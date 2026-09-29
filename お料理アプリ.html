@@ -6,219 +6,263 @@
 <title>わが家のごはん帖</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* レイアウト: 1カラムの献立帳。上に日付入りの見出し、下に固定タブ。カードは「献立の一品」単位でだけ使う */
+/* レイアウト: 1カラムの献立帳。主役は「お膳」を真上から見た図（奥左=副菜・奥右=主菜・手前左=ご飯・手前右=汁もの）。
+   色: 藍染めの藍と和紙の地、器は染付・漆・青磁、アレンジだけ山吹色。書体: 見出しは明朝（品書き）、本文は角ゴシック */
 :root{
-    --bg:#f3f5ef;          /* 青菜を薄めたような地 */
+    --bg:#eef1f4;
     --surface:#ffffff;
-    --surface-2:#e9ede3;
-    --ink:#22281f;
-    --muted:#646c5c;
-    --line:#d6dccd;
-    --accent:#2f6b3f;      /* 青菜の緑 */
+    --surface-2:#e4e9ef;
+    --ink:#172033;
+    --muted:#5b6679;
+    --line:#d4dbe4;
+    --accent:#22406b;          /* 藍 */
     --accent-ink:#ffffff;
-    --accent-soft:#dfeadb;
-    --yolk:#e6a817;        /* 卵黄: ひとひねり(アレンジ)専用 */
-    --yolk-soft:#fbf0d2;
-    --yolk-ink:#4a3605;
-    --danger:#b3412f;
-    --shadow:0 1px 2px rgba(34,40,31,.06),0 6px 18px rgba(34,40,31,.06);
-    --font-display:'Kiwi Maru','Hiragino Maru Gothic ProN','Rounded Mplus 1c',serif;
+    --accent-soft:#dde6f2;
+    --yolk:#c98e0c;            /* 山吹: ひとひねり専用 */
+    --yolk-soft:#f6ecd2;
+    --yolk-ink:#5b3f00;
+    --danger:#b23a2a;
+    --sun:#b23a2a; --sat:#2d5b9a;
+    /* 器と膳（イラスト。どちらのテーマでも同じ色） */
+    --tray:#2b211d; --tray-2:#3a2b25; --tray-edge:#7d2a1f; --tray-ink:#f5eee3; --tray-muted:#c9b9a6;
+    --porcelain:#fbfaf6; --rim:#2c4c7c; --lacquer:#8f2b1f; --lacquer-dark:#1c1210; --celadon:#a4c3b2; --celadon-dark:#7e9f8d; --rice:#f6f3ea;
+    --shadow:0 1px 2px rgba(23,32,51,.06),0 8px 24px rgba(23,32,51,.08);
+    --font-display:'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',serif;
     --font-body:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic',sans-serif;
-    --radius:14px;
+    --r:12px;
 }
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-        --bg:#141912;--surface:#1c2319;--surface-2:#252e22;--ink:#e6eadf;--muted:#9aa390;--line:#34402f;
-        --accent:#86c291;--accent-ink:#10200f;--accent-soft:#233526;
-        --yolk:#f0bd45;--yolk-soft:#3a3016;--yolk-ink:#fbe7b0;--danger:#ef8a78;
-        --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+        --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
+        --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
+        --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
+        --tray:#231a17;--tray-2:#30241f;
+        --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
         color-scheme:dark;
     }
 }
 :root[data-theme="dark"]{
-    --bg:#141912;--surface:#1c2319;--surface-2:#252e22;--ink:#e6eadf;--muted:#9aa390;--line:#34402f;
-    --accent:#86c291;--accent-ink:#10200f;--accent-soft:#233526;
-    --yolk:#f0bd45;--yolk-soft:#3a3016;--yolk-ink:#fbe7b0;--danger:#ef8a78;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+    --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
+    --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
+    --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
+    --tray:#231a17;--tray-2:#30241f;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
     color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{
-    background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7;
-    -webkit-font-smoothing:antialiased;padding-inline:16px;
-}
-.wrap{max-width:720px;margin:0 auto;padding-block:20px 120px;display:flex;flex-direction:column;gap:22px}
-#view{display:flex;flex-direction:column;gap:32px}
-h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0;text-wrap:balance;line-height:1.35}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:16px}
+.wrap{max-width:680px;margin:0 auto;padding-block:18px 124px;display:flex;flex-direction:column;gap:20px}
+#view{display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:1.35;letter-spacing:.02em}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
+a{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* ヘッダー */
-.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.top h1{font-size:1.65rem;letter-spacing:.04em}
-.top .date{font-size:.85rem;color:var(--muted);letter-spacing:.08em}
-.top .tagline{font-size:.8rem;color:var(--muted);margin-top:2px}
+/* ヘッダー: 品書きの題字＋落款 */
+.top{display:flex;align-items:center;gap:12px}
+.seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--lacquer);color:var(--lacquer);border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
+.top h1{font-size:1.45rem}
+.top .date{font-size:.8rem;color:var(--muted);letter-spacing:.12em}
 
 /* 見出し */
-.sec{display:flex;flex-direction:column;gap:12px}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.sec-head h2{font-size:1.2rem}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec-head{display:flex;flex-direction:column;gap:2px}
+.sec-head h2{font-size:1.3rem}
+.sec-head h3{font-size:1.08rem}
 .sec-head .hint{font-size:.8rem;color:var(--muted)}
-.label{font-size:.72rem;letter-spacing:.14em;color:var(--muted);font-weight:700}
+.sec-head.split{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.label{font-size:.72rem;letter-spacing:.16em;color:var(--muted);font-weight:700}
 
 /* ボタン */
-.btn{
-    border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.5rem 1rem;
-    font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
-    transition:background .15s,border-color .15s,transform .1s;min-height:40px;
-}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:42px;text-decoration:none;color:var(--ink)}
 .btn:hover{border-color:var(--accent)}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
-.btn.yolk{background:var(--yolk);border-color:var(--yolk);color:#2b1f02;font-weight:700}
-.btn.ghost{background:transparent}
-.btn.sm{min-height:32px;padding:.25rem .75rem;font-size:.8rem}
+.btn.yolk{background:var(--yolk);border-color:var(--yolk);color:#231800;font-weight:700}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{border-color:var(--line)}
+.btn.sm{min-height:34px;padding:.25rem .75rem;font-size:.8rem}
 .btn.danger{color:var(--danger)}
+.btn.wide{flex:1 1 auto}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 /* チップ */
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{
-    border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .8rem;font-size:.84rem;
-    display:inline-flex;align-items:center;gap:.35rem;min-height:34px;
-}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-block:2px}
+.chips.scroll::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:36px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.chip.yolk[aria-pressed="true"]{background:var(--yolk);border-color:var(--yolk);color:#2b1f02}
+.chip.yolk[aria-pressed="true"]{background:var(--yolk);border-color:var(--yolk);color:#231800}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
-
-/* 献立の一品 */
-.menu{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-.dish{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:14px 14px;border-top:1px solid var(--line)}
-.dish:first-child{border-top:0}
-.dish .slot{font-family:var(--font-display);font-size:.8rem;color:var(--accent);text-align:center;border:1px solid var(--accent-soft);background:var(--accent-soft);border-radius:10px;padding:.35rem 0}
-.dish .body{min-width:0;cursor:pointer}
-.dish .name{font-family:var(--font-display);font-size:1.08rem;line-height:1.4}
-.dish .meta{font-size:.78rem;color:var(--muted)}
-.dish .reroll{border:1px solid var(--line);background:transparent;border-radius:999px;font-size:.78rem;padding:.3rem .7rem;min-height:34px;white-space:nowrap}
-.dish .reroll:hover{border-color:var(--accent)}
-.menu-foot{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:var(--surface-2)}
-.badge{display:inline-block;font-size:.7rem;padding:.05rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-right:4px;vertical-align:1px}
+.badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-right:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
 .badge.new{background:var(--accent-soft);color:var(--accent)}
 
-/* ひとひねり(アレンジ)カード */
-.twist{background:var(--yolk-soft);border:1px dashed var(--yolk);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px}
-.twist .kicker{font-size:.72rem;letter-spacing:.14em;color:var(--yolk-ink);font-weight:700}
-.twist .name{font-family:var(--font-display);font-size:1.2rem;line-height:1.4;color:var(--ink)}
-.twist .from{font-size:.82rem;color:var(--muted)}
-.changes{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.changes li{font-size:.76rem;background:var(--surface);border-radius:999px;padding:.1rem .6rem;border:1px solid var(--line)}
+/* お膳 */
+.tray{
+    background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%);
+    border-radius:18px;padding:18px 14px 16px;box-shadow:inset 0 0 0 2px var(--tray-edge),inset 0 0 0 7px var(--tray),inset 0 0 0 8px rgba(255,255,255,.06),0 14px 30px rgba(20,12,8,.25);
+    display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"side main" "rice soup";gap:14px 10px;color:var(--tray-ink)
+}
+.spot{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;text-align:center}
+.spot.side{grid-area:side;justify-content:flex-end}.spot.main{grid-area:main}.spot.rice{grid-area:rice}.spot.soup{grid-area:soup}
+.vessel{position:relative;aspect-ratio:1;border-radius:50%;border:0;padding:0;background:var(--porcelain);transition:transform .2s ease;max-width:100%}
+.vessel:hover{transform:translateY(-2px) scale(1.02)}
+.vessel .food{position:absolute;border-radius:47% 53% 50% 50%/55% 45% 55% 45%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.4),transparent 42%),var(--food,#a8652b);background-size:cover;background-position:center}
+.vessel .food.photo{border-radius:50%;background-image:var(--img)}
+.v-plate{width:92%;box-shadow:inset 0 0 0 6px var(--porcelain),inset 0 0 0 8px var(--rim),inset 0 -8px 18px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.45)}
+.v-plate .food{inset:20%}.v-plate .food.photo{inset:11%}
+.v-donburi{width:92%;background:repeating-conic-gradient(var(--rim) 0 5deg,var(--porcelain) 5deg 15deg);box-shadow:0 8px 16px rgba(0,0,0,.45)}
+.v-donburi::before{content:"";position:absolute;inset:7%;border-radius:50%;background:var(--porcelain)}
+.v-donburi .food{inset:14%}
+.v-donburi.noodle .food:not(.photo){background:repeating-linear-gradient(35deg,rgba(255,255,255,.45) 0 2px,transparent 2px 6px),var(--food)}
+.v-kobachi{width:68%;background:radial-gradient(circle,var(--celadon) 0 62%,var(--celadon-dark) 63% 100%);box-shadow:0 6px 12px rgba(0,0,0,.45)}
+.v-kobachi .food{inset:22%}.v-kobachi .food.photo{inset:14%}
+.v-wan{width:72%;background:var(--lacquer);box-shadow:inset 0 0 0 5px var(--lacquer-dark),0 6px 12px rgba(0,0,0,.5)}
+.v-wan .food{inset:13%;border-radius:50%}
+.v-chawan{width:62%;box-shadow:inset 0 0 0 4px var(--porcelain),inset 0 0 0 6px var(--rim),inset 0 0 0 9px var(--porcelain),inset 0 0 0 10px var(--rim),0 6px 12px rgba(0,0,0,.45)}
+.v-chawan .food{inset:17%;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff 0 1.5px,transparent 2px) 0 0/7px 7px,radial-gradient(circle at 70% 60%,#e9e3d3 0 1.5px,transparent 2px) 0 0/9px 9px,var(--rice)}
+.v-konomono{width:50%;border-radius:14%;box-shadow:inset 0 0 0 3px var(--porcelain),inset 0 0 0 4px var(--rim),0 5px 10px rgba(0,0,0,.45)}
+.v-konomono .food{inset:26%;border-radius:4px;background:repeating-linear-gradient(90deg,#e7c34a 0 7px,#d9af2a 7px 8px)}
+.spot-label{display:flex;flex-direction:column;gap:0;min-width:0;max-width:100%}
+.spot-label .slot{font-size:.66rem;letter-spacing:.2em;color:var(--tray-muted)}
+.spot-label .nm{font-family:var(--font-display);font-weight:700;font-size:.98rem;line-height:1.35;overflow-wrap:anywhere}
+.spot-label .mt{font-size:.7rem;color:var(--tray-muted)}
+.spot-label .last{font-size:.66rem;color:#f0c874}
+.swap-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.swap-row .btn{min-height:38px;font-size:.78rem;padding:.25rem .3rem}
+.credit{font-size:.7rem;color:var(--muted)}
 
-/* 汎用リスト */
-.list{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+/* ひとひねり: 短冊 */
+.tanzaku{display:grid;grid-template-columns:34px 1fr;background:var(--yolk-soft);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.tanzaku .band{background:var(--yolk);color:#231800;writing-mode:vertical-rl;font-family:var(--font-display);font-weight:700;letter-spacing:.3em;display:flex;align-items:center;justify-content:center;font-size:.85rem;padding-block:12px}
+.tanzaku .body{padding:14px 14px 14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:10px;border-top:1px dashed color-mix(in srgb,var(--yolk) 55%,transparent)}
+.tw-item:first-child{border-top:0;padding-top:0}
+.thumb{width:64px;height:64px;border-radius:50%;background:var(--surface-2);background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px var(--porcelain),0 2px 6px rgba(0,0,0,.15);flex-shrink:0;position:relative}
+.thumb.none{background:radial-gradient(circle,var(--food,#a8652b) 0 36%,var(--porcelain) 37%)}
+.tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink)}
+.from{font-size:.78rem;color:var(--muted)}
+.changes{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none}
+.changes li{font-size:.72rem;background:var(--surface);border-radius:999px;padding:.05rem .55rem;color:var(--yolk-ink);border:1px solid color-mix(in srgb,var(--yolk) 40%,transparent)}
+
+/* リスト */
+.list{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
 .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
 .item .t{font-weight:500;cursor:pointer;min-width:0}
-.item .s{font-size:.78rem;color:var(--muted)}
 .item .t:hover{color:var(--accent)}
+.item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
+.note{font-size:.85rem;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
 /* 入力 */
-.field{display:flex;flex-direction:column;gap:4px}
-.field label{font-size:.8rem;color:var(--muted);font-weight:500}
-input[type=text],input[type=number],input[type=date],select,textarea{
-    border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:42px;
-}
+.field{display:flex;flex-direction:column;gap:6px}
+.field>label{font-size:.8rem;color:var(--muted);font-weight:500}
+input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
 .inputbar{display:grid;grid-template-columns:1fr auto auto;gap:8px}
+@media (max-width:420px){.inputbar{grid-template-columns:1fr auto}.inputbar #mic-btn{grid-column:1/-1}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:480px){.grid2{grid-template-columns:1fr}}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted);cursor:pointer}
+.check input{margin-top:.3rem;width:18px;height:18px;accent-color:var(--accent);flex-shrink:0}
 
 /* 材料マッチ */
-.match{padding:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.match{padding:12px 14px;border-top:1px solid var(--line);display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
 .match:first-child{border-top:0}
-.match .head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;cursor:pointer}
-.match .head .name{font-family:var(--font-display);font-size:1.02rem}
-.meter{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;width:80px;flex-shrink:0}
+.match .thumb{width:52px;height:52px;cursor:pointer}
+.match .info{min-width:0;display:flex;flex-direction:column;gap:4px}
+.match .head{display:flex;justify-content:space-between;gap:8px;align-items:center;cursor:pointer}
+.match .head .name{font-family:var(--font-display);font-weight:700;font-size:1rem}
+.meter{height:5px;border-radius:999px;background:var(--surface-2);overflow:hidden;width:64px;flex-shrink:0}
 .meter i{display:block;height:100%;background:var(--accent)}
-.ings{font-size:.8rem;color:var(--muted)}
+.ings{font-size:.8rem;color:var(--muted);line-height:1.8}
 .ings b{color:var(--accent);font-weight:700}
 .ings .miss{color:var(--danger)}
 .ings .sub{color:var(--yolk-ink);background:var(--yolk-soft);border-radius:4px;padding:0 .25rem}
 
 /* 週プラン */
-.week .item{grid-template-columns:72px 1fr auto}
-.week .day{font-family:var(--font-display);font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.week .item{grid-template-columns:48px 1fr auto}
+.day{display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.day .dd{font-family:var(--font-display);font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.day .wd{font-size:.68rem;color:var(--muted)}
+.day.sun .wd,.day.sun .dd{color:var(--sun)}.day.sat .wd,.day.sat .dd{color:var(--sat)}
+.day.today .dd{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 
 /* 統計 */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--surface);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
-.stat .n{font-family:var(--font-display);font-size:1.4rem;font-variant-numeric:tabular-nums}
+.stat{background:var(--surface);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
+.stat .n{font-family:var(--font-display);font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.2}
 .stat .k{font-size:.72rem;color:var(--muted)}
 
-details.box{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:0 14px}
+details.box{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:0 14px}
 details.box>summary{padding:14px 0;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
+details.box>summary::-webkit-details-marker{display:none}
 details.box>summary::after{content:'＋';color:var(--muted)}
 details.box[open]>summary::after{content:'－'}
-details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:10px}
+details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:12px}
 
 /* タブ */
-nav.tabs{
-    position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
-    padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;
-}
-nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:560px}
-nav.tabs button{border:0;background:transparent;border-radius:10px;padding:.45rem 0;font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:1px;min-height:48px}
-nav.tabs button .ic{font-family:var(--font-display);font-size:1.05rem;line-height:1.2}
-nav.tabs button[aria-selected="true"]{color:var(--accent);background:var(--accent-soft);font-weight:700}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
+nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px}
+nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
+nav.tabs svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
+nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 
-/* モーダル */
-.modal{position:fixed;inset:0;z-index:40;background:rgba(15,20,12,.5);display:flex;align-items:flex-end;justify-content:center}
-.sheet{
-    background:var(--bg);width:100%;max-width:720px;max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;
-    padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;
-}
-@media (min-width:760px){.modal{align-items:center}.sheet{border-radius:18px;max-height:88vh}}
-.sheet h2{font-size:1.4rem}
-.sheet .close{align-self:flex-end;margin-bottom:-8px}
-.recipe-ings{list-style:none;margin:0;padding:0;background:var(--surface);border-radius:12px;box-shadow:var(--shadow)}
-.recipe-ings li{display:flex;justify-content:space-between;gap:10px;padding:.5rem .9rem;border-top:1px solid var(--line);font-size:.92rem}
+/* 詳細シート */
+.modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+@media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh}}
+.sheet>*{flex-shrink:0}
+.hero{position:relative;background:var(--tray);min-height:120px}
+.hero img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.hero .noimg{display:grid;place-items:center;padding:28px 0}
+.hero .noimg .vessel{width:150px}
+.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:36px;padding:.2rem .9rem;font-size:.8rem}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.66rem;line-height:1.4}
+.hero .cap a{color:#fff}
+.sheet-body{padding:18px 16px 0;display:flex;flex-direction:column;gap:16px}
+.sheet h2{font-size:1.5rem}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.fact{font-size:.76rem;border:1px solid var(--line);border-radius:999px;padding:.05rem .6rem;background:var(--surface)}
+.recipe-ings{list-style:none;margin:0;padding:0;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow)}
+.recipe-ings li{display:flex;justify-content:space-between;gap:10px;padding:.55rem .9rem;border-top:1px dashed var(--line);font-size:.92rem}
 .recipe-ings li:first-child{border-top:0}
 .recipe-ings li.add{background:var(--yolk-soft)}
 .recipe-ings li .q{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .recipe-ings li .ok{color:var(--accent);font-weight:700;margin-right:.3rem}
-.seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border-radius:12px;padding:.6rem .9rem;box-shadow:var(--shadow)}
-.steps{margin:0;padding-left:1.4rem;display:flex;flex-direction:column;gap:8px}
-.steps li{padding-left:.2rem}
-.steps li.add{background:var(--yolk-soft);border-radius:8px;padding:.2rem .5rem}
-.note{font-size:.84rem;background:var(--surface-2);border-radius:10px;padding:.6rem .8rem}
-.confirm{background:var(--surface-2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
-
-.toast{
-    position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:60;
-    background:var(--ink);color:var(--bg);padding:.55rem 1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);
-    max-width:calc(100% - 32px);
-}
+.seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border-radius:var(--r);padding:.7rem .9rem;box-shadow:var(--shadow)}
+.steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:12px}
+.steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(st);width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;margin-top:1px}
+.steps li.add{background:var(--yolk-soft);border-radius:10px;padding:.35rem .5rem .35rem .35rem}
+.steps li.add::before{background:var(--yolk);color:#231800}
+.confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 .muted{color:var(--muted)}
 .small{font-size:.8rem}
+@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+.pop{animation:rise .28s ease-out}
+.tray .vessel{animation:rise .35s ease-out backwards}
+.tray .spot.main .vessel{animation-delay:.04s}.tray .spot.rice .vessel{animation-delay:.08s}.tray .spot.soup .vessel{animation-delay:.12s}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@keyframes pop{from{transform:translateY(6px)}to{transform:none}}
-.pop{animation:pop .25s ease-out}
 </style>
 </head>
 <body>
 <div class="wrap">
     <header class="top">
+        <div class="seal" aria-hidden="true">膳</div>
         <div>
             <div class="date" id="today-label"></div>
             <h1>わが家のごはん帖</h1>
-            <div class="tagline">献立の提案・冷蔵庫の材料から・定番のひとひねり</div>
         </div>
     </header>
     <main id="view"></main>
@@ -226,10 +270,10 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);background:var(--accen
 
 <nav class="tabs" aria-label="画面の切りかえ">
     <div class="in" role="tablist">
-        <button role="tab" data-tab="today"><span class="ic">献</span>今日の献立</button>
-        <button role="tab" data-tab="fridge"><span class="ic">材</span>材料から</button>
-        <button role="tab" data-tab="twist"><span class="ic">捻</span>ひとひねり</button>
-        <button role="tab" data-tab="log"><span class="ic">記</span>記録</button>
+        <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日の献立</button>
+        <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/></svg>材料から</button>
+        <button role="tab" data-tab="twist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>ひとひねり</button>
+        <button role="tab" data-tab="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 17 21H6z"/><path d="M6 3v18M9.5 8h5.5M9.5 12h5.5M9.5 16h3"/></svg>記録</button>
     </div>
 </nav>
 <div id="modal-root"></div>
@@ -859,62 +903,182 @@ function render(){
     if (tab === 'log') v.innerHTML = viewLog();
 }
 
+/* ---- 料理写真 ----
+   Wikipedia日本語版の記事の代表画像を、見ている人のブラウザが Wikimedia Commons から取得する。
+   撮影者とライセンスも一緒に取得して表示する（Commons にない画像は使わない）。30日間キャッシュ。 */
+const WIKI = {
+    nikujaga:'肉じゃが', shogayaki:'生姜焼き', karaage:'唐揚げ', teriyaki:'照り焼き', hamburg:'ハンバーグ', stew:'クリームシチュー',
+    mapo:'麻婆豆腐', hoikoro:'回鍋肉', chinjao:'青椒肉絲', gyoza:'餃子', meuniere:'ムニエル', sabamiso:'鯖の味噌煮',
+    buriteri:'照り焼き', nanban:'チキン南蛮', butakimu:'豚キムチ', japchae:'チャプチェ', ebichili:'エビチリ', happosai:'八宝菜',
+    chanchan:'ちゃんちゃん焼き', champuru:'ゴーヤーチャンプルー', reishabu:'冷しゃぶ', atsuage:'厚揚げ', gratin:'グラタン',
+    subuta:'酢豚', rollcabbage:'ロールキャベツ', chikuzen:'筑前煮', buridaikon:'ぶり大根', okonomi:'お好み焼き', mabonasu:'麻婆茄子',
+    curry:'カレーライス', oyakodon:'親子丼', gyudon:'牛丼', omurice:'オムライス', gapao:'ガパオライス', tacorice:'タコライス',
+    chahan:'炒飯', takikomi:'炊き込みご飯', napolitan:'ナポリタン', yakisoba:'焼きそば', carbonara:'カルボナーラ', nikuudon:'肉うどん',
+    ohitashi:'お浸し', kinpira:'きんぴら', potesala:'ポテトサラダ', hijiki:'ひじき', dashimaki:'だし巻き卵', kabocha:'カボチャ',
+    nasubitashi:'揚げ浸し', komatsuna:'煮浸し', tatakikyuri:'拍黄瓜', namul:'ナムル', sakamushi:'酒蒸し', coleslaw:'コールスロー',
+    hiyayakko:'冷奴', sunomono:'酢の物', tomatotamago:'西紅柿炒鶏蛋', misoshiru:'味噌汁', tonjiru:'豚汁', minestrone:'ミネストローネ',
+    tamagosoup:'かき玉汁', consomme:'コンソメ', wakamesoup:'ミヨックク', sundubu:'スンドゥブチゲ',
+};
+const PHOTO_KEY = 'gohancho.photos.v1';
+let PHOTOS = {}, photoStatus = 'idle';
+try{
+    const c = JSON.parse(localStorage.getItem(PHOTO_KEY) || 'null');
+    if (c && c.v === 1 && Date.now() - c.t < 30*864e5){ PHOTOS = c.data || {}; photoStatus = 'done'; }
+}catch(e){}
+function stripHtml(h){ try{ return (new DOMParser().parseFromString(String(h||''), 'text/html').body.textContent || '').trim().replace(/\s+/g,' '); }catch(e){ return ''; } }
+async function loadPhotos(){
+    if (photoStatus === 'done' || photoStatus === 'loading') return;
+    photoStatus = 'loading';
+    try{
+        const titles = [...new Set(Object.values(WIKI))], fileOf = {};
+        for (let k = 0; k < titles.length; k += 40){
+            const chunk = titles.slice(k, k+40);
+            const url = 'https://ja.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*&redirects=1&prop=pageimages&piprop=name&titles=' + encodeURIComponent(chunk.join('|'));
+            const j = await (await fetch(url)).json();
+            const map = {}; [...(j.query.normalized||[]), ...(j.query.redirects||[])].forEach(n => map[n.from] = n.to);
+            const byTitle = {}; (j.query.pages||[]).forEach(pg => { if (pg.pageimage) byTitle[pg.title] = pg.pageimage; });
+            chunk.forEach(t => { let x = t; for (let n = 0; n < 3 && map[x]; n++) x = map[x]; if (byTitle[x]) fileOf[t] = byTitle[x]; });
+        }
+        const files = [...new Set(Object.values(fileOf))].filter(f => /\.(jpe?g|png|webp)$/i.test(f));
+        const info = {};
+        for (let k = 0; k < files.length; k += 40){
+            const chunk = files.slice(k, k+40);
+            const url = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=720&iiextmetadatafilter=Artist|LicenseShortName&titles=' + encodeURIComponent(chunk.map(f => 'File:' + f).join('|'));
+            const j = await (await fetch(url)).json();
+            const back = {}; (j.query.normalized||[]).forEach(n => back[n.to] = n.from);
+            (j.query.pages||[]).forEach(pg => {
+                const ii = pg.imageinfo && pg.imageinfo[0]; if (!ii || pg.missing) return;
+                const em = ii.extmetadata || {};
+                const rec = {src: ii.thumburl || ii.url, page: ii.descriptionurl,
+                    artist: stripHtml(em.Artist && em.Artist.value).slice(0, 80), license: stripHtml(em.LicenseShortName && em.LicenseShortName.value)};
+                [pg.title, back[pg.title] || pg.title].forEach(t => { const f = t.replace(/^File:/,''); info[f] = rec; info[f.replace(/_/g,' ')] = rec; });
+            });
+        }
+        const out = {};
+        Object.entries(WIKI).forEach(([id, t]) => { const f = fileOf[t]; const rec = f && (info[f] || info[f.replace(/_/g,' ')]); if (rec && rec.src && /^https:\/\//.test(rec.src)) out[id] = rec; });
+        PHOTOS = out; photoStatus = 'done';
+        try{ localStorage.setItem(PHOTO_KEY, JSON.stringify({v:1, t:Date.now(), data:out})); }catch(e){}
+    }catch(e){ photoStatus = 'blocked'; }
+    const a = document.activeElement;
+    if (!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) render();
+    if (modalId) renderModal();
+}
+function photoOf(r){ if (!r) return null; return PHOTOS[r.isTwist ? r.base.id : r.id] || null; }
+function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
+function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
+function photoNote(){
+    if (photoStatus === 'loading') return '料理の写真を読み込んでいます…';
+    if (photoStatus === 'blocked') return 'この画面では料理写真を読み込めませんでした。ファイルをブラウザで直接開くと表示されます。';
+    if (Object.keys(PHOTOS).length) return '写真: Wikipedia / Wikimedia Commons。撮影者とライセンスは各料理の詳細に表示しています。';
+    return '';
+}
+
+/* ---- 器のイラスト ---- */
+function foodColor(r){
+    if (!r) return '#a8652b';
+    if (r.type === '汁物') return {'洋':'#b5503a','中':'#d9b95c','韓':'#b8452f','エスニック':'#c2703a'}[r.genre] || '#b48a55';
+    return {'煮':'#8a5a2b','炒':'#6f8f3a','焼':'#a8652b','揚':'#c98f2e','和え':'#5f9b5a','炊':'#c9a877'}[r.method] || '#a8652b';
+}
+function vesselKind(r){
+    if (!r) return 'plate';
+    if (r.type === 'ごはん' || r.type === '麺') return 'donburi';
+    if (r.type === '汁物') return 'wan';
+    if (r.type === '副菜') return 'kobachi';
+    return 'plate';
+}
+function vesselHtml(kind, r, still=false){
+    const ph = r ? photoOf(r) : null;
+    const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
+    const food = (kind === 'chawan' || kind === 'konomono') ? '<span class="food"></span>' : `<span class="food${ph ? ' photo' : ''}"></span>`;
+    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}`;
+    if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
+    return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(r.name)}の作り方を見る">${food}</button>`;
+}
+function thumbHtml(r){
+    const ph = photoOf(r);
+    return ph ? `<span class="thumb" style="${esc('background-image:' + cssUrl(ph.src))}" role="img" aria-label="${esc(r.name)}の写真"></span>`
+              : `<span class="thumb none" style="${esc('--food:' + foodColor(r))}" aria-hidden="true"></span>`;
+}
+
 /* ---- 今日の献立 ---- */
 function viewToday(){
     if (!session.menu) newMenu();
     const {main, side, soup} = session.menu;
     const planned = weekToday();
+    const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChips = MOODS.map(m => `<button class="chip" data-act="mood" data-k="${m.k}" aria-pressed="${session.mood===m.k}">${esc(m.label)}</button>`).join('');
-    const dish = (slot, r, key) => r ? `
-        <div class="dish pop">
-            <div class="slot">${slot}</div>
-            <div class="body" data-act="open" data-id="${esc(r.id)}">
-                <div class="name">${esc(r.name)}</div>
-                <div class="meta">${esc(metaLine(r))} ${badges(r)}</div>
+    const spot = (cls, slot, r, emptyText) => {
+        const kind = cls === 'main' ? vesselKind(r) : cls === 'side' ? 'kobachi' : 'wan';
+        const last = r ? lastLabel(r.id) : '';
+        return `<div class="spot ${cls}">
+            ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
+            <div class="spot-label"><span class="slot">${slot}</span>
+                ${r ? `<span class="nm">${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${last ? `<span class="last">${esc(last)}</span>` : ''}`
+                    : `<span class="mt">${esc(emptyText)}</span>`}
             </div>
-            <button class="reroll" data-act="reroll" data-k="${key}" aria-label="${slot}を別の案にする">別の案</button>
-        </div>` : `<div class="dish"><div class="slot">${slot}</div><div class="body muted small">${key==='soup' && main && main.id==='nikuudon' ? '汁ものの麺なので、今日はなしでOK' : '条件に合う料理がありません。気分を「おまかせ」に戻してください'}</div><span></span></div>`;
+        </div>`;
+    };
+    const riceSpot = `<div class="spot rice">${vesselHtml(oneBowl ? 'konomono' : 'chawan', null)}
+        <div class="spot-label"><span class="slot">${oneBowl ? '香の物' : 'ご飯'}</span><span class="nm">${oneBowl ? 'お漬物' : '白ご飯'}</span></div></div>`;
     const tw = session.twist;
+    const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
     <section class="sec">
-        ${planned ? `<div class="note">1週間プランでは、今日の主菜は <b>${esc(planned.name)}</b> の予定です。 <button class="btn sm" data-act="use-plan">献立にする</button></div>` : ''}
-        <div class="sec-head"><h2>今日の献立</h2><span class="hint">主菜・副菜・汁ものの一汁二菜（2人分）</span></div>
-        <div class="chips" role="group" aria-label="気分">${moodChips}</div>
-        <label class="row small muted" style="gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''} style="margin-top:.35rem"><span>「材料から」に登録した食材を使う料理を優先する（${S.fridge.length}品登録中）</span></label>
-        <div class="menu">
-            ${dish('主菜', main, 'main')}
-            ${dish('副菜', side, 'side')}
-            ${dish('汁もの', soup, 'soup')}
-            <div class="menu-foot">
-                <button class="btn primary" data-act="decide" ${main?'':'disabled'}>この献立に決定（記録する）</button>
-                <button class="btn" data-act="new-menu">まるごと入れ替え</button>
-            </div>
+        ${planned ? `<div class="note"><span>1週間プランでは、今日の主菜は <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">献立にする</button></div>` : ''}
+        <div class="sec-head"><h2>今日の献立</h2><span class="hint">一汁二菜・2人分。器をタップすると作り方が開きます</span></div>
+        <div class="chips scroll" role="group" aria-label="今日の気分">${moodChips}</div>
+        <div class="tray" aria-label="今日のお膳">
+            ${spot('side', '副菜', side, '条件に合う副菜がありません')}
+            ${spot('main', '主菜', main, '条件に合う料理がありません。気分を「おまかせ」に戻してください')}
+            ${riceSpot}
+            ${spot('soup', '汁もの', soup, main && main.id === 'nikuudon' ? '汁ものの麺なので、今日はなし' : '条件に合う汁ものがありません')}
         </div>
-        <p class="small muted" style="margin:0">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないようにしています。記録がたまるほど精度が上がります。</p>
+        <div class="swap-row">
+            <button class="btn" data-act="reroll" data-k="side" ${side?'':'disabled'}>副菜を変える</button>
+            <button class="btn" data-act="reroll" data-k="main">主菜を変える</button>
+            <button class="btn" data-act="reroll" data-k="soup" ${soup?'':'disabled'}>汁ものを変える</button>
+        </div>
+        <div class="row">
+            <button class="btn primary wide" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
+            <button class="btn" data-act="new-menu">まるごと入れ替え</button>
+        </div>
+        <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（${S.fridge.length}品）を使う料理を優先する</span></label>
+        <p class="small muted" style="margin:0">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>
 
     ${tw ? `<section class="sec">
-        <div class="sec-head"><h2>今日のひとひねり</h2><span class="hint">定番をもとにしたアレンジ案</span></div>
-        <div class="twist pop">
-            <div class="kicker">元の料理: ${esc(tw.base.name)}</div>
-            <div class="name">${esc(tw.name)}</div>
-            <ul class="changes">${tw.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-            <div class="row">
-                <button class="btn yolk" data-act="open" data-id="${esc(tw.id)}">作り方を見る</button>
-                <button class="btn" data-act="twist-main">主菜をこれにする</button>
-                <button class="btn ghost" data-act="new-twist">別のひねり</button>
+        <div class="sec-head"><h2>今日のひとひねり</h2><span class="hint">いつもの定番を、ちょっと変えた一品</span></div>
+        <div class="tanzaku pop">
+            <div class="band">ひとひねり</div>
+            <div class="body">
+                <div class="tw-item">
+                    ${thumbHtml(tw)}
+                    <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                        <div class="tw-name" data-act="open" data-id="${esc(tw.id)}">${esc(tw.name)}</div>
+                        <div class="from">元の料理: ${esc(tw.base.name)}</div>
+                        <ul class="changes">${tw.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn sm yolk" data-act="open" data-id="${esc(tw.id)}">作り方を見る</button>
+                    <button class="btn sm" data-act="twist-main">主菜にする</button>
+                    <button class="btn sm ghost" data-act="new-twist">別のひねり</button>
+                </div>
             </div>
         </div>
     </section>` : ''}
 
     <section class="sec">
-        <div class="sec-head"><h2>1週間の主菜プラン</h2><span class="hint">7日間、同じ料理・同じ肉魚が続かないように組みます</span></div>
-        ${S.week && S.week.days.some(x => x.d >= TODAY) ? `<div class="list week">${S.week.days.filter(x => x.d >= TODAY).map((x,i) => { const r = byId(x.id); return r ? `
-            <div class="item"><span class="day">${esc(jpDate(x.d).replace(/^\d+月/,''))}</span>
+        <div class="sec-head"><h2>1週間の主菜</h2><span class="hint">7日間、同じ料理や同じ肉・魚が続かないように組みます</span></div>
+        ${upcoming.length ? `<div class="list week">${upcoming.map(x => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay(); return `
+            <div class="item">
+                <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${WD[wd]}</span></div>
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
-                <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button></div>` : ''; }).join('')}</div>
+                <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button>
+            </div>`; }).join('')}</div>
             <div class="row"><button class="btn" data-act="make-week">作り直す</button></div>`
-        : `<div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
+        : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。</div></div>
+           <div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
     </section>`;
 }
 
@@ -934,7 +1098,7 @@ function viewFridge(){
             <div class="list">${arr.map(matchRow).join('')}</div>` : '';
         results = `
         <section class="sec">
-            <div class="sec-head"><h2>作れる料理</h2>
+            <div class="sec-head split"><h2>作れる料理</h2>
                 <button class="btn sm yolk" data-act="fridge-twist">この材料でひとひねり案</button></div>
             ${block('今ある材料で作れる', `${ready.length}品`, ready)}
             ${block('代わりの食材で作れる', '黄色の食材を置きかえます', withSub)}
@@ -967,12 +1131,15 @@ function matchRow(m){
         ...m.miss.map(i => `<span class="miss">${esc(i.label)}</span>`),
     ];
     return `<div class="match">
-        <div class="head" data-act="open" data-id="${esc(r.id)}">
-            <span class="name">${esc(r.name)}</span>
-            <span class="meter" aria-label="材料のそろい具合 ${Math.round(m.ratio*100)}%"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
+        <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
+        <div class="info">
+            <div class="head" data-act="open" data-id="${esc(r.id)}">
+                <span class="name">${esc(r.name)}</span>
+                <span class="meter" aria-label="材料のそろい具合 ${Math.round(m.ratio*100)}%"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
+            </div>
+            <div class="ings">${parts.join('・')}</div>
+            <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
         </div>
-        <div class="ings">${parts.join('・')}</div>
-        <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
     </div>`;
 }
 
@@ -993,17 +1160,22 @@ function viewTwist(){
     return `
     <section class="sec">
         <div class="sec-head"><h2>定番をひとひねり</h2><span class="hint">味の方向・かたち・主役の食材を入れかえて、新しい一品を考えます</span></div>
-        <div class="twist">
-            <div class="kicker">ひとひねり案</div>
+        <div class="tanzaku pop">
+            <div class="band">ひとひねり案</div>
+            <div class="body">
             ${res.length ? res.map(t => `
-                <div style="display:flex;flex-direction:column;gap:6px;padding-block:6px;border-top:1px dashed var(--yolk)">
-                    <div class="name" data-act="open" data-id="${esc(t.id)}" style="cursor:pointer">${esc(t.name)}</div>
-                    <div class="from">元の料理: ${esc(t.base.name)}</div>
-                    <ul class="changes">${t.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-                    <div class="row"><button class="btn sm yolk" data-act="open" data-id="${esc(t.id)}">作り方を見る</button>
-                    <button class="btn sm" data-act="fav" data-id="${esc(t.id)}">${S.favs.includes(t.id)?'お気に入り解除':'お気に入り'}</button></div>
+                <div class="tw-item">
+                    ${thumbHtml(t)}
+                    <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                        <div class="tw-name" data-act="open" data-id="${esc(t.id)}">${esc(t.name)}</div>
+                        <div class="from">元の料理: ${esc(t.base.name)}</div>
+                        <ul class="changes">${t.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+                        <div class="row" style="margin-top:4px"><button class="btn sm yolk" data-act="open" data-id="${esc(t.id)}">作り方を見る</button>
+                        <button class="btn sm" data-act="fav" data-id="${esc(t.id)}">${S.favs.includes(t.id)?'お気に入り解除':'お気に入り'}</button></div>
+                    </div>
                 </div>`).join('') : '<div class="small">この組み合わせでは案が作れませんでした。条件を「おまかせ」に戻してみてください。</div>'}
-            <div class="row"><button class="btn yolk" data-act="tw-run">別の案を出す</button></div>
+            <div class="row"><button class="btn yolk wide" data-act="tw-run">別の案を出す</button></div>
+            </div>
         </div>
     </section>
     <section class="sec">
@@ -1108,36 +1280,48 @@ function renderModal(){
     const have = fridgeKeys();
     const isFav = S.favs.includes(r.id);
     const last = lastLabel(r.id);
-    const baseInfo = r.isTwist ? `<div class="twist"><div class="kicker">元の料理: ${esc(r.base.name)}</div><ul class="changes">${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul><div class="small muted">黄色の部分が、元のレシピから変えたところです。</div></div>` : '';
+    const ph = photoOf(r);
+    const hero = ph
+        ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'の写真')}">
+           <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の写真 ／ ` : '参考写真 ／ '}撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
+        : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
+    const genreName = {'和':'和食','洋':'洋食','中':'中華','韓':'韓国','エスニック':'エスニック'}[r.genre] || r.genre;
+    const facts = [r.type, genreName, `${r.min}分`, '2人分', r.family && r.family !== '野菜' ? FAMILY_LABEL[r.family] : ''].filter(Boolean);
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
         <div class="sheet pop" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
-            <button class="btn sm ghost close" data-act="close">閉じる</button>
-            <div>
-                <div class="small muted">${esc(r.type)}・${esc(metaLine(r))}・2人分</div>
-                <h2>${esc(r.name)}</h2>
-                <div class="small">${badges(r)}</div>
+            <div class="hero">${hero}<button class="close" data-act="close">閉じる</button></div>
+            <div class="sheet-body">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                    <h2>${esc(r.name)}</h2>
+                    <div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div>
+                    <div class="small">${badges(r)}</div>
+                    <div class="row"><a class="btn sm" href="${esc(imageSearchUrl(r))}" target="_blank" rel="noopener">ほかの完成写真を画像検索で見る</a></div>
+                </div>
+                ${r.isTwist ? `<div class="tanzaku"><div class="band">ひとひねり</div><div class="body">
+                    <div class="from">元の料理: <b>${esc(r.base.name)}</b></div>
+                    <ul class="changes">${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+                    <div class="small muted">黄色の部分が、元のレシピから変えたところです。写真は元の料理のものです。</div></div></div>` : ''}
+                <div class="label">材料（2人分）${have.size ? '　✓ は登録済みの食材' : ''}</div>
+                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?' <span class="small muted">（なくても可）</span>':''}</span><span class="q">${esc(i.qty)}</span></li>`).join('')}</ul>
+                ${r.seas ? `<div class="seasoning"><span class="label">調味料</span><br>${esc(r.seas)}</div>` : ''}
+                <div class="label">作り方</div>
+                <ol class="steps">${r.steps.map(s => typeof s === 'string' ? `<li>${esc(s)}</li>` : `<li class="${s.add?'add':''}">${esc(s.t)}</li>`).join('')}</ol>
+                ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
+                <div class="row">
+                    <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${last === '今日作った' ? '今日の記録に入っています' : '今日作った'}</button>
+                    <button class="btn" data-act="fav" data-id="${esc(r.id)}">${isFav ? 'お気に入り解除' : 'お気に入り'}</button>
+                    ${!r.isTwist ? `<button class="btn yolk" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
+                </div>
+                <div class="row small">
+                    <label for="cook-date" class="muted">別の日に作った:</label>
+                    <input type="date" id="cook-date" value="${TODAY}" max="${TODAY}" style="width:auto">
+                    <button class="btn sm" data-act="cooked-date" data-id="${esc(r.id)}">その日に記録</button>
+                </div>
+                ${!r.isTwist ? (modalConfirmHide
+                    ? `<div class="confirm"><div class="small">「${esc(r.name)}」を献立の候補から外します。記録画面からいつでも戻せます。</div><div class="row"><button class="btn sm primary" data-act="hide-yes" data-id="${esc(r.id)}">外す</button><button class="btn sm" data-act="hide-no">やめる</button></div></div>`
+                    : `<div class="row"><button class="btn sm ghost" data-act="hide" data-id="${esc(r.id)}">この料理は今は出さない</button></div>`) : ''}
             </div>
-            ${baseInfo}
-            <div class="label">材料（2人分）${have.size ? '　✓ は登録済みの食材' : ''}</div>
-            <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?' <span class="small muted">（なくても可）</span>':''}</span><span class="q">${esc(i.qty)}</span></li>`).join('')}</ul>
-            ${r.seas ? `<div class="seasoning"><span class="label">調味料</span><br>${esc(r.seas)}</div>` : ''}
-            <div class="label">作り方</div>
-            <ol class="steps">${r.steps.map(s => typeof s === 'string' ? `<li>${esc(s)}</li>` : `<li class="${s.add?'add':''}">${esc(s.t)}</li>`).join('')}</ol>
-            ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
-            <div class="row">
-                <button class="btn primary" data-act="cooked" data-id="${esc(r.id)}">${last === '今日作った' ? '今日の記録に入っています' : '今日作った'}</button>
-                <button class="btn" data-act="fav" data-id="${esc(r.id)}">${isFav ? 'お気に入り解除' : 'お気に入り'}</button>
-                ${!r.isTwist ? `<button class="btn yolk" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
-            </div>
-            <div class="row small">
-                <label for="cook-date" class="muted">別の日に作った:</label>
-                <input type="date" id="cook-date" value="${TODAY}" max="${TODAY}" style="width:auto">
-                <button class="btn sm" data-act="cooked-date" data-id="${esc(r.id)}">その日に記録</button>
-            </div>
-            ${!r.isTwist ? (modalConfirmHide
-                ? `<div class="confirm"><div class="small">「${esc(r.name)}」を献立の候補から外します。記録画面からいつでも戻せます。</div><div class="row"><button class="btn sm primary" data-act="hide-yes" data-id="${esc(r.id)}">外す</button><button class="btn sm" data-act="hide-no">やめる</button></div></div>`
-                : `<div class="row"><button class="btn sm ghost" data-act="hide" data-id="${esc(r.id)}">この料理は今は出さない</button></div>`) : ''}
         </div>
     </div>`;
     document.body.style.overflow = 'hidden';
@@ -1314,6 +1498,7 @@ document.addEventListener('submit', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 setTab(tab);
+loadPhotos();
 </script>
 </body>
 </html>
