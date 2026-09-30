@@ -249,6 +249,49 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 .muted{color:var(--muted)}
 .small{font-size:.8rem}
+/* 料理イラスト */
+.vessel .food.svg{background:none;border-radius:0;overflow:visible}
+.vessel .food.svg svg,.thumb svg,.hero .noimg svg{width:100%;height:100%;display:block}
+.v-plate .food.svg{inset:9%}.v-donburi .food.svg{inset:10%}.v-kobachi .food.svg{inset:12%}.v-wan .food.svg{inset:11%}
+.thumb.svg{background:var(--porcelain);overflow:hidden}
+.thumb.svg svg{transform:scale(1.08)}
+.hero.illust{background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%)}
+/* あいさつ */
+.greet{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.greet .mark{width:36px;height:36px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;color:var(--accent)}
+.greet .hello{font-family:var(--font-display);font-weight:700;font-size:1rem}
+.greet .line{font-size:.86rem;color:var(--muted);line-height:1.6}
+/* ひと手間 */
+.skill{display:grid;grid-template-columns:34px 1fr;background:var(--surface);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.skill .band{background:var(--accent);color:var(--accent-ink);writing-mode:vertical-rl;font-family:var(--font-display);font-weight:700;letter-spacing:.18em;display:flex;align-items:center;justify-content:center;font-size:.85rem;padding-block:12px}
+.skill.done .band{background:var(--yolk);color:#231800}
+.skill .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.skill .add{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+.skill .plus{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:.9rem;margin-right:6px;vertical-align:2px}
+.skill .why{font-size:.86rem}
+.skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:8px;padding:.45rem .6rem}
+.skill .how b{color:var(--ink)}
+/* 買い足し提案 */
+.hint-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.hint-row:first-child{border-top:0}
+.hint-row .k{font-family:var(--font-display);font-weight:700;font-size:1rem;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:.15rem .6rem;white-space:nowrap}
+.hint-row .v{font-size:.8rem;color:var(--muted)}
+.hint-row .v b{color:var(--ink)}
+/* ふりかえり・称号 */
+.review{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:10px}
+.review p{margin:0;font-family:var(--font-display);font-weight:700;font-size:1rem;line-height:1.6}
+.review .stat{box-shadow:none;background:var(--surface-2)}
+.titles{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.title-row{padding:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.title-row:first-child{border-top:0}
+.title-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.title-name{font-weight:700}
+.title-lv{font-family:var(--font-display);font-weight:700;color:var(--accent)}
+.bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.title-foot{display:flex;justify-content:space-between;gap:8px;font-size:.76rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.toast.praise{border-radius:14px;padding:.8rem 1.1rem;font-family:var(--font-display);font-weight:700;font-size:.95rem;line-height:1.5}
+
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
@@ -265,6 +308,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
             <h1>わが家のごはん帖</h1>
         </div>
     </header>
+    <div class="greet" id="greet"></div>
     <main id="view"></main>
 </div>
 
@@ -581,7 +625,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], custom:[], seenTwists:[], week:null, settings:{avoidDays:10}};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], week:null, settings:{avoidDays:10}};
 let S = load();
 function load(){
     try{
@@ -608,9 +652,9 @@ const TODAY = ymd();
 function byId(id){ return RECIPES.find(r => r.id === id) || (String(id).startsWith('a~') ? buildTwist(id) : null); }
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function toast(msg){
-    const root = $('#toast-root'); root.innerHTML = `<div class="toast pop" role="status">${esc(msg)}</div>`;
-    clearTimeout(toast.t); toast.t = setTimeout(() => root.innerHTML = '', 2400);
+function toast(msg, praise=false){
+    const root = $('#toast-root'); root.innerHTML = `<div class="toast pop${praise?' praise':''}" role="status">${esc(msg)}</div>`;
+    clearTimeout(toast.t); toast.t = setTimeout(() => root.innerHTML = '', praise ? 4200 : 2400);
 }
 // 最後に食べた日からの日数（食べていなければ Infinity）
 function daysSince(id){
@@ -631,7 +675,7 @@ function recentMainFamilies(days){
     }
     return res;
 }
-function fridgeKeys(){ return new Set(S.fridge.map(keyOf)); }
+function fridgeKeys(){ return new Set([...S.fridge, ...S.staples].map(keyOf)); }
 
 /* =========================================================
    材料マッチ
@@ -896,6 +940,8 @@ function badges(r){
 }
 function render(){
     $('#today-label').textContent = jpDate(TODAY);
+    const g = greeting();
+    $('#greet').innerHTML = `<div class="mark" aria-hidden="true">${esc(g.hello.slice(0,1))}</div><div><div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div></div>`;
     const v = $('#view');
     if (tab === 'today') v.innerHTML = viewToday();
     if (tab === 'fridge') v.innerHTML = viewFridge();
@@ -967,8 +1013,6 @@ function photoOf(r){ if (!r) return null; return PHOTOS[r.isTwist ? r.base.id : 
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
 function photoNote(){
-    if (photoStatus === 'loading') return '料理の写真を読み込んでいます…';
-    if (photoStatus === 'blocked') return 'この画面では料理写真を読み込めませんでした。ファイルをブラウザで直接開くと表示されます。';
     if (Object.keys(PHOTOS).length) return '写真: Wikipedia / Wikimedia Commons。撮影者とライセンスは各料理の詳細に表示しています。';
     return '';
 }
@@ -989,7 +1033,7 @@ function vesselKind(r){
 function vesselHtml(kind, r, still=false){
     const ph = r ? photoOf(r) : null;
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
-    const food = (kind === 'chawan' || kind === 'konomono') ? '<span class="food"></span>' : `<span class="food${ph ? ' photo' : ''}"></span>`;
+    const food = (kind === 'chawan' || kind === 'konomono') ? '<span class="food"></span>' : ph ? '<span class="food photo"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
     const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(r.name)}の作り方を見る">${food}</button>`;
@@ -997,7 +1041,384 @@ function vesselHtml(kind, r, still=false){
 function thumbHtml(r){
     const ph = photoOf(r);
     return ph ? `<span class="thumb" style="${esc('background-image:' + cssUrl(ph.src))}" role="img" aria-label="${esc(r.name)}の写真"></span>`
-              : `<span class="thumb none" style="${esc('--food:' + foodColor(r))}" aria-hidden="true"></span>`;
+              : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
+}
+
+/* ---- 料理のイラスト（SVG・真上から見た盛りつけ） ----
+   材料の名前から具材の絵を選び、料理IDを種にして毎回同じ配置に並べる。
+   写真がなくても、どの料理（アレンジ・わが家のレシピ含む）にも絵が付く。 */
+function seeded(str){
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const G = {   // 具材の絵。中心(x,y)・大きさs・回転rot で描く
+    chunk:(x,y,s,rot,c,c2)=>`<path transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})" d="M-9,-4 Q-6,-10 1,-9 Q9,-8 9,-1 Q10,7 3,9 Q-5,10 -9,4 Z" fill="${c}"/><path transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})" d="M-5,-4 Q-1,-7 4,-5" stroke="${c2}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`,
+    cube:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-s/2}" y="${-s/2}" width="${s}" height="${s}" rx="${s*.18}" fill="${c}"/><rect x="${-s/2+1.2}" y="${-s/2+1.2}" width="${s*.45}" height="${s*.3}" rx="1" fill="${c2}" opacity=".7"/></g>`,
+    round:(x,y,s,rot,c,c2)=>`<circle cx="${x}" cy="${y}" r="${s/2}" fill="${c}"/><circle cx="${x}" cy="${y}" r="${s/3.4}" fill="none" stroke="${c2}" stroke-width="${Math.max(.8,s*.1)}" opacity=".8"/>`,
+    dot:(x,y,s,rot,c)=>`<circle cx="${x}" cy="${y}" r="${s/2}" fill="${c}"/>`,
+    crescent:(x,y,s,rot,c,c2)=>`<path transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})" d="M-8,2 A8.5,8.5 0 0 1 8,2 A6,6 0 0 0 -8,2 Z" fill="${c}" stroke="${c2}" stroke-width=".6"/>`,
+    leaf:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-9,0 Q-6,-8 0,-7 Q7,-9 9,-1 Q7,7 0,7 Q-6,8 -9,0 Z" fill="${c}"/><path d="M-7,0 Q0,-1 7,0" stroke="${c2}" stroke-width="1" fill="none"/></g>`,
+    stick:(x,y,s,rot,c)=>`<rect transform="translate(${x} ${y}) rotate(${rot})" x="${-s/2}" y="${-s/6}" width="${s}" height="${s/3}" rx="${s/6}" fill="${c}"/>`,
+    strand:(x,y,s,rot,c)=>`<path transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})" d="M-10,0 C-6,-5 -2,5 2,0 S8,-4 10,0" stroke="${c}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`,
+    floret:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y})"><circle cx="0" cy="0" r="${s/2}" fill="${c}"/><circle cx="${-s/4}" cy="${-s/5}" r="${s/3.2}" fill="${c2}"/><circle cx="${s/4}" cy="${-s/6}" r="${s/3.4}" fill="${c2}"/><circle cx="0" cy="${s/4}" r="${s/3.6}" fill="${c2}"/></g>`,
+    fillet:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-12,-5 Q0,-8 12,-4 L11,5 Q0,8 -12,5 Z" fill="${c}"/><path d="M-7,-3 Q-4,0 -7,4 M-1,-4 Q2,0 -1,5 M5,-4 Q8,0 5,4" stroke="${c2}" stroke-width="1.1" fill="none" opacity=".8"/></g>`,
+    shrimp:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-7,3 Q-9,-6 0,-7 Q9,-6 7,3" stroke="${c}" stroke-width="4.2" fill="none" stroke-linecap="round"/><path d="M-7,3 Q-9,-6 0,-7 Q9,-6 7,3" stroke="${c2}" stroke-width="1.2" fill="none" stroke-dasharray="1.5 2.2"/><path d="M6,3 l3,3 M7,4 l-2,3" stroke="${c}" stroke-width="1.4" stroke-linecap="round"/></g>`,
+    shell:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-8,3 A8,8 0 0 1 8,3 Z" fill="${c}"/><path d="M0,3 L-4,-4 M0,3 L0,-5 M0,3 L4,-4" stroke="${c2}" stroke-width=".9"/></g>`,
+    egg:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-10,-2 Q-8,-10 2,-9 Q11,-8 10,1 Q8,9 -1,9 Q-11,8 -10,-2 Z" fill="${c}"/><circle cx="-1" cy="0" r="4" fill="${c2}"/></g>`,
+    cap:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-9,2 Q-9,-8 0,-8 Q9,-8 9,2 Z" fill="${c}"/><rect x="-3" y="2" width="6" height="5" rx="1.5" fill="${c2}"/></g>`,
+    ring:(x,y,s,rot,c,c2)=>`<circle cx="${x}" cy="${y}" r="${s/2}" fill="${c2}" stroke="${c}" stroke-width="${Math.max(1,s*.22)}"/>`,
+    slab:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-s/2}" y="${-s/3}" width="${s}" height="${s*.66}" rx="2" fill="${c}"/><path d="M${-s/2+2},${-s/6} h${s-4} M${-s/2+2},${s/8} h${s-4}" stroke="${c2}" stroke-width="1" opacity=".6"/></g>`,
+    dumpling:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-10,3 Q-6,-5 0,-5 Q6,-5 10,3 Q0,7 -10,3 Z" fill="${c}"/><path d="M-6,-1 l1,3 M-2,-3 l1,3 M2,-3 l1,3 M6,-1 l1,3" stroke="${c2}" stroke-width=".9"/><path d="M-6,4 Q0,6 6,4" stroke="#b9772e" stroke-width="1.6" fill="none" opacity=".8"/></g>`,
+    tri:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M0,-9 L9,7 Q0,9 -9,7 Z" fill="${c}"/><rect x="-4" y="2" width="8" height="6" fill="${c2}"/></g>`,
+    roll:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot})"><rect x="${-s/2}" y="${-s/4}" width="${s}" height="${s/2}" rx="${s/4}" fill="${c}"/><path d="M${-s/6},${-s/4} v${s/2} M${s/6},${-s/4} v${s/2}" stroke="${c2}" stroke-width="1.2" opacity=".8"/></g>`,
+    lotus:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y})"><circle r="${s/2}" fill="${c}"/>${[0,60,120,180,240,300].map(a=>`<circle cx="${Math.cos(a*Math.PI/180)*s*.27}" cy="${Math.sin(a*Math.PI/180)*s*.27}" r="${s*.09}" fill="${c2}"/>`).join('')}<circle r="${s*.08}" fill="${c2}"/></g>`,
+    bitter:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-9,2 A9,9 0 0 1 9,2 A5,5 0 0 0 -9,2 Z" fill="${c}"/><path d="M-7,0 A7,7 0 0 1 7,0" stroke="${c2}" stroke-width="1.3" fill="none" stroke-dasharray="1.2 1.6"/></g>`,
+    wedge:(x,y,s,rot,c,c2)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s/10})"><path d="M-8,6 Q0,-12 8,6 Z" fill="${c}"/><path d="M-8,6 Q0,-12 8,6" stroke="${c2}" stroke-width="2" fill="none"/></g>`,
+};
+// 食材キー → 具材の絵（種類・色・大きさ・個数・描く順）
+const ING_ART = {
+    '豚肉':{g:'chunk',c:'#b57a52',c2:'#e9c4a4',s:12,n:4,z:2}, '牛肉':{g:'chunk',c:'#8b4a34',c2:'#c9917a',s:12,n:4,z:2}, '鶏肉':{g:'chunk',c:'#cf9a68',c2:'#f1d7bd',s:12,n:4,z:2},
+    '豚ひき肉':{g:'dot',c:'#8a5236',s:2.6,n:22,z:2}, '合いびき肉':{g:'dot',c:'#7a4530',s:2.6,n:22,z:2}, '鶏ひき肉':{g:'dot',c:'#b98b66',s:2.6,n:22,z:2},
+    '鮭':{g:'fillet',c:'#ef8f6a',c2:'#fbd3c0',s:18,n:1,z:2}, 'さば':{g:'fillet',c:'#7d8ea3',c2:'#dfe6ee',s:18,n:1,z:2}, 'ぶり':{g:'fillet',c:'#c9a27c',c2:'#f0dcc4',s:18,n:1,z:2}, 'たら':{g:'fillet',c:'#f1e9dc',c2:'#d9cbb6',s:18,n:1,z:2},
+    'えび':{g:'shrimp',c:'#f07a5a',c2:'#fde0d0',s:11,n:4,z:3}, 'あさり':{g:'shell',c:'#8b8378',c2:'#e5ded2',s:9,n:5,z:3},
+    'ベーコン':{g:'stick',c:'#d2705f',s:11,n:4,z:2}, 'ハム':{g:'cube',c:'#f0a0a0',c2:'#fbd0d0',s:5,n:6,z:2}, 'ウインナー':{g:'roll',c:'#c8624b',c2:'#e6907c',s:13,n:3,z:2},
+    '卵':{g:'egg',c:'#f7d24a',c2:'#f6a92a',s:11,n:2,z:3}, 'うずらの卵':{g:'dot',c:'#f7f0dc',s:5,n:3,z:3},
+    '玉ねぎ':{g:'crescent',c:'#f6ecd6',c2:'#d8c49a',s:9,n:4,z:1}, '長ねぎ':{g:'ring',c:'#5e9a4f',c2:'#eef7e6',s:3.6,n:6,z:4},
+    'じゃがいも':{g:'cube',c:'#efd68a',c2:'#f9eab8',s:9,n:4,z:1}, 'にんじん':{g:'round',c:'#f08a2c',c2:'#f9c78d',s:7,n:4,z:2}, '大根':{g:'round',c:'#f7f3ea',c2:'#e3dccd',s:11,n:3,z:1},
+    'キャベツ':{g:'leaf',c:'#c7dc8f',c2:'#eef5d6',s:11,n:5,z:1}, '白菜':{g:'leaf',c:'#dbe6b7',c2:'#f5f8e6',s:12,n:4,z:1}, 'レタス':{g:'leaf',c:'#b6d97a',c2:'#e8f4cf',s:12,n:4,z:1},
+    'ほうれん草':{g:'strand',c:'#2f6b3a',s:12,n:6,z:2}, '小松菜':{g:'strand',c:'#3a7a3f',s:12,n:6,z:2}, 'ニラ':{g:'stick',c:'#3f8a3c',s:12,n:5,z:3}, 'ブロッコリー':{g:'floret',c:'#3b7a3a',c2:'#5a9b4f',s:10,n:3,z:2},
+    'ピーマン':{g:'stick',c:'#3f8f3f',s:9,n:5,z:3}, 'パプリカ':{g:'stick',c:'#e05a3a',s:9,n:4,z:3}, 'なす':{g:'crescent',c:'#5a3a7a',c2:'#efe3d8',s:12,n:4,z:2},
+    'トマト':{g:'round',c:'#e2412f',c2:'#f5a08a',s:9,n:3,z:2}, 'トマト缶':{g:'dot',c:'#c93a2b',s:6,n:5,z:1}, 'きゅうり':{g:'round',c:'#8fc46b',c2:'#e5f2d3',s:7,n:5,z:2},
+    'もやし':{g:'strand',c:'#f2eddc',s:11,n:7,z:2}, 'しめじ':{g:'cap',c:'#b18a6a',c2:'#f1e4d2',s:7,n:5,z:3}, 'しいたけ':{g:'cap',c:'#6f4a30',c2:'#e8d7c0',s:9,n:3,z:3}, 'まいたけ':{g:'cap',c:'#8d6a4a',c2:'#e6d6c2',s:7,n:4,z:3}, 'えのき':{g:'strand',c:'#f4efdf',s:10,n:6,z:2},
+    'かぼちゃ':{g:'wedge',c:'#f0a63a',c2:'#3f6b34',s:12,n:4,z:2}, 'ゴーヤ':{g:'bitter',c:'#4f9a49',c2:'#a9d59d',s:11,n:5,z:2}, 'ごぼう':{g:'stick',c:'#9a7050',s:12,n:6,z:2}, 'れんこん':{g:'lotus',c:'#f4efe4',c2:'#d9d0bf',s:10,n:3,z:2},
+    'たけのこ':{g:'stick',c:'#efd9a4',s:9,n:4,z:2}, 'コーン':{g:'dot',c:'#f7cf3a',s:3,n:8,z:4}, 'キムチ':{g:'leaf',c:'#d9482c',c2:'#f2a284',s:10,n:5,z:2},
+    '豆腐':{g:'cube',c:'#faf7ef',c2:'#ffffff',s:9,n:4,z:2}, '厚揚げ':{g:'cube',c:'#e2b060',c2:'#f8f2e2',s:10,n:4,z:2}, '油揚げ':{g:'stick',c:'#e1b25c',s:9,n:4,z:2}, 'こんにゃく':{g:'cube',c:'#8f8a80',c2:'#c8c3b8',s:8,n:3,z:1},
+    'わかめ':{g:'strand',c:'#2c5a3f',s:11,n:5,z:2}, 'ひじき':{g:'strand',c:'#2a2622',s:8,n:10,z:2}, '春雨':{g:'strand',c:'#e9e2cf',s:14,n:8,z:1},
+    '餃子の皮':{g:'dumpling',c:'#f3e6c8',c2:'#d9c39a',s:13,n:5,z:3}, 'チーズ':{g:'dot',c:'#f6d76a',s:8,n:5,z:4}, '牛乳':{g:'dot',c:'#fbf8ef',s:10,n:2,z:1},
+    '大葉':{g:'leaf',c:'#3f8a45',c2:'#a8d69d',s:8,n:2,z:5}, 'レモン':{g:'wedge',c:'#f6e05a',c2:'#fbf2a8',s:8,n:1,z:5}, '生姜':{g:'stick',c:'#f1d9a8',s:5,n:4,z:5},
+    'ししとう':{g:'stick',c:'#4f9a49',s:11,n:2,z:4}, '三つ葉':{g:'strand',c:'#4f9a49',s:7,n:3,z:5}, '天かす':{g:'dot',c:'#e5b35a',s:3,n:8,z:4}, '紅しょうが':{g:'stick',c:'#e34a6a',s:5,n:4,z:5}, 'バジル':{g:'leaf',c:'#2f7a3a',c2:'#7fbb75',s:7,n:3,z:5},
+    '梅干し':{g:'round',c:'#c8323c',c2:'#e8848c',s:6,n:2,z:5}, 'にんにく':{g:'crescent',c:'#f6f0dc',c2:'#d9cfa8',s:6,n:3,z:4}, 'バター':{g:'cube',c:'#f8e58a',c2:'#fdf6c6',s:6,n:1,z:5},
+    '温泉卵':{g:'egg',c:'#fbf5e6',c2:'#f5b52e',s:13,n:1,z:5}, '刻みのり':{g:'stick',c:'#1f2a24',s:7,n:6,z:5}, '大根おろし':{g:'dot',c:'#f7f3ea',s:9,n:2,z:5}, '白ごま':{g:'dot',c:'#f6efd8',s:1.6,n:14,z:5},
+    '粉チーズ':{g:'dot',c:'#f8efc8',s:1.8,n:14,z:5}, 'コチュジャン':{g:'dot',c:'#b8322a',s:5,n:4,z:4}, 'カレー粉':{g:'dot',c:'#d9a12a',s:2,n:12,z:4}, '味噌':{g:'dot',c:'#9a6a2e',s:4,n:3,z:4},
+    '万能ねぎ':{g:'ring',c:'#5e9a4f',c2:'#eef7e6',s:3,n:6,z:5}, 'かつお節':{g:'strand',c:'#b98a5a',s:6,n:6,z:5}, 'パセリ':{g:'dot',c:'#3f8a45',s:2,n:8,z:5},
+    '食パン':{g:'slab',c:'#e8c98f',c2:'#f5e6c8',s:24,n:1,z:0}, '春巻きの皮':{g:'roll',c:'#e0a85a',c2:'#f3d4a0',s:16,n:3,z:3}, 'スイートチリソース':{g:'dot',c:'#e0553a',s:4,n:4,z:4},
+};
+// ソース・ベースの色（調理法・ジャンル）
+function baseColor(r){
+    if (r.type === '汁物') return {'洋':'#c6553f','中':'#e6c66a','韓':'#c0452c','エスニック':'#d08444'}[r.genre] || '#c9a26e';
+    return {'煮':'#a9713d','炒':'#c8853f','焼':'#c98a4a','揚':'#e0a34a','和え':'#ddd2b4','炊':'#efe4c8','汁':'#c9a26e'}[r.method] || '#c8853f';
+}
+// 料理ごとの決め打ち（材料から自動で組むと似ない料理）
+const DISH_ART = {
+    hamburg:{base:'#8a4a2c', items:[['chunk','#6d3a22','#a56b4d',30,1,0,0,0],['dot','#c33a26',null,12,1,0,-4,0],['round','#f08a2c','#f9c78d',7,2,0,0,0],['floret','#3b7a3a','#5a9b4f',10,1,0,0,0]]},
+    omurice:{base:'#f5d557', items:[['egg','#f7cf3f','#f7cf3f',44,1,-15,0,0],['strand','#d8382a',null,26,1,0,0,-3],['dot','#d8382a',null,4,4,0,0,0],['dot','#3f8a45',null,2,6,0,0,0]]},
+    curry:{base:'#f5f1e6', rice:true, roux:true, items:[['cube','#efd68a','#f9eab8',7,3,0,12,0],['round','#f08a2c','#f9c78d',6,3,0,12,0],['chunk','#8b5a3a','#c58f6a',9,3,0,12,0],['dot','#fbf8ef',null,2,10,0,-16,0]]},
+    gyoza:{base:'#f3e9d4', items:[['dumpling','#f3e6c8','#d9c39a',15,6,0,0,0],['ring','#5e9a4f','#eef7e6',3,4,0,0,0]]},
+    karaage:{base:'#f7efd9', items:[['chunk','#c98033','#eebd7a',15,6,0,0,0],['wedge','#f6e05a','#fbf2a8',10,1,0,20,14],['leaf','#b6d97a','#e8f4cf',12,2,0,-22,10]]},
+    okonomi:{base:'#b8642c', items:[['dot','#6a2f1a',null,42,1,0,0,0],['strand','#f4f0e6',null,30,3,0,0,0],['strand','#d8a05a',null,9,4,0,0,0],['dot','#3f8a45',null,2.2,12,0,0,0],['stick','#e34a6a',null,5,3,0,0,0]]},
+    rollcabbage:{base:'#c6553f', items:[['roll','#dbe6b7','#b9c98a',20,3,0,0,0],['dot','#c93a2b',null,5,4,0,0,0]]},
+    dashimaki:{base:'#fbf6ea', items:[['slab','#f5c842','#f7d96a',16,4,0,0,0],['dot','#f7f3ea',null,10,1,0,22,14]]},
+    hiyayakko:{base:'#f7f7f4', items:[['cube','#fbfaf5','#ffffff',34,1,0,0,0],['ring','#5e9a4f','#eef7e6',3,5,0,0,0],['strand','#b98a5a',null,6,5,0,0,0],['dot','#f1d9a8',null,4,1,0,0,0]]},
+    potesala:{base:'#f2e9cf', items:[['dot','#f6efd8',null,40,1,0,0,0],['round','#8fc46b','#e5f2d3',6,4,0,0,0],['cube','#f0a0a0','#fbd0d0',5,4,0,0,0],['crescent','#f6ecd6','#d8c49a',7,3,0,0,0]]},
+    misoshiru:{base:'#c9a26e', items:[['cube','#faf7ef','#ffffff',8,5,0,0,0],['strand','#2c5a3f',null,10,5,0,0,0],['ring','#5e9a4f','#eef7e6',3.4,5,0,0,0]]},
+    gratin:{base:'#e9b657', items:[['dot','#f6d76a',null,44,1,0,0,0],['dot','#b96b2a',null,7,6,0,0,0],['stick','#f1e2a8',null,10,5,0,0,0]]},
+    carbonara:{base:'#efe2b6', items:[['strand','#f1de9a',null,20,10,0,0,0],['stick','#d2705f',null,9,4,0,0,0],['dot','#f8efc8',null,1.8,14,0,0,0],['dot','#3a3a3a',null,1.4,12,0,0,0]]},
+    napolitan:{base:'#d8452c', items:[['strand','#e5893a',null,20,10,0,0,0],['roll','#c8624b','#e6907c',11,3,0,0,0],['ring','#3f8f3f','#cfe8c0',5,4,0,0,0],['crescent','#f6ecd6','#d8c49a',7,3,0,0,0]]},
+    kinokopasta:{base:'#efe2b6', items:[['strand','#f1de9a',null,20,10,0,0,0],['cap','#b18a6a','#f1e4d2',7,5,0,0,0],['stick','#d2705f',null,9,3,0,0,0],['leaf','#3f8a45','#a8d69d',8,2,0,0,0]]},
+    yakisoba:{base:'#a8633a', items:[['strand','#c99a4a',null,20,10,0,0,0],['leaf','#c7dc8f','#eef5d6',10,4,0,0,0],['chunk','#b57a52','#e9c4a4',9,3,0,0,0],['dot','#3f8a45',null,2,10,0,0,0],['stick','#e34a6a',null,5,3,0,0,0]]},
+    nikuudon:{base:'#c9a26e', items:[['strand','#f7f2e6',null,22,10,0,0,0],['chunk','#8b4a34','#c9917a',11,4,0,0,0],['ring','#5e9a4f','#eef7e6',5,4,0,0,0]]},
+    chahan:{base:'#e8d29a', items:[['dot','#f7f0d6',null,4,26,0,0,0],['cube','#f0a0a0','#fbd0d0',5,5,0,0,0],['dot','#f7cf3a',null,4,8,0,0,0],['ring','#5e9a4f','#eef7e6',3.4,6,0,0,0]]},
+    takikomi:{base:'#e6d3a6', items:[['dot','#f2e6c6',null,4,26,0,0,0],['cap','#b18a6a','#f1e4d2',7,5,0,0,0],['stick','#e1b25c',null,8,4,0,0,0],['round','#f08a2c','#f9c78d',5,4,0,0,0]]},
+    oyakodon:{base:'#f5f0e2', items:[['egg','#f5cf4a','#f7d96a',40,1,0,0,0],['chunk','#cf9a68','#f1d7bd',11,4,0,0,0],['crescent','#f6ecd6','#d8c49a',8,3,0,0,0],['strand','#4f9a49',null,7,3,0,0,0]]},
+    gyudon:{base:'#f5f0e2', items:[['chunk','#8b4a34','#c9917a',12,6,0,0,0],['crescent','#f6ecd6','#d8c49a',8,4,0,0,0],['stick','#e34a6a',null,5,4,0,-20,-16]]},
+    gapao:{base:'#f5f0e2', items:[['dot','#8a5236',null,26,1,0,10,4],['dot','#7a4530',null,2.6,18,0,10,4],['stick','#e05a3a',null,8,4,0,10,4],['leaf','#2f7a3a','#7fbb75',7,3,0,10,4],['egg','#fbf5e6','#f5b52e',20,1,0,-18,-14]]},
+    tacorice:{base:'#f5f0e2', items:[['leaf','#b6d97a','#e8f4cf',14,5,0,0,0],['dot','#7a4530',null,2.8,20,0,0,0],['round','#e2412f','#f5a08a',7,4,0,0,0],['dot','#f6d76a',null,3,10,0,0,0]]},
+    stew:{base:'#f4efe0', items:[['dot','#fbf8ef',null,40,1,0,0,0],['chunk','#cf9a68','#f1d7bd',10,3,0,0,0],['cube','#efd68a','#f9eab8',8,3,0,0,0],['round','#f08a2c','#f9c78d',6,3,0,0,0],['floret','#3b7a3a','#5a9b4f',9,2,0,0,0]]},
+    sundubu:{base:'#c0452c', items:[['cube','#faf7ef','#ffffff',10,4,0,0,0],['shell','#8b8378','#e5ded2',8,3,0,0,0],['egg','#fbf5e6','#f5b52e',13,1,0,0,0],['ring','#5e9a4f','#eef7e6',3.6,4,0,0,0]]},
+    reishabu:{base:'#e9f1d8', items:[['leaf','#b6d97a','#e8f4cf',14,4,0,0,0],['chunk','#e9d3c5','#f7ebe3',13,5,0,0,0],['round','#e2412f','#f5a08a',9,2,0,0,0],['round','#8fc46b','#e5f2d3',6,3,0,0,0]]},
+    ohitashi:{base:'#e6eddc', items:[['strand','#2f6b3a',null,14,10,0,0,0],['strand','#b98a5a',null,6,6,0,0,0]]},
+    namul:{base:'#efe9d6', items:[['strand','#f2eddc',null,12,9,0,0,0],['strand','#2f6b3a',null,10,5,0,0,0],['stick','#f08a2c',null,8,3,0,0,0],['dot','#f6efd8',null,1.6,14,0,0,0]]},
+    coleslaw:{base:'#f3f2e6', items:[['strand','#c7dc8f',null,12,10,0,0,0],['strand','#f08a2c',null,8,4,0,0,0],['dot','#f7cf3a',null,3,6,0,0,0]]},
+    sunomono:{base:'#eef3e6', items:[['round','#8fc46b','#e5f2d3',7,7,0,0,0],['strand','#2c5a3f',null,10,5,0,0,0]]},
+    tatakikyuri:{base:'#eef3e6', items:[['chunk','#8fc46b','#dcefc9',12,6,0,0,0],['dot','#f6efd8',null,1.6,14,0,0,0]]},
+    kabocha:{base:'#e9d5a8', items:[['wedge','#f0a63a','#3f6b34',15,5,0,0,0]]},
+    hijiki:{base:'#e5dfd0', items:[['strand','#2a2622',null,8,18,0,0,0],['stick','#f08a2c',null,7,4,0,0,0],['stick','#e1b25c',null,7,3,0,0,0]]},
+    kinpira:{base:'#e5dccb', items:[['stick','#9a7050',null,14,10,0,0,0],['stick','#f08a2c',null,12,5,0,0,0],['dot','#f6efd8',null,1.6,10,0,0,0]]},
+    tomatotamago:{base:'#f3e3c8', items:[['egg','#f7d24a','#f6a92a',14,4,0,0,0],['round','#e2412f','#f5a08a',11,4,0,0,0]]},
+    consomme:{base:'#e5c47a', items:[['crescent','#f6ecd6','#d8c49a',9,5,0,0,0],['stick','#d2705f',null,7,3,0,0,0],['dot','#3f8a45',null,2,6,0,0,0]]},
+    tamagosoup:{base:'#e6c66a', items:[['strand','#f7e28a',null,14,7,0,0,0],['ring','#5e9a4f','#eef7e6',3.6,4,0,0,0],['strand','#2c5a3f',null,8,3,0,0,0]]},
+    wakamesoup:{base:'#cdb98a', items:[['strand','#2c5a3f',null,13,8,0,0,0],['chunk','#8b4a34','#c9917a',8,2,0,0,0],['dot','#f6efd8',null,1.6,10,0,0,0]]},
+    minestrone:{base:'#c6553f', items:[['cube','#f6ecd6','#d8c49a',6,4,0,0,0],['cube','#f08a2c','#f9c78d',6,4,0,0,0],['stick','#d2705f',null,7,3,0,0,0],['leaf','#c7dc8f','#eef5d6',8,3,0,0,0]]},
+    tonjiru:{base:'#c9a26e', items:[['round','#f7f3ea','#e3dccd',9,3,0,0,0],['round','#f08a2c','#f9c78d',7,3,0,0,0],['chunk','#b57a52','#e9c4a4',9,3,0,0,0],['stick','#9a7050',null,9,3,0,0,0],['ring','#5e9a4f','#eef7e6',3.6,4,0,0,0]]},
+    meuniere:{base:'#f5efdf', items:[['fillet','#e0a45a','#f5d9a8',30,1,-10,0,0],['wedge','#f6e05a','#fbf2a8',9,1,0,22,14],['cube','#f8e58a','#fdf6c6',5,1,0,0,-4]]},
+    sabamiso:{base:'#9a5f2e', items:[['fillet','#8a97a8','#dfe6ee',30,1,-8,0,0],['stick','#f1d9a8',null,6,3,0,0,0]]},
+    buriteri:{base:'#8f5a2a', items:[['fillet','#b48a5e','#e6c9a2',30,1,-8,0,0],['stick','#4f9a49',null,11,2,0,20,14]]},
+    buridaikon:{base:'#a9713d', items:[['round','#efe0c4','#d8c7a8',16,3,0,0,0],['fillet','#b48a5e','#e6c9a2',22,1,-8,0,0]]},
+    nanban:{base:'#f5efdf', items:[['chunk','#d1913f','#efc78a',15,4,0,0,0],['dot','#f6f1de',null,20,1,0,6,4],['dot','#f7cf3a',null,3,6,0,6,4],['leaf','#b6d97a','#e8f4cf',12,2,0,-22,10]]},
+    teriyaki:{base:'#8f5a2a', items:[['chunk','#a4622e','#d9a06a',16,5,0,0,0],['floret','#3b7a3a','#5a9b4f',10,2,0,22,12]]},
+    negishio:{base:'#f5efdf', items:[['chunk','#efd9b8','#faf0e0',14,5,0,0,0],['ring','#5e9a4f','#eef7e6',3.6,10,0,0,0],['wedge','#f6e05a','#fbf2a8',8,1,0,24,16]]},
+    champuru:{base:'#e9dcc0', items:[['bitter','#4f9a49','#a9d59d',12,5,0,0,0],['cube','#e2b060','#f8f2e2',9,4,0,0,0],['chunk','#b57a52','#e9c4a4',9,3,0,0,0],['egg','#f7d24a','#f6a92a',10,2,0,0,0],['strand','#b98a5a',null,6,5,0,0,0]]},
+    sakamushi:{base:'#d8cfb8', items:[['shell','#8b8378','#e5ded2',12,7,0,0,0],['ring','#5e9a4f','#eef7e6',3,5,0,0,0]]},
+    nasubitashi:{base:'#a9713d', items:[['crescent','#5a3a7a','#efe3d8',16,4,0,0,0],['leaf','#3f8a45','#a8d69d',8,2,0,0,0],['dot','#f1d9a8',null,4,2,0,0,0]]},
+    komatsuna:{base:'#cdb98a', items:[['strand','#3a7a3f',null,14,8,0,0,0],['stick','#e1b25c',null,10,4,0,0,0]]},
+    japchae:{base:'#e0cfae', items:[['strand','#c9b48a',null,18,10,0,0,0],['stick','#3f8f3f',null,9,4,0,0,0],['stick','#f08a2c',null,9,3,0,0,0],['chunk','#8b4a34','#c9917a',9,3,0,0,0],['dot','#f6efd8',null,1.6,10,0,0,0]]},
+};
+function dishSvg(r, opts={}){
+    if (!r) return '';
+    const rng = seeded(String(r.id));
+    const R = 34, cx = 50, cy = 50;
+    const layers = [];
+    const place = (item) => {
+        const [g, c, c2, s, n, rot0, ox, oy] = item;
+        let out = '';
+        for (let k = 0; k < n; k++){
+            let x, y, tries = 0;
+            do { const a = rng()*Math.PI*2, d = Math.sqrt(rng()) * (R - s*.55); x = cx + ox + Math.cos(a)*d; y = cy + oy + Math.sin(a)*d; tries++; }
+            while (tries < 6 && Math.hypot(x-cx, y-cy) > R - s*.4);
+            const rot = rot0 + (n > 1 ? (rng()-.5)*140 : 0);
+            out += G[g](x, y, s, rot, c, c2 || c);
+        }
+        return out;
+    };
+    let base, items;
+    const art = r.isTwist ? null : DISH_ART[r.id];
+    if (art){ base = art.base; items = art.items.map(i => ({z: i[0]==='dot' && i[3] > 20 ? 0 : 2, item:i})); }
+    else {
+        base = baseColor(r);
+        items = [];
+        const seen = new Set();
+        r.items.forEach(i => {
+            const a = ING_ART[i.key] || ING_ART[i.label]; if (!a || seen.has(i.key)) return; seen.add(i.key);
+            const n = i.opt ? Math.max(1, Math.round(a.n*.6)) : a.n;
+            items.push({z:a.z, item:[a.g, a.c, a.c2, a.s, n, 0, 0, 0]});
+        });
+        if (!items.length) items.push({z:2, item:['chunk', '#b57a52', '#e9c4a4', 12, 4, 0, 0, 0]});
+    }
+    // かたちのアレンジ: ご飯・麺・パン・卵・チーズなどを足す
+    let under = '', over = '';
+    const fo = r.isTwist ? String(r.id).split('~')[3] : '';
+    const fl = r.isTwist ? String(r.id).split('~')[2] : '';
+    const riceUnder = `<circle cx="50" cy="50" r="${R}" fill="#f7f3e8"/>${Array.from({length:26},()=>{const a=rng()*6.28,d=Math.sqrt(rng())*30;return `<ellipse cx="${(50+Math.cos(a)*d).toFixed(1)}" cy="${(50+Math.sin(a)*d).toFixed(1)}" rx="2.2" ry="1.3" transform="rotate(${(rng()*180).toFixed(0)} ${(50+Math.cos(a)*d).toFixed(1)} ${(50+Math.sin(a)*d).toFixed(1)})" fill="#ffffff" stroke="#e3dccb" stroke-width=".4"/>`;}).join('')}`;
+    const isRiceDish = !art && (r.type === 'ごはん');
+    const isNoodle = !art && (r.type === '麺');
+    if (fo === 'don' || isRiceDish || (art && art.rice)){ under = riceUnder; }
+    if (art && art.roux){ under += `<path d="M46,14 C70,10 90,30 86,56 C82,78 62,88 44,84 C60,70 62,30 46,14 Z" fill="#8a5a2b"/>`; }
+    if (fo === 'pasta' || isNoodle){ under = `<circle cx="50" cy="50" r="${R}" fill="#f1e6c2"/>` + Array.from({length:12},()=>G.strand(50+(rng()-.5)*40, 50+(rng()-.5)*40, 22, rng()*180, '#f1de9a')).join(''); }
+    if (fo === 'sand'){ under = `<rect x="14" y="14" width="72" height="72" rx="6" fill="#e8c98f"/><rect x="18" y="18" width="64" height="64" rx="4" fill="#f5e6c8"/>`; }
+    if (fo === 'omelet'){ over = `<path d="M22,58 Q20,30 50,28 Q80,30 78,58 Q50,70 22,58 Z" fill="#f7cf3f" opacity=".92"/><path d="M30,56 Q50,64 70,56" stroke="#e9b62a" stroke-width="1.4" fill="none"/>`; }
+    if (fo === 'gratin' || fo === 'cheese' || fl === 'it'){ over += Array.from({length: fo ? 7 : 4},()=>G.dot(50+(rng()-.5)*44, 50+(rng()-.5)*44, 7+rng()*5, 0, '#f6d76a')).join('') + (fo ? Array.from({length:5},()=>G.dot(50+(rng()-.5)*40, 50+(rng()-.5)*40, 4, 0, '#b96b2a')).join('') : ''); }
+    if (fo === 'harumaki'){ over = Array.from({length:3},(_,k)=>G.roll(50, 36+k*14, 40, -12, '#e0a85a', '#f3d4a0')).join(''); }
+    if (fo === 'onigiri'){ under = `<circle cx="50" cy="50" r="${R}" fill="#f0e8d4"/>`; over = G.tri(38,52,26,0,'#f7f3e8','#2a2f2a') + G.tri(64,48,26,0,'#f7f3e8','#2a2f2a'); }
+    if (fo === 'nabe'){ under = `<circle cx="50" cy="50" r="${R}" fill="#d9c9a6"/>` + G.leaf(30,40,14,20,'#dbe6b7','#f5f8e6') + G.leaf(66,62,14,-30,'#dbe6b7','#f5f8e6') + G.cube(60,36,10,10,'#faf7ef','#fff') + G.cube(36,64,10,-8,'#faf7ef','#fff'); }
+    const tint = {kr:'rgba(200,50,30,.28)', curry:'rgba(230,170,30,.35)', cn:'rgba(120,60,20,.18)', et:'rgba(240,120,40,.2)', misobutter:'rgba(150,100,40,.25)', wa:'rgba(90,60,30,.12)', garlic:'rgba(250,220,120,.25)', ume:'rgba(200,40,60,.15)'}[fl] || '';
+    const garnish = {kr:Array.from({length:12},()=>G.dot(50+(rng()-.5)*50, 50+(rng()-.5)*50, 1.6, 0, '#f6efd8')).join('') + G.strand(60,40,10,20,'#c8323c'),
+        et:G.leaf(62,36,8,20,'#3f8a45','#a8d69d')+G.leaf(36,62,8,-40,'#3f8a45','#a8d69d')+G.wedge(70,66,8,0,'#f6e05a','#fbf2a8'),
+        wa:G.dot(62,38,10,0,'#f7f3ea')+G.leaf(36,60,8,-30,'#3f8a45','#a8d69d'),
+        ume:G.round(60,38,6,0,'#c8323c','#e8848c')+G.leaf(38,60,9,-30,'#3f8a45','#a8d69d'),
+        garlic:G.crescent(62,38,6,20,'#f6f0dc','#d9cfa8')+G.crescent(38,62,6,-50,'#f6f0dc','#d9cfa8')+G.dot(50,50,2,0,'#2a2a2a'),
+        misobutter:G.cube(58,42,7,10,'#f8e58a','#fdf6c6'),
+        cn:Array.from({length:5},()=>G.ring(50+(rng()-.5)*44, 50+(rng()-.5)*44, 3.4, 0, '#5e9a4f','#eef7e6')).join(''),
+        it:G.leaf(62,36,8,20,'#2f7a3a','#7fbb75')+Array.from({length:10},()=>G.dot(50+(rng()-.5)*50, 50+(rng()-.5)*50, 1.8, 0, '#f8efc8')).join(''),
+        curry:''}[fl] || '';
+    items.sort((a,b) => a.z - b.z);
+    const body = items.map(x => place(x.item)).join('');
+    const baseOp = art ? .95 : ({'煮':.95,'炒':.5,'焼':.42,'揚':.35,'和え':.55,'炊':.9,'汁':1}[r.method] || .6);
+    const baseShape = under || (opts.plain ? '' : `<path opacity="${baseOp}" d="M50,${cy-R} C${cx+R*.9},${cy-R*.9} ${cx+R*1.05},${cy+R*.5} ${cx+R*.55},${cy+R*.85} C${cx-R*.2},${cy+R*1.1} ${cx-R*1.05},${cy+R*.4} ${cx-R*.95},${cy-R*.3} C${cx-R*.85},${cy-R*.95} ${cx-R*.2},${cy-R*1.05} 50,${cy-R} Z" fill="${base}"/>`);
+    const tintShape = tint ? `<circle cx="50" cy="50" r="${R}" fill="${tint}"/>` : '';
+    const gloss = `<ellipse cx="38" cy="30" rx="12" ry="6" fill="#fff" opacity=".18" transform="rotate(-25 38 30)"/>`;
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="dish" aria-hidden="true"><defs><clipPath id="c${String(r.id).replace(/[^a-z0-9]/gi,'')}"><circle cx="50" cy="50" r="${R+2}"/></clipPath></defs><g clip-path="url(#c${String(r.id).replace(/[^a-z0-9]/gi,'')})">${baseShape}<g stroke="rgba(40,20,10,.16)" stroke-width=".5">${body}</g>${over}${tintShape}${garnish}${gloss}</g></svg>`;
+}
+
+/* =========================================================
+   いつも家にある食材（常備品）
+   ========================================================= */
+const STAPLE_QUICK = ['卵','玉ねぎ','にんじん','じゃがいも','長ねぎ','豆腐','キャベツ','ベーコン','ハム','ウインナー','しめじ','ツナ','コーン','わかめ','油揚げ','チーズ','キムチ','うどん','スパゲッティ','牛乳'];
+function stapleKeys(){ return new Set(S.staples.map(keyOf)); }
+// 買い足すとレパートリーが広がる食材: その1品を足すと「今すぐ作れる」に変わる料理を数える
+function shoppingHints(have, limit=3){
+    const gain = {};
+    RECIPES.forEach(r => {
+        if (S.hidden.includes(r.id)) return;
+        const m = matchRecipe(r, have);
+        if (m.miss.length === 1 && (m.got.length + m.subs.length) >= 1){
+            const k = m.miss[0].key, lbl = m.miss[0].label;
+            (gain[k] = gain[k] || {label:lbl, names:[]}).names.push(r.name);
+        }
+    });
+    return Object.entries(gain).map(([k,v]) => ({key:k, label:v.label, n:v.names.length, names:v.names.slice(0,3)}))
+        .sort((a,b) => b.n - a.n).slice(0, limit);
+}
+
+/* =========================================================
+   ひと手間でスキルアップ
+   「この料理に、この食材を足す（この一手間をかける）と腕が上がる」
+   ========================================================= */
+const UPGRADES = {
+    nikujaga:{add:'絹さや', why:'最後に散らすと彩りが出て、お店の肉じゃがの顔になります', skill:'色止め', how:'絹さやは塩を入れた湯で30秒ゆで、冷水にとる。緑が鮮やかなまま残ります'},
+    shogayaki:{add:'りんごのすりおろし', why:'タレに少し入れると甘みに奥行きが出て、肉もやわらかくなります', skill:'酵素で肉をやわらかく', how:'りんご1/8個をすりおろしてタレに混ぜ、肉を5分だけ漬けてから焼く'},
+    karaage:{add:'にんにくと生姜を倍', why:'下味を強めにすると、冷めてもおいしい唐揚げになります', skill:'二度揚げ', how:'170℃で3分→3分休ませる→190℃で1分。休ませる間に余熱で火が通ります'},
+    teriyaki:{add:'長ねぎ', why:'一緒に焼くと甘みが出て、タレも吸って副菜いらずになります', skill:'皮目パリッと', how:'皮目を下にしたら動かさない。フライ返しで軽く押さえて6分。脂が出たら拭き取る'},
+    hamburg:{add:'麩（パン粉の代わり）', why:'砕いた麩は肉汁を抱えこむので、切ったときに汁があふれます', skill:'肉だねを冷やす', how:'こねた肉だねは冷蔵庫で15分冷やしてから成形。脂が溶けず、ふっくら焼けます'},
+    stew:{add:'白ワイン（または酒）大さじ2', why:'鶏肉を炒めたあとに入れると、コクが増して「煮ただけ」感が消えます', skill:'ルウは火を止めてから', how:'沸騰中にルウを入れるとダマになります。火を止めて2分待ってから溶かす'},
+    mapo:{add:'花椒（ホアジャオ）', why:'仕上げにひとふりで、しびれる本格の香りになります', skill:'豆腐の下ゆで', how:'塩少々の湯で2分ゆでると、豆腐が崩れにくく、水っぽくなりません'},
+    hoikoro:{add:'にんにくの芽', why:'キャベツと一緒に炒めると、香りと歯ごたえが加わります', skill:'キャベツは強火で短く', how:'キャベツは30秒で取り出して、最後に戻す。しゃきしゃきが残ります'},
+    chinjao:{add:'オイスターソースを小さじ1増やす', why:'味がぼやけるときはこれ。ツヤも出ます', skill:'肉に片栗粉', how:'下味のあと片栗粉をまぶす。肉がつるんとして、味が全体にからみます'},
+    gyoza:{add:'キャベツを白菜に半分', why:'白菜が入ると、あんがジューシーになります', skill:'羽根つき', how:'水50mlに小麦粉小さじ1を溶いたものを回し入れてふたをする。パリパリの羽根がつきます'},
+    meuniere:{add:'ケッパー', why:'仕上げのバターに少し加えると、レストランの味になります', skill:'焦がしバター', how:'最後に加えたバターが薄茶色になったら火を止め、スプーンで鮭にかける'},
+    sabamiso:{add:'長ねぎのぶつ切り', why:'一緒に煮ると甘くとろけて、さばの臭みも取れます', skill:'霜降り', how:'さばに熱湯を回しかけてから煮る。臭みが消えて、澄んだ味になります'},
+    buriteri:{add:'大根おろし', why:'添えるだけで、脂の乗ったぶりがさっぱり食べられます', skill:'照りの出し方', how:'タレは煮詰めすぎない。とろみがついたら火を止め、余熱でからめる'},
+    nanban:{add:'ゆで卵を粗く', why:'タルタルは卵をゴロッと残すと、ぐっと手作り感が出ます', skill:'甘酢に熱いうちに', how:'揚げたてを甘酢にくぐらせると、衣が汁を吸って味がしみます'},
+    butakimu:{add:'ニラ', why:'最後に入れると香りが立って、ごはんが進みます', skill:'キムチを炒める順', how:'キムチは肉のあとに入れて、少し炒めて酸味を飛ばす。甘みが出ます'},
+    curry:{add:'すりおろしたりんご', why:'隠し味の定番。子どもも食べやすい甘みになります', skill:'玉ねぎをあめ色に', how:'玉ねぎだけで10分、塩ひとつまみを入れて炒めると早く色づきます'},
+    oyakodon:{add:'三つ葉', why:'香りと緑が入るだけで、見た目が別物になります', skill:'卵は2回に分けて', how:'最初に2/3、ふたをして30秒、残りを入れて半熟で火を止める。とろとろになります'},
+    gyudon:{add:'しらたき', why:'肉の間に入ると味がしみて、かさも増えます', skill:'アクを取る', how:'牛肉を入れて出てきたアクをすくうと、つゆが澄んでお店の味になります'},
+    omurice:{add:'バターを卵に', why:'卵液にバター5gを混ぜると、しっとり破れにくくなります', skill:'半熟オムレツ', how:'強めの中火で、菜箸で大きく3回だけ混ぜて火を止める。余熱で仕上げます'},
+    chahan:{add:'かにかま', why:'手軽に彩りと旨みが足せます', skill:'卵とご飯を先に混ぜる', how:'ご飯に溶き卵を混ぜてから炒めると、ひと粒ずつ卵がコーティングされてパラパラに'},
+    napolitan:{add:'ピーマンを増やす＋粉チーズたっぷり', why:'喫茶店の味の正体はこれ', skill:'ケチャップを先に炒める', how:'具にケチャップを加えて1分炒め、酸味を飛ばしてから麺を入れる'},
+    yakisoba:{add:'目玉焼き', why:'のせるだけでごちそう感が出ます', skill:'麺は別に焼く', how:'麺だけ先に焼き色をつけて取り出し、具と合わせる。べちゃっとしません'},
+    carbonara:{add:'黒こしょうを粗びきで', why:'たっぷりひくと、香りが本格になります', skill:'余熱で卵をからめる', how:'火を止めてから卵液を入れ、ゆで汁でのばす。炒り卵にならず、とろりとします'},
+    potesala:{add:'酢を熱いうちに', why:'つぶしたじゃがいもに酢小さじ1。味が締まって、翌日も水っぽくなりません', skill:'粉ふきいも', how:'ゆでたあと湯を捨てて弱火にかけ、鍋をゆすって水分を飛ばす'},
+    kinpira:{add:'白ごまをたっぷり', why:'仕上げのごまで、香ばしさが段違いになります', skill:'ごぼうの下処理', how:'ごぼうは皮をこそげる程度に。香りは皮のすぐ下にあります'},
+    dashimaki:{add:'だしを大さじ1増やす', why:'だしが多いほどジューシーになります。片栗粉少々を混ぜると破れにくい', skill:'巻きの温度', how:'卵液を入れたらジュッと音がする温度で。弱すぎると固くなります'},
+    misoshiru:{add:'すりおろし生姜', why:'仕上げにほんの少し。体が温まります', skill:'味噌は火を止めてから', how:'沸騰させると香りが飛びます。火を止めて味噌を溶き、温め直す程度で'},
+    tonjiru:{add:'ごま油で炒める', why:'具材を先にごま油で炒めるだけで、コクが一段上がります', skill:'豚汁は一晩', how:'翌日のほうがおいしい。多めに作って、2日目は七味で'},
+    ohitashi:{add:'かつお節をもむ', why:'手でもんで細かくすると、全体にからみます', skill:'水気を絞る', how:'ゆでたあと冷水にとり、しっかり絞ってからだしに浸す。味が薄まりません'},
+    hiyayakko:{add:'みょうが', why:'夏の香り。ねぎと生姜に加えるだけで格上げです', skill:'豆腐の水切り', how:'キッチンペーパーに10分包むだけで、醤油が薄まりません'},
+    japchae:{add:'錦糸卵', why:'黄色が入ると、韓国の食卓の見た目になります', skill:'春雨に味を吸わせる', how:'春雨は少し固めにゆで、最後に調味料と一緒に炒めて吸わせる'},
+    gratin:{add:'ナツメグ少々', why:'ホワイトソースにひとふりで、香りがプロの味になります', skill:'ダマにならないソース', how:'牛乳は少しずつ、そのつど混ぜて。冷たい牛乳のほうが失敗しません'},
+    okonomi:{add:'長いものすりおろし', why:'生地に加えると、ふわふわになります', skill:'押さえない', how:'焼くときに押さえると固くなります。裏返したらふたをして蒸し焼き'},
+    chikuzen:{add:'ごま油を仕上げに', why:'香りが立って、冷めてもおいしいおかずになります', skill:'乱切りの大きさをそろえる', how:'同じ時間で火が通るように大きさをそろえる。煮物の基本です'},
+    gapao:{add:'バジルを倍量', why:'バジルの量が多いほど、タイ料理らしくなります', skill:'カリカリ目玉焼き', how:'多めの油を熱して卵を落とし、ふちが茶色くなるまで動かさない'},
+    negishio:{add:'黒こしょうとレモン', why:'仕上げのふたつで、居酒屋の味になります', skill:'むね肉をしっとり', how:'そぎ切り＋片栗粉＋ふたをして蒸し焼き。3つそろえばパサつきません'},
+};
+const UPGRADE_BY_METHOD = {
+    '煮':{add:'絹さや・いんげんなど緑の野菜', why:'仕上げに散らすと彩りが出ます', skill:'冷まして味を含ませる', how:'煮物は冷めるときに味がしみます。火を止めて10分おく'},
+    '炒':{add:'にんにくか生姜のみじん切り', why:'油に香りを移してから炒めると、味に芯が通ります', skill:'強火で短時間', how:'フライパンをしっかり熱してから。野菜は水が出る前に仕上げる'},
+    '焼':{add:'レモンか大葉', why:'添えるだけで、香りと見た目が変わります', skill:'触らずに焼く', how:'焼き色がつくまで動かさない。返すのは1回だけ'},
+    '揚':{add:'塩＋カレー粉の「カレー塩」', why:'つけて食べる塩を変えるだけで新しい味に', skill:'油の温度を見る', how:'菜箸を入れて細かい泡が出れば170℃。衣を落として途中で浮けば180℃'},
+    '和え':{add:'白ごまかかつお節', why:'香りが加わって、副菜が一品らしくなります', skill:'水気を絞る', how:'ゆで野菜はしっかり絞る。和え衣が薄まらず、翌日も水っぽくなりません'},
+    '汁':{add:'薬味（ねぎ・生姜・七味）', why:'最後の薬味で、いつもの汁が引き締まります', skill:'だしをちゃんと', how:'水にだしパックを入れて沸かすだけでも、顆粒だしと香りが違います'},
+    '炊':{add:'油揚げ', why:'コクが出て、具の少ない炊き込みも満足感が出ます', skill:'米を30分浸す', how:'浸水してから炊くと、芯が残らずふっくら炊けます'},
+};
+function upgradeOf(r){
+    const base = r.isTwist ? r.base : r;
+    return UPGRADES[base.id] || UPGRADE_BY_METHOD[base.method] || UPGRADE_BY_METHOD['炒'];
+}
+function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
+function upgradeHtml(r, compact=false){
+    const u = upgradeOf(r); if (!u) return '';
+    const done = skillDone(r);
+    const base = r.isTwist ? r.base : r;
+    return `<div class="skill${done?' done':''}">
+        <div class="band">ひと手間</div>
+        <div class="body">
+            <div class="add"><span class="plus">＋</span>${esc(u.add)}</div>
+            <div class="why">${esc(u.why)}</div>
+            <div class="how"><b>${esc(u.skill)}</b>　${esc(u.how)}</div>
+            ${compact ? '' : `<div class="row">${done
+                ? `<span class="badge fav">習得済み</span><span class="small muted">「${esc(u.skill)}」はもう身についています</span>`
+                : `<button class="btn sm primary" data-act="skill-done" data-id="${esc(base.id)}">やってみた</button><span class="small muted">できたら押してください。記録に残ります</span>`}</div>`}
+        </div>
+    </div>`;
+}
+
+/* =========================================================
+   励まし（あいさつ・ねぎらい・ふりかえり・称号）
+   ========================================================= */
+function recordedDays(){ return [...new Set(S.history.map(h => h.d))].sort().reverse(); }
+function streak(){
+    const days = new Set(S.history.map(h => h.d));
+    let n = 0, d = TODAY;
+    if (!days.has(d)) d = addDays(d, -1);
+    while (days.has(d)){ n++; d = addDays(d, -1); }
+    return n;
+}
+function weekStart(d=TODAY){ const dt = parseYmd(d); const wd = (dt.getDay() + 6) % 7; return addDays(d, -wd); }   // 月曜はじまり
+function weekStats(){
+    const from = weekStart();
+    const hs = S.history.filter(h => h.d >= from && h.d <= TODAY);
+    const days = new Set(hs.map(h => h.d)).size;
+    const firstOf = {};
+    S.history.slice().sort((a,b) => a.d < b.d ? -1 : 1).forEach(h => { if (!firstOf[h.id]) firstOf[h.id] = h.d; });
+    const fresh = [...new Set(hs.map(h => h.id))].filter(id => firstOf[id] >= from);
+    const skills = S.skills.filter(s => s.d >= from).length;
+    const genres = new Set(hs.map(h => { const r = byId(h.id); return r && r.genre; }).filter(Boolean)).size;
+    return {days, dishes:hs.length, fresh, skills, genres};
+}
+function greeting(){
+    const h = new Date().getHours();
+    const hello = h < 5 ? 'こんばんは。遅くまでおつかれさまです' : h < 11 ? 'おはようございます' : h < 17 ? 'こんにちは' : 'こんばんは';
+    const todayDone = S.history.some(x => x.d === TODAY);
+    const st = streak();
+    const ws = weekStats();
+    let line;
+    if (!S.history.length) line = 'まずは今日の献立を決めるところから。決めるだけでも、立派なひと仕事です。';
+    else if (todayDone && st >= 3) line = `${st}日続けて献立が決まっています。この調子は、ちゃんとすごいことです。`;
+    else if (todayDone) line = '今日の献立は決まっています。あとは作るだけ。';
+    else if (st >= 3) line = `${st}日続いています。今日の分を決めれば${st+1}日目です。`;
+    else if (ws.days) line = `今週は${ws.days}日分、${ws.dishes}品を記録しています。今日はどうしましょう。`;
+    else line = 'きのうまでのごはん、おつかれさまでした。今日の分をいっしょに考えましょう。';
+    return {hello, line};
+}
+const PRAISE = ['今日もおつかれさまです。', '献立が決まれば、半分は終わったようなものです。', '毎日のごはんが、ちゃんと回っています。', '記録しました。いつかの自分を助けます。', '今日の分、決まりました。あとは作るだけ。'];
+function praiseFor(ids){
+    const st = streak();
+    const firstTimers = ids.filter(id => S.history.filter(h => h.id === id).length === 1);
+    if (firstTimers.length) return `初めての料理に挑戦です。レパートリーが${firstTimers.length}品増えました。`;
+    if ([7,14,30,50,100].includes(st)) return `${st}日連続で献立を記録しました。すごい継続力です。`;
+    if (st >= 3 && Math.random() < .5) return `${st}日続けて記録しています。今日もおつかれさまです。`;
+    return rand(PRAISE);
+}
+const TITLES = [
+    {k:'days', label:'台所の日々', unit:'日', steps:[1,7,30,100], names:['はじめの一日','一週間の台所','ひと月の台所','百日の台所'], hint:'献立を記録した日数'},
+    {k:'fresh', label:'レパートリー', unit:'品', steps:[3,10,25,50], names:['三品の手帖','十品の手帖','二十五品の手帖','五十品の手帖'], hint:'一度でも作った料理の数'},
+    {k:'skill', label:'ひと手間', unit:'つ', steps:[1,5,15,30], names:['最初のひと手間','五つのコツ','十五のコツ','三十のコツ'], hint:'「やってみた」を押したひと手間の数'},
+    {k:'genre', label:'世界の台所', unit:'種', steps:[2,3,4,5], names:['二つの国','三つの国','四つの国','五つの国'], hint:'作ったことのあるジャンルの数（和・洋・中・韓・エスニック）'},
+    {k:'twist', label:'ひとひねり', unit:'品', steps:[1,3,10,20], names:['初ひねり','三ひねり','十ひねり','二十ひねり'], hint:'実際に作ったアレンジ料理の数'},
+];
+function titleValues(){
+    const genres = new Set(S.history.map(h => { const r = byId(h.id); return r && r.genre; }).filter(Boolean));
+    return {days: recordedDays().length, fresh: new Set(S.history.map(h => h.id)).size, skill: S.skills.length, genre: genres.size,
+        twist: new Set(S.history.filter(h => String(h.id).startsWith('a~')).map(h => h.id)).size};
+}
+function titlesHtml(){
+    const v = titleValues();
+    return TITLES.map(t => {
+        const val = v[t.k] || 0;
+        let lv = 0; while (lv < t.steps.length && val >= t.steps[lv]) lv++;
+        const next = t.steps[lv], prev = lv ? t.steps[lv-1] : 0;
+        const pct = next ? Math.round(((val - prev) / (next - prev)) * 100) : 100;
+        return `<div class="title-row">
+            <div class="title-head"><span class="title-name">${esc(t.label)}</span><span class="title-lv">${lv ? esc(t.names[lv-1]) : '（まだ）'}</span></div>
+            <div class="bar" role="img" aria-label="${esc(t.label)} ${val}${t.unit}"><i style="width:${Math.min(100,Math.max(2,pct))}%"></i></div>
+            <div class="title-foot"><span>${val}${t.unit}</span><span>${next ? `あと${next - val}${t.unit}で「${esc(t.names[lv])}」` : '最高位に到達しています'}</span></div>
+            <div class="small muted">${esc(t.hint)}</div>
+        </div>`;
+    }).join('');
+}
+function reviewHtml(){
+    const ws = weekStats();
+    const from = weekStart();
+    let msg;
+    if (!S.history.length) msg = '記録がたまると、ここに一週間のふりかえりが出ます。最初の一日を記録してみてください。';
+    else if (!ws.days) msg = '今週はまだ記録がありません。忙しい週もあります。今日の分だけ、決めてみませんか。';
+    else {
+        const parts = [`今週は${ws.days}日分、${ws.dishes}品`];
+        if (ws.fresh.length) parts.push(`新しい料理が${ws.fresh.length}つ増えました`);
+        if (ws.skills) parts.push(`ひと手間を${ws.skills}つ試しました`);
+        if (ws.genres >= 3) parts.push(`${ws.genres}つのジャンルを行き来しています`);
+        msg = parts.join('。') + '。' + (ws.days >= 5 ? 'よく回した一週間です。' : ws.days >= 3 ? 'いいペースです。' : '一日一日が積み重なっています。');
+    }
+    return `<div class="review">
+        <div class="label">今週のふりかえり（${esc(jpDate(from).replace(/（.*/,''))}〜）</div>
+        <p>${esc(msg)}</p>
+        <div class="stats">
+            <div class="stat"><div class="n">${ws.days}</div><div class="k">記録した日</div></div>
+            <div class="stat"><div class="n">${ws.fresh.length}</div><div class="k">新しい料理</div></div>
+            <div class="stat"><div class="n">${ws.skills}</div><div class="k">ひと手間</div></div>
+        </div>
+    </div>`;
 }
 
 /* ---- 今日の献立 ---- */
@@ -1042,7 +1463,8 @@ function viewToday(){
             <button class="btn primary wide" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
             <button class="btn" data-act="new-menu">まるごと入れ替え</button>
         </div>
-        <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（${S.fridge.length}品）を使う料理を優先する</span></label>
+        <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（冷蔵庫${S.fridge.length}品・常備${S.staples.length}品）を使う料理を優先する</span></label>
+        ${main ? `<div class="sec-head"><h3>今日のひと手間</h3><span class="hint">${esc(main.name)}に、これを足すと腕が上がります</span></div>${upgradeHtml(main)}` : ''}
         <p class="small muted" style="margin:0">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>
 
@@ -1087,6 +1509,9 @@ const QUICK = ['豚肉','鶏肉','牛肉','ひき肉','鮭','卵','豆腐','玉�
 function viewFridge(){
     const have = fridgeKeys();
     const speech = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    const hints = have.size ? shoppingHints(have) : [];
+    const hintsHtml = hints.length ? `<div class="sec-head"><h3>これを買い足すと、作れる料理が増えます</h3></div>
+        <div class="list">${hints.map(h => `<div class="hint-row"><span class="k">＋${esc(h.label)}</span><span class="v"><b>${h.n}品</b>が今すぐ作れるように： ${esc(h.names.join('・'))}${h.n > 3 ? ' など' : ''}</span></div>`).join('')}</div>` : '';
     let results = '';
     if (have.size){
         const ms = RECIPES.map(r => matchRecipe(r, have)).filter(m => m.used > 0 && (m.got.length + m.subs.length) > 0);
@@ -1104,7 +1529,7 @@ function viewFridge(){
             ${block('代わりの食材で作れる', '黄色の食材を置きかえます', withSub)}
             ${block('あと1〜2品あれば作れる', '赤字が足りない食材', near)}
             ${!ready.length && !withSub.length && !near.length ? '<div class="list"><div class="empty">この組み合わせに合う料理が見つかりませんでした。食材をもう少し足してみてください。</div></div>' : ''}
-            <p class="small muted" style="margin:0">調味料（醤油・砂糖・みりん・味噌・油など）とご飯は、家にあるものとして数えています。</p>
+            <p class="small muted" style="margin:0">調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。</p>
         </section>`;
     }
     return `
@@ -1119,7 +1544,17 @@ function viewFridge(){
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">全部外す</button></div>`
         : `<div class="note">まだ材料が登録されていません。下のよく使う食材をタップするか、「豚肉、キャベツ、卵」のようにまとめて入力できます。 <button class="btn sm" data-act="sample-ing">例: 豚肉・キャベツ・卵で試す</button></div>`}
         <div class="label">よく使う食材</div>
-        <div class="chips">${QUICK.map(q => { const on = have.has(keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        <div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+    </section>
+    <section class="sec">
+        <div class="sec-head"><h2>いつも家にある食材</h2><span class="hint">卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます</span></div>
+        <form class="inputbar" data-form="add-staple">
+            <input type="text" id="staple-input" placeholder="例: 卵、玉ねぎ、ツナ缶" autocomplete="off" aria-label="常備品を入力">
+            <button class="btn primary" type="submit">登録</button>
+        </form>
+        ${S.staples.length ? `<div class="chips">${S.staples.map(f => `<span class="chip have">${esc(f)}<button class="x" data-act="rm-staple" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>` : ''}
+        <div class="chips">${STAPLE_QUICK.map(q => { const on = S.staples.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-staple" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        ${hintsHtml}
     </section>
     ${results}`;
 }
@@ -1210,13 +1645,23 @@ function viewLog(){
     const top = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
     const favs = S.favs.map(byId).filter(Boolean);
     const hidden = S.hidden.map(byId).filter(Boolean);
+    const skillList = S.skills.slice().reverse().slice(0, 8);
     return `
     <section class="sec">
+        ${reviewHtml()}
         <div class="stats">
             <div class="stat"><div class="n">${days.length}</div><div class="k">記録した日</div></div>
             <div class="stat"><div class="n">${monthCount}</div><div class="k">今月作った品数</div></div>
-            <div class="stat"><div class="n">${S.favs.length}</div><div class="k">お気に入り</div></div>
+            <div class="stat"><div class="n">${streak()}</div><div class="k">続けて記録した日</div></div>
         </div>
+    </section>
+    <section class="sec">
+        <div class="sec-head"><h2>台所の腕前</h2><span class="hint">続けるほど、称号が上がっていきます</span></div>
+        <div class="titles">${titlesHtml()}</div>
+    </section>
+    <section class="sec">
+        <div class="sec-head"><h3>身についたひと手間</h3><span class="hint">料理の詳しい画面の「やってみた」で増えます</span></div>
+        <div class="list">${skillList.length ? skillList.map(sk => { const r = byId(sk.id); return `<div class="item"><div class="t" ${r?`data-act="open" data-id="${esc(sk.id)}"`:''}>${esc(sk.skill)}<div class="s">${esc(r ? r.name : '')}　${esc(jpDate(sk.d))}</div></div><span class="badge fav">習得</span></div>`; }).join('') : '<div class="empty">まだありません。今日の献立の「今日のひと手間」から、ひとつ試してみてください。</div>'}</div>
     </section>
     <section class="sec">
         <div class="sec-head"><h2>作った記録</h2><span class="hint">この記録をもとに、同じ料理が続かないようにしています</span></div>
@@ -1265,7 +1710,7 @@ function viewLog(){
                     <button class="btn" data-act="import">貼りつけたデータを読み込む</button>
                 </div>
                 ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small">今の記録は、貼りつけたデータで上書きされます。よろしいですか？</div><div class="row"><button class="btn primary sm" data-act="import-yes">上書きする</button><button class="btn sm" data-act="cancel-confirm">やめる</button></div></div>` : ''}
-                ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">記録・お気に入り・材料・わが家のレシピをすべて消します。元には戻せません。</div><div class="row"><button class="btn primary sm" data-act="reset-yes">すべて消す</button><button class="btn sm" data-act="cancel-confirm">やめる</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">すべてのデータを消す</button></div>`}
+                ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">記録・お気に入り・材料・常備品・ひと手間・わが家のレシピをすべて消します。元には戻せません。</div><div class="row"><button class="btn primary sm" data-act="reset-yes">すべて消す</button><button class="btn sm" data-act="cancel-confirm">やめる</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">すべてのデータを消す</button></div>`}
             </div>
         </details>
     </section>`;
@@ -1285,12 +1730,13 @@ function renderModal(){
         ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'の写真')}">
            <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の写真 ／ ` : '参考写真 ／ '}撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
+    const heroCls = ph ? 'hero' : 'hero illust';
     const genreName = {'和':'和食','洋':'洋食','中':'中華','韓':'韓国','エスニック':'エスニック'}[r.genre] || r.genre;
     const facts = [r.type, genreName, `${r.min}分`, '2人分', r.family && r.family !== '野菜' ? FAMILY_LABEL[r.family] : ''].filter(Boolean);
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
         <div class="sheet pop" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
-            <div class="hero">${hero}<button class="close" data-act="close">閉じる</button></div>
+            <div class="${heroCls}">${hero}<button class="close" data-act="close">閉じる</button></div>
             <div class="sheet-body">
                 <div style="display:flex;flex-direction:column;gap:8px">
                     <h2>${esc(r.name)}</h2>
@@ -1308,6 +1754,8 @@ function renderModal(){
                 <div class="label">作り方</div>
                 <ol class="steps">${r.steps.map(s => typeof s === 'string' ? `<li>${esc(s)}</li>` : `<li class="${s.add?'add':''}">${esc(s.t)}</li>`).join('')}</ol>
                 ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
+                <div class="label">ひと手間でスキルアップ</div>
+                ${upgradeHtml(r)}
                 <div class="row">
                     <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${last === '今日作った' ? '今日の記録に入っています' : '今日作った'}</button>
                     <button class="btn" data-act="fav" data-id="${esc(r.id)}">${isFav ? 'お気に入り解除' : 'お気に入り'}</button>
@@ -1375,8 +1823,9 @@ document.addEventListener('click', e => {
             newMenu(); render(); break;
         case 'decide': {
             const m = session.menu;
-            [m.main, m.side, m.soup].filter(Boolean).forEach(r => record(r.id, slotOf(r)));
-            toast('今日の献立を記録しました'); render(); break;
+            const ids = [m.main, m.side, m.soup].filter(Boolean).map(r => r.id);
+            ids.forEach(id => record(id, slotOf(byId(id))));
+            toast(praiseFor(ids), true); render(); break;
         }
         case 'use-plan': {
             const p = weekToday(); if (!p) break;
@@ -1425,7 +1874,7 @@ document.addEventListener('click', e => {
             if (i >= 0){ S.favs.splice(i,1); toast('お気に入りから外しました'); } else { S.favs.push(id); toast('お気に入りに入れました'); }
             save(); if (modalId) renderModal(); render(); break;
         }
-        case 'cooked': { const r = byId(id); record(id, slotOf(r)); toast(`「${r.name}」を記録しました`); renderModal(); render(); break; }
+        case 'cooked': { const r = byId(id); record(id, slotOf(r)); toast(praiseFor([id]), true); renderModal(); render(); break; }
         case 'cooked-date': {
             const d = $('#cook-date').value || TODAY; const r = byId(id);
             if (d > TODAY){ toast('未来の日付には記録できません'); break; }
@@ -1443,6 +1892,20 @@ document.addEventListener('click', e => {
             S.custom = S.custom.filter(r => r.id !== id);
             const i = RECIPES.findIndex(r => r.id === id); if (i >= 0) RECIPES.splice(i,1);
             save(); render(); break;
+        }
+        case 'toggle-staple': {
+            const v = el.dataset.v, k = keyOf(v);
+            const i = S.staples.findIndex(x => keyOf(x) === k);
+            if (i >= 0) S.staples.splice(i,1); else S.staples.push(canonOf(v) || v);
+            save(); render(); break;
+        }
+        case 'rm-staple': S.staples = S.staples.filter(x => x !== el.dataset.v); save(); render(); break;
+        case 'skill-done': {
+            const r = byId(id); const u = upgradeOf(r);
+            if (!S.skills.some(sk => sk.id === id)){ S.skills.push({d:TODAY, id, skill:u.skill}); save(); }
+            const n = S.skills.length;
+            toast(n === 1 ? `「${u.skill}」を習得しました。最初のひと手間です。` : `「${u.skill}」を習得しました。これで${n}つ目のコツです。`, true);
+            renderModal(); render(); break;
         }
         case 'export': {
             const ta = $('#backup-text'); ta.value = JSON.stringify(S);
@@ -1485,6 +1948,11 @@ document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
     if (f === 'add-ing'){ const inp = $('#ing-input'); if (inp.value.trim()){ addIngredients(inp.value); inp.value = ''; render(); $('#ing-input').focus(); } }
+    if (f === 'add-staple'){
+        const inp = $('#staple-input'); const found = extractIngredients(inp.value); let added = 0;
+        found.forEach(x => { if (!S.staples.some(y => keyOf(y) === keyOf(x))){ S.staples.push(x); added++; } });
+        save(); toast(added ? `${found.join('・')} を常備品に登録しました` : '食材の名前が読み取れませんでした'); render();
+    }
     if (f === 'custom'){
         const name = $('#c-name').value.trim(); if (!name) return;
         const ings = $('#c-ings').value.split('\n').map(s => s.trim().replace(/[\s　]+/, ' ')).filter(Boolean);
