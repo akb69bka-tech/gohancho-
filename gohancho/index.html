@@ -347,6 +347,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pw-price .n{font-size:.72rem;color:var(--accent);font-weight:700}
 .pw-free{margin:0;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;font-weight:500}
 
+.locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
+.week .item.locked .t{cursor:pointer}
+.hint-row.locked{cursor:pointer}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
@@ -682,7 +685,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], week:null, onboarded:false, firstUse:'', pro:null, usage:{}, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[]}};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[]}};
 let S = load();
 function load(){
     try{
@@ -1443,7 +1446,9 @@ function upgradeHtml(r, compact=false){
             <div class="how"><b>${esc(u.skill)}</b>　${esc(u.how)}</div>
             ${compact ? '' : `<div class="row">${done
                 ? `<span class="badge fav">習得済み</span><span class="small muted">「${esc(u.skill)}」はもう身についています</span>`
-                : `<button class="btn sm primary" data-act="skill-done" data-id="${esc(base.id)}">やってみた</button><span class="small muted">できたら押してください。記録に残ります</span>`}</div>`}
+                : hasPro()
+                ? `<button class="btn sm primary" data-act="skill-done" data-id="${esc(base.id)}">やってみた</button><span class="small muted">できたら押してください。記録に残ります</span>`
+                : `<button class="btn sm" data-act="paywall-skill">やってみた<span class="plus-mark">プラス</span></button><span class="small muted">記録と腕前の称号はプラスで使えます</span>`}</div>`}
         </div>
     </div>`;
 }
@@ -1579,13 +1584,20 @@ const PLAN = {
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
-    freeLimits: {dishes:4, twistPerDay:3, myPhotos:12},
-    benefits: ['5品・6品の献立（おもてなし・作り置きの日に）', 'ひとひねり案を回数無制限で', '「わが家の写真」を枚数無制限で', 'これから追加する新機能'],
+    trialDays: 3,                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
+    freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:2, shoppingHints:1},
+    benefits: ['1週間分の献立プラン（無料版は2日分まで）', 'ひと手間の「やってみた」で腕前を記録', '買い足すと作れる料理が増える食材をすべて表示', '5品・6品の献立（おもてなし・作り置きの日に）', 'ひとひねり案を回数無制限で', '「わが家の写真」を枚数無制限で'],
 };
-function hasPro(){
-    if (!PLAN.billingEnabled) return true;
+function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
     return !!(S.pro && S.pro.active);
+}
+// お試し期間: アプリを開いた日の数が trialDays 以下のあいだ（＝4日目の利用から無料版の範囲になる）
+function trialActive(){ return PLAN.billingEnabled && (S.usedDays || []).length <= PLAN.trialDays; }
+function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - (S.usedDays || []).length); }
+function hasPro(){
+    if (!PLAN.billingEnabled) return true;
+    return isSubscribed() || trialActive();
 }
 function proMark(){ return PLAN.billingEnabled && !hasPro() ? '<span class="plus-mark">プラス</span>' : ''; }
 function useTwistQuota(){
@@ -1630,6 +1642,10 @@ const PAYWALL_REASON = {
     dishes: '5品・6品の献立は、ごはん帖プラスで使えます。',
     twist: `ひとひねり案は、無料版では1日${PLAN.freeLimits.twistPerDay}回までです。`,
     photos: `「わが家の写真」は、無料版では${PLAN.freeLimits.myPhotos}枚までです。`,
+    week: `無料版で見られる献立プランは${PLAN.freeLimits.weekDays}日分までです。1週間分まとめて見ると、買い物が一度で済みます。`,
+    skill: '「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。',
+    hints: '買い足すと作れる料理が増える食材を、すべて表示します。',
+    trialEnd: `${PLAN.trialDays}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。`,
     info: '',
 };
 
@@ -1679,6 +1695,7 @@ function renderSheet(){
         const native = !!purchasesPlugin();
         body = `
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
+            ${trialActive() && !isSubscribed() ? `<p class="pw-free">いまはお試し期間です（あと${trialDaysLeft()}日）。期間中はすべての機能が使えます。</p>` : ''}
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
@@ -1808,7 +1825,8 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
-                ? (hasPro() ? `<div class="note"><span>${esc(PLAN.name)}をご利用中です。ありがとうございます。</span></div>`
+                ? (isSubscribed() ? `<div class="note"><span>${esc(PLAN.name)}をご利用中です。ありがとうございます。</span></div>`
+                  : trialActive() ? `<div class="note"><span>お試し期間中です（あと${trialDaysLeft()}日）。すべての機能が使えます。</span><button class="btn sm" data-act="paywall">プラスの内容</button></div>`
                             : `<button class="btn primary" data-act="paywall">${esc(PLAN.name)}を見る</button>`)
                 : `<div class="note"><span>いまは無料公開中です。すべての機能をお使いいただけます。</span><button class="btn sm" data-act="paywall">プラスの内容</button></div>`}
             ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">購入を復元</button>` : ''}
@@ -1921,14 +1939,21 @@ function viewToday(){
 
     <section class="sec">
         <div class="sec-head"><h2>1週間の主菜</h2><span class="hint">7日間、同じ料理や同じ肉・魚が続かないように組みます</span></div>
-        ${upcoming.length ? `<div class="list week">${upcoming.map(x => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay(); return `
+        ${upcoming.length ? `<div class="list week">${upcoming.map((x, wi) => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay();
+            if (!hasPro() && wi >= PLAN.freeLimits.weekDays) return `
+            <div class="item locked">
+                <div class="day ${wd===0?'sun':wd===6?'sat':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${WD[wd]}</span></div>
+                <div class="t" data-act="paywall-week"><span class="veil">${'●'.repeat(Math.min(8, r.name.length))}</span><div class="s">プラスで見られます</div></div>
+                <span class="plus-mark">プラス</span>
+            </div>`;
+            return `
             <div class="item">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${WD[wd]}</span></div>
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button>
             </div>`; }).join('')}</div>
             <div class="row"><button class="btn" data-act="make-week">作り直す</button></div>`
-        : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。</div></div>
+        : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。${!hasPro() ? `無料版では${PLAN.freeLimits.weekDays}日分まで見られます。` : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
     </section>`;
 }
@@ -1940,7 +1965,9 @@ function viewFridge(){
     const speech = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
     const hints = have.size ? shoppingHints(have) : [];
     const hintsHtml = hints.length ? `<div class="sec-head"><h3>これを買い足すと、作れる料理が増えます</h3></div>
-        <div class="list">${hints.map(h => `<div class="hint-row"><span class="k">＋${esc(h.label)}</span><span class="v"><b>${h.n}品</b>が今すぐ作れるように： ${esc(h.names.join('・'))}${h.n > 3 ? ' など' : ''}</span></div>`).join('')}</div>` : '';
+        <div class="list">${hints.map((h, hi) => !hasPro() && hi >= PLAN.freeLimits.shoppingHints
+            ? `<div class="hint-row locked" data-act="paywall-hints"><span class="k"><span class="veil">＋${'●'.repeat(Math.min(5, h.label.length))}</span></span><span class="v"><b>${h.n}品</b>増える食材があります <span class="plus-mark">プラス</span></span></div>`
+            : `<div class="hint-row"><span class="k">＋${esc(h.label)}</span><span class="v"><b>${h.n}品</b>が今すぐ作れるように： ${esc(h.names.join('・'))}${h.n > 3 ? ' など' : ''}</span></div>`).join('')}</div>` : '';
     let results = '';
     if (have.size){
         const ms = RECIPES.filter(r => !isAvoided(r)).map(r => matchRecipe(r, have)).filter(m => m.used > 0 && (m.got.length + m.subs.length) > 0);
@@ -2262,6 +2289,9 @@ document.addEventListener('click', e => {
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
         case 'paywall': openPaywall('info'); break;
+        case 'paywall-week': openPaywall('week'); break;
+        case 'paywall-skill': openPaywall('skill'); break;
+        case 'paywall-hints': openPaywall('hints'); break;
         case 'buy': purchase(id); break;
         case 'restore': restorePurchases(); break;
         case 'sheet-close': closeSheet(); break;
@@ -2360,6 +2390,7 @@ document.addEventListener('click', e => {
         }
         case 'rm-staple': S.staples = S.staples.filter(x => x !== el.dataset.v); save(); render(); break;
         case 'skill-done': {
+            if (!hasPro()){ openPaywall('skill'); break; }
             const r = byId(id); const u = upgradeOf(r);
             if (!S.skills.some(sk => sk.id === id)){ S.skills.push({d:TODAY, id, skill:u.skill}); save(); }
             const n = S.skills.length;
@@ -2440,7 +2471,9 @@ document.addEventListener('submit', e => {
 document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard') closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 setTab(tab);
+if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
 if (!S.onboarded) startOnboard();
+else if (PLAN.billingEnabled && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 loadPhotos();
 loadMine();
