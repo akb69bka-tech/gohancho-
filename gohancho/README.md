@@ -3,6 +3,8 @@
 献立の提案・冷蔵庫の材料から料理さがし・定番のひとひねり・家事を励ます記録ができる料理アプリです。
 HTML 1枚（`index.html`）で動き、スマホのホーム画面に追加するとアプリとして使えます（PWA）。
 
+MacBook での起動・レシピの追加・スマホへの反映・バックアップは **[Mac運用ガイド.md](Mac運用ガイド.md)** を見てください（`Macで起動.command` をダブルクリックで起動）。
+
 ## スマホに入れる手順
 
 1. GitHub の **Settings → Pages** で、Source を「Deploy from a branch」、Branch を `main`（フォルダは `/ (root)`）にして保存する
@@ -21,6 +23,8 @@ HTML 1枚（`index.html`）で動き、スマホのホーム画面に追加す�
 | `manifest.webmanifest` | アプリ名・アイコン・表示方法 |
 | `sw.js` | オフラインで開けるようにするためのキャッシュ |
 | `icon-*.png`, `apple-touch-icon.png` | ホーム画面のアイコン |
+| `Macで起動.command` | Mac でダブルクリックして起動する |
+| `Mac運用ガイド.md` | Mac での運用管理の手順 |
 
 ## 写真と動画
 
