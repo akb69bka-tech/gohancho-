@@ -1,0 +1,11 @@
+{
+  "name": "gohancho-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "わが家のごはん帖 iPhone アプリ版（Capacitor）",
+  "scripts": {
+    "copy-web": "rm -rf www && mkdir -p www && cp -R ../gohancho/. www/ && rm -f www/*.command www/*.md",
+    "sync": "npm run copy-web && npx cap sync ios",
+    "ios": "npm run sync && npx cap open ios"
+  }
+}

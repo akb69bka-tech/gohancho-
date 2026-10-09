@@ -1,0 +1,9 @@
+{
+  "appId": "com.example.gohancho",
+  "appName": "ごはん帖",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#eef1f4"
+  }
+}

@@ -1,6 +1,6 @@
 // わが家のごはん帖: オフラインで開けるようにアプリ本体をキャッシュする
-const VERSION = 'gohancho-v1';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
+const VERSION = 'gohancho-v2';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html'];
 const IMG = 'gohancho-img-v1';
 
 self.addEventListener('install', e => {

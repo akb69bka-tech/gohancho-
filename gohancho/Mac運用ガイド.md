@@ -76,7 +76,7 @@ R('butadaikon','豚バラ大根','和','主菜','煮',30,'豚バラ薄切り肉 
 
 | やりたいこと | 場所 |
 | --- | --- |
-| 同じ料理を出さない日数 | 画面の「記録」タブ →「設定」 |
+| 人数・品数・苦手な食材・同じ料理を出さない日数 | 画面右上の歯車（設定） |
 | 「ひと手間」の内容 | `index.html` の `const UPGRADES` |
 | 写真を探す Wikipedia の記事名 | `index.html` の `const WIKI` |
 | 励ましの言葉 | `index.html` の `const PRAISE` と `function greeting` |
