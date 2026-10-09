@@ -1572,21 +1572,22 @@ function installHtml(){
    いまは billingEnabled:false なので、すべての機能が無料で使える。
    販売を始めるときは billingEnabled を true にし、価格と商品IDを App Store Connect に合わせる。
    ========================================================= */
+const PLAN_WEEK_FREE = 1;   // 無料版で見られる献立プランの日数
 const PLAN = {
     billingEnabled: false,              // true にすると、下の freeLimits を超える機能が「プラス」限定になる
     name: 'ごはん帖プラス',
     prices: [                           // 表示用。実際の価格は App Store Connect の設定が正
-        {id:'gohancho_plus_yearly',  label:'年額プラン', price:'2,400円 / 年', note:'月あたり200円'},
         {id:'gohancho_plus_monthly', label:'月額プラン', price:'300円 / 月', note:''},
+        {id:'gohancho_plus_yearly',  label:'年額プラン', price:'3,000円 / 年', note:'2か月分おトク'},
     ],
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
-    trialDays: 3,                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
-    freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:2, shoppingHints:1},
-    benefits: ['1週間分の献立プラン（無料版は2日分まで）', 'ひと手間の「やってみた」で腕前を記録', '買い足すと作れる料理が増える食材をすべて表示', '5品・6品の献立（おもてなし・作り置きの日に）', 'ひとひねり案を回数無制限で', '「わが家の写真」を枚数無制限で'],
+    trialDays: 7,                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
+    freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
+    benefits: [`1週間分の献立プラン（まとめ買いに。無料版は${PLAN_WEEK_FREE}日分まで）`, 'ひと手間の「やってみた」で腕前を記録', '買い足すと作れる料理が増える食材をすべて表示', '5品・6品の献立（おもてなし・作り置きの日に）', 'ひとひねり案を回数無制限で', '「わが家の写真」を枚数無制限で'],
 };
 function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
@@ -1642,7 +1643,7 @@ const PAYWALL_REASON = {
     dishes: '5品・6品の献立は、ごはん帖プラスで使えます。',
     twist: `ひとひねり案は、無料版では1日${PLAN.freeLimits.twistPerDay}回までです。`,
     photos: `「わが家の写真」は、無料版では${PLAN.freeLimits.myPhotos}枚までです。`,
-    week: `無料版で見られる献立プランは${PLAN.freeLimits.weekDays}日分までです。1週間分まとめて見ると、買い物が一度で済みます。`,
+    week: `無料版で見られる献立プランは${PLAN.freeLimits.weekDays === 1 ? '今日の1日分' : PLAN.freeLimits.weekDays + '日分'}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。`,
     skill: '「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。',
     hints: '買い足すと作れる料理が増える食材を、すべて表示します。',
     trialEnd: `${PLAN.trialDays}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。`,
@@ -1699,7 +1700,7 @@ function renderSheet(){
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                <div class="pw-prices">${PLAN.prices.map((p,i) => `<button class="pw-price${i===0?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(p.price)}</span>${p.note?`<span class="n">${esc(p.note)}</span>`:''}</button>`).join('')}</div>
+                <div class="pw-prices">${PLAN.prices.map((p,i) => `<button class="pw-price${p.note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(p.price)}</span>${p.note?`<span class="n">${esc(p.note)}</span>`:''}</button>`).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">Web で購入する</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">購入を復元</button>
                 <p class="tiny muted">サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。</p>

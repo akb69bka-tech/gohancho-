@@ -70,9 +70,9 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 | 項目 | 今の値 | 販売時 |
 | --- | --- | --- |
 | `billingEnabled` | `false`（全機能無料） | `true` |
-| `prices` | 年額 2,400円・月額 300円（仮） | App Store Connect の価格に合わせる |
-| `trialDays` | `3`（使った日が3日目までは全機能。4日目から無料版の範囲） | お試しの長さ |
-| `freeLimits` | 献立プラン2日分・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
+| `prices` | 月額 300円・年額 3,000円 | App Store Connect の価格に合わせる |
+| `trialDays` | `7`（使った日が7日目までは全機能。8日目から無料版の範囲） | お試しの長さ |
+| `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
 | （コード内） | ひと手間の「やってみた」記録はプラスのみ | |
 | `earlySupporterBefore` | 空 | 例: `'2027-04-01'` にすると、その日より前から使っている人はずっと無料（初期ユーザーへのお礼） |
 | `revenueCatApiKey` | 空 | RevenueCat の公開 API キー |
