@@ -350,6 +350,16 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
 .hint-row.locked{cursor:pointer}
+.btn.line{background:#06c755;border-color:#06c755;color:#fff;font-weight:700}
+.btn.line:hover{background:#05b34c;border-color:#05b34c}
+.share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
+.shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.shop .shop-row:first-child{border-top:0}
+.shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
+.shop .nm{font-weight:700}
+.shop .q{font-size:.8rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.shop .for{grid-column:2 / 4;font-size:.72rem;color:var(--muted)}
+.shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
@@ -463,6 +473,69 @@ R('consomme','玉ねぎのコンソメスープ','洋','汁物','汁',15,'玉ね
 R('wakamesoup','韓国風わかめスープ','韓','汁物','汁',10,'わかめ（乾燥） 5g|牛こま切れ肉 50g?|長ねぎ 少々?','ごま油 小さじ2・おろしにんにく 少々・水 400ml・鶏ガラスープの素 小さじ2・醤油 小さじ1・白ごま 少々','わかめは水でもどして食べやすく切る。|ごま油でにんにくと牛肉を炒め、わかめを加えてさっと炒める。|水と鶏ガラスープの素を加えて5分煮る。|醤油で味をととのえ、ねぎと白ごまを散らす。');
 R('sundubu','スンドゥブチゲ','韓','汁物','汁',20,'絹ごし豆腐 1丁|あさり 150g?|豚バラ薄切り肉 80g|白菜キムチ 100g|卵 2個?|長ねぎ 1/2本?','コチュジャン 大さじ1・おろしにんにく 小さじ1・鶏ガラスープの素 小さじ2・醤油 小さじ1・水 400ml・ごま油 大さじ1','ごま油でにんにく・豚肉・キムチを炒める。|水・鶏ガラスープの素・コチュジャンを加えて煮立て、あさりを入れる。|豆腐をスプーンで大きくすくって入れ、5分煮て醤油で味をととのえる。|卵を落とし、ねぎを散らして半熟で火を止める。');
 
+// ---- 追加レシピ（v1.1）: 主菜 ----
+R('tonkatsu','とんかつ','和','主菜','揚',30,'豚ロース厚切り肉 2枚|卵 1個|キャベツ 1/6個?','塩 こしょう 少々・小麦粉 大さじ2・パン粉 1カップ・揚げ油 適量・とんかつソース 適量','豚肉は脂身と赤身の境目の筋を数か所切り、塩こしょうをふる。|小麦粉→溶き卵→パン粉の順に衣をつけ、手で軽く押さえる。|170℃の油で4分、返して2分揚げる。|油を切って3分休ませてから切り、千切りキャベツとソースを添える。');
+R('sabashio','さばの塩焼き','和','主菜','焼',20,'さば 2切れ|大根 3cm?','塩 小さじ1/2・醤油 少々','さばの両面に塩をふって10分おき、出てきた水気を拭く。|皮に浅く切り目を入れる。|魚焼きグリルで盛りつける面から中火で6分、返して4分焼く。|大根おろしを添え、醤油を少したらす。');
+R('sanma','さんまの塩焼き','和','主菜','焼',20,'さんま 2尾|大根 3cm?|すだち 1個?','塩 小さじ1/2','さんまは洗って水気を拭き、半分に切る。|両面に塩をふって10分おく。|グリルで中火で片面5分ずつ、皮がこんがりするまで焼く。|大根おろしとすだちを添える。');
+R('ajifry','あじフライ','和','主菜','揚',30,'あじ（開いたもの） 4枚|卵 1個|キャベツ 1/6個?','塩 こしょう 少々・小麦粉 大さじ2・パン粉 1カップ・揚げ油 適量・中濃ソース 適量','あじは水気を拭き、塩こしょうをふる。|小麦粉→溶き卵→パン粉の順に衣をつける。|170℃の油で3分、きつね色になるまで揚げる。|千切りキャベツを添え、ソース（またはタルタル）で食べる。');
+R('iwashiume','いわしの梅煮','和','主菜','煮',30,'いわし 4尾|梅干し 2個|生姜 1かけ?','水 200ml・酒 50ml・醤油 大さじ2・みりん 大さじ2・砂糖 大さじ1','いわしは頭と内臓を除き、よく洗って水気を拭く。生姜は薄切りにする。|鍋に調味料と水を煮立て、いわし・梅干し・生姜を並べ入れる。|落としぶたをして中弱火で15分煮る。|煮汁をかけながら、とろみが出るまで煮詰める（骨までやわらかく食べられる）。');
+R('kareini','かれいの煮付け','和','主菜','煮',20,'かれい 2切れ|生姜 1かけ?|ごぼう 1/3本?','水 150ml・酒 50ml・醤油 大さじ2・みりん 大さじ2・砂糖 大さじ1','かれいは皮に切り目を入れ、熱湯を回しかけて臭みを取る。ごぼうは5cm長さに切る。|フライパンに調味料と水、生姜を煮立てる。|かれいとごぼうを入れ、落としぶたをして中火で10分煮る。|煮汁をかけながら2〜3分煮て、照りを出す。');
+R('hoilyaki','鮭のホイル焼き','洋','主菜','焼',20,'生鮭 2切れ|玉ねぎ 1/4個|しめじ 1/2パック|ピーマン 1個?','塩 こしょう 少々・バター 20g・醤油 小さじ2・レモン 適量','鮭に塩こしょうをふる。玉ねぎは薄切り、しめじはほぐす。|アルミホイルに玉ねぎを敷き、鮭・しめじ・ピーマンをのせてバターをのせる。|口をしっかり閉じ、フライパンに並べてふたをし、中火で12分蒸し焼きにする。|開いて醤油をたらし、レモンを添える。');
+R('amazu_sakana','白身魚の甘酢あんかけ','中','主菜','揚',25,'生だら 2切れ|玉ねぎ 1/4個|にんじん 1/4本|ピーマン 1個?','塩 少々・片栗粉 大さじ2・揚げ油 適量・酢 大さじ2・砂糖 大さじ2・醤油 大さじ1・ケチャップ 大さじ1・水 大さじ4・片栗粉 小さじ1','たらは一口大に切って塩をふり、水気を拭いて片栗粉をまぶす。野菜は細切りにする。|多めの油でたらを揚げ焼きにして取り出す。|同じフライパンで野菜を炒め、甘酢の材料（酢・砂糖・醤油・ケチャップ・水・片栗粉）を加えてとろみをつける。|たらにあんをかける。');
+R('tebasappari','手羽元のさっぱり煮','和','主菜','煮',35,'鶏手羽元 8本|ゆで卵 2個?','水 200ml・酢 100ml・醤油 大さじ3・砂糖 大さじ2・おろしにんにく 小さじ1','手羽元は骨に沿って切り目を入れる。|フライパンで手羽元の表面を焼きつける。|水・酢・醤油・砂糖・にんにくを加え、ふたをして中火で20分煮る。|ゆで卵を加え、煮汁をからめながら5分煮詰める（酢の酸味はとんでまろやかになる）。');
+R('yurinchi','油淋鶏','中','主菜','揚',25,'鶏もも肉 1枚|長ねぎ 1/2本','塩 こしょう 少々・片栗粉 大さじ3・揚げ油 適量・醤油 大さじ2・酢 大さじ1.5・砂糖 大さじ1・おろし生姜 小さじ1・ごま油 小さじ1','鶏肉は厚みを均一に開き、塩こしょうをして片栗粉をまぶす。|長ねぎはみじん切りにし、醤油・酢・砂糖・生姜・ごま油と混ぜてねぎだれを作る。|多めの油で皮目から鶏肉を揚げ焼きにし、両面カリッとさせる。|食べやすく切って、ねぎだれをたっぷりかける。');
+R('piccata','鶏むね肉のピカタ','洋','主菜','焼',15,'鶏むね肉 1枚|卵 1個','塩 こしょう 少々・小麦粉 大さじ1・粉チーズ 大さじ1・サラダ油 大さじ1・ケチャップ 適量','鶏肉はそぎ切りにして塩こしょうをふり、小麦粉をまぶす。|溶き卵に粉チーズを混ぜる。|鶏肉を卵液にくぐらせ、油を熱したフライパンで弱めの中火で両面焼く。|残った卵液をからめながら焼き、ケチャップを添える。');
+R('nikudango','肉団子の甘酢あん','中','主菜','揚',30,'豚ひき肉 250g|玉ねぎ 1/4個|卵 1個?','片栗粉 大さじ1・塩 少々・揚げ油 適量・ケチャップ 大さじ2・酢 大さじ2・砂糖 大さじ2・醤油 大さじ1・水 大さじ4・片栗粉 小さじ1','玉ねぎはみじん切りにし、ひき肉・卵・片栗粉・塩とよく練る。|一口大に丸め、170℃の油で4分揚げる（多めの油で転がしながら焼いてもよい）。|甘酢の材料をフライパンで煮立て、とろみをつける。|肉団子を入れてからめる。');
+R('butadaikon','豚バラ大根','和','主菜','煮',35,'豚バラ薄切り肉 150g|大根 1/3本|生姜 1かけ?','だし 300ml・醤油 大さじ2・みりん 大さじ2・砂糖 大さじ1・酒 大さじ1・ごま油 小さじ1','大根は1cm幅のいちょう切り、豚肉は4cm幅に切る。|ごま油で豚肉を炒め、大根を加えて全体に油を回す。|だしと調味料、せん切りの生姜を加え、落としぶたで20分煮る。|大根が透き通ったら火を止め、少しおいて味を含ませる。');
+R('kakuni','豚の角煮','和','主菜','煮',90,'豚バラかたまり肉 400g|長ねぎの青い部分 1本?|生姜 1かけ?|ゆで卵 2個?','水 600ml・酒 100ml・醤油 大さじ4・砂糖 大さじ3・みりん 大さじ2','豚肉は4cm角に切り、フライパンで全面に焼き色をつける。|鍋にたっぷりの水と長ねぎ・生姜を入れて豚肉を40分下ゆでし、ゆで汁を捨てる。|水600mlと調味料を加え、落としぶたで30分煮る。|ゆで卵を加え、煮汁が半分になるまで10分煮詰める。');
+R('nasumiso','なすと豚肉の味噌炒め','和','主菜','炒',15,'なす 2本|豚バラ薄切り肉 150g|ピーマン 2個?','味噌 大さじ1.5・みりん 大さじ1・砂糖 小さじ2・酒 大さじ1・サラダ油 大さじ2','なすは乱切り、ピーマンは乱切り、豚肉は4cm幅に切る。調味料を混ぜておく。|油でなすを焼き、しんなりしたら取り出す。|豚肉を炒め、なすとピーマンを戻す。|合わせ味噌を加えて炒めからめる。');
+R('shigureni','牛肉とごぼうのしぐれ煮','和','主菜','煮',20,'牛こま切れ肉 200g|ごぼう 1/2本|生姜 1かけ','醤油 大さじ2・みりん 大さじ2・砂糖 大さじ1・酒 大さじ2・水 50ml','ごぼうはささがきにして水にさらし、生姜はせん切りにする。|鍋に調味料と水、生姜を煮立て、ごぼうを3分煮る。|牛肉をほぐしながら加え、アクを取る。|汁気がほとんどなくなるまで煮詰める（作り置きにも向く）。');
+R('nikudofu','肉豆腐','和','主菜','煮',20,'牛こま切れ肉 150g|木綿豆腐 1丁|長ねぎ 1本|しらたき 1袋?','だし 200ml・醤油 大さじ3・みりん 大さじ2・砂糖 大さじ1.5・酒 大さじ2','豆腐は8等分に切り、長ねぎは斜め切りにする。しらたきは下ゆでする。|鍋にだしと調味料を煮立て、牛肉を入れてアクを取る。|豆腐・長ねぎ・しらたきを加え、落としぶたで10分煮る。|火を止めて少しおき、豆腐に味を含ませる。');
+R('bulgogi','プルコギ','韓','主菜','炒',20,'牛こま切れ肉 200g|玉ねぎ 1/2個|にんじん 1/3本|ピーマン 2個?|ニラ 1/3束?','醤油 大さじ2・砂糖 大さじ1・ごま油 大さじ1・おろしにんにく 小さじ1・酒 大さじ1・白ごま 少々','牛肉に醤油・砂糖・にんにく・酒をもみ込んで10分おく。|玉ねぎは薄切り、にんじんとピーマンは細切り、ニラは4cm長さに切る。|ごま油で牛肉を炒め、色が変わったら野菜を加えて炒め合わせる。|ニラを加えてさっと混ぜ、白ごまをふる。');
+R('dakgalbi','タッカルビ','韓','主菜','炒',25,'鶏もも肉 1枚|キャベツ 1/6個|玉ねぎ 1/2個|さつまいも 1/2本?|ピザ用チーズ 50g?','コチュジャン 大さじ2・醤油 大さじ1・砂糖 大さじ1・酒 大さじ1・おろしにんにく 小さじ1・ごま油 大さじ1','鶏肉は一口大に切り、調味料をもみ込んで10分おく。|キャベツはざく切り、玉ねぎはくし切り、さつまいもは1cm幅の半月切りにする。|ごま油で鶏肉を焼き、野菜を加えてふたをし、中火で8分蒸し焼きにする。|全体を混ぜ、チーズをのせてふたをし、溶けたら完成。');
+R('banbanji','棒棒鶏','中','主菜','和え',20,'鶏むね肉 1枚|きゅうり 1本|トマト 1個?','酒 大さじ1・塩 少々・練りごま 大さじ2・醤油 大さじ1・酢 大さじ1・砂糖 小さじ2・ごま油 小さじ1','鶏肉に酒と塩をふり、ふたをして弱火で8分蒸し焼きにし、そのまま冷ます。|きゅうりは細切り、トマトは薄切りにする。|鶏肉を手で細く裂く。|器に野菜と鶏肉を盛り、練りごま・醤油・酢・砂糖・ごま油を混ぜたたれをかける。');
+R('tofuhamburg','豆腐ハンバーグ','和','主菜','焼',30,'鶏ひき肉 150g|木綿豆腐 1/2丁|玉ねぎ 1/4個|しめじ 1/2パック?','パン粉 大さじ3・塩 少々・サラダ油 小さじ1・大根おろし 適量・ポン酢 大さじ3','豆腐はキッチンペーパーで包み、10分重しをして水切りする。玉ねぎはみじん切り。|ひき肉・豆腐・玉ねぎ・パン粉・塩をよく練り、4等分して小判形にする。|油を熱して両面に焼き色をつけ、ふたをして弱火で6分蒸し焼き。しめじも一緒に焼く。|大根おろしをのせ、ポン酢をかける。');
+R('pimannikuzume','ピーマンの肉詰め','洋','主菜','焼',30,'ピーマン 4個|合いびき肉 200g|玉ねぎ 1/4個|卵 1個?','パン粉 大さじ3・牛乳 大さじ2・塩 こしょう 少々・小麦粉 少々・サラダ油 小さじ2・ケチャップ 大さじ2・中濃ソース 大さじ2','ピーマンは縦半分に切って種を取り、内側に小麦粉をふる。|ひき肉・みじん切りの玉ねぎ・卵・パン粉・牛乳・塩こしょうを練る。|ピーマンに肉だねをすき間なく詰める。|肉の面から焼き、焼き色がついたら返してふたをし、弱火で6分。ケチャップとソースを加えてからめる。');
+R('torinotomatoni','鶏肉のトマト煮','洋','主菜','煮',30,'鶏もも肉 1枚|玉ねぎ 1/2個|トマト缶 1缶|しめじ 1パック?','塩 こしょう 少々・オリーブオイル 大さじ1・おろしにんにく 小さじ1・コンソメ 小さじ1・砂糖 小さじ1','鶏肉は一口大に切り、塩こしょうをふる。玉ねぎは薄切り、しめじはほぐす。|オリーブオイルとにんにくで鶏肉を皮目から焼く。|玉ねぎ・しめじを加えて炒め、トマト缶・コンソメ・砂糖を入れる。|ふたをして15分煮て、塩こしょうで味をととのえる。');
+R('ikasatoimo','いかと里芋の煮物','和','主菜','煮',35,'いか 1杯|里芋 6個','だし 300ml・醤油 大さじ2・砂糖 大さじ1.5・みりん 大さじ1・酒 大さじ2','いかは内臓と軟骨を除き、胴は輪切り、足は食べやすく切る。|里芋は皮をむいて塩もみし、水で洗ってぬめりを取る。|だしと調味料で里芋を15分煮る。|いかを加えて5分煮る（煮すぎると固くなる）。火を止めて味を含ませる。');
+R('atsuagesoboro','厚揚げのそぼろあんかけ','和','主菜','煮',15,'厚揚げ 1枚|鶏ひき肉 100g|長ねぎ 少々?','だし 200ml・醤油 大さじ1.5・みりん 大さじ1.5・砂糖 小さじ1・水溶き片栗粉 大さじ1','厚揚げは熱湯をかけて油抜きし、一口大に切る。|鍋でひき肉を炒め、だしと調味料を加える。|厚揚げを入れて5分煮る。|水溶き片栗粉でとろみをつけ、小口切りのねぎを散らす。');
+// ---- 追加レシピ: ごはん・麺 ----
+R('soborodon','鶏そぼろ丼','和','ごはん','炒',20,'鶏ひき肉 200g|卵 2個|さやいんげん 6本?|ご飯 2杯分','醤油 大さじ2・砂糖 大さじ1.5・みりん 大さじ1・酒 大さじ1・おろし生姜 小さじ1・（卵用）砂糖 小さじ2・塩 少々','鍋にひき肉と調味料・生姜を入れ、火にかける前によく混ぜる。|中火で菜箸4〜5本を使って混ぜながら、汁気がなくなるまで炒る。|卵に砂糖と塩を混ぜ、別の鍋で同じように炒り卵にする。いんげんはゆでて斜め切り。|ご飯にそぼろ・炒り卵・いんげんを彩りよくのせる。');
+R('chukadon','中華丼','中','ごはん','炒',20,'豚こま切れ肉 120g|白菜 1/8個|にんじん 1/3本|しいたけ 2枚?|うずらの卵（水煮） 4個?|ご飯 2杯分','鶏ガラスープの素 小さじ2・水 250ml・オイスターソース 大さじ1・醤油 小さじ1・水溶き片栗粉 大さじ2・ごま油 小さじ1・サラダ油 大さじ1','白菜はそぎ切り、にんじんは短冊切り、しいたけは薄切りにする。|油で豚肉を炒め、野菜を加えて炒める。|水・鶏ガラ・オイスターソース・醤油・うずらの卵を加えて3分煮る。|水溶き片栗粉でとろみをつけてごま油をたらし、ご飯にかける。');
+R('bibimbap','ビビンバ','韓','ごはん','和え',25,'牛こま切れ肉 120g|もやし 1/2袋|ほうれん草 1/2束|にんじん 1/3本|卵 2個?|ご飯 2杯分','ごま油 大さじ2・醤油 大さじ1.5・砂糖 小さじ2・おろしにんにく 小さじ1/2・塩 少々・白ごま 適量・コチュジャン 適量','もやし・ほうれん草・細切りのにんじんをそれぞれゆで、ごま油・塩・白ごまで和えてナムルにする。|牛肉をごま油で炒め、醤油・砂糖・にんにくで甘辛く味をつける。|卵は目玉焼き（または温泉卵）にする。|ご飯にナムルと牛肉、卵をのせ、コチュジャンを添えて混ぜて食べる。');
+R('hayashi','ハヤシライス','洋','ごはん','煮',30,'牛こま切れ肉 200g|玉ねぎ 1個|しめじ 1パック?|ハヤシルウ 1/2箱|ご飯 2杯分','水 400ml・サラダ油 大さじ1','玉ねぎは薄切り、しめじはほぐす。|油で玉ねぎをしんなりするまで炒め、牛肉としめじを加えて炒める。|水を加えて煮立て、アクを取って10分煮る。|火を止めてルウを溶かし、とろみがつくまで5分煮てご飯にかける。');
+R('drycurry','ドライカレー','洋','ごはん','炒',20,'合いびき肉 200g|玉ねぎ 1/2個|にんじん 1/3本|ピーマン 1個?|ご飯 2杯分','カレー粉 大さじ1・ケチャップ 大さじ2・中濃ソース 大さじ1・コンソメ 小さじ1・塩 こしょう 少々・サラダ油 小さじ2','野菜はすべてみじん切りにする。|油で玉ねぎとにんじんを炒め、ひき肉を加えてポロポロになるまで炒める。|カレー粉をふって香りを出し、ピーマン・ケチャップ・ソース・コンソメを加える。|汁気を飛ばし、塩こしょうで味をととのえてご飯に添える。');
+R('hiyashichuka','冷やし中華','中','麺','和え',20,'中華麺 2玉|ハム 4枚|きゅうり 1本|卵 2個|トマト 1個?','醤油 大さじ3・酢 大さじ3・砂糖 大さじ2・ごま油 大さじ1・水 大さじ2・（卵用）砂糖 小さじ1・サラダ油 少々','たれの材料（醤油・酢・砂糖・ごま油・水）を混ぜて冷やす。|卵に砂糖を混ぜて薄焼きにし、細切りにして錦糸卵を作る。ハム・きゅうりも細切り、トマトはくし切り。|麺をゆでて冷水でしめ、水気をよく切る。|器に麺を盛って具を並べ、たれをかける。');
+R('yakiudon','焼きうどん','和','麺','炒',15,'ゆでうどん 2玉|豚こま切れ肉 120g|キャベツ 1/8個|玉ねぎ 1/4個?|にんじん 1/4本?','醤油 大さじ2・みりん 大さじ1・和風だしの素 小さじ1/2・かつお節 適量・サラダ油 大さじ1','うどんは電子レンジで2分温めてほぐしておく。野菜は食べやすく切る。|油で豚肉を炒め、野菜を加えて炒める。|うどんを加え、醤油・みりん・だしの素で味をつける。|器に盛り、かつお節をのせる。');
+R('salmoncreampasta','鮭とほうれん草のクリームパスタ','洋','麺','煮',20,'スパゲッティ 200g|生鮭 1切れ|ほうれん草 1/2束|牛乳 200ml|玉ねぎ 1/4個?','バター 10g・小麦粉 大さじ1・コンソメ 小さじ1・塩 こしょう 少々・粉チーズ 大さじ1','スパゲッティをゆで始める。鮭は皮と骨を除いて一口大、ほうれん草は4cm長さ、玉ねぎは薄切り。|バターで鮭と玉ねぎを炒め、小麦粉をふり入れて炒める。|牛乳を少しずつ加えてとろみをつけ、コンソメ・ほうれん草を加える。|ゆでたスパゲッティを和え、塩こしょうと粉チーズで味をととのえる。');
+R('tunatomatopasta','ツナとトマトのパスタ','洋','麺','炒',15,'スパゲッティ 200g|ツナ缶 1缶|トマト缶 1/2缶|玉ねぎ 1/4個?','オリーブオイル 大さじ1・おろしにんにく 小さじ1/2・コンソメ 小さじ1/2・塩 こしょう 少々','スパゲッティをゆで始める。玉ねぎは薄切り。|オリーブオイルとにんにくで玉ねぎを炒め、トマト缶とコンソメを加えて5分煮詰める。|ツナを油ごと加えて混ぜる。|ゆでたスパゲッティとゆで汁大さじ2を加えて和え、塩こしょうで味をととのえる。');
+// ---- 追加レシピ: 副菜 ----
+R('kiriboshi','切り干し大根の煮物','和','副菜','煮',25,'切り干し大根 30g|にんじん 1/3本|油揚げ 1枚','だし 200ml・醤油 大さじ1.5・砂糖 大さじ1・みりん 大さじ1・ごま油 小さじ1','切り干し大根は水で10分もどし、水気を絞って食べやすく切る。|にんじんと油揚げは細切りにする。|ごま油で切り干し大根とにんじんを炒め、油揚げを加える。|だしと調味料を加え、汁気が少なくなるまで10分煮る。');
+R('gomaae','ほうれん草の胡麻和え','和','副菜','和え',10,'ほうれん草 1束','すりごま 大さじ2・醤油 大さじ1・砂糖 小さじ2','ほうれん草は塩少々を入れた湯でゆで、冷水にとって水気を絞る。|4cm長さに切り、もう一度水気を絞る。|すりごま・醤油・砂糖を混ぜる。|食べる直前にほうれん草と和える。');
+R('okraokaka','オクラのおかか和え','和','副菜','和え',5,'オクラ 1袋','かつお節 1パック・醤油 小さじ2・塩 少々','オクラは塩をまぶしてこすり、うぶ毛を取る。|熱湯で1分ゆでて冷水にとる。|斜め半分に切る。|かつお節と醤油で和える。');
+R('harusamesalad','春雨サラダ','中','副菜','和え',15,'春雨 40g|きゅうり 1本|ハム 3枚|にんじん 1/4本?','酢 大さじ2・醤油 大さじ1.5・砂糖 大さじ1・ごま油 大さじ1・白ごま 少々','春雨はゆでて水気を切り、食べやすく切る。|きゅうり・ハム・にんじんは細切りにし、にんじんはさっとゆでる。|調味料を混ぜてたれを作る。|すべてを和え、冷蔵庫で10分なじませて白ごまをふる。');
+R('macaronisalad','マカロニサラダ','洋','副菜','和え',20,'マカロニ 60g|きゅうり 1/2本|ハム 3枚|玉ねぎ 1/4個?','マヨネーズ 大さじ4・酢 小さじ1・塩 こしょう 少々','マカロニは表示どおりゆでて水気を切り、酢をまぶして冷ます。|きゅうりと玉ねぎは薄切りにして塩もみし、水気を絞る。|ハムは短冊切りにする。|すべてをマヨネーズ・塩こしょうで和える。');
+R('kabochasalad','かぼちゃサラダ','洋','副菜','和え',15,'かぼちゃ 1/8個|玉ねぎ 1/4個?|ハム 2枚?','マヨネーズ 大さじ2・塩 こしょう 少々','かぼちゃは種を取って一口大に切り、ラップをして電子レンジで4分加熱する。|熱いうちに粗くつぶす。|玉ねぎは薄切りにして水にさらし、水気を絞る。ハムは短冊切り。|粗熱が取れたら、すべてをマヨネーズ・塩こしょうで和える。');
+R('satoimonikkorogashi','里芋の煮っころがし','和','副菜','煮',25,'里芋 8個','だし 200ml・醤油 大さじ1.5・砂糖 大さじ1・みりん 大さじ1','里芋は皮をむいて塩もみし、水で洗ってぬめりを取る。|鍋に里芋とだしを入れて火にかけ、煮立ったら砂糖を加えて10分煮る。|醤油とみりんを加え、ときどき鍋をゆすりながら汁気がなくなるまで煮る。|照りが出たら完成。');
+R('daigakuimo','大学芋','和','副菜','揚',25,'さつまいも 1本','揚げ油 適量・砂糖 大さじ3・醤油 小さじ1・水 大さじ1・黒ごま 少々','さつまいもは皮つきのまま乱切りにし、水に5分さらして水気を拭く。|160℃の油で5分、竹串が通るまで揚げる。|フライパンに砂糖・醤油・水を入れて煮立て、とろみが出たら火を止める。|さつまいもを入れてからめ、黒ごまをふる。');
+R('hakusaiasazuke','白菜の浅漬け','和','副菜','和え',10,'白菜 1/8個|昆布 3cm?','塩 小さじ1・赤唐辛子 少々','白菜はざく切りにする。|ポリ袋に白菜・塩・細切りの昆布・唐辛子を入れてよくもむ。|空気を抜いて口を閉じ、冷蔵庫で30分以上おく。|水気を軽く絞って器に盛る。');
+R('chingensai','チンゲン菜のにんにく炒め','中','副菜','炒',5,'チンゲン菜 2株','ごま油 大さじ1・おろしにんにく 小さじ1/2・鶏ガラスープの素 小さじ1/2・塩 少々','チンゲン菜は根元を切り、茎と葉に分けて食べやすく切る。|ごま油とにんにくを熱し、茎を先に1分炒める。|葉を加え、鶏ガラと塩で味をつける。|しんなりしすぎないうちに火を止める。');
+R('broccoligoma','ブロッコリーのごまマヨ和え','洋','副菜','和え',10,'ブロッコリー 1株','マヨネーズ 大さじ1.5・すりごま 大さじ1・醤油 小さじ1','ブロッコリーは小房に分ける。|塩少々を入れた湯で2分ゆで、ざるに上げて冷ます。|マヨネーズ・すりごま・醤油を混ぜる。|水気をよく切ったブロッコリーと和える。');
+R('kinokobutter','きのこのバター醤油炒め','和','副菜','炒',10,'しめじ 1パック|エリンギ 1パック|まいたけ 1パック?','バター 10g・醤油 小さじ2・こしょう 少々','しめじとまいたけはほぐし、エリンギは縦に薄切りにする。|フライパンでバターを溶かす。|きのこを強めの中火で、あまり動かさずに焼き色をつける。|醤油を鍋肌から回し入れ、こしょうをふる。');
+R('nagaimoume','長いもの梅和え','和','副菜','和え',5,'長いも 10cm|梅干し 1個|大葉 3枚?','醤油 少々','長いもは皮をむいて拍子木切りにする。|梅干しは種を取ってたたく。|長いもと梅を和え、醤油を少したらす。|器に盛り、せん切りの大葉をのせる。');
+R('spinachbacon','ほうれん草とベーコンのソテー','洋','副菜','炒',10,'ほうれん草 1束|ベーコン 2枚','バター 5g・塩 こしょう 少々','ほうれん草は4cm長さ、ベーコンは1cm幅に切る。|フライパンでベーコンを炒めて脂を出す。|ほうれん草の茎、葉の順に加えて強火でさっと炒める。|バターを加え、塩こしょうで味をととのえる。');
+R('gobosalad','ごぼうサラダ','和','副菜','和え',15,'ごぼう 1本|にんじん 1/3本','マヨネーズ 大さじ3・醤油 小さじ1・砂糖 小さじ1・すりごま 大さじ1','ごぼうは細切りにして水にさらし、にんじんも細切りにする。|ごぼうを3分、にんじんを最後の1分一緒にゆでる。|ざるに上げて水気をよく切り、冷ます。|マヨネーズ・醤油・砂糖・すりごまで和える。');
+R('unohana','卯の花','和','副菜','煮',20,'おから 100g|にんじん 1/4本|しいたけ 2枚?|油揚げ 1/2枚?','だし 200ml・醤油 大さじ1.5・砂糖 大さじ1.5・みりん 大さじ1・サラダ油 大さじ1','にんじん・しいたけ・油揚げは細かく切る。|油で野菜と油揚げを炒め、おからを加えてポロポロになるまで炒める。|だしと調味料を加える。|しっとりするまで混ぜながら5分煮る。');
+R('takosunomono','たこときゅうりの酢の物','和','副菜','和え',10,'ゆでだこ 80g|きゅうり 1本|わかめ（乾燥） 2g?','酢 大さじ2・砂糖 大さじ1・醤油 小さじ1/2・塩 少々','きゅうりは薄切りにして塩もみし、水気を絞る。|わかめは水でもどして水気を絞る。|たこは薄くそぎ切りにする。|酢・砂糖・醤油を混ぜ、すべてを和える。');
+// ---- 追加レシピ: 汁物 ----
+R('kenchinjiru','けんちん汁','和','汁物','汁',25,'大根 3cm|にんじん 1/3本|ごぼう 1/3本|木綿豆腐 1/2丁|里芋 2個?|こんにゃく 1/4枚?','だし 600ml・醤油 大さじ1.5・塩 少々・ごま油 小さじ2','野菜はいちょう切りや乱切りに、こんにゃくはちぎって下ゆでする。|ごま油で野菜とこんにゃくを炒める。|豆腐を手でくずし入れて炒め、だしを加えて10分煮る。|醤油と塩で味をととのえる。');
+R('namekomiso','なめこと豆腐の味噌汁','和','汁物','汁',10,'なめこ 1袋|豆腐 1/2丁|長ねぎ 少々?','だし 400ml・味噌 大さじ2','なめこはさっと洗い、豆腐はさいの目に切る。|だしを温め、豆腐となめこを入れる。|ひと煮立ちしたら火を弱め、味噌を溶き入れる。|小口切りのねぎを散らす。');
+R('asarimiso','あさりの味噌汁','和','汁物','汁',10,'あさり 200g|長ねぎ 少々?','水 400ml・味噌 大さじ2','あさりは砂抜きして、殻をこすり洗いする。|鍋に水とあさりを入れて火にかける。|殻が開いたらアクを取り、火を弱めて味噌を溶き入れる。|小口切りのねぎを散らす（あさりからだしが出るので、だしは不要）。');
+R('cornsoup','コーンスープ','洋','汁物','汁',15,'コーン缶（クリーム） 1缶|牛乳 200ml|玉ねぎ 1/4個?','バター 10g・コンソメ 小さじ1・塩 こしょう 少々','玉ねぎは薄切りにし、バターでしんなりするまで炒める。|コーン缶とコンソメを加えて混ぜる。|牛乳を加え、沸騰させないように弱火で温める。|塩こしょうで味をととのえる。');
+R('clamchowder','クラムチャウダー','洋','汁物','汁',25,'あさり 200g|じゃがいも 1個|玉ねぎ 1/2個|にんじん 1/3本|牛乳 300ml|ベーコン 2枚?','バター 10g・小麦粉 大さじ1・水 200ml・コンソメ 小さじ1・塩 こしょう 少々','あさりは水200mlで酒蒸しのように加熱し、殻が開いたら身と蒸し汁に分ける。|野菜とベーコンは1cm角に切り、バターで炒めて小麦粉をふり入れる。|あさりの蒸し汁とコンソメを加え、野菜がやわらかくなるまで10分煮る。|牛乳とあさりを加えて温め、塩こしょうで味をととのえる。');
+R('sanratan','酸辣湯','中','汁物','汁',15,'絹ごし豆腐 1/2丁|しいたけ 2枚|卵 1個|たけのこ水煮 50g?','水 400ml・鶏ガラスープの素 小さじ2・醤油 小さじ2・酢 大さじ2・こしょう 少々・ラー油 少々・水溶き片栗粉 大さじ1','豆腐・しいたけ・たけのこは細切りにする。|水と鶏ガラを煮立て、具を入れて3分煮る。|醤油で味をつけ、水溶き片栗粉でとろみをつけて溶き卵を回し入れる。|火を止めてから酢を加え、こしょうとラー油をふる（酢は最後に入れると香りが立つ）。');
+R('tomatoeggsoup','トマトと卵のスープ','中','汁物','汁',10,'トマト 1個|卵 1個','水 400ml・鶏ガラスープの素 小さじ2・塩 こしょう 少々・ごま油 少々','トマトはくし切りにする。|水と鶏ガラを煮立て、トマトを入れて2分煮る。|塩こしょうで味をととのえ、溶き卵を細く回し入れる。|卵がふんわり固まったら、ごま油をたらす。');
+
 /* =========================================================
    食材の名寄せ（表記ゆれ → 代表名）
    ========================================================= */
@@ -477,7 +550,13 @@ const CANON = [
     ['鮭',['鮭','さけ','しゃけ','サーモン']],
     ['さば',['さば','鯖']],
     ['ぶり',['ぶり','鰤']],
-    ['たら',['たら','鱈','白身魚']],
+    ['たら',['たら','鱈','白身魚','生だら','生鱈']],
+    ['あじ',['あじ','鯵','アジ']],
+    ['いわし',['いわし','鰯','イワシ']],
+    ['さんま',['さんま','秋刀魚','サンマ']],
+    ['かれい',['かれい','鰈','カレイ']],
+    ['いか',['いか','イカ','するめいか']],
+    ['たこ',['ゆでだこ','たこ','タコ','蛸']],
     ['えび',['えび','海老','エビ']],
     ['あさり',['あさり','浅利']],
     ['ツナ',['ツナ','シーチキン']],
@@ -532,6 +611,20 @@ const CANON = [
     ['コーン',['コーン','とうもろこし']],
     ['カレールウ',['カレールウ','カレールー','カレー']],
     ['シチュールウ',['シチュールウ','シチュー']],
+    ['ハヤシルウ',['ハヤシルウ','ハヤシ']],
+    ['梅干し',['梅干し','梅']],
+    ['紅しょうが',['紅しょうが','紅生姜']],
+    ['生姜',['生姜','しょうが','ショウガ']],
+    ['切り干し大根',['切り干し大根','切干大根','切干し大根']],
+    ['里芋',['里芋','さといも','サトイモ']],
+    ['さつまいも',['さつまいも','さつま芋','サツマイモ']],
+    ['長いも',['長いも','長芋','山芋','やまいも']],
+    ['オクラ',['オクラ']],
+    ['チンゲン菜',['チンゲン菜','青梗菜','ちんげんさい']],
+    ['エリンギ',['エリンギ']],
+    ['なめこ',['なめこ']],
+    ['おから',['おから']],
+    ['さやいんげん',['いんげん']],
     ['ご飯',['ご飯','ごはん','白米','米']],
     ['食パン',['食パン','パン']],
 ];
@@ -586,7 +679,7 @@ const SUBS = {
     '豆腐':['厚揚げ'], '厚揚げ':['豆腐'], 'レタス':['キャベツ'],
 };
 const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉':'鶏','牛肉':'牛','合いびき肉':'ひき肉',
-    '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
+    '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','あじ':'魚','いわし':'魚','さんま':'魚','かれい':'魚','いか':'魚介','たこ':'魚介','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
     '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚'};
 const FAMILY_LABEL = {'豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
 function prepRecipe(r){
@@ -1037,6 +1130,11 @@ const WIKI = {   // 候補を前から順に探し、Commons に写真がある�
     nasubitashi:['揚げ浸し'], komatsuna:['煮浸し'], tatakikyuri:['たたききゅうり','拍黄瓜'], namul:['ナムル'], sakamushi:['酒蒸し'], coleslaw:['コールスロー'],
     hiyayakko:['冷奴'], sunomono:['酢の物'], tomatotamago:['トマトと卵の炒め物','西紅柿炒鶏蛋'], misoshiru:['味噌汁'], tonjiru:['豚汁'], minestrone:['ミネストローネ'],
     tamagosoup:['かき玉汁','卵スープ'], consomme:['オニオンスープ'], wakamesoup:['ミヨックク','わかめスープ'], sundubu:['スンドゥブチゲ'],
+    tonkatsu:['とんかつ'], sabashio:['塩焼き'], sanma:['サンマ'], ajifry:['アジフライ'], iwashiume:['イワシ'], kareini:['煮付け'], hoilyaki:['ホイル焼き'],
+    tebasappari:['手羽元'], yurinchi:['油淋鶏'], piccata:['ピカタ'], nikudango:['肉団子'], kakuni:['角煮','豚の角煮'], shigureni:['しぐれ煮'], nikudofu:['肉豆腐'],
+    bulgogi:['プルコギ'], dakgalbi:['タッカルビ'], banbanji:['棒棒鶏'], tofuhamburg:['豆腐ハンバーグ'], pimannikuzume:['ピーマンの肉詰め'],
+    soborodon:['そぼろ丼','三色丼'], chukadon:['中華丼'], bibimbap:['ビビンバ'], hayashi:['ハヤシライス'], drycurry:['ドライカレー'], hiyashichuka:['冷やし中華'], yakiudon:['焼きうどん'],
+    gomaae:['胡麻和え','ごま和え'], macaronisalad:['マカロニサラダ'], daigakuimo:['大学芋'], kenchinjiru:['けんちん汁'], cornsoup:['コーンスープ'], clamchowder:['クラムチャウダー'], sanratan:['酸辣湯'],
     rice:['ご飯','白飯'], konomono:['漬物','たくあん'],
 };
 const PHOTO_KEY = 'gohancho.photos.v2';
@@ -1220,7 +1318,13 @@ const ING_ART = {
     'トマト':{g:'round',c:'#e2412f',c2:'#f5a08a',s:9,n:3,z:2}, 'トマト缶':{g:'dot',c:'#c93a2b',s:6,n:5,z:1}, 'きゅうり':{g:'round',c:'#8fc46b',c2:'#e5f2d3',s:7,n:5,z:2},
     'もやし':{g:'strand',c:'#f2eddc',s:11,n:7,z:2}, 'しめじ':{g:'cap',c:'#b18a6a',c2:'#f1e4d2',s:7,n:5,z:3}, 'しいたけ':{g:'cap',c:'#6f4a30',c2:'#e8d7c0',s:9,n:3,z:3}, 'まいたけ':{g:'cap',c:'#8d6a4a',c2:'#e6d6c2',s:7,n:4,z:3}, 'えのき':{g:'strand',c:'#f4efdf',s:10,n:6,z:2},
     'かぼちゃ':{g:'wedge',c:'#f0a63a',c2:'#3f6b34',s:12,n:4,z:2}, 'ゴーヤ':{g:'bitter',c:'#4f9a49',c2:'#a9d59d',s:11,n:5,z:2}, 'ごぼう':{g:'stick',c:'#9a7050',s:12,n:6,z:2}, 'れんこん':{g:'lotus',c:'#f4efe4',c2:'#d9d0bf',s:10,n:3,z:2},
-    'たけのこ':{g:'stick',c:'#efd9a4',s:9,n:4,z:2}, 'コーン':{g:'dot',c:'#f7cf3a',s:3,n:8,z:4}, 'キムチ':{g:'leaf',c:'#d9482c',c2:'#f2a284',s:10,n:5,z:2},
+    'たけのこ':{g:'stick',c:'#efd9a4',s:9,n:4,z:2},
+    'ツナ':{g:'dot',c:'#d9c7a3',s:5,n:6,z:2},
+    'あじ':{g:'fillet',c:'#c9a46a',c2:'#f1dcb4',s:16,n:2,z:2}, 'いわし':{g:'fillet',c:'#7f8fa3',c2:'#e3e9ef',s:15,n:2,z:2}, 'さんま':{g:'fillet',c:'#8a8f98',c2:'#e6e8ec',s:20,n:1,z:2}, 'かれい':{g:'fillet',c:'#b8946a',c2:'#efdcc0',s:20,n:1,z:2},
+    'いか':{g:'ring',c:'#f2e7dc',c2:'#fbf6f0',s:8,n:5,z:3}, 'たこ':{g:'chunk',c:'#c4504a',c2:'#f0c4b8',s:8,n:5,z:3},
+    '里芋':{g:'round',c:'#efe6d4',c2:'#d8c9ad',s:10,n:4,z:2}, 'さつまいも':{g:'wedge',c:'#f1c75a',c2:'#7a2f5a',s:11,n:4,z:2}, '長いも':{g:'stick',c:'#f7f2e6',s:10,n:5,z:2},
+    'オクラ':{g:'ring',c:'#5f9b45',c2:'#e9f3d9',s:5,n:6,z:3}, 'チンゲン菜':{g:'leaf',c:'#7fb85a',c2:'#e3f0d2',s:12,n:4,z:2}, 'エリンギ':{g:'cap',c:'#e9dcc6',c2:'#f6efe2',s:9,n:4,z:3},
+    'なめこ':{g:'dot',c:'#c88a3c',s:4,n:8,z:3}, '切り干し大根':{g:'strand',c:'#efe3c6',s:11,n:8,z:2}, 'おから':{g:'dot',c:'#efe5cc',s:5,n:16,z:1}, 'さやいんげん':{g:'stick',c:'#4f9a49',s:11,n:4,z:3}, 'コーン':{g:'dot',c:'#f7cf3a',s:3,n:8,z:4}, 'キムチ':{g:'leaf',c:'#d9482c',c2:'#f2a284',s:10,n:5,z:2},
     '豆腐':{g:'cube',c:'#faf7ef',c2:'#ffffff',s:9,n:4,z:2}, '厚揚げ':{g:'cube',c:'#e2b060',c2:'#f8f2e2',s:10,n:4,z:2}, '油揚げ':{g:'stick',c:'#e1b25c',s:9,n:4,z:2}, 'こんにゃく':{g:'cube',c:'#8f8a80',c2:'#c8c3b8',s:8,n:3,z:1},
     'わかめ':{g:'strand',c:'#2c5a3f',s:11,n:5,z:2}, 'ひじき':{g:'strand',c:'#2a2622',s:8,n:10,z:2}, '春雨':{g:'strand',c:'#e9e2cf',s:14,n:8,z:1},
     '餃子の皮':{g:'dumpling',c:'#f3e6c8',c2:'#d9c39a',s:13,n:5,z:3}, 'チーズ':{g:'dot',c:'#f6d76a',s:8,n:5,z:4}, '牛乳':{g:'dot',c:'#fbf8ef',s:10,n:2,z:1},
@@ -1351,11 +1455,38 @@ function dishSvg(r, opts={}){
         curry:''}[fl] || '';
     items.sort((a,b) => a.z - b.z);
     const body = items.map(x => place(x.item)).join('');
-    const baseOp = art ? .95 : ({'煮':.95,'炒':.5,'焼':.42,'揚':.35,'和え':.55,'炊':.9,'汁':1}[r.method] || .6);
+    const plated = !art && !under && r.type === '主菜' && (r.method === '焼' || r.method === '揚');   // 焼き物・揚げ物は白い皿にキャベツを添えて盛る
+    const baseOp = art ? .95 : plated ? 0 : ({'煮':.95,'炒':.8,'和え':.6,'炊':.9,'汁':1}[r.method] || .7);
     const baseShape = under || (opts.plain ? '' : `<path opacity="${baseOp}" d="M50,${cy-R} C${cx+R*.9},${cy-R*.9} ${cx+R*1.05},${cy+R*.5} ${cx+R*.55},${cy+R*.85} C${cx-R*.2},${cy+R*1.1} ${cx-R*1.05},${cy+R*.4} ${cx-R*.95},${cy-R*.3} C${cx-R*.85},${cy-R*.95} ${cx-R*.2},${cy-R*1.05} 50,${cy-R} Z" fill="${base}"/>`);
     const tintShape = tint ? `<circle cx="50" cy="50" r="${R}" fill="${tint}"/>` : '';
-    const gloss = `<ellipse cx="38" cy="30" rx="12" ry="6" fill="#fff" opacity=".18" transform="rotate(-25 38 30)"/>`;
-    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="dish" aria-hidden="true"><g>${baseShape}<g stroke="rgba(40,20,10,.16)" stroke-width=".5">${body}</g>${over}${tintShape}${garnish}${gloss}</g></svg>`;
+    // 仕上げ: ソースは中心が明るく縁が濃いグラデーション、具材には影と照り（光沢）を付けて立体的に
+    const p = 'dz' + (dishSvg.n = (dishSvg.n || 0) + 1);
+    const baseFill = under ? '' : baseShape.replace(`fill="${base}"`, `fill="url(#${p}g)"`);
+    const defs = `<defs>
+        <radialGradient id="${p}g" cx="42%" cy="38%" r="70%"><stop offset="0" stop-color="${mixHex(base,'#ffffff',.28)}"/><stop offset=".65" stop-color="${base}"/><stop offset="1" stop-color="${mixHex(base,'#2a160a',.32)}"/></radialGradient>
+        <radialGradient id="${p}h" cx="35%" cy="28%" r="45%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <filter id="${p}f" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="bl"/>
+            <feSpecularLighting in="bl" surfaceScale="2.2" specularConstant=".42" specularExponent="18" lighting-color="#ffffff" result="sp"><fePointLight x="28" y="18" z="70"/></feSpecularLighting>
+            <feComposite in="sp" in2="SourceAlpha" operator="in" result="spc"/>
+            <feComposite in="SourceGraphic" in2="spc" operator="arithmetic" k2="1" k3=".7" result="lit"/>
+            <feOffset in="SourceAlpha" dy="1.1" result="off"/><feGaussianBlur in="off" stdDeviation=".9" result="sh"/>
+            <feFlood flood-color="#2a160a" flood-opacity=".38"/><feComposite in2="sh" operator="in" result="shc"/>
+            <feMerge><feMergeNode in="shc"/><feMergeNode in="lit"/></feMerge>
+        </filter>
+    </defs>`;
+    const rim = under ? '' : `<circle cx="50" cy="51" r="${R+1}" fill="#2a160a" opacity=".10"/>`;
+    const gloss = `<ellipse cx="40" cy="33" rx="22" ry="14" fill="url(#${p}h)" transform="rotate(-25 40 33)"/>`;
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="dish" aria-hidden="true">${defs}<g>${rim}${under || baseFill}${plated ? sideGarnish(rng) : ''}<g filter="url(#${p}f)" stroke="rgba(40,20,10,.14)" stroke-width=".4">${body}${over}</g>${tintShape}<g filter="url(#${p}f)">${garnish}</g>${gloss}</g></svg>`;
+}
+function sideGarnish(rng){
+    let out = '';
+    for (let k = 0; k < 22; k++){ const x = 66 + (rng()-.5)*20, y = 64 + (rng()-.5)*16; out += `<path d="M${x.toFixed(1)},${y.toFixed(1)} q${(4+rng()*4).toFixed(1)},${(-2+rng()*4).toFixed(1)} ${(9+rng()*5).toFixed(1)},${(-1+rng()*2).toFixed(1)}" stroke="${rng() < .5 ? '#d9eab0' : '#bcd98a'}" stroke-width="1.3" fill="none" stroke-linecap="round" transform="rotate(${(-30+rng()*60).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`; }
+    return `<g>${out}</g><circle cx="76" cy="48" r="4.6" fill="#e2412f"/><circle cx="74.8" cy="46.6" r="1.3" fill="#fff" opacity=".6"/><path d="M76,43.6 l1.2,-1.4 M76,43.6 l-1.4,-.9" stroke="#3f7a35" stroke-width=".9" stroke-linecap="round"/>`;
+}
+function mixHex(a, b, t){
+    const h = x => { x = String(x).replace('#',''); if (x.length === 3) x = x.split('').map(c => c + c).join(''); return [0,2,4].map(i => parseInt(x.slice(i, i+2), 16)); };
+    try{ const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2,'0')).join(''); }catch(e){ return a; }
 }
 
 /* =========================================================
@@ -1569,12 +1700,14 @@ function installHtml(){
 
 /* =========================================================
    ごはん帖プラス（課金のしくみ）
-   いまは billingEnabled:false なので、すべての機能が無料で使える。
-   販売を始めるときは billingEnabled を true にし、価格と商品IDを App Store Connect に合わせる。
+   billingMode:'native' のため、Web 版（PWA）は全機能無料。iPhone アプリ版は revenueCatApiKey を入れると課金が有効になる。
+   価格・商品ID・お試しの内容は App Store Connect の設定と合わせる。
    ========================================================= */
 const PLAN_WEEK_FREE = 1;   // 無料版で見られる献立プランの日数
 const PLAN = {
-    billingEnabled: false,              // true にすると、下の freeLimits を超える機能が「プラス」限定になる
+    // 課金を有効にする範囲: 'off'＝全員無料 / 'native'＝iPhone アプリ版だけ（RevenueCat のキーを入れたとき）/ 'all'＝Web 版も
+    billingMode: 'native',
+    get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     name: 'ごはん帖プラス',
     prices: [                           // 表示用。実際の価格は App Store Connect の設定が正
         {id:'gohancho_plus_monthly', label:'月額プラン', price:'300円 / 月', note:''},
@@ -1585,7 +1718,8 @@ const PLAN = {
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
-    trialDays: 7,                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
+    trialDays: 7,
+    introTrialLabel: '最初の7日間は無料',   // App Store Connect の「お試しオファー」と同じ内容にする                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
     freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
     benefits: [`1週間分の献立プラン（まとめ買いに。無料版は${PLAN_WEEK_FREE}日分まで）`, 'ひと手間の「やってみた」で腕前を記録', '買い足すと作れる料理が増える食材をすべて表示', '5品・6品の献立（おもてなし・作り置きの日に）', 'ひとひねり案を回数無制限で', '「わが家の写真」を枚数無制限で'],
 };
@@ -1594,7 +1728,8 @@ function isSubscribed(){
     return !!(S.pro && S.pro.active);
 }
 // お試し期間: アプリを開いた日の数が trialDays 以下のあいだ（＝4日目の利用から無料版の範囲になる）
-function trialActive(){ return PLAN.billingEnabled && (S.usedDays || []).length <= PLAN.trialDays; }
+// iPhone アプリ版では、お試しは Apple 公式の「お試しオファー」（App Store Connect で7日間無料を設定）で行い、端末では数えない
+function trialActive(){ return PLAN.billingEnabled && !isNative() && (S.usedDays || []).length <= PLAN.trialDays; }
 function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - (S.usedDays || []).length); }
 function hasPro(){
     if (!PLAN.billingEnabled) return true;
@@ -1691,6 +1826,7 @@ function renderSheet(){
         body = `<div class="ob-dots" aria-hidden="true">${dots}</div>${body}
             ${st > 0 ? '' : '<button class="btn sm ghost ob-skip" data-act="ob-skip">設定せずに使う</button>'}`;
     }
+    if (sheet.kind === 'share') body = shareSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = PAYWALL_REASON[sheet.reason] || '';
         const native = !!purchasesPlugin();
@@ -1700,6 +1836,7 @@ function renderSheet(){
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
+                ${native ? `<p class="pw-free">${esc(PLAN.introTrialLabel)}。無料期間中に解約すれば料金はかかりません。</p>` : ''}
                 <div class="pw-prices">${PLAN.prices.map((p,i) => `<button class="pw-price${p.note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(p.price)}</span>${p.note?`<span class="n">${esc(p.note)}</span>`:''}</button>`).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">Web で購入する</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">購入を復元</button>
@@ -1775,6 +1912,8 @@ function fmtAmount(v, unit){
         return String(Math.max(step, Math.round(v / step) * step));
     }
     if (v >= 3){ const h = Math.round(v * 2) / 2; return Number.isInteger(h) ? String(h) : `${Math.floor(h)}と1/2`; }
+    const t = Math.round(v * 3);   // 1/3・2/3 はそのまま表す（レシピに多い）
+    if (t % 3 !== 0 && Math.abs(v * 3 - t) < 0.06){ const w3 = Math.floor(t / 3), r3 = t % 3; return (w3 ? `${w3}と` : '') + `${r3}/3`; }
     const q = Math.round(v * 4) / 4;
     if (q === 0) return '1/8';
     const w = Math.floor(q), f = +(q - w).toFixed(2);
@@ -1834,7 +1973,8 @@ function viewSettings(){
         </div>
         <div class="set-group">
             <div class="set-title">アプリ</div>
-            ${installHtml()}
+            ${reminderHtml()}
+            ${isNative() ? '' : installHtml()}
             <button class="btn sm" data-act="ob-again">はじめての設定をもう一度</button>
         </div>
         <div class="set-group">
@@ -1856,11 +1996,139 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">このアプリについて</div>
             <p class="small muted" style="margin:0">わが家のごはん帖 ${APP_VERSION}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理写真は Wikipedia / Wikimedia Commons から読み込み、撮影者とライセンスを表示しています。</p>
-            <a class="btn sm" href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>
+            <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">サポート・よくある質問</a></div>
         </div>
     </section>`;
 }
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
+
+/* =========================================================
+   iPhone アプリ版（Capacitor）かどうか
+   ========================================================= */
+function isNative(){ try{ return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); }catch(e){ return false; } }
+function nativePlugin(name){ try{ return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins[name]) || null; }catch(e){ return null; } }
+
+/* =========================================================
+   買い物メモ（1週間プランの主菜から、家にない材料をまとめる）
+   ========================================================= */
+function visiblePlanDays(){
+    if (!S.week) return [];
+    const days = S.week.days.filter(x => x.d >= TODAY);
+    return hasPro() ? days : days.slice(0, PLAN.freeLimits.weekDays);
+}
+function shoppingList(){
+    const have = fridgeKeys(), fac = servingFactor(), map = new Map();
+    visiblePlanDays().forEach(x => {
+        const r = byId(x.id); if (!r) return;
+        r.items.forEach(i => {
+            if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
+            const e = map.get(i.key) || {key:i.key, label:i.label, qty:[], dishes:[]};
+            if (i.qty) e.qty.push(scaleText(i.qty, fac));
+            if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
+            map.set(i.key, e);
+        });
+    });
+    return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, 'ja'));
+}
+// 同じ単位の分量は足し合わせる（例: 1/3本＋1/3本 → 2/3本、150g＋200g → 350g）
+function sumQty(list){
+    const groups = new Map(), rest = [];
+    list.forEach(q => {
+        const m = String(q).match(/^(\D*?)(?:(\d+)と)?(\d+(?:\.\d+)?)(?:\/(\d+))?(\D*)$/);
+        if (!m){ rest.push(q); return; }
+        const v = (m[2] ? Number(m[2]) : 0) + (m[4] ? Number(m[3]) / Number(m[4]) : Number(m[3]));
+        const key = m[1] + '|' + m[5];
+        groups.set(key, (groups.get(key) || 0) + v);
+    });
+    const out = [...groups.entries()].map(([k, v]) => { const [pre, unit] = k.split('|'); const f = fmtAmount(v, unit); return pre + (f === '1/8' ? '少々' : f) + unit; });
+    return [...out, ...rest];
+}
+function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
+function shoppingHtml(){
+    const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
+    const done = shopDoneSet();
+    return `<div class="sec-head"><h3>買い物メモ</h3><span class="hint">${visiblePlanDays().length}日分の主菜で使う材料のうち、冷蔵庫・常備品にないもの（${Number(S.settings.servings)||2}人分）</span></div>
+        <div class="list shop">${list.length ? list.map(e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}</span><span class="q">${esc(sumQty(e.qty).join('＋'))}</span><span class="for">${esc(e.dishes.join('・'))}</span></label>`).join('')
+            : '<div class="empty">必要な材料は、冷蔵庫と常備品でそろっています。</div>'}</div>`;
+}
+
+/* =========================================================
+   LINE・ほかのアプリで家族に送る
+   ========================================================= */
+function menuShareText(){
+    const m = session.menu; if (!m) return '';
+    const lines = [`【${jpDate(TODAY)}の献立】`];
+    m.items.forEach(x => { if (x.r) lines.push(`${x.slot === '汁物' ? '汁もの' : x.slot}：${x.r.name}`); });
+    const main = m.items[0] && m.items[0].r;
+    if (!(main && (main.type === 'ごはん' || main.type === '麺'))) lines.push('ご飯');
+    lines.push('', '― わが家のごはん帖');
+    return lines.join('\n');
+}
+function weekShareText(){
+    const days = visiblePlanDays(); if (!days.length) return '';
+    const lines = ['【献立の予定】'];
+    days.forEach(x => { const r = byId(x.id); if (r) lines.push(`${jpDate(x.d)}　${r.name}`); });
+    const list = shoppingList(); const done = shopDoneSet();
+    const rest = list.filter(e => !done.has(e.key));
+    if (rest.length){ lines.push('', '【買い物メモ】'); rest.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? '（' + sumQty(e.qty).join('＋') + '）' : ''}`)); }
+    lines.push('', '― わが家のごはん帖');
+    return lines.join('\n');
+}
+function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
+function openShare(kind){
+    const text = kind === 'week' ? weekShareText() : menuShareText();
+    if (!text){ toast('送る献立がありません'); return; }
+    sheet = {kind:'share', text, title: kind === 'week' ? '献立の予定と買い物メモ' : '今日の献立'}; renderSheet();
+}
+async function systemShare(text, title){
+    const P = nativePlugin('Share');
+    try{
+        if (P){ await P.share({title, text, dialogTitle:'家族に送る'}); return; }
+        if (navigator.share){ await navigator.share({title, text}); return; }
+    }catch(e){ if (e && (e.name === 'AbortError' || /cancel/i.test(String(e.message)))) return; }
+    copyText(text);
+}
+function copyText(text){
+    const done = () => toast('コピーしました。LINE などに貼りつけて送れます');
+    try{ navigator.clipboard.writeText(text).then(done, () => { const t = $('#share-text'); if (t){ t.select(); toast('文字を選択しました。コピーしてください'); } }); }
+    catch(e){ const t = $('#share-text'); if (t){ t.select(); toast('文字を選択しました。コピーしてください'); } }
+}
+function shareSheetHtml(){
+    const canSystem = !!(nativePlugin('Share') || navigator.share);
+    return `<h2>${esc(sheet.title)}を送る</h2>
+        <textarea id="share-text" class="share-text" readonly aria-label="送る内容">${esc(sheet.text)}</textarea>
+        <a class="btn line wide" href="${esc(lineShareUrl(sheet.text))}" target="_blank" rel="noopener">LINE で送る</a>
+        <div class="row">
+            ${canSystem ? '<button class="btn wide" data-act="share-system">ほかのアプリで送る</button>' : ''}
+            <button class="btn wide" data-act="share-copy">コピーする</button>
+        </div>
+        <p class="tiny muted">LINE を押すと、送り先（家族やグループ）を選ぶ画面が開きます。</p>
+        <button class="btn ghost" data-act="sheet-close">閉じる</button>`;
+}
+
+/* =========================================================
+   毎日のお知らせ（iPhone アプリ版のみ。端末の通知で献立を決める時間を知らせる）
+   ========================================================= */
+const NOTIFY_ID = 1001;
+async function setReminder(hour){
+    const P = nativePlugin('LocalNotifications');
+    if (!P){ toast('お知らせは iPhone アプリ版で使えます'); return; }
+    try{
+        await P.cancel({notifications:[{id: NOTIFY_ID}]}).catch(() => {});
+        if (hour === null){ S.settings.remind = null; save(); toast('お知らせを止めました'); render(); return; }
+        const perm = await P.requestPermissions();
+        if (perm && perm.display && perm.display !== 'granted'){ toast('通知が許可されていません。iPhone の「設定」→「ごはん帖」→「通知」で許可してください'); return; }
+        await P.schedule({notifications:[{id: NOTIFY_ID, title:'今日の献立を決めましょう', body:'おまかせで、主菜・副菜・汁ものをすぐに提案します。', schedule:{on:{hour, minute:0}, allowWhileIdle:true}}]});
+        S.settings.remind = hour; save(); toast(`毎日${hour}時にお知らせします`); render();
+    }catch(e){ toast('お知らせを設定できませんでした'); }
+}
+function reminderHtml(){
+    if (!isNative()) return `<p class="small muted" style="margin:0">毎日のお知らせ（献立を決める時間の通知）は iPhone アプリ版で使えます。</p>`;
+    const cur = S.settings.remind;
+    return `<div class="field"><label>毎日のお知らせ</label>
+        <div class="chips">${[['off','なし'],[15,'15時'],[16,'16時'],[17,'17時'],[18,'18時']].map(([v,l]) => `<button class="chip" data-act="remind" data-v="${v}" aria-pressed="${v==='off' ? !cur : cur===v}">${l}</button>`).join('')}</div>
+        <span class="small muted">献立を決める時間に、端末の通知でお知らせします。</span></div>`;
+}
 
 /* ---- 今日の献立 ---- */
 function viewToday(){
@@ -1911,6 +2179,7 @@ function viewToday(){
             <button class="btn primary wide" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
             <button class="btn" data-act="new-menu">まるごと入れ替え</button>
         </div>
+        <button class="btn line" data-act="share-menu" ${main?'':'disabled'}>今日の献立を LINE で家族に送る</button>
         <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（冷蔵庫${S.fridge.length}品・常備${S.staples.length}品）を使う料理を優先する</span></label>
         ${main ? `<div class="sec-head"><h3>今日のひと手間</h3><span class="hint">${esc(main.name)}に、これを足すと腕が上がります</span></div>${upgradeHtml(main)}` : ''}
         <p class="small muted" style="margin:0">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。${S.settings.avoid.length ? `苦手な食材（${esc(S.settings.avoid.join('・'))}）を使う料理は出しません。` : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
@@ -1953,7 +2222,8 @@ function viewToday(){
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button>
             </div>`; }).join('')}</div>
-            <div class="row"><button class="btn" data-act="make-week">作り直す</button></div>`
+            <div class="row"><button class="btn line" data-act="share-week">予定と買い物メモを LINE で送る</button><button class="btn" data-act="make-week">作り直す</button></div>
+            ${shoppingHtml()}`
         : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。${!hasPro() ? `無料版では${PLAN.freeLimits.weekDays}日分まで見られます。` : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
     </section>`;
@@ -2290,6 +2560,16 @@ document.addEventListener('click', e => {
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
         case 'paywall': openPaywall('info'); break;
+        case 'share-menu': openShare('menu'); break;
+        case 'share-week': openShare('week'); break;
+        case 'share-system': if (sheet) systemShare(sheet.text, sheet.title); break;
+        case 'share-copy': if (sheet) copyText(sheet.text); break;
+        case 'shop-check': {
+            shopDoneSet(); const k = el.dataset.k, a = S.shopDone.keys, i = a.indexOf(k);
+            if (el.checked){ if (i < 0) a.push(k); } else if (i >= 0) a.splice(i, 1);
+            save(); render(); break;
+        }
+        case 'remind': setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
         case 'paywall-week': openPaywall('week'); break;
         case 'paywall-skill': openPaywall('skill'); break;
         case 'paywall-hints': openPaywall('hints'); break;
@@ -2474,7 +2754,7 @@ document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('cl
 setTab(tab);
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
 if (!S.onboarded) startOnboard();
-else if (PLAN.billingEnabled && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
+else if (PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 loadPhotos();
 loadMine();

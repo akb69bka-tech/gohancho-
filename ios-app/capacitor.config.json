@@ -1,9 +1,14 @@
 {
-  "appId": "com.example.gohancho",
+  "appId": "io.github.akb69bka.gohancho",
   "appName": "ごはん帖",
   "webDir": "www",
   "ios": {
     "contentInset": "never",
     "backgroundColor": "#eef1f4"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "iconColor": "#22406b"
+    }
   }
 }

@@ -3,6 +3,8 @@
 `../gohancho/`（Web 版）をそのまま iPhone アプリに包むための設定です。仕組みは **Capacitor**（Web で作ったアプリを iOS アプリにする無料の道具）を使います。
 作業はすべて **MacBook** で行います（iPhone アプリは Mac の Xcode でしか作れません）。
 
+> **申請までの手順は [申請チェックリスト.md](申請チェックリスト.md) にまとめました。** App Store に入力する文章は `appstore/metadata.md`、スクリーンショットは `appstore/screenshots/`、アイコンは `assets/` にあります。Mac では `npm run setup` で準備が一度に終わります。
+
 ---
 
 ## 全体の流れ
@@ -12,7 +14,7 @@
 | 1. 無料公開（今ここ） | Web 版を GitHub Pages で公開し、家族や知人に使ってもらう | 0円 |
 | 2. iPhone で試す | この手順で Xcode から自分の iPhone に入れる | 0円（Apple ID だけで可） |
 | 3. App Store に無料で出す | Apple Developer Program に登録して審査に出す | 年 99 米ドル（※） |
-| 4. 課金を始める | App 内課金（サブスクリプション）を設定し、アプリ側の `billingEnabled` を `true` にする | 売上から Apple の手数料（※） |
+| 4. 課金を始める | App 内課金（サブスクリプション）を設定し、`revenueCatApiKey` を入れる（iPhone アプリ版だけ課金が有効になる） | 売上から Apple の手数料（※） |
 
 ※ Apple Developer Program は年 99 米ドル（日本円の金額は時期で変わるので公式ページで確認）。手数料は通常 30%、年間売上 100 万米ドル以下の「App Store Small Business Program」に申し込むと 15%。
 出典: Apple Developer Program（https://developer.apple.com/jp/programs/）、App Store Small Business Program（https://developer.apple.com/jp/app-store/small-business-program/）
@@ -29,9 +31,7 @@
 
 ```bash
 cd ~/Documents/toresabi/ios-app
-npm install @capacitor/core @capacitor/cli @capacitor/ios
-npx cap add ios
-npm run ios
+npm run setup   # 部品の取りこみ・iOS プロジェクト作成・アイコン・審査用の設定まで自動
 ```
 
 Xcode が開いたら:
@@ -69,7 +69,7 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 
 | 項目 | 今の値 | 販売時 |
 | --- | --- | --- |
-| `billingEnabled` | `false`（全機能無料） | `true` |
+| `billingMode` | `'native'`（Web 版は全機能無料。iPhone アプリ版は API キーを入れると課金が有効） | そのまま |
 | `prices` | 月額 300円・年額 3,000円 | App Store Connect の価格に合わせる |
 | `trialDays` | `7`（使った日が7日目までは全機能。8日目から無料版の範囲） | お試しの長さ |
 | `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
@@ -82,7 +82,7 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 2. **RevenueCat**（https://www.revenuecat.com/）に登録し、アプリと商品をつなぐ。Entitlement 名を `plus` にする
    - RevenueCat は購入の確認（レシートの検証）を代わりにやってくれるサービスです。一定の売上までは無料で使えます（条件は公式で確認）
 3. `npm install @revenuecat/purchases-capacitor` → `npx cap sync ios`
-4. `PLAN.revenueCatApiKey` にキーを入れ、`billingEnabled: true` にして `npm run sync`
+4. `PLAN.revenueCatApiKey` にキーを入れて `npm run sync`（iPhone アプリ版だけ課金が有効になる）
 5. Xcode で「Signing & Capabilities」→「+ Capability」→「In-App Purchase」を追加
 6. Sandbox（テスト用アカウント）で購入・復元を試してから審査に出す
 
