@@ -360,7 +360,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .shop .q{font-size:.8rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
 .shop .for{grid-column:2 / 4;font-size:.72rem;color:var(--muted)}
 .shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
-/* 鉛筆画 */
+/* 料理のイラスト */
 .vessel .food.svg{background:#fbf8f1}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
@@ -393,34 +393,15 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 </nav>
 <div id="modal-root"></div>
 <div id="sheet-root"></div>
-<!-- 鉛筆画のための共通フィルター（料理のイラストと参考写真で使う） -->
+<!-- ポップなイラストのための共通フィルター -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <!-- 色鉛筆のぬり: 輪郭を少しゆらし、紙に引っかかった筆圧のムラ（ざらつき）を出す -->
-    <filter id="pencil-fill" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="3" result="wn"/>
-      <feDisplacementMap in="SourceGraphic" in2="wn" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob"/>
-      <feColorMatrix in="wob" type="saturate" values=".8" result="sat"/>
-      <feComponentTransfer in="sat" result="col"><feFuncR type="linear" slope=".9" intercept=".09"/><feFuncG type="linear" slope=".9" intercept=".09"/><feFuncB type="linear" slope=".9" intercept=".08"/></feComponentTransfer>
-      <feTurbulence type="fractalNoise" baseFrequency="1.3 .16" numOctaves="2" seed="7" result="gr"/>
-      <feColorMatrix in="gr" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.72" result="gm"/>
-      <feComposite in="col" in2="gm" operator="in"/>
+    <!-- 色を少し鮮やかに -->
+    <filter id="pop-fill" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="1.25"/></filter>
+    <!-- 料理全体のやわらかい影（皿から少し浮いて見える） -->
+    <filter id="pop-shadow" x="-15%" y="-15%" width="130%" height="135%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1.6" stdDeviation="1.1" flood-color="#3a2416" flood-opacity=".32"/>
     </filter>
-    <!-- 鉛筆の線: 手でなぞったようなゆれと、かすれ -->
-    <filter id="pencil-line" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="2" seed="11" result="wn"/>
-      <feDisplacementMap in="SourceGraphic" in2="wn" scale="1.6" xChannelSelector="R" yChannelSelector="G" result="wob"/>
-      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" seed="5" result="gr"/>
-      <feColorMatrix in="gr" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.6" result="gm"/>
-      <feComposite in="wob" in2="gm" operator="in"/>
-    </filter>
-    <!-- かげの斜線（ハッチング）。各具材の右下ほど濃く入る -->
-    <pattern id="pencil-hatch" width="2.4" height="2.4" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-      <line x1="0" y1="0" x2="0" y2="2.4" stroke="#3b3631" stroke-width=".5"/>
-    </pattern>
-    <linearGradient id="pencil-shade" x1="0" y1="0" x2="1" y2="1">
-      <stop offset=".45" stop-color="#000"/><stop offset="1" stop-color="#fff"/>
-    </linearGradient>
   </defs>
 </svg>
 <div id="toast-root"></div>
@@ -1268,10 +1249,10 @@ function photoOf(r){
     return sketchOf(PHOTOS[r.isTwist ? r.base.id : r.id]);
 }
 
-/* ---- 参考写真を色鉛筆のスケッチに描き直す ----
-   Wikipedia の写真は、端末の中で一度だけ鉛筆画に変換して保存し、以後はそれを表示する。
-   変換が終わるまで・変換できない写真は、手描き風のイラストを表示する（元の写真そのものは出さない）。 */
-const SKETCH = {};          // 元の写真URL → 鉛筆画のURL（null は変換できなかった）
+/* ---- 参考写真をもとに、ポップなイラストに描き直す ----
+   Wikipedia の写真は、端末の中で一度だけ「細部をなめらかに → 明るさを数段階のぬり分けにして鮮やかに → くっきりした輪郭に太い線」でイラスト化して保存し、以後はそれを表示する。
+   変換が終わるまで・変換できない写真は、アプリが描くイラストを表示する（元の写真そのものは出さない）。 */
+const SKETCH = {};          // 元の写真URL → イラスト化した画像のURL（null は変換できなかった）
 const sketchQueue = [];
 let sketchBusy = false;
 function sketchOf(ph){
@@ -1290,8 +1271,9 @@ async function pumpSketches(){
     while (sketchQueue.length){
         const src = sketchQueue.shift();
         try{
-            let blob = await idbDo('readonly', st => st.get(src), 'sketches').catch(() => null);
-            if (!blob){ blob = await pencilSketch(src); idbDo('readwrite', st => st.put(blob, src), 'sketches').catch(() => {}); }
+            const key = 'pop3:' + src;
+            let blob = await idbDo('readonly', st => st.get(key), 'sketches').catch(() => null);
+            if (!blob){ blob = await popIllustrate(src); idbDo('readwrite', st => st.put(blob, key), 'sketches').catch(() => {}); }
             SKETCH[src] = URL.createObjectURL(blob);
         }catch(e){ SKETCH[src] = null; }
         scheduleRender();
@@ -1307,67 +1289,81 @@ function scheduleRender(){
         if (modalId) renderModal();
     }, 250);
 }
-function pencilSketch(src){
+function popIllustrate(src){
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onerror = () => reject(new Error('load'));
         img.onload = () => {
             try{
-                const k = Math.min(1, 560 / Math.max(img.naturalWidth, img.naturalHeight));
-                const W = Math.max(1, Math.round(img.naturalWidth * k)), H = Math.max(1, Math.round(img.naturalHeight * k));
+                const k = Math.min(1, 520 / Math.max(img.naturalWidth, img.naturalHeight));
+                const W = Math.max(1, Math.round(img.naturalWidth * k)), H = Math.max(1, Math.round(img.naturalHeight * k)), n = W * H;
                 const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
                 const ctx = cv.getContext('2d', {willReadFrequently: true});
                 ctx.drawImage(img, 0, 0, W, H);
-                const im = ctx.getImageData(0, 0, W, H), d = im.data, n = W * H;   // 他サイトの画像で許可がない場合はここで例外 → イラスト表示
-                const gray = new Float32Array(n), inv = new Float32Array(n);
-                for (let i = 0; i < n; i++){ const g = .3 * d[i*4] + .59 * d[i*4+1] + .11 * d[i*4+2]; gray[i] = g; inv[i] = 255 - g; }
-                const blur = boxBlur(inv, W, H, Math.max(3, Math.round(W / 70)));
-                let seed = 1234567;
-                const rnd = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
-                const streak = new Float32Array(W + H);   // 斜めの色鉛筆の筆跡
-                for (let t = 0; t < streak.length; t++) streak[t] = .9 + .1 * rnd();
+                const im = ctx.getImageData(0, 0, W, H), d = im.data;     // 許可のない画像はここで例外 → イラスト表示
+                // 1) 細部をなめらかに（輪郭は残すぼかし）
+                let px = new Float32Array(n * 3);
+                for (let i = 0; i < n; i++){ px[i*3] = d[i*4]; px[i*3+1] = d[i*4+1]; px[i*3+2] = d[i*4+2]; }
+                for (let it = 0; it < 3; it++) px = smoothKeepEdges(px, W, H, 3, 26);
+                // 2) 色（色み）はそのままに、明るさだけを数段階にそろえて「ぬり分け」にする → 赤いトマトは赤、緑の野菜は緑のまま
+                const LEVELS = 5, lumS = new Float32Array(n);
                 for (let i = 0; i < n; i++){
-                    const x = i % W, y = (i / W) | 0;
-                    const dodge = Math.min(255, gray[i] * 255 / (256 - blur[i]));      // 覆い焼きで輪郭だけを線に
-                    const line = Math.pow(dodge / 255, 2.2);
-                    const r = d[i*4], g = d[i*4+1], b = d[i*4+2], l = gray[i];
-                    const tex = streak[(x + ((y * .7) | 0)) % streak.length] * (.94 + .06 * rnd());
-                    const col = c => ((l + (c - l) * .62) * .66 + 255 * .34);           // 色は淡く（色鉛筆）
-                    d[i*4]   = Math.min(255, col(r) * line * tex * .985);
-                    d[i*4+1] = Math.min(255, col(g) * line * tex * .972);
-                    d[i*4+2] = Math.min(255, col(b) * line * tex * .945);              // 紙の色（生成り）に寄せる
+                    const r = px[i*3], g = px[i*3+1], b = px[i*3+2];
+                    const L = .3 * r + .59 * g + .11 * b; lumS[i] = L;
+                    const band = Math.min(LEVELS - 1, Math.floor(L / 256 * LEVELS));
+                    const Lq = (band + .62) * 256 / LEVELS;                 // 段階の中ほどへ（少し明るめ）
+                    const f = Lq / Math.max(8, L);
+                    let R = r * f, G = g * f, B = b * f;
+                    const l2 = .3 * R + .59 * G + .11 * B;                   // 鮮やかに
+                    R = l2 + (R - l2) * 1.55; G = l2 + (G - l2) * 1.55; B = l2 + (B - l2) * 1.55;
+                    d[i*4] = Math.max(0, Math.min(255, R + 6)); d[i*4+1] = Math.max(0, Math.min(255, G + 4)); d[i*4+2] = Math.max(0, Math.min(255, B));
+                    d[i*4+3] = 255;
+                }
+                // 3) くっきりした輪郭だけに太い線（明るさの変化が大きい所）
+                const thr = 22, edge = new Uint8Array(n);
+                for (let y = 1; y < H - 1; y++) for (let x = 1; x < W - 1; x++){
+                    const i = y * W + x;
+                    const gx = -lumS[i-W-1] - 2*lumS[i-1] - lumS[i+W-1] + lumS[i-W+1] + 2*lumS[i+1] + lumS[i+W+1];
+                    const gy = -lumS[i-W-1] - 2*lumS[i-W] - lumS[i-W+1] + lumS[i+W-1] + 2*lumS[i+W] + lumS[i+W+1];
+                    if (Math.hypot(gx, gy) / 4 > thr) edge[i] = 1;
+                }
+                const thick = Math.max(1, Math.round(W / 300));
+                for (let y = 0; y < H; y++) for (let x = 0; x < W; x++){
+                    if (!edge[y*W+x]) continue;
+                    for (let dy = -thick; dy <= thick; dy++) for (let dx = -thick; dx <= thick; dx++){
+                        const yy = y + dy, xx = x + dx; if (yy < 0 || yy >= H || xx < 0 || xx >= W) continue;
+                        const q = (yy * W + xx) * 4; d[q] = 74; d[q+1] = 46; d[q+2] = 31;
+                    }
                 }
                 ctx.putImageData(im, 0, 0);
-                cv.toBlob(bl => bl ? resolve(bl) : reject(new Error('blob')), 'image/jpeg', .85);
+                cv.toBlob(bl => bl ? resolve(bl) : reject(new Error('blob')), 'image/png');
             }catch(e){ reject(e); }
         };
         img.src = src;
     });
 }
-function boxBlur(src, W, H, r){
-    let a = src, b = new Float32Array(src.length);
-    for (let pass = 0; pass < 3; pass++){
-        for (let y = 0; y < H; y++){   // 横
-            let acc = 0; const o = y * W;
-            for (let x = -r; x <= r; x++) acc += a[o + Math.min(W - 1, Math.max(0, x))];
-            for (let x = 0; x < W; x++){ b[o + x] = acc / (2 * r + 1); acc += a[o + Math.min(W - 1, x + r + 1)] - a[o + Math.max(0, x - r)]; }
+// 似た色どうしだけを混ぜるぼかし（バイラテラルフィルターの簡易版）。輪郭は残り、面はなめらかになる
+function smoothKeepEdges(px, W, H, r, sigma){
+    const out = new Float32Array(px.length), s2 = 2 * sigma * sigma;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++){
+        const i = (y * W + x) * 3, R = px[i], G = px[i+1], B = px[i+2];
+        let sr = 0, sg = 0, sb = 0, sw = 0;
+        for (let dy = -r; dy <= r; dy += 1) for (let dx = -r; dx <= r; dx += 1){
+            const yy = Math.min(H - 1, Math.max(0, y + dy)), xx = Math.min(W - 1, Math.max(0, x + dx)), j = (yy * W + xx) * 3;
+            const dr = px[j] - R, dg = px[j+1] - G, db = px[j+2] - B;
+            const w = Math.exp(-(dr*dr + dg*dg + db*db) / s2);
+            sr += px[j] * w; sg += px[j+1] * w; sb += px[j+2] * w; sw += w;
         }
-        [a, b] = [b, a];
-        for (let x = 0; x < W; x++){   // 縦
-            let acc = 0;
-            for (let y = -r; y <= r; y++) acc += a[Math.min(H - 1, Math.max(0, y)) * W + x];
-            for (let y = 0; y < H; y++){ b[y * W + x] = acc / (2 * r + 1); acc += a[Math.min(H - 1, y + r + 1) * W + x] - a[Math.max(0, y - r) * W + x]; }
-        }
-        [a, b] = [b, a];
+        out[i] = sr / sw; out[i+1] = sg / sw; out[i+2] = sb / sw;
     }
-    return a;
+    return out;
 }
 function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent((r.isTwist ? r.base.name : r.name).replace(/（.*?）/g,'') + ' 作り方'); }
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
 function photoNote(){
-    if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return '料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとに鉛筆画風に加工しています。撮影者とライセンスは各料理の詳細に表示しています。';
+    if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return '料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。';
     return '';
 }
 
@@ -1587,19 +1583,19 @@ function dishSvg(r, opts={}){
     const baseOp = art ? .95 : plated ? 0 : ({'煮':.95,'炒':.8,'和え':.6,'炊':.9,'汁':1}[r.method] || .7);
     const baseShape = under || (opts.plain ? '' : `<path opacity="${baseOp}" d="M50,${cy-R} C${cx+R*.9},${cy-R*.9} ${cx+R*1.05},${cy+R*.5} ${cx+R*.55},${cy+R*.85} C${cx-R*.2},${cy+R*1.1} ${cx-R*1.05},${cy+R*.4} ${cx-R*.95},${cy-R*.3} C${cx-R*.85},${cy-R*.95} ${cx-R*.2},${cy-R*1.05} 50,${cy-R} Z" fill="${base}"/>`);
     const tintShape = tint ? `<circle cx="50" cy="50" r="${R}" fill="${tint}"/>` : '';
-    // 仕上げ: 鉛筆の輪郭の上から色鉛筆でぬり（下の具材の線は上の具材に隠れる）、右下に斜線のかげを入れる
-    const p = 'dz' + (dishSvg.n = (dishSvg.n || 0) + 1);
+    // 仕上げ: 太い輪郭（ぬりの下に引くので、重なった具材の線は隠れる）＋鮮やかなぬり＋つや＋影で、ポップなイラストに
     const side = plated ? sideGarnish(rng) : '';
     const shapes = (under || baseShape) + side + body + over + garnish;
-    // 輪郭は「ぬりのある形」だけをなぞる（線だけの飾りや細部はなぞらない）
+    // 輪郭は「ぬりのある形」だけ（線だけの飾りや細部はなぞらない）
     const asLines = t => t.replace(/<(path|line)\b[^>]*fill="none"[^>]*\/>/g, '').replace(/<line\b[^>]*\/>/g, '')
         .replace(/fill="(?!none)[^"]*"/g, 'fill="none"').replace(/stroke="[^"]*"/g, '').replace(/stroke-width="[^"]*"/g, '').replace(/opacity="[^"]*"/g, '');
-    const asShade = t => t.replace(/fill="(?!none)[^"]*"/g, 'fill="url(#pencil-shade)"').replace(/stroke="[^"]*"/g, 'stroke="none"').replace(/opacity="[^"]*"/g, '');
-    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="dish pencil" aria-hidden="true">
-        <defs><mask id="${p}m" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">${asShade((under ? '' : baseShape) + body + over)}</mask></defs>
-        <g filter="url(#pencil-line)" fill="none" stroke="#3b3631" stroke-width=".9" stroke-linejoin="round" stroke-linecap="round" opacity=".75">${asLines(shapes)}</g>
-        <g transform="rotate(-35 50 50)" filter="url(#pencil-fill)"><g transform="rotate(35 50 50)">${shapes}${tintShape}</g></g>
-        <g mask="url(#${p}m)" opacity=".5"><rect width="100" height="100" fill="url(#pencil-hatch)"/></g>
+    const shine = `<ellipse cx="38" cy="32" rx="9" ry="4.5" fill="#fff" opacity=".35" transform="rotate(-30 38 32)"/><circle cx="31" cy="38" r="1.6" fill="#fff" opacity=".5"/>`;
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="dish pop" aria-hidden="true">
+        <g filter="url(#pop-shadow)">
+            <g fill="none" stroke="#4a2e1f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">${asLines(shapes)}</g>
+            <g filter="url(#pop-fill)">${shapes}${tintShape}</g>
+        </g>
+        ${under ? '' : shine}
     </svg>`;
 }
 function sideGarnish(rng){
@@ -2563,8 +2559,8 @@ function renderModal(){
     const hero = ph && ph.mine
         ? `<img src="${esc(ph.src)}" alt="${esc(r.name + 'の写真（わが家で作ったもの）')}"><div class="cap">わが家の一枚（${esc(jpDate(ph.d))}に登録）</div>`
         : ph
-        ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'の絵（写真をもとにした鉛筆画）')}">
-           <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}写真をもとに鉛筆画風に加工 ／ 撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
+        ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'のイラスト（写真をもとに作成）')}">
+           <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}写真をもとにイラスト化 ／ 撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
     const heroCls = ph ? 'hero' : 'hero illust';
     const genreName = {'和':'和食','洋':'洋食','中':'中華','韓':'韓国','エスニック':'エスニック'}[r.genre] || r.genre;

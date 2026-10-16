@@ -79,7 +79,7 @@
 利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 プライバシーポリシー: https://akb69bka-tech.github.io/toresabi/gohancho/privacy.html
 
-料理の絵は、色鉛筆で描いたような手描きのイラストです。一部の料理は Wikipedia / Wikimedia Commons の写真をもとに鉛筆画風に加工し、撮影者とライセンスを表示しています。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
+料理の絵は、ひと目でわかるポップなイラストです。一部の料理は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを表示しています。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
 ```
 
 ## キーワード（100文字まで、カンマ区切り・空白なし）
@@ -137,7 +137,7 @@ Main features:
 - Optional daily local notification reminder (Settings > 毎日のお知らせ).
 - Users can photograph their own dishes (stored on device only).
 
-No account or login is required. Dish images are colored-pencil style illustrations drawn in code; some are pencil-sketch renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
+No account or login is required. Dish images are flat pop-style illustrations drawn in code; some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
 In-app purchase: "ごはん帖プラス" auto-renewable subscription (monthly / yearly) with a 1-week free introductory offer. To view the paywall: tap the gear icon (top right) > "ごはん帖プラスを見る", or tap a locked day in "1週間の主菜". "購入を復元" (Restore Purchases) is on the same screen.
 ```
