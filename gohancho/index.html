@@ -1173,8 +1173,11 @@ function stripHtml(h){ try{ return (new DOMParser().parseFromString(String(h||''
 async function loadPhotos(){
     if (photoStatus === 'done' || photoStatus === 'loading') return;
     photoStatus = 'loading';
+    // 同梱の絵がある料理は、Wikipedia に問い合わせない
+    const need = Object.entries(WIKI).filter(([id]) => !GEN[id]);
+    if (!need.length){ photoStatus = 'done'; return; }
     try{
-        const titles = [...new Set(Object.values(WIKI).flat())], fileOf = {};
+        const titles = [...new Set(need.map(([, ts]) => ts).flat())], fileOf = {};
         for (let k = 0; k < titles.length; k += 40){
             const chunk = titles.slice(k, k+40);
             const url = 'https://ja.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&origin=*&redirects=1&prop=pageimages&piprop=name&titles=' + encodeURIComponent(chunk.join('|'));
@@ -1199,7 +1202,7 @@ async function loadPhotos(){
             });
         }
         const out = {};
-        Object.entries(WIKI).forEach(([id, ts]) => { for (const t of ts){ const f = fileOf[t]; const rec = f && (info[f] || info[f.replace(/_/g,' ')]); if (rec && rec.src && /^https:\/\//.test(rec.src)){ out[id] = rec; break; } } });
+        need.forEach(([id, ts]) => { for (const t of ts){ const f = fileOf[t]; const rec = f && (info[f] || info[f.replace(/_/g,' ')]); if (rec && rec.src && /^https:\/\//.test(rec.src)){ out[id] = rec; break; } } });
         PHOTOS = out; photoStatus = 'done';
         try{ localStorage.setItem(PHOTO_KEY, JSON.stringify({v:2, t:Date.now(), data:out})); }catch(e){}
     }catch(e){ photoStatus = 'blocked'; }
@@ -1260,11 +1263,12 @@ function photoOf(r){
     if (!r) return null;
     if (MINE[r.id]) return MINE[r.id];               // 自分で撮った写真はそのまま
     const id = r.isTwist ? r.base.id : r.id;
-    return GEN[id] || sketchOf(PHOTOS[id]);          // 次に ChatGPT で作った絵、その次に写真をイラスト化したもの
+    return GEN[id] || sketchOf(PHOTOS[id]);          // 次に同梱の絵（手描き・ChatGPT）、その次に写真をイラスト化したもの
 }
 
-/* ---- ChatGPT（OpenAI の画像生成）で前もって作った料理の絵 ----
-   tools/illustrations/generate.mjs が img/dish/ に画像と manifest.json を置く。アプリはそれを読むだけで、ChatGPT と通信はしない。 */
+/* ---- アプリに同梱した料理の絵 ----
+   img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
+   'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像。アプリから外部へは通信しない。 */
 const GEN = {};
 async function loadGenerated(){
     try{
@@ -1273,7 +1277,7 @@ async function loadGenerated(){
         const m = await res.json(), items = (m && m.items) || {};
         Object.keys(items).forEach(id => {
             const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
-            GEN[id] = {src: 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, via: it.via};
+            GEN[id] = {src: 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, ai: it.via === 'api' || it.via === 'chatgpt'};
         });
         if (Object.keys(GEN).length) scheduleRender();
     }catch(e){}
@@ -1393,7 +1397,9 @@ function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
 function photoNote(){
-    if (Object.keys(GEN).length) return '料理の絵は ChatGPT（OpenAI の画像生成）で作成したイメージです。' + (Object.keys(PHOTOS).length ? '一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。' : '');
+    const ai = Object.values(GEN).some(g => g.ai), wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
+    if (ai || wiki) return [ai ? '料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。' : '', wiki ? '一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。' : ''].join('');
+    if (Object.keys(GEN).length) return '';
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return '料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。';
     return '';
 }
@@ -2591,7 +2597,7 @@ function renderModal(){
         ? `<img src="${esc(ph.src)}" alt="${esc(r.name + 'の写真（わが家で作ったもの）')}"><div class="cap">わが家の一枚（${esc(jpDate(ph.d))}に登録）</div>`
         : ph && ph.gen
         ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'のイラスト')}">
-           <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。</div>`
+           ${r.isTwist || ph.ai ? `<div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵${ph.ai ? ' ／ ' : ''}` : ''}${ph.ai ? 'イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。' : ''}</div>` : ''}`
         : ph
         ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'のイラスト（写真をもとに作成）')}">
            <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}写真をもとにイラスト化 ／ 撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
@@ -2909,8 +2915,7 @@ if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), T
 if (!S.onboarded) startOnboard();
 else if (PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
-loadGenerated();
-loadPhotos();
+loadGenerated().then(loadPhotos);
 loadMine();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){ navigator.serviceWorker.register('sw.js').catch(() => {}); }
 </script>

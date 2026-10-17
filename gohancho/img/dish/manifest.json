@@ -1,4 +1,29 @@
 {
   "version": 1,
-  "items": {}
+  "items": {
+    "nikujaga": {
+      "file": "nikujaga.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "karaage": {
+      "file": "karaage.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "shogayaki": {
+      "file": "shogayaki.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "misoshiru": {
+      "file": "misoshiru.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    }
+  }
 }
