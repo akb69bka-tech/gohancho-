@@ -18,7 +18,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* レイアウト: 1カラムの献立帳。主役は「お膳」を真上から見た図（奥左=副菜・奥右=主菜・手前左=ご飯・手前右=汁もの）。
-   色: 藍染めの藍と和紙の地、器は染付・漆・青磁、アレンジだけ山吹色。書体: 見出しは明朝（品書き）、本文は角ゴシック */
+   色: 操作はすべて藍の1色。山吹は「変えたところ・プラス」の目印だけ。器は染付・漆・青磁。書体: 見出しは明朝（品書き）、本文は角ゴシック
+   形: 白いカード（.card）1種類・角丸16px・見出しは「章（h2）」と「カードの小見出し（.eyebrow）」の2段だけ */
 :root{
     --bg:#eef1f4;
     --surface:#ffffff;
@@ -29,7 +30,7 @@
     --accent:#22406b;          /* 藍 */
     --accent-ink:#ffffff;
     --accent-soft:#dde6f2;
-    --yolk:#c98e0c;            /* 山吹: ひとひねり専用 */
+    --yolk:#c98e0c;            /* 山吹: 変えたところ・プラスの目印だけ */
     --yolk-soft:#f6ecd2;
     --yolk-ink:#5b3f00;
     --danger:#b23a2a;
@@ -40,7 +41,7 @@
     --shadow:0 1px 2px rgba(23,32,51,.06),0 8px 24px rgba(23,32,51,.08);
     --font-display:'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',serif;
     --font-body:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic',sans-serif;
-    --r:12px;
+    --r:16px;
 }
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -64,7 +65,7 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:16px}
 .wrap{max-width:680px;margin:0 auto;padding-block:18px 124px;display:flex;flex-direction:column;gap:20px}
-#view{display:flex;flex-direction:column;gap:36px}
+#view{display:flex;flex-direction:column;gap:40px}
 h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:1.35;letter-spacing:.02em}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -78,20 +79,24 @@ a{color:var(--accent)}
 .top .date{font-size:.8rem;color:var(--muted);letter-spacing:.12em}
 
 /* 見出し */
-.sec{display:flex;flex-direction:column;gap:14px}
+.sec{display:flex;flex-direction:column;gap:12px}
 .sec-head{display:flex;flex-direction:column;gap:2px}
-.sec-head h2{font-size:1.3rem}
-.sec-head h3{font-size:1.08rem}
+.sec-head h2{font-size:1.3rem;padding-left:12px;border-left:4px solid var(--accent)}
+.sec-head h3{font-size:1rem;margin-top:8px}
 .sec-head .hint{font-size:.8rem;color:var(--muted)}
+.sec-head h2+.hint{padding-left:16px}
+/* カード: 画面の中の囲みはすべてこれ */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.eyebrow{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.foot{font-size:.76rem;color:var(--muted);margin:0;line-height:1.7}
 .sec-head.split{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.label{font-size:.72rem;letter-spacing:.16em;color:var(--muted);font-weight:700}
+.label{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ボタン */
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:42px;text-decoration:none;color:var(--ink)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:42px;text-decoration:none;color:var(--ink)}
 .btn:hover{border-color:var(--accent)}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
-.btn.yolk{background:var(--yolk);border-color:var(--yolk);color:#231800;font-weight:700}
 .btn.ghost{background:transparent;border-color:transparent}
 .btn.ghost:hover{border-color:var(--line)}
 .btn.sm{min-height:34px;padding:.25rem .75rem;font-size:.8rem}
@@ -106,7 +111,6 @@ a{color:var(--accent)}
 .chips.scroll::-webkit-scrollbar{display:none}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:36px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.chip.yolk[aria-pressed="true"]{background:var(--yolk);border-color:var(--yolk);color:#231800}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
 .badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-right:4px;vertical-align:1px;white-space:nowrap}
@@ -116,7 +120,7 @@ a{color:var(--accent)}
 /* お膳 */
 .tray{
     background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%);
-    border-radius:18px;padding:18px 14px 16px;box-shadow:inset 0 0 0 2px var(--tray-edge),inset 0 0 0 7px var(--tray),inset 0 0 0 8px rgba(255,255,255,.06),0 14px 30px rgba(20,12,8,.25);
+    border-radius:var(--r);padding:18px 14px 16px;box-shadow:inset 0 0 0 2px var(--tray-edge),inset 0 0 0 7px var(--tray),inset 0 0 0 8px rgba(255,255,255,.06),0 14px 30px rgba(20,12,8,.25);
     display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"side main" "rice soup";gap:14px 10px;color:var(--tray-ink)
 }
 .spot{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;text-align:center}
@@ -153,28 +157,25 @@ a{color:var(--accent)}
 .spot-label .last{font-size:.66rem;color:#f0c874}
 .credit{font-size:.7rem;color:var(--muted)}
 
-/* ひとひねり: 短冊 */
-.tanzaku{display:grid;grid-template-columns:34px 1fr;background:var(--yolk-soft);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
-.tanzaku .band{background:var(--yolk);color:#231800;writing-mode:vertical-rl;font-family:var(--font-display);font-weight:700;letter-spacing:.3em;display:flex;align-items:center;justify-content:center;font-size:.85rem;padding-block:12px}
-.tanzaku .body{padding:14px 14px 14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:10px;border-top:1px dashed color-mix(in srgb,var(--yolk) 55%,transparent)}
-.tw-item:first-child{border-top:0;padding-top:0}
+/* ひとひねり */
+.tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:12px;border-top:1px solid var(--line)}
+.tw-item:first-of-type,.eyebrow+.tw-item{border-top:0;padding-top:0}
 .thumb{width:64px;height:64px;border-radius:50%;background:var(--surface-2);background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px var(--porcelain),0 2px 6px rgba(0,0,0,.15);flex-shrink:0;position:relative}
 .thumb.none{background:radial-gradient(circle,var(--food,#a8652b) 0 36%,var(--porcelain) 37%)}
 .tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink)}
 .from{font-size:.78rem;color:var(--muted)}
 .changes{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none}
-.changes li{font-size:.72rem;background:var(--surface);border-radius:999px;padding:.05rem .55rem;color:var(--yolk-ink);border:1px solid color-mix(in srgb,var(--yolk) 40%,transparent)}
+.changes li{font-size:.72rem;background:var(--yolk-soft);border-radius:999px;padding:.05rem .55rem;color:var(--yolk-ink)}
 
 /* リスト */
-.list{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
 .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
 .item .t{font-weight:500;cursor:pointer;min-width:0}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
-.note{font-size:.85rem;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
 /* 入力 */
 .field{display:flex;flex-direction:column;gap:6px}
@@ -212,11 +213,11 @@ textarea{min-height:90px;resize:vertical}
 
 /* 統計 */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--surface);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
+.stat{background:var(--surface-2);border-radius:12px;padding:10px 12px}
 .stat .n{font-family:var(--font-display);font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.2}
 .stat .k{font-size:.72rem;color:var(--muted)}
 
-details.box{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:0 14px}
+details.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:0 16px}
 details.box>summary{padding:14px 0;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
 details.box>summary::-webkit-details-marker{display:none}
 details.box>summary::after{content:'＋';color:var(--muted)}
@@ -247,13 +248,13 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .sheet h2{font-size:1.5rem}
 .facts{display:flex;flex-wrap:wrap;gap:6px}
 .fact{font-size:.76rem;border:1px solid var(--line);border-radius:999px;padding:.05rem .6rem;background:var(--surface)}
-.recipe-ings{list-style:none;margin:0;padding:0;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow)}
+.recipe-ings{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
 .recipe-ings li{display:flex;justify-content:space-between;gap:10px;padding:.55rem .9rem;border-top:1px dashed var(--line);font-size:.92rem}
 .recipe-ings li:first-child{border-top:0}
 .recipe-ings li.add{background:var(--yolk-soft)}
 .recipe-ings li .q{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .recipe-ings li .ok{color:var(--accent);font-weight:700;margin-right:.3rem}
-.seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border-radius:var(--r);padding:.7rem .9rem;box-shadow:var(--shadow)}
+.seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:.7rem .9rem;box-shadow:var(--shadow)}
 .steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:12px}
 .steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
 .steps li::before{content:counter(st);width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;margin-top:1px}
@@ -271,19 +272,16 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .thumb.svg svg{transform:scale(1.08)}
 .hero.illust{background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%)}
 /* あいさつ */
-.greet{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
-.greet .mark{width:36px;height:36px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;color:var(--accent)}
+.greet{display:flex;flex-direction:column;gap:0;margin-top:-6px}
+.greet:empty{display:none}
 .greet .hello{font-family:var(--font-display);font-weight:700;font-size:1rem}
-.greet .line{font-size:.86rem;color:var(--muted);line-height:1.6}
+.greet .line{font-size:.84rem;color:var(--muted);line-height:1.6}
 /* ひと手間 */
-.skill{display:grid;grid-template-columns:34px 1fr;background:var(--surface);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
-.skill .band{background:var(--accent);color:var(--accent-ink);writing-mode:vertical-rl;font-family:var(--font-display);font-weight:700;letter-spacing:.18em;display:flex;align-items:center;justify-content:center;font-size:.85rem;padding-block:12px}
-.skill.done .band{background:var(--yolk);color:#231800}
-.skill .body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.skill{gap:6px}
 .skill .add{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
 .skill .plus{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:.9rem;margin-right:6px;vertical-align:2px}
 .skill .why{font-size:.86rem}
-.skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:8px;padding:.45rem .6rem}
+.skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:.45rem .6rem}
 .skill .how b{color:var(--ink)}
 /* 買い足し提案 */
 .hint-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
@@ -292,10 +290,10 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .hint-row .v{font-size:.8rem;color:var(--muted)}
 .hint-row .v b{color:var(--ink)}
 /* ふりかえり・称号 */
-.review{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:10px}
+.review{gap:10px}
 .review p{margin:0;font-family:var(--font-display);font-weight:700;font-size:1rem;line-height:1.6}
-.review .stat{box-shadow:none;background:var(--surface-2)}
-.titles{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.review p.foot{font-family:var(--font-body);font-weight:400;font-size:.76rem}
+.titles{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
 .title-row{padding:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
 .title-row:first-child{border-top:0}
 .title-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
@@ -323,7 +321,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tiny{font-size:.7rem;line-height:1.5;margin:0}
 /* 設定 */
 .settings-head{display:flex;align-items:center;gap:8px}
-.set-group{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:14px}
+.set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
 .set-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
 /* はじめての設定・プラス案内 */
@@ -357,8 +355,11 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
 .hint-row.locked{cursor:pointer}
-.btn.line{background:#06c755;border-color:#06c755;color:#fff;font-weight:700}
-.btn.line:hover{background:#05b34c;border-color:#05b34c}
+.btn.line{color:#06a046;font-weight:700}
+.btn.line::before{content:"LINE";background:#06c755;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
+.btn.line:hover{border-color:#06c755}
+.sheet .btn.line{background:#06c755;border-color:#06c755;color:#fff}
+.sheet .btn.line::before{display:none}
 .share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
 .shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
 .shop .shop-row:first-child{border-top:0}
@@ -372,6 +373,11 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
+.cond .field{gap:4px}
+.cond .chips.scroll{margin-inline:-16px;padding-inline:16px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions .btn{width:100%}
+.actions .full{grid-column:1 / -1}
 .tray .spot.main .vessel{animation-delay:.04s}.tray .spot.rice .vessel{animation-delay:.08s}.tray .spot.soup .vessel{animation-delay:.12s}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -1125,7 +1131,7 @@ function badges(r){
 function render(){
     $('#today-label').textContent = jpDate(TODAY);
     const g = greeting();
-    $('#greet').innerHTML = `<div class="mark" aria-hidden="true">${esc(g.hello.slice(0,1))}</div><div><div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div></div>`;
+    $('#greet').innerHTML = tab === 'today' ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
     const v = $('#view');
     if (tab === 'today') v.innerHTML = viewToday();
     if (tab === 'fridge') v.innerHTML = viewFridge();
@@ -1714,9 +1720,8 @@ function upgradeHtml(r, compact=false){
     const u = upgradeOf(r); if (!u) return '';
     const done = skillDone(r);
     const base = r.isTwist ? r.base : r;
-    return `<div class="skill${done?' done':''}">
-        <div class="band">ひと手間</div>
-        <div class="body">
+    return `<div class="card skill${done?' done':''}">
+            <div class="eyebrow">ひと手間${done ? '・習得済み' : ''}</div>
             <div class="add"><span class="plus">＋</span>${esc(u.add)}</div>
             <div class="why">${esc(u.why)}</div>
             <div class="how"><b>${esc(u.skill)}</b>　${esc(u.how)}</div>
@@ -1725,7 +1730,6 @@ function upgradeHtml(r, compact=false){
                 : hasPro()
                 ? `<button class="btn sm primary" data-act="skill-done" data-id="${esc(base.id)}">やってみた</button><span class="small muted">できたら押してください。記録に残ります</span>`
                 : `<button class="btn sm" data-act="paywall-skill">やってみた<span class="plus-mark">プラス</span></button><span class="small muted">記録と腕前の称号はプラスで使えます</span>`}</div>`}
-        </div>
     </div>`;
 }
 
@@ -1816,14 +1820,16 @@ function reviewHtml(){
         if (ws.genres >= 3) parts.push(`${ws.genres}つのジャンルを行き来しています`);
         msg = parts.join('。') + '。' + (ws.days >= 5 ? 'よく回した一週間です。' : ws.days >= 3 ? 'いいペースです。' : '一日一日が積み重なっています。');
     }
-    return `<div class="review">
-        <div class="label">今週のふりかえり（${esc(jpDate(from).replace(/（.*/,''))}〜）</div>
+    const allDays = new Set(S.history.map(h => h.d)).size, monthCount = S.history.filter(h => h.d.startsWith(TODAY.slice(0,7))).length;
+    return `<div class="card review">
+        <div class="eyebrow">今週のふりかえり（${esc(jpDate(from).replace(/（.*/,''))}〜）</div>
         <p>${esc(msg)}</p>
         <div class="stats">
             <div class="stat"><div class="n">${ws.days}</div><div class="k">記録した日</div></div>
             <div class="stat"><div class="n">${ws.fresh.length}</div><div class="k">新しい料理</div></div>
             <div class="stat"><div class="n">${ws.skills}</div><div class="k">ひと手間</div></div>
         </div>
+        <p class="foot">これまで ${allDays}日記録・今月 ${monthCount}品・${streak()}日続けて記録中</p>
     </div>`;
 }
 
@@ -2313,28 +2319,31 @@ function viewToday(){
     <section class="sec">
         ${planned ? `<div class="note"><span>1週間プランでは、今日の主菜は <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">献立にする</button></div>` : ''}
         <div class="sec-head"><h2>今日の献立</h2><span class="hint">${esc(COMPOSE[m.n].name)}・${m.n}品とご飯・${Number(S.settings.servings)||2}人分。${esc(countReason(m.n))}</span></div>
-        <div class="field"><span class="label">気分</span><div class="chips scroll" role="group" aria-label="今日の気分">${moodChips}</div></div>
-        <div class="field"><span class="label">品数</span><div class="chips scroll" role="group" aria-label="品数">${countChips(S.settings.dishCount, 'count')}</div></div>
+        <div class="card cond">
+            <div class="field"><span class="eyebrow">気分</span><div class="chips scroll" role="group" aria-label="今日の気分">${moodChips}</div></div>
+            <div class="field"><span class="eyebrow">品数</span><div class="chips scroll" role="group" aria-label="品数">${countChips(S.settings.dishCount, 'count')}</div></div>
+            <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（冷蔵庫${S.fridge.length}品・常備${S.staples.length}品）を使う料理を優先する</span></label>
+        </div>
         <div class="tray" aria-label="今日のお膳（${m.n}品）">
             <div class="tray-row back">${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
             ${sides.length ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
             <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}</div>
         </div>
-        <div class="row">
-            <button class="btn primary wide" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
+        <div class="actions">
+            <button class="btn primary full" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
             <button class="btn" data-act="new-menu">まるごと入れ替え</button>
+            <button class="btn line" data-act="share-menu" ${main?'':'disabled'}>家族に送る</button>
         </div>
-        <button class="btn line" data-act="share-menu" ${main?'':'disabled'}>今日の献立を LINE で家族に送る</button>
-        <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>「材料から」に登録した食材（冷蔵庫${S.fridge.length}品・常備${S.staples.length}品）を使う料理を優先する</span></label>
-        ${main ? `<div class="sec-head"><h3>今日のひと手間</h3><span class="hint">${esc(main.name)}に、これを足すと腕が上がります</span></div>${upgradeHtml(main)}` : ''}
-        <p class="small muted" style="margin:0">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。${S.settings.avoid.length ? `苦手な食材（${esc(S.settings.avoid.join('・'))}）を使う料理は出しません。` : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>
+
+    ${main ? `<section class="sec">
+        <div class="sec-head"><h2>今日のひと手間</h2><span class="hint">${esc(main.name)}に、これを足すと腕が上がります</span></div>
+        ${upgradeHtml(main)}
+    </section>` : ''}
 
     ${tw ? `<section class="sec">
         <div class="sec-head"><h2>今日のひとひねり</h2><span class="hint">いつもの定番を、ちょっと変えた一品</span></div>
-        <div class="tanzaku pop">
-            <div class="band">ひとひねり</div>
-            <div class="body">
+        <div class="card pop">
                 <div class="tw-item">
                     ${thumbHtml(tw)}
                     <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
@@ -2344,11 +2353,10 @@ function viewToday(){
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn sm yolk" data-act="open" data-id="${esc(tw.id)}">作り方を見る</button>
+                    <button class="btn sm primary" data-act="open" data-id="${esc(tw.id)}">作り方を見る</button>
                     <button class="btn sm" data-act="twist-main">主菜にする</button>
                     <button class="btn sm ghost" data-act="new-twist">別のひねり</button>
                 </div>
-            </div>
         </div>
     </section>` : ''}
 
@@ -2367,10 +2375,11 @@ function viewToday(){
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button>
             </div>`; }).join('')}</div>
-            <div class="row"><button class="btn line" data-act="share-week">予定と買い物メモを LINE で送る</button><button class="btn" data-act="make-week">作り直す</button></div>
+            <div class="row"><button class="btn line" data-act="share-week">予定と買い物メモを送る</button><button class="btn" data-act="make-week">作り直す</button></div>
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。${!hasPro() ? `無料版では${PLAN.freeLimits.weekDays}日分まで見られます。` : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
+        <p class="foot">${S.settings.avoidDays}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。${S.settings.avoid.length ? `苦手な食材（${esc(S.settings.avoid.join('・'))}）を使う料理は出しません。` : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>`;
 }
 
@@ -2396,17 +2405,18 @@ function viewFridge(){
         results = `
         <section class="sec">
             <div class="sec-head split"><h2>作れる料理</h2>
-                <button class="btn sm yolk" data-act="fridge-twist">この材料でひとひねり案</button></div>
+                <button class="btn sm" data-act="fridge-twist">この材料でひとひねり案</button></div>
             ${block('今ある材料で作れる', `${ready.length}品`, ready)}
             ${block('代わりの食材で作れる', '黄色の食材を置きかえます', withSub)}
             ${block('あと1〜2品あれば作れる', '赤字が足りない食材', near)}
             ${!ready.length && !withSub.length && !near.length ? '<div class="list"><div class="empty">この組み合わせに合う料理が見つかりませんでした。食材をもう少し足してみてください。</div></div>' : ''}
-            <p class="small muted" style="margin:0">調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。</p>
+            <p class="foot">調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。</p>
         </section>`;
     }
     return `
     <section class="sec">
         <div class="sec-head"><h2>冷蔵庫にある材料</h2><span class="hint">ここに登録した食材は次に開いたときも残ります</span></div>
+        <div class="card">
         <form class="inputbar" data-form="add-ing">
             <input type="text" id="ing-input" placeholder="例: 豚肉と玉ねぎとキャベツ" autocomplete="off" aria-label="材料を入力">
             <button class="btn primary" type="submit">追加</button>
@@ -2415,17 +2425,20 @@ function viewFridge(){
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(f)}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">全部外す</button></div>`
         : `<div class="note">まだ材料が登録されていません。下のよく使う食材をタップするか、「豚肉、キャベツ、卵」のようにまとめて入力できます。 <button class="btn sm" data-act="sample-ing">例: 豚肉・キャベツ・卵で試す</button></div>`}
-        <div class="label">よく使う食材</div>
+        <div class="eyebrow">よく使う食材</div>
         <div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        </div>
     </section>
     <section class="sec">
         <div class="sec-head"><h2>いつも家にある食材</h2><span class="hint">卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます</span></div>
+        <div class="card">
         <form class="inputbar" data-form="add-staple">
             <input type="text" id="staple-input" placeholder="例: 卵、玉ねぎ、ツナ缶" autocomplete="off" aria-label="常備品を入力">
             <button class="btn primary" type="submit">登録</button>
         </form>
         ${S.staples.length ? `<div class="chips">${S.staples.map(f => `<span class="chip have">${esc(f)}<button class="x" data-act="rm-staple" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>` : ''}
         <div class="chips">${STAPLE_QUICK.map(q => { const on = S.staples.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-staple" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        </div>
         ${hintsHtml}
     </section>
     ${results}`;
@@ -2459,7 +2472,7 @@ function viewTwist(){
         <option value="">おまかせ（いろいろな定番から）</option>
         ${groups.map(([t,l]) => `<optgroup label="${l}">${RECIPES.filter(r => r.type === t).map(r => `<option value="${r.id}" ${twistState.baseId===r.id?'selected':''}>${esc(r.name)}</option>`).join('')}</optgroup>`).join('')}
     </select>`;
-    const seg = (key, list) => `<div class="chips" role="group">${list.map(([v,l]) => `<button class="chip yolk" data-act="tw-set" data-key="${key}" data-v="${v}" aria-pressed="${String(twistState[key])===String(v)}">${esc(l)}</button>`).join('')}</div>`;
+    const seg = (key, list) => `<div class="chips" role="group">${list.map(([v,l]) => `<button class="chip" data-act="tw-set" data-key="${key}" data-v="${v}" aria-pressed="${String(twistState[key])===String(v)}">${esc(l)}</button>`).join('')}</div>`;
     const flavorList = [['any','おまかせ'],['none','味はそのまま'], ...Object.entries(FLAVORS).map(([k,f]) => [k, f.label])];
     const formList = [['any','おまかせ'],['none','かたちはそのまま'], ...Object.entries(FORMS).map(([k,f]) => [k, f.label])];
     const res = twistState.results || [];
@@ -2467,9 +2480,8 @@ function viewTwist(){
     return `
     <section class="sec">
         <div class="sec-head"><h2>定番をひとひねり</h2><span class="hint">味の方向・かたち・主役の食材を入れかえて、新しい一品を考えます</span></div>
-        <div class="tanzaku pop">
-            <div class="band">ひとひねり案</div>
-            <div class="body">
+        <div class="card pop">
+            <div class="eyebrow">ひとひねり案</div>
             ${res.length ? res.map(t => `
                 <div class="tw-item">
                     ${thumbHtml(t)}
@@ -2477,24 +2489,25 @@ function viewTwist(){
                         <div class="tw-name" data-act="open" data-id="${esc(t.id)}">${esc(t.name)}</div>
                         <div class="from">元の料理: ${esc(t.base.name)}</div>
                         <ul class="changes">${t.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-                        <div class="row" style="margin-top:4px"><button class="btn sm yolk" data-act="open" data-id="${esc(t.id)}">作り方を見る</button>
+                        <div class="row" style="margin-top:4px"><button class="btn sm primary" data-act="open" data-id="${esc(t.id)}">作り方を見る</button>
                         <button class="btn sm" data-act="fav" data-id="${esc(t.id)}">${S.favs.includes(t.id)?'お気に入り解除':'お気に入り'}</button></div>
                     </div>
                 </div>`).join('') : '<div class="small">この組み合わせでは案が作れませんでした。条件を「おまかせ」に戻してみてください。</div>'}
-            <div class="row"><button class="btn yolk wide" data-act="tw-run">別の案を出す</button></div>
-            </div>
+            <div class="row"><button class="btn wide" data-act="tw-run">別の案を出す</button></div>
         </div>
     </section>
     <section class="sec">
-        <div class="sec-head"><h3>条件を変える</h3></div>
+        <div class="sec-head"><h2>条件を変える</h2></div>
+        <div class="card">
         <div class="field"><label for="tw-base">元にする料理</label>${baseSel}</div>
         <div class="field"><label>ひねり具合</label>${seg('level', [[1,'ちょっとだけ'],[2,'しっかり'],[3,'大胆に']])}</div>
         <div class="field"><label>味の方向</label>${seg('flavor', flavorList)}</div>
         <div class="field"><label>かたち</label>${seg('form', formList)}</div>
         <div class="field"><label>主役の食材</label>${seg('swap', [['any','おまかせ'],['none','そのまま'],['yes','別の食材にかえる']])}</div>
+        </div>
     </section>
     <section class="sec">
-        <div class="sec-head"><h3>最近考えたひとひねり</h3><span class="hint">一度出した案は、しばらく出にくくなります</span></div>
+        <div class="sec-head"><h2>最近考えたひとひねり</h2><span class="hint">一度出した案は、しばらく出にくくなります</span></div>
         <div class="list">${seen.length ? seen.map(t => `<div class="item"><div class="t" data-act="open" data-id="${esc(t.id)}">${esc(t.name)}<div class="s">元の料理: ${esc(t.base.name)}</div></div><span class="small muted">${esc(lastLabel(t.id))}</span></div>`).join('') : '<div class="empty">まだありません。</div>'}</div>
     </section>`;
 }
@@ -2507,9 +2520,6 @@ function runTwist(){
 /* ---- 記録 ---- */
 let pendingConfirm = null;
 function viewLog(){
-    const month = TODAY.slice(0,7);
-    const days = [...new Set(S.history.map(h => h.d))];
-    const monthCount = S.history.filter(h => h.d.startsWith(month)).length;
     const byDay = {};
     S.history.forEach(h => (byDay[h.d] = byDay[h.d] || []).push(h));
     const counts = {};
@@ -2521,18 +2531,13 @@ function viewLog(){
     return `
     <section class="sec">
         ${reviewHtml()}
-        <div class="stats">
-            <div class="stat"><div class="n">${days.length}</div><div class="k">記録した日</div></div>
-            <div class="stat"><div class="n">${monthCount}</div><div class="k">今月作った品数</div></div>
-            <div class="stat"><div class="n">${streak()}</div><div class="k">続けて記録した日</div></div>
-        </div>
     </section>
     <section class="sec">
         <div class="sec-head"><h2>台所の腕前</h2><span class="hint">続けるほど、称号が上がっていきます</span></div>
         <div class="titles">${titlesHtml()}</div>
     </section>
     <section class="sec">
-        <div class="sec-head"><h3>身についたひと手間</h3><span class="hint">料理の詳しい画面の「やってみた」で増えます</span></div>
+        <div class="sec-head"><h2>身についたひと手間</h2><span class="hint">料理の詳しい画面の「やってみた」で増えます</span></div>
         <div class="list">${skillList.length ? skillList.map(sk => { const r = byId(sk.id); return `<div class="item"><div class="t" ${r?`data-act="open" data-id="${esc(sk.id)}"`:''}>${esc(sk.skill)}<div class="s">${esc(r ? r.name : '')}　${esc(jpDate(sk.d))}</div></div><span class="badge fav">習得</span></div>`; }).join('') : '<div class="empty">まだありません。今日の献立の「今日のひと手間」から、ひとつ試してみてください。</div>'}</div>
     </section>
     <section class="sec">
@@ -2542,16 +2547,16 @@ function viewLog(){
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="記録を消す">消す</button></div>`).join('')).join('')
             : '<div class="empty">まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。</div>'}</div>
     </section>
-    ${top.length ? `<section class="sec"><div class="sec-head"><h3>よく作る料理</h3></div>
+    ${top.length ? `<section class="sec"><div class="sec-head"><h2>よく作る料理</h2></div>
         <div class="list">${top.map(([n,c]) => `<div class="item"><div>${esc(n)}</div><span class="small muted">${c}回</span></div>`).join('')}</div></section>` : ''}
     <section class="sec">
-        <div class="sec-head"><h3>お気に入り</h3></div>
+        <div class="sec-head"><h2>お気に入り</h2></div>
         <div class="list">${favs.length ? favs.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div><span class="small muted">${esc(lastLabel(r.id))}</span></div>`).join('') : '<div class="empty">料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。</div>'}</div>
     </section>
-    ${hidden.length ? `<section class="sec"><div class="sec-head"><h3>今は出さない料理</h3></div>
+    ${hidden.length ? `<section class="sec"><div class="sec-head"><h2>今は出さない料理</h2></div>
         <div class="list">${hidden.map(r => `<div class="item"><div>${esc(r.name)}</div><button class="btn sm" data-act="unhide" data-id="${esc(r.id)}">また出す</button></div>`).join('')}</div></section>` : ''}
     <section class="sec">
-        <div class="sec-head"><h3>わが家のレシピ</h3><span class="hint">追加した料理も献立・材料さがし・ひとひねりに使われます</span></div>
+        <div class="sec-head"><h2>わが家のレシピ</h2><span class="hint">追加した料理も献立・材料さがし・ひとひねりに使われます</span></div>
         ${S.custom.length ? `<div class="list">${S.custom.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(r.type)}・${esc(r.min)}分</div></div><button class="btn sm ghost danger" data-act="rm-custom" data-id="${esc(r.id)}">消す</button></div>`).join('')}</div>` : ''}
         <details class="box"><summary>レシピを追加する</summary>
             <form class="inner" data-form="custom">
@@ -2614,10 +2619,10 @@ function renderModal(){
                         ${MINE[r.id] ? `<button class="btn sm ghost danger" data-act="photo-rm" data-id="${esc(r.id)}">写真を外す</button>` : ''}
                     </div>
                 </div>
-                ${r.isTwist ? `<div class="tanzaku"><div class="band">ひとひねり</div><div class="body">
+                ${r.isTwist ? `<div class="card"><div class="eyebrow">ひとひねり</div>
                     <div class="from">元の料理: <b>${esc(r.base.name)}</b></div>
                     <ul class="changes">${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-                    <div class="small muted">黄色の部分が、元のレシピから変えたところです。写真は元の料理のものです。</div></div></div>` : ''}
+                    <div class="small muted">黄色の部分が、元のレシピから変えたところです。絵は元の料理のものです。</div></div>` : ''}
                 <div class="label">材料（${sv}人分）${have.size ? '　✓ は登録済みの食材' : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?' <span class="small muted">（なくても可）</span>':''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${r.seas ? `<div class="seasoning"><span class="label">調味料（${sv}人分）</span><br>${esc(scaleText(r.seas, fac))}</div>` : ''}
@@ -2630,7 +2635,7 @@ function renderModal(){
                 <div class="row">
                     <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${last === '今日作った' ? '今日の記録に入っています' : '今日作った'}</button>
                     <button class="btn" data-act="fav" data-id="${esc(r.id)}">${isFav ? 'お気に入り解除' : 'お気に入り'}</button>
-                    ${!r.isTwist ? `<button class="btn yolk" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
+                    ${!r.isTwist ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
                 </div>
                 <div class="row small">
                     <label for="cook-date" class="muted">別の日に作った:</label>
