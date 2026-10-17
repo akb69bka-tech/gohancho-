@@ -24,6 +24,732 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-17"
+    },
+    "meuniere": {
+      "file": "meuniere.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sabamiso": {
+      "file": "sabamiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "buriteri": {
+      "file": "buriteri.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chanchan": {
+      "file": "chanchan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chikuzen": {
+      "file": "chikuzen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "buridaikon": {
+      "file": "buridaikon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sabashio": {
+      "file": "sabashio.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sanma": {
+      "file": "sanma.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "ajifry": {
+      "file": "ajifry.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "iwashiume": {
+      "file": "iwashiume.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kareini": {
+      "file": "kareini.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hoilyaki": {
+      "file": "hoilyaki.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "ikasatoimo": {
+      "file": "ikasatoimo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tebasappari": {
+      "file": "tebasappari.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "butadaikon": {
+      "file": "butadaikon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kakuni": {
+      "file": "kakuni.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "shigureni": {
+      "file": "shigureni.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nikudofu": {
+      "file": "nikudofu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "atsuagesoboro": {
+      "file": "atsuagesoboro.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "teriyaki": {
+      "file": "teriyaki.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hamburg": {
+      "file": "hamburg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "stew": {
+      "file": "stew.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nanban": {
+      "file": "nanban.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gratin": {
+      "file": "gratin.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "negishio": {
+      "file": "negishio.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "rollcabbage": {
+      "file": "rollcabbage.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "okonomi": {
+      "file": "okonomi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tonkatsu": {
+      "file": "tonkatsu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "piccata": {
+      "file": "piccata.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tofuhamburg": {
+      "file": "tofuhamburg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "pimannikuzume": {
+      "file": "pimannikuzume.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "torinotomatoni": {
+      "file": "torinotomatoni.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "atsuage": {
+      "file": "atsuage.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "mapo": {
+      "file": "mapo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hoikoro": {
+      "file": "hoikoro.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chinjao": {
+      "file": "chinjao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gyoza": {
+      "file": "gyoza.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "butakimu": {
+      "file": "butakimu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "japchae": {
+      "file": "japchae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "ebichili": {
+      "file": "ebichili.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "happosai": {
+      "file": "happosai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "champuru": {
+      "file": "champuru.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "reishabu": {
+      "file": "reishabu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "subuta": {
+      "file": "subuta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "mabonasu": {
+      "file": "mabonasu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "amazu_sakana": {
+      "file": "amazu_sakana.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "yurinchi": {
+      "file": "yurinchi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nikudango": {
+      "file": "nikudango.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nasumiso": {
+      "file": "nasumiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "bulgogi": {
+      "file": "bulgogi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "dakgalbi": {
+      "file": "dakgalbi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "banbanji": {
+      "file": "banbanji.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "rice": {
+      "file": "rice.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "curry": {
+      "file": "curry.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "oyakodon": {
+      "file": "oyakodon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gyudon": {
+      "file": "gyudon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "omurice": {
+      "file": "omurice.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gapao": {
+      "file": "gapao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tacorice": {
+      "file": "tacorice.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chahan": {
+      "file": "chahan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "takikomi": {
+      "file": "takikomi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "soborodon": {
+      "file": "soborodon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chukadon": {
+      "file": "chukadon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "bibimbap": {
+      "file": "bibimbap.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hayashi": {
+      "file": "hayashi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "drycurry": {
+      "file": "drycurry.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "napolitan": {
+      "file": "napolitan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "yakisoba": {
+      "file": "yakisoba.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "carbonara": {
+      "file": "carbonara.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kinokopasta": {
+      "file": "kinokopasta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nikuudon": {
+      "file": "nikuudon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hiyashichuka": {
+      "file": "hiyashichuka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "yakiudon": {
+      "file": "yakiudon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "salmoncreampasta": {
+      "file": "salmoncreampasta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tunatomatopasta": {
+      "file": "tunatomatopasta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "ohitashi": {
+      "file": "ohitashi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kinpira": {
+      "file": "kinpira.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "potesala": {
+      "file": "potesala.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hijiki": {
+      "file": "hijiki.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "dashimaki": {
+      "file": "dashimaki.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kabocha": {
+      "file": "kabocha.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nasubitashi": {
+      "file": "nasubitashi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "komatsuna": {
+      "file": "komatsuna.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tatakikyuri": {
+      "file": "tatakikyuri.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "namul": {
+      "file": "namul.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sakamushi": {
+      "file": "sakamushi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "coleslaw": {
+      "file": "coleslaw.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hiyayakko": {
+      "file": "hiyayakko.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sunomono": {
+      "file": "sunomono.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tomatotamago": {
+      "file": "tomatotamago.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kiriboshi": {
+      "file": "kiriboshi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gomaae": {
+      "file": "gomaae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "okraokaka": {
+      "file": "okraokaka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "harusamesalad": {
+      "file": "harusamesalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "macaronisalad": {
+      "file": "macaronisalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kabochasalad": {
+      "file": "kabochasalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "satoimonikkorogashi": {
+      "file": "satoimonikkorogashi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "daigakuimo": {
+      "file": "daigakuimo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "hakusaiasazuke": {
+      "file": "hakusaiasazuke.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "chingensai": {
+      "file": "chingensai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "broccoligoma": {
+      "file": "broccoligoma.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kinokobutter": {
+      "file": "kinokobutter.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "nagaimoume": {
+      "file": "nagaimoume.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "spinachbacon": {
+      "file": "spinachbacon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "gobosalad": {
+      "file": "gobosalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "unohana": {
+      "file": "unohana.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "takosunomono": {
+      "file": "takosunomono.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "konomono": {
+      "file": "konomono.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tonjiru": {
+      "file": "tonjiru.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "minestrone": {
+      "file": "minestrone.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tamagosoup": {
+      "file": "tamagosoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "consomme": {
+      "file": "consomme.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "wakamesoup": {
+      "file": "wakamesoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sundubu": {
+      "file": "sundubu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "kenchinjiru": {
+      "file": "kenchinjiru.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "namekomiso": {
+      "file": "namekomiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "asarimiso": {
+      "file": "asarimiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "cornsoup": {
+      "file": "cornsoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "clamchowder": {
+      "file": "clamchowder.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "sanratan": {
+      "file": "sanratan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
+    },
+    "tomatoeggsoup": {
+      "file": "tomatoeggsoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-17"
     }
   }
 }

@@ -1,4 +1,27 @@
-# 料理のイラストを ChatGPT で作る（ごはん帖）
+# 料理のイラスト（ごはん帖）
+
+## いま入っている絵: 手描きの SVG（全125品）
+
+`draw/` で、125品すべてを1品ずつ描いています（ベクター画像なので、どの大きさでもくっきり表示されます）。
+
+| ファイル | 内容 |
+| --- | --- |
+| `draw/kit.mjs` | 器（皿・鉢・椀・丼・長皿・小鉢など）と具材の部品。光は左上から、影・照り・揚げ衣の質感つき |
+| `draw/dishes/*.mjs` | 料理ごとの盛りつけ（どの器に、どの具を、どこに置くか） |
+| `draw/build.mjs` | 絵を `gohancho/img/dish/{id}.svg` に書き出し、`manifest.json` に登録する |
+
+```bash
+node tools/illustrations/draw/build.mjs            # 全部作り直す
+node tools/illustrations/draw/build.mjs nikujaga   # 1品だけ
+```
+
+レシピを追加したら、`draw/dishes/` のどれかに同じ ID で盛りつけを書いて、上のコマンドを実行します。
+
+下の ChatGPT の方法で画像を作ると、その料理は手描きの絵の代わりに ChatGPT の画像が表示されます（手描きの SVG ファイルは残るので、`manifest.json` からその料理を消して `build.mjs` を実行すれば戻せます）。
+
+---
+
+# 料理のイラストを ChatGPT で作る（任意）
 
 ごはん帖の料理の絵（125品: レシピ123品＋白ご飯・お漬物）を、ChatGPT の画像生成（OpenAI）で作ってアプリに入れる手順です。
 

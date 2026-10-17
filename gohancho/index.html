@@ -160,7 +160,7 @@ a{color:var(--accent)}
 /* ひとひねり */
 .tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:12px;border-top:1px solid var(--line)}
 .tw-item:first-of-type,.eyebrow+.tw-item{border-top:0;padding-top:0}
-.thumb{width:64px;height:64px;border-radius:50%;background:var(--surface-2);background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px var(--porcelain),0 2px 6px rgba(0,0,0,.15);flex-shrink:0;position:relative}
+.thumb{display:block;width:64px;height:64px;border-radius:50%;background:var(--surface-2);background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px var(--porcelain),0 2px 6px rgba(0,0,0,.15);flex-shrink:0;position:relative}
 .thumb.none{background:radial-gradient(circle,var(--food,#a8652b) 0 36%,var(--porcelain) 37%)}
 .tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink)}
 .from{font-size:.78rem;color:var(--muted)}
@@ -2152,7 +2152,7 @@ function viewSettings(){
         </div>
         <div class="set-group">
             <div class="set-title">このアプリについて</div>
-            <p class="small muted" style="margin:0">わが家のごはん帖 ${APP_VERSION}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理写真は Wikipedia / Wikimedia Commons から読み込み、撮影者とライセンスを表示しています。</p>
+            <p class="small muted" style="margin:0">わが家のごはん帖 ${APP_VERSION}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。</p>
             <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">サポート・よくある質問</a></div>
         </div>
     </section>`;

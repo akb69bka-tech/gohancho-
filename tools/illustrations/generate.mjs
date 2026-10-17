@@ -173,7 +173,8 @@ async function main(){
     const m = readManifest();
     const only = val('--only') ? new Set(val('--only').split(',').map(s => s.trim())) : null;
     let targets = recipes.filter(r => (!only || only.has(r.id)));
-    if (!has('--force') && !has('--export-prompts')) targets = targets.filter(r => !m.items[r.id]);
+    // 手描きの SVG（via: 'svg'）は、ChatGPT の画像で置きかえてよいものとして数える
+    if (!has('--force') && !has('--export-prompts')) targets = targets.filter(r => !m.items[r.id] || m.items[r.id].via === 'svg');
     if (only){ const unknown = [...only].filter(id => !recipes.some(r => r.id === id)); if (unknown.length) console.log(`見つからない料理 ID: ${unknown.join(', ')}`); }
 
     if (has('--import')){

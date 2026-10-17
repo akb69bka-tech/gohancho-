@@ -79,7 +79,7 @@
 利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 プライバシーポリシー: https://akb69bka-tech.github.io/toresabi/gohancho/privacy.html
 
-料理の絵は、ひと目でわかるポップなイラストです（AI の画像生成で作成したイメージで、実際の盛りつけとは異なる場合があります）。一部の料理は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを表示しています。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
+料理の絵は、家庭の盛りつけをもとに全125品を1品ずつ描いたポップなイラストです。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
 ```
 
 ## キーワード（100文字まで、カンマ区切り・空白なし）
@@ -120,7 +120,7 @@
 
 - 開発者（あなた）は、記録・写真・設定を収集しません（端末の中だけに保存）
 - **RevenueCat を使う場合**、購入の確認のために「購入履歴」と「ユーザ ID（匿名）」が RevenueCat に送られます。回答は RevenueCat の案内（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）に従ってください（**要確認**）
-- 料理写真の読み込みで Wikipedia に料理名が送られますが、利用者を特定する情報は送りません
+- 料理の絵はアプリに同梱しているため、通常は外部に通信しません（同梱の絵が読み込めないときだけ Wikipedia に料理名を問い合わせます。利用者を特定する情報は送りません）
 
 ---
 
@@ -137,7 +137,7 @@ Main features:
 - Optional daily local notification reminder (Settings > 毎日のお知らせ).
 - Users can photograph their own dishes (stored on device only).
 
-No account or login is required. Dish images are pop-style illustrations bundled with the app (pre-generated with OpenAI's image generation and reviewed by the developer; the app itself makes no AI requests), or drawn in code as a fallback; some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
+No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
 In-app purchase: "ごはん帖プラス" auto-renewable subscription (monthly / yearly) with a 1-week free introductory offer. To view the paywall: tap the gear icon (top right) > "ごはん帖プラスを見る", or tap a locked day in "1週間の主菜". "購入を復元" (Restore Purchases) is on the same screen.
 ```
