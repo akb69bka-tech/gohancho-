@@ -124,6 +124,13 @@ a{color:var(--accent)}
 .vessel:hover{transform:translateY(-2px) scale(1.02)}
 .vessel .food{position:absolute;border-radius:47% 53% 50% 50%/55% 45% 55% 45%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.4),transparent 42%),var(--food,#a8652b);background-size:cover;background-position:center}
 .vessel .food.photo{border-radius:50%;background-image:var(--img);background-size:cover;background-position:center;background-repeat:no-repeat}
+/* ChatGPT で作った絵: 器ごと描いてあるので、アプリの器は消して絵だけを出す */
+.vessel.gen,.vessel.gen:hover{background:none;box-shadow:none}
+.vessel.gen::before{display:none}
+.vessel.gen .food.photo,.v-plate.gen .food.photo,.v-kobachi.gen .food.photo{inset:-4%;border-radius:0;background-color:transparent;background-size:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+.thumb.gen{background-color:var(--porcelain);background-size:112%}
+.hero.gen{background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%)}
+.hero.gen img{object-fit:contain;padding:10px 0 26px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.35))}
 .v-plate{width:92%;box-shadow:inset 0 0 0 6px var(--porcelain),inset 0 0 0 8px var(--rim),inset 0 -8px 18px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.45)}
 .v-plate .food{inset:20%}.v-plate .food.photo{inset:11%}
 .v-donburi{width:92%;background:repeating-conic-gradient(var(--rim) 0 5deg,var(--porcelain) 5deg 15deg);box-shadow:0 8px 16px rgba(0,0,0,.45)}
@@ -1246,7 +1253,24 @@ async function removeMine(id){
 function photoOf(r){
     if (!r) return null;
     if (MINE[r.id]) return MINE[r.id];               // 自分で撮った写真はそのまま
-    return sketchOf(PHOTOS[r.isTwist ? r.base.id : r.id]);
+    const id = r.isTwist ? r.base.id : r.id;
+    return GEN[id] || sketchOf(PHOTOS[id]);          // 次に ChatGPT で作った絵、その次に写真をイラスト化したもの
+}
+
+/* ---- ChatGPT（OpenAI の画像生成）で前もって作った料理の絵 ----
+   tools/illustrations/generate.mjs が img/dish/ に画像と manifest.json を置く。アプリはそれを読むだけで、ChatGPT と通信はしない。 */
+const GEN = {};
+async function loadGenerated(){
+    try{
+        const res = await fetch('img/dish/manifest.json', {cache:'no-cache'});
+        if (!res.ok) return;
+        const m = await res.json(), items = (m && m.items) || {};
+        Object.keys(items).forEach(id => {
+            const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
+            GEN[id] = {src: 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, via: it.via};
+        });
+        if (Object.keys(GEN).length) scheduleRender();
+    }catch(e){}
 }
 
 /* ---- 参考写真をもとに、ポップなイラストに描き直す ----
@@ -1363,6 +1387,7 @@ function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
 function photoNote(){
+    if (Object.keys(GEN).length) return '料理の絵は ChatGPT（OpenAI の画像生成）で作成したイメージです。' + (Object.keys(PHOTOS).length ? '一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。' : '');
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return '料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。';
     return '';
 }
@@ -1381,16 +1406,17 @@ function vesselKind(r){
     return 'plate';
 }
 function vesselHtml(kind, r, still=false){
-    const ph = r ? photoOf(r) : sketchOf(kind === 'chawan' ? PHOTOS.rice : kind === 'konomono' ? PHOTOS.konomono : null);
+    const extra = kind === 'chawan' ? 'rice' : kind === 'konomono' ? 'konomono' : null;
+    const ph = r ? photoOf(r) : extra ? (GEN[extra] || sketchOf(PHOTOS[extra])) : null;
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
-    const food = ph ? '<span class="food photo"></span>' : (kind === 'chawan' || kind === 'konomono') ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
-    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}`;
+    const food = ph ? '<span class="food photo"></span>' : extra ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
+    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(r.name)}の作り方を見る">${food}</button>`;
 }
 function thumbHtml(r){
     const ph = photoOf(r);
-    return ph ? `<span class="thumb" style="${esc('background-image:' + cssUrl(ph.src))}" role="img" aria-label="${esc(r.name)}の写真"></span>`
+    return ph ? `<span class="thumb${ph.gen ? ' gen' : ''}" style="${esc('background-image:' + cssUrl(ph.src))}" role="img" aria-label="${esc(r.name)}の写真"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
@@ -2558,11 +2584,14 @@ function renderModal(){
     const ph = photoOf(r);
     const hero = ph && ph.mine
         ? `<img src="${esc(ph.src)}" alt="${esc(r.name + 'の写真（わが家で作ったもの）')}"><div class="cap">わが家の一枚（${esc(jpDate(ph.d))}に登録）</div>`
+        : ph && ph.gen
+        ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'のイラスト')}">
+           <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。</div>`
         : ph
         ? `<img src="${esc(ph.src)}" alt="${esc((r.isTwist ? r.base.name : r.name) + 'のイラスト（写真をもとに作成）')}">
            <div class="cap">${r.isTwist ? `元の料理「${esc(r.base.name)}」の絵 ／ ` : ''}写真をもとにイラスト化 ／ 撮影: ${esc(ph.artist || '不明')}（${esc(ph.license || 'ライセンス不明')}） <a href="${esc(ph.page)}" target="_blank" rel="noopener">出典: Wikimedia Commons</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
-    const heroCls = ph ? 'hero' : 'hero illust';
+    const heroCls = ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust';
     const genreName = {'和':'和食','洋':'洋食','中':'中華','韓':'韓国','エスニック':'エスニック'}[r.genre] || r.genre;
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
     const facts = [r.type, genreName, `${r.min}分`, `${sv}人分`, r.family && r.family !== '野菜' ? FAMILY_LABEL[r.family] : ''].filter(Boolean);
@@ -2875,6 +2904,7 @@ if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), T
 if (!S.onboarded) startOnboard();
 else if (PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
+loadGenerated();
 loadPhotos();
 loadMine();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){ navigator.serviceWorker.register('sw.js').catch(() => {}); }

@@ -1,5 +1,5 @@
 // わが家のごはん帖: オフラインで開けるようにアプリ本体をキャッシュする
-const VERSION = 'gohancho-v3';
+const VERSION = 'gohancho-v4';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html'];
 const IMG = 'gohancho-img-v1';
 
@@ -26,7 +26,17 @@ self.addEventListener('fetch', e => {
     e.respondWith(caches.open(IMG).then(c => c.match(req).then(hit => hit || fetch(req).then(res => { c.put(req, res.clone()); return res; }))));
     return;
   }
-  // 同じサイトのファイル（アイコンなど）
+  // ChatGPT で作った絵の一覧: 作り直したら反映されるよう、まずネットから
+  if (url.origin === self.location.origin && /\/img\/dish\/manifest\.json$/.test(url.pathname)){
+    e.respondWith(fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); return res; })
+      .catch(() => caches.match(req, {ignoreSearch:true})));
+    return;
+  }
+  // 同じサイトのファイル（アイコン・料理の絵など）。一度見たものは保存して電波がなくても出す
+  if (url.origin === self.location.origin && /\/img\//.test(url.pathname)){
+    e.respondWith(caches.open(VERSION).then(c => c.match(req).then(hit => hit || fetch(req).then(res => { if (res.ok) c.put(req, res.clone()); return res; }))));
+    return;
+  }
   if (url.origin === self.location.origin){
     e.respondWith(caches.match(req).then(hit => hit || fetch(req)));
   }
