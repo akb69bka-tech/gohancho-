@@ -16,8 +16,10 @@
 | 3. App Store に無料で出す | Apple Developer Program に登録して審査に出す | 年 99 米ドル（※） |
 | 4. 課金を始める | App 内課金（サブスクリプション）を設定し、`revenueCatApiKey` を入れる（iPhone アプリ版だけ課金が有効になる） | 売上から Apple の手数料（※） |
 
-※ Apple Developer Program は年 99 米ドル（日本円の金額は時期で変わるので公式ページで確認）。手数料は通常 30%、年間売上 100 万米ドル以下の「App Store Small Business Program」に申し込むと 15%。
-出典: Apple Developer Program（https://developer.apple.com/jp/programs/）、App Store Small Business Program（https://developer.apple.com/jp/app-store/small-business-program/）
+※ Apple Developer Program は年 99 米ドル（日本の App Store では 12,800円と表示。時期で変わるので登録画面で確認）。
+日本の App Store の手数料（2025年12月の「スマホ新法」対応後）は、手数料（コミッション）＋決済手数料5%:
+通常 21%＋5%＝26%、Small Business Program 参加者と「1年を超えて続いているサブスクリプション」は 10%＋5%＝15%。詳しくは `申請前の確認と収支試算.md`。
+出典: Apple Developer Program（https://developer.apple.com/jp/programs/）、日本における App の配信（https://developer.apple.com/support/app-distribution-in-japan/）、App Store Small Business Program（https://developer.apple.com/jp/app-store/small-business-program/）
 
 ---
 
@@ -70,7 +72,7 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 | 項目 | 今の値 | 販売時 |
 | --- | --- | --- |
 | `billingMode` | `'native'`（Web 版は全機能無料。iPhone アプリ版は API キーを入れると課金が有効） | そのまま |
-| `prices` | 月額 300円・年額 3,000円 | App Store Connect の価格に合わせる |
+| `prices` | 月額 480円・年額 4,800円（iPhone アプリ版では App Store の実際の価格を自動で表示） | App Store Connect の価格に合わせる |
 | `trialDays` | `7`（使った日が7日目までは全機能。8日目から無料版の範囲） | お試しの長さ |
 | `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
 | （コード内） | ひと手間の「やってみた」記録はプラスのみ | |

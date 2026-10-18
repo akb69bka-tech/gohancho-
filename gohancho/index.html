@@ -1866,9 +1866,9 @@ const PLAN = {
     billingMode: 'native',
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     name: 'ごはん帖プラス',
-    prices: [                           // 表示用。実際の価格は App Store Connect の設定が正
-        {id:'gohancho_plus_monthly', label:'月額プラン', price:'300円 / 月', note:''},
-        {id:'gohancho_plus_yearly',  label:'年額プラン', price:'3,000円 / 年', note:'2か月分おトク'},
+    prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
+        {id:'gohancho_plus_monthly', label:'月額プラン', price:'480円 / 月', per:'月', note:''},
+        {id:'gohancho_plus_yearly',  label:'年額プラン', price:'4,800円 / 年', per:'年', note:'2か月分おトク'},
     ],
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
@@ -1912,6 +1912,29 @@ function applyCustomerInfo(ci){
     S.pro = {active, checked: Date.now()}; save(); render();
     return active;
 }
+// App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
+const storePrices = {};
+async function loadStorePrices(){
+    const ready = rcInit(); if (!ready) return;
+    try{
+        const P = await ready, offs = await P.getOfferings();
+        ((offs && offs.current && offs.current.availablePackages) || []).forEach(pkg => {
+            const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price)};
+        });
+        if (sheet && sheet.kind === 'paywall') renderSheet();
+    }catch(e){}
+}
+function priceLabel(p){
+    const live = storePrices[p.id];
+    return live ? `${live.text} / ${p.per}` : p.price;
+}
+function priceNote(p){
+    if (p.per !== '年') return p.note;
+    const m = storePrices['gohancho_plus_monthly'], y = storePrices[p.id];
+    if (!m || !y) return p.note;
+    const months = Math.floor(12 - y.value / m.value);
+    return months >= 1 ? `${months}か月分おトク` : '';
+}
 async function purchase(productId){
     const ready = rcInit();
     if (!ready){ toast('まだ販売していません。今はすべての機能を無料で使えます'); return; }
@@ -1945,7 +1968,7 @@ const PAYWALL_REASON = {
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
 function closeSheet(){ sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; }
-function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); }
+function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
 function renderSheet(){
@@ -1994,7 +2017,7 @@ function renderSheet(){
             <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
                 ${native ? `<p class="pw-free">${esc(PLAN.introTrialLabel)}。無料期間中に解約すれば料金はかかりません。</p>` : ''}
-                <div class="pw-prices">${PLAN.prices.map((p,i) => `<button class="pw-price${p.note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(p.price)}</span>${p.note?`<span class="n">${esc(p.note)}</span>`:''}</button>`).join('')}</div>
+                <div class="pw-prices">${PLAN.prices.map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">Web で購入する</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">購入を復元</button>
                 <p class="tiny muted">サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。</p>
