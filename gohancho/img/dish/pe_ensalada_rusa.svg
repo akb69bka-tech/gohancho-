@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400"><defs><filter id="pe_ensalada_rusa-1" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="2.52" dy="3.6" stdDeviation="2.3400000000000003" flood-color="#2b1607" flood-opacity=".36"/></filter><radialGradient id="pe_ensalada_rusa-2" cx="0.35" cy="0.3" r=".75"><stop offset="0" stop-color="#efeae1"/><stop offset=".6" stop-color="#e9e3d7"/><stop offset="1" stop-color="#b9afa3"/></radialGradient><radialGradient id="pe_ensalada_rusa-3" cx="0.64" cy="0.66" r=".75"><stop offset="0" stop-color="#f8f4ed"/><stop offset=".6" stop-color="#f7f3eb"/><stop offset="1" stop-color="#b5aca2"/></radialGradient><filter id="pe_ensalada_rusa-4" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="1.68" dy="2.4" stdDeviation="1.56" flood-color="#2b1607" flood-opacity=".36"/></filter><radialGradient id="pe_ensalada_rusa-5" cx="0.4" cy="0.38" r=".75"><stop offset="0" stop-color="#ecbdce"/><stop offset=".6" stop-color="#e6a7bd"/><stop offset="1" stop-color="#bd8795"/></radialGradient><filter id="pe_ensalada_rusa-6" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.7" dy="1" stdDeviation="0.65" flood-color="#2b1607" flood-opacity=".36"/></filter><linearGradient id="pe_ensalada_rusa-7" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bb6789"/><stop offset=".55" stop-color="#9b1f52"/><stop offset="1" stop-color="#8d1e49"/></linearGradient><linearGradient id="pe_ensalada_rusa-8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7dee5"/><stop offset=".55" stop-color="#f3cfd9"/><stop offset="1" stop-color="#dbb9c0"/></linearGradient><linearGradient id="pe_ensalada_rusa-9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4af79"/><stop offset=".55" stop-color="#ef8a3a"/><stop offset="1" stop-color="#d77c34"/></linearGradient><linearGradient id="pe_ensalada_rusa-10" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cb7598"/><stop offset=".55" stop-color="#b23468"/><stop offset="1" stop-color="#a2305c"/></linearGradient><linearGradient id="pe_ensalada_rusa-11" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5e3e7"/><stop offset=".55" stop-color="#f0d6dc"/><stop offset="1" stop-color="#d8bfc2"/></linearGradient><radialGradient id="pe_ensalada_rusa-12" cx="0.35" cy="0.32" r=".75"><stop offset="0" stop-color="#99c87b"/><stop offset=".6" stop-color="#6db043"/><stop offset="1" stop-color="#5c8934"/></radialGradient></defs><g filter="url(#pe_ensalada_rusa-1)"><circle cx="100" cy="100" r="92" fill="url(#pe_ensalada_rusa-2)"/></g>
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#f1ede5" stroke-width="1.2" opacity=".7"/>
+        <circle cx="100" cy="100" r="80.04" fill="url(#pe_ensalada_rusa-3)"/>
+        <path d="M35.60000000000001,61.36 A75.44,75.44 0 0 1 77,28.239999999999995" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/><g filter="url(#pe_ensalada_rusa-4)"><path transform="translate(100 102)" d="M66.7,0C66.9,10.5 64.5,23 58.9,31.9C53.2,40.8 42.6,47.9 32.7,53.3C22.9,58.7 10.9,64.4 0,64.4C-10.9,64.4 -22.7,58.6 -32.7,53.2C-42.7,47.9 -54.6,41.3 -59.8,32.4C-65,23.6 -63.9,10.8 -63.8,0C-63.7,-10.8 -64.3,-23.1 -59.2,-32.1C-54.1,-41.1 -43,-49.3 -33.2,-54C-23.3,-58.7 -10.8,-60.7 0,-60.4C10.8,-60 22.3,-56.7 31.9,-51.9C41.5,-47.1 52,-40 57.8,-31.3C63.6,-22.7 66.5,-10.5 66.7,0Z" fill="url(#pe_ensalada_rusa-5)"/></g><g filter="url(#pe_ensalada_rusa-6)"><g transform="translate(139.56 86.28) rotate(347)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(101.89 65.9) rotate(54)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(84.53 108.73) rotate(91)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(77.84 145.29) rotate(85)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(105.09 144.63) rotate(217)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(79.51 55.51) rotate(150)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(80.62 72.67) rotate(199)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(57.6 108.73) rotate(198)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(92.14 119.96) rotate(93)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(45.74 97.01) rotate(128)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(110.08 115.69) rotate(1)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(110.18 51.12) rotate(209)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(73.33 87.46) rotate(74)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(61.39 138.72) rotate(152)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(49.98 122.37) rotate(19)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(135.85 113.35) rotate(22)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(128.28 60.2) rotate(201)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(95.8 93.85) rotate(250)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(73.73 123.06) rotate(104)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(94.53 48.3) rotate(340)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(114.3 63.64) rotate(147)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(118.48 86.43) rotate(227)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(63.42 92.86) rotate(77)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(125.24 75.27) rotate(128)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(127.47 130.4) rotate(42)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(139 128.84) rotate(204)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(131.89 143.87) rotate(187)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(115.78 135.55) rotate(51)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(122.58 109.46) rotate(25)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(42.6 113.04) rotate(272)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(114.27 97.26) rotate(177)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(150.76 98.65) rotate(202)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(101.22 134.25) rotate(317)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(59.31 69.37) rotate(70)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(93.32 145.14) rotate(204)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(45.61 85.53) rotate(173)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(159.21 108.07) rotate(323)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(86.32 132.38) rotate(158)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(145.28 63.72) rotate(239)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(115.6 149.58) rotate(344)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#ccb3b5"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-11)" stroke="#bfa6a7" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(66.64 56.32) rotate(182)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#871d44"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-7)" stroke="#7f1c3f" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(136.41 100.89) rotate(230)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#cfadb3"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-8)" stroke="#c1a0a4" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(109.32 78.83) rotate(251)" opacity="1"><rect x="-5" y="-5" width="10" height="10" rx="2" fill="#cc7531"/>
+        <rect x="-5" y="-5" width="8.6" height="8.6" rx="1.8" fill="url(#pe_ensalada_rusa-9)" stroke="#be6d2d" stroke-width=".5"/>
+        
+        <path d="M-3.2,-3 L1.2,-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g><g transform="translate(97.43 77.28) rotate(189)" opacity="1"><rect x="-5.5" y="-5.5" width="11" height="11" rx="2.2" fill="#9a2e56"/>
+        <rect x="-5.5" y="-5.5" width="9.5" height="9.5" rx="2" fill="url(#pe_ensalada_rusa-10)" stroke="#902c50" stroke-width=".5"/>
+        
+        <path d="M-3.5,-3.3 L1.3,-3.3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g></g><circle cx="72.1" cy="141.2" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="70.8" cy="139.8" r="0.8" fill="#fff" opacity=".7"/><circle cx="69.7" cy="124" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="68.4" cy="122.6" r="0.8" fill="#fff" opacity=".7"/><circle cx="57.5" cy="121.2" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="56.3" cy="119.8" r="0.8" fill="#fff" opacity=".7"/><circle cx="66" cy="97.2" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="64.7" cy="95.8" r="0.8" fill="#fff" opacity=".7"/><circle cx="122.7" cy="125" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="121.5" cy="123.6" r="0.8" fill="#fff" opacity=".7"/><circle cx="131.2" cy="65.3" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="130" cy="63.9" r="0.8" fill="#fff" opacity=".7"/><circle cx="133.7" cy="108.4" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="132.4" cy="107" r="0.8" fill="#fff" opacity=".7"/><circle cx="126.3" cy="79.5" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="125.1" cy="78.1" r="0.8" fill="#fff" opacity=".7"/><circle cx="110.2" cy="76.1" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="109" cy="74.7" r="0.8" fill="#fff" opacity=".7"/><circle cx="142.7" cy="95.5" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="141.4" cy="94.1" r="0.8" fill="#fff" opacity=".7"/><circle cx="94.1" cy="94.3" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="92.9" cy="92.9" r="0.8" fill="#fff" opacity=".7"/><circle cx="120.2" cy="146.4" r="3.5" fill="url(#pe_ensalada_rusa-12)" stroke="#3f7a24" stroke-width=".5"/><circle cx="119" cy="145" r="0.8" fill="#fff" opacity=".7"/><path transform="translate(98 100)" d="M58.23,0C56.7,10.37 44.94,18.63 38.2,27.76C31.46,36.88 27.05,50.47 17.79,54.76C8.53,59.04 -7.91,57.86 -17.37,53.45C-26.82,49.04 -31.35,37.19 -38.93,28.28C-46.51,19.38 -61.61,10.32 -62.84,0C-64.08,-10.32 -53.96,-24.92 -46.32,-33.65C-38.69,-42.39 -27.42,-49.79 -17.02,-52.4C-6.63,-55.01 5.28,-52.3 16.02,-49.31C26.76,-46.31 40.36,-42.65 47.39,-34.43C54.43,-26.22 59.77,-10.37 58.23,0Z" fill="#fff4f6" opacity="0.26"/>
+        <path transform="translate(98 100)" d="M-33,-11 Q-16.5,-35.2 11,-36.3" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M83.7,86.7L82.8,87.3L81.6,86.5L83,85.3L83.5,85.6ZM85.8,78.3L84.4,80.3L82.2,78.1L83.9,76.6L85.1,77.5ZM94.9,91.5L93.1,92L92.4,91.2L93.3,89.1L95.2,89.8ZM134.2,88.3L132.3,88.3L131.3,86.5L132.1,85.5L134.4,84.9ZM139.2,79.1L137.5,80.2L136.8,79.5L137.6,77.8L138.4,77.9Z" fill="#3f8a2c" stroke="#3f8a2c" stroke-width=".5" stroke-linejoin="round"/><path d="M74.2,119L72.2,120.1L70.3,118.9L71.9,117.5L72.8,117.8ZM122.3,91.9L120.5,92.8L120.3,91.1L121.1,89.7L121.7,90.5ZM126.4,98.9L124.5,99.2L123.5,98.5L124.9,97L125.4,97.3ZM73.4,82.7L72.1,83.3L71.3,82L71.3,80.7L73.2,81.3ZM79,88.2L78.2,88.2L76.8,87L77.1,86.4L79.1,86.3Z" fill="#5aa63c" stroke="#5aa63c" stroke-width=".5" stroke-linejoin="round"/></svg>
