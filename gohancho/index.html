@@ -835,12 +835,14 @@ let S = load();
 function load(){
     try{
         const raw = localStorage.getItem(STORE_KEY);
-        if (raw){ const d = JSON.parse(raw); return Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign({}, DEFAULT_STATE.settings, d.settings||{})}); }
+        if (raw){ const d = JSON.parse(raw); return Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign(structuredClone(DEFAULT_STATE.settings), d.settings||{})}); }
     }catch(e){}
     return structuredClone(DEFAULT_STATE);
 }
 function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} }
-S.custom.forEach(r => { if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); });
+function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
+function addCustomRecipes(){ S.custom.forEach(r => { if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }); }
+addCustomRecipes();
 if (!S.onboarded && (S.history.length || S.favs.length || S.fridge.length)) S.onboarded = true;   // 以前から使っている人には出さない
 if (!S.firstUse) S.firstUse = S.history.length ? S.history[S.history.length-1].d : ymd();
 save();
@@ -1245,12 +1247,12 @@ function makeWeek(){
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
-        const cands = RECIPES.filter(r => r.main && !used.has(r.id));
+        const cands = RECIPES.filter(r => r.main && !used.has(r.id) && !isAvoided(r));
         let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null});
         if (!r && cands.length) r = pick(cands, {recent: []});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度
-            const all = RECIPES.filter(x => x.main); const order = days.map(x => x.id);
+            const okAll = RECIPES.filter(x => x.main && !isAvoided(x)); const all = okAll.length ? okAll : RECIPES.filter(x => x.main); const order = days.map(x => x.id);
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
@@ -2135,7 +2137,7 @@ function applyCustomerInfo(ci){
     const ent = ci && ci.entitlements && ci.entitlements.active && ci.entitlements.active[PLAN.entitlement];
     const since = ent && ent.originalPurchaseDate ? String(ent.originalPurchaseDate).slice(0, 10) : ((S.pro && S.pro.since) || null);
     S.pro = {active: !!ent, since, checked: Date.now()}; save(); render();
-    return active;
+    return !!ent;
 }
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
 const storePrices = {};
@@ -3112,7 +3114,7 @@ document.addEventListener('click', e => {
         case 'ob-next': sheet.step++; renderSheet(); break;
         case 'ob-back': sheet.step--; renderSheet(); break;
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
-        case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
+        case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v; sheet.avoid.has(v) ? sheet.avoid.delete(v) : sheet.avoid.add(v); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
@@ -3143,8 +3145,14 @@ document.addEventListener('click', e => {
             const d = el.dataset.d, w = S.week; const idx = w.days.findIndex(x => x.d === d);
             const used = new Set(w.days.map(x => x.id));
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
-            const r = pick(RECIPES.filter(r => r.main && !used.has(r.id)), {recent});
-            if (r){ w.days[idx].id = r.id; save(); } render(); break;
+            const r = pick(RECIPES.filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
+            if (r){ w.days[idx].id = r.id; save(); }
+            else {   // 主菜が7つしかない国: ほかの日と入れかえる（となりの日は避ける）
+                const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && w.days[j].id !== w.days[idx].id);
+                const j = others.length ? others[Math.floor(Math.random() * others.length)] : -1;
+                if (j >= 0){ const tmp = w.days[idx].id; w.days[idx].id = w.days[j].id; w.days[j].id = tmp; save(); }
+            }
+            render(); break;
         }
         case 'toggle-ing': {
             const v = el.dataset.v, k = keyOf(v);
@@ -3232,16 +3240,18 @@ document.addEventListener('click', e => {
             try{
                 const d = JSON.parse(importBuffer);
                 S = Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign({}, DEFAULT_STATE.settings, d.settings||{})});
-                for (let i = RECIPES.length-1; i >= 0; i--) if (String(RECIPES[i].id).startsWith('u')) RECIPES.splice(i,1);
-                S.custom.forEach(r => RECIPES.push(prepRecipe(Object.assign({}, r))));
+                for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
+                addCustomRecipes();
                 save(); toast(t('読み込みました'));
             }catch(err){ toast(t('読み込めませんでした')); }
             pendingConfirm = null; session.menu = null; render(); break;
         }
         case 'reset': pendingConfirm = 'reset'; render(); keepDetailsOpen(); break;
         case 'reset-yes':
-            for (let i = RECIPES.length-1; i >= 0; i--) if (String(RECIPES[i].id).startsWith('u')) RECIPES.splice(i,1);
-            S = structuredClone(DEFAULT_STATE); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました')); render(); break;
+            S = structuredClone(DEFAULT_STATE); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
+            try{ localStorage.removeItem('gohancho.remote'); }catch(e){}
+            setTimeout(() => location.reload(), 600);   // 国の選択からやり直す（読みこみ直すのがいちばん確実）
+            break;
         case 'cancel-confirm': pendingConfirm = null; render(); keepDetailsOpen(); break;
     }
 });
@@ -3272,9 +3282,9 @@ document.addEventListener('submit', e => {
     }
     if (f === 'custom'){
         const name = $('#c-name').value.trim(); if (!name) return;
-        const ings = $('#c-ings').value.split('\n').map(s => s.trim().replace(/[\s　]+/, ' ')).filter(Boolean);
+        const ings = $('#c-ings').value.split('\n').map(s => s.trim()).filter(Boolean).map(s => { const m = /^(.+?)[\s　]+(\d[\s\S]*)$/.exec(s); return m ? m[1] + ' ' + m[2] : s.replace(/[\s　]+/, ' '); });   // 「Ground beef 500 g」→ 名前「Ground beef」分量「500 g」
         const steps = $('#c-steps').value.split('\n').map(s => s.trim()).filter(Boolean);
-        const r = {id:'u'+Date.now(), name, genre:$('#c-genre').value, type:$('#c-type').value, method:$('#c-method').value,
+        const r = {id:'u'+Date.now(), name, genre: PACK ? 'local' : $('#c-genre').value, type:$('#c-type').value, method:$('#c-method').value, pack: PACK ? PACK.country : undefined,
             min:Number($('#c-min').value)||20, ings: ings.length ? ings : [name], seas:$('#c-seas').value.trim(), steps: steps.length ? steps : [t('（作り方は未入力です）')]};
         S.custom.push(r); RECIPES.push(prepRecipe(Object.assign({}, r))); save();
         toast(t('「{name}」を追加しました', {name})); render();
@@ -3440,6 +3450,7 @@ function applyCountry(cc){
     rebuildVariants();
     session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;
     for (const k in BROWSE) delete BROWSE[k];
+    addCustomRecipes();
     updateTabs();
 }
 // 「ひとひねり」は日本のレシピを日本語で組み立てるしくみなので、日本＋日本語のときだけ出す
