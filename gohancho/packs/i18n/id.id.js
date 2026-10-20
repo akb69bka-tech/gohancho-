@@ -1,0 +1,288 @@
+// Indonesia recipes — Bahasa Indonesia
+GOHAN_PACK_TR('ID', 'id', {
+  staple: 'Nasi putih',
+  names: {
+    'chicken': 'Ayam', 'beef': 'Daging sapi', 'fish': 'Ikan', 'shrimp': 'Udang', 'egg': 'Telur', 'tofu': 'Tahu', 'tempeh': 'Tempe',
+    'rice': 'Nasi', 'noodles': 'Mi telur', 'potato': 'Kentang', 'tomato': 'Tomat', 'chili': 'Cabai', 'lime': 'Jeruk nipis',
+    'cucumber': 'Timun', 'cabbage': 'Kol', 'water spinach': 'Kangkung', 'spinach': 'Bayam', 'choy sum': 'Sawi hijau',
+    'carrot': 'Wortel', 'cauliflower': 'Kembang kol', 'long beans': 'Kacang panjang', 'bean sprouts': 'Tauge', 'corn': 'Jagung manis',
+    'chayote': 'Labu siam', 'peanuts': 'Kacang tanah', 'tamarind': 'Asam jawa', 'melinjo': 'Melinjo', 'coconut': 'Kelapa parut',
+    'celery': 'Seledri', 'crackers': 'Kerupuk'
+  },
+  recipes: {
+    'id_ayamgoreng': {
+      name: 'Ayam goreng bumbu kuning',
+      ings: [
+        ['Potongan ayam dengan tulang', '600 g'],
+        ['Timun (lalapan)', '1/2?'],
+        ['Daun kol (lalapan)', '2 lembar?'],
+      ],
+      seas: '4 bawang merah · 3 siung bawang putih · 2 butir kemiri · kunyit 3 cm (atau 1 sdt bubuk) · lengkuas 2 cm · 1 batang serai · 2 lembar daun salam · 1 sdt ketumbar · 1 sdt garam · minyak untuk menggoreng',
+      steps: [
+        'Haluskan bawang merah, bawang putih, kemiri, kunyit, ketumbar, dan garam sampai menjadi pasta halus (bumbu kuning).',
+        'Masukkan ayam ke panci bersama bumbu halus, lengkuas dan serai yang digeprek, daun salam, dan 400 ml air.',
+        'Didihkan, balik sesekali, selama 30-35 menit sampai ayam matang dan air hampir habis (ungkep).',
+        'Panaskan minyak setinggi 2 cm, lalu goreng ayam dengan api sedang-besar 4-5 menit per sisi sampai cokelat keemasan.',
+        'Sajikan dengan irisan timun, daun kol, dan sambal.',
+      ],
+      tip: { add: 'Kremesan: goreng sisa air ungkepan yang dicampur sedikit tepung beras', why: 'Remahan renyah keemasan untuk ditaburkan di atas ayam', skill: 'Ungkep dulu', how: 'Merebus ayam dalam bumbu sebelum digoreng membuat bumbu meresap sampai ke tulang dan daging tetap juicy.' },
+    },
+    'id_semur': {
+      name: 'Semur daging',
+      ings: [
+        ['Daging sapi sengkel/sandung lamur', '400 g'],
+        ['Kentang', '2'],
+        ['Tomat', '1?'],
+      ],
+      seas: '5 sdm kecap manis · 4 bawang merah · 3 siung bawang putih · 1/4 sdt pala · 1/4 sdt lada putih · 3 cengkih · kayu manis 3 cm · 1 sdt garam · 1 sdm minyak · 1 sdm bawang goreng',
+      steps: [
+        'Potong daging menjadi kotak 3 cm. Haluskan atau cincang halus bawang merah dan bawang putih.',
+        'Tumis bumbu halus bersama cengkih dan kayu manis sampai harum, lalu masukkan daging dan aduk sampai berubah warna.',
+        'Tambahkan kecap manis, pala, lada, garam, dan 700 ml air. Tutup dan masak dengan api kecil 60 menit sampai daging empuk.',
+        'Masukkan kentang yang dikupas dan dipotong (boleh digoreng dulu) serta tomat yang dipotong bagian. Masak 20 menit lagi sampai kentang lunak dan kuah kental mengilap.',
+        'Koreksi rasa dengan garam atau kecap manis, lalu taburi bawang goreng.',
+      ],
+      tip: { add: 'Beberapa butir telur rebus di 20 menit terakhir', why: 'Semur telur: telurnya menyerap kuah manis', skill: 'Jalan pintas pakai presto', how: 'Presto daging 20 menit pada langkah 3 supaya bisa jadi masakan hari kerja.' },
+    },
+    'id_ikanbalado': {
+      name: 'Ikan goreng balado',
+      ings: [
+        ['Ikan utuh (kembung atau nila), sudah dibersihkan', '2 ekor (500 g)'],
+        ['Cabai merah besar', '8 buah (100 g)'],
+        ['Tomat', '1'],
+        ['Jeruk nipis', '1/2'],
+      ],
+      seas: '5 bawang merah · 3 siung bawang putih · 1 sdt garam · 1 sdt gula · minyak untuk menggoreng',
+      steps: [
+        'Beri sayatan di kedua sisi ikan, lumuri dengan air jeruk nipis dan 1/2 sdt garam, diamkan 10 menit.',
+        'Panaskan minyak setinggi 2 cm, goreng ikan dengan api sedang-besar 5-6 menit per sisi sampai renyah, keemasan, dan matang. Tiriskan.',
+        'Ulek kasar atau blender sebentar cabai, bawang merah, bawang putih, dan tomat (balado bertekstur kasar, bukan halus).',
+        'Tumis bumbu dengan 3 sdm minyak bekas menggoreng selama 8-10 menit sambil diaduk, sampai gelap dan minyaknya keluar. Beri garam dan gula.',
+        'Siramkan balado di atas ikan.',
+      ],
+      tip: { add: 'Peras jeruk nipis di atas balado', why: 'Cabai tetap segar dan rasanya cerah', skill: 'Ikan kering, minyak tenang', how: 'Keringkan ikan dengan tisu dan jangan digeser selama 4 menit pertama supaya kulitnya tidak lengket.' },
+    },
+    'id_telurbalado': {
+      name: 'Telur balado',
+      ings: [
+        ['Telur', '4'],
+        ['Cabai merah besar', '6'],
+        ['Tomat', '1'],
+      ],
+      seas: '4 bawang merah · 2 siung bawang putih · 2 lembar daun jeruk · 1 sdt gula · 1/2 sdt garam · minyak untuk menggoreng',
+      steps: [
+        'Rebus telur 9 menit, dinginkan dengan air dingin, lalu kupas.',
+        'Goreng telur utuh dalam minyak panas sambil digulirkan sampai permukaannya keemasan dan berkerut. Tiriskan.',
+        'Ulek kasar cabai, bawang merah, bawang putih, dan tomat.',
+        'Tumis bumbu dengan 3 sdm minyak dan daun jeruk selama 8 menit sampai kental dan minyaknya keluar. Beri gula dan garam.',
+        'Masukkan telur (utuh atau dibelah dua) dan aduk sampai terbalut bumbu.',
+      ],
+      tip: { add: 'Petai atau kentang goreng potong dadu', why: 'Tambahan balado ala Padang yang klasik', skill: 'Tusuk dulu sebelum digoreng', how: 'Tusuk setiap telur rebus beberapa kali dengan garpu supaya tidak meletus di minyak panas.' },
+    },
+    'id_bacem': {
+      name: 'Tahu tempe bacem',
+      ings: [
+        ['Tahu putih padat', '300 g'],
+        ['Tempe', '200 g'],
+      ],
+      seas: '3 sdm kecap manis · 2 sdm gula jawa · 4 bawang merah · 3 siung bawang putih · 1 sdt ketumbar · lengkuas 2 cm · 2 lembar daun salam · 1 sdt asam jawa · 1/2 sdt garam · minyak untuk menggoreng',
+      steps: [
+        'Potong tahu menjadi kotak tebal atau segitiga, dan tempe menjadi lempeng.',
+        'Haluskan bawang merah, bawang putih, dan ketumbar. Masukkan ke panci bersama 400 ml air, gula jawa, kecap manis, asam jawa, garam, lengkuas, dan daun salam.',
+        'Masukkan tahu dan tempe, masak sambil dibalik pelan-pelan selama 30 menit sampai kuah hampir habis dan warnanya cokelat tua.',
+        'Goreng sebentar dalam minyak panas 1-2 menit per sisi sampai pinggirnya karamel. Sajikan hangat dengan sambal.',
+      ],
+      tip: { add: 'Air kelapa sebagai pengganti air biasa', why: 'Bacem Jawa yang klasik jadi lebih manis dan bulat rasanya', skill: 'Goreng sebentar saja', how: 'Gula cepat gosong; goreng hanya sampai pinggirnya menggelap, jangan lebih lama.' },
+    },
+    'id_nasigoreng': {
+      name: 'Nasi goreng',
+      ings: [
+        ['Nasi matang (sisa kemarin)', '400 g'],
+        ['Telur', '3'],
+        ['Dada ayam', '100 g?'],
+        ['Timun', '1/2'],
+        ['Tomat', '1'],
+        ['Kerupuk udang', '1 genggam?'],
+      ],
+      seas: '3 bawang merah · 2 siung bawang putih · 2 cabai merah · 1 sdt terasi · 2 sdm kecap manis · 1/2 sdt garam · 3 sdm minyak · 1 sdm bawang goreng',
+      steps: [
+        'Ulek kasar bawang merah, bawang putih, cabai, dan terasi. Potong dadu kecil ayamnya.',
+        'Panaskan 2 sdm minyak dan tumis bumbu 2 menit sampai harum. Masukkan ayam dan masak sampai tidak merah lagi.',
+        'Geser ke pinggir, orak-arik 1 telur, lalu masukkan nasi dan tumis dengan api besar 4-5 menit.',
+        'Tambahkan kecap manis dan garam, aduk sampai setiap butir nasi berwarna cokelat merata.',
+        'Goreng 2 telur lainnya mata sapi dengan sisa minyak. Sajikan nasi goreng dengan telur mata sapi, bawang goreng, timun, tomat, dan kerupuk.',
+      ],
+      tip: { add: 'Sesendok sambal di samping', why: 'Pedasnya bisa diatur masing-masing', skill: 'Nasi dingin, wajan panas', how: 'Pakai nasi dari kulkas dan jaga api tetap besar supaya nasi tergoreng, bukan terkukus.' },
+    },
+    'id_miegoreng': {
+      name: 'Mie goreng',
+      ings: [
+        ['Mi telur', '200 g'],
+        ['Dada ayam', '150 g'],
+        ['Kol', '150 g'],
+        ['Sawi hijau', '100 g'],
+        ['Telur', '1'],
+      ],
+      seas: '3 bawang merah · 2 siung bawang putih · 2 sdm kecap manis · 1 sdm kecap asin · 1 sdt saus tiram · 1/4 sdt lada putih · 2 sdm minyak · 1 sdm bawang goreng',
+      steps: [
+        'Rebus mi sampai baru empuk, bilas dengan air dingin, lalu tiriskan. Iris tipis ayam; potong sayuran.',
+        'Tumis irisan bawang merah dan bawang putih dengan minyak sampai harum. Masukkan ayam dan tumis sampai matang.',
+        'Geser ke pinggir dan orak-arik telur.',
+        'Masukkan kol dan batang sawi, tumis 1 menit, lalu masukkan mi, daun sawi, kecap manis, kecap asin, saus tiram, dan lada.',
+        'Aduk dengan api besar 2-3 menit sampai mengilap dan berwarna cokelat merata. Taburi bawang goreng.',
+      ],
+      tip: { add: 'Acar timun di samping', why: 'Segar asam yang renyah untuk mi manis gurih', skill: 'Bilas mi', how: 'Membilas menghilangkan pati di permukaan sehingga mi tidak menggumpal di wajan.' },
+    },
+    'id_tumiskangkung': {
+      name: 'Tumis kangkung',
+      ings: [
+        ['Kangkung', '400 g'],
+        ['Cabai merah', '2'],
+      ],
+      seas: '3 bawang merah · 3 siung bawang putih · 1/2 sdt terasi · 1 sdt saus tiram · 1/2 sdt gula · 1/4 sdt garam · 1 sdm minyak',
+      steps: [
+        'Petik kangkung sepanjang 8-10 cm, buang batang yang keras. Cuci dan tiriskan.',
+        'Iris bawang merah, bawang putih, dan cabai. Tumis dengan minyak dan terasi sampai harum.',
+        'Masukkan kangkung dan tumis dengan api besar 1-2 menit.',
+        'Bumbui dengan saus tiram, gula, dan garam, aduk sampai baru layu, lalu sajikan.',
+      ],
+      tip: { add: 'Beberapa udang kupas bersama bawang putih', why: 'Tumisannya jadi lebih mengenyangkan', skill: 'Batang dulu', how: 'Masukkan batang yang lebih tebal 30 detik sebelum daunnya supaya matang bersamaan.' },
+    },
+    'id_tempeorek': {
+      name: 'Tempe orek',
+      ings: [
+        ['Tempe', '250 g'],
+        ['Cabai merah', '2'],
+      ],
+      seas: '3 bawang merah · 2 siung bawang putih · 2 lembar daun salam · lengkuas 2 cm · 3 sdm kecap manis · 1 sdt gula jawa · 1/2 sdt garam · minyak untuk menggoreng',
+      steps: [
+        'Potong tempe menjadi korek api tipis. Goreng sampai keemasan dan renyah; tiriskan.',
+        'Dengan 1 sdm minyak, tumis irisan bawang merah, bawang putih, dan cabai bersama daun salam dan lengkuas yang digeprek sampai harum.',
+        'Masukkan kecap manis, gula jawa, garam, dan 3 sdm air, didihkan.',
+        'Masukkan tempe dan aduk sampai bumbu meresap dan tempe mengilap. Tahan 3 hari di kulkas.',
+      ],
+      tip: { add: 'Segenggam kacang tanah goreng', why: 'Tambah renyah untuk bekal makan siang', skill: 'Potongan tipis dan rata', how: 'Korek api yang tipis akan matang renyah merata dan menyerap bumbu manis.' },
+    },
+    'id_perkedel': {
+      name: 'Perkedel kentang',
+      ings: [
+        ['Kentang', '3 (400 g)'],
+        ['Telur', '1'],
+        ['Daun seledri', '1 tangkai?'],
+      ],
+      seas: '1 sdm bawang goreng · 1/4 sdt pala · 1/4 sdt lada putih · 1/2 sdt garam · minyak untuk menggoreng',
+      steps: [
+        'Kupas kentang, potong-potong, lalu goreng (cara tradisional) atau rebus sampai lunak. Haluskan selagi panas.',
+        'Campurkan bawang goreng, daun seledri cincang, pala, lada, dan garam. Bentuk menjadi bulat pipih kecil.',
+        'Kocok telur. Celupkan setiap bulatan ke dalam telur.',
+        'Goreng dengan api sedang selama 2 menit per sisi sampai keemasan dan tepinya berenda telur.',
+      ],
+      tip: { add: 'Sedikit cincangan ayam atau daging sapi', why: 'Perkedel yang lebih mengenyangkan', skill: 'Goreng, jangan rebus', how: 'Menggoreng kentang dulu menghasilkan adonan yang lebih kering, mudah dibentuk, dan lebih gurih.' },
+    },
+    'id_sambal': {
+      name: 'Sambal tomat',
+      ings: [
+        ['Cabai merah dan cabai rawit', '8 + 3'],
+        ['Tomat', '2'],
+        ['Jeruk nipis', '1/2?'],
+      ],
+      seas: '3 bawang merah · 2 siung bawang putih · 1 sdt terasi, dibakar · 1 sdt gula jawa · 1/2 sdt garam · 2 sdm minyak',
+      steps: [
+        'Goreng cabai, bawang merah, bawang putih, dan tomat dengan minyak selama 5 menit sampai lunak.',
+        'Ulek di cobek bersama terasi, gula jawa, dan garam sampai kasar dan seperti selai.',
+        'Cicipi dan beri perasan jeruk nipis. Sajikan di cobek.',
+      ],
+      tip: { add: 'Daun kemangi segar di samping', why: 'Lalapan harum untuk teman sambal', skill: 'Kasar, bukan halus', how: 'Ulek atau blender sebentar saja; potongan tomat dan kulit cabai memberi tekstur sambal.' },
+    },
+    'id_urap': {
+      name: 'Urap sayur',
+      ings: [
+        ['Kacang panjang', '100 g'],
+        ['Bayam', '100 g'],
+        ['Tauge', '100 g'],
+        ['Kol', '100 g'],
+        ['Kelapa parut', '100 g'],
+      ],
+      seas: '2 bawang merah · 1 siung bawang putih · 2 cabai merah · kencur 2 cm (opsional) · 1 lembar daun jeruk · 1 sdt gula jawa · 1/2 sdt garam · 1/2 sdt terasi',
+      steps: [
+        'Haluskan bawang merah, bawang putih, cabai, kencur, terasi, gula jawa, dan garam. Campur dengan kelapa parut dan daun jeruk yang diiris halus.',
+        'Kukus kelapa berbumbu selama 10 menit (lebih awet dan rasanya lebih bulat).',
+        'Rebus sebentar tiap sayuran secara terpisah: kacang panjang (potong 3 cm) 2 menit, kol 1 menit, bayam dan tauge 20 detik. Tiriskan dengan baik.',
+        'Campur sayuran dengan kelapa tepat sebelum disajikan.',
+      ],
+      tip: { add: 'Daun kenikir atau daun singkong jika ada', why: 'Sayuran urap Jawa yang klasik', skill: 'Campur sebelum makan', how: 'Kelapa cepat basi jika dicampur sayuran basah; pisahkan sampai waktunya makan.' },
+    },
+    'id_capcay': {
+      name: 'Cap cay udang',
+      ings: [
+        ['Udang kupas', '150 g'],
+        ['Wortel', '1'],
+        ['Kembang kol', '150 g'],
+        ['Kol', '150 g'],
+        ['Sawi hijau', '100 g'],
+      ],
+      seas: '3 siung bawang putih · 1 sdm saus tiram · 1 sdm kecap asin · 1 sdt tepung maizena · 1/4 sdt lada putih · 1/2 sdt garam · 1 sdm minyak · 150 ml air',
+      steps: [
+        'Iris tipis wortel, potong kembang kol menjadi kuntum kecil, dan kol serta sawi seukuran gigitan.',
+        'Tumis bawang putih dengan minyak, masukkan udang dan masak sampai merah muda.',
+        'Masukkan wortel dan kembang kol bersama air, tutup dan masak 3 menit.',
+        'Masukkan kol, sawi, saus tiram, kecap asin, lada, dan garam, lalu tumis 2 menit.',
+        'Tuang maizena yang dilarutkan dengan 2 sdm air, masak sampai kuah mengilap.',
+      ],
+      tip: { add: 'Beberapa bakso ikan atau irisan ayam', why: 'Cap cay fleksibel, pakai apa yang ada di kulkas', skill: 'Sayur keras dulu', how: 'Wortel dan kembang kol butuh waktu lebih lama; sayur hijau masuk terakhir agar tetap segar.' },
+    },
+    'id_sayurasem': {
+      name: 'Sayur asem',
+      ings: [
+        ['Jagung manis', '1 tongkol'],
+        ['Labu siam', '1'],
+        ['Kacang panjang', '50 g'],
+        ['Kacang tanah mentah', '30 g'],
+        ['Asam jawa', '20 g'],
+        ['Melinjo dan daun melinjo', '1 genggam?'],
+      ],
+      seas: '3 bawang merah · 2 siung bawang putih · 2 cabai merah · 1 sdt terasi · 2 lembar daun salam · lengkuas 2 cm · 1 sdm gula jawa · 1 sdt garam · 1 liter air',
+      steps: [
+        'Haluskan bawang merah, bawang putih, cabai, dan terasi. Potong jagung bulat-bulat, labu siam kotak, dan kacang panjang 4 cm.',
+        'Didihkan air bersama bumbu halus, daun salam, lengkuas, kacang tanah, dan jagung. Masak 10 menit.',
+        'Masukkan labu siam dan melinjo, masak 5 menit, lalu kacang panjang 3 menit.',
+        'Larutkan asam jawa dengan sedikit kuah, saring ke dalam panci, dan bumbui dengan gula jawa dan garam hingga rasa asam manisnya segar.',
+      ],
+      tip: { add: 'Nangka muda', why: 'Klasik di sayur asem ala Betawi', skill: 'Asam di akhir', how: 'Kuah asam membuat sayur alot; masukkan asam jawa setelah sayurnya empuk.' },
+    },
+    'id_sopayam': {
+      name: 'Sop ayam',
+      ings: [
+        ['Potongan ayam dengan tulang', '300 g'],
+        ['Wortel', '1'],
+        ['Kentang', '1'],
+        ['Kol', '100 g'],
+        ['Seledri dan daun bawang', '1 tangkai'],
+      ],
+      seas: '3 siung bawang putih · 2 bawang merah · jahe 2 cm · 1/4 sdt pala · 1/4 sdt lada putih · 1 sdt garam · 1 sdm minyak · 1 sdm bawang goreng · 1 liter air',
+      steps: [
+        'Rebus ayam dalam air bersama jahe yang digeprek selama 20 menit, buang busanya.',
+        'Tumis bawang putih dan bawang merah cincang dengan minyak sampai keemasan, lalu masukkan ke kaldu bersama pala dan lada.',
+        'Masukkan wortel iris bulat dan kentang potong, rebus 10 menit. Pastikan ayam sudah matang.',
+        'Masukkan kol dan masak 3 menit. Beri garam.',
+        'Sajikan dengan taburan seledri cincang, daun bawang, dan bawang goreng.',
+      ],
+      tip: { add: 'Perasan jeruk nipis dan sesendok sambal di meja makan', why: 'Membuat kuah bening lebih segar', skill: 'Kuah bening', how: 'Jaga api kecil dan buang busa sejak awal; didih besar membuat kuah keruh.' },
+    },
+    'id_sayurbening': {
+      name: 'Sayur bening bayam',
+      ings: [
+        ['Bayam', '200 g'],
+        ['Jagung manis', '1 tongkol'],
+      ],
+      seas: '3 bawang merah · 1 siung bawang putih · temu kunci 2 cm (opsional) · 1 sdt garam · 1/2 sdt gula · 700 ml air',
+      steps: [
+        'Iris tipis bawang merah dan bawang putih. Potong jagung kecil-kecil atau pipil.',
+        'Didihkan air bersama bawang merah, bawang putih, temu kunci, dan jagung; masak 5 menit.',
+        'Beri garam dan gula.',
+        'Masukkan daun bayam, masak 1 menit sampai baru layu, lalu langsung sajikan.',
+      ],
+      tip: { add: 'Beberapa irisan labu siam atau wortel', why: 'Lebih berwarna dan berisi', skill: 'Bayam terakhir, makan selagi segar', how: 'Bayam menghitam dan hilang manisnya jika dibiarkan; masak paling akhir dan jangan dipanaskan ulang.' },
+    }
+  }
+});

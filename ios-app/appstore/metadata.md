@@ -66,15 +66,15 @@
 ■ 収録レシピ
 肉じゃが、生姜焼き、唐揚げ、さばの味噌煮、筑前煮、とんかつ、ビビンバ、けんちん汁など、家庭の定番料理123品（2人分を基準に人数で換算）。
 
+■ 世界の家庭料理
+国を選ぶと、その国の家庭で毎日食べられている料理で献立を組みます（日本のほか、アメリカ・イギリス・フランス・ドイツ・イタリア・スペイン・ポーランド・トルコ・エジプト・インド・中国・台湾・韓国・タイ・ベトナム・インドネシア・フィリピン・メキシコ・ブラジル・ペルーの21の国と地域、440品以上）。「世界のレシピ」から、ほかの国の料理も見られます。画面と各国のレシピは、選んだ国の言葉で表示します。
+
 ■ ごはん帖プラス（App 内課金）
-・1週間分の献立プランと買い物メモ（無料版は今日の1日分）
-・5品・6品の献立
-・ひとひねり案、わが家の写真を無制限に
-・ひと手間の「やってみた」記録と称号
-月額480円・年額4,800円。最初の7日間は無料でお試しいただけます。無料期間中に解約すれば料金はかかりません。
+はじめて使う日から7日間は、登録なしですべての機能を無料で使えます。7日が過ぎるとプランを選ぶ画面になり、プランを選ぶとすべての機能を使い続けられます（記録や設定はそのまま残ります。無料期間のあとに自動で請求されることはありません）。
+月額480円・年額4,800円（年額は2か月分無料）。
 
 【お支払いについて】
-お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
+お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。
 
 利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 プライバシーポリシー: https://akb69bka-tech.github.io/toresabi/gohancho/privacy.html
@@ -105,14 +105,16 @@
 | 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly |
 | 参照名 | ごはん帖プラス 月額 | ごはん帖プラス 年額 |
 | 期間 | 1か月 | 1年 |
-| 価格（日本） | 480円 | 4,800円（月額の10か月分） |
-| お試しオファー | 1週間 無料（新規の利用者） | 1週間 無料（新規の利用者） |
+| 価格（日本） | 480円 | 4,800円（月額の10か月分＝2か月分無料） |
+| お試しオファー | **設定しない**（アプリ側で、はじめて使う日から7日間を無料期間にしている） | 同左 |
 | 表示名 | ごはん帖プラス（月額） | ごはん帖プラス（年額） |
 | 説明（45文字まで） | 1週間の献立と買い物メモなどが使えます | 1週間の献立と買い物メモなどが1年使えます |
 
 - 審査用スクリーンショット: アプリの「ごはん帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
 - RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額・年額の2つを入れる
+- 無料期間は App Store のお試しオファーではなく、アプリの中で数えています（`PLAN.trialMode: 'app'`）。審査で「お試しは App Store のオファーで」と指摘された場合は、`index.html` の `trialMode` を `'store'` に変えて、両製品に「1週間 無料」のお試しオファーを設定してください（表示は自動で切りかわります）
+- 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
 
@@ -127,7 +129,7 @@
 ## 審査メモ（App Review Information → Notes。審査担当者向けなので英語）
 
 ```
-Gohancho is a meal-planning app for Japanese home cooking. All app files (HTML/JS/CSS, 123 original recipes, and illustrations) are bundled in the app; it does not load a remote website and works fully offline.
+Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks a country or region (21 available: Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday dishes, in that country's language (17 UI languages; the first screen is English). All app files (HTML/JS/CSS, 440+ original recipes, translations and illustrations) are bundled in the app; it does not load a remote website and works fully offline.
 
 Main features:
 - Generates a daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoids repeating recent dishes, meats and cuisines based on the user's cooking history.
@@ -139,7 +141,7 @@ Main features:
 
 No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
-In-app purchase: "ごはん帖プラス" auto-renewable subscription (monthly / yearly) with a 1-week free introductory offer. To view the paywall: tap the gear icon (top right) > "ごはん帖プラスを見る", or tap a locked day in "1週間の主菜". "購入を復元" (Restore Purchases) is on the same screen.
+In-app purchase: "Gohancho Plus" auto-renewable subscription (monthly / yearly). The first 7 days after first launch are free with full access and no sign-up; the app itself counts the days, so no App Store introductory offer is configured. After 7 days a paywall appears that shows the current App Store prices (yearly first, with "2 months free"), the subscription terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". To view the paywall before day 7: tap the gear icon (top right) > "See Gohancho Plus". For review, the free period can be ended by setting the device date 8 days ahead.
 ```
 
 ---
@@ -154,3 +156,81 @@ In-app purchase: "ごはん帖プラス" auto-renewable subscription (monthly / 
 | `6.5inch-01.png`〜`06.png` | 1284 × 2778 | iPhone 6.5 インチ ディスプレイ（求められた場合） |
 
 画面はアプリの実際の表示です。文字の書体は撮影環境の都合で端末と少し異なります。気になる場合は、Xcode のシミュレーター（iPhone 16 Pro Max）で撮り直してください。
+
+---
+
+## English (App Store Connect → English (U.S.) localization)
+
+英語の欄にはこちらを貼ります。ほかの言語の欄は、まずこの英語を使い、余裕があれば `gohancho/i18n/` の訳語を参考に各国語版を作ります。
+
+| Field | Text |
+| --- | --- |
+| Name (30) | Gohancho – Home Meal Planner |
+| Subtitle (30) | Tonight's dinner, decided |
+| Keywords (100) | meal planner,dinner ideas,weekly meal plan,shopping list,home cooking,recipes,what to cook,family dinner |
+| Support URL | https://akb69bka-tech.github.io/toresabi/gohancho/support-en.html |
+| Privacy Policy URL | https://akb69bka-tech.github.io/toresabi/gohancho/privacy-en.html |
+
+### Promotional text (170)
+
+```
+Stop asking "what's for dinner?" Gohancho plans a complete home-cooked meal from your country's everyday dishes, never repeats recent ones, and makes the shopping list.
+```
+
+### Description (4000)
+
+```
+"What's for dinner tonight?" Gohancho answers that question every day, the way families in your country actually eat.
+
+■ Pick your country, get your food
+Choose from 21 countries and regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru). Gohancho suggests a main dish, sides and soup from that country's weekday home cooking, with the everyday staple. 440+ recipes, each with an original illustration. The app and the recipes are shown in your country's language.
+
+■ Never the same dish too soon
+Save a plan or tap "Made today" and Gohancho remembers it: recently cooked dishes, yesterday's meat or fish and the same cuisine two days in a row are all avoided. Swap any single dish with one tap.
+
+■ A week planned, shopping list done
+Plan 7 days of mains at once. Gohancho builds a shopping list of what you don't already have in your fridge and pantry, ready to tick off at the store.
+
+■ Send it to your family
+Share today's meal or the week's plan and shopping list in one tap with WhatsApp, LINE, Messenger and more.
+
+■ Cook with what you have
+Type what's in your fridge and see what you can cook right now, what needs one more ingredient, and which ingredient would unlock the most dishes.
+
+■ Made for your family
+Quantities scale to your household. Ingredients you'd rather avoid are never suggested.
+
+■ World recipes
+Curious about other countries? Browse any country's home cooking from the World tab, translated into your language.
+
+■ Works offline, stays private
+Everything runs on your phone. Your history, photos and settings never leave your device. No account needed.
+
+■ Gohancho Plus (in-app purchase)
+The first 7 days after you start are free with full access, no sign-up. After that, choose a plan to keep using every feature; your history and settings stay. Monthly or yearly (the yearly plan is 2 months free). Nothing is charged automatically after the free period.
+
+Payment is charged to your Apple Account when you confirm the purchase. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
+
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://akb69bka-tech.github.io/toresabi/gohancho/privacy-en.html
+
+If you have allergies, always check the ingredients of seasonings and processed foods yourself.
+```
+
+### What's New
+
+```
+First release. We hope Gohancho makes dinner a little easier every day.
+```
+
+### Screenshots
+
+`appstore/screenshots-en/` に英語の画面（6.9インチ・6.5インチ）があります。
+
+---
+
+## 配信する国と言語
+
+- **配信する国**: App Store Connect →「価格および配信状況」で、**中国本土を外して**ほかはすべて選ぶ（中国本土での配信には ICP 備案が必要）
+- **アプリの対応言語（Xcode の Localizations に追加）**: 英語・日本語・フランス語・ドイツ語・イタリア語・スペイン語・ポルトガル語（ブラジル）・ポーランド語・トルコ語・アラビア語・ヒンディー語・インドネシア語・フィリピン語・タイ語・中国語（簡体）・中国語（繁体）・韓国語・ベトナム語
+- **国ごとの価格**: `世界配信の計画と収支試算.md` の表のとおり。年額は各国とも月額の10か月分（2か月分無料）

@@ -6,7 +6,7 @@
 <title>わが家のごはん帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -324,6 +324,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .country .sub{font-size:.72rem;color:var(--muted);line-height:1.2}
 .country.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
 .v-staple{width:62%}
+.world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
+.world-head .fl{font-size:1.6rem;line-height:1}
+.trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
 .top .gear{margin-left:auto;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-left:4px}
@@ -418,6 +421,7 @@ nav.tabs button[hidden]{display:none}
         <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日の献立</button>
         <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/></svg>材料から</button>
         <button role="tab" data-tab="twist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>ひとひねり</button>
+        <button role="tab" data-tab="world"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-5.8-3.9-9S9.4 5.8 12 3z"/></svg>世界のレシピ</button>
         <button role="tab" data-tab="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 17 21H6z"/><path d="M6 3v18M9.5 8h5.5M9.5 12h5.5M9.5 16h3"/></svg>記録</button>
     </div>
 </nav>
@@ -853,7 +857,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
    訳が {one:'…', other:'…'} のときは vars.n で単数・複数を選ぶ（Intl.PluralRules）。訳の中で {d:# dish:# dishes} とも書ける。
    新しい言語: i18n/<lang>.js を作り（GOHAN_I18N('<lang>', {...})）、I18N_FILES に足す。
    tools/i18n/extract.mjs --check <lang> で、足りない訳を確かめられる。 */
-const I18N_FILES = ['en'];                 // i18n/ にある辞書
+const I18N_FILES = ['en', 'fr', 'de', 'it', 'es', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'zh-Hans', 'zh-Hant', 'ko', 'vi'];                 // i18n/ にある辞書
 const LANG_NAMES = {ja:'日本語', en:'English', fr:'Français', de:'Deutsch', it:'Italiano', es:'Español', pl:'Polski', tr:'Türkçe', ar:'العربية', hi:'हिन्दी',
     'zh-Hans':'简体中文', 'zh-Hant':'繁體中文', ko:'한국어', th:'ไทย', vi:'Tiếng Việt', id:'Bahasa Indonesia', fil:'Filipino', 'pt-BR':'Português (Brasil)'};
 const I18N = {};
@@ -910,7 +914,8 @@ function availLang(l){
 function wantLang(){
     const u = S.settings.uiLang || 'auto';
     if (u !== 'auto' && availLang(u)) return availLang(u);
-    const cc = S.settings.country || guessCountry();
+    const cc = S.settings.country;
+    if (!cc) return 'en';                    // 国を選ぶ前（はじめて開いたとき）は英語
     if (cc === 'JP') return 'ja';
     return availLang(countryOf(cc).lang) || 'en';
 }
@@ -946,7 +951,7 @@ function applyStaticText(){
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:t('今日の献立'), fridge:t('材料から'), twist:t('ひとひねり'), log:t('記録')};
+    const labels = {today:t('今日の献立'), fridge:t('材料から'), twist:t('ひとひねり'), world:t('世界のレシピ'), log:t('記録')};
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         const n = [...b.childNodes].reverse().find(x => x.nodeType === 3);
         if (n && labels[b.dataset.tab]) n.textContent = labels[b.dataset.tab];
@@ -976,7 +981,10 @@ function jpDate(s, withWeekday=true){
     catch(e){ return s; }
 }
 const TODAY = ymd();
-function byId(id){ return RECIPES.find(r => r.id === id) || (String(id).startsWith('a~') ? buildTwist(id) : null); }
+function byId(id){
+    return RECIPES.find(r => r.id === id) || (String(id).startsWith('a~') ? buildTwist(id) : null)
+        || Object.values(BROWSE).reduce((hit, list) => hit || list.find(r => r.id === id), null) || null;
+}
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function toast(msg, praise=false){
@@ -1259,7 +1267,7 @@ function slotOf(r){ return r.main ? '主菜' : r.type === '汁物' ? '汁物' : 
    画面
    ========================================================= */
 let tab = 'today';
-try{ const h = location.hash.replace('#',''); if (['today','fridge','twist','log','settings'].includes(h)) tab = h; }catch(e){}
+try{ const h = location.hash.replace('#',''); if (['today','fridge','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
 function setTab(tb){
     if (tb === 'settings' && tab !== 'settings') prevTab = tab;
     tab = tb;
@@ -1288,9 +1296,12 @@ function render(){
     if (tab === 'today') v.innerHTML = viewToday();
     if (tab === 'fridge') v.innerHTML = viewFridge();
     if (tab === 'twist') v.innerHTML = viewTwist();
+    if (tab === 'world') v.innerHTML = viewWorld();
     if (tab === 'log') v.innerHTML = viewLog();
     if (tab === 'settings') v.innerHTML = viewSettings();
     if (sheet) renderSheet();
+    // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
+    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall('locked');
 }
 
 /* ---- 料理写真 ----
@@ -2029,7 +2040,7 @@ const PLAN = {
     get name(){ return t('ごはん帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
         {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('480円 / 月'); }, per:'月', note:''},
-        {id:'gohancho_plus_yearly',  get label(){ return t('年額プラン'); }, get price(){ return t('4,800円 / 年'); }, per:'年', get note(){ return t('2か月分おトク'); }},
+        {id:'gohancho_plus_yearly',  get label(){ return t('年額プラン'); }, get price(){ return t('4,800円 / 年'); }, per:'年', get note(){ return t('2か月分無料'); }},
     ],
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
@@ -2037,6 +2048,9 @@ const PLAN = {
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
     trialDays: 7,
+    // 'app': 使いはじめて7日間はすべて無料、8日目から購入するまでロック（App Store のお試しオファーは設定しない）
+    // 'store': はじめから購入画面。App Store Connect の「お試しオファー（1週間無料）」で無料期間を出す（審査で 'app' が通らない場合の切りかえ用）
+    trialMode: 'app',
     get introTrialLabel(){ return t('最初の7日間は無料'); },   // App Store Connect の「お試しオファー」と同じ内容にする                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
     freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
     get benefits(){ return [t('1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）', {n:PLAN_WEEK_FREE}), t('ひと手間の「やってみた」で腕前を記録'), t('買い足すと作れる料理が増える食材をすべて表示'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('ひとひねり案を回数無制限で'), t('「わが家の写真」を枚数無制限で')]; },
@@ -2045,10 +2059,22 @@ function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
     return !!(S.pro && S.pro.active);
 }
-// お試し期間: アプリを開いた日の数が trialDays 以下のあいだ（＝4日目の利用から無料版の範囲になる）
-// iPhone アプリ版では、お試しは Apple 公式の「お試しオファー」（App Store Connect で7日間無料を設定）で行い、端末では数えない
-function trialActive(){ return PLAN.billingEnabled && !isNative() && (S.usedDays || []).length <= PLAN.trialDays; }
-function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - (S.usedDays || []).length); }
+// 無料期間: 使いはじめた日（S.firstUse）から trialDays 日間。過ぎて購入していなければロック（isLocked）
+function trialUsed(){ return Math.max(0, daysBetween(S.firstUse || TODAY, TODAY)); }
+function trialActive(){ return PLAN.billingEnabled && PLAN.trialMode === 'app' && trialUsed() < PLAN.trialDays; }
+function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - trialUsed()); }
+function isLocked(){ return PLAN.billingEnabled && !isSubscribed() && !trialActive(); }
+// 無料期間の終わる前の日に、端末の通知で知らせる（通知を許可している人だけ）
+async function scheduleTrialReminder(){
+    const P = nativePlugin('LocalNotifications');
+    if (!P || !trialActive() || isSubscribed()) return;
+    try{
+        const perm = await P.checkPermissions(); if (!perm || perm.display !== 'granted') return;
+        const d = parseYmd(S.firstUse || TODAY); d.setDate(d.getDate() + PLAN.trialDays - 1); d.setHours(19, 0, 0, 0);
+        if (d <= new Date()) return;
+        await P.schedule({notifications:[{id: 1002, title: t('無料期間は明日までです'), body: t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。'), schedule:{at: d}}]});
+    }catch(e){}
+}
 function hasPro(){
     if (!PLAN.billingEnabled) return true;
     return isSubscribed() || trialActive();
@@ -2093,8 +2119,8 @@ function priceNote(p){
     if (p.per !== '年') return p.note;
     const m = storePrices['gohancho_plus_monthly'], y = storePrices[p.id];
     if (!m || !y) return p.note;
-    const months = Math.floor(12 - y.value / m.value);
-    return months >= 1 ? t('{n}か月分おトク', {n:months}) : '';
+    const months = Math.round(12 - y.value / m.value);
+    return months >= 1 ? t('{n}か月分無料', {n:months}) : '';
 }
 async function purchase(productId){
     const ready = rcInit();
@@ -2124,6 +2150,7 @@ function paywallReason(k){
         case 'week': return t('無料版で見られる献立プランは{days}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。', {days: PLAN.freeLimits.weekDays === 1 ? t('今日の1日分') : t('{n}日分', {n:PLAN.freeLimits.weekDays})});
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
+        case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
         default: return '';
     }
@@ -2131,7 +2158,7 @@ function paywallReason(k){
 
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
-function closeSheet(){ sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; }
+function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; }
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
@@ -2150,6 +2177,7 @@ function renderSheet(){
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
                 <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
             </ul>
+            ${PLAN.billingEnabled && PLAN.trialMode === 'app' ? `<p class="pw-free">${esc(t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -2181,14 +2209,14 @@ function renderSheet(){
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                ${native ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
-                <div class="pw-prices">${PLAN.prices.map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
+                ${native && PLAN.trialMode === 'store' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
+                <div class="pw-prices">${[...PLAN.prices].reverse().map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
                 <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}<a href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a></p>`
             : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
-            <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+            ${isLocked() ? '' : `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`}`;
     }
     root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind} pop" role="dialog" aria-modal="true"><div class="sheet-body sheet-pad">${body}</div></div></div>`;
     document.body.style.overflow = 'hidden';
@@ -2539,6 +2567,7 @@ function viewToday(){
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
     <section class="sec">
+        ${trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span>${esc(t('1週間プランでは、今日の主菜は'))} <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc(t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}))}</span></div>
         <div class="card cond">
@@ -2931,7 +2960,7 @@ document.addEventListener('click', e => {
         case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
         case 'ui-lang': {
             S.settings.uiLang = el.dataset.v; save();
-            setLang(wantLang()).then(() => { relocalize(); render(); });
+            setLang(wantLang()).then(refreshRecipes).then(() => { relocalize(); render(); });
             break;
         }
         case 'toggle-avoid': {
@@ -2961,6 +2990,7 @@ document.addEventListener('click', e => {
         case 'sheet-close': closeSheet(); break;
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;
+        case 'world-cc': worldCC = el.dataset.cc; render(); break;
         case 'pick-country': {
             const cc = el.dataset.cc;
             setCountry(cc).then(ok => { if (!ok) return; render(); if (!S.onboarded) startOnboard(); else closeSheet(); });
@@ -3200,17 +3230,56 @@ const PACK_FAMILY = {pork:'豚', chicken:'鶏', beef:'牛', mince:'ひき肉', l
 const PROTEIN_WORDS = {pork:/pork|bacon|ham|sausage|chorizo/, chicken:/chicken|turkey/, beef:/beef|veal/, mince:/ground|mince/, lamb:/lamb|mutton|goat/,
     fish:/fish|salmon|cod|tuna|mackerel|sardine|tilapia|trout|hake|anchov|herring|milkfish|catfish|pomfret/, seafood:/shrimp|prawn|squid|clam|mussel|crab|octopus|scallop/,
     legume:/tofu|bean|lentil|chickpea|dal|pea/, egg:/egg/, processed:/ham|sausage|bacon|hot dog|spam|salami|chorizo|corned/};
-function packRecipe(pk, x){
-    const items = x.ings.map(s => {
+/* ---- レシピの翻訳 ----
+   packs/i18n/<cc>.<lang>.js（GOHAN_PACK_TR('<CC>', '<lang>', {staple, names, recipes:{id:{name, ings:[[名前, 分量]], seas, steps, tip}}})）。
+   国のパックは英語で書いてあるので、英語以外の言語ではその言語の訳を重ねる。日本のレシピは日本語以外で英語などの訳を重ねる。訳がなければ元のまま */
+const PACK_TR = {}, trLoads = {};
+window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d) PACK_TR[cc + '.' + lang] = d; };
+function loadPackTr(cc, lang){
+    const k = cc + '.' + lang;
+    if (k in PACK_TR) return Promise.resolve(PACK_TR[k]);
+    return trLoads[k] || (trLoads[k] = new Promise(res => {
+        const el = document.createElement('script');
+        el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
+        el.onload = () => res(PACK_TR[k] || null);
+        el.onerror = () => { PACK_TR[k] = null; res(null); };
+        document.head.appendChild(el);
+    }));
+}
+function trLangFor(cc){ return cc === 'JP' ? (LANG === 'ja' ? null : LANG) : (LANG === 'en' ? null : LANG); }
+async function ensureTr(cc){
+    const l = trLangFor(cc); if (!l) return null;
+    const d = await loadPackTr(cc, l);
+    if (!d && cc === 'JP' && l !== 'en') return loadPackTr('JP', 'en');
+    return d;
+}
+function trOf(cc){
+    const l = trLangFor(cc); if (!l) return null;
+    return PACK_TR[cc + '.' + l] || (cc === 'JP' ? PACK_TR['JP.en'] : null) || null;
+}
+// 日本のレシピに訳を重ねる（食材のキーはそのまま。表示の名前・分量・作り方だけ入れかえる）
+function jpRecipe(r, tr){
+    const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
+    const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
+    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, tip: rt.tip || r.tip || null, trLang: LANG});
+}
+function packRecipe(pk, x, tr){
+    const rt = tr && tr.recipes && tr.recipes[x.id];
+    const items = x.ings.map((s, k) => {
         const opt = s.endsWith('?'); if (opt) s = s.slice(0, -1);
-        const [key, label, qty] = s.split('|');
+        let [key, label, qty] = s.split('|');
+        const v = rt && rt.ings && rt.ings[k];
+        if (v){ label = v[0]; if (v[1] != null) qty = String(v[1]).replace(/[?？]\s*$/, ''); }
+        else if (tr && tr.names && tr.names[(key || '').trim().toLowerCase()]) label = tr.names[(key || '').trim().toLowerCase()];
         return {name: label || key, qty: qty || '', opt, key: (key || '').trim().toLowerCase(), label: label || key};
     });
     const family = PACK_FAMILY[x.protein] || '野菜';
     const re = PROTEIN_WORDS[x.protein];
     const p = family === '野菜' ? null : (items.find(i => re && re.test(i.key)) || items[0]);
-    return {id: x.id, name: x.local || x.name, nameEn: x.name, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
-        min: Number(x.min) || 30, ings: x.ings, items, seas: x.seas || '', steps: (x.steps || []).slice(), tip: x.tip || null, pack: pk.country,
+    const name = rt && rt.name ? rt.name : (x.local || x.name);
+    return {id: x.id, name, nameEn: name === (x.local || x.name) ? x.name : (x.local || x.name), genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
+        min: Number(x.min) || 30, ings: x.ings, items, seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
+        tip: (rt && rt.tip) || x.tip || null, pack: pk.country,
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
 }
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
@@ -3220,15 +3289,29 @@ function applyCountry(cc){
         quick: QUICK.slice(), stapleQuick: STAPLE_QUICK.slice(), avoidQuick: AVOID_QUICK.slice(), moods: MOODS.slice()};
     const pk = cc === 'JP' ? null : PACKS[cc];
     PACK = pk || null;
+    const tr = trOf(cc);
     if (!pk){
-        replaceList(RECIPES, JP_DATA.recipes); replaceList(CANON, JP_DATA.canon); replaceList(QUICK, JP_DATA.quick); replaceList(STAPLE_QUICK, JP_DATA.stapleQuick);
-        replaceList(AVOID_QUICK, JP_DATA.avoidQuick); replaceList(MOODS, JP_DATA.moods);
-        PANTRY.clear(); JP_DATA.pantry.forEach(v => PANTRY.add(v)); replaceObj(FAMILY, JP_DATA.family); replaceObj(SUBS, JP_DATA.subs); replaceObj(PACK_NAMES, {});
+        replaceList(RECIPES, tr ? JP_DATA.recipes.map(r => jpRecipe(r, tr)) : JP_DATA.recipes); replaceList(MOODS, JP_DATA.moods);
+        PANTRY.clear(); JP_DATA.pantry.forEach(v => PANTRY.add(v)); replaceObj(FAMILY, JP_DATA.family); replaceObj(SUBS, JP_DATA.subs);
+        if (tr && tr.names){
+            // 日本の食材の名前を訳で表示し、訳の名前でも冷蔵庫に入れられるようにする
+            const nm = tr.names, names = {}, extra = [];
+            JP_DATA.recipes.forEach(r => r.items.forEach(i => { const v = nm[i.name] || nm[i.key]; if (v && !names[i.key]){ names[i.key] = v; extra.push([i.key, [i.name, v]]); } }));
+            JP_DATA.canon.forEach(([c]) => { if (nm[c]) names[c] = nm[c]; });
+            replaceObj(PACK_NAMES, names);
+            replaceList(CANON, [...JP_DATA.canon.map(([c, vs]) => [c, nm[c] ? [...vs, nm[c]] : vs]), ...extra]);
+            const disp = q => nm[q] || q;
+            replaceList(QUICK, JP_DATA.quick.map(disp)); replaceList(STAPLE_QUICK, JP_DATA.stapleQuick.map(disp)); replaceList(AVOID_QUICK, JP_DATA.avoidQuick.map(disp));
+        } else {
+            replaceList(CANON, JP_DATA.canon); replaceList(QUICK, JP_DATA.quick); replaceList(STAPLE_QUICK, JP_DATA.stapleQuick);
+            replaceList(AVOID_QUICK, JP_DATA.avoidQuick); replaceObj(PACK_NAMES, {});
+        }
     } else {
-        const recipes = pk.recipes.map(x => packRecipe(pk, x));
+        const recipes = pk.recipes.map(x => packRecipe(pk, x, tr));
         replaceList(RECIPES, recipes);
-        const names = Object.assign({}, pk.names || {});
+        const names = Object.assign({}, pk.names || {}, (tr && tr.names) || {});
         const aliases = Object.assign({}, pk.aliases || {});
+        if (tr && tr.names) Object.entries(pk.names || {}).forEach(([k, v]) => { aliases[k] = [...(aliases[k] || []), v]; });
         recipes.forEach(r => r.items.forEach(i => { if (!names[i.key]) names[i.key] = i.label; if (!aliases[i.key]) aliases[i.key] = []; }));
         replaceObj(PACK_NAMES, names);
         replaceList(CANON, Object.entries(aliases).map(([k, vs]) => [k, [...new Set([k, names[k], ...vs].filter(Boolean))]]));
@@ -3243,12 +3326,66 @@ function applyCountry(cc){
     }
     rebuildVariants();
     session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;
-    const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !!pk;
-    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${pk ? 3 : 4},1fr)`;
-    if (pk && tab === 'twist') tab = 'today';
+    for (const k in BROWSE) delete BROWSE[k];
+    updateTabs();
+}
+// 「ひとひねり」は日本のレシピを日本語で組み立てるしくみなので、日本＋日本語のときだけ出す
+function twistAvailable(){ return !PACK && LANG === 'ja'; }
+function updateTabs(){
+    const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !twistAvailable();
+    const n = document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').length;
+    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},1fr)`;
+    if (!twistAvailable() && tab === 'twist') tab = 'today';
+}
+// 言語や国を変えたあと、いまの献立は同じ料理のまま、表示だけ新しい言語にする
+async function refreshRecipes(){
+    const cc = currentCountry();
+    await ensureTr(cc);
+    const m = session.menu, ids = m ? m.items.map(x => ({slot: x.slot, id: x.r && x.r.id})) : null;
+    applyCountry(cc);
+    if (m && ids) session.menu = {n: m.n, items: ids.map(x => ({slot: x.slot, r: x.id ? RECIPES.find(r => r.id === x.id) || null : null}))};
+}
+
+/* ---- 世界のレシピ（自分の国の献立はそのままで、ほかの国の家庭料理を見る） ---- */
+const BROWSE = {};
+let worldCC = null;
+function buildBrowse(cc){
+    if (cc === 'JP'){ const tr = trOf('JP'); return JP_DATA.recipes.map(r => tr ? jpRecipe(r, tr) : r); }
+    const pk = PACKS[cc]; if (!pk) return [];
+    const tr = trOf(cc);
+    return pk.recipes.map(x => packRecipe(pk, x, tr));
+}
+async function loadBrowse(cc){
+    try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); }catch(e){ BROWSE[cc] = []; }
+    if (tab === 'world') render();
+}
+function viewWorld(){
+    const home = currentCountry();
+    const others = COUNTRIES.filter(c => c.cc !== home);
+    if (!worldCC || worldCC === home) worldCC = others[0].cc;
+    const list = BROWSE[worldCC];
+    if (!list) loadBrowse(worldCC);
+    const c = countryOf(worldCC);
+    const group = (code, title) => {
+        const rs = (list || []).filter(r => code.includes(r.type)); if (!rs.length) return '';
+        return `<div class="sec-head"><h3>${esc(title)}</h3></div>
+            <div class="list">${rs.map(r => `<div class="match" data-act="open" data-id="${esc(r.id)}">
+                <span>${thumbHtml(r)}</span>
+                <div class="info"><div class="head"><span class="name">${esc(r.name)}</span></div>
+                    ${r.nameEn && r.nameEn !== r.name ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
+                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>`;
+    };
+    return `
+    <section class="sec">
+        <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
+        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
+        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${LANG === 'ja' ? (c.nameJa !== c.nameLocal ? `<span class="muted small">${esc(c.nameJa)}</span>` : '') : (c.name !== c.nameLocal ? `<span class="muted small">${esc(c.name)}</span>` : '')}</div>
+        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの')) : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
+    </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
 async function setCountry(cc){
+    const first = !S.settings.country;
     const old = currentCountry();
     if (old !== cc){
         S.countryData = S.countryData || {};
@@ -3259,8 +3396,10 @@ async function setCountry(cc){
     }
     try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
     S.settings.country = cc; save();
-    applyCountry(cc);
     await setLang(wantLang());
+    await ensureTr(cc);
+    applyCountry(cc);
+    if (first){ S.firstUse = TODAY; save(); }   // 無料期間は国を選んで使いはじめた日から
     return true;
 }
 function stapleSpot(){
@@ -3290,15 +3429,16 @@ document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('cl
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
 (async () => {
     const cc = S.settings.country;
-    if (cc && cc !== 'JP'){ try{ await loadPack(cc); applyCountry(cc); }catch(e){ S.settings.country = 'JP'; applyCountry('JP'); } }
-    else applyCountry('JP');
+    if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ S.settings.country = 'JP'; } }
     await setLang(wantLang());
+    await ensureTr(currentCountry());
+    applyCountry(currentCountry());
+    scheduleTrialReminder();
     setTab(tab);
     if (!S.settings.country) openCountrySheet();
     else if (!S.onboarded) startOnboard();
 })();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
-if (S.onboarded && PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 loadGenerated().then(loadPhotos);
 loadMine();

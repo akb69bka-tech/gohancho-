@@ -1,6 +1,6 @@
 // わが家のごはん帖: オフラインで開けるようにアプリ本体をキャッシュする
-const VERSION = 'gohancho-v5';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './i18n/en.js'];
+const VERSION = 'gohancho-v6';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './i18n/en.js'];
 const IMG = 'gohancho-img-v1';
 
 self.addEventListener('install', e => {
@@ -33,7 +33,7 @@ self.addEventListener('fetch', e => {
     return;
   }
   // 国のレシピ（packs/）と画面の言葉の辞書（i18n/）: 直したら反映されるよう、まずネットから。だめならキャッシュ（電波がなくても使える）
-  if (url.origin === self.location.origin && /\/(packs|i18n)\/[^/]+\.js$/.test(url.pathname)){
+  if (url.origin === self.location.origin && /\/(packs|i18n)\/.+\.js$/.test(url.pathname)){
     e.respondWith(fetch(req).then(res => { if (res.ok){ const copy = res.clone(); caches.open(VERSION).then(c => c.put(req, copy)); } return res; })
       .catch(() => caches.match(req, {ignoreSearch:true}).then(hit => hit || Response.error())));
     return;
