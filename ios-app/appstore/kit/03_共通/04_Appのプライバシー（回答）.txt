@@ -1,0 +1,5 @@
+データを収集しますか: はい
+収集するデータ: 「購入 → 購入履歴」「ID → ユーザ ID」の2つだけ
+それぞれの使い方: App の機能のみ／ユーザの身元にひも付けない／トラッキングに使わない
+ほか（位置情報・連絡先・写真・使用状況など）: 収集しない
+根拠: 購入の確認に RevenueCat を使うため（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）

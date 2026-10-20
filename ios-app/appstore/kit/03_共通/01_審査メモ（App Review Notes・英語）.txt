@@ -1,0 +1,13 @@
+Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks a country or region (21 available: Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday dishes, in that country's language (17 UI languages; the first screen is English). All app files (HTML/JS/CSS, 440+ original recipes, translations and illustrations) are bundled in the app; it does not load a remote website and works fully offline.
+
+Main features:
+- Generates a daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoids repeating recent dishes, meats and cuisines based on the user's cooking history.
+- Builds a shopping list from the plan, excluding ingredients the user already has.
+- Shares the menu and shopping list via the iOS share sheet / LINE.
+- Ingredient-based search ("what can I cook with what's in my fridge"), servings scaling and disliked-ingredient filtering.
+- Optional daily local notification reminder (Settings > 毎日のお知らせ).
+- Users can photograph their own dishes (stored on device only).
+
+No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
+
+In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly plan) at ¥380/month with a 1-month free introductory offer configured in App Store Connect (the app reads the actual length from the offer and shows it). A yearly product (¥3,500, "1-year thank-you price") exists but is only surfaced to users who have been subscribed for 12+ months. After choosing a country and the short setup, the app shows the subscription screen: the current App Store price, the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
