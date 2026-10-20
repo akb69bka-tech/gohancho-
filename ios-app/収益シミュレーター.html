@@ -1,0 +1,133 @@
+<title>ご飯帖 収益シミュレーター</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* 配置: 上に前提（人数・率）、下に結果。数字は表で、帯グラフは「売上のうち手元に残る割合」だけ */
+:root{--bg:#f6f3ec;--fg:#1f2430;--muted:#5f6878;--accent:#22406b;--accent-soft:#e3eaf4;--line:#d9d4c8;--card:#fffdf8;--yolk:#c98e0c;--yolk-soft:#f6ecd2;--font:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121620;--fg:#e8eaf0;--muted:#98a2b3;--accent:#9dbbe6;--accent-soft:#1c2a40;--line:#2b3444;--card:#181e2a;--yolk:#e9b53c;--yolk-soft:#33290f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121620;--fg:#e8eaf0;--muted:#98a2b3;--accent:#9dbbe6;--accent-soft:#1c2a40;--line:#2b3444;--card:#181e2a;--yolk:#e9b53c;--yolk-soft:#33290f;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.7;padding-block:14px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px;min-width:0}
+h1{font-size:1.3rem;margin:0;text-wrap:balance}
+h2{font-size:1rem;margin:0 0 6px;color:var(--accent)}
+p{margin:0;font-size:.9rem} .muted{color:var(--muted);font-size:.82rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+button.p{font:inherit;font-size:.84rem;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:5px 12px;cursor:pointer}
+button.p[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:.8rem;color:var(--muted)}
+label.f input,label.f select{font:inherit;font-size:.95rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:100%;min-width:0;font-variant-numeric:tabular-nums}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;width:fit-content}
+.seg button{font:inherit;font-size:.84rem;border:0;background:transparent;color:var(--fg);padding:5px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border-top:1px solid var(--line);padding:7px 6px;text-align:right;vertical-align:top;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{border-top:0;color:var(--muted);font-weight:500;font-size:.8rem}
+tr.total td{font-weight:700;border-top:2px solid var(--accent)}
+.big{font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1.2}
+.bar{height:12px;border-radius:999px;background:var(--line);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .net{background:var(--accent)} .bar .fee{background:var(--yolk)} .bar .rc{background:var(--muted)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.note{background:var(--yolk-soft);border-radius:10px;padding:8px 12px;font-size:.84rem}
+.tw{overflow-x:auto}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+<main>
+  <div>
+    <h1>わが家のご飯帖 収益シミュレーター</h1>
+    <p class="muted">月額380円（海外は国ごとの価格）、最初の1か月無料、Apple の手数料（日本・EU 26%／他 30%、Small Business なら15%）、RevenueCat 1% を入れた、1年目の年間の見込みです。税金は含みません。</p>
+  </div>
+
+  <section class="card">
+    <h2>前提</h2>
+    <div class="presets" id="presets">
+      <button class="p" data-p="a" aria-pressed="true">A: 日本1万＋各国1万（20万人）</button>
+      <button class="p" data-p="b">B: 世界で1万人</button>
+      <button class="p" data-p="b2">B2: 日本だけで1万人</button>
+    </div>
+    <div>
+      <div class="muted" style="margin-bottom:4px">「人数」の意味</div>
+      <div class="seg" id="mode"><button data-m="paid" aria-pressed="true">有料会員の数</button><button data-m="dl">ダウンロード数（一部が有料）</button></div>
+    </div>
+    <div class="grid">
+      <label class="f">日本（380円/月）<input type="number" id="n_jp" min="0" step="100" value="10000"></label>
+      <label class="f">高単価8か国 米英仏独伊西韓台（約450円/月）<input type="number" id="n_hi" min="0" step="100" value="80000"></label>
+      <label class="f">中価格6か国 伯墨波土秘泰（約190円/月）<input type="number" id="n_mid" min="0" step="100" value="60000"></label>
+      <label class="f">低価格5か国 印尼比越埃（約95円/月）<input type="number" id="n_lo" min="0" step="100" value="50000"></label>
+      <label class="f" id="convwrap" hidden>ダウンロードのうち有料になる割合（%）<input type="number" id="conv" min="0" max="100" step="0.5" value="3"></label>
+      <label class="f">月の解約率（%）<input type="number" id="churn" min="0" max="50" step="0.5" value="6"></label>
+      <label class="f">1米ドル（円）<input type="number" id="fx" min="50" max="300" step="1" value="150"></label>
+      <label class="f">Apple の手数料<select id="feeMode"><option value="auto">自動（手取りが年100万米ドル以下なら15%）</option><option value="small">ずっと15%（Small Business）</option><option value="std">通常（日本・EU 26%／他 30%）</option></select></label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>1年目の見込み</h2>
+    <div class="big" id="net">—</div>
+    <p class="muted" id="netsub"></p>
+    <div class="bar" id="bar"></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>手元に残る</span><span><i style="background:var(--yolk)"></i>Apple</span><span><i style="background:var(--muted)"></i>RevenueCat</span></div>
+    <div class="tw"><table id="tbl"></table></div>
+    <p class="muted" id="foot"></p>
+  </section>
+
+  <section class="card">
+    <h2>読み方</h2>
+    <p>・「有料会員の数」は、無料の1か月を終えて払い始めた人の数です。1年目は最大11か月分の支払いになります。</p>
+    <p>・「月の解約率 6%」は、毎月 6% の人がやめる前提で、1人あたり平均 8.2 か月分の支払いになります（0% にすると 11 か月分）。業界の目安は月 5〜10%（出典不明）。</p>
+    <p>・「ダウンロード数」を選ぶと、そのうち有料になる割合（初期値 3%）だけが会員になります。無料部分の広いアプリの中央値は約 2%、最初に購入画面を出す型は約 10% という調査があります（RevenueCat「State of Subscription Apps」の要約）。</p>
+    <p>・2年目以降は、続いている会員の手数料が 15% に下がり、無料の1か月もないので、同じ会員数なら 1年目より手元が増えます。</p>
+    <div class="note">税金（所得税・住民税、消費税）は引いていません。海外からの入金の税務は税理士に確認してください。</div>
+  </section>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const PRESETS = {a:[10000,80000,60000,50000], b:[500,4000,3000,2500], b2:[10000,0,0,0]};
+let mode = 'paid';
+const yen = v => v >= 1e8 ? (v/1e8).toFixed(2).replace(/\.?0+$/,'') + '億円' : Math.round(v/1e4).toLocaleString('ja-JP') + '万円';
+function calc(){
+  const n = ['n_jp','n_hi','n_mid','n_lo'].map(id => Math.max(0, +$('#'+id).value || 0));
+  const conv = mode === 'dl' ? Math.min(100, Math.max(0, +$('#conv').value || 0)) / 100 : 1;
+  const churn = Math.min(0.5, Math.max(0, (+$('#churn').value || 0) / 100));
+  const fx = Math.max(1, +$('#fx').value || 150);
+  const paidMonths = churn === 0 ? 11 : (1 - Math.pow(1 - churn, 11)) / churn;
+  // 区分: 名前, 人数, 月額(円), 手数料の地域
+  const groups = [
+    ['日本', n[0]*conv, 380, 'jp'],
+    ['EU 4か国（仏独伊西）', n[1]*conv/2, 450, 'eu'],
+    ['米英韓台', n[1]*conv/2, 450, 'other'],
+    ['中価格6か国', n[2]*conv, 190, 'other'],
+    ['低価格5か国', n[3]*conv, 95, 'other'],
+  ].map(([g,c,p,reg]) => ({g, c, p, reg, gross: c*p*paidMonths}));
+  const gross = groups.reduce((s,x) => s + x.gross, 0);
+  const fm = $('#feeMode').value;
+  const small = fm === 'small' ? true : fm === 'std' ? false : (gross*0.85/fx <= 1_000_000);
+  const rate = reg => small ? 0.15 : ({jp:0.26, eu:0.26, other:0.30})[reg];
+  groups.forEach(x => { x.fee = x.gross*rate(x.reg); });
+  const fee = groups.reduce((s,x) => s + x.fee, 0);
+  const rc = (gross/12/fx > 2500) ? gross*0.01 : 0;
+  const net = gross - fee - rc;
+  const payers = groups.reduce((s,x) => s + x.c, 0);
+  $('#net').textContent = '手元に残る額 ' + yen(net) + ' / 年';
+  $('#netsub').textContent = `売上 ${yen(gross)} − Apple ${yen(fee)}（${small ? 'Small Business 15%' : '通常 26〜30%'}） − RevenueCat ${yen(rc)}。有料会員 ${Math.round(payers).toLocaleString('ja-JP')}人、1人あたり平均 ${paidMonths.toFixed(1)}か月分の支払い。月平均 ${yen(net/12)}。`;
+  $('#bar').innerHTML = gross ? `<i class="net" style="width:${net/gross*100}%"></i><i class="fee" style="width:${fee/gross*100}%"></i><i class="rc" style="width:${rc/gross*100}%"></i>` : '';
+  $('#tbl').innerHTML = `<thead><tr><th>地域</th><th>有料会員</th><th>月額</th><th>売上/年</th><th>Apple</th><th>手元</th></tr></thead><tbody>` +
+    groups.map(x => `<tr><td>${x.g}</td><td>${Math.round(x.c).toLocaleString('ja-JP')}人</td><td>${x.p}円</td><td>${yen(x.gross)}</td><td>${Math.round(rate(x.reg)*100)}%</td><td>${yen(x.gross - x.fee - (gross ? rc*x.gross/gross : 0))}</td></tr>`).join('') +
+    `<tr class="total"><td>合計</td><td>${Math.round(payers).toLocaleString('ja-JP')}人</td><td></td><td>${yen(gross)}</td><td>${yen(fee)}</td><td>${yen(net)}</td></tr></tbody>`;
+  $('#foot').textContent = small ? '手取りが年100万米ドル以下なので Small Business Program の15%で計算しています。超えた翌年からは通常の手数料になります。' : '手取りが年100万米ドルを超える規模なので、通常の手数料（日本・EU 26%、その他 30%）で計算しています。2年目以降に続いている会員の分は15%になります。';
+}
+document.querySelectorAll('#presets .p').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#presets .p').forEach(x => x.setAttribute('aria-pressed', x === b));
+  PRESETS[b.dataset.p].forEach((v,i) => { $('#'+['n_jp','n_hi','n_mid','n_lo'][i]).value = v; }); calc();
+}));
+document.querySelectorAll('#mode button').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.m; document.querySelectorAll('#mode button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('#convwrap').hidden = mode !== 'dl'; calc();
+}));
+document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calc));
+calc();
+</script>
