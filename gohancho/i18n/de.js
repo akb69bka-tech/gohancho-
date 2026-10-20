@@ -178,7 +178,7 @@ GOHAN_I18N('de', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Als App startest du Gohancho im Vollbild über das Symbol, und Menüs, Rezepte und Protokoll funktionieren auch ohne Netz. Hinzufügen kannst du sie, wenn du die App-Seite öffnest (die „gohancho“-Adresse auf GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Monatlich",
-    "480円 / 月": "480 ¥ / Monat",
+    "380円 / 月": "380 ¥ / Monat",
     "{n}か月分無料": {"one": "1 Monat gratis", "other": "{n} Monate gratis"},
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one": "Wochenplan für alle Mahlzeiten, ideal für den Großeinkauf (kostenlose Version: nur heute)", "other": "Wochenplan für alle Mahlzeiten, ideal für den Großeinkauf (kostenlose Version: {n} Tage)"},
     "ひと手間の「やってみた」で腕前を記録": "Fortschritt mit „Ausprobiert“ bei Küchentipps festhalten",
@@ -527,5 +527,14 @@ GOHAN_I18N('de', {
     "読みこんでいます…": "Wird geladen…",
     "最初の1か月は、すべての機能を無料で使えます。": "Der erste Monat ist gratis, mit allen Funktionen.",
     "ご意見・不具合を送る": "Feedback senden oder Problem melden",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "Die ersten {n} Monate sind gratis, mit allen Funktionen."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Die ersten {n} Monate sind gratis, mit allen Funktionen.",
+    "3,500円 / 年": "3.500 ¥ / Jahr",
+    "無料体験キャンペーン中: あと{n}日": {"one": "Gratis-Aktion: noch {n} Tag", "other": "Gratis-Aktion: noch {n} Tage"},
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Schick jede Woche kurz Feedback oder eine Idee, dann bleibt die nächste Woche gratis (bis zu {n} Monate).",
+    "ありがとうございます。次の1週間分が開きました。": "Danke! Die nächste Woche ist freigeschaltet.",
+    "今週の分は受け取りました。ありがとうございます。": "Feedback für diese Woche erhalten, danke.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} Monate gratis, ohne Anmeldung. Ein kurzes Feedback pro Woche genügt, um weiterzumachen.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Danke für ein ganzes Jahr! Hier ist ein Sonderpreis für das Jahresabo.",
+    "年額プラン（1年ありがとう価格）": "Jährlich (Dankeschön-Preis nach 1 Jahr)",
+    "感想・改善点を送る": "Feedback oder Idee senden"
 });

@@ -178,7 +178,7 @@ GOHAN_I18N('tr', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Uygulama olarak simgesinden tam ekran açılır; menüler, tarifler ve kayıtlarınız internet olmadan da çalışır. Uygulamanın kendi sayfasını (GitHub Pages'teki “gohancho” adresi) açtığınızda ekleyebilirsiniz.",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Aylık",
-    "480円 / 月": "¥480 / ay",
+    "380円 / 月": "¥380 / ay",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Tam bir haftalık menü planı, tek seferde alışveriş için ideal (ücretsiz sürüm: sadece bugün)","other":"Tam bir haftalık menü planı, tek seferde alışveriş için ideal (ücretsiz sürüm: {n} gün)"},
     "ひと手間の「やってみた」で腕前を記録": "Püf noktalarında “Denedim” ile becerilerinizi takip edin",
     "買い足すと作れる料理が増える食材をすべて表示": "Daha fazla yemek açan tüm malzemeleri görün",
@@ -527,5 +527,14 @@ GOHAN_I18N('tr', {
     "読みこんでいます…": "Yükleniyor…",
     "最初の1か月は、すべての機能を無料で使えます。": "İlk ay tüm özelliklerle ücretsizdir.",
     "ご意見・不具合を送る": "Görüş gönder veya sorun bildir",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "İlk {n} ay tüm özelliklerle ücretsizdir."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "İlk {n} ay tüm özelliklerle ücretsizdir.",
+    "3,500円 / 年": "¥3.500 / yıl",
+    "無料体験キャンペーン中: あと{n}日": "Ücretsiz deneme kampanyası: {n} gün kaldı",
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Her hafta kısa bir görüş ya da fikir gönderin, sonraki hafta da ücretsiz olsun (en fazla {n} ay).",
+    "ありがとうございます。次の1週間分が開きました。": "Teşekkürler! Sonraki hafta açıldı.",
+    "今週の分は受け取りました。ありがとうございます。": "Bu haftanın görüşü alındı, teşekkürler.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "Kayıt olmadan {n} ay ücretsiz. Devam etmek için her hafta kısa bir görüş yeterli.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Koca bir yıl için teşekkürler! Yıllık plan için özel fiyat sizi bekliyor.",
+    "年額プラン（1年ありがとう価格）": "Yıllık (1 yıl teşekkür fiyatı)",
+    "感想・改善点を送る": "Görüş veya fikir gönder"
 });

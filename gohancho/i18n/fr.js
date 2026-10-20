@@ -178,7 +178,7 @@ GOHAN_I18N('fr', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "En appli, elle s'ouvre en plein écran depuis son icône, et les menus, recettes et votre journal fonctionnent même hors connexion. Vous pouvez l'ajouter en ouvrant la page de l'appli (l'adresse « gohancho » sur GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Mensuel",
-    "480円 / 月": "¥480 / mois",
+    "380円 / 月": "¥380 / mois",
     "{n}か月分無料": {"one":"1 mois offert","other":"{n} mois offerts"},
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Une semaine entière de menus, idéale pour un grand tour de courses (version gratuite : aujourd'hui seulement)","other":"Une semaine entière de menus, idéale pour un grand tour de courses (version gratuite : {n} jours)"},
     "ひと手間の「やってみた」で腕前を記録": "Suivez vos progrès avec les astuces du chef",
@@ -527,5 +527,14 @@ GOHAN_I18N('fr', {
     "読みこんでいます…": "Chargement…",
     "最初の1か月は、すべての機能を無料で使えます。": "Le premier mois est offert, avec toutes les fonctions.",
     "ご意見・不具合を送る": "Envoyer un avis ou signaler un problème",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "Les {n} premiers mois sont offerts, avec toutes les fonctions."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Les {n} premiers mois sont offerts, avec toutes les fonctions.",
+    "3,500円 / 年": "¥3 500 / an",
+    "無料体験キャンペーン中: あと{n}日": {"one": "Essai gratuit : plus que {n} jour", "other": "Essai gratuit : plus que {n} jours"},
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Chaque semaine, envoyez un petit avis ou une idée : la semaine suivante reste gratuite (jusqu'à {n} mois).",
+    "ありがとうございます。次の1週間分が開きました。": "Merci ! La semaine suivante est débloquée.",
+    "今週の分は受け取りました。ありがとうございます。": "Avis de la semaine bien reçu, merci.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} mois gratuits, sans inscription. Un petit avis chaque semaine suffit pour continuer.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Merci pour cette année ! Voici un tarif spécial pour la formule annuelle.",
+    "年額プラン（1年ありがとう価格）": "Annuel (prix merci 1 an)",
+    "感想・改善点を送る": "Envoyer un avis ou une idée"
 });

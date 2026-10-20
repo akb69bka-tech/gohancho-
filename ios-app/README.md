@@ -72,8 +72,8 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 | 項目 | 今の値 | 販売時 |
 | --- | --- | --- |
 | `billingMode` | `'native'`（Web 版は全機能無料。iPhone アプリ版は API キーを入れると課金が有効） | そのまま |
-| `prices` | 月額 480円のみ（iPhone アプリ版では App Store の実際の価格を自動で表示） | App Store Connect の価格に合わせる |
-| `trialDays` / `trialMode` | `30` / `'store'`（App Store のお試しオファー「1か月無料」に合わせる） | お試しの長さ |
+| `prices` / `loyalty` | 月額 380円。年額 3,500円は1年つづいた会員にだけ表示（iPhone アプリ版では App Store の実際の価格を自動で表示） | App Store Connect の価格に合わせる |
+| `trialMode` / `campaign` | `'store'`（App Store のお試しオファー: 日本2か月・他1か月）。`campaign.active: false`（予備: 登録なしで最大60日、毎週ひとこと感想で1週間ずつ） | お試し開始率が低ければ `campaign.active: true` に |
 | `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
 | （コード内） | ひと手間の「やってみた」記録はプラスのみ | |
 | `earlySupporterBefore` | 空 | 例: `'2027-04-01'` にすると、その日より前から使っている人はずっと無料（初期ユーザーへのお礼） |

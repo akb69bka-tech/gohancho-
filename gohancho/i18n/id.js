@@ -178,7 +178,7 @@ GOHAN_I18N('id', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Sebagai aplikasi, Gohancho terbuka layar penuh dari ikonnya, dan menu, resep, serta catatan tetap bisa dipakai tanpa internet. Anda bisa menambahkannya saat membuka halaman aplikasinya sendiri (alamat “gohancho” di GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Bulanan",
-    "480円 / 月": "¥480 / bulan",
+    "380円 / 月": "¥380 / bulan",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": "Rencana menu seminggu penuh, pas untuk belanja sekali jalan (versi gratis: {n} hari)",
     "ひと手間の「やってみた」で腕前を記録": "Catat keahlian Anda lewat tips koki",
     "買い足すと作れる料理が増える食材をすべて表示": "Lihat semua bahan yang membuka lebih banyak masakan",
@@ -527,5 +527,14 @@ GOHAN_I18N('id', {
     "読みこんでいます…": "Memuat…",
     "最初の1か月は、すべての機能を無料で使えます。": "Bulan pertama gratis, dengan semua fitur.",
     "ご意見・不具合を送る": "Kirim masukan atau laporkan masalah",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "{n} bulan pertama gratis, dengan semua fitur."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "{n} bulan pertama gratis, dengan semua fitur.",
+    "3,500円 / 年": "¥3.500 / tahun",
+    "無料体験キャンペーン中: あと{n}日": "Kampanye uji coba gratis: {n} hari lagi",
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Kirim komentar atau ide singkat setiap minggu, maka minggu berikutnya tetap gratis (maksimal {n} bulan).",
+    "ありがとうございます。次の1週間分が開きました。": "Terima kasih! Minggu berikutnya sudah terbuka.",
+    "今週の分は受け取りました。ありがとうございます。": "Komentar minggu ini sudah diterima, terima kasih.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} bulan gratis tanpa daftar. Cukup kirim komentar singkat tiap minggu untuk melanjutkan.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Terima kasih sudah setahun penuh! Ini harga khusus untuk paket tahunan.",
+    "年額プラン（1年ありがとう価格）": "Tahunan (harga terima kasih 1 tahun)",
+    "感想・改善点を送る": "Kirim komentar atau ide"
 });

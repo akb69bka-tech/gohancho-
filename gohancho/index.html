@@ -1301,7 +1301,7 @@ function render(){
     if (tab === 'settings') v.innerHTML = viewSettings();
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
-    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(PLAN.trialMode === 'store' ? 'start' : 'locked');
+    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked');
 }
 
 /* ---- 料理写真 ----
@@ -2039,9 +2039,13 @@ const PLAN = {
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     get name(){ return t('ごはん帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
-        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('480円 / 月'); }, per:'月', note:''},
-        // 年額プランは置かない（いつでも解約できる月額だけ）。復活させるなら {id:'gohancho_plus_yearly', per:'年', ...} をここに足す
+        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('380円 / 月'); }, per:'月', note:''},
     ],
+    // 年額は「1年つづけてくれた人」にだけ案内する特別価格（App Store Connect に製品を作り、アプリは12か月以上の会員にだけ表示する）
+    loyalty: {months:12, id:'gohancho_plus_yearly_loyal', get label(){ return t('年額プラン（1年ありがとう価格）'); }, get price(){ return t('3,500円 / 年'); }, per:'年', note:''},
+    // 無料体験キャンペーン（アプリ側）: 登録なしで使いはじめられ、毎週ひとこと感想・改善点を送ると次の1週間が開く（最大 days 日）
+    // まずは Apple 方式（App Store Connect のお試しオファー: 日本2か月・他1か月）で出すので false。App Store Connect の「お試し開始率」を見て、低ければ true に切りかえる（そのときはお試しオファーを外す）
+    campaign: {active:false, days:60, weekDays:7, resendAfter:5},
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
@@ -2063,21 +2067,42 @@ function isSubscribed(){
 function trialUsed(){ return Math.max(0, daysBetween(S.firstUse || TODAY, TODAY)); }
 function trialActive(){ return PLAN.billingEnabled && PLAN.trialMode === 'app' && trialUsed() < PLAN.trialDays; }
 function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - trialUsed()); }
-function isLocked(){ return PLAN.billingEnabled && !isSubscribed() && !trialActive(); }
+function isLocked(){ return PLAN.billingEnabled && !isSubscribed() && !trialActive() && !monitorActive(); }
+// 無料体験キャンペーン（モニター）: 使いはじめの1週間は無条件。以後は感想・改善点を送るたびに1週間ずつ、最大 campaign.days 日まで開く
+function monitorOn(){ return PLAN.billingEnabled && PLAN.campaign.active && !!S.firstUse; }
+function monitorCapEnd(){ return addDays(S.firstUse, PLAN.campaign.days); }
+function monitorUntil(){ const u = (S.monitor && S.monitor.until) || addDays(S.firstUse, PLAN.campaign.weekDays); const cap = monitorCapEnd(); return u < cap ? u : cap; }
+function monitorActive(){ return monitorOn() && !isSubscribed() && TODAY < monitorUntil(); }
+function monitorDaysLeft(){ return Math.max(0, daysBetween(TODAY, monitorUntil())); }
+function monitorOpen(){ return monitorOn() && !isSubscribed() && TODAY < monitorCapEnd(); }   // まだ送れば延ばせる期間の中
+function monitorCanSend(){ if (!monitorOpen()) return false; const last = S.monitor && S.monitor.lastSent; return !last || daysBetween(last, TODAY) >= PLAN.campaign.resendAfter; }
+function monitorSend(){
+    const base = TODAY > monitorUntil() ? TODAY : monitorUntil();
+    S.monitor = {until: addDays(base, PLAN.campaign.weekDays), lastSent: TODAY, count: ((S.monitor && S.monitor.count) || 0) + 1}; save();
+    const subject = '[Gohancho] ' + t('感想・改善点を送る') + ' #' + S.monitor.count;
+    const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG} / week ${S.monitor.count}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
+    if (SUPPORT_EMAIL) location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    else if (navigator.share) navigator.share({title: subject, text: subject}).catch(() => {});
+    toast(t('ありがとうございます。次の1週間分が開きました。'), true); closeSheet(); render(); scheduleTrialReminder();
+}
+function loyalEligible(){ return isSubscribed() && !!(S.pro && S.pro.since) && daysBetween(S.pro.since, TODAY) >= PLAN.loyalty.months * 30; }
 // 無料期間の終わる前の日に、端末の通知で知らせる（通知を許可している人だけ）
 async function scheduleTrialReminder(){
     const P = nativePlugin('LocalNotifications');
-    if (!P || !trialActive() || isSubscribed()) return;
+    if (!P || isSubscribed()) return;
+    const end = trialActive() ? addDays(S.firstUse || TODAY, PLAN.trialDays) : monitorActive() ? monitorUntil() : null; if (!end) return;
     try{
         const perm = await P.checkPermissions(); if (!perm || perm.display !== 'granted') return;
-        const d = parseYmd(S.firstUse || TODAY); d.setDate(d.getDate() + PLAN.trialDays - 1); d.setHours(19, 0, 0, 0);
+        const d = parseYmd(end); d.setDate(d.getDate() - 1); d.setHours(19, 0, 0, 0);
         if (d <= new Date()) return;
-        await P.schedule({notifications:[{id: 1002, title: t('無料期間は明日までです'), body: t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。'), schedule:{at: d}}]});
+        try{ await P.cancel({notifications:[{id: 1002}]}); }catch(e){}
+        const body = monitorActive() ? t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}) : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
+        await P.schedule({notifications:[{id: 1002, title: t('無料期間は明日までです'), body, schedule:{at: d}}]});
     }catch(e){}
 }
 function hasPro(){
     if (!PLAN.billingEnabled) return true;
-    return isSubscribed() || trialActive();
+    return isSubscribed() || trialActive() || monitorActive();
 }
 function proMark(){ return PLAN.billingEnabled && !hasPro() ? `<span class="plus-mark">${esc(t('プラス'))}</span>` : ''; }
 function useTwistQuota(){
@@ -2095,8 +2120,9 @@ function rcInit(){
     return rcReady || (rcReady = P.configure({apiKey: PLAN.revenueCatApiKey}).then(() => P));
 }
 function applyCustomerInfo(ci){
-    const active = !!(ci && ci.entitlements && ci.entitlements.active && ci.entitlements.active[PLAN.entitlement]);
-    S.pro = {active, checked: Date.now()}; save(); render();
+    const ent = ci && ci.entitlements && ci.entitlements.active && ci.entitlements.active[PLAN.entitlement];
+    const since = ent && ent.originalPurchaseDate ? String(ent.originalPurchaseDate).slice(0, 10) : ((S.pro && S.pro.since) || null);
+    S.pro = {active: !!ent, since, checked: Date.now()}; save(); render();
     return active;
 }
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
@@ -2176,7 +2202,8 @@ function paywallReason(k){
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
         case 'start': return introEligible ? introLabel() : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
-        case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:PLAN.trialDays});
+        case 'monitor': return t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)});
+        case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:monitorOn() ? PLAN.campaign.days : PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
         default: return '';
     }
@@ -2203,7 +2230,7 @@ function renderSheet(){
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
                 <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
             </ul>
-            ${PLAN.billingEnabled ? `<p class="pw-free">${esc(PLAN.trialMode === 'store' ? introLabel() : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
+            ${PLAN.billingEnabled ? `<p class="pw-free">${esc(monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? introLabel() : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -2233,10 +2260,11 @@ function renderSheet(){
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
             ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
+            ${sheet.reason === 'monitor' ? `<div class="row">${monitorCanSend() ? `<button class="btn primary" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small muted">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : ''}
             <ul class="pw-list">${(sheet.reason === 'start' || sheet.reason === 'locked' ? [t('毎日の献立を、お膳ごと提案'), t('同じ料理が続かない'), t('献立の予定と買い物メモ'), t('冷蔵庫の材料から探せる'), t('世界のレシピ'), t('家族に送る')] : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                ${PLAN.trialMode === 'store' && introEligible && sheet.reason !== 'start' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
-                <div class="pw-prices">${[...PLAN.prices].reverse().map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
+                ${PLAN.trialMode === 'store' && introEligible && !monitorOn() && sheet.reason !== 'start' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
+                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
@@ -2383,6 +2411,7 @@ function viewSettings(){
                 : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
             ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
+        ${loyalEligible() ? `<div class="note"><span>${esc(t('1年間ありがとうございます。年額プランを特別価格でご案内します。'))}</span><button class="btn sm" data-act="paywall">${esc(t('年額プラン（1年ありがとう価格）'))}</button></div>` : ''}
         <div class="set-group">
             <div class="set-title">${esc(t('アプリ'))}</div>
             ${reminderHtml()}
@@ -2598,7 +2627,7 @@ function viewToday(){
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
     <section class="sec">
-        ${trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
+        ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span>${esc(t('1週間プランでは、今日の主菜は'))} <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc(t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}))}</span></div>
         <div class="card cond">
@@ -3018,6 +3047,7 @@ document.addEventListener('click', e => {
         case 'paywall-hints': openPaywall('hints'); break;
         case 'buy': purchase(id); break;
         case 'restore': restorePurchases(); break;
+        case 'monitor-send': monitorSend(); break;
         case 'sheet-close': closeSheet(); break;
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;

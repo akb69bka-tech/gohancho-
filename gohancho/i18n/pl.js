@@ -178,7 +178,7 @@ GOHAN_I18N('pl', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Jako aplikacja otwiera się na pełnym ekranie z ikony, a jadłospisy, przepisy i dziennik działają nawet offline. Możesz ją dodać, otwierając stronę samej aplikacji (adres „gohancho” na GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Miesięcznie",
-    "480円 / 月": "¥480 / miesiąc",
+    "380円 / 月": "¥380 / miesiąc",
     "{n}か月分無料": {"one": "1 miesiąc gratis", "few": "{n} miesiące gratis", "many": "{n} miesięcy gratis", "other": "{n} miesiąca gratis"},
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: tylko dziś)", "few": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dni)", "many": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dni)", "other": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dnia)"},
     "ひと手間の「やってみた」で腕前を記録": "Zapisuj swoje umiejętności dzięki trikom szefa",
@@ -527,5 +527,14 @@ GOHAN_I18N('pl', {
     "読みこんでいます…": "Wczytywanie…",
     "最初の1か月は、すべての機能を無料で使えます。": "Pierwszy miesiąc jest za darmo, ze wszystkimi funkcjami.",
     "ご意見・不具合を送る": "Wyślij opinię lub zgłoś problem",
-    "最初の{n}か月は、すべての機能を無料で使えます。": {"one": "Pierwszy miesiąc jest za darmo, ze wszystkimi funkcjami.", "few": "Pierwsze {n} miesiące są za darmo, ze wszystkimi funkcjami.", "many": "Pierwsze {n} miesięcy jest za darmo, ze wszystkimi funkcjami.", "other": "Pierwsze {n} miesiąca jest za darmo, ze wszystkimi funkcjami."}
+    "最初の{n}か月は、すべての機能を無料で使えます。": {"one": "Pierwszy miesiąc jest za darmo, ze wszystkimi funkcjami.", "few": "Pierwsze {n} miesiące są za darmo, ze wszystkimi funkcjami.", "many": "Pierwsze {n} miesięcy jest za darmo, ze wszystkimi funkcjami.", "other": "Pierwsze {n} miesiąca jest za darmo, ze wszystkimi funkcjami."},
+    "3,500円 / 年": "¥3 500 / rok",
+    "無料体験キャンペーン中: あと{n}日": {"one": "Darmowy okres: został {n} dzień", "few": "Darmowy okres: zostały {n} dni", "many": "Darmowy okres: zostało {n} dni", "other": "Darmowy okres: zostało {n} dnia"},
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Co tydzień wyślij krótką opinię lub pomysł, a kolejny tydzień pozostanie darmowy (maks. {n} miesiące).",
+    "ありがとうございます。次の1週間分が開きました。": "Dziękujemy! Kolejny tydzień został odblokowany.",
+    "今週の分は受け取りました。ありがとうございます。": "Opinia na ten tydzień odebrana, dziękujemy.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} miesiące za darmo, bez rejestracji. Wystarczy krótka opinia co tydzień.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Dziękujemy za cały rok! Oto specjalna cena planu rocznego.",
+    "年額プラン（1年ありがとう価格）": "Roczny (cena-podziękowanie po roku)",
+    "感想・改善点を送る": "Wyślij opinię lub pomysł"
 });

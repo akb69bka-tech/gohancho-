@@ -178,7 +178,7 @@ GOHAN_I18N('fil', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Bilang app, bubukas ito nang full screen mula sa icon, at gumagana ang menu, recipe at talaan kahit walang signal. Maidaragdag mo ito kapag binuksan mo ang mismong page ng app (ang “gohancho” address sa GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Buwanan",
-    "480円 / 月": "¥480 / buwan",
+    "380円 / 月": "¥380 / buwan",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Isang buong linggong meal plan, bagay sa isahang grocery (libreng bersyon: ngayon lang)","other":"Isang buong linggong meal plan, bagay sa isahang grocery (libreng bersyon: {n} araw)"},
     "ひと手間の「やってみた」で腕前を記録": "Itala ang skills mo sa dagdag-diskarte",
     "買い足すと作れる料理が増える食材をすべて表示": "Makita ang lahat ng sangkap na magbubukas ng mas maraming ulam",
@@ -527,5 +527,14 @@ GOHAN_I18N('fil', {
     "読みこんでいます…": "Naglo-load…",
     "最初の1か月は、すべての機能を無料で使えます。": "Libre ang unang buwan, kasama ang lahat ng feature.",
     "ご意見・不具合を送る": "Magpadala ng feedback o mag-report ng problema",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "Libre ang unang {n} buwan, kasama ang lahat ng feature."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Libre ang unang {n} buwan, kasama ang lahat ng feature.",
+    "3,500円 / 年": "¥3,500 / taon",
+    "無料体験キャンペーン中: あと{n}日": "Libreng trial campaign: {n} araw na lang",
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Magpadala ng maikling komento o ideya kada linggo at libre pa rin ang susunod na linggo (hanggang {n} buwan).",
+    "ありがとうございます。次の1週間分が開きました。": "Salamat! Bukas na ang susunod na linggo.",
+    "今週の分は受け取りました。ありがとうございます。": "Natanggap na ang komento ngayong linggo, salamat.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} buwang libre, walang sign-up. Magpadala lang ng maikling komento kada linggo para magpatuloy.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Salamat sa isang buong taon! Heto ang espesyal na presyo sa taunang plan.",
+    "年額プラン（1年ありがとう価格）": "Taunan (1-year thank-you price)",
+    "感想・改善点を送る": "Magpadala ng komento o ideya"
 });

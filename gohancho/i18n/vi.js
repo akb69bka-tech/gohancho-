@@ -6,7 +6,7 @@ GOHAN_I18N('vi', {
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": "Kế hoạch bữa ăn cả tuần (tiện đi chợ một lần. Bản miễn phí xem tối đa {n} ngày)",
     "1週間分を考える": "Lên kế hoạch cả tuần",
     "20分以内": "Dưới 20 phút",
-    "480円 / 月": "¥480 / tháng",
+    "380円 / 月": "¥380 / tháng",
     "5品・6品の献立は、ごはん帖プラスで使えます。": "Thực đơn 5–6 món nằm trong Gohancho Plus.",
     "5品・6品の献立（おもてなし・作り置きの日に）": "Thực đơn 5–6 món (cho ngày có khách hoặc nấu sẵn cả tuần)",
     "7日間、同じ料理や同じ肉・魚が続かないように組みます": "Bảy ngày món chính không lặp món hay lặp loại thịt, cá liên tiếp",
@@ -527,5 +527,14 @@ GOHAN_I18N('vi', {
     "読みこんでいます…": "Đang tải…",
     "最初の1か月は、すべての機能を無料で使えます。": "Tháng đầu miễn phí với đầy đủ tính năng.",
     "ご意見・不具合を送る": "Gửi góp ý hoặc báo lỗi",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "{n} tháng đầu miễn phí với đầy đủ tính năng."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "{n} tháng đầu miễn phí với đầy đủ tính năng.",
+    "3,500円 / 年": "¥3.500 / năm",
+    "無料体験キャンペーン中: あと{n}日": "Chiến dịch dùng thử miễn phí: còn {n} ngày",
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Mỗi tuần gửi một nhận xét hoặc ý tưởng ngắn, tuần tiếp theo vẫn miễn phí (tối đa {n} tháng).",
+    "ありがとうございます。次の1週間分が開きました。": "Cảm ơn bạn! Tuần tiếp theo đã được mở.",
+    "今週の分は受け取りました。ありがとうございます。": "Đã nhận góp ý tuần này, cảm ơn bạn.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "Miễn phí {n} tháng, không cần đăng ký. Chỉ cần gửi một nhận xét ngắn mỗi tuần để tiếp tục.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Cảm ơn bạn đã đồng hành trọn một năm! Đây là giá đặc biệt cho gói năm.",
+    "年額プラン（1年ありがとう価格）": "Gói năm (giá tri ân 1 năm)",
+    "感想・改善点を送る": "Gửi nhận xét hoặc ý tưởng"
 });

@@ -178,7 +178,7 @@ GOHAN_I18N('it', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Come app si apre a schermo intero dall'icona, e menu, ricette e diario funzionano anche offline. Puoi aggiungerla aprendo la pagina dell'app (l'indirizzo «gohancho» su GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Mensile",
-    "480円 / 月": "¥480 / mese",
+    "380円 / 月": "¥380 / mese",
     "{n}か月分無料": {"one":"1 mese gratis","other":"{n} mesi gratis"},
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Una settimana intera di menu, ideale per fare la spesa una volta sola (versione gratuita: solo oggi)","other":"Una settimana intera di menu, ideale per fare la spesa una volta sola (versione gratuita: {n} giorni)"},
     "ひと手間の「やってみた」で腕前を記録": "Tieni traccia delle tue abilità con i trucchi del mestiere",
@@ -527,5 +527,14 @@ GOHAN_I18N('it', {
     "読みこんでいます…": "Caricamento…",
     "最初の1か月は、すべての機能を無料で使えます。": "Il primo mese è gratis, con tutte le funzioni.",
     "ご意見・不具合を送る": "Invia un commento o segnala un problema",
-    "最初の{n}か月は、すべての機能を無料で使えます。": "I primi {n} mesi sono gratis, con tutte le funzioni."
+    "最初の{n}か月は、すべての機能を無料で使えます。": "I primi {n} mesi sono gratis, con tutte le funzioni.",
+    "3,500円 / 年": "¥3.500 / anno",
+    "無料体験キャンペーン中: あと{n}日": {"one": "Prova gratuita: ancora {n} giorno", "other": "Prova gratuita: ancora {n} giorni"},
+    "毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。": "Ogni settimana invia un breve commento o un'idea: la settimana dopo resta gratis (fino a {n} mesi).",
+    "ありがとうございます。次の1週間分が開きました。": "Grazie! La prossima settimana è sbloccata.",
+    "今週の分は受け取りました。ありがとうございます。": "Commento di questa settimana ricevuto, grazie.",
+    "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} mesi gratis, senza registrazione. Basta un breve commento a settimana per continuare.",
+    "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Grazie per un anno intero! Ecco un prezzo speciale per il piano annuale.",
+    "年額プラン（1年ありがとう価格）": "Annuale (prezzo grazie 1 anno)",
+    "感想・改善点を送る": "Invia un commento o un'idea"
 });
