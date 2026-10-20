@@ -178,12 +178,8 @@ GOHAN_I18N('es', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Como app se abre a pantalla completa desde su icono, y los menús, las recetas y el diario funcionan incluso sin conexión. Puedes añadirla al abrir la página propia de la app (la dirección “gohancho” en GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Mensual",
-    "年額プラン": "Anual",
     "480円 / 月": "480 ¥ / mes",
-    "4,800円 / 年": "4.800 ¥ / año",
-    "2か月分無料": "2 meses gratis",
     "{n}か月分無料": {"one": "{n} mes gratis", "other": "{n} meses gratis"},
-    "最初の7日間は無料": "Los primeros 7 días, gratis",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one": "Plan de menús para toda la semana, ideal para una sola compra grande (versión gratuita: solo hoy)", "other": "Plan de menús para toda la semana, ideal para una sola compra grande (versión gratuita: {n} días)"},
     "ひと手間の「やってみた」で腕前を記録": "Registra tu progreso con los trucos del chef",
     "買い足すと作れる料理が増える食材をすべて表示": "Ver todos los ingredientes que te permiten cocinar más platos",
@@ -529,4 +525,7 @@ GOHAN_I18N('es', {
     "無料期間は明日までです": "Tu prueba gratuita termina mañana",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Elige un plan para seguir. Tu historial se queda tal cual.",
     "読みこんでいます…": "Cargando…",
+    "最初の1か月は、すべての機能を無料で使えます。": "El primer mes es gratis, con todas las funciones.",
+    "ご意見・不具合を送る": "Enviar opinión o informar de un problema",
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Los primeros {n} meses son gratis, con todas las funciones."
 });

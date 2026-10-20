@@ -70,7 +70,7 @@
 国を選ぶと、その国の家庭で毎日食べられている料理で献立を組みます（日本のほか、アメリカ・イギリス・フランス・ドイツ・イタリア・スペイン・ポーランド・トルコ・エジプト・インド・中国・台湾・韓国・タイ・ベトナム・インドネシア・フィリピン・メキシコ・ブラジル・ペルーの21の国と地域、440品以上）。「世界のレシピ」から、ほかの国の料理も見られます。画面と各国のレシピは、選んだ国の言葉で表示します。
 
 ■ ごはん帖プラス（App 内課金）
-最初の7日間は無料でお試しいただけます。月額480円・年額4,800円（年額は2か月分無料）。無料期間が終わる24時間前までに解約すれば、料金はかかりません。
+最初の2か月は無料でお試しいただけます。その後は月額480円。年の縛りはなく、いつでも解約できます（無料期間が終わる24時間前までに解約すれば、料金はかかりません）。
 
 【お支払いについて】
 お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
@@ -99,20 +99,22 @@
 
 **サブスクリプショングループ名**: ごはん帖プラス
 
-| 項目 | 月額 | 年額 |
-| --- | --- | --- |
-| 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly |
-| 参照名 | ごはん帖プラス 月額 | ごはん帖プラス 年額 |
-| 期間 | 1か月 | 1年 |
-| 価格（日本） | 480円 | 4,800円（月額の10か月分＝2か月分無料） |
-| お試しオファー | 1週間 無料（新規の利用者） | 1週間 無料（新規の利用者） |
-| 表示名 | ごはん帖プラス（月額） | ごはん帖プラス（年額） |
-| 説明（45文字まで） | 1週間の献立と買い物メモなどが使えます | 1週間の献立と買い物メモなどが1年使えます |
+| 項目 | 月額 |
+| --- | --- |
+| 製品 ID | gohancho_plus_monthly |
+| 参照名 | ごはん帖プラス 月額 |
+| 期間 | 1か月 |
+| 価格（日本） | 480円（クラシル プレミアムと同じ水準） |
+| お試しオファー | **日本: 2か月 無料／その他の国: 1か月 無料**（新規の利用者。お試しオファーは国ごとに設定できる） |
+| 表示名 | ごはん帖プラス |
+| 説明（45文字まで） | 献立・買い物メモ・世界のレシピが使えます |
+
+年額プランは置きません（いつでも解約できる月額だけ）。
 
 - 審査用スクリーンショット: アプリの「ごはん帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
-- RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額・年額の2つを入れる
-- 無料期間は Apple のしくみ（App Store Connect の「お試しオファー」1週間無料）で出します（`PLAN.trialMode: 'store'`）。アプリは、はじめて開いたあとに購入画面を出し、利用者は「年額」か「月額」を選んで無料お試しを始めます。7日後は解約しなければ自動で課金されます。アプリ側は RevenueCat でお試しの対象かどうかを確かめ、対象外の人には「無料」の文言を出しません
+- RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額の1つを入れる
+- 無料期間は Apple のしくみ（App Store Connect の「お試しオファー」）で出します（`PLAN.trialMode: 'store'`）。日本は2か月、ほかの国は1か月。アプリは RevenueCat から実際のお試しの長さを取って「最初の2か月は無料」のように表示するので、国ごとに違っても修正は不要です。アプリは、はじめて開いたあとに購入画面を出し、利用者は月額プランを選んで無料お試しを始めます。無料期間が終わると、解約しなければ自動で課金されます。アプリ側は RevenueCat でお試しの対象かどうかを確かめ、対象外の人には「無料」の文言を出しません
 - 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
@@ -140,7 +142,7 @@ Main features:
 
 No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
-In-app purchase: "Gohancho Plus" auto-renewable subscription (monthly / yearly), each with a 1-week free introductory offer configured in App Store Connect. After choosing a country and the short setup, the app shows the subscription screen: the current App Store prices (yearly first, with "2 months free"), the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly plan) with a free introductory offer configured in App Store Connect (2 months in Japan, 1 month in other storefronts; the app reads the actual length from the offer and shows it). After choosing a country and the short setup, the app shows the subscription screen: the current App Store price, the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 ```
 
 ---
@@ -206,7 +208,7 @@ Curious about other countries? Browse any country's home cooking from the World 
 Everything runs on your phone. Your history, photos and settings never leave your device. No account needed.
 
 ■ Gohancho Plus (in-app purchase)
-Try everything free for 7 days. Then monthly or yearly (the yearly plan is 2 months free). Cancel at least 24 hours before the trial ends and you won't be charged.
+Try everything free for your first month. After that it's one simple monthly plan: no yearly commitment, cancel anytime. Cancel at least 24 hours before the trial ends and you won't be charged.
 
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 
@@ -232,4 +234,4 @@ First release. We hope Gohancho makes dinner a little easier every day.
 
 - **配信する国**: App Store Connect →「価格および配信状況」で、**中国本土を外して**ほかはすべて選ぶ（中国本土での配信には ICP 備案が必要）
 - **アプリの対応言語（Xcode の Localizations に追加）**: 英語・日本語・フランス語・ドイツ語・イタリア語・スペイン語・ポルトガル語（ブラジル）・ポーランド語・トルコ語・アラビア語・ヒンディー語・インドネシア語・フィリピン語・タイ語・中国語（簡体）・中国語（繁体）・韓国語・ベトナム語
-- **国ごとの価格**: `世界配信の計画と収支試算.md` の表のとおり。年額は各国とも月額の10か月分（2か月分無料）
+- **国ごとの価格**: `世界配信の計画と収支試算.md` の表のとおり（月額のみ。年額プランはなし）

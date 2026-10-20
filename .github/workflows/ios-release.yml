@@ -1,0 +1,174 @@
+# ごはん帖 iPhone アプリを組み立てて App Store Connect にアップロードする
+#
+# 動かし方（どちらか）:
+#   - GitHub の Actions タブ → 「iOS release」 → Run workflow（バージョンを入れる）
+#   - Claude に「バージョン 1.1.1 で申請して」と頼む（Claude がこのワークフローを起動する）
+# 必要な Secrets（リポジトリの Settings → Secrets and variables → Actions。登録のしかたは ios-app/アップデートの手順.md）:
+#   APPLE_TEAM_ID        … Apple Developer の Team ID（10桁）
+#   ASC_KEY_ID           … App Store Connect API キーの Key ID
+#   ASC_ISSUER_ID        … 同 Issuer ID
+#   ASC_API_KEY_P8       … 同 .p8 ファイルの中身（-----BEGIN PRIVATE KEY----- から全部）
+#   REVENUECAT_API_KEY   … RevenueCat の Apple 用 公開APIキー（appl_…）。入れると課金が有効
+#   SUPPORT_EMAIL        … 「ご意見・不具合を送る」の宛先メール（任意）
+#   IOS_DIST_P12_BASE64 / IOS_DIST_P12_PASSWORD … （任意）配布用証明書。API キーのクラウド署名で失敗するときだけ
+# アップロードが終わったら、App Store Connect で新しいビルドを選んで「審査へ提出」を押す（人の確認が必要な最後の一歩）。
+name: iOS release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'バージョン（例 1.1.1）。空なら ios-app/package.json の値'
+        required: false
+        default: ''
+      note:
+        description: 'メモ（何を直したか。ログに残すだけ）'
+        required: false
+        default: ''
+  push:
+    tags: ['gohancho-v*']
+
+concurrency:
+  group: ios-release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: アプリの確認（文法・翻訳の辞書）
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: JavaScript の文法と翻訳の辞書を確認
+        run: |
+          set -e
+          for f in gohancho/sw.js gohancho/i18n/*.js gohancho/packs/*.js gohancho/packs/i18n/*.js; do node --check "$f"; done
+          for l in en fr de it es pt-BR pl tr ar hi id fil th zh-Hans zh-Hant ko vi; do
+            node tools/i18n/extract.mjs --check "$l" | tail -n 1 | tee -a check.log
+          done
+          ! grep -E "[1-9][0-9]* missing|[1-9][0-9]* placeholder" check.log
+          python3 ios-app/appstore/check.py
+
+  build:
+    name: 組み立てて App Store Connect にアップロード
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Secrets がそろっているか
+        run: |
+          for v in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID; do
+            [ -n "${!v}" ] || { echo "::error::Secret $v が未登録です（ios-app/アップデートの手順.md を見てください）"; exit 1; }
+          done
+          [ -n "${{ secrets.ASC_API_KEY_P8 }}" ] || { echo "::error::Secret ASC_API_KEY_P8 が未登録です"; exit 1; }
+
+      - name: バージョンを決める
+        id: ver
+        run: |
+          V="${{ github.event.inputs.version }}"
+          if [ -z "$V" ] && [[ "${GITHUB_REF}" == refs/tags/gohancho-v* ]]; then V="${GITHUB_REF#refs/tags/gohancho-v}"; fi
+          if [ -z "$V" ]; then V=$(node -p "require('./ios-app/package.json').version"); fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "build=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+          echo "バージョン $V（ビルド ${{ github.run_number }}）: ${{ github.event.inputs.note }}"
+
+      - name: アプリの中の設定を書きこむ（バージョン・RevenueCat・連絡先）
+        env:
+          RC_KEY: ${{ secrets.REVENUECAT_API_KEY }}
+          SUPPORT: ${{ secrets.SUPPORT_EMAIL }}
+        run: |
+          node - <<'EOF'
+          const fs = require('fs'); const p = 'gohancho/index.html'; let s = fs.readFileSync(p, 'utf8');
+          const v = process.env.VERSION, rc = process.env.RC_KEY || '', mail = process.env.SUPPORT || '';
+          s = s.replace(/const APP_VERSION = '[^']*';/, `const APP_VERSION = '${v}';`);
+          if (rc) s = s.replace(/revenueCatApiKey: '[^']*'/, `revenueCatApiKey: '${rc}'`);
+          if (mail) s = s.replace(/const SUPPORT_EMAIL = '[^']*';/, `const SUPPORT_EMAIL = '${mail}';`);
+          fs.writeFileSync(p, s);
+          console.log('APP_VERSION', v, '| RevenueCat', rc ? 'あり' : 'なし（課金は無効のまま）', '| SUPPORT_EMAIL', mail ? 'あり' : 'なし');
+          EOF
+        # VERSION は上の step の出力
+        shell: bash
+        # （env に出力を渡す）
+      - name: VERSION を env に
+        run: echo "VERSION=${{ steps.ver.outputs.version }}" >> "$GITHUB_ENV"
+
+      - name: iOS プロジェクトを用意する（Capacitor）
+        working-directory: ios-app
+        run: bash scripts/setup-ios.sh --ci
+
+      - name: バージョン番号を Xcode プロジェクトに書く
+        working-directory: ios-app/ios/App
+        run: |
+          xcrun agvtool new-marketing-version "${{ steps.ver.outputs.version }}"
+          xcrun agvtool new-version -all "${{ steps.ver.outputs.build }}"
+
+      - name: App Store Connect API キーを置く
+        run: |
+          mkdir -p ~/private_keys
+          printf '%s' "${{ secrets.ASC_API_KEY_P8 }}" > ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          chmod 600 ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+
+      - name: （任意）配布用証明書をキーチェーンに入れる
+        if: ${{ secrets.IOS_DIST_P12_BASE64 != '' }}
+        env:
+          P12_B64: ${{ secrets.IOS_DIST_P12_BASE64 }}
+          P12_PASS: ${{ secrets.IOS_DIST_P12_PASSWORD }}
+        run: |
+          KC=$RUNNER_TEMP/build.keychain-db; PW=$(uuidgen)
+          security create-keychain -p "$PW" "$KC"; security set-keychain-settings -lut 21600 "$KC"; security unlock-keychain -p "$PW" "$KC"
+          echo "$P12_B64" | base64 --decode > $RUNNER_TEMP/dist.p12
+          security import $RUNNER_TEMP/dist.p12 -P "$P12_PASS" -A -t cert -f pkcs12 -k "$KC"
+          security set-key-partition-list -S apple-tool:,apple: -k "$PW" "$KC"
+          security list-keychain -d user -s "$KC" login.keychain-db
+
+      - name: アーカイブ（Release ビルド）
+        working-directory: ios-app/ios/App
+        run: |
+          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
+            -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
+            -authenticationKeyPath ~/private_keys/AuthKey_${ASC_KEY_ID}.p8 -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|warning: .*(sign|provision)|ARCHIVE (SUCCEEDED|FAILED)" || true
+          grep -q "ARCHIVE SUCCEEDED" "$RUNNER_TEMP/archive.log"
+
+      - name: App Store Connect にアップロード
+        working-directory: ios-app/ios/App
+        run: |
+          cat > "$RUNNER_TEMP/export.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" -exportOptionsPlist "$RUNNER_TEMP/export.plist" -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_${ASC_KEY_ID}.p8 -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            | tee "$RUNNER_TEMP/export.log" | grep -E "error:|Upload|EXPORT (SUCCEEDED|FAILED)" || true
+          grep -q "EXPORT SUCCEEDED" "$RUNNER_TEMP/export.log"
+          echo "::notice::バージョン ${{ steps.ver.outputs.version }}（ビルド ${{ steps.ver.outputs.build }}）を App Store Connect に送りました。10〜30分ほどで「ビルド」に現れます。あとは App Store Connect で審査へ提出してください。"
+
+      - name: ログを残す（失敗したときの手がかり）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-release-logs-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/archive.log
+            ${{ runner.temp }}/export.log
+          if-no-files-found: ignore

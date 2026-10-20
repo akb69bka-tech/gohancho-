@@ -178,10 +178,7 @@ GOHAN_I18N('fil', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Bilang app, bubukas ito nang full screen mula sa icon, at gumagana ang menu, recipe at talaan kahit walang signal. Maidaragdag mo ito kapag binuksan mo ang mismong page ng app (ang “gohancho” address sa GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Buwanan",
-    "年額プラン": "Taunan",
     "480円 / 月": "¥480 / buwan",
-    "4,800円 / 年": "¥4,800 / taon",
-    "最初の7日間は無料": "Libre sa unang 7 araw",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Isang buong linggong meal plan, bagay sa isahang grocery (libreng bersyon: ngayon lang)","other":"Isang buong linggong meal plan, bagay sa isahang grocery (libreng bersyon: {n} araw)"},
     "ひと手間の「やってみた」で腕前を記録": "Itala ang skills mo sa dagdag-diskarte",
     "買い足すと作れる料理が増える食材をすべて表示": "Makita ang lahat ng sangkap na magbubukas ng mas maraming ulam",
@@ -518,7 +515,6 @@ GOHAN_I18N('fil', {
     "この国のデータを読みこめませんでした": "Hindi ma-load ang mga recipe ng bansang ito",
     "国・地域を選んでください": "Piliin ang bansa o rehiyon mo",
     "選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。": "Magmumungkahi kami ng pang-araw-araw na menu mula sa lutong-bahay ng lugar mo. Mababago mo ito mamaya sa Settings.",
-    "2か月分無料": "Libre ang 2 buwan",
     "{n}か月分無料": {"one":"Libre ang 1 buwan","other":"Libre ang {n} buwan"},
     "{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。": "Tapos na ang {n}-araw na libreng trial. Pumili ng plan para magpatuloy sa Gohancho. Nandito pa rin ang history at settings mo.",
     "ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。": "Tingnan ang lutong-bahay ng ibang bansa. Mananatili sa bansa mo ang pang-araw-araw na menu.",
@@ -529,4 +525,7 @@ GOHAN_I18N('fil', {
     "無料期間は明日までです": "Hanggang bukas na lang ang libreng trial mo",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Pumili ng plan para magpatuloy. Mananatili ang history mo.",
     "読みこんでいます…": "Naglo-load…",
+    "最初の1か月は、すべての機能を無料で使えます。": "Libre ang unang buwan, kasama ang lahat ng feature.",
+    "ご意見・不具合を送る": "Magpadala ng feedback o mag-report ng problema",
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Libre ang unang {n} buwan, kasama ang lahat ng feature."
 });

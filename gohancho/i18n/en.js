@@ -179,10 +179,7 @@ GOHAN_I18N('en', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "As an app it opens full screen from its icon, and menus, recipes and your log work even offline. You can add it when you open the app's own page (the “gohancho” address on GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Monthly",
-    "年額プラン": "Yearly",
     "480円 / 月": "¥480 / month",
-    "4,800円 / 年": "¥4,800 / year",
-    "最初の7日間は無料": "Free for the first 7 days",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one": "A full week of meal plans, great for one big shop (free version: today only)", "other": "A full week of meal plans, great for one big shop (free version: {n} days)"},
     "ひと手間の「やってみた」で腕前を記録": "Track your skills with chef's tips",
     "買い足すと作れる料理が増える食材をすべて表示": "See every ingredient that unlocks more dishes",
@@ -519,7 +516,6 @@ GOHAN_I18N('en', {
     "この国のデータを読みこめませんでした": "Couldn't load recipes for this country",
     "国・地域を選んでください": "Choose your country or region",
     "選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。": "We'll suggest everyday menus from home cooking where you live. You can change this later in Settings.",
-    "2か月分無料": "2 months free",
     "{n}か月分無料": {"one": "{n} month free", "other": "{n} months free"},
     "{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。": "Your {n}-day free trial has ended. Choose a plan to keep using Gohancho. Your history and settings are all still here.",
     "ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。": "Browse home cooking from other countries. Your daily menu stays with your own country.",
@@ -530,4 +526,7 @@ GOHAN_I18N('en', {
     "無料期間は明日までです": "Your free trial ends tomorrow",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Choose a plan to keep going. Your history stays just as it is.",
     "読みこんでいます…": "Loading…",
+    "最初の1か月は、すべての機能を無料で使えます。": "Your first month is free, with every feature included.",
+    "ご意見・不具合を送る": "Send feedback or report a problem",
+    "最初の{n}か月は、すべての機能を無料で使えます。": "Your first {n} months are free, with every feature included."
 });

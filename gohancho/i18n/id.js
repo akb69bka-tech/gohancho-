@@ -178,10 +178,7 @@ GOHAN_I18N('id', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Sebagai aplikasi, Gohancho terbuka layar penuh dari ikonnya, dan menu, resep, serta catatan tetap bisa dipakai tanpa internet. Anda bisa menambahkannya saat membuka halaman aplikasinya sendiri (alamat “gohancho” di GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Bulanan",
-    "年額プラン": "Tahunan",
     "480円 / 月": "¥480 / bulan",
-    "4,800円 / 年": "¥4.800 / tahun",
-    "最初の7日間は無料": "Gratis 7 hari pertama",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": "Rencana menu seminggu penuh, pas untuk belanja sekali jalan (versi gratis: {n} hari)",
     "ひと手間の「やってみた」で腕前を記録": "Catat keahlian Anda lewat tips koki",
     "買い足すと作れる料理が増える食材をすべて表示": "Lihat semua bahan yang membuka lebih banyak masakan",
@@ -518,7 +515,6 @@ GOHAN_I18N('id', {
     "この国のデータを読みこめませんでした": "Resep negara ini tidak dapat dimuat",
     "国・地域を選んでください": "Pilih negara atau wilayah Anda",
     "選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。": "Kami akan menyarankan menu sehari-hari dari masakan rumahan di tempat Anda tinggal. Bisa diubah nanti di Pengaturan.",
-    "2か月分無料": "Gratis 2 bulan",
     "{n}か月分無料": "Gratis {n} bulan",
     "{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。": "Masa gratis {n} hari sudah berakhir. Pilih paket untuk terus memakai Gohancho. Catatan dan pengaturan Anda masih utuh.",
     "ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。": "Lihat masakan rumahan dari negara lain. Menu harian tetap sesuai negara pilihan Anda.",
@@ -529,4 +525,7 @@ GOHAN_I18N('id', {
     "無料期間は明日までです": "Masa gratis berakhir besok",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Pilih paket untuk melanjutkan. Catatan Anda tetap utuh.",
     "読みこんでいます…": "Memuat…",
+    "最初の1か月は、すべての機能を無料で使えます。": "Bulan pertama gratis, dengan semua fitur.",
+    "ご意見・不具合を送る": "Kirim masukan atau laporkan masalah",
+    "最初の{n}か月は、すべての機能を無料で使えます。": "{n} bulan pertama gratis, dengan semua fitur."
 });

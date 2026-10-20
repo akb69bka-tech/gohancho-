@@ -1,8 +1,10 @@
 #!/bin/bash
 # ごはん帖 iPhone アプリの準備を一度に行う（Mac で実行。Xcode と Node.js が必要）
 #   使い方: cd ~/Documents/toresabi/ios-app && npm run setup
+#   --ci を付けると、GitHub Actions 用（Xcode を開かない）
 set -euo pipefail
 cd "$(dirname "$0")/.."
+CI_MODE=0; [ "${1:-}" = "--ci" ] && CI_MODE=1
 
 echo "1/6 部品（Capacitor とプラグイン）を入れています…"
 npm install @capacitor/core @capacitor/ios @capacitor/share @capacitor/local-notifications @revenuecat/purchases-capacitor
@@ -30,6 +32,7 @@ set_key ITSAppUsesNonExemptEncryption bool false
 PBX=ios/App/App.xcodeproj/project.pbxproj
 sed -i '' -e 's/TARGETED_DEVICE_FAMILY = "1,2";/TARGETED_DEVICE_FAMILY = 1;/g' "$PBX" || true
 
+if [ "$CI_MODE" = 1 ]; then echo "6/6 同期しています…"; npx cap sync ios; exit 0; fi
 echo "6/6 同期して Xcode を開きます…"
 npx cap sync ios
 npx cap open ios

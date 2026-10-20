@@ -2040,18 +2040,18 @@ const PLAN = {
     get name(){ return t('ごはん帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
         {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('480円 / 月'); }, per:'月', note:''},
-        {id:'gohancho_plus_yearly',  get label(){ return t('年額プラン'); }, get price(){ return t('4,800円 / 年'); }, per:'年', get note(){ return t('2か月分無料'); }},
+        // 年額プランは置かない（いつでも解約できる月額だけ）。復活させるなら {id:'gohancho_plus_yearly', per:'年', ...} をここに足す
     ],
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
-    trialDays: 7,
+    trialDays: 30,                      // 無料期間（App Store のお試しオファー「1か月」と合わせる）
     // 'store': Apple のしくみに従う。はじめに「7日間無料で始める」で登録し、App Store Connect の「お試しオファー（1週間無料）」で無料期間を出す。7日後は解約しなければ自動で課金
     // 'app': アプリ側で7日間を数え、8日目から購入するまでロック（App Store のお試しオファーは設定しない。予備）
     trialMode: 'store',
-    get introTrialLabel(){ return t('最初の7日間は無料'); },   // App Store Connect の「お試しオファー」と同じ内容にする                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
+    get introTrialLabel(){ return introLabel().replace(/[。.]\s*$/, ''); },   // App Store のお試しオファー（RevenueCat から取れた長さ）に合わせる                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
     freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
     get benefits(){ return [t('1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）', {n:PLAN_WEEK_FREE}), t('ひと手間の「やってみた」で腕前を記録'), t('買い足すと作れる料理が増える食材をすべて表示'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('ひとひねり案を回数無制限で'), t('「わが家の写真」を枚数無制限で')]; },
 };
@@ -2102,12 +2102,30 @@ function applyCustomerInfo(ci){
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
 const storePrices = {};
 let introEligible = true;   // App Store のお試しオファーを使えるか（一度でも登録した人は使えない）。RevenueCat で確認できたら更新
+let introOffer = null;      // App Store に登録したお試しの長さ {unit:'day'|'month', n}。国ごとに違うので RevenueCat から取る。取れなければ「1か月」として表示
+// お試しの長さの文（購入画面・はじめの案内）
+function introLabel(){
+    const o = introOffer || {unit:'month', n:1};
+    if (o.unit === 'day') return t('最初の{n}日間は、すべての機能を無料で使えます。', {n:o.n});
+    return o.n === 1 ? t('最初の1か月は、すべての機能を無料で使えます。') : t('最初の{n}か月は、すべての機能を無料で使えます。', {n:o.n});
+}
+function parseIntro(pr){
+    const ip = pr && pr.introPrice; if (!ip) return null;
+    let unit = String(ip.periodUnit || '').toUpperCase(), n = Number(ip.periodNumberOfUnits) || 0;
+    if (!unit && ip.period){ const m = /^P(\d+)([DWMY])$/.exec(ip.period); if (m){ n = +m[1]; unit = {D:'DAY', W:'WEEK', M:'MONTH', Y:'YEAR'}[m[2]]; } }
+    if (!n) return null;
+    if (unit === 'WEEK') return {unit:'day', n:n * 7};
+    if (unit === 'DAY') return {unit:'day', n};
+    if (unit === 'YEAR') return {unit:'month', n:n * 12};
+    return {unit:'month', n};
+}
 async function loadStorePrices(){
     const ready = rcInit(); if (!ready) return;
     try{
         const P = await ready, offs = await P.getOfferings();
         ((offs && offs.current && offs.current.availablePackages) || []).forEach(pkg => {
             const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price)};
+            if (pr && pr.identifier === 'gohancho_plus_monthly'){ const o = parseIntro(pr); if (o) introOffer = o; }
         });
         if (sheet && sheet.kind === 'paywall') renderSheet();
         if (P.checkTrialOrIntroductoryPriceEligibility){
@@ -2157,7 +2175,7 @@ function paywallReason(k){
         case 'week': return t('無料版で見られる献立プランは{days}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。', {days: PLAN.freeLimits.weekDays === 1 ? t('今日の1日分') : t('{n}日分', {n:PLAN.freeLimits.weekDays})});
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
-        case 'start': return introEligible ? t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}) : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
+        case 'start': return introEligible ? introLabel() : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
         case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
         default: return '';
@@ -2185,7 +2203,7 @@ function renderSheet(){
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
                 <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
             </ul>
-            ${PLAN.billingEnabled ? `<p class="pw-free">${esc(t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
+            ${PLAN.billingEnabled ? `<p class="pw-free">${esc(PLAN.trialMode === 'store' ? introLabel() : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -2390,11 +2408,16 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
             <p class="small muted" style="margin:0">${esc(t('わが家のごはん帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
-            <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a></div>
+            <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a>${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
         </div>
     </section>`;
 }
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせる（申請の自動化がここも書きかえる）
+const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
+function feedbackMailto(){
+    const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
+    return `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent('[Gohancho] ' + t('ご意見・不具合を送る'))}&body=${encodeURIComponent(body)}`;
+}
 
 /* =========================================================
    iPhone アプリ版（Capacitor）かどうか

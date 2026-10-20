@@ -178,12 +178,8 @@ GOHAN_I18N('pl', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Jako aplikacja otwiera się na pełnym ekranie z ikony, a jadłospisy, przepisy i dziennik działają nawet offline. Możesz ją dodać, otwierając stronę samej aplikacji (adres „gohancho” na GitHub Pages).",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Miesięcznie",
-    "年額プラン": "Rocznie",
     "480円 / 月": "¥480 / miesiąc",
-    "4,800円 / 年": "¥4 800 / rok",
-    "2か月分無料": "2 miesiące gratis",
     "{n}か月分無料": {"one": "1 miesiąc gratis", "few": "{n} miesiące gratis", "many": "{n} miesięcy gratis", "other": "{n} miesiąca gratis"},
-    "最初の7日間は無料": "Pierwsze 7 dni za darmo",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: tylko dziś)", "few": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dni)", "many": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dni)", "other": "Plan jadłospisu na cały tydzień, idealny do jednych dużych zakupów (wersja darmowa: {n} dnia)"},
     "ひと手間の「やってみた」で腕前を記録": "Zapisuj swoje umiejętności dzięki trikom szefa",
     "買い足すと作れる料理が増える食材をすべて表示": "Pokazuj wszystkie składniki, które odblokują więcej dań",
@@ -529,4 +525,7 @@ GOHAN_I18N('pl', {
     "無料期間は明日までです": "Okres próbny kończy się jutro",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Wybierz plan, aby kontynuować. Historia pozostanie bez zmian.",
     "読みこんでいます…": "Wczytywanie…",
+    "最初の1か月は、すべての機能を無料で使えます。": "Pierwszy miesiąc jest za darmo, ze wszystkimi funkcjami.",
+    "ご意見・不具合を送る": "Wyślij opinię lub zgłoś problem",
+    "最初の{n}か月は、すべての機能を無料で使えます。": {"one": "Pierwszy miesiąc jest za darmo, ze wszystkimi funkcjami.", "few": "Pierwsze {n} miesiące są za darmo, ze wszystkimi funkcjami.", "many": "Pierwsze {n} miesięcy jest za darmo, ze wszystkimi funkcjami.", "other": "Pierwsze {n} miesiąca jest za darmo, ze wszystkimi funkcjami."}
 });

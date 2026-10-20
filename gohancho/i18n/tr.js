@@ -178,10 +178,7 @@ GOHAN_I18N('tr', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Uygulama olarak simgesinden tam ekran açılır; menüler, tarifler ve kayıtlarınız internet olmadan da çalışır. Uygulamanın kendi sayfasını (GitHub Pages'teki “gohancho” adresi) açtığınızda ekleyebilirsiniz.",
     "ごはん帖プラス": "Gohancho Plus",
     "月額プラン": "Aylık",
-    "年額プラン": "Yıllık",
     "480円 / 月": "¥480 / ay",
-    "4,800円 / 年": "¥4.800 / yıl",
-    "最初の7日間は無料": "İlk 7 gün ücretsiz",
     "1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）": {"one":"Tam bir haftalık menü planı, tek seferde alışveriş için ideal (ücretsiz sürüm: sadece bugün)","other":"Tam bir haftalık menü planı, tek seferde alışveriş için ideal (ücretsiz sürüm: {n} gün)"},
     "ひと手間の「やってみた」で腕前を記録": "Püf noktalarında “Denedim” ile becerilerinizi takip edin",
     "買い足すと作れる料理が増える食材をすべて表示": "Daha fazla yemek açan tüm malzemeleri görün",
@@ -518,7 +515,6 @@ GOHAN_I18N('tr', {
     "この国のデータを読みこめませんでした": "Bu ülkenin tarifleri yüklenemedi",
     "国・地域を選んでください": "Ülkenizi veya bölgenizi seçin",
     "選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。": "Yaşadığınız yerin ev yemeklerinden günlük menüler önereceğiz. Bunu sonra Ayarlar'dan değiştirebilirsiniz.",
-    "2か月分無料": "2 ay bedava",
     "{n}か月分無料": {"one":"{n} ay bedava","other":"{n} ay bedava"},
     "{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。": "{n} günlük ücretsiz deneme sona erdi. Gohancho'yu kullanmaya devam etmek için bir plan seçin. Geçmişiniz ve ayarlarınız olduğu gibi duruyor.",
     "ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。": "Diğer ülkelerin ev yemeklerine göz atabilirsiniz. Günlük menünüz kendi ülkenizde kalır.",
@@ -529,4 +525,7 @@ GOHAN_I18N('tr', {
     "無料期間は明日までです": "Ücretsiz deneme yarın bitiyor",
     "続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。": "Devam etmek için bir plan seçin. Geçmişiniz olduğu gibi kalır.",
     "読みこんでいます…": "Yükleniyor…",
+    "最初の1か月は、すべての機能を無料で使えます。": "İlk ay tüm özelliklerle ücretsizdir.",
+    "ご意見・不具合を送る": "Görüş gönder veya sorun bildir",
+    "最初の{n}か月は、すべての機能を無料で使えます。": "İlk {n} ay tüm özelliklerle ücretsizdir."
 });
