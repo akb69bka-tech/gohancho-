@@ -1,6 +1,11 @@
 """PR 動画のナレーション（女性の声）を作る。出力: narration-ja.wav / narration-en.wav（48kHz モノラル、動画と同じ長さ）
 使い方: python3 make-voice.py <声のモデルのフォルダ> [ffmpeg のパス]
-  日本語: Open JTalk（pip install pyopenjtalk）＋ 東北大学の女性の声 tohoku-f01（git clone https://github.com/icn-lab/htsvoice-tohoku-f01  CC BY 4.0）
+  日本語: VOICEVOX「春日部つむぎ」（クレジット表記「VOICEVOX:春日部つむぎ」が必須。規約 https://tsumugi-official.studio.site/rule ）
+         <声のモデルのフォルダ>/voicevox/ に次を置く:
+           lib/libvoicevox_onnxruntime.so.*  … https://github.com/VOICEVOX/onnxruntime-builder/releases （voicevox_onnxruntime-linux-x64-1.17.3.tgz の lib）
+           vvms/0.vvm                        … https://github.com/VOICEVOX/voicevox_vvm （0.vvm に春日部つむぎが入っている）
+         pip install は https://github.com/VOICEVOX/voicevox_core/releases の voicevox_core-*.whl。辞書は pyopenjtalk の open_jtalk_dic を使う
+         無ければ Open JTalk（pip install pyopenjtalk）＋ 東北大学の女性の声 tohoku-f01（git clone https://github.com/icn-lab/htsvoice-tohoku-f01  CC BY 4.0）に切りかわる
   英語:   Piper の女性の声 amy（pip install sherpa-onnx、モデルは https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-amy-medium.tar.bz2）
 """
 import json, os, subprocess, sys, tempfile
@@ -20,6 +25,10 @@ def to48k(x, sr):
         y, _ = sf.read(b, dtype='float32'); return y
 
 def ja_tts():
+    vv = os.path.join(VOICES, 'voicevox')
+    if os.path.isdir(vv):
+        try: return ja_voicevox(vv)
+        except Exception as e: print('VOICEVOX を使えないので Open JTalk にします:', repr(e)[:160])
     import pyopenjtalk
     from pyopenjtalk.htsengine import HTSEngine
     voice = os.path.join(VOICES, 'htsvoice-tohoku-f01', 'tohoku-f01-neutral.htsvoice')
@@ -28,6 +37,31 @@ def ja_tts():
         x = e.synthesize(pyopenjtalk.extract_fullcontext(text)); sr = e.get_sampling_frequency()
         return to48k(np.asarray(x, dtype=np.float32) / 32768.0, sr)
     return synth
+
+def ja_voicevox(vv):
+    import glob, io, wave, pyopenjtalk
+    from voicevox_core.blocking import Onnxruntime, OpenJtalk, Synthesizer, VoiceModelFile
+    so = glob.glob(os.path.join(vv, 'lib', 'libvoicevox_onnxruntime.so*'))[0]
+    ort = Onnxruntime.load_once(filename=so)
+    dic = os.environ.get('OPEN_JTALK_DICT') or os.path.join(os.path.dirname(pyopenjtalk.__file__), 'open_jtalk_dic_utf_8-1.11')
+    synth = Synthesizer(ort, OpenJtalk(dic))
+    style = None
+    for f in sorted(glob.glob(os.path.join(vv, 'vvms', '*.vvm'))):
+        with VoiceModelFile.open(f) as m:
+            for c in m.metas:
+                if '春日部つむぎ' in c.name:
+                    style = c.styles[0].id; synth.load_voice_model(m)
+        if style is not None: break
+    if style is None: raise RuntimeError('春日部つむぎの vvm が見つからない')
+    def synth_fn(text, speed):
+        aq = synth.create_audio_query(text, style)
+        aq.speed_scale = float(speed); aq.pre_phoneme_length = 0.05; aq.post_phoneme_length = 0.1
+        data = synth.synthesis(aq, style)
+        with wave.open(io.BytesIO(data)) as w:
+            sr = w.getframerate(); x = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0
+        return to48k(x, sr)
+    print('日本語の声: VOICEVOX 春日部つむぎ (style', style, ')')
+    return synth_fn
 
 def en_tts():
     import sherpa_onnx
