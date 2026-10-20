@@ -1,0 +1,57 @@
+{
+  "_comment": "cm.html の場面ごとのナレーション。start は場面の始まり（ミリ秒）、slot は場面の長さ。長すぎる行は少し速く読んで収める",
+  "scenes": [
+    {
+      "start": 0,
+      "slot": 2800
+    },
+    {
+      "start": 2800,
+      "slot": 3800
+    },
+    {
+      "start": 6600,
+      "slot": 3800
+    },
+    {
+      "start": 10400,
+      "slot": 3400
+    },
+    {
+      "start": 13800,
+      "slot": 3800
+    },
+    {
+      "start": 17600,
+      "slot": 3400
+    },
+    {
+      "start": 21000,
+      "slot": 3400
+    },
+    {
+      "start": 24400,
+      "slot": 3800
+    }
+  ],
+  "ja": [
+    "今日のごはん、もう悩まない。ごはん帖。",
+    "国を選ぶだけで、その国の家庭料理で献立を提案。",
+    "主菜も副菜も汁ものも、お膳ごとおまかせ。",
+    "作り方はシンプル。分量は人数に合わせます。",
+    "一週間の献立と買い物メモを、家族に送れます。",
+    "冷蔵庫にあるもので、作れる料理がわかります。",
+    "世界の家庭料理も、あなたの言葉で。",
+    "最初の二か月は無料。アップストアで近日公開。"
+  ],
+  "en": [
+    "Tonight's dinner, decided. This is Gohancho.",
+    "Pick your country, and Gohancho plans your meals.",
+    "A main, sides and soup, chosen for you.",
+    "Simple recipes, scaled to your family.",
+    "Plan your week, and send the list to your family.",
+    "See what you can cook with what's in your fridge.",
+    "World recipes too, in your language.",
+    "First month free. Coming soon on the App Store."
+  ]
+}

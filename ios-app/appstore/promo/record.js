@@ -1,4 +1,4 @@
-// cm.html を録画して動画にする（Playwright → webm → ffmpeg で mp4）
+// cm.html を録画して動画にする（Playwright → webm → ffmpeg で mp4。voice/ にナレーションがあれば音声も付ける）
 // 使い方: node record.js [出力フォルダ] [ffmpeg のパス]
 //   縦 886×1920（App Store の App プレビュー用）と 横 1920×1080（YouTube・SNS 用）を、日本語と英語で作る
 const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
@@ -22,6 +22,13 @@ const BASE = process.env.CM_URL || 'http://localhost:8766/ios-app/appstore/promo
     console.log(`${lang} ${name}: bar ${(frac * 100).toFixed(0)}% at 12s, lead ${lead.toFixed(2)}s`);
     execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-ss', lead.toFixed(2), '-i', webm, '-t', (total / 1000 + 0.6).toFixed(2), '-r', '30', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '23', '-preset', 'medium', '-movflags', '+faststart', '-an', out]);
     fs.rmSync(dir, { recursive: true, force: true });
+    // ナレーション（voice/make-voice.py で作った wav）があれば音声を付ける
+    const narr = path.join(__dirname, 'voice', `narration-${lang}.wav`);
+    if (fs.existsSync(narr)){
+      const tmp = out + '.tmp.mp4';
+      execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-i', out, '-i', narr, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', tmp]);
+      fs.renameSync(tmp, out); console.log('voice', path.basename(narr));
+    }
     console.log('wrote', out);
   }
   await b.close();

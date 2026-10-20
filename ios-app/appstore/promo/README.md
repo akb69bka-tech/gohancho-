@@ -13,19 +13,21 @@
 
 - App プレビューは **15〜30秒・最大500MB**。縦 886 × 1920 は iPhone 6.5/6.7/6.9 インチ用の受け付けサイズです（出典: Apple「App プレビューの仕様」 https://developer.apple.com/help/app-store-connect/reference/app-preview-specifications/ 。申請時に最新の表で確認してください）。
 - App プレビューは **アプリの実際の画面だけ**を使う決まりです（ガイドライン 2.3.4）。この動画は実機の画面を端末の枠に入れ、キャッチコピーを添えた形なので、審査で「枠やコピーを外して」と言われる可能性があります（**わかりません**）。その場合は `cm.html` の `.copy` と `.phone` の枠を消して撮り直してください。YouTube・SNS 用にはそのまま使えます。
+- **ナレーション（女性の声）入り**です。日本語は Open JTalk ＋ 東北大学 伊藤・能勢研究室の女性の声「tohoku-f01」（CC BY 4.0。クレジット表記: 「音声合成: Open JTalk / HTS voice tohoku-f01 (Tohoku University)」）、英語は Piper の女性の声「amy」（sherpa-onnx 経由。MIT / 音声モデルは Piper のライセンスに従う）。合成音声なので、人の声にしたい場合はナレーターに `voice/lines.json` の文を読んでもらい、`voice/narration-ja.wav` を差しかえてから録画し直してください。
 - 音楽は入っていません。SNS 用に BGM を付ける場合は、商用利用できる音源を使ってください。
 
 ## 作り方（撮り直すとき）
 
 1. `cm.html` が動画の設計図です。`?lang=ja` / `?lang=en` で言葉が変わり、画面の縦横で配置が変わります。文言は各要素の `data-ja` / `data-en` を直します。
 2. 画面の素材は `shots/` にあります（Playwright でアプリを 390 × 844・3倍で撮ったもの）。アプリの見た目を変えたら撮り直してください（セッションの `promo-shots.js` 相当。国・献立・冷蔵庫・世界のレシピ・レシピ・購入画面）。
-3. 録画: リポジトリのルートで `python3 -m http.server 8766` を動かしてから
+3. ナレーションを変えるとき: `voice/lines.json` の文を直し、`python3 voice/make-voice.py <声のモデルのフォルダ> <ffmpeg>` で `voice/narration-ja.wav` / `narration-en.wav` を作り直す（声のモデルの入手先は `make-voice.py` の先頭に書いてあります。長すぎる文は自動で少し速く読まれ、ログに「次の場面にかかる」と出ます）
+4. 録画: リポジトリのルートで `python3 -m http.server 8766` を動かしてから
 
    ```sh
    node ios-app/appstore/promo/record.js ios-app/appstore/promo /path/to/ffmpeg
    ```
 
-   Playwright（`npm i -g playwright`）と ffmpeg が必要です。Mac なら `brew install ffmpeg`。4本の mp4 を作り直します。
+   Playwright（`npm i -g playwright`）と ffmpeg が必要です。Mac なら `brew install ffmpeg`。4本の mp4 を作り直し、`voice/` のナレーションを自動で付けます。
 
 ## 中身（場面の順）
 
