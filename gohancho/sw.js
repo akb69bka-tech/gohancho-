@@ -1,4 +1,4 @@
-// わが家のごはん帖: オフラインで開けるようにアプリ本体をキャッシュする
+// わが家のご飯帖: オフラインで開けるようにアプリ本体をキャッシュする
 const VERSION = 'gohancho-v6';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './i18n/en.js'];
 const IMG = 'gohancho-img-v1';

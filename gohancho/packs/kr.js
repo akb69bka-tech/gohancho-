@@ -1,4 +1,4 @@
-// South Korea — home cooking pack for ごはん帖
+// South Korea — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'KR',
   name: 'South Korea',

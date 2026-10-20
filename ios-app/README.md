@@ -1,4 +1,4 @@
-# ごはん帖 iPhone アプリ化と販売の手順
+# ご飯帖 iPhone アプリ化と販売の手順
 
 `../gohancho/`（Web 版）をそのまま iPhone アプリに包むための設定です。仕組みは **Capacitor**（Web で作ったアプリを iOS アプリにする無料の道具）を使います。
 作業はすべて **MacBook** で行います（iPhone アプリは Mac の Xcode でしか作れません）。
@@ -65,7 +65,7 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 
 ---
 
-## 4. 課金を始める（ごはん帖プラス）
+## 4. 課金を始める（ご飯帖プラス）
 
 アプリ側の準備はできています（`gohancho/index.html` の `const PLAN`）。
 

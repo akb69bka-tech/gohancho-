@@ -1,4 +1,4 @@
-// Indonesia — home cooking pack for ごはん帖
+// Indonesia — home cooking pack for ご飯帖
 // Masakan rumahan: nasi + lauk + sayur (often berkuah) + sambal. Halal: no pork.
 GOHAN_PACK({
   country: 'ID',

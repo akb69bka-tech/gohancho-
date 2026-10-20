@@ -1,6 +1,6 @@
 {
   "appId": "io.github.akb69bka.gohancho",
-  "appName": "ごはん帖",
+  "appName": "ご飯帖",
   "webDir": "www",
   "ios": {
     "contentInset": "never",

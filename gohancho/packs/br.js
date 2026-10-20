@@ -1,4 +1,4 @@
-// Brazil — home cooking pack for ごはん帖
+// Brazil — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'BR',
   name: 'Brazil',

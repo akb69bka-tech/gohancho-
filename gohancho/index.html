@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>わが家のごはん帖</title>
+<title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
 <script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ごはん帖">
+<meta name="apple-mobile-web-app-title" content="ご飯帖">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -407,7 +407,7 @@ nav.tabs button[hidden]{display:none}
         <div class="seal" aria-hidden="true">膳</div>
         <div>
             <div class="date" id="today-label"></div>
-            <h1>わが家のごはん帖</h1>
+            <h1>わが家のご飯帖</h1>
         </div>
         <button class="gear flagbtn" data-act="country" aria-label="国・地域を変える" id="flag-btn">🇯🇵</button>
         <button class="gear" data-act="settings" aria-label="設定"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -944,11 +944,11 @@ async function setLang(l){
 }
 // index.html に直接書いてある文（見出し・タブ・読み上げ用ラベル）
 function applyStaticText(){
-    document.title = t('わが家のごはん帖');
+    document.title = t('わが家のご飯帖');
     const md = document.querySelector('meta[name="description"]'); if (md) md.content = t('毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ');
     const set = (sel, txt) => { const el = $(sel); if (el) el.textContent = txt; };
     const aria = (sel, txt) => { const el = $(sel); if (el) el.setAttribute('aria-label', txt); };
-    set('header.top h1', t('わが家のごはん帖'));
+    set('header.top h1', t('わが家のご飯帖'));
     set('header.top .seal', t('膳'));
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
@@ -2043,7 +2043,7 @@ function installHtml(){
 }
 
 /* =========================================================
-   ごはん帖プラス（課金のしくみ）
+   ご飯帖プラス（課金のしくみ）
    billingMode:'native' のため、Web 版（PWA）は全機能無料。iPhone アプリ版は revenueCatApiKey を入れると課金が有効になる。
    価格・商品ID・お試しの内容は App Store Connect の設定と合わせる。
    ========================================================= */
@@ -2052,7 +2052,7 @@ const PLAN = {
     // 課金を有効にする範囲: 'off'＝全員無料 / 'native'＝iPhone アプリ版だけ（RevenueCat のキーを入れたとき）/ 'all'＝Web 版も
     billingMode: 'native',
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
-    get name(){ return t('ごはん帖プラス'); },
+    get name(){ return t('ご飯帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
         {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('380円 / 月'); }, per:'月', note:''},
     ],
@@ -2209,11 +2209,11 @@ async function restorePurchases(){
 // プラス案内を開いた理由（どの機能から来たか）
 function paywallReason(k){
     switch(k){
-        case 'dishes': return t('5品・6品の献立は、ごはん帖プラスで使えます。');
+        case 'dishes': return t('5品・6品の献立は、ご飯帖プラスで使えます。');
         case 'twist': return t('ひとひねり案は、無料版では1日{n}回までです。', {n:PLAN.freeLimits.twistPerDay});
         case 'photos': return t('「わが家の写真」は、無料版では{n}枚までです。', {n:PLAN.freeLimits.myPhotos});
         case 'week': return t('無料版で見られる献立プランは{days}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。', {days: PLAN.freeLimits.weekDays === 1 ? t('今日の1日分') : t('{n}日分', {n:PLAN.freeLimits.weekDays})});
-        case 'skill': return t('「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。');
+        case 'skill': return t('「やってみた」の記録と腕前の称号は、ご飯帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
         case 'start': return introEligible ? introLabel() : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
         case 'monitor': return t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)});
@@ -2238,7 +2238,7 @@ function renderSheet(){
         const dots = [0,1,2].map(i => `<i class="${i === st ? 'on' : ''}"></i>`).join('');
         if (st === 0) body = `
             <div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>
-            <h2>${esc(t('ごはん帖へようこそ'))}</h2>
+            <h2>${esc(t('ご飯帖へようこそ'))}</h2>
             <ul class="ob-points">
                 <li><b>${esc(t('毎日の献立を、お膳ごと提案'))}</b><span>${esc(t('主菜・副菜・汁もの。品数も日によって変えられます'))}</span></li>
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
@@ -2450,7 +2450,7 @@ function viewSettings(){
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
-            <p class="small muted" style="margin:0">${esc(t('わが家のごはん帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
+            <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
             <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a>${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
         </div>
     </section>`;
@@ -2559,7 +2559,7 @@ function menuShareText(){
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
     if (!(main && (main.type === 'ごはん' || main.type === '麺'))){ if (PACK){ if (st) lines.push(st.local || st.name); } else lines.push(t('ご飯')); }
-    lines.push('', t('― わが家のごはん帖'));
+    lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
 function weekShareText(){
@@ -2569,7 +2569,7 @@ function weekShareText(){
     const list = shoppingList(); const done = shopDoneSet();
     const rest = list.filter(e => !done.has(e.key));
     if (rest.length){ lines.push('', t('【買い物メモ】')); rest.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`)); }
-    lines.push('', t('― わが家のごはん帖'));
+    lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
 function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
@@ -2626,7 +2626,7 @@ async function setReminder(hour){
         await P.cancel({notifications:[{id: NOTIFY_ID}]}).catch(() => {});
         if (hour === null){ S.settings.remind = null; save(); toast(t('お知らせを止めました')); render(); return; }
         const perm = await P.requestPermissions();
-        if (perm && perm.display && perm.display !== 'granted'){ toast(t('通知が許可されていません。iPhone の「設定」→「ごはん帖」→「通知」で許可してください')); return; }
+        if (perm && perm.display && perm.display !== 'granted'){ toast(t('通知が許可されていません。iPhone の「設定」→「ご飯帖」→「通知」で許可してください')); return; }
         await P.schedule({notifications:[{id: NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}}]});
         S.settings.remind = hour; save(); toast(t('毎日{time}にお知らせします', {time:hourLabel(hour)})); render();
     }catch(e){ toast(t('お知らせを設定できませんでした')); }

@@ -1,5 +1,5 @@
 #!/bin/bash
-# ごはん帖 iPhone アプリの準備を一度に行う（Mac で実行。Xcode と Node.js が必要）
+# ご飯帖 iPhone アプリの準備を一度に行う（Mac で実行。Xcode と Node.js が必要）
 #   使い方: cd ~/Documents/toresabi/ios-app && npm run setup
 #   --ci を付けると、GitHub Actions 用（Xcode を開かない）
 set -euo pipefail
@@ -23,7 +23,7 @@ echo "5/6 審査に必要な設定（Info.plist）を書きこんでいます…
 PLIST=ios/App/App/Info.plist
 PB=/usr/libexec/PlistBuddy
 set_key(){ "$PB" -c "Set :$1 $3" "$PLIST" 2>/dev/null || "$PB" -c "Add :$1 $2 $3" "$PLIST"; }
-set_key CFBundleDisplayName string "ごはん帖"
+set_key CFBundleDisplayName string "ご飯帖"
 set_key CFBundleDevelopmentRegion string "ja"
 set_key NSCameraUsageDescription string "作った料理の写真を撮るために使います"
 set_key NSPhotoLibraryUsageDescription string "作った料理の写真を選ぶために使います"

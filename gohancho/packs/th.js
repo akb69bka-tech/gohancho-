@@ -1,4 +1,4 @@
-// Thailand — home cooking pack for ごはん帖
+// Thailand — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'TH',
   name: 'Thailand',

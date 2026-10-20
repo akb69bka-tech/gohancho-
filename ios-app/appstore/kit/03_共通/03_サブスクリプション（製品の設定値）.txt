@@ -1,22 +1,22 @@
-サブスクリプショングループ: ごはん帖プラス（英語: Gohancho Plus）
+サブスクリプショングループ: ご飯帖プラス（英語: Gohancho Plus）
 
 [月額]
-参照名: ごはん帖プラス 月額
+参照名: ご飯帖プラス 月額
 製品 ID: gohancho_plus_monthly
 期間: 1か月
 価格（日本）: 380円
 お試しオファー: 無料トライアル 1か月（新規の利用者・すべての国）
-表示名（日本語）: ごはん帖プラス ／ 説明: 献立・買い物メモ・世界のレシピが使えます
+表示名（日本語）: ご飯帖プラス ／ 説明: 献立・買い物メモ・世界のレシピが使えます
 Display name (English): Gohancho Plus / Description: Meal plans, shopping lists and world recipes
 審査メモ: Monthly plan with 1-month free trial.
 
 [年額（1年ありがとう価格）]
-参照名: ごはん帖プラス 年額（1年ありがとう価格）
+参照名: ご飯帖プラス 年額（1年ありがとう価格）
 製品 ID: gohancho_plus_yearly_loyal
 期間: 1年
 価格（日本）: 3,500円
 お試しオファー: なし
-表示名（日本語）: ごはん帖プラス 年額 ／ 説明: 1年つづけてくださった方への特別価格です
+表示名（日本語）: ご飯帖プラス 年額 ／ 説明: 1年つづけてくださった方への特別価格です
 Display name (English): Gohancho Plus Yearly / Description: Special price for members of one year or more
 審査メモ: Shown in the app only to users subscribed for 12+ months.
 

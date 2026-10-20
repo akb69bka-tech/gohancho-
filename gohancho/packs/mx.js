@@ -1,4 +1,4 @@
-// Mexico — home cooking pack for ごはん帖
+// Mexico — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'MX',
   name: 'Mexico',

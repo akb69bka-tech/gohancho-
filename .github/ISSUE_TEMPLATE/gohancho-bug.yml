@@ -1,6 +1,6 @@
-name: ごはん帖の不具合・要望
+name: ご飯帖の不具合・要望
 description: アプリで困ったこと・直してほしいことを書くと、Claude が直して新しいバージョンを用意します
-title: "[ごはん帖] "
+title: "[ご飯帖] "
 labels: ["gohancho"]
 body:
   - type: dropdown
@@ -26,8 +26,8 @@ body:
     id: env
     attributes:
       label: 機種と国・言語
-      description: 設定の一番下に出ている「わが家のごはん帖 1.x.x」の数字と、選んでいる国
-      placeholder: 例) iPhone 15 / iOS 18 / ごはん帖 1.1.0 / 日本
+      description: 設定の一番下に出ている「わが家のご飯帖 1.x.x」の数字と、選んでいる国
+      placeholder: 例) iPhone 15 / iOS 18 / ご飯帖 1.1.0 / 日本
   - type: checkboxes
     id: ok
     attributes:

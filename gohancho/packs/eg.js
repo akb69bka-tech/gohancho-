@@ -1,4 +1,4 @@
-// Egypt — home cooking pack for ごはん帖
+// Egypt — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'EG',
   name: 'Egypt',

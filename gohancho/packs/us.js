@@ -1,4 +1,4 @@
-// United States — home cooking pack for ごはん帖
+// United States — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'US',
   name: 'United States',

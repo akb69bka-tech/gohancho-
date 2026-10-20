@@ -1,4 +1,4 @@
-// Spain — home cooking pack for ごはん帖
+// Spain — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'ES',
   name: 'Spain',

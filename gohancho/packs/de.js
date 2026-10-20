@@ -1,4 +1,4 @@
-// Germany — home cooking pack for ごはん帖
+// Germany — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'DE',
   name: 'Germany',

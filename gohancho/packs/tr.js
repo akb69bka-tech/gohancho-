@@ -1,4 +1,4 @@
-// Turkey — home cooking pack for ごはん帖
+// Turkey — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'TR',
   name: 'Turkey',

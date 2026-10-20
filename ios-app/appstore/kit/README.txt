@@ -1,4 +1,4 @@
-ごはん帖 App Store 申請キット
+ご飯帖 App Store 申請キット
 
 01_日本語/   … App Store Connect の「日本語」の各欄に貼る文章（ファイル名 = 欄の名前）
 02_English/  … 「English (U.S.)」の各欄に貼る文章

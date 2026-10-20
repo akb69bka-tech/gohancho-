@@ -1,4 +1,4 @@
-# ごはん帖 iPhone アプリを組み立てて App Store Connect にアップロードする
+# ご飯帖 iPhone アプリを組み立てて App Store Connect にアップロードする
 #
 # 動かし方（どちらか）:
 #   - GitHub の Actions タブ → 「iOS release」 → Run workflow（バージョンを入れる）

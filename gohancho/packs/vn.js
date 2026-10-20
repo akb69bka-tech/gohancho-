@@ -1,4 +1,4 @@
-// Vietnam — home cooking pack for ごはん帖
+// Vietnam — home cooking pack for ご飯帖
 // Bữa cơm nhà: cơm trắng + món mặn + rau + canh
 GOHAN_PACK({
   country: 'VN',

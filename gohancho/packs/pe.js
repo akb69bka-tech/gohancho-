@@ -1,4 +1,4 @@
-// Peru — home cooking pack for ごはん帖
+// Peru — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'PE',
   name: 'Peru',

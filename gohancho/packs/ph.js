@@ -1,4 +1,4 @@
-// Philippines — home cooking pack for ごはん帖
+// Philippines — home cooking pack for ご飯帖
 GOHAN_PACK({
   country: 'PH',
   name: 'Philippines',
