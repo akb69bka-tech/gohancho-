@@ -1,4 +1,4 @@
-# 料理のイラスト（ごはん帖）
+# 料理のイラスト（ご飯帖）
 
 ## いま入っている絵: 手描きの SVG（全125品）
 
@@ -23,7 +23,7 @@ node tools/illustrations/draw/build.mjs nikujaga   # 1品だけ
 
 # 料理のイラストを ChatGPT で作る（任意）
 
-ごはん帖の料理の絵（125品: レシピ123品＋白ご飯・お漬物）を、ChatGPT の画像生成（OpenAI）で作ってアプリに入れる手順です。
+ご飯帖の料理の絵（125品: レシピ123品＋白ご飯・お漬物）を、ChatGPT の画像生成（OpenAI）で作ってアプリに入れる手順です。
 
 ## しくみ
 
@@ -102,10 +102,10 @@ cd ios-app && npm run sync             # iPhone アプリにも反映
 2. ChatGPT（アプリでも Web でも可）で新しいチャットを開き、`prompts.md` の指示文を1つずつ貼る
    - 絵がそろうように、**最初の1枚が気に入ったら、同じチャットで続けて**作るのがコツです
    - 背景が白くなったときは「背景を透明にして PNG で」と頼む
-3. できた絵を保存し、**`prompts.md` に書いてあるファイル名**（例 `nikujaga.png`）に変えて、1つのフォルダ（例: ダウンロードの中の「ごはん帖」）に集める
+3. できた絵を保存し、**`prompts.md` に書いてあるファイル名**（例 `nikujaga.png`）に変えて、1つのフォルダ（例: ダウンロードの中の「ご飯帖」）に集める
 4. まとめて取りこむ
    ```bash
-   node tools/illustrations/generate.mjs --import ~/Downloads/ごはん帖
+   node tools/illustrations/generate.mjs --import ~/Downloads/ご飯帖
    ```
    - ファイル名が料理の ID と一致しないものは無視します
    - Mac では大きな画像（400KB 超）を自動で 640px に縮めます（アプリが重くならないように）

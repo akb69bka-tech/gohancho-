@@ -1,4 +1,4 @@
-# ChatGPT に貼る指示文（ごはん帖の料理イラスト）
+# ChatGPT に貼る指示文（ご飯帖の料理イラスト）
 
 1つずつ ChatGPT に貼って画像を作り、**指定のファイル名**で同じフォルダに保存してください。
 保存したら `node tools/illustrations/generate.mjs --import <そのフォルダ>` で取りこめます。
