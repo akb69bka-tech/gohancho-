@@ -536,5 +536,6 @@ GOHAN_I18N('de', {
     "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} Monate gratis, ohne Anmeldung. Ein kurzes Feedback pro Woche genügt, um weiterzumachen.",
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Danke für ein ganzes Jahr! Hier ist ein Sonderpreis für das Jahresabo.",
     "年額プラン（1年ありがとう価格）": "Jährlich (Dankeschön-Preis nach 1 Jahr)",
-    "感想・改善点を送る": "Feedback oder Idee senden"
+    "感想・改善点を送る": "Feedback oder Idee senden",
+    "くわしく": "Mehr"
 });

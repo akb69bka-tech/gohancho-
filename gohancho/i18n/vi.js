@@ -536,5 +536,6 @@ GOHAN_I18N('vi', {
     "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "Miễn phí {n} tháng, không cần đăng ký. Chỉ cần gửi một nhận xét ngắn mỗi tuần để tiếp tục.",
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Cảm ơn bạn đã đồng hành trọn một năm! Đây là giá đặc biệt cho gói năm.",
     "年額プラン（1年ありがとう価格）": "Gói năm (giá tri ân 1 năm)",
-    "感想・改善点を送る": "Gửi nhận xét hoặc ý tưởng"
+    "感想・改善点を送る": "Gửi nhận xét hoặc ý tưởng",
+    "くわしく": "Chi tiết"
 });

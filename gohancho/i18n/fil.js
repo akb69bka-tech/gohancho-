@@ -536,5 +536,6 @@ GOHAN_I18N('fil', {
     "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} buwang libre, walang sign-up. Magpadala lang ng maikling komento kada linggo para magpatuloy.",
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Salamat sa isang buong taon! Heto ang espesyal na presyo sa taunang plan.",
     "年額プラン（1年ありがとう価格）": "Taunan (1-year thank-you price)",
-    "感想・改善点を送る": "Magpadala ng komento o ideya"
+    "感想・改善点を送る": "Magpadala ng komento o ideya",
+    "くわしく": "Detalye"
 });

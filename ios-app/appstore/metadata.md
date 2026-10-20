@@ -70,7 +70,7 @@
 国を選ぶと、その国の家庭で毎日食べられている料理で献立を組みます（日本のほか、アメリカ・イギリス・フランス・ドイツ・イタリア・スペイン・ポーランド・トルコ・エジプト・インド・中国・台湾・韓国・タイ・ベトナム・インドネシア・フィリピン・メキシコ・ブラジル・ペルーの21の国と地域、440品以上）。「世界のレシピ」から、ほかの国の料理も見られます。画面と各国のレシピは、選んだ国の言葉で表示します。
 
 ■ ごはん帖プラス（App 内課金）
-今なら2か月無料体験キャンペーン中。その後は月額380円。年の縛りはなく、いつでも解約できます（無料期間が終わる24時間前までに解約すれば、料金はかかりません）。1年つづけてくださった方には、年額3,500円の特別価格をアプリ内でご案内します。
+最初の1か月は無料。2か月目から月額380円。年の縛りはなく、いつでも解約できます（無料期間が終わる24時間前までに解約すれば、料金はかかりません）。1年つづけてくださった方には、年額3,500円の特別価格をアプリ内でご案内します。
 
 【お支払いについて】
 お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
@@ -105,7 +105,7 @@
 | 参照名 | ごはん帖プラス 月額 | ごはん帖プラス 年額（1年ありがとう価格） |
 | 期間 | 1か月 | 1年 |
 | 価格（日本） | **380円**（クラシル プレミアム 480円より安く） | **3,500円**（月額の約9か月分） |
-| お試しオファー | **日本: 2か月 無料／その他の国: 1か月 無料**（新規の利用者。国ごとに設定） | なし |
+| お試しオファー | **1か月 無料**（新規の利用者。すべての国） | なし |
 | 表示名 | ごはん帖プラス | ごはん帖プラス 年額 |
 | 説明（45文字まで） | 献立・買い物メモ・世界のレシピが使えます | 1年つづけてくださった方への特別価格です |
 | 誰に見せるか | 全員 | アプリが「12か月以上つづいている会員」にだけ表示（審査担当者向けに審査メモに記載） |
@@ -113,8 +113,7 @@
 - 審査用スクリーンショット: アプリの「ごはん帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
 - RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額と年額（1年ありがとう価格）の2つを入れる（年額はアプリ側で12か月以上の会員にだけ表示する）
-- まずは **Apple 方式**で出します: 無料期間は App Store Connect のお試しオファー（日本2か月・他1か月）。アプリは RevenueCat から実際の長さを取って「最初の2か月は無料」のように表示します（`PLAN.trialMode: 'store'`）
-- 予備の **アプリ側キャンペーン**（`PLAN.campaign`、いまは `active: false`）: 登録なしで使いはじめ、毎週「感想・改善点を送る」（開発者へのメール）を押すと1週間ずつ、最大60日無料。App Store Connect の「お試し開始率」が低ければこちらに切りかえる（お試しオファーを外し、`active: true` にしてアップデート）。App Store のレビューを求める・見返りにするものではありません（ガイドライン 5.6.1）
+- 無料期間は App Store Connect のお試しオファー（1か月無料）です。アプリは RevenueCat から実際の長さを取って「最初の1か月は無料」と表示します（`PLAN.trialMode: 'store'`）。1か月が終わると、解約していなければ月額380円が自動で始まります
 - 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
@@ -123,6 +122,7 @@
 
 - 開発者（あなた）は、記録・写真・設定を収集しません（端末の中だけに保存）
 - **RevenueCat を使う場合**、購入の確認のために「購入履歴」と「ユーザ ID（匿名）」が RevenueCat に送られます。回答は RevenueCat の案内（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）に従ってください（**要確認**）
+- 起動時に GitHub 上の小さな設定ファイル（お知らせ・設定の切りかえ）を読みます。利用者を特定する情報は送りません
 - 料理の絵はアプリに同梱しているため、通常は外部に通信しません（同梱の絵が読み込めないときだけ Wikipedia に料理名を問い合わせます。利用者を特定する情報は送りません）
 
 ---
@@ -142,7 +142,7 @@ Main features:
 
 No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
-In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly plan) at ¥380/month with a free introductory offer configured in App Store Connect (2 months in Japan, 1 month in other storefronts; the app reads the actual length from the offer and shows it). A yearly product (¥3,500, "1-year thank-you price") exists but is only surfaced to users who have been subscribed for 12+ months. After choosing a country and the short setup, the app shows the subscription screen: the current App Store price, the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly plan) at ¥380/month with a 1-month free introductory offer configured in App Store Connect (the app reads the actual length from the offer and shows it). A yearly product (¥3,500, "1-year thank-you price") exists but is only surfaced to users who have been subscribed for 12+ months. After choosing a country and the short setup, the app shows the subscription screen: the current App Store price, the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 ```
 
 ---

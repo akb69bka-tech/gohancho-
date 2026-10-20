@@ -1,0 +1,7 @@
+{
+  "_help": "アプリが起動時に読む設定。審査なしで変えられる（main ブランチのこのファイルを直すだけ。次の起動から反映）。notice はお知らせ（id を変えると、閉じた人にもまた出る）。plan は課金まわりの切りかえ。minVersion より古いアプリには notice を必ず出す。",
+  "version": 1,
+  "notice": null,
+  "plan": {},
+  "minVersion": ""
+}

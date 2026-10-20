@@ -536,5 +536,6 @@ GOHAN_I18N('id', {
     "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "{n} bulan gratis tanpa daftar. Cukup kirim komentar singkat tiap minggu untuk melanjutkan.",
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Terima kasih sudah setahun penuh! Ini harga khusus untuk paket tahunan.",
     "年額プラン（1年ありがとう価格）": "Tahunan (harga terima kasih 1 tahun)",
-    "感想・改善点を送る": "Kirim komentar atau ide"
+    "感想・改善点を送る": "Kirim komentar atau ide",
+    "くわしく": "Selengkapnya"
 });

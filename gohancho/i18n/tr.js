@@ -536,5 +536,6 @@ GOHAN_I18N('tr', {
     "登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。": "Kayıt olmadan {n} ay ücretsiz. Devam etmek için her hafta kısa bir görüş yeterli.",
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Koca bir yıl için teşekkürler! Yıllık plan için özel fiyat sizi bekliyor.",
     "年額プラン（1年ありがとう価格）": "Yıllık (1 yıl teşekkür fiyatı)",
-    "感想・改善点を送る": "Görüş veya fikir gönder"
+    "感想・改善点を送る": "Görüş veya fikir gönder",
+    "くわしく": "Ayrıntılar"
 });

@@ -1440,7 +1440,7 @@ async function loadGenerated(){
         const m = await res.json(), items = (m && m.items) || {};
         Object.keys(items).forEach(id => {
             const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
-            GEN[id] = {src: 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, ai: it.via === 'api' || it.via === 'chatgpt'};
+            GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, ai: it.via === 'api' || it.via === 'chatgpt'};
         });
         if (Object.keys(GEN).length) scheduleRender();
     }catch(e){}
@@ -2043,8 +2043,7 @@ const PLAN = {
     ],
     // 年額は「1年つづけてくれた人」にだけ案内する特別価格（App Store Connect に製品を作り、アプリは12か月以上の会員にだけ表示する）
     loyalty: {months:12, id:'gohancho_plus_yearly_loyal', get label(){ return t('年額プラン（1年ありがとう価格）'); }, get price(){ return t('3,500円 / 年'); }, per:'年', note:''},
-    // 無料体験キャンペーン（アプリ側）: 登録なしで使いはじめられ、毎週ひとこと感想・改善点を送ると次の1週間が開く（最大 days 日）
-    // まずは Apple 方式（App Store Connect のお試しオファー: 日本2か月・他1か月）で出すので false。App Store Connect の「お試し開始率」を見て、低ければ true に切りかえる（そのときはお試しオファーを外す）
+    // （使っていない）アプリ側の無料体験キャンペーン: 登録なしで使いはじめ、毎週ひとこと感想を送ると1週間ずつ開く。Apple のお試しオファー方式で出すので false のまま
     campaign: {active:false, days:60, weekDays:7, resendAfter:5},
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
@@ -2442,6 +2441,43 @@ function viewSettings(){
     </section>`;
 }
 const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせる（申請の自動化がここも書きかえる）
+// 外から直せる設定（審査なしで変えられる）: GitHub 上の gohancho/remote.json を起動時に読む。読めなくても、古くても、そのまま動く
+//   notice: {id, ja, en, fr…, until:'YYYY-MM-DD', url?}  今日の画面に出すお知らせ（×で閉じられる）
+//   plan:   {trialMode, trialDays, loyaltyMonths, campaign:{active…}}  課金まわりの切りかえ
+//   minVersion: 'x.y.z'  これより古いアプリには notice を必ず出す（アップデートのお願い）
+const REMOTE_URL = 'https://raw.githubusercontent.com/akb69bka-tech/toresabi/main/gohancho/remote.json';
+let REMOTE = {};
+function applyRemote(j){
+    if (!j || typeof j !== 'object') return;
+    REMOTE = j;
+    const pl = j.plan && typeof j.plan === 'object' ? j.plan : {};
+    if (pl.trialMode === 'app' || pl.trialMode === 'store') PLAN.trialMode = pl.trialMode;
+    if (Number(pl.trialDays) > 0) PLAN.trialDays = Number(pl.trialDays);
+    if (Number(pl.loyaltyMonths) > 0) PLAN.loyalty.months = Number(pl.loyaltyMonths);
+    if (pl.campaign && typeof pl.campaign === 'object') Object.assign(PLAN.campaign, pl.campaign);
+}
+async function loadRemote(){
+    try{ const c = JSON.parse(localStorage.getItem('gohancho.remote') || 'null'); if (c) applyRemote(c); }catch(e){}
+    if (!/^https?:$/.test(location.protocol) && !isNative()) return;
+    try{
+        const ctrl = new AbortController(); setTimeout(() => ctrl.abort(), 6000);
+        const res = await fetch(REMOTE_URL + '?t=' + Math.floor(Date.now() / 3600000), {cache:'no-store', signal: ctrl.signal});
+        if (!res.ok) return;
+        const j = await res.json(); if (!j || typeof j !== 'object') return;
+        try{ localStorage.setItem('gohancho.remote', JSON.stringify(j)); }catch(e){}
+        applyRemote(j); render();
+    }catch(e){}
+}
+function cmpVer(a, b){ const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++){ if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); } return 0; }
+function remoteNoticeHtml(){
+    const n = REMOTE.notice; if (!n || typeof n !== 'object' || !n.id) return '';
+    const old = REMOTE.minVersion && cmpVer(APP_VERSION, REMOTE.minVersion) < 0;
+    if (!old && S.noticeSeen === n.id) return '';
+    if (n.until && n.until < TODAY) return '';
+    const text = n[LANG] || n.en || n.ja; if (!text) return '';
+    const link = n.url && /^https:\/\//.test(n.url) ? `<a class="btn sm" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.linkLabel || t('くわしく'))}</a>` : '';
+    return `<div class="note trial-note"><span>${esc(text)}</span>${link}${old ? '' : `<button class="btn sm ghost" data-act="notice-close">${esc(t('閉じる'))}</button>`}</div>`;
+}
 const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
 function feedbackMailto(){
     const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
@@ -2627,6 +2663,7 @@ function viewToday(){
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
     <section class="sec">
+        ${remoteNoticeHtml()}
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span>${esc(t('1週間プランでは、今日の主菜は'))} <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc(t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}))}</span></div>
@@ -3048,6 +3085,7 @@ document.addEventListener('click', e => {
         case 'buy': purchase(id); break;
         case 'restore': restorePurchases(); break;
         case 'monitor-send': monitorSend(); break;
+        case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;
@@ -3495,6 +3533,7 @@ if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前�
     await ensureTr(currentCountry());
     applyCountry(currentCountry());
     scheduleTrialReminder();
+    loadRemote();
     setTab(tab);
     if (!S.settings.country) openCountrySheet();
     else if (!S.onboarded) startOnboard();
