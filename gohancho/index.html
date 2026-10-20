@@ -314,6 +314,15 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .swap:hover{background:rgba(245,238,227,.1)}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
 /* ヘッダーの設定ボタン */
+.top .gear.flagbtn{font-size:1.35rem;line-height:1}
+.top .gear.flagbtn+.gear{margin-left:8px}
+.country-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:56vh;overflow-y:auto;padding:2px}
+.country{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
+.country .fl{grid-row:span 2;font-size:1.6rem;line-height:1}
+.country .nm{font-weight:700;font-size:.92rem;line-height:1.3}
+.country .sub{font-size:.72rem;color:var(--muted);line-height:1.2}
+.country.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.v-staple{width:62%}
 .top .gear{margin-left:auto;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-left:4px}
@@ -355,11 +364,13 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
 .hint-row.locked{cursor:pointer}
-.btn.line{color:#06a046;font-weight:700}
-.btn.line::before{content:"LINE";background:#06c755;color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
-.btn.line:hover{border-color:#06c755}
-.sheet .btn.line{background:#06c755;border-color:#06c755;color:#fff}
-.sheet .btn.line::before{display:none}
+.btn.msg{--msg:#06c755;color:color-mix(in srgb,var(--msg) 80%,#000);font-weight:700}
+.btn.msg.wa{--msg:#25d366}.btn.msg.tg{--msg:#2aabee}.btn.msg.none{--msg:var(--accent)}
+.btn.msg::before{content:attr(data-app);background:var(--msg);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
+.btn.msg.none::before{display:none}
+.btn.msg:hover{border-color:var(--msg)}
+.sheet .btn.msg{background:var(--msg);border-color:var(--msg);color:#fff}
+.sheet .btn.msg::before{display:none}
 .share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
 .shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
 .shop .shop-row:first-child{border-top:0}
@@ -390,6 +401,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
             <div class="date" id="today-label"></div>
             <h1>わが家のごはん帖</h1>
         </div>
+        <button class="gear flagbtn" data-act="country" aria-label="国・地域を変える" id="flag-btn">🇯🇵</button>
         <button class="gear" data-act="settings" aria-label="設定"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </header>
     <div class="greet" id="greet"></div>
@@ -663,15 +675,20 @@ function norm(s){
 }
 // 長い表記から順に照合する（「たまねぎ」を「ねぎ」より先に、「牛乳」を「牛」より先に）
 const VARIANTS = [];
-CANON.forEach(([c, vs], order) => vs.forEach(v => VARIANTS.push({c, v: norm(v), order})));
-VARIANTS.sort((a,b) => b.v.length - a.v.length || a.order - b.order);
+function rebuildVariants(){
+    VARIANTS.length = 0;
+    CANON.forEach(([c, vs], order) => vs.forEach(v => VARIANTS.push({c, v: norm(v), order})));
+    VARIANTS.sort((a,b) => b.v.length - a.v.length || a.order - b.order);
+}
+rebuildVariants();
 function canonOf(name){
     const n = norm(name);
     for (const {c, v} of VARIANTS) if (n.includes(v)) return c;
     return null;
 }
 function keyOf(name){ return canonOf(name) || norm(name); }
-function labelOf(name){ return canonOf(name) || String(name).replace(/[（(][^）)]*[）)]/g,'').trim(); }
+const PACK_NAMES = {};   // 食材キー → 表示名（国のパックを使っているとき。日本は空）
+function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c) : String(name).replace(/[（(][^）)]*[）)]/g,'').trim(); }
 // 自由入力（「豚肉と玉ねぎとキャベツ」など）から食材を取り出す
 function extractIngredients(text){
     const out = [];
@@ -681,7 +698,7 @@ function extractIngredients(text){
         for (const {c, v} of VARIANTS){
             if (t.includes(v)){ found.push(c); t = t.split(v).join('｜'); }
         }
-        if (found.length) found.forEach(c => { if (!out.includes(c)) out.push(c); });
+        if (found.length) found.map(c => PACK_NAMES[c] || c).forEach(c => { if (!out.includes(c)) out.push(c); });
         else if (tok.length <= 12 && !out.includes(tok)) out.push(tok);
     });
     return out;
@@ -707,7 +724,7 @@ const SUBS = {
 const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉':'鶏','牛肉':'牛','合いびき肉':'ひき肉',
     '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','あじ':'魚','いわし':'魚','さんま':'魚','かれい':'魚','いか':'魚介','たこ':'魚介','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
     '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚'};
-const FAMILY_LABEL = {'豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
+const FAMILY_LABEL = {'羊':'羊肉','豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
 function prepRecipe(r){
     r.items = r.ings.map(parseIng);
     const p = r.items.find(i => FAMILY[i.key] && i.key !== '卵') || r.items.find(i => FAMILY[i.key]);
@@ -949,7 +966,7 @@ function newMenu(){
         items.push({slot, r});
     });
     session.menu = {n, items};
-    session.twist = suggestTwist();
+    session.twist = PACK ? null : suggestTwist();
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
 function setMenuMain(r){
@@ -1116,7 +1133,7 @@ function setTab(t){
     render(); window.scrollTo({top:0});
 }
 function metaLine(r){
-    const parts = [r.genre === 'エスニック' ? 'エスニック' : r.genre === '韓' ? '韓国' : r.genre === '中' ? '中華' : r.genre === '洋' ? '洋食' : '和食', `${r.min}分`];
+    const parts = [r.pack ? countryOf(r.pack).nameLocal : r.genre === 'エスニック' ? 'エスニック' : r.genre === '韓' ? '韓国' : r.genre === '中' ? '中華' : r.genre === '洋' ? '洋食' : '和食', `${r.min}分`];
     if (r.family && r.family !== '野菜') parts.push(FAMILY_LABEL[r.family] || r.family);
     return parts.join('・');
 }
@@ -1130,6 +1147,7 @@ function badges(r){
 }
 function render(){
     $('#today-label').textContent = jpDate(TODAY);
+    $('#flag-btn').textContent = countryOf(currentCountry()).flag;
     const g = greeting();
     $('#greet').innerHTML = tab === 'today' ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
     const v = $('#view');
@@ -1393,9 +1411,9 @@ function smoothKeepEdges(px, W, H, r, sigma){
     }
     return out;
 }
-function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent((r.isTwist ? r.base.name : r.name).replace(/（.*?）/g,'') + ' 作り方'); }
+function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query=' + encodeURIComponent((r.isTwist ? r.base.name : r.name).replace(/（.*?）/g,'') + (r.pack ? ' recipe' : ' 作り方')); }
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
-function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + ' 料理'); }
+function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + (r.pack ? '' : ' 料理')); }
 function photoNote(){
     const ai = Object.values(GEN).some(g => g.ai), wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
     if (ai || wiki) return [ai ? '料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。' : '', wiki ? '一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。' : ''].join('');
@@ -1421,7 +1439,7 @@ function vesselHtml(kind, r, still=false){
     const extra = kind === 'chawan' ? 'rice' : kind === 'konomono' ? 'konomono' : null;
     const ph = r ? photoOf(r) : extra ? (GEN[extra] || sketchOf(PHOTOS[extra])) : null;
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
-    const food = ph ? '<span class="food photo"></span>' : extra ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
+    const food = ph ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
     const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(r.name)}の作り方を見る">${food}</button>`;
@@ -1719,7 +1737,7 @@ const UPGRADE_BY_METHOD = {
 };
 function upgradeOf(r){
     const base = r.isTwist ? r.base : r;
-    return UPGRADES[base.id] || UPGRADE_BY_METHOD[base.method] || UPGRADE_BY_METHOD['炒'];
+    return base.tip || UPGRADES[base.id] || UPGRADE_BY_METHOD[base.method] || UPGRADE_BY_METHOD['炒'];
 }
 function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
 function upgradeHtml(r, compact=false){
@@ -1979,7 +1997,7 @@ function renderSheet(){
         const st = sheet.step;
         const dots = [0,1,2].map(i => `<i class="${i === st ? 'on' : ''}"></i>`).join('');
         if (st === 0) body = `
-            <div class="ob-hero">${vesselHtml('plate', byId('nikujaga'), true)}</div>
+            <div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>
             <h2>ごはん帖へようこそ</h2>
             <ul class="ob-points">
                 <li><b>毎日の献立を、お膳ごと提案</b><span>主菜・副菜・汁もの。品数も日によって変えられます</span></li>
@@ -2006,6 +2024,7 @@ function renderSheet(){
         body = `<div class="ob-dots" aria-hidden="true">${dots}</div>${body}
             ${st > 0 ? '' : '<button class="btn sm ghost ob-skip" data-act="ob-skip">設定せずに使う</button>'}`;
     }
+    if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'share') body = shareSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = PAYWALL_REASON[sheet.reason] || '';
@@ -2127,6 +2146,11 @@ function viewSettings(){
     return `
     <section class="sec">
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">← もどる</button><h2>設定</h2></div>
+        <div class="set-group">
+            <div class="set-title">国・地域</div>
+            <button class="btn" data-act="country">${countryOf(currentCountry()).flag} ${esc(countryOf(currentCountry()).nameLocal)}　を変える</button>
+            <span class="small muted">選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。</span>
+        </div>
         <div class="set-group">
             <div class="set-title">家族と献立</div>
             <div class="field"><label>何人分つくるか</label>
@@ -2255,6 +2279,16 @@ function weekShareText(){
     return lines.join('\n');
 }
 function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
+// 国でよく使われる家族の連絡アプリ（リンクで開けるものだけボタンにする。ほかは「ほかのアプリで送る」）
+function msgLabel(){ const m = messengerFor(); return m ? m.label : ''; }
+function msgBtnClass(){ const m = messengerFor(); return 'btn msg ' + (m ? m.cls : 'none'); }
+function messengerFor(){
+    const app = PACK ? PACK.share : 'line';
+    if (app === 'line') return {label:'LINE', cls:'', url: lineShareUrl};
+    if (app === 'whatsapp') return {label:'WhatsApp', cls:'wa', url: t => 'https://wa.me/?text=' + encodeURIComponent(t)};
+    if (app === 'telegram') return {label:'Telegram', cls:'tg', url: t => 'https://t.me/share/url?url=&text=' + encodeURIComponent(t)};
+    return null;
+}
 function openShare(kind){
     const text = kind === 'week' ? weekShareText() : menuShareText();
     if (!text){ toast('送る献立がありません'); return; }
@@ -2277,12 +2311,12 @@ function shareSheetHtml(){
     const canSystem = !!(nativePlugin('Share') || navigator.share);
     return `<h2>${esc(sheet.title)}を送る</h2>
         <textarea id="share-text" class="share-text" readonly aria-label="送る内容">${esc(sheet.text)}</textarea>
-        <a class="btn line wide" href="${esc(lineShareUrl(sheet.text))}" target="_blank" rel="noopener">LINE で送る</a>
+        ${(m => m ? `<a class="btn msg ${m.cls} wide" href="${esc(m.url(sheet.text))}" target="_blank" rel="noopener">${m.label} で送る</a>` : '')(messengerFor())}
         <div class="row">
             ${canSystem ? '<button class="btn wide" data-act="share-system">ほかのアプリで送る</button>' : ''}
             <button class="btn wide" data-act="share-copy">コピーする</button>
         </div>
-        <p class="tiny muted">LINE を押すと、送り先（家族やグループ）を選ぶ画面が開きます。</p>
+        ${messengerFor() ? `<p class="tiny muted">${messengerFor().label} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">閉じる</button>`;
 }
 
@@ -2338,7 +2372,10 @@ function viewToday(){
     const mains = indexed.filter(x => x.it.slot === '主菜');
     const sides = indexed.filter(x => x.it.slot === '副菜');
     const soups = indexed.filter(x => x.it.slot === '汁物');
-    const riceSpot = `<div class="spot rice" style="--w:40%">${vesselHtml(oneBowl ? 'konomono' : 'chawan', null)}
+    const st = stapleSpot();
+    const riceSpot = PACK ? (st && !oneBowl ? `<div class="spot rice" style="--w:40%">${vesselHtml('staple', {id: st.id, name: st.local || st.name, staple: true}, true)}
+        <div class="spot-label"><span class="slot">主食</span><span class="nm">${esc(st.local || st.name)}</span></div></div>` : '')
+        : `<div class="spot rice" style="--w:40%">${vesselHtml(oneBowl ? 'konomono' : 'chawan', null)}
         <div class="spot-label"><span class="slot">${oneBowl ? '香の物' : 'ご飯'}</span><span class="nm">${oneBowl ? 'お漬物' : '白ご飯'}</span></div></div>`;
     const sideW = sides.length >= 3 ? '31%' : '40%';
     const mainW = mains.length >= 2 ? '45%' : '56%';
@@ -2361,7 +2398,7 @@ function viewToday(){
         <div class="actions">
             <button class="btn primary full" data-act="decide" ${main?'':'disabled'}>この献立に決定</button>
             <button class="btn" data-act="new-menu">まるごと入れ替え</button>
-            <button class="btn line" data-act="share-menu" ${main?'':'disabled'}>家族に送る</button>
+            <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>家族に送る</button>
         </div>
     </section>
 
@@ -2404,7 +2441,7 @@ function viewToday(){
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">別の案</button>
             </div>`; }).join('')}</div>
-            <div class="row"><button class="btn line" data-act="share-week">予定と買い物メモを送る</button><button class="btn" data-act="make-week">作り直す</button></div>
+            <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">予定と買い物メモを送る</button><button class="btn" data-act="make-week">作り直す</button></div>
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">今日から7日分の主菜をまとめて考えます。買い物の前に便利です。${!hasPro() ? `無料版では${PLAN.freeLimits.weekDays}日分まで見られます。` : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">1週間分を考える</button></div>`}
@@ -2451,7 +2488,7 @@ function viewFridge(){
             <button class="btn primary" type="submit">追加</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" id="mic-btn" aria-label="声で入力">声で入力</button>` : ''}
         </form>
-        ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(f)}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>
+        ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">全部外す</button></div>`
         : `<div class="note">まだ材料が登録されていません。下のよく使う食材をタップするか、「豚肉、キャベツ、卵」のようにまとめて入力できます。 <button class="btn sm" data-act="sample-ing">例: 豚肉・キャベツ・卵で試す</button></div>`}
         <div class="eyebrow">よく使う食材</div>
@@ -2465,7 +2502,7 @@ function viewFridge(){
             <input type="text" id="staple-input" placeholder="例: 卵、玉ねぎ、ツナ缶" autocomplete="off" aria-label="常備品を入力">
             <button class="btn primary" type="submit">登録</button>
         </form>
-        ${S.staples.length ? `<div class="chips">${S.staples.map(f => `<span class="chip have">${esc(f)}<button class="x" data-act="rm-staple" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>` : ''}
+        ${S.staples.length ? `<div class="chips">${S.staples.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-staple" data-v="${esc(f)}" aria-label="${esc(f)}を外す">×</button></span>`).join('')}</div>` : ''}
         <div class="chips">${STAPLE_QUICK.map(q => { const on = S.staples.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-staple" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
         </div>
         ${hintsHtml}
@@ -2664,7 +2701,7 @@ function renderModal(){
                 <div class="row">
                     <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${last === '今日作った' ? '今日の記録に入っています' : '今日作った'}</button>
                     <button class="btn" data-act="fav" data-id="${esc(r.id)}">${isFav ? 'お気に入り解除' : 'お気に入り'}</button>
-                    ${!r.isTwist ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
+                    ${!r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">これをひとひねり</button>` : ''}
                 </div>
                 <div class="row small">
                     <label for="cook-date" class="muted">別の日に作った:</label>
@@ -2758,7 +2795,13 @@ document.addEventListener('click', e => {
         case 'buy': purchase(id); break;
         case 'restore': restorePurchases(); break;
         case 'sheet-close': closeSheet(); break;
-        case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard') closeSheet(); break;
+        case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
+        case 'country': openCountrySheet(); break;
+        case 'pick-country': {
+            const cc = el.dataset.cc;
+            setCountry(cc).then(ok => { if (!ok) return; render(); if (!S.onboarded) startOnboard(); else closeSheet(); });
+            break;
+        }
         case 'ob-again': startOnboard(); break;
         case 'ob-next': sheet.step++; renderSheet(); break;
         case 'ob-back': sheet.step--; renderSheet(); break;
@@ -2931,12 +2974,157 @@ document.addEventListener('submit', e => {
         toast(`「${name}」を追加しました`); render();
     }
 });
-document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard') closeSheet(); else if (modalId) closeModal(); });
+
+/* =========================================================
+   国・地域（世界版）
+   日本は index.html の中のレシピ。ほかの国は packs/<cc>.js（GOHAN_PACK({...})）を読みこみ、
+   レシピ・食材の呼び名・よく使う食材などを入れかえる。献立の組み立て方は日本と同じしくみを使う。
+   ========================================================= */
+const COUNTRIES = [
+    {cc:'JP', flag:'🇯🇵', nameLocal:'日本', name:'Japan', nameJa:'日本', lang:'ja'},
+    {cc:'US', flag:'🇺🇸', nameLocal:'United States', name:'United States', nameJa:'アメリカ', lang:'en'},
+    {cc:'GB', flag:'🇬🇧', nameLocal:'United Kingdom', name:'United Kingdom', nameJa:'イギリス', lang:'en'},
+    {cc:'FR', flag:'🇫🇷', nameLocal:'France', name:'France', nameJa:'フランス', lang:'fr'},
+    {cc:'DE', flag:'🇩🇪', nameLocal:'Deutschland', name:'Germany', nameJa:'ドイツ', lang:'de'},
+    {cc:'IT', flag:'🇮🇹', nameLocal:'Italia', name:'Italy', nameJa:'イタリア', lang:'it'},
+    {cc:'ES', flag:'🇪🇸', nameLocal:'España', name:'Spain', nameJa:'スペイン', lang:'es'},
+    {cc:'PL', flag:'🇵🇱', nameLocal:'Polska', name:'Poland', nameJa:'ポーランド', lang:'pl'},
+    {cc:'TR', flag:'🇹🇷', nameLocal:'Türkiye', name:'Türkiye', nameJa:'トルコ', lang:'tr'},
+    {cc:'EG', flag:'🇪🇬', nameLocal:'مصر', name:'Egypt', nameJa:'エジプト', lang:'ar'},
+    {cc:'IN', flag:'🇮🇳', nameLocal:'भारत', name:'India', nameJa:'インド', lang:'hi'},
+    {cc:'CN', flag:'🇨🇳', nameLocal:'中国', name:'China', nameJa:'中国', lang:'zh-Hans'},
+    {cc:'TW', flag:'🇹🇼', nameLocal:'台灣', name:'Taiwan', nameJa:'台湾', lang:'zh-Hant'},
+    {cc:'KR', flag:'🇰🇷', nameLocal:'대한민국', name:'South Korea', nameJa:'韓国', lang:'ko'},
+    {cc:'TH', flag:'🇹🇭', nameLocal:'ประเทศไทย', name:'Thailand', nameJa:'タイ', lang:'th'},
+    {cc:'VN', flag:'🇻🇳', nameLocal:'Việt Nam', name:'Vietnam', nameJa:'ベトナム', lang:'vi'},
+    {cc:'ID', flag:'🇮🇩', nameLocal:'Indonesia', name:'Indonesia', nameJa:'インドネシア', lang:'id'},
+    {cc:'PH', flag:'🇵🇭', nameLocal:'Pilipinas', name:'Philippines', nameJa:'フィリピン', lang:'fil'},
+    {cc:'MX', flag:'🇲🇽', nameLocal:'México', name:'Mexico', nameJa:'メキシコ', lang:'es'},
+    {cc:'BR', flag:'🇧🇷', nameLocal:'Brasil', name:'Brazil', nameJa:'ブラジル', lang:'pt-BR'},
+    {cc:'PE', flag:'🇵🇪', nameLocal:'Perú', name:'Peru', nameJa:'ペルー', lang:'es'},
+];
+const PACKS = {};
+window.GOHAN_PACK = pack => { if (pack && pack.country) PACKS[pack.country] = pack; };
+let PACK = null;                     // いま使っている国のパック（日本は null）
+let JP_DATA = null;                  // 日本のデータの控え（国を切りかえて戻るときに使う）
+function countryOf(cc){ return COUNTRIES.find(c => c.cc === cc) || COUNTRIES[0]; }
+function currentCountry(){ return S.settings.country || 'JP'; }
+function guessCountry(){
+    try{
+        const langs = navigator.languages || [navigator.language];
+        for (const l of langs){
+            const m = String(l).match(/-([A-Z]{2})\b/i); if (m && COUNTRIES.some(c => c.cc === m[1].toUpperCase())) return m[1].toUpperCase();
+            const base = String(l).split('-')[0].toLowerCase();
+            const hit = COUNTRIES.find(c => c.lang.split('-')[0] === base); if (hit) return hit.cc;
+        }
+    }catch(e){}
+    return 'JP';
+}
+function loadPack(cc){
+    if (cc === 'JP' || PACKS[cc]) return Promise.resolve(PACKS[cc] || null);
+    return new Promise((res, rej) => {
+        const el = document.createElement('script');
+        el.src = `packs/${cc.toLowerCase()}.js`;
+        el.onload = () => PACKS[cc] ? res(PACKS[cc]) : rej(new Error('pack'));
+        el.onerror = () => rej(new Error('pack'));
+        document.head.appendChild(el);
+    });
+}
+const PACK_TYPE = {main:'主菜', side:'副菜', soup:'汁物', rice:'ごはん', noodle:'麺'};
+const PACK_METHOD = {simmer:'煮', stirfry:'炒', grill:'焼', fry:'揚', raw:'和え', soup:'汁', rice:'炊'};
+const PACK_FAMILY = {pork:'豚', chicken:'鶏', beef:'牛', mince:'ひき肉', lamb:'羊', fish:'魚', seafood:'魚介', legume:'大豆', egg:'卵', processed:'加工肉', veg:'野菜'};
+const PROTEIN_WORDS = {pork:/pork|bacon|ham|sausage|chorizo/, chicken:/chicken|turkey/, beef:/beef|veal/, mince:/ground|mince/, lamb:/lamb|mutton|goat/,
+    fish:/fish|salmon|cod|tuna|mackerel|sardine|tilapia|trout|hake|anchov|herring|milkfish|catfish|pomfret/, seafood:/shrimp|prawn|squid|clam|mussel|crab|octopus|scallop/,
+    legume:/tofu|bean|lentil|chickpea|dal|pea/, egg:/egg/, processed:/ham|sausage|bacon|hot dog|spam|salami|chorizo|corned/};
+function packRecipe(pk, x){
+    const items = x.ings.map(s => {
+        const opt = s.endsWith('?'); if (opt) s = s.slice(0, -1);
+        const [key, label, qty] = s.split('|');
+        return {name: label || key, qty: qty || '', opt, key: (key || '').trim().toLowerCase(), label: label || key};
+    });
+    const family = PACK_FAMILY[x.protein] || '野菜';
+    const re = PROTEIN_WORDS[x.protein];
+    const p = family === '野菜' ? null : (items.find(i => re && re.test(i.key)) || items[0]);
+    return {id: x.id, name: x.local || x.name, nameEn: x.name, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
+        min: Number(x.min) || 30, ings: x.ings, items, seas: x.seas || '', steps: (x.steps || []).slice(), tip: x.tip || null, pack: pk.country,
+        protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
+}
+function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
+function replaceObj(obj, src){ Object.keys(obj).forEach(k => delete obj[k]); Object.assign(obj, src); }
+function applyCountry(cc){
+    if (!JP_DATA) JP_DATA = {recipes: RECIPES.slice(), canon: CANON.slice(), pantry: [...PANTRY], family: Object.assign({}, FAMILY), subs: Object.assign({}, SUBS),
+        quick: QUICK.slice(), stapleQuick: STAPLE_QUICK.slice(), avoidQuick: AVOID_QUICK.slice(), moods: MOODS.slice()};
+    const pk = cc === 'JP' ? null : PACKS[cc];
+    PACK = pk || null;
+    if (!pk){
+        replaceList(RECIPES, JP_DATA.recipes); replaceList(CANON, JP_DATA.canon); replaceList(QUICK, JP_DATA.quick); replaceList(STAPLE_QUICK, JP_DATA.stapleQuick);
+        replaceList(AVOID_QUICK, JP_DATA.avoidQuick); replaceList(MOODS, JP_DATA.moods);
+        PANTRY.clear(); JP_DATA.pantry.forEach(v => PANTRY.add(v)); replaceObj(FAMILY, JP_DATA.family); replaceObj(SUBS, JP_DATA.subs); replaceObj(PACK_NAMES, {});
+    } else {
+        const recipes = pk.recipes.map(x => packRecipe(pk, x));
+        replaceList(RECIPES, recipes);
+        const names = Object.assign({}, pk.names || {});
+        const aliases = Object.assign({}, pk.aliases || {});
+        recipes.forEach(r => r.items.forEach(i => { if (!names[i.key]) names[i.key] = i.label; if (!aliases[i.key]) aliases[i.key] = []; }));
+        replaceObj(PACK_NAMES, names);
+        replaceList(CANON, Object.entries(aliases).map(([k, vs]) => [k, [...new Set([k, names[k], ...vs].filter(Boolean))]]));
+        const fam = {}; recipes.forEach(r => { if (r.protein) fam[r.protein] = r.family; });
+        replaceObj(FAMILY, fam); replaceObj(SUBS, {});
+        PANTRY.clear();
+        const disp = k => names[k] || k;
+        replaceList(QUICK, (pk.quick || []).map(disp));
+        replaceList(STAPLE_QUICK, (pk.pantry || []).map(disp));
+        replaceList(AVOID_QUICK, (pk.quick || []).slice(0, 14).map(disp));
+        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'fish', 'meat'].includes(m.k)));
+    }
+    rebuildVariants();
+    session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;
+    document.documentElement.lang = pk ? (pk.lang || 'en') : 'ja';
+    const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !!pk;
+    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${pk ? 3 : 4},1fr)`;
+    if (pk && tab === 'twist') tab = 'today';
+}
+// 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
+async function setCountry(cc){
+    const old = currentCountry();
+    if (old !== cc){
+        S.countryData = S.countryData || {};
+        S.countryData[old] = {fridge: S.fridge, staples: S.staples, avoid: S.settings.avoid};
+        const d = S.countryData[cc] || {};
+        S.fridge = d.fridge || []; S.staples = d.staples || []; S.settings.avoid = d.avoid || [];
+        S.week = null;
+    }
+    try{ await loadPack(cc); }catch(e){ toast('この国のデータを読みこめませんでした'); return false; }
+    S.settings.country = cc; save();
+    applyCountry(cc);
+    return true;
+}
+function stapleSpot(){
+    if (!PACK) return null;
+    return PACK.staple || null;
+}
+function countrySheetHtml(){
+    const cur = S.settings.country || guessCountry();
+    return `<h2>国・地域を選んでください</h2>
+        <p class="muted small">選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。</p>
+        <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}">
+            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm">${esc(c.nameLocal)}</span><span class="sub">${esc(c.nameLocal === c.nameJa ? '' : c.nameJa)}</span></button>`).join('')}</div>
+        ${S.settings.country ? '<button class="btn ghost" data-act="sheet-close">閉じる</button>' : ''}`;
+}
+function openCountrySheet(){ sheet = {kind:'country'}; renderSheet(); }
+document.addEventListener('keydown', e => { if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
-setTab(tab);
+if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
+(async () => {
+    const cc = S.settings.country;
+    if (cc && cc !== 'JP'){ try{ await loadPack(cc); applyCountry(cc); }catch(e){ S.settings.country = 'JP'; } }
+    else applyCountry('JP');
+    setTab(tab);
+    if (!S.settings.country) openCountrySheet();
+    else if (!S.onboarded) startOnboard();
+})();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
-if (!S.onboarded) startOnboard();
-else if (PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
+if (S.onboarded && PLAN.billingEnabled && !isNative() && !trialActive() && !isSubscribed() && !S.trialNoticeShown){ S.trialNoticeShown = true; save(); openPaywall('trialEnd'); }
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 loadGenerated().then(loadPhotos);
 loadMine();
