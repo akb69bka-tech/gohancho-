@@ -60,6 +60,7 @@ jobs:
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      P12_B64: ${{ secrets.IOS_DIST_P12_BASE64 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -118,9 +119,8 @@ jobs:
           chmod 600 ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
 
       - name: （任意）配布用証明書をキーチェーンに入れる
-        if: ${{ secrets.IOS_DIST_P12_BASE64 != '' }}
+        if: ${{ env.P12_B64 != '' }}
         env:
-          P12_B64: ${{ secrets.IOS_DIST_P12_BASE64 }}
           P12_PASS: ${{ secrets.IOS_DIST_P12_PASSWORD }}
         run: |
           KC=$RUNNER_TEMP/build.keychain-db; PW=$(uuidgen)
