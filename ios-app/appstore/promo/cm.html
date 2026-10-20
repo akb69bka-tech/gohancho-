@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ごはん帖 CM</title>
+<!--
+  公開前のデモ PR 動画（CM）のもとになるページ。
+  ?lang=ja|en で言葉、画面の向きで配置が変わる（縦: App Store プレビュー用 / 横: YouTube・SNS 用）。
+  再生は自動で始まり約30秒で終わる。録画は record.js（Playwright）で行う。
+-->
+<style>
+:root{
+  --navy:#22406b; --navy-deep:#172c4b; --ink:#172033; --paper:#f6f1e7; --cream:#fffaf0;
+  --yolk:#f2b632; --yolk-ink:#6b4d00; --tomato:#d9534f; --leaf:#5a8f5a; --muted:#9db3d1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--navy-deep)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP','Noto Sans CJK JP','Segoe UI',Roboto,sans-serif;color:#fff}
+.stage{position:fixed;inset:0;background:radial-gradient(120% 80% at 50% 0%,#2d5287 0%,var(--navy) 45%,var(--navy-deep) 100%)}
+/* ゆっくり流れる料理の絵（背景） */
+.bg{position:absolute;inset:0;overflow:hidden;opacity:.1;pointer-events:none}
+.bg img{position:absolute;width:16vmin;height:16vmin;clip-path:circle(44%);animation:drift 28s linear infinite}
+@keyframes drift{from{transform:translateY(110vh) rotate(-8deg)}to{transform:translateY(-30vh) rotate(8deg)}}
+/* 場面 */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4vmin;padding:6vmin;opacity:0;visibility:hidden;transition:opacity .6s ease,visibility .6s}
+.scene.on{opacity:1;visibility:visible}
+.copy{text-align:center;max-width:90vw}
+.copy h2{font-size:7.2vmin;line-height:1.25;font-weight:800;letter-spacing:.02em;text-shadow:0 2px 14px rgba(0,0,0,.25);transform:translateY(3vmin);opacity:0;transition:all .7s cubic-bezier(.2,.8,.2,1) .15s}
+.copy p{font-size:3.4vmin;line-height:1.5;color:#e4ecf7;margin-top:1.6vmin;transform:translateY(3vmin);opacity:0;transition:all .7s cubic-bezier(.2,.8,.2,1) .4s}
+.scene.on .copy h2,.scene.on .copy p{transform:none;opacity:1}
+/* 電話の枠 */
+.phone{position:relative;width:min(27vh,80vw);aspect-ratio:390/844;border-radius:6.2vmin;background:#0d1626;padding:1.1vmin;box-shadow:0 3vmin 8vmin rgba(0,0,0,.45),inset 0 0 0 .3vmin #3a4a66;transform:translateY(6vmin) scale(.96);opacity:0;transition:all .8s cubic-bezier(.2,.8,.2,1) .25s}
+.scene.on .phone{transform:none;opacity:1}
+.phone .scr{position:absolute;inset:1.1vmin;border-radius:5.2vmin;overflow:hidden;background:#eef1f4}
+.phone .scr img{width:100%;display:block}
+.phone .notch{position:absolute;top:1.6vmin;left:50%;width:28%;height:2.4vmin;background:#0d1626;border-radius:2vmin;transform:translateX(-50%);z-index:2}
+/* 画面をゆっくりスクロール */
+.scene.on .scroll img{animation:scroll var(--dur,4s) ease-in-out .9s forwards}
+@keyframes scroll{from{transform:translateY(0)}to{transform:translateY(calc(-1 * var(--to,40%)))}}
+/* ロゴ */
+.logo{display:flex;flex-direction:column;align-items:center;gap:2.4vmin}
+.mark{width:18vmin;height:18vmin;border-radius:4.5vmin;background:var(--cream);color:var(--tomato);display:grid;place-items:center;font-size:11vmin;font-weight:900;font-family:'Hiragino Mincho ProN','Noto Serif JP',Georgia,serif;box-shadow:0 2vmin 6vmin rgba(0,0,0,.35);transform:scale(.6);opacity:0;transition:all .8s cubic-bezier(.2,.9,.2,1.2)}
+.scene.on .mark{transform:none;opacity:1}
+.name{font-size:8vmin;font-weight:800;letter-spacing:.04em}
+.tag{font-size:4vmin;color:#e4ecf7}
+/* 国旗が並ぶ */
+.flags{display:flex;flex-wrap:wrap;justify-content:center;gap:1.6vmin;max-width:80vw;font-size:6.5vmin;line-height:1}
+.flags span{display:inline-block;transform:scale(0);transition:transform .5s cubic-bezier(.2,.9,.2,1.3) .55s}
+.scene.on .flags span{transform:none}
+/* 最後の値段 */
+.price{display:flex;gap:2.4vmin;margin-top:1vmin}
+.price div{background:rgba(255,255,255,.1);border:.3vmin solid rgba(255,255,255,.35);border-radius:3vmin;padding:2.2vmin 3.4vmin;text-align:center;min-width:28vmin;transform:translateY(3vmin);opacity:0;transition:all .7s cubic-bezier(.2,.8,.2,1) .5s}
+.price div:nth-child(2){transition-delay:.7s}
+.scene.on .price div{transform:none;opacity:1}
+.price b{display:block;font-size:4.6vmin}
+.price small{display:block;font-size:2.6vmin;color:var(--muted);margin-top:.6vmin}
+.price .best{border-color:var(--yolk);background:rgba(242,182,50,.14)}
+.price .best small{color:var(--yolk)}
+.free{display:inline-block;background:var(--yolk);color:var(--yolk-ink);font-weight:800;font-size:4.2vmin;padding:1.2vmin 3.4vmin;border-radius:99vmin;transform:scale(.7);opacity:0;transition:all .6s cubic-bezier(.2,.9,.2,1.3) .3s}
+.scene.on .free{transform:none;opacity:1}
+.soon{font-size:3.2vmin;color:#e4ecf7;margin-top:2vmin;opacity:0;transition:opacity .8s 1s}
+.scene.on .soon{opacity:1}
+.fine{font-size:2vmin;color:var(--muted);opacity:0;transition:opacity .8s 1.2s;max-width:80vw;text-align:center;line-height:1.5}
+.scene.on .fine{opacity:1}
+/* 横向き: 電話を左、言葉を右に */
+@media (orientation:landscape){
+  .scene.split{flex-direction:row;gap:8vmin}
+  .scene.split .copy{text-align:left;max-width:42vw}
+  .scene.split .copy h2{font-size:8.6vmin}
+  .scene.split .copy p{font-size:3.8vmin}
+  .phone{width:min(36vh,30vw)}
+}
+.bar{position:absolute;left:0;bottom:0;height:.8vmin;background:var(--yolk);width:0;transition:width .3s linear}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="bg" id="bg"></div>
+
+  <section class="scene" data-t="0" data-d="2800">
+    <div class="logo"><div class="mark">G</div><div class="name" data-ja="わが家のごはん帖" data-en="Gohancho"></div><div class="tag" data-ja="今日のごはん、もう悩まない。" data-en="Tonight's dinner, decided."></div></div>
+  </section>
+
+  <section class="scene split" data-t="2800" data-d="3800">
+    <div class="phone"><div class="notch"></div><div class="scr"><img data-src="shots/{lang}-country.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="国を選ぶだけ。" data-en="Pick your country."></h2><p data-ja="21の国・地域の家庭料理、440品以上" data-en="Everyday home cooking from 21 countries and regions, 440+ dishes"></p>
+      <div class="flags">🇯🇵 🇺🇸 🇬🇧 🇫🇷 🇩🇪 🇮🇹 🇪🇸 🇵🇱 🇹🇷 🇪🇬 🇮🇳 🇨🇳 🇹🇼 🇰🇷 🇹🇭 🇻🇳 🇮🇩 🇵🇭 🇲🇽 🇧🇷 🇵🇪</div></div>
+  </section>
+
+  <section class="scene split" data-t="6600" data-d="3800">
+    <div class="phone"><div class="notch"></div><div class="scr scroll" style="--to:22%;--dur:2.8s"><img data-src="shots/{lang}-today-full.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="お膳ごと、おまかせ。" data-en="A whole meal, decided for you."></h2><p data-ja="主菜・副菜・汁もの。作った記録から、同じ料理は続きません" data-en="Main, sides and soup. It remembers what you cooked, so nothing repeats too soon"></p></div>
+  </section>
+
+  <section class="scene split" data-t="10400" data-d="3400">
+    <div class="phone"><div class="notch"></div><div class="scr"><img data-src="shots/{lang}-recipe.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="作り方は、シンプルに。" data-en="Clear, simple recipes."></h2><p data-ja="家族の人数に合わせて分量を自動で計算" data-en="Quantities scale to your family"></p></div>
+  </section>
+
+  <section class="scene split" data-t="13800" data-d="3800">
+    <div class="phone"><div class="notch"></div><div class="scr"><img data-src="shots/{lang}-week.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="1週間の献立と、買い物メモ。" data-en="Your week, and the shopping list."></h2><p data-ja="家にないものだけをまとめて、家族にワンタップで送れる" data-en="Only what you don't already have, sent to your family in one tap"></p></div>
+  </section>
+
+  <section class="scene split" data-t="17600" data-d="3400">
+    <div class="phone"><div class="notch"></div><div class="scr"><img data-src="shots/{lang}-fridge.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="冷蔵庫の材料から。" data-en="Cook from your fridge."></h2><p data-ja="あるもので作れる料理と、あと1品で作れる料理がわかる" data-en="What you can make now, and what's just one ingredient away"></p></div>
+  </section>
+
+  <section class="scene split" data-t="21000" data-d="3400">
+    <div class="phone"><div class="notch"></div><div class="scr"><img data-src="shots/{lang}-world.png" alt=""></div></div>
+    <div class="copy"><h2 data-ja="世界の家庭料理も。" data-en="World recipes, too."></h2><p data-ja="ほかの国のレシピを、あなたの言葉で" data-en="Browse any country's home cooking, in your language"></p></div>
+  </section>
+
+  <section class="scene" data-t="24400" data-d="3800">
+    <div class="logo"><div class="mark">G</div><div class="name" data-ja="わが家のごはん帖" data-en="Gohancho"></div></div>
+    <div class="free" data-ja="7日間 無料でお試し" data-en="Try it free for 7 days"></div>
+    <div class="price">
+      <div class="best"><b data-ja="年額 4,800円" data-en="Yearly $34.99"></b><small data-ja="2か月分無料" data-en="2 months free"></small></div>
+      <div><b data-ja="月額 480円" data-en="Monthly $3.49"></b><small data-ja="いつでも解約できます" data-en="Cancel anytime"></small></div>
+    </div>
+    <div class="soon" data-ja="App Store で近日公開" data-en="Coming soon on the App Store"></div>
+    <div class="fine" data-ja="無料期間が終わる24時間前までに解約しなければ、選んだプランの料金が自動で請求されます。" data-en="Renews automatically at the end of the free trial unless cancelled at least 24 hours before."></div>
+  </section>
+
+  <div class="bar" id="bar"></div>
+</div>
+<script>
+const q = new URLSearchParams(location.search);
+const lang = q.get('lang') === 'en' ? 'en' : 'ja';
+document.documentElement.lang = lang;
+document.querySelectorAll('[data-ja]').forEach(el => { el.textContent = el.dataset[lang]; });
+document.querySelectorAll('img[data-src]').forEach(el => { el.src = el.dataset.src.replace('{lang}', lang); });
+// 背景の料理の絵
+const dishes = ['nikujaga','karaage','shogayaki','sabamiso','tonkatsu','gapao','curry','omurice','hamburg','gyoza','mabonasu','bibimbap'];
+const bg = document.getElementById('bg');
+dishes.forEach((d, i) => { const im = new Image(); im.src = `../../../gohancho/img/dish/${d}.svg`; im.style.left = (i * 8.3) % 100 + '%'; im.style.animationDelay = (-i * 2.4) + 's'; im.style.animationDuration = (24 + (i % 4) * 4) + 's'; im.onerror = () => im.remove(); bg.appendChild(im); });
+// 場面の切りかえ（開始からの時刻で決める。録画でも同じ結果になるように）
+const scenes = [...document.querySelectorAll('.scene')];
+const total = Math.max(...scenes.map(s => +s.dataset.t + +s.dataset.d));
+const bar = document.getElementById('bar');
+window.CM_TOTAL = total;
+const start = performance.now() + 400;   // 画像の読みこみを少し待つ
+window.CM_START_WALL = performance.timeOrigin + start;   // 録画の先頭を切りそろえるための時刻
+function tick(){
+  const now = performance.now() - start;
+  scenes.forEach(s => { const t = +s.dataset.t, d = +s.dataset.d; s.classList.toggle('on', now >= t && now < t + d - 150); });
+  bar.style.width = Math.min(100, now / total * 100) + '%';
+  if (now < total + 600) requestAnimationFrame(tick); else { document.body.dataset.done = '1'; }
+}
+Promise.all([...document.images].filter(i => !i.complete).map(i => new Promise(r => { i.onload = i.onerror = r; }))).then(() => requestAnimationFrame(tick));
+</script>
+</body>
+</html>
