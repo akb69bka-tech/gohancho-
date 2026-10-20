@@ -9,7 +9,7 @@
 | 項目 | 入力する内容 |
 | --- | --- |
 | 名前（30文字まで） | ごはん帖 献立と買い物メモ |
-| サブタイトル（30文字まで） | おまかせ献立・冷蔵庫の材料から |
+| サブタイトル（30文字まで） | お膳ごと、おまかせ献立 |
 | プライマリ言語 | 日本語 |
 | カテゴリ | フード/ドリンク（セカンダリ: ライフスタイル） |
 | バンドル ID | io.github.akb69bka.gohancho（`capacitor.config.json` の appId と同じ） |
@@ -28,7 +28,7 @@
 ## プロモーション用テキスト（170文字まで）
 
 ```
-今日の献立、もう悩まない。主菜・副菜・汁ものをお膳ごとおまかせで提案し、作った記録から同じ料理が続かないように選びます。1週間の献立と買い物メモをLINEで家族に送れて、まとめ買いもラクに。
+今日のお膳、できました。主菜・副菜・汁ものをお膳ごとおまかせで提案し、作った記録から同じ料理が続かないように選びます。1週間の献立と買い物メモをLINEで家族に送れて、まとめ買いもラクに。
 ```
 
 ## 説明（4000文字まで）
@@ -167,7 +167,7 @@ In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly 
 | Field | Text |
 | --- | --- |
 | Name (30) | Gohancho – Home Meal Planner |
-| Subtitle (30) | Tonight's dinner, decided |
+| Subtitle (30) | Your whole table, planned |
 | Keywords (100) | meal planner,dinner ideas,weekly meal plan,shopping list,home cooking,recipes,what to cook,family dinner |
 | Support URL | https://akb69bka-tech.github.io/toresabi/gohancho/support-en.html |
 | Privacy Policy URL | https://akb69bka-tech.github.io/toresabi/gohancho/privacy-en.html |
