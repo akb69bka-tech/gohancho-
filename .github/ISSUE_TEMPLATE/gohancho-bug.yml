@@ -1,0 +1,36 @@
+name: ごはん帖の不具合・要望
+description: アプリで困ったこと・直してほしいことを書くと、Claude が直して新しいバージョンを用意します
+title: "[ごはん帖] "
+labels: ["gohancho"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 種類
+      options:
+        - 不具合（動かない・表示がおかしい）
+        - 要望（こうしてほしい）
+        - レシピの間違い（材料・分量・作り方・絵）
+        - 翻訳の間違い
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: 何が起きましたか（または、どうしてほしいですか）
+      description: 画面のどこで、何をしたら、どうなったか。スクリーンショットがあれば貼ってください
+      placeholder: 例) 「材料から」で「鶏肉」を選んだのに、鶏肉の料理が出てこない
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 機種と国・言語
+      description: 設定の一番下に出ている「わが家のごはん帖 1.x.x」の数字と、選んでいる国
+      placeholder: 例) iPhone 15 / iOS 18 / ごはん帖 1.1.0 / 日本
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: 確認
+      options:
+        - label: この内容は App Store のレビューではなく、開発者への連絡として送ります
