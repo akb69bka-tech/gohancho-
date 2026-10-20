@@ -1094,11 +1094,18 @@ function suggestMain(){
     const cands = RECIPES.filter(r => r.main && moodOk(r, session.mood));
     return pick(cands, {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null});
 }
+// 条件（最近作った・肉魚の重なり・ジャンル）で候補がなくなったときは、その枠の料理からどれかを出す（空の枠を作らない）
+function suggestOrAny(slot, items, main){
+    const r = suggestFor(slot, items, main); if (r) return r;
+    const used = new Set(items.map(x => x.r && x.r.id).filter(Boolean));
+    const pool = RECIPES.filter(x => !x.main && slotOf(x) === slot && !used.has(x.id) && !isAvoided(x));
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+}
 function newMenu(){
     const n = menuCount();
     const items = [];
     COMPOSE[n].slots.forEach((slot, i) => {
-        const r = i === 0 ? suggestMain() : suggestFor(slot, items, items[0] && items[0].r);
+        const r = i === 0 ? suggestMain() : suggestOrAny(slot, items, items[0] && items[0].r);
         items.push({slot, r});
     });
     session.menu = {n, items};
@@ -1108,7 +1115,7 @@ function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r
 function setMenuMain(r){
     const m = session.menu; if (!m || !r) return;
     m.items[0].r = r;
-    m.items.forEach((x, j) => { if (j && (!x.r || x.slot === '汁物')) x.r = suggestFor(x.slot, m.items.filter((_, k) => k !== j), r); });
+    m.items.forEach((x, j) => { if (j && (!x.r || x.slot === '汁物')) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r); });
 }
 
 /* =========================================================
@@ -1239,7 +1246,13 @@ function makeWeek(){
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
         const cands = RECIPES.filter(r => r.main && !used.has(r.id));
-        const r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null});
+        let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null});
+        if (!r && cands.length) r = pick(cands, {recent: []});                       // 肉・魚やジャンルの条件を外して選ぶ
+        if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
+        if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度
+            const all = RECIPES.filter(x => x.main); const order = days.map(x => x.id);
+            r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
+        }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
     }
     S.week = {start:TODAY, days}; save();
@@ -3346,11 +3359,12 @@ function loadPackTr(cc, lang){
     }));
 }
 function trLangFor(cc){ return cc === 'JP' ? (LANG === 'ja' ? null : LANG) : (LANG === 'en' ? null : LANG); }
+// 用意してある訳: 日本のレシピは英語、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
+function trAvail(cc){ return cc === 'JP' ? ['en'] : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
 async function ensureTr(cc){
     const l = trLangFor(cc); if (!l) return null;
-    const d = await loadPackTr(cc, l);
-    if (!d && cc === 'JP' && l !== 'en') return loadPackTr('JP', 'en');
-    return d;
+    if (trAvail(cc).includes(l)) return loadPackTr(cc, l);
+    return cc === 'JP' ? loadPackTr('JP', 'en') : null;
 }
 function trOf(cc){
     const l = trLangFor(cc); if (!l) return null;
@@ -3485,6 +3499,7 @@ function viewWorld(){
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
 async function setCountry(cc){
     const first = !S.settings.country;
+    const fresh = !(S.countryData && S.countryData[cc]);   // この国をはじめて選ぶ
     const old = currentCountry();
     if (old !== cc){
         S.countryData = S.countryData || {};
@@ -3498,6 +3513,8 @@ async function setCountry(cc){
     await setLang(wantLang());
     await ensureTr(cc);
     applyCountry(cc);
+    // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定で外せる）
+    if (PACK && fresh && !S.staples.length){ S.staples = STAPLE_QUICK.slice(); save(); }
     if (first){ S.firstUse = TODAY; save(); }   // 無料期間は国を選んで使いはじめた日から
     return true;
 }
