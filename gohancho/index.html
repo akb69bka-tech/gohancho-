@@ -108,8 +108,7 @@ a{color:var(--accent)}
 
 /* チップ */
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;padding-block:2px}
-.chips.scroll::-webkit-scrollbar{display:none}
+.chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:36px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
@@ -309,6 +308,18 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray{display:flex;flex-direction:column;gap:14px}
 .tray-row{display:flex;justify-content:center;align-items:flex-start;gap:6px}
 .tray .spot{width:var(--w,46%);flex:0 1 auto}
+/* 5品以上: 3〜4列に詰めて、スクロールせずに全部の絵が見えるように */
+.tray.compact{gap:10px;padding:14px 10px 12px}
+.tray.compact .tray-row{gap:4px;align-items:flex-start}
+.tray.compact .spot{width:var(--w,31%)}
+.tray.compact .spot .vessel,.tray.compact .spot.main .vessel,.tray.compact .spot.side .v-kobachi{width:88%}
+.tray.compact .spot-label{gap:0}
+.tray.compact .spot-label .slot{font-size:.6rem;letter-spacing:.12em}
+.tray.compact .spot-label .nm{font-size:.82rem;line-height:1.3}
+.tray.compact .spot-label .mt{display:none}
+.tray.compact .spot-label .last{font-size:.6rem}
+.tray.compact .swap{min-height:26px;font-size:.66rem;padding:.05rem .55rem}
+.tray.compact .spot{gap:5px}
 .spot.side .v-kobachi{width:78%}
 .tray .spot.main .vessel{width:86%}
 .swap{border:1px solid rgba(245,238,227,.28);background:transparent;color:var(--tray-ink);border-radius:999px;font-size:.7rem;padding:.1rem .7rem;min-height:30px;cursor:pointer}
@@ -389,7 +400,6 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
 .cond .field{gap:4px}
-.cond .chips.scroll{margin-inline:-16px;padding-inline:16px}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .actions .btn{width:100%}
 .actions .full{grid-column:1 / -1}
@@ -2654,7 +2664,7 @@ function viewToday(){
         const label = slotLabel(it.slot);
         const last = r ? lastLabel(r.id) : '';
         const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : t('合う料理がありません');
-        return `<div class="spot ${cls}" style="--w:${w}">
+        return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
                 ${r ? `<span class="nm">${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${last ? `<span class="last">${esc(last)}</span>` : ''}`
@@ -2674,6 +2684,17 @@ function viewToday(){
         <div class="spot-label"><span class="slot">${esc(oneBowl ? t('香の物') : t('ご飯'))}</span><span class="nm">${esc(oneBowl ? t('お漬物') : t('白ご飯'))}</span></div></div>`;
     const sideW = sides.length >= 3 ? '31%' : '40%';
     const mainW = mains.length >= 2 ? '45%' : '56%';
+    // 5品以上は、主菜→副菜→ご飯→汁ものの順に 3列（7つなら 4列＋3列）で並べ、1画面に収める
+    const allSpots = [...mains.map(x => spot(x.it, x.i, '')), ...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot ? [riceSpot.replace('style="--w:40%"', 'style=""')] : []), ...soups.map(x => spot(x.it, x.i, ''))];
+    const compact = m.n >= 5 && allSpots.length >= 6;
+    const compactRows = [];
+    if (compact){
+        const per = allSpots.length >= 7 ? [4, 3] : [3, 3];
+        let k = 0; for (const c of per){ compactRows.push(allSpots.slice(k, k + c)); k += c; }
+        if (k < allSpots.length) compactRows.push(allSpots.slice(k));
+        const w4 = '23%', w3 = '31%';
+        compactRows.forEach((row, ri) => { row.forEach((h, ci) => { row[ci] = h.replace('style=""', `style="--w:${row.length >= 4 ? w4 : w3}"`); }); });
+    }
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
@@ -2687,11 +2708,12 @@ function viewToday(){
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount, 'count')}</div></div>
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </div>
-        <div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
+        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map(row => `<div class="tray-row">${row.join('')}</div>`).join('')}</div>`
+        : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
             <div class="tray-row back">${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
             ${sides.length ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
             <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}</div>
-        </div>
+        </div>`}
         <div class="actions">
             <button class="btn primary full" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>
             <button class="btn" data-act="new-menu">${esc(t('まるごと入れ替え'))}</button>
