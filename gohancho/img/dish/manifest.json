@@ -2172,6 +2172,618 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-20"
+    },
+    "gb_staple": {
+      "file": "gb_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_shepherdspie": {
+      "file": "gb_shepherdspie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_bangers": {
+      "file": "gb_bangers.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_fishcakes": {
+      "file": "gb_fishcakes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_spagbol": {
+      "file": "gb_spagbol.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_tikkamasala": {
+      "file": "gb_tikkamasala.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_stew": {
+      "file": "gb_stew.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_jacket": {
+      "file": "gb_jacket.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_peas": {
+      "file": "gb_peas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_cauliflowercheese": {
+      "file": "gb_cauliflowercheese.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_chips": {
+      "file": "gb_chips.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_coleslaw": {
+      "file": "gb_coleslaw.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_carrotswede": {
+      "file": "gb_carrotswede.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_cabbage": {
+      "file": "gb_cabbage.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_salad": {
+      "file": "gb_salad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_leekpotato": {
+      "file": "gb_leekpotato.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "gb_carrotcoriander": {
+      "file": "gb_carrotcoriander.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_staple": {
+      "file": "id_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_ayamgoreng": {
+      "file": "id_ayamgoreng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_semur": {
+      "file": "id_semur.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_ikanbalado": {
+      "file": "id_ikanbalado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_telurbalado": {
+      "file": "id_telurbalado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_bacem": {
+      "file": "id_bacem.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_nasigoreng": {
+      "file": "id_nasigoreng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_miegoreng": {
+      "file": "id_miegoreng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_tumiskangkung": {
+      "file": "id_tumiskangkung.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_tempeorek": {
+      "file": "id_tempeorek.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_perkedel": {
+      "file": "id_perkedel.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_sambal": {
+      "file": "id_sambal.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_urap": {
+      "file": "id_urap.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_capcay": {
+      "file": "id_capcay.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_sayurasem": {
+      "file": "id_sayurasem.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_sopayam": {
+      "file": "id_sopayam.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "id_sayurbening": {
+      "file": "id_sayurbening.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_staple": {
+      "file": "mx_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_tinga": {
+      "file": "mx_tinga.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_picadillo": {
+      "file": "mx_picadillo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_bistec": {
+      "file": "mx_bistec.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_puerco_verde": {
+      "file": "mx_puerco_verde.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_veracruzana": {
+      "file": "mx_veracruzana.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_huevos": {
+      "file": "mx_huevos.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_enfrijoladas": {
+      "file": "mx_enfrijoladas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_arroz": {
+      "file": "mx_arroz.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_frijoles": {
+      "file": "mx_frijoles.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_nopales": {
+      "file": "mx_nopales.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_calabacitas": {
+      "file": "mx_calabacitas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_guacamole": {
+      "file": "mx_guacamole.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_pico": {
+      "file": "mx_pico.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_rajas": {
+      "file": "mx_rajas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_fideo": {
+      "file": "mx_fideo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "mx_caldo": {
+      "file": "mx_caldo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_staple": {
+      "file": "pe_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_lomo_saltado": {
+      "file": "pe_lomo_saltado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_aji_gallina": {
+      "file": "pe_aji_gallina.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_arroz_pollo": {
+      "file": "pe_arroz_pollo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_tallarines_verdes": {
+      "file": "pe_tallarines_verdes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_sudado": {
+      "file": "pe_sudado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_lentejas": {
+      "file": "pe_lentejas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_seco": {
+      "file": "pe_seco.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_huancaina": {
+      "file": "pe_huancaina.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_salsa_criolla": {
+      "file": "pe_salsa_criolla.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_causa": {
+      "file": "pe_causa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_ensalada_rusa": {
+      "file": "pe_ensalada_rusa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_platano": {
+      "file": "pe_platano.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_choclo": {
+      "file": "pe_choclo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_aguadito": {
+      "file": "pe_aguadito.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_sopa_quinua": {
+      "file": "pe_sopa_quinua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "pe_sopa_criolla": {
+      "file": "pe_sopa_criolla.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_staple": {
+      "file": "th_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_kaprao": {
+      "file": "th_kaprao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_kaengkiaowan": {
+      "file": "th_kaengkiaowan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_khaijiao": {
+      "file": "th_khaijiao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_platutod": {
+      "file": "th_platutod.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_nueanammanhoi": {
+      "file": "th_nueanammanhoi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_khaopad": {
+      "file": "th_khaopad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_padseeew": {
+      "file": "th_padseeew.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_padpakbung": {
+      "file": "th_padpakbung.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_somtam": {
+      "file": "th_somtam.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_namprikkapi": {
+      "file": "th_namprikkapi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_yamwunsen": {
+      "file": "th_yamwunsen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_padpakruam": {
+      "file": "th_padpakruam.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_khaitun": {
+      "file": "th_khaitun.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_tomyum": {
+      "file": "th_tomyum.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_tomjued": {
+      "file": "th_tomjued.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "th_tomkhagai": {
+      "file": "th_tomkhagai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_staple": {
+      "file": "tw_staple.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_lurou_fan": {
+      "file": "tw_lurou_fan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_sanbeiji": {
+      "file": "tw_sanbeiji.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_caipu_dan": {
+      "file": "tw_caipu_dan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_jian_shimuyu": {
+      "file": "tw_jian_shimuyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_gualirou": {
+      "file": "tw_gualirou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_congbao_niurou": {
+      "file": "tw_congbao_niurou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_chao_mifen": {
+      "file": "tw_chao_mifen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_chao_gaolicai": {
+      "file": "tw_chao_gaolicai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_tang_diguaye": {
+      "file": "tw_tang_diguaye.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_lu_dougan": {
+      "file": "tw_lu_dougan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_cangyingtou": {
+      "file": "tw_cangyingtou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_xiandan_kugua": {
+      "file": "tw_xiandan_kugua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_taxiang_qiezi": {
+      "file": "tw_taxiang_qiezi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_geli_tang": {
+      "file": "tw_geli_tang.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_yumi_paigu": {
+      "file": "tw_yumi_paigu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
+    },
+    "tw_yuwan_tang": {
+      "file": "tw_yuwan_tang.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-20"
     }
   }
 }
