@@ -1301,7 +1301,7 @@ function render(){
     if (tab === 'settings') v.innerHTML = viewSettings();
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
-    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall('locked');
+    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(PLAN.trialMode === 'store' ? 'start' : 'locked');
 }
 
 /* ---- 料理写真 ----
@@ -2048,9 +2048,9 @@ const PLAN = {
     webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
     trialDays: 7,
-    // 'app': 使いはじめて7日間はすべて無料、8日目から購入するまでロック（App Store のお試しオファーは設定しない）
-    // 'store': はじめから購入画面。App Store Connect の「お試しオファー（1週間無料）」で無料期間を出す（審査で 'app' が通らない場合の切りかえ用）
-    trialMode: 'app',
+    // 'store': Apple のしくみに従う。はじめに「7日間無料で始める」で登録し、App Store Connect の「お試しオファー（1週間無料）」で無料期間を出す。7日後は解約しなければ自動で課金
+    // 'app': アプリ側で7日間を数え、8日目から購入するまでロック（App Store のお試しオファーは設定しない。予備）
+    trialMode: 'store',
     get introTrialLabel(){ return t('最初の7日間は無料'); },   // App Store Connect の「お試しオファー」と同じ内容にする                       // 使い始めてこの日数（使った日の数）までは、すべての機能を使える
     freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
     get benefits(){ return [t('1週間分の献立プラン（まとめ買いに。無料版は{n}日分まで）', {n:PLAN_WEEK_FREE}), t('ひと手間の「やってみた」で腕前を記録'), t('買い足すと作れる料理が増える食材をすべて表示'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('ひとひねり案を回数無制限で'), t('「わが家の写真」を枚数無制限で')]; },
@@ -2101,6 +2101,7 @@ function applyCustomerInfo(ci){
 }
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
 const storePrices = {};
+let introEligible = true;   // App Store のお試しオファーを使えるか（一度でも登録した人は使えない）。RevenueCat で確認できたら更新
 async function loadStorePrices(){
     const ready = rcInit(); if (!ready) return;
     try{
@@ -2109,6 +2110,12 @@ async function loadStorePrices(){
             const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price)};
         });
         if (sheet && sheet.kind === 'paywall') renderSheet();
+        if (P.checkTrialOrIntroductoryPriceEligibility){
+            const ids = PLAN.prices.map(p => p.id);
+            const r = await P.checkTrialOrIntroductoryPriceEligibility({productIdentifiers: ids});
+            const st = ids.map(id => r && r[id] && r[id].status);   // 2 = 使える, 1 = 使えない, 3 = オファーなし, 0 = 不明
+            if (st.length && st.every(v => v === 1 || v === 3)){ introEligible = false; if (sheet && sheet.kind === 'paywall') renderSheet(); }
+        }
     }catch(e){}
 }
 function priceLabel(p){
@@ -2150,6 +2157,7 @@ function paywallReason(k){
         case 'week': return t('無料版で見られる献立プランは{days}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。', {days: PLAN.freeLimits.weekDays === 1 ? t('今日の1日分') : t('{n}日分', {n:PLAN.freeLimits.weekDays})});
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ごはん帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
+        case 'start': return introEligible ? t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}) : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
         case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
         default: return '';
@@ -2177,7 +2185,7 @@ function renderSheet(){
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
                 <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
             </ul>
-            ${PLAN.billingEnabled && PLAN.trialMode === 'app' ? `<p class="pw-free">${esc(t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
+            ${PLAN.billingEnabled ? `<p class="pw-free">${esc(t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}</p>` : ''}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -2207,9 +2215,9 @@ function renderSheet(){
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
             ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
             ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
-            <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+            <ul class="pw-list">${(sheet.reason === 'start' || sheet.reason === 'locked' ? [t('毎日の献立を、お膳ごと提案'), t('同じ料理が続かない'), t('献立の予定と買い物メモ'), t('冷蔵庫の材料から探せる'), t('世界のレシピ'), t('家族に送る')] : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                ${native && PLAN.trialMode === 'store' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
+                ${PLAN.trialMode === 'store' && introEligible && sheet.reason !== 'start' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
                 <div class="pw-prices">${[...PLAN.prices].reverse().map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span><span class="p">${esc(priceLabel(p))}</span>${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
@@ -3003,7 +3011,7 @@ document.addEventListener('click', e => {
         case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v; sheet.avoid.has(v) ? sheet.avoid.delete(v) : sheet.avoid.add(v); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
-        case 'ob-skip': S.onboarded = true; save(); closeSheet(); break;
+        case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-done': {
             S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...sheet.avoid];
             S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples])];

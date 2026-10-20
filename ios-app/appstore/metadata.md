@@ -70,11 +70,10 @@
 国を選ぶと、その国の家庭で毎日食べられている料理で献立を組みます（日本のほか、アメリカ・イギリス・フランス・ドイツ・イタリア・スペイン・ポーランド・トルコ・エジプト・インド・中国・台湾・韓国・タイ・ベトナム・インドネシア・フィリピン・メキシコ・ブラジル・ペルーの21の国と地域、440品以上）。「世界のレシピ」から、ほかの国の料理も見られます。画面と各国のレシピは、選んだ国の言葉で表示します。
 
 ■ ごはん帖プラス（App 内課金）
-はじめて使う日から7日間は、登録なしですべての機能を無料で使えます。7日が過ぎるとプランを選ぶ画面になり、プランを選ぶとすべての機能を使い続けられます（記録や設定はそのまま残ります。無料期間のあとに自動で請求されることはありません）。
-月額480円・年額4,800円（年額は2か月分無料）。
+最初の7日間は無料でお試しいただけます。月額480円・年額4,800円（年額は2か月分無料）。無料期間が終わる24時間前までに解約すれば、料金はかかりません。
 
 【お支払いについて】
-お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。
+お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
 
 利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 プライバシーポリシー: https://akb69bka-tech.github.io/toresabi/gohancho/privacy.html
@@ -106,14 +105,14 @@
 | 参照名 | ごはん帖プラス 月額 | ごはん帖プラス 年額 |
 | 期間 | 1か月 | 1年 |
 | 価格（日本） | 480円 | 4,800円（月額の10か月分＝2か月分無料） |
-| お試しオファー | **設定しない**（アプリ側で、はじめて使う日から7日間を無料期間にしている） | 同左 |
+| お試しオファー | 1週間 無料（新規の利用者） | 1週間 無料（新規の利用者） |
 | 表示名 | ごはん帖プラス（月額） | ごはん帖プラス（年額） |
 | 説明（45文字まで） | 1週間の献立と買い物メモなどが使えます | 1週間の献立と買い物メモなどが1年使えます |
 
 - 審査用スクリーンショット: アプリの「ごはん帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
 - RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額・年額の2つを入れる
-- 無料期間は App Store のお試しオファーではなく、アプリの中で数えています（`PLAN.trialMode: 'app'`）。審査で「お試しは App Store のオファーで」と指摘された場合は、`index.html` の `trialMode` を `'store'` に変えて、両製品に「1週間 無料」のお試しオファーを設定してください（表示は自動で切りかわります）
+- 無料期間は Apple のしくみ（App Store Connect の「お試しオファー」1週間無料）で出します（`PLAN.trialMode: 'store'`）。アプリは、はじめて開いたあとに購入画面を出し、利用者は「年額」か「月額」を選んで無料お試しを始めます。7日後は解約しなければ自動で課金されます。アプリ側は RevenueCat でお試しの対象かどうかを確かめ、対象外の人には「無料」の文言を出しません
 - 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
@@ -141,7 +140,7 @@ Main features:
 
 No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
 
-In-app purchase: "Gohancho Plus" auto-renewable subscription (monthly / yearly). The first 7 days after first launch are free with full access and no sign-up; the app itself counts the days, so no App Store introductory offer is configured. After 7 days a paywall appears that shows the current App Store prices (yearly first, with "2 months free"), the subscription terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". To view the paywall before day 7: tap the gear icon (top right) > "See Gohancho Plus". For review, the free period can be ended by setting the device date 8 days ahead.
+In-app purchase: "Gohancho Plus" auto-renewable subscription (monthly / yearly), each with a 1-week free introductory offer configured in App Store Connect. After choosing a country and the short setup, the app shows the subscription screen: the current App Store prices (yearly first, with "2 months free"), the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 ```
 
 ---
@@ -207,9 +206,9 @@ Curious about other countries? Browse any country's home cooking from the World 
 Everything runs on your phone. Your history, photos and settings never leave your device. No account needed.
 
 ■ Gohancho Plus (in-app purchase)
-The first 7 days after you start are free with full access, no sign-up. After that, choose a plan to keep using every feature; your history and settings stay. Monthly or yearly (the yearly plan is 2 months free). Nothing is charged automatically after the free period.
+Try everything free for 7 days. Then monthly or yearly (the yearly plan is 2 months free). Cancel at least 24 hours before the trial ends and you won't be charged.
 
-Payment is charged to your Apple Account when you confirm the purchase. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
+Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://akb69bka-tech.github.io/toresabi/gohancho/privacy-en.html
