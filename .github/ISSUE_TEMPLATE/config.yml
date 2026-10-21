@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: ご飯帖 サポート窓口（常設の相談 Issue）
+    url: https://github.com/akb69bka-tech/toresabi/issues?q=is%3Aissue+label%3Agohancho-support+%E7%AA%93%E5%8F%A3
+    about: どこに書けばいいか迷ったら、常設の「サポート窓口」Issue にコメントしてください
+  - name: サポート体制の説明（3チームと相談先）
+    url: https://github.com/akb69bka-tech/toresabi/blob/main/ios-app/サポート体制.md
+    about: お客様の声チーム・不具合解消チーム・Apple 窓口チームの分担と文例
+  - name: 返金・解約（利用者向け・Apple の窓口）
+    url: https://reportaproblem.apple.com/
+    about: サブスクリプションの返金は Apple が扱います。開発者は直接返金できません

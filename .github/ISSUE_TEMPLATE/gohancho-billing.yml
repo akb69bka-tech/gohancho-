@@ -1,0 +1,36 @@
+name: ご飯帖の課金・返金の相談
+description: 購入できない・購入を復元できない・返金や解約を求められた、など課金に関すること。課金担当（Claude）が案内文と対処を出します
+title: "[ご飯帖 課金] "
+labels: ["gohancho", "gohancho-support", "billing"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 起きたこと
+      options:
+        - 購入したのに会員機能が使えない
+        - 「購入を復元」が効かない
+        - 価格や無料期間の表示がおかしい
+        - 返金を求められた
+        - 解約のしかたを聞かれた
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: 詳しく
+      description: 利用者からの文（個人名・メールアドレスは消して）、起きた日時、機種・国・バージョン
+    validations:
+      required: true
+  - type: input
+    id: appuser
+    attributes:
+      label: アプリの設定の一番下に出る番号（サポート用の番号）
+      description: 利用者に聞ける場合。RevenueCat で購入の状態を確認するのに使います
+  - type: checkboxes
+    id: note
+    attributes:
+      label: 確認
+      options:
+        - label: 返金は Apple が行うため、利用者に「返金します」とまだ約束していない

@@ -1,0 +1,32 @@
+name: ご飯帖の相談・質問
+description: 不具合ではないけれど相談したいこと（値段・方針・使い方・Apple からの連絡など）。窓口担当（Claude）が整理して返します
+title: "[ご飯帖 相談] "
+labels: ["gohancho", "gohancho-support"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 相談の種類
+      options:
+        - お客様の声（レビュー・メール）を反映したい
+        - 値段・無料期間・方針の相談
+        - Apple からの連絡（審査・差し戻し）
+        - 使い方・設定がわからない
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: 相談したい内容
+      description: レビューや Apple からの文はそのまま貼ってください
+    validations:
+      required: true
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: 急ぎ具合
+      options:
+        - 急ぎでない
+        - 1週間以内に知りたい
+        - 今日中（利用者が困っている）
