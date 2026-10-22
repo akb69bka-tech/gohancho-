@@ -546,4 +546,5 @@ GOHAN_I18N('id', {
     "聞いています…（タップで止める）": "Mendengarkan… (ketuk untuk berhenti)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Tidak ditemukan. Coba kata lain atau hanya nama bahannya",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Nama bahan tidak terbaca. Perbaiki teks lalu ketuk \"Tambah\"",
+    "苦手な食材を使わない料理がありません": "Tidak ada masakan tanpa bahan yang Anda hindari",
 });

@@ -546,4 +546,5 @@ GOHAN_I18N('de', {
     "聞いています…（タップで止める）": "Höre zu… (zum Stoppen tippen)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Nichts gefunden. Versuchen Sie ein anderes Wort oder nur den Zutatennamen",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Zutat nicht erkannt. Text korrigieren und „Hinzufügen“ tippen",
+    "苦手な食材を使わない料理がありません": "Kein Gericht ohne Ihre unbeliebten Zutaten",
 });

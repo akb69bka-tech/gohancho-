@@ -1105,14 +1105,27 @@ function pick(cands, ctx){
     return scored[0].r;
 }
 function suggestMain(){
-    const cands = RECIPES.filter(r => r.main && moodOk(r, session.mood));
-    return pick(cands, {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null});
+    const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null};
+    let cands = RECIPES.filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
+    if (!cands.length) cands = RECIPES.filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    const r = pick(cands, ctx); if (r) return r;
+    // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
+    const prev = new Set(menuIds());
+    cands.forEach(x => { if (!prev.has(x.id)) session.rejected.delete(x.id); });
+    const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
+    if (again) return again;
+    const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
+    const pool = rest.length ? rest : cands;
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
 }
 // 条件（最近作った・肉魚の重なり・ジャンル）で候補がなくなったときは、その枠の料理からどれかを出す（空の枠を作らない）
 function suggestOrAny(slot, items, main){
     const r = suggestFor(slot, items, main); if (r) return r;
     const used = new Set(items.map(x => x.r && x.r.id).filter(Boolean));
-    const pool = RECIPES.filter(x => !x.main && slotOf(x) === slot && !used.has(x.id) && !isAvoided(x));
+    // 予備: その枠に入る料理なら何でも（主菜の枠は主菜・ごはんもの・麺。以前は主菜の枠だと必ず空になっていた）
+    const any = RECIPES.filter(x => slotOf(x) === slot && x !== main && !used.has(x.id) && !isAvoided(x));
+    const shown = any.filter(x => !S.hidden.includes(x.id));
+    const pool = shown.length ? shown : any;
     return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
 }
 function newMenu(){
@@ -1129,7 +1142,11 @@ function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r
 function setMenuMain(r){
     const m = session.menu; if (!m || !r) return;
     m.items[0].r = r;
-    m.items.forEach((x, j) => { if (j && (!x.r || x.slot === '汁物')) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r); });
+    // 空の枠・汁もの、それに新しい主菜と同じ料理（または同じ肉・魚の2品目の主菜）になった枠は選び直す
+    m.items.forEach((x, j) => {
+        const clash = x.r && (x.r.id === r.id || (x.slot === '主菜' && x.r.family === r.family && r.family !== '野菜'));
+        if (j && (!x.r || x.slot === '汁物' || clash)) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r);
+    });
 }
 
 /* =========================================================
@@ -2349,10 +2366,24 @@ function suggestFor(slot, items, main){
         return pick(RECIPES.filter(r => r.type === '汁物' && !used.includes(r.id)), ctx);
     }
     if (slot === '副菜') return pick(RECIPES.filter(r => r.type === '副菜' && !used.includes(r.id)), ctx);
-    // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの
+    // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
+    // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
     const mainProteins = new Set(main.items.filter(i => !i.opt && FAMILY[i.key]).map(i => i.key));
-    return pick(RECIPES.filter(r => r.type === '主菜' && !used.includes(r.id) && r.family !== main.family && r.min <= 30
-        && !r.items.some(i => !i.opt && mainProteins.has(i.key))), ctx);
+    const free = r => r.id !== main.id && !used.includes(r.id) && !isAvoided(r);
+    const diff = r => r.family !== main.family && !r.items.some(i => !i.opt && mainProteins.has(i.key));
+    const tiers = [
+        r => r.type === '主菜' && diff(r) && r.min <= 30,
+        r => r.type === '主菜' && diff(r) && r.min <= 50,
+        r => r.type === '主菜' && diff(r),
+        r => r.type === '主菜' && r.family !== main.family,
+        r => r.main && diff(r),
+        r => r.main,
+    ];
+    for (const ok of tiers){
+        const pool = RECIPES.filter(r => free(r) && ok(r));
+        const r = pool.length ? pick(pool, ctx) : null; if (r) return r;
+    }
+    return null;
 }
 
 /* =========================================================
@@ -2665,7 +2696,8 @@ function viewToday(){
         const kind = it.slot === '主菜' ? vesselKind(r) : it.slot === '副菜' ? 'kobachi' : 'wan';
         const label = slotLabel(it.slot);
         const last = r ? lastLabel(r.id) : '';
-        const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : t('合う料理がありません');
+        const byAvoid = !r && S.settings.avoid.length && RECIPES.some(x => slotOf(x) === it.slot && isAvoided(x));
+        const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : byAvoid ? t('苦手な食材を使わない料理がありません') : t('合う料理がありません');
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
@@ -3167,7 +3199,7 @@ document.addEventListener('click', e => {
             const i = Number(el.dataset.i), m = session.menu, it = m.items[i];
             if (it.r) session.rejected.add(it.r.id);
             if (i === 0) setMenuMain(suggestMain());
-            else it.r = suggestFor(it.slot, m.items.filter((_, k) => k !== i), m.items[0].r);
+            else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
             render(); break;
         }
         case 'new-menu':

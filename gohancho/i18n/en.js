@@ -547,4 +547,5 @@ GOHAN_I18N('en', {
     "聞いています…（タップで止める）": "Listening… (tap to stop)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Nothing found. Try another word, or just the ingredient name",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Couldn't read an ingredient name. Fix the text and tap \"Add\"",
+    "苦手な食材を使わない料理がありません": "No dish without your disliked ingredients",
 });

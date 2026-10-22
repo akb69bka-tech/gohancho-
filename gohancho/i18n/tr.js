@@ -546,4 +546,5 @@ GOHAN_I18N('tr', {
     "聞いています…（タップで止める）": "Dinliyorum… (durdurmak için dokunun)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Bulunamadı. Başka bir kelime ya da sadece malzeme adını deneyin",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Malzeme adı anlaşılamadı. Metni düzeltip “Ekle”ye dokunun",
+    "苦手な食材を使わない料理がありません": "Sevmediğiniz malzemeler olmadan yemek yok",
 });

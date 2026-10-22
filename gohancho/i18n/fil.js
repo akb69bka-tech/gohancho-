@@ -546,4 +546,5 @@ GOHAN_I18N('fil', {
     "聞いています…（タップで止める）": "Nakikinig… (i-tap para itigil)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Walang nahanap. Subukan ang ibang salita o ang pangalan lang ng sangkap",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Hindi nabasa ang sangkap. Ayusin ang teksto at i-tap ang \"Idagdag\"",
+    "苦手な食材を使わない料理がありません": "Walang putahe na wala ang mga ayaw mong sangkap",
 });

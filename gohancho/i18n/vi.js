@@ -546,4 +546,5 @@ GOHAN_I18N('vi', {
     "聞いています…（タップで止める）": "Đang nghe… (chạm để dừng)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Không tìm thấy. Thử từ khác hoặc chỉ tên nguyên liệu",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Không đọc được tên nguyên liệu. Sửa chữ rồi chạm \"Thêm\"",
+    "苦手な食材を使わない料理がありません": "Không có món nào không dùng nguyên liệu bạn tránh",
 });
