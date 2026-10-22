@@ -440,7 +440,6 @@ GOHAN_I18N('vi', {
     "羊肉": "Thịt cừu",
     "習得": "Đã học",
     "習得済み": "Đã thành thạo",
-    "聞いています…": "Đang nghe…",
     "聞き取れませんでした。もう一度どうぞ": "Mình chưa nghe rõ. Vui lòng thử lại",
     "膳": "G",
     "自動（国に合わせる）": "Tự động (theo quốc gia)",
@@ -537,5 +536,14 @@ GOHAN_I18N('vi', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Cảm ơn bạn đã đồng hành trọn một năm! Đây là giá đặc biệt cho gói năm.",
     "年額プラン（1年ありがとう価格）": "Gói năm (giá tri ân 1 năm)",
     "感想・改善点を送る": "Gửi nhận xét hoặc ý tưởng",
-    "くわしく": "Chi tiết"
+    "くわしく": "Chi tiết",
+    "{list} を冷蔵庫の材料に追加": "Thêm {list} vào nguyên liệu trong tủ lạnh",
+    "「{q}」の料理": "Món có \"{q}\"",
+    "さがす": "Tìm",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "Đang hiển thị {n} món đầu. Thêm nguyên liệu để thu hẹp",
+    "料理をさがす": "Tìm món",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "Nhập tên món hoặc nguyên liệu để xem các món dùng nó",
+    "聞いています…（タップで止める）": "Đang nghe… (chạm để dừng)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Không tìm thấy. Thử từ khác hoặc chỉ tên nguyên liệu",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Không đọc được tên nguyên liệu. Sửa chữ rồi chạm \"Thêm\"",
 });

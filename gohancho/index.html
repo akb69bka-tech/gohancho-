@@ -183,7 +183,9 @@ a{color:var(--accent)}
 input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
 .inputbar{display:grid;grid-template-columns:1fr auto auto;gap:8px}
-@media (max-width:420px){.inputbar{grid-template-columns:1fr auto}.inputbar #mic-btn{grid-column:1/-1}}
+@media (max-width:420px){.inputbar{grid-template-columns:1fr auto}.inputbar [data-act=mic]{grid-column:1/-1}}
+.btn.listening{background:var(--accent);color:#fff;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.6}}
+@media (prefers-reduced-motion: reduce){.btn.listening{animation:none}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:480px){.grid2{grid-template-columns:1fr}}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted);cursor:pointer}
@@ -1049,7 +1051,7 @@ function matchRecipe(r, have){
    - 前日・直近の主菜と同じ肉・魚、同じジャンルは点数を下げる
    - 「今は出さない」にした料理は出さない
    ========================================================= */
-let session = {rejected:new Set(), mood:'all', useFridge:false, menu:null, twist:null};
+let session = {rejected:new Set(), mood:'all', useFridge:false, menu:null, twist:null, search:''};
 const MOODS = [
     {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
     {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }},
@@ -2800,12 +2802,23 @@ function viewFridge(){
     }
     return `
     <section class="sec">
+        <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
+        <div class="card">
+        <form class="inputbar search" data-form="search" role="search">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉']).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+        </form>
+        <div id="search-results">${searchResultsHtml(session.search || '')}</div>
+        </div>
+    </section>
+    <section class="sec">
         <div class="sec-head"><h2>${esc(t('冷蔵庫にある材料'))}</h2><span class="hint">${esc(t('ここに登録した食材は次に開いたときも残ります'))}</span></div>
         <div class="card">
         <form class="inputbar" data-form="add-ing">
             <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:sampleIngs().join(', ')}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
             <button class="btn primary" type="submit">${esc(t('追加'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" id="mic-btn" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
@@ -2827,6 +2840,43 @@ function viewFridge(){
         ${hintsHtml}
     </section>
     ${results}`;
+}
+/* 料理名・材料名での検索（冷蔵庫に登録しなくても、その食材を使う料理が出る） */
+function searchRecipes(q){
+    const raw = String(q || '').split(/[、,，。・\/\n]+|\s+/).map(x => x.trim()).filter(Boolean);
+    if (!raw.length) return {terms:[], hits:[]};
+    const keys = extractIngredients(q).map(keyOf);
+    const terms = raw.map(norm).filter(Boolean);
+    const score = r => {
+        let sc = 0; const nm = norm(r.name);
+        terms.forEach(tm => { if (nm.includes(tm)) sc += 3; });
+        keys.forEach(k => { if (r.items.some(i => i.key === k)) sc += i_main(r, k) ? 2 : 1; });
+        terms.forEach(tm => { if (r.items.some(i => norm(i.label).includes(tm) || i.key.includes(tm))) sc += 1; });
+        return sc;
+    };
+    const i_main = (r, k) => r.items.findIndex(i => i.key === k) < 3;
+    const hits = RECIPES.filter(r => !isAvoided(r)).map(r => ({r, sc:score(r)})).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.r);
+    return {terms:raw, hits};
+}
+function searchResultsHtml(q){
+    if (!String(q || '').trim()) return '';
+    const {terms, hits} = searchRecipes(q);
+    const ings = extractIngredients(q).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)));
+    const addBtn = ings.length ? `<div class="row"><button class="btn sm" data-act="search-to-fridge" data-v="${esc(ings.join('、'))}">${esc(t('{list} を冷蔵庫の材料に追加', {list:joinNames(ings)}))}</button></div>` : '';
+    if (!hits.length) return `<div class="list"><div class="empty">${esc(t('見つかりませんでした。別の言い方や、食材の名前だけで試してください'))}</div></div>${addBtn}`;
+    const shown = hits.slice(0, 30);
+    return `<div class="sec-head"><h3>${esc(t('「{q}」の料理', {q:terms.join(LANG === 'ja' ? '、' : ', ')}))}</h3><span class="hint">${esc(t('{n}品', {n:hits.length}))}</span></div>
+    <div class="list">${shown.map(r => `<div class="match">
+        <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
+        <div class="info">
+            <div class="head" data-act="open" data-id="${esc(r.id)}"><span class="name">${esc(r.name)}</span></div>
+            <div class="ings">${r.items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</div>
+            <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
+        </div></div>`).join('')}</div>${hits.length > shown.length ? `<p class="foot">${esc(t('上位{n}品を表示しています。食材を足すと絞りこめます', {n:shown.length}))}</p>` : ''}${addBtn}`;
+}
+function runSearch(q){
+    session.search = q;
+    const box = $('#search-results'); if (box) box.innerHTML = searchResultsHtml(q);
 }
 function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵']; }
 function matchRow(m){
@@ -3050,19 +3100,58 @@ function addIngredients(text){
     if (found.length) toast(added ? t('{list} を追加しました', {list:joinNames(found)}) : t('すでに登録されています'));
     else toast(t('食材の名前が読み取れませんでした'));
 }
-let recog = null;
-function startMic(){
+let recog = null, recogTimer = 0, recogTarget = 'ing-input';
+function speechLocale(){
+    if (PACK && PACK.speechLang) return PACK.speechLang;
+    const m = {ja:'ja-JP', en:'en-US', fr:'fr-FR', de:'de-DE', it:'it-IT', es:'es-ES', 'pt-BR':'pt-BR', pl:'pl-PL', tr:'tr-TR', ar:'ar-SA', hi:'hi-IN', id:'id-ID', fil:'fil-PH', th:'th-TH', 'zh-Hans':'zh-CN', 'zh-Hant':'zh-TW', ko:'ko-KR', vi:'vi-VN'};
+    return m[LANG] || navigator.language || 'en-US';
+}
+function micButtons(){ return [...document.querySelectorAll('[data-act="mic"]')]; }
+function micIdle(){
+    clearTimeout(recogTimer); recogTimer = 0;
+    micButtons().forEach(b => { b.textContent = t('声で入力'); b.classList.remove('listening'); b.setAttribute('aria-pressed', 'false'); });
+    recog = null;
+}
+function stopMic(){ if (recog){ try{ recog.stop(); }catch(e){} } micIdle(); }
+// 声で入力: 聞き取った文字を入力欄に入れ、食材が読み取れたら追加（材料欄）または検索（検索欄）。
+// 直した点: 入力欄の文字を消さない（画面全体を描き直さない）、聞き取りが複数に分かれても全部つなぐ、
+//           途中経過を入力欄に見せる、終了イベントが来ない端末でも12秒で止める、言語は画面の言語に合わせる。
+function startMic(targetId){
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR){ toast(t('この端末では声の入力が使えません。文字で入力してください')); return; }
-    if (recog){ recog.stop(); return; }
+    if (recog){ stopMic(); return; }
+    recogTarget = targetId || 'ing-input';
+    const inp = document.getElementById(recogTarget);
     try{
-        recog = new SR(); recog.lang = PACK ? (PACK.speechLang || navigator.language || 'en-US') : 'ja-JP'; recog.interimResults = false; recog.maxAlternatives = 1;
-        const btn = $('#mic-btn'); if (btn) btn.textContent = t('聞いています…');
-        recog.onresult = e => { const t = e.results[0][0].transcript; addIngredients(t); };
-        recog.onerror = e => { toast(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? t('マイクが使えませんでした。文字で入力してください') : t('聞き取れませんでした。もう一度どうぞ')); };
-        recog.onend = () => { recog = null; render(); };
+        recog = new SR(); recog.lang = speechLocale(); recog.interimResults = true; recog.maxAlternatives = 1; recog.continuous = false;
+        let finalText = '', gotResult = false;
+        micButtons().forEach(b => { if (b.dataset.target === recogTarget){ b.textContent = t('聞いています…（タップで止める）'); b.classList.add('listening'); b.setAttribute('aria-pressed', 'true'); } });
+        recog.onresult = e => {
+            let interim = ''; finalText = '';
+            for (let i = 0; i < e.results.length; i++){ const r = e.results[i]; if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript; }
+            const text = (finalText + interim).replace(/[。．.]+$/g, '').trim();
+            if (inp) inp.value = text;
+            if (finalText){ gotResult = true; commitSpeech(finalText); }
+        };
+        recog.onerror = e => {
+            if (e.error === 'aborted') return;
+            toast(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? t('マイクが使えませんでした。文字で入力してください') : t('聞き取れませんでした。もう一度どうぞ'));
+        };
+        recog.onend = () => { if (!gotResult && inp && inp.value.trim()) commitSpeech(inp.value); micIdle(); };
         recog.start();
-    }catch(e){ recog = null; toast(t('マイクが使えませんでした。文字で入力してください')); }
+        recogTimer = setTimeout(() => { if (recog) stopMic(); }, 12000);
+    }catch(e){ console.warn('mic', e); micIdle(); toast(t('マイクが使えませんでした。文字で入力してください')); }
+}
+function commitSpeech(text){
+    text = String(text).replace(/[。．.]+$/g, '').trim(); if (!text) return;
+    const inp = document.getElementById(recogTarget);
+    if (recogTarget === 'search-input'){ if (inp) inp.value = text; runSearch(text); return; }
+    const found = extractIngredients(text);
+    if (!found.length){ if (inp) inp.value = text; toast(t('食材の名前が読み取れませんでした。文字を直して「追加」を押してください')); return; }
+    addIngredients(text);
+    const keep = $('#search-input') ? $('#search-input').value : '';
+    render();
+    const si = $('#search-input'); if (si && keep){ si.value = keep; runSearch(keep); }
 }
 
 document.addEventListener('click', e => {
@@ -3185,7 +3274,8 @@ document.addEventListener('click', e => {
         case 'rm-ing': S.fridge = S.fridge.filter(x => x !== el.dataset.v); save(); render(); break;
         case 'clear-ing': S.fridge = []; save(); render(); break;
         case 'sample-ing': S.fridge = sampleIngs(); save(); render(); break;
-        case 'mic': startMic(); break;
+        case 'mic': startMic(el.dataset.target); break;
+        case 'search-to-fridge': addIngredients(el.dataset.v); render(); break;
         case 'fridge-twist': {
             const have = fridgeKeys();
             const top = RECIPES.filter(r => r.type !== '汁物').map(r => matchRecipe(r, have)).sort((a,b) => b.ratio - a.ratio || b.used - a.used).slice(0,6).map(m => m.r.id);
@@ -3279,6 +3369,12 @@ document.addEventListener('click', e => {
 });
 let importBuffer = '';
 function keepDetailsOpen(){ const b = document.querySelectorAll('details.box'); if (b.length) b[b.length-1].open = true; }
+let searchDeb = 0;
+document.addEventListener('input', e => {
+    if (e.target.id !== 'search-input') return;
+    clearTimeout(searchDeb); const q = e.target.value;
+    searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
+});
 document.addEventListener('change', e => {
     const el = e.target;
     if (el.id === 'photo-input' && el.files && el.files[0] && modalId){
@@ -3291,6 +3387,7 @@ document.addEventListener('change', e => {
 document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
+    if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'add-ing'){ const inp = $('#ing-input'); if (inp.value.trim()){ addIngredients(inp.value); inp.value = ''; render(); $('#ing-input').focus(); } }
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);

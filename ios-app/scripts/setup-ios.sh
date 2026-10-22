@@ -27,6 +27,9 @@ set_key CFBundleDisplayName string "ご飯帖"
 set_key CFBundleDevelopmentRegion string "ja"
 set_key NSCameraUsageDescription string "作った料理の写真を撮るために使います"
 set_key NSPhotoLibraryUsageDescription string "作った料理の写真を選ぶために使います"
+# 「声で入力」（材料・料理の検索）に必要。これが無いと iPhone アプリでマイクが使えず、審査でも指摘される
+set_key NSMicrophoneUsageDescription string "声で食材や料理の名前を入力するために使います"
+set_key NSSpeechRecognitionUsageDescription string "話した言葉を食材や料理の名前に変えるために使います"
 set_key ITSAppUsesNonExemptEncryption bool false
 # iPhone 専用にする（iPad 用のスクリーンショットを用意しなくて済む）
 PBX=ios/App/App.xcodeproj/project.pbxproj

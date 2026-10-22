@@ -489,7 +489,6 @@ GOHAN_I18N('tr', {
     "すでに登録されています": "Zaten listenizde var",
     "食材の名前が読み取れませんでした": "Hiçbir malzeme tanınamadı",
     "この端末では声の入力が使えません。文字で入力してください": "Bu cihazda sesli giriş kullanılamıyor. Lütfen yazın",
-    "聞いています…": "Dinliyorum…",
     "マイクが使えませんでした。文字で入力してください": "Mikrofon kullanılamadı. Lütfen yazın",
     "聞き取れませんでした。もう一度どうぞ": "Anlaşılamadı. Lütfen tekrar deneyin",
     "{n}人分の分量で表示します": {"one":"1 kişilik miktarlar gösteriliyor","other":"{n} kişilik miktarlar gösteriliyor"},
@@ -537,5 +536,14 @@ GOHAN_I18N('tr', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Koca bir yıl için teşekkürler! Yıllık plan için özel fiyat sizi bekliyor.",
     "年額プラン（1年ありがとう価格）": "Yıllık (1 yıl teşekkür fiyatı)",
     "感想・改善点を送る": "Görüş veya fikir gönder",
-    "くわしく": "Ayrıntılar"
+    "くわしく": "Ayrıntılar",
+    "{list} を冷蔵庫の材料に追加": "{list} buzdolabı malzemelerine ekle",
+    "「{q}」の料理": "“{q}” içeren yemekler",
+    "さがす": "Ara",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "İlk {n} gösteriliyor. Daraltmak için malzeme ekleyin",
+    "料理をさがす": "Yemek ara",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "Yemek veya malzeme adı yazın, onu kullanan yemekler çıksın",
+    "聞いています…（タップで止める）": "Dinliyorum… (durdurmak için dokunun)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Bulunamadı. Başka bir kelime ya da sadece malzeme adını deneyin",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Malzeme adı anlaşılamadı. Metni düzeltip “Ekle”ye dokunun",
 });

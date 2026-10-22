@@ -489,7 +489,6 @@ GOHAN_I18N('fil', {
     "すでに登録されています": "Nasa listahan mo na",
     "食材の名前が読み取れませんでした": "Hindi makilala ang pangalan ng sangkap",
     "この端末では声の入力が使えません。文字で入力してください": "Hindi available ang voice input sa device na ito. Mag-type na lang",
-    "聞いています…": "Nakikinig…",
     "マイクが使えませんでした。文字で入力してください": "Hindi magamit ang mikropono. Mag-type na lang",
     "聞き取れませんでした。もう一度どうぞ": "Hindi narinig. Subukan ulit",
     "{n}人分の分量で表示します": {"one":"Nagpapakita ng dami para sa 1 tao","other":"Nagpapakita ng dami para sa {n} tao"},
@@ -537,5 +536,14 @@ GOHAN_I18N('fil', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Salamat sa isang buong taon! Heto ang espesyal na presyo sa taunang plan.",
     "年額プラン（1年ありがとう価格）": "Taunan (1-year thank-you price)",
     "感想・改善点を送る": "Magpadala ng komento o ideya",
-    "くわしく": "Detalye"
+    "くわしく": "Detalye",
+    "{list} を冷蔵庫の材料に追加": "Idagdag ang {list} sa mga sangkap sa ref",
+    "「{q}」の料理": "Mga putahe na may \"{q}\"",
+    "さがす": "Hanapin",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "Ipinapakita ang unang {n}. Magdagdag ng sangkap para paliitin",
+    "料理をさがす": "Maghanap ng putahe",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "I-type ang putahe o sangkap para makita ang mga putaheng gumagamit nito",
+    "聞いています…（タップで止める）": "Nakikinig… (i-tap para itigil)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Walang nahanap. Subukan ang ibang salita o ang pangalan lang ng sangkap",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Hindi nabasa ang sangkap. Ayusin ang teksto at i-tap ang \"Idagdag\"",
 });

@@ -490,7 +490,6 @@ GOHAN_I18N('en', {
     "すでに登録されています": "Already on your list",
     "食材の名前が読み取れませんでした": "Couldn't recognize any ingredients",
     "この端末では声の入力が使えません。文字で入力してください": "Voice input isn't available on this device. Please type instead",
-    "聞いています…": "Listening…",
     "マイクが使えませんでした。文字で入力してください": "Couldn't use the microphone. Please type instead",
     "聞き取れませんでした。もう一度どうぞ": "Didn't catch that. Please try again",
     "{n}人分の分量で表示します": {"one": "Showing amounts for 1 person", "other": "Showing amounts for {n} people"},
@@ -538,5 +537,14 @@ GOHAN_I18N('en', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Thank you for a whole year! Here's a special price on the yearly plan.",
     "年額プラン（1年ありがとう価格）": "Yearly (1-year thank-you price)",
     "感想・改善点を送る": "Send a comment or idea",
-    "くわしく": "Details"
+    "くわしく": "Details",
+    "{list} を冷蔵庫の材料に追加": "Add {list} to fridge ingredients",
+    "「{q}」の料理": "Dishes with \"{q}\"",
+    "さがす": "Search",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "Showing the top {n}. Add an ingredient to narrow it down",
+    "料理をさがす": "Find a dish",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "Type a dish or ingredient name to see dishes that use it",
+    "聞いています…（タップで止める）": "Listening… (tap to stop)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Nothing found. Try another word, or just the ingredient name",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Couldn't read an ingredient name. Fix the text and tap \"Add\"",
 });

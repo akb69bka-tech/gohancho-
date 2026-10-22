@@ -490,7 +490,6 @@ GOHAN_I18N('de', {
     "すでに登録されています": "Steht schon auf deiner Liste",
     "食材の名前が読み取れませんでした": "Keine Zutaten erkannt",
     "この端末では声の入力が使えません。文字で入力してください": "Spracheingabe ist auf diesem Gerät nicht verfügbar. Bitte tippe stattdessen",
-    "聞いています…": "Ich höre zu …",
     "マイクが使えませんでした。文字で入力してください": "Das Mikrofon war nicht verfügbar. Bitte tippe stattdessen",
     "聞き取れませんでした。もう一度どうぞ": "Das habe ich nicht verstanden. Bitte noch einmal",
     "{n}人分の分量で表示します": {"one": "Mengen für 1 Person", "other": "Mengen für {n} Personen"},
@@ -537,5 +536,14 @@ GOHAN_I18N('de', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Danke für ein ganzes Jahr! Hier ist ein Sonderpreis für das Jahresabo.",
     "年額プラン（1年ありがとう価格）": "Jährlich (Dankeschön-Preis nach 1 Jahr)",
     "感想・改善点を送る": "Feedback oder Idee senden",
-    "くわしく": "Mehr"
+    "くわしく": "Mehr",
+    "{list} を冷蔵庫の材料に追加": "{list} zu den Kühlschrank-Zutaten hinzufügen",
+    "「{q}」の料理": "Gerichte mit „{q}“",
+    "さがす": "Suchen",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "Die ersten {n} werden angezeigt. Fügen Sie eine Zutat hinzu, um einzugrenzen",
+    "料理をさがす": "Gericht suchen",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "Gericht oder Zutat eingeben, um passende Gerichte zu sehen",
+    "聞いています…（タップで止める）": "Höre zu… (zum Stoppen tippen)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Nichts gefunden. Versuchen Sie ein anderes Wort oder nur den Zutatennamen",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Zutat nicht erkannt. Text korrigieren und „Hinzufügen“ tippen",
 });

@@ -489,7 +489,6 @@ GOHAN_I18N('id', {
     "すでに登録されています": "Sudah ada di daftar Anda",
     "食材の名前が読み取れませんでした": "Tidak ada bahan yang dikenali",
     "この端末では声の入力が使えません。文字で入力してください": "Input suara tidak tersedia di perangkat ini. Silakan ketik",
-    "聞いています…": "Mendengarkan…",
     "マイクが使えませんでした。文字で入力してください": "Mikrofon tidak dapat dipakai. Silakan ketik",
     "聞き取れませんでした。もう一度どうぞ": "Tidak terdengar. Silakan coba lagi",
     "{n}人分の分量で表示します": "Menampilkan takaran untuk {n} orang",
@@ -537,5 +536,14 @@ GOHAN_I18N('id', {
     "1年間ありがとうございます。年額プランを特別価格でご案内します。": "Terima kasih sudah setahun penuh! Ini harga khusus untuk paket tahunan.",
     "年額プラン（1年ありがとう価格）": "Tahunan (harga terima kasih 1 tahun)",
     "感想・改善点を送る": "Kirim komentar atau ide",
-    "くわしく": "Selengkapnya"
+    "くわしく": "Selengkapnya",
+    "{list} を冷蔵庫の材料に追加": "Tambahkan {list} ke bahan di kulkas",
+    "「{q}」の料理": "Masakan dengan \"{q}\"",
+    "さがす": "Cari",
+    "上位{n}品を表示しています。食材を足すと絞りこめます": "Menampilkan {n} teratas. Tambahkan bahan untuk mempersempit",
+    "料理をさがす": "Cari masakan",
+    "料理名か材料名を入れると、その食材を使う料理がすぐ出ます": "Ketik nama masakan atau bahan untuk melihat masakan yang memakainya",
+    "聞いています…（タップで止める）": "Mendengarkan… (ketuk untuk berhenti)",
+    "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Tidak ditemukan. Coba kata lain atau hanya nama bahannya",
+    "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Nama bahan tidak terbaca. Perbaiki teks lalu ketuk \"Tambah\"",
 });
