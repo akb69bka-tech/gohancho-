@@ -3138,6 +3138,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "us_clamchowder": {
+      "file": "us_clamchowder.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_chili": {
+      "file": "us_chili.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_whitechili": {
+      "file": "us_whitechili.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_cornchowder": {
+      "file": "us_cornchowder.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_potatosoup": {
+      "file": "us_potatosoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_broccolicheddar": {
+      "file": "us_broccolicheddar.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_splitpea": {
+      "file": "us_splitpea.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_beefbarley": {
+      "file": "us_beefbarley.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_minestrone": {
+      "file": "us_minestrone.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_frenchonion": {
+      "file": "us_frenchonion.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_gumbo": {
+      "file": "us_gumbo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_tortillasoup": {
+      "file": "us_tortillasoup.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_lentil": {
+      "file": "us_lentil.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_butternut": {
+      "file": "us_butternut.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_stuffedpepper": {
+      "file": "us_stuffedpepper.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_sausagekale": {
+      "file": "us_sausagekale.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_blackbean": {
+      "file": "us_blackbean.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_mushroom": {
+      "file": "us_mushroom.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_chickendumplings": {
+      "file": "us_chickendumplings.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_wedding": {
+      "file": "us_wedding.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
