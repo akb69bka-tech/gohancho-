@@ -50,7 +50,18 @@ GOHAN_PACK_TR('ES', 'es', {
     'fresh tuna': 'Bonito o atún fresco',
     'clams': 'Almejas',
     'cream': 'Nata para cocinar',
-    'pear': 'Peras'
+    'pear': 'Peras',
+    'pork loin': 'Lomo de cerdo',
+    'eggplant': 'Berenjena',
+    'anchovies': 'Boquerones',
+    'sea bream': 'Dorada',
+    'milk': 'Leche',
+    'artichokes': 'Alcachofas',
+    'cauliflower': 'Coliflor',
+    'asparagus': 'Espárragos trigueros',
+    'chard': 'Acelgas',
+    'banana': 'Plátanos',
+    'breadcrumbs': 'Pan rallado'
   },
   recipes: {
     'es_tortilla': {
@@ -490,6 +501,486 @@ GOHAN_PACK_TR('ES', 'es', {
         'Añade la calabaza, la pera, los garbanzos y el azafrán y cuece 15 minutos más, hasta que todo esté tierno. Sala y termina con unas hojas de hierbabuena.'
       ],
       tip: { add: 'Unas hojas de hierbabuena fresca', why: 'El toque final tradicional, fresco frente al dulzor de la calabaza', skill: 'La pera, al final', how: 'La pera y la calabaza se cuecen rápido; échalas en los últimos 15 minutos para que no se deshagan.' }
+    },
+    'es_pollohorno': {
+      name: 'Pollo asado al horno con patatas',
+      ings: [['Pollo troceado (muslos y contramuslos)', '1 kg'], ['Patatas', '600 g'], ['Cebolla', '1'], ['Limón', '1/2']],
+      seas: 'Sal · pimienta · 4 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Precalienta el horno a 200 °C. Pela las patatas y córtalas en rodajas gruesas; corta la cebolla en aros gruesos y ponlo todo en una bandeja de horno. Sala y riega con la mitad del aceite.',
+        'Salpimienta el pollo, espolvorea el tomillo y colócalo con la piel hacia arriba sobre las patatas, con los ajos chafados y los trozos de limón.',
+        'Vierte el vino en la bandeja, riega el pollo con el resto del aceite y hornea 30 minutos.',
+        'Da la vuelta al pollo, rocíalo con el jugo y hornea 25-30 minutos más, hasta que la piel esté dorada y el jugo junto al hueso salga transparente. Sirve con las patatas y el jugo.'
+      ],
+      tip: { add: 'Un chorrito de agua si la bandeja se seca', why: 'Las patatas absorben el jugo y quedan tiernas y sabrosas', skill: 'Las patatas, debajo', how: 'Pon las patatas bajo el pollo para que la grasa y el vino caigan sobre ellas al asarse.' }
+    },
+    'es_pechugas': {
+      name: 'Filetes de pechuga empanados',
+      ings: [['Pechuga de pollo en filetes finos', '500 g'], ['Huevos', '2'], ['Pan rallado', '100 g'], ['Limón', '1/2']],
+      seas: 'Sal · 1 diente de ajo · un poco de perejil picado · aceite de girasol u oliva para freír',
+      steps: [
+        'Sala los filetes. Bate los huevos con el ajo machacado y el perejil picado.',
+        'Pasa cada filete por el huevo y después por el pan rallado, apretando para que se pegue bien.',
+        'Fríe en 1 cm de aceite caliente a fuego medio-alto, 2-3 minutos por cada lado, hasta que estén dorados y hechos por dentro.',
+        'Escurre sobre papel de cocina y sirve caliente con gajos de limón, ensalada o patatas fritas.'
+      ],
+      tip: { add: 'Ajo y perejil en el huevo batido', why: 'El toque casero de siempre que da sabor al rebozado', skill: 'Filetes finos e iguales', how: 'Pide la pechuga en filetes finos o aplánala con un rodillo para que se haga antes de que el pan se queme.' }
+    },
+    'es_chilindron': {
+      name: 'Pollo al chilindrón',
+      ings: [['Pollo troceado', '1 kg'], ['Pimientos rojos y verdes', '3'], ['Cebolla', '1'], ['Tomates maduros', '3'], ['Taquitos de jamón serrano', '50 g']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Salpimienta el pollo y dóralo en el aceite en una cazuela ancha durante 10 minutos. Reserva.',
+        'En el mismo aceite sofríe la cebolla y el ajo picados y los pimientos en tiras durante 10 minutos. Añade el jamón y rehoga 2 minutos.',
+        'Incorpora el tomate rallado y cocina 10 minutos hasta que espese. Fuera del fuego, añade el pimentón.',
+        'Vuelve a poner el pollo, agrega el vino, tapa y cuece a fuego suave 25-30 minutos hasta que el pollo esté tierno y la salsa espesa. Rectifica de sal.'
+      ],
+      tip: { add: 'Pimientos asados en vez de crudos', why: 'La salsa queda aún más dulce y sedosa', skill: 'Deja que el sofrito se haga', how: 'Los pimientos y el tomate deben quedar blandos y melosos antes de volver a echar el pollo; ahí está todo el sabor.' }
+    },
+    'es_arrozpollo': {
+      name: 'Arroz con pollo',
+      ings: [['Arroz redondo', '300 g'], ['Pollo troceado pequeño', '600 g'], ['Pimiento rojo', '1'], ['Tomate maduro', '1'], ['Guisantes', '80 g']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharadita de pimentón dulce · unas hebras de azafrán o colorante · 900 ml de caldo de pollo o agua caliente · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Sala el pollo y dóralo en el aceite en una paellera o cazuela ancha durante 10 minutos.',
+        'Añade el pimiento en tiras y el ajo picado y sofríe 5 minutos; agrega el tomate rallado y cocina 5 minutos más. Fuera del fuego, echa el pimentón.',
+        'Incorpora el arroz y rehoga 1 minuto; vierte el caldo caliente con el azafrán y los guisantes. Prueba de sal.',
+        'Cuece 8 minutos a fuego fuerte y 10 más a fuego suave sin remover, hasta que el arroz esté tierno. Deja reposar 5 minutos tapado con un paño.'
+      ],
+      tip: { add: 'Unas tiras de pimiento asado por encima', why: 'Color y dulzor para la mesa familiar', skill: 'No remuevas tras echar el caldo', how: 'Remover suelta el almidón y lo empasta; reparte bien el arroz y déjalo.' }
+    },
+    'es_lomo': {
+      name: 'Lomo adobado con patatas',
+      ings: [['Lomo de cerdo en filetes de 1 cm', '500 g'], ['Patatas', '500 g'], ['Pimiento verde', '1']],
+      seas: 'Sal · 2 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de orégano seco · 1 cucharada de vinagre de vino · 3 cucharadas de aceite de oliva (adobo) · aceite para freír',
+      steps: [
+        'Mezcla el ajo machacado, el pimentón, el orégano, el vinagre, la sal y el aceite. Unta los filetes y deja al menos 20 minutos (o toda la noche en la nevera).',
+        'Corta las patatas para freír y fríelas en abundante aceite caliente hasta que estén doradas. Escurre y sala. Si quieres, fríe también el pimiento en tiras.',
+        'Haz el lomo en una plancha o sartén muy caliente, 2-3 minutos por lado, hasta que esté dorado y justo hecho.',
+        'Sirve enseguida con las patatas y los pimientos.'
+      ],
+      tip: { add: 'Un huevo frito', why: 'Lomo, huevo y patatas es el plato combinado de siempre', skill: 'Plancha muy caliente', how: 'La plancha caliente sella los filetes rápido y el lomo queda jugoso; si se pasa, se seca.' }
+    },
+    'es_costillas': {
+      name: 'Costillas de cerdo al horno',
+      ings: [['Costillas de cerdo (en tira o troceadas)', '1 kg'], ['Patatas', '500 g'], ['Cebolla', '1']],
+      seas: 'Sal · pimienta · 4 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 150 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Precalienta el horno a 180 °C. Unta las costillas con sal, pimienta, ajo machacado, pimentón, tomillo y el aceite.',
+        'Corta las patatas y la cebolla en rodajas, ponlas en una bandeja, sálalas y coloca encima las costillas. Vierte el vino.',
+        'Tapa con papel de aluminio y hornea 40 minutos.',
+        'Quita el papel, sube el horno a 210 °C y hornea 20-25 minutos más, dándoles la vuelta una vez, hasta que estén doradas y tiernas.'
+      ],
+      tip: { add: 'Una cucharada de miel pintada al final', why: 'Deja una costra brillante que encanta a los niños', skill: 'Primero tapadas, luego destapadas', how: 'El papel mantiene la carne jugosa hasta que se ablanda; el final sin tapar la dora y la deja crujiente.' }
+    },
+    'es_arrozhorno': {
+      name: 'Arroz al horno',
+      ings: [['Arroz redondo', '300 g'], ['Costilla o panceta de cerdo troceada', '300 g'], ['Morcilla', '1'], ['Garbanzos cocidos', '200 g'], ['Patata', '1'], ['Tomates', '2']],
+      seas: 'Sal · 1 cabeza de ajos · 1 cucharadita de pimentón dulce · unas hebras de azafrán o colorante · 750 ml de caldo o agua caliente · 5 cucharadas de aceite de oliva',
+      steps: [
+        'Precalienta el horno a 220 °C. Dora el cerdo con sal en el aceite en una sartén ancha. Añade la patata en rodajas, un tomate partido por la mitad y la cabeza de ajos entera; fríe 5 minutos. Fríe la morcilla en trozos 1 minuto.',
+        'Retira la patata, las mitades de tomate, los ajos y la morcilla. Ralla el otro tomate en la sartén, cocina 3 minutos y añade el pimentón y el arroz.',
+        'Pásalo a una cazuela ancha de horno (mejor de barro). Añade los garbanzos, vierte el caldo caliente con el azafrán y la sal, y coloca encima la patata, los tomates, la morcilla y la cabeza de ajos.',
+        'Hornea 18-20 minutos, hasta que el arroz esté tierno y sin caldo. Deja reposar 5 minutos.'
+      ],
+      tip: { add: 'Restos de la carne y los garbanzos del cocido', why: 'Así nació este plato en las casas valencianas', skill: 'Caldo caliente, horno caliente', how: 'Todo debe entrar muy caliente para que el arroz empiece a cocer enseguida y quede suelto.' }
+    },
+    'es_estofado': {
+      name: 'Estofado de ternera',
+      ings: [['Carne de ternera para guisar (morcillo o aguja)', '700 g'], ['Patatas', '500 g'], ['Zanahorias', '2'], ['Cebolla', '1'], ['Pimiento verde', '1'], ['Guisantes', '80 g']],
+      seas: 'Sal · pimienta · 2 dientes de ajo · 1 hoja de laurel · 2 cucharadas de harina · 1 cucharada de concentrado de tomate · 200 ml de vino tinto · unos 600 ml de agua · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Corta la carne en tacos grandes, salpimienta y enharina. Dórala por tandas en el aceite en una olla pesada y reserva.',
+        'En la misma olla sofríe la cebolla, el pimiento y el ajo picados 8 minutos. Añade las zanahorias en rodajas y el concentrado de tomate y rehoga 2 minutos.',
+        'Vuelve a poner la carne, vierte el vino y deja que hierva 3 minutos. Añade el laurel y agua justo hasta cubrir, tapa y cuece a fuego suave 1 hora y 15 minutos (25 minutos en olla exprés).',
+        'Añade las patatas chascadas (y los guisantes) y cuece 20-25 minutos más, hasta que la carne y las patatas estén tiernas. Rectifica de sal.'
+      ],
+      tip: { add: 'Unas patatas fritas o pan para mojar', why: 'En España la salsa se rebaña hasta la última gota', skill: 'Dora por tandas', how: 'Si echas mucha carne a la vez suelta agua y se cuece en vez de dorarse; esa costra dorada da profundidad a la salsa.' }
+    },
+    'es_filetesrusos': {
+      name: 'Filetes rusos',
+      ings: [['Carne picada mixta (ternera y cerdo)', '500 g'], ['Huevo', '1'], ['Pan remojado en leche', '1 rebanada'], ['Leche', '50 ml'], ['Cebolla', '1/2']],
+      seas: 'Sal · pimienta · 1 diente de ajo · un poco de perejil picado · 3 cucharadas de harina · aceite para freír',
+      steps: [
+        'Remoja el pan en la leche y escúrrelo un poco. Mézclalo con la carne, el huevo, la cebolla y el ajo muy picados, el perejil, la sal y la pimienta.',
+        'Forma filetes ovalados y planos de 1,5 cm de grosor y pásalos por harina.',
+        'Fríelos en 1 cm de aceite caliente a fuego medio 3-4 minutos por lado, hasta que estén dorados y hechos por dentro.',
+        'Escurre y sirve con patatas fritas, ensalada o tomate frito.'
+      ],
+      tip: { add: 'Tomate frito al lado', why: 'Así los comen casi todos los niños en España', skill: 'Pásalos por harina', how: 'Una capa fina de harina forma una costra que guarda el jugo y evita que se peguen.' }
+    },
+    'es_berenjenas': {
+      name: 'Berenjenas rellenas de carne',
+      ings: [['Berenjenas', '2'], ['Carne picada', '300 g'], ['Cebolla', '1'], ['Tomate frito', '150 g'], ['Queso rallado', '60 g'], ['Leche (para una bechamel rápida)', '250 ml']],
+      seas: 'Sal · pimienta · 1 diente de ajo · 1/2 cucharadita de orégano · 2 cucharadas de harina y 1 de mantequilla (bechamel) · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Precalienta el horno a 200 °C. Parte las berenjenas por la mitad a lo largo, haz cortes en la pulpa, sala y riega con aceite. Hornéalas boca arriba 25 minutos hasta que estén blandas y vacía la pulpa dejando la piel como barquita.',
+        'Sofríe la cebolla y el ajo picados 6 minutos, añade la carne y dórala. Agrega la pulpa picada, el tomate frito, el orégano, sal y pimienta y cocina 5 minutos.',
+        'Si haces bechamel: derrite la mantequilla, añade la harina y rehoga 1 minuto, incorpora la leche batiendo y cuece hasta que espese. Sala.',
+        'Rellena las barquitas con la carne, cubre con bechamel y queso y gratina 10-15 minutos hasta que estén doradas.'
+      ],
+      tip: { add: 'Una capa fina de bechamel bajo el queso', why: 'Como las hacen las abuelas, cremosas y doradas', skill: 'Ásalas antes de rellenar', how: 'Asar las mitades antes facilita vaciarlas y evita que el plato quede aguado.' }
+    },
+    'es_canelones': {
+      name: 'Canelones',
+      ings: [['Placas de canelones', '16'], ['Carne picada de cerdo y ternera', '400 g'], ['Contramuslo de pollo (o pollo asado sobrante)', '200 g'], ['Cebolla', '1'], ['Leche', '700 ml'], ['Queso rallado', '60 g']],
+      seas: 'Sal · pimienta · nuez moscada · 60 g de mantequilla · 60 g de harina · 2 cucharadas de tomate frito · 50 ml de brandy o vino blanco (opcional) · 2 cucharadas de aceite de oliva',
+      steps: [
+        'Sofríe la cebolla picada a fuego lento en el aceite 15 minutos. Añade la carne picada y el pollo troceado y dóralos. Agrega el vino y el tomate frito y cocina 10 minutos; salpimienta y tritura o pica fino.',
+        'Cuece las placas como indique el paquete y extiéndelas sobre un paño húmedo. Precalienta el horno a 200 °C.',
+        'Haz la bechamel: derrite la mantequilla, añade la harina y rehoga 2 minutos, incorpora la leche batiendo y cuece 8-10 minutos hasta que espese. Sazona con sal, pimienta y nuez moscada. Mezcla 3 cucharadas con el relleno.',
+        'Enrolla el relleno en las placas y colócalos en una fuente untada de mantequilla. Cubre con la bechamel y el queso y gratina 15-20 minutos hasta que estén dorados.'
+      ],
+      tip: { add: 'Restos de asado o de guiso en el relleno', why: 'En Cataluña se hacen el 26 de diciembre con las sobras de Navidad', skill: 'Sofríe la cebolla despacio', how: 'Un sofrito largo y suave hace el relleno dulce y jugoso en vez de seco.' }
+    },
+    'es_bacalao': {
+      name: 'Bacalao con tomate',
+      ings: [['Bacalao desalado (o fresco)', '500 g'], ['Tomate triturado o tomate frito', '400 g'], ['Cebolla', '1'], ['Pimiento verde', '1'], ['Aceitunas negras', '8']],
+      seas: '2 dientes de ajo · 1 pizca de azúcar · 3 cucharadas de harina · aceite de oliva para freír y para la salsa · sal solo si hace falta',
+      steps: [
+        'Seca los trozos de bacalao, pásalos por harina y fríelos en aceite caliente 2 minutos por lado hasta que estén ligeramente dorados. Reserva.',
+        'En 3 cucharadas de ese aceite sofríe la cebolla, el pimiento y el ajo picados 10 minutos hasta que estén blandos.',
+        'Añade el tomate y el azúcar y cuece 15 minutos hasta que espese. Prueba antes de salar (el bacalao es salado).',
+        'Coloca el bacalao en la salsa, añade las aceitunas, tapa y cocina a fuego suave 5 minutos hasta que se separe en lascas.'
+      ],
+      tip: { add: 'Unas tiras de pimiento rojo asado', why: 'Su dulzor contrasta con el bacalao salado', skill: 'Desala bien', how: 'Remoja el bacalao 36-48 horas en la nevera cambiando el agua 3-4 veces, o cómpralo ya desalado.' }
+    },
+    'es_merluzaverde': {
+      name: 'Merluza en salsa verde',
+      ings: [['Merluza en rodajas o lomos', '600 g'], ['Almejas', '200 g'], ['Perejil', '1 manojo'], ['Guisantes', '50 g']],
+      seas: 'Sal · 3 dientes de ajo · 1 cucharada de harina · 100 ml de vino blanco · 200 ml de caldo de pescado o agua · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Pon las almejas en agua con sal 30 minutos para que suelten la arena. Sala la merluza.',
+        'En una cazuela de barro o sartén ancha calienta el aceite con el ajo laminado hasta que empiece a dorarse. Añade la harina y rehoga 1 minuto.',
+        'Incorpora el vino y el caldo poco a poco, removiendo, hasta tener una salsa ligera. Añade la mitad del perejil picado.',
+        'Coloca la merluza, las almejas y los guisantes, y cocina 5-6 minutos moviendo la cazuela suavemente, hasta que el pescado esté opaco y las almejas se abran. Termina con el resto del perejil.'
+      ],
+      tip: { add: 'Huevo duro en cuartos o espárragos blancos', why: 'La guarnición tradicional vasca', skill: 'Mueve la cazuela', how: 'Moverla en círculos hace que la gelatina del pescado ligue la salsa sin romper los trozos.' }
+    },
+    'es_boquerones': {
+      name: 'Boquerones fritos',
+      ings: [['Boquerones frescos', '500 g'], ['Limón', '1']],
+      seas: 'Sal · unas 6 cucharadas de harina (mejor harina de freír o de garbanzo) · abundante aceite de oliva o girasol para freír',
+      steps: [
+        'Limpia los boquerones: quita la cabeza con las tripas y enjuágalos. Déjalos enteros o ábrelos y quita la espina. Escúrrelos bien.',
+        'Sálalos y enharínalos; sacúdelos en un colador para quitar el exceso. Si quieres, júntalos por la cola en abanicos de 4-5.',
+        'Fríelos en aceite muy caliente (180 °C) en tandas pequeñas 1-2 minutos, hasta que estén dorados y crujientes.',
+        'Escurre sobre papel de cocina y sirve enseguida con gajos de limón.'
+      ],
+      tip: { add: 'Una ensalada sencilla de tomate o lechuga', why: 'La cena andaluza de verano por excelencia', skill: 'Tandas pequeñas, aceite muy caliente', how: 'Si echas muchos a la vez el aceite se enfría y quedan blandos; fríelos de pocos en pocos.' }
+    },
+    'es_dorada': {
+      name: 'Dorada al horno con patatas',
+      ings: [['Doradas enteras limpias', '2 (unos 400 g cada una)'], ['Patatas', '500 g'], ['Cebolla', '1'], ['Limón', '1']],
+      seas: 'Sal · 3 dientes de ajo · un poco de perejil picado · 100 ml de vino blanco · 5 cucharadas de aceite de oliva',
+      steps: [
+        'Precalienta el horno a 200 °C. Corta las patatas y la cebolla en láminas finas, ponlas en una bandeja con sal y 3 cucharadas de aceite y hornea 20 minutos.',
+        'Sala el pescado por dentro y por fuera, hazle 2-3 cortes en cada lado y mete rodajas de limón en ellos. Colócalo sobre las patatas y riega con el vino.',
+        'Hornea 15-20 minutos, hasta que la carne se separe fácilmente de la espina.',
+        'Mientras, dora el ajo laminado en el resto del aceite, añade el perejil y vierte este refrito sobre el pescado al servir.'
+      ],
+      tip: { add: 'Un chorrito de vinagre en el refrito', why: 'El refrito vasco que alegra el pescado', skill: 'Primero las patatas', how: 'Las patatas necesitan más tiempo que el pescado; dales 20 minutos de ventaja para que todo esté listo a la vez.' }
+    },
+    'es_fideua': {
+      name: 'Fideuà',
+      ings: [['Fideo grueso (n.º 2-4)', '300 g'], ['Gambas o langostinos', '250 g'], ['Calamar o sepia', '250 g'], ['Tomate maduro', '1'], ['Allioli para servir', '4 cucharadas']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharadita de pimentón dulce · unas hebras de azafrán o colorante · 750 ml de caldo de pescado caliente · 5 cucharadas de aceite de oliva',
+      steps: [
+        'En una paellera marca las gambas en el aceite 1 minuto y resérvalas. Sofríe el calamar troceado 3 minutos.',
+        'Añade los fideos y tuéstalos removiendo 3-4 minutos hasta que estén dorados.',
+        'Agrega el ajo picado y el tomate rallado y cocina 3 minutos; añade el pimentón y vierte el caldo caliente con el azafrán y la sal.',
+        'Cuece a fuego medio-fuerte 8-10 minutos sin remover hasta que se absorba el caldo. Coloca las gambas encima y deja reposar 5 minutos. Sirve con allioli.'
+      ],
+      tip: { add: 'Allioli en la mesa', why: 'En Valencia y Cataluña la fideuà nunca se sirve sin él', skill: 'Tuesta los fideos', how: 'Freír los fideos primero los mantiene sueltos y hace que se levanten las puntas al secarse al final.' }
+    },
+    'es_calamares': {
+      name: 'Calamares en su tinta',
+      ings: [['Calamares limpios', '700 g'], ['Cebollas', '2'], ['Pimiento verde', '1'], ['Tomate maduro', '1'], ['Arroz blanco para acompañar', '200 g']],
+      seas: 'Sal · 2 dientes de ajo · 2 sobres de tinta de calamar (8 g) · 100 ml de vino blanco · 150 ml de caldo de pescado o agua · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Corta los cuerpos de los calamares en aros y los tentáculos en trozos. Sala.',
+        'Pocha las cebollas, el pimiento y el ajo picados en el aceite a fuego lento 15 minutos, hasta que estén muy blandos. Añade el tomate rallado y cocina 5 minutos.',
+        'Incorpora los calamares y rehoga 3 minutos; vierte el vino y deja que hierva. Disuelve la tinta en el caldo y añádela.',
+        'Tapa y cuece a fuego suave 25-30 minutos hasta que estén tiernos. Si te gusta fina, tritura parte de la salsa. Sirve con arroz blanco.'
+      ],
+      tip: { add: 'Arroz blanco con un poco de ajo', why: 'El arroz blanco junto a la salsa negra es el plato clásico', skill: 'Poco o mucho, nunca a medias', how: 'El calamar queda tierno a los 2 minutos o a los 25; entre medias queda gomoso, así que dale todo el guiso lento.' }
+    },
+    'es_huevosrotos': {
+      name: 'Huevos rotos con jamón',
+      ings: [['Patatas', '600 g'], ['Huevos', '4'], ['Jamón serrano en lonchas finas', '80 g']],
+      seas: 'Sal · 1 diente de ajo (opcional) · aceite de oliva para freír',
+      steps: [
+        'Pela las patatas y córtalas en bastones finos o rodajas. Fríelas en abundante aceite de oliva, primero a fuego medio hasta que estén blandas y luego a fuego fuerte hasta que se doren. Escurre y sala.',
+        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida.',
+        'Pon las patatas en una fuente, coloca encima el jamón y los huevos fritos.',
+        'En la mesa, rompe los huevos con un tenedor y mézclalos con las patatas.'
+      ],
+      tip: { add: 'Chorizo o pimientos verdes fritos en vez de jamón', why: 'Otras versiones muy populares en bares y casas de Madrid', skill: 'Fríe a dos temperaturas', how: 'El fuego suave hace la patata por dentro; el golpe final de fuego fuerte la dora y la deja crujiente.' }
+    },
+    'es_cubana': {
+      name: 'Arroz a la cubana',
+      ings: [['Arroz largo o redondo', '250 g'], ['Huevos', '4'], ['Tomate frito', '300 g'], ['Plátanos maduros (fritos, opcional)', '2']],
+      seas: 'Sal · 2 dientes de ajo · 1 hoja de laurel · 500 ml de agua · aceite de oliva para freír',
+      steps: [
+        'Dora los ajos enteros en 1 cucharada de aceite, añade el arroz y rehoga 1 minuto. Agrega el agua, la sal y el laurel y cuece tapado a fuego suave 15-18 minutos hasta que esté tierno. Deja reposar 5 minutos.',
+        'Calienta el tomate frito en un cazo.',
+        'Fríe los huevos en aceite caliente, con la yema jugosa. Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
+        'Aprieta el arroz en una taza y desmóldalo en cada plato. Sirve con el tomate, un huevo frito y el plátano.'
+      ],
+      tip: { add: 'Plátano frito', why: 'El toque dulce tradicional que da nombre al plato', skill: 'Moldea el arroz', how: 'Apretar el arroz en una taza untada de aceite y volcarla da la cúpula perfecta que esperan los niños.' }
+    },
+    'es_menestra': {
+      name: 'Menestra de verduras',
+      ings: [['Alcachofas (frescas o corazones congelados)', '4'], ['Judías verdes', '200 g'], ['Guisantes', '150 g'], ['Zanahorias', '2'], ['Patata', '1'], ['Taquitos de jamón serrano', '60 g'], ['Huevos duros', '2']],
+      seas: 'Sal · 2 dientes de ajo · 1 cebolla · 1 cucharada de harina · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Trocea las zanahorias, las judías y la patata, y parte las alcachofas en cuartos. Cuece cada verdura en agua con sal hasta que esté justo tierna (alcachofas y patata 12-15 minutos, judías y zanahorias 8-10, guisantes 3). Reserva 300 ml del agua.',
+        'En una cazuela ancha sofríe la cebolla y el ajo picados en el aceite 6 minutos; añade el jamón y rehoga 1 minuto.',
+        'Agrega la harina, rehoga 1 minuto e incorpora poco a poco el agua reservada para hacer una salsa ligera.',
+        'Añade todas las verduras y cuece 5 minutos moviendo la cazuela. Sirve con huevo duro en cuartos por encima.'
+      ],
+      tip: { add: 'Huevo duro en cuartos', why: 'Convierte las verduras en una cena completa, como en Navarra y La Rioja', skill: 'Cuece cada verdura por separado', how: 'Cada una necesita su tiempo; cocerlas por separado deja todas tiernas pero enteras.' }
+    },
+    'es_patataspobre': {
+      name: 'Patatas a lo pobre',
+      ings: [['Patatas', '600 g'], ['Cebolla', '1'], ['Pimiento verde', '1']],
+      seas: 'Sal · 2 dientes de ajo · unos 150 ml de aceite de oliva (casi todo se reutiliza) · 1 cucharada de vinagre de vino (opcional)',
+      steps: [
+        'Pela las patatas y córtalas en láminas finas; corta la cebolla y el pimiento en tiras y el ajo en láminas.',
+        'Calienta el aceite en una sartén ancha a fuego medio-bajo, echa todo con sal y tapa.',
+        'Cocina 20-25 minutos, dando vueltas de vez en cuando, hasta que las patatas estén muy tiernas y algunas un poco doradas.',
+        'Escurre el exceso de aceite, añade el vinagre si lo usas, mezcla y sirve.'
+      ],
+      tip: { add: 'Un chorrito de vinagre al final', why: 'Al estilo andaluz; aviva el dulzor de la cebolla y el pimiento', skill: 'Pochar, no freír', how: 'Fuego medio-bajo y tapa: las patatas quedan blandas y melosas, no crujientes, que es la gracia del plato.' }
+    },
+    'es_bravas': {
+      name: 'Patatas bravas',
+      ings: [['Patatas', '600 g'], ['Allioli o mayonesa de ajo', '3 cucharadas']],
+      seas: 'Sal · 2 cucharaditas de pimentón picante (o dulce con una pizca de cayena) · 1 cucharada de harina · 250 ml de caldo de pollo o agua · 1 cucharada de vinagre de Jerez · aceite de oliva para freír',
+      steps: [
+        'Pela las patatas y córtalas en dados de 2-3 cm. Fríelas en abundante aceite a fuego medio 10 minutos hasta que estén tiernas y luego sube el fuego para dorarlas. Escurre y sala.',
+        'Para la salsa: calienta 2 cucharadas de aceite, añade la harina y rehoga 1 minuto; retira del fuego y agrega el pimentón.',
+        'Incorpora el caldo y el vinagre batiendo y cuece 5 minutos hasta que napee la cuchara. Sala.',
+        'Vierte la salsa sobre las patatas calientes (con un poco de allioli si te gusta) y sirve con palillos.'
+      ],
+      tip: { add: 'Un hilo de allioli también', why: 'El estilo de bravas mixtas de Madrid y Cataluña', skill: 'Pimentón fuera del fuego', how: 'El pimentón se quema en segundos y amarga; añádelo con la sartén apartada del fuego.' }
+    },
+    'es_pipirrana': {
+      name: 'Pipirrana',
+      ings: [['Tomates maduros', '3'], ['Pimiento verde', '1'], ['Pepino', '1'], ['Cebolla', '1/2'], ['Atún en lata', '1 lata'], ['Huevo duro', '1']],
+      seas: 'Sal · 4 cucharadas de aceite de oliva virgen extra · 1 cucharada de vinagre de Jerez o de vino · 1 diente de ajo pequeño (opcional)',
+      steps: [
+        'Corta en dados muy pequeños el tomate, el pimiento, el pepino y la cebolla, todo del mismo tamaño.',
+        'Ponlos en un bol con el atún escurrido y el huevo picado si lo usas.',
+        'Aliña con sal, vinagre y aceite (machaca el ajo en el aliño si quieres) y mezcla.',
+        'Enfría 20 minutos y sirve con pan para mojar en el jugo.'
+      ],
+      tip: { add: 'Pan para mojar', why: 'El jugo de tomate y aceite del fondo es lo mejor', skill: 'Dados pequeños e iguales', how: 'Cortar todo pequeño y del mismo tamaño es lo que distingue la pipirrana de una ensalada normal: en cada cucharada hay de todo.' }
+    },
+    'es_escalivada': {
+      name: 'Escalivada',
+      ings: [['Berenjenas', '2'], ['Pimientos rojos', '2'], ['Cebollas', '2']],
+      seas: 'Sal · 5 cucharadas de aceite de oliva virgen extra · 1 diente de ajo (opcional)',
+      steps: [
+        'Precalienta el horno a 200 °C. Pon las verduras enteras en una bandeja, úntalas con un poco de aceite y ásalas 50-60 minutos, dándoles la vuelta un par de veces, hasta que estén muy blandas y tostadas.',
+        'Mete los pimientos y las berenjenas en un bol tapado 15 minutos para que la piel se suelte.',
+        'Pélalo todo y desgárralo en tiras largas; pela las cebollas y córtalas en gajos finos.',
+        'Colócalo en una fuente y aliña con sal, el ajo picado si lo usas y abundante aceite. Sirve templada o a temperatura ambiente.'
+      ],
+      tip: { add: 'Unas anchoas por encima', why: 'Lo habitual en Cataluña; su sal contrasta con el dulzor de las verduras', skill: 'Deja sudar las verduras', how: 'Taparlas en caliente hace que la piel salga sola sin perder los jugos ahumados.' }
+    },
+    'es_zanahorias': {
+      name: 'Zanahorias aliñadas',
+      ings: [['Zanahorias', '500 g']],
+      seas: 'Sal · 3 dientes de ajo · 1 cucharadita de comino · 1 cucharadita de pimentón dulce · 1 cucharadita de orégano seco · 4 cucharadas de vinagre de Jerez o de vino · 4 cucharadas de aceite de oliva · 2 cucharadas de agua',
+      steps: [
+        'Pela las zanahorias, córtalas en rodajas y cuécelas en agua con sal 6-8 minutos, hasta que estén tiernas pero firmes. Escurre.',
+        'Machaca el ajo con el comino y una pizca de sal; mézclalo con el pimentón, el orégano, el vinagre, el aceite y el agua.',
+        'Vierte el aliño sobre las zanahorias templadas y remueve.',
+        'Déjalas en la nevera al menos 2 horas (mejor de un día para otro) y sirve frías como guarnición o tapa.'
+      ],
+      tip: { add: 'Un poco de perejil fresco', why: 'Frescor y color sobre el naranja de la zanahoria', skill: 'Alíñalas templadas', how: 'La zanahoria templada absorbe el aliño de ajo mucho mejor que fría.' }
+    },
+    'es_alcachofas': {
+      name: 'Alcachofas salteadas con jamón',
+      ings: [['Alcachofas', '6 (o 400 g de corazones congelados)'], ['Taquitos de jamón serrano', '60 g'], ['Limón', '1/2']],
+      seas: 'Sal · 2 dientes de ajo · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Quita las hojas duras de fuera de las alcachofas, corta las puntas y el tallo, pártelas en cuartos y échalas en agua con zumo de limón para que no se oscurezcan.',
+        'Cuécelas en agua con sal 12-15 minutos hasta que estén tiernas. Escúrrelas bien.',
+        'Dora el ajo laminado en el aceite 1 minuto, añade el jamón y rehoga 1 minuto más.',
+        'Incorpora las alcachofas y saltéalas a fuego medio-fuerte 3-4 minutos hasta que se doren un poco. Prueba de sal.'
+      ],
+      tip: { add: 'Unas gotas de limón al final', why: 'Aviva el sabor de la alcachofa', skill: 'Mantenlas en agua con limón', how: 'La alcachofa cortada se oscurece en minutos; el agua con limón la mantiene verde clara.' }
+    },
+    'es_coliflor': {
+      name: 'Coliflor al ajoarriero',
+      ings: [['Coliflor', '1 pequeña (unos 700 g)']],
+      seas: 'Sal · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre de vino · 4 cucharadas de aceite de oliva',
+      steps: [
+        'Corta la coliflor en ramilletes y cuécela en agua con sal 8-10 minutos, hasta que esté justo tierna. Escúrrela bien y ponla en una fuente.',
+        'Dora el ajo laminado en el aceite a fuego medio.',
+        'Retira la sartén del fuego, añade el pimentón y después el vinagre (cuidado, salpica).',
+        'Vierte el refrito caliente sobre la coliflor, mezcla con cuidado y sirve.'
+      ],
+      tip: { add: 'Una pizca de pimentón picante', why: 'Un poco de picante hace la coliflor más alegre para los mayores', skill: 'No la cuezas de más', how: 'Los ramilletes tiernos pero enteros recogen el refrito; pasada, la coliflor huele fuerte y se deshace.' }
+    },
+    'es_berenjenasmiel': {
+      name: 'Berenjenas fritas con miel de caña',
+      ings: [['Berenjenas', '2'], ['Leche (para remojar)', '300 ml']],
+      seas: 'Sal · 6 cucharadas de harina · 3 cucharadas de miel de caña o miel · aceite de oliva para freír',
+      steps: [
+        'Corta las berenjenas en bastones finos o rodajas de 5 mm y déjalas en remojo en la leche con una pizca de sal 30 minutos.',
+        'Escúrrelas y pásalas por harina, sacudiendo el exceso.',
+        'Fríelas en aceite muy caliente en tandas pequeñas 2-3 minutos hasta que estén doradas y crujientes. Escurre sobre papel y sala un poco.',
+        'Riega con la miel de caña y sirve enseguida.'
+      ],
+      tip: { add: 'Sal en escamas con la miel', why: 'El contraste dulce y salado es lo que engancha', skill: 'Remójalas en leche', how: 'La leche suaviza el amargor y hace que la berenjena absorba menos aceite.' }
+    },
+    'es_esparragos': {
+      name: 'Espárragos trigueros a la plancha',
+      ings: [['Espárragos trigueros', '1 manojo (250 g)']],
+      seas: 'Sal gorda · 2 cucharadas de aceite de oliva · unas gotas de limón o un poco de queso curado rallado (opcional)',
+      steps: [
+        'Parte los extremos leñosos de los espárragos por donde se rompan solos. Lávalos y sécalos bien.',
+        'Úntalos con el aceite y ponlos en una plancha o sartén muy caliente en una sola capa.',
+        'Hazlos 5-7 minutos, girándolos de vez en cuando, hasta que estén tiernos y un poco tostados.',
+        'Espolvorea sal gorda y sirve calientes, con limón o queso si quieres.'
+      ],
+      tip: { add: 'Romesco o un huevo frito', why: 'Acompañamientos habituales en Cataluña y en el centro de España', skill: 'Pártelos, no los cortes', how: 'Al doblar cada espárrago se rompe justo donde termina la parte dura.' }
+    },
+    'es_acelgas': {
+      name: 'Acelgas con patatas',
+      ings: [['Acelgas', '500 g'], ['Patatas', '2']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharadita de pimentón dulce · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Lava las acelgas, pica las hojas y corta las pencas en trozos. Pela las patatas y trocéalas.',
+        'Cuece las patatas y las pencas en agua con sal 10 minutos, añade las hojas y cuece 5 minutos más. Escurre bien.',
+        'Dora el ajo laminado en el aceite, retira del fuego y añade el pimentón.',
+        'Vierte el refrito sobre las verduras, mezcla con cuidado y sirve caliente.'
+      ],
+      tip: { add: 'Un huevo duro o escalfado', why: 'Lo convierte en una cena ligera, como lo comen muchas familias', skill: 'Primero las pencas', how: 'Las pencas blancas tardan más que las hojas; ponlas con las patatas para que todo quede tierno a la vez.' }
+    },
+    'es_guisantes': {
+      name: 'Guisantes con jamón',
+      ings: [['Guisantes (frescos o congelados)', '400 g'], ['Taquitos de jamón serrano', '60 g'], ['Cebolla', '1/2']],
+      seas: 'Sal · 1 diente de ajo · 3 cucharadas de aceite de oliva · 100 ml de agua o caldo',
+      steps: [
+        'Pica la cebolla y el ajo y sofríelos suavemente en el aceite 6 minutos.',
+        'Añade el jamón y rehoga 1 minuto.',
+        'Incorpora los guisantes y el agua, tapa y cuece 8-10 minutos (congelados) o 15 minutos (frescos) hasta que estén tiernos.',
+        'Destapa, deja que se evapore casi todo el líquido y prueba de sal (el jamón es salado).'
+      ],
+      tip: { add: 'Un huevo duro picado', why: 'El remate clásico en las casas de Madrid', skill: 'Poco líquido', how: 'Los guisantes deben cocerse con poca agua para que sigan dulces y el sabor del jamón se les quede pegado.' }
+    },
+    'es_croquetas': {
+      name: 'Croquetas de jamón',
+      ings: [['Jamón serrano muy picado', '100 g'], ['Leche entera', '750 ml'], ['Cebolla', '1/2'], ['Huevos (para rebozar)', '2'], ['Pan rallado', '150 g']],
+      seas: 'Sal · nuez moscada · 80 g de mantequilla o 6 cucharadas de aceite de oliva · 90 g de harina · aceite para freír',
+      steps: [
+        'Derrite la mantequilla, pocha la cebolla muy picada 5 minutos, añade el jamón 1 minuto y después la harina, removiendo 3 minutos.',
+        'Incorpora la leche templada poco a poco sin dejar de remover y cuece 10-15 minutos a fuego suave hasta que la masa se despegue de la cazuela. Sazona con nuez moscada y un poco de sal.',
+        'Extiéndela en una fuente, cubre la superficie con film y enfría al menos 3 horas o toda la noche.',
+        'Forma cilindros pequeños, pásalos por huevo batido y pan rallado y fríelos en aceite muy caliente, pocos a la vez, hasta que estén dorados. Escurre y sirve calientes.'
+      ],
+      tip: { add: 'Restos de cocido o de pollo asado en vez de jamón', why: 'Las croquetas nacieron para aprovechar las sobras', skill: 'Cuece bien la harina', how: 'Rehogar la harina unos minutos quita el sabor a crudo y hace la bechamel sedosa.' }
+    },
+    'es_pantumaca': {
+      name: 'Pan con tomate',
+      ings: [['Pan de payés o barra', '4 rebanadas'], ['Tomates muy maduros', '2'], ['Jamón serrano (opcional)', '4 lonchas']],
+      seas: 'Sal · aceite de oliva virgen extra · 1 diente de ajo (opcional)',
+      steps: [
+        'Tuesta las rebanadas de pan hasta que estén crujientes por fuera.',
+        'Frótalas ligeramente con el ajo partido si lo usas.',
+        'Parte los tomates por la mitad y restriega el corte con fuerza sobre el pan (o ralla los tomates y unta la pulpa).',
+        'Sala, riega con abundante aceite y pon jamón encima si quieres.'
+      ],
+      tip: { add: 'Una loncha de jamón o de queso manchego', why: 'Convierte la guarnición en una cena rápida', skill: 'Usa los tomates más maduros', how: 'Los tomates blandos y muy rojos dan más jugo; los de ensalada duros apenas tiñen el pan.' }
+    },
+    'es_aceitunas': {
+      name: 'Aceitunas aliñadas',
+      ings: [['Aceitunas verdes (manzanilla o gordal) escurridas', '300 g'], ['Limón', '1/2'], ['Cebolla', '1/4']],
+      seas: '3 dientes de ajo · 1 cucharadita de orégano seco · 1/2 cucharadita de semillas de hinojo o una ramita de tomillo · 1 cucharadita de pimentón dulce · 2 cucharadas de vinagre de Jerez o de vino · 4 cucharadas de aceite de oliva · agua',
+      steps: [
+        'Machaca ligeramente cada aceituna con la hoja de un cuchillo (o hazle un pequeño corte) para que entre el aliño.',
+        'Ponlas en un tarro con los ajos chafados, el limón en rodajas, la cebolla en tiras, el orégano, el hinojo y el pimentón.',
+        'Añade el vinagre y el aceite y completa con agua hasta cubrir. Cierra y agita.',
+        'Déjalas al menos 1 día en la nevera (mejoran durante una semana). Sirve como guarnición o con el aperitivo.'
+      ],
+      tip: { add: 'Una tira de pimiento rojo asado', why: 'Color y dulzor, como en Sevilla', skill: 'Machaca las aceitunas', how: 'Una pequeña grieta deja que el ajo y las hierbas lleguen al centro de la aceituna.' }
+    },
+    'es_ensaladagarbanzos': {
+      name: 'Ensalada de garbanzos',
+      ings: [['Garbanzos cocidos (de bote)', '400 g'], ['Tomates', '2'], ['Pimiento rojo y verde', '1/2 de cada'], ['Cebolla morada o cebolleta', '1/2'], ['Atún en lata', '1 lata'], ['Huevos duros', '2']],
+      seas: 'Sal · 4 cucharadas de aceite de oliva virgen extra · 1 1/2 cucharadas de vinagre de Jerez o de vino · un poco de perejil picado',
+      steps: [
+        'Enjuaga y escurre los garbanzos.',
+        'Corta en dados pequeños los tomates, los pimientos y la cebolla.',
+        'Mézclalo todo con el atún escurrido y los huevos picados.',
+        'Aliña con sal, vinagre y aceite y deja reposar 15 minutos antes de servir para que los garbanzos cojan sabor.'
+      ],
+      tip: { add: 'Unas aceitunas y una pizca de comino', why: 'Un sabor terroso que va muy bien con el garbanzo', skill: 'Déjala reposar', how: 'El garbanzo de bote es soso; 15 minutos en el aliño cambian todo.' }
+    },
+    'es_puerros': {
+      name: 'Puerros a la vinagreta',
+      ings: [['Puerros', '4'], ['Huevo duro', '1'], ['Pimiento rojo (un trozo pequeño)', '1/4'], ['Cebolleta o cebolla', '1/4']],
+      seas: 'Sal · 5 cucharadas de aceite de oliva virgen extra · 2 cucharadas de vinagre de vino',
+      steps: [
+        'Limpia los puerros dejando la parte blanca y verde clara. Si son gruesos, pártelos a lo largo y lávalos bien entre las capas.',
+        'Cuécelos en agua con sal 12-15 minutos hasta que un cuchillo entre con facilidad. Escúrrelos bien y deja que se enfríen.',
+        'Pica muy fino el huevo, el pimiento y la cebolla y mézclalos con sal, vinagre y aceite.',
+        'Coloca los puerros en una fuente y cúbrelos con la vinagreta. Sirve a temperatura ambiente o fríos.'
+      ],
+      tip: { add: 'Unas alcaparras o pepinillo picado', why: 'Una vinagreta más viva para el puerro, suave y dulce', skill: 'Escúrrelos muy bien', how: 'Aprieta los puerros con suavidad sobre papel de cocina; el agua que queda dentro agua la vinagreta.' }
+    },
+    'es_repollo': {
+      name: 'Repollo rehogado con ajo',
+      ings: [['Repollo', '1/2 (unos 600 g)'], ['Patata', '1'], ['Panceta o beicon (opcional)', '60 g']],
+      seas: 'Sal · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 1 cucharadita de vinagre de vino · 3 cucharadas de aceite de oliva',
+      steps: [
+        'Corta el repollo en tiras (y la patata en trozos). Cuécelos en agua con sal 10-12 minutos hasta que estén tiernos. Escurre muy bien.',
+        'Dora el ajo laminado (y la panceta en dados) en el aceite.',
+        'Retira del fuego, añade el pimentón y después el repollo y la patata.',
+        'Rehoga a fuego fuerte 3-4 minutos, añade el vinagre, prueba de sal y sirve.'
+      ],
+      tip: { add: 'Unas rodajas de chorizo', why: 'Convierte una guarnición humilde en algo especial, a la gallega', skill: 'Escúrrelo a fondo', how: 'Si el repollo está mojado se cuece en la sartén; bien escurrido se dora un poco y coge el sabor del ajo.' }
+    },
+    'es_huevosrellenos': {
+      name: 'Huevos rellenos',
+      ings: [['Huevos', '6'], ['Atún en lata', '1 lata (80 g)'], ['Mayonesa', '5 cucharadas'], ['Tomate frito', '1 cucharada'], ['Aceitunas', '6']],
+      seas: 'Sal · una pizca de pimentón dulce o perejil picado para decorar',
+      steps: [
+        'Pon los huevos en agua fría, lleva a ebullición y cuece 10-11 minutos. Enfría en agua fría y pélalos.',
+        'Pártelos por la mitad a lo largo y saca las yemas.',
+        'Aplasta casi todas las yemas con el atún escurrido, 2 cucharadas de mayonesa y el tomate frito. Sala.',
+        'Rellena las claras, cubre con el resto de la mayonesa y decora con yema rallada, aceitunas y pimentón. Enfría antes de servir.'
+      ],
+      tip: { add: 'Yema rallada por encima', why: 'El acabado amarillo de las fiestas familiares españolas', skill: 'Empieza en agua fría', how: 'Empezar en agua fría y enfriar rápido deja la yema amarilla, sin el cerco gris.' }
+    },
+    'es_pure': {
+      name: 'Puré de patatas',
+      ings: [['Patatas harinosas', '800 g'], ['Leche', '200 ml']],
+      seas: 'Sal · nuez moscada · 40 g de mantequilla o 3 cucharadas de aceite de oliva',
+      steps: [
+        'Pela las patatas, córtalas en trozos iguales y ponlas en agua fría con sal. Lleva a ebullición y cuece 20 minutos hasta que estén muy tiernas.',
+        'Escúrrelas y déjalas 2 minutos en la olla para que suelten el vapor.',
+        'Aplástalas en caliente (con pasapurés o tenedor, no con batidora) y añade la mantequilla.',
+        'Incorpora la leche caliente poco a poco hasta que esté cremoso, y sazona con sal y un poco de nuez moscada.'
+      ],
+      tip: { add: 'Un poco de nuez moscada rallada', why: 'El toque tradicional del puré en España', skill: 'Nada de batidora', how: 'La batidora rompe el almidón y el puré queda chicloso; usa pasapurés o un aplastador.' }
+    },
+    'es_calabacin': {
+      name: 'Calabacín rebozado',
+      ings: [['Calabacines', '2'], ['Huevos', '2']],
+      seas: 'Sal · 5 cucharadas de harina · aceite de oliva o girasol para freír',
+      steps: [
+        'Corta los calabacines en rodajas de 5 mm, sálalos y déjalos 10 minutos; sécalos con papel.',
+        'Pasa cada rodaja por harina y después por huevo batido.',
+        'Fríelas en 1 cm de aceite caliente 1-2 minutos por lado hasta que estén doradas.',
+        'Escurre sobre papel de cocina y sirve caliente, con un poco de sal.'
+      ],
+      tip: { add: 'Unas gotas de limón o un poco de allioli', why: 'Frescor frente al rebozado', skill: 'Sala y seca antes', how: 'La sal saca el agua; las rodajas secas mantienen el rebozado crujiente en vez de blando.' }
     }
   }
 });
