@@ -3618,6 +3618,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "pl_zurek": {
+      "file": "pl_zurek.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_barszcz": {
+      "file": "pl_barszcz.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_krupnik": {
+      "file": "pl_krupnik.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_grochowka": {
+      "file": "pl_grochowka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_kapusniak": {
+      "file": "pl_kapusniak.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_kalafiorowa": {
+      "file": "pl_kalafiorowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_jarzynowa": {
+      "file": "pl_jarzynowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_pieczarkowa": {
+      "file": "pl_pieczarkowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_fasolowa": {
+      "file": "pl_fasolowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_szczawiowa": {
+      "file": "pl_szczawiowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_botwinka": {
+      "file": "pl_botwinka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_chlodnik": {
+      "file": "pl_chlodnik.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_kartoflanka": {
+      "file": "pl_kartoflanka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_brokulowa": {
+      "file": "pl_brokulowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_dyniowa": {
+      "file": "pl_dyniowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_soczewicowa": {
+      "file": "pl_soczewicowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_koperkowa": {
+      "file": "pl_koperkowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_gulaszowa": {
+      "file": "pl_gulaszowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_grzybowa": {
+      "file": "pl_grzybowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pl_szparagowa": {
+      "file": "pl_szparagowa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
