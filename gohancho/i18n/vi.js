@@ -569,4 +569,13 @@ GOHAN_I18N('vi', {
     "作った料理の写真を、日付つきで残しています": "Ảnh các món bạn đã nấu, lưu kèm ngày",
     "写真はこの端末の中だけに保存され、外には送られません。": "Ảnh chỉ lưu trên thiết bị này và không bao giờ được tải lên.",
     "読みこみ中…": "Đang tải…",
+    "staple|なし": "Không",
+    "ふだんの主食": "Món chính thường dùng",
+    "パン（トースト）": "Bánh mì nướng",
+    "主食はなしにしました": "Không dùng món chính kèm",
+    "主食を「{name}」にしました": "Món chính kèm: \"{name}\"",
+    "主食をかえる": "Đổi món chính kèm",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Món chính ăn kèm mỗi thực đơn, lưu riêng cho từng nước. Cũng có thể đổi bằng nút \"Đổi\" trên mâm.",
+    "玄米ご飯": "Cơm gạo lứt",
+    "雑穀ご飯": "Cơm ngũ cốc",
 });

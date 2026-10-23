@@ -2530,6 +2530,9 @@ function viewSettings(){
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
                 <span class="small muted">${esc(t('材料の分量をこの人数に合わせて表示します（作り方の文中の分量は2人分のままです）。'))}</span></div>
+            <div class="field"><label>${esc(t('ふだんの主食'))}</label>
+                <div class="chips">${(o => stapleOptions().map(x => `<button class="chip" data-act="staple-set" data-v="${esc(x.k)}" aria-pressed="${x.k === o.k}">${esc(stapleName(x))}</button>`).join(''))(currentStapleOpt())}</div>
+                <span class="small muted">${esc(t('献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。'))}</span></div>
             <div class="field"><label>${esc(t('ふだんの品数'))}</label>
                 <div class="chips">${countChips(S.settings.dishCount, 'count')}</div></div>
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
@@ -2682,7 +2685,7 @@ function menuShareText(){
     m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot), name:x.r.name})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
-    if (!(main && (main.type === 'ごはん' || main.type === '麺'))){ if (PACK){ if (st) lines.push(st.local || st.name); } else lines.push(t('ご飯')); }
+    if (!(main && (main.type === 'ごはん' || main.type === '麺')) && st) lines.push(t('{slot}：{name}', {slot:t('主食'), name:st.name}));
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
@@ -2802,10 +2805,16 @@ function viewToday(){
     const sides = indexed.filter(x => x.it.slot === '副菜');
     const soups = indexed.filter(x => x.it.slot === '汁物');
     const st = stapleSpot();
-    const riceSpot = PACK ? (st && !oneBowl ? `<div class="spot rice" style="--w:40%">${vesselHtml('staple', {id: st.id, name: st.local || st.name, staple: true}, true)}
-        <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(st.local || st.name)}</span></div></div>` : '')
-        : `<div class="spot rice" style="--w:40%">${vesselHtml(oneBowl ? 'konomono' : 'chawan', null)}
-        <div class="spot-label"><span class="slot">${esc(oneBowl ? t('香の物') : t('ご飯'))}</span><span class="nm">${esc(oneBowl ? t('お漬物') : t('白ご飯'))}</span></div></div>`;
+    const stapleBtn = `<button class="swap" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">${esc(t('かえる'))}</button>`;
+    const riceSpot = !PACK && oneBowl
+        ? `<div class="spot rice" style="--w:40%">${vesselHtml('konomono', null)}
+        <div class="spot-label"><span class="slot">${esc(t('香の物'))}</span><span class="nm">${esc(t('お漬物'))}</span></div></div>`
+        : oneBowl || !st ? ''
+        : !PACK && st.id === 'rice'
+        ? `<div class="spot rice" style="--w:40%">${vesselHtml('chawan', null)}
+        <div class="spot-label"><span class="slot">${esc(t('ご飯'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`
+        : `<div class="spot rice" style="--w:40%">${vesselHtml('staple', {id: st.id, name: st.name, staple: true}, true)}
+        <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`;
     const sideW = sides.length >= 3 ? '31%' : '40%';
     const mainW = mains.length >= 2 ? '45%' : '56%';
     // 5品以上は、主菜→副菜→ご飯→汁ものの順に 3列（7つなら 4列＋3列）で並べ、1画面に収める
@@ -3465,6 +3474,11 @@ document.addEventListener('click', e => {
         case 'sample-ing': S.fridge = sampleIngs(); save(); render(); break;
         case 'mic': startMic(el.dataset.target); break;
         case 'goto-today': setTab('today'); break;
+        case 'staple-next': {
+            const opts = stapleOptions(), cur = currentStapleOpt(); const nx = opts[(opts.findIndex(o => o.k === cur.k) + 1) % opts.length];
+            setStaple(nx.k); render(); toast(nx.k === 'none' ? t('主食はなしにしました') : t('主食を「{name}」にしました', {name: stapleName(nx)})); break;
+        }
+        case 'staple-set': setStaple(el.dataset.v); render(); break;
         case 'album-rm': removeAlbum(el.dataset.k); break;
         case 'album-all': session.albumAll = true; render(); break;
         case 'goto-cook': session.cookIdx = 0; setTab('cook'); break;
@@ -3857,9 +3871,62 @@ async function setCountry(cc){
     if (first){ S.firstUse = TODAY; save(); }   // 無料期間は国を選んで使いはじめた日から
     return true;
 }
+/* ---- 主食（国ごとに選べる。最初の項目がその国のふだんの主食。なしも選べる） ----
+   img は料理の絵の ID（img/dish/<img>.svg）。日本は t() の辞書で、ほかの国は en / local（その国の言葉）/ ja の名前を持つ
+   参考: Wikipedia「Staple food」、FAO「Staple foods: What do people eat?」、各国の家庭料理の一般的な食べ方 */
+const STAPLE_CHOICES = {
+    JP: [{k:'rice', img:'rice', key:'白ご飯'}, {k:'genmai', img:'st_genmai', key:'玄米ご飯'}, {k:'zakkoku', img:'st_zakkoku', key:'雑穀ご飯'}, {k:'toast', img:'st_toast', key:'パン（トースト）'}],
+    US: [{k:'rolls', img:'st_rolls', en:'Dinner rolls', local:'Dinner rolls', ja:'ディナーロール'}, {k:'bread', img:'gb_staple', en:'Sliced bread', local:'Sliced bread', ja:'食パン'}, {k:'rice', img:'br_staple', en:'White rice', local:'White rice', ja:'白ご飯'}, {k:'potatoes', img:'st_potatoes', en:'Boiled potatoes', local:'Boiled potatoes', ja:'ゆでじゃがいも'}],
+    GB: [{k:'bread', img:'gb_staple', en:'Bread and butter', local:'Bread and butter', ja:'パンとバター'}, {k:'potatoes', img:'st_potatoes', en:'Boiled new potatoes', local:'Boiled new potatoes', ja:'ゆでた新じゃが'}, {k:'rice', img:'br_staple', en:'White rice', local:'White rice', ja:'白ご飯'}],
+    FR: [{k:'default'}, {k:'potatoes', img:'st_potatoes', en:'Steamed potatoes', local:'Pommes de terre vapeur', ja:'蒸しじゃがいも'}, {k:'rice', img:'br_staple', en:'White rice', local:'Riz blanc', ja:'白ご飯'}],
+    DE: [{k:'default'}, {k:'rolls', img:'st_rolls', en:'Bread rolls', local:'Brötchen', ja:'ブレートヒェン（小型パン）'}, {k:'potatoes', img:'st_potatoes', en:'Boiled potatoes', local:'Salzkartoffeln', ja:'ゆでじゃがいも'}],
+    IT: [{k:'default'}, {k:'polenta', img:'st_polenta', en:'Polenta', local:'Polenta', ja:'ポレンタ'}],
+    ES: [{k:'default'}, {k:'rice', img:'br_staple', en:'White rice', local:'Arroz blanco', ja:'白ご飯'}, {k:'potatoes', img:'st_potatoes', en:'Boiled potatoes', local:'Patatas cocidas', ja:'ゆでじゃがいも'}],
+    PL: [{k:'default'}, {k:'potatoes', img:'st_potatoes', en:'Boiled potatoes', local:'Ziemniaki z wody', ja:'ゆでじゃがいも'}, {k:'kasza', img:'st_kasza', en:'Buckwheat groats', local:'Kasza gryczana', ja:'そばの実のカーシャ'}],
+    TR: [{k:'default'}, {k:'pilav', img:'st_pilav', en:'Rice pilaf', local:'Pirinç pilavı', ja:'ピラウ（ピラフ）'}, {k:'bulgur', img:'st_bulgur', en:'Bulgur pilaf', local:'Bulgur pilavı', ja:'ブルグルのピラフ'}],
+    EG: [{k:'default'}, {k:'rice', img:'br_staple', en:'White rice', local:'رز أبيض', ja:'白ご飯'}],
+    IN: [{k:'default'}, {k:'roti', img:'st_roti', en:'Roti', local:'रोटी', ja:'ロティ（チャパティ）'}, {k:'rice', img:'br_staple', en:'Rice', local:'चावल', ja:'ご飯'}],
+    CN: [{k:'default'}, {k:'mantou', img:'st_mantou', en:'Mantou (steamed buns)', local:'馒头', ja:'マントウ（蒸しパン）'}],
+    TW: [{k:'default'}, {k:'mantou', img:'st_mantou', en:'Mantou (steamed buns)', local:'饅頭', ja:'マントウ（蒸しパン）'}],
+    KR: [{k:'default'}, {k:'japgok', img:'st_japgok', en:'Multigrain rice', local:'잡곡밥', ja:'雑穀ご飯（チャプコッパプ）'}],
+    TH: [{k:'default'}, {k:'sticky', img:'st_sticky', en:'Sticky rice', local:'ข้าวเหนียว', ja:'もち米（カオニャオ）'}],
+    VN: [{k:'default'}, {k:'banhmi', img:'st_banhmi', en:'Bánh mì (baguette)', local:'Bánh mì', ja:'バインミー（パン）'}],
+    ID: [{k:'default'}, {k:'merah', img:'st_genmai', en:'Red rice', local:'Nasi merah', ja:'赤米ご飯'}],
+    PH: [{k:'default'}, {k:'sinangag', img:'st_garlicrice', en:'Garlic fried rice', local:'Sinangag', ja:'ガーリックライス'}, {k:'pandesal', img:'st_pandesal', en:'Pandesal (bread rolls)', local:'Pandesal', ja:'パンデサル（丸パン）'}],
+    MX: [{k:'default'}, {k:'flour', img:'st_flourtort', en:'Flour tortillas', local:'Tortillas de harina', ja:'小麦粉のトルティーヤ'}, {k:'bolillo', img:'st_bolillo', en:'Bolillo rolls', local:'Bolillos', ja:'ボリーリョ（小型パン）'}],
+    BR: [{k:'default'}, {k:'feijao', img:'st_ricebeans', en:'Rice and beans', local:'Arroz e feijão', ja:'ご飯と豆の煮もの'}, {k:'pao', img:'st_rolls', en:'Bread rolls', local:'Pão francês', ja:'パン（パン・フランセス）'}],
+    PE: [{k:'default'}, {k:'papas', img:'st_potatoes', en:'Boiled potatoes', local:'Papas sancochadas', ja:'ゆでじゃがいも'}],
+};
+// アメリカ・イギリスは、主菜にじゃがいもやパンが添えてあることが多いので、はじめは「なし」
+const STAPLE_NONE_FIRST = ['US', 'GB'];
+// 国の主食の選択肢（最後に「なし」）。default はその国のパックの主食（日本語の名前は翻訳パックにあればそれ）
+function stapleOptions(cc = currentCountry()){
+    const list = (STAPLE_CHOICES[cc] || []).map(o => {
+        if (o.k !== 'default') return o;
+        const st = PACK && PACK.country === cc ? PACK.staple : (PACKS[cc] && PACKS[cc].staple);
+        if (!st) return null;
+        const ja = (PACK_TR[cc + '.ja'] || {}).staple;
+        return {k:'default', img: st.id, en: st.name, local: st.local || st.name, ja: ja || st.local || st.name};
+    }).filter(Boolean);
+    return list.concat([{k:'none'}]);
+}
+function stapleName(o){
+    if (!o || o.k === 'none') return tc('staple', 'なし');
+    if (o.key) return ({rice:t('白ご飯'), genmai:t('玄米ご飯'), zakkoku:t('雑穀ご飯'), toast:t('パン（トースト）')})[o.k] || o.key;
+    const lang = PACK && PACK.lang;
+    return LANG === 'ja' ? (o.ja || o.en) : LANG === lang ? (o.local || o.en) : o.en;
+}
+function currentStapleOpt(cc = currentCountry()){
+    const opts = stapleOptions(cc), want = (S.settings.stapleBy || {})[cc] || (STAPLE_NONE_FIRST.includes(cc) ? 'none' : '');
+    return opts.find(o => o.k === want) || opts[0];
+}
+function setStaple(k){
+    const cc = currentCountry(); S.settings.stapleBy = Object.assign({}, S.settings.stapleBy, {[cc]: k}); save();
+}
+// お膳に出す主食（なしなら null）。{id: 絵の ID, name}
 function stapleSpot(){
-    if (!PACK) return null;
-    return PACK.staple || null;
+    const o = currentStapleOpt();
+    return o && o.k !== 'none' ? {id: o.img, name: stapleName(o), k: o.k} : null;
 }
 function countrySheetHtml(){
     const cur = S.settings.country || guessCountry();

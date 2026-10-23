@@ -569,4 +569,13 @@ GOHAN_I18N('es', {
     "作った料理の写真を、日付つきで残しています": "Fotos de los platos que hiciste, con la fecha",
     "写真はこの端末の中だけに保存され、外には送られません。": "Las fotos se guardan solo en este dispositivo y nunca se suben.",
     "読みこみ中…": "Cargando…",
+    "staple|なし": "Ninguno",
+    "ふだんの主食": "Acompañamiento habitual",
+    "パン（トースト）": "Pan tostado",
+    "主食はなしにしました": "Sin acompañamiento",
+    "主食を「{name}」にしました": "Acompañamiento: «{name}»",
+    "主食をかえる": "Cambiar acompañamiento",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "El acompañamiento de cada menú, guardado por país. También puedes cambiarlo con «Cambiar» en la bandeja.",
+    "玄米ご飯": "Arroz integral",
+    "雑穀ご飯": "Arroz con cereales",
 });

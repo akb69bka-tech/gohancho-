@@ -570,4 +570,13 @@ GOHAN_I18N('en', {
     "作った料理の写真を、日付つきで残しています": "Photos of dishes you made, kept with the date",
     "写真はこの端末の中だけに保存され、外には送られません。": "Photos are stored only on this device and are never uploaded.",
     "読みこみ中…": "Loading…",
+    "staple|なし": "None",
+    "ふだんの主食": "Usual staple",
+    "パン（トースト）": "Toast",
+    "主食はなしにしました": "No staple with meals now",
+    "主食を「{name}」にしました": "Staple set to \"{name}\"",
+    "主食をかえる": "Change the staple",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "The staple served with each menu. Saved for each country. You can also change it with the staple's \"Swap\" button on the table.",
+    "玄米ご飯": "Brown rice",
+    "雑穀ご飯": "Multigrain rice",
 });

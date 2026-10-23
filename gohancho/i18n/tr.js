@@ -569,4 +569,13 @@ GOHAN_I18N('tr', {
     "作った料理の写真を、日付つきで残しています": "Yaptığınız yemeklerin fotoğrafları, tarihleriyle",
     "写真はこの端末の中だけに保存され、外には送られません。": "Fotoğraflar yalnızca bu cihazda saklanır, hiçbir yere gönderilmez.",
     "読みこみ中…": "Yükleniyor…",
+    "staple|なし": "Yok",
+    "ふだんの主食": "Her zamanki ana yiyecek",
+    "パン（トースト）": "Kızarmış ekmek",
+    "主食はなしにしました": "Artık ana yiyecek yok",
+    "主食を「{name}」にしました": "Ana yiyecek: “{name}”",
+    "主食をかえる": "Ana yiyeceği değiştir",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Her menüyle gelen ana yiyecek; ülkeye göre kaydedilir. Tepsideki “Değiştir” düğmesiyle de değiştirebilirsiniz.",
+    "玄米ご飯": "Esmer pirinç",
+    "雑穀ご飯": "Karışık tahıllı pirinç",
 });

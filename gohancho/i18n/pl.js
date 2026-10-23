@@ -569,4 +569,13 @@ GOHAN_I18N('pl', {
     "作った料理の写真を、日付つきで残しています": "Zdjęcia ugotowanych dań, z datą",
     "写真はこの端末の中だけに保存され、外には送られません。": "Zdjęcia są przechowywane tylko na tym urządzeniu i nigdy nie są wysyłane.",
     "読みこみ中…": "Wczytywanie…",
+    "staple|なし": "Brak",
+    "ふだんの主食": "Zwykły dodatek",
+    "パン（トースト）": "Tost",
+    "主食はなしにしました": "Bez dodatku",
+    "主食を「{name}」にしました": "Dodatek: „{name}”",
+    "主食をかえる": "Zmień dodatek",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Dodatek podawany do każdego jadłospisu, zapisywany dla każdego kraju. Możesz go też zmienić przyciskiem „Zamień” na tacy.",
+    "玄米ご飯": "Ryż brązowy",
+    "雑穀ご飯": "Ryż wieloziarnisty",
 });

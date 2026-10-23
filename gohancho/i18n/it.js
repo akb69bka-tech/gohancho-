@@ -569,4 +569,13 @@ GOHAN_I18N('it', {
     "作った料理の写真を、日付つきで残しています": "Le foto dei piatti che hai cucinato, con la data",
     "写真はこの端末の中だけに保存され、外には送られません。": "Le foto restano solo su questo dispositivo e non vengono mai caricate.",
     "読みこみ中…": "Caricamento…",
+    "staple|なし": "Nessuno",
+    "ふだんの主食": "Contorno base abituale",
+    "パン（トースト）": "Pane tostato",
+    "主食はなしにしました": "Niente accompagnamento",
+    "主食を「{name}」にしました": "Accompagnamento: «{name}»",
+    "主食をかえる": "Cambia accompagnamento",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "L'accompagnamento servito con ogni menu, salvato per paese. Puoi cambiarlo anche con «Cambia» sul vassoio.",
+    "玄米ご飯": "Riso integrale",
+    "雑穀ご飯": "Riso ai cereali",
 });

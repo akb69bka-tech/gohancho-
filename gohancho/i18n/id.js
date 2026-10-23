@@ -569,4 +569,13 @@ GOHAN_I18N('id', {
     "作った料理の写真を、日付つきで残しています": "Foto masakan yang Anda buat, beserta tanggalnya",
     "写真はこの端末の中だけに保存され、外には送られません。": "Foto hanya disimpan di perangkat ini dan tidak pernah diunggah.",
     "読みこみ中…": "Memuat…",
+    "staple|なし": "Tidak ada",
+    "ふだんの主食": "Makanan pokok biasa",
+    "パン（トースト）": "Roti panggang",
+    "主食はなしにしました": "Tanpa makanan pokok",
+    "主食を「{name}」にしました": "Makanan pokok: \"{name}\"",
+    "主食をかえる": "Ganti makanan pokok",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Makanan pokok yang disajikan dengan setiap menu, disimpan per negara. Bisa juga diganti dengan tombol \"Ganti\" di nampan.",
+    "玄米ご飯": "Nasi merah",
+    "雑穀ご飯": "Nasi multigrain",
 });

@@ -569,4 +569,13 @@ GOHAN_I18N('de', {
     "作った料理の写真を、日付つきで残しています": "Fotos Ihrer Gerichte, mit Datum aufbewahrt",
     "写真はこの端末の中だけに保存され、外には送られません。": "Fotos werden nur auf diesem Gerät gespeichert und nie hochgeladen.",
     "読みこみ中…": "Wird geladen…",
+    "staple|なし": "Keine",
+    "ふだんの主食": "Übliche Beilage",
+    "パン（トースト）": "Toast",
+    "主食はなしにしました": "Keine Beilage mehr",
+    "主食を「{name}」にしました": "Beilage: „{name}“",
+    "主食をかえる": "Beilage ändern",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Die Beilage zu jedem Menü, für jedes Land gespeichert. Sie können sie auch mit „Tauschen“ auf dem Tablett ändern.",
+    "玄米ご飯": "Naturreis",
+    "雑穀ご飯": "Mehrkornreis",
 });

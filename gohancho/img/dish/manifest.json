@@ -2784,6 +2784,120 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-20"
+    },
+    "st_genmai": {
+      "file": "st_genmai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_zakkoku": {
+      "file": "st_zakkoku.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_toast": {
+      "file": "st_toast.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_potatoes": {
+      "file": "st_potatoes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_roti": {
+      "file": "st_roti.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_mantou": {
+      "file": "st_mantou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_sticky": {
+      "file": "st_sticky.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_japgok": {
+      "file": "st_japgok.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_flourtort": {
+      "file": "st_flourtort.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_bolillo": {
+      "file": "st_bolillo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_rolls": {
+      "file": "st_rolls.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_ricebeans": {
+      "file": "st_ricebeans.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_bulgur": {
+      "file": "st_bulgur.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_pilav": {
+      "file": "st_pilav.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_kasza": {
+      "file": "st_kasza.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_polenta": {
+      "file": "st_polenta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_garlicrice": {
+      "file": "st_garlicrice.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_pandesal": {
+      "file": "st_pandesal.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "st_banhmi": {
+      "file": "st_banhmi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }

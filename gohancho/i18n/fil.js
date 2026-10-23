@@ -569,4 +569,13 @@ GOHAN_I18N('fil', {
     "作った料理の写真を、日付つきで残しています": "Mga larawan ng niluto mo, kasama ang petsa",
     "写真はこの端末の中だけに保存され、外には送られません。": "Sa device na ito lang naka-save ang mga larawan at hindi kailanman ina-upload.",
     "読みこみ中…": "Naglo-load…",
+    "staple|なし": "Wala",
+    "ふだんの主食": "Karaniwang kanin o tinapay",
+    "パン（トースト）": "Tostadong tinapay",
+    "主食はなしにしました": "Wala nang kanin o tinapay",
+    "主食を「{name}」にしました": "Kanin o tinapay: \"{name}\"",
+    "主食をかえる": "Palitan ang kanin o tinapay",
+    "献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。": "Ang kanin o tinapay na kasama ng bawat menu, naka-save para sa bawat bansa. Mapapalitan din sa \"Palitan\" sa bandeha.",
+    "玄米ご飯": "Brown rice",
+    "雑穀ご飯": "Multigrain rice",
 });
