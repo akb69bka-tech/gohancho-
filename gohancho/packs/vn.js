@@ -1787,12 +1787,12 @@ GOHAN_PACK({
       ],
       seas: '1 1/2 tbsp fish sauce · 1 tbsp sugar · 1 garlic clove · 1 chili · 1 tbsp fried shallots',
       steps: [
-        'Slice the beef paper-thin across the grain (easier half-frozen).',
+        'Slice the beef paper-thin across the grain (easier half-frozen). Dip the slices in boiling water for 10-15 seconds until the surface turns pale, then drain.',
         'Squeeze the limes over the beef and mix; leave 5-10 minutes until it turns pale. Squeeze out the lime juice.',
         'Slice the onion thinly. Mix the fish sauce, sugar, minced garlic and chili.',
         'Toss the beef with the onion, herbs and dressing, and top with peanuts and fried shallots.',
       ],
-      tip: { add: 'Briefly dip the slices in boiling water first', why: 'Safer and still tender if you are unsure of the beef', skill: 'Use very fresh beef', how: 'Buy beef for this on the day and keep it cold until you slice it.' },
+      tip: { add: 'A few slices of chili and extra fried shallots', why: 'Heat and crunch lift the lean beef', skill: 'Keep the dip short', how: 'Use beef bought that day and keep it cold; a quick dip in boiling water makes it safer while it stays tender.' },
     },
   ],
   aliases: {

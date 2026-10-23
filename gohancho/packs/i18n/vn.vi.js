@@ -955,12 +955,12 @@ GOHAN_PACK_TR('VN', 'vi', {
       ings: [['Thịt bò nạc (thăn hoặc bắp)', '250 g'], ['Hành tây', '1/2 củ'], ['Chanh', '3 quả'], ['Rau răm, húng và ngò gai', '1 nắm'], ['Đậu phộng rang hoặc mè', '1 muỗng canh']],
       seas: '1 1/2 muỗng canh nước mắm · 1 muỗng canh đường · 1 tép tỏi · 1 quả ớt · 1 muỗng canh hành phi',
       steps: [
-        'Thái bò thật mỏng ngang thớ (dễ hơn khi thịt còn hơi đông).',
+        'Thái bò thật mỏng ngang thớ (dễ hơn khi thịt còn hơi đông). Nhúng thịt qua nước sôi 10-15 giây đến khi mặt thịt chuyển màu rồi vớt ra để ráo.',
         'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh.',
         'Thái mỏng hành tây. Pha nước mắm, đường, tỏi băm và ớt.',
         'Trộn bò với hành tây, rau thơm và nước trộn, rắc đậu phộng và hành phi.'
       ],
-      tip: { add: 'Nhúng sơ thịt qua nước sôi trước', why: 'An toàn hơn mà thịt vẫn mềm nếu không chắc độ tươi', skill: 'Dùng bò thật tươi', how: 'Mua bò trong ngày và giữ lạnh đến lúc thái.' }
+      tip: { add: 'Thêm vài lát ớt và hành phi', why: 'Vị cay và giòn làm thịt bò nạc ngon hơn', skill: 'Nhúng thật nhanh', how: 'Dùng bò mua trong ngày, giữ lạnh; nhúng nhanh qua nước sôi để an toàn mà thịt vẫn mềm.' }
     },
   }
 });

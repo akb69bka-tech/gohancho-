@@ -47,7 +47,27 @@ GOHAN_PACK_TR('DE', 'de', {
     'kasseler': 'Kasseler',
     'white beans': 'Weiße Bohnen',
     'broccoli': 'Brokkoli',
-    'ginger': 'Ingwer'
+    'ginger': 'Ingwer',
+    'pickles': 'Gewürzgurken',
+    'capers': 'Kapern',
+    'herring': 'Hering (Matjes)',
+    'quark': 'Quark',
+    'sauerkraut': 'Sauerkraut',
+    'maultaschen': 'Maultaschen',
+    'schupfnudeln': 'Schupfnudeln',
+    'ham': 'Schinken',
+    'lambs lettuce': 'Feldsalat',
+    'radish': 'Radieschen',
+    'beetroot': 'Rote Bete',
+    'lettuce': 'Kopfsalat',
+    'brussels sprouts': 'Rosenkohl',
+    'kohlrabi': 'Kohlrabi',
+    'savoy cabbage': 'Wirsing',
+    'cauliflower': 'Blumenkohl',
+    'walnuts': 'Walnüsse',
+    'mayonnaise': 'Mayonnaise',
+    'potato starch': 'Kartoffelstärke',
+    'raisins': 'Rosinen'
   },
   recipes: {
     'de_frikadellen': {
@@ -476,6 +496,471 @@ GOHAN_PACK_TR('DE', 'de', {
         'Fein pürieren, Orangensaft (und Sahne) einrühren, erhitzen und mit Salz und Pfeffer abschmecken.'
       ],
       tip: { add: 'Ein paar geröstete Sonnenblumenkerne', why: 'Biss auf der samtigen orangefarbenen Suppe', skill: 'Ingwer am Anfang', how: 'Mit der Zwiebel angedünstet wird er mild; wer es schärfer mag, reibt am Ende etwas rohen Ingwer dazu.' }
+    },
+    'de_rouladen': {
+      name: 'Rinderrouladen',
+      ings: [['Rinderrouladen (aus der Oberschale)', '4 (ca. 600 g)'], ['Durchwachsener Speck in Scheiben', '4'], ['Gewürzgurken', '2'], ['Zwiebeln', '2'], ['Möhre', '1'], ['Knollensellerie', '50 g']],
+      seas: 'Salz · Pfeffer · 4 TL mittelscharfer Senf · 2 EL Öl · 1 EL Tomatenmark · 150 ml Rotwein oder mehr Brühe · 400 ml Rinderbrühe · 1 Lorbeerblatt · 1 EL Speisestärke',
+      steps: [
+        'Die Rouladen ausbreiten, salzen, pfeffern und jeweils mit 1 TL Senf bestreichen. Mit einer Scheibe Speck, einigen Zwiebelstreifen (von 1 Zwiebel) und einem Gurkenviertel belegen, von der schmalen Seite her fest aufrollen und mit Rouladennadeln oder Küchengarn verschließen.',
+        'Die Rouladen im Öl in einem schweren Topf rundherum kräftig anbraten und herausnehmen. Die zweite Zwiebel, Möhre und Sellerie gewürfelt im selben Topf 5 Minuten anrösten, dann das Tomatenmark 1 Minute mitrösten.',
+        'Mit Wein und Brühe ablöschen, Lorbeerblatt und Rouladen zugeben, zudecken und 90 Minuten sanft schmoren, einmal wenden, bis das Fleisch zart ist.',
+        'Die Rouladen herausnehmen und das Garn entfernen. Die Soße passieren oder pürieren, mit in wenig kaltem Wasser angerührter Stärke binden und abschmecken. Mit Rotkohl und Klößen oder Salzkartoffeln servieren.'
+      ],
+      tip: { add: 'Ein Löffel saure Sahne in der Soße', why: 'Rundet die kräftige Soße ab, wie viele Familien es mögen', skill: 'Kräftig anbraten', how: 'Die dunkle Kruste an Rouladen und Gemüse gibt der Soße Farbe und Geschmack.' }
+    },
+    'de_sauerbraten': {
+      name: 'Sauerbraten',
+      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '1 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g'], ['Rosinen', '2 EL']],
+      seas: 'Salz · Pfeffer · Beize: 400 ml Rotweinessig oder Weinessig · 400 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 2 zerbröselte Printen oder Lebkuchen oder 1 EL Zucker · 1 EL Speisestärke',
+      steps: [
+        'Zwei bis drei Tage vorher: Zwiebeln, Möhren und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
+        'Am Kochtag das Fleisch herausnehmen und trocken tupfen; die Beize abseihen und mit dem Gemüse aufheben. Das Fleisch salzen und im Öl rundherum kräftig anbraten, dann Gemüse und Tomatenmark zugeben und 5 Minuten mitrösten.',
+        '500 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 1/2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
+        'Das Fleisch herausnehmen, die Soße passieren, Printen (und Rosinen) einrühren, 5 Minuten köcheln und mit der in Wasser angerührten Stärke binden. Mit Salz, Pfeffer und Zucker süßsauer abschmecken. Das Fleisch aufschneiden und mit Rotkohl und Kartoffelklößen servieren.'
+      ],
+      tip: { add: 'Eine Handvoll Rosinen in der Soße', why: 'Die rheinische Art: süß gegen sauer', skill: 'Zeit in der Beize', how: 'Zwei bis drei Tage in der kalten Essigbeize machen das Fleisch zart und geben den typischen Geschmack; das lässt sich nicht abkürzen.' }
+    },
+    'de_schweinebraten': {
+      name: 'Schweinebraten mit Kruste',
+      ings: [['Schweineschulter mit Schwarte', '1,2 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g']],
+      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 500 ml Wasser oder Rinderbrühe · 250 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
+      steps: [
+        'Den Backofen auf 180 °C vorheizen. Die Schwarte mit einem sehr scharfen Messer im 1-cm-Rautenmuster einschneiden, nur durch Schwarte und Fett, nicht ins Fleisch. Das Fleisch (nicht die Schwarte) mit Salz, Pfeffer, Kümmel, Paprika und zerdrücktem Knoblauch einreiben, die Schwarte mit Salz.',
+        'Das grob geschnittene Gemüse in einen Bräter geben, 250 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
+        'Etwa 2 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
+        'Den Braten 10 Minuten ruhen lassen. Den Bratensaft mit dem restlichen Wasser durch ein Sieb in einen Topf geben, mit der in kaltem Wasser angerührten Stärke binden und abschmecken. Den Braten aufschneiden und mit Soße, Semmelknödeln und Krautsalat servieren.'
+      ],
+      tip: { add: 'Bayerischer Krautsalat mit Speck', why: 'Der klassische Sonntagsteller in Bayern', skill: 'Trockene Schwarte', how: 'Die Schwarte sehr gut trocken tupfen und nicht begießen; nur trockene Haut wird zur knusprigen Kruste.' }
+    },
+    'de_kotelett': {
+      name: 'Schweinekotelett mit Zwiebelsoße',
+      ings: [['Schweinekoteletts (mit Knochen, ca. 2 cm dick)', '2'], ['Zwiebeln', '2'], ['Sahne', '50 ml']],
+      seas: 'Salz · Pfeffer · 1/2 TL edelsüßes Paprikapulver · 1 EL Öl · 10 g Butter · 150 ml Rinderbrühe · 1 TL mittelscharfer Senf',
+      steps: [
+        'Die Koteletts 15 Minuten vorher aus dem Kühlschrank nehmen. Den Fettrand mehrmals einschneiden, damit sie flach bleiben, trocken tupfen und mit Salz, Pfeffer und Paprika würzen. Die Zwiebeln in Ringe schneiden.',
+        'Die Koteletts im Öl bei mittlerer bis starker Hitze 4–5 Minuten pro Seite braten, bis sie gebräunt und durchgegart sind und der Saft klar ist. Auf einem Teller warm halten.',
+        'Butter und Zwiebeln in die Pfanne geben und 6–8 Minuten weich und goldbraun braten. Den Senf einrühren, Brühe (und Sahne) angießen und 2–3 Minuten leicht sämig einköcheln.',
+        'Die Koteletts mit dem ausgetretenen Saft 1 Minute in der Soße ziehen lassen und abschmecken. Mit Bratkartoffeln oder Kartoffelpüree und grünen Bohnen servieren.'
+      ],
+      tip: { add: 'Bratkartoffeln', why: 'Die Alltagskombination aus Wirtshaus und Familienküche', skill: 'Fettrand einschneiden', how: 'Das Fett zieht sich beim Braten zusammen; kleine Schnitte verhindern, dass sich das Kotelett wölbt, so bräunt es gleichmäßig.' }
+    },
+    'de_klopse': {
+      name: 'Königsberger Klopse',
+      ings: [['Hackfleisch (Kalb, Rind oder gemischt)', '500 g'], ['Altbackenes Brötchen', '1'], ['Ei', '1'], ['Zwiebel', '1'], ['Kapern', '2 EL'], ['Sahne', '100 ml'], ['Kartoffeln oder Reis als Beilage', '600 g']],
+      seas: 'Salz · Pfeffer · 1 l Gemüse- oder Rinderbrühe · 1 Lorbeerblatt · 30 g Butter · 30 g Mehl · 1 EL Zitronensaft · 1 Eigelb (nach Belieben) · 1 Prise Zucker',
+      steps: [
+        'Das Brötchen einweichen und gut ausdrücken. Mit Hackfleisch, Ei, fein gehackter Zwiebel, 1 TL Salz und Pfeffer verkneten und 12 Klopse von etwa 4 cm formen. Die Kartoffeln kochen.',
+        'Brühe mit Lorbeerblatt zum leisen Sieden bringen, die Klopse hineingeben und 12–15 Minuten gar ziehen lassen, ohne dass es sprudelt. Herausnehmen und 500 ml Brühe aufheben.',
+        'Die Butter schmelzen, das Mehl 1 Minute anschwitzen, die heiße Brühe einrühren und 5 Minuten köcheln. Sahne und Kapern zugeben und mit Zitronensaft, Salz, Pfeffer und einer Prise Zucker abschmecken.',
+        'Vom Herd nehmen, etwas Soße mit dem Eigelb (falls verwendet) verrühren und unter die Soße ziehen; nicht mehr kochen. Die Klopse darin erwärmen und mit Kartoffeln und Rote-Bete-Salat servieren.'
+      ],
+      tip: { add: 'Rote-Bete-Salat dazu', why: 'Der traditionelle Partner; rot und süßsauer zur hellen Soße', skill: 'Ziehen lassen, nicht kochen', how: 'In leise siedender Brühe bleiben die Klopse locker und ganz; sprudelnd gekocht werden sie fest und zerfallen.' }
+    },
+    'de_kohlrouladen': {
+      name: 'Kohlrouladen',
+      ings: [['Weißkohl (große äußere Blätter)', '1 Kopf'], ['Gemischtes Hackfleisch', '400 g'], ['Altbackenes Brötchen', '1'], ['Ei', '1'], ['Zwiebeln', '2'], ['Speckwürfel', '50 g']],
+      seas: 'Salz · Pfeffer · 1 TL edelsüßes Paprikapulver · 1/2 TL Kümmel · 2 EL Öl · 1 EL Tomatenmark · 400 ml Rinderbrühe · 2 EL saure Sahne (nach Belieben) · 1 EL Speisestärke',
+      steps: [
+        'Den Strunk herausschneiden. Den Kohlkopf 5 Minuten in einen großen Topf mit kochendem Salzwasser geben und 8 weiche äußere Blätter ablösen (den Kopf noch einmal hineingeben, wenn die inneren noch fest sind). Die dicke Mittelrippe flach schneiden. 200 g vom Rest in Streifen schneiden.',
+        'Das Brötchen einweichen, ausdrücken und mit Hackfleisch, Ei, 1 fein gehackten Zwiebel, Paprika, 1 TL Salz und Pfeffer verkneten. Auf jedes Blatt eine Portion setzen (kleine Blätter doppelt legen), die Seiten einschlagen, fest aufrollen und mit Küchengarn binden.',
+        'Die Rouladen im Öl (mit dem Speck) in einem breiten Topf rundherum anbraten. Die zweite Zwiebel in Streifen und den geschnittenen Kohl zugeben, 3 Minuten mitbraten, Tomatenmark und Kümmel unterrühren.',
+        'Die Brühe angießen, zudecken und 45–50 Minuten schmoren, bis die Füllung durchgegart ist. Die Rouladen herausnehmen, die Soße mit der in Wasser angerührten Stärke (und saurer Sahne) binden und abschmecken. Mit Salzkartoffeln oder Püree servieren.'
+      ],
+      tip: { add: 'Ein Klecks saure Sahne obendrauf', why: 'Gibt der Kohlsoße eine milde, leicht säuerliche Note', skill: 'Blätter weich machen', how: 'Blanchierte, biegsame Blätter reißen beim Rollen nicht, und eine flach geschnittene Rippe hält die Rouladen in Form.' }
+    },
+    'de_gefuelltepaprika': {
+      name: 'Gefüllte Paprika',
+      ings: [['Paprikaschoten (rot, gelb oder grün)', '4'], ['Gemischtes Hackfleisch', '400 g'], ['Reis (ungekocht)', '60 g'], ['Zwiebel', '1'], ['Ei', '1'], ['Passierte oder stückige Tomaten', '500 g'], ['Geriebener Käse', '50 g']],
+      seas: 'Salz · Pfeffer · 1 TL edelsüßes Paprikapulver · 1 TL getrockneter Oregano oder Majoran · 1 EL Öl · 1 Knoblauchzehe · 150 ml Wasser · 1 Prise Zucker',
+      steps: [
+        'Den Reis 10 Minuten in Salzwasser vorgaren (er gart in der Paprika fertig) und abgießen. Von den Paprika einen Deckel abschneiden, die Kerne entfernen und die Deckel klein schneiden.',
+        'Hackfleisch, Reis, Ei, die Hälfte der fein gehackten Zwiebel, Paprikapulver, Oregano, 1 TL Salz und Pfeffer vermengen und locker in die Paprika füllen.',
+        'In einem Topf, in den die Paprika aufrecht gerade hineinpassen, restliche Zwiebel, Knoblauch und die gehackten Paprikadeckel im Öl 3 Minuten andünsten. Tomaten, Wasser, Zucker und etwas Salz zugeben und die Paprika hineinstellen.',
+        'Zugedeckt 35–40 Minuten sanft köcheln, bis die Füllung durchgegart und die Paprika weich sind. (In den letzten 5 Minuten mit Käse bestreuen und zudecken.) Die Soße abschmecken und mit Reis oder Kartoffeln servieren.'
+      ],
+      tip: { add: 'Ein Löffel saure Sahne in der Soße', why: 'Macht die Tomatensoße mild und cremig, wie viele Familien es mögen', skill: 'Locker füllen', how: 'Der Reis quillt beim Garen; zu fest gestopft wird die Füllung kompakt und kann die Paprika sprengen.' }
+    },
+    'de_currywurst': {
+      name: 'Currywurst',
+      ings: [['Bratwurst oder Bockwurst', '4'], ['Passierte Tomaten', '200 g'], ['Zwiebel', '1/2'], ['Brötchen oder Pommes als Beilage', '2']],
+      seas: '1 EL Öl · 2 EL Currypulver und etwas mehr zum Bestäuben · 1 TL edelsüßes Paprikapulver · 3 EL Ketchup · 1 EL Zucker oder Honig · 1 EL Essig · 50 ml Wasser · Salz · 1 Prise Cayennepfeffer (nach Belieben)',
+      steps: [
+        'Die Zwiebel fein reiben oder hacken und in der Hälfte des Öls 3 Minuten andünsten. Currypulver und Paprika 30 Sekunden mitrösten, bis es duftet.',
+        'Passierte Tomaten, Ketchup, Zucker, Essig und Wasser zugeben, 10 Minuten köcheln und mit Salz (und Cayenne) abschmecken. Nach Wunsch glatt pürieren.',
+        'Inzwischen die Würste im restlichen Öl bei mittlerer Hitze 8–10 Minuten rundherum braun und heiß braten.',
+        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren.'
+      ],
+      tip: { add: 'Eine Prise geräuchertes Paprikapulver in der Soße', why: 'Bringt den Geschmack vom Grill und von der Imbissbude', skill: 'Curry anrösten', how: 'Ein paar Sekunden in heißem Fett wecken die Gewürze; direkt in die Flüssigkeit gegeben schmecken sie staubig.' }
+    },
+    'de_haehnchenschenkel': {
+      name: 'Hähnchenschenkel aus dem Ofen',
+      ings: [['Hähnchenschenkel', '4'], ['Festkochende Kartoffeln', '600 g'], ['Zwiebeln', '2'], ['Rote Paprikaschote', '1']],
+      seas: 'Salz · Pfeffer · 2 TL edelsüßes Paprikapulver · 1/2 TL Currypulver · 3 EL Öl · 2 Knoblauchzehen · 1 TL getrockneter Thymian oder Rosmarin',
+      steps: [
+        'Den Backofen auf 200 °C vorheizen. Öl, Paprika, Curry, zerdrückten Knoblauch, Thymian, 1 1/2 TL Salz und Pfeffer verrühren. Die Hälfte auf den Hähnchenschenkeln verreiben.',
+        'Die Kartoffeln in Spalten, die Zwiebeln in Achtel (und die Paprika in Streifen) schneiden und mit dem restlichen Gewürzöl auf einem Backblech mischen.',
+        'Die Schenkel mit der Haut nach oben darauflegen und 45–50 Minuten braten, bis die Haut knusprig ist und beim Einstechen an der dicksten Stelle klarer Saft austritt, ohne rosa Stellen am Knochen.',
+        'Die Kartoffeln nach der Hälfte der Zeit einmal wenden. Direkt vom Blech mit grünem Salat oder Gurkensalat servieren.'
+      ],
+      tip: { add: 'Eine Schale Kräuterquark oder Knoblauchdip', why: 'Kühl und cremig zum knusprigen, würzigen Hähnchen', skill: 'Hähnchen obenauf', how: 'Das Fett aus der Haut tropft auf die Kartoffeln und macht sie goldbraun und würzig.' }
+    },
+    'de_geschnetzeltes': {
+      name: 'Hähnchengeschnetzeltes',
+      ings: [['Hähnchenbrustfilet', '400 g'], ['Champignons', '250 g'], ['Zwiebel', '1'], ['Sahne', '150 ml'], ['Reis, Spätzle oder Nudeln als Beilage', '150 g']],
+      seas: 'Salz · Pfeffer · 1 TL edelsüßes Paprikapulver · 1 EL Mehl · 2 EL Öl · 10 g Butter · 150 ml Hühnerbrühe · 1 TL Zitronensaft · gehackte Petersilie',
+      steps: [
+        'Reis oder Nudeln kochen. Das Hähnchen in dünne Streifen schneiden, mit Salz, Pfeffer und Paprika würzen und mit Mehl bestäuben. Die Champignons in Scheiben schneiden, die Zwiebel würfeln.',
+        'Das Hähnchen in der Hälfte des Öls bei starker Hitze in zwei Portionen 3–4 Minuten braun und durchgaren und herausnehmen.',
+        'Die Champignons im restlichen Öl und der Butter 4 Minuten braun braten, die Zwiebel zugeben und 2 Minuten mitbraten.',
+        'Brühe und Sahne angießen, 3 Minuten sämig köcheln, das Hähnchen zurückgeben und 1 Minute erhitzen. Mit Zitronensaft, Salz und Pfeffer abschmecken, mit Petersilie bestreuen und mit Reis oder Spätzle servieren.'
+      ],
+      tip: { add: 'Ein Schuss Weißwein vor der Brühe', why: 'Der Zürcher Akzent, den viele deutsche Familien übernehmen', skill: 'Heiße Pfanne, kleine Portionen', how: 'Zu viel Fleisch auf einmal kühlt die Pfanne ab, dann dünstet das Hähnchen blass statt zu bräunen.' }
+    },
+    'de_matjes': {
+      name: 'Matjes nach Hausfrauenart',
+      ings: [['Matjesfilets', '4 (ca. 250 g)'], ['Säuerlicher Apfel', '1'], ['Zwiebel (rot oder weiß)', '1'], ['Gewürzgurken', '2'], ['Saure Sahne oder Schmand', '200 g'], ['Festkochende Kartoffeln als Beilage', '500 g']],
+      seas: 'Pfeffer · 2 EL Gurkenwasser oder 1 EL Zitronensaft · 1 Prise Zucker · 1 EL Mayonnaise oder Joghurt (nach Belieben) · frischer Dill oder Schnittlauch',
+      steps: [
+        'Die Kartoffeln mit Schale in Salzwasser etwa 20 Minuten kochen. Ein Stück Matjes probieren; ist er sehr salzig, die Filets 15 Minuten in kaltes Wasser oder Milch legen und trocken tupfen.',
+        'Den Apfel entkernen und in dünne Scheiben oder kleine Würfel schneiden. Die Zwiebel in feine Ringe, die Gurken in Scheiben schneiden.',
+        'Saure Sahne mit Gurkenwasser, Zucker, Pfeffer (und Mayonnaise) verrühren und Apfel, Zwiebel und Gurken untermischen.',
+        'Den Matjes in mundgerechte Stücke schneiden, unter die Soße heben und mindestens 10 Minuten kalt stellen. Mit Dill bestreuen und mit den heißen Kartoffeln servieren.'
+      ],
+      tip: { add: 'Grüne Bohnen mit Speck dazu', why: 'Die norddeutsche Sommerkombination', skill: 'Ziehen lassen', how: 'Eine kurze Zeit in der Kälte lässt Apfel und Zwiebel die Soße aromatisieren und der Fisch wird etwas zarter.' }
+    },
+    'de_backfisch': {
+      name: 'Backfisch mit Remoulade',
+      ings: [['Feste weiße Fischfilets (Seelachs, Kabeljau)', '500 g'], ['Mehl', '120 g'], ['Ei', '1'], ['Mayonnaise', '4 EL'], ['Gewürzgurke', '1'], ['Zitrone', '1/2']],
+      seas: 'Salz · Pfeffer · 150 ml kaltes Bier oder Mineralwasser · 1/2 TL Backpulver · Öl zum Frittieren · Remoulade: 1 TL Kapern · 1 TL Senf · 2 EL Joghurt · Petersilie oder Dill',
+      steps: [
+        'Für die Remoulade Gurke, Kapern und Kräuter fein hacken und mit Senf und Joghurt unter die Mayonnaise rühren. Abschmecken und kalt stellen.',
+        '100 g Mehl, Backpulver, Ei, kaltes Bier und 1/2 TL Salz zu einem dickflüssigen, glatten Teig verquirlen. Den Fisch in 4 Stücke schneiden, trocken tupfen, mit Salz und Zitronensaft würzen und im restlichen Mehl wenden.',
+        '4 cm Öl in einem tiefen Topf auf 170–175 °C erhitzen (ein Tropfen Teig steigt sofort mit lebhaften Bläschen auf). Den Fisch durch den Teig ziehen, abtropfen lassen und je 2 Stücke 5–6 Minuten frittieren, einmal wenden, bis sie goldbraun sind und der Fisch innen zerfällt.',
+        'Auf einem Gitter oder Küchenpapier abtropfen lassen, salzen und sofort mit Remoulade, Zitronenspalten und Kartoffelsalat servieren.'
+      ],
+      tip: { add: 'Schwäbischer oder norddeutscher Kartoffelsalat', why: 'Der Klassiker von Jahrmarkt und Hafen', skill: 'Kalter Teig, heißes Öl', how: 'Je größer der Temperaturunterschied, desto knuspriger und leichter die Hülle; den Teig kalt halten und in kleinen Portionen frittieren.' }
+    },
+    'de_senfeier': {
+      name: 'Senfeier',
+      ings: [['Eier', '6'], ['Kartoffeln', '600 g'], ['Milch', '250 ml'], ['Sahne', '50 ml']],
+      seas: 'Salz · Pfeffer · 30 g Butter · 30 g Mehl · 250 ml Gemüsebrühe · 2 EL mittelscharfer Senf · 1 TL körniger Senf · 1 Prise Zucker · 1 TL Zitronensaft · Schnittlauch oder Petersilie',
+      steps: [
+        'Die Kartoffeln schälen und in Salzwasser 20 Minuten kochen. Die Eier 8–9 Minuten kochen, kalt abschrecken und pellen.',
+        'Die Butter schmelzen, das Mehl 1 Minute hell anschwitzen und nach und nach Brühe und Milch einrühren. Unter Rühren 5 Minuten köcheln, bis die Soße dick und glatt ist.',
+        'Beide Senfsorten (und die Sahne) einrühren und mit Salz, Pfeffer, Zucker und Zitronensaft abschmecken. Nach dem Senf nicht mehr stark kochen, sonst wird er bitter.',
+        'Die Eier halbieren und 2 Minuten in der Soße erwärmen. Mit Schnittlauch bestreuen und mit den Kartoffeln (und Rote-Bete- oder Gurkensalat) servieren.'
+      ],
+      tip: { add: 'Grüner Salat oder Rote-Bete-Salat', why: 'Frisch und leicht säuerlich neben dem milden, weichen Gericht', skill: 'Senf zum Schluss', how: 'Senf verliert beim langen Kochen seine Schärfe und kann bitter werden; nur noch unterrühren, nicht sprudeln lassen.' }
+    },
+    'de_bauernfruehstueck': {
+      name: 'Bauernfrühstück',
+      ings: [['Pellkartoffeln (vom Vortag)', '500 g'], ['Eier', '4'], ['Speckwürfel', '80 g'], ['Zwiebel', '1'], ['Gewürzgurken als Beilage', '2']],
+      seas: 'Salz · Pfeffer · 1 EL Öl · 2 EL Milch · Schnittlauch · 1 Prise edelsüßes Paprikapulver',
+      steps: [
+        'Die kalten Kartoffeln pellen und in etwa 5 mm dicke Scheiben schneiden. Die Zwiebel würfeln.',
+        'Den Speck im Öl in einer großen Pfanne auslassen. Die Kartoffeln in einer Lage zugeben und bei mittlerer Hitze 10–12 Minuten braten, nur ab und zu wenden, bis sie goldbraun und knusprig sind. In den letzten 3 Minuten die Zwiebel zugeben und mit Salz, Pfeffer und Paprika würzen.',
+        'Die Eier mit Milch, einer Prise Salz und gehacktem Schnittlauch verquirlen und über die Kartoffeln gießen.',
+        'Bei schwacher Hitze 3–4 Minuten stocken lassen, dabei die Ränder vorsichtig anheben, bis das Ei gerade fest ist. In der Pfanne mit Gewürzgurken servieren.'
+      ],
+      tip: { add: 'Schinkenwürfel oder Bratenreste', why: 'Das Gericht ist zur Resteverwertung entstanden', skill: 'Kalte Kartoffeln, wenig wenden', how: 'Am Vortag gekochte Kartoffeln zerfallen nicht, und in Ruhe gelassen bildet sich eine Kruste.' }
+    },
+    'de_spargel': {
+      name: 'Spargel mit Sauce Hollandaise',
+      ings: [['Frischer weißer Spargel', '1 kg'], ['Kleine festkochende Kartoffeln', '500 g'], ['Eigelb', '2'], ['Gekochter oder roher Schinken', '150 g']],
+      seas: 'Salz · 1 TL Zucker · 20 g Butter fürs Spargelwasser · Hollandaise: 125 g Butter · 2 EL Wasser · 1 TL Zitronensaft · 1 Prise Salz und weißer Pfeffer · Petersilie',
+      steps: [
+        'Die Kartoffeln in Salzwasser kochen. Den Spargel von knapp unter dem Kopf abwärts schälen und die holzigen Enden abschneiden.',
+        'In einem breiten Topf Wasser mit 1 TL Salz, Zucker und 20 g Butter aufkochen. Den Spargel 12–15 Minuten köcheln, bis das dicke Ende beim Einstechen weich ist, die Stangen aber noch Form haben.',
+        'Inzwischen 125 g Butter schmelzen. Eigelb und Wasser in einer Metallschüssel über leise siedendem Wasserbad dick-schaumig und warm aufschlagen (ca. 65 °C; es darf nicht stocken). Vom Wasserbad nehmen, die warme Butter erst tropfenweise, dann im dünnen Strahl unterschlagen und mit Zitronensaft, Salz und Pfeffer abschmecken.',
+        'Den Spargel mit einer Schaumkelle herausheben und abtropfen lassen. Mit Kartoffeln, Schinken und Hollandaise servieren und mit Petersilie bestreuen.'
+      ],
+      tip: { add: 'Braune Butter statt Hollandaise', why: 'So essen viele Familien ihren Frühlingsspargel schneller', skill: 'Sanfte Hitze für die Soße', how: 'Wird das Eigelb zu heiß, gerinnt es zu Rührei; die Schüssel vom Dampf nehmen, sobald der Schaum dicklich wird.' }
+    },
+    'de_pellkartoffeln': {
+      name: 'Pellkartoffeln mit Kräuterquark',
+      ings: [['Festkochende Kartoffeln', '800 g'], ['Quark (mager oder 20 %)', '500 g'], ['Milch oder Mineralwasser', '4 EL'], ['Kleine Zwiebel oder Frühlingszwiebel', '1'], ['Salatgurke', '1/4']],
+      seas: 'Salz · Pfeffer · 1 TL Kümmel · reichlich gehackte Kräuter (Schnittlauch, Petersilie, Dill) · 1 Knoblauchzehe (nach Belieben) · 2 EL Leinöl (nach Belieben) · 1 Prise edelsüßes Paprikapulver',
+      steps: [
+        'Die Kartoffeln waschen und mit Schale, Salz und Kümmel 20–25 Minuten weich kochen.',
+        'Den Quark mit der Milch glatt und cremig rühren. Fein gehackte Zwiebel, Kräuter (geraspelte Gurke und zerdrückten Knoblauch), Salz und Pfeffer untermischen.',
+        'In den Quark eine kleine Mulde drücken, nach Belieben das Leinöl hineingießen und mit Paprika bestäuben.',
+        'Die Kartoffeln abgießen und heiß mit Schale servieren; jeder pellt seine selbst und tunkt sie in den Quark.'
+      ],
+      tip: { add: 'Ein Faden Leinöl', why: 'Der ostdeutsche und schlesische Klassiker, nussig und grün', skill: 'Quark auflockern', how: 'Quark direkt aus dem Becher ist fest; etwas Milch oder Mineralwasser macht ihn locker und cremig.' }
+    },
+    'de_semmelknoedel': {
+      name: 'Semmelknödel mit Rahmschwammerl',
+      ings: [['Altbackene Brötchen (oder 250 g Knödelbrot)', '5'], ['Milch', '250 ml'], ['Eier', '2'], ['Zwiebeln', '2'], ['Pilze (Champignons, braune Champignons oder gemischt)', '400 g'], ['Sahne', '150 ml']],
+      seas: 'Salz · Pfeffer · 30 g Butter · 1 Prise Muskat · 3 EL gehackte Petersilie · 1 EL Semmelbrösel bei Bedarf · 100 ml Gemüsebrühe · 1 TL Zitronensaft',
+      steps: [
+        'Die Brötchen in kleine Würfel schneiden. Die Milch erwärmen, darübergießen und 15 Minuten ziehen lassen. 1 Zwiebel fein gehackt in der Hälfte der Butter andünsten und mit Eiern, Petersilie, 1 TL Salz, Pfeffer und Muskat zum Brot geben. Gut verkneten; ist der Teig zu weich, Semmelbrösel zugeben.',
+        'Mit nassen Händen 6–8 feste Knödel formen. In einem großen Topf mit leise siedendem Salzwasser 18–20 Minuten ziehen lassen, ohne dass es kocht, bis sie oben schwimmen und fest sind.',
+        'Inzwischen die Pilze in Scheiben schneiden und in der restlichen Butter bei starker Hitze braun braten. Die zweite Zwiebel gewürfelt 2 Minuten mitbraten, Brühe und Sahne angießen und 5 Minuten sämig köcheln. Mit Zitronensaft, Salz, Pfeffer und Petersilie abschmecken.',
+        'Die Knödel mit einer Schaumkelle herausheben und mit der Pilzsoße und grünem Salat servieren.'
+      ],
+      tip: { add: 'Übrige Knödel in Scheiben mit Ei gebraten', why: 'Ein beliebtes Resteessen in Bayern', skill: 'Erst einen probieren', how: 'Zuerst einen kleinen Knödel garen; zerfällt er, noch Semmelbrösel unter den Teig kneten.' }
+    },
+    'de_maultaschen': {
+      name: 'Geschmälzte Maultaschen',
+      ings: [['Maultaschen (fertig, aus dem Kühlregal)', '8 (ca. 500 g)'], ['Zwiebeln', '2'], ['Eier', '3'], ['Speckwürfel', '50 g']],
+      seas: 'Salz · Pfeffer · 20 g Butter · 1 EL Öl · Schnittlauch oder Petersilie',
+      steps: [
+        'Die Zwiebeln in feine Ringe schneiden. Die Maultaschen in 1,5 cm breite Streifen schneiden.',
+        'Die Zwiebeln (und den Speck) in Butter und Öl bei mittlerer Hitze 8 Minuten goldbraun braten und zur Seite schieben.',
+        'Die Maultaschenstreifen zugeben und 4–5 Minuten unter Wenden braten, bis die Ränder braun und alles heiß ist.',
+        'Die verquirlten, leicht gesalzenen Eier darübergießen und 1–2 Minuten vorsichtig rühren, bis sie gerade gestockt sind. Pfeffern, mit Schnittlauch bestreuen und mit Kartoffelsalat oder grünem Salat servieren.'
+      ],
+      tip: { add: 'Schwäbischer Kartoffelsalat dazu', why: 'Der klassische Partner in Schwaben', skill: 'Goldbraune Zwiebeln', how: 'Die in Butter gebräunten Zwiebeln (geschmälzt) machen den Geschmack; ihnen Zeit geben, bevor die Maultaschen dazukommen.' }
+    },
+    'de_schupfnudeln': {
+      name: 'Schupfnudeln mit Sauerkraut',
+      ings: [['Schupfnudeln (fertig)', '500 g'], ['Sauerkraut', '300 g'], ['Zwiebel', '1'], ['Speckwürfel', '80 g']],
+      seas: 'Salz · Pfeffer · 30 g Butter oder Schmalz · 1/2 TL Kümmel · 1 Prise Zucker · Schnittlauch',
+      steps: [
+        'Das Sauerkraut abtropfen lassen und leicht ausdrücken; lange Fäden etwas kleiner schneiden. Die Zwiebel würfeln.',
+        'Die Schupfnudeln in der Hälfte der Butter bei mittlerer Hitze 6–8 Minuten rundherum goldbraun braten und herausnehmen.',
+        'Zwiebel (und Speck) in der restlichen Butter 4 Minuten braten, Sauerkraut, Kümmel und Zucker zugeben und weitere 5 Minuten braten, bis das Kraut an den Rändern Farbe nimmt.',
+        'Die Schupfnudeln zurückgeben, alles 2 Minuten durchschwenken und mit Salz und Pfeffer abschmecken. Mit Schnittlauch bestreuen.'
+      ],
+      tip: { add: 'Ein Löffel saure Sahne', why: 'Mild und cremig zum sauren Kraut', skill: 'Portionsweise bräunen', how: 'Schupfnudeln bekommen nur in einer Lage eine Kruste; zu eng werden sie weich und klebrig.' }
+    },
+    'de_schinkennudeln': {
+      name: 'Schinkennudeln',
+      ings: [['Bandnudeln oder kurze Nudeln', '250 g'], ['Gekochter Schinken, gewürfelt', '150 g'], ['Eier', '3'], ['Zwiebel', '1'], ['Geriebener Käse', '50 g']],
+      seas: 'Salz · Pfeffer · 20 g Butter · 2 EL Milch · Schnittlauch oder Petersilie',
+      steps: [
+        'Die Nudeln in Salzwasser bissfest kochen, abgießen und ausdampfen lassen (Nudeln vom Vortag eignen sich sehr gut).',
+        'Gewürfelte Zwiebel und Schinken in der Butter 4 Minuten anbraten. Die Nudeln zugeben und bei mittlerer bis starker Hitze 5–6 Minuten braten, ab und zu wenden, bis einige Ränder goldbraun sind.',
+        'Die Eier mit Milch, einer Prise Salz und Pfeffer verquirlen, über die Nudeln gießen und vorsichtig rühren, bis sie gerade gestockt sind (mit Käse bestreuen).',
+        'Abschmecken, mit Schnittlauch bestreuen und mit grünem Salat oder Tomatensalat servieren.'
+      ],
+      tip: { add: 'Ein paar TK-Erbsen', why: 'Farbe und Süße, und Kinder mögen sie', skill: 'Trockene Nudeln braten besser', how: 'Nasse Nudeln dämpfen und kleben; gut abgetropfte oder Nudeln vom Vortag bekommen knusprige Ränder.' }
+    },
+    'de_feldsalat': {
+      name: 'Feldsalat mit Speck',
+      ings: [['Feldsalat', '150 g'], ['Speckwürfel', '50 g'], ['Brötchen oder Brotscheibe für Croûtons', '1'], ['Schalotte oder kleine Zwiebel', '1/2']],
+      seas: 'Salz · Pfeffer · 2 EL Weißwein- oder Apfelessig · 1 TL mittelscharfer Senf · 1 TL Honig · 3 EL Öl · 1 EL Wasser',
+      steps: [
+        'Den Feldsalat zwei- bis dreimal in reichlich Wasser waschen (er ist oft sandig), die Wurzelenden abknipsen, die Röschen aber ganz lassen, und trocken schleudern.',
+        'Essig, Senf, Honig, fein gehackte Schalotte, Salz, Pfeffer, Wasser und Öl zu einem Dressing verschlagen.',
+        'Das Brot würfeln. Den Speck in einer Pfanne ohne Fett knusprig braten, dann die Brotwürfel im Fett goldbraun rösten.',
+        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen.'
+      ],
+      tip: { add: 'Eine gekochte Kartoffel ins Dressing gedrückt', why: 'Die schwäbische und pfälzische Art: cremig und haftet an den Blättern', skill: 'Erst bei Tisch anmachen', how: 'Die zarten Blätter fallen wenige Minuten nach dem Anmachen zusammen; erst direkt vor dem Essen mischen.' }
+    },
+    'de_tomatensalat': {
+      name: 'Tomatensalat',
+      ings: [['Reife Tomaten', '4'], ['Zwiebel (weiß oder rot)', '1/2']],
+      seas: 'Salz · Pfeffer · 2 EL Weißweinessig · 3 EL Öl · 1 Prise Zucker · Schnittlauch oder Petersilie',
+      steps: [
+        'Die Tomaten in Scheiben oder Spalten, die Zwiebel in sehr feine Ringe oder Würfel schneiden.',
+        'Essig, Zucker, Salz, Pfeffer und Öl verrühren.',
+        'Tomaten und Zwiebel auf einer Platte anrichten, das Dressing darübergießen, mit Schnittlauch bestreuen und 5–10 Minuten ziehen lassen.'
+      ],
+      tip: { add: 'Ein paar Würfel Feta oder milder Schafskäse', why: 'Eine beliebte Sommervariante für ein leichtes Abendessen', skill: 'Tomaten bei Zimmertemperatur', how: 'Tomaten aus dem Kühlschrank schmecken flach; außerhalb gelagert sind sie süßer und saftiger.' }
+    },
+    'de_moehrenrohkost': {
+      name: 'Möhren-Apfel-Rohkost',
+      ings: [['Möhren', '3'], ['Apfel', '1'], ['Walnüsse oder Sonnenblumenkerne', '2 EL']],
+      seas: '2 EL Zitronensaft · 1 TL Honig oder Zucker · 2 EL Öl · 1 Prise Salz',
+      steps: [
+        'Die Möhren schälen und grob raspeln. Den Apfel mit Schale (ohne Kerngehäuse) raspeln und sofort mit dem Zitronensaft mischen, damit er nicht braun wird.',
+        'Möhren, Apfel, Honig, Salz und Öl vermischen.',
+        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen.'
+      ],
+      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett hilft dem Körper, das Vitamin A aus Möhren aufzunehmen, und macht den Salat runder.' }
+    },
+    'de_nudelsalat': {
+      name: 'Nudelsalat',
+      ings: [['Kurze Nudeln (Spiralen oder Hörnchen)', '250 g'], ['Gekochter Schinken oder Fleischwurst', '150 g'], ['Gewürzgurken', '4'], ['TK-Erbsen', '100 g'], ['Mayonnaise', '4 EL'], ['Hart gekochte Eier', '2']],
+      seas: 'Salz · Pfeffer · 4 EL Gurkenwasser · 4 EL Joghurt · 1 TL Senf · 1 Prise Zucker · Schnittlauch',
+      steps: [
+        'Die Nudeln in Salzwasser bissfest kochen, die Erbsen in den letzten 2 Minuten mitkochen. Abgießen und kurz kalt abspülen.',
+        'Schinken, Gurken (und Eier) würfeln.',
+        'Mayonnaise, Joghurt, Gurkenwasser, Senf, Zucker, Salz und Pfeffer glatt rühren und mit Nudeln, Erbsen, Schinken und Gurken mischen.',
+        'Mindestens 30 Minuten kalt stellen; vor dem Servieren noch einmal abschmecken und etwas Gurkenwasser oder Joghurt zugeben, wenn er trocken geworden ist. Mit Schnittlauch bestreuen.'
+      ],
+      tip: { add: 'Ein gewürfelter Apfel oder etwas Mais', why: 'Jede Familie hat ihre eigene Zutat; das macht den Salat frischer', skill: 'Nach dem Kühlen nachwürzen', how: 'Die Nudeln saugen im Kühlschrank das Dressing auf; ein Schuss Gurkenwasser vor dem Servieren macht ihn wieder saftig.' }
+    },
+    'de_rotebete': {
+      name: 'Rote-Bete-Salat',
+      ings: [['Gekochte Rote Bete (vakuumverpackt)', '500 g'], ['Zwiebel', '1/2'], ['Apfel', '1/2']],
+      seas: 'Salz · Pfeffer · 3 EL Essig · 2 EL Öl · 1 TL Zucker · 1/2 TL Kümmel oder 1 TL geriebener Meerrettich',
+      steps: [
+        'Die Rote Bete in Scheiben oder Würfel schneiden (Handschuhe tragen oder auf einem Teller arbeiten, sie färbt stark). Die Zwiebel (und den Apfel) fein würfeln.',
+        'Essig, Zucker, Salz, Pfeffer, Kümmel und Öl verrühren.',
+        'Alles mischen und mindestens 30 Minuten, besser einige Stunden, im Kühlschrank ziehen lassen. Hält sich 3–4 Tage.'
+      ],
+      tip: { add: 'Etwas geriebener Meerrettich', why: 'Die scharfe Note ist der altbewährte Geschmack zu Roter Bete', skill: 'Durchziehen lassen', how: 'Rote Bete braucht Zeit, um den Essig aufzunehmen; am nächsten Tag schmeckt der Salat besser.' }
+    },
+    'de_kopfsalat': {
+      name: 'Kopfsalat mit Sahnedressing',
+      ings: [['Kopfsalat', '1 Kopf'], ['Sahne oder saure Sahne', '4 EL'], ['Kleine Zwiebel oder Schalotte', '1/2']],
+      seas: 'Salz · Pfeffer · 1 EL Zitronensaft oder milder Essig · 1 TL Zucker · gehackter Dill und Schnittlauch',
+      steps: [
+        'Die Blätter ablösen, in kaltem Wasser waschen, sehr gut trocken schleudern und in mundgerechte Stücke zupfen.',
+        'Die Sahne mit Zitronensaft, Zucker, Salz, Pfeffer (fein gehackter Zwiebel) und Kräutern verrühren.',
+        'Das Dressing erst kurz vor dem Servieren über den Salat geben und mischen.'
+      ],
+      tip: { add: 'Radieschen- oder Gurkenscheiben', why: 'Biss und Farbe, wie aus Omas Garten', skill: 'Trockene Blätter', how: 'Nasse Blätter verwässern das Sahnedressing; gut schleudern, damit es haftet.' }
+    },
+    'de_radieschensalat': {
+      name: 'Radieschensalat',
+      ings: [['Radieschen', '2 Bund (ca. 250 g)'], ['Salatgurke', '1/2'], ['Joghurt oder saure Sahne', '2 EL']],
+      seas: 'Salz · Pfeffer · 1 EL Weißweinessig · 1 EL Öl · 1 Prise Zucker · reichlich Schnittlauch',
+      steps: [
+        'Die Radieschen putzen, waschen und in dünne Scheiben schneiden (die Gurke ebenso).',
+        'Mit einer Prise Salz bestreuen, 5 Minuten ziehen lassen und austretende Flüssigkeit abgießen.',
+        'Mit Essig, Zucker, Pfeffer und Öl (und Joghurt) und reichlich gehacktem Schnittlauch mischen. Bald servieren.'
+      ],
+      tip: { add: 'Radieschenscheiben aufs Butterbrot', why: 'Der klassische Begleiter zum Abendbrot', skill: 'Nur kurz salzen', how: 'Kurzes Salzen nimmt die größte Schärfe und etwas Wasser; länger werden sie schlapp.' }
+    },
+    'de_waldorfsalat': {
+      name: 'Waldorfsalat',
+      ings: [['Knollensellerie', '250 g'], ['Säuerliche Äpfel', '2'], ['Walnüsse', '50 g'], ['Mayonnaise', '3 EL'], ['Joghurt oder saure Sahne', '3 EL']],
+      seas: 'Salz · Pfeffer · 2 EL Zitronensaft · 1 Prise Zucker',
+      steps: [
+        'Den Sellerie schälen und in feine Stifte schneiden oder grob raspeln. Die Äpfel entkernen, ebenfalls in Stifte schneiden und beides sofort mit dem Zitronensaft mischen.',
+        'Mayonnaise mit Joghurt, Salz, Pfeffer und Zucker verrühren und mit Sellerie und Apfel mischen.',
+        'Die Walnüsse kurz in einer Pfanne ohne Fett rösten, grob hacken und kurz vor dem Servieren unterheben (einige für obendrauf aufheben).'
+      ],
+      tip: { add: 'Ein paar halbierte Weintrauben', why: 'Eine saftig-süße Variante, beliebt auf deutschen Familienbuffets', skill: 'Sofort Zitrone', how: 'Sellerie und Apfel werden in wenigen Minuten braun; Zitronensaft hält sie hell.' }
+    },
+    'de_bratkartoffeln': {
+      name: 'Bratkartoffeln',
+      ings: [['Festkochende Kartoffeln, am Vortag gekocht', '600 g'], ['Zwiebel', '1'], ['Speckwürfel', '50 g']],
+      seas: 'Salz · Pfeffer · 2 EL Öl oder Butterschmalz · 10 g Butter · 1/2 TL edelsüßes Paprikapulver · 1/2 TL getrockneter Majoran · gehackte Petersilie',
+      steps: [
+        'Die kalten Kartoffeln pellen und in etwa 5 mm dicke Scheiben schneiden. Die Zwiebel würfeln.',
+        'Das Öl in einer großen Pfanne (am besten Gusseisen) erhitzen und die Kartoffeln möglichst in einer Lage hineinlegen. Bei mittlerer Hitze 6–8 Minuten braten, ohne sie zu bewegen, bis sich eine goldbraune Kruste bildet.',
+        'Mit dem Pfannenwender wenden, Zwiebel (und Speck) zugeben und weitere 8–10 Minuten braten, nur ab und zu wenden, bis sie rundum knusprig sind.',
+        'Zum Schluss die Butter zugeben, mit Salz, Pfeffer, Paprika und Majoran würzen und mit Petersilie bestreuen.'
+      ],
+      tip: { add: 'Ein Spiegelei obendrauf', why: 'Mit Salat wird aus der Beilage schnell ein Abendessen', skill: 'Geduld', how: 'Zu häufiges Wenden zerbricht die Kartoffeln und verhindert die Kruste; in Ruhe lassen, bis sie sich leicht lösen.' }
+    },
+    'de_rosenkohl': {
+      name: 'Rosenkohl in Butter',
+      ings: [['Rosenkohl', '500 g'], ['Speckwürfel', '40 g'], ['Schalotte oder kleine Zwiebel', '1/2']],
+      seas: 'Salz · Pfeffer · 20 g Butter · 1 Prise Muskat · 1 Prise Zucker',
+      steps: [
+        'Die Strunkenden abschneiden und gelbe äußere Blätter entfernen. Große Röschen halbieren, damit alle etwa gleich groß sind.',
+        'In kochendem Salzwasser 6–8 Minuten garen, bis ein Messer gerade leicht hineingeht. Gut abtropfen lassen.',
+        'Die Butter in einer Pfanne schmelzen, die fein gehackte Schalotte (und den Speck) 2 Minuten anbraten, Rosenkohl und Zucker zugeben und 4–5 Minuten braten, bis er stellenweise leicht gebräunt ist. Mit Salz, Pfeffer und Muskat abschmecken.'
+      ],
+      tip: { add: 'Eine Handvoll geröstete Mandelblättchen oder gehackte Haselnüsse', why: 'Nussiger Biss passt zum leicht bitteren Rosenkohl', skill: 'Nicht zerkochen', how: 'Zu lange gekochter Rosenkohl wird grau und schmeckt schweflig; aufhören, sobald das Messer gerade hineingeht.' }
+    },
+    'de_rahmchampignons': {
+      name: 'Rahmchampignons',
+      ings: [['Champignons', '400 g'], ['Zwiebel', '1'], ['Sahne', '100 ml']],
+      seas: 'Salz · Pfeffer · 1 EL Öl · 10 g Butter · 1 TL Mehl · 1 TL Zitronensaft · reichlich gehackte Petersilie',
+      steps: [
+        'Die Champignons mit Pinsel oder Küchenpapier säubern und in Scheiben schneiden. Die Zwiebel würfeln.',
+        'Die Pilze im Öl bei starker Hitze, bei Bedarf in zwei Portionen, 5 Minuten braten, bis ihre Flüssigkeit verdampft ist und sie Farbe haben. Butter und Zwiebel zugeben und 2 Minuten mitbraten.',
+        'Mit Mehl bestäuben, umrühren, die Sahne angießen und 2 Minuten sämig köcheln. Mit Zitronensaft, Salz und Pfeffer abschmecken und die Petersilie unterrühren.'
+      ],
+      tip: { add: 'Auf Toast oder zum Schnitzel', why: 'Als Jägersoße der klassische Schnitzelpartner, auf Toast ein schnelles Abendessen', skill: 'Erst am Ende salzen', how: 'Salz zieht Wasser aus den Pilzen; früh gesalzen dünsten sie, statt zu bräunen.' }
+    },
+    'de_speckbohnen': {
+      name: 'Speckbohnen',
+      ings: [['Grüne Bohnen', '400 g'], ['Speckwürfel oder durchwachsener Speck', '60 g'], ['Zwiebel', '1/2']],
+      seas: 'Salz · Pfeffer · 10 g Butter · 1/2 TL getrocknetes Bohnenkraut oder Thymian',
+      steps: [
+        'Die Bohnen putzen und in kochendem Salzwasser 7–9 Minuten weich garen (mit einem Zweig Bohnenkraut, wenn vorhanden). Abgießen.',
+        'Den Speck in einer Pfanne ohne Fett knusprig braten, Butter und gewürfelte Zwiebel zugeben und 3 Minuten weich braten.',
+        'Die Bohnen 2 Minuten in der Pfanne schwenken und mit Bohnenkraut, Pfeffer und wenig Salz abschmecken.'
+      ],
+      tip: { add: 'Kleine Bündel in Speck wickeln (Bohnenbündel)', why: 'Die festliche Variante zum Sonntagsbraten', skill: 'Bohnen ganz garen', how: 'Rohe grüne Bohnen enthalten Stoffe, die erst durch Kochen abgebaut werden; weich kochen, nicht roh-knackig.' }
+    },
+    'de_sauerkraut': {
+      name: 'Sauerkraut',
+      ings: [['Sauerkraut', '500 g'], ['Apfel', '1'], ['Zwiebel', '1'], ['Speckwürfel', '50 g']],
+      seas: '1 EL Schmalz oder Butter · 1 Lorbeerblatt · 4 Wacholderbeeren · 1/2 TL Kümmel · 200 ml Brühe oder Wasser · 1 TL Zucker · Salz · Pfeffer',
+      steps: [
+        'Das Sauerkraut probieren; ist es sehr sauer, kurz abspülen und ausdrücken. Die Zwiebel würfeln, den Apfel schälen und reiben oder würfeln.',
+        'Das Schmalz schmelzen und die Zwiebel (und den Speck) 3 Minuten anbraten. Sauerkraut, Apfel, Lorbeerblatt, leicht angedrückte Wacholderbeeren, Kümmel, Zucker und Brühe zugeben.',
+        'Zugedeckt 30 Minuten sanft köcheln, ab und zu umrühren und bei Bedarf Wasser nachgießen. Mit Salz und Pfeffer abschmecken und das Lorbeerblatt entfernen.'
+      ],
+      tip: { add: 'Eine roh geriebene Kartoffel in den letzten 10 Minuten', why: 'Bindet den Saft und macht das Kraut sämig, wie in vielen Familien', skill: 'Lange und sanft', how: 'Langsames Garen mildert die scharfe Säure und lässt Apfel und Gewürze einziehen.' }
+    },
+    'de_kohlrabi': {
+      name: 'Kohlrabigemüse',
+      ings: [['Kohlrabi', '2'], ['Milch', '100 ml'], ['Sahne', '50 ml']],
+      seas: 'Salz · weißer Pfeffer · 15 g Butter · 1 EL Mehl · 200 ml Wasser · 1 Prise Muskat · 1 Prise Zucker · gehackte Petersilie',
+      steps: [
+        'Den Kohlrabi schälen, in Stifte oder 1-cm-Würfel schneiden und einige zarte grüne Blätter aufheben.',
+        'Den Kohlrabi im Wasser mit einer Prise Salz und Zucker zugedeckt 8–10 Minuten weich garen. Abgießen, das Kochwasser auffangen.',
+        'Die Butter schmelzen, das Mehl 1 Minute anschwitzen und 150 ml Kochwasser und die Milch (und Sahne) einrühren. 3 Minuten köcheln, den Kohlrabi zugeben, mit Salz, Pfeffer und Muskat abschmecken und Petersilie und die fein gehackten Kohlrabiblätter unterrühren.'
+      ],
+      tip: { add: 'Die fein gehackten jungen Blätter', why: 'Sie sind zart, grün und aromatisch; viele werfen sie weg', skill: 'Kochwasser verwenden', how: 'Es enthält den süßen Kohlrabigeschmack, so schmeckt die Soße nach Gemüse statt nur nach Mehl.' }
+    },
+    'de_schmorgurken': {
+      name: 'Schmorgurken',
+      ings: [['Schmorgurken oder Salatgurken', '2 (ca. 800 g)'], ['Zwiebel', '1'], ['Saure Sahne', '100 g'], ['Speckwürfel', '50 g']],
+      seas: 'Salz · Pfeffer · 1 EL Butter · 100 ml Gemüsebrühe · 1 TL mittelscharfer Senf · 1 EL Essig · 1 Prise Zucker · reichlich frischer Dill',
+      steps: [
+        'Die Gurken schälen, längs halbieren, die Kerne mit einem Löffel herauskratzen und in 2 cm große Stücke schneiden. Die Zwiebel würfeln.',
+        'Die Zwiebel (und den Speck) in der Butter 3 Minuten andünsten, Gurken und Brühe zugeben und zugedeckt 8–10 Minuten schmoren, bis die Gurke glasig ist, aber noch etwas Biss hat.',
+        'Saure Sahne, Senf, Essig und Zucker einrühren, erhitzen, aber nicht kochen, mit Salz und Pfeffer abschmecken und reichlich gehackten Dill zugeben.'
+      ],
+      tip: { add: 'Frikadellen und Kartoffeln dazu', why: 'Das klassische ostdeutsche Sommeressen', skill: 'Kerne entfernen', how: 'Die wässrigen Kerne verdünnen die Soße; ohne sie bleibt die Gurke fest und die Soße cremig.' }
+    },
+    'de_kartoffelpueree': {
+      name: 'Kartoffelpüree',
+      ings: [['Mehligkochende Kartoffeln', '800 g'], ['Milch', '200 ml']],
+      seas: 'Salz · 40 g Butter · 1 Prise Muskat',
+      steps: [
+        'Die Kartoffeln schälen, in gleich große Stücke schneiden und in Salzwasser 20 Minuten sehr weich kochen. Abgießen und im Topf 1 Minute ausdampfen lassen.',
+        'Inzwischen die Milch mit der Butter erhitzen.',
+        'Die Kartoffeln mit dem Kartoffelstampfer zerdrücken oder durch die Presse drücken und die heiße Milch nach und nach unterrühren, bis das Püree locker ist. Mit Salz und Muskat abschmecken.'
+      ],
+      tip: { add: 'Braune Butter oder Röstzwiebeln obendrauf', why: 'So machen es viele Familien für Gäste besonders', skill: 'Niemals pürieren', how: 'Pürierstab oder Küchenmaschine machen Kartoffeln kleisterig; von Hand stampfen und heiße Milch nehmen.' }
+    },
+    'de_blumenkohl': {
+      name: 'Blumenkohl mit Butterbröseln',
+      ings: [['Blumenkohl', '1 Kopf (ca. 800 g)'], ['Semmelbrösel', '3 EL'], ['Hart gekochtes Ei', '1']],
+      seas: 'Salz · 40 g Butter · 1 Prise Muskat · 1 EL gehackte Petersilie',
+      steps: [
+        'Den Blumenkohl in Röschen teilen und in kochendem Salzwasser 8–10 Minuten garen, bis er weich ist, aber nicht zerfällt. Gut abtropfen lassen.',
+        'Die Butter in einer kleinen Pfanne schmelzen, die Semmelbrösel zugeben und bei mittlerer Hitze 2–3 Minuten rühren, bis sie goldbraun sind und nussig duften.',
+        'Den Blumenkohl in eine Schüssel geben, mit Muskat würzen, die Butterbrösel darübergeben und mit Petersilie (und dem gehackten Ei) bestreuen.'
+      ],
+      tip: { add: 'Ein gehacktes hart gekochtes Ei (à la polonaise)', why: 'Die altmodische Restaurantvariante', skill: 'Brösel im Blick behalten', how: 'Butterbrösel werden in Sekunden von goldbraun zu verbrannt; ständig rühren und rechtzeitig vom Herd nehmen.' }
+    },
+    'de_kartoffelkloesse': {
+      name: 'Kartoffelklöße',
+      ings: [['Mehligkochende Kartoffeln', '1 kg'], ['Kartoffelstärke', '80 g'], ['Ei', '1'], ['Brötchen für Croûtons (nach Belieben)', '1']],
+      seas: 'Salz · 1 Prise Muskat · 10 g Butter für die Croûtons',
+      steps: [
+        'Die Kartoffeln mit Schale weich kochen (ca. 25 Minuten), heiß pellen und durch die Presse drücken. Vollständig abkühlen lassen, am besten einige Stunden oder über Nacht.',
+        'Die Kartoffeln mit Stärke, Ei, 1 TL Salz und Muskat zu einem glatten Teig verkneten, der nicht an den Händen klebt; sonst etwas mehr Stärke zugeben.',
+        'Nach Belieben kleine Brotwürfel in der Butter goldbraun rösten. Mit feuchten Händen 8 Klöße formen und in jeden 2–3 Croûtons drücken.',
+        'In einen großen Topf mit leise siedendem Salzwasser geben und 20 Minuten ziehen lassen, ohne dass es kocht, bis sie oben schwimmen und fest sind. Mit der Schaumkelle herausheben und zu Braten mit reichlich Soße servieren.'
+      ],
+      tip: { add: 'Übrige Klöße in Scheiben in Butter gebraten', why: 'Außen knusprig, innen weich, ein Liebling am nächsten Tag', skill: 'Kein sprudelndes Wasser', how: 'Kochendes Wasser zerreißt die Klöße; sie dürfen nur knapp unter dem Siedepunkt ziehen.' }
+    },
+    'de_rahmwirsing': {
+      name: 'Rahmwirsing',
+      ings: [['Wirsing', '1/2 Kopf (ca. 500 g)'], ['Zwiebel', '1'], ['Sahne', '100 ml'], ['Speckwürfel', '40 g']],
+      seas: 'Salz · Pfeffer · 15 g Butter · 100 ml Gemüsebrühe · 1 Prise Muskat',
+      steps: [
+        'Die harten äußeren Blätter und den Strunk entfernen, den Wirsing in feine Streifen schneiden, waschen und abtropfen lassen. Die Zwiebel würfeln.',
+        'Die Zwiebel (und den Speck) in der Butter 3 Minuten andünsten, Wirsing und Brühe zugeben und zugedeckt 8–10 Minuten garen, bis er weich, aber noch leuchtend grün ist.',
+        'Die Sahne angießen und offen 3 Minuten sämig köcheln. Mit Salz, Pfeffer und Muskat abschmecken.'
+      ],
+      tip: { add: 'Dazu Bratwurst oder ein Kotelett', why: 'Ein alltägliches Winteressen in ganz Deutschland', skill: 'Kurz garen', how: 'Wirsing ist zarter als Weißkohl; kurz gegart bleibt er grün und mild.' }
+    },
+    'de_kartoffelgratin': {
+      name: 'Kartoffelgratin',
+      ings: [['Festkochende Kartoffeln', '800 g'], ['Sahne', '200 ml'], ['Milch', '200 ml'], ['Geriebener Käse (Emmentaler oder Gouda)', '80 g']],
+      seas: 'Salz · Pfeffer · 1 Prise Muskat · 1 Knoblauchzehe · 10 g Butter für die Form',
+      steps: [
+        'Den Backofen auf 180 °C vorheizen. Eine Auflaufform mit der halbierten Knoblauchzehe ausreiben und mit Butter einfetten.',
+        'Die Kartoffeln schälen und in dünne Scheiben (2–3 mm) hobeln. Nicht waschen; die Stärke macht die Soße cremig.',
+        'Sahne und Milch mit 1 TL Salz, Pfeffer und Muskat erwärmen. Die Kartoffeln dachziegelartig in die Form schichten, die Sahnemischung darübergießen (sie sollte sie fast bedecken) und mit Käse bestreuen.',
+        '50–60 Minuten backen, bis die Oberfläche goldbraun ist und ein Messer leicht durch die Kartoffeln gleitet. Vor dem Servieren 10 Minuten ruhen lassen.'
+      ],
+      tip: { add: 'Ein paar Thymianblättchen zwischen den Schichten', why: 'Eine leichte Kräuternote zur reichhaltigen Sahne', skill: 'Gleichmäßig dünne Scheiben', how: 'Gleich dicke Scheiben garen gleichzeitig, so bleiben in der Mitte keine harten Stellen.' }
     }
   }
 });
