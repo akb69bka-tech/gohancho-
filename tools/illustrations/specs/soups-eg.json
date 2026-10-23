@@ -1,0 +1,22 @@
+{
+  "eg_khodar": { "vessel": "bowl", "broth": "#d9823f", "body": "chunky", "top": [["carrot",3],["potato",3],["zucchini",2],["peas",3]], "garnish": "parsley" },
+  "eg_shaariya": { "vessel": "deep", "broth": "#c99a55", "body": "clear", "oil": true, "top": [["vermicelli",3],["beefChunk",3],["lemon",1]], "garnish": "pepper" },
+  "eg_freekeh": { "vessel": "bowl", "broth": "#a8854f", "body": "chunky", "top": [["rice",4],["chicken",3],["lemon",1]], "garnish": "parsley" },
+  "eg_kawarea": { "vessel": "pot", "broth": "#d8c9a3", "body": "clear", "oil": true, "top": [["beefChunk",4],["chickpeas",3],["lemon",1]], "garnish": "pepper" },
+  "eg_shorbetsamak": { "vessel": "clay", "broth": "#a8562e", "body": "chunky", "oil": true, "top": [["fish",3],["tomato",2],["onion",2],["lemon",1]], "garnish": "cilantro" },
+  "eg_adsbigebba": { "vessel": "bowl", "broth": "#6e4a2a", "body": "stew", "top": [["lentils",5],["onion",2],["lemon",1]], "garnish": "none" },
+  "eg_tamatem": { "vessel": "deep", "broth": "#c9412a", "body": "chunky", "top": [["rice",4],["tomato",2]], "garnish": "parsley" },
+  "eg_kosa": { "vessel": "deep", "broth": "#b9c47a", "body": "cream", "swirl": "#f1efe0", "top": [["zucchini",3],["cheese",1]], "garnish": "pepper" },
+  "eg_shoofan": { "vessel": "bowl", "broth": "#d8b37c", "body": "stew", "top": [["chicken",3],["carrot",3],["tomato",1]], "garnish": "parsley" },
+  "eg_hommosesham": { "vessel": "mug", "broth": "#d9c08a", "body": "chunky", "top": [["chickpeas",6],["tomato",2],["chili",1],["lemon",1]], "garnish": "parsley" },
+  "eg_fulnabit": { "vessel": "bowl", "broth": "#b7a06a", "body": "chunky", "top": [["beans",6],["onion",2],["lemon",1]], "garnish": "cilantro" },
+  "eg_kishk": { "vessel": "deep", "broth": "#efe6cf", "body": "cream", "top": [["chicken",3],["onion",4]], "garnish": "none" },
+  "eg_kremafirakh": { "vessel": "deep", "broth": "#eee2c4", "body": "cream", "swirl": "#fbf6ea", "top": [["chicken",3],["mushroom",2],["croutons",2]], "garnish": "parsley" },
+  "eg_mashroom": { "vessel": "bowl", "broth": "#b89a76", "body": "cream", "swirl": "#f3ebdc", "top": [["mushroom",4]], "garnish": "parsley" },
+  "eg_qar3": { "vessel": "deep", "broth": "#e0892c", "body": "cream", "swirl": "#fbf1df", "top": [["pumpkin",2],["cream",1]], "garnish": "pepper" },
+  "eg_khobeiza": { "vessel": "clay", "broth": "#4f6b2a", "body": "stew", "oil": true, "top": [["greens",5],["rice",2]], "garnish": "none" },
+  "eg_seafood": { "vessel": "bowl", "broth": "#e8b78c", "body": "cream", "top": [["shrimp",3],["squid",3],["fish",2],["lemon",1]], "garnish": "parsley" },
+  "eg_broccoli": { "vessel": "deep", "broth": "#7f9a3e", "body": "cream", "swirl": "#f2efdc", "top": [["greens",3],["cheese",1]], "garnish": "pepper" },
+  "eg_lahmakhodar": { "vessel": "pot", "broth": "#c8763a", "body": "chunky", "oil": true, "top": [["beefChunk",3],["potato",3],["carrot",3],["zucchini",2]], "garnish": "parsley" },
+  "eg_besella": { "vessel": "bowl", "broth": "#8fae3c", "body": "cream", "swirl": "#f3f0dd", "top": [["peas",4],["croutons",3]], "garnish": "herbs" }
+}
