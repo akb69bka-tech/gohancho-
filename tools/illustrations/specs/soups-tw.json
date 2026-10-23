@@ -1,0 +1,22 @@
+{
+  "tw_xianggu_jitang": { "vessel": "bowl", "broth": "#d9b46a", "body": "clear", "oil": true, "top": [["chicken",4],["shiitake",4]], "garnish": "none" },
+  "tw_mayouji": { "vessel": "clay", "broth": "#7a4a22", "body": "clear", "oil": true, "top": [["chicken",5],["herbsprig",2]], "garnish": "none" },
+  "tw_fengli_kugua_ji": { "vessel": "bowl", "broth": "#d8c27a", "body": "chunky", "top": [["chicken",4],["zucchini",3],["corn",2]], "garnish": "none" },
+  "tw_bopi_lajiao_ji": { "vessel": "bowl", "broth": "#c8a04e", "body": "clear", "oil": true, "top": [["chicken",4],["pepper",3],["shiitake",2]], "garnish": "none" },
+  "tw_changnian_jitang": { "vessel": "pot", "broth": "#d6c58a", "body": "clear", "top": [["chicken",4],["greens",4]], "garnish": "none" },
+  "tw_gongwan_tang": { "vessel": "bowl", "broth": "#e6dcc2", "body": "clear", "top": [["meatball",5],["daikon",4]], "garnish": "scallion" },
+  "tw_shimuyu_tang": { "vessel": "bowl", "broth": "#ece4d0", "body": "clear", "top": [["fish",4],["herbsprig",2]], "garnish": "scallion" },
+  "tw_ezai_tang": { "vessel": "bowl", "broth": "#e8e0cc", "body": "clear", "top": [["mussel",6],["scallion",3]], "garnish": "scallion" },
+  "tw_rougeng": { "vessel": "bowl", "broth": "#8a5a32", "body": "stew", "top": [["pork",5],["cabbage",2],["carrot",2],["bamboo",2]], "garnish": "cilantro" },
+  "tw_youyu_geng": { "vessel": "bowl", "broth": "#9a6638", "body": "stew", "top": [["squid",5],["bamboo",3],["cabbage",2],["herbsprig",1]], "garnish": "none" },
+  "tw_sishen_tang": { "vessel": "bowl", "broth": "#e2d6b8", "body": "chunky", "top": [["pork",4],["beans",4],["lotus",2]], "garnish": "none" },
+  "tw_paigusu_tang": { "vessel": "bowl", "broth": "#a7743e", "body": "chunky", "oil": true, "top": [["pork",5],["daikon",4]], "garnish": "cilantro" },
+  "tw_yaodun_paigu": { "vessel": "clay", "broth": "#5a3a1e", "body": "clear", "top": [["pork",5],["chili",2],["herbsprig",2]], "garnish": "none" },
+  "tw_zhugan_tang": { "vessel": "bowl", "broth": "#e4d8be", "body": "clear", "top": [["beef",5],["scallion",3]], "garnish": "scallion" },
+  "tw_huasheng_zhujiao": { "vessel": "pot", "broth": "#efe6d2", "body": "chunky", "top": [["pork",5],["chickpeas",5]], "garnish": "none" },
+  "tw_luosong_tang": { "vessel": "deep", "broth": "#c4552e", "body": "chunky", "oil": true, "top": [["beefChunk",3],["tomato",2],["cabbage",2],["potato",2],["carrot",2]], "garnish": "parsley" },
+  "tw_qingdun_niurou": { "vessel": "bowl", "broth": "#d8c49a", "body": "clear", "oil": true, "top": [["beefChunk",4],["daikon",4]], "garnish": "scallion" },
+  "tw_pidan_xiancai": { "vessel": "bowl", "broth": "#9a3a4a", "body": "chunky", "top": [["spinach",5],["egg",3],["sprouts",2]], "garnish": "none" },
+  "tw_xian_tangyuan": { "vessel": "bowl", "broth": "#b8935a", "body": "clear", "oil": true, "top": [["dumpling",6],["shiitake",2],["greens",2],["pork",2]], "garnish": "cilantro" },
+  "tw_zhusun_tang": { "vessel": "bowl", "broth": "#ece6cf", "body": "clear", "top": [["bamboo",6],["shiitake",3]], "garnish": "none" }
+}
