@@ -1804,8 +1804,8 @@ function vesselHtml(kind, r, still=false){
 }
 function thumbHtml(r){
     const ph = photoOf(r);
-    // <img> にして、画面に入ったものから順に、裏で読みこむ（loading="lazy" と decoding="async"）
-    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" loading="lazy" decoding="async"></span>`
+    // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
