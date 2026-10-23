@@ -13,6 +13,9 @@
  *   node tools/illustrations/generate.mjs --only mapo --force    作り直す
  *   node tools/illustrations/generate.mjs --export-prompts      ChatGPT アプリに貼るための指示文の一覧を書き出す（API 不要）
  *   node tools/illustrations/generate.mjs --import ~/Downloads/ごはん帖  ChatGPT アプリで保存した画像を取りこむ
+ *   --country KR        その国の料理だけ（日本は JP。カンマで複数: --country KR,TH）
+ *   --new               汁もの・主菜・副菜の追加で設定から描いた料理（tools/illustrations/specs/*.json）だけ
+ *   作ったあとは node tools/illustrations/draw/thumbs.mjs を実行する（大きい画像を 512px に縮め、一覧用の小さい絵を作る）
  *
  * 必要なもの: Node.js 18 以上。自動で作る場合は環境変数 OPENAI_API_KEY。
  */
@@ -51,7 +54,29 @@ function loadRecipes(){
     // お膳の「ご飯」「香の物」も作る
     list.push({ id: 'rice', name: '白ご飯', type: 'ごはん', method: '炊', ings: ['ご飯'], extra: true });
     list.push({ id: 'konomono', name: 'お漬物（たくあん・きゅうりの浅漬け）', type: '副菜', method: '和え', ings: ['たくあん'], extra: true });
+    list.forEach(r => { r.cc = 'JP'; });
+    return list.concat(loadPackRecipes());
+}
+// ほかの国のレシピ（gohancho/packs/*.js）
+const TYPE_JA = { main: '主菜', rice: 'ごはん', noodle: '麺', side: '副菜', soup: '汁物' };
+function loadPackRecipes(){
+    const dir = path.join(ROOT, 'gohancho', 'packs'), list = [];
+    for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.js')).sort()){
+        let pk = null;
+        vm.runInNewContext(fs.readFileSync(path.join(dir, f), 'utf8'), { GOHAN_PACK: x => { pk = x; } });
+        if (!pk) continue;
+        for (const r of pk.recipes || []) list.push({ id: r.id, name: r.name, local: r.local, cc: pk.country, country: pk.name, type: TYPE_JA[r.type] || '主菜', method: r.method,
+            ings: (r.ings || []).filter(s => !/\?$/.test(s)).map(s => s.split('|')[1]).filter(Boolean), pack: true });
+        if (pk.staple && pk.staple.id) list.push({ id: pk.staple.id, name: pk.staple.name, local: pk.staple.local, cc: pk.country, country: pk.name, type: 'ごはん', method: 'rice', ings: [pk.staple.name], pack: true, extra: true });
+    }
     return list;
+}
+// 設定から描いた料理（汁もの・主菜・副菜の追加分）
+function specIds(){
+    const dir = path.join(ROOT, 'tools', 'illustrations', 'specs'), ids = new Set();
+    if (!fs.existsSync(dir)) return ids;
+    for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.json'))) Object.keys(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))).forEach(id => ids.add(id));
+    return ids;
 }
 
 // ---- 指示文（プロンプト） ----
@@ -63,7 +88,25 @@ function vesselOf(r){
     if (r.type === '副菜') return 'a small celadon-green ceramic bowl';
     return 'a round white ceramic plate with a thin indigo rim';
 }
+// ほかの国の料理: その国の家庭の器で、本物の見た目に近く
+function packVessel(r){
+    if (r.type === '汁物') return 'a deep soup bowl typical of home kitchens in ' + r.country;
+    if (r.type === 'ごはん' || r.type === '麺') return 'a wide bowl or plate typical of home kitchens in ' + r.country;
+    if (r.type === '副菜') return 'a small side dish or small plate typical of home kitchens in ' + r.country;
+    return 'a round serving plate typical of home kitchens in ' + r.country;
+}
+function packPrompt(r){
+    return [
+        `A cute, clean pop-style food illustration of the home-cooked dish "${r.name}"` + (r.local && r.local !== r.name ? ` (${r.local})` : '') + ` from ${r.country}.`,
+        `Main ingredients: ${r.ings.slice(0, 7).join(', ')}.`,
+        `Served in ${packVessel(r)}, seen from directly above (top-down view), centered, the dish filling about 90% of the image.`,
+        'Style: modern flat illustration for a recipe app, soft rounded shapes, bright and appetizing colors, gentle shading and small white highlights, clean dark-brown outlines.',
+        `Accurate to how this dish really looks when made at home in ${r.country} (shape, color, garnish and serving style). No text, no letters, no hands, no utensils, no table, no other dishes. Transparent background.`,
+        'Keep the same illustration style across a whole series of dishes.',
+    ].join(' ');
+}
 export function promptOf(r){
+    if (r.pack) return packPrompt(r);
     const garnish = r.type === '主菜' && (r.method === '焼' || r.method === '揚') ? ' Served with a little shredded cabbage and a cherry tomato on the side.' : '';
     return [
         `A cute, clean pop-style food illustration of the Japanese home-cooked dish "${r.name}".`,
@@ -172,7 +215,9 @@ async function main(){
     const recipes = loadRecipes();
     const m = readManifest();
     const only = val('--only') ? new Set(val('--only').split(',').map(s => s.trim())) : null;
-    let targets = recipes.filter(r => (!only || only.has(r.id)));
+    const ccs = val('--country') ? new Set(val('--country').toUpperCase().split(',').map(s => s.trim())) : null;
+    const fromSpecs = has('--new') ? specIds() : null;
+    let targets = recipes.filter(r => (!only || only.has(r.id)) && (!ccs || ccs.has(r.cc)) && (!fromSpecs || fromSpecs.has(r.id)));
     // 手描きの SVG（via: 'svg'）は、ChatGPT の画像で置きかえてよいものとして数える
     if (!has('--force') && !has('--export-prompts')) targets = targets.filter(r => !m.items[r.id] || m.items[r.id].via === 'svg');
     if (only){ const unknown = [...only].filter(id => !recipes.some(r => r.id === id)); if (unknown.length) console.log(`見つからない料理 ID: ${unknown.join(', ')}`); }

@@ -7,6 +7,7 @@
  * 端末が毎回計算するので、何百品も並ぶと遅い。前もって小さい画像にしておくと、読みこみも表示も速い。
  * 料理の詳しい画面とお膳の器は、大きく出すので SVG のまま使う。
  * 出力: gohancho/img/dish/t/{id}.webp と、manifest.json の各料理の "thumb"
+ * ChatGPT で作った大きい画像（1024px）は、先に 512px の WebP に縮める（アプリが重くならないように）
  * 必要なもの: Playwright（npm i -g playwright && npx playwright install chromium）
  */
 import fs from 'node:fs';
@@ -19,7 +20,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(HERE, '../../..', 'gohancho', 'img', 'dish');
 const TDIR = path.join(OUT, 't');
 const MANIFEST = path.join(OUT, 'manifest.json');
-const SIZE = 192, QUALITY = 0.8;
+const SIZE = 192, QUALITY = 0.8, BIG = 512, BIG_QUALITY = 0.85;
 const all = process.argv.includes('--all');
 
 let chromium;
@@ -31,20 +32,47 @@ catch(e){
 
 const m = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 fs.mkdirSync(TDIR, { recursive: true });
+const isRaster = f => !f.endsWith('.svg');
 const mime = f => f.endsWith('.svg') ? 'image/svg+xml' : f.endsWith('.png') ? 'image/png' : f.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
+// 大きい画像（ChatGPT など）: 150KB より大きいものを 512px に縮める
+const shrink = Object.entries(m.items).filter(([id, it]) => it && it.file && isRaster(it.file) && fs.existsSync(path.join(OUT, it.file)) && fs.statSync(path.join(OUT, it.file)).size > 150 * 1024);
 const todo = Object.entries(m.items).filter(([id, it]) => {
     if (!it || !it.file) return false;
     const src = path.join(OUT, it.file), dst = path.join(TDIR, `${id}.webp`);
     if (all || !it.thumb || !fs.existsSync(dst)) return true;
     return fs.statSync(dst).mtimeMs < fs.statSync(src).mtimeMs;
 });
-if (!todo.length){ console.log('小さい絵はそろっています'); process.exit(0); }
+if (!todo.length && !shrink.length){ console.log('小さい絵はそろっています'); process.exit(0); }
 
 let browser;
 try{ browser = await chromium.launch(); }
 catch(e){ browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }); }
 const page = await browser.newPage();
 await page.setContent('<!doctype html><title>thumbs</title>');
+const draw = (batch, size, quality) => page.evaluate(async ({ batch, size, quality }) => {
+    const out = [];
+    for (const b of batch){
+        const im = new Image(); im.src = b.url;
+        try{ await im.decode(); }catch(e){ out.push({ id: b.id, err: String(e) }); continue; }
+        const c = document.createElement('canvas'); c.width = c.height = size;
+        c.getContext('2d').drawImage(im, 0, 0, size, size);
+        out.push({ id: b.id, data: c.toDataURL('image/webp', quality).split(',')[1] });
+    }
+    return out;
+}, { batch, size, quality });
+let shrunk = 0;
+for (let i = 0; i < shrink.length; i += 20){
+    const batch = shrink.slice(i, i + 20).map(([id, it]) => ({ id, url: `data:${mime(it.file)};base64,` + fs.readFileSync(path.join(OUT, it.file)).toString('base64') }));
+    for (const r of await draw(batch, BIG, BIG_QUALITY)){
+        if (r.err){ console.error(`${r.id}: 縮められませんでした（${r.err}）`); continue; }
+        const it = m.items[r.id], file = `${r.id}.webp`;
+        fs.writeFileSync(path.join(OUT, file), Buffer.from(r.data, 'base64'));
+        if (it.file !== file) fs.unlinkSync(path.join(OUT, it.file));
+        it.file = file; shrunk++;
+        if (!todo.some(([id]) => id === r.id)) todo.push([r.id, it]);
+    }
+}
+if (shrunk) console.log(`${shrunk}枚の大きい画像を ${BIG}px に縮めました`);
 let n = 0, bytes = 0;
 for (let i = 0; i < todo.length; i += 40){
     const batch = todo.slice(i, i + 40).map(([id, it]) => ({ id, url: `data:${mime(it.file)};base64,` + fs.readFileSync(path.join(OUT, it.file)).toString('base64') }));
