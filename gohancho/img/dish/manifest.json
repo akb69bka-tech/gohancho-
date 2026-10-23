@@ -5298,6 +5298,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "pe_caldo_gallina": {
+      "file": "pe_caldo_gallina.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_chupe_camarones": {
+      "file": "pe_chupe_camarones.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_menestron": {
+      "file": "pe_menestron.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_sancochado": {
+      "file": "pe_sancochado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_chilcano": {
+      "file": "pe_chilcano.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_parihuela": {
+      "file": "pe_parihuela.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_shambar": {
+      "file": "pe_shambar.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_sopa_moron": {
+      "file": "pe_sopa_moron.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_crema_zapallo": {
+      "file": "pe_crema_zapallo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_sopa_wantan": {
+      "file": "pe_sopa_wantan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_patasca": {
+      "file": "pe_patasca.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_chupe_habas": {
+      "file": "pe_chupe_habas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_inchicapi": {
+      "file": "pe_inchicapi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_sustancia": {
+      "file": "pe_sustancia.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_crema_esparragos": {
+      "file": "pe_crema_esparragos.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_caldo_verde": {
+      "file": "pe_caldo_verde.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_fuchifu": {
+      "file": "pe_fuchifu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_caldo_cordero": {
+      "file": "pe_caldo_cordero.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_dieta_pollo": {
+      "file": "pe_dieta_pollo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_lawa_choclo": {
+      "file": "pe_lawa_choclo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }

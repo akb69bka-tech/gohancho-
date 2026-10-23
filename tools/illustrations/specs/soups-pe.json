@@ -1,0 +1,22 @@
+{
+  "pe_caldo_gallina": { "vessel": "deep", "broth": "#e3c47a", "body": "clear", "oil": true, "top": [["chicken",3],["noodles",2],["potato",2],["eggHalf",2],["scallion",2]], "garnish": "scallion" },
+  "pe_chupe_camarones": { "vessel": "deep", "broth": "#e8a35a", "body": "chunky", "swirl": "#f3dcb8", "top": [["shrimp",4],["potato",2],["corn",2],["poached",1],["cheese",2],["peas",1]], "garnish": "herbs" },
+  "pe_menestron": { "vessel": "deep", "broth": "#7f9a4a", "body": "chunky", "top": [["beefChunk",2],["whitebeans",2],["pasta",2],["potato",2],["corn",1],["cabbage",1],["carrot",2]], "garnish": "none" },
+  "pe_sancochado": { "vessel": "pot", "broth": "#d2b57c", "body": "chunky", "top": [["beefChunk",3],["potato",2],["sweetpotato",2],["corn",1],["cabbage",2],["carrot",2]], "garnish": "parsley" },
+  "pe_chilcano": { "vessel": "bowl", "broth": "#e6dcc0", "body": "clear", "top": [["fish",3],["lime",1],["scallion",2],["herbsprig",1],["chili",1]], "garnish": "cilantro" },
+  "pe_parihuela": { "vessel": "clay", "broth": "#c4552e", "body": "chunky", "oil": true, "top": [["fish",2],["shrimp",3],["squid",2],["mussel",3],["lime",1]], "garnish": "cilantro" },
+  "pe_shambar": { "vessel": "clay", "broth": "#9a6a3c", "body": "stew", "top": [["beans",3],["chickpeas",2],["pork",3],["corn",2]], "garnish": "cilantro" },
+  "pe_sopa_moron": { "vessel": "deep", "broth": "#d9c08a", "body": "chunky", "top": [["rice",3],["potato",2],["carrot",2],["peas",2],["cheese",1]], "garnish": "parsley" },
+  "pe_crema_zapallo": { "vessel": "bowl", "broth": "#e8962e", "body": "cream", "swirl": "#f6e7cf", "top": [["croutons",3],["cheese",1]], "garnish": "parsley" },
+  "pe_sopa_wantan": { "vessel": "bowl", "broth": "#e2c98e", "body": "clear", "oil": true, "top": [["dumpling",4],["bokchoy",2],["chicken",2],["pork",2],["scallion",2]], "garnish": "scallion" },
+  "pe_patasca": { "vessel": "clay", "broth": "#c9945a", "body": "chunky", "oil": true, "top": [["tripe",3],["corn",3],["potato",2],["herbsprig",2]], "garnish": "herbs" },
+  "pe_chupe_habas": { "vessel": "deep", "broth": "#e9dcb4", "body": "chunky", "top": [["beans",4],["potato",2],["poached",1],["cheese",2]], "garnish": "herbs" },
+  "pe_inchicapi": { "vessel": "clay", "broth": "#d6ad6e", "body": "stew", "top": [["chicken",3],["potato",3],["herbsprig",2]], "garnish": "cilantro" },
+  "pe_sustancia": { "vessel": "deep", "broth": "#c99a55", "body": "clear", "oil": true, "top": [["beefChunk",3],["noodles",2],["potato",2],["carrot",2]], "garnish": "parsley" },
+  "pe_crema_esparragos": { "vessel": "bowl", "broth": "#b9c47a", "body": "cream", "swirl": "#f2efdf", "top": [["greens",3],["cheese",1]], "garnish": "pepper" },
+  "pe_caldo_verde": { "vessel": "clay", "broth": "#7ea24a", "body": "chunky", "top": [["potato",3],["poached",2],["cheese",2],["herbsprig",2]], "garnish": "herbs" },
+  "pe_fuchifu": { "vessel": "bowl", "broth": "#e6cf8f", "body": "clear", "top": [["egg",4],["noodles",2],["chicken",2],["bokchoy",1],["scallion",2]], "garnish": "scallion" },
+  "pe_caldo_cordero": { "vessel": "clay", "broth": "#d7bd86", "body": "chunky", "oil": true, "top": [["beefChunk",3],["potato",2],["carrot",2],["cabbage",1],["herbsprig",2]], "garnish": "herbs" },
+  "pe_dieta_pollo": { "vessel": "deep", "broth": "#ead9a6", "body": "clear", "top": [["chicken",3],["potato",2],["carrot",2],["pumpkin",2],["pasta",1]], "garnish": "parsley" },
+  "pe_lawa_choclo": { "vessel": "clay", "broth": "#ecd27e", "body": "cream", "top": [["corn",4],["potato",2],["cheese",2],["herbsprig",1]], "garnish": "herbs" }
+}

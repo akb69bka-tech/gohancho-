@@ -35,7 +35,33 @@ GOHAN_PACK_TR('PE', 'es', {
     'avocado': 'Palta',
     'beet': 'Betarraga',
     'plantain': 'Plátano de freír',
-    'beer': 'Cerveza negra'
+    'beer': 'Cerveza negra',
+    'shrimp': 'Camarones',
+    'squid': 'Calamar',
+    'mussels': 'Choros',
+    'pumpkin': 'Zapallo',
+    'asparagus': 'Espárragos',
+    'celery': 'Apio',
+    'ginger': 'Kion',
+    'spring onion': 'Cebolla china',
+    'cabbage': 'Col',
+    'cassava': 'Yuca',
+    'sweet potato': 'Camote',
+    'leek': 'Poro',
+    'beans': 'Frejoles',
+    'wheat': 'Trigo',
+    'hominy': 'Mote',
+    'tripe': 'Mondongo',
+    'pork': 'Cerdo',
+    'lamb': 'Cordero',
+    'peanuts': 'Maní',
+    'wonton wrappers': 'Masa wantán',
+    'mint': 'Hierbabuena',
+    'huacatay': 'Huacatay',
+    'parsley': 'Perejil',
+    'fava': 'Habas',
+    'bok choy': 'Col china (pak choi)',
+    'cornmeal': 'Harina de maíz'
   },
   recipes: {
     'pe_lomo_saltado': {
@@ -240,6 +266,261 @@ GOHAN_PACK_TR('PE', 'es', {
         'Sazona con sal y orégano y sirve cada plato con un huevo y pan tostado.'
       ],
       tip: { add: 'Frota orégano seco entre las palmas sobre el plato', why: 'Libera su aroma', skill: 'La leche, a fuego bajo', how: 'Agrega la leche cuando el fuego esté bajo para que no se corte.' }
+    },
+    'pe_caldo_gallina': {
+      name: 'Caldo de gallina',
+      ings: [['Gallina o presas de pollo con hueso', '2 presas (500 g)'], ['Tallarín grueso', '80 g'], ['Papas amarillas', '2'], ['Huevos', '2'], ['Kion', '3 cm'], ['Cebolla china', '2 tallos'], ['Apio', '1 rama'], ['Limón', '1']],
+      seas: 'Sal · 1,8 litros de agua · 1 diente de ajo · Ají amarillo o rocoto, para servir',
+      steps: [
+        'Pon la gallina en una olla con 1,8 litros de agua fría, el kion en rodajas, el ajo machacado y el apio. Lleva a hervor a fuego medio y retira la espuma gris.',
+        'Tapa y cocina a fuego bajo 1 hora 30 minutos (40 minutos si usas pollo común), hasta que la carne se desprenda del hueso y esté bien cocida.',
+        'Mientras tanto, sancocha los huevos 10 minutos hasta que estén duros, enfríalos en agua, pélalos y pártelos por la mitad.',
+        'Agrega las papas peladas y partidas por la mitad y cocina 15 minutos; añade el tallarín y cocina de 8 a 10 minutos más, hasta que esté suave.',
+        'Sazona con sal y sirve cada plato con una presa, papa, tallarín y medio huevo, con cebolla china picada encima. Pon limón y ají en la mesa.'
+      ],
+      tip: { add: 'Un chorrito de limón y rocoto picado en la mesa', why: 'Equilibra un caldo tan sustancioso', skill: 'Empieza en agua fría y espuma', how: 'Calentar la gallina despacio desde agua fría y quitar la espuma deja el caldo limpio y dorado.' }
+    },
+    'pe_chupe_camarones': {
+      name: 'Chupe de camarones',
+      ings: [['Camarones o langostinos con cáscara', '300 g'], ['Papas amarillas', '2'], ['Choclo', '1 mazorca'], ['Arroz', '3 cucharadas (40 g)'], ['Arvejas o habas', '1/3 taza'], ['Huevos', '2'], ['Leche evaporada', '120 ml'], ['Queso fresco', '80 g'], ['Cebolla', '1/2'], ['Tomate', '1'], ['Huacatay u orégano', '1 ramita']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de orégano seco · 1 cucharada de aceite · 1 litro de agua',
+      steps: [
+        'Pela los camarones y guarda las cabezas y cáscaras. Fríe las cáscaras en el aceite 3 minutos, agrega 1 litro de agua, hierve 10 minutos y cuela: ese es tu caldo.',
+        'En la misma olla sofríe la cebolla picada, el ajo, el tomate rallado y el ají panca 5 minutos a fuego medio; luego vierte el caldo.',
+        'Agrega el arroz, las papas en trozos y el choclo en rodajas, y cocina 15 minutos; añade las arvejas y cocina 5 minutos más.',
+        'Rompe los huevos con cuidado dentro de la sopa y cocina 5 minutos, hasta que la clara y la yema estén firmes. Añade los camarones y cocina 3 minutos, hasta que estén rosados y opacos por completo.',
+        'Baja el fuego, incorpora la leche evaporada y el queso en cubos y calienta 1-2 minutos sin que hierva. Sazona con sal, orégano y las hojas de huacatay.'
+      ],
+      tip: { add: 'Unas hojas de huacatay al final', why: 'Es la hierba que le da su aroma al chupe arequipeño', skill: 'Caldo de las cáscaras', how: 'Freír las cabezas y cáscaras antes de echar el agua da un color anaranjado y un sabor profundo a camarón.' }
+    },
+    'pe_menestron': {
+      name: 'Menestrón',
+      ings: [['Carne de res (osobuco o pecho) en trozos', '250 g'], ['Frejoles blancos cocidos (de lata, o secos y remojados)', '1/2 taza'], ['Fideos cortos (codito)', '50 g'], ['Papa', '1'], ['Yuca', '100 g'], ['Choclo', '1 mazorca'], ['Col', '1/8'], ['Zanahoria', '1'], ['Hojas de albahaca', '1 taza'], ['Espinaca', '1 puñado'], ['Queso fresco o parmesano', '40 g'], ['Cebolla', '1/2']],
+      seas: 'Sal · 2 dientes de ajo · 2 cucharadas de aceite · 1,5 litros de agua',
+      steps: [
+        'Si usas frejoles secos, remójalos desde la noche anterior y luego hiérvelos en agua nueva cerca de 1 hora, hasta que estén bien suaves.',
+        'Pon la carne en 1,5 litros de agua, lleva a hervor, espuma y cocina tapado 40 minutos, hasta que esté suave.',
+        'Agrega la papa, la yuca y la zanahoria en cubos, el choclo en rodajas y la col picada, y cocina 15 minutos. Añade los fideos y los frejoles y cocina 10 minutos más.',
+        'Mientras tanto, licúa la albahaca, la espinaca, el queso y el ajo con un cucharón de caldo. Sofríe la cebolla picada en el aceite 3 minutos, agrega la crema verde y cocina 2 minutos.',
+        'Incorpora la mezcla verde a la olla, cocina 5 minutos y sazona con sal. Debe quedar espeso.'
+      ],
+      tip: { add: 'Más queso rallado encima', why: 'Se derrite en el caldo verde', skill: 'La albahaca, al final', how: 'Cocinarla solo unos minutos la mantiene verde y aromática, sin que se ponga oscura.' }
+    },
+    'pe_sancochado': {
+      name: 'Sancochado',
+      ings: [['Pecho u osobuco de res con hueso', '500 g'], ['Papas', '2'], ['Camote', '1'], ['Yuca', '150 g'], ['Choclo', '1 mazorca'], ['Col', '1/4'], ['Zanahorias', '2'], ['Poro', '1'], ['Apio', '1 rama']],
+      seas: 'Sal · 2 litros de agua · 5 granos de pimienta negra · Salsa criolla o ají, para servir',
+      steps: [
+        'Pon la carne en una olla grande con 2 litros de agua fría, el poro, el apio y la pimienta. Lleva a hervor y retira la espuma.',
+        'Tapa y cocina a fuego bajo 1 hora 15 minutos, hasta que la carne esté suave.',
+        'Agrega las zanahorias, la yuca en trozos y el choclo en pedazos, y cocina 15 minutos.',
+        'Añade las papas peladas, el camote en rodajas gruesas y la col en gajos, y cocina 20 minutos, hasta que todo esté tierno. Sazona el caldo con sal.',
+        'Sirve primero el caldo en tazas y luego la carne y las verduras en un plato con salsa criolla, o todo junto en un plato hondo.'
+      ],
+      tip: { add: 'Una cucharada de ají amarillo licuado con limón', why: 'Una salsa viva para la carne sancochada', skill: 'Verduras por etapas', how: 'Pon primero las duras y al final la col y las papas, para que nada se deshaga.' }
+    },
+    'pe_chilcano': {
+      name: 'Chilcano de pescado',
+      ings: [['Cabezas y espinazos de pescado, o trozos de pescado blanco', '500 g'], ['Kion', '2 cm'], ['Cebolla china', '2 tallos'], ['Culantro', '1 puñadito'], ['Limón', '1'], ['Ají limo o ají amarillo fresco', '1']],
+      seas: 'Sal · 1 litro de agua · 1 diente de ajo',
+      steps: [
+        'Enjuaga bien las cabezas y espinazos con agua fría y quítales las agallas, que amargan el caldo.',
+        'Ponlos en una olla con 1 litro de agua, el kion en rodajas, el ajo machacado y la parte blanca de la cebolla china. Lleva a hervor y espuma.',
+        'Cocina a fuego bajo 20 minutos, hasta que la carne esté opaca y se desprenda de las espinas. Sazona con sal.',
+        'En cada plato pon un chorrito de limón, la parte verde de la cebolla china picada, culantro y ají en rodajas, y sirve encima el caldo caliente con el pescado.'
+      ],
+      tip: { add: 'Un poco de arroz cocido en el plato', why: 'Lo convierte en una comida ligera', skill: 'El limón en el plato, no en la olla', how: 'El limón hervido se amarga; agregarlo crudo justo antes de comer lo mantiene fresco.' }
+    },
+    'pe_parihuela': {
+      name: 'Parihuela',
+      ings: [['Filete de pescado blanco (corvina, merluza)', '250 g'], ['Langostinos pelados', '150 g'], ['Calamar en aros', '150 g'], ['Choros', '8'], ['Tomates', '2'], ['Cebolla', '1'], ['Pasta de ají amarillo', '1 cucharada'], ['Culantro', '1 puñadito'], ['Chicha de jora o cerveza', '100 ml'], ['Limón', '1']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de orégano seco · 1 hoja de laurel · 2 cucharadas de aceite · 800 ml de agua o fumet de pescado',
+      steps: [
+        'Lava bien los choros y quítales las barbas; descarta los que estén abiertos y no se cierren al golpearlos.',
+        'Sofríe en el aceite la cebolla picada, el ajo y las dos pastas de ají 5 minutos, agrega los tomates rallados y cocina 5 minutos; luego vierte la chicha y cocina 2 minutos.',
+        'Añade el agua o el fumet, el laurel y el orégano, y cocina 10 minutos.',
+        'Agrega el pescado en trozos y cocina 4 minutos; luego los choros, los langostinos y el calamar. Tapa y cocina 5 minutos, hasta que los choros se abran, los langostinos estén rosados y el pescado se deshoje con facilidad; descarta los choros que sigan cerrados.',
+        'Sazona con sal, espolvorea culantro y sirve con gajos de limón.'
+      ],
+      tip: { add: 'Un chorrito de chicha de jora', why: 'Su toque ácido le da profundidad al caldo', skill: 'Los mariscos, al final', how: 'El calamar y los langostinos se ponen duros si hierven mucho; unos minutos bastan para que se cocinen bien.' }
+    },
+    'pe_shambar': {
+      name: 'Shambar',
+      ings: [['Trigo pelado', '1/2 taza (90 g)'], ['Frejoles secos (canarios o blancos)', '1/4 taza (50 g)'], ['Habas secas partidas', '1/4 taza (50 g)'], ['Arvejas secas partidas', '1/4 taza (50 g)'], ['Panceta o pata de cerdo ahumada', '200 g'], ['Cebolla', '1/2'], ['Culantro', '1 puñadito'], ['Hierbabuena', 'unas ramitas']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1 cucharada de aceite · 1,8 litros de agua · Cancha, para servir',
+      steps: [
+        'La noche anterior, remoja el trigo, los frejoles, las habas y las arvejas en abundante agua fría.',
+        'Escúrrelos y ponlos en una olla con 1,8 litros de agua nueva y el cerdo; hierve a fuego fuerte 10 minutos y luego tapa y cocina a fuego bajo de 1 hora 30 minutos a 2 horas, removiendo de vez en cuando, hasta que los granos estén bien suaves.',
+        'Sofríe la cebolla picada, el ajo, el ají panca y el comino en el aceite 5 minutos e incorpóralo a la olla.',
+        'Saca el cerdo, córtalo en trozos y devuélvelo. Cocina 15 minutos más, agregando agua si espesa demasiado, y sazona con sal.',
+        'Sirve con culantro y hierbabuena picados encima y cancha al lado.'
+      ],
+      tip: { add: 'Un puñado de cancha encima', why: 'El maíz tostado crocante es su compañero de siempre', skill: 'Cocina bien los granos', how: 'Los granos secos deben hervir fuerte al inicio y luego cocinarse hasta que se aplasten fácil entre los dedos.' }
+    },
+    'pe_sopa_moron': {
+      name: 'Sopa de morón',
+      ings: [['Trigo morón', '1/2 taza (80 g)'], ['Papas', '2'], ['Zanahoria', '1'], ['Cebolla', '1/2'], ['Arvejas', '1/3 taza'], ['Queso fresco', '50 g'], ['Leche evaporada', '50 ml']],
+      seas: 'Sal · 1 diente de ajo · 1 cucharada de aceite · 1/2 cucharadita de orégano seco · 1,1 litros de agua o caldo de res · Perejil picado',
+      steps: [
+        'Tuesta el morón en una olla seca a fuego medio 3 minutos, removiendo, hasta que huela a nuez; retíralo.',
+        'Sofríe la cebolla picada y el ajo en el aceite 3 minutos, vierte el agua o el caldo y lleva a hervor.',
+        'Echa el morón en lluvia sin dejar de remover para que no se formen grumos y cocina 15 minutos, removiendo a menudo.',
+        'Agrega las papas y la zanahoria en cubitos y cocina 15 minutos hasta que estén suaves; añade las arvejas en los últimos 5 minutos.',
+        'Incorpora la leche y el queso en cubos, si los usas, sazona con sal y orégano y termina con perejil.'
+      ],
+      tip: { add: 'Un hueso de res cocido en el caldo', why: 'Convierte esta sopa económica en una sustanciosa', skill: 'Tuesta el morón', how: 'Unos minutos en la olla seca le dan sabor tostado y evitan que el trigo quede pegajoso.' }
+    },
+    'pe_crema_zapallo': {
+      name: 'Crema de zapallo',
+      ings: [['Zapallo macre o zapallo loche', '500 g'], ['Papa', '1'], ['Cebolla', '1/2'], ['Leche evaporada', '100 ml'], ['Parmesano o queso fresco', '30 g'], ['Pan en cubitos tostados', '1 rebanada']],
+      seas: 'Sal · Pimienta · 1 diente de ajo · 1 cucharada de mantequilla · 600 ml de agua o caldo de pollo · Una pizca de nuez moscada (opcional)',
+      steps: [
+        'Derrite la mantequilla en una olla y cocina la cebolla picada y el ajo a fuego medio-bajo 4 minutos, hasta que se ablanden.',
+        'Agrega el zapallo y la papa pelados en cubos y el agua o el caldo, lleva a hervor y cocina 20 minutos, hasta que estén muy suaves.',
+        'Deja entibiar un poco y licúa hasta que quede lisa, llenando la licuadora solo hasta la mitad.',
+        'Regresa a la olla, incorpora la leche evaporada y calienta 2 minutos sin que hierva. Sazona con sal, pimienta y nuez moscada.',
+        'Sirve con cubitos de pan tostado y queso rallado encima.'
+      ],
+      tip: { add: 'Un poquito de pasta de ají amarillo', why: 'Da un picor suave y un naranja aún más intenso', skill: 'Licúa con cuidado', how: 'La sopa caliente se expande en la licuadora; llénala hasta la mitad y sujeta la tapa con un trapo.' }
+    },
+    'pe_sopa_wantan': {
+      name: 'Sopa wantán',
+      ings: [['Carne de cerdo molida', '150 g'], ['Masa wantán', '16 hojas'], ['Presas de pollo, para el caldo', '300 g'], ['Langostinos pelados', '60 g'], ['Col china (pak choi)', '2 pequeñas'], ['Cebolla china', '3 tallos'], ['Kion', '3 cm']],
+      seas: 'Sal · Pimienta · 1 1/2 cucharadas de sillao · 1 cucharadita de aceite de ajonjolí · 1,2 litros de agua',
+      steps: [
+        'Cocina el pollo en 1,2 litros de agua con el kion en rodajas y la parte blanca de 2 cebollas chinas 30 minutos, hasta que esté bien cocido. Sácalo y deshiláchalo.',
+        'Mezcla el cerdo con los langostinos bien picados, la cebolla china restante picada, 1/2 cucharada de sillao, unas gotas de aceite de ajonjolí, sal y pimienta.',
+        'Pon una cucharadita de relleno en el centro de cada hoja, moja los bordes, dobla en triángulo y une las dos puntas.',
+        'Vuelve a hervir el caldo, echa los wantanes y cocina de 5 a 6 minutos, hasta que floten y el relleno esté bien cocido, sin partes rosadas. Agrega la col china en el último minuto.',
+        'Sazona con el resto del sillao y sal, y sirve con el pollo deshilachado, la parte verde de la cebolla china y unas gotas de aceite de ajonjolí.'
+      ],
+      tip: { add: 'Unas tajadas de chancho asado encima', why: 'Así la sirven los chifas de Lima', skill: 'Sella bien los wantanes', how: 'Saca el aire al doblarlos para que no se revienten al hervir.' }
+    },
+    'pe_patasca': {
+      name: 'Patasca',
+      ings: [['Mondongo de res limpio', '300 g'], ['Osobuco de res', '200 g'], ['Mote pelado cocido', '1 1/2 tazas (250 g)'], ['Papas', '2'], ['Cebolla', '1/2'], ['Hierbabuena', 'unas ramitas']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1/2 cucharadita de orégano seco · 1 cucharada de aceite · 2 litros de agua',
+      steps: [
+        'Frota el mondongo con sal y jugo de limón, enjuágalo bien varias veces y córtalo en tiras. (Si usas mote seco, remójalo la noche anterior y hiérvelo unas 2 horas, hasta que los granos revienten.)',
+        'Pon el mondongo y la carne en 2 litros de agua, lleva a hervor y espuma; luego tapa y cocina 2 horas (o 40 minutos en olla a presión), hasta que el mondongo esté suave.',
+        'Sofríe la cebolla picada, el ajo, el ají panca y el comino en el aceite 5 minutos, agrégalo a la olla con el mote y cocina 20 minutos.',
+        'Añade las papas en trozos y cocina 20 minutos, hasta que estén suaves.',
+        'Sazona con sal y orégano y termina con hierbabuena picada. Sirve con ají al lado.'
+      ],
+      tip: { add: 'Rocoto picado al lado', why: 'El picante clásico para una mañana fría', skill: 'Limpia bien el mondongo', how: 'Frotarlo con sal y limón y enjuagarlo varias veces le quita el olor fuerte.' }
+    },
+    'pe_chupe_habas': {
+      name: 'Chupe de habas',
+      ings: [['Habas verdes desgranadas', '1 1/2 tazas (250 g)'], ['Papas', '2'], ['Arroz', '2 cucharadas'], ['Huevos', '2'], ['Leche evaporada', '100 ml'], ['Queso fresco', '80 g'], ['Cebolla', '1/2'], ['Hierbabuena o huacatay', '1 ramita']],
+      seas: 'Sal · 1 diente de ajo · 1 cucharada de pasta de ají amarillo · 1/2 cucharadita de orégano seco · 1 cucharada de aceite · 900 ml de agua',
+      steps: [
+        'Blanquea las habas 1 minuto en agua hirviendo y quítales la piel si es gruesa.',
+        'Sofríe la cebolla picada, el ajo y el ají en el aceite 4 minutos, agrega 900 ml de agua y el arroz y cocina 8 minutos.',
+        'Añade las papas en cubos y las habas y cocina 15 minutos, hasta que estén suaves.',
+        'Rompe los huevos con cuidado dentro de la sopa y cocina 5 minutos, hasta que la clara y la yema estén firmes.',
+        'Baja el fuego, agrega la leche y el queso en cubos, calienta 1 minuto sin que hierva, sazona con sal y orégano y añade la hierbabuena.'
+      ],
+      tip: { add: 'Más cubos de queso fresco', why: 'Se ablandan en la sopa caliente', skill: 'Pela las habas grandes', how: 'Las habas maduras tienen la piel dura; un minuto en agua hirviendo hace que salga sola.' }
+    },
+    'pe_inchicapi': {
+      name: 'Inchicapi',
+      ings: [['Presas de pollo', '2 (400 g)'], ['Maní crudo sin sal', '1/2 taza (70 g)'], ['Yuca', '200 g'], ['Harina de maíz fina', '2 cucharadas'], ['Cebolla', '1/2'], ['Sacha culantro o culantro', '1 puñado']],
+      seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino · 1 cucharada de aceite · 1,2 litros de agua',
+      steps: [
+        'Tuesta el maní en una sartén seca a fuego medio-bajo 5 minutos, removiendo; quítale la cáscarita y licúalo con 300 ml del agua hasta que quede liso.',
+        'Pon el pollo en los 900 ml de agua restantes, lleva a hervor, espuma y cocina 20 minutos.',
+        'Sofríe la cebolla, el ajo y el comino en el aceite 4 minutos y agrégalos a la olla con la leche de maní y la yuca en trozos. Cocina 20 minutos, removiendo a menudo para que no se pegue, hasta que la yuca esté suave y el pollo bien cocido.',
+        'Disuelve la harina de maíz en 4 cucharadas de agua fría, incorpórala y cocina 5 minutos, hasta que la sopa espese un poco.',
+        'Sazona con sal y agrega el culantro picado justo antes de servir.'
+      ],
+      tip: { add: 'Un poco de ají charapita u otro ají picante picado', why: 'El ají pequeño y bravo de la Amazonía', skill: 'Remueve la leche de maní', how: 'El maní molido se asienta y se pega al fondo; remueve cada pocos minutos.' }
+    },
+    'pe_sustancia': {
+      name: 'Sustancia de carne',
+      ings: [['Osobuco o huesos de res con carne', '500 g'], ['Fideo cabello o tallarín', '60 g'], ['Papas amarillas', '2'], ['Zanahoria', '1'], ['Apio', '1 rama'], ['Poro', '1/2'], ['Kion', '2 cm']],
+      seas: 'Sal · 1,8 litros de agua · 4 granos de pimienta negra · Perejil picado · Limón y ají, para servir',
+      steps: [
+        'Pon la carne en 1,8 litros de agua fría con el apio, el poro, el kion y la pimienta. Lleva a hervor y espuma con cuidado.',
+        'Tapa y cocina a fuego bajo 1 hora 30 minutos, hasta que la carne esté muy suave. Retira el poro y el apio y corta la carne en trozos.',
+        'Agrega las papas en mitades y la zanahoria en rodajas y cocina 15 minutos.',
+        'Añade los fideos y cocina de 6 a 8 minutos; luego sazona con sal.',
+        'Sirve con la carne y un poco de perejil, con limón y ají en la mesa.'
+      ],
+      tip: { add: 'Un chorrito de limón', why: 'Aviva el sabor profundo de la carne', skill: 'Hervor suave', how: 'Un hervor apenas perceptible da un caldo limpio; si hierve fuerte se enturbia.' }
+    },
+    'pe_crema_esparragos': {
+      name: 'Crema de espárragos',
+      ings: [['Espárragos verdes', '300 g'], ['Papa', '1'], ['Cebolla', '1/2'], ['Leche evaporada', '100 ml'], ['Parmesano rallado', '2 cucharadas']],
+      seas: 'Sal · Pimienta · 1 cucharada de mantequilla · 600 ml de agua o caldo de pollo',
+      steps: [
+        'Quiebra la parte dura de los espárragos, corta las puntas y resérvalas, y corta los tallos en rodajas.',
+        'Cocina la cebolla picada en la mantequilla a fuego medio-bajo 4 minutos, agrega los tallos, la papa en cubos y el agua o el caldo, y cocina 15 minutos hasta que estén suaves.',
+        'Licúa hasta que quede liso, regresa a la olla, agrega las puntas y cocina 3 minutos.',
+        'Incorpora la leche evaporada, calienta 2 minutos sin que hierva y sazona con sal, pimienta y parmesano.'
+      ],
+      tip: { add: 'Cubitos de pan tostado', why: 'Un contraste crocante con la crema suave', skill: 'Las puntas enteras', how: 'Cocinarlas solo al final las mantiene verdes y deja algo que morder.' }
+    },
+    'pe_caldo_verde': {
+      name: 'Caldo verde',
+      ings: [['Papas blancas', '3'], ['Huevos', '2'], ['Queso fresco', '80 g'], ['Perejil', '1 puñado'], ['Culantro', '1 puñado'], ['Hierbabuena', 'unas ramitas'], ['Huacatay', 'unas hojas']],
+      seas: 'Sal · 1 diente de ajo · 900 ml de agua · Cancha, para servir',
+      steps: [
+        'Pela las papas, pártelas por la mitad y hiérvelas en 900 ml de agua con sal 15 minutos, hasta que estén casi suaves.',
+        'Mientras tanto, licúa las hierbas, el ajo y la mitad del queso con unas cucharadas de agua hasta obtener una pasta verde y lisa.',
+        'Rompe los huevos uno por uno dentro de la sopa que hierve suave y cocina 5 minutos, hasta que la clara y la yema estén firmes.',
+        'Incorpora la pasta verde y el resto del queso en cubos y cocina 2 minutos; sazona con sal.',
+        'Sirve cada plato con un huevo y papas, y cancha al lado.'
+      ],
+      tip: { add: 'Un puñado de cancha', why: 'Así se come en Cajamarca', skill: 'Las hierbas, al final', how: 'Dos minutos de cocción bastan; si pasa más, el verde vivo se vuelve oliva.' }
+    },
+    'pe_fuchifu': {
+      name: 'Sopa fuchifú',
+      ings: [['Pechuga o pierna de pollo', '300 g'], ['Tallarín chino', '80 g'], ['Huevos', '2'], ['Cebolla china', '3 tallos'], ['Kion', '3 cm'], ['Col china (pak choi)', '1']],
+      seas: 'Sal · Pimienta · 1 cucharada de sillao · 1 cucharadita de aceite de ajonjolí · 1 cucharadita de chuño o maicena (opcional) · 1,2 litros de agua',
+      steps: [
+        'Cocina el pollo en 1,2 litros de agua con el kion en rodajas y la parte blanca de la cebolla china de 20 a 25 minutos, hasta que esté bien cocido. Sácalo y deshiláchalo.',
+        'Cocina el tallarín en el caldo de 3 a 4 minutos (o lo que indique el paquete) y agrega la col china en el último minuto.',
+        'Si te gusta el caldo un poco más espeso, añade el chuño disuelto en 2 cucharadas de agua fría y cocina 1 minuto.',
+        'Bate los huevos y viértelos en un hilo delgado sobre el caldo hirviendo mientras remueves suavemente; cocina 1 minuto hasta que cuajen en hebras firmes.',
+        'Devuelve el pollo, sazona con sillao, sal y pimienta, y termina con la parte verde de la cebolla china picada y aceite de ajonjolí.'
+      ],
+      tip: { add: 'Unas gotas de aceite de ajonjolí al final', why: 'Da el aroma del chifa', skill: 'Vierte el huevo despacio', how: 'Un hilo fino sobre el caldo hirviendo forma hebras delicadas en vez de grumos.' }
+    },
+    'pe_caldo_cordero': {
+      name: 'Caldo de cordero',
+      ings: [['Cuello o costillas de cordero en trozos', '500 g'], ['Papas', '2'], ['Arroz', '3 cucharadas'], ['Zanahoria', '1'], ['Col', '1/8'], ['Cebolla china', '2 tallos'], ['Hierbabuena', 'unas ramitas']],
+      seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 1,8 litros de agua · Rocoto o ají, para servir',
+      steps: [
+        'Enjuaga el cordero, ponlo en 1,8 litros de agua fría con el ajo machacado y la parte blanca de la cebolla china, lleva a hervor y espuma bien.',
+        'Tapa y cocina a fuego bajo 1 hora, hasta que la carne esté suave y bien cocida, retirando la grasa de vez en cuando.',
+        'Agrega el arroz y la zanahoria en rodajas y cocina 10 minutos; luego añade las papas en trozos y la col picada y cocina 20 minutos, hasta que estén suaves.',
+        'Sazona con sal y orégano y agrega hierbabuena y la parte verde de la cebolla china picadas justo antes de servir, con rocoto al lado.'
+      ],
+      tip: { add: 'Rocoto picado con un poco de limón', why: 'Calienta el cuerpo en el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
+    },
+    'pe_dieta_pollo': {
+      name: 'Dieta de pollo',
+      ings: [['Pechuga o pierna de pollo sin piel', '300 g'], ['Papa', '1'], ['Zanahoria', '1'], ['Zapallo', '150 g'], ['Apio', '1 rama'], ['Fideos pequeños o cabello de ángel', '40 g'], ['Kion', '2 cm']],
+      seas: 'Sal · 1,2 litros de agua · Perejil picado',
+      steps: [
+        'Pon el pollo en 1,2 litros de agua fría con el kion en rodajas y el apio, lleva a hervor y espuma.',
+        'Cocina 20 minutos, hasta que el pollo esté bien cocido y sin partes rosadas. Sácalo y deshiláchalo.',
+        'Agrega la papa, la zanahoria y el zapallo en cubitos y cocina 15 minutos hasta que estén suaves; añade los fideos en los últimos 5 minutos.',
+        'Devuelve el pollo, sazona con poca sal y termina con perejil.'
+      ],
+      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo cuando uno está mal', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel la hace suave para el estómago.' }
+    },
+    'pe_lawa_choclo': {
+      name: 'Lawa de choclo',
+      ings: [['Granos de choclo', '2 tazas (unas 2 mazorcas)'], ['Papas', '2'], ['Queso fresco', '80 g'], ['Leche evaporada', '100 ml'], ['Cebolla', '1/2'], ['Huacatay o hierbabuena', 'unas hojas']],
+      seas: 'Sal · 1 diente de ajo · 1 cucharada de pasta de ají amarillo · 1 cucharada de aceite · 900 ml de agua',
+      steps: [
+        'Desgrana el choclo y licúa los granos, sin que quede muy fino, con 300 ml del agua.',
+        'Sofríe la cebolla picada, el ajo y el ají en el aceite 4 minutos, agrega el resto del agua y las papas en cubos y cocina 10 minutos.',
+        'Vierte el choclo licuado y cocina a fuego bajo 15 minutos, sin dejar de remover para que no se pegue, hasta que esté espeso y cremoso.',
+        'Incorpora la leche y el queso en cubos, agrega el huacatay y sazona con sal.'
+      ],
+      tip: { add: 'Más cubos de queso fresco', why: 'Se derriten en hebras suaves', skill: 'Remueve todo el tiempo', how: 'El choclo licuado espesa rápido y se quema fácil; mantén el fuego bajo y la cuchara en movimiento.' }
     }
   }
 });
