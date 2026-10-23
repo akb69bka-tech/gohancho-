@@ -1,0 +1,22 @@
+{
+  "sumashijiru": { "vessel": "wan", "broth": "#e8d6a8", "body": "clear", "top": [["tofu",4],["mushroom",2],["herbsprig",2]], "garnish": "none" },
+  "kasujiru": { "vessel": "wan", "broth": "#ece4d4", "body": "cream", "top": [["fish",3],["daikon",3],["carrot",3],["leek",2]], "garnish": "scallion" },
+  "noppeijiru": { "vessel": "wan", "broth": "#c9a46a", "body": "chunky", "top": [["chicken",3],["potato",3],["daikon",2],["carrot",2],["shiitake",2]], "garnish": "none" },
+  "satsumajiru": { "vessel": "wan", "broth": "#b98a4e", "body": "chunky", "top": [["chicken",3],["daikon",2],["carrot",2],["sweetpotato",2],["leek",2]], "garnish": "scallion" },
+  "kakitamajiru": { "vessel": "wan", "broth": "#e6cf8f", "body": "clear", "top": [["egg",5],["herbsprig",2]], "garnish": "scallion" },
+  "ishikarijiru": { "vessel": "wan", "broth": "#c4955a", "body": "chunky", "top": [["fish",3],["potato",2],["cabbage",2],["carrot",2],["onion",2]], "garnish": "scallion" },
+  "sawaniwan": { "vessel": "wan", "broth": "#dcc58e", "body": "clear", "oil": true, "top": [["pork",3],["carrot",3],["shiitake",2],["leek",2],["herbsprig",1]], "garnish": "pepper" },
+  "senbajiru": { "vessel": "wan", "broth": "#e2d3a8", "body": "clear", "top": [["fish",3],["daikon",4],["leek",2]], "garnish": "scallion" },
+  "gojiru": { "vessel": "wan", "broth": "#d9c08f", "body": "cream", "top": [["daikon",2],["carrot",2],["potato",2],["beans",3]], "garnish": "scallion" },
+  "dangojiru": { "vessel": "wan", "broth": "#b5874d", "body": "chunky", "top": [["dumpling",4],["pork",2],["daikon",2],["carrot",2],["shiitake",1]], "garnish": "scallion" },
+  "shijimimiso": { "vessel": "wan", "broth": "#a97d4a", "body": "clear", "top": [["clam",8]], "garnish": "scallion" },
+  "imoni": { "vessel": "pot", "broth": "#8e5f33", "body": "chunky", "top": [["potato",4],["beef",3],["leek",3],["shimeji",2]], "garnish": "none" },
+  "daikonmiso": { "vessel": "wan", "broth": "#b98d55", "body": "clear", "top": [["daikon",5],["tofu",2]], "garnish": "scallion" },
+  "zoni": { "vessel": "wan", "broth": "#e4d1a0", "body": "clear", "top": [["tofu",2],["chicken",2],["greens",2],["carrot",2],["herbsprig",1]], "garnish": "none" },
+  "kabochapotage": { "vessel": "deep", "broth": "#e8b84a", "body": "cream", "swirl": "#fbf3e2", "top": [["croutons",3]], "garnish": "parsley" },
+  "potofu": { "vessel": "deep", "broth": "#e3c789", "body": "chunky", "top": [["sausage",3],["potato",2],["carrot",2],["cabbage",2],["onion",1]], "garnish": "parsley" },
+  "wantansoup": { "vessel": "bowl", "broth": "#dcc07e", "body": "clear", "oil": true, "top": [["dumpling",5],["bokchoy",2],["leek",2]], "garnish": "scallion" },
+  "harusamesoup": { "vessel": "bowl", "broth": "#d8b874", "body": "clear", "top": [["vermicelli",3],["egg",2],["shiitake",2],["carrot",2]], "garnish": "scallion" },
+  "kimchichige": { "vessel": "stone", "broth": "#c2412a", "body": "chunky", "oil": true, "top": [["kimchi",3],["pork",3],["tofu",3],["leek",2]], "garnish": "scallion" },
+  "tomyumkung": { "vessel": "bowl", "broth": "#d9622e", "body": "clear", "oil": true, "top": [["shrimp",4],["shimeji",2],["tomato",2],["lime",1]], "garnish": "cilantro" }
+}

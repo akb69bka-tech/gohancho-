@@ -798,6 +798,146 @@ GOHAN_PACK_TR('JP', 'en', {
       ings: [['Tomato', '1'], ['Egg', '1']],
       seas: 'Water 400 ml · Chicken bouillon powder 2 tsp · Salt, pepper a little · Sesame oil a little',
       steps: ['Cut the tomato into wedges.', 'Bring the water and bouillon powder to a boil, add the tomato and simmer for 2 minutes.', 'Season with salt and pepper and pour in the beaten egg in a thin stream.', 'When the egg sets fluffy, drizzle with sesame oil.']
+    },
+    sumashijiru: {
+      name: 'Clear soup with tofu and mitsuba (sumashi-jiru)',
+      ings: [['Silken tofu', '1/2 block'], ['Mitsuba', 'a little'], ['Enoki mushrooms', '1/4 pack']],
+      seas: 'Dashi 400 ml · Light soy sauce 1 tsp · Salt 1/4 tsp · Sake 1 tsp',
+      steps: ['Cut the tofu into 1.5 cm cubes; trim the enoki and cut in half. Cut the mitsuba into 3 cm lengths.', 'Warm the dashi over medium heat and season with the sake, salt and light soy sauce.', 'Add the tofu and enoki and simmer over medium-low heat for 2 minutes until the tofu is hot (a rolling boil breaks the tofu and drives off the aroma).', 'Ladle into bowls and top with the mitsuba.'],
+      tip: { add: 'A strip of yuzu peel', why: 'A clear soup lives on aroma, and citrus peel lifts it the moment the lid comes off.', skill: 'Adding aroma at the end', how: 'Shave a thumbnail-sized piece of yuzu or lemon peel, avoiding the white pith, and float it on each bowl just before serving.' }
+    },
+    kasujiru: {
+      name: 'Salmon and sake lees soup (kasu-jiru)',
+      ings: [['Fresh salmon', '2 fillets'], ['Sake lees (sake kasu)', '50 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Konnyaku', '1/4 block'], ['Leek', '1/3']],
+      seas: 'Dashi 600 ml · Miso 1 tbsp · Salt a little',
+      steps: ['Cut the salmon into bite-size pieces, salt lightly, leave 10 minutes and pat dry. Tear the sake lees into small pieces and soak in 100 ml of the warm dashi to soften.', 'Cut the daikon and carrot into quarter rounds and the fried tofu into strips; tear the konnyaku and parboil for 2 minutes.', 'Simmer the vegetables and konnyaku in the rest of the dashi over medium heat for 8 minutes until tender.', 'Add the salmon and fried tofu and simmer over medium-low heat for 5 minutes, skimming, until the salmon is cooked through.', 'Mash the sake lees into its dashi, stir it in with the miso, warm over low heat for 2 minutes, add the sliced leek and turn off the heat.'],
+      tip: { add: 'A little grated ginger', why: 'Ginger cuts the richness of the lees and warms you up even more.', skill: 'Dissolving sake lees smoothly', how: 'Soak the lees in warm dashi first, then mash with a spoon or whisk until no lumps remain before adding to the pot.' }
+    },
+    noppeijiru: {
+      name: 'Thickened root vegetable soup (noppei-jiru)',
+      ings: [['Chicken thigh', '100 g'], ['Taro', '3'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Shiitake mushrooms', '2'], ['Konnyaku', '1/4 block']],
+      seas: 'Dashi 600 ml · Sake 1 tbsp · Soy sauce 1 tbsp · Salt 1/4 tsp · Starch slurry 1.5 tbsp',
+      steps: ['Cut the chicken into small bite-size pieces, peel the taro and slice into 1 cm rounds, cut the daikon and carrot into quarter rounds and slice the shiitake. Tear the konnyaku and parboil for 2 minutes.', 'Put the dashi, vegetables and konnyaku in a pot over medium heat; when it boils, add the chicken and sake.', 'Skim, set the lid ajar and simmer over medium-low heat for 12 minutes, until a skewer slides into the taro and the chicken is cooked through.', 'Season with soy sauce and salt, stir in the starch slurry and boil for 1 minute, stirring, to thicken.'],
+      tip: { add: 'Grated ginger on top', why: 'The thick soup holds heat for a long time, and ginger adds a clean, warming finish.', skill: 'Lump-free thickening', how: 'Stir the slurry again right before adding, pour it in a thin stream while stirring, then let it bubble for a full minute so the starch sets.' }
+    },
+    satsumajiru: {
+      name: 'Chicken and vegetable miso soup (satsuma-jiru)',
+      ings: [['Chicken thigh', '150 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Burdock root', '1/3'], ['Sweet potato', '1/3'], ['Leek', '1/3']],
+      seas: 'Dashi 600 ml · Miso 2.5 tbsp · Sesame oil 1 tsp',
+      steps: ['Cut the chicken into bite-size pieces and the daikon and carrot into quarter rounds; shave the burdock and soak in water. Cut the sweet potato into 1 cm quarter rounds and soak in water.', 'Heat the sesame oil and stir-fry the chicken over medium heat for 2 minutes until the surface changes color, then add the daikon, carrot and burdock and stir briefly.', 'Add the dashi and skim when it boils. Add the sweet potato and simmer over medium-low heat for 12 minutes, until the vegetables are tender and the chicken is cooked through.', 'Lower the heat, dissolve in the miso, add the sliced leek, bring just back to a simmer and turn off the heat.'],
+      tip: { add: 'A pinch of shichimi pepper', why: 'A little heat sharpens the sweet miso and chicken broth.', skill: 'Searing for deeper broth', how: 'Brown the chicken skin side down without moving it for the first minute; the browned bits dissolve into the broth.' }
+    },
+    kakitamajiru: {
+      name: 'Egg drop clear soup (kakitama-jiru)',
+      ings: [['Egg', '1'], ['Mitsuba', 'a little'], ['Leek', 'a little']],
+      seas: 'Dashi 400 ml · Light soy sauce 1 tsp · Salt 1/4 tsp · Starch slurry 2 tsp',
+      steps: ['Beat the egg well. Cut the mitsuba into 2 cm lengths and thinly slice the leek.', 'Bring the dashi to a boil over medium heat and season with the light soy sauce and salt.', 'Stir in the starch slurry and keep it at a gentle boil with a light thickness.', 'Pour in the egg in a thin stream, leave it untouched for about 30 seconds, then stir once and cook until the egg is fluffy and set. Ladle into bowls and scatter with mitsuba and leek.'],
+      tip: { add: 'A few drops of ginger juice', why: 'It brightens the gentle dashi flavor without hiding it.', skill: 'Fluffy egg ribbons', how: 'Thicken the soup slightly first and keep it boiling; pour the egg along a chopstick in a circle and do not stir until it floats.' }
+    },
+    ishikarijiru: {
+      name: 'Hokkaido salmon miso soup (Ishikari-jiru)',
+      ings: [['Fresh salmon', '2 fillets'], ['Potato', '1'], ['Onion', '1/2'], ['Cabbage', '2 leaves'], ['Carrot', '1/3'], ['Leek', '1/3'], ['Butter', '10 g']],
+      seas: 'Dashi 600 ml · Sake 1 tbsp · Miso 2.5 tbsp',
+      steps: ['Cut the salmon into thirds and pour boiling water over it to remove any fishy smell. Cut the potato into bite-size pieces, the onion into wedges, the carrot into half rounds and the cabbage into rough pieces.', 'Put the dashi, potato, carrot and onion in a pot over medium heat; when it boils, simmer over medium-low heat for 8 minutes.', 'Add the salmon, cabbage and sake and simmer for 6 minutes, skimming, until the salmon is cooked through.', 'Lower the heat, dissolve in the miso and add the sliced leek. If you like, top each bowl with butter.'],
+      tip: { add: 'Corn kernels', why: 'Sweet corn and butter are a classic Hokkaido pairing with salmon and miso.', skill: 'Removing fish odor', how: 'Pour boiling water over the salmon until the surface turns white, then rinse in cold water and pat dry before adding.' }
+    },
+    sawaniwan: {
+      name: 'Julienned vegetable and pork clear soup (sawani-wan)',
+      ings: [['Pork belly slices', '50 g'], ['Carrot', '1/4'], ['Burdock root', '1/4'], ['Shiitake mushrooms', '2'], ['Leek', '1/3'], ['Mitsuba', 'a little']],
+      seas: 'Dashi 500 ml · Sake 1 tbsp · Light soy sauce 2 tsp · Salt a little · Pepper a little',
+      steps: ['Cut the carrot, shiitake and leek into 4 cm matchsticks; cut the burdock into matchsticks and soak in water. Cut the pork into thin strips.', 'Put the pork in boiling water, cook for 30 seconds after it changes color and drain to remove excess fat.', 'Bring the dashi to a boil over medium heat and simmer the burdock and carrot for 3 minutes. Add the shiitake, leek and pork and simmer 2 more minutes until the pork is cooked through.', 'Season with the sake, light soy sauce and salt, ladle into bowls, top with mitsuba and sprinkle with pepper.'],
+      tip: { add: 'Freshly ground black pepper', why: 'Pepper is the traditional accent of sawani-wan, tying the pork fat and the vegetables together.', skill: 'Even julienne', how: 'Slice the vegetables thinly first, stack the slices and cut into matchsticks of the same thickness so they all cook in the same time.' }
+    },
+    senbajiru: {
+      name: 'Mackerel and daikon clear soup (Senba-jiru)',
+      ings: [['Mackerel', '2 fillets'], ['Daikon', '4 cm'], ['Leek', '1/3'], ['Ginger', '1 knob']],
+      seas: 'Water 500 ml · Kombu 5 cm · Sake 1 tbsp · Salt 1/3 tsp · Light soy sauce 1 tsp',
+      steps: ['Cut the mackerel into bite-size pieces, salt lightly (extra) and leave 10 minutes; pour boiling water over and pat dry. Cut the daikon into strips and the ginger into fine shreds.', 'Soak the kombu in the water for 15 minutes, then heat over medium heat and remove the kombu just before it boils.', 'Simmer the daikon for 5 minutes, then add the mackerel and sake and simmer over medium-low heat for 8 minutes, skimming, until the fish is cooked through.', 'Season with salt and light soy sauce, ladle into bowls and top with leek and ginger.'],
+      tip: { add: 'Salted mackerel (shio-saba)', why: 'The original Osaka soup used salted mackerel, whose bones and skin give a rich broth.', skill: 'Making kombu dashi', how: 'Soak kombu in cold water, heat slowly and take it out just before boiling so the broth stays clean and not slimy.' }
+    },
+    gojiru: {
+      name: 'Soybean purée miso soup (go-jiru)',
+      ings: [['Boiled soybeans', '100 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Leek', '1/3'], ['Taro', '2']],
+      seas: 'Dashi 600 ml · Miso 2.5 tbsp',
+      steps: ['Blend the soybeans with 200 ml of the dashi until smooth (this purée is the "go").', 'Cut the daikon and carrot into quarter rounds, the taro into rounds and the fried tofu into strips.', 'Simmer the vegetables and fried tofu in the rest of the dashi over medium heat for 10 minutes until tender.', 'Add the soybean purée and bring to a full simmer over medium-low heat for 3 minutes, stirring so it does not boil over, to cook it through.', 'Lower the heat, dissolve in the miso and scatter with sliced leek.'],
+      tip: { add: 'A few drops of sesame oil', why: 'It brings out the nutty flavor of the soybeans.', skill: 'Watching for boil-over', how: 'Soy purée foams like milk; keep the heat at medium-low and stir along the bottom while it simmers.' }
+    },
+    dangojiru: {
+      name: 'Flour dumpling miso soup (dango-jiru)',
+      ings: [['Flour', '100 g'], ['Pork belly slices', '80 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Burdock root', '1/3'], ['Shiitake mushrooms', '2'], ['Leek', '1/3']],
+      seas: 'Water 60 ml (for the dumplings) · Salt a pinch · Dashi 700 ml · Miso 3 tbsp',
+      steps: ['Knead the flour with the salt, adding the water little by little, until it is as soft as an earlobe. Cover with wrap and rest for 15 minutes.', 'Cut the pork into 3 cm pieces, the daikon and carrot into quarter rounds, shave the burdock and slice the shiitake.', 'Put the dashi and vegetables in a pot over medium heat; when it boils, add the pork. Simmer for 8 minutes, skimming, until the vegetables are tender and the pork is cooked through.', 'Tear the dough into bite-size pieces, stretching each thin with your fingers, and drop into the pot. Simmer for 3 minutes after they float, until no raw center remains.', 'Dissolve in the miso and scatter with sliced leek.'],
+      tip: { add: 'Kabocha cubes', why: 'Kabocha melts slightly and adds a natural sweetness to the miso.', skill: 'Resting dough', how: 'Resting the dough lets the gluten relax, so it stretches thin without tearing and cooks evenly.' }
+    },
+    shijimimiso: {
+      name: 'Freshwater clam miso soup (shijimi miso soup)',
+      ings: [['Shijimi clams', '200 g'], ['Leek', 'a little']],
+      seas: 'Water 450 ml · Sake 1 tbsp · Miso 2 tbsp',
+      steps: ['Let the clams purge their sand, then rub the shells together to wash them.', 'Put the water, sake and clams in a pot over medium heat (starting in cold water draws out more flavor).', 'Skim when it boils and simmer over medium-low heat for 2 minutes until all the shells open (discard any that stay closed).', 'Lower the heat, dissolve in the miso and scatter with sliced leek.'],
+      tip: { add: 'Red miso (aka miso)', why: 'Its deep, slightly bitter taste suits the strong clam broth.', skill: 'Purging clams', how: 'Soak shijimi in lightly salted water (about 1%) in a dark place for 1-3 hours, then rinse.' }
+    },
+    imoni: {
+      name: 'Taro and beef soup (imoni)',
+      ings: [['Taro', '6'], ['Beef scraps', '150 g'], ['Konnyaku', '1/2 block'], ['Leek', '1'], ['Shimeji mushrooms', '1/2 pack']],
+      seas: 'Water 700 ml · Sake 2 tbsp · Soy sauce 3 tbsp · Sugar 1.5 tbsp',
+      steps: ['Peel the taro, halve if large, rub with a little salt (extra) and wash off the slime. Tear the konnyaku and parboil for 2 minutes. Slice the leek on the diagonal and separate the shimeji.', 'Put the water, taro and konnyaku in a pot over medium heat; when it boils, simmer over medium-low heat for 12 minutes until a skewer goes into the taro.', 'Add the sake, sugar and half the soy sauce, then add the beef, spreading it out. Simmer for 4 minutes, skimming, until the beef has fully changed color and is cooked through.', 'Add the rest of the soy sauce, the shimeji and the leek and simmer for 3 minutes until the leek softens, then turn off the heat.'],
+      tip: { add: 'Udon or curry roux the next day', why: 'In Yamagata, leftover imoni is often turned into udon or curry the next day.', skill: 'Keeping beef tender', how: 'Add the beef after the taro is soft and cook it only until done; long boiling makes thin beef tough.' }
+    },
+    daikonmiso: {
+      name: 'Daikon and fried tofu miso soup',
+      ings: [['Daikon', '4 cm'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Leek', 'a little']],
+      seas: 'Dashi 400 ml · Miso 2 tbsp',
+      steps: ['Cut the daikon into 5 mm sticks. Pour boiling water over the fried tofu to remove excess oil and cut into strips.', 'Put the daikon in the dashi over medium heat; when it boils, simmer over medium-low heat for 6 minutes until translucent.', 'Add the fried tofu and simmer for 1 minute.', 'Lower the heat, dissolve in the miso and scatter with sliced leek.'],
+      tip: { add: 'Daikon leaves', why: 'Chopped leaves add color and a pleasant bitterness, and use the whole vegetable.', skill: 'Starting daikon in cold dashi', how: 'Put daikon into dashi before heating so it cooks through evenly and soaks up flavor.' }
+    },
+    zoni: {
+      name: 'New Year mochi soup, Kanto style (ozoni)',
+      ings: [['Rice cakes (kiri mochi)', '4'], ['Chicken thigh', '100 g'], ['Komatsuna', '2 stalks'], ['Carrot', '3 cm'], ['Kamaboko fish cake', '4 slices'], ['Mitsuba', 'a little']],
+      seas: 'Dashi 600 ml · Sake 1 tbsp · Light soy sauce 1 tbsp · Salt 1/4 tsp',
+      steps: ['Cut the chicken into small bite-size pieces and the carrot into thin rounds. Blanch the komatsuna in salted water, cool in water, cut into 3 cm lengths and squeeze dry.', 'Put the dashi and carrot in a pot over medium heat; when it boils, add the chicken and sake and simmer for 6 minutes, skimming, until the chicken is cooked through.', 'Season with light soy sauce and salt.', 'Toast the mochi in a toaster oven for 6-8 minutes until puffed and browned.', 'Put the mochi, komatsuna and kamaboko in bowls, pour over the hot soup and chicken and top with mitsuba.'],
+      tip: { add: 'Yuzu peel', why: 'A sliver of yuzu gives the New Year bowl a festive aroma.', skill: 'Eating mochi safely', how: 'Cut mochi into small pieces for children and older people, and eat slowly; hot mochi is very sticky.' }
+    },
+    kabochapotage: {
+      name: 'Kabocha potage',
+      ings: [['Kabocha', '1/8'], ['Onion', '1/4'], ['Milk', '250 ml'], ['Heavy cream', '2 tbsp']],
+      seas: 'Butter 10 g · Water 150 ml · Bouillon granules 1 tsp · Salt, pepper a little',
+      steps: ['Remove the seeds and pulp from the kabocha, peel and slice thinly. Slice the onion thinly.', 'Melt the butter and cook the onion over medium-low heat for 3 minutes until soft, then add the kabocha and stir briefly.', 'Add the water and bouillon, cover and simmer over low heat for 10 minutes until the kabocha is soft enough to fall apart.', 'Let it cool slightly and blend until smooth.', 'Return to the pot, add the milk and warm over low heat without boiling. Season with salt and pepper and drizzle with the cream.'],
+      tip: { add: 'Toasted pumpkin seeds or croutons', why: 'A crunchy topping contrasts with the velvety soup.', skill: 'Blending hot soup safely', how: 'Cool the soup for a few minutes and fill the blender no more than half full; steam can push the lid off.' }
+    },
+    potofu: {
+      name: 'Pot-au-feu with sausages',
+      ings: [['Sausages', '6'], ['Potatoes', '2'], ['Carrot', '1/2'], ['Onion', '1'], ['Cabbage', '1/8 head'], ['Broccoli', '1/4 head']],
+      seas: 'Water 700 ml · Bouillon granules 2 tsp · Bay leaf 1 · Salt, pepper a little · Wholegrain mustard as needed',
+      steps: ['Halve the potatoes, quarter the carrot lengthwise and cut the onion into wedges. Cut the cabbage in two, keeping the core attached. Separate the broccoli into florets.', 'Put the water, bouillon, bay leaf, potatoes, carrot and onion in a pot over medium heat; when it boils, simmer over low heat for 15 minutes.', 'Add the cabbage and sausages, cover and simmer 10 more minutes. Add the broccoli for the last 3 minutes.', 'Season with salt and pepper and serve with wholegrain mustard.'],
+      tip: { add: 'A chunk of bacon', why: 'Smoked meat adds a deeper flavor to the broth.', skill: 'Gentle simmering', how: 'Keep the pot just bubbling at the edges; a hard boil breaks the potatoes and clouds the broth.' }
+    },
+    wantansoup: {
+      name: 'Wonton soup',
+      ings: [['Wonton wrappers', '20'], ['Ground pork', '100 g'], ['Leek', '1/3'], ['Bok choy', '1'], ['Ginger', 'a little']],
+      seas: 'Soy sauce 1 tsp · Sesame oil 1 tsp · Water 600 ml · Chicken bouillon powder 1 tbsp · Salt, pepper a little',
+      steps: ['Mince half the leek and thinly slice the rest on the diagonal. Cut the bok choy into 4 cm lengths.', 'Mix the pork with the minced leek, grated ginger, soy sauce and sesame oil until sticky. Put 1 tsp on each wrapper, wet the edges and fold into triangles to seal.', 'Bring the water and bouillon powder to a boil and cook the bok choy stems for 1 minute.', 'Add the wontons one at a time and cook over medium heat for 2-3 minutes after they float, until the filling is cooked through. Add the bok choy leaves and sliced leek and season with salt and pepper.'],
+      tip: { add: 'A few drops of chili oil and black vinegar', why: 'They add a little heat and tang, like a Chinese diner.', skill: 'Sealing wontons', how: 'Use only a little filling and press the edges firmly so no air is trapped; they will not burst while boiling.' }
+    },
+    harusamesoup: {
+      name: 'Glass noodle soup',
+      ings: [['Glass noodles', '20 g'], ['Ground pork', '50 g'], ['Shiitake mushrooms', '2'], ['Carrot', '1/4'], ['Egg', '1'], ['Scallions', 'a little']],
+      seas: 'Sesame oil 1 tsp · Water 500 ml · Chicken bouillon powder 2 tsp · Soy sauce 1 tsp · Vinegar 1 tsp (optional) · Salt, pepper a little',
+      steps: ['Slice the shiitake and cut the carrot into matchsticks. Cut the dry glass noodles with kitchen scissors if long.', 'Heat the sesame oil and stir-fry the pork over medium heat for 2 minutes until crumbly and no longer pink. Add the carrot and shiitake and stir briefly.', 'Add the water and bouillon powder, bring to a boil, add the noodles and cook for the time on the package (about 3-4 minutes).', 'Season with soy sauce, salt and pepper, pour in the beaten egg and cook until it sets. Add vinegar if you like and scatter with scallions.'],
+      tip: { add: 'Sesame seeds and chili oil', why: 'They give the light soup aroma and a little kick.', skill: 'Using dry noodles directly', how: 'Glass noodles can go straight into the boiling soup; they soak up broth as they soften, so add a little more water if it gets thick.' }
+    },
+    kimchichige: {
+      name: 'Kimchi jjigae',
+      ings: [['Napa kimchi', '150 g'], ['Pork belly slices', '120 g'], ['Firm tofu', '1/2 block'], ['Onion', '1/4'], ['Leek', '1/3'], ['Enoki mushrooms', '1/2 pack']],
+      seas: 'Sesame oil 1 tbsp · Grated garlic 1/2 tsp · Gochujang 2 tsp · Water 450 ml · Chicken bouillon powder 2 tsp · Soy sauce 1 tsp',
+      steps: ['Cut the pork into 4 cm pieces, the tofu into 1 cm slices, the onion into thin slices and the leek on the diagonal. Cut the kimchi if the pieces are large.', 'Heat the sesame oil and stir-fry the pork over medium heat. When it changes color, add the kimchi and garlic and stir-fry for 2 minutes to soften the sourness.', 'Add the water, bouillon powder and gochujang, bring to a boil, add the onion and enoki and simmer for 5 minutes (the pork cooks through).', 'Add the tofu and simmer 3 minutes, season with soy sauce, add the leek and simmer briefly.'],
+      tip: { add: 'Well-fermented, sour kimchi', why: 'Older kimchi has more acidity and depth, which makes the best jjigae.', skill: 'Frying kimchi first', how: 'Stir-fry the kimchi with the pork fat before adding water; it mellows the sourness and makes the broth richer.' }
+    },
+    tomyumkung: {
+      name: 'Tom yum goong (Thai hot and sour shrimp soup)',
+      ings: [['Shrimp', '6'], ['Shimeji mushrooms', '1/2 pack'], ['Tomato', '1/2'], ['Cilantro', 'a little']],
+      seas: 'Tom yum paste 1.5 tbsp · Water 500 ml · Chicken bouillon powder 1 tsp · Fish sauce 2 tsp · Sugar 1 tsp · Lemon juice 1 tbsp',
+      steps: ['Devein and peel the shrimp, leaving the tails. Separate the shimeji and cut the tomato into wedges.', 'Bring the water and bouillon powder to a boil and dissolve the tom yum paste.', 'Add the shimeji and tomato and simmer for 2 minutes, then add the shrimp. Cook over medium heat for 2-3 minutes until the shrimp turn opaque and are cooked through.', 'Season with fish sauce and sugar, turn off the heat and add the lemon juice. Serve topped with cilantro.'],
+      tip: { add: 'A splash of coconut milk', why: 'It turns the soup into the creamy "nam khon" style and softens the heat.', skill: 'Adding citrus off the heat', how: 'Add lemon or lime juice after turning off the heat; boiling makes it bitter and dulls the aroma.' }
     }
   }
 });
