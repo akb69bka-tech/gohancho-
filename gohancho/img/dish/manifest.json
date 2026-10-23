@@ -5418,6 +5418,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "us_meatloaf": {
+      "file": "us_meatloaf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_potroast": {
+      "file": "us_potroast.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_friedchicken": {
+      "file": "us_friedchicken.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_fajitas": {
+      "file": "us_fajitas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_burgers": {
+      "file": "us_burgers.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_steak": {
+      "file": "us_steak.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_pulledpork": {
+      "file": "us_pulledpork.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_porktenderloin": {
+      "file": "us_porktenderloin.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_shrimpgrits": {
+      "file": "us_shrimpgrits.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_tilapia": {
+      "file": "us_tilapia.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_tunacasserole": {
+      "file": "us_tunacasserole.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_potpie": {
+      "file": "us_potpie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_jambalaya": {
+      "file": "us_jambalaya.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_redbeans": {
+      "file": "us_redbeans.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_denveromelet": {
+      "file": "us_denveromelet.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_stuffedshells": {
+      "file": "us_stuffedshells.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_alfredo": {
+      "file": "us_alfredo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_beanburgers": {
+      "file": "us_beanburgers.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_enchiladas": {
+      "file": "us_enchiladas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_lasagna": {
+      "file": "us_lasagna.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_potatosalad": {
+      "file": "us_potatosalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_deviledeggs": {
+      "file": "us_deviledeggs.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_bakedbeans": {
+      "file": "us_bakedbeans.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_caesar": {
+      "file": "us_caesar.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_threebean": {
+      "file": "us_threebean.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_bakedpotato": {
+      "file": "us_bakedpotato.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_sweetpotatoes": {
+      "file": "us_sweetpotatoes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_collards": {
+      "file": "us_collards.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_creamedspinach": {
+      "file": "us_creamedspinach.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_glazedcarrots": {
+      "file": "us_glazedcarrots.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_brussels": {
+      "file": "us_brussels.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_squash": {
+      "file": "us_squash.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_succotash": {
+      "file": "us_succotash.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_fridgepickles": {
+      "file": "us_fridgepickles.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_waldorf": {
+      "file": "us_waldorf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_ricepilaf": {
+      "file": "us_ricepilaf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_garlicbread": {
+      "file": "us_garlicbread.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_mushrooms": {
+      "file": "us_mushrooms.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_macsalad": {
+      "file": "us_macsalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "us_friedokra": {
+      "file": "us_friedokra.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
