@@ -9,10 +9,12 @@
 | `draw/kit.mjs` | 器（皿・鉢・椀・丼・長皿・小鉢など）と具材の部品。光は左上から、影・照り・揚げ衣の質感つき |
 | `draw/dishes/*.mjs` | 料理ごとの盛りつけ（どの器に、どの具を、どこに置くか） |
 | `draw/build.mjs` | 絵を `gohancho/img/dish/{id}.svg` に書き出し、`manifest.json` に登録する |
+| `draw/thumbs.mjs` | 一覧用の小さい絵（192px の WebP）を `gohancho/img/dish/t/{id}.webp` に作り、`manifest.json` の `thumb` に登録する。一覧に何百品も並んでも速く出すため（Playwright が必要） |
 
 ```bash
 node tools/illustrations/draw/build.mjs            # 全部作り直す
 node tools/illustrations/draw/build.mjs nikujaga   # 1品だけ
+node tools/illustrations/draw/thumbs.mjs           # 絵を作ったあとに必ず。小さい絵がない・古いものだけ作る
 ```
 
 レシピを追加したら、`draw/dishes/` のどれかに同じ ID で盛りつけを書いて、上のコマンドを実行します。

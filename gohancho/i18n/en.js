@@ -563,6 +563,7 @@ GOHAN_I18N('en', {
     "くわしく見る（ひと手間・お気に入り）": "More (chef's tip, favorite)",
     "この写真をアルバムから消す": "Remove this photo from the album",
     "すべて見る（{n}枚）": "See all ({n} photos)",
+    "すべて見る（{n}品）": "See all ({n} dishes)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "No photos yet. Tap \"Add a photo of yours\" on a recipe and it will be kept here with the date.",
     "わが家のアルバム": "Family album",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Photo saved. It also appears in your menu and in the album under \"Log\".",

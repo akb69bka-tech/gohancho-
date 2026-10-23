@@ -562,6 +562,7 @@ GOHAN_I18N('id', {
     "くわしく見る（ひと手間・お気に入り）": "Selengkapnya (tips koki, favorit)",
     "この写真をアルバムから消す": "Hapus foto ini dari album",
     "すべて見る（{n}枚）": "Lihat semua ({n} foto)",
+    "すべて見る（{n}品）": "Lihat semua ({n} hidangan)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "Belum ada foto. Ketuk \"Tambah foto masakan Anda\" di resep, foto akan disimpan di sini dengan tanggalnya.",
     "わが家のアルバム": "Album keluarga",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Foto disimpan. Foto juga muncul di menu dan di album \"Catatan\".",

@@ -161,6 +161,10 @@ a{color:var(--accent)}
 .tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:12px;border-top:1px solid var(--line)}
 .tw-item:first-of-type,.eyebrow+.tw-item{border-top:0;padding-top:0}
 .thumb{display:block;width:64px;height:64px;border-radius:50%;background:var(--surface-2);background-size:cover;background-position:center;box-shadow:inset 0 0 0 3px var(--porcelain),0 2px 6px rgba(0,0,0,.15);flex-shrink:0;position:relative}
+.thumb.pic{overflow:hidden}
+.thumb.pic>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.thumb.pic.gen>img{inset:-6%;width:112%;height:112%}
+.thumb.pic::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 3px var(--porcelain);pointer-events:none}
 .thumb.none{background:radial-gradient(circle,var(--food,#a8652b) 0 36%,var(--porcelain) 37%)}
 .tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink)}
 .from{font-size:.78rem;color:var(--muted)}
@@ -1622,17 +1626,37 @@ function photoOf(r){
    img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
    'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像。アプリから外部へは通信しない。 */
 const GEN = {};
+const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名、読みこみ済みは true
+function addGenerated(items){
+    Object.keys(items).forEach(id => {
+        const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
+        const v = '?v=' + encodeURIComponent(it.date || '');
+        GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + v, gen: true, ai: it.via === 'api' || it.via === 'chatgpt',
+            // 一覧用の小さい絵（192px）。一覧に何百品も並んでも、SVG の影を毎回計算しないので速い
+            thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
+    });
+}
 async function loadGenerated(){
     try{
         const res = await fetch('img/dish/manifest.json', {cache:'no-cache'});
         if (!res.ok) return;
-        const m = await res.json(), items = (m && m.items) || {};
-        Object.keys(items).forEach(id => {
-            const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
-            GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + '?v=' + encodeURIComponent(it.date || ''), gen: true, ai: it.via === 'api' || it.via === 'chatgpt'};
-        });
+        const m = await res.json();
+        addGenerated((m && m.items) || {});
+        Object.assign(GEN_BUNDLES, (m && m.bundles) || {});
+        loadGenBundle(currentCountry());
         if (Object.keys(GEN).length) scheduleRender();
     }catch(e){}
+}
+// 国の絵のまとまりを、その国を使うときにだけ読みこむ（manifest に bundles があるときだけ）
+async function loadGenBundle(cc){
+    const f = GEN_BUNDLES[cc];
+    if (!f || f === true || !/^[\w.-]+\.json$/.test(f)) return;
+    GEN_BUNDLES[cc] = true;
+    try{
+        const res = await fetch('img/dish/' + f);
+        if (!res.ok) throw new Error(res.status);
+        const m = await res.json(); addGenerated((m && m.items) || {}); scheduleRender();
+    }catch(e){ GEN_BUNDLES[cc] = f; }
 }
 
 /* ---- 参考写真をもとに、ポップなイラストに描き直す ----
@@ -1780,7 +1804,8 @@ function vesselHtml(kind, r, still=false){
 }
 function thumbHtml(r){
     const ph = photoOf(r);
-    return ph ? `<span class="thumb${ph.gen ? ' gen' : ''}" style="${esc('background-image:' + cssUrl(ph.src))}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"></span>`
+    // <img> にして、画面に入ったものから順に、裏で読みこむ（loading="lazy" と decoding="async"）
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" loading="lazy" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
@@ -3585,6 +3610,7 @@ document.addEventListener('click', e => {
         case 'staple-set': setStaple(el.dataset.v); render(); break;
         case 'album-rm': removeAlbum(el.dataset.k); break;
         case 'album-all': session.albumAll = true; render(); break;
+        case 'world-all': worldAll.add(el.dataset.k); render(); break;
         case 'goto-cook': session.cookIdx = 0; setTab('cook'); break;
         case 'cook-tab': { const k = Number(el.dataset.k); if (k >= 0 && k < cookItems().length){ session.cookIdx = k; render(); const p = document.querySelector('.cook-tabs'); if (p) p.scrollIntoView({block:'start', behavior:'smooth'}); } break; }
         case 'cook-step': {
@@ -3853,6 +3879,7 @@ function packRecipe(pk, x, tr){
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
 function replaceObj(obj, src){ Object.keys(obj).forEach(k => delete obj[k]); Object.assign(obj, src); }
 function applyCountry(cc){
+    loadGenBundle(cc);
     if (!JP_DATA) JP_DATA = {recipes: RECIPES.slice(), canon: CANON.slice(), pantry: [...PANTRY], family: Object.assign({}, FAMILY), subs: Object.assign({}, SUBS),
         quick: QUICK.slice(), stapleQuick: STAPLE_QUICK.slice(), avoidQuick: AVOID_QUICK.slice(), moods: MOODS.slice()};
     const pk = cc === 'JP' ? null : PACKS[cc];
@@ -3919,6 +3946,7 @@ async function refreshRecipes(){
 /* ---- 世界のレシピ（自分の国の献立はそのままで、ほかの国の家庭料理を見る） ---- */
 const BROWSE = {};
 let worldCC = null;
+const WORLD_FIRST = 30, worldAll = new Set();   // 世界のレシピで「すべて見る」を押した国と種類
 function buildBrowse(cc){
     if (cc === 'JP'){ const tr = trOf('JP'); return JP_DATA.recipes.map(r => tr ? jpRecipe(r, tr) : r); }
     const pk = PACKS[cc]; if (!pk) return [];
@@ -3935,15 +3963,19 @@ function viewWorld(){
     if (!worldCC || worldCC === home) worldCC = others[0].cc;
     const list = BROWSE[worldCC];
     if (!list) loadBrowse(worldCC);
+    loadGenBundle(worldCC);
     const c = countryOf(worldCC);
     const group = (code, title) => {
-        const rs = (list || []).filter(r => code.includes(r.type)); if (!rs.length) return '';
+        const all = (list || []).filter(r => code.includes(r.type)); if (!all.length) return '';
+        // 1か国で何百品にもなるので、最初は30品だけ並べる（絵の読みこみと表示を軽くする）
+        const key = worldCC + ':' + code[0], rs = worldAll.has(key) ? all : all.slice(0, WORLD_FIRST);
         return `<div class="sec-head"><h3>${esc(title)}</h3></div>
             <div class="list">${rs.map(r => `<div class="match" data-act="open" data-id="${esc(r.id)}">
                 <span>${thumbHtml(r)}</span>
                 <div class="info"><div class="head"><span class="name">${esc(r.name)}</span></div>
                     ${r.nameEn && r.nameEn !== r.name ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
-                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>`;
+                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>
+            ${all.length > rs.length ? `<div class="row"><button class="btn sm" data-act="world-all" data-k="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: all.length}))}</button></div>` : ''}`;
     };
     return `
     <section class="sec">

@@ -562,6 +562,7 @@ GOHAN_I18N('tr', {
     "くわしく見る（ひと手間・お気に入り）": "Daha fazla (şef ipucu, favori)",
     "この写真をアルバムから消す": "Bu fotoğrafı albümden kaldır",
     "すべて見る（{n}枚）": "Tümünü gör ({n} fotoğraf)",
+    "すべて見る（{n}品）": "Tümünü gör ({n} yemek)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "Henüz fotoğraf yok. Bir tarifte “Yaptığınız yemeğin fotoğrafını ekleyin”ye dokunun; tarihiyle burada saklanır.",
     "わが家のアルバム": "Aile albümü",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Fotoğraf kaydedildi. Menüde ve “Günlük” albümünde de görünür.",
