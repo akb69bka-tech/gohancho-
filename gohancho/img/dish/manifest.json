@@ -4338,6 +4338,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "de_erbsensuppe": {
+      "file": "de_erbsensuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_gulaschsuppe": {
+      "file": "de_gulaschsuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_kuerbissuppe": {
+      "file": "de_kuerbissuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_tomatensuppe": {
+      "file": "de_tomatensuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_flaedlesuppe": {
+      "file": "de_flaedlesuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_griessnockerl": {
+      "file": "de_griessnockerl.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_kaeselauch": {
+      "file": "de_kaeselauch.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_spargelcreme": {
+      "file": "de_spargelcreme.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_bohneneintopf": {
+      "file": "de_bohneneintopf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_weisskohleintopf": {
+      "file": "de_weisskohleintopf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_steckruebeneintopf": {
+      "file": "de_steckruebeneintopf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_pichelsteiner": {
+      "file": "de_pichelsteiner.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_hochzeitssuppe": {
+      "file": "de_hochzeitssuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_rindfleischsuppe": {
+      "file": "de_rindfleischsuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_graupeneintopf": {
+      "file": "de_graupeneintopf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_weissebohnen": {
+      "file": "de_weissebohnen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_brokkolisuppe": {
+      "file": "de_brokkolisuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_champignonsuppe": {
+      "file": "de_champignonsuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_fischsuppe": {
+      "file": "de_fischsuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "de_moehrensuppe": {
+      "file": "de_moehrensuppe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }

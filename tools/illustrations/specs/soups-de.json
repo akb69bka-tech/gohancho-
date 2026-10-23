@@ -1,0 +1,22 @@
+{
+  "de_erbsensuppe": { "vessel": "deep", "broth": "#b9a640", "body": "stew", "top": [["sausage", 4], ["carrot", 3], ["potato", 2], ["bacon", 2]], "garnish": "parsley" },
+  "de_gulaschsuppe": { "vessel": "crock", "broth": "#9c3a1e", "body": "chunky", "oil": true, "top": [["beefChunk", 5], ["potato", 3], ["redpepper", 3]], "garnish": "parsley" },
+  "de_kuerbissuppe": { "vessel": "deep", "broth": "#e08a2c", "body": "cream", "swirl": "#f6ecd8", "top": [["pumpkin", 3]], "garnish": "herbs" },
+  "de_tomatensuppe": { "vessel": "deep", "broth": "#c9412a", "body": "cream", "swirl": "#f8f1e6", "top": [["rice", 4], ["cream", 1]], "garnish": "herbs" },
+  "de_flaedlesuppe": { "vessel": "deep", "broth": "#c58a3c", "body": "clear", "oil": true, "top": [["noodles", 6], ["scallion", 3]], "garnish": "scallion" },
+  "de_griessnockerl": { "vessel": "deep", "broth": "#c9913e", "body": "clear", "oil": true, "top": [["dumpling", 4], ["carrot", 3]], "garnish": "scallion" },
+  "de_kaeselauch": { "vessel": "bowl", "broth": "#e6d29a", "body": "cream", "top": [["leek", 5], ["mushroom", 2], ["meatball", 3]], "garnish": "herbs" },
+  "de_spargelcreme": { "vessel": "deep", "broth": "#eee3bf", "body": "cream", "swirl": "#fbf6ea", "top": [["herbsprig", 1], ["leek", 4]], "garnish": "scallion" },
+  "de_bohneneintopf": { "vessel": "pot", "broth": "#a38a4a", "body": "chunky", "top": [["beans", 6], ["potato", 3], ["sausage", 3]], "garnish": "parsley" },
+  "de_weisskohleintopf": { "vessel": "deep", "broth": "#b98e4c", "body": "chunky", "top": [["cabbage", 5], ["meatball", 3], ["carrot", 2], ["potato", 2]], "garnish": "parsley" },
+  "de_steckruebeneintopf": { "vessel": "pot", "broth": "#d8a650", "body": "stew", "top": [["sweetpotato", 4], ["pork", 3], ["carrot", 3]], "garnish": "parsley" },
+  "de_pichelsteiner": { "vessel": "pot", "broth": "#8a5a2c", "body": "chunky", "top": [["beefChunk", 3], ["pork", 2], ["potato", 3], ["carrot", 2], ["leek", 2]], "garnish": "parsley" },
+  "de_hochzeitssuppe": { "vessel": "deep", "broth": "#c99540", "body": "clear", "oil": true, "top": [["meatball", 4], ["egg", 3], ["carrot", 2], ["herbsprig", 1]], "garnish": "scallion" },
+  "de_rindfleischsuppe": { "vessel": "deep", "broth": "#b9782e", "body": "clear", "oil": true, "top": [["beef", 3], ["carrot", 3], ["leek", 2], ["noodles", 3]], "garnish": "parsley" },
+  "de_graupeneintopf": { "vessel": "deep", "broth": "#c8ad78", "body": "stew", "top": [["rice", 5], ["ham", 3], ["carrot", 2], ["potato", 2]], "garnish": "parsley" },
+  "de_weissebohnen": { "vessel": "pot", "broth": "#c47a4a", "body": "chunky", "top": [["whitebeans", 6], ["bacon", 2], ["carrot", 2], ["potato", 2]], "garnish": "parsley" },
+  "de_brokkolisuppe": { "vessel": "deep", "broth": "#7a9a3c", "body": "cream", "swirl": "#f3ede0", "top": [["greens", 3]], "garnish": "none" },
+  "de_champignonsuppe": { "vessel": "deep", "broth": "#c8b28e", "body": "cream", "swirl": "#f4ecdc", "top": [["mushroom", 4], ["croutons", 3]], "garnish": "parsley" },
+  "de_fischsuppe": { "vessel": "bowl", "broth": "#e2cf98", "body": "chunky", "top": [["fish", 4], ["potato", 3], ["carrot", 2], ["leek", 2]], "garnish": "dill" },
+  "de_moehrensuppe": { "vessel": "deep", "broth": "#e8792a", "body": "cream", "swirl": "#f8efe0", "top": [["cream", 1], ["herbsprig", 1], ["chili", 1]], "garnish": "none" }
+}
