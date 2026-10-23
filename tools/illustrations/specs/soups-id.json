@@ -1,0 +1,22 @@
+{
+  "id_sotoayam": {"vessel":"bowl","broth":"#e3b13c","body":"clear","oil":true,"top":[["chicken",3],["vermicelli",2],["eggHalf",2],["sprouts",2],["cabbage",1]],"garnish":"scallion"},
+  "id_sayurlodeh": {"vessel":"bowl","broth":"#ecd7a0","body":"chunky","top":[["zucchini",3],["beans",3],["tofu",2],["chili",2]],"garnish":"none"},
+  "id_sopbuntut": {"vessel":"deep","broth":"#c58b4c","body":"clear","oil":true,"top":[["beefChunk",3],["carrot",3],["potato",2],["tomato",1]],"garnish":"scallion"},
+  "id_rawon": {"vessel":"bowl","broth":"#2e2018","body":"clear","oil":true,"top":[["beefChunk",4],["sprouts",2],["eggHalf",1]],"garnish":"scallion"},
+  "id_sotobetawi": {"vessel":"bowl","broth":"#e6c27e","body":"chunky","oil":true,"top":[["beefChunk",3],["potato",3],["tomato",2]],"garnish":"scallion"},
+  "id_sopkambing": {"vessel":"bowl","broth":"#c9a064","body":"clear","oil":true,"top":[["beefChunk",4],["carrot",2],["tomato",2]],"garnish":"scallion"},
+  "id_pindangikan": {"vessel":"deep","broth":"#d8953a","body":"clear","top":[["fish",3],["tomato",3],["chili",3]],"garnish":"none"},
+  "id_ikankuahkuning": {"vessel":"bowl","broth":"#efc12f","body":"clear","oil":true,"top":[["fish",3],["tomato",2],["chili",2],["herbsprig",2],["lime",1]],"garnish":"herbs"},
+  "id_supjagung": {"vessel":"bowl","broth":"#f2d985","body":"cream","top":[["corn",4],["egg",3],["carrot",2]],"garnish":"scallion"},
+  "id_oporayam": {"vessel":"bowl","broth":"#f0dfb2","body":"stew","oil":true,"top":[["chicken",4],["eggHalf",2]],"garnish":"none"},
+  "id_baksokuah": {"vessel":"bowl","broth":"#d6c49a","body":"clear","oil":true,"top":[["meatball",5],["noodles",2],["bokchoy",2]],"garnish":"scallion"},
+  "id_tekwan": {"vessel":"bowl","broth":"#e6d6ab","body":"clear","top":[["dumpling",5],["shrimp",2],["vermicelli",2],["mushroom",2]],"garnish":"scallion"},
+  "id_supmakaroni": {"vessel":"bowl","broth":"#e2c88c","body":"clear","top":[["pasta",4],["sausage",3],["carrot",2],["potato",2]],"garnish":"parsley"},
+  "id_sayurbobor": {"vessel":"bowl","broth":"#eee4c4","body":"chunky","top":[["spinach",5],["zucchini",2]],"garnish":"none"},
+  "id_brenebon": {"vessel":"deep","broth":"#8c3f2c","body":"chunky","top":[["beans",6],["beefChunk",2],["carrot",2],["potato",1]],"garnish":"scallion"},
+  "id_migodog": {"vessel":"bowl","broth":"#d8b064","body":"chunky","top":[["noodles",3],["egg",2],["cabbage",2],["chicken",2],["tomato",1]],"garnish":"scallion"},
+  "id_garangasem": {"vessel":"bowl","broth":"#eed9a2","body":"chunky","top":[["chicken",3],["tomato",3],["chili",3]],"garnish":"none"},
+  "id_kariayam": {"vessel":"bowl","broth":"#dd8f2e","body":"stew","oil":true,"top":[["chicken",3],["potato",3],["carrot",2]],"garnish":"none"},
+  "id_kimlo": {"vessel":"bowl","broth":"#e0c78e","body":"clear","top":[["chicken",2],["mushroom",2],["vermicelli",2],["carrot",3],["egg",1]],"garnish":"scallion"},
+  "id_sayuroyong": {"vessel":"bowl","broth":"#ede5c4","body":"clear","top":[["zucchini",4],["egg",2],["vermicelli",2]],"garnish":"none"}
+}
