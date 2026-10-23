@@ -8,7 +8,7 @@ GOHAN_PACK_TR('VN', 'vi', {
     'coconut water': 'Nước dừa', 'water spinach': 'Rau muống', 'cabbage': 'Bắp cải', 'carrot': 'Cà rốt',
     'daikon': 'Củ cải trắng', 'eggplant': 'Cà tím', 'pumpkin': 'Bí đỏ', 'pineapple': 'Dứa', 'okra': 'Đậu bắp',
     'bean sprouts': 'Giá đỗ', 'tamarind': 'Me', 'herbs': 'Rau thơm', 'peanuts': 'Đậu phộng', 'lime': 'Chanh',
-    'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay'
+    'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay', 'lemongrass': 'Sả', 'bell pepper': 'Ớt chuông', 'lettuce': 'Xà lách', 'ground beef': 'Thịt bò xay', 'betel leaves': 'Lá lốt', 'squid': 'Mực', 'mushrooms': 'Nấm', 'rice vermicelli': 'Bún', 'cucumber': 'Dưa leo', 'egg noodles': 'Mì trứng', 'bok choy': 'Cải thìa', 'chayote': 'Su su', 'broccoli': 'Bông cải xanh', 'green beans': 'Đậu que', 'dried shrimp': 'Tôm khô', 'lotus stems': 'Ngó sen', 'green papaya': 'Đu đủ xanh', 'rice paper': 'Bánh tráng', 'small eggplants': 'Cà pháo'
   },
   recipes: {
     'vn_thitkhotrung': {
@@ -466,6 +466,501 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Nêm nước mắm, muối và đường, cho hành lá và tiêu vào.'
       ],
       tip: { add: 'Một nắm hạt sen khô đã ngâm', why: 'Thành món canh bồi bổ nhẹ nhàng cho ngày se lạnh', skill: 'Xào săn gà trước', how: 'Xào gà với gừng trước khi đổ nước giúp thịt săn, hết mùi hôi và nước dùng trong hơn.' }
+    },
+    'vn_suonram': {
+      name: 'Sườn ram mặn ngọt',
+      ings: [['Sườn non chặt miếng 4 cm', '500 g'], ['Hành lá', '1 cây']],
+      seas: '2 muỗng canh nước mắm · 1 1/2 muỗng canh đường · 3 tép tỏi · 2 củ hành khô · 1/2 muỗng cà phê tiêu · 1 muỗng canh dầu ăn',
+      steps: [
+        'Chần sườn trong nước sôi 3 phút, rửa lại và để ráo. Ướp với 1 muỗng canh nước mắm, 1/2 muỗng canh đường, một nửa tỏi và hành khô băm, tiêu trong 15 phút.',
+        'Phi dầu nóng, chiên sườn ở lửa vừa lớn cho vàng đều các mặt, khoảng 6-8 phút. Gắp ra.',
+        'Cũng chảo đó, phi phần tỏi và hành còn lại, cho phần đường còn lại vào thắng đến màu cánh gián.',
+        'Cho sườn trở lại cùng phần nước mắm còn lại và 150 ml nước. Đậy nắp, rim lửa nhỏ 20 phút đến khi mềm.',
+        'Mở nắp, đảo ở lửa lớn đến khi nước sốt sánh và bám đều. Rắc hành lá và tiêu.'
+      ],
+      tip: { add: 'Một muỗng nước màu', why: 'Giúp sườn có màu nâu đỏ bóng đẹp', skill: 'Rim cạn cuối cùng', how: 'Đảo liên tục ở những phút cuối; nước sốt chuyển từ lỏng sang sệt rất nhanh và dễ cháy.' }
+    },
+    'vn_thitrangchay': {
+      name: 'Thịt rang cháy cạnh',
+      ings: [['Thịt ba chỉ', '400 g'], ['Hành lá', '2 cây']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng cà phê đường · 2 củ hành khô · 1/2 muỗng cà phê tiêu · 1 muỗng cà phê nước màu (tùy thích)',
+      steps: [
+        'Thái thịt ba chỉ mỏng khoảng 3 mm, ướp với một nửa nước mắm, một nửa đường, hành khô thái lát và tiêu trong 10 phút.',
+        'Cho thịt vào chảo khô ở lửa vừa cho ra mỡ, thỉnh thoảng đảo, khoảng 8-10 phút.',
+        'Khi mép thịt vàng và hơi xém cong lại, chắt bớt mỡ, chỉ để lại 1 muỗng canh.',
+        'Cho phần nước mắm, đường còn lại và nước màu vào, đảo lửa lớn 1-2 phút đến khi thịt bóng.',
+        'Cho hành lá cắt khúc, đảo 20 giây rồi tắt bếp.'
+      ],
+      tip: { add: 'Thêm ít hành khô phi cùng thịt', why: 'Đúng mùi thơm kiểu miền Bắc', skill: 'Không cần dầu', how: 'Cho thịt vào chảo nguội; mỡ ba chỉ chảy ra sẽ tự rán vàng thịt.' }
+    },
+    'vn_thitluoc': {
+      name: 'Thịt luộc chấm nước mắm',
+      ings: [['Thịt ba chỉ hoặc nạc vai, để nguyên miếng', '500 g'], ['Dưa leo', '1 quả'], ['Rau thơm (tía tô, húng)', '1 nắm']],
+      seas: '1 muỗng cà phê muối · 1 củ hành khô · 3 muỗng canh nước mắm · 1 muỗng canh đường · 1 muỗng canh nước cốt chanh · 2 tép tỏi · 1 quả ớt',
+      steps: [
+        'Xát muối lên thịt, rửa sạch rồi cho vào nồi với nước ngập thịt, củ hành khô đập dập và chút muối.',
+        'Đun sôi, vớt bọt, hạ lửa nhỏ luộc 25-30 phút đến khi xiên que qua được và nước chảy ra trong.',
+        'Vớt thịt thả vào nước lạnh 1 phút cho thịt săn lại rồi để ráo.',
+        'Pha nước mắm, đường, nước cốt chanh, 2 muỗng canh nước, tỏi băm và ớt làm nước chấm.',
+        'Thái thịt mỏng, ăn kèm dưa leo, rau thơm và nước chấm.'
+      ],
+      tip: { add: 'Hoặc chấm mắm tôm vắt chanh, thêm chút đường', why: 'Cách chấm thịt luộc được ưa chuộng ở miền Bắc', skill: 'Ngâm nước lạnh', how: 'Thả nhanh vào nước lạnh giúp bì trắng, thái miếng gọn và đẹp.' }
+    },
+    'vn_xiumai': {
+      name: 'Xíu mại sốt cà chua',
+      ings: [['Thịt heo bằm', '400 g'], ['Cà chua chín', '3 quả'], ['Hành tây', '1/2 củ'], ['Nấm mèo đã ngâm', '3 tai'], ['Hành lá', '1 cây']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng cà phê đường · 1 muỗng canh bột năng · 2 củ hành khô · 1/2 muỗng cà phê tiêu · 1 muỗng canh dầu ăn',
+      steps: [
+        'Trộn thịt với hành tây băm nhuyễn, nấm mèo băm, một nửa hành khô, 1 muỗng canh nước mắm, bột năng và tiêu. Nhồi đến khi dẻo rồi vo thành viên cỡ hạt óc chó.',
+        'Hấp viên thịt 10 phút (hoặc chiên sơ với ít dầu) cho viên giữ được hình.',
+        'Phi phần hành khô còn lại với dầu, cho cà chua băm vào xào 5 phút đến khi sệt.',
+        'Thêm 150 ml nước, phần nước mắm còn lại và đường, rồi cho xíu mại vào. Rim 10 phút.',
+        'Rắc hành lá và tiêu. Ăn với cơm hoặc bánh mì.'
+      ],
+      tip: { add: 'Một ít củ sắn (củ đậu) thái hạt lựu trộn vào thịt', why: 'Giúp viên thịt mọng nước và hơi giòn', skill: 'Nhồi kỹ', how: 'Quật thịt vào thành tô vài lần; viên sẽ dai, không bị bở.' }
+    },
+    'vn_chatrung': {
+      name: 'Chả trứng hấp',
+      ings: [['Trứng', '4 quả'], ['Thịt heo bằm', '200 g'], ['Miến đã ngâm', '20 g'], ['Nấm mèo đã ngâm', '3 tai'], ['Hành lá', '1 cây']],
+      seas: '1 muỗng canh nước mắm · 1/2 muỗng cà phê đường · 1 củ hành khô · 1/4 muỗng cà phê tiêu · 1 muỗng cà phê dầu ăn',
+      steps: [
+        'Cắt miến ngắn, băm nhỏ nấm mèo và hành khô.',
+        'Trộn thịt với miến, nấm mèo, hành khô, nước mắm, đường và tiêu. Đập vào 3 quả trứng và 1 lòng trắng (để riêng 1 lòng đỏ), trộn đều.',
+        'Đổ vào đĩa chịu nhiệt đã thoa dầu, hấp lửa vừa 20-25 phút đến khi giữa chả chắc lại.',
+        'Quét lòng đỏ đã đánh tan lên mặt, hấp thêm 2 phút cho mặt chả vàng đẹp.',
+        'Rắc hành lá và cắt miếng vuông.'
+      ],
+      tip: { add: 'Ăn với cơm tấm và nước mắm', why: 'Đây chính là miếng chả trên dĩa cơm tấm', skill: 'Hấp lửa vừa', how: 'Để lửa vừa và bọc khăn quanh nắp để hơi nước không nhỏ xuống làm rỗ mặt chả.' }
+    },
+    'vn_gachiennuocmam': {
+      name: 'Cánh gà chiên nước mắm',
+      ings: [['Cánh gà', '600 g'], ['Ớt', '1 quả']],
+      seas: '2 muỗng canh nước mắm · 1 1/2 muỗng canh đường · 4 tép tỏi · 2 muỗng canh bột năng · 1/2 muỗng cà phê muối · 1/4 muỗng cà phê tiêu · dầu để chiên',
+      steps: [
+        'Chặt cánh gà ở khớp, ướp muối, tiêu rồi áo một lớp bột năng mỏng.',
+        'Chiên trong dầu ngập 2-3 cm ở lửa vừa 10-12 phút, trở đều, đến khi vàng và chín kỹ. Vớt ra để ráo dầu.',
+        'Chắt bớt dầu, chừa 1 muỗng canh. Phi tỏi băm và ớt đến vàng.',
+        'Cho nước mắm, đường và 2 muỗng canh nước vào, đun đến khi sánh như siro.',
+        'Cho cánh gà vào đảo nhanh ở lửa lớn đến khi nước sốt bám đều.'
+      ],
+      tip: { add: 'Chiên cánh gà hai lần', why: 'Da vẫn giòn dưới lớp sốt dẻo', skill: 'Thắng sốt trước', how: 'Đun sốt đến khi nổi bọt to rồi mới cho gà vào, sốt sẽ bám chứ không ngấm làm mềm da.' }
+    },
+    'vn_gaxaosa': {
+      name: 'Gà xào sả ớt',
+      ings: [['Đùi gà chặt miếng', '500 g'], ['Sả', '3 cây'], ['Ớt đỏ', '2 quả'], ['Hành tây', '1/2 củ']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng canh đường · 1/2 muỗng cà phê bột nghệ (tùy thích) · 2 tép tỏi · 1 củ hành khô · 1/2 muỗng cà phê tiêu · 2 muỗng canh dầu ăn',
+      steps: [
+        'Băm sả thật nhuyễn. Ướp gà với một nửa sả, nước mắm, một nửa đường, bột nghệ, hành khô và tiêu trong 15 phút.',
+        'Phi phần sả còn lại và tỏi với dầu đến khi vàng thơm.',
+        'Cho gà vào xào lửa lớn 5 phút đến khi săn và vàng.',
+        'Thêm ớt thái lát, hành tây, phần đường còn lại và 3 muỗng canh nước. Đậy nắp, để lửa nhỏ 10 phút đến khi gà chín.',
+        'Mở nắp, đảo đến khi nước gần cạn và sệt lại.'
+      ],
+      tip: { add: 'Một muỗng đậu phộng rang giã dập rắc lên trên', why: 'Bùi giòn, hợp với mùi sả thơm', skill: 'Băm sả thật nhuyễn', how: 'Chỉ dùng phần gốc non và băm thật nhỏ để sả giòn, không bị xơ.' }
+    },
+    'vn_boluclac': {
+      name: 'Bò lúc lắc',
+      ings: [['Thăn hoặc mông bò', '350 g'], ['Ớt chuông', '1 quả'], ['Hành tây', '1 củ'], ['Xà lách hoặc cải xoong', '1 nắm'], ['Cà chua', '1 quả']],
+      seas: '1 muỗng canh dầu hào · 1 muỗng cà phê nước tương · 1 muỗng cà phê nước mắm · 1 muỗng cà phê đường · 4 tép tỏi · 1/2 muỗng cà phê tiêu · 1 muỗng canh bơ (tùy thích) · 2 muỗng canh dầu ăn',
+      steps: [
+        'Cắt bò thành khối vuông 2,5 cm, ướp với dầu hào, nước tương, đường, một nửa tỏi, tiêu và 1 muỗng cà phê dầu trong 15 phút.',
+        'Cắt ớt chuông và hành tây thành miếng vuông. Xếp xà lách và cà chua thái lát ra đĩa.',
+        'Đun dầu thật nóng. Cho bò vào thành một lớp, để yên áp chảo 1 phút rồi lắc chảo cho các mặt đều chín. Áp thêm 1-2 phút rồi gắp ra.',
+        'Phi phần tỏi còn lại, cho ớt chuông và hành tây vào đảo 1 phút với nước mắm.',
+        'Cho bò trở lại cùng bơ, lắc đều rồi xếp lên đĩa rau.'
+      ],
+      tip: { add: 'Chấm muối tiêu chanh', why: 'Muối tiêu chanh luôn đi kèm bò lúc lắc', skill: 'Lắc chảo, đừng đảo', how: 'Để bò yên cho mặt ngoài xém lại rồi mới lắc chảo; đảo đũa sẽ làm rách lớp xém và chảy nước thịt.' }
+    },
+    'vn_bolalot': {
+      name: 'Bò cuốn lá lốt',
+      ings: [['Thịt bò xay (hoặc nửa bò nửa heo)', '300 g'], ['Lá lốt', '30 lá'], ['Sả', '1 cây'], ['Đậu phộng rang', '2 muỗng canh']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng cà phê đường · 2 củ hành khô · 2 tép tỏi · 1/2 muỗng cà phê tiêu · 2 muỗng canh dầu ăn · nước mắm chấm',
+      steps: [
+        'Trộn thịt bò với sả, hành khô, tỏi băm, nước mắm, đường và tiêu; ướp 15 phút.',
+        'Đặt lá lốt mặt bóng úp xuống, cho 1 muỗng cà phê thịt vào phía cuống rồi cuộn chặt. Làm đến hết.',
+        'Xếp các cuốn, mép cuốn úp xuống, vào chảo đã thoa dầu (hoặc lên vỉ nướng), áp lửa vừa 8-10 phút, trở đều đến khi lá héo và thịt chín.',
+        'Rắc đậu phộng giã dập, ăn với nước mắm chấm, cơm hoặc bún.'
+      ],
+      tip: { add: 'Quét mỡ hành lên trên', why: 'Lá lốt bóng đẹp và thơm hơn', skill: 'Úp mép cuốn xuống', how: 'Áp mặt có mép cuốn xuống trước, cuốn sẽ tự dính mà không cần tăm.' }
+    },
+    'vn_casotca': {
+      name: 'Cá sốt cà chua',
+      ings: [['Cá thu hoặc cá rô phi cắt khúc', '500 g'], ['Cà chua chín', '3 quả'], ['Hành lá', '2 cây']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng cà phê đường · 2 củ hành khô · 1/2 muỗng cà phê muối · tiêu · 3 muỗng canh dầu ăn',
+      steps: [
+        'Xát muối lên cá, rửa sạch và thấm thật khô.',
+        'Chiên cá trong dầu ở lửa vừa 4-5 phút mỗi mặt đến khi vàng và chín. Gắp ra.',
+        'Chắt bớt dầu, phi hành khô rồi cho cà chua băm vào xào 5 phút đến khi mềm.',
+        'Thêm 100 ml nước, nước mắm và đường. Xếp cá vào, rim 5 phút, chan sốt lên cá.',
+        'Rắc hành lá và tiêu.'
+      ],
+      tip: { add: 'Thêm ít thì là cùng hành lá', why: 'Cá thơm và thanh hơn theo kiểu miền Bắc', skill: 'Cá khô, dầu nóng', how: 'Thấm cá thật khô và đợi dầu thật nóng thì da cá không bị dính chảo.' }
+    },
+    'vn_chaca': {
+      name: 'Chả cá thì là',
+      ings: [['Phi lê cá thịt trắng', '400 g'], ['Thì là', '1 bó nhỏ'], ['Hành lá', '1 cây']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng cà phê đường · 1 muỗng canh bột năng · 1 củ hành khô · 1/2 muỗng cà phê tiêu · 3 muỗng canh dầu ăn',
+      steps: [
+        'Cắt cá thành miếng rồi xay hoặc giã nhuyễn với nước mắm, đường, bột năng và tiêu.',
+        'Trộn thì là, hành lá và hành khô băm vào. Quết bằng muỗng 2 phút đến khi chả dai.',
+        'Thoa dầu vào tay, nặn thành miếng dẹt dày 1 cm.',
+        'Chiên trong dầu ở lửa vừa 3-4 phút mỗi mặt đến khi vàng và chín.'
+      ],
+      tip: { add: 'Chấm mắm tôm vắt chanh', why: 'Cách ăn chả cá quen thuộc của người Hà Nội', skill: 'Giữ chả lạnh', how: 'Giữ cá lạnh khi xay; chả bị ấm sẽ bở, không dai.' }
+    },
+    'vn_cahap': {
+      name: 'Cá hấp gừng hành',
+      ings: [['Cá nguyên con (rô phi, cá hồng) hoặc phi lê dày', '600 g'], ['Gừng', '30 g'], ['Hành lá', '3 cây'], ['Nấm đông cô đã ngâm', '3 cái']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng canh nước tương · 1 muỗng cà phê đường · 1/2 muỗng cà phê muối · tiêu · 2 muỗng canh dầu ăn',
+      steps: [
+        'Xát muối lên cá, rửa sạch và khứa hai mặt. Xếp một nửa gừng thái sợi và nấm thái lát lên đĩa chịu nhiệt rồi đặt cá lên trên.',
+        'Trộn nước mắm, nước tương, đường và 2 muỗng canh nước rồi rưới lên cá.',
+        'Hấp lửa lớn 12-15 phút đến khi thịt cá trắng và tách thớ ở chỗ dày nhất.',
+        'Rải phần gừng còn lại và hành lá thái sợi lên. Đun dầu thật nóng rồi rưới lên cho xèo xèo.'
+      ],
+      tip: { add: 'Vài lát dưa cải chua lót đĩa', why: 'Nước hấp có vị chua nhẹ dễ ăn', skill: 'Kê cá lên', how: 'Kê hai chiếc đũa dưới cá để hơi nước lưu thông, cá chín đều.' }
+    },
+    'vn_mucxao': {
+      name: 'Mực xào chua ngọt',
+      ings: [['Mực đã làm sạch', '400 g'], ['Dứa', '150 g'], ['Cà chua', '1 quả'], ['Hành tây', '1/2 củ'], ['Ớt chuông', '1/2 quả'], ['Hành lá', '1 cây']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng canh tương cà · 1 muỗng cà phê đường · 1 muỗng cà phê giấm · 2 tép tỏi · tiêu · 2 muỗng canh dầu ăn',
+      steps: [
+        'Khứa mực hình caro rồi cắt miếng vừa ăn. Ướp với chút nước mắm và tiêu.',
+        'Cắt dứa, cà chua, hành tây và ớt chuông thành miếng vừa ăn.',
+        'Đun 1 muỗng canh dầu thật nóng, xào mực 1 phút đến khi cuộn lại. Gắp ra.',
+        'Phi tỏi với phần dầu còn lại, cho rau củ và dứa vào đảo 2 phút. Nêm nước mắm, tương cà, đường và giấm.',
+        'Cho mực trở lại cùng hành lá, đảo 30 giây.'
+      ],
+      tip: { add: 'Vài cọng cần tây', why: 'Mùi thơm quen thuộc khi xào mực', skill: 'Xào mực thật nhanh', how: 'Mực mềm khi xào 1-2 phút hoặc hầm 30 phút; ở giữa thì sẽ dai.' }
+    },
+    'vn_ngheuhapsa': {
+      name: 'Nghêu hấp sả',
+      ings: [['Nghêu', '1 kg'], ['Sả', '4 cây'], ['Gừng', '1 nhánh'], ['Ớt', '2 quả'], ['Húng quế', '1 nắm']],
+      seas: '1 muỗng cà phê nước mắm · muối tiêu chanh để chấm',
+      steps: [
+        'Ngâm nghêu trong nước muối 1 tiếng cho nhả cát. Chà và rửa sạch.',
+        'Đập dập sả, cắt khúc; thái lát gừng và ớt.',
+        'Cho sả, gừng, ớt vào nồi với 200 ml nước và nước mắm, đun sôi.',
+        'Cho nghêu vào, đậy nắp hấp lửa lớn 3-5 phút, thỉnh thoảng lắc nồi, đến khi nghêu mở miệng. Bỏ những con không mở.',
+        'Cho húng quế vào, ăn với muối tiêu chanh và nước hấp.'
+      ],
+      tip: { add: 'Một chút bia thay một phần nước', why: 'Cách hay dùng để nước hấp đậm đà hơn', skill: 'Con nào mở thì gắp ra', how: 'Gắp nghêu ra ngay khi mở miệng để những con mở trước không bị dai.' }
+    },
+    'vn_dauhusaot': {
+      name: 'Đậu hũ chiên sả ớt',
+      ings: [['Đậu hũ', '400 g'], ['Sả', '3 cây'], ['Ớt đỏ', '2 quả']],
+      seas: '1 muỗng canh nước tương hoặc nước mắm · 1 muỗng cà phê đường · 1/2 muỗng cà phê muối · 2 tép tỏi · 4 muỗng canh dầu ăn',
+      steps: [
+        'Thấm khô đậu hũ, cắt khối 2 cm. Băm nhuyễn sả, ớt và tỏi.',
+        'Chiên đậu với 3 muỗng canh dầu đến khi vàng đều các mặt. Vớt ra.',
+        'Với phần dầu còn lại, phi sả ở lửa vừa nhỏ đến khi vàng giòn, rồi cho tỏi và ớt vào.',
+        'Cho đậu hũ, muối, đường và nước tương vào, đảo đến khi đậu áo đều sả phi giòn.'
+      ],
+      tip: { add: 'Dùng hạt nêm nấm thay nước mắm', why: 'Thành món chay cho ngày rằm', skill: 'Phi sả lửa nhỏ', how: 'Sả rất dễ cháy; phi nhẹ lửa và đảo liên tục đến khi vàng.' }
+    },
+    'vn_dauhukhonam': {
+      name: 'Đậu hũ kho nấm',
+      ings: [['Đậu hũ', '400 g'], ['Nấm rơm hoặc nấm bào ngư', '200 g'], ['Hành lá', '1 cây']],
+      seas: '2 muỗng canh nước tương · 1 muỗng cà phê đường · 1 muỗng cà phê nước màu (tùy thích) · 1 củ hành khô · 1/2 muỗng cà phê tiêu · 3 muỗng canh dầu ăn',
+      steps: [
+        'Cắt đậu hũ miếng dày, chiên vàng. Cắt đôi nấm.',
+        'Phi hành khô thái lát với 1 muỗng canh dầu, cho nấm vào đảo 2 phút.',
+        'Cho đậu hũ, nước tương, đường, nước màu và 150 ml nước vào. Kho lửa nhỏ 10-15 phút đến khi nước sệt lại.',
+        'Rắc hành lá và nhiều tiêu.'
+      ],
+      tip: { add: 'Dùng ít nước dừa thay nước lọc', why: 'Ngọt và bóng kiểu miền Nam', skill: 'Kho, đừng đảo', how: 'Lắc nồi thay vì đảo để đậu hũ chiên giữ nguyên miếng.' }
+    },
+    'vn_catimxaothit': {
+      name: 'Cà tím xào thịt bằm',
+      ings: [['Cà tím dài', '2 quả'], ['Thịt heo bằm', '150 g'], ['Tía tô hoặc húng quế', '1 nắm']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng cà phê đường · 3 tép tỏi · 1 quả ớt · 1/2 muỗng cà phê muối · 3 muỗng canh dầu ăn',
+      steps: [
+        'Cắt cà tím thành miếng cỡ ngón tay, ngâm nước muối 10 phút. Vớt ra, vắt nhẹ.',
+        'Xào cà tím với 2 muỗng canh dầu ở lửa lớn đến khi mềm và hơi vàng. Gắp ra.',
+        'Phi tỏi và ớt với phần dầu còn lại, cho thịt vào đảo tơi đến khi chín.',
+        'Cho cà tím trở lại cùng nước mắm, đường và 3 muỗng canh nước, đun 2 phút. Cho rau thơm vào.'
+      ],
+      tip: { add: 'Một chút tương bần', why: 'Đúng vị cà xào kiểu miền Bắc', skill: 'Ngâm nước muối', how: 'Ngâm giúp cà tím không bị thâm và không hút quá nhiều dầu.' }
+    },
+    'vn_bunthitnuong': {
+      name: 'Bún thịt nướng',
+      ings: [['Nạc vai hoặc ba chỉ thái mỏng', '400 g'], ['Bún', '300 g'], ['Sả', '2 cây'], ['Xà lách', '1 cây'], ['Dưa leo', '1 quả'], ['Húng và tía tô', '1 bó'], ['Đậu phộng rang', '2 muỗng canh']],
+      seas: '2 muỗng canh nước mắm · 1 muỗng canh đường · 1 muỗng canh mật ong · 2 củ hành khô · 2 tép tỏi · 1 muỗng canh dầu ăn · nước mắm chua ngọt · đồ chua (tùy thích)',
+      steps: [
+        'Ướp thịt với sả, hành khô, tỏi băm, nước mắm, đường, mật ong và dầu ít nhất 30 phút.',
+        'Luộc bún, xả nước lạnh và để ráo.',
+        'Nướng thịt trên than, trong lò hoặc áp chảo nóng 3-4 phút mỗi mặt đến khi chín và cháy cạnh.',
+        'Cho xà lách thái, dưa leo và rau thơm vào tô, rồi bún và thịt nướng.',
+        'Rắc đậu phộng giã và mỡ hành nếu thích, chan nước mắm chua ngọt khi ăn.'
+      ],
+      tip: { add: 'Vài cuốn chả giò cắt khúc', why: 'Thành bún thịt nướng chả giò đầy đủ', skill: 'Thái thật mỏng', how: 'Thái thịt khi còn hơi đông để miếng mỏng, nướng nhanh và xém cạnh trước khi bị khô.' }
+    },
+    'vn_mixao': {
+      name: 'Mì xào thập cẩm',
+      ings: [['Mì trứng', '250 g'], ['Tôm bóc vỏ', '150 g'], ['Mực', '100 g'], ['Cải thìa hoặc cải ngọt', '200 g'], ['Cà rốt', '1/2 củ']],
+      seas: '1 muỗng canh dầu hào · 1 muỗng canh nước tương · 1 muỗng cà phê nước mắm · 1 muỗng cà phê đường · 1 muỗng cà phê bột năng · 3 tép tỏi · tiêu · 3 muỗng canh dầu ăn',
+      steps: [
+        'Luộc mì vừa chín tới, để ráo và trộn với 1 muỗng cà phê dầu.',
+        'Xào mì với 1 muỗng canh dầu đến khi vài chỗ hơi giòn. Cho ra đĩa.',
+        'Phi tỏi, cho tôm và mực vào đảo 1-2 phút. Thêm cà rốt thái lát và cải, đảo 2 phút.',
+        'Cho dầu hào, nước tương, nước mắm, đường và bột năng pha với 100 ml nước vào. Đảo đến khi sốt sánh bóng.',
+        'Rưới lên mì (hoặc trộn mì vào chảo) và rắc tiêu.'
+      ],
+      tip: { add: 'Vài lát thịt heo hoặc thịt bò', why: 'Đúng nghĩa thập cẩm, mỗi thứ một ít', skill: 'Mì khô xào mới ngon', how: 'Để mì thật ráo và trải ra cho hơi khô trước khi xào.' }
+    },
+    'vn_comrangduabo': {
+      name: 'Cơm rang dưa bò',
+      ings: [['Cơm nguội', '400 g'], ['Thịt bò thái mỏng', '200 g'], ['Dưa cải chua', '150 g'], ['Cà chua', '1 quả'], ['Trứng', '1 quả'], ['Hành lá', '1 cây']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng cà phê nước tương · 1/2 muỗng cà phê đường · 2 tép tỏi · tiêu · 3 muỗng canh dầu ăn',
+      steps: [
+        'Ướp bò với chút nước mắm, tỏi và tiêu. Vắt ráo dưa cải và cắt ngắn.',
+        'Xào bò với 1 muỗng canh dầu thật nóng trong 1 phút rồi gắp ra.',
+        'Xào dưa cải và cà chua với đường 3 phút đến khi thơm. Cho ra.',
+        'Rang cơm với phần dầu còn lại (đánh trứng vào nếu dùng) 4-5 phút đến khi nóng và hơi giòn. Nêm nước tương và phần nước mắm còn lại.',
+        'Cho dưa và bò vào đảo đều, thêm hành lá rồi dọn ra.'
+      ],
+      tip: { add: 'Một quả trứng ốp la bên trên', why: 'Kiểu quen thuộc ở nhà và quán Hà Nội', skill: 'Xào riêng từng thứ', how: 'Xào bò và dưa riêng thì bò mềm, cơm khô ráo.' }
+    },
+    'vn_giaxaohe': {
+      name: 'Giá xào hẹ',
+      ings: [['Giá đỗ', '300 g'], ['Hẹ', '1 bó'], ['Đậu hũ chiên', '1 miếng']],
+      seas: '1 muỗng cà phê nước mắm · 1/4 muỗng cà phê muối · 2 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Nhặt rễ giá nếu có thời gian; cắt hẹ khúc 4 cm.',
+        'Phi tỏi với dầu ở lửa lớn cho thơm.',
+        'Cho giá (và đậu hũ thái lát) vào đảo 1 phút.',
+        'Cho hẹ, nước mắm và muối vào đảo thêm 20 giây. Dọn ngay.'
+      ],
+      tip: { add: 'Vài con tôm bóc vỏ', why: 'Thêm vị ngọt và đạm', skill: 'Xào nhanh lửa lớn', how: 'Giá xào quá 2 phút sẽ ra nước và bị nhũn.' }
+    },
+    'vn_susuxao': {
+      name: 'Su su xào tỏi',
+      ings: [['Su su', '2 quả'], ['Cà rốt', '1/2 củ']],
+      seas: '1 muỗng cà phê nước mắm · 1/4 muỗng cà phê muối · chút đường · 3 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Gọt su su dưới vòi nước (nhựa su su rất dính), bổ đôi, bỏ hạt và thái mỏng. Thái lát cà rốt.',
+        'Phi tỏi với dầu đến vàng.',
+        'Cho su su và cà rốt vào xào lửa lớn 3-4 phút, thêm chút nước, đến khi vừa chín tới.',
+        'Nêm nước mắm, muối và đường.'
+      ],
+      tip: { add: 'Dùng ngọn su su thay quả', why: 'Ngọn su su xào tỏi là món rau rất được ưa chuộng', skill: 'Gọt dưới nước', how: 'Nhựa su su khô lại sẽ làm rít tay; gọt dưới vòi nước hoặc đeo găng.' }
+    },
+    'vn_khoquaxaotrung': {
+      name: 'Khổ qua xào trứng',
+      ings: [['Khổ qua', '1 quả'], ['Trứng', '2 quả'], ['Hành lá', '1 cây']],
+      seas: '1 muỗng cà phê nước mắm · 1/2 muỗng cà phê muối · 1/2 muỗng cà phê đường · 2 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Bổ đôi khổ qua, nạo bỏ hạt và ruột trắng, thái mỏng, bóp muối 5 phút rồi rửa lại.',
+        'Phi tỏi với dầu, cho khổ qua vào xào lửa lớn 2-3 phút.',
+        'Đổ trứng đã đánh với nước mắm và đường vào, đảo nhẹ đến khi trứng vừa chín.',
+        'Cho hành lá vào rồi dọn ra.'
+      ],
+      tip: { add: 'Thêm ít thịt bằm', why: 'Làm dịu vị đắng', skill: 'Nạo sạch ruột trắng', how: 'Nạo hết phần ruột trắng; vị đắng gắt nằm chủ yếu ở đó.' }
+    },
+    'vn_bongcaixao': {
+      name: 'Bông cải xào cà rốt',
+      ings: [['Bông cải xanh hoặc súp lơ trắng', '1 cây'], ['Cà rốt', '1/2 củ'], ['Tôm', '100 g']],
+      seas: '1 muỗng cà phê dầu hào · 1 muỗng cà phê nước mắm · 1/2 muỗng cà phê đường · 1/2 muỗng cà phê bột năng · 2 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Cắt bông cải thành bông nhỏ, thái lát cà rốt. Chần cả hai 1 phút rồi để ráo.',
+        'Phi tỏi với dầu (cho tôm vào đảo đến khi đỏ nếu dùng).',
+        'Cho rau củ vào xào lửa lớn 2 phút.',
+        'Cho dầu hào, nước mắm, đường và bột năng pha 3 muỗng canh nước vào, đảo đến khi bóng.'
+      ],
+      tip: { add: 'Vài lát thịt bò', why: 'Bông cải xào bò là món quen thuộc trong bữa cơm nhà', skill: 'Chần trước', how: 'Chần giúp bông cải xanh đẹp và chín đều khi xào nhanh.' }
+    },
+    'vn_dauquexao': {
+      name: 'Đậu que xào tỏi',
+      ings: [['Đậu que', '300 g'], ['Cà rốt', '1/2 củ']],
+      seas: '1 muỗng cà phê nước mắm · 1/4 muỗng cà phê muối · 1/2 muỗng cà phê đường · 3 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Tước xơ đậu que, cắt xéo khúc 4 cm. Chần 2 phút rồi để ráo.',
+        'Phi tỏi với dầu đến vàng.',
+        'Cho đậu que và cà rốt vào xào lửa lớn 2-3 phút.',
+        'Nêm nước mắm, muối và đường.'
+      ],
+      tip: { add: 'Vài lát thịt bò', why: 'Đậu que xào bò rất đưa cơm', skill: 'Chần nước muối', how: 'Cho chút muối vào nước chần để đậu giữ màu xanh và thấm vị.' }
+    },
+    'vn_caithiaxaonam': {
+      name: 'Cải thìa xào nấm',
+      ings: [['Cải thìa', '400 g'], ['Nấm đông cô tươi hoặc nấm bào ngư', '150 g']],
+      seas: '1 muỗng canh dầu hào · 1/4 muỗng cà phê muối · 1/2 muỗng cà phê đường · 2 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Chẻ đôi hoặc chẻ tư cải thìa theo chiều dọc, rửa kỹ. Thái lát nấm.',
+        'Phi tỏi với dầu, cho nấm vào đảo 2 phút.',
+        'Cho cải thìa và 2 muỗng canh nước vào, xào lửa lớn 2 phút đến khi cọng vừa chín.',
+        'Nêm dầu hào, muối và đường.'
+      ],
+      tip: { add: 'Vài giọt dầu mè lúc cuối', why: 'Thêm mùi thơm bùi', skill: 'Cọng trước, lá sau', how: 'Nếu cải to, xào phần cọng trước 1 phút rồi mới cho lá.' }
+    },
+    'vn_bapxao': {
+      name: 'Bắp xào tép mỡ hành',
+      ings: [['Hạt bắp ngọt', '2 trái (300 g)'], ['Tôm khô (tép khô)', '2 muỗng canh'], ['Hành lá', '3 cây']],
+      seas: '1 muỗng cà phê đường · 1/4 muỗng cà phê muối · 1 muỗng canh bơ hoặc dầu ăn',
+      steps: [
+        'Ngâm tép khô trong nước ấm 10 phút rồi để ráo. Thái hành lá.',
+        'Đun nóng bơ hoặc dầu, phi tép khô cho thơm.',
+        'Cho bắp vào xào 3-4 phút. Nêm đường và muối.',
+        'Cho hành lá vào, đảo đến khi hành vừa héo rồi dọn ra.'
+      ],
+      tip: { add: 'Chút nước mắm hoặc tương ớt', why: 'Mặn cay như bắp xào ngoài phố', skill: 'Tách hạt sát lõi', how: 'Dựng trái bắp lên miệng tô rồi cắt dọc xuống, hạt rơi vào tô không văng ra ngoài.' }
+    },
+    'vn_daubapluoc': {
+      name: 'Đậu bắp luộc',
+      ings: [['Đậu bắp', '300 g'], ['Ớt', '1 quả']],
+      seas: '1/2 muỗng cà phê muối · 2 muỗng canh nước mắm · 1 muỗng cà phê đường · 1 muỗng canh nước cốt chanh · 1 tép tỏi · 1 muỗng cà phê gừng băm (tùy thích)',
+      steps: [
+        'Rửa đậu bắp, chỉ cắt bớt đầu cuống (không cắt vào trái).',
+        'Luộc trong nước muối 3-4 phút đến khi xanh và mềm.',
+        'Pha nước mắm, đường, nước cốt chanh, 1 muỗng canh nước, tỏi băm, ớt và gừng làm nước chấm.',
+        'Dọn đậu bắp ra đĩa ăn với nước chấm.'
+      ],
+      tip: { add: 'Chấm chao thay nước mắm', why: 'Cách ăn được ưa chuộng ở miền Nam', skill: 'Để nguyên trái', how: 'Không cắt vào trái thì đậu bắp không bị nhớt khi luộc.' }
+    },
+    'vn_khoquet': {
+      name: 'Rau củ luộc chấm kho quẹt',
+      ings: [['Cà rốt', '1 củ'], ['Bắp cải', '1/4 bắp'], ['Đậu que hoặc đậu bắp', '150 g'], ['Mỡ heo hoặc ba chỉ thái hạt lựu', '80 g'], ['Tôm khô', '2 muỗng canh']],
+      seas: '3 muỗng canh nước mắm · 2 muỗng canh đường · 2 củ hành khô · 1 quả ớt · 1/2 muỗng cà phê tiêu · 1/2 muỗng cà phê muối',
+      steps: [
+        'Cắt rau củ thành miếng, luộc trong nước muối đến khi vừa chín (cà rốt trước, rồi đậu, rồi bắp cải). Để ráo.',
+        'Thắng thịt mỡ trong nồi nhỏ đến khi ra mỡ và thành tóp mỡ giòn. Cho tôm khô đã ngâm và hành khô vào phi thơm.',
+        'Cho nước mắm, đường, ớt và 2 muỗng canh nước vào, kho lửa nhỏ 5-7 phút đến khi sệt như siro.',
+        'Rắc tiêu, dọn kho quẹt nóng nguyên nồi để chấm rau củ.'
+      ],
+      tip: { add: 'Đọt lang luộc hoặc bí đỏ luộc', why: 'Cách ăn kho quẹt của miền Tây', skill: 'Tắt bếp khi vừa sệt', how: 'Kho quẹt sẽ đặc thêm khi nguội; tắt bếp khi nước kho bám muỗng.' }
+    },
+    'vn_cucaikho': {
+      name: 'Củ cải trắng kho tép',
+      ings: [['Củ cải trắng', '500 g'], ['Tôm khô (tép khô)', '2 muỗng canh'], ['Hành lá', '1 cây']],
+      seas: '2 muỗng canh nước mắm · 1 muỗng cà phê đường · 1 muỗng cà phê nước màu (tùy thích) · 1 củ hành khô · tiêu · 1 muỗng canh dầu ăn',
+      steps: [
+        'Gọt củ cải, cắt miếng bán nguyệt dày. Ngâm tép khô 10 phút.',
+        'Phi hành khô và tép với dầu cho thơm.',
+        'Cho củ cải, nước mắm, đường, nước màu và 200 ml nước vào. Đậy nắp kho lửa nhỏ 20-25 phút đến khi củ cải mềm và có màu hổ phách.',
+        'Mở nắp cho nước kho cạn bớt, rắc hành lá và tiêu.'
+      ],
+      tip: { add: 'Vài lát thịt ba chỉ', why: 'Mỡ làm củ cải béo và đậm đà hơn', skill: 'Cắt miếng dày', how: 'Miếng dày thấm nước kho mà không bị nát.' }
+    },
+    'vn_goingosen': {
+      name: 'Gỏi ngó sen tôm thịt',
+      ings: [['Ngó sen (ngâm chua hoặc tươi)', '300 g'], ['Tôm', '150 g'], ['Thịt ba chỉ', '150 g'], ['Cà rốt', '1/2 củ'], ['Rau răm hoặc húng quế', '1 nắm'], ['Đậu phộng rang', '2 muỗng canh']],
+      seas: '2 muỗng canh nước mắm · 2 muỗng canh đường · 2 muỗng canh nước cốt chanh hoặc giấm · 1 tép tỏi · 1 quả ớt · 1 muỗng canh hành phi · bánh phồng tôm (tùy thích)',
+      steps: [
+        'Luộc thịt 20 phút và tôm 2 phút. Thái thịt mỏng, tôm bóc vỏ và chẻ đôi.',
+        'Cắt ngó sen khúc 5 cm (chẻ đôi cọng to), ngâm nước pha chút giấm rồi vắt ráo. Bào sợi cà rốt.',
+        'Pha nước mắm, đường, nước cốt chanh, tỏi băm và ớt đến khi tan đường.',
+        'Trộn tất cả với rau thơm và nước trộn, rắc đậu phộng và hành phi, ăn kèm bánh phồng tôm.'
+      ],
+      tip: { add: 'Vài sợi dưa leo', why: 'Thêm giòn và mát', skill: 'Vắt ráo rau củ', how: 'Vắt thật ráo ngó sen và cà rốt để gỏi không bị chảy nước.' }
+    },
+    'vn_nomdudu': {
+      name: 'Nộm đu đủ',
+      ings: [['Đu đủ xanh', '1/2 quả (400 g)'], ['Cà rốt', '1/2 củ'], ['Húng quế và rau răm', '1 nắm'], ['Đậu phộng rang', '2 muỗng canh']],
+      seas: '2 muỗng canh nước mắm · 2 muỗng canh đường · 2 muỗng canh nước cốt chanh hoặc giấm · 1 tép tỏi · 1 quả ớt · 1/2 muỗng cà phê muối',
+      steps: [
+        'Gọt vỏ và bào sợi đu đủ, cà rốt. Bóp với muối, để 10 phút, rửa lại và vắt thật ráo.',
+        'Pha nước mắm, đường, nước cốt chanh, tỏi băm và ớt.',
+        'Trộn rau củ với nước trộn và rau thơm thái nhỏ.',
+        'Rắc đậu phộng giã dập lên trên.'
+      ],
+      tip: { add: 'Bò khô xé sợi', why: 'Thành món nộm bò khô quen thuộc ngoài phố', skill: 'Bóp muối và vắt ráo', how: 'Bóp muối giúp đu đủ hết nhựa và sợi giòn hơn.' }
+    },
+    'vn_xalachdaugiam': {
+      name: 'Xà lách trộn dầu giấm',
+      ings: [['Xà lách', '1 cây'], ['Cà chua', '2 quả'], ['Hành tây', '1/2 củ'], ['Dưa leo', '1 quả'], ['Trứng luộc', '1 quả']],
+      seas: '2 muỗng canh giấm · 1 1/2 muỗng canh đường · 2 muỗng canh dầu ăn · 1/2 muỗng cà phê muối · 1/4 muỗng cà phê tiêu · 1 tép tỏi',
+      steps: [
+        'Thái mỏng hành tây, trộn với 1 muỗng canh giấm và chút đường, để 10 phút.',
+        'Ngắt xà lách, thái lát cà chua và dưa leo.',
+        'Khuấy phần giấm, đường còn lại với muối, tiêu, tỏi băm và dầu.',
+        'Trộn tất cả ngay trước khi ăn; xếp trứng thái lát lên trên nếu dùng.'
+      ],
+      tip: { add: 'Dọn kèm bò lúc lắc hoặc cá chiên', why: 'Món trộn chua ngọt này là bạn đồng hành của các món chiên', skill: 'Trộn khi ăn', how: 'Xà lách héo chỉ sau vài phút; rưới nước trộn vào lúc cuối cùng.' }
+    },
+    'vn_goicuon': {
+      name: 'Gỏi cuốn',
+      ings: [['Bánh tráng', '12 lá'], ['Tôm', '200 g'], ['Thịt ba chỉ', '200 g'], ['Bún', '100 g'], ['Xà lách', '1 cây'], ['Húng, tía tô và hẹ', '1 bó']],
+      seas: 'Tương chấm: 3 muỗng canh tương đen · 1 muỗng canh bơ đậu phộng · 1 tép tỏi · 1 muỗng cà phê dầu ăn · 4 muỗng canh nước · đậu phộng giã và ớt',
+      steps: [
+        'Luộc thịt 20-25 phút rồi thái mỏng. Luộc tôm 2 phút, bóc vỏ và chẻ đôi theo chiều dọc. Luộc bún và để ráo.',
+        'Làm tương chấm: phi tỏi với dầu, cho tương đen, bơ đậu phộng và nước vào đun 1 phút.',
+        'Nhúng bánh tráng qua nước 1-2 giây rồi trải phẳng. Xếp xà lách, bún, rau thơm và thịt ở 1/3 phía dưới, đặt 3 nửa con tôm mặt cắt úp lên phía trên.',
+        'Gấp mép dưới lên, gấp hai bên vào rồi cuốn chặt. Ăn với tương chấm rắc đậu phộng và ớt.'
+      ],
+      tip: { add: 'Để một cọng hẹ ló ra ở mỗi cuốn', why: 'Đúng kiểu gỏi cuốn quen thuộc và thêm vị hăng thơm', skill: 'Nhúng nhanh', how: 'Chỉ nhúng bánh tráng thật nhanh; bánh sẽ tiếp tục mềm trên thớt, ngâm lâu dễ rách.' }
+    },
+    'vn_duacai': {
+      name: 'Dưa cải chua',
+      ings: [['Cải bẹ xanh', '1 kg'], ['Hành lá', '3 cây']],
+      seas: '1 lít nước · 1 1/2 muỗng canh muối · 1 muỗng canh đường · 2 củ hành khô · 1 quả ớt (tùy thích)',
+      steps: [
+        'Rửa cải và phơi nắng hoặc để ở nhiệt độ phòng nửa ngày cho héo. Cắt khúc 4 cm.',
+        'Đun sôi nước với muối và đường, để nguội còn ấm.',
+        'Xếp cải cùng hành khô thái lát, hành lá và ớt vào hũ sạch, đổ nước muối vào. Nén cho ngập.',
+        'Để ở nhiệt độ phòng 2-3 ngày đến khi dưa vàng và chua, rồi cất tủ lạnh.'
+      ],
+      tip: { add: 'Một muỗng nước dưa cũ', why: 'Dưa lên men nhanh hơn', skill: 'Phơi héo trước', how: 'Cải héo uốn được mà không gãy, muối xong vẫn giòn.' }
+    },
+    'vn_duagia': {
+      name: 'Dưa giá',
+      ings: [['Giá đỗ', '400 g'], ['Hẹ', '1 bó'], ['Cà rốt', '1/2 củ']],
+      seas: '500 ml nước · 1 muỗng canh muối · 1 muỗng canh đường · 2 muỗng canh giấm',
+      steps: [
+        'Rửa giá và để ráo. Cắt hẹ khúc 4 cm, cà rốt thái sợi.',
+        'Đun sôi nước với muối và đường, cho giấm vào rồi để nguội còn âm ấm.',
+        'Xếp rau vào hũ và đổ nước muối vào.',
+        'Để ở nhiệt độ phòng 1 ngày đến khi chua rồi cất tủ lạnh. Ăn trong 3-4 ngày.'
+      ],
+      tip: { add: 'Ăn kèm thịt kho', why: 'Vị chua giòn cân bằng món kho béo, cặp đôi ngày Tết', skill: 'Nước ấm, không nóng', how: 'Nước âm ấm giúp dưa lên men mà không làm chín giá.' }
+    },
+    'vn_caphaomuoi': {
+      name: 'Cà pháo muối',
+      ings: [['Cà pháo', '500 g'], ['Gừng', '1 nhánh'], ['Ớt', '2 quả']],
+      seas: '1 lít nước · 3 muỗng canh muối · 1 muỗng canh đường · 3 tép tỏi',
+      steps: [
+        'Bỏ cuống cà, ngâm nước muối 3-4 tiếng, thay nước một lần cho bớt đắng.',
+        'Đun sôi nước với muối và đường, để nguội hẳn.',
+        'Xếp cà vào hũ cùng gừng, tỏi và ớt thái lát, đổ nước muối vào và nén cho ngập.',
+        'Để 3-5 ngày đến khi cà ngả vàng và có vị chua. Cất tủ lạnh.'
+      ],
+      tip: { add: 'Ăn với mắm tôm', why: 'Cặp đôi nổi tiếng của miền Bắc: cà pháo mắm tôm', skill: 'Nén cho ngập', how: 'Quả nào nổi lên khỏi nước sẽ bị thâm và mềm; dùng đĩa nhỏ nén xuống.' }
+    },
+    'vn_chagio': {
+      name: 'Chả giò',
+      ings: [['Thịt heo bằm', '300 g'], ['Bánh tráng', '20 lá nhỏ'], ['Nấm mèo đã ngâm', '4 tai'], ['Miến đã ngâm', '30 g'], ['Cà rốt', '1 củ'], ['Trứng', '1 quả'], ['Tôm băm', '100 g']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng cà phê đường · 2 củ hành khô · 1/2 muỗng cà phê tiêu · dầu để chiên · nước mắm chấm',
+      steps: [
+        'Băm nấm mèo, cắt ngắn miến và bào sợi nhỏ cà rốt.',
+        'Trộn thịt, tôm, rau củ, miến, trứng, hành khô băm, nước mắm, đường và tiêu.',
+        'Quét nước lên bánh tráng, cho 1 muỗng canh nhân ở phía dưới, gấp hai bên vào rồi cuốn chặt.',
+        'Chiên trong dầu vừa nóng 8-10 phút, trở đều, đến khi vàng giòn và nhân chín kỹ.',
+        'Ăn với xà lách, rau thơm và nước mắm chấm.'
+      ],
+      tip: { add: 'Pha chút bia hoặc đường vào nước quét bánh', why: 'Bánh tráng vàng đẹp và nổi bọt giòn', skill: 'Cho vào dầu ấm', how: 'Thả chả giò vào dầu ấm rồi tăng lửa từ từ để cuốn không bị nứt.' }
+    },
+    'vn_lacrang': {
+      name: 'Lạc rang muối',
+      ings: [['Lạc sống còn vỏ lụa', '200 g']],
+      seas: '1 muỗng cà phê muối · 2 muỗng canh nước',
+      steps: [
+        'Hòa tan muối vào nước.',
+        'Rang lạc trong chảo khô ở lửa nhỏ 12-15 phút, đảo liên tục, đến khi nghe lách tách và có mùi thơm.',
+        'Rưới nước muối vào và đảo tiếp đến khi nước bay hơi, để lại lớp muối mịn bám vỏ.',
+        'Để nguội hẳn; lạc sẽ giòn khi nguội.'
+      ],
+      tip: { add: 'Vài lá chanh chiên giòn', why: 'Món quen thuộc thêm mùi thơm mới', skill: 'Lửa nhỏ, rang lâu', how: 'Lạc cháy sẽ đắng; giữ lửa nhỏ và cắn thử một hạt sau 10 phút.' }
+    },
+    'vn_botaichanh': {
+      name: 'Bò tái chanh',
+      ings: [['Thịt bò nạc (thăn hoặc bắp)', '250 g'], ['Hành tây', '1/2 củ'], ['Chanh', '3 quả'], ['Rau răm, húng và ngò gai', '1 nắm'], ['Đậu phộng rang hoặc mè', '1 muỗng canh']],
+      seas: '1 1/2 muỗng canh nước mắm · 1 muỗng canh đường · 1 tép tỏi · 1 quả ớt · 1 muỗng canh hành phi',
+      steps: [
+        'Thái bò thật mỏng ngang thớ (dễ hơn khi thịt còn hơi đông).',
+        'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh.',
+        'Thái mỏng hành tây. Pha nước mắm, đường, tỏi băm và ớt.',
+        'Trộn bò với hành tây, rau thơm và nước trộn, rắc đậu phộng và hành phi.'
+      ],
+      tip: { add: 'Nhúng sơ thịt qua nước sôi trước', why: 'An toàn hơn mà thịt vẫn mềm nếu không chắc độ tươi', skill: 'Dùng bò thật tươi', how: 'Mua bò trong ngày và giữ lạnh đến lúc thái.' }
     },
   }
 });
