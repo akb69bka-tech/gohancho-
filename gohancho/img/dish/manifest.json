@@ -8778,6 +8778,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "ph_menudo": {
+      "file": "ph_menudo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_kaldereta": {
+      "file": "ph_kaldereta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_afritada": {
+      "file": "ph_afritada.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_lechon_kawali": {
+      "file": "ph_lechon_kawali.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_kare_kare": {
+      "file": "ph_kare_kare.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_bicol_express": {
+      "file": "ph_bicol_express.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_pininyahang_manok": {
+      "file": "ph_pininyahang_manok.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_daing_bangus": {
+      "file": "ph_daing_bangus.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_escabeche": {
+      "file": "ph_escabeche.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_paksiw_isda": {
+      "file": "ph_paksiw_isda.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginataang_hipon": {
+      "file": "ph_ginataang_hipon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_adobong_pusit": {
+      "file": "ph_adobong_pusit.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_tortang_patatas": {
+      "file": "ph_tortang_patatas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_tokwat_baboy": {
+      "file": "ph_tokwat_baboy.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_pinakbet": {
+      "file": "ph_pinakbet.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_laing": {
+      "file": "ph_laing.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_sinangag": {
+      "file": "ph_sinangag.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_arroz_caldo": {
+      "file": "ph_arroz_caldo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_pancit_canton": {
+      "file": "ph_pancit_canton.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_spaghetti": {
+      "file": "ph_spaghetti.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_chopsuey": {
+      "file": "ph_chopsuey.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_adobong_sitaw": {
+      "file": "ph_adobong_sitaw.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginisang_sayote": {
+      "file": "ph_ginisang_sayote.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginisang_upo": {
+      "file": "ph_ginisang_upo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginisang_togue": {
+      "file": "ph_ginisang_togue.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginisang_repolyo": {
+      "file": "ph_ginisang_repolyo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ensaladang_talong": {
+      "file": "ph_ensaladang_talong.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ensaladang_mangga": {
+      "file": "ph_ensaladang_mangga.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ensaladang_pipino": {
+      "file": "ph_ensaladang_pipino.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_talbos_kamote": {
+      "file": "ph_talbos_kamote.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_kinilaw": {
+      "file": "ph_kinilaw.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_burong_mangga": {
+      "file": "ph_burong_mangga.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginataang_langka": {
+      "file": "ph_ginataang_langka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_adobong_talong": {
+      "file": "ph_adobong_talong.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_lumpiang_gulay": {
+      "file": "ph_lumpiang_gulay.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_okoy": {
+      "file": "ph_okoy.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_macaroni_salad": {
+      "file": "ph_macaroni_salad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_nilagang_okra": {
+      "file": "ph_nilagang_okra.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_ginisang_pechay": {
+      "file": "ph_ginisang_pechay.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "ph_buttered_veg": {
+      "file": "ph_buttered_veg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
