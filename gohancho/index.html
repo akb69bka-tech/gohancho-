@@ -445,6 +445,14 @@ nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
 .cook-steps li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cook-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+/* わが家のアルバム */
+.album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.album-item{margin:0;position:relative;display:flex;flex-direction:column;gap:4px;min-width:0}
+.album-ph{aspect-ratio:1;width:100%;border:0;border-radius:12px;background-size:cover;background-position:center;background-color:var(--surface-2);cursor:pointer;padding:0}
+.album-item figcaption{display:flex;flex-direction:column;font-size:.72rem;line-height:1.25;min-width:0}
+.album-item .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.album-item .d{color:var(--muted);font-size:.66rem}
+.album-rm{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
 [dir="rtl"] .steps li,[dir="rtl"] .recipe-ings li,[dir="rtl"] .country{text-align:right}
 </style>
 </head>
@@ -1458,8 +1466,9 @@ async function loadPhotos(){
 let MINE = {};
 function openDb(){
     return openDb.p || (openDb.p = new Promise((res, rej) => {
-        const q = indexedDB.open('gohancho', 2);
-        q.onupgradeneeded = () => { const db = q.result; ['photos', 'sketches'].forEach(n => { if (!db.objectStoreNames.contains(n)) db.createObjectStore(n); }); };
+        const q = indexedDB.open('gohancho', 3);
+        q.onupgradeneeded = () => { const db = q.result; ['photos', 'sketches'].forEach(n => { if (!db.objectStoreNames.contains(n)) db.createObjectStore(n); });
+            if (!db.objectStoreNames.contains('album')) db.createObjectStore('album', {autoIncrement: true}); };
         q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error);
     }));
 }
@@ -1476,7 +1485,26 @@ async function loadMine(){
             tx.oncomplete = res; tx.onerror = () => rej(tx.error);
         });
         if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); }
+        // 以前に登録した写真（アルバムができる前の分）をアルバムにも入れる
+        if (!S.albumMigrated){
+            const n = await idbDo('readonly', st => st.count(), 'album');
+            if (!n){ for (const id of Object.keys(MINE)){ const v = await idbDo('readonly', st => st.get(id)); const r = byId(id); if (v) await idbDo('readwrite', st => st.add({id, name: r ? r.name : id, blob: v.blob, d: v.d}), 'album'); } }
+            S.albumMigrated = true; save();
+        }
     }catch(e){}
+}
+// わが家のアルバム（撮った写真を新しい順に。料理の写真を撮り直しても前の写真は残る）
+let ALBUM = null;   // [{key, id, name, d, src}]
+async function loadAlbum(){
+    try{
+        const db = await openDb(); const out = [];
+        await new Promise((res, rej) => { const tx = db.transaction('album', 'readonly'); const cur = tx.objectStore('album').openCursor(null, 'prev');
+            cur.onsuccess = () => { const c = cur.result; if (!c) return; out.push({key: c.key, id: c.value.id, name: c.value.name, d: c.value.d, blob: c.value.blob}); c.continue(); };
+            tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+        if (ALBUM) ALBUM.forEach(a => URL.revokeObjectURL(a.src));
+        ALBUM = out.map(a => Object.assign(a, {src: URL.createObjectURL(a.blob)}));
+    }catch(e){ ALBUM = []; }
+    if (tab === 'log') render();
 }
 async function shrinkImage(file){
     const url = URL.createObjectURL(file);
@@ -1492,9 +1520,10 @@ async function saveMine(id, file){
     try{
         const blob = await shrinkImage(file); if (!blob) throw 0;
         await idbDo('readwrite', st => st.put({blob, d: TODAY}, id));
+        { const r = byId(id); await idbDo('readwrite', st => st.add({id, name: r ? r.name : id, blob, d: TODAY}), 'album').catch(() => {}); ALBUM = null; }
         if (MINE[id]) URL.revokeObjectURL(MINE[id].src);
         MINE[id] = {src: URL.createObjectURL(blob), d: TODAY, mine: true};
-        toast(t('わが家の一枚を登録しました。献立にもこの写真が出ます'), true);
+        toast(t('わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます'), true);
     }catch(e){ toast(t('写真を保存できませんでした。別の写真で試してください')); }
     render(); if (modalId) renderModal();
 }
@@ -1502,6 +1531,21 @@ async function removeMine(id){
     try{ await idbDo('readwrite', st => st.delete(id)); }catch(e){}
     if (MINE[id]){ URL.revokeObjectURL(MINE[id].src); delete MINE[id]; }
     toast(t('写真を外しました')); render(); if (modalId) renderModal();
+}
+async function removeAlbum(key){
+    try{ await idbDo('readwrite', st => st.delete(Number(key)), 'album'); }catch(e){}
+    ALBUM = null; toast(t('アルバムから消しました')); loadAlbum();
+}
+function albumHtml(){
+    if (ALBUM === null){ loadAlbum(); return `<div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div>`; }
+    if (!ALBUM.length) return `<div class="list"><div class="empty">${esc(t('まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。'))}</div></div>`;
+    const shown = ALBUM.slice(0, session.albumAll ? ALBUM.length : 12);
+    return `<div class="album">${shown.map(a => `<figure class="album-item">
+        <button class="album-ph" style="${esc('background-image:' + cssUrl(a.src))}" ${byId(a.id) ? `data-act="open" data-id="${esc(a.id)}"` : 'disabled'} aria-label="${esc(t('{name}の写真（わが家で作ったもの）', {name:(byId(a.id) || {}).name || a.name}))}"></button>
+        <figcaption><span class="nm">${esc((byId(a.id) || {}).name || a.name)}</span><span class="d">${esc(jpDate(a.d))}</span></figcaption>
+        <button class="album-rm" data-act="album-rm" data-k="${a.key}" aria-label="${esc(t('この写真をアルバムから消す'))}">×</button></figure>`).join('')}</div>
+        ${ALBUM.length > shown.length ? `<div class="row"><button class="btn sm" data-act="album-all">${esc(t('すべて見る（{n}枚）', {n:ALBUM.length}))}</button></div>` : ''}
+        <p class="foot">${esc(t('写真はこの端末の中だけに保存され、外には送られません。'))}</p>`;
 }
 function photoOf(r){
     if (!r) return null;
@@ -2878,8 +2922,17 @@ function viewCook(){
             ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
         <div class="card cook-card" role="tabpanel">
             <div class="cook-head">${thumbHtml(cur)}<div style="min-width:0"><h3>${esc(cur.name)}</h3><div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div></div></div>
+            <div class="row">
+                <a class="btn sm" href="${esc(videoSearchUrl(cur))}" target="_blank" rel="noopener">${esc(t('作り方の動画を探す'))}</a>
+                <a class="btn sm" href="${esc(imageSearchUrl(cur))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
+            </div>
             ${recipeCoreHtml(cur, done)}
-            <div class="row"><button class="btn sm" data-act="open" data-id="${esc(cur.id)}">${esc(t('くわしく見る（動画・写真の登録・ひと手間）'))}</button></div>
+            <div class="row">
+                <label class="btn sm primary" for="photo-input-cook">${esc(MINE[cur.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
+                <input type="file" id="photo-input-cook" accept="image/*" hidden>
+                ${MINE[cur.id] ? `<span class="small muted">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(MINE[cur.id].d)}))}</span>` : ''}
+            </div>
+            <div class="row"><button class="btn sm ghost" data-act="open" data-id="${esc(cur.id)}">${esc(t('くわしく見る（ひと手間・お気に入り）'))}</button></div>
         </div>
         <div class="cook-nav">
             <button class="btn" data-act="cook-tab" data-k="${i - 1}" ${i === 0 ? 'disabled' : ''}>${esc(t('← 前の料理'))}</button>
@@ -3086,6 +3139,10 @@ function viewLog(){
     return `
     <section class="sec">
         ${reviewHtml()}
+    </section>
+    <section class="sec">
+        <div class="sec-head"><h2>${esc(t('わが家のアルバム'))}</h2><span class="hint">${esc(t('作った料理の写真を、日付つきで残しています'))}</span></div>
+        ${albumHtml()}
     </section>
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('台所の腕前'))}</h2><span class="hint">${esc(t('続けるほど、称号が上がっていきます'))}</span></div>
@@ -3408,6 +3465,8 @@ document.addEventListener('click', e => {
         case 'sample-ing': S.fridge = sampleIngs(); save(); render(); break;
         case 'mic': startMic(el.dataset.target); break;
         case 'goto-today': setTab('today'); break;
+        case 'album-rm': removeAlbum(el.dataset.k); break;
+        case 'album-all': session.albumAll = true; render(); break;
         case 'goto-cook': session.cookIdx = 0; setTab('cook'); break;
         case 'cook-tab': { const k = Number(el.dataset.k); if (k >= 0 && k < cookItems().length){ session.cookIdx = k; render(); const p = document.querySelector('.cook-tabs'); if (p) p.scrollIntoView({block:'start', behavior:'smooth'}); } break; }
         case 'cook-step': {
@@ -3521,6 +3580,11 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('change', e => {
     const el = e.target;
+    if (el.id === 'photo-input-cook' && el.files && el.files[0]){
+        const cur = cookItems()[session.cookIdx || 0]; if (!cur){ el.value = ''; return; }
+        if (!hasPro() && !MINE[cur.r.id] && Object.keys(MINE).length >= PLAN.freeLimits.myPhotos){ el.value = ''; openPaywall('photos'); return; }
+        saveMine(cur.r.id, el.files[0]); el.value = ''; return;
+    }
     if (el.id === 'photo-input' && el.files && el.files[0] && modalId){
         if (!hasPro() && !MINE[modalId] && Object.keys(MINE).length >= PLAN.freeLimits.myPhotos){ el.value = ''; openPaywall('photos'); return; }
         saveMine(modalId, el.files[0]); el.value = ''; return;
