@@ -49,7 +49,34 @@ GOHAN_PACK_TR('IT', 'it', {
     'barley': 'Orzo perlato',
     'speck': 'Speck',
     'farro': 'Farro',
-    'mushrooms': 'Funghi'
+    'mushrooms': 'Funghi',
+    'pine nuts': 'Pinoli',
+    'tuna': 'Tonno',
+    'clams': 'Vongole',
+    'eggplant': 'Melanzane',
+    'ricotta salata': 'Ricotta salata',
+    'gnocchi': 'Gnocchi di patate',
+    'rice': 'Riso',
+    'saffron': 'Zafferano',
+    'beef': 'Manzo',
+    'pork': 'Maiale',
+    'milk': 'Latte',
+    'lamb': 'Agnello',
+    'sea bream': 'Orata / branzino',
+    'cuttlefish': 'Seppie / calamari',
+    'peas': 'Piselli',
+    'oregano': 'Origano',
+    'sage': 'Salvia',
+    'orange': 'Arance',
+    'rocket': 'Rucola',
+    'cucumber': 'Cetrioli',
+    'mint': 'Menta',
+    'pearl onions': 'Cipolline',
+    'chicory': 'Cicoria',
+    'artichoke': 'Carciofi',
+    'ham': 'Prosciutto',
+    'cauliflower': 'Cavolfiore',
+    'asparagus': 'Asparagi'
   },
   recipes: {
     'it_pomodoro': {
@@ -678,6 +705,678 @@ GOHAN_PACK_TR('IT', 'it', {
         'Aggiusta di sale, unisci un filo d\'olio e servi con il Parmigiano. Un cucchiaio di pastina o riso cotto dentro lo rende più sostanzioso.'
       ],
       tip: { add: 'Qualche cubetto di pane tostato', why: 'Il croccante rende più divertente la crema liscia, soprattutto per i bambini', skill: 'Usare le verdure di stagione', how: 'Zucca in autunno, piselli in primavera: il metodo resta lo stesso, tieni la patata per la cremosità.' }
+    },
+    'it_ragu': {
+      name: 'Tagliatelle al ragù',
+      ings: [
+        ['Tagliatelle all\'uovo', '200 g'],
+        ['Macinato misto di manzo e maiale', '300 g'],
+        ['Cipolla', '1/2'],
+        ['Carota', '1'],
+        ['Sedano', '1 costa'],
+        ['Passata di pomodoro', '300 g'],
+        ['Parmigiano Reggiano', 'per servire']
+      ],
+      seas: 'Sale · pepe · 3 cucchiai di olio d\'oliva · 100 ml di vino rosso o bianco · 200 ml di acqua o brodo · 3 cucchiai di latte (facoltativo)',
+      steps: [
+        'Trita finemente cipolla, carota e sedano e falli appassire dolcemente nell\'olio per 10 minuti (è il soffritto).',
+        'Alza la fiamma, aggiungi il macinato e sgranalo con un cucchiaio di legno. Rosolalo per 8-10 minuti, finché non è più rosa e comincia a sfrigolare.',
+        'Sfuma con il vino e lascialo evaporare, poi aggiungi la passata, l\'acqua, un pizzico di sale e pepe.',
+        'Copri lasciando uno spiraglio e cuoci a fuoco minimo per almeno 1 ora e mezza, mescolando ogni tanto e aggiungendo un goccio d\'acqua se si asciuga. Alla fine unisci il latte, se lo usi.',
+        'Cuoci le tagliatelle in acqua bollente salata, scolale e condiscile con il ragù. Servi con Parmigiano grattugiato.'
+      ],
+      tip: { add: 'Un goccio di latte alla fine', why: 'Ammorbidisce l\'acidità del pomodoro e rende il ragù più vellutato', skill: 'Cuocere piano', how: 'Più cuoce a lungo e dolcemente, più il sapore diventa profondo; fanne il doppio e congelane metà.' }
+    },
+    'it_amatriciana': {
+      name: 'Bucatini all\'amatriciana',
+      ings: [
+        ['Bucatini o spaghetti', '180 g'],
+        ['Guanciale o pancetta', '80 g'],
+        ['Passata o pelati', '300 g'],
+        ['Pecorino Romano', '40 g']
+      ],
+      seas: 'Sale · pepe · 1 pizzico di peperoncino · 1 goccio di vino bianco (facoltativo)',
+      steps: [
+        'Taglia il guanciale a listarelle e cuocilo in una padella senza olio a fuoco medio per 6-7 minuti, finché il grasso si scioglie e diventa dorato. Togli metà dei pezzi croccanti e tienili da parte.',
+        'Aggiungi il peperoncino e sfuma con il vino, poi versa il pomodoro con poco sale. Cuoci per 12-15 minuti finché si addensa.',
+        'Cuoci la pasta in acqua bollente salata, al dente.',
+        'Scolala tenendo un po\' d\'acqua e mantecala nel sugo a fuoco spento con metà del pecorino e un goccio d\'acqua. Servi con il guanciale tenuto da parte, il resto del pecorino e pepe.'
+      ],
+      tip: { add: 'Guanciale croccante sopra', why: 'Metà dà sapore al sugo, metà resta croccante', skill: 'Formaggio a fuoco spento', how: 'Il pecorino fa i fili se scalda troppo; mescolalo a fiamma spenta.' }
+    },
+    'it_pesto': {
+      name: 'Trofie al pesto alla genovese',
+      ings: [
+        ['Trofie o linguine', '180 g'],
+        ['Foglie di basilico fresco', '2 grosse manciate (50 g)'],
+        ['Pinoli', '1 cucchiaio'],
+        ['Parmigiano Reggiano', '30 g'],
+        ['Pecorino', '10 g'],
+        ['Patata', '1 piccola'],
+        ['Fagiolini', '80 g']
+      ],
+      seas: 'Sale · 1 piccolo spicchio d\'aglio · 80 ml di olio extravergine d\'oliva',
+      steps: [
+        'Frulla o pesta nel mortaio le foglie di basilico ben asciutte con l\'aglio, i pinoli, un pizzico di sale e l\'olio fino a ottenere una crema verde grossolana, poi unisci i formaggi grattugiati.',
+        'Sbuccia la patata e tagliala a cubetti; taglia i fagiolini a pezzetti.',
+        'Lessa la pasta in acqua salata con la patata e i fagiolini, in modo che finiscano di cuocere insieme alla pasta.',
+        'Scola tenendo un po\' d\'acqua e condisci tutto in una ciotola con il pesto e 2-3 cucchiai di acqua di cottura finché è cremoso. Non scaldare il pesto.'
+      ],
+      tip: { add: 'Patate e fagiolini nella pentola', why: 'È l\'uso ligure: l\'amido della patata rende il pesto cremoso', skill: 'Tenere il basilico verde', how: 'Frulla poco e con olio freddo (raffredda il bicchiere se puoi); il calore scurisce il basilico e lo rende amaro.' }
+    },
+    'it_tonno': {
+      name: 'Pasta al tonno',
+      ings: [
+        ['Penne o spaghetti', '180 g'],
+        ['Tonno sott\'olio sgocciolato', '160 g'],
+        ['Passata di pomodoro', '300 g'],
+        ['Capperi', '1 cucchiaio'],
+        ['Prezzemolo', '1 ciuffetto']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · 2 cucchiai di olio d\'oliva · 1 pizzico di peperoncino (facoltativo)',
+      steps: [
+        'Scalda l\'olio con l\'aglio schiacciato (e il peperoncino) per 2 minuti, poi aggiungi la passata e un pizzico di sale e cuoci per 10 minuti.',
+        'Unisci il tonno sbriciolato e i capperi sciacquati e cuoci ancora 3 minuti. Togli l\'aglio.',
+        'Intanto cuoci la pasta in acqua bollente salata, al dente.',
+        'Scolala e saltala nel sugo con un goccio di acqua di cottura. Finisci con prezzemolo tritato (niente formaggio sulla pasta col pesce, per tradizione).'
+      ],
+      tip: { add: 'Un po\' di scorza di limone alla fine', why: 'Rinfresca il tonno in scatola', skill: 'Il tonno va aggiunto tardi', how: 'Se cuoce a lungo diventa secco e stopposo; basta scaldarlo.' }
+    },
+    'it_vongole': {
+      name: 'Spaghetti alle vongole',
+      ings: [
+        ['Spaghetti', '180 g'],
+        ['Vongole spurgate', '500 g'],
+        ['Prezzemolo', '1 mazzetto']
+      ],
+      seas: 'Sale per l\'acqua della pasta · 2 spicchi d\'aglio · 4 cucchiai di olio extravergine d\'oliva · 50 ml di vino bianco · 1 pizzico di peperoncino (facoltativo)',
+      steps: [
+        'Sciacqua le vongole ed elimina quelle rotte o che restano aperte se le batti.',
+        'In una padella grande scalda l\'olio con l\'aglio, il peperoncino e i gambi di prezzemolo, aggiungi le vongole e il vino, copri e cuoci a fuoco alto per 3-4 minuti finché si aprono. Scarta quelle chiuse.',
+        'Cuoci gli spaghetti in acqua salata per 2 minuti meno del tempo indicato.',
+        'Scolali e finisci la cottura nella padella delle vongole con il loro liquido per 2 minuti, mescolando sempre finché il fondo diventa cremoso. Aggiungi prezzemolo tritato e un filo d\'olio a crudo.'
+      ],
+      tip: { add: 'I gambi di prezzemolo nell\'olio', why: 'Profumano il fondo senza bruciare', skill: 'Non salare il sugo', how: 'Le vongole rilasciano un liquido sapido; assaggia prima di aggiungere sale.' }
+    },
+    'it_norma': {
+      name: 'Pasta alla Norma',
+      ings: [
+        ['Penne o rigatoni', '180 g'],
+        ['Melanzana', '1 grande'],
+        ['Passata di pomodoro', '400 g'],
+        ['Ricotta salata (o pecorino)', '40 g'],
+        ['Basilico fresco', '1 rametto']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · olio d\'oliva per friggere (circa 150 ml)',
+      steps: [
+        'Taglia la melanzana a cubetti, cospargila di sale e lasciala in uno scolapasta per 20 minuti, poi asciugala.',
+        'Friggi i cubetti in olio caldo poco alla volta finché sono dorati e morbidi, e scolali su carta assorbente.',
+        'In un\'altra padella fai insaporire l\'aglio in 2 cucchiai d\'olio, aggiungi la passata e un pizzico di sale e cuoci per 15 minuti. Unisci il basilico spezzettato.',
+        'Cuoci la pasta, scolala e saltala nel sugo con gran parte delle melanzane. Servi con le melanzane rimaste sopra e tanta ricotta salata grattugiata.'
+      ],
+      tip: { add: 'Salare prima la melanzana', why: 'Perde acqua e assorbe meno olio', skill: 'Olio caldo, poche alla volta', how: 'Se l\'olio si raffredda la melanzana lo assorbe come una spugna; friggine poche per volta.' }
+    },
+    'it_gnocchi': {
+      name: 'Gnocchi alla sorrentina',
+      ings: [
+        ['Gnocchi di patate', '400 g'],
+        ['Passata di pomodoro', '400 g'],
+        ['Mozzarella', '125 g'],
+        ['Parmigiano Reggiano', '30 g'],
+        ['Basilico fresco', '1 rametto']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · 2 cucchiai di olio d\'oliva',
+      steps: [
+        'Scalda il forno a 220°C. Fai insaporire l\'aglio nell\'olio, aggiungi la passata e un pizzico di sale e cuoci per 10 minuti. Unisci il basilico.',
+        'Lessa gli gnocchi in acqua salata e scolali appena vengono a galla.',
+        'Mescola gli gnocchi con il sugo e metà della mozzarella a cubetti, e mettili in una pirofila.',
+        'Copri con il resto della mozzarella e il Parmigiano e inforna per 10 minuti, finché bolle e si dora in superficie.'
+      ],
+      tip: { add: 'Scolare bene la mozzarella', why: 'Una mozzarella bagnata rende il piatto acquoso', skill: 'Scolare presto gli gnocchi', how: 'Finiscono di cuocere in forno; se bollono troppo si sfaldano.' }
+    },
+    'it_risottofunghi': {
+      name: 'Risotto ai funghi',
+      ings: [
+        ['Riso Carnaroli o Arborio', '160 g'],
+        ['Funghi champignon (più qualche porcino secco)', '250 g'],
+        ['Cipolla o scalogno', '1/2'],
+        ['Burro', '30 g'],
+        ['Parmigiano Reggiano', '40 g'],
+        ['Prezzemolo', '1 ciuffetto']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 2 cucchiai di olio d\'oliva · 50 ml di vino bianco · circa 800 ml di brodo vegetale caldo',
+      steps: [
+        'Affetta i funghi e saltali in 1 cucchiaio d\'olio con l\'aglio a fuoco alto per 5 minuti. Sala e tienili da parte. (Se usi porcini secchi, ammollali e aggiungi l\'acqua al brodo.)',
+        'In una casseruola larga fai appassire la cipolla tritata nell\'olio rimasto, aggiungi il riso e tostalo per 2 minuti mescolando, finché i chicchi sono traslucidi ai bordi. Sfuma con il vino.',
+        'Aggiungi il brodo caldo un mestolo alla volta, mescolando spesso e aggiungendone altro man mano che si assorbe, per circa 16-18 minuti. A metà cottura unisci i funghi.',
+        'Quando il riso è cremoso ma ancora al dente, spegni il fuoco, manteca con il burro freddo e il Parmigiano, copri e lascia riposare 2 minuti. Aggiungi il prezzemolo e servi.'
+      ],
+      tip: { add: 'Qualche porcino secco con la sua acqua', why: 'Anche poco dà un profumo intenso di bosco', skill: 'Brodo sempre caldo', how: 'Il brodo freddo blocca la cottura e il riso diventa colloso; tienilo sul fuoco accanto.' }
+    },
+    'it_risottomilanese': {
+      name: 'Risotto alla milanese',
+      ings: [
+        ['Riso Carnaroli', '160 g'],
+        ['Zafferano (in polvere o pistilli)', '1 bustina'],
+        ['Cipolla o scalogno', '1/2'],
+        ['Burro', '40 g'],
+        ['Parmigiano Reggiano', '40 g']
+      ],
+      seas: 'Sale · 50 ml di vino bianco · circa 800 ml di brodo di carne caldo',
+      steps: [
+        'Sciogli metà del burro in una casseruola larga e fai appassire la cipolla tritata finemente per 5 minuti, senza farla colorire.',
+        'Aggiungi il riso e tostalo per 2 minuti, poi sfuma con il vino. Sciogli lo zafferano in un mestolo di brodo caldo.',
+        'Aggiungi il brodo un mestolo alla volta, mescolando spesso, per circa 16-18 minuti. A metà cottura versa il brodo con lo zafferano.',
+        'A fuoco spento manteca con il burro freddo rimasto e il Parmigiano finché il risotto è cremoso e "all\'onda", regola di sale e lascia riposare 2 minuti prima di servire.'
+      ],
+      tip: { add: 'Un cucchiaio di fondo d\'arrosto o di ossobuco sopra', why: 'È così che le famiglie milanesi lo servono nei giorni di festa', skill: 'Mantecare', how: 'Il burro freddo sbattuto a fuoco spento dà la consistenza lucida e fluida del vero risotto.' }
+    },
+    'it_cotoletta': {
+      name: 'Cotoletta di pollo impanata',
+      ings: [
+        ['Petto di pollo a fette sottili', '300 g'],
+        ['Uova', '2'],
+        ['Pangrattato', '80 g'],
+        ['Parmigiano grattugiato', '2 cucchiai'],
+        ['Limone', '1']
+      ],
+      seas: 'Sale · olio d\'oliva o di semi per friggere in padella (oppure 30 g di burro + olio)',
+      steps: [
+        'Batti le fette di pollo fino a circa 5 mm. Sbatti le uova con un pizzico di sale in un piatto; mescola il pangrattato con il Parmigiano in un altro.',
+        'Passa ogni fetta nell\'uovo, poi nel pangrattato premendo bene su entrambi i lati.',
+        'Scalda 1 cm d\'olio (o burro e olio) in una padella grande e friggi le cotolette a fuoco medio per 3-4 minuti per lato finché sono ben dorate.',
+        'Scolale su carta assorbente, sala e servi calde con spicchi di limone.'
+      ],
+      tip: { add: 'Un po\' di burro nell\'olio', why: 'Dà il profumo nocciolato e il colore della milanese', skill: 'Premere bene il pangrattato', how: 'Premere con il palmo evita che la panatura si stacchi in padella.' }
+    },
+    'it_cacciatora': {
+      name: 'Pollo alla cacciatora',
+      ings: [
+        ['Pollo a pezzi (sovracosce e fusi)', '800 g'],
+        ['Cipolla', '1'],
+        ['Pelati o passata', '400 g'],
+        ['Olive nere', '10'],
+        ['Rosmarino', '1 rametto']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 3 cucchiai di olio d\'oliva · 100 ml di vino rosso o bianco',
+      steps: [
+        'Sala e pepa il pollo e rosolalo bene su tutti i lati nell\'olio in un tegame largo, circa 10 minuti. Toglilo e tienilo da parte.',
+        'Nello stesso tegame fai appassire la cipolla affettata e l\'aglio per 5 minuti, poi rimetti il pollo e sfuma con il vino per 2 minuti.',
+        'Aggiungi i pomodori, il rosmarino e un pizzico di sale, copri e cuoci per 35-40 minuti, girando i pezzi ogni tanto, finché la carne è tenera.',
+        'Negli ultimi 5 minuti aggiungi le olive e cuoci senza coperchio per far addensare il sugo. Servi con pane o polenta.'
+      ],
+      tip: { add: 'Un goccio d\'aceto insieme al vino', why: 'Molte ricette di campagna lo usano per un sugo più vivace', skill: 'Rosolare bene il pollo', how: 'La pelle dorata dà sapore al sugo; non affollare il tegame.' }
+    },
+    'it_spezzatino': {
+      name: 'Spezzatino di manzo con patate',
+      ings: [
+        ['Spezzatino di manzo (spalla) a cubetti', '500 g'],
+        ['Patate', '400 g'],
+        ['Cipolla', '1'],
+        ['Carota', '1'],
+        ['Sedano', '1 costa'],
+        ['Passata di pomodoro', '3 cucchiai']
+      ],
+      seas: 'Sale · pepe · 2 cucchiai di farina · 3 cucchiai di olio d\'oliva · 100 ml di vino rosso · circa 500 ml di brodo caldo o acqua · 1 foglia di alloro',
+      steps: [
+        'Infarina la carne e rosolala poco alla volta nell\'olio in una pentola dal fondo spesso. Tienila da parte.',
+        'Aggiungi cipolla, carota e sedano tritati e cuoci per 5 minuti. Rimetti la carne, sfuma con il vino e lascia evaporare.',
+        'Aggiungi la passata, l\'alloro, sale, pepe e brodo caldo quasi a coprire. Copri e cuoci a fuoco dolce per 1 ora, aggiungendo liquido se serve.',
+        'Unisci le patate a tocchi e cuoci per altri 30 minuti, finché la carne è tenerissima e il sugo è denso.'
+      ],
+      tip: { add: 'Una striscia di scorza di limone negli ultimi 10 minuti', why: 'Alleggerisce il sugo ricco', skill: 'Rosolare poca carne alla volta', how: 'Troppa carne insieme butta acqua e lessa invece di rosolare.' }
+    },
+    'it_pizzaiola': {
+      name: 'Carne alla pizzaiola',
+      ings: [
+        ['Fettine di manzo', '400 g'],
+        ['Pelati o passata', '400 g'],
+        ['Origano secco', '1 cucchiaino'],
+        ['Mozzarella', '100 g']
+      ],
+      seas: 'Sale · pepe · 2 spicchi d\'aglio · 3 cucchiai di olio d\'oliva',
+      steps: [
+        'Scotta velocemente le fettine in 1 cucchiaio d\'olio caldo, 30 secondi per lato. Tienile da parte.',
+        'Nella stessa padella scalda il resto dell\'olio con l\'aglio a fettine, aggiungi i pomodori, sale e origano e cuoci per 10 minuti.',
+        'Adagia la carne nel sugo, copri e cuoci a fuoco basso per 5-8 minuti. Se vuoi, aggiungi fette di mozzarella negli ultimi 2 minuti, coperto, per farle filare.',
+        'Servi con tanto pane per la scarpetta (oppure usa il sugo per condire la pasta).'
+      ],
+      tip: { add: 'Qualche cappero o oliva nel sugo', why: 'Aggiungono una nota sapida da pizza', skill: 'Non cuocere troppo le fettine', how: 'Le fettine sottili si induriscono se bollono a lungo; scottale veloci e scaldale solo nel sugo.' }
+    },
+    'it_maialelatte': {
+      name: 'Arista di maiale al latte',
+      ings: [
+        ['Lonza o arista di maiale in un pezzo', '700 g'],
+        ['Latte intero', '500 ml'],
+        ['Burro', '20 g'],
+        ['Rosmarino o salvia', '1 rametto']
+      ],
+      seas: 'Sale · pepe · 2 spicchi d\'aglio · 1 cucchiaio di olio d\'oliva',
+      steps: [
+        'Massaggia la carne con sale e pepe. Rosolala su tutti i lati nel burro e olio in una pentola della sua misura, circa 8 minuti.',
+        'Aggiungi l\'aglio e il rosmarino, poi versa il latte (deve arrivare a metà della carne). Porta a un leggero bollore.',
+        'Copri lasciando uno spiraglio e cuoci a fuoco basso per circa 1 ora e mezza, girando la carne ogni tanto. Il latte si rapprende in grumi dorati: è normale.',
+        'Togli la carne e affettala. Frulla o sbatti il fondo di cottura fino a ottenere una salsa liscia, regola di sale e versala sulle fette.'
+      ],
+      tip: { add: 'Una striscia di scorza di limone nel latte', why: 'Profuma la salsa e aiuta il latte a formare i grumi dorati', skill: 'Pentola piccola', how: 'Se la pentola è troppo larga il latte evapora prima che la carne sia tenera.' }
+    },
+    'it_agnello': {
+      name: 'Agnello al forno con patate',
+      ings: [
+        ['Agnello a pezzi (spalla o cosciotto)', '800 g'],
+        ['Patate', '600 g'],
+        ['Rosmarino', '2 rametti'],
+        ['Limone', '1/2']
+      ],
+      seas: 'Sale · pepe · 3 spicchi d\'aglio · 4 cucchiai di olio d\'oliva · 100 ml di vino bianco',
+      steps: [
+        'Massaggia l\'agnello con l\'olio, l\'aglio schiacciato, il rosmarino tritato, sale, pepe e il succo di limone. Lascia marinare 30 minuti (o una notte in frigo).',
+        'Scalda il forno a 200°C. Taglia le patate a tocchi e condiscile con olio, sale e rosmarino.',
+        'Metti agnello e patate in una teglia, versa il vino sulla carne e inforna per 50-60 minuti, girando tutto una volta.',
+        'Quando l\'agnello è dorato e le patate croccanti, lascialo riposare 5 minuti e servi con il fondo di cottura.'
+      ],
+      tip: { add: 'Una manciata di piselli nella teglia negli ultimi 15 minuti', why: 'Le famiglie romane lo servono così a Pasqua', skill: 'Far riposare la carne', how: '5 minuti fuori dal forno fanno assestare i succhi e la carne resta morbida.' }
+    },
+    'it_orata': {
+      name: 'Orata al forno con patate',
+      ings: [
+        ['Orata intera eviscerata (o branzino)', '1 (circa 600 g)'],
+        ['Patate', '400 g'],
+        ['Pomodorini', '8'],
+        ['Limone', '1'],
+        ['Prezzemolo', '1 ciuffetto']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 4 cucchiai di olio d\'oliva · 50 ml di vino bianco',
+      steps: [
+        'Scalda il forno a 200°C. Affetta sottili le patate (3-4 mm), condiscile con metà dell\'olio e sale, stendile in una teglia e inforna per 15 minuti.',
+        'Sala e pepa il pesce dentro e fuori e riempi la pancia con fette di limone, aglio e gambi di prezzemolo.',
+        'Adagia il pesce sulle patate con i pomodorini tagliati a metà intorno, irrora con il vino e il resto dell\'olio.',
+        'Inforna per 20-25 minuti, finché l\'occhio è bianco e la carne si stacca dalla lisca. Cospargi di prezzemolo tritato e servi con il limone.'
+      ],
+      tip: { add: 'Limone ed erbe nella pancia', why: 'Profumano la carne dall\'interno', skill: 'Precuocere le patate', how: 'Le patate hanno bisogno di qualche minuto in più per essere pronte insieme al pesce.' }
+    },
+    'it_seppie': {
+      name: 'Seppie con i piselli',
+      ings: [
+        ['Seppie pulite (o calamari)', '600 g'],
+        ['Piselli (anche surgelati)', '300 g'],
+        ['Cipolla', '1/2'],
+        ['Passata di pomodoro', '200 g'],
+        ['Prezzemolo', '1 ciuffetto']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 3 cucchiai di olio d\'oliva · 50 ml di vino bianco',
+      steps: [
+        'Taglia le seppie a listarelle. Fai appassire la cipolla tritata e l\'aglio nell\'olio per 5 minuti.',
+        'Aggiungi le seppie e cuoci a fuoco alto per 3 minuti, poi sfuma con il vino.',
+        'Aggiungi la passata, poco sale e un bicchiere d\'acqua, copri e cuoci a fuoco basso per 20 minuti.',
+        'Unisci i piselli e cuoci ancora 10-15 minuti, finché le seppie sono tenere e il sugo è denso. Finisci con prezzemolo e pepe.'
+      ],
+      tip: { add: 'Servire con polenta morbida o pane', why: 'Il sugo è troppo buono per lasciarlo nel piatto', skill: 'Cottura breve o lunga', how: 'Le seppie sono tenere dopo 1-2 minuti o dopo 30; in mezzo sono gommose, quindi lasciale sobbollire.' }
+    },
+    'it_purgatorio': {
+      name: 'Uova in purgatorio',
+      ings: [
+        ['Uova', '4'],
+        ['Passata o pelati', '400 g'],
+        ['Basilico fresco', '1 rametto'],
+        ['Parmigiano Reggiano', '20 g'],
+        ['Pane casereccio', 'per servire']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 3 cucchiai di olio d\'oliva · 1 pizzico di peperoncino (facoltativo)',
+      steps: [
+        'In una padella larga scalda l\'olio con l\'aglio (e il peperoncino), aggiungi il pomodoro e un pizzico di sale e cuoci per 10-12 minuti finché si addensa.',
+        'Con un cucchiaio fai 4 incavi nel sugo e rompi un uovo in ognuno. Sala leggermente le uova.',
+        'Copri e cuoci a fuoco basso per 5-7 minuti, finché l\'albume è rappreso e il tuorlo ancora morbido.',
+        'Completa con basilico e Parmigiano grattugiato e servi direttamente in padella con pane per la scarpetta.'
+      ],
+      tip: { add: 'Un cucchiaio di ragù avanzato o piselli nel sugo', why: 'Trasforma una cena veloce in una più ricca', skill: 'Coprire la padella', how: 'Il vapore rapprende l\'albume in superficie mentre il tuorlo resta morbido.' }
+    },
+    'it_parmigiana': {
+      name: 'Parmigiana di melanzane',
+      ings: [
+        ['Melanzane', '2 grandi (circa 800 g)'],
+        ['Passata di pomodoro', '500 g'],
+        ['Mozzarella', '250 g'],
+        ['Parmigiano Reggiano', '60 g'],
+        ['Basilico fresco', '1 mazzetto']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · olio d\'oliva per friggere (o per spennellare, se cuoci le fette in forno)',
+      steps: [
+        'Taglia le melanzane per il lungo a fette di 5 mm, salale e lasciale 30 minuti, poi asciugale. Friggile in olio caldo finché sono dorate (oppure spennellale d\'olio e cuocile in forno a 200°C per 20 minuti).',
+        'Prepara un sugo semplice: fai insaporire l\'aglio in 2 cucchiai d\'olio, aggiungi la passata e un pizzico di sale e cuoci per 15 minuti. Taglia la mozzarella a pezzetti e falla scolare.',
+        'Scalda il forno a 200°C. In una pirofila alterna sugo, melanzane, mozzarella, Parmigiano e basilico, e ripeti 3-4 volte, finendo con sugo e Parmigiano.',
+        'Inforna per 30-35 minuti finché bolle ed è dorata. Lasciala riposare almeno 15 minuti prima di tagliarla (il giorno dopo è ancora più buona).'
+      ],
+      tip: { add: 'Tanto basilico in ogni strato', why: 'È la nota fresca che bilancia la ricchezza del formaggio', skill: 'Farla riposare', how: 'Tagliata appena sfornata si sfalda; dopo il riposo gli strati restano compatti.' }
+    },
+    'it_uccelletto': {
+      name: 'Fagioli all\'uccelletto con salsiccia',
+      ings: [
+        ['Fagioli cannellini lessati', '500 g'],
+        ['Passata o pelati', '250 g'],
+        ['Foglie di salvia fresca', '6'],
+        ['Salsicce di maiale', '3']
+      ],
+      seas: 'Sale · pepe · 2 spicchi d\'aglio · 4 cucchiai di olio d\'oliva',
+      steps: [
+        'Bucherella le salsicce e rosolale in una padella senza olio per 8-10 minuti finché sono cotte. Tienile da parte.',
+        'In una pentola scalda l\'olio con l\'aglio schiacciato e le foglie di salvia per 2 minuti, finché la salvia sfrigola.',
+        'Aggiungi il pomodoro e un pizzico di sale e cuoci per 5 minuti, poi unisci i fagioli scolati e un goccio del loro liquido o d\'acqua.',
+        'Cuoci per 10-15 minuti, finché i fagioli hanno assorbito il sugo. Negli ultimi 5 minuti aggiungi le salsicce, pepa e servi con un filo d\'olio a crudo.'
+      ],
+      tip: { add: 'Tanta salvia soffritta nell\'olio', why: 'È il profumo toscano che caratterizza il piatto', skill: 'Fagioli secchi, se puoi', how: 'Fagioli cotti in casa con il loro liquido danno un sugo più cremoso di quelli in scatola.' }
+    },
+    'it_finocchiarance': {
+      name: 'Insalata di finocchi e arance',
+      ings: [
+        ['Finocchio', '1 grande'],
+        ['Arance', '2'],
+        ['Olive nere', '8'],
+        ['Cipolla rossa', '1/4']
+      ],
+      seas: 'Sale · pepe · 3 cucchiai di olio extravergine d\'oliva',
+      steps: [
+        'Pulisci il finocchio tenendo un po\' di barbetta verde e affettalo sottilissimo.',
+        'Pela a vivo le arance con un coltello, eliminando tutta la parte bianca, e tagliale a rondelle o spicchi sopra una ciotola per raccogliere il succo.',
+        'Disponi finocchio, arance, olive e cipolla a fettine su un piatto. Emulsiona il succo d\'arancia con olio, sale e pepe, versa sopra e completa con la barbetta del finocchio.'
+      ],
+      tip: { add: 'Acqua e ghiaccio per il finocchio', why: '10 minuti in acqua ghiacciata lo rendono croccantissimo', skill: 'Pelare le arance a vivo', how: 'Togliere la parte bianca amara rende l\'insalata dolce e succosa.' }
+    },
+    'it_panzanella': {
+      name: 'Panzanella',
+      ings: [
+        ['Pane raffermo toscano', '200 g'],
+        ['Pomodori maturi', '3'],
+        ['Cetriolo', '1'],
+        ['Cipolla rossa', '1/2'],
+        ['Basilico fresco', '1 rametto']
+      ],
+      seas: 'Sale · 4 cucchiai di olio extravergine d\'oliva · 2 cucchiai di aceto di vino rosso',
+      steps: [
+        'Ammolla il pane in acqua fredda con un goccio d\'aceto per 5-10 minuti, poi strizzalo bene e sbriciolalo in una ciotola.',
+        'Affetta sottile la cipolla e lasciala in acqua fredda per 10 minuti per addolcirla. Taglia a pezzi pomodori e cetriolo.',
+        'Unisci le verdure e il basilico spezzettato al pane, condisci con sale, olio e aceto e mescola. Lascia riposare 15 minuti prima di servire perché i sapori si amalgamino.'
+      ],
+      tip: { add: 'Salare prima i pomodori', why: 'Rilasciano il succo che insaporisce il pane', skill: 'Pane davvero raffermo', how: 'Il pane fresco diventa una pappa; quello secco assorbe i succhi e mantiene la forma.' }
+    },
+    'it_rucola': {
+      name: 'Rucola, pomodorini e scaglie di grana',
+      ings: [
+        ['Rucola', '100 g'],
+        ['Pomodorini', '10'],
+        ['Scaglie di Parmigiano o Grana Padano', '30 g']
+      ],
+      seas: 'Sale · 3 cucchiai di olio extravergine d\'oliva · 1 cucchiaio di aceto balsamico o succo di limone',
+      steps: [
+        'Lava e asciuga bene la rucola. Taglia a metà i pomodorini.',
+        'Metti rucola e pomodorini in una ciotola e condisci con sale, olio e aceto balsamico o limone.',
+        'Ricava le scaglie di formaggio con un pelapatate direttamente sopra e servi subito.'
+      ],
+      tip: { add: 'Una manciata di pinoli tostati', why: 'Danno croccantezza e dolcezza contro il piccante della rucola', skill: 'Condire all\'ultimo', how: 'La rucola appassisce pochi minuti dopo essere stata condita.' }
+    },
+    'it_pinzimonio': {
+      name: 'Pinzimonio',
+      ings: [
+        ['Carote', '2'],
+        ['Cuori di sedano', '2 coste'],
+        ['Finocchio', '1'],
+        ['Peperone rosso o giallo', '1'],
+        ['Cetriolo', '1']
+      ],
+      seas: 'Sale · pepe · 6 cucchiai del miglior olio extravergine · 1 cucchiaio di aceto o succo di limone (facoltativo)',
+      steps: [
+        'Lava le verdure e tagliale a bastoncini o spicchi. Tienile in acqua e ghiaccio fino al momento di servire perché restino croccanti.',
+        'Versa l\'olio in ciotoline individuali e condisci con sale, pepe e qualche goccia di aceto o limone, se ti piace.',
+        'Scola le verdure, disponile in piedi in un bicchiere o su un piatto e lascia che ognuno le intinga nella propria ciotolina d\'olio.'
+      ],
+      tip: { add: 'Il tuo olio migliore e più fresco', why: 'Qui l\'olio è il condimento, quindi il suo sapore è tutto', skill: 'Una ciotolina a testa', how: 'Intingere nella propria ciotolina è la tradizione e tiene pulito l\'olio.' }
+    },
+    'it_carote': {
+      name: 'Insalata di carote al limone',
+      ings: [
+        ['Carote', '3'],
+        ['Limone', '1/2'],
+        ['Prezzemolo', '1 ciuffetto']
+      ],
+      seas: 'Sale · 2 cucchiai di olio extravergine d\'oliva',
+      steps: [
+        'Pela le carote e grattugiale con i fori grossi (o tagliale a julienne sottile).',
+        'Condisci con sale, succo di limone e olio e mescola bene.',
+        'Lascia riposare 10 minuti perché le carote si ammorbidiscano un po\', poi cospargi di prezzemolo tritato.'
+      ],
+      tip: { add: 'Una manciata di uvetta o noci', why: 'Ai bambini piace la sorpresa dolce', skill: 'Sale prima dell\'olio', how: 'Il sale si scioglie nel limone e insaporisce in modo uniforme; l\'olio ricoprirebbe le carote impedendolo.' }
+    },
+    'it_borlotti': {
+      name: 'Insalata di fagioli e cipolla rossa',
+      ings: [
+        ['Fagioli borlotti lessati e scolati', '400 g'],
+        ['Cipolla rossa (di Tropea se possibile)', '1'],
+        ['Prezzemolo', '1 ciuffetto'],
+        ['Tonno sott\'olio', '80 g']
+      ],
+      seas: 'Sale · pepe · 3 cucchiai di olio extravergine d\'oliva · 1 cucchiaio di aceto di vino rosso',
+      steps: [
+        'Affetta sottile la cipolla e lasciala in acqua fredda per 10 minuti, poi scolala.',
+        'Sciacqua e scola i fagioli e mettili in una ciotola con la cipolla e il prezzemolo tritato (e il tonno sbriciolato, se lo usi).',
+        'Condisci con sale, pepe, aceto e olio, mescola e lascia riposare qualche minuto prima di servire.'
+      ],
+      tip: { add: 'Condire i fagioli tiepidi', why: 'I fagioli tiepidi assorbono molto meglio il condimento', skill: 'Addolcire la cipolla', how: 'L\'ammollo in acqua fredda toglie il pungente e la lascia croccante.' }
+    },
+    'it_scapece': {
+      name: 'Zucchine alla scapece',
+      ings: [
+        ['Zucchine', '3'],
+        ['Foglie di menta fresca', '1 mazzetto piccolo']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · 3 cucchiai di aceto di vino bianco · olio per friggere',
+      steps: [
+        'Taglia le zucchine a rondelle sottili e lasciale asciugare su un canovaccio per 30 minuti (o al sole, come a Napoli).',
+        'Friggile in olio caldo poco alla volta finché sono ben dorate, poi scolale su carta assorbente.',
+        'Disponile a strati in un piatto con sale, fettine d\'aglio, menta spezzettata e qualche spruzzo d\'aceto. Lascia insaporire almeno 1 ora (meglio qualche ora) e servi a temperatura ambiente.'
+      ],
+      tip: { add: 'Prepararle il giorno prima', why: 'Aceto e menta si insaporiscono e diventano ancora più buone', skill: 'Asciugare prima le fette', how: 'Le zucchine asciutte friggono croccanti e dorate; quelle bagnate schizzano e si ammosciano.' }
+    },
+    'it_cipolline': {
+      name: 'Cipolline in agrodolce',
+      ings: [
+        ['Cipolline borettane', '500 g'],
+        ['Burro', '20 g']
+      ],
+      seas: 'Sale · 1 cucchiaio di olio d\'oliva · 2 cucchiai di zucchero · 4 cucchiai di aceto di vino rosso o balsamico · poca acqua',
+      steps: [
+        'Sbollenta le cipolline in acqua bollente per 2 minuti per pelarle facilmente, poi scolale e sbucciale.',
+        'Sciogli il burro con l\'olio in un tegame, aggiungi le cipolline e rosolale per 5 minuti. Cospargi di zucchero e lascialo caramellare leggermente.',
+        'Aggiungi l\'aceto, un pizzico di sale e mezzo bicchiere d\'acqua, copri e cuoci per 20-25 minuti, finché le cipolline sono tenere e avvolte da uno sciroppo lucido.'
+      ],
+      tip: { add: 'Servirle con bollito o arrosto', why: 'L\'agrodolce sgrassa i piatti ricchi', skill: 'Ridurre alla fine', how: 'Se lo sciroppo è liquido, scopri e fai bollire 2-3 minuti scuotendo il tegame.' }
+    },
+    'it_funghitrifolati': {
+      name: 'Funghi trifolati',
+      ings: [
+        ['Funghi champignon o misti', '400 g'],
+        ['Prezzemolo', '1 mazzetto']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 3 cucchiai di olio d\'oliva · 1 goccio di vino bianco (facoltativo)',
+      steps: [
+        'Pulisci i funghi con un panno umido (non metterli in ammollo) e affettali.',
+        'Scalda l\'olio con l\'aglio in una padella grande, aggiungi i funghi e cuoci a fuoco alto per 8-10 minuti mescolando, finché l\'acqua che rilasciano è evaporata e diventano dorati. Sfuma con il vino, se lo usi.',
+        'Sala e pepa, togli l\'aglio e unisci tanto prezzemolo tritato.'
+      ],
+      tip: { add: 'Una noce di burro alla fine', why: 'Rende i funghi lucidi e più ricchi', skill: 'Salare alla fine', how: 'Il sale fa uscire l\'acqua e i funghi lessano invece di rosolare.' }
+    },
+    'it_cicoria': {
+      name: 'Cicoria ripassata in padella',
+      ings: [
+        ['Cicoria (o catalogna)', '600 g']
+      ],
+      seas: 'Sale · 2 spicchi d\'aglio · 3 cucchiai di olio d\'oliva · 1 peperoncino secco',
+      steps: [
+        'Lava bene la cicoria ed elimina le parti dure. Lessala in acqua salata per 8-10 minuti finché è tenera, poi scolala e strizzala.',
+        'Scalda l\'olio con l\'aglio a fettine e il peperoncino in una padella finché l\'aglio è appena dorato.',
+        'Aggiungi la cicoria tagliata grossolanamente e ripassala per 5 minuti, girandola nell\'olio. Aggiusta di sale.'
+      ],
+      tip: { add: 'Servirla con pane fresco o accanto ai legumi', why: 'A Roma e in Puglia è l\'abbinamento classico con fave o cannellini', skill: 'Lessare prima', how: 'La bollitura toglie l\'amaro; la padella poi dà il sapore.' }
+    },
+    'it_carciofi': {
+      name: 'Carciofi alla romana',
+      ings: [
+        ['Carciofi romaneschi (mammole)', '4'],
+        ['Mentuccia o menta fresca', '1 mazzetto piccolo'],
+        ['Prezzemolo', '1 ciuffetto'],
+        ['Limone (per l\'acqua)', '1']
+      ],
+      seas: 'Sale · pepe · 2 spicchi d\'aglio · 100 ml di olio d\'oliva · 100 ml di acqua',
+      steps: [
+        'Elimina le foglie esterne dure dei carciofi fino a quelle chiare, taglia le punte e pela il gambo lasciandone circa 4 cm. Apri il centro ed elimina l\'eventuale barbetta. Tienili in acqua e limone.',
+        'Trita insieme menta, prezzemolo e aglio con sale e pepe e metti il trito al centro di ogni carciofo.',
+        'Sistema i carciofi a testa in giù (gambo in alto) in una pentola che li contenga stretti, versa olio e acqua, copri e cuoci a fuoco basso per 25-30 minuti, finché un coltello entra facilmente nel cuore. Servili tiepidi o a temperatura ambiente con il loro fondo.'
+      ],
+      tip: { add: 'Mentuccia nel ripieno', why: 'È il vero sapore romano del piatto', skill: 'Acqua e limone', how: 'I carciofi tagliati anneriscono in pochi minuti; in acqua e limone restano chiari.' }
+    },
+    'it_caponata': {
+      name: 'Caponata di melanzane',
+      ings: [
+        ['Melanzane', '2'],
+        ['Sedano', '2 coste'],
+        ['Cipolla', '1'],
+        ['Passata di pomodoro', '200 g'],
+        ['Olive verdi', '12'],
+        ['Capperi', '1 cucchiaio'],
+        ['Pinoli', '1 cucchiaio']
+      ],
+      seas: 'Sale · olio d\'oliva per friggere · 1 cucchiaio e mezzo di zucchero · 4 cucchiai di aceto di vino rosso · qualche foglia di basilico',
+      steps: [
+        'Taglia le melanzane a cubetti, salale per 20 minuti, asciugale e friggile in olio caldo finché sono dorate. Scolale su carta assorbente.',
+        'Sbollenta il sedano a pezzetti per 3 minuti. In una padella larga fai appassire la cipolla affettata in 3 cucchiai d\'olio, aggiungi il sedano, la passata, le olive, i capperi sciacquati e i pinoli e cuoci per 10 minuti.',
+        'Unisci le melanzane, cospargi di zucchero, versa l\'aceto e cuoci per 5 minuti finché l\'odore pungente si attenua.',
+        'Aggiungi il basilico e lascia raffreddare. Servi a temperatura ambiente; il giorno dopo è ancora più buona.'
+      ],
+      tip: { add: 'Un po\' di uvetta o un pizzico di cacao', why: 'Alcune famiglie siciliane li aggiungono per un agrodolce più profondo', skill: 'Farla riposare', how: 'La caponata ha bisogno di qualche ora (o una notte) perché dolce e aspro si amalgamino.' }
+    },
+    'it_piselli': {
+      name: 'Piselli al prosciutto',
+      ings: [
+        ['Piselli (anche surgelati)', '400 g'],
+        ['Prosciutto cotto o crudo a dadini', '80 g'],
+        ['Cipolla', '1/2']
+      ],
+      seas: 'Sale · pepe · 2 cucchiai di olio d\'oliva o 20 g di burro · poca acqua o brodo',
+      steps: [
+        'Fai appassire la cipolla tritata finemente nell\'olio o nel burro per 5 minuti.',
+        'Aggiungi il prosciutto e cuoci per 1 minuto, poi unisci i piselli, un po\' d\'acqua e un pizzico di sale.',
+        'Copri e cuoci per 10-12 minuti finché i piselli sono teneri, scoprendo alla fine per far ritirare il liquido. Pepa.'
+      ],
+      tip: { add: 'Un pizzico di zucchero', why: 'Esalta la dolcezza dei piselli surgelati', skill: 'Poco sale', how: 'Il prosciutto è già sapido; assaggia prima di aggiungerne.' }
+    },
+    'it_verza': {
+      name: 'Verza stufata',
+      ings: [
+        ['Cavolo verza', '1/2 cespo'],
+        ['Cipolla', '1/2'],
+        ['Pancetta a dadini', '50 g']
+      ],
+      seas: 'Sale · pepe · 2 cucchiai di olio d\'oliva · 1 cucchiaio di aceto di vino bianco (facoltativo)',
+      steps: [
+        'Elimina il torsolo duro della verza e taglia le foglie a striscioline. Lavale e scolale.',
+        'In un tegame largo fai appassire la cipolla affettata (e la pancetta) nell\'olio per 5 minuti.',
+        'Aggiungi la verza ancora bagnata e un pizzico di sale, copri e cuoci a fuoco basso per 25-30 minuti, mescolando ogni tanto, finché è morbida e dolce. Alla fine, se ti piace, aggiungi l\'aceto e pepa.'
+      ],
+      tip: { add: 'Servirla con salsicce o maiale', why: 'Al nord è l\'abbinamento invernale classico con il maiale', skill: 'Cuocerla piano', how: 'Una cottura lunga e dolce rende la verza dolce invece che dall\'odore forte.' }
+    },
+    'it_pure': {
+      name: 'Purè di patate',
+      ings: [
+        ['Patate farinose', '700 g'],
+        ['Latte intero', '200 ml'],
+        ['Burro', '40 g'],
+        ['Parmigiano grattugiato', '30 g']
+      ],
+      seas: 'Sale · un po\' di noce moscata grattugiata',
+      steps: [
+        'Lessa le patate intere con la buccia in acqua salata per 25-30 minuti, finché un coltello entra facilmente.',
+        'Sbucciale ancora calde e passale allo schiacciapatate (o schiacciale bene) in una pentola.',
+        'A fuoco basso aggiungi il latte caldo poco alla volta, poi il burro, il Parmigiano, sale e noce moscata, mescolando con un cucchiaio di legno finché è liscio e spumoso.'
+      ],
+      tip: { add: 'Parmigiano e noce moscata', why: 'Danno al purè italiano il suo sapore profondo', skill: 'Mai il frullatore', how: 'Il frullatore rende le patate collose; lo schiacciapatate le lascia leggere.' }
+    },
+    'it_patatearrosto': {
+      name: 'Patate al forno con rosmarino',
+      ings: [
+        ['Patate', '700 g'],
+        ['Rosmarino', '2 rametti']
+      ],
+      seas: 'Sale · pepe · 2 spicchi d\'aglio in camicia · 4 cucchiai di olio d\'oliva',
+      steps: [
+        'Scalda il forno a 220°C. Pela le patate, tagliale a tocchi, sciacquale e asciugale bene.',
+        'Condiscile in una teglia con olio, aghi di rosmarino, aglio schiacciato, sale e pepe, e stendile in un solo strato.',
+        'Inforna per 40-45 minuti, girandole una o due volte, finché sono dorate e croccanti fuori e morbide dentro.'
+      ],
+      tip: { add: 'Sbollentare le patate 5 minuti prima', why: 'I bordi irregolari diventano ancora più croccanti', skill: 'Asciugarle bene', how: 'Le patate bagnate cuociono al vapore; quelle asciutte diventano croccanti.' }
+    },
+    'it_grigliate': {
+      name: 'Verdure grigliate',
+      ings: [
+        ['Melanzana', '1'],
+        ['Zucchine', '2'],
+        ['Peperoni rossi e gialli', '2'],
+        ['Prezzemolo o menta', '1 ciuffetto']
+      ],
+      seas: 'Sale · 1 spicchio d\'aglio · 5 cucchiai di olio extravergine d\'oliva · 1 cucchiaio di aceto (facoltativo)',
+      steps: [
+        'Taglia melanzana e zucchine per il lungo a fette di circa 5 mm; taglia i peperoni a falde larghe.',
+        'Scalda bene una bistecchiera e griglia le verdure senza olio, poche alla volta, per 2-3 minuti per lato finché sono segnate e tenere.',
+        'Disponile in un piatto e condisci ogni strato con sale, aglio a fettine, erbe tritate e olio (e un po\' d\'aceto). Lascia insaporire 30 minuti prima di servire.'
+      ],
+      tip: { add: 'Menta fresca sulle melanzane', why: 'È un tocco del sud che esalta il sapore affumicato', skill: 'Grigliare a secco, condire dopo', how: 'L\'olio sulla piastra calda brucia e fa fumo; condisci le verdure appena tolte dal fuoco.' }
+    },
+    'it_pomodorigratinati': {
+      name: 'Pomodori gratinati',
+      ings: [
+        ['Pomodori tondi maturi', '4'],
+        ['Pangrattato', '4 cucchiai'],
+        ['Prezzemolo', '1 ciuffetto'],
+        ['Parmigiano grattugiato', '2 cucchiai']
+      ],
+      seas: 'Sale · pepe · 1 spicchio d\'aglio · 3 cucchiai di olio d\'oliva · 1 pizzico di origano secco',
+      steps: [
+        'Scalda il forno a 200°C. Taglia i pomodori a metà orizzontalmente, svuotali dei semi, salali all\'interno e capovolgili a scolare per 10 minuti.',
+        'Mescola il pangrattato con prezzemolo e aglio tritati, origano, Parmigiano, pepe e 2 cucchiai d\'olio.',
+        'Riempi i pomodori con il composto, sistemali in una teglia unta, irrora con l\'olio rimasto e inforna per 25 minuti finché la superficie è dorata.'
+      ],
+      tip: { add: 'Un\'acciuga tritata nel pangrattato', why: 'Dà profondità di sapore senza sapere di pesce', skill: 'Far scolare i pomodori', how: 'Salarli e scolarli prima tiene il pangrattato croccante, non molle.' }
+    },
+    'it_cavolfiore': {
+      name: 'Cavolfiore gratinato',
+      ings: [
+        ['Cavolfiore', '1 medio'],
+        ['Parmigiano grattugiato', '50 g'],
+        ['Pangrattato', '2 cucchiai'],
+        ['Burro', '20 g'],
+        ['Latte (per una besciamella veloce)', '250 ml']
+      ],
+      seas: 'Sale · pepe · noce moscata · 2 cucchiai di farina (per la besciamella)',
+      steps: [
+        'Scalda il forno a 200°C. Dividi il cavolfiore in cimette e lessale in acqua salata per 6-7 minuti, finché sono appena tenere. Scolale bene.',
+        'Per la besciamella sciogli metà del burro, unisci la farina, poi versa il latte mescolando con la frusta e cuoci 4-5 minuti finché si addensa. Regola di sale, pepe e noce moscata. (Senza besciamella, basta qualche fiocchetto di burro.)',
+        'Metti il cavolfiore in una pirofila imburrata, copri con la besciamella, cospargi di Parmigiano e pangrattato e completa con fiocchetti del burro rimasto. Inforna per 20 minuti finché è dorato.'
+      ],
+      tip: { add: 'Qualche fetta di prosciutto cotto tra le cimette', why: 'Trasforma il contorno in una cena leggera', skill: 'Scolare bene il cavolfiore', how: 'Le cimette bagnate allungano la besciamella e il gratin diventa acquoso.' }
+    },
+    'it_asparagi': {
+      name: 'Asparagi alla parmigiana',
+      ings: [
+        ['Asparagi verdi', '500 g'],
+        ['Burro', '30 g'],
+        ['Parmigiano grattugiato', '40 g'],
+        ['Uova (all\'occhio di bue, da servire sopra)', '2']
+      ],
+      seas: 'Sale · pepe',
+      steps: [
+        'Spezza la parte legnosa degli asparagi e pela la parte bassa dei gambi. Lessali o cuocili al vapore per 4-6 minuti, finché sono appena teneri. Scolali.',
+        'Accendi il grill del forno. Disponi gli asparagi in una pirofila imburrata, sala e pepa, cospargi di Parmigiano e completa con fiocchetti di burro.',
+        'Gratina per 5-8 minuti, finché il formaggio fonde e diventa dorato. Servili così, o con le uova all\'occhio di bue sopra, alla milanese.'
+      ],
+      tip: { add: 'Un uovo all\'occhio di bue sopra', why: 'Intingere gli asparagi nel tuorlo è l\'uso milanese', skill: 'Pelare i gambi', how: 'Pelare la parte bassa fa cuocere l\'asparago in modo uniforme e tenero.' }
     }
   }
 });
