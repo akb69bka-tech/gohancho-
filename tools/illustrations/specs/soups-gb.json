@@ -1,0 +1,22 @@
+{
+  "gb_scotchbroth": { "vessel": "bowl", "broth": "#c9a66b", "body": "chunky", "top": [["beefChunk", 3], ["carrot", 3], ["rice", 3], ["leek", 2], ["cabbage", 1]], "garnish": "parsley" },
+  "gb_cockaleekie": { "vessel": "deep", "broth": "#d9c27a", "body": "clear", "top": [["chicken", 3], ["leek", 4], ["carrot", 2], ["beans", 2]], "garnish": "parsley" },
+  "gb_cullenskink": { "vessel": "deep", "broth": "#efe3c4", "body": "chunky", "top": [["fish", 3], ["potato", 3], ["onion", 1]], "garnish": "herbs" },
+  "gb_cawl": { "vessel": "bowl", "broth": "#c2995a", "body": "chunky", "oil": true, "top": [["beefChunk", 3], ["potato", 3], ["carrot", 2], ["leek", 3]], "garnish": "parsley" },
+  "gb_peaham": { "vessel": "deep", "broth": "#a3a845", "body": "cream", "top": [["ham", 4], ["croutons", 2]], "garnish": "pepper" },
+  "gb_tomato": { "vessel": "mug", "broth": "#d2452c", "body": "cream", "swirl": "#f6ead8", "top": [["croutons", 3], ["herbsprig", 1]], "garnish": "pepper" },
+  "gb_mulligatawny": { "vessel": "bowl", "broth": "#c47a2a", "body": "cream", "top": [["chicken", 4], ["rice", 3], ["lemon", 1]], "garnish": "cilantro" },
+  "gb_brocstilton": { "vessel": "deep", "broth": "#8fa548", "body": "cream", "top": [["cheese", 4], ["greens", 2]], "garnish": "pepper" },
+  "gb_butternut": { "vessel": "deep", "broth": "#e59335", "body": "cream", "swirl": "#f7ecd9", "top": [["pumpkin", 2], ["herbsprig", 1]], "garnish": "pepper" },
+  "gb_parsnip": { "vessel": "bowl", "broth": "#dcbc6e", "body": "cream", "swirl": "#f3e8d2", "top": [["croutons", 3]], "garnish": "chili" },
+  "gb_chickenveg": { "vessel": "bowl", "broth": "#dcb562", "body": "chunky", "top": [["chicken", 3], ["carrot", 3], ["potato", 2], ["leek", 2], ["peas", 2]], "garnish": "parsley" },
+  "gb_oxtail": { "vessel": "deep", "broth": "#6e3b22", "body": "stew", "oil": true, "top": [["beef", 4], ["carrot", 2]], "garnish": "herbs" },
+  "gb_lentil": { "vessel": "bowl", "broth": "#d98a3c", "body": "chunky", "top": [["lentils", 4], ["carrot", 3], ["bacon", 2]], "garnish": "pepper" },
+  "gb_watercress": { "vessel": "deep", "broth": "#5f9a3c", "body": "cream", "swirl": "#f4efe0", "top": [["greens", 3]], "garnish": "pepper" },
+  "gb_mushroom": { "vessel": "deep", "broth": "#b59a7a", "body": "cream", "swirl": "#f2e9da", "top": [["mushroom", 4], ["herbsprig", 1]], "garnish": "parsley" },
+  "gb_peamint": { "vessel": "deep", "broth": "#79b041", "body": "cream", "swirl": "#f8f3e6", "top": [["peas", 5], ["herbsprig", 2]], "garnish": "herbs" },
+  "gb_celery": { "vessel": "bowl", "broth": "#c9cf8e", "body": "cream", "swirl": "#f5efdf", "top": [["greens", 2], ["croutons", 2]], "garnish": "pepper" },
+  "gb_vegbroth": { "vessel": "bowl", "broth": "#b58c55", "body": "chunky", "top": [["beefChunk", 2], ["carrot", 3], ["leek", 2], ["rice", 2], ["peas", 2]], "garnish": "parsley" },
+  "gb_caulicheese": { "vessel": "crock", "broth": "#ede0b8", "body": "cream", "top": [["cheese", 4], ["croutons", 2]], "garnish": "pepper" },
+  "gb_redpepper": { "vessel": "deep", "broth": "#d8502f", "body": "cream", "swirl": "#f4ecdc", "top": [["redpepper", 2], ["herbsprig", 2]], "garnish": "herbs" }
+}
