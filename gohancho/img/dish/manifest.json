@@ -5658,6 +5658,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "gb_roastchicken": {
+      "file": "gb_roastchicken.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_roastbeef": {
+      "file": "gb_roastbeef.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_toadinhole": {
+      "file": "gb_toadinhole.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_fishpie": {
+      "file": "gb_fishpie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_chickenpie": {
+      "file": "gb_chickenpie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_hotpot": {
+      "file": "gb_hotpot.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_porkchops": {
+      "file": "gb_porkchops.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_gammon": {
+      "file": "gb_gammon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_kedgeree": {
+      "file": "gb_kedgeree.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_lambchops": {
+      "file": "gb_lambchops.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_chilli": {
+      "file": "gb_chilli.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_cornedbeefhash": {
+      "file": "gb_cornedbeefhash.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_macaroni": {
+      "file": "gb_macaroni.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_steakpie": {
+      "file": "gb_steakpie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_minceandtatties": {
+      "file": "gb_minceandtatties.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_tunabake": {
+      "file": "gb_tunabake.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_rarebit": {
+      "file": "gb_rarebit.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_baconeggpie": {
+      "file": "gb_baconeggpie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_glamorgan": {
+      "file": "gb_glamorgan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_beanburgers": {
+      "file": "gb_beanburgers.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_roastpotatoes": {
+      "file": "gb_roastpotatoes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_yorkshire": {
+      "file": "gb_yorkshire.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_parsnips": {
+      "file": "gb_parsnips.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_sprouts": {
+      "file": "gb_sprouts.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_redcabbage": {
+      "file": "gb_redcabbage.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_champ": {
+      "file": "gb_champ.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_bubble": {
+      "file": "gb_bubble.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_mushypeas": {
+      "file": "gb_mushypeas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_runnerbeans": {
+      "file": "gb_runnerbeans.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_carrots": {
+      "file": "gb_carrots.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_leeks": {
+      "file": "gb_leeks.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_beetroot": {
+      "file": "gb_beetroot.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_waldorf": {
+      "file": "gb_waldorf.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_tomatosalad": {
+      "file": "gb_tomatosalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_spinach": {
+      "file": "gb_spinach.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_rootveg": {
+      "file": "gb_rootveg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_broccoli": {
+      "file": "gb_broccoli.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_garlicmushrooms": {
+      "file": "gb_garlicmushrooms.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_onionrings": {
+      "file": "gb_onionrings.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "gb_stuffing": {
+      "file": "gb_stuffing.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
