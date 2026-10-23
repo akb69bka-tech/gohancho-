@@ -1,0 +1,380 @@
+{
+  "br_sopa_feijao": {
+    "vessel": "deep",
+    "broth": "#7a4a2e",
+    "body": "stew",
+    "top": [
+      [
+        "pasta",
+        5
+      ],
+      [
+        "bacon",
+        3
+      ],
+      [
+        "potato",
+        2
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_sopa_legumes": {
+    "vessel": "deep",
+    "broth": "#b8743a",
+    "body": "chunky",
+    "top": [
+      [
+        "beefChunk",
+        3
+      ],
+      [
+        "potato",
+        2
+      ],
+      [
+        "carrot",
+        3
+      ],
+      [
+        "zucchini",
+        2
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_caldo_mandioca": {
+    "vessel": "mug",
+    "vesselColor": "#8a5a3c",
+    "broth": "#e9d9a8",
+    "body": "cream",
+    "top": [
+      [
+        "beef",
+        5
+      ],
+      [
+        "scallion",
+        3
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_sopa_ervilha": {
+    "vessel": "deep",
+    "broth": "#a3a24a",
+    "body": "cream",
+    "top": [
+      [
+        "sausage",
+        4
+      ],
+      [
+        "croutons",
+        4
+      ]
+    ],
+    "garnish": "pepper"
+  },
+  "br_sopa_lentilha": {
+    "vessel": "bowl",
+    "broth": "#7d5a36",
+    "body": "stew",
+    "top": [
+      [
+        "lentils",
+        4
+      ],
+      [
+        "sausage",
+        3
+      ],
+      [
+        "carrot",
+        2
+      ],
+      [
+        "greens",
+        2
+      ]
+    ],
+    "garnish": "none"
+  },
+  "br_caldo_abobora": {
+    "vessel": "deep",
+    "broth": "#e39a3b",
+    "body": "cream",
+    "top": [
+      [
+        "beef",
+        5
+      ],
+      [
+        "scallion",
+        3
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_creme_mandioquinha": {
+    "vessel": "deep",
+    "broth": "#ecd27a",
+    "body": "cream",
+    "top": [
+      [
+        "chicken",
+        5
+      ]
+    ],
+    "garnish": "parsley",
+    "swirl": "#fff6e0"
+  },
+  "br_canjiquinha": {
+    "vessel": "clay",
+    "vesselColor": "#5a4a42",
+    "broth": "#e8c45a",
+    "body": "stew",
+    "top": [
+      [
+        "pork",
+        4
+      ],
+      [
+        "corn",
+        4
+      ],
+      [
+        "greens",
+        2
+      ]
+    ],
+    "garnish": "scallion"
+  },
+  "br_sopa_letrinhas": {
+    "vessel": "bowl",
+    "broth": "#d9883e",
+    "body": "clear",
+    "top": [
+      [
+        "pasta",
+        5
+      ],
+      [
+        "carrot",
+        3
+      ],
+      [
+        "potato",
+        2
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_caldo_peixe": {
+    "vessel": "clay",
+    "vesselColor": "#3f3631",
+    "broth": "#d0703a",
+    "body": "chunky",
+    "oil": true,
+    "top": [
+      [
+        "fish",
+        3
+      ],
+      [
+        "tomato",
+        2
+      ],
+      [
+        "pepper",
+        2
+      ],
+      [
+        "onion",
+        2
+      ]
+    ],
+    "garnish": "cilantro"
+  },
+  "br_caldo_camarao": {
+    "vessel": "mug",
+    "vesselColor": "#6b4a34",
+    "broth": "#f0c08a",
+    "body": "cream",
+    "top": [
+      [
+        "shrimp",
+        4
+      ],
+      [
+        "tomato",
+        1
+      ]
+    ],
+    "garnish": "cilantro"
+  },
+  "br_creme_milho": {
+    "vessel": "deep",
+    "broth": "#f2d36b",
+    "body": "cream",
+    "top": [
+      [
+        "corn",
+        6
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_sopa_fuba": {
+    "vessel": "deep",
+    "broth": "#e6c25c",
+    "body": "cream",
+    "top": [
+      [
+        "egg",
+        3
+      ],
+      [
+        "greens",
+        3
+      ],
+      [
+        "sausage",
+        3
+      ]
+    ],
+    "garnish": "pepper"
+  },
+  "br_sopa_cevadinha": {
+    "vessel": "deep",
+    "broth": "#b9834a",
+    "body": "chunky",
+    "top": [
+      [
+        "rice",
+        5
+      ],
+      [
+        "beefChunk",
+        3
+      ],
+      [
+        "carrot",
+        3
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_sopa_capeletti": {
+    "vessel": "deep",
+    "broth": "#e2b65a",
+    "body": "clear",
+    "oil": true,
+    "top": [
+      [
+        "dumpling",
+        6
+      ],
+      [
+        "chicken",
+        3
+      ],
+      [
+        "carrot",
+        2
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_caldo_inhame": {
+    "vessel": "deep",
+    "broth": "#ddd2bd",
+    "body": "cream",
+    "top": [
+      [
+        "bacon",
+        3
+      ],
+      [
+        "leek",
+        3
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_creme_brocolis": {
+    "vessel": "deep",
+    "broth": "#7fa64a",
+    "body": "cream",
+    "top": [
+      [
+        "greens",
+        3
+      ],
+      [
+        "cheese",
+        2
+      ]
+    ],
+    "garnish": "none",
+    "swirl": "#f4f1e6"
+  },
+  "br_sopa_cebola": {
+    "vessel": "crock",
+    "vesselColor": "#8b4a2b",
+    "broth": "#a8692e",
+    "body": "clear",
+    "top": [
+      [
+        "cheese",
+        4
+      ],
+      [
+        "bread",
+        2
+      ],
+      [
+        "onion",
+        3
+      ]
+    ],
+    "garnish": "none"
+  },
+  "br_sopa_grao_bico": {
+    "vessel": "bowl",
+    "broth": "#c98a4a",
+    "body": "chunky",
+    "top": [
+      [
+        "chickpeas",
+        6
+      ],
+      [
+        "sausage",
+        3
+      ],
+      [
+        "potato",
+        2
+      ]
+    ],
+    "garnish": "parsley"
+  },
+  "br_creme_cenoura": {
+    "vessel": "deep",
+    "broth": "#e8823a",
+    "body": "cream",
+    "top": [
+      [
+        "carrot",
+        3
+      ],
+      [
+        "herbsprig",
+        1
+      ]
+    ],
+    "garnish": "parsley",
+    "swirl": "#fff3e6"
+  }
+}
