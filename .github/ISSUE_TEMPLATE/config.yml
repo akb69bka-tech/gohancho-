@@ -1,10 +1,10 @@
 blank_issues_enabled: true
 contact_links:
   - name: ご飯帖 サポート窓口（常設の相談 Issue）
-    url: https://github.com/akb69bka-tech/gohancho/issues/1
+    url: https://github.com/akb69bka-tech/gohancho-/issues/1
     about: どこに書けばいいか迷ったら、常設の「サポート窓口」Issue にコメントしてください
   - name: サポート体制の説明（3チームと相談先）
-    url: https://github.com/akb69bka-tech/gohancho/blob/main/ios-app/サポート体制.md
+    url: https://github.com/akb69bka-tech/gohancho-/blob/main/ios-app/サポート体制.md
     about: お客様の声チーム・不具合解消チーム・Apple 窓口チームの分担と文例
   - name: 返金・解約（利用者向け・Apple の窓口）
     url: https://reportaproblem.apple.com/

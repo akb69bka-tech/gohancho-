@@ -3,7 +3,7 @@
 お膳ごと、おまかせ献立。主菜・副菜・ご飯・汁ものを「お膳」の形で毎日提案する献立アプリです。21の国・地域の家庭料理と17言語に対応し、アカウント不要・データは端末の中だけに保存します。
 
 - iPhone アプリ（App Store に申請予定）と、ブラウザで使える Web 版（PWA）があります
-- Web 版・プライバシーポリシー・サポート: https://akb69bka-tech.github.io/gohancho/
+- Web 版・プライバシーポリシー・サポート: https://akb69bka-tech.github.io/gohancho-/
 - 不具合・要望・相談: [Issues](../../issues/new/choose)（迷ったら [サポート窓口](../../issues/1)）
 
 ## このリポジトリの中身

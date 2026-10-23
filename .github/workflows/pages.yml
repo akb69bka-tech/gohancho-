@@ -1,5 +1,5 @@
 # ご飯帖の公開ページ（Web 版・プライバシーポリシー・サポート）を GitHub Pages に出す
-# main の gohancho/ が変わるたびに自動で更新。URL: https://akb69bka-tech.github.io/gohancho/
+# main の gohancho/ が変わるたびに自動で更新。URL: https://akb69bka-tech.github.io/gohancho-/
 # 初回だけ: GitHub の Settings → Pages → Source を「GitHub Actions」にする
 name: Pages
 

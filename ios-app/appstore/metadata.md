@@ -17,9 +17,9 @@
 | 価格 | 無料（App 内課金あり） |
 | 年齢制限 | 4+（質問にはすべて「なし」と回答） |
 | 著作権 | 2026 【運営者名】 |
-| サポート URL | https://akb69bka-tech.github.io/gohancho/support.html |
-| マーケティング URL | https://akb69bka-tech.github.io/gohancho/ |
-| プライバシーポリシー URL | https://akb69bka-tech.github.io/gohancho/privacy.html |
+| サポート URL | https://akb69bka-tech.github.io/gohancho-/support.html |
+| マーケティング URL | https://akb69bka-tech.github.io/gohancho-/ |
+| プライバシーポリシー URL | https://akb69bka-tech.github.io/gohancho-/privacy.html |
 
 ※ URL は GitHub Pages を有効にしてから使えます。【】の部分は記入してください。
 
@@ -76,7 +76,7 @@
 お支払いは購入の確定時に Apple ID に請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
 
 利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-プライバシーポリシー: https://akb69bka-tech.github.io/gohancho/privacy.html
+プライバシーポリシー: https://akb69bka-tech.github.io/gohancho-/privacy.html
 
 料理の絵は、家庭の盛りつけをもとに全125品を1品ずつ描いたポップなイラストです。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
 ```
@@ -169,8 +169,8 @@ In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly 
 | Name (30) | Gohancho – Home Meal Planner |
 | Subtitle (30) | Your whole table, planned |
 | Keywords (100) | meal planner,dinner ideas,weekly meal plan,shopping list,home cooking,recipes,what to cook,family dinner |
-| Support URL | https://akb69bka-tech.github.io/gohancho/support-en.html |
-| Privacy Policy URL | https://akb69bka-tech.github.io/gohancho/privacy-en.html |
+| Support URL | https://akb69bka-tech.github.io/gohancho-/support-en.html |
+| Privacy Policy URL | https://akb69bka-tech.github.io/gohancho-/privacy-en.html |
 
 ### Promotional text (170)
 
@@ -213,7 +213,7 @@ Try everything free for your first month. After that it's one simple monthly pla
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Privacy Policy: https://akb69bka-tech.github.io/gohancho/privacy-en.html
+Privacy Policy: https://akb69bka-tech.github.io/gohancho-/privacy-en.html
 
 If you have allergies, always check the ingredients of seasonings and processed foods yourself.
 ```

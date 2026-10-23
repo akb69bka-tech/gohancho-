@@ -8,7 +8,7 @@ MacBook での起動・レシピの追加・スマホへの反映・バックア
 ## スマホに入れる手順
 
 1. GitHub の **Settings → Pages** で、Source を「GitHub Actions」にする（初回だけ。以後は main に入るたびに自動で更新）
-2. 数分後、`https://akb69bka-tech.github.io/gohancho/` をスマホで開く
+2. 数分後、`https://akb69bka-tech.github.io/gohancho-/` をスマホで開く
 3. ホーム画面に追加する
    - iPhone: Safari の共有ボタン →「ホーム画面に追加」
    - Android: Chrome の︙メニュー →「アプリをインストール」

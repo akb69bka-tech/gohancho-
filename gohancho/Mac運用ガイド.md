@@ -20,7 +20,7 @@ MacBook にファイルを置いて、起動・レシピの追加・修正・ス
 
 ```bash
 cd ~/Documents
-git clone https://github.com/akb69bka-tech/gohancho.git
+git clone https://github.com/akb69bka-tech/gohancho-.git
 cd gohancho
 git checkout claude/cooking-recipe-app
 ```

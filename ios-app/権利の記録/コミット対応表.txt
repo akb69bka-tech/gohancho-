@@ -1,4 +1,4 @@
-# トレサビのリポジトリ（akb69bka-tech/toresabi）上の元のコミット → ご飯帖のリポジトリ（akb69bka-tech/gohancho）上のコミット
+# トレサビのリポジトリ（akb69bka-tech/toresabi）上の元のコミット → ご飯帖のリポジトリ（akb69bka-tech/gohancho-）上のコミット
 # 2026-10-23 に git filter-repo でご飯帖のファイルだけを切り出したときの対応。元のコミットは https://github.com/akb69bka-tech/toresabi/commit/<元の番号> で見られます
 # 0000000000000000000000000000000000000000 は、ご飯帖のファイルを含まないため切り出しで消えたコミット
 元のコミット 新しいコミット
