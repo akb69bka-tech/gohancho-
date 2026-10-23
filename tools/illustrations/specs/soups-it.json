@@ -1,0 +1,22 @@
+{
+  "it_stracciatella": { "vessel": "deep", "broth": "#e3c46a", "body": "clear", "top": [["egg",6],["cheese",2]], "garnish": "parsley" },
+  "it_tortellinibrodo": { "vessel": "deep", "broth": "#d9a94a", "body": "clear", "oil": true, "top": [["dumpling",8],["cheese",2]], "garnish": "none" },
+  "it_pastinabrodo": { "vessel": "bowl", "broth": "#e2b45c", "body": "clear", "top": [["pasta",8],["cheese",2]], "garnish": "parsley" },
+  "it_brodopollo": { "vessel": "deep", "broth": "#d8a548", "body": "clear", "oil": true, "top": [["chicken",4],["carrot",3],["onion",2]], "garnish": "parsley" },
+  "it_ribollita": { "vessel": "crock", "broth": "#8a6a3a", "body": "stew", "top": [["whitebeans",4],["greens",3],["bread",2],["carrot",2]], "garnish": "pepper" },
+  "it_pappapomodoro": { "vessel": "deep", "broth": "#c2462a", "body": "stew", "oil": true, "top": [["bread",4],["herbsprig",2]], "garnish": "pepper" },
+  "it_passatelli": { "vessel": "deep", "broth": "#dcae52", "body": "clear", "top": [["noodles",6],["cheese",2]], "garnish": "none" },
+  "it_lenticchie": { "vessel": "bowl", "broth": "#7a5530", "body": "chunky", "oil": true, "top": [["lentils",6],["carrot",3],["bread",1]], "garnish": "parsley" },
+  "it_pastaceci": { "vessel": "deep", "broth": "#d1a463", "body": "cream", "oil": true, "top": [["chickpeas",6],["pasta",4],["herbsprig",1]], "garnish": "pepper" },
+  "it_vellutatazucca": { "vessel": "deep", "broth": "#e8892a", "body": "cream", "swirl": "#fff3df", "top": [["croutons",4],["cheese",1]], "garnish": "pepper" },
+  "it_patateporri": { "vessel": "bowl", "broth": "#e8dfb8", "body": "cream", "top": [["leek",4],["cheese",1]], "garnish": "pepper" },
+  "it_zuppacozze": { "vessel": "pot", "broth": "#b84a2c", "body": "chunky", "oil": true, "top": [["mussel",8],["tomato",2],["bread",1]], "garnish": "parsley" },
+  "it_zuppapesce": { "vessel": "deep", "broth": "#b9502e", "body": "chunky", "oil": true, "top": [["fish",3],["shrimp",3],["mussel",4],["bread",1]], "garnish": "parsley" },
+  "it_orzo": { "vessel": "bowl", "broth": "#cfb68a", "body": "chunky", "top": [["rice",5],["bacon",3],["carrot",2],["potato",2]], "garnish": "scallion" },
+  "it_pastapatate": { "vessel": "deep", "broth": "#e0bf72", "body": "stew", "top": [["potato",4],["pasta",4],["cheese",2]], "garnish": "pepper" },
+  "it_farro": { "vessel": "bowl", "broth": "#b9894e", "body": "chunky", "oil": true, "top": [["rice",5],["carrot",2],["zucchini",3]], "garnish": "pepper" },
+  "it_polpettinebrodo": { "vessel": "deep", "broth": "#d6a24a", "body": "clear", "top": [["meatball",6],["spinach",2],["pasta",3]], "garnish": "none" },
+  "it_vellutatafunghi": { "vessel": "bowl", "broth": "#9c7a55", "body": "cream", "swirl": "#efe4d2", "top": [["mushroom",4]], "garnish": "parsley" },
+  "it_zuppapavese": { "vessel": "deep", "broth": "#d7a347", "body": "clear", "top": [["bread",2],["poached",2],["cheese",2]], "garnish": "none" },
+  "it_passatoverdure": { "vessel": "deep", "broth": "#c7a24a", "body": "cream", "oil": true, "top": [["croutons",3],["cheese",1]], "garnish": "parsley" }
+}

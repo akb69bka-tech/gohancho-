@@ -3258,6 +3258,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "it_stracciatella": {
+      "file": "it_stracciatella.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_tortellinibrodo": {
+      "file": "it_tortellinibrodo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_pastinabrodo": {
+      "file": "it_pastinabrodo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_brodopollo": {
+      "file": "it_brodopollo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_ribollita": {
+      "file": "it_ribollita.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_pappapomodoro": {
+      "file": "it_pappapomodoro.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_passatelli": {
+      "file": "it_passatelli.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_lenticchie": {
+      "file": "it_lenticchie.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_pastaceci": {
+      "file": "it_pastaceci.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_vellutatazucca": {
+      "file": "it_vellutatazucca.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_patateporri": {
+      "file": "it_patateporri.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_zuppacozze": {
+      "file": "it_zuppacozze.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_zuppapesce": {
+      "file": "it_zuppapesce.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_orzo": {
+      "file": "it_orzo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_pastapatate": {
+      "file": "it_pastapatate.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_farro": {
+      "file": "it_farro.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_polpettinebrodo": {
+      "file": "it_polpettinebrodo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_vellutatafunghi": {
+      "file": "it_vellutatafunghi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_zuppapavese": {
+      "file": "it_zuppapavese.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "it_passatoverdure": {
+      "file": "it_passatoverdure.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
