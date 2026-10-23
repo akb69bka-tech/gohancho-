@@ -1207,7 +1207,7 @@ GOHAN_PACK({
       steps: [
         'Boil the potatoes in salted water. Peel the asparagus from just under the tip down, and cut off the woody ends.',
         'Bring a wide pot of water with 1 tsp salt, the sugar and 20 g butter to the boil. Add the asparagus and simmer 12-15 minutes until the thick end is tender when pierced but the spears still hold their shape.',
-        'Meanwhile melt the 125 g butter. Whisk the egg yolks and water in a metal bowl over barely simmering water until thick, foamy and warm (about 65°C; it must not scramble). Off the heat, whisk in the warm butter drop by drop, then in a thin stream, and season with lemon juice, salt and pepper.',
+        'Meanwhile melt the 125 g butter. Whisk the egg yolks and water in a metal bowl over barely simmering water until thick, foamy and warm (about 70°C, about 3-4 minutes; keep whisking so it does not scramble). Off the heat, whisk in the warm butter drop by drop, then in a thin stream, and season with lemon juice, salt and pepper.',
         'Lift the asparagus out with a slotted spoon and drain. Serve with the potatoes, ham and hollandaise, sprinkled with parsley.',
       ],
       tip: { add: 'Melted brown butter instead of hollandaise', why: 'The quicker way many families eat their spring asparagus', skill: 'Gentle heat for the sauce', how: 'If the yolks get too hot they turn into scrambled egg; take the bowl off the steam as soon as the foam thickens.' },

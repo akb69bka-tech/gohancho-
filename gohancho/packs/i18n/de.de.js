@@ -672,7 +672,7 @@ GOHAN_PACK_TR('DE', 'de', {
       steps: [
         'Die Kartoffeln in Salzwasser kochen. Den Spargel von knapp unter dem Kopf abwärts schälen und die holzigen Enden abschneiden.',
         'In einem breiten Topf Wasser mit 1 TL Salz, Zucker und 20 g Butter aufkochen. Den Spargel 12–15 Minuten köcheln, bis das dicke Ende beim Einstechen weich ist, die Stangen aber noch Form haben.',
-        'Inzwischen 125 g Butter schmelzen. Eigelb und Wasser in einer Metallschüssel über leise siedendem Wasserbad dick-schaumig und warm aufschlagen (ca. 65 °C; es darf nicht stocken). Vom Wasserbad nehmen, die warme Butter erst tropfenweise, dann im dünnen Strahl unterschlagen und mit Zitronensaft, Salz und Pfeffer abschmecken.',
+        'Inzwischen 125 g Butter schmelzen. Eigelb und Wasser in einer Metallschüssel über leise siedendem Wasserbad dick-schaumig und warm aufschlagen (ca. 70 °C, etwa 3-4 Minuten; ständig schlagen, damit es nicht stockt). Vom Wasserbad nehmen, die warme Butter erst tropfenweise, dann im dünnen Strahl unterschlagen und mit Zitronensaft, Salz und Pfeffer abschmecken.',
         'Den Spargel mit einer Schaumkelle herausheben und abtropfen lassen. Mit Kartoffeln, Schinken und Hollandaise servieren und mit Petersilie bestreuen.'
       ],
       tip: { add: 'Braune Butter statt Hollandaise', why: 'So essen viele Familien ihren Frühlingsspargel schneller', skill: 'Sanfte Hitze für die Soße', how: 'Wird das Eigelb zu heiß, gerinnt es zu Rührei; die Schüssel vom Dampf nehmen, sobald der Schaum dicklich wird.' }
