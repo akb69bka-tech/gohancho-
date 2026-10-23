@@ -31,7 +31,26 @@ GOHAN_PACK_TR('MX', 'es', {
     'olive': 'Aceitunas',
     'caper': 'Alcaparras',
     'rice': 'Arroz',
-    'pasta': 'Pasta de fideo'
+    'pasta': 'Pasta de fideo',
+    'hominy': 'Maíz pozolero',
+    'guajillo': 'Chiles guajillo',
+    'ancho': 'Chiles anchos',
+    'pasilla': 'Chiles pasilla',
+    'pepitas': 'Pepitas de calabaza',
+    'cabbage': 'Col (repollo)',
+    'radish': 'Rábanos',
+    'beef shank': 'Chambarete de res',
+    'chickpeas': 'Garbanzos',
+    'lentils': 'Lentejas',
+    'shrimp': 'Camarones',
+    'squash blossom': 'Flor de calabaza',
+    'tripe': 'Panza de res (callo)',
+    'fava beans': 'Habas secas',
+    'mushroom': 'Champiñones',
+    'epazote': 'Epazote',
+    'plantain': 'Plátano macho',
+    'chayote': 'Chayote',
+    'green beans': 'Ejotes'
   },
   recipes: {
     'mx_tinga': {
@@ -232,6 +251,259 @@ GOHAN_PACK_TR('MX', 'es', {
         'Sirve con limón, cebolla picada, chile serrano y tortillas calientes.'
       ],
       tip: { add: 'Una cucharada de arroz rojo en cada plato', why: 'Como lo sirven muchas familias', skill: 'Agrega las verduras por etapas', how: 'Primero las verduras duras y al final la calabacita suave, para que nada se deshaga.' }
+    },
+    'mx_pozole_rojo': {
+      name: 'Pozole rojo',
+      ings: [['Espaldilla de puerco en trozos grandes', '500 g'], ['Maíz pozolero cocido, escurrido', '500 g'], ['Chiles guajillo secos', '4'], ['Cebolla', '1/2'], ['Col o lechuga rebanada para servir', '2 tazas'], ['Rábanos rebanados para servir', '4'], ['Limones para servir', '2'], ['Tostadas para servir', '4']],
+      seas: '3 dientes de ajo · 1 cucharadita de orégano seco · Sal · 2 litros de agua · Chile piquín molido para servir',
+      steps: [
+        'Pon la carne en una olla grande con el agua, un cuarto de la cebolla, 2 dientes de ajo y 2 cucharaditas de sal. Deja que hierva, quita la espuma, tapa y cocina a fuego bajo 1 hora 15 minutos, hasta que la carne esté bien cocida y se deshebre fácilmente.',
+        'Mientras, quita los rabos y las semillas a los guajillos, ásalos en un comal 20 segundos por lado y remójalos en agua caliente 15 minutos.',
+        'Licúa los chiles con el último diente de ajo, la mitad del orégano y 250 ml del caldo hasta que quede terso. Cuélalo sobre la olla.',
+        'Agrega el maíz pozolero y cocina 20 minutos para que tome el sabor del caldo. Rectifica la sal.',
+        'Pica el resto de la cebolla. Sirve el pozole con col, rábanos, cebolla picada, limón, el resto del orégano, chile piquín y tostadas.'
+      ],
+      tip: { add: 'Rebanadas de aguacate', why: 'Suavizan el picor del chile', skill: 'Cuela el chile licuado', how: 'El colador detiene los pellejos duros del chile y el caldo queda sedoso.' }
+    },
+    'mx_pozole_verde': {
+      name: 'Pozole verde de pollo',
+      ings: [['Muslos de pollo con hueso', '600 g'], ['Maíz pozolero cocido, escurrido', '500 g'], ['Tomates verdes sin cáscara', '4'], ['Pepitas de calabaza peladas', '60 g'], ['Chiles serranos', '2'], ['Cilantro', '1 manojo chico'], ['Rábanos rebanados para servir', '4'], ['Limones para servir', '2']],
+      seas: '1/2 cebolla · 2 dientes de ajo · 1 cucharadita de orégano seco · Sal · 1 cucharada de aceite · 1.8 litros de agua',
+      steps: [
+        'Cuece el pollo en el agua con un trozo de cebolla, 1 diente de ajo y sal durante 35 minutos, hasta que esté cocido hasta el hueso. Sácalo, deshébralo y guarda el caldo.',
+        'Tuesta las pepitas en un sartén seco a fuego medio-bajo de 3 a 4 minutos, moviendo, hasta que se inflen y empiecen a tronar. No dejes que se doren.',
+        'Hierve los tomates verdes y los serranos en poca agua 6 minutos, hasta que cambien a verde olivo. Licúalos con las pepitas, el cilantro, el resto de la cebolla y el ajo y 300 ml de caldo hasta que quede terso.',
+        'Fríe la salsa verde en el aceite a fuego medio 5 minutos, moviendo. Vierte el caldo, agrega el maíz y el orégano y cocina a fuego suave 15 minutos. Regresa el pollo y calienta 5 minutos.',
+        'Sirve con rábanos, limón, cebolla picada y tostadas.'
+      ],
+      tip: { add: 'Trocitos de chicharrón encima', why: 'Le dan lo crujiente, como en Guerrero', skill: 'Mantén un hervor suave', how: 'Una salsa espesada con pepitas se puede cortar si hierve fuerte.' }
+    },
+    'mx_sopa_tortilla': {
+      name: 'Sopa de tortilla',
+      ings: [['Tortillas de maíz del día anterior, en tiras', '6'], ['Jitomates', '3'], ['Chile pasilla seco', '1'], ['Cebolla', '1/4'], ['Aguacate en cubos', '1'], ['Queso fresco o panela en cubos', '80 g'], ['Crema para servir', '2 cucharadas']],
+      seas: '1 diente de ajo · 1 litro de caldo de pollo · Aceite para freír · 1 rama de epazote (opcional) · Sal',
+      steps: [
+        'Fríe las tiras de tortilla en 1 cm de aceite caliente, por tandas, de 1 a 2 minutos hasta que estén doradas y crujientes. Escúrrelas en papel y sálalas un poco.',
+        'Fríe el pasilla en el mismo aceite unos 10 segundos, solo hasta que se infle, y apártalo. Si se quema, amarga.',
+        'Licúa los jitomates, la cebolla y el ajo. Deja solo 1 cucharada de aceite en la olla y fríe el licuado a fuego medio 5 minutos, hasta que se oscurezca.',
+        'Agrega el caldo y el epazote y cocina 10 minutos. Sazona con sal.',
+        'Pon tiras de tortilla, queso y aguacate en cada plato, sirve encima el caldo caliente y termina con pasilla desmoronado y crema.'
+      ],
+      tip: { add: 'Pollo cocido deshebrado', why: 'La convierte en una comida completa', skill: 'Pon la tortilla al servir', how: 'Las tiras solo se mantienen crujientes unos minutos una vez que cae el caldo.' }
+    },
+    'mx_sopa_frijol': {
+      name: 'Sopa de frijol',
+      ings: [['Frijoles negros secos', '250 g'], ['Cebolla', '1/2'], ['Jitomate', '1'], ['Epazote', '1 rama'], ['Tortillas de maíz en tiras, fritas, para servir', '3'], ['Queso fresco para servir', '60 g'], ['Crema para servir', '2 cucharadas']],
+      seas: '2 dientes de ajo · Sal · 1 cucharada de manteca o aceite · 1.5 litros de agua · 1 chipotle en adobo (opcional)',
+      steps: [
+        'La noche anterior, enjuaga los frijoles, quítales las piedritas y remójalos en bastante agua.',
+        'Escúrrelos y ponlos en una olla con agua limpia, un cuarto de la cebolla y 1 diente de ajo. Hierve fuerte 10 minutos, luego tapa y cocina a fuego bajo de 1 hora y media a 2 horas, hasta que estén muy suaves, agregando agua caliente si hace falta. Pon la sal en los últimos 20 minutos.',
+        'Licúa los frijoles con su caldo, el jitomate, el otro diente de ajo y el chipotle hasta que quede terso.',
+        'Pica el resto de la cebolla y fríela en la manteca 4 minutos. Vierte el licuado, agrega el epazote y cocina 10 minutos, moviendo para que no se pegue. Si está muy espesa, añade agua.',
+        'Sirve con tiras de tortilla fritas, queso desmoronado y crema.'
+      ],
+      tip: { add: 'Un poco de chorizo frito', why: 'Ahumado y sabroso', skill: 'Cuece los frijoles hasta que estén cremosos', how: 'Aprieta uno entre los dedos: si se deshace sin granitos, ya están listos para licuar.' }
+    },
+    'mx_lentejas': {
+      name: 'Sopa de lentejas',
+      ings: [['Lentejas', '200 g'], ['Jitomates', '2'], ['Cebolla', '1/2'], ['Zanahoria en cubitos', '1'], ['Plátano macho maduro en rodajas', '1/2']],
+      seas: '1 diente de ajo · 1 cucharada de aceite · 1 hoja de laurel · Sal · Pimienta · 1.2 litros de agua',
+      steps: [
+        'Enjuaga las lentejas y quítales las piedritas. No necesitan remojo.',
+        'Licúa los jitomates con la mitad de la cebolla y el ajo. Pica el resto de la cebolla.',
+        'Sofríe la cebolla picada y la zanahoria en el aceite 4 minutos. Agrega el licuado y fríe 5 minutos, hasta que se oscurezca.',
+        'Añade las lentejas, el agua y el laurel. Deja que hierva y cocina a fuego bajo, medio tapado, 30 minutos hasta que las lentejas estén suaves. Agrega el plátano en los últimos 10 minutos y sazona con sal y pimienta.'
+      ],
+      tip: { add: 'Tocino picado frito con la cebolla', why: 'Le da un fondo ahumado', skill: 'Sala al final', how: 'Si salas muy pronto, la piel de las lentejas puede quedar dura.' }
+    },
+    'mx_albondigas': {
+      name: 'Caldo de albóndigas',
+      ings: [['Carne molida de res (o mitad de puerco)', '400 g'], ['Arroz crudo enjuagado', '2 cucharadas'], ['Huevo', '1'], ['Jitomates', '3'], ['Zanahoria en rodajas', '1'], ['Calabacita en trozos', '1'], ['Chipotle en adobo', '1'], ['Limón para servir', '1']],
+      seas: '1/4 de cebolla · 1 diente de ajo · 6 hojas de hierbabuena fresca · 1/2 cucharadita de comino molido · Sal · Pimienta · 1 cucharada de aceite · 1.2 litros de agua',
+      steps: [
+        'Mezcla la carne con el arroz, el huevo, la hierbabuena picada, el comino, sal y pimienta. Forma de 14 a 16 albóndigas de unos 4 cm.',
+        'Licúa los jitomates, la cebolla, el ajo y el chipotle con 250 ml del agua. Fríe en el aceite 5 minutos.',
+        'Agrega el resto del agua y deja que hierva. Pon las albóndigas una por una y cocina a fuego suave 10 minutos sin mover, para que se afirmen.',
+        'Añade la zanahoria y cocina 10 minutos; luego la calabacita, 8 minutos más, hasta que las albóndigas estén cocidas por dentro, sin nada rosado, y el arroz esté suave.',
+        'Sazona y sirve con limón y tortillas calientes.'
+      ],
+      tip: { add: 'Un trocito de huevo cocido escondido en cada albóndiga', why: 'La sorpresa clásica de la casa', skill: 'Moja tus manos al formarlas', how: 'La carne no se pega, las albóndigas quedan lisas y no se deshacen en el caldo.' }
+    },
+    'mx_caldo_res': {
+      name: 'Caldo de res',
+      ings: [['Chambarete de res con hueso, en trozos', '700 g'], ['Elote en 3 trozos', '1'], ['Zanahorias en trozos gruesos', '2'], ['Papas en mitades', '2'], ['Chayote en gajos', '1'], ['Col en un gajo', '1/4'], ['Calabacita en trozos', '1'], ['Limón para servir', '1']],
+      seas: '1/2 cebolla · 3 dientes de ajo · 1 jitomate · 2 ramas de cilantro · Sal · 2.5 litros de agua · Chile serrano picado para servir',
+      steps: [
+        'Pon el chambarete en una olla grande con el agua, la cebolla, el ajo y la sal. Deja que hierva y quita la espuma durante los primeros 10 minutos.',
+        'Tapa y cocina a fuego bajo 1 hora 45 minutos, hasta que la carne esté suave y se despegue del hueso.',
+        'Licúa el jitomate con un cucharón de caldo y cuélalo sobre la olla. Agrega el elote, las zanahorias y las papas y cocina 15 minutos.',
+        'Añade el chayote, la col, la calabacita y el cilantro y cocina 10 minutos más, hasta que todo esté suave.',
+        'Sirve la carne y las verduras en platos hondos con bastante caldo, limón, serrano y tortillas o arroz rojo.'
+      ],
+      tip: { add: 'El tuétano del hueso untado en una tortilla caliente con sal', why: 'Para muchos es el mejor bocado', skill: 'Espuma bien al principio', how: 'Quitar pronto la espuma gris deja el caldo claro y de sabor limpio.' }
+    },
+    'mx_tlalpeno': {
+      name: 'Caldo tlalpeño',
+      ings: [['Muslos de pollo con hueso', '500 g'], ['Garbanzos cocidos, escurridos', '1 taza'], ['Zanahorias en cubitos', '2'], ['Chipotles en adobo', '2'], ['Jitomates', '2'], ['Ejotes en trozos cortos', '80 g'], ['Aguacate para servir', '1'], ['Queso panela u Oaxaca en cubos', '80 g']],
+      seas: '1/2 cebolla · 2 dientes de ajo · 1 rama de epazote (opcional) · Sal · 1 cucharada de aceite · 1.5 litros de agua · Limón para servir',
+      steps: [
+        'Cuece el pollo en el agua con un trozo de cebolla, 1 diente de ajo y sal durante 30 minutos, hasta que esté cocido hasta el hueso. Deshébralo y guarda el caldo.',
+        'Licúa los jitomates, los chipotles, el otro diente de ajo y un poco de cebolla. Fríe en el aceite 5 minutos.',
+        'Agrega el caldo, las zanahorias y los ejotes y cocina 10 minutos. Añade los garbanzos y el epazote y cocina 5 minutos más.',
+        'Regresa el pollo y calienta 3 minutos. Sirve sobre cubos de queso y aguacate en cada plato, con limón.'
+      ],
+      tip: { add: 'Una cucharada de arroz blanco en cada plato', why: 'Lo vuelve una comida completa', skill: 'Controla el picor con el adobo', how: 'Agrega los chipotles de uno en uno; el adobo de la lata da lo ahumado con menos picor.' }
+    },
+    'mx_caldo_pescado': {
+      name: 'Caldo de pescado',
+      ings: [['Postas o filetes gruesos de pescado blanco (tilapia, huachinango)', '500 g'], ['Jitomates', '3'], ['Chiles guajillo secos', '2'], ['Zanahoria en rodajas', '1'], ['Papa en cubos', '1'], ['Cebolla', '1/2'], ['Cilantro', '2 ramas'], ['Limones para servir', '2']],
+      seas: '2 dientes de ajo · 1 hoja de laurel · 1/2 cucharadita de orégano seco · Sal · Pimienta · 1 cucharada de aceite · 1.2 litros de agua',
+      steps: [
+        'Quita las semillas a los guajillos y remójalos en agua caliente 10 minutos. Licúalos con los jitomates, la mitad de la cebolla y el ajo.',
+        'Rebana el resto de la cebolla y sofríela en el aceite 3 minutos. Vierte el licuado colado y fríe 5 minutos.',
+        'Agrega el agua, el laurel, el orégano, la zanahoria y la papa. Cocina 12 minutos hasta que estén casi suaves.',
+        'Acomoda el pescado, añade el cilantro y cocina a fuego suave de 8 a 10 minutos, hasta que el pescado esté opaco por completo y se separe fácilmente en lajas. No muevas con fuerza.',
+        'Sazona y sirve con limón, cebolla picada y tostadas o tortillas.'
+      ],
+      tip: { add: 'Un puño de camarones en los últimos 4 minutos', why: 'Lo convierte en caldo mixto', skill: 'El pescado va al final', how: 'Poco tiempo a fuego suave mantiene los trozos enteros y jugosos.' }
+    },
+    'mx_caldo_camaron': {
+      name: 'Caldo de camarón',
+      ings: [['Camarones crudos con cáscara', '400 g'], ['Chiles guajillo secos', '3'], ['Jitomates', '2'], ['Papa en cubos', '1'], ['Zanahoria en cubos', '1'], ['Limones para servir', '2']],
+      seas: '1/4 de cebolla · 2 dientes de ajo · 1/2 cucharadita de orégano seco · Sal · 1 cucharada de aceite · 1 litro de agua',
+      steps: [
+        'Pela y desvena los camarones. Hierve las cáscaras y cabezas en el agua 10 minutos y cuela: ese es el caldo.',
+        'Quita las semillas a los guajillos y remójalos en agua caliente 10 minutos. Licúalos con los jitomates, la cebolla, el ajo y un cucharón de caldo, y fríe el licuado colado en el aceite 5 minutos.',
+        'Agrega el caldo de camarón, la papa, la zanahoria y el orégano. Cocina 12 minutos hasta que las verduras estén suaves.',
+        'Añade los camarones y cocina de 3 a 4 minutos, hasta que estén rosados por fuera y opacos en el centro. Sazona y sirve con limón.'
+      ],
+      tip: { add: 'Cebolla y cilantro picados y unas gotas de salsa picante', why: 'Como se sirve en la costa', skill: 'Aprovecha las cáscaras', how: 'Las cáscaras y cabezas dan un sabor a mar que el agua sola no tiene.' }
+    },
+    'mx_crema_elote': {
+      name: 'Crema de elote',
+      ings: [['Granos de elote frescos o congelados', '2 tazas'], ['Cebolla', '1/4'], ['Chile poblano asado en rajas', '1'], ['Queso fresco para servir', '50 g'], ['Crema para servir', '3 cucharadas']],
+      seas: '1 cucharada de mantequilla · 1 diente de ajo · 500 ml de leche · 250 ml de caldo de pollo · Sal · Pimienta',
+      steps: [
+        'Derrite la mantequilla y sofríe la cebolla y el ajo picados a fuego medio-bajo 3 minutos, hasta que estén suaves.',
+        'Agrega el elote, apartando un cuarto de taza, y cocina 3 minutos. Añade el caldo y cocina 10 minutos.',
+        'Licúa con la leche hasta que quede terso. Cuélalo si la quieres más fina.',
+        'Regresa a la olla con los granos apartados y calienta a fuego suave 5 minutos sin que hierva fuerte. Sazona.',
+        'Sirve con rajas de poblano, queso desmoronado y un hilo de crema.'
+      ],
+      tip: { add: 'Tiras de tortilla fritas', why: 'Lo crujiente contra la crema tersa', skill: 'No hiervas fuerte la leche', how: 'Mantenla justo por debajo del hervor para que no se pegue ni se corte.' }
+    },
+    'mx_crema_poblano': {
+      name: 'Crema de poblano',
+      ings: [['Chiles poblanos', '3'], ['Cebolla', '1/2'], ['Papa chica en cubos', '1'], ['Granos de elote', '1/2 taza'], ['Crema', '3 cucharadas'], ['Queso panela en cubos para servir', '60 g']],
+      seas: '1 cucharada de mantequilla · 1 diente de ajo · 400 ml de leche · 400 ml de caldo de pollo · Sal · Pimienta',
+      steps: [
+        'Asa los poblanos directo en la flama o en el asador, volteándolos, de 8 a 10 minutos hasta que estén ampollados por todos lados. Mételos en una bolsa 10 minutos, pélalos y quítales semillas y venas.',
+        'Sofríe la cebolla y el ajo picados en la mantequilla 3 minutos. Agrega la papa y el caldo y cocina 12 minutos hasta que esté suave.',
+        'Licúa con los poblanos y la leche hasta que quede terso.',
+        'Regresa a la olla con el elote y calienta a fuego suave 5 minutos. Incorpora la crema y sazona.',
+        'Sirve con cubos de panela.'
+      ],
+      tip: { add: 'Unas rajas de poblano asado apartadas para decorar', why: 'Muestran de qué es la crema', skill: 'Quita todas las venas', how: 'Las venas claras guardan casi todo el picor; ráspalas para una crema suave.' }
+    },
+    'mx_sopa_flor': {
+      name: 'Sopa de flor de calabaza',
+      ings: [['Flor de calabaza', '1 manojo (unas 20)'], ['Calabacita en cubitos', '1'], ['Granos de elote', '1/2 taza'], ['Cebolla', '1/4'], ['Jitomate', '1'], ['Epazote', '1 rama'], ['Queso fresco para servir', '50 g']],
+      seas: '1 diente de ajo · 1 cucharada de mantequilla o aceite · 1 litro de caldo de pollo o de verduras · Sal · Pimienta',
+      steps: [
+        'Quita a las flores los tallos verdes, las hojitas verdes de la base y el pistilo. Enjuágalas con cuidado y pícalas en trozos.',
+        'Sofríe la cebolla y el ajo picados 3 minutos. Agrega el jitomate picado y cocina 3 minutos.',
+        'Añade el caldo, la calabacita y el elote y cocina 8 minutos.',
+        'Agrega las flores y el epazote y cocina 3 minutos, solo hasta que se marchiten. Sazona y sirve con queso desmoronado.'
+      ],
+      tip: { add: 'Quesadillas para acompañar', why: 'La pareja de siempre para una comida ligera', skill: 'Las flores van al final', how: 'Son delicadas; si se cocinan mucho se oscurecen y pierden su sabor.' }
+    },
+    'mx_menudo': {
+      name: 'Menudo rojo',
+      ings: [['Panza de res (callo), limpia', '700 g'], ['Maíz pozolero cocido, escurrido', '300 g'], ['Chiles guajillo secos', '4'], ['Chile ancho seco', '1'], ['Cebolla', '1'], ['Limones para servir', '2']],
+      seas: '4 dientes de ajo · 2 cucharaditas de orégano seco · 1 hoja de laurel · Sal · 3 litros de agua · Cebolla picada y chile piquín para servir',
+      steps: [
+        'Enjuaga muy bien la panza, tállala con sal y jugo de limón y vuelve a enjuagarla. Córtala en trozos de 3 cm.',
+        'Cúbrela con agua, hierve 10 minutos, escurre y enjuaga. Este primer hervor le quita el olor fuerte.',
+        'Regresa la panza a la olla con los 3 litros de agua limpia, la mitad de la cebolla, 3 dientes de ajo, el laurel y sal. Tapa y cocina a fuego bajo 3 horas, hasta que esté muy suave, agregando agua caliente si hace falta.',
+        'Quita las semillas a los chiles y remójalos en agua caliente 15 minutos. Licúalos con el último diente de ajo y una taza de caldo y cuela sobre la olla. Agrega el maíz y 1 cucharadita de orégano y cocina 20 minutos.',
+        'Pica el resto de la cebolla. Sirve con cebolla, orégano, chile piquín, limón y tortillas calientes.'
+      ],
+      tip: { add: 'Una pata de res o de puerco cocida junto con la panza', why: 'Le da cuerpo al caldo', skill: 'Dale un primer hervor a la panza', how: 'Un hervor corto la limpia; luego agua limpia para que el caldo quede limpio.' }
+    },
+    'mx_sopa_verduras': {
+      name: 'Sopa de verduras',
+      ings: [['Zanahoria en cubitos', '1'], ['Papa en cubitos', '1'], ['Calabacita en cubitos', '1'], ['Chayote en cubitos', '1/2'], ['Ejotes en trozos cortos', '60 g'], ['Granos de elote', '1/2 taza'], ['Jitomates', '2'], ['Cebolla', '1/4']],
+      seas: '1 diente de ajo · 1 cucharada de aceite · 1 litro de caldo de pollo o de verduras · 1 rama de cilantro · Sal · Pimienta',
+      steps: [
+        'Licúa los jitomates, la cebolla y el ajo. Fríe el licuado en el aceite 5 minutos, hasta que se oscurezca.',
+        'Agrega el caldo, la zanahoria y la papa y cocina 10 minutos.',
+        'Añade los ejotes, el chayote y el elote y cocina 6 minutos.',
+        'Agrega la calabacita y el cilantro y cocina 5 minutos más, hasta que todas las verduras estén suaves. Sazona.'
+      ],
+      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan proteína y un sabor lechoso', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
+    },
+    'mx_mole_olla': {
+      name: 'Mole de olla',
+      ings: [['Chambarete de res con hueso, en trozos', '600 g'], ['Chiles guajillo secos', '3'], ['Chile ancho seco', '1'], ['Elote en trozos', '1'], ['Papa en trozos', '1'], ['Chayote en gajos', '1'], ['Ejotes', '80 g'], ['Calabacita en trozos', '1']],
+      seas: '1/2 cebolla · 3 dientes de ajo · 1 rama de epazote · Sal · 2.5 litros de agua · Limón y cebolla picada para servir',
+      steps: [
+        'Cuece el chambarete en el agua con la cebolla, 2 dientes de ajo y sal durante 1 hora 30 minutos, quitando la espuma al principio, hasta que esté suave.',
+        'Quita las semillas a los chiles, ásalos 20 segundos por lado en un comal y remójalos en agua caliente 15 minutos. Licúalos con el último diente de ajo y una taza de caldo y cuela sobre la olla.',
+        'Agrega el elote y la papa y cocina 15 minutos.',
+        'Añade el chayote, los ejotes, la calabacita y el epazote y cocina 10 minutos más, hasta que estén suaves. Sazona.',
+        'Sirve con limón, cebolla picada y tortillas.'
+      ],
+      tip: { add: 'Un xoconostle pelado junto con el elote', why: 'El toque ácido tradicional', skill: 'Asa los chiles muy poco', how: 'Solo hasta que huelan; los chiles quemados amargan el caldo.' }
+    },
+    'mx_crema_calabacita': {
+      name: 'Crema de calabacita',
+      ings: [['Calabacitas mexicanas o calabacines', '3'], ['Cebolla', '1/4'], ['Papa chica', '1'], ['Crema', '3 cucharadas'], ['Queso fresco para servir', '50 g']],
+      seas: '1 cucharada de mantequilla · 1 diente de ajo · 600 ml de caldo de pollo · 200 ml de leche · Sal · Pimienta · Una pizca de nuez moscada (opcional)',
+      steps: [
+        'Sofríe la cebolla y el ajo picados en la mantequilla a fuego medio-bajo 3 minutos.',
+        'Agrega la calabacita y la papa en trozos y cocina 3 minutos, moviendo.',
+        'Añade el caldo y cocina 12 minutos, hasta que las verduras estén suaves.',
+        'Licúa con la leche hasta que quede terso, regresa a la olla y calienta 3 minutos. Incorpora la crema y sazona.',
+        'Sirve con queso desmoronado.'
+      ],
+      tip: { add: 'Cubitos de pan tostado', why: 'Un contraste crujiente', skill: 'No cocines de más la calabacita', how: 'Apaga en cuanto esté suave para que la crema quede verde brillante.' }
+    },
+    'mx_sopa_habas': {
+      name: 'Sopa de habas',
+      ings: [['Habas secas peladas (amarillas)', '250 g'], ['Jitomates', '2'], ['Cebolla', '1/2'], ['Nopales en cubitos', '2'], ['Cilantro', '2 ramas'], ['Chile pasilla frito para servir', '1']],
+      seas: '2 dientes de ajo · 1 cucharada de aceite · Sal · 1.5 litros de agua · 1/2 cucharadita de comino molido (opcional)',
+      steps: [
+        'La noche anterior, enjuaga las habas y remójalas en bastante agua.',
+        'Escúrrelas y ponlas en una olla con agua limpia y un trozo de cebolla. Hierve 10 minutos, luego tapa y cocina a fuego bajo de 1 hora a 1 hora 15 minutos, hasta que se deshagan.',
+        'Licúa los jitomates, el resto de la cebolla y el ajo. Fríe en el aceite 5 minutos y agrégalo a las habas.',
+        'Añade los nopales, el cilantro y el comino y cocina 15 minutos, hasta que los nopales cambien a verde olivo y la sopa espese. Agrega agua si hace falta y sazona.',
+        'Sirve con pasilla frito desmoronado y un chorrito de aceite.'
+      ],
+      tip: { add: 'Limón y cebolla picada', why: 'Alegran el sabor terroso de las habas', skill: 'Compra habas peladas', how: 'Las habas amarillas ya peladas se cuecen más rápido y no tienen pellejo que quitar.' }
+    },
+    'mx_caldo_huevo': {
+      name: 'Caldo de huevo',
+      ings: [['Huevos', '4'], ['Jitomates', '3'], ['Cebolla', '1/4'], ['Chile serrano', '1'], ['Papa en cubitos', '1'], ['Cilantro', '2 ramas']],
+      seas: '1 diente de ajo · 1 cucharada de aceite · 750 ml de agua o caldo de pollo · Sal · 1 rama de epazote (opcional)',
+      steps: [
+        'Licúa los jitomates, la cebolla y el ajo. Fríe en el aceite con el serrano entero 5 minutos.',
+        'Agrega el agua y la papa y cocina 10 minutos, hasta que esté suave. Sazona.',
+        'Rompe los huevos uno por uno en una taza y deslízalos en el caldo con hervor suave. Tapa y cocina de 6 a 8 minutos, hasta que las claras estén firmes y las yemas cuajadas.',
+        'Agrega el cilantro y el epazote, sirve los huevos con el caldo y acompaña con tortillas.'
+      ],
+      tip: { add: 'Nopales cocidos en el caldo', why: 'Una comida de vigilia muy común', skill: 'Mantén un hervor suave', how: 'Un hervor fuerte rompe los huevos antes de que cuajen.' }
+    },
+    'mx_sopa_champinones': {
+      name: 'Sopa de champiñones',
+      ings: [['Champiñones rebanados', '300 g'], ['Jitomates', '2'], ['Cebolla', '1/4'], ['Chile serrano picado', '1'], ['Epazote', '1 rama']],
+      seas: '2 dientes de ajo · 1 cucharada de mantequilla o aceite · 1 litro de caldo de pollo · Sal · Pimienta · Limón para servir',
+      steps: [
+        'Sofríe la cebolla y el ajo picados 3 minutos. Agrega los champiñones y el serrano y cocina a fuego medio-alto de 6 a 8 minutos, hasta que se seque su jugo y se doren un poco.',
+        'Licúa los jitomates, cuélalos sobre la olla y fríe 4 minutos.',
+        'Añade el caldo y el epazote y cocina 10 minutos. Sazona.',
+        'Sirve caliente con limón y tortillas.'
+      ],
+      tip: { add: 'Cubos de queso panela', why: 'Se suavizan en el caldo caliente', skill: 'Dora bien los champiñones', how: 'No llenes de más la olla; dorados saben a carne, cocidos al vapor saben planos.' }
     }
   }
 });

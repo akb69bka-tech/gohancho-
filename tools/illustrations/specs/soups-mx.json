@@ -1,0 +1,22 @@
+{
+  "mx_pozole_rojo": { "vessel": "clay", "broth": "#b5361f", "body": "chunky", "oil": true, "top": [["pork",4],["corn",4],["cabbage",2],["lime",1]], "garnish": "none" },
+  "mx_pozole_verde": { "vessel": "clay", "broth": "#7f9a3a", "body": "chunky", "top": [["chicken",4],["corn",4],["lime",1]], "garnish": "cilantro" },
+  "mx_sopa_tortilla": { "vessel": "bowl", "broth": "#b8461f", "body": "clear", "oil": true, "swirl": "#f3ece0", "top": [["tortilla",4],["avocado",3],["cheese",2],["chili",1]], "garnish": "none" },
+  "mx_sopa_frijol": { "vessel": "clay", "broth": "#3a2620", "body": "cream", "swirl": "#f3ece0", "top": [["tortilla",3],["cheese",2]], "garnish": "cilantro" },
+  "mx_lentejas": { "vessel": "bowl", "broth": "#8a4f2a", "body": "chunky", "top": [["lentils",6],["carrot",3],["plantain",2]], "garnish": "cilantro" },
+  "mx_albondigas": { "vessel": "deep", "broth": "#c4552c", "body": "chunky", "oil": true, "top": [["meatball",4],["carrot",3],["zucchini",2]], "garnish": "herbs" },
+  "mx_caldo_res": { "vessel": "deep", "broth": "#c99a55", "body": "chunky", "top": [["beefChunk",3],["corn",2],["carrot",2],["potato",2],["cabbage",1],["zucchini",1]], "garnish": "cilantro" },
+  "mx_tlalpeno": { "vessel": "bowl", "broth": "#b9562c", "body": "chunky", "oil": true, "top": [["chicken",3],["chickpeas",4],["carrot",2],["avocado",2]], "garnish": "none" },
+  "mx_caldo_pescado": { "vessel": "deep", "broth": "#c4552c", "body": "chunky", "oil": true, "top": [["fish",3],["carrot",2],["potato",2],["lime",1]], "garnish": "cilantro" },
+  "mx_caldo_camaron": { "vessel": "bowl", "broth": "#c2401f", "body": "chunky", "oil": true, "top": [["shrimp",5],["potato",2],["carrot",2],["lime",1]], "garnish": "cilantro" },
+  "mx_crema_elote": { "vessel": "deep", "broth": "#efd27a", "body": "cream", "swirl": "#fbf6ea", "top": [["corn",4],["pepper",2],["cheese",1]], "garnish": "none" },
+  "mx_crema_poblano": { "vessel": "deep", "broth": "#8fa45a", "body": "cream", "swirl": "#fbf6ea", "top": [["pepper",3],["corn",3],["cheese",2]], "garnish": "none" },
+  "mx_sopa_flor": { "vessel": "bowl", "broth": "#d9a43a", "body": "chunky", "top": [["greens",3],["zucchini",3],["corn",3],["cheese",1]], "garnish": "herbs" },
+  "mx_menudo": { "vessel": "pot", "broth": "#a8321c", "body": "chunky", "oil": true, "top": [["tripe",5],["corn",3],["onion",2],["lime",1]], "garnish": "none" },
+  "mx_sopa_verduras": { "vessel": "bowl", "broth": "#d0723a", "body": "chunky", "top": [["carrot",3],["potato",2],["zucchini",2],["beans",2],["corn",2]], "garnish": "cilantro" },
+  "mx_mole_olla": { "vessel": "clay", "broth": "#9a2e1a", "body": "chunky", "oil": true, "top": [["beefChunk",3],["corn",2],["zucchini",2],["beans",2],["potato",1]], "garnish": "none" },
+  "mx_crema_calabacita": { "vessel": "deep", "broth": "#b8c77a", "body": "cream", "swirl": "#fbf6ea", "top": [["cheese",2],["croutons",3]], "garnish": "pepper" },
+  "mx_sopa_habas": { "vessel": "clay", "broth": "#c9a052", "body": "cream", "oil": true, "top": [["whitebeans",4],["greens",2],["chili",2]], "garnish": "cilantro" },
+  "mx_caldo_huevo": { "vessel": "deep", "broth": "#c8502a", "body": "clear", "top": [["poached",2],["potato",3],["chili",1]], "garnish": "cilantro" },
+  "mx_sopa_champinones": { "vessel": "bowl", "broth": "#a85a32", "body": "chunky", "top": [["mushroom",6],["chili",2]], "garnish": "herbs" }
+}
