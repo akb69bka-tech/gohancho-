@@ -8058,6 +8058,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "pe_pollo_horno": {
+      "file": "pe_pollo_horno.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_arroz_chaufa": {
+      "file": "pe_arroz_chaufa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_tallarin_saltado": {
+      "file": "pe_tallarin_saltado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_tallarines_rojos": {
+      "file": "pe_tallarines_rojos.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_estofado": {
+      "file": "pe_estofado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_bistec_apanado": {
+      "file": "pe_bistec_apanado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_arroz_tapado": {
+      "file": "pe_arroz_tapado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_papa_rellena": {
+      "file": "pe_papa_rellena.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_carapulcra": {
+      "file": "pe_carapulcra.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_adobo": {
+      "file": "pe_adobo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_ceviche": {
+      "file": "pe_ceviche.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_chicharron_pescado": {
+      "file": "pe_chicharron_pescado.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_escabeche": {
+      "file": "pe_escabeche.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_arroz_mariscos": {
+      "file": "pe_arroz_mariscos.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_tortilla_verduras": {
+      "file": "pe_tortilla_verduras.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_arroz_cubana": {
+      "file": "pe_arroz_cubana.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_tacu_tacu": {
+      "file": "pe_tacu_tacu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_pallares": {
+      "file": "pe_pallares.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_locro": {
+      "file": "pe_locro.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_olluquito": {
+      "file": "pe_olluquito.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_solterito": {
+      "file": "pe_solterito.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_ocopa": {
+      "file": "pe_ocopa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_palta_rellena": {
+      "file": "pe_palta_rellena.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_choros_chalaca": {
+      "file": "pe_choros_chalaca.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_ensalada_quinua": {
+      "file": "pe_ensalada_quinua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_ensalada_pallares": {
+      "file": "pe_ensalada_pallares.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_crema_rocoto": {
+      "file": "pe_crema_rocoto.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_encurtido": {
+      "file": "pe_encurtido.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_saltado_vainitas": {
+      "file": "pe_saltado_vainitas.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_verduras_chifa": {
+      "file": "pe_verduras_chifa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_cancha": {
+      "file": "pe_cancha.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_frejoles": {
+      "file": "pe_frejoles.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_pepian_choclo": {
+      "file": "pe_pepian_choclo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_pure_papa": {
+      "file": "pe_pure_papa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_arroz_arabe": {
+      "file": "pe_arroz_arabe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_yuca_frita": {
+      "file": "pe_yuca_frita.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_camote_frito": {
+      "file": "pe_camote_frito.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_torrejas_choclo": {
+      "file": "pe_torrejas_choclo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_pastel_acelga": {
+      "file": "pe_pastel_acelga.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "pe_pastel_papa": {
+      "file": "pe_pastel_papa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }

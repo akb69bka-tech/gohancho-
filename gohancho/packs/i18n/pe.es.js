@@ -61,7 +61,23 @@ GOHAN_PACK_TR('PE', 'es', {
     'parsley': 'Perejil',
     'fava': 'Habas',
     'bok choy': 'Col china (pak choi)',
-    'cornmeal': 'Harina de maíz'
+    'cornmeal': 'Harina de maíz',
+    'mushrooms': 'Hongos',
+    'breadcrumbs': 'Pan rallado',
+    'mince': 'Carne molida',
+    'raisins': 'Pasas',
+    'dried potato': 'Papa seca',
+    'green beans': 'Vainitas',
+    'lima beans': 'Pallares',
+    'olluco': 'Olluco',
+    'rocoto': 'Rocoto',
+    'cucumber': 'Pepino',
+    'broccoli': 'Brócoli',
+    'cancha': 'Maíz para cancha',
+    'butter': 'Mantequilla',
+    'almonds': 'Almendras',
+    'chard': 'Acelga',
+    'cauliflower': 'Coliflor'
   },
   recipes: {
     'pe_lomo_saltado': {
@@ -521,6 +537,490 @@ GOHAN_PACK_TR('PE', 'es', {
         'Incorpora la leche y el queso en cubos, agrega el huacatay y sazona con sal.'
       ],
       tip: { add: 'Más cubos de queso fresco', why: 'Se derriten en hebras suaves', skill: 'Remueve todo el tiempo', how: 'El choclo licuado espesa rápido y se quema fácil; mantén el fuego bajo y la cuchara en movimiento.' }
+    },
+    'pe_pollo_horno': {
+      name: 'Pollo al horno',
+      ings: [['Piernas o presas de pollo', '4 (unos 900 g)'], ['Papas', '4'], ['Limón', '1'], ['Camote', '1']],
+      seas: 'Sal · Pimienta negra · 4 dientes de ajo · 2 cucharadas de pasta de ají panca · 2 cucharadas de sillao · 1 cucharada de vinagre · 1 cucharadita de comino · 1 cucharadita de orégano seco · 2 cucharadas de aceite',
+      steps: [
+        'Mezcla el ajo molido, el ají panca, el sillao, el vinagre, el jugo de limón, el comino, el orégano, el aceite, sal y pimienta. Unta bien el pollo y déjalo macerar al menos 30 minutos (o toda la noche en la refrigeradora).',
+        'Calienta el horno a 200 °C. Corta las papas y el camote en gajos gruesos y mézclalos con un poco de la marinada.',
+        'Pon el pollo con la piel hacia arriba en una fuente, rodéalo con las papas y vierte encima el resto de la marinada.',
+        'Hornea de 50 a 60 minutos, bañándolo una o dos veces con sus jugos, hasta que la piel esté dorada y al pinchar la parte más gruesa salga jugo claro (sin partes rosadas junto al hueso).',
+        'Sirve con las papas, arroz blanco y una ensalada fresca o salsa criolla.'
+      ],
+      tip: { add: 'Un chorrito de cerveza negra en la fuente', why: 'Los jugos se vuelven una salsa brillante', skill: 'Macera con tiempo', how: 'Dejarlo toda la noche hace que el ají panca llegue a la carne y no solo a la piel.' }
+    },
+    'pe_arroz_chaufa': {
+      name: 'Arroz chaufa de pollo',
+      ings: [['Arroz blanco cocido (del día anterior)', '3 tazas'], ['Pechuga de pollo', '200 g'], ['Huevos', '2'], ['Cebolla china', '4 tallos'], ['Kion', '2 cm'], ['Pimiento rojo', '1/2']],
+      seas: 'Sal · 3 cucharadas de sillao · 1 cucharadita de aceite de ajonjolí · 1 diente de ajo · 3 cucharadas de aceite',
+      steps: [
+        'Corta el pollo en cubos pequeños y sazónalo con un poco de sillao. Pica fino el kion y el ajo, corta la cebolla china (separando la parte blanca de la verde) y el pimiento en cubitos.',
+        'Bate los huevos con una pizca de sal y haz una tortilla delgada con un poco de aceite; enróllala y córtala en tiras.',
+        'Calienta bien un wok, agrega el aceite y saltea el pollo de 4 a 5 minutos, hasta que esté bien cocido y sin partes rosadas. Añade el kion, el ajo, la parte blanca de la cebolla china y el pimiento por 1 minuto.',
+        'Agrega el arroz frío, deshaciendo los grumos, y saltea a fuego fuerte de 3 a 4 minutos. Vierte el sillao por el borde del wok y vuelve a saltear.',
+        'Incorpora las tiras de tortilla, la parte verde de la cebolla china y el aceite de ajonjolí, prueba la sal y sirve caliente.'
+      ],
+      tip: { add: 'Unas gotas de aceite de ajonjolí al final', why: 'Da el verdadero aroma del chifa', skill: 'Usa arroz frío', how: 'El arroz del día anterior está más seco y los granos quedan sueltos en vez de apelmazarse.' }
+    },
+    'pe_tallarin_saltado': {
+      name: 'Tallarín saltado de carne',
+      ings: [['Tallarín chino o spaghetti', '200 g'], ['Lomo o cuadril de res', '250 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Cebolla china', '2 tallos'], ['Pimiento', '1/2'], ['Ají amarillo fresco', '1']],
+      seas: 'Sal · Pimienta negra · 2 dientes de ajo · 3 cucharadas de sillao · 1 cucharada de salsa de ostión · 1 cucharada de vinagre · 2 cucharadas de aceite',
+      steps: [
+        'Cocina los fideos en agua con sal hasta que estén al dente, escúrrelos y mézclalos con unas gotas de aceite.',
+        'Corta la carne en tiras y sazónala con sal y pimienta. Corta la cebolla y los tomates en gajos, el pimiento y el ají en tiras y la cebolla china en trozos de 4 cm.',
+        'Sella la carne en un wok muy caliente con el aceite de 1 a 2 minutos, hasta que se dore; resérvala.',
+        'Saltea el ajo, la cebolla, el pimiento y el ají 1 minuto, agrega el tomate, el sillao, la salsa de ostión y el vinagre, y regresa la carne.',
+        'Añade los fideos y la cebolla china y saltea a fuego fuerte de 1 a 2 minutos, hasta que se impregnen y estén calientes. Sirve de inmediato.'
+      ],
+      tip: { add: 'Un puñado de frejolito chino con los fideos', why: 'Le da el crocante del chifa', skill: 'Fideos un poco duros', how: 'Terminan de cocinarse en el wok; hiérvelos un minuto menos de lo que dice el paquete.' }
+    },
+    'pe_tallarines_rojos': {
+      name: 'Tallarines rojos con pollo',
+      ings: [['Tallarín (spaghetti)', '200 g'], ['Piernas o muslos de pollo', '2 (400 g)'], ['Tomates maduros', '4'], ['Cebolla', '1'], ['Zanahoria', '1'], ['Hongos secos', '10 g'], ['Queso parmesano rallado', '2 cucharadas']],
+      seas: 'Sal · Pimienta negra · 3 dientes de ajo · 1 cucharada de pasta de ají panca · 1 hoja de laurel · 1/2 cucharadita de orégano seco · 2 cucharadas de aceite',
+      steps: [
+        'Remoja los hongos secos en 1/2 taza de agua tibia. Licúa los tomates hasta que quede un puré liso. Ralla la zanahoria y pica la cebolla fina.',
+        'Sazona el pollo con sal y pimienta y dóralo en el aceite de 6 a 8 minutos; resérvalo.',
+        'En la misma olla sofríe la cebolla, el ajo, el ají panca y la zanahoria 6 minutos; luego agrega el tomate, el laurel, el orégano y los hongos con su agua.',
+        'Regresa el pollo, tapa y cocina a fuego bajo 30 minutos, hasta que la salsa espese y el pollo esté bien cocido, sin partes rosadas junto al hueso.',
+        'Cocina el tallarín en agua con sal hasta que esté al dente, mézclalo con la salsa y sirve con el pollo y el parmesano encima.'
+      ],
+      tip: { add: 'Un chorrito de vino tinto en la salsa', why: 'Le da más sabor, como el almuerzo del domingo', skill: 'Deja reducir el tomate', how: 'La cocción lenta quita la acidez y deja la salsa dulce y espesa.' }
+    },
+    'pe_estofado': {
+      name: 'Estofado de pollo',
+      ings: [['Presas de pollo', '600 g'], ['Tomates maduros', '3'], ['Cebolla', '1'], ['Zanahorias', '2'], ['Papas amarillas', '3'], ['Arvejas', '1/2 taza']],
+      seas: 'Sal · Pimienta negra · 3 dientes de ajo · 1 cucharada de pasta de ají panca · 1 hoja de laurel · Una pizca de comino · 100 ml de vino tinto (opcional) · 2 cucharadas de aceite',
+      steps: [
+        'Sazona el pollo con sal, pimienta y comino y dóralo en el aceite de 6 a 8 minutos; resérvalo.',
+        'Sofríe la cebolla picada, el ajo y el ají panca 5 minutos; agrega los tomates licuados y el laurel y cocina 5 minutos.',
+        'Regresa el pollo, añade el vino y 300 ml de agua, tapa y cocina 15 minutos.',
+        'Agrega las zanahorias en rodajas y las papas en mitades y cocina de 15 a 20 minutos; añade las arvejas en los últimos 5 minutos. El pollo debe quedar bien cocido, sin partes rosadas junto al hueso.',
+        'Prueba la sal y sirve con arroz blanco.'
+      ],
+      tip: { add: 'Unas pasas o hongos secos', why: 'En las casas limeñas se agregan para una salsa dulce y profunda', skill: 'Deja que la papa espese', how: 'La papa amarilla se deshace un poco y vuelve la salsa cremosa sin harina.' }
+    },
+    'pe_bistec_apanado': {
+      name: 'Bistec apanado',
+      ings: [['Bistecs delgados de res', '4 (400 g)'], ['Huevo', '1'], ['Pan rallado', '1 taza'], ['Limón', '1']],
+      seas: 'Sal · Pimienta negra · 1 diente de ajo · 1/2 cucharadita de comino · 2 cucharadas de harina · Aceite para freír',
+      steps: [
+        'Golpea los bistecs entre dos plásticos para dejarlos delgados y sazónalos con sal, pimienta, ajo molido y comino.',
+        'Pasa cada bistec por harina, luego por el huevo batido y apánalo bien con pan rallado por ambos lados.',
+        'Fríe en 1 cm de aceite caliente de 2 a 3 minutos por lado, hasta que esté dorado y crocante; escúrrelo sobre papel absorbente.',
+        'Sirve con gajos de limón, arroz blanco y ensalada, o con tallarines verdes o papas fritas.'
+      ],
+      tip: { add: 'Queso parmesano rallado mezclado con el pan rallado', why: 'Una costra más crocante y sabrosa', skill: 'Golpea parejo', how: 'Un bistec delgado y parejo se cocina en el mismo tiempo que tarda en dorarse el apanado.' }
+    },
+    'pe_arroz_tapado': {
+      name: 'Arroz tapado',
+      ings: [['Arroz blanco cocido', '3 tazas'], ['Carne molida de res', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Huevo', '1'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
+      seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1 cucharada de aceite',
+      steps: [
+        'Sancocha el huevo 10 minutos, enfríalo y pícalo.',
+        'Sofríe la cebolla picada, el ajo, el ají panca y el comino en el aceite 5 minutos; agrega la carne molida y cocina 8 minutos, desmenuzándola, hasta que no quede nada rosado.',
+        'Añade el tomate picado y las pasas y cocina 5 minutos hasta que esté casi seco; incorpora el huevo y las aceitunas y sazona.',
+        'Unta con aceite un tazón o una taza, presiona una capa de arroz caliente, rellena con el picadillo, cubre con más arroz y aprieta.',
+        'Voltea sobre un plato y sirve con huevo frito, plátano frito o salsa criolla.'
+      ],
+      tip: { add: 'Un huevo frito encima', why: 'La yema blanda hace de salsa', skill: 'Picadillo sequito', how: 'Si el relleno tiene mucho jugo, el arroz se desarma al voltearlo.' }
+    },
+    'pe_papa_rellena': {
+      name: 'Papa rellena',
+      ings: [['Papas blancas', '4 (800 g)'], ['Carne molida de res', '200 g'], ['Cebolla', '1'], ['Huevos', '2'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
+      seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 4 cucharadas de harina · Aceite para freír',
+      steps: [
+        'Sancocha las papas con cáscara de 20 a 25 minutos hasta que estén suaves, pélalas en caliente y aplástalas hasta obtener un puré liso con sal. Sancocha un huevo 10 minutos y pícalo.',
+        'Sofríe la cebolla, el ajo, el ají panca y el comino 5 minutos; agrega la carne y cocina de 8 a 10 minutos, hasta que no quede nada rosado y esté casi seca. Incorpora las pasas, las aceitunas y el huevo picado.',
+        'Con las manos enharinadas, aplana una porción de puré en la palma, pon 2 cucharadas de relleno al centro y ciérrala dándole forma de papa. Haz de 4 a 6.',
+        'Pasa cada una por el otro huevo batido y luego por harina.',
+        'Fríe en aceite caliente de 3 a 4 minutos, volteando, hasta que estén doradas por todos lados. Sirve con salsa criolla.'
+      ],
+      tip: { add: 'Salsa criolla y un poco de crema de rocoto', why: 'La acidez fresca equilibra la fritura', skill: 'Deja entibiar el puré', how: 'El puré tibio mantiene la forma; si está muy caliente se raja en el aceite.' }
+    },
+    'pe_carapulcra': {
+      name: 'Carapulcra',
+      ings: [['Papa seca', '200 g'], ['Carne de cerdo (paleta)', '400 g'], ['Maní tostado', '1/4 de taza'], ['Cebolla', '1'], ['Yuca, para acompañar', '300 g']],
+      seas: 'Sal · 3 dientes de ajo · 2 cucharadas de pasta de ají panca · 1 cucharada de pasta de ají amarillo · 1/2 cucharadita de comino · 2 clavos de olor · 1 cuadradito de chocolate bitter (opcional) · 1 litro de agua o caldo · 2 cucharadas de aceite',
+      steps: [
+        'Tuesta la papa seca en una sartén sin aceite 5 minutos, moviendo, hasta que huela a tostado; luego remójala en agua 30 minutos y escúrrela.',
+        'Corta el cerdo en cubos, sazónalo con sal y dóralo en el aceite 8 minutos; resérvalo.',
+        'Sofríe la cebolla picada, el ajo, las dos pastas de ají, el comino y el clavo 6 minutos. Regresa el cerdo, agrega la papa seca y el agua y lleva a hervor.',
+        'Cocina a fuego bajo de 45 a 50 minutos, moviendo seguido para que no se pegue y agregando agua caliente si espesa demasiado, hasta que la papa seca esté suave y el cerdo tierno y bien cocido.',
+        'Incorpora el maní molido y el chocolate en los últimos 5 minutos. Sirve con arroz y yuca sancochada.'
+      ],
+      tip: { add: 'Una porción de sopa seca al lado', why: 'Es la combinación famosa de Chincha', skill: 'Tuesta la papa seca', how: 'Tostarla antes le da al guiso su sabor ahumado y a nuez.' }
+    },
+    'pe_adobo': {
+      name: 'Adobo de cerdo',
+      ings: [['Carne de cerdo (paleta o lomo) en trozos grandes', '500 g'], ['Cebolla roja', '1'], ['Chicha de jora (o cerveza negra)', '300 ml'], ['Camote, para acompañar', '1']],
+      seas: 'Sal · Pimienta negra · 4 dientes de ajo · 3 cucharadas de pasta de ají panca · 1 cucharadita de comino · 1 cucharadita de orégano seco · 1 hoja de laurel · 1 cucharada de vinagre · 1 cucharada de aceite',
+      steps: [
+        'Mezcla el ajo molido, el ají panca, el comino, el orégano, el vinagre, la chicha, sal y pimienta. Agrega el cerdo y la cebolla en gajos gruesos y deja macerar en la refrigeradora al menos 4 horas o toda la noche.',
+        'Pon todo en una olla gruesa con el aceite y el laurel, lleva a hervor, tapa y cocina a fuego bajo 1 hora 30 minutos, moviendo de vez en cuando.',
+        'Cuando el cerdo esté muy suave y bien cocido y la salsa espesa y roja, prueba la sal. Si se seca, agrega un poco de agua.',
+        'Sirve con camote sancochado o asado y pan o arroz.'
+      ],
+      tip: { add: 'Un pan crocante para mojar', why: 'En Arequipa el adobo se come con pan', skill: 'Macera toda la noche', how: 'La chicha ablanda el cerdo y el ají panca lo colorea hasta el centro.' }
+    },
+    'pe_ceviche': {
+      name: 'Ceviche de pescado',
+      ings: [['Pescado blanco muy fresco (lenguado, corvina)', '400 g'], ['Limones', '10 a 12'], ['Cebolla roja', '1'], ['Ají limo o ají amarillo', '1'], ['Culantro', '1 puñadito'], ['Camote, para acompañar', '1'], ['Choclo, para acompañar', '1 mazorca']],
+      seas: 'Sal · 1 dientecito de ajo (opcional) · Unos cubos de hielo',
+      steps: [
+        'Sancocha el camote 25 minutos y el choclo 15 minutos; córtalos y resérvalos.',
+        'Corta la cebolla en pluma fina y enjuágala en agua fría. Quita las semillas al ají y pícalo fino; pica el culantro.',
+        'Corta el pescado en cubos de 2 cm, ponlo en un bol de vidrio frío y sazónalo con sal, el ajo machacado y el ají.',
+        'Exprime los limones suavemente (sin apretar la cáscara amarga) directo sobre el pescado, agrega el hielo y mezcla de 2 a 3 minutos, hasta que el pescado se ponga blanco por fuera.',
+        'Retira el hielo, añade la cebolla y el culantro, prueba la sal y sirve de inmediato con el camote y el choclo.'
+      ],
+      tip: { add: 'Un puñado de cancha al lado', why: 'Lo crocante contrasta con el pescado suave', skill: 'Pescado fresquísimo y al momento', how: 'Usa pescado apto para comer crudo y mantenlo frío; el limón lo sazona, pero no lo cocina como el fuego.' }
+    },
+    'pe_chicharron_pescado': {
+      name: 'Chicharrón de pescado',
+      ings: [['Filetes de pescado blanco firme', '400 g'], ['Limón', '1'], ['Yuca, para acompañar', '300 g'], ['Cebolla roja, para la salsa criolla', '1']],
+      seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1/2 cucharadita de comino · 4 cucharadas de harina · 2 cucharadas de chuño o maicena · Aceite para freír',
+      steps: [
+        'Corta el pescado en trozos de 3 cm y sazónalo con sal, pimienta, ajo molido, comino y un poco de jugo de limón por 10 minutos.',
+        'Mezcla la harina con el chuño y pasa bien los trozos, sacudiendo el exceso.',
+        'Fríe en aceite caliente (180 °C) en tandas pequeñas de 3 a 4 minutos, hasta que estén crocantes y dorados y el pescado esté blanco por dentro; escúrrelos sobre papel absorbente.',
+        'Sirve con yuca sancochada o frita, gajos de limón y salsa criolla.'
+      ],
+      tip: { add: 'Salsa tártara o crema de rocoto para mojar', why: 'Las cremas de siempre en la mesa peruana', skill: 'Fríe en tandas pequeñas', how: 'Si pones muchos trozos a la vez, el aceite se enfría y el apanado queda blando.' }
+    },
+    'pe_escabeche': {
+      name: 'Escabeche de pescado',
+      ings: [['Filetes de pescado firme (bonito o jurel)', '400 g'], ['Cebollas rojas', '2'], ['Ají amarillo fresco', '2'], ['Huevos', '2'], ['Aceitunas de botija', '4'], ['Camote', '1']],
+      seas: 'Sal · Pimienta negra · 3 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1/2 cucharadita de orégano seco · 4 cucharadas de vinagre tinto · 3 cucharadas de harina · Aceite para freír',
+      steps: [
+        'Sancocha los huevos 10 minutos y el camote 25 minutos; pélalos y córtalos en rodajas.',
+        'Sazona el pescado con sal, pimienta y comino, pásalo por harina y fríelo en 1 cm de aceite de 3 a 4 minutos por lado, hasta que esté dorado y blanco por dentro. Resérvalo caliente.',
+        'Corta las cebollas en tiras gruesas y el ají en tiras. En 2 cucharadas de aceite, sofríe el ajo y el ají panca 1 minuto; agrega la cebolla y el ají y cocina de 2 a 3 minutos para que queden crocantes.',
+        'Vierte el vinagre, agrega el orégano y la sal, y deja hervir 1 minuto.',
+        'Cubre el pescado con las cebollas y decora con el huevo, las aceitunas y el camote. Sirve tibio o a temperatura ambiente.'
+      ],
+      tip: { add: 'Una hoja de lechuga debajo del pescado', why: 'Fresco y como se sirve tradicionalmente', skill: 'Cebolla crocante', how: 'Solo unos minutos en la sartén; debe quedar ácida y crujiente, no blanda.' }
+    },
+    'pe_arroz_mariscos': {
+      name: 'Arroz con mariscos',
+      ings: [['Arroz', '1 taza (200 g)'], ['Langostinos pelados', '200 g'], ['Calamar en aros', '150 g'], ['Choros limpios', '8'], ['Cebolla', '1'], ['Pimiento rojo', '1/2'], ['Arvejas', '1/2 taza'], ['Queso parmesano rallado', '2 cucharadas'], ['Culantro', '1 puñado']],
+      seas: 'Sal · 3 dientes de ajo · 1 cucharada de pasta de ají panca · 1 cucharada de pasta de ají amarillo · 1/2 cucharadita de comino · 50 ml de vino blanco · 500 ml de caldo de pescado o agua · 2 cucharadas de aceite',
+      steps: [
+        'Sofríe la cebolla picada, el ajo, las dos pastas de ají y el comino en el aceite 5 minutos; luego agrega el pimiento en cubitos por 2 minutos.',
+        'Añade el calamar y el vino y cocina 2 minutos; luego agrega el arroz y mezcla para que se impregne.',
+        'Vierte el caldo caliente, sazona con sal, tapa y cocina a fuego bajo 15 minutos.',
+        'Agrega los langostinos, los choros y las arvejas, vuelve a tapar y cocina de 5 a 7 minutos, hasta que los langostinos estén rosados, los choros se abran (descarta los que sigan cerrados) y el arroz esté suave y jugoso.',
+        'Incorpora el parmesano y el culantro y sirve con salsa criolla y limón.'
+      ],
+      tip: { add: 'Un chorrito de leche evaporada al final', why: 'Lo deja cremoso como en las cevicherías', skill: 'Mariscos al final', how: 'Los langostinos y el calamar se ponen como jebe si se cocinan tanto como el arroz.' }
+    },
+    'pe_tortilla_verduras': {
+      name: 'Tortilla de verduras',
+      ings: [['Huevos', '4'], ['Vainitas', '80 g'], ['Zanahoria', '1'], ['Cebolla', '1/2'], ['Tomate', '1'], ['Perejil', '1 puñadito']],
+      seas: 'Sal · Pimienta negra · 1 cucharada de harina (opcional) · 2 cucharadas de aceite',
+      steps: [
+        'Corta la zanahoria en cubitos y las vainitas en trozos cortos; sancóchalas 4 minutos y escúrrelas.',
+        'Sofríe la cebolla picada en 1 cucharada de aceite 3 minutos, agrega el tomate en cubitos y cocina 2 minutos.',
+        'Bate los huevos con la harina, sal y pimienta y mezcla todas las verduras y el perejil.',
+        'Calienta el resto del aceite en una sartén, vierte la mezcla y cocina a fuego medio-bajo 5 minutos; voltéala con ayuda de un plato y cocina de 3 a 4 minutos más, hasta que cuaje en el centro.',
+        'Corta en porciones y sirve con arroz blanco y salsa criolla.'
+      ],
+      tip: { add: 'Unos cubitos de queso fresco', why: 'Se derriten y quedan suaves', skill: 'Cocina antes las verduras', how: 'La zanahoria cruda sigue dura cuando el huevo ya está listo.' }
+    },
+    'pe_arroz_cubana': {
+      name: 'Arroz a la cubana',
+      ings: [['Arroz blanco cocido', '2 tazas'], ['Huevos', '2'], ['Plátano de freír maduro', '1'], ['Tomate', '1']],
+      seas: 'Sal · 1 diente de ajo · Aceite para freír',
+      steps: [
+        'Calienta el arroz en una olla con un poco de aceite y el ajo molido por 2 minutos.',
+        'Pela el plátano, córtalo en tajadas largas en diagonal y fríelo en 1 cm de aceite de 2 a 3 minutos por lado, hasta que esté bien dorado.',
+        'Fríe los huevos en aceite caliente, echándoles aceite por encima, hasta que la clara cuaje y los bordes estén crocantes; cocina la yema dura si es para niños o para quien deba evitar el huevo blando.',
+        'Moldea el arroz en una taza y voltéalo en cada plato, coloca encima un huevo y acompaña con el plátano y el tomate en rodajas.'
+      ],
+      tip: { add: 'Una salchicha en rodajas frita con el plátano', why: 'La versión favorita de los niños', skill: 'Plátano bien maduro', how: 'Un plátano con manchas negras se carameliza y queda dulce.' }
+    },
+    'pe_tacu_tacu': {
+      name: 'Tacu tacu',
+      ings: [['Frejol canario cocido', '2 tazas'], ['Arroz blanco cocido', '2 tazas'], ['Cebolla', '1/2'], ['Pasta de ají amarillo', '1 cucharada'], ['Huevos, para acompañar', '2']],
+      seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 3 cucharadas de aceite',
+      steps: [
+        'Aplasta más o menos la mitad de los frejoles con un tenedor y deja el resto enteros.',
+        'Sofríe la cebolla picada, el ajo, la pasta de ají y el orégano en 1 cucharada de aceite 5 minutos, agrega los frejoles y el arroz y mezcla bien; sazona con sal.',
+        'Calienta el resto del aceite en una sartén antiadherente, agrega la mezcla y dale forma de óvalo grueso con una espátula.',
+        'Cocina 5 minutos sin moverlo hasta que se forme una costra dorada, voltéalo y dora el otro lado de 4 a 5 minutos.',
+        'Sirve con un huevo frito encima y salsa criolla.'
+      ],
+      tip: { add: 'Un bistec delgado o plátano frito al lado', why: 'Convierte lo que sobró en un banquete', skill: 'Usa frejoles y arroz de ayer', how: 'Las sobras frías se compactan mejor y forman una costra más crocante.' }
+    },
+    'pe_pallares': {
+      name: 'Pallares guisados',
+      ings: [['Pallares secos', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Pasta de ají amarillo', '1 cucharada'], ['Queso fresco', '60 g'], ['Leche evaporada', '50 ml']],
+      seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino · 1/2 cucharadita de orégano seco · 2 cucharadas de aceite',
+      steps: [
+        'Remoja los pallares toda la noche. Si quieres, pélalos (quedan más cremosos).',
+        'Cúbrelos con agua limpia y cocina de 45 a 60 minutos, hasta que estén muy suaves.',
+        'Sofríe la cebolla picada, el ajo, la pasta de ají, el comino y el orégano en el aceite 5 minutos; agrega el tomate picado y cocina 3 minutos.',
+        'Incorpora el aderezo a los pallares con un poco de su líquido y cocina 10 minutos, aplastando algunos para espesar. Añade la leche y el queso desmenuzado, sazona con sal y sirve con arroz.'
+      ],
+      tip: { add: 'Pescado frito o un huevo frito al lado', why: 'Así se completa siempre una menestra', skill: 'La sal, al final', how: 'Si se sala el agua de cocción, los pallares no se ablandan.' }
+    },
+    'pe_locro': {
+      name: 'Locro de zapallo',
+      ings: [['Zapallo macre', '600 g'], ['Papas blancas', '3'], ['Choclo', '1'], ['Arvejas', '1/2 taza'], ['Cebolla', '1'], ['Queso fresco', '100 g'], ['Leche evaporada', '100 ml'], ['Huacatay', 'unas ramitas']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharada de pasta de ají amarillo · 1/2 cucharadita de orégano seco · 2 cucharadas de aceite',
+      steps: [
+        'Sofríe la cebolla picada, el ajo, la pasta de ají y el orégano en el aceite 5 minutos.',
+        'Agrega el zapallo en trozos, las papas en cubos, el choclo en ruedas y 1 taza de agua. Tapa y cocina a fuego bajo 20 minutos, moviendo de vez en cuando.',
+        'Cuando el zapallo se esté deshaciendo, aplástalo un poco con la cuchara para que el locro quede espeso, dejando las papas en trozos. Agrega las arvejas y cocina 5 minutos.',
+        'Incorpora la leche, el queso en cubos y el huacatay; sazona con sal. Sirve con arroz blanco.'
+      ],
+      tip: { add: 'Un huevo frito encima', why: 'Un almuerzo sin carne, sencillo y completo', skill: 'Poca agua', how: 'El zapallo suelta su jugo; con mucha agua sale sopa y no locro.' }
+    },
+    'pe_olluquito': {
+      name: 'Olluquito con carne',
+      ings: [['Ollucos', '500 g'], ['Carne de res (o charqui)', '200 g'], ['Cebolla', '1'], ['Perejil', '1 puñado']],
+      seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1 cucharadita de pasta de ají amarillo · 1/2 cucharadita de comino · 1/2 cucharadita de orégano seco · 2 cucharadas de aceite',
+      steps: [
+        'Lava bien los ollucos y luego córtalos en tiras delgadas. No los vuelvas a lavar después de cortarlos.',
+        'Corta la carne en tiritas, sazónala con sal y pimienta y dórala en el aceite 5 minutos.',
+        'Agrega la cebolla picada, el ajo, las dos pastas de ají, el comino y el orégano y cocina 5 minutos.',
+        'Añade el olluco y la sal, mezcla, tapa y cocina a fuego bajo de 20 a 25 minutos sin agregar agua, moviendo con cuidado de vez en cuando, hasta que el olluco esté suave y la carne bien cocida.',
+        'Incorpora bastante perejil picado y sirve con arroz blanco.'
+      ],
+      tip: { add: 'Charqui en lugar de carne fresca', why: 'La versión tradicional, de sabor más intenso', skill: 'Sin agua', how: 'El olluco se cocina en su propio jugo; con agua se pone babosito.' }
+    },
+    'pe_solterito': {
+      name: 'Solterito',
+      ings: [['Habas verdes peladas', '1 taza'], ['Queso fresco', '100 g'], ['Granos de choclo sancochados', '1 taza'], ['Tomates', '2'], ['Cebolla roja', '1/2'], ['Aceitunas de botija', '6'], ['Rocoto', '1/2'], ['Perejil', '1 puñadito']],
+      seas: 'Sal · Pimienta negra · 3 cucharadas de aceite de oliva · 2 cucharadas de vinagre tinto',
+      steps: [
+        'Sancocha las habas de 4 a 5 minutos, enfríalas en agua fría y quítales la piel si la tienen.',
+        'Corta en cubitos el queso, los tomates y la cebolla; quita las semillas al rocoto y pícalo fino; parte las aceitunas por la mitad.',
+        'Mezcla todo con el choclo y el perejil, aliña con el aceite, el vinagre, sal y pimienta y sirve frío.'
+      ],
+      tip: { add: 'Una cucharada de pallares cocidos', why: 'En algunas casas arequipeñas lo agregan para darle cuerpo', skill: 'Aliña al momento', how: 'El tomate suelta agua y la ensalada se aguada si espera.' }
+    },
+    'pe_ocopa': {
+      name: 'Ocopa arequipeña',
+      ings: [['Papas amarillas o blancas', '4'], ['Hojas de huacatay', '1 puñado'], ['Maní tostado', '1/3 de taza'], ['Ají mirasol o amarillo fresco', '2'], ['Cebolla', '1/2'], ['Queso fresco', '100 g'], ['Leche evaporada', '150 ml'], ['Galletas de soda', '4'], ['Huevo', '1'], ['Aceitunas', '2']],
+      seas: 'Sal · 2 dientes de ajo · 3 cucharadas de aceite',
+      steps: [
+        'Sancocha las papas 20 minutos y el huevo 10 minutos; pélalos y deja enfriar.',
+        'Quita las semillas al ají y córtalo en trozos con la cebolla y el ajo; dóralos en el aceite a fuego medio-bajo de 6 a 8 minutos, hasta que estén suaves y ligeramente tostados.',
+        'Licúa con el huacatay, el maní, el queso, la leche y las galletas hasta obtener una crema espesa y lisa; sazona con sal.',
+        'Corta las papas en rodajas, cúbrelas con la crema y decora con huevo y aceitunas.'
+      ],
+      tip: { add: 'Más huacatay si la crema está pálida', why: 'Le da el color verde y el aroma silvestre', skill: 'Dora el ají y la cebolla', how: 'Tostarlos antes le da a la salsa su sabor profundo y ahumado.' }
+    },
+    'pe_palta_rellena': {
+      name: 'Palta rellena',
+      ings: [['Paltas maduras', '2'], ['Pechuga de pollo', '200 g'], ['Zanahoria', '1'], ['Arvejas', '1/2 taza'], ['Mayonesa', '3 cucharadas'], ['Limón', '1/2'], ['Hojas de lechuga', '4']],
+      seas: 'Sal · Pimienta negra',
+      steps: [
+        'Cocina el pollo en agua con sal de 15 a 20 minutos, hasta que esté bien cocido y sin partes rosadas; enfríalo y deshiláchalo fino.',
+        'Sancocha la zanahoria en cubitos y las arvejas 5 minutos; escúrrelas y enfríalas.',
+        'Mezcla el pollo, las verduras y la mayonesa; sazona con sal y pimienta.',
+        'Parte las paltas por la mitad, quítales la pepa y la cáscara, úntalas con limón y rellénalas con la ensalada. Sirve sobre lechuga.'
+      ],
+      tip: { add: 'Atún en lata en vez de pollo', why: 'Una versión rápida para entre semana', skill: 'Limón sobre la palta', how: 'Evita que la superficie cortada se ponga negra.' }
+    },
+    'pe_choros_chalaca': {
+      name: 'Choros a la chalaca',
+      ings: [['Choros limpios', '12'], ['Cebolla roja', '1/2'], ['Tomate', '1'], ['Granos de choclo sancochados', '1/2 taza'], ['Rocoto o ají limo', '1/2'], ['Limones', '3'], ['Culantro', '1 puñadito']],
+      seas: 'Sal · 1 cucharadita de aceite',
+      steps: [
+        'Pon los choros en una olla con 1/2 taza de agua, tapa y cocina al vapor de 4 a 5 minutos, hasta que se abran. Descarta los que sigan cerrados. Déjalos enfriar.',
+        'Retira la concha de arriba y despega el choro de la concha de abajo.',
+        'Pica fino la cebolla, el tomate y el rocoto y mézclalos con el choclo, el culantro picado, el jugo de limón, la sal y el aceite.',
+        'Cubre cada choro con la sarsa y sirve frío de inmediato.'
+      ],
+      tip: { add: 'Un poquito del jugo de cocción de los choros en la sarsa', why: 'Le da sabor a mar', skill: 'Pica todo muy fino', how: 'Así cada concha lleva un poco de todo.' }
+    },
+    'pe_ensalada_quinua': {
+      name: 'Ensalada de quinua',
+      ings: [['Quinua', '1/2 taza (90 g)'], ['Tomate', '1'], ['Pepino', '1/2'], ['Cebolla roja', '1/4'], ['Queso fresco', '80 g'], ['Limón', '1'], ['Perejil o culantro', '1 puñadito']],
+      seas: 'Sal · Pimienta negra · 2 cucharadas de aceite de oliva',
+      steps: [
+        'Lava bien la quinua bajo el chorro de agua, frotándola, para quitarle el amargor.',
+        'Cocínala en 1 taza de agua 15 minutos, hasta que los granos revienten; escúrrela y extiéndela para que se enfríe.',
+        'Corta en cubitos el tomate, el pepino, la cebolla y el queso y mézclalos con la quinua y las hierbas picadas.',
+        'Aliña con jugo de limón, aceite de oliva, sal y pimienta.'
+      ],
+      tip: { add: 'Unos cubos de palta', why: 'Cremosa y llena más', skill: 'Enfría bien la quinua', how: 'La quinua tibia marchita las verduras y derrite el queso.' }
+    },
+    'pe_ensalada_pallares': {
+      name: 'Ensalada de pallares',
+      ings: [['Pallares cocidos', '2 tazas'], ['Cebolla roja', '1/2'], ['Tomate', '1'], ['Ají amarillo o limo fresco', '1/2'], ['Culantro', '1 puñadito'], ['Limones', '2']],
+      seas: 'Sal · Pimienta negra · 2 cucharadas de aceite',
+      steps: [
+        'Si usas pallares secos, remójalos toda la noche y sancóchalos de 40 a 50 minutos, hasta que estén suaves pero enteros; escúrrelos y enfríalos.',
+        'Corta la cebolla en pluma fina y enjuágala; corta el tomate en cubitos y pica el ají sin semillas y el culantro.',
+        'Mezcla todo con los pallares, el jugo de limón, el aceite, sal y pimienta y deja reposar 5 minutos antes de servir.'
+      ],
+      tip: { add: 'Cubos de queso fresco', why: 'La convierten en un almuerzo ligero', skill: 'No cocines de más', how: 'Para ensalada deben mantener la forma; apágalos apenas estén suaves.' }
+    },
+    'pe_crema_rocoto': {
+      name: 'Crema de rocoto',
+      ings: [['Rocotos', '2'], ['Queso fresco', '60 g'], ['Leche evaporada', '60 ml'], ['Galletas de soda', '2'], ['Hojas de huacatay', 'unas hojas']],
+      seas: 'Sal · 1 dientecito de ajo · 2 cucharadas de aceite · 1 cucharadita de jugo de limón',
+      steps: [
+        'Con guantes, abre los rocotos y quítales todas las semillas y venas blancas.',
+        'Blanquéalos en agua hirviendo 2 minutos, escúrrelos y repite 2 veces más con agua nueva para bajarles el picante.',
+        'Licúa con el queso, la leche, las galletas, el huacatay, el ajo, el aceite, el limón y la sal hasta que quede espesa y lisa.',
+        'Sirve en un platito con papas sancochadas, pescado frito, papa rellena o cualquier fritura. Dura 3 días en la refrigeradora.'
+      ],
+      tip: { add: 'Una galleta más si queda muy líquida', why: 'La espesa para que se pegue a la comida', skill: 'Blanquea tres veces', how: 'Cada cambio de agua le quita picante y conserva su sabor afrutado.' }
+    },
+    'pe_encurtido': {
+      name: 'Encurtido de verduras',
+      ings: [['Zanahorias', '2'], ['Coliflor', '1/4'], ['Vainitas', '100 g'], ['Cebolla roja', '1'], ['Ají amarillo fresco o rocoto', '1']],
+      seas: '250 ml de vinagre blanco · 150 ml de agua · 1 cucharada de azúcar · 1 cucharadita de sal · 1 hoja de laurel · 1/2 cucharadita de orégano seco · 4 pimientas enteras · 1 diente de ajo',
+      steps: [
+        'Corta las zanahorias en bastones, la coliflor en arbolitos pequeños, las vainitas en trozos y la cebolla en gajos gruesos; corta el ají en tiras.',
+        'Blanquea la zanahoria, la coliflor y las vainitas en agua hirviendo 2 minutos y escúrrelas.',
+        'Hierve el vinagre, el agua, el azúcar, la sal, el laurel, el orégano, la pimienta y el ajo 2 minutos.',
+        'Pon todas las verduras en un frasco limpio, vierte el líquido caliente, deja enfriar, tapa y guarda en la refrigeradora. Está listo al día siguiente y dura 2 semanas.'
+      ],
+      tip: { add: 'Unas rodajas de rocoto', why: 'Le dan un picante suave y color rojo', skill: 'Blanqueado corto', how: 'Dos minutos bastan; las verduras deben quedar crocantes en el frasco.' }
+    },
+    'pe_saltado_vainitas': {
+      name: 'Saltado de vainitas',
+      ings: [['Vainitas', '250 g'], ['Cebolla roja', '1/2'], ['Tomate', '1'], ['Ají amarillo fresco', '1/2']],
+      seas: 'Sal · Pimienta negra · 1 diente de ajo · 1 cucharada de sillao · 1 cucharadita de vinagre · 1 cucharada de aceite',
+      steps: [
+        'Corta las vainitas en trozos de 5 cm y sancóchalas 3 minutos; escúrrelas.',
+        'Corta la cebolla y el tomate en gajos y el ají en tiras.',
+        'Saltea el ajo, la cebolla y el ají en aceite bien caliente 1 minuto, agrega las vainitas 2 minutos y luego el tomate, el sillao y el vinagre por 30 segundos. Sazona y sirve.'
+      ],
+      tip: { add: 'Un huevo revuelto al final', why: 'Lo convierte en una comida ligera', skill: 'El tomate, al último', how: 'Solo 30 segundos para que se caliente sin deshacerse.' }
+    },
+    'pe_verduras_chifa': {
+      name: 'Verduras salteadas al estilo chifa',
+      ings: [['Col china (pak choi)', '2'], ['Brócoli', '1/2'], ['Zanahoria', '1/2'], ['Kion', '2 cm'], ['Cebolla china', '2 tallos']],
+      seas: 'Sal · 1 diente de ajo · 1 cucharada de sillao · 1 cucharada de salsa de ostión · 1 cucharadita de aceite de ajonjolí · 1 cucharadita de chuño · 2 cucharadas de aceite',
+      steps: [
+        'Corta el brócoli en arbolitos, la zanahoria en láminas finas, el pak choi en cuartos y la cebolla china en trozos; corta en láminas el kion y el ajo.',
+        'Blanquea el brócoli y la zanahoria 1 minuto y escúrrelos.',
+        'Saltea el kion y el ajo en aceite muy caliente 30 segundos, agrega todas las verduras y saltea 2 minutos.',
+        'Añade el sillao, la salsa de ostión y el chuño disuelto en 3 cucharadas de agua; saltea hasta que brille y termina con el aceite de ajonjolí.'
+      ],
+      tip: { add: 'Unos hongos o frejolito chino', why: 'La mezcla clásica del chifa', skill: 'Todo listo antes de prender el fuego', how: 'El salteado dura 3 minutos; si cortas mientras cocinas, las verduras se ablandan.' }
+    },
+    'pe_cancha': {
+      name: 'Cancha serrana',
+      ings: [['Maíz para cancha (chulpe)', '1 taza']],
+      seas: '1 cucharada de aceite · Sal',
+      steps: [
+        'Calienta el aceite en una olla gruesa con tapa a fuego medio y agrega el maíz en una sola capa.',
+        'Tapa y cocina de 8 a 10 minutos, moviendo la olla seguido, hasta que los granos se inflen, se abran y estén dorados.',
+        'Pásala a un plato, échale sal en caliente y deja enfriar para que quede crocante.'
+      ],
+      tip: { add: 'Sírvela con ceviche o sopas', why: 'El piqueo crocante de toda mesa peruana', skill: 'No destapes', how: 'Algunos granos saltan; la tapa los contiene y el vapor ayuda a que se abran.' }
+    },
+    'pe_frejoles': {
+      name: 'Frejoles guisados',
+      ings: [['Frejol canario seco', '250 g'], ['Cebolla', '1/2'], ['Panceta o tocino', '50 g']],
+      seas: 'Sal · 2 dientes de ajo · 1 cucharadita de pasta de ají panca · 1/2 cucharadita de comino · 1 cucharada de aceite',
+      steps: [
+        'Remoja los frejoles toda la noche, escúrrelos, cúbrelos con agua limpia y cocina de 1 hora a 1 hora 20 minutos, hasta que estén muy suaves.',
+        'Fríe la panceta en cubitos en el aceite hasta que se dore y esté bien cocida; agrega la cebolla picada, el ajo, el ají panca y el comino por 5 minutos.',
+        'Incorpora el aderezo a los frejoles y aplasta más o menos un tercio para que queden espesos y cremosos. Cocina 10 minutos y sazona con sal.'
+      ],
+      tip: { add: 'Sírvelos al lado del seco', why: 'El seco con frejoles es un clásico', skill: 'Aplasta algunos, no todos', how: 'Unos aplastados y otros enteros dan la textura cremosa que gusta en casa.' }
+    },
+    'pe_pepian_choclo': {
+      name: 'Pepián de choclo',
+      ings: [['Choclos', '3'], ['Cebolla', '1'], ['Pasta de ají amarillo', '1 cucharada'], ['Culantro', '1 puñadito']],
+      seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino · 2 cucharadas de aceite · 300 ml de agua o caldo de pollo',
+      steps: [
+        'Ralla los granos de choclo (o lícualos sin que quede muy fino con un poco del agua).',
+        'Sofríe la cebolla picada, el ajo, la pasta de ají y el comino en el aceite 5 minutos.',
+        'Agrega el choclo y el agua y cocina a fuego bajo de 15 a 20 minutos, sin dejar de mover, hasta que espese como una polenta suave. Sazona y termina con culantro.'
+      ],
+      tip: { add: 'Sírvelo con pollo o pavo guisado', why: 'El pepián es el compañero clásico de un guiso', skill: 'Mueve todo el tiempo', how: 'El almidón del choclo espesa rápido y se pega al fondo.' }
+    },
+    'pe_pure_papa': {
+      name: 'Puré de papa',
+      ings: [['Papas amarillas o blancas', '4 (600 g)'], ['Leche evaporada', '100 ml'], ['Mantequilla', '2 cucharadas'], ['Queso parmesano rallado', '1 cucharada']],
+      seas: 'Sal · Una pizca de nuez moscada',
+      steps: [
+        'Pela las papas, córtalas en trozos y sancóchalas en agua con sal de 15 a 20 minutos, hasta que estén muy suaves.',
+        'Escúrrelas bien y aplástalas en caliente.',
+        'A fuego bajo, incorpora la mantequilla y la leche tibia de a poquitos, batiendo, hasta que quede lisa y cremosa; agrega la nuez moscada, el parmesano y la sal.'
+      ],
+      tip: { add: 'Sírvelo con estofado o bistec apanado', why: 'El acompañante de siempre para guisos y apanados', skill: 'Leche tibia', how: 'La leche fría hace que el puré quede grumoso y pegajoso.' }
+    },
+    'pe_arroz_arabe': {
+      name: 'Arroz árabe',
+      ings: [['Arroz', '1 taza (200 g)'], ['Fideo cabello de ángel', '40 g'], ['Pasas', '3 cucharadas'], ['Almendras o maní', '3 cucharadas'], ['Cebolla', '1/4']],
+      seas: 'Sal · 1 diente de ajo · 2 cucharadas de mantequilla o aceite · 100 ml de gaseosa negra o chicha morada (opcional, para el color) · Agua',
+      steps: [
+        'Rompe el cabello de ángel en trocitos y dóralo en la mantequilla, moviendo, de 2 a 3 minutos.',
+        'Agrega la cebolla picada y el ajo por 2 minutos, luego el arroz, y mezcla 1 minuto.',
+        'Vierte la gaseosa (si la usas) y agua hasta completar 300 ml de líquido, agrega sal y las pasas, tapa y cocina a fuego bajo de 18 a 20 minutos.',
+        'Tuesta las almendras en una sartén sin aceite, pícalas grueso y mézclalas con el arroz antes de servir.'
+      ],
+      tip: { add: 'Sírvelo con pavo o cerdo al horno', why: 'Es el arroz de Navidad y Año Nuevo en el Perú', skill: 'Dora bien los fideos', how: 'Los fideos tostados le dan al arroz su sabor a nuez y su color dorado.' }
+    },
+    'pe_yuca_frita': {
+      name: 'Yuca frita',
+      ings: [['Yuca', '500 g']],
+      seas: 'Sal · Aceite para freír',
+      steps: [
+        'Pela la yuca, córtala en trozos de 8 cm y sancóchala en agua con sal de 20 a 25 minutos, hasta que esté suave por completo. La yuca nunca se come cruda.',
+        'Escúrrela, córtala en bastones gruesos y retira la fibra dura del centro.',
+        'Fríe en aceite caliente de 4 a 5 minutos, hasta que esté crocante y dorada; escúrrela y échale sal.'
+      ],
+      tip: { add: 'Huancaína o crema de rocoto para mojar', why: 'La combinación favorita en Lima', skill: 'Sancocha antes de freír', how: 'La yuca cocida queda suave por dentro y crocante por fuera.' }
+    },
+    'pe_camote_frito': {
+      name: 'Camote frito',
+      ings: [['Camote amarillo', '1 grande (400 g)']],
+      seas: 'Una pizca de sal · Aceite para freír',
+      steps: [
+        'Pela el camote y córtalo en rodajas o tajadas largas de 1 cm de grosor.',
+        'Fríelo en 1 cm de aceite a fuego medio de 3 a 4 minutos por lado, hasta que esté dorado y suave por dentro.',
+        'Escúrrelo sobre papel absorbente y échale una pizca de sal.'
+      ],
+      tip: { add: 'Sírvelo con chicharrón o pescado frito', why: 'Dulce y salado, como en el desayuno del domingo', skill: 'Fuego medio', how: 'Si el aceite está muy caliente, el azúcar se quema antes de que el centro se ablande.' }
+    },
+    'pe_torrejas_choclo': {
+      name: 'Torrejas de choclo',
+      ings: [['Granos de choclo', '2 tazas'], ['Huevos', '2'], ['Cebolla china', '2 tallos'], ['Queso fresco', '50 g']],
+      seas: 'Sal · Pimienta negra · 4 cucharadas de harina · 1/2 cucharadita de polvo de hornear · Aceite para freír',
+      steps: [
+        'Licúa la mitad del choclo sin que quede fino; mézclalo con los granos enteros, los huevos batidos, la cebolla china picada, el queso desmenuzado, la harina, el polvo de hornear, sal y pimienta.',
+        'Echa cucharadas de la mezcla en 1 cm de aceite caliente y aplánalas un poco.',
+        'Fríe de 2 a 3 minutos por lado, hasta que estén doradas y cocidas al centro; escúrrelas sobre papel absorbente.'
+      ],
+      tip: { add: 'Salsa criolla encima', why: 'La cebolla fresca equilibra la fritura', skill: 'Licúa solo la mitad', how: 'El puré une la mezcla y los granos enteros revientan en la boca.' }
+    },
+    'pe_pastel_acelga': {
+      name: 'Pastel de acelga',
+      ings: [['Acelga', '1 atado (500 g)'], ['Huevos', '3'], ['Cebolla', '1'], ['Queso fresco o parmesano', '80 g'], ['Mantequilla fría, para la masa', '100 g'], ['Pasas', '2 cucharadas']],
+      seas: 'Sal · Pimienta negra · 1 diente de ajo · 250 g de harina · 1 cucharadita de polvo de hornear · 4 a 5 cucharadas de agua fría · 1 cucharada de aceite',
+      steps: [
+        'Mezcla la mantequilla con la harina, el polvo de hornear y una pizca de sal con la punta de los dedos, agrega el agua fría y forma una masa. Refrigera 20 minutos.',
+        'Blanquea la acelga 2 minutos, exprímela muy bien y pícala. Sofríe la cebolla y el ajo en el aceite 5 minutos y mézclalos con la acelga, 2 huevos batidos, el queso, las pasas, sal y pimienta.',
+        'Calienta el horno a 180 °C. Estira dos tercios de la masa para forrar un molde de 22 cm, agrega el relleno y cubre con el resto de la masa; sella los bordes y pinta con el último huevo batido.',
+        'Hornea de 35 a 40 minutos, hasta que esté dorado y el relleno cuajado. Deja reposar 10 minutos antes de cortar.'
+      ],
+      tip: { add: 'Unas rodajas de huevo duro en el relleno', why: 'Como lo hacían las abuelas limeñas', skill: 'Exprime bien la acelga', how: 'Si la acelga está húmeda, la masa de abajo queda cruda y blanda.' }
+    },
+    'pe_pastel_papa': {
+      name: 'Pastel de papa',
+      ings: [['Papas', '5 (800 g)'], ['Queso fresco o andino', '150 g'], ['Leche evaporada', '200 ml'], ['Huevos', '2'], ['Cebolla', '1/2']],
+      seas: 'Sal · Pimienta negra · Una pizca de nuez moscada · 1 cucharada de mantequilla para el molde · 1/2 cucharadita de pasta de ají amarillo (opcional)',
+      steps: [
+        'Calienta el horno a 180 °C y engrasa una fuente con mantequilla. Pela las papas y córtalas en rodajas muy delgadas; corta la cebolla en pluma fina y desmenuza el queso.',
+        'Bate los huevos con la leche, la pasta de ají, la nuez moscada, sal y pimienta.',
+        'Pon capas de papa, cebolla y queso en la fuente, repitiendo hasta terminar y acabando con queso. Vierte encima la mezcla de huevo.',
+        'Cubre con papel aluminio y hornea 30 minutos; luego destapa y hornea de 15 a 20 minutos más, hasta que esté dorado y un cuchillo atraviese fácilmente las papas.'
+      ],
+      tip: { add: 'Sírvelo con adobo o carne al horno', why: 'En Arequipa es el acompañante del domingo', skill: 'Corta muy fino', how: 'Las rodajas delgadas se cocinan parejo y absorben la mezcla de huevo.' }
     }
   }
 });
