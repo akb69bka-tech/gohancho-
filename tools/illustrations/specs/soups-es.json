@@ -1,0 +1,22 @@
+{
+  "es_salmorejo": { "vessel": "deep", "broth": "#e0703f", "body": "cream", "oil": true, "top": [["ham", 4], ["egg", 2]], "garnish": "none" },
+  "es_ajoblanco": { "vessel": "deep", "broth": "#f1ece0", "body": "cream", "oil": true, "top": [["croutons", 2], ["herbsprig", 1]], "garnish": "none" },
+  "es_sopaajo": { "vessel": "crock", "broth": "#c8742f", "body": "chunky", "oil": true, "top": [["bread", 3], ["poached", 1], ["ham", 3]], "garnish": "parsley" },
+  "es_sopafideos": { "vessel": "deep", "broth": "#e3c27a", "body": "clear", "top": [["vermicelli", 3], ["chicken", 3], ["carrot", 3]], "garnish": "parsley" },
+  "es_cocido": { "vessel": "pot", "broth": "#d9a85a", "body": "chunky", "top": [["chickpeas", 4], ["beefChunk", 2], ["sausage", 2], ["carrot", 2], ["potato", 2]], "garnish": "none" },
+  "es_fabada": { "vessel": "clay", "broth": "#c76a2e", "body": "stew", "oil": true, "top": [["whitebeans", 6], ["sausage", 2], ["bacon", 2]], "garnish": "none" },
+  "es_caldogallego": { "vessel": "clay", "broth": "#c9b07a", "body": "chunky", "top": [["greens", 4], ["potato", 3], ["whitebeans", 3], ["sausage", 1]], "garnish": "none" },
+  "es_potaje": { "vessel": "crock", "broth": "#c98a3e", "body": "stew", "oil": true, "top": [["chickpeas", 5], ["spinach", 3], ["fish", 2], ["eggHalf", 2]], "garnish": "none" },
+  "es_marmitako": { "vessel": "pot", "broth": "#c4682f", "body": "stew", "oil": true, "top": [["fish", 3], ["potato", 4], ["pepper", 2]], "garnish": "parsley" },
+  "es_sopapescado": { "vessel": "deep", "broth": "#d0773a", "body": "clear", "oil": true, "top": [["shrimp", 3], ["clam", 4], ["fish", 2]], "garnish": "parsley" },
+  "es_porrusalda": { "vessel": "deep", "broth": "#e2d29a", "body": "chunky", "top": [["leek", 5], ["potato", 3], ["carrot", 3]], "garnish": "none" },
+  "es_cremacalabaza": { "vessel": "deep", "broth": "#e8952e", "body": "cream", "swirl": "#f6ead2", "top": [["croutons", 4]], "garnish": "pepper" },
+  "es_cremapuerros": { "vessel": "deep", "broth": "#e6e1b8", "body": "cream", "swirl": "#fbf7ea", "top": [["leek", 3]], "garnish": "pepper" },
+  "es_cremachampi": { "vessel": "deep", "broth": "#b89a76", "body": "cream", "swirl": "#efe3d2", "top": [["mushroom", 4]], "garnish": "parsley" },
+  "es_cremazanahoria": { "vessel": "deep", "broth": "#eb8a2f", "body": "cream", "oil": true, "top": [["croutons", 3]], "garnish": "pepper" },
+  "es_purever": { "vessel": "deep", "broth": "#c9b25a", "body": "cream", "oil": true, "top": [["herbsprig", 1], ["croutons", 3]], "garnish": "none" },
+  "es_riojana": { "vessel": "clay", "broth": "#c4552a", "body": "stew", "oil": true, "top": [["potato", 5], ["sausage", 4]], "garnish": "parsley" },
+  "es_gazpachuelo": { "vessel": "deep", "broth": "#efe2b8", "body": "cream", "top": [["fish", 3], ["potato", 3], ["shrimp", 2]], "garnish": "parsley" },
+  "es_sopatomate": { "vessel": "crock", "broth": "#cf4a2c", "body": "chunky", "oil": true, "top": [["bread", 2], ["poached", 1], ["redpepper", 2]], "garnish": "parsley" },
+  "es_ollagitana": { "vessel": "clay", "broth": "#d08a3a", "body": "stew", "top": [["chickpeas", 4], ["pumpkin", 3], ["beans", 2], ["potato", 2]], "garnish": "herbs" }
+}
