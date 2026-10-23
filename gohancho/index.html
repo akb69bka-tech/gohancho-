@@ -1630,7 +1630,7 @@ const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用
 function addGenerated(items){
     Object.keys(items).forEach(id => {
         const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
-        const v = '?v=' + encodeURIComponent(it.date || '');
+        const v = '?v=' + encodeURIComponent(it.v || it.date || '');   // v は絵の中身から作った印（描き直すと変わる）
         GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + v, gen: true, ai: it.via === 'api' || it.via === 'chatgpt',
             // 一覧用の小さい絵（192px）。一覧に何百品も並んでも、SVG の影を毎回計算しないので速い
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};

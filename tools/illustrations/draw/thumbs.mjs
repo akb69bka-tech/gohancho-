@@ -11,6 +11,7 @@
  * 必要なもの: Playwright（npm i -g playwright && npx playwright install chromium）
  */
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
@@ -42,7 +43,17 @@ const todo = Object.entries(m.items).filter(([id, it]) => {
     if (all || !it.thumb || !fs.existsSync(dst)) return true;
     return fs.statSync(dst).mtimeMs < fs.statSync(src).mtimeMs;
 });
-if (!todo.length && !shrink.length){ console.log('小さい絵はそろっています'); process.exit(0); }
+// 絵の中身から短い印（v）を作る。アプリは絵のアドレスに付けるので、描き直すと端末の古い絵が使われなくなる
+function stamp(){
+    for (const [id, it] of Object.entries(m.items)){
+        if (!it || !it.file || !fs.existsSync(path.join(OUT, it.file))) continue;
+        const h = crypto.createHash('sha1').update(fs.readFileSync(path.join(OUT, it.file)));
+        if (it.thumb && fs.existsSync(path.join(OUT, it.thumb))) h.update(fs.readFileSync(path.join(OUT, it.thumb)));
+        it.v = h.digest('hex').slice(0, 8);
+    }
+    fs.writeFileSync(MANIFEST, JSON.stringify(m, null, 2) + '\n');
+}
+if (!todo.length && !shrink.length){ stamp(); console.log('小さい絵はそろっています'); process.exit(0); }
 
 let browser;
 try{ browser = await chromium.launch(); }
@@ -96,5 +107,5 @@ for (let i = 0; i < todo.length; i += 40){
     }
 }
 await browser.close();
-fs.writeFileSync(MANIFEST, JSON.stringify(m, null, 2) + '\n');
+stamp();
 console.log(`${n}品の小さい絵を作りました（合計 ${Math.round(bytes / 1024)}KB）`);
