@@ -1,0 +1,22 @@
+{
+  "in_dalmakhani": { "vessel": "metal", "broth": "#5a2e1f", "body": "stew", "swirl": "#f3e6d0", "top": [["lentils",6],["beans",3],["cream",1]], "garnish": "cilantro" },
+  "in_dalpalak": { "vessel": "metal", "broth": "#7f8a2e", "body": "chunky", "oil": true, "top": [["spinach",5],["lentils",4],["tomato",2]], "garnish": "chili" },
+  "in_laukichana": { "vessel": "metal", "broth": "#d6a63a", "body": "chunky", "oil": true, "top": [["zucchini",5],["lentils",4],["chili",1]], "garnish": "cilantro" },
+  "in_panchmel": { "vessel": "metal", "broth": "#c98a2c", "body": "chunky", "oil": true, "top": [["lentils",7],["chili",2],["tomato",2]], "garnish": "cilantro" },
+  "in_amti": { "vessel": "metal", "broth": "#c46a2a", "body": "clear", "oil": true, "top": [["lentils",4],["herbsprig",2]], "garnish": "cilantro" },
+  "in_gujaratidal": { "vessel": "metal", "broth": "#e0a93a", "body": "clear", "oil": true, "top": [["lentils",3],["tomato",2],["chili",1],["herbsprig",2]], "garnish": "cilantro" },
+  "in_daldhokli": { "vessel": "bowl", "broth": "#d49a35", "body": "stew", "oil": true, "top": [["dumpling",6],["tomato",2],["herbsprig",2]], "garnish": "cilantro" },
+  "in_dalma": { "vessel": "clay", "broth": "#d9a64a", "body": "chunky", "top": [["pumpkin",3],["potato",2],["plantain",2],["lentils",3]], "garnish": "none" },
+  "in_cholardal": { "vessel": "bowl", "broth": "#e3b23c", "body": "chunky", "oil": true, "top": [["lentils",6],["chili",1],["herbsprig",2]], "garnish": "none" },
+  "in_kadhipakora": { "vessel": "bowl", "broth": "#e8c24a", "body": "cream", "top": [["dumpling",5],["chili",2]], "garnish": "cilantro" },
+  "in_gujaratikadhi": { "vessel": "metal", "broth": "#f1e7c9", "body": "cream", "top": [["herbsprig",3],["chili",1]], "garnish": "cilantro" },
+  "in_morkuzhambu": { "vessel": "bowl", "broth": "#f0dc8c", "body": "cream", "top": [["daikon",5],["herbsprig",3],["chili",1]], "garnish": "none" },
+  "in_muttonshorba": { "vessel": "bowl", "broth": "#8a4a22", "body": "chunky", "oil": true, "top": [["beefChunk",5],["potato",3]], "garnish": "cilantro" },
+  "in_chickenshorba": { "vessel": "bowl", "broth": "#c7913f", "body": "clear", "oil": true, "top": [["chicken",5],["herbsprig",2]], "garnish": "cilantro" },
+  "in_tomatoshorba": { "vessel": "mug", "broth": "#c4402a", "body": "cream", "top": [["herbsprig",2],["cream",1]], "garnish": "cilantro" },
+  "in_sweetcorn": { "vessel": "bowl", "broth": "#f2d675", "body": "cream", "top": [["corn",8],["carrot",2],["scallion",2]], "garnish": "scallion" },
+  "in_manchow": { "vessel": "bowl", "broth": "#5e3a22", "body": "chunky", "top": [["cabbage",3],["carrot",2],["pepper",2],["noodles",3]], "garnish": "scallion" },
+  "in_palaksoup": { "vessel": "bowl", "broth": "#4f7a2a", "body": "cream", "swirl": "#f5f0e4", "top": [["cream",1],["croutons",3]], "garnish": "pepper" },
+  "in_vegishtu": { "vessel": "bowl", "broth": "#f4ecd8", "body": "stew", "top": [["potato",3],["carrot",3],["peas",3],["herbsprig",2]], "garnish": "none" },
+  "in_thukpa": { "vessel": "bowl", "broth": "#c98a45", "body": "chunky", "oil": true, "top": [["noodles",4],["chicken",3],["carrot",2],["greens",2]], "garnish": "scallion" }
+}
