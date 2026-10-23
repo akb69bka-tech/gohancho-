@@ -1,0 +1,22 @@
+{
+  "fr_oignon": { "vessel": "crock", "broth": "#9a5a2a", "body": "clear", "top": [["cheese", 2], ["bread", 1], ["onion", 3]], "garnish": "none" },
+  "fr_pistou": { "vessel": "deep", "broth": "#c9a45a", "body": "chunky", "oil": true, "top": [["whitebeans", 3], ["zucchini", 2], ["pasta", 2], ["potato", 2], ["tomato", 1]], "garnish": "herbs" },
+  "fr_garbure": { "vessel": "clay", "broth": "#b89a6a", "body": "stew", "top": [["whitebeans", 3], ["cabbage", 2], ["ham", 2], ["carrot", 2], ["potato", 2]], "garnish": "parsley" },
+  "fr_cresson": { "vessel": "deep", "broth": "#6f9a3e", "body": "cream", "swirl": "#f6f1e4", "top": [["greens", 3]], "garnish": "none" },
+  "fr_crecy": { "vessel": "deep", "broth": "#e58a2e", "body": "cream", "top": [["herbsprig", 2], ["carrot", 1]], "garnish": "herbs" },
+  "fr_poiscasses": { "vessel": "bowl", "broth": "#9aa04a", "body": "cream", "top": [["croutons", 4], ["bacon", 3]], "garnish": "pepper" },
+  "fr_champignons": { "vessel": "deep", "broth": "#c9b391", "body": "cream", "swirl": "#f4eee0", "top": [["mushroom", 4]], "garnish": "parsley" },
+  "fr_tomate": { "vessel": "deep", "broth": "#c8402a", "body": "cream", "swirl": "#f6efe2", "top": [["herbsprig", 3]], "garnish": "none" },
+  "fr_courgette": { "vessel": "deep", "broth": "#a3b85a", "body": "cream", "swirl": "#f4f1e6", "top": [["zucchini", 3]], "garnish": "herbs" },
+  "fr_chou": { "vessel": "pot", "broth": "#cdb47a", "body": "chunky", "top": [["cabbage", 3], ["bacon", 3], ["potato", 2], ["carrot", 2], ["sausage", 2]], "garnish": "pepper" },
+  "fr_legumes": { "vessel": "deep", "broth": "#d7a24a", "body": "cream", "top": [["herbsprig", 2], ["carrot", 1]], "garnish": "herbs" },
+  "fr_lentcorail": { "vessel": "bowl", "broth": "#e07a35", "body": "cream", "swirl": "#f5ecdc", "top": [["lentils", 3], ["herbsprig", 1]], "garnish": "cilantro" },
+  "fr_poisson": { "vessel": "deep", "broth": "#c4642a", "body": "cream", "oil": true, "top": [["bread", 3], ["cheese", 2]], "garnish": "none" },
+  "fr_vermicelle": { "vessel": "deep", "broth": "#e6c56a", "body": "clear", "oil": true, "top": [["vermicelli", 3], ["chicken", 3], ["carrot", 3], ["leek", 2]], "garnish": "parsley" },
+  "fr_chataigne": { "vessel": "deep", "broth": "#b8936a", "body": "cream", "swirl": "#f2e8d8", "top": [["bacon", 3], ["croutons", 2]], "garnish": "pepper" },
+  "fr_choufleur": { "vessel": "deep", "broth": "#efe7d2", "body": "cream", "top": [["cheese", 2], ["croutons", 2]], "garnish": "pepper" },
+  "fr_tourin": { "vessel": "crock", "broth": "#e3cf96", "body": "clear", "top": [["egg", 2], ["bread", 2]], "garnish": "pepper" },
+  "fr_asperges": { "vessel": "deep", "broth": "#e8dfa8", "body": "cream", "swirl": "#f7f2e4", "top": [["greens", 3]], "garnish": "herbs" },
+  "fr_brocolis": { "vessel": "deep", "broth": "#5f8f3a", "body": "cream", "swirl": "#f2efe2", "top": [["greens", 3]], "garnish": "none" },
+  "fr_panais": { "vessel": "deep", "broth": "#e6d7ae", "body": "cream", "swirl": "#f7f1e2", "top": [["croutons", 3]], "garnish": "pepper" }
+}

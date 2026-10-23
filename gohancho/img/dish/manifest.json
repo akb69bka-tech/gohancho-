@@ -3978,6 +3978,126 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "fr_oignon": {
+      "file": "fr_oignon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_pistou": {
+      "file": "fr_pistou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_garbure": {
+      "file": "fr_garbure.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_cresson": {
+      "file": "fr_cresson.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_crecy": {
+      "file": "fr_crecy.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_poiscasses": {
+      "file": "fr_poiscasses.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_champignons": {
+      "file": "fr_champignons.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_tomate": {
+      "file": "fr_tomate.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_courgette": {
+      "file": "fr_courgette.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_chou": {
+      "file": "fr_chou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_legumes": {
+      "file": "fr_legumes.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_lentcorail": {
+      "file": "fr_lentcorail.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_poisson": {
+      "file": "fr_poisson.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_vermicelle": {
+      "file": "fr_vermicelle.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_chataigne": {
+      "file": "fr_chataigne.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_choufleur": {
+      "file": "fr_choufleur.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_tourin": {
+      "file": "fr_tourin.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_asperges": {
+      "file": "fr_asperges.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_brocolis": {
+      "file": "fr_brocolis.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "fr_panais": {
+      "file": "fr_panais.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
