@@ -2503,7 +2503,7 @@ const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせ�
 //   notice: {id, ja, en, fr…, until:'YYYY-MM-DD', url?}  今日の画面に出すお知らせ（×で閉じられる）
 //   plan:   {trialMode, trialDays, loyaltyMonths, campaign:{active…}}  課金まわりの切りかえ
 //   minVersion: 'x.y.z'  これより古いアプリには notice を必ず出す（アップデートのお願い）
-const REMOTE_URL = 'https://raw.githubusercontent.com/akb69bka-tech/toresabi/main/gohancho/remote.json';
+const REMOTE_URL = 'https://raw.githubusercontent.com/akb69bka-tech/gohancho/main/gohancho/remote.json';
 let REMOTE = {};
 function applyRemote(j){
     if (!j || typeof j !== 'object') return;

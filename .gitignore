@@ -1,0 +1,7 @@
+node_modules/
+ios-app/ios/
+ios-app/node_modules/
+.DS_Store
+*.p8
+*.p12
+*.mobileprovision

@@ -5,4 +5,4 @@
 [ ] gohancho/index.html の const SUPPORT_EMAIL = '' にメールアドレス
 [ ] gohancho/index.html の revenueCatApiKey: '' に RevenueCat の appl_ の鍵（ステップ5のあと）
 [ ] App Store Connect の「著作権」に名前
-[ ] PR #10 を Merge（GitHub）
+[ ] GitHub の gohancho リポジトリが最新か確認（Claude が main に入れます）

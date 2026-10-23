@@ -32,7 +32,7 @@
 ターミナルで:
 
 ```bash
-cd ~/Documents/toresabi/ios-app
+cd ~/Documents/gohancho/ios-app
 npm run setup   # 部品の取りこみ・iOS プロジェクト作成・アイコン・審査用の設定まで自動
 ```
 

@@ -63,7 +63,7 @@ Mac で1回だけ実行 ──▶ ChatGPT（OpenAI）が絵を作る ──▶ g
 ### 手順2: Mac のターミナルで実行（20〜40分）
 
 ```bash
-cd ~/Documents/toresabi && git pull
+cd ~/Documents/gohancho && git pull
 export OPENAI_API_KEY='sk-ここに貼る'
 
 # まず、費用の目安と指示文を確認（通信しない・無料）

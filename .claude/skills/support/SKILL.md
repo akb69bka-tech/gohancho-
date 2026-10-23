@@ -7,7 +7,7 @@ description: ご飯帖の不具合・相談の窓口。「/support ＜報告の�
 引数（$ARGUMENTS）には、利用者からの報告の本文、GitHub Issue の番号、App Store レビューの文、Apple からの差し戻し文のいずれかが入ります。
 
 手順:
-1. Issue 番号なら `gh api repos/akb69bka-tech/toresabi/issues/<番号>` で本文を取る。
+1. Issue 番号なら `gh api repos/akb69bka-tech/gohancho/issues/<番号>` で本文を取る。
 2. `support-desk` エージェントに本文を渡し、事実・緊急度・担当を決めさせる。
 3. 担当エージェントに作業させる:
    - アプリの不具合 → `app-fixer`（直してテスト、ブランチ `claude/fix-<短い名前>` に push、Draft PR）

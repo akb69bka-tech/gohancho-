@@ -1,0 +1,34 @@
+# ご飯帖の公開ページ（Web 版・プライバシーポリシー・サポート）を GitHub Pages に出す
+# main の gohancho/ が変わるたびに自動で更新。URL: https://akb69bka-tech.github.io/gohancho/
+# 初回だけ: GitHub の Settings → Pages → Source を「GitHub Actions」にする
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ['gohancho/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: gohancho
+      - id: deployment
+        uses: actions/deploy-pages@v4

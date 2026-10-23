@@ -1,6 +1,6 @@
 #!/bin/bash
 # ご飯帖 iPhone アプリの準備を一度に行う（Mac で実行。Xcode と Node.js が必要）
-#   使い方: cd ~/Documents/toresabi/ios-app && npm run setup
+#   使い方: cd ~/Documents/gohancho/ios-app && npm run setup
 #   --ci を付けると、GitHub Actions 用（Xcode を開かない）
 set -euo pipefail
 cd "$(dirname "$0")/.."

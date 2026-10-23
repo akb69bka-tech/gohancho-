@@ -20,15 +20,15 @@ MacBook にファイルを置いて、起動・レシピの追加・修正・ス
 
 ```bash
 cd ~/Documents
-git clone https://github.com/akb69bka-tech/toresabi.git
-cd toresabi
+git clone https://github.com/akb69bka-tech/gohancho.git
+cd gohancho
 git checkout claude/cooking-recipe-app
 ```
 
 - 初回に「コマンドラインデベロッパツールをインストールしますか」と出たら「インストール」を押す（数分かかります）
 - プルリクエストを main に取りこんだあとは `git checkout main` に切りかえる
 
-アプリは `~/Documents/toresabi/gohancho/` に入ります。
+アプリは `~/Documents/gohancho/gohancho/` に入ります。
 
 ---
 
@@ -88,7 +88,7 @@ R('butadaikon','豚バラ大根','和','主菜','煮',30,'豚バラ薄切り肉 
 先に GitHub の Settings → Pages を有効にしておきます（`README.md` の手順）。そのうえで、ターミナルで:
 
 ```bash
-cd ~/Documents/toresabi
+cd ~/Documents/gohancho
 git add -A
 git commit -m "レシピを追加"
 git push
@@ -116,7 +116,7 @@ git push
 Mac に Claude Code（またはデスクトップ版 Claude の Code 機能）を入れると、このフォルダを開いた状態で「レシピを10品足して」「色を変えて」などと頼めます。
 
 ```bash
-cd ~/Documents/toresabi
+cd ~/Documents/gohancho
 claude
 ```
 
@@ -126,7 +126,7 @@ claude
 
 | 症状 | 対処 |
 | --- | --- |
-| 「Macで起動」が開けない | 右クリック →「開く」。それでも駄目ならターミナルで `chmod +x ~/Documents/toresabi/gohancho/Macで起動.command` |
+| 「Macで起動」が開けない | 右クリック →「開く」。それでも駄目ならターミナルで `chmod +x ~/Documents/gohancho/gohancho/Macで起動.command` |
 | 「Address already in use」と出る | すでに起動しています。ブラウザで `http://localhost:8765/` を開く |
 | 書き足したレシピが出ない | ブラウザで ⌘ + Shift + R（強制再読み込み）。それでも出なければ、行の `'` や `,` の抜けを確認 |
 | 画面が真っ白になった | 直前に書き足した行に間違いがあります。Safari なら「開発」→「JavaScript コンソールを表示」で、赤字の行番号を確認 |
