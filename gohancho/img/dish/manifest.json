@@ -6378,6 +6378,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "tw_zha_paigu": {
+      "file": "tw_zha_paigu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_yansuji": {
+      "file": "tw_yansuji.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_douchi_ke": {
+      "file": "tw_douchi_ke.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_pobuzi_zhengyu": {
+      "file": "tw_pobuzi_zhengyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_jian_daiyu": {
+      "file": "tw_jian_daiyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_jian_xiangchang": {
+      "file": "tw_jian_xiangchang.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_gela_zhengdan": {
+      "file": "tw_gela_zhengdan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_jinsha_doufu": {
+      "file": "tw_jinsha_doufu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_gaolicai_fan": {
+      "file": "tw_gaolicai_fan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_youfan": {
+      "file": "tw_youfan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_jiroufan": {
+      "file": "tw_jiroufan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_niuroumian": {
+      "file": "tw_niuroumian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_majiangmian": {
+      "file": "tw_majiangmian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_shacha_yangrou": {
+      "file": "tw_shacha_yangrou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_hujiao_xia": {
+      "file": "tw_hujiao_xia.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_hongzao_rou": {
+      "file": "tw_hongzao_rou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_lu_jitui": {
+      "file": "tw_lu_jitui.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_kejia_xiaochao": {
+      "file": "tw_kejia_xiaochao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_mayou_mianxian": {
+      "file": "tw_mayou_mianxian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_dousu_xueyu": {
+      "file": "tw_dousu_xueyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_chao_shuilian": {
+      "file": "tw_chao_shuilian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_liangsun": {
+      "file": "tw_liangsun.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_tang_qiukui": {
+      "file": "tw_tang_qiukui.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_paocai": {
+      "file": "tw_paocai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_chao_longxucai": {
+      "file": "tw_chao_longxucai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_baicai_lu": {
+      "file": "tw_baicai_lu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_jiangsi_sigua": {
+      "file": "tw_jiangsi_sigua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_fanqie_qiepan": {
+      "file": "tw_fanqie_qiepan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_lu_sungan": {
+      "file": "tw_lu_sungan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_chao_suancai": {
+      "file": "tw_chao_suancai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_lu_huasheng": {
+      "file": "tw_lu_huasheng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_xiangjian_doufu": {
+      "file": "tw_xiangjian_doufu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_chao_shansu": {
+      "file": "tw_chao_shansu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_chao_puagua": {
+      "file": "tw_chao_puagua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_malingshu_shala": {
+      "file": "tw_malingshu_shala.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_liangban_jisi": {
+      "file": "tw_liangban_jisi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_xian_xianzai": {
+      "file": "tw_xian_xianzai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_shacha_kongxincai": {
+      "file": "tw_shacha_kongxincai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_yansu_xingbaogu": {
+      "file": "tw_yansu_xingbaogu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "tw_lu_caitou": {
+      "file": "tw_lu_caitou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
