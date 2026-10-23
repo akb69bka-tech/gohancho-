@@ -163,4 +163,5 @@ if (fs.existsSync(SPECS)){
     }
 }
 export const SOUP_KINDS = Object.keys(KINDS);
+export { KINDS, vessel, garnish, spots };   // 主菜・副菜の絵（p_plates.mjs）でも使う
 export default out;
