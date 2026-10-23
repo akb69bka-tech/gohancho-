@@ -1,0 +1,22 @@
+{
+  "kr_sundubujjigae": { "vessel": "stone", "broth": "#c8402a", "body": "chunky", "oil": true, "top": [["tofu",4],["clam",3],["poached",1]], "garnish": "scallion" },
+  "kr_budaejjigae": { "vessel": "pot", "broth": "#c4492e", "body": "chunky", "oil": true, "top": [["ham",3],["sausage",3],["kimchi",2],["noodles",1],["cheese",1]], "garnish": "scallion" },
+  "kr_kongnamulguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#e6dcc0", "body": "clear", "top": [["sprouts",6],["scallion",1]], "garnish": "chili" },
+  "kr_sogogimuguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#c99a5c", "body": "clear", "top": [["daikon",5],["beef",3]], "garnish": "scallion" },
+  "kr_bugeoguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#ece2cc", "body": "clear", "top": [["fish",3],["egg",2],["daikon",2]], "garnish": "scallion" },
+  "kr_gyeranguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#e9d9a8", "body": "clear", "top": [["egg",4],["onion",2]], "garnish": "scallion" },
+  "kr_eomuktang": { "vessel": "pot", "broth": "#d9c49a", "body": "clear", "top": [["fish",4],["daikon",3],["chili",1]], "garnish": "scallion" },
+  "kr_yukgaejang": { "vessel": "stone", "broth": "#b5361f", "body": "chunky", "oil": true, "top": [["beef",3],["leek",3],["sprouts",3],["egg",1]], "garnish": "none" },
+  "kr_samgyetang": { "vessel": "stone", "broth": "#efe6d2", "body": "clear", "top": [["chicken",3],["rice",2],["herbsprig",1]], "garnish": "scallion" },
+  "kr_galbitang": { "vessel": "stone", "broth": "#cfae7a", "body": "clear", "top": [["beefChunk",4],["daikon",3],["vermicelli",1]], "garnish": "scallion" },
+  "kr_tteokguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#e7dcc2", "body": "chunky", "top": [["fish",6],["egg",2],["nori",2]], "garnish": "scallion" },
+  "kr_manduguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#dccba2", "body": "clear", "top": [["dumpling",5],["egg",2],["nori",1]], "garnish": "scallion" },
+  "kr_sigeumchidoenjangguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#a77a45", "body": "clear", "top": [["spinach",4],["tofu",3]], "garnish": "scallion" },
+  "kr_dongtaejjigae": { "vessel": "pot", "broth": "#c4442c", "body": "chunky", "oil": true, "top": [["fish",4],["daikon",2],["tofu",2],["greens",2]], "garnish": "chili" },
+  "kr_gochujangjjigae": { "vessel": "stone", "broth": "#b8442a", "body": "chunky", "oil": true, "top": [["potato",3],["zucchini",3],["pork",2],["tofu",2]], "garnish": "scallion" },
+  "kr_cheonggukjangjjigae": { "vessel": "clay", "broth": "#8d6532", "body": "chunky", "top": [["tofu",4],["kimchi",2],["zucchini",2],["beans",3]], "garnish": "chili" },
+  "kr_ojingeomuguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#cc5a33", "body": "clear", "oil": true, "top": [["squid",4],["daikon",4]], "garnish": "scallion" },
+  "kr_gamjaguk": { "vessel": "bowl", "vesselColor": "#e9e4d8", "broth": "#e3d6b4", "body": "clear", "top": [["potato",5],["onion",2],["egg",1]], "garnish": "scallion" },
+  "kr_kongbijijjigae": { "vessel": "clay", "broth": "#e2d2a8", "body": "stew", "top": [["kimchi",3],["pork",2],["chili",1]], "garnish": "scallion" },
+  "kr_oinaengguk": { "vessel": "bowl", "vesselColor": "#dfe9ec", "broth": "#eef0dc", "body": "clear", "top": [["zucchini",5],["wakame",3],["redpepper",1]], "garnish": "sesame" }
+}
