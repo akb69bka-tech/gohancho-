@@ -311,6 +311,23 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray-row{display:flex;justify-content:center;align-items:flex-start;gap:6px}
 .tray .spot{width:var(--w,46%);flex:0 1 auto}
 /* 5品以上: 3〜4列に詰めて、スクロールせずに全部の絵が見えるように */
+/* お膳の真ん中の丸い「まるごと入れ替え」: 1段目と2段目のあいだに置き、絵を見ながら続けて押せる */
+.tray-shuffle{display:flex;justify-content:center;align-items:center;margin:-6px 0;position:relative}
+.tray-shuffle::before,.tray-shuffle::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14));margin:0 10px}
+.tray-shuffle::after{background:linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
+.shuffle{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:var(--accent);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px;cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08);font:inherit;font-size:.6rem;font-weight:700;line-height:1.1;text-align:center;transition:transform .15s ease}
+.shuffle svg{width:24px;height:24px;flex:0 0 auto}
+.shuffle span{max-width:58px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.shuffle:hover{transform:scale(1.05)}
+.shuffle:active{transform:scale(.94)}
+.shuffle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.shuffle.spin svg{animation:shufflespin .45s ease-out}
+@keyframes shufflespin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.shuffle.spin svg{animation:none}.shuffle{transition:none}}
+.tray.compact .tray-shuffle{margin:-4px 0}
+.tray.compact .shuffle{width:62px;height:62px}
 .tray.compact{gap:10px;padding:14px 10px 12px}
 .tray.compact .tray-row{gap:4px;align-items:flex-start}
 .tray.compact .spot{width:var(--w,31%)}
@@ -2729,6 +2746,9 @@ function viewToday(){
         const w4 = '23%', w3 = '31%';
         compactRows.forEach((row, ri) => { row.forEach((h, ci) => { row[ci] = h.replace('style=""', `style="--w:${row.length >= 4 ? w4 : w3}"`); }); });
     }
+    const shuffleBtn = `<div class="tray-shuffle"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg>
+        <span>${LANG === 'ja' ? 'まるごと<br>入れ替え' : esc(t('まるごと入れ替え'))}</span></button></div>`;
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     return `
@@ -2742,15 +2762,15 @@ function viewToday(){
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount, 'count')}</div></div>
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </div>
-        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map(row => `<div class="tray-row">${row.join('')}</div>`).join('')}</div>`
+        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}</div>`
         : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
             <div class="tray-row back">${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
+            ${shuffleBtn}
             ${sides.length ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
             <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}</div>
         </div>`}
         <div class="actions">
-            <button class="btn primary full" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>
-            <button class="btn" data-act="new-menu">${esc(t('まるごと入れ替え'))}</button>
+            <button class="btn primary" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>
             <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>
         </div>
     </section>
@@ -3205,7 +3225,9 @@ document.addEventListener('click', e => {
         case 'new-menu':
             menuIds().forEach(id => session.rejected.add(id));
             session.countSalt = (session.countSalt || 0) + 1;
-            newMenu(); render(); break;
+            newMenu(); render();
+            { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (el.classList.contains('shuffle')) b.focus({preventScroll:true}); } }
+            break;
         case 'count': {
             const v = el.dataset.v;
             if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; }
