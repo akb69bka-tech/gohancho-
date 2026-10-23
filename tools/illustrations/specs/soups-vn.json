@@ -1,0 +1,22 @@
+{
+  "vn_canhraungot": { "vessel": "bowl", "broth": "#d9d3a0", "body": "clear", "top": [["greens",6],["pork",3]], "garnish": "scallion" },
+  "vn_canhcaixanh": { "vessel": "bowl", "broth": "#dcd6a6", "body": "clear", "top": [["greens",5],["shrimp",3]], "garnish": "none" },
+  "vn_canhmongtoi": { "vessel": "bowl", "broth": "#c9cf93", "body": "clear", "top": [["spinach",5],["zucchini",3]], "garnish": "none" },
+  "vn_canhbixanh": { "vessel": "bowl", "broth": "#e6dfbd", "body": "clear", "top": [["daikon",4],["shrimp",3]], "garnish": "cilantro" },
+  "vn_canhkhoqua": { "vessel": "bowl", "broth": "#d8cf9c", "body": "chunky", "top": [["zucchini",3],["meatball",3]], "garnish": "cilantro" },
+  "vn_canhbapcai": { "vessel": "bowl", "broth": "#e3dcb8", "body": "clear", "top": [["cabbage",4],["meatball",2]], "garnish": "pepper" },
+  "vn_canhhedauhu": { "vessel": "bowl", "broth": "#e8e2c4", "body": "clear", "top": [["tofu",5],["scallion",4]], "garnish": "pepper" },
+  "vn_canhngao": { "vessel": "bowl", "broth": "#e6b77e", "body": "clear", "top": [["clam",6],["tomato",3]], "garnish": "dill" },
+  "vn_canhcucai": { "vessel": "bowl", "broth": "#e0cf9e", "body": "chunky", "top": [["daikon",4],["carrot",3],["pork",3]], "garnish": "cilantro" },
+  "vn_canhmoc": { "vessel": "bowl", "broth": "#dfcf9a", "body": "clear", "top": [["meatball",5],["shiitake",3],["vermicelli",2]], "garnish": "cilantro" },
+  "vn_supgango": { "vessel": "bowl", "broth": "#f0d98a", "body": "cream", "top": [["corn",5],["chicken",3],["egg",2]], "garnish": "cilantro" },
+  "vn_supcua": { "vessel": "bowl", "broth": "#ecd9a8", "body": "cream", "top": [["crab",4],["egg",3],["shiitake",2]], "garnish": "cilantro" },
+  "vn_canhkhoaimo": { "vessel": "bowl", "broth": "#9b6aa8", "body": "cream", "top": [["shrimp",3],["herbsprig",3]], "garnish": "herbs" },
+  "vn_canhcathila": { "vessel": "bowl", "broth": "#e9b47a", "body": "clear", "oil": true, "top": [["fish",3],["tomato",3],["herbsprig",2]], "garnish": "dill" },
+  "vn_canhduabo": { "vessel": "bowl", "broth": "#d6a86a", "body": "chunky", "top": [["beef",3],["greens",4],["tomato",2]], "garnish": "cilantro" },
+  "vn_canhcaicuc": { "vessel": "bowl", "broth": "#d8d4a0", "body": "clear", "top": [["greens",5],["meatball",4]], "garnish": "pepper" },
+  "vn_canhmang": { "vessel": "pot", "broth": "#e0c88e", "body": "chunky", "oil": true, "top": [["bamboo",5],["pork",4]], "garnish": "scallion" },
+  "vn_canhrongbien": { "vessel": "bowl", "broth": "#cfc79a", "body": "clear", "top": [["wakame",4],["tofu",3],["pork",2]], "garnish": "scallion" },
+  "vn_canhcua": { "vessel": "bowl", "broth": "#b9a46e", "body": "chunky", "top": [["crab",4],["greens",5]], "garnish": "none" },
+  "vn_canhganam": { "vessel": "bowl", "broth": "#e2c588", "body": "clear", "oil": true, "top": [["chicken",4],["shiitake",3],["carrot",2]], "garnish": "scallion" }
+}
