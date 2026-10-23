@@ -7578,6 +7578,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "kr_dakgalbi": {
+      "file": "kr_dakgalbi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_dakgangjeong": {
+      "file": "kr_dakgangjeong.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_galbijjim": {
+      "file": "kr_galbijjim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_chadolsukju": {
+      "file": "kr_chadolsukju.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_suyuk": {
+      "file": "kr_suyuk.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_samgyeopsal": {
+      "file": "kr_samgyeopsal.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_tteokgalbi": {
+      "file": "kr_tteokgalbi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_galchijorim": {
+      "file": "kr_galchijorim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_jogigui": {
+      "file": "kr_jogigui.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_haemulpajeon": {
+      "file": "kr_haemulpajeon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_jjukkumibokkeum": {
+      "file": "kr_jjukkumibokkeum.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_dubukimchi": {
+      "file": "kr_dubukimchi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_omurice": {
+      "file": "kr_omurice.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_bibimbap": {
+      "file": "kr_bibimbap.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_kongnamulbap": {
+      "file": "kr_kongnamulbap.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_japchae": {
+      "file": "kr_japchae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_janchiguksu": {
+      "file": "kr_janchiguksu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_bibimguksu": {
+      "file": "kr_bibimguksu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_kimbap": {
+      "file": "kr_kimbap.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_kimchijjim": {
+      "file": "kr_kimchijjim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_gosarinamul": {
+      "file": "kr_gosarinamul.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_sukjunamul": {
+      "file": "kr_sukjunamul.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_musaengchae": {
+      "file": "kr_musaengchae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_gajinamul": {
+      "file": "kr_gajinamul.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_beoseotbokkeum": {
+      "file": "kr_beoseotbokkeum.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_eomukbokkeum": {
+      "file": "kr_eomukbokkeum.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_jangjorim": {
+      "file": "kr_jangjorim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_kongjaban": {
+      "file": "kr_kongjaban.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_yeongeunjorim": {
+      "file": "kr_yeongeunjorim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_gyeranjjim": {
+      "file": "kr_gyeranjjim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_dububuchim": {
+      "file": "kr_dububuchim.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_hobakjeon": {
+      "file": "kr_hobakjeon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_kimchijeon": {
+      "file": "kr_kimchijeon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_dongeurangttaeng": {
+      "file": "kr_dongeurangttaeng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_baechugeotjeori": {
+      "file": "kr_baechugeotjeori.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_yangpajangajji": {
+      "file": "kr_yangpajangajji.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_miyeokjulgi": {
+      "file": "kr_miyeokjulgi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_jinmichae": {
+      "file": "kr_jinmichae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_gamjachae": {
+      "file": "kr_gamjachae.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "kr_dotorimuk": {
+      "file": "kr_dotorimuk.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
