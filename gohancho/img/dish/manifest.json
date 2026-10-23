@@ -7338,6 +7338,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "cn_qingjiao_rousi": {
+      "file": "cn_qingjiao_rousi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_tangcu_paigu": {
+      "file": "cn_tangcu_paigu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_mapo_doufu": {
+      "file": "cn_mapo_doufu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_kele_jichi": {
+      "file": "cn_kele_jichi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_tudou_shaoji": {
+      "file": "cn_tudou_shaoji.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_hongshao_daiyu": {
+      "file": "cn_hongshao_daiyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_youmen_daxia": {
+      "file": "cn_youmen_daxia.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_haoyou_niurou": {
+      "file": "cn_haoyou_niurou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_tudou_niurou": {
+      "file": "cn_tudou_niurou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_congbao_yangrou": {
+      "file": "cn_congbao_yangrou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_roumo_zhengdan": {
+      "file": "cn_roumo_zhengdan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_hongshao_shizitou": {
+      "file": "cn_hongshao_shizitou.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_zhurou_jiaozi": {
+      "file": "cn_zhurou_jiaozi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_hongshao_qiezi": {
+      "file": "cn_hongshao_qiezi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_suancaiyu": {
+      "file": "cn_suancaiyu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_dan_chaofan": {
+      "file": "cn_dan_chaofan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_lachang_menfan": {
+      "file": "cn_lachang_menfan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_congyou_banmian": {
+      "file": "cn_congyou_banmian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_rousi_chaomian": {
+      "file": "cn_rousi_chaomian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_mayi_shangshu": {
+      "file": "cn_mayi_shangshu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_paihuanggua": {
+      "file": "cn_paihuanggua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_liangban_bocai": {
+      "file": "cn_liangban_bocai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_liangban_fuzhu": {
+      "file": "cn_liangban_fuzhu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_liangban_haidaisi": {
+      "file": "cn_liangban_haidaisi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_tangcu_luobo": {
+      "file": "cn_tangcu_luobo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_culiu_baicai": {
+      "file": "cn_culiu_baicai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_haoyou_shengcai": {
+      "file": "cn_haoyou_shengcai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_ganbian_doujiao": {
+      "file": "cn_ganbian_doujiao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_shousi_baocai": {
+      "file": "cn_shousi_baocai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_jiucai_jidan": {
+      "file": "cn_jiucai_jidan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_suanrong_xilanhua": {
+      "file": "cn_suanrong_xilanhua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_hongshao_donggua": {
+      "file": "cn_hongshao_donggua.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_youmen_sun": {
+      "file": "cn_youmen_sun.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_shangtang_wawacai": {
+      "file": "cn_shangtang_wawacai.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_baicai_dun_fentiao": {
+      "file": "cn_baicai_dun_fentiao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_baizhuo_caixin": {
+      "file": "cn_baizhuo_caixin.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_hupi_qingjiao": {
+      "file": "cn_hupi_qingjiao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_qingchao_oupian": {
+      "file": "cn_qingchao_oupian.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_youzha_huasheng": {
+      "file": "cn_youzha_huasheng.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "cn_roumo_suandoujiao": {
+      "file": "cn_roumo_suandoujiao.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
