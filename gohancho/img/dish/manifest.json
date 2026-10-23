@@ -7818,6 +7818,246 @@
       "via": "svg",
       "model": "hand-drawn",
       "date": "2026-10-23"
+    },
+    "eg_hawawshi": {
+      "file": "eg_hawawshi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_fatta": {
+      "file": "eg_fatta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_mesaqaa": {
+      "file": "eg_mesaqaa.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_pane": {
+      "file": "eg_pane.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_kebda": {
+      "file": "eg_kebda.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_sayadeya": {
+      "file": "eg_sayadeya.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_torly": {
+      "file": "eg_torly.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_kababhalla": {
+      "file": "eg_kababhalla.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_kosabechamel": {
+      "file": "eg_kosabechamel.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_shishtawook": {
+      "file": "eg_shishtawook.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_rozmeammar": {
+      "file": "eg_rozmeammar.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_tagensamak": {
+      "file": "eg_tagensamak.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_gambari": {
+      "file": "eg_gambari.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_eggah": {
+      "file": "eg_eggah.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_shakshouka": {
+      "file": "eg_shakshouka.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_lobia": {
+      "file": "eg_lobia.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_bessara": {
+      "file": "eg_bessara.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_salsamacarona": {
+      "file": "eg_salsamacarona.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_sogo": {
+      "file": "eg_sogo.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_reyash": {
+      "file": "eg_reyash.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_torshi": {
+      "file": "eg_torshi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_betenganmekhalel": {
+      "file": "eg_betenganmekhalel.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_salatazabadi": {
+      "file": "eg_salatazabadi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_salatabatates": {
+      "file": "eg_salatabatates.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_gargir": {
+      "file": "eg_gargir.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_batatessotee": {
+      "file": "eg_batatessotee.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_kosasotee": {
+      "file": "eg_kosasotee.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_fasoleya": {
+      "file": "eg_fasoleya.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_besellagazar": {
+      "file": "eg_besellagazar.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_sabanekh": {
+      "file": "eg_sabanekh.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_arnabeet": {
+      "file": "eg_arnabeet.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_hummus": {
+      "file": "eg_hummus.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_gebnatamatem": {
+      "file": "eg_gebnatamatem.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_banger": {
+      "file": "eg_banger.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_koronb": {
+      "file": "eg_koronb.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_felfel": {
+      "file": "eg_felfel.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_rozbelkhalta": {
+      "file": "eg_rozbelkhalta.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_tamatemmeqaleya": {
+      "file": "eg_tamatemmeqaleya.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_pure": {
+      "file": "eg_pure.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
+    },
+    "eg_salatamakarona": {
+      "file": "eg_salatamakarona.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-23"
     }
   }
 }
