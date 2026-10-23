@@ -1,0 +1,22 @@
+{
+  "ph_sinigang_hipon": { "vessel": "bowl", "broth": "#c98a4e", "body": "clear", "top": [["shrimp", 4], ["okra", 2], ["daikon", 2], ["tomato", 2], ["greens", 2]], "garnish": "chili" },
+  "ph_sinigang_bangus": { "vessel": "bowl", "broth": "#cfa26a", "body": "clear", "top": [["fish", 2], ["daikon", 2], ["tomato", 2], ["greens", 2], ["chili", 1]], "garnish": "none" },
+  "ph_sinigang_baka": { "vessel": "pot", "broth": "#b9884f", "body": "chunky", "top": [["beefChunk", 4], ["potato", 2], ["daikon", 2], ["greens", 2], ["tomato", 1]], "garnish": "chili" },
+  "ph_sinigang_miso": { "vessel": "bowl", "broth": "#b8864e", "body": "clear", "oil": true, "top": [["fish", 2], ["greens", 3], ["daikon", 2], ["tomato", 2], ["chili", 1]], "garnish": "none" },
+  "ph_nilagang_baka": { "vessel": "bowl", "broth": "#d6b47a", "body": "chunky", "top": [["beefChunk", 3], ["corn", 2], ["potato", 2], ["cabbage", 2], ["bokchoy", 2]], "garnish": "pepper" },
+  "ph_nilagang_baboy": { "vessel": "bowl", "broth": "#dcc08e", "body": "chunky", "top": [["pork", 3], ["potato", 2], ["plantain", 2], ["cabbage", 2], ["bokchoy", 2]], "garnish": "pepper" },
+  "ph_bulalo": { "vessel": "pot", "broth": "#cfa565", "body": "clear", "oil": true, "top": [["beefChunk", 3], ["corn", 2], ["cabbage", 2], ["bokchoy", 2]], "garnish": "pepper" },
+  "ph_pochero": { "vessel": "pot", "broth": "#b9532e", "body": "stew", "oil": true, "top": [["pork", 3], ["plantain", 2], ["chickpeas", 3], ["potato", 1], ["bokchoy", 2]], "garnish": "none" },
+  "ph_sopas": { "vessel": "bowl", "broth": "#f0e2c4", "body": "cream", "top": [["pasta", 5], ["chicken", 2], ["carrot", 2], ["sausage", 2], ["cabbage", 1]], "garnish": "scallion" },
+  "ph_molo": { "vessel": "bowl", "broth": "#e2c48e", "body": "clear", "top": [["dumpling", 5], ["chicken", 2], ["carrot", 1]], "garnish": "scallion" },
+  "ph_sotanghon": { "vessel": "bowl", "broth": "#e39a52", "body": "clear", "oil": true, "top": [["vermicelli", 4], ["chicken", 2], ["carrot", 2], ["cabbage", 1], ["eggHalf", 2]], "garnish": "scallion" },
+  "ph_tinolang_tahong": { "vessel": "bowl", "broth": "#e1cfa0", "body": "clear", "top": [["mussel", 6], ["greens", 3], ["chili", 1]], "garnish": "none" },
+  "ph_sinabawang_mais": { "vessel": "bowl", "broth": "#efd27a", "body": "cream", "top": [["corn", 5], ["greens", 3], ["shrimp", 2]], "garnish": "none" },
+  "ph_pesang_isda": { "vessel": "bowl", "broth": "#e8dcbc", "body": "clear", "top": [["fish", 2], ["bokchoy", 3], ["cabbage", 2], ["potato", 1]], "garnish": "scallion" },
+  "ph_picadillo": { "vessel": "bowl", "broth": "#c97a4a", "body": "chunky", "oil": true, "top": [["beef", 3], ["potato", 4], ["carrot", 2], ["greens", 1]], "garnish": "none" },
+  "ph_bulanglang": { "vessel": "bowl", "broth": "#e6d5ae", "body": "chunky", "top": [["pumpkin", 3], ["okra", 2], ["beans", 2], ["tomato", 2], ["greens", 2]], "garnish": "none" },
+  "ph_binakol": { "vessel": "bowl", "broth": "#ece1c4", "body": "clear", "top": [["chicken", 3], ["zucchini", 2], ["herbsprig", 2], ["greens", 2]], "garnish": "none" },
+  "ph_lomi": { "vessel": "bowl", "broth": "#a7743e", "body": "stew", "top": [["noodles", 4], ["pork", 2], ["egg", 2], ["cabbage", 1], ["carrot", 1]], "garnish": "scallion" },
+  "ph_sinampalukang_manok": { "vessel": "bowl", "broth": "#d3a560", "body": "clear", "top": [["chicken", 3], ["tomato", 2], ["beans", 2], ["greens", 3], ["chili", 1]], "garnish": "none" },
+  "ph_halaan": { "vessel": "bowl", "broth": "#e7dcbf", "body": "clear", "top": [["clam", 7], ["greens", 2], ["tomato", 1]], "garnish": "none" }
+}
