@@ -3749,9 +3749,15 @@ document.addEventListener('click', e => {
             try{
                 const d = JSON.parse(importBuffer);
                 S = Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign({}, DEFAULT_STATE.settings, d.settings||{})});
+                if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
                 for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
                 addCustomRecipes();
                 save(); toast(t('読み込みました'));
+                // 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）
+                const cc = currentCountry();
+                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { S.settings.country = 'JP'; save(); })
+                    .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
+                    .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
             }catch(err){ toast(t('読み込めませんでした')); }
             pendingConfirm = null; session.menu = null; render(); break;
         }
