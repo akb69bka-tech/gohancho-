@@ -805,8 +805,9 @@ function norm(s){
 }
 // 長い表記から順に照合する（「たまねぎ」を「ねぎ」より先に、「牛乳」を「牛」より先に）
 // ラテン文字の言葉（英語・フランス語など）は単語ごとに照合する。部分一致だと eggplant が egg、peanuts が nuts に当たってしまうため
-const LATIN_RE = /^[a-zÀ-ɏ'’.\- ]+$/;
-function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ0-9]+/g, ' ').trim() + ' '; }
+// ベトナム語（Ḁ-ỿ）・トルコ語の İ（i＋結合文字）なども同じラテン文字として扱う
+const LATIN_RE = /^[a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff'’.\- ]+$/;
+function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff0-9]+/g, ' ').trim() + ' '; }
 function wordRe(phrase){
     const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:e?s)?');
     return ws.length ? new RegExp(' ' + ws.join(' ') + ' ') : null;
@@ -830,13 +831,17 @@ function canonOf(name){
 function keyOf(name){ return canonOf(name) || norm(name); }
 const PACK_NAMES = {};   // 食材キー → 表示名（国のパックを使っているとき。日本は空）
 function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c) : String(name).replace(/[（(][^）)]*[）)]/g,'').trim(); }
+function isLatinText(seg){ return /[a-zÀ-ɏ\u1e00-\u1eff]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg); }
 // 自由入力（「豚肉と玉ねぎとキャベツ」「green onions, pork」など）から食材を取り出す
 // ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
 function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
-    String(text).split(/[、,，。・\/\n;；]+/).forEach(seg => {
+    // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
+    const exact = seg => { const n = norm(seg); const x = n && VARIANTS.find(x => x.v === n); return x ? x.c : null; };
+    String(text).split(/[、,，。\/\n;；]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
         seg = seg.trim(); if (!seg) return;
-        if (/[a-zÀ-ɏ]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg)){
+        const ex = exact(seg); if (ex){ push(PACK_NAMES[ex] || ex); return; }
+        if (isLatinText(seg)){
             let w = wnorm(seg); const found = [];
             for (const x of VARIANTS){
                 if (x.re && x.re.test(w)){ found.push(x.c); w = w.replace(x.re, ' | '); }
