@@ -49,7 +49,7 @@
         --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
         --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
         --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
-        --tray:#231a17;--tray-2:#30241f;
+        --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
         --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
         color-scheme:dark;
     }
@@ -58,7 +58,7 @@
     --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
     --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
     --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
-    --tray:#231a17;--tray-2:#30241f;
+    --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
     --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
     color-scheme:dark;
 }
@@ -75,7 +75,7 @@ a{color:var(--accent)}
 
 /* ヘッダー: 品書きの題字＋落款 */
 .top{display:flex;align-items:center;gap:12px}
-.seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--lacquer);color:var(--lacquer);border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
+.seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--seal,var(--lacquer));color:var(--seal,var(--lacquer));border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
 .top h1{font-size:1.45rem}
 .top .date{font-size:.8rem;color:var(--muted);letter-spacing:.12em}
 
