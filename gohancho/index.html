@@ -2642,8 +2642,10 @@ function fmtAmount(v, unit){
 }
 function scaleText(str, factor){
     if (!str || factor === 1) return str;
-    return String(str).replace(/(（[^）]*）|\([^)]*\))|(\d+(?:\.\d+)?)(?:\/(\d+))?(倍|℃|%|枚切り|cm|mm|g|ml)?/g, (m, paren, a, b, unit) => {
-        if (paren) return paren;
+    // かっこの中の分量も同じ倍率にする（2 large (350 g) → 4 large (700 g)）。大きさ（10 cm・20cmの鍋）や温度はそのまま
+    return String(str).replace(/(（[^）]*）|\([^)]*\))|(\d+(?:\.\d+)?)(?:\/(\d+))?(\s*(?:cm|mm|inch(?:es)?|in\.|°[CF]?)(?![a-z])|倍|℃|%|枚切り|cm|mm|g|ml)?/g, (m, paren, a, b, unit) => {
+        if (paren) return /\beach\b|\bper\b|ずつ|あたり|^.1(缶|個|本|枚|袋|パック|玉|尾|切れ)|\bcada\b|chacun|ciascun|\bje\b|każd|개당|mỗi|masing/i.test(paren) ? paren   // 1個あたりの重さはそのまま
+            : paren.slice(0, 1) + scaleText(paren.slice(1, -1), factor) + paren.slice(-1);
         if (unit && !['g','ml'].includes(unit)) return m;
         const v = (b ? Number(a) / Number(b) : Number(a)) * factor;
         return fmtAmount(v, unit) + (unit || '');
