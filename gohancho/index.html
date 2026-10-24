@@ -347,6 +347,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray .spot.main .vessel{width:86%}
 .swap{border:1px solid rgba(245,238,227,.28);background:transparent;color:var(--tray-ink);border-radius:999px;font-size:.7rem;padding:.1rem .7rem;min-height:30px;cursor:pointer}
 .swap:hover{background:rgba(245,238,227,.1)}
+.tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
 /* ヘッダーの設定ボタン */
 .top .gear.flagbtn{font-size:1.35rem;line-height:1}
@@ -2990,6 +2991,9 @@ function viewToday(){
         <div class="spot-label"><span class="slot">${esc(t('ご飯'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`
         : `<div class="spot rice" style="--w:40%">${vesselHtml('staple', {id: st.id, name: st.name, staple: true}, true)}
         <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`;
+    // 主食を「なし」にしても、お膳から主食を戻せるようにする（アメリカ・イギリスは、はじめが「なし」）
+    const stapleAdd = !oneBowl && !st && stapleOptions().length > 1
+        ? `<button class="swap tray-add" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">＋ ${esc(t('主食'))}</button>` : '';
     const sideW = sides.length >= 3 ? '31%' : '40%';
     const mainW = mains.length >= 2 ? '45%' : '56%';
     // 5品以上は、主菜→副菜→ご飯→汁ものの順に 3列（7つなら 4列＋3列）で並べ、1画面に収める
@@ -3019,12 +3023,12 @@ function viewToday(){
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount, 'count')}</div></div>
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </div>
-        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}</div>`
+        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}${stapleAdd ? `<div class="tray-row">${stapleAdd}</div>` : ''}</div>`
         : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
             <div class="tray-row back">${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
             ${shuffleBtn}
             ${sides.length ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
-            <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}</div>
+            <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}${stapleAdd}</div>
         </div>`}
         <div class="actions">
             ${S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join()
