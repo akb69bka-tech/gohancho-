@@ -735,7 +735,7 @@ const CANON = [
     ['合いびき肉',['合いびき','合挽','あいびき','ひき肉','挽き肉','挽肉','ミンチ']],
     ['牛乳',['牛乳','ミルク','ぎゅうにゅう']],
     ['豚肉',['豚','ぶた','ポーク']],
-    ['鶏肉',['鶏','鳥肉','とりにく','チキン','ささみ','手羽']],
+    ['鶏肉',['鶏','鳥肉','とりにく','トリ肉','とり肉','チキン','ささみ','手羽']],
     ['牛肉',['牛','ぎゅう','ビーフ']],
     ['鮭',['鮭','さけ','しゃけ','サーモン']],
     ['さば',['さば','鯖']],
@@ -3950,6 +3950,21 @@ function packRecipe(pk, x, tr){
         tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
 }
+// 日本語の画面でほかの国を使うとき、日本の言い方（とりにく・たまねぎ・たまご・チキン・ビーフなど）でもその国の食材に入れられるようにする。
+// その国の食材の日本語名から日本の代表名を求め、代表名ごとにいちばん近い食材（名前がそのものか、いちばん短いもの）に日本の言い方をまとめて足す
+function addJpAliases(names, aliases){
+    const jv = [];
+    JP_DATA.canon.forEach(([c, vs], o) => [c, ...vs].forEach(v => jv.push({c, v: norm(v), o})));
+    jv.sort((a, b) => b.v.length - a.v.length || a.o - b.o);
+    const best = {};
+    Object.keys(aliases).forEach(k => {
+        const n = norm(names[k] || ''); if (!n || /[a-z]/.test(n)) return;
+        const hit = jv.find(x => n.includes(x.v)); if (!hit) return;
+        const sc = jv.some(x => x.c === hit.c && x.v === n) ? 0 : n.length;
+        if (!best[hit.c] || sc < best[hit.c].sc) best[hit.c] = {k, sc};
+    });
+    JP_DATA.canon.forEach(([c, vs]) => { const b = best[c]; if (b) aliases[b.k] = [...aliases[b.k], c, ...vs]; });
+}
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
 function replaceObj(obj, src){ Object.keys(obj).forEach(k => delete obj[k]); Object.assign(obj, src); }
 function applyCountry(cc){
@@ -3982,6 +3997,7 @@ function applyCountry(cc){
         const aliases = Object.assign({}, pk.aliases || {});
         if (tr && tr.names) Object.entries(pk.names || {}).forEach(([k, v]) => { aliases[k] = [...(aliases[k] || []), v]; });
         recipes.forEach(r => r.items.forEach(i => { if (!names[i.key]) names[i.key] = i.label; if (!aliases[i.key]) aliases[i.key] = []; }));
+        if (LANG === 'ja' && tr) addJpAliases(names, aliases);
         replaceObj(PACK_NAMES, names);
         replaceList(CANON, Object.entries(aliases).map(([k, vs]) => [k, [...new Set([k, names[k], ...vs].filter(Boolean))]]));
         const fam = {}; recipes.forEach(r => { if (r.protein) fam[r.protein] = r.family; });
