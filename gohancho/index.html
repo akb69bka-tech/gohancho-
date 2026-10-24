@@ -1605,7 +1605,7 @@ async function loadMine(){
             cur.onsuccess = () => { const c = cur.result; if (!c) return; MINE[c.key] = {src: URL.createObjectURL(c.value.blob), d: c.value.d, mine: true}; c.continue(); };
             tx.oncomplete = res; tx.onerror = () => rej(tx.error);
         });
-        if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); }
+        if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); if (JP_DATA) loadRefs(); }
         // 以前に登録した写真（アルバムができる前の分）をアルバムにも入れる
         if (!S.albumMigrated){
             const n = await idbDo('readonly', st => st.count(), 'album');
@@ -1624,6 +1624,7 @@ async function loadAlbum(){
             tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
         if (ALBUM) ALBUM.forEach(a => URL.revokeObjectURL(a.src));
         ALBUM = out.map(a => Object.assign(a, {src: URL.createObjectURL(a.blob)}));
+        if (JP_DATA) loadRefs();
     }catch(e){ ALBUM = []; }
     if (tab === 'log') render();
 }
@@ -4014,6 +4015,7 @@ function applyCountry(cc){
     for (const k in BROWSE) delete BROWSE[k];
     addCustomRecipes();
     updateTabs();
+    loadRefs();
 }
 // 「ひとひねり」は日本のレシピを日本語で組み立てるしくみなので、日本＋日本語のときだけ出す
 function twistAvailable(){ return !PACK && LANG === 'ja'; }
@@ -4046,6 +4048,27 @@ function buildBrowse(cc){
 async function loadBrowse(cc){
     try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); }catch(e){ BROWSE[cc] = []; }
     if (tab === 'world') render();
+}
+// お気に入り・作った記録・アルバムにあるほかの国の料理を開けるように、その国のレシピだけ読みこんでおく（起動したときと国・言語を変えたとき）
+function refCountries(){
+    const ids = new Set([...S.favs, ...S.history.map(h => h.id), ...(ALBUM || []).map(a => a.id), ...Object.keys(MINE)].map(String));
+    const out = new Set(), home = currentCountry();
+    ids.forEach(id => {
+        if (id.startsWith('a~')) return;
+        const m = id.match(/^([a-z]{2})_/), cc = m && m[1].toUpperCase();
+        if (cc && COUNTRIES.some(c => c.cc === cc)) out.add(cc);
+        else if (JP_DATA && JP_DATA.recipes.some(r => r.id === id)) out.add('JP');
+    });
+    out.delete(home);
+    return [...out].filter(cc => !BROWSE[cc]);
+}
+const refLoading = new Set();
+async function loadRefs(){
+    const ccs = refCountries().filter(cc => !refLoading.has(cc)); if (!ccs.length) return;
+    ccs.forEach(cc => refLoading.add(cc));
+    await Promise.all(ccs.map(loadBrowse));
+    ccs.forEach(cc => refLoading.delete(cc));
+    render(); if (modalId) renderModal();
 }
 function viewWorld(){
     const home = currentCountry();
