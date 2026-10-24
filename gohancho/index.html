@@ -3757,7 +3757,8 @@ document.addEventListener('click', e => {
         }
         case 'reset': pendingConfirm = 'reset'; render(); keepDetailsOpen(); break;
         case 'reset-yes':
-            S = structuredClone(DEFAULT_STATE); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
+            // 無料期間の始まりと購入の状態は消さない（消すたびにお試しがやり直せてしまうため）
+            S = Object.assign(structuredClone(DEFAULT_STATE), {firstUse: S.firstUse, pro: S.pro, monitor: S.monitor, trialKept: true}); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
             try{ localStorage.removeItem('gohancho.remote'); }catch(e){}
             setTimeout(() => location.reload(), 600);   // 国の選択からやり直す（読みこみ直すのがいちばん確実）
             break;
@@ -4054,7 +4055,7 @@ async function setCountry(cc){
     applyCountry(cc);
     // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
     if (PACK && fresh && !S.staples.length){ S.staples = STAPLE_QUICK.slice(); save(); }
-    if (first){ S.firstUse = TODAY; save(); }   // 無料期間は国を選んで使いはじめた日から
+    if (first){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; save(); }   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
     return true;
 }
 /* ---- 主食（国ごとに選べる。最初の項目がその国のふだんの主食。なしも選べる） ----
