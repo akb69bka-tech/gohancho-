@@ -703,6 +703,29 @@ R('chijimi','ニラチヂミ','韓','副菜','焼',20,'ニラ 1束|にんじん 
 R('karashiae','菜の花のからし和え','和','副菜','和え',10,'菜の花 1束','塩 少々・醤油 小さじ2・だし 大さじ1・練りからし 小さじ1/2','菜の花は根元のかたい部分を切り落とし、冷水につけてシャキッとさせる。|塩を入れた湯で茎から入れて1分ゆで、冷水にとって水気をよく絞り、3cm長さに切る。|醤油・だし・からしを混ぜる。|食べる直前に菜の花を和える。');
 R('konnyakuitame','こんにゃくのピリ辛炒め','和','副菜','炒',15,'こんにゃく 1枚|かつお節 1パック?','ごま油 大さじ1・赤唐辛子 1/2本・醤油 大さじ1.5・みりん 大さじ1・砂糖 小さじ1','こんにゃくはスプーンで一口大にちぎり、3分下ゆでして水気を切る。|フライパンで乾いりして水分を飛ばす。|ごま油と輪切りの唐辛子を加え、こんにゃくの表面がチリチリするまで炒める。|醤油・みりん・砂糖を加えて汁気がなくなるまで炒め、かつお節をまぶす。');
 
+// 日本のレシピのよみ（ひらがな）。かなで検索したとき（にくじゃが・マーボー・しょうが焼き など）に料理名と同じように当てる。読みが二つあるものは , で区切る
+const YOMI = Object.fromEntries([
+    'nikujaga:にくじゃが shogayaki:ぶたのしょうがやき karaage:とりのからあげ teriyaki:てりやきちきん hamburg:はんばーぐ stew:くりーむしちゅー mapo:まーぼーどうふ hoikoro:ほいこーろー chinjao:ちんじゃおろーす gyoza:やきぎょうざ',
+    'meuniere:さけのむにえる sabamiso:さばのみそに buriteri:ぶりのてりやき nanban:ちきんなんばん butakimu:ぶたきむちいため japchae:ちゃぷちぇ ebichili:えびちり happosai:はっぽうさい chanchan:さけのちゃんちゃんやき champuru:ごーやちゃんぷるー',
+    'reishabu:れいしゃぶさらだ atsuage:あつあげとぶたにくのみそいため gratin:まかろにぐらたん negishio:とりむねにくのねぎしおやき subuta:すぶた rollcabbage:ろーるきゃべつ chikuzen:ちくぜんに buridaikon:ぶりだいこん okonomi:おこのみやき mabonasu:まーぼーなす',
+    'curry:かれーらいす oyakodon:おやこどん gyudon:ぎゅうどん omurice:おむらいす gapao:がぱおらいす tacorice:たこらいす chahan:ちゃーはん,やきめし takikomi:きのこのたきこみごはん napolitan:なぽりたん yakisoba:そーすやきそば',
+    'carbonara:かるぼなーら kinokopasta:きのこのわふうぱすた nikuudon:にくうどん ohitashi:ほうれんそうのおひたし kinpira:きんぴらごぼう potesala:ぽてとさらだ hijiki:ひじきのにもの dashimaki:だしまきたまご kabocha:かぼちゃのにもの nasubitashi:なすのあげびたし',
+    'komatsuna:こまつなとあぶらあげのにびたし tatakikyuri:たたききゅうり namul:もやしのなむる sakamushi:あさりのさかむし coleslaw:こーるすろー hiyayakko:ひややっこ sunomono:きゅうりとわかめのすのもの tomatotamago:とまととたまごのいためもの misoshiru:とうふとわかめのみそしる tonjiru:とんじる,ぶたじる',
+    'minestrone:みねすとろーね tamagosoup:ちゅうかふうたまごすーぷ consomme:たまねぎのこんそめすーぷ wakamesoup:かんこくふうわかめすーぷ sundubu:すんどぅぶちげ tonkatsu:とんかつ sabashio:さばのしおやき sanma:さんまのしおやき ajifry:あじふらい iwashiume:いわしのうめに',
+    'kareini:かれいのにつけ hoilyaki:さけのほいるやき amazu_sakana:しろみざかなのあまずあんかけ tebasappari:てばもとのさっぱりに yurinchi:ゆーりんちー piccata:とりむねにくのぴかた nikudango:にくだんごのあまずあん butadaikon:ぶたばらだいこん kakuni:ぶたのかくに nasumiso:なすとぶたにくのみそいため',
+    'shigureni:ぎゅうにくとごぼうのしぐれに nikudofu:にくどうふ bulgogi:ぷるこぎ dakgalbi:たっかるび banbanji:ばんばんじー tofuhamburg:とうふはんばーぐ pimannikuzume:ぴーまんのにくづめ torinotomatoni:とりにくのとまとに ikasatoimo:いかとさといものにもの atsuagesoboro:あつあげのそぼろあんかけ',
+    'soborodon:とりそぼろどん chukadon:ちゅうかどん bibimbap:びびんば hayashi:はやしらいす drycurry:どらいかれー hiyashichuka:ひやしちゅうか yakiudon:やきうどん salmoncreampasta:さけとほうれんそうのくりーむぱすた tunatomatopasta:つなととまとのぱすた kiriboshi:きりぼしだいこんのにもの',
+    'gomaae:ほうれんそうのごまあえ okraokaka:おくらのおかかあえ harusamesalad:はるさめさらだ macaronisalad:まかろにさらだ kabochasalad:かぼちゃさらだ satoimonikkorogashi:さといものにっころがし daigakuimo:だいがくいも hakusaiasazuke:はくさいのあさづけ chingensai:ちんげんさいのにんにくいため broccoligoma:ぶろっこりーのごままよあえ',
+    'kinokobutter:きのこのばたーしょうゆいため nagaimoume:ながいものうめあえ spinachbacon:ほうれんそうとべーこんのそてー gobosalad:ごぼうさらだ unohana:うのはな takosunomono:たこときゅうりのすのもの kenchinjiru:けんちんじる namekomiso:なめことうふのみそしる asarimiso:あさりのみそしる cornsoup:こーんすーぷ',
+    'clamchowder:くらむちゃうだー sanratan:さんらーたん tomatoeggsoup:とまととたまごのすーぷ sumashijiru:とうふとみつばのすましじる kasujiru:さけのかすじる noppeijiru:のっぺいじる satsumajiru:さつまじる kakitamajiru:かきたまじる ishikarijiru:いしかりじる sawaniwan:さわにわん',
+    'senbajiru:せんばじる gojiru:ごじる dangojiru:だんごじる shijimimiso:しじみのみそしる imoni:いもに daikonmiso:だいこんとあぶらあげのみそしる zoni:おぞうにかんとうふう kabochapotage:かぼちゃのぽたーじゅ potofu:ぽとふ wantansoup:わんたんすーぷ',
+    'harusamesoup:はるさめすーぷ kimchichige:きむちちげ tomyumkung:とむやむくん sukiyaki:すきやき tarakopasta:たらこすぱげってぃ korokke:ころっけ saikyoyaki:さわらのさいきょうやき kajikisaute:かじきのばたーしょうゆそてー ajinanbanzuke:あじのなんばんづけ ebifry:えびふらい',
+    'kanitama:かにたま tofusteak:とうふすてーき ankakeyakisoba:あんかけやきそば beefstew:びーふしちゅー tempura:てんぷら asparamaki:ぶたにくのあすぱらまき tsukune:とりつくね rebanira:ればにらいため yasaiitame:やさいいため katsudon:かつどん',
+    'chirashi:ちらしずし tandoori:たんどりーちきん meatsauce:みーとそーすすぱげってぃ kabuamazu:かぶのあまずづけ gomokumame:ごもくまめ shiraae:しらあえ shiokombu:きゃべつのしおこんぶあえ nasudengaku:なすでんがく furofuki:ふろふきだいこん koyadofu:こうやどうふのふくめに',
+    'germanpotato:じゃーまんぽてと shirishiri:にんじんしりしり niratama:にらたま daikonsalad:だいこんさらだ tomatomarine:とまとのまりね jakopiman:ぴーまんとじゃこのいため kofukiimo:こふきいも glace:にんじんのぐらっせ tosani:たけのこのとさに isobeage:ちくわのいそべあげ',
+    'chijimi:にらちぢみ karashiae:なのはなのからしあえ konnyakuitame:こんにゃくのぴりからいため'
+].join(' ').split(' ').map(x => x.split(':')));
+
 /* =========================================================
    食材の名寄せ（表記ゆれ → 代表名）
    ========================================================= */
@@ -3186,14 +3209,27 @@ function viewFridge(){
     ${results}`;
 }
 /* 料理名・材料名での検索（冷蔵庫に登録しなくても、その食材を使う料理が出る） */
+// 検索のことば: 区切り記号で分け、ラテン文字の言葉（pad thai・ground beef）は空白で分けずにひとかたまりで使う
+function searchTerms(q){
+    return String(q || '').split(/[、,，。・\/\n]+/).map(x => x.trim()).filter(Boolean).flatMap(seg => isLatinText(seg) ? [seg] : seg.split(/\s+/)).filter(Boolean);
+}
+// 料理名に当たるか: 表示の名前・元の名前（英語・その国の言葉・訳）・日本のレシピのよみ（ひらがな）のどれかに含まれれば当たり。
+// 「しょうが焼き」のようにかなと漢字がまざる言葉は、かなの部分はよみ、漢字の部分は料理名に含まれれば当たり
+function nameHit(r, tm){
+    // id もローマ字の料理名なので当てる（kr_bibimbap・nikujaga）
+    const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).map(norm).join('|') + '|' + (YOMI[r.id] || '') + '|' + String(r.id).replace(/^[a-z]{2}_/, '').replace(/_/g, '');
+    if (hay.includes(tm)) return true;
+    const runs = tm.match(/[ぁ-ゖー]+|[^ぁ-ゖー]+/g) || [];
+    return runs.length > 1 && /[ぁ-ゖ]/.test(tm) && runs.every(x => hay.includes(x));
+}
 function searchRecipes(q){
-    const raw = String(q || '').split(/[、,，。・\/\n]+|\s+/).map(x => x.trim()).filter(Boolean);
+    const raw = searchTerms(q);
     if (!raw.length) return {terms:[], hits:[]};
     const keys = extractIngredients(q).map(keyOf);
     const terms = raw.map(norm).filter(Boolean);
     const score = r => {
-        let sc = 0; const nm = norm(r.name);
-        terms.forEach(tm => { if (nm.includes(tm)) sc += 3; });
+        let sc = 0;
+        terms.forEach(tm => { if (nameHit(r, tm)) sc += 3; });
         keys.forEach(k => { if (r.items.some(i => i.key === k)) sc += i_main(r, k) ? 2 : 1; });
         terms.forEach(tm => { if (r.items.some(i => norm(i.label).includes(tm) || i.key.includes(tm))) sc += 1; });
         return sc;
@@ -3205,7 +3241,9 @@ function searchRecipes(q){
 function searchResultsHtml(q){
     if (!String(q || '').trim()) return '';
     const {terms, hits} = searchRecipes(q);
-    const ings = extractIngredients(q).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)));
+    // 料理名（肉じゃが・ハンバーグ・麻婆）だけを入れたときは、それを食材として冷蔵庫に入れる案は出さない
+    const ings = extractIngredients(q).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)))
+        .filter(x => canonOf(x) || !RECIPES.some(r => nameHit(r, norm(x))));
     const addBtn = ings.length ? `<div class="row"><button class="btn sm" data-act="search-to-fridge" data-v="${esc(ings.join('、'))}">${esc(t('{list} を冷蔵庫の材料に追加', {list:joinNames(ings)}))}</button></div>` : '';
     if (!hits.length) return `<div class="list"><div class="empty">${esc(t('見つかりませんでした。別の言い方や、食材の名前だけで試してください'))}</div></div>${addBtn}`;
     const shown = hits.slice(0, 30);
@@ -3909,7 +3947,7 @@ function packRecipe(pk, x, tr){
     const name = rt && rt.name ? rt.name : (x.local || x.name);
     return {id: x.id, name, nameEn: name === (x.local || x.name) ? x.name : (x.local || x.name), genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
         min: Number(x.min) || 30, ings: x.ings, items, seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
-        tip: (rt && rt.tip) || x.tip || null, pack: pk.country,
+        tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
 }
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
