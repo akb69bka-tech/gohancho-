@@ -536,6 +536,7 @@ GOHAN_I18N('vi', {
     "年額プラン（1年ありがとう価格）": "Gói năm (giá tri ân 1 năm)",
     "感想・改善点を送る": "Gửi nhận xét hoặc ý tưởng",
     "くわしく": "Chi tiết",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "Đã có phiên bản mới. Vui lòng cập nhật ứng dụng.",
     "{list} を冷蔵庫の材料に追加": "Thêm {list} vào nguyên liệu trong tủ lạnh",
     "「{q}」の料理": "Món có \"{q}\"",
     "さがす": "Tìm",

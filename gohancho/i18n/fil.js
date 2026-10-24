@@ -536,6 +536,7 @@ GOHAN_I18N('fil', {
     "年額プラン（1年ありがとう価格）": "Taunan (1-year thank-you price)",
     "感想・改善点を送る": "Magpadala ng komento o ideya",
     "くわしく": "Detalye",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "May bagong bersyon. Paki-update ang app.",
     "{list} を冷蔵庫の材料に追加": "Idagdag ang {list} sa mga sangkap sa ref",
     "「{q}」の料理": "Mga putahe na may \"{q}\"",
     "さがす": "Hanapin",

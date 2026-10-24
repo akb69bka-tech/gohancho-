@@ -536,6 +536,7 @@ GOHAN_I18N('id', {
     "年額プラン（1年ありがとう価格）": "Tahunan (harga terima kasih 1 tahun)",
     "感想・改善点を送る": "Kirim komentar atau ide",
     "くわしく": "Selengkapnya",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "Versi baru tersedia. Silakan perbarui aplikasinya.",
     "{list} を冷蔵庫の材料に追加": "Tambahkan {list} ke bahan di kulkas",
     "「{q}」の料理": "Masakan dengan \"{q}\"",
     "さがす": "Cari",

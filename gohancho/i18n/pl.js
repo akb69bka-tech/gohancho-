@@ -536,6 +536,7 @@ GOHAN_I18N('pl', {
     "年額プラン（1年ありがとう価格）": "Roczny (cena-podziękowanie po roku)",
     "感想・改善点を送る": "Wyślij opinię lub pomysł",
     "くわしく": "Szczegóły",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "Dostępna jest nowa wersja. Zaktualizuj aplikację.",
     "{list} を冷蔵庫の材料に追加": "Dodaj {list} do składników w lodówce",
     "「{q}」の料理": "Dania z „{q}”",
     "さがす": "Szukaj",

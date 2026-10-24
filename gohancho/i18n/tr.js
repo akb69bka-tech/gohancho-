@@ -536,6 +536,7 @@ GOHAN_I18N('tr', {
     "年額プラン（1年ありがとう価格）": "Yıllık (1 yıl teşekkür fiyatı)",
     "感想・改善点を送る": "Görüş veya fikir gönder",
     "くわしく": "Ayrıntılar",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "Yeni bir sürüm var. Lütfen uygulamayı güncelleyin.",
     "{list} を冷蔵庫の材料に追加": "{list} buzdolabı malzemelerine ekle",
     "「{q}」の料理": "“{q}” içeren yemekler",
     "さがす": "Ara",

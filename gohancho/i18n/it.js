@@ -536,6 +536,7 @@ GOHAN_I18N('it', {
     "年額プラン（1年ありがとう価格）": "Annuale (prezzo grazie 1 anno)",
     "感想・改善点を送る": "Invia un commento o un'idea",
     "くわしく": "Dettagli",
+    "新しいバージョンがあります。アプリを最新版に更新してください。": "È disponibile una nuova versione. Aggiorna l'app.",
     "{list} を冷蔵庫の材料に追加": "Aggiungi {list} agli ingredienti del frigo",
     "「{q}」の料理": "Piatti con \"{q}\"",
     "さがす": "Cerca",
