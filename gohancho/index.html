@@ -3536,8 +3536,14 @@ document.addEventListener('click', e => {
         }
         case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
         case 'ui-lang': {
-            S.settings.uiLang = el.dataset.v; save();
-            setLang(wantLang()).then(refreshRecipes).then(() => { relocalize(); render(); });
+            // 辞書を読みこめたときだけ切りかえる（電波がないときは、いまの言語のまま知らせる）
+            const prevUi = S.settings.uiLang, v = el.dataset.v;
+            S.settings.uiLang = v; const l = wantLang(); S.settings.uiLang = prevUi;
+            loadLang(l).then(() => {
+                if (l !== 'ja' && !I18N[l]){ render(); toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return; }
+                S.settings.uiLang = v; save();
+                return setLang(l).then(refreshRecipes).then(() => { relocalize(); render(); });
+            });
             break;
         }
         case 'toggle-avoid': {
@@ -3569,7 +3575,8 @@ document.addEventListener('click', e => {
         case 'sheet-close': closeSheet(); break;
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;
-        case 'world-cc': worldCC = el.dataset.cc; render(); break;
+        case 'world-cc': worldCC = el.dataset.cc; browseErr.delete(worldCC); render(); break;
+        case 'world-retry': browseErr.delete(worldCC); render(); break;
         case 'pick-country': {
             const cc = el.dataset.cc;
             setCountry(cc).then(ok => { if (!ok) return; render(); if (!S.onboarded) startOnboard(); else closeSheet(); });
@@ -3866,7 +3873,7 @@ function loadPackTr(cc, lang){
         const el = document.createElement('script');
         el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
         el.onload = () => res(PACK_TR[k] || null);
-        el.onerror = () => { PACK_TR[k] = null; res(null); };
+        el.onerror = () => { delete trLoads[k]; res(null); };   // 読めなかったことは覚えない（電波が戻れば読みに行く）
         document.head.appendChild(el);
     }));
 }
@@ -3984,16 +3991,17 @@ function buildBrowse(cc){
     const tr = trOf(cc);
     return pk.recipes.map(x => packRecipe(pk, x, tr));
 }
+const browseErr = new Set();   // 読みこめなかった国（失敗は覚えない。もう一度押すと読みに行く）
 async function loadBrowse(cc){
-    try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); }catch(e){ BROWSE[cc] = []; }
+    try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); browseErr.delete(cc); }catch(e){ delete BROWSE[cc]; browseErr.add(cc); }
     if (tab === 'world') render();
 }
 function viewWorld(){
     const home = currentCountry();
     const others = COUNTRIES.filter(c => c.cc !== home);
     if (!worldCC || worldCC === home) worldCC = others[0].cc;
-    const list = BROWSE[worldCC];
-    if (!list) loadBrowse(worldCC);
+    const list = BROWSE[worldCC], failed = !list && browseErr.has(worldCC);
+    if (!list && !failed) loadBrowse(worldCC);
     loadGenBundle(worldCC);
     const c = countryOf(worldCC);
     const group = (code, title) => {
@@ -4013,7 +4021,9 @@ function viewWorld(){
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${LANG === 'ja' ? (c.nameJa !== c.nameLocal ? `<span class="muted small">${esc(c.nameJa)}</span>` : '') : (c.name !== c.nameLocal ? `<span class="muted small">${esc(c.name)}</span>` : '')}</div>
-        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの')) : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
+        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
+            : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
+            : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
     </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
