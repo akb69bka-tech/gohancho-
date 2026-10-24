@@ -2931,7 +2931,7 @@ function restoreDecided(){
     const items = c.ids.map((id, i) => ({slot: (c.slots || [])[i] || slotOf(byId(id) || {}), r: byId(id)}));
     if (!items.length || items.some(x => !x.r) || items[0].slot !== '主菜') return false;
     const n = items.length;
-    if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join()) return false;   // 品数を変えたら新しく作る
+    if ((S.settings.dishCount !== 'auto' && n !== menuCount()) || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join()) return false;   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
     session.menu = {n, items}; return true;
 }
 function viewToday(){
@@ -3594,6 +3594,8 @@ document.addEventListener('click', e => {
         case 'decide': {
             const m = session.menu;
             const ids = menuIds();
+            // 同じ日に決め直したときは、前に決めた献立の記録を消してから記録する（両方の料理が「今日作った」にならないように）
+            if (S.cook && S.cook.d === TODAY && S.cook.ids){ const prev = S.cook.ids.filter(id => !ids.includes(id)); S.history = S.history.filter(h => !(h.d === TODAY && prev.includes(h.id))); }
             ids.forEach(id => record(id, slotOf(byId(id))));
             S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: {}}; save();
             session.cookIdx = 0;
