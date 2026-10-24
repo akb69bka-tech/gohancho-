@@ -3176,7 +3176,7 @@ function viewFridge(){
         <form class="inputbar search" data-form="search" role="search">
             <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉']).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
             <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         <div id="search-results">${searchResultsHtml(session.search || '')}</div>
         </div>
@@ -3187,7 +3187,7 @@ function viewFridge(){
         <form class="inputbar" data-form="add-ing">
             <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:sampleIngs().join(', ')}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
             <button class="btn primary" type="submit">${esc(t('追加'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
@@ -3498,8 +3498,14 @@ function addIngredients(text){
     else toast(t('食材の名前が読み取れませんでした'));
 }
 let recog = null, recogTimer = 0, recogTarget = 'ing-input';
+const SPEECH_CC = {JP:'ja-JP', US:'en-US', GB:'en-GB', FR:'fr-FR', DE:'de-DE', IT:'it-IT', ES:'es-ES', PL:'pl-PL', TR:'tr-TR', EG:'ar-EG', IN:'hi-IN', CN:'zh-CN', TW:'zh-TW',
+    KR:'ko-KR', TH:'th-TH', VN:'vi-VN', ID:'id-ID', PH:'fil-PH', MX:'es-MX', BR:'pt-BR', PE:'es-PE'};
 function speechLocale(){
     if (PACK && PACK.speechLang) return PACK.speechLang;
+    // 国の言葉で話すときは、その国の言い方（メキシコ・ペルーのスペイン語、エジプトのアラビア語など）で聞き取る
+    const cc = currentCountry(), loc = SPEECH_CC[cc];
+    if (loc && loc.split('-')[0] === LANG.split('-')[0]) return loc;
+    if (LANG === 'en' && ['US', 'GB', 'IN', 'PH'].includes(cc)) return 'en-' + cc;
     const m = {ja:'ja-JP', en:'en-US', fr:'fr-FR', de:'de-DE', it:'it-IT', es:'es-ES', 'pt-BR':'pt-BR', pl:'pl-PL', tr:'tr-TR', ar:'ar-SA', hi:'hi-IN', id:'id-ID', fil:'fil-PH', th:'th-TH', 'zh-Hans':'zh-CN', 'zh-Hant':'zh-TW', ko:'ko-KR', vi:'vi-VN'};
     return m[LANG] || navigator.language || 'en-US';
 }
@@ -3516,27 +3522,31 @@ function stopMic(){ if (recog){ try{ recog.stop(); }catch(e){} } micIdle(); }
 function startMic(targetId){
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR){ toast(t('この端末では声の入力が使えません。文字で入力してください')); return; }
-    if (recog){ stopMic(); return; }
+    // 聞いているボタンをもう一度押すと止める。もう一方のボタンを押したら、そちらの入力欄に切りかえて聞きなおす
+    if (recog){ const same = recogTarget === (targetId || 'ing-input'); recog.switched = !same; stopMic(); if (same) return; }
     recogTarget = targetId || 'ing-input';
     const inp = document.getElementById(recogTarget);
+    // すでに入力してある文字は消さず、聞き取った言葉をうしろに足す
+    const before = inp ? inp.value.trim() : '', joinTo = x => before && x ? before + (LANG === 'ja' ? '、' : ', ') + x : (before || x);
     try{
-        recog = new SR(); recog.lang = speechLocale(); recog.interimResults = true; recog.maxAlternatives = 1; recog.continuous = false;
-        let finalText = '', gotResult = false;
+        const me = recog = new SR(); recog.lang = speechLocale(); recog.interimResults = true; recog.maxAlternatives = 1; recog.continuous = false;
+        let finalText = '', gotResult = false, heard = '';
         micButtons().forEach(b => { if (b.dataset.target === recogTarget){ b.textContent = t('聞いています…（タップで止める）'); b.classList.add('listening'); b.setAttribute('aria-pressed', 'true'); } });
         recog.onresult = e => {
+            if (me.switched) return;
             let interim = ''; finalText = '';
             for (let i = 0; i < e.results.length; i++){ const r = e.results[i]; if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript; }
-            const text = (finalText + interim).replace(/[。．.]+$/g, '').trim();
-            if (inp) inp.value = text;
-            if (finalText){ gotResult = true; commitSpeech(finalText); }
+            heard = (finalText + interim).replace(/[。．.]+$/g, '').trim();
+            if (inp) inp.value = joinTo(heard);
+            if (finalText){ gotResult = true; commitSpeech(joinTo(finalText.replace(/[。．.]+$/g, '').trim())); }
         };
         recog.onerror = e => {
-            if (e.error === 'aborted') return;
+            if (e.error === 'aborted' || me.switched) return;
             toast(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? t('マイクが使えませんでした。文字で入力してください') : t('聞き取れませんでした。もう一度どうぞ'));
         };
-        recog.onend = () => { if (!gotResult && inp && inp.value.trim()) commitSpeech(inp.value); micIdle(); };
+        recog.onend = () => { if (me.switched) return; if (!gotResult && heard) commitSpeech(joinTo(heard)); if (recog === me) micIdle(); };
         recog.start();
-        recogTimer = setTimeout(() => { if (recog) stopMic(); }, 12000);
+        recogTimer = setTimeout(() => { if (recog === me) stopMic(); }, 12000);
     }catch(e){ console.warn('mic', e); micIdle(); toast(t('マイクが使えませんでした。文字で入力してください')); }
 }
 function commitSpeech(text){
