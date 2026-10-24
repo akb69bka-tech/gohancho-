@@ -25,6 +25,8 @@
     --bg:#eef1f4;
     --surface:#ffffff;
     --surface-2:#e4e9ef;
+    --sheet-bg:var(--bg);       /* 下から出るシート。ライトはページと同じ、ダークは一段明るくして浮かせる */
+    --sheet-edge:transparent;
     --ink:#172033;
     --muted:#5b6679;
     --line:#d4dbe4;
@@ -46,7 +48,7 @@
 }
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-        --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
+        --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
         --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
         --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
         --tray:#231a17;--tray-2:#30241f;
@@ -55,7 +57,7 @@
     }
 }
 :root[data-theme="dark"]{
-    --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
+    --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
     --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
     --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
     --tray:#231a17;--tray-2:#30241f;
@@ -240,7 +242,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 
 /* 詳細シート */
 .modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--bg);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+.sheet{background:var(--sheet-bg);box-shadow:0 0 0 1px var(--sheet-edge);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
 @media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh}}
 .sheet>*{flex-shrink:0}
 .hero{position:relative;background:var(--tray);min-height:120px}
@@ -351,11 +353,11 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 /* ヘッダーの設定ボタン */
 .top .gear.flagbtn{font-size:1.35rem;line-height:1}
 .top .gear.flagbtn+.gear{margin-left:8px}
-.country-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:56vh;overflow-y:auto;padding:2px}
-.country{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
+.country-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:56vh;overflow-y:auto;padding:2px}
+.country{display:grid;grid-template-columns:auto minmax(0,1fr);min-width:0;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
 .country .fl{grid-row:span 2;font-size:1.6rem;line-height:1}
-.country .nm{font-weight:700;font-size:.92rem;line-height:1.3}
-.country .sub{font-size:.72rem;color:var(--muted);line-height:1.2}
+.country .nm{font-weight:700;font-size:.92rem;line-height:1.3;min-width:0;overflow-wrap:anywhere}
+.country .sub{font-size:.72rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
 .country.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
 .v-staple{width:62%}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
@@ -389,8 +391,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pw-badge{background:var(--yolk);color:#231800;font-weight:700;font-size:.72rem;letter-spacing:.14em;border-radius:6px;padding:.15rem .5rem}
 .pw-reason{margin:0;font-weight:700}
 .pw-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.pw-list li{padding-left:26px;position:relative}
-.pw-list li::before{content:"";position:absolute;left:4px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);transform:rotate(-45deg)}
+.pw-list li{padding-inline-start:26px;position:relative}
+.pw-list li::before{content:"";position:absolute;inset-inline-start:4px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);transform:rotate(-45deg)}
 .pw-prices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .pw-price{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
 .pw-price.best{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -1057,12 +1059,24 @@ function availLang(l){
     const b = String(l).split('-')[0];
     return I18N_FILES.find(x => x.split('-')[0] === b) || null;
 }
+// 端末の言語のうち、画面の辞書があるもの（なければ null）
+function deviceLang(){
+    try{
+        for (const l of (navigator.languages || [navigator.language])){
+            const v = String(l || ''), b = v.split('-')[0].toLowerCase();
+            if (b === 'ja') return 'ja';
+            if (b === 'zh') return /-(Hant|TW|HK|MO)\b/i.test(v) ? 'zh-Hant' : 'zh-Hans';
+            const a = availLang(b === 'tl' ? 'fil' : v); if (a) return a;
+        }
+    }catch(e){}
+    return null;
+}
 // 'auto': 日本 → 日本語。ほかの国 → その国の言語の辞書があればそれ、なければ英語
 function wantLang(){
     const u = S.settings.uiLang || 'auto';
     if (u !== 'auto' && availLang(u)) return availLang(u);
     const cc = S.settings.country;
-    if (!cc) return 'en';                    // 国を選ぶ前（はじめて開いたとき）は英語
+    if (!cc) return deviceLang() || 'en';    // 国を選ぶ前（はじめて開いたとき）は端末の言語（辞書がなければ英語）
     if (cc === 'JP') return 'ja';
     return availLang(countryOf(cc).lang) || 'en';
 }
