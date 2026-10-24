@@ -1231,7 +1231,7 @@ function scoreRecipe(r, ctx){
 }
 function pick(cands, ctx){
     let scored = cands.map(r => ({r, s: scoreRecipe(r, ctx)})).filter(x => x.s > -Infinity);
-    if (!scored.length) scored = cands.filter(r => !S.hidden.includes(r.id) && !isAvoided(r)).map(r => ({r, s: scoreRecipe(r, Object.assign({}, ctx, {relax:true}))})).filter(x => x.s > -Infinity);
+    if (!scored.length && !ctx.strict) scored = cands.filter(r => !S.hidden.includes(r.id) && !isAvoided(r)).map(r => ({r, s: scoreRecipe(r, Object.assign({}, ctx, {relax:true}))})).filter(x => x.s > -Infinity);
     if (!scored.length) return null;
     scored.forEach(x => x.s += Math.random() * 0.7);
     scored.sort((a,b) => b.s - a.s);
@@ -2614,9 +2614,10 @@ function suggestFor(slot, items, main){
         r => r.main && diff(r),
         r => r.main,
     ];
-    for (const ok of tiers){
+    // 最近作った料理は、どの段階にも作っていない主菜がないときだけ使う（段階の中でゆるめると、まだある主菜より先に最近の料理が出てしまう）
+    for (const strict of [true, false]) for (const ok of tiers){
         const pool = RECIPES.filter(r => free(r) && ok(r));
-        const r = pool.length ? pick(pool, ctx) : null; if (r) return r;
+        const r = pool.length ? pick(pool, Object.assign({}, ctx, {strict})) : null; if (r) return r;
     }
     return null;
 }
