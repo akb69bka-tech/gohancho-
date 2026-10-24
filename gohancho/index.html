@@ -2972,8 +2972,25 @@ function restoreDecided(){
     if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join()) return false;   // 品数を変えたら新しく作る
     session.menu = {n, items}; return true;
 }
+// まだ決めていない今日の案も、その日のうちは同じものを出す（iPhone はアプリを裏で閉じることが多いので、開き直すたびに変わらないよう S.draft に残す）
+let draftTried = false;
+function restoreDraft(){
+    if (draftTried) return false; draftTried = true;   // アプリを開いたときだけ。設定を変えて作り直すときは新しく作る
+    const c = S.draft; if (!c || c.d !== TODAY || c.cc !== currentCountry()) return false;
+    const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
+    if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
+    session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
+    session.twist = PACK ? null : suggestTwist();
+    return true;
+}
+function keepDraft(){
+    const m = session.menu; if (!m) return;
+    const d = {d: TODAY, cc: currentCountry(), n: m.n, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge};
+    if (JSON.stringify(d) !== JSON.stringify(S.draft)){ S.draft = d; save(); }
+}
 function viewToday(){
-    if (!session.menu && !restoreDecided()) newMenu();
+    if (!session.menu && !restoreDecided() && !restoreDraft()) newMenu();
+    draftTried = true; keepDraft();
     const m = session.menu;
     const main = m.items[0] && m.items[0].r;
     const planned = weekToday();
