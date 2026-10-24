@@ -1292,7 +1292,7 @@ function scoreRecipe(r, ctx){
     if (ds < avoid*2) s -= 0.35 * (1 - (ds - avoid) / avoid);
     if (ds === Infinity) s += 0.1;
     if (S.favs.includes(r.id)) s += 0.3;
-    s += reactBias(r.id);   // 家族の反応（また作って！・おいしかった → 少し出やすく、ふつう2回以上 → 少し出にくく）
+    s += reactBias(r.id);   // 家族の「おいしかった！」が多い料理は少し出やすく
     if (ctx.recent){
         ctx.recent.forEach(x => {
             if (x.family === r.family && r.family !== '野菜') s -= x.ago <= 1 ? 0.6 : 0.2;
@@ -1540,67 +1540,71 @@ function record(id, slot, d=TODAY){
 }
 function slotOf(r){ return r.main ? '主菜' : r.type === '汁物' ? '汁物' : '副菜'; }
 
-/* ---- 家族の反応と今月の料理自慢（サーバーなし・端末の中だけ）----
-   作った記録（S.history の1件）に h.r = 'again'（また作って！ 3点）／'good'（おいしかった 2点）／'ok'（ふつう 0点）を付ける。
-   その月の点の合計がいちばん多い料理が「今月のわが家の料理自慢」（同点は最近の反応が新しいほう）。終わった月は S.awards['2026-10'] に残す */
-const REACTS = [['again', 3], ['good', 2], ['ok', 0]];
-function reactLabel(k){ return k === 'again' ? t('また作って！') : k === 'good' ? t('おいしかった') : t('ふつう'); }
-function reactPts(k){ const x = REACTS.find(x => x[0] === k); return x ? x[1] : 0; }
+/* ---- 「おいしかった！」と今月の料理自慢（サーバーなし・端末の中だけ）----
+   作った記録（S.history の1件）に h.y = おいしかったと押した人数を付ける（家族ひとりにつき1回押す）。
+   その月の人数の合計がいちばん多い料理が「今月のわが家の料理自慢」（同じなら新しく作ったほう）。終わった月は S.awards['2026-10'] に残す。
+   以前の h.r（'again'・'good'）は1人ぶんとして数える */
+const YUM_MAX = 20;
+function yumOf(h){ return h ? (h.y > 0 ? h.y : (h.r === 'again' || h.r === 'good') ? 1 : 0) : 0; }
 function histEntry(id, d){ return S.history.find(h => h.id === id && h.d === d); }
 let reactVer = 0, reactCache = null;
-function setReaction(id, d, k){
-    const h = histEntry(id, d); if (!h) return;
-    if (h.r === k) delete h.r; else h.r = k;   // 同じものをもう一度押すと取り消し。ちがうものは置きかえ
-    reactVer++; settleAwards(); save();
+function addYum(id, d, n){
+    const h = histEntry(id, d); if (!h) return 0;
+    const y = Math.max(0, Math.min(YUM_MAX, yumOf(h) + n));
+    delete h.r; if (y) h.y = y; else delete h.y;
+    reactVer++; settleAwards(); save(); return y;
 }
+// おいしかったが多い料理は献立に少し出やすく（下げることはしない）
 function reactBias(id){
     if (!reactCache || reactCache.h !== S.history || reactCache.n !== S.history.length || reactCache.v !== reactVer){
-        const m = {}; S.history.forEach(h => { if (h.r){ const x = m[h.id] = m[h.id] || {again:0, good:0, ok:0}; if (x[h.r] !== undefined) x[h.r]++; } });
+        const m = {}; S.history.forEach(h => { const y = yumOf(h); if (y) m[h.id] = (m[h.id] || 0) + y; });
         reactCache = {h: S.history, n: S.history.length, v: reactVer, m};
     }
-    const x = reactCache.m[id]; if (!x) return 0;
-    return (x.again ? 0.3 : x.good ? 0.2 : 0) - (x.ok >= 2 ? 0.3 : 0);
+    return Math.min(0.3, (reactCache.m[id] || 0) * 0.1);
 }
 function monthAward(ym){
     const m = {};
-    S.history.forEach(h => { if (!h.r || !String(h.d).startsWith(ym)) return;
-        const x = m[h.id] = m[h.id] || {id:h.id, name:h.name, pts:0, last:'', n:{}};
-        x.pts += reactPts(h.r); x.n[h.r] = (x.n[h.r] || 0) + 1; if (h.d > x.last) x.last = h.d; });
-    return Object.values(m).filter(x => x.pts > 0).sort((a,b) => b.pts - a.pts || (a.last < b.last ? 1 : a.last > b.last ? -1 : 0))[0] || null;
+    S.history.forEach(h => { const y = yumOf(h); if (!y || !String(h.d).startsWith(ym)) return;
+        const x = m[h.id] = m[h.id] || {id:h.id, name:h.name, pts:0, last:''};
+        x.pts += y; if (h.d > x.last) x.last = h.d; });
+    return Object.values(m).sort((a,b) => b.pts - a.pts || (a.last < b.last ? 1 : a.last > b.last ? -1 : 0))[0] || null;
 }
 function awardName(a){ const r = byId(a.id); return r ? r.name : a.name; }
 // 終わった月の料理自慢を S.awards に残す（記録が残っている月は記録から数え直す。消した月はそのまま残す）
 function settleAwards(){
     const cur = TODAY.slice(0,7); let ch = false;
     if (!S.awards || typeof S.awards !== 'object') S.awards = {};
-    new Set(S.history.filter(h => h.r && String(h.d).slice(0,7) < cur).map(h => h.d.slice(0,7))).forEach(ym => {
+    new Set(S.history.filter(h => yumOf(h) && String(h.d).slice(0,7) < cur).map(h => h.d.slice(0,7))).forEach(ym => {
         const w = monthAward(ym), o = S.awards[ym]; if (!w) return;
         if (!o || o.id !== w.id || o.pts !== w.pts){ S.awards[ym] = {id:w.id, name:awardName(w), pts:w.pts}; ch = true; }
     });
     return ch;
 }
+function yumCount(n){ return t('{n}人', {n}); }
 function monthLabel(ym){
     const [y, m] = ym.split('-').map(Number);
     if (LANG === 'ja') return `${y}年${m}月`;
     try{ return new Intl.DateTimeFormat(LANG, {year:'numeric', month:'long'}).format(new Date(y, m-1, 1)); }catch(e){ return ym; }
 }
-// 反応のボタン（3つを1列に）。その日の記録がある料理だけ出す
+// 「おいしかった！」のボタン。家族ひとりにつき1回押す。押しすぎたときは「−」で減らす。その日の記録がある料理だけ出す
 function reactRowHtml(id, d){
     const h = histEntry(id, d); if (!h) return '';
-    return `<div class="react" role="group" aria-label="${esc(t('家族の反応は？'))}"><span class="small muted">${esc(t('家族の反応は？'))}</span>${REACTS.map(([k]) =>
-        `<button class="chip" data-act="react" data-id="${esc(id)}" data-d="${esc(d)}" data-v="${k}" aria-pressed="${h.r === k}">${esc(reactLabel(k))}</button>`).join('')}${proMark()}</div>`;
+    const y = yumOf(h);
+    return `<div class="react" role="group" aria-label="${esc(t('おいしかった人は押してください'))}"><span class="small muted">${esc(t('おいしかった人は押してください'))}</span>
+        <button class="chip yum" data-act="yum" data-id="${esc(id)}" data-d="${esc(d)}" aria-pressed="${y > 0}">${esc(t('おいしかった！'))}${y ? ` <b>${esc(yumCount(y))}</b>` : ''}</button>
+        ${y ? `<button class="chip yum-minus" data-act="yum-minus" data-id="${esc(id)}" data-d="${esc(d)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}${proMark()}</div>`;
 }
 function awardShareLine(){ const w = monthAward(TODAY.slice(0,7)); return w ? t('今月の料理自慢: {name}', {name:awardName(w)}) : ''; }
 function awardHtml(){
     if (settleAwards()) save();
     const ym = TODAY.slice(0,7), w = monthAward(ym), r = w && byId(w.id);
     const past = Object.entries(S.awards || {}).filter(([k, a]) => k < ym && a && a.id).sort((a,b) => a[0] < b[0] ? 1 : -1).slice(0, 12);
-    return `<div class="sec-head"><h2>${esc(t('今月のわが家の料理自慢'))}</h2><span class="hint">${esc(t('家族の反応がいちばんよかった料理です'))}</span></div>
+    return `<div class="sec-head"><h2>${esc(t('今月のわが家の料理自慢'))}</h2><span class="hint">${esc(t('家族の「おいしかった！」がいちばん多かった料理です'))}</span></div>
         ${w ? `<div class="card award"><div class="award-main">${r ? thumbHtml(r) : ''}<div style="min-width:0">
             <div class="eyebrow">${esc(monthLabel(ym))}</div>
             <h3 data-act="open-hist" data-id="${esc(w.id)}">${esc(awardName(w))}</h3>
-            <div class="small muted">${esc(['again', 'good'].filter(k => w.n[k]).map(k => LANG === 'ja' ? reactLabel(k) + ' ' + t('{n}回', {n:w.n[k]}) : `${reactLabel(k)} ×${w.n[k]}`).join(GAP()))}</div></div></div></div>`
-            : `<div class="list"><div class="empty">${esc(t('料理を作ったら、家族の反応を「また作って！」「おいしかった」「ふつう」から1つ押してください。反応がいちばんよかった料理を、月ごとに表彰します。'))}</div></div>`}
+            <div class="small muted">${esc(t('おいしかった！'))} ${esc(yumCount(w.pts))}</div></div></div></div>`
+            : `<div class="list"><div class="empty">${esc(t('料理を作ったら、おいしかった人が「おいしかった！」を1回ずつ押してください。いちばん多かった料理を、月ごとに表彰します。'))}</div></div>`}
         ${past.length ? `<div class="sec-head"><h3>${esc(t('これまでの料理自慢'))}</h3></div>
         <div class="list">${past.map(([k, a]) => `<div class="item"><div class="t" data-act="open-hist" data-id="${esc(a.id)}">${esc(awardName(a))}<div class="s">${esc(monthLabel(k))}</div></div></div>`).join('')}</div>` : ''}`;
 }
@@ -2651,7 +2655,7 @@ function paywallReason(k){
         case 'photos': return t('「わが家の写真」は、無料版では{n}枚までです。', {n:PLAN.freeLimits.myPhotos});
         case 'week': return t('無料版で見られる献立プランは{days}までです。1週間分まとめて見ると、まとめ買いが一度で済みます。', {days: PLAN.freeLimits.weekDays === 1 ? t('今日の1日分') : t('{n}日分', {n:PLAN.freeLimits.weekDays})});
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ご飯帖プラスで使えます。コツの内容はこのまま読めます。');
-        case 'award': return t('家族の反応と今月の料理自慢は、ご飯帖プラスで使えます。');
+        case 'award': return t('「おいしかった！」と今月の料理自慢は、ご飯帖プラスで使えます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
         case 'start': return introEligible ? introLabel() : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
         case 'monitor': return t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)});
@@ -3657,7 +3661,7 @@ function viewLog(){
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         <div class="list">${Object.keys(byDay).length ? Object.entries(byDay).slice(0, 30).map(([d, hs]) => hs.map((h,i) => `
             <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
-            <div class="item-acts"><button class="btn sm ${h.r ? 'reacted' : 'ghost'}" data-act="react-open" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('家族の反応は？'))}" aria-expanded="${session.reactOpen === d + '|' + h.id}">${h.r ? esc(reactLabel(h.r)) : PLUS() + esc(t('反応'))}</button>
+            <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="react-open" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}" aria-expanded="${session.reactOpen === d + '|' + h.id}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
             ${session.reactOpen === d + '|' + h.id ? `<div class="item react-item">${reactRowHtml(h.id, d)}</div>` : ''}`).join('')).join('')
             : `<div class="empty">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
@@ -4106,10 +4110,10 @@ document.addEventListener('click', e => {
             refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;
         case 'unhide': S.hidden = S.hidden.filter(x => x !== id); save(); render(); break;
-        case 'react': {
+        case 'yum': case 'yum-minus': {
             if (!hasPro()){ openPaywall('award'); break; }
-            const d = el.dataset.d; setReaction(id, d, el.dataset.v);
-            const h = histEntry(id, d); toast(h && h.r ? t('「{label}」を記録しました', {label:reactLabel(h.r)}) : t('反応を取り消しました'));
+            const y = addYum(id, el.dataset.d, act === 'yum' ? 1 : -1);
+            toast(y ? t('「おいしかった！」が{n}人になりました', {n:y}) : t('「おいしかった！」を取り消しました'));
             if (modalId) renderModal(); render(); break;
         }
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
