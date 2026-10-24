@@ -9,10 +9,12 @@
 | `draw/kit.mjs` | 器（皿・鉢・椀・丼・長皿・小鉢など）と具材の部品。光は左上から、影・照り・揚げ衣の質感つき |
 | `draw/dishes/*.mjs` | 料理ごとの盛りつけ（どの器に、どの具を、どこに置くか） |
 | `draw/build.mjs` | 絵を `gohancho/img/dish/{id}.svg` に書き出し、`manifest.json` に登録する |
+| `draw/thumbs.mjs` | 一覧用の小さい絵（192px の WebP）を `gohancho/img/dish/t/{id}.webp` に作り、`manifest.json` の `thumb` に登録する。一覧に何百品も並んでも速く出すため（Playwright が必要） |
 
 ```bash
 node tools/illustrations/draw/build.mjs            # 全部作り直す
 node tools/illustrations/draw/build.mjs nikujaga   # 1品だけ
+node tools/illustrations/draw/thumbs.mjs           # 絵を作ったあとに必ず。小さい絵がない・古いものだけ作る
 ```
 
 レシピを追加したら、`draw/dishes/` のどれかに同じ ID で盛りつけを書いて、上のコマンドを実行します。
@@ -50,6 +52,27 @@ Mac で1回だけ実行 ──▶ ChatGPT（OpenAI）が絵を作る ──▶ g
 | 必要なもの | OpenAI の API キー（ChatGPT Plus とは別契約） | ChatGPT アカウント |
 
 ---
+
+## 世界の料理（21か国）も ChatGPT で作る
+
+2026年10月から、日本以外の国の料理も同じ道具で作れます。
+
+| 作るもの | コマンドに足すもの | 品数 | 費用の目安（low / medium） |
+| --- | --- | --- | --- |
+| 追加した汁もの・主菜・副菜（設定から描いた絵） | `--new` | 1,260 | 約14 / 約53 米ドル |
+| 1か国だけ | `--country KR`（日本は `JP`） | 約60〜80 | 約1 / 約3 米ドル |
+| 全部 | （なし） | 1,723 | 約19 / 約72 米ドル |
+
+```bash
+export OPENAI_API_KEY='sk-ここに貼る'
+node tools/illustrations/generate.mjs --dry-run --new --country KR   # 指示文と費用を見る（無料）
+node tools/illustrations/generate.mjs --new --country KR             # 韓国の分だけ作る
+node tools/illustrations/draw/thumbs.mjs                             # 必ず続けて実行（1024px → 512px に縮め、一覧用の小さい絵を作る）
+```
+
+- 品質を下げて安くするときは、先に `export GOHAN_IMAGE_QUALITY=low` を実行します。
+- `thumbs.mjs` を忘れると、1枚 1MB ほどの画像がそのまま入り、アプリが重くなります。
+- 気に入らない料理は `--only kr_bibimbap --force` で作り直せます。
 
 ## A. 自動で作る（おすすめ）
 

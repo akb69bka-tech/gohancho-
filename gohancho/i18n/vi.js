@@ -562,6 +562,7 @@ GOHAN_I18N('vi', {
     "くわしく見る（ひと手間・お気に入り）": "Thêm (mẹo đầu bếp, yêu thích)",
     "この写真をアルバムから消す": "Xóa ảnh này khỏi album",
     "すべて見る（{n}枚）": "Xem tất cả ({n} ảnh)",
+    "すべて見る（{n}品）": "Xem tất cả ({n} món)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "Chưa có ảnh. Chạm \"Thêm ảnh món bạn nấu\" trong công thức, ảnh sẽ được lưu ở đây kèm ngày.",
     "わが家のアルバム": "Album gia đình",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Đã lưu ảnh. Ảnh cũng hiện trong thực đơn và trong album ở \"Nhật ký\".",

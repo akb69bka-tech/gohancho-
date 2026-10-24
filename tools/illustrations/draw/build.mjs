@@ -36,10 +36,14 @@ let n = 0, bytes = 0;
 for (const id of ids){
     const p = new Pic(id);
     const svg = p.svg(DISHES[id](p));
-    fs.writeFileSync(path.join(OUT, `${id}.svg`), svg);
+    const file = path.join(OUT, `${id}.svg`);
+    // 絵が前と同じなら、manifest の日付と一覧用の小さい絵（thumb）はそのまま残す
+    const same = fs.existsSync(file) && fs.readFileSync(file, 'utf8') === svg;
+    if (!same) fs.writeFileSync(file, svg);
     bytes += svg.length; n++;
     const cur = m.items[id];
-    if (!cur || cur.via === 'svg') m.items[id] = { file: `${id}.svg`, via: 'svg', model: 'hand-drawn', date: new Date().toISOString().slice(0, 10) };
+    if (!cur || (cur.via === 'svg' && !same)) m.items[id] = { file: `${id}.svg`, via: 'svg', model: 'hand-drawn', date: new Date().toISOString().slice(0, 10) };
 }
 if (!noManifest) fs.writeFileSync(MANIFEST, JSON.stringify(m, null, 2) + '\n');
 console.log(`${n}品の絵を作りました（合計 ${Math.round(bytes / 1024)}KB）`);
+if (!noManifest) console.log('続けて node tools/illustrations/draw/thumbs.mjs で、一覧用の小さい絵を作ってください');

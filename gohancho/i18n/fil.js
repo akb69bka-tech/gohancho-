@@ -562,6 +562,7 @@ GOHAN_I18N('fil', {
     "くわしく見る（ひと手間・お気に入り）": "Higit pa (tip ng chef, paborito)",
     "この写真をアルバムから消す": "Alisin ang larawang ito sa album",
     "すべて見る（{n}枚）": "Tingnan lahat ({n} larawan)",
+    "すべて見る（{n}品）": "Tingnan lahat ({n} putahe)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "Wala pang larawan. I-tap ang \"Magdagdag ng litrato ng luto mo\" sa recipe at itatago ito rito kasama ang petsa.",
     "わが家のアルバム": "Album ng pamilya",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Na-save ang larawan. Lalabas din ito sa menu at sa album sa \"Talaan\".",

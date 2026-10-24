@@ -562,6 +562,7 @@ GOHAN_I18N('it', {
     "くわしく見る（ひと手間・お気に入り）": "Altro (consiglio, preferito)",
     "この写真をアルバムから消す": "Rimuovi questa foto dall'album",
     "すべて見る（{n}枚）": "Vedi tutte ({n} foto)",
+    "すべて見る（{n}品）": "Vedi tutti ({n} piatti)",
     "まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。": "Ancora nessuna foto. Tocca «Aggiungi una foto del tuo piatto» in una ricetta: sarà conservata qui con la data.",
     "わが家のアルバム": "Album di famiglia",
     "わが家の一枚を登録しました。献立と「記録」のアルバムにも出ます": "Foto salvata. Appare anche nel menu e nell'album in «Diario».",
