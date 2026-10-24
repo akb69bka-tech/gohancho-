@@ -793,6 +793,7 @@ const CANON = [
     ['おから',['おから']],
     ['さやいんげん',['いんげん']],
     ['ご飯',['ご飯','ごはん','白米','米']],
+    ['パン粉',['パン粉']],
     ['食パン',['食パン','パン']],
 ];
 const PANTRY = new Set(['ご飯']);   // いつもある前提のもの
@@ -803,32 +804,56 @@ function norm(s){
         .replace(/[\s　]/g,'');
 }
 // 長い表記から順に照合する（「たまねぎ」を「ねぎ」より先に、「牛乳」を「牛」より先に）
+// ラテン文字の言葉（英語・フランス語など）は単語ごとに照合する。部分一致だと eggplant が egg、peanuts が nuts に当たってしまうため
+const LATIN_RE = /^[a-zÀ-ɏ'’.\- ]+$/;
+function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ0-9]+/g, ' ').trim() + ' '; }
+function wordRe(phrase){
+    const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:e?s)?');
+    return ws.length ? new RegExp(' ' + ws.join(' ') + ' ') : null;
+}
 const VARIANTS = [];
 function rebuildVariants(){
     VARIANTS.length = 0;
-    CANON.forEach(([c, vs], order) => vs.forEach(v => VARIANTS.push({c, v: norm(v), order})));
+    CANON.forEach(([c, vs], order) => vs.forEach(v => {
+        const raw = String(v).normalize('NFKC').toLowerCase().trim();
+        VARIANTS.push(LATIN_RE.test(raw) ? {c, v: norm(v), order, re: wordRe(raw)} : {c, v: norm(v), order});
+    }));
     VARIANTS.sort((a,b) => b.v.length - a.v.length || a.order - b.order);
 }
 rebuildVariants();
+function variantIn(x, n, w){ return x.re ? x.re.test(w) : n.includes(x.v); }
 function canonOf(name){
-    const n = norm(name);
-    for (const {c, v} of VARIANTS) if (n.includes(v)) return c;
+    const n = norm(name), w = wnorm(name);
+    for (const x of VARIANTS) if (variantIn(x, n, w)) return x.c;
     return null;
 }
 function keyOf(name){ return canonOf(name) || norm(name); }
 const PACK_NAMES = {};   // 食材キー → 表示名（国のパックを使っているとき。日本は空）
 function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c) : String(name).replace(/[（(][^）)]*[）)]/g,'').trim(); }
-// 自由入力（「豚肉と玉ねぎとキャベツ」など）から食材を取り出す
+// 自由入力（「豚肉と玉ねぎとキャベツ」「green onions, pork」など）から食材を取り出す
+// ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
 function extractIngredients(text){
-    const out = [];
-    String(text).split(/[、,，。・\/\n]+|\s+/).forEach(tok => {
-        tok = tok.trim(); if (!tok) return;
-        let t = norm(tok); const found = [];
-        for (const {c, v} of VARIANTS){
-            if (t.includes(v)){ found.push(c); t = t.split(v).join('｜'); }
+    const out = [], push = c => { if (!out.includes(c)) out.push(c); };
+    String(text).split(/[、,，。・\/\n;；]+/).forEach(seg => {
+        seg = seg.trim(); if (!seg) return;
+        if (/[a-zÀ-ɏ]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg)){
+            let w = wnorm(seg); const found = [];
+            for (const x of VARIANTS){
+                if (x.re && x.re.test(w)){ found.push(x.c); w = w.replace(x.re, ' | '); }
+            }
+            if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
+            else if (seg.length <= 30) push(seg);
+            return;
         }
-        if (found.length) found.map(c => PACK_NAMES[c] || c).forEach(c => { if (!out.includes(c)) out.push(c); });
-        else if (tok.length <= 12 && !out.includes(tok)) out.push(tok);
+        seg.split(/\s+/).forEach(tok => {
+            tok = tok.trim(); if (!tok) return;
+            let t = norm(tok); const found = [];
+            for (const x of VARIANTS){
+                if (!x.re && t.includes(x.v)){ found.push(x.c); t = t.split(x.v).join('｜'); }
+            }
+            if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
+            else if (tok.length <= 12) push(tok);
+        });
     });
     return out;
 }
@@ -2630,7 +2655,11 @@ function servingFactor(){ return (Number(S.settings.servings) || 2) / 2; }
 function avoidKeys(){ return new Set((S.settings.avoid || []).map(keyOf)); }
 function isAvoided(r){
     const ks = avoidKeys(); if (!ks.size || !r || !r.items) return false;
-    return r.items.some(i => !i.opt && ks.has(i.key));
+    if (r.items.some(i => !i.opt && ks.has(i.key))) return true;
+    // 食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば避ける
+    const free = (S.settings.avoid || []).filter(x => !canonOf(x));
+    return free.some(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(), re = LATIN_RE.test(raw) ? wordRe(raw) : null;
+        return r.items.some(i => !i.opt && (re ? re.test(wnorm(i.label + ' ' + i.name)) : norm(i.label + i.name).includes(norm(x)))); });
 }
 
 /* =========================================================
@@ -3555,8 +3584,10 @@ document.addEventListener('click', e => {
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-done': {
-            S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...sheet.avoid];
-            S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples])];
+            // 日本を日本語以外で使うとき、画面の名前（Pork など）ではなく食材の名前（豚肉）で保存する。言語を変えても効くように
+            const jpKey = v => currentCountry() === 'JP' ? (canonOf(v) || v) : v;
+            S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
+            S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
             S.onboarded = true; save(); closeSheet(); session.menu = null; setTab('today');
             toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
