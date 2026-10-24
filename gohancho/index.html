@@ -2538,7 +2538,7 @@ function renderSheet(){
             <div class="chips">${AVOID_QUICK.map(q => `<button class="chip" data-act="ob-avoid" data-v="${esc(q)}" aria-pressed="${sheet.avoid.has(q)}">${esc(q)}</button>`).join('')}</div>
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
-            <div class="chips">${STAPLE_QUICK.slice(0,12).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
+            <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
         body = `<div class="ob-dots" aria-hidden="true">${dots}</div>${body}
             ${st > 0 ? '' : `<button class="btn sm ghost ob-skip" data-act="ob-skip">${esc(t('設定せずに使う'))}</button>`}`;
@@ -4047,7 +4047,7 @@ async function setCountry(cc){
     await setLang(wantLang());
     await ensureTr(cc);
     applyCountry(cc);
-    // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定で外せる）
+    // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
     if (PACK && fresh && !S.staples.length){ S.staples = STAPLE_QUICK.slice(); save(); }
     if (first){ S.firstUse = TODAY; save(); }   // 無料期間は国を選んで使いはじめた日から
     return true;
