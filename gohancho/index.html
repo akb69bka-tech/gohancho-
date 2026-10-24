@@ -186,8 +186,9 @@ a{color:var(--accent)}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
 input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
-.inputbar{display:grid;grid-template-columns:1fr auto auto;gap:8px}
-@media (max-width:420px){.inputbar{grid-template-columns:1fr auto}.inputbar [data-act=mic]{grid-column:1/-1}}
+.inputbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
+.inputbar input{min-width:0}
+@media (max-width:420px){.inputbar{grid-template-columns:minmax(0,1fr) auto}.inputbar [data-act=mic]{grid-column:1/-1}}
 .btn.listening{background:var(--accent);color:#fff;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.6}}
 @media (prefers-reduced-motion: reduce){.btn.listening{animation:none}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
