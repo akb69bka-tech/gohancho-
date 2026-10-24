@@ -1127,7 +1127,7 @@ function jpDate(s, withWeekday=true){
     try{ return new Intl.DateTimeFormat(LANG, withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}).format(d); }
     catch(e){ return s; }
 }
-const TODAY = ymd();
+let TODAY = ymd();   // 開いたまま日付が変わったら refreshToday() で更新する
 function byId(id){
     return RECIPES.find(r => r.id === id) || (String(id).startsWith('a~') ? buildTwist(id) : null)
         || Object.values(BROWSE).reduce((hit, list) => hit || list.find(r => r.id === id), null) || null;
@@ -4152,6 +4152,17 @@ if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前�
     else if (!S.onboarded) startOnboard();
 })();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
+// アプリを開いたまま日付をまたいだとき（画面に戻ってきたとき）に、今日の日付と献立を新しくする
+function refreshToday(){
+    const d = ymd(); if (d === TODAY) return;
+    TODAY = d;
+    if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
+    session.menu = null; session.countSalt = 0; session.rejected.clear();
+    render();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshToday(); });
+window.addEventListener('focus', refreshToday);
+(() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', refreshToday); }catch(e){} })();
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 loadGenerated().then(loadPhotos);
 loadMine();
