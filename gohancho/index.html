@@ -2838,16 +2838,26 @@ function visiblePlanDays(){
     const days = S.week.days.filter(x => x.d >= TODAY);
     return hasPro() ? days : days.slice(0, PLAN.freeLimits.weekDays);
 }
+// 買い物メモで同じ材料とみなす名前（かっこ・「, diced」などの下ごしらえ・複数形の s を除く。タイ語は最初の空白まで）
+// 食材のキーが同じでも名前がちがうもの（ミニトマトとトマト、숙주と콩나물、밥と쌀）は別の行にする
+function shopBase(label){
+    let s = String(label).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').split(/[,，、]/)[0].trim();
+    if (/[\u0E00-\u0E7F]/.test(s)) s = s.split(/\s+/)[0];
+    return s.split(/\s+/).map(w => /^[a-zà-ɏ'’-]+$/.test(w) ? w.replace(/(?<=..)s$/, '') : w).join(' ');
+}
 function shoppingList(){
-    const have = fridgeKeys(), fac = servingFactor(), map = new Map();
+    const have = fridgeKeys(), fac = servingFactor(), map = new Map(), first = new Map();
     visiblePlanDays().forEach(x => {
         const r = byId(x.id); if (!r) return;
         r.items.forEach(i => {
             if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
-            const e = map.get(i.key) || {key:i.key, label:i.label, qty:[], dishes:[]};
+            const b = shopBase(i.label); if (!first.has(i.key)) first.set(i.key, b);
+            const id = first.get(i.key) === b ? i.key : i.key + '|' + b;   // チェックの記録と合うよう、最初の名前はキーのまま
+            const e = map.get(id) || {key:id, label:i.label, qty:[], dishes:[]};
+            if (i.label.length < e.label.length) e.label = i.label;          // まとめた行は、いちばん短い名前で出す
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
-            map.set(i.key, e);
+            map.set(id, e);
         });
     });
     return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, LANG));
@@ -2859,10 +2869,11 @@ function sumQty(list){
         const m = String(q).match(/^(\D*?)(?:(\d+)[と ])?(\d+(?:\.\d+)?)(?:\/(\d+))?(\D*)$/);
         if (!m){ rest.push(q); return; }
         const v = (m[2] ? Number(m[2]) : 0) + (m[4] ? Number(m[3]) / Number(m[4]) : Number(m[3]));
-        const key = m[1] + '|' + m[5];
-        groups.set(key, (groups.get(key) || 0) + v);
+        // 単位（前後の言葉）がちがうものは足さない。「400 g」と「400g」は同じ単位とみなす
+        const key = m[1].trim() + '|' + m[5].trim(), g = groups.get(key) || {pre:m[1], unit:m[5], v:0};
+        g.v += v; groups.set(key, g);
     });
-    const out = [...groups.entries()].map(([k, v]) => { const [pre, unit] = k.split('|'); const f = fmtAmount(v, unit); return pre + (f === '1/8' ? t('少々') : f) + unit; });
+    const out = [...groups.values()].map(({pre, unit, v}) => { const f = fmtAmount(v, unit.trim()); return pre + (f === '1/8' ? t('少々') : f) + unit; });
     return [...out, ...rest];
 }
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
