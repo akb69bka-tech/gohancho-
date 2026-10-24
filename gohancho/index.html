@@ -1137,7 +1137,7 @@ function applyStaticText(){
 function typeLabel(c){ return {'主菜':t('主菜'), '副菜':t('副菜'), '汁物':t('汁物'), 'ごはん':t('ごはん'), '麺':t('麺')}[c] || c; }
 function slotLabel(c){ return c === '汁物' ? t('汁もの') : typeLabel(c); }
 function genreLabel(r){
-    if (r.pack) return countryOf(r.pack).nameLocal;
+    if (r.pack) return countryLabel(countryOf(r.pack));
     return {'和':t('和食'), '洋':t('洋食'), '中':t('中華'), '韓':t('韓国'), 'エスニック':t('エスニック')}[r.genre] || r.genre || '';
 }
 function familyLabel(f){
@@ -3174,7 +3174,7 @@ function viewFridge(){
         <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
         <div class="card">
         <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉']).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
             <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
@@ -3262,7 +3262,7 @@ function runSearch(q){
     session.search = q;
     const box = $('#search-results'); if (box) box.innerHTML = searchResultsHtml(q);
 }
-function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵']; }
+function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵'].map(labelOf); }
 function matchRow(m){
     const r = m.r;
     const parts = [
@@ -3881,6 +3881,13 @@ window.GOHAN_PACK = pack => { if (pack && pack.country) PACKS[pack.country] = pa
 let PACK = null;                     // いま使っている国のパック（日本は null）
 let JP_DATA = null;                  // 日本のデータの控え（国を切りかえて戻るときに使う）
 function countryOf(cc){ return COUNTRIES.find(c => c.cc === cc) || COUNTRIES[0]; }
+// 国の名前を画面の言語で（日本語は nameJa、その国の言葉なら nameLocal、ほかは端末の Intl。使えなければ英語名）
+function countryLabel(c){
+    if (LANG === 'ja') return c.nameJa;
+    if (c.lang === LANG) return c.nameLocal;
+    try{ const n = new Intl.DisplayNames([LANG], {type:'region'}).of(c.cc); if (n && n !== c.cc) return n; }catch(e){}
+    return c.name;
+}
 function currentCountry(){ return S.settings.country || 'JP'; }
 function guessCountry(){
     try{
@@ -4105,7 +4112,7 @@ function viewWorld(){
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
-        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${LANG === 'ja' ? (c.nameJa !== c.nameLocal ? `<span class="muted small">${esc(c.nameJa)}</span>` : '') : (c.name !== c.nameLocal ? `<span class="muted small">${esc(c.name)}</span>` : '')}</div>
+        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
         ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの')) : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
     </section>`;
 }
@@ -4190,7 +4197,7 @@ function stapleSpot(){
 }
 function countrySheetHtml(){
     const cur = S.settings.country || guessCountry();
-    const subOf = c => LANG === 'ja' ? (c.nameLocal === c.nameJa ? '' : c.nameJa) : (c.nameLocal === c.name ? '' : c.name);
+    const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
         <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}">
