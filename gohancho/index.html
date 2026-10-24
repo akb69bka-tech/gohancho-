@@ -448,6 +448,17 @@ nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:
 .cook-head h3{margin:0 0 4px;font-size:1.1rem}
 .cook-steps li{cursor:pointer;border-radius:8px;transition:opacity .15s}
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
+.timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .45rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5}
+.timers{position:sticky;top:8px;z-index:5;display:flex;flex-direction:column;gap:6px}
+.timers:empty{display:none}
+.timer{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.4rem .7rem;box-shadow:var(--shadow);min-width:0}
+.timer .tm{font-family:var(--font-display);font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums;color:var(--accent);flex:0 0 auto}
+.timer .tn{flex:1;min-width:0;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.timer .x{border:0;background:transparent;font-size:1.2rem;line-height:1;color:var(--muted);min-width:32px;min-height:32px;cursor:pointer}
+.timer.ring{background:var(--yolk-soft);border-color:var(--yolk);animation:ring 1s ease-in-out infinite}
+.timer.ring .tm{color:var(--yolk-ink)}
+@keyframes ring{50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--yolk) 45%,transparent)}}
+@media (prefers-reduced-motion:reduce){.timer.ring{animation:none}}
 .cook-steps li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cook-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 /* わが家のアルバム */
@@ -3106,6 +3117,7 @@ function viewCook(){
     return `<section class="sec">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
+        <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
         <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
             ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
         <div class="card cook-card" role="tabpanel">
@@ -3407,9 +3419,46 @@ function recipeCoreHtml(r, done){
                 <div class="label">${esc(t('作り方'))}</div>
                 ${fac !== 1 ? `<p class="small muted" style="margin:0">${esc(t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
                 ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>
-                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}">${esc(stepText(st))}</li>`).join('')}</ol>`
+                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}">${timerStepHtml(stepText(st), r.name)}</li>`).join('')}</ol>`
                 : `<ol class="steps">${r.steps.map(st => typeof st === 'string' ? `<li>${esc(st)}</li>` : `<li class="${st.add?'add':''}">${esc(st.t)}</li>`).join('')}</ol>`}
                 ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}`;
+}
+/* ---- 作り方タブのタイマー（手順の「8分」などをタップすると数えはじめる。音や振動は出さず、0になったら目で分かるように） ---- */
+const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
+function timerSecs(num, unit){
+    const u = unit.toLowerCase(), v = parseFloat(num.replace(',', '.'));
+    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
+    const sec = Math.round(v * f); return sec > 0 && sec <= 12 * 3600 ? sec : 0;
+}
+function timerStepHtml(text, name){
+    let out = '', last = 0;
+    String(text).replace(TIMER_RE, (m, num, unit, off) => {
+        const sec = timerSecs(num, unit); if (!sec) return m;
+        out += esc(text.slice(last, off)) + `<button type="button" class="timer-chip" data-act="timer" data-s="${sec}" data-name="${esc(name)}" data-label="${esc(m)}" aria-label="${esc(t('タイマーを始める'))}: ${esc(m)}">${esc(m)}</button>`;
+        last = off + m.length; return m;
+    });
+    return out + esc(String(text).slice(last));
+}
+let TIMERS = [], timerTick = 0;
+function fmtLeft(s){ s = Math.max(0, Math.ceil(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); }
+function timersHtml(){
+    return TIMERS.map(x => { const left = (x.end - Date.now()) / 1000;
+        return `<div class="timer${left <= 0 ? ' ring' : ''}" data-tid="${x.id}" role="timer"><span class="tm">${esc(left <= 0 ? t('時間です') : fmtLeft(left))}</span><span class="tn">${esc(x.name)}${GAP()}${esc(x.label)}</span><button type="button" class="x" data-act="timer-stop" data-tid="${x.id}" aria-label="${esc(t('タイマーを止める'))}">×</button></div>`; }).join('');
+}
+function startTimer(sec, name, label){
+    TIMERS.push({id: Date.now() + Math.random().toString(36).slice(2, 6), end: Date.now() + sec * 1000, name, label, rang: false});
+    if (TIMERS.length > 5) TIMERS.shift();
+    clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000);
+    const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
+}
+function tickTimers(){
+    if (!TIMERS.length){ clearInterval(timerTick); return; }
+    TIMERS.forEach(x => {
+        const left = (x.end - Date.now()) / 1000;
+        if (left <= 0 && !x.rang){ x.rang = true; toast(t('{name}のタイマーが終わりました', {name:x.name})); }
+        const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
+        if (el){ el.classList.toggle('ring', left <= 0); el.querySelector('.tm').textContent = left <= 0 ? t('時間です') : fmtLeft(left); }
+    });
 }
 function renderModal(){
     const r = byId(modalId); if (!r){ closeModal(); return; }
@@ -3692,6 +3741,8 @@ document.addEventListener('click', e => {
             break;
         }
         case 'share-cook': openShare('cook'); break;
+        case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label); break;
+        case 'timer-stop': TIMERS = TIMERS.filter(x => x.id !== el.dataset.tid); { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
         case 'search-to-fridge': addIngredients(el.dataset.v); render(); break;
         case 'fridge-twist': {
             const have = fridgeKeys();
