@@ -287,6 +287,7 @@ GOHAN_I18N('fil', {
     "【献立の予定】": "Plano ng menu",
     "【買い物メモ】": "Listahan ng pamimili",
     "送る献立がありません": "Wala pang menu na maipapadala",
+    "このレシピは今は開けません": "Hindi mabuksan ang recipe na ito ngayon",
     "献立の予定と買い物メモ": "Plano ng menu at listahan ng pamimili",
     "家族に送る": "Ipadala sa pamilya",
     "コピーしました。LINE などに貼りつけて送れます": "Nakopya! I-paste sa anumang chat para ipadala",

@@ -487,6 +487,7 @@ GOHAN_I18N('vi', {
     "追加する": "Thêm",
     "送る内容": "Nội dung",
     "送る献立がありません": "Chưa có thực đơn để gửi",
+    "このレシピは今は開けません": "Hiện không mở được công thức này",
     "通知が許可されていません。iPhone の「設定」→「ご飯帖」→「通知」で許可してください": "Thông báo đang tắt. Bật trong Cài đặt iPhone → Gohancho → Thông báo",
     "選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。": "Mình sẽ gợi ý thực đơn hằng ngày từ món nhà nấu ở nơi bạn sống. Bạn có thể đổi sau trong Cài đặt.",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Thực đơn được lên từ món nhà nấu của quốc gia bạn chọn. Tủ lạnh và đồ sẵn có được lưu riêng cho từng quốc gia.",

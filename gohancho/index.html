@@ -3314,9 +3314,12 @@ let pendingConfirm = null;
 function viewLog(){
     const byDay = {};
     S.history.forEach(h => (byDay[h.d] = byDay[h.d] || []).push(h));
+    // 料理の名前は、いまの言語で出せるときはその名前（記録したときの名前は予備）。よく作る料理も ID で数える
+    const histName = h => { const r = byId(h.id); return r ? r.name : h.name; };
+    loadHistCountries();
     const counts = {};
-    S.history.forEach(h => { counts[h.name] = (counts[h.name]||0) + 1; });
-    const top = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
+    S.history.forEach(h => { const c = counts[h.id] = counts[h.id] || {name: histName(h), n: 0}; c.n++; });
+    const top = Object.values(counts).sort((a,b) => b.n-a.n).slice(0,5).map(c => [c.name, c.n]);
     const favs = S.favs.map(byId).filter(Boolean);
     const hidden = S.hidden.map(byId).filter(Boolean);
     const skillList = S.skills.slice().reverse().slice(0, 8);
@@ -3339,7 +3342,7 @@ function viewLog(){
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         <div class="list">${Object.keys(byDay).length ? Object.entries(byDay).slice(0, 30).map(([d, hs]) => hs.map((h,i) => `
-            <div class="item"><div class="t" data-act="open" data-id="${esc(h.id)}">${esc(h.name)}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
+            <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div>`).join('')).join('')
             : `<div class="empty">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
     </section>
@@ -3376,6 +3379,18 @@ function viewLog(){
 /* ---- 詳細（モーダル） ---- */
 let modalId = null, modalConfirmHide = false;
 function openModal(id){ modalId = id; modalConfirmHide = false; renderModal(); }
+// 記録の料理を開く。国を変えたあとのほかの国の料理は、世界のレシピのデータを読みこんで開く
+function histCountry(id){ const m = /^([a-z]{2})_/.exec(id); return m && COUNTRIES.some(c => c.cc === m[1].toUpperCase()) ? m[1].toUpperCase() : 'JP'; }
+async function openHist(id){
+    if (!byId(id)){ const cc = histCountry(id); if (cc !== currentCountry() && !BROWSE[cc]) await loadBrowse(cc); }
+    if (byId(id)) openModal(id); else toast(t('このレシピは今は開けません'));
+}
+// 記録にほかの国の料理があれば、その国のデータを読みこんで、いまの言語の名前で出し直す
+const histLoading = new Set();
+function loadHistCountries(){
+    const ccs = new Set(S.history.slice(0, 200).filter(h => !byId(h.id)).map(h => histCountry(h.id)).filter(cc => cc !== currentCountry() && !BROWSE[cc] && !histLoading.has(cc)));
+    ccs.forEach(cc => { histLoading.add(cc); loadBrowse(cc).then(() => { histLoading.delete(cc); if (tab === 'log') render(); }); });
+}
 function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; }
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 function recipeCoreHtml(r, done){
@@ -3529,6 +3544,7 @@ document.addEventListener('click', e => {
     if (act === 'modal-bg' && e.target !== el) return;
     switch(act){
         case 'open': openModal(id); break;
+        case 'open-hist': openHist(id); break;
         case 'close': case 'modal-bg': closeModal(); break;
         case 'mood': session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
         case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;

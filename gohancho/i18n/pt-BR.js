@@ -288,6 +288,7 @@ GOHAN_I18N('pt-BR', {
     "【献立の予定】": "Plano de refeições",
     "【買い物メモ】": "Lista de compras",
     "送る献立がありません": "Ainda não há cardápio para enviar",
+    "このレシピは今は開けません": "Não é possível abrir esta receita agora",
     "献立の予定と買い物メモ": "Plano de refeições e lista de compras",
     "家族に送る": "Enviar para a família",
     "コピーしました。LINE などに貼りつけて送れます": "Copiado! Cole em qualquer conversa para enviar",

@@ -287,6 +287,7 @@ GOHAN_I18N('tr', {
     "【献立の予定】": "Yemek planı",
     "【買い物メモ】": "Alışveriş listesi",
     "送る献立がありません": "Henüz gönderilecek bir menü yok",
+    "このレシピは今は開けません": "Bu tarif şu anda açılamıyor",
     "献立の予定と買い物メモ": "Yemek planı ve alışveriş listesi",
     "家族に送る": "Aileye gönder",
     "コピーしました。LINE などに貼りつけて送れます": "Kopyalandı! Herhangi bir sohbete yapıştırıp gönderebilirsiniz",

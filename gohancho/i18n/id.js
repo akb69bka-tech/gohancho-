@@ -287,6 +287,7 @@ GOHAN_I18N('id', {
     "【献立の予定】": "Rencana makan",
     "【買い物メモ】": "Daftar belanja",
     "送る献立がありません": "Belum ada menu untuk dikirim",
+    "このレシピは今は開けません": "Resep ini tidak bisa dibuka sekarang",
     "献立の予定と買い物メモ": "Rencana makan & daftar belanja",
     "家族に送る": "Kirim ke keluarga",
     "コピーしました。LINE などに貼りつけて送れます": "Tersalin! Tempel di chat mana pun untuk mengirim",
