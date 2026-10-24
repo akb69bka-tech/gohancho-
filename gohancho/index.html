@@ -51,7 +51,7 @@
         --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
         --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
         --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
-        --tray:#231a17;--tray-2:#30241f;
+        --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
         --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
         color-scheme:dark;
     }
@@ -60,7 +60,7 @@
     --bg:#10151d;--surface:#18202b;--surface-2:#212b38;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e6eaf0;--muted:#94a1b3;--line:#2c3746;
     --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;
     --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
-    --tray:#231a17;--tray-2:#30241f;
+    --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
     --shadow:0 1px 2px rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.3);
     color-scheme:dark;
 }
@@ -77,7 +77,7 @@ a{color:var(--accent)}
 
 /* ヘッダー: 品書きの題字＋落款 */
 .top{display:flex;align-items:center;gap:12px}
-.seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--lacquer);color:var(--lacquer);border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
+.seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--seal,var(--lacquer));color:var(--seal,var(--lacquer));border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
 .top h1{font-size:1.45rem}
 .top .date{font-size:.8rem;color:var(--muted);letter-spacing:.12em}
 
@@ -96,13 +96,13 @@ a{color:var(--accent)}
 .label{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ボタン */
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:42px;text-decoration:none;color:var(--ink)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:44px;text-decoration:none;color:var(--ink)}
 .btn:hover{border-color:var(--accent)}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
 .btn.ghost{background:transparent;border-color:transparent}
 .btn.ghost:hover{border-color:var(--line)}
-.btn.sm{min-height:34px;padding:.25rem .75rem;font-size:.8rem}
+.btn.sm{min-height:44px;padding:.25rem .75rem;font-size:.8rem}
 .btn.danger{color:var(--danger)}
 .btn.wide{flex:1 1 auto}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -111,7 +111,7 @@ a{color:var(--accent)}
 /* チップ */
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:36px;white-space:nowrap;flex-shrink:0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:44px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
@@ -241,6 +241,7 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 
 /* 詳細シート */
+.sheet [tabindex="-1"]:focus{outline:none}
 .modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--sheet-bg);box-shadow:0 0 0 1px var(--sheet-edge);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
 @media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh}}
@@ -249,7 +250,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .hero img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
 .hero .noimg{display:grid;place-items:center;padding:28px 0}
 .hero .noimg .vessel{width:150px}
-.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:36px;padding:.2rem .9rem;font-size:.8rem}
+.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:44px;padding:.2rem .9rem;font-size:.8rem}
 .hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.66rem;line-height:1.4}
 .hero .cap a{color:#fff}
 .sheet-body{padding:18px 16px 0;display:flex;flex-direction:column;gap:16px}
@@ -364,7 +365,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
-.top .gear{margin-left:auto;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.top .gear{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-left:4px}
 .warn{color:var(--danger)}
@@ -435,7 +436,7 @@ html.i18n-wait body{visibility:hidden}
 .sheet-body .name-en{margin-top:-10px;color:var(--muted);font-size:.92rem;line-height:1.4}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
-nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 0;white-space:nowrap;letter-spacing:-.02em;overflow:hidden}
+nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
 /* 作り方タブ */
 .cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
@@ -2511,13 +2512,49 @@ function paywallReason(k){
 
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
-function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; }
+function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; dlgClosed('sheet-root'); }
+/* ---- 下から出る画面のフォーカス（開いたら中へ移し、Tab は中だけを回り、閉じたら開いたボタンへ戻す） ---- */
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const dlgRet = {}, dlgLast = {};   // 開く前にフォーカスがあったもの／中で最後にフォーカスしたもの（描き直しても戻せるよう data-* で覚える）
+function focusKey(el){ return el && el.dataset && el.dataset.act ? ['act', 'id', 'v', 'k', 'cc'].map(k => el.dataset[k] || '').join('|') : (el && el.id ? '#' + el.id : ''); }
+function findByKey(scope, key){ if (!key) return null; if (key[0] === '#') return scope.querySelector(key); return [...scope.querySelectorAll('[data-act]')].find(x => focusKey(x) === key) || null; }
+function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
+function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
+    const root = document.getElementById(rootId), d = root.querySelector('[role="dialog"]'); if (!d) return;
+    const h = d.querySelector('h2, h3');
+    if (h && !d.hasAttribute('aria-label')){ h.id = h.id || rootId + '-title'; d.setAttribute('aria-labelledby', h.id); }
+    const a = document.activeElement;
+    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a)}; dlgLast[rootId] = ''; }
+    else if (a && a !== document.body && document.contains(a)) return;   // 描き直してもフォーカスが残っている
+    const back = findByKey(root, dlgLast[rootId]);
+    if (back){ back.focus({preventScroll:true}); return; }
+    const first = h || d.querySelector('[data-act="close"], [data-act="sheet-close"]') || d;
+    if (!first.matches(FOCUSABLE)) first.setAttribute('tabindex', '-1');
+    first.focus({preventScroll:true});
+}
+function dlgClosed(rootId){
+    if (!(rootId in dlgRet)) return;
+    const r = dlgRet[rootId]; delete dlgRet[rootId]; delete dlgLast[rootId];
+    if (topDialog() && topDialog().contains(document.activeElement)) return;
+    const el = r.el && document.contains(r.el) ? r.el : findByKey(document, r.key);
+    if (el) el.focus({preventScroll:true});
+}
+document.addEventListener('focusin', e => { for (const id of ['modal-root', 'sheet-root']){ const root = document.getElementById(id); if (root && root.contains(e.target)) dlgLast[id] = focusKey(e.target); } });
+function trapTab(e){
+    const d = topDialog(); if (!d) return;
+    const els = [...d.querySelectorAll(FOCUSABLE)].filter(x => x.getClientRects().length && !x.closest('[hidden]'));
+    if (!els.length){ e.preventDefault(); return; }
+    const first = els[0], last = els[els.length - 1], a = document.activeElement;
+    if (!d.contains(a)){ e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if (e.shiftKey && (a === first || !els.includes(a) && a.compareDocumentPosition(first) & Node.DOCUMENT_POSITION_FOLLOWING)){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && a === last){ e.preventDefault(); first.focus(); }
+}
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
 function renderSheet(){
     const root = $('#sheet-root');
-    if (!sheet){ root.innerHTML = ''; return; }
+    if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
     let body = '';
     if (sheet.kind === 'onboard'){
         const st = sheet.step;
@@ -2574,6 +2611,7 @@ function renderSheet(){
     }
     root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind} pop" role="dialog" aria-modal="true"><div class="sheet-body sheet-pad">${body}</div></div></div>`;
     document.body.style.overflow = 'hidden';
+    dlgOpened('sheet-root');
 }
 
 /* =========================================================
@@ -2960,8 +2998,25 @@ function restoreDecided(){
     if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join()) return false;   // 品数を変えたら新しく作る
     session.menu = {n, items}; return true;
 }
+// まだ決めていない今日の案も、その日のうちは同じものを出す（iPhone はアプリを裏で閉じることが多いので、開き直すたびに変わらないよう S.draft に残す）
+let draftTried = false;
+function restoreDraft(){
+    if (draftTried) return false; draftTried = true;   // アプリを開いたときだけ。設定を変えて作り直すときは新しく作る
+    const c = S.draft; if (!c || c.d !== TODAY || c.cc !== currentCountry()) return false;
+    const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
+    if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
+    session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
+    session.twist = PACK ? null : suggestTwist();
+    return true;
+}
+function keepDraft(){
+    const m = session.menu; if (!m) return;
+    const d = {d: TODAY, cc: currentCountry(), n: m.n, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge};
+    if (JSON.stringify(d) !== JSON.stringify(S.draft)){ S.draft = d; save(); }
+}
 function viewToday(){
-    if (!session.menu && !restoreDecided()) newMenu();
+    if (!session.menu && !restoreDecided() && !restoreDraft()) newMenu();
+    draftTried = true; keepDraft();
     const m = session.menu;
     const main = m.items[0] && m.items[0].r;
     const planned = weekToday();
@@ -3385,7 +3440,7 @@ function viewLog(){
 /* ---- 詳細（モーダル） ---- */
 let modalId = null, modalConfirmHide = false;
 function openModal(id){ modalId = id; modalConfirmHide = false; renderModal(); }
-function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; }
+function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; dlgClosed('modal-root'); }
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 function recipeCoreHtml(r, done){
     const have = fridgeKeys();
@@ -3465,6 +3520,7 @@ function renderModal(){
         </div>
     </div>`;
     document.body.style.overflow = 'hidden';
+    dlgOpened('modal-root');
 }
 
 /* =========================================================
@@ -3562,8 +3618,14 @@ document.addEventListener('click', e => {
         }
         case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
         case 'ui-lang': {
-            S.settings.uiLang = el.dataset.v; save();
-            setLang(wantLang()).then(refreshRecipes).then(() => { relocalize(); render(); });
+            // 辞書を読みこめたときだけ切りかえる（電波がないときは、いまの言語のまま知らせる）
+            const prevUi = S.settings.uiLang, v = el.dataset.v;
+            S.settings.uiLang = v; const l = wantLang(); S.settings.uiLang = prevUi;
+            loadLang(l).then(() => {
+                if (l !== 'ja' && !I18N[l]){ render(); toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return; }
+                S.settings.uiLang = v; save();
+                return setLang(l).then(refreshRecipes).then(() => { relocalize(); render(); });
+            });
             break;
         }
         case 'toggle-avoid': {
@@ -3595,7 +3657,8 @@ document.addEventListener('click', e => {
         case 'sheet-close': closeSheet(); break;
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;
-        case 'world-cc': worldCC = el.dataset.cc; render(); break;
+        case 'world-cc': worldCC = el.dataset.cc; browseErr.delete(worldCC); render(); break;
+        case 'world-retry': browseErr.delete(worldCC); render(); break;
         case 'pick-country': {
             const cc = el.dataset.cc;
             setCountry(cc).then(ok => { if (!ok) return; render(); if (!S.onboarded) startOnboard(); else closeSheet(); });
@@ -3899,7 +3962,7 @@ function loadPackTr(cc, lang){
         const el = document.createElement('script');
         el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
         el.onload = () => res(PACK_TR[k] || null);
-        el.onerror = () => { PACK_TR[k] = null; res(null); };
+        el.onerror = () => { delete trLoads[k]; res(null); };   // 読めなかったことは覚えない（電波が戻れば読みに行く）
         document.head.appendChild(el);
     }));
 }
@@ -3994,7 +4057,7 @@ function twistAvailable(){ return !PACK && LANG === 'ja'; }
 function updateTabs(){
     const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !twistAvailable();
     const n = document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').length;
-    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},1fr)`;
+    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},${n >= 6 ? 'minmax(0,1fr)' : '1fr'})`;
     document.querySelector('nav.tabs').classList.toggle('many', n >= 6);
     if (!twistAvailable() && tab === 'twist') tab = 'today';
 }
@@ -4017,16 +4080,17 @@ function buildBrowse(cc){
     const tr = trOf(cc);
     return pk.recipes.map(x => packRecipe(pk, x, tr));
 }
+const browseErr = new Set();   // 読みこめなかった国（失敗は覚えない。もう一度押すと読みに行く）
 async function loadBrowse(cc){
-    try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); }catch(e){ BROWSE[cc] = []; }
+    try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); browseErr.delete(cc); }catch(e){ delete BROWSE[cc]; browseErr.add(cc); }
     if (tab === 'world') render();
 }
 function viewWorld(){
     const home = currentCountry();
     const others = COUNTRIES.filter(c => c.cc !== home);
     if (!worldCC || worldCC === home) worldCC = others[0].cc;
-    const list = BROWSE[worldCC];
-    if (!list) loadBrowse(worldCC);
+    const list = BROWSE[worldCC], failed = !list && browseErr.has(worldCC);
+    if (!list && !failed) loadBrowse(worldCC);
     loadGenBundle(worldCC);
     const c = countryOf(worldCC);
     const group = (code, title) => {
@@ -4046,7 +4110,9 @@ function viewWorld(){
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${LANG === 'ja' ? (c.nameJa !== c.nameLocal ? `<span class="muted small">${esc(c.nameJa)}</span>` : '') : (c.name !== c.nameLocal ? `<span class="muted small">${esc(c.name)}</span>` : '')}</div>
-        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの')) : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
+        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
+            : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
+            : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
     </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
@@ -4146,7 +4212,16 @@ function relocalize(){
     if (modalId) renderModal();
 }
 function openCountrySheet(){ sheet = {kind:'country'}; renderSheet(); }
-document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-act="cook-step"]')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
+// ボタンでない要素（料理の行・名前など）に data-act があるときは、キーボードと読み上げでも押せるようにする（見た目は変えない）
+function a11yActs(){
+    document.querySelectorAll('[data-act]:not(button):not(a):not(input):not(select):not(textarea):not(label):not([role]):not(.modal)').forEach(el => {
+        // 行の絵は同じ行の名前と同じ料理を開くので、Tab で二度止まらないよう読み上げとキーボードからは外す
+        if (el.tagName === 'SPAN' && el.dataset.act === 'open' && el.parentElement && el.parentElement.querySelector(':scope > .info [data-act="open"]')){ el.setAttribute('role', 'presentation'); el.setAttribute('aria-hidden', 'true'); return; }
+        el.setAttribute('role', 'button'); el.tabIndex = 0;
+    });
+}
+new MutationObserver(a11yActs).observe(document.body, {childList:true, subtree:true});
+document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
 (async () => {

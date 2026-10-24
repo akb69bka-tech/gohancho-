@@ -1,5 +1,5 @@
 // わが家のご飯帖: オフラインで開けるようにアプリ本体をキャッシュする
-const VERSION = 'gohancho-v10';
+const VERSION = 'gohancho-v11';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './i18n/en.js'];
 const IMG = 'gohancho-img-v1';
 
@@ -16,9 +16,12 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   // ページ本体: まずネットから最新を取り、だめならキャッシュ
+  // アプリの画面（/ と index.html）だけを './index.html' として保存する。プライバシーなど別のページはそのページのURLで保存
   if (req.mode === 'navigate'){
-    e.respondWith(fetch(req).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put('./index.html', copy)); return res; })
-      .catch(() => caches.match('./index.html')));
+    const isApp = url.origin === self.location.origin && /\/(index\.html)?$/.test(url.pathname);
+    const key = isApp ? './index.html' : req;
+    e.respondWith(fetch(req).then(res => { if (res.ok){ const copy = res.clone(); caches.open(VERSION).then(c => c.put(key, copy)); } return res; })
+      .catch(() => caches.match(key, {ignoreSearch:true}).then(hit => hit || caches.match('./index.html')).then(hit => hit || Response.error())));
     return;
   }
   // 料理写真とフォント: 一度見たものは電波がなくても出す
