@@ -2560,7 +2560,7 @@ function renderSheet(){
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
-                <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}<a href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a></p>`
+                <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}<a href="${docPage('privacy')}" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a></p>`
             : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
             ${isLocked() ? '' : `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`}`;
     }
@@ -2750,7 +2750,7 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
             <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
-            <div class="row"><a class="btn sm" href="privacy.html" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="support.html" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a>${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
+            <div class="row"><a class="btn sm" href="${docPage('privacy')}" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="${docPage('support')}" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a>${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
         </div>
     </section>`;
 }
@@ -2792,6 +2792,8 @@ function remoteNoticeHtml(){
     const link = n.url && /^https:\/\//.test(n.url) ? `<a class="btn sm" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.linkLabel || t('くわしく'))}</a>` : '';
     return `<div class="note trial-note"><span>${esc(text)}</span>${link}${old ? '' : `<button class="btn sm ghost" data-act="notice-close">${esc(t('閉じる'))}</button>`}</div>`;
 }
+// プライバシーポリシー・サポートのページ（日本語以外の画面では英語版）
+function docPage(name){ return name + (LANG === 'ja' ? '' : '-en') + '.html'; }
 const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
 function feedbackMailto(){
     const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
