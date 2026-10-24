@@ -239,6 +239,7 @@ nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 
 /* 詳細シート */
+.sheet [tabindex="-1"]:focus{outline:none}
 .modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--bg);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
 @media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh}}
@@ -2489,13 +2490,49 @@ function paywallReason(k){
 
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
-function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; }
+function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; dlgClosed('sheet-root'); }
+/* ---- 下から出る画面のフォーカス（開いたら中へ移し、Tab は中だけを回り、閉じたら開いたボタンへ戻す） ---- */
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+const dlgRet = {}, dlgLast = {};   // 開く前にフォーカスがあったもの／中で最後にフォーカスしたもの（描き直しても戻せるよう data-* で覚える）
+function focusKey(el){ return el && el.dataset && el.dataset.act ? ['act', 'id', 'v', 'k', 'cc'].map(k => el.dataset[k] || '').join('|') : (el && el.id ? '#' + el.id : ''); }
+function findByKey(scope, key){ if (!key) return null; if (key[0] === '#') return scope.querySelector(key); return [...scope.querySelectorAll('[data-act]')].find(x => focusKey(x) === key) || null; }
+function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
+function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
+    const root = document.getElementById(rootId), d = root.querySelector('[role="dialog"]'); if (!d) return;
+    const h = d.querySelector('h2, h3');
+    if (h && !d.hasAttribute('aria-label')){ h.id = h.id || rootId + '-title'; d.setAttribute('aria-labelledby', h.id); }
+    const a = document.activeElement;
+    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a)}; dlgLast[rootId] = ''; }
+    else if (a && a !== document.body && document.contains(a)) return;   // 描き直してもフォーカスが残っている
+    const back = findByKey(root, dlgLast[rootId]);
+    if (back){ back.focus({preventScroll:true}); return; }
+    const first = h || d.querySelector('[data-act="close"], [data-act="sheet-close"]') || d;
+    if (!first.matches(FOCUSABLE)) first.setAttribute('tabindex', '-1');
+    first.focus({preventScroll:true});
+}
+function dlgClosed(rootId){
+    if (!(rootId in dlgRet)) return;
+    const r = dlgRet[rootId]; delete dlgRet[rootId]; delete dlgLast[rootId];
+    if (topDialog() && topDialog().contains(document.activeElement)) return;
+    const el = r.el && document.contains(r.el) ? r.el : findByKey(document, r.key);
+    if (el) el.focus({preventScroll:true});
+}
+document.addEventListener('focusin', e => { for (const id of ['modal-root', 'sheet-root']){ const root = document.getElementById(id); if (root && root.contains(e.target)) dlgLast[id] = focusKey(e.target); } });
+function trapTab(e){
+    const d = topDialog(); if (!d) return;
+    const els = [...d.querySelectorAll(FOCUSABLE)].filter(x => x.getClientRects().length && !x.closest('[hidden]'));
+    if (!els.length){ e.preventDefault(); return; }
+    const first = els[0], last = els[els.length - 1], a = document.activeElement;
+    if (!d.contains(a)){ e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if (e.shiftKey && (a === first || !els.includes(a) && a.compareDocumentPosition(first) & Node.DOCUMENT_POSITION_FOLLOWING)){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && a === last){ e.preventDefault(); first.focus(); }
+}
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
 function renderSheet(){
     const root = $('#sheet-root');
-    if (!sheet){ root.innerHTML = ''; return; }
+    if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
     let body = '';
     if (sheet.kind === 'onboard'){
         const st = sheet.step;
@@ -2552,6 +2589,7 @@ function renderSheet(){
     }
     root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind} pop" role="dialog" aria-modal="true"><div class="sheet-body sheet-pad">${body}</div></div></div>`;
     document.body.style.overflow = 'hidden';
+    dlgOpened('sheet-root');
 }
 
 /* =========================================================
@@ -3359,7 +3397,7 @@ function viewLog(){
 /* ---- 詳細（モーダル） ---- */
 let modalId = null, modalConfirmHide = false;
 function openModal(id){ modalId = id; modalConfirmHide = false; renderModal(); }
-function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; }
+function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; dlgClosed('modal-root'); }
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 function recipeCoreHtml(r, done){
     const have = fridgeKeys();
@@ -3439,6 +3477,7 @@ function renderModal(){
         </div>
     </div>`;
     document.body.style.overflow = 'hidden';
+    dlgOpened('modal-root');
 }
 
 /* =========================================================
@@ -4123,7 +4162,16 @@ function relocalize(){
     if (modalId) renderModal();
 }
 function openCountrySheet(){ sheet = {kind:'country'}; renderSheet(); }
-document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-act="cook-step"]')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
+// ボタンでない要素（料理の行・名前など）に data-act があるときは、キーボードと読み上げでも押せるようにする（見た目は変えない）
+function a11yActs(){
+    document.querySelectorAll('[data-act]:not(button):not(a):not(input):not(select):not(textarea):not(label):not([role]):not(.modal)').forEach(el => {
+        // 行の絵は同じ行の名前と同じ料理を開くので、Tab で二度止まらないよう読み上げとキーボードからは外す
+        if (el.tagName === 'SPAN' && el.dataset.act === 'open' && el.parentElement && el.parentElement.querySelector(':scope > .info [data-act="open"]')){ el.setAttribute('role', 'presentation'); el.setAttribute('aria-hidden', 'true'); return; }
+        el.setAttribute('role', 'button'); el.tabIndex = 0;
+    });
+}
+new MutationObserver(a11yActs).observe(document.body, {childList:true, subtree:true});
+document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
 (async () => {
