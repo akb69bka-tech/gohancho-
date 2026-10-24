@@ -2795,9 +2795,9 @@ function remoteNoticeHtml(){
     let n = REMOTE.notice; if (!n || typeof n !== 'object' || !n.id || (n.until && n.until < TODAY)) n = null;
     const text = (n && (n[LANG] || n.en || n.ja)) || (old ? t('新しいバージョンがあります。アプリを最新版に更新してください。') : '');
     if (!text || (!old && S.noticeSeen === n.id)) return '';
-    // linkLabel は {ja, en, fr…} で言語ごとに書ける。文字列1つなら、日本語の文は日本語の画面でだけ使う。なければ「くわしく」
+    // linkLabel は {ja, en, fr…} で言語ごとに書ける。文字列1つなら、日本語の文は日本語の画面でだけ使う。その言語のものがなければ、訳した「くわしく」
     const ll = n && n.linkLabel, jaText = v => /[\u3040-\u30ff\u4e00-\u9fff]/.test(v);
-    const label = (ll && typeof ll === 'object' ? ll[LANG] || (LANG !== 'ja' && ll.en) : typeof ll === 'string' && (LANG === 'ja' || !jaText(ll)) ? ll : '') || t('くわしく');
+    const label = (ll && typeof ll === 'object' ? ll[LANG] : typeof ll === 'string' && (LANG === 'ja' || !jaText(ll)) ? ll : '') || t('くわしく');
     const link = n && n.url && /^https:\/\//.test(n.url) ? `<a class="btn sm" href="${esc(n.url)}" target="_blank" rel="noopener" dir="auto">${esc(label)}</a>` : '';
     return `<div class="note trial-note"><span dir="auto">${esc(text)}</span>${link}${old || !n ? '' : `<button class="btn sm ghost" data-act="notice-close">${esc(t('閉じる'))}</button>`}</div>`;
 }
