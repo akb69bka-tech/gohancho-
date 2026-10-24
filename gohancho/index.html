@@ -434,6 +434,20 @@ html.i18n-wait body{visibility:hidden}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
 nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 0;white-space:nowrap;letter-spacing:-.02em;overflow:hidden}
+/* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
+.spot-label .slot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spot-label .nm{-webkit-hyphens:auto;hyphens:auto}
+/* 320px ほどの狭い画面: お膳の余白と字を少し詰め、タブの名前は2行に分けてとなりとくっつかないようにする */
+@media (max-width:359px){
+    .tray.compact{padding-left:4px;padding-right:4px}
+    .tray.compact .tray-row{gap:2px}
+    .tray.compact .spot-label .slot{letter-spacing:.02em;font-size:.56rem}
+    .tray.compact .spot-label .nm{font-size:.74rem}
+    nav.tabs{padding-left:2px;padding-right:2px}
+    nav.tabs button{min-width:0;font-size:.64rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
+    nav.tabs.many .in{gap:0}
+    nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:.58rem;text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
+}
 /* 作り方タブ */
 .cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
