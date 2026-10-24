@@ -94,13 +94,13 @@ a{color:var(--accent)}
 .label{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ボタン */
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:42px;text-decoration:none;color:var(--ink)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:44px;text-decoration:none;color:var(--ink)}
 .btn:hover{border-color:var(--accent)}
 .btn:active{transform:scale(.98)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
 .btn.ghost{background:transparent;border-color:transparent}
 .btn.ghost:hover{border-color:var(--line)}
-.btn.sm{min-height:34px;padding:.25rem .75rem;font-size:.8rem}
+.btn.sm{min-height:44px;padding:.25rem .75rem;font-size:.8rem}
 .btn.danger{color:var(--danger)}
 .btn.wide{flex:1 1 auto}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -109,7 +109,7 @@ a{color:var(--accent)}
 /* チップ */
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:36px;white-space:nowrap;flex-shrink:0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:44px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
@@ -248,7 +248,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .hero img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
 .hero .noimg{display:grid;place-items:center;padding:28px 0}
 .hero .noimg .vessel{width:150px}
-.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:36px;padding:.2rem .9rem;font-size:.8rem}
+.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:44px;padding:.2rem .9rem;font-size:.8rem}
 .hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.66rem;line-height:1.4}
 .hero .cap a{color:#fff}
 .sheet-body{padding:18px 16px 0;display:flex;flex-direction:column;gap:16px}
@@ -362,7 +362,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
-.top .gear{margin-left:auto;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.top .gear{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-left:4px}
 .warn{color:var(--danger)}
@@ -433,7 +433,7 @@ html.i18n-wait body{visibility:hidden}
 .sheet-body .name-en{margin-top:-10px;color:var(--muted);font-size:.92rem;line-height:1.4}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
-nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 0;white-space:nowrap;letter-spacing:-.02em;overflow:hidden}
+nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
 /* 作り方タブ */
 .cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
@@ -4007,7 +4007,7 @@ function twistAvailable(){ return !PACK && LANG === 'ja'; }
 function updateTabs(){
     const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !twistAvailable();
     const n = document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').length;
-    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},1fr)`;
+    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},${n >= 6 ? 'minmax(0,1fr)' : '1fr'})`;
     document.querySelector('nav.tabs').classList.toggle('many', n >= 6);
     if (!twistAvailable() && tab === 'twist') tab = 'today';
 }
