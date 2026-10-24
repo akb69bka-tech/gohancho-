@@ -1297,7 +1297,7 @@ function newMenu(){
         items.push({slot, r});
     });
     session.menu = {n, items};
-    session.twist = PACK ? null : suggestTwist();
+    session.twist = twistAvailable() ? suggestTwist() : null;
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
 function setMenuMain(r){
@@ -3051,7 +3051,7 @@ function viewToday(){
         ${upgradeHtml(main)}
     </section>` : ''}
 
-    ${tw ? `<section class="sec">
+    ${tw && twistAvailable() ? `<section class="sec">
         <div class="sec-head"><h2>${esc(t('今日のひとひねり'))}</h2><span class="hint">${esc(t('いつもの定番を、ちょっと変えた一品'))}</span></div>
         <div class="card pop">
                 <div class="tw-item">
@@ -3160,7 +3160,7 @@ function viewFridge(){
         results = `
         <section class="sec">
             <div class="sec-head split"><h2>${esc(t('作れる料理'))}</h2>
-                ${PACK ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
+                ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
             ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.length})), ready)}
             ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub)}
             ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near)}
@@ -3469,7 +3469,7 @@ function renderModal(){
                 <div class="row">
                     <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${esc(daysSince(r.id) === 0 ? t('今日の記録に入っています') : t('今日作った'))}</button>
                     <button class="btn" data-act="fav" data-id="${esc(r.id)}">${esc(isFav ? t('お気に入り解除') : t('お気に入り'))}</button>
-                    ${!r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button>` : ''}
+                    ${twistAvailable() && !r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button>` : ''}
                 </div>
                 <div class="row small">
                     <label for="cook-date" class="muted">${esc(t('別の日に作った:'))}</label>
