@@ -188,8 +188,9 @@ a{color:var(--accent)}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
 input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
-.inputbar{display:grid;grid-template-columns:1fr auto auto;gap:8px}
-@media (max-width:420px){.inputbar{grid-template-columns:1fr auto}.inputbar [data-act=mic]{grid-column:1/-1}}
+.inputbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
+.inputbar input{min-width:0}
+@media (max-width:420px){.inputbar{grid-template-columns:minmax(0,1fr) auto}.inputbar [data-act=mic]{grid-column:1/-1}}
 .btn.listening{background:var(--accent);color:#fff;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{50%{opacity:.6}}
 @media (prefers-reduced-motion: reduce){.btn.listening{animation:none}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -711,6 +712,29 @@ R('chijimi','ニラチヂミ','韓','副菜','焼',20,'ニラ 1束|にんじん 
 R('karashiae','菜の花のからし和え','和','副菜','和え',10,'菜の花 1束','塩 少々・醤油 小さじ2・だし 大さじ1・練りからし 小さじ1/2','菜の花は根元のかたい部分を切り落とし、冷水につけてシャキッとさせる。|塩を入れた湯で茎から入れて1分ゆで、冷水にとって水気をよく絞り、3cm長さに切る。|醤油・だし・からしを混ぜる。|食べる直前に菜の花を和える。');
 R('konnyakuitame','こんにゃくのピリ辛炒め','和','副菜','炒',15,'こんにゃく 1枚|かつお節 1パック?','ごま油 大さじ1・赤唐辛子 1/2本・醤油 大さじ1.5・みりん 大さじ1・砂糖 小さじ1','こんにゃくはスプーンで一口大にちぎり、3分下ゆでして水気を切る。|フライパンで乾いりして水分を飛ばす。|ごま油と輪切りの唐辛子を加え、こんにゃくの表面がチリチリするまで炒める。|醤油・みりん・砂糖を加えて汁気がなくなるまで炒め、かつお節をまぶす。');
 
+// 日本のレシピのよみ（ひらがな）。かなで検索したとき（にくじゃが・マーボー・しょうが焼き など）に料理名と同じように当てる。読みが二つあるものは , で区切る
+const YOMI = Object.fromEntries([
+    'nikujaga:にくじゃが shogayaki:ぶたのしょうがやき karaage:とりのからあげ teriyaki:てりやきちきん hamburg:はんばーぐ stew:くりーむしちゅー mapo:まーぼーどうふ hoikoro:ほいこーろー chinjao:ちんじゃおろーす gyoza:やきぎょうざ',
+    'meuniere:さけのむにえる sabamiso:さばのみそに buriteri:ぶりのてりやき nanban:ちきんなんばん butakimu:ぶたきむちいため japchae:ちゃぷちぇ ebichili:えびちり happosai:はっぽうさい chanchan:さけのちゃんちゃんやき champuru:ごーやちゃんぷるー',
+    'reishabu:れいしゃぶさらだ atsuage:あつあげとぶたにくのみそいため gratin:まかろにぐらたん negishio:とりむねにくのねぎしおやき subuta:すぶた rollcabbage:ろーるきゃべつ chikuzen:ちくぜんに buridaikon:ぶりだいこん okonomi:おこのみやき mabonasu:まーぼーなす',
+    'curry:かれーらいす oyakodon:おやこどん gyudon:ぎゅうどん omurice:おむらいす gapao:がぱおらいす tacorice:たこらいす chahan:ちゃーはん,やきめし takikomi:きのこのたきこみごはん napolitan:なぽりたん yakisoba:そーすやきそば',
+    'carbonara:かるぼなーら kinokopasta:きのこのわふうぱすた nikuudon:にくうどん ohitashi:ほうれんそうのおひたし kinpira:きんぴらごぼう potesala:ぽてとさらだ hijiki:ひじきのにもの dashimaki:だしまきたまご kabocha:かぼちゃのにもの nasubitashi:なすのあげびたし',
+    'komatsuna:こまつなとあぶらあげのにびたし tatakikyuri:たたききゅうり namul:もやしのなむる sakamushi:あさりのさかむし coleslaw:こーるすろー hiyayakko:ひややっこ sunomono:きゅうりとわかめのすのもの tomatotamago:とまととたまごのいためもの misoshiru:とうふとわかめのみそしる tonjiru:とんじる,ぶたじる',
+    'minestrone:みねすとろーね tamagosoup:ちゅうかふうたまごすーぷ consomme:たまねぎのこんそめすーぷ wakamesoup:かんこくふうわかめすーぷ sundubu:すんどぅぶちげ tonkatsu:とんかつ sabashio:さばのしおやき sanma:さんまのしおやき ajifry:あじふらい iwashiume:いわしのうめに',
+    'kareini:かれいのにつけ hoilyaki:さけのほいるやき amazu_sakana:しろみざかなのあまずあんかけ tebasappari:てばもとのさっぱりに yurinchi:ゆーりんちー piccata:とりむねにくのぴかた nikudango:にくだんごのあまずあん butadaikon:ぶたばらだいこん kakuni:ぶたのかくに nasumiso:なすとぶたにくのみそいため',
+    'shigureni:ぎゅうにくとごぼうのしぐれに nikudofu:にくどうふ bulgogi:ぷるこぎ dakgalbi:たっかるび banbanji:ばんばんじー tofuhamburg:とうふはんばーぐ pimannikuzume:ぴーまんのにくづめ torinotomatoni:とりにくのとまとに ikasatoimo:いかとさといものにもの atsuagesoboro:あつあげのそぼろあんかけ',
+    'soborodon:とりそぼろどん chukadon:ちゅうかどん bibimbap:びびんば hayashi:はやしらいす drycurry:どらいかれー hiyashichuka:ひやしちゅうか yakiudon:やきうどん salmoncreampasta:さけとほうれんそうのくりーむぱすた tunatomatopasta:つなととまとのぱすた kiriboshi:きりぼしだいこんのにもの',
+    'gomaae:ほうれんそうのごまあえ okraokaka:おくらのおかかあえ harusamesalad:はるさめさらだ macaronisalad:まかろにさらだ kabochasalad:かぼちゃさらだ satoimonikkorogashi:さといものにっころがし daigakuimo:だいがくいも hakusaiasazuke:はくさいのあさづけ chingensai:ちんげんさいのにんにくいため broccoligoma:ぶろっこりーのごままよあえ',
+    'kinokobutter:きのこのばたーしょうゆいため nagaimoume:ながいものうめあえ spinachbacon:ほうれんそうとべーこんのそてー gobosalad:ごぼうさらだ unohana:うのはな takosunomono:たこときゅうりのすのもの kenchinjiru:けんちんじる namekomiso:なめことうふのみそしる asarimiso:あさりのみそしる cornsoup:こーんすーぷ',
+    'clamchowder:くらむちゃうだー sanratan:さんらーたん tomatoeggsoup:とまととたまごのすーぷ sumashijiru:とうふとみつばのすましじる kasujiru:さけのかすじる noppeijiru:のっぺいじる satsumajiru:さつまじる kakitamajiru:かきたまじる ishikarijiru:いしかりじる sawaniwan:さわにわん',
+    'senbajiru:せんばじる gojiru:ごじる dangojiru:だんごじる shijimimiso:しじみのみそしる imoni:いもに daikonmiso:だいこんとあぶらあげのみそしる zoni:おぞうにかんとうふう kabochapotage:かぼちゃのぽたーじゅ potofu:ぽとふ wantansoup:わんたんすーぷ',
+    'harusamesoup:はるさめすーぷ kimchichige:きむちちげ tomyumkung:とむやむくん sukiyaki:すきやき tarakopasta:たらこすぱげってぃ korokke:ころっけ saikyoyaki:さわらのさいきょうやき kajikisaute:かじきのばたーしょうゆそてー ajinanbanzuke:あじのなんばんづけ ebifry:えびふらい',
+    'kanitama:かにたま tofusteak:とうふすてーき ankakeyakisoba:あんかけやきそば beefstew:びーふしちゅー tempura:てんぷら asparamaki:ぶたにくのあすぱらまき tsukune:とりつくね rebanira:ればにらいため yasaiitame:やさいいため katsudon:かつどん',
+    'chirashi:ちらしずし tandoori:たんどりーちきん meatsauce:みーとそーすすぱげってぃ kabuamazu:かぶのあまずづけ gomokumame:ごもくまめ shiraae:しらあえ shiokombu:きゃべつのしおこんぶあえ nasudengaku:なすでんがく furofuki:ふろふきだいこん koyadofu:こうやどうふのふくめに',
+    'germanpotato:じゃーまんぽてと shirishiri:にんじんしりしり niratama:にらたま daikonsalad:だいこんさらだ tomatomarine:とまとのまりね jakopiman:ぴーまんとじゃこのいため kofukiimo:こふきいも glace:にんじんのぐらっせ tosani:たけのこのとさに isobeage:ちくわのいそべあげ',
+    'chijimi:にらちぢみ karashiae:なのはなのからしあえ konnyakuitame:こんにゃくのぴりからいため'
+].join(' ').split(' ').map(x => x.split(':')));
+
 /* =========================================================
    食材の名寄せ（表記ゆれ → 代表名）
    ========================================================= */
@@ -720,7 +744,7 @@ const CANON = [
     ['合いびき肉',['合いびき','合挽','あいびき','ひき肉','挽き肉','挽肉','ミンチ']],
     ['牛乳',['牛乳','ミルク','ぎゅうにゅう']],
     ['豚肉',['豚','ぶた','ポーク']],
-    ['鶏肉',['鶏','鳥肉','とりにく','チキン','ささみ','手羽']],
+    ['鶏肉',['鶏','鳥肉','とりにく','トリ肉','とり肉','チキン','ささみ','手羽']],
     ['牛肉',['牛','ぎゅう','ビーフ']],
     ['鮭',['鮭','さけ','しゃけ','サーモン']],
     ['さば',['さば','鯖']],
@@ -813,8 +837,9 @@ function norm(s){
 }
 // 長い表記から順に照合する（「たまねぎ」を「ねぎ」より先に、「牛乳」を「牛」より先に）
 // ラテン文字の言葉（英語・フランス語など）は単語ごとに照合する。部分一致だと eggplant が egg、peanuts が nuts に当たってしまうため
-const LATIN_RE = /^[a-zÀ-ɏ'’.\- ]+$/;
-function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ0-9]+/g, ' ').trim() + ' '; }
+// ベトナム語（Ḁ-ỿ）・トルコ語の İ（i＋結合文字）なども同じラテン文字として扱う
+const LATIN_RE = /^[a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff'’.\- ]+$/;
+function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff0-9]+/g, ' ').trim() + ' '; }
 function wordRe(phrase){
     const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:e?s)?');
     return ws.length ? new RegExp(' ' + ws.join(' ') + ' ') : null;
@@ -838,13 +863,17 @@ function canonOf(name){
 function keyOf(name){ return canonOf(name) || norm(name); }
 const PACK_NAMES = {};   // 食材キー → 表示名（国のパックを使っているとき。日本は空）
 function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c) : String(name).replace(/[（(][^）)]*[）)]/g,'').trim(); }
+function isLatinText(seg){ return /[a-zÀ-ɏ\u1e00-\u1eff]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg); }
 // 自由入力（「豚肉と玉ねぎとキャベツ」「green onions, pork」など）から食材を取り出す
 // ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
 function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
-    String(text).split(/[、,，。・\/\n;；]+/).forEach(seg => {
+    // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
+    const exact = seg => { const n = norm(seg); const x = n && VARIANTS.find(x => x.v === n); return x ? x.c : null; };
+    String(text).split(/[、,，。\/\n;；]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
         seg = seg.trim(); if (!seg) return;
-        if (/[a-zÀ-ɏ]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg)){
+        const ex = exact(seg); if (ex){ push(PACK_NAMES[ex] || ex); return; }
+        if (isLatinText(seg)){
             let w = wnorm(seg); const found = [];
             for (const x of VARIANTS){
                 if (x.re && x.re.test(w)){ found.push(x.c); w = w.replace(x.re, ' | '); }
@@ -1128,7 +1157,7 @@ function applyStaticText(){
 function typeLabel(c){ return {'主菜':t('主菜'), '副菜':t('副菜'), '汁物':t('汁物'), 'ごはん':t('ごはん'), '麺':t('麺')}[c] || c; }
 function slotLabel(c){ return c === '汁物' ? t('汁もの') : typeLabel(c); }
 function genreLabel(r){
-    if (r.pack) return countryOf(r.pack).nameLocal;
+    if (r.pack) return countryLabel(countryOf(r.pack));
     return {'和':t('和食'), '洋':t('洋食'), '中':t('中華'), '韓':t('韓国'), 'エスニック':t('エスニック')}[r.genre] || r.genre || '';
 }
 function familyLabel(f){
@@ -1289,7 +1318,7 @@ function newMenu(){
         items.push({slot, r});
     });
     session.menu = {n, items};
-    session.twist = PACK ? null : suggestTwist();
+    session.twist = twistAvailable() ? suggestTwist() : null;
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
 function setMenuMain(r){
@@ -1597,7 +1626,7 @@ async function loadMine(){
             cur.onsuccess = () => { const c = cur.result; if (!c) return; MINE[c.key] = {src: URL.createObjectURL(c.value.blob), d: c.value.d, mine: true}; c.continue(); };
             tx.oncomplete = res; tx.onerror = () => rej(tx.error);
         });
-        if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); }
+        if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); if (JP_DATA) loadRefs(); }
         // 以前に登録した写真（アルバムができる前の分）をアルバムにも入れる
         if (!S.albumMigrated){
             const n = await idbDo('readonly', st => st.count(), 'album');
@@ -1616,6 +1645,7 @@ async function loadAlbum(){
             tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
         if (ALBUM) ALBUM.forEach(a => URL.revokeObjectURL(a.src));
         ALBUM = out.map(a => Object.assign(a, {src: URL.createObjectURL(a.blob)}));
+        if (JP_DATA) loadRefs();
     }catch(e){ ALBUM = []; }
     if (tab === 'log') render();
 }
@@ -3179,7 +3209,7 @@ function viewToday(){
         ${upgradeHtml(main)}
     </section>` : ''}
 
-    ${tw ? `<section class="sec">
+    ${tw && twistAvailable() ? `<section class="sec">
         <div class="sec-head"><h2>${esc(t('今日のひとひねり'))}</h2><span class="hint">${esc(t('いつもの定番を、ちょっと変えた一品'))}</span></div>
         <div class="card pop">
                 <div class="tw-item">
@@ -3288,7 +3318,7 @@ function viewFridge(){
         results = `
         <section class="sec">
             <div class="sec-head split"><h2>${esc(t('作れる料理'))}</h2>
-                ${PACK ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
+                ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
             ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.length})), ready)}
             ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub)}
             ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near)}
@@ -3301,9 +3331,9 @@ function viewFridge(){
         <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
         <div class="card">
         <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉']).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
             <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         <div id="search-results">${searchResultsHtml(session.search || '')}</div>
         </div>
@@ -3314,7 +3344,7 @@ function viewFridge(){
         <form class="inputbar" data-form="add-ing">
             <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:sampleIngs().join(', ')}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
             <button class="btn primary" type="submit">${esc(t('追加'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
@@ -3338,14 +3368,27 @@ function viewFridge(){
     ${results}`;
 }
 /* 料理名・材料名での検索（冷蔵庫に登録しなくても、その食材を使う料理が出る） */
+// 検索のことば: 区切り記号で分け、ラテン文字の言葉（pad thai・ground beef）は空白で分けずにひとかたまりで使う
+function searchTerms(q){
+    return String(q || '').split(/[、,，。・\/\n]+/).map(x => x.trim()).filter(Boolean).flatMap(seg => isLatinText(seg) ? [seg] : seg.split(/\s+/)).filter(Boolean);
+}
+// 料理名に当たるか: 表示の名前・元の名前（英語・その国の言葉・訳）・日本のレシピのよみ（ひらがな）のどれかに含まれれば当たり。
+// 「しょうが焼き」のようにかなと漢字がまざる言葉は、かなの部分はよみ、漢字の部分は料理名に含まれれば当たり
+function nameHit(r, tm){
+    // id もローマ字の料理名なので当てる（kr_bibimbap・nikujaga）
+    const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).map(norm).join('|') + '|' + (YOMI[r.id] || '') + '|' + String(r.id).replace(/^[a-z]{2}_/, '').replace(/_/g, '');
+    if (hay.includes(tm)) return true;
+    const runs = tm.match(/[ぁ-ゖー]+|[^ぁ-ゖー]+/g) || [];
+    return runs.length > 1 && /[ぁ-ゖ]/.test(tm) && runs.every(x => hay.includes(x));
+}
 function searchRecipes(q){
-    const raw = String(q || '').split(/[、,，。・\/\n]+|\s+/).map(x => x.trim()).filter(Boolean);
+    const raw = searchTerms(q);
     if (!raw.length) return {terms:[], hits:[]};
     const keys = extractIngredients(q).map(keyOf);
     const terms = raw.map(norm).filter(Boolean);
     const score = r => {
-        let sc = 0; const nm = norm(r.name);
-        terms.forEach(tm => { if (nm.includes(tm)) sc += 3; });
+        let sc = 0;
+        terms.forEach(tm => { if (nameHit(r, tm)) sc += 3; });
         keys.forEach(k => { if (r.items.some(i => i.key === k)) sc += i_main(r, k) ? 2 : 1; });
         terms.forEach(tm => { if (r.items.some(i => norm(i.label).includes(tm) || i.key.includes(tm))) sc += 1; });
         return sc;
@@ -3357,7 +3400,9 @@ function searchRecipes(q){
 function searchResultsHtml(q){
     if (!String(q || '').trim()) return '';
     const {terms, hits} = searchRecipes(q);
-    const ings = extractIngredients(q).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)));
+    // 料理名（肉じゃが・ハンバーグ・麻婆）だけを入れたときは、それを食材として冷蔵庫に入れる案は出さない
+    const ings = extractIngredients(q).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)))
+        .filter(x => canonOf(x) || !RECIPES.some(r => nameHit(r, norm(x))));
     const addBtn = ings.length ? `<div class="row"><button class="btn sm" data-act="search-to-fridge" data-v="${esc(ings.join('、'))}">${esc(t('{list} を冷蔵庫の材料に追加', {list:joinNames(ings)}))}</button></div>` : '';
     if (!hits.length) return `<div class="list"><div class="empty">${esc(t('見つかりませんでした。別の言い方や、食材の名前だけで試してください'))}</div></div>${addBtn}`;
     const shown = hits.slice(0, 30);
@@ -3374,7 +3419,7 @@ function runSearch(q){
     session.search = q;
     const box = $('#search-results'); if (box) box.innerHTML = searchResultsHtml(q);
 }
-function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵']; }
+function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵'].map(labelOf); }
 function matchRow(m){
     const r = m.r;
     const parts = [
@@ -3582,7 +3627,7 @@ function renderModal(){
                 <div class="row">
                     <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${esc(daysSince(r.id) === 0 ? t('今日の記録に入っています') : t('今日作った'))}</button>
                     <button class="btn" data-act="fav" data-id="${esc(r.id)}">${esc(isFav ? t('お気に入り解除') : t('お気に入り'))}</button>
-                    ${!r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button>` : ''}
+                    ${twistAvailable() && !r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button>` : ''}
                 </div>
                 <div class="row small">
                     <label for="cook-date" class="muted">${esc(t('別の日に作った:'))}</label>
@@ -3611,8 +3656,14 @@ function addIngredients(text){
     else toast(t('食材の名前が読み取れませんでした'));
 }
 let recog = null, recogTimer = 0, recogTarget = 'ing-input';
+const SPEECH_CC = {JP:'ja-JP', US:'en-US', GB:'en-GB', FR:'fr-FR', DE:'de-DE', IT:'it-IT', ES:'es-ES', PL:'pl-PL', TR:'tr-TR', EG:'ar-EG', IN:'hi-IN', CN:'zh-CN', TW:'zh-TW',
+    KR:'ko-KR', TH:'th-TH', VN:'vi-VN', ID:'id-ID', PH:'fil-PH', MX:'es-MX', BR:'pt-BR', PE:'es-PE'};
 function speechLocale(){
     if (PACK && PACK.speechLang) return PACK.speechLang;
+    // 国の言葉で話すときは、その国の言い方（メキシコ・ペルーのスペイン語、エジプトのアラビア語など）で聞き取る
+    const cc = currentCountry(), loc = SPEECH_CC[cc];
+    if (loc && loc.split('-')[0] === LANG.split('-')[0]) return loc;
+    if (LANG === 'en' && ['US', 'GB', 'IN', 'PH'].includes(cc)) return 'en-' + cc;
     const m = {ja:'ja-JP', en:'en-US', fr:'fr-FR', de:'de-DE', it:'it-IT', es:'es-ES', 'pt-BR':'pt-BR', pl:'pl-PL', tr:'tr-TR', ar:'ar-SA', hi:'hi-IN', id:'id-ID', fil:'fil-PH', th:'th-TH', 'zh-Hans':'zh-CN', 'zh-Hant':'zh-TW', ko:'ko-KR', vi:'vi-VN'};
     return m[LANG] || navigator.language || 'en-US';
 }
@@ -3629,27 +3680,31 @@ function stopMic(){ if (recog){ try{ recog.stop(); }catch(e){} } micIdle(); }
 function startMic(targetId){
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR){ toast(t('この端末では声の入力が使えません。文字で入力してください')); return; }
-    if (recog){ stopMic(); return; }
+    // 聞いているボタンをもう一度押すと止める。もう一方のボタンを押したら、そちらの入力欄に切りかえて聞きなおす
+    if (recog){ const same = recogTarget === (targetId || 'ing-input'); recog.switched = !same; stopMic(); if (same) return; }
     recogTarget = targetId || 'ing-input';
     const inp = document.getElementById(recogTarget);
+    // すでに入力してある文字は消さず、聞き取った言葉をうしろに足す
+    const before = inp ? inp.value.trim() : '', joinTo = x => before && x ? before + (LANG === 'ja' ? '、' : ', ') + x : (before || x);
     try{
-        recog = new SR(); recog.lang = speechLocale(); recog.interimResults = true; recog.maxAlternatives = 1; recog.continuous = false;
-        let finalText = '', gotResult = false;
+        const me = recog = new SR(); recog.lang = speechLocale(); recog.interimResults = true; recog.maxAlternatives = 1; recog.continuous = false;
+        let finalText = '', gotResult = false, heard = '';
         micButtons().forEach(b => { if (b.dataset.target === recogTarget){ b.textContent = t('聞いています…（タップで止める）'); b.classList.add('listening'); b.setAttribute('aria-pressed', 'true'); } });
         recog.onresult = e => {
+            if (me.switched) return;
             let interim = ''; finalText = '';
             for (let i = 0; i < e.results.length; i++){ const r = e.results[i]; if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript; }
-            const text = (finalText + interim).replace(/[。．.]+$/g, '').trim();
-            if (inp) inp.value = text;
-            if (finalText){ gotResult = true; commitSpeech(finalText); }
+            heard = (finalText + interim).replace(/[。．.]+$/g, '').trim();
+            if (inp) inp.value = joinTo(heard);
+            if (finalText){ gotResult = true; commitSpeech(joinTo(finalText.replace(/[。．.]+$/g, '').trim())); }
         };
         recog.onerror = e => {
-            if (e.error === 'aborted') return;
+            if (e.error === 'aborted' || me.switched) return;
             toast(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? t('マイクが使えませんでした。文字で入力してください') : t('聞き取れませんでした。もう一度どうぞ'));
         };
-        recog.onend = () => { if (!gotResult && inp && inp.value.trim()) commitSpeech(inp.value); micIdle(); };
+        recog.onend = () => { if (me.switched) return; if (!gotResult && heard) commitSpeech(joinTo(heard)); if (recog === me) micIdle(); };
         recog.start();
-        recogTimer = setTimeout(() => { if (recog) stopMic(); }, 12000);
+        recogTimer = setTimeout(() => { if (recog === me) stopMic(); }, 12000);
     }catch(e){ console.warn('mic', e); micIdle(); toast(t('マイクが使えませんでした。文字で入力してください')); }
 }
 function commitSpeech(text){
@@ -4005,6 +4060,13 @@ window.GOHAN_PACK = pack => { if (pack && pack.country) PACKS[pack.country] = pa
 let PACK = null;                     // いま使っている国のパック（日本は null）
 let JP_DATA = null;                  // 日本のデータの控え（国を切りかえて戻るときに使う）
 function countryOf(cc){ return COUNTRIES.find(c => c.cc === cc) || COUNTRIES[0]; }
+// 国の名前を画面の言語で（日本語は nameJa、その国の言葉なら nameLocal、ほかは端末の Intl。使えなければ英語名）
+function countryLabel(c){
+    if (LANG === 'ja') return c.nameJa;
+    if (c.lang === LANG) return c.nameLocal;
+    try{ const n = new Intl.DisplayNames([LANG], {type:'region'}).of(c.cc); if (n && n !== c.cc) return n; }catch(e){}
+    return c.name;
+}
 function currentCountry(){ return S.settings.country || 'JP'; }
 function guessCountry(){
     try{
@@ -4083,8 +4145,23 @@ function packRecipe(pk, x, tr){
     const name = rt && rt.name ? rt.name : (x.local || x.name);
     return {id: x.id, name, nameEn: name === (x.local || x.name) ? x.name : (x.local || x.name), genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
         min: Number(x.min) || 30, ings: x.ings, items, seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
-        tip: (rt && rt.tip) || x.tip || null, pack: pk.country,
+        tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
+}
+// 日本語の画面でほかの国を使うとき、日本の言い方（とりにく・たまねぎ・たまご・チキン・ビーフなど）でもその国の食材に入れられるようにする。
+// その国の食材の日本語名から日本の代表名を求め、代表名ごとにいちばん近い食材（名前がそのものか、いちばん短いもの）に日本の言い方をまとめて足す
+function addJpAliases(names, aliases){
+    const jv = [];
+    JP_DATA.canon.forEach(([c, vs], o) => [c, ...vs].forEach(v => jv.push({c, v: norm(v), o})));
+    jv.sort((a, b) => b.v.length - a.v.length || a.o - b.o);
+    const best = {};
+    Object.keys(aliases).forEach(k => {
+        const n = norm(names[k] || ''); if (!n || /[a-z]/.test(n)) return;
+        const hit = jv.find(x => n.includes(x.v)); if (!hit) return;
+        const sc = jv.some(x => x.c === hit.c && x.v === n) ? 0 : n.length;
+        if (!best[hit.c] || sc < best[hit.c].sc) best[hit.c] = {k, sc};
+    });
+    JP_DATA.canon.forEach(([c, vs]) => { const b = best[c]; if (b) aliases[b.k] = [...aliases[b.k], c, ...vs]; });
 }
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
 function replaceObj(obj, src){ Object.keys(obj).forEach(k => delete obj[k]); Object.assign(obj, src); }
@@ -4118,6 +4195,7 @@ function applyCountry(cc){
         const aliases = Object.assign({}, pk.aliases || {});
         if (tr && tr.names) Object.entries(pk.names || {}).forEach(([k, v]) => { aliases[k] = [...(aliases[k] || []), v]; });
         recipes.forEach(r => r.items.forEach(i => { if (!names[i.key]) names[i.key] = i.label; if (!aliases[i.key]) aliases[i.key] = []; }));
+        if (LANG === 'ja' && tr) addJpAliases(names, aliases);
         replaceObj(PACK_NAMES, names);
         replaceList(CANON, Object.entries(aliases).map(([k, vs]) => [k, [...new Set([k, names[k], ...vs].filter(Boolean))]]));
         const fam = {}; recipes.forEach(r => { if (r.protein) fam[r.protein] = r.family; });
@@ -4134,6 +4212,7 @@ function applyCountry(cc){
     for (const k in BROWSE) delete BROWSE[k];
     addCustomRecipes();
     updateTabs();
+    loadRefs();
 }
 // 「ひとひねり」は日本のレシピを日本語で組み立てるしくみなので、日本＋日本語のときだけ出す
 function twistAvailable(){ return !PACK && LANG === 'ja'; }
@@ -4168,6 +4247,27 @@ async function loadBrowse(cc){
     try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); browseErr.delete(cc); }catch(e){ delete BROWSE[cc]; browseErr.add(cc); }
     if (tab === 'world') render();
 }
+// お気に入り・作った記録・アルバムにあるほかの国の料理を開けるように、その国のレシピだけ読みこんでおく（起動したときと国・言語を変えたとき）
+function refCountries(){
+    const ids = new Set([...S.favs, ...S.history.map(h => h.id), ...(ALBUM || []).map(a => a.id), ...Object.keys(MINE)].map(String));
+    const out = new Set(), home = currentCountry();
+    ids.forEach(id => {
+        if (id.startsWith('a~')) return;
+        const m = id.match(/^([a-z]{2})_/), cc = m && m[1].toUpperCase();
+        if (cc && COUNTRIES.some(c => c.cc === cc)) out.add(cc);
+        else if (JP_DATA && JP_DATA.recipes.some(r => r.id === id)) out.add('JP');
+    });
+    out.delete(home);
+    return [...out].filter(cc => !BROWSE[cc]);
+}
+const refLoading = new Set();
+async function loadRefs(){
+    const ccs = refCountries().filter(cc => !refLoading.has(cc)); if (!ccs.length) return;
+    ccs.forEach(cc => refLoading.add(cc));
+    await Promise.all(ccs.map(loadBrowse));
+    ccs.forEach(cc => refLoading.delete(cc));
+    render(); if (modalId) renderModal();
+}
 function viewWorld(){
     const home = currentCountry();
     const others = COUNTRIES.filter(c => c.cc !== home);
@@ -4192,7 +4292,7 @@ function viewWorld(){
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
-        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${LANG === 'ja' ? (c.nameJa !== c.nameLocal ? `<span class="muted small">${esc(c.nameJa)}</span>` : '') : (c.name !== c.nameLocal ? `<span class="muted small">${esc(c.name)}</span>` : '')}</div>
+        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
         ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
             : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
@@ -4279,7 +4379,7 @@ function stapleSpot(){
 }
 function countrySheetHtml(){
     const cur = S.settings.country || guessCountry();
-    const subOf = c => LANG === 'ja' ? (c.nameLocal === c.nameJa ? '' : c.nameJa) : (c.nameLocal === c.name ? '' : c.name);
+    const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
         <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}">
