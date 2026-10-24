@@ -1421,6 +1421,21 @@ function makeWeek(){
     }
     S.week = {start:TODAY, days}; save();
 }
+// 苦手な食材を足したり料理を「今は出さない」にしたりしたとき、作ってある1週間プランのうち、その料理の日だけ選び直す
+function refreshWeek(){
+    if (!S.week) return 0;
+    const out = r => !r || isAvoided(r) || S.hidden.includes(r.id);
+    const used = new Set(S.week.days.map(x => x.id)); let n = 0;
+    S.week.days.forEach((x, i) => {
+        if (x.d < TODAY || !out(byId(x.id))) return;
+        const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
+        const cands = RECIPES.filter(r => r.main && !used.has(r.id) && !out(r));
+        const r = pick(cands, {recent}) || pick(cands, {recent: []}) || cands[0];
+        if (r){ used.add(r.id); x.id = r.id; n++; }
+    });
+    if (n) save();
+    return n;
+}
 function weekToday(){
     if (!S.week) return null;
     const x = S.week.days.find(x => x.d === TODAY);
@@ -3545,7 +3560,7 @@ document.addEventListener('click', e => {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
             const i = a.findIndex(x => keyOf(x) === k);
             if (i >= 0) a.splice(i, 1); else a.push(canonOf(v) || v);
-            save(); session.menu = null; render(); break;
+            save(); session.menu = null; refreshWeek(); render(); break;
         }
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
@@ -3686,7 +3701,11 @@ document.addEventListener('click', e => {
         case 'hide-no': modalConfirmHide = false; renderModal(); break;
         case 'hide-yes':
             if (!S.hidden.includes(id)) S.hidden.push(id); save();
-            closeModal(); if (menuIds().includes(id)) newMenu();
+            closeModal();
+            { const m = session.menu, i = m ? m.items.findIndex(x => x.r && x.r.id === id) : -1;   // 外した料理の枠だけ選び直す
+              if (i === 0) setMenuMain(suggestMain());
+              else if (i > 0) m.items[i].r = suggestOrAny(m.items[i].slot, m.items.filter((_, k) => k !== i), m.items[0].r); }
+            refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;
         case 'unhide': S.hidden = S.hidden.filter(x => x !== id); save(); render(); break;
         case 'rm-hist': S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); save(); render(); break;
@@ -3778,7 +3797,7 @@ document.addEventListener('submit', e => {
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
         found.forEach(x => { if (!S.settings.avoid.some(y => keyOf(y) === keyOf(x))) S.settings.avoid.push(x); });
-        save(); session.menu = null; if (found.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(found)})); render();
+        save(); session.menu = null; refreshWeek(); if (found.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(found)})); render();
     }
     if (f === 'add-staple'){
         const inp = $('#staple-input'); const found = extractIngredients(inp.value); let added = 0;
