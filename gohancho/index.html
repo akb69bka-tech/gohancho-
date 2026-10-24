@@ -412,6 +412,10 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
 .shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
 .shop .shop-row:first-child{border-top:0}
+.shop .shop-sec{padding:10px 14px 2px;font-size:.72rem;font-weight:700;color:var(--muted);border-top:1px solid var(--line)}
+.shop .shop-sec:first-child{border-top:0}
+.shop .shop-sec + .shop-row{border-top:0}
+.shop .shop-sec.done{padding:0;border-top:2px solid var(--line)}
 .shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
 .shop .nm{font-weight:700}
 .shop .q{font-size:.8rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
@@ -2847,6 +2851,17 @@ function shopBase(label){
     if (/[\u0E00-\u0E7F]/.test(s)) s = s.split(/\s+/)[0];
     return s.split(/\s+/).map(w => /^[a-zà-ɏ'’-]+$/.test(w) ? w.replace(/(?<=..)s$/, '') : w).join(' ');
 }
+// 買い物メモの売り場: veg（野菜）・meat（肉・魚）・dairy（乳製品・卵）・other（その他）
+const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節'];
+function shopSec(i){
+    const w = (i.key + '|' + (i.en || '')).toLowerCase();
+    if (['pork','chicken','beef','fish','shellfish'].some(f => inFam(f, i)) || /\b(lamb|mutton|goat|duck|liver|meat|mince|keema|sausage)\b/.test(w)) return 'meat';
+    if (inFam('egg', i) || inFam('dairy', i)) return 'dairy';
+    if (/\b(green|long|wing|string|runner|broad|fava)\s+beans?\b|bean sprouts?|snow peas|^peas\|/.test(w)) return 'veg';
+    if (SHOP_OTHER_JP.includes(i.key) || inFam('wheat', i) || inFam('nuts', i)
+        || /rice|noodle|vermicelli|tofu|tempeh|yuba|beans?\b|lentil|chickpea|\bpeas\b|\bdal\b|sauce|paste|canned|\bcan\b|stock|broth|\boil\b|wine|beer|kimchi|curry|tortilla|taco|wrapper|starch|sugar|vinegar|\bmix\b|seaweed|kelp|miso|tahini|coconut milk|cornmeal|grits|hominy|oats|quinoa|barley|tapioca|chips|pickle|olives?\b|capers?\b|raisins|prunes|mayonnaise|ketchup|ranch|mole|dried|preserved|salted|fermented|jelly|cakes?\b|dumplings|sesame|pepitas|lotus seed|ginseng|goji|jujube|fungus|wood ear|red yeast|herbal|saffron|sauerkraut|zhacai|bulgur|couscous|freekeh|tarhana|semolina|cassava flour|gram flour|atta/.test(w)) return 'other';
+    return 'veg';
+}
 function shoppingList(){
     const have = fridgeKeys(), fac = servingFactor(), map = new Map(), first = new Map();
     visiblePlanDays().forEach(x => {
@@ -2855,7 +2870,7 @@ function shoppingList(){
             if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
             const b = shopBase(i.label); if (!first.has(i.key)) first.set(i.key, b);
             const id = first.get(i.key) === b ? i.key : i.key + '|' + b;   // チェックの記録と合うよう、最初の名前はキーのまま
-            const e = map.get(id) || {key:id, label:i.label, qty:[], dishes:[]};
+            const e = map.get(id) || {key:id, label:i.label, qty:[], dishes:[], sec:shopSec(i)};
             if (i.label.length < e.label.length) e.label = i.label;          // まとめた行は、いちばん短い名前で出す
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
@@ -2879,11 +2894,19 @@ function sumQty(list){
     return [...out, ...rest];
 }
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
+// 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
+function shopRowsHtml(list, done){
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`;
+    const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
+    return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
+        const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec">${esc(l)}</div>${xs.map(row).join('')}` : '';
+    }).join('') + (got.length ? `<div class="shop-sec done" aria-hidden="true"></div>${got.map(row).join('')}` : '');
+}
 function shoppingHtml(){
     const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
     const done = shopDoneSet();
     return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(t('{n}日分の主菜で使う材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n:visiblePlanDays().length, sv:Number(S.settings.servings)||2}))}</span></div>
-        <div class="list shop">${list.length ? list.map(e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`).join('')
+        <div class="list shop">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>`;
 }
 
