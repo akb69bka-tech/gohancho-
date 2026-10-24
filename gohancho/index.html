@@ -2853,10 +2853,11 @@ function shoppingHtml(){
 /* =========================================================
    LINE・ほかのアプリで家族に送る
    ========================================================= */
-function menuShareText(){
-    const m = session.menu; if (!m) return '';
-    const lines = [t('【{date}の献立】', {date:jpDate(TODAY)})];
-    m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot), name:x.r.name})); });
+// 作り方タブから送るときは、決めた献立（S.cook）の料理を送る
+function menuShareText(m = session.menu, d = TODAY){
+    if (!m || !m.items.length) return '';
+    const lines = [t('【{date}の献立】', {date:jpDate(d)})];
+    m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
     if (!(main && (main.type === 'ごはん' || main.type === '麺')) && st) lines.push(t('{slot}：{name}', {slot:t('主食'), name:st.name}));
@@ -2885,7 +2886,7 @@ function messengerFor(){
     return null;
 }
 function openShare(kind){
-    const text = kind === 'week' ? weekShareText() : menuShareText();
+    const text = kind === 'week' ? weekShareText() : kind === 'cook' ? (S.cook ? menuShareText({items: cookItems()}, S.cook.d) : '') : menuShareText();
     if (!text){ toast(t('送る献立がありません')); return; }
     sheet = {kind:'share', text, title: kind === 'week' ? t('献立の予定と買い物メモ') : t('今日の献立')}; renderSheet();
 }
@@ -3670,7 +3671,7 @@ document.addEventListener('click', e => {
             if (a.length >= cur.r.steps.length){ render(); toast(t('{name}、できあがり！', {name:cur.r.name})); }
             break;
         }
-        case 'share-cook': openShare('menu'); break;
+        case 'share-cook': openShare('cook'); break;
         case 'search-to-fridge': addIngredients(el.dataset.v); render(); break;
         case 'fridge-twist': {
             const have = fridgeKeys();
