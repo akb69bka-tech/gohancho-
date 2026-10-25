@@ -181,6 +181,7 @@ a{color:var(--accent)}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
+.swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-left:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
 /* 入力 */
@@ -2734,7 +2735,7 @@ function renderSheet(){
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-next">${esc(t('次へ'))}</button></div>`;
         if (st === 2) body = `
             <h2>${esc(t('苦手な食材はありますか'))}</h2>
-            <p class="muted small">${esc(t('選んだ食材を使う料理は、献立に出しません（なくても作れる料理は出します）。'))}</p>
+            <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             <div class="chips">${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}</div>
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
@@ -2910,14 +2911,136 @@ function avoidChipsHtml(list, act, famAct){
     return fams.join('') + AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => `<button class="chip" data-act="${act}" data-v="${esc(q)}" aria-pressed="${list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q))}">${esc(q)}</button>`).join('');
 }
 function avoidKeys(){ return new Set((S.settings.avoid || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
+// 苦手な食材か（1つの材料）。食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば苦手とみなす
+function avoidCtx(){
+    const av = S.settings.avoid || [], sig = JSON.stringify(av);
+    if (avoidCtx.c && avoidCtx.c.sig === sig) return avoidCtx.c;
+    const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
+    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free};
+}
+function itemAvoided(i, c){
+    c = c || avoidCtx(); if (!c.any) return false;
+    if (c.ks.has(i.key) || c.fams.some(f => inFam(f, i))) return true;
+    return c.free.some(({x, re}) => re ? re.test(wnorm(i.label + ' ' + i.name)) : norm(i.label + i.name).includes(norm(x)));
+}
+// 苦手な食材を使う料理か（置き換えて作れる料理は、置き換えて出すので苦手にしない）
 function isAvoided(r){
-    const av = S.settings.avoid || []; if (!av.length || !r || !r.items) return false;
-    const ks = avoidKeys(), fams = [...new Set(av.map(avoidFamOf).filter(Boolean))];
-    if (r.items.some(i => !i.opt && (ks.has(i.key) || fams.some(f => inFam(f, i))))) return true;
-    // 食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば避ける
-    const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x));
-    return free.some(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(), re = LATIN_RE.test(raw) ? wordRe(raw) : null;
-        return r.items.some(i => !i.opt && (re ? re.test(wnorm(i.label + ' ' + i.name)) : norm(i.label + i.name).includes(norm(x)))); });
+    if (!r || !r.items || !(S.settings.avoid || []).length) return false;
+    const c = avoidCtx(); if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
+    return !recipeSwaps(r);
+}
+
+/* ---- 苦手な食材の置き換え ---- */
+// 苦手な食材を使う料理も、ほかの食材で作れるなら置き換えて出す（設定でオフにできる）。
+// 代わりの食材は、いまの国のレシピによく出てくる食材から選ぶ（その国で手に入りやすく、名前もその国の言葉で出せる）。
+// 卵・乳製品・ナッツ・小麦や、ハム・だしの素のような加工品は置き換えない（その料理は今までどおり出さない）
+const SWAP_TXT = i => (i.key + '|' + (i.en || '') + '|' + i.label).toLowerCase();
+const SWAP_BAD = /stock|broth|soup|condensed|\beggs?\b|\bhead\b|\bwhole\b|poussin|tripe|mondongo|offal|kidney|tongue|oxtail|\bsalt(ed)? (cod|fish|herring|mackerel|pork|beef)|bacalhau|matj|charqui|carne seca|bouillon|powder|cube|granule|seasoning|sauce|paste|\bfat\b|lard|skin|bones?\b|liver|gizzard|heart|feet|trotter|canned|tinned|\bcan\b|dried|smoked|cured|ガラ|スープの素|だし|ルウ|ソース|缶/;
+const SWAP_PROC = /\bham\b|bacon|sausage|salami|chorizo|pancetta|prosciutto|guanciale|\bspam\b|wiener|hot ?dog|frankfurter|wurst|corned|pastrami|bresaola|sucuk|ハム|ベーコン|ウインナー|ソーセージ|ツナ|かまぼこ|ちくわ|かに風味|ちりめん|surimi|anchov|\btuna\b|bonito|katsuobushi|fish ball|fish ?cakes?|eomuk|\bballs?\b|morcilla|blood|black pudding|haggis|gammon|moo yor|pork roll|meatball|nugget|dumpling|wonton|wrapper|mandu|餃子|しゅうまい|\bpie\b|pastry|patt(y|ies)|burger|leftover|cooked|shredded/;
+const swapMince = i => /ひき肉|びき肉|ミンチ|\bground\b|\bmince/.test(SWAP_TXT(i));
+// 代わりにしない部位（骨付き・煮込み向きのかたまりなど。ステーキや炒めものの代わりにならない）
+const SWAP_CUT = /ribs?\b|belly|shoulder|\bbutt\b|hock|knuckle|shank|whole|bone-in|on the bone|with bone|wings?\b|drumstick|\blegs?\b|carcass|骨付き|手羽|スペアリブ|豚バラ|ซี่โครง|ปีก|น่อง/;
+const swapBody = f => i => inFam(f, i) && !SWAP_BAD.test(SWAP_TXT(i)) && !SWAP_PROC.test(SWAP_TXT(i));
+const swapSlice = f => i => swapBody(f)(i) && !swapMince(i);
+const swapCut = f => i => swapSlice(f)(i) && !SWAP_CUT.test(SWAP_TXT(i));
+const swapGround = f => i => swapBody(f)(i) && swapMince(i);
+const swapTofu = i => /厚揚げ|豆腐|tofu/.test(SWAP_TXT(i)) && !/skin|yuba|fermented|stinky|dried|puff|sheet|油揚げ|高野|湯葉|silken|soft|絹/.test(SWAP_TXT(i));
+const swapVeg = re => i => re.test(SWAP_TXT(i)) && !SWAP_BAD.test(SWAP_TXT(i));
+// is: 置き換える材料。to: 代わりの候補を前から順に（[見分け方, 火の通しの注意]）
+const SWAP_RULES = [
+    {is: i => swapMince(i) && ['pork', 'beef', 'chicken'].some(f => swapBody(f)(i)), to: [[swapGround('chicken'), 'chicken'], [swapGround('pork'), 'pork'], [swapGround('beef'), '']]},
+    {is: swapSlice('pork'), to: [[swapCut('chicken'), 'chicken'], [swapTofu, 'tofu']]},
+    {is: swapSlice('beef'), to: [[swapCut('pork'), 'pork'], [swapCut('chicken'), 'chicken']]},
+    {is: swapSlice('chicken'), to: [[swapCut('pork'), 'pork'], [swapTofu, 'tofu']]},
+    {is: swapBody('fish'), to: [[swapBody('fish'), 'fish'], [swapCut('chicken'), 'chicken']]},
+    {is: i => swapBody('shellfish')(i), to: [[swapCut('chicken'), 'chicken']]},
+    {is: swapVeg(/ピーマン|パプリカ|bell pepper|capsicum|green pepper|sweet pepper|\bpimiento|paprika\|/), to: [[swapVeg(/ピーマン|パプリカ|bell pepper|capsicum|sweet pepper/), ''], [swapVeg(/ズッキーニ|zucchini|courgette/), '']]},
+    {is: swapVeg(/なす|eggplant|aubergine|brinjal|\bterong\b/), to: [[swapVeg(/ズッキーニ|zucchini|courgette/), ''], [swapVeg(/ピーマン|パプリカ|bell pepper/), '']]},
+    {is: swapVeg(/ゴーヤ|bitter (gourd|melon)|ampalaya|karela/), to: [[swapVeg(/ピーマン|bell pepper|green pepper/), ''], [swapVeg(/ズッキーニ|zucchini/), '']]},
+    {is: swapVeg(/しいたけ|しめじ|まいたけ|えのき|エリンギ|mushroom|shiitake|champignon/), to: [[swapVeg(/しいたけ|しめじ|まいたけ|えのき|エリンギ|mushroom|shiitake|champignon/), '']]},
+    {is: swapVeg(/パクチー|cilantro|coriander (leaves|leaf)|^coriander\||fresh coriander/), to: [[swapVeg(/三つ葉|小ねぎ|parsley|spring onion|green onion|scallion/), '']]},
+    {is: swapVeg(/セロリ|celery/), to: [[swapVeg(/玉ねぎ|^onion\||\byellow onion|white onion/), '']]},
+    {is: swapVeg(/ほうれん草|小松菜|spinach/), to: [[swapVeg(/ほうれん草|小松菜|spinach|kale|chard|bok choy|pak choi/), '']]},
+    {is: swapVeg(/キャベツ|白菜|cabbage/), to: [[swapVeg(/キャベツ|白菜|cabbage/), '']]},
+    {is: swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b/), to: [[swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b|shallot/), '']]},
+];
+// いまの国の材料（名前ごとに、よく出てくる順）。苦手の設定と国・言語が変わったら作り直す
+function swapPool(){
+    const sig = currentCountry() + '|' + LANG + '|' + RECIPES.length;
+    if (swapPool.c && swapPool.c.sig === sig) return swapPool.c.list;
+    // よく出てくる食材のキーの順。同じキーでも部位や名前がちがうもの（fish の切り身と頭など）は別々に並べる
+    const keyN = new Map(), m = new Map();
+    RECIPES.forEach(r => (r.items || []).forEach(i => { if (i.opt) return; keyN.set(i.key, (keyN.get(i.key) || 0) + 1);
+        const k = SWAP_TXT(i), e = m.get(k); if (e) e.n++; else m.set(k, {i, n: 1}); }));
+    const list = [...m.values()].sort((a, b) => keyN.get(b.i.key) - keyN.get(a.i.key) || b.n - a.n).map(e => e.i);
+    swapPool.c = {sig, list}; return list;
+}
+// 1つの材料の代わり（なければ null）
+function swapFor(i){
+    const c = avoidCtx(), sig = c.sig + '|' + currentCountry() + '|' + LANG;
+    if (!swapFor.c || swapFor.c.sig !== sig) swapFor.c = {sig, m: new Map()};
+    const ck = SWAP_TXT(i);   // 各国のパックは同じキー（fish など）で別の部位があるので、名前ごとに覚える
+    if (swapFor.c.m.has(ck)) return swapFor.c.m.get(ck);
+    let hit = null;
+    const rule = SWAP_RULES.find(x => x.is(i));
+    if (rule) for (const [ok, tip] of rule.to){
+        const j = swapPool().find(x => SWAP_TXT(x) !== SWAP_TXT(i) && ok(x) && !itemAvoided(x, c));
+        if (j){ hit = {i: j, tip}; break; }
+    }
+    swapFor.c.m.set(ck, hit); return hit;
+}
+function swapOn(){ return S.settings.avoidSwap !== false; }
+// 料理の置き換え: {swaps:[{from, to, tip}], omit:[なくても作れる苦手な材料]}。置き換えられない材料があれば null
+function recipeSwaps(r){
+    if (!swapOn() || !r || !r.items) return null;
+    const c = avoidCtx(), swaps = [], omit = [];
+    for (const i of r.items){
+        if (!itemAvoided(i, c)) continue;
+        if (i.opt){ omit.push(i); continue; }
+        const w = swapFor(i);
+        if (!w || r.items.some(x => x !== i && x.key === w.i.key)) return null;   // 代わりがない・同じ食材がもう入っている
+        swaps.push({from: i, to: w.i, tip: w.tip});
+    }
+    return {swaps, omit};
+}
+// 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
+function swappedRecipe(r){
+    if (!r || !r.items || !(S.settings.avoid || []).length || r.swapped) return r;
+    if (!r.isTwist && !RECIPES.includes(r)) return r;
+    const w = recipeSwaps(r); if (!w || (!w.swaps.length && !w.omit.length)) return r;
+    const by = new Map(w.swaps.map(x => [x.from, x]));
+    const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); return x ? Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, changed: true, from: i.name}) : i; });
+    const esc_ = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const repl = txt => w.swaps.reduce((s, x) => {
+        // 作り方の文の中の名前も入れかえる（日本語の料理は「豚肉」「豚バラ肉」のような言い方も）
+        const fam = currentCountry() === 'JP' && !r.trLang ? FAMILY_RE[FAMILY[x.from.key]] : null;
+        if (fam && /[ぁ-ん一-龠]/.test(x.to.name)) s = s.replace(fam, x.to.name);
+        return [...new Set([x.from.name, x.from.label])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
+            .reduce((u, n) => u.replace(new RegExp(esc_(n), 'gi'), x.to.label), s);
+    }, String(txt));
+    const steps = r.steps.map(st => typeof st === 'string' ? repl(st) : Object.assign({}, st, {t: repl(st.t)}));
+    return Object.assign({}, r, {items, steps, swapped: w});
+}
+// 献立の一覧に出す置き換えの一言（例: 🔁 さば の代わりに 鶏肉）
+function swapLineHtml(r){
+    const w = (swappedRecipe(r) || {}).swapped; if (!w || !w.swaps.length) return '';
+    return `<br><span class="swap-line">🔁 ${esc(w.swaps.map(x => t('{from} の代わりに {to}', {from: x.from.label, to: x.to.label})).join(LANG === 'ja' ? '、' : ', '))}</span>`;
+}
+// お膳に出す短い一言（例: 🔁 鶏肉で作る）
+function swapTagHtml(r){
+    const w = (swappedRecipe(r) || {}).swapped; if (!w || !w.swaps.length) return '';
+    return `<span class="mt swap-line">🔁 ${esc(t('{to}で作る', {to: joinNames([...new Set(w.swaps.map(x => x.to.label))])}))}</span>`;
+}
+// 置き換えの案内（詳細と作り方タブ）
+function swapNoteHtml(r){
+    const w = r && r.swapped; if (!w) return '';
+    const tipText = {chicken: t('鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。'), pork: t('豚肉も中まで火を通してください。'),
+        tofu: t('豆腐・厚揚げは水気を切り、崩れないようにやさしく混ぜてください。'), fish: t('魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。')};
+    const tips = [...new Set(w.swaps.map(x => tipText[x.tip]).filter(Boolean))];
+    return `<div class="note swap-note"><b>${esc(t('苦手な食材を置き換えています'))}</b><ul>
+        ${w.swaps.map(x => `<li>${esc(t('{from} の代わりに {to}', {from: x.from.name, to: x.to.name}))}</li>`).join('')}
+        ${w.omit.map(i => `<li>${esc(t('{name} は入れません（なくても作れます）', {name: i.name}))}</li>`).join('')}</ul>
+        ${w.swaps.length ? `<span class="small">${esc(t('作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。'))}${tips.length ? ' ' + esc(tips.join(' ')) : ''}</span>` : ''}</div>`;
 }
 
 /* =========================================================
@@ -2957,6 +3080,8 @@ function viewSettings(){
                 <div class="chips">${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam')}
                 ${S.settings.avoid.filter(x => !avoidFamOf(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => `<span class="chip have">${esc(x)}<button class="x" data-act="toggle-avoid" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`).join('')}</div>
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
+                <label class="check" style="margin-top:6px"><input type="checkbox" data-act="avoid-swap" ${swapOn()?'checked':''}><span>${esc(t('ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）'))}</span></label>
+                <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。') : t('苦手な食材を使う料理は、すべて出しません。'))}</span>
                 <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span></div>
         </div>
         <div class="set-group">
@@ -3081,7 +3206,7 @@ function shopSec(i){
 function shoppingList(){
     const have = fridgeKeys(), fac = servingFactor(), map = new Map(), first = new Map();
     visiblePlanDays().forEach(x => {
-        const r = byId(x.id); if (!r) return;
+        const r = swappedRecipe(byId(x.id)); if (!r) return;
         r.items.forEach(i => {
             if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
             const b = shopBase(i.label); if (!first.has(i.key)) first.set(i.key, b);
@@ -3264,7 +3389,7 @@ function viewToday(){
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${last ? `<span class="last">${esc(last)}</span>` : ''}`
+                ${r ? `<span class="nm">${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
                     : `<span class="mt">${esc(empty)}</span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>` : ''}
@@ -3368,14 +3493,14 @@ function viewToday(){
             return `
             <div class="item">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
-                <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div>
+                <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div></div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button>
             </div>`; }).join('')}</div>
             <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('予定と買い物メモを送る'))}</button><button class="btn" data-act="make-week">${esc(t('作り直す'))}</button></div>
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
-        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${S.settings.avoid.length ? esc(t('苦手な食材（{list}）を使う料理は出しません。', {list:joinNames([...new Set(S.settings.avoid.map(avoidName))])})) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
+        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${S.settings.avoid.length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(S.settings.avoid.map(avoidName))])) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>`;
 }
 
@@ -3438,7 +3563,7 @@ function viewFridge(){
             : `<div class="hint-row"><span class="k">${PLUS()}${esc(h.label)}</span><span class="v"><b>${esc(t('{n}品', {n:h.n}))}</b>${esc(t('が今すぐ作れるように：'))} ${esc(joinNames(h.names))}${h.n > 3 ? esc(t(' など')) : ''}</span></div>`).join('')}</div>` : '';
     let results = '';
     if (have.size){
-        const ms = RECIPES.filter(r => !isAvoided(r)).map(r => matchRecipe(r, have)).filter(m => m.used > 0 && (m.got.length + m.subs.length) > 0);
+        const ms = RECIPES.filter(r => !isAvoided(r)).map(r => matchRecipe(swappedRecipe(r), have)).filter(m => m.used > 0 && (m.got.length + m.subs.length) > 0);
         const ready = ms.filter(m => !m.miss.length && !m.subs.length).sort((a,b) => b.used - a.used);
         const withSub = ms.filter(m => !m.miss.length && m.subs.length).sort((a,b) => b.used - a.used);
         const near = ms.filter(m => m.miss.length && m.miss.length <= 2 && m.ratio >= 0.4).sort((a,b) => b.ratio - a.ratio || b.used - a.used).slice(0, 12);
@@ -3541,7 +3666,7 @@ function searchResultsHtml(q){
         <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
         <div class="info">
             <div class="head" data-act="open" data-id="${esc(r.id)}"><span class="name">${esc(r.name)}</span></div>
-            <div class="ings">${r.items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</div>
+            <div class="ings">${swappedRecipe(r).items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</div>
             <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
         </div></div>`).join('')}</div>${hits.length > shown.length ? `<p class="foot">${esc(t('上位{n}品を表示しています。食材を足すと絞りこめます', {n:shown.length}))}</p>` : ''}${addBtn}`;
 }
@@ -3670,7 +3795,7 @@ function viewLog(){
         <div class="list">${top.map(([n,c]) => `<div class="item"><div>${esc(n)}</div><span class="small muted">${esc(t('{n}回', {n:c}))}</span></div>`).join('')}</div></section>` : ''}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('お気に入り'))}</h2></div>
-        <div class="list">${favs.length ? favs.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}</div></div><span class="small muted">${esc(lastLabel(r.id))}</span></div>`).join('') : `<div class="empty">${esc(t('料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。'))}</div>`}</div>
+        <div class="list">${favs.length ? favs.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div></div><span class="small muted">${esc(lastLabel(r.id))}</span></div>`).join('') : `<div class="empty">${esc(t('料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。'))}</div>`}</div>
     </section>
     ${hidden.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('今は出さない料理'))}</h2></div>
         <div class="list">${hidden.map(r => `<div class="item"><div>${esc(r.name)}</div><button class="btn sm" data-act="unhide" data-id="${esc(r.id)}">${esc(t('また出す'))}</button></div>`).join('')}</div></section>` : ''}
@@ -3714,10 +3839,11 @@ function loadHistCountries(){
 function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; dlgClosed('modal-root'); }
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 function recipeCoreHtml(r, done){
+    r = swappedRecipe(r);
     const have = fridgeKeys();
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
     const stepText = s => typeof s === 'string' ? s : s.t;
-    return `<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
+    return `${swapNoteHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(r.seas, fac))}</div>` : ''}
                 <div class="label">${esc(t('作り方'))}</div>
@@ -3954,6 +4080,7 @@ document.addEventListener('click', e => {
             if (i >= 0) a.splice(i, 1); else a.push(canonOf(v) || v);
             save(); session.menu = null; refreshWeek(); render(); break;
         }
+        case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); session.menu = null; refreshWeek(); render(); break; }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
             const f = el.dataset.v, a = S.settings.avoid;
