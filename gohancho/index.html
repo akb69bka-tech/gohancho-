@@ -1109,6 +1109,7 @@ function normalizeState(d){
     if (st.cook && !(isYmd(st.cook.d) && Array.isArray(st.cook.ids))) st.cook = null;
     if (st.draft && !(isYmd(st.draft.d) && Array.isArray(st.draft.ids) && Array.isArray(st.draft.slots))) st.draft = null;
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
+    if (!st.settings.avoidX || typeof st.settings.avoidX !== 'object' || Array.isArray(st.settings.avoidX)) delete st.settings.avoidX;
     st.settings.mix = obj(st.settings.mix);
     if (!isYmd(st.firstUse)) st.firstUse = '';
     return st;
@@ -1435,6 +1436,9 @@ function suggestMain(keep = [], bowl = null){
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
     if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
     if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
+    // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
+    const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY).map(x => x.id));
+    if (ahead.size){ const ok = cands.filter(r => !ahead.has(r.id)); if (ok.length) cands = ok; }
     const r = pick(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
@@ -1649,6 +1653,8 @@ function suggestTwist(){
 /* =========================================================
    1週間の主菜プラン
    ========================================================= */
+// i日あとの主菜にしても、「○日以内に作った料理は出さない」に当たらない料理か
+function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoidDays) || 0); }
 function makeWeek(){
     const days = [], used = new Set();
     for (let i = 0; i < 7; i++){
@@ -1656,13 +1662,15 @@ function makeWeek(){
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
-        const cands = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
+        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
+        const fresh = all0.filter(r => weekFresh(r, i)), cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
         const wdi = parseYmd(d).getDay();
-        let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5});
-        if (!r && cands.length) r = pick(cands, {recent: []});                       // 肉・魚やジャンルの条件を外して選ぶ
+        let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
+        if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度
-            const okAll = poolFor('主菜').filter(x => x.main && !isAvoided(x)); const all = okAll.length ? okAll : poolFor('主菜').filter(x => x.main); const order = days.map(x => x.id);
+            const okAll = poolFor('主菜').filter(x => x.main && !isAvoided(x)); let all = okAll.length ? okAll : poolFor('主菜').filter(x => x.main); const order = days.map(x => x.id);
+            const fr = all.filter(x => weekFresh(x, i)); if (fr.length) all = fr;
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
@@ -1677,8 +1685,9 @@ function refreshWeek(){
     S.week.days.forEach((x, i) => {
         if (x.d < TODAY || !out(byId(x.id))) return;
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
-        const cands = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r));
-        const r = pick(cands, {recent}) || pick(cands, {recent: []}) || cands[0];
+        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
+        const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
+        const r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
         if (r){ used.add(r.id); x.id = r.id; n++; }
     });
     if (n) save();
@@ -1687,8 +1696,12 @@ function refreshWeek(){
 function weekToday(){
     if (!S.week) return null;
     const x = S.week.days.find(x => x.d === TODAY);
-    return x ? byId(x.id) : null;
+    const r = x ? byId(x.id) : null, mc = mixCc('主菜');
+    if (r && mc && (r.pack || 'JP') !== mc) return null;   // 国の組み合わせで主菜の国を選んでいるときは、ほかの国のプランの料理を今日の主菜にしない
+    return r;
 }
+// 1週間プランの今日の主菜を、そのまま今日の献立にしてよいか（苦手・今は出さない・最近作った料理は除く）
+function planUsable(p){ return !!p && !isAvoided(p) && !S.hidden.includes(p.id) && daysSince(p.id) >= (Number(S.settings.avoidDays) || 0); }
 
 /* =========================================================
    記録
@@ -3222,19 +3235,100 @@ function avoidSumHtml(list){
     finally { S.settings.avoid = keep; }
     return `<p class="small avoid-sum" role="status">${esc(t('いまの国の料理のうち、{a}品は置き換えて、{b}品は出さずに献立を作ります', {a, b}))}</p>`;
 }
+// 苦手な食材を、言葉・言語・国に関係なく見分けるための表。[日本の食材（複数）, 各国の食材のキー, 英語の名前で見分ける式, 除く式, 入力される言い方（/区切り）]
+// 日本の料理は日本の食材のキー、各国の料理は英語のキーと英語の名前（i.key｜i.en）で照らす。入力した言葉がどの言語でも同じ食材になる
+const AVOID_CON = [
+    [['セロリ'], ['celery'], /\bceler(y|iac)\b/, null, 'セロリ/celery/셀러리/芹菜/西芹/apio/céleri/celeri/sellerie/sedano/aipo/كرفس/ขึ้นฉ่าย/cần tây/seledri/kereviz/seler/kintsay/अजवाइन'],
+    [['ピーマン','パプリカ'], ['bell pepper','capsicum','red pepper','green pepper'], /\b(bell|green|red|yellow|orange|sweet) peppers?\b|capsicum/, /chil|hot|black|white|cayenne|flakes|ground|powder|paste/,
+        'ピーマン/パプリカ/bell pepper/green pepper/red pepper/sweet pepper/capsicum/paprika/피망/파프리카/青椒/彩椒/甜椒/柿子椒/pimiento/pimiento morrón/poivron/paprikaschote/peperone/pimentão/فلفل رومي/فلفل حلو/พริกหยวก/พริกหวาน/ớt chuông/dolmalık biber/papryka/शिमला मिर्च'],
+    [['トマト','トマト缶'], ['tomato','canned tomato','tomato sauce','passata','cherry tomato'], /\btomato(e?s)?\b|passata|pomodor|tomate/, /\btomatillos?\b/,
+        'トマト/ミニトマト/トマト缶/tomato/tomatoes/canned tomato/tomato puree/tomato purée/tomato paste/passata/토마토/番茄/西红柿/西紅柿/tomate/jitomate/pomodoro/طماطم/بندورة/มะเขือเทศ/cà chua/tomat/domates/pomidor/टमाटर/kamatis/paradeiser'],
+    [['パクチー','コリアンダー','香菜'], ['cilantro','coriander'], /\b(cilantro|coriander)\b/, /seeds?|ground|powder/, 'パクチー/コリアンダー/香菜/cilantro/coriander/고수/芫荽/culantro/coriandre/koriander/coriandolo/coentro/كزبرة/ผักชี/rau mùi/ketumbar/kişniş/kolendra/धनिया/wansuy'],
+    [['玉ねぎ'], ['onion'], /\bonions?\b/, /green|spring|scallion|welsh|leek/, '玉ねぎ/たまねぎ/onion/onions/양파/洋葱/cebolla/oignon/zwiebel/cipolla/cebola/بصل/หัวหอม/hành tây/bawang bombay/soğan/cebula/प्याज/sibuyas'],
+    [['長ねぎ','万能ねぎ'], ['green onion','spring onion','scallion'], /\b(green|spring) onions?\b|scallions?/, null, '長ねぎ/ねぎ/青ねぎ/green onion/spring onion/scallion/대파/파/小葱/大葱/葱/cebolleta/cebollín/oignon vert/frühlingszwiebel/cipollotto/cebolinha/بصل أخضر/ต้นหอม/hành lá/daun bawang/yeşil soğan/szczypior/हरा प्याज'],
+    [['にんにく'], ['garlic'], /\bgarlic\b/, null, 'にんにく/ニンニク/garlic/마늘/大蒜/ajo/ail/knoblauch/aglio/alho/ثوم/กระเทียม/tỏi/bawang putih/sarımsak/czosnek/लहसुन'],
+    [['生姜'], ['ginger'], /\bginger\b/, null, '生姜/しょうが/ショウガ/ginger/생강/姜/jengibre/gingembre/ingwer/zenzero/gengibre/زنجبيل/ขิง/gừng/jahe/zencefil/imbir/अदरक/luya'],
+    [['にんじん'], ['carrot'], /\bcarrots?\b/, null, 'にんじん/人参/ニンジン/carrot/당근/胡萝卜/zanahoria/carotte/karotte/möhre/carota/cenoura/جزر/แครอท/cà rốt/wortel/havuç/marchew/गाजर'],
+    [['じゃがいも'], ['potato'], /\bpotato(e?s)?\b/, /sweet|yam|chips|starch/, 'じゃがいも/ジャガイモ/potato/potatoes/감자/土豆/马铃薯/patata/papa/pomme de terre/kartoffel/batata inglesa/بطاطس/มันฝรั่ง/khoai tây/kentang/patates/ziemniak/आलू'],
+    [['なす'], ['eggplant','aubergine'], /\begg ?plants?\b|aubergines?/, null, 'なす/ナス/茄子/eggplant/aubergine/가지/berenjena/melanzana/berinjela/باذنجان/มะเขือยาว/cà tím/terong/patlıcan/bakłażan/बैंगन/talong'],
+    [['きのこ','しいたけ','しめじ','えのき','まいたけ','エリンギ','なめこ','マッシュルーム'], ['mushroom','mushrooms','shiitake'], /mushroom|shiitake|enoki|champignon|\bporcini\b|\bcep\b|cremini|portobello/, null, 'きのこ/キノコ/マッシュルーム/mushroom/mushrooms/버섯/蘑菇/菇/champiñón/champiñones/seta/setas/champignon/pilz/pilze/funghi/cogumelo/فطر/เห็ด/nấm/jamur/mantar/grzyby/मशरूम/kabute'],
+    [['きゅうり'], ['cucumber'], /\bcucumbers?\b/, null, 'きゅうり/キュウリ/cucumber/오이/黄瓜/pepino/concombre/gurke/cetriolo/خيار/แตงกวา/dưa chuột/mentimun/salatalık/ogórek/खीरा'],
+    [['ほうれん草'], ['spinach'], /\bspinach\b/, null, 'ほうれん草/ほうれんそう/spinach/시금치/菠菜/espinaca/épinards/spinat/spinaci/espinafre/سبانخ/ปวยเล้ง/rau chân vịt/bayam/ıspanak/szpinak/पालक'],
+    [['キャベツ'], ['cabbage'], /\bcabbages?\b/, /napa|chinese|savoy|red|kimchi|sauerkraut/, 'キャベツ/cabbage/양배추/卷心菜/包菜/col/repollo/chou/kohl/weißkohl/cavolo/repolho/كرنب/ملفوف/กะหล่ำปลี/bắp cải/kubis/lahana/kapusta/पत्ता गोभी'],
+    [['白菜'], ['napa cabbage','chinese cabbage'], /\b(napa|chinese) cabbage\b/, null, '白菜/napa cabbage/chinese cabbage/배추/大白菜/col china/chou chinois/chinakohl/cavolo cinese/couve chinesa/ผักกาดขาว/cải thảo/pekin lahanası/kapusta pekińska'],
+    [['かぼちゃ'], ['pumpkin','squash','kabocha'], /\b(pumpkin|squash|kabocha)\b/, /zucchini|courgette/, 'かぼちゃ/カボチャ/南瓜/pumpkin/squash/kabocha/호박/단호박/calabaza/citrouille/potiron/kürbis/zucca/abóbora/يقطين/ฟักทอง/bí ngô/labu/kabak/dynia/कद्दू'],
+    [['ブロッコリー'], ['broccoli'], /\bbroccoli\b/, null, 'ブロッコリー/broccoli/브로콜리/西兰花/西蘭花/brócoli/brocoli/brokkoli/brócolis/بروكلي/บรอกโคลี/súp lơ xanh/brokoli/brokuł/ब्रोकोली'],
+    [['ゴーヤ'], ['bitter melon','bitter gourd','karela'], /bitter (melon|gourd)|karela/, null, 'ゴーヤ/にがうり/ゴーヤー/bitter melon/bitter gourd/karela/여주/苦瓜/melón amargo/margose/bittermelone/zucca amara/มะระ/khổ qua/mướp đắng/pare/acı kavun/gorzki melon/करेला/ampalaya'],
+    [['オクラ'], ['okra'], /\bokra\b/, null, 'オクラ/okra/오크라/秋葵/quimbombó/gombo/okraschote/ocra/quiabo/بامية/กระเจี๊ยบเขียว/đậu bắp/bamya/भिंडी'],
+    [['コーン','とうもろこし'], ['corn','sweet corn'], /\b(sweet )?corn\b/, /starch|flour|meal|tortilla|bread|oil|syrup|masa/, 'コーン/とうもろこし/トウモロコシ/corn/sweet corn/옥수수/玉米/maíz/elote/maïs/mais/milho/ذرة/ข้าวโพด/bắp/ngô/jagung/mısır/kukurydza/मक्का'],
+    [['豆腐'], ['tofu'], /\btofu\b|bean curd/, null, '豆腐/とうふ/tofu/두부/豆腐/เต้าหู้/đậu phụ/tahu/टोफू/tokwa'],
+    [['唐辛子'], ['chili','chilli','chile','hot pepper'], /\bchil(l?i|e)s?\b|hot peppers?/, null, '唐辛子/とうがらし/鷹の爪/チリ/chili/chilli/hot pepper/고추/辣椒/chile/ají/piment/peperoncino/pimenta/فلفل حار/พริก/ớt/cabai/acı biber/papryczka/मिर्च/sili'],
+    [['ココナッツ'], ['coconut'], /\bcoconut\b/, null, 'ココナッツ/coconut/코코넛/椰子/椰奶/coco/noix de coco/kokosnuss/cocco/جوز الهند/มะพร้าว/dừa/kelapa/hindistan cevizi/kokos/नारियल/niyog'],
+    [['オリーブ'], ['olive'], /\bolives?\b/, /oil/, 'オリーブ/olive/olives/올리브/橄榄/aceituna/oliva/azeitona/زيتون/มะกอก/ôliu/zaitun/zeytin/oliwka/जैतून'],
+    [['ごま','白ごま','黒ごま','ねりごま'], ['sesame'], /\bsesame\b|tahini/, /oil/, 'ごま/ゴマ/胡麻/sesame/참깨/芝麻/sésamo/sésame/sesam/sesamo/gergelim/سمسم/งา/mè/wijen/susam/sezam/तिल'],
+    [['パセリ'], ['parsley'], /\bparsley\b/, null, 'パセリ/parsley/파슬리/欧芹/荷兰芹/perejil/persil/petersilie/prezzemolo/salsinha/بقدونس/ผักชีฝรั่ง/ngò tây/peterseli/maydanoz/pietruszka/अजमोद'],
+    [['アボカド'], ['avocado'], /\bavocados?\b/, null, 'アボカド/avocado/아보카도/牛油果/aguacate/avocat/abacate/أفوكادو/อะโวคาโด/bơ/alpukat/avokado/awokado/एवोकैडो'],
+    [['大根'], ['radish','daikon'], /\b(daikon|radish(es)?)\b/, null, '大根/だいこん/daikon/radish/무/萝卜/白萝卜/rábano/radis/rettich/rafano/rabanete/فجل/หัวไชเท้า/củ cải/lobak/turp/rzodkiew/मूली'],
+    [['もやし'], ['bean sprouts'], /bean sprouts?/, null, 'もやし/bean sprouts/콩나물/숙주/豆芽/brotes de soja/germes de soja/sojasprossen/germogli di soia/ถั่วงอก/giá đỗ/tauge/fasulye filizi/kiełki fasoli'],
+    [['キムチ'], ['kimchi'], /\bkimchi\b/, null, 'キムチ/kimchi/김치/泡菜/辛奇/كيمتشي/กิมจิ/kim chi/kimçi'],
+    [['わかめ','のり','昆布','ひじき'], ['seaweed','nori','wakame','kelp'], /seaweed|\bnori\b|wakame|kelp|kombu/, null, 'わかめ/海苔/のり/昆布/ひじき/seaweed/nori/wakame/kelp/김/미역/海带/紫菜/alga/algas/algue/algen/alga marinha/สาหร่าย/rong biển/rumput laut/deniz yosunu/wodorosty'],
+    [['グリンピース'], ['peas','green peas'], /\b(green )?peas?\b/, /chick|pigeon|black.?eyed|split|cow ?pea/, 'グリンピース/えんどう/green peas/peas/완두콩/豌豆/guisantes/petits pois/erbsen/piselli/ervilhas/بازلاء/ถั่วลันเตา/đậu hà lan/kacang polong/bezelye/groszek/मटर'],
+    [['さば'], ['mackerel'], /mackerel/, null, 'さば/サバ/鯖/mackerel/고등어/鲭鱼/caballa/maquereau/makrele/sgombro/cavala/ماكريل/ปลาทู/cá thu/makarel/makrela'],
+    [['鮭'], ['salmon'], /salmon/, null, '鮭/さけ/サケ/サーモン/salmon/연어/三文鱼/鲑鱼/salmón/saumon/lachs/salmone/salmão/سلمون/แซลมอน/cá hồi/somon/łosoś'],
+    [['あさり'], ['clams','clam'], /\bclams?\b/, null, 'あさり/アサリ/clam/clams/바지락/蛤蜊/almeja/palourde/muschel/vongole/amêijoa/محار/หอยลาย/nghêu/kerang/midye/małże'],
+    [['えび'], ['shrimp','prawn','prawns'], /shrimps?|prawns?/, null, 'えび/エビ/海老/shrimp/prawn/새우/虾/蝦/gamba/camarón/crevette/garnele/gambero/camarão/جمبري/กุ้ง/tôm/udang/karides/krewetka/झींगा/hipon'],
+    [['牛乳'], ['milk'], /\bmilk\b/, /coconut|soy|almond|oat|condensed|powder|rice milk/, '牛乳/ミルク/milk/우유/牛奶/leche/lait/milch/latte/leite/حليب/นม/sữa/susu/süt/mleko/दूध/gatas'],
+    [['チーズ'], ['cheese','parmesan','mozzarella'], /cheese|parmesan|mozzarella|cheddar|feta|ricotta|gruy|paneer|halloumi/, null, 'チーズ/cheese/치즈/奶酪/芝士/queso/fromage/käse/formaggio/queijo/جبن/ชีส/phô mai/keju/peynir/ser/पनीर/keso'],
+];
+const AVOID_CON_NORM = new Map();
+const conWords = c => c[4].split('/').filter(Boolean);
+// 入力された言葉がどの食材か（いちばん長く一致した言い方の食材）。国のパックの食材のキーでも探す。なければ -1
+function avoidConOf(word){
+    const n = norm(word), w = wnorm(word), key = (canonOf(word) || '').toLowerCase(); let best = -1, bl = 0;
+    AVOID_CON.forEach((c, ix) => {
+        if (key && c[1].includes(key) && bl < 99){ best = ix; bl = 99; }
+        conWords(c).forEach(t => {
+            let nt = AVOID_CON_NORM.get(t);
+            if (!nt){ const raw = t.normalize('NFKC').toLowerCase(); nt = LATIN_RE.test(raw) ? {l: raw.length, re: wordRe(raw)} : {l: norm(t).length, v: norm(t)}; AVOID_CON_NORM.set(t, nt); }
+            const hit = nt.re ? nt.re.test(w) : (nt.l >= 2 ? n.includes(nt.v) : n === nt.v);
+            if (hit && nt.l > bl){ best = ix; bl = nt.l; }
+        });
+    });
+    return best;
+}
+const NK = new Map();   // 食材のキー → 照合用に整えた形
+const nkOf = k => { let v = NK.get(k); if (v === undefined){ v = norm(k); NK.set(k, v); } return v; };
+function conHit(c, i){
+    const k = i.key || '';
+    if (c[1].includes(k)) return true;
+    const nk = nkOf(k);
+    if (c[0].some(j => { const nj = nkOf(j); return nj.length < 2 ? nk === nj : nk.includes(nj); })) return true;
+    const t = (k + '|' + (i.en || '')).toLowerCase();
+    return !!c[2] && c[2].test(t) && !(c[3] && c[3].test(t));
+}
+// 足した苦手な食材がどの食材か（AVOID_CON）を覚えておく。あとで言語や国を変えても、同じ食材として照らせる
+function rememberAvoidX(word, typed){
+    let ix = avoidConOf(word); if (ix < 0 && typed && typed !== word) ix = avoidConOf(typed);
+    if (ix < 0) return;
+    if (!S.settings.avoidX) S.settings.avoidX = {};
+    S.settings.avoidX[word] = AVOID_CON[ix][0][0];
+}
 function avoidKeys(){ return new Set((S.settings.avoid || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
 // 苦手な食材か（1つの材料）。食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば苦手とみなす
 function avoidCtx(){
-    const av = S.settings.avoid || [], sig = JSON.stringify(av);
+    const av = S.settings.avoid || [], ax = S.settings.avoidX || {}, sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG;
     if (avoidCtx.c && avoidCtx.c.sig === sig) return avoidCtx.c;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
-    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free};
+    // 食材の表（AVOID_CON）で見分けられる言葉は、言語・国をまたいで同じ食材として照らす（足したときに覚えた食材を先に使う）
+    const cons = [...new Set(av.filter(x => String(x)[0] !== '@' && !avoidFamOf(x)).map(x => { const cid = ax[x]; const ix = cid ? AVOID_CON.findIndex(c => c[0][0] === cid) : -1; return ix >= 0 ? ix : avoidConOf(x); }).filter(ix => ix >= 0))].map(ix => AVOID_CON[ix]);
+    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free, cons};
 }
 function itemAvoided(i, c){
     c = c || avoidCtx(); if (!c.any) return false;
     if (c.ks.has(i.key) || c.fams.some(f => inFam(f, i))) return true;
     if (i.en && i.label && c.ks.has(keyOf(i.label))) return true;   // ほかの国の料理も、画面の名前（ピーマンなど）で見分ける
-    return c.free.some(({x, re}) => re ? re.test(wnorm(i.label + ' ' + i.name)) : norm(i.label + i.name).includes(norm(x)));
+    if (c.cons.some(k => conHit(k, i))) return true;
+    return c.free.some(({x, re}) => re ? re.test(wnorm(i.label + ' ' + i.name + ' ' + (i.en || ''))) : norm(i.label + i.name + (i.en || '')).includes(norm(x)));
 }
 // 苦手な食材を使う料理か（置き換えて作れる料理は、置き換えて出すので苦手にしない）
 // 調味料の欄の食材（天ぷらの衣の小麦粉・卵、ムニエルのバターなど）。元の言葉の文から取り出す（日本は日本語、各国は英語）
@@ -3264,6 +3358,7 @@ function isAvoided(r){
 const SWAP_TXT = i => (i.key + '|' + (i.en || '') + '|' + i.label).toLowerCase();
 const SWAP_BAD = /stock|broth|soup|condensed|\beggs?\b|\bhead\b|\bwhole\b|poussin|tripe|mondongo|offal|kidney|tongue|oxtail|\bsalt(ed)? (cod|fish|herring|mackerel|pork|beef)|bacalhau|matj|charqui|carne seca|bouillon|powder|cube|granule|seasoning|sauce|paste|\bfat\b|lard|skin|bones?\b|liver|gizzard|heart|feet|trotter|canned|tinned|\bcan\b|dried|smoked|cured|ガラ|スープの素|だし|ルウ|ソース|缶/;
 const SWAP_PROC = /\bham\b|bacon|sausage|salami|chorizo|pancetta|prosciutto|guanciale|\bspam\b|wiener|hot ?dog|frankfurter|wurst|corned|pastrami|bresaola|sucuk|ハム|ベーコン|ウインナー|ソーセージ|ツナ|かまぼこ|ちくわ|かに風味|ちりめん|surimi|anchov|\btuna\b|bonito|katsuobushi|fish ball|fish ?cakes?|eomuk|\bballs?\b|morcilla|blood|black pudding|haggis|gammon|moo yor|pork roll|meatball|nugget|dumpling|wonton|wrapper|mandu|餃子|しゅうまい|\bpie\b|pastry|patt(y|ies)|burger|leftover|cooked|shredded/;
+const SWAP_SHAPED = /ball|loaf|burger|patt(y|ies)|ko?fte|köfte|kofta|kebab|kabab|frikadel|albóndiga|polpett|boulette|dumpling|gyoza|stuffed|dolma|nugget|sausage|croquet|hamburg|ハンバーグ|つくね|団子|肉だんご|餃子|しゅうまい|肉詰め|コロッケ|丸|köfte|sarma|musakka|moussaka|lasagn|meat ?pie|empanada|samosa|momo|lumpia|siu mai|shumai|bao|bun|roll|meat sauce|bolognese|ragù|ragu|chili|tacos?|picadillo/;
 const swapMince = i => /ひき肉|びき肉|ミンチ|\bground\b|\bmince/.test(SWAP_TXT(i));
 // 代わりにしない部位（骨付き・煮込み向きのかたまりなど。ステーキや炒めものの代わりにならない）
 const SWAP_CUT = /ribs?\b|belly|shoulder|\bbutt\b|hock|knuckle|shank|whole|bone-in|on the bone|with bone|wings?\b|drumstick|\blegs?\b|carcass|骨付き|手羽|スペアリブ|豚バラ|ซี่โครง|ปีก|น่อง/;
@@ -3275,10 +3370,10 @@ const swapTofu = i => /厚揚げ|豆腐|tofu/.test(SWAP_TXT(i)) && !/skin|yuba|f
 const swapVeg = re => i => re.test(SWAP_TXT(i)) && !SWAP_BAD.test(SWAP_TXT(i));
 // is: 置き換える材料。to: 代わりの候補を前から順に（[見分け方, 火の通しの注意]）
 const SWAP_RULES = [
-    {is: i => swapMince(i) && ['pork', 'beef', 'chicken'].some(f => swapBody(f)(i)), to: [[swapGround('chicken'), 'chicken'], [swapGround('pork'), 'pork'], [swapGround('beef'), '']]},
-    {is: swapSlice('pork'), to: [[swapCut('chicken'), 'chicken'], [swapTofu, 'tofu']]},
+    {is: i => swapMince(i) && ['pork', 'beef', 'chicken'].some(f => swapBody(f)(i)), to: [[swapGround('chicken'), 'chicken'], [swapGround('pork'), 'pork'], [swapGround('beef'), ''], [swapCut('chicken'), 'chicken']]},   // ひき肉の代わりがない国は、鶏肉を細かく切って使う
+    {is: swapSlice('pork'), to: [[swapCut('chicken'), 'chicken'], [swapTofu, 'tofu'], [swapCut('beef'), '']]},
     {is: swapSlice('beef'), to: [[swapCut('pork'), 'pork'], [swapCut('chicken'), 'chicken']]},
-    {is: swapSlice('chicken'), to: [[swapCut('pork'), 'pork'], [swapTofu, 'tofu']]},
+    {is: swapSlice('chicken'), to: [[swapCut('pork'), 'pork'], [swapTofu, 'tofu'], [swapCut('beef'), '']]},
     {is: swapBody('fish'), to: [[swapBody('fish'), 'fish'], [swapCut('chicken'), 'chicken']]},
     {is: i => swapBody('shellfish')(i), to: [[swapCut('chicken'), 'chicken']]},
     {is: swapVeg(/ピーマン|パプリカ|bell pepper|capsicum|green pepper|sweet pepper|\bpimiento|paprika\|/), to: [[swapVeg(/ピーマン|パプリカ|bell pepper|capsicum|sweet pepper/), ''], [swapVeg(/ズッキーニ|zucchini|courgette/), '']]},
@@ -3289,7 +3384,7 @@ const SWAP_RULES = [
     {is: swapVeg(/セロリ|celery/), to: [[swapVeg(/玉ねぎ|^onion\||\byellow onion|white onion/), '']]},
     {is: swapVeg(/ほうれん草|小松菜|spinach/), to: [[swapVeg(/ほうれん草|小松菜|spinach|kale|chard|bok choy|pak choi/), '']]},
     {is: swapVeg(/キャベツ|白菜|cabbage/), to: [[swapVeg(/キャベツ|白菜|cabbage/), '']]},
-    {is: swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b/), to: [[swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b|shallot/), '']]},
+    {is: swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b/), to: [[swapVeg(/玉ねぎ|長ねぎ|^onion\||\bleeks?\b|shallot/), ''], [swapVeg(/spring onion|green onion|scallion|chives?\b|万能ねぎ|小ねぎ/), '']]},
 ];
 // いまの国の材料（名前ごとに、よく出てくる順）。苦手の設定と国・言語が変わったら作り直す
 function swapPool(){
@@ -3327,6 +3422,7 @@ function recipeSwaps(r){
         const w = swapFor(i);
         if (!w || r.items.some(x => x !== i && x.key === w.i.key)) return null;   // 代わりがない・同じ食材がもう入っている
         if ([i.label, i.name].some(n => n && n.length >= 2 && String(r.name).includes(n))) return null;   // 料理の名前の食材（ピーマンの肉詰めのピーマンなど）は置き換えない
+        if (swapMince(i) && !swapMince(w.i) && SWAP_SHAPED.test([r.name, r.nameEn, ...(r.alt || [])].join(' ').toLowerCase())) return null;   // ひき肉をこねて形にする料理（ミートボール・ハンバーグなど）は、切った鶏肉では作れない
         if (nameHasFam(r, i)) return null;   // 料理の名前が主役の肉・魚を表す（鶏の唐揚げ・豚汁・Chicken parm など）料理も置き換えない
         swaps.push({from: i, to: w.i, tip: w.tip});
     }
@@ -3761,12 +3857,12 @@ function viewToday(){
     if (!session.menu && !restoreDraft() && !restoreDecided()){
         newMenu();
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
-        const p = weekToday(); if (p && !isAvoided(p) && !S.hidden.includes(p.id) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
+        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
     }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
     const m = session.menu;
     const main = m.items[0] && m.items[0].r;
-    const planned = (p => p && !(main && main.id === p.id) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない
+    const planned = (p => planUsable(p) && !(main && main.id === p.id) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない
     const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChips = MOODS.map(x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood===x.k}">${esc(x.label)}</button>`).join('');
     const spot = (it, idx, w) => {
@@ -4532,7 +4628,7 @@ document.addEventListener('click', e => {
         case 'toggle-avoid': {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
             const i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
-            if (i >= 0) a.splice(i, 1); else a.push(canonOf(v) || v);
+            if (i >= 0) a.splice(i, 1); else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
@@ -4896,7 +4992,7 @@ document.addEventListener('submit', e => {
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
         const fresh = found.filter(x => !S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
-        fresh.forEach(x => S.settings.avoid.push(x));
+        fresh.forEach(x => { S.settings.avoid.push(x); rememberAvoidX(x, inp.value); });
         save(); reconcileMenu(); refreshWeek();
         if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
         else if (found.length) toast(t('もう苦手な食材に入っています'));
@@ -5055,8 +5151,10 @@ function packRecipe(pk, x, tr){
     const family = PACK_FAMILY[x.protein] || '野菜';
     const re = PROTEIN_WORDS[x.protein];
     const p = family === '野菜' ? null : (items.find(i => re && re.test(i.key)) || items[0]);
-    const name = rt && rt.name ? rt.name : (x.local || x.name);
-    return {id: x.id, name, nameEn: name === (x.local || x.name) ? x.name : (x.local || x.name), genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
+    // 訳がないとき、その国の文字（中国語・ハングル・アラビア文字など）は、その言語の画面でないと読めないので、英語の名前を主に出し、元の名前は2行目に回す
+    const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || !/[^\u0000-\u036f\u1e00-\u1eff\u2000-\u206f\s]/.test(x.local);
+    const name = rt && rt.name ? rt.name : (readable ? loc : x.name);
+    return {id: x.id, name, nameEn: name === loc ? x.name : loc, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
         min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
         tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
