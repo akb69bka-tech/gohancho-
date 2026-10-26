@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -210,6 +210,7 @@ textarea{min-height:90px;resize:vertical}
 /* 材料マッチ */
 .match{padding:12px 14px;border-top:1px solid var(--line);display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
 .match:first-child{border-top:0}
+.match,.list>.item{content-visibility:auto;contain-intrinsic-size:auto 76px}   /* 画面の外の行は描かない（長い一覧が軽くなる） */
 .match .thumb{width:52px;height:52px;cursor:pointer}
 .match .info{min-width:0;display:flex;flex-direction:column;gap:4px}
 .match .head{display:flex;justify-content:space-between;gap:8px;align-items:center;cursor:pointer}
@@ -971,9 +972,9 @@ function wordRe(phrase){
     const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:e?s)?');
     return ws.length ? new RegExp(' ' + ws.join(' ') + ' ') : null;
 }
-const VARIANTS = [];
+const VARIANTS = [], CANON_MEMO = new Map();   // CANON_MEMO: 名前 → canonOf の結果（rebuildVariants で空にする）
 function rebuildVariants(){
-    VARIANTS.length = 0;
+    VARIANTS.length = 0; CANON_MEMO.clear();
     CANON.forEach(([c, vs], order) => vs.forEach(v => {
         const raw = String(v).normalize('NFKC').toLowerCase().trim();
         VARIANTS.push(LATIN_RE.test(raw) ? {c, v: norm(v), order, re: wordRe(raw)} : /\S\s+\S/.test(raw) ? {c, v: norm(v), order, mw: raw.replace(/\s+/g, ' ')} : {c, v: norm(v), order});   // mw = 空白を含む名前（हरी मिर्च など。空白で区切る前に探す）
@@ -983,9 +984,14 @@ function rebuildVariants(){
 rebuildVariants();
 function variantIn(x, n, w){ return x.re ? x.re.test(w) : n.includes(x.v); }
 function canonOf(name){
-    const n = norm(name), w = wnorm(name);
-    for (const x of VARIANTS) if (variantIn(x, n, w)) return x.c;
-    return null;
+    const k = typeof name === 'string' ? name : String(name);
+    const hit = CANON_MEMO.get(k); if (hit !== undefined) return hit;
+    const n = norm(k), w = wnorm(k);
+    let res = null;
+    for (const x of VARIANTS) if (variantIn(x, n, w)){ res = x.c; break; }
+    if (CANON_MEMO.size > 6000) CANON_MEMO.clear();
+    CANON_MEMO.set(k, res);
+    return res;
 }
 function keyOf(name){ return canonOf(name) || norm(name); }
 const PACK_NAMES = {};   // 食材キー → 表示名（国のパックを使っているとき。日本は空）
@@ -1221,11 +1227,16 @@ function load(){
 }
 // packFail: 電波がなくて国のデータを読みこめず、いまだけ日本で開いている国（保存するときは元の国のまま残す）
 let packFail = null;
-function save(){ try{
+// 保存はまとめて書く（記録が増えると JSON にするだけで数十 ms かかる）。少し待って1回だけ書き、裏に回る・閉じるときは必ず書き切る
+let saveT = 0;
+function save(){ if (!saveT) saveT = setTimeout(saveNow, 300); }
+function saveNow(){ if (saveT){ clearTimeout(saveT); saveT = 0; } try{
     const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
     localStorage.setItem(STORE_KEY, JSON.stringify(out)); try{ notifSoon(); }catch(e){} }catch(e){
     // 端末の空きが足りず保存できないとき（黙って消えないよう、開いているあいだに1回だけ知らせる）
     if (!save.warned && typeof toast === 'function'){ save.warned = true; setTimeout(() => toast(t('端末の空きが足りず、保存できませんでした。写真などを減らしてください')), 0); } } }
+document.addEventListener('visibilitychange', () => { if (document.hidden && saveT) saveNow(); });
+['pagehide', 'beforeunload', 'freeze'].forEach(ev => window.addEventListener(ev, () => { if (saveT) saveNow(); }));
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
 function addCustomRecipes(){ S.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }catch(e){} }); }
 addCustomRecipes();
@@ -1251,6 +1262,13 @@ const LANG_NAMES = {ja:'日本語', en:'English', fr:'Français', de:'Deutsch', 
 const I18N = {};
 window.GOHAN_I18N = (lang, dict) => { if (lang && dict) I18N[lang] = Object.assign(I18N[lang] || {}, dict); };
 let LANG = 'ja';
+const PLURAL_RULES = {};   // 言語 → Intl.PluralRules（毎回 new すると遅いので使い回す。作れない言語は null）
+function pluralCat(loc, n){
+    let pr = PLURAL_RULES[loc];
+    if (pr === undefined){ try{ pr = new Intl.PluralRules(loc); }catch(e){ pr = null; } PLURAL_RULES[loc] = pr; }
+    if (!pr) return 'other';
+    try{ return pr.select(n); }catch(e){ return 'other'; }
+}
 function t(ja, vars){
     let s = ja;
     if (LANG !== 'ja'){
@@ -1258,8 +1276,7 @@ function t(ja, vars){
         const own = d && d[ja] != null;
         s = own ? d[ja] : en && en[ja] != null ? en[ja] : ja;
         if (s && typeof s === 'object'){
-            let cat = 'other';
-            try{ cat = new Intl.PluralRules(own ? LANG : 'en').select(Number(vars && vars.n)); }catch(e){}
+            const cat = pluralCat(own ? LANG : 'en', Number(vars && vars.n));
             s = s[cat] != null ? s[cat] : s.other != null ? s.other : ja;
         }
     }
@@ -1269,8 +1286,7 @@ function t(ja, vars){
         if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
         const v = String(vars[k]);
         if (one === undefined) return v;
-        let cat = 'other';
-        try{ cat = new Intl.PluralRules(LANG).select(Number(v)); }catch(e){}
+        const cat = pluralCat(LANG, Number(v));
         return (cat === 'one' ? one : other).replace(/#/g, v);
     });
     return LANG === 'ko' ? koParticles(out) : out;
@@ -1405,16 +1421,30 @@ function parseYmd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(
 function addDays(s, n){ const d = parseYmd(s); d.setDate(d.getDate()+n); return ymd(d); }
 function daysBetween(a, b){ return Math.round((parseYmd(b) - parseYmd(a)) / 86400000); }
 const WD = ['日','月','火','水','木','金','土'];
+const DATE_FMT = {};   // 言語 → Intl.DateTimeFormat（使い回す）
 // 日付の表示。日本語は「10月20日（火）」、ほかの言語はその言語の書き方（Intl）
 function jpDate(s, withWeekday=true){
     const d = parseYmd(s);
     if (LANG === 'ja'){ const x = `${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`; return withWeekday ? x : x.replace(/（.*/,''); }
-    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}).format(d); }
+    try{
+        const k = LANG + (withWeekday ? '|w' : '');
+        const f = DATE_FMT[k] || (DATE_FMT[k] = new Intl.DateTimeFormat(LANG + '-u-nu-latn', withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}));
+        return f.format(d); }
     catch(e){ return s; }
 }
 let TODAY = ymd();   // 開いたまま日付が変わったら refreshToday() で更新する
+// RECIPES の id → 料理の索引（件数・先頭・末尾が変わったら作り直す）
+let RID = {m: new Map(), n: -1, a: null, z: null};
+function recipeById(id){
+    const n = RECIPES.length, a = RECIPES[0], z = RECIPES[n - 1];
+    if (RID.n !== n || RID.a !== a || RID.z !== z){
+        const m = new Map(); for (let i = n - 1; i >= 0; i--) m.set(RECIPES[i].id, RECIPES[i]);   // 同じ id は先に出てくるほうを使う（find と同じ）
+        RID = {m, n, a, z};
+    }
+    return RID.m.get(id);
+}
 function byId(id){
-    return RECIPES.find(r => r.id === id) || (String(id).startsWith('a~') ? buildTwist(id) : null)
+    return recipeById(id) || (String(id).startsWith('a~') ? buildTwist(id) : null)
         || Object.values(BROWSE).reduce((hit, list) => hit || list.find(r => r.id === id), null) || null;
 }
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
@@ -1429,11 +1459,20 @@ function toast(msg, praise=false, undo=null){
     arm();
 }
 // 最後に食べた日からの日数（食べていなければ Infinity）
-function daysSince(id){
-    let best = Infinity;
-    for (const h of S.history) if (h.id === id){ const d = daysBetween(h.d, TODAY); if (d >= 0 && d < best) best = d; }
-    return best;
+// 料理 id → 最後に食べてからの日数の表。S.history が変わったとき（配列が入れ替わる・件数が変わる）か日付が変わったときだけ作り直す
+let DS_CACHE = null;
+function lastDays(){
+    const hs = S.history, c = DS_CACHE;
+    if (c && c.hs === hs && c.n === hs.length && c.today === TODAY) return c.m;
+    const m = new Map(), byDate = new Map();
+    for (const h of hs){
+        let d = byDate.get(h.d); if (d === undefined){ d = daysBetween(h.d, TODAY); byDate.set(h.d, d); }
+        if (d >= 0){ const b = m.get(h.id); if (b === undefined || d < b) m.set(h.id, d); }
+    }
+    DS_CACHE = {hs, n: hs.length, today: TODAY, m};
+    return m;
 }
+function daysSince(id){ const d = lastDays().get(id); return d === undefined ? Infinity : d; }
 function lastLabel(id){
     const d = daysSince(id);
     if (d === Infinity) return '';
@@ -1669,7 +1708,20 @@ function newMenu(){
         items.push({slot, r});
     });
     session.menu = {n, items};
-    session.twist = twistAvailable() ? suggestTwist() : null;
+    session.twist = twistAvailable() ? lazyTwist() : null;
+}
+// 起動して最初の献立だけ、ひとひねり案（重い）を最初の表示のあとに作る。それ以降は今までどおりその場で作る
+let twistFirst = true;
+function lazyTwist(){
+    if (!twistFirst) return suggestTwist();
+    twistFirst = false;
+    const m = session.menu;
+    requestAnimationFrame(() => setTimeout(() => {
+        if (session.menu !== m || session.twist || !twistAvailable()) return;
+        session.twist = suggestTwist();
+        if (tab === 'today') scheduleRender();
+    }, 30));
+    return null;
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
 function setMenuMain(r){
@@ -1981,7 +2033,8 @@ function setTab(tb){
     if (tb === 'settings' && tab !== 'settings') prevTab = tab;
     tab = tb;
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tb ? 'true' : 'false'));
-    render(); window.scrollTo({top:0});
+    window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
+    render();
 }
 function metaLine(r){
     r = swappedRecipe(r) || r;
@@ -2001,11 +2054,12 @@ function badges(r){
 function render(){
     $('#today-label').textContent = jpDate(TODAY);
     $('#flag-btn').textContent = countryOf(currentCountry()).flag;
-    const g = greeting();
-    $('#greet').innerHTML = tab === 'today' ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
+    const g = tab === 'today' ? greeting() : null;   // あいさつは献立タブだけ（記録を数えるので、ほかのタブでは作らない）
+    $('#greet').innerHTML = g ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
     const v = $('#view');
     // 描き直しても、押したボタン（または同じ役目のボタン）にフォーカスを戻す（キーボード・読み上げで迷わないように）
-    const fk = v.contains(document.activeElement) ? focusKey(document.activeElement) : '';
+    // （キーボードで操作しているときと、文字入力欄だけ。タップで押したボタンには戻さない＝強制レイアウトを避ける）
+    const fk = v.contains(document.activeElement) && kbFocused(document.activeElement) ? focusKey(document.activeElement) : '';
     if (tab === 'today') v.innerHTML = viewToday();
     if (tab === 'cook') v.innerHTML = viewCook();
     if (tab === 'fridge') v.innerHTML = viewFridge();
@@ -2205,7 +2259,7 @@ function addGenerated(items){
 }
 async function loadGenerated(){
     try{
-        const res = await fetch('img/dish/manifest.json', {cache:'no-cache'});
+        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION));
         if (!res.ok) return;
         const m = await res.json();
         addGenerated((m && m.items) || {});
@@ -2340,9 +2394,11 @@ function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + (r.pack ? '' : ' 料理')); }
 function photoNote(){
-    const ai = Object.values(GEN).some(g => g.ai), wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
+    let ai = false, anyGen = false;   // 数千件の GEN を配列にコピーしない
+    for (const k in GEN){ anyGen = true; if (GEN[k].ai){ ai = true; break; } }
+    const wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
     if (ai || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
-    if (Object.keys(GEN).length) return '';
+    if (anyGen) return '';
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return t('料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。');
     return '';
 }
@@ -2752,7 +2808,7 @@ function weekStats(){
     const hs = S.history.filter(h => h.d >= from && h.d <= TODAY);
     const days = new Set(hs.map(h => h.d)).size;
     const firstOf = {};
-    S.history.slice().sort((a,b) => a.d < b.d ? -1 : 1).forEach(h => { if (!firstOf[h.id]) firstOf[h.id] = h.d; });
+    S.history.forEach(h => { if (!firstOf[h.id] || h.d < firstOf[h.id]) firstOf[h.id] = h.d; });   // 料理ごとの初めて作った日（並べ替えずに最小の日付を取る）
     const fresh = [...new Set(hs.map(h => h.id))].filter(id => firstOf[id] >= from);
     const skills = S.skills.filter(s => s.d >= from).length;
     const genres = new Set(hs.map(h => { const r = byId(h.id); return r && r.genre; }).filter(Boolean)).size;
@@ -3097,6 +3153,13 @@ function findByKey(scope, key){
     if (key.startsWith('sum|')) return [...scope.querySelectorAll('summary')].find(x => 'sum|' + x.parentElement.className === key) || null;
     return [...scope.querySelectorAll('[data-act]')].find(x => focusKey(x) === key) || null;
 }
+// キーボードで操作しているか（:focus-visible）。文字入力欄は常に true。タップ・クリックで当たったボタンは false
+// 直前の操作がキーボードか（指・マウスで触れたあとの 600ms は false）
+let ptrAt = -1e9, keyAt = -1e9;
+['pointerdown', 'touchstart', 'mousedown'].forEach(ev => document.addEventListener(ev, () => { ptrAt = performance.now(); }, {capture:true, passive:true}));
+document.addEventListener('keydown', e => { if (e.key !== 'Shift' && e.key !== 'Control' && e.key !== 'Alt' && e.key !== 'Meta') keyAt = performance.now(); }, true);
+function kbNav(){ return keyAt > ptrAt || performance.now() - ptrAt > 600; }
+function kbFocused(el){ try{ return el.matches(':focus-visible'); }catch(e){ return true; } }
 function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
 function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     const root = document.getElementById(rootId), d = root.querySelector('[role="dialog"]'); if (!d) return;
@@ -3105,6 +3168,7 @@ function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     const a = document.activeElement;
     if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a)}; dlgLast[rootId] = ''; }
     else if (a && a !== document.body && document.contains(a)) return;   // 描き直してもフォーカスが残っている
+    if (!kbNav()) return;   // タップで開いたときは、フォーカスを動かさない（動かすと強制レイアウトが走る）
     const back = findByKey(root, dlgLast[rootId]);
     if (back){ back.focus({preventScroll:true}); return; }
     const first = h || d.querySelector('[data-act="close"], [data-act="sheet-close"]') || d;
@@ -3115,6 +3179,7 @@ function dlgClosed(rootId){
     if (!(rootId in dlgRet)) return;
     const r = dlgRet[rootId]; delete dlgRet[rootId]; delete dlgLast[rootId];
     if (topDialog() && topDialog().contains(document.activeElement)) return;
+    if (!kbNav()) return;
     const el = r.el && document.contains(r.el) ? r.el : findByKey(document, r.key);
     if (el) el.focus({preventScroll:true});
 }
@@ -4421,7 +4486,7 @@ function restoreDraft(){
     if (n !== menuCount() || !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
     if (n !== menuCount() || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
     session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
-    session.twist = PACK ? null : suggestTwist();
+    session.twist = PACK ? null : lazyTwist();
     return true;
 }
 function keepDraft(){
@@ -4830,6 +4895,7 @@ function viewCook(){
 
 /* ---- 材料から ---- */
 const QUICK = ['豚肉','鶏肉','牛肉','ひき肉','鮭','卵','豆腐','玉ねぎ','キャベツ','にんじん','じゃがいも','長ねぎ','ピーマン','なす','白菜','大根','もやし','しめじ','トマト','きゅうり'];
+const LIST_FIRST = 20, moreOpen = new Set();   // 長い一覧の「すべて見る」を押した一覧
 function viewFridge(){
     const have = fridgeKeys();
     const speech = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
@@ -4844,16 +4910,18 @@ function viewFridge(){
         const ready = ms.filter(m => !m.miss.length && !m.subs.length).sort((a,b) => b.used - a.used);
         const withSub = ms.filter(m => !m.miss.length && m.subs.length).sort((a,b) => b.used - a.used);
         const near = ms.filter(m => m.miss.length && m.miss.length <= 2 && m.ratio >= 0.4).sort((a,b) => b.ratio - a.ratio || b.used - a.used).slice(0, 12);
-        const block = (title, hint, arr) => arr.length ? `
+        // 長いときは20品まで。「すべて見る」で全部（長い一覧を一度に作らない）
+        const block = (title, hint, arr, key) => arr.length ? `
             <div class="sec-head"><h3>${title}</h3><span class="hint">${hint}</span></div>
-            <div class="list">${arr.map(matchRow).join('')}</div>` : '';
+            <div class="list">${(moreOpen.has(key) ? arr : arr.slice(0, LIST_FIRST)).map(matchRow).join('')}</div>
+            ${arr.length > LIST_FIRST && !moreOpen.has(key) ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="${key}">${esc(t('すべて見る（{n}品）', {n: arr.length}))}</button></div>` : ''}` : '';
         results = `
         <section class="sec">
             <div class="sec-head split"><h2>${esc(t('作れる料理'))}</h2>
                 ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
-            ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.length})), ready)}
-            ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub)}
-            ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near)}
+            ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.length})), ready, 'fr-ready')}
+            ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub, 'fr-sub')}
+            ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near, 'fr-near')}
             ${!ready.length && !withSub.length && !near.length ? `<div class="list"><div class="empty">${esc(t('この組み合わせに合う料理が見つかりませんでした。食材をもう少し足してみてください。'))}</div></div>` : ''}
             <p class="foot">${esc(PACK ? t('調味料と主食、それに「いつも家にある食材」は、あるものとして数えています。') : t('調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。'))}</p>
         </section>`;
@@ -4907,9 +4975,21 @@ function searchTerms(q){
 }
 // 料理名に当たるか: 表示の名前・元の名前（英語・その国の言葉・訳）・日本のレシピのよみ（ひらがな）のどれかに含まれれば当たり。
 // 「しょうが焼き」のようにかなと漢字がまざる言葉は、かなの部分はよみ、漢字の部分は料理名に含まれれば当たり
+// 料理ごとに、正規化した名前・材料名を1回だけ作っておく（検索のたびに数百品ぶんを norm し直さない）。名前・材料・よみが変わったら作り直す
+const SEARCH_IDX = new WeakMap();
+function searchIdx(r){
+    const yomi = YOMI[r.id] || '';
+    let e = SEARCH_IDX.get(r);
+    if (!e || e.name !== r.name || e.en !== r.nameEn || e.alt !== r.alt || e.items !== r.items || e.n !== r.items.length || e.yomi !== yomi){
+        // id もローマ字の料理名なので当てる（kr_bibimbap・nikujaga）
+        const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).map(norm).join('|') + '|' + yomi + '|' + String(r.id).replace(/^[a-z]{2}_/, '').replace(/_/g, '');
+        e = {name: r.name, en: r.nameEn, alt: r.alt, items: r.items, n: r.items.length, yomi, hay, labs: r.items.map(i => norm(i.label))};
+        SEARCH_IDX.set(r, e);
+    }
+    return e;
+}
 function nameHit(r, tm){
-    // id もローマ字の料理名なので当てる（kr_bibimbap・nikujaga）
-    const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).map(norm).join('|') + '|' + (YOMI[r.id] || '') + '|' + String(r.id).replace(/^[a-z]{2}_/, '').replace(/_/g, '');
+    const hay = searchIdx(r).hay;
     if (hay.includes(tm)) return true;
     const runs = tm.match(/[ぁ-ゖー]+|[^ぁ-ゖー]+/g) || [];
     return runs.length > 1 && /[ぁ-ゖ]/.test(tm) && runs.every(x => hay.includes(x));
@@ -4923,7 +5003,8 @@ function searchRecipes(q){
         let sc = 0;
         terms.forEach(tm => { if (nameHit(r, tm)) sc += 3; });
         keys.forEach(k => { if (r.items.some(i => i.key === k)) sc += i_main(r, k) ? 2 : 1; });
-        terms.forEach(tm => { if (r.items.some(i => norm(i.label).includes(tm) || i.key.includes(tm))) sc += 1; });
+        const labs = searchIdx(r).labs;
+        terms.forEach(tm => { if (r.items.some((i, ix) => labs[ix].includes(tm) || i.key.includes(tm))) sc += 1; });
         return sc;
     };
     const i_main = (r, k) => r.items.findIndex(i => i.key === k) < 3;
@@ -5059,6 +5140,9 @@ function viewLog(){
     const favs = S.favs.map(byId).filter(Boolean);
     const hidden = S.hidden.map(byId).filter(Boolean);
     const skillList = S.skills.slice().reverse().slice(0, 8);
+    // 作った記録は、直近7日ぶん。「すべて見る」で30日ぶん（長い記録を一度に作らない）
+    const logDays = Object.entries(byDay).slice(0, 30), logShown = moreOpen.has('log') ? logDays : logDays.slice(0, 7);
+    const logRest = logDays.slice(logShown.length).reduce((n, [, hs]) => n + hs.length, 0);
     const ed = session.editCustom ? S.custom.find(r => r.id === session.editCustom) : null;   // 編集中の「わが家のレシピ」
     return `
     <section class="sec">
@@ -5087,13 +5171,14 @@ function viewLog(){
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
-        <div class="list">${Object.keys(byDay).length ? Object.entries(byDay).slice(0, 30).map(([d, hs]) => hs.map((h,i) => `
+        <div class="list">${Object.keys(byDay).length ? logShown.map(([d, hs]) => hs.map((h,i) => `
             <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
             <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
             ${yumOf(h) ? `<button class="btn sm ghost" data-act="yum-minus" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
 `).join('')).join('')
             : `<div class="empty">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
+        ${logRest ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="log">${esc(t('すべて見る（{n}品）', {n: logRest}))}</button></div>` : ''}
     </section>
     ${top.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('よく作る料理'))}</h2></div>
         <div class="list">${top.map(([n,c]) => `<div class="item"><div>${esc(n)}</div><span class="small muted">${esc(t('{n}回', {n:c}))}</span></div>`).join('')}</div></section>` : ''}
@@ -5389,15 +5474,20 @@ function stopTimer(id){
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
     floatTimer();
 }
+// 文字の中身だけ書きかえる（要素を作り直さない・MutationObserver を起こさない）
+function setText(el, s){ const n = el.firstChild; if (n && n.nodeType === 3 && !n.nextSibling){ if (n.data !== s) n.data = s; } else el.textContent = s; }
 function tickTimers(){
     floatTimer();
-    if (!TIMERS.length){ clearInterval(timerTick); return; }
+    if (!TIMERS.length){ clearInterval(timerTick); timerTick = 0; return; }
+    let live = false;   // まだ鳴っていないタイマーがあるか。全部鳴り終わったら、毎秒の更新をやめる
     TIMERS.forEach(x => {
         const left = (x.end - Date.now()) / 1000;
+        if (left > 0) live = true;
         if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); if (hf.on){ hfListenStop(); voiceSay(t('{name}のタイマーが終わりました', {name:x.name}), hfListen); } try{ if (navigator.vibrate) navigator.vibrate([400, 200, 400, 200, 400]); }catch(e){} }
         const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
-        if (el){ el.classList.toggle('ring', left <= 0); el.querySelector('.tm').textContent = left <= 0 ? t('時間です') : fmtLeft(left); }
+        if (el){ el.classList.toggle('ring', left <= 0); setText(el.querySelector('.tm'), left <= 0 ? t('時間です') : fmtLeft(left)); }
     });
+    if (!live){ clearInterval(timerTick); timerTick = 0; floatTimer(); }
 }
 // 裏から戻ってきたら、すぐ数え直して「時間です」を出す
 document.addEventListener('visibilitychange', () => { if (!document.hidden && TIMERS.length){ clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000); tickTimers(); const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } });
@@ -5405,9 +5495,15 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && TI
 function floatTimer(){
     const box = $('#timer-float'); if (!box) return;
     const x = tab === 'cook' ? null : TIMERS.slice().sort((a, b) => a.end - b.end)[0];
-    if (!x){ if (box.innerHTML) box.innerHTML = ''; return; }
+    if (!x){ if (box.innerHTML) box.innerHTML = ''; box._k = ''; return; }
     const left = (x.end - Date.now()) / 1000;
-    box.innerHTML = `<button type="button" class="timer-float${left <= 0 ? ' ring' : ''}" data-act="goto-cook">⏱ ${esc(left <= 0 ? t('時間です') : fmtLeft(left))}${GAP()}${esc(x.name)}${TIMERS.length > 1 ? ` (+${TIMERS.length - 1})` : ''}</button>`;
+    const txt = left <= 0 ? t('時間です') : fmtLeft(left);
+    // 毎秒 innerHTML を作り直さない。タイマーの組み合わせが同じなら、秒数の文字だけ書きかえる
+    const k = [x.id, x.name, TIMERS.length, left <= 0, LANG].join('|');
+    const sp = box._k === k && box.firstElementChild ? box.querySelector('.tf-t') : null;
+    if (sp){ setText(sp, txt); return; }
+    box._k = k;
+    box.innerHTML = `<button type="button" class="timer-float${left <= 0 ? ' ring' : ''}" data-act="goto-cook">⏱ <span class="tf-t">${esc(txt)}</span>${GAP()}${esc(x.name)}${TIMERS.length > 1 ? ` (+${TIMERS.length - 1})` : ''}</button>`;
 }
 function renderModal(){
     const r = byId(modalId); if (!r){ closeModal(); return; }
@@ -5580,7 +5676,7 @@ document.addEventListener('click', e => {
             menuIds().forEach(id => session.rejected.add(id));
             session.countSalt = (session.countSalt || 0) + 1;
             newMenu(); render();
-            { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (el.classList.contains('shuffle')) b.focus({preventScroll:true}); } }
+            { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (el.classList.contains('shuffle') && kbNav()) b.focus({preventScroll:true}); } }
             break;
         case 'count': {
             const v = el.dataset.v;
@@ -5870,6 +5966,7 @@ document.addEventListener('click', e => {
             if (modalId) renderModal(); render(); break;
         }
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
+        case 'more-list': moreOpen.add(el.dataset.k); render(); break;
         case 'rm-hist': {
             // 消したあとに「元に戻す」を出す（押しまちがい・すばやい2回押しで消えたときに戻せるように）
             const before = S.history.slice();
@@ -6141,10 +6238,11 @@ let PACK = null;                     // いま使っている国のパック（�
 let JP_DATA = null;                  // 日本のデータの控え（国を切りかえて戻るときに使う）
 function countryOf(cc){ return COUNTRIES.find(c => c.cc === cc) || COUNTRIES[0]; }
 // 国の名前を画面の言語で（日本語は nameJa、その国の言葉なら nameLocal、ほかは端末の Intl。使えなければ英語名）
+const REGION_NAMES = {};   // 言語 → Intl.DisplayNames（使い回す）
 function countryLabel(c){
     if (LANG === 'ja') return c.nameJa;
     if (c.lang === LANG) return c.nameLocal;
-    try{ const n = new Intl.DisplayNames([LANG], {type:'region'}).of(c.cc); if (n && n !== c.cc) return n; }catch(e){}
+    try{ const dn = REGION_NAMES[LANG] || (REGION_NAMES[LANG] = new Intl.DisplayNames([LANG], {type:'region'})); const n = dn.of(c.cc); if (n && n !== c.cc) return n; }catch(e){}
     return c.name;
 }
 function currentCountry(){ return S.settings.country || 'JP'; }
@@ -6534,14 +6632,16 @@ function relocalize(){
 }
 function openCountrySheet(){ sheet = {kind:'country'}; renderSheet(); }
 // ボタンでない要素（料理の行・名前など）に data-act があるときは、キーボードと読み上げでも押せるようにする（見た目は変えない）
-function a11yActs(){
-    document.querySelectorAll('[data-act]:not(button):not(a):not(input):not(select):not(textarea):not(label):not([role]):not(.modal)').forEach(el => {
-        // 行の絵は同じ行の名前と同じ料理を開くので、Tab で二度止まらないよう読み上げとキーボードからは外す
-        if (el.tagName === 'SPAN' && el.dataset.act === 'open' && el.parentElement && el.parentElement.querySelector(':scope > .info [data-act="open"]')){ el.setAttribute('role', 'presentation'); el.setAttribute('aria-hidden', 'true'); return; }
-        el.setAttribute('role', 'button'); el.tabIndex = 0;
-    });
+const A11Y_SEL = '[data-act]:not(button):not(a):not(input):not(select):not(textarea):not(label):not([role]):not(.modal)';
+function a11yFix(el){
+    // 行の絵は同じ行の名前と同じ料理を開くので、Tab で二度止まらないよう読み上げとキーボードからは外す
+    if (el.tagName === 'SPAN' && el.dataset.act === 'open' && el.parentElement && el.parentElement.querySelector(':scope > .info [data-act="open"]')){ el.setAttribute('role', 'presentation'); el.setAttribute('aria-hidden', 'true'); return; }
+    el.setAttribute('role', 'button'); el.tabIndex = 0;
 }
-new MutationObserver(a11yActs).observe(document.body, {childList:true, subtree:true});
+function a11yActs(root=document){ root.querySelectorAll(A11Y_SEL).forEach(a11yFix); }
+a11yActs();
+// 足された要素の中だけ見る（描き直しのたびに全部を数え直して属性を書きかえない）
+new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(n => { if (n.nodeType !== 1 || !n.isConnected) return; if (n.matches(A11Y_SEL)) a11yFix(n); if (n.firstElementChild) a11yActs(n); }); }).observe(document.body, {childList:true, subtree:true});
 document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
