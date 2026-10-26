@@ -1215,6 +1215,10 @@ function normalizeState(d){
     st.savedMenus = arr(st.savedMenus).filter(m => m && typeof m.id === 'string' && typeof m.name === 'string' && Array.isArray(m.ids) && m.ids.length && Array.isArray(m.slots) && m.ids.every(x => typeof x === 'string' || typeof x === 'number')).slice(0, 30);   // 「保存した献立」は30件まで
     st.skills = arr(st.skills).filter(x => x && typeof x === 'object');   // 「やってみた」の記録は {d, id, skill}
     st.settings.servings = Math.min(6, Math.max(1, Math.round(Number(st.settings.servings)) || 2));
+    { const dflt = DEFAULT_STATE.settings, cl = (k, lo, hi) => { const n = Math.round(Number(st.settings[k])); st.settings[k] = Number.isFinite(n) && n >= lo && n <= hi ? n : (dflt[k] === undefined ? null : dflt[k]); };
+      if (st.settings.remind != null && st.settings.remind !== false && st.settings.remind !== '') cl('remind', 0, 23);
+      if (st.settings.shopRemind != null && st.settings.shopRemind !== false && st.settings.shopRemind !== '') cl('shopRemind', 0, 6);
+      cl('avoidDays', 0, 60); }
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
         ings: arr(r.ings).filter(x => typeof x === 'string' && x.trim()), steps: arr(r.steps).filter(x => typeof x === 'string'), seas: typeof r.seas === 'string' ? r.seas : '',
@@ -1349,7 +1353,7 @@ function tc(ctx, ja, vars){
 // 名前を並べる（日本語は「・」、ほかの言語は「, 」）
 // 文の中に並べる食材名。アラビア語はアラビア語のコンマ（،）、スペイン語は文の途中なので小文字にして（　）の補足を省く（「Queso (queso fresco)」→「queso」）
 function joinNames(arr){
-    if (LANG === 'es') arr = arr.map(n => { n = String(n).replace(/\s*\([^)]*\)/g, '').trim(); return /^[A-ZÁÉÍÓÚÑ][a-záéíóúñü]/.test(n) ? n[0].toLowerCase() + n.slice(1) : n; });
+    if (LANG === 'es') arr = arr.map(n => { n = String(n).replace(/\s*\([^)]*\)/g, '').trim(); return /^[A-ZÁÉÍÓÚÑ][a-záéíóúñü]/.test(n) && !(typeof famNameSet === 'function' && famNameSet().has(n)) ? n[0].toLowerCase() + n.slice(1) : n; });
     return arr.join(LANG === 'ja' ? '・' : /^zh/.test(LANG) ? '、' : LANG === 'ar' ? '، ' : ', ');
 }
 // 文と文をつなぐ（日本語・中国語は空白を入れない）／全角の記号で終わる文のあとにも空白を入れない
@@ -3004,7 +3008,8 @@ function loyalEligible(){ return PLAN.loyaltyEnabled && isSubscribed() && !!(S.p
 async function scheduleTrialReminder(){
     const P = nativePlugin('LocalNotifications');
     const storeTrial = S.pro && S.pro.active && S.pro.trialEnd && S.pro.willRenew !== false ? S.pro.trialEnd : null;
-    if (!P || (isSubscribed() && !storeTrial)) return;
+    if (!P) return;
+    if (isSubscribed() && !storeTrial){ try{ await P.cancel({notifications:[{id: 1002}]}); }catch(e){} return; }   // 解約済み・更新しない人に「解約できます」の通知を残さない
     const end = storeTrial || (trialActive() ? addDays(S.firstUse || TODAY, PLAN.trialDays) : monitorActive() ? monitorUntil() : null); if (!end) return;
     try{
         const perm = await P.checkPermissions(); if (!perm || perm.display !== 'granted') return;
@@ -3098,10 +3103,12 @@ async function loadStorePrices(){
 let storeState = 'idle', introChecked = false;
 function storeReady(){ return !purchasesPlugin() || storeState === 'ok'; }
 // これから始めるお試しの終わる日（App Store のお試しの長さから）と、そのあとの月額
-function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = parseYmd(TODAY); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else d.setMonth(d.getMonth() + o.n); return ymd(d); }
+// 月を足す（31日に1か月足すと月末に丸める。Apple の1か月無料も月末に丸まる）
+function addMonthsClamp(d, n){ const day = d.getDate(); d.setDate(1); d.setMonth(d.getMonth() + n); d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate())); return d; }
+function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = parseYmd(TODAY); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else addMonthsClamp(d, o.n); return ymd(d); }
 // 解約の期限: お試しが終わる時刻の24時間前（自動更新は24時間前までの解約が必要）。日付と時刻で出す
 function introCancelBy(){
-    const o = introOffer || {unit:'month', n:1}, d = new Date(); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else d.setMonth(d.getMonth() + o.n);
+    const o = introOffer || {unit:'month', n:1}, d = new Date(); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else addMonthsClamp(d, o.n);
     d.setHours(d.getHours() - 24);
     return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
 }
@@ -3141,7 +3148,7 @@ async function purchase(productId){
 async function restorePurchases(){
     const ready = rcInit();
     if (!ready){ toast(t('復元できる購入はありません')); return; }
-    try{ const P = await ready; const res = await P.restorePurchases(); toast(applyCustomerInfo(res && res.customerInfo) ? t('購入を復元しました') : t('復元できる購入は見つかりませんでした')); }
+    try{ const P = await ready; const res = await P.restorePurchases(); const okR = applyCustomerInfo(res && res.customerInfo); if (okR) closeSheet(); toast(okR ? t('購入を復元しました') : t('復元できる購入は見つかりませんでした')); }
     catch(e){ toast(t('購入を復元できませんでした')); }
 }
 // プラス案内を開いた理由（どの機能から来たか）
@@ -3623,6 +3630,7 @@ function rememberAvoidX(word, typed){
 const FAM_MAX = 6;
 function famOf(el){ const w = el.closest && el.closest('[data-fm]'); return w ? famMembers().find(m => m.id === w.dataset.fm) || null : null; }
 function famMembers(){ return Array.isArray(S.family) ? S.family : []; }
+function famNameSet(){ return new Set(famMembers().map(m => (m.name || '').trim()).filter(Boolean)); }
 function eaterMembers(){ const fm = famMembers(); return !fm.length ? [] : Array.isArray(S.eaters) ? fm.filter(m => S.eaters.includes(m.id)) : fm; }
 function effAvoid(){
     const base = S.settings.avoid || [], ms = eaterMembers(); if (!ms.length) return base;
@@ -3804,7 +3812,7 @@ function swapLineHtml(r){
     return `<br><span class="swap-line">🔁 ${esc(w.swaps.map(x => t('{from} の代わりに {to}', {from: x.from.label, to: x.to.label})).join(LANG === 'ja' ? '、' : ', '))}</span>`;
 }
 // 家族に送る文に添える置き換え（受け取った人が元の食材を買わないように）
-function swapShare(r){ const w = (swappedRecipe(r) || {}).swapped; return w && w.swaps.length ? (LANG === 'ja' ? '' : ' ') + t('（{to}で作る）', {to: joinNames([...new Set(w.swaps.map(x => shortLabel(x.to)))])}) : ''; }
+function swapShare(r){ const w = (swappedRecipe(r) || {}).swapped; return w && w.swaps.length ? (/^(ja|zh)/.test(LANG) ? '' : ' ') + t('（{to}で作る）', {to: joinNames([...new Set(w.swaps.map(x => shortLabel(x.to)))])}) : ''; }
 // 置き換えの一言に出す短い名前（「닭다리살 (뼈 없는 것)」→「닭다리살」）
 function shortLabel(i){ return String(i.label || i.name).replace(/\s*[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').trim() || i.label; }
 // 料理の名前が、なかまの食材を表しているか（日本語・英語・各国の名前を見る）
@@ -4307,7 +4315,9 @@ async function cardCanvas(kind){
         const ax = px + 30, ay = py + 20, aw = pw - 60, ah = ph - 40, cw = aw / cols, ch = ah / rows;
         const fsz = n <= 2 ? 52 : n <= 4 ? 44 : 36, lines = n <= 2 ? 3 : 2, chipSz = n <= 2 ? 30 : 26;
         const textH = chipSz * 1.75 + 24 + fsz * 1.3 * lines, rad = Math.min((cw - 40) / 2, (ch - textH - 44) / 2, 210);
-        const wraps = D.dishes.map(x => { ctx.font = `700 ${fsz}px ${CARD_SANS}`; return cardWrap(ctx, x.name, cw - 36, lines); });
+        const fits = x => { let f = fsz; for (; f > fsz * .6; f -= 2){ ctx.font = `700 ${f}px ${CARD_SANS}`; if (String(x.name).split(/\s+/).every(w => ctx.measureText(w).width <= cw - 36)) break; } return f; };   // 長い1語（ドイツ語の複合語など）は語の途中で切らず、文字を小さくして収める
+        const wraps = D.dishes.map(x => { ctx.font = `700 ${fits(x)}px ${CARD_SANS}`; return cardWrap(ctx, x.name, cw - 36, lines); });
+        const fsizes = D.dishes.map(fits);
         D.dishes.forEach((x, i) => {
             const row = Math.floor(i / cols), inRow = Math.min(cols, n - row * cols), c = i % cols + (cols - inRow) / 2;
             const cx = ax + (rtl ? cols - 1 - c : c) * cw + cw / 2;
@@ -4315,7 +4325,7 @@ async function cardCanvas(kind){
             const blockH = rad * 2 + 22 + chipSz * 1.75 + 14 + rowLines * fsz * 1.3, top = ay + row * ch + (ch - blockH) / 2;
             cardPlate(ctx, cx, top + rad, rad, imgs[i], x.r, x.name);
             cardChip(ctx, x.slot, cx, top + rad * 2 + 22 + chipSz * .875, chipSz);
-            ctx.fillStyle = CARD_C.ink; ctx.font = `700 ${fsz}px ${CARD_SANS}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = CARD_C.ink; ctx.font = `700 ${fsizes[i]}px ${CARD_SANS}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ls.forEach((l, k) => ctx.fillText(l, cx, top + rad * 2 + 22 + chipSz * 1.75 + 14 + fsz * 1.3 * (k + .5)));
         });
     }
@@ -4419,7 +4429,9 @@ function notifBuild(now){
     const out = [], hour = S.settings.remind, days = visiblePlanDays().filter(x => byId(x.id));
     const at = (d, h) => { const x = parseYmd(d); x.setHours(h, 0, 0, 0); return x; };
     if (hour != null){
-        if (!days.length) out.push({id:NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}});
+        const decidedToday = !!(S.cook && S.cook.d === TODAY);   // 今日はもう決めた日: くり返しをやめ、あしたからの分だけ個別に予約する
+        if (!days.length && decidedToday){ for (let i = 1; i < NOTIFY_DAYS; i++){ const when = at(addDays(TODAY, i), hour); if (when > now) out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); } }
+        else if (!days.length) out.push({id:NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}});
         else for (let i = 0; i < NOTIFY_DAYS; i++){
             const d = addDays(TODAY, i), when = at(d, hour);
             if (when <= now || (i === 0 && S.cook && S.cook.d === TODAY)) continue;
