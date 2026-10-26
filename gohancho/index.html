@@ -1171,7 +1171,7 @@ function load(){
 let packFail = null;
 function save(){ try{
     const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
-    localStorage.setItem(STORE_KEY, JSON.stringify(out)); }catch(e){
+    localStorage.setItem(STORE_KEY, JSON.stringify(out)); try{ notifSoon(); }catch(e){} }catch(e){
     // 端末の空きが足りず保存できないとき（黙って消えないよう、開いているあいだに1回だけ知らせる）
     if (!save.warned && typeof toast === 'function'){ save.warned = true; setTimeout(() => toast(t('端末の空きが足りず、保存できませんでした。写真などを減らしてください')), 0); } } }
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
@@ -3640,8 +3640,11 @@ function viewSettings(){
         </div>
         ${loyalEligible() ? `<div class="note"><span>${esc(t('1年間ありがとうございます。年額プランを特別価格でご案内します。'))}</span><button class="btn sm" data-act="paywall">${esc(t('年額プラン（1年ありがとう価格）'))}</button></div>` : ''}
         <div class="set-group">
-            <div class="set-title">${esc(t('アプリ'))}</div>
+            <div class="set-title">${esc(t('お知らせ'))}</div>
             ${reminderHtml()}
+        </div>
+        <div class="set-group">
+            <div class="set-title">${esc(t('アプリ'))}</div>
             ${isNative() ? '' : installHtml()}
             <button class="btn sm" data-act="ob-again">${esc(t('はじめての設定をもう一度'))}</button>
         </div>
@@ -3931,25 +3934,107 @@ function shareSheetHtml(){
 /* =========================================================
    毎日のお知らせ（iPhone アプリ版のみ。端末の通知で献立を決める時間を知らせる）
    ========================================================= */
-const NOTIFY_ID = 1001;
+const NOTIFY_ID = 1001;          // 1週間プランがないときの、毎日くり返すお知らせ
+const NOTIFY_DAY_ID = 1100;      // 1100〜1113: 今日から14日先までの、日ごとのお知らせ（プランの日は「今日は○○」）
+const NOTIFY_DAYS = 14;
+const NOTIFY_SHOP_ID = 1200;     // 1200〜1201: 買い物の前日のお知らせ（次の2回分）
+const NOTIFY_TEST_ID = 1003;     // テスト通知
+const NOTIFY_ALL = [NOTIFY_ID, ...Array.from({length:NOTIFY_DAYS}, (_, i) => NOTIFY_DAY_ID + i), NOTIFY_SHOP_ID, NOTIFY_SHOP_ID + 1];   // 合計17件（iOS の予約は最大64件）
+var notifPerm = null, notifBusy = Promise.resolve(), notifSig = '', notifTimer = null;
+// 通知に出す「主な材料」（調味料・常備品は除く）
+function notifIngs(r){
+    const out = [];
+    (r.items || []).forEach(i => { if (i.opt || PANTRY.has(i.key)) return; const l = (/[\u0E00-\u0E7F]/.test(i.label) ? i.label.split(/\s+/)[0] : i.label.replace(/[（(][^）)]*[）)]/g, '')).trim(); if (l && !out.includes(l)) out.push(l); });
+    return out.slice(0, 3);
+}
+// いま予約しておくべきお知らせの一覧（今日の献立をもう決めていたら、今日の分は出さない）
+function notifBuild(now){
+    const out = [], hour = S.settings.remind, days = visiblePlanDays().filter(x => byId(x.id));
+    const at = (d, h) => { const x = parseYmd(d); x.setHours(h, 0, 0, 0); return x; };
+    if (hour != null){
+        if (!days.length) out.push({id:NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}});
+        else for (let i = 0; i < NOTIFY_DAYS; i++){
+            const d = addDays(TODAY, i), when = at(d, hour);
+            if (when <= now || (i === 0 && S.cook && S.cook.d === TODAY)) continue;
+            const x = days.find(y => y.d === d), r = x && byId(x.id);
+            if (!r){ out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); continue; }
+            const min = dayDishes(x).reduce((a, y) => a + (Number(y.min) || 0), 0), ings = notifIngs(r);
+            out.push({id:NOTIFY_DAY_ID + i, title:t('今日は{name}', {name:r.name}), body:[min ? t('{n}分', {n:min}) : '', ings.length ? t('材料チェック：{items}', {items:joinNames(ings)}) : ''].filter(Boolean).join(SLASH()) || t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}});
+        }
+    }
+    const wd = S.settings.shopRemind;
+    if (typeof wd === 'number' && wd >= 0 && wd <= 6){
+        const last = days.length ? days[days.length - 1].d : '', n = days.length ? shoppingList().filter(e => !shopDoneSet().has(e.key)).length : 0;
+        for (let k = 1, j = 0; k <= 21 && j < 2; k++){
+            const shopDay = addDays(TODAY, k); if (parseYmd(shopDay).getDay() !== wd) continue;
+            const when = at(addDays(shopDay, -1), 18); if (when <= now) continue;
+            const has = n > 0 && shopDay <= last;
+            out.push({id:NOTIFY_SHOP_ID + j++, title:t('明日は買い物の日です'), body:has ? t('明日の分の買い物リストがあります（{n}品）', {n}) : t('1週間プランを作っておくと、買うものがまとまります。'), schedule:{at:when, allowWhileIdle:true}});
+        }
+    }
+    return out;
+}
+// お知らせを予約しなおす（プラン・設定・時間が変わったとき、アプリを開いたとき・戻ったときに呼ぶ。前の予約は全部消してから入れる）
+function syncNotifs(force){
+    const P = nativePlugin('LocalNotifications'); if (!P) return Promise.resolve();
+    return notifBusy = notifBusy.then(async () => {
+        try{
+            const perm = await P.checkPermissions(), prev = notifPerm; notifPerm = perm && perm.display;
+            const list = notifPerm === 'granted' ? notifBuild(new Date()) : [];
+            const sig = JSON.stringify(list.map(n => [n.id, n.title, n.body, n.schedule.at ? +n.schedule.at : n.schedule.on]));
+            if (prev !== notifPerm && typeof tab !== 'undefined' && tab === 'settings') render();
+            if (!force && sig === notifSig) return;
+            await P.cancel({notifications: NOTIFY_ALL.map(id => ({id}))});
+            if (list.length) await P.schedule({notifications: list});
+            notifSig = sig;
+        }catch(e){}
+    });
+}
+function notifSoon(){ if (!nativePlugin('LocalNotifications')) return; clearTimeout(notifTimer); notifTimer = setTimeout(() => syncNotifs(), 800); }
+// 通知の許可をたずねる（許可されていなければ、設定のしかたを知らせる）
+async function notifAsk(P){
+    const perm = await P.requestPermissions(); notifPerm = perm && perm.display;
+    if (notifPerm !== 'granted'){ toast(t('通知が許可されていません。iPhone の「設定」→「ご飯帖」→「通知」で許可してください')); render(); return false; }
+    return true;
+}
 async function setReminder(hour){
     const P = nativePlugin('LocalNotifications');
     if (!P){ toast(t('お知らせは iPhone アプリ版で使えます')); return; }
     try{
-        await P.cancel({notifications:[{id: NOTIFY_ID}]}).catch(() => {});
-        if (hour === null){ S.settings.remind = null; save(); toast(t('お知らせを止めました')); render(); return; }
-        const perm = await P.requestPermissions();
-        if (perm && perm.display && perm.display !== 'granted'){ toast(t('通知が許可されていません。iPhone の「設定」→「ご飯帖」→「通知」で許可してください')); return; }
-        await P.schedule({notifications:[{id: NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}}]});
-        S.settings.remind = hour; save(); toast(t('毎日{time}にお知らせします', {time:hourLabel(hour)})); render();
+        if (hour === null){ S.settings.remind = null; save(); await syncNotifs(true); toast(t('お知らせを止めました')); render(); return; }
+        if (!(await notifAsk(P))) return;
+        S.settings.remind = hour; save(); await syncNotifs(true); toast(t('毎日{time}にお知らせします', {time:hourLabel(hour)})); render();
+    }catch(e){ toast(t('お知らせを設定できませんでした')); }
+}
+async function setShopRemind(wd){
+    const P = nativePlugin('LocalNotifications');
+    if (!P){ toast(t('お知らせは iPhone アプリ版で使えます')); return; }
+    try{
+        if (wd === null){ S.settings.shopRemind = null; save(); await syncNotifs(true); toast(t('お知らせを止めました')); render(); return; }
+        if (!(await notifAsk(P))) return;
+        S.settings.shopRemind = wd; save(); await syncNotifs(true); toast(t('買い物の前日の夕方にお知らせします')); render();
+    }catch(e){ toast(t('お知らせを設定できませんでした')); }
+}
+async function testNotify(){
+    const P = nativePlugin('LocalNotifications'); if (!P) return;
+    try{
+        if (!(await notifAsk(P))) return;
+        await P.schedule({notifications:[{id:NOTIFY_TEST_ID, title:t('テスト通知です'), body:t('このように表示されます。'), schedule:{at:new Date(Date.now() + 5000), allowWhileIdle:true}}]});
+        toast(t('5秒後にテスト通知が届きます'));
     }catch(e){ toast(t('お知らせを設定できませんでした')); }
 }
 function reminderHtml(){
     if (!isNative()) return `<p class="small muted" style="margin:0">${esc(t('毎日のお知らせ（献立を決める時間の通知）は iPhone アプリ版で使えます。'))}</p>`;
-    const cur = S.settings.remind;
-    return `<div class="field"><label>${esc(t('毎日のお知らせ'))}</label>
-        <div class="chips">${[['off',t('なし')],[15,hourLabel(15)],[16,hourLabel(16)],[17,hourLabel(17)],[18,hourLabel(18)],[19,hourLabel(19)]].map(([v,l]) => `<button class="chip" data-act="remind" data-v="${v}" aria-pressed="${v==='off' ? !cur : cur===v}">${esc(l)}</button>`).join('')}</div>
-        <span class="small muted">${esc(t('献立を決める時間に、端末の通知でお知らせします。'))}</span></div>`;
+    const cur = S.settings.remind, sw = S.settings.shopRemind, on = (v, c) => v === 'off' ? c == null : c === v;
+    return `${notifPerm === 'denied' ? `<p class="small warn" style="margin:0">${esc(t('いまは通知がオフです。iPhone の「設定」→「ご飯帖」→「通知」で「通知を許可」にすると、お知らせが届きます。'))}</p>` : ''}
+        <div class="field"><label>${esc(t('毎日のお知らせ'))}</label>
+        <div class="chips">${[['off',t('なし')],[15,hourLabel(15)],[16,hourLabel(16)],[17,hourLabel(17)],[18,hourLabel(18)],[19,hourLabel(19)]].map(([v,l]) => `<button class="chip" data-act="remind" data-v="${v}" aria-pressed="${on(v, cur)}">${esc(l)}</button>`).join('')}</div>
+        <span class="small muted">${esc(t('献立を決める時間に、端末の通知でお知らせします。'))}</span>
+        <span class="small muted">${esc(t('1週間プランがあると、その日の主菜と主な材料をお知らせします。'))}</span></div>
+        <div class="field"><label>${esc(t('買い物の前日のお知らせ'))}</label>
+        <div class="chips">${[['off',t('なし')], ...[0,1,2,3,4,5,6].map(i => [i, wdName(i)])].map(([v,l]) => `<button class="chip" data-act="shop-remind" data-v="${v}" aria-pressed="${on(v, typeof sw === 'number' ? sw : null)}">${esc(l)}</button>`).join('')}</div>
+        <span class="small muted">${esc(t('買い物に行く曜日を選ぶと、前の日の夕方に買い物リストをお知らせします。'))}</span></div>
+        <button class="btn sm" data-act="notif-test">${esc(t('テスト通知を送る'))}</button>`;
 }
 
 /* ---- 今日の献立 ---- */
@@ -4836,6 +4921,8 @@ document.addEventListener('click', e => {
             save(); render(); break;
         }
         case 'remind': S.remindAsked = true; setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'shop-remind': S.remindAsked = true; setShopRemind(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'notif-test': testNotify(); break;
         case 'remind-no': S.remindAsked = true; save(); render(); break;
         case 'paywall-week': openPaywall('week'); break;
         case 'paywall-skill': openPaywall('skill'); break;
@@ -5671,6 +5758,7 @@ if (S.settings.country && (S.settings.uiLang || 'auto') === 'auto'){ S.settings.
     await ensureTr(currentCountry());
     applyCountry(currentCountry());
     scheduleTrialReminder();
+    syncNotifs(true);
     loadRemote();
     setTab(tab);
     if (!S.settings.country) openCountrySheet();
@@ -5683,11 +5771,11 @@ function refreshToday(){
     TODAY = d;
     if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
     session.menu = null; session.countSalt = 0; session.rejected.clear();
-    render();
+    render(); syncNotifs(true);
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshToday(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ refreshToday(); syncNotifs(); } });
 window.addEventListener('focus', refreshToday);
-(() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', refreshToday); }catch(e){} })();
+(() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの長さ・価格を、はじめの案内より先に読んでおく
 loadGenerated().then(loadPhotos);
