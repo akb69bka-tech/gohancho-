@@ -3905,6 +3905,166 @@ function weekShareText(){
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
+/* ---- 献立カード（画像で送る） ----
+   今日の献立・決めた献立・1週間の予定を 1080×1350 の PNG にする。canvas だけで描く（外部の字体・通信なし）。
+   料理の絵が読みこめないときは、色のお皿にする。 */
+const CARD_W = 1080, CARD_H = 1350;
+const CARD_SANS = "'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP','Noto Sans JP','Noto Sans Arabic','Noto Sans Thai','Noto Sans Devanagari','Noto Sans KR','Noto Sans SC','Noto Sans TC','Segoe UI','Helvetica Neue',Arial,system-ui,sans-serif";
+const CARD_SERIF = "'Hiragino Mincho ProN','Yu Mincho','Noto Serif CJK JP','Noto Serif JP','Noto Serif',serif";
+const CARD_C = {ink:'#1d2733', muted:'#66758a', accent:'#22406b', soft:'#dde6f2', line:'#d5dde8'};
+// kind: 'menu'（今日の案）/ 'cook'（決めた献立）/ 'week'（1週間の予定）→ 描くための材料
+function cardData(kind){
+    if (kind === 'week'){
+        const days = visiblePlanDays().map(x => ({d:x.d, r:byId(x.id)})).filter(x => x.r).slice(0, 7);
+        return days.length ? {kind, days, date:days[0].d, line:t('今週の献立です')} : null;
+    }
+    const cook = kind === 'cook', m = cook ? (S.cook ? {items: cookItems()} : null) : session.menu, d = cook && S.cook ? S.cook.d : TODAY;
+    if (!m || !m.items.length) return null;
+    const dishes = m.items.filter(x => x.r).map(x => ({r:x.r, name:x.r.name, slot:slotLabel(x.slot || slotOf(x.r)), min:x.r.min || 0}));
+    const main = m.items[0] && m.items[0].r, st = stapleSpot();
+    if (!(main && (main.type === 'ごはん' || main.type === '麺')) && st && dishes.length < 6) dishes.push({r:null, staple:true, name:st.name, slot:t('主食'), min:0});
+    return dishes.length ? {kind, dishes, date:d, line: cook ? t('今日はこれを作ります') : t('今日のごはんです'), min:dishes.reduce((a, x) => a + x.min, 0), sv:Number(S.settings.servings) || 2} : null;
+}
+function cardLoadImg(r, staple){
+    return new Promise(res => {
+        let ph = null; try{ ph = r ? photoOf(r) : staple ? (GEN.rice || sketchOf(PHOTOS.rice)) : null; }catch(e){}
+        if (!ph || !ph.src) return res(null);
+        const im = new Image(), to = setTimeout(() => res(null), 5000);
+        im.onload = () => { clearTimeout(to); res(im.naturalWidth ? im : null); };
+        im.onerror = () => { clearTimeout(to); res(null); };
+        im.src = ph.src;
+    });
+}
+// 文字を幅に合わせて折り返す（単語の切れ目で。切れ目のない長い文字は文字ごとに）。入りきらないときは「…」
+function cardWrap(ctx, text, maxW, maxLines){
+    let segs; try{ segs = Array.from(new Intl.Segmenter(LANG, {granularity:'word'}).segment(text), s => s.segment); }catch(e){ segs = text.split(/(?<=\s)/); }
+    const lines = []; let cur = '';
+    const push = s => { for (const ch of Array.from(s)){ if (cur && ctx.measureText(cur + ch).width > maxW){ lines.push(cur.trimEnd()); cur = ''; } cur += ch; } };
+    for (const s of segs){
+        if (!cur || ctx.measureText(cur + s).width <= maxW){ if (ctx.measureText(s).width > maxW) push(s); else cur += s; }
+        else { lines.push(cur.trimEnd()); cur = ''; if (ctx.measureText(s.trimStart()).width > maxW) push(s.trimStart()); else cur = s.trimStart(); }
+    }
+    if (cur.trim()) lines.push(cur.trimEnd());
+    if (lines.length > maxLines){
+        lines.length = maxLines; let l = lines[maxLines - 1];
+        while (l && ctx.measureText(l + '…').width > maxW) l = Array.from(l).slice(0, -1).join('');
+        lines[maxLines - 1] = l + '…';
+    }
+    return lines;
+}
+function cardRound(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); }
+// 丸いお皿に絵を入れる（絵がなければ色のお皿に頭文字）
+function cardPlate(ctx, cx, cy, rad, img, r, name){
+    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.22)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12;
+    ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, rad - 7, 0, Math.PI * 2); ctx.clip();
+    if (img){
+        const iw = img.naturalWidth || 300, ih = img.naturalHeight || 300, k = Math.max((rad * 2) / iw, (rad * 2) / ih);
+        ctx.drawImage(img, cx - iw * k / 2, cy - ih * k / 2, iw * k, ih * k);
+    } else {
+        let col = '#e9d9b8'; try{ if (r) col = foodColor(r) || col; }catch(e){}
+        ctx.fillStyle = col; ctx.fillRect(cx - rad, cy - rad, rad * 2, rad * 2);
+        ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.beginPath(); ctx.arc(cx, cy, rad * .62, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(29,39,51,.55)'; ctx.font = `700 ${Math.round(rad * .6)}px ${CARD_SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.direction = 'ltr'; ctx.fillText(Array.from(name || '')[0] || '', cx, cy + rad * .04);
+    }
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(cx, cy, rad - 3.5, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(34,64,107,.14)'; ctx.lineWidth = 3; ctx.stroke();
+}
+function cardChip(ctx, text, cx, cy, size){
+    ctx.font = `600 ${size}px ${CARD_SANS}`; const w = Math.min(ctx.measureText(text).width + size * 1.4, 300), h = size * 1.75;
+    cardRound(ctx, cx - w / 2, cy - h / 2, w, h, h / 2); ctx.fillStyle = CARD_C.soft; ctx.fill();
+    ctx.fillStyle = CARD_C.accent; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, cx, cy + size * .04, w - size * .6);
+}
+async function cardCanvas(kind){
+    const D = cardData(kind); if (!D) return null;
+    const rtl = /^(ar|he|fa|ur)(-|$)/.test(LANG), W = CARD_W, H = CARD_H;
+    const imgs = await Promise.all((D.kind === 'week' ? D.days : D.dishes).map(x => cardLoadImg(x.r, x.staple)));
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
+    // 背景
+    const bg = ctx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#fbf8f1'); bg.addColorStop(1, '#e9eef5');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    // 見出し（藍の帯）
+    ctx.fillStyle = CARD_C.accent; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(W, 250); ctx.quadraticCurveTo(W / 2, 300, 0, 250); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.arc(rtl ? 90 : W - 90, 40, 190, 0, Math.PI * 2); ctx.fill();
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff'; ctx.font = `700 76px ${CARD_SERIF}`;
+    let ds = jpDate(D.date), fs = 76; while (ctx.measureText(ds).width > W - 120 && fs > 40){ fs -= 4; ctx.font = `700 ${fs}px ${CARD_SERIF}`; }
+    ctx.fillText(ds, W / 2, 128, W - 100);
+    ctx.fillStyle = '#cfdcf0'; ctx.font = `500 38px ${CARD_SANS}`; ctx.fillText(D.line, W / 2, 196, W - 120);
+    // 本体（白いパネル）
+    const px = 44, py = 292, pw = W - 88, ph = 836;
+    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
+    if (D.kind === 'week'){
+        const n = D.days.length, rh = Math.min(116, (ph - 40) / n), top = py + (ph - rh * n) / 2;
+        D.days.forEach((x, i) => {
+            const y = top + rh * i, mid = y + rh / 2, dt = parseYmd(x.d), wd = dt.getDay();
+            const bx = rtl ? px + pw - 40 - 92 : px + 40, tx = rtl ? px + pw - 40 - 92 - 24 - 96 : px + 40 + 92 + 24 + 96;
+            if (i) { ctx.fillStyle = CARD_C.line; ctx.fillRect(px + 40, y, pw - 80, 2); }
+            cardRound(ctx, bx, mid - 40, 92, 80, 20); ctx.fillStyle = x.d === TODAY ? CARD_C.accent : CARD_C.soft; ctx.fill();
+            ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = x.d === TODAY ? '#fff' : CARD_C.accent;
+            ctx.font = `700 38px ${CARD_SERIF}`; ctx.fillText(String(dt.getDate()), bx + 46, mid + 6);
+            ctx.fillStyle = x.d === TODAY ? '#dbe6f6' : (wd === 0 ? '#b3402f' : wd === 6 ? '#2f6aa8' : CARD_C.muted); ctx.font = `600 22px ${CARD_SANS}`; ctx.fillText(wdName(wd), bx + 46, mid + 32, 84);
+            const pr = rh / 2 - 8, pcx = rtl ? bx - 24 - pr : bx + 92 + 24 + pr;
+            cardPlate(ctx, pcx, mid, pr, imgs[i], x.r, x.r.name);
+            const tw = pw - 80 - 92 - 24 - pr * 2 - 24, tcx = rtl ? pcx - pr - 24 - tw : pcx + pr + 24;
+            ctx.fillStyle = CARD_C.ink; ctx.textBaseline = 'middle'; ctx.textAlign = rtl ? 'right' : 'left'; ctx.font = `600 36px ${CARD_SANS}`;
+            const ls = cardWrap(ctx, x.r.name, tw, 2), lh = 42;
+            ls.forEach((l, k) => ctx.fillText(l, rtl ? tcx + tw : tcx, mid + (k - (ls.length - 1) / 2) * lh));
+        });
+    } else {
+        const n = D.dishes.length, cols = n <= 2 ? n : n <= 4 ? 2 : 3, rows = Math.ceil(n / cols);
+        const ax = px + 30, ay = py + 20, aw = pw - 60, ah = ph - 40, cw = aw / cols, ch = ah / rows;
+        const fsz = n <= 2 ? 52 : n <= 4 ? 44 : 36, lines = n <= 2 ? 3 : 2, chipSz = n <= 2 ? 30 : 26;
+        const textH = chipSz * 1.75 + 24 + fsz * 1.3 * lines, rad = Math.min((cw - 40) / 2, (ch - textH - 44) / 2, 210);
+        const wraps = D.dishes.map(x => { ctx.font = `700 ${fsz}px ${CARD_SANS}`; return cardWrap(ctx, x.name, cw - 36, lines); });
+        D.dishes.forEach((x, i) => {
+            const row = Math.floor(i / cols), inRow = Math.min(cols, n - row * cols), c = i % cols + (cols - inRow) / 2;
+            const cx = ax + (rtl ? cols - 1 - c : c) * cw + cw / 2;
+            const ls = wraps[i], rowLines = Math.max(...wraps.slice(row * cols, row * cols + inRow).map(w => w.length));   // 同じ段のお皿は高さをそろえる
+            const blockH = rad * 2 + 22 + chipSz * 1.75 + 14 + rowLines * fsz * 1.3, top = ay + row * ch + (ch - blockH) / 2;
+            cardPlate(ctx, cx, top + rad, rad, imgs[i], x.r, x.name);
+            cardChip(ctx, x.slot, cx, top + rad * 2 + 22 + chipSz * .875, chipSz);
+            ctx.fillStyle = CARD_C.ink; ctx.font = `700 ${fsz}px ${CARD_SANS}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ls.forEach((l, k) => ctx.fillText(l, cx, top + rad * 2 + 22 + chipSz * 1.75 + 14 + fsz * 1.3 * (k + .5)));
+        });
+    }
+    // 合計の時間と人数
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    if (D.kind !== 'week' && D.min){
+        const s = t('合計 {n}分', {n:D.min}) + '　·　' + t('{n}人分', {n:D.sv});
+        ctx.font = `600 34px ${CARD_SANS}`; const w = Math.min(ctx.measureText(s).width + 84, W - 120);
+        cardRound(ctx, (W - w) / 2, 1160, w, 76, 38); ctx.fillStyle = CARD_C.accent; ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.fillText(s, W / 2, 1199, w - 50);
+    } else if (D.kind === 'week'){
+        ctx.font = `500 30px ${CARD_SANS}`; ctx.fillStyle = CARD_C.muted; ctx.fillText(t('{n}人分', {n:Number(S.settings.servings) || 2}), W / 2, 1198);
+    }
+    // ご飯帖のしるし
+    const nm = t('わが家のご飯帖'); ctx.font = `600 28px ${CARD_SANS}`;
+    const nw = Math.min(ctx.measureText(nm).width, 560), tot = 78 + 16 + nw, sx = (W - tot) / 2, fy = 1292;
+    const sealX = rtl ? sx + nw + 16 : sx, nameX = rtl ? sx : sx + 78 + 16;
+    cardRound(ctx, sealX, fy - 26, 78, 52, 13); ctx.fillStyle = CARD_C.accent; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.direction = 'ltr'; ctx.font = `700 24px ${CARD_SERIF}`; ctx.fillText('ご飯帖', sealX + 39, fy + 1, 70); ctx.direction = rtl ? 'rtl' : 'ltr';
+    ctx.fillStyle = CARD_C.muted; ctx.font = `600 28px ${CARD_SANS}`; ctx.textAlign = 'left'; ctx.direction = 'ltr'; ctx.fillText(nm, nameX, fy, nw);
+    return cv;
+}
+// 画像にして、共有できる端末は共有シート（LINE・メッセージなど）へ、できなければ保存（ダウンロード）
+async function shareCard(kind){
+    try{
+        const cv = await cardCanvas(kind); if (!cv){ toast(t('送る献立がありません')); return; }
+        const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+        if (!blob) throw new Error('blob');
+        const name = 'gohancho-' + (kind === 'week' ? 'week' : 'menu') + '-' + TODAY.replace(/-/g, '') + '.png';
+        let file = null; try{ file = new File([blob], name, {type:'image/png'}); }catch(e){}
+        if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+            try{ await navigator.share({files:[file], title:t('わが家のご飯帖')}); return; }
+            catch(e){ if (e && e.name === 'AbortError') return; }
+        }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(t('画像を保存しました'));
+    }catch(e){ toast(t('画像をつくれませんでした')); }
+}
 function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
 // 国でよく使われる家族の連絡アプリ（リンクで開けるものだけボタンにする。ほかは「ほかのアプリで送る」）
 function msgLabel(){ const m = messengerFor(); return m ? m.label : ''; }
@@ -3919,7 +4079,7 @@ function messengerFor(){
 function openShare(kind){
     const text = kind === 'week' ? weekShareText() : kind === 'cook' ? (S.cook ? menuShareText({items: cookItems()}, S.cook.d) : '') : menuShareText();
     if (!text){ toast(t('送る献立がありません')); return; }
-    sheet = {kind:'share', text, title: kind === 'week' ? t('献立の予定と買い物メモ') : t('今日の献立')}; renderSheet();
+    sheet = {kind:'share', card:kind, text, title: kind === 'week' ? t('献立の予定と買い物メモ') : t('今日の献立')}; renderSheet();
 }
 async function systemShare(text, title){
     const P = nativePlugin('Share');
@@ -3944,6 +4104,7 @@ function shareSheetHtml(){
             ${canSystem ? `<button class="btn wide" data-act="share-system">${esc(t('ほかのアプリで送る'))}</button>` : ''}
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
+        <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}">${esc(t('画像でつくる'))}</button></div>
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
 }
@@ -4175,6 +4336,7 @@ function viewToday(){
                 ? `<button class="btn primary" data-act="goto-cook">${esc(t('作り方を見る'))}</button>`
                 : `<button class="btn primary" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>`}
             <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>
+            <button class="btn ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button>
         </div>
     </section>
 
@@ -4998,6 +5160,8 @@ document.addEventListener('click', e => {
         case 'share-week': openShare('week'); break;
         case 'share-system': if (sheet) systemShare(sheet.text, sheet.title); break;
         case 'share-copy': if (sheet) copyText(sheet.text); break;
+        case 'share-card': shareCard(el.dataset.k || 'menu'); break;
+        case 'card-menu': shareCard('menu'); break;
         case 'shop-check': {
             shopDoneSet(); const k = el.dataset.k, a = S.shopDone.keys, i = a.indexOf(k);
             if (el.checked){ if (i < 0) a.push(k); } else if (i >= 0) a.splice(i, 1);
