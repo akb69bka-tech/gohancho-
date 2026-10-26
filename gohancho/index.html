@@ -181,6 +181,7 @@ a{color:var(--accent)}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
+.mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:40px}
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-left:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
@@ -1325,8 +1326,8 @@ function pick(cands, ctx){
 }
 function suggestMain(){
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null};
-    let cands = RECIPES.filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
-    if (!cands.length) cands = RECIPES.filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
+    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
     const r = pick(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
@@ -1342,10 +1343,30 @@ function suggestOrAny(slot, items, main){
     const r = suggestFor(slot, items, main); if (r) return r;
     const used = new Set(items.map(x => x.r && x.r.id).filter(Boolean));
     // 予備: その枠に入る料理なら何でも（主菜の枠は主菜・ごはんもの・麺。以前は主菜の枠だと必ず空になっていた）
-    const any = RECIPES.filter(x => slotOf(x) === slot && x !== main && !used.has(x.id) && !isAvoided(x));
+    const any = poolFor(slot).filter(x => slotOf(x) === slot && x !== main && !used.has(x.id) && !isAvoided(x));
     const shown = any.filter(x => !S.hidden.includes(x.id));
     const pool = shown.length ? shown : any;
     return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+}
+/* ---- 国の組み合わせ（主菜は中華・副菜は和食・汁ものは韓国のように、枠ごとに国を選ぶ。選ばない枠はいまの国） ---- */
+const MIX_SLOTS = ['主菜', '副菜', '汁物'];
+function mixCc(slot){ const cc = (S.settings.mix || {})[slot]; return cc && cc !== currentCountry() && COUNTRIES.some(c => c.cc === cc) ? cc : null; }
+function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean))]; }
+// その枠の料理の候補（選んだ国のデータをまだ読みこめていないときは、いまの国）
+function poolFor(slot){ const cc = mixCc(slot); return cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; }
+function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
+function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixLoading.has(cc)); ccs.forEach(cc => { mixLoading.add(cc); loadBrowse(cc).then(() => { mixLoading.delete(cc); if (tab === 'today') render(); }); }); }
+const mixLoading = new Set();
+function mixHtml(){
+    const mix = S.settings.mix || {}, home = currentCountry();
+    const opts = sel => [`<option value="" ${!sel ? 'selected' : ''}>${esc(t('いまの国（{country}）', {country: countryOf(home).flag + ' ' + countryLabel(countryOf(home))}))}</option>`,
+        ...COUNTRIES.filter(c => c.cc !== home).map(c => `<option value="${c.cc}" ${sel === c.cc ? 'selected' : ''}>${esc(c.flag + ' ' + countryLabel(c))}</option>`)].join('');
+    const on = mixCountries().length > 0;
+    return `<details class="mix" ${on || session.mixOpen ? 'open' : ''}><summary>${esc(t('国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）'))}${on ? ' 🌏' : ''}</summary>
+        <div class="mix-rows">${MIX_SLOTS.map(sl => `<label class="mix-row"><span>${esc(slotLabel(sl))}</span><select data-act="mix" data-slot="${sl}">${opts(mixCc(sl))}</select></label>`).join('')}</div>
+        ${on ? `<div class="row"><button class="btn sm ghost" data-act="mix-reset">${esc(t('組み合わせをやめる'))}</button></div>` : ''}
+        ${mixCountries().some(cc => browseErr.has(cc)) ? `<p class="small warn">${esc(t('この国のデータを読みこめませんでした'))}</p>` : ''}
+    </details>`;
 }
 function newMenu(){
     const n = menuCount();
@@ -1495,12 +1516,12 @@ function makeWeek(){
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
-        const cands = RECIPES.filter(r => r.main && !used.has(r.id) && !isAvoided(r));
+        const cands = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
         let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null});
         if (!r && cands.length) r = pick(cands, {recent: []});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度
-            const okAll = RECIPES.filter(x => x.main && !isAvoided(x)); const all = okAll.length ? okAll : RECIPES.filter(x => x.main); const order = days.map(x => x.id);
+            const okAll = poolFor('主菜').filter(x => x.main && !isAvoided(x)); const all = okAll.length ? okAll : poolFor('主菜').filter(x => x.main); const order = days.map(x => x.id);
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
@@ -1515,7 +1536,7 @@ function refreshWeek(){
     S.week.days.forEach((x, i) => {
         if (x.d < TODAY || !out(byId(x.id))) return;
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
-        const cands = RECIPES.filter(r => r.main && !used.has(r.id) && !out(r));
+        const cands = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r));
         const r = pick(cands, {recent}) || pick(cands, {recent: []}) || cands[0];
         if (r){ used.add(r.id); x.id = r.id; n++; }
     });
@@ -2814,9 +2835,9 @@ function suggestFor(slot, items, main){
     const ctx = {main, others, fridge: session.useFridge ? fridgeKeys() : null};
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物') return null;
-        return pick(RECIPES.filter(r => r.type === '汁物' && !used.includes(r.id)), ctx);
+        return pick(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id)), ctx);
     }
-    if (slot === '副菜') return pick(RECIPES.filter(r => r.type === '副菜' && !used.includes(r.id)), ctx);
+    if (slot === '副菜') return pick(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id)), ctx);
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
     const mainProteins = new Set(main.items.filter(i => !i.opt && FAMILY[i.key]).map(i => i.key));
@@ -2832,7 +2853,7 @@ function suggestFor(slot, items, main){
     ];
     // 最近作った料理は、どの段階にも作っていない主菜がないときだけ使う（段階の中でゆるめると、まだある主菜より先に最近の料理が出てしまう）
     for (const strict of [true, false]) for (const ok of tiers){
-        const pool = RECIPES.filter(r => free(r) && ok(r));
+        const pool = poolFor('主菜').filter(r => free(r) && ok(r));
         const r = pool.length ? pick(pool, Object.assign({}, ctx, {strict})) : null; if (r) return r;
     }
     return null;
@@ -2927,7 +2948,7 @@ function itemAvoided(i, c){
 function isAvoided(r){
     if (!r || !r.items || !(S.settings.avoid || []).length) return false;
     const c = avoidCtx(); if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
-    return !recipeSwaps(r);
+    return !(r.isTwist || RECIPES.includes(r)) || !recipeSwaps(r);   // ほかの国の料理（国の組み合わせ）は置き換えない
 }
 
 /* ---- 苦手な食材の置き換え ---- */
@@ -3051,7 +3072,7 @@ function viewSettings(){
     const sv = Number(S.settings.servings) || 2;
     const cur = countryOf(currentCountry());
     const uiLang = S.settings.uiLang || 'auto';
-    const langChips = [['auto', t('自動（国に合わせる）')], ['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])]
+    const langChips = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])]
         .map(([v, l]) => `<button class="chip" data-act="ui-lang" data-v="${esc(v)}" aria-pressed="${uiLang === v}" lang="${v === 'auto' ? LANG : v}">${esc(l)}</button>`).join('');
     return `
     <section class="sec">
@@ -3062,7 +3083,7 @@ function viewSettings(){
             <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
             <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
-                <span class="small muted">${esc(t('「自動」は、日本では日本語、ほかの国ではその国の言語（辞書がない国は英語）で表示します。料理の名前や作り方は国のデータのままです。'))}</span></div>
+                <span class="small muted">${esc(t('国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('家族と献立'))}</div>
@@ -3371,6 +3392,8 @@ function keepDraft(){
     if (JSON.stringify(d) !== JSON.stringify(S.draft)){ S.draft = d; save(); }
 }
 function viewToday(){
+    if (mixWaiting()) loadMix();
+    if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
     if (!session.menu && !restoreDecided() && !restoreDraft()) newMenu();
     draftTried = true; keepDraft();
     const m = session.menu;
@@ -3440,6 +3463,7 @@ function viewToday(){
         <div class="card cond">
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分'))}">${moodChips}</div></div>
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount, 'count')}</div></div>
+            ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </div>
         ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}${stapleAdd ? `<div class="tray-row">${stapleAdd}</div>` : ''}</div>`
@@ -4041,6 +4065,7 @@ document.addEventListener('click', e => {
         case 'open': openModal(id); break;
         case 'open-hist': openHist(id); break;
         case 'close': case 'modal-bg': closeModal(); break;
+        case 'mix-reset': S.settings.mix = {}; save(); session.menu = null; session.rejected.clear(); render(); break;
         case 'mood': session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
         case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;
         case 'reroll': {
@@ -4159,7 +4184,7 @@ document.addEventListener('click', e => {
             const d = el.dataset.d, w = S.week; const idx = w.days.findIndex(x => x.d === d);
             const used = new Set(w.days.map(x => x.id));
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
-            const r = pick(RECIPES.filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
+            const r = pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
             if (r){ w.days[idx].id = r.id; save(); }
             else {   // 主菜が7つしかない国: ほかの日と入れかえる（となりの日は避ける）
                 const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && w.days[j].id !== w.days[idx].id);
@@ -4330,6 +4355,10 @@ document.addEventListener('change', e => {
         saveMine(modalId, el.files[0]); el.value = ''; return;
     }
     if (el.id === 'tw-base'){ twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }
+    if (el.dataset && el.dataset.act === 'mix'){
+        S.settings.mix = Object.assign({}, S.settings.mix, {[el.dataset.slot]: el.value}); save(); session.mixOpen = true;
+        session.menu = null; session.rejected.clear(); render(); return;
+    }
     if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); session.menu = null; toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
 });
 document.addEventListener('submit', e => {
@@ -4576,11 +4605,12 @@ function buildBrowse(cc){
 const browseErr = new Set();   // 読みこめなかった国（失敗は覚えない。もう一度押すと読みに行く）
 async function loadBrowse(cc){
     try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); browseErr.delete(cc); }catch(e){ delete BROWSE[cc]; browseErr.add(cc); }
-    if (tab === 'world') render();
+    if (tab === 'world' || tab === 'today') render();
 }
 // お気に入り・作った記録・アルバムにあるほかの国の料理を開けるように、その国のレシピだけ読みこんでおく（起動したときと国・言語を変えたとき）
 function refCountries(){
-    const ids = new Set([...S.favs, ...S.history.map(h => h.id), ...(ALBUM || []).map(a => a.id), ...Object.keys(MINE)].map(String));
+    const ids = new Set([...S.favs, ...S.history.map(h => h.id), ...(ALBUM || []).map(a => a.id), ...Object.keys(MINE),
+        ...((S.week && S.week.days) || []).map(x => x.id), ...((S.draft && S.draft.ids) || []), ...((S.cook && S.cook.ids) || [])].filter(Boolean).map(String));
     const out = new Set(), home = currentCountry();
     ids.forEach(id => {
         if (id.startsWith('a~')) return;
@@ -4588,6 +4618,7 @@ function refCountries(){
         if (cc && COUNTRIES.some(c => c.cc === cc)) out.add(cc);
         else if (JP_DATA && JP_DATA.recipes.some(r => r.id === id)) out.add('JP');
     });
+    mixCountries().forEach(cc => out.add(cc));   // 国の組み合わせで選んだ国
     out.delete(home);
     return [...out].filter(cc => !BROWSE[cc]);
 }
@@ -4642,7 +4673,10 @@ async function setCountry(cc){
         S.week = null;
     }
     try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
-    S.settings.country = cc; save();
+    S.settings.country = cc;
+    // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
+    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = wantLang();
+    save();
     await setLang(wantLang());
     await ensureTr(cc);
     applyCountry(cc);
@@ -4738,6 +4772,8 @@ new MutationObserver(a11yActs).observe(document.body, {childList:true, subtree:t
 document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
+// 「自動（国に合わせる）」だった人は、いま表示している言語に決める。これからは国を変えても言語は変わらない
+if (S.settings.country && (S.settings.uiLang || 'auto') === 'auto'){ S.settings.uiLang = wantLang(); save(); }
 (async () => {
     const cc = S.settings.country;
     if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ S.settings.country = 'JP'; } }
