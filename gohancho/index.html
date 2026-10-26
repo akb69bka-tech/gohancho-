@@ -503,6 +503,22 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-head{display:flex;gap:12px;align-items:center}
 .cook-head .thumb{width:64px;height:64px;flex:0 0 auto}
 .cook-head h3{margin:0 0 4px;font-size:1.1rem}
+.points{background:var(--accent-soft);border-radius:var(--r);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.pt-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.pt-time{font-size:.8rem;color:var(--muted)}
+.pt-l{margin:0;font-size:.88rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.more-detail{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px;display:flex;flex-direction:column;gap:4px}
+.vid-ings{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.vid-ing{display:flex;align-items:center;gap:10px;padding:8px 12px;min-height:44px;cursor:pointer;border-bottom:1px solid var(--line)}
+.vid-ings li:last-child .vid-ing{border-bottom:0}
+.vid-ing .nm{flex:1;min-width:0;overflow-wrap:anywhere}.vid-ing .q{color:var(--muted);font-size:.88rem;text-align:end}
+.vid-ing input{width:20px;height:20px;flex:0 0 auto;accent-color:var(--accent)}
+.vid-ing input:checked ~ .nm{text-decoration:line-through;opacity:.55}
+.vid-steps{margin:0;padding-inline-start:1.5em;display:flex;flex-direction:column;gap:6px;font-size:.9rem;line-height:1.5}
+.vid-steps .vs-t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vs-time{color:var(--accent);font-size:.8rem}
+.vid-btns{display:flex;flex-direction:column;gap:8px;margin-top:6px}.vid-btns .btn.sm{align-self:center}
+.steps li.resume{background:var(--accent-soft);border-radius:8px}
 .cook-steps li{cursor:pointer;border-radius:8px;transition:opacity .15s}
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
 .cook-steps li.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
@@ -3073,6 +3089,7 @@ function renderSheet(){
     }
     if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'share') body = shareSheetHtml();
+    if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
@@ -4153,10 +4170,6 @@ function viewCook(){
             ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
         <div class="card cook-card" role="tabpanel">
             <div class="cook-head">${thumbHtml(cur)}<div style="min-width:0"><h3>${esc(cur.name)}</h3><div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div></div></div>
-            <div class="row">
-                <a class="btn sm" href="${esc(videoSearchUrl(cur))}" target="_blank" rel="noopener">${esc(t('作り方の動画を探す'))}</a>
-                <a class="btn sm" href="${esc(imageSearchUrl(cur))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
-            </div>
             ${recipeCoreHtml(cur, done)}
             <div class="row">
                 <label class="btn sm primary" for="photo-input-cook">${esc(MINE[cur.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
@@ -4486,6 +4499,7 @@ function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document
 // アメリカの料理・アメリカで使うときは、オーブンの温度に華氏を添える（190°C → 190°C (375°F)）
 function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${Math.round((c * 9 / 5 + 32) / 5) * 5}°F)`) : txt; }
 function recipeCoreHtml(r, done){
+    const r0 = r;
     r = swappedRecipe(r);
     const have = fridgeKeys();
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
@@ -4494,7 +4508,7 @@ function recipeCoreHtml(r, done){
     let scaled = 0;
     const texts = r.steps.map(st => { const x = scaleSteps(withF(seasSwapText(typeof st === 'string' ? st : st.t, r), r), fac, names); scaled += x.n; return x.s; });
     const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
-    return `${swapNoteHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
+    return `${swapNoteHtml(r)}${pointsHtml(r, texts, sv)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
                 <div class="label">${esc(t('作り方'))}</div>
@@ -4503,8 +4517,81 @@ function recipeCoreHtml(r, done){
                 <div class="cook-run"><ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span>${timerStepHtml(texts[k], r.name)}</span></li>`).join('')}</ol>
                 <button type="button" class="btn primary cook-next" data-act="cook-next"${nowK < 0 ? ' hidden' : ''}>${esc(left === 1 ? t('完了') : t('次の手順'))}</button></div>`
                 : `<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${esc(texts[k])}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>`}
-                ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}`;
+                ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
+                <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
+                    <a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>
+                    <a class="btn sm ghost" href="${esc(imageSearchUrl(r0))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
+                </div></div>`;
 }
+// 「ポイント」: レシピにあるデータだけから、短く（コツ or 時間・温度のある最初の手順 / 全体の時間 / 肉・卵の火の通し）
+function pointsHtml(r, texts, sv){
+    const tp = r.tip, tipTxt = typeof tp === 'string' ? tp : tp && (tp.how || tp.why);
+    let first = tipTxt || '';
+    if (!first){ const k = texts.findIndex(s => s.search(TIMER_RE) >= 0 || /\d\s*(?:°|℃|度)/.test(s)); if (k >= 0) first = texts[k]; }
+    const safe = ['豚', '鶏', '牛', 'ひき肉', '羊', '卵'].includes(r.family);
+    if (!first && !safe && !r.min) return '';
+    return `<div class="points"><div class="pt-head"><span class="label">${esc(t('ポイント'))}</span>${r.min ? `<span class="pt-time">${esc(t('{n}分', {n:r.min}))}${GAP()}${esc(t('{n}人分', {n:sv}))}</span>` : ''}</div>
+        ${first ? `<p class="pt-l">${esc(first)}</p>` : ''}${safe ? `<p class="pt-l pt-safe">${esc(t('肉や卵は、中までしっかり火を通しましょう'))}</p>` : ''}</div>`;
+}
+/* ---- 動画の前に、アプリのレシピで流れをつかんでもらう（記録はすべてこの端末の中だけ。送信しない） ---- */
+const VID_AWAY_MS = 90 * 60 * 1000;
+const usageOf = () => S.usage || (S.usage = {});
+function vidDay(){ const u = usageOf(); if (u.vidDay !== TODAY){ u.vidDay = TODAY; u.vidSeen = []; u.vidChk = {}; } return u; }
+function stepTextsOf(r, fac){
+    const names = [...r.items.map(i => i.name), '卵', '卵黄', '卵白', 'にんにく'];
+    return r.steps.map(st => scaleSteps(withF(seasSwapText(typeof st === 'string' ? st : st.t, r), r), fac, names).s);
+}
+function videoSheetHtml(id){
+    const r0 = byId(id); if (!r0) return '';
+    const r = swappedRecipe(r0), sv = Number(S.settings.servings) || 2, fac = servingFactor();
+    const u = usageOf(), chk = (u.vidDay === TODAY && u.vidChk && u.vidChk[id]) || [];
+    const texts = stepTextsOf(r, fac);
+    return `<h3>${esc(t('動画の前に、30秒で流れを確認'))}</h3>
+        <div class="facts"><span class="fact">${esc(t('{n}分', {n:r.min}))}</span><span class="fact">${esc(t('{n}人分', {n:sv}))}</span><span class="fact">${esc(r0.name)}</span></div>
+        <div class="label">${esc(t('材料（{n}人分）', {n:sv}))}</div>
+        <ul class="vid-ings">${r.items.map((i, k) => `<li><label class="vid-ing"><input type="checkbox" data-act="vid-chk" data-id="${esc(id)}" data-k="${k}"${chk.includes(k) ? ' checked' : ''}><span class="nm">${esc(i.name)}${i.opt ? ` <span class="small muted">${esc(t('（なくても可）'))}</span>` : ''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
+        <div class="label">${esc(t('作り方'))}</div>
+        <ol class="vid-steps">${texts.map(x => { const m = x.match(new RegExp(TIMER_RE.source, 'iu')); return `<li><span class="vs-t">${esc(x)}</span>${m ? `<b class="vs-time">${esc(m[0])}</b>` : ''}</li>`; }).join('')}</ol>
+        <div class="vid-btns">
+            <button type="button" class="btn primary wide" data-act="vid-start" data-id="${esc(id)}">${esc(t('このまま作りはじめる'))}</button>
+            <a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="vid-go" data-id="${esc(id)}">${esc(t('動画を開く'))}</a>
+            <button type="button" class="btn sm ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>
+        </div>`;
+}
+function vidAwayStart(id){ usageOf().away = {id, ts: Date.now(), hid: false}; save(); }
+// 作りはじめる: 今日の作り方タブに入れて、いまの手順（はじめは1番）を見せる
+function startCooking(id){
+    const r = byId(id); if (!r) return;
+    let c = S.cook; if (!c || c.d !== TODAY || !c.ids) c = S.cook = {d: TODAY, ids: [], slots: [], done: {}};
+    if (!c.ids.includes(id)){ c.ids.push(id); c.slots = c.slots || []; c.slots[c.ids.length - 1] = slotOf(r); }
+    c.done = c.done || {}; save();
+    closeSheet(); if (modalId) closeModal();
+    session.cookIdx = c.ids.indexOf(id); setTab('cook');
+    setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 80);
+}
+// 動画から戻ったら、続きの手順へ
+function vidWelcome(id){
+    const r = byId(id); if (!r) return;
+    const n = r.steps.length, ci = cookItems().findIndex(x => x.r.id === id);
+    let k;
+    if (ci >= 0){ const d = (S.cook.done || {})[id] || []; k = r.steps.findIndex((st, j) => !d.includes(j)); if (k < 0) k = n - 1; }
+    else { const ls = (usageOf().lastStep || {})[id]; k = ls == null ? 0 : Math.min(ls + 1, n - 1); }
+    if (sheet && sheet.kind === 'video') closeSheet();
+    const go = () => { const li = document.querySelectorAll(modalId === id ? '#modal-root .steps li' : '.cook-steps li')[k]; if (li){ li.classList.add('resume'); li.scrollIntoView({block:'center'}); } };
+    if (modalId === id) go();
+    else if (ci >= 0){ if (modalId) closeModal(); session.cookIdx = ci; if (tab === 'cook') render(); else setTab('cook'); setTimeout(go, 80); }
+    else { openModal(id); setTimeout(go, 80); }
+    toast(t('おかえりなさい。手順{n}から続けましょう', {n: k + 1}));
+}
+document.addEventListener('visibilitychange', () => {
+    const u = S.usage, a = u && u.away; if (!a) return;
+    if (document.hidden){ if (!a.hid){ a.hid = true; save(); } return; }
+    if (!a.hid) return;
+    delete u.away; save();
+    if (Date.now() - a.ts <= VID_AWAY_MS) vidWelcome(a.id);
+});
+// アプリごと閉じられて戻ってきたとき
+setTimeout(() => { const u = S.usage, a = u && u.away; if (a && a.hid && Date.now() - a.ts <= VID_AWAY_MS && S.onboarded){ delete u.away; save(); vidWelcome(a.id); } }, 1500);
 // 作り方タブの「いまの手順」（終わっていない最初の手順）の印と「次の手順」ボタンを、描き直さずに合わせる。いまの手順の li を返す
 function cookNow(){
     const lis = [...document.querySelectorAll('.cook-steps li')], k = lis.findIndex(li => !li.classList.contains('done'));
@@ -4644,10 +4731,6 @@ function renderModal(){
                     <h2>${esc(r.name)}</h2>${sub ? `<div class="name-en" lang="en">${esc(sub)}</div>` : ''}
                     <div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div>
                     <div class="small">${badges(r)}</div>
-                    <div class="row">
-                        <a class="btn sm" href="${esc(videoSearchUrl(r))}" target="_blank" rel="noopener">${esc(t('作り方の動画を探す'))}</a>
-                        <a class="btn sm" href="${esc(imageSearchUrl(r))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
-                    </div>
                     <div class="row">
                         <label class="btn sm primary" for="photo-input">${esc(MINE[r.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
                         <input type="file" id="photo-input" accept="image/*" hidden>
@@ -4846,6 +4929,11 @@ document.addEventListener('click', e => {
         case 'monitor-send': monitorSend(); break;
         case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;
+        case 'video': if (vidDay().vidSeen.includes(id)){ vidAwayStart(id); break; }
+            e.preventDefault(); vidDay().vidSeen.push(id); save(); sheet = {kind:'video', id}; renderSheet(); break;
+        case 'vid-go': vidAwayStart(id); break;
+        case 'vid-start': startCooking(id); break;
+        case 'vid-chk': { const u = vidDay(), a = u.vidChk[id] = u.vidChk[id] || [], k = Number(el.dataset.k), j = a.indexOf(k); if (el.checked && j < 0) a.push(k); else if (!el.checked && j >= 0) a.splice(j, 1); save(); break; }
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
         case 'country': openCountrySheet(); break;
         case 'world-cc': worldCC = el.dataset.cc; browseErr.delete(worldCC); render(); break;
@@ -4946,7 +5034,7 @@ document.addEventListener('click', e => {
             const cur = cookItems()[session.cookIdx || 0]; if (!cur) break;
             const li = act === 'cook-next' ? document.querySelector('.cook-steps li.now') : el; if (!li) break;   // 次の手順: いまの手順を終わりにして、次へ
             const k = Number(li.dataset.k); S.cook.done = S.cook.done || {}; const a = S.cook.done[cur.r.id] = S.cook.done[cur.r.id] || [];
-            const j = a.indexOf(k); if (j >= 0) a.splice(j, 1); else a.push(k); save();
+            const j = a.indexOf(k); if (j >= 0) a.splice(j, 1); else { a.push(k); (usageOf().lastStep = usageOf().lastStep || {})[cur.r.id] = k; } save();
             li.classList.toggle('done', j < 0); li.setAttribute('aria-pressed', String(j < 0));
             if (a.length >= cur.r.steps.length){ render(); toast(t('{name}、できあがり！', {name:cur.r.name})); break; }
             const nx = cookNow();
