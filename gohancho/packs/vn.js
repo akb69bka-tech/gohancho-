@@ -1807,7 +1807,7 @@ GOHAN_PACK({
     'rice': ['rice', 'cooked rice', 'gạo', 'gao', 'cơm', 'com', 'cơm nguội', 'com nguoi'],
     'sausage': ['sausage', 'chinese sausage', 'lạp xưởng', 'lap xuong', 'lạp xường'],
     'tomato': ['tomato', 'tomatoes', 'cà chua', 'ca chua'],
-    'onion': ['onion', 'onions', 'hành tây', 'hanh tay'],
+    'onion': ['onion', 'onions', 'hành tây', 'hanh tay', 'củ hành', 'cu hanh'],
     'scallion': ['scallion', 'scallions', 'spring onion', 'spring onions', 'green onion', 'hành lá', 'hanh la', 'hành', 'hanh'],
     'ginger': ['ginger', 'gừng', 'gung'],
     'chili': ['chili', 'chilli', 'chilies', 'ớt', 'ot', 'ớt hiểm', 'ot hiem'],

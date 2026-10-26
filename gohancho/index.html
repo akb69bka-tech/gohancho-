@@ -307,10 +307,10 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:.45rem .6rem}
 .skill .how b{color:var(--ink)}
 /* 買い足し提案 */
-.hint-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.hint-row{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}   /* 食材の名前が長いときは、説明を下の行に回す */
 .hint-row:first-child{border-top:0}
-.hint-row .k{font-family:var(--font-display);font-weight:700;font-size:1rem;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:.15rem .6rem;white-space:nowrap}
-.hint-row .v{font-size:.8rem;color:var(--muted)}
+.hint-row .k{font-family:var(--font-display);font-weight:700;font-size:1rem;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:.15rem .6rem;max-width:100%;overflow-wrap:anywhere}
+.hint-row .v{font-size:.8rem;color:var(--muted);flex:1 1 9rem;min-width:0}
 .hint-row .v b{color:var(--ink)}
 /* 家族の反応・今月の料理自慢 */
 .react{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
@@ -489,7 +489,9 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 @media (max-width:359px){
     .tray.compact{padding-left:4px;padding-right:4px}
     .tray.compact .tray-row{gap:2px}
-    .tray.compact .spot-label .slot{letter-spacing:.02em;font-size:.56rem}
+    .spot-label .slot{letter-spacing:.05em}
+    .top .date{letter-spacing:.04em;font-size:.74rem}   /* ベトナム語の「Th 2, 26 tháng 10」などが2行にならないように */
+    .tray.compact .spot-label .slot{letter-spacing:0;font-size:.52rem}
     .tray.compact .spot-label .nm{font-size:.74rem}
     nav.tabs{padding-left:2px;padding-right:2px}
     nav.tabs button{min-width:0;font-size:.64rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
@@ -969,7 +971,12 @@ function norm(s){
 const LATIN_RE = /^[a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff'’.\- ]+$/;
 function wnorm(s){ return ' ' + String(s).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').replace(/[^a-zÀ-ɏ\u0300-\u036f\u1e00-\u1eff0-9]+/g, ' ').trim() + ' '; }
 function wordRe(phrase){
-    const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:e?s)?');
+    const ws = wnorm(phrase).trim().split(' ').filter(Boolean).map(w => {
+        // ポーランド語・トルコ語は語尾が変わる（kurczak→kurczaka、yumurta→yumurtayı）ので、語幹に語尾を許す。インドネシア語は -nya
+        if (LANG === 'pl' && w.length >= 4 && /[a-ząćęłńóśźż]$/.test(w)){ const st = w.length >= 5 && /[aeiouyąę]$/.test(w) ? w.slice(0, -1) : w; return st.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + `[a-ząćęłńóśźż]{0,${w.length >= 5 ? 3 : 2}}`; }
+        if (LANG === 'tr' && w.length >= 3){ const k = /k$/.test(w) && w.length >= 4; return (k ? w.slice(0, -1) : w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + (k ? '[kğ]' : '') + `[a-zçğıöşüâî]{0,${w.length >= 5 ? 5 : 2}}`; }
+        return w.replace(/(?:es|s)$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + (LANG === 'id' ? '(?:e?s|nya)?' : '(?:e?s)?');
+    });
     return ws.length ? new RegExp(' ' + ws.join(' ') + ' ') : null;
 }
 const VARIANTS = [], CANON_MEMO = new Map();   // CANON_MEMO: 名前 → canonOf の結果（rebuildVariants で空にする）
@@ -1009,14 +1016,19 @@ const INPUT_CONJ = new Set(['और','तथा','एवं','व','या','و'
 // 数と助数詞だけの語（「3개」「한 근」「各2个」「2個」「3本」…）は食材ではない
 const COUNTER_RE = new RegExp('^(?:[各每约約共]?(?:[\\d０-９.,½¼¾]+|[一二两兩三四五六七八九十百半几幾]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|하나|둘|셋|넷|몇)\\s*(?:[개근모단봉마리장캔팩쪽줄기포병통알컵인분큰술작은술]+|[个個只条條根颗顆块塊包瓶罐把棵朵斤克片袋盒公升勺碗杯个]+|個|本|枚|袋|パック|缶|丁|玉|束|房|切れ|匹|尾|つ|杯|カップ|g|kg|ml|cc|l|グラム|キロ|mg|개|pcs?|x)?|[개근모단봉마리장캔팩쪽병통알컵個本枚袋缶丁匹尾个只条條根颗顆块塊包瓶罐把棵斤克片盒])$', 'i');
 // 食材のあとにくっつく助詞（「3개랑」「감자랑」「ズッキーニと」「ズッキーニや」）を落とす（知らない語を食材として足すときだけ使う）
-const INPUT_NUM2 = '[\\d０-９٠-٩०-९๐-๙.,½¼¾]+|หนึ่ง|เอ็ด|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ครึ่ง|एक|दो|तीन|चार|पाँच|पांच|छह|छः|सात|आठ|नौ|दस|आधा|आधी|डेढ़|واحد|واحدة|اثنين|اتنين|اثنان|ثلاث|ثلاثة|تلات|تلاتة|أربع|أربعة|اربع|اربعة|خمس|خمسة|ست|ستة|سبع|سبعة|ثمان|ثمانية|تمن|تمانية|تسع|تسعة|عشر|عشرة|نص|نصف|ربع|un|una|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|medio|media|unos|unas';
+const INPUT_NUM2 = '[\\d０-９٠-٩०-९๐-๙.,½¼¾]+|หนึ่ง|เอ็ด|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ครึ่ง|एक|दो|तीन|चार|पाँच|पांच|छह|छः|सात|आठ|नौ|दस|आधा|आधी|डेढ़|واحد|واحدة|اثنين|اتنين|اثنان|ثلاث|ثلاثة|تلات|تلاتة|أربع|أربعة|اربع|اربعة|خمس|خمسة|ست|ستة|سبع|سبعة|ثمان|ثمانية|تمن|تمانية|تسع|تسعة|عشر|عشرة|نص|نصف|ربع|un|una|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|medio|media|unos|unas|une|deux|trois|quatre|cinq|sept|huit|neuf|dix|demi|demie|ein|eine|einen|einem|einer|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|halbe|halber|halbes|paar|due|tre|quattro|cinque|sei|sette|otto|nove|dieci|mezzo|mezza|um|uma|dois|duas|três|quatro|cinco|sete|oito|dez|meio|meia|jeden|jedna|jedno|dwa|dwie|dwa|trzy|cztery|pięć|sześć|siedem|osiem|dziewięć|dziesięć|pół|kilka|bir|iki|üç|dört|beş|altı|yedi|sekiz|dokuz|yarım|satu|dua|tiga|empat|lima|enam|tujuh|delapan|sembilan|sepuluh|setengah|beberapa|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười|nửa|vài|isa|dalawa|tatlo|apat|anim|pito|walo|siyam|sampu|kalahati|ilang|isang|dalawang|tatlong|apat na|limang|pitong|walong|one|two|three|four|five|six|seven|eight|nine|ten|half|couple|few|an?';
 const INPUT_UNIT2 = 'ฟอง|ชิ้น|หัว|ก้อน|ขีด|กิโล|กิโลกรัม|กก\\.?|กรัม|ถ้วย|ช้อน|กลีบ|ต้น|ถุง|ขวด|กระป๋อง|ลูก|ผล|ตัว|ใบ|เส้น|แผ่น|ฝัก|ห่อ|แพ็ค|หน่อ|กำ|มัด|ซอง|' +
     'किलो|किग्रा|ग्राम|ग्रा|कप|चम्मच|टुकड़े|टुकड़ा|पैकेट|डिब्बा|कली|कलियाँ|गुच्छा|बोतल|दर्जन|लीटर|' +
     'كيلو|كجم|جرام|غرام|جم|حبة|حبات|حبه|قطعة|قطع|علبة|علب|كوب|أكواب|ملعقة|ملاعق|فص|فصوص|رأس|راس|حزمة|ربطة|كيس|لتر|' +
-    'kilos?|kgs?|gramos?|gr|piezas?|pzas?|latas?|paquetes?|bolsas?|manojos?|rebanadas?|dientes?|tazas?|cucharadas?|cucharaditas?|litros?|botellas?|docenas?';
+    'kilos?|kgs?|gramos?|gr|piezas?|pzas?|latas?|paquetes?|bolsas?|manojos?|rebanadas?|dientes?|tazas?|cucharadas?|cucharaditas?|litros?|botellas?|docenas?|tranch\\p{L}*|gousses?|bo[iî]tes?|paquets?|sachets?|bouquets?|bottes?|pinc[ée]es?|cuill[eè]res?|tasses?|verres?|morceaux?|pots?|litres?|cl|dl|g|kg|ml|l|st[uü]ck|scheibe[n]?|zehen?|dosen?|packung(?:en)?|bund|prise|l[oö]ffel|el|tl|gramm|pfund|becher|kopf|stange[n]?|fett[ae]|spicchi[o]?|scatol[ae]|confezion[ei]|mazz[oi]|pizzic[hi]*|cucchiai[o]?|tazz[ae]|bicchier[ei]|pezz[oi]|etti|etto|chil[oi]|grammi|barattol[oi]|fatias?|dentes?|latas?|pacotes?|ma[cç]os?|pitadas?|colher(?:es)?|x[ií]caras?|copos?|peda[cç]os?|quilos?|gramas?|unidades?|cabe[cç]as?|caixas?|potes?|sztuk[ai]?|plasterk[ai]|plastry|z[aą]bek|z[aą]bki|puszk[ai]|opakowani[ea]|p[eę]czek|szczypt[ay]|[lł]y[zż]k[ai]|szklank[ai]|kawa[lł]ek|kawa[lł]ki|litr[ay]?|dag|dkg|gramów|g[lł][oó]wk[ai]|adet|dilim|di[sş]|kutu|paket|demet|tutam|ka[sş][ıi]k|bardak|par[cç]a|baş|tane|avu[cç]|butir|buah|ekor|siung|lembar|potong|batang|ikat|bungkus|kaleng|sendok|gelas|cangkir|liter|ons|genggam|biji|helai|qu[aả]|tr[aá]i|c[uủ]|t[eé]p|l[aá]t|mi[eế]ng|h[oộ]p|g[oó]i|b[oó]|n[aắ]m|th[iì]a|mu[oỗ]ng|ch[eé]n|b[aá]t|l[ií]t|c[aâ]n|k[yý]|con|c[aá]i|t[oờ]|nh[aá]nh|c[aâ]y|lon|chai|piraso|hiwa|pakete|tali|kurot|kutsara|tasa|baso|gramo|ulo|bungkos|dakot|pcs?|slices?|cloves?|cans?|tins?|bunch(?:es)?|pinch(?:es)?|handfuls?|sticks?|heads?|pounds?|lbs?|ounces?|oz';
 const COUNTER_RE2 = new RegExp('^(?:(?:' + INPUT_NUM2 + ')\\s*(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'i');
+const LATIN_NUMUNIT_RE = new RegExp('^(?:(?:' + INPUT_NUM2 + ')|[\\d.,½¼¾]+(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'iu');   // ラテン文字の語: 数・数の単語・単位だけ（bacon を ba+con と読まない）
 const INPUT_FILL_LATIN = new Set(['tengo','hay','tenemos','queda','quedan','me','nos','un','una','uno','unos','unas','de','del','la','el','los','las','poco','poca','algo','algunos','algunas','mucho','muchos','también','tambien','más','mas','sobra','sobran','en','mi','el','refri','refrigerador','nevera']);
 const INPUT_CONJ_LATIN = /\s+(?:y|e|o|u|con|and|or|with|&|\+)\s+/i;
+// 言語ごとの「持っている」「少し」「の」などと、「と」「または」（ラテン文字の入力で、知っている食材を除いたあまりを食材として足すときに使う）
+'j ai jai il y a ai avons reste restent du de des d l la le les en peu un quelques beaucoup avec aussi plus frigo mon ma mes dans moi encore ich habe hab haben wir noch etwas bisschen viel mit im kühlschrank von vom der die das dem den und oder auch zu zum zur ho abbiamo c è ce po di del della dei delle degli dello il lo gli ed anche frigorifero mi rimasto rimasta avanzato avanzata qualche poco tenho temos tem ainda pouco do da dos das o os as com ou também na geladeira no minha sobrou alguns algumas mam mamy jest są trochę troszkę dużo z ze i oraz lub albo też także w lodówce do na mi zostało jeszcze var vardı evde buzdolabında biraz birkaç ile ve veya ya da ayrıca ben bende elimde kalan punya ada saya aku kami di kulkas sedikit dan atau dengan serta juga sisa masih yang sama có tôi nhà còn ở trong tủ lạnh ít với và hoặc hay cùng cũng thêm may mayroon meron ako sa ref kaunting konting kaunti ng na at saka pati tsaka kasama mga ang ay ko namin natira pa rin din have got ve there is are some of the my fridge left leftover lots little bit i s t pas ni sans non kein keine keinen keiner ohne niente senza sem não bez nie yok değil tanpa tidak bukan không walang hindi no not without ăn allergique allergisch allergico alérgico alergia alergik'.split(' ').forEach(w => INPUT_FILL_LATIN.add(w));
+const INPUT_CONJ_W = new Set('et ou und oder mit e ed o ou com ve veya ile dan atau dengan và hoặc hay với at saka pati tsaka oraz lub albo i z ze and or with y u con avec'.split(' '));   // 食材と食材をつなぐ語
+
 function stripInputParticle(tok){
     let m;
     if (/^و/.test(tok) && /[؀-ۿ]/.test(tok) && (m = tok.match(/^و(.{2,}|[٠-٩\d])$/))) return m[1];   // アラビア語の「と」（و）は次の語にくっつく
@@ -1029,7 +1041,7 @@ function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
     // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
     const exact = seg => { const n = norm(seg); const x = n && VARIANTS.find(x => x.v === n); return x ? x.c : null; };
-    String(text).split(/[、,，。\/\n;；،؛।॥+]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
+    String(text).split(/[、,，。\/\n;；،؛।॥+&]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
         seg = seg.trim(); if (!seg) return;
         const ex = exact(seg); if (ex){ push(PACK_NAMES[ex] || ex); return; }
         if (isLatinText(seg)){
@@ -1037,11 +1049,19 @@ function extractIngredients(text){
             for (const x of VARIANTS){
                 if (x.re && x.re.test(w)){ found.push(x.c); w = w.replace(x.re, ' | '); }
             }
-            if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
-            else seg.split(INPUT_CONJ_LATIN).forEach(part => {   // 知らない食材は「y / o / con / and」で分け、「tengo」「2 kg de」のような言いまわしを落とす
-                const ws = part.trim().split(/\s+/).filter(x => !INPUT_FILL_LATIN.has(x.toLowerCase()) && !COUNTER_RE2.test(x));
-                const nm = ws.join(' ');
-                if (nm && nm.length <= 30) push(nm);
+            found.forEach(c => push(PACK_NAMES[c] || c));
+            // 知らない食材（tofu・ail・aglio・Knoblauch…）は、「y / and / und / et」で分けて、「tengo」「j'ai」「2 kg de」のような言いまわしを落としたあまりを足す
+            const rest = [];
+            w.split(' | ').forEach(piece => {
+                let cur = []; const flush = () => { while (cur.length && INPUT_FILL_LATIN.has(cur[0])) cur.shift(); while (cur.length && INPUT_FILL_LATIN.has(cur[cur.length - 1])) cur.pop(); if (cur.length) rest.push(cur); cur = []; };
+                piece.trim().split(/\s+/).filter(Boolean).forEach(x => { if (INPUT_CONJ_W.has(x)) flush(); else if (!LATIN_NUMUNIT_RE.test(x)) cur.push(x); });
+                flush();
+            });
+            rest.forEach(ws => {
+                let nm = ws.join(' ');
+                try { const m = seg.match(new RegExp(ws.map(x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^\\p{L}\\p{N}]+'), 'iu')); if (m) nm = m[0]; } catch(e){}   // 打った文字のまま（l'ail・crème fraîche）に戻す
+                nm = nm[0].toUpperCase() + nm.slice(1);
+                if (nm.length <= 30 && !out.some(o => norm(o) === norm(nm))) push(nm);
             });
             return;
         }
@@ -1269,6 +1289,10 @@ function pluralCat(loc, n){
     if (!pr) return 'other';
     try{ return pr.select(n); }catch(e){ return 'other'; }
 }
+// イギリスの英語（国が GB のとき）: つづり・言い方を英国式にする。日付・時刻の書き方も en-GB にする
+function isGB(){ try{ return S.settings.country === 'GB'; }catch(e){ return false; } }
+function brit(s){ return typeof s === 'string' ? s.replace(/([Ff])avorite/g, '$1avourite').replace(/([Ff])lavor/g, '$1lavour').replace(/([Cc])olor/g, '$1olour').replace(/([Rr])ecogniz/g, '$1ecognis').replace(/([Ll])icense/g, '$1icence').replace(/([Oo])rganiz/g, '$1rganis').replace(/scallion/g, 'spring onion').replace(/Ground beef/g, 'Beef mince').replace(/\b([Vv])eggies\b/g, '$1eg') : s; }
+const dateLoc = () => LANG === 'en' && isGB() ? 'en-GB' : LANG;
 function t(ja, vars){
     let s = ja;
     if (LANG !== 'ja'){
@@ -1279,15 +1303,18 @@ function t(ja, vars){
             const cat = pluralCat(own ? LANG : 'en', Number(vars && vars.n));
             s = s[cat] != null ? s[cat] : s.other != null ? s.other : ja;
         }
+        if (LANG === 'en' && isGB()) s = brit(s);
     }
     if (!vars) return LANG === 'ko' ? koParticles(s) : s;
     // {n} は値に置きかえる。訳の中の {n:# day:# days} は数で単数・複数を選ぶ（# が数になる）
-    const out = String(s).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*))?\}/g, (m, k, one, other) => {
+    const out = String(s).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*)(?::([^:{}]*))?(?::([^:{}]*))?)?\}/g, (m, k, one, a2, a3, a4) => {
         if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
         const v = String(vars[k]);
         if (one === undefined) return v;
         const cat = pluralCat(LANG, Number(v));
-        return (cat === 'one' ? one : other).replace(/#/g, v);
+        // 2つ: one / other。4つ（ポーランド語など）: one / few / many / other
+        const f = a3 === undefined ? (cat === 'one' ? one : a2) : cat === 'one' ? one : cat === 'few' ? a2 : cat === 'many' ? a3 : (a4 !== undefined ? a4 : a3);
+        return f.replace(/#/g, v);
     });
     return LANG === 'ko' ? koParticles(out) : out;
 }
@@ -1334,11 +1361,11 @@ const SLASH = () => LANG === 'ja' ? ' ／ ' : ' / ';
 function wdName(i, long=false){
     if (LANG === 'ja') return WD[i];
 // 数字は、どの端末でも算用数字（0123）にそろえる（アラビア語・ヒンディー語の数字にしない）
-    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {weekday: long ? 'long' : 'short'}).format(new Date(2026, 0, 4 + i)); }catch(e){ return WD[i]; }
+    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {weekday: long ? 'long' : 'short'}).format(new Date(2026, 0, 4 + i)); }catch(e){ return WD[i]; }
 }
 function hourLabel(h){
     if (LANG === 'ja') return `${h}時`;
-    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {hour:'numeric'}).format(new Date(2026, 0, 1, h)); }catch(e){ return `${h}:00`; }
+    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {hour:'numeric'}).format(new Date(2026, 0, 1, h)); }catch(e){ return `${h}:00`; }
 }
 function availLang(l){
     if (!l) return null;
@@ -1427,8 +1454,8 @@ function jpDate(s, withWeekday=true){
     const d = parseYmd(s);
     if (LANG === 'ja'){ const x = `${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`; return withWeekday ? x : x.replace(/（.*/,''); }
     try{
-        const k = LANG + (withWeekday ? '|w' : '');
-        const f = DATE_FMT[k] || (DATE_FMT[k] = new Intl.DateTimeFormat(LANG + '-u-nu-latn', withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}));
+        const k = dateLoc() + (withWeekday ? '|w' : '');
+        const f = DATE_FMT[k] || (DATE_FMT[k] = new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}));
         return f.format(d); }
     catch(e){ return s; }
 }
@@ -1999,7 +2026,7 @@ function yumCount(n){ return t('{n}人', {n}); }
 function monthLabel(ym){
     const [y, m] = ym.split('-').map(Number);
     if (LANG === 'ja') return `${y}年${m}月`;
-    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {year:'numeric', month:'long'}).format(new Date(y, m-1, 1)); }catch(e){ return ym; }
+    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {year:'numeric', month:'long'}).format(new Date(y, m-1, 1)); }catch(e){ return ym; }
 }
 // 「おいしかった！」のボタン。家族ひとりにつき1回押す。押しすぎたときは「−」で減らす。その日の記録がある料理だけ出す
 function reactRowHtml(id, d){
@@ -4061,27 +4088,40 @@ function shoppingList(){
 // 数え方の単数・複数（買い物メモで足すときに同じ単位とみなし、足したあとの数に合う形で出す）
 const UNIT_PAIRS = [['clove','cloves'],['can','cans'],['tin','tins'],['slice','slices'],['piece','pieces'],['head','heads'],['bunch','bunches'],['stalk','stalks'],['sprig','sprigs'],['rasher','rashers'],['fillet','fillets'],['sheet','sheets'],
     ['tranche','tranches'],['gousse','gousses'],['boîte','boîtes'],['diente','dientes'],['lata','latas'],['rebanada','rebanadas'],['dente','dentes'],['fatia','fatias'],['spicchio','spicchi'],['fetta','fette'],['Zehe','Zehen'],['Dose','Dosen'],['Scheibe','Scheiben'],
-    ['ząbek','ząbki'],['plaster','plastry'],['حبة','حبات'],['فص','فصوص'],['رأس','رؤوس'],
+    ['حبة','حبات'],['فص','فصوص'],['رأس','رؤوس'],
     ['taza','tazas'],['cucharada','cucharadas'],['cucharadita','cucharaditas'],['rama','ramas'],['manojo','manojos'],['trozo','trozos'],['loncha','lonchas'],['pieza','piezas'],
     ['بيضة','بيضات'],['قطعة','قطع'],['ملعقة','ملاعق'],['رغيف','أرغفة'],['علبة','علب'],['حزمة','حزم'],['बड़ा','बड़े'],['छोटा','छोटे']];
-function unitSing(u){ return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[1] === w); return sp + (p ? p[0] : w); }); }
+// フランス語・ドイツ語・イタリア語・ポルトガル語の数え方。ポーランド語は4つの形（1個 / 2〜4個 / 5個以上 / 小数・分数）
+UNIT_PAIRS.push(['cup','cups'],['handful','handfuls'],['leaf','leaves'],['box','boxes'],['cob','cobs'],['ear','ears'],['stick','sticks'],['loaf','loaves'],['jar','jars'],['tube','tubes'],['knob','knobs'],['sachet','sachets'],['bulb','bulbs'],['pinch','pinches'],['litre','litres'],['liter','liters'],
+    ['petite','petites'],['rouleau','rouleaux'],['tête','têtes'],['botte','bottes'],['poignée','poignées'],['branche','branches'],['feuille','feuilles'],['pincée','pincées'],
+    ['Kopf','Köpfe'],['Stange','Stangen'],['Bund','Bünde'],['Prise','Prisen'],['Zweig','Zweige'],['Blatt','Blätter'],
+    ['costa','coste'],['ciuffetto','ciuffetti'],['rametto','rametti'],['mazzetto','mazzetti'],['cucchiaio','cucchiai'],['cucchiaino','cucchiaini'],['cespo','cespi'],['bustina','bustine'],['manciata','manciate'],['foglia','foglie'],['piccola','piccole'],['grossa','grosse'],
+    ['xícara','xícaras'],['punhado','punhados'],['colher','colheres'],['folha','folhas'],['caixinha','caixinhas'],['maço','maços'],['cabeça','cabeças'],['pitada','pitadas'],['vidro','vidros'],['pé','pés'],
+    ['łyżka','łyżki','łyżek','łyżki'],['łyżeczka','łyżeczki','łyżeczek','łyżeczki'],['szklanka','szklanki','szklanek','szklanki'],['pęczek','pęczki','pęczków','pęczka'],['główka','główki','główek','główki'],
+    ['plaster','plastry','plastrów','plastra'],['plasterek','plasterki','plasterków','plasterka'],['kromka','kromki','kromek','kromki'],['kawałek','kawałki','kawałków','kawałka'],['ząbek','ząbki','ząbków','ząbka'],
+    ['szczypta','szczypty','szczypt','szczypty'],['garść','garście','garści','garści'],['puszka','puszki','puszek','puszki'],['gałązka','gałązki','gałązek','gałązki'],['sztuka','sztuki','sztuk','sztuki']);
+function unitSing(u){ return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x.indexOf(w) > 0); return sp + (p ? p[0] : w); }); }
 function unitForm(u, v){
     return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[0] === w); if (!p) return m;
+        if (p.length > 2){ let c = 'other'; try{ c = new Intl.PluralRules('pl').select(v); }catch(e){} return sp + (c === 'one' ? p[0] : c === 'few' ? p[1] : c === 'many' ? p[2] : p[3]); }
         const many = /^[\u0600-\u06ff]/.test(w) ? (v >= 3 && v <= 10) : v > 1;   // アラビア語は3〜10が複数形
         return sp + (many ? p[1] : p[0]); });
 }
 function sumQty(list){
     const groups = new Map(), rest = [];
     list.forEach(q => {
-        const m = String(q).match(/^(\D*?)(?:(\d+)[と ])?(\d+(?:\.\d+)?)(?:\/(\d+))?(\D*)$/);
+        // 「2 cups (480 ml)」のように、うしろのかっこに重さ・かさがあるときは、かっこの中も足す（同じ単位のものだけ）
+        const pm = String(q).match(/^(.*?\S)\s*[（(]\s*(\d+(?:\.\d+)?)\s*(g|kg|ml|l|cl|dl)\s*[)）]\s*$/);
+        const body = pm ? pm[1] : q;
+        const m = String(body).match(/^(\D*?)(?:(\d+)[と ])?(\d+(?:\.\d+)?)(?:\/(\d+))?(\D*)$/);
         if (!m){ rest.push(q); return; }
         const v = (m[2] ? Number(m[2]) : 0) + (m[4] ? Number(m[3]) / Number(m[4]) : Number(m[3]));
         // 単位（前後の言葉）がちがうものは足さない。「400 g」と「400g」は同じ単位とみなす
         // 単数と複数（clove / cloves、حبة / حبات など）は同じ単位として足す
-        const u = unitSing(m[5]), key = m[1].trim() + '|' + u.trim(), g = groups.get(key) || {pre:m[1], unit:u, v:0};
-        g.v += v; groups.set(key, g);
+        const u = unitSing(m[5]), key = m[1].trim() + '|' + u.trim() + '|' + (pm ? pm[3] : ''), g = groups.get(key) || {pre:m[1], unit:u, v:0, pu:pm ? pm[3] : '', pv:0};
+        g.v += v; if (pm) g.pv += Number(pm[2]); groups.set(key, g);
     });
-    const out = [...groups.values()].map(({pre, unit, v}) => { const f = fmtAmount(v, unit.trim()); return pre + (f === '1/8' ? t('少々') : f) + unitForm(unit, v); });
+    const out = [...groups.values()].map(({pre, unit, v, pu, pv}) => { const f = fmtAmount(v, unit.trim()); return pre + (f === '1/8' ? t('少々') : f) + unitForm(unit, v) + (pu ? ' (' + fmtAmount(pv, pu) + ' ' + pu + ')' : ''); });
     return [...out, ...rest];
 }
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
@@ -4141,7 +4181,7 @@ function weekShareText(){
         [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
             const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
             lines.push(t('〈{l}〉', {l})); xs.forEach(e => { const q = e.qty.length ? sumQty(e.qty).join(t('＋')) : '';
-                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : ' ') + q : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない
+                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : /^\d[^()（）+]*[(（][^()（）]*[)）]$/.test(q) ? ' (' + q.replace(/\s*[(（]\s*([^()（）]*?)\s*[)）]/g, ', $1') + ')' : ' ' + q) : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない（「8 (約1200 g)」→「(8, 約1200 g)」）
         });
     }
     const pb = pantryBuySet(), buys = pantryList().filter(e => pb.has(e.key));   // 「家にあるかも」は、「買う」にチェックしたものだけ送る
@@ -5412,10 +5452,10 @@ function hfListen(){
 }
 document.addEventListener('visibilitychange', () => { if (document.hidden && (hf.on || voiceLive)){ voiceStop(); if (tab === 'cook') render(); } });
 /* ---- 作り方タブのタイマー（手順の「8分」などをタップすると数えはじめる。音や振動は出さず、0になったら目で分かるように） ---- */
-const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|至|到|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|小时|小時|钟头|鐘頭|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:hrs?|std|minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
+const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|至|到|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|小时|小時|钟头|鐘頭|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:hrs?|std|h|minutes?|minutos?|minutes?|minuti|minuten?|minuty|minutę|minut|mins?|dakika(?:da)?|dk|menit|phút|hours?|heures?|horas?|ore|ora|oras|minuto|stunden?|godzin[ayę]?|saat|jam|giờ|tiếng|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
 function timerSecs(num, unit){
     const u = unit.toLowerCase(), v = parseFloat(num.replace(',', '.'));
-    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|小时|小時|钟头|鐘頭|hrs?|std|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
+    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|小时|小時|钟头|鐘頭|h$|tiếng|hrs?|std|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
     const sec = Math.round(v * f); return sec > 0 && sec <= 12 * 3600 ? sec : 0;
 }
 function timerStepHtml(text, name){

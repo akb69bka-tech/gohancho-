@@ -2,7 +2,7 @@
 GOHAN_PACK_TR('VN', 'vi', {
   staple: 'Cơm trắng',
   names: {
-    'pork': 'Thịt ba chỉ', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
+    'pork': 'Thịt heo', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
     'shrimp': 'Tôm', 'egg': 'Trứng', 'tofu': 'Đậu phụ', 'rice': 'Cơm', 'sausage': 'Lạp xưởng',
     'tomato': 'Cà chua', 'onion': 'Hành tây', 'scallion': 'Hành lá', 'ginger': 'Gừng', 'chili': 'Ớt',
     'coconut water': 'Nước dừa', 'water spinach': 'Rau muống', 'cabbage': 'Bắp cải', 'carrot': 'Cà rốt',

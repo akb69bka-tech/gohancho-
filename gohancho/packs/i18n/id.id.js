@@ -8,7 +8,7 @@ GOHAN_PACK_TR('ID', 'id', {
     'carrot': 'Wortel', 'cauliflower': 'Kembang kol', 'long beans': 'Kacang panjang', 'bean sprouts': 'Tauge', 'corn': 'Jagung manis',
     'chayote': 'Labu siam', 'peanuts': 'Kacang tanah', 'tamarind': 'Asam jawa', 'melinjo': 'Melinjo', 'coconut': 'Kelapa parut',
     'celery': 'Seledri', 'crackers': 'Kerupuk',
-    'glass noodles': 'Soun', 'eggplant': 'Terong', 'young jackfruit': 'Nangka muda', 'coconut milk': 'Santan', 'oxtail': 'Buntut sapi', 'keluak': 'Kluwek', 'milk': 'Susu cair', 'lamb': 'Daging kambing', 'pineapple': 'Nanas', 'basil': 'Kemangi', 'mince': 'Daging giling', 'tapioca': 'Tepung tapioka', 'jicama': 'Bengkuang', 'mushroom': 'Jamur kuping', 'macaroni': 'Makaroni', 'sausage': 'Sosis', 'kidney beans': 'Kacang merah', 'star fruit': 'Belimbing wuluh', 'luffa': 'Oyong', 'lily buds': 'Sedap malam kering',
+    'glass noodles': 'Soun', 'eggplant': 'Terong', 'young jackfruit': 'Nangka muda', 'coconut milk': 'Santan', 'oxtail': 'Buntut sapi', 'keluak': 'Kluwek', 'milk': 'Susu cair', 'lamb': 'Daging kambing', 'pineapple': 'Nanas', 'basil': 'Kemangi', 'mince': 'Daging giling', 'tapioca': 'Tepung tapioka', 'jicama': 'Bengkuang', 'mushroom': 'Jamur', 'macaroni': 'Makaroni', 'sausage': 'Sosis', 'kidney beans': 'Kacang merah', 'star fruit': 'Belimbing wuluh', 'luffa': 'Oyong', 'lily buds': 'Sedap malam kering',
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
