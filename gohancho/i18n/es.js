@@ -680,4 +680,6 @@ GOHAN_I18N('es', {
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "No hay espacio suficiente en el dispositivo y no se pudo guardar. Borra algunas fotos.",
     "記録を消しました": "Registro eliminado",
     "いまの国": "actual",
+    "App Store の価格を読み込んでいます…": "Cargando el precio de la App Store…",
+    "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "No se pudo cargar el precio. Inténtalo de nuevo con conexión.",
 });

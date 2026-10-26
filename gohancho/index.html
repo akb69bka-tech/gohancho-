@@ -2712,23 +2712,28 @@ function parseIntro(pr){
 async function loadStorePrices(){
     const ready = rcInit(); if (!ready || introLoading) return;
     const rerender = () => { if (sheet && (sheet.kind === 'paywall' || (sheet.kind === 'onboard' && sheet.step === 0))) renderSheet(); };
-    introLoading = true;
+    introLoading = true; storeState = 'loading'; rerender();
     try{
         const P = await ready, offs = await P.getOfferings();
         ((offs && offs.current && offs.current.availablePackages) || []).forEach(pkg => {
             const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price)};
             if (pr && pr.identifier === 'gohancho_plus_monthly'){ const o = parseIntro(pr); if (o) introOffer = o; }
         });
+        storeState = storePrices['gohancho_plus_monthly'] ? 'ok' : 'fail';
         introLoading = false; rerender();
         if (P.checkTrialOrIntroductoryPriceEligibility){
             const ids = PLAN.prices.map(p => p.id);
             const r = await P.checkTrialOrIntroductoryPriceEligibility({productIdentifiers: ids});
             const st = ids.map(id => r && r[id] && r[id].status);   // 2 = 使える, 1 = 使えない, 3 = オファーなし, 0 = 不明
-            if (st.length && st.every(v => v === 1 || v === 3)){ introEligible = false; rerender(); }
+            if (st.length && st.every(v => v === 1 || v === 3)) introEligible = false;
         }
-    }catch(e){}
-    if (introLoading){ introLoading = false; rerender(); }
+        introChecked = true; rerender();
+    }catch(e){ if (storeState !== 'ok') storeState = 'fail'; introChecked = true; }
+    if (introLoading){ introLoading = false; rerender(); } else rerender();
 }
+// App Store の価格を読めたか（'idle' | 'loading' | 'ok' | 'fail'）。読めるまでは購入ボタンを出さない（価格のない「無料」だけの表示にしない: 3.1.2）
+let storeState = 'idle', introChecked = false;
+function storeReady(){ return !purchasesPlugin() || storeState === 'ok'; }
 // これから始めるお試しの終わる日（App Store のお試しの長さから）と、そのあとの月額
 function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = parseYmd(TODAY); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else d.setMonth(d.getMonth() + o.n); return ymd(d); }
 function introDays(){ return daysBetween(TODAY, introEndYmd()); }
@@ -2882,7 +2887,9 @@ function renderSheet(){
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
-        const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && !monitorOn() && !isSubscribed();
+        const priced = storeReady();   // App Store の価格が取れるまでは、お試しの文も購入ボタンも出さない
+        if (native && !priced && storeState === 'idle') loadStorePrices();
+        const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && (!native || introChecked) && priced && !monitorOn() && !isSubscribed();
         // 献立はもうできている: 購入の前に、この人の今日の献立を名前で見せる
         const ready = sheet.reason === 'start' && session.menu ? session.menu.items.map(x => x.r && x.r.name).filter(Boolean) : [];
         body = `
@@ -2895,7 +2902,7 @@ function renderSheet(){
             <ul class="pw-list">${(sheet.reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
                 ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:jpDate(addDays(introEndYmd(), -1))}))}</p>` : ''}
-                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
+                ${!priced ? `<div class="note"><span>${esc(storeState === 'fail' ? t('価格を読み込めませんでした。電波のあるところでもう一度お試しください') : t('App Store の価格を読み込んでいます…'))}</span>${storeState === 'fail' ? `<button class="btn sm" data-act="store-retry">${esc(t('もう一度読みこむ'))}</button>` : ''}</div>` : `<div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`}
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
@@ -4358,6 +4365,7 @@ document.addEventListener('click', e => {
         case 'paywall-hints': openPaywall('hints'); break;
         case 'buy': purchase(id); break;
         case 'restore': restorePurchases(); break;
+        case 'store-retry': storeState = 'idle'; loadStorePrices(); break;
         case 'monitor-send': monitorSend(); break;
         case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;

@@ -680,4 +680,6 @@ GOHAN_I18N('fil', {
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Kulang ang storage ng device kaya hindi na-save. Magbura ng ilang larawan.",
     "記録を消しました": "Nabura ang record",
     "いまの国": "kasalukuyan",
+    "App Store の価格を読み込んでいます…": "Nilo-load ang presyo sa App Store…",
+    "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Hindi na-load ang presyo. Subukan ulit kapag may internet.",
 });

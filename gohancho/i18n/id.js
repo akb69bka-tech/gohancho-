@@ -680,4 +680,6 @@ GOHAN_I18N('id', {
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Penyimpanan perangkat penuh, tidak bisa menyimpan. Coba hapus beberapa foto.",
     "記録を消しました": "Catatan dihapus",
     "いまの国": "saat ini",
+    "App Store の価格を読み込んでいます…": "Memuat harga App Store…",
+    "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Harga tidak bisa dimuat. Coba lagi saat ada internet.",
 });

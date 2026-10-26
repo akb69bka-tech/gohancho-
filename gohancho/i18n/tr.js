@@ -680,4 +680,6 @@ GOHAN_I18N('tr', {
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Cihazda yeterli alan yok, kaydedilemedi. Birkaç fotoğrafı silin.",
     "記録を消しました": "Kayıt silindi",
     "いまの国": "mevcut ülke",
+    "App Store の価格を読み込んでいます…": "App Store fiyatı yükleniyor…",
+    "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Fiyat yüklenemedi. İnternet varken tekrar deneyin.",
 });

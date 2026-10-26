@@ -680,4 +680,6 @@ GOHAN_I18N('vi', {
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Thiết bị hết dung lượng nên không lưu được. Hãy xóa bớt ảnh.",
     "記録を消しました": "Đã xóa bản ghi",
     "いまの国": "hiện tại",
+    "App Store の価格を読み込んでいます…": "Đang tải giá trên App Store…",
+    "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Không tải được giá. Hãy thử lại khi có mạng.",
 });
