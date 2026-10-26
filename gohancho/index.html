@@ -378,6 +378,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .swap:hover{background:rgba(245,238,227,.1)}
 .swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
 .spot .swap-line{color:var(--tray-ink)}
+.spice-tag{white-space:nowrap}.eaters-line{margin:2px 0 0;text-align:center}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
 .tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
 /* ヘッダーの設定ボタン */
@@ -1149,7 +1150,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null};
 let S = load();
 // 保存データ・読み込んだデータの形を直す（足りない項目・型の違い・日付のない記録などで、アプリが起動しなくならないように）
 function normalizeState(d){
@@ -1173,6 +1174,13 @@ function normalizeState(d){
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
     if (!st.settings.avoidX || typeof st.settings.avoidX !== 'object' || Array.isArray(st.settings.avoidX)) delete st.settings.avoidX;
     st.settings.mix = obj(st.settings.mix);
+    // 家族のプロフィール（最大6人）と、今日食べる人（null = 全員）
+    const strs = x => arr(x).filter(v => typeof v === 'string' && v.trim());
+    const seenF = new Set();
+    st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, 6).map(m => {
+        const avoid = [...new Set(strs(m.avoid))]; return {id: m.id, name: typeof m.name === 'string' ? m.name.slice(0, 12) : '', role: m.role === 'child' ? 'child' : 'adult',
+            avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true}; });
+    st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => st.family.some(m => m.id === x)) : null;
     if (!isYmd(st.firstUse)) st.firstUse = '';
     return st;
 }
@@ -1462,6 +1470,7 @@ function scoreRecipe(r, ctx){
     if (ds < avoid*2) s -= 0.35 * (1 - (ds - avoid) / avoid);
     if (ds === Infinity) s += 0.1;
     if (S.favs.includes(r.id)) s += 0.3;
+    if (mildOn() && spiceLevel(r) === 1) s -= 0.4;   // 辛いのが苦手な人がいるときは、辛みの少ない料理を先に
     s += reactBias(r.id);   // 家族の「おいしかった！」が多い料理は少し出やすく
     if (ctx.recent){
         ctx.recent.forEach(x => {
@@ -3335,7 +3344,7 @@ function avoidChipsHtml(list, act, famAct, more){
 }
 // 苦手な食材を変えたあとの一言: いまの国の料理のうち、置き換えて出す品数と、出さない品数
 function avoidSumHtml(list){
-    if (!list.length) return '';
+    if (!list.length || avoidSumHtml.off) return '';
     const keep = S.settings.avoid; let a = 0, b = 0;
     S.settings.avoid = list;
     try { RECIPES.forEach(r => { if (isAvoided(r)) b++; else if (((swappedRecipe(r) || {}).swapped || {swaps: []}).swaps.length) a++; }); }
@@ -3420,15 +3429,54 @@ function rememberAvoidX(word, typed){
     if (!S.settings.avoidX) S.settings.avoidX = {};
     S.settings.avoidX[word] = AVOID_CON[ix][0][0];
 }
-function avoidKeys(){ return new Set((S.settings.avoid || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
+/* ---- 家族のプロフィール ----
+   S.family: [{id, name, role:'child'|'adult', avoid:[食材], allergy:[avoid の中でアレルギーのもの], mild:辛いのが苦手}]。S.eaters: 今日食べる人の id（null なら全員）
+   実際に避ける食材 = 家の苦手な食材 ∪ 今日食べる人の苦手な食材 */
+const FAM_MAX = 6;
+function famOf(el){ const w = el.closest && el.closest('[data-fm]'); return w ? famMembers().find(m => m.id === w.dataset.fm) || null : null; }
+function famMembers(){ return Array.isArray(S.family) ? S.family : []; }
+function eaterMembers(){ const fm = famMembers(); return !fm.length ? [] : Array.isArray(S.eaters) ? fm.filter(m => S.eaters.includes(m.id)) : fm; }
+function effAvoid(){
+    const base = S.settings.avoid || [], ms = eaterMembers(); if (!ms.length) return base;
+    return [...new Set(base.concat(...ms.map(m => m.avoid)))];
+}
+function allergyList(){ const ms = eaterMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
+function mildOn(){ return eaterMembers().some(m => m.mild); }
+function famLabel(m, i){ return (m.name || '').trim() || t('{n}人目', {n: i + 1}); }
+// 食べる人に決まりごとがあるときの一言（お膳の下・家族に送る文）
+function eatersLine(){
+    const ms = eaterMembers(); if (!ms.some(m => m.avoid.length || m.mild)) return '';
+    return t('{names}が食べられるお膳です', {names: joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))))});
+}
+// 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる）、0 = 辛くない
+const SPICE_HOT = /chil(?:i|li|e)|唐辛子|とうがらし|鷹の爪|一味|七味|豆板醤|コチュジャン|ラー油|ガラムマサラ|カイエン|ハラペーニョ|ハリッサ|サンバル|シラチャ|タバスコ|ペペロンチーノ|jalape|cayenne|harissa|sambal|sriracha|gochu|tabasco|curry paste|peri.?peri|pepper flakes|habanero|chipotle|고추|매운|辣|พริก|\bớt\b|cabai/i;
+const SPICE_NAME = /辛(?!子)|麻婆|担々|タンタン|キムチチゲ|スンドゥブ|spicy|\bhot\b|vindaloo|arrabbiata|diavola|buffalo|辣|매운/i;
+function spiceLevel(r){
+    if (!r || !r.items) return 0;
+    if (r._spice !== undefined) return r._spice;
+    const txt = i => (i.key + '|' + (i.en || '') + '|' + (i.name || '') + '|' + (i.label || ''));
+    const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
+    let lv = 0;
+    if (r.items.some(i => !i.opt && SPICE_HOT.test(txt(i))) || SPICE_NAME.test(names)) lv = 2;
+    else {
+        const steps = (r.steps || []).map(x => typeof x === 'string' ? x : (x && x.t) || '').join(' ');
+        if (r.items.some(i => SPICE_HOT.test(txt(i))) || SPICE_HOT.test(String(r.seas || '') + ' ' + steps) || /辛(?!子)|spicy/i.test(steps)) lv = 1;
+    }
+    Object.defineProperty(r, '_spice', {value: lv, enumerable: false, configurable: true});
+    return lv;
+}
+function spiceTagHtml(r){ return mildOn() && spiceLevel(r) >= 1 ? `<span class="mt spice-tag">🌶 ${esc(t('辛みあり'))}</span>` : ''; }
+function avoidKeys(av){ return new Set((av || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
 // 苦手な食材か（1つの材料）。食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば苦手とみなす
-function avoidCtx(){
-    const av = S.settings.avoid || [], ax = S.settings.avoidX || {}, sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG;
-    if (avoidCtx.c && avoidCtx.c.sig === sig) return avoidCtx.c;
+function avoidCtx(){ return avoidCtxFor(effAvoid(), 'c'); }
+function allergyCtx(){ return avoidCtxFor(allergyList(), 'g'); }   // アレルギーの食材だけ（置き換えない）
+function avoidCtxFor(av, slot){
+    const ax = S.settings.avoidX || {}, sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG;
+    const hit = avoidCtxFor[slot]; if (hit && hit.sig === sig) return hit;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
     // 食材の表（AVOID_CON）で見分けられる言葉は、言語・国をまたいで同じ食材として照らす（足したときに覚えた食材を先に使う）
     const cons = [...new Set(av.filter(x => String(x)[0] !== '@' && !avoidFamOf(x)).map(x => { const cid = ax[x]; const ix = cid ? AVOID_CON.findIndex(c => c[0][0] === cid) : -1; return ix >= 0 ? ix : avoidConOf(x); }).filter(ix => ix >= 0))].map(ix => AVOID_CON[ix]);
-    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free, cons};
+    return avoidCtxFor[slot] = {sig, any: av.length > 0, ks: avoidKeys(av), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free, cons};
 }
 function itemAvoided(i, c){
     c = c || avoidCtx(); if (!c.any) return false;
@@ -3448,10 +3496,12 @@ function seasItems(r){
     return out;
 }
 // 調味料の欄の苦手な食材のうち、置き換えて出せるもの（鶏ガラスープの素など。seasFor で替える）
-function seasSwappable(r, i){ return swapOn() && !r.pack && !r.trLang ? SEAS_SWAP.some(([f, re]) => { re.lastIndex = 0; return re.test(i.name); }) : false; }
+function seasSwappable(r, i){ return swapOn() && !r.pack && !r.trLang && !(allergyList().length && itemAvoided(i, allergyCtx())) ? SEAS_SWAP.some(([f, re]) => { re.lastIndex = 0; return re.test(i.name); }) : false; }
 function seasAvoided(r, c){ return seasItems(r).some(i => itemAvoided(i, c) && !seasSwappable(r, i)); }
 function isAvoided(r){
-    if (!r || !r.items || !(S.settings.avoid || []).length) return false;
+    if (!r || !r.items) return false;
+    if (mildOn() && spiceLevel(r) >= 2) return true;   // 辛いのが苦手な人がいるときは、とても辛い料理は出さない
+    if (!effAvoid().length) return false;
     const c = avoidCtx();
     if (seasAvoided(r, c)) return true;   // 調味料に苦手な食材（小麦粉・卵・バターなど）がある料理は出さない
     if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
@@ -3522,9 +3572,10 @@ function swapOn(){ return S.settings.avoidSwap !== false; }
 // 料理の置き換え: {swaps:[{from, to, tip}], omit:[なくても作れる苦手な材料]}。置き換えられない材料があれば null
 function recipeSwaps(r){
     if (!swapOn() || !r || !r.items) return null;
-    const c = avoidCtx(), swaps = [], omit = [];
+    const c = avoidCtx(), swaps = [], omit = [], g = allergyList().length ? allergyCtx() : null;
     for (const i of r.items){
         if (!itemAvoided(i, c)) continue;
+        if (g && itemAvoided(i, g)) return null;   // アレルギーの食材は、置き換えたり抜いたりせず、その料理を出さない
         if (i.opt){ omit.push(i); continue; }
         const w = swapFor(i);
         if (!w || r.items.some(x => x !== i && x.key === w.i.key)) return null;   // 代わりがない・同じ食材がもう入っている
@@ -3537,7 +3588,7 @@ function recipeSwaps(r){
 }
 // 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
 function swappedRecipe(r){
-    if (!r || !r.items || !(S.settings.avoid || []).length || r.swapped) return r;
+    if (!r || !r.items || !effAvoid().length || r.swapped) return r;
     if (!RECIPES.includes(r)) return r;
     const w = recipeSwaps(r); if (!w || (!w.swaps.length && !w.omit.length)) return r;
     const by = new Map(w.swaps.map(x => [x.from, x])), seen = new Set();
@@ -3610,6 +3661,33 @@ function swapNoteHtml(r){
    設定画面
    ========================================================= */
 let prevTab = 'today';
+// 家族のプロフィール（設定）: 1人ずつ、名前（絵文字）・大人/子ども・食べられない食材・アレルギー・辛いのが苦手
+function familySettingsHtml(){
+    const fm = famMembers();
+    const one = (m, i) => {
+        const open = session.famOpen === m.id;
+        avoidSumHtml.off = true;
+        let chips; try { chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
+        return `<details class="box fam-member" data-fm="${esc(m.id)}" ${open ? 'open' : ''}><summary>${esc(famLabel(m, i))} <span class="small muted">${esc(m.role === 'child' ? t('子ども') : t('大人'))}${m.avoid.length ? ' · ' + esc(joinNames([...new Set(m.avoid.map(avoidName))])) : ''}${m.allergy.length ? ' ⚠' : ''}${m.mild ? ' 🌶' : ''}</span></summary>
+            <div class="field"><input type="text" class="fam-name" data-act="fam-name" value="${esc(m.name)}" maxlength="12" placeholder="${esc(t('名前か絵文字（例: 長女、👧）'))}" aria-label="${esc(t('名前か絵文字（例: 長女、👧）'))}" autocomplete="off">
+                <div class="chips" role="group">${[['adult', t('大人')], ['child', t('子ども')]].map(([k, l]) => `<button class="chip" data-act="fam-role" data-v="${k}" aria-pressed="${m.role === k}">${esc(l)}</button>`).join('')}</div></div>
+            <div class="field"><label>${esc(t('食べられない食材'))}</label>${chips}
+                <form class="inputbar" data-form="fam-add-avoid"><input type="text" class="fam-avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form></div>
+            ${m.avoid.length ? `<div class="field"><label>${esc(t('アレルギーの食材（⚠ をつけると、置き換えずに、その食材を使う料理を出しません）'))}</label>
+                <div class="chips">${m.avoid.map(x => `<button class="chip ${m.allergy.includes(x) ? 'allergy' : ''}" data-act="fam-allergy" data-v="${esc(x)}" aria-pressed="${m.allergy.includes(x)}" aria-label="${esc(t('{name}をアレルギーにする', {name: avoidName(x)}))}">⚠ ${esc(avoidName(x))}</button>`).join('')}</div></div>` : ''}
+            <label class="check"><input type="checkbox" data-act="fam-mild" ${m.mild ? 'checked' : ''}><span>${esc(t('辛いのが苦手'))} 🌶</span></label>
+            <div class="row"><button class="btn sm ghost" data-act="fam-del">${esc(t('この人を削除'))}</button></div>
+        </details>`;
+    };
+    return `<div class="set-group" id="family-profile">
+        <div class="set-title">${esc(t('家族のプロフィール'))}</div>
+        <span class="small muted">${esc(t('家族ごとに食べられないものを登録しておくと、「今日食べる人」を選ぶだけで、みんなが食べられる献立になります。'))}</span>
+        ${fm.map(one).join('')}
+        ${fm.length < FAM_MAX ? `<button class="btn" data-act="fam-add">＋ ${esc(t('家族を追加'))}</button>` : ''}
+        <span class="small muted">${esc(t('辛いのが苦手な人がいるときは、とても辛い料理は出さず、少し辛みのある料理は後回しにします。'))}</span>
+        <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span>
+    </div>`;
+}
 function viewSettings(){
     const sv = Number(S.settings.servings) || 2;
     const cur = countryOf(currentCountry());
@@ -3646,6 +3724,7 @@ function viewSettings(){
                 <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。') : t('苦手な食材を使う料理は、すべて出しません。'))}</span>
                 <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span></div>
         </div>
+        ${familySettingsHtml()}
         <div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
@@ -3875,6 +3954,7 @@ function weekExtraHtml(x){
 function menuShareText(m = session.menu, d = TODAY){
     if (!m || !m.items.length) return '';
     const lines = [t('【{date}の献立】', {date:jpDate(d)})];
+    const el = eatersLine(); if (el) lines.push(el);
     m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r)})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
@@ -4264,12 +4344,12 @@ function viewToday(){
         const kind = it.slot === '主菜' ? vesselKind(r) : it.slot === '副菜' ? 'kobachi' : 'wan';
         const label = slotLabel(it.slot);
         const last = r ? lastLabel(r.id) : '';
-        const byAvoid = !r && S.settings.avoid.length && RECIPES.some(x => slotOf(x) === it.slot && isAvoided(x));
+        const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoided(x));
         const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : byAvoid ? t('苦手な食材を使わない料理がありません') : t('合う料理がありません');
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${spiceTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
                     : `<span class="mt">${esc(empty)}</span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>` : ''}
@@ -4321,6 +4401,7 @@ function viewToday(){
         <details class="card cond" ${S.condOpen ? 'open' : ''}><summary class="cond-sum"><span>${esc(t('条件を変える'))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n}), ...(mixCountries().length ? [t('国の組み合わせ')] : []), ...(session.useFridge ? [t('冷蔵庫の材料を優先')] : [])].join(t('・')))}</span></summary>
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分'))}">${moodChips}</div></div>
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
+            ${famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().map((m, i) => `<button class="chip" data-act="eater" data-v="${esc(m.id)}" aria-pressed="${eaterMembers().includes(m)}">${esc(famLabel(m, i))}</button>`).join('')}</div></div>` : ''}
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </details>
@@ -4331,6 +4412,7 @@ function viewToday(){
             ${sides.length ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
             <div class="tray-row front">${riceSpot}${soups.map(x => spot(x.it, x.i, '40%')).join('')}${stapleAdd}</div>
         </div>`}
+        ${eatersLine() ? `<p class="small muted eaters-line" role="status">${esc(eatersLine())}</p>` : ''}
         <div class="actions">
             ${S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join()
                 ? `<button class="btn primary" data-act="goto-cook">${esc(t('作り方を見る'))}</button>`
@@ -4384,7 +4466,7 @@ function viewToday(){
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
-        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${S.settings.avoid.length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(S.settings.avoid.map(avoidName))])) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
+        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
     </section>`;
 }
 
@@ -5145,6 +5227,45 @@ document.addEventListener('click', e => {
             if (i >= 0) a.splice(i, 1); else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
+        case 'eater': {
+            const id = el.dataset.v, cur = eaterMembers().map(m => m.id), on = cur.includes(id);
+            S.eaters = on ? cur.filter(x => x !== id) : cur.concat(id);
+            save(); reconcileMenu(); refreshWeek(); render(); break;   // 影響する枠だけ選び直す
+        }
+        case 'fam-add': {
+            if (famMembers().length >= FAM_MAX){ toast(t('家族は{n}人まで登録できます', {n: FAM_MAX})); break; }
+            const m = {id: 'f' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), name: '', role: 'adult', avoid: [], allergy: [], mild: false};
+            if (!Array.isArray(S.family)) S.family = [];
+            const was = eaterMembers().map(x => x.id), all = !Array.isArray(S.eaters);
+            S.family.push(m); if (!all) S.eaters = was.concat(m.id);
+            session.famOpen = m.id; save(); render(); break;
+        }
+        case 'fam-del': {
+            const m = famOf(el); if (!m) break;
+            S.family = S.family.filter(x => x !== m); if (Array.isArray(S.eaters)) S.eaters = S.eaters.filter(x => x !== m.id);
+            save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
+        case 'fam-role': { const m = famOf(el); if (m){ m.role = el.dataset.v === 'child' ? 'child' : 'adult'; session.famOpen = m.id; save(); render(); } break; }
+        case 'fam-mild': { const m = famOf(el); if (m){ m.mild = el.checked; session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); } break; }
+        case 'fam-allergy': {
+            const m = famOf(el); if (!m) break; const v = el.dataset.v, i = m.allergy.indexOf(v);
+            if (i >= 0) m.allergy.splice(i, 1); else if (m.avoid.includes(v)) m.allergy.push(v);
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
+        case 'fam-avoid': {
+            const m = famOf(el); if (!m) break;
+            const v = el.dataset.v, k = keyOf(v), a = m.avoid, i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
+            if (i >= 0){ m.allergy = m.allergy.filter(x => x !== a[i]); a.splice(i, 1); } else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
+        case 'fam-avoid-fam': {
+            const m = famOf(el); if (!m) break;
+            const f = el.dataset.v, a = m.avoid;
+            if (a.some(x => avoidFamOf(x) === f)) m.avoid = a.filter(x => avoidFamOf(x) !== f);
+            else m.avoid = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f);
+            m.allergy = m.allergy.filter(x => m.avoid.includes(x));
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
@@ -5509,6 +5630,7 @@ document.addEventListener('change', e => {
         S.settings.mix = Object.assign({}, S.settings.mix, {[el.dataset.slot]: el.value}); save(); session.mixOpen = true;
         reconcileMenu(); render(); return;   // 選んだ枠だけ選び直す
     }
+    if (el.dataset && el.dataset.act === 'fam-name'){ const m = famOf(el); if (m){ m.name = el.value.trim().slice(0, 12); session.famOpen = m.id; save(); render(); } return; }
     if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
 });
 document.addEventListener('submit', e => {
@@ -5521,6 +5643,17 @@ document.addEventListener('submit', e => {
         const fresh = found.filter(x => !S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
         fresh.forEach(x => { S.settings.avoid.push(x); rememberAvoidX(x, inp.value); });
         save(); reconcileMenu(); refreshWeek();
+        if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
+        else if (found.length) toast(t('もう苦手な食材に入っています'));
+        else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
+        render();
+    }
+    if (f === 'fam-add-avoid'){
+        const m = famOf(e.target); if (!m) return;
+        const inp = e.target.querySelector('input'); const found = extractIngredients(inp.value);
+        const fresh = found.filter(x => !m.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
+        fresh.forEach(x => { m.avoid.push(x); rememberAvoidX(x, inp.value); });
+        session.famOpen = m.id; save(); reconcileMenu(); refreshWeek();
         if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
         else if (found.length) toast(t('もう苦手な食材に入っています'));
         else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
@@ -5815,11 +5948,11 @@ async function loadRefs(){
     render(); if (modalId) renderModal();
 }
 // 苦手な食材を使う料理を隠すか（苦手な食材があるときだけ。はじめは隠す）
-function worldHide(){ return (S.settings.avoid || []).length > 0 && S.settings.worldHideAvoid !== false; }
+function worldHide(){ return (effAvoid().length > 0 || mildOn()) && S.settings.worldHideAvoid !== false; }
 // 国ごとの料理を種類で分け、苦手な食材を使う料理を見分けておく（国・言語・苦手な食材が変わったときだけ作りなおす）
 let worldMemo = null;
 function worldLists(list){
-    const sig = avoidCtx().sig + '|' + swapOn();
+    const sig = avoidCtx().sig + '|' + swapOn() + '|' + mildOn();
     if (worldMemo && worldMemo.list === list && worldMemo.sig === sig) return worldMemo;
     const by = code => ({code, all: list.filter(r => code.includes(r.type))});
     return worldMemo = {list, sig, bad: new Set(list.filter(isAvoided)), groups: [by(['主菜', 'ごはん', '麺']), by(['副菜']), by(['汁物'])]};
@@ -5879,7 +6012,7 @@ function viewWorld(){
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span>${countryLabel(o) !== o.nameLocal ? ` <small class="muted">${esc(countryLabel(o))}</small>` : ''}</button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
-        ${list && (S.settings.avoid || []).length ? `<div><label class="check"><input type="checkbox" data-act="world-hide-avoid" ${hide ? 'checked' : ''}><span>${esc(t('苦手な食材を使う料理を隠す'))}</span></label>${hide && hidden ? `<div class="small muted">${esc(t('{n}品を隠しています', {n: hidden}))}</div>` : ''}</div>` : ''}
+        ${list && (effAvoid().length || mildOn()) ? `<div><label class="check"><input type="checkbox" data-act="world-hide-avoid" ${hide ? 'checked' : ''}><span>${esc(t('苦手な食材を使う料理を隠す'))}</span></label>${hide && hidden ? `<div class="small muted">${esc(t('{n}品を隠しています', {n: hidden}))}</div>` : ''}</div>` : ''}
         ${list ? body || `<div class="list"><div class="empty">${esc(t('苦手な食材を使わない料理がありません'))}</div></div>`
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
             : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
