@@ -1428,6 +1428,32 @@ function mixHtml(){
         ${mixCountries().some(cc => browseErr.has(cc)) ? `<p class="small warn">${esc(t('この国のデータを読みこめませんでした'))}</p>` : ''}
     </details>`;
 }
+/* ---- 設定を変えたとき、献立を丸ごと作り直さない ----
+   苦手な食材・置き換え・国の組み合わせ・設定のやり直しなどを変えても、条件に合わなくなった料理の枠だけを選び直す。
+   ほかの料理・ご飯の欄は動かさない（品数が変わったときだけ作り直す） */
+function slotStillOk(it){
+    const r = it.r; if (!r) return false;
+    if (S.hidden.includes(r.id) || isAvoided(r)) return false;
+    if (r.isTwist || isCustomId(r.id)) return true;
+    const want = mixCc(it.slot) || currentCountry(), have = r.pack || 'JP';
+    return have === want;
+}
+function reconcileMenu(){
+    const m = session.menu; if (!m) return false;
+    if (m.n !== menuCount()){ newMenu(); return true; }
+    let changed = false;
+    m.items.forEach((it, i) => {
+        if (slotStillOk(it)) return;
+        const others = m.items.filter((_, k) => k !== i);
+        let nr = null;
+        if (it.slot === '主菜' && i === 0){
+            const keep = others.filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
+            nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
+        } else nr = suggestOrAny(it.slot, others, m.items[0].r);
+        if (nr && nr !== it.r){ it.r = nr; changed = true; }
+    });
+    return changed;
+}
 function newMenu(){
     const n = menuCount();
     const items = [];
@@ -4332,7 +4358,7 @@ document.addEventListener('click', e => {
         case 'open': openModal(id); break;
         case 'open-hist': openHist(id); break;
         case 'close': case 'modal-bg': closeModal(); break;
-        case 'mix-reset': S.settings.mix = {}; save(); session.menu = null; session.rejected.clear(); render(); break;
+        case 'mix-reset': S.settings.mix = {}; save(); reconcileMenu(); render(); break;
         case 'mood': if (session.mood === el.dataset.k) break; session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
         case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;
         case 'reroll': {
@@ -4376,15 +4402,15 @@ document.addEventListener('click', e => {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
             const i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
             if (i >= 0) a.splice(i, 1); else a.push(canonOf(v) || v);
-            save(); session.menu = null; refreshWeek(); render(); break;
+            save(); reconcileMenu(); refreshWeek(); render(); break;
         }
-        case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); session.menu = null; refreshWeek(); render(); break; }
+        case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
             const f = el.dataset.v, a = S.settings.avoid;
             if (a.some(x => avoidFamOf(x) === f)) S.settings.avoid = a.filter(x => avoidFamOf(x) !== f);
             else S.settings.avoid = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f);   // なかまに入る食材（えびなど）は、なかまにまとめる
-            save(); session.menu = null; refreshWeek(); render(); break;
+            save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
@@ -4432,7 +4458,7 @@ document.addEventListener('click', e => {
             const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
             S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
             S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
-            S.onboarded = true; save(); closeSheet(); session.menu = null; refreshWeek(); setTab('today');
+            S.onboarded = true; save(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
             if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
         case 'decide': {
@@ -4465,8 +4491,7 @@ document.addEventListener('click', e => {
             markSeen([tw]); toast(t('主菜をひとひねり案にしました')); render(); break;
         }
         case 'make-week': {
-            makeWeek();
-            const p = weekToday(); if (p && session.menu && !(S.cook && S.cook.d === TODAY) && session.menu.items[0] && session.menu.items[0].r !== p && !isAvoided(p)) setMenuMain(p);   // 今日の献立もプランの主菜に
+            makeWeek();   // 今日の献立は変えない（プランの主菜は「献立にする」で選べる）
             render(); break;
         }
         case 'week-reroll': {
@@ -4549,7 +4574,7 @@ document.addEventListener('click', e => {
             if (!S.hidden.includes(id)) S.hidden.push(id); save();
             closeModal();
             { const m = session.menu, i = m ? m.items.findIndex(x => x.r && x.r.id === id) : -1;   // 外した料理の枠だけ選び直す
-              if (i === 0) setMenuMain(suggestMain());
+              if (i === 0){ const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot})); const nr = suggestMain(keep, isBowlMain(m.items[0].r)); if (nr) m.items[0].r = nr; }
               else if (i > 0) m.items[i].r = suggestOrAny(m.items[i].slot, m.items.filter((_, k) => k !== i), m.items[0].r); }
             refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;
@@ -4724,9 +4749,9 @@ document.addEventListener('change', e => {
     if (el.id === 'tw-base'){ twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }
     if (el.dataset && el.dataset.act === 'mix'){
         S.settings.mix = Object.assign({}, S.settings.mix, {[el.dataset.slot]: el.value}); save(); session.mixOpen = true;
-        session.menu = null; session.rejected.clear(); render(); return;
+        reconcileMenu(); render(); return;   // 選んだ枠だけ選び直す
     }
-    if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); session.menu = null; toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
+    if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
 });
 document.addEventListener('submit', e => {
     e.preventDefault();
@@ -4737,7 +4762,7 @@ document.addEventListener('submit', e => {
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
         const fresh = found.filter(x => !S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
         fresh.forEach(x => S.settings.avoid.push(x));
-        save(); session.menu = null; refreshWeek();
+        save(); reconcileMenu(); refreshWeek();
         if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
         else if (found.length) toast(t('もう苦手な食材に入っています'));
         else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
@@ -4980,9 +5005,15 @@ function updateTabs(){
 async function refreshRecipes(){
     const cc = currentCountry();
     await ensureTr(cc);
-    const m = session.menu, ids = m ? m.items.map(x => ({slot: x.slot, id: x.r && x.r.id})) : null;
+    const m = session.menu, ids = m ? m.items.map(x => ({slot: x.slot, id: x.r && x.r.id})) : null, mood = session.mood, twistWas = session.twist;
     applyCountry(cc);
-    if (m && ids) session.menu = {n: m.n, items: ids.map(x => ({slot: x.slot, r: x.id ? RECIPES.find(r => r.id === x.id) || null : null}))};
+    session.mood = mood;   // 言語を変えても、気分は「すべて」に戻さない
+    if (m && ids){
+        // ほかの国の料理・ひとひねりの料理も、新しい言語で探し直す（見つからないからといって枠を空にしない）
+        const others = [...new Set(ids.map(x => x.id).filter(id => id && !RECIPES.some(r => r.id === id) && !String(id).startsWith('a~')).map(histCountry))].filter(c => c !== cc);
+        await Promise.all(others.map(c => BROWSE[c] ? null : loadBrowse(c)));
+        session.menu = {n: m.n, items: ids.map(x => ({slot: x.slot, r: x.id ? (RECIPES.find(r => r.id === x.id) || byId(x.id)) : null}))};
+    }
 }
 
 /* ---- 世界のレシピ（自分の国の献立はそのままで、ほかの国の家庭料理を見る） ---- */
@@ -5054,7 +5085,9 @@ function viewWorld(){
     </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
+function PACK_LOADED_OK(cc){ return cc === 'JP' ? currentCountry() === 'JP' : !!PACKS[cc] && currentCountry() === cc && !packFail; }
 async function setCountry(cc){
+    if (S.settings.country && S.settings.country === cc && PACK_LOADED_OK(cc)) return true;   // 同じ国をもう一度選んでも何も変えない
     const first = !S.settings.country;
     const fresh = !(S.countryData && S.countryData[cc]);   // この国をはじめて選ぶ
     const old = currentCountry();
