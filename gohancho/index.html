@@ -110,6 +110,7 @@ a{color:var(--accent)}
 
 /* チップ */
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips:not(.scroll) .chip{white-space:normal;flex-shrink:1;max-width:100%;text-align:start}   /* 長い言葉のチップ（苦手な食材のなかまなど）は折り返して、画面からはみ出さない */
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:44px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -1324,10 +1325,13 @@ function pick(cands, ctx){
     scored.sort((a,b) => b.s - a.s);
     return scored[0].r;
 }
-function suggestMain(){
+// keep: そのまま残すほかの主菜（6品のときの2品目）。同じ料理・同じ肉や魚にならない主菜から選ぶ
+function suggestMain(keep = []){
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null};
+    const clash = r => keep.some(k => k && (k.id === r.id || (k.family === r.family && r.family !== '野菜')));
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
-    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));
+    if (keep.length){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }      // その気分の料理がない国でも空にしない
     const r = pick(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
@@ -1596,8 +1600,10 @@ function awardName(a){ const r = byId(a.id); return r ? r.name : a.name; }
 function settleAwards(){
     const cur = TODAY.slice(0,7); let ch = false;
     if (!S.awards || typeof S.awards !== 'object') S.awards = {};
-    new Set(S.history.filter(h => yumOf(h) && String(h.d).slice(0,7) < cur).map(h => h.d.slice(0,7))).forEach(ym => {
-        const w = monthAward(ym), o = S.awards[ym]; if (!w) return;
+    // 「おいしかった！」がある月と、もう表彰がある月（取り消して0人になった月は表彰を消す）
+    new Set([...S.history.filter(h => yumOf(h)).map(h => String(h.d).slice(0,7)), ...Object.keys(S.awards)].filter(ym => ym < cur)).forEach(ym => {
+        const w = monthAward(ym), o = S.awards[ym];
+        if (!w){ if (o){ delete S.awards[ym]; ch = true; } return; }
         if (!o || o.id !== w.id || o.pts !== w.pts){ S.awards[ym] = {id:w.id, name:awardName(w), pts:w.pts}; ch = true; }
     });
     return ch;
@@ -3094,7 +3100,7 @@ function viewSettings(){
                 <div class="chips">${(o => stapleOptions().map(x => `<button class="chip" data-act="staple-set" data-v="${esc(x.k)}" aria-pressed="${x.k === o.k}">${esc(stapleName(x))}</button>`).join(''))(currentStapleOpt())}</div>
                 <span class="small muted">${esc(t('献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。'))}</span></div>
             <div class="field"><label>${esc(t('ふだんの品数'))}</label>
-                <div class="chips">${countChips(S.settings.dishCount, 'count')}</div></div>
+                <div class="chips">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
             <div class="field"><label>${esc(t('苦手な食材（その食材を使う料理は献立に出しません）'))}</label>
@@ -3242,6 +3248,16 @@ function shoppingList(){
     return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, LANG));
 }
 // 同じ単位の分量は足し合わせる（例: 1/3本＋1/3本 → 2/3本、150g＋200g → 350g）
+// 数え方の単数・複数（買い物メモで足すときに同じ単位とみなし、足したあとの数に合う形で出す）
+const UNIT_PAIRS = [['clove','cloves'],['can','cans'],['tin','tins'],['slice','slices'],['piece','pieces'],['head','heads'],['bunch','bunches'],['stalk','stalks'],['sprig','sprigs'],['rasher','rashers'],['fillet','fillets'],['sheet','sheets'],
+    ['tranche','tranches'],['gousse','gousses'],['boîte','boîtes'],['diente','dientes'],['lata','latas'],['rebanada','rebanadas'],['dente','dentes'],['fatia','fatias'],['spicchio','spicchi'],['fetta','fette'],['Zehe','Zehen'],['Dose','Dosen'],['Scheibe','Scheiben'],
+    ['ząbek','ząbki'],['plaster','plastry'],['حبة','حبات'],['فص','فصوص'],['رأس','رؤوس']];
+function unitSing(u){ return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[1] === w); return sp + (p ? p[0] : w); }); }
+function unitForm(u, v){
+    return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[0] === w); if (!p) return m;
+        const many = /^[\u0600-\u06ff]/.test(w) ? (v >= 3 && v <= 10) : v > 1;   // アラビア語は3〜10が複数形
+        return sp + (many ? p[1] : p[0]); });
+}
 function sumQty(list){
     const groups = new Map(), rest = [];
     list.forEach(q => {
@@ -3249,10 +3265,11 @@ function sumQty(list){
         if (!m){ rest.push(q); return; }
         const v = (m[2] ? Number(m[2]) : 0) + (m[4] ? Number(m[3]) / Number(m[4]) : Number(m[3]));
         // 単位（前後の言葉）がちがうものは足さない。「400 g」と「400g」は同じ単位とみなす
-        const key = m[1].trim() + '|' + m[5].trim(), g = groups.get(key) || {pre:m[1], unit:m[5], v:0};
+        // 単数と複数（clove / cloves、حبة / حبات など）は同じ単位として足す
+        const u = unitSing(m[5]), key = m[1].trim() + '|' + u.trim(), g = groups.get(key) || {pre:m[1], unit:u, v:0};
         g.v += v; groups.set(key, g);
     });
-    const out = [...groups.values()].map(({pre, unit, v}) => { const f = fmtAmount(v, unit.trim()); return pre + (f === '1/8' ? t('少々') : f) + unit; });
+    const out = [...groups.values()].map(({pre, unit, v}) => { const f = fmtAmount(v, unit.trim()); return pre + (f === '1/8' ? t('少々') : f) + unitForm(unit, v); });
     return [...out, ...rest];
 }
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
@@ -3381,6 +3398,9 @@ function restoreDraft(){
     if (draftTried) return false; draftTried = true;   // アプリを開いたときだけ。設定を変えて作り直すときは新しく作る
     const c = S.draft; if (!c || c.d !== TODAY || c.cc !== currentCountry()) return false;
     const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
+    // おまかせの品数は気分と「まるごと入れ替え」の回数で決まるので、先に戻してから品数を照らし合わせる
+    const prevMood = session.mood, prevSalt = session.countSalt; session.mood = c.mood || 'all'; session.countSalt = c.salt || 0;
+    if (n !== menuCount() || !COMPOSE[n]){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
     if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
     session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
     session.twist = PACK ? null : suggestTwist();
@@ -3388,17 +3408,17 @@ function restoreDraft(){
 }
 function keepDraft(){
     const m = session.menu; if (!m) return;
-    const d = {d: TODAY, cc: currentCountry(), n: m.n, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge};
+    const d = {d: TODAY, cc: currentCountry(), n: m.n, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge, salt: session.countSalt || 0};
     if (JSON.stringify(d) !== JSON.stringify(S.draft)){ S.draft = d; save(); }
 }
 function viewToday(){
     if (mixWaiting()) loadMix();
     if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
-    if (!session.menu && !restoreDecided() && !restoreDraft()) newMenu();
+    if (!session.menu && !restoreDraft() && !restoreDecided()) newMenu();   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
     const m = session.menu;
     const main = m.items[0] && m.items[0].r;
-    const planned = weekToday();
+    const planned = (p => p && !(main && main.id === p.id) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない
     const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChips = MOODS.map(x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood===x.k}">${esc(x.label)}</button>`).join('');
     const spot = (it, idx, w) => {
@@ -3462,7 +3482,7 @@ function viewToday(){
         <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc(t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}))}</span></div>
         <div class="card cond">
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分'))}">${moodChips}</div></div>
-            <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount, 'count')}</div></div>
+            <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </div>
@@ -3549,6 +3569,7 @@ function viewCook(){
     return `<section class="sec">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
+        ${isToday ? `<div class="row"><button class="btn sm ghost" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>` : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
         <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
             ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
@@ -4066,12 +4087,12 @@ document.addEventListener('click', e => {
         case 'open-hist': openHist(id); break;
         case 'close': case 'modal-bg': closeModal(); break;
         case 'mix-reset': S.settings.mix = {}; save(); session.menu = null; session.rejected.clear(); render(); break;
-        case 'mood': session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
+        case 'mood': if (session.mood === el.dataset.k) break; session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
         case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;
         case 'reroll': {
             const i = Number(el.dataset.i), m = session.menu, it = m.items[i];
             if (it.r) session.rejected.add(it.r.id);
-            if (i === 0) setMenuMain(suggestMain());
+            if (i === 0) setMenuMain(suggestMain(m.items.slice(1).filter(x => x.slot === '主菜').map(x => x.r)));
             else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
             render(); break;
         }
@@ -4083,6 +4104,7 @@ document.addEventListener('click', e => {
             break;
         case 'count': {
             const v = el.dataset.v;
+            if (String(S.settings.dishCount) === String(v)) break;   // 選んでいる品数をもう一度押しても、献立はそのまま
             if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; }
             S.settings.dishCount = v === 'auto' ? 'auto' : Number(v); save();
             session.menu = null; render(); break;
@@ -4110,7 +4132,7 @@ document.addEventListener('click', e => {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
             const f = el.dataset.v, a = S.settings.avoid;
             if (a.some(x => avoidFamOf(x) === f)) S.settings.avoid = a.filter(x => avoidFamOf(x) !== f); else a.push('@' + f);
-            save(); session.menu = null; render(); break;
+            save(); session.menu = null; refreshWeek(); render(); break;
         }
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
@@ -4156,7 +4178,7 @@ document.addEventListener('click', e => {
             const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
             S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
             S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
-            S.onboarded = true; save(); closeSheet(); session.menu = null; setTab('today');
+            S.onboarded = true; save(); closeSheet(); session.menu = null; refreshWeek(); setTab('today');
             toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
         case 'decide': {
@@ -4165,9 +4187,17 @@ document.addEventListener('click', e => {
             // 同じ日に決め直したときは、前に決めた献立の記録を消してから記録する（両方の料理が「今日作った」にならないように）
             if (S.cook && S.cook.d === TODAY && S.cook.ids){ const prev = S.cook.ids.filter(id => !ids.includes(id)); S.history = S.history.filter(h => !(h.d === TODAY && prev.includes(h.id))); }
             ids.forEach(id => record(id, slotOf(byId(id))));
-            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: {}}; save();
+            const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
+            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone}; save();
             session.cookIdx = 0;
             toast(praiseFor(ids), true); setTab('cook'); break;
+        }
+        case 'undo-decide': {
+            // 「この献立に決定」の取り消し: 決めたときに記録した今日の料理を記録から消す（「おいしかった！」を押した料理は残す）
+            if (!S.cook || S.cook.d !== TODAY) break;
+            const ids = S.cook.ids || [];
+            S.history = S.history.filter(h => !(h.d === TODAY && ids.includes(h.id) && !yumOf(h)));
+            S.cook = null; save(); reactVer++; setTab('today'); toast(t('決めた献立を取り消しました')); break;
         }
         case 'use-plan': {
             const p = weekToday(); if (!p) break;
@@ -4245,10 +4275,11 @@ document.addEventListener('click', e => {
             if (i >= 0){ S.favs.splice(i,1); toast(t('お気に入りから外しました')); } else { S.favs.push(id); toast(t('お気に入りに入れました')); }
             save(); if (modalId) renderModal(); render(); break;
         }
-        case 'cooked': { const r = byId(id); record(id, slotOf(r)); toast(praiseFor([id]), true); renderModal(); render(); break; }
+        case 'cooked': { const r = byId(id); if (histEntry(id, TODAY)){ toast(t('今日の記録に入っています')); break; } record(id, slotOf(r)); toast(praiseFor([id]), true); renderModal(); render(); break; }
         case 'cooked-date': {
             const d = $('#cook-date').value || TODAY; const r = byId(id);
             if (d > TODAY){ toast(t('未来の日付には記録できません')); break; }
+            if (histEntry(id, d)){ modalReactD = d; toast(t('{date}の記録に入っています', {date:jpDate(d)})); renderModal(); break; }
             record(id, slotOf(r), d); modalReactD = d; toast(t('{date}に記録しました', {date:jpDate(d)})); renderModal(); render(); break;
         }
         case 'hide': modalConfirmHide = true; renderModal(); break;
@@ -4261,15 +4292,16 @@ document.addEventListener('click', e => {
               else if (i > 0) m.items[i].r = suggestOrAny(m.items[i].slot, m.items.filter((_, k) => k !== i), m.items[0].r); }
             refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;
-        case 'unhide': S.hidden = S.hidden.filter(x => x !== id); save(); render(); break;
+        case 'unhide': S.hidden = S.hidden.filter(x => x !== id); save(); toast(t('また献立に出すようにしました')); render(); break;
         case 'yum': case 'yum-minus': {
             if (!hasPro()){ openPaywall('award'); break; }
+            if (act === 'yum' && yumOf(histEntry(id, el.dataset.d)) >= YUM_MAX){ toast(t('「おいしかった！」は{n}人までです', {n:YUM_MAX})); break; }
             const y = addYum(id, el.dataset.d, act === 'yum' ? 1 : -1);
             toast(y ? t('「おいしかった！」が{n}人になりました', {n:y}) : t('「おいしかった！」を取り消しました'));
             if (modalId) renderModal(); render(); break;
         }
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
-        case 'rm-hist': S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); save(); render(); break;
+        case 'rm-hist': S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); reactVer++; settleAwards(); save(); render(); break;
         case 'rm-custom': {
             S.custom = S.custom.filter(r => r.id !== id);
             const i = RECIPES.findIndex(r => r.id === id); if (i >= 0) RECIPES.splice(i,1);
@@ -4368,8 +4400,13 @@ document.addEventListener('submit', e => {
     if (f === 'add-ing'){ const inp = $('#ing-input'); if (inp.value.trim()){ addIngredients(inp.value); inp.value = ''; render(); $('#ing-input').focus(); } }
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
-        found.forEach(x => { if (!S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x))) S.settings.avoid.push(x); });
-        save(); session.menu = null; refreshWeek(); if (found.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(found)})); render();
+        const fresh = found.filter(x => !S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
+        fresh.forEach(x => S.settings.avoid.push(x));
+        save(); session.menu = null; refreshWeek();
+        if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
+        else if (found.length) toast(t('もう苦手な食材に入っています'));
+        else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
+        render();
     }
     if (f === 'add-staple'){
         const inp = $('#staple-input'); const found = extractIngredients(inp.value); let added = 0;
