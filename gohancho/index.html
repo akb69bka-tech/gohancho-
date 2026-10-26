@@ -485,6 +485,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
     .tray.compact{padding-left:4px;padding-right:4px}
     .tray.compact .tray-row{gap:2px}
     .spot-label .slot{letter-spacing:.05em}
+    .top .date{letter-spacing:.04em;font-size:.74rem}   /* ベトナム語の「Th 2, 26 tháng 10」などが2行にならないように */
     .tray.compact .spot-label .slot{letter-spacing:0;font-size:.52rem}
     .tray.compact .spot-label .nm{font-size:.74rem}
     nav.tabs{padding-left:2px;padding-right:2px}
@@ -3937,7 +3938,7 @@ function weekShareText(){
         [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
             const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
             lines.push(t('〈{l}〉', {l})); xs.forEach(e => { const q = e.qty.length ? sumQty(e.qty).join(t('＋')) : '';
-                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : ' ') + q : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない
+                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : /^\d[^()（）+]*[(（][^()（）]*[)）]$/.test(q) ? ' (' + q.replace(/\s*[(（]\s*([^()（）]*?)\s*[)）]/g, ', $1') + ')' : ' ' + q) : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない（「8 (約1200 g)」→「(8, 約1200 g)」）
         });
     }
     const aw = awardShareLine(); if (aw) lines.push('', aw);

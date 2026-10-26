@@ -433,7 +433,7 @@ GOHAN_I18N('fil', {
     "ひとひねり案": "Twist ideas",
     "この組み合わせでは案が作れませんでした。条件を「おまかせ」に戻してみてください。": "Walang naisip na idea sa kombinasyong ito. Ibalik sa “Auto” ang mga option.",
     "別の案を出す": "Iba pang idea",
-    "条件を変える": "Baguhin ang option",
+    "条件を変える": "Mga option",
     "ひねり具合": "Gaano kalaki ang twist?",
     "ちょっとだけ": "Kaunti lang",
     "しっかり": "Ramdam",

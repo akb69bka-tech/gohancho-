@@ -102,7 +102,7 @@ GOHAN_I18N('tr', {
     "記録と腕前の称号はプラスで使えます": "Kayıt ve beceri rozetleri Plus ile gelir",
     "ひと手間でスキルアップ": "Püf noktasıyla bir üst seviyeye",
     "今日のひと手間": "Bugünün püf noktası",
-    "{name}に、これを足すと腕が上がります": "{name} yemeğine bunu ekleyin, ustalığınız artsın",
+    "{name}に、これを足すと腕が上がります": "{name}: bunu ekleyin, ustalığınız artsın",
     "絹さや・いんげんなど緑の野菜": "Yeşil bir şey, mesela bezelye kabuğu ya da taze fasulye",
     "仕上げに散らすと彩りが出ます": "Son anda üstüne serpin, rengi canlansın",
     "冷まして味を含ませる": "Soğumaya bırakın, lezzeti çeksin",
