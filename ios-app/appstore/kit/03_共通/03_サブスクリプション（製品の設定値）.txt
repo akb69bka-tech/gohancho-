@@ -10,7 +10,7 @@
 Display name (English): Gohancho Plus / Description: Meal plans, shopping lists and world recipes
 審査メモ: Monthly plan with 1-month free trial.
 
-[年額（1年ありがとう価格）]
+[年額（1年ありがとう価格）]  ※今回の申請では作らない（月額だけで申請。審査メモも「年額なし」）。あとのアップデートで追加するときの控え
 参照名: ご飯帖プラス 年額（1年ありがとう価格）
 製品 ID: gohancho_plus_yearly_loyal
 期間: 1年
