@@ -1563,60 +1563,168 @@ const MOODS = [
     {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'bento', get label(){ return t('お弁当'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
     {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }},
 ];
-/* 「ラクの日」: 主菜は20分以内・材料7つまで（常備品を除く）・揚げ物なし、副菜・汁ものは10分以内。
-   国によって当てはまる料理が少ないときは、枠ごとに少しずつゆるめる（段階 0→3。それでも足りなければ条件なし） */
+/* 「ラクの日」: 主菜は20分以内・材料7つまで（常備品を除く）、副菜・汁ものは10分以内。揚げ物・オーブン・圧力鍋を使う料理は出さない（洗いものと火加減の手間が増えるため）。
+   国によって当てはまる料理が少ないときは、枠ごとに少しずつゆるめる（段階 0→3。ゆるめた枠は画面にそのまま書く）。
+   段階 3 でも 3 つそろわないときは、道具の条件に合う料理のうち手早い順に 3 品だけ出す（段階 4）。道具の条件に合う料理がなければ条件なし */
 const EASY_MIN = {main: [20, 30, 40, 60], side: [10, 15, 20, 30]}, EASY_ING = [7, 8, 9, 99], EASY_NEED = 3;
-const easyMemo = new Map();
+const easyMemo = new Map(), HEAVY = new WeakMap();
 function easyKind(r){ const s = slotOf(r); return s === '副菜' || s === '汁物' ? 'side' : 'main'; }
+// 揚げ物・オーブン・圧力鍋/スロークッカーを使う料理。作り方の元の文（パックは英語、日本は日本語）で見分ける（画面の言語に左右されない）
+const HEAVY_RE = /\boven\b|\bbroil|toaster|baking (?:sheet|tray|dish)|deep.?fry|shallow.?fry|frying oil|oil for .{0,12}fry|pressure cook|slow cook|オーブン|トースター|天板|揚げ油|揚げ焼き|圧力鍋/i;
+function easyHeavy(r){
+    let v = HEAVY.get(r);
+    if (v === undefined){ v = r.method === '揚' || HEAVY_RE.test([...(r.stepsBase || r.steps || []), r.seasBase || r.seas || ''].join(' ')); HEAVY.set(r, v); }
+    return v;
+}
 function easyFits(r, lv){
+    if (easyHeavy(r)) return false;
     const k = easyKind(r);
     if (r.min > EASY_MIN[k][Math.min(lv, 3)]) return false;
-    if (k === 'main' && (r.method === '揚' || r.items.filter(i => !i.opt && !PANTRY.has(i.key)).length > EASY_ING[Math.min(lv, 3)])) return false;
+    if (k === 'main' && r.items.filter(i => !i.opt && !PANTRY.has(i.key)).length > EASY_ING[Math.min(lv, 3)]) return false;
     return true;
 }
-// その枠の候補の中で、「ラク」な料理が3つ以上そろう最初の段階（4 = 条件なし）
-function easyLevel(slot){
+// その枠の「ラク」の条件。{lv: 0〜3 = 段階 / 4 = 手早い順の少数 / 5 = 条件なし, ids: lv 4 のときの料理 id の集まり, max: 出る料理の最長の分, n: 件数}
+function easyInfo(slot){
     const pool = poolFor(slot);
     const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join();
     if (easyMemo.has(key)) return easyMemo.get(key);
     const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
-    let lv = 0; while (lv < 4 && base.filter(r => lv >= 4 || easyFits(r, lv)).length < EASY_NEED) lv++;
+    let lv = 0, hit = [];
+    for (; lv < 4; lv++){ hit = base.filter(r => easyFits(r, lv)); if (hit.length >= EASY_NEED) break; }
+    let info;
+    if (lv < 4) info = {lv, ids: null, max: Math.max(...hit.map(r => r.min)), n: hit.length};
+    else {
+        const light = base.filter(r => !easyHeavy(r)).sort((x, y) => x.min - y.min || x.items.length - y.items.length).slice(0, EASY_NEED);
+        info = light.length ? {lv: 4, ids: new Set(light.map(r => r.id)), max: Math.max(...light.map(r => r.min)), n: light.length} : {lv: 5, ids: null, max: 0, n: 0};
+    }
     if (easyMemo.size > 60) easyMemo.clear();
-    easyMemo.set(key, lv); return lv;
+    easyMemo.set(key, info); return info;
 }
-function easyRelaxed(){ return session.mood === 'easy' && ['主菜', '副菜', '汁物'].some(sl => easyLevel(sl) > 0); }
-/* 「お弁当」: 主菜1＋副菜2（汁ものなし）。汁気が少なく、冷めてもおいしい調理法（焼・炒・揚・和え・煮つめ）の主菜・副菜から選ぶ。
-   汁もの・鍋・シチュー・カレー・生ものは出さない。国によって当てはまる料理が少ないときは、枠ごとに少しずつゆるめる（段階 0→2。3は種類と名前だけ） */
-const BENTO_WET = /汁|スープ|シチュー|鍋|煮込み|チゲ|カレー|おでん|雑炊|粥|刺身|サラダ|生(?!姜)|漬け丼|soups?\b|stew|salad|curry|raw\b|ceviche|carpaccio|tartare|sashimi|gazpacho|porridge|congee|hot ?pot|chowder|broth|sopa|caldo|ensalada|guiso|guisad|soupe|salade|ragoût|suppe|eintopf|salat|zuppa|insalata|minestra|zupa|sałatka|çorba|salata|\bcanh\b|gỏi|sinigang|ซุป|แกง|ยำ|국$|탕$|찌개|샐러드|汤|羹|沙拉|شوربة|حساء|سلطة|يخنة|सूप|सलाद|करी|sup\b|bubur/i;
-const BENTO_MIN = [30, 45, 60, 999], BENTO_ML = [150, 250, 999, 999], BENTO_METHOD = ['焼', '炒', '揚', '和え', '煮'], BENTO_NEED = 3;
-function bentoMl(r){
-    const txt = [r.seas, ...(r.ings || [])].filter(x => typeof x === 'string').join(' ');
-    let ml = 0; txt.replace(/(\d+(?:\.\d+)?)\s*(ml|mL|cc|カップ|cups?)/g, (m, n, u) => { ml += Number(n) * (/^(ml|mL|cc)$/.test(u) ? 1 : 240); return m; });
-    return ml;
+function easyOk(r, info){ return info.lv >= 5 || (info.ids ? info.ids.has(r.id) : easyFits(r, info.lv)); }
+// ゆるめた枠を、実際にゆるめたとおりに言う（主菜は分と材料の数、副菜・汁ものは分、手早い順に絞った枠はその品数と最長の分）
+function easyRelaxText(){
+    if (session.mood !== 'easy') return '';
+    const slots = [...new Set((session.menu ? session.menu.items : []).map(x => x.slot))].filter(sl => ['主菜', '副菜', '汁物'].includes(sl));
+    const parts = [];
+    for (const sl of slots.length ? slots : ['主菜', '副菜', '汁物']){
+        const f = easyInfo(sl), k = sl === '主菜' ? 'main' : 'side', name = slotLabel(sl);
+        if (f.lv === 0) continue;
+        if (f.lv === 5) parts.push(t('{slot}は「ラク」な料理がないので、条件なし', {slot: name}));
+        else if (f.lv === 4) parts.push(t('{slot}は手早い順の{n}品だけ（最長{min}分）', {slot: name, n: f.n, min: f.max}));
+        else if (k === 'main') parts.push(EASY_ING[f.lv] >= 99 ? t('{slot}は{min}分以内（材料の数は問わない）', {slot: name, min: EASY_MIN.main[f.lv]}) : t('{slot}は{min}分以内・材料{ing}つまで', {slot: name, min: EASY_MIN.main[f.lv], ing: EASY_ING[f.lv]}));
+        else parts.push(t('{slot}は{min}分以内', {slot: name, min: EASY_MIN.side[f.lv]}));
+    }
+    return parts.length ? t('この国には「ラク」な料理が少ないので、条件をゆるめています（{list}）', {list: parts.join(' / ')}) : '';
 }
-function bentoFits(r, lv){
-    if (r.type !== '主菜' && r.type !== '副菜') return false;
-    if (BENTO_WET.test([r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' '))) return false;
-    lv = Math.min(lv, 3); if (lv >= 3) return true;
-    return r.min <= BENTO_MIN[lv] && BENTO_METHOD.includes(r.method) && bentoMl(r) <= BENTO_ML[lv];
-}
+/* 「お弁当」: 主菜1＋副菜2（汁ものなし）。冷めてもおいしい・汁気が漏れない・傷みにくい・手で詰められる、を材料と調理法から一品ずつ見て選んだ料理だけ（BENTO_OK）から出す。
+   汁もの・鍋・カレー・シチュー・グラタン・生もの・マヨネーズやクリームで和えたもの・揚げ衣が湿るもの・ソースが多いものは入れていない。
+   新しい料理は、ここに id を足すまでお弁当には出ない（足した料理が弁当向きとは限らないため）。国ごとの並び: JP US GB FR DE IT ES PL TR EG IN CN TW KR TH VN ID PH MX BR PE */
+const BENTO_OK = new Set(`
+    shogayaki karaage teriyaki hamburg hoikoro chinjao
+    gyoza meuniere buriteri butakimu japchae atsuage
+    negishio chikuzen piccata nasumiso shigureni bulgogi
+    tofuhamburg pimannikuzume tonkatsu sabashio ajifry korokke
+    saikyoyaki kajikisaute ebifry asparamaki tsukune tandoori
+    kinpira hijiki dashimaki kabocha namul harusamesalad
+    gomaae daigakuimo chingensai broccoligoma kinokobutter spinachbacon
+    nasudengaku germanpotato shirishiri niratama jakopiman isobeage
+    chijimi konnyakuitame kiriboshi unohana satoimonikkorogashi gomokumame
+    tosani glace kofukiimo koyadofu
+    us_porkchops us_salmon us_beefbroccoli us_friedchicken us_meatloaf us_steak
+    us_porktenderloin us_tilapia us_greenbeans us_broccoli us_cornbread us_sweetpotatoes
+    us_glazedcarrots us_brussels us_succotash us_garlicbread us_ricepilaf
+    gb_fishcakes gb_roastbeef gb_baconeggpie gb_porkchops gb_lambchops gb_glamorgan
+    gb_parsnips gb_rootveg gb_sprouts gb_broccoli gb_carrots gb_stuffing
+    gb_roastpotatoes gb_runnerbeans
+    fr_saumon fr_rotiporc fr_omelette fr_quiche fr_tartepoireaux fr_carottes
+    fr_haricots fr_taboule fr_saladelentilles fr_sarladaises fr_vichy fr_rizpilaf
+    de_frikadellen de_schnitzel de_haehnchenschenkel de_bauernfruehstueck de_bratkartoffeln de_speckbohnen
+    de_rosenkohl de_moehrenrohkost de_krautsalat de_salzkartoffeln
+    it_scaloppine it_frittata it_cotoletta it_salsiccia it_zucchine it_spinaci
+    it_fagiolini it_broccoli it_carote it_borlotti it_peperonata it_grigliate
+    it_caponata it_funghitrifolati it_cicoria it_scapece it_patatearrosto
+    es_tortilla es_pollo es_merluza es_pollohorno es_pechugas es_lomo
+    es_costillas es_filetesrusos es_boquerones es_pimientos es_judias es_escalivada
+    es_esparragos es_coliflor es_croquetas es_repollo es_patataspobre es_alcachofas
+    pl_schabowy pl_mielone pl_dorsz pl_udka pl_kotletyjajeczne pl_krokiety
+    pl_marchewka pl_kiszona pl_czerwonakapusta pl_opiekane pl_fasolka pl_kapustazasmazana
+    tr_hamsi tr_tavuksis tr_firintavuk tr_pilav tr_mucver tr_patates
+    tr_kisir tr_mercimekkofte tr_bulgurpilavi
+    eg_firakh eg_kofta eg_samak eg_hawawshi eg_pane eg_shishtawook
+    eg_eggah eg_taameya eg_rozshaariya eg_batatessotee eg_arnabeet eg_rozbelkhalta
+    eg_salatabatates
+    in_tandoori in_fishfry in_andabhurji in_aloogobi in_bhindi in_poriyal
+    in_jeeraaloo in_gajarmatar in_aloomethi in_karelafry in_begunbhaja in_besanmirch
+    in_arbifry
+    cn_gongbao_jiding cn_qingjiao_rousi cn_haoyou_niurou cn_congbao_yangrou cn_kele_jichi cn_tangcu_paigu
+    cn_suanrong_qingcai cn_suanla_tudousi cn_disanxian cn_qincai_xianggan cn_ganbian_doujiao cn_shousi_baocai
+    cn_jiucai_jidan cn_suanrong_xilanhua cn_youzha_huasheng cn_hupi_qingjiao cn_qingchao_oupian cn_roumo_suandoujiao
+    cn_youmen_sun
+    tw_sanbeiji tw_caipu_dan tw_jian_shimuyu tw_congbao_niurou tw_zha_paigu tw_yansuji
+    tw_jian_daiyu tw_jian_xiangchang tw_hongzao_rou tw_kejia_xiaochao tw_hujiao_xia tw_shacha_yangrou
+    tw_chao_gaolicai tw_lu_dougan tw_cangyingtou tw_xiandan_kugua tw_taxiang_qiezi tw_chao_longxucai
+    tw_chao_suancai tw_xiangjian_doufu tw_shacha_kongxincai tw_yansu_xingbaogu
+    kr_jeyuk kr_bulgogi kr_godeungeo kr_dakgangjeong kr_tteokgalbi kr_jogigui
+    kr_haemulpajeon kr_dubujorim kr_sigeumchi kr_gyeranmari kr_myeolchi kr_gamjajorim
+    kr_kongnamul kr_sukjunamul kr_gosarinamul kr_beoseotbokkeum kr_eomukbokkeum kr_jangjorim
+    kr_kongjaban kr_yeongeunjorim kr_hobakjeon kr_kimchijeon kr_dongeurangttaeng kr_miyeokjulgi
+    kr_jinmichae kr_gamjachae
+    th_kaprao th_khaijiao th_platutod th_nueanammanhoi th_mootodkratiam th_kaiphadkhing
+    th_kaimetmamuang th_kaiyang th_nueadaddiao th_thodmanpla th_moophadphrikkaeng th_padpakbung
+    th_phadkhana th_kalamphadnampla th_faktongphadkhai th_hetnangfa th_khaijiaochaom th_plakhemthod
+    th_moowan th_phadthualantao
+    vn_garang vn_boxao vn_tomrim vn_suonram vn_thitrangchay vn_gachiennuocmam
+    vn_gaxaosa vn_boluclac vn_bolalot vn_chaca vn_dauhusaot vn_raumuongxao
+    vn_trungchien vn_susuxao vn_bongcaixao vn_dauquexao vn_caithiaxaonam vn_bapxao
+    vn_chagio vn_lacrang vn_khoquaxaotrung
+    id_ayamgoreng id_ikanbalado id_telurbalado id_ayambakar id_ayamgeprek id_satekambing
+    id_ikanbakar id_udangbalado id_cumikecap id_telurdadar id_empal id_pepesikan
+    id_bacem id_tumiskangkung id_tempeorek id_perkedel id_tumistauge id_tumisbuncis
+    id_tumislabusiam id_tumispare id_serundeng id_mendoan id_bakwan id_kentangkering
+    id_rempeyek id_orakarik id_tumisjamur id_terongbalado
+    ph_adobo ph_tilapia ph_tortang_talong ph_tortang_patatas ph_daing_bangus ph_adobong_pusit
+    ph_kangkong ph_ampalaya ph_lumpia ph_adobong_sitaw ph_ginisang_repolyo ph_adobong_talong
+    ph_lumpiang_gulay ph_okoy ph_ginisang_pechay ph_ginisang_sayote ph_buttered_veg
+    mx_milanesa mx_carne_asada mx_pescado_ajo mx_chorizo_papas mx_papas_mexicana mx_platanos_fritos
+    mx_nopales_asados mx_arroz mx_arroz_verde mx_ejotes
+    br_bife br_bisteca br_omelete br_frango_assado br_frango_passarinho br_lombo_assado
+    br_peixe_empanado br_farofa br_couve br_batata_saute br_arroz_brocolis br_mandioca_frita
+    br_vagem_refogada br_repolho_refogado br_polenta_frita br_banana_milanesa br_feijao_tropeiro
+    pe_pollo_horno pe_bistec_apanado pe_papa_rellena pe_chicharron_pescado pe_tortilla_verduras pe_tacu_tacu
+    pe_platano pe_yuca_frita pe_camote_frito pe_torrejas_choclo pe_saltado_vainitas pe_verduras_chifa
+    pe_cancha pe_arroz_arabe pe_pastel_acelga`.split(/\s+/).filter(Boolean));
+const BENTO_NEED = 3, BENTO_FEW = 5;
+function bentoFits(r){ return (r.type === '主菜' || r.type === '副菜') && BENTO_OK.has(r.id); }
+// その枠（主菜 / 副菜）で、いま選べるお弁当向きの料理の数（苦手・「今は出さない」を除く）
 const bentoMemo = new Map();
-function bentoLevel(slot){
+function bentoCount(slot){
     const pool = poolFor(slot);
     const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join();
     if (bentoMemo.has(key)) return bentoMemo.get(key);
-    const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
-    let lv = 0; while (lv < 3 && base.filter(r => bentoFits(r, lv)).length < BENTO_NEED) lv++;
+    const n = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && bentoFits(r) && !S.hidden.includes(r.id) && !isAvoided(r)).length;
     if (bentoMemo.size > 60) bentoMemo.clear();
-    bentoMemo.set(key, lv); return lv;
+    bentoMemo.set(key, n); return n;
 }
-function bentoPool(slot, list){ const f = list.filter(r => bentoFits(r, bentoLevel(slot))); return f.length ? f : list; }
-function easyPool(slot, list){ if (session.mood === 'bento') return bentoPool(slot, list); if (session.mood !== 'easy') return list; const lv = easyLevel(slot); return lv >= 4 ? list : list.filter(r => easyFits(r, lv)); }
+function bentoPool(slot, list){ const f = list.filter(bentoFits); return f.length ? f : list; }
+// 献立に出ている主菜・副菜の説明。弁当向きでない料理が混ざっているときは、そう書く（保証しない）
+function bentoNote(){
+    if (session.mood !== 'bento' || !session.menu) return '';
+    const items = session.menu.items.filter(x => x.r && (x.slot === '主菜' || x.slot === '副菜'));
+    const m = bentoCount('主菜'), sd = bentoCount('副菜');
+    if (items.some(x => !bentoFits(x.r))) return t('この国にはお弁当向きの料理が足りないので、お弁当に向かない料理が含まれています');
+    const note = t('お弁当向きのおかずです（冷ましてから詰めてください）');
+    return m < BENTO_FEW || sd < BENTO_FEW ? note + ' ' + t('お弁当向きが少ない国です（主菜{m}品・副菜{s}品から選んでいます）', {m, s: sd}) : note;
+}
+function easyPool(slot, list){
+    if (session.mood === 'bento') return bentoPool(slot, list);
+    if (session.mood !== 'easy') return list;
+    const f = easyInfo(slot); return f.lv >= 5 ? list : list.filter(r => easyOk(r, f));
+}
 function moodOk(r, mood){
     switch(mood){
         case 'quick': return r.min <= 20;
-        case 'easy': { const lv = easyLevel(['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'); return lv >= 4 || easyFits(r, lv); }
-        case 'bento': return bentoFits(r, bentoLevel(slotOf(r) === '副菜' ? '副菜' : '主菜'));
+        case 'easy': return easyOk(r, easyInfo(['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'));
+        case 'bento': return bentoFits(r);
         case 'asia': return r.genre === '韓' || r.genre === 'エスニック';
         case 'fish': return ['魚','魚介'].includes(r.family);
         case 'meat': return ['豚','鶏','牛','ひき肉'].includes(r.family);
@@ -4838,8 +4946,8 @@ function viewToday(){
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </details>
-        ${session.mood === 'bento' ? `<p class="small muted" style="margin:0">${esc(t('お弁当向きのおかずです（冷ましてから詰めてください）'))}</p>` : ''}
-        ${easyRelaxed() ? `<p class="small muted" style="margin:0">${esc(easyLevel('主菜') === 0 || easyLevel('主菜') >= 4 ? t('この国には「ラク」な料理が少ないので、条件をゆるめて選んでいます') : t('この国には「ラク」な料理が少ないので、主菜は{n}分以内までゆるめて選んでいます', {n: EASY_MIN.main[easyLevel('主菜')]}))}</p>` : ''}
+        ${bentoNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote())}</p>` : ''}
+        ${easyRelaxText() ? `<p class="small muted" style="margin:0">${esc(easyRelaxText())}</p>` : ''}
         ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}${stapleAdd ? `<div class="tray-row">${stapleAdd}</div>` : ''}</div>`
         : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
             <div class="tray-row back">${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
@@ -6440,7 +6548,7 @@ function trOf(cc){
 function jpRecipe(r, tr){
     const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
     const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
-    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, tip: rt.tip || r.tip || null, trLang: LANG});
+    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, tip: rt.tip || r.tip || null, trLang: LANG});
 }
 function packRecipe(pk, x, tr){
     const rt = tr && tr.recipes && tr.recipes[x.id];
@@ -6459,7 +6567,7 @@ function packRecipe(pk, x, tr){
     const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || !/[^\u0000-\u036f\u1e00-\u1eff\u2000-\u206f\s]/.test(x.local);
     const name = rt && rt.name ? rt.name : (readable ? loc : x.name);
     return {id: x.id, name, nameEn: name === loc ? x.name : loc, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
-        min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
+        min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', stepsBase: x.steps || [], seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
         tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
 }
