@@ -3125,7 +3125,8 @@ function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = p
 function introCancelBy(){
     const o = introOffer || {unit:'month', n:1}, d = new Date(); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else addMonthsClamp(d, o.n);
     d.setHours(d.getHours() - 24);
-    return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    let tz = ''; try{ const p = new Intl.DateTimeFormat(LANG, {timeZoneName:'short'}).formatToParts(d).find(x => x.type === 'timeZoneName'); tz = p ? p.value : ''; }catch(e){}   // 端末のタイムゾーン略称（JST・PST など）。取れなければ付けない
+    return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + (tz ? ' ' + tz : '');
 }
 function introDays(){ return daysBetween(TODAY, introEndYmd()); }
 function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
@@ -4041,6 +4042,8 @@ function nativePlugin(name){ try{ return (window.Capacitor && window.Capacitor.P
 /* =========================================================
    買い物メモ（1週間プランの主菜から、家にない材料をまとめる）
    ========================================================= */
+// 無料版の制限で、1週間のプランの一部しか見えていないか
+function weekCutByFree(){ return !!S.week && !hasPro() && S.week.days.filter(x => x.d >= TODAY).length > visiblePlanDays().length; }
 function visiblePlanDays(){
     if (!S.week) return [];
     const days = S.week.days.filter(x => x.d >= TODAY);
@@ -4228,6 +4231,12 @@ const CARD_C = {ink:'#1d2733', muted:'#66758a', accent:'#22406b', soft:'#dde6f2'
 function cardData(kind){
     if (kind === 'week'){
         const days = visiblePlanDays().map(x => ({d:x.d, r:byId(x.id)})).filter(x => x.r).slice(0, 7);
+        // 1日分だけのとき（無料版）は、ほぼ空白の「週」カードにせず、その日の献立カードにする
+        if (days.length === 1){
+            const x = visiblePlanDays().find(y => y.d === days[0].d), rs = dayDishes(x);
+            const dishes = rs.map(r => ({r, name:r.name, slot:slotLabel(slotOf(r)), min:r.min || 0}));
+            return dishes.length ? {kind:'menu', dishes, date:days[0].d, line: days[0].d === TODAY ? t('今日のごはんです') : t('今週の献立です'), min:dishes.reduce((a, y) => a + y.min, 0), sv:Number(S.settings.servings) || 2} : null;
+        }
         return days.length ? {kind, days, date:days[0].d, line:t('今週の献立です')} : null;
     }
     const cook = kind === 'cook', m = cook ? (S.cook ? {items: cookItems()} : null) : session.menu, d = cook && S.cook ? S.cook.d : TODAY;
@@ -4251,7 +4260,7 @@ function cardLoadImg(r, staple){
 function cardWrap(ctx, text, maxW, maxLines){
     let segs; try{ segs = Array.from(new Intl.Segmenter(LANG, {granularity:'word'}).segment(text), s => s.segment); }catch(e){ segs = text.split(/(?<=\s)/); }
     const lines = []; let cur = '';
-    const push = s => { for (const ch of Array.from(s)){ if (cur && ctx.measureText(cur + ch).width > maxW){ lines.push(cur.trimEnd()); cur = ''; } cur += ch; } };
+    const push = s => { for (const ch of Array.from(s)){ if (cur && ctx.measureText(cur + ch).width > maxW && !/[）)」』】〕、。，．,.!?！？ー]/.test(ch)){ lines.push(cur.trimEnd()); cur = ''; } cur += ch; } };
     for (const s of segs){
         if (!cur || ctx.measureText(cur + s).width <= maxW){ if (ctx.measureText(s).width > maxW) push(s); else cur += s; }
         else { lines.push(cur.trimEnd()); cur = ''; if (ctx.measureText(s.trimStart()).width > maxW) push(s.trimStart()); else cur = s.trimStart(); }
@@ -4330,7 +4339,8 @@ async function cardCanvas(kind){
         const ax = px + 30, ay = py + 20, aw = pw - 60, ah = ph - 40, cw = aw / cols, ch = ah / rows;
         const fsz = n <= 2 ? 52 : n <= 4 ? 44 : 36, lines = n <= 2 ? 3 : 2, chipSz = n <= 2 ? 30 : 26;
         const textH = chipSz * 1.75 + 24 + fsz * 1.3 * lines, rad = Math.min((cw - 40) / 2, (ch - textH - 44) / 2, 210);
-        const fits = x => { let f = fsz; for (; f > fsz * .6; f -= 2){ ctx.font = `700 ${f}px ${CARD_SANS}`; if (String(x.name).split(/\s+/).every(w => ctx.measureText(w).width <= cw - 36)) break; } return f; };   // 長い1語（ドイツ語の複合語など）は語の途中で切らず、文字を小さくして収める
+        const wide = w => /[\u0E00-\u0E7F\u3040-\u9fff\uac00-\ud7af]/.test(w);   // 日本語・中国語・タイ語・韓国語は語の途中でも折り返せる
+        const fits = x => { let f = fsz; for (; f > fsz * .6; f -= 2){ ctx.font = `700 ${f}px ${CARD_SANS}`; if (String(x.name).split(/\s+/).every(w => wide(w) || ctx.measureText(w).width <= cw - 36) && cardWrap(ctx, x.name, cw - 36, 99).length <= lines) break; } return f; };   // 長い1語（ドイツ語の複合語など）は語の途中で切らず、行数に入らないときは「…」の前に文字を小さくして収める
         const wraps = D.dishes.map(x => { ctx.font = `700 ${fits(x)}px ${CARD_SANS}`; return cardWrap(ctx, x.name, cw - 36, lines); });
         const fsizes = D.dishes.map(fits);
         D.dishes.forEach((x, i) => {
@@ -4363,21 +4373,41 @@ async function cardCanvas(kind){
     ctx.fillStyle = CARD_C.muted; ctx.font = `600 28px ${CARD_SANS}`; ctx.textAlign = 'left'; ctx.direction = 'ltr'; ctx.fillText(nm, nameX, fy, nw);
     return cv;
 }
-// 画像にして、共有できる端末は共有シート（LINE・メッセージなど）へ、できなければ保存（ダウンロード）
+// ファイルを渡す共通の流れ: 共有できる端末は共有シート（files を優先）、できなければダウンロード。
+// 共有中の二重起動（InvalidStateError）や取り消し（AbortError）はダウンロードに落とさない。ダウンロードは「始めた」とだけ言う
+var fileShareBusy = false, cardBusy = false;
+async function shareFileOrDownload(blob, name, type, dlMsg){
+    if (fileShareBusy){ toast(t('いま共有中です。終わるまでお待ちください')); return; }
+    fileShareBusy = true;
+    try{
+        let file = null; try{ file = new File([blob], name, {type}); }catch(e){}
+        if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+            try{ await navigator.share({files:[file], title:t('わが家のご飯帖')}); return; }
+            catch(e){ if (e && (e.name === 'AbortError' || e.name === 'InvalidStateError')) return; }
+        }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(dlMsg);
+    }finally{ fileShareBusy = false; }
+}
+// 記録（JSON）をファイルにして渡す（設定の「ファイルで書き出す」と購入画面の「書き出す」で共通）
+function exportDataFile(){
+    const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json';
+    shareFileOrDownload(new Blob([JSON.stringify(S)], {type: 'application/json'}), name, 'application/json', t('{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます', {name}));
+}
+// 画像にして、共有できる端末は共有シート（LINE・メッセージなど）へ、できなければダウンロード
 async function shareCard(kind){
+    if (fileShareBusy || cardBusy){ toast(t('いま共有中です。終わるまでお待ちください')); return; }
+    cardBusy = true;
+    const btn = document.querySelector('[data-act="share-card"]'), label = btn ? btn.textContent : '';
+    if (btn){ btn.disabled = true; btn.textContent = t('画像をつくっています…'); }
     try{
         const cv = await cardCanvas(kind); if (!cv){ toast(t('送る献立がありません')); return; }
         const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
         if (!blob) throw new Error('blob');
         const name = 'gohancho-' + (kind === 'week' ? 'week' : 'menu') + '-' + TODAY.replace(/-/g, '') + '.png';
-        let file = null; try{ file = new File([blob], name, {type:'image/png'}); }catch(e){}
-        if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-            try{ await navigator.share({files:[file], title:t('わが家のご飯帖')}); return; }
-            catch(e){ if (e && e.name === 'AbortError') return; }
-        }
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(t('画像を保存しました'));
+        await shareFileOrDownload(blob, name, 'image/png', t('画像のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます'));
     }catch(e){ toast(t('画像をつくれませんでした')); }
+    finally{ cardBusy = false; const b = document.querySelector('[data-act="share-card"]'); if (b){ b.disabled = false; if (label) b.textContent = label; } }
 }
 function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
 // 国でよく使われる家族の連絡アプリ（リンクで開けるものだけボタンにする。ほかは「ほかのアプリで送る」）
@@ -4419,6 +4449,7 @@ function shareSheetHtml(){
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
         <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}">${esc(t('画像でつくる'))}</button></div>
+        ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
 }
@@ -4458,12 +4489,14 @@ function notifBuild(now){
     }
     const wd = S.settings.shopRemind;
     if (typeof wd === 'number' && wd >= 0 && wd <= 6){
-        const last = days.length ? days[days.length - 1].d : '', n = days.length ? shoppingList().filter(e => !shopDoneSet().has(e.key)).length : 0;
+        const last = days.length ? days[days.length - 1].d : '', todo = days.length ? shoppingList().filter(e => !shopDoneSet().has(e.key)) : [], n = todo.length;
+        // 主な3品（いくつの料理に使うかの多い順）。かっこの中は省く。長い名前（文字数が多い・「AまたはB」）は途中で切らず、次の品に回す。なければ品名は出さない
+        const top = []; todo.forEach(e => { const l = String(e.label).replace(/[（(][^）)]*[）)]/g, '').trim(), wide = /[\u1100-\u11ff\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/.test(l); if (l && Array.from(l).length <= (wide ? 8 : 14) && !SHOP_ALT.test(l) && !top.includes(l) && top.length < 3) top.push(l); });
         for (let k = 1, j = 0; k <= 21 && j < 2; k++){
             const shopDay = addDays(TODAY, k); if (parseYmd(shopDay).getDay() !== wd) continue;
             const when = at(addDays(shopDay, -1), 18); if (when <= now) continue;
             const has = n > 0 && shopDay <= last;
-            out.push({id:NOTIFY_SHOP_ID + j++, title:t('明日は買い物の日です'), body:has ? t('明日の分の買い物リストがあります（{n}品）', {n}) : t('1週間プランを作っておくと、買うものがまとまります。'), schedule:{at:when, allowWhileIdle:true}});
+            out.push({id:NOTIFY_SHOP_ID + j++, title:t('明日は買い物の日です'), body:has ? [t('明日の分の買い物リストがあります（{n}品）', {n}), top.length ? t('主なもの：{items}', {items:joinNames(top)}) : ''].filter(Boolean).join(SLASH()) : t('1週間プランを作っておくと、買うものがまとまります。'), schedule:{at:when, allowWhileIdle:true}});
         }
     }
     return out;
@@ -6160,10 +6193,8 @@ document.addEventListener('click', e => {
             break;
         }
         case 'export-share': {
-            // 購入画面からも、これまでの記録を書き出せる（期限が切れても自分のデータを持ち出せるように）
-            const txt = JSON.stringify(S);
-            if (navigator.share) navigator.share({title: t('わが家のご飯帖'), text: txt}).catch(() => {});
-            else try{ navigator.clipboard.writeText(txt).then(() => toast(t('コピーしました'))); }catch(err){}
+            // 購入画面からも、これまでの記録を書き出せる（期限が切れても自分のデータを持ち出せるように）。設定の「ファイルで書き出す」と同じ
+            exportDataFile();
             break;
         }
         case 'export': {
@@ -6178,17 +6209,7 @@ document.addEventListener('click', e => {
             if (!askImport(txt, 'text')) toast(t('読み込めませんでした。コピーした文字をそのまま貼りつけてください'));
             break;
         }
-        case 'export-file': {
-            // ファイルにして渡す（共有できる端末は共有シート、できなければダウンロード）
-            const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json';
-            const blob = new Blob([JSON.stringify(S)], {type: 'application/json'});
-            const download = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(t('{name} を書き出しました', {name})); };
-            let file = null; try{ file = new File([blob], name, {type: 'application/json'}); }catch(err){}
-            if (file && navigator.share && navigator.canShare && navigator.canShare({files: [file]}))
-                navigator.share({files: [file], title: t('わが家のご飯帖')}).catch(err => { if (!err || err.name !== 'AbortError') download(); });
-            else download();
-            break;
-        }
+        case 'export-file': exportDataFile(); break;
         case 'import-file': { const inp = $('#backup-file'); if (inp){ inp.value = ''; inp.click(); } break; }
         case 'import-yes': {
             try{
