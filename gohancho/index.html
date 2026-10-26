@@ -411,6 +411,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .ob-dots i.on{background:var(--accent);width:20px;border-radius:4px}
 .ob-hero{display:grid;place-items:center;padding:6px 0;background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%);border-radius:16px}
 .ob-hero .vessel{width:150px;margin:18px 0}
+.ob-tray{padding:14px 8px 12px;border-radius:16px;pointer-events:none}
+.ob-lead{margin:0;color:var(--muted);font-size:.9rem}
 .ob-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .ob-points li{display:flex;flex-direction:column;padding-left:14px;border-left:3px solid var(--accent)}
 .ob-points b{font-family:var(--font-display)}
@@ -519,6 +521,20 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-steps li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cook-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 /* わが家のアルバム */
+.cal{display:flex;flex-direction:column;gap:10px;padding:12px;margin-bottom:10px}
+.cal-week{margin:0;font-weight:700}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cal-nav .btn{min-width:44px;min-height:44px}
+[dir="rtl"] .cal-nav .btn span{display:inline-block;transform:scaleX(-1)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
+.cal-wd{font-size:.7rem;color:var(--muted);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:2.6rem;padding:2px 0;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer}
+.cal-d.today span{font-weight:800;text-decoration:underline}
+.cal-d.sel{background:var(--accent);color:var(--accent-ink)}
+.cal-d i{width:6px;height:6px;border-radius:50%;background:transparent}
+.cal-d i.on{background:var(--accent)}.cal-d.sel i.on{background:var(--accent-ink)}
+.cal-day{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
+.cal-day .t{cursor:pointer;padding:4px 0}.cal-day .s{color:var(--muted);font-size:.8rem}
 .album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .album-item{margin:0;position:relative;display:flex;flex-direction:column;gap:4px;min-width:0}
 .album-ph{aspect-ratio:1;width:100%;border:0;border-radius:12px;background-size:cover;background-position:center;background-color:var(--surface-2);cursor:pointer;padding:0}
@@ -2944,6 +2960,20 @@ function trapTab(e){
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
+// はじめての画面に出す、この国の今日の献立（実際の献立と同じ料理・絵）
+function obTrayHtml(){
+    try{
+        if (!session.menu && !mixWaiting() && !restoreDraft() && !restoreDecided()) newMenu();
+        const m = session.menu; if (!m) return '';
+        const tiles = m.items.filter(it => it.r).map(it => {
+            const kind = it.slot === '主菜' ? vesselKind(it.r) : it.slot === '副菜' ? 'kobachi' : 'wan';
+            return `<div class="spot ${it.slot === '主菜' ? 'main' : it.slot === '副菜' ? 'side' : 'soup'}" style="--w:31%">${vesselHtml(kind, it.r, true)}<div class="spot-label"><span class="slot">${esc(slotLabel(it.slot))}</span><span class="nm">${esc(it.r.name)}</span></div></div>`;
+        });
+        if (!tiles.length) return '';
+        const rows = []; for (let i = 0; i < tiles.length; i += 3) rows.push(tiles.slice(i, i + 3));
+        return `<div class="tray compact ob-tray" role="img" aria-label="${esc(t('今日のお膳（{n}品）', {n:tiles.length}))}">${rows.map(r => `<div class="tray-row">${r.join('')}</div>`).join('')}</div>`;
+    }catch(e){ return ''; }
+}
 function renderSheet(){
     const root = $('#sheet-root');
     if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
@@ -2952,13 +2982,9 @@ function renderSheet(){
         const st = sheet.step;
         const dots = [0,1,2].map(i => `<i class="${i === st ? 'on' : ''}"></i>`).join('');
         if (st === 0) body = `
-            <div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>
+            ${obTrayHtml() || `<div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>`}
             <h2>${esc(t('ご飯帖へようこそ'))}</h2>
-            <ul class="ob-points">
-                <li><b>${esc(t('毎日の献立を、お膳ごと提案'))}</b><span>${esc(t('主菜・副菜・汁もの。品数も日によって変えられます'))}</span></li>
-                <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
-                <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
-            </ul>
+            <p class="ob-lead">${esc(t('こんな献立を、毎日お膳ごと提案します。人数や苦手な食材を設定すると、あなたの家に合わせて選びます。'))}</p>
             ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
@@ -4242,6 +4268,24 @@ function runTwist(){
     markSeen(twistState.results);
 }
 
+/* ---- 記録: 月のカレンダー（記録のある日に点。日を押すとその日の記録） ---- */
+function calMonthHtml(byDay){
+    const ym = session.logMonth || TODAY.slice(0,7), [y, m] = ym.split('-').map(Number);
+    const first = new Date(y, m-1, 1), dim = new Date(y, m, 0).getDate(), lead = (first.getDay() + 6) % 7;   // 月曜はじまり
+    const cells = []; for (let i = 0; i < lead; i++) cells.push('<span></span>');
+    for (let d = 1; d <= dim; d++){
+        const key = `${ym}-${String(d).padStart(2,'0')}`, n = (byDay[key] || []).length;
+        cells.push(`<button type="button" class="cal-d${key === TODAY ? ' today' : ''}${key === session.logDay ? ' sel' : ''}" data-act="cal-day" data-d="${key}" aria-pressed="${key === session.logDay}" aria-label="${esc(jpDate(key) + (n ? GAP() + t('{n}品', {n}) : ''))}"><span>${d}</span><i class="${n ? 'on' : ''}"></i></button>`);
+    }
+    const dayHs = session.logDay && session.logDay.slice(0,7) === ym ? byDay[session.logDay] || [] : null;
+    const ws = weekStats();
+    return `<div class="card cal">
+        <p class="cal-week">${esc(t('今週は{n}日つくりました・{m}品', {n:ws.days, m:ws.dishes}))}</p>
+        <div class="cal-nav"><button type="button" class="btn sm ghost" data-act="cal-nav" data-v="-1" aria-label="${esc(t('前の月'))}"><span aria-hidden="true">‹</span></button><b>${esc(monthLabel(ym))}</b><button type="button" class="btn sm ghost" data-act="cal-nav" data-v="1" aria-label="${esc(t('次の月'))}" ${ym >= TODAY.slice(0,7) ? 'disabled' : ''}><span aria-hidden="true">›</span></button></div>
+        <div class="cal-grid">${[1,2,3,4,5,6,0].map(i => `<span class="cal-wd">${esc(LANG === 'ar' ? new Intl.DateTimeFormat(LANG, {weekday:'narrow'}).format(new Date(2026, 0, 4 + i)) : wdName(i))}</span>`).join('')}${cells.join('')}</div>
+        ${dayHs ? `<div class="cal-day"><b>${esc(jpDate(session.logDay))}</b>${dayHs.length ? dayHs.map(h => { const r = byId(h.id); return `<div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(r ? r.name : h.name)}${h.slot ? `<span class="s">${GAP()}${esc(typeLabel(h.slot))}</span>` : ''}</div>`; }).join('') : `<span class="small muted">${esc(t('この日の記録はありません'))}</span>`}</div>` : ''}
+    </div>`;
+}
 /* ---- 記録 ---- */
 let pendingConfirm = null;
 function viewLog(){
@@ -4278,6 +4322,7 @@ function viewLog(){
     </section>
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
+        ${calMonthHtml(byDay)}
         <div class="list">${Object.keys(byDay).length ? Object.entries(byDay).slice(0, 30).map(([d, hs]) => hs.map((h,i) => `
             <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
             <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
@@ -4405,22 +4450,56 @@ function timersHtml(){
     return TIMERS.map(x => { const left = (x.end - Date.now()) / 1000;
         return `<div class="timer${left <= 0 ? ' ring' : ''}" data-tid="${x.id}" role="timer"><span class="tm">${esc(left <= 0 ? t('時間です') : fmtLeft(left))}</span><span class="tn">${esc(x.name)}${GAP()}${esc(x.label)}</span><button type="button" class="x" data-act="timer-stop" data-tid="${x.id}" aria-label="${esc(t('タイマーを止める'))}">×</button></div>`; }).join('');
 }
+// iPhone アプリが裏にあるときも終わりを知らせるため、端末の通知を終了時刻に予約する（ID は 2000〜2009）
+let timerPermAsked = false;
+async function timerNotifyPerm(P){
+    try{
+        let perm = await P.checkPermissions();
+        if (perm && (perm.display === 'prompt' || perm.display === 'prompt-with-rationale')) perm = await P.requestPermissions();
+        if (perm && perm.display === 'granted') return true;
+    }catch(e){}
+    if (!timerPermAsked){ timerPermAsked = true; toast(t('通知が許可されていません。iPhone の「設定」→「ご飯帖」→「通知」で許可してください')); }
+    return false;
+}
+async function scheduleTimerNotify(x){
+    const P = nativePlugin('LocalNotifications'); if (!P || !x.nid) return;
+    try{
+        if (!(await timerNotifyPerm(P))) return;
+        await P.schedule({notifications:[{id: x.nid, title: t('{name}のタイマーが終わりました', {name:x.name}), body: x.label, schedule:{at: new Date(x.end), allowWhileIdle:true}}]});
+    }catch(e){}
+}
+function cancelTimerNotify(x){
+    const P = nativePlugin('LocalNotifications'); if (!P || !x || !x.nid) return;
+    try{ Promise.resolve(P.cancel({notifications:[{id: x.nid}]})).catch(() => {}); }catch(e){}
+}
 function startTimer(sec, name, label){
-    TIMERS.push({id: Date.now() + Math.random().toString(36).slice(2, 6), end: Date.now() + sec * 1000, name, label, rang: false});
-    if (TIMERS.length > 5) TIMERS.shift();
+    const used = new Set(TIMERS.map(x => x.nid));
+    let nid = 2000; while (used.has(nid)) nid++;
+    const x = {id: Date.now() + Math.random().toString(36).slice(2, 6), end: Date.now() + sec * 1000, name, label, rang: false, nid};
+    TIMERS.push(x);
+    if (TIMERS.length > 5) cancelTimerNotify(TIMERS.shift());
     saveTimers(); clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000);
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
+    scheduleTimerNotify(x);
+}
+function stopTimer(id){
+    cancelTimerNotify(TIMERS.find(x => x.id === id));
+    TIMERS = TIMERS.filter(x => x.id !== id); saveTimers();
+    const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
+    floatTimer();
 }
 function tickTimers(){
     floatTimer();
     if (!TIMERS.length){ clearInterval(timerTick); return; }
     TIMERS.forEach(x => {
         const left = (x.end - Date.now()) / 1000;
-        if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); }
+        if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); try{ if (navigator.vibrate) navigator.vibrate([400, 200, 400, 200, 400]); }catch(e){} }
         const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
         if (el){ el.classList.toggle('ring', left <= 0); el.querySelector('.tm').textContent = left <= 0 ? t('時間です') : fmtLeft(left); }
     });
 }
+// 裏から戻ってきたら、すぐ数え直して「時間です」を出す
+document.addEventListener('visibilitychange', () => { if (!document.hidden && TIMERS.length){ clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000); tickTimers(); const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } });
 // 作り方タブの外にいるときも、動いているタイマーを下に小さく出す（押すと作り方タブへ）
 function floatTimer(){
     const box = $('#timer-float'); if (!box) return;
@@ -4674,6 +4753,8 @@ document.addEventListener('click', e => {
         case 'ob-again': startOnboard(); break;
         case 'ob-next': sheet.step++; renderSheet(); break;
         case 'ob-back': sheet.step--; renderSheet(); break;
+        case 'cal-nav': { const [y, m] = (session.logMonth || TODAY.slice(0,7)).split('-').map(Number), d = new Date(y, m - 1 + Number(el.dataset.v), 1); const nm = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; if (nm <= TODAY.slice(0,7)){ session.logMonth = nm; session.logDay = null; render(); } break; }
+        case 'cal-day': session.logDay = session.logDay === el.dataset.d ? null : el.dataset.d; render(); break;
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
@@ -4769,7 +4850,7 @@ document.addEventListener('click', e => {
         case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
         case 'share-cook': openShare('cook'); break;
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label); break;
-        case 'timer-stop': TIMERS = TIMERS.filter(x => x.id !== el.dataset.tid); saveTimers(); { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
+        case 'timer-stop': stopTimer(el.dataset.tid); break;
         case 'search-to-fridge': addIngredients(el.dataset.v); render(); break;
         case 'fridge-twist': {
             const have = fridgeKeys();
