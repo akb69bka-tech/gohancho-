@@ -1669,7 +1669,8 @@ function setTab(tb){
 }
 function metaLine(r){
     r = swappedRecipe(r) || r;
-    const parts = [genreLabel(r) || t('和食'), t('{n}分', {n:r.min})];
+    // いまの国の料理には国名を出さない（どれも同じ国名になって役に立たないので）。ほかの国の料理だけ国名を出す
+    const parts = [...(r.pack && r.pack === currentCountry() ? [] : [genreLabel(r) || t('和食')]), t('{n}分', {n:r.min})];
     if (r.family && r.family !== '野菜') parts.push(familyLabel(r.family));
     return parts.join(t('・'));
 }
@@ -2813,6 +2814,7 @@ function renderSheet(){
             <div class="chips">${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}</div>
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
+            <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
             <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
         body = `<div class="ob-dots" aria-hidden="true">${dots}</div>${body}
@@ -3396,7 +3398,13 @@ function weekShareText(){
         days.forEach(x => { const r = byId(x.id); if (r) lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`); });
     const list = shoppingList(); const done = shopDoneSet();
     const rest = list.filter(e => !done.has(e.key));
-    if (rest.length){ lines.push('', t('【買い物メモ】')); rest.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`)); }
+    if (rest.length){
+        lines.push('', t('【買い物メモ】'));
+        [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
+            const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
+            lines.push(`〈${l}〉`); xs.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`));
+        });
+    }
     const aw = awardShareLine(); if (aw) lines.push('', aw);
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');

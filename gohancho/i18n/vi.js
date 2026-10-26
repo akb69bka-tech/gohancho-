@@ -663,4 +663,5 @@ GOHAN_I18N('vi', {
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Nguyên liệu bạn không ăn (chỉ gợi ý món không có hoặc đã thay thế)",
     "プランの残りが少なくなりました": "Kế hoạch sắp hết",
     "今日から7日分を考える": "Lên kế hoạch 7 ngày từ hôm nay",
+    "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Coi như đã có sẵn ở nhà và không đưa vào danh sách mua.",
 });

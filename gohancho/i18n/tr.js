@@ -663,4 +663,5 @@ GOHAN_I18N('tr', {
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Kaçındığınız malzemeler (yalnızca onlarsız ya da değiştirilmiş yemekler)",
     "プランの残りが少なくなりました": "Planınız bitmek üzere",
     "今日から7日分を考える": "Bugünden itibaren 7 gün planla",
+    "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Bunları evde var sayarız ve alışveriş listesine eklemeyiz.",
 });

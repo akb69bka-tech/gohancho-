@@ -663,4 +663,5 @@ GOHAN_I18N('fil', {
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Mga iniiwasang sangkap (ulam lang na wala ito o may kapalit)",
     "プランの残りが少なくなりました": "Malapit nang matapos ang plan mo",
     "今日から7日分を考える": "Magplano ng 7 araw mula ngayon",
+    "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Ituturing na mayroon na sa bahay at hindi isasama sa listahan ng bibilhin.",
 });

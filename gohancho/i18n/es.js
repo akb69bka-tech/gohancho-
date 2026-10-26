@@ -663,4 +663,5 @@ GOHAN_I18N('es', {
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Ingredientes que evitas (solo platos sin ellos o con un cambio)",
     "プランの残りが少なくなりました": "Tu plan está por terminar",
     "今日から7日分を考える": "Planear 7 días desde hoy",
+    "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Se cuentan como que ya los tienes y no salen en la lista de compras.",
 });

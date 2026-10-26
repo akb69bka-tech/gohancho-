@@ -663,4 +663,5 @@ GOHAN_I18N('id', {
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Bahan yang kamu hindari (hanya masakan tanpa bahan itu atau dengan pengganti)",
     "プランの残りが少なくなりました": "Rencanamu hampir selesai",
     "今日から7日分を考える": "Rencanakan 7 hari mulai hari ini",
+    "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Dianggap sudah ada di rumah dan tidak masuk daftar belanja.",
 });
