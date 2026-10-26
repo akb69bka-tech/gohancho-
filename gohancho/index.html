@@ -453,7 +453,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
-.cond .field{gap:4px}.cond-sum{cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-height:44px;font-weight:600}.cond-sum::after{content:'▾';margin-left:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-left:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .actions .btn{width:100%}
 .actions .full{grid-column:1 / -1}
@@ -1069,7 +1069,9 @@ function normalizeState(d){
     const st = Object.assign(structuredClone(DEFAULT_STATE), d, {settings: Object.assign(structuredClone(DEFAULT_STATE.settings), d.settings && typeof d.settings === 'object' ? d.settings : {})});
     const arr = x => Array.isArray(x) ? x : [], obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
     const isYmd = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
-    ['favs','hidden','fridge','staples','skills','seenTwists','usedDays'].forEach(k => { st[k] = arr(st[k]).filter(x => typeof x === 'string' || typeof x === 'number'); });
+    ['favs','hidden','fridge','staples','seenTwists','usedDays'].forEach(k => { st[k] = arr(st[k]).filter(x => typeof x === 'string' || typeof x === 'number'); });
+    st.skills = arr(st.skills).filter(x => x && typeof x === 'object');   // 「やってみた」の記録は {d, id, skill}
+    st.settings.servings = Math.min(6, Math.max(1, Math.round(Number(st.settings.servings)) || 2));
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
         ings: arr(r.ings).filter(x => typeof x === 'string' && x.trim()), steps: arr(r.steps).filter(x => typeof x === 'string'), seas: typeof r.seas === 'string' ? r.seas : '',
@@ -2885,7 +2887,7 @@ function renderSheet(){
             ${sheet.reason === 'monitor' ? `<div class="row">${monitorCanSend() ? `<button class="btn primary" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small muted">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : ''}
             <ul class="pw-list">${(sheet.reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:jpDate(introEndYmd())}))}</p>` : ''}
+                ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:jpDate(addDays(introEndYmd(), -1))}))}</p>` : ''}
                 <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${startOffer && p.per === '月' ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
@@ -3146,6 +3148,7 @@ function recipeSwaps(r){
         const w = swapFor(i);
         if (!w || r.items.some(x => x !== i && x.key === w.i.key)) return null;   // 代わりがない・同じ食材がもう入っている
         if ([i.label, i.name].some(n => n && n.length >= 2 && String(r.name).includes(n))) return null;   // 料理の名前の食材（ピーマンの肉詰めのピーマンなど）は置き換えない
+        if (nameHasFam(r, i)) return null;   // 料理の名前が主役の肉・魚を表す（鶏の唐揚げ・豚汁・Chicken parm など）料理も置き換えない
         swaps.push({from: i, to: w.i, tip: w.tip});
     }
     return {swaps, omit};
@@ -3180,7 +3183,21 @@ function swapLineHtml(r){
     return `<br><span class="swap-line">🔁 ${esc(w.swaps.map(x => t('{from} の代わりに {to}', {from: x.from.label, to: x.to.label})).join(LANG === 'ja' ? '、' : ', '))}</span>`;
 }
 // 家族に送る文に添える置き換え（受け取った人が元の食材を買わないように）
-function swapShare(r){ const w = (swappedRecipe(r) || {}).swapped; return w && w.swaps.length ? ' ' + t('（{to}で作る）', {to: joinNames([...new Set(w.swaps.map(x => x.to.label))])}) : ''; }
+function swapShare(r){ const w = (swappedRecipe(r) || {}).swapped; return w && w.swaps.length ? (LANG === 'ja' ? '' : ' ') + t('（{to}で作る）', {to: joinNames([...new Set(w.swaps.map(x => shortLabel(x.to)))])}) : ''; }
+// 置き換えの一言に出す短い名前（「닭다리살 (뼈 없는 것)」→「닭다리살」）
+function shortLabel(i){ return String(i.label || i.name).replace(/\s*[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').trim() || i.label; }
+// 料理の名前が、なかまの食材を表しているか（日本語・英語・各国の名前を見る）
+const NAME_FAM = {
+    pork: /豚|ポーク|とんかつ|トンカツ|角煮|\bpork\b|bacon|\bham\b|carnitas|lechon|돼지|제육|삼겹|หมู|thịt heo|thịt lợn|babi|baboy|schwein|porc|cerdo|maiale|porco|wieprz/i,
+    chicken: /鶏|チキン|親子|唐揚げ|からあげ|つくね|油淋鶏|棒棒鶏|手羽|ささみ|タッカルビ|サムゲタン|\bchicken\b|pollo|poulet|frango|hähnchen|huhn|kurczak|tavuk|닭|ไก่|\bgà\b|ayam|manok|鸡|雞/i,
+    beef: /牛|ビーフ|すき焼き|\bbeef\b|steak|bulgogi|불고기|갈비|소고기|เนื้อ|\bbò\b|sapi|\bbaka\b|bœuf|boeuf|\bres\b|\brind(er|fleisch)|wołow|\bdana\b|牛肉/i,
+    fish: /鮭|さけ|サーモン|石狩|船場汁|さば|鯖|ぶり|鰤|たら|鱈|あじ|鯵|いわし|さんま|かれい|さわら|かじき|白身魚|魚|\bfish\b|salmon|cod\b|tuna|mackerel|생선|고등어|ปลา|\bcá\b|ikan|isda|poisson|pescado|pesce|peixe|ryb|balık|鱼|魚/i,
+    shellfish: /えび|エビ|海老|いか|イカ|たこ|タコ|かに|カニ|蟹|あさり|しじみ|貝|shrimp|prawn|crab|squid|calamari|clam|mussel|oyster|새우|오징어|낙지|조개|กุ้ง|ปลาหมึก|\btôm\b|mực|udang|cumi|hipon|crevette|gamba|gamberi|camarão|krewet|karides|虾|蝦/i,
+};
+function nameHasFam(r, i){
+    const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
+    return Object.keys(NAME_FAM).some(f => inFam(f, i) && NAME_FAM[f].test(names));
+}
 // お膳に出す短い一言（例: 🔁 鶏肉で作る）
 function swapTagHtml(r){
     const w = (swappedRecipe(r) || {}).swapped; if (!w || !w.swaps.length) return '';
@@ -3188,12 +3205,13 @@ function swapTagHtml(r){
 }
 // 調味料の欄の苦手な食材（日本の料理の日本語の文だけ）: 鶏ガラスープの素・牛脂・オイスターソースを、苦手でないものに替える
 const SEAS_SWAP = [['chicken', /鶏ガラスープの素/g, '顆粒昆布だし'], ['beef', /牛脂（またはサラダ油）|牛脂/g, 'サラダ油'], ['pork', /ラード/g, 'サラダ油'], ['shellfish', /オイスターソース/g, '醤油（オイスターソースの代わり）']];
-function seasFor(r){
-    const s0 = r && r.seas; if (!s0 || r.pack || r.trLang || !swapOn()) return s0;
-    const fams = avoidCtx().fams; let s1 = String(s0);
+function seasSwapText(txt, r){
+    if (!txt || !r || r.pack || r.trLang || !swapOn()) return txt;
+    const fams = avoidCtx().fams; let s1 = String(txt);
     SEAS_SWAP.forEach(([f, re, to]) => { if (fams.includes(f)) s1 = s1.replace(re, to); });
     return s1;
 }
+function seasFor(r){ return seasSwapText(r && r.seas, r); }   // 作り方の文も同じように替える（recipeCoreHtml の stepText）
 // 置き換えの案内（詳細と作り方タブ）
 function swapNoteHtml(r){
     const w = r && r.swapped; if (!w) return '';
@@ -3360,7 +3378,7 @@ const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ',
 function shopSec(i){
     const w = (i.key + '|' + (i.en || '')).toLowerCase();
     if (['pork','chicken','beef','fish','shellfish'].some(f => inFam(f, i)) || /\b(lamb|mutton|goat|duck|liver|meat|mince|keema|sausage)\b/.test(w) || i.key === 'たらこ') return 'meat';
-    if (inFam('egg', i) || inFam('dairy', i)) return 'dairy';
+    if ((inFam('egg', i) || inFam('dairy', i)) && !/noodle|pasta|soup|condensed/.test(w)) return 'dairy';   // 卵麺・クリームスープの缶は乳製品・卵の売り場に入れない
     if (/\b(green|long|wing|string|runner|broad|fava)\s+beans?\b|bean sprouts?|snow peas|^peas\|/.test(w)) return 'veg';
     if (SHOP_OTHER_JP.includes(i.key) || inFam('wheat', i) || inFam('nuts', i)
         || /rice|noodle|vermicelli|tofu|tempeh|yuba|beans?\b|lentil|chickpea|\bpeas\b|\bdal\b|sauce|paste|canned|\bcan\b|stock|broth|\boil\b|wine|beer|kimchi|curry|tortilla|taco|wrapper|starch|sugar|vinegar|\bmix\b|seaweed|kelp|miso|tahini|coconut milk|cornmeal|grits|hominy|oats|quinoa|barley|tapioca|chips|pickle|olives?\b|capers?\b|raisins|prunes|mayonnaise|ketchup|ranch|mole|dried|preserved|salted|fermented|jelly|cakes?\b|dumplings|sesame|pepitas|lotus seed|ginseng|goji|jujube|fungus|wood ear|red yeast|herbal|saffron|sauerkraut|zhacai|bulgur|couscous|freekeh|tarhana|semolina|cassava flour|gram flour|atta/.test(w)) return 'other';
@@ -4039,7 +4057,7 @@ function recipeCoreHtml(r, done){
     r = swappedRecipe(r);
     const have = fridgeKeys();
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
-    const stepText = s => withF(typeof s === 'string' ? s : s.t, r);
+    const stepText = s => withF(seasSwapText(typeof s === 'string' ? s : s.t, r), r);
     return `${swapNoteHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
