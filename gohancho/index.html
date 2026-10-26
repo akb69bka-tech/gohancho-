@@ -495,6 +495,13 @@ nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:
 .cook-head h3{margin:0 0 4px;font-size:1.1rem}
 .cook-steps li{cursor:pointer;border-radius:8px;transition:opacity .15s}
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
+.cook-steps li.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
+.cook-steps li .now-tag{display:none}
+.cook-steps li.now .now-tag{display:block;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:2px}
+.cook-run{display:flex;flex-direction:column;gap:12px}   /* 「次の手順」は手順が見えているあいだだけ下に貼りつく */
+.cook-next{position:sticky;bottom:calc(var(--nav-h,84px) + 8px);z-index:4;width:100%;min-height:56px;font-size:1.05rem;box-shadow:var(--shadow)}
+.cook-next[hidden]{display:none}
+.wake-toggle{min-height:36px;align-self:flex-start}
 .timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .45rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5}
 .timers{position:sticky;top:8px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .timers:empty{display:none}
@@ -1742,6 +1749,8 @@ function render(){
     if (tab === 'settings') v.innerHTML = viewSettings();
     if (fk && !sheet && !modalId){ const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); }
     floatTimer();
+    syncWake();
+    if (tab === 'cook'){ const nv = document.querySelector('nav.tabs'); if (nv) document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); }   // 「次の手順」を下のタブのすぐ上に置く（言語でタブの高さが変わる）
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
     if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked');
@@ -3009,6 +3018,56 @@ function scaleText(str, factor){
     });
 }
 function servingFactor(){ return (Number(S.settings.servings) || 2) / 2; }
+// 作り方の文の中の分量も人数に合わせる。{s: 直した文, n: 直した数}
+// 変えるのは重さ・かさ・さじ・カップ・oz/lb と、材料名のすぐあとの「卵2個」「にんにく1片」だけ。温度・時間・大きさ・「4等分」「12個に丸める」・「1個ずつ」「each」はそのまま
+const STEP_NUM = '(?:\\d+(?:[.,]\\d+)?(?:(?:\\s+|と)\\d+\\/\\d+|\\/\\d+)?[½¼¾⅓⅔]?|[½¼¾⅓⅔])';
+const STEP_RANGE = `(${STEP_NUM})(?:\\s*(?:[-–~〜～]|to|à|a|bis|al|do|hingga|đến|hanggang)\\s*(${STEP_NUM}))?`;
+const STEP_W = 'g|grams?|gramos?|grammes?|grammi|ml|mL|㎖|cc|克|毫升|กรัม|มล\\.?|มิลลิลิตร|그램|밀리리터';   // 5・10 で丸める
+const STEP_D = 'kg|dl|cl|l|L|ℓ|litres?|liters?|litros?|litri|Liter|lít|リットル|리터|ลิตร|公升|升|公斤|กิโลกรัม';   // 小数で表す
+const STEP_F = 'tbsp|Tbsp|tsp|tablespoons?|teaspoons?|cups?|fl\\.? oz|oz|ounces?|lbs?|pounds?|c\\. ?à (?:soupe|café|s\\.|c\\.)|cuill?(?:\\.|ères?|ère)? à (?:soupe|café)|EL|TL|Esslöffel|Teelöffel|cucharad(?:as?|itas?)|tazas?|colher(?:es)?(?: de (?:sopa|chá))?|xícaras?|cucchia(?:io|ino|ini|i)|tazz[ae]|łyż\\p{L}*|sendok(?: makan| teh)?|kutsar\\p{L}*|gelas|चम्मच|कप|ملاعق|ملعقة|كوب|大匙|小匙|汤匙|湯匙|茶匙|큰술|작은술|컵|ช้อนโต๊ะ|ช้อนชา|ถ้วย|muỗng(?: canh| cà phê)?|chén|yemek kaşığı|çay kaşığı|su bardağı|カップ|杯';
+const STEP_RE = new RegExp(`(大さじ|小さじ|カップ)\\s*${STEP_RANGE}|${STEP_RANGE}\\s*(${STEP_W}|${STEP_D}|${STEP_F})(?![A-Za-zÀ-ɏ])|${STEP_RANGE}(個|本|枚|片)`, 'gu');
+const STEP_WRE = new RegExp(`^(?:${STEP_W})$`, 'u'), STEP_DRE = new RegExp(`^(?:${STEP_D})$`, 'u');
+const STEP_PL = {cup:'cups', tablespoon:'tablespoons', teaspoon:'teaspoons', ounce:'ounces', pound:'pounds', litre:'litres', liter:'liters', gram:'grams', cucharada:'cucharadas', cucharadita:'cucharaditas', taza:'tazas', litro:'litros', colher:'colheres', 'xícara':'xícaras', cucchiaio:'cucchiai', cucchiaino:'cucchiaini', 'cuillère':'cuillères', gramo:'gramos', gramme:'grammes'};
+const STEP_SG = Object.fromEntries(Object.entries(STEP_PL).map(([a, b]) => [b, a]));
+const STEP_FRAC = {'½':0.5, '¼':0.25, '¾':0.75, '⅓':1/3, '⅔':2/3};
+function stepNum(s){
+    let v = 0;
+    s.replace(/[½¼¾⅓⅔]$/, m => ' ' + STEP_FRAC[m]).trim().split(/\s+|と/).forEach(x => { const [a, b] = x.replace(',', '.').split('/'); v += b ? Number(a) / Number(b) : Number(a); });
+    return v;
+}
+function scaleSteps(text, factor, names){
+    let n = 0;
+    if (!text || factor === 1) return {s: text, n};
+    const ja = /[\u3040-\u30ff]/.test(text);   // ひらがな・カタカナがあれば日本語の文（1と1/2）
+    const s = String(text).replace(STEP_RE, (m, pre, pa, pb, a, b, unit, ca, cb, counter, off, all) => {
+        const before = all.slice(Math.max(0, off - 14), off), after = all.slice(off + m.length, off + m.length + 24);
+        // 1個あたり・1枚に大さじ2・各お椀に・each はそのまま（数が増えるのはひとつ分の量ではなく個数のほう）
+        if (/^.{0,6}(?:ずつ|それぞれ)|^(?:씩|あたり|につき)|^[^.;]*?\b(?:each|apiece|chacun|chacune|cada uno|ciascun|jeweils|per (?:piece|serving|person))\b/i.test(after)) return m;
+        if (/\b(?:each|per|chaque|cada|je|jeweils|każd\p{L}*)\s*$|各|それぞれ|1(?:枚|個|本|人|切れ)(?:に|につき|あたり)|(?:^|[\s\d])[x×]\s*$|\d\s*[(（]\s*$/iu.test(before)) return m;   // 4 x 100 g・1 (400 g) can
+        if (/^\s*(?:の)?(?:cans?|tins?|jars?|packs?|packages?|bags?|boxes?|bottles?|缶|袋|パック|箱)(?![a-z])/i.test(after)) return m;
+        if (unit === '杯' && ja) return m;   // 日本語の「お玉1杯」は量りの単位ではない
+        if (counter){   // 「卵2個」「にんにく1片」のように、材料名のすぐあとだけ
+            if (!ja || !names.some(nm => nm && before.endsWith(nm))) return m;
+            a = ca; b = cb; unit = counter;
+        } else if (pre){ a = pa; b = pb; }
+        const comma = /\d,\d/.test(m), kind = STEP_WRE.test(unit || '') ? 'w' : STEP_DRE.test(unit || '') ? 'd' : 'f';
+        const fmt = v => {
+            const f = (kind === 'w' ? fmtAmount(v, 'g') : kind === 'd' ? String(v >= 10 ? Math.round(v) : Math.max(0.1, Math.round(v * 10) / 10)) : fmtAmount(v, ''))
+                .replace(/^(\d+)(?:と| )(\d+\/\d+)$/, ja ? '$1と$2' : '$1 $2');
+            return comma ? f.replace('.', ',') : f;
+        };
+        const ia = m.indexOf(a), ie = b ? m.lastIndexOf(b) + b.length : ia + a.length;
+        const vb = b ? stepNum(b) * factor : 0, last = b ? vb : stepNum(a) * factor;
+        const num = fmt(stepNum(a) * factor) + (b ? m.slice(ia + a.length, m.lastIndexOf(b)) + fmt(vb) : '');
+        let u = m.slice(ie);   // 数のあとの空白と単位（大さじ・小さじは前）
+        const word = (u.trim().match(/^\S+/u) || [''])[0];   // cuillères à soupe・colher de sopa は最初の語で単数・複数を合わせる
+        if (STEP_PL[word] && last > 1) u = u.replace(word, STEP_PL[word]);
+        else if (STEP_SG[word] && (last === 1 || last < 1 && kind === 'f')) u = u.replace(word, STEP_SG[word]);   // 1/2 cup・0.6 litres
+        n++;
+        return m.slice(0, ia) + num + u;
+    });
+    return {s, n};
+}
 
 /* ---- 苦手な食材 ---- */
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
@@ -3256,7 +3315,7 @@ function viewSettings(){
             <div class="set-title">${esc(t('家族と献立'))}</div>
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
-                <span class="small muted">${esc(t('材料の分量をこの人数に合わせて表示します（作り方の文中の分量は2人分のままです）。'))}</span></div>
+                <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
             <div class="field"><label>${esc(t('ふだんの主食'))}</label>
                 <div class="chips">${(o => stapleOptions().map(x => `<button class="chip" data-act="staple-set" data-v="${esc(x.k)}" aria-pressed="${x.k === o.k}">${esc(stapleName(x))}</button>`).join(''))(currentStapleOpt())}</div>
                 <span class="small muted">${esc(t('献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。'))}</span></div>
@@ -3749,6 +3808,7 @@ function viewCook(){
         ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm${h === 17 ? ' primary' : ''}" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${!isToday ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div>` : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
+        ${wakeOK() ? `<label class="check wake-toggle"><input type="checkbox" data-act="keep-awake" ${S.settings.keepAwake !== false ? 'checked' : ''}><span>${esc(t('画面を消さない'))}</span></label>` : ''}
         <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
             ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
         <div class="card cook-card" role="tabpanel">
@@ -4070,17 +4130,47 @@ function recipeCoreHtml(r, done){
     r = swappedRecipe(r);
     const have = fridgeKeys();
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
-    const stepText = s => withF(seasSwapText(typeof s === 'string' ? s : s.t, r), r);
+    // 作り方の文の中の分量も人数に合わせる（「卵2個」などは材料名のすぐあとのときだけ）
+    const names = [...r.items.map(i => i.name), '卵', '卵黄', '卵白', 'にんにく'];
+    let scaled = 0;
+    const texts = r.steps.map(st => { const x = scaleSteps(withF(seasSwapText(typeof st === 'string' ? st : st.t, r), r), fac, names); scaled += x.n; return x.s; });
+    const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
     return `${swapNoteHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
                 <div class="label">${esc(t('作り方'))}</div>
-                ${fac !== 1 ? `<p class="small muted" style="margin:0">${esc(t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
+                ${fac !== 1 ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:sv}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
                 ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>
-                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"><span class="st-txt">${timerStepHtml(stepText(st), r.name)}</span></li>`).join('')}</ol>`
-                : `<ol class="steps">${r.steps.map(st => typeof st === 'string' ? `<li>${esc(stepText(st))}</li>` : `<li class="${st.add?'add':''}">${esc(stepText(st))}</li>`).join('')}</ol>`}
+                <div class="cook-run"><ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span>${timerStepHtml(texts[k], r.name)}</span></li>`).join('')}</ol>
+                <button type="button" class="btn primary cook-next" data-act="cook-next"${nowK < 0 ? ' hidden' : ''}>${esc(left === 1 ? t('完了') : t('次の手順'))}</button></div>`
+                : `<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${esc(texts[k])}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>`}
                 ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}`;
 }
+// 作り方タブの「いまの手順」（終わっていない最初の手順）の印と「次の手順」ボタンを、描き直さずに合わせる。いまの手順の li を返す
+function cookNow(){
+    const lis = [...document.querySelectorAll('.cook-steps li')], k = lis.findIndex(li => !li.classList.contains('done'));
+    lis.forEach((li, j) => { li.classList.toggle('now', j === k); if (j === k) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
+    const b = document.querySelector('.cook-next');
+    if (b){ b.hidden = k < 0; b.textContent = lis.filter(li => !li.classList.contains('done')).length === 1 ? t('完了') : t('次の手順'); }
+    return lis[k];
+}
+/* ---- 作り方タブを開いているあいだは画面を消さない（Screen Wake Lock。iOS は 16.4 から。使えない端末ではスイッチを出さない）。
+   画面を離れると端末が自動で解除するので、戻ってきたら取り直す ---- */
+let wakeLock = null, wakeBusy = false;
+const wakeOK = () => !!(navigator.wakeLock && navigator.wakeLock.request);
+const wakeWanted = () => wakeOK() && tab === 'cook' && S.settings.keepAwake !== false && !document.hidden && cookItems().length > 0;
+function syncWake(){
+    if (wakeWanted()){
+        if (wakeLock || wakeBusy) return;
+        wakeBusy = true;
+        navigator.wakeLock.request('screen').then(l => {
+            wakeBusy = false; wakeLock = l;
+            l.addEventListener('release', () => { if (wakeLock === l) wakeLock = null; });
+            if (!wakeWanted()) syncWake();   // 待つあいだにタブを離れた
+        }).catch(() => { wakeBusy = false; });
+    } else if (wakeLock){ const l = wakeLock; wakeLock = null; l.release().catch(() => {}); }
+}
+document.addEventListener('visibilitychange', syncWake);
 /* ---- 作り方タブのタイマー（手順の「8分」などをタップすると数えはじめる。音や振動は出さず、0になったら目で分かるように） ---- */
 const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
 function timerSecs(num, unit){
@@ -4455,14 +4545,18 @@ document.addEventListener('click', e => {
         case 'world-all': worldAll.add(el.dataset.k); render(); break;
         case 'goto-cook': session.cookIdx = 0; setTab('cook'); break;
         case 'cook-tab': { const k = Number(el.dataset.k); if (k >= 0 && k < cookItems().length){ session.cookIdx = k; render(); const p = document.querySelector('.cook-tabs'); if (p) p.scrollIntoView({block:'start', behavior:'smooth'}); } break; }
-        case 'cook-step': {
+        case 'cook-next': case 'cook-step': {
             const cur = cookItems()[session.cookIdx || 0]; if (!cur) break;
-            const k = Number(el.dataset.k); S.cook.done = S.cook.done || {}; const a = S.cook.done[cur.r.id] = S.cook.done[cur.r.id] || [];
+            const li = act === 'cook-next' ? document.querySelector('.cook-steps li.now') : el; if (!li) break;   // 次の手順: いまの手順を終わりにして、次へ
+            const k = Number(li.dataset.k); S.cook.done = S.cook.done || {}; const a = S.cook.done[cur.r.id] = S.cook.done[cur.r.id] || [];
             const j = a.indexOf(k); if (j >= 0) a.splice(j, 1); else a.push(k); save();
-            el.classList.toggle('done', j < 0); el.setAttribute('aria-pressed', String(j < 0));
-            if (a.length >= cur.r.steps.length){ render(); toast(t('{name}、できあがり！', {name:cur.r.name})); }
+            li.classList.toggle('done', j < 0); li.setAttribute('aria-pressed', String(j < 0));
+            if (a.length >= cur.r.steps.length){ render(); toast(t('{name}、できあがり！', {name:cur.r.name})); break; }
+            const nx = cookNow();
+            if (act === 'cook-next' && nx) nx.scrollIntoView({block:'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
             break;
         }
+        case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
         case 'share-cook': openShare('cook'); break;
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label); break;
         case 'timer-stop': TIMERS = TIMERS.filter(x => x.id !== el.dataset.tid); saveTimers(); { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
