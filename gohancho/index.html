@@ -3083,10 +3083,20 @@ function swapLineHtml(r){
     const w = (swappedRecipe(r) || {}).swapped; if (!w || !w.swaps.length) return '';
     return `<br><span class="swap-line">🔁 ${esc(w.swaps.map(x => t('{from} の代わりに {to}', {from: x.from.label, to: x.to.label})).join(LANG === 'ja' ? '、' : ', '))}</span>`;
 }
+// 家族に送る文に添える置き換え（受け取った人が元の食材を買わないように）
+function swapShare(r){ const w = (swappedRecipe(r) || {}).swapped; return w && w.swaps.length ? ' ' + t('（{to}で作る）', {to: joinNames([...new Set(w.swaps.map(x => x.to.label))])}) : ''; }
 // お膳に出す短い一言（例: 🔁 鶏肉で作る）
 function swapTagHtml(r){
     const w = (swappedRecipe(r) || {}).swapped; if (!w || !w.swaps.length) return '';
     return `<span class="mt swap-line">🔁 ${esc(t('{to}で作る', {to: joinNames([...new Set(w.swaps.map(x => x.to.label))])}))}</span>`;
+}
+// 調味料の欄の苦手な食材（日本の料理の日本語の文だけ）: 鶏ガラスープの素・牛脂・オイスターソースを、苦手でないものに替える
+const SEAS_SWAP = [['chicken', /鶏ガラスープの素/g, '顆粒昆布だし'], ['beef', /牛脂（またはサラダ油）|牛脂/g, 'サラダ油'], ['pork', /ラード/g, 'サラダ油'], ['shellfish', /オイスターソース/g, '醤油（オイスターソースの代わり）']];
+function seasFor(r){
+    const s0 = r && r.seas; if (!s0 || r.pack || r.trLang || !swapOn()) return s0;
+    const fams = avoidCtx().fams; let s1 = String(s0);
+    SEAS_SWAP.forEach(([f, re, to]) => { if (fams.includes(f)) s1 = s1.replace(re, to); });
+    return s1;
 }
 // 置き換えの案内（詳細と作り方タブ）
 function swapNoteHtml(r){
@@ -3326,7 +3336,7 @@ function shoppingHtml(){
 function menuShareText(m = session.menu, d = TODAY){
     if (!m || !m.items.length) return '';
     const lines = [t('【{date}の献立】', {date:jpDate(d)})];
-    m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name})); });
+    m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r)})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
     if (!(main && (main.type === 'ごはん' || main.type === '麺')) && st) lines.push(t('{slot}：{name}', {slot:t('主食'), name:st.name}));
@@ -3337,7 +3347,7 @@ function menuShareText(m = session.menu, d = TODAY){
 function weekShareText(){
     const days = visiblePlanDays(); if (!days.length) return '';
     const lines = [t('【献立の予定】')];
-        days.forEach(x => { const r = byId(x.id); if (r) lines.push(`${jpDate(x.d)}${GAP()}${r.name}`); });
+        days.forEach(x => { const r = byId(x.id); if (r) lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`); });
     const list = shoppingList(); const done = shopDoneSet();
     const rest = list.filter(e => !done.has(e.key));
     if (rest.length){ lines.push('', t('【買い物メモ】')); rest.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`)); }
@@ -3444,7 +3454,11 @@ function keepDraft(){
 function viewToday(){
     if (mixWaiting()) loadMix();
     if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
-    if (!session.menu && !restoreDraft() && !restoreDecided()) newMenu();   // 決めたあとに「かえる」で変えた案も、開き直して残す
+    if (!session.menu && !restoreDraft() && !restoreDecided()){
+        newMenu();
+        // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
+        const p = weekToday(); if (p && !isAvoided(p) && !S.hidden.includes(p.id) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
+    }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
     const m = session.menu;
     const main = m.items[0] && m.items[0].r;
@@ -3742,7 +3756,7 @@ function searchResultsHtml(q){
         <div class="info">
             <div class="head" data-act="open" data-id="${esc(r.id)}"><span class="name">${esc(r.name)}</span></div>
             <div class="ings">${swappedRecipe(r).items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</div>
-            <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
+            <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
         </div></div>`).join('')}</div>${hits.length > shown.length ? `<p class="foot">${esc(t('上位{n}品を表示しています。食材を足すと絞りこめます', {n:shown.length}))}</p>` : ''}${addBtn}`;
 }
 function runSearch(q){
@@ -3765,7 +3779,7 @@ function matchRow(m){
                 <span class="meter" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
             </div>
             <div class="ings">${parts.join(t('・'))}</div>
-            <div class="small muted">${esc(metaLine(r))} ${badges(r)}</div>
+            <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
         </div>
     </div>`;
 }
@@ -3861,9 +3875,10 @@ function viewLog(){
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         <div class="list">${Object.keys(byDay).length ? Object.entries(byDay).slice(0, 30).map(([d, hs]) => hs.map((h,i) => `
             <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
-            <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="react-open" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}" aria-expanded="${session.reactOpen === d + '|' + h.id}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
+            <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
+            ${yumOf(h) ? `<button class="btn sm ghost" data-act="yum-minus" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
-            ${session.reactOpen === d + '|' + h.id ? `<div class="item react-item">${reactRowHtml(h.id, d)}</div>` : ''}`).join('')).join('')
+`).join('')).join('')
             : `<div class="empty">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
     </section>
     ${top.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('よく作る料理'))}</h2></div>
@@ -3920,7 +3935,7 @@ function recipeCoreHtml(r, done){
     const stepText = s => typeof s === 'string' ? s : s.t;
     return `${swapNoteHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
-                ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(r.seas, fac))}</div>` : ''}
+                ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
                 <div class="label">${esc(t('作り方'))}</div>
                 ${fac !== 1 ? `<p class="small muted" style="margin:0">${esc(t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
                 ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>
@@ -3944,7 +3959,10 @@ function timerStepHtml(text, name){
     });
     return out + esc(String(text).slice(last));
 }
-let TIMERS = [], timerTick = 0;
+// タイマーは端末に残す（iPhone はアプリを裏で閉じることがあるので、開き直しても続きから数える。終わって10分たったものは消す）
+let TIMERS = (() => { try{ return (JSON.parse(localStorage.getItem('gohancho.timers') || '[]') || []).filter(x => x && x.end > Date.now() - 600000); }catch(e){ return []; } })(), timerTick = 0;
+function saveTimers(){ try{ localStorage.setItem('gohancho.timers', JSON.stringify(TIMERS)); }catch(e){} }
+if (TIMERS.length) setTimeout(() => { timerTick = setInterval(tickTimers, 1000); }, 0);
 function fmtLeft(s){ s = Math.max(0, Math.ceil(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); }
 function timersHtml(){
     return TIMERS.map(x => { const left = (x.end - Date.now()) / 1000;
@@ -3953,14 +3971,14 @@ function timersHtml(){
 function startTimer(sec, name, label){
     TIMERS.push({id: Date.now() + Math.random().toString(36).slice(2, 6), end: Date.now() + sec * 1000, name, label, rang: false});
     if (TIMERS.length > 5) TIMERS.shift();
-    clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000);
+    saveTimers(); clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000);
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
 }
 function tickTimers(){
     if (!TIMERS.length){ clearInterval(timerTick); return; }
     TIMERS.forEach(x => {
         const left = (x.end - Date.now()) / 1000;
-        if (left <= 0 && !x.rang){ x.rang = true; toast(t('{name}のタイマーが終わりました', {name:x.name})); }
+        if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); }
         const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
         if (el){ el.classList.toggle('ring', left <= 0); el.querySelector('.tm').textContent = left <= 0 ? t('時間です') : fmtLeft(left); }
     });
@@ -4023,6 +4041,7 @@ function renderModal(){
                     <label for="cook-date" class="muted">${esc(t('別の日に作った:'))}</label>
                     <input type="date" id="cook-date" value="${TODAY}" max="${TODAY}" style="width:auto">
                     <button class="btn sm" data-act="cooked-date" data-id="${esc(r.id)}">${esc(t('その日に記録'))}</button>
+                    <button class="btn sm ghost" data-act="cooked-date" data-d="yesterday" data-id="${esc(r.id)}">${esc(t('昨日作った'))}</button>
                 </div>
                 ${!r.isTwist ? (modalConfirmHide
                     ? `<div class="confirm"><div class="small">${esc(t('「{name}」を献立の候補から外します。記録画面からいつでも戻せます。', {name:r.name}))}</div><div class="row"><button class="btn sm primary" data-act="hide-yes" data-id="${esc(r.id)}">${esc(t('外す'))}</button><button class="btn sm" data-act="hide-no">${esc(t('やめる'))}</button></div></div>`
@@ -4285,7 +4304,7 @@ document.addEventListener('click', e => {
         }
         case 'share-cook': openShare('cook'); break;
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label); break;
-        case 'timer-stop': TIMERS = TIMERS.filter(x => x.id !== el.dataset.tid); { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
+        case 'timer-stop': TIMERS = TIMERS.filter(x => x.id !== el.dataset.tid); saveTimers(); { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
         case 'search-to-fridge': addIngredients(el.dataset.v); render(); break;
         case 'fridge-twist': {
             const have = fridgeKeys();
@@ -4310,7 +4329,7 @@ document.addEventListener('click', e => {
         }
         case 'cooked': { const r = byId(id); if (histEntry(id, TODAY)){ toast(t('今日の記録に入っています')); break; } record(id, slotOf(r)); toast(praiseFor([id]), true); renderModal(); render(); break; }
         case 'cooked-date': {
-            const d = $('#cook-date').value || TODAY; const r = byId(id);
+            const d = el.dataset.d === 'yesterday' ? addDays(TODAY, -1) : ($('#cook-date').value || TODAY); const r = byId(id);
             if (d > TODAY){ toast(t('未来の日付には記録できません')); break; }
             if (histEntry(id, d)){ modalReactD = d; toast(t('{date}の記録に入っています', {date:jpDate(d)})); renderModal(); break; }
             record(id, slotOf(r), d); modalReactD = d; toast(t('{date}に記録しました', {date:jpDate(d)})); renderModal(); render(); break;
