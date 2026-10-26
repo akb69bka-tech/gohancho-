@@ -1471,7 +1471,7 @@ function matchRecipe(r, have){
    ========================================================= */
 let session = {rejected:new Set(), mood:'all', useFridge:false, menu:null, twist:null, search:''};
 const MOODS = [
-    {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
+    {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'bento', get label(){ return t('お弁当'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
     {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }},
 ];
 /* 「ラクの日」: 主菜は20分以内・材料7つまで（常備品を除く）・揚げ物なし、副菜・汁ものは10分以内。
@@ -1496,11 +1496,38 @@ function easyLevel(slot){
     easyMemo.set(key, lv); return lv;
 }
 function easyRelaxed(){ return session.mood === 'easy' && ['主菜', '副菜', '汁物'].some(sl => easyLevel(sl) > 0); }
-function easyPool(slot, list){ if (session.mood !== 'easy') return list; const lv = easyLevel(slot); return lv >= 4 ? list : list.filter(r => easyFits(r, lv)); }
+/* 「お弁当」: 主菜1＋副菜2（汁ものなし）。汁気が少なく、冷めてもおいしい調理法（焼・炒・揚・和え・煮つめ）の主菜・副菜から選ぶ。
+   汁もの・鍋・シチュー・カレー・生ものは出さない。国によって当てはまる料理が少ないときは、枠ごとに少しずつゆるめる（段階 0→2。3は種類と名前だけ） */
+const BENTO_WET = /汁|スープ|シチュー|鍋|煮込み|チゲ|カレー|おでん|雑炊|粥|刺身|サラダ|生(?!姜)|漬け丼|soups?\b|stew|salad|curry|raw\b|ceviche|carpaccio|tartare|sashimi|gazpacho|porridge|congee|hot ?pot|chowder|broth|sopa|caldo|ensalada|guiso|guisad|soupe|salade|ragoût|suppe|eintopf|salat|zuppa|insalata|minestra|zupa|sałatka|çorba|salata|\bcanh\b|gỏi|sinigang|ซุป|แกง|ยำ|국$|탕$|찌개|샐러드|汤|羹|沙拉|شوربة|حساء|سلطة|يخنة|सूप|सलाद|करी|sup\b|bubur/i;
+const BENTO_MIN = [30, 45, 60, 999], BENTO_ML = [150, 250, 999, 999], BENTO_METHOD = ['焼', '炒', '揚', '和え', '煮'], BENTO_NEED = 3;
+function bentoMl(r){
+    const txt = [r.seas, ...(r.ings || [])].filter(x => typeof x === 'string').join(' ');
+    let ml = 0; txt.replace(/(\d+(?:\.\d+)?)\s*(ml|mL|cc|カップ|cups?)/g, (m, n, u) => { ml += Number(n) * (/^(ml|mL|cc)$/.test(u) ? 1 : 240); return m; });
+    return ml;
+}
+function bentoFits(r, lv){
+    if (r.type !== '主菜' && r.type !== '副菜') return false;
+    if (BENTO_WET.test([r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' '))) return false;
+    lv = Math.min(lv, 3); if (lv >= 3) return true;
+    return r.min <= BENTO_MIN[lv] && BENTO_METHOD.includes(r.method) && bentoMl(r) <= BENTO_ML[lv];
+}
+const bentoMemo = new Map();
+function bentoLevel(slot){
+    const pool = poolFor(slot);
+    const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join();
+    if (bentoMemo.has(key)) return bentoMemo.get(key);
+    const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
+    let lv = 0; while (lv < 3 && base.filter(r => bentoFits(r, lv)).length < BENTO_NEED) lv++;
+    if (bentoMemo.size > 60) bentoMemo.clear();
+    bentoMemo.set(key, lv); return lv;
+}
+function bentoPool(slot, list){ const f = list.filter(r => bentoFits(r, bentoLevel(slot))); return f.length ? f : list; }
+function easyPool(slot, list){ if (session.mood === 'bento') return bentoPool(slot, list); if (session.mood !== 'easy') return list; const lv = easyLevel(slot); return lv >= 4 ? list : list.filter(r => easyFits(r, lv)); }
 function moodOk(r, mood){
     switch(mood){
         case 'quick': return r.min <= 20;
         case 'easy': { const lv = easyLevel(['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'); return lv >= 4 || easyFits(r, lv); }
+        case 'bento': return bentoFits(r, bentoLevel(slotOf(r) === '副菜' ? '副菜' : '主菜'));
         case 'asia': return r.genre === '韓' || r.genre === 'エスニック';
         case 'fish': return ['魚','魚介'].includes(r.family);
         case 'meat': return ['豚','鶏','牛','ひき肉'].includes(r.family);
@@ -1631,7 +1658,7 @@ function reconcileMenu(){
 function newMenu(){
     const n = menuCount();
     const items = [];
-    COMPOSE[n].slots.forEach((slot, i) => {
+    composeOf(n).slots.forEach((slot, i) => {
         const r = i === 0 ? suggestMain() : suggestOrAny(slot, items, items[0] && items[0].r);
         items.push({slot, r});
     });
@@ -3145,6 +3172,7 @@ function renderSheet(){
             ${st > 0 ? '' : `<button class="btn sm ghost ob-skip" data-act="ob-skip">${esc(t('設定せずに使う'))}</button>`}`;
     }
     if (sheet.kind === 'country') body = countrySheetHtml();
+    if (sheet.kind === 'one') body = oneSheetHtml();
     if (sheet.kind === 'share') body = shareSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'paywall'){
@@ -3189,6 +3217,12 @@ const COMPOSE = {
     5:{slots:['主菜','副菜','副菜','副菜','汁物'], get name(){ return t('一汁四菜'); }},
     6:{slots:['主菜','主菜','副菜','副菜','副菜','汁物'], get name(){ return t('おもてなし膳'); }},
 };
+// 気分が「お弁当」のときは、汁ものの枠のない 3〜4品（主菜＋副菜）にする。ほかの気分は COMPOSE のまま
+const BENTO_COMPOSE = {
+    3:{slots:['主菜','副菜','副菜'], get name(){ return t('お弁当'); }},
+    4:{slots:['主菜','副菜','副菜','副菜'], get name(){ return t('お弁当'); }},
+};
+function composeOf(n){ return (session.mood === 'bento' && BENTO_COMPOSE[n]) || COMPOSE[n]; }
 function countChips(cur, act){
     return ['auto',2,3,4,5,6].map(v => {
         const locked = (v === 5 || v === 6) ? proMark() : '';
@@ -3208,6 +3242,7 @@ function autoCount(){
 function menuCount(){
     let n = S.settings.dishCount === 'auto' ? autoCount() : Number(S.settings.dishCount) || 3;
     if (n > PLAN.freeLimits.dishes && !hasPro()) n = PLAN.freeLimits.dishes;
+    if (session.mood === 'bento') return n >= 4 ? 4 : 3;
     return Math.min(6, Math.max(2, n));
 }
 function countReason(n){
@@ -3215,6 +3250,7 @@ function countReason(n){
     const wd = parseYmd(TODAY).getDay();
     if (session.mood === 'quick') return t('急ぎの日なので少なめの{n}品', {n});
     if (session.mood === 'easy') return t('ラクの日なので少なめの{n}品', {n});
+    if (session.mood === 'bento') return t('お弁当なので主菜と副菜の{n}品', {n});
     return t('{wd}曜日なので{n}品にしました', {wd: LANG === 'ja' ? WD[wd] : wdName(wd, true), n});
 }
 function suggestFor(slot, items, main){
@@ -3225,11 +3261,11 @@ function suggestFor(slot, items, main){
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物') return null;
         const ps = poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id));
-        return pick(easyPool('汁物', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);
+        return pick(easyPool('汁物', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
         const ps = poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id));
-        return pick(easyPool('副菜', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);
+        return pick(easyPool('副菜', ps), ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(ps, ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
@@ -4290,8 +4326,9 @@ function restoreDecided(){
     const c = S.cook; if (!c || c.d !== TODAY) return false;
     const items = c.ids.map((id, i) => ({slot: (c.slots || [])[i] || slotOf(byId(id) || {}), r: byId(id)}));
     if (!items.length || items.some(x => !x.r) || items[0].slot !== '主菜') return false;
-    const n = items.length;
-    if ((S.settings.dishCount !== 'auto' && n !== menuCount()) || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join()) return false;   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
+    const n = items.length, prevMood = session.mood;
+    if (n >= 3 && n <= 4 && items.every(x => x.slot !== '汁物')) session.mood = 'bento';   // 汁ものなしの献立は「お弁当」の献立
+    if ((S.settings.dishCount !== 'auto' && n !== menuCount()) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join()){ session.mood = prevMood; return false; }   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
     session.menu = {n, items}; return true;
 }
 // まだ決めていない今日の案も、その日のうちは同じものを出す（iPhone はアプリを裏で閉じることが多いので、開き直すたびに変わらないよう S.draft に残す）
@@ -4302,8 +4339,8 @@ function restoreDraft(){
     const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
     // おまかせの品数は気分と「まるごと入れ替え」の回数で決まるので、先に戻してから品数を照らし合わせる
     const prevMood = session.mood, prevSalt = session.countSalt; session.mood = c.mood || 'all'; session.countSalt = c.salt || 0;
-    if (n !== menuCount() || !COMPOSE[n]){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
-    if (n !== menuCount() || !COMPOSE[n] || COMPOSE[n].slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
+    if (n !== menuCount() || !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
+    if (n !== menuCount() || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
     session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
     session.twist = PACK ? null : suggestTwist();
     return true;
@@ -4329,6 +4366,115 @@ function whyLine(){
     if (rs.length >= 2 && total <= 60) return t('全部で合計{n}分でできます', {n: total});
     return '';
 }
+/* ---- あと1品（いまある料理に合う副菜・汁ものを3つ提案して、今日の献立に1品だけ足す） ----
+   料理は、この国の料理名をさがす・お気に入り・最近作った料理から選ぶか、「コロッケ」のように自由に入れる。
+   足すときは、同じ種類の空いた枠があればそこだけ、なければ品数を1つ増やして入れる（ほかの料理は動かさない） */
+const ONE_FAM = {pork:'豚', chicken:'鶏', beef:'牛', fish:'魚', shellfish:'魚介'};
+function onePseudo(text){
+    let fam = '';
+    for (const f in NAME_FAM) if (NAME_FAM[f].test(text)){ fam = ONE_FAM[f] || ''; break; }
+    if (!fam && /コロッケ|ハンバーグ|餃子|ぎょうざ|ギョーザ|シュウマイ|焼売|メンチ|つくね|ミートボール|meatball|burger|dumpling|croquette/i.test(text)) fam = 'ひき肉';
+    if (!fam) for (const k of extractIngredients(text).map(keyOf)) if (FAMILY[k]){ fam = FAMILY[k]; break; }
+    return {id:'_free', name:text, type:'主菜', family:fam, genre:'', items:[], main:true, method:'', min:0};
+}
+function oneSuggest(main, seen){
+    const bento = session.mood === 'bento', kinds = main.type === '汁物' || bento ? ['副菜', '副菜', '副菜'] : ['副菜', '汁物', '副菜'];
+    const fam = main.family && main.family !== '野菜' ? main.family : '';
+    const inMenu = new Set(menuIds()), base = [{r: main}, ...seen.map(id => ({r: RECIPES.find(r => r.id === id) || byId(id)})).filter(x => x.r)];
+    const out = [];
+    for (const slot of kinds){
+        const tried = []; let r = null;
+        for (let k = 0; k < 6 && !r; k++){
+            const c = suggestFor(slot, [...base, ...out.map(x => ({r:x})), ...tried.map(x => ({r:x}))], main);
+            if (!c) break;
+            if (inMenu.has(c.id) || (fam && c.family === fam)) tried.push(c); else r = c;
+        }
+        if (!r) r = tried.find(x => !inMenu.has(x.id)) || null;
+        if (r) out.push(r);
+    }
+    return out;
+}
+function ensureMenu(){
+    if (session.menu) return;
+    if (!restoreDraft() && !restoreDecided()){
+        newMenu();
+        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
+    }
+}
+function oneAdd(id){
+    const r = byId(id); if (!r) return;
+    ensureMenu(); const m = session.menu; if (!m) return;
+    if (m.items.some(x => x.r && x.r.id === r.id)){ toast(t('もう今日の献立に入っています')); return; }
+    const slot = slotOf(r) === '汁物' ? '汁物' : '副菜';
+    const maxN = session.mood === 'bento' ? 4 : 5, lim = hasPro() ? 6 : PLAN.freeLimits.dishes;
+    const empty = m.items.find(x => x.slot === slot && !x.r);
+    let msg;
+    if (empty){ empty.r = r; msg = t('「{name}」を今日の献立に入れました', {name:r.name}); }
+    else if (m.n < maxN && m.n + 1 <= lim && !(slot === '汁物' && m.items.some(x => x.slot === '汁物'))){
+        // 空いた枠がない: 品数を1つ増やす（副菜は最後の副菜の次、汁ものは最後）。ほかの料理はそのまま
+        const prev = {n: m.n, items: m.items.slice(), dc: S.settings.dishCount};
+        let at = m.items.length; if (slot === '副菜'){ at = 0; m.items.forEach((x, i) => { if (x.slot === '副菜' || x.slot === '主菜') at = i + 1; }); }
+        m.items.splice(at, 0, {slot, r}); m.n = m.items.length; S.settings.dishCount = m.n; save();
+        msg = t('「{name}」を入れて{n}品にしました', {name:r.name, n:m.n});
+        toast(msg, false, () => { m.n = prev.n; m.items = prev.items; S.settings.dishCount = prev.dc; save(); render(); }); closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
+    } else {
+        // 品数をこれ以上増やせない: 同じ種類の最後の枠だけをかえる（元に戻せる）
+        let at = -1; m.items.forEach((x, i) => { if (x.slot === slot) at = i; });
+        if (at < 0){ toast(t('合う料理がありません')); return; }
+        const old = m.items[at].r; m.items[at].r = r;
+        toast(t('「{old}」を「{name}」にかえました', {old: old ? old.name : '', name:r.name}), false, () => { m.items[at].r = old; render(); });
+        closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
+    }
+    toast(msg); closeSheet(); if (tab !== 'today') setTab('today'); else render();
+}
+function openOne(){ sheet = {kind:'one', q:'', pick:null, sugg:null, seen:[]}; renderSheet(); }
+function oneName(){ const p = sheet.pick; return p.id ? ((RECIPES.find(r => r.id === p.id) || byId(p.id) || {}).name || '') : p.text; }
+function oneMain(){ const p = sheet.pick; return p.id ? (RECIPES.find(r => r.id === p.id) || byId(p.id)) : onePseudo(p.text); }
+function oneRun(more){
+    const main = oneMain(); if (!main) return;
+    let list = oneSuggest(main, more ? sheet.seen : []);
+    if (more && !list.length){ sheet.seen = []; list = oneSuggest(main, []); }
+    sheet.seen = more ? sheet.seen.concat(list.map(r => r.id)) : list.map(r => r.id);
+    sheet.sugg = list.map(r => r.id);
+}
+function oneBodyHtml(){
+    const sh = sheet;
+    if (sh.pick){
+        const name = oneName(), list = (sh.sugg || []).map(id => byId(id)).filter(Boolean);
+        return `<div class="note"><span>${esc(name)}</span><button class="btn sm ghost" data-act="one-change">${esc(t('かえる'))}</button></div>
+            <p class="small muted" style="margin:0">${esc(t('「{name}」に合う副菜・汁もの', {name}))}</p>
+            ${list.length ? `<div class="list">${list.map(r => `<div class="match">
+                <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
+                <div class="info">
+                    <div class="head"><span class="name">${esc(r.name)}</span></div>
+                    <div class="small muted">${esc(slotLabel(slotOf(r)))}・${esc(metaLine(r))}</div>
+                    <div class="row"><button class="btn sm primary" data-act="one-add" data-id="${esc(r.id)}">${esc(t('今日の献立に入れる'))}</button><button class="btn sm" data-act="one-view" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>
+                </div></div>`).join('')}</div>` : `<div class="list"><div class="empty">${esc(t('合う料理がありません'))}</div></div>`}
+            <div class="row"><button class="btn sm ghost" data-act="one-more">${esc(t('別の案を出す'))}</button></div>`;
+    }
+    const q = (sh.q || '').trim();
+    const chip = r => `<button class="chip" data-act="one-pick" data-id="${esc(r.id)}">${esc(r.name)}</button>`;
+    if (q){
+        const hits = searchRecipes(q).hits.slice(0, 6);
+        return `<div class="chips">${hits.map(chip).join('')}<button class="chip" data-act="one-free" data-v="${esc(q)}">${esc(t('「{name}」をそのまま使う', {name:q}))}</button></div>`;
+    }
+    const inR = id => RECIPES.find(r => r.id === id);
+    const favs = S.favs.map(inR).filter(Boolean).slice(0, 6), seen = new Set(favs.map(r => r.id));
+    const recent = []; S.history.forEach(h => { const r = inR(h.id); if (r && !seen.has(r.id) && !recent.includes(r) && recent.length < 6 && r.type !== '汁物') recent.push(r); });
+    return `${favs.length ? `<div class="eyebrow">${esc(t('お気に入り'))}</div><div class="chips">${favs.map(chip).join('')}</div>` : ''}
+        ${recent.length ? `<div class="eyebrow">${esc(t('よく作る料理'))}</div><div class="chips">${recent.map(chip).join('')}</div>` : ''}`;
+}
+function oneSheetHtml(){
+    return `<h2>${esc(t('あと1品'))}</h2>
+        <p class="muted small" style="margin:0">${esc(t('いまある料理（買ってきた・残りもの・好きな料理）に合う、副菜や汁ものを3つ提案します。'))}</p>
+        ${sheet.pick ? '' : `<form class="inputbar" data-form="one-search" role="search">
+            <input type="search" id="one-input" value="${esc(sheet.q || '')}" placeholder="${esc(t('料理名を入れる（例: コロッケ）'))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理名'))}">
+            <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
+        </form>`}
+        <div id="one-body" class="one-body">${oneBodyHtml()}</div>
+        <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+}
+function oneRefresh(){ const b = $('#one-body'); if (b) b.innerHTML = oneBodyHtml(); }
 /* ---- いつもの献立（保存した献立） ---- */
 function saveMenu(){
     const m = session.menu; if (!m) return;
@@ -4473,13 +4619,14 @@ function viewToday(){
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${main && !(S.cook && S.cook.d === TODAY) ? `<button class="btn primary big-decide" data-act="decide" data-quick="1"><span>${esc(t('おまかせで決定'))}</span><small>${esc(t('いま出ている献立に決めて、作り方へ進みます'))}</small></button>` : ''}
         ${planned ? `<div class="note"><span>${esc(t('1週間プランでは、今日の主菜は'))} <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
-        <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}) : t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:COMPOSE[m.n].name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)})))}</span></div>
+        <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}) : t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)})))}</span></div>
         <details class="card cond" ${S.condOpen ? 'open' : ''}><summary class="cond-sum"><span>${esc(t('条件を変える'))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n}), ...(mixCountries().length ? [t('国の組み合わせ')] : []), ...(session.useFridge ? [t('冷蔵庫の材料を優先')] : [])].join(t('・')))}</span></summary>
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分'))}">${moodChips}</div></div>
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </details>
+        ${session.mood === 'bento' ? `<p class="small muted" style="margin:0">${esc(t('お弁当向きのおかずです（冷ましてから詰めてください）'))}</p>` : ''}
         ${easyRelaxed() ? `<p class="small muted" style="margin:0">${esc(easyLevel('主菜') === 0 || easyLevel('主菜') >= 4 ? t('この国には「ラク」な料理が少ないので、条件をゆるめて選んでいます') : t('この国には「ラク」な料理が少ないので、主菜は{n}分以内までゆるめて選んでいます', {n: EASY_MIN.main[easyLevel('主菜')]}))}</p>` : ''}
         ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}${stapleAdd ? `<div class="tray-row">${stapleAdd}</div>` : ''}</div>`
         : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
@@ -4496,7 +4643,7 @@ function viewToday(){
             <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>
             <button class="btn ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button>
         </div>
-        <div class="menu-tools"><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
+        <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
     </section>
 
     ${main ? `<section class="sec">
@@ -4640,6 +4787,7 @@ function viewFridge(){
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         <div id="search-results">${searchResultsHtml(session.search || '')}</div>
+        <div class="row"><button class="btn sm" data-act="one-open">${esc(t('あと1品'))}</button><span class="small muted">${esc(t('いまある料理に合う副菜・汁ものを提案'))}</span></div>
         </div>
     </section>
     <section class="sec">
@@ -5396,6 +5544,13 @@ document.addEventListener('click', e => {
         case 'share-card': shareCard(el.dataset.k || 'menu'); break;
         case 'card-menu': shareCard('menu'); break;
         case 'save-menu': saveMenu(); break;
+        case 'one-open': openOne(); break;
+        case 'one-pick': sheet.pick = {id}; oneRun(false); renderSheet(); break;
+        case 'one-free': sheet.pick = {text: el.dataset.v}; oneRun(false); renderSheet(); break;
+        case 'one-change': sheet.pick = null; sheet.sugg = null; sheet.seen = []; sheet.q = ''; renderSheet(); break;
+        case 'one-more': oneRun(true); oneRefresh(); break;
+        case 'one-add': oneAdd(id); break;
+        case 'one-view': closeSheet(); openModal(id); break;
         case 'goto-saved': setTab('log'); setTimeout(() => { const e = $('#saved-menus'); if (e) e.scrollIntoView({block:'start'}); }, 30); break;
         case 'saved-apply': applySavedMenu(id); break;
         case 'saved-rm': {
@@ -5728,6 +5883,7 @@ function keepDetailsOpen(){ const b = document.querySelectorAll('details.box'); 
 let searchDeb = 0;
 document.addEventListener('input', e => {
     if (/^c-(name|ings)$/.test(e.target.id) && e.target.getAttribute('aria-invalid')){ e.target.removeAttribute('aria-invalid'); const m = $('#' + e.target.id + '-err'); if (m) m.remove(); }   // 入れはじめたら「足りない」の印を消す
+    if (e.target.id === 'one-input' && sheet && sheet.kind === 'one'){ sheet.q = e.target.value; oneRefresh(); return; }
     if (e.target.id !== 'search-input') return;
     clearTimeout(searchDeb); const q = e.target.value;
     searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
@@ -5766,6 +5922,11 @@ document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
+    if (f === 'one-search' && sheet && sheet.kind === 'one'){
+        const q = $('#one-input').value.trim(); sheet.q = q; if (!q) return;
+        const hit = searchRecipes(q).hits[0];
+        sheet.pick = hit && norm(hit.name) === norm(q) ? {id: hit.id} : {text: q}; oneRun(false); renderSheet();
+    }
     if (f === 'add-ing'){ const inp = $('#ing-input'); if (inp.value.trim()){ addIngredients(inp.value); inp.value = ''; render(); $('#ing-input').focus(); } }
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
@@ -5994,7 +6155,7 @@ function applyCountry(cc){
         replaceList(QUICK, (pk.quick || []).map(disp));
         replaceList(STAPLE_QUICK, (pk.pantry || []).map(disp));
         replaceList(AVOID_QUICK, (pk.quick || []).slice(0, 14).map(disp));
-        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'fish', 'meat'].includes(m.k)));
+        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'bento', 'fish', 'meat'].includes(m.k)));
     }
     rebuildVariants();
     session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;
