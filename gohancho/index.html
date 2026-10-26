@@ -190,6 +190,7 @@ a{color:var(--accent)}
 .pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 8px;font-size:.84rem}.pw-steps li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;gap:8px;padding-inline-start:10px;border-inline-start:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-inline-start:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cook-warn{margin:.6rem 0}
 
 /* 入力 */
 .field{display:flex;flex-direction:column;gap:6px}
@@ -1713,7 +1714,7 @@ function slotStillOk(it){
 }
 function reconcileMenu(){
     const m = session.menu; if (!m) return false;
-    if (m.n !== menuCount()){ newMenu(); return true; }
+    if (m.n !== menuCount() && !m.adj){ newMenu(); return true; }   // 「あと1品」で足した品数は、設定が変わらないかぎり、そのまま
     let changed = false;
     m.items.forEach((it, i) => {
         if (slotStillOk(it)) return;
@@ -3345,11 +3346,15 @@ function menuCount(){
     return Math.min(6, Math.max(2, n));
 }
 function countReason(n){
-    if (S.settings.dishCount !== 'auto') return t('{n}品に固定しています', {n});
+    if (session.menu && session.menu.adj && n !== menuCount()) return t('「あと1品」で足して{n}品にしました', {n});   // 設定の品数は変わらない（今日の献立だけ）
+    if (session.mood === 'bento') return t('お弁当なので主菜と副菜の{n}品', {n});   // お弁当は設定が何品でも3〜4品（汁ものなし）
+    if (S.settings.dishCount !== 'auto'){
+        if (!hasPro() && Number(S.settings.dishCount) > n && n === PLAN.freeLimits.dishes) return t('無料版は{n}品までなので{n}品です', {n});
+        return t('{n}品に固定しています', {n});
+    }
     const wd = parseYmd(TODAY).getDay();
     if (session.mood === 'quick') return t('急ぎの日なので少なめの{n}品', {n});
     if (session.mood === 'easy') return t('ラクの日なので少なめの{n}品', {n});
-    if (session.mood === 'bento') return t('お弁当なので主菜と副菜の{n}品', {n});
     return t('{wd}曜日なので{n}品にしました', {wd: LANG === 'ja' ? WD[wd] : wdName(wd, true), n});
 }
 function suggestFor(slot, items, main){
@@ -3636,19 +3641,65 @@ function eatersLine(){
     const ms = eaterMembers(); if (!ms.some(m => m.avoid.length || m.mild)) return '';
     return t('{names}が食べられるお膳です', {names: joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))))});
 }
-// 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる）、0 = 辛くない
-const SPICE_HOT = /chil(?:i|li|e)|唐辛子|とうがらし|鷹の爪|一味|七味|豆板醤|コチュジャン|ラー油|ガラムマサラ|カイエン|ハラペーニョ|ハリッサ|サンバル|シラチャ|タバスコ|ペペロンチーノ|jalape|cayenne|harissa|sambal|sriracha|gochu|tabasco|curry paste|peri.?peri|pepper flakes|habanero|chipotle|고추|매운|辣|พริก|\bớt\b|cabai/i;
-const SPICE_NAME = /辛(?!子)|麻婆|担々|タンタン|キムチチゲ|スンドゥブ|spicy|\bhot\b|vindaloo|arrabbiata|diavola|buffalo|辣|매운/i;
+// 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理・唐辛子の調味料を大さじ1ほど使う料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる・キムチ）、0 = 辛くない
+// 材料の言葉は、英語の名前（key・en）のほか、各国の言葉（ハングル・ヒンディー語・アラビア語・タイ語・ベトナム語・インドネシア語・トルコ語など）でも見分ける。
+// 「ピーマン・パプリカ・黒こしょう」を辛いと間違えないよう、ししとう型の辛くない唐辛子（shimla mirch=ピーマン、ớt chuông、พริกไทย など）は除く
+const SPICE_HOT = new RegExp([
+    'chil(?:i|li|e)(?!an)', '唐辛子|とうがらし|鷹の爪|一味|七味|豆板醤|コチュジャン|ラー油|ガラムマサラ|カイエン|ハラペーニョ|ハリッサ|サンバル|シラチャ|タバスコ|ペペロンチーノ|トムヤム|ハバネロ|チリパウダー|チリソース|チリペッパー|ブート|ピリ辛',
+    'jalape|cayenne|harissa|sambal|sriracha|gochu|tabasco|curry paste|peri.?peri|pepper flakes|habanero|chipotle|serrano|de [aá]rbol|guindilla|piquin|chiltepin|rocoto|aj[ií] limo|scotch bonnet|bird.?s eye|hot sauce|hot pepper|doubanjiang|piment(?![oóõãuaà])|peperoncino|piccante|picante|pimenta.malagueta|malagueta',
+    '고추|고춧|청양|매운|매콤|辣|麻辣|พริก(?!ไทย|หยวก|หวาน|ขี้หนูใหญ่หวาน)|เผ็ด|ต้มยำ|\\bớt\\b(?!\\s*chu[oô]ng)|sa t[eế]|\\bcay\\b|cabai|rawit|lombok|pedas|\\bsili(?:ng)?\\b|ostr(?:y|a|e)\\b|papryczk',
+    'हरी मिर्च|लाल मिर्च|सूखी मिर्च|मिर्च पाउडर|मिर्च फ्लेक्स|तीखा|तीखी',
+    '(?:^|[^\\u0600-\\u06FF])شط[ةه]|فلفل\\s+(?:أخضر\\s+|أحمر\\s+)?حار|هريسة|(?:^|\\s)حار(?:ة)?(?![\\u0600-\\u06FF])',
+    'ac[ıi] (?:biber|salça|sos|ezme|toz)|acılı|pul biber|\\bisot\\b'
+].join('|'), 'i');
+// 辛くない（または辛みの弱い）唐辛子。名前に chili/chile とあっても、辛い料理とは数えない（ししとう型・ポブラノ・アンチョ・パシージャ・グアヒーヨ・アヒ・アマリージョ・シリン・ハバ・コワリ）
+const SPICE_MILD_CHILI = /sweet chil|kashmiri|poblano|ancho\b|pasilla|guajillo|aj[ií] amarillo|aj[ií] mirasol|siling haba|kkwari|꽈리|padr[oó]n|massaman|มัสมั่น|panang|พะแนง|shishito|anaheim|banana (?:pepper|chili)|pepperoncini|green chiles?\b(?= *\(?canned| *\(?diced)|canned diced green chil/i;
+// 材料そのものは辛くはないが、辛い味つけになることが多いもの（キムチ）。少し辛みあり
+const SPICE_KIMCHI = /kimchi|キムチ|김치|묵은지/i;
+const SPICE_NAME = /辛(?!子)|麻婆|担々|坦々|キムチチゲ|キムチ鍋|スンドゥブ|김치찌개|김치찜|순두부|spicy|\bhot\b(?!\s*(?:dog|pot|cocoa|chocolate|water|cross))|vindaloo|vindalu|arrabbiata|diavol[ao]|diabla|buffalo|辣|매운|매콤|เผ็ด|ต้มยำ|ส้มตำ|ลาบ|tom yum|som tam|larb|kimchi jjigae|pedas|sambal|rendang|balado|geprek|tinga|chilaquiles/i;
+const SPICE_STRONG = /gochujang|gochugaru|고추장|고춧가루|chil(?:i|li|e)\s*(?:powder|flakes?|paste|sauce|jam|oil|crisp)|red pepper flakes|crushed red pepper|cayenne|harissa|sambal|sriracha|curry paste|hot sauce|doubanjiang|豆板醤|コチュジャン|ラー油|一味|七味|トムヤムペースト|チリパウダー|チリソース|ハリッサ|サンバル|タバスコ|nam prik|พริกป่น|พริกแกง|मिर्च पाउडर|(?:^|[^\u0600-\u06FF])شط[ةه]/i;
+const SPICE_SOFT = /pinch|dash|少々|ひとつまみ|optional|好みで|適量|to serve|for serving|to sprinkle|garnish|선택|생략|ถ้าชอบ|สำหรับเสิร์ฟ|चाहें|رشة|رشّة|\?\s*$/i;
+// 「1 tbsp」「大さじ2」「1 1/2 tbsp」のような分量を小さじ換算にする（読み取れなければ null）
+const spiceClean = x => String(x).replace(/甘辛|塩辛|辛抱|からし|jam[oó]n(?: serrano)?|serrano ham|serrano jam[oó]n/gi, '').replace(/(唐?)辛子/g, (m, t) => t ? m : '');
+function spiceTsp(tok){
+    const m = String(tok).match(/(\d+)\s+(\d+)\/(\d+)|(\d+)\/(\d+)|(\d+(?:\.\d+)?)/); if (!m) return null;
+    const n = m[1] ? +m[1] + m[2] / m[3] : m[4] ? m[4] / m[5] : +m[6];
+    if (/tbsp|tablespoon|大さじ/i.test(tok)) return n * 3;
+    if (/tsp|teaspoon|小さじ/i.test(tok)) return n;
+    return null;
+}
+// 調味料の欄1つ分の辛さ: 唐辛子の調味料は、大さじ1ほど（小さじ2以上）使うなら2、少しなら1。アメリカ・ヨーロッパの chili powder は香辛料の混ぜもの（クミンなどが主）なので、辛さは強く数えない
+function seasSpice(str, pack){
+    let lv = 0; const western = pack && /^(US|GB|FR|DE|IT|ES|PL)$/.test(pack);
+    spiceClean(str || '').split(/\s*[·•;、・]\s*|,\s+/).forEach(tok => {
+        if (!tok || (!SPICE_HOT.test(tok) && !SPICE_STRONG.test(tok))) return;
+        if (SPICE_MILD_CHILI.test(tok)) { lv = Math.max(lv, 1); return; }
+        const strong = SPICE_STRONG.test(tok) && !(western && /chil(?:i|li|e)\s*powder/i.test(tok));
+        const tsp = spiceTsp(tok), soft = SPICE_SOFT.test(tok);
+        const whole = tok.match(/(\d+)\s*(?:dried|fresh|green|red|whole|bird)?[^\d]{0,24}chil(?:i|li|e)(?:s|ies)?\b(?!\s*(?:powder|flakes|paste|sauce|oil))|赤唐辛子\s*(\d+)本/i);
+        if (whole && !soft) { lv = Math.max(lv, +(whole[1] || whole[2]) >= 3 ? 2 : 1); return; }
+        lv = Math.max(lv, strong && !soft && tsp !== null && tsp >= 2 ? 2 : 1);
+    });
+    return lv;
+}
 function spiceLevel(r){
     if (!r || !r.items) return 0;
     if (r._spice !== undefined) return r._spice;
     const txt = i => (i.key + '|' + (i.en || '') + '|' + (i.name || '') + '|' + (i.label || ''));
-    const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
+    const clean = spiceClean;
+    const names = clean([r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | '));
     let lv = 0;
-    if (r.items.some(i => !i.opt && SPICE_HOT.test(txt(i))) || SPICE_NAME.test(names)) lv = 2;
-    else {
+    r.items.forEach(i => {
+        const x = clean(txt(i)); let v = 0;
+        if (SPICE_HOT.test(x) || SPICE_STRONG.test(x)) v = SPICE_MILD_CHILI.test(x) ? 1 : (i.opt ? 1 : 2);
+        else if (SPICE_KIMCHI.test(x)) v = 1;
+        lv = Math.max(lv, v);
+    });
+    if (SPICE_NAME.test(names)) lv = 2;
+    else if (lv < 2){
         const steps = (r.steps || []).map(x => typeof x === 'string' ? x : (x && x.t) || '').join(' ');
-        if (r.items.some(i => SPICE_HOT.test(txt(i))) || SPICE_HOT.test(String(r.seas || '') + ' ' + steps) || /辛(?!子)|spicy/i.test(steps)) lv = 1;
+        lv = Math.max(lv, seasSpice(r.seasBase, r.pack), r.seas !== r.seasBase ? seasSpice(r.seas, r.pack) : 0);
+        if (!lv && (SPICE_HOT.test(clean(steps)) || /辛(?!子)|spicy/i.test(clean(steps)))) lv = 1;
     }
     Object.defineProperty(r, '_spice', {value: lv, enumerable: false, configurable: true});
     return lv;
@@ -3690,6 +3741,7 @@ function isAvoided(r){
     if (!r || !r.items) return false;
     if (mildOn() && spiceLevel(r) >= 2) return true;   // 辛いのが苦手な人がいるときは、とても辛い料理は出さない
     if (!effAvoid().length) return false;
+    if (allergyList().length && r.items.some(i => itemAvoided(i, allergyCtx()))) return true;   // アレルギーの食材は、なくても可の材料でも使う料理を出さない（置き換え・抜くこともしない）
     const c = avoidCtx();
     if (seasAvoided(r, c)) return true;   // 調味料に苦手な食材（小麦粉・卵・バターなど）がある料理は出さない
     if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
@@ -3909,7 +3961,7 @@ function viewSettings(){
                 ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
                 <label class="check" style="margin-top:6px"><input type="checkbox" data-act="avoid-swap" ${swapOn()?'checked':''}><span>${esc(t('ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）'))}</span></label>
-                <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。') : t('苦手な食材を使う料理は、すべて出しません。'))}</span>
+                <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。「なくても可」の材料は抜いて出します。') : t('苦手な食材を必ず使う料理は出しません。「なくても可」の材料にだけ入っている料理は、そのまま出します（その材料は入れなくて大丈夫です）。'))}</span>
                 <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span></div>
         </div>
         ${familySettingsHtml()}
@@ -4512,8 +4564,8 @@ function restoreDecided(){
     if (!items.length || items.some(x => !x.r) || items[0].slot !== '主菜') return false;
     const n = items.length, prevMood = session.mood;
     if (n >= 3 && n <= 4 && items.every(x => x.slot !== '汁物')) session.mood = 'bento';   // 汁ものなしの献立は「お弁当」の献立
-    if ((S.settings.dishCount !== 'auto' && n !== menuCount()) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join()){ session.mood = prevMood; return false; }   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
-    session.menu = {n, items}; return true;
+    if ((S.settings.dishCount !== 'auto' && n !== menuCount() && !c.adj) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join()){ session.mood = prevMood; return false; }   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
+    session.menu = {n, items, adj: !!c.adj && n !== menuCount()}; return true;
 }
 // まだ決めていない今日の案も、その日のうちは同じものを出す（iPhone はアプリを裏で閉じることが多いので、開き直すたびに変わらないよう S.draft に残す）
 let draftTried = false;
@@ -4523,28 +4575,35 @@ function restoreDraft(){
     const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
     // おまかせの品数は気分と「まるごと入れ替え」の回数で決まるので、先に戻してから品数を照らし合わせる
     const prevMood = session.mood, prevSalt = session.countSalt; session.mood = c.mood || 'all'; session.countSalt = c.salt || 0;
-    if (n !== menuCount() || !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
-    if (n !== menuCount() || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
-    session.menu = {n, items}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
+    if ((n !== menuCount() && !c.adj) || !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
+    if ((n !== menuCount() && !c.adj) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
+    session.menu = {n, items, adj: !!c.adj && n !== menuCount()}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
     session.twist = PACK ? null : lazyTwist();
     return true;
 }
 function keepDraft(){
     const m = session.menu; if (!m) return;
-    const d = {d: TODAY, cc: currentCountry(), n: m.n, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge, salt: session.countSalt || 0};
+    const d = {d: TODAY, cc: currentCountry(), n: m.n, adj: !!m.adj, slots: m.items.map(x => x.slot), ids: m.items.map(x => x.r ? x.r.id : null), mood: session.mood, useFridge: !!session.useFridge, salt: session.countSalt || 0};
     if (JSON.stringify(d) !== JSON.stringify(S.draft)){ S.draft = d; save(); }
 }
 /* ---- このお膳のひとこと（本当のことだけ: 昨日の記録・冷蔵庫・料理の時間） ---- */
 function whyLine(){
     const m = session.menu; if (!m) return '';
-    const rs = m.items.map(x => x.r).filter(Boolean), main = rs[0]; if (!main) return '';
-    const y = recentMainFamilies(1).find(x => x.ago === 1 && x.family !== '野菜');
-    if (y && main.family && main.family !== '野菜' && y.family !== main.family) return t('昨日は{y}だったので、今日は{d}のおかずです', {y: familyLabel(y.family), d: familyLabel(main.family)});
+    // 画面に出る料理（苦手な食材を置き換えたあと）で見る。置き換えた主役の肉・魚、使う食材は、置き換えたあとのもの
+    const rs = m.items.map(x => x.r).filter(Boolean).map(r => swappedRecipe(r) || r), mi = m.items.find(x => x.r), main = rs[0]; if (!main) return '';
+    // 昨日の記録の主菜がすべて、肉・魚・卵などの種類がわかる料理で、今日の主菜の種類がそのどれとも違うときだけ言う
+    // （昨日の料理が置き換えて作られたかもしれない・記録の料理がなくなっているときは、事実がわからないので言わない）
+    const yd = addDays(TODAY, -1), yrs = S.history.filter(h => h.d === yd && h.slot === '主菜').map(h => byId(h.id));
+    if (mi && mi.slot === '主菜' && yrs.length && main.family && main.family !== '野菜' && yrs.every(r => r && !((swappedRecipe(r) || {}).swapped || {swaps: []}).swaps.length)){
+        const yf = [...new Set(yrs.map(r => r.family).filter(f => f && f !== '野菜'))];
+        if (yf.length && !yf.includes(main.family)) return t('昨日は{y}だったので、今日は{d}のおかずです', {y: joinNames(yf.map(familyLabel)), d: familyLabel(main.family)});
+    }
     if (S.fridge.length){
         const fk = new Set(S.fridge.map(keyOf)), names = [];
         rs.forEach(r => r.items.forEach(i => { if (!i.opt && fk.has(i.key) && !names.includes(i.label)) names.push(i.label); }));
         if (names.length) return t('冷蔵庫の{names}が使えます', {names: joinNames(names.slice(0, 3))});
     }
+    if (rs.some(r => !(Number(r.min) > 0))) return '';   // 時間がわからない料理があるときは、時間のことは言わない
     const total = rs.reduce((a, r) => a + (Number(r.min) || 0), 0), mx = Math.max(...rs.map(r => Number(r.min) || 0));
     if (rs.length >= 2 && mx <= 20) return t('どれも{max}分以内で作れます（合計{n}分）', {max: mx, n: total});
     if (rs.length >= 2 && total <= 60) return t('全部で合計{n}分でできます', {n: total});
@@ -4585,28 +4644,37 @@ function ensureMenu(){
         const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
     }
 }
+// 「あと1品」で選んだ料理が、今日の献立のどこに入るか: fill = 空いた枠に入れる、add = 品数を1つ増やして入れる、replace = これ以上増やせないので、同じ種類の最後の料理とかえる
+function oneWhere(r){
+    const m = session.menu; if (!m) return null;
+    const slot = slotOf(r) === '汁物' ? '汁物' : '副菜';
+    const maxN = session.mood === 'bento' ? 4 : 5, lim = hasPro() ? 6 : PLAN.freeLimits.dishes;
+    const empty = m.items.find(x => x.slot === slot && !x.r);
+    if (empty) return {mode: 'fill', slot, empty};
+    if (m.n < maxN && m.n + 1 <= lim && !(slot === '汁物' && m.items.some(x => x.slot === '汁物'))) return {mode: 'add', slot};
+    let at = -1; m.items.forEach((x, i) => { if (x.slot === slot) at = i; });
+    return at < 0 ? {mode: 'none', slot} : {mode: 'replace', slot, at, old: m.items[at].r};
+}
 function oneAdd(id){
     const r = byId(id); if (!r) return;
     ensureMenu(); const m = session.menu; if (!m) return;
     if (m.items.some(x => x.r && x.r.id === r.id)){ toast(t('もう今日の献立に入っています')); return; }
-    const slot = slotOf(r) === '汁物' ? '汁物' : '副菜';
-    const maxN = session.mood === 'bento' ? 4 : 5, lim = hasPro() ? 6 : PLAN.freeLimits.dishes;
-    const empty = m.items.find(x => x.slot === slot && !x.r);
+    const w = oneWhere(r); if (!w) return;
+    const slot = w.slot;
     let msg;
-    if (empty){ empty.r = r; msg = t('「{name}」を今日の献立に入れました', {name:r.name}); }
-    else if (m.n < maxN && m.n + 1 <= lim && !(slot === '汁物' && m.items.some(x => x.slot === '汁物'))){
-        // 空いた枠がない: 品数を1つ増やす（副菜は最後の副菜の次、汁ものは最後）。ほかの料理はそのまま
-        const prev = {n: m.n, items: m.items.slice(), dc: S.settings.dishCount};
+    if (w.mode === 'fill'){ w.empty.r = r; msg = t('「{name}」を今日の献立に入れました', {name:r.name}); }
+    else if (w.mode === 'add'){
+        // 空いた枠がない: 今日の献立だけ品数を1つ増やす（副菜は最後の副菜の次、汁ものは最後）。ほかの料理はそのまま・設定の品数（ふだんの品数）は変えない
+        const prev = {n: m.n, items: m.items.slice(), adj: m.adj};
         let at = m.items.length; if (slot === '副菜'){ at = 0; m.items.forEach((x, i) => { if (x.slot === '副菜' || x.slot === '主菜') at = i + 1; }); }
-        m.items.splice(at, 0, {slot, r}); m.n = m.items.length; S.settings.dishCount = m.n; save();
+        m.items.splice(at, 0, {slot, r}); m.n = m.items.length; m.adj = m.n !== menuCount();
         msg = t('「{name}」を入れて{n}品にしました', {name:r.name, n:m.n});
-        toast(msg, false, () => { m.n = prev.n; m.items = prev.items; S.settings.dishCount = prev.dc; save(); render(); }); closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
+        toast(msg, false, () => { m.n = prev.n; m.items = prev.items; m.adj = prev.adj; render(); }); closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
     } else {
-        // 品数をこれ以上増やせない: 同じ種類の最後の枠だけをかえる（元に戻せる）
-        let at = -1; m.items.forEach((x, i) => { if (x.slot === slot) at = i; });
-        if (at < 0){ toast(t('合う料理がありません')); return; }
-        const old = m.items[at].r; m.items[at].r = r;
-        toast(t('「{old}」を「{name}」にかえました', {old: old ? old.name : '', name:r.name}), false, () => { m.items[at].r = old; render(); });
+        // 品数をこれ以上増やせない: 同じ種類の最後の枠だけをかえる（カードに先に書いてある・元に戻せる）
+        if (w.mode === 'none'){ toast(t('合う料理がありません')); return; }
+        const old = w.old; m.items[w.at].r = r;
+        toast(t('「{old}」を「{name}」にかえました', {old: old ? old.name : '', name:r.name}), false, () => { m.items[w.at].r = old; render(); });
         closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
     }
     toast(msg); closeSheet(); if (tab !== 'today') setTab('today'); else render();
@@ -4632,7 +4700,8 @@ function oneBodyHtml(){
                 <div class="info">
                     <div class="head"><span class="name">${esc(r.name)}</span></div>
                     <div class="small muted">${esc(slotLabel(slotOf(r)))}・${esc(metaLine(r))}</div>
-                    <div class="row"><button class="btn sm primary" data-act="one-add" data-id="${esc(r.id)}">${esc(t('今日の献立に入れる'))}</button><button class="btn sm" data-act="one-view" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>
+                    ${(w => w && w.mode === 'replace' && w.old ? `<div class="small warn">${esc(t('これ以上品数を増やせないので、足さずに「{old}」とかえます', {old: w.old.name}))}</div>` : '')(oneWhere(r))}
+                    <div class="row"><button class="btn sm primary" data-act="one-add" data-id="${esc(r.id)}">${esc((w => w && w.mode === 'replace' && w.old ? t('「{old}」とかえる', {old: w.old.name}) : t('今日の献立に入れる'))(oneWhere(r)))}</button><button class="btn sm" data-act="one-view" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>
                 </div></div>`).join('')}</div>` : `<div class="list"><div class="empty">${esc(t('合う料理がありません'))}</div></div>`}
             <div class="row"><button class="btn sm ghost" data-act="one-more">${esc(t('別の案を出す'))}</button></div>`;
     }
@@ -4691,15 +4760,69 @@ function applySavedMenu(id){
 const PANTRY_UNIT = /^(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|cloves?|pinch|dash|large|small|medium|g|kg|ml|l|oz|lbs?|to|taste|of|a|some|pieces?|sprigs?|大さじ|小さじ|適量|少々|ひとつまみ|カップ|큰술|작은술|컵|꼬집|약간|적당량|ملعقة|ملاعق|كوب|رشة|حسب|الذوق)$/i;
 const PANTRY_EN = /salt|pepper|\boil\b|sugar|vinegar|soy|flour|honey|butter|stock|broth|bouillon|powder|spice|cumin|paprika|oregano|thyme|basil|cinnamon|nutmeg|starch|ketchup|mustard|mayo|sesame|miso|baking|sauce|paste|wine|seasoning|herbs?|curry|masala|turmeric|coriander|cardamom|chil+i|cayenne|syrup|gochu|mirin|sake/i;
 const PANTRY_NOT = /fresh|cloves?\b|garlic(?! powder)|ginger|lemon|lime|onion|tomato|cilantro|parsley|egg|milk|cream|cheese|yogurt|scallion|chive|mint|dill/i;
+// 調味料の欄を1つ1つに分ける。括弧の中の「·」「,」では区切らない（「hot sauce (optional)」「doubanjiang (chili bean paste, Pixian)」が崩れないように）。括弧が閉じていないときだけ、括弧を無視して区切る
+function pantrySplit(str, ignoreParen){
+    const out = []; let cur = '', depth = 0;
+    const s = String(str || '');
+    for (let k = 0; k < s.length; k++){
+        const ch = s[k];
+        if (!ignoreParen && (ch === '(' || ch === '（')) depth++;
+        else if (!ignoreParen && (ch === ')' || ch === '）')) depth = Math.max(0, depth - 1);
+        const sep = depth === 0 && (/[·•;・、]/.test(ch) || (/[,，،]/.test(ch) && /\s/.test(s[k + 1] || '')));
+        if (sep){ out.push(cur); cur = ''; } else cur += ch;
+    }
+    out.push(cur);
+    if (!ignoreParen && depth > 0) return pantrySplit(str, true);
+    return out.map(v => v.trim()).filter(Boolean);
+}
+// 分量のことば（各国の言葉）。調味料の名前に残らないように取り除く
+const PANTRY_QTY_PHRASE = /(?:^|\s)(?:muỗng canh|muỗng cà phê|c\. ?à ?(?:soupe|café|s|c)\.?|colheres? de (?:sopa|chá|café)|yemek kaşığı|çay kaşığı|su bardağı|chừng|tùy thích|nach belieben|al gusto|a gusto|secukupnya|sesuai selera|q\.b\.|na oko|do smaku|ayon sa panlasa|حسب الذوق|بحسب الذوق|स्वादानुसार|ตามชอบ|ถ้าชอบ|to taste|as needed|a little|a bit of|a handful of|small handful|little)(?=\s|$)/gi;
+const PANTRY_QTY_WORD = new Set(['ملعقة','ملاعق','كبيرة','كبيره','صغيرة','صغيره','نصف','ربع','رشة','رشّة','رشه','مل','جم','جرام','لتر','حبة','حبات','فص','فصوص','عود','ورقة','أوراق','عصرة','كوب','أكواب','إلى','قليل','قبضة',
+    'चम्मच','छोटा','छोटी','छोटे','बड़ा','बड़ी','बड़े','चुटकी','भर','ग्राम','कप','लीटर','कलियाँ','कली','चाहें','तो','मि.ली.',
+    'ช้อนโต๊ะ','ช้อนชา','มล.','กลีบ','ลูก','ชิ้น','ใบ','ราก','ดอก','หัว','เม็ด','ลิตร','ซม.','กรัม',
+    'muỗng','chút','nhúm','lít','tép','ít','vừa','đủ',
+    'cucharada','cucharadas','cucharadita','cucharaditas','pizca','diente','dientes','litro','litros','unas','una','un',
+    'colher','colheres','pitada','dente','dentes','xícara','xícaras','cucchiaio','cucchiai','cucchiaino','cucchiaini','pizzico','spicchio','spicchi',
+    'el','tl','prise','messerspitze','zehe','zehen','sdt','sdm','siung','lembar','butir','sejumput','tutam','diş','adet',
+    'łyżka','łyżki','łyżek','łyżeczka','łyżeczki','łyżeczek','szczypta','ząbek','ząbki','kutsarita','kutsara','butil','hinlalaking','gousse','gousses','pincée','cl','dl','kg','mg','unos','algunos','algunas','alguns','algumas','qualche','circa','quelques','etwas','kilka','trochę','birkaç','biraz','beberapa','ilang','vài',"po'"]);
+const PANTRY_EDGE = new Set(['de','di','d','of','du','des','von','ng','na','sa','do','da','para','pour','für','zum','का','की','के','de la','la','le']);
+// 分量・個数・括弧の説明・「ソース: 」のような前書きを取り除いた、調味料の名前（言葉は変えない）
+function pantryName(x){
+    let v = String(x).replace(/[(（][^)）]*[)）]/g, ' ').replace(/[(（][^)）]*$/, ' ');
+    v = v.replace(/^\s*[^:：]{1,40}[:：]\s*(?=\S)/, '');   // 「Sauce: soy sauce」「기름장: 참기름」
+    v = v.replace(PANTRY_QTY_PHRASE, ' ').replace(/[?？]\s*$/, '');
+    const words = v.split(/\s+/).filter(w => {
+        if (!w || /\d|[½¼¾⅓⅔]/.test(w)) return false;
+        const k = w.replace(/^[\s.,;:()（）]+|[\s.,;:()（）]+$/g, '').toLowerCase();
+        return k && !PANTRY_UNIT.test(k) && !PANTRY_QTY_WORD.has(k);
+    });
+    while (words.length > 1 && PANTRY_EDGE.has(words[0].toLowerCase())) words.shift();
+    while (words.length > 1 && PANTRY_EDGE.has(words[words.length - 1].toLowerCase())) words.pop();
+    return words.join(' ').replace(/^[\s.,;:()（）]+|[\s.,;:()（）]+$/g, '');
+}
+// 同じものをまとめるための名前（英語）。「ground cumin」「cumin」、「dried Italian seasoning」「Italian seasoning」、「oil」「oil for frying」「cooking oil」は1つにする。「A or B」は先に書いてある A
+function pantryKeyEn(x){
+    // 「to taste」「for frying」「with …」のような付け足しは、分量のことばを取る前に切る
+    let k = String(x).toLowerCase().replace(/[(（][^)）]*[)）]/g, ' ').replace(/[(（][^)）]*$/, ' ').replace(/^\s*[^:：]{1,40}[:：]\s*(?=\S)/, '').replace(/^\s*or\s+/, '');
+    k = k.replace(/\s+(?:for|to|mixed|dissolved|diluted|stirred|as|if|when|until|with|plus|from|in|per)\s+.*$/, '').replace(/,.*$/, '');
+    k = pantryName(k).toLowerCase();
+    k = k.split(/\s+(?:or|and\/or|and)\s+/)[0];
+    for (let n = 0; n < 3; n++) k = k.replace(/^(?:about|approx\.?|approximately|around|roughly|few|plenty|some|several|generous|good|best|small|large|hot|warm|boiling|cold)\s+(?=\S)/, '');
+    k = k.replace(/\b(?:ground|dried|coarse|freshly|powdered|good[- ]quality)\s+/g, '').replace(/\bextra[- ]virgin\s+/g, '').trim();
+    k = k.replace(/^((?:chicken|vegetable|beef|fish|pork|veg)) (?:stock|broth|bouillon)(?: (?:cubes?|powder|granules))?$/, '$1 stock');
+    if (/^(?:(?:black|white)\s+)?peppers?$/.test(k) && !/white/.test(k)) k = 'black pepper';
+    if (/^(?:(?:cooking|vegetable|neutral|frying|canola|sunflower|plain)\s+)?oil$/.test(k)) k = 'oil';
+    if (/^(?:(?:sea|kosher|table|fine)\s+)?salt$/.test(k)) k = 'salt';
+    if (/^(?:light|dark)\s+soy$/.test(k)) k += ' sauce';
+    return k;
+}
 function pantryOf(r){
     const base = String(r.seasBase != null ? r.seasBase : (r.seas || '')), shown = String(r.seas || '');
-    const sp = x => x.split(/\s*[·•;]\s*|[・、]|,\s+/).map(v => v.trim()).filter(Boolean);
-    const b = sp(base), sh = sp(shown), out = [];
-    const strip = x => x.split(/\s+/).filter(w => !/\d|[½¼¾⅓⅔]/.test(w) && !PANTRY_UNIT.test(w)).join(' ').replace(/^[\s()（）]+|[\s()（）]+$/g, '');
+    const b = pantrySplit(base), sh = pantrySplit(shown), out = [];
     b.forEach((c, i) => {
-        const jp = !r.pack, key = jp ? parseIng(c).key : strip(c).toLowerCase();
+        const jp = !r.pack, key = jp ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).key : pantryKeyEn(c);
         if (!key || (jp && FAMILY[key]) || (!jp && (!PANTRY_EN.test(key) || PANTRY_NOT.test(key)))) return;
-        const lab = (sh.length === b.length ? strip(sh[i]) : '') || (jp ? labelOf(parseIng(c).name) : strip(c));
+        const lab = (sh.length === b.length ? (jp ? labelOf(parseIng(sh[i].replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(sh[i])) : '') || (jp ? labelOf(parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(c));
         out.push({key: 'p|' + key, label: lab});
     });
     r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label}); });
@@ -4822,6 +4945,7 @@ function viewToday(){
         </div>`}
         ${(w => w ? `<p class="why">${esc(w)}</p>` : '')(whyLine())}
         ${eatersLine() ? `<p class="small muted eaters-line" role="status">${esc(eatersLine())}</p>` : ''}
+        ${cookWarnHtml()}
         <div class="actions">
             ${S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join()
                 ? `<button class="btn primary" data-act="goto-cook">${esc(t('作り方を見る'))}</button>`
@@ -4885,6 +5009,14 @@ function cookItems(){
     const c = S.cook; if (!c || !c.ids) return [];
     return c.ids.map((id, i) => ({r: byId(id), slot: (c.slots || [])[i]})).filter(x => x.r);
 }
+// 決めた献立に、いまの食べる人（アレルギー・苦手な食材・辛いのが苦手）に合わない料理が残っているときの知らせ。
+// 食べる人や苦手な食材を変えたあとも、決めた献立の中身は黙って変えない。知らせて、取り消して選び直せるようにする
+function cookWarnHtml(){
+    const c = S.cook; if (!c || c.d !== TODAY) return '';
+    const bad = cookItems().filter(x => isAvoided(x.r));
+    if (!bad.length) return '';
+    return `<div class="note warn cook-warn" role="alert"><span>${esc(t('決めた献立の「{names}」は、いま食べる人のアレルギー・苦手な食材・辛さに合いません。作る前に確かめるか、取り消して選び直してください。', {names: joinNames(bad.map(x => x.r.name))}))}</span><button class="btn sm" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>`;
+}
 function viewCook(){
     const items = cookItems();
     if (!items.length) return `<section class="sec">
@@ -4902,6 +5034,7 @@ function viewCook(){
     return `<section class="sec">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
+        ${cookWarnHtml()}
         ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm${h === 17 ? ' primary' : ''}" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${!isToday ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div>` : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
@@ -5720,7 +5853,7 @@ document.addEventListener('click', e => {
             break;
         case 'count': {
             const v = el.dataset.v;
-            if (String(S.settings.dishCount) === String(v)) break;   // 選んでいる品数をもう一度押しても、献立はそのまま
+            if (String(S.settings.dishCount) === String(v) && !(session.menu && session.menu.adj)) break;   // 選んでいる品数をもう一度押しても、献立はそのまま（「あと1品」で増やしたときは、設定の品数に戻す）
             if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; }
             S.settings.dishCount = v === 'auto' ? 'auto' : Number(v); save();
             session.menu = null; render(); break;
@@ -5878,7 +6011,7 @@ document.addEventListener('click', e => {
             const before = new Set(S.history.filter(h => h.d !== TODAY || (S.cook && S.cook.d === TODAY && S.cook.ids.includes(h.id))).map(h => h.id));
             ids.forEach(id => record(id, slotOf(byId(id))));
             const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
-            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone}; save();
+            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj}; save();
             session.cookIdx = 0;
             toast(t('献立が決まりました。作り方はこちらです') + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
         }
