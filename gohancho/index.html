@@ -14,9 +14,6 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ご飯帖">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* レイアウト: 1カラムの献立帳。主役は「お膳」を真上から見た図（奥左=副菜・奥右=主菜・手前左=ご飯・手前右=汁もの）。
    色: 操作はすべて藍の1色。山吹は「変えたところ・プラス」の目印だけ。器は染付・漆・青磁。書体: 見出しは明朝（品書き）、本文は角ゴシック
@@ -42,8 +39,8 @@
     --tray:#2b211d; --tray-2:#3a2b25; --tray-edge:#7d2a1f; --tray-ink:#f5eee3; --tray-muted:#c9b9a6;
     --porcelain:#fbfaf6; --rim:#2c4c7c; --lacquer:#8f2b1f; --lacquer-dark:#1c1210; --celadon:#a4c3b2; --celadon-dark:#7e9f8d; --rice:#f6f3ea;
     --shadow:0 1px 2px rgba(23,32,51,.06),0 8px 24px rgba(23,32,51,.08);
-    --font-display:'Shippori Mincho B1','Hiragino Mincho ProN','Yu Mincho',serif;
-    --font-body:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic',sans-serif;
+    --font-display:'Hiragino Mincho ProN','Hiragino Mincho Pro','Yu Mincho','YuMincho','Noto Serif JP','Noto Serif CJK JP','Noto Serif',ui-serif,'Times New Roman',serif;   /* 外部フォントは読まない（端末の書体のみ） */
+    --font-body:'Hiragino Kaku Gothic ProN','Hiragino Sans',-apple-system,BlinkMacSystemFont,system-ui,'PingFang TC','PingFang SC','Apple SD Gothic Neo','Yu Gothic','Noto Sans JP','Noto Sans KR','Noto Sans SC','Noto Sans Arabic','Noto Sans Thai','Noto Sans Devanagari','Segoe UI',Roboto,sans-serif;
     --r:16px;
 }
 @media (prefers-color-scheme: dark){
@@ -2839,9 +2836,10 @@ const PLAN = {
         {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('380円 / 月'); }, per:'月', note:''},
     ],
     // 年額は「1年つづけてくれた人」にだけ案内する特別価格（App Store Connect に製品を作り、アプリは12か月以上の会員にだけ表示する）
+    loyaltyEnabled: false,              // 年額（1年ありがとう価格）はこの版では出さない。true にすると loyalEligible() の人に案内する
     loyalty: {months:12, id:'gohancho_plus_yearly_loyal', get label(){ return t('年額プラン（1年ありがとう価格）'); }, get price(){ return t('3,500円 / 年'); }, per:'年', note:''},
     // （使っていない）アプリ側の無料体験キャンペーン: 登録なしで使いはじめ、毎週ひとこと感想を送ると1週間ずつ開く。Apple のお試しオファー方式で出すので false のまま
-    campaign: {active:false, days:60, weekDays:7, resendAfter:5},
+    campaign: {active:false,   /* 固定: remote.json からは変えられない（モニター関連の処理は active=false で動かない） */  days:60, weekDays:7, resendAfter:5},
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
@@ -2882,7 +2880,7 @@ function monitorSend(){
     else if (navigator.share) navigator.share({title: subject, text: subject}).catch(() => {});
     toast(t('ありがとうございます。次の1週間分が開きました。'), true); closeSheet(); render(); scheduleTrialReminder();
 }
-function loyalEligible(){ return isSubscribed() && !!(S.pro && S.pro.since) && daysBetween(S.pro.since, TODAY) >= PLAN.loyalty.months * 30; }
+function loyalEligible(){ return PLAN.loyaltyEnabled && isSubscribed() && !!(S.pro && S.pro.since) && daysBetween(S.pro.since, TODAY) >= PLAN.loyalty.months * 30; }
 // 無料期間の終わる前の日に、端末の通知で知らせる（通知を許可している人だけ）
 async function scheduleTrialReminder(){
     const P = nativePlugin('LocalNotifications');
@@ -3170,7 +3168,7 @@ function renderSheet(){
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
                 <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
-                <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}<a href="${docPage('privacy')}" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a></p>`
+                <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>`
             : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
             ${isLocked() ? '' : `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`}`;
     }
@@ -3751,25 +3749,21 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
             <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
-            <div class="row"><a class="btn sm" href="${docPage('privacy')}" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a><a class="btn sm" href="${docPage('support')}" target="_blank" rel="noopener">${esc(t('サポート・よくある質問'))}</a>${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
+            <div class="row">${docLink('privacy', t('プライバシーポリシー'), 'btn sm')}${docLink('support', t('サポート・よくある質問'), 'btn sm')}${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
         </div>
     </section>`;
 }
 const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせる（申請の自動化がここも書きかえる）
 // 外から直せる設定（審査なしで変えられる）: GitHub 上の gohancho/remote.json を起動時に読む。読めなくても、古くても、そのまま動く
 //   notice: {id, ja, en, fr…, until:'YYYY-MM-DD', url?, linkLabel?:{ja, en, fr…}}  今日の画面に出すお知らせ（×で閉じられる）
-//   plan:   {trialMode, trialDays, loyaltyMonths, campaign:{active…}}  課金まわりの切りかえ
+//   plan:   読まない（審査後に課金の動きが変わらないよう、plan の上書きは無視する。notice と minVersion だけ使う）
 //   minVersion: 'x.y.z'  これより古いアプリには notice を必ず出す（notice がない・期限切れでも、アップデートのお願いを出す）
 const REMOTE_URL = 'https://raw.githubusercontent.com/akb69bka-tech/gohancho-/main/gohancho/remote.json';
 let REMOTE = {};
 function applyRemote(j){
     if (!j || typeof j !== 'object') return;
-    REMOTE = j;
-    const pl = j.plan && typeof j.plan === 'object' ? j.plan : {};
-    if (pl.trialMode === 'app' || pl.trialMode === 'store') PLAN.trialMode = pl.trialMode;
-    if (Number(pl.trialDays) > 0) PLAN.trialDays = Number(pl.trialDays);
-    if (Number(pl.loyaltyMonths) > 0) PLAN.loyalty.months = Number(pl.loyaltyMonths);
-    if (pl.campaign && typeof pl.campaign === 'object') Object.assign(PLAN.campaign, pl.campaign);
+    REMOTE = {notice: j.notice, minVersion: j.minVersion};   // 使うのはお知らせと最低バージョンだけ
+    // plan（trialMode / trialDays / campaign など）は意図して無視する。課金の動きはアプリ本体の PLAN だけで決まる
 }
 async function loadRemote(){
     try{ const c = JSON.parse(localStorage.getItem('gohancho.remote') || 'null'); if (c) applyRemote(c); }catch(e){}
@@ -3779,7 +3773,7 @@ async function loadRemote(){
         const res = await fetch(REMOTE_URL + '?t=' + Math.floor(Date.now() / 3600000), {cache:'no-store', signal: ctrl.signal});
         if (!res.ok) return;
         const j = await res.json(); if (!j || typeof j !== 'object') return;
-        try{ localStorage.setItem('gohancho.remote', JSON.stringify(j)); }catch(e){}
+        try{ localStorage.setItem('gohancho.remote', JSON.stringify({notice: j.notice, minVersion: j.minVersion})); }catch(e){}   // 最後に読めたお知らせだけ控える
         applyRemote(j); render();
     }catch(e){}
 }
@@ -3797,6 +3791,11 @@ function remoteNoticeHtml(){
 }
 // プライバシーポリシー・サポートのページ（日本語以外の画面では英語版）
 function docPage(name){ return name + (LANG === 'ja' ? '' : '-en') + '.html'; }
+// アプリ内の WebView に閉じこめられないよう、公開ページは絶対URLでシステムのブラウザへ。圏外のときだけ同梱のページ（クリック時に切りかえ）
+const DOC_BASE = 'https://akb69bka-tech.github.io/gohancho-/';
+function docUrl(name){ return DOC_BASE + docPage(name); }
+function docLink(name, label, cls){ return `<a${cls ? ` class="${cls}"` : ''} href="${docUrl(name)}" data-doc="${name}" target="_blank" rel="noopener">${esc(label)}</a>`; }
+document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[data-doc]'); if (a) a.href = navigator.onLine === false ? docPage(a.dataset.doc) : docUrl(a.dataset.doc); }, true);
 const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
 function feedbackMailto(){
     const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
