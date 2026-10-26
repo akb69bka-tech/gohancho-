@@ -1375,14 +1375,16 @@ function pick(cands, ctx){
     scored.sort((a,b) => b.s - a.s);
     return scored[0].r;
 }
-// keep: そのまま残すほかの主菜（6品のときの2品目）。同じ料理・同じ肉や魚にならない主菜から選ぶ
-function suggestMain(keep = []){
+// keep: そのまま残すほかの料理（{…, slot}）。同じ料理・2品目の主菜と同じ肉や魚にならない主菜から選ぶ
+// bowl: 主菜だけを「かえる」とき、ご飯もの・麺・汁ものかどうかをいまの主菜とそろえる（ご飯の欄がお漬物に変わるなど、ほかの欄が動かないように）
+const isBowlMain = r => !!r && (r.type === 'ごはん' || r.type === '麺' || r.type === '汁物' || r.id === 'nikuudon');
+function suggestMain(keep = [], bowl = null){
     const wd = parseYmd(TODAY).getDay();
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
-    const clash = r => keep.some(k => k && (k.id === r.id || (k.family === r.family && r.family !== '野菜')));
+    const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
-    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));
-    if (keep.length){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }      // その気分の料理がない国でも空にしない
+    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
     const r = pick(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
@@ -4283,7 +4285,12 @@ document.addEventListener('click', e => {
         case 'reroll': {
             const i = Number(el.dataset.i), m = session.menu, it = m.items[i];
             if (it.r) session.rejected.add(it.r.id);
-            if (i === 0) setMenuMain(suggestMain(m.items.slice(1).filter(x => x.slot === '主菜').map(x => x.r)));
+            if (i === 0){
+                // 主菜だけをかえる。ほかの料理・ご飯の欄は絶対に動かさない（合わない主菜は最初から選ばない）
+                const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
+                const nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
+                if (nr && !keep.some(k => k.id === nr.id)) it.r = nr;
+            }
             else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
             render(); break;
         }
