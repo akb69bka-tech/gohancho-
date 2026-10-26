@@ -875,14 +875,14 @@ GOHAN_PACK_TR('PL', 'pl', {
     'pl_zeberka': {
       name: "Żeberka pieczone w miodzie",
       ings: [
-        ["Żeberka wieprzowe", "1 kg"],
+        ["Żeberka wieprzowe", "600 g"],
         ["Cebula", "1"],
-        ["Ziemniaki", "600 g"],
+        ["Ziemniaki", "400 g"],
       ],
-      seas: "Sól · Pieprz · 2 łyżki miodu · 1 łyżka musztardy · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki suszonego majeranku · 3 ząbki czosnku · 2 łyżki oleju",
+      seas: "Sól · Pieprz · 2 łyżki miodu · 1 łyżka musztardy · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki suszonego majeranku · 2 ząbki czosnku · 2 łyżki oleju",
       steps: [
         "Pokrój żeberka na porcje po 2–3 kości. Wymieszaj miód, musztardę, paprykę, majeranek, przeciśnięty czosnek, olej, sól i pieprz i natrzyj żeberka. Odstaw na co najmniej godzinę (lub na noc do lodówki).",
-        "Rozgrzej piekarnik do 170°C. Ułóż żeberka w naczyniu na pokrojonej cebuli, dodaj 100 ml wody, przykryj folią i piecz 1 1/2 godziny.",
+        "Rozgrzej piekarnik do 170°C. Ułóż żeberka w naczyniu na pokrojonej cebuli, dodaj 100 ml wody, przykryj folią i piecz 1 1/4 godziny.",
         "Zdejmij folię, ewentualnie rozłóż wokół ćwiartki ziemniaków, zwiększ temperaturę do 200°C i piecz jeszcze 25–30 minut, polewając sosem, aż będą lepkie i zrumienione.",
         "Podawaj z ziemniakami i surówką z kiszonej kapusty.",
       ],
@@ -919,7 +919,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       steps: [
         "Nastaw ziemniaki. Oczyść wątróbki z błon i zielonych plamek, opłucz i osusz.",
         "Zeszklij i zrumień pokrojoną cebulę (i cząstki jabłka) na maśle, a potem zdejmij z patelni.",
-        "Obtocz wątróbki w mące i smaż na oleju na dużym ogniu po 2–3 minuty z każdej strony, aż się zrumienią, ale w środku będą lekko różowe.",
+        "Obtocz wątróbki w mące i smaż na oleju na średnio dużym ogniu po 3–4 minuty z każdej strony, aż się zrumienią i będą dobrze wysmażone w środku, bez różowego koloru (przekrój jedną, aby sprawdzić).",
         "Dodaj z powrotem cebulę i majeranek i dopiero teraz dopraw solą i pieprzem. Podawaj z ziemniakami i ogórkiem kiszonym.",
       ],
       tip: { add: "Wcześniej namocz wątróbki w mleku na 30 minut", why: "Usuwa gorycz i łagodzi smak", skill: "Sól na końcu", how: "Solona przed smażeniem wątróbka twardnieje; dopraw ją na samym końcu." }
@@ -936,7 +936,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       steps: [
         "Ugotuj ziemniaki w osolonej wodzie, odcedź i wymieszaj z odrobiną masła i posiekanym koperkiem.",
         "Rozpuść łyżkę masła na patelni, dodaj przeciśnięty czosnek i szpinak i duś, aż zwiędnie. Dopraw i ewentualnie wmieszaj śmietankę.",
-        "Usmaż jajka na pozostałym maśle na średnio-małym ogniu, aż białka się zetną, a żółtka pozostaną płynne.",
+        "Usmaż jajka na pozostałym maśle na średnio-małym ogniu, aż białka się zetną, a żółtka pozostaną płynne (dla małych dzieci i kobiet w ciąży smaż, aż żółtka się zetną).",
         "Podawaj jajka z ziemniakami i szpinakiem.",
       ],
       tip: { add: "Szklanka kefiru lub maślanki", why: "Klasyczny dodatek do tego piątkowego obiadu w polskich domach", skill: "Smaż jajka delikatnie", how: "Mały ogień i chwila pod pokrywką ścinają białko bez twardych, przypalonych brzegów." }
@@ -1195,7 +1195,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       ],
       seas: "150 ml oleju rzepakowego lub słonecznikowego · Pieprz · 3 ziela angielskie · 1 liść laurowy · Szczypta cukru",
       steps: [
-        "Jeśli śledzie są bardzo słone, mocz je w zimnej wodzie lub mleku 1–2 godziny, potem odsącz i osusz.",
+        "Zacznij dzień wcześniej: śledzie muszą postać w lodówce co najmniej 12 godzin. Jeśli śledzie są bardzo słone, mocz je w zimnej wodzie lub mleku 1–2 godziny, potem odsącz i osusz.",
         "Pokrój filety na kawałki 2–3 cm, a cebulę w cienkie krążki.",
         "Układaj warstwami śledzie i cebulę w słoiku z zielem angielskim i liściem laurowym, posyp cukrem i pieprzem i zalej olejem.",
         "Wstaw do lodówki na co najmniej 12 godzin i podawaj z ziemniakami lub chlebem.",

@@ -511,24 +511,24 @@ GOHAN_PACK_TR('DE', 'de', {
     },
     'de_sauerbraten': {
       name: 'Sauerbraten',
-      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '1 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g'], ['Rosinen', '2 EL']],
-      seas: 'Salz · Pfeffer · Beize: 400 ml Rotweinessig oder Weinessig · 400 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 2 zerbröselte Printen oder Lebkuchen oder 1 EL Zucker · 1 EL Speisestärke',
+      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '500 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g'], ['Rosinen', '1 EL']],
+      seas: 'Salz · Pfeffer · Beize: 250 ml Rotweinessig oder Weinessig · 250 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 1 zerbröselte Printe oder 1 Lebkuchen oder 2 TL Zucker · 2 TL Speisestärke',
       steps: [
-        'Zwei bis drei Tage vorher: Zwiebeln, Möhren und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
+        'Zwei bis drei Tage vorher: Zwiebel, Möhre und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
         'Am Kochtag das Fleisch herausnehmen und trocken tupfen; die Beize abseihen und mit dem Gemüse aufheben. Das Fleisch salzen und im Öl rundherum kräftig anbraten, dann Gemüse und Tomatenmark zugeben und 5 Minuten mitrösten.',
-        '500 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 1/2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
+        '300 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
         'Das Fleisch herausnehmen, die Soße passieren, Printen (und Rosinen) einrühren, 5 Minuten köcheln und mit der in Wasser angerührten Stärke binden. Mit Salz, Pfeffer und Zucker süßsauer abschmecken. Das Fleisch aufschneiden und mit Rotkohl und Kartoffelklößen servieren.'
       ],
       tip: { add: 'Eine Handvoll Rosinen in der Soße', why: 'Die rheinische Art: süß gegen sauer', skill: 'Zeit in der Beize', how: 'Zwei bis drei Tage in der kalten Essigbeize machen das Fleisch zart und geben den typischen Geschmack; das lässt sich nicht abkürzen.' }
     },
     'de_schweinebraten': {
       name: 'Schweinebraten mit Kruste',
-      ings: [['Schweineschulter mit Schwarte', '1,2 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g']],
-      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 500 ml Wasser oder Rinderbrühe · 250 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
+      ings: [['Schweineschulter mit Schwarte', '600 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g']],
+      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 400 ml Wasser oder Rinderbrühe · 150 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
       steps: [
         'Den Backofen auf 180 °C vorheizen. Die Schwarte mit einem sehr scharfen Messer im 1-cm-Rautenmuster einschneiden, nur durch Schwarte und Fett, nicht ins Fleisch. Das Fleisch (nicht die Schwarte) mit Salz, Pfeffer, Kümmel, Paprika und zerdrücktem Knoblauch einreiben, die Schwarte mit Salz.',
-        'Das grob geschnittene Gemüse in einen Bräter geben, 250 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
-        'Etwa 2 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
+        'Das grob geschnittene Gemüse in einen Bräter geben, 200 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
+        'Etwa 1 1/4 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
         'Den Braten 10 Minuten ruhen lassen. Den Bratensaft mit dem restlichen Wasser durch ein Sieb in einen Topf geben, mit der in kaltem Wasser angerührten Stärke binden und abschmecken. Den Braten aufschneiden und mit Soße, Semmelknödeln und Krautsalat servieren.'
       ],
       tip: { add: 'Bayerischer Krautsalat mit Speck', why: 'Der klassische Sonntagsteller in Bayern', skill: 'Trockene Schwarte', how: 'Die Schwarte sehr gut trocken tupfen und nicht begießen; nur trockene Haut wird zur knusprigen Kruste.' }

@@ -1011,7 +1011,7 @@ GOHAN_PACK({
       protein: 'chicken',
       min: 25,
       ings: [
-        'rice|Cooked white rice (day-old)|3 cups',
+        'rice|Cooked white rice (day-old)|3 cups (about 500 g)',
         'chicken|Chicken breast|200 g',
         'egg|Eggs|2',
         'spring onion|Spring onions|4',
@@ -1140,7 +1140,7 @@ GOHAN_PACK({
       protein: 'mince',
       min: 35,
       ings: [
-        'rice|Cooked white rice|3 cups',
+        'rice|Cooked white rice|3 cups (about 500 g)',
         'mince|Minced beef|250 g',
         'onion|Onion|1',
         'tomato|Tomato|1',
@@ -1255,7 +1255,7 @@ GOHAN_PACK({
         'Slice the onion into thin half-moons and rinse in cold water. Seed and chop the ají finely and chop the coriander.',
         'Cut the fish into 2 cm cubes, put it in a cold glass bowl and season with salt, the crushed garlic and the ají.',
         'Squeeze the limes gently (without pressing the bitter peel) straight over the fish, add the ice and stir for 2-3 minutes until the outside of the fish turns white.',
-        'Remove the ice, add the onion and coriander, check the salt and serve at once with the sweet potato and choclo.',
+        'Remove the ice, add the onion and coriander, check the salt and serve at once with the sweet potato and choclo. Ceviche is raw fish: buy fish sold for eating raw from a trusted shop, and do not serve it to small children or during pregnancy.',
       ],
       tip: { add: 'A handful of cancha on the side', why: 'Crunch against the soft fish', skill: 'Only very fresh fish, eaten at once', how: 'Use fish sold for eating raw and keep it cold; the lime flavours it but does not cook it like heat does.' },
     },
@@ -1372,7 +1372,7 @@ GOHAN_PACK({
       protein: 'egg',
       min: 20,
       ings: [
-        'rice|Cooked white rice|2 cups',
+        'rice|Cooked white rice|2 cups (about 330 g)',
         'egg|Eggs|2',
         'plantain|Ripe plantain|1',
         'tomato|Tomato|1?',
@@ -1396,7 +1396,7 @@ GOHAN_PACK({
       min: 30,
       ings: [
         'beans|Cooked canary beans (frejol canario)|2 cups',
-        'rice|Cooked white rice|2 cups',
+        'rice|Cooked white rice|2 cups (about 330 g)',
         'onion|Onion|1/2',
         'aji amarillo|Ají amarillo paste|1 tbsp',
         'egg|Eggs, to serve|2?',
@@ -1469,7 +1469,7 @@ GOHAN_PACK({
       local: 'Olluquito con carne',
       type: 'main',
       method: 'simmer',
-      protein: 'veg',
+      protein: 'beef',
       min: 45,
       ings: [
         'olluco|Ollucos|500 g',

@@ -245,7 +245,7 @@ GOHAN_PACK({
       type: 'side',
       method: 'raw',
       protein: 'veg',
-      min: 20,
+      min: 80,
       ings: [
         'wood ear|Dried wood ear mushrooms|15 g',
         'chili|Fresh red chili|1?',
@@ -510,7 +510,7 @@ GOHAN_PACK({
       ],
       seas: '1 tbsp oil · 3 slices ginger · salt to taste (clams are salty) · pinch of white pepper · 700 ml water',
       steps: [
-        'Beforehand, leave the clams in salted water (about 1 tbsp salt per litre) in a dark place for 1-2 hours so they spit out sand. Scrub and rinse them. Throw away any with broken shells or that stay open when tapped.',
+        'If the clams are not sold purged, leave them beforehand in salted water (about 1 tbsp salt per litre) in a dark place for 1-2 hours so they spit out sand. Scrub and rinse them. Throw away any with broken shells or that stay open when tapped.',
         'Peel the luffa thinly and cut it into chunks, turning it after each cut.',
         'Heat the oil, fry the ginger for 30 seconds, add the luffa and stir-fry 1 minute until bright green. Pour in the water and bring to a boil.',
         'Add the clams, cover and boil on medium-high heat for 3-5 minutes until all the shells are open, then boil 1 minute more. Throw away any clams that stay closed.',
@@ -1336,7 +1336,7 @@ GOHAN_PACK({
       type: 'side',
       method: 'raw',
       protein: 'legume',
-      min: 20,
+      min: 80,
       ings: [
         'yuba|Dried tofu sticks (fuzhu)|100 g',
         'cucumber|Cucumber|1/2?',

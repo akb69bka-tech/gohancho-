@@ -349,7 +349,7 @@ GOHAN_PACK({
       type: 'soup',
       method: 'soup',
       protein: 'veg',
-      min: 15,
+      min: 75,
       ings: [
         'tomato|Very ripe tomatoes|600 g',
         'cucumber|Cucumber|1/2',
@@ -418,7 +418,7 @@ GOHAN_PACK({
       type: 'soup',
       method: 'soup',
       protein: 'veg',
-      min: 20,
+      min: 80,
       ings: [
         'almonds|Blanched almonds|100 g',
         'bread|Stale white bread (crumb only)|60 g',
@@ -485,7 +485,7 @@ GOHAN_PACK({
       local: 'Cocido madrileño',
       type: 'soup',
       method: 'simmer',
-      protein: 'legume',
+      protein: 'pork',
       min: 180,
       ings: [
         'chickpeas|Dried chickpeas|200 g',
@@ -515,7 +515,7 @@ GOHAN_PACK({
       local: 'Fabada asturiana',
       type: 'soup',
       method: 'simmer',
-      protein: 'legume',
+      protein: 'pork',
       min: 180,
       ings: [
         'white beans|Dried large white beans (fabes)|250 g',
@@ -880,12 +880,12 @@ GOHAN_PACK({
       protein: 'chicken',
       min: 75,
       ings: [
-        'chicken|Chicken pieces (thighs and drumsticks)|1 kg',
-        'potato|Potatoes|600 g',
+        'chicken|Chicken pieces (thighs and drumsticks)|600 g',
+        'potato|Potatoes|400 g',
         'onion|Onion|1',
         'lemon|Lemon|1/2?',
       ],
-      seas: 'Salt · pepper · 4 garlic cloves · 1 tsp dried thyme or rosemary · 100 ml white wine · 4 tbsp olive oil',
+      seas: 'Salt · pepper · 3 garlic cloves · 1 tsp dried thyme or rosemary · 100 ml white wine · 3 tbsp olive oil',
       steps: [
         'Heat the oven to 200 °C. Peel the potatoes and cut them into thick slices; cut the onion into thick rings and lay both in a roasting tin. Season with salt and drizzle with half the oil.',
         'Season the chicken with salt, pepper and thyme and place it skin side up on the potatoes with the crushed garlic and lemon pieces.',
@@ -926,13 +926,13 @@ GOHAN_PACK({
       protein: 'chicken',
       min: 60,
       ings: [
-        'chicken|Chicken pieces|1 kg',
-        'bell pepper|Red and green peppers|3',
+        'chicken|Chicken pieces|600 g',
+        'bell pepper|Red and green peppers|2',
         'onion|Onion|1',
-        'tomato|Ripe tomatoes|3',
+        'tomato|Ripe tomatoes|2',
         'ham|Serrano ham (diced)|50 g?',
       ],
-      seas: 'Salt · pepper · 3 garlic cloves · 1 tsp sweet pimentón · 100 ml white wine · 3 tbsp olive oil',
+      seas: 'Salt · pepper · 2 garlic cloves · 1 tsp sweet pimentón · 100 ml white wine · 3 tbsp olive oil',
       steps: [
         'Season the chicken with salt and pepper and brown it in the oil in a wide casserole for 10 minutes. Set aside.',
         'In the same oil fry the chopped onion, garlic and the peppers cut into strips for 10 minutes. Add the ham and cook 2 minutes.',
@@ -996,11 +996,11 @@ GOHAN_PACK({
       protein: 'pork',
       min: 80,
       ings: [
-        'pork|Pork ribs (rack or pieces)|1 kg',
-        'potato|Potatoes|500 g',
+        'pork|Pork ribs (rack or pieces)|600 g',
+        'potato|Potatoes|400 g',
         'onion|Onion|1',
       ],
-      seas: 'Salt · pepper · 4 garlic cloves · 2 tsp sweet pimentón · 1 tsp dried thyme or rosemary · 150 ml white wine · 3 tbsp olive oil',
+      seas: 'Salt · pepper · 3 garlic cloves · 2 tsp sweet pimentón · 1 tsp dried thyme or rosemary · 100 ml white wine · 2 tbsp olive oil',
       steps: [
         'Heat the oven to 180 °C. Rub the ribs with salt, pepper, crushed garlic, pimentón, thyme and the oil.',
         'Slice the potatoes and onion, lay them in a roasting tin, salt them and put the ribs on top. Pour in the wine.',
@@ -1288,7 +1288,7 @@ GOHAN_PACK({
       seas: 'Salt · 1 garlic clove (optional) · olive oil for frying',
       steps: [
         'Peel the potatoes and cut them into thin chips or slices. Fry in plenty of olive oil, first on medium heat until soft, then on high until golden. Drain and salt.',
-        'Fry the eggs one by one in hot oil, spooning the oil over the whites, keeping the yolks runny.',
+        'Fry the eggs one by one in hot oil, spooning the oil over the whites, keeping the yolks runny (cook the yolks firm for small children and during pregnancy).',
         'Put the chips on a plate, lay the ham on top and place the fried eggs over them.',
         'At the table, break the eggs with a fork and mix them into the chips.',
       ],
@@ -1312,7 +1312,7 @@ GOHAN_PACK({
       steps: [
         'Fry the whole garlic cloves in 1 tbsp oil, add the rice and stir 1 minute. Add the water, salt and bay leaf and cook covered on low heat for 15-18 minutes until tender. Rest 5 minutes.',
         'Warm the tomate frito in a small pan.',
-        'Fry the eggs in hot oil, keeping the yolks soft. If using bananas, halve them lengthways and fry 1 minute per side.',
+        'Fry the eggs in hot oil, keeping the yolks soft (cook the yolks firm for small children and during pregnancy). If using bananas, halve them lengthways and fry 1 minute per side.',
         'Press the rice into a cup and turn it out onto each plate. Serve with the tomato sauce, a fried egg and the banana.',
       ],
       tip: { add: 'Fried banana', why: 'The traditional sweet touch that gives the dish its name', skill: 'Mould the rice', how: 'Pressing the rice into an oiled cup and turning it out gives the neat dome Spanish children expect.' },
@@ -1441,7 +1441,7 @@ GOHAN_PACK({
       type: 'side',
       method: 'raw',
       protein: 'veg',
-      min: 20,
+      min: 140,
       ings: [
         'carrot|Carrots|500 g',
       ],

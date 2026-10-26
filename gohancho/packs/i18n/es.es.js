@@ -504,8 +504,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_pollohorno': {
       name: 'Pollo asado al horno con patatas',
-      ings: [['Pollo troceado (muslos y contramuslos)', '1 kg'], ['Patatas', '600 g'], ['Cebolla', '1'], ['Limón', '1/2']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 4 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado (muslos y contramuslos)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1'], ['Limón', '1/2']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 200 °C. Pela las patatas y córtalas en rodajas gruesas; corta la cebolla en aros gruesos y ponlo todo en una bandeja de horno. Sala y riega con la mitad del aceite.',
         'Salpimienta el pollo, espolvorea el tomillo y colócalo con la piel hacia arriba sobre las patatas, con los ajos chafados y los trozos de limón.',
@@ -528,8 +528,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_chilindron': {
       name: 'Pollo al chilindrón',
-      ings: [['Pollo troceado', '1 kg'], ['Pimientos rojos y verdes', '3'], ['Cebolla', '1'], ['Tomates maduros', '3'], ['Taquitos de jamón serrano', '50 g']],
-      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado', '600 g'], ['Pimientos rojos y verdes', '2'], ['Cebolla', '1'], ['Tomates maduros', '2'], ['Taquitos de jamón serrano', '50 g']],
+      seas: 'Sal · pimienta · 2 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Salpimienta el pollo y dóralo en el aceite en una cazuela ancha durante 10 minutos. Reserva.',
         'En el mismo aceite sofríe la cebolla y el ajo picados y los pimientos en tiras durante 10 minutos. Añade el jamón y rehoga 2 minutos.',
@@ -564,8 +564,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_costillas': {
       name: 'Costillas de cerdo al horno',
-      ings: [['Costillas de cerdo (en tira o troceadas)', '1 kg'], ['Patatas', '500 g'], ['Cebolla', '1']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 150 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Costillas de cerdo (en tira o troceadas)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 2 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 180 °C. Unta las costillas con sal, pimienta, ajo machacado, pimentón, tomillo y el aceite.',
         'Corta las patatas y la cebolla en rodajas, ponlas en una bandeja, sálalas y coloca encima las costillas. Vierte el vino.',
@@ -712,7 +712,7 @@ GOHAN_PACK_TR('ES', 'es', {
       seas: 'Sal · 1 diente de ajo (opcional) · aceite de oliva para freír',
       steps: [
         'Pela las patatas y córtalas en bastones finos o rodajas. Fríelas en abundante aceite de oliva, primero a fuego medio hasta que estén blandas y luego a fuego fuerte hasta que se doren. Escurre y sala.',
-        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida.',
+        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida (para niños pequeños y embarazadas, cuaja bien la yema).',
         'Pon las patatas en una fuente, coloca encima el jamón y los huevos fritos.',
         'En la mesa, rompe los huevos con un tenedor y mézclalos con las patatas.'
       ],
@@ -725,7 +725,7 @@ GOHAN_PACK_TR('ES', 'es', {
       steps: [
         'Dora los ajos enteros en 1 cucharada de aceite, añade el arroz y rehoga 1 minuto. Agrega el agua, la sal y el laurel y cuece tapado a fuego suave 15-18 minutos hasta que esté tierno. Deja reposar 5 minutos.',
         'Calienta el tomate frito en un cazo.',
-        'Fríe los huevos en aceite caliente, con la yema jugosa. Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
+        'Fríe los huevos en aceite caliente, con la yema jugosa (para niños pequeños y embarazadas, cuaja bien la yema). Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
         'Aprieta el arroz en una taza y desmóldalo en cada plato. Sirve con el tomate, un huevo frito y el plátano.'
       ],
       tip: { add: 'Plátano frito', why: 'El toque dulce tradicional que da nombre al plato', skill: 'Moldea el arroz', how: 'Apretar el arroz en una taza untada de aceite y volcarla da la cúpula perfecta que esperan los niños.' }

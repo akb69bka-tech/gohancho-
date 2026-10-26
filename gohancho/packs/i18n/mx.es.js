@@ -561,8 +561,8 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_pollo_mole': {
       name: 'Pollo en mole',
-      ings: [['Piezas de pollo (muslos, piernas)', '1 kg'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
-      seas: 'Sal · 2 dientes de ajo · 1 litro de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
+      ings: [['Piezas de pollo (muslos, piernas)', '600 g'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
+      seas: 'Sal · 2 dientes de ajo · 750 ml de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
       steps: [
         'Cuece el pollo en el agua con la cebolla, el ajo y sal durante 30 minutos. Guarda el caldo.',
         'En una cazuela honda disuelve la pasta de mole en 2 tazas de caldo caliente, aplastándola con una cuchara. Si usas el jitomate, lícualo con un poco de caldo y agrégalo.',
@@ -573,12 +573,12 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_cochinita': {
       name: 'Cochinita pibil',
-      ings: [['Espaldilla de puerco en trozos grandes', '1 kg'], ['Pasta de achiote', '100 g'], ['Jugo de naranja agria, o de naranja dulce', '250 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
+      ings: [['Espaldilla de puerco en trozos grandes', '500 g'], ['Pasta de achiote', '50 g'], ['Jugo de naranja agria, o de naranja dulce', '150 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
       seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino molido · 1/2 cucharadita de orégano seco · 1/4 de cucharadita de pimienta negra molida',
       steps: [
-        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1 cucharadita de sal.',
+        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1/2 cucharadita de sal.',
         'Unta la carne con el adobo y déjala reposar al menos 2 horas, o toda la noche en el refrigerador.',
-        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 1/2 a 3 horas, hasta que se deshaga.',
+        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 a 2 1/2 horas, hasta que se deshaga.',
         'Mientras, rebana la cebolla muy delgada y mézclala con el jugo del otro limón y una pizca de sal.',
         'Deshebra la carne en su jugo y sirve con la cebolla curtida y tortillas.'
       ],

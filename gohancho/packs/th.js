@@ -221,6 +221,7 @@ GOHAN_PACK({
         'dried shrimp|Dried shrimp|1 tbsp?',
         'chili|Bird\'s eye chilies|2–4',
         'lime|Lime|1',
+        'cabbage|Cabbage wedge, to serve|1/8?',
       ],
       seas: '2 garlic cloves · 1 1/2 tbsp fish sauce · 1 1/2 tbsp palm sugar',
       steps: [
@@ -559,7 +560,7 @@ GOHAN_PACK({
       local: 'ไข่พะโล้',
       type: 'soup',
       method: 'simmer',
-      protein: 'egg',
+      protein: 'pork',
       min: 80,
       ings: [
         'egg|Eggs|4',
@@ -1737,7 +1738,7 @@ GOHAN_PACK({
       steps: [
         'Keep the shrimp on ice; slice the bitter melon thinly and chill in iced water.',
         'Pound the chilies, coriander roots and 2 cloves of the garlic and mix with the fish sauce, lime juice and sugar.',
-        'Arrange the shrimp on the bitter melon, top with the sliced garlic and mint and spoon over the sauce just before eating.',
+        'Arrange the shrimp on the bitter melon, top with the sliced garlic and mint and spoon over the sauce just before eating. Raw shrimp is not for small children, pregnant women or anyone with weak immunity; for them, blanch the shrimp for 30 seconds first.',
       ],
       tip: { add: 'Use shrimp sold for sashimi', why: 'They are eaten raw, so freshness matters most', skill: 'Keep everything icy cold', how: 'Chill the plate, shrimp and bitter melon; cold shrimp is sweet and firm, and the sauce tastes sharper.' },
     },

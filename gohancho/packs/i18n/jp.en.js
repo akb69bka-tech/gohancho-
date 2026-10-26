@@ -26,7 +26,7 @@ GOHAN_PACK_TR('JP', 'en', {
   },
   recipes: {
     nikujaga: {
-      name: 'Nikujaga (simmered beef & potatoes, pork version)',
+      name: 'Nikujaga (simmered pork & potatoes)',
       ings: [['Pork, thinly sliced scraps', '200 g'], ['Potatoes', '3'], ['Onion', '1'], ['Carrot', '1'], ['Shirataki noodles', '1 pack']],
       seas: 'Dashi 300 ml · Soy sauce 3 tbsp · Sugar 2 tbsp · Mirin 2 tbsp · Sake 2 tbsp · Vegetable oil 1 tbsp',
       steps: ['Cut the potatoes into large bite-size pieces, the onion into wedges and the carrot into chunks. Blanch the shirataki and cut it into easy-to-eat lengths.', 'Heat the oil in a pot and stir-fry the pork. When it changes color, add the vegetables and shirataki and toss until coated with oil.', 'Add the dashi, sugar, sake and mirin, cover with a drop lid and simmer over medium heat for 10 minutes.', 'Add the soy sauce and simmer 10 more minutes, until the potatoes are tender. Turn off the heat and let it sit a while so the flavor soaks in.'],
@@ -43,7 +43,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Karaage (Japanese fried chicken)',
       ings: [['Chicken thighs', '2 (500 g)'], ['Lemon', '1/4']],
       seas: 'Soy sauce 2 tbsp · Sake 1 tbsp · Grated garlic 1 tsp · Grated ginger 1 tsp · Potato starch 5 tbsp · Oil for frying',
-      steps: ['Cut the chicken into bite-size pieces and rub in the soy sauce, sake, garlic and ginger. Leave for 15 minutes.', 'Drain off the excess liquid lightly and coat with potato starch.', 'Fry in 170°C (340°F) oil for 3 minutes, take out, and rest for 3 minutes.', 'Raise the oil to 190°C (375°F) and fry 1 more minute for a crisp double fry.'],
+      steps: ['Cut the chicken into bite-size pieces and rub in the soy sauce, sake, garlic and ginger. Leave for 15 minutes.', 'Drain off the excess liquid lightly and coat with potato starch.', 'Fry in 170°C (340°F) oil for 3 minutes, take out, and rest for 3 minutes.', 'Raise the oil to 190°C (375°F) and fry 1 more minute for a crisp double fry. Serve with lemon wedges if you like.'],
       tip: { add: 'Double the garlic and ginger', why: 'A stronger marinade keeps karaage tasty even when cold.', skill: 'Double frying', how: '170°C for 3 minutes, rest 3 minutes, then 190°C for 1 minute. The chicken finishes cooking in its own heat while it rests.' }
     },
     teriyaki: {
@@ -57,7 +57,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Hambagu (Japanese hamburger steak)',
       ings: [['Ground beef and pork mix', '300 g'], ['Onion', '1/2'], ['Egg', '1'], ['Breadcrumbs', '4 tbsp'], ['Milk', '3 tbsp']],
       seas: 'Salt 1/3 tsp · Pepper a little · Nutmeg a little · Ketchup 3 tbsp · Worcestershire-style sauce 2 tbsp · Vegetable oil 1 tsp',
-      steps: ['Finely chop the onion, sauté it and let it cool. Soak the breadcrumbs in the milk.', 'Knead the meat with the salt until sticky, then mix in the onion, egg, breadcrumbs, pepper and nutmeg.', 'Divide into 2, press out the air and shape into ovals with a dent in the center.', 'Brown both sides over medium heat, then cover and steam-fry over low heat for 8 minutes. Add the ketchup and sauce to the leftover juices, bring to a boil and use as the sauce.'],
+      steps: ['Finely chop the onion, sauté it and let it cool. Soak the breadcrumbs in the milk.', 'Knead the meat with the salt until sticky, then mix in the onion, egg, breadcrumbs, pepper and nutmeg.', 'Divide into 2, press out the air and shape into ovals with a dent in the center.', 'Brown both sides over medium heat, then cover and steam-fry over low heat for 8 minutes. Pierce with a skewer: clear juices mean it is done (if they are pink, cook 2 minutes more). Add the ketchup and sauce to the leftover juices, bring to a boil and use as the sauce.'],
       tip: { add: 'Crumbled fu (dried wheat gluten) instead of breadcrumbs', why: 'Crushed fu holds the meat juices, so they spill out when you cut it open.', skill: 'Chill the meat mixture', how: 'Chill the kneaded mixture in the fridge for 15 minutes before shaping. The fat stays solid and the patties cook up plump.' }
     },
     stew: {
@@ -236,7 +236,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Oyakodon (chicken and egg rice bowl)',
       ings: [['Chicken thigh', '200 g'], ['Onion', '1/2'], ['Eggs', '3'], ['Cooked rice', '2 servings'], ['Mitsuba (Japanese parsley)', 'a little']],
       seas: 'Dashi 150 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 1 tsp',
-      steps: ['Cut the chicken into small bite-size pieces and slice the onion.', 'Bring the dashi and seasonings to a boil in a small frying pan, add the chicken and onion and simmer for 5 minutes.', 'Pour in 2/3 of the beaten egg, cover and cook for 30 seconds. Add the rest and turn off the heat while still soft-set.', 'Slide it over the rice and scatter with mitsuba.'],
+      steps: ['Cut the chicken into small bite-size pieces and slice the onion.', 'Bring the dashi and seasonings to a boil in a small frying pan, add the chicken and onion and simmer for 5 minutes.', 'Pour in 2/3 of the beaten egg, cover and cook for 30 seconds. Add the rest and turn off the heat while still soft-set (for small children and during pregnancy, cover and cook 1 minute more).', 'Slide it over the rice and scatter with mitsuba.'],
       tip: { add: 'Mitsuba', why: 'Just the aroma and green make it look completely different.', skill: 'Add the egg in two goes', how: 'First 2/3, cover for 30 seconds, then the rest, and turn off the heat while still half-set. It turns out silky.' }
     },
     gyudon: {
@@ -515,7 +515,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Chicken piccata (egg-battered chicken breast)',
       ings: [['Chicken breast', '1'], ['Egg', '1']],
       seas: 'Salt, pepper a little · Flour 1 tbsp · Grated Parmesan 1 tbsp · Vegetable oil 1 tbsp · Ketchup as needed',
-      steps: ['Slice the chicken on the diagonal, season with salt and pepper and dust with flour.', 'Mix the beaten egg with the Parmesan.', 'Dip the chicken in the egg and cook both sides in a heated, oiled frying pan over medium-low heat.', 'Cook, coating with the leftover egg, and serve with ketchup.']
+      steps: ['Slice the chicken on the diagonal, season with salt and pepper and dust with flour.', 'Mix the beaten egg with the Parmesan.', 'Dip the chicken in the egg and cook both sides in a heated, oiled frying pan over medium-low heat for 2–3 minutes per side, until cooked through.', 'Cook, coating with the leftover egg, and serve with ketchup.']
     },
     nikudango: {
       name: 'Meatballs in sweet and sour sauce',
@@ -581,7 +581,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Stuffed green peppers',
       ings: [['Bell peppers (green)', '4'], ['Ground beef and pork mix', '200 g'], ['Onion', '1/4'], ['Egg', '1']],
       seas: 'Breadcrumbs 3 tbsp · Milk 2 tbsp · Salt, pepper a little · Flour a little · Vegetable oil 2 tsp · Ketchup 2 tbsp · Worcestershire-style sauce 2 tbsp',
-      steps: ['Halve the peppers lengthwise, remove the seeds and dust the insides with flour.', 'Knead the meat with the minced onion, egg, breadcrumbs, milk, salt and pepper.', 'Stuff the peppers snugly with the meat mixture.', 'Cook meat-side down, and when browned, flip, cover and cook over low heat for 6 minutes. Add the ketchup and sauce and coat.']
+      steps: ['Halve the peppers lengthwise, remove the seeds and dust the insides with flour.', 'Knead the meat with the minced onion, egg, breadcrumbs, milk, salt and pepper.', 'Stuff the peppers snugly with the meat mixture.', 'Cook meat-side down, and when browned, flip, cover and cook over low heat for 6 minutes, until a skewer brings out clear juices. Add the ketchup and sauce and coat.']
     },
     torinotomatoni: {
       name: 'Chicken stewed in tomato',
@@ -894,7 +894,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'New Year mochi soup, Kanto style (ozoni)',
       ings: [['Rice cakes (kiri mochi)', '4'], ['Chicken thigh', '100 g'], ['Komatsuna', '2 stalks'], ['Carrot', '3 cm'], ['Kamaboko fish cake', '4 slices'], ['Mitsuba', 'a little']],
       seas: 'Dashi 600 ml · Sake 1 tbsp · Light soy sauce 1 tbsp · Salt 1/4 tsp',
-      steps: ['Cut the chicken into small bite-size pieces and the carrot into thin rounds. Blanch the komatsuna in salted water, cool in water, cut into 3 cm lengths and squeeze dry.', 'Put the dashi and carrot in a pot over medium heat; when it boils, add the chicken and sake and simmer for 6 minutes, skimming, until the chicken is cooked through.', 'Season with light soy sauce and salt.', 'Toast the mochi in a toaster oven for 6-8 minutes until puffed and browned.', 'Put the mochi, komatsuna and kamaboko in bowls, pour over the hot soup and chicken and top with mitsuba.'],
+      steps: ['Cut the chicken into small bite-size pieces and the carrot into thin rounds. Blanch the komatsuna in salted water, cool in water, cut into 3 cm lengths and squeeze dry.', 'Put the dashi and carrot in a pot over medium heat; when it boils, add the chicken and sake and simmer for 6 minutes, skimming, until the chicken is cooked through.', 'Season with light soy sauce and salt.', 'Toast the mochi in a toaster oven for 6-8 minutes until puffed and browned. For small children and older people, cut it into small pieces and remind them to chew well.', 'Put the mochi, komatsuna and kamaboko in bowls, pour over the hot soup and chicken and top with mitsuba.'],
       tip: { add: 'Yuzu peel', why: 'A sliver of yuzu gives the New Year bowl a festive aroma.', skill: 'Eating mochi safely', how: 'Cut mochi into small pieces for children and older people, and eat slowly; hot mochi is very sticky.' }
     },
     kabochapotage: {
@@ -943,7 +943,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Sukiyaki (sweet soy beef hot pot)',
       ings: [['Thinly sliced beef', '250 g'], ['Firm tofu', '1/2 block'], ['Leek', '1'], ['Napa cabbage', '1/8 head'], ['Shirataki noodles', '1 pack'], ['Shiitake mushrooms', '4'], ['Shungiku (chrysanthemum greens)', '1/2 bunch'], ['Eggs', '2']],
       seas: 'Soy sauce 4 tbsp · Sugar 3 tbsp · Mirin 3 tbsp · Sake 3 tbsp · Water 100 ml · Beef fat or vegetable oil a little',
-      steps: ['Cut the tofu into 8 pieces, the leek on the diagonal and the napa cabbage into large pieces. Stem the shiitake; blanch the shirataki and cut it into easy lengths.', 'Mix the soy sauce, sugar, mirin, sake and water to make the warishita sauce.', 'Heat the fat in a pot, spread out half the beef and sear it, then pour in a little warishita and coat the meat.', 'Arrange the rest of the beef, tofu, vegetables and shirataki, add the warishita and simmer over medium heat for about 8 minutes. Dip in beaten raw egg if you like.'],
+      steps: ['Cut the tofu into 8 pieces, the leek on the diagonal and the napa cabbage into large pieces, and pick the shungiku leaves off the stems. Stem the shiitake; blanch the shirataki and cut it into easy lengths.', 'Mix the soy sauce, sugar, mirin, sake and water to make the warishita sauce.', 'Heat the fat in a pot, spread out half the beef and sear it, then pour in a little warishita and coat the meat.', 'Arrange the rest of the beef, tofu, vegetables and shirataki, add the warishita and simmer over medium heat for about 8 minutes. Dip in beaten raw egg if you like (for small children and during pregnancy, cook the egg in the pot instead).'],
       tip: { add: 'A few cubes of fu (wheat gluten) or udon at the end', why: 'They soak up the sweet, beefy sauce left in the pot, so nothing goes to waste.', skill: 'Searing the first beef', how: 'Cook the first slices with sugar and soy before adding vegetables; the caramelized beef seasons the whole pot.' }
     },
     tarakopasta: {
@@ -964,7 +964,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Saikyo-yaki (Spanish mackerel grilled in sweet white miso)',
       ings: [['Spanish mackerel (sawara)', '2 fillets'], ['Daikon', '3 cm']],
       seas: 'White miso 3 tbsp · Mirin 1 tbsp · Sake 1 tbsp · Sugar 1 tsp',
-      steps: ['Mix the white miso, mirin, sake and sugar to make the saikyo miso.', 'Spread it on the fish, wrap in plastic and refrigerate overnight (at least 3 hours).', 'Lightly wipe off the miso and grill both sides over medium-low heat for 7–8 minutes, watching closely as it burns easily.', 'Serve with grated daikon.'],
+      steps: ['Start the day before (at least 3 hours ahead). Mix the white miso, mirin, sake and sugar to make the saikyo miso.', 'Spread it on the fish, wrap in plastic and refrigerate overnight (at least 3 hours).', 'Lightly wipe off the miso and grill both sides over medium-low heat for 7–8 minutes, watching closely as it burns easily.', 'Serve with grated daikon.'],
       tip: { add: 'Salmon or cod instead', why: 'The same miso marinade works for any mild fish.', skill: 'Gentle grilling', how: 'Wipe off the miso well and use lower heat than usual; the sugar in miso scorches long before the fish is cooked.' }
     },
     kajikisaute: {
@@ -1020,7 +1020,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Tempura (shrimp and vegetables)',
       ings: [['Shrimp', '6'], ['Eggplant', '1'], ['Kabocha squash', '1/8'], ['Sweet potato', '1/3'], ['Shiso leaves', '4'], ['Shishito peppers', '4']],
       seas: '(Batter) Flour 100 g · Ice water 150 ml · Egg 1/2 · Oil for frying · (Dipping sauce) Dashi 150 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Grated daikon to taste',
-      steps: ['Peel and devein the shrimp and cut the belly to straighten. Quarter the eggplant lengthwise, slice the kabocha and sweet potato 5 mm thick, and pierce the shishito.', 'Bring the dashi, soy sauce and mirin to a boil for the dipping sauce.', 'Beat the egg into the ice water and fold in the sifted flour lightly (do not overmix).', 'Dust the ingredients with flour, dip in batter and fry vegetables at 170°C for 2–3 minutes and shrimp at 180°C for 1.5 minutes. Serve with the sauce and grated daikon.'],
+      steps: ['Peel and devein the shrimp and cut the belly to straighten. Quarter the eggplant lengthwise, slice the kabocha and sweet potato 5 mm thick, and pierce the shishito.', 'Bring the dashi, soy sauce and mirin to a boil for the dipping sauce.', 'Beat the egg into the ice water and fold in the sifted flour lightly (do not overmix).', 'Dust the ingredients with flour, dip in batter and fry vegetables at 170°C for 2–3 minutes (shiso leaves: batter the back only and fry 30 seconds) and shrimp at 180°C for 1.5 minutes. Serve with the sauce and grated daikon.'],
       tip: { add: 'Matcha salt', why: 'Mixing a little matcha into salt is a pretty way to enjoy the crisp batter.', skill: 'Light, crisp batter', how: 'Keep the batter ice-cold and lumpy; stirring develops gluten and makes it heavy.' }
     },
     asparamaki: {
@@ -1034,7 +1034,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Tsukune (glazed chicken patties)',
       ings: [['Ground chicken', '300 g'], ['Leek', '1/2'], ['Egg', '1'], ['Shiso leaves', '6']],
       seas: 'Potato starch 1 tbsp · Grated ginger 1 tsp · Salt a little · Vegetable oil 1 tsp · Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 1 tsp · Sake 1 tbsp',
-      steps: ['Mince the leek.', 'Knead the chicken, leek, egg, starch, ginger and salt until sticky. Divide into 8 ovals (wrap in shiso if you like).', 'Fry in oil over medium heat until browned, flip, cover and steam on low for 5 minutes.', 'Add the soy sauce, mirin, sugar and sake and cook until glossy.'],
+      steps: ['Mince the leek.', 'Knead the chicken, leek, egg, starch, ginger and salt until sticky. Divide into 8 ovals (wrap in shiso if you like).', 'Fry in oil over medium heat until browned, flip, cover and steam on low for 5 minutes, until cooked through.', 'Add the soy sauce, mirin, sugar and sake and cook until glossy.'],
       tip: { add: 'Raw egg yolk for dipping', why: 'Dipping glazed tsukune in yolk is the yakitori-shop way and makes it mellow.', skill: 'Soft, juicy patties', how: 'Knead until the meat turns pale and sticky; it binds well and holds juices.' }
     },
     rebanira: {
@@ -1055,7 +1055,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Katsudon (pork cutlet and egg rice bowl)',
       ings: [['Thick pork loin', '2 slices'], ['Onion', '1/2'], ['Eggs', '3'], ['Panko breadcrumbs', '1 cup'], ['Cooked rice', '2 servings'], ['Mitsuba', 'a little']],
       seas: 'Salt, pepper a little · Flour 2 tbsp · Oil for frying · Dashi 150 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 2 tsp',
-      steps: ['Cut the sinew of the pork, season, coat with flour, beaten egg (1 egg) and panko, fry at 170°C for 5–6 minutes and cut into strips.', 'In a small frying pan simmer the dashi, soy sauce, mirin, sugar and sliced onion for 3 minutes.', 'For each serving, add a cutlet, pour over 1 beaten egg, cover and cook 1 minute until just set.', 'Slide onto rice in a bowl and garnish with mitsuba.'],
+      steps: ['Cut the sinew of the pork, season, coat with flour, beaten egg (1 egg) and panko, fry at 170°C for 5–6 minutes and cut into strips.', 'In a small frying pan simmer the dashi, soy sauce, mirin, sugar and sliced onion for 3 minutes.', 'For each serving, add a cutlet, pour over 1 beaten egg, cover and cook 1 minute until just set (2 minutes, until the egg is fully set, for small children and during pregnancy).', 'Slide onto rice in a bowl and garnish with mitsuba.'],
       tip: { add: 'Leftover or store-bought tonkatsu', why: 'Simmering in the sauce revives a cold cutlet, making a quick weeknight meal.', skill: 'Silky egg', how: 'Pour the egg in two stages: most first, the rest just before turning off the heat, for a soft, runny finish.' }
     },
     chirashi: {

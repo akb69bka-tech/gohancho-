@@ -1285,7 +1285,7 @@ GOHAN_PACK({
       steps: [
         'In a wide frying pan warm the oil with the garlic (and chili), add the tomato and a pinch of salt and simmer for 10-12 minutes until thick.',
         'Make 4 hollows in the sauce with a spoon and break an egg into each. Season the eggs with a little salt.',
-        'Cover and cook on low heat for 5-7 minutes until the whites are set but the yolks still soft.',
+        'Cover and cook on low heat for 5-7 minutes until the whites are set but the yolks still soft (2-3 minutes longer, until the yolks are firm, for small children and during pregnancy).',
         'Scatter with basil and grated Parmigiano and serve straight from the pan with bread for dipping.',
       ],
       tip: { add: 'A spoon of leftover ragù or peas in the sauce', why: 'It turns a quick dinner into a richer one', skill: 'Cover the pan', how: 'The steam sets the top of the whites while the yolks stay runny.' },

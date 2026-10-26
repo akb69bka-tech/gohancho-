@@ -1247,7 +1247,7 @@ GOHAN_PACK({
       local: 'Cà tím xào thịt bằm',
       type: 'main',
       method: 'stirfry',
-      protein: 'veg',
+      protein: 'mince',
       min: 25,
       ings: [
         'eggplant|Long eggplants|2',
@@ -1788,7 +1788,7 @@ GOHAN_PACK({
       seas: '1 1/2 tbsp fish sauce · 1 tbsp sugar · 1 garlic clove · 1 chili · 1 tbsp fried shallots',
       steps: [
         'Slice the beef paper-thin across the grain (easier half-frozen). Dip the slices in boiling water for 10-15 seconds until the surface turns pale, then drain.',
-        'Squeeze the limes over the beef and mix; leave 5-10 minutes until it turns pale. Squeeze out the lime juice.',
+        'Squeeze the limes over the beef and mix; leave 5-10 minutes until it turns pale. Squeeze out the lime juice. For small children or during pregnancy, blanch their slices for 1 minute until no pink remains.',
         'Slice the onion thinly. Mix the fish sauce, sugar, minced garlic and chili.',
         'Toss the beef with the onion, herbs and dressing, and top with peanuts and fried shallots.',
       ],

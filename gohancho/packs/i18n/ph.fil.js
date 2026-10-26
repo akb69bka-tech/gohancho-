@@ -579,10 +579,10 @@ GOHAN_PACK_TR('PH', 'fil', {
     },
     'ph_kare_kare': {
       name: 'Kare-kare',
-      ings: [['Buntot o bulalo ng baka, hiniwa', '1 kg'], ['Peanut butter (walang tamis kung mayroon)', '1/2 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
-      seas: '4 butil ng bawang · 2 kutsara atsuete powder o atsuete oil · 3 kutsara giniling na sinangag na bigas · 1 kutsarita asin · 2 kutsara mantika · 2 litro tubig · Ginisang bagoong para sa sawsawan',
+      ings: [['Buntot o bulalo ng baka, hiniwa', '600 g'], ['Peanut butter (walang tamis kung mayroon)', '1/3 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 1/2 kutsara atsuete powder o atsuete oil · 2 kutsara giniling na sinangag na bigas · 1/2 kutsarita asin · 2 kutsara mantika · 1.5 litro tubig · Ginisang bagoong para sa sawsawan',
       steps: [
-        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 1 litrong sabaw.',
+        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 600 ml na sabaw.',
         'Igisa ang bawang at sibuyas sa mantika kasama ang atsuete. Ilagay ang karne at sabaw, ihalo ang peanut butter at pakuluan ng 10 minuto.',
         'Tunawin ang giniling na bigas sa kaunting tubig at ihalo para lumapot. Timplahan nang bahagya ng asin.',
         'Hiwalay na ilaga ang mga gulay sa kumukulong tubig ng 2 hanggang 3 minuto at iayos sa ibabaw. Ihain na may bagoong at kanin.'
@@ -894,7 +894,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Gumamit lang ng napakasariwang isda na puwedeng kainin nang hilaw. Hugasan ang mga cube sa kaunting suka at itapon ang sukang iyon.',
         'Ilagay ang isda sa mangkok na salamin kasama ang natirang suka at luya. Ilagay sa ref ng 10 hanggang 15 minuto hanggang pumuti ang labas.',
         'Itapon ang karamihan ng suka. Ihalo ang sibuyas, pipino, sili, katas ng kalamansi, asin at paminta.',
-        'Ihain agad nang malamig.'
+        'Ihain agad nang malamig. Hilaw na isda ito: bilhin sa mapagkakatiwalaang tindahan, at huwag ipakain sa maliliit na bata o sa buntis.'
       ],
       tip: { add: 'Kaunting gata', why: 'Malinamnam na estilong Bisaya na nagpapalambot ng asim', skill: 'Huwag ibabad nang matagal', how: 'Lampas 30 minuto, nanunuyo at nagiging pulbusin ang isda; kainin habang malambot pa ang gitna.' }
     },

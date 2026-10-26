@@ -1026,7 +1026,7 @@ GOHAN_PACK_TR('IT', 'it', {
       steps: [
         'In una padella larga scalda l\'olio con l\'aglio (e il peperoncino), aggiungi il pomodoro e un pizzico di sale e cuoci per 10-12 minuti finché si addensa.',
         'Con un cucchiaio fai 4 incavi nel sugo e rompi un uovo in ognuno. Sala leggermente le uova.',
-        'Copri e cuoci a fuoco basso per 5-7 minuti, finché l\'albume è rappreso e il tuorlo ancora morbido.',
+        'Copri e cuoci a fuoco basso per 5-7 minuti, finché l\'albume è rappreso e il tuorlo ancora morbido (per bambini piccoli e in gravidanza, 2-3 minuti in più, finché anche il tuorlo è sodo).',
         'Completa con basilico e Parmigiano grattugiato e servi direttamente in padella con pane per la scarpetta.'
       ],
       tip: { add: 'Un cucchiaio di ragù avanzato o piselli nel sugo', why: 'Trasforma una cena veloce in una più ricca', skill: 'Coprire la padella', how: 'Il vapore rapprende l\'albume in superficie mentre il tuorlo resta morbido.' }

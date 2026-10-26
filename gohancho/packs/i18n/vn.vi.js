@@ -956,7 +956,7 @@ GOHAN_PACK_TR('VN', 'vi', {
       seas: '1 1/2 muỗng canh nước mắm · 1 muỗng canh đường · 1 tép tỏi · 1 quả ớt · 1 muỗng canh hành phi',
       steps: [
         'Thái bò thật mỏng ngang thớ (dễ hơn khi thịt còn hơi đông). Nhúng thịt qua nước sôi 10-15 giây đến khi mặt thịt chuyển màu rồi vớt ra để ráo.',
-        'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh.',
+        'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh. Với trẻ nhỏ hoặc phụ nữ mang thai, nhúng phần thịt của họ vào nước sôi 1 phút đến khi không còn màu hồng.',
         'Thái mỏng hành tây. Pha nước mắm, đường, tỏi băm và ớt.',
         'Trộn bò với hành tây, rau thơm và nước trộn, rắc đậu phộng và hành phi.'
       ],
