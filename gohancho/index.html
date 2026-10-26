@@ -116,6 +116,8 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
+.chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
+.avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
 .badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-right:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
 .badge.new{background:var(--accent-soft);color:var(--accent)}
@@ -2867,7 +2869,7 @@ function renderSheet(){
         if (st === 2) body = `
             <h2>${esc(t('苦手な食材はありますか'))}</h2>
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
-            <div class="chips">${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}</div>
+            ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
             <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
@@ -3044,10 +3046,39 @@ function avoidFamLabel(f){
 }
 // 画面に出す苦手の名前（なかまを避けるものは、なかまの名前で出す）
 function avoidName(x){ const f = avoidFamOf(x); return f ? avoidFamLabel(f) : String(x); }
-// 苦手のチップ: なかまのチップ（いまの国の料理に出てくるものだけ）と、なかまで足りない個別の食材
-function avoidChipsHtml(list, act, famAct){
-    const fams = avoidFamChips().map(f => `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${list.some(x => avoidFamOf(x) === f)}">${esc(avoidFamLabel(f))}</button>`);
-    return fams.join('') + AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => `<button class="chip" data-act="${act}" data-v="${esc(q)}" aria-pressed="${list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q))}">${esc(q)}</button>`).join('');
+// 1つずつの食材が、選んだなかま（fams）に入っていれば、そのなかま（いまの国の料理の材料で見分ける）
+function avoidCoveredBy(q, fams){
+    if (!fams.length) return null;
+    const k = keyOf(q); let i = null;
+    for (const r of RECIPES){ i = (r.items || []).find(x => x.key === k); if (i) break; }
+    return fams.find(f => inFam(f, i || {key:k, en:''})) || null;
+}
+// 苦手のチップ: 「なかまでまとめて」（いまの国の料理に出てくるなかまだけ）と「1つずつ」の2つに分けて出す。
+// 選んだなかまに入っている食材は、選んだ形（押せない）で出す。最後に、いまの国の料理がどうなるかの一言を添える。more: 設定の画面。選んだものを先に出し、多いときは残りを「ほかの食材を見る」にしまう
+function avoidChipsHtml(list, act, famAct, more){
+    const sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
+    const fam = avoidFamChips().map(f => ({on: sel.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
+    const one = AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => { const by = avoidCoveredBy(q, sel);
+        if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">✓ ${esc(q)}</button>`};
+        const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
+        return {on, h: `<button class="chip" data-act="${act}" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`}; })
+        // 入力して足した食材（チップにないもの）
+        .concat(list.filter(x => !avoidFamOf(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => ({on: true, h: `<span class="chip have">${esc(x)}<button class="x" data-act="${act}" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`})));
+    const grp = (label, xs) => xs.length ? `<div class="avoid-grp"><span class="small muted">${esc(label)}</span><div class="chips">${xs.map(x => x.h).join('')}</div></div>` : '';
+    const groups = pick => grp(t('なかまでまとめて'), pick(fam)) + grp(t('1つずつ'), pick(one));
+    if (!more) return groups(xs => xs) + avoidSumHtml(list);
+    const rest = fam.concat(one).filter(x => !x.on).length;
+    if (!list.length || rest <= 8) return groups(xs => xs.filter(x => x.on).concat(xs.filter(x => !x.on))) + avoidSumHtml(list);
+    return groups(xs => xs.filter(x => x.on)) + avoidSumHtml(list) + `<details class="avoid-more" ${session.avoidMore ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${groups(xs => xs.filter(x => !x.on))}</details>`;
+}
+// 苦手な食材を変えたあとの一言: いまの国の料理のうち、置き換えて出す品数と、出さない品数
+function avoidSumHtml(list){
+    if (!list.length) return '';
+    const keep = S.settings.avoid; let a = 0, b = 0;
+    S.settings.avoid = list;
+    try { RECIPES.forEach(r => { if (isAvoided(r)) b++; else if (((swappedRecipe(r) || {}).swapped || {swaps: []}).swaps.length) a++; }); }
+    finally { S.settings.avoid = keep; }
+    return `<p class="small avoid-sum" role="status">${esc(t('いまの国の料理のうち、{a}品は置き換えて、{b}品は出さずに献立を作ります', {a, b}))}</p>`;
 }
 function avoidKeys(){ return new Set((S.settings.avoid || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
 // 苦手な食材か（1つの材料）。食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば苦手とみなす
@@ -3264,8 +3295,7 @@ function viewSettings(){
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
             <div class="field"><label>${esc(t('苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）'))}</label>
-                <div class="chips">${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam')}
-                ${S.settings.avoid.filter(x => !avoidFamOf(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => `<span class="chip have">${esc(x)}<button class="x" data-act="toggle-avoid" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`).join('')}</div>
+                ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
                 <label class="check" style="margin-top:6px"><input type="checkbox" data-act="avoid-swap" ${swapOn()?'checked':''}><span>${esc(t('ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）'))}</span></label>
                 <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。') : t('苦手な食材を使う料理は、すべて出しません。'))}</span>
@@ -4329,7 +4359,8 @@ document.addEventListener('click', e => {
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
             const f = el.dataset.v, a = S.settings.avoid;
-            if (a.some(x => avoidFamOf(x) === f)) S.settings.avoid = a.filter(x => avoidFamOf(x) !== f); else a.push('@' + f);
+            if (a.some(x => avoidFamOf(x) === f)) S.settings.avoid = a.filter(x => avoidFamOf(x) !== f);
+            else S.settings.avoid = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f);   // なかまに入る食材（えびなど）は、なかまにまとめる
             save(); session.menu = null; refreshWeek(); render(); break;
         }
         case 'settings': setTab('settings'); break;
@@ -4369,7 +4400,7 @@ document.addEventListener('click', e => {
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
-        case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add('@' + f); renderSheet(); break; }
+        case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-done': {
@@ -4609,6 +4640,7 @@ document.addEventListener('toggle', e => {
     if (!e.target.matches) return;
     if (e.target.matches('details.cond')) { if (!!S.condOpen !== e.target.open){ S.condOpen = e.target.open; save(); } }   // 開き直しても同じ開き方で出す
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
+    if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
 document.addEventListener('change', e => {
     const el = e.target;
