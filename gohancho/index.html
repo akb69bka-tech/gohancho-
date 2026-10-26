@@ -469,6 +469,7 @@ html.i18n-wait body{visibility:hidden}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
 nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
+html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
 .spot-label .slot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .spot-label .nm{-webkit-hyphens:auto;hyphens:auto}
@@ -1271,7 +1272,7 @@ function applyStaticText(){
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:t('今日の献立'), cook:tc('tab', '作り方'), fridge:t('材料から'), twist:t('ひとひねり'), world:t('世界のレシピ'), log:t('記録')};
+    const labels = {today:tc('tab', '今日の献立'), cook:tc('tab', '作り方'), fridge:t('材料から'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:t('記録')};
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         const n = [...b.childNodes].reverse().find(x => x.nodeType === 3);
         if (n && labels[b.dataset.tab]) n.textContent = labels[b.dataset.tab];
@@ -3332,7 +3333,7 @@ function viewSettings(){
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
         <div class="set-group">
             <div class="set-title">${esc(t('国・地域'))}</div>
-            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + cur.nameLocal}))}</button>
+            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + countryLabel(cur)}))}</button>
             <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
             <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
@@ -3565,7 +3566,8 @@ function weekShareText(){
         lines.push('', t('【買い物メモ】'));
         [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
             const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
-            lines.push(`〈${l}〉`); xs.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`));
+            lines.push(t('〈{l}〉', {l})); xs.forEach(e => { const q = e.qty.length ? sumQty(e.qty).join(t('＋')) : '';
+                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : ' ') + q : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない
         });
     }
     const aw = awardShareLine(); if (aw) lines.push('', aw);
@@ -3988,7 +3990,7 @@ function matchRow(m){
     const r = m.r;
     const parts = [
         ...m.got.map(i => `<b>${esc(i.label)}</b>`),
-        ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(x.alt)}</span>`),
+        ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(PACK_NAMES[x.alt] || labelOf(x.alt))}</span>`),
         ...m.miss.map(i => `<span class="miss">${esc(i.label)}</span>`),
     ];
     return `<div class="match">
@@ -4236,7 +4238,7 @@ function renderModal(){
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
     const facts = [typeLabel(r.type), genreName, t('{n}分', {n:r.min}), t('{n}人分', {n:sv}), fam && fam !== '野菜' ? familyLabel(fam) : ''].filter(Boolean);
-    const sub = r.pack && r.nameEn && r.nameEn !== r.name ? r.nameEn : '';
+    const sub = r.pack && r.nameEn && r.nameEn !== r.name && countryOf(r.pack).lang !== LANG ? r.nameEn : '';   // その国の言葉の画面では、英語の副題は出さない
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
         <div class="sheet pop" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
@@ -5078,14 +5080,14 @@ function viewWorld(){
             <div class="list">${rs.map(r => `<div class="match" data-act="open" data-id="${esc(r.id)}">
                 <span>${thumbHtml(r)}</span>
                 <div class="info"><div class="head"><span class="name">${esc(r.name)}</span></div>
-                    ${r.nameEn && r.nameEn !== r.name ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
+                    ${r.nameEn && r.nameEn !== r.name && !(r.pack && countryOf(r.pack).lang === LANG) ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
                     <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>
             ${all.length > rs.length ? `<div class="row"><button class="btn sm" data-act="world-all" data-k="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: all.length}))}</button></div>` : ''}`;
     };
     return `
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
-        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
+        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span>${countryLabel(o) !== o.nameLocal ? ` <small class="muted">${esc(countryLabel(o))}</small>` : ''}</button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
         ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
@@ -5109,7 +5111,7 @@ async function setCountry(cc){
     }
     S.settings.country = cc;
     // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
-    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = wantLang();
+    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = cc === 'JP' ? (deviceLang() || 'ja') : wantLang();   // 日本を選んでも、端末が日本語でなければ端末の言語のまま（日本の料理には英語の訳がある）
     save();
     await setLang(wantLang());
     await ensureTr(cc);
