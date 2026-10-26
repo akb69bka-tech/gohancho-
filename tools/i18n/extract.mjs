@@ -67,7 +67,7 @@ export function extractKeys(src){
 }
 
 // {n} と、訳の中の {n:# day:# days}（単数・複数）を同じ置き換え記号として数える
-function placeholders(s){ return [...new Set([...String(s).matchAll(/\{(\w+)(?::[^:{}]*:[^:{}]*)?\}/g)].map(x => '{' + x[1] + '}'))].sort().join(','); }
+function placeholders(s){ return [...new Set([...String(s).matchAll(/\{(\w+)(?::[^:{}]*:[^:{}]*(?::[^:{}]*(?::[^:{}]*)?)?)?\}/g)].map(x => '{' + x[1] + '}'))].sort().join(','); }
 
 function loadDict(lang){
     const file = path.join(ROOT, 'gohancho', 'i18n', `${lang}.js`);
