@@ -1361,10 +1361,10 @@ function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r
 function setMenuMain(r){
     const m = session.menu; if (!m || !r) return;
     m.items[0].r = r;
-    // 空の枠・汁もの、それに新しい主菜と同じ料理（または同じ肉・魚の2品目の主菜）になった枠は選び直す
+    // 主菜だけをかえる。ほかの料理はそのまま残し、空の枠と、新しい主菜と同じ料理（または同じ肉・魚の2品目の主菜）になった枠だけ選び直す
     m.items.forEach((x, j) => {
         const clash = x.r && (x.r.id === r.id || (x.slot === '主菜' && x.r.family === r.family && r.family !== '野菜'));
-        if (j && (!x.r || x.slot === '汁物' || clash)) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r);
+        if (j && (!x.r || clash)) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r);
     });
 }
 
