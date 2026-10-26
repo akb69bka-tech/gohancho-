@@ -124,7 +124,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Chicken nanban (fried chicken in sweet vinegar with tartar sauce)',
       ings: [['Chicken breast', '1'], ['Eggs', '2'], ['Onion', '1/4'], ['Cabbage', '1/8 head']],
       seas: 'Flour 2 tbsp · Vinegar 3 tbsp · Sugar 2 tbsp · Soy sauce 2 tbsp · Mayonnaise 4 tbsp · Oil for frying',
-      steps: ['Hard-boil 1 egg, chop it and mix with minced onion and mayonnaise to make tartar sauce.', 'Slice the chicken on the diagonal, season with salt and pepper, coat with flour and dip in the remaining beaten egg.', 'Shallow-fry both sides in plenty of oil.', 'Dip the hot chicken in the sweet vinegar made by boiling the vinegar, sugar and soy sauce, then top with the tartar sauce. Serve with shredded cabbage.'],
+      steps: ['Hard-boil 1 egg, then chop and mix with minced onion and mayonnaise to make tartar sauce.', 'Slice the chicken on the diagonal, season with salt and pepper, coat with flour and dip in the remaining beaten egg.', 'Shallow-fry both sides in plenty of oil.', 'Dip the hot chicken in the sweet vinegar made by boiling the vinegar, sugar and soy sauce, then top with the tartar sauce. Serve with shredded cabbage.'],
       tip: { add: 'Coarsely chopped boiled egg', why: 'Leaving chunks of egg in the tartar sauce makes it taste homemade.', skill: 'Dip in the sweet vinegar while hot', how: 'Dip the freshly fried chicken so the coating absorbs the sauce and the flavor sinks in.' }
     },
     butakimu: {
@@ -254,7 +254,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Omurice (omelet rice)',
       ings: [['Chicken thigh', '100 g'], ['Onion', '1/2'], ['Eggs', '4'], ['Cooked rice', '2 servings']],
       seas: 'Ketchup 5 tbsp · Butter 20 g · Salt, pepper a little · Milk 2 tbsp',
-      steps: ['Cut the chicken into 1 cm cubes and finely chop the onion.', 'Sauté the chicken and onion in half the butter, add the ketchup and cook off the moisture, then mix in the rice to make ketchup rice.', 'Beat 2 eggs with 1 tbsp milk and cook until half-set in half of the remaining butter.', 'Place half of the ketchup rice on it, fold it over and turn out onto a plate. Make the second serving the same way and top with ketchup.'],
+      steps: ['Cut the chicken into 1 cm cubes and finely chop the onion.', 'Sauté the chicken and onion in half the butter, add the ketchup and cook off the moisture, then mix in the rice to make ketchup rice.', 'For each serving, beat 2 eggs with 1 tbsp milk and cook until half-set in an equal share of the remaining butter.', 'Divide the ketchup rice equally, place one portion on each omelet, fold it over and turn out onto a plate. Make the rest the same way and top with ketchup.'],
       tip: { add: 'Butter in the eggs', why: 'Mixing 5 g of butter into the beaten egg makes it moist and less likely to tear.', skill: 'Soft omelet', how: 'Over fairly high heat, stir big only 3 times with chopsticks, then turn off the heat. Residual heat finishes it.' }
     },
     gapao: {

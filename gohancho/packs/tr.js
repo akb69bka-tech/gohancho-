@@ -1204,7 +1204,7 @@ GOHAN_PACK({
       ],
       seas: 'Salt · 1 garlic clove · 2 tbsp butter · 1 tsp pul biber · 1 tbsp vinegar for the water',
       steps: [
-        'Mix the yogurt with the crushed garlic and a little salt and spread it on two plates. It should be at room temperature.',
+        'Mix the yogurt with the crushed garlic and a little salt and spread it on the serving plates. It should be at room temperature.',
         'Bring a wide pan of water with the vinegar to a gentle simmer. Crack each egg into a cup and slide it in; poach for 3-4 minutes until the white is set (5 minutes for a firm yolk).',
         'Lift the eggs out with a slotted spoon, drain and place them on the yogurt.',
         'Sizzle the pul biber in the butter for a few seconds and drizzle over. Sprinkle with dill and serve with bread.',

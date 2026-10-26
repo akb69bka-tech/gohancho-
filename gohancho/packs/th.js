@@ -1254,9 +1254,9 @@ GOHAN_PACK({
       seas: '2 garlic cloves · 1 tbsp tomato ketchup · 1 tsp light soy sauce · 1 tsp fish sauce · 1 tsp sugar · pinch of white pepper · 2 tbsp oil',
       steps: [
         'Fry the chopped garlic and pork in 1 tbsp oil for 3 minutes, add the onion, long beans, tomato, ketchup, soy sauce, sugar and pepper and cook for 2–3 minutes until thick. Set aside.',
-        'Beat the eggs with the fish sauce. Heat a little oil in a wide pan over medium heat and swirl in half the eggs to make a thin round.',
-        'When the top is almost set, put half the filling in the centre and fold the four sides over to make a parcel.',
-        'Turn it out onto a plate, seam side down, and make the second one. Serve with rice and chili sauce.',
+        'Beat the eggs with the fish sauce. For each omelette, heat a little oil in a wide pan over medium heat and swirl in the beaten egg from 2 eggs to make a thin round.',
+        'When the top is almost set, put an equal share of the filling in the centre and fold the four sides over to make a parcel.',
+        'Turn it out onto a plate, seam side down, and make the rest the same way. Serve with rice and chili sauce.',
       ],
       tip: { add: 'Sriracha on top', why: 'Its sweet heat suits the tomato filling', skill: 'Keep the egg thin', how: 'Tilt the pan so the egg spreads into a wide, thin sheet; a thick omelette will tear when you fold it.' },
     },
