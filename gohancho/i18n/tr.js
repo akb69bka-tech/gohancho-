@@ -687,4 +687,5 @@ GOHAN_I18N('tr', {
     "いまの国": "mevcut ülke",
     "App Store の価格を読み込んでいます…": "App Store fiyatı yükleniyor…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Fiyat yüklenemedi. İnternet varken tekrar deneyin.",
+    "{date}まで使えます（更新しません）": "{date} tarihine kadar geçerli (yenilenmeyecek)",
 });

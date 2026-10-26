@@ -687,4 +687,5 @@ GOHAN_I18N('fil', {
     "いまの国": "kasalukuyan",
     "App Store の価格を読み込んでいます…": "Nilo-load ang presyo sa App Store…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Hindi na-load ang presyo. Subukan ulit kapag may internet.",
+    "{date}まで使えます（更新しません）": "Aktibo hanggang {date} (hindi mare-renew)",
 });

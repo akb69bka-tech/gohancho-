@@ -687,4 +687,5 @@ GOHAN_I18N('vi', {
     "いまの国": "hiện tại",
     "App Store の価格を読み込んでいます…": "Đang tải giá trên App Store…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Không tải được giá. Hãy thử lại khi có mạng.",
+    "{date}まで使えます（更新しません）": "Dùng được đến {date} (không gia hạn)",
 });

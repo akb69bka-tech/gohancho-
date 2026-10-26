@@ -687,4 +687,5 @@ GOHAN_I18N('pl', {
     "いまの国": "obecny",
     "App Store の価格を読み込んでいます…": "Wczytywanie ceny z App Store…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Nie udało się wczytać ceny. Spróbuj ponownie z dostępem do internetu.",
+    "{date}まで使えます（更新しません）": "Aktywne do {date} (bez odnowienia)",
 });
