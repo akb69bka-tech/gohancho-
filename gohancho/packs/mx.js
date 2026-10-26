@@ -1959,7 +1959,7 @@ GOHAN_PACK({
     'cucumber': ['cucumber', 'cucumbers', 'pepino', 'pepinos'],
   },
   quick: ['chicken', 'pork', 'beef', 'ground beef', 'fish', 'egg', 'beans', 'cheese', 'tomato', 'tomatillo', 'onion', 'chili', 'potato', 'zucchini', 'nopal', 'avocado', 'corn', 'poblano'],
-  pantry: ['tortilla', 'beans', 'rice', 'egg', 'onion', 'tomato', 'chili', 'chipotle', 'lime', 'cheese', 'cream', 'pasta', 'cilantro', 'potato'],
+  pantry: ['tortilla', 'beans', 'rice', 'egg', 'onion', 'tomato', 'chili', 'chipotle', 'lime', 'cheese', 'cream', 'pasta', 'cilantro', 'potato', 'garlic'],
   names: {
     'chicken': 'Chicken',
     'pork': 'Pork',

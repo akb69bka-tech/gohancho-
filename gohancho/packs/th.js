@@ -1931,7 +1931,7 @@ GOHAN_PACK({
     'salted fish': ['salted fish', 'dried salted fish', 'pla khem', 'ปลาเค็ม'],
   },
   quick: ['ground pork', 'pork', 'chicken', 'beef', 'shrimp', 'egg', 'tofu', 'holy basil', 'chili', 'onion', 'green onion', 'mushroom', 'chinese broccoli', 'morning glory', 'cabbage', 'tomato', 'cucumber', 'lime', 'coconut milk', 'long bean'],
-  pantry: ['rice', 'egg', 'chili', 'lime', 'onion', 'shallot', 'green onion', 'coconut milk', 'curry paste', 'shrimp paste', 'dried shrimp', 'lemongrass', 'galangal', 'lime leaf', 'peanut', 'glass noodles'],
+  pantry: ['rice', 'egg', 'chili', 'lime', 'onion', 'shallot', 'green onion', 'coconut milk', 'curry paste', 'shrimp paste', 'dried shrimp', 'lemongrass', 'galangal', 'lime leaf', 'peanut', 'glass noodles', 'garlic'],
   names: {
     'ground pork': 'Minced pork',
     'pork': 'Pork',

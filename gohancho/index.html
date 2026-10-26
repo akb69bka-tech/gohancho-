@@ -184,6 +184,7 @@ a{color:var(--accent)}
 .spot-label .nm,.tw-name,.match .name,.cook-head h3,.modal h2{overflow-wrap:anywhere}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
+.item .s.ex{margin-top:2px;cursor:pointer}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
 .mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0;min-height:44px;display:flex;align-items:center;gap:6px}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:44px}
 @media (max-width:400px){.mix-row{grid-template-columns:1fr;gap:2px}}   /* 狭い画面では見出しを上にして、国の名前が切れないように */
@@ -1671,6 +1672,8 @@ function suggestTwist(){
    ========================================================= */
 // i日あとの主菜にしても、「○日以内に作った料理は出さない」に当たらない料理か
 function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoidDays) || 0); }
+const WEEK_BOWL_MAX = 3;
+const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){
     const days = [], used = new Set();
     for (let i = 0; i < 7; i++){
@@ -1679,7 +1682,9 @@ function makeWeek(){
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
         const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
-        const fresh = all0.filter(r => weekFresh(r, i)), cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
+        const fresh = all0.filter(r => weekFresh(r, i)); let cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
+        // ごはんもの・麺の一品料理は1週間で3日まで（中華圏などで主菜が丼・麺ばかりにならないように。候補が足りないときはそのまま）
+        if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
         const wdi = parseYmd(d).getDay();
         let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
@@ -1704,10 +1709,35 @@ function refreshWeek(){
         const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
         const r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
-        if (r){ used.add(r.id); x.id = r.id; n++; }
+        if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
     });
     if (n) save();
     return n;
+}
+// 1週間プランの各日の副菜・汁もの（主菜だけを決めるので、買い物メモに入れるときに主菜に合う副菜と汁ものを1品ずつ選び、S.week.days[i].extra = {side, soup} に残す。作り直さないかぎり同じ）
+function weekSidesOn(){ return !!S.settings.weekSides; }
+function ensureWeekExtras(){
+    if (!S.week) return;
+    const ok = id => { const r = byId(id); return !!r && !isAvoided(r) && !S.hidden.includes(id); };
+    const taken = new Set(); let ch = false;
+    S.week.days.forEach(x => { const e = x.extra; if (e) [e.side, e.soup].forEach(id => { if (id && ok(id)) taken.add(id); }); });
+    visiblePlanDays().forEach(x => {
+        const main = byId(x.id); if (!main) return;
+        const e = x.extra && typeof x.extra === 'object' ? x.extra : (x.extra = {});
+        [['side', '副菜'], ['soup', '汁物']].forEach(([k, slot]) => {
+            if (e[k] && ok(e[k])) return;
+            const r = suggestFor(slot, [{r:main}, ...[...taken].map(id => ({r:byId(id)})).filter(y => y.r)], main) || suggestFor(slot, [{r:main}], main);
+            if (r && ok(r.id)){ e[k] = r.id; taken.add(r.id); } else delete e[k];
+            ch = true;
+        });
+    });
+    if (ch) save();
+}
+// その日に買い物メモへ入れる料理（主菜＋スイッチが入っているときは副菜・汁もの）
+function dayDishes(x){
+    const out = [byId(x.id)];
+    if (weekSidesOn() && x.extra) out.push(byId(x.extra.side), byId(x.extra.soup));
+    return out.filter(Boolean);
 }
 function weekToday(){
     if (!S.week) return null;
@@ -3673,11 +3703,31 @@ function visiblePlanDays(){
 }
 // 買い物メモで同じ材料とみなす名前（かっこ・「, diced」などの下ごしらえ・複数形の s を除く。タイ語は最初の空白まで）
 // 食材のキーが同じでも名前がちがうもの（ミニトマトとトマト、숙주と콩나물、밥と쌀）は別の行にする
-function shopBase(label){
+// 中国語は末尾の「肉」（猪里脊肉＝猪里脊）と切り方（薑片・薑絲・薑泥＝薑）、英語などは先頭の shredded / grated / diced、複数形（tomatoes・potatoes・berries）、アクセントのちがいも同じとみなす
+const SHOP_PRE = /^(?:(?:shredded|grated|diced|chopped|sliced|minced|peeled|fresh|large|small|medium|ripe|finely|thinly|coarsely|roughly|crushed)\s+)+/;
+const SHOP_POST = /\s+(?:(?:en|em|in|à|au|aux|a|al) (?:cubos?|cubitos?|cubinhos?|rodajas?|rodelas?|trozos?|gajos?|láminas?|aros?|tiras?|pedaços?|fatias?|pezzi|fette|dés|rondelles|morceaux)|(?:picad[oa]s?|rallad[oa]s?|ralad[oa]s?|fatiad[oa]s?|rebanad[oa]s?|filetead[oa]s?|grattugiat[oa]|tritat[oa]|affettat[oa]|sliced|chopped|diced|grated|minced|shredded))(?:\s.*)?$/;
+const SHOP_ALT = /\s+(?:or|ou|o|oder|lub|veya|hoặc|หรือ|या|أو)\s+|或者?|或是|หรือ|(?<=[가-힣])이?나(?=\s|$)/;
+function shopClean(label){
     let s = String(label).normalize('NFKC').toLowerCase().replace(/[（(][^）)]*[）)]/g, ' ').split(/[,，、]/)[0].trim();
     if (/[\u0E00-\u0E7F]/.test(s)) s = s.split(/\s+/)[0];
-    return s.split(/\s+/).map(w => /^[a-zà-ɏ'’-]+$/.test(w) ? w.replace(/(?<=..)s$/, '') : w).join(' ');
+    return s;
 }
+function shopNorm(s){
+    if (/^[\u3400-\u9fff]+$/.test(s)){
+        s = s.replace(/^(?:新鮮|新鲜|鮮|鲜|熟透的|粗|細|细)(?=.{2})/, '').replace(/(?<=.)[片丝絲末泥块塊丁条條粒段]$/, '');
+        s = s.replace(/(?<=.{2})肉$/, '');
+        return s;
+    }
+    s = s.replace(SHOP_PRE, '').replace(SHOP_POST, '').replace(/^(?:따뜻한|신선한|싱싱한)\s+/, '').replace(/\s+tươi$/, '');
+    return s.split(/\s+/).map(w => {
+        if (!/^[a-zà-ɏ'’-]+$/.test(w)) return w;
+        w = w.replace(/^(.{2,}?)ies$/, '$1y').replace(/(?<=..)(?:oes|(?:ch|sh|x|z)es|(?:on|or|al|in)es)$/, m => m.slice(0, -2)).replace(/(?<=..)s$/, '');
+        return w.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }).join(' ');
+}
+function shopBase(label){ return shopNorm(shopClean(label)); }
+// 同じ食材キーの中では「A または B」の A だけで見たものとも同じ行にする（Milk or buttermilk ＝ Milk）
+function shopLoose(label){ return shopNorm(shopClean(label).split(SHOP_ALT)[0].trim()); }
 // 買い物メモの売り場: veg（野菜）・meat（肉・魚）・dairy（乳製品・卵）・other（その他）
 const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節'];
 function shopSec(i){
@@ -3690,20 +3740,26 @@ function shopSec(i){
     return 'veg';
 }
 function shoppingList(){
-    const have = fridgeKeys(), fac = servingFactor(), map = new Map(), first = new Map();
-    visiblePlanDays().forEach(x => {
-        const r = swappedRecipe(byId(x.id)); if (!r) return;
+    const have = fridgeKeys(), fac = servingFactor(), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set();
+    const add = r => {
+        if (!r) return;
         r.items.forEach(i => {
             if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
-            const b = shopBase(i.label); if (!first.has(i.key)) first.set(i.key, b);
-            const id = first.get(i.key) === b ? i.key : i.key + '|' + b;   // チェックの記録と合うよう、最初の名前はキーのまま
-            const e = map.get(id) || {key:id, label:i.label, qty:[], dishes:[], sec:shopSec(i)};
-            if (i.label.length < e.label.length) e.label = i.label;          // まとめた行は、いちばん短い名前で出す
+            const b = shopBase(i.label), lb = shopLoose(i.label);
+            // 名前が同じなら食材キーがちがっても1行に（猪里脊 / 猪里脊肉）。同じキーなら「A または B」も A の行に
+            let id = byBase.get(b) || byLoose.get(i.key + '|' + lb);
+            if (!id){ id = keySeen.has(i.key) ? i.key + '|' + b : i.key; keySeen.add(i.key); }   // チェックの記録と合うよう、最初の名前はキーのまま
+            byBase.set(b, id); if (!byLoose.has(i.key + '|' + b)) byLoose.set(i.key + '|' + b, id); if (!byLoose.has(i.key + '|' + lb)) byLoose.set(i.key + '|' + lb, id);
+            const lab = /[\u0E00-\u0E7F]/.test(i.label) ? i.label.split(/\s+/)[0] : i.label;   // タイ語は下ごしらえの説明（หั่นท่อน 4 ซม. など）を出さない
+            const e = map.get(id) || {key:id, label:lab, qty:[], dishes:[], sec:shopSec(i)};
+            if (lab.length < e.label.length) e.label = lab;                  // まとめた行は、いちばん短い名前で出す
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
             map.set(id, e);
         });
-    });
+    };
+    if (weekSidesOn()) ensureWeekExtras();
+    visiblePlanDays().forEach(x => { dayDishes(x).forEach(r => add(swappedRecipe(r))); });
     return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, LANG));
 }
 // 同じ単位の分量は足し合わせる（例: 1/3本＋1/3本 → 2/3本、150g＋200g → 350g）
@@ -3742,10 +3798,18 @@ function shopRowsHtml(list, done){
 }
 function shoppingHtml(){
     const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
-    const done = shopDoneSet();
-    return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(t('{n}日分の主菜で使う材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n:visiblePlanDays().length, sv:Number(S.settings.servings)||2}))}</span></div>
+    const done = shopDoneSet(), sv = Number(S.settings.servings) || 2, on = weekSidesOn();
+    const days = visiblePlanDays(), n = on ? days.length : days.filter(x => byId(x.id)).length;
+    const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
+    return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
+        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button></div>
         <div class="list shop">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>`;
+}
+// プランの日ごとに出す副菜・汁もの（買い物メモに含めるスイッチが入っているとき）
+function weekExtraHtml(x){
+    if (!weekSidesOn() || !x.extra) return '';
+    return [['side', '副菜'], ['soup', '汁物']].map(([k, slot]) => { const r = byId(x.extra[k]); return r ? `<div class="s ex" data-act="open" data-id="${esc(r.id)}">${esc(t('{slot}：{name}', {slot:slotLabel(slot), name:r.name}))}</div>` : ''; }).join('');
 }
 
 /* =========================================================
@@ -3765,8 +3829,12 @@ function menuShareText(m = session.menu, d = TODAY){
 }
 function weekShareText(){
     const days = visiblePlanDays(); if (!days.length) return '';
+    if (weekSidesOn()) ensureWeekExtras();
     const lines = [t('【献立の予定】')];
-        days.forEach(x => { const r = byId(x.id); if (r) lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`); });
+        days.forEach(x => { const r = byId(x.id); if (!r) return; lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`);
+            const ex = weekSidesOn() && x.extra ? [['side', '副菜'], ['soup', '汁物']].map(([k, slot]) => { const e = byId(x.extra[k]); return e ? t('{slot}：{name}', {slot:slotLabel(slot), name:e.name + swapShare(e)}) : ''; }).filter(Boolean).join(' / ') : '';
+            if (ex) lines.push('　' + ex);
+        });
     const list = shoppingList(); const done = shopDoneSet();
     const rest = list.filter(e => !done.has(e.key));
     if (rest.length){
@@ -3944,6 +4012,7 @@ function viewToday(){
         <span>${LANG === 'ja' ? 'まるごと<br>入れ替え' : esc(t('まるごと入れ替え'))}</span></button></div>`;
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
+    if (S.week && weekSidesOn()) ensureWeekExtras();
     return `
     <section class="sec">
         ${remoteNoticeHtml()}
@@ -4007,7 +4076,7 @@ function viewToday(){
             return `
             <div class="item">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
-                <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div></div>
+                <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div>${weekExtraHtml(x)}</div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button>
             </div>`; }).join('')}</div>
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
@@ -4807,11 +4876,11 @@ document.addEventListener('click', e => {
             const used = new Set(w.days.map(x => x.id));
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
             const r = pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
-            if (r){ w.days[idx].id = r.id; save(); }
+            if (r){ w.days[idx].id = r.id; delete w.days[idx].extra; save(); }
             else {   // 主菜が7つしかない国: ほかの日と入れかえる（となりの日は避ける）
                 const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && w.days[j].id !== w.days[idx].id);
                 const j = others.length ? others[Math.floor(Math.random() * others.length)] : -1;
-                if (j >= 0){ const tmp = w.days[idx].id; w.days[idx].id = w.days[j].id; w.days[j].id = tmp; save(); }
+                if (j >= 0){ const tmp = w.days[idx].id; w.days[idx].id = w.days[j].id; w.days[j].id = tmp; delete w.days[idx].extra; delete w.days[j].extra; save(); }
             }
             render(); break;
         }
@@ -4928,6 +4997,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'edit-custom-cancel': session.editCustom = null; render(); break;
+        case 'toggle-week-sides': S.settings.weekSides = !S.settings.weekSides; save(); render(); break;
         case 'toggle-staple': {
             const v = el.dataset.v, k = keyOf(v);
             const i = S.staples.findIndex(x => keyOf(x) === k);
