@@ -1,6 +1,10 @@
 // Japan (built-in recipes) — English
 GOHAN_PACK_TR('JP', 'en', {
   staple: 'rice',
+  aliases: {
+    '長ねぎ': ['green onion', 'green onions', 'scallion', 'scallions', 'spring onion', 'spring onions', 'welsh onion', 'negi'], '玉ねぎ': ['onions', 'yellow onion'],
+    '合いびき肉': ['ground meat', 'minced meat', 'mince', 'ground beef and pork', 'minced beef and pork'], '豚ひき肉': ['minced pork'], '鶏ひき肉': ['minced chicken']
+  },
   names: {
     '豚ひき肉': 'ground pork', '鶏ひき肉': 'ground chicken', '合いびき肉': 'ground beef & pork', '牛乳': 'milk', '豚肉': 'pork', '鶏肉': 'chicken', '牛肉': 'beef',
     '鮭': 'salmon', 'さば': 'mackerel', 'ぶり': 'yellowtail', 'たら': 'cod', 'あじ': 'horse mackerel', 'いわし': 'sardines', 'さんま': 'Pacific saury', 'かれい': 'flounder',
