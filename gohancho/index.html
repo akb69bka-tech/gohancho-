@@ -420,7 +420,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .ob-points li{display:flex;flex-direction:column;padding-inline-start:14px;border-inline-start:3px solid var(--accent)}
 .ob-points b{font-family:var(--font-display)}
 .ob-points span{font-size:.85rem;color:var(--muted)}
-.ob-actions{display:flex;gap:8px;margin-top:6px}
+.ob-actions{display:flex;gap:8px;margin-top:6px}.sheet-onboard .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:10px 0 calc(14px + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .ob-skip{align-self:center}
 .pw-head{display:flex;align-items:center;gap:10px}
 .pw-badge{background:var(--yolk);color:#231800;font-weight:700;font-size:.72rem;letter-spacing:.14em;border-radius:6px;padding:.15rem .5rem}
@@ -432,7 +432,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pw-price{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start}
 .pw-price.best{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .pw-price .l{font-size:.78rem;color:var(--muted)}
-.pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+.pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.05rem}.pw-price.cta .p{font-size:1.35rem}.pw-offer .ot{font-weight:400;font-size:.95rem}.pw-offer .op{font-size:1.4rem}
 .pw-price .n{font-size:.72rem;color:var(--accent);font-weight:700}
 .pw-free{margin:0;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;font-weight:500}
 
@@ -3241,13 +3241,13 @@ function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
 // お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
 function trialTimelineHtml(){
     const end = introEndYmd(), price = monthlyPrice();
-    const steps = [[t('今日'), t('すべての機能が使えます')], [jpDate(addDays(end, -3)), t('お試しが終わる前にお知らせします')], [jpDate(end), price ? t('この日から{price}', {price}) : t('この日から月額料金')]];
+    const steps = [[t('今日'), t('すべての機能が使えます')], [jpDate(end), price ? t('この日から{price}', {price}) : t('この日から月額料金')]];
     return `<ol class="pw-steps" role="list">${steps.map(([d, x]) => `<li><b>${esc(d)}</b><span>${esc(x)}</span></li>`).join('')}</ol>`;
 }
 function priceLabel(p){
     const live = storePrices[p.id];
     if (live) return p.per === '年' ? t('{price} / 年', {price:live.text}) : t('{price} / 月', {price:live.text});
-    return LANG === 'ja' || currentCountry() === 'JP' ? p.price : '';   // 目安の円の価格は日本向けだけ。ほかの国は App Store の価格が取れたときだけ出す
+    return !purchasesPlugin() && (LANG === 'ja' || currentCountry() === 'JP') ? p.price : '';   // 目安の円の価格は日本向けだけ。ほかの国は App Store の価格が取れたときだけ出す
 }
 function priceNote(p){
     if (p.per !== '年') return p.note;
@@ -3285,7 +3285,7 @@ function paywallReason(k){
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ご飯帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'award': return t('「おいしかった！」と今月の料理自慢は、ご飯帖プラスで使えます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
-        case 'start': return introEligible ? introLabel() : t('プランを選ぶと、すべての機能が使えます。');
+        case 'start': return introEligible && (!purchasesPlugin() || introOffer) ? introLabel() : t('プランを選ぶと、すべての機能が使えます。');
         case 'monitor': return t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)});
         case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:monitorOn() ? PLAN.campaign.days : PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
@@ -3379,7 +3379,7 @@ function renderSheet(){
             ${obTrayHtml() || `<div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>`}
             <h2>${esc(t('ご飯帖へようこそ'))}</h2>
             <p class="ob-lead">${esc(t('こんな献立を、毎日お膳ごと提案します。人数や苦手な食材を設定すると、あなたの家に合わせて選びます。'))}</p>
-            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
+            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -3410,13 +3410,13 @@ function renderSheet(){
         const native = !!purchasesPlugin();
         const priced = storeReady();   // App Store の価格が取れるまでは、お試しの文も購入ボタンも出さない
         if (native && !priced && storeState === 'idle') loadStorePrices();
-        const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && (!native || introChecked) && priced && !monitorOn() && !isSubscribed();
+        const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && (!native || (introChecked && introOffer)) && priced && !monitorOn() && !isSubscribed();
         // 献立はもうできている: 購入の前に、この人の今日の献立を名前で見せる
         const ready = sheet.reason === 'start' && session.menu ? session.menu.items.map(x => x.r && x.r.name).filter(Boolean) : [];
         body = `
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
             ${ready.length ? `<p class="pw-ready"><b>${esc(t('あなたの今日の献立ができています'))}</b><br>${esc(joinNames(ready))}</p>` : ''}
-            ${startOffer ? `<p class="pw-offer"><b>${esc(monthlyPrice() ? t('{trial}。そのあと{price}', {trial:introShort(), price:monthlyPrice()}) : introShort())}</b></p>${trialTimelineHtml()}` : ''}
+            ${startOffer ? `<p class="pw-offer">${monthlyPrice() ? esc(t('{trial}。そのあと{price}', {trial:'\u0001' + introShort() + '\u0002', price:'\u0003' + monthlyPrice() + '\u0004'})).replace(/\u0001/g, '<span class="ot">').replace(/\u0002/g, '</span>').replace(/\u0003/g, '<b class="op">').replace(/\u0004/g, '</b>') : `<b>${esc(introShort())}</b>`}</p>${trialTimelineHtml()}` : ''}
             ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
             ${reason && !(startOffer && sheet.reason === 'start') ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             ${sheet.reason === 'monitor' ? `<div class="row">${monitorCanSend() ? `<button class="btn primary" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small muted">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : ''}
@@ -3427,7 +3427,8 @@ function renderSheet(){
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
-                <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
+                ${isSubscribed() && native ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}
+                <p class="small muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
                 <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>`
             : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
             ${isLocked() ? '' : `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`}`;
@@ -6896,7 +6897,7 @@ function countrySheetHtml(){
     const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
+        <div class="country-list">${(S.settings.country ? COUNTRIES : [...COUNTRIES].sort((a, b) => (b.cc === cur) - (a.cc === cur))).map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
             <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
         ${S.settings.country ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : ''}`;
 }
