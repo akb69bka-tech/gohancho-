@@ -1800,7 +1800,7 @@ GOHAN_PACK({
     'king oyster mushroom': ['king oyster mushroom', 'king oyster mushrooms', 'eryngii', '杏鮑菇'],
   },
   quick: ['pork belly', 'pork', 'ground pork', 'chicken', 'beef', 'fish', 'clam', 'egg', 'cabbage', 'eggplant', 'basil', 'scallion', 'sweet potato leaves', 'bitter melon', 'carrot', 'corn', 'pork rib', 'pressed tofu'],
-  pantry: ['rice', 'egg', 'scallion', 'fried shallot', 'dried shrimp', 'shiitake', 'rice vermicelli', 'preserved radish', 'pickled cucumber', 'salted egg', 'pressed tofu', 'carrot', 'cabbage', 'basil', 'chili'],
+  pantry: ['rice', 'egg', 'scallion', 'fried shallot', 'dried shrimp', 'shiitake', 'rice vermicelli', 'preserved radish', 'pickled cucumber', 'salted egg', 'pressed tofu', 'carrot', 'cabbage', 'basil', 'chili', 'garlic', 'ginger'],
   names: {
     'pork belly': 'Pork belly',
     'fried shallot': 'Fried shallots',

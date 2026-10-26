@@ -1776,7 +1776,7 @@ GOHAN_PACK({
     'pickled long bean': ['pickled long bean', 'pickled long beans', 'pickled beans', '酸豆角', '酸豇豆'],
   },
   quick: ['pork', 'pork belly', 'ground pork', 'chicken', 'fish', 'egg', 'tofu', 'tomato', 'potato', 'eggplant', 'bok choy', 'napa cabbage', 'cucumber', 'bell pepper', 'carrot', 'celery', 'scallion', 'wood ear'],
-  pantry: ['rice', 'egg', 'scallion', 'tomato', 'potato', 'noodles', 'tofu', 'wood ear', 'peanut', 'chili', 'seaweed', 'dried shrimp', 'glass noodles', 'carrot', 'napa cabbage'],
+  pantry: ['rice', 'egg', 'scallion', 'tomato', 'potato', 'noodles', 'tofu', 'wood ear', 'peanut', 'chili', 'seaweed', 'dried shrimp', 'glass noodles', 'carrot', 'napa cabbage', 'onion'],
   names: {
     'egg': 'Eggs',
     'tomato': 'Tomatoes',

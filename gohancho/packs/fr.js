@@ -1849,7 +1849,7 @@ GOHAN_PACK({
     'red cabbage': ['red cabbage', 'purple cabbage', 'chou rouge'],
   },
   quick: ['chicken', 'ground beef', 'pork', 'salmon', 'egg', 'ham', 'bacon', 'sausage', 'potato', 'carrot', 'onion', 'tomato', 'zucchini', 'green bean', 'leek', 'cheese', 'cream', 'pasta'],
-  pantry: ['egg', 'onion', 'shallot', 'potato', 'carrot', 'milk', 'cream', 'cheese', 'pasta', 'rice', 'lentils', 'couscous', 'lemon', 'tomato', 'ham', 'lettuce'],
+  pantry: ['egg', 'onion', 'shallot', 'potato', 'carrot', 'milk', 'cream', 'cheese', 'pasta', 'rice', 'lentils', 'couscous', 'lemon', 'tomato', 'ham', 'lettuce', 'garlic'],
   names: {
     'chicken': 'Chicken',
     'bell pepper': 'Bell pepper',
