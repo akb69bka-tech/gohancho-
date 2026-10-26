@@ -664,4 +664,7 @@ GOHAN_I18N('fil', {
     "プランの残りが少なくなりました": "Malapit nang matapos ang plan mo",
     "今日から7日分を考える": "Magplano ng 7 araw mula ngayon",
     "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Ituturing na mayroon na sa bahay at hindi isasama sa listahan ng bibilhin.",
+    "元に戻す": "I-undo",
+    "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Kulang ang storage ng device kaya hindi na-save. Magbura ng ilang larawan.",
+    "記録を消しました": "Nabura ang record",
 });

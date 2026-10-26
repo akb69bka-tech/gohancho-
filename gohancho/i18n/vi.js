@@ -664,4 +664,7 @@ GOHAN_I18N('vi', {
     "プランの残りが少なくなりました": "Kế hoạch sắp hết",
     "今日から7日分を考える": "Lên kế hoạch 7 ngày từ hôm nay",
     "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Coi như đã có sẵn ở nhà và không đưa vào danh sách mua.",
+    "元に戻す": "Hoàn tác",
+    "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Thiết bị hết dung lượng nên không lưu được. Hãy xóa bớt ảnh.",
+    "記録を消しました": "Đã xóa bản ghi",
 });

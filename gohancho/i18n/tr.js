@@ -664,4 +664,7 @@ GOHAN_I18N('tr', {
     "プランの残りが少なくなりました": "Planınız bitmek üzere",
     "今日から7日分を考える": "Bugünden itibaren 7 gün planla",
     "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Bunları evde var sayarız ve alışveriş listesine eklemeyiz.",
+    "元に戻す": "Geri al",
+    "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Cihazda yeterli alan yok, kaydedilemedi. Birkaç fotoğrafı silin.",
+    "記録を消しました": "Kayıt silindi",
 });

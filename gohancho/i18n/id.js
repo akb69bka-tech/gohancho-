@@ -664,4 +664,7 @@ GOHAN_I18N('id', {
     "プランの残りが少なくなりました": "Rencanamu hampir selesai",
     "今日から7日分を考える": "Rencanakan 7 hari mulai hari ini",
     "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Dianggap sudah ada di rumah dan tidak masuk daftar belanja.",
+    "元に戻す": "Urungkan",
+    "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Penyimpanan perangkat penuh, tidak bisa menyimpan. Coba hapus beberapa foto.",
+    "記録を消しました": "Catatan dihapus",
 });

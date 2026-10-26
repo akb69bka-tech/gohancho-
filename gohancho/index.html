@@ -178,7 +178,8 @@ a{color:var(--accent)}
 .list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
 .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid var(--line)}
 .item:first-child{border-top:0}
-.item .t{font-weight:500;cursor:pointer;min-width:0}
+.item .t{font-weight:500;cursor:pointer;min-width:0;overflow-wrap:anywhere}
+.spot-label .nm,.tw-name,.match .name,.cook-head h3,.modal h2{overflow-wrap:anywhere}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
@@ -1057,10 +1058,32 @@ const FAMILY_RE = {
 const STORE_KEY = 'gohancho.v1';
 const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], staples:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}};
 let S = load();
+// 保存データ・読み込んだデータの形を直す（足りない項目・型の違い・日付のない記録などで、アプリが起動しなくならないように）
+function normalizeState(d){
+    d = d && typeof d === 'object' && !Array.isArray(d) ? d : {};
+    const st = Object.assign(structuredClone(DEFAULT_STATE), d, {settings: Object.assign(structuredClone(DEFAULT_STATE.settings), d.settings && typeof d.settings === 'object' ? d.settings : {})});
+    const arr = x => Array.isArray(x) ? x : [], obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
+    const isYmd = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
+    ['favs','hidden','fridge','staples','skills','seenTwists','usedDays'].forEach(k => { st[k] = arr(st[k]).filter(x => typeof x === 'string' || typeof x === 'number'); });
+    st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
+    st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
+        ings: arr(r.ings).filter(x => typeof x === 'string' && x.trim()), steps: arr(r.steps).filter(x => typeof x === 'string'), seas: typeof r.seas === 'string' ? r.seas : '',
+        type: ['主菜','副菜','汁物','ごはん','麺'].includes(r.type) ? r.type : '主菜', min: Number(r.min) || 20, genre: r.genre || '和', method: r.method || '炒'}))
+        .filter(r => r.ings.length);
+    ['awards','usage','countryData','stapleBy'].forEach(k => { if (k in st) st[k] = obj(st[k]); });
+    if (!(st.week && isYmd(st.week.start) && Array.isArray(st.week.days))) st.week = null;
+    else st.week.days = st.week.days.filter(x => x && isYmd(x.d) && x.id);
+    if (st.cook && !(isYmd(st.cook.d) && Array.isArray(st.cook.ids))) st.cook = null;
+    if (st.draft && !(isYmd(st.draft.d) && Array.isArray(st.draft.ids) && Array.isArray(st.draft.slots))) st.draft = null;
+    st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
+    st.settings.mix = obj(st.settings.mix);
+    if (!isYmd(st.firstUse)) st.firstUse = '';
+    return st;
+}
 function load(){
     try{
         const raw = localStorage.getItem(STORE_KEY);
-        if (raw){ const d = JSON.parse(raw); return Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign(structuredClone(DEFAULT_STATE.settings), d.settings||{})}); }
+        if (raw) return normalizeState(JSON.parse(raw));
     }catch(e){}
     return structuredClone(DEFAULT_STATE);
 }
@@ -1068,9 +1091,11 @@ function load(){
 let packFail = null;
 function save(){ try{
     const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
-    localStorage.setItem(STORE_KEY, JSON.stringify(out)); }catch(e){} }
+    localStorage.setItem(STORE_KEY, JSON.stringify(out)); }catch(e){
+    // 端末の空きが足りず保存できないとき（黙って消えないよう、開いているあいだに1回だけ知らせる）
+    if (!save.warned && typeof toast === 'function'){ save.warned = true; setTimeout(() => toast(t('端末の空きが足りず、保存できませんでした。写真などを減らしてください')), 0); } } }
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
-function addCustomRecipes(){ S.custom.forEach(r => { if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }); }
+function addCustomRecipes(){ S.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }catch(e){} }); }
 addCustomRecipes();
 if (!S.onboarded && (S.history.length || S.favs.length || S.fridge.length)) S.onboarded = true;   // 以前から使っている人には出さない
 if (!S.firstUse) S.firstUse = S.history.length ? S.history[S.history.length-1].d : ymd();
@@ -1230,9 +1255,11 @@ function byId(id){
 }
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function toast(msg, praise=false){
-    const root = $('#toast-root'); root.innerHTML = `<div class="toast pop${praise?' praise':''}" role="status">${esc(msg)}</div>`;
-    clearTimeout(toast.t); toast.t = setTimeout(() => root.innerHTML = '', praise ? 4200 : 2400);
+// undo を渡すと「元に戻す」ボタンを付けて少し長めに出す
+function toast(msg, praise=false, undo=null){
+    const root = $('#toast-root'); toast.undo = undo;
+    root.innerHTML = `<div class="toast pop${praise?' praise':''}" role="status">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
+    clearTimeout(toast.t); toast.t = setTimeout(() => { root.innerHTML = ''; toast.undo = null; }, undo ? 5000 : praise ? 4200 : 2400);
 }
 // 最後に食べた日からの日数（食べていなければ Infinity）
 function daysSince(id){
@@ -3954,7 +3981,7 @@ function viewLog(){
                 <div class="field"><label for="c-name">${esc(t('料理名'))}</label><input type="text" id="c-name" required placeholder="${esc(t('例: 実家の豚バラ大根'))}"></div>
                 <div class="grid2">
                     <div class="field"><label for="c-type">${esc(t('種類'))}</label><select id="c-type">${['主菜','副菜','汁物','ごはん','麺'].map(c => `<option value="${c}">${esc(typeLabel(c))}</option>`).join('')}</select></div>
-                    <div class="field"><label for="c-genre">${esc(t('ジャンル'))}</label><select id="c-genre">${['和','洋','中','韓','エスニック'].map(g => `<option value="${g}">${esc(genreLabel({genre:g}))}</option>`).join('')}</select></div>
+                    ${PACK ? '' : `<div class="field"><label for="c-genre">${esc(t('ジャンル'))}</label><select id="c-genre">${['和','洋','中','韓','エスニック'].map(g => `<option value="${g}">${esc(genreLabel({genre:g}))}</option>`).join('')}</select></div>`}
                     <div class="field"><label for="c-method">${esc(t('主な調理'))}</label><select id="c-method">${[['煮',t('煮る')],['炒',t('炒める')],['焼',t('焼く')],['揚',t('揚げる')],['和え',t('和える')],['汁',t('汁もの')],['炊',t('炊く')]].map(([v,l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select></div>
                     <div class="field"><label for="c-min">${esc(t('調理時間（分）'))}</label><input type="number" id="c-min" value="20" min="1" max="240"></div>
                 </div>
@@ -4187,9 +4214,12 @@ function commitSpeech(text){
     const si = $('#search-input'); if (si && keep){ si.value = keep; runSearch(keep); }
 }
 
+let tapGuard = 0;   // 画面が切りかわった直後のすばやい2回目のタップを、次の画面のボタンに当てない
 document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]'); if (!el) return;
+    if (Date.now() < tapGuard && el.dataset.act !== 'toast-undo') return;
     const act = el.dataset.act, id = el.dataset.id;
+    if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
     switch(act){
         case 'open': openModal(id); break;
@@ -4418,10 +4448,18 @@ document.addEventListener('click', e => {
             if (modalId) renderModal(); render(); break;
         }
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
-        case 'rm-hist': S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); reactVer++; settleAwards(); save(); render(); break;
+        case 'rm-hist': {
+            // 消したあとに「元に戻す」を出す（押しまちがい・すばやい2回押しで消えたときに戻せるように）
+            const before = S.history.slice();
+            S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); reactVer++; settleAwards(); save(); render();
+            toast(t('記録を消しました'), false, () => { S.history = before; reactVer++; settleAwards(); save(); render(); });
+            break;
+        }
+        case 'toast-undo': { const f = toast.undo; $('#toast-root').innerHTML = ''; toast.undo = null; if (f) f(); break; }
         case 'rm-custom': {
             S.custom = S.custom.filter(r => r.id !== id);
             const i = RECIPES.findIndex(r => r.id === id); if (i >= 0) RECIPES.splice(i,1);
+            if (JP_DATA){ const j = JP_DATA.recipes.findIndex(r => r.id === id); if (j >= 0) JP_DATA.recipes.splice(j, 1); }   // 言語を変えても戻ってこないように
             save(); render(); break;
         }
         case 'toggle-staple': {
@@ -4474,7 +4512,9 @@ document.addEventListener('click', e => {
         case 'import-yes': {
             try{
                 const d = JSON.parse(importBuffer);
-                S = Object.assign(structuredClone(DEFAULT_STATE), d, {settings:Object.assign({}, DEFAULT_STATE.settings, d.settings||{})});
+                // 購入の状態・無料期間の始まりは、この端末のものを残す（古いバックアップで購入が消えたり、貼った文字で開いたりしないように）
+                const keep = {pro: S.pro, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept};
+                S = Object.assign(normalizeState(d), keep);
                 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
                 for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
                 addCustomRecipes();

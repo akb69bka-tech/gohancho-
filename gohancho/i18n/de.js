@@ -664,4 +664,7 @@ GOHAN_I18N('de', {
     "プランの残りが少なくなりました": "Dein Plan ist fast vorbei",
     "今日から7日分を考える": "7 Tage ab heute planen",
     "選んだ食材は、あるものとして数え、買い物メモに出しません。": "Diese zählen als vorhanden und kommen nicht auf die Einkaufsliste.",
+    "元に戻す": "Rückgängig",
+    "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Nicht genug Speicher auf dem Gerät, Speichern fehlgeschlagen. Entferne z. B. einige Fotos.",
+    "記録を消しました": "Eintrag gelöscht",
 });
