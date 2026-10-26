@@ -1089,6 +1089,7 @@ function normalizeState(d){
     if (st.cook && !(isYmd(st.cook.d) && Array.isArray(st.cook.ids))) st.cook = null;
     if (st.draft && !(isYmd(st.draft.d) && Array.isArray(st.draft.ids) && Array.isArray(st.draft.slots))) st.draft = null;
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
+    if (!st.settings.avoidX || typeof st.settings.avoidX !== 'object' || Array.isArray(st.settings.avoidX)) delete st.settings.avoidX;
     st.settings.mix = obj(st.settings.mix);
     if (!isYmd(st.firstUse)) st.firstUse = '';
     return st;
@@ -3088,19 +3089,100 @@ function avoidSumHtml(list){
     finally { S.settings.avoid = keep; }
     return `<p class="small avoid-sum" role="status">${esc(t('いまの国の料理のうち、{a}品は置き換えて、{b}品は出さずに献立を作ります', {a, b}))}</p>`;
 }
+// 苦手な食材を、言葉・言語・国に関係なく見分けるための表。[日本の食材（複数）, 各国の食材のキー, 英語の名前で見分ける式, 除く式, 入力される言い方（/区切り）]
+// 日本の料理は日本の食材のキー、各国の料理は英語のキーと英語の名前（i.key｜i.en）で照らす。入力した言葉がどの言語でも同じ食材になる
+const AVOID_CON = [
+    [['セロリ'], ['celery'], /\bceler(y|iac)\b/, null, 'セロリ/celery/셀러리/芹菜/西芹/apio/céleri/celeri/sellerie/sedano/aipo/كرفس/ขึ้นฉ่าย/cần tây/seledri/kereviz/seler/kintsay/अजवाइन'],
+    [['ピーマン','パプリカ'], ['bell pepper','capsicum','red pepper','green pepper'], /\b(bell|green|red|yellow|orange|sweet) peppers?\b|capsicum/, /chil|hot|black|white|cayenne|flakes|ground|powder|paste/,
+        'ピーマン/パプリカ/bell pepper/green pepper/red pepper/sweet pepper/capsicum/paprika/피망/파프리카/青椒/彩椒/甜椒/柿子椒/pimiento/pimiento morrón/poivron/paprikaschote/peperone/pimentão/فلفل رومي/فلفل حلو/พริกหยวก/พริกหวาน/ớt chuông/dolmalık biber/papryka/शिमला मिर्च'],
+    [['トマト','トマト缶'], ['tomato','canned tomato','tomato sauce','passata','cherry tomato'], /\btomato(e?s)?\b|passata|pomodor|tomate/, /\btomatillos?\b/,
+        'トマト/ミニトマト/トマト缶/tomato/tomatoes/canned tomato/tomato puree/tomato purée/tomato paste/passata/토마토/番茄/西红柿/西紅柿/tomate/jitomate/pomodoro/طماطم/بندورة/มะเขือเทศ/cà chua/tomat/domates/pomidor/टमाटर/kamatis/paradeiser'],
+    [['パクチー','コリアンダー','香菜'], ['cilantro','coriander'], /\b(cilantro|coriander)\b/, /seeds?|ground|powder/, 'パクチー/コリアンダー/香菜/cilantro/coriander/고수/芫荽/culantro/coriandre/koriander/coriandolo/coentro/كزبرة/ผักชี/rau mùi/ketumbar/kişniş/kolendra/धनिया/wansuy'],
+    [['玉ねぎ'], ['onion'], /\bonions?\b/, /green|spring|scallion|welsh|leek/, '玉ねぎ/たまねぎ/onion/onions/양파/洋葱/cebolla/oignon/zwiebel/cipolla/cebola/بصل/หัวหอม/hành tây/bawang bombay/soğan/cebula/प्याज/sibuyas'],
+    [['長ねぎ','万能ねぎ'], ['green onion','spring onion','scallion'], /\b(green|spring) onions?\b|scallions?/, null, '長ねぎ/ねぎ/青ねぎ/green onion/spring onion/scallion/대파/파/小葱/大葱/葱/cebolleta/cebollín/oignon vert/frühlingszwiebel/cipollotto/cebolinha/بصل أخضر/ต้นหอม/hành lá/daun bawang/yeşil soğan/szczypior/हरा प्याज'],
+    [['にんにく'], ['garlic'], /\bgarlic\b/, null, 'にんにく/ニンニク/garlic/마늘/大蒜/ajo/ail/knoblauch/aglio/alho/ثوم/กระเทียม/tỏi/bawang putih/sarımsak/czosnek/लहसुन'],
+    [['生姜'], ['ginger'], /\bginger\b/, null, '生姜/しょうが/ショウガ/ginger/생강/姜/jengibre/gingembre/ingwer/zenzero/gengibre/زنجبيل/ขิง/gừng/jahe/zencefil/imbir/अदरक/luya'],
+    [['にんじん'], ['carrot'], /\bcarrots?\b/, null, 'にんじん/人参/ニンジン/carrot/당근/胡萝卜/zanahoria/carotte/karotte/möhre/carota/cenoura/جزر/แครอท/cà rốt/wortel/havuç/marchew/गाजर'],
+    [['じゃがいも'], ['potato'], /\bpotato(e?s)?\b/, /sweet|yam|chips|starch/, 'じゃがいも/ジャガイモ/potato/potatoes/감자/土豆/马铃薯/patata/papa/pomme de terre/kartoffel/batata inglesa/بطاطس/มันฝรั่ง/khoai tây/kentang/patates/ziemniak/आलू'],
+    [['なす'], ['eggplant','aubergine'], /\begg ?plants?\b|aubergines?/, null, 'なす/ナス/茄子/eggplant/aubergine/가지/berenjena/melanzana/berinjela/باذنجان/มะเขือยาว/cà tím/terong/patlıcan/bakłażan/बैंगन/talong'],
+    [['きのこ','しいたけ','しめじ','えのき','まいたけ','エリンギ','なめこ','マッシュルーム'], ['mushroom','mushrooms','shiitake'], /mushroom|shiitake|enoki|champignon|\bporcini\b|\bcep\b|cremini|portobello/, null, 'きのこ/キノコ/マッシュルーム/mushroom/mushrooms/버섯/蘑菇/菇/champiñón/champiñones/seta/setas/champignon/pilz/pilze/funghi/cogumelo/فطر/เห็ด/nấm/jamur/mantar/grzyby/मशरूम/kabute'],
+    [['きゅうり'], ['cucumber'], /\bcucumbers?\b/, null, 'きゅうり/キュウリ/cucumber/오이/黄瓜/pepino/concombre/gurke/cetriolo/خيار/แตงกวา/dưa chuột/mentimun/salatalık/ogórek/खीरा'],
+    [['ほうれん草'], ['spinach'], /\bspinach\b/, null, 'ほうれん草/ほうれんそう/spinach/시금치/菠菜/espinaca/épinards/spinat/spinaci/espinafre/سبانخ/ปวยเล้ง/rau chân vịt/bayam/ıspanak/szpinak/पालक'],
+    [['キャベツ'], ['cabbage'], /\bcabbages?\b/, /napa|chinese|savoy|red|kimchi|sauerkraut/, 'キャベツ/cabbage/양배추/卷心菜/包菜/col/repollo/chou/kohl/weißkohl/cavolo/repolho/كرنب/ملفوف/กะหล่ำปลี/bắp cải/kubis/lahana/kapusta/पत्ता गोभी'],
+    [['白菜'], ['napa cabbage','chinese cabbage'], /\b(napa|chinese) cabbage\b/, null, '白菜/napa cabbage/chinese cabbage/배추/大白菜/col china/chou chinois/chinakohl/cavolo cinese/couve chinesa/ผักกาดขาว/cải thảo/pekin lahanası/kapusta pekińska'],
+    [['かぼちゃ'], ['pumpkin','squash','kabocha'], /\b(pumpkin|squash|kabocha)\b/, /zucchini|courgette/, 'かぼちゃ/カボチャ/南瓜/pumpkin/squash/kabocha/호박/단호박/calabaza/citrouille/potiron/kürbis/zucca/abóbora/يقطين/ฟักทอง/bí ngô/labu/kabak/dynia/कद्दू'],
+    [['ブロッコリー'], ['broccoli'], /\bbroccoli\b/, null, 'ブロッコリー/broccoli/브로콜리/西兰花/西蘭花/brócoli/brocoli/brokkoli/brócolis/بروكلي/บรอกโคลี/súp lơ xanh/brokoli/brokuł/ब्रोकोली'],
+    [['ゴーヤ'], ['bitter melon','bitter gourd','karela'], /bitter (melon|gourd)|karela/, null, 'ゴーヤ/にがうり/ゴーヤー/bitter melon/bitter gourd/karela/여주/苦瓜/melón amargo/margose/bittermelone/zucca amara/มะระ/khổ qua/mướp đắng/pare/acı kavun/gorzki melon/करेला/ampalaya'],
+    [['オクラ'], ['okra'], /\bokra\b/, null, 'オクラ/okra/오크라/秋葵/quimbombó/gombo/okraschote/ocra/quiabo/بامية/กระเจี๊ยบเขียว/đậu bắp/bamya/भिंडी'],
+    [['コーン','とうもろこし'], ['corn','sweet corn'], /\b(sweet )?corn\b/, /starch|flour|meal|tortilla|bread|oil|syrup|masa/, 'コーン/とうもろこし/トウモロコシ/corn/sweet corn/옥수수/玉米/maíz/elote/maïs/mais/milho/ذرة/ข้าวโพด/bắp/ngô/jagung/mısır/kukurydza/मक्का'],
+    [['豆腐'], ['tofu'], /\btofu\b|bean curd/, null, '豆腐/とうふ/tofu/두부/豆腐/เต้าหู้/đậu phụ/tahu/टोफू/tokwa'],
+    [['唐辛子'], ['chili','chilli','chile','hot pepper'], /\bchil(l?i|e)s?\b|hot peppers?/, null, '唐辛子/とうがらし/鷹の爪/チリ/chili/chilli/hot pepper/고추/辣椒/chile/ají/piment/peperoncino/pimenta/فلفل حار/พริก/ớt/cabai/acı biber/papryczka/मिर्च/sili'],
+    [['ココナッツ'], ['coconut'], /\bcoconut\b/, null, 'ココナッツ/coconut/코코넛/椰子/椰奶/coco/noix de coco/kokosnuss/cocco/جوز الهند/มะพร้าว/dừa/kelapa/hindistan cevizi/kokos/नारियल/niyog'],
+    [['オリーブ'], ['olive'], /\bolives?\b/, /oil/, 'オリーブ/olive/olives/올리브/橄榄/aceituna/oliva/azeitona/زيتون/มะกอก/ôliu/zaitun/zeytin/oliwka/जैतून'],
+    [['ごま','白ごま','黒ごま','ねりごま'], ['sesame'], /\bsesame\b|tahini/, /oil/, 'ごま/ゴマ/胡麻/sesame/참깨/芝麻/sésamo/sésame/sesam/sesamo/gergelim/سمسم/งา/mè/wijen/susam/sezam/तिल'],
+    [['パセリ'], ['parsley'], /\bparsley\b/, null, 'パセリ/parsley/파슬리/欧芹/荷兰芹/perejil/persil/petersilie/prezzemolo/salsinha/بقدونس/ผักชีฝรั่ง/ngò tây/peterseli/maydanoz/pietruszka/अजमोद'],
+    [['アボカド'], ['avocado'], /\bavocados?\b/, null, 'アボカド/avocado/아보카도/牛油果/aguacate/avocat/abacate/أفوكادو/อะโวคาโด/bơ/alpukat/avokado/awokado/एवोकैडो'],
+    [['大根'], ['radish','daikon'], /\b(daikon|radish(es)?)\b/, null, '大根/だいこん/daikon/radish/무/萝卜/白萝卜/rábano/radis/rettich/rafano/rabanete/فجل/หัวไชเท้า/củ cải/lobak/turp/rzodkiew/मूली'],
+    [['もやし'], ['bean sprouts'], /bean sprouts?/, null, 'もやし/bean sprouts/콩나물/숙주/豆芽/brotes de soja/germes de soja/sojasprossen/germogli di soia/ถั่วงอก/giá đỗ/tauge/fasulye filizi/kiełki fasoli'],
+    [['キムチ'], ['kimchi'], /\bkimchi\b/, null, 'キムチ/kimchi/김치/泡菜/辛奇/كيمتشي/กิมจิ/kim chi/kimçi'],
+    [['わかめ','のり','昆布','ひじき'], ['seaweed','nori','wakame','kelp'], /seaweed|\bnori\b|wakame|kelp|kombu/, null, 'わかめ/海苔/のり/昆布/ひじき/seaweed/nori/wakame/kelp/김/미역/海带/紫菜/alga/algas/algue/algen/alga marinha/สาหร่าย/rong biển/rumput laut/deniz yosunu/wodorosty'],
+    [['グリンピース'], ['peas','green peas'], /\b(green )?peas?\b/, /chick|pigeon|black.?eyed|split|cow ?pea/, 'グリンピース/えんどう/green peas/peas/완두콩/豌豆/guisantes/petits pois/erbsen/piselli/ervilhas/بازلاء/ถั่วลันเตา/đậu hà lan/kacang polong/bezelye/groszek/मटर'],
+    [['さば'], ['mackerel'], /mackerel/, null, 'さば/サバ/鯖/mackerel/고등어/鲭鱼/caballa/maquereau/makrele/sgombro/cavala/ماكريل/ปลาทู/cá thu/makarel/makrela'],
+    [['鮭'], ['salmon'], /salmon/, null, '鮭/さけ/サケ/サーモン/salmon/연어/三文鱼/鲑鱼/salmón/saumon/lachs/salmone/salmão/سلمون/แซลมอน/cá hồi/somon/łosoś'],
+    [['あさり'], ['clams','clam'], /\bclams?\b/, null, 'あさり/アサリ/clam/clams/바지락/蛤蜊/almeja/palourde/muschel/vongole/amêijoa/محار/หอยลาย/nghêu/kerang/midye/małże'],
+    [['えび'], ['shrimp','prawn','prawns'], /shrimps?|prawns?/, null, 'えび/エビ/海老/shrimp/prawn/새우/虾/蝦/gamba/camarón/crevette/garnele/gambero/camarão/جمبري/กุ้ง/tôm/udang/karides/krewetka/झींगा/hipon'],
+    [['牛乳'], ['milk'], /\bmilk\b/, /coconut|soy|almond|oat|condensed|powder|rice milk/, '牛乳/ミルク/milk/우유/牛奶/leche/lait/milch/latte/leite/حليب/นม/sữa/susu/süt/mleko/दूध/gatas'],
+    [['チーズ'], ['cheese','parmesan','mozzarella'], /cheese|parmesan|mozzarella|cheddar|feta|ricotta|gruy|paneer|halloumi/, null, 'チーズ/cheese/치즈/奶酪/芝士/queso/fromage/käse/formaggio/queijo/جبن/ชีส/phô mai/keju/peynir/ser/पनीर/keso'],
+];
+const AVOID_CON_NORM = new Map();
+const conWords = c => c[4].split('/').filter(Boolean);
+// 入力された言葉がどの食材か（いちばん長く一致した言い方の食材）。国のパックの食材のキーでも探す。なければ -1
+function avoidConOf(word){
+    const n = norm(word), w = wnorm(word), key = (canonOf(word) || '').toLowerCase(); let best = -1, bl = 0;
+    AVOID_CON.forEach((c, ix) => {
+        if (key && c[1].includes(key) && bl < 99){ best = ix; bl = 99; }
+        conWords(c).forEach(t => {
+            let nt = AVOID_CON_NORM.get(t);
+            if (!nt){ const raw = t.normalize('NFKC').toLowerCase(); nt = LATIN_RE.test(raw) ? {l: raw.length, re: wordRe(raw)} : {l: norm(t).length, v: norm(t)}; AVOID_CON_NORM.set(t, nt); }
+            const hit = nt.re ? nt.re.test(w) : (nt.l >= 2 ? n.includes(nt.v) : n === nt.v);
+            if (hit && nt.l > bl){ best = ix; bl = nt.l; }
+        });
+    });
+    return best;
+}
+const NK = new Map();   // 食材のキー → 照合用に整えた形
+const nkOf = k => { let v = NK.get(k); if (v === undefined){ v = norm(k); NK.set(k, v); } return v; };
+function conHit(c, i){
+    const k = i.key || '';
+    if (c[1].includes(k)) return true;
+    const nk = nkOf(k);
+    if (c[0].some(j => { const nj = nkOf(j); return nj.length < 2 ? nk === nj : nk.includes(nj); })) return true;
+    const t = (k + '|' + (i.en || '')).toLowerCase();
+    return !!c[2] && c[2].test(t) && !(c[3] && c[3].test(t));
+}
+// 足した苦手な食材がどの食材か（AVOID_CON）を覚えておく。あとで言語や国を変えても、同じ食材として照らせる
+function rememberAvoidX(word, typed){
+    let ix = avoidConOf(word); if (ix < 0 && typed && typed !== word) ix = avoidConOf(typed);
+    if (ix < 0) return;
+    if (!S.settings.avoidX) S.settings.avoidX = {};
+    S.settings.avoidX[word] = AVOID_CON[ix][0][0];
+}
 function avoidKeys(){ return new Set((S.settings.avoid || []).filter(x => String(x)[0] !== '@').map(keyOf)); }
 // 苦手な食材か（1つの材料）。食材の一覧にない言葉（例: peanuts、えごま）は、材料の名前に含まれていれば苦手とみなす
 function avoidCtx(){
-    const av = S.settings.avoid || [], sig = JSON.stringify(av);
+    const av = S.settings.avoid || [], ax = S.settings.avoidX || {}, sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG;
     if (avoidCtx.c && avoidCtx.c.sig === sig) return avoidCtx.c;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
-    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free};
+    // 食材の表（AVOID_CON）で見分けられる言葉は、言語・国をまたいで同じ食材として照らす（足したときに覚えた食材を先に使う）
+    const cons = [...new Set(av.filter(x => String(x)[0] !== '@' && !avoidFamOf(x)).map(x => { const cid = ax[x]; const ix = cid ? AVOID_CON.findIndex(c => c[0][0] === cid) : -1; return ix >= 0 ? ix : avoidConOf(x); }).filter(ix => ix >= 0))].map(ix => AVOID_CON[ix]);
+    return avoidCtx.c = {sig, any: av.length > 0, ks: avoidKeys(), fams: [...new Set(av.map(avoidFamOf).filter(Boolean))], free, cons};
 }
 function itemAvoided(i, c){
     c = c || avoidCtx(); if (!c.any) return false;
     if (c.ks.has(i.key) || c.fams.some(f => inFam(f, i))) return true;
     if (i.en && i.label && c.ks.has(keyOf(i.label))) return true;   // ほかの国の料理も、画面の名前（ピーマンなど）で見分ける
-    return c.free.some(({x, re}) => re ? re.test(wnorm(i.label + ' ' + i.name)) : norm(i.label + i.name).includes(norm(x)));
+    if (c.cons.some(k => conHit(k, i))) return true;
+    return c.free.some(({x, re}) => re ? re.test(wnorm(i.label + ' ' + i.name + ' ' + (i.en || ''))) : norm(i.label + i.name + (i.en || '')).includes(norm(x)));
 }
 // 苦手な食材を使う料理か（置き換えて作れる料理は、置き換えて出すので苦手にしない）
 // 調味料の欄の食材（天ぷらの衣の小麦粉・卵、ムニエルのバターなど）。元の言葉の文から取り出す（日本は日本語、各国は英語）
@@ -4366,7 +4448,7 @@ document.addEventListener('click', e => {
         case 'toggle-avoid': {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
             const i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
-            if (i >= 0) a.splice(i, 1); else a.push(canonOf(v) || v);
+            if (i >= 0) a.splice(i, 1); else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
             save(); session.menu = null; refreshWeek(); render(); break;
         }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); session.menu = null; refreshWeek(); render(); break; }
@@ -4727,7 +4809,7 @@ document.addEventListener('submit', e => {
     if (f === 'add-avoid'){
         const inp = $('#avoid-input'); const found = extractIngredients(inp.value);
         const fresh = found.filter(x => !S.settings.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
-        fresh.forEach(x => S.settings.avoid.push(x));
+        fresh.forEach(x => { S.settings.avoid.push(x); rememberAvoidX(x, inp.value); });
         save(); session.menu = null; refreshWeek();
         if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
         else if (found.length) toast(t('もう苦手な食材に入っています'));
