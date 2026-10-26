@@ -8,6 +8,8 @@ GOHAN_PACK_TR('TH', 'th', {
     'beef': 'เนื้อวัว',
     'shrimp': 'กุ้ง',
     'mackerel': 'ปลาทู',
+    'squid': 'ปลาหมึก',
+    'fish sauce': 'น้ำปลา',
     'egg': 'ไข่',
     'tofu': 'เต้าหู้',
     'holy basil': 'ใบกะเพรา',

@@ -3,6 +3,7 @@ GOHAN_PACK_TR('TH', 'ja', {
   staple: 'ごはん（ジャスミンライス）',
   names: {
     'ground pork': '豚ひき肉', 'pork': '豚肉', 'chicken': '鶏肉', 'beef': '牛肉', 'shrimp': 'えび',
+    'squid': 'いか', 'fish sauce': 'ナンプラー',
     'mackerel': 'プラートゥー（タイのさば）', 'egg': '卵', 'tofu': '豆腐', 'holy basil': 'ガパオ（ホーリーバジル）', 'thai basil': 'スイートバジル（ホラパー）',
     'chili': '唐辛子', 'coconut milk': 'ココナッツミルク', 'curry paste': 'カレーペースト', 'eggplant': 'タイなす', 'lime leaf': 'こぶみかんの葉（バイマックルー）',
     'onion': '玉ねぎ', 'green onion': '青ねぎ', 'mushroom': 'きのこ', 'rice': 'ジャスミンライス', 'rice noodles': '幅広米麺（センヤイ）',
