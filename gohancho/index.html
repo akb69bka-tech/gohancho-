@@ -4140,6 +4140,7 @@ function shoppingHtml(){
     const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
     return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
         <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button></div>
+        ${list.some(e => done.has(e.key)) ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:list.filter(e => done.has(e.key)).length}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
         <div class="list shop">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
         ${pantryHtml()}`;
@@ -5818,6 +5819,19 @@ document.addEventListener('click', e => {
             shopDoneSet(); const k = el.dataset.k, a = S.shopDone.buy = S.shopDone.buy || [], i = a.indexOf(k);
             if (el.checked){ if (i < 0) a.push(k); } else if (i >= 0) a.splice(i, 1);
             session.pantryOpen = true; save(); render(); break;
+        }
+        case 'shop-to-fridge': {
+            const done = shopDoneSet(), before = S.fridge.slice(), beforeDone = S.shopDone.keys.slice(), have = fridgeKeys();
+            const got = [];   // 冷蔵庫の食材名として同じ食材に読み取れるものだけ入れる（読み取りがずれる食材は買い物メモに残す）
+            shoppingList().filter(e => done.has(e.key)).forEach(e => {
+                const k = String(e.key).split('|')[0], nm = [k, e.label].find(x => keyOf(x) === k); if (!nm) return;
+                if (!have.has(k)){ S.fridge.push(nm); have.add(k); }
+                got.push(e.key);
+            });
+            if (!got.length){ toast(t('冷蔵庫に入れられる食材はありませんでした')); break; }
+            S.shopDone.keys = S.shopDone.keys.filter(k => !got.includes(k));
+            save(); render();
+            toast(t('{n}品を冷蔵庫に入れました', {n:got.length}), false, () => { S.fridge = before; S.shopDone.keys = beforeDone; save(); render(); }); break;
         }
         case 'shop-check': {
             shopDoneSet(); const k = el.dataset.k, a = S.shopDone.keys, i = a.indexOf(k);
