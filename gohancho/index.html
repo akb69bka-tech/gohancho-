@@ -84,10 +84,10 @@ a{color:var(--accent)}
 /* 見出し */
 .sec{display:flex;flex-direction:column;gap:12px}
 .sec-head{display:flex;flex-direction:column;gap:2px}
-.sec-head h2{font-size:1.3rem;padding-left:12px;border-left:4px solid var(--accent)}
+.sec-head h2{font-size:1.3rem;padding-inline-start:12px;border-inline-start:4px solid var(--accent)}
 .sec-head h3{font-size:1rem;margin-top:8px}
 .sec-head .hint{font-size:.8rem;color:var(--muted)}
-.sec-head h2+.hint{padding-left:16px}
+.sec-head h2+.hint{padding-inline-start:16px}
 /* カード: 画面の中の囲みはすべてこれ */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .eyebrow{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
@@ -118,7 +118,7 @@ a{color:var(--accent)}
 .chip.have{background:var(--accent-soft);border-color:transparent}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
-.badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-right:4px;vertical-align:1px;white-space:nowrap}
+.badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
 .badge.new{background:var(--accent-soft);color:var(--accent)}
 
@@ -263,7 +263,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .hero img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
 .hero .noimg{display:grid;place-items:center;padding:28px 0}
 .hero .noimg .vessel{width:150px}
-.hero .close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:44px;padding:.2rem .9rem;font-size:.8rem}
+.hero .close{position:absolute;top:12px;inset-inline-end:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:44px;padding:.2rem .9rem;font-size:.8rem}
 .hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.66rem;line-height:1.4}
 .hero .cap a{color:#fff}
 .sheet-body{padding:18px 16px 0;display:flex;flex-direction:column;gap:16px}
@@ -275,7 +275,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .recipe-ings li:first-child{border-top:0}
 .recipe-ings li.add{background:var(--yolk-soft)}
 .recipe-ings li .q{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.recipe-ings li .ok{color:var(--accent);font-weight:700;margin-right:.3rem}
+.recipe-ings li .ok{color:var(--accent);font-weight:700;margin-inline-end:.3rem}
 .seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:.7rem .9rem;box-shadow:var(--shadow)}
 .steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:12px}
 .steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
@@ -304,7 +304,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 /* ひと手間 */
 .skill{gap:6px}
 .skill .add{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
-.skill .plus{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:.9rem;margin-right:6px;vertical-align:2px}
+.skill .plus{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:.9rem;margin-inline-end:6px;vertical-align:2px}
 .skill .why{font-size:.86rem}
 .skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:.45rem .6rem}
 .skill .how b{color:var(--ink)}
@@ -382,9 +382,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
 /* ヘッダーの設定ボタン */
 .top .gear.flagbtn{font-size:1.35rem;line-height:1}
-.top .gear.flagbtn+.gear{margin-left:8px}
+.top .gear.flagbtn+.gear{margin-inline-start:8px}
 .country-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:56vh;overflow-y:auto;padding:2px}
-.country{display:grid;grid-template-columns:auto minmax(0,1fr);min-width:0;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
+.country{display:grid;grid-template-columns:auto minmax(0,1fr);min-width:0;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
 .country .fl{grid-row:span 2;font-size:1.6rem;line-height:1}
 .country .nm{font-weight:700;font-size:.92rem;line-height:1.3;min-width:0;overflow-wrap:anywhere}
 .country .sub{font-size:.72rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
@@ -397,9 +397,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .world-list .head{justify-content:flex-start;flex-wrap:wrap;column-gap:6px;row-gap:2px}
 .badge.avoid{background:transparent;box-shadow:inset 0 0 0 1px var(--line);margin-right:0}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
-.top .gear{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.top .gear{margin-inline-start:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-left:4px}
+.plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-inline-start:4px}
 .warn{color:var(--danger)}
 .tiny{font-size:.7rem;line-height:1.5;margin:0}
 /* 設定 */
@@ -418,7 +418,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .ob-tray{padding:14px 8px 12px;border-radius:16px;pointer-events:none}
 .ob-lead{margin:0;color:var(--muted);font-size:.9rem}
 .ob-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.ob-points li{display:flex;flex-direction:column;padding-left:14px;border-left:3px solid var(--accent)}
+.ob-points li{display:flex;flex-direction:column;padding-inline-start:14px;border-inline-start:3px solid var(--accent)}
 .ob-points b{font-family:var(--font-display)}
 .ob-points span{font-size:.85rem;color:var(--muted)}
 .ob-actions{display:flex;gap:8px;margin-top:6px}
@@ -456,7 +456,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .shop .shop-sec.done{padding:0;border-top:2px solid var(--line)}
 .shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
 .shop .nm{font-weight:700}
-.shop .q{font-size:.8rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.shop .q{font-size:.8rem;color:var(--muted);text-align:end;font-variant-numeric:tabular-nums}
 .shop .for{grid-column:2 / 4;font-size:.72rem;color:var(--muted)}
 .shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
 /* 料理のイラスト */
@@ -464,7 +464,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
-.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-left:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .actions .btn{width:100%}
 .actions .full{grid-column:1 / -1}
@@ -475,6 +475,7 @@ html.i18n-wait body{visibility:hidden}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
 nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
+html[lang="hi"] *,html[lang="ar"] *,html[lang="th"] *{letter-spacing:normal!important}   /* 字間をあけると、つながる文字（ヒンディー語・アラビア語・タイ語）の形がくずれる */
 html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
 .spot-label .slot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -497,7 +498,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-tab .ct-slot{font-size:.6rem;color:var(--muted);letter-spacing:.08em}
 .cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase}
 .cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
-.cook-tab .ct-ok{position:absolute;top:4px;right:6px;font-size:.75rem;color:var(--accent);font-weight:700}
+.cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
 .cook-card{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .cook-head{display:flex;gap:12px;align-items:center}
 .cook-head .thumb{width:64px;height:64px;flex:0 0 auto}
@@ -545,7 +546,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .album-item figcaption{display:flex;flex-direction:column;font-size:.72rem;line-height:1.25;min-width:0}
 .album-item .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .album-item .d{color:var(--muted);font-size:.66rem}
-.album-rm{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
+.album-rm{position:absolute;top:4px;inset-inline-end:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
 [dir="rtl"] .steps li,[dir="rtl"] .recipe-ings li,[dir="rtl"] .country{text-align:right}
 </style>
 </head>
@@ -931,7 +932,7 @@ function rebuildVariants(){
     VARIANTS.length = 0;
     CANON.forEach(([c, vs], order) => vs.forEach(v => {
         const raw = String(v).normalize('NFKC').toLowerCase().trim();
-        VARIANTS.push(LATIN_RE.test(raw) ? {c, v: norm(v), order, re: wordRe(raw)} : {c, v: norm(v), order});
+        VARIANTS.push(LATIN_RE.test(raw) ? {c, v: norm(v), order, re: wordRe(raw)} : /\S\s+\S/.test(raw) ? {c, v: norm(v), order, mw: raw.replace(/\s+/g, ' ')} : {c, v: norm(v), order});   // mw = 空白を含む名前（हरी मिर्च など。空白で区切る前に探す）
     }));
     VARIANTS.sort((a,b) => b.v.length - a.v.length || a.order - b.order);
 }
@@ -950,12 +951,25 @@ function isLatinText(seg){ return /[a-zÀ-ɏ\u1e00-\u1eff]/i.test(seg) && !/[぀
 // ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
 const INPUT_CONJ = new Set(['और','तथा','एवं','व','या','و','أو','และ','กับ','หรือ','과','와','하고','랑','및','또는','和','跟','與','与','及','或',
     '그리고','그리고요','그리고는','그래서','그런데','또','또는','이랑','있어','있어요','있음','있습니다','있고','없어','없어요','남았어','남았어요','한','두','세','네','각각','약간','조금','좀',
-    '以及','还有','還有','另外','还','還','有','各','各自','再','和','跟','与','與','然后','然後','以及','加上','と','や','あと','あとは','それと','および','または','など','とか','ほか','あとね','それから','ありますの']);
+    '以及','还有','還有','另外','还','還','有','各','各自','再','和','跟','与','與','然后','然後','以及','加上','と','や','あと','あとは','それと','および','または','など','とか','ほか','あとね','それから','ありますの',
+    // タイ語・ヒンディー語・アラビア語の「ある」「持っている」「少し」などの言いまわし
+    'มี','เหลือ','อยู่','แล้ว','ด้วย','อีก','นิดหน่อย','เล็กน้อย','แล้วก็','รวมทั้ง','และก็','ครับ','ค่ะ','คะ','ผม','ฉัน','ที่บ้าน','ในตู้เย็น',
+    'मेरे','पास','है','हैं','थोड़ा','थोड़ी','कुछ','भी','साथ','के','का','की','में','फ्रिज','घर','पर','बचा','बची','बचे','और',
+    'عندي','عندنا','معايا','فيه','في','موجود','موجودة','شوية','شويه','كمان','بس','من','مع','ثم','الثلاجة','التلاجة','معي','لدي','يوجد','قليل','شوي']);
 // 数と助数詞だけの語（「3개」「한 근」「各2个」「2個」「3本」…）は食材ではない
 const COUNTER_RE = new RegExp('^(?:[各每约約共]?(?:[\\d０-９.,½¼¾]+|[一二两兩三四五六七八九十百半几幾]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|하나|둘|셋|넷|몇)\\s*(?:[개근모단봉마리장캔팩쪽줄기포병통알컵인분큰술작은술]+|[个個只条條根颗顆块塊包瓶罐把棵朵斤克片袋盒公升勺碗杯个]+|個|本|枚|袋|パック|缶|丁|玉|束|房|切れ|匹|尾|つ|杯|カップ|g|kg|ml|cc|l|グラム|キロ|mg|개|pcs?|x)?|[개근모단봉마리장캔팩쪽병통알컵個本枚袋缶丁匹尾个只条條根颗顆块塊包瓶罐把棵斤克片盒])$', 'i');
 // 食材のあとにくっつく助詞（「3개랑」「감자랑」「ズッキーニと」「ズッキーニや」）を落とす（知らない語を食材として足すときだけ使う）
+const INPUT_NUM2 = '[\\d０-９٠-٩०-९๐-๙.,½¼¾]+|หนึ่ง|เอ็ด|สอง|สาม|สี่|ห้า|หก|เจ็ด|แปด|เก้า|สิบ|ครึ่ง|एक|दो|तीन|चार|पाँच|पांच|छह|छः|सात|आठ|नौ|दस|आधा|आधी|डेढ़|واحد|واحدة|اثنين|اتنين|اثنان|ثلاث|ثلاثة|تلات|تلاتة|أربع|أربعة|اربع|اربعة|خمس|خمسة|ست|ستة|سبع|سبعة|ثمان|ثمانية|تمن|تمانية|تسع|تسعة|عشر|عشرة|نص|نصف|ربع|un|una|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|medio|media|unos|unas';
+const INPUT_UNIT2 = 'ฟอง|ชิ้น|หัว|ก้อน|ขีด|กิโล|กิโลกรัม|กก\\.?|กรัม|ถ้วย|ช้อน|กลีบ|ต้น|ถุง|ขวด|กระป๋อง|ลูก|ผล|ตัว|ใบ|เส้น|แผ่น|ฝัก|ห่อ|แพ็ค|หน่อ|กำ|มัด|ซอง|' +
+    'किलो|किग्रा|ग्राम|ग्रा|कप|चम्मच|टुकड़े|टुकड़ा|पैकेट|डिब्बा|कली|कलियाँ|गुच्छा|बोतल|दर्जन|लीटर|' +
+    'كيلو|كجم|جرام|غرام|جم|حبة|حبات|حبه|قطعة|قطع|علبة|علب|كوب|أكواب|ملعقة|ملاعق|فص|فصوص|رأس|راس|حزمة|ربطة|كيس|لتر|' +
+    'kilos?|kgs?|gramos?|gr|piezas?|pzas?|latas?|paquetes?|bolsas?|manojos?|rebanadas?|dientes?|tazas?|cucharadas?|cucharaditas?|litros?|botellas?|docenas?';
+const COUNTER_RE2 = new RegExp('^(?:(?:' + INPUT_NUM2 + ')\\s*(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'i');
+const INPUT_FILL_LATIN = new Set(['tengo','hay','tenemos','queda','quedan','me','nos','un','una','uno','unos','unas','de','del','la','el','los','las','poco','poca','algo','algunos','algunas','mucho','muchos','también','tambien','más','mas','sobra','sobran','en','mi','el','refri','refrigerador','nevera']);
+const INPUT_CONJ_LATIN = /\s+(?:y|e|o|u|con|and|or|with|&|\+)\s+/i;
 function stripInputParticle(tok){
     let m;
+    if (/^و/.test(tok) && /[؀-ۿ]/.test(tok) && (m = tok.match(/^و(.{2,}|[٠-٩\d])$/))) return m[1];   // アラビア語の「と」（و）は次の語にくっつく
     if ((m = tok.match(/^(.{2,}?)(?:이랑|하고|이고|이며|랑|과|와|도|만|은|는)$/)) && /[가-힯]/.test(tok)) return m[1];
     if ((m = tok.match(/^(.{2,}?)(?:とか|など|と|や)$/)) && /[぀-ヿ一-鿿]/.test(tok)) return m[1];
     if ((m = tok.match(/^(.{2,}?)(?:和|跟|与|與|还有|還有|以及)$/))) return m[1];
@@ -965,7 +979,7 @@ function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
     // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
     const exact = seg => { const n = norm(seg); const x = n && VARIANTS.find(x => x.v === n); return x ? x.c : null; };
-    String(text).split(/[、,，。\/\n;；]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
+    String(text).split(/[、,，。\/\n;；،؛।॥+]+/).flatMap(seg => exact(seg) ? [seg] : seg.split(/[・]+/)).forEach(seg => {
         seg = seg.trim(); if (!seg) return;
         const ex = exact(seg); if (ex){ push(PACK_NAMES[ex] || ex); return; }
         if (isLatinText(seg)){
@@ -974,17 +988,29 @@ function extractIngredients(text){
                 if (x.re && x.re.test(w)){ found.push(x.c); w = w.replace(x.re, ' | '); }
             }
             if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
-            else if (seg.length <= 30) push(seg);
+            else seg.split(INPUT_CONJ_LATIN).forEach(part => {   // 知らない食材は「y / o / con / and」で分け、「tengo」「2 kg de」のような言いまわしを落とす
+                const ws = part.trim().split(/\s+/).filter(x => !INPUT_FILL_LATIN.has(x.toLowerCase()) && !COUNTER_RE2.test(x));
+                const nm = ws.join(' ');
+                if (nm && nm.length <= 30) push(nm);
+            });
             return;
         }
-        seg.split(/\s+/).forEach(tok => {
-            tok = tok.trim(); if (!tok || INPUT_CONJ.has(tok) || COUNTER_RE.test(stripInputParticle(tok))) return;   // 「और」「و」「และ」のような「と」や、「3個」「한 근」のような数え方は食材にしない
+        // 空白を含む名前（हरी मिर्च など）を先に探す
+        let sp = seg.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ');
+        if (/\s/.test(sp)) for (const x of VARIANTS) if (x.mw && sp.includes(x.mw)){ push(PACK_NAMES[x.c] || x.c); sp = sp.split(x.mw).join(' '); }
+        sp.split(/\s+/).forEach(tok => {
+            tok = tok.trim(); if (!tok || INPUT_CONJ.has(tok) || COUNTER_RE.test(stripInputParticle(tok)) || COUNTER_RE2.test(stripInputParticle(tok))) return;   // 「और」「و」「และ」のような「と」や、「3個」「한 근」のような数え方は食材にしない
             let t = norm(tok); const found = [];
             for (const x of VARIANTS){
-                if (!x.re && t.includes(x.v)){ found.push(x.c); t = t.split(x.v).join('｜'); }
+                if (!x.re && !x.mw && t.includes(x.v)){ found.push(x.c); t = t.split(x.v).join('｜'); }
             }
             if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
-            else { tok = stripInputParticle(tok); if (tok.length <= 12 && !INPUT_CONJ.has(tok) && !COUNTER_RE.test(tok)) push(tok); }
+            else {
+                // タイ語は「และ / กับ / หรือ」が語にくっつくので、そこで分ける
+                (/[ก-๛]/.test(tok) ? tok.split(/และ|กับ|หรือ/) : [tok]).forEach(tk => {
+                    tk = stripInputParticle(tk.trim()); if (tk && tk.length <= 12 && !INPUT_CONJ.has(tk) && !COUNTER_RE.test(tk) && !COUNTER_RE2.test(tk)) push(tk);
+                });
+            }
         });
     });
     return out;
@@ -1226,7 +1252,11 @@ function tc(ctx, ja, vars){
     return t(ja, vars);
 }
 // 名前を並べる（日本語は「・」、ほかの言語は「, 」）
-function joinNames(arr){ return arr.join(LANG === 'ja' ? '・' : /^zh/.test(LANG) ? '、' : ', '); }
+// 文の中に並べる食材名。アラビア語はアラビア語のコンマ（،）、スペイン語は文の途中なので小文字にして（　）の補足を省く（「Queso (queso fresco)」→「queso」）
+function joinNames(arr){
+    if (LANG === 'es') arr = arr.map(n => { n = String(n).replace(/\s*\([^)]*\)/g, '').trim(); return /^[A-ZÁÉÍÓÚÑ][a-záéíóúñü]/.test(n) ? n[0].toLowerCase() + n.slice(1) : n; });
+    return arr.join(LANG === 'ja' ? '・' : /^zh/.test(LANG) ? '、' : LANG === 'ar' ? '، ' : ', ');
+}
 // 文と文をつなぐ（日本語・中国語は空白を入れない）／全角の記号で終わる文のあとにも空白を入れない
 const sentGap = () => /^(ja|zh)/.test(LANG) ? '' : ' ';
 const afterText = s => s + (/[\u3000-\u303f\uff00-\uffef]$/.test(s) ? '' : ' ');
@@ -1235,11 +1265,12 @@ const GAP = () => LANG === 'ja' ? '　' : ' · ';
 const SLASH = () => LANG === 'ja' ? ' ／ ' : ' / ';
 function wdName(i, long=false){
     if (LANG === 'ja') return WD[i];
-    try{ return new Intl.DateTimeFormat(LANG, {weekday: long ? 'long' : 'short'}).format(new Date(2026, 0, 4 + i)); }catch(e){ return WD[i]; }
+// 数字は、どの端末でも算用数字（0123）にそろえる（アラビア語・ヒンディー語の数字にしない）
+    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {weekday: long ? 'long' : 'short'}).format(new Date(2026, 0, 4 + i)); }catch(e){ return WD[i]; }
 }
 function hourLabel(h){
     if (LANG === 'ja') return `${h}時`;
-    try{ return new Intl.DateTimeFormat(LANG, {hour:'numeric'}).format(new Date(2026, 0, 1, h)); }catch(e){ return `${h}:00`; }
+    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {hour:'numeric'}).format(new Date(2026, 0, 1, h)); }catch(e){ return `${h}:00`; }
 }
 function availLang(l){
     if (!l) return null;
@@ -1326,7 +1357,7 @@ const WD = ['日','月','火','水','木','金','土'];
 function jpDate(s, withWeekday=true){
     const d = parseYmd(s);
     if (LANG === 'ja'){ const x = `${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`; return withWeekday ? x : x.replace(/（.*/,''); }
-    try{ return new Intl.DateTimeFormat(LANG, withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}).format(d); }
+    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', withWeekday ? {month:'long', day:'numeric', weekday:'short'} : {month:'long', day:'numeric'}).format(d); }
     catch(e){ return s; }
 }
 let TODAY = ymd();   // 開いたまま日付が変わったら refreshToday() で更新する
@@ -1811,7 +1842,7 @@ function yumCount(n){ return t('{n}人', {n}); }
 function monthLabel(ym){
     const [y, m] = ym.split('-').map(Number);
     if (LANG === 'ja') return `${y}年${m}月`;
-    try{ return new Intl.DateTimeFormat(LANG, {year:'numeric', month:'long'}).format(new Date(y, m-1, 1)); }catch(e){ return ym; }
+    try{ return new Intl.DateTimeFormat(LANG + '-u-nu-latn', {year:'numeric', month:'long'}).format(new Date(y, m-1, 1)); }catch(e){ return ym; }
 }
 // 「おいしかった！」のボタン。家族ひとりにつき1回押す。押しすぎたときは「−」で減らす。その日の記録がある料理だけ出す
 function reactRowHtml(id, d){
@@ -3171,7 +3202,7 @@ function scaleText(str, factor){
         if (unit && !['g','ml'].includes(unit)) return m;
         const v = ((w ? Number(w) : 0) + (b ? Number(a) / Number(b) : Number(a))) * factor;
         return fmtAmount(v, unit) + (unit || '');
-    });
+    }).replace(/(\d+(?:[.,]\d+)?(?:\s+\d+\/\d+|\/\d+)?)(\s+)([^\s\d()（）,;·.]+)/g, (m, n, sp, w) => unitForm(unitSing(w), stepNum(n)) === w ? m : n + sp + unitForm(unitSing(w), stepNum(n)));   // 数が変わったら、数え方の単数・複数も合わせる（2 taza → 2 tazas、4 حبة → 4 حبات）
 }
 function servingFactor(){ return (Number(S.settings.servings) || 2) / 2; }
 // 作り方の文の中の分量も人数に合わせる。{s: 直した文, n: 直した数}
@@ -3769,7 +3800,9 @@ function shoppingList(){
 // 数え方の単数・複数（買い物メモで足すときに同じ単位とみなし、足したあとの数に合う形で出す）
 const UNIT_PAIRS = [['clove','cloves'],['can','cans'],['tin','tins'],['slice','slices'],['piece','pieces'],['head','heads'],['bunch','bunches'],['stalk','stalks'],['sprig','sprigs'],['rasher','rashers'],['fillet','fillets'],['sheet','sheets'],
     ['tranche','tranches'],['gousse','gousses'],['boîte','boîtes'],['diente','dientes'],['lata','latas'],['rebanada','rebanadas'],['dente','dentes'],['fatia','fatias'],['spicchio','spicchi'],['fetta','fette'],['Zehe','Zehen'],['Dose','Dosen'],['Scheibe','Scheiben'],
-    ['ząbek','ząbki'],['plaster','plastry'],['حبة','حبات'],['فص','فصوص'],['رأس','رؤوس']];
+    ['ząbek','ząbki'],['plaster','plastry'],['حبة','حبات'],['فص','فصوص'],['رأس','رؤوس'],
+    ['taza','tazas'],['cucharada','cucharadas'],['cucharadita','cucharaditas'],['rama','ramas'],['manojo','manojos'],['trozo','trozos'],['loncha','lonchas'],['pieza','piezas'],
+    ['بيضة','بيضات'],['قطعة','قطع'],['ملعقة','ملاعق'],['رغيف','أرغفة'],['علبة','علب'],['حزمة','حزم'],['बड़ा','बड़े'],['छोटा','छोटे']];
 function unitSing(u){ return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[1] === w); return sp + (p ? p[0] : w); }); }
 function unitForm(u, v){
     return String(u).replace(/^(\s*)(\S+)/, (m, sp, w) => { const p = UNIT_PAIRS.find(x => x[0] === w); if (!p) return m;
@@ -4177,7 +4210,7 @@ function viewFridge(){
         <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
         <div class="card">
         <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
             <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
@@ -4188,13 +4221,13 @@ function viewFridge(){
         <div class="sec-head"><h2>${esc(t('冷蔵庫にある材料'))}</h2><span class="hint">${esc(t('ここに登録した食材は次に開いたときも残ります'))}</span></div>
         <div class="card">
         <form class="inputbar" data-form="add-ing">
-            <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:sampleIngs().join(', ')}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
+            <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:(LANG === 'ja' ? sampleIngs().join(', ') : joinNames(sampleIngs()))}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
             <button class="btn primary" type="submit">${esc(t('追加'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`).join('')}</div>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
-        : `<div class="note">${esc(t('まだ材料が登録されていません。下のよく使う食材をタップするか、「{list}」のようにまとめて入力できます。', {list:sampleIngs().join(LANG === 'ja' ? '、' : ', ')}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
+        : `<div class="note">${esc(t('まだ材料が登録されていません。下のよく使う食材をタップするか、「{list}」のようにまとめて入力できます。', {list:(LANG === 'ja' ? sampleIngs().join('、') : joinNames(sampleIngs()))}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
         <div class="eyebrow">${esc(t('よく使う食材'))}</div>
         <div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
         </div>
