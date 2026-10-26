@@ -1,14 +1,27 @@
 // わが家のご飯帖: オフラインで開けるようにアプリ本体をキャッシュする
-const VERSION = 'gohancho-v15';
+const VERSION = 'gohancho-v16';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './i18n/en.js'];
 const IMG = 'gohancho-img-v1';
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
+// 版を上げたとき、前の版で保存した国のレシピ・辞書・料理の絵を新しい版へ移してから古い版を消す
+// （移さないと、更新した直後に電波がない場所で開いたとき、使っている国のデータがなくなる）
+const KEEP = /\/(packs|i18n|img)\//;
+async function carryOver(oldKeys){
+  const cur = await caches.open(VERSION);
+  for (const k of oldKeys){
+    const old = await caches.open(k);
+    for (const req of await old.keys()){
+      if (!KEEP.test(new URL(req.url).pathname) || await cur.match(req)) continue;
+      const res = await old.match(req); if (res) await cur.put(req, res);
+    }
+  }
+}
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== IMG).map(k => caches.delete(k))))
+    .then(keys => { const old = keys.filter(k => k !== VERSION && k !== IMG && k.startsWith('gohancho-')); return carryOver(old).catch(() => {}).then(() => Promise.all(old.map(k => caches.delete(k)))); })
     .then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {

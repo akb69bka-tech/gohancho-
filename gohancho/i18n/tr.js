@@ -624,4 +624,12 @@ GOHAN_I18N('tr', {
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Ülkeyi değiştirseniz de görüntüleme dili aynı kalır. Diğer ülkelerin yemekleri, çevirisi varsa bu dilde gösterilir (yoksa İngilizce).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Ülkeleri karıştır (ör. Çin ana yemeği, Japon yan yemekleri, Kore çorbası)",
     "組み合わせをやめる": "Karıştırmayı bırak",
+    "{date}の記録に入っています": "{date} için zaten kayıtlı",
+    "「おいしかった！」は{n}人までです": "\"Lezzetli!\" en fazla {n} kişi",
+    "この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください": "Bu ülkenin verileri yüklenemedi. İnternet varken uygulamayı yeniden açın",
+    "また献立に出すようにしました": "Bu yemek yeniden önerilecek",
+    "もう苦手な食材に入っています": "Zaten listenizde",
+    "決めた献立を取り消しました": "Bugünün menüsü geri alındı",
+    "決めた献立を取り消す": "Bugünün menüsünü geri al",
+    "食材の名前として読み取れませんでした": "Malzeme olarak tanınmadı",
 });

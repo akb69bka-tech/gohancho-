@@ -624,4 +624,12 @@ GOHAN_I18N('id', {
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Bahasa tampilan tetap sama meski negara diganti. Masakan negara lain ditampilkan dalam bahasa ini jika ada terjemahannya (jika tidak, dalam bahasa Inggris).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Gabungkan negara (mis. lauk utama Tiongkok, lauk pendamping Jepang, sup Korea)",
     "組み合わせをやめる": "Berhenti menggabungkan",
+    "{date}の記録に入っています": "Sudah dicatat untuk {date}",
+    "「おいしかった！」は{n}人までです": "\"Enak!\" maksimal {n} orang",
+    "この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください": "Data negara ini tidak bisa dimuat. Buka lagi aplikasinya saat ada internet",
+    "また献立に出すようにしました": "Masakan ini akan disarankan lagi",
+    "もう苦手な食材に入っています": "Sudah ada di daftar",
+    "決めた献立を取り消しました": "Menu hari ini dibatalkan",
+    "決めた献立を取り消す": "Batalkan menu hari ini",
+    "食材の名前として読み取れませんでした": "Tidak dikenali sebagai bahan",
 });

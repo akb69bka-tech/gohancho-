@@ -624,4 +624,12 @@ GOHAN_I18N('fil', {
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Hindi magbabago ang wika kahit palitan ang bansa. Ipapakita sa wikang ito ang mga ulam ng ibang bansa kung may salin (kung wala, sa Ingles).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Paghaluin ang mga bansa (hal. Chinese na ulam, Japanese na side dish, Korean na sabaw)",
     "組み合わせをやめる": "Itigil ang paghahalo",
+    "{date}の記録に入っています": "Naitala na para sa {date}",
+    "「おいしかった！」は{n}人までです": "Hanggang {n} tao ang \"Masarap!\"",
+    "この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください": "Hindi ma-load ang data ng bansang ito. Buksan ulit ang app kapag may internet",
+    "また献立に出すようにしました": "Imumungkahi ulit ang ulam na ito",
+    "もう苦手な食材に入っています": "Nasa listahan mo na",
+    "決めた献立を取り消しました": "Na-undo ang menu ngayon",
+    "決めた献立を取り消す": "I-undo ang menu ngayon",
+    "食材の名前として読み取れませんでした": "Hindi nakilala bilang sangkap",
 });

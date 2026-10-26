@@ -624,4 +624,12 @@ GOHAN_I18N('pt-BR', {
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "O idioma continua o mesmo quando você muda de país. Pratos de outros países aparecem neste idioma quando há tradução (senão, em inglês).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Combinar países (ex.: principal chinês, acompanhamentos japoneses, sopa coreana)",
     "組み合わせをやめる": "Parar de combinar",
+    "{date}の記録に入っています": "Já registrado em {date}",
+    "「おいしかった！」は{n}人までです": "\"Delícia!\" vai até {n} pessoas",
+    "この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください": "Não foi possível carregar os dados deste país. Abra o app de novo com internet",
+    "また献立に出すようにしました": "Este prato voltará a ser sugerido",
+    "もう苦手な食材に入っています": "Já está na sua lista",
+    "決めた献立を取り消しました": "O cardápio de hoje foi desfeito",
+    "決めた献立を取り消す": "Desfazer o cardápio de hoje",
+    "食材の名前として読み取れませんでした": "Não foi reconhecido como ingrediente",
 });

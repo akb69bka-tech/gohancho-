@@ -624,4 +624,12 @@ GOHAN_I18N('vi', {
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Đổi nước thì ngôn ngữ hiển thị vẫn giữ nguyên. Món của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Kết hợp các nước (vd: món chính Trung Quốc, món phụ Nhật, canh Hàn)",
     "組み合わせをやめる": "Thôi kết hợp",
+    "{date}の記録に入っています": "Đã ghi cho ngày {date}",
+    "「おいしかった！」は{n}人までです": "\"Ngon!\" tối đa {n} người",
+    "この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください": "Không tải được dữ liệu của nước này. Hãy mở lại ứng dụng khi có mạng",
+    "また献立に出すようにしました": "Món này sẽ được gợi ý lại",
+    "もう苦手な食材に入っています": "Đã có trong danh sách",
+    "決めた献立を取り消しました": "Đã hủy thực đơn hôm nay",
+    "決めた献立を取り消す": "Hủy thực đơn hôm nay",
+    "食材の名前として読み取れませんでした": "Không nhận ra nguyên liệu",
 });

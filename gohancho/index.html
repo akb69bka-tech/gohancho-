@@ -182,14 +182,14 @@ a{color:var(--accent)}
 .item .t:hover{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
-.mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:40px}
+.mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0;min-height:44px;display:flex;align-items:center;gap:6px}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:44px}
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-left:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
 /* 入力 */
 .field{display:flex;flex-direction:column;gap:6px}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
-input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
+input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
 .inputbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
 .inputbar input{min-width:0}
@@ -335,7 +335,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray-shuffle{display:flex;justify-content:center;align-items:center;margin:-6px 0;position:relative}
 .tray-shuffle::before,.tray-shuffle::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14));margin:0 10px}
 .tray-shuffle::after{background:linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
-.shuffle{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:var(--accent);
+.shuffle{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px;cursor:pointer;
     box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08);font:inherit;font-size:.6rem;font-weight:700;line-height:1.1;text-align:center;transition:transform .15s ease}
 .shuffle svg{width:24px;height:24px;flex:0 0 auto}
@@ -363,6 +363,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray .spot.main .vessel{width:86%}
 .swap{border:1px solid rgba(245,238,227,.28);background:transparent;color:var(--tray-ink);border-radius:999px;font-size:.7rem;padding:.1rem .7rem;min-height:30px;cursor:pointer}
 .swap:hover{background:rgba(245,238,227,.1)}
+.swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
+.spot .swap-line{color:var(--tray-ink)}
 .tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
 /* ヘッダーの設定ボタン */
@@ -787,6 +789,7 @@ const CANON = [
     ['鮭',['鮭','さけ','しゃけ','サーモン']],
     ['さば',['さば','鯖']],
     ['ぶり',['ぶり','鰤']],
+    ['たらこ',['たらこ','タラコ','明太子']],   // 「たら」（魚）とは別の食材
     ['たら',['たら','鱈','白身魚','生だら','生鱈']],
     ['あじ',['あじ','鯵','アジ']],
     ['いわし',['いわし','鰯','イワシ']],
@@ -904,6 +907,7 @@ function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c)
 function isLatinText(seg){ return /[a-zÀ-ɏ\u1e00-\u1eff]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg); }
 // 自由入力（「豚肉と玉ねぎとキャベツ」「green onions, pork」など）から食材を取り出す
 // ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
+const INPUT_CONJ = new Set(['और','तथा','एवं','व','या','و','أو','และ','กับ','หรือ','과','와','하고','랑','및','또는','和','跟','與','与','及','或']);
 function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
     // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
@@ -921,7 +925,7 @@ function extractIngredients(text){
             return;
         }
         seg.split(/\s+/).forEach(tok => {
-            tok = tok.trim(); if (!tok) return;
+            tok = tok.trim(); if (!tok || INPUT_CONJ.has(tok)) return;   // 「और」「و」「และ」のような「と」は食材にしない
             let t = norm(tok); const found = [];
             for (const x of VARIANTS){
                 if (!x.re && t.includes(x.v)){ found.push(x.c); t = t.split(x.v).join('｜'); }
@@ -1059,7 +1063,11 @@ function load(){
     }catch(e){}
     return structuredClone(DEFAULT_STATE);
 }
-function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} }
+// packFail: 電波がなくて国のデータを読みこめず、いまだけ日本で開いている国（保存するときは元の国のまま残す）
+let packFail = null;
+function save(){ try{
+    const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
+    localStorage.setItem(STORE_KEY, JSON.stringify(out)); }catch(e){} }
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
 function addCustomRecipes(){ S.custom.forEach(r => { if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }); }
 addCustomRecipes();
@@ -1403,7 +1411,7 @@ function twistOptions(base){
     const forms = Object.entries(FORMS).filter(([k,f]) =>
         f.types.includes(base.type) && f.methods.includes(base.method) && !(f.skipFamily||[]).includes(base.family)).map(([k]) => k);
     const swaps = (SWAPS[base.family] || []).map((s,i) => `${base.family}:${i}`)
-        .filter(k => { const s = swapOf(k); return !base.items.some(i => i.key === s.to); });
+        .filter(k => { const s = swapOf(k); return !base.items.some(i => i.key === s.to) && !itemAvoided(parseIng(s.word)); });   // 苦手な食材に替える案は出さない
     return {flavors, forms, swaps};
 }
 function flavorLabel(k){
@@ -1459,13 +1467,16 @@ function generateTwists(opts={}){
     const {baseId=null, level=2, flavor='any', form='any', swap='any', count=3, fromIds=null} = opts;
     let bases = baseId ? [RECIPES.find(r => r.id === baseId)] :
         (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物'));
-    bases = bases.filter(r => r && !isAvoided(r));
+    // 苦手な食材が主役（主役を替えれば使わなくなる）の料理は、主役を替える案だけ出す
+    const strict = r => r.items.filter(i => !i.opt && itemAvoided(i));
+    bases = bases.filter(r => r && strict(r).every(i => i.key === r.protein));
     const all = [];
     bases.forEach(b => {
         const o = twistOptions(b);
         const fls = flavor === 'none' ? [''] : flavor === 'any' ? ['', ...o.flavors] : (o.flavors.includes(flavor) ? [flavor] : []);
         const fos = form === 'none' ? [''] : form === 'any' ? ['', ...o.forms] : (o.forms.includes(form) ? [form] : []);
-        const sws = swap === 'none' ? [''] : swap === 'any' ? ['', ...o.swaps] : o.swaps;
+        let sws = swap === 'none' ? [''] : swap === 'any' ? ['', ...o.swaps] : o.swaps;
+        if (strict(b).length) sws = sws.filter(Boolean);
         fls.forEach(fl => fos.forEach(fo => sws.forEach(sw => {
             const n = [fl,fo,sw].filter(Boolean).length;
             if (!n) return;
@@ -1488,14 +1499,18 @@ function generateTwists(opts={}){
     for (const {x} of scored){
         if (out.length >= count) break;
         if (usedBase.has(x.base.id) && !baseId) continue;
-        usedBase.add(x.base.id); out.push(buildTwist(x.id));
+        const tw = buildTwist(x.id); if (twistAvoided(tw)) continue;
+        usedBase.add(x.base.id); out.push(tw);
     }
     for (const {x} of scored){
         if (out.length >= count) break;
-        if (!out.some(t => t.id === x.id)) out.push(buildTwist(x.id));
+        if (out.some(t => t.id === x.id)) continue;
+        const tw = buildTwist(x.id); if (!twistAvoided(tw)) out.push(tw);
     }
     return out;
 }
+// できあがったひとひねり案に、苦手な食材が残っていないか（足す食材も含めて）
+function twistAvoided(tw){ return !tw || tw.items.some(i => !i.opt && itemAvoided(i)); }
 function markSeen(list){
     list.forEach(t => { if (t && !S.seenTwists.includes(t.id)) S.seenTwists.push(t.id); });
     if (S.seenTwists.length > 300) S.seenTwists = S.seenTwists.slice(-300);
@@ -1649,6 +1664,7 @@ function setTab(tb){
     render(); window.scrollTo({top:0});
 }
 function metaLine(r){
+    r = swappedRecipe(r) || r;
     const parts = [genreLabel(r) || t('和食'), t('{n}分', {n:r.min})];
     if (r.family && r.family !== '野菜') parts.push(familyLabel(r.family));
     return parts.join(t('・'));
@@ -2016,9 +2032,16 @@ function vesselKind(r){
     if (r.type === '副菜') return 'kobachi';
     return 'plate';
 }
+// 絵を読みこめなかったとき（電波がなく、まだ保存していない絵など）は、器ごと消えないよう線のイラストに切りかえる
+const IMG_FAIL = new Set(), IMG_PROBED = new Set();
+function probeImg(src){
+    if (!src || IMG_PROBED.has(src)) return; IMG_PROBED.add(src);
+    const im = new Image(); im.onerror = () => { IMG_FAIL.add(src); scheduleRender(); }; im.src = src;
+}
 function vesselHtml(kind, r, still=false){
     const extra = kind === 'chawan' ? 'rice' : kind === 'konomono' ? 'konomono' : null;
-    const ph = r ? photoOf(r) : extra ? (GEN[extra] || sketchOf(PHOTOS[extra])) : null;
+    let ph = r ? photoOf(r) : extra ? (GEN[extra] || sketchOf(PHOTOS[extra])) : null;
+    if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)) ph = null; }
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
     const food = ph ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
     const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}`;
@@ -2026,7 +2049,8 @@ function vesselHtml(kind, r, still=false){
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
 function thumbHtml(r){
-    const ph = photoOf(r);
+    let ph = photoOf(r);
+    if (ph){ const src = ph.thumb || ph.src; probeImg(src); if (IMG_FAIL.has(src)) ph = null; }
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
     return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
@@ -2255,8 +2279,8 @@ function stapleKeys(){ return new Set(S.staples.map(keyOf)); }
 function shoppingHints(have, limit=3){
     const gain = {};
     RECIPES.forEach(r => {
-        if (S.hidden.includes(r.id)) return;
-        const m = matchRecipe(r, have);
+        if (S.hidden.includes(r.id) || isAvoided(r)) return;
+        const m = matchRecipe(swappedRecipe(r), have);   // 苦手な食材は買い足す候補にしない（置き換えた食材で数える）
         if (m.miss.length === 1 && (m.got.length + m.subs.length) >= 1){
             const k = m.miss[0].key, lbl = m.miss[0].label;
             (gain[k] = gain[k] || {label:lbl, names:[]}).names.push(r.name);
@@ -2954,7 +2978,7 @@ function itemAvoided(i, c){
 function isAvoided(r){
     if (!r || !r.items || !(S.settings.avoid || []).length) return false;
     const c = avoidCtx(); if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
-    return !(r.isTwist || RECIPES.includes(r)) || !recipeSwaps(r);   // ほかの国の料理（国の組み合わせ）は置き換えない
+    return !RECIPES.includes(r) || !recipeSwaps(r);   // ほかの国の料理（国の組み合わせ）とひとひねり案は置き換えない
 }
 
 /* ---- 苦手な食材の置き換え ---- */
@@ -3033,10 +3057,16 @@ function recipeSwaps(r){
 // 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
 function swappedRecipe(r){
     if (!r || !r.items || !(S.settings.avoid || []).length || r.swapped) return r;
-    if (!r.isTwist && !RECIPES.includes(r)) return r;
+    if (!RECIPES.includes(r)) return r;
     const w = recipeSwaps(r); if (!w || (!w.swaps.length && !w.omit.length)) return r;
-    const by = new Map(w.swaps.map(x => [x.from, x]));
-    const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); return x ? Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, changed: true, from: i.name}) : i; });
+    const by = new Map(w.swaps.map(x => [x.from, x])), seen = new Set();
+    // 分量は代わりの食材のふだんの分量（尾・杯・本のような数え方がそのまま残らないように）。同じ食材への置き換えが2つあれば1行にまとめる
+    const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); if (!x) return i;
+        if (seen.has(x.to.key)) return null; seen.add(x.to.key);
+        return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: x.to.qty || i.qty, changed: true, from: i.name}); }).filter(Boolean);
+    // 肉・魚の種類も置き換えた主役に合わせる
+    const pw = w.swaps.find(x => x.from.key === r.protein), famOf = {chicken:'鶏', pork:'豚', tofu:'大豆', fish:'魚'};
+    const fam = pw ? (FAMILY[pw.to.key] || famOf[pw.tip] || (/ground|mince/.test(SWAP_TXT(pw.to)) ? 'ひき肉' : r.family)) : r.family;
     const esc_ = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const repl = txt => w.swaps.reduce((s, x) => {
         // 作り方の文の中の名前も入れかえる（日本語の料理は「豚肉」「豚バラ肉」のような言い方も）
@@ -3046,7 +3076,7 @@ function swappedRecipe(r){
             .reduce((u, n) => u.replace(new RegExp(esc_(n), 'gi'), x.to.label), s);
     }, String(txt));
     const steps = r.steps.map(st => typeof st === 'string' ? repl(st) : Object.assign({}, st, {t: repl(st.t)}));
-    return Object.assign({}, r, {items, steps, swapped: w});
+    return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : r.protein});
 }
 // 献立の一覧に出す置き換えの一言（例: 🔁 さば の代わりに 鶏肉）
 function swapLineHtml(r){
@@ -3954,7 +3984,8 @@ function renderModal(){
     const heroCls = ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust';
     const genreName = genreLabel(r);
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
-    const facts = [typeLabel(r.type), genreName, t('{n}分', {n:r.min}), t('{n}人分', {n:sv}), r.family && r.family !== '野菜' ? familyLabel(r.family) : ''].filter(Boolean);
+    const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
+    const facts = [typeLabel(r.type), genreName, t('{n}分', {n:r.min}), t('{n}人分', {n:sv}), fam && fam !== '野菜' ? familyLabel(fam) : ''].filter(Boolean);
     const sub = r.pack && r.nameEn && r.nameEn !== r.name ? r.nameEn : '';
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
@@ -4264,7 +4295,9 @@ document.addEventListener('click', e => {
         }
         case 'tw-set': {
             const key = el.dataset.key; let v = el.dataset.v; if (key === 'level') v = Number(v);
-            twistState[key] = v; runTwist(); render(); break;
+            twistState[key] = v;
+            if (twistState.results && !useTwistQuota()){ twistState.results = null; render(); break; }   // 無料版は条件を変えて作り直すのも1回に数える
+            runTwist(); render(); break;
         }
         case 'tw-run': if (!useTwistQuota()) break; runTwist(); render(); break;
         case 'twist-this':
@@ -4702,6 +4735,9 @@ async function setCountry(cc){
     const first = !S.settings.country;
     const fresh = !(S.countryData && S.countryData[cc]);   // この国をはじめて選ぶ
     const old = currentCountry();
+    // 先にデータを読みこむ（電波がなくて読みこめないときは、いまの国の冷蔵庫・1週間プランをそのまま残す）
+    try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
+    packFail = null;
     if (old !== cc){
         S.countryData = S.countryData || {};
         S.countryData[old] = {fridge: S.fridge, staples: S.staples, avoid: S.settings.avoid};
@@ -4709,7 +4745,6 @@ async function setCountry(cc){
         S.fridge = d.fridge || []; S.staples = d.staples || []; S.settings.avoid = d.avoid || [];
         S.week = null;
     }
-    try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
     S.settings.country = cc;
     // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
     if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = wantLang();
@@ -4784,7 +4819,7 @@ function countrySheetHtml(){
     const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}">
+        <div class="country-list">${COUNTRIES.map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
             <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
         ${S.settings.country ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : ''}`;
 }
@@ -4813,7 +4848,7 @@ if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前�
 if (S.settings.country && (S.settings.uiLang || 'auto') === 'auto'){ S.settings.uiLang = wantLang(); save(); }
 (async () => {
     const cc = S.settings.country;
-    if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ S.settings.country = 'JP'; } }
+    if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ packFail = cc; S.settings.country = 'JP'; setTimeout(() => toast(t('この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください')), 1500); } }
     await setLang(wantLang());
     await ensureTr(currentCountry());
     applyCountry(currentCountry());
