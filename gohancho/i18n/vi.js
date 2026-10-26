@@ -617,7 +617,6 @@ GOHAN_I18N('vi', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Nếu món nấu được với nguyên liệu khác, chúng tôi sẽ thay (vd: gà thay cho heo). Món không thể thay sẽ không được gợi ý.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Thời gian tùy loại cá. Nấu đến khi thịt cá trắng đục bên trong.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Nấu gà chín kỹ; thêm 1–2 phút so với thời gian nấu.",
-    "いまの国（{country}）": "Nước của bạn ({country})",
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Đổi nước thì ngôn ngữ hiển thị vẫn giữ nguyên. Món của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Kết hợp các nước (vd: món chính Trung Quốc, món phụ Nhật, canh Hàn)",
     "組み合わせをやめる": "Thôi kết hợp",
@@ -667,4 +666,5 @@ GOHAN_I18N('vi', {
     "元に戻す": "Hoàn tác",
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Thiết bị hết dung lượng nên không lưu được. Hãy xóa bớt ảnh.",
     "記録を消しました": "Đã xóa bản ghi",
+    "いまの国": "nước của bạn",
 });

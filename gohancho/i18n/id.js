@@ -617,7 +617,6 @@ GOHAN_I18N('id', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Jika masakan bisa dibuat dengan bahan lain, kami menggantinya (mis. ayam sebagai pengganti babi). Masakan yang tidak bisa diganti tidak disarankan.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Waktu masak tergantung jenis ikan. Masak sampai dagingnya putih hingga ke dalam.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Masak ayam sampai matang; tambah 1–2 menit waktu memasak.",
-    "いまの国（{country}）": "Negaramu ({country})",
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Bahasa tampilan tetap sama meski negara diganti. Masakan negara lain ditampilkan dalam bahasa ini jika ada terjemahannya (jika tidak, dalam bahasa Inggris).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Gabungkan negara (mis. lauk utama Tiongkok, lauk pendamping Jepang, sup Korea)",
     "組み合わせをやめる": "Berhenti menggabungkan",
@@ -667,4 +666,5 @@ GOHAN_I18N('id', {
     "元に戻す": "Urungkan",
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Penyimpanan perangkat penuh, tidak bisa menyimpan. Coba hapus beberapa foto.",
     "記録を消しました": "Catatan dihapus",
+    "いまの国": "negaramu",
 });

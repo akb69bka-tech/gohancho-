@@ -617,7 +617,6 @@ GOHAN_I18N('de', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Wo ein Gericht mit einer anderen Zutat funktioniert, ersetzen wir sie (z. B. Hähnchen statt Schwein). Gerichte ohne Ersatz werden nicht vorgeschlagen.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Die Garzeit hängt vom Fisch ab. Garen, bis das Fleisch durchgehend weiß ist.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Hähnchen ganz durchgaren; 1–2 Minuten länger garen.",
-    "いまの国（{country}）": "Dein Land ({country})",
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Die Anzeigesprache bleibt gleich, wenn du das Land wechselst. Gerichte aus anderen Ländern erscheinen in dieser Sprache, wenn es eine Übersetzung gibt (sonst auf Englisch).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Länder kombinieren (z. B. chinesisches Hauptgericht, japanische Beilagen, koreanische Suppe)",
     "組み合わせをやめる": "Nicht mehr kombinieren",
@@ -667,4 +666,5 @@ GOHAN_I18N('de', {
     "元に戻す": "Rückgängig",
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Nicht genug Speicher auf dem Gerät, Speichern fehlgeschlagen. Entferne z. B. einige Fotos.",
     "記録を消しました": "Eintrag gelöscht",
+    "いまの国": "dein Land",
 });

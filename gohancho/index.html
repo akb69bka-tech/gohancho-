@@ -102,7 +102,7 @@ a{color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
 .btn.ghost{background:transparent;border-color:transparent}
 .btn.ghost:hover{border-color:var(--line)}
-.btn.sm{min-height:44px;padding:.25rem .75rem;font-size:.8rem}
+.btn.sm{min-height:44px;min-width:44px;padding:.25rem .75rem;font-size:.8rem}
 .btn.danger{color:var(--danger)}
 .btn.wide{flex:1 1 auto}
 .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -184,8 +184,11 @@ a{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
 .mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0;min-height:44px;display:flex;align-items:center;gap:6px}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:44px}
-.pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;gap:4px;font-size:.84rem}.pw-steps li{display:grid;grid-template-columns:max-content 1fr;gap:8px;padding-left:10px;border-left:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
-.swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-left:1.2em}
+@media (max-width:400px){.mix-row{grid-template-columns:1fr;gap:2px}}   /* 狭い画面では見出しを上にして、国の名前が切れないように */
+.tray :focus-visible{outline-color:var(--tray-ink)}
+@media (max-width:360px){.actions{grid-template-columns:1fr}}
+.pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 8px;font-size:.84rem}.pw-steps li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;gap:8px;padding-inline-start:10px;border-inline-start:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
+.swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-inline-start:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
 /* 入力 */
@@ -200,7 +203,7 @@ textarea{min-height:90px;resize:vertical}
 @media (prefers-reduced-motion: reduce){.btn.listening{animation:none}}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:480px){.grid2{grid-template-columns:1fr}}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted);cursor:pointer}
+.check{display:flex;gap:10px;align-items:center;min-height:44px;font-size:.82rem;color:var(--muted);cursor:pointer}
 .check input{margin-top:.3rem;width:18px;height:18px;accent-color:var(--accent);flex-shrink:0}
 
 /* 材料マッチ */
@@ -276,7 +279,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .steps li.add{background:var(--yolk-soft);border-radius:10px;padding:.35rem .5rem .35rem .35rem}
 .steps li.add::before{background:var(--yolk);color:#231800}
 .confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
+.toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
+.toast .btn{margin-inline-start:8px;min-height:36px;vertical-align:middle}
 .muted{color:var(--muted)}
 .small{font-size:.8rem}
 /* 料理イラスト */
@@ -312,6 +316,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .award h3{font-size:1.15rem;margin:2px 0;cursor:pointer}
 .btn.reacted{background:var(--yolk-soft);color:var(--yolk-ink);border-color:transparent}
 .item .item-acts{display:flex;gap:4px;align-items:center}
+@media (max-width:400px){.item:has(> .item-acts){grid-template-columns:1fr}.item > .item-acts{justify-content:flex-end}}   /* 狭い画面では料理名を1行目に広く、ボタンは下の段に */
 .item.react-item{grid-template-columns:1fr;background:var(--surface-2)}
 /* ふりかえり・称号 */
 .review{gap:10px}
@@ -359,7 +364,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray.compact .spot-label .nm{font-size:.82rem;line-height:1.3}
 .tray.compact .spot-label .mt{display:none}
 .tray.compact .spot-label .last{font-size:.6rem}
-.tray.compact .swap{min-height:26px;font-size:.66rem;padding:.05rem .55rem}
+.tray.compact .swap{min-height:28px;font-size:.66rem;padding:.05rem .55rem}
 .tray.compact .spot{gap:5px}
 .spot.side .v-kobachi{width:78%}
 .tray .spot.main .vessel{width:86%}
@@ -414,7 +419,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pw-list li{padding-inline-start:26px;position:relative}
 .pw-list li::before{content:"";position:absolute;inset-inline-start:4px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);transform:rotate(-45deg)}
 .pw-prices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pw-price{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
+.pw-price{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start}
 .pw-price.best{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .pw-price .l{font-size:.78rem;color:var(--muted)}
 .pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
@@ -549,7 +554,7 @@ nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:
     </filter>
   </defs>
 </svg>
-<div id="toast-root"></div>
+<div id="toast-root" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
 'use strict';
@@ -1258,8 +1263,11 @@ function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math
 // undo を渡すと「元に戻す」ボタンを付けて少し長めに出す
 function toast(msg, praise=false, undo=null){
     const root = $('#toast-root'); toast.undo = undo;
-    root.innerHTML = `<div class="toast pop${praise?' praise':''}" role="status">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
-    clearTimeout(toast.t); toast.t = setTimeout(() => { root.innerHTML = ''; toast.undo = null; }, undo ? 5000 : praise ? 4200 : 2400);
+    root.innerHTML = `<div class="toast pop${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
+    // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
+    const hide = () => { root.innerHTML = ''; toast.undo = null; };
+    const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 4200 : 2400); };
+    arm();
 }
 // 最後に食べた日からの日数（食べていなければ Infinity）
 function daysSince(id){
@@ -1401,7 +1409,7 @@ function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixL
 const mixLoading = new Set();
 function mixHtml(){
     const mix = S.settings.mix || {}, home = currentCountry();
-    const opts = sel => [`<option value="" ${!sel ? 'selected' : ''}>${esc(t('いまの国（{country}）', {country: countryOf(home).flag + ' ' + countryLabel(countryOf(home))}))}</option>`,
+    const opts = sel => [`<option value="" ${!sel ? 'selected' : ''}>${esc(countryOf(home).flag + ' ' + countryLabel(countryOf(home)) + t('（{qty}）', {qty: t('いまの国')}))}</option>`,
         ...COUNTRIES.filter(c => c.cc !== home).map(c => `<option value="${c.cc}" ${sel === c.cc ? 'selected' : ''}>${esc(c.flag + ' ' + countryLabel(c))}</option>`)].join('');
     const on = mixCountries().length > 0;
     return `<details class="mix" ${on || session.mixOpen ? 'open' : ''}><summary>${esc(t('国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）'))}${on ? ' 🌏' : ''}</summary>
@@ -1715,6 +1723,8 @@ function render(){
     const g = greeting();
     $('#greet').innerHTML = tab === 'today' ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
     const v = $('#view');
+    // 描き直しても、押したボタン（または同じ役目のボタン）にフォーカスを戻す（キーボード・読み上げで迷わないように）
+    const fk = v.contains(document.activeElement) ? focusKey(document.activeElement) : '';
     if (tab === 'today') v.innerHTML = viewToday();
     if (tab === 'cook') v.innerHTML = viewCook();
     if (tab === 'fridge') v.innerHTML = viewFridge();
@@ -1722,6 +1732,7 @@ function render(){
     if (tab === 'world') v.innerHTML = viewWorld();
     if (tab === 'log') v.innerHTML = viewLog();
     if (tab === 'settings') v.innerHTML = viewSettings();
+    if (fk && !sheet && !modalId){ const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); }
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
     if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked');
@@ -2717,7 +2728,7 @@ function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
 function trialTimelineHtml(){
     const end = introEndYmd(), price = monthlyPrice();
     const steps = [[t('今日'), t('すべての機能が使えます')], [jpDate(addDays(end, -3)), t('お試しが終わる前にお知らせします')], [jpDate(end), price ? t('ここから{price}', {price}) : t('ここから月額')]];
-    return `<ol class="pw-steps">${steps.map(([d, x]) => `<li><b>${esc(d)}</b><span>${esc(x)}</span></li>`).join('')}</ol>`;
+    return `<ol class="pw-steps" role="list">${steps.map(([d, x]) => `<li><b>${esc(d)}</b><span>${esc(x)}</span></li>`).join('')}</ol>`;
 }
 function priceLabel(p){
     const live = storePrices[p.id];
@@ -2774,8 +2785,18 @@ function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) retu
 /* ---- 下から出る画面のフォーカス（開いたら中へ移し、Tab は中だけを回り、閉じたら開いたボタンへ戻す） ---- */
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 const dlgRet = {}, dlgLast = {};   // 開く前にフォーカスがあったもの／中で最後にフォーカスしたもの（描き直しても戻せるよう data-* で覚える）
-function focusKey(el){ return el && el.dataset && el.dataset.act ? ['act', 'id', 'v', 'k', 'cc'].map(k => el.dataset[k] || '').join('|') : (el && el.id ? '#' + el.id : ''); }
-function findByKey(scope, key){ if (!key) return null; if (key[0] === '#') return scope.querySelector(key); return [...scope.querySelectorAll('[data-act]')].find(x => focusKey(x) === key) || null; }
+function focusKey(el){
+    if (!el || el === document.body) return '';
+    if (el.dataset && el.dataset.act) return ['act', 'id', 'v', 'k', 'cc', 'slot', 'd', 'i'].map(k => el.dataset[k] || '').join('|');
+    if (el.id) return '#' + el.id;
+    if (el.matches && el.matches('summary') && el.parentElement) return 'sum|' + el.parentElement.className;   // 「条件を変える」などの開閉
+    return '';
+}
+function findByKey(scope, key){
+    if (!key) return null; if (key[0] === '#') return scope.querySelector(key);
+    if (key.startsWith('sum|')) return [...scope.querySelectorAll('summary')].find(x => 'sum|' + x.parentElement.className === key) || null;
+    return [...scope.querySelectorAll('[data-act]')].find(x => focusKey(x) === key) || null;
+}
 function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
 function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     const root = document.getElementById(rootId), d = root.querySelector('[role="dialog"]'); if (!d) return;
@@ -4025,7 +4046,7 @@ function recipeCoreHtml(r, done){
                 <div class="label">${esc(t('作り方'))}</div>
                 ${fac !== 1 ? `<p class="small muted" style="margin:0">${esc(t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
                 ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>
-                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}">${timerStepHtml(stepText(st), r.name)}</li>`).join('')}</ol>`
+                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"><span class="st-txt">${timerStepHtml(stepText(st), r.name)}</span></li>`).join('')}</ol>`
                 : `<ol class="steps">${r.steps.map(st => typeof st === 'string' ? `<li>${esc(stepText(st))}</li>` : `<li class="${st.add?'add':''}">${esc(stepText(st))}</li>`).join('')}</ol>`}
                 ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}`;
 }
@@ -4546,7 +4567,11 @@ document.addEventListener('input', e => {
     searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
 });
 // 今日の献立の「条件を変える」を開いたかどうかを覚える（描き直しても開いたまま）
-document.addEventListener('toggle', e => { if (e.target.matches && e.target.matches('details.cond')) session.condOpen = e.target.open; }, true);
+document.addEventListener('toggle', e => {
+    if (!e.target.matches) return;
+    if (e.target.matches('details.cond')) session.condOpen = e.target.open;
+    if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
+}, true);
 document.addEventListener('change', e => {
     const el = e.target;
     if (el.id === 'photo-input-cook' && el.files && el.files[0]){

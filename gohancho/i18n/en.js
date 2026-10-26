@@ -618,7 +618,6 @@ GOHAN_I18N('en', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Where a dish works with another ingredient, we swap it (e.g. chicken instead of pork). Dishes that can't be swapped are skipped.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Cooking time depends on the fish. Cook until the flesh is opaque all the way through.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Cook chicken all the way through; add 1-2 minutes to the cooking time.",
-    "いまの国（{country}）": "Your country ({country})",
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "The display language stays the same when you change country. Dishes from other countries are shown in this language when a translation exists (otherwise in English).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Mix countries (e.g. Chinese main, Japanese sides, Korean soup)",
     "組み合わせをやめる": "Stop mixing",
@@ -668,4 +667,5 @@ GOHAN_I18N('en', {
     "元に戻す": "Undo",
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Not enough storage on this device, so we couldn't save. Try removing some photos.",
     "記録を消しました": "Record deleted",
+    "いまの国": "your country",
 });

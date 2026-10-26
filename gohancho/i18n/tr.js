@@ -617,7 +617,6 @@ GOHAN_I18N('tr', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Bir yemek başka bir malzemeyle olabiliyorsa değiştiririz (ör. domuz yerine tavuk). Değiştirilemeyen yemekler önerilmez.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Pişme süresi balığa göre değişir. Eti içine kadar beyazlayana dek pişirin.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Tavuğu iyice pişirin; süreye 1-2 dakika ekleyin.",
-    "いまの国（{country}）": "Ülkeniz ({country})",
     "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Ülkeyi değiştirseniz de görüntüleme dili aynı kalır. Diğer ülkelerin yemekleri, çevirisi varsa bu dilde gösterilir (yoksa İngilizce).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Ülkeleri karıştır (ör. Çin ana yemeği, Japon yan yemekleri, Kore çorbası)",
     "組み合わせをやめる": "Karıştırmayı bırak",
@@ -667,4 +666,5 @@ GOHAN_I18N('tr', {
     "元に戻す": "Geri al",
     "端末の空きが足りず、保存できませんでした。写真などを減らしてください": "Cihazda yeterli alan yok, kaydedilemedi. Birkaç fotoğrafı silin.",
     "記録を消しました": "Kayıt silindi",
+    "いまの国": "ülkeniz",
 });
