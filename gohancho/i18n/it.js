@@ -718,7 +718,7 @@ GOHAN_I18N('it', {
     "{compose}・{n}品・{sv}人分。{reason}": "{compose} · {n} piatti · per {sv}. {reason}",
     "今日の献立はまだ決まっていません": "Il menu di oggi non è ancora deciso",
     "冷蔵庫の材料を優先": "Prima il frigo",
-    "品数おまかせ": "Numero di piatti automatico",
+    "品数おまかせ": "Piatti: auto",
     "国の組み合わせ": "Paesi combinati",
     "献立が決まりました。作り方はこちらです": "Menu deciso. Ecco come cucinarlo.",
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Ingredienti da evitare (solo piatti senza o con una sostituzione)",

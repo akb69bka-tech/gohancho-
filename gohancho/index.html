@@ -309,10 +309,10 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .skill .how{font-size:.82rem;color:var(--muted);background:var(--surface-2);border-radius:10px;padding:.45rem .6rem}
 .skill .how b{color:var(--ink)}
 /* 買い足し提案 */
-.hint-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}
+.hint-row{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line)}   /* 食材の名前が長いときは、説明を下の行に回す */
 .hint-row:first-child{border-top:0}
-.hint-row .k{font-family:var(--font-display);font-weight:700;font-size:1rem;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:.15rem .6rem;white-space:nowrap}
-.hint-row .v{font-size:.8rem;color:var(--muted)}
+.hint-row .k{font-family:var(--font-display);font-weight:700;font-size:1rem;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:.15rem .6rem;max-width:100%;overflow-wrap:anywhere}
+.hint-row .v{font-size:.8rem;color:var(--muted);flex:1 1 9rem;min-width:0}
 .hint-row .v b{color:var(--ink)}
 /* 家族の反応・今月の料理自慢 */
 .react{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
@@ -484,7 +484,8 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 @media (max-width:359px){
     .tray.compact{padding-left:4px;padding-right:4px}
     .tray.compact .tray-row{gap:2px}
-    .tray.compact .spot-label .slot{letter-spacing:.02em;font-size:.56rem}
+    .spot-label .slot{letter-spacing:.05em}
+    .tray.compact .spot-label .slot{letter-spacing:0;font-size:.52rem}
     .tray.compact .spot-label .nm{font-size:.74rem}
     nav.tabs{padding-left:2px;padding-right:2px}
     nav.tabs button{min-width:0;font-size:.64rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
@@ -990,7 +991,7 @@ const LATIN_NUMUNIT_RE = new RegExp('^(?:(?:' + INPUT_NUM2 + ')|[\\d.,½¼¾]+(?
 const INPUT_FILL_LATIN = new Set(['tengo','hay','tenemos','queda','quedan','me','nos','un','una','uno','unos','unas','de','del','la','el','los','las','poco','poca','algo','algunos','algunas','mucho','muchos','también','tambien','más','mas','sobra','sobran','en','mi','el','refri','refrigerador','nevera']);
 const INPUT_CONJ_LATIN = /\s+(?:y|e|o|u|con|and|or|with|&|\+)\s+/i;
 // 言語ごとの「持っている」「少し」「の」などと、「と」「または」（ラテン文字の入力で、知っている食材を除いたあまりを食材として足すときに使う）
-'j ai jai il y a ai avons reste restent du de des d l la le les en peu un quelques beaucoup avec aussi plus frigo mon ma mes dans moi encore ich habe hab haben wir noch etwas bisschen viel mit im kühlschrank von vom der die das dem den und oder auch zu zum zur ho abbiamo c è ce po di del della dei delle degli dello il lo gli ed anche frigorifero mi rimasto rimasta avanzato avanzata qualche poco tenho temos tem ainda pouco do da dos das o os as com ou também na geladeira no minha sobrou alguns algumas mam mamy jest są trochę troszkę dużo z ze i oraz lub albo też także w lodówce do na mi zostało jeszcze var vardı evde buzdolabında biraz birkaç ile ve veya ya da ayrıca ben bende elimde kalan punya ada saya aku kami di kulkas sedikit dan atau dengan serta juga sisa masih yang sama có tôi nhà còn ở trong tủ lạnh ít với và hoặc hay cùng cũng thêm may mayroon meron ako sa ref kaunting konting kaunti ng na at saka pati tsaka kasama mga ang ay ko namin natira pa rin din have got ve there is are some of the my fridge left leftover lots little bit i s t'.split(' ').forEach(w => INPUT_FILL_LATIN.add(w));
+'j ai jai il y a ai avons reste restent du de des d l la le les en peu un quelques beaucoup avec aussi plus frigo mon ma mes dans moi encore ich habe hab haben wir noch etwas bisschen viel mit im kühlschrank von vom der die das dem den und oder auch zu zum zur ho abbiamo c è ce po di del della dei delle degli dello il lo gli ed anche frigorifero mi rimasto rimasta avanzato avanzata qualche poco tenho temos tem ainda pouco do da dos das o os as com ou também na geladeira no minha sobrou alguns algumas mam mamy jest są trochę troszkę dużo z ze i oraz lub albo też także w lodówce do na mi zostało jeszcze var vardı evde buzdolabında biraz birkaç ile ve veya ya da ayrıca ben bende elimde kalan punya ada saya aku kami di kulkas sedikit dan atau dengan serta juga sisa masih yang sama có tôi nhà còn ở trong tủ lạnh ít với và hoặc hay cùng cũng thêm may mayroon meron ako sa ref kaunting konting kaunti ng na at saka pati tsaka kasama mga ang ay ko namin natira pa rin din have got ve there is are some of the my fridge left leftover lots little bit i s t pas ni sans non kein keine keinen keiner ohne niente senza sem não bez nie yok değil tanpa tidak bukan không walang hindi no not without ăn allergique allergisch allergico alérgico alergia alergik'.split(' ').forEach(w => INPUT_FILL_LATIN.add(w));
 const INPUT_CONJ_W = new Set('et ou und oder mit e ed o ou com ve veya ile dan atau dengan và hoặc hay với at saka pati tsaka oraz lub albo i z ze and or with y u con avec'.split(' '));   // 食材と食材をつなぐ語
 
 function stripInputParticle(tok){
@@ -4903,10 +4904,10 @@ function syncWake(){
 }
 document.addEventListener('visibilitychange', syncWake);
 /* ---- 作り方タブのタイマー（手順の「8分」などをタップすると数えはじめる。音や振動は出さず、0になったら目で分かるように） ---- */
-const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|至|到|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|小时|小時|钟头|鐘頭|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:hrs?|std|minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
+const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|至|到|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|小时|小時|钟头|鐘頭|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:hrs?|std|h|minutes?|minutos?|minutes?|minuti|minuten?|minuty|minutę|minut|mins?|dakika(?:da)?|dk|menit|phút|hours?|heures?|horas?|ore|ora|oras|minuto|stunden?|godzin[ayę]?|saat|jam|giờ|tiếng|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
 function timerSecs(num, unit){
     const u = unit.toLowerCase(), v = parseFloat(num.replace(',', '.'));
-    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|小时|小時|钟头|鐘頭|hrs?|std|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
+    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|小时|小時|钟头|鐘頭|h$|tiếng|hrs?|std|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
     const sec = Math.round(v * f); return sec > 0 && sec <= 12 * 3600 ? sec : 0;
 }
 function timerStepHtml(text, name){

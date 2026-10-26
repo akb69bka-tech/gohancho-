@@ -273,7 +273,7 @@ GOHAN_I18N('vi', {
     "主菜": "Món chính",
     "主菜にする": "Làm món chính",
     "主菜をひとひねり案にしました": "Món chính của bạn đã thành món biến tấu",
-    "主食": "Cơm hoặc bánh mì",
+    "主食": "Cơm / bánh mì",
     "丼にする": "Cơm tô",
     "予定と買い物メモを送る": "Gửi kế hoạch & danh sách",
     "二つの国": "2 nền ẩm thực",

@@ -718,7 +718,7 @@ GOHAN_I18N('pt-BR', {
     "{compose}・{n}品・{sv}人分。{reason}": "{compose} · {n} pratos · para {sv}. {reason}",
     "今日の献立はまだ決まっていません": "O cardápio de hoje ainda não foi definido",
     "冷蔵庫の材料を優先": "Geladeira primeiro",
-    "品数おまかせ": "Número de pratos automático",
+    "品数おまかせ": "Pratos: auto",
     "国の組み合わせ": "Países combinados",
     "献立が決まりました。作り方はこちらです": "Cardápio definido. Veja como preparar.",
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Ingredientes que você evita (só pratos sem eles ou com troca)",

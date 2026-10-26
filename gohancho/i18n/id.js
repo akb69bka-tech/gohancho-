@@ -718,7 +718,7 @@ GOHAN_I18N('id', {
     "{compose}・{n}品・{sv}人分。{reason}": "{compose} · {n} hidangan · untuk {sv} orang. {reason}",
     "今日の献立はまだ決まっていません": "Menu hari ini belum ditentukan",
     "冷蔵庫の材料を優先": "Utamakan isi kulkas",
-    "品数おまかせ": "Jumlah hidangan otomatis",
+    "品数おまかせ": "Hidangan: otomatis",
     "国の組み合わせ": "Gabungan negara",
     "献立が決まりました。作り方はこちらです": "Menu sudah ditentukan. Ini cara memasaknya.",
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Bahan yang Anda hindari (hanya masakan tanpa bahan itu atau dengan pengganti)",

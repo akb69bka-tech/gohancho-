@@ -718,7 +718,7 @@ GOHAN_I18N('fil', {
     "{compose}・{n}品・{sv}人分。{reason}": "{compose} · {n} ulam · para sa {sv}. {reason}",
     "今日の献立はまだ決まっていません": "Hindi pa napipili ang menu ngayon",
     "冷蔵庫の材料を優先": "Unahin ang nasa ref",
-    "品数おまかせ": "Awtomatikong bilang ng ulam",
+    "品数おまかせ": "Ulam: auto",
     "国の組み合わせ": "Pinaghalong bansa",
     "献立が決まりました。作り方はこちらです": "Napili na ang menu. Ito ang paraan ng pagluto.",
     "苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）": "Mga iniiwasang sangkap (ulam lang na wala ito o may kapalit)",
