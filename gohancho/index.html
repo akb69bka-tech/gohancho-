@@ -469,6 +469,7 @@ html.i18n-wait body{visibility:hidden}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
 nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
+html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
 .spot-label .slot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .spot-label .nm{-webkit-hyphens:auto;hyphens:auto}
@@ -927,7 +928,19 @@ function labelOf(name){ const c = canonOf(name); return c ? (PACK_NAMES[c] || c)
 function isLatinText(seg){ return /[a-zÀ-ɏ\u1e00-\u1eff]/i.test(seg) && !/[぀-ヿ㐀-鿿가-힯]/.test(seg); }
 // 自由入力（「豚肉と玉ねぎとキャベツ」「green onions, pork」など）から食材を取り出す
 // ラテン文字の入力は空白で区切らず、区切り記号ごとに長い言い方から照合する（green onions を green と onion に分けない）
-const INPUT_CONJ = new Set(['और','तथा','एवं','व','या','و','أو','และ','กับ','หรือ','과','와','하고','랑','및','또는','和','跟','與','与','及','或']);
+const INPUT_CONJ = new Set(['और','तथा','एवं','व','या','و','أو','และ','กับ','หรือ','과','와','하고','랑','및','또는','和','跟','與','与','及','或',
+    '그리고','그리고요','그리고는','그래서','그런데','또','또는','이랑','있어','있어요','있음','있습니다','있고','없어','없어요','남았어','남았어요','한','두','세','네','각각','약간','조금','좀',
+    '以及','还有','還有','另外','还','還','有','各','各自','再','和','跟','与','與','然后','然後','以及','加上','と','や','あと','あとは','それと','および','または','など','とか','ほか','あとね','それから','ありますの']);
+// 数と助数詞だけの語（「3개」「한 근」「各2个」「2個」「3本」…）は食材ではない
+const COUNTER_RE = new RegExp('^(?:[各每约約共]?(?:[\\d０-９.,½¼¾]+|[一二两兩三四五六七八九十百半几幾]+|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|하나|둘|셋|넷|몇)\\s*(?:[개근모단봉마리장캔팩쪽줄기포병통알컵인분큰술작은술]+|[个個只条條根颗顆块塊包瓶罐把棵朵斤克片袋盒公升勺碗杯个]+|個|本|枚|袋|パック|缶|丁|玉|束|房|切れ|匹|尾|つ|杯|カップ|g|kg|ml|cc|l|グラム|キロ|mg|개|pcs?|x)?|[개근모단봉마리장캔팩쪽병통알컵個本枚袋缶丁匹尾个只条條根颗顆块塊包瓶罐把棵斤克片盒])$', 'i');
+// 食材のあとにくっつく助詞（「3개랑」「감자랑」「ズッキーニと」「ズッキーニや」）を落とす（知らない語を食材として足すときだけ使う）
+function stripInputParticle(tok){
+    let m;
+    if ((m = tok.match(/^(.{2,}?)(?:이랑|하고|이고|이며|랑|과|와|도|만|은|는)$/)) && /[가-힯]/.test(tok)) return m[1];
+    if ((m = tok.match(/^(.{2,}?)(?:とか|など|と|や)$/)) && /[぀-ヿ一-鿿]/.test(tok)) return m[1];
+    if ((m = tok.match(/^(.{2,}?)(?:和|跟|与|與|还有|還有|以及)$/))) return m[1];
+    return tok;
+}
 function extractIngredients(text){
     const out = [], push = c => { if (!out.includes(c)) out.push(c); };
     // 「ピーマン・パプリカ」「ハム・スパム」のように・を含む名前は、まるごと一致するときはそのまま使う
@@ -945,13 +958,13 @@ function extractIngredients(text){
             return;
         }
         seg.split(/\s+/).forEach(tok => {
-            tok = tok.trim(); if (!tok || INPUT_CONJ.has(tok)) return;   // 「और」「و」「และ」のような「と」は食材にしない
+            tok = tok.trim(); if (!tok || INPUT_CONJ.has(tok) || COUNTER_RE.test(stripInputParticle(tok))) return;   // 「और」「و」「และ」のような「と」や、「3個」「한 근」のような数え方は食材にしない
             let t = norm(tok); const found = [];
             for (const x of VARIANTS){
                 if (!x.re && t.includes(x.v)){ found.push(x.c); t = t.split(x.v).join('｜'); }
             }
             if (found.length) found.forEach(c => push(PACK_NAMES[c] || c));
-            else if (tok.length <= 12) push(tok);
+            else { tok = stripInputParticle(tok); if (tok.length <= 12 && !INPUT_CONJ.has(tok) && !COUNTER_RE.test(tok)) push(tok); }
         });
     });
     return out;
@@ -1151,15 +1164,39 @@ function t(ja, vars){
             s = s[cat] != null ? s[cat] : s.other != null ? s.other : ja;
         }
     }
-    if (!vars) return s;
+    if (!vars) return LANG === 'ko' ? koParticles(s) : s;
     // {n} は値に置きかえる。訳の中の {n:# day:# days} は数で単数・複数を選ぶ（# が数になる）
-    return String(s).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*))?\}/g, (m, k, one, other) => {
+    const out = String(s).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*))?\}/g, (m, k, one, other) => {
         if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
         const v = String(vars[k]);
         if (one === undefined) return v;
         let cat = 'other';
         try{ cat = new Intl.PluralRules(LANG).select(Number(v)); }catch(e){}
         return (cat === 'one' ? one : other).replace(/#/g, v);
+    });
+    return LANG === 'ko' ? koParticles(out) : out;
+}
+// 韓国語の助詞: 訳に「{name}을(를)」「{list}이(가)」「{name}(으)로」と書いておくと、直前の字の받침（終声）の有無で 을/를・이/가・은/는・과/와・으로/로 に直す。
+// 받침 は ハングル音節（U+AC00–D7A3）の終声で見る。数字は読み（영 일 삼 육 칠 팔 は받침あり）。引用符・かっこは飛ばして直前の字を見る
+function hasBatchim(str){
+    const m = String(str).replace(/[”“"'’‘」』)\]\s]+$/, '').match(/([가-힣]|[0-9]|[A-Za-z])$/);
+    if (!m) return false;
+    const ch = m[1], c = ch.charCodeAt(0);
+    if (c >= 0xAC00 && c <= 0xD7A3) return (c - 0xAC00) % 28 !== 0;
+    if (/[0-9]/.test(ch)) return '013678'.includes(ch);
+    return /[lmnr]/i.test(ch);
+}
+function isRieul(str){
+    const m = String(str).replace(/[”“"'’‘」』)\]\s]+$/, '').match(/[가-힣]$/);
+    return !!m && (m[0].charCodeAt(0) - 0xAC00) % 28 === 8;
+}
+function koParticles(s){
+    if (s.indexOf('(') < 0) return s;
+    return s.replace(/(^|[\s\S])(을\(를\)|를\(을\)|이\(가\)|가\(이\)|은\(는\)|는\(은\)|과\(와\)|와\(과\)|\(으\)로)/g, (m, pre, pt, off, all) => {
+        const before = all.slice(0, off) + pre, b = hasBatchim(before);
+        if (pt.endsWith('로')) return pre + (b && !isRieul(before) ? '으로' : '로');
+        const i = '을를이가은는과와'.indexOf(pt[0]) >> 1;   // 0:을/를 1:이/가 2:은/는 3:과/와
+        return pre + '을이은과'[i].repeat(b) + (b ? '' : '를가는와'[i]) ;
     });
 }
 // 同じ日本語でも場面で訳し分けたいとき: tc(場面, 日本語の文)。辞書に「場面|日本語の文」があればそれ、なければ t(日本語の文)
@@ -1168,7 +1205,10 @@ function tc(ctx, ja, vars){
     return t(ja, vars);
 }
 // 名前を並べる（日本語は「・」、ほかの言語は「, 」）
-function joinNames(arr){ return arr.join(LANG === 'ja' ? '・' : ', '); }
+function joinNames(arr){ return arr.join(LANG === 'ja' ? '・' : /^zh/.test(LANG) ? '、' : ', '); }
+// 文と文をつなぐ（日本語・中国語は空白を入れない）／全角の記号で終わる文のあとにも空白を入れない
+const sentGap = () => /^(ja|zh)/.test(LANG) ? '' : ' ';
+const afterText = s => s + (/[\u3000-\u303f\uff00-\uffef]$/.test(s) ? '' : ' ');
 const PLUS = () => LANG === 'ja' ? '＋' : '+';
 const GAP = () => LANG === 'ja' ? '　' : ' · ';
 const SLASH = () => LANG === 'ja' ? ' ／ ' : ' / ';
@@ -1239,7 +1279,7 @@ function applyStaticText(){
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:t('今日の献立'), cook:tc('tab', '作り方'), fridge:t('材料から'), twist:t('ひとひねり'), world:t('世界のレシピ'), log:t('記録')};
+    const labels = {today:tc('tab', '今日の献立'), cook:tc('tab', '作り方'), fridge:t('材料から'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:t('記録')};
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         const n = [...b.childNodes].reverse().find(x => x.nodeType === 3);
         if (n && labels[b.dataset.tab]) n.textContent = labels[b.dataset.tab];
@@ -3378,7 +3418,7 @@ function viewSettings(){
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
         <div class="set-group">
             <div class="set-title">${esc(t('国・地域'))}</div>
-            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + cur.nameLocal}))}</button>
+            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + countryLabel(cur)}))}</button>
             <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
             <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
@@ -3611,7 +3651,8 @@ function weekShareText(){
         lines.push('', t('【買い物メモ】'));
         [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
             const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
-            lines.push(`〈${l}〉`); xs.forEach(e => lines.push(`□ ${e.label}${e.qty.length ? t('（{qty}）', {qty:sumQty(e.qty).join(t('＋'))}) : ''}`));
+            lines.push(t('〈{l}〉', {l})); xs.forEach(e => { const q = e.qty.length ? sumQty(e.qty).join(t('＋')) : '';
+                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : ' ') + q : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない
         });
     }
     const aw = awardShareLine(); if (aw) lines.push('', aw);
@@ -3916,7 +3957,7 @@ function viewFridge(){
     const hintsHtml = hints.length ? `<div class="sec-head"><h3>${esc(t('これを買い足すと、作れる料理が増えます'))}</h3></div>
         <div class="list">${hints.map((h, hi) => !hasPro() && hi >= PLAN.freeLimits.shoppingHints
             ? `<div class="hint-row locked" data-act="paywall-hints"><span class="k"><span class="veil">${PLUS()}${'●'.repeat(Math.min(5, h.label.length))}</span></span><span class="v"><b>${esc(t('{n}品', {n:h.n}))}</b>${esc(t('増える食材があります'))} <span class="plus-mark">${esc(t('プラス'))}</span></span></div>`
-            : `<div class="hint-row"><span class="k">${PLUS()}${esc(h.label)}</span><span class="v"><b>${esc(t('{n}品', {n:h.n}))}</b>${esc(t('が今すぐ作れるように：'))} ${esc(joinNames(h.names))}${h.n > 3 ? esc(t(' など')) : ''}</span></div>`).join('')}</div>` : '';
+            : `<div class="hint-row"><span class="k">${PLUS()}${esc(h.label)}</span><span class="v"><b>${esc(t('{n}品', {n:h.n}))}</b>${esc(afterText(t('が今すぐ作れるように：')))}${esc(joinNames(h.names))}${h.n > 3 ? esc(t(' など')) : ''}</span></div>`).join('')}</div>` : '';
     let results = '';
     if (have.size){
         const ms = RECIPES.filter(r => !isAvoided(r)).map(r => matchRecipe(swappedRecipe(r), have)).filter(m => m.used > 0 && (m.got.length + m.subs.length) > 0);
@@ -4035,7 +4076,7 @@ function matchRow(m){
     const r = m.r;
     const parts = [
         ...m.got.map(i => `<b>${esc(i.label)}</b>`),
-        ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(x.alt)}</span>`),
+        ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(PACK_NAMES[x.alt] || labelOf(x.alt))}</span>`),
         ...m.miss.map(i => `<span class="miss">${esc(i.label)}</span>`),
     ];
     return `<div class="match">
@@ -4244,10 +4285,10 @@ function syncWake(){
 }
 document.addEventListener('visibilitychange', syncWake);
 /* ---- 作り方タブのタイマー（手順の「8分」などをタップすると数えはじめる。音や振動は出さず、0になったら目で分かるように） ---- */
-const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
+const TIMER_RE = /(\d+(?:[.,]\d+)?)(?:\s*(?:[〜~～\-–]|至|到|to|à|a|bis|al|do|ila|đến|hingga|sampai|hanggang)\s*\d+(?:[.,]\d+)?)?\s*(分钟|分鐘|分(?!の)|小时|小時|钟头|鐘頭|時間|秒|시간|분|초|นาที|ชั่วโมง|วินาที|मिनट|घंटे|घंटा|सेकंड|دقائق|دقيقة|ساعات|ساعة|ثوان|ثانية|(?:hrs?|std|minutes?|minutos?|minuti|minuten?|minuty|minutę|minut|mins?|dakika|menit|phút|hours?|heures?|horas?|ore|ora|stunden?|godzin[ya]?|saat|jam|giờ|seconds?|secondes?|segundos?|secondi|sekunden?|sekundy?|saniye|detik|giây)(?!\p{L}))/giu;
 function timerSecs(num, unit){
     const u = unit.toLowerCase(), v = parseFloat(num.replace(',', '.'));
-    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
+    const f = /^(秒|초|วินาที|सेकंड|ثوان|ثانية|sec|seg|sek|saniye|detik|giây)/.test(u) ? 1 : /^(時間|小时|小時|钟头|鐘頭|hrs?|std|시간|ชั่วโมง|घंट|ساع|hour|heure|hora|ore|ora|stund|godzin|saat|jam|giờ)/.test(u) ? 3600 : 60;
     const sec = Math.round(v * f); return sec > 0 && sec <= 12 * 3600 ? sec : 0;
 }
 function timerStepHtml(text, name){
@@ -4313,7 +4354,7 @@ function renderModal(){
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
     const facts = [typeLabel(r.type), genreName, t('{n}分', {n:r.min}), t('{n}人分', {n:sv}), fam && fam !== '野菜' ? familyLabel(fam) : ''].filter(Boolean);
-    const sub = r.pack && r.nameEn && r.nameEn !== r.name ? r.nameEn : '';
+    const sub = r.pack && r.nameEn && r.nameEn !== r.name && countryOf(r.pack).lang !== LANG ? r.nameEn : '';   // その国の言葉の画面では、英語の副題は出さない
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
         <div class="sheet pop" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
@@ -4561,7 +4602,7 @@ document.addEventListener('click', e => {
             const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
             S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone}; save();
             session.cookIdx = 0;
-            toast(t('献立が決まりました。作り方はこちらです') + ' ' + praiseFor(ids, before), true); setTab('cook'); break;
+            toast(t('献立が決まりました。作り方はこちらです') + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
         }
         case 'undo-decide': {
             // 「この献立に決定」の取り消し: 決めたときに記録した今日の料理を記録から消す（「おいしかった！」を押した料理は残す）
@@ -5053,7 +5094,7 @@ function applyCountry(cc){
             JP_DATA.recipes.forEach(r => r.items.forEach(i => { const v = nm[i.name] || nm[i.key]; if (v && !names[i.key]){ names[i.key] = v; extra.push([i.key, [i.name, v]]); } }));
             JP_DATA.canon.forEach(([c]) => { if (nm[c]) names[c] = nm[c]; });
             replaceObj(PACK_NAMES, names);
-            replaceList(CANON, [...JP_DATA.canon.map(([c, vs]) => [c, nm[c] ? [...vs, nm[c]] : vs]), ...extra]);
+            replaceList(CANON, [...JP_DATA.canon.map(([c, vs]) => [c, nm[c] ? [...vs, nm[c]] : vs]), ...extra, ...Object.entries(tr.aliases || {})]);   // tr.aliases = 日本の食材 → その言語での別の言い方（green onion など）
             const disp = q => nm[q] || q;
             replaceList(QUICK, JP_DATA.quick.map(disp)); replaceList(STAPLE_QUICK, JP_DATA.stapleQuick.map(disp)); replaceList(AVOID_QUICK, JP_DATA.avoidQuick.map(disp));
         } else {
@@ -5164,14 +5205,14 @@ function viewWorld(){
             <div class="list">${rs.map(r => `<div class="match" data-act="open" data-id="${esc(r.id)}">
                 <span>${thumbHtml(r)}</span>
                 <div class="info"><div class="head"><span class="name">${esc(r.name)}</span></div>
-                    ${r.nameEn && r.nameEn !== r.name ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
+                    ${r.nameEn && r.nameEn !== r.name && !(r.pack && countryOf(r.pack).lang === LANG) ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
                     <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>
             ${all.length > rs.length ? `<div class="row"><button class="btn sm" data-act="world-all" data-k="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: all.length}))}</button></div>` : ''}`;
     };
     return `
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
-        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span></button>`).join('')}</div>
+        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span>${countryLabel(o) !== o.nameLocal ? ` <small class="muted">${esc(countryLabel(o))}</small>` : ''}</button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
         ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
@@ -5197,7 +5238,7 @@ async function setCountry(cc){
     }
     S.settings.country = cc;
     // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
-    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = wantLang();
+    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = cc === 'JP' ? (deviceLang() || 'ja') : wantLang();   // 日本を選んでも、端末が日本語でなければ端末の言語のまま（日本の料理には英語の訳がある）
     save();
     await setLang(wantLang());
     await ensureTr(cc);
