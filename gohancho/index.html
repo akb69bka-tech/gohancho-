@@ -196,6 +196,7 @@ a{color:var(--accent)}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
 input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
+.field [aria-invalid=true]{border-color:var(--danger)}
 .inputbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
 .inputbar input{min-width:0}
 @media (max-width:420px){.inputbar{grid-template-columns:minmax(0,1fr) auto}.inputbar [data-act=mic]{grid-column:1/-1}}
@@ -3298,7 +3299,12 @@ function viewSettings(){
                         <button class="btn" data-act="export">${esc(t('今のデータを表示してコピー'))}</button>
                         <button class="btn" data-act="import">${esc(t('貼りつけたデータを読み込む'))}</button>
                     </div>
-                    ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small">${esc(t('今の記録は、貼りつけたデータで上書きされます。よろしいですか？'))}</div><div class="row"><button class="btn primary sm" data-act="import-yes">${esc(t('上書きする'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : ''}
+                    <div class="row">
+                        <button class="btn" data-act="export-file">${esc(t('ファイルで書き出す'))}</button>
+                        <button class="btn" data-act="import-file">${esc(t('ファイルから読み込む'))}</button>
+                        <input type="file" id="backup-file" accept="application/json,.json" hidden>
+                    </div>
+                    ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small">${esc(importFrom === 'file' ? t('今の記録は、このファイルのデータで上書きされます。よろしいですか？') : t('今の記録は、貼りつけたデータで上書きされます。よろしいですか？'))}</div><div class="small muted">${esc(importSummary())}</div><div class="row"><button class="btn primary sm" data-act="import-yes">${esc(t('上書きする'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : ''}
                     ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
                 </div>
             </details>
@@ -3981,6 +3987,7 @@ function viewLog(){
     const favs = S.favs.map(byId).filter(Boolean);
     const hidden = S.hidden.map(byId).filter(Boolean);
     const skillList = S.skills.slice().reverse().slice(0, 8);
+    const ed = session.editCustom ? S.custom.find(r => r.id === session.editCustom) : null;   // 編集中の「わが家のレシピ」
     return `
     <section class="sec">
         ${reviewHtml()}
@@ -4020,20 +4027,20 @@ function viewLog(){
         <div class="list">${hidden.map(r => `<div class="item"><div>${esc(r.name)}</div><button class="btn sm" data-act="unhide" data-id="${esc(r.id)}">${esc(t('また出す'))}</button></div>`).join('')}</div></section>` : ''}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('わが家のレシピ'))}</h2><span class="hint">${esc(PACK ? t('追加した料理も献立・材料さがしに使われます') : t('追加した料理も献立・材料さがし・ひとひねりに使われます'))}</span></div>
-        ${S.custom.length ? `<div class="list">${S.custom.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(typeLabel(r.type))}${esc(t('・'))}${esc(t('{n}分', {n:r.min}))}</div></div><button class="btn sm ghost danger" data-act="rm-custom" data-id="${esc(r.id)}">${esc(t('消す'))}</button></div>`).join('')}</div>` : ''}
-        <details class="box"><summary>${esc(t('レシピを追加する'))}</summary>
-            <form class="inner" data-form="custom">
-                <div class="field"><label for="c-name">${esc(t('料理名'))}</label><input type="text" id="c-name" required placeholder="${esc(t('例: 実家の豚バラ大根'))}"></div>
+        ${S.custom.length ? `<div class="list">${S.custom.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(typeLabel(r.type))}${esc(t('・'))}${esc(t('{n}分', {n:r.min}))}</div></div><div class="item-acts"><button class="btn sm ghost" data-act="edit-custom" data-id="${esc(r.id)}">${esc(t('編集'))}</button><button class="btn sm ghost danger" data-act="rm-custom" data-id="${esc(r.id)}">${esc(t('消す'))}</button></div></div>`).join('')}</div>` : ''}
+        <details class="box" id="custom-box"${ed ? ' open' : ''}><summary>${esc(ed ? t('レシピを編集する') : t('レシピを追加する'))}</summary>
+            <form class="inner" data-form="custom" novalidate>
+                <div class="field"><label for="c-name">${esc(t('料理名'))}</label><input type="text" id="c-name" required value="${esc(ed ? ed.name : '')}" placeholder="${esc(t('例: 実家の豚バラ大根'))}"></div>
                 <div class="grid2">
-                    <div class="field"><label for="c-type">${esc(t('種類'))}</label><select id="c-type">${['主菜','副菜','汁物','ごはん','麺'].map(c => `<option value="${c}">${esc(typeLabel(c))}</option>`).join('')}</select></div>
-                    ${PACK ? '' : `<div class="field"><label for="c-genre">${esc(t('ジャンル'))}</label><select id="c-genre">${['和','洋','中','韓','エスニック'].map(g => `<option value="${g}">${esc(genreLabel({genre:g}))}</option>`).join('')}</select></div>`}
-                    <div class="field"><label for="c-method">${esc(t('主な調理'))}</label><select id="c-method">${[['煮',t('煮る')],['炒',t('炒める')],['焼',t('焼く')],['揚',t('揚げる')],['和え',t('和える')],['汁',t('汁もの')],['炊',t('炊く')]].map(([v,l]) => `<option value="${v}">${esc(l)}</option>`).join('')}</select></div>
-                    <div class="field"><label for="c-min">${esc(t('調理時間（分）'))}</label><input type="number" id="c-min" value="20" min="1" max="240"></div>
+                    <div class="field"><label for="c-type">${esc(t('種類'))}</label><select id="c-type">${['主菜','副菜','汁物','ごはん','麺'].map(c => `<option value="${c}"${ed && ed.type === c ? ' selected' : ''}>${esc(typeLabel(c))}</option>`).join('')}</select></div>
+                    ${PACK ? '' : `<div class="field"><label for="c-genre">${esc(t('ジャンル'))}</label><select id="c-genre">${['和','洋','中','韓','エスニック'].map(g => `<option value="${g}"${ed && ed.genre === g ? ' selected' : ''}>${esc(genreLabel({genre:g}))}</option>`).join('')}</select></div>`}
+                    <div class="field"><label for="c-method">${esc(t('主な調理'))}</label><select id="c-method">${[['煮',t('煮る')],['炒',t('炒める')],['焼',t('焼く')],['揚',t('揚げる')],['和え',t('和える')],['汁',t('汁もの')],['炊',t('炊く')]].map(([v,l]) => `<option value="${v}"${ed && ed.method === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></div>
+                    <div class="field"><label for="c-min">${esc(t('調理時間（分）'))}</label><input type="number" id="c-min" value="${ed ? esc(ed.min) : 20}" min="1" max="240"></div>
                 </div>
-                <div class="field"><label for="c-ings">${esc(t('材料（1行に1つ「名前 分量」）'))}</label><textarea id="c-ings" placeholder="${esc(t('豚バラ薄切り肉 150g\n大根 1/3本'))}"></textarea></div>
-                <div class="field"><label for="c-seas">${esc(t('調味料'))}</label><input type="text" id="c-seas" placeholder="${esc(t('醤油 大さじ2・みりん 大さじ2'))}"></div>
-                <div class="field"><label for="c-steps">${esc(t('作り方（1行に1手順）'))}</label><textarea id="c-steps"></textarea></div>
-                <div class="row"><button class="btn primary" type="submit">${esc(t('追加する'))}</button></div>
+                <div class="field"><label for="c-ings">${esc(t('材料（1行に1つ「名前 分量」）'))}</label><textarea id="c-ings" placeholder="${esc(t('豚バラ薄切り肉 150g\n大根 1/3本'))}">${ed ? esc(ed.ings.join('\n')) : ''}</textarea></div>
+                <div class="field"><label for="c-seas">${esc(t('調味料'))}</label><input type="text" id="c-seas" value="${esc(ed ? ed.seas : '')}" placeholder="${esc(t('醤油 大さじ2・みりん 大さじ2'))}"></div>
+                <div class="field"><label for="c-steps">${esc(t('作り方（1行に1手順）'))}</label><textarea id="c-steps">${ed ? esc(ed.steps.filter(x => x !== t('（作り方は未入力です）')).join('\n')) : ''}</textarea></div>
+                <div class="row"><button class="btn primary" type="submit">${esc(ed ? t('保存する') : t('追加する'))}</button>${ed ? `<button class="btn" type="button" data-act="edit-custom-cancel">${esc(t('やめる'))}</button>` : ''}</div>
             </form>
         </details>
     </section>
@@ -4516,11 +4523,26 @@ document.addEventListener('click', e => {
         }
         case 'toast-undo': { const f = toast.undo; $('#toast-root').innerHTML = ''; toast.undo = null; if (f) f(); break; }
         case 'rm-custom': {
+            // 消したあとに「元に戻す」を出す（同じ id のまま戻すので、記録・お気に入りもつながったまま）
+            const k = S.custom.findIndex(r => r.id === id); if (k < 0) break;
+            const gone = S.custom[k];
             S.custom = S.custom.filter(r => r.id !== id);
             const i = RECIPES.findIndex(r => r.id === id); if (i >= 0) RECIPES.splice(i,1);
             if (JP_DATA){ const j = JP_DATA.recipes.findIndex(r => r.id === id); if (j >= 0) JP_DATA.recipes.splice(j, 1); }   // 言語を変えても戻ってこないように
-            save(); render(); break;
+            if (session.editCustom === id) session.editCustom = null;
+            save(); render();
+            toast(t('「{name}」を消しました', {name: gone.name}), false, () => {
+                if (S.custom.some(r => r.id === id)) return;
+                S.custom.splice(Math.min(k, S.custom.length), 0, gone); addCustomRecipes(); save(); render(); });
+            break;
         }
+        case 'edit-custom': {
+            if (!S.custom.some(r => r.id === id)) break;
+            session.editCustom = id; render();
+            const box = $('#custom-box'); if (box){ box.scrollIntoView({block:'start', behavior:'smooth'}); $('#c-name').focus({preventScroll:true}); }
+            break;
+        }
+        case 'edit-custom-cancel': session.editCustom = null; render(); break;
         case 'toggle-staple': {
             const v = el.dataset.v, k = keyOf(v);
             const i = S.staples.findIndex(x => keyOf(x) === k);
@@ -4564,10 +4586,21 @@ document.addEventListener('click', e => {
         }
         case 'import': {
             const txt = $('#backup-text').value.trim();
-            try{ const d = JSON.parse(txt); if (!d || !Array.isArray(d.history)) throw 0; pendingConfirm = 'import'; importBuffer = txt; render(); keepDetailsOpen(); }
-            catch(err){ toast(t('読み込めませんでした。コピーした文字をそのまま貼りつけてください')); }
+            if (!askImport(txt, 'text')) toast(t('読み込めませんでした。コピーした文字をそのまま貼りつけてください'));
             break;
         }
+        case 'export-file': {
+            // ファイルにして渡す（共有できる端末は共有シート、できなければダウンロード）
+            const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json';
+            const blob = new Blob([JSON.stringify(S)], {type: 'application/json'});
+            const download = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(t('{name} を書き出しました', {name})); };
+            let file = null; try{ file = new File([blob], name, {type: 'application/json'}); }catch(err){}
+            if (file && navigator.share && navigator.canShare && navigator.canShare({files: [file]}))
+                navigator.share({files: [file], title: t('わが家のご飯帖')}).catch(err => { if (!err || err.name !== 'AbortError') download(); });
+            else download();
+            break;
+        }
+        case 'import-file': { const inp = $('#backup-file'); if (inp){ inp.value = ''; inp.click(); } break; }
         case 'import-yes': {
             try{
                 const d = JSON.parse(importBuffer);
@@ -4596,10 +4629,23 @@ document.addEventListener('click', e => {
         case 'cancel-confirm': pendingConfirm = null; render(); keepDetailsOpen(); break;
     }
 });
-let importBuffer = '';
+let importBuffer = '', importFrom = 'text';
+// 読みこむ前に中身を確かめて、上書きの確認を出す（貼りつけ・ファイル共通）。読めないときは false
+function askImport(txt, from){
+    try{ const d = JSON.parse(txt); if (!d || !Array.isArray(d.history)) return false; }catch(err){ return false; }
+    pendingConfirm = 'import'; importBuffer = txt; importFrom = from; render(); keepDetailsOpen(); return true;
+}
+// 読みこむデータの中身（記録・お気に入り・自作レシピの数と国）
+function importSummary(){
+    try{
+        const d = normalizeState(JSON.parse(importBuffer)), c = countryOf(d.settings.country || 'JP');
+        return [t('記録{n}件', {n: d.history.length}), t('お気に入り{n}件', {n: d.favs.length}), t('自作レシピ{n}件', {n: d.custom.length}), c.flag + ' ' + countryLabel(c)].join(t('・'));
+    }catch(err){ return ''; }
+}
 function keepDetailsOpen(){ const b = document.querySelectorAll('details.box'); if (b.length) b[b.length-1].open = true; }
 let searchDeb = 0;
 document.addEventListener('input', e => {
+    if (/^c-(name|ings)$/.test(e.target.id) && e.target.getAttribute('aria-invalid')){ e.target.removeAttribute('aria-invalid'); const m = $('#' + e.target.id + '-err'); if (m) m.remove(); }   // 入れはじめたら「足りない」の印を消す
     if (e.target.id !== 'search-input') return;
     clearTimeout(searchDeb); const q = e.target.value;
     searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
@@ -4620,6 +4666,11 @@ document.addEventListener('change', e => {
     if (el.id === 'photo-input' && el.files && el.files[0] && modalId){
         if (!hasPro() && !MINE[modalId] && Object.keys(MINE).length >= PLAN.freeLimits.myPhotos){ el.value = ''; openPaywall('photos'); return; }
         saveMine(modalId, el.files[0]); el.value = ''; return;
+    }
+    if (el.id === 'backup-file' && el.files && el.files[0]){
+        const fl = el.files[0]; el.value = '';
+        fl.text().then(txt => { if (!askImport(txt.trim(), 'file')) toast(t('読み込めませんでした')); }, () => toast(t('読み込めませんでした')));
+        return;
     }
     if (el.id === 'tw-base'){ twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }
     if (el.dataset && el.dataset.act === 'mix'){
@@ -4649,11 +4700,32 @@ document.addEventListener('submit', e => {
         save(); toast(added ? t('{list} を常備品に登録しました', {list:joinNames(found)}) : t('食材の名前が読み取れませんでした')); render();
     }
     if (f === 'custom'){
-        const name = $('#c-name').value.trim(); if (!name) return;
+        // 足りない欄を、その欄の下に出して知らせる（料理名と材料1つ以上は必須）
+        document.querySelectorAll('[data-form="custom"] .c-err').forEach(x => x.remove());
+        document.querySelectorAll('[data-form="custom"] [aria-invalid]').forEach(x => { x.removeAttribute('aria-invalid'); x.removeAttribute('aria-describedby'); });
+        const name = $('#c-name').value.trim();
         const ings = $('#c-ings').value.split('\n').map(s => s.trim()).filter(Boolean).map(s => { const m = /^(.+?)[\s　]+(\d[\s\S]*)$/.exec(s); return m ? m[1] + ' ' + m[2] : s.replace(/[\s　]+/, ' '); });   // 「Ground beef 500 g」→ 名前「Ground beef」分量「500 g」
+        const miss = [[!name, 'c-name', t('料理名を入れてください')], [!ings.length, 'c-ings', t('材料を1つ以上入れてください')]].filter(x => x[0]);
+        if (miss.length){
+            miss.forEach(([, fid, msg]) => { const el = $('#' + fid); el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', fid + '-err');
+                el.insertAdjacentHTML('afterend', `<div class="small warn c-err" id="${fid}-err">${esc(msg)}</div>`); });
+            $('#' + miss[0][1]).focus(); toast(miss[0][2]); return;
+        }
         const steps = $('#c-steps').value.split('\n').map(s => s.trim()).filter(Boolean);
-        const r = {id:'u'+Date.now(), name, genre: PACK ? 'local' : $('#c-genre').value, type:$('#c-type').value, method:$('#c-method').value, pack: PACK ? PACK.country : undefined,
-            min:Number($('#c-min').value)||20, ings: ings.length ? ings : [name], seas:$('#c-seas').value.trim(), steps: steps.length ? steps : [t('（作り方は未入力です）')]};
+        const old = session.editCustom ? S.custom.find(x => x.id === session.editCustom) : null;
+        const r = {id: old ? old.id : 'u'+Date.now(), name, genre: PACK ? 'local' : $('#c-genre').value, type:$('#c-type').value, method:$('#c-method').value, pack: PACK ? PACK.country : undefined,
+            min:Number($('#c-min').value)||20, ings, seas:$('#c-seas').value.trim(), steps: steps.length ? steps : [t('（作り方は未入力です）')]};
+        if (old){
+            // 編集: 同じ id のまま入れかえる（記録・お気に入りはつながったまま）。献立などが持っている料理もその場で新しい中身にする
+            if (old.pack) r.pack = old.pack; else delete r.pack;
+            if (PACK) r.genre = old.genre;   // 国を変えて編集したときも、元のジャンルを残す
+            S.custom[S.custom.indexOf(old)] = r;
+            const fresh = prepRecipe(Object.assign({}, r));
+            [RECIPES, JP_DATA ? JP_DATA.recipes : []].forEach(list => list.forEach(x => { if (x.id === r.id) Object.assign(x, fresh); }));
+            if (!RECIPES.some(x => x.id === r.id)) RECIPES.push(fresh);
+            session.editCustom = null; save();
+            toast(t('「{name}」を保存しました', {name})); render(); return;
+        }
         S.custom.push(r); RECIPES.push(prepRecipe(Object.assign({}, r))); save();
         toast(t('「{name}」を追加しました', {name})); render();
     }
