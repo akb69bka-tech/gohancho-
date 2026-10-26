@@ -281,6 +281,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
 .toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
 .toast .btn{margin-inline-start:8px;min-height:36px;vertical-align:middle}
+.timer-float{position:fixed;inset-inline-end:12px;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
+.timer-float.ring{background:var(--yolk);color:#231800}
 .muted{color:var(--muted)}
 .small{font-size:.8rem}
 /* 料理イラスト */
@@ -555,6 +557,7 @@ nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:
   </defs>
 </svg>
 <div id="toast-root" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="timer-float"></div>
 
 <script>
 'use strict';
@@ -1735,6 +1738,7 @@ function render(){
     if (tab === 'log') v.innerHTML = viewLog();
     if (tab === 'settings') v.innerHTML = viewSettings();
     if (fk && !sheet && !modalId){ const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); }
+    floatTimer();
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
     if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked');
@@ -2888,7 +2892,7 @@ function renderSheet(){
             <ul class="pw-list">${(sheet.reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
                 ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:jpDate(addDays(introEndYmd(), -1))}))}</p>` : ''}
-                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${startOffer && p.per === '月' ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
+                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
                 ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
@@ -3596,7 +3600,7 @@ function viewToday(){
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
                     : `<span class="mt">${esc(empty)}</span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>` : ''}
@@ -3734,7 +3738,7 @@ function viewCook(){
     return `<section class="sec">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
-        ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row"><button class="btn sm primary" data-act="remind" data-v="17">${esc(t('毎日{time}に受け取る', {time:hourLabel(17)}))}</button><button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
+        ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm${h === 17 ? ' primary' : ''}" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${!isToday ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div>` : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
         <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
@@ -4100,6 +4104,7 @@ function startTimer(sec, name, label){
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
 }
 function tickTimers(){
+    floatTimer();
     if (!TIMERS.length){ clearInterval(timerTick); return; }
     TIMERS.forEach(x => {
         const left = (x.end - Date.now()) / 1000;
@@ -4107,6 +4112,14 @@ function tickTimers(){
         const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
         if (el){ el.classList.toggle('ring', left <= 0); el.querySelector('.tm').textContent = left <= 0 ? t('時間です') : fmtLeft(left); }
     });
+}
+// 作り方タブの外にいるときも、動いているタイマーを下に小さく出す（押すと作り方タブへ）
+function floatTimer(){
+    const box = $('#timer-float'); if (!box) return;
+    const x = tab === 'cook' ? null : TIMERS.slice().sort((a, b) => a.end - b.end)[0];
+    if (!x){ if (box.innerHTML) box.innerHTML = ''; return; }
+    const left = (x.end - Date.now()) / 1000;
+    box.innerHTML = `<button type="button" class="timer-float${left <= 0 ? ' ring' : ''}" data-act="goto-cook">⏱ ${esc(left <= 0 ? t('時間です') : fmtLeft(left))}${GAP()}${esc(x.name)}${TIMERS.length > 1 ? ` (+${TIMERS.length - 1})` : ''}</button>`;
 }
 function renderModal(){
     const r = byId(modalId); if (!r){ closeModal(); return; }
