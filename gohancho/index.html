@@ -183,6 +183,7 @@ a{color:var(--accent)}
 .item .s{font-size:.76rem;color:var(--muted);font-weight:400}
 .empty{padding:18px 14px;color:var(--muted);font-size:.88rem}
 .mix{margin:.2rem 0 .4rem}.mix summary{cursor:pointer;font-size:.88rem;font-weight:600;padding:.3rem 0;min-height:44px;display:flex;align-items:center;gap:6px}.mix-rows{display:grid;gap:6px;margin:.3rem 0}.mix-row{display:grid;grid-template-columns:5.5em 1fr;align-items:center;gap:8px;font-size:.88rem}.mix-row select{min-width:0;width:100%;min-height:44px}
+.pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;gap:4px;font-size:.84rem}.pw-steps li{display:grid;grid-template-columns:max-content 1fr;gap:8px;padding-left:10px;border-left:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-left:1.2em}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
@@ -2590,15 +2591,18 @@ function loyalEligible(){ return isSubscribed() && !!(S.pro && S.pro.since) && d
 // 無料期間の終わる前の日に、端末の通知で知らせる（通知を許可している人だけ）
 async function scheduleTrialReminder(){
     const P = nativePlugin('LocalNotifications');
-    if (!P || isSubscribed()) return;
-    const end = trialActive() ? addDays(S.firstUse || TODAY, PLAN.trialDays) : monitorActive() ? monitorUntil() : null; if (!end) return;
+    const storeTrial = S.pro && S.pro.active && S.pro.trialEnd && S.pro.willRenew !== false ? S.pro.trialEnd : null;
+    if (!P || (isSubscribed() && !storeTrial)) return;
+    const end = storeTrial || (trialActive() ? addDays(S.firstUse || TODAY, PLAN.trialDays) : monitorActive() ? monitorUntil() : null); if (!end) return;
     try{
         const perm = await P.checkPermissions(); if (!perm || perm.display !== 'granted') return;
-        const d = parseYmd(end); d.setDate(d.getDate() - 1); d.setHours(19, 0, 0, 0);
+        const d = parseYmd(end); d.setDate(d.getDate() - (storeTrial ? 3 : 1)); d.setHours(19, 0, 0, 0);
         if (d <= new Date()) return;
         try{ await P.cancel({notifications:[{id: 1002}]}); }catch(e){}
         const body = monitorActive() ? t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}) : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
-        await P.schedule({notifications:[{id: 1002, title: t('無料期間は明日までです'), body, schedule:{at: d}}]});
+        const title = storeTrial ? t('無料期間は{date}までです', {date:jpDate(end)}) : t('無料期間は明日までです');
+        const body2 = storeTrial ? t('続けない場合は、iPhone の「設定」→ Apple ID →「サブスクリプション」で解約できます。アプリの設定の「プランの管理・解約」からも開けます。') : body;
+        await P.schedule({notifications:[{id: 1002, title, body: body2, schedule:{at: d}}]});
     }catch(e){}
 }
 function hasPro(){
@@ -2623,7 +2627,10 @@ function rcInit(){
 function applyCustomerInfo(ci){
     const ent = ci && ci.entitlements && ci.entitlements.active && ci.entitlements.active[PLAN.entitlement];
     const since = ent && ent.originalPurchaseDate ? String(ent.originalPurchaseDate).slice(0, 10) : ((S.pro && S.pro.since) || null);
-    S.pro = {active: !!ent, since, checked: Date.now()}; save(); render();
+    // App Store のお試し中なら終わる日を覚えておき、3日前に知らせる
+    const trialEnd = ent && /TRIAL|INTRO/i.test(String(ent.periodType || '')) && ent.expirationDate ? String(ent.expirationDate).slice(0, 10) : null;
+    S.pro = {active: !!ent, since, checked: Date.now(), trialEnd, expires: ent && ent.expirationDate ? String(ent.expirationDate).slice(0, 10) : null, willRenew: ent ? ent.willRenew !== false : null}; save(); render();
+    scheduleTrialReminder();
     return !!ent;
 }
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
@@ -2632,6 +2639,8 @@ let introEligible = true;   // App Store のお試しオファーを使えるか
 let introOffer = null;      // App Store に登録したお試しの長さ {unit:'day'|'month', n}。国ごとに違うので RevenueCat から取る。取れなければ「1か月」として表示
 let introLoading = false;   // RevenueCat からお試しの長さを読みこみ中（その間は長さを書かない。はじめの案内と購入画面で長さが食い違わないように）
 // お試しの長さの文（購入画面・はじめの案内）
+// 短い言い方（「1か月無料」「7日間無料」）
+function introShort(){ const o = introOffer || {unit:'month', n:1}; return o.unit === 'day' ? t('{n}日間無料', {n:o.n}) : t('{n}か月無料', {n:o.n}); }
 function introLabel(){
     if (!introOffer && introLoading) return t('お試し期間中は、すべての機能を無料で使えます。');
     const o = introOffer || {unit:'month', n:1};
@@ -2667,6 +2676,16 @@ async function loadStorePrices(){
         }
     }catch(e){}
     if (introLoading){ introLoading = false; rerender(); }
+}
+// これから始めるお試しの終わる日（App Store のお試しの長さから）と、そのあとの月額
+function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = parseYmd(TODAY); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else d.setMonth(d.getMonth() + o.n); return ymd(d); }
+function introDays(){ return daysBetween(TODAY, introEndYmd()); }
+function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
+// お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
+function trialTimelineHtml(){
+    const end = introEndYmd(), price = monthlyPrice();
+    const steps = [[t('今日'), t('すべての機能が使えます')], [jpDate(addDays(end, -3)), t('お試しが終わる前にお知らせします')], [jpDate(end), price ? t('ここから{price}', {price}) : t('ここから月額')]];
+    return `<ol class="pw-steps">${steps.map(([d, x]) => `<li><b>${esc(d)}</b><span>${esc(x)}</span></li>`).join('')}</ol>`;
 }
 function priceLabel(p){
     const live = storePrices[p.id];
@@ -2709,7 +2728,7 @@ function paywallReason(k){
         case 'skill': return t('「やってみた」の記録と腕前の称号は、ご飯帖プラスで使えます。コツの内容はこのまま読めます。');
         case 'award': return t('「おいしかった！」と今月の料理自慢は、ご飯帖プラスで使えます。');
         case 'hints': return t('買い足すと作れる料理が増える食材を、すべて表示します。');
-        case 'start': return introEligible ? introLabel() : t('続けて使うには、プランを選んでください。これまでの記録はそのまま残ります。');
+        case 'start': return introEligible ? introLabel() : t('プランを選ぶと、すべての機能が使えます。');
         case 'monitor': return t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)});
         case 'locked': return t('{n}日間の無料期間が終わりました。続けて使うには、プランを選んでください。これまでの記録や設定は、そのまま残っています。', {n:monitorOn() ? PLAN.campaign.days : PLAN.trialDays});
         case 'trialEnd': return t('{n}日間のお試しが終わりました。今日の献立・材料さがし・記録は、このまま無料で使えます。', {n:PLAN.trialDays});
@@ -2774,7 +2793,7 @@ function renderSheet(){
                 <li><b>${esc(t('同じ料理が続かない'))}</b><span>${esc(t('作った記録をもとに、肉・魚やジャンルも偏らないように選びます'))}</span></li>
                 <li><b>${esc(t('冷蔵庫の材料から探せる'))}</b><span>${esc(t('あるもので作れる料理と、買い足すと増える料理がわかります'))}</span></li>
             </ul>
-            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible ? introLabel() : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
+            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible ? t('{trial}（App Store で登録します。期間中に解約すれば0円）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
         if (st === 1) body = `
             <h2>${esc(t('何人分つくりますか'))}</h2>
@@ -2800,17 +2819,23 @@ function renderSheet(){
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
+        const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && !monitorOn() && !isSubscribed();
+        // 献立はもうできている: 購入の前に、この人の今日の献立を名前で見せる
+        const ready = sheet.reason === 'start' && session.menu ? session.menu.items.map(x => x.r && x.r.name).filter(Boolean) : [];
         body = `
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
+            ${ready.length ? `<p class="pw-ready"><b>${esc(t('あなたの今日の献立ができています'))}</b><br>${esc(joinNames(ready))}</p>` : ''}
+            ${startOffer ? `<p class="pw-offer"><b>${esc(monthlyPrice() ? t('{trial}。そのあと{price}', {trial:introShort(), price:monthlyPrice()}) : introShort())}</b></p>${trialTimelineHtml()}` : ''}
             ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
-            ${reason ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
+            ${reason && !(startOffer && sheet.reason === 'start') ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             ${sheet.reason === 'monitor' ? `<div class="row">${monitorCanSend() ? `<button class="btn primary" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small muted">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : ''}
-            <ul class="pw-list">${PLAN.benefits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+            <ul class="pw-list">${(sheet.reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
             ${PLAN.billingEnabled ? `
-                ${PLAN.trialMode === 'store' && introEligible && !monitorOn() && sheet.reason !== 'start' ? `<p class="pw-free">${esc(t('{trial}。無料期間中に解約すれば料金はかかりません。', {trial:PLAN.introTrialLabel}))}</p>` : ''}
-                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
+                ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:jpDate(introEndYmd())}))}</p>` : ''}
+                <div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${startOffer && p.per === '月' ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>
                 ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
                 <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
+                ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
                 <p class="tiny muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
                 <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}<a href="${docPage('privacy')}" target="_blank" rel="noopener">${esc(t('プライバシーポリシー'))}</a></p>`
             : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
@@ -3154,7 +3179,7 @@ function viewSettings(){
         <div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
-                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}</span></div>`
+                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:monthlyPrice() || t('月額')})) : S.pro && S.pro.expires && S.pro.willRenew !== false ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
                   : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
                             : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
                 : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
@@ -3613,6 +3638,7 @@ function viewCook(){
     return `<section class="sec">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
+        ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row"><button class="btn sm primary" data-act="remind" data-v="17">${esc(t('毎日{time}に受け取る', {time:hourLabel(17)}))}</button><button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${isToday ? `<div class="row"><button class="btn sm ghost" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>` : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
         <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
@@ -4196,7 +4222,8 @@ document.addEventListener('click', e => {
             if (el.checked){ if (i < 0) a.push(k); } else if (i >= 0) a.splice(i, 1);
             save(); render(); break;
         }
-        case 'remind': setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'remind': S.remindAsked = true; setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'remind-no': S.remindAsked = true; save(); render(); break;
         case 'paywall-week': openPaywall('week'); break;
         case 'paywall-skill': openPaywall('skill'); break;
         case 'paywall-hints': openPaywall('hints'); break;
@@ -4229,7 +4256,7 @@ document.addEventListener('click', e => {
             S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
             S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
             S.onboarded = true; save(); closeSheet(); session.menu = null; refreshWeek(); setTab('today');
-            toast(t('準備ができました。今日の献立はこちらです'), true); break;
+            if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
         case 'decide': {
             const m = session.menu;
@@ -4378,6 +4405,19 @@ document.addEventListener('click', e => {
         case 'install': {
             const ev = installEvent; if (!ev) break;
             ev.prompt(); ev.userChoice.then(c => { if (c.outcome === 'accepted') toast(t('ホーム画面に追加しました'), true); installEvent = null; render(); }).catch(() => {});
+            break;
+        }
+        case 'manage-sub': {
+            // App Store のサブスクリプション管理画面を開く（RevenueCat に機能があればそれ、なければ App Store の画面）
+            const P = purchasesPlugin();
+            (P && P.showManageSubscriptions ? rcInit().then(x => x.showManageSubscriptions()) : Promise.reject()).catch(() => { location.href = 'itms-apps://apps.apple.com/account/subscriptions'; });
+            break;
+        }
+        case 'export-share': {
+            // 購入画面からも、これまでの記録を書き出せる（期限が切れても自分のデータを持ち出せるように）
+            const txt = JSON.stringify(S);
+            if (navigator.share) navigator.share({title: t('わが家のご飯帖'), text: txt}).catch(() => {});
+            else try{ navigator.clipboard.writeText(txt).then(() => toast(t('コピーしました'))); }catch(err){}
             break;
         }
         case 'export': {
