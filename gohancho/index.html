@@ -393,6 +393,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .v-staple{width:62%}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
+.world-list .match{content-visibility:auto;contain-intrinsic-size:auto 77px}   /* 画面の外の行は配置の計算を後回しにする（何十品もあっても開くのが重くならない） */
+.world-list .head{justify-content:flex-start;flex-wrap:wrap;column-gap:6px;row-gap:2px}
+.badge.avoid{background:transparent;box-shadow:inset 0 0 0 1px var(--line);margin-right:0}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
 .top .gear{margin-left:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -4903,6 +4906,7 @@ document.addEventListener('click', e => {
         case 'album-rm': removeAlbum(el.dataset.k); break;
         case 'album-all': session.albumAll = true; render(); break;
         case 'world-all': worldAll.add(el.dataset.k); render(); break;
+        case 'world-hide-avoid': S.settings.worldHideAvoid = el.checked; save(); render(); break;
         case 'goto-cook': session.cookIdx = 0; setTab('cook'); break;
         case 'cook-tab': { const k = Number(el.dataset.k); if (k >= 0 && k < cookItems().length){ session.cookIdx = k; render(); const p = document.querySelector('.cook-tabs'); if (p) p.scrollIntoView({block:'start', behavior:'smooth'}); } break; }
         case 'cook-next': case 'cook-step': {
@@ -5438,6 +5442,33 @@ async function loadRefs(){
     ccs.forEach(cc => refLoading.delete(cc));
     render(); if (modalId) renderModal();
 }
+// 苦手な食材を使う料理を隠すか（苦手な食材があるときだけ。はじめは隠す）
+function worldHide(){ return (S.settings.avoid || []).length > 0 && S.settings.worldHideAvoid !== false; }
+// 国ごとの料理を種類で分け、苦手な食材を使う料理を見分けておく（国・言語・苦手な食材が変わったときだけ作りなおす）
+let worldMemo = null;
+function worldLists(list){
+    const sig = avoidCtx().sig + '|' + swapOn();
+    if (worldMemo && worldMemo.list === list && worldMemo.sig === sig) return worldMemo;
+    const by = code => ({code, all: list.filter(r => code.includes(r.type))});
+    return worldMemo = {list, sig, bad: new Set(list.filter(isAvoided)), groups: [by(['主菜', 'ごはん', '麺']), by(['副菜']), by(['汁物'])]};
+}
+// 料理の名前: 1行目は国旗と読める言葉の名前（訳がなく、その国の言葉が画面の言語と違うときは英語の名前）、2行目はその国の言葉の名前
+function worldNames(r, c){
+    const local = r.pack ? (r.alt[1] || r.alt[0]) : (r.trLang ? r.nameEn : r.name), en = r.pack ? r.alt[0] : '';
+    const main = r.name !== local ? r.name : en && en !== local && c.lang !== 'en' && c.lang !== LANG ? en : local;
+    return {main, mainLang: main === local ? c.lang : main === en && main !== r.name ? 'en' : '', sub: main !== local ? local : ''};
+}
+const WORLD_NOW = 8, WORLD_STEP = 4;   // 開いたときにすぐ描く品数と、そのあと少しずつ足す品数
+let worldPend = null;
+// 開いたときに描かなかった料理の行を、手のあいたときに少しずつ足す（タブを開く処理が長く固まらないように）
+function worldFill(pd){
+    if (pd !== worldPend || tab !== 'world') return;
+    const job = pd.jobs[0]; if (!job){ worldPend = null; return; }
+    const box = document.querySelector('#view .world-sec ' + job.sel); if (!box){ worldPend = null; return; }
+    box.insertAdjacentHTML('beforeend', job.rs.splice(0, WORLD_STEP).map(job.html).join(''));
+    if (!job.rs.length) pd.jobs.shift();
+    (window.requestIdleCallback || (f => setTimeout(f, 16)))(() => worldFill(pd), {timeout: 300});
+}
 function viewWorld(){
     const home = currentCountry();
     const others = COUNTRIES.filter(c => c.cc !== home);
@@ -5446,24 +5477,38 @@ function viewWorld(){
     if (!list && !failed) loadBrowse(worldCC);
     loadGenBundle(worldCC);
     const c = countryOf(worldCC);
-    const group = (code, title) => {
-        const all = (list || []).filter(r => code.includes(r.type)); if (!all.length) return '';
-        // 1か国で何百品にもなるので、最初は30品だけ並べる（絵の読みこみと表示を軽くする）
-        const key = worldCC + ':' + code[0], rs = worldAll.has(key) ? all : all.slice(0, WORLD_FIRST);
-        return `<div class="sec-head"><h3>${esc(title)}</h3></div>
-            <div class="list">${rs.map(r => `<div class="match" data-act="open" data-id="${esc(r.id)}">
+    const wl = list && worldLists(list), hide = worldHide();
+    // 描き直し（絵が届いたときなど）では、もう並べた行までは一度に描く（ページが縮んで見ている場所がずれないように）
+    const sec = document.querySelector('#view .world-sec');
+    let budget = sec && sec.dataset.cc === worldCC ? Math.max(WORLD_NOW, sec.querySelectorAll('.world-list .match').length) : WORLD_NOW;
+    const row = r => { const nm = worldNames(r, c), av = !hide && wl.bad.has(r);
+        return `<div class="match" data-act="open" data-id="${esc(r.id)}">
                 <span>${thumbHtml(r)}</span>
-                <div class="info"><div class="head"><span class="name">${esc(r.name)}</span></div>
-                    ${r.nameEn && r.nameEn !== r.name && !(r.pack && countryOf(r.pack).lang === LANG) ? `<div class="small muted">${esc(r.nameEn)}</div>` : ''}
-                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`).join('')}</div>
+                <div class="info"><div class="head"><span class="name"><span aria-hidden="true">${c.flag}</span> <span${nm.mainLang ? ` lang="${esc(nm.mainLang)}"` : ''}>${esc(nm.main)}</span></span>${av ? `<span class="badge avoid">${esc(t('苦手な食材あり'))}</span>` : ''}</div>
+                    ${nm.sub ? `<div class="small muted" lang="${esc(c.lang)}">${esc(nm.sub)}</div>` : ''}
+                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`; };
+    const pd = {jobs: []}; let hidden = 0;
+    const group = ({code, all}, title) => {
+        if (hide){ const n = all.length; all = all.filter(r => !wl.bad.has(r)); hidden += n - all.length; }
+        if (!all.length) return '';
+        // 1か国で何百品にもなるので、最初は30品だけ並べる（絵の読みこみと表示を軽くする）。開いたときは先頭の数品だけ描き、残りは手のあいたときに足す
+        const key = worldCC + ':' + code[0], rs = worldAll.has(key) ? all : all.slice(0, WORLD_FIRST);
+        const now = rs.slice(0, budget); budget -= now.length;
+        if (rs.length > now.length) pd.jobs.push({sel: `.world-list[data-k="${CSS.escape(key)}"]`, rs: rs.slice(now.length), html: row});
+        return `<div class="sec-head"><h3>${esc(title)}</h3></div>
+            <div class="list world-list" data-k="${esc(key)}">${now.map(row).join('')}</div>
             ${all.length > rs.length ? `<div class="row"><button class="btn sm" data-act="world-all" data-k="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: all.length}))}</button></div>` : ''}`;
     };
+    const body = list ? group(wl.groups[0], t('主菜')) + group(wl.groups[1], t('副菜')) + group(wl.groups[2], t('汁もの')) : '';
+    worldPend = pd.jobs.length ? pd : null;
+    if (worldPend) setTimeout(() => worldFill(pd), 0);
     return `
-    <section class="sec">
+    <section class="sec world-sec" data-cc="${esc(worldCC)}">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
         <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span>${countryLabel(o) !== o.nameLocal ? ` <small class="muted">${esc(countryLabel(o))}</small>` : ''}</button>`).join('')}</div>
         <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
-        ${list ? group(['主菜', 'ごはん', '麺'], t('主菜')) + group(['副菜'], t('副菜')) + group(['汁物'], t('汁もの'))
+        ${list && (S.settings.avoid || []).length ? `<div><label class="check"><input type="checkbox" data-act="world-hide-avoid" ${hide ? 'checked' : ''}><span>${esc(t('苦手な食材を使う料理を隠す'))}</span></label>${hide && hidden ? `<div class="small muted">${esc(t('{n}品を隠しています', {n: hidden}))}</div>` : ''}</div>` : ''}
+        ${list ? body || `<div class="list"><div class="empty">${esc(t('苦手な食材を使わない料理がありません'))}</div></div>`
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
             : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
     </section>`;
