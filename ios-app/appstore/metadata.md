@@ -75,7 +75,6 @@
 ・無料期間のあとは、月額380円（税込）で自動更新されます
 ・無料期間が終わる24時間前までに解約すれば、料金はかかりません
 ・年の縛りはなく、いつでも解約できます
-・1年つづけてくださった方には、年額3,500円の特別価格をアプリ内でご案内します
 
 【お支払いについて】
 お支払いは購入の確定時に Apple アカウントに請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
@@ -114,6 +113,8 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 
 **サブスクリプショングループ名**: ご飯帖プラス
 
+> **今回の申請は月額だけです。** 年額（1年ありがとう価格）は今回は作らない（作った場合も、このバージョンの審査には付けない）。審査メモも「月額のみ・年額なし」と書いています。年額は、あとのアップデートで審査メモを書き足してから出します。
+
 | 項目 | 月額 | 年額（1年ありがとう価格） |
 | --- | --- | --- |
 | 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly_loyal |
@@ -145,19 +146,25 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 ## 審査メモ（App Review Information → Notes。審査担当者向けなので英語）
 
 ```
-Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks a country or region (21 available: Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday dishes, in that country's language (17 UI languages; the first screen is English). All app files (HTML/JS/CSS, 1,700+ original recipes, translations and illustrations) are bundled in the app; it does not load a remote website and works fully offline.
+Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks one of 21 countries/regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday home dishes. The UI is available in 18 languages including Japanese (the first screen is in English; the language follows the chosen country and can be changed in Settings).
+
+Content and offline use: all app files (HTML/JS/CSS, 1,700+ original recipes, translations and 1,743 original dish illustrations) are bundled in the app binary. The app does not load a remote website and works fully offline. No account or login is required; meal history, photos and settings are stored on the device only.
 
 Main features:
-- Generates a daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoids repeating recent dishes, meats and cuisines based on the user's cooking history.
-- Builds a shopping list from the plan, excluding ingredients the user already has.
-- Shares the menu and shopping list via the iOS share sheet / LINE.
-- Ingredient-based search ("what can I cook with what's in my fridge"), servings scaling and disliked-ingredient filtering.
-- Optional daily local notification reminder (Settings > 毎日のお知らせ).
-- Users can photograph their own dishes (stored on device only).
+- Daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoid repeating recently cooked dishes, meats and cuisines.
+- Shopping list grouped by store section, excluding ingredients the user already has.
+- Ingredient search ("what can I cook with what's in my fridge"), servings scaling, and disliked ingredients: when possible the disliked ingredient is swapped for another one (e.g. pork -> chicken); otherwise the dish is not suggested.
 
-No account or login is required. Dish images are original pop-style vector illustrations of all 125 dishes, bundled with the app (no network needed); some are illustrated renderings of Wikimedia Commons photos, shown with author and license attribution and a note that they were modified.
+Native iOS features used:
+- Local notifications: optional daily reminder (Settings). No push notifications, no server.
+- Share sheet: send the menu or shopping list to family.
+- Camera / photo library: optionally photograph a cooked dish or pick a photo (saved on device only).
+- Microphone / speech recognition: optional voice input for ingredient and dish search.
+- StoreKit in-app purchase, handled through the RevenueCat SDK.
 
-In-app purchase: "Gohancho Plus" monthly auto-renewable subscription (no yearly plan) at ¥380/month with a 1-month free introductory offer configured in App Store Connect (the app reads the actual length from the offer and shows it). A yearly product (¥3,500, "1-year thank-you price") exists but is only surfaced to users who have been subscribed for 12+ months. After choosing a country and the short setup, the app shows the subscription screen: the current App Store price, the free-trial note (shown only to users eligible for the introductory offer, checked through RevenueCat), the auto-renewal terms, links to the Terms of Use and Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+In-app purchase: "Gohancho Plus", a monthly auto-renewable subscription (product ID gohancho_plus_monthly, JPY 380/month in Japan) with a 1-month free introductory offer for eligible new subscribers. This submission contains the monthly plan only; there is no yearly plan. After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+
+How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes).
 ```
 
 ---
@@ -231,7 +238,6 @@ The app's features, including meal planning, are part of Gohancho Plus, an auto-
 - After the trial, it renews monthly at the price shown in the App Store for your country
 - Cancel at least 24 hours before the trial ends and you won't be charged
 - No yearly commitment; cancel anytime
-- Subscribers who stay a full year are offered a special yearly price in the app
 
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 

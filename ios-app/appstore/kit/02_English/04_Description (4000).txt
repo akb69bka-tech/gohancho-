@@ -33,7 +33,6 @@ The app's features, including meal planning, are part of Gohancho Plus, an auto-
 - After the trial, it renews monthly at the price shown in the App Store for your country
 - Cancel at least 24 hours before the trial ends and you won't be charged
 - No yearly commitment; cancel anytime
-- Subscribers who stay a full year are offered a special yearly price in the app
 
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 
