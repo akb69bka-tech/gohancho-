@@ -470,18 +470,35 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .sheet .btn.msg.none{color:var(--accent-ink)!important}
 .sheet .btn.msg::before{display:none}
 .share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
-.shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
+.shop .shop-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:10px 14px;min-height:60px;border-top:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.shop .shop-row:active{background:var(--line)}
 .shop .shop-row:first-child{border-top:0}
 .shop .shop-sec{padding:10px 14px 2px;font-size:.75rem;font-weight:700;color:var(--muted);border-top:1px solid var(--line)}
 .shop .shop-sec:first-child{border-top:0}
 .shop .shop-sec + .shop-row{border-top:0}
-.shop .shop-sec.done{padding:0;border-top:2px solid var(--line)}
-.shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
+.shop .shop-sec.done{border-top:2px solid var(--line);margin-top:6px}
+.shop .shop-row input{width:28px;height:28px;accent-color:var(--accent);grid-row:span 2;margin:0;-webkit-appearance:none;appearance:none;border:2px solid var(--muted);border-radius:7px;background:var(--bg);display:grid;place-content:center}   /* 暗い画面でも枠が見えるように */
+.shop .shop-row input:checked{background:var(--accent);border-color:var(--accent)}
+.shop .shop-row input:checked::after{content:"";width:34%;height:62%;border:solid var(--accent-ink);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-8%,-8%)}
+.shop .shop-row input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.shop .shop-row .for{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
+.shop .shop-row .for .btn{min-height:44px;margin-inline-start:auto}
+.shop .nm{overflow-wrap:anywhere}
+.shop.big .shop-row{min-height:76px;padding:14px;grid-template-columns:36px minmax(0,1fr) auto}
+.shop.big .shop-row input{width:36px;height:36px}
+.shop.big .nm{font-size:1.25rem}
+.shop.big .q{font-size:1rem}
+.shop-prog{margin:6px 0;font-size:.9rem;font-weight:700}
+.shop-add{margin:8px 0}.shop-add input{font-size:1rem;min-height:44px}
+.shop-left{margin:8px 0;padding-inline-start:1.2rem;line-height:1.7}
 .shop .nm{font-weight:700}
 .shop .nm .alt{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
 .shop .q{font-size:.8rem;color:var(--muted);text-align:end;font-variant-numeric:tabular-nums}
 .shop .for{grid-column:2 / 4;font-size:.75rem;color:var(--muted)}
 .shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
+.shop .shop-row.done{background:transparent}
+.shop .shop-row.done .nm{font-weight:400}
+@media (prefers-reduced-motion:no-preference){.shop .shop-row{transition:background .15s}}
 /* 料理のイラスト */
 .vessel .food.svg{background:#fbf8f1}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
@@ -3509,6 +3526,7 @@ function renderSheet(){
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
+    if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
@@ -4445,6 +4463,8 @@ const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ',
 function shopSec(i){
     const w = (i.key + '|' + (i.en || '')).toLowerCase();
     if (['pork','chicken','beef','fish','shellfish'].some(f => inFam(f, i)) || /\b(lamb|mutton|goat|duck|liver|meat|mince|keema|sausage)\b/.test(w) || i.key === 'たらこ') return 'meat';
+    // 売り場が野菜でないとわかる加工品・缶・ジュース・乾物など（野菜の名前を含んでいても、生の野菜ではないもの）
+    if (/\b(soup|juice|galette|adobo|passata|pelati|buckwheat|potato sticks|fried shallot|coconut water|tamarind)\b|jugo de|pickled long bean|przecier|kasza|\bcancha\b/.test(w + '|' + String(i.label || '').toLowerCase()) || /^(frozen\b|tk-)/i.test(String(i.label || '').trim())) return 'other';
     if ((inFam('egg', i) || inFam('dairy', i)) && !/noodle|pasta|soup|condensed/.test(w)) return 'dairy';   // 卵麺・クリームスープの缶は乳製品・卵の売り場に入れない
     if (/\b(green|long|wing|string|runner|broad|fava)\s+beans?\b|bean sprouts?|snow peas|^peas\|/.test(w)) return 'veg';
     if (SHOP_OTHER_JP.includes(i.key) || inFam('wheat', i) || inFam('nuts', i)
@@ -4497,6 +4517,8 @@ function shoppingList(){
     };
     if (weekSidesOn()) ensureWeekExtras();
     visiblePlanDays().forEach(x => { dayDishes(x).forEach(r => add(swappedRecipe(r))); });
+    // 自分で足した品（献立とは関係なく、買い物メモにだけ入る。売り場は「その他」）
+    shopExtras().forEach(x => { if (!map.has(x.k)) map.set(x.k, {key:x.k, label:x.label, qty:[], dishes:[], sec:'other', alt:'', extra:true}); });
     return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, LANG));
 }
 // 同じ単位の分量は足し合わせる（例: 1/3本＋1/3本 → 2/3本、150g＋200g → 350g）
@@ -4540,13 +4562,52 @@ function sumQty(list){
     return [...out, ...rest];
 }
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
+// 自分で足した品（今週の買い物メモにだけ残る。端末の中だけ）
+function shopExtras(){ shopDoneSet(); return (S.shopDone.extra || []).filter(x => x && typeof x.k === 'string' && typeof x.label === 'string'); }
 // 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
 function shopRowsHtml(list, done){
-    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`;
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
     return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
         const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec">${esc(l)}</div>${xs.map(row).join('')}` : '';
-    }).join('') + (got.length ? `<div class="shop-sec done" aria-hidden="true"></div>${got.map(row).join('')}` : '');
+    }).join('') + (got.length ? `<div class="shop-sec done">${esc(t('買った（{n}）', {n:got.length}))}</div>${got.map(row).join('')}` : '');
+}
+// 買ったもの（チェックした品）を冷蔵庫に入れる。自分で足した品は食材ではないので入れない
+function shopToFridge(){
+    const done = shopDoneSet(), before = S.fridge.slice(), beforeDone = S.shopDone.keys.slice(), have = fridgeKeys();
+    const got = [];   // 冷蔵庫の食材名として同じ食材に読み取れるものだけ入れる（読み取りがずれる食材は買い物メモに残す）
+    shoppingList().filter(e => done.has(e.key) && !e.extra).forEach(e => {
+        const k = String(e.key).split('|')[0], nm = [k, e.label].find(x => keyOf(x) === k); if (!nm) return;
+        if (!have.has(k)){ S.fridge.push(nm); have.add(k); }
+        got.push(e.key);
+    });
+    if (!got.length){ toast(t('冷蔵庫に入れられる食材はありませんでした')); return; }
+    S.shopDone.keys = S.shopDone.keys.filter(k => !got.includes(k));
+    save(); render();
+    toast(t('{n}品を冷蔵庫に入れました', {n:got.length}), false, () => { S.fridge = before; S.shopDone.keys = beforeDone; save(); render(); });
+}
+// 自分で品を足す（同じ名前がすでにメモにあれば足さない）
+function shopAddExtra(name){
+    const label = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (!label) return false;
+    shopDoneSet(); const ex = S.shopDone.extra = (S.shopDone.extra || []).filter(x => x && typeof x.k === 'string'), b = shopBase(label);
+    const dup = shoppingList().find(e => shopBase(e.label) === b);
+    if (dup){ toast(t('「{name}」はもう買い物メモにあります', {name:dup.label})); return false; }
+    if (ex.length >= 40){ toast(t('自分で足せるのは40品までです')); return false; }
+    const k = 'free|' + label; S.shopDone.extra = ex.concat([{k, label}]); S.shopDone.keys = S.shopDone.keys.filter(x => x !== k);
+    save(); render();
+    toast(t('「{name}」を買い物メモに足しました', {name:label}), false, () => { shopDoneSet(); S.shopDone.extra = (S.shopDone.extra || []).filter(x => x.k !== k); save(); render(); });
+    return true;
+}
+// 買い忘れ防止の確認（チェックしていない品を一覧で見せる）
+function shopDoneSheetHtml(){
+    const left = shoppingList().filter(e => !shopDoneSet().has(e.key)), n = left.length;
+    if (!n) return `<button class="btn primary" data-act="shop-to-fridge-go">${esc(t('このまま冷蔵庫に入れる'))}</button><button class="btn ghost" data-act="sheet-close">${esc(t('買い物に戻る'))}</button>`;
+    const shown = left.slice(0, 8);
+    return `<h2>${esc(t('まだ買っていない品があります（{n}品）', {n}))}</h2>
+        <ul class="shop-left">${shown.map(e => `<li>${esc(e.label)}</li>`).join('')}${n > shown.length ? `<li class="muted">${esc(t('ほか{n}品', {n:n - shown.length}))}</li>` : ''}</ul>
+        <p class="muted small">${esc(t('冷蔵庫に入れるのは、チェックした品だけです。残りは買い物メモに残ります。'))}</p>
+        <button class="btn primary" data-act="sheet-close">${esc(t('買い物に戻る'))}</button>
+        <button class="btn" data-act="shop-to-fridge-go">${esc(t('このまま冷蔵庫に入れる'))}</button>`;
 }
 let jpEnTried = false;
 function shoppingHtml(){
@@ -4556,11 +4617,15 @@ function shoppingHtml(){
     const done = shopDoneSet(), sv = Number(S.settings.servings) || 2, on = weekSidesOn();
     const days = visiblePlanDays(), n = on ? days.length : days.filter(x => byId(x.id)).length;
     const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
-    return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
-        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button>${list.some(e => e.alt) || shopAltOn() ? `<button class="chip" data-act="toggle-shop-alt" aria-pressed="${shopAltOn()}">${esc(t('もうひとつの名前も併記'))}</button>` : ''}</div>
+    const nDone = list.filter(e => done.has(e.key)).length, nFridge = list.filter(e => done.has(e.key) && !e.extra).length;
+    return `<div class="sec-head" id="shop-memo"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
+        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button><button class="chip" data-act="shop-mode" aria-pressed="${!!session.shopMode}">${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button>${list.some(e => e.alt) || shopAltOn() ? `<button class="chip" data-act="toggle-shop-alt" aria-pressed="${shopAltOn()}">${esc(t('もうひとつの名前も併記'))}</button>` : ''}</div>
+        <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
+        ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
+        ${list.length ? `<p class="shop-prog" role="status">${esc(nDone === list.length ? t('すべてチェックしました') : t('買った {done} / {total}品', {done:nDone, total:list.length}))}</p>` : ''}
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
-        ${list.some(e => done.has(e.key)) ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:list.filter(e => done.has(e.key)).length}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
-        <div class="list shop">${list.length ? shopRowsHtml(list, done)
+        ${nFridge ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
+        <div class="list shop${session.shopMode ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
         ${pantryHtml()}`;
 }
@@ -5624,7 +5689,7 @@ function viewToday(){
             </div>`; }).join('')}</div>
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
-            <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('予定と買い物メモを送る'))}</button><button class="btn" data-act="make-week">${esc(t('作り直す'))}</button></div>
+            <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('予定と買い物メモを送る'))}</button><button class="btn" data-act="make-week">${esc(t('作り直す'))}</button><button class="btn" data-act="goto-shop">${esc(t('買い物メモを見る'))}</button></div>
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
@@ -6191,7 +6256,7 @@ function cookNow(){
    画面を離れると端末が自動で解除するので、戻ってきたら取り直す ---- */
 let wakeLock = null, wakeBusy = false;
 const wakeOK = () => !!(navigator.wakeLock && navigator.wakeLock.request);
-const wakeWanted = () => wakeOK() && tab === 'cook' && S.settings.keepAwake !== false && !document.hidden && cookItems().length > 0;
+const wakeWanted = () => wakeOK() && !document.hidden && ((tab === 'cook' && S.settings.keepAwake !== false && cookItems().length > 0) || (tab === 'today' && !!session.shopMode && !!S.week));   // 買い物モードは今日の画面（買い物メモ）で、スイッチを入れたあいだだけ
 function syncWake(){
     if (wakeWanted()){
         if (wakeLock || wakeBusy) return;
@@ -6200,7 +6265,7 @@ function syncWake(){
             wakeBusy = false; wakeLock = l;
             l.addEventListener('release', () => { if (wakeLock === l) wakeLock = null; });
             if (!wakeWanted()) syncWake();   // 待つあいだにタブを離れた
-        }).catch(() => { wakeBusy = false; });
+        }).catch(() => { wakeBusy = false; if (tab === 'today' && session.shopMode && !session.shopWakeFail){ session.shopWakeFail = true; render(); } });
     } else if (wakeLock){ const l = wakeLock; wakeLock = null; l.release().catch(() => {}); }
 }
 document.addEventListener('visibilitychange', syncWake);
@@ -6802,22 +6867,27 @@ document.addEventListener('click', e => {
             session.pantryOpen = true; save(); render(); break;
         }
         case 'shop-to-fridge': {
-            const done = shopDoneSet(), before = S.fridge.slice(), beforeDone = S.shopDone.keys.slice(), have = fridgeKeys();
-            const got = [];   // 冷蔵庫の食材名として同じ食材に読み取れるものだけ入れる（読み取りがずれる食材は買い物メモに残す）
-            shoppingList().filter(e => done.has(e.key)).forEach(e => {
-                const k = String(e.key).split('|')[0], nm = [k, e.label].find(x => keyOf(x) === k); if (!nm) return;
-                if (!have.has(k)){ S.fridge.push(nm); have.add(k); }
-                got.push(e.key);
-            });
-            if (!got.length){ toast(t('冷蔵庫に入れられる食材はありませんでした')); break; }
-            S.shopDone.keys = S.shopDone.keys.filter(k => !got.includes(k));
-            save(); render();
-            toast(t('{n}品を冷蔵庫に入れました', {n:got.length}), false, () => { S.fridge = before; S.shopDone.keys = beforeDone; save(); render(); }); break;
+            // 買い忘れ防止: チェックしていない品が残っているときは、入れる前に一覧を見せて確かめる
+            const left = shoppingList().filter(e => !shopDoneSet().has(e.key));
+            if (left.length){ sheet = {kind:'shopdone'}; renderSheet(); break; }
+            shopToFridge(); break;
+        }
+        case 'shop-to-fridge-go': closeSheet(); shopToFridge(); break;
+        case 'shop-mode': session.shopMode = !session.shopMode; session.shopWakeFail = false; render(); break;
+        case 'goto-shop': { const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break; }
+        case 'shop-extra-rm': {
+            shopDoneSet(); const k = el.dataset.k, ex = S.shopDone.extra || [], gone = ex.find(x => x.k === k); if (!gone) break;
+            const beforeEx = ex.slice(), beforeKeys = S.shopDone.keys.slice();
+            S.shopDone.extra = ex.filter(x => x.k !== k); S.shopDone.keys = S.shopDone.keys.filter(x => x !== k); save(); render();
+            toast(t('「{name}」を消しました', {name: gone.label}), false, () => { shopDoneSet(); S.shopDone.extra = beforeEx; S.shopDone.keys = beforeKeys; save(); render(); }); break;
         }
         case 'shop-check': {
-            shopDoneSet(); const k = el.dataset.k, a = S.shopDone.keys, i = a.indexOf(k);
+            shopDoneSet(); const k = el.dataset.k, a = S.shopDone.keys, i = a.indexOf(k), was = i >= 0;
             if (el.checked){ if (i < 0) a.push(k); } else if (i >= 0) a.splice(i, 1);
-            save(); render(); break;
+            save(); render();
+            // 押しまちがい対策: チェックすると行は下の「買った」に移るので、すぐ元に戻せるようにする
+            if (el.checked && !was){ const e = shoppingList().find(x => x.key === k); if (e) toast(t('「{name}」にチェックしました', {name:e.label}), false, () => { shopDoneSet(); S.shopDone.keys = S.shopDone.keys.filter(x => x !== k); save(); render(); }); }
+            break;
         }
         case 'remind': S.remindAsked = true; setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
         case 'shop-remind': S.remindAsked = true; setShopRemind(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
@@ -7197,6 +7267,7 @@ document.addEventListener('submit', e => {
     const f = e.target.dataset.form;
     if (f === 'spend'){ spendAdd(); return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
+    if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
     if (f === 'who-set' && sheet && sheet.kind === 'who'){ setWho(sheet.d, $('#who-input').value); return; }
     if (f === 'one-search' && sheet && sheet.kind === 'one'){
         const q = $('#one-input').value.trim(); sheet.q = q; if (!q) return;
