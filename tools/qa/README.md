@@ -9,3 +9,7 @@
 - `sw-offline.js`: Service Worker（`gohancho/sw.js`）の確認。自分で小さなサーバーを立てて、オフライン起動・オフラインで国切替（保存した国は切り替わり、保存していない国は切り替わらず画面は生きている）・ネットが3秒で返らないときは保存した画面で開き裏で新しい版を保存・版を上げた直後（古い保存の整理、前の版の国のデータの引き継ぎ、開いている画面への通知、オフラインでの起動）・壊れた保存（途中で切れた画面、途中で切れた国のレシピ、js の場所に返ってきた HTML）からの復帰を確かめる。`ALL OK` が合格。`sw.js` の `VERSION` と `index.html` の `window.ASSET_V` が同じ値かも確かめる（版を上げるときは両方）。BASE は使わない。
 
 環境変数 `BASE` でアプリのURLを変えられます（例: `BASE=http://localhost:8791/`）。
+- `layout-shift.js`: 料理の入れ替え・画像の読み込みで、画面がガタつかないことを確かめる。「かえる」「主食」「気分」「まるごと入れ替え」「保存献立を適用」「1週間プランの別の案」「作り方タブの切り替え」「料理の詳細（絵あり・なし・遅い・失敗）」「言語切替」「世界タブ」ごとに、前後で全要素の位置・大きさ（getBoundingClientRect）を比べ、押した料理の中身以外が0.5px以上動いたら違反とする（画面の下の遠くは別に数える）。PerformanceObserver の layout-shift（CLS）も合わせて出す。「違反」0 が合格。
+  - 使い方: `BASE=http://localhost:8791/ node tools/qa/layout-shift.js [--quick] [--jobs 4] [--json out.json]`（`--quick` は 4か国・390pxだけ。`--jobs` は国ごとに分けて並列に走らせる）
+  - 環境変数: `CCS=JP,US` 国を絞る / `WIDTHS=320,390` 幅 / `SCALES=1,1.25` 文字の拡大 / `IMG=ok,fail,slow` 絵の状態（読めた・失敗・遅い）
+  - 注意: 画面を作り直す（innerHTML）ので、PerformanceObserver の CLS は 0 になりやすい。ずれの本体は、位置・大きさの比較（「画面内の最大ずれpx」）で見る。
