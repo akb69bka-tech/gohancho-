@@ -203,6 +203,7 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
+.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}
 .chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
@@ -1435,7 +1436,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[]};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[]};
 const BROKEN_PREFIX = 'gohancho.broken.';
 const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
@@ -1449,7 +1450,7 @@ function normalizeState(d){
     // 冷蔵庫の食材の印（{食材: {soon: 早めに使う, d: 登録した日}}）。端末の中だけ。冷蔵庫にない食材・不正な値は捨てる。印がなかった頃から入っていた食材の登録日は不明なので d は空
     { const had = d.fridgeMeta && typeof d.fridgeMeta === 'object' && !Array.isArray(d.fridgeMeta), fm = had ? d.fridgeMeta : {}, out = {};
       st.fridge.forEach(f => { if (typeof f !== 'string' || out[f]) return; const e = fm[f] && typeof fm[f] === 'object' && !Array.isArray(fm[f]) ? fm[f] : null;
-          const o = {d: e && isYmd(e.d) ? e.d : (had ? ymd() : '')}; if (e && e.soon === true) o.soon = true; out[f] = o; });
+          const o = {d: e && isYmd(e.d) ? e.d : (had ? ymd() : '')}; if (e && e.soon === true) o.soon = true; if (e && isYmd(e.exp)) o.exp = e.exp; out[f] = o; });
       st.fridgeMeta = out; }
     st.savedMenus = arr(st.savedMenus).filter(m => m && typeof m.id === 'string' && typeof m.name === 'string' && Array.isArray(m.ids) && m.ids.length && Array.isArray(m.slots) && m.ids.every(x => typeof x === 'string' || typeof x === 'number')).slice(0, 30)   // 「保存した献立」は30件まで
         .map(m => { if (!('mix' in m) && !('names' in m)) return m; const mx = {}; Object.entries(obj(m.mix)).forEach(([k, v]) => { if (['主菜', '副菜', '汁物'].includes(k) && typeof v === 'string' && /^[A-Z]{2}$/.test(v)) mx[k] = v; });   // 国ミックス（枠 → 国）
@@ -1459,6 +1460,7 @@ function normalizeState(d){
     { const dflt = DEFAULT_STATE.settings, cl = (k, lo, hi) => { const n = Math.round(Number(st.settings[k])); st.settings[k] = Number.isFinite(n) && n >= lo && n <= hi ? n : (dflt[k] === undefined ? null : dflt[k]); };
       if (st.settings.remind != null && st.settings.remind !== false && st.settings.remind !== '') cl('remind', 0, 23);
       if (st.settings.shopRemind != null && st.settings.shopRemind !== false && st.settings.shopRemind !== '') cl('shopRemind', 0, 6);
+      if (st.settings.lossRemind != null && st.settings.lossRemind !== false && st.settings.lossRemind !== '') cl('lossRemind', 0, 23); if (typeof st.settings.lossRemind !== 'number') delete st.settings.lossRemind;
       cl('avoidDays', 0, 60); }
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(st.settings.dinnerAt || '')) delete st.settings.dinnerAt;   // 食べる時刻（作り方の画面）
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
@@ -1489,6 +1491,9 @@ function normalizeState(d){
         .map(x => ({id: typeof x.id === 'string' || typeof x.id === 'number' ? x.id : '', name: x.name.slice(0, 80), d: x.d}));
     st.spend = arr(st.spend).filter(x => x && typeof x === 'object' && isYmd(x.d) && Number.isFinite(Number(x.a)) && Number(x.a) > 0 && Number(x.a) <= 1e9).slice(0, 400)
         .map((x, i) => ({id: typeof x.id === 'string' && x.id ? x.id : 'x' + i, d: x.d, a: Math.round(Number(x.a) * 100) / 100}));
+    // 食品ロスの記録（{d: 記録した日, n: 食材名, r: 'u'=使い切った / 't'=捨てた}）。事実の記録だけ。400件まで。端末の中だけ
+    st.foodLog = arr(st.foodLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim() && (x.r === 'u' || x.r === 't')).slice(-400)
+        .map(x => ({d: x.d, n: x.n.slice(0, 40), r: x.r}));
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
     if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
     if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
@@ -1531,7 +1536,7 @@ function quarantine(raw, strict){
 }
 // 読み込みで直した（捨てた）記録があるか。直したときは元の文字も残しておく
 function lostRecords(d, st){
-    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
+    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
 }
 function load(){
     let raw = null;
@@ -5105,6 +5110,8 @@ function shopAddExtra(name){
     const label = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (!label) return false;
     shopDoneSet(); const ex = S.shopDone.extra = (S.shopDone.extra || []).filter(x => x && typeof x.k === 'string'), b = shopBase(label);
     const dup = shoppingList().find(e => shopBase(e.label) === b);
+    const fr = S.fridge.find(f => keyOf(f) === keyOf(label) || shopBase(labelOf(f)) === b);   // 冷蔵庫にある食材は、足す前に知らせる（足すこと自体は止めない）
+    if (fr && !dup) toast(t('「{name}」は冷蔵庫にあります。買い物メモには足しました', {name:labelOf(fr)}));
     if (dup){ toast(t('「{name}」はもう買い物メモにあります', {name:dup.label})); return false; }
     if (ex.length >= 40){ toast(t('自分で足せるのは40品までです')); return false; }
     const k = 'free|' + label; S.shopDone.extra = ex.concat([{k, label}]); S.shopDone.keys = S.shopDone.keys.filter(x => x !== k);
@@ -5141,7 +5148,18 @@ function shoppingHtml(){
         ${nFridge ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
         <div class="list shop${session.shopMode ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
+        ${shopHaveHtml()}
         ${pantryHtml()}`;
+}
+// 冷蔵庫にあるので買い物メモに入れていない食材（買いすぎ・重複購入を防ぐため、省いた分を見せる）。期限を入れた食材は期限も添える
+function shopHaveHtml(){
+    if (!S.fridge.length || !S.week || !visiblePlanDays().length) return '';
+    const need = new Set(), list = shoppingList();
+    const keyset = new Set(list.map(e => String(e.key).split('|')[0]));
+    visiblePlanDays().forEach(x => dayDishes(x).forEach(r0 => { const r = swappedRecipe(r0); if (r) r.items.forEach(i => { if (!i.opt && !PANTRY.has(i.key) && fridgeKeys().has(i.key) && !keyset.has(i.key)) need.add(i.key); }); }));
+    const names = S.fridge.filter(f => need.has(keyOf(f))).map(f => { const n = expDays(f); return labelOf(f) + (n !== null ? '（' + expLabel(n) + '）' : ''); });
+    if (!names.length) return '';
+    return `<p class="pantry-hint shop-have">${esc(t('冷蔵庫にあるので、買い物メモには入れていません：{list}', {list:joinNames(names)}))}</p>`;
 }
 // プランの日ごとに出す副菜・汁もの（買い物メモに含めるスイッチが入っているとき）
 function weekExtraHtml(x){
@@ -5605,7 +5623,9 @@ const NOTIFY_DAY_ID = 1100;      // 1100〜1113: 今日から14日先までの�
 const NOTIFY_DAYS = 14;
 const NOTIFY_SHOP_ID = 1200;     // 1200〜1201: 買い物の前日のお知らせ（次の2回分）
 const NOTIFY_TEST_ID = 1003;     // テスト通知
-const NOTIFY_ALL = [NOTIFY_ID, ...Array.from({length:NOTIFY_DAYS}, (_, i) => NOTIFY_DAY_ID + i), NOTIFY_SHOP_ID, NOTIFY_SHOP_ID + 1];   // 合計17件（iOS の予約は最大64件）
+const NOTIFY_LOSS_ID = 1300;     // 1300〜1306: 入れた期限の日の朝に「今日使い切りたい食材があります」（今日から7日先まで）
+const NOTIFY_LOSS_DAYS = 7;
+const NOTIFY_ALL = [NOTIFY_ID, ...Array.from({length:NOTIFY_DAYS}, (_, i) => NOTIFY_DAY_ID + i), NOTIFY_SHOP_ID, NOTIFY_SHOP_ID + 1, ...Array.from({length:NOTIFY_LOSS_DAYS}, (_, i) => NOTIFY_LOSS_ID + i)];   // 合計24件（iOS の予約は最大64件）
 var notifPerm = null, notifBusy = Promise.resolve(), notifSig = '', notifTimer = null;
 // 通知に出す「主な材料」（調味料・常備品は除く）
 function notifIngs(r){
@@ -5632,6 +5652,14 @@ function notifBuild(now){
             if (!r){ out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); continue; }
             const min = dayDishes(x).reduce((a, y) => a + (Number(y.min) || 0), 0), ings = notifIngs(r);
             out.push({id:NOTIFY_DAY_ID + i, title:t('今日は{name}', {name:r.name}), body:[min ? t('{n}分', {n:min}) : '', ings.length ? t('材料チェック：{items}', {items:joinNames(ings)}) : ''].filter(Boolean).join(SLASH()) || t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}});
+        }
+    }
+    const lh = S.settings.lossRemind;
+    if (typeof lh === 'number' && lh >= 0 && lh <= 23){
+        for (let i = 0; i < NOTIFY_LOSS_DAYS; i++){
+            const d = addDays(TODAY, i), when = at(d, lh); if (when <= now) continue;
+            const names = S.fridge.filter(f => S.fridgeMeta[f] && S.fridgeMeta[f].exp === d).map(f => labelOf(f)); if (!names.length) continue;
+            out.push({id:NOTIFY_LOSS_ID + i, title:t('今日使い切りたい食材があります'), body:joinNames(names.slice(0, 3)) + (names.length > 3 ? t(' など') : ''), schedule:{at:when, allowWhileIdle:true}});
         }
     }
     const wd = S.settings.shopRemind;
@@ -5689,6 +5717,15 @@ async function setShopRemind(wd){
         S.settings.shopRemind = wd; save(); await syncNotifs(true); toast(t('買い物の前日の夕方にお知らせします')); render();
     }catch(e){ toast(t('お知らせを設定できませんでした')); }
 }
+async function setLossRemind(h){
+    const P = nativePlugin('LocalNotifications');
+    if (!P){ toast(t('お知らせは iPhone アプリ版で使えます')); return; }
+    try{
+        if (h === null){ delete S.settings.lossRemind; save(); await syncNotifs(true); toast(t('お知らせを止めました')); render(); return; }
+        if (!(await notifAsk(P))) return;
+        S.settings.lossRemind = h; save(); await syncNotifs(true); toast(t('食材の期限の日の{time}にお知らせします', {time:hourLabel(h)})); render();
+    }catch(e){ toast(t('お知らせを設定できませんでした')); }
+}
 async function testNotify(){
     const P = nativePlugin('LocalNotifications'); if (!P) return;
     try{
@@ -5708,6 +5745,9 @@ function reminderHtml(){
         <div class="field"><label>${esc(t('買い物の前日のお知らせ'))}</label>
         <div class="chips">${[['off',t('なし')], ...[0,1,2,3,4,5,6].map(i => [i, wdName(i)])].map(([v,l]) => `<button class="chip" data-act="shop-remind" data-v="${v}" aria-pressed="${on(v, typeof sw === 'number' ? sw : null)}">${esc(l)}</button>`).join('')}</div>
         <span class="small muted">${esc(t('買い物に行く曜日を選ぶと、前の日の夕方に買い物リストをお知らせします。'))}</span></div>
+        <div class="field"><label>${esc(t('食材の期限のお知らせ'))}</label>
+        <div class="chips">${[['off',t('なし')],[7,hourLabel(7)],[8,hourLabel(8)],[9,hourLabel(9)]].map(([v,l]) => `<button class="chip" data-act="loss-remind" data-v="${v}" aria-pressed="${on(v, typeof S.settings.lossRemind === 'number' ? S.settings.lossRemind : null)}">${esc(l)}</button>`).join('')}</div>
+        <span class="small muted">${esc(t('冷蔵庫の食材に自分で入れた期限の日の朝に、「今日使い切りたい食材があります」とお知らせします。'))}</span></div>
         <button class="btn sm" data-act="notif-test">${esc(t('テスト通知を送る'))}</button>`;
 }
 
@@ -5842,7 +5882,54 @@ function oneCanAdd(r){
     const maxN = session.mood === 'bento' ? 4 : 5, lim = hasPro() ? 6 : PLAN.freeLimits.dishes;
     return m.n < maxN && m.n + 1 <= lim && !(slot === '汁物' && m.items.some(x => x.slot === '汁物'));
 }
-function soonKeys(){ return new Set(S.fridge.filter(f => S.fridgeMeta[f] && S.fridgeMeta[f].soon).map(keyOf)); }
+function soonKeys(){ const lim = addDays(TODAY, 2); return new Set(S.fridge.filter(f => { const e = S.fridgeMeta[f]; return e && (e.soon || (e.exp && e.exp <= lim)); }).map(keyOf)); }   // 「早めに使う」の印、または入力した期限が2日以内（過ぎたものを含む）
+/* ---- 食品ロスを減らす ----
+   期限は利用者が自分で入れた日付（任意・端末の中だけ。S.fridgeMeta[食材].exp）。食べられるかどうかは判断しない。
+   使い切った/捨てた は1タップで S.foodLog に残し、月・週の件数だけを事実として出す（評価や助言はしない）。献立の選び方は変えない */
+const LOSS_URGENT_DAYS = 3;
+function expDays(f){ const e = S.fridgeMeta[f]; return e && e.exp ? daysBetween(TODAY, e.exp) : null; }
+function expLabel(n){ return n < -1 ? t('期限を{n}日過ぎています', {n:-n}) : n === -1 ? t('期限は昨日でした') : n === 0 ? t('今日まで') : n === 1 ? t('明日まで') : t('あと{n}日', {n}); }
+// 使い切りたい食材: 期限が近い順（過ぎたものが先）→ 「早めに使う」の印だけのもの（登録が古い順）
+function lossItems(){
+    const out = S.fridge.map(f => { const e = S.fridgeMeta[f] || {}; return {f, days: expDays(f), soon: !!e.soon, d: e.d || ''}; })
+        .filter(x => (x.days !== null && x.days <= LOSS_URGENT_DAYS) || x.soon);
+    return out.sort((a, b) => (a.days === null ? 1 : 0) - (b.days === null ? 1 : 0) || (a.days || 0) - (b.days || 0) || (a.d < b.d ? -1 : a.d > b.d ? 1 : 0));
+}
+function lossLogAdd(f, r){
+    const e = S.fridgeMeta[f], was = {f, meta: e ? Object.assign({}, e) : null, i: S.fridge.indexOf(f)};
+    if (was.i < 0) return;
+    S.fridge.splice(was.i, 1);
+    const entry = {d: TODAY, n: String(labelOf(f)).slice(0, 40), r}; S.foodLog.push(entry); if (S.foodLog.length > 400) S.foodLog.splice(0, S.foodLog.length - 400);
+    save(); render();
+    toast(r === 'u' ? t('「{name}」を使い切ったと記録しました', {name:entry.n}) : t('「{name}」を捨てたと記録しました', {name:entry.n}), false, () => {
+        S.foodLog = S.foodLog.filter(x => x !== entry); if (!S.fridge.includes(f)) S.fridge.splice(Math.min(was.i, S.fridge.length), 0, f);
+        if (was.meta) S.fridgeMeta[f] = was.meta; save(); render(); });
+}
+function lossCount(from, to){ const c = {u:0, t:0}; (S.foodLog || []).forEach(x => { if (x.d >= from && x.d <= to) c[x.r]++; }); return c; }
+function lossRowHtml(x){
+    const f = x.f, nm = labelOf(f);
+    return `<div class="loss-row"><span class="loss-nm">${esc(nm)}${x.soon ? ' ⏰' : ''}</span>${x.days !== null ? `<span class="loss-d${x.days < 0 ? ' over' : ''}">${esc(expLabel(x.days))}</span>` : ''}
+        <span class="loss-btns"><button class="btn sm" data-act="loss-use" data-v="${esc(f)}" aria-label="${esc(t('{name}を使い切った', {name:nm}))}">${esc(t('使い切った'))}</button><button class="btn sm ghost" data-act="loss-toss" data-v="${esc(f)}" aria-label="${esc(t('{name}を捨てた', {name:nm}))}">${esc(t('捨てた'))}</button>${x.days !== null ? `<button class="btn sm ghost" data-act="loss-exp-clear" data-v="${esc(f)}" aria-label="${esc(t('{name}の期限を消す', {name:nm}))}">${esc(t('期限を消す'))}</button>` : ''}</span></div>`;
+}
+function lossHtml(){
+    if (!S.fridge.length && !S.foodLog.length) return '';
+    const urg = lossItems(), urgSet = new Set(urg.map(x => x.f)), rest = S.fridge.filter(f => !urgSet.has(f)).map(f => ({f, days: expDays(f), soon: false, d: ''}));
+    const mon = TODAY.slice(0, 7), m = lossCount(mon + '-01', mon + '-31'), w = lossCount(addDays(TODAY, -6), TODAY);
+    const sum = S.foodLog.length ? `<p class="small" style="margin:6px 0 0">${esc(t('今月: 使い切った食材{n}件・捨てた食材{m}件', {n:m.u, m:m.t}))}<br>${esc(t('直近7日: 使い切った食材{n}件・捨てた食材{m}件', {n:w.u, m:w.t}))}</p>` : '';
+    const opts = S.fridge.map(f => `<option value="${esc(f)}">${esc(labelOf(f))}</option>`).join('');
+    return `<section class="sec loss-sec">
+        <div class="sec-head"><h2>${esc(t('使い切りたい食材'))}</h2><span class="hint">${esc(t('期限が近い順。期限は自分で入れた日付です'))}</span></div>
+        <div class="card">
+        ${urg.length ? urg.map(lossRowHtml).join('') : (S.fridge.length ? `<p class="small muted" style="margin:0">${esc(t('期限が近い食材・「早めに使う」の印をつけた食材は、いまありません。'))}</p>` : '')}
+        ${S.fridge.length ? `<div class="row small loss-exp"><select id="loss-exp-item" aria-label="${esc(t('期限を入れる食材'))}">${opts}</select>
+            <input type="date" id="loss-exp-date" value="${addDays(TODAY, 3)}" min="${addDays(TODAY, -30)}" style="width:auto" aria-label="${esc(t('期限の日付'))}">
+            <button class="btn sm" data-act="loss-exp-add">${esc(t('期限を入れる'))}</button></div>
+            <p class="small muted" style="margin:4px 0">${esc(t('期限（任意）を入れると、近い順に上に並び、2日以内の食材を使う料理を先に出します。この端末の中だけに残り、食べられるかどうかはアプリでは判断しません。'))}</p>` : ''}
+        ${rest.length ? `<details class="loss-rest"><summary class="small">${esc(t('ほかの食材（{n}品）', {n:rest.length}))}</summary>${rest.map(lossRowHtml).join('')}</details>` : ''}
+        ${sum}
+        <p class="foot"><a href="https://www.caa.go.jp/policies/policy/consumer_policy/information/food_loss/" target="_blank" rel="noopener">${esc(t('食品ロスについて（消費者庁）'))}</a></p>
+        </div></section>`;
+}
 function fridgeUseInfo(){
     const m = session.menu, main = m && m.items[0] && m.items[0].r;
     if (!main || !S.fridge.length) return null;
@@ -6511,7 +6598,7 @@ function viewFridge(){
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => { const e = S.fridgeMeta[f] || {}, n = e.d ? daysBetween(e.d, ymd()) : 0;
-            return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" title="${esc([e.soon ? t('早めに使う') : '', n >= 1 ? t('登録から{n}日', {n}) : ''].filter(Boolean).join(' · '))}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag" aria-hidden="true">⏰</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('{n}日', {n}))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
+            return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" title="${esc([e.soon ? t('早めに使う') : '', n >= 1 ? t('登録から{n}日', {n}) : ''].filter(Boolean).join(' · '))}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag" aria-hidden="true">⏰</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('{n}日', {n}))}</span>` : ''}${e.exp ? ` <span class="chip-d">${esc(expLabel(daysBetween(TODAY, e.exp)))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
             <p class="small muted" style="margin:4px 0">${esc(t('食材をタップすると「早めに使う」の印がつき、その食材を使う料理を先に出します。印と日数はこの端末の中だけに残ります。'))}</p>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
         : `<div class="note">${esc(t('まだ材料が登録されていません。下のよく使う食材をタップするか、「{list}」のようにまとめて入力できます。', {list:(LANG === 'ja' ? sampleIngs().join('、') : joinNames(sampleIngs()))}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
@@ -6519,6 +6606,7 @@ function viewFridge(){
         <div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
         </div>
     </section>
+    ${lossHtml()}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('いつも家にある食材'))}</h2><span class="hint">${esc(t('卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます'))}</span></div>
         <div class="card">
@@ -6601,6 +6689,8 @@ function runSearch(q){
 function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵'].map(labelOf); }
 function matchRow(m){
     const r = m.r;
+    // 使い切りたい食材を、1個や1本に満たない量（1/2個など）で使う料理には、半端が残ることがある、と添える（分量は人数に合わせた値）
+    const sk = soonKeys(), part = sk.size ? m.got.filter(i => sk.has(i.key) && i.qty && /\d\/\d|[½¼¾⅓⅔]|半/.test(scaleText(i.qty, servingFactor()))) : [];
     const parts = [
         ...m.got.map(i => `<b>${esc(i.label)}</b>`),
         ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(PACK_NAMES[x.alt] || labelOf(x.alt))}</span>`),
@@ -6614,6 +6704,7 @@ function matchRow(m){
                 <span class="meter" role="img" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
             </div>
             <div class="ings">${parts.join(t('・'))}</div>
+            ${part.length ? `<div class="small muted">${esc(t('{name}は{qty}使います（半端な量が残ることがあります）', {name:joinNames(part.map(i => i.label)), qty:part.map(i => scaleText(i.qty, servingFactor())).join(t('・'))}))}</div>` : ''}
             <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
         </div>
     </div>`;
@@ -7556,6 +7647,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'remind': S.remindAsked = true; setReminder(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'loss-remind': S.remindAsked = true; setLossRemind(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
         case 'shop-remind': S.remindAsked = true; setShopRemind(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
         case 'notif-test': testNotify(); break;
         case 'remind-no': S.remindAsked = true; save(); render(); break;
@@ -7666,6 +7758,12 @@ document.addEventListener('click', e => {
             save(); render(); break;
         }
         case 'soon-ing': { const v = el.dataset.v; if (S.fridge.includes(v)){ const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); if (e.soon) delete e.soon; else e.soon = true; save(); render(); } break; }
+        case 'loss-use': lossLogAdd(el.dataset.v, 'u'); break;
+        case 'loss-toss': lossLogAdd(el.dataset.v, 't'); break;
+        case 'loss-exp-clear': { const e = S.fridgeMeta[el.dataset.v]; if (e && e.exp){ const was = e.exp; delete e.exp; save(); render(); toast(t('期限を消しました'), false, () => { if (S.fridgeMeta[el.dataset.v]){ S.fridgeMeta[el.dataset.v].exp = was; save(); render(); } }); } break; }
+        case 'loss-exp-add': { const it = $('#loss-exp-item'), dt = $('#loss-exp-date'), v = it && it.value, d = dt && dt.value;
+            if (!v || !S.fridge.includes(v) || !/^\d{4}-\d{2}-\d{2}$/.test(d || '') || !realYmd(d)){ toast(t('日付を入れてください')); break; }
+            const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); e.exp = d; save(); render(); break; }
         case 'rm-ing': S.fridge = S.fridge.filter(x => x !== el.dataset.v); save(); render(); break;
         case 'clear-ing': S.fridge = []; save(); render(); break;
         case 'sample-ing': S.fridge = sampleIngs(); save(); render(); break;
@@ -7915,7 +8013,7 @@ function parseBackup(txt){
     let d; try{ d = JSON.parse(txt, (k, v) => k === '__proto__' ? undefined : v); }catch(e){ return {ok:false, reason:'broken'}; }
     if (!d || typeof d !== 'object' || Array.isArray(d)) return {ok:false, reason:'notmine'};
     // ご飯帖のデータの目印: 記録・お気に入りなどの配列、または設定（古い版は history だけでなく項目が少ない）
-    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','hidden','usedDays'];
+    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','foodLog','hidden','usedDays'];
     const known = A.some(k => Array.isArray(d[k])) || (d.settings && typeof d.settings === 'object' && !Array.isArray(d.settings) && Object.keys(d.settings).length > 0) || (d.week && typeof d.week === 'object' && Array.isArray(d.week.days));
     if (!known) return {ok:false, reason:'notmine'};
     const v = d._gohancho && Number(d._gohancho.v);
@@ -7951,6 +8049,7 @@ function stateSummary(d){
     if (d.fridge.length) a.push(t('冷蔵庫の食材{n}品', {n: d.fridge.length}));
     if (d.leftovers.length) a.push(t('作り置きメモ{n}件', {n: d.leftovers.length}));
     if (d.spend.length) a.push(t('食費メモ{n}件', {n: d.spend.length}));
+    if (d.foodLog.length) a.push(t('使い切り・捨ての記録{n}件', {n: d.foodLog.length}));
     if (wk.length) a.push(t('1週間の予定{n}日分', {n: wk.length}) + (skip ? t('（作らない日{n}日）', {n: skip}) : '') + (who ? t('（担当を決めた日{n}日）', {n: who}) : ''));
     a.push(c.flag + ' ' + countryLabel(c));
     return a.join(t('・'));
