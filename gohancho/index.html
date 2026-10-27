@@ -8756,6 +8756,7 @@ async function retryPack(){
         try{ setTab(tab); }catch(_){}
         GH.fatal(true);
     }finally{
+        bootReady = true;
         GH.booted = true;
         try{ if (LANG !== wantLang()){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); } }catch(_){}
         try{ flushNotes(); }catch(_){}
