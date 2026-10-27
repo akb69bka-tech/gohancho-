@@ -1841,7 +1841,7 @@ async function loadScriptTry(src, valid, o = {}){
         if (x === 'ok'){ if (!valid || valid()) return 'ok'; r = 'fail'; }   // 読めたが中身が欠けている（途中で切れた・壊れた）
         else r = x === 'error' && await isMissingFile(src) ? 'missing' : 'fail';
         if (r === 'missing') return r;
-        if (i < tries - 1){ try{ await swEvict(src); }catch(e){} await sleep(600 * (i + 1)); }
+        if (i < tries - 1){ try{ await Promise.race([swEvict(src), sleep(1500)]); }catch(e){} await sleep(600 * (i + 1)); }
     }
     return r;
 }
