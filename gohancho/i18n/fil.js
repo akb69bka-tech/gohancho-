@@ -795,7 +795,6 @@ GOHAN_I18N('fil', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (mag-subscribe sa App Store; kapag nag-cancel habang trial, wala kang babayaran)",
     "あなたの今日の献立ができています": "Handa na ang menu mo ngayon",
     "いいえ": "Hindi muna",
-    "お試しが終わる前にお知らせします": "Paaalalahanan ka namin bago matapos ang trial",
     "この日から{price}": "Magsisimula ang singil: {price}",
     "この日から月額料金": "Magsisimula ang buwanang singil",
     "これまでの記録を書き出す": "I-export ang mga record mo",

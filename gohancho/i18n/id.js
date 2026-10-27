@@ -795,7 +795,6 @@ GOHAN_I18N('id', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (berlangganan lewat App Store; batalkan selama uji coba agar tidak dikenai biaya)",
     "あなたの今日の献立ができています": "Menu hari ini sudah siap",
     "いいえ": "Nanti saja",
-    "お試しが終わる前にお知らせします": "Kami ingatkan sebelum uji coba berakhir",
     "この日から{price}": "Mulai ditagih: {price}",
     "この日から月額料金": "Mulai ditagih bulanan",
     "これまでの記録を書き出す": "Ekspor catatan Anda",

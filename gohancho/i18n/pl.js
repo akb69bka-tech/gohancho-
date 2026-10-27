@@ -795,7 +795,6 @@ GOHAN_I18N('pl', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (zapis przez App Store; anulując w okresie próbnym nic nie płacisz)",
     "あなたの今日の献立ができています": "Twój dzisiejszy jadłospis jest gotowy",
     "いいえ": "Nie, dziękuję",
-    "お試しが終わる前にお知らせします": "Przypomnimy przed końcem okresu próbnego",
     "この日から{price}": "Od tego dnia {price}",
     "この日から月額料金": "Od tego dnia opłata miesięczna",
     "これまでの記録を書き出す": "Eksportuj swoje wpisy",

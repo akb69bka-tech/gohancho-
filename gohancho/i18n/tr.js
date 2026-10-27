@@ -795,7 +795,6 @@ GOHAN_I18N('tr', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (App Store üzerinden kayıt; deneme süresinde iptal ederseniz ücret yok)",
     "あなたの今日の献立ができています": "Bugünkü menünüz hazır",
     "いいえ": "Hayır, teşekkürler",
-    "お試しが終わる前にお知らせします": "Deneme bitmeden haber vereceğiz",
     "この日から{price}": "Ödeme başlar: {price}",
     "この日から月額料金": "Aylık ödeme başlar",
     "これまでの記録を書き出す": "Kayıtlarınızı dışa aktarın",

@@ -795,7 +795,6 @@ GOHAN_I18N('es', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (suscripción en el App Store; si cancelas durante la prueba no pagas nada)",
     "あなたの今日の献立ができています": "Tu menú de hoy está listo",
     "いいえ": "No, gracias",
-    "お試しが終わる前にお知らせします": "Te avisaremos antes de que termine la prueba",
     "この日から{price}": "Empieza el cobro: {price}",
     "この日から月額料金": "Empieza el cobro mensual",
     "これまでの記録を書き出す": "Exportar tus registros",

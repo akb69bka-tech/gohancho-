@@ -795,7 +795,6 @@ GOHAN_I18N('vi', {
     "{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）": "{trial} (đăng ký qua App Store; hủy trong thời gian dùng thử thì không mất phí)",
     "あなたの今日の献立ができています": "Thực đơn hôm nay của bạn đã sẵn sàng",
     "いいえ": "Không, cảm ơn",
-    "お試しが終わる前にお知らせします": "Mình sẽ nhắc bạn trước khi hết dùng thử",
     "この日から{price}": "Bắt đầu tính phí: {price}",
     "この日から月額料金": "Bắt đầu tính phí hằng tháng",
     "これまでの記録を書き出す": "Xuất dữ liệu của bạn",
