@@ -191,6 +191,7 @@ a{color:var(--accent)}
 @media (max-width:360px){.actions{grid-template-columns:1fr}}
 .pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 8px;font-size:.84rem}.pw-steps li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;gap:8px;padding-inline-start:10px;border-inline-start:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-inline-start:1.2em}
+.tally{display:flex;flex-direction:column;gap:2px;font-size:.9rem;padding:.6rem .9rem;border:1px solid var(--line);border-radius:12px}
 .note{font-size:.85rem;background:var(--accent-soft);border-radius:12px;padding:.7rem .9rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .cook-warn{margin:.6rem 0}
 
@@ -1540,6 +1541,30 @@ function recentMainFamilies(days){
     return res;
 }
 function fridgeKeys(){ return new Set([...S.fridge, ...S.staples].map(keyOf)); }
+/* ---- 主菜の内訳（事実の回数だけ。「足りない」「多い」などの判断はしない。献立の選び方にも使わない） ----
+   主菜の主な材料（r.family）の種類と、ジャンルを数える。置き換えて作った料理も、元の料理で数える。回数が 0 の種類は出さない */
+const TALLY_KIND = {'豚':'meat', '鶏':'meat', '牛':'meat', 'ひき肉':'meat', '羊':'meat', '加工肉':'meat', '魚':'魚', '魚介':'魚介', '卵':'卵', '大豆':'豆腐・大豆', '野菜':'野菜'};
+function tallyKindLabel(k){ return {meat:t('肉'), '魚':t('魚'), '魚介':t('魚介'), '卵':t('卵'), '豆腐・大豆':t('豆腐・大豆'), '野菜':t('野菜')}[k] || k; }
+function mainTally(recs){
+    const kinds = new Map(), genres = new Map(); let n = 0;
+    recs.forEach(r => {
+        if (!r) return; n++;
+        const k = TALLY_KIND[r.family]; if (k) kinds.set(k, (kinds.get(k) || 0) + 1);
+        const g = genreLabel(r); if (g) genres.set(g, (genres.get(g) || 0) + 1);
+    });
+    const order = ['meat', '魚', '魚介', '卵', '豆腐・大豆', '野菜'];
+    return {n, kinds: order.filter(k => kinds.has(k)).map(k => [tallyKindLabel(k), kinds.get(k)]), genres: [...genres.entries()].sort((a, b) => b[1] - a[1])};
+}
+function tallyHtml(title, recs){
+    const T = mainTally(recs); if (!T.n) return '';
+    const line = xs => xs.length ? `<div>${esc(joinNames(xs.map(([l, c]) => l + ' ' + t('{n}回', {n:c}))))}</div>` : '';
+    return `<div class="tally" data-tally><div class="small muted">${esc(title)}</div>${line(T.kinds)}${line(T.genres)}</div>`;
+}
+// この7日間（今日をふくむ）に「作った」主菜
+function recentMainRecipes(days = 7){
+    const from = addDays(TODAY, -(days - 1));
+    return S.history.filter(h => h.slot === '主菜' && h.d >= from && h.d <= TODAY).map(h => byId(h.id)).filter(Boolean);
+}
 
 /* =========================================================
    材料マッチ
@@ -4170,6 +4195,7 @@ function familySettingsHtml(){
             ${m.avoid.length ? `<div class="field"><label>${esc(t('アレルギーの食材（⚠ をつけると、置き換えずに、その食材を使う料理を出しません）'))}</label>
                 <div class="chips">${m.avoid.map(x => `<button class="chip ${m.allergy.includes(x) ? 'allergy' : ''}" data-act="fam-allergy" data-v="${esc(x)}" aria-pressed="${m.allergy.includes(x)}" aria-label="${esc(t('{name}をアレルギーにする', {name: avoidName(x)}))}">⚠ ${esc(avoidName(x))}</button>`).join('')}</div></div>` : ''}
             <label class="check"><input type="checkbox" data-act="fam-mild" ${m.mild ? 'checked' : ''}><span>${esc(t('辛いのが苦手'))} 🌶</span></label>
+            ${m.avoid.length || m.mild ? `<div class="row"><button class="btn sm" data-act="needs-open">${esc(t('食べられないものを伝える'))}</button></div>` : ''}
             <div class="row"><button class="btn sm ghost" data-act="fam-del">${esc(t('この人を削除'))}</button></div>
         </details>`;
     };
@@ -4503,6 +4529,27 @@ function weekShareText(){
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
+/* ---- 食べられないものの共有カード（祖父母・保育園・親戚に預けるとき） ----
+   家族プロフィールに登録した内容だけを、1枚の文章か画像にする。名前は任意（既定は入れない）。調べたことや推測は足さない */
+function needsData(mid, withName){
+    const fm = famMembers(), m = fm.find(x => x.id === mid); if (!m) return null;
+    const allergy = [...new Set(m.allergy.map(avoidName))];
+    const avoid = [...new Set(m.avoid.filter(x => !m.allergy.includes(x)).map(avoidName))].filter(x => !allergy.includes(x));
+    if (!allergy.length && !avoid.length && !m.mild) return null;
+    const nm = (m.name || '').trim();
+    const head = withName && nm ? t('{name}の食べられないもの', {name:nm}) : m.role === 'child' ? t('お子さんの食べられないもの') : t('食べられないもの');
+    return {head, allergy, avoid, mild:m.mild, hasName:!!nm,
+        lines: [allergy.length ? t('⚠ アレルギー: {list}', {list:joinNames(allergy)}) : '', avoid.length ? t('食べられない食材: {list}', {list:joinNames(avoid)}) : '', m.mild ? t('辛いのが苦手') + ' 🌶' : ''].filter(Boolean)};
+}
+function needsShareText(mid, withName){
+    const D = needsData(mid, withName); if (!D) return '';
+    return [t('【{title}】', {title:D.head}), ...D.lines, '', t('このメモは、ご飯帖に登録した内容です。アレルギーや食べられないものは、調味料や加工品の原材料もふくめて、預かる方がご自身で必ず確かめてください。'), '', t('― わが家のご飯帖')].join('\n');
+}
+function openNeeds(mid){
+    const withName = false, text = needsShareText(mid, withName);
+    if (!text){ toast(t('送る内容がありません')); return; }
+    sheet = {kind:'share', card:'needs', mid, withName, text, title:t('食べられないものメモ')}; renderSheet();
+}
 /* ---- 献立カード（画像で送る） ----
    今日の献立・決めた献立・1週間の予定を 1080×1350 の PNG にする。canvas だけで描く（外部の字体・通信なし）。
    料理の絵が読みこめないときは、色のお皿にする。 */
@@ -4580,12 +4627,8 @@ function cardChip(ctx, text, cx, cy, size){
     cardRound(ctx, cx - w / 2, cy - h / 2, w, h, h / 2); ctx.fillStyle = CARD_C.soft; ctx.fill();
     ctx.fillStyle = CARD_C.accent; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(text, cx, cy + size * .04, w - size * .6);
 }
-async function cardCanvas(kind){
-    const D = cardData(kind); if (!D) return null;
-    const rtl = /^(ar|he|fa|ur)(-|$)/.test(LANG), W = CARD_W, H = CARD_H;
-    const imgs = await Promise.all((D.kind === 'week' ? D.days : D.dishes).map(x => cardLoadImg(x.r, x.staple)));
-    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
-    const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
+function cardBackdrop(ctx, rtl, big, sub){
+    const W = CARD_W, H = CARD_H;
     // 背景
     const bg = ctx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#fbf8f1'); bg.addColorStop(1, '#e9eef5');
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
@@ -4594,9 +4637,75 @@ async function cardCanvas(kind){
     ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.beginPath(); ctx.arc(rtl ? 90 : W - 90, 40, 190, 0, Math.PI * 2); ctx.fill();
     ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
     ctx.fillStyle = '#fff'; ctx.font = `700 76px ${CARD_SERIF}`;
-    let ds = jpDate(D.date), fs = 76; while (ctx.measureText(ds).width > W - 120 && fs > 40){ fs -= 4; ctx.font = `700 ${fs}px ${CARD_SERIF}`; }
+    let ds = big, fs = 76; while (ctx.measureText(ds).width > W - 120 && fs > 40){ fs -= 4; ctx.font = `700 ${fs}px ${CARD_SERIF}`; }
     ctx.fillText(ds, W / 2, 128, W - 100);
-    ctx.fillStyle = '#cfdcf0'; ctx.font = `500 38px ${CARD_SANS}`; ctx.fillText(D.line, W / 2, 196, W - 120);
+    ctx.fillStyle = '#cfdcf0'; ctx.font = `500 38px ${CARD_SANS}`; ctx.fillText(sub, W / 2, 196, W - 120);
+}
+function cardSeal(ctx, rtl){
+    const W = CARD_W;
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    // ご飯帖のしるし
+    const nm = t('わが家のご飯帖'); ctx.font = `600 28px ${CARD_SANS}`;
+    const nw = Math.min(ctx.measureText(nm).width, 560), tot = 78 + 16 + nw, sx = (W - tot) / 2, fy = 1292;
+    const sealX = rtl ? sx + nw + 16 : sx, nameX = rtl ? sx : sx + 78 + 16;
+    cardRound(ctx, sealX, fy - 26, 78, 52, 13); ctx.fillStyle = CARD_C.accent; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.direction = 'ltr'; ctx.font = `700 24px ${CARD_SERIF}`; ctx.fillText('ご飯帖', sealX + 39, fy + 1, 70); ctx.direction = rtl ? 'rtl' : 'ltr';
+    ctx.fillStyle = CARD_C.muted; ctx.font = `600 28px ${CARD_SANS}`; ctx.textAlign = 'left'; ctx.direction = 'ltr'; ctx.fillText(nm, nameX, fy, nw);
+}
+// 食べられないものの共有カード（1080×1350）。登録した内容と「必ずご自身で確かめてください」の注意だけを描く
+async function needsCardCanvas(arg){
+    const D = needsData(arg.mid, !!arg.withName); if (!D) return null;
+    const rtl = /^(ar|he|fa|ur)(-|$)/.test(LANG), W = CARD_W, H = CARD_H;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
+    cardBackdrop(ctx, rtl, D.head, t('預けるときのメモ'));
+    const px = 44, py = 292, pw = W - 88, ph = 836, inner = pw - 96, left = px + 48;
+    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
+    ctx.textBaseline = 'middle';
+    // 注意（下）
+    const note = t('このメモは、ご飯帖に登録した内容です。アレルギーや食べられないものは、調味料や加工品の原材料もふくめて、預かる方がご自身で必ず確かめてください。');
+    let nf = 30, nl = [];
+    for (; nf >= 22; nf -= 2){ ctx.font = `500 ${nf}px ${CARD_SANS}`; nl = cardWrap(ctx, note, inner, 99); if (nl.length <= 6) break; }
+    if (nl.length > 6){ nf = 22; ctx.font = `500 ${nf}px ${CARD_SANS}`; nl = cardWrap(ctx, note, inner, 6); }
+    const nlh = nf * 1.5, noteTop = py + ph - 36 - (nl.length * nlh + 8);
+    ctx.fillStyle = CARD_C.line; ctx.fillRect(left, noteTop - 18, inner, 2);
+    ctx.fillStyle = CARD_C.ink; ctx.textAlign = rtl ? 'right' : 'left'; ctx.font = `500 ${nf}px ${CARD_SANS}`;
+    nl.forEach((l, k) => ctx.fillText(l, rtl ? left + inner : left, noteTop + nlh * (k + .5) + 4, inner));
+    // 本体: アレルギー / 食べられない食材 / 辛いのが苦手
+    const secs = [];
+    if (D.allergy.length) secs.push({label:t('アレルギー'), items:D.allergy, warn:true});
+    if (D.avoid.length) secs.push({label:t('食べられない食材'), items:D.avoid});
+    if (D.mild) secs.push({label:'', items:[t('辛いのが苦手') + ' 🌶']});
+    const limit = noteTop - 40, chipH = 68, gap = 14, fz = 38; let y = py + 52, clipped = false;
+    for (const sec of secs){
+        if (sec.label){
+            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.muted; ctx.font = `700 34px ${CARD_SANS}`; ctx.textAlign = rtl ? 'right' : 'left';
+            ctx.fillText((sec.warn ? '⚠ ' : '') + sec.label, rtl ? left + inner : left, y + 20, inner); y += 56;
+        }
+        let cx = 0;
+        for (const it of sec.items){
+            ctx.font = `600 ${fz}px ${CARD_SANS}`; const w = Math.min(ctx.measureText(it).width + 52, inner);
+            if (cx && cx + w > inner){ cx = 0; y += chipH + gap; }
+            if (y + chipH > limit){ clipped = true; break; }
+            const x = rtl ? left + inner - cx - w : left + cx;
+            cardRound(ctx, x, y, w, chipH, chipH / 2); ctx.fillStyle = sec.warn ? '#fbe9e5' : CARD_C.soft; ctx.fill();
+            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.accent; ctx.textAlign = 'center'; ctx.fillText(it, x + w / 2, y + chipH / 2 + 2, w - 36);
+            cx += w + gap;
+        }
+        if (clipped){ ctx.fillStyle = CARD_C.muted; ctx.textAlign = 'center'; ctx.fillText('…', W / 2, Math.min(y + chipH / 2, limit)); break; }
+        y += chipH + 34;
+    }
+    cardSeal(ctx, rtl);
+    return cv;
+}
+async function cardCanvas(kind, arg){
+    if (kind === 'needs') return needsCardCanvas(arg || {});
+    const D = cardData(kind); if (!D) return null;
+    const rtl = /^(ar|he|fa|ur)(-|$)/.test(LANG), W = CARD_W, H = CARD_H;
+    const imgs = await Promise.all((D.kind === 'week' ? D.days : D.dishes).map(x => cardLoadImg(x.r, x.staple)));
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
+    cardBackdrop(ctx, rtl, jpDate(D.date), D.line);
     // 本体（白いパネル）
     const px = 44, py = 292, pw = W - 88, ph = 836;
     ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
@@ -4647,13 +4756,7 @@ async function cardCanvas(kind){
     } else if (D.kind === 'week'){
         ctx.font = `500 30px ${CARD_SANS}`; ctx.fillStyle = CARD_C.muted; ctx.fillText(t('{n}人分', {n:Number(S.settings.servings) || 2}), W / 2, 1198);
     }
-    // ご飯帖のしるし
-    const nm = t('わが家のご飯帖'); ctx.font = `600 28px ${CARD_SANS}`;
-    const nw = Math.min(ctx.measureText(nm).width, 560), tot = 78 + 16 + nw, sx = (W - tot) / 2, fy = 1292;
-    const sealX = rtl ? sx + nw + 16 : sx, nameX = rtl ? sx : sx + 78 + 16;
-    cardRound(ctx, sealX, fy - 26, 78, 52, 13); ctx.fillStyle = CARD_C.accent; ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.direction = 'ltr'; ctx.font = `700 24px ${CARD_SERIF}`; ctx.fillText('ご飯帖', sealX + 39, fy + 1, 70); ctx.direction = rtl ? 'rtl' : 'ltr';
-    ctx.fillStyle = CARD_C.muted; ctx.font = `600 28px ${CARD_SANS}`; ctx.textAlign = 'left'; ctx.direction = 'ltr'; ctx.fillText(nm, nameX, fy, nw);
+    cardSeal(ctx, rtl);
     return cv;
 }
 // ファイルを渡す共通の流れ: 共有できる端末は共有シート（files を優先）、できなければダウンロード。
@@ -4678,16 +4781,16 @@ function exportDataFile(){
     shareFileOrDownload(new Blob([JSON.stringify(S)], {type: 'application/json'}), name, 'application/json', t('{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます', {name}));
 }
 // 画像にして、共有できる端末は共有シート（LINE・メッセージなど）へ、できなければダウンロード
-async function shareCard(kind){
+async function shareCard(kind, arg){
     if (fileShareBusy || cardBusy){ toast(t('いま共有中です。終わるまでお待ちください')); return; }
     cardBusy = true;
     const btn = document.querySelector('[data-act="share-card"]'), label = btn ? btn.textContent : '';
     if (btn){ btn.disabled = true; btn.textContent = t('画像をつくっています…'); }
     try{
-        const cv = await cardCanvas(kind); if (!cv){ toast(t('送る献立がありません')); return; }
+        const cv = await cardCanvas(kind, arg); if (!cv){ toast(kind === 'needs' ? t('送る内容がありません') : t('送る献立がありません')); return; }
         const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
         if (!blob) throw new Error('blob');
-        const name = 'gohancho-' + (kind === 'week' ? 'week' : 'menu') + '-' + TODAY.replace(/-/g, '') + '.png';
+        const name = 'gohancho-' + (kind === 'week' ? 'week' : kind === 'needs' ? 'needs' : 'menu') + '-' + TODAY.replace(/-/g, '') + '.png';
         await shareFileOrDownload(blob, name, 'image/png', t('画像のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます'));
     }catch(e){ toast(t('画像をつくれませんでした')); }
     finally{ cardBusy = false; const b = document.querySelector('[data-act="share-card"]'); if (b){ b.disabled = false; if (label) b.textContent = label; } }
@@ -4731,7 +4834,8 @@ function shareSheetHtml(){
             ${canSystem ? `<button class="btn wide" data-act="share-system">${esc(t('ほかのアプリで送る'))}</button>` : ''}
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
-        <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}">${esc(t('画像でつくる'))}</button></div>
+        ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
+        <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
@@ -5327,6 +5431,7 @@ function viewToday(){
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div>${weekExtraHtml(x)}</div>
                 <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button>
             </div>`; }).join('')}</div>
+            ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
             <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('予定と買い物メモを送る'))}</button><button class="btn" data-act="make-week">${esc(t('作り直す'))}</button></div>
             ${shoppingHtml()}`
@@ -5710,6 +5815,10 @@ function viewLog(){
         <div class="list">${(S.savedMenus || []).length ? S.savedMenus.map(sm => `<div class="item"><div class="t">${esc(sm.name)}<div class="s">${esc(joinNames(sm.ids.map(id => (byId(id) || {}).name).filter(Boolean)) || '')}${GAP()}${esc(jpDate(sm.d))}</div></div>
             <div class="item-acts"><button class="btn sm primary" data-act="saved-apply" data-id="${esc(sm.id)}">${esc(t('今日の献立にする'))}</button><button class="btn sm ghost danger" data-act="saved-rm" data-id="${esc(sm.id)}" aria-label="${esc(t('保存した献立を消す'))}">${esc(t('消す'))}</button></div></div>`).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「この献立を保存」で、いつもの献立を残せます。'))}</div>`}</div>
     </section>
+    ${(h => h ? `<section class="sec" id="week-tally">
+        <div class="sec-head"><h2>${esc(t('今週の主菜の内訳'))}</h2><span class="hint">${esc(t('主な材料とジャンルを、回数だけ数えています。置き換えて作った料理も、元の料理で数えます。'))}</span></div>
+        ${h}
+    </section>` : '')(tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()))}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
@@ -6354,7 +6463,9 @@ document.addEventListener('click', e => {
         case 'share-week': openShare('week'); break;
         case 'share-system': if (sheet) systemShare(sheet.text, sheet.title); break;
         case 'share-copy': if (sheet) copyText(sheet.text); break;
-        case 'share-card': shareCard(el.dataset.k || 'menu'); break;
+        case 'share-card': shareCard(el.dataset.k || 'menu', el.dataset.k === 'needs' ? {mid:el.dataset.m, withName:el.dataset.n === '1'} : null); break;
+        case 'needs-open': { const m = famOf(el); if (m){ session.famOpen = m.id; openNeeds(m.id); } break; }
+        case 'needs-name': if (sheet && sheet.card === 'needs'){ sheet.withName = el.checked; sheet.text = needsShareText(sheet.mid, sheet.withName); renderSheet(); } break;
         case 'card-menu': shareCard('menu'); break;
         case 'save-menu': saveMenu(); break;
         case 'one-open': openOne(); break;
