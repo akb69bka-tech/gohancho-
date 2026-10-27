@@ -12,20 +12,23 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const CCS = (process.env.CCS || 'JP,US,KR,FR,IN,TH').split(',');
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
-const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+let curCC = '';   // 失敗時に出す再現情報（乱数は国ごとに SEED から決まる。SEED=... CCS=国 で同じ状況になる）
+const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ' CCS=' + curCC + ']'); } };
 const open = async (cc, n = 4) => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(seedScript(seedFor('scarce', cc)));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(([cc, n]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:n}})); } }, [cc, n]);
-    await p.goto(URL_); await p.waitForTimeout(1500); await p.evaluate(() => { hasPro = () => true; session.menu = null; render(); });
+    await p.goto(URL_); await ready(p); await p.evaluate(() => { hasPro = () => true; session.menu = null; render(); });
     return {ctx, p};
 };
 for (const cc of CCS){
+    curCC = cc;
     /* ---- 手に入りにくい食材 ---- */
     {
         const {ctx, p} = await open(cc);
