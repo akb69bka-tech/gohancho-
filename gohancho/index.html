@@ -4819,6 +4819,7 @@ function shopRowsHtml(list, done){
 // 買ったもの（チェックした品）を冷蔵庫に入れる。自分で足した品は食材ではないので入れない
 function shopToFridge(){
     const done = shopDoneSet(), before = S.fridge.slice(), beforeDone = S.shopDone.keys.slice(), have = fridgeKeys();
+    const rowsBefore = new Set(shoppingList().map(e => e.key));
     const got = [];   // 冷蔵庫の食材名として同じ食材に読み取れるものだけ入れる（読み取りがずれる食材は買い物メモに残す）
     shoppingList().filter(e => done.has(e.key) && !e.extra).forEach(e => {
         const k = String(e.key).split('|')[0], nm = [k, e.label].find(x => keyOf(x) === k); if (!nm) return;
@@ -4827,6 +4828,8 @@ function shopToFridge(){
     });
     if (!got.length){ toast(t('冷蔵庫に入れられる食材はありませんでした')); return; }
     S.shopDone.keys = S.shopDone.keys.filter(k => !got.includes(k));
+    // 名前が近くて1行にまとめてあった別の食材（例: トマトに合わさっていた缶詰トマト）は、まとめた行を入れたあとに別の行として出てくる。チェックした行にふくまれていたので、チェック済みのまま残す（未チェックに戻さない）
+    shoppingList().forEach(e => { if (!rowsBefore.has(e.key) && !S.shopDone.keys.includes(e.key)) S.shopDone.keys.push(e.key); });
     save(); render();
     toast(t('{n}品を冷蔵庫に入れました', {n:got.length}), false, () => { S.fridge = before; S.shopDone.keys = beforeDone; save(); render(); });
 }
