@@ -49,6 +49,25 @@ for (const cc of CCS){
                 if (S.week.days[i].skip || S.week.days[i].id !== JSON.parse(mid2[i]).id) bad.push('戻す: 同じ料理に戻らない');
                 if (outside() !== base) bad.push('週の外（献立・冷蔵庫・記録）が動いた');
             }
+            // 日ごとの担当: 押した日の who だけが変わる（料理・副菜汁もの・skip・ほかの日・週の外は不変）。別の案・作らないでも who は残り、作り直しても日付で残る
+            { const who = (d, v) => { click('week-who', d); if (!sheet || sheet.kind !== 'who') { bad.push('担当の画面が開かない'); return; } const e = document.createElement('button'); e.dataset.act = 'who-pick'; e.dataset.v = v; document.body.appendChild(e); e.click(); e.remove(); };
+              S.week.days.forEach(x => { delete x.skip; delete x.who; }); const w0 = S.week.days.map(snapDay), b2 = outside(), sh0 = shoppingList().map(e => e.key).join();
+              for (let i = 0; i < ds.length; i++){ const nm = i % 2 ? '父' : '母' + i; const bf = S.week.days.map(snapDay); who(ds[i], nm);
+                  S.week.days.forEach((x, j) => { if (snapDay(x) !== bf[j]) bad.push('who: 料理・skip が変わった ' + j); if (j !== i && x.who !== (bf[j] && S.week.days[j].who)) {} });
+                  if (S.week.days[i].who !== nm) bad.push('who が入らない');
+                  S.week.days.forEach((x, j) => { if (j > i && x.who) bad.push('who: 押していない日に入った'); });
+                  if (!weekShareText().includes(t('担当：{name}', {name:nm}))) bad.push('送る文面に担当が出ない'); }
+              if (outside() !== b2) bad.push('who: 週の外が動いた'); if (shoppingList().map(e => e.key).join() !== sh0) bad.push('who: 買い物メモが変わった');
+              if (S.week.days.map(snapDay).join() !== w0.join()) bad.push('who: 料理が変わった');
+              const wh = S.week.days.map(x => x.who).join(); const j2 = 3 % ds.length; click('week-reroll', ds[j2]);
+              if (S.week.days.map(x => x.who).join() !== wh) bad.push('別の案で担当が動いた');
+              click('week-skip', ds[1]); if (S.week.days[1].who !== '父') bad.push('作らないで担当が消えた'); if (weekShareText().split('\n').some(l => l.includes(t('作らない日')) && l.includes('担当'))) bad.push('作らない日に担当が出た');
+              click('week-who', ds[1]); if (sheet) bad.push('作らない日に担当の画面が開いた');
+              click('week-skip', ds[1]);
+              click('week-who', ds[2]); const ee = document.createElement('button'); ee.dataset.act = 'who-clear'; document.body.appendChild(ee); ee.click(); ee.remove(); if (S.week.days[2].who) bad.push('担当をはずせない');
+              const wk = S.week.days.map(x => x.who || '').join(); makeWeek(); if (S.week.days.map(x => x.who || '').join() !== wk) bad.push('作り直しで担当が日付で残らない');
+              const td = S.week.days.find(x => x.d === TODAY); td.who = '母'; td.skip = false; if (!menuShareText(session.menu, TODAY).includes(t('担当：{name}', {name:'母'}))) bad.push('今日の献立の文面に担当が出ない'); td.skip = true; if (menuShareText(session.menu, TODAY).includes(t('担当：{name}', {name:'母'}))) bad.push('作らない日の献立文面に担当'); td.skip = false;
+              S.week.days.forEach(x => { delete x.who; delete x.skip; }); }
             // 作り直しても作らない日は日付で残る／今日が作らない日なら weekToday は null
             click('week-skip', ds[0]); click('week-skip', ds[2]);
             if (weekToday()) bad.push('今日が作らない日なのに weekToday');
@@ -69,6 +88,20 @@ for (const cc of CCS){
         return bad;
     }, N);
     ok(!r.length, cc + ": " + [...new Set(r)].slice(0, 6).join(" | ") + (process.env.DBG ? " :: " + r.length : ""));
+    await ctx.close();
+}
+// 390px のスマホで、週の行（担当・別の案・作らない・作る日に戻す）が画面からはみ出さず、ボタンが44px以上で押せる
+for (const lang of (process.env.LAYOUT_LANGS || 'ja,de,ar,th,fr,vi').split(',')){
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage();
+    await p.addInitScript(lang => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), lang, settings:{country:'JP', dishCount:3, lang}, family:[{id:'f1', name:'母', role:'adult', avoid:[], allergy:[], mild:false}]})); } }, lang);
+    await p.goto(URL_); await p.waitForTimeout(900);
+    await p.evaluate(async lang => { await setLang(lang); hasPro = () => true; if (!S.week) makeWeek(); S.week.days[0].skip = true; S.week.days[1].who = '長い名前の人長い名前'; render(); }, lang);
+    const m = await p.evaluate(() => { const bad = [], W = document.documentElement.clientWidth;
+        if (document.documentElement.scrollWidth > W) bad.push('横にはみ出す ' + document.documentElement.scrollWidth);
+        document.querySelectorAll('.week .item').forEach(it => { const ir = it.getBoundingClientRect(); it.querySelectorAll('button').forEach(bt => { const r = bt.getBoundingClientRect(); if (r.height < 43.5 || r.width < 43.5) bad.push('小さい ' + bt.textContent.trim()); if (r.right > W + .5 || r.left < -.5 || r.right > ir.right + .5 || r.left < ir.left - .5) bad.push('はみ出す ' + bt.textContent.trim()); }); });
+        return bad; });
+    ok(!m.length, 'layout ' + lang + ': ' + [...new Set(m)].slice(0, 4).join(' | '));
     await ctx.close();
 }
 await b.close();

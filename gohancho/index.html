@@ -232,7 +232,7 @@ small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を
 .ings .sub{color:var(--yolk-ink);background:var(--yolk-soft);border-radius:4px;padding:0 .25rem}
 
 /* 週プラン */
-.week .item{grid-template-columns:48px 1fr auto}
+.week .item{grid-template-columns:48px minmax(0,1fr)}
 .day{display:flex;flex-direction:column;align-items:center;line-height:1.1}
 .day .dd{font-family:var(--font-display);font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
 .day .wd{font-size:.75rem;color:var(--muted)}
@@ -449,9 +449,15 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
-.week-acts{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+.week .item .t{grid-column:2}
+.week .item .day{align-self:start;padding-top:2px}
+.week-acts{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;margin-top:-4px}
+.week-acts .btn{border-color:var(--line);flex:0 1 auto}
+.week-acts .btn.who{margin-inline-end:auto;justify-content:flex-start;text-align:start}
+.week-acts .btn.who.set{background:var(--surface-2);font-weight:600}
 .week .item.skipped{background:var(--surface-2)}
-.week .item.skipped .t{color:var(--muted);cursor:default}
+.week .item.skipped .t{color:var(--muted);cursor:default;text-wrap:balance}
+.who-names{margin:10px 0}
 .hint-row.locked{cursor:pointer}
 .btn.msg{--msg:#06c755;color:color-mix(in srgb,var(--msg) 50%,#000);font-weight:700}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}}
@@ -1263,7 +1269,7 @@ function normalizeState(d){
         .filter(r => r.ings.length);
     ['awards','usage','countryData','stapleBy'].forEach(k => { if (k in st) st[k] = obj(st[k]); });
     if (!(st.week && isYmd(st.week.start) && Array.isArray(st.week.days))) st.week = null;
-    else st.week.days = st.week.days.filter(x => x && isYmd(x.d) && x.id);
+    else st.week.days = st.week.days.filter(x => x && isYmd(x.d) && x.id).map(x => { if (typeof x.who === 'string' && x.who.trim()) x.who = x.who.trim().slice(0, 12); else delete x.who; return x; });
     if (st.cook && !(isYmd(st.cook.d) && Array.isArray(st.cook.ids))) st.cook = null;
     if (st.draft && !(isYmd(st.draft.d) && Array.isArray(st.draft.ids) && Array.isArray(st.draft.slots))) st.draft = null;
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
@@ -2108,6 +2114,8 @@ function makeWeek(){
     }
     const skipped = new Set(((S.week && S.week.days) || []).filter(x => x.skip).map(x => x.d));   // 作り直しても、「作らない日」にした日はそのまま（日付で引き継ぐ）
     days.forEach(x => { if (skipped.has(x.d)) x.skip = true; });
+    const whoBy = new Map(((S.week && S.week.days) || []).filter(x => x.who).map(x => [x.d, x.who]));   // 日ごとの担当も、作り直しても日付で引き継ぐ
+    days.forEach(x => { if (whoBy.has(x.d)) x.who = whoBy.get(x.d); });
     S.week = {start:TODAY, days}; save();
 }
 // 苦手な食材を足したり料理を「今は出さない」にしたりしたとき、作ってある1週間プランのうち、その料理の日だけ選び直す
@@ -3497,6 +3505,7 @@ function renderSheet(){
     if (sheet.kind === 'share') body = shareSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'term') body = termSheetHtml();
+    if (sheet.kind === 'who') body = whoSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
@@ -4566,6 +4575,7 @@ function menuShareText(m = session.menu, d = TODAY){
     if (!m || !m.items.length) return '';
     const lines = [t('【{date}の献立】', {date:jpDate(d)})];
     const el = eatersLine(); if (el) lines.push(el);
+    const wx = d === TODAY && S.week && S.week.days.find(y => y.d === TODAY); if (wx && wx.who && !wx.skip) lines.push(t('担当：{name}', {name:wx.who}));
     m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r)})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
@@ -4578,7 +4588,7 @@ function weekShareText(){
     const days = visiblePlanDaysAll(); if (!days.length) return '';
     if (weekSidesOn()) ensureWeekExtras();
     const lines = [t('【献立の予定】')];
-        days.forEach(x => { const r = byId(x.id); if (!r) return; if (x.skip){ lines.push(`${jpDate(x.d)}${GAP()}${t('作らない日')}`); return; } lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`);
+        days.forEach(x => { const r = byId(x.id); if (!r) return; if (x.skip){ lines.push(`${jpDate(x.d)}${GAP()}${t('作らない日')}`); return; } lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}${x.who ? GAP() + t('担当：{name}', {name:x.who}) : ''}`);
             const ex = weekSidesOn() && x.extra ? [['side', '副菜'], ['soup', '汁物']].map(([k, slot]) => { const e = byId(x.extra[k]); return e ? t('{slot}：{name}', {slot:slotLabel(slot), name:e.name + swapShare(e)}) : ''; }).filter(Boolean).join(' / ') : '';
             if (ex) lines.push('　' + ex);
         });
@@ -5243,6 +5253,31 @@ function oneSheetHtml(){
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
 }
 function oneRefresh(){ const b = $('#one-body'); if (b) b.innerHTML = oneBodyHtml(); }
+// 日ごとの担当（S.week.days[i].who。名前の文字だけを、その日にだけ持つ。端末の中だけ。料理や、ほかの日は変えない）
+function whoNames(){
+    const fam = famMembers().map(m => (m.name || '').trim()).filter(Boolean), seen = new Set();
+    const used = ((S.week && S.week.days) || []).map(x => x.who).filter(Boolean);
+    return [...fam, ...used].filter(n => !seen.has(n) && seen.add(n));
+}
+function whoSheetHtml(){
+    const x = S.week && S.week.days.find(y => y.d === sheet.d); if (!x) return `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+    const ns = whoNames();
+    return `<h2>${esc(t('{date}の担当', {date:jpDate(x.d)}))}</h2>
+        ${ns.length ? `<div class="chips who-names" role="group">${ns.map(n => `<button class="chip" data-act="who-pick" data-v="${esc(n)}" aria-pressed="${x.who === n}">${esc(n)}</button>`).join('')}</div>` : ''}
+        <form class="inputbar" data-form="who-set">
+            <input type="text" id="who-input" value="${esc(x.who || '')}" maxlength="12" placeholder="${esc(t('名前（例: 父）'))}" autocomplete="off" enterkeyhint="done" aria-label="${esc(t('名前（例: 父）'))}">
+            <button class="btn primary" type="submit">${esc(t('決める'))}</button>
+        </form>
+        <p class="muted small" style="margin:8px 0">${esc(t('家族の名前から選ぶか、自由に入れてください。この端末の中だけに残ります。'))}</p>
+        ${x.who ? `<button class="btn ghost" data-act="who-clear">${esc(t('担当をはずす'))}</button>` : ''}
+        <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+}
+function setWho(d, name){
+    const x = S.week && S.week.days.find(y => y.d === d); if (!x) return;
+    const n = String(name || '').trim().slice(0, 12);
+    if (n) x.who = n; else delete x.who;
+    save(); closeSheet(); render();
+}
 /* ---- いつもの献立（保存した献立） ---- */
 function saveMenu(){
     const m = session.menu; if (!m) return;
@@ -5576,13 +5611,13 @@ function viewToday(){
             <div class="item skipped">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
                 <div class="t"><b>${esc(t('作らない日'))}</b><div class="s">${esc(t('買い物メモに入れていません'))}</div></div>
-                <button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作る日に戻す'))}</button>
+                <div class="week-acts"><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作る日に戻す'))}</button></div>
             </div>`;
             return `
             <div class="item">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div>${weekExtraHtml(x)}</div>
-                <div class="week-acts"><button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作らない'))}</button></div>
+                <div class="week-acts"><button class="btn sm who${x.who ? ' set' : ''}" data-act="week-who" data-d="${x.d}">${esc(x.who ? t('担当：{name}', {name:x.who}) : t('担当を決める'))}</button><button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作らない'))}</button></div>
             </div>`; }).join('')}</div>
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
@@ -6877,6 +6912,9 @@ document.addEventListener('click', e => {
             }
             render(); break;
         }
+        case 'week-who': { const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x || x.skip) break; sheet = {kind:'who', d:x.d}; renderSheet(); break; }
+        case 'who-pick': if (sheet && sheet.kind === 'who') setWho(sheet.d, el.dataset.v); break;
+        case 'who-clear': if (sheet && sheet.kind === 'who') setWho(sheet.d, ''); break;
         case 'week-skip': {   // その日だけを「作らない日」にする／戻す。料理は消さずに残すので、戻すと同じ料理に戻る。ほかの日・料理は動かない
             const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x) break;
             if (x.skip) delete x.skip; else x.skip = true;
@@ -7156,6 +7194,7 @@ document.addEventListener('submit', e => {
     const f = e.target.dataset.form;
     if (f === 'spend'){ spendAdd(); return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
+    if (f === 'who-set' && sheet && sheet.kind === 'who'){ setWho(sheet.d, $('#who-input').value); return; }
     if (f === 'one-search' && sheet && sheet.kind === 'one'){
         const q = $('#one-input').value.trim(); sheet.q = q; if (!q) return;
         const hit = searchRecipes(q).hits[0];
