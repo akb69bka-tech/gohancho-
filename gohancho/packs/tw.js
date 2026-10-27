@@ -960,7 +960,7 @@ GOHAN_PACK({
       local: '蛤蜊蒸蛋',
       type: 'main',
       method: 'simmer',
-      protein: 'egg',
+      protein: 'seafood',
       min: 25,
       ings: [
         'egg|Eggs|3',

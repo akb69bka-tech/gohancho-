@@ -20,7 +20,7 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
       return {a, c};
     };
     // 献立に出ていない食材を苦手にする
-    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (ings.size && [...ings].some(k => /shrimp|clam|えび|あさり|squid|prawn|crab/.test(k))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
+    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (ings.size && [...ings].some(k => /shrimp|clam|えび|あさり|しじみ|squid|prawn|crab/.test(k))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap', () => { S.settings.avoidSwap = false; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap-back', () => { S.settings.avoidSwap = true; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('avoid-days', () => { S.settings.avoidDays = 21; save(); render(); });

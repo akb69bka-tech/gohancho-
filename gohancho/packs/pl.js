@@ -1236,7 +1236,7 @@ GOHAN_PACK({
       local: 'Fasolka po bretońsku',
       type: 'main',
       method: 'simmer',
-      protein: 'legume',
+      protein: 'processed',
       min: 50,
       ings: [
         'white beans|Cooked or canned white beans|800 g',

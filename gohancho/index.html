@@ -116,7 +116,7 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
-.chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
+.chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
@@ -240,10 +240,10 @@ small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を
 .day.today .dd{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 
 /* 統計 */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,6.5rem),1fr));gap:8px}   /* 文字を大きくしたり長い言語のときは、3列から2列・1列に自動で折り返す */
+.stat{background:var(--surface-2);border-radius:12px;padding:10px 12px;min-width:0}
 .stat .n{font-family:var(--font-display);font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.2}
-.stat .k{font-size:.75rem;color:var(--muted)}
+.stat .k{font-size:.75rem;color:var(--muted);overflow-wrap:anywhere}
 
 details.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:0 16px}
 details.box>summary{padding:14px 0;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
@@ -255,7 +255,7 @@ details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:12
 /* タブ */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
 nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px}
-nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
+nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:min(calc(.75rem / var(--ts,1)), 3.1vw);min-width:0;overflow-wrap:break-word;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
 nav.tabs svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 nav.tabs button[aria-selected="true"] svg{stroke-width:2}
@@ -412,7 +412,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tiny{font-size:.75rem;line-height:1.5;margin:0}
 /* 設定 */
 html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
-.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px}.left-chips .chip{white-space:normal;text-align:center}.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
+.left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px}.left-chips .chip{white-space:normal;text-align:center}.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
 .set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
@@ -463,6 +463,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}}
 :root[data-theme="dark"] .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}
 .btn.msg.wa{--msg:#25d366}.btn.msg.tg{--msg:#2aabee}.btn.msg.none{--msg:var(--accent)}
+.btn.msg{flex-wrap:wrap;max-width:100%;min-width:0;text-align:center;white-space:normal;overflow-wrap:anywhere}
 .btn.msg::before{content:attr(data-app);background:var(--msg);color:#06160c;font-size:.75rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
 .btn.msg.none::before{display:none}
 .btn.msg:hover{border-color:var(--msg)}
@@ -520,7 +521,7 @@ html.i18n-wait body{visibility:hidden}
 .sheet-body .name-en{margin-top:-10px;color:var(--muted);font-size:.92rem;line-height:1.4}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
-nav.tabs.many button{font-size:.75rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
+nav.tabs.many button{font-size:min(calc(.75rem / var(--ts,1)), 2.9vw);line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
 html[lang="hi"] *,html[lang="ar"] *,html[lang="th"] *{letter-spacing:normal!important}   /* 字間をあけると、つながる文字（ヒンディー語・アラビア語・タイ語）の形がくずれる */
 html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
@@ -535,9 +536,9 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
     .tray.compact .spot-label .slot{letter-spacing:0;font-size:.75rem}
     .tray.compact .spot-label .nm{font-size:.75rem}
     nav.tabs{padding-left:2px;padding-right:2px}
-    nav.tabs button{min-width:0;font-size:.75rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
+    nav.tabs button{min-width:0;font-size:min(calc(.75rem / var(--ts,1)), 3.1vw);line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}
     nav.tabs.many .in{gap:0}
-    nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:.75rem;text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
+    nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:min(calc(.75rem / var(--ts,1)), 2.9vw);text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
 }
 /* 作り方タブ */
 .cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
@@ -1159,7 +1160,9 @@ const SUBS = {
 };
 const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉':'鶏','牛肉':'牛','合いびき肉':'ひき肉',
     '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','あじ':'魚','いわし':'魚','さんま':'魚','かれい':'魚','いか':'魚介','たこ':'魚介','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
-    '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚'};
+    '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚',
+    'さわら':'魚','かじき':'魚','たらこ':'魚','ちくわ':'魚','ちりめんじゃこ':'魚','かに風味かまぼこ':'魚','しじみ':'魚介',
+    '油揚げ':'大豆','おから':'大豆','大豆':'大豆'};
 const FAMILY_LABEL = {'羊':'羊肉','豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
 function prepRecipe(r){
     r.items = r.ings.map(parseIng); r.seasBase = r.seas;
@@ -4854,24 +4857,48 @@ async function needsCardCanvas(arg){
     if (D.allergy.length) secs.push({label:t('アレルギー'), items:D.allergy, warn:true});
     if (D.avoid.length) secs.push({label:t('食べられない食材'), items:D.avoid});
     if (D.mild) secs.push({label:'', items:[t('辛いのが苦手') + ' 🌶']});
-    const limit = noteTop - 40, chipH = 68, gap = 14, fz = 38; let y = py + 52, clipped = false;
-    for (const sec of secs){
+    const limit = noteTop - 40;
+    // 全部入るまで少しずつ小さくする（見出しだけ残って中身が消えることがないように）。最小でも入らない分は「…ほか n 件は文で」と書く
+    const layout = (sc, reserve) => {
+        const chipH = Math.round(68 * sc), gap = Math.round(14 * sc), fz = Math.round(38 * sc), hf = Math.round(34 * Math.max(sc, .8)), hh = hf + 22;
+        ctx.font = `600 ${fz}px ${CARD_SANS}`;
+        let y = py + 52, hidden = 0, full = false; const out = [], lim = limit - reserve;
+        for (const sec of secs){
+            if (full){ hidden += sec.items.length; continue; }
+            const rows = []; let cx = 0, row = null, top = y + (sec.label ? hh : 0);
+            let yy = top, shown = 0;
+            for (const it of sec.items){
+                const w = Math.min(ctx.measureText(it).width + Math.round(52 * sc), inner);
+                if (!row || cx + w > inner){ if (row) yy += chipH + gap; row = []; rows.push(row); cx = 0; }
+                if (yy + chipH > lim){ hidden += sec.items.length - shown; full = true; break; }
+                row.push({it, w, cx}); cx += w + gap; shown++;
+            }
+            if (!shown){ continue; }
+            out.push({sec, rows, hy: y, top});
+            y = yy + chipH + Math.round(34 * sc);
+        }
+        return {out, hidden, chipH, gap, fz, hf};
+    };
+    let L = null;
+    for (const sc of [1, .86, .74, .64, .56]){ L = layout(sc, 0); if (!L.hidden) break; }
+    if (L.hidden) L = layout(.56, 44);
+    for (const g of L.out){
+        const sec = g.sec;
         if (sec.label){
-            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.muted; ctx.font = `700 34px ${CARD_SANS}`; ctx.textAlign = rtl ? 'right' : 'left';
-            ctx.fillText((sec.warn ? '⚠ ' : '') + sec.label, rtl ? left + inner : left, y + 20, inner); y += 56;
+            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.muted; ctx.font = `700 ${L.hf}px ${CARD_SANS}`; ctx.textAlign = rtl ? 'right' : 'left';
+            ctx.fillText((sec.warn ? '⚠ ' : '') + sec.label, rtl ? left + inner : left, g.hy + L.hf / 2 + 3, inner);
         }
-        let cx = 0;
-        for (const it of sec.items){
-            ctx.font = `600 ${fz}px ${CARD_SANS}`; const w = Math.min(ctx.measureText(it).width + 52, inner);
-            if (cx && cx + w > inner){ cx = 0; y += chipH + gap; }
-            if (y + chipH > limit){ clipped = true; break; }
-            const x = rtl ? left + inner - cx - w : left + cx;
-            cardRound(ctx, x, y, w, chipH, chipH / 2); ctx.fillStyle = sec.warn ? '#fbe9e5' : CARD_C.soft; ctx.fill();
-            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.accent; ctx.textAlign = 'center'; ctx.fillText(it, x + w / 2, y + chipH / 2 + 2, w - 36);
-            cx += w + gap;
-        }
-        if (clipped){ ctx.fillStyle = CARD_C.muted; ctx.textAlign = 'center'; ctx.fillText('…', W / 2, Math.min(y + chipH / 2, limit)); break; }
-        y += chipH + 34;
+        ctx.font = `600 ${L.fz}px ${CARD_SANS}`;
+        g.rows.forEach((row, ri) => row.forEach(c => {
+            const y = g.top + ri * (L.chipH + L.gap);
+            const x = rtl ? left + inner - c.cx - c.w : left + c.cx;
+            cardRound(ctx, x, y, c.w, L.chipH, L.chipH / 2); ctx.fillStyle = sec.warn ? '#fbe9e5' : CARD_C.soft; ctx.fill();
+            ctx.fillStyle = sec.warn ? '#b3402f' : CARD_C.accent; ctx.textAlign = 'center'; ctx.fillText(c.it, x + c.w / 2, y + L.chipH / 2 + 2, c.w - 28);
+        }));
+    }
+    if (L.hidden){
+        ctx.fillStyle = '#b3402f'; ctx.font = `700 26px ${CARD_SANS}`; ctx.textAlign = rtl ? 'right' : 'left';
+        ctx.fillText(t('ほか{n}件は、いっしょに送る文章を見てください。', {n:L.hidden}), rtl ? left + inner : left, limit - 8, inner);
     }
     cardSeal(ctx, rtl);
     return cv;
@@ -5065,7 +5092,10 @@ function notifBuild(now){
     const at = (d, h) => { const x = parseYmd(d); x.setHours(h, 0, 0, 0); return x; };
     if (hour != null){
         const decidedToday = !!(S.cook && S.cook.d === TODAY);   // 今日はもう決めた日: くり返しをやめ、あしたからの分だけ個別に予約する
-        if (!days.length && decidedToday){ for (let i = 1; i < NOTIFY_DAYS; i++){ const when = at(addDays(TODAY, i), hour); if (when > now) out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); } }
+        const skipDays = new Set(S.week && S.week.days ? S.week.days.filter(y => y.skip).map(y => y.d) : []);
+        const anySkip = [...skipDays].some(d => d >= TODAY && d <= addDays(TODAY, NOTIFY_DAYS - 1));
+        // 献立を決めた日・「作らない」日がある間は、くり返し（毎日）にせず、決める日だけ個別に予約する（作らない日に「献立を決めましょう」が鳴らない）
+        if (!days.length && (decidedToday || anySkip)){ for (let i = decidedToday ? 1 : 0; i < NOTIFY_DAYS; i++){ const d = addDays(TODAY, i), when = at(d, hour); if (when > now && !skipDays.has(d)) out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); } }
         else if (!days.length) out.push({id:NOTIFY_ID, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{on:{hour, minute:0}, allowWhileIdle:true}});
         else for (let i = 0; i < NOTIFY_DAYS; i++){
             const d = addDays(TODAY, i), when = at(d, hour);
@@ -5534,8 +5564,9 @@ function pantryHtml(){
    「残りを冷蔵庫に入れた」と押した日を 1日目として、何日目かを数えて事実だけ出す。何日もつか・傷むかは、このアプリでは言わない（根拠となる出典がないため）。
    献立の選び方・冷蔵庫の食材リストは変えない。データは S.leftovers（端末の中だけ） */
 function leftDay(x){ return Math.max(1, daysBetween(x.d, TODAY) + 1); }
+function leftName(x){ const r = x.id !== '' && x.id != null ? byId(x.id) : null; return r && r.name ? r.name : x.name; }   // 言語を切り替えたあとも、いまの言語の料理名で出す（料理が見つからないときは保存した名前）
 function leftoverLine(x){
-    const day = leftDay(x), name = x.name;
+    const day = leftDay(x), name = leftName(x);
     return day === 1 ? t('今日の{name}の残りがあります（{day}日目）', {name, day}) : day === 2 ? t('昨日の{name}の残りがあります（{day}日目）', {name, day}) : t('{name}の残りがあります（{day}日目）', {name, day});
 }
 function leftoversHtml(){
@@ -5544,7 +5575,8 @@ function leftoversHtml(){
     const nameOf = r => r.name;
     const on = r => S.leftovers.some(x => x.d === TODAY && String(x.id) === String(r.id));
     return `<div class="card left-card"><div class="eyebrow">${esc(t('残り物メモ'))}</div>
-        ${list.map(x => `<div class="left-line"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:x.name}))}">${esc(t('食べきった'))}</button></div>`).join('')}
+        ${list.map(x => `<div class="left-line${leftDay(x) >= 4 ? ' left-old' : ''}"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:leftName(x)}))}">${esc(t('食べきった'))}</button></div>`).join('')}
+        ${list.some(x => leftDay(x) >= 4) ? `<div class="row" style="margin-top:4px"><button class="btn sm ghost" data-act="left-clean">${esc(t('4日目以降のメモをまとめて消す'))}</button></div>` : ''}
         ${items.length ? `<div class="small muted" style="margin-top:6px">${esc(t('今日の料理の残りを冷蔵庫に入れたら押します'))}</div>
         <div class="chips left-chips" role="group" aria-label="${esc(t('残りを冷蔵庫に入れた'))}">${items.map(it => `<button class="chip" data-act="left-add" data-id="${esc(it.r.id)}" aria-pressed="${on(it.r)}">${esc(nameOf(it.r))}</button>`).join('')}</div>` : ''}
         <p class="foot">${esc(t('押した日を1日目として数えます。何日食べられるかは、このアプリでは判断しません。'))}</p></div>`;
@@ -5569,8 +5601,32 @@ function moneyText(a){
     try{ return new Intl.NumberFormat(dateLoc() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a); }catch(e){ return a + ' ' + cur; }
 }
 function parseMoney(raw){
-    let v = String(raw == null ? '' : raw).normalize('NFKC').replace(/\s/g, '');
-    if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v)) v = v.replace(/,/g, ''); else v = v.replace(',', '.');
+    // 通貨記号・円/元/원/zł などの文字・空白・アポストロフィ区切りは読み飛ばす。区切りは「その言語の小数点」を基準に、末尾1〜2桁だけを小数とみなす
+    // （3桁が続く区切りは千の区切り。ただしその言語の小数点で3桁のもの「1,234」(独語など)は1000倍の取り違えを避けるため受け付けない）
+    let v = String(raw == null ? '' : raw).normalize('NFKC').replace(/[\u0660-\u0669]/g, c => c.charCodeAt(0) - 0x660).replace(/[\u06f0-\u06f9]/g, c => c.charCodeAt(0) - 0x6f0).replace(/[\u066b]/g, '.').replace(/[\u066c]/g, ',');
+    v = v.toLowerCase().replace(/r\s*\$/g, '').replace(/\p{Sc}|円|圓|元|원|บาท|đồng|đ|zł|vnd|pln|eur|euro|usd|jpy|gbp|inr|krw|twd|cny|rmb|thb|idr|php|mxn|brl|pen|egp|try|rp|rs|tl|s\//gu, '').replace(/[\s'’\u202f\u00a0]/g, '');
+    if (!/^[\d.,]*\d[\d.,]*$/.test(v)) return null;   // 記号・単位以外の文字や「-」「e」が残るものは金額として読まない
+    let dec = '.'; try { dec = new Intl.NumberFormat(LANG).formatToParts(1.5).find(x => x.type === 'decimal').value; } catch (e) {}
+    const grp = dec === ',' ? '.' : ',';
+    const last = Math.max(v.lastIndexOf('.'), v.lastIndexOf(','));
+    if (last < 0){ /* 整数 */ }
+    else {
+        const sep = v[last], after = v.slice(last + 1), before = v.slice(0, last), other = sep === '.' ? ',' : '.';
+        const groupsOk = (str, ch) => str.split(ch).every((g, i) => i === 0 ? /^\d{1,3}$/.test(g) : /^\d{3}$/.test(g));
+        if (before.includes(sep)){
+            // 同じ区切りが2回以上 → すべて千の区切り
+            if (before.includes(other) || !groupsOk(v, sep)) return null;
+            v = v.split(sep).join('');
+        } else if (before.includes(other)){
+            if (after.length < 1 || after.length > 2 || !groupsOk(before, other)) return null;      // 1.234,50 / 1,234.50
+            v = before.split(other).join('') + '.' + after;
+        } else if (after.length === 3){
+            if (sep === dec || !/^\d{1,3}$/.test(before)) return null;                              // 35.000 / 1,234 (日本・英語) だけ千の区切り
+            v = before + after;
+        } else if (after.length >= 1 && after.length <= 2){
+            v = before + '.' + after;
+        } else return null;
+    }
     if (!/^\d+(\.\d{1,2})?$/.test(v)) return null;
     const n = Math.round(Number(v) * 100) / 100;
     return n > 0 && n <= 1e9 ? n : null;
@@ -5784,12 +5840,14 @@ function eatPlanHtml(items){
     if (!rs.length || rs.some(r => !(Number(r.min) > 0))) return '';   // 時間がわからない料理があるときは、時間のことは言わない
     const at = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(S.settings.dinnerAt || '');
     const mins = rs.map(r => Number(r.min)), total = mins.reduce((a, b) => a + b, 0), mx = Math.max(...mins), longest = rs[mins.indexOf(mx)];
-    const MIN = 60000, now = new Date(), eat = at ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), +at[1], +at[2]) : null;
+    const MIN = 60000, now = new Date();
+    let eat = at ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), +at[1], +at[2]) : null;
+    if (eat && eat <= now && +at[1] < 4) eat = new Date(eat.getTime() + 24 * 60 * MIN);   // 0時〜3時台の指定は、もう過ぎているなら「あすの未明」（夜の食事のあとの時刻）とみなす
     const end1 = new Date(now.getTime() + total * MIN), end2 = new Date(now.getTime() + mx * MIN), c = clockText;
-    const lines = [];
+    const lines = []; let nowLine = '';
     if (eat){
         const startBy = n => c(new Date(eat.getTime() - n * MIN));
-        if (eat <= now) lines.push(t('いま{now}に始めると、1品ずつ順に作って{t1}ごろに終わります。同時に進めても{t2}より早くはなりません', {now:c(now), t1:c(end1), t2:c(end2)}));
+        if (eat <= now) nowLine = t('いま{now}に始めると、1品ずつ順に作って{t1}ごろに終わります。同時に進めても{t2}より早くはなりません', {now:c(now), t1:c(end1), t2:c(end2)});
         else if (end1 <= eat){
             lines.push(t('{time}までに始めれば、1品ずつ順に作っても{eat}に間に合います（合計{n}分）', {time:startBy(total), eat:c(eat), n:total}));
             if (rs.length > 1) lines.push(t('同時に進めるなら、いちばん時間のかかる「{name}」が{n}分なので、{time}までには始めたいです', {name:longest.name, n:mx, time:startBy(mx)}));
@@ -5802,9 +5860,11 @@ function eatPlanHtml(items){
             lines.push(t('時間のかかる料理から始める順：{list}', {list:joinNames(order)}));
         }
     }
+    if (!nowLine) nowLine = t('いま{now}に始めると、1品ずつ順に作って{t1}ごろに終わります。同時に進めても{t2}より早くはなりません', {now:c(now), t1:c(end1), t2:c(end2)});   // 食べる時刻を入れなくても、いま始めたらいつ終わるかは出す
+    lines.push(nowLine);
     return `<details class="card eat-plan" ${(session.eatOpen === undefined ? at : session.eatOpen) ? 'open' : ''}><summary class="eat-sum"><span>${esc(t('食べる時刻から逆算'))}</span><span class="small muted">${esc(eat ? c(eat) : '')}</span></summary>
         <div class="row eat-row"><label class="small" for="eat-at">${esc(t('食べる時刻'))}</label><input type="time" id="eat-at" value="${at ? esc(at[0]) : ''}">${at ? `<button class="btn sm ghost" data-act="eat-clear">${esc(t('時刻を消す'))}</button>` : ''}</div>
-        ${lines.length ? lines.map(l => `<p class="eat-line">${esc(l)}</p>`).join('') : `<p class="small muted">${esc(t('食べたい時刻を入れると、作り始める目安の時刻を出します。時間は、各料理に書かれた所要時間から数えています。'))}</p>`}
+        ${lines.map(l => `<p class="eat-line">${esc(l)}</p>`).join('')}${eat ? '' : `<p class="small muted">${esc(t('食べたい時刻を入れると、作り始める目安の時刻を出します。時間は、各料理に書かれた所要時間から数えています。'))}</p>`}
         ${lines.length ? `<p class="foot">${esc(t('料理ごとの所要時間の目安から数えています。実際の手順や待ち時間までは見ていません。'))}</p>` : ''}
     </details>`;
 }
@@ -5918,7 +5978,7 @@ function viewFridge(){
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => { const e = S.fridgeMeta[f] || {}, n = e.d ? daysBetween(e.d, ymd()) : 0;
-            return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag">${esc('⏰ ' + t('早めに使う'))}</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('登録から{n}日', {n}))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
+            return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" title="${esc([e.soon ? t('早めに使う') : '', n >= 1 ? t('登録から{n}日', {n}) : ''].filter(Boolean).join(' · '))}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag" aria-hidden="true">⏰</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('{n}日', {n}))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
             <p class="small muted" style="margin:4px 0">${esc(t('食材をタップすると「早めに使う」の印がつき、その食材を使う料理を先に出します。印と日数はこの端末の中だけに残ります。'))}</p>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
         : `<div class="note">${esc(t('まだ材料が登録されていません。下のよく使う食材をタップするか、「{list}」のようにまとめて入力できます。', {list:(LANG === 'ja' ? sampleIngs().join('、') : joinNames(sampleIngs()))}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
@@ -6446,7 +6506,7 @@ const TERM_RE = {
         ['ja_zaku', 'ざく切り'], ['ja_sasagaki', 'ささがき'], ['ja_mentori', '面取り'], ['ja_shiomomi', '塩もみ'], ['ja_sunanuki', '砂抜き'], ['ja_hitahita', 'ひたひた'],
         ['ja_shinnari', 'しんなり'], ['ja_aranetsu', '粗熱'], ['ja_mushiyaki', '蒸し焼き'], ['ja_shitaaji', '下味']],
     en: [['-', '(?:low|medium|high)-(?:low|medium|high) heat'], ['heat_low', '\\blow heat'], ['heat_med', '\\bmedium heat'], ['heat_high', '\\bhigh heat'],
-        ['simmer', '\\bsimmer(?:s|ed|ing)?\\b'], ['skim', '\\bskim(?:med|ming)?\\b|\\bscum\\b'], ['blanch', '\\b(?:blanch|parboil)(?:es|ed|ing)?\\b'], ['mince', '\\bmince[d]?\\b'],
+        ['simmer', '\\bsimmer(?:s|ed|ing)?\\b'], ['skim', '\\bskim(?:med|ming)?\\b(?![^.]{0,25}\\b(?:fat|oil|grease|cream)\\b)|\\bscum\\b'], ['blanch', '\\b(?:blanch|parboil)(?:es|ed|ing)?\\b'], ['mince', '\\bmince[d]?\\b'],
         ['slurry', '\\bslurry\\b'], ['droplid', '\\bdrop lid\\b'], ['aldente', '\\bal dente\\b']],
     de: [['-', 'mittel(?:stark|hoh)e[rn]? Hitze'], ['heat_low', '(?:schwach|niedrig|klein)e[rn]? (?:Hitze|Flamme)'], ['heat_med', 'mittler[ea][rn]? Hitze'], ['heat_high', '(?:stark|hoh|groß)e[rn]? Hitze'],
         ['simmer', 'köchel' + TW], ['skim', 'abschäum' + TW], ['aldente', 'bissfest' + TW]],
@@ -6456,7 +6516,7 @@ const TERM_RE = {
         ['simmer', 'frémi' + TW], ['skim', 'écum' + TW], ['blanch', 'blanchi' + TW]],
     it: [['-', 'fuoco medio[- ](?:alto|basso)'], ['heat_low', 'fuoco (?:basso|dolce|minimo)'], ['heat_med', 'fuoco medio(?![-\\p{L}])'], ['heat_high', 'fuoco (?:alto|vivo|vivace|forte)'],
         ['simmer', 'sobbol' + TW], ['skim', '\\bschiuma\\b'], ['blanch', 'sbollent' + TW], ['aldente', '\\bal dente\\b']],
-    pl: [['-', 'średnio-\\p{L}+ ogniu'], ['heat_low', '(?:małym|słabym|niskim) ogniu'], ['heat_med', 'średnim ogniu'], ['heat_high', '(?:dużym|silnym|wysokim) ogniu'],
+    pl: [['-', 'średnio[- ]\\p{L}+ ogniu'], ['heat_low', '(?:małym|słabym|niskim) ogniu'], ['heat_med', 'średnim ogniu'], ['heat_high', '(?:dużym|silnym|wysokim) ogniu'],
         ['skim', 'szumowin' + TW + '|odszum' + TW], ['blanch', 'blanszuj' + TW + '|sparz' + TW]],
     'pt-BR': [['-', 'fogo médio[- ](?:alto|baixo)'], ['heat_low', 'fogo (?:baixo|brando)'], ['heat_med', 'fogo médio(?![-\\p{L}])'], ['heat_high', 'fogo (?:alto|forte)'],
         ['skim', '\\bespuma\\b'], ['blanch', 'escald' + TW], ['aldente', '\\bal dente\\b']],
@@ -6464,9 +6524,9 @@ const TERM_RE = {
         ['skim', 'busanya|\\bbusa\\b'], ['mince', 'cincang' + TW]],
     ko: [['-', '중약불|중강불'], ['heat_low', '약불|약한 ?불'], ['heat_med', '중불|중간 ?불'], ['heat_high', '센 ?불|강불|강한 ?불'],
         ['skim', '거품을 걷' + TW], ['blanch', '데치' + TW + '|데쳐' + TW], ['mince', '다진']],
-    'zh-Hans': [['-', '中小火|中大火|大中火|小中火'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
+    'zh-Hans': [['-', '中小火|中大火|大中火|小中火|[沖冲]掉浮沫'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
         ['skim', '撇去浮沫|撇沫|浮沫'], ['blanch', '焯水|焯'], ['mince', '切末|剁碎'], ['slurry', '水淀粉']],
-    'zh-Hant': [['-', '中小火|中大火|大中火|小中火'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
+    'zh-Hant': [['-', '中小火|中大火|大中火|小中火|[沖冲]掉浮沫'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
         ['skim', '浮沫'], ['blanch', '汆燙'], ['mince', '切末|剁碎'], ['slurry', '太白粉水']],
     ar: [['heat_low', 'نار (?:هادئة|هادية|واطية|خفيفة)'], ['heat_med', 'نار متوسطة'], ['heat_high', 'نار (?:عالية|قوية)'], ['skim', 'الرغوة']],
     hi: [['heat_low', 'धीमी आ(?:ँ|ं)च'], ['heat_med', 'मध्यम आ(?:ँ|ं)च'], ['heat_high', 'तेज़? आ(?:ँ|ं)च'], ['skim', 'झाग निकाल' + TW], ['blanch', 'ब्लांच' + TW]],
@@ -7107,6 +7167,7 @@ document.addEventListener('click', e => {
         case 'big-cook': S.settings.bigCook = el.checked; save(); render(); setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 30); break;
         case 'say-step': { const li = el.closest('li'); voiceStop(true); hfListenStop(); voiceSay(stepSpeech(li), hf.on ? hfListen : null); break; }
         case 'left-add': leftoverToggle(el.dataset.id); break;
+        case 'left-clean': { const old = S.leftovers.filter(x => leftDay(x) >= 4); if (old.length){ S.leftovers = S.leftovers.filter(x => leftDay(x) < 4); save(); render(); toast(t('消しました'), false, () => { S.leftovers = S.leftovers.concat(old); save(); render(); }); } break; }
         case 'left-done': { const [id, d] = String(el.dataset.i).split('|'); const i = S.leftovers.findIndex(x => String(x.id) === id && x.d === d); if (i >= 0){ const was = S.leftovers.splice(i, 1)[0]; save(); render(); toast(t('消しました'), false, () => { S.leftovers.push(was); save(); render(); }); } break; }
         case 'spend-del': { const i = S.spend.findIndex(x => x.id === el.dataset.i); if (i >= 0){ const was = S.spend.splice(i, 1)[0]; session.spendOpen = true; save(); render(); toast(t('消しました'), false, () => { S.spend.push(was); save(); render(); }); } break; }
         case 'text-size': { const v = Number(el.dataset.v); if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); break; }
