@@ -6,7 +6,16 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v18';/* sw.js の VERSION（gohancho-v18）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>
+/* アプリ本体が最後まで動かなかった（保存してある画面が途中で切れていた・壊れていた）ときだけ、保存をすべて捨てて1回だけ読み直す。壊れた画面の中に残っていても動くよう、先頭に置く */
+window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
+    if (sessionStorage.getItem('gohanHeal')) return;
+    sessionStorage.setItem('gohanHeal', '1');
+    Promise.all([window.caches ? caches.keys().then(function(ks){ return Promise.all(ks.filter(function(k){ return k.indexOf('gohancho-') === 0 && k !== 'gohancho-img-v1'; }).map(function(k){ return caches.delete(k); })); }) : 0,
+        navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function(rs){ return Promise.all(rs.map(function(r){ return r.unregister(); })); }) : 0]).catch(function(){}).then(function(){ location.reload(); });
+}catch(e){} });
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1079,7 +1088,6 @@ const INPUT_UNIT2 = 'ฟอง|ชิ้น|หัว|ก้อน|ขีด|ก
 const COUNTER_RE2 = new RegExp('^(?:(?:' + INPUT_NUM2 + ')\\s*(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'i');
 const LATIN_NUMUNIT_RE = new RegExp('^(?:(?:' + INPUT_NUM2 + ')|[\\d.,½¼¾]+(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'iu');   // ラテン文字の語: 数・数の単語・単位だけ（bacon を ba+con と読まない）
 const INPUT_FILL_LATIN = new Set(['tengo','hay','tenemos','queda','quedan','me','nos','un','una','uno','unos','unas','de','del','la','el','los','las','poco','poca','algo','algunos','algunas','mucho','muchos','también','tambien','más','mas','sobra','sobran','en','mi','el','refri','refrigerador','nevera']);
-const INPUT_CONJ_LATIN = /\s+(?:y|e|o|u|con|and|or|with|&|\+)\s+/i;
 // 言語ごとの「持っている」「少し」「の」などと、「と」「または」（ラテン文字の入力で、知っている食材を除いたあまりを食材として足すときに使う）
 'j ai jai il y a ai avons reste restent du de des d l la le les en peu un quelques beaucoup avec aussi plus frigo mon ma mes dans moi encore ich habe hab haben wir noch etwas bisschen viel mit im kühlschrank von vom der die das dem den und oder auch zu zum zur ho abbiamo c è ce po di del della dei delle degli dello il lo gli ed anche frigorifero mi rimasto rimasta avanzato avanzata qualche poco tenho temos tem ainda pouco do da dos das o os as com ou também na geladeira no minha sobrou alguns algumas mam mamy jest są trochę troszkę dużo z ze i oraz lub albo też także w lodówce do na mi zostało jeszcze var vardı evde buzdolabında biraz birkaç ile ve veya ya da ayrıca ben bende elimde kalan punya ada saya aku kami di kulkas sedikit dan atau dengan serta juga sisa masih yang sama có tôi nhà còn ở trong tủ lạnh ít với và hoặc hay cùng cũng thêm may mayroon meron ako sa ref kaunting konting kaunti ng na at saka pati tsaka kasama mga ang ay ko namin natira pa rin din have got ve there is are some of the my fridge left leftover lots little bit i s t pas ni sans non kein keine keinen keiner ohne niente senza sem não bez nie yok değil tanpa tidak bukan không walang hindi no not without ăn allergique allergisch allergico alérgico alergia alergik'.split(' ').forEach(w => INPUT_FILL_LATIN.add(w));
 const INPUT_CONJ_W = new Set('et ou und oder mit e ed o ou com ve veya ile dan atau dengan và hoặc hay với at saka pati tsaka oraz lub albo i z ze and or with y u con avec'.split(' '));   // 食材と食材をつなぐ語
@@ -1163,7 +1171,6 @@ const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉
     '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚',
     'さわら':'魚','かじき':'魚','たらこ':'魚','ちくわ':'魚','ちりめんじゃこ':'魚','かに風味かまぼこ':'魚','しじみ':'魚介',
     '油揚げ':'大豆','おから':'大豆','大豆':'大豆'};
-const FAMILY_LABEL = {'羊':'羊肉','豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
 function prepRecipe(r){
     r.items = r.ings.map(parseIng); r.seasBase = r.seas;
     const p = r.items.find(i => FAMILY[i.key] && i.key !== '卵') || r.items.find(i => FAMILY[i.key]);
@@ -1482,16 +1489,28 @@ function wantLang(){
     if (cc === 'JP') return 'ja';
     return availLang(countryOf(cc).lang) || 'en';
 }
+/* ---- 画面の言葉・国のレシピの読みこみ ----
+   URL に ?v=<ASSET_V> を付ける（sw.js の VERSION と同じ値。版が変わると別のファイルとして取り直す）。
+   読めなかった・途中で切れていた（保存が壊れていた）ときは、保存を捨てて取り直し、もう1回だけ読む */
+const assetUrl = u => u + '?v=' + (window.ASSET_V || '');
+function swEvict(u){
+    try{ const c = navigator.serviceWorker && navigator.serviceWorker.controller; if (c) c.postMessage({type:'evict', url:u}); }catch(e){}
+    return new Promise(r => setTimeout(r, 120)).then(() => fetch(u, {cache:'reload'}).catch(() => {}));
+}
+function loadScript(u, ok){
+    const once = () => new Promise(res => {
+        const el = document.createElement('script');
+        el.src = u;
+        el.onload = () => res(!!ok());
+        el.onerror = () => { el.remove(); res(false); };
+        document.head.appendChild(el);
+    });
+    return once().then(good => good ? true : swEvict(u).then(once));
+}
 const langLoads = {};
 function loadLang(l){
     if (l === 'ja' || I18N[l]) return Promise.resolve();
-    return langLoads[l] || (langLoads[l] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `i18n/${l}.js`;
-        el.onload = () => res();
-        el.onerror = () => { delete langLoads[l]; res(); };
-        document.head.appendChild(el);
-    }));
+    return langLoads[l] || (langLoads[l] = loadScript(assetUrl(`i18n/${l}.js`), () => I18N[l]).then(good => { if (!good) delete langLoads[l]; }));
 }
 async function setLang(l){
     await Promise.all([loadLang(l), l !== 'ja' && l !== 'en' ? loadLang('en') : null]);
@@ -1527,12 +1546,20 @@ function genreLabel(r){
     if (r.pack) return countryLabel(countryOf(r.pack));
     return {'和':t('和食'), '洋':t('洋食'), '中':t('中華'), '韓':t('韓国'), 'エスニック':t('エスニック')}[r.genre] || r.genre || '';
 }
+let FAM_LABELS = null, FAM_LABELS_KEY = '';   // 言語ごとに1回だけ作る（呼ぶたびに11個の訳を引かない）
 function familyLabel(f){
-    return {'羊':t('羊肉'), '豚':t('豚肉'), '鶏':t('鶏肉'), '牛':t('牛肉'), 'ひき肉':t('ひき肉'), '魚':t('魚'), '魚介':t('魚介'), '大豆':t('豆腐・大豆'),
-        '卵':t('卵'), '加工肉':t('ハム・ベーコン'), '野菜':t('野菜')}[f] || f;
+    const key = LANG + (LANG === 'en' && isGB() ? '-GB' : '');
+    if (!FAM_LABELS || FAM_LABELS_KEY !== key){ FAM_LABELS_KEY = key; FAM_LABELS = {'羊':t('羊肉'), '豚':t('豚肉'), '鶏':t('鶏肉'), '牛':t('牛肉'), 'ひき肉':t('ひき肉'), '魚':t('魚'), '魚介':t('魚介'), '大豆':t('豆腐・大豆'),
+        '卵':t('卵'), '加工肉':t('ハム・ベーコン'), '野菜':t('野菜')}; }
+    return FAM_LABELS[f] || f;
 }
 function ymd(d=new Date()){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function parseYmd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+const YMD_MS = new Map();   // 日付の文字列 → その日の0時（ミリ秒）。記録が数千件あっても毎回の分解・Date の組み立てをしない（返すのは毎回新しい Date）
+function parseYmd(s){
+    let ms = YMD_MS.get(s);
+    if (ms === undefined){ const [y, m, d] = s.split('-').map(Number); ms = new Date(y, m-1, d).getTime(); if (YMD_MS.size > 4000) YMD_MS.clear(); YMD_MS.set(s, ms); }
+    return new Date(ms);
+}
 function realYmd(s){ const [y, m, d] = String(s).split('-').map(Number); if (!(y >= 1900 && y <= 9999 && m >= 1 && m <= 12 && d >= 1)) return false; const x = new Date(y, m - 1, d); return x.getFullYear() === y && x.getMonth() === m - 1 && x.getDate() === d; }   // 暦にある日付か
 function addDays(s, n){ const d = parseYmd(s); d.setDate(d.getDate()+n); return ymd(d); }
 function daysBetween(a, b){ return Math.round((parseYmd(b) - parseYmd(a)) / 86400000); }
@@ -1788,7 +1815,7 @@ const BENTO_OK = new Set(`
     pe_pollo_horno pe_bistec_apanado pe_papa_rellena pe_chicharron_pescado pe_tortilla_verduras pe_tacu_tacu
     pe_platano pe_yuca_frita pe_camote_frito pe_torrejas_choclo pe_saltado_vainitas pe_verduras_chifa
     pe_cancha pe_arroz_arabe pe_pastel_acelga`.split(/\s+/).filter(Boolean));
-const BENTO_NEED = 3, BENTO_FEW = 5;
+const BENTO_FEW = 5;
 function bentoFits(r){ return (r.type === '主菜' || r.type === '副菜') && BENTO_OK.has(r.id); }
 // その枠（主菜 / 副菜）で、いま選べるお弁当向きの料理の数（苦手・「今は出さない」を除く）
 const bentoMemo = new Map();
@@ -2539,7 +2566,7 @@ function addGenerated(items){
 }
 async function loadGenerated(){
     try{
-        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION));
+        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION + '.' + (window.ASSET_V || '')));
         if (!res.ok) return;
         const m = await res.json();
         addGenerated((m && m.items) || {});
@@ -2929,16 +2956,11 @@ function sideGarnish(rng){
     for (let k = 0; k < 22; k++){ const x = 66 + (rng()-.5)*20, y = 64 + (rng()-.5)*16; out += `<path d="M${x.toFixed(1)},${y.toFixed(1)} q${(4+rng()*4).toFixed(1)},${(-2+rng()*4).toFixed(1)} ${(9+rng()*5).toFixed(1)},${(-1+rng()*2).toFixed(1)}" stroke="${rng() < .5 ? '#d9eab0' : '#bcd98a'}" stroke-width="1.3" fill="none" stroke-linecap="round" transform="rotate(${(-30+rng()*60).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`; }
     return `<g>${out}</g><circle cx="76" cy="48" r="4.6" fill="#e2412f"/><circle cx="74.8" cy="46.6" r="1.3" fill="#fff" opacity=".6"/><path d="M76,43.6 l1.2,-1.4 M76,43.6 l-1.4,-.9" stroke="#3f7a35" stroke-width=".9" stroke-linecap="round"/>`;
 }
-function mixHex(a, b, t){
-    const h = x => { x = String(x).replace('#',''); if (x.length === 3) x = x.split('').map(c => c + c).join(''); return [0,2,4].map(i => parseInt(x.slice(i, i+2), 16)); };
-    try{ const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2,'0')).join(''); }catch(e){ return a; }
-}
 
 /* =========================================================
    いつも家にある食材（常備品）
    ========================================================= */
 const STAPLE_QUICK = ['卵','玉ねぎ','にんじん','じゃがいも','長ねぎ','豆腐','キャベツ','ベーコン','ハム','ウインナー','しめじ','ツナ','コーン','わかめ','油揚げ','チーズ','キムチ','うどん','スパゲッティ','牛乳'];
-function stapleKeys(){ return new Set(S.staples.map(keyOf)); }
 // 買い足すとレパートリーが広がる食材: その1品を足すと「今すぐ作れる」に変わる料理を数える
 function shoppingHints(have, limit=3){
     const gain = {};
@@ -3365,7 +3387,6 @@ function introCancelBy(){
     let tz = ''; try{ const p = new Intl.DateTimeFormat(LANG, {timeZoneName:'short'}).formatToParts(d).find(x => x.type === 'timeZoneName'); tz = p ? p.value : ''; }catch(e){}   // 端末のタイムゾーン略称（JST・PST など）。取れなければ付けない
     return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + (tz ? ' ' + tz : '');
 }
-function introDays(){ return daysBetween(TODAY, introEndYmd()); }
 function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
 // お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
 function trialTimelineHtml(){
@@ -3753,7 +3774,13 @@ const STEP_LEFT_FAT = /\b(?:fat|oil|grease|drippings|lard|schmaltz)\b|\b(?:pour|
 const STEP_LEFT_AFTER = /^\s*(?:だけ|のみ|ほど)?(?:を)?\s*(?:残|のこ)/;
 // 作り方の文に、人数で変わる分量（グラム・さじ・個数など）が残っているか。時間・温度・大きさ・「4等分」「3回」だけなら、分量の注記は要らない
 const STEP_NOAMT = new RegExp('\\d+(?:[.,]\\d+)?(?:\\s*[½¼¾⅓⅔]|\\s+\\d+\\/\\d+)?(?:\\s*(?:[-–~〜～]|to|or|ou|oder|o|à|a|bis|al|do|hingga|đến|hanggang|إلى|或|か)\\s*\\d+(?:[.,]\\d+)?(?:\\s*[½¼¾⅓⅔]|\\s+\\d+\\/\\d+)?)?\\s*(?:more\\s+|もう|さらに)?(?:°\\s*[CF]?|℃|%|倍|درجة|h\\s*\\d*(?![A-Za-zÀ-ɏ])|(?:cm|mm|inch(?:es)?|厘米|公分|公釐|毫米|センチ|ミリ|ซม\\.?|سم|ملم|सें\\.?\\s?मी\\.?|-hole)|[Cc](?![A-Za-z]|\\.\\s*à)|(?:(?:diagonal|deep|shallow|small|light)\\s+)?(?:cuts?|slashes|slits|incisions|cortes|entailles|Schnitte|tagli|çizik|hiwa|刀|칼집|シュッ)|(?:minutes?|mins?|hours?|hrs?|seconds?|secs?|days?|weeks?|nights?|times?|whistles|分|秒|時間|日|週間|晩|분|초|시간|일|小时|小時|分钟|分鐘|秒钟|天|นาที|ชั่วโมง|วินาที|วัน|dakika|saat|saniye|gün|menit|jam|detik|hari|phút|giờ|giây|ngày|minut\\p{L}*|hora\\p{L}*|segundos?|d[ií]as?|ore?|secondi|giorni|Minuten?|Stunden?|Sekunden?|Tage?n?|heures?|secondes?|jours?|godzin\\p{L}*|sekund\\p{L}*|dni|dzień|oras|segundo|araw|linggo|ساعة|ساعات|دقيقة|دقائق|دقايق|ثانية|ثواني|يوم|أيام|مرة|مرات|मिनट|घंटे?|घंटा|सेकंड|दिन|सीटी|回|度|等分|つ割り|か所|ヶ所|番|次|번|lần|veces|vezes|volte|Mal|fois|razy|kali|tiếng)(?![A-Za-zÀ-ɏ])|\\d+\\/\\d+(?=\\s*(?:of|de|des|von|の|을|를|を|は|the|le|la|el|del)\\b)|\\d+\\/\\d+\\s*[のをはがに]|\\d+\\s*(?:-|–)\\s*(?:minute|hour|inch|cm|mm))', 'giu');
+const STEP_AMT = new Map();   // 手順の文 → 分量の数字があるか（同じ文を開くたびに長い正規表現をかけない）
 function stepHasAmount(text){
+    const k = String(text), hit = STEP_AMT.get(k); if (hit !== undefined) return hit;
+    if (STEP_AMT.size > 3000) STEP_AMT.clear();
+    const v = stepHasAmountRaw(k); STEP_AMT.set(k, v); return v;
+}
+function stepHasAmountRaw(text){
     const t0 = String(text).replace(STEP_NOAMT, '').replace(/\d+\s*(?:x|×)\s*\d+/g, '');
     return /\d/.test(t0) || /كوباية|كوبين/.test(t0);
 }
@@ -4496,12 +4523,15 @@ function shopNorm(s){
         return w.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }).join(' ');
 }
-function shopBase(label){ return shopNorm(shopClean(label)); }
+const SHOP_MEMO = new Map();   // 買い物メモの名寄せ・売り場の判定は文字列だけで決まる。1週間分の材料を毎回、長い正規表現で調べ直さない
+function shopMemo(k, f){ let v = SHOP_MEMO.get(k); if (v === undefined){ if (SHOP_MEMO.size > 6000) SHOP_MEMO.clear(); v = f(); SHOP_MEMO.set(k, v); } return v; }
+function shopBase(label){ return shopMemo('b|' + label, () => shopNorm(shopClean(label))); }
 // 同じ食材キーの中では「A または B」の A だけで見たものとも同じ行にする（Milk or buttermilk ＝ Milk）
-function shopLoose(label){ return shopNorm(shopClean(label).split(SHOP_ALT)[0].trim()); }
+function shopLoose(label){ return shopMemo('l|' + label, () => shopNorm(shopClean(label).split(SHOP_ALT)[0].trim())); }
 // 買い物メモの売り場: veg（野菜）・meat（肉・魚）・dairy（乳製品・卵）・other（その他）
 const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節'];
-function shopSec(i){
+function shopSec(i){ return shopMemo('s\u0001' + i.key + '\u0001' + (i.en || '') + '\u0001' + (i.label || ''), () => shopSecRaw(i)); }
+function shopSecRaw(i){
     const w = (i.key + '|' + (i.en || '')).toLowerCase();
     if (['pork','chicken','beef','fish','shellfish'].some(f => inFam(f, i)) || /\b(lamb|mutton|goat|duck|liver|meat|mince|keema|sausage)\b/.test(w) || i.key === 'たらこ') return 'meat';
     // 売り場が野菜でないとわかる加工品・缶・ジュース・乾物など（野菜の名前を含んでいても、生の野菜ではないもの）
@@ -7646,13 +7676,7 @@ function guessCountry(){
 }
 function loadPack(cc){
     if (cc === 'JP' || PACKS[cc]) return Promise.resolve(PACKS[cc] || null);
-    return new Promise((res, rej) => {
-        const el = document.createElement('script');
-        el.src = `packs/${cc.toLowerCase()}.js`;
-        el.onload = () => PACKS[cc] ? res(PACKS[cc]) : rej(new Error('pack'));
-        el.onerror = () => rej(new Error('pack'));
-        document.head.appendChild(el);
-    });
+    return loadScript(assetUrl(`packs/${cc.toLowerCase()}.js`), () => PACKS[cc]).then(good => { if (good) return PACKS[cc]; throw new Error('pack'); });
 }
 const PACK_TYPE = {main:'主菜', side:'副菜', soup:'汁物', rice:'ごはん', noodle:'麺'};
 const PACK_METHOD = {simmer:'煮', stirfry:'炒', grill:'焼', fry:'揚', raw:'和え', soup:'汁', rice:'炊'};
@@ -7668,12 +7692,9 @@ window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d){ d.tlang = lang; 
 function loadPackTr(cc, lang){
     const k = cc + '.' + lang;
     if (k in PACK_TR) return Promise.resolve(PACK_TR[k]);
-    return trLoads[k] || (trLoads[k] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
-        el.onload = () => res(PACK_TR[k] || null);
-        el.onerror = () => { delete trLoads[k]; res(null); };   // 読めなかったことは覚えない（電波が戻れば読みに行く）
-        document.head.appendChild(el);
+    return trLoads[k] || (trLoads[k] = loadScript(assetUrl(`packs/i18n/${cc.toLowerCase()}.${lang}.js`), () => PACK_TR[k]).then(good => {
+        if (!good) delete trLoads[k];   // 読めなかったことは覚えない（電波が戻れば読みに行く）
+        return good ? PACK_TR[k] : null;
     }));
 }
 function trLangFor(cc){ return cc === 'JP' ? (LANG === 'ja' ? null : LANG) : (LANG === 'en' ? null : LANG); }
@@ -8065,7 +8086,22 @@ window.addEventListener('focus', refreshToday);
 if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの長さ・価格を、はじめの案内より先に読んでおく
 loadGenerated().then(loadPhotos);
 loadMine();
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){ navigator.serviceWorker.register('sw.js').catch(() => {}); }
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){
+    navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(() => {});
+    // 新しい版が入った（前の版で開いたまま／保存した画面で開いた）ときは、アプリに戻ってきたときに読み直す（開いている途中の画面は触らない）
+    let swNew = false;
+    navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'gohancho-updated') swNew = true; });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden || !swNew) return;
+        try{
+            const n = Number(sessionStorage.getItem('gohanReload') || 0); if (n >= 3) return;   // 読み直しが続かないように
+            if (document.querySelector('#modal-root [role="dialog"], .sheet.open') || (typeof hf !== 'undefined' && hf.on)) return;
+            sessionStorage.setItem('gohanReload', String(n + 1)); history.replaceState(null, '', '#' + tab); location.reload();
+        }catch(e){}
+    });
+}
+try{ sessionStorage.removeItem('gohanHeal'); }catch(e){}
+window.__gohanOK = 1;   // ここまで動いた印（下の保存の立て直しが見る）
 </script>
 </body>
 </html>
