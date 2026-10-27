@@ -589,7 +589,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Die Zwiebel fein reiben oder hacken und in der Hälfte des Öls 3 Minuten andünsten. Currypulver und Paprika 30 Sekunden mitrösten, bis es duftet.',
         'Passierte Tomaten, Ketchup, Zucker, Essig und Wasser zugeben, 10 Minuten köcheln und mit Salz (und Cayenne) abschmecken. Nach Wunsch glatt pürieren.',
         'Inzwischen die Würste im restlichen Öl bei mittlerer Hitze 8–10 Minuten rundherum braun und heiß braten.',
-        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren.'
+        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine Prise geräuchertes Paprikapulver in der Soße', why: 'Bringt den Geschmack vom Grill und von der Imbissbude', skill: 'Curry anrösten', how: 'Ein paar Sekunden in heißem Fett wecken die Gewürze; direkt in die Flüssigkeit gegeben schmecken sie staubig.' }
     },
@@ -745,7 +745,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Den Feldsalat zwei- bis dreimal in reichlich Wasser waschen (er ist oft sandig), die Wurzelenden abknipsen, die Röschen aber ganz lassen, und trocken schleudern.',
         'Essig, Senf, Honig, fein gehackte Schalotte, Salz, Pfeffer, Wasser und Öl zu einem Dressing verschlagen.',
         'Das Brot würfeln. Den Speck in einer Pfanne ohne Fett knusprig braten, dann die Brotwürfel im Fett goldbraun rösten.',
-        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen.'
+        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine gekochte Kartoffel ins Dressing gedrückt', why: 'Die schwäbische und pfälzische Art: cremig und haftet an den Blättern', skill: 'Erst bei Tisch anmachen', how: 'Die zarten Blätter fallen wenige Minuten nach dem Anmachen zusammen; erst direkt vor dem Essen mischen.' }
     },
@@ -767,7 +767,7 @@ GOHAN_PACK_TR('DE', 'de', {
       steps: [
         'Die Möhren schälen und grob raspeln. Den Apfel mit Schale (ohne Kerngehäuse) raspeln und sofort mit dem Zitronensaft mischen, damit er nicht braun wird.',
         'Möhren, Apfel, Honig, Salz und Öl vermischen.',
-        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen.'
+        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett hilft dem Körper, das Vitamin A aus Möhren aufzunehmen, und macht den Salat runder.' }
     },

@@ -884,7 +884,7 @@ GOHAN_PACK_TR('PL', 'pl', {
         "Pokrój żeberka na porcje po 2–3 kości. Wymieszaj miód, musztardę, paprykę, majeranek, przeciśnięty czosnek, olej, sól i pieprz i natrzyj żeberka. Odstaw na co najmniej godzinę (lub na noc do lodówki).",
         "Rozgrzej piekarnik do 170°C. Ułóż żeberka w naczyniu na pokrojonej cebuli, dodaj 100 ml wody, przykryj folią i piecz 1 1/4 godziny.",
         "Zdejmij folię, ewentualnie rozłóż wokół ćwiartki ziemniaków, zwiększ temperaturę do 200°C i piecz jeszcze 25–30 minut, polewając sosem, aż będą lepkie i zrumienione.",
-        "Podawaj z ziemniakami i surówką z kiszonej kapusty.",
+        "Podawaj z ziemniakami i surówką z kiszonej kapusty. Nie podawaj miodu niemowlętom poniżej 1. roku życia, nawet po podgrzaniu.",
       ],
       tip: { add: "Surówka z kiszonej kapusty obok", why: "Jej kwaśność równoważy słodkie, tłuste żeberka", skill: "Najpierw nisko, potem wysoko", how: "Powolne pieczenie pod przykryciem zmiękcza mięso, a gorący finisz bez folii karmelizuje glazurę." }
     },

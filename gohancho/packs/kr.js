@@ -267,7 +267,7 @@ GOHAN_PACK({
         'Dry-toast the anchovies in a frying pan over medium-low heat for 2 minutes, then shake them in a sieve to remove the dust.',
         'Add the oil to the pan with the garlic, soy sauce and sugar and let it bubble for 20 seconds.',
         'Add the anchovies and nuts and toss for 1 minute until coated.',
-        'Turn off the heat, stir in the syrup and sesame seeds, and spread out to cool so they stay crisp.',
+        'Turn off the heat, stir in the syrup and sesame seeds, and spread out to cool so they stay crisp. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A small green chili, sliced', why: 'A little heat cuts the sweetness for adults', skill: 'Add the syrup off the heat', how: 'Syrup added on the heat hardens like candy; stirring it in after gives a glossy coat that stays crunchy.' },
     },
@@ -1671,7 +1671,7 @@ GOHAN_PACK({
       steps: [
         'Squeeze the tofu hard in a cloth and chop the onion, carrot and green onion very finely.',
         'Mix the pork, tofu, vegetables and seasonings and knead well.',
-        'Shape into round patties 4 cm wide and 1 cm thick.',
+        'Shape into round patties 4 cm wide and 1 cm thick. Cook until cooked through, with no pink in the center.',
         'Dust with flour, dip in the beaten egg and pan-fry in oil over medium-low heat for 3–4 minutes on each side.',
       ],
       tip: { add: 'Make a double batch and freeze them uncooked', why: 'Ready for lunchboxes and busy evenings', skill: 'Squeeze the tofu dry', how: 'Wet tofu makes the patties soft and they fall apart in the pan.' },

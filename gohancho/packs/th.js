@@ -1084,7 +1084,7 @@ GOHAN_PACK({
       ],
       seas: '2 tbsp fish sauce · 2–3 tbsp lime juice · 1–2 tsp dried chili flakes · 1/2 tsp sugar · 3 tbsp water',
       steps: [
-        'Put the pork and water in a pan over medium heat and cook, breaking it up, for 4–5 minutes until just cooked; it should stay moist.',
+        'Put the pork and water in a pan over medium heat and cook, breaking it up, for 4–5 minutes until just cooked; it should stay moist. Make sure no pink remains in the pork.',
         'Turn off the heat and season with fish sauce, lime juice, chili flakes and sugar.',
         'Add the shallots, toasted rice, spring onion, sawtooth coriander and mint and toss.',
         'Serve with sticky rice and raw cabbage, long beans and cucumber.',
@@ -1253,7 +1253,7 @@ GOHAN_PACK({
       ],
       seas: '2 garlic cloves · 1 tbsp tomato ketchup · 1 tsp light soy sauce · 1 tsp fish sauce · 1 tsp sugar · pinch of white pepper · 2 tbsp oil',
       steps: [
-        'Fry the chopped garlic and pork in 1 tbsp oil for 3 minutes, add the onion, long beans, tomato, ketchup, soy sauce, sugar and pepper and cook for 2–3 minutes until thick. Set aside.',
+        'Fry the chopped garlic and pork in 1 tbsp oil for 3 minutes, add the onion, long beans, tomato, ketchup, soy sauce, sugar and pepper and cook for 2–3 minutes until thick. Make sure no pink remains in the pork, then set aside.',
         'Beat the eggs with the fish sauce. For each omelette, heat a little oil in a wide pan over medium heat and swirl in the beaten egg from 2 eggs to make a thin round.',
         'When the top is almost set, put an equal share of the filling in the centre and fold the four sides over to make a parcel.',
         'Turn it out onto a plate, seam side down, and make the rest the same way. Serve with rice and chili sauce.',
@@ -1301,7 +1301,7 @@ GOHAN_PACK({
       seas: '2 garlic cloves · 2 tbsp cornflour · 1 tbsp oyster sauce · 1 tsp light soy sauce · 1/2 tsp sugar · pinch of white pepper · 150 ml water · 1 tsp cornflour mixed with 1 tbsp water · oil for frying',
       steps: [
         'Dust the tofu slices with cornflour and shallow-fry for 2–3 minutes per side until golden. Arrange on a plate.',
-        'Fry the chopped garlic and pork for 2 minutes, add the mushrooms, carrot, oyster sauce, soy sauce, sugar and water and simmer for 2 minutes.',
+        'Fry the chopped garlic and pork for 2 minutes, add the mushrooms, carrot, oyster sauce, soy sauce, sugar and water and simmer for 2 minutes. Cook until no pink remains in the pork.',
         'Stir in the cornflour slurry and simmer for 30 seconds until glossy.',
         'Pour over the tofu and top with spring onion and white pepper.',
       ],

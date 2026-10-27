@@ -1513,7 +1513,7 @@ GOHAN_PACK({
         'Cut the aubergines into thin sticks or 5 mm rounds and soak them in the milk with a pinch of salt for 30 minutes.',
         'Drain and toss in flour, shaking off the excess.',
         'Fry in very hot oil in small batches for 2-3 minutes until golden and crisp. Drain on kitchen paper and sprinkle with a little salt.',
-        'Drizzle with the miel de caña and serve straight away.',
+        'Drizzle with the miel de caña and serve straight away. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'Flaky salt with the honey', why: 'The sweet-salty contrast is what makes it addictive', skill: 'Soak in milk', how: 'The milk softens any bitterness and makes the aubergine absorb less oil.' },
     },
