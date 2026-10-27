@@ -87,10 +87,10 @@ a{color:var(--accent)}
 .sec-head h2+.hint{padding-inline-start:16px}
 /* カード: 画面の中の囲みはすべてこれ */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.eyebrow{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.eyebrow{font-size:.75rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 .foot{font-size:.76rem;color:var(--muted);margin:0;line-height:1.7}
 .sec-head.split{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.label{font-size:.72rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.label{font-size:.75rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ボタン */
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.5rem 1rem;font-size:.88rem;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background .15s,border-color .15s,transform .1s;min-height:44px;text-decoration:none;color:var(--ink)}
@@ -109,13 +109,15 @@ a{color:var(--accent)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips:not(.scroll) .chip{white-space:normal;flex-shrink:1;max-width:100%;text-align:start}   /* 長い言葉のチップ（苦手な食材のなかまなど）は折り返して、画面からはみ出さない */
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;gap:.35rem;min-height:44px;white-space:nowrap;flex-shrink:0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-height:44px;min-width:44px;white-space:nowrap;flex-shrink:0}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"]::before{content:"✓";content:"✓" / "";font-weight:700}   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
+.chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
-.badge{display:inline-block;font-size:.7rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
+.badge{display:inline-block;font-size:.75rem;padding:.02rem .5rem;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
 .badge.new{background:var(--accent-soft);color:var(--accent)}
 
@@ -153,11 +155,11 @@ a{color:var(--accent)}
 .v-konomono .food.photo{inset:12%;border-radius:8%}
 .v-konomono .food{inset:26%;border-radius:4px;background:repeating-linear-gradient(90deg,#e7c34a 0 7px,#d9af2a 7px 8px)}
 .spot-label{display:flex;flex-direction:column;gap:0;min-width:0;max-width:100%}
-.spot-label .slot{font-size:.66rem;letter-spacing:.2em;color:var(--tray-muted)}
+.spot-label .slot{font-size:.75rem;letter-spacing:.2em;color:var(--tray-muted)}
 .spot-label .nm{font-family:var(--font-display);font-weight:700;font-size:.98rem;line-height:1.35;overflow-wrap:anywhere}
-.spot-label .mt{font-size:.7rem;color:var(--tray-muted)}
-.spot-label .last{font-size:.66rem;color:#f0c874}
-.credit{font-size:.7rem;color:var(--muted)}
+.spot-label .mt{font-size:.75rem;color:var(--tray-muted)}
+.spot-label .last{font-size:.75rem;color:#f0c874}
+.credit{font-size:.75rem;color:var(--muted)}
 
 /* ひとひねり */
 .tw-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start;padding-block:12px;border-top:1px solid var(--line)}
@@ -168,10 +170,10 @@ a{color:var(--accent)}
 .thumb.pic.gen>img{inset:-6%;width:112%;height:112%}
 .thumb.pic::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 3px var(--porcelain);pointer-events:none}
 .thumb.none{background:radial-gradient(circle,var(--food,#a8652b) 0 36%,var(--porcelain) 37%)}
-.tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink)}
+.tw-name{font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1.4;cursor:pointer;color:var(--ink);min-height:44px;display:flex;align-items:center}
 .from{font-size:.78rem;color:var(--muted)}
 .changes{display:flex;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none}
-.changes li{font-size:.72rem;background:var(--yolk-soft);border-radius:999px;padding:.05rem .55rem;color:var(--yolk-ink)}
+.changes li{font-size:.75rem;background:var(--yolk-soft);border-radius:999px;padding:.05rem .55rem;color:var(--yolk-ink)}
 
 /* リスト */
 .list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
@@ -197,6 +199,8 @@ a{color:var(--accent)}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
 input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
+small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を下回らないように */
+::placeholder{color:var(--muted);opacity:1}   /* 入力例の文字も、薄すぎないように（ダークでも4.5:1以上） */
 .field [aria-invalid=true]{border-color:var(--danger)}
 .inputbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}
 .inputbar input{min-width:0}
@@ -220,14 +224,14 @@ textarea{min-height:90px;resize:vertical}
 .meter i{display:block;height:100%;background:var(--accent)}
 .ings{font-size:.8rem;color:var(--muted);line-height:1.8}
 .ings b{color:var(--accent);font-weight:700}
-.ings .miss{color:var(--danger)}
+.ings .miss{color:var(--danger);text-decoration:underline dotted;text-underline-offset:3px}   /* ないものは色だけでなく点線の下線でも示す */
 .ings .sub{color:var(--yolk-ink);background:var(--yolk-soft);border-radius:4px;padding:0 .25rem}
 
 /* 週プラン */
 .week .item{grid-template-columns:48px 1fr auto}
 .day{display:flex;flex-direction:column;align-items:center;line-height:1.1}
 .day .dd{font-family:var(--font-display);font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
-.day .wd{font-size:.68rem;color:var(--muted)}
+.day .wd{font-size:.75rem;color:var(--muted)}
 .day.sun .wd,.day.sun .dd{color:var(--sun)}.day.sat .wd,.day.sat .dd{color:var(--sat)}
 .day.today .dd{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 
@@ -235,7 +239,7 @@ textarea{min-height:90px;resize:vertical}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{background:var(--surface-2);border-radius:12px;padding:10px 12px}
 .stat .n{font-family:var(--font-display);font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.2}
-.stat .k{font-size:.72rem;color:var(--muted)}
+.stat .k{font-size:.75rem;color:var(--muted)}
 
 details.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:0 16px}
 details.box>summary{padding:14px 0;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
@@ -247,7 +251,7 @@ details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:12
 /* タブ */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
 nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px}
-nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:.72rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
+nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
 nav.tabs svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 nav.tabs button[aria-selected="true"] svg{stroke-width:2}
@@ -263,7 +267,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .hero .noimg{display:grid;place-items:center;padding:28px 0}
 .hero .noimg .vessel{width:150px}
 .hero .close{position:absolute;top:12px;inset-inline-end:12px;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:999px;min-height:44px;padding:.2rem .9rem;font-size:.8rem}
-.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.66rem;line-height:1.4}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.75rem;line-height:1.4}
 .hero .cap a{color:#fff}
 .sheet-body{padding:18px 16px 0;display:flex;flex-direction:column;gap:16px}
 .sheet h2{font-size:1.5rem}
@@ -283,7 +287,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .steps li.add::before{background:var(--yolk);color:#231800}
 .confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
 .toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.55rem 1.1rem;border-radius:999px;font-size:.86rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
-.toast .btn{margin-inline-start:8px;min-height:36px;vertical-align:middle}
+.toast .btn{margin-inline-start:8px;min-height:44px;vertical-align:middle}
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
 .muted{color:var(--muted)}
@@ -349,7 +353,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray-shuffle::after{background:linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
 .shuffle{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px;cursor:pointer;
-    box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08);font:inherit;font-size:.6rem;font-weight:700;line-height:1.1;text-align:center;transition:transform .15s ease}
+    box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08);font:inherit;font-size:.75rem;font-weight:700;line-height:1.1;text-align:center;transition:transform .15s ease}
 .shuffle svg{width:24px;height:24px;flex:0 0 auto}
 .shuffle span{max-width:58px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .shuffle:hover{transform:scale(1.05)}
@@ -365,15 +369,15 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tray.compact .spot{width:var(--w,31%)}
 .tray.compact .spot .vessel,.tray.compact .spot.main .vessel,.tray.compact .spot.side .v-kobachi{width:88%}
 .tray.compact .spot-label{gap:0}
-.tray.compact .spot-label .slot{font-size:.6rem;letter-spacing:.12em}
+.tray.compact .spot-label .slot{font-size:.75rem;letter-spacing:.12em}
 .tray.compact .spot-label .nm{font-size:.82rem;line-height:1.3}
 .tray.compact .spot-label .mt{display:none}
-.tray.compact .spot-label .last{font-size:.6rem}
-.tray.compact .swap{min-height:28px;font-size:.66rem;padding:.05rem .55rem}
+.tray.compact .spot-label .last{font-size:.75rem}
+.tray.compact .swap{min-height:28px;font-size:.75rem;padding:.05rem .55rem}
 .tray.compact .spot{gap:5px}
 .spot.side .v-kobachi{width:78%}
 .tray .spot.main .vessel{width:86%}
-.swap{border:1px solid rgba(245,238,227,.28);background:transparent;color:var(--tray-ink);border-radius:999px;font-size:.7rem;padding:.1rem .7rem;min-height:30px;cursor:pointer}
+.swap{border:1px solid rgba(245,238,227,.28);background:transparent;color:var(--tray-ink);border-radius:999px;font-size:.75rem;padding:.1rem .7rem;min-height:30px;cursor:pointer}
 .swap:hover{background:rgba(245,238,227,.1)}
 .swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
 .spot .swap-line{color:var(--tray-ink)}
@@ -387,7 +391,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .country{display:grid;grid-template-columns:auto minmax(0,1fr);min-width:0;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;min-height:56px}
 .country .fl{grid-row:span 2;font-size:1.6rem;line-height:1}
 .country .nm{font-weight:700;font-size:.92rem;line-height:1.3;min-width:0;overflow-wrap:anywhere}
-.country .sub{font-size:.72rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
+.country .sub{font-size:.75rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
 @media (max-width:360px){.country{padding:10px 8px;column-gap:6px}.country .fl{font-size:1.3rem}.country .nm{font-size:.86rem;hyphens:auto}}
 .country.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
 .v-staple{width:62%}
@@ -399,9 +403,9 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
 .top .gear{margin-inline-start:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
 .top .gear svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.plus-mark{font-size:.6rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-inline-start:4px}
+.plus-mark{font-size:.75rem;font-weight:700;letter-spacing:.06em;background:var(--yolk);color:#231800;border-radius:4px;padding:0 .3rem;margin-inline-start:4px}
 .warn{color:var(--danger)}
-.tiny{font-size:.7rem;line-height:1.5;margin:0}
+.tiny{font-size:.75rem;line-height:1.5;margin:0}
 /* 設定 */
 .settings-head{display:flex;align-items:center;gap:8px}
 .set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
@@ -424,7 +428,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .ob-actions{display:flex;gap:8px;margin-top:6px}.sheet-onboard .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:10px 0 calc(14px + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .ob-skip{align-self:center}
 .pw-head{display:flex;align-items:center;gap:10px}
-.pw-badge{background:var(--yolk);color:#231800;font-weight:700;font-size:.72rem;letter-spacing:.14em;border-radius:6px;padding:.15rem .5rem}
+.pw-badge{background:var(--yolk);color:#231800;font-weight:700;font-size:.75rem;letter-spacing:.14em;border-radius:6px;padding:.15rem .5rem}
 .pw-reason{margin:0;font-weight:700}
 .pw-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .pw-list li{padding-inline-start:26px;position:relative}
@@ -434,30 +438,33 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pw-price.best{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .pw-price .l{font-size:.78rem;color:var(--muted)}
 .pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.05rem}.pw-price.cta .p{font-size:1.35rem}.pw-offer .ot{font-weight:400;font-size:.95rem}.pw-offer .op{font-size:1.4rem}
-.pw-price .n{font-size:.72rem;color:var(--accent);font-weight:700}
+.pw-price .n{font-size:.75rem;color:var(--accent);font-weight:700}
 .pw-free{margin:0;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;font-weight:500}
 
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
 .hint-row.locked{cursor:pointer}
-.btn.msg{--msg:#06c755;color:color-mix(in srgb,var(--msg) 80%,#000);font-weight:700}
+.btn.msg{--msg:#06c755;color:color-mix(in srgb,var(--msg) 50%,#000);font-weight:700}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}}
+:root[data-theme="dark"] .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}
 .btn.msg.wa{--msg:#25d366}.btn.msg.tg{--msg:#2aabee}.btn.msg.none{--msg:var(--accent)}
-.btn.msg::before{content:attr(data-app);background:var(--msg);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
+.btn.msg::before{content:attr(data-app);background:var(--msg);color:#06160c;font-size:.75rem;font-weight:700;letter-spacing:.04em;border-radius:5px;padding:.08rem .35rem}
 .btn.msg.none::before{display:none}
 .btn.msg:hover{border-color:var(--msg)}
-.sheet .btn.msg{background:var(--msg);border-color:var(--msg);color:#fff}
+.sheet .btn.msg{background:var(--msg);border-color:var(--msg);color:#06160c!important}
+.sheet .btn.msg.none{color:var(--accent-ink)!important}
 .sheet .btn.msg::before{display:none}
 .share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
 .shop .shop-row{display:grid;grid-template-columns:22px 1fr auto;gap:2px 10px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);cursor:pointer}
 .shop .shop-row:first-child{border-top:0}
-.shop .shop-sec{padding:10px 14px 2px;font-size:.72rem;font-weight:700;color:var(--muted);border-top:1px solid var(--line)}
+.shop .shop-sec{padding:10px 14px 2px;font-size:.75rem;font-weight:700;color:var(--muted);border-top:1px solid var(--line)}
 .shop .shop-sec:first-child{border-top:0}
 .shop .shop-sec + .shop-row{border-top:0}
 .shop .shop-sec.done{padding:0;border-top:2px solid var(--line)}
 .shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
 .shop .nm{font-weight:700}
 .shop .q{font-size:.8rem;color:var(--muted);text-align:end;font-variant-numeric:tabular-nums}
-.shop .for{grid-column:2 / 4;font-size:.72rem;color:var(--muted)}
+.shop .for{grid-column:2 / 4;font-size:.75rem;color:var(--muted)}
 .shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
 /* 料理のイラスト */
 .vessel .food.svg{background:#fbf8f1}
@@ -467,7 +474,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
-.big-decide small{font-size:.74rem;font-weight:500;opacity:.9}
+.big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
 .why{margin:2px 0 0;text-align:center;font-size:.9rem;color:var(--ink);background:var(--accent-soft);border-radius:12px;padding:.55rem .9rem;line-height:1.5}
 .menu-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .pantry-hint{font-size:.78rem;color:var(--muted);padding:10px 14px 4px}
@@ -480,7 +487,7 @@ html.i18n-wait body{visibility:hidden}
 .sheet-body .name-en{margin-top:-10px;color:var(--muted);font-size:.92rem;line-height:1.4}
 nav.tabs button[hidden]{display:none}
 nav.tabs.many .in{gap:2px}
-nav.tabs.many button{font-size:.6rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
+nav.tabs.many button{font-size:.75rem;line-height:1.15;text-align:center;padding:.35rem 1px;letter-spacing:-.02em;overflow-wrap:anywhere;min-width:0}   /* 6つ並ぶときは2行に折り返して、隣と重ならないように */
 html[lang="hi"] *,html[lang="ar"] *,html[lang="th"] *{letter-spacing:normal!important}   /* 字間をあけると、つながる文字（ヒンディー語・アラビア語・タイ語）の形がくずれる */
 html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
@@ -491,19 +498,19 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
     .tray.compact{padding-left:4px;padding-right:4px}
     .tray.compact .tray-row{gap:2px}
     .spot-label .slot{letter-spacing:.05em}
-    .top .date{letter-spacing:.04em;font-size:.74rem}   /* ベトナム語の「Th 2, 26 tháng 10」などが2行にならないように */
-    .tray.compact .spot-label .slot{letter-spacing:0;font-size:.52rem}
-    .tray.compact .spot-label .nm{font-size:.74rem}
+    .top .date{letter-spacing:.04em;font-size:.75rem}   /* ベトナム語の「Th 2, 26 tháng 10」などが2行にならないように */
+    .tray.compact .spot-label .slot{letter-spacing:0;font-size:.75rem}
+    .tray.compact .spot-label .nm{font-size:.75rem}
     nav.tabs{padding-left:2px;padding-right:2px}
-    nav.tabs button{min-width:0;font-size:.64rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
+    nav.tabs button{min-width:0;font-size:.75rem;line-height:1.15;text-align:center;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:anywhere}
     nav.tabs.many .in{gap:0}
-    nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:.58rem;text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
+    nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:.75rem;text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
 }
 /* 作り方タブ */
 .cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
 .cook-tab .thumb{width:44px;height:44px;margin-bottom:2px}
-.cook-tab .ct-slot{font-size:.6rem;color:var(--muted);letter-spacing:.08em}
+.cook-tab .ct-slot{font-size:.75rem;color:var(--muted);letter-spacing:.08em}
 .cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase}
 .cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
 .cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
@@ -530,7 +537,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
 .cook-steps li.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
 .cook-steps li .now-tag{display:none}
-.cook-steps li.now .now-tag{display:block;font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:2px}
+.cook-steps li.now .now-tag{display:block;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:2px}
 .cook-run{display:flex;flex-direction:column;gap:12px}   /* 「次の手順」は手順が見えているあいだだけ下に貼りつく */
 .cook-ctl{position:sticky;bottom:calc(var(--nav-h,84px) + 8px);z-index:4;display:flex;gap:8px}
 .cook-next{flex:2 1 0;min-width:0;min-height:56px;font-size:1.05rem;box-shadow:var(--shadow)}
@@ -538,8 +545,8 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-steps li{scroll-margin-bottom:calc(var(--nav-h,84px) + 90px)}
 body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-next[hidden]{display:none}
-.wake-toggle{min-height:36px;align-self:flex-start}
-.timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .45rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5}
+.wake-toggle{min-height:44px;align-self:flex-start}
+.timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .6rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .timers{position:sticky;top:8px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .timers:empty{display:none}
 .timer-list{display:flex;flex-direction:column;gap:6px;max-height:38vh;overflow-y:auto}
@@ -550,7 +557,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .timer{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.4rem .7rem;box-shadow:var(--shadow);min-width:0}
 .timer .tm{font-family:var(--font-display);font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums;color:var(--accent);flex:0 0 auto}
 .timer .tn{flex:1;min-width:0;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.timer .x{border:0;background:transparent;font-size:1.2rem;line-height:1;color:var(--muted);min-width:32px;min-height:32px;cursor:pointer}
+.timer .x{border:0;background:transparent;font-size:1.2rem;line-height:1;color:var(--muted);min-width:44px;min-height:44px;cursor:pointer}
 .timer.ring{background:var(--yolk-soft);border-color:var(--yolk);animation:ring 1s ease-in-out infinite}
 .timer.ring .tm{color:var(--yolk-ink)}
 @keyframes ring{50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--yolk) 45%,transparent)}}
@@ -560,7 +567,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-tools{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .cook-tools .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .hf-hint{margin:0;font-size:.82rem;color:var(--muted)}
-.step-say{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;min-width:34px;min-height:34px;font:inherit;line-height:1;cursor:pointer;margin-inline-start:6px;vertical-align:middle}
+.step-say{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;min-width:44px;min-height:44px;font:inherit;line-height:1;cursor:pointer;margin-inline-start:6px;vertical-align:middle}
 .cook-card.big .cook-steps li{display:none;font-size:1.4rem;line-height:1.6}
 .cook-card.big .cook-steps li.now,.cook-card.big .cook-steps li.nextp{display:grid}
 .cook-card.big .cook-steps li.now{background:var(--ink);color:var(--bg);box-shadow:none;padding:.7rem .7rem .7rem .5rem}
@@ -570,9 +577,9 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-card.big .cook-steps li.nextp{font-size:1rem;opacity:.75}
 .cook-card.big .cook-steps li.prevp{display:grid;font-size:1rem}
 .cook-steps li .prev-tag{display:none}
-.cook-card.big .cook-steps li.prevp .prev-tag{display:block;font-size:.72rem;font-weight:700;color:var(--muted)}
+.cook-card.big .cook-steps li.prevp .prev-tag{display:block;font-size:.75rem;font-weight:700;color:var(--muted)}
 .cook-steps li .next-tag{display:none}
-.cook-card.big .cook-steps li.nextp .next-tag{display:block;font-size:.72rem;font-weight:700;color:var(--muted)}
+.cook-card.big .cook-steps li.nextp .next-tag{display:block;font-size:.75rem;font-weight:700;color:var(--muted)}
 .celebrate{position:relative;overflow:hidden;text-align:center;padding:1rem .8rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--accent);display:flex;flex-direction:column;gap:8px;align-items:center}
 .celebrate .cel-ico{font-size:2.6rem;line-height:1}
 .celebrate .cel-t{font-family:var(--font-display);font-weight:700;font-size:1.5rem}
@@ -591,8 +598,8 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cal-nav .btn{min-width:44px;min-height:44px}
 [dir="rtl"] .cal-nav .btn span{display:inline-block;transform:scaleX(-1)}
 .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
-.cal-wd{font-size:.7rem;color:var(--muted);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:2.6rem;padding:2px 0;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer}
+.cal-wd{font-size:.75rem;color:var(--muted);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:44px;padding:2px 0;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer}
 .cal-d.today span{font-weight:800;text-decoration:underline}
 .cal-d.sel{background:var(--accent);color:var(--accent-ink)}
 .cal-d i{width:6px;height:6px;border-radius:50%;background:transparent}
@@ -602,9 +609,9 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .album-item{margin:0;position:relative;display:flex;flex-direction:column;gap:4px;min-width:0}
 .album-ph{aspect-ratio:1;width:100%;border:0;border-radius:12px;background-size:cover;background-position:center;background-color:var(--surface-2);cursor:pointer;padding:0}
-.album-item figcaption{display:flex;flex-direction:column;font-size:.72rem;line-height:1.25;min-width:0}
+.album-item figcaption{display:flex;flex-direction:column;font-size:.75rem;line-height:1.25;min-width:0}
 .album-item .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.album-item .d{color:var(--muted);font-size:.66rem}
+.album-item .d{color:var(--muted);font-size:.75rem}
 .album-rm{position:absolute;top:4px;inset-inline-end:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
 [dir="rtl"] .steps li,[dir="rtl"] .recipe-ings li,[dir="rtl"] .country{text-align:right}
 </style>
@@ -1500,7 +1507,7 @@ function toast(msg, praise=false, undo=null){
     root.innerHTML = `<div class="toast pop${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
     // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
     const hide = () => { root.innerHTML = ''; toast.undo = null; };
-    const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 4200 : 2400); };
+    const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 6000 : 4500); };
     arm();
 }
 // 最後に食べた日からの日数（食べていなければ Infinity）
@@ -5520,7 +5527,7 @@ function matchRow(m){
         <div class="info">
             <div class="head" data-act="open" data-id="${esc(r.id)}">
                 <span class="name">${esc(r.name)}</span>
-                <span class="meter" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
+                <span class="meter" role="img" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
             </div>
             <div class="ings">${parts.join(t('・'))}</div>
             <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
