@@ -978,10 +978,10 @@ GOHAN_PACK({
       steps: [
         'Heat the oven to 200°C. Make small slits in the pork and slide in slivers of garlic; brush with the mustard and season.',
         'Brown the roast on all sides in the oil and butter in an ovenproof dish, about 8 minutes.',
-        'Surround it with the halved potatoes, the onion in quarters, the carrots in chunks and the herbs, pour in the water and roast for about 35-40 minutes, turning and basting halfway, until the centre reaches 65°C (the juices run clear).',
+        'Surround it with the halved potatoes, the onion in quarters, the carrots in chunks and the herbs, pour in the water and roast for about 35-40 minutes, turning and basting halfway, until the centre reaches 75°C (the juices run clear).',
         'Rest the roast for 10 minutes under foil, slice and serve with the vegetables and the juices scraped from the dish.',
       ],
-      tip: { add: 'A handful of prunes for the last 20 minutes', why: 'Their sweetness is a classic match for pork', skill: 'Do not overcook', how: 'Pork loin dries out easily; stop at 65°C in the centre and it finishes cooking while it rests.' },
+      tip: { add: 'A handful of prunes for the last 20 minutes', why: 'Their sweetness is a classic match for pork', skill: 'Do not overcook', how: 'Pork loin dries out easily; stop at 75°C in the centre and it finishes cooking while it rests.' },
     },
     {
       id: 'fr_tartiflette',
@@ -1278,7 +1278,7 @@ GOHAN_PACK({
       local: 'Endives au jambon',
       type: 'main',
       method: 'grill',
-      protein: 'veg',
+      protein: 'processed',
       min: 60,
       ings: [
         'endive|Belgian endives (chicory)|8',

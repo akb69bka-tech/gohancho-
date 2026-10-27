@@ -54,7 +54,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Teriyaki chicken',
       ings: [['Chicken thigh', '1 (300 g)'], ['Broccoli', '1/2 head']],
       seas: 'Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 1 tsp · Sake 1 tbsp · Vegetable oil 1 tsp',
-      steps: ['Open up the thick parts of the chicken and prick the skin with a fork. Boil the broccoli in salted water.', 'Place the chicken skin-side down in a frying pan and cook over medium heat for 6 minutes, until the skin is crisp.', 'Flip, cover, and steam-fry over low heat for 5 minutes.', 'Wipe off the excess fat, add the seasonings and simmer until glazed. Slice and serve with the broccoli.'],
+      steps: ['Open up the thick parts of the chicken and prick the skin with a fork. Boil the broccoli in salted water.', 'Place the chicken skin-side down in a frying pan and cook over medium heat for 6 minutes, until the skin is crisp.', 'Flip, cover, and steam-fry over low heat for 5 minutes. It is done when the center is white and the juices run clear.', 'Wipe off the excess fat, add the seasonings and simmer until glazed. Slice and serve with the broccoli.'],
       tip: { add: 'Leeks (naganegi)', why: 'Cooked alongside, they turn sweet and soak up the sauce, so you may not need a side dish.', skill: 'Crispy skin', how: 'Once the chicken is skin-side down, leave it alone. Press lightly with a spatula for 6 minutes and wipe off the fat as it renders.' }
     },
     hamburg: {
@@ -82,7 +82,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Hoikoro (twice-cooked pork with cabbage)',
       ings: [['Pork belly, thinly sliced', '200 g'], ['Cabbage', '1/4 head'], ['Bell peppers (green)', '2']],
       seas: 'Sweet bean sauce 1.5 tbsp · Doubanjiang 1/2 tsp · Soy sauce 1 tsp · Sake 1 tbsp · Grated garlic 1/2 tsp · Vegetable oil 1 tsp',
-      steps: ['Cut the cabbage into chunks, the peppers into wedges and the pork into 4 cm pieces. Mix the seasonings.', 'Stir-fry the pork to render the fat, then take it out.', 'In the same pan, stir-fry the cabbage and peppers briefly over high heat.', 'Return the pork, add the mixed seasonings and toss quickly to coat.'],
+      steps: ['Cut the cabbage into chunks, the peppers into wedges and the pork into 4 cm pieces. Mix the seasonings.', 'Stir-fry the pork to render the fat, then take it out. Cook the pork until no pink remains.', 'In the same pan, stir-fry the cabbage and peppers briefly over high heat.', 'Return the pork, add the mixed seasonings and toss quickly to coat.'],
       tip: { add: 'Garlic chives stems (garlic scapes)', why: 'Stir-fried with the cabbage, they add aroma and crunch.', skill: 'Cabbage: high heat, short time', how: 'Take the cabbage out after 30 seconds and return it at the end. It stays crisp.' }
     },
     chinjao: {
@@ -124,7 +124,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Chicken nanban (fried chicken in sweet vinegar with tartar sauce)',
       ings: [['Chicken breast', '1'], ['Eggs', '2'], ['Onion', '1/4'], ['Cabbage', '1/8 head']],
       seas: 'Flour 2 tbsp · Vinegar 3 tbsp · Sugar 2 tbsp · Soy sauce 2 tbsp · Mayonnaise 4 tbsp · Oil for frying',
-      steps: ['Hard-boil 1 egg, then chop and mix with minced onion and mayonnaise to make tartar sauce.', 'Slice the chicken on the diagonal, season with salt and pepper, coat with flour and dip in the remaining beaten egg.', 'Shallow-fry both sides in plenty of oil.', 'Dip the hot chicken in the sweet vinegar made by boiling the vinegar, sugar and soy sauce, then top with the tartar sauce. Serve with shredded cabbage.'],
+      steps: ['Hard-boil 1 egg, then chop and mix with minced onion and mayonnaise to make tartar sauce.', 'Slice the chicken on the diagonal, season with salt and pepper, coat with flour and dip in the remaining beaten egg.', 'Shallow-fry both sides in plenty of oil. Cook until the chicken is white all the way through.', 'Dip the hot chicken in the sweet vinegar made by boiling the vinegar, sugar and soy sauce, then top with the tartar sauce. Serve with shredded cabbage.'],
       tip: { add: 'Coarsely chopped boiled egg', why: 'Leaving chunks of egg in the tartar sauce makes it taste homemade.', skill: 'Dip in the sweet vinegar while hot', how: 'Dip the freshly fried chicken so the coating absorbs the sauce and the flavor sinks in.' }
     },
     butakimu: {
@@ -151,7 +151,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Happosai (eight-treasure stir-fry)',
       ings: [['Pork, thinly sliced scraps', '150 g'], ['Napa cabbage', '1/8 head'], ['Carrot', '1/3'], ['Shiitake mushrooms', '3'], ['Quail eggs (boiled)', '6']],
       seas: 'Chicken bouillon powder 2 tsp · Water 200 ml · Oyster sauce 1 tbsp · Soy sauce 1 tsp · Sake 1 tbsp · Starch slurry 2 tbsp · Sesame oil 1 tsp',
-      steps: ['Slice the napa cabbage on the diagonal, cut the carrot into rectangles and slice the shiitake thinly.', 'Stir-fry the pork in oil, then add the carrot, the napa stems and the shiitake.', 'Add the napa leaves, quail eggs, water and seasonings and simmer for 3 minutes.', 'Thicken with the starch slurry and drizzle with sesame oil.']
+      steps: ['Slice the napa cabbage on the diagonal, cut the carrot into rectangles and slice the shiitake thinly.', 'Stir-fry the pork in oil, then add the carrot, the napa stems and the shiitake. Cook the pork until no pink remains.', 'Add the napa leaves, quail eggs, water and seasonings and simmer for 3 minutes.', 'Thicken with the starch slurry and drizzle with sesame oil.']
     },
     chanchan: {
       name: 'Salmon chanchan-yaki (salmon and vegetables in miso)',
@@ -188,7 +188,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Negi-shio chicken (chicken breast with salted leek sauce)',
       ings: [['Chicken breast', '1'], ['Leek (naganegi)', '1'], ['Lemon', '1/4']],
       seas: 'Potato starch 1 tbsp · Sake 1 tsp · Sesame oil 2 tbsp · Chicken bouillon powder 1/2 tsp · Salt 1/4 tsp · Black pepper a little',
-      steps: ['Finely chop the leek and mix with 1 tbsp sesame oil, the bouillon powder, salt and black pepper to make the salted leek sauce.', 'Slice the chicken on the diagonal, rub in the sake and coat with starch.', 'Cook both sides in the remaining sesame oil, then cover and steam-fry over low heat for 3 minutes.', 'Plate it, top with the leek sauce and serve with lemon.'],
+      steps: ['Finely chop the leek and mix with 1 tbsp sesame oil, the bouillon powder, salt and black pepper to make the salted leek sauce.', 'Slice the chicken on the diagonal, rub in the sake and coat with starch.', 'Cook both sides in the remaining sesame oil, then cover and steam-fry over low heat for 3 minutes. It is done when the center is white all the way through.', 'Plate it, top with the leek sauce and serve with lemon.'],
       tip: { add: 'Black pepper and lemon', why: 'These two finishing touches give an izakaya flavor.', skill: 'Juicy chicken breast', how: 'Slice on the diagonal, coat with starch and steam-fry under a lid. With all three, it will not dry out.' }
     },
     subuta: {
@@ -227,7 +227,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Mabo nasu (spicy eggplant with pork)',
       ings: [['Eggplants', '3'], ['Ground pork', '150 g'], ['Leek (naganegi)', '1/2']],
       seas: 'Doubanjiang 1 tsp · Sweet bean sauce 1 tbsp · Soy sauce 2 tsp · Chicken bouillon powder 1 tsp · Water 120 ml · Starch slurry 1 tbsp · Vegetable oil 2 tbsp · Sesame oil a little',
-      steps: ['Cut the eggplants into chunks, pan-fry in plenty of oil until soft and take them out.', 'Stir-fry the pork, then add the doubanjiang and sweet bean sauce and cook until fragrant.', 'Add the water, bouillon powder and soy sauce, bring to a boil, return the eggplant and simmer for 2 minutes.', 'Add the minced leek, thicken with the starch slurry and drizzle with sesame oil.']
+      steps: ['Cut the eggplants into chunks, pan-fry in plenty of oil until soft and take them out.', 'Stir-fry the pork, then add the doubanjiang and sweet bean sauce and cook until fragrant. Cook the ground meat until no pink remains.', 'Add the water, bouillon powder and soy sauce, bring to a boil, return the eggplant and simmer for 2 minutes.', 'Add the minced leek, thicken with the starch slurry and drizzle with sesame oil.']
     },
     curry: {
       name: 'Curry rice',
@@ -268,7 +268,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Taco rice (Okinawan-style)',
       ings: [['Ground beef and pork mix', '200 g'], ['Onion', '1/2'], ['Lettuce', '3 leaves'], ['Tomato', '1'], ['Pizza cheese (shredded)', '40 g'], ['Cooked rice', '2 servings']],
       seas: 'Ketchup 2 tbsp · Worcestershire-style sauce 1 tbsp · Curry powder 1 tsp · Grated garlic 1/2 tsp · Vegetable oil 1 tsp',
-      steps: ['Mince the onion, shred the lettuce and dice the tomato.', 'Stir-fry the garlic and onion in oil, add the meat and break it into crumbles as you cook.', 'Season with the ketchup, sauce and curry powder and cook off the liquid.', 'Layer on the rice in this order: lettuce, meat, cheese, tomato.']
+      steps: ['Mince the onion, shred the lettuce and dice the tomato.', 'Stir-fry the garlic and onion in oil, add the meat and break it into crumbles as you cook. Cook the ground meat until no pink remains.', 'Season with the ketchup, sauce and curry powder and cook off the liquid.', 'Layer on the rice in this order: lettuce, meat, cheese, tomato.']
     },
     chahan: {
       name: 'Chahan (fried rice)',
@@ -294,7 +294,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Sauce yakisoba (stir-fried noodles)',
       ings: [['Yakisoba noodles', '2 portions'], ['Pork, thinly sliced scraps', '120 g'], ['Cabbage', '1/8 head'], ['Bean sprouts', '1/2 bag'], ['Carrot', '1/4']],
       seas: 'Worcestershire sauce 3 tbsp · Thick tonkatsu-style sauce 1 tbsp · Aonori / pickled red ginger as needed · Vegetable oil 1 tbsp',
-      steps: ['Cut the cabbage into chunks and the carrot into rectangles.', 'Stir-fry the pork in oil, then add the vegetables and bean sprouts.', 'Add the noodles and 2 tbsp water and stir-fry, loosening the noodles.', 'Add the sauce and coat everything, then top with aonori and pickled red ginger.'],
+      steps: ['Cut the cabbage into chunks and the carrot into rectangles.', 'Stir-fry the pork in oil, then add the vegetables and bean sprouts. Cook the pork until no pink remains.', 'Add the noodles and 2 tbsp water and stir-fry, loosening the noodles.', 'Add the sauce and coat everything, then top with aonori and pickled red ginger.'],
       tip: { add: 'Fried egg', why: 'Just putting one on top makes it feel like a treat.', skill: 'Cook the noodles separately', how: 'Brown the noodles alone first and take them out, then combine with the rest. They will not get soggy.' }
     },
     carbonara: {
@@ -453,13 +453,13 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Sundubu jjigae (soft tofu stew)',
       ings: [['Silken tofu', '1 block'], ['Manila clams', '150 g'], ['Pork belly, thinly sliced', '80 g'], ['Napa cabbage kimchi', '100 g'], ['Eggs', '2'], ['Leek (naganegi)', '1/2']],
       seas: 'Gochujang 1 tbsp · Grated garlic 1 tsp · Chicken bouillon powder 2 tsp · Soy sauce 1 tsp · Water 400 ml · Sesame oil 1 tbsp',
-      steps: ['Stir-fry the garlic, pork and kimchi in the sesame oil.', 'Add the water, bouillon powder and gochujang, bring to a boil and add the clams.', 'Scoop in the tofu in big spoonfuls, simmer for 5 minutes and season with soy sauce.', 'Crack in the eggs, scatter with the leek and turn off the heat while the eggs are still soft.']
+      steps: ['Stir-fry the garlic, pork and kimchi in the sesame oil.', 'Add the water, bouillon powder and gochujang, bring to a boil and add the clams.', 'Scoop in the tofu in big spoonfuls, simmer for 5 minutes and season with soy sauce.', 'Crack in the eggs, scatter with the leek and turn off the heat while the eggs are still soft. (For small children and during pregnancy, cook the egg until firm.)']
     },
     tonkatsu: {
       name: 'Tonkatsu (breaded pork cutlet)',
       ings: [['Thick-cut pork loin', '2'], ['Egg', '1'], ['Cabbage', '1/6 head']],
       seas: 'Salt, pepper a little · Flour 2 tbsp · Panko 1 cup · Oil for frying · Tonkatsu sauce as needed',
-      steps: ['Cut the tendons between the fat and lean in a few places and sprinkle the pork with salt and pepper.', 'Coat in the order flour, beaten egg, panko, pressing lightly with your hand.', 'Fry in 170°C (340°F) oil for 4 minutes, flip and fry 2 minutes.', 'Drain, rest for 3 minutes, then slice and serve with shredded cabbage and sauce.']
+      steps: ['Cut the tendons between the fat and lean in a few places and sprinkle the pork with salt and pepper.', 'Coat in the order flour, beaten egg, panko, pressing lightly with your hand.', 'Fry in 170°C (340°F) oil for 4 minutes, flip and fry 2 minutes.', 'Drain, rest for 3 minutes, then slice and serve with shredded cabbage and sauce. If the cut face is still pink, cook a little longer.']
     },
     sabashio: {
       name: 'Saba shioyaki (salt-grilled mackerel)',
@@ -525,7 +525,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Meatballs in sweet and sour sauce',
       ings: [['Ground pork', '250 g'], ['Onion', '1/4'], ['Egg', '1']],
       seas: 'Potato starch 1 tbsp · Salt a little · Oil for frying · Ketchup 2 tbsp · Vinegar 2 tbsp · Sugar 2 tbsp · Soy sauce 1 tbsp · Water 4 tbsp · Potato starch 1 tsp',
-      steps: ['Mince the onion and knead well with the pork, egg, starch and salt.', 'Roll into bite-size balls and fry in 170°C (340°F) oil for 4 minutes (or roll them around in plenty of oil in a frying pan).', 'Bring the sweet-and-sour ingredients to a boil in a frying pan and thicken.', 'Add the meatballs and coat them.']
+      steps: ['Mince the onion and knead well with the pork, egg, starch and salt.', 'Roll into bite-size balls and fry in 170°C (340°F) oil for 4 minutes (or roll them around in plenty of oil in a frying pan). Cut one open to check that it is cooked through.', 'Bring the sweet-and-sour ingredients to a boil in a frying pan and thicken.', 'Add the meatballs and coat them.']
     },
     butadaikon: {
       name: 'Buta bara daikon (simmered pork belly and daikon)',
@@ -543,7 +543,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Miso stir-fry of eggplant and pork',
       ings: [['Eggplants', '2'], ['Pork belly, thinly sliced', '150 g'], ['Bell peppers (green)', '2']],
       seas: 'Miso 1.5 tbsp · Mirin 1 tbsp · Sugar 2 tsp · Sake 1 tbsp · Vegetable oil 2 tbsp',
-      steps: ['Cut the eggplants and peppers into wedges and the pork into 4 cm pieces. Mix the seasonings.', 'Pan-fry the eggplant in the oil and take it out when soft.', 'Stir-fry the pork and return the eggplant and peppers.', 'Add the mixed miso and toss to coat.']
+      steps: ['Cut the eggplants and peppers into wedges and the pork into 4 cm pieces. Mix the seasonings.', 'Pan-fry the eggplant in the oil and take it out when soft.', 'Stir-fry the pork and return the eggplant and peppers. Cook the pork until no pink remains.', 'Add the mixed miso and toss to coat.']
     },
     shigureni: {
       name: 'Shigureni (beef and burdock simmered in soy)',
@@ -567,13 +567,13 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Dakgalbi (spicy Korean chicken stir-fry)',
       ings: [['Chicken thigh', '1'], ['Cabbage', '1/6 head'], ['Onion', '1/2'], ['Sweet potato', '1/2'], ['Pizza cheese (shredded)', '50 g']],
       seas: 'Gochujang 2 tbsp · Soy sauce 1 tbsp · Sugar 1 tbsp · Sake 1 tbsp · Grated garlic 1 tsp · Sesame oil 1 tbsp',
-      steps: ['Cut the chicken into bite-size pieces, rub in the seasonings and leave for 10 minutes.', 'Cut the cabbage into chunks, the onion into wedges and the sweet potato into 1 cm half-moons.', 'Cook the chicken in the sesame oil, add the vegetables, cover and steam-fry over medium heat for 8 minutes.', 'Mix everything, top with the cheese, cover, and it is done when the cheese melts.']
+      steps: ['Cut the chicken into bite-size pieces, rub in the seasonings and leave for 10 minutes.', 'Cut the cabbage into chunks, the onion into wedges and the sweet potato into 1 cm half-moons.', 'Cook the chicken in the sesame oil, add the vegetables, cover and steam-fry over medium heat for 8 minutes. Cook until the chicken is white all the way through.', 'Mix everything, top with the cheese, cover, and it is done when the cheese melts.']
     },
     banbanji: {
       name: 'Bang bang chicken (chicken with sesame sauce)',
       ings: [['Chicken breast', '1'], ['Cucumber', '1'], ['Tomato', '1']],
       seas: 'Sake 1 tbsp · Salt a little · Sesame paste 2 tbsp · Soy sauce 1 tbsp · Vinegar 1 tbsp · Sugar 2 tsp · Sesame oil 1 tsp',
-      steps: ['Sprinkle the chicken with sake and salt, cover and steam-fry over low heat for 8 minutes, then let it cool in the pan.', 'Cut the cucumber into thin strips and slice the tomato thinly.', 'Shred the chicken by hand.', 'Arrange the vegetables and chicken on a plate and pour over the sauce of sesame paste, soy sauce, vinegar, sugar and sesame oil.']
+      steps: ['Sprinkle the chicken with sake and salt, cover and steam-fry over low heat for 8 minutes, then let it cool in the pan. Make sure the chicken is white all the way through and the juices run clear.', 'Cut the cucumber into thin strips and slice the tomato thinly.', 'Shred the chicken by hand.', 'Arrange the vegetables and chicken on a plate and pour over the sauce of sesame paste, soy sauce, vinegar, sugar and sesame oil.']
     },
     tofuhamburg: {
       name: 'Tofu hambagu (tofu and chicken patties)',
@@ -603,7 +603,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Fried tofu with chicken soboro sauce',
       ings: [['Thick fried tofu (atsuage)', '1 block'], ['Ground chicken', '100 g'], ['Leek (naganegi)', 'a little']],
       seas: 'Dashi 200 ml · Soy sauce 1.5 tbsp · Mirin 1.5 tbsp · Sugar 1 tsp · Starch slurry 1 tbsp',
-      steps: ['Pour boiling water over the fried tofu to remove the oil and cut into bite-size pieces.', 'Stir-fry the chicken in a pot and add the dashi and seasonings.', 'Add the fried tofu and simmer for 5 minutes.', 'Thicken with the starch slurry and scatter with thinly sliced leek.']
+      steps: ['Pour boiling water over the fried tofu to remove the oil and cut into bite-size pieces.', 'Stir-fry the chicken in a pot and add the dashi and seasonings. Cook the ground meat until no pink remains.', 'Add the fried tofu and simmer for 5 minutes.', 'Thicken with the starch slurry and scatter with thinly sliced leek.']
     },
     soborodon: {
       name: 'Chicken soboro don (three-color rice bowl)',
@@ -615,7 +615,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Chukadon (Chinese-style stir-fry over rice)',
       ings: [['Pork, thinly sliced scraps', '120 g'], ['Napa cabbage', '1/8 head'], ['Carrot', '1/3'], ['Shiitake mushrooms', '2'], ['Quail eggs (boiled)', '4'], ['Cooked rice', '2 servings']],
       seas: 'Chicken bouillon powder 2 tsp · Water 250 ml · Oyster sauce 1 tbsp · Soy sauce 1 tsp · Starch slurry 2 tbsp · Sesame oil 1 tsp · Vegetable oil 1 tbsp',
-      steps: ['Slice the napa cabbage on the diagonal, cut the carrot into rectangles and slice the shiitake thinly.', 'Stir-fry the pork in the oil, then add the vegetables and stir-fry.', 'Add the water, bouillon powder, oyster sauce, soy sauce and quail eggs and simmer for 3 minutes.', 'Thicken with the starch slurry, drizzle with sesame oil and pour over rice.']
+      steps: ['Slice the napa cabbage on the diagonal, cut the carrot into rectangles and slice the shiitake thinly.', 'Stir-fry the pork in the oil, then add the vegetables and stir-fry. Cook the pork until no pink remains.', 'Add the water, bouillon powder, oyster sauce, soy sauce and quail eggs and simmer for 3 minutes.', 'Thicken with the starch slurry, drizzle with sesame oil and pour over rice.']
     },
     bibimbap: {
       name: 'Bibimbap',
@@ -645,7 +645,7 @@ GOHAN_PACK_TR('JP', 'en', {
       name: 'Yaki udon (stir-fried udon)',
       ings: [['Boiled udon noodles', '2 portions'], ['Pork, thinly sliced scraps', '120 g'], ['Cabbage', '1/8 head'], ['Onion', '1/4'], ['Carrot', '1/4']],
       seas: 'Soy sauce 2 tbsp · Mirin 1 tbsp · Dashi granules 1/2 tsp · Bonito flakes as needed · Vegetable oil 1 tbsp',
-      steps: ['Microwave the udon for 2 minutes and loosen it. Cut the vegetables into easy pieces.', 'Stir-fry the pork in the oil, then add the vegetables and stir-fry.', 'Add the udon and season with the soy sauce, mirin and dashi granules.', 'Plate and top with bonito flakes.']
+      steps: ['Microwave the udon for 2 minutes and loosen it. Cut the vegetables into easy pieces.', 'Stir-fry the pork in the oil, then add the vegetables and stir-fry. Cook the pork until no pink remains.', 'Add the udon and season with the soy sauce, mirin and dashi granules.', 'Plate and top with bonito flakes.']
     },
     salmoncreampasta: {
       name: 'Salmon and spinach cream pasta',

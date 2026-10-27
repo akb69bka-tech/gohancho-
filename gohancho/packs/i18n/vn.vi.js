@@ -691,7 +691,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Luộc bún, xả nước lạnh và để ráo.',
         'Nướng thịt trên than, trong lò hoặc áp chảo nóng 3-4 phút mỗi mặt đến khi chín và cháy cạnh.',
         'Cho xà lách thái, dưa leo và rau thơm vào tô, rồi bún và thịt nướng.',
-        'Rắc đậu phộng giã và mỡ hành nếu thích, chan nước mắm chua ngọt khi ăn.'
+        'Rắc đậu phộng giã và mỡ hành nếu thích, chan nước mắm chua ngọt khi ăn. Không cho trẻ dưới 1 tuổi ăn mật ong, kể cả đã nấu chín.'
       ],
       tip: { add: 'Vài cuốn chả giò cắt khúc', why: 'Thành bún thịt nướng chả giò đầy đủ', skill: 'Thái thật mỏng', how: 'Thái thịt khi còn hơi đông để miếng mỏng, nướng nhanh và xém cạnh trước khi bị khô.' }
     },

@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || 'http://localhost:8795/';
+const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
 async function open(cc, extra = {}, lang){
@@ -66,7 +66,7 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
             const inp = () => document.querySelector('#spend-a'), go = v => { document.querySelector('details.spend-card').open = true; inp().value = v; document.querySelector('form[data-form="spend"]').dispatchEvent(new Event('submit', {cancelable:true, bubbles:true})); };
             go('abc'); const bad1 = S.spend.length, errShown = !!document.querySelector('[role=alert]');
             go('-5'); go('0'); go('1e3'); const bad2 = S.spend.length;
-            go('1,200'); go('350.5'); go('９００');
+            go(new Intl.NumberFormat(LANG).formatToParts(1.5).find(x => x.type === 'decimal').value === ',' ? '1.200' : '1,200'); go('350.5'); go('９００');
             S.spend.push({id:'old', d:addDays(TODAY, -7), a:99999}, {id:'edge', d:addDays(TODAY, -6), a:10}); render();
             const sum = document.querySelector('.spend-sum').textContent, rows = document.querySelectorAll('.spend-card .left-line').length;
             const amounts = S.spend.map(x => x.a);
@@ -89,6 +89,67 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
     ok(/1,550\.5|1,551|1550/.test(s), '合計 ' + s);
     await p.ctx.close();
 }
+// 2b) 金額の読み取り: 通貨記号・円・千区切り・小数（末尾1〜2桁だけ）。1000倍の取り違えはしない
+{
+    const p = await open('DE', {}, 'de'), q = await open('JP', {}, 'ja');
+    const run = pg => pg.evaluate(() => ['1.234,50', '35.000', '¥300', '300円', '€ 12,5', '1.234.567', '1,234', '12,345', '1.2.3', '$1,234.50', '12.5', '٣٠٠', '', 'abc', '0', '-5', '10 000', "1'234"].map(v => [v, parseMoney(v)]));
+    const d = Object.fromEntries(await run(p)), j = Object.fromEntries(await run(q));
+    ok(d['1.234,50'] === 1234.5 && d['35.000'] === 35000 && d['¥300'] === 300 && d['300円'] === 300 && d['€ 12,5'] === 12.5 && d['1.234.567'] === 1234567, 'de: ' + JSON.stringify(d));
+    ok(d['1,234'] === null && d['12,345'] === null, 'de: "1,234" is not read as 1234 (would be 1000x): ' + d['1,234']);
+    ok(d['1.2.3'] === null && d[''] === null && d['abc'] === null && d['0'] === null && d['-5'] === null, 'de junk');
+    ok(j['1,234'] === 1234 && j['$1,234.50'] === 1234.5 && j['300円'] === 300 && j['¥300'] === 300 && j['12.5'] === 12.5 && j['٣٠٠'] === 300 && j['10 000'] === 10000 && j["1'234"] === 1234, 'ja: ' + JSON.stringify(j));
+    ok(j['35.000'] === null, 'ja: "35.000" is ambiguous so it is not accepted: ' + j['35.000']);
+    await p.ctx.close(); await q.ctx.close();
+}
+// 1b) 残り物メモ: 言語を切り替えると料理名も直る／4日目以降は薄く出て、まとめて消せる（元に戻せる）
+{
+    const p = await open('JP', {leftovers:[{id:'nikujaga', name:'肉じゃが', d:new Date().toISOString().slice(0,10)}, {id:'nikujaga', name:'肉じゃが', d:new Date(Date.now() - 5 * 86400000).toISOString().slice(0,10)}, {id:'gone-id', name:'保存した名前', d:new Date(Date.now() - 1 * 86400000).toISOString().slice(0,10)}]});
+    const o = await p.evaluate(async () => {
+        setTab('today'); ensureMenu(); render();
+        const ja = [...document.querySelectorAll('.left-line span')].map(x => x.textContent);
+        { const e = document.createElement('button'); e.dataset.act = 'ui-lang'; e.dataset.v = 'en'; document.body.appendChild(e); e.click(); e.remove(); } await new Promise(r => setTimeout(r, 1200)); setTab('today'); render();
+        const en = [...document.querySelectorAll('.left-line span')].map(x => x.textContent);
+        const old = document.querySelectorAll('.left-line.left-old').length, btn = !!document.querySelector('[data-act="left-clean"]');
+        const n0 = S.leftovers.length; document.querySelector('[data-act="left-clean"]').click();
+        const n1 = S.leftovers.length, btn1 = !!document.querySelector('[data-act="left-clean"]');
+        return {ja, en, old, btn, n0, n1, btn1, fr: JSON.stringify(S.fridge)};
+    });
+    ok(o.ja.some(x => x.includes('肉じゃが')) && o.ja.some(x => x.includes('保存した名前')), 'ja names: ' + o.ja);
+    ok(o.en.some(x => /Nikujaga|pork/i.test(x)) && !o.en.some(x => x.includes('肉じゃが')) && o.en.some(x => x.includes('保存した名前')), 'names follow the language (fallback to the saved name): ' + o.en);
+    ok(o.old === 1 && o.btn && o.n0 === 3 && o.n1 === 2 && !o.btn1, 'day-4+ memos are dimmed and can be cleared together: ' + JSON.stringify(o));
+    await p.ctx.close();
+}
+// 2c) 冷蔵庫の食材チップ（⏰と日数）は、狭い幅・大きい文字でもはみ出さない
+for (const [w, sz, lang] of [[320, 2, 'de'], [320, 2, 'en'], [360, 1, 'ar'], [320, 2, 'ja']]){
+    const ctx = await b.newContext({ viewport: { width: w, height: 800 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage(); p.errs = [];
+    const d0 = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
+    await p.addInitScript(([lang, sz, d0]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:d0, settings:{country:'JP', dishCount:3, uiLang:lang, textSize:sz}, fridge:['豚肉', '玉ねぎ', 'キャベツ', 'じゃがいも'], fridgeMeta:{'豚肉':{d:d0, soon:true}, '玉ねぎ':{d:d0, soon:true}, 'キャベツ':{d:d0}, 'じゃがいも':{d:d0, soon:true}}})); } }, [lang, sz, d0]);
+    await p.goto(URL_); await p.waitForTimeout(900);
+    const r = await p.evaluate(async () => { setTab('fridge'); await new Promise(r => setTimeout(r, 200)); const chips = [...document.querySelectorAll('.chip.have')];
+        return {n: chips.length, sw: document.documentElement.scrollWidth, iw: innerWidth, out: chips.filter(c => c.getBoundingClientRect().right > innerWidth + 1 || c.getBoundingClientRect().left < -1).length, txt: chips.map(c => c.textContent.trim()).join('|')}; });
+    ok(r.n === 4 && r.sw <= r.iw + 1 && r.out === 0, `fridge chips ${w}px sz${sz} ${lang}: ` + JSON.stringify(r));
+    await ctx.close();
+}
+// 5) 食べる時刻から逆算: 0時台の指定は、過ぎていれば「あすの未明」。時刻を入れなくても「いま始めたら」を出す
+{
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage(); p.errs = [];
+    const d = '2026-10-27';
+    await p.addInitScript(d => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:d, settings:{country:'JP', dishCount:3, uiLang:'ja'}, cook:{d, ids:['nikujaga', 'hamburg'], slots:['主菜', '主菜'], done:{}}})); } }, d);
+    await p.clock.install({ time: new Date(d + 'T16:00:00') });
+    await p.goto(URL_); await p.waitForTimeout(900);
+    const r = await p.evaluate(async () => {
+        setTab('cook'); await new Promise(r => setTimeout(r, 300));
+        const lines = () => [...document.querySelectorAll('.eat-line')].map(x => x.textContent);
+        const none = lines(); S.settings.dinnerAt = '00:00'; render(); const mid = lines(); S.settings.dinnerAt = '19:00'; render(); const ev = lines();
+        return {none, mid, ev};
+    });
+    ok(r.none.length === 1 && /いま.*に始めると/.test(r.none[0]), 'no eat time: still shows "if you start now": ' + JSON.stringify(r.none));
+    ok(r.mid.some(x => /までに始めれば|同時に進めるなら|1品ずつ順に作ると/.test(x)) && !r.mid.some(x => /いま.*に始めると/.test(x) && r.mid.length === 1), '00:00 is treated as tonight midnight (not already past): ' + JSON.stringify(r.mid));
+    ok(r.ev.length >= 2 && r.ev.some(x => /までに始めれば/.test(x)), '19:00 still works: ' + JSON.stringify(r.ev));
+    await ctx.close();
+}
 // 3) 文字の大きさ
 for (const [cc, lang] of [['JP'], ['US'], ['DE', 'de'], ['EG', 'ar'], ['TH', 'th'], ['KR', 'ko'], ['PL', 'pl'], ['IN', 'hi']]){
     for (const sz of [0, 1, 2]){
@@ -107,6 +168,20 @@ for (const [cc, lang] of [['JP'], ['US'], ['DE', 'de'], ['EG', 'ar'], ['TH', 'th
         ok(!p.errs.length, cc + ' errors ' + p.errs.join('|'));
         await p.ctx.close();
     }
+}
+// 3b) 下のタブの名前は、単語の途中で折れない・はみ出さない（独語・葡語など長い言葉。狭い画面・大きい文字でも）
+for (const [lang, w, sz] of [['de', 320, 2], ['de', 360, 1], ['de', 390, 0], ['pt-BR', 320, 2], ['fr', 360, 2], ['tr', 320, 1]]){
+    const ctx = await b.newContext({ viewport: { width: w, height: 800 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage();
+    await p.addInitScript(([lang, sz]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-20', settings:{country:'DE', dishCount:3, uiLang:lang, textSize:sz || undefined}})); } }, [lang, sz]);
+    await p.goto(URL_); await p.waitForTimeout(900);
+    const bad = await p.evaluate(() => [...document.querySelectorAll('nav.tabs button:not([hidden])')].map(bt => {
+        const words = bt.innerText.trim().split(/\s+/), rg = document.createRange(); const span = [...bt.childNodes].find(n => n.nodeType === 3 && n.textContent.trim()) || bt.querySelector('span');
+        if (span) rg.selectNodeContents(span); const lines = span ? rg.getClientRects().length : 1;
+        return (bt.scrollWidth > bt.clientWidth + 1 ? 'overflow ' : '') + (lines > words.length ? 'mid-word break ' : '') + (bt.scrollWidth > bt.clientWidth + 1 || lines > words.length ? bt.innerText : '');
+    }).filter(Boolean));
+    ok(!bad.length, `tabs ${lang} ${w}px sz${sz}: ` + bad.join(' | '));
+    await ctx.close();
 }
 // 設定で切りかえ → 保存 → 再読み込みで保たれる
 {

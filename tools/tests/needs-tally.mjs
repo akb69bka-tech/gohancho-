@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || 'http://localhost:8794/';
+const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const LANGS = ['ja','en','de','es','fil','fr','hi','id','it','ko','pl','pt-BR','th','tr','vi','zh-Hans','zh-Hant','ar'];
 const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 let fails = 0; const errs = [];
@@ -59,11 +59,66 @@ for (const lang of LANGS){
     ok(r.none === null, lang + ' no card without registered items');
     await ctx.close();
 }
+// 2b) 共有カード: 長い一覧でも、見出しだけ残って中身が消えない／入らない分は「ほか n 件」と数える
+{
+    const { ctx, p } = await open('ja');
+    for (const n of [4, 14, 30, 90]){
+        const r = await p.evaluate(async n => {
+            const avoid = Array.from({length:n}, (_, i) => '食材' + String(i).padStart(2, '0')), allergy = avoid.slice(0, Math.min(3, n));
+            S.family = [{id:'big', name:'', role:'child', avoid, allergy, mild:true}];
+            const drawn = [], orig = CanvasRenderingContext2D.prototype.fillText;
+            CanvasRenderingContext2D.prototype.fillText = function(tx, x, y, w){ drawn.push([String(tx), y]); return orig.apply(this, arguments); };
+            let cv; try{ cv = await cardCanvas('needs', {mid:'big', withName:false}); } finally { CanvasRenderingContext2D.prototype.fillText = orig; }
+            const items = drawn.filter(d => /^食材\d\d$/.test(d[0])).length;
+            const heads = drawn.filter(d => /^(⚠ )?(アレルギー|食べられない食材)$/.test(d[0]));
+            const more = drawn.map(d => /^ほか(\d+)件/.exec(d[0])).find(Boolean);
+            // 見出しの直後(下)に、その見出しの項目が最低1つ描かれているか
+            const headOk = heads.every((h, k) => drawn.some(d => /^食材\d\d$/.test(d[0]) && d[1] > h[1] && (!heads[k + 1] || d[1] < heads[k + 1][1])));
+            const noteY = Math.min(...drawn.filter(d => /^このメモは/.test(d[0]) || /確かめて/.test(d[0])).map(d => d[1]).concat([9999]));
+            const maxItemY = Math.max(...drawn.filter(d => /^食材\d\d$/.test(d[0])).map(d => d[1]));
+            const allergyN = Math.min(3, n);
+            return { items, heads: heads.length, more: more ? Number(more[1]) : 0, headOk, total: n + (0), size: [cv.width, cv.height], maxItemY, noteY };
+        }, n);
+        ok(r.headOk, `n=${n}: every heading has at least one chip under it ` + JSON.stringify(r));
+        ok(r.items + r.more === r.total + (r.more ? 1 : 0), `n=${n}: every item is drawn or counted as "ほか n 件": ` + JSON.stringify(r));
+        if (n <= 14) ok(r.more === 0, `n=${n}: a normal-size list fits entirely: ` + JSON.stringify(r));
+        ok(r.maxItemY < 1128 - 36, `n=${n}: chips stay inside the white panel`);
+    }
+    await ctx.close();
+}
+// 2c) 主菜の分類: 魚・肉・卵・豆腐が野菜扱いにならない（日本のレシピと全国のパック）
+{
+    const { ctx, p } = await open('ja');
+    const r = await p.evaluate(() => {
+        const fam = id => (RECIPES.find(x => x.id === id) || {}).family;
+        return { saikyo: fam('saikyoyaki'), kajiki: fam('kajikisaute'), kani: fam('kanitama'), tarako: RECIPES.filter(x => x.ings.some(g => /たらこ/.test(g))).map(x => x.family),
+            veg: RECIPES.filter(x => x.type === '主菜' && x.family === '野菜').map(x => x.id),
+            unknown: [...new Set(RECIPES.flatMap(x => x.items.filter(i => !i.opt && /^(さわら|かじき|たらこ|しじみ|ちくわ|ちりめんじゃこ|かに風味かまぼこ|おから|油揚げ)$/.test(i.key) && !FAMILY[i.key]).map(i => i.key)))] };
+    });
+    ok(r.saikyo === '魚' && r.kajiki === '魚' && r.kani === '魚', 'saikyo-yaki / swordfish / kani-tama count as fish: ' + JSON.stringify(r));
+    ok(r.tarako.every(f => f === '魚' || f === '卵' || f === '野菜' || f), 'tarako dish has a family');
+    ok(r.veg.length === 0, 'no JP main dish is counted as vegetable (fish and meat words missing from FAMILY): ' + r.veg);
+    ok(r.unknown.length === 0, 'fish/soy words are in FAMILY: ' + r.unknown);
+    await ctx.close();
+    // 全国のパック: 主菜(main/rice/noodle)で、必須の材料に魚介・肉・豆腐があるのに protein が veg のものがない
+    const fs = await import('node:fs'), vm = await import('node:vm');
+    const dir = new URL('../../gohancho/packs/', import.meta.url).pathname;
+    const W = /\b(fish|salmon|cod|tuna|mackerel|sardine|tilapia|trout|hake|herring|milkfish|catfish|pomfret|shrimp|prawn|squid|clam|mussel|crab|octopus|scallop|pork|bacon|ham|sausage|chorizo|chicken|turkey|duck|beef|veal|lamb|mutton|goat|mince|steak|tofu|tempeh)\b/i;
+    const bad = [];
+    for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.js'))){
+        let pk; vm.runInNewContext(fs.readFileSync(dir + f, 'utf8'), { GOHAN_PACK: x => { pk = x; } });
+        for (const x of pk.recipes) if (['main', 'rice', 'noodle'].includes(x.type) && x.protein === 'veg'){
+            const hit = x.ings.filter(s => !s.endsWith('?')).map(s => s.split('|').slice(0, 2).join(' ')).filter(s => W.test(s) && !/dried|paste|sauce|stock|broth|cube/i.test(s));
+            if (hit.length) bad.push(pk.country + ':' + x.id + ' ' + hit.join(';'));
+        }
+    }
+    ok(bad.length === 0, 'pack mains with fish/meat/tofu are not declared veg: ' + bad.join(' | '));
+}
 // 3) 内訳
 {
     const { ctx, p } = await open('ja');
     const r = await p.evaluate(() => {
-        const pick = fam => RECIPES.find(x => x.type === '主菜' && x.family === fam);
+        const pick = fam => RECIPES.find(x => x.type === '主菜' && x.family === fam) || RECIPES.find(x => x.family === fam);   // 野菜・卵が主役の「主菜」は日本のレシピにはない（魚の分類漏れを直したため）ので、副菜でもよい
         const rs = {豚:pick('豚'), 鶏:pick('鶏'), 魚:pick('魚'), 野菜:pick('野菜'), 卵:pick('卵')};
         const old = RECIPES.find(x => x.type === '主菜' && x.family === '牛');
         S.history = [{d:TODAY, id:rs.豚.id, name:'', slot:'主菜'}, {d:addDays(TODAY, -1), id:rs.鶏.id, name:'', slot:'主菜'}, {d:addDays(TODAY, -2), id:rs.豚.id, name:'', slot:'主菜'},
