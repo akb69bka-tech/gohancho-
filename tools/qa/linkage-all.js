@@ -303,7 +303,8 @@ async function secDecided(b, cc) {
     const { ctx, p } = await open(b, { cc, n });
     await p.evaluate(() => { document.querySelector('[data-act="decide"]').click(); }); await p.waitForTimeout(500);
     await p.evaluate(() => setTab('today')); await p.waitForTimeout(200);
-    const cookTab = async () => { await p.evaluate(() => setTab('cook')); const h = await p.evaluate(() => { const c = document.querySelector('#view').cloneNode(true); c.querySelectorAll('.eat-plan').forEach(x => x.remove()); return c.innerHTML.replace(/\s+/g, ' '); });   // 「食べる時刻から逆算」は現在時刻の文字が入るので比べない await p.evaluate(() => setTab('today')); return h; };
+    // 「食べる時刻から逆算」は現在時刻の文字が入るので比べない
+    const cookTab = async () => { await p.evaluate(() => setTab('cook')); const h = await p.evaluate(() => { const c = document.querySelector('#view').cloneNode(true); c.querySelectorAll('.eat-plan').forEach(x => x.remove()); return c.innerHTML.replace(/\s+/g, ' '); }); await p.evaluate(() => setTab('today')); return h; };
     const c0 = await cookTab();
     await pressAll(p, 'decided', cc + ' 決定後 n=' + n, { reps: 2 });
     // 作り方タブは「決めた献立」のまま（かえる で作り方タブの料理が変わらない）
