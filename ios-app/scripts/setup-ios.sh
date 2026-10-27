@@ -12,7 +12,7 @@ CI_MODE=0; [ "${1:-}" = "--ci" ] && CI_MODE=1
 #   - 上げるときは、Capacitor の移行ガイドを読んでから、ここの数字と ios-release.yml をまとめて変える
 CAP=8; RC=13; CAP_ASSETS=3
 echo "1/7 部品（Capacitor $CAP とプラグイン）を入れています…"
-npm install "@capacitor/core@^$CAP" "@capacitor/ios@^$CAP" "@capacitor/share@^$CAP" "@capacitor/local-notifications@^$CAP" "@revenuecat/purchases-capacitor@^$RC"
+npm install "@capacitor/core@^$CAP" "@capacitor/ios@^$CAP" "@capacitor/share@^$CAP" "@capacitor/filesystem@^$CAP" "@capacitor/local-notifications@^$CAP" "@revenuecat/purchases-capacitor@^$RC"
 npm install -D "@capacitor/cli@^$CAP" "@capacitor/assets@^$CAP_ASSETS"
 
 echo "2/7 アプリ本体（../gohancho）を取りこんでいます…"
