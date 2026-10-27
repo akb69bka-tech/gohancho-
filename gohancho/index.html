@@ -1267,7 +1267,7 @@ function normalizeState(d){
     d = d && typeof d === 'object' && !Array.isArray(d) ? d : {};
     const st = Object.assign(structuredClone(DEFAULT_STATE), d, {settings: Object.assign(structuredClone(DEFAULT_STATE.settings), d.settings && typeof d.settings === 'object' ? d.settings : {})});
     const arr = x => Array.isArray(x) ? x : [], obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
-    const isYmd = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
+    const isYmd = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x) && realYmd(x);   // 2月30日・13月・0000年など、暦にない日付は読み込まない（parseYmd が別の日にずらすため）
     ['favs','hidden','fridge','staples','seenTwists','usedDays'].forEach(k => { st[k] = arr(st[k]).filter(x => typeof x === 'string' || typeof x === 'number'); });
     // 冷蔵庫の食材の印（{食材: {soon: 早めに使う, d: 登録した日}}）。端末の中だけ。冷蔵庫にない食材・不正な値は捨てる。印がなかった頃から入っていた食材の登録日は不明なので d は空
     { const had = d.fridgeMeta && typeof d.fridgeMeta === 'object' && !Array.isArray(d.fridgeMeta), fm = had ? d.fridgeMeta : {}, out = {};
@@ -1533,6 +1533,7 @@ function familyLabel(f){
 }
 function ymd(d=new Date()){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function parseYmd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+function realYmd(s){ const [y, m, d] = String(s).split('-').map(Number); if (!(y >= 1900 && y <= 9999 && m >= 1 && m <= 12 && d >= 1)) return false; const x = new Date(y, m - 1, d); return x.getFullYear() === y && x.getMonth() === m - 1 && x.getDate() === d; }   // 暦にある日付か
 function addDays(s, n){ const d = parseYmd(s); d.setDate(d.getDate()+n); return ymd(d); }
 function daysBetween(a, b){ return Math.round((parseYmd(b) - parseYmd(a)) / 86400000); }
 const WD = ['日','月','火','水','木','金','土'];
@@ -3360,7 +3361,7 @@ function introEndYmd(){ const o = introOffer || {unit:'month', n:1}; const d = p
 // 解約の期限: お試しが終わる時刻の24時間前（自動更新は24時間前までの解約が必要）。日付と時刻で出す
 function introCancelBy(){
     const o = introOffer || {unit:'month', n:1}, d = new Date(); if (o.unit === 'day') d.setDate(d.getDate() + o.n); else addMonthsClamp(d, o.n);
-    d.setHours(d.getHours() - 24);
+    d.setTime(d.getTime() - 24 * 3600000);   // 夏時間の切り替え日でも、ちょうど24時間前（壁時計の時刻ではなく経過時間）
     let tz = ''; try{ const p = new Intl.DateTimeFormat(LANG, {timeZoneName:'short'}).formatToParts(d).find(x => x.type === 'timeZoneName'); tz = p ? p.value : ''; }catch(e){}   // 端末のタイムゾーン略称（JST・PST など）。取れなければ付けない
     return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + (tz ? ' ' + tz : '');
 }
@@ -5894,7 +5895,7 @@ function eatPlanHtml(items){
     const mins = rs.map(r => Number(r.min)), total = mins.reduce((a, b) => a + b, 0), mx = Math.max(...mins), longest = rs[mins.indexOf(mx)];
     const MIN = 60000, now = new Date();
     let eat = at ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), +at[1], +at[2]) : null;
-    if (eat && eat <= now && +at[1] < 4) eat = new Date(eat.getTime() + 24 * 60 * MIN);   // 0時〜3時台の指定は、もう過ぎているなら「あすの未明」（夜の食事のあとの時刻）とみなす
+    if (eat && eat <= now && +at[1] < 4) eat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +at[1], +at[2]);   // 0時〜3時台の指定は、もう過ぎているなら「あすの未明」（夜の食事のあとの時刻）とみなす
     const end1 = new Date(now.getTime() + total * MIN), end2 = new Date(now.getTime() + mx * MIN), c = clockText;
     const lines = []; let nowLine = '';
     if (eat){
@@ -7455,8 +7456,9 @@ function backupDue(){
     const has = S.history.length >= 3 || S.favs.length || S.custom.length || S.savedMenus.length || S.family.length;
     if (!has) return false;
     const base = S.lastBackup || S.firstUse; if (!base) return false;
-    if (daysBetween(base, TODAY) < 30) return false;
-    return !(S.backupSnooze && daysBetween(S.backupSnooze, TODAY) < 14);
+    if (daysBetween(base, TODAY) < 30) return false;   // 端末の日付を過去に戻されたとき: 書き出した日が「未来」になるが、日付が直れば普通に数える
+    const sn = S.backupSnooze;
+    return !(sn && daysBetween(sn, TODAY) < 14 && sn <= TODAY);   // 「あとで」の日が未来（日付を戻された）なら、その分は無視して出す
 }
 function backupNoteHtml(){
     if (!backupDue()) return '';
@@ -8055,6 +8057,8 @@ function refreshToday(){
     render(); syncNotifs(true);
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden){ refreshToday(); syncNotifs(); } });
+// 開いたまま0時を過ぎたとき（戻ってくる操作がなくても）日付を新しくする。入力中は邪魔しない。端末の日付・時間帯が変わったときも、30秒以内に気づく
+setInterval(() => { const a = document.activeElement; if (!document.hidden && ymd() !== TODAY && !(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) refreshToday(); }, 30000);
 window.addEventListener('focus', refreshToday);
 (() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
