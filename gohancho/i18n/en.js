@@ -447,6 +447,8 @@ GOHAN_I18N('en', {
     "買い物の前日の夕方にお知らせします": "We'll remind you the evening before shopping day",
     "汁ものの麺なので、なし": "None needed (noodle soup)",
     "合う料理がありません": "No good match",
+    "汁ものを足す": "Add a soup",
+    "汁ものは入れていません": "No soup included",
     "{slot}を別の料理にかえる": "Swap the {slot} for something else",
     "かえる": "Swap",
     "1週間プランでは、今日の主菜は": "Today's main from your weekly plan:",

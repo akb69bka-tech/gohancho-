@@ -446,6 +446,8 @@ GOHAN_I18N('fil', {
     "買い物の前日の夕方にお知らせします": "Ipapaalala namin sa gabi bago ang araw ng pamimili",
     "汁ものの麺なので、なし": "Wala (sabaw na may pansit)",
     "合う料理がありません": "Walang tugmang ulam",
+    "汁ものを足す": "Magdagdag ng sopas",
+    "汁ものは入れていません": "Walang sopas",
     "{slot}を別の料理にかえる": "Palitan ang {slot} ng iba",
     "かえる": "Palitan",
     "1週間プランでは、今日の主菜は": "Ulam ngayon mula sa weekly plan mo:",

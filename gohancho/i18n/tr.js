@@ -446,6 +446,8 @@ GOHAN_I18N('tr', {
     "買い物の前日の夕方にお知らせします": "Alışveriş gününden önceki akşam hatırlatacağız",
     "汁ものの麺なので、なし": "Gerek yok (çorbalı erişte)",
     "合う料理がありません": "Uygun bir seçenek yok",
+    "汁ものを足す": "Çorba ekle",
+    "汁ものは入れていません": "Çorba yok",
     "{slot}を別の料理にかえる": "{slot} yerine başka bir şey seç",
     "かえる": "Değiştir",
     "1週間プランでは、今日の主菜は": "Haftalık planınızdan bugünün ana yemeği:",

@@ -30,8 +30,10 @@ window.__snap = (opts) => {
   opts = opts || {};
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
-    const b = sp.querySelector('[data-act="reroll"]'); const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: c.outerHTML.replace(/ style="[^"]*"/g, '')};   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
+    const sa = sp.querySelector('[data-act="soup-add"]');
+    const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
+    // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '')};   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }

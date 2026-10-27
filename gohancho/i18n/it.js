@@ -447,6 +447,8 @@ GOHAN_I18N('it', {
     "買い物の前日の夕方にお知らせします": "Ti avviseremo la sera prima del giorno della spesa",
     "汁ものの麺なので、なし": "Non serve (zuppa con pasta)",
     "合う料理がありません": "Nessun abbinamento adatto",
+    "汁ものを足す": "Aggiungi una zuppa",
+    "汁ものは入れていません": "Nessuna zuppa",
     "{slot}を別の料理にかえる": "Cambia {slot} con qualcos'altro",
     "かえる": "Cambia",
     "1週間プランでは、今日の主菜は": "Il secondo di oggi dal tuo piano settimanale:",
