@@ -860,7 +860,7 @@ GOHAN_PACK({
       ],
       seas: 'Salt · 4 garlic cloves · 1 tbsp grated ginger · 1 green chili · 1 tbsp soy sauce · 1/4 tsp turmeric · 1/2 tsp cumin powder · 1/2 tsp black pepper · 1 tsp lemon juice · 1 tbsp oil · 800 ml water',
       steps: [
-        'Boil the noodles as the packet says (about 4–5 minutes) until just tender, drain, rinse and divide between two bowls.',
+        'Boil the noodles as the packet says (about 4–5 minutes) until just tender, drain, rinse and divide between the serving bowls.',
         'Heat the oil, fry the sliced onion 3 minutes, add the garlic, ginger and chili for 1 minute, then the chopped tomato, turmeric and cumin and cook 3 minutes until soft.',
         'Add the chicken and stir 2 minutes, pour in the water, soy sauce and salt, bring to a boil and simmer 10–12 minutes until the chicken is cooked through (no pink when cut).',
         'Add the carrot and cabbage and simmer 3 minutes. Season with pepper and lemon, ladle over the noodles and top with spring onion.',

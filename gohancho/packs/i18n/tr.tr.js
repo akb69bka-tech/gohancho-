@@ -614,7 +614,7 @@ GOHAN_PACK_TR('TR', 'tr', {
       ings: [['Yumurta', '4 adet'], ['Süzme yoğurt', '300 g'], ['Dereotu', 'birkaç dal']],
       seas: 'Tuz · 1 diş sarımsak · 2 yemek kaşığı tereyağı · 1 çay kaşığı pul biber · Haşlama suyu için 1 yemek kaşığı sirke',
       steps: [
-        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp iki tabağa yayın. Oda sıcaklığında olmalı.',
+        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp servis tabaklarına yayın. Oda sıcaklığında olmalı.',
         'Geniş bir tencerede sirkeli suyu hafifçe kaynatın. Yumurtaları tek tek bir fincana kırıp suya kaydırın; beyazı pişene kadar 3-4 dakika (sarısı katı olsun isterseniz 5 dakika) haşlayın.',
         'Yumurtaları kevgirle alın, suyunu süzdürüp yoğurdun üstüne koyun.',
         'Pul biberi tereyağında birkaç saniye cızdırıp üzerine gezdirin. Dereotu serpip ekmekle servis edin.'
