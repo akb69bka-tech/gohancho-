@@ -16,7 +16,7 @@ async function open(cc, opts = {}){
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(([cc, wake]) => {
         if (wake){ window.__wl = {req:0, rel:0}; Object.defineProperty(navigator, 'wakeLock', {configurable:true, value:{request: async () => { __wl.req++; const l = {addEventListener(){}, release: async () => { __wl.rel++; }}; return l; }}}); }
-        if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, [cc, !!opts.wake]);
+        if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, [cc, !!opts.wake]);
     await p.goto(URL_); await p.waitForTimeout(900); await p.evaluate(() => { hasPro = () => true; });
     await p.evaluate(() => { S.fridge = []; S.staples = []; makeWeek(); render(); }); await p.waitForTimeout(300);
     return { ctx, p };

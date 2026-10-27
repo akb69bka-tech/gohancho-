@@ -529,10 +529,35 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .why-slot{min-height:calc(3.8rem + 2px)}
 .why{margin:2px 0 0;text-align:center;font-size:.9rem;color:var(--ink);background:var(--accent-soft);border-radius:12px;padding:.55rem .9rem;line-height:1.5}
 .menu-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+/* 空の画面: 案内文の上に、線画のアイコンを1つ（藍を薄くした色）。文は変えない */
+.empty.ill{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:22px 16px}
+.empty.ill::before{content:"";width:44px;height:44px;background:var(--accent);opacity:.4;-webkit-mask:var(--ic) center/contain no-repeat;mask:var(--ic) center/contain no-repeat}
+.ill-bowl{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h18a9 8 0 0 1-18 0z'/%3E%3Cpath d='M9 20h6'/%3E%3Cpath d='M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8'/%3E%3C/svg%3E")}.ill-book{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h11a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 17 21H6z'/%3E%3Cpath d='M6 3v18M9.5 8h5.5M9.5 12h5.5M9.5 16h3'/%3E%3C/svg%3E")}.ill-cam{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8h3l1.5-2h7L17 8h3v11H4z'/%3E%3Ccircle cx='12' cy='13' r='3.2'/%3E%3C/svg%3E")}
+/* 毎日は使わない section は、見出し1行に畳む（.fold）。開けば中身はそのまま */
+.fold{display:block}.fold+.fold{margin-top:-26px}
+.fold-sum{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:10px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);transition:transform .1s}
+.fold-sum::-webkit-details-marker{display:none}
+.fold-sum:active{transform:scale(.985)}
+.fold-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fold-tx h2{font-size:1.05rem;padding-inline-start:10px;border-inline-start:4px solid var(--accent)}
+.fold-tx .hint{font-size:.78rem;color:var(--muted);padding-inline-start:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fold-chev{width:9px;height:9px;flex:none;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.fold[open]>.fold-sum .fold-chev{transform:rotate(225deg) translate(-2px,-2px)}
+.fold-body{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+/* 押したときの手ごたえ: 沈む（:active）。タブと選択肢も */
+.chip:active{transform:scale(.96)}.chip{transition:background .15s,border-color .15s,transform .1s}
+nav.tabs button{transition:color .15s,transform .1s}nav.tabs button:active{transform:scale(.92)}
+.btn.primary:active{filter:brightness(.92)}
+.album-ph:active,.cal-d:active{transform:scale(.96)}
+/* 画面（タブ）を切りかえたときだけ、ふわっと現れる（不透明度だけ。位置は動かさない） */
+@media (prefers-reduced-motion:no-preference){#view.view-in{animation:viewIn .18s ease-out}@keyframes viewIn{from{opacity:0}to{opacity:1}}}
 .pantry-hint{font-size:.78rem;color:var(--muted);padding:10px 14px 4px}
 .pantry-box{margin-top:6px}
 .actions .btn{width:100%;min-width:0;text-align:center;overflow-wrap:anywhere}
-.actions .full{grid-column:1 / -1}
+.actions .full,.actions .btn:last-child:nth-child(odd){grid-column:1 / -1}
+.menu-tools .btn{border-color:var(--line)}
+.memo-sum::after{content:"";width:9px;height:9px;flex:none;margin-inline-start:auto;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.memo-card[open]>.memo-sum::after{transform:rotate(225deg) translate(-2px,-2px)}
 .tray .spot.main .vessel.rise-in{animation-delay:.04s}.tray .spot.rice .vessel.rise-in{animation-delay:.08s}.tray .spot.soup .vessel.rise-in{animation-delay:.12s}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 html.i18n-wait body{visibility:hidden}
@@ -2465,7 +2490,10 @@ function setTab(tb){
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tb ? 'true' : 'false'));
     window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
     render();
+    const vw = document.getElementById('view'); if (vw){ vw.classList.remove('view-in'); void vw.offsetWidth; vw.classList.add('view-in'); }
 }
+// 手ごたえの振動（あれば。Android の navigator.vibrate／iPhone アプリの Haptics）。決める操作だけで、ごく軽く
+function haptic(){ try{ const h = nativePlugin('Haptics'); if (h && h.impact){ h.impact({style:'LIGHT'}); return; } if (navigator.vibrate) navigator.vibrate(12); }catch(e){} }
 function metaLine(r){
     r = swappedRecipe(r) || r;
     // いまの国の料理には国名を出さない（どれも同じ国名になって役に立たないので）。ほかの国の料理だけ国名を出す
@@ -2702,7 +2730,7 @@ async function removeAlbum(key){
 }
 function albumHtml(){
     if (ALBUM === null){ loadAlbum(); return `<div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div>`; }
-    if (!ALBUM.length) return `<div class="list"><div class="empty">${esc(t('まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。'))}</div></div>`;
+    if (!ALBUM.length) return `<div class="list"><div class="empty ill ill-cam">${esc(t('まだ写真がありません。料理の作り方の画面で「作った料理を撮って登録」を押すと、ここに日付つきで残ります。'))}</div></div>`;
     const shown = ALBUM.slice(0, session.albumAll ? ALBUM.length : 12);
     return `<div class="album">${shown.map(a => `<figure class="album-item">
         <button class="album-ph" style="${esc('background-image:' + cssUrl(a.src))}" ${byId(a.id) ? `data-act="open" data-id="${esc(a.id)}"` : 'disabled'} aria-label="${esc(t('{name}の写真（わが家で作ったもの）', {name:(byId(a.id) || {}).name || a.name}))}"></button>
@@ -5828,12 +5856,12 @@ function leftoversHtml(){
     const list = S.leftovers.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
     const nameOf = r => r.name;
     const on = r => S.leftovers.some(x => x.d === TODAY && String(x.id) === String(r.id));
-    return `<div class="card left-card"><div class="eyebrow">${esc(t('残り物メモ'))}</div>
+    return `<details class="card memo-card left-card" ${(session.leftOpen === undefined ? list.length : session.leftOpen) ? 'open' : ''}><summary class="memo-sum"><span>${esc(t('残り物メモ'))}</span></summary>
         ${list.map(x => `<div class="left-line${leftDay(x) >= 4 ? ' left-old' : ''}"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:leftName(x)}))}">${esc(t('食べきった'))}</button></div>`).join('')}
         ${list.some(x => leftDay(x) >= 4) ? `<div class="row" style="margin-top:4px"><button class="btn sm ghost" data-act="left-clean">${esc(t('4日目以降のメモをまとめて消す'))}</button></div>` : ''}
         ${items.length ? `<div class="small muted" style="margin-top:6px">${esc(t('今日の料理の残りを冷蔵庫に入れたら押します'))}</div>
         <div class="chips left-chips" role="group" aria-label="${esc(t('残りを冷蔵庫に入れた'))}">${items.map(it => `<button class="chip" data-act="left-add" data-id="${esc(it.r.id)}" aria-pressed="${on(it.r)}">${esc(nameOf(it.r))}</button>`).join('')}</div>` : ''}
-        <p class="foot">${esc(t('押した日を1日目として数えます。何日食べられるかは、このアプリでは判断しません。'))}</p></div>`;
+        <p class="foot">${esc(t('押した日を1日目として数えます。何日食べられるかは、このアプリでは判断しません。'))}</p></details>`;
 }
 function leftoverToggle(id){
     const r = byId(id); if (!r) return;
@@ -5906,6 +5934,10 @@ function spendAdd(){
     save(); render();
     toast(t('{amount}を記録しました', {amount:moneyText(a)}), false, () => { S.spend = S.spend.filter(x => x !== entry); save(); render(); });
 }
+// 毎日は使わない section は、見出し1行に畳んでおく（開いた・閉じたは端末に覚える）。機能は消さず、開けばそのまま使える
+function foldHtml(key, title, hint, body){
+    return `<details class="sec fold" data-fold="${key}" ${S.foldOpen && S.foldOpen[key] ? 'open' : ''}><summary class="fold-sum"><span class="fold-tx"><h2>${esc(title)}</h2>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="fold-body">${body}</div></details>`;
+}
 function viewToday(){
     if (mixWaiting()) loadMix();
     if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
@@ -5920,6 +5952,7 @@ function viewToday(){
     session.trayShown = {ids: m.items.map(x => x.r ? x.r.id : '-'), rice: ''};
     const main = m.items[0] && m.items[0].r;
     const planned = (p => planUsable(p) && !(main && main.id === p.id) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない
+    const bigDecide = !!(main && !(S.cook && S.cook.d === TODAY));   // 「決める」ボタンは1つだけ。上の大きいボタンがあるときは、お膳の下には出さない
     const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChips = MOODS.map(x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood===x.k}">${esc(x.label)}</button>`).join('');
     const exSwap = swapOn() && effAvoid().length ? 1 : 0, exSpice = mildOn() ? 1 : 0, exLast = S.history.length ? 1 : 0, exLeft = eaterMembers().length && S.history.some(h => leftOf(h).length) ? 1 : 0;   // 押した料理以外の高さが動かないよう、出る可能性のある行ぶんの高さを前もって確保する
@@ -5987,7 +6020,7 @@ function viewToday(){
         ${remoteNoticeHtml()}
         ${backupNoteHtml()}
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
-        ${main && !(S.cook && S.cook.d === TODAY) ? `<button class="btn primary big-decide" data-act="decide" data-quick="1"><span>${esc(t('おまかせで決定'))}</span><small>${esc(t('いま出ている献立に決めて、作り方へ進みます'))}</small></button>` : ''}
+        ${bigDecide ? `<button class="btn primary big-decide" data-act="decide" data-quick="1"><span>${esc(t('おまかせで決定'))}</span><small>${esc(t('いま出ている献立に決めて、作り方へ進みます'))}</small></button>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint hint2">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}) : t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)})))}</span></div>
         <details class="card cond" ${S.condOpen ? 'open' : ''}><summary class="cond-sum"><span>${esc(t('条件を変える'))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n}), ...(mixCountries().length ? [t('国の組み合わせ')] : []), ...(session.useFridge ? [t('冷蔵庫の材料を優先')] : [])].join(t('・')))}</span></summary>
@@ -6008,12 +6041,11 @@ function viewToday(){
         ${cookWarnHtml()}
         <div class="actions">
             ${S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join()
-                ? `<button class="btn primary" data-act="goto-cook">${esc(t('作り方を見る'))}</button>`
-                : `<button class="btn primary" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>`}
+                ? `<button class="btn primary full" data-act="goto-cook">${esc(t('作り方を見る'))}</button>`
+                : bigDecide ? '' : `<button class="btn primary full" data-act="decide" ${main?'':'disabled'}>${esc(t('この献立に決定'))}</button>`}
             <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>
-            <button class="btn ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button>
         </div>
-        <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
+        <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
         ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote())}</p>` : ''}
         ${easyRelaxText() ? `<p class="small muted" style="margin:0">${esc(easyRelaxText())}</p>` : ''}
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(whyLine())}</div>
@@ -6021,14 +6053,9 @@ function viewToday(){
         ${leftoversHtml()}
     </section>
 
-    ${main ? `<section class="sec">
-        <div class="sec-head"><h2>${esc(t('今日のひと手間'))}</h2><span class="hint">${esc(t('{name}に、これを足すと腕が上がります', {name:main.name}))}</span></div>
-        ${upgradeHtml(main)}
-    </section>` : ''}
+    ${main ? foldHtml('upg', t('今日のひと手間'), t('{name}に、これを足すと腕が上がります', {name:main.name}), upgradeHtml(main)) : ''}
 
-    ${tw && twistAvailable() ? `<section class="sec">
-        <div class="sec-head"><h2>${esc(t('今日のひとひねり'))}</h2><span class="hint">${esc(t('いつもの定番を、ちょっと変えた一品'))}</span></div>
-        <div class="card${popOnce('twToday', tw.id)}">
+    ${tw && twistAvailable() ? foldHtml('tw', t('今日のひとひねり'), t('いつもの定番を、ちょっと変えた一品'), `<div class="card${popOnce('twToday', tw.id)}">
                 <div class="tw-item">
                     ${thumbHtml(tw)}
                     <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
@@ -6042,11 +6069,9 @@ function viewToday(){
                     <button class="btn sm" data-act="twist-main">${esc(t('主菜にする'))}</button>
                     <button class="btn sm ghost" data-act="new-twist">${esc(t('別のひねり'))}</button>
                 </div>
-        </div>
-    </section>` : ''}
+        </div>`) : ''}
 
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('1週間の主菜'))}</h2><span class="hint">${esc(t('7日間、同じ料理や同じ肉・魚が続かないように組みます'))}</span></div>
+    ${foldHtml('week', t('1週間の主菜'), t('7日間、同じ料理や同じ肉・魚が続かないように組みます'), `
         ${upcoming.length ? `<div class="list week" style="--wm:${swapOn() && effAvoid().length ? 3 : 1}">${upcoming.map((x, wi) => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay();
             if (!hasPro() && wi >= PLAN.freeLimits.weekDays) return `
             <div class="item locked">
@@ -6073,8 +6098,9 @@ function viewToday(){
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
         <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${scarceList().length ? (/^(ja|zh)/.test(LANG) ? '' : ' ') + esc(t('手に入りにくい食材（{list}）を使う料理は出しません。', {list: joinNames(scarceList())})) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
-        ${spendHtml()}
-    </section>`;
+`)}
+
+    <section class="sec">${spendHtml()}</section>`;
 }
 
 /* ---- 作り方（「この献立に決定」した料理の作り方を、料理ごとのタブで見る） ---- */
@@ -6134,7 +6160,7 @@ function viewCook(){
     const items = cookItems();
     if (!items.length) return `<section class="sec">
         <div class="sec-head"><h2>${esc(t('作り方'))}</h2></div>
-        <div class="list"><div class="empty">${esc(t('「今日の献立」で「この献立に決定」を押すと、ここに各料理の作り方がまとめて入ります。'))}</div></div>
+        <div class="list"><div class="empty ill ill-bowl">${esc(t('「今日の献立」で「この献立に決定」を押すと、ここに各料理の作り方がまとめて入ります。'))}</div></div>
         <div class="row"><button class="btn primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div></section>`;
     let i = Math.min(Math.max(0, session.cookIdx || 0), items.length - 1); session.cookIdx = i;
     const cur = items[i].r;
@@ -6475,7 +6501,7 @@ function viewLog(){
             ${yumOf(h) ? `<button class="btn sm ghost" data-act="yum-minus" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
 `).join('')).join('')
-            : `<div class="empty">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
+            : `<div class="empty ill ill-book">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
         ${logRest ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="log">${esc(t('すべて見る（{n}品）', {n: logRest}))}</button></div>` : ''}
     </section>
     ${top.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('よく作る料理'))}</h2></div>
@@ -7274,7 +7300,7 @@ document.addEventListener('click', e => {
         }
         case 'shop-to-fridge-go': closeSheet(); shopToFridge(); break;
         case 'shop-mode': session.shopMode = !session.shopMode; session.shopWakeFail = false; render(); break;
-        case 'goto-shop': { const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break; }
+        case 'goto-shop': { const fd = document.querySelector('details.fold[data-fold="week"]'); if (fd && !fd.open) fd.open = true; const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break; }
         case 'shop-extra-rm': {
             shopDoneSet(); const k = el.dataset.k, ex = S.shopDone.extra || [], gone = ex.find(x => x.k === k); if (!gone) break;
             const beforeEx = ex.slice(), beforeKeys = S.shopDone.keys.slice();
@@ -7344,7 +7370,7 @@ document.addEventListener('click', e => {
             const before = new Set(S.history.filter(h => h.d !== TODAY || (S.cook && S.cook.d === TODAY && S.cook.ids.includes(h.id))).map(h => h.id));
             ids.forEach(id => record(id, slotOf(byId(id))));
             const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
-            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj}; save();
+            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj}; save(); haptic();
             session.cookIdx = 0;
             toast(endSent(t('献立が決まりました。作り方はこちらです')) + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
         }
@@ -7720,6 +7746,8 @@ document.addEventListener('input', e => {
 document.addEventListener('toggle', e => {
     if (!e.target.matches) return;
     if (e.target.matches('details.cond')) { if (!!S.condOpen !== e.target.open){ S.condOpen = e.target.open; save(); } }   // 開き直しても同じ開き方で出す
+    if (e.target.matches('details.fold')) { const k = e.target.dataset.fold, was = !!(S.foldOpen && S.foldOpen[k]); if (k && was !== e.target.open){ if (!S.foldOpen) S.foldOpen = {}; S.foldOpen[k] = e.target.open; save(); } }
+    if (e.target.matches('details.left-card')) session.leftOpen = e.target.open;
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
