@@ -19,8 +19,8 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
       if (expectSame && !same(a, c)) bad(name, cc + ' ' + JSON.stringify(a.ids) + ' -> ' + JSON.stringify(c.ids)); else ok(name);
       return {a, c};
     };
-    // 献立に出ていない食材を苦手にする
-    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (session.menu.items.some(x => x.r && isAvoided(x.r))) S.settings.avoid = ['@dairy_unrelated_zzz'];   // 献立にたこ・いか・貝などがあれば「無関係」な苦手にならないので避ける save(); reconcileMenu(); refreshWeek(); render(); });
+    // 献立に出ていない食材を苦手にする（たこ・いか・貝なども「魚介」に入るので、献立にあれば無関係な苦手にならない）
+    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (session.menu.items.some(x => x.r && isAvoided(x.r))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap', () => { S.settings.avoidSwap = false; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap-back', () => { S.settings.avoidSwap = true; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('avoid-days', () => { S.settings.avoidDays = 21; save(); render(); });
