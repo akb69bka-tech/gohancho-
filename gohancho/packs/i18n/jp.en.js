@@ -1069,6 +1069,66 @@ GOHAN_PACK_TR('JP', 'en', {
       steps: ['Cook the rice with kombu and slightly less water than usual. Soak the shiitake and cut into strips; cut the carrot into strips and the lotus root into thin quarter rounds.', 'Simmer the shiitake, carrot and lotus root in the simmering liquid until it is gone. Boil the shrimp and green beans.', 'Mix the eggs with sugar and salt, make thin omelets and slice into fine threads.', 'Pour the sushi vinegar over the hot rice and fold in with cutting motions, mix in the simmered vegetables, then top with egg threads, shrimp, beans and nori.'],
       tip: { add: 'Salmon roe or sashimi on top', why: 'It turns into a celebration dish for Girls\' Day or birthdays.', skill: 'Glossy sushi rice', how: 'Fan the rice while mixing in the vinegar; quick cooling gives it shine and keeps it from getting mushy.' }
     },
+    okayu: {
+      name: 'Okayu (plain rice porridge)',
+      ings: [['Rice', '1/2 go (90 ml)']],
+      seas: 'Water 450 ml · Salt a little (optional)',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Put the rice and 450 ml water (5 times the rice by volume) in a heavy pot, cover and bring to a boil over medium heat.', 'When it boils, stir gently once from the bottom, then simmer over low heat with the lid slightly ajar for 30 minutes. Stirring too much makes it sticky.', 'Turn off the heat, cover and let it steam for 10 minutes. Serve in a bowl with a little salt on the side if you like.']
+    },
+    tamagogayu: {
+      name: 'Egg okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Eggs', '2'], ['Leek (naganegi)', 'a little'], ['Shredded nori', 'a little']],
+      seas: 'Water 450 ml · Salt 1/4 tsp · Soy sauce 1/2 tsp',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Put the rice and 450 ml water in a heavy pot, cover and bring to a boil over medium heat. Stir once when it boils, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Season with the salt and soy sauce and pour in the beaten eggs in a thin stream. Cover and cook for 1 minute, until the eggs are set.', 'Serve topped with thinly sliced leek and shredded nori.']
+    },
+    umegayu: {
+      name: 'Ume (pickled plum) okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Umeboshi (pickled plums)', '2'], ['Shiso leaves', '2'], ['White sesame seeds', 'a little']],
+      seas: 'Water 450 ml · Salt a little',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Put the rice and 450 ml water in a heavy pot, cover and bring to a boil over medium heat. Stir once when it boils, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Remove the pits from the umeboshi and chop the flesh. Cut the shiso into thin strips.', 'Turn off the heat, cover and steam for 10 minutes. Serve topped with the umeboshi and shiso, and sprinkle with sesame seeds. Adjust the saltiness with the amount of umeboshi.']
+    },
+    shakegayu: {
+      name: 'Salmon okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Salted salmon (lightly salted)', '1 fillet'], ['Leek (naganegi)', 'a little'], ['Shredded nori', 'a little']],
+      seas: 'Water 450 ml · Salt a little',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Put the rice and 450 ml water in a heavy pot, cover and bring to a boil over medium heat. Stir once when it boils, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'While the porridge cooks, grill or pan-fry the salmon until cooked through. Remove the skin and bones and flake the meat coarsely.', 'Stir in the salmon, turn off the heat, cover and steam for 10 minutes. Add a little salt if needed, and top with leek and nori.']
+    },
+    nanakusagayu: {
+      name: 'Nanakusa-gayu (seven-herb okayu)',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Spring seven-herb set', '1 pack (about 40 g)']],
+      seas: 'Water 450 ml · Salt 1/3 tsp',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Put the rice and 450 ml water in a heavy pot, cover and bring to a boil over medium heat. Stir once when it boils, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Wash the herbs well, blanch briefly in boiling water with a little salt (not included in the amounts), and cool in cold water. Squeeze out the water and chop finely (slice daikon and turnip thinly and boil until tender).', 'Season the porridge with salt and stir in the herbs. Turn off the heat, cover and steam for 5 minutes, then serve. It is traditionally eaten on the morning of January 7.']
+    },
+    chukagayu: {
+      name: 'Chinese-style chicken and ginger congee',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Chicken thigh', '100 g'], ['Ginger', '1 knob'], ['Leek (naganegi)', 'a little'], ['White sesame seeds', 'a little']],
+      seas: 'Water 450 ml · Chicken bouillon powder 1 tsp · Sake 1 tsp · Salt a little · Sesame oil 1 tsp',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Cut the chicken into 2 cm cubes and sprinkle with the sake. Slice half of the ginger and cut the rest into thin strips.', 'Put the rice, 450 ml water, bouillon powder, sliced ginger and chicken in a heavy pot, cover and bring to a boil over medium heat. Stir once, then simmer over low heat with the lid slightly ajar for 30 minutes. Cook the chicken until it is white all the way through and flakes apart.', 'Adjust with salt, turn off the heat, cover and steam for 10 minutes.', 'Serve topped with the ginger strips, sliced leek and sesame seeds, and drizzle with sesame oil.']
+    },
+    satsumaimogayu: {
+      name: 'Sweet potato okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Sweet potato', '1/2 (about 100 g)']],
+      seas: 'Water 450 ml · Salt a pinch',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Cut the sweet potato into 1 cm cubes with the skin on, soak in water for 5 minutes and drain.', 'Put the rice, 450 ml water and sweet potato in a heavy pot, cover and bring to a boil over medium heat. Stir once, then simmer over low heat with the lid slightly ajar for 30 minutes, until the sweet potato is tender.', 'Add the salt, turn off the heat, cover and steam for 10 minutes. Stir lightly and serve.']
+    },
+    kabochagayu: {
+      name: 'Kabocha squash okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Kabocha squash', '100 g']],
+      seas: 'Water 450 ml · Salt a pinch',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Remove the seeds and pulp from the kabocha and cut into 1.5 cm cubes (peel parts of the skin if you like).', 'Put the rice, 450 ml water and kabocha in a heavy pot, cover and bring to a boil over medium heat. Stir once, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Add the salt, turn off the heat, cover and steam for 10 minutes. Mash the kabocha lightly with a spatula while mixing, and serve.']
+    },
+    azukigayu: {
+      name: 'Azuki bean okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Azuki beans (dried)', '3 tbsp (about 30 g)']],
+      seas: 'Water about 550 ml (including the bean cooking liquid) · Salt 1/4 tsp',
+      steps: ['Rinse the azuki, put them in a pot, cover with plenty of water (not included in the amounts) and bring to a boil. Boil for 5 minutes, then discard the liquid.', 'Add 300 ml water (not included in the amounts) to the beans, cover and simmer over low heat for 30–40 minutes, until soft enough to crush with your fingers. Meanwhile, rinse the rice lightly and drain.', 'Leave the beans in their cooking liquid, add the rice, and top up with water to about 550 ml in total. Cover and bring to a boil over medium heat, stir once, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Add the salt, turn off the heat, cover and steam for 10 minutes. Serve in a bowl.']
+    },
+    kinokogayu: {
+      name: 'Mushroom okayu',
+      ings: [['Rice', '1/2 go (90 ml)'], ['Shimeji mushrooms', '1/2 pack'], ['Enoki mushrooms', '1/2 bag'], ['Shiitake mushrooms', '2'], ['Mitsuba', 'a little']],
+      seas: 'Water 450 ml · Soy sauce 1 tsp · Salt 1/4 tsp',
+      steps: ['Rinse the rice lightly, drain in a colander and soak in water for about 30 minutes (it also works without soaking).', 'Trim the mushrooms. Separate the shimeji, cut the enoki into 3 cm lengths and slice the shiitake.', 'Put the rice, 450 ml water and mushrooms in a heavy pot, cover and bring to a boil over medium heat. Stir once, then simmer over low heat with the lid slightly ajar for 30 minutes.', 'Season with the soy sauce and salt, turn off the heat, cover and steam for 10 minutes. Serve topped with chopped mitsuba.']
+    },
     tandoori: {
       name: 'Tandoori chicken (pan-fried)',
       ings: [['Chicken thigh', '2'], ['Plain yogurt', '4 tbsp'], ['Lemon', '1/4'], ['Red leaf lettuce', '2 leaves']],

@@ -13944,6 +13944,86 @@
       "date": "2026-10-23",
       "thumb": "t/id_tumisjamur.webp",
       "v": "0b8a3f6a"
+    },
+    "okayu": {
+      "file": "okayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/okayu.webp",
+      "v": "571b5d01"
+    },
+    "tamagogayu": {
+      "file": "tamagogayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/tamagogayu.webp",
+      "v": "d47801de"
+    },
+    "umegayu": {
+      "file": "umegayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/umegayu.webp",
+      "v": "ba8075bd"
+    },
+    "shakegayu": {
+      "file": "shakegayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/shakegayu.webp",
+      "v": "2c3174b3"
+    },
+    "nanakusagayu": {
+      "file": "nanakusagayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/nanakusagayu.webp",
+      "v": "df243593"
+    },
+    "chukagayu": {
+      "file": "chukagayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/chukagayu.webp",
+      "v": "08ca7012"
+    },
+    "satsumaimogayu": {
+      "file": "satsumaimogayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/satsumaimogayu.webp",
+      "v": "2579accd"
+    },
+    "kabochagayu": {
+      "file": "kabochagayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/kabochagayu.webp",
+      "v": "e8d96a07"
+    },
+    "azukigayu": {
+      "file": "azukigayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/azukigayu.webp",
+      "v": "5b27bf2a"
+    },
+    "kinokogayu": {
+      "file": "kinokogayu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/kinokogayu.webp",
+      "v": "69141c0d"
     }
   }
 }
