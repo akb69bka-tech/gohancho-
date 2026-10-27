@@ -110,7 +110,7 @@ a{color:var(--accent)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips:not(.scroll) .chip{white-space:normal;flex-shrink:1;max-width:100%;text-align:start}   /* 長い言葉のチップ（苦手な食材のなかまなど）は折り返して、画面からはみ出さない */
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
-.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-height:44px;min-width:44px;white-space:nowrap;flex-shrink:0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.3rem .85rem;font-size:.84rem;display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-height:44px;min-width:44px;white-space:normal;overflow-wrap:anywhere;max-width:100%;flex-shrink:0}   /* 長い名前（国名など）でも画面の幅を超えない。収まるチップは今までどおり1行 */
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .chip[aria-pressed="true"]::before{content:"✓";content:"✓" / "";font-weight:700}   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
 .chip[aria-pressed="false"]::before{content:"✓";content:"✓" / "";font-weight:700;visibility:hidden}   /* 選んだ・選んでいないで幅が変わると、となりのチップが横にずれる。✓の分の幅を、選んでいないチップにも前もって取る */   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
@@ -242,10 +242,10 @@ small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を
 .day.today .dd{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
 
 /* 統計 */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .stat{background:var(--surface-2);border-radius:12px;padding:10px 12px}
 .stat .n{font-family:var(--font-display);font-weight:700;font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.2}
-.stat .k{font-size:.75rem;color:var(--muted)}
+.stat .k{font-size:.75rem;color:var(--muted);overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}   /* ドイツ語「Küchentipps」など長い1語で、3列が画面の幅を超えないように */
 
 details.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:0 16px}
 details.box>summary{padding:14px 0;cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between}
@@ -479,7 +479,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .pop{animation:rise .28s ease-out}
 .tray .vessel.rise-in{animation:rise .35s ease-out backwards}   /* 入れ替わった料理の器だけ（描き直しのたびに全部が弾むと、押していない料理まで動いて見える） */
 .cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}   /* 1fr のままだと、長い言葉（イタリア語・ドイツ語など）で列が広がって、画面全体が横にはみ出す */
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
 .big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
 .note .plan-note{min-width:0}.note .pn{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}   /* 料理名の長さで、この案内が1行・2行と変わらないように */
@@ -488,7 +488,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .menu-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .pantry-hint{font-size:.78rem;color:var(--muted);padding:10px 14px 4px}
 .pantry-box{margin-top:6px}
-.actions .btn{width:100%}
+.actions .btn{width:100%;min-width:0;text-align:center;overflow-wrap:anywhere}
 .actions .full{grid-column:1 / -1}
 .tray .spot.main .vessel.rise-in{animation-delay:.04s}.tray .spot.rice .vessel.rise-in{animation-delay:.08s}.tray .spot.soup .vessel.rise-in{animation-delay:.12s}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -538,7 +538,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
 .cook-tab .thumb{width:44px;height:44px;margin-bottom:2px}
 .cook-tab .ct-slot{font-size:.75rem;color:var(--muted);letter-spacing:.08em}
-.cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase}
+.cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語で、タブが画面の幅を超えて、画面全体が横に広がらないように */
 .cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
 .cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
 .cook-card{display:flex;flex-direction:column;gap:10px;margin-top:10px}

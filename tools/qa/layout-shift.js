@@ -72,7 +72,7 @@ var results = []; // {scn, cc, w, sc, img, cls, worst, n, dsy, off}
 const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY)) return; results.push(r); if ((r.worst > TOL || r.cls > 0.001) && results.filter(x => x.scn === r.scn && (x.worst > TOL || x.cls > 0.001)).length <= 2) console.log('SHIFT', r.scn, r.cc, r.w, 'x' + r.sc, r.img, 'cls=' + r.cls.toFixed(3), 'worst=' + r.worst, 'n=' + r.n, 'dSY=' + r.dsy, (r.off || []).join(' / ')); };
 
 (async () => {
-  const b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  let b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
   const errs = [];
   const probe = await b.newPage(); await probe.goto(BASE); await probe.waitForTimeout(500);
   const allCC = await probe.evaluate(() => COUNTRIES.map(c => c.cc)); await probe.close();
@@ -86,7 +86,7 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
     for (const im of IMGS) if (im !== 'ok') for (const [w, sc] of [[390, 1], [320, 1.25]]) tasks.push({cc, w, sc, img: im, n: ci % 2 ? 6 : 4, lv: 'img'});
   });
   for (const {cc, w, sc, img, n, lv} of tasks) {
-    {
+    try {
       const ctx = await b.newContext({viewport: {width: w, height: 844}, deviceScaleFactor: 2, hasTouch: true, isMobile: true});
       await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
       if (img === 'fail') await ctx.route(/\/img\//, r => r.abort());
@@ -229,8 +229,13 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         await p.evaluate(() => setTab('today'));
       }
       }
+      // 横にはみ出して、画面全体が横に広がらない（固定の下タブがずれる原因になる）
+      for (const tb of ['today', 'cook', 'fridge', 'twist', 'world', 'log', 'settings']) {
+        const ov = await p.evaluate(async tb => { setTab(tb); await new Promise(r => setTimeout(r, 350)); return document.documentElement.scrollWidth - document.documentElement.clientWidth; }, tb);
+        record(Object.assign({}, base, {scn: '横はみ出し（7つのタブ）', cls: 0, worst: Math.max(0, ov), n: 0, all: Math.max(0, ov), dsy: 0, off: [tb + ' +' + ov + 'px']}));
+      }
       await ctx.close();
-    }
+    } catch (e) { errs.push(`${cc} ${w} x${sc} ${img} n${n}: ${String(e.message).split('\n')[0]}`); try { await b.close(); } catch (e2) {} b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'}); }
   }
   await b.close();
 
