@@ -1078,7 +1078,6 @@ const INPUT_UNIT2 = 'ฟอง|ชิ้น|หัว|ก้อน|ขีด|ก
 const COUNTER_RE2 = new RegExp('^(?:(?:' + INPUT_NUM2 + ')\\s*(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'i');
 const LATIN_NUMUNIT_RE = new RegExp('^(?:(?:' + INPUT_NUM2 + ')|[\\d.,½¼¾]+(?:' + INPUT_UNIT2 + ')?|(?:' + INPUT_UNIT2 + '))$', 'iu');   // ラテン文字の語: 数・数の単語・単位だけ（bacon を ba+con と読まない）
 const INPUT_FILL_LATIN = new Set(['tengo','hay','tenemos','queda','quedan','me','nos','un','una','uno','unos','unas','de','del','la','el','los','las','poco','poca','algo','algunos','algunas','mucho','muchos','también','tambien','más','mas','sobra','sobran','en','mi','el','refri','refrigerador','nevera']);
-const INPUT_CONJ_LATIN = /\s+(?:y|e|o|u|con|and|or|with|&|\+)\s+/i;
 // 言語ごとの「持っている」「少し」「の」などと、「と」「または」（ラテン文字の入力で、知っている食材を除いたあまりを食材として足すときに使う）
 'j ai jai il y a ai avons reste restent du de des d l la le les en peu un quelques beaucoup avec aussi plus frigo mon ma mes dans moi encore ich habe hab haben wir noch etwas bisschen viel mit im kühlschrank von vom der die das dem den und oder auch zu zum zur ho abbiamo c è ce po di del della dei delle degli dello il lo gli ed anche frigorifero mi rimasto rimasta avanzato avanzata qualche poco tenho temos tem ainda pouco do da dos das o os as com ou também na geladeira no minha sobrou alguns algumas mam mamy jest są trochę troszkę dużo z ze i oraz lub albo też także w lodówce do na mi zostało jeszcze var vardı evde buzdolabında biraz birkaç ile ve veya ya da ayrıca ben bende elimde kalan punya ada saya aku kami di kulkas sedikit dan atau dengan serta juga sisa masih yang sama có tôi nhà còn ở trong tủ lạnh ít với và hoặc hay cùng cũng thêm may mayroon meron ako sa ref kaunting konting kaunti ng na at saka pati tsaka kasama mga ang ay ko namin natira pa rin din have got ve there is are some of the my fridge left leftover lots little bit i s t pas ni sans non kein keine keinen keiner ohne niente senza sem não bez nie yok değil tanpa tidak bukan không walang hindi no not without ăn allergique allergisch allergico alérgico alergia alergik'.split(' ').forEach(w => INPUT_FILL_LATIN.add(w));
 const INPUT_CONJ_W = new Set('et ou und oder mit e ed o ou com ve veya ile dan atau dengan và hoặc hay với at saka pati tsaka oraz lub albo i z ze and or with y u con avec'.split(' '));   // 食材と食材をつなぐ語
@@ -1160,7 +1159,6 @@ const SUBS = {
 const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉':'鶏','牛肉':'牛','合いびき肉':'ひき肉',
     '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','あじ':'魚','いわし':'魚','さんま':'魚','かれい':'魚','いか':'魚介','たこ':'魚介','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
     '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚'};
-const FAMILY_LABEL = {'羊':'羊肉','豚':'豚肉','鶏':'鶏肉','牛':'牛肉','ひき肉':'ひき肉','魚':'魚','魚介':'魚介','大豆':'豆腐・大豆','卵':'卵','加工肉':'ハム・ベーコン','野菜':'野菜'};
 function prepRecipe(r){
     r.items = r.ings.map(parseIng); r.seasBase = r.seas;
     const p = r.items.find(i => FAMILY[i.key] && i.key !== '卵') || r.items.find(i => FAMILY[i.key]);
@@ -1521,12 +1519,20 @@ function genreLabel(r){
     if (r.pack) return countryLabel(countryOf(r.pack));
     return {'和':t('和食'), '洋':t('洋食'), '中':t('中華'), '韓':t('韓国'), 'エスニック':t('エスニック')}[r.genre] || r.genre || '';
 }
+let FAM_LABELS = null, FAM_LABELS_KEY = '';   // 言語ごとに1回だけ作る（呼ぶたびに11個の訳を引かない）
 function familyLabel(f){
-    return {'羊':t('羊肉'), '豚':t('豚肉'), '鶏':t('鶏肉'), '牛':t('牛肉'), 'ひき肉':t('ひき肉'), '魚':t('魚'), '魚介':t('魚介'), '大豆':t('豆腐・大豆'),
-        '卵':t('卵'), '加工肉':t('ハム・ベーコン'), '野菜':t('野菜')}[f] || f;
+    const key = LANG + (LANG === 'en' && isGB() ? '-GB' : '');
+    if (!FAM_LABELS || FAM_LABELS_KEY !== key){ FAM_LABELS_KEY = key; FAM_LABELS = {'羊':t('羊肉'), '豚':t('豚肉'), '鶏':t('鶏肉'), '牛':t('牛肉'), 'ひき肉':t('ひき肉'), '魚':t('魚'), '魚介':t('魚介'), '大豆':t('豆腐・大豆'),
+        '卵':t('卵'), '加工肉':t('ハム・ベーコン'), '野菜':t('野菜')}; }
+    return FAM_LABELS[f] || f;
 }
 function ymd(d=new Date()){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function parseYmd(s){ const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); }
+const YMD_MS = new Map();   // 日付の文字列 → その日の0時（ミリ秒）。記録が数千件あっても毎回の分解・Date の組み立てをしない（返すのは毎回新しい Date）
+function parseYmd(s){
+    let ms = YMD_MS.get(s);
+    if (ms === undefined){ const [y, m, d] = s.split('-').map(Number); ms = new Date(y, m-1, d).getTime(); if (YMD_MS.size > 4000) YMD_MS.clear(); YMD_MS.set(s, ms); }
+    return new Date(ms);
+}
 function addDays(s, n){ const d = parseYmd(s); d.setDate(d.getDate()+n); return ymd(d); }
 function daysBetween(a, b){ return Math.round((parseYmd(b) - parseYmd(a)) / 86400000); }
 const WD = ['日','月','火','水','木','金','土'];
@@ -1781,7 +1787,7 @@ const BENTO_OK = new Set(`
     pe_pollo_horno pe_bistec_apanado pe_papa_rellena pe_chicharron_pescado pe_tortilla_verduras pe_tacu_tacu
     pe_platano pe_yuca_frita pe_camote_frito pe_torrejas_choclo pe_saltado_vainitas pe_verduras_chifa
     pe_cancha pe_arroz_arabe pe_pastel_acelga`.split(/\s+/).filter(Boolean));
-const BENTO_NEED = 3, BENTO_FEW = 5;
+const BENTO_FEW = 5;
 function bentoFits(r){ return (r.type === '主菜' || r.type === '副菜') && BENTO_OK.has(r.id); }
 // その枠（主菜 / 副菜）で、いま選べるお弁当向きの料理の数（苦手・「今は出さない」を除く）
 const bentoMemo = new Map();
@@ -2922,16 +2928,11 @@ function sideGarnish(rng){
     for (let k = 0; k < 22; k++){ const x = 66 + (rng()-.5)*20, y = 64 + (rng()-.5)*16; out += `<path d="M${x.toFixed(1)},${y.toFixed(1)} q${(4+rng()*4).toFixed(1)},${(-2+rng()*4).toFixed(1)} ${(9+rng()*5).toFixed(1)},${(-1+rng()*2).toFixed(1)}" stroke="${rng() < .5 ? '#d9eab0' : '#bcd98a'}" stroke-width="1.3" fill="none" stroke-linecap="round" transform="rotate(${(-30+rng()*60).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`; }
     return `<g>${out}</g><circle cx="76" cy="48" r="4.6" fill="#e2412f"/><circle cx="74.8" cy="46.6" r="1.3" fill="#fff" opacity=".6"/><path d="M76,43.6 l1.2,-1.4 M76,43.6 l-1.4,-.9" stroke="#3f7a35" stroke-width=".9" stroke-linecap="round"/>`;
 }
-function mixHex(a, b, t){
-    const h = x => { x = String(x).replace('#',''); if (x.length === 3) x = x.split('').map(c => c + c).join(''); return [0,2,4].map(i => parseInt(x.slice(i, i+2), 16)); };
-    try{ const A = h(a), B = h(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2,'0')).join(''); }catch(e){ return a; }
-}
 
 /* =========================================================
    いつも家にある食材（常備品）
    ========================================================= */
 const STAPLE_QUICK = ['卵','玉ねぎ','にんじん','じゃがいも','長ねぎ','豆腐','キャベツ','ベーコン','ハム','ウインナー','しめじ','ツナ','コーン','わかめ','油揚げ','チーズ','キムチ','うどん','スパゲッティ','牛乳'];
-function stapleKeys(){ return new Set(S.staples.map(keyOf)); }
 // 買い足すとレパートリーが広がる食材: その1品を足すと「今すぐ作れる」に変わる料理を数える
 function shoppingHints(have, limit=3){
     const gain = {};
@@ -3358,7 +3359,6 @@ function introCancelBy(){
     let tz = ''; try{ const p = new Intl.DateTimeFormat(LANG, {timeZoneName:'short'}).formatToParts(d).find(x => x.type === 'timeZoneName'); tz = p ? p.value : ''; }catch(e){}   // 端末のタイムゾーン略称（JST・PST など）。取れなければ付けない
     return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + (tz ? ' ' + tz : '');
 }
-function introDays(){ return daysBetween(TODAY, introEndYmd()); }
 function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
 // お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
 function trialTimelineHtml(){
@@ -3746,7 +3746,13 @@ const STEP_LEFT_FAT = /\b(?:fat|oil|grease|drippings|lard|schmaltz)\b|\b(?:pour|
 const STEP_LEFT_AFTER = /^\s*(?:だけ|のみ|ほど)?(?:を)?\s*(?:残|のこ)/;
 // 作り方の文に、人数で変わる分量（グラム・さじ・個数など）が残っているか。時間・温度・大きさ・「4等分」「3回」だけなら、分量の注記は要らない
 const STEP_NOAMT = new RegExp('\\d+(?:[.,]\\d+)?(?:\\s*[½¼¾⅓⅔]|\\s+\\d+\\/\\d+)?(?:\\s*(?:[-–~〜～]|to|or|ou|oder|o|à|a|bis|al|do|hingga|đến|hanggang|إلى|或|か)\\s*\\d+(?:[.,]\\d+)?(?:\\s*[½¼¾⅓⅔]|\\s+\\d+\\/\\d+)?)?\\s*(?:more\\s+|もう|さらに)?(?:°\\s*[CF]?|℃|%|倍|درجة|h\\s*\\d*(?![A-Za-zÀ-ɏ])|(?:cm|mm|inch(?:es)?|厘米|公分|公釐|毫米|センチ|ミリ|ซม\\.?|سم|ملم|सें\\.?\\s?मी\\.?|-hole)|[Cc](?![A-Za-z]|\\.\\s*à)|(?:(?:diagonal|deep|shallow|small|light)\\s+)?(?:cuts?|slashes|slits|incisions|cortes|entailles|Schnitte|tagli|çizik|hiwa|刀|칼집|シュッ)|(?:minutes?|mins?|hours?|hrs?|seconds?|secs?|days?|weeks?|nights?|times?|whistles|分|秒|時間|日|週間|晩|분|초|시간|일|小时|小時|分钟|分鐘|秒钟|天|นาที|ชั่วโมง|วินาที|วัน|dakika|saat|saniye|gün|menit|jam|detik|hari|phút|giờ|giây|ngày|minut\\p{L}*|hora\\p{L}*|segundos?|d[ií]as?|ore?|secondi|giorni|Minuten?|Stunden?|Sekunden?|Tage?n?|heures?|secondes?|jours?|godzin\\p{L}*|sekund\\p{L}*|dni|dzień|oras|segundo|araw|linggo|ساعة|ساعات|دقيقة|دقائق|دقايق|ثانية|ثواني|يوم|أيام|مرة|مرات|मिनट|घंटे?|घंटा|सेकंड|दिन|सीटी|回|度|等分|つ割り|か所|ヶ所|番|次|번|lần|veces|vezes|volte|Mal|fois|razy|kali|tiếng)(?![A-Za-zÀ-ɏ])|\\d+\\/\\d+(?=\\s*(?:of|de|des|von|の|을|를|を|は|the|le|la|el|del)\\b)|\\d+\\/\\d+\\s*[のをはがに]|\\d+\\s*(?:-|–)\\s*(?:minute|hour|inch|cm|mm))', 'giu');
+const STEP_AMT = new Map();   // 手順の文 → 分量の数字があるか（同じ文を開くたびに長い正規表現をかけない）
 function stepHasAmount(text){
+    const k = String(text), hit = STEP_AMT.get(k); if (hit !== undefined) return hit;
+    if (STEP_AMT.size > 3000) STEP_AMT.clear();
+    const v = stepHasAmountRaw(k); STEP_AMT.set(k, v); return v;
+}
+function stepHasAmountRaw(text){
     const t0 = String(text).replace(STEP_NOAMT, '').replace(/\d+\s*(?:x|×)\s*\d+/g, '');
     return /\d/.test(t0) || /كوباية|كوبين/.test(t0);
 }
@@ -4465,12 +4471,15 @@ function shopNorm(s){
         return w.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }).join(' ');
 }
-function shopBase(label){ return shopNorm(shopClean(label)); }
+const SHOP_MEMO = new Map();   // 買い物メモの名寄せ・売り場の判定は文字列だけで決まる。1週間分の材料を毎回、長い正規表現で調べ直さない
+function shopMemo(k, f){ let v = SHOP_MEMO.get(k); if (v === undefined){ if (SHOP_MEMO.size > 6000) SHOP_MEMO.clear(); v = f(); SHOP_MEMO.set(k, v); } return v; }
+function shopBase(label){ return shopMemo('b|' + label, () => shopNorm(shopClean(label))); }
 // 同じ食材キーの中では「A または B」の A だけで見たものとも同じ行にする（Milk or buttermilk ＝ Milk）
-function shopLoose(label){ return shopNorm(shopClean(label).split(SHOP_ALT)[0].trim()); }
+function shopLoose(label){ return shopMemo('l|' + label, () => shopNorm(shopClean(label).split(SHOP_ALT)[0].trim())); }
 // 買い物メモの売り場: veg（野菜）・meat（肉・魚）・dairy（乳製品・卵）・other（その他）
 const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節'];
-function shopSec(i){
+function shopSec(i){ return shopMemo('s\u0001' + i.key + '\u0001' + (i.en || '') + '\u0001' + (i.label || ''), () => shopSecRaw(i)); }
+function shopSecRaw(i){
     const w = (i.key + '|' + (i.en || '')).toLowerCase();
     if (['pork','chicken','beef','fish','shellfish'].some(f => inFam(f, i)) || /\b(lamb|mutton|goat|duck|liver|meat|mince|keema|sausage)\b/.test(w) || i.key === 'たらこ') return 'meat';
     // 売り場が野菜でないとわかる加工品・缶・ジュース・乾物など（野菜の名前を含んでいても、生の野菜ではないもの）
