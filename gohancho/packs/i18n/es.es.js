@@ -834,7 +834,7 @@ GOHAN_PACK_TR('ES', 'es', {
         'Corta las berenjenas en bastones finos o rodajas de 5 mm y déjalas en remojo en la leche con una pizca de sal 30 minutos.',
         'Escúrrelas y pásalas por harina, sacudiendo el exceso.',
         'Fríelas en aceite muy caliente en tandas pequeñas 2-3 minutos hasta que estén doradas y crujientes. Escurre sobre papel y sala un poco.',
-        'Riega con la miel de caña y sirve enseguida.'
+        'Riega con la miel de caña y sirve enseguida. No des miel a bebés menores de 1 año, ni siquiera cocinada.'
       ],
       tip: { add: 'Sal en escamas con la miel', why: 'El contraste dulce y salado es lo que engancha', skill: 'Remójalas en leche', how: 'La leche suaviza el amargor y hace que la berenjena absorba menos aceite.' }
     },

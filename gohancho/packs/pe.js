@@ -170,7 +170,7 @@ GOHAN_PACK({
       steps: [
         'Rinse the lentils and simmer them in 750 ml of water for 20 minutes until almost soft.',
         'Meanwhile, fry the onion, garlic, ají panca, cumin and oregano in the oil for 5 minutes, then add the grated tomato and diced carrot for 3 minutes.',
-        'Stir this aderezo into the lentils and simmer for 10 more minutes until thick and creamy.',
+        'Stir this aderezo into the lentils and simmer for 10 more minutes until thick and creamy. Stir in the chopped coriander at the end.',
         'Season with salt and serve with white rice, salsa criolla and a fried egg or fried fish.',
       ],
       tip: { add: 'A fried egg on top', why: 'Makes it a complete Monday lunch', skill: 'Salt at the end', how: 'Salting too early keeps lentils firm; add it once they are soft.' },

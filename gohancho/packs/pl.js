@@ -1155,7 +1155,7 @@ GOHAN_PACK({
         'Cut the ribs into portions of 2-3 bones. Mix the honey, mustard, paprika, marjoram, crushed garlic, oil, salt and pepper and rub it all over the ribs. Leave for at least 1 hour (or overnight in the fridge).',
         'Heat the oven to 170°C. Lay the ribs in a dish on sliced onion, add 100 ml water, cover with foil and bake for 1 1/4 hours.',
         'Remove the foil, put potato wedges around the ribs if using, raise the oven to 200°C and roast 25-30 minutes more, basting with the juices, until sticky and browned.',
-        'Serve with the potatoes and a sauerkraut salad.',
+        'Serve with the potatoes and a sauerkraut salad. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'Sauerkraut salad on the side', why: 'Its sourness cuts through the sweet, fatty ribs', skill: 'Low, then high', how: 'Slow covered baking makes the meat tender; the hot uncovered finish caramelises the glaze.' },
     },

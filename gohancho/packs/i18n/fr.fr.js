@@ -794,10 +794,10 @@ GOHAN_PACK_TR('FR', 'fr', {
       steps: [
         'Préchauffez le four à 200 °C. Faites de petites entailles dans le rôti et glissez-y des éclats d\'ail ; badigeonnez de moutarde, salez et poivrez.',
         'Faites dorer le rôti sur toutes ses faces dans l\'huile et le beurre, dans un plat allant au four, environ 8 minutes.',
-        'Entourez-le des pommes de terre coupées en deux, de l\'oignon en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 35 à 40 minutes, en retournant et en arrosant à mi-cuisson, jusqu\'à 65 °C à cœur (le jus doit être clair).',
+        'Entourez-le des pommes de terre coupées en deux, de l\'oignon en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 35 à 40 minutes, en retournant et en arrosant à mi-cuisson, jusqu\'à 75 °C à cœur (le jus doit être clair).',
         'Laissez reposer 10 minutes sous une feuille d\'aluminium, tranchez et servez avec les légumes et le jus en grattant le fond du plat.',
       ],
-      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 65 °C à cœur, il finit de cuire en reposant.' },
+      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 75 °C à cœur, il finit de cuire en reposant.' },
     },
     'fr_tartiflette': {
       name: 'Tartiflette',
