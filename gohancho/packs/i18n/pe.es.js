@@ -154,7 +154,7 @@ GOHAN_PACK_TR('PE', 'es', {
       steps: [
         'Lava las lentejas y cocínalas en 750 ml de agua por 20 minutos, hasta que estén casi blandas.',
         'Mientras tanto, sofríe la cebolla, el ajo, el ají panca, el comino y el orégano en el aceite por 5 minutos; luego agrega el tomate rallado y la zanahoria en cubitos por 3 minutos.',
-        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas.',
+        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas. Al final, incorpora el cilantro picado.',
         'Sazona con sal y sirve con arroz blanco, salsa criolla y un huevo frito o pescado frito.'
       ],
       tip: { add: 'Un huevo frito encima', why: 'Lo convierte en un almuerzo de lunes completo', skill: 'Sala al final', how: 'Si sazonas muy pronto, las lentejas quedan duras; agrega la sal cuando ya estén blandas.' }

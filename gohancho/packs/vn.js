@@ -1286,7 +1286,7 @@ GOHAN_PACK({
         'Cook the rice vermicelli, rinse in cold water and drain.',
         'Grill the pork over charcoal, under the oven grill or in a hot pan for 3-4 minutes per side until cooked through and charred at the edges.',
         'In bowls, put shredded lettuce, cucumber and herbs, then the noodles and the pork.',
-        'Top with crushed peanuts and spring onion oil if you like, and pour over the dipping fish sauce at the table.',
+        'Top with crushed peanuts and spring onion oil if you like, and pour over the dipping fish sauce at the table. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A couple of chả giò cut in pieces', why: 'Makes it bún thịt nướng chả giò, the full version', skill: 'Thin slices', how: 'Slice the pork thin while slightly frozen so it cooks fast and chars before it dries out.' },
     },

@@ -82,7 +82,7 @@ GOHAN_PACK({
         'Pat the chops dry and season both sides with salt, pepper, paprika and garlic powder.',
         'Heat the oil in a heavy skillet over medium-high heat. Lay in the chops and sear 4-5 minutes without moving them until deep golden.',
         'Flip, lower the heat to medium and cook 3-4 minutes more. Add the butter, garlic and thyme and spoon the foaming butter over the chops for 1 minute.',
-        'Check the chops are cooked through (63°C in the center, juices clear), then rest them 5 minutes before serving.',
+        'Check the chops are cooked through (75°C in the center, juices clear), then rest them 5 minutes before serving.',
       ],
       tip: { add: 'Applesauce on the side', why: 'The classic sweet-tart partner for pork', skill: 'Rest before cutting', how: 'Five minutes on the plate lets the juices settle so the chop stays moist.' },
     },
@@ -1083,8 +1083,8 @@ GOHAN_PACK({
       steps: [
         'Heat the oven to 200°C. Trim off the thin silver skin, pat the pork dry and season with salt and pepper. Mix the honey, soy sauce, garlic and mustard.',
         'Heat the oil in an oven-safe skillet over medium-high heat and brown the pork on all sides, about 6 minutes.',
-        'Pour half the honey mixture over the pork and roast 15-18 minutes, brushing with the rest halfway, until 63°C in the center.',
-        'Rest 5 minutes. Stir the butter into the pan juices, slice the pork and spoon the glaze over.',
+        'Pour half the honey mixture over the pork and roast 15-18 minutes, brushing with the rest halfway, until the center reaches 75°C and no pink remains.',
+        'Rest 5 minutes. Stir the butter into the pan juices, slice the pork and spoon the glaze over. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'Roasted sweet potatoes on the side', why: 'They share the oven and suit the sweet glaze', skill: 'Watch the glaze', how: 'Honey burns easily - if the pan darkens too much, add a splash of water.' },
     },
@@ -1620,7 +1620,7 @@ GOHAN_PACK({
       steps: [
         'Peel the carrots and slice on the diagonal about 7 mm thick.',
         'Put them in a skillet with the water, butter, honey and salt. Cover and simmer 6-8 minutes until nearly tender.',
-        'Uncover and cook over medium-high heat, stirring, 3-4 minutes until the liquid becomes a shiny glaze. Add pepper and parsley.',
+        'Uncover and cook over medium-high heat, stirring, 3-4 minutes until the liquid becomes a shiny glaze. Add pepper and parsley. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A squeeze of orange or a pinch of thyme', why: 'Lifts the sweetness', skill: 'Cook off the water', how: 'The glaze forms only when the water evaporates; keep stirring so it coats every slice without burning.' },
     },
