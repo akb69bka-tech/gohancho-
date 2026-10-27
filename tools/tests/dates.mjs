@@ -138,11 +138,11 @@ for (const [tz, start, label] of [['America/New_York', '2026-03-05T15:00:00Z', '
     const p = await open('America/New_York', '2026-03-07T17:00:00Z');   // 3/7 12:00 EST
     const s = await p.evaluate(() => { introOffer = {unit: 'day', n: 1}; return introCancelBy(); });
     ok(/11:00/.test(s) && /3月7日|Mar|7/.test(s), `NY 春: 3/8 12:00 EDT の24時間前は 3/7 11:00 EST (${s})`);
-    const s2 = await p.evaluate(() => { introOffer = {unit: 'month', n: 1}; return [introEndYmd(), introDays()]; });
+    const s2 = await p.evaluate(() => { introOffer = {unit: 'month', n: 1}; return [introEndYmd(), daysBetween(TODAY, introEndYmd())]; });
     eq(s2, ['2026-04-07', 31], 'NY 春: 1か月後の終了日と日数');
     await p.clock.setSystemTime(new Date('2026-01-31T17:00:00Z'));
     await p.evaluate(() => refreshToday());
-    eq(await p.evaluate(() => [introEndYmd(), introDays()]), ['2026-02-28', 28], '1/31 の1か月後は月末に丸めて 2/28');
+    eq(await p.evaluate(() => [introEndYmd(), daysBetween(TODAY, introEndYmd())]), ['2026-02-28', 28], '1/31 の1か月後は月末に丸めて 2/28');
     await p.clock.setSystemTime(new Date('2028-01-31T17:00:00Z')); await p.evaluate(() => refreshToday());
     eq(await p.evaluate(() => introEndYmd()), '2028-02-29', '閏年の 1/31 の1か月後は 2/29');
     await p.clock.setSystemTime(new Date('2026-12-31T17:00:00Z')); await p.evaluate(() => refreshToday());
