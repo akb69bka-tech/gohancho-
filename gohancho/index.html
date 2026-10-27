@@ -1288,6 +1288,9 @@ function normalizeState(d){
         .map(x => ({id: typeof x.id === 'string' || typeof x.id === 'number' ? x.id : '', name: x.name.slice(0, 80), d: x.d}));
     st.spend = arr(st.spend).filter(x => x && typeof x === 'object' && isYmd(x.d) && Number.isFinite(Number(x.a)) && Number(x.a) > 0 && Number(x.a) <= 1e9).slice(0, 400)
         .map((x, i) => ({id: typeof x.id === 'string' && x.id ? x.id : 'x' + i, d: x.d, a: Math.round(Number(x.a) * 100) / 100}));
+    delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
+    if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
+    if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
     if (st.settings.textSize !== 1 && st.settings.textSize !== 2) delete st.settings.textSize;   // 文字の大きさ: なし=ふつう / 1=大きい / 2=もっと大きい
     return st;
 }
@@ -4319,6 +4322,12 @@ function viewSettings(){
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('データ'))}</div>
+            <div class="box backup-card" id="backup-card" style="padding:12px 14px;margin-bottom:8px">
+                <b>${esc(t('データのバックアップ'))}</b>
+                <p class="small muted" style="margin:6px 0">${esc(t('記録・お気に入り・保存した献立・家族・冷蔵庫などは、この端末の中だけに保存されています。機種変更・アプリの削除・ブラウザのデータ削除で消えることがあります。ときどきファイルに書き出しておくと安心です。'))}</p>
+                <p class="small" style="margin:0 0 8px">${esc(S.lastBackup ? t('最後に書き出した日: {d}', {d: S.lastBackup}) : t('まだ書き出していません'))}</p>
+                <div class="row"><button class="btn" data-act="export-file">${esc(t('ファイルで書き出す'))}</button></div>
+            </div>
             <details class="box"><summary>${esc(t('データの引っ越し・バックアップ'))}</summary>
                 <div class="inner">
                     <p class="small muted" style="margin:0">${esc(t('登録した「わが家の写真」は、この文字には入りません（端末の中にだけ保存されます）。'))}</p>
@@ -4333,7 +4342,8 @@ function viewSettings(){
                         <button class="btn" data-act="import-file">${esc(t('ファイルから読み込む'))}</button>
                         <input type="file" id="backup-file" accept="application/json,.json" hidden>
                     </div>
-                    ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small">${esc(importFrom === 'file' ? t('今の記録は、このファイルのデータで上書きされます。よろしいですか？') : t('今の記録は、貼りつけたデータで上書きされます。よろしいですか？'))}</div><div class="small muted">${esc(importSummary())}</div><div class="row"><button class="btn primary sm" data-act="import-yes">${esc(t('上書きする'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : ''}
+                    ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small"><b>${esc(t('いまのデータは、すべてこの内容に置き換わります。'))}</b> ${esc(importFrom === 'file' ? t('このファイルの内容') : t('貼りつけた内容'))}</div><div class="small muted">${esc(importSummary())}</div>${importNewer() ? `<div class="small muted">${esc(t('新しい版のご飯帖で書き出されたファイルです。このアプリで使える項目だけ読み込まれます。'))}</div>` : ''}<div class="small muted">${esc(t('いまのデータ'))}: ${esc(stateSummary(S))}</div><div class="small muted">${esc(t('読み込む前の状態は1回分だけ控えるので、あとで元に戻せます。'))}</div><div class="row"><button class="btn primary sm" data-act="import-yes">${esc(t('置き換えて読み込む'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : ''}
+                    ${(u => u && pendingConfirm !== 'import' ? `<div class="row"><button class="btn sm" data-act="import-undo">${esc(t('読み込む前の状態に戻す'))}</button><span class="small muted">${esc(t('{d}の分を控えています', {d: u.d || ''}))}</span></div>` : '')(loadUndo())}
                     ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
                 </div>
             </details>
@@ -4853,22 +4863,42 @@ async function cardCanvas(kind, arg){
 // 共有中の二重起動（InvalidStateError）や取り消し（AbortError）はダウンロードに落とさない。ダウンロードは「始めた」とだけ言う
 var fileShareBusy = false, cardBusy = false;
 async function shareFileOrDownload(blob, name, type, dlMsg){
-    if (fileShareBusy){ toast(t('いま共有中です。終わるまでお待ちください')); return; }
+    if (fileShareBusy){ toast(t('いま共有中です。終わるまでお待ちください')); return false; }
     fileShareBusy = true;
     try{
         let file = null; try{ file = new File([blob], name, {type}); }catch(e){}
         if (file && navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-            try{ await navigator.share({files:[file], title:t('わが家のご飯帖')}); return; }
-            catch(e){ if (e && (e.name === 'AbortError' || e.name === 'InvalidStateError')) return; }
+            try{ await navigator.share({files:[file], title:t('わが家のご飯帖')}); return true; }
+            catch(e){ if (e && (e.name === 'AbortError' || e.name === 'InvalidStateError')) return false; }
         }
         const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(dlMsg);
+        setTimeout(() => URL.revokeObjectURL(a.href), 10000); toast(dlMsg); return true;
     }finally{ fileShareBusy = false; }
 }
 // 記録（JSON）をファイルにして渡す（設定の「ファイルで書き出す」と購入画面の「書き出す」で共通）
-function exportDataFile(){
-    const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json';
-    shareFileOrDownload(new Blob([JSON.stringify(S)], {type: 'application/json'}), name, 'application/json', t('{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます', {name}));
+// 書き出すデータ（版・日時の目印つき。古いアプリは目印を無視して読める）
+function backupJson(){ return JSON.stringify(Object.assign({}, S, {_gohancho: {v: BACKUP_VER, at: new Date().toISOString()}})); }
+function markBackedUp(){ S.lastBackup = TODAY; delete S.backupSnooze; save(); }
+async function exportDataFile(){
+    const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json', json = backupJson();
+    const FS = nativePlugin('Filesystem'), SH = nativePlugin('Share');
+    // iPhone アプリ版: Filesystem + Share があればファイルにして共有シートへ。Share だけなら文字として渡す。どちらもなければ（ブラウザ版と同じ）共有 / ダウンロード
+    if (isNative() && SH){
+        try{
+            if (FS){
+                const r = await FS.writeFile({path: name, data: json, directory: 'CACHE', encoding: 'utf8'});
+                await SH.share({title: t('わが家のご飯帖'), url: r.uri, dialogTitle: t('わが家のご飯帖')});
+            }else await SH.share({title: name, text: json, dialogTitle: t('わが家のご飯帖')});
+            markBackedUp(); toast(t('書き出しました')); render(); return;
+        }catch(e){ if (e && (e.name === 'AbortError' || /cancel|dismiss/i.test(String(e.message)))) return; }
+    }
+    try{
+        if (await shareFileOrDownload(new Blob([json], {type: 'application/json'}), name, 'application/json', t('{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます', {name}))){ markBackedUp(); render(); }
+    }catch(e){
+        // ファイルにできない環境: 欄に文字を出してコピーしてもらう
+        const ta = $('#backup-text'); if (ta){ ta.value = json; ta.select(); keepDetailsOpen(); }
+        toast(t('ファイルにできなかったので、下の欄に文字を出しました。コピーして保管してください'));
+    }
 }
 // 画像にして、共有できる端末は共有シート（LINE・メッセージなど）へ、できなければダウンロード
 async function shareCard(kind, arg){
@@ -5542,6 +5572,7 @@ function viewToday(){
     return `
     <section class="sec">
         ${remoteNoticeHtml()}
+        ${backupNoteHtml()}
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${main && !(S.cook && S.cook.d === TODAY) ? `<button class="btn primary big-decide" data-act="decide" data-quick="1"><span>${esc(t('おまかせで決定'))}</span><small>${esc(t('いま出ている献立に決めて、作り方へ進みます'))}</small></button>` : ''}
         ${planned ? `<div class="note"><span>${esc(t('1週間プランでは、今日の主菜は'))} <b>${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
@@ -7095,7 +7126,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'export': {
-            const ta = $('#backup-text'); ta.value = JSON.stringify(S);
+            const ta = $('#backup-text'); ta.value = backupJson(); markBackedUp();
             const done = () => toast(t('コピーしました'));
             try{ navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); toast(t('文字を選択しました。コピーしてください')); }); }
             catch(err){ ta.select(); toast(t('文字を選択しました。コピーしてください')); }
@@ -7103,20 +7134,17 @@ document.addEventListener('click', e => {
         }
         case 'import': {
             const txt = $('#backup-text').value.trim();
-            if (!askImport(txt, 'text')) toast(t('読み込めませんでした。コピーした文字をそのまま貼りつけてください'));
+            if (!askImport(txt, 'text')) toast(importErrMsg('text'));
             break;
         }
         case 'export-file': exportDataFile(); break;
         case 'import-file': { const inp = $('#backup-file'); if (inp){ inp.value = ''; inp.click(); } break; }
         case 'import-yes': {
             try{
-                const d = JSON.parse(importBuffer);
-                // 購入の状態・無料期間の始まりは、この端末のものを残す（古いバックアップで購入が消えたり、貼った文字で開いたりしないように）
-                const keep = {pro: S.pro, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept};
-                S = Object.assign(normalizeState(d), keep);
+                const pr = parseBackup(importBuffer); if (!pr.ok) throw new Error('parse');
+                saveUndo();   // 読み込む前の状態を1回分だけ控える（「読み込む前の状態に戻す」用）
+                S = applyImported(pr.d);
                 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
-                for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
-                addCustomRecipes();
                 applyTextSize(); save(); toast(t('読み込みました'));
                 // 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）
                 const cc = currentCountry();
@@ -7126,6 +7154,20 @@ document.addEventListener('click', e => {
             }catch(err){ toast(t('読み込めませんでした')); }
             pendingConfirm = null; session.menu = null; render(); break;
         }
+        case 'import-undo': {
+            const u = loadUndo(); if (!u){ toast(t('戻せるデータがありません')); break; }
+            try{
+                const cur = S; saveUndo();   // いまの状態を控え直す（もう一度押せば、読み込んだ状態に戻せる）
+                S = applyImported(u.data);
+                applyTextSize(); save(); toast(t('読み込む前の状態に戻しました')); void cur;
+                const cc = currentCountry();
+                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { S.settings.country = 'JP'; save(); })
+                    .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
+                    .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
+            }catch(err){ toast(t('読み込めませんでした')); }
+            pendingConfirm = null; session.menu = null; render(); break;
+        }
+        case 'backup-snooze': S.backupSnooze = TODAY; save(); render(); break;
         case 'reset': pendingConfirm = 'reset'; render(); keepDetailsOpen(); break;
         case 'reset-yes':
             // 無料期間の始まりと購入の状態は消さない（消すたびにお試しがやり直せてしまうため）
@@ -7136,18 +7178,72 @@ document.addEventListener('click', e => {
         case 'cancel-confirm': pendingConfirm = null; render(); keepDetailsOpen(); break;
     }
 });
-let importBuffer = '', importFrom = 'text';
-// 読みこむ前に中身を確かめて、上書きの確認を出す（貼りつけ・ファイル共通）。読めないときは false
+let importBuffer = '', importFrom = 'text', importErr = '';
+// ---- バックアップの読み込み ----
+const BACKUP_VER = 1, BACKUP_MAX = 12e6, UNDO_KEY = 'gohancho.undo';
+// 文字を読んで、ご飯帖のデータか確かめる。{ok, d, newer} か {ok:false, reason: 'empty'|'big'|'broken'|'notmine'}
+function parseBackup(txt){
+    if (typeof txt !== 'string') return {ok:false, reason:'broken'};
+    txt = txt.replace(/^﻿/, '').trim();
+    if (!txt) return {ok:false, reason:'broken'};
+    if (txt.length > BACKUP_MAX) return {ok:false, reason:'big'};
+    let d; try{ d = JSON.parse(txt, (k, v) => k === '__proto__' ? undefined : v); }catch(e){ return {ok:false, reason:'broken'}; }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return {ok:false, reason:'notmine'};
+    // ご飯帖のデータの目印: 記録・お気に入りなどの配列、または設定（古い版は history だけでなく項目が少ない）
+    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','hidden','usedDays'];
+    const known = A.some(k => Array.isArray(d[k])) || (d.settings && typeof d.settings === 'object' && !Array.isArray(d.settings) && Object.keys(d.settings).length > 0) || (d.week && typeof d.week === 'object' && Array.isArray(d.week.days));
+    if (!known) return {ok:false, reason:'notmine'};
+    const v = d._gohancho && Number(d._gohancho.v);
+    return {ok:true, d, newer: Number.isFinite(v) && v > BACKUP_VER};
+}
+function importErrMsg(from){
+    return importErr === 'notmine' ? t('ご飯帖のデータではないようです') : importErr === 'big' ? t('ファイルが大きすぎて読み込めません')
+        : from === 'file' ? t('ファイルが壊れているか、空のようです。書き出したときのファイルをそのまま選んでください') : t('読み込めませんでした。コピーした文字をそのまま貼りつけてください');
+}
+// 読みこむ前に中身を確かめて、置き換えの確認を出す（貼りつけ・ファイル共通）。読めないときは false（理由は importErr）
 function askImport(txt, from){
-    try{ const d = JSON.parse(txt); if (!d || !Array.isArray(d.history)) return false; }catch(err){ return false; }
+    const r = parseBackup(txt); importErr = r.ok ? '' : r.reason; if (!r.ok) return false;
     pendingConfirm = 'import'; importBuffer = txt; importFrom = from; render(); keepDetailsOpen(); return true;
 }
-// 読みこむデータの中身（記録・お気に入り・自作レシピの数と国）
-function importSummary(){
-    try{
-        const d = normalizeState(JSON.parse(importBuffer)), c = countryOf(d.settings.country || 'JP');
-        return [t('記録{n}件', {n: d.history.length}), t('お気に入り{n}件', {n: d.favs.length}), t('自作レシピ{n}件', {n: d.custom.length}), c.flag + ' ' + countryLabel(c)].join(t('・'));
-    }catch(err){ return ''; }
+// 読みこんだデータをこの端末の状態にする。購入の状態・無料期間の始まり・バックアップの日付は、この端末のものを残す（古いバックアップで購入が消えたり、貼った文字で開いたりしないように）
+function applyImported(d){
+    const keep = {pro: S.pro, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept, lastBackup: S.lastBackup, backupSnooze: S.backupSnooze};
+    Object.keys(keep).forEach(k => { if (keep[k] === undefined) delete keep[k]; });
+    const st = Object.assign(normalizeState(d), keep);
+    if (!st.settings.country && st.onboarded) st.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
+    for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
+    st.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepRecipe(Object.assign({}, r))); }catch(e){} });
+    return st;
+}
+// 読み込む前の状態を1世代だけ控える（端末の空きがなければ控えられない。そのときは何も言わず、読み込みは続ける）
+function saveUndo(){ try{ localStorage.setItem(UNDO_KEY, JSON.stringify({t: Date.now(), d: TODAY, data: S})); }catch(e){} }
+function loadUndo(){ try{ const u = JSON.parse(localStorage.getItem(UNDO_KEY) || 'null'); return u && u.data && typeof u.data === 'object' && !Array.isArray(u.data) ? u : null; }catch(e){ return null; } }
+// データの中身（件数）の要約。読みこむデータにも、いまのデータにも使う
+function stateSummary(d){
+    const c = countryOf(d.settings.country || 'JP'), wk = d.week ? d.week.days : [], skip = wk.filter(x => x.skip).length, who = wk.filter(x => x.who).length;
+    const a = [t('記録{n}件', {n: d.history.length}), t('お気に入り{n}件', {n: d.favs.length}), t('自作レシピ{n}件', {n: d.custom.length}), t('保存した献立{n}件', {n: d.savedMenus.length})];
+    if (d.family.length) a.push(t('家族{n}人', {n: d.family.length}));
+    if (d.fridge.length) a.push(t('冷蔵庫の食材{n}品', {n: d.fridge.length}));
+    if (d.leftovers.length) a.push(t('作り置きメモ{n}件', {n: d.leftovers.length}));
+    if (d.spend.length) a.push(t('食費メモ{n}件', {n: d.spend.length}));
+    if (wk.length) a.push(t('1週間の予定{n}日分', {n: wk.length}) + (skip ? t('（作らない日{n}日）', {n: skip}) : '') + (who ? t('（担当を決めた日{n}日）', {n: who}) : ''));
+    a.push(c.flag + ' ' + countryLabel(c));
+    return a.join(t('・'));
+}
+function importSummary(){ try{ const r = parseBackup(importBuffer); return r.ok ? stateSummary(normalizeState(r.d)) : ''; }catch(err){ return ''; } }
+function importNewer(){ try{ const r = parseBackup(importBuffer); return r.ok && r.newer; }catch(err){ return false; } }
+// バックアップのお知らせ: 記録などがあるのに、最後の書き出し（なければ使いはじめ）から30日以上たち、「あとで」も押していないとき
+function backupDue(){
+    const has = S.history.length >= 3 || S.favs.length || S.custom.length || S.savedMenus.length || S.family.length;
+    if (!has) return false;
+    const base = S.lastBackup || S.firstUse; if (!base) return false;
+    if (daysBetween(base, TODAY) < 30) return false;
+    return !(S.backupSnooze && daysBetween(S.backupSnooze, TODAY) < 14);
+}
+function backupNoteHtml(){
+    if (!backupDue()) return '';
+    const msg = S.lastBackup ? t('最後に書き出してから{n}日たちました。機種変更や削除に備えて、ファイルに書き出しておくと安心です。', {n: daysBetween(S.lastBackup, TODAY)}) : t('記録はこの端末の中だけにあります。機種変更や削除に備えて、ファイルに書き出しておくと安心です。');
+    return `<div class="note trial-note" role="note"><span dir="auto">${esc(msg)}</span><button class="btn sm" data-act="export-file">${esc(t('ファイルで書き出す'))}</button><button class="btn sm ghost" data-act="backup-snooze">${esc(t('あとで'))}</button></div>`;
 }
 function keepDetailsOpen(){ const b = document.querySelectorAll('details.box'); if (b.length) b[b.length-1].open = true; }
 let searchDeb = 0;
@@ -7180,7 +7276,8 @@ document.addEventListener('change', e => {
     }
     if (el.id === 'backup-file' && el.files && el.files[0]){
         const fl = el.files[0]; el.value = '';
-        fl.text().then(txt => { if (!askImport(txt.trim(), 'file')) toast(t('読み込めませんでした')); }, () => toast(t('読み込めませんでした')));
+        if (fl.size > BACKUP_MAX){ toast(t('ファイルが大きすぎて読み込めません')); return; }
+        fl.text().then(txt => { if (!askImport(txt, 'file')) toast(importErrMsg('file')); }, () => toast(t('読み込めませんでした')));
         return;
     }
     if (el.id === 'eat-at'){ S.settings.dinnerAt = /^([01]\d|2[0-3]):[0-5]\d$/.test(el.value) ? el.value : null; session.eatOpen = true; save(); render(); return; }
