@@ -4938,6 +4938,46 @@ function oneAdd(id){
     }
     toast(msg); closeSheet(); if (tab !== 'today') setTab('today'); else render();
 }
+/* ---- 冷蔵庫の食材が今日の献立で使われているか／あと1品で使い切れる料理（今日のほかの料理は変えない） ---- */
+function oneCanAdd(r){
+    const m = session.menu; if (!m || m.items.some(x => x.r && x.r.id === r.id)) return false;
+    const slot = slotOf(r) === '汁物' ? '汁物' : '副菜';
+    if (m.items.some(x => x.slot === slot && !x.r)) return true;
+    const maxN = session.mood === 'bento' ? 4 : 5, lim = hasPro() ? 6 : PLAN.freeLimits.dishes;
+    return m.n < maxN && m.n + 1 <= lim && !(slot === '汁物' && m.items.some(x => x.slot === '汁物'));
+}
+function fridgeUseInfo(){
+    const m = session.menu, main = m && m.items[0] && m.items[0].r;
+    if (!main || !S.fridge.length) return null;
+    const names = new Map(); S.fridge.forEach(f => { const k = keyOf(f); if (!names.has(k)) names.set(k, labelOf(f)); });
+    const usedKeys = new Set(); m.items.forEach(x => { if (x.r) x.r.items.forEach(i => { if (!i.opt) usedKeys.add(i.key); }); });
+    const used = [...names.keys()].filter(k => usedKeys.has(k)), unused = [...names.keys()].filter(k => !usedKeys.has(k));
+    const sugg = [];
+    if (unused.length){
+        const inMenu = new Set(menuIds()), seen = new Set();
+        const soupOk = !(session.mood === 'bento' || main.type === '汁物' || main.id === 'nikuudon');
+        ['副菜', '汁物'].forEach(sl => { if (sl === '汁物' && !soupOk) return;
+            poolFor(sl).forEach(r => {
+                if (seen.has(r.id) || inMenu.has(r.id) || r.type !== sl || isAvoided(r) || !oneCanAdd(r)) return;
+                const hit = unused.filter(k => r.items.some(i => !i.opt && i.key === k)); if (!hit.length) return;
+                seen.add(r.id); sugg.push({r, hit});
+            }); });
+        sugg.sort((a, b) => b.hit.length - a.hit.length || a.r.min - b.r.min || a.r.id.localeCompare(b.r.id));
+    }
+    return {names, used, unused, sugg: sugg.slice(0, 3)};
+}
+function fridgeUseHtml(){
+    const f = fridgeUseInfo(); if (!f) return '';
+    const nm = ks => joinNames(ks.map(k => f.names.get(k)));
+    return `<div class="card fridge-use"><div class="eyebrow">${esc(t('冷蔵庫の食材と今日の献立'))}</div>
+        ${f.used.length ? `<p class="small" style="margin:4px 0">${esc(t('使う: {list}', {list:nm(f.used)}))}</p>` : ''}
+        ${f.unused.length ? `<p class="small muted" style="margin:4px 0">${esc(t('まだ使わない: {list}', {list:nm(f.unused)}))}</p>` : `<p class="small" style="margin:4px 0">${esc(t('冷蔵庫の食材は、今日の献立ですべて使います。'))}</p>`}
+        ${f.sugg.map(x => `<div class="match"><span data-act="open" data-id="${esc(x.r.id)}">${thumbHtml(x.r)}</span><div class="info">
+            <div class="head"><span class="name">${esc(x.r.name)}</span></div>
+            <div class="small muted">${esc(x.hit.length === f.unused.length ? t('{list}を使い切れます', {list:nm(x.hit)}) : t('{list}が使えます', {list:nm(x.hit)}))}</div>
+            <div class="row"><button class="btn sm primary" data-act="fridge-add" data-id="${esc(x.r.id)}">${esc(t('今日の献立に入れる'))}</button><button class="btn sm" data-act="one-view" data-id="${esc(x.r.id)}">${esc(t('作り方を見る'))}</button></div></div></div>`).join('')}
+        ${f.unused.length && !f.sugg.length ? `<p class="small muted" style="margin:4px 0">${esc(t('足せる副菜・汁ものは見つかりませんでした。'))}</p>` : ''}</div>`;
+}
 function openOne(){ sheet = {kind:'one', q:'', pick:null, sugg:null, seen:[]}; renderSheet(); }
 function oneName(){ const p = sheet.pick; return p.id ? ((RECIPES.find(r => r.id === p.id) || byId(p.id) || {}).name || '') : p.text; }
 function oneMain(){ const p = sheet.pick; return p.id ? (RECIPES.find(r => r.id === p.id) || byId(p.id)) : onePseudo(p.text); }
@@ -5213,6 +5253,7 @@ function viewToday(){
             <button class="btn ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button>
         </div>
         <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
+        ${fridgeUseHtml()}
     </section>
 
     ${main ? `<section class="sec">
@@ -6253,6 +6294,7 @@ document.addEventListener('click', e => {
         case 'one-change': sheet.pick = null; sheet.sugg = null; sheet.seen = []; sheet.q = ''; renderSheet(); break;
         case 'one-more': oneRun(true); oneRefresh(); break;
         case 'one-add': oneAdd(id); break;
+        case 'fridge-add': { const r = byId(id); if (r && oneCanAdd(r)) oneAdd(id); else render(); break; }
         case 'one-view': closeSheet(); openModal(id); break;
         case 'goto-saved': setTab('log'); setTimeout(() => { const e = $('#saved-menus'); if (e) e.scrollIntoView({block:'start'}); }, 30); break;
         case 'saved-apply': applySavedMenu(id); break;
