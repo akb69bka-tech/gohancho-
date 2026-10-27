@@ -467,6 +467,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .shop .shop-sec.done{padding:0;border-top:2px solid var(--line)}
 .shop .shop-row input{width:18px;height:18px;accent-color:var(--accent);grid-row:span 2}
 .shop .nm{font-weight:700}
+.shop .nm .alt{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
 .shop .q{font-size:.8rem;color:var(--muted);text-align:end;font-variant-numeric:tabular-nums}
 .shop .for{grid-column:2 / 4;font-size:.75rem;color:var(--muted)}
 .shop .shop-row.done .nm,.shop .shop-row.done .q{text-decoration:line-through;color:var(--muted)}
@@ -4132,7 +4133,7 @@ function swappedRecipe(r){
     // 分量は代わりの食材のふだんの分量（尾・杯・本のような数え方がそのまま残らないように）。同じ食材への置き換えが2つあれば1行にまとめる
     const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); if (!x) return i;
         if (seen.has(x.to.key)) return null; seen.add(x.to.key);
-        return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: x.to.qty || i.qty, changed: true, from: i.name}); }).filter(Boolean);
+        return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: x.to.qty || i.qty, changed: true, from: i.name, jp: x.to.jp}); }).filter(Boolean);
     // 肉・魚の種類も置き換えた主役に合わせる
     const pw = w.swaps.find(x => x.from.key === r.protein), famOf = {chicken:'鶏', pork:'豚', tofu:'大豆', fish:'魚'};
     const fam = pw ? (FAMILY[pw.to.key] || famOf[pw.tip] || (/ground|mince/.test(SWAP_TXT(pw.to)) ? 'ひき肉' : r.family)) : r.family;
@@ -4418,6 +4419,31 @@ function shopSec(i){
         || /rice|noodle|vermicelli|tofu|tempeh|yuba|beans?\b|lentil|chickpea|\bpeas\b|\bdal\b|sauce|paste|canned|\bcan\b|stock|broth|\boil\b|wine|beer|kimchi|curry|tortilla|taco|wrapper|starch|sugar|vinegar|\bmix\b|seaweed|kelp|miso|tahini|coconut milk|cornmeal|grits|hominy|oats|quinoa|barley|tapioca|chips|pickle|olives?\b|capers?\b|raisins|prunes|mayonnaise|ketchup|ranch|mole|dried|preserved|salted|fermented|jelly|cakes?\b|dumplings|sesame|pepitas|lotus seed|ginseng|goji|jujube|fungus|wood ear|red yeast|herbal|saffron|sauerkraut|zhacai|bulgur|couscous|freekeh|tarhana|semolina|cassava flour|gram flour|atta/.test(w)) return 'other';
     return 'veg';
 }
+// 買い物メモに添える「もうひとつの名前」。アプリがすでに持っている別の言語の名前だけを使う（新しく訳さない）
+// ・各国のレシピ: パックの英語の名前（画面の言葉とちがうとき）  ・翻訳した日本のレシピ: 元の日本語の名前
+// ・日本語のままの日本のレシピ: 英語版の訳（同じ日本語の名前の訳が、単数・複数や補足のちがいだけのものに限る）
+let JP_EN_MAP = null;
+function jpEnName(name){
+    const tr = PACK_TR['JP.en'], base = JP_DATA ? JP_DATA.recipes : (currentCountry() === 'JP' ? RECIPES : null);
+    if (!tr || !tr.recipes || !base) return '';
+    if (!JP_EN_MAP){
+        const cnt = new Map();
+        base.forEach(r => { const rt = tr.recipes[r.id]; if (!rt || !rt.ings) return;
+            r.items.forEach((i, k) => { const v = rt.ings[k]; if (!v || !v[0]) return; const m = cnt.get(i.name) || new Map(); m.set(v[0], (m.get(v[0]) || 0) + 1); cnt.set(i.name, m); }); });
+        const norm1 = x => x.toLowerCase().replace(/\s*\([^)]*\)/g, '').replace(/s$/, '');
+        JP_EN_MAP = new Map();
+        cnt.forEach((m, jp) => { const vs = [...m]; if (new Set(vs.map(([x]) => norm1(x))).size > 1) return;   // 訳が1つに定まらないものは出さない
+            vs.sort((a, b) => b[1] - a[1] || b[0].length - a[0].length); JP_EN_MAP.set(jp, vs[0][0]); });
+    }
+    return JP_EN_MAP.get(name) || '';
+}
+function itemAltName(i, r){
+    if (!r || !i) return '';
+    if (r.pack){ const e = String(i.en || '').trim(); return e && e.toLowerCase() !== String(i.label || '').trim().toLowerCase() ? e : ''; }
+    if (r.trLang) return i.jp && i.jp !== i.label ? i.jp : '';
+    return LANG === 'ja' ? jpEnName(i.name) : '';
+}
+function shopAltOn(){ return !!S.settings.shopAlt; }
 function shoppingList(){
     const have = fridgeKeys(), fac = servingFactor(), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set();
     const add = r => {
@@ -4430,8 +4456,8 @@ function shoppingList(){
             if (!id){ id = keySeen.has(i.key) ? i.key + '|' + b : i.key; keySeen.add(i.key); }   // チェックの記録と合うよう、最初の名前はキーのまま
             byBase.set(b, id); if (!byLoose.has(i.key + '|' + b)) byLoose.set(i.key + '|' + b, id); if (!byLoose.has(i.key + '|' + lb)) byLoose.set(i.key + '|' + lb, id);
             const lab = /[\u0E00-\u0E7F]/.test(i.label) ? i.label.split(/\s+/)[0] : i.label;   // タイ語は下ごしらえの説明（หั่นท่อน 4 ซม. など）を出さない
-            const e = map.get(id) || {key:id, label:lab, qty:[], dishes:[], sec:shopSec(i)};
-            if (lab.length < e.label.length) e.label = lab;                  // まとめた行は、いちばん短い名前で出す
+            const e = map.get(id) || {key:id, label:lab, qty:[], dishes:[], sec:shopSec(i), alt:itemAltName(i, r)};
+            if (lab.length < e.label.length){ e.label = lab; e.alt = itemAltName(i, r); }                  // まとめた行は、いちばん短い名前で出す（もうひとつの名前もその材料のもの）
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
             map.set(id, e);
@@ -4484,19 +4510,23 @@ function sumQty(list){
 function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone || S.shopDone.week !== w) S.shopDone = {week:w, keys:[]}; return new Set(S.shopDone.keys); }
 // 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
 function shopRowsHtml(list, done){
-    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`;
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
     return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
         const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec">${esc(l)}</div>${xs.map(row).join('')}` : '';
     }).join('') + (got.length ? `<div class="shop-sec done" aria-hidden="true"></div>${got.map(row).join('')}` : '');
 }
+let jpEnTried = false;
 function shoppingHtml(){
     const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
+    // 日本語の画面で日本の料理に英語の名前を添えるため、英語版の訳を（まだなら）一度だけ読む。読めなければ英語の名前は出さない
+    if (LANG === 'ja' && !PACK_TR['JP.en'] && !jpEnTried && (JP_DATA || currentCountry() === 'JP')){ jpEnTried = true; loadPackTr('JP', 'en').then(tr => { if (tr){ JP_EN_MAP = null; render(); } }); }
     const done = shopDoneSet(), sv = Number(S.settings.servings) || 2, on = weekSidesOn();
     const days = visiblePlanDays(), n = on ? days.length : days.filter(x => byId(x.id)).length;
     const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
     return `<div class="sec-head"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
-        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button></div>
+        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button>${list.some(e => e.alt) || shopAltOn() ? `<button class="chip" data-act="toggle-shop-alt" aria-pressed="${shopAltOn()}">${esc(t('もうひとつの名前も併記'))}</button>` : ''}</div>
+        ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
         ${list.some(e => done.has(e.key)) ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:list.filter(e => done.has(e.key)).length}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
         <div class="list shop">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
@@ -4539,7 +4569,7 @@ function weekShareText(){
         [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].forEach(([k, l]) => {
             const xs = rest.filter(e => e.sec === k); if (!xs.length) return;
             lines.push(t('〈{l}〉', {l})); xs.forEach(e => { const q = e.qty.length ? sumQty(e.qty).join(t('＋')) : '';
-                lines.push(t('□ {name}', {name: e.label + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : /^\d[^()（）+]*[(（][^()（）]*[)）]$/.test(q) ? ' (' + q.replace(/\s*[(（]\s*([^()（）]*?)\s*[)）]/g, ', $1') + ')' : ' ' + q) : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない（「8 (約1200 g)」→「(8, 約1200 g)」）
+                lines.push(t('□ {name}', {name: e.label + (shopAltOn() && e.alt ? ' / ' + e.alt : '') + (!q ? '' : /[（(]/.test(q) ? (LANG === 'ja' ? '' : /^\d[^()（）+]*[(（][^()（）]*[)）]$/.test(q) ? ' (' + q.replace(/\s*[(（]\s*([^()（）]*?)\s*[)）]/g, ', $1') + ')' : ' ' + q) : t('（{qty}）', {qty:q}))})); });   // 量にかっこが入っているときは、かっこを二重にしない（「8 (約1200 g)」→「(8, 約1200 g)」）
         });
     }
     const pb = pantryBuySet(), buys = pantryList().filter(e => pb.has(e.key));   // 「家にあるかも」は、「買う」にチェックしたものだけ送る
@@ -6942,6 +6972,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'edit-custom-cancel': session.editCustom = null; render(); break;
+        case 'toggle-shop-alt': S.settings.shopAlt = !S.settings.shopAlt; save(); render(); break;
         case 'toggle-week-sides': S.settings.weekSides = !S.settings.weekSides; save(); render(); break;
         case 'toggle-staple': {
             const v = el.dataset.v, k = keyOf(v);
@@ -7242,7 +7273,7 @@ function trOf(cc){
 // 日本のレシピに訳を重ねる（食材のキーはそのまま。表示の名前・分量・作り方だけ入れかえる）
 function jpRecipe(r, tr){
     const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
-    const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
+    const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], jp: i.name, qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
     return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, slang: rt.steps ? tr.tlang : 'ja', tip: rt.tip || r.tip || null, trLang: LANG});
 }
 function packRecipe(pk, x, tr){

@@ -314,6 +314,8 @@ GOHAN_I18N('fil', {
     "主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Mga sangkap para sa {n} planadong ulam na wala sa ref o pantry mo (para sa {sv})",
     "主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Mga sangkap para sa ulam, side dish at sabaw sa loob ng {n} araw na wala sa ref o pantry mo (para sa {sv})",
     "副菜・汁ものも含める": "Isama ang side dish at sabaw",
+    "もうひとつの名前も併記": "Ipakita rin ang isa pang pangalan",
+    "併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。": "Ang isa pang pangalan ay pangalan sa ibang wika na nasa app na. Maaaring bahagyang iba ito sa nakasulat sa tindahan.",
     "必要な材料は、冷蔵庫と常備品でそろっています。": "Kumpleto na ang kailangan mo.",
     "← もどる": "← Bumalik",
     "国・地域": "Bansa o rehiyon",

@@ -314,6 +314,8 @@ GOHAN_I18N('tr', {
     "主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Planladığınız {n} ana yemek için dolapta ya da kilerde olmayan malzemeler ({sv} kişilik)",
     "主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "{n} günlük ana yemek, yan yemek ve çorba için dolapta ya da kilerde olmayan malzemeler ({sv} kişilik)",
     "副菜・汁ものも含める": "Yan yemek ve çorbaları da ekle",
+    "もうひとつの名前も併記": "Diğer adı da göster",
+    "併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。": "Diğer ad, uygulamada zaten bulunan başka bir dildeki addır. Mağazadaki yazımdan biraz farklı olabilir.",
     "必要な材料は、冷蔵庫と常備品でそろっています。": "Gereken her şey evde var.",
     "← もどる": "← Geri",
     "国・地域": "Ülke veya bölge",

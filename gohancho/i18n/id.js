@@ -314,6 +314,8 @@ GOHAN_I18N('id', {
     "主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Bahan untuk {n} lauk utama yang direncanakan, yang tidak ada di kulkas atau stok (untuk {sv} orang)",
     "主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Bahan lauk utama, lauk pendamping, dan sup selama {n} hari, yang tidak ada di kulkas atau stok (untuk {sv} orang)",
     "副菜・汁ものも含める": "Sertakan lauk pendamping dan sup",
+    "もうひとつの名前も併記": "Tampilkan nama lain juga",
+    "併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。": "Nama lain adalah nama dalam bahasa lain yang sudah ada di aplikasi. Bisa sedikit berbeda dari tulisan di toko.",
     "必要な材料は、冷蔵庫と常備品でそろっています。": "Semua bahan yang dibutuhkan sudah ada.",
     "← もどる": "← Kembali",
     "国・地域": "Negara atau wilayah",
