@@ -44,7 +44,7 @@ window.__snap = () => {
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
     const b = sp.querySelector('[data-act="reroll"]'); const c = sp.cloneNode(true); c.querySelectorAll('.swap, .last, .spice-tag, .swap-line').forEach(x => x.remove());   // 「今日作った」など記録の表示は料理の入れ替わりではない
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: c.outerHTML.replace(/ style="[^"]*"/g, '')};
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '')};
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }
