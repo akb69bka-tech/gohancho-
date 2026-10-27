@@ -2167,7 +2167,30 @@ function reactRowHtml(id, d){
     const y = yumOf(h);
     return `<div class="react" role="group" aria-label="${esc(t('おいしかった人は押してください'))}"><span class="small muted">${esc(t('おいしかった人は押してください'))}</span>
         <button class="chip yum" data-act="yum" data-id="${esc(id)}" data-d="${esc(d)}" aria-pressed="${y > 0}">${esc(t('おいしかった！'))}${y ? ` <b>${esc(yumCount(y))}</b>` : ''}</button>
-        ${y ? `<button class="chip yum-minus" data-act="yum-minus" data-id="${esc(id)}" data-d="${esc(d)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}${proMark()}</div>`;
+        ${y ? `<button class="chip yum-minus" data-act="yum-minus" data-id="${esc(id)}" data-d="${esc(d)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}${proMark()}</div>`+leftRowHtml(id, d);
+}
+// 「残した人」: 作った記録に h.left = [家族の id] を付ける（自分で押した記録だけ。献立の選び方は変えず、表示だけに使う）
+function leftOf(h){ const ids = h && Array.isArray(h.left) ? h.left : []; return famMembers().filter(m => ids.includes(m.id)); }
+function toggleLeft(id, d, mid){
+    const h = histEntry(id, d); if (!h || !famMembers().some(m => m.id === mid)) return false;
+    const had = Array.isArray(h.left) && h.left.includes(mid);
+    const cur = (Array.isArray(h.left) ? h.left : []).filter(x => x !== mid);
+    if (!had) cur.push(mid);
+    if (cur.length) h.left = cur; else delete h.left;
+    save(); return !had;
+}
+function leftRowHtml(id, d){
+    const fm = famMembers(); if (!fm.length || !histEntry(id, d)) return '';
+    const on = leftOf(histEntry(id, d));
+    return `<div class="react" role="group" aria-label="${esc(t('残した人'))}"><span class="small muted">${esc(t('残した人'))}</span>
+        ${fm.map((m, i) => `<button class="chip" data-act="left" data-id="${esc(id)}" data-d="${esc(d)}" data-m="${esc(m.id)}" aria-pressed="${on.includes(m)}" aria-label="${esc(t('{name}が残した', {name: famLabel(m, i)}))}">${esc(famLabel(m, i))}</button>`).join('')}</div>`;
+}
+// 今日食べる人のうち、この料理を前に残した人（献立の下に出す一言。表示だけ）
+function leftWarnNames(rid){
+    const ms = eaterMembers(); if (!ms.length) return '';
+    const ls = new Set(); S.history.forEach(h => { if (h.id === rid) leftOf(h).forEach(m => ls.add(m.id)); });
+    const hit = ms.filter(m => ls.has(m.id)); if (!hit.length) return '';
+    return joinNames(hit.map(m => famLabel(m, famMembers().indexOf(m))));
 }
 function awardShareLine(){ const w = monthAward(TODAY.slice(0,7)); return w ? t('今月の料理自慢: {name}', {name:awardName(w)}) : ''; }
 function awardHtml(){
@@ -5184,7 +5207,7 @@ function viewToday(){
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${spiceTagHtml(r)}${last ? `<span class="last">${esc(last)}</span>` : ''}`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt">${esc(metaLine(r))}</span>${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}`
                     : `<span class="mt">${esc(empty)}</span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>` : ''}
@@ -6527,6 +6550,7 @@ document.addEventListener('click', e => {
             toast(y ? t('おいしかった！') + ' ' + yumCount(y) : t('「おいしかった！」を取り消しました'));
             if (modalId) renderModal(); render(); break;
         }
+        case 'left': toggleLeft(id, el.dataset.d, el.dataset.m); if (modalId) renderModal(); render(); break;
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
         case 'more-list': moreOpen.add(el.dataset.k); render(); break;
         case 'rm-hist': {
