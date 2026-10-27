@@ -1395,9 +1395,9 @@ const FORMS = {
 };
 const SWAPS = {
     '豚':[{to:'鶏肉', word:'鶏もも肉', label:'鶏肉で', note:'鶏肉は小さめに切り、中まで火が通るよう加熱時間を1〜2分のばす。'},
-          {to:'厚揚げ', word:'厚揚げ', label:'厚揚げでヘルシーに', note:'厚揚げは熱湯をかけて油抜きし、一口大に切ってから使う。'}],
+          {to:'厚揚げ', word:'厚揚げ', label:'厚揚げで', note:'厚揚げは熱湯をかけて油抜きし、一口大に切ってから使う。'}],
     '鶏':[{to:'豚肉', word:'豚こま切れ肉', label:'豚肉で', note:'豚肉は火が通りやすいので加熱時間を少し短めにする。'},
-          {to:'厚揚げ', word:'厚揚げ', label:'厚揚げでヘルシーに', note:'厚揚げは熱湯をかけて油抜きし、一口大に切ってから使う。'}],
+          {to:'厚揚げ', word:'厚揚げ', label:'厚揚げで', note:'厚揚げは熱湯をかけて油抜きし、一口大に切ってから使う。'}],
     '牛':[{to:'豚肉', word:'豚こま切れ肉', label:'豚肉で', note:'豚こま切れ肉なら同じ手順・時間で作れる。'},
           {to:'鶏肉', word:'鶏もも肉', label:'鶏肉で', note:'鶏肉は小さめに切り、しっかり火を通す。'}],
     'ひき肉':[{to:'鶏ひき肉', word:'鶏ひき肉', label:'鶏ひき肉であっさり', note:'鶏ひき肉は脂が少ないので、つなぎに豆腐1/4丁を足すとふんわりする。'}],
@@ -6823,6 +6823,7 @@ function recipeCoreHtml(r, done){
 // 肉・卵の料理には、火の通しの注意を添える
 function pointsHtml(r){
     const tp = r.tip, tipTxt = typeof tp === 'string' ? tp : tp && (tp.how || tp.why);
+    // 肉・卵の「中までしっかり加熱」は食中毒予防の一般的な注意（出典: 厚生労働省 https://www.mhlw.go.jp/stf/web_magazine/closeup/08.html 「中心部まで加熱」、消費者庁 https://www.caa.go.jp/policies/policy/consumer_safety/food_safety/food_safety_portal/microorganism_virus/ 「中心部75℃で1分以上」）。温度の数字は画面に出さない
     const safe = ['豚', '鶏', '牛', 'ひき肉', '羊', '卵'].includes(r.family);
     if (!tipTxt && !safe) return '';
     return `<div class="points"><div class="pt-head"><span class="label">${esc(t('ポイント'))}</span></div>
