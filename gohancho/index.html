@@ -679,7 +679,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 @keyframes celPop{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 @keyframes celFall{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(120px) rotate(40deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){.celebrate.pop .cel-ico,.celebrate.pop .cf{animation:none}}
-.cook-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.cook-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}.cook-nav .btn{min-width:0;white-space:normal;text-wrap:balance;overflow-wrap:anywhere}   /* 文字を大きくした狭い画面でも「次の料理 →」が画面の外にはみ出さない */
 /* わが家のアルバム */
 .cal{display:flex;flex-direction:column;gap:10px;padding:12px;margin-bottom:10px}
 .cal-week{margin:0;font-weight:700}
