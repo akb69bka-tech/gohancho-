@@ -1784,12 +1784,13 @@ function pick(cands, ctx){
 // keep: そのまま残すほかの料理（{…, slot}）。同じ料理・2品目の主菜と同じ肉や魚にならない主菜から選ぶ
 // bowl: 主菜だけを「かえる」とき、ご飯もの・麺・汁ものかどうかをいまの主菜とそろえる（ご飯の欄がお漬物に変わるなど、ほかの欄が動かないように）
 const isBowlMain = r => !!r && (r.type === 'ごはん' || r.type === '麺' || r.type === '汁物' || r.id === 'nikuudon');
-function suggestMain(keep = [], bowl = null){
+function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: 「かえる」では、同じ種類（ご飯もの・麺／ふつうの主菜）の候補がなければ null（別の種類にして、ご飯の欄を動かさない）
     const wd = parseYmd(TODAY).getDay();
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
     const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
     if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
     if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
     // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
     const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY).map(x => x.id));
@@ -1806,6 +1807,7 @@ function suggestMain(keep = [], bowl = null){
 }
 // 条件（最近作った・肉魚の重なり・ジャンル）で候補がなくなったときは、その枠の料理からどれかを出す（空の枠を作らない）
 function suggestOrAny(slot, items, main){
+    if (slot === '汁物' && main && (main.id === 'nikuudon' || main.type === '汁物')) return null;   // 汁ものの麺・汁ものが主菜なら、汁ものの枠は空のまま（設定を変えるたびに予備の汁ものが入らないように）
     const r = suggestFor(slot, items, main); if (r) return r;
     const used = new Set(items.map(x => x.r && x.r.id).filter(Boolean));
     // 予備: その枠に入る料理なら何でも（主菜の枠は主菜・ごはんもの・麺。以前は主菜の枠だと必ず空になっていた）
@@ -1821,7 +1823,8 @@ function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean)
 // その枠の料理の候補（選んだ国のデータをまだ読みこめていないときは、いまの国）
 function poolFor(slot){ const cc = mixCc(slot); return cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; }
 function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
-function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixLoading.has(cc)); ccs.forEach(cc => { mixLoading.add(cc); loadBrowse(cc).then(() => { mixLoading.delete(cc); if (tab === 'today') render(); }); }); }
+// 読みこめたら、その国を選んだ枠だけ選び直す
+function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixLoading.has(cc)); ccs.forEach(cc => { mixLoading.add(cc); loadBrowse(cc).then(() => { mixLoading.delete(cc); if (reconcileMenu() || tab === 'today') render(); }); }); }
 const mixLoading = new Set();
 function mixHtml(){
     const mix = S.settings.mix || {}, home = currentCountry();
@@ -1842,6 +1845,7 @@ function slotStillOk(it){
     if (S.hidden.includes(r.id) || isAvoided(r)) return false;
     if (r.isTwist || isCustomId(r.id)) return true;
     const want = mixCc(it.slot) || currentCountry(), have = r.pack || 'JP';
+    if (want !== currentCountry() && !(BROWSE[want] && BROWSE[want].length)) return true;   // 選んだ国のデータを読みこむまでは、その枠を選び直さない（家の国の別の料理に変わってしまう）。読みこんだあとに選び直す
     return have === want;
 }
 function reconcileMenu(){
@@ -5059,7 +5063,7 @@ function applySavedMenu(id){
         else it.r = suggestOrAny(it.slot, others, items[0].r);
     });
     if (!items[0] || items[0].slot !== '主菜' || !items[0].r){ toast(t('この献立は今は使えません')); return; }
-    session.menu = {n, items}; session.twist = twistAvailable() ? suggestTwist() : null;
+    session.menu = {n, items, adj: n !== menuCount()}; session.twist = twistAvailable() ? suggestTwist() : null;   // 設定の品数と違う保存献立でも、あとの設定変更で丸ごと作り直さない
     setTab('today');
     toast(redo ? t('保存した献立を今日の献立にしました（{n}品は今は出せないので別の料理にしました）', {n: redo}) : t('保存した献立を今日の献立にしました'));
 }
@@ -6202,7 +6206,7 @@ document.addEventListener('click', e => {
             if (i === 0){
                 // 主菜だけをかえる。ほかの料理・ご飯の欄は絶対に動かさない（合わない主菜は最初から選ばない）
                 const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
-                const nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
+                const nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null, true);
                 if (nr && !keep.some(k => k.id === nr.id)) it.r = nr;
             }
             else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
@@ -6964,7 +6968,7 @@ async function refreshRecipes(){
         // ほかの国の料理・ひとひねりの料理も、新しい言語で探し直す（見つからないからといって枠を空にしない）
         const others = [...new Set(ids.map(x => x.id).filter(id => id && !RECIPES.some(r => r.id === id) && !String(id).startsWith('a~')).map(histCountry))].filter(c => c !== cc);
         await Promise.all(others.map(c => BROWSE[c] ? null : loadBrowse(c)));
-        session.menu = {n: m.n, items: ids.map(x => ({slot: x.slot, r: x.id ? (RECIPES.find(r => r.id === x.id) || byId(x.id)) : null}))};
+        session.menu = {n: m.n, items: ids.map(x => ({slot: x.slot, r: x.id ? (RECIPES.find(r => r.id === x.id) || byId(x.id)) : null})), adj: !!m.adj};   // 「あと1品」で増やした品数も、言語を変えたあとそのまま（忘れると、次の設定変更で献立が丸ごと作り直される）
     }
 }
 
