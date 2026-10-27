@@ -149,7 +149,7 @@ window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
 *{box-sizing:border-box}
 html,body{margin:0}
 html{font-size:calc(100% * var(--ts,1))}html[data-ts="1"]{--ts:1.15}html[data-ts="2"]{--ts:1.3}   /* アプリ内の文字の大きさ（3段階）。端末の文字サイズの設定（ブラウザの基準 100%）にそのまま掛けるので、両方が効く */
-body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:.9375rem;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:16px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:.9375rem;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))}   /* 横向きのノッチ・角の丸みに本文がかからない */
 .wrap{max-width:680px;margin:0 auto;padding-block:18px 124px;display:flex;flex-direction:column;gap:20px}
 #view{display:flex;flex-direction:column;gap:40px}
 h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:1.35;letter-spacing:.02em}
@@ -344,8 +344,9 @@ details.box[open]>summary::after{content:'－'}
 details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:12px}
 
 /* タブ */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));display:flex;justify-content:center}
 nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px}
+@media (min-width:700px){nav.tabs .in{max-width:680px}}   /* iPad など広い画面では、本文の幅にそろえる */
 nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:min(calc(.75rem / var(--ts,1)), 3.1vw);min-width:0;overflow-wrap:break-word;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
 nav.tabs svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
@@ -353,9 +354,25 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 
 /* 詳細シート */
 .sheet [tabindex="-1"]:focus{outline:none}
-.modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--sheet-bg);box-shadow:0 0 0 1px var(--sheet-edge);width:100%;max-width:680px;max-height:94vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
-@media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh}}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center;padding:0 env(safe-area-inset-right,0px) var(--kb,0px) env(safe-area-inset-left,0px)}   /* --kb: キーボードの高さ（下に隠れないよう、シートを持ち上げる） */
+.sheet{background:var(--sheet-bg);box-shadow:0 0 0 1px var(--sheet-edge);width:100%;max-width:680px;max-height:94vh;max-height:min(94dvh,calc(var(--vvh,100vh) * .94));overflow-y:auto;overscroll-behavior:contain;border-radius:20px 20px 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+@media (min-width:760px){.modal{align-items:center}.sheet{border-radius:20px;max-height:90vh;max-height:min(90dvh,calc(var(--vvh,100vh) * .9))}}
+/* 横向き（高さが低い）: 下のタブを細くして本文を広く。シートの絵も画面を埋めないよう低く */
+@media (max-height:500px) and (orientation:landscape){
+    nav.tabs{padding-top:2px;padding-bottom:calc(2px + env(safe-area-inset-bottom,0px))}
+    nav.tabs button{min-height:44px;padding-block:2px;gap:0}
+    nav.tabs svg{width:20px;height:20px}
+    .wrap{padding-block:12px 72px}
+    .hero{aspect-ratio:auto;height:34vh;min-height:96px}
+    .hero .noimg .vessel{width:90px}
+    .toast{bottom:calc(56px + env(safe-area-inset-bottom,0px))}
+    .timer-float{bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+    .sheet{max-height:98vh;max-height:min(98dvh,calc(var(--vvh,100vh) * .98))}
+}
+/* キーボードが出ているあいだは、下のタブとふわふわの知らせを消して、入力欄を広く使う */
+body.kb nav.tabs,body.kb .timer-float{display:none}
+body.kb .toast{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .sheet>*{flex-shrink:0}
 .hero{position:relative;background:var(--tray);min-height:120px;aspect-ratio:16/10}   /* 絵があってもなくても同じ高さ（あとから絵が届いても、下の文字が動かないように） */
 .hero img{display:block;width:100%;height:100%;aspect-ratio:16/10;object-fit:cover}
@@ -763,7 +780,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 @keyframes celPop{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 @keyframes celFall{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(120px) rotate(40deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){.celebrate.pop .cel-ico,.celebrate.pop .cf{animation:none}}
-.cook-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.cook-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}.cook-nav .btn{min-width:0;white-space:normal;text-wrap:balance;overflow-wrap:anywhere}   /* 文字を大きくした狭い画面でも「次の料理 →」が画面の外にはみ出さない */
 /* わが家のアルバム */
 .cal{display:flex;flex-direction:column;gap:10px;padding:12px;margin-bottom:10px}
 .cal-week{margin:0;font-weight:700}
@@ -8645,6 +8662,30 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden){ ref
 // 開いたまま0時を過ぎたとき（戻ってくる操作がなくても）日付を新しくする。入力中は邪魔しない。端末の日付・時間帯が変わったときも、30秒以内に気づく
 setInterval(() => { const a = document.activeElement; if (!document.hidden && ymd() !== TODAY && !(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) refreshToday(); }, 30000);
 window.addEventListener('focus', refreshToday);
+// 画面の向き・キーボード・分割表示で大きさが変わったとき（状態は作り直さず、見た目だけ合わせる）
+(() => {
+    const root = document.documentElement, vv = window.visualViewport; let full = 0, lastW = 0, timer = 0;
+    const editing = () => { const a = document.activeElement; return !!a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && !/^(checkbox|radio|button|submit|range|file|color)$/.test(a.type)) || a.isContentEditable); };
+    function sync(){
+        const h = vv ? vv.height : window.innerHeight, top = vv ? vv.offsetTop : 0;
+        if (innerWidth !== lastW){ lastW = innerWidth; full = 0; }   // 向き・分割の幅が変わったら、「キーボードなし」の高さを測り直す
+        full = Math.max(full, window.innerHeight);
+        const overlap = Math.max(0, Math.round(window.innerHeight - h - top));   // キーボードが重なる端末（visualViewport だけ縮む）
+        const on = editing() && (overlap > 80 || full - window.innerHeight > 80);   // 画面ごと縮む端末（innerHeight が減る）
+        document.body.classList.toggle('kb', on);
+        root.style.setProperty('--vvh', Math.round(h) + 'px');
+        root.style.setProperty('--kb', (on ? overlap : 0) + 'px');
+        const nv = document.querySelector('nav.tabs'); if (nv && !on && nv.offsetHeight) root.style.setProperty('--nav-h', nv.offsetHeight + 'px');
+        return on;
+    }
+    function reveal(){ clearTimeout(timer); timer = setTimeout(() => { const on = sync(), a = document.activeElement; if (on && a.scrollIntoView) try{ a.scrollIntoView({block:'center', inline:'nearest'}); const r = a.getBoundingClientRect(), vh = vv ? vv.height : innerHeight; if (!a.closest('.sheet') && (r.bottom > vh - 8 || r.top < 0)) scrollBy(0, r.top + r.height / 2 - vh / 2); }catch(e){} }, 320); }   // キーボードに重なる端末では、見える部分（visualViewport）の中央に   // キーボードが出きってから、入力欄を見える位置に
+    if (vv){ vv.addEventListener('resize', () => { sync(); reveal(); }); vv.addEventListener('scroll', sync); }
+    addEventListener('resize', () => { sync(); reveal(); });
+    addEventListener('orientationchange', () => setTimeout(sync, 250));
+    document.addEventListener('focusin', () => { sync(); reveal(); });
+    document.addEventListener('focusout', () => setTimeout(sync, 60));
+    sync();
+})();
 (() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
 (() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
 if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの長さ・価格を、はじめの案内より先に読んでおく

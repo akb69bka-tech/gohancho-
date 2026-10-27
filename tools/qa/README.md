@@ -13,3 +13,4 @@
   - 使い方: `BASE=http://localhost:8791/ node tools/qa/layout-shift.js [--quick] [--jobs 4] [--json out.json]`（`--quick` は 4か国・390pxだけ。`--jobs` は国ごとに分けて並列に走らせる）
   - 環境変数: `CCS=JP,US` 国を絞る / `WIDTHS=320,390` 幅 / `SCALES=1,1.25` 文字の拡大 / `IMG=ok,fail,slow` 絵の状態（読めた・失敗・遅い）
   - 注意: 画面を作り直す（innerHTML）ので、PerformanceObserver の CLS は 0 になりやすい。ずれの本体は、位置・大きさの比較（「画面内の最大ずれpx」）で見る。
+- `viewport.js`: iPad・横向き・分割表示・極小画面・キーボード・回転の総点検。幅（768×1024, 820×1180, 1024×1366, 844×390, 932×430, 375×667, 320×568, 320×400 ほか）×言語（ja/en/de/ar）×全タブで、横にはみ出さない・下のタブが高すぎない（横向きは高さの16%まで）、購入・共有・1品追加のシートが画面に収まる、キーボード（画面が縮む端末と visualViewport だけ縮む端末）で食費・材料・自由入力・シートの欄が見える位置に来て下のタブが隠れる、回転・分割幅の変更でタブ・入力途中の文字・献立が変わらない、safe-area（env(safe-area-inset-*)）が本文・下のタブ・シートに効いている、を確かめる。`NG 0` が合格。`BASE=http://localhost:8791/ node tools/qa/viewport.js [--quick]`（`VPS=390x844,844x390` `LANGS=ja,ar` で絞れる）
