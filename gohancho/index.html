@@ -7,6 +7,82 @@
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
 <script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>
+/* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
+   文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
+(function(){
+    var G = window.GH = {booted:false, shown:{}, on:{}, t:null, json:null, raw:null, brokenKey:'', brokenRaw:null};
+    var ja = /^ja/i.test((navigator.language || '') + '');
+    var FB = {msg: ja ? 'うまく表示できませんでした。もう一度開くか、データを書き出してください' : 'Could not show this screen. Please reopen the app, or export your data.',
+        reload: ja ? '再読み込み' : 'Reload', exp: ja ? 'データを書き出す' : 'Export data', close: ja ? '閉じる' : 'Close'};
+    function tx(k, fb){ try{ if (G.t){ var v = G.t(k); if (v) return v; } }catch(e){} return fb; }
+    G.tx = tx;
+    function host(){
+        var h = document.getElementById('gh-notes');
+        if (!h && document.body){ h = document.createElement('div'); h.id = 'gh-notes'; document.body.insertBefore(h, document.body.firstChild); }
+        return h;
+    }
+    // 案内を出す。同じ id は置きかえる。acts: [{k: 'reload'|'export'|'close'|'retry'|'brk', label}]
+    G.note = function(id, text, acts, alert){
+        try{
+            document.documentElement.classList.remove('i18n-wait');   // 読み込み待ちで body を隠している間も、案内は見えるように
+            var h = host(); if (!h) return;
+            var old = document.getElementById('gh-note-' + id); if (old) old.remove();
+            var box = document.createElement('div'); box.id = 'gh-note-' + id; box.className = 'gh-note'; box.setAttribute('role', alert ? 'alert' : 'status');
+            var p = document.createElement('p'); p.textContent = text; box.appendChild(p);
+            var row = document.createElement('div'); row.className = 'row';
+            (acts || []).forEach(function(a){ var b = document.createElement('button'); b.type = 'button'; b.className = 'btn sm'; b.setAttribute('data-gh', a.k); b.textContent = a.label; row.appendChild(b); });
+            if (row.firstChild) box.appendChild(row);
+            h.appendChild(box);
+        }catch(e){}
+    };
+    G.clear = function(id){ try{ var n = document.getElementById('gh-note-' + id); if (n) n.remove(); delete G.shown[id]; }catch(e){} };
+    G.acts = function(){ return [{k:'reload', label: tx('再読み込み', FB.reload)}, {k:'export', label: tx('データを書き出す', FB.exp)}]; };
+    function blank(){ var v = document.getElementById('view'); return !v || !v.firstElementChild; }
+    G.fatal = function(sticky){   // sticky: 起動の途中で止まったときの案内（あとで描けても消さない）
+        var id = sticky ? 'bootfail' : 'fatal';
+        if (G.shown[id]) return; G.shown[id] = 1;
+        var a = G.acts(); if (sticky) a.push({k:'close', label: tx('閉じる', FB.close)});
+        G.note(id, tx('うまく表示できませんでした。もう一度開くか、データを書き出してください', FB.msg), a, true);
+    };
+    function check(){ if (G.booted && !blank()) return; G.fatal(); }
+    function onErr(){ setTimeout(check, G.booted ? 0 : 1500); }   // 起動中はこのあと立ち直ることもあるので少し待つ。画面が空のままなら案内を出す
+    window.addEventListener('error', function(e){ if (e && e.target && e.target !== window) return; onErr(); });
+    window.addEventListener('unhandledrejection', onErr);
+    setTimeout(function(){ if (!G.booted && blank()) G.fatal(); }, 12000);   // 何かが終わらず起動しないとき
+    // 書き出す内容: 本体が動いていれば今のデータ、動いていなければ端末に保存してある文字そのもの
+    G.exportText = function(which){
+        if (which === 'broken') return G.brokenRaw;
+        try{ if (G.json) return G.json(); }catch(e){}
+        try{ var r = localStorage.getItem('gohancho.v1'); if (r) return r; }catch(e){}
+        return G.raw || null;
+    };
+    G.exportNow = function(which){
+        var text = G.exportText(which);
+        if (!text){ G.note('noexp', (G.noData && G.noData()) || (ja ? '書き出せるデータがありません' : 'There is no data to export.'), [{k:'close', label: tx('閉じる', FB.close)}]); return; }
+        try{
+            var a = document.createElement('a'), d = new Date(), pad = function(n){ return (n < 10 ? '0' : '') + n; };
+            a.href = URL.createObjectURL(new Blob([text], {type:'application/json'}));
+            a.download = 'gohancho-' + (which === 'broken' ? 'broken-' : '') + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '.json';
+            document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); }, 10000);
+        }catch(e){
+            try{
+                G.note('expbox', tx('ファイルにできなかったので、下の欄に文字を出しました。コピーして保管してください', ja ? 'ファイルにできなかったので、下の欄に文字を出しました。コピーして保管してください' : 'Could not make a file. The text is in the box below; please copy and keep it.'), [{k:'close', label: tx('閉じる', FB.close)}]);
+                var ta = document.createElement('textarea'); ta.readOnly = true; ta.value = text; ta.rows = 6; ta.style.cssText = 'width:100%;font:inherit;box-sizing:border-box';
+                document.getElementById('gh-note-expbox').insertBefore(ta, document.querySelector('#gh-note-expbox .row')); ta.select();
+            }catch(e2){}
+        }
+    };
+    document.addEventListener('click', function(e){
+        var b = e.target && e.target.closest ? e.target.closest('[data-gh]') : null; if (!b) return;
+        var k = b.getAttribute('data-gh');
+        if (G.on[k]){ G.on[k](b); return; }
+        if (k === 'reload') location.reload();
+        else if (k === 'export') G.exportNow();
+        else if (k === 'close'){ var n = b.closest('.gh-note'); if (n) n.remove(); }
+    });
+})();
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -650,6 +726,29 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .album-item .d{color:var(--muted);font-size:.75rem}
 .album-rm{position:absolute;top:4px;inset-inline-end:4px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.9rem;line-height:1;cursor:pointer}
 [dir="rtl"] .steps li,[dir="rtl"] .recipe-ings li,[dir="rtl"] .country{text-align:right}
+/* 落ちても安全: 失敗の案内（控えめに。画面の上に出す） */
+#gh-notes{position:fixed;inset:0 0 auto 0;z-index:80;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 12px;pointer-events:none;max-height:70vh;max-height:70dvh;overflow-y:auto}   /* シートやモーダルの上にも出す */
+#gh-notes:empty{display:none}
+.gh-note,.gh-view-fail{font-size:.85rem;background:var(--accent-soft);color:var(--ink);border-radius:12px;padding:.7rem .9rem;display:flex;flex-direction:column;gap:8px}
+.gh-note{pointer-events:auto;width:100%;max-width:680px;background:var(--surface);border:1px solid var(--accent);box-shadow:var(--shadow)}
+.gh-note p,.gh-view-fail p{margin:0;overflow-wrap:anywhere}
+.gh-note .row,.gh-view-fail .row{display:flex;flex-wrap:wrap;gap:8px}
+.gh-note .btn,.gh-view-fail .btn{min-height:44px}
+/* 極端な画面（幅280px・高さ400px・横向き・分割表示）でも、はみ出さず、操作できる */
+.top > div{min-width:0}
+.chips.scroll .chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.modal,.sheet{max-width:100%}
+@media (max-width:340px){
+    body{padding-inline:12px}
+    .top{gap:8px}
+    .top .gear.flagbtn+.gear{margin-inline-start:4px}
+}
+@media (max-height:480px){
+    .wrap{padding-block:10px 84px}
+    nav.tabs{padding-top:3px;padding-bottom:calc(3px + env(safe-area-inset-bottom,0px))}
+    nav.tabs button{min-height:44px;padding-block:.15rem;gap:0}
+    nav.tabs svg{width:20px;height:20px}
+}
 </style>
 </head>
 <body>
@@ -1261,6 +1360,8 @@ const FAMILY_RE = {
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
 const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[]};
+const BROKEN_PREFIX = 'gohancho.broken.';
+const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
 // 保存データ・読み込んだデータの形を直す（足りない項目・型の違い・日付のない記録などで、アプリが起動しなくならないように）
 function normalizeState(d){
@@ -1317,11 +1418,57 @@ function normalizeState(d){
     if (st.settings.textSize !== 1 && st.settings.textSize !== 2) delete st.settings.textSize;   // 文字の大きさ: なし=ふつう / 1=大きい / 2=もっと大きい
     return st;
 }
-function load(){
+/* ---- 保存の安全 ----
+   ・端末の保存場所（localStorage）が使えない（プライベートモード・容量いっぱい・Safari の制限）ときも、メモリの上で動き続ける。保存できないことは、開いているあいだに1回だけ知らせる
+   ・書き込みは JSON 全体を1回で。失敗したときは前に保存したデータがそのまま残る（書きかけにならない）
+   ・保存データが壊れていても起動する。壊れた分は捨てずに gohancho.broken.<日付> に残して、新しく始める */
+// 保存場所に書く。失敗の理由（'quota' = 容量いっぱい / 'unavailable' = 使えない）を返す。成功なら ''
+function lsWrite(k, v){
     try{
-        const raw = localStorage.getItem(STORE_KEY);
-        if (raw) return normalizeState(JSON.parse(raw));
-    }catch(e){}
+        localStorage.setItem(k, v);
+        const back = localStorage.getItem(k);
+        if (back == null || back.length !== v.length) return 'unavailable';   // 書いたのに読めない（書き込みを黙って捨てる環境）
+        return '';
+    }catch(e){ return e && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22 || e.code === 1014) ? 'quota' : 'unavailable'; }
+}
+// 容量が足りないときは、なくても困らない控え（写真の控え・お知らせの控え、最後に元に戻す用）を空けて書き直す
+function lsWriteFreeing(k, v){
+    let why = lsWrite(k, v);
+    for (const keys of [['gohancho.photos.v2', 'gohancho.remote'], ['gohancho.undo']]){   // 先に作り直せる控え、それでも足りなければ「元に戻す」用の控え
+        if (why !== 'quota') break;
+        keys.forEach(x => { try{ localStorage.removeItem(x); }catch(e){} });
+        why = lsWrite(k, v);
+    }
+    return why;
+}
+// 壊れた保存データを gohancho.broken.<日付> に残す（同じ日に何度かあれば -2, -3…。上書きしない）
+function quarantine(raw, strict){
+    GH.brokenRaw = raw;
+    const d = new Date(), pad = n => String(n).padStart(2, '0'), day = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    let key = BROKEN_PREFIX + day;
+    try{ for (let i = 2; localStorage.getItem(key) != null && localStorage.getItem(key) !== raw && i < 100; i++) key = BROKEN_PREFIX + day + '-' + i; }catch(e){ storeInfo.fail = 'unavailable'; }
+    const why = lsWriteFreeing(key, raw);
+    if (!why){ storeInfo.broken = key; GH.brokenKey = key; return true; }
+    if (strict) storeInfo.hold = true;   // 退避できないまま新しいデータで上書きすると、壊れたデータが消える。今回は保存しない
+    return false;
+}
+// 読み込みで直した（捨てた）記録があるか。直したときは元の文字も残しておく
+function lostRecords(d, st){
+    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
+}
+function load(){
+    let raw = null;
+    try{ raw = localStorage.getItem(STORE_KEY); }catch(e){ storeInfo.fail = 'unavailable'; }   // 保存場所そのものが使えない（SecurityError など）
+    if (raw) GH.raw = raw;
+    if (raw && raw !== 'null'){
+        try{
+            const d = JSON.parse(raw);
+            if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('shape');
+            const st = normalizeState(d);
+            if (lostRecords(d, st)){ quarantine(raw); storeInfo.pending.push('lost'); }   // 形の合わない記録は読み込みで外れる。元のデータは残す
+            return st;
+        }catch(e){ quarantine(raw, true); storeInfo.pending.push('broken'); }
+    }
     return structuredClone(DEFAULT_STATE);
 }
 // packFail: 電波がなくて国のデータを読みこめず、いまだけ日本で開いている国（保存するときは元の国のまま残す）
@@ -1334,11 +1481,51 @@ function syncFridgeMeta(){   // 冷蔵庫にある食材だけ印・登録日を
     S.fridgeMeta = out;
 }
 function save(){ try{ syncFridgeMeta(); }catch(e){} if (!saveT) saveT = setTimeout(saveNow, 300); }
-function saveNow(){ if (saveT){ clearTimeout(saveT); saveT = 0; } try{
-    const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
-    localStorage.setItem(STORE_KEY, JSON.stringify(out)); try{ notifSoon(); }catch(e){} }catch(e){
-    // 端末の空きが足りず保存できないとき（黙って消えないよう、開いているあいだに1回だけ知らせる）
-    if (!save.warned && typeof toast === 'function'){ save.warned = true; setTimeout(() => toast(t('端末の空きが足りず、保存できませんでした。写真などを減らしてください')), 0); } } }
+function saveNow(){
+    if (saveT){ clearTimeout(saveT); saveT = 0; }
+    let json;
+    try{
+        const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
+        json = JSON.stringify(out);
+    }catch(e){ storeWarn('unavailable'); return; }
+    if (storeInfo.hold) return;   // 壊れたデータを退避できていないあいだは上書きしない（知らせは起動時に出している）
+    const why = lsWriteFreeing(STORE_KEY, json);   // 前のデータは書き込みに失敗してもそのまま残る。足りないときは控えを空けて試す
+    if (why){ storeWarn(why); return; }
+    if (storeInfo.fail){ storeInfo.fail = ''; storeInfo.warned = false; if (typeof GH !== 'undefined') GH.clear('store'); }   // 保存できるようになった
+    GH.raw = json;
+    try{ notifSoon(); }catch(e){}
+}
+// 保存できないことを、開いているあいだに1回だけ知らせる（起動の途中なら、画面が整ってから）
+function storeWarn(why){
+    storeInfo.fail = why;
+    if (storeInfo.warned) return;
+    storeInfo.warned = true; storeInfo.pending.push('store');
+    if (GH.booted) flushNotes();
+}
+function storeNoteText(kind){
+    if (kind === 'broken') return t('保存データを読めなかったので、新しく始めました。元のデータは端末に残してあります');
+    if (kind === 'lost') return t('保存データの一部が読めなかったので、元のデータを端末に残しました');
+    if (kind === 'hold') return t('壊れていたデータを退避できませんでした。このまま使えますが、今回の内容は保存されません');
+    return storeInfo.fail === 'quota' ? t('端末の空きが足りず、保存できませんでした。写真などを減らしてください')
+        : t('この端末では保存できないようです。このまま使えますが、閉じると今回の内容は消えるおそれがあります。「データを書き出す」で控えを取れます');
+}
+function flushNotes(){
+    const list = storeInfo.pending.splice(0);
+    const exp = {k:'export', label: t('データを書き出す')}, close = {k:'close', label: t('閉じる')};
+    list.forEach(kind => {
+        if (kind === 'broken' || kind === 'lost'){
+            const acts = storeInfo.broken || GH.brokenRaw ? [{k:'brk', label: t('壊れていたデータを書き出す')}, close] : [close];
+            GH.note('broken', storeNoteText(kind), acts);
+            if (storeInfo.hold) GH.note('hold', storeNoteText('hold'), [exp, close]);
+        } else if (kind === 'store') GH.note('store', storeNoteText('store'), [exp, close]);
+        else if (kind === 'pack' && packFail) GH.note('pack', t('この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください'), [{k:'retry', label: t('もう一度読みこむ')}, close]);
+    });
+}
+GH.t = t;
+GH.noData = () => t('書き出せるデータがありません');
+GH.on.brk = () => GH.exportNow('broken');
+GH.on.retry = () => retryPack();
+GH.json = () => backupJson();
 document.addEventListener('visibilitychange', () => { if (document.hidden && saveT) saveNow(); });
 ['pagehide', 'beforeunload', 'freeze'].forEach(ev => window.addEventListener(ev, () => { if (saveT) saveNow(); }));
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
@@ -1483,15 +1670,35 @@ function wantLang(){
     return availLang(countryOf(cc).lang) || 'en';
 }
 const langLoads = {};
+/* ---- 外部ファイル（辞書・国のデータ・レシピの訳）の読みこみ ----
+   時間切れ（15〜20秒）と、1回だけのやり直しつき。結果は 'ok'（読めた）/ 'missing'（ファイルがない = 404）/ 'fail'（電波・時間切れ・中身が欠けている）。
+   読めなかったことは覚えない（電波が戻れば、次に押したときに読みに行く） */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function loadScriptOnce(src, ms){
+    return new Promise(res => {
+        const el = document.createElement('script'); let done = false;
+        const fin = r => { if (done) return; done = true; clearTimeout(tm); el.onload = el.onerror = null; if (r !== 'ok') el.remove(); res(r); };
+        const tm = setTimeout(() => fin('timeout'), ms);
+        el.onload = () => fin('ok'); el.onerror = () => fin('error');
+        el.src = src; document.head.appendChild(el);
+    });
+}
+async function isMissingFile(src){ try{ const r = await fetch(src, {method: 'HEAD', cache: 'no-store'}); return r.status === 404; }catch(e){ return false; } }
+async function loadScriptTry(src, valid, o = {}){
+    const tries = o.tries || 2, ms = o.ms || 15000;
+    let r = 'fail';
+    for (let i = 0; i < tries; i++){
+        const x = await loadScriptOnce(src, ms);
+        if (x === 'ok'){ if (!valid || valid()) return 'ok'; r = 'fail'; }   // 読めたが中身が欠けている（途中で切れた・壊れた）
+        else r = x === 'error' && await isMissingFile(src) ? 'missing' : 'fail';
+        if (r === 'missing') return r;
+        if (i < tries - 1) await sleep(600 * (i + 1));
+    }
+    return r;
+}
 function loadLang(l){
     if (l === 'ja' || I18N[l]) return Promise.resolve();
-    return langLoads[l] || (langLoads[l] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `i18n/${l}.js`;
-        el.onload = () => res();
-        el.onerror = () => { delete langLoads[l]; res(); };
-        document.head.appendChild(el);
-    }));
+    return langLoads[l] || (langLoads[l] = loadScriptTry(`i18n/${l}.js`, () => !!I18N[l]).then(() => { delete langLoads[l]; }));
 }
 async function setLang(l){
     await Promise.all([loadLang(l), l !== 'ja' && l !== 'en' ? loadLang('en') : null]);
@@ -2330,31 +2537,42 @@ function badges(r){
     else if (!r.isTwist) b += `<span class="badge new">${esc(t('まだ作っていない'))}</span>`;
     return b;
 }
+// 画面の一部（見出し・ひとつの画面・シート）が例外で描けなくても、ほかの画面は動かす。失敗した画面には案内だけを出す
+function failedView(name, e){
+    try{ console.error('[render] ' + name, e); }catch(_){}
+    return `<section class="sec gh-view-fail" role="alert"><p>${esc(t('うまく表示できませんでした。もう一度開くか、データを書き出してください'))}</p><div class="row"><button type="button" class="btn sm" data-gh="reload">${esc(t('再読み込み'))}</button><button type="button" class="btn sm" data-gh="export">${esc(t('データを書き出す'))}</button></div></section>`;
+}
+function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
+const renderFail = new Set();
+const VIEWS = {today: () => viewToday(), cook: () => viewCook(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), log: () => viewLog(), settings: () => viewSettings()};
 function render(){
-    $('#today-label').textContent = jpDate(TODAY);
-    $('#flag-btn').textContent = countryOf(currentCountry()).flag;
-    const g = tab === 'today' ? greeting() : null;   // あいさつは献立タブだけ（記録を数えるので、ほかのタブでは作らない）
-    $('#greet').innerHTML = g ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
+    renderFail.clear();
+    guard('head', () => {
+        $('#today-label').textContent = jpDate(TODAY);
+        $('#flag-btn').textContent = countryOf(currentCountry()).flag;
+        const g = tab === 'today' ? greeting() : null;   // あいさつは献立タブだけ（記録を数えるので、ほかのタブでは作らない）
+        $('#greet').innerHTML = g ? `<div class="hello">${esc(g.hello)}</div><div class="line">${esc(g.line)}</div>` : '';
+    });
     const v = $('#view');
     // 描き直しても、押したボタン（または同じ役目のボタン）にフォーカスを戻す（キーボード・読み上げで迷わないように）
     // （キーボードで操作しているときと、文字入力欄だけ。タップで押したボタンには戻さない＝強制レイアウトを避ける）
-    const fk = v.contains(document.activeElement) && kbFocused(document.activeElement) ? focusKey(document.activeElement) : '';
-    if (tab === 'today') v.innerHTML = viewToday();
-    if (tab === 'cook') v.innerHTML = viewCook();
-    if (tab === 'fridge') v.innerHTML = viewFridge();
-    if (tab === 'twist') v.innerHTML = viewTwist();
-    if (tab === 'world') v.innerHTML = viewWorld();
-    if (tab === 'log') v.innerHTML = viewLog();
-    if (tab === 'settings') v.innerHTML = viewSettings();
-    if (fk && !sheet && !modalId){ const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); }
-    floatTimer();
-    syncWake();
+    const fk = guard('focus', () => v.contains(document.activeElement) && kbFocused(document.activeElement) ? focusKey(document.activeElement) : '') || '';
+    let html = null, failed = false;   // 知らない画面名のときは、いまの中身をそのまま残す
+    if (VIEWS[tab]){
+        try{ html = VIEWS[tab](); if (typeof html !== 'string') throw new Error('view'); }
+        catch(e){ failed = true; html = failedView(tab, e); }
+    }
+    if (html !== null) v.innerHTML = html;
+    if (failed) GH.shown.view = 1; else if (GH.shown.view || GH.shown.fatal){ delete GH.shown.view; GH.clear('fatal'); }
+    if (fk && !sheet && !modalId) guard('focus', () => { const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); });
+    guard('timer', floatTimer);
+    guard('wake', syncWake);
     document.body.classList.toggle('on-cook', tab === 'cook');   // 作り方タブでは、トーストを「次の手順」ボタンより上に出す
-    if (tab !== 'cook' && (hf.on || voiceLive)) voiceStop();
-    if (tab === 'cook'){ const nv = document.querySelector('nav.tabs'); if (nv) document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); }   // 「次の手順」を下のタブのすぐ上に置く（言語でタブの高さが変わる）
+    guard('voice', () => { if (tab !== 'cook' && (hf.on || voiceLive)) voiceStop(); });
+    if (tab === 'cook') guard('navh', () => { const nv = document.querySelector('nav.tabs'); if (nv) document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); });   // 「次の手順」を下のタブのすぐ上に置く（言語でタブの高さが変わる）
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
-    if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked');
+    guard('paywall', () => { if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked'); });
 }
 
 /* ---- 料理写真 ----
@@ -3498,6 +3716,10 @@ function obTrayHtml(){
     }catch(e){ return ''; }
 }
 function renderSheet(){
+    try{ renderSheetBody(); }
+    catch(e){ try{ console.error('[sheet]', e); }catch(_){} sheet = null; try{ $('#sheet-root').innerHTML = ''; dlgClosed('sheet-root'); }catch(_){} try{ toast(t('うまく表示できませんでした。もう一度開くか、データを書き出してください')); }catch(_){} }
+}
+function renderSheetBody(){
     const root = $('#sheet-root');
     if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
     let body = '';
@@ -6764,6 +6986,10 @@ function floatTimer(){
     box.innerHTML = `<button type="button" class="timer-float${left <= 0 ? ' ring' : ''}" data-act="goto-cook" data-id="${esc(x.rid || '')}" data-name="${esc(x.name)}">⏱ <span class="tf-t">${esc(txt)}</span>${GAP()}${esc(x.name)}${TIMERS.length > 1 ? ` (+${TIMERS.length - 1})` : ''}</button>`;
 }
 function renderModal(){
+    try{ renderModalBody(); }
+    catch(e){ try{ console.error('[modal]', e); }catch(_){} try{ closeModal(); }catch(_){ modalId = null; } try{ toast(t('うまく表示できませんでした。もう一度開くか、データを書き出してください')); }catch(_){} }
+}
+function renderModalBody(){
     const r = byId(modalId); if (!r){ closeModal(); return; }
     const have = fridgeKeys();
     const isFav = S.favs.includes(r.id);
@@ -6944,17 +7170,7 @@ document.addEventListener('click', e => {
             session.menu = null; render(); break;
         }
         case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
-        case 'ui-lang': {
-            // 辞書を読みこめたときだけ切りかえる（電波がないときは、いまの言語のまま知らせる）
-            const prevUi = S.settings.uiLang, v = el.dataset.v;
-            S.settings.uiLang = v; const l = wantLang(); S.settings.uiLang = prevUi;
-            loadLang(l).then(() => {
-                if (l !== 'ja' && !I18N[l]){ render(); toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return; }
-                S.settings.uiLang = v; save();
-                return setLang(l).then(refreshRecipes).then(() => { relocalize(); render(); });
-            });
-            break;
-        }
+        case 'ui-lang': { const v = el.dataset.v, n = ++uiLangSeq; uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}); break; }
         case 'toggle-avoid': {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
             const i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
@@ -7367,7 +7583,7 @@ document.addEventListener('click', e => {
                 applyTextSize(); save(); toast(t('読み込みました'));
                 // 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）
                 const cc = currentCountry();
-                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { S.settings.country = 'JP'; save(); })
+                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); flushNotes(); })
                     .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
                     .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
             }catch(err){ toast(t('読み込めませんでした')); }
@@ -7380,7 +7596,7 @@ document.addEventListener('click', e => {
                 S = applyImported(u.data);
                 applyTextSize(); save(); toast(t('読み込む前の状態に戻しました')); void cur;
                 const cc = currentCountry();
-                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { S.settings.country = 'JP'; save(); })
+                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); flushNotes(); })
                     .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
                     .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
             }catch(err){ toast(t('読み込めませんでした')); }
@@ -7644,15 +7860,21 @@ function guessCountry(){
     }catch(e){}
     return 'JP';
 }
+// 国のデータとして使える形か（途中で切れた・壊れたファイルを、半分だけ使わない）
+function validPack(pk){
+    return !!pk && typeof pk === 'object' && typeof pk.lang === 'string' && Array.isArray(pk.recipes) && pk.recipes.length > 0
+        && pk.recipes.every(x => x && typeof x.id === 'string' && Array.isArray(x.ings));
+}
+const packLoads = {};
 function loadPack(cc){
-    if (cc === 'JP' || PACKS[cc]) return Promise.resolve(PACKS[cc] || null);
-    return new Promise((res, rej) => {
-        const el = document.createElement('script');
-        el.src = `packs/${cc.toLowerCase()}.js`;
-        el.onload = () => PACKS[cc] ? res(PACKS[cc]) : rej(new Error('pack'));
-        el.onerror = () => rej(new Error('pack'));
-        document.head.appendChild(el);
-    });
+    if (cc === 'JP') return Promise.resolve(null);
+    if (validPack(PACKS[cc])) return Promise.resolve(PACKS[cc]);
+    delete PACKS[cc];
+    return packLoads[cc] || (packLoads[cc] = loadScriptTry(`packs/${cc.toLowerCase()}.js`, () => validPack(PACKS[cc]), {ms: 20000}).then(r => {
+        delete packLoads[cc];
+        if (r === 'ok') return PACKS[cc];
+        delete PACKS[cc]; throw new Error('pack');
+    }));
 }
 const PACK_TYPE = {main:'主菜', side:'副菜', soup:'汁物', rice:'ごはん', noodle:'麺'};
 const PACK_METHOD = {simmer:'煮', stirfry:'炒', grill:'焼', fry:'揚', raw:'和え', soup:'汁', rice:'炊'};
@@ -7665,25 +7887,31 @@ const PROTEIN_WORDS = {pork:/pork|bacon|ham|sausage|chorizo/, chicken:/chicken|t
    国のパックは英語で書いてあるので、英語以外の言語ではその言語の訳を重ねる。日本のレシピは日本語以外で英語などの訳を重ねる。訳がなければ元のまま */
 const PACK_TR = {}, trLoads = {};
 window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d){ d.tlang = lang; PACK_TR[cc + '.' + lang] = d; } };
+const trFail = {};   // 読みに行ったが電波などで読めなかった訳（ファイルがない = 404 は入れない）
 function loadPackTr(cc, lang){
     const k = cc + '.' + lang;
     if (k in PACK_TR) return Promise.resolve(PACK_TR[k]);
-    return trLoads[k] || (trLoads[k] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
-        el.onload = () => res(PACK_TR[k] || null);
-        el.onerror = () => { delete trLoads[k]; res(null); };   // 読めなかったことは覚えない（電波が戻れば読みに行く）
-        document.head.appendChild(el);
+    return trLoads[k] || (trLoads[k] = loadScriptTry(`packs/i18n/${cc.toLowerCase()}.${lang}.js`, () => !!PACK_TR[k]).then(r => {
+        delete trLoads[k];   // 読めなかったことは覚えない（電波が戻れば読みに行く）
+        if (r === 'fail') trFail[k] = true; else delete trFail[k];
+        return PACK_TR[k] || null;
     }));
 }
-function trLangFor(cc){ return cc === 'JP' ? (LANG === 'ja' ? null : LANG) : (LANG === 'en' ? null : LANG); }
+function trLangFor(cc, lang = LANG){ return cc === 'JP' ? (lang === 'ja' ? null : lang) : (lang === 'en' ? null : lang); }
 // 用意してある訳: 日本のレシピは英語、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
 function trAvail(cc){ return cc === 'JP' ? ['en'] : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
-async function ensureTr(cc){
-    const l = trLangFor(cc); if (!l) return null;
-    if (trAvail(cc).includes(l)) return loadPackTr(cc, l);
-    return cc === 'JP' ? loadPackTr('JP', 'en') : null;
+// その国・言語で使う訳のファイル（なければ null）
+function trKey(cc, lang = LANG){
+    const l = trLangFor(cc, lang); if (!l) return null;
+    if (trAvail(cc).includes(l)) return cc + '.' + l;
+    return cc === 'JP' ? 'JP.en' : null;
 }
+async function ensureTr(cc, lang = LANG){
+    const k = trKey(cc, lang); if (!k) return null;
+    const i = k.indexOf('.'); return loadPackTr(k.slice(0, i), k.slice(i + 1));
+}
+// 訳が要るのに、読もうとして読めなかったときだけ false（切りかえの途中で、画面の言葉と料理の言葉がずれないよう確かめる）
+function trOk(cc, lang = LANG){ const k = trKey(cc, lang); return !k || !trFail[k]; }
 function trOf(cc){
     const l = trLangFor(cc); if (!l) return null;
     return PACK_TR[cc + '.' + l] || (cc === 'JP' ? PACK_TR['JP.en'] : null) || null;
@@ -7915,33 +8143,82 @@ function viewWorld(){
     </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
-function PACK_LOADED_OK(cc){ return cc === 'JP' ? currentCountry() === 'JP' : !!PACKS[cc] && currentCountry() === cc && !packFail; }
+function PACK_LOADED_OK(cc){ return !packFail && (cc === 'JP' ? currentCountry() === 'JP' : validPack(PACKS[cc]) && currentCountry() === cc); }
+// 国を変える・言語を変える途中で外部ファイルが読めなかったら、何も変えない（国だけ変わって料理は前の国のまま、にならない）
+function peekLang(country, ui){
+    const c = S.settings.country, u = S.settings.uiLang; S.settings.country = country; S.settings.uiLang = ui;
+    try{ return wantLang(); }finally{ S.settings.country = c; S.settings.uiLang = u; }
+}
+// 言語を切りかえる。辞書とレシピの訳を先に読みこみ、読めたときだけ切りかえる（電波がないときは、いまの言語のまま知らせる）。途中で失敗したらもとの言語に戻す
+let uiLangSeq = 0, uiLangQ = Promise.resolve();
+async function switchLang(v, n){
+    if (n !== uiLangSeq) return;   // 続けて押されたら、最後に押した言語だけ
+    const prevUi = S.settings.uiLang, prevLang = LANG, cc = currentCountry();
+    const failed = () => { render(); toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); };
+    S.settings.uiLang = v; const l = wantLang(); S.settings.uiLang = prevUi;
+    await loadLang(l);
+    if (l !== 'ja' && !I18N[l]) return failed();
+    await ensureTr(cc, l);
+    if (!trOk(cc, l)) return failed();   // 画面の言葉だけ新しくなって、料理が前の言語のまま、にならないように
+    try{
+        S.settings.uiLang = v; save();
+        await setLang(l); await refreshRecipes(); relocalize(); render();
+    }catch(e){
+        try{ console.error('[ui-lang]', e); }catch(_){}
+        S.settings.uiLang = prevUi; save();
+        try{ await setLang(prevLang); await refreshRecipes(); relocalize(); }catch(_){}
+        failed();
+    }
+}
+let countryBusy = false;
 async function setCountry(cc){
     if (S.settings.country && S.settings.country === cc && PACK_LOADED_OK(cc)) return true;   // 同じ国をもう一度選んでも何も変えない
+    if (countryBusy) return false;   // 読みこみ中にもう一度押されても、重ねて切りかえない
+    countryBusy = true;
+    try{ return await setCountryRun(cc); }finally{ countryBusy = false; }
+}
+async function setCountryRun(cc){
     const first = !S.settings.country;
     const fresh = !(S.countryData && S.countryData[cc]);   // この国をはじめて選ぶ
-    const old = currentCountry();
-    // 先にデータを読みこむ（電波がなくて読みこめないときは、いまの国の冷蔵庫・1週間プランをそのまま残す）
+    const old = packFail || currentCountry();
+    // 先に必要なファイル（国のデータ・画面の言葉・レシピの訳）をすべて読みこむ（電波がなくて読みこめないときは、いまの国の冷蔵庫・1週間プランをそのまま残す）
     try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
-    packFail = null;
-    if (old !== cc){
-        S.countryData = S.countryData || {};
-        S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, scarce: scarceList()};
-        const d = S.countryData[cc] || {};
-        S.fridge = d.fridge || []; S.fridgeMeta = d.fridgeMeta || {}; S.staples = d.staples || []; S.settings.avoid = d.avoid || []; S.settings.scarce = d.scarce || [];
-        S.week = null;
+    const nextUi = first && (S.settings.uiLang || 'auto') === 'auto' ? (cc === 'JP' ? (deviceLang() || 'ja') : peekLang(cc, 'auto')) : S.settings.uiLang;
+    const nextLang = peekLang(cc, nextUi);
+    await loadLang(nextLang);
+    if (nextLang !== 'ja' && !I18N[nextLang]){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return false; }
+    await ensureTr(cc, nextLang);
+    if (!trOk(cc, nextLang)){ toast(t('この国のデータを読みこめませんでした')); return false; }
+    const snap = {country: S.settings.country, ui: S.settings.uiLang, fridge: S.fridge, meta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, scarce: S.settings.scarce,
+        week: S.week, cd: S.countryData, firstUse: S.firstUse, trialKept: S.trialKept, packFail, lang: LANG};
+    try{
+        packFail = null;
+        if (old !== cc){
+            S.countryData = Object.assign({}, S.countryData);
+            S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, scarce: scarceList()};
+            const d = S.countryData[cc] || {};
+            S.fridge = d.fridge || []; S.fridgeMeta = d.fridgeMeta || {}; S.staples = d.staples || []; S.settings.avoid = d.avoid || []; S.settings.scarce = d.scarce || [];
+            S.week = null;
+        }
+        S.settings.country = cc;
+        // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
+        if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = nextUi;   // 日本を選んでも、端末が日本語でなければ端末の言語のまま（日本の料理には英語の訳がある）
+        await setLang(wantLang());
+        applyCountry(cc);
+        // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
+        if (PACK && fresh && !S.staples.length) S.staples = STAPLE_QUICK.slice();
+        if (first){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; }   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
+        save();
+        return true;
+    }catch(e){
+        // 途中で失敗したら、国も言語も冷蔵庫も、もとのまま
+        try{ console.error('[setCountry]', e); }catch(_){}
+        S.settings.country = snap.country; S.settings.uiLang = snap.ui; S.fridge = snap.fridge; S.fridgeMeta = snap.meta; S.staples = snap.staples;
+        S.settings.avoid = snap.avoid; S.settings.scarce = snap.scarce; S.week = snap.week; S.countryData = snap.cd; S.firstUse = snap.firstUse; packFail = snap.packFail;
+        if (snap.trialKept === undefined) delete S.trialKept; else S.trialKept = snap.trialKept;
+        try{ await setLang(snap.lang); applyCountry(currentCountry()); }catch(_){}
+        save(); toast(t('この国のデータを読みこめませんでした')); return false;
     }
-    S.settings.country = cc;
-    // 表示する言語は、はじめに国を選んだときに決めて、あとで国を変えてもそのままにする（ほかの国の料理も、この言語の訳があれば訳して出す）
-    if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = cc === 'JP' ? (deviceLang() || 'ja') : wantLang();   // 日本を選んでも、端末が日本語でなければ端末の言語のまま（日本の料理には英語の訳がある）
-    save();
-    await setLang(wantLang());
-    await ensureTr(cc);
-    applyCountry(cc);
-    // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
-    if (PACK && fresh && !S.staples.length){ S.staples = STAPLE_QUICK.slice(); save(); }
-    if (first){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; save(); }   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
-    return true;
 }
 /* ---- 主食（国ごとに選べる。最初の項目がその国のふだんの主食。なしも選べる） ----
    img は料理の絵の ID（img/dish/<img>.svg）。日本は t() の辞書で、ほかの国は en / local（その国の言葉）/ ja の名前を持つ
@@ -8034,18 +8311,49 @@ document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('cl
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
 // 「自動（国に合わせる）」だった人は、いま表示している言語に決める。これからは国を変えても言語は変わらない
 if (S.settings.country && (S.settings.uiLang || 'auto') === 'auto'){ S.settings.uiLang = wantLang(); save(); }
+// 起動のとき国のデータが読めず、いまだけ日本で開いているときに、もう一度読みこむ（読めたら元の国に戻す）
+async function retryPack(){
+    const cc = packFail; if (!cc) return;
+    try{ await loadPack(cc); await ensureTr(cc, wantLang()); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return; }
+    const was = S.settings.country;
+    try{
+        packFail = null; S.settings.country = cc;
+        await setLang(wantLang()); applyCountry(cc); session.menu = null;
+        GH.clear('pack'); render();
+    }catch(e){
+        packFail = cc; S.settings.country = was;
+        try{ applyCountry(currentCountry()); }catch(_){}
+        toast(t('この国のデータを読みこめませんでした'));
+    }
+}
 (async () => {
-    const cc = S.settings.country;
-    if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ packFail = cc; S.settings.country = 'JP'; setTimeout(() => toast(t('この国のデータを読みこめませんでした。電波のあるところでもう一度開いてください')), 1500); } }
-    await setLang(wantLang());
-    await ensureTr(currentCountry());
-    applyCountry(currentCountry());
-    scheduleTrialReminder();
-    syncNotifs(true);
-    loadRemote();
-    setTab(tab);
-    if (!S.settings.country) openCountrySheet();
-    else if (!S.onboarded) startOnboard();
+    try{
+        const cc = S.settings.country;
+        if (cc && cc !== 'JP'){ try{ await loadPack(cc); }catch(e){ packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); } }
+        await setLang(wantLang());
+        await ensureTr(currentCountry());
+        try{ applyCountry(currentCountry()); }
+        catch(e){   // 国のデータの中身が使えないときは、日本で開く（保存するときは元の国のまま）
+            if (currentCountry() === 'JP') throw e;
+            packFail = currentCountry(); S.settings.country = 'JP'; delete PACKS[packFail]; storeInfo.pending.push('pack');
+            applyCountry('JP');
+        }
+        guard('trial', scheduleTrialReminder);
+        guard('notifs', () => syncNotifs(true));
+        guard('remote', loadRemote);
+        setTab(tab);
+        if (!S.settings.country) openCountrySheet();
+        else if (!S.onboarded) startOnboard();
+    }catch(e){
+        // 起動の途中で止まっても、真っ白にしない（案内と、書き出す入口を出す）
+        try{ console.error('[boot]', e); }catch(_){}
+        try{ setTab(tab); }catch(_){}
+        GH.fatal(true);
+    }finally{
+        GH.booted = true;
+        try{ if (LANG !== wantLang()){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); } }catch(_){}
+        try{ flushNotes(); }catch(_){}
+    }
 })();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
 // アプリを開いたまま日付をまたいだとき（画面に戻ってきたとき）に、今日の日付と献立を新しくする
