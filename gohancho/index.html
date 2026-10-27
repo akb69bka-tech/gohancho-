@@ -2073,7 +2073,7 @@ function matchRecipe(r, have){
 let session = {rejected:new Set(), mood:'all', useFridge:false, menu:null, twist:null, search:''};
 const MOODS = [
     {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'bento', get label(){ return t('お弁当'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
-    {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }},
+    {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }}, {k:'okayu', get label(){ return t('おかゆの日'); }},
 ];
 /* 「ラクの日」: 主菜は20分以内・材料7つまで（常備品を除く）、副菜・汁ものは10分以内。揚げ物・オーブン・圧力鍋を使う料理は出さない（洗いものと火加減の手間が増えるため）。
    国によって当てはまる料理が少ないときは、枠ごとに少しずつゆるめる（段階 0→3。ゆるめた枠は画面にそのまま書く）。
@@ -2219,6 +2219,7 @@ function bentoCount(slot){
 }
 function bentoPool(slot, list){ const f = list.filter(bentoFits); return f.length ? f : list; }
 // 献立に出ている主菜・副菜の説明。弁当向きでない料理が混ざっているときは、そう書く（保証しない）
+function okayuNote(){ return session.mood === 'okayu' && session.menu && session.menu.items[0] && isOkayu(session.menu.items[0].r) ? t('おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）') : ''; }
 function bentoNote(){
     if (session.mood !== 'bento' || !session.menu) return '';
     const items = session.menu.items.filter(x => x.r && (x.slot === '主菜' || x.slot === '副菜'));
@@ -2237,6 +2238,7 @@ function moodOk(r, mood){
         case 'quick': return r.min <= 20;
         case 'easy': return easyOk(r, easyInfo(['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'));
         case 'bento': return bentoFits(r);
+        case 'okayu': return isOkayu(r);
         case 'asia': return r.genre === '韓' || r.genre === 'エスニック';
         case 'fish': return ['魚','魚介'].includes(r.family);
         case 'meat': return ['豚','鶏','牛','ひき肉'].includes(r.family);
@@ -2326,7 +2328,8 @@ const MIX_SLOTS = ['主菜', '副菜', '汁物'];
 function mixCc(slot){ const cc = (S.settings.mix || {})[slot]; return cc && cc !== currentCountry() && COUNTRIES.some(c => c.cc === cc) ? cc : null; }
 function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean))]; }
 // その枠の料理の候補（選んだ国のデータをまだ読みこめていないときは、いまの国）
-function poolFor(slot){ const cc = mixCc(slot); return cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; }
+// 主菜の候補。おかゆは「おかゆの日」のときだけ出す（ふだんの献立・1週間プランの主菜には混ぜない）
+function poolFor(slot){ const cc = mixCc(slot), all = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; return slot === '主菜' && session.mood !== 'okayu' && all.some(isOkayu) ? all.filter(r => !isOkayu(r)) : all; }
 function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
 // 読みこめたら、その国を選んだ枠だけ選び直す
 function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixLoading.has(cc)); ccs.forEach(cc => { mixLoading.add(cc); loadBrowse(cc).then(() => { mixLoading.delete(cc); if (reconcileMenu() || tab === 'today') render(); }); }); }
@@ -2407,7 +2410,20 @@ function setMenuMain(r){
    ひとひねり（アレンジ）生成
    id 形式: a~元のID~味~かたち~主役  → いつでも同じレシピに戻せる
    ========================================================= */
+// おかゆ（白がゆ）と、その具を変えた9品。基本のおかゆのひとひねりは、味・かたち・主役の入れかえではなく、この具の違う品で提案する
+const OKAYU_IDS = ['okayu','tamagogayu','umegayu','shakegayu','nanakusagayu','chukagayu','satsumaimogayu','kabochagayu','azukigayu','kinokogayu'];
+const isOkayu = r => !!r && OKAYU_IDS.includes(r.id);
+function okayuVariantIds(base){ return isOkayu(base) ? OKAYU_IDS.filter(id => id !== 'okayu' && id !== base.id) : []; }
+// おかゆの変化を、ひとひねり案として見せる形にする（料理そのものは、ふつうのレシピ。id もそのまま）
+function variantTwist(id, baseId){
+    const r = RECIPES.find(x => x.id === id), b = RECIPES.find(x => x.id === (baseId || 'okayu')) || RECIPES.find(x => x.id === 'okayu');
+    if (!r || !b) return null;
+    const added = r.items.filter(i => !i.opt && !b.items.some(x => x.key === i.key)).map(i => i.label);
+    return Object.assign({}, r, {base: b, isVariant: true, changes: added.length ? [t('おかゆの具: {v}', {v: added.join(t('・'))})] : []});
+}
+const twistOf = id => String(id).startsWith('a~') ? buildTwist(id) : OKAYU_IDS.includes(id) ? variantTwist(id) : null;
 function twistOptions(base){
+    if (isOkayu(base)) return {flavors:[], forms:[], swaps:[]};
     const flavors = Object.entries(FLAVORS).filter(([k,f]) =>
         f.methods.includes(base.method) && !(f.skipGenre||[]).includes(base.genre) && !(f.skipId||[]).includes(base.id)).map(([k]) => k);
     const forms = Object.entries(FORMS).filter(([k,f]) =>
@@ -2468,13 +2484,17 @@ function buildTwist(id){
 function generateTwists(opts={}){
     const {baseId=null, level=2, flavor='any', form='any', swap='any', count=3, fromIds=null} = opts;
     let bases = baseId ? [RECIPES.find(r => r.id === baseId)] :
-        (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物'));
+        (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物' && !isOkayu(r)));   // おかゆは、選んだとき・お気に入りや作った記録があるときだけ元にする
     // 苦手な食材が主役（主役を替えれば使わなくなる）の料理は、主役を替える案だけ出す
     const strict = r => r.items.filter(i => !i.opt && itemAvoided(i));
     bases = bases.filter(r => r && strict(r).every(i => i.key === r.protein));
     const all = [];
     bases.forEach(b => {
         const o = twistOptions(b);
+        if (isOkayu(b)){
+            if (flavor === 'any' || flavor === 'none'){ if ((form === 'any' || form === 'none') && swap !== 'yes') okayuVariantIds(b).forEach(id => all.push({id, n: 1, base: b, variant: true})); }
+            return;
+        }
         const fls = flavor === 'none' ? [''] : flavor === 'any' ? ['', ...o.flavors] : (o.flavors.includes(flavor) ? [flavor] : []);
         const fos = form === 'none' ? [''] : form === 'any' ? ['', ...o.forms] : (o.forms.includes(form) ? [form] : []);
         let sws = swap === 'none' ? [''] : swap === 'any' ? ['', ...o.swaps] : o.swaps;
@@ -2501,13 +2521,13 @@ function generateTwists(opts={}){
     for (const {x} of scored){
         if (out.length >= count) break;
         if (usedBase.has(x.base.id) && !baseId) continue;
-        const tw = buildTwist(x.id); if (twistAvoided(tw)) continue;
+        const tw = x.variant ? variantTwist(x.id, x.base.id) : buildTwist(x.id); if (twistAvoided(tw)) continue;
         usedBase.add(x.base.id); out.push(tw);
     }
     for (const {x} of scored){
         if (out.length >= count) break;
         if (out.some(t => t.id === x.id)) continue;
-        const tw = buildTwist(x.id); if (!twistAvoided(tw)) out.push(tw);
+        const tw = x.variant ? variantTwist(x.id, x.base.id) : buildTwist(x.id); if (!twistAvoided(tw)) out.push(tw);
     }
     return out;
 }
@@ -6302,7 +6322,7 @@ function viewToday(){
             <button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>
         </div>
         <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
-        ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote())}</p>` : ''}
+        ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() || okayuNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote() || okayuNote())}</p>` : ''}
         ${easyRelaxText() ? `<p class="small muted" style="margin:0">${esc(easyRelaxText())}</p>` : ''}
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(whyLine())}</div>
         ${fridgeUseHtml()}
@@ -6643,7 +6663,7 @@ function viewTwist(){
     const flavorList = [['any',t('おまかせ')],['none',t('味はそのまま')], ...Object.keys(FLAVORS).map(k => [k, flavorLabel(k)])];
     const formList = [['any',t('おまかせ')],['none',t('かたちはそのまま')], ...Object.keys(FORMS).map(k => [k, formLabel(k)])];
     const res = twistState.results || [];
-    const seen = S.seenTwists.slice(-8).reverse().map(buildTwist).filter(Boolean);
+    const seen = S.seenTwists.slice(-8).reverse().map(twistOf).filter(Boolean);
     return `
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('定番をひとひねり'))}</h2><span class="hint">${esc(t('味の方向・かたち・主役の食材を入れかえて、新しい一品を考えます'))}</span></div>
@@ -8530,7 +8550,7 @@ async function setCountryRun(cc){
    img は料理の絵の ID（img/dish/<img>.svg）。日本は t() の辞書で、ほかの国は en / local（その国の言葉）/ ja の名前を持つ
    参考: Wikipedia「Staple food」、FAO「Staple foods: What do people eat?」、各国の家庭料理の一般的な食べ方 */
 const STAPLE_CHOICES = {
-    JP: [{k:'rice', img:'rice', key:'白ご飯'}, {k:'genmai', img:'st_genmai', key:'玄米ご飯'}, {k:'zakkoku', img:'st_zakkoku', key:'雑穀ご飯'}, {k:'toast', img:'st_toast', key:'パン（トースト）'}],
+    JP: [{k:'rice', img:'rice', key:'白ご飯'}, {k:'genmai', img:'st_genmai', key:'玄米ご飯'}, {k:'zakkoku', img:'st_zakkoku', key:'雑穀ご飯'}, {k:'toast', img:'st_toast', key:'パン（トースト）'}, {k:'okayu', img:'okayu', key:'おかゆ（白がゆ）'}],
     US: [{k:'rolls', img:'st_rolls', en:'Dinner rolls', local:'Dinner rolls', ja:'ディナーロール'}, {k:'bread', img:'gb_staple', en:'Sliced bread', local:'Sliced bread', ja:'食パン'}, {k:'rice', img:'br_staple', en:'White rice', local:'White rice', ja:'白ご飯'}, {k:'potatoes', img:'st_potatoes', en:'Boiled potatoes', local:'Boiled potatoes', ja:'ゆでじゃがいも'}],
     GB: [{k:'bread', img:'gb_staple', en:'Bread and butter', local:'Bread and butter', ja:'パンとバター'}, {k:'potatoes', img:'st_potatoes', en:'Boiled new potatoes', local:'Boiled new potatoes', ja:'ゆでた新じゃが'}, {k:'rice', img:'br_staple', en:'White rice', local:'White rice', ja:'白ご飯'}],
     FR: [{k:'default'}, {k:'potatoes', img:'st_potatoes', en:'Steamed potatoes', local:'Pommes de terre vapeur', ja:'蒸しじゃがいも'}, {k:'rice', img:'br_staple', en:'White rice', local:'Riz blanc', ja:'白ご飯'}],
@@ -8567,7 +8587,7 @@ function stapleOptions(cc = currentCountry()){
 }
 function stapleName(o){
     if (!o || o.k === 'none') return tc('staple', 'なし');
-    if (o.key) return ({rice:t('白ご飯'), genmai:t('玄米ご飯'), zakkoku:t('雑穀ご飯'), toast:t('パン（トースト）')})[o.k] || o.key;
+    if (o.key) return ({rice:t('白ご飯'), genmai:t('玄米ご飯'), zakkoku:t('雑穀ご飯'), toast:t('パン（トースト）'), okayu:t('おかゆ（白がゆ）')})[o.k] || o.key;
     const lang = PACK && PACK.lang;
     return LANG === 'ja' ? (o.ja || o.en) : LANG === lang ? (o.local || o.en) : o.en;
 }
@@ -8594,7 +8614,7 @@ function countrySheetHtml(){
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
 function relocalize(){
-    const re = r => r && r.isTwist ? buildTwist(r.id) : r;
+    const re = r => r && r.isTwist ? buildTwist(r.id) : r && r.isVariant ? variantTwist(r.id, r.base.id) : r;
     if (twistState.results) twistState.results = twistState.results.map(re).filter(Boolean);
     if (session.twist) session.twist = re(session.twist);
     if (session.menu) session.menu.items.forEach(x => { x.r = re(x.r); });
