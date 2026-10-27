@@ -42,7 +42,7 @@ const INJECT = () => {
       if (/^(SCRIPT|STYLE|PATH|CIRCLE|RECT|G|LINE|POLYGON|ELLIPSE|DEFS|LINEARGRADIENT|RADIALGRADIENT|STOP|USE|TEXT|TSPAN)$/i.test(el.tagName) || el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue;
       const r = el.getBoundingClientRect(); if (!r.width && !r.height) continue;
       const fx = isFixed(el); const dx = fx ? 0 : scrollX, dy = fx ? 0 : scrollY;
-      out[keyOf(el)] = [r.left + dx, r.top + dy, r.width, r.height, (el.className && el.className.baseVal === undefined ? el.className : el.tagName).toString().slice(0, 40), fx ? 1 : 0];
+      out[keyOf(el)] = [r.left + dx, r.top + dy, r.width, r.height, ((el.className && el.className.baseVal === undefined ? el.className : el.tagName) + '<' + (el.parentElement && el.parentElement.className && el.parentElement.className.baseVal === undefined ? el.parentElement.className : '')).toString().slice(0, 60), fx ? 1 : 0];
     }
     return {rects: out, sy: scrollY, docH: document.documentElement.scrollHeight};
   };

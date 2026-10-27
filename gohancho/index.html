@@ -287,7 +287,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .recipe-ings li{display:flex;justify-content:space-between;gap:10px;padding:.55rem .9rem;border-top:1px dashed var(--line);font-size:.92rem}
 .recipe-ings li:first-child{border-top:0}
 .recipe-ings li.add{background:var(--yolk-soft)}
-.recipe-ings li .q{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.recipe-ings li .q{color:var(--muted);font-variant-numeric:tabular-nums;max-width:55%;text-align:end;overflow-wrap:anywhere}   /* 「2 Bund (ca. 250 g)」など長い分量が、画面の幅を超えないように（折り返す） */
 .recipe-ings li .ok{color:var(--accent);font-weight:700;margin-inline-end:.3rem}
 .seasoning{font-size:.86rem;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:.7rem .9rem;box-shadow:var(--shadow)}
 .steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:12px}
@@ -419,7 +419,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .tiny{font-size:.75rem;line-height:1.5;margin:0}
 /* 設定 */
 html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
-.left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px}.left-chips .chip{white-space:normal;text-align:center}.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
+.left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.left-chips .chip{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:40px;padding-block:0}   /* 料理名の長さで、列の折り返しと高さが変わらないように（2列・1行は…で切る） */.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
 .set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
