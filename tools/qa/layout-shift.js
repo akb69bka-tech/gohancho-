@@ -69,7 +69,7 @@ function compare(a, b, exempt, vh = 844, above = null) {   // above: この高�
 }
 
 var results = []; // {scn, cc, w, sc, img, cls, worst, n, dsy, off}
-const record = r => { results.push(r); if ((r.worst > TOL || r.cls > 0.001) && results.filter(x => x.scn === r.scn && (x.worst > TOL || x.cls > 0.001)).length <= 2) console.log('SHIFT', r.scn, r.cc, r.w, 'x' + r.sc, r.img, 'cls=' + r.cls.toFixed(3), 'worst=' + r.worst, 'n=' + r.n, 'dSY=' + r.dsy, (r.off || []).join(' / ')); };
+const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY)) return; results.push(r); if ((r.worst > TOL || r.cls > 0.001) && results.filter(x => x.scn === r.scn && (x.worst > TOL || x.cls > 0.001)).length <= 2) console.log('SHIFT', r.scn, r.cc, r.w, 'x' + r.sc, r.img, 'cls=' + r.cls.toFixed(3), 'worst=' + r.worst, 'n=' + r.n, 'dSY=' + r.dsy, (r.off || []).join(' / ')); };
 
 (async () => {
   const b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
@@ -80,7 +80,7 @@ const record = r => { results.push(r); if ((r.worst > TOL || r.cls > 0.001) && r
   // 組み合わせ: A = 全部の操作を 390px・文字等倍・絵あり / B = お膳まわりの操作を ほかの幅と文字拡大 / C = 絵の失敗・遅い読み込み
   const tasks = [];
   CCS.forEach((cc, ci) => {
-    if (quick) { for (const n of [4, 6]) tasks.push({cc, w: 390, sc: 1, img: 'ok', n, lv: 'full'}); return; }
+    if (quick) { for (const im of IMGS) for (const n of [4, 6]) tasks.push({cc, w: 390, sc: 1, img: im, n, lv: 'full'}); return; }
     for (const n of [4, 6]) tasks.push({cc, w: 390, sc: 1, img: 'ok', n, lv: 'full'});
     for (const w of WIDTHS) for (const sc of SCALES) { if (w === 390 && sc === 1) continue; tasks.push({cc, w, sc, img: 'ok', n: ci % 2 ? 6 : 4, lv: 'core'}); }
     for (const im of IMGS) if (im !== 'ok') for (const [w, sc] of [[390, 1], [320, 1.25]]) tasks.push({cc, w, sc, img: im, n: ci % 2 ? 6 : 4, lv: 'img'});
@@ -105,6 +105,7 @@ const record = r => { results.push(r); if ((r.worst > TOL || r.cls > 0.001) && r
       // 1つの操作を実行して前後を比べる。exemptSel: 中身が変わってよい入れ物の選び方
       //   'press:.spot' = 押したボタンを含む .spot の中身だけ / '.tray' など = その CSS に合う要素の中身
       const act = async (scn, doFn, arg, exemptSel, scrollTo, stop) => {
+        if (process.env.ONLY && !scn.includes(process.env.ONLY)) return;
         await p.evaluate(st => { window.__stop = st || null; }, stop);
         if (scrollTo === 'btn' || scrollTo === 'btn2') { await p.evaluate(([fn, arg]) => { const el = fn === 'reroll' ? document.querySelectorAll('.tray [data-act="reroll"]')[arg] : fn === 'sel' ? document.querySelector(arg) : fn === 'nth' ? document.querySelectorAll(arg[0])[arg[1]] : null; if (el) el.scrollIntoView({block: 'center'}); }, [doFn, arg]); await p.waitForTimeout(120); }   // 押すボタンが見える位置で押す（見えないボタンは押せない）
         else if (scrollTo !== undefined) { await p.evaluate(y => window.scrollTo(0, y), scrollTo); await p.waitForTimeout(120); }
@@ -118,9 +119,11 @@ const record = r => { results.push(r); if ((r.worst > TOL || r.cls > 0.001) && r
         }, [doFn, arg, exemptSel]);
         if (/world|week|cook/.test(exemptSel)) exempt.noBox = true;
         const imm = await p.evaluate(() => window.__snap());
+        if (process.env.DBG) console.log('DBG', scn, JSON.stringify(await p.evaluate(() => [session.trayShown, [...document.querySelectorAll('.tray .vessel')].map(e => e.className.replace('vessel ', ''))])));
         await p.waitForTimeout(img === 'slow' ? 1400 : 600);
         const after = await p.evaluate(() => window.__snap());
         const cls = await p.evaluate(() => window.__cls);
+        if (process.env.DBG) console.log('DBG2', scn, JSON.stringify(await p.evaluate(() => [[...document.querySelectorAll('.tray .vessel')].map(e => e.className.replace('vessel ', '') + ':' + Math.round(e.getBoundingClientRect().top))])));
         // お膳ごと入れ替える操作: お膳の高さが同じなら、お膳より下も動いてはいけない。高さが変わる（品数や一品ものの有無が変わった）ときは、お膳より上だけ見る
         let above = null;
         const tk = exempt.find(k => before.rects[k] && /(^| )tray( |$)/.test(before.rects[k][4]));
