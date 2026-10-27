@@ -1967,6 +1967,8 @@ function jpDate(s, withWeekday=true){
     catch(e){ return s; }
 }
 let TODAY = ymd();   // 開いたまま日付が変わったら refreshToday() で更新する
+// 起動して、国のデータ（料理）を読みこみ終わるまでは true にならない。それより前に献立を作ったり、前の案を探したりすると、料理がまだ引けず、開くたびに別の献立になる
+let bootReady = false;
 // RECIPES の id → 料理の索引（件数・先頭・末尾が変わったら作り直す）
 let RID = {m: new Map(), n: -1, a: null, z: null};
 function recipeById(id){
@@ -2291,7 +2293,7 @@ function pick(cands, ctx){
 }
 // keep: そのまま残すほかの料理（{…, slot}）。同じ料理・2品目の主菜と同じ肉や魚にならない主菜から選ぶ
 // bowl: 主菜だけを「かえる」とき、ご飯もの・麺・汁ものかどうかをいまの主菜とそろえる（ご飯の欄がお漬物に変わるなど、ほかの欄が動かないように）
-const isBowlMain = r => !!r && (r.type === 'ごはん' || r.type === '麺' || r.type === '汁物' || r.id === 'nikuudon');
+const isBowlMain = r => !!r && (r.type === 'ごはん' || r.type === '麺');   // ご飯の欄（お漬物に変わる）に関わる種類だけ。汁ものの枠は主菜を変えても動かさない
 function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: 「かえる」では、同じ種類（ご飯もの・麺／ふつうの主菜）の候補がなければ null（別の種類にして、ご飯の欄を動かさない）
     const wd = parseYmd(TODAY).getDay();
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
@@ -2362,6 +2364,7 @@ function reconcileMenu(){
     if (m.n !== menuCount() && !m.adj){ newMenu(); return true; }   // 「あと1品」で足した品数は、設定が変わらないかぎり、そのまま
     let changed = false;
     m.items.forEach((it, i) => {
+        if (!it.r && i > 0) return;   // 空の枠（汁ものの麺が主菜のとき・候補がなかったとき）は、設定を変えたついでには埋めない。汁ものは「汁ものを足す」で選ぶ
         if (slotStillOk(it)) return;
         const others = m.items.filter((_, k) => k !== i);
         let nr = null;
@@ -2400,10 +2403,10 @@ function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r
 function setMenuMain(r){
     const m = session.menu; if (!m || !r) return;
     m.items[0].r = r;
-    // 主菜だけをかえる。ほかの料理はそのまま残し、空の枠と、新しい主菜と同じ料理になった枠だけ選び直す
+    // 主菜だけをかえる。ほかの料理はそのまま残し（空の枠も空のまま。汁ものの枠は「汁ものを足す」で選ぶ）、新しい主菜と同じ料理になった枠だけ選び直す
     m.items.forEach((x, j) => {
         const clash = x.r && x.r.id === r.id;   // 同じ料理が2枠に並ぶときだけ（押した料理以外は、同じ肉・魚でも動かさない）
-        if (j && (!x.r || clash)) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r);
+        if (j && x.r && clash) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== j), r);
     });
 }
 
@@ -3984,7 +3987,7 @@ function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.se
 // はじめての画面に出す、この国の今日の献立（実際の献立と同じ料理・絵）
 function obTrayHtml(){
     try{
-        if (!session.menu && !mixWaiting() && !restoreDraft() && !restoreDecided()) newMenu();
+        if (!session.menu && bootReady && !mixWaiting() && !restoreDraft() && !restoreDecided()) newMenu();
         const m = session.menu; if (!m) return '';
         const tiles = m.items.filter(it => it.r).map(it => {
             const kind = it.slot === '主菜' ? vesselKind(it.r) : it.slot === '副菜' ? 'kobachi' : 'wan';
@@ -5129,6 +5132,7 @@ function shopRowsHtml(list, done){
 // 買ったもの（チェックした品）を冷蔵庫に入れる。自分で足した品は食材ではないので入れない
 function shopToFridge(){
     const done = shopDoneSet(), before = S.fridge.slice(), beforeDone = S.shopDone.keys.slice(), have = fridgeKeys();
+    const rowsBefore = new Set(shoppingList().map(e => e.key));
     const got = [];   // 冷蔵庫の食材名として同じ食材に読み取れるものだけ入れる（読み取りがずれる食材は買い物メモに残す）
     shoppingList().filter(e => done.has(e.key) && !e.extra).forEach(e => {
         const k = String(e.key).split('|')[0], nm = [k, e.label].find(x => keyOf(x) === k); if (!nm) return;
@@ -5137,6 +5141,8 @@ function shopToFridge(){
     });
     if (!got.length){ toast(t('冷蔵庫に入れられる食材はありませんでした')); return; }
     S.shopDone.keys = S.shopDone.keys.filter(k => !got.includes(k));
+    // 名前が近くて1行にまとめてあった別の食材（例: トマトに合わさっていた缶詰トマト）は、まとめた行を入れたあとに別の行として出てくる。チェックした行にふくまれていたので、チェック済みのまま残す（未チェックに戻さない）
+    shoppingList().forEach(e => { if (!rowsBefore.has(e.key) && !S.shopDone.keys.includes(e.key)) S.shopDone.keys.push(e.key); });
     save(); render();
     toast(t('{n}品を冷蔵庫に入れました', {n:got.length}), false, () => { S.fridge = before; S.shopDone.keys = beforeDone; save(); render(); });
 }
@@ -5754,18 +5760,20 @@ function reminderHtml(){
 /* ---- 今日の献立 ---- */
 // 今日「この献立に決定」した献立があれば、アプリを開き直しても同じ献立を出す
 function restoreDecided(){
+    if (!bootReady) return false;
     const c = S.cook; if (!c || c.d !== TODAY) return false;
     const items = c.ids.map((id, i) => ({slot: (c.slots || [])[i] || slotOf(byId(id) || {}), r: byId(id)}));
     if (!items.length || items.some(x => !x.r) || items[0].slot !== '主菜') return false;
-    const n = items.length, prevMood = session.mood;
+    const n = items.length, prevMood = session.mood, prevSalt = session.countSalt;
     if (n >= 3 && n <= 4 && items.every(x => x.slot !== '汁物')) session.mood = 'bento';   // 汁ものなしの献立は「お弁当」の献立
-    if ((S.settings.dishCount !== 'auto' && n !== menuCount() && !c.adj) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join()){ session.mood = prevMood; return false; }   // 品数を変えたら新しく作る（おまかせは日によって品数が変わるので、決めた献立をそのまま出す）
+    session.countSalt = c.salt || 0;   // おまかせの品数は「まるごと入れ替え」の回数で決まる。決めたときの回数に戻してから照らし合わせる（食い違うまま出すと、次の設定変更で丸ごと作り直されて料理が変わる）
+    if ((n !== menuCount() && !c.adj) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join()){ session.mood = prevMood; session.countSalt = prevSalt; return false; }   // 品数を変えたら新しく作る
     session.menu = {n, items, adj: !!c.adj && n !== menuCount()}; return true;
 }
 // まだ決めていない今日の案も、その日のうちは同じものを出す（iPhone はアプリを裏で閉じることが多いので、開き直すたびに変わらないよう S.draft に残す）
 let draftTried = false;
 function restoreDraft(){
-    if (draftTried) return false; draftTried = true;   // アプリを開いたときだけ。設定を変えて作り直すときは新しく作る
+    if (!bootReady || draftTried) return false; draftTried = true;   // アプリを開いたときだけ。設定を変えて作り直すときは新しく作る
     const c = S.draft; if (!c || c.d !== TODAY || c.cc !== currentCountry()) return false;
     const n = c.n, items = (c.ids || []).map((id, i) => ({slot: c.slots[i], r: id ? byId(id) : null}));
     // おまかせの品数は気分と「まるごと入れ替え」の回数で決まるので、先に戻してから品数を照らし合わせる
@@ -5833,7 +5841,7 @@ function oneSuggest(main, seen){
     return out;
 }
 function ensureMenu(){
-    if (session.menu) return;
+    if (session.menu || !bootReady) return;
     if (!restoreDraft() && !restoreDecided()){
         newMenu();
         const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜') setMenuMain(p);
@@ -6225,7 +6233,7 @@ function foldHtml(key, title, hint, body){
 }
 function viewToday(){
     if (mixWaiting()) loadMix();
-    if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
+    if (!session.menu && (mixWaiting() || !bootReady)){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
     if (!session.menu && !restoreDraft() && !restoreDecided()){
         newMenu();
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
@@ -6249,14 +6257,16 @@ function viewToday(){
         const label = slotLabel(it.slot);
         const last = r ? lastLabel(r.id) : '';
         const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoidedCore(x));
-        const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : byAvoid ? t('苦手な食材を使わない料理がありません') : t('合う料理がありません');
+        const soupNone = it.slot === '汁物' && !r && main && (main.id === 'nikuudon' || main.type === '汁物');   // 汁ものの麺・汁ものが主菜なら、足すボタンも出さない
+        const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
                 ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${esc(metaLine(r))}</span><span class="ex" style="--exn:${exN};--exl:${exLast}">${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
                     : `<span class="nm none">${esc(empty)}</span><span class="mt meta"></span><span class="ex" style="--exn:${exN};--exl:${exLast}"></span>`}
             </div>
-            ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>` : ''}
+            ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>`
+                : soupNone ? '' : `<button class="swap" data-act="soup-add" data-i="${idx}" aria-label="${esc(t('汁ものを足す'))}">${esc(t('汁ものを足す'))}</button>`}
         </div>`;
     };
     const indexed = m.items.map((it, i) => ({it, i}));
@@ -7515,6 +7525,13 @@ document.addEventListener('click', e => {
             else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
             render(); break;
         }
+        case 'soup-add': {
+            // 空の汁もの枠だけに、押したときに1品選ぶ（ほかの料理は動かさない）
+            const i = Number(el.dataset.i), m = session.menu, it = m && m.items[i]; if (!it || it.slot !== '汁物' || it.r) break;
+            const nr = suggestOrAny('汁物', m.items.filter((_, k) => k !== i), m.items[0].r);
+            if (nr) it.r = nr; else toast(t('合う料理がありません'));
+            render(); break;
+        }
         case 'new-menu':
             menuIds().forEach(id => session.rejected.add(id));
             session.countSalt = (session.countSalt || 0) + 1;
@@ -7698,7 +7715,7 @@ document.addEventListener('click', e => {
             const before = new Set(S.history.filter(h => h.d !== TODAY || (S.cook && S.cook.d === TODAY && S.cook.ids.includes(h.id))).map(h => h.id));
             ids.forEach(id => record(id, slotOf(byId(id))));
             const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
-            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj}; save(); haptic();
+            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0}; save(); haptic();
             session.cookIdx = 0;
             toast(endSent(t('献立が決まりました。作り方はこちらです')) + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
         }
@@ -8726,6 +8743,7 @@ async function retryPack(){
             packFail = currentCountry(); S.settings.country = 'JP'; delete PACKS[packFail]; storeInfo.pending.push('pack');
             applyCountry('JP');
         }
+        bootReady = true;
         guard('trial', scheduleTrialReminder);
         guard('notifs', () => syncNotifs(true));
         guard('remote', loadRemote);

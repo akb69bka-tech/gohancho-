@@ -513,6 +513,8 @@ GOHAN_I18N('fr', {
     "買い物の前日の夕方にお知らせします": "Nous vous rappellerons la veille au soir des courses",
     "汁ものの麺なので、なし": "Inutile (soupe de nouilles)",
     "合う料理がありません": "Aucune correspondance",
+    "汁ものを足す": "Ajouter une soupe",
+    "汁ものは入れていません": "Pas de soupe",
     "{slot}を別の料理にかえる": "Remplacer : {slot}",
     "かえる": "Changer",
     "1週間プランでは、今日の主菜は": "Plat du jour dans votre plan de la semaine :",

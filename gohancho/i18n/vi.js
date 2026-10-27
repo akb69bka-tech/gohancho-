@@ -498,6 +498,8 @@ GOHAN_I18N('vi', {
     "台所の日々": "Những ngày vào bếp",
     "台所の腕前": "Tay nghề bếp núc",
     "合う料理がありません": "Chưa có món nào hợp",
+    "汁ものを足す": "Thêm món canh",
+    "汁ものは入れていません": "Chưa có canh",
     "同じ料理が続かない": "Không lặp món",
     "同じ料理を出さない日数": "Không lặp lại một món trong",
     "味: {v}": "Hương vị: {v}",

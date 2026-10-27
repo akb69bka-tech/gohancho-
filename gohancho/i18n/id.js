@@ -512,6 +512,8 @@ GOHAN_I18N('id', {
     "買い物の前日の夕方にお知らせします": "Kami akan mengingatkan malam sebelum hari belanja",
     "汁ものの麺なので、なし": "Tidak perlu (mi berkuah)",
     "合う料理がありません": "Tidak ada yang cocok",
+    "汁ものを足す": "Tambah sup",
+    "汁ものは入れていません": "Tanpa sup",
     "{slot}を別の料理にかえる": "Ganti {slot} dengan yang lain",
     "かえる": "Ganti",
     "1週間プランでは、今日の主菜は": "Lauk utama hari ini dari rencana mingguan Anda:",

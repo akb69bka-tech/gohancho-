@@ -39,6 +39,7 @@ for (const cc of CCS){
             const mainKeys = new Set(m.items[0].r.items.map(g => g.key));
             const it = m.items[side].r.items.find(g => !g.opt && g.label && g.label.length >= 2 && !mainKeys.has(g.key)); if (!it) return {skip: true};
             const word = it.label;
+            const beforeR = session.menu.items.map(x => x.r);   // 登録前の料理
             const before = ids(), o0 = outside(), settings0 = JSON.stringify(S.settings.avoid);
             // 画面の入力欄から登録する
             S.settings.scarce = []; setTab('settings'); render();
@@ -47,6 +48,8 @@ for (const cc of CCS){
             out.registered = scarceList().length > 0; out.word = word; out.list = scarceList().join();
             const after = ids();
             out.changed = before.map((x, j) => x !== after[j] ? j : -1).filter(j => j >= 0);
+            // 登録した食材を必須に使っていた別の枠（同じ食材を別の料理も使う）は、外れて当然。使っていない枠が動いたら連動
+            out.unrelated = out.changed.filter(j => j !== side && !(beforeR[j] && isScarce(beforeR[j])));
             out.badSide = side;
             out.leftover = session.menu.items.filter(x => x.r && isScarce(x.r)).length;
             out.outsideSame = outside() === o0; out.avoidSame = JSON.stringify(S.settings.avoid) === settings0;
@@ -75,7 +78,7 @@ for (const cc of CCS){
         });
         if (r.skip) { console.log('skip scarce', cc); } else {
             ok(r.hasField && r.registered, cc + ' 入力欄から登録できない ' + JSON.stringify(r));
-            ok(r.changed.every(j => j === r.badSide), cc + ' 登録で関係ない枠が変わった ' + r.changed + ' 副菜=' + r.badSide);
+            ok(r.unrelated.length === 0, cc + ' 登録で関係ない枠が変わった ' + r.changed + ' 副菜=' + r.badSide);
             ok(r.leftover === 0, cc + ' 登録した食材を使う料理が献立に残った');
             ok(r.outsideSame && r.avoidSame, cc + ' 登録で記録・苦手の設定が動いた');
             ok(r.reqHit > 0 && r.optOk, cc + ' 必須の材料だけを見るはず ' + r.reqHit);
