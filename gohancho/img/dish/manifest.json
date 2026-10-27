@@ -14024,6 +14024,246 @@
       "date": "2026-10-27",
       "thumb": "t/kinokogayu.webp",
       "v": "69141c0d"
+    },
+    "onigiri": {
+      "file": "onigiri.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/onigiri.webp",
+      "v": "3d193801"
+    },
+    "tendon": {
+      "file": "tendon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/tendon.webp",
+      "v": "5b09d425"
+    },
+    "ochazuke": {
+      "file": "ochazuke.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/ochazuke.webp",
+      "v": "a3686095"
+    },
+    "tkg": {
+      "file": "tkg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/tkg.webp",
+      "v": "79a5c2f2"
+    },
+    "sekihan": {
+      "file": "sekihan.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/sekihan.webp",
+      "v": "d6ba9404"
+    },
+    "gomokutakikomi": {
+      "file": "gomokutakikomi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/gomokutakikomi.webp",
+      "v": "fc92849b"
+    },
+    "inarizushi": {
+      "file": "inarizushi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/inarizushi.webp",
+      "v": "e44af9be"
+    },
+    "zosui": {
+      "file": "zosui.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/zosui.webp",
+      "v": "03edd7ff"
+    },
+    "somen": {
+      "file": "somen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/somen.webp",
+      "v": "5d56758d"
+    },
+    "zarusoba": {
+      "file": "zarusoba.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/zarusoba.webp",
+      "v": "be1be898"
+    },
+    "kitsuneudon": {
+      "file": "kitsuneudon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/kitsuneudon.webp",
+      "v": "1928a6a3"
+    },
+    "curryudon": {
+      "file": "curryudon.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/curryudon.webp",
+      "v": "b90e6e0e"
+    },
+    "ramen": {
+      "file": "ramen.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/ramen.webp",
+      "v": "23542ca5"
+    },
+    "shakeshio": {
+      "file": "shakeshio.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/shakeshio.webp",
+      "v": "7a53cfb9"
+    },
+    "ajihimono": {
+      "file": "ajihimono.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/ajihimono.webp",
+      "v": "907e6d86"
+    },
+    "hamuegg": {
+      "file": "hamuegg.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/hamuegg.webp",
+      "v": "e6230aa4"
+    },
+    "yakiniku": {
+      "file": "yakiniku.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/yakiniku.webp",
+      "v": "78a80ad5"
+    },
+    "oden": {
+      "file": "oden.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/oden.webp",
+      "v": "ef3f98b8"
+    },
+    "yudofu": {
+      "file": "yudofu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/yudofu.webp",
+      "v": "bde7aabc"
+    },
+    "shabushabu": {
+      "file": "shabushabu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/shabushabu.webp",
+      "v": "f6f68775"
+    },
+    "yosenabe": {
+      "file": "yosenabe.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/yosenabe.webp",
+      "v": "7170add6"
+    },
+    "chawanmushi": {
+      "file": "chawanmushi.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/chawanmushi.webp",
+      "v": "773ead1a"
+    },
+    "agedashidofu": {
+      "file": "agedashidofu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/agedashidofu.webp",
+      "v": "797392cc"
+    },
+    "natto": {
+      "file": "natto.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/natto.webp",
+      "v": "7c495dcd"
+    },
+    "yakinasu": {
+      "file": "yakinasu.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/yakinasu.webp",
+      "v": "19016060"
+    },
+    "kyuriasazuke": {
+      "file": "kyuriasazuke.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/kyuriasazuke.webp",
+      "v": "974bbbc3"
+    },
+    "greensalad": {
+      "file": "greensalad.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/greensalad.webp",
+      "v": "32e1a3a5"
+    },
+    "jagaimomiso": {
+      "file": "jagaimomiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/jagaimomiso.webp",
+      "v": "7b439658"
+    },
+    "nasuagemiso": {
+      "file": "nasuagemiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/nasuagemiso.webp",
+      "v": "ed14aa09"
+    },
+    "cabbagemiso": {
+      "file": "cabbagemiso.svg",
+      "via": "svg",
+      "model": "hand-drawn",
+      "date": "2026-10-27",
+      "thumb": "t/cabbagemiso.webp",
+      "v": "92d06aa6"
     }
   }
 }
