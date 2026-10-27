@@ -9,9 +9,9 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8795/';
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const { chromium, LAUNCH, BASE: BASE_ } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
+const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0;
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
@@ -29,6 +29,18 @@ async function open(opts = {}){
     if (opts.init) await p.addInitScript(opts.init);
     await p.addInitScript(x => { try{ if (x != null && !sessionStorage.getItem('seeded')){ sessionStorage.setItem('seeded', '1'); localStorage.setItem('gohancho.v1', x); } }catch(e){} }, seed);
     await p.goto(URL_); await p.waitForFunction(() => window.GH && window.GH.booted, null, { timeout: 15000 }).catch(() => {}); await sleep(250);
+    // 負荷が高いと、ページが自分で読み直した（起動の立て直しなど）直後の evaluate が「実行環境が破棄された」で落ちることがある。読み直しが終わるのを待って1回だけやり直す（起きたら印を出す）
+    const ev = p.evaluate.bind(p);
+    p.evaluate = async (...a) => {
+        for (let k = 0; ; k++){
+            try{ return await ev(...a); }
+            catch(e){
+                if (k >= 2 || !/Execution context was destroyed|navigation/i.test(String(e && e.message))) throw e;
+                console.log('(note) evaluate 中にページが読み直された。待ってやり直す:', String(a[0]).slice(0, 60).replace(/\s+/g, ' '));
+                await p.waitForLoadState('load').catch(() => {}); await p.waitForFunction(() => window.GH && window.GH.booted, null, { timeout: 15000 }).catch(() => {}); await sleep(250);
+            }
+        }
+    };
     return p;
 }
 const raw = (p, k = 'gohancho.v1') => p.evaluate(k => { try{ return localStorage.getItem(k); }catch(e){ return 'THROW'; } }, k);

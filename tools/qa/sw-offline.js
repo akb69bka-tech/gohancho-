@@ -1,7 +1,7 @@
 // Service Worker（sw.js）の確認: オフライン起動・オフラインで国切替・更新直後の初回・壊れた保存からの復帰・遅いネットでの起動
 // 自分で小さなサーバーを立てる（gohancho/ のコピーを一時フォルダに作り、index.html・sw.js だけ書きかえられるようにする。packs/ i18n/ は共有）。
 //   node tools/qa/sw-offline.js        ... 全部 ok なら合格（FAIL が出たら終了コード1）
-const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
+const { chromium, LAUNCH, BASE: BASE_ } = require('../lib/pw.cjs');
 const http = require('http'), fs = require('fs'), path = require('path'), os = require('os');
 const SRC = path.resolve(__dirname, '../../gohancho');
 const MIME = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8', '.json':'application/json', '.webmanifest':'application/manifest+json', '.png':'image/png', '.svg':'image/svg+xml'};
@@ -56,7 +56,7 @@ const swVersion = p => p.evaluate(() => caches.keys().then(k => k.filter(x => x.
 (async () => {
   await new Promise(r => server.listen(0, '127.0.0.1', r));
   BASE = `http://localhost:${server.address().port}/`;
-  const b = await chromium.launch({executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  const b = await chromium.launch(LAUNCH);
   const reset = () => { ctl.override = {}; ctl.down = false; write('index.html')(ORIG.index); write('sw.js')(ORIG.sw); ctl.delay = 0; };
 
   // 0. 版の印が合っている

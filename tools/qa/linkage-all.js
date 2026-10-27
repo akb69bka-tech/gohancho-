@@ -9,8 +9,8 @@
 //   JOBS=3    並列数（既定 3）    LOG=path  不一致を全部このファイルに書く
 // 合格は「BAD 0」。BAD の行に、国・品数・操作・変わった枠が出る。
 const fs = require('fs');
-const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
-const BASE = process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, seedScript, seedFor } = require('../lib/pw.cjs');
+const BASE = BASE_;
 const REPS = Number(process.env.REPS || 3), JOBS = Number(process.env.JOBS || 3);
 const ALL_CC = 'JP,US,GB,FR,DE,IT,ES,PL,TR,EG,IN,CN,TW,KR,TH,VN,ID,PH,MX,BR,PE'.split(',');
 const CCS = (process.env.CCS || ALL_CC.join()).split(',');
@@ -81,12 +81,13 @@ function diff(a, c, pressed, o = {}) {
 async function open(b, { cc, n = 'auto', settings = {}, state = {}, wait = 1500, pro = true }) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 900 } });
   await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+  await ctx.addInitScript(seedScript(seedFor('linkage', cc, n)));   // 失敗は SEED=... で再現
   const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ' ' + e.message));
   await p.addInitScript(([cc, n, settings, state]) => {
     if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({ onboarded: true, firstUse: '2026-10-26', settings: Object.assign({ country: cc, dishCount: n }, settings) }, state))); }
   }, [cc, n, settings, state]);
   await p.addInitScript(PAGE_LIB);
-  await p.goto(BASE); await p.waitForTimeout(wait);
+  await p.goto(BASE); await ready(p);
   await p.evaluate(pro => { if (pro) window.hasPro = () => true; session.menu = null; render(); }, pro);
   await p.waitForTimeout(100);
   return { ctx, p };
@@ -346,7 +347,7 @@ async function secLang(b, cc) {
 const SECTIONS = [['matrix', secMatrix], ['soup', secSoup], ['mix', secMix], ['mood', secMood], ['one', secOne], ['saved', secSaved], ['savedmix', secSavedMix], ['scarce', secScarce], ['family', secFamily], ['avoid', secAvoid], ['decided', secDecided], ['week', secWeek], ['lang', secLang]];
 
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const b = await chromium.launch(LAUNCH);
   const jobs = [];
   for (const [name, fn] of SECTIONS) if (want(name)) { area(name); for (const cc of CCS) jobs.push([name, fn, cc]); }
   let done = 0; const t0 = Date.now();

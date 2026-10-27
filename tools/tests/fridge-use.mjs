@@ -4,16 +4,16 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(LAUNCH);
 let fails = 0, shown = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
 for (const cc of CCS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(cc => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, cc);
-    await p.goto(URL_); await p.waitForTimeout(900);
+    await p.goto(URL_); await ready(p);
     const o = await p.evaluate(() => {
         setTab('today'); ensureMenu();
         const m = session.menu, inMenu = new Set(); m.items.forEach(x => x.r && x.r.items.forEach(i => { if (!i.opt) inMenu.add(i.key); }));

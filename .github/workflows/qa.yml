@@ -1,0 +1,40 @@
+# push / PR でテストを実行する（外部サービス・秘密情報は使わない。無料枠で収まるよう 15 分で打ち切る）
+#   JS 構文チェック・国ごとのレシピ(packs)の検査・17言語の翻訳が 0 missing・ブラウザでの短縮テスト（tools/qa/run-all.sh --quick。失敗した項目のログは表のあとに出る）
+name: QA
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Playwright (chromium) を入れる
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+      - name: 静的チェック（JS 構文・packs・17言語）
+        run: |
+          node tools/qa/check-syntax.mjs
+          node tools/packs/check.mjs
+          for l in ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant; do
+            echo "== $l"; node tools/i18n/extract.mjs --check "$l"
+          done
+      - name: ブラウザテスト（短縮モード）
+        run: |
+          export NODE_PATH="$(npm root -g)"
+          tools/qa/run-all.sh --quick --jobs 3 --skip syntax,packs,i18n,steps,terms
