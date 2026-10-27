@@ -547,6 +547,8 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-next[hidden]{display:none}
 .wake-toggle{min-height:44px;align-self:flex-start}
+.term-chip{background:none;border:0;border-bottom:2px dotted currentColor;border-radius:0;padding:.25em 0;margin:-.25em 0;font:inherit;color:inherit;cursor:pointer;line-height:inherit;-webkit-tap-highlight-color:transparent}
+.term-w{margin:0}.term-def{margin:0;line-height:1.7}
 .timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .6rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .timers{position:sticky;top:8px;z-index:5;display:flex;flex-direction:column;gap:6px}
 .timers:empty{display:none}
@@ -3461,6 +3463,7 @@ function renderSheet(){
     if (sheet.kind === 'one') body = oneSheetHtml();
     if (sheet.kind === 'share') body = shareSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
+    if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
@@ -5889,6 +5892,8 @@ function recipeCoreHtml(r, done){
     const names = [...r.items.map(i => i.name), '卵', '卵黄', '卵白', 'にんにく'];
     let scaled = 0, kept = 0, amt = false;
     const texts = r.steps.map(st => { const src = withF(seasSwapText(typeof st === 'string' ? st : st.t, r), r), x = scaleSteps(src, fac, names); scaled += x.n; kept += x.k; if (!amt && stepHasAmount(src)) amt = true; return x.s; });
+    const sl = stepLangOf(r), slOf = st => typeof st === 'string' ? sl : null;   // 用語の解説は、元の文のままの手順だけ（ひとひねりで足した手順には出さない）
+    const termHint = sl && r.steps.some((st, k) => slOf(st) && termFind(texts[k], sl).some(h => termDef(h.id))) ? `<p class="small muted" style="margin:0">${esc(t('点線の言葉をタップすると、意味がわかります'))}</p>` : '';
     const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
     let prevK = -1; if (done) r.steps.forEach((st, k) => { if (done.includes(k) && (nowK < 0 || k < nowK)) prevK = k; });   // 「前の手順」: いまの手順の手前で、終わっている最後の手順
     return `${swapNoteHtml(r)}${pointsHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
@@ -5896,10 +5901,10 @@ function recipeCoreHtml(r, done){
                 ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
                 <div class="label">${esc(t('作り方'))}</div>
                 ${fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:sv}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
-                ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>
-                <div class="cook-run"><ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k)}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">🔊</button>` : ''}</span></li>`).join('')}</ol>
+                ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>${termHint}
+                <div class="cook-run"><ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k, slOf(st))}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">🔊</button>` : ''}</span></li>`).join('')}</ol>
                 <div class="cook-ctl"><button type="button" class="btn cook-prev" data-act="cook-prev"${prevK < 0 ? ' disabled' : ''}>${esc(t('前の手順'))}</button><button type="button" class="btn primary cook-next" data-act="cook-next"${nowK < 0 ? ' hidden' : ''}>${esc(left === 1 ? t('完了') : t('次の手順'))}</button></div></div>`
-                : `<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${esc(texts[k])}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>`}
+                : `${termHint}<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${termsHtml(texts[k], sl)}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>`}
                 ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
                 <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
                     <a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>
@@ -6107,13 +6112,125 @@ function timerFind(text){
     for (const [re, sec, nb] of WORD_TIMERS) for (const x of text.matchAll(re)){ const prev = text[x.index - 1]; if (nb && prev && /[\p{L}\p{M}\d]/u.test(prev)) continue; add(x.index, x[0], sec); }
     return hits.sort((a, b) => a.i - b.i);
 }
-function timerStepHtml(text, name, rid, k){
-    text = String(text); let out = '', last = 0;
-    timerFind(text).forEach(h => {
-        out += esc(text.slice(last, h.i)) + `<button type="button" class="timer-chip" data-act="timer" data-s="${h.sec}" data-name="${esc(name)}" data-label="${esc(h.m)}"${rid ? ` data-rid="${esc(rid)}" data-k="${k}"` : ''} aria-label="${esc(t('タイマーを始める'))}: ${esc(h.m)}">${esc(h.m)}</button>`;
+/* ---- 料理用語のワンタップ解説（作り方の文に出る決まった言葉だけ。意味はアプリに入っている固定の説明で、外へは送らない） ----
+   言語ごとに [用語ID, 正規表現のもと]。同じ位置では先に書いたほうが優先。ID が '-' のものは、ほかの用語の一部に見えてしまう言い方（例: medium-low heat の low heat）を飲み込むための印で、何も出さない。
+   正規表現は、その言語の手順に実際に出てくる言い方だけ（tools/steps と packs の文で確認）。'ja_' で始まる用語は日本語の画面でだけ使う。 */
+const TW = '[\\p{L}\\p{M}]*';
+const TERM_RE = {
+    ja: [['-', '弱めの中火|強めの中火|中弱火|中強火'], ['heat_low', '弱火'], ['heat_med', '中火'], ['heat_high', '強火'],
+        ['simmer', 'ふつふつ'], ['skim', 'アクを(?:取|と)[りるっ]?|アク取り|灰汁を取[りる]?'], ['blanch', '下ゆで|下茹で|湯通し'], ['mince', 'みじん切り'],
+        ['slurry', '水溶き片栗粉'], ['droplid', '落としぶた|落とし蓋'], ['aldente', 'アルデンテ'],
+        ['ja_ranngiri', '乱切り'], ['ja_hangetsu', '半月切り'], ['ja_icho', 'いちょう切り'], ['ja_koguchi', '小口切り'], ['ja_tanzaku', '短冊切り'], ['ja_sengiri', 'せん切り|千切り'],
+        ['ja_zaku', 'ざく切り'], ['ja_sasagaki', 'ささがき'], ['ja_mentori', '面取り'], ['ja_shiomomi', '塩もみ'], ['ja_sunanuki', '砂抜き'], ['ja_hitahita', 'ひたひた'],
+        ['ja_shinnari', 'しんなり'], ['ja_aranetsu', '粗熱'], ['ja_mushiyaki', '蒸し焼き'], ['ja_shitaaji', '下味']],
+    en: [['-', '(?:low|medium|high)-(?:low|medium|high) heat'], ['heat_low', '\\blow heat'], ['heat_med', '\\bmedium heat'], ['heat_high', '\\bhigh heat'],
+        ['simmer', '\\bsimmer(?:s|ed|ing)?\\b'], ['skim', '\\bskim(?:med|ming)?\\b|\\bscum\\b'], ['blanch', '\\b(?:blanch|parboil)(?:es|ed|ing)?\\b'], ['mince', '\\bmince[d]?\\b'],
+        ['slurry', '\\bslurry\\b'], ['droplid', '\\bdrop lid\\b'], ['aldente', '\\bal dente\\b']],
+    de: [['-', 'mittel(?:stark|hoh)e[rn]? Hitze'], ['heat_low', '(?:schwach|niedrig|klein)e[rn]? (?:Hitze|Flamme)'], ['heat_med', 'mittler[ea][rn]? Hitze'], ['heat_high', '(?:stark|hoh|groß)e[rn]? Hitze'],
+        ['simmer', 'köchel' + TW], ['skim', 'abschäum' + TW], ['aldente', 'bissfest' + TW]],
+    es: [['-', 'fuego medio[- ](?:alto|bajo)|fuego (?:alto|bajo)[- ]medio'], ['heat_low', 'fuego (?:muy )?(?:bajo|suave|lento)(?![-\\p{L}])'], ['heat_med', 'fuego medio(?![-\\p{L}])'], ['heat_high', 'fuego (?:alto|fuerte|vivo)(?![-\\p{L}])'],
+        ['skim', 'desespum' + TW + '|\\bespuma\\b'], ['blanch', 'blanque' + TW + '|escald' + TW], ['aldente', '\\bal dente\\b']],
+    fr: [['-', 'feu moyen[- ](?:vif|doux)|feu (?:vif|doux)[- ]moyen'], ['heat_low', 'feu (?:très |bien )?doux(?![-\\p{L}])'], ['heat_med', 'feu moyen(?![-\\p{L}])'], ['heat_high', 'feu (?:vif|fort)(?![-\\p{L}])'],
+        ['simmer', 'frémi' + TW], ['skim', 'écum' + TW], ['blanch', 'blanchi' + TW]],
+    it: [['-', 'fuoco medio[- ](?:alto|basso)'], ['heat_low', 'fuoco (?:basso|dolce|minimo)'], ['heat_med', 'fuoco medio(?![-\\p{L}])'], ['heat_high', 'fuoco (?:alto|vivo|vivace|forte)'],
+        ['simmer', 'sobbol' + TW], ['skim', '\\bschiuma\\b'], ['blanch', 'sbollent' + TW], ['aldente', '\\bal dente\\b']],
+    pl: [['-', 'średnio-\\p{L}+ ogniu'], ['heat_low', '(?:małym|słabym|niskim) ogniu'], ['heat_med', 'średnim ogniu'], ['heat_high', '(?:dużym|silnym|wysokim) ogniu'],
+        ['skim', 'szumowin' + TW + '|odszum' + TW], ['blanch', 'blanszuj' + TW + '|sparz' + TW]],
+    'pt-BR': [['-', 'fogo médio[- ](?:alto|baixo)'], ['heat_low', 'fogo (?:baixo|brando)'], ['heat_med', 'fogo médio(?![-\\p{L}])'], ['heat_high', 'fogo (?:alto|forte)'],
+        ['skim', '\\bespuma\\b'], ['blanch', 'escald' + TW], ['aldente', '\\bal dente\\b']],
+    id: [['heat_low', 'api (?:kecil|pelan)'], ['heat_med', 'api sedang'], ['heat_high', 'api (?:besar|tinggi)'],
+        ['skim', 'busanya|\\bbusa\\b'], ['mince', 'cincang' + TW]],
+    ko: [['-', '중약불|중강불'], ['heat_low', '약불|약한 ?불'], ['heat_med', '중불|중간 ?불'], ['heat_high', '센 ?불|강불|강한 ?불'],
+        ['skim', '거품을 걷' + TW], ['blanch', '데치' + TW + '|데쳐' + TW], ['mince', '다진']],
+    'zh-Hans': [['-', '中小火|中大火|大中火|小中火'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
+        ['skim', '撇去浮沫|撇沫|浮沫'], ['blanch', '焯水|焯'], ['mince', '切末|剁碎'], ['slurry', '水淀粉']],
+    'zh-Hant': [['-', '中小火|中大火|大中火|小中火'], ['heat_low', '小火|微火'], ['heat_med', '中火'], ['heat_high', '大火|旺火'],
+        ['skim', '浮沫'], ['blanch', '汆燙'], ['mince', '切末|剁碎'], ['slurry', '太白粉水']],
+    ar: [['heat_low', 'نار (?:هادئة|هادية|واطية|خفيفة)'], ['heat_med', 'نار متوسطة'], ['heat_high', 'نار (?:عالية|قوية)'], ['skim', 'الرغوة']],
+    hi: [['heat_low', 'धीमी आ(?:ँ|ं)च'], ['heat_med', 'मध्यम आ(?:ँ|ं)च'], ['heat_high', 'तेज़? आ(?:ँ|ं)च'], ['skim', 'झाग निकाल' + TW], ['blanch', 'ब्लांच' + TW]],
+    fil: [['heat_low', 'mahinang apoy'], ['heat_med', 'katamtamang apoy'], ['heat_high', '(?:malakas|mataas) na apoy'], ['skim', '\\bbula\\b']],
+    th: [['heat_low', 'ไฟอ่อน'], ['heat_med', 'ไฟกลาง'], ['heat_high', 'ไฟแรง'], ['skim', 'ช้อนฟอง'], ['blanch', 'ลวก'], ['mince', 'สับ(?!ปะรด)']],
+    tr: [['-', 'orta[- ](?:yüksek|kısık|düşük) ateş' + TW], ['heat_low', '(?:kısık|hafif|düşük) ateş' + TW], ['heat_med', 'orta ateş' + TW], ['heat_high', 'yüksek ateş' + TW]],
+    vi: [['-', 'lửa vừa (?:nhỏ|lớn)|lửa (?:nhỏ|lớn) vừa'], ['heat_low', 'lửa nhỏ'], ['heat_med', 'lửa vừa'], ['heat_high', 'lửa lớn'],
+        ['skim', 'vớt bọt'], ['blanch', 'chần|trụng'], ['mince', 'băm']]
+};
+const TERM_C = {};
+function termCompiled(lang){
+    if (!(lang in TERM_C)){
+        const L = TERM_RE[lang];
+        TERM_C[lang] = L ? {re: new RegExp(L.map(x => '(' + x[1] + ')').join('|'), 'giu'), ids: L.map(x => x[0])} : null;
+    }
+    return TERM_C[lang];
+}
+// 手順の文の中の用語を [{i, m, id}] で返す（位置順・重ならない）。lang はその手順の文の言語
+function termFind(text, lang){
+    const c = termCompiled(lang); if (!c) return [];
+    const hits = [];
+    for (const x of String(text).matchAll(c.re)){
+        let g = 1; while (g < x.length && x[g] == null) g++;
+        const id = c.ids[g - 1];
+        if (id && id !== '-' && !(id.startsWith('ja_') && LANG !== 'ja')) hits.push({i: x.index, m: x[0], id});
+    }
+    return hits;
+}
+
+const TERM_DEF = {
+    heat_low: () => t('弱火は、火を小さくして、焦がさずにじっくり静かに火を通す火加減です。ガスコンロでは、炎の先が鍋底につかないくらいが目安です。'),
+    heat_med: () => t('中火は、強すぎず弱すぎない、ふつうの火加減です。ガスコンロでは、炎の先が鍋底にちょうど当たるくらいが目安です。'),
+    heat_high: () => t('強火は、いちばん強い火加減です。ガスコンロでは、炎が鍋底全体に広がるくらいが目安です。'),
+    simmer: () => t('ふつふつ煮る（シマー）は、煮汁が沸騰する手前の、小さな泡がゆっくり出ているくらいの弱い火加減で、おだやかに煮ることです。'),
+    skim: () => t('アクを取るとは、煮はじめに汁の表面に浮いてくる泡や濁り（アク）を、おたまなどですくい取ることです。味や見た目がすっきりします。'),
+    blanch: () => t('下ゆで（ブランチ）は、本格的に調理する前に、材料をさっとゆでておくことです。火の通りを早くしたり、アクやくせ、余分な脂を取ったりするために行います。'),
+    mince: () => t('みじん切りは、材料をごく細かい粒のように刻むことです。目安は数ミリ角です。'),
+    slurry: () => t('水溶き片栗粉は、片栗粉（でんぷん）を水で溶いたものです。煮立った汁に加えて混ぜると、とろみがつきます。入れる前に、底にたまった粉をよく混ぜ直します。'),
+    droplid: () => t('落としぶたは、鍋より小さめのふたを、煮ている材料の上に直接のせるものです。少ない煮汁でも味がまわり、煮くずれしにくくなります。クッキングシートやアルミホイルで代用できます。'),
+    aldente: () => t('アルデンテは、パスタなどを、中心にほんの少し芯が残る歯ごたえにゆでた状態です。'),
+};
+// 日本語の画面でだけ出す用語（日本の切り方・下ごしらえの言葉）。日本語の手順にしか出ないので、訳は持たない
+const TERM_JA = {
+    ja_ranngiri: '乱切りは、材料を回しながら斜めに包丁を入れて、形のふぞろいな塊に切る切り方です。切り口が大きく、火が通りやすく味もしみやすくなります。',
+    ja_hangetsu: '半月切りは、丸い棒状の野菜を縦半分に切り、切り口を下にして端から一定の幅で切る切り方です。半円の形になります。',
+    ja_icho: 'いちょう切りは、丸い棒状の野菜を縦に十字に切って4等分にし、端から一定の幅で切る切り方です。いちょうの葉に似た形（円の4分の1）になります。',
+    ja_koguchi: '小口切りは、ねぎやきゅうりのような細長い材料を、端から一定の幅で切る切り方です。',
+    ja_tanzaku: '短冊切りは、細長い長方形の薄切りにする切り方です。短冊のような形になります。',
+    ja_sengiri: 'せん切りは、材料を細く長く切る切り方です。薄切りにして重ねてから、端から細く切ります。',
+    ja_zaku: 'ざく切りは、大きめにざっくりと切る切り方です。キャベツや葉物野菜などに使います。',
+    ja_sasagaki: 'ささがきは、ごぼうなどを、鉛筆を削るように薄く削ぎ切りにする切り方です。',
+    ja_mentori: '面取りは、大根やかぼちゃなどの切り口の角を、薄く削り取ることです。煮ている間に角が欠けて煮くずれるのを防ぎます。',
+    ja_shiomomi: '塩もみは、野菜に塩をふって軽くもみ、水分を出してしんなりさせることです。出た水分は、しぼって捨てます。',
+    ja_sunanuki: '砂抜きは、あさりなどの貝を塩水につけて、中の砂を吐かせることです。',
+    ja_hitahita: 'ひたひたは、材料の頭が水面から少し出るくらいの、水や煮汁の量です。「かぶるくらい」より少なめの量です。',
+    ja_shinnari: 'しんなりは、野菜が水分を出して、やわらかくくたっとなった状態です。',
+    ja_aranetsu: '粗熱は、加熱した直後の熱さがおさまって、手で触れられるくらいに少し冷めた状態です。',
+    ja_mushiyaki: '蒸し焼きは、フライパンや鍋にふたをして、材料から出る水分や少量の水の蒸気で火を通す方法です。',
+    ja_shitaaji: '下味は、調理の前に、塩や調味料などで材料にあらかじめつけておく味です。',
+};
+function termDef(id){ return TERM_DEF[id] ? TERM_DEF[id]() : (id.startsWith('ja_') && LANG === 'ja' ? TERM_JA[id] || '' : ''); }
+// 手順の文の用語に点線のボタンをつける（lang はその文の言語。分からない・自作のレシピは null で何もしない）
+function termsHtml(text, lang){
+    text = String(text); if (!lang) return esc(text);
+    let out = '', last = 0;
+    termFind(text, lang).forEach(h => {
+        if (!termDef(h.id)) return;
+        out += esc(text.slice(last, h.i)) + `<button type="button" class="term-chip" data-act="term" data-id="${h.id}" data-w="${esc(h.m)}" aria-haspopup="dialog">${esc(h.m)}</button>`;
         last = h.i + h.m.length;
     });
     return out + esc(text.slice(last));
+}
+function termSheetHtml(){
+    const d = termDef(sheet.id); if (!d) return '';
+    return `<h3 class="term-w">${esc(sheet.w)}</h3><p class="term-def">${esc(d)}</p>${/^heat_/.test(sheet.id) ? `<p class="small muted">${esc(t('IHコンロは機種によって目盛りが違います。説明書の目安に合わせてください。'))}</p>` : ''}
+        <button type="button" class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+}
+// 手順の文の言語: 日本のレシピは日本語（英語の訳を重ねたときは英語）、国のレシピは英語（その国の言葉の訳を重ねたときはその言葉）。自作・ひとひねりの料理は分からないので出さない
+function stepLangOf(r){ return !r || r.isTwist || isCustomId(r.id) ? null : (r.slang || (r.pack ? 'en' : 'ja')); }
+function timerStepHtml(text, name, rid, k, lang){
+    text = String(text); let out = '', last = 0;
+    timerFind(text).forEach(h => {
+        out += termsHtml(text.slice(last, h.i), lang) + `<button type="button" class="timer-chip" data-act="timer" data-s="${h.sec}" data-name="${esc(name)}" data-label="${esc(h.m)}"${rid ? ` data-rid="${esc(rid)}" data-k="${k}"` : ''} aria-label="${esc(t('タイマーを始める'))}: ${esc(h.m)}">${esc(h.m)}</button>`;
+        last = h.i + h.m.length;
+    });
+    return out + termsHtml(text.slice(last), lang);
 }
 // タイマーは端末に残す（iPhone はアプリを裏で閉じることがあるので、開き直しても続きから数える。終わって10分たったものは消す）
 let TIMERS = (() => { try{ return (JSON.parse(localStorage.getItem('gohancho.timers') || '[]') || []).filter(x => x && x.end > Date.now() - 600000); }catch(e){ return []; } })(), timerTick = 0;
@@ -6519,6 +6636,7 @@ document.addEventListener('click', e => {
         case 'monitor-send': monitorSend(); break;
         case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;
+        case 'term': sheet = {kind:'term', id: el.dataset.id, w: el.dataset.w}; renderSheet(); break;
         case 'video': if (vidDay().vidSeen.includes(id) || cookingNow(id)){ vidAwayStart(id); break; }   // 作り方タブで進めている料理は「動画の前に」の画面を出さず、そのまま開く
             e.preventDefault(); vidDay().vidSeen.push(id); save(); sheet = {kind:'video', id}; renderSheet(); break;
         case 'vid-go': vidAwayStart(id); break;
@@ -7003,7 +7121,7 @@ const PROTEIN_WORDS = {pork:/pork|bacon|ham|sausage|chorizo/, chicken:/chicken|t
    packs/i18n/<cc>.<lang>.js（GOHAN_PACK_TR('<CC>', '<lang>', {staple, names, recipes:{id:{name, ings:[[名前, 分量]], seas, steps, tip}}})）。
    国のパックは英語で書いてあるので、英語以外の言語ではその言語の訳を重ねる。日本のレシピは日本語以外で英語などの訳を重ねる。訳がなければ元のまま */
 const PACK_TR = {}, trLoads = {};
-window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d) PACK_TR[cc + '.' + lang] = d; };
+window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d){ d.tlang = lang; PACK_TR[cc + '.' + lang] = d; } };
 function loadPackTr(cc, lang){
     const k = cc + '.' + lang;
     if (k in PACK_TR) return Promise.resolve(PACK_TR[k]);
@@ -7031,7 +7149,7 @@ function trOf(cc){
 function jpRecipe(r, tr){
     const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
     const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
-    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, tip: rt.tip || r.tip || null, trLang: LANG});
+    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, slang: rt.steps ? tr.tlang : 'ja', tip: rt.tip || r.tip || null, trLang: LANG});
 }
 function packRecipe(pk, x, tr){
     const rt = tr && tr.recipes && tr.recipes[x.id];
@@ -7050,7 +7168,7 @@ function packRecipe(pk, x, tr){
     const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || !/[^\u0000-\u036f\u1e00-\u1eff\u2000-\u206f\s]/.test(x.local);
     const name = rt && rt.name ? rt.name : (readable ? loc : x.name);
     return {id: x.id, name, nameEn: name === loc ? x.name : loc, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
-        min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', stepsBase: x.steps || [], seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(),
+        min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', stepsBase: x.steps || [], seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(), slang: rt && rt.steps ? tr.tlang : 'en',
         tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type)};
 }
