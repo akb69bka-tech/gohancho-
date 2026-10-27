@@ -225,6 +225,49 @@ async function secSaved(b, cc) {
     await ctx.close();
   }
 }
+// 6b. 国ミックスで保存した献立の復元（保存 → ミックスをやめて別の献立 → 復元）。復元した献立は保存と同じで、そのあとの「かえる」・再調整・言語切替でも押していない枠は変わらない
+async function secSavedMix(b, cc) {
+  const others = ALL_CC.filter(x => x !== cc); const pick = i => others[(ALL_CC.indexOf(cc) * 3 + i) % others.length];
+  for (const mix of [{ '主菜': pick(0), '汁物': pick(1) }, { '副菜': pick(2) }, { '主菜': pick(3), '副菜': pick(4), '汁物': pick(5) }]) {
+    const { ctx, p } = await open(b, { cc, n: 4 });
+    for (const [slot, mc] of Object.entries(mix)) {
+      await p.evaluate(([slot, mc]) => { const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', { bubbles: true })); }, [slot, mc]);
+      await p.waitForTimeout(1800);
+    }
+    const s0 = await snap(p);
+    const sm = await p.evaluate(() => { saveMenu(); return S.savedMenus[0] && S.savedMenus[0].id; });
+    await p.evaluate(() => { S.settings.mix = {}; save(); session.menu = null; render(); }); await p.waitForTimeout(200);
+    await p.evaluate(id => applySavedMenu(id), sm); await p.waitForTimeout(2500);
+    const s1 = await snap(p); area('savedmix').taps++;
+    if (s1.ids.join() !== s0.ids.join()) bad('savedmix', cc + ' ' + JSON.stringify(mix) + ' 復元した献立が保存と違う ' + s0.ids.join() + ' -> ' + s1.ids.join());
+    await stays(p, 'savedmix', cc + ' 復元後 再調整 ' + JSON.stringify(mix), () => { reconcileMenu(); refreshWeek(); render(); });
+    await pressAll(p, 'savedmix', cc + ' 復元後 ' + JSON.stringify(mix), { reps: 2 });
+    // 復元した献立のあとの言語切替でも料理は変わらない
+    await stays(p, 'savedmix', cc + ' 復元後 言語 en', async () => { S.settings.uiLang = 'en'; save(); await setLang('en'); await refreshRecipes(); relocalize(); render(); reconcileMenu(); render(); }, { wait: 1500, idsOnly: true });
+    await ctx.close();
+  }
+}
+// 6c. 手に入りにくい食材を登録・解除しても、使っていない枠は変わらない。登録後の「かえる」で登録した食材を使う料理が出ない
+async function secScarce(b, cc) {
+  for (const n of [3, 5]) {
+    const { ctx, p } = await open(b, { cc, n });
+    const s0 = await snap(p);
+    const word = await p.evaluate(() => { const m = session.menu, k = new Set(m.items[0].r.items.map(g => g.key)); const it = m.items.slice(1).flatMap(x => x.r ? x.r.items : []).find(g => !g.opt && g.label && g.label.length >= 2 && !k.has(g.key)); return it ? it.label : null; });
+    if (word) {
+      // 登録した食材（同じ食材として照らされる言い方も含む）を必須に使っている枠。登録だけして、選び直す前に調べる
+      const used = await p.evaluate(w => { S.settings.scarce = [w]; save(); return session.menu.items.map(x => !!(x.r && isScarce(x.r))); }, word);
+      await p.evaluate(() => { reconcileMenu(); refreshWeek(); render(); });
+      const s1 = await snap(p); area('scarce').taps++;
+      s0.ids.forEach((x, j) => { if (x !== s1.ids[j] && !used[j]) bad('scarce', cc + ' n=' + n + ' 登録=' + word + ' 使っていない枠#' + j + ' が ' + x + ' -> ' + s1.ids[j]); });
+      await pressAll(p, 'scarce', cc + ' n=' + n + ' 登録=' + word, { checkAvoid: true, reps: 2 });
+      const bad0 = await p.evaluate(() => session.menu.items.filter(x => x.r && isScarce(x.r)).map(x => x.r.id));
+      if (bad0.length) bad('scarce', cc + ' 登録した食材を使う料理が出た ' + bad0.join());
+      // 解除: 何も変わらない
+      await stays(p, 'scarce', cc + ' n=' + n + ' 解除', () => { S.settings.scarce = []; save(); reconcileMenu(); refreshWeek(); render(); }, { skip: ['settings'] });
+    }
+    await ctx.close();
+  }
+}
 // 7. 家族プロフィール（アレルギー）
 async function secFamily(b, cc) {
   for (const fam of ['shellfish', 'egg', 'fish', 'pork', 'dairy', 'nuts', 'wheat']) {
@@ -297,7 +340,7 @@ async function secLang(b, cc) {
   await ctx.close();
 }
 
-const SECTIONS = [['matrix', secMatrix], ['soup', secSoup], ['mix', secMix], ['mood', secMood], ['one', secOne], ['saved', secSaved], ['family', secFamily], ['avoid', secAvoid], ['decided', secDecided], ['week', secWeek], ['lang', secLang]];
+const SECTIONS = [['matrix', secMatrix], ['soup', secSoup], ['mix', secMix], ['mood', secMood], ['one', secOne], ['saved', secSaved], ['savedmix', secSavedMix], ['scarce', secScarce], ['family', secFamily], ['avoid', secAvoid], ['decided', secDecided], ['week', secWeek], ['lang', secLang]];
 
 (async () => {
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
