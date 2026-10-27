@@ -1278,7 +1278,7 @@ GOHAN_PACK({
       local: 'Endives au jambon',
       type: 'main',
       method: 'grill',
-      protein: 'veg',
+      protein: 'processed',
       min: 60,
       ings: [
         'endive|Belgian endives (chicory)|8',

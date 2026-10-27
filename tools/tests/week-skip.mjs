@@ -81,6 +81,11 @@ for (const cc of CCS){
             // 全部作らない日でも落ちない・週カードが描ける
             S.week.days.forEach(x => x.skip = true);
             try{ render(); weekShareText(); shoppingList(); }catch(e){ bad.push('全部skipで例外 ' + e.message); }
+            // 全部作らない日: 毎日くり返す一括のお知らせ(1001)は予約しない。作らない日の個別の予約も出さない（無料・有料どちらでも）
+            { const ns = notifBuild(new Date(0)), skipIdx = new Set(S.week.days.filter(x => x.skip).map(x => Math.round((parseYmd(x.d) - parseYmd(TODAY)) / 864e5)));
+              if (ns.some(n => n.id === NOTIFY_ID)) bad.push('全部作らない日なのに毎日くり返すお知らせ(1001)が予約される');
+              if (ns.some(n => skipIdx.has(n.id - NOTIFY_DAY_ID))) bad.push('作らない日にお知らせが予約される');
+              if (!ns.some(n => !skipIdx.has(n.id - NOTIFY_DAY_ID))) bad.push('作る日(週のあと)のお知らせまで消えた'); }
             const cv = await cardCanvas('week'); if (!cv) bad.push('週カードが作れない');
             S.week.days.forEach(x => delete x.skip); S.week.days[1].skip = true;
             const cv2 = await cardCanvas('week'); if (!cv2) bad.push('週カード(一部skip)が作れない');

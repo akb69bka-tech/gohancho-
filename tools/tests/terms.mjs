@@ -15,6 +15,8 @@ const T = [
   ["fr", "À feu moyen-vif, puis à feu doux. Écumez.", "heat_low,skim"], ["it", "Cuoci a fuoco medio-basso, poi a fuoco alto.", "heat_high"],
   ["ko", "중약불에서 끓이고 센 불로 올린다. 다진 마늘.", "heat_high,mince"], ["zh-Hans", "中小火煮开，转大火，撇去浮沫。", "heat_high,skim"],
   ["th", "ใส่สับปะรด ใช้ไฟกลาง แล้วสับกระเทียม", "heat_med,mince"], ["tr", "Orta-yüksek ateşte pişirin, sonra kısık ateşte.", "heat_low"],
+  ["pl", "Smaż na średnio dużym ogniu 3 minuty, potem na małym ogniu.", "heat_low"], ["en", "Bring to a boil. Skim off any fat.", ""], ["en", "Skim off the foam.", "skim"],
+  ["zh-Hant", "撈出沖掉浮沫。煮開後撈去浮沫。", "skim"], ["zh-Hans", "捞出冲掉浮沫。", ""],
   ["vi", "Lửa vừa lớn 2 phút, chuyển lửa nhỏ. Vớt bọt.", "heat_low,skim"], ["hi", "धीमी आँच पर पकाएँ।", "heat_low"], ["ar", "على نار هادئة.", "heat_low"],
 ];
 let ok = 0, bad = 0;

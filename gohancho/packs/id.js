@@ -1290,7 +1290,7 @@ GOHAN_PACK({
       local: 'Gado-gado',
       type: 'main',
       method: 'raw',
-      protein: 'veg',
+      protein: 'legume',
       min: 45,
       ings: [
         'potato|Potatoes|2',
