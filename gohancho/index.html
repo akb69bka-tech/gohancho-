@@ -471,7 +471,7 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel{animation:rise .35s ease-out backwards}
-.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
 .big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
@@ -1238,6 +1238,7 @@ function normalizeState(d){
       if (st.settings.remind != null && st.settings.remind !== false && st.settings.remind !== '') cl('remind', 0, 23);
       if (st.settings.shopRemind != null && st.settings.shopRemind !== false && st.settings.shopRemind !== '') cl('shopRemind', 0, 6);
       cl('avoidDays', 0, 60); }
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(st.settings.dinnerAt || '')) delete st.settings.dinnerAt;   // 食べる時刻（作り方の画面）
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
         ings: arr(r.ings).filter(x => typeof x === 'string' && x.trim()), steps: arr(r.steps).filter(x => typeof x === 'string'), seas: typeof r.seas === 'string' ? r.seas : '',
@@ -5348,6 +5349,42 @@ function cookWarnHtml(){
     if (!bad.length) return '';
     return `<div class="note warn cook-warn" role="alert"><span>${esc(t('決めた献立の「{names}」は、いま食べる人のアレルギー・苦手な食材・辛さに合いません。作る前に確かめるか、取り消して選び直してください。', {names: joinNames(bad.map(x => x.r.name))}))}</span><button class="btn sm" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>`;
 }
+/* ---- 食べる時刻から逆算（作り方の画面） ----
+   食べたい時刻を入れると、決めた献立の「各料理に書かれた所要時間」だけから、作り始める目安を出す。
+   確かに言えるのは 2 つの範囲だけ: 1品ずつ順に作れば合計（上限）／同時に進めても、いちばん時間のかかる1品の時間（下限）。
+   待ち時間の中身や段取りは、料理の文章からは決めつけない。時刻は端末の中にだけ残る（S.settings.dinnerAt = 'HH:MM'） */
+function clockText(d){
+    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {hour:'numeric', minute:'2-digit'}).format(d); }catch(e){ return `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; }
+}
+function eatPlanHtml(items){
+    const rs = items.map(x => x.r);
+    if (!rs.length || rs.some(r => !(Number(r.min) > 0))) return '';   // 時間がわからない料理があるときは、時間のことは言わない
+    const at = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(S.settings.dinnerAt || '');
+    const mins = rs.map(r => Number(r.min)), total = mins.reduce((a, b) => a + b, 0), mx = Math.max(...mins), longest = rs[mins.indexOf(mx)];
+    const MIN = 60000, now = new Date(), eat = at ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), +at[1], +at[2]) : null;
+    const end1 = new Date(now.getTime() + total * MIN), end2 = new Date(now.getTime() + mx * MIN), c = clockText;
+    const lines = [];
+    if (eat){
+        const startBy = n => c(new Date(eat.getTime() - n * MIN));
+        if (eat <= now) lines.push(t('いま{now}に始めると、1品ずつ順に作って{t1}ごろに終わります。同時に進めても{t2}より早くはなりません', {now:c(now), t1:c(end1), t2:c(end2)}));
+        else if (end1 <= eat){
+            lines.push(t('{time}までに始めれば、1品ずつ順に作っても{eat}に間に合います（合計{n}分）', {time:startBy(total), eat:c(eat), n:total}));
+            if (rs.length > 1) lines.push(t('同時に進めるなら、いちばん時間のかかる「{name}」が{n}分なので、{time}までには始めたいです', {name:longest.name, n:mx, time:startBy(mx)}));
+        } else if (end2 <= eat){
+            lines.push(t('1品ずつ順に作ると{time}ごろまでかかり、{eat}を過ぎます', {time:c(end1), eat:c(eat)}));
+            lines.push(t('同時に進めるなら、いちばん時間のかかる「{name}」が{n}分なので、{time}までには始めたいです', {name:longest.name, n:mx, time:startBy(mx)}));
+        } else lines.push(t('いま始めても、いちばん時間のかかる「{name}」が{n}分なので、{eat}には間に合いません（{time}ごろ）', {name:longest.name, n:mx, eat:c(eat), time:c(end2)}));
+        if (rs.length > 1 && mins.some(m => m !== mx)){
+            const order = items.map((x, i) => ({r:x.r, i})).sort((a, b) => (b.r.min - a.r.min) || (a.i - b.i)).map(x => x.r.name);
+            lines.push(t('時間のかかる料理から始める順：{list}', {list:joinNames(order)}));
+        }
+    }
+    return `<details class="card eat-plan" ${(session.eatOpen === undefined ? at : session.eatOpen) ? 'open' : ''}><summary class="eat-sum"><span>${esc(t('食べる時刻から逆算'))}</span><span class="small muted">${esc(eat ? c(eat) : '')}</span></summary>
+        <div class="row eat-row"><label class="small" for="eat-at">${esc(t('食べる時刻'))}</label><input type="time" id="eat-at" value="${at ? esc(at[0]) : ''}">${at ? `<button class="btn sm ghost" data-act="eat-clear">${esc(t('時刻を消す'))}</button>` : ''}</div>
+        ${lines.length ? lines.map(l => `<p class="eat-line">${esc(l)}</p>`).join('') : `<p class="small muted">${esc(t('食べたい時刻を入れると、作り始める目安の時刻を出します。時間は、各料理に書かれた所要時間から数えています。'))}</p>`}
+        ${lines.length ? `<p class="foot">${esc(t('料理ごとの所要時間の目安から数えています。実際の手順や待ち時間までは見ていません。'))}</p>` : ''}
+    </details>`;
+}
 function viewCook(){
     const items = cookItems();
     if (!items.length) return `<section class="sec">
@@ -5368,6 +5405,7 @@ function viewCook(){
         ${cookWarnHtml()}
         ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm${h === 17 ? ' primary' : ''}" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${!isToday ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div>` : ''}
+        ${isToday ? eatPlanHtml(items) : ''}
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
         ${wakeOK() ? `<label class="check wake-toggle"><input type="checkbox" data-act="keep-awake" ${S.settings.keepAwake !== false ? 'checked' : ''}><span>${esc(t('画面を消さない'))}</span></label>` : ''}
         <div class="cook-tools">${ttsOK() ? `<button type="button" class="chip" data-act="hf-toggle" aria-pressed="${hf.on}">🔊 ${esc(t('ハンズフリー'))}</button>` : ''}<label class="check"><input type="checkbox" data-act="big-cook" ${S.settings.bigCook ? 'checked' : ''}><span>${esc(t('大きく表示'))}</span></label></div>
@@ -6498,6 +6536,7 @@ document.addEventListener('click', e => {
         case 'hf-toggle': if (hf.on){ voiceStop(); render(); } else { hf.on = true; hf.noMic = false; render(); hfReadNow(); } break;
         case 'big-cook': S.settings.bigCook = el.checked; save(); render(); setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 30); break;
         case 'say-step': { const li = el.closest('li'); voiceStop(true); hfListenStop(); voiceSay(stepSpeech(li), hf.on ? hfListen : null); break; }
+        case 'eat-clear': S.settings.dinnerAt = null; session.eatOpen = true; save(); render(); break;
         case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
         case 'share-cook': openShare('cook'); break;
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label, el.dataset.rid, el.dataset.k == null ? null : Number(el.dataset.k)); break;
@@ -6684,6 +6723,7 @@ document.addEventListener('toggle', e => {
     if (!e.target.matches) return;
     if (e.target.matches('details.cond')) { if (!!S.condOpen !== e.target.open){ S.condOpen = e.target.open; save(); } }   // 開き直しても同じ開き方で出す
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
+    if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
     if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
 document.addEventListener('change', e => {
@@ -6702,6 +6742,7 @@ document.addEventListener('change', e => {
         fl.text().then(txt => { if (!askImport(txt.trim(), 'file')) toast(t('読み込めませんでした')); }, () => toast(t('読み込めませんでした')));
         return;
     }
+    if (el.id === 'eat-at'){ S.settings.dinnerAt = /^([01]\d|2[0-3]):[0-5]\d$/.test(el.value) ? el.value : null; session.eatOpen = true; save(); render(); return; }
     if (el.id === 'tw-base'){ twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }
     if (el.dataset && el.dataset.act === 'mix'){
         S.settings.mix = Object.assign({}, S.settings.mix, {[el.dataset.slot]: el.value}); save(); session.mixOpen = true;
