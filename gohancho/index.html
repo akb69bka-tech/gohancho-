@@ -174,6 +174,7 @@ a{color:var(--accent)}
 .sec-head .hint.hint2{line-height:1.5;min-height:3em}   /* 品数・理由の一文は1〜2行で変わる。2行ぶんの高さを取って、気分や品数を変えても、下のお膳が動かないように */
 /* カード: 画面の中の囲みはすべてこれ */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.fphoto-box{margin:4px 0 12px}
 .eyebrow{font-size:.75rem;letter-spacing:.16em;color:var(--accent);font-weight:700}
 .foot{font-size:.76rem;color:var(--muted);margin:0;line-height:1.7}
 .sec-head.split{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -2985,7 +2986,7 @@ async function loadAlbum(){
     if (tab === 'log') render();
 }
 const PHOTO_MAX = 40e6;   // これより大きい写真は読み込まない（縮小の途中で端末のメモリが足りなくなるため）
-async function shrinkImage(file){
+async function shrinkImage(file, maxSide=1000){
     if (file.size > PHOTO_MAX) throw new Error('big');
     const url = URL.createObjectURL(file);
     try{
@@ -2993,7 +2994,7 @@ async function shrinkImage(file){
         try{ img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; }); }
         catch(e){ img = window.createImageBitmap ? await createImageBitmap(file) : Promise.reject(e); }   // <img> で開けない形式は、ブラウザの画像デコーダで試す
         const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
-        const k = Math.min(1, 1000 / Math.max(w, h));
+        const k = Math.min(1, maxSide / Math.max(w, h));
         const c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
         c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
         if (img.close) img.close();
@@ -3940,7 +3941,7 @@ function paywallReason(k){
 
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
-function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; dlgClosed('sheet-root'); }
+function closeSheet(){ if (sheet && sheet.kind === 'paywall' && isLocked()) return; if (sheet && sheet.kind === 'fphoto') fphotoDrop(); sheet = null; $('#sheet-root').innerHTML = ''; if (!modalId) document.body.style.overflow = ''; dlgClosed('sheet-root'); }
 /* ---- 下から出る画面のフォーカス（開いたら中へ移し、Tab は中だけを回り、閉じたら開いたボタンへ戻す） ---- */
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 const dlgRet = {}, dlgLast = {};   // 開く前にフォーカスがあったもの／中で最後にフォーカスしたもの（描き直しても戻せるよう data-* で覚える）
@@ -4056,6 +4057,7 @@ function renderSheetBody(){
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
+    if (sheet.kind === 'fphoto') body = fphotoSheetHtml();
     if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
@@ -6849,7 +6851,7 @@ function viewFridge(){
             <div class="list">${(moreOpen.has(key) ? arr : arr.slice(0, LIST_FIRST)).map(matchRow).join('')}</div>
             ${arr.length > LIST_FIRST && !moreOpen.has(key) ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="${key}">${esc(t('すべて見る（{n}品）', {n: arr.length}))}</button></div>` : ''}` : '';
         results = `
-        <section class="sec">
+        <section class="sec" id="fridge-results">
             <div class="sec-head split"><h2>${esc(t('作れる料理'))}</h2>
                 ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
             ${block('⏰ ' + esc(t('早めに使う食材を使う料理')), esc(t('{n}品', {n:soonList.length})), soonList, 'fr-soon')}
@@ -6881,6 +6883,12 @@ function viewFridge(){
             <button class="btn primary" type="submit">${esc(t('追加'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
+        <div class="fphoto-box">
+            <div class="eyebrow">${esc(t('冷蔵庫の写真から選ぶ'))}</div>
+            <div class="row"><label class="btn" for="fp-cam">${esc(t('写真を撮る'))}</label><label class="btn" for="fp-lib">${esc(t('写真を選ぶ'))}</label>
+                <input type="file" id="fp-cam" accept="image/*" capture="environment" hidden><input type="file" id="fp-lib" accept="image/*" hidden></div>
+            <p class="small muted" style="margin:4px 0">${esc(t('写真は端末の外に送らず、保存もしません。'))}</p>
+        </div>
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => { const e = S.fridgeMeta[f] || {}, n = e.d ? daysBetween(e.d, ymd()) : 0;
             return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" title="${esc([e.soon ? t('早めに使う') : '', n >= 1 ? t('登録から{n}日', {n}) : ''].filter(Boolean).join(' · '))}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag" aria-hidden="true">⏰</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('{n}日', {n}))}</span>` : ''}${e.exp ? ` <span class="chip-d">${esc(expLabel(daysBetween(TODAY, e.exp)))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
             ${fridgeUnknownHtml()}
@@ -6905,6 +6913,113 @@ function viewFridge(){
         ${hintsHtml}
     </section>
     ${results}`;
+}
+/* ---- 冷蔵庫の写真から選ぶ ----
+   写真は端末の中のメモリにだけ置く（blob URL。保存も送信もしない。閉じたら破棄）。
+   読み取りは iPhone アプリの Vision（端末内・オフライン）を呼ぶ小さなプラグイン FridgeVision があるときだけ。無ければ、写真を見ながら食材を選ぶ画面になる。
+   読み取り結果は「候補」。利用者が確かめて（外す・足す）から冷蔵庫に入る。 */
+// Vision の分類ラベル（英語。小文字・単数）→ [日本の食材名, 英語名]。確実に食材といえるものだけ。generic なラベル（food・vegetable・meat など）は使わない。
+// 食材の表（CANON）にその名前がある国・言語だけ候補になる（見つからないものは候補に出さない）
+const FRIDGE_LABELS = {
+    'tomato':['トマト','tomato'], 'cucumber':['きゅうり','cucumber'], 'carrot':['にんじん','carrot'], 'onion':['玉ねぎ','onion'],
+    'green onion':['長ねぎ','green onion'], 'scallion':['長ねぎ','green onion'], 'potato':['じゃがいも','potato'], 'sweet potato':['さつまいも','sweet potato'],
+    'cabbage':['キャベツ','cabbage'], 'napa cabbage':['白菜','napa cabbage'], 'chinese cabbage':['白菜','napa cabbage'], 'lettuce':['レタス','lettuce'],
+    'spinach':['ほうれん草','spinach'], 'broccoli':['ブロッコリー','broccoli'], 'eggplant':['なす','eggplant'], 'aubergine':['なす','eggplant'],
+    'pumpkin':['かぼちゃ','pumpkin'], 'daikon':['大根','daikon'], 'radish':['大根','daikon'], 'bean sprout':['もやし','bean sprouts'], 'corn':['コーン','corn'],
+    'okra':['オクラ','okra'], 'ginger':['生姜','ginger'], 'kimchi':['キムチ','kimchi'],
+    'egg':['卵','egg'], 'milk':['牛乳','milk'], 'cheese':['チーズ','cheese'], 'tofu':['豆腐','tofu'],
+    'bacon':['ベーコン','bacon'], 'ham':['ハム','ham'], 'sausage':['ウインナー','sausage'],
+    'pork':['豚肉','pork'], 'chicken':['鶏肉','chicken'], 'beef':['牛肉','beef'],
+    'salmon':['鮭','salmon'], 'mackerel':['さば','mackerel'], 'shrimp':['えび','shrimp'], 'prawn':['えび','shrimp'], 'squid':['いか','squid'], 'octopus':['たこ','octopus'], 'clam':['あさり','clam'],
+    'udon':['うどん','udon'], 'spaghetti':['スパゲッティ','spaghetti'], 'bread':['食パン','bread'], 'rice':['ご飯','rice'],
+};
+// ラベルの表記をそろえる（小文字・_ や - を空白に・複数形の s を落とす）
+function fphotoNorm(l){
+    let x = String(l || '').toLowerCase().replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (FRIDGE_LABELS[x]) return x;
+    const sg = x.replace(/(?:es|s)$/, ''); return FRIDGE_LABELS[sg] ? sg : x;
+}
+// 認識結果 [{identifier, confidence}] → 食材名の候補（このアプリの食材の名前。表にあるものだけ・確信度の高い順・重複なし・最大12）
+function fphotoCands(labels, max = 12){
+    const out = [], seen = new Set();
+    (Array.isArray(labels) ? labels : []).filter(x => x && typeof x === 'object' && Number(x.confidence) >= 0.1)
+        .sort((a, b) => Number(b.confidence) - Number(a.confidence)).forEach(x => {
+        const m = FRIDGE_LABELS[fphotoNorm(x.identifier)]; if (!m) return;
+        const c = canonOf(m[0]) || canonOf(m[1]); if (!c || seen.has(c)) return;
+        seen.add(c); out.push(PACK_NAMES[c] || c);
+    });
+    return out.slice(0, max);
+}
+function fridgeVision(){ const p = nativePlugin('FridgeVision'); return p && typeof p.classify === 'function' ? p : null; }
+function fphotoDrop(){ try{ if (sheet && sheet.url) URL.revokeObjectURL(sheet.url); }catch(e){} if (sheet) sheet.url = ''; }
+async function blobB64(blob){
+    const u8 = new Uint8Array(await blob.arrayBuffer()); let bin = '';
+    for (let i = 0; i < u8.length; i += 0x8000) bin += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+    return btoa(bin);
+}
+async function fphotoStart(file){
+    if (file.size > PHOTO_MAX){ toast(t('ファイルが大きすぎて読み込めません')); return; }
+    if (sheet && sheet.kind === 'fphoto') fphotoDrop();
+    const vis = fridgeVision(), token = {};
+    let url = ''; try{ url = URL.createObjectURL(file); }catch(e){}
+    sheet = {kind:'fphoto', url, token, phase: vis ? 'busy' : 'review', msg: vis ? '' : 'unavail', cands: [], sel: new Map()};
+    renderSheet();
+    if (!vis) return;
+    let labels = null;
+    try{
+        const blob = await shrinkImage(file, 640); if (!blob) throw 0;
+        const b64 = await blobB64(blob);
+        const res = await Promise.race([vis.classify({image: b64, minConfidence: 0.1}), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 20000))]);
+        labels = res && res.labels;
+    }catch(e){ labels = null; }
+    if (!sheet || sheet.token !== token) return;   // 閉じられた
+    const names = labels ? fphotoCands(labels) : [];
+    sheet.phase = 'review'; sheet.msg = !labels ? 'fail' : names.length ? 'found' : 'none';
+    sheet.cands = names; names.forEach(n => sheet.sel.set(keyOf(n), n));
+    renderSheet();
+}
+function fphotoGrid(){
+    const have = new Set(sheet.cands.map(keyOf)), out = [];
+    [...QUICK, ...STAPLE_QUICK].forEach(q => { const k = keyOf(q); if (!have.has(k)){ have.add(k); out.push(q); } });
+    return out;
+}
+function fphotoSheetHtml(){
+    const chip = n => `<button class="chip" data-act="fp-tog" data-v="${esc(n)}" aria-pressed="${sheet.sel.has(keyOf(n))}">${esc(n)}</button>`;
+    const msg = {found: t('写真から読み取った候補です。違うものは外してください'),
+        none: t('写真から食材を読み取れませんでした。写真を見ながら、下から選んでください。'), fail: t('写真から食材を読み取れませんでした。写真を見ながら、下から選んでください。'),
+        unavail: t('この端末では写真の自動読み取りが使えません。写真を見ながら、下から選んでください。')}[sheet.msg] || '';
+    const n = sheet.sel.size;
+    return `<h2>${esc(t('冷蔵庫の写真から選ぶ'))}</h2>
+        ${sheet.url ? `<img class="fp-img" src="${esc(sheet.url)}" alt="" style="width:100%;max-height:34vh;object-fit:contain;border-radius:12px;background:var(--surface)">` : ''}
+        ${sheet.phase === 'busy' ? `<p role="status" class="muted">${esc(t('写真の中の食材を読み取っています…'))}</p>` : `
+        ${msg ? `<p class="${sheet.msg === 'found' ? '' : 'muted '}fp-msg" role="status"><b>${esc(msg)}</b></p>` : ''}
+        ${sheet.cands.length ? `<div class="chips fp-cands" role="group">${sheet.cands.map(chip).join('')}</div>` : ''}
+        <h3>${esc(t('ほかに写っている食材を足す'))}</h3>
+        <div class="chips fp-grid" role="group">${fphotoGrid().map(chip).join('')}</div>
+        <form class="inputbar" data-form="fp-add"><input type="text" id="fp-add-input" placeholder="${esc(t('材料を入力'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>`}
+        <p class="small muted">${esc(t('写真は端末の外に送らず、保存もしません。'))}</p>
+        <button class="btn primary" data-act="fp-go" ${n && sheet.phase !== 'busy' ? '' : 'disabled'}>${esc(t('冷蔵庫に入れる（{n}品）', {n}))}</button>
+        <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
+}
+function fphotoToggle(v){
+    if (!sheet || sheet.kind !== 'fphoto') return;
+    const k = keyOf(v); if (sheet.sel.has(k)) sheet.sel.delete(k); else sheet.sel.set(k, v);
+    renderSheet();
+}
+function fphotoAddTyped(text){
+    if (!sheet || sheet.kind !== 'fphoto') return;
+    const names = extractIngredients(text);
+    if (!names.length){ toast(t('食材の名前が読み取れませんでした')); return; }
+    names.forEach(n => { const k = keyOf(n); if (!sheet.cands.some(c => keyOf(c) === k) && !fphotoGrid().some(c => keyOf(c) === k)) sheet.cands.push(n); sheet.sel.set(k, n); });
+    renderSheet();
+}
+function fphotoCommit(){
+    if (!sheet || sheet.kind !== 'fphoto' || !sheet.sel.size) return;
+    const before = S.fridge.slice(), have = new Set(S.fridge.map(keyOf)); let added = 0;
+    sheet.sel.forEach((name, k) => { if (!have.has(k)){ have.add(k); S.fridge.push(canonOf(name) || name); added++; } });
+    save(); closeSheet(); render();
+    toast(added ? t('{n}品を冷蔵庫に入れました', {n:added}) : t('すでに登録されています'), false, added ? () => { S.fridge = before; save(); render(); } : null);
+    const r = document.getElementById('fridge-results'); if (r && r.scrollIntoView) r.scrollIntoView({block:'start', behavior:'smooth'});
 }
 /* 料理名・材料名での検索（冷蔵庫に登録しなくても、その食材を使う料理が出る） */
 // 検索のことば: 区切り記号で分け、ラテン文字の言葉（pad thai・ground beef）は空白で分けずにひとかたまりで使う
@@ -7985,6 +8100,8 @@ document.addEventListener('click', e => {
         case 'monitor-send': monitorSend(); break;
         case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;
+        case 'fp-tog': fphotoToggle(el.dataset.v); break;
+        case 'fp-go': fphotoCommit(); break;
         case 'term': sheet = {kind:'term', id: el.dataset.id, w: el.dataset.w}; renderSheet(); break;
         case 'video': if (vidDay().vidSeen.includes(id) || cookingNow(id)){ vidAwayStart(id); break; }   // 作り方タブで進めている料理は「動画の前に」の画面を出さず、そのまま開く
             e.preventDefault(); vidDay().vidSeen.push(id); save(); sheet = {kind:'video', id}; renderSheet(); break;
@@ -8424,6 +8541,7 @@ document.addEventListener('toggle', e => {
 }, true);
 document.addEventListener('change', e => {
     const el = e.target;
+    if ((el.id === 'fp-cam' || el.id === 'fp-lib') && el.files && el.files[0]){ const f = el.files[0]; el.value = ''; fphotoStart(f); return; }
     if (el.id === 'photo-input-cook' && el.files && el.files[0]){
         const cur = cookItems()[session.cookIdx || 0]; if (!cur){ el.value = ''; return; }
         if (!hasPro() && !MINE[cur.r.id] && Object.keys(MINE).length >= PLAN.freeLimits.myPhotos){ el.value = ''; openPaywall('photos'); return; }
@@ -8454,6 +8572,7 @@ document.addEventListener('submit', e => {
     if (f === 'spend'){ spendAdd(); return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
+    if (f === 'fp-add'){ const inp = $('#fp-add-input'); if (inp && inp.value.trim()) fphotoAddTyped(inp.value); return; }
     if (f === 'who-set' && sheet && sheet.kind === 'who'){ setWho(sheet.d, $('#who-input').value); return; }
     if (f === 'one-search' && sheet && sheet.kind === 'one'){
         const q = $('#one-input').value.trim(); sheet.q = q; if (!q) return;

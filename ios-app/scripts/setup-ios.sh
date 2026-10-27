@@ -13,6 +13,8 @@ CI_MODE=0; [ "${1:-}" = "--ci" ] && CI_MODE=1
 CAP=8; RC=13; CAP_ASSETS=3
 echo "1/7 部品（Capacitor $CAP とプラグイン）を入れています…"
 npm install "@capacitor/core@^$CAP" "@capacitor/ios@^$CAP" "@capacitor/share@^$CAP" "@capacitor/filesystem@^$CAP" "@capacitor/local-notifications@^$CAP" "@revenuecat/purchases-capacitor@^$RC"
+# 冷蔵庫の写真を端末の中だけで読み取る自作プラグイン（Apple Vision。plugins/gohancho-fridge-vision。外部送信なし）。入らなくてもアプリは動く（写真を見ながら選ぶ画面になる）
+npm install ./plugins/gohancho-fridge-vision || echo "   （冷蔵庫の写真の自動読み取りプラグインを入れられませんでした。写真を見ながら食材を選ぶ画面で動きます）"
 npm install -D "@capacitor/cli@^$CAP" "@capacitor/assets@^$CAP_ASSETS"
 
 echo "2/7 アプリ本体（../gohancho）を取りこんでいます…"
@@ -32,22 +34,22 @@ set_key CFBundleDisplayName string "ご飯帖"
 # 開発言語は英語にする: 日本語以外の言語の人には、下の英語の許可文言が出る（日本語の人には ja.lproj の日本語）。
 set_key CFBundleDevelopmentRegion string "en"
 # 許可の文言（Info.plist の基本＝英語）。押したときだけ使うこと・保存しないことを、本当のとおりに書く（審査 5.1.1(ii)・5.1.2）
-set_key NSCameraUsageDescription string "Used only when you choose to take a photo of a dish you cooked. The photo is kept on this device."
-set_key NSPhotoLibraryUsageDescription string "Used only when you choose to pick a photo of a dish you cooked. The photo is kept on this device."
+set_key NSCameraUsageDescription string "Used only when you choose to take a photo of a dish you cooked or of your fridge. A dish photo is kept on this device; a fridge photo is read on this device and not saved."
+set_key NSPhotoLibraryUsageDescription string "Used only when you choose to pick a photo of a dish you cooked or of your fridge. A dish photo is kept on this device; a fridge photo is read on this device and not saved."
 # 「声で入力」（材料・料理の検索）に必要。これが無いと iPhone アプリでマイクが使えず、審査でも指摘される
 set_key NSMicrophoneUsageDescription string "Used only while you tap the voice-input button, to hear an ingredient or dish name. The app does not save recordings."
 set_key NSSpeechRecognitionUsageDescription string "Used to turn your spoken words into text for ingredient and dish names. Speech is processed by Apple's speech recognition."
 # 日本語（InfoPlist.strings）。App Store の「Localizations」で言語を足したときも、日本語以外は上の英語になる
 mkdir -p ios/App/App/en.lproj ios/App/App/ja.lproj
 cat > ios/App/App/en.lproj/InfoPlist.strings <<'STR'
-"NSCameraUsageDescription" = "Used only when you choose to take a photo of a dish you cooked. The photo is kept on this device.";
-"NSPhotoLibraryUsageDescription" = "Used only when you choose to pick a photo of a dish you cooked. The photo is kept on this device.";
+"NSCameraUsageDescription" = "Used only when you choose to take a photo of a dish you cooked or of your fridge. A dish photo is kept on this device; a fridge photo is read on this device and not saved.";
+"NSPhotoLibraryUsageDescription" = "Used only when you choose to pick a photo of a dish you cooked or of your fridge. A dish photo is kept on this device; a fridge photo is read on this device and not saved.";
 "NSMicrophoneUsageDescription" = "Used only while you tap the voice-input button, to hear an ingredient or dish name. The app does not save recordings.";
 "NSSpeechRecognitionUsageDescription" = "Used to turn your spoken words into text for ingredient and dish names. Speech is processed by Apple's speech recognition.";
 STR
 cat > ios/App/App/ja.lproj/InfoPlist.strings <<'STR'
-"NSCameraUsageDescription" = "作った料理の写真を撮るときだけ使います。写真はこの端末の中に保存されます。";
-"NSPhotoLibraryUsageDescription" = "作った料理の写真を選ぶときだけ使います。写真はこの端末の中に保存されます。";
+"NSCameraUsageDescription" = "作った料理や冷蔵庫の写真を撮るときだけ使います。料理の写真はこの端末の中に保存されます。冷蔵庫の写真はこの端末の中で読み取るだけで、保存しません。";
+"NSPhotoLibraryUsageDescription" = "作った料理や冷蔵庫の写真を選ぶときだけ使います。料理の写真はこの端末の中に保存されます。冷蔵庫の写真はこの端末の中で読み取るだけで、保存しません。";
 "NSMicrophoneUsageDescription" = "「声で入力」を押している間だけ、食材や料理の名前を聞き取るために使います。アプリは録音を保存しません。";
 "NSSpeechRecognitionUsageDescription" = "話した言葉を食材や料理の名前の文字にするために使います。音声は Apple の音声認識で処理されます。";
 STR
@@ -147,8 +149,17 @@ else
   [ "$CI_MODE" = 1 ] && exit 1
 fi
 
-if [ "$CI_MODE" = 1 ]; then echo "7/7 同期しています…"; npx cap sync ios; exit 0; fi
+# 同期のあと、冷蔵庫の写真プラグインが iOS プロジェクトに組みこまれたか確かめる（無くても動くが、写真の自動読み取りは使えない）
+check_fridge_plugin(){
+  if grep -rqi "GohanchoFridgeVision\|gohancho-fridge-vision" ios/App/CapApp-SPM/Package.swift 2>/dev/null; then
+    echo "   冷蔵庫の写真プラグイン（FridgeVision）が入りました"
+  else
+    echo "!! 冷蔵庫の写真プラグイン（FridgeVision）が iOS プロジェクトに見つかりません。写真の自動読み取りは使えず、写真を見ながら選ぶ画面になります。"
+  fi
+}
+if [ "$CI_MODE" = 1 ]; then echo "7/7 同期しています…"; npx cap sync ios; check_fridge_plugin; exit 0; fi
 echo "7/7 同期して Xcode を開きます…"
 npx cap sync ios
+check_fridge_plugin
 npx cap open ios
 echo "完了: Xcode で Signing & Capabilities の Team を選び、In-App Purchase を追加してください（申請チェックリスト.md の手順4）。"
