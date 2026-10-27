@@ -74,7 +74,7 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 | `billingMode` | `'native'`（Web 版は全機能無料。iPhone アプリ版は API キーを入れると課金が有効） | そのまま |
 | `prices` / `loyalty` | 月額 380円。年額 3,500円は1年つづいた会員にだけ表示（iPhone アプリ版では App Store の実際の価格を自動で表示） | App Store Connect の価格に合わせる |
 | `trialMode` | `'store'`（App Store のお試しオファー「1か月無料」に合わせる。2か月目から月額） | そのまま |
-| `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
+| `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲（`freeTier: true` のときだけ有効。既定の false では、お試し後の未購入はすべてロックで無料版なし） |
 | （コード内） | ひと手間の「やってみた」記録はプラスのみ | |
 | `earlySupporterBefore` | 空 | 例: `'2027-04-01'` にすると、その日より前から使っている人はずっと無料（初期ユーザーへのお礼） |
 | `revenueCatApiKey` | 空 | RevenueCat の公開 API キー |
