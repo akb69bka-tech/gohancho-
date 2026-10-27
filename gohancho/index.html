@@ -447,6 +447,9 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
+.week-acts{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+.week .item.skipped{background:var(--surface-2)}
+.week .item.skipped .t{color:var(--muted);cursor:default}
 .hint-row.locked{cursor:pointer}
 .btn.msg{--msg:#06c755;color:color-mix(in srgb,var(--msg) 50%,#000);font-weight:700}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.msg{color:color-mix(in srgb,var(--msg) 55%,#fff)}}
@@ -1833,7 +1836,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
     if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
     // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
-    const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY).map(x => x.id));
+    const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY && !x.skip).map(x => x.id));
     if (ahead.size){ const ok = cands.filter(r => !ahead.has(r.id)); if (ok.length) cands = ok; }
     const r = pick(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
@@ -2091,6 +2094,8 @@ function makeWeek(){
         }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
     }
+    const skipped = new Set(((S.week && S.week.days) || []).filter(x => x.skip).map(x => x.d));   // 作り直しても、「作らない日」にした日はそのまま（日付で引き継ぐ）
+    days.forEach(x => { if (skipped.has(x.d)) x.skip = true; });
     S.week = {start:TODAY, days}; save();
 }
 // 苦手な食材を足したり料理を「今は出さない」にしたりしたとき、作ってある1週間プランのうち、その料理の日だけ選び直す
@@ -2137,7 +2142,7 @@ function dayDishes(x){
 function weekToday(){
     if (!S.week) return null;
     const x = S.week.days.find(x => x.d === TODAY);
-    const r = x ? byId(x.id) : null, mc = mixCc('主菜');
+    const r = x && !x.skip ? byId(x.id) : null, mc = mixCc('主菜');
     if (r && mc && (r.pack || 'JP') !== mc) return null;   // 国の組み合わせで主菜の国を選んでいるときは、ほかの国のプランの料理を今日の主菜にしない
     return r;
 }
@@ -4375,12 +4380,15 @@ function nativePlugin(name){ try{ return (window.Capacitor && window.Capacitor.P
    買い物メモ（1週間プランの主菜から、家にない材料をまとめる）
    ========================================================= */
 // 無料版の制限で、1週間のプランの一部しか見えていないか
-function weekCutByFree(){ return !!S.week && !hasPro() && S.week.days.filter(x => x.d >= TODAY).length > visiblePlanDays().length; }
-function visiblePlanDays(){
+function weekCutByFree(){ return !!S.week && !hasPro() && S.week.days.filter(x => x.d >= TODAY).length > visiblePlanDaysAll().length; }
+// 見られる範囲の日（「作らない日」も含む）。無料版の範囲は、作らない日も1日として数える
+function visiblePlanDaysAll(){
     if (!S.week) return [];
     const days = S.week.days.filter(x => x.d >= TODAY);
     return hasPro() ? days : days.slice(0, PLAN.freeLimits.weekDays);
 }
+// 実際に作る日だけ（「この日は作らない」にした日は、買い物メモ・お知らせ・今日の主菜から外れる）
+function visiblePlanDays(){ return visiblePlanDaysAll().filter(x => !x.skip); }
 // 買い物メモで同じ材料とみなす名前（かっこ・「, diced」などの下ごしらえ・複数形の s を除く。タイ語は最初の空白まで）
 // 食材のキーが同じでも名前がちがうもの（ミニトマトとトマト、숙주と콩나물、밥と쌀）は別の行にする
 // 中国語は末尾の「肉」（猪里脊肉＝猪里脊）と切り方（薑片・薑絲・薑泥＝薑）、英語などは先頭の shredded / grated / diced、複数形（tomatoes・potatoes・berries）、アクセントのちがいも同じとみなす
@@ -4555,10 +4563,10 @@ function menuShareText(m = session.menu, d = TODAY){
     return lines.join('\n');
 }
 function weekShareText(){
-    const days = visiblePlanDays(); if (!days.length) return '';
+    const days = visiblePlanDaysAll(); if (!days.length) return '';
     if (weekSidesOn()) ensureWeekExtras();
     const lines = [t('【献立の予定】')];
-        days.forEach(x => { const r = byId(x.id); if (!r) return; lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`);
+        days.forEach(x => { const r = byId(x.id); if (!r) return; if (x.skip){ lines.push(`${jpDate(x.d)}${GAP()}${t('作らない日')}`); return; } lines.push(`${jpDate(x.d)}${GAP()}${r.name}${swapShare(r)}`);
             const ex = weekSidesOn() && x.extra ? [['side', '副菜'], ['soup', '汁物']].map(([k, slot]) => { const e = byId(x.extra[k]); return e ? t('{slot}：{name}', {slot:slotLabel(slot), name:e.name + swapShare(e)}) : ''; }).filter(Boolean).join(' / ') : '';
             if (ex) lines.push('　' + ex);
         });
@@ -4613,9 +4621,9 @@ const CARD_C = {ink:'#1d2733', muted:'#66758a', accent:'#22406b', soft:'#dde6f2'
 // kind: 'menu'（今日の案）/ 'cook'（決めた献立）/ 'week'（1週間の予定）→ 描くための材料
 function cardData(kind){
     if (kind === 'week'){
-        const days = visiblePlanDays().map(x => ({d:x.d, r:byId(x.id)})).filter(x => x.r).slice(0, 7);
-        // 1日分だけのとき（無料版）は、ほぼ空白の「週」カードにせず、その日の献立カードにする
-        if (days.length === 1){
+        const days = visiblePlanDaysAll().map(x => ({d:x.d, r:byId(x.id), skip:!!x.skip})).filter(x => x.r).slice(0, 7);
+        // 1日分だけのとき（無料版）は、ほぼ空白の「週」カードにせず、その日の献立カードにする（作らない日だけのときは週カードのまま）
+        if (days.length === 1 && !days[0].skip){
             const x = visiblePlanDays().find(y => y.d === days[0].d), rs = dayDishes(x);
             const dishes = rs.map(r => ({r, name:r.name, slot:slotLabel(slotOf(r)), min:r.min || 0}));
             return dishes.length ? {kind:'menu', dishes, date:days[0].d, line: days[0].d === TODAY ? t('今日のごはんです') : t('今週の献立です'), min:dishes.reduce((a, y) => a + y.min, 0), sv:Number(S.settings.servings) || 2} : null;
@@ -4755,7 +4763,7 @@ async function cardCanvas(kind, arg){
     if (kind === 'needs') return needsCardCanvas(arg || {});
     const D = cardData(kind); if (!D) return null;
     const rtl = /^(ar|he|fa|ur)(-|$)/.test(LANG), W = CARD_W, H = CARD_H;
-    const imgs = await Promise.all((D.kind === 'week' ? D.days : D.dishes).map(x => cardLoadImg(x.r, x.staple)));
+    const imgs = await Promise.all((D.kind === 'week' ? D.days : D.dishes).map(x => x.skip ? null : cardLoadImg(x.r, x.staple)));
     const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
     const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
     cardBackdrop(ctx, rtl, jpDate(D.date), D.line);
@@ -4772,6 +4780,10 @@ async function cardCanvas(kind, arg){
             ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = x.d === TODAY ? '#fff' : CARD_C.accent;
             ctx.font = `700 38px ${CARD_SERIF}`; ctx.fillText(String(dt.getDate()), bx + 46, mid + 6);
             ctx.fillStyle = x.d === TODAY ? '#dbe6f6' : (wd === 0 ? '#b3402f' : wd === 6 ? '#2f6aa8' : CARD_C.muted); ctx.font = `600 22px ${CARD_SANS}`; ctx.fillText(wdName(wd), bx + 46, mid + 32, 84);
+            if (x.skip){
+                ctx.fillStyle = CARD_C.muted; ctx.textBaseline = 'middle'; ctx.textAlign = rtl ? 'right' : 'left'; ctx.font = `600 36px ${CARD_SANS}`;
+                ctx.fillText(t('作らない日'), rtl ? bx - 24 : bx + 92 + 24, mid, pw - 80 - 92 - 24 - 24); return;
+            }
             const pr = rh / 2 - 8, pcx = rtl ? bx - 24 - pr : bx + 92 + 24 + pr;
             cardPlate(ctx, pcx, mid, pr, imgs[i], x.r, x.r.name);
             const tw = pw - 80 - 92 - 24 - pr * 2 - 24, tcx = rtl ? pcx - pr - 24 - tw : pcx + pr + 24;
@@ -4921,6 +4933,7 @@ function notifBuild(now){
         else for (let i = 0; i < NOTIFY_DAYS; i++){
             const d = addDays(TODAY, i), when = at(d, hour);
             if (when <= now || (i === 0 && S.cook && S.cook.d === TODAY)) continue;
+            if (S.week && S.week.days.some(y => y.d === d && y.skip)) continue;   // 作らない日は「献立を決めましょう」も出さない
             const x = days.find(y => y.d === d), r = x && byId(x.id);
             if (!r){ out.push({id:NOTIFY_DAY_ID + i, title:t('今日の献立を決めましょう'), body:t('おまかせで、主菜・副菜・汁ものをすぐに提案します。'), schedule:{at:when, allowWhileIdle:true}}); continue; }
             const min = dayDishes(x).reduce((a, y) => a + (Number(y.min) || 0), 0), ings = notifIngs(r);
@@ -5545,11 +5558,17 @@ function viewToday(){
                 <div class="t" data-act="paywall-week"><span class="veil">${'●'.repeat(Math.min(8, r.name.length))}</span><div class="s">${esc(t('プラスで見られます'))}</div></div>
                 <span class="plus-mark">${esc(t('プラス'))}</span>
             </div>`;
+            if (x.skip) return `
+            <div class="item skipped">
+                <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
+                <div class="t"><b>${esc(t('作らない日'))}</b><div class="s">${esc(t('買い物メモに入れていません'))}</div></div>
+                <button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作る日に戻す'))}</button>
+            </div>`;
             return `
             <div class="item">
                 <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
                 <div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}</div>${weekExtraHtml(x)}</div>
-                <button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button>
+                <div class="week-acts"><button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作らない'))}</button></div>
             </div>`; }).join('')}</div>
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
@@ -6825,16 +6844,22 @@ document.addEventListener('click', e => {
         }
         case 'week-reroll': {
             const d = el.dataset.d, w = S.week; const idx = w.days.findIndex(x => x.d === d);
+            if (idx < 0 || w.days[idx].skip) break;   // 作らない日の料理は変えない
             const used = new Set(w.days.map(x => x.id));
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
             const r = pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
             if (r){ w.days[idx].id = r.id; delete w.days[idx].extra; save(); }
             else {   // 主菜が7つしかない国: ほかの日と入れかえる（となりの日は避ける）
-                const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && w.days[j].id !== w.days[idx].id);
+                const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && !w.days[j].skip && w.days[j].id !== w.days[idx].id);
                 const j = others.length ? others[Math.floor(Math.random() * others.length)] : -1;
                 if (j >= 0){ const tmp = w.days[idx].id; w.days[idx].id = w.days[j].id; w.days[j].id = tmp; delete w.days[idx].extra; delete w.days[j].extra; save(); }
             }
             render(); break;
+        }
+        case 'week-skip': {   // その日だけを「作らない日」にする／戻す。料理は消さずに残すので、戻すと同じ料理に戻る。ほかの日・料理は動かない
+            const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x) break;
+            if (x.skip) delete x.skip; else x.skip = true;
+            save(); render(); break;
         }
         case 'toggle-ing': {
             const v = el.dataset.v, k = keyOf(v);
