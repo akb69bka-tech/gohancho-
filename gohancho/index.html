@@ -6,7 +6,16 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v18';/* sw.js の VERSION（gohancho-v18）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>
+/* アプリ本体が最後まで動かなかった（保存してある画面が途中で切れていた・壊れていた）ときだけ、保存をすべて捨てて1回だけ読み直す。壊れた画面の中に残っていても動くよう、先頭に置く */
+window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
+    if (sessionStorage.getItem('gohanHeal')) return;
+    sessionStorage.setItem('gohanHeal', '1');
+    Promise.all([window.caches ? caches.keys().then(function(ks){ return Promise.all(ks.filter(function(k){ return k.indexOf('gohancho-') === 0 && k !== 'gohancho-img-v1'; }).map(function(k){ return caches.delete(k); })); }) : 0,
+        navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function(rs){ return Promise.all(rs.map(function(r){ return r.unregister(); })); }) : 0]).catch(function(){}).then(function(){ location.reload(); });
+}catch(e){} });
+</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1474,16 +1483,28 @@ function wantLang(){
     if (cc === 'JP') return 'ja';
     return availLang(countryOf(cc).lang) || 'en';
 }
+/* ---- 画面の言葉・国のレシピの読みこみ ----
+   URL に ?v=<ASSET_V> を付ける（sw.js の VERSION と同じ値。版が変わると別のファイルとして取り直す）。
+   読めなかった・途中で切れていた（保存が壊れていた）ときは、保存を捨てて取り直し、もう1回だけ読む */
+const assetUrl = u => u + '?v=' + (window.ASSET_V || '');
+function swEvict(u){
+    try{ const c = navigator.serviceWorker && navigator.serviceWorker.controller; if (c) c.postMessage({type:'evict', url:u}); }catch(e){}
+    return new Promise(r => setTimeout(r, 120)).then(() => fetch(u, {cache:'reload'}).catch(() => {}));
+}
+function loadScript(u, ok){
+    const once = () => new Promise(res => {
+        const el = document.createElement('script');
+        el.src = u;
+        el.onload = () => res(!!ok());
+        el.onerror = () => { el.remove(); res(false); };
+        document.head.appendChild(el);
+    });
+    return once().then(good => good ? true : swEvict(u).then(once));
+}
 const langLoads = {};
 function loadLang(l){
     if (l === 'ja' || I18N[l]) return Promise.resolve();
-    return langLoads[l] || (langLoads[l] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `i18n/${l}.js`;
-        el.onload = () => res();
-        el.onerror = () => { delete langLoads[l]; res(); };
-        document.head.appendChild(el);
-    }));
+    return langLoads[l] || (langLoads[l] = loadScript(assetUrl(`i18n/${l}.js`), () => I18N[l]).then(good => { if (!good) delete langLoads[l]; }));
 }
 async function setLang(l){
     await Promise.all([loadLang(l), l !== 'ja' && l !== 'en' ? loadLang('en') : null]);
@@ -2538,7 +2559,7 @@ function addGenerated(items){
 }
 async function loadGenerated(){
     try{
-        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION));
+        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION + '.' + (window.ASSET_V || '')));
         if (!res.ok) return;
         const m = await res.json();
         addGenerated((m && m.items) || {});
@@ -7494,13 +7515,7 @@ function guessCountry(){
 }
 function loadPack(cc){
     if (cc === 'JP' || PACKS[cc]) return Promise.resolve(PACKS[cc] || null);
-    return new Promise((res, rej) => {
-        const el = document.createElement('script');
-        el.src = `packs/${cc.toLowerCase()}.js`;
-        el.onload = () => PACKS[cc] ? res(PACKS[cc]) : rej(new Error('pack'));
-        el.onerror = () => rej(new Error('pack'));
-        document.head.appendChild(el);
-    });
+    return loadScript(assetUrl(`packs/${cc.toLowerCase()}.js`), () => PACKS[cc]).then(good => { if (good) return PACKS[cc]; throw new Error('pack'); });
 }
 const PACK_TYPE = {main:'主菜', side:'副菜', soup:'汁物', rice:'ごはん', noodle:'麺'};
 const PACK_METHOD = {simmer:'煮', stirfry:'炒', grill:'焼', fry:'揚', raw:'和え', soup:'汁', rice:'炊'};
@@ -7516,12 +7531,9 @@ window.GOHAN_PACK_TR = (cc, lang, d) => { if (cc && lang && d){ d.tlang = lang; 
 function loadPackTr(cc, lang){
     const k = cc + '.' + lang;
     if (k in PACK_TR) return Promise.resolve(PACK_TR[k]);
-    return trLoads[k] || (trLoads[k] = new Promise(res => {
-        const el = document.createElement('script');
-        el.src = `packs/i18n/${cc.toLowerCase()}.${lang}.js`;
-        el.onload = () => res(PACK_TR[k] || null);
-        el.onerror = () => { delete trLoads[k]; res(null); };   // 読めなかったことは覚えない（電波が戻れば読みに行く）
-        document.head.appendChild(el);
+    return trLoads[k] || (trLoads[k] = loadScript(assetUrl(`packs/i18n/${cc.toLowerCase()}.${lang}.js`), () => PACK_TR[k]).then(good => {
+        if (!good) delete trLoads[k];   // 読めなかったことは覚えない（電波が戻れば読みに行く）
+        return good ? PACK_TR[k] : null;
     }));
 }
 function trLangFor(cc){ return cc === 'JP' ? (LANG === 'ja' ? null : LANG) : (LANG === 'en' ? null : LANG); }
@@ -7911,7 +7923,22 @@ window.addEventListener('focus', refreshToday);
 if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの長さ・価格を、はじめの案内より先に読んでおく
 loadGenerated().then(loadPhotos);
 loadMine();
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){ navigator.serviceWorker.register('sw.js').catch(() => {}); }
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){
+    navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(() => {});
+    // 新しい版が入った（前の版で開いたまま／保存した画面で開いた）ときは、アプリに戻ってきたときに読み直す（開いている途中の画面は触らない）
+    let swNew = false;
+    navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'gohancho-updated') swNew = true; });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden || !swNew) return;
+        try{
+            const n = Number(sessionStorage.getItem('gohanReload') || 0); if (n >= 3) return;   // 読み直しが続かないように
+            if (document.querySelector('#modal-root [role="dialog"], .sheet.open') || (typeof hf !== 'undefined' && hf.on)) return;
+            sessionStorage.setItem('gohanReload', String(n + 1)); history.replaceState(null, '', '#' + tab); location.reload();
+        }catch(e){}
+    });
+}
+try{ sessionStorage.removeItem('gohanHeal'); }catch(e){}
+window.__gohanOK = 1;   // ここまで動いた印（下の保存の立て直しが見る）
 </script>
 </body>
 </html>
