@@ -3187,9 +3187,12 @@ const PLAN = {
     // 'app': アプリ側で trialDays 日間を数え、過ぎたら購入するまでロック（App Store のお試しオファーは設定しない。予備）
     trialMode: 'store',
     get introTrialLabel(){ return introLabel().replace(/[。.]\s*$/, ''); },   // App Store のお試しオファー（RevenueCat から取れた長さ）に合わせる
+    // 無料版を残す（フリーミアム）か。false＝いまのしくみ: 課金ありなら、お試しが終わって未購入のあいだはすべてロック（無料版はない）。
+    // true にすると isLocked() が常に false になり、下の freeLimits の範囲が無料版になる（今日の献立・作り方・材料さがし・記録・今日の分の買い物などは無料のまま）。課金の経路は増えない
+    freeTier: false,
     freeLimits: {dishes:4, twistPerDay:3, myPhotos:12, weekDays:PLAN_WEEK_FREE, shoppingHints:1},
     // プラスの内容。いまのしくみ（課金ありなら購入・お試しなしではすべてロック、なしなら全員無料）には「無料版」がないので、無料版との差ではなく使えることを並べる。ひとひねりは日本＋日本語のときだけ
-    get benefits(){ return [t('毎日の献立を、お膳ごと提案'), t('同じ料理が続かない'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('献立の予定と買い物メモ'), t('冷蔵庫の材料から探せる'), t('買い足すと作れる料理が増える食材をすべて表示'), ...(twistAvailable() ? [t('定番をひとひねり')] : []), t('ひと手間の「やってみた」で腕前を記録'), t('世界のレシピ'), t('家族に送る')]; },
+    get benefits(){ if (this.freeTier) return [t('5品・6品の献立（おもてなし・作り置きの日に）'), t('献立の予定と買い物メモ'), t('買い足すと作れる料理が増える食材をすべて表示'), ...(twistAvailable() ? [t('定番をひとひねり')] : []), t('ひと手間の「やってみた」で腕前を記録')]; return [t('毎日の献立を、お膳ごと提案'), t('同じ料理が続かない'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('献立の予定と買い物メモ'), t('冷蔵庫の材料から探せる'), t('買い足すと作れる料理が増える食材をすべて表示'), ...(twistAvailable() ? [t('定番をひとひねり')] : []), t('ひと手間の「やってみた」で腕前を記録'), t('世界のレシピ'), t('家族に送る')]; },
 };
 function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
@@ -3199,7 +3202,7 @@ function isSubscribed(){
 function trialUsed(){ return Math.max(0, daysBetween(S.firstUse || TODAY, TODAY)); }
 function trialActive(){ return PLAN.billingEnabled && PLAN.trialMode === 'app' && trialUsed() < PLAN.trialDays; }
 function trialDaysLeft(){ return Math.max(0, PLAN.trialDays - trialUsed()); }
-function isLocked(){ return PLAN.billingEnabled && !isSubscribed() && !trialActive() && !monitorActive(); }
+function isLocked(){ return PLAN.billingEnabled && !PLAN.freeTier && !isSubscribed() && !trialActive() && !monitorActive(); }
 // 無料体験キャンペーン（モニター）: 使いはじめの1週間は無条件。以後は感想・改善点を送るたびに1週間ずつ、最大 campaign.days 日まで開く
 function monitorOn(){ return PLAN.billingEnabled && PLAN.campaign.active && !!S.firstUse; }
 function monitorCapEnd(){ return addDays(S.firstUse, PLAN.campaign.days); }
