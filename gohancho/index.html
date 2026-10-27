@@ -1271,7 +1271,9 @@ function normalizeState(d){
       st.fridge.forEach(f => { if (typeof f !== 'string' || out[f]) return; const e = fm[f] && typeof fm[f] === 'object' && !Array.isArray(fm[f]) ? fm[f] : null;
           const o = {d: e && isYmd(e.d) ? e.d : (had ? ymd() : '')}; if (e && e.soon === true) o.soon = true; out[f] = o; });
       st.fridgeMeta = out; }
-    st.savedMenus = arr(st.savedMenus).filter(m => m && typeof m.id === 'string' && typeof m.name === 'string' && Array.isArray(m.ids) && m.ids.length && Array.isArray(m.slots) && m.ids.every(x => typeof x === 'string' || typeof x === 'number')).slice(0, 30);   // 「保存した献立」は30件まで
+    st.savedMenus = arr(st.savedMenus).filter(m => m && typeof m.id === 'string' && typeof m.name === 'string' && Array.isArray(m.ids) && m.ids.length && Array.isArray(m.slots) && m.ids.every(x => typeof x === 'string' || typeof x === 'number')).slice(0, 30)   // 「保存した献立」は30件まで
+        .map(m => { if (!('mix' in m) && !('names' in m)) return m; const mx = {}; Object.entries(obj(m.mix)).forEach(([k, v]) => { if (['主菜', '副菜', '汁物'].includes(k) && typeof v === 'string' && /^[A-Z]{2}$/.test(v)) mx[k] = v; });   // 国ミックス（枠 → 国）
+            return Object.assign({}, m, {mix: mx, names: arr(m.names).filter(x => typeof x === 'string').slice(0, 8)}); });
     st.skills = arr(st.skills).filter(x => x && typeof x === 'object');   // 「やってみた」の記録は {d, id, skill}
     st.settings.servings = Math.min(6, Math.max(1, Math.round(Number(st.settings.servings)) || 2));
     { const dflt = DEFAULT_STATE.settings, cl = (k, lo, hi) => { const n = Math.round(Number(st.settings[k])); st.settings[k] = Number.isFinite(n) && n >= lo && n <= hi ? n : (dflt[k] === undefined ? null : dflt[k]); };
@@ -1292,6 +1294,7 @@ function normalizeState(d){
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
     if (!st.settings.avoidX || typeof st.settings.avoidX !== 'object' || Array.isArray(st.settings.avoidX)) delete st.settings.avoidX;
     st.settings.mix = obj(st.settings.mix);
+    st.settings.scarce = arr(st.settings.scarce).filter(x => typeof x === 'string' && x.trim());   // 手に入りにくい食材
     // 家族のプロフィール（最大6人）と、今日食べる人（null = 全員）
     const strs = x => arr(x).filter(v => typeof v === 'string' && v.trim());
     const seenF = new Set();
@@ -1674,7 +1677,7 @@ function easyFits(r, lv){
 // その枠の「ラク」の条件。{lv: 0〜3 = 段階 / 4 = 手早い順の少数 / 5 = 条件なし, ids: lv 4 のときの料理 id の集まり, max: 出る料理の最長の分, n: 件数}
 function easyInfo(slot){
     const pool = poolFor(slot);
-    const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join();
+    const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join() + '|' + scarceList().join();
     if (easyMemo.has(key)) return easyMemo.get(key);
     const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
     let lv = 0, hit = [];
@@ -1787,7 +1790,7 @@ function bentoFits(r){ return (r.type === '主菜' || r.type === '副菜') && BE
 const bentoMemo = new Map();
 function bentoCount(slot){
     const pool = poolFor(slot);
-    const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join();
+    const key = (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.length + '|' + S.settings.avoid.join() + '|' + scarceList().join();
     if (bentoMemo.has(key)) return bentoMemo.get(key);
     const n = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && bentoFits(r) && !S.hidden.includes(r.id) && !isAvoided(r)).length;
     if (bentoMemo.size > 60) bentoMemo.clear();
@@ -4085,7 +4088,16 @@ function seasItems(r){
 // 調味料の欄の苦手な食材のうち、置き換えて出せるもの（鶏ガラスープの素など。seasFor で替える）
 function seasSwappable(r, i){ return swapOn() && !r.pack && !r.trLang && !(allergyList().length && itemAvoided(i, allergyCtx())) ? SEAS_SWAP.some(([f, re]) => { re.lastIndex = 0; return re.test(i.name); }) : false; }
 function seasAvoided(r, c){ return seasItems(r).some(i => itemAvoided(i, c) && !seasSwappable(r, i)); }
-function isAvoided(r){
+// 手に入りにくい食材（設定で登録）。必須の材料（「なくても可」でないもの）に使う料理は出さない。置き換えはしない
+function scarceList(){ return Array.isArray(S.settings.scarce) ? S.settings.scarce : []; }
+function scarceCtx(){ return avoidCtxFor(scarceList(), 's'); }
+function isScarce(r){
+    if (!r || !r.items || !scarceList().length) return false;
+    const c = scarceCtx(); return r.items.some(i => !i.opt && itemAvoided(i, c));
+}
+function isAvoided(r){ return isScarce(r) || isAvoidedCore(r); }
+// 苦手な食材・アレルギー・辛さで出さない料理（手に入りにくい食材は含めない）
+function isAvoidedCore(r){
     if (!r || !r.items) return false;
     if (mildOn() && spiceLevel(r) >= 2) return true;   // 辛いのが苦手な人がいるときは、とても辛い料理は出さない
     if (!effAvoid().length) return false;
@@ -4144,14 +4156,14 @@ function swapPool(){
 }
 // 1つの材料の代わり（なければ null）
 function swapFor(i){
-    const c = avoidCtx(), sig = c.sig + '|' + currentCountry() + '|' + LANG;
+    const c = avoidCtx(), sc = scarceList().length ? scarceCtx() : null, sig = c.sig + '|' + (sc ? sc.sig : '') + '|' + currentCountry() + '|' + LANG;
     if (!swapFor.c || swapFor.c.sig !== sig) swapFor.c = {sig, m: new Map()};
     const ck = SWAP_TXT(i);   // 各国のパックは同じキー（fish など）で別の部位があるので、名前ごとに覚える
     if (swapFor.c.m.has(ck)) return swapFor.c.m.get(ck);
     let hit = null;
     const rule = SWAP_RULES.find(x => x.is(i));
     if (rule) for (const [ok, tip] of rule.to){
-        const j = swapPool().find(x => SWAP_TXT(x) !== SWAP_TXT(i) && ok(x) && !itemAvoided(x, c));
+        const j = swapPool().find(x => SWAP_TXT(x) !== SWAP_TXT(i) && ok(x) && !itemAvoided(x, c) && !(sc && itemAvoided(x, sc)));   // 手に入りにくい食材に置き換えない
         if (j){ hit = {i: j, tip}; break; }
     }
     swapFor.c.m.set(ck, hit); return hit;
@@ -4317,6 +4329,10 @@ function viewSettings(){
                 <label class="check" style="margin-top:6px"><input type="checkbox" data-act="avoid-swap" ${swapOn()?'checked':''}><span>${esc(t('ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）'))}</span></label>
                 <span class="small muted">${esc(swapOn() ? t('置き換えられない料理（卵・乳製品・ナッツ・小麦や、ハム・だしの素などの加工品を使う料理）は出しません。「なくても可」の材料は抜いて出します。') : t('苦手な食材を必ず使う料理は出しません。「なくても可」の材料にだけ入っている料理は、そのまま出します（その材料は入れなくて大丈夫です）。'))}</span>
                 <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span></div>
+            <div class="field" id="scarce-field"><label>${esc(t('手に入りにくい食材（これを使う料理は出しません）'))}</label>
+                ${scarceList().length ? `<div class="chips">${scarceList().map(x => `<span class="chip have">${esc(x)}<button class="x" data-act="scarce-del" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`).join('')}</div>` : ''}
+                <form class="inputbar" data-form="add-scarce"><input type="text" id="scarce-input" placeholder="${esc(t('食材の名前（例: 長ねぎ、しらたき）'))}" autocomplete="off" aria-label="${esc(t('手に入りにくい食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
+                <span class="small muted">${esc(t('登録した食材は、「なくても可」ではない材料にあるときだけ見ます。調味料の欄は見ません。ほかの食材への置き換えはしません。'))}</span></div>
         </div>
         ${familySettingsHtml()}
         <div class="set-group">
@@ -4654,7 +4670,8 @@ function menuShareText(m = session.menu, d = TODAY){
     const lines = [t('【{date}の献立】', {date:jpDate(d)})];
     const el = eatersLine(); if (el) lines.push(el);
     const wx = d === TODAY && S.week && S.week.days.find(y => y.d === TODAY); if (wx && wx.who && !wx.skip) lines.push(t('担当：{name}', {name:wx.who}));
-    m.items.forEach(x => { if (x.r) lines.push(t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r)})); });
+    const mixed = m.items.some(x => x.r && (x.r.pack || 'JP') !== currentCountry());   // 国ミックスの献立は、どの国の料理かを添える
+    m.items.forEach(x => { if (x.r) lines.push(mixed ? t('{slot}：{name}（{country}）', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r), country:countryLabel(countryOf(x.r.pack || 'JP'))}) : t('{slot}：{name}', {slot:slotLabel(x.slot || slotOf(x.r)), name:x.r.name + swapShare(x.r)})); });
     const main = m.items[0] && m.items[0].r;
     const st = stapleSpot();
     if (!(main && (main.type === 'ごはん' || main.type === '麺')) && st) lines.push(t('{slot}：{name}', {slot:t('主食'), name:st.name}));
@@ -5381,16 +5398,28 @@ function saveMenu(){
     const m = session.menu; if (!m) return;
     const items = m.items.filter(x => x.r); if (!items.length) return;
     const ids = items.map(x => x.r.id), slots = items.map(x => x.slot);
-    const dup = (S.savedMenus || []).find(x => x.ids.join() === ids.join());
+    // 国ミックス（枠ごとの国）。いまの国と違う国の料理が入っている枠だけ覚える。復元のとき、ほかの枠を動かさないため
+    const mix = {}; items.forEach(x => { const cc = x.r.pack || 'JP'; if (cc !== currentCountry() && MIX_SLOTS.includes(x.slot) && !mix[x.slot]) mix[x.slot] = cc; });
+    const dup = (S.savedMenus || []).find(x => x.ids.join() === ids.join() && JSON.stringify(x.mix || {}) === JSON.stringify(mix));
     if (dup){ toast(t('同じ献立がすでに保存してあります')); return; }
     const name = t('{name}の日', {name: items[0].r.name});
-    S.savedMenus = [{id: 's' + Date.now(), name, d: TODAY, cc: currentCountry(), ids, slots}, ...(S.savedMenus || [])].slice(0, 30);
+    S.savedMenus = [{id: 's' + Date.now(), name, d: TODAY, cc: currentCountry(), ids, slots, mix, names: items.map(x => x.r.name).slice(0, 8)}, ...(S.savedMenus || [])].slice(0, 30);
     save(); render(); toast(t('「{name}」を保存しました。記録タブの「保存した献立」から呼び出せます', {name}));
 }
 // 保存した献立を今日の献立にする。使えなくなった料理（なくなった・苦手・出さない）の枠だけ選び直す
-function applySavedMenu(id){
+// 国ミックスで保存した献立は、保存したときの「枠ごとの国」に戻して復元する（その国の料理データを先に読みこむ）。国を選んでいない枠の料理は動かさない
+function applySavedMenu(id, loaded){
     const sm = (S.savedMenus || []).find(x => x.id === id); if (!sm) return;
     const n = sm.ids.length; if (!COMPOSE[n]){ toast(t('この献立は今は使えません')); return; }
+    const mix = sm.mix ? Object.assign({}, sm.mix) : null;   // 古い保存（国の記録なし）は、いまの組み合わせのまま
+    if (mix){
+        const need = [...new Set(Object.values(mix))].filter(cc => cc !== currentCountry() && !BROWSE[cc]);
+        if (need.length){
+            if (loaded){ toast(t('この国のデータを読みこめませんでした')); return; }
+            Promise.all(need.map(cc => loadBrowse(cc))).then(() => applySavedMenu(id, true)); return;
+        }
+    }
+    const prevMix = S.settings.mix; if (mix) S.settings.mix = mix;
     const items = sm.ids.map((rid, i) => { const r = byId(rid), it = {slot: sm.slots[i] || (r ? slotOf(r) : '副菜'), r}; return slotStillOk(it) ? it : {slot: it.slot, r: null}; });
     let redo = 0;
     items.forEach((it, i) => {
@@ -5399,7 +5428,8 @@ function applySavedMenu(id){
         if (it.slot === '主菜' && i === 0) it.r = suggestMain(others.filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot})));
         else it.r = suggestOrAny(it.slot, others, items[0].r);
     });
-    if (!items[0] || items[0].slot !== '主菜' || !items[0].r){ toast(t('この献立は今は使えません')); return; }
+    if (!items[0] || items[0].slot !== '主菜' || !items[0].r){ S.settings.mix = prevMix; toast(t('この献立は今は使えません')); return; }
+    if (mix) save();
     session.menu = {n, items, adj: n !== menuCount()}; session.twist = twistAvailable() ? suggestTwist() : null;   // 設定の品数と違う保存献立でも、あとの設定変更で丸ごと作り直さない
     setTab('today');
     toast(redo ? t('保存した献立を今日の献立にしました（{n}品は今は出せないので別の料理にしました）', {n: redo}) : t('保存した献立を今日の献立にしました'));
@@ -5586,7 +5616,7 @@ function viewToday(){
         const kind = it.slot === '主菜' ? vesselKind(r) : it.slot === '副菜' ? 'kobachi' : 'wan';
         const label = slotLabel(it.slot);
         const last = r ? lastLabel(r.id) : '';
-        const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoided(x));
+        const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoidedCore(x));
         const empty = it.slot === '汁物' && main && main.id === 'nikuudon' ? t('汁ものの麺なので、なし') : byAvoid ? t('苦手な食材を使わない料理がありません') : t('合う料理がありません');
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
@@ -5724,7 +5754,7 @@ function viewToday(){
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
-        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
+        <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${scarceList().length ? (/^(ja|zh)/.test(LANG) ? '' : ' ') + esc(t('手に入りにくい食材（{list}）を使う料理は出しません。', {list: joinNames(scarceList())})) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
         ${spendHtml()}
     </section>`;
 }
@@ -5738,7 +5768,7 @@ function cookItems(){
 // 食べる人や苦手な食材を変えたあとも、決めた献立の中身は黙って変えない。知らせて、取り消して選び直せるようにする
 function cookWarnHtml(){
     const c = S.cook; if (!c || c.d !== TODAY) return '';
-    const bad = cookItems().filter(x => isAvoided(x.r));
+    const bad = cookItems().filter(x => isAvoidedCore(x.r));
     if (!bad.length) return '';
     return `<div class="note warn cook-warn" role="alert"><span>${esc(t('決めた献立の「{names}」は、いま食べる人のアレルギー・苦手な食材・辛さに合いません。作る前に確かめるか、取り消して選び直してください。', {names: joinNames(bad.map(x => x.r.name))}))}</span><button class="btn sm" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>`;
 }
@@ -6107,7 +6137,7 @@ function viewLog(){
     </section>
     <section class="sec" id="saved-menus">
         <div class="sec-head"><h2>${esc(t('保存した献立'))}</h2><span class="hint">${esc(t('いつもの献立を残しておくと、ワンタップで今日の献立にできます'))}</span></div>
-        <div class="list">${(S.savedMenus || []).length ? S.savedMenus.map(sm => `<div class="item"><div class="t">${esc(sm.name)}<div class="s">${esc(joinNames(sm.ids.map(id => (byId(id) || {}).name).filter(Boolean)) || '')}${GAP()}${esc(jpDate(sm.d))}</div></div>
+        <div class="list">${(S.savedMenus || []).length ? S.savedMenus.map(sm => `<div class="item"><div class="t">${esc(sm.name)}<div class="s">${esc(joinNames(sm.ids.map(id => (byId(id) || {}).name).filter(Boolean)) || joinNames(sm.names || []) || '')}${GAP()}${esc(jpDate(sm.d))}${sm.mix && Object.keys(sm.mix).length ? '<br>🌏 ' + esc(joinNames(Object.entries(sm.mix).map(([sl, cc]) => t('{slot}：{name}', {slot: slotLabel(sl), name: countryLabel(countryOf(cc))})))) : ''}</div></div>
             <div class="item-acts"><button class="btn sm primary" data-act="saved-apply" data-id="${esc(sm.id)}">${esc(t('今日の献立にする'))}</button><button class="btn sm ghost danger" data-act="saved-rm" data-id="${esc(sm.id)}" aria-label="${esc(t('保存した献立を消す'))}">${esc(t('消す'))}</button></div></div>`).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「この献立を保存」で、いつもの献立を残せます。'))}</div>`}</div>
     </section>
     ${(h => h ? `<section class="sec" id="week-tally">
@@ -6818,6 +6848,10 @@ document.addEventListener('click', e => {
             if (i >= 0) a.splice(i, 1); else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
+        case 'scarce-del': {
+            const v = el.dataset.v; S.settings.scarce = scarceList().filter(x => x !== v);
+            save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
         case 'eater': {
             const id = el.dataset.v, cur = eaterMembers().map(m => m.id), on = cur.includes(id);
             S.eaters = on ? cur.filter(x => x !== id) : cur.concat(id);
@@ -7382,6 +7416,17 @@ document.addEventListener('submit', e => {
         else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
         render();
     }
+    if (f === 'add-scarce'){
+        const inp = $('#scarce-input'); const found = extractIngredients(inp.value);
+        if (!Array.isArray(S.settings.scarce)) S.settings.scarce = [];
+        const fresh = found.filter(x => !S.settings.scarce.some(y => keyOf(y) === keyOf(x)));
+        fresh.forEach(x => { S.settings.scarce.push(x); rememberAvoidX(x, inp.value); });
+        save(); reconcileMenu(); refreshWeek();
+        if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list:joinNames(fresh)}));
+        else if (found.length) toast(t('手に入りにくい食材にもう入っています'));
+        else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
+        render();
+    }
     if (f === 'fam-add-avoid'){
         const m = famOf(e.target); if (!m) return;
         const inp = e.target.querySelector('input'); const found = extractIngredients(inp.value);
@@ -7690,7 +7735,7 @@ function worldLists(list){
     const sig = avoidCtx().sig + '|' + swapOn() + '|' + mildOn();
     if (worldMemo && worldMemo.list === list && worldMemo.sig === sig) return worldMemo;
     const by = code => ({code, all: list.filter(r => code.includes(r.type))});
-    return worldMemo = {list, sig, bad: new Set(list.filter(isAvoided)), groups: [by(['主菜', 'ごはん', '麺']), by(['副菜']), by(['汁物'])]};
+    return worldMemo = {list, sig, bad: new Set(list.filter(isAvoidedCore)), groups: [by(['主菜', 'ごはん', '麺']), by(['副菜']), by(['汁物'])]};
 }
 // 料理の名前: 1行目は国旗と読める言葉の名前（訳がなく、その国の言葉が画面の言語と違うときは英語の名前）、2行目はその国の言葉の名前
 function worldNames(r, c){
@@ -7765,9 +7810,9 @@ async function setCountry(cc){
     packFail = null;
     if (old !== cc){
         S.countryData = S.countryData || {};
-        S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid};
+        S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, scarce: scarceList()};
         const d = S.countryData[cc] || {};
-        S.fridge = d.fridge || []; S.fridgeMeta = d.fridgeMeta || {}; S.staples = d.staples || []; S.settings.avoid = d.avoid || [];
+        S.fridge = d.fridge || []; S.fridgeMeta = d.fridgeMeta || {}; S.staples = d.staples || []; S.settings.avoid = d.avoid || []; S.settings.scarce = d.scarce || [];
         S.week = null;
     }
     S.settings.country = cc;
