@@ -155,12 +155,19 @@ Main features:
 - Shopping list grouped by store section, excluding ingredients the user already has.
 - Ingredient search ("what can I cook with what's in my fridge"), servings scaling, and disliked ingredients: when possible the disliked ingredient is swapped for another one (e.g. pork -> chicken); otherwise the dish is not suggested.
 
-Native iOS features used:
-- Local notifications: optional daily reminder (Settings). No push notifications, no server.
-- Share sheet: send the menu or shopping list to family.
-- Camera / photo library: optionally photograph a cooked dish or pick a photo (saved on device only).
-- Microphone / speech recognition: optional voice input for ingredient and dish search.
+Native iOS features used (all optional; none is needed to use the app, and each permission is requested only at the moment the user taps the related button):
+- Local notifications: daily reminder (Settings > Daily reminder) and cooking timers (tap a time such as "8 min" in a recipe's steps). The notification permission is requested only when the user turns on a reminder or starts a timer, never at launch. No push notifications, no server.
+- Share sheet / messenger links: send the menu or shopping list to family. Nothing is uploaded to our servers.
+- Camera / photo library: optionally add a photo of a cooked dish. Photos stay on the device.
+- Microphone / speech recognition: (1) the "Speak" button on the ingredient and dish search screens, to say an ingredient or dish name; (2) "Hands-free" in a recipe's Cook tab (off by default), which reads the step aloud and listens for "next". Both are requested only when the user taps them. The app does not save recordings; on iPhone the speech is processed by Apple's speech recognition. If permission is declined, typing works the same.
+- Read aloud: the device's built-in speech synthesis (AVSpeechSynthesizer via the web view). No network, no permission.
 - StoreKit in-app purchase, handled through the RevenueCat SDK.
+
+Other notes for review:
+- No account, no sign-in, no tracking and no ads (App Tracking Transparency is not used). Because there is no account, there is no account to delete; "Settings > Erase all data" removes all data on the device.
+- No user-generated content is shared with other users. Recipes or photos a user adds are stored only on that user's device.
+- The app gives cooking suggestions only. It makes no medical, nutrition or health claims. Allergy notices say to check ingredient labels yourself.
+- Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any outside payment page.
 
 In-app purchase: "Gohancho Plus", a monthly auto-renewable subscription (product ID gohancho_plus_monthly, JPY 380/month in Japan) with a 1-month free introductory offer for eligible new subscribers. This submission contains the monthly plan only; there is no yearly plan. After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 
