@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { execSync, spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8795/';
+const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const LANGS = (process.env.LANGS || 'ja,en,ar,th,ko,zh-Hans,de').split(',');
 const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 let fails = 0, checks = 0; const errs = [];
