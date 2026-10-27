@@ -572,7 +572,7 @@ GOHAN_I18N('es', {
     "今日のごはんです": "La comida de hoy",
     "今日はこれを作ります": "Hoy cocino esto",
     "今週の献立です": "Menú de esta semana",
-    "合計 {n}分": "Total {n} min",
+    "合計 {n}分": "Total: {n} min",
     "画像をつくれませんでした": "No se pudo crear la imagen",
     "画像のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Ha empezado la descarga de la imagen. Mira la lista de descargas del navegador.",
     "画像をつくっています…": "Creando la imagen…",

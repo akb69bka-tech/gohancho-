@@ -290,6 +290,7 @@ a{color:var(--accent)}
 /* 入力 */
 .field{display:flex;flex-direction:column;gap:6px}
 .field>label{font-size:.8rem;color:var(--muted);font-weight:500}
+input[type=text],input[type=search]{text-overflow:ellipsis}   /* 長い入力例は、途中で切れたとわかるように … を付ける */
 input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.55rem .75rem;width:100%;min-height:44px}
 textarea{min-height:90px;resize:vertical}
 small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を下回らないように */
@@ -462,14 +463,16 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .tray .spot{width:var(--w,46%);flex:0 1 auto}
 /* 5品以上: 3〜4列に詰めて、スクロールせずに全部の絵が見えるように */
 /* お膳の真ん中の丸い「まるごと入れ替え」: 1段目と2段目のあいだに置き、絵を見ながら続けて押せる */
-.tray-shuffle{display:flex;justify-content:center;align-items:center;margin:-6px 0;position:relative}
-.tray-shuffle::before,.tray-shuffle::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14));margin:0 10px}
+.tray-shuffle{display:flex;justify-content:center;align-items:flex-start;margin:-6px 0 0;position:relative}
+.tray-shuffle::before,.tray-shuffle::after{content:"";flex:1;height:1px;margin-top:34px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14));margin-left:10px;margin-right:10px}
 .tray-shuffle::after{background:linear-gradient(90deg,rgba(255,255,255,.14),transparent)}
-.shuffle{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px;cursor:pointer;
-    box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08);font:inherit;font-size:.75rem;font-weight:700;line-height:1.1;text-align:center;transition:transform .15s ease}
-.shuffle svg{width:24px;height:24px;flex:0 0 auto}
-.shuffle span{max-width:58px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.shuffle{flex:0 0 auto;border:0;background:none;color:var(--tray-ink);
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;padding:0;cursor:pointer;max-width:min(11rem,56vw);
+    font:inherit;font-size:.75rem;font-weight:700;line-height:1.25;text-align:center;transition:transform .15s ease}
+.shuffle .sh-ic{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+    box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08)}
+.shuffle svg{width:28px;height:28px;flex:0 0 auto}
+.shuffle span.sh-tx{display:block;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
 .shuffle:hover{transform:scale(1.05)}
 .shuffle:active{transform:scale(.94)}
 .shuffle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -477,7 +480,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 @keyframes shufflespin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){.shuffle.spin svg{animation:none}.shuffle{transition:none}}
 .tray.compact .tray-shuffle{margin:-4px 0}
-.tray.compact .shuffle{width:62px;height:62px}
+.tray.compact .shuffle .sh-ic{width:62px;height:62px}
 .tray.compact{gap:10px;padding:14px 10px 12px}
 .tray.compact .tray-row{gap:4px;align-items:flex-start}
 .tray.compact .spot{width:var(--w,31%)}
@@ -569,6 +572,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .week-acts .btn{border-color:var(--line);flex:0 1 auto}
 .week-acts .btn.who{margin-inline-end:auto;justify-content:flex-start;text-align:start}
 .week-acts .btn.who.set{background:var(--surface-2);font-weight:600}
+@media (max-width:400px){.week-acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.week-acts .btn.who{grid-column:1 / -1}.week-acts:has(> .btn:only-child){grid-template-columns:minmax(0,1fr)}.week-acts .btn{width:100%;min-width:0;padding-inline:.3rem;line-height:1.2;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}.week-acts .btn.who{margin-inline-end:0;justify-content:center;text-align:center}}   /* 狭い画面では、担当を1段目いっぱいに、かえる・作らないを2段目に同じ幅で並べる */
 .week .item.skipped{background:var(--surface-2)}
 .week .item.skipped .t{color:var(--muted);cursor:default;text-wrap:balance}
 .who-names{margin:10px 0}
@@ -599,7 +603,11 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .shop .shop-row .for{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
 .shop .shop-row .for .btn{min-height:44px;margin-inline-start:auto}
 .shop .nm{overflow-wrap:anywhere}
-.shop.big .shop-row{min-height:76px;padding:14px;grid-template-columns:36px minmax(0,1fr) auto}
+.shop.big .shop-row{min-height:76px;padding:14px;grid-template-columns:36px minmax(0,1fr)}
+.shop.big .shop-row input{grid-row:span 3}
+.shop.big .nm{grid-column:2;-webkit-hyphens:auto;hyphens:auto}
+.shop.big .q{grid-column:2;text-align:start}
+.shop.big .for{grid-column:2}
 .shop.big .shop-row input{width:36px;height:36px}
 .shop.big .nm{font-size:1.25rem}
 .shop.big .q{font-size:1rem}
@@ -619,7 +627,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel.rise-in{animation:rise .35s ease-out backwards}   /* 入れ替わった料理の器だけ（描き直しのたびに全部が弾むと、押していない料理まで動いて見える） */
-.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cond-sum > span:first-child{white-space:nowrap}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-sum > .small{white-space:nowrap;flex:none}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35}.cond-sum > span:first-child{flex:0 1 auto}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}   /* 1fr のままだと、長い言葉（イタリア語・ドイツ語など）で列が広がって、画面全体が横にはみ出す */
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
 .big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
@@ -666,7 +674,7 @@ nav.tabs.many button{font-size:min(calc(.75rem / var(--ts,1)), 2.9vw);line-heigh
 html[lang="hi"] *,html[lang="ar"] *,html[lang="th"] *{letter-spacing:normal!important}   /* 字間をあけると、つながる文字（ヒンディー語・アラビア語・タイ語）の形がくずれる */
 html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}   /* 韓国語を単語の途中で折り返さない */
 /* お膳の「主菜・副菜」の小さな見出しは1行で（長い言葉は … で切る）。料理名は単語の途中で切らず、できる言語ではハイフンで分ける */
-.spot-label .slot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spot-label .slot{white-space:normal;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;line-height:1.3}   /* 枠名は省略せず、狭いときは折り返す */
 .spot-label .nm{-webkit-hyphens:auto;hyphens:auto}
 /* お膳の文字の欄は行数を固定する。料理の名前・説明の長さで高さが変わると、押していない段の絵まで上下に動くため。
    はみ出す分は … で切る（全文は絵のボタンの読み上げ名と、料理の詳細に出る）。行の高さは行ごとに決めて、言語や絵文字の大きさに左右されない */
@@ -704,7 +712,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
 .cook-tab .thumb{width:44px;height:44px;margin-bottom:2px}
 .cook-tab .ct-slot{font-size:.75rem;color:var(--muted);letter-spacing:.08em}
-.cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語で、タブが画面の幅を超えて、画面全体が横に広がらないように */
+.cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語で、タブが画面の幅を超えて、画面全体が横に広がらないように */
 .cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
 .cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
 .cook-card{display:flex;flex-direction:column;gap:10px;margin-top:10px}
@@ -713,7 +721,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-head h3{margin:0 0 4px;font-size:1.1rem}
 .points{background:var(--accent-soft);border-radius:var(--r);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
 .pt-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.pt-l{margin:0;font-size:.88rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pt-l{margin:0;font-size:.88rem;line-height:1.55;overflow-wrap:anywhere}   /* コツや火の通しの注意は、途中で切らずに全文を出す */
 .more-detail{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px;display:flex;flex-direction:column;gap:4px}
 .vid-ings{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 .vid-ing{display:flex;align-items:center;gap:10px;padding:8px 12px;min-height:44px;cursor:pointer;border-bottom:1px solid var(--line)}
@@ -6604,8 +6612,8 @@ function viewToday(){
         compactRows.forEach((row, ri) => { row.forEach((h, ci) => { row[ci] = h.replace('style=""', `style="--w:${row.length >= 4 ? w4 : w3}"`); }); });
     }
     const shuffleBtn = `<div class="tray-shuffle"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg>
-        <span>${LANG === 'ja' ? 'まるごと<br>入れ替え' : esc(t('まるごと入れ替え'))}</span></button></div>`;
+        <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
+        <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button></div>`;
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     if (S.week && weekSidesOn()) ensureWeekExtras();
@@ -6714,8 +6722,8 @@ function cookWarnHtml(){
    食べたい時刻を入れると、決めた献立の「各料理に書かれた所要時間」だけから、作り始める目安を出す。
    確かに言えるのは 2 つの範囲だけ: 1品ずつ順に作れば合計（上限）／同時に進めても、いちばん時間のかかる1品の時間（下限）。
    待ち時間の中身や段取りは、料理の文章からは決めつけない。時刻は端末の中にだけ残る（S.settings.dinnerAt = 'HH:MM'） */
-function clockText(d){
-    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {hour:'numeric', minute:'2-digit'}).format(d); }catch(e){ return `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; }
+function clockText(d){   // 「6:30 PM」は行の途中で2行に割れないよう、空白を改行しない空白にする
+    try{ return new Intl.DateTimeFormat(dateLoc() + '-u-nu-latn', {hour:'numeric', minute:'2-digit'}).format(d).replace(/[\s\u202f]+/g, '\u00a0'); }catch(e){ return `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; }
 }
 function eatPlanHtml(items){
     const rs = items.map(x => x.r);
@@ -6867,7 +6875,7 @@ function viewFridge(){
         <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
         <div class="card">
         <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] && RECIPES[0].name.length <= 14 ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
             <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
