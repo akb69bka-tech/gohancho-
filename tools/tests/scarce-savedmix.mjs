@@ -21,7 +21,7 @@ const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const open = async (cc, n = 4) => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
-    await p.addInitScript(([cc, n]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:n}})); } }, [cc, n]);
+    await p.addInitScript(([cc, n]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:n}})); } }, [cc, n]);
     await p.goto(URL_); await p.waitForTimeout(1500); await p.evaluate(() => { hasPro = () => true; session.menu = null; render(); });
     return {ctx, p};
 };

@@ -16,7 +16,7 @@ const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
 async function open(lang, store = {}){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(lang + ': ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) errs.push(lang + ': ' + m.text()); });
-    await p.addInitScript(([lang, store]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:'JP', dishCount:3, uiLang:lang, avoidDays:10, servings:2, avoid:[]}, ...store})); } }, [lang, store]);
+    await p.addInitScript(([lang, store]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:'JP', dishCount:3, uiLang:lang, avoidDays:10, servings:2, avoid:[]}, ...store})); } }, [lang, store]);
     await p.goto(URL_); await p.waitForTimeout(900); await p.evaluate(() => { hasPro = () => true; });
     return { ctx, p };
 }
