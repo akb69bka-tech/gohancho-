@@ -1378,5 +1378,29 @@ GOHAN_PACK_TR('FR', 'fr', {
       ],
       tip: { add: 'Une poignée d\'amandes effilées ou de petits pois à la fin', why: 'De la couleur et du croquant sans effort', skill: 'Nacrer le riz dans le beurre', how: 'Enrobé de matière grasse, chaque grain reste séparé et le riz ne colle pas.' },
     },
+    'fr_steakhache': {
+      name: 'Steak haché maison à l’échalote',
+      ings: [['Bœuf haché (5 à 15 % de matière grasse)', '300 g'], ['Échalote', '1'], ['Jaune d’œuf', '1?'], ['Salade verte, pour servir', '1/2 salade?']],
+      seas: '1 c. à soupe de beurre · 1 c. à café d’huile · sel · poivre · 1 c. à café de moutarde de Dijon (facultatif)',
+      steps: [
+        'Hachez finement l’échalote. Mélangez-la délicatement à la viande avec une bonne pincée de sel, du poivre, la moutarde et le jaune d’œuf si vous en utilisez, sans trop travailler la viande. Formez 2 steaks de 2 cm d’épaisseur et creusez légèrement le centre.',
+        'Faites chauffer l’huile et la moitié du beurre dans une poêle à feu moyen-vif, jusqu’à ce qu’il mousse.',
+        'Faites cuire les steaks 3 à 4 minutes sur la première face sans les bouger, jusqu’à ce qu’ils soient bien dorés, puis retournez-les et comptez 3 minutes (un peu plus pour une cuisson bien cuite).',
+        'Ajoutez le reste du beurre, arrosez-en les steaks et laissez-les reposer 2 minutes. Servez avec des frites ou de la purée et une salade verte.'
+      ],
+      tip: { add: 'Une cuillerée de moutarde de Dijon à côté', why: 'Son piquant tranche avec la viande grasse, comme au bistrot', skill: 'Ne pas pétrir la viande', how: 'Un mélange léger garde la texture tendre ; pétrir donne un steak dense et caoutchouteux.' }
+    },
+    'fr_potaufeu': {
+      name: 'Pot-au-feu',
+      ings: [['Bœuf à pot-au-feu (jarret, macreuse ou plat de côtes)', '600 g'], ['Carottes', '3'], ['Poireaux', '2'], ['Navets', '2'], ['Pommes de terre', '3'], ['Oignon piqué de 2 clous de girofle', '1']],
+      seas: '2 litres d’eau · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de gros sel · 10 grains de poivre · moutarde de Dijon et cornichons, pour servir',
+      steps: [
+        'Mettez la viande dans une grande marmite, couvrez d’eau froide et portez lentement à ébullition. Écumez la mousse grise pendant quelques minutes.',
+        'Ajoutez l’oignon, le bouquet garni, le sel et le poivre. Couvrez et laissez frémir très doucement 1 h 30.',
+        'Coupez les carottes, les navets et les poireaux en gros morceaux (ficelez les poireaux en botte) et les pommes de terre en deux. Ajoutez-les dans la marmite et laissez mijoter encore 40 minutes, jusqu’à ce que la viande et les légumes soient tendres.',
+        'Retirez le bouquet garni. Tranchez la viande et servez dans des assiettes creuses avec les légumes et une louche de bouillon, avec moutarde, cornichons et gros sel.'
+      ],
+      tip: { add: 'Servir d’abord le bouillon avec un peu de vermicelle', why: 'C’est la façon traditionnelle de manger le pot-au-feu : bouillon, puis viande et légumes', skill: 'Ne pas faire bouillir fort', how: 'Un frémissement doux garde le bouillon clair et la viande tendre ; un gros bouillon le trouble et rend la viande filandreuse.' }
+    },
   },
 });
