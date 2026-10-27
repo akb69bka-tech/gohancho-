@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};pre('i18n/en.js');if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js');if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -63,7 +63,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:16px}
+html{font-size:calc(100% * var(--ts,1))}html[data-ts="1"]{--ts:1.15}html[data-ts="2"]{--ts:1.3}   /* アプリ内の文字の大きさ（3段階）。端末の文字サイズの設定（ブラウザの基準 100%）にそのまま掛けるので、両方が効く */
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:.9375rem;line-height:1.7;-webkit-font-smoothing:antialiased;padding-inline:16px}
 .wrap{max-width:680px;margin:0 auto;padding-block:18px 124px;display:flex;flex-direction:column;gap:20px}
 #view{display:flex;flex-direction:column;gap:40px}
 h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:1.35;letter-spacing:.02em}
@@ -407,6 +408,8 @@ nav.tabs button[aria-selected="true"] svg{stroke-width:2}
 .warn{color:var(--danger)}
 .tiny{font-size:.75rem;line-height:1.5;margin:0}
 /* 設定 */
+html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
+.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px}.left-chips .chip{white-space:normal;text-align:center}.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
 .set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
@@ -1260,6 +1263,12 @@ function normalizeState(d){
             avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true}; });
     st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => st.family.some(m => m.id === x)) : null;
     if (!isYmd(st.firstUse)) st.firstUse = '';
+    // 作り置き・残り物メモ（{id, name, d}: 「冷蔵庫に入れた」と押した日 d を 1日目として数える）と、食費メモ（{id, d, a}: 自分で入れた金額）。端末の中だけ
+    st.leftovers = arr(st.leftovers).filter(x => x && typeof x === 'object' && typeof x.name === 'string' && x.name.trim() && isYmd(x.d)).slice(0, 30)
+        .map(x => ({id: typeof x.id === 'string' || typeof x.id === 'number' ? x.id : '', name: x.name.slice(0, 80), d: x.d}));
+    st.spend = arr(st.spend).filter(x => x && typeof x === 'object' && isYmd(x.d) && Number.isFinite(Number(x.a)) && Number(x.a) > 0 && Number(x.a) <= 1e9).slice(0, 400)
+        .map((x, i) => ({id: typeof x.id === 'string' && x.id ? x.id : 'x' + i, d: x.d, a: Math.round(Number(x.a) * 100) / 100}));
+    if (st.settings.textSize !== 1 && st.settings.textSize !== 2) delete st.settings.textSize;   // 文字の大きさ: なし=ふつう / 1=大きい / 2=もっと大きい
     return st;
 }
 function load(){
@@ -1287,6 +1296,8 @@ addCustomRecipes();
 if (!S.onboarded && (S.history.length || S.favs.length || S.fridge.length)) S.onboarded = true;   // 以前から使っている人には出さない
 if (!S.firstUse) S.firstUse = S.history.length ? S.history[S.history.length-1].d : ymd();
 save();
+function applyTextSize(){ const v = S.settings.textSize; if (v === 1 || v === 2) document.documentElement.setAttribute('data-ts', v); else document.documentElement.removeAttribute('data-ts'); }
+applyTextSize();
 
 /* =========================================================
    小道具
@@ -4200,6 +4211,11 @@ function viewSettings(){
                 <span class="small muted">${esc(t('国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
         </div>
         <div class="set-group">
+            <div class="set-title">${esc(t('文字の大きさ'))}</div>
+            <div class="chips" role="group" aria-label="${esc(t('文字の大きさ'))}">${[[0, t('ふつう')], [1, t('大きい')], [2, t('もっと大きい')]].map(([v, l]) => `<button class="chip" data-act="text-size" data-v="${v}" aria-pressed="${(S.settings.textSize || 0) === v}">${esc(l)}</button>`).join('')}</div>
+            <span class="small muted">${esc(t('アプリの中の文字の大きさを変えます。端末の文字サイズの設定とも合わせて大きくなります。'))}</span>
+        </div>
+        <div class="set-group">
             <div class="set-title">${esc(t('家族と献立'))}</div>
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
@@ -5183,6 +5199,72 @@ function pantryHtml(){
         <div class="list shop">${list.map(e => `<label class="shop-row"><input type="checkbox" data-act="shop-buy" data-k="${esc(e.key)}" ${buy.has(e.key) ? 'checked' : ''}><span class="nm">${esc(e.label)}</span><span class="q">${buy.has(e.key) ? esc(t('買う')) : ''}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`).join('')}</div>
     </details>`;
 }
+/* ---- 作り置き・残り物メモ ----
+   「残りを冷蔵庫に入れた」と押した日を 1日目として、何日目かを数えて事実だけ出す。何日もつか・傷むかは、このアプリでは言わない（根拠となる出典がないため）。
+   献立の選び方・冷蔵庫の食材リストは変えない。データは S.leftovers（端末の中だけ） */
+function leftDay(x){ return Math.max(1, daysBetween(x.d, TODAY) + 1); }
+function leftoverLine(x){
+    const day = leftDay(x), name = x.name;
+    return day === 1 ? t('今日の{name}の残りがあります（{day}日目）', {name, day}) : day === 2 ? t('昨日の{name}の残りがあります（{day}日目）', {name, day}) : t('{name}の残りがあります（{day}日目）', {name, day});
+}
+function leftoversHtml(){
+    const items = (session.menu && session.menu.items || []).filter(it => it.r);
+    const list = S.leftovers.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
+    const nameOf = r => r.name;
+    const on = r => S.leftovers.some(x => x.d === TODAY && String(x.id) === String(r.id));
+    return `<div class="card left-card"><div class="eyebrow">${esc(t('残り物メモ'))}</div>
+        ${list.map(x => `<div class="left-line"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:x.name}))}">${esc(t('食べきった'))}</button></div>`).join('')}
+        ${items.length ? `<div class="small muted" style="margin-top:6px">${esc(t('今日の料理の残りを冷蔵庫に入れたら押します'))}</div>
+        <div class="chips left-chips" role="group" aria-label="${esc(t('残りを冷蔵庫に入れた'))}">${items.map(it => `<button class="chip" data-act="left-add" data-id="${esc(it.r.id)}" aria-pressed="${on(it.r)}">${esc(nameOf(it.r))}</button>`).join('')}</div>` : ''}
+        <p class="foot">${esc(t('押した日を1日目として数えます。何日食べられるかは、このアプリでは判断しません。'))}</p></div>`;
+}
+function leftoverToggle(id){
+    const r = byId(id); if (!r) return;
+    const i = S.leftovers.findIndex(x => x.d === TODAY && String(x.id) === String(id));
+    if (i >= 0){ const was = S.leftovers.splice(i, 1)[0]; save(); render(); toast(t('消しました'), false, () => { S.leftovers.push(was); save(); render(); }); return; }
+    const entry = {id: r.id, name: r.name, d: TODAY};
+    S.leftovers.push(entry); if (S.leftovers.length > 30) S.leftovers.splice(0, S.leftovers.length - 30);
+    save(); render();
+    toast(t('「{name}」の残りをメモしました', {name:r.name}), false, () => { S.leftovers = S.leftovers.filter(x => x !== entry); save(); render(); });
+}
+/* ---- 食費メモ ----
+   自分で入れた金額の、直近7日（今日を含む）の合計だけ出す。入力は任意。料理ごとの原価などは出さない。通貨は地域設定の国の通貨。端末の中だけ（S.spend） */
+const CURRENCY = {JP:'JPY', US:'USD', GB:'GBP', FR:'EUR', DE:'EUR', IT:'EUR', ES:'EUR', PL:'PLN', TR:'TRY', EG:'EGP', IN:'INR', CN:'CNY', TW:'TWD', KR:'KRW', TH:'THB', VN:'VND', ID:'IDR', PH:'PHP', MX:'MXN', BR:'BRL', PE:'PEN'};
+function moneyText(a){
+    const cur = CURRENCY[currentCountry()] || 'JPY';
+    // 地域設定の国の通貨で、国の書き方（記号の位置・区切り）で出す。端数があるときは、丸めて見せないよう小数も出す（例: 円でも ￥2,460.50）
+    const base = LANG === 'pt-BR' ? 'pt' : LANG, frac = Math.round(a * 100) % 100 !== 0 ? {minimumFractionDigits:2, maximumFractionDigits:2} : {};
+    try{ return new Intl.NumberFormat(base + '-' + currentCountry() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a); }catch(e){}
+    try{ return new Intl.NumberFormat(dateLoc() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a); }catch(e){ return a + ' ' + cur; }
+}
+function parseMoney(raw){
+    let v = String(raw == null ? '' : raw).normalize('NFKC').replace(/\s/g, '');
+    if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(v)) v = v.replace(/,/g, ''); else v = v.replace(',', '.');
+    if (!/^\d+(\.\d{1,2})?$/.test(v)) return null;
+    const n = Math.round(Number(v) * 100) / 100;
+    return n > 0 && n <= 1e9 ? n : null;
+}
+function spendWeek(){ const from = addDays(TODAY, -6); return S.spend.filter(x => x.d >= from && x.d <= TODAY).sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0); }
+function spendHtml(){
+    const w = spendWeek(), sum = Math.round(w.reduce((a, x) => a + Math.round(x.a * 100), 0)) / 100;
+    return `<details class="card memo-card spend-card" ${session.spendOpen === undefined ? (w.length ? 'open' : '') : (session.spendOpen ? 'open' : '')}><summary class="memo-sum"><span>${esc(t('食費メモ（直近7日）'))}</span><span class="small muted">${w.length ? esc(moneyText(sum)) : ''}</span></summary>
+        <form class="spend-row" data-form="spend"><label class="small" for="spend-a">${esc(t('今日使った金額'))}</label><input id="spend-a" type="text" inputmode="decimal" autocomplete="off" aria-describedby="spend-foot"><button class="btn sm primary" type="submit">${esc(t('記録する'))}</button></form>
+        ${session.spendErr ? `<p class="small" role="alert" style="color:var(--danger);margin:4px 0">${esc(t('金額を数字で入れてください'))}</p>` : ''}
+        ${w.length ? `<div class="spend-sum">${esc(t('入力した金額の合計: {amount}', {amount:moneyText(sum)}))}</div>
+        ${w.map(x => `<div class="left-line"><span>${esc(jpDate(x.d))}　${esc(moneyText(x.a))}</span><button class="btn sm ghost" data-act="spend-del" data-i="${esc(x.id)}" aria-label="${esc(t('{amount}の記録を消す', {amount:moneyText(x.a)}))}">${esc(t('消す'))}</button></div>`).join('')}`
+        : `<p class="small muted">${esc(t('まだ入力がありません。買い物のあとに金額を入れると、7日分の合計が出ます。'))}</p>`}
+        <p class="foot" id="spend-foot">${esc(t('入力は任意です。金額は自分で入れた数字の合計だけで、この端末の中に保存され、外へは送りません。'))}</p></details>`;
+}
+function spendAdd(){
+    const inp = $('#spend-a'), a = parseMoney(inp && inp.value);
+    session.spendOpen = true;
+    if (a == null){ session.spendErr = true; render(); const i2 = $('#spend-a'); if (i2) i2.focus(); return; }
+    session.spendErr = false;
+    const entry = {id: 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), d: TODAY, a};
+    S.spend.push(entry); if (S.spend.length > 400) S.spend.splice(0, S.spend.length - 400);
+    save(); render();
+    toast(t('{amount}を記録しました', {amount:moneyText(a)}), false, () => { S.spend = S.spend.filter(x => x !== entry); save(); render(); });
+}
 function viewToday(){
     if (mixWaiting()) loadMix();
     if (!session.menu && mixWaiting()){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
@@ -5286,6 +5368,7 @@ function viewToday(){
         </div>
         <div class="menu-tools"><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
         ${fridgeUseHtml()}
+        ${leftoversHtml()}
     </section>
 
     ${main ? `<section class="sec">
@@ -5333,6 +5416,7 @@ function viewToday(){
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
         <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
+        ${spendHtml()}
     </section>`;
 }
 
@@ -6536,6 +6620,10 @@ document.addEventListener('click', e => {
         case 'hf-toggle': if (hf.on){ voiceStop(); render(); } else { hf.on = true; hf.noMic = false; render(); hfReadNow(); } break;
         case 'big-cook': S.settings.bigCook = el.checked; save(); render(); setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 30); break;
         case 'say-step': { const li = el.closest('li'); voiceStop(true); hfListenStop(); voiceSay(stepSpeech(li), hf.on ? hfListen : null); break; }
+        case 'left-add': leftoverToggle(el.dataset.id); break;
+        case 'left-done': { const [id, d] = String(el.dataset.i).split('|'); const i = S.leftovers.findIndex(x => String(x.id) === id && x.d === d); if (i >= 0){ const was = S.leftovers.splice(i, 1)[0]; save(); render(); toast(t('消しました'), false, () => { S.leftovers.push(was); save(); render(); }); } break; }
+        case 'spend-del': { const i = S.spend.findIndex(x => x.id === el.dataset.i); if (i >= 0){ const was = S.spend.splice(i, 1)[0]; session.spendOpen = true; save(); render(); toast(t('消しました'), false, () => { S.spend.push(was); save(); render(); }); } break; }
+        case 'text-size': { const v = Number(el.dataset.v); if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); break; }
         case 'eat-clear': S.settings.dinnerAt = null; session.eatOpen = true; save(); render(); break;
         case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
         case 'share-cook': openShare('cook'); break;
@@ -6677,7 +6765,7 @@ document.addEventListener('click', e => {
                 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
                 for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
                 addCustomRecipes();
-                save(); toast(t('読み込みました'));
+                applyTextSize(); save(); toast(t('読み込みました'));
                 // 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）
                 const cc = currentCountry();
                 (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { S.settings.country = 'JP'; save(); })
@@ -6724,6 +6812,7 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.cond')) { if (!!S.condOpen !== e.target.open){ S.condOpen = e.target.open; save(); } }   // 開き直しても同じ開き方で出す
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
+    if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
     if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
 document.addEventListener('change', e => {
@@ -6754,6 +6843,7 @@ document.addEventListener('change', e => {
 document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
+    if (f === 'spend'){ spendAdd(); return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'one-search' && sheet && sheet.kind === 'one'){
         const q = $('#one-input').value.trim(); sheet.q = q; if (!q) return;
