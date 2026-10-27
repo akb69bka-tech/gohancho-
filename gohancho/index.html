@@ -4997,6 +4997,46 @@ async function shareCard(kind, arg){
     }catch(e){ toast(t('画像をつくれませんでした')); }
     finally{ cardBusy = false; const b = document.querySelector('[data-act="share-card"]'); if (b){ b.disabled = false; if (label) b.textContent = label; } }
 }
+// ---- 1週間プランをカレンダーに取りこむ .ics（RFC 5545。https://www.rfc-editor.org/rfc/rfc5545）----
+// 作る日ごとに終日の予定を1つ（浮動時間や VTIMEZONE を使わない日付だけの予定）。作らない日・無料版で見えない日は出さない。UID は日付から決めるので、書き出し直して取りこんでも重ならず上書きされる
+function icsEsc(s){ return String(s == null ? '' : s).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r\n|\r|\n/g, '\\n'); }
+// 75 オクテット（UTF-8）で折り返す。文字（サロゲートペア含む）の途中では切らない。続きの行は空白1つで始める
+function icsFold(line){
+    const enc = new TextEncoder(), out = []; let cur = '', n = 0, lim = 75;
+    for (const ch of line){ const b = enc.encode(ch).length; if (n + b > lim){ out.push(cur); cur = ' '; n = 1; lim = 75; } cur += ch; n += b; }
+    out.push(cur); return out.join('\r\n');
+}
+function icsStamp(d){ return d.toISOString().replace(/[-:]|\.\d{3}/g, ''); }
+function weekIcs(now){
+    const days = visiblePlanDays().filter(x => byId(x.id)); if (!days.length) return '';
+    if (weekSidesOn()) ensureWeekExtras();
+    const stamp = icsStamp(now || new Date()), dt = s => s.replace(/-/g, '');
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Gohancho//Week plan//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:' + icsEsc(t('わが家のご飯帖'))];
+    days.forEach(x => {
+        const r = byId(x.id), one = (e, slot) => t('{slot}：{name}', {slot:slotLabel(slot), name:e.name + swapShare(e)}) + GAP() + t('{n}分', {n:(swappedRecipe(e) || e).min});
+        const desc = [one(r, '主菜')];
+        if (weekSidesOn() && x.extra) [['side', '副菜'], ['soup', '汁物']].forEach(([k, slot]) => { const e = byId(x.extra[k]); if (e) desc.push(one(e, slot)); });
+        if (x.who) desc.push(t('担当：{name}', {name:x.who}));
+        L.push('BEGIN:VEVENT', 'UID:gohancho-' + dt(x.d) + '@gohancho.app', 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + dt(x.d), 'DTEND;VALUE=DATE:' + dt(addDays(x.d, 1)),
+            'SUMMARY:' + icsEsc(r.name), 'DESCRIPTION:' + icsEsc(desc.join('\n')), 'TRANSP:TRANSPARENT', 'END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    return L.map(icsFold).join('\r\n') + '\r\n';
+}
+async function exportWeekIcs(){
+    const ics = weekIcs(); if (!ics){ toast(t('カレンダーに入れる作る日がありません')); return; }
+    const name = 'gohancho-week-' + TODAY.replace(/-/g, '') + '.ics';
+    const FS = nativePlugin('Filesystem'), SH = nativePlugin('Share');
+    if (isNative() && SH){
+        try{
+            if (FS){ const r = await FS.writeFile({path: name, data: ics, directory: 'CACHE', encoding: 'utf8'}); await SH.share({title: t('わが家のご飯帖'), url: r.uri, dialogTitle: t('わが家のご飯帖')}); }
+            else await SH.share({title: name, text: ics, dialogTitle: t('わが家のご飯帖')});
+            return;
+        }catch(e){ if (e && (e.name === 'AbortError' || /cancel|dismiss/i.test(String(e.message)))) return; }
+    }
+    try{ await shareFileOrDownload(new Blob([ics], {type: 'text/calendar'}), name, 'text/calendar', t('{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます', {name})); }
+    catch(e){ toast(t('ファイルにできませんでした')); }
+}
 function lineShareUrl(text){ return 'https://line.me/R/share?text=' + encodeURIComponent(text); }
 // 国でよく使われる家族の連絡アプリ（リンクで開けるものだけボタンにする。ほかは「ほかのアプリで送る」）
 function msgLabel(){ const m = messengerFor(); return m ? m.label : ''; }
@@ -5038,6 +5078,7 @@ function shareSheetHtml(){
         </div>
         ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
         <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>
+        ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
@@ -6905,6 +6946,7 @@ document.addEventListener('click', e => {
         case 'share-menu': openShare('menu'); break;
         case 'share-week': openShare('week'); break;
         case 'share-system': if (sheet) systemShare(sheet.text, sheet.title); break;
+        case 'share-ics': exportWeekIcs(); break;
         case 'share-copy': if (sheet) copyText(sheet.text); break;
         case 'share-card': shareCard(el.dataset.k || 'menu', el.dataset.k === 'needs' ? {mid:el.dataset.m, withName:el.dataset.n === '1'} : null); break;
         case 'needs-open': { const m = famOf(el); if (m){ session.famOpen = m.id; openNeeds(m.id); } break; }
