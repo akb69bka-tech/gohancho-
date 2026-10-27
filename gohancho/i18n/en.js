@@ -295,6 +295,8 @@ GOHAN_I18N('en', {
     "主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Ingredients for {n} planned mains that aren't in your fridge or pantry (serves {sv})",
     "主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Ingredients for mains, sides and soups over {n} days that aren't in your fridge or pantry (serves {sv})",
     "副菜・汁ものも含める": "Include sides and soups",
+    "もうひとつの名前も併記": "Show second name too",
+    "併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。": "The second name is a name in another language that is already in the app. It may differ a little from the label in the store.",
     "必要な材料は、冷蔵庫と常備品でそろっています。": "You already have everything you need.",
     "← もどる": "← Back",
     "国・地域": "Country or region",

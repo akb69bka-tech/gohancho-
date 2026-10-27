@@ -85,6 +85,8 @@ GOHAN_I18N('vi', {
     "主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Nguyên liệu của {n} món chính đã lên kế hoạch mà tủ lạnh và đồ sẵn có chưa có (cho {sv} người)",
     "主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）": "Nguyên liệu món chính, món phụ và canh trong {n} ngày mà tủ lạnh và đồ sẵn có chưa có (cho {sv} người)",
     "副菜・汁ものも含める": "Gồm cả món phụ và canh",
+    "もうひとつの名前も併記": "Hiện cả tên thứ hai",
+    "併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。": "Tên thứ hai là tên bằng ngôn ngữ khác đã có sẵn trong ứng dụng. Có thể hơi khác với nhãn ở cửa hàng.",
     "{n}日前に作った": "Đã nấu cách đây {n} ngày",
     "{n}日続いています。今日の分を決めれば{m}日目です。": "Bạn đang giữ chuỗi {n} ngày. Lên thực đơn hôm nay là thành {m} ngày.",
     "{n}日続けて献立が決まっています。この調子は、ちゃんとすごいことです。": "Bạn đã lên thực đơn {n} ngày liền. Thật đáng nể.",
