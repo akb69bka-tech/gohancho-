@@ -36,7 +36,7 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     ok(await todayIds(p) === '', 'A1 決めただけでは記録しない: ' + await todayIds(p));
     ok(!(await p.evaluate(() => document.querySelector('#toast-root').textContent)).includes('増えました'), 'A2 決めただけで「作った料理が増えました」と出さない');
     // 1品目の手順を全部終える
-    const finish = async k => p.evaluate(k => { session.cookIdx = k; setTab('cook'); render(); const r = cookItems()[k].r;
+    const finish = async k => p.evaluate(k => { session.cookIdx = k; session.cookPin = cookItems()[k].r.id; session.cookView = 'step'; setTab('cook'); render(); /* 三 作る: その料理の印を押したのと同じ（その料理の手順を続ける） */ const r = cookItems()[k].r;
         for (let i = 0; i < r.steps.length + 2; i++){ const b = document.querySelector('[data-act="cook-next"]'); if (!b || (((S.cook.done || {})[r.id]) || []).length >= r.steps.length) break; b.click(); } return (((S.cook.done || {})[r.id]) || []).length >= r.steps.length; }, k);
     ok(await finish(0), 'A3 1品目の手順を全部終えられる');
     ok(await todayIds(p) === ids[0], 'A4 作り終えた料理だけ記録する: ' + await todayIds(p));
