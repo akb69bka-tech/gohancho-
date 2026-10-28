@@ -119,22 +119,23 @@ const swVersion = p => p.evaluate(() => caches.keys().then(k => k.filter(x => x.
     await p.goto(BASE); await tray(p); await controlled(p);
     await p.evaluate(async () => { await setCountry('US'); await setCountry('JP'); });
     await p.evaluate(() => { window.__upd = false; navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'gohancho-updated') window.__upd = true; }); });
-    write('sw.js')(ORIG.sw.replace("'gohancho-v18'", "'gohancho-v19'"));
-    write('index.html')(ORIG.index.replace("window.ASSET_V='v18'", "window.ASSET_V='v19';window.__v19=1"));
+    const CUR = /const VERSION = 'gohancho-(v\d+)'/.exec(ORIG.sw)[1], NEXT = 'v' + (Number(CUR.slice(1)) + 1);   // いまの版の次の版で更新を試す
+    write('sw.js')(ORIG.sw.replace(`'gohancho-${CUR}'`, `'gohancho-${NEXT}'`));
+    write('index.html')(ORIG.index.replace(`window.ASSET_V='${CUR}'`, `window.ASSET_V='${NEXT}';window.__vnext=1`));
     await p.evaluate(() => navigator.serviceWorker.getRegistration().then(r => r.update()));
     const upd = await p.waitForFunction(() => window.__upd, null, {timeout: 15000}).then(() => true, () => false);
     ok('update: 開いている画面に「更新した」と届く', upd);
-    ok('update: 古い版の保存が消えて新しい版だけ', JSON.stringify(await swVersion(p)) === JSON.stringify(['gohancho-v19']), await swVersion(p));
-    ok('update: 前の版の米国データが新しい版に移った', (await cacheHas(p, BASE + 'packs/us.js')) === 'gohancho-v19');
+    ok('update: 古い版の保存が消えて新しい版だけ', JSON.stringify(await swVersion(p)) === JSON.stringify(['gohancho-' + NEXT]), await swVersion(p));
+    ok('update: 前の版の米国データが新しい版に移った', (await cacheHas(p, BASE + 'packs/us.js')) === 'gohancho-' + NEXT);
     // アプリに戻ってきたとき読み直して新しい版になる
     await p.evaluate(() => { Object.defineProperty(document, 'hidden', {value: false, configurable: true}); document.dispatchEvent(new Event('visibilitychange')); });
-    await p.waitForFunction(() => window.__v19, null, {timeout: 15000}).catch(() => {});
-    ok('update: 戻ってきたら新しい版に読み直される', await p.evaluate(() => !!window.__v19));
+    await p.waitForFunction(() => window.__vnext, null, {timeout: 15000}).catch(() => {});
+    ok('update: 戻ってきたら新しい版に読み直される', await p.evaluate(() => !!window.__vnext));
     // 更新直後に電波が切れても、米国に切り替えて使える
     await tray(p); await offline(p, true); await p.reload();
     ok('update: 更新直後でもオフラインで起動', await tray(p, 20000), p.errs);
     ok('update: 更新直後でもオフラインで米国に切替', await p.evaluate(async () => { const r = await setCountry('US'); session.menu = null; render(); return r !== false && session.menu.items.some(x => x.r && x.r.pack === 'US'); }));
-    ok('update: 新しい版の辞書・国の取り直しは ?v=v19', await p.evaluate(() => assetUrl('packs/us.js')) === 'packs/us.js?v=v19');
+    ok('update: 新しい版の辞書・国の取り直しは ?v=次の版', await p.evaluate(() => assetUrl('packs/us.js')) === 'packs/us.js?v=' + NEXT);
     await p.ctx.close();
   }
 
