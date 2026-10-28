@@ -204,7 +204,7 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
-.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}
+.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}.stock-q{font-size:.9em}.stock-q.over{color:var(--warn,#b3261e)}.stock-add{margin-top:8px;align-items:center;gap:.4rem}.stock-add input{min-width:0;max-width:100%;text-overflow:ellipsis}.my-rec dl{display:grid;grid-template-columns:1fr auto;gap:.3rem .8rem;margin:0}.my-rec dt{margin:0}.my-rec dd{margin:0;font-weight:600;text-align:end}
 .chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
@@ -1095,6 +1095,36 @@ R('isobeage','ちくわの磯辺揚げ','和','副菜','揚',15,'ちくわ 4本'
 R('chijimi','ニラチヂミ','韓','副菜','焼',20,'ニラ 1束|にんじん 1/4本?|むきえび 50g?|卵 1個','小麦粉 60g・片栗粉 大さじ2・水 80ml・塩 少々・ごま油 大さじ2・（たれ）醤油 大さじ1・酢 大さじ1・ごま油 小さじ1・白ごま 少々・コチュジャン 少々（好みで）','ニラは4cm長さ、にんじんはせん切りにし、えびは粗く刻む。|小麦粉・片栗粉・水・卵・塩を混ぜて生地を作り、具を加えて混ぜる。|フライパンにごま油大さじ1を熱し、生地を薄く広げて中火で3〜4分、カリッと焼き色がつくまで焼く。|返して残りのごま油を鍋肌から加え、押さえながら3分焼く。食べやすく切り、たれを添える。');
 R('karashiae','菜の花のからし和え','和','副菜','和え',10,'菜の花 1束','塩 少々・醤油 小さじ2・だし 大さじ1・練りからし 小さじ1/2','菜の花は根元のかたい部分を切り落とし、冷水につけてシャキッとさせる。|塩を入れた湯で茎から入れて1分ゆで、冷水にとって水気をよく絞り、3cm長さに切る。|醤油・だし・からしを混ぜる。|食べる直前に菜の花を和える。');
 R('konnyakuitame','こんにゃくのピリ辛炒め','和','副菜','炒',15,'こんにゃく 1枚|かつお節 1パック?','ごま油 大さじ1・赤唐辛子 1/2本・醤油 大さじ1.5・みりん 大さじ1・砂糖 小さじ1','こんにゃくはスプーンで一口大にちぎり、3分下ゆでして水気を切る。|フライパンで乾いりして水分を飛ばす。|ごま油と輪切りの唐辛子を加え、こんにゃくの表面がチリチリするまで炒める。|醤油・みりん・砂糖を加えて汁気がなくなるまで炒め、かつお節をまぶす。');
+R('onigiri','おにぎり（鮭・梅・おかか）','和','ごはん','和え',20,'ご飯 茶碗3杯分（約450g）|塩鮭（甘塩） 1/2切れ|梅干し 1個|かつお節 1パック（約2g）|焼きのり 1枚','塩 少々・醤油 小さじ1/2（おかか用）','鮭はグリルかフライパンで中まで火が通るまで焼き、皮と骨を除いて粗くほぐす。梅干しは種を除いてほぐす。かつお節は醤油で和える。|焼きのりは6等分に切る。ご飯は6等分（1個あたり約75g）にしておく。|手を水でぬらして塩少々を手のひらに広げ、ご飯の真ん中をくぼませて具（鮭・梅・おかか）を入れ、ご飯でおおう。鮭・梅・おかかを2個ずつ作る。|温かいうちに、持ちかえながら軽くにぎって三角に整え、のりを巻く（熱いときはラップを使うとにぎりやすい）。');
+R('tendon','天丼','和','ごはん','揚',35,'えび 4尾|かぼちゃ 80g|なす 1本|ししとう 4本?|卵 1/2個|ご飯 丼2杯分','（衣）小麦粉 70g・冷水 100ml・（打ち粉）小麦粉 大さじ1・揚げ油 適量・（たれ）だし 100ml・醤油 大さじ2・みりん 大さじ2・砂糖 小さじ1','えびは殻と背わたを取り、腹側に数か所切れ目を入れて伸ばす。かぼちゃは5mm厚さ、なすは縦半分にして皮に切れ目、ししとうは包丁で穴をあける。|小鍋にだし・醤油・みりん・砂糖を入れてひと煮立ちさせ、たれを作る。|冷水に溶いた卵を混ぜ、小麦粉70gをさっくり混ぜて衣にする（混ぜすぎない）。具に打ち粉をまぶす。|170〜180℃の油で、かぼちゃ（3分）・なす・ししとう（2分）・えび（2〜3分）の順に、衣をつけて揚げる。衣がカリッとして浮いてきたら油を切る。|丼にご飯を盛り、天ぷらをのせてたれをかける。');
+R('ochazuke','鮭茶漬け','和','ごはん','焼',10,'ご飯 茶碗2杯分|塩鮭（甘塩） 1切れ|焼きのり 少々?|三つ葉 少々?|白ごま 少々?|わさび 少々?','熱い緑茶（煎茶・ほうじ茶でも） 300ml・塩 少々','鮭はグリルかフライパンで中まで火が通るまで焼き、皮と骨を除いてほぐす。|茶碗にご飯を盛り、鮭・ちぎった焼きのり・刻んだ三つ葉・ごまをのせる。|熱いお茶を注ぎ、味をみて塩を少々加える。好みでわさびをのせる。');
+R('tkg','卵かけご飯','和','ごはん','和え',5,'ご飯 茶碗2杯分|卵（生食用） 2個|刻みのり 少々?|長ねぎ 少々?','醤油 小さじ2（好みで）','生で食べるときは「生食用」と表示のある卵を、賞味期限内のうちに使う。|卵を小さな器に割り入れ、醤油を加えて白身を切るように混ぜる。|温かいご飯を茶碗に盛り、卵をかけて、刻みのりと小口切りのねぎをのせる。小さな子ども・妊娠中の人・高齢の人・体調がよくない人は、卵をよく加熱したものにする。');
+R('sekihan','赤飯','和','ごはん','炊',90,'もち米 1合（180ml）|ささげ（または小豆） 大さじ2（約20g）','水 約180ml（豆のゆで汁と合わせて）・塩 小さじ1/4・黒ごま 少々（好みで）','もち米は洗ってざるに上げ、水に30分以上浸したあと、水気を切る。|ささげは洗って鍋に入れ、水300ml（分量外）を加えて火にかけ、沸騰して10分ゆでる。豆とゆで汁に分け、ゆで汁は冷ます。|炊飯器にもち米、ささげ、塩を入れ、ゆで汁に水を足して180mlにして加える（豆のゆで汁で赤く色づく）。おこわのモードか普通に炊く。|炊き上がったら10分蒸らし、さっくり混ぜて器に盛り、黒ごまをふる。');
+R('gomokutakikomi','五目炊き込みご飯','和','ごはん','炊',60,'米 2合|鶏もも肉 80g|にんじん 1/3本|ごぼう 1/3本|しいたけ 2枚|油揚げ 1/2枚','だし 約360ml（水加減に合わせて）・醤油 大さじ2・みりん 大さじ2・酒 大さじ1・塩 小さじ1/3','米は洗ってざるに上げ、30分浸水する。|鶏肉は1cm角に切る。にんじんは細切り、ごぼうはささがきにして水にさらし、しいたけは薄切り、油揚げは熱湯をかけて油抜きし、細切りにする。|炊飯器に米を入れ、醤油・みりん・酒・塩を加えて、だしを2合の目盛りまで注いで軽く混ぜる。具をのせる（混ぜない）。|普通に炊き、炊き上がったら10分蒸らして底からさっくり混ぜる。');
+R('inarizushi','いなり寿司','和','ごはん','煮',40,'油揚げ 4枚|ご飯 1合分（炊きたて約330g）|白ごま 大さじ1?|紅しょうが 少々?','（煮汁）だし 200ml・砂糖 大さじ3・醤油 大さじ2・みりん 大さじ1・（すし酢）酢 大さじ2・砂糖 大さじ1・塩 小さじ1/2','油揚げは半分に切って袋状に開き、熱湯をかけて油抜きする。|鍋に煮汁の材料と油揚げを入れ、落としぶたをして弱火で15分、煮汁が少なくなるまで煮る。そのまま冷まして味をしみ込ませ、軽く汁気を切る。|すし酢の材料を混ぜ、炊きたてのご飯に回しかけて切るように混ぜ、ごまを加える。粗熱が取れたら8等分して軽く丸める。|油揚げにご飯を詰め、口を折って形を整える。好みで紅しょうがを添える。');
+R('zosui','卵雑炊','和','ごはん','煮',15,'ご飯 茶碗2杯分|卵 2個|長ねぎ 1/2本|しいたけ 2枚?|三つ葉 少々?','だし 500ml・酒 大さじ1・醤油 小さじ2・塩 小さじ1/3','ご飯をざるに入れ、流水でさっと洗ってぬめりを落とす。長ねぎは小口切り、しいたけは薄切りにする。|鍋にだし・酒・醤油・塩を入れて煮立て、しいたけとねぎを入れて2分煮る。|ご飯を加え、弱火で3〜4分煮る（混ぜすぎない）。|溶き卵を回し入れ、ふたをして火を止め、卵に火が通るまで1分ほどおく。器に盛り、三つ葉をのせる。');
+R('somen','そうめん','和','麺','和え',15,'そうめん 4束（約200g）|きゅうり 1/2本|卵 1個|みょうが 1個?|大葉 3枚?|長ねぎ 少々?','めんつゆ（3倍濃縮） 大さじ4・冷水 120ml・砂糖 小さじ1/2・サラダ油 少々','めんつゆを冷水で薄めてつゆを作り、冷やしておく。|卵に砂糖を混ぜて薄焼きにし、細切りにして錦糸卵にする。きゅうり・大葉は細切り、みょうがと長ねぎは小口切り（薄切り）にする。|たっぷりの湯でそうめんを袋の表示時間どおりにゆで、ざるに上げて流水でもみ洗いし、ぬめりを落として氷水でしめる。|水気をよく切って器に盛り、具と薬味を添える。つゆにつけて食べる。');
+R('zarusoba','ざるそば','和','麺','和え',15,'蕎麦（乾麺） 200g|長ねぎ 1/3本|焼きのり 1/2枚|わさび 少々?','めんつゆ（3倍濃縮） 大さじ4・冷水 120ml','めんつゆを冷水で薄めてつゆを作り、冷やしておく。長ねぎは小口切りにし、のりは細切りにする。|たっぷりの湯でそばを袋の表示時間どおりにゆでる。|ざるに上げ、流水でもみ洗いしてぬめりを落とし、氷水でしめて水気をよく切る。|ざるか器に盛ってのりをのせ、つゆ・ねぎ・わさびを添える。');
+R('kitsuneudon','きつねうどん','和','麺','煮',20,'ゆでうどん 2玉|油揚げ 1枚|長ねぎ 1/2本|かまぼこ 4切れ?','（つゆ）だし 600ml・醤油 大さじ2・みりん 大さじ2・塩 小さじ1/4・（油揚げの煮汁）だし 100ml・砂糖 大さじ1・醤油 大さじ1','油揚げは熱湯をかけて油抜きし、半分に切る。長ねぎは斜め切りにする。|小鍋に油揚げの煮汁の材料と油揚げを入れ、落としぶたをして弱火で8分、汁気が少なくなるまで煮る。|別の鍋にだし・醤油・みりん・塩を入れて煮立て、うどんを入れて温める。|器にうどんとつゆを入れ、油揚げ・長ねぎ・かまぼこをのせる。');
+R('curryudon','カレーうどん','和','麺','煮',20,'ゆでうどん 2玉|豚こま切れ肉 100g|玉ねぎ 1/2個|長ねぎ 1/2本','サラダ油 小さじ1・だし 500ml・カレールウ 2かけ（約40g）・醤油 小さじ2・みりん 大さじ1','玉ねぎは薄切り、長ねぎは斜め切りにし、豚肉は食べやすく切る。|鍋に油を熱し、豚肉と玉ねぎを炒めて、肉の色が変わったらだしを加える。|煮立ったらアクを取り、弱火で5分煮る。いったん火を止めてカレールウを溶かし、醤油とみりんを加える。|うどんと長ねぎを入れて2〜3分煮て、器に盛る（つゆがはねやすいので注意）。');
+R('ramen','醤油ラーメン','和','麺','煮',25,'中華麺（生） 2玉|豚バラ薄切り肉 100g|もやし 1/2袋|長ねぎ 1/3本|卵 2個?','水 600ml・鶏ガラスープの素 大さじ1と1/2・醤油 大さじ2・みりん 大さじ1・ごま油 小さじ1・こしょう 少々','卵は沸騰した湯に冷蔵庫から出してそのまま入れ、7分ゆでて冷水にとり、殻をむく（半熟）。|豚肉は3cm幅に切り、ごま油で炒めて色が変わったらもやしを加えてさっと炒め、こしょうをふる。|鍋に水・鶏ガラスープの素・醤油・みりんを入れて煮立て、スープを作る。麺は別の鍋で袋の表示時間どおりにゆでて、湯をよく切る。|どんぶりにスープを注いで麺を入れ、炒めた具、半分に切った卵、小口切りのねぎをのせる。');
+R('shakeshio','鮭の塩焼き','和','主菜','焼',15,'塩鮭（甘塩） 2切れ|大根 3cm?|レモン 1/4個?','サラダ油 少々（フライパンのとき）・醤油 少々','鮭の水気をキッチンペーパーでふき取る。大根はすりおろして軽く水気を切る。|グリルの場合は予熱して、中火で皮目を上にして7〜8分焼く。フライパンの場合は、油を薄く引いて皮目を下にして中火で4分焼き、返してふたをして3〜4分、中まで火を通す。|器に盛り、大根おろしとレモンを添える。大根おろしに醤油を少しかけて食べる。');
+R('ajihimono','あじの開き（干物）','和','主菜','焼',15,'あじの開き（干物） 2枚|大根 3cm?|すだち（またはレモン） 1個?','サラダ油 少々（フライパンのとき）・醤油 少々','大根はすりおろして軽く水気を切る。|グリルは予熱して、身の側を上にして中火で5〜6分焼き、返して皮の側を2〜3分焼く。フライパンの場合は、クッキングシートを敷いて身の側から中火で4分、返して3分焼く。|器に盛り、大根おろしとすだちを添える。干物は塩気があるので、醤油はかけすぎない。');
+R('hamuegg','ハムエッグ','洋','主菜','焼',10,'ハム 4枚|卵 4個|ミニトマト 4個?|レタス 1枚?','サラダ油 小さじ2・水 大さじ1・塩 こしょう 少々','フライパンに油を熱し、ハムを2枚ずつ重ねないように並べて軽く焼く。|ハムの上に卵を2個ずつ割り入れ、水を加えてふたをし、弱火で2〜3分、白身が固まるまで蒸し焼きにする（小さな子どもや妊娠中の人の分は、黄身もしっかり固まるまで焼く）。|器に盛り、塩こしょうをふる。ミニトマトとレタスを添える。');
+R('yakiniku','焼肉','和','主菜','焼',20,'牛カルビ肉（焼肉用） 250g|玉ねぎ 1/2個|ピーマン 2個|しいたけ 4枚|サンチュ（またはレタス） 4枚?','（たれ）醤油 大さじ3・砂糖 大さじ1と1/2・酒 大さじ1・おろしにんにく 小さじ1・おろし生姜 小さじ1/2・ごま油 大さじ1・白ごま 小さじ1・サラダ油 少々','たれの材料を混ぜる。玉ねぎは1cm幅のくし切り、ピーマンは4つ割り、しいたけは軸を除いて半分に切る。|ホットプレートかフライパンを熱して油を引き、野菜を先に焼いて取り出す。|牛肉を1枚ずつ広げて、焼き色がつくまで両面を焼き、中まで火を通す。|たれにつけて食べる。サンチュで巻いても食べやすい。');
+R('oden','おでん','和','主菜','煮',70,'大根 1/3本（約400g）|卵 4個|こんにゃく 1枚|厚揚げ 1枚|ちくわ 2本|昆布（結び昆布用） 20cm?|練りからし 少々?','だし 1000ml・醤油 大さじ2・みりん 大さじ2・酒 大さじ2・塩 小さじ1/2・米のとぎ汁 適量（大根の下ゆで用）','大根は3cm厚さの輪切りにして皮をむき、面取りする。米のとぎ汁（ないときは水に米を大さじ1入れる）で15〜20分、竹串が通るまで下ゆでする。|卵は沸騰した湯で10分ゆでて殻をむく。こんにゃくは両面に格子状の切れ目を入れて三角に切り、2〜3分ゆでて水を切る。厚揚げとちくわは熱湯をかけて油抜きし、ちくわは斜め半分に切る。昆布は水でもどして結ぶ。|鍋にだし・醤油・みりん・酒・塩を入れて煮立て、大根・卵・こんにゃく・昆布を入れて、落としぶたをし弱火で30分煮る。|厚揚げとちくわを加えてさらに10分煮る。そのまま少しおくか、できれば一晩おくと味がよくしみる。器に盛り、練りからしを添える。');
+R('yudofu','湯豆腐','和','主菜','煮',15,'木綿豆腐 2丁|昆布 10cm|長ねぎ 1/2本|かつお節 1パック?|おろし生姜 少々?','水 700ml・ポン酢（またはつけだれ用の醤油） 大さじ4','土鍋か厚手の鍋に水と昆布を入れ、時間があれば30分おく。豆腐は8等分に切り、長ねぎは小口切りにする。|中火にかけ、沸騰する直前に昆布を取り出す。|豆腐を静かに入れて弱火にし、温まるまで3〜5分煮る（ぐらぐら沸かすと豆腐が固くなる）。|ポン酢にねぎ・かつお節・生姜の薬味を加え、あたたまった豆腐をつけて食べる。');
+R('shabushabu','豚しゃぶ鍋','和','主菜','煮',25,'豚ロースしゃぶしゃぶ用肉 250g|白菜 1/8個|春菊 1/2束|長ねぎ 1/2本|木綿豆腐 1/2丁|えのき 1/2袋','昆布 10cm・水 800ml・（ごまだれ）白すりごま 大さじ2・醤油 大さじ1・砂糖 小さじ2・酢 大さじ1・水 大さじ1・ポン酢 大さじ4','白菜はざく切り、春菊は食べやすく切り、長ねぎは斜め切りにする。えのきは石づきを除いてほぐし、豆腐は一口大に切る。|ごまだれの材料を混ぜる。|鍋に水と昆布を入れて火にかけ、沸騰する直前に昆布を取り出す。白菜の芯・豆腐・長ねぎ・えのきを入れて煮る。|豚肉を1枚ずつ湯にくぐらせ、色が完全に変わるまで火を通す。春菊や白菜の葉も加え、ポン酢やごまだれで食べる。');
+R('yosenabe','寄せ鍋','和','主菜','煮',35,'鶏もも肉 150g|たら（切り身） 2切れ|えび 4尾|白菜 1/8個|長ねぎ 1本|しいたけ 4枚|木綿豆腐 1丁|春菊 1/2束','だし 800ml・醤油 大さじ2・みりん 大さじ2・酒 大さじ2・塩 小さじ1/2','鶏肉とたらは一口大に切る。たらは熱湯をかけて水で洗い、臭みを取る。えびは背わたを取る。|白菜はざく切り、長ねぎは斜め切り、しいたけは軸を除いて飾り切りか薄切り、豆腐は一口大、春菊は食べやすく切る。|鍋にだし・醤油・みりん・酒・塩を入れて煮立て、鶏肉と白菜の芯、長ねぎ、しいたけを入れて5分煮る。|豆腐・たら・えびを加えて5分、魚介と鶏肉に中まで火が通るまで煮る。最後に春菊を入れ、さっと火を通して食べる。');
+R('chawanmushi','茶碗蒸し','和','副菜','煮',30,'卵 2個|鶏もも肉 40g|えび 2尾|しいたけ 1枚|三つ葉 少々?','だし 300ml・塩 小さじ1/3・醤油 小さじ1/2・みりん 小さじ1・（下味）酒 小さじ1・醤油 少々','鶏肉は小さくそぎ切りにして酒と醤油をまぶす。えびは殻と背わたを取り、しいたけは薄切りにする。|卵を泡立てないように溶きほぐし、冷ましただしと塩・醤油・みりんを混ぜて、ざるで漉す。|2つの器に具を入れ、卵液を注ぎ、アルミホイルでふたをする。|フライパンに布巾を敷いて器を並べ、器の半分の高さまで湯を入れる。ふたをして沸騰したら弱火にし、ふたを少しずらして12〜15分蒸す。竹串を刺して澄んだ汁が出たらできあがり。三つ葉を飾る。');
+R('agedashidofu','揚げ出し豆腐','和','副菜','揚',30,'木綿豆腐 1丁|片栗粉 大さじ3|大根おろし 4cm分?|長ねぎ 少々?|かつお節 少々?','だし 150ml・醤油 大さじ1と1/2・みりん 大さじ1と1/2・揚げ油 適量','豆腐はキッチンペーパーで包み、皿をのせて15分おいて水気を切る。|小鍋にだし・醤油・みりんを入れてひと煮立ちさせ、つゆを作る。|豆腐を4等分に切り、片栗粉を全体にまぶす。170℃の油で4〜5分、きつね色になるまで揚げて油を切る。|器に盛ってつゆをかけ、大根おろし・小口切りのねぎ・かつお節をのせる。');
+R('natto','ねぎ納豆','和','副菜','和え',3,'納豆 2パック（約90g）|長ねぎ 3cm','納豆付属のたれ 2袋・からし 少々','長ねぎは小口切りにする。|納豆を器に出して、粘りが出るまで20回ほど混ぜる。|付属のたれとからしを加えてさらに混ぜ、ねぎをのせる。');
+R('yakinasu','焼きなす','和','副菜','焼',15,'なす 3本|おろし生姜 少々|かつお節 1パック','醤油 大さじ1','なすはヘタのまわりに浅く切れ目を入れ、皮に竹串で数か所穴をあける。|グリルか焼き網で強めの中火にかけ、皮が全体に黒く焦げるまで、ときどき回しながら10分ほど焼く。|熱いうちに冷水か氷水にとって、ヘタのほうから皮をむく。水気をそっと絞り、ヘタを切って縦に裂く。|器に盛り、かつお節とおろし生姜をのせて、醤油をかける。');
+R('kyuriasazuke','きゅうりの浅漬け','和','副菜','和え',15,'きゅうり 2本|昆布 3cm?|赤唐辛子 1/2本?','塩 小さじ1/2','きゅうりは両端を切り、縦半分に切って、1cm幅の斜め切りにする。昆布はハサミで細く切り、赤唐辛子は輪切りにする。|ポリ袋にすべての材料と塩を入れ、袋の外から軽くもむ。|空気を抜いて口を閉じ、10分以上おく（冷蔵庫で30分おくと味がなじむ）。|水気を軽く絞り、器に盛る。');
+R('greensalad','グリーンサラダ（和風ドレッシング）','和','副菜','和え',10,'レタス 1/4個|トマト 1個|きゅうり 1/2本|玉ねぎ 1/8個?','（ドレッシング）醤油 大さじ1・酢 大さじ1・サラダ油 大さじ1・砂糖 小さじ1/2・白ごま 少々','レタスは一口大にちぎり、冷水に5分つけてから水気をよく切る。トマトはくし切り、きゅうりは斜め薄切り、玉ねぎは薄切りにして水にさらし、水気を切る。|ドレッシングの材料をよく混ぜる。|器に野菜を盛り、食べる直前にドレッシングをかける。');
+R('jagaimomiso','じゃがいもと玉ねぎの味噌汁','和','汁物','汁',15,'じゃがいも 1個|玉ねぎ 1/2個|長ねぎ 少々?','だし 400ml・味噌 大さじ2','じゃがいもは5mm厚さのいちょう切りにして水にさらし、玉ねぎは薄切りにする。|だしにじゃがいもと玉ねぎを入れて火にかけ、煮立ったら弱めの中火で6〜7分、じゃがいもがやわらかくなるまで煮る。|火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
+R('nasuagemiso','なすと油揚げの味噌汁','和','汁物','汁',15,'なす 1本|油揚げ 1/2枚|長ねぎ 少々?','だし 400ml・味噌 大さじ2','なすはヘタを取って縦半分にし、斜めに薄く切って水に5分さらす。油揚げは熱湯をかけて油抜きし、短冊切りにする。|だしを温め、水気を切ったなすを入れて中火で4分煮る。|油揚げを加えて1分煮て、火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
+R('cabbagemiso','キャベツと油揚げの味噌汁','和','汁物','汁',10,'キャベツ 2枚（約100g）|油揚げ 1/2枚|長ねぎ 少々?','だし 400ml・味噌 大さじ2','キャベツは1cm幅の短冊切り、油揚げは熱湯をかけて油抜きし、短冊切りにする。|だしを温め、キャベツと油揚げを入れて、煮立ったら弱めの中火で3分煮る。|火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
 
 // 日本のレシピのよみ（ひらがな）。かなで検索したとき（にくじゃが・マーボー・しょうが焼き など）に料理名と同じように当てる。読みが二つあるものは , で区切る
 const YOMI = Object.fromEntries([
@@ -1117,7 +1147,9 @@ const YOMI = Object.fromEntries([
     'chirashi:ちらしずし tandoori:たんどりーちきん meatsauce:みーとそーすすぱげってぃ kabuamazu:かぶのあまずづけ gomokumame:ごもくまめ shiraae:しらあえ shiokombu:きゃべつのしおこんぶあえ nasudengaku:なすでんがく furofuki:ふろふきだいこん koyadofu:こうやどうふのふくめに',
     'germanpotato:じゃーまんぽてと shirishiri:にんじんしりしり niratama:にらたま daikonsalad:だいこんさらだ tomatomarine:とまとのまりね jakopiman:ぴーまんとじゃこのいため kofukiimo:こふきいも glace:にんじんのぐらっせ tosani:たけのこのとさに isobeage:ちくわのいそべあげ',
     'chijimi:にらちぢみ karashiae:なのはなのからしあえ konnyakuitame:こんにゃくのぴりからいため',
-    'okayu:おかゆ,しらがゆ tamagogayu:たまごがゆ umegayu:うめがゆ shakegayu:さけがゆ nanakusagayu:ななくさがゆ chukagayu:ちゅうかがゆ satsumaimogayu:さつまいもがゆ kabochagayu:かぼちゃがゆ azukigayu:あずきがゆ kinokogayu:きのこがゆ'
+    'okayu:おかゆ,しらがゆ tamagogayu:たまごがゆ umegayu:うめがゆ shakegayu:さけがゆ nanakusagayu:ななくさがゆ chukagayu:ちゅうかがゆ satsumaimogayu:さつまいもがゆ kabochagayu:かぼちゃがゆ azukigayu:あずきがゆ kinokogayu:きのこがゆ',
+    'onigiri:おにぎり,おむすび,にぎりめし tendon:てんどん ochazuke:さけちゃづけ,おちゃづけ tkg:たまごかけごはん sekihan:せきはん,おこわ gomokutakikomi:ごもくたきこみごはん,かやくごはん inarizushi:いなりずし,おいなりさん zosui:たまごぞうすい,ぞうすい somen:そうめん zarusoba:ざるそば,そば kitsuneudon:きつねうどん curryudon:かれーうどん ramen:しょうゆらーめん,らーめん',
+    'shakeshio:さけのしおやき,やきざけ ajihimono:あじのひらき,ひもの hamuegg:はむえっぐ,めだまやき yakiniku:やきにく oden:おでん yudofu:ゆどうふ shabushabu:ぶたしゃぶなべ,しゃぶしゃぶ yosenabe:よせなべ chawanmushi:ちゃわんむし agedashidofu:あげだしどうふ natto:ねぎなっとう,なっとう yakinasu:やきなす kyuriasazuke:きゅうりのあさづけ greensalad:ぐりーんさらだ,さらだ jagaimomiso:じゃがいもとたまねぎのみそしる nasuagemiso:なすとあぶらあげのみそしる cabbagemiso:きゃべつとあぶらあげのみそしる'
 ].join(' ').split(' ').map(x => x.split(':')));
 
 /* =========================================================
@@ -1190,6 +1222,9 @@ const CANON = [
     ['スパゲッティ',['スパゲッティ','スパゲティ','パスタ']],
     ['マカロニ',['マカロニ']],
     ['うどん',['うどん']],
+    ['そうめん',['そうめん','素麺']],
+    ['もち米',['もち米','餅米']],
+    ['納豆',['納豆','なっとう']],
     ['焼きそば麺',['焼きそば','中華麺','蒸し麺']],
     ['わかめ',['わかめ','ワカメ']],
     ['ひじき',['ひじき']],
@@ -1363,7 +1398,7 @@ const FAMILY = {'豚肉':'豚','豚ひき肉':'豚','鶏肉':'鶏','鶏ひき肉
     '鮭':'魚','さば':'魚','ぶり':'魚','たら':'魚','あじ':'魚','いわし':'魚','さんま':'魚','かれい':'魚','いか':'魚介','たこ':'魚介','えび':'魚介','あさり':'魚介','豆腐':'大豆','厚揚げ':'大豆',
     '卵':'卵','ウインナー':'加工肉','ベーコン':'加工肉','ハム':'加工肉','ツナ':'魚',
     'さわら':'魚','かじき':'魚','たらこ':'魚','ちくわ':'魚','ちりめんじゃこ':'魚','かに風味かまぼこ':'魚','しじみ':'魚介',
-    '油揚げ':'大豆','おから':'大豆','大豆':'大豆'};
+    '油揚げ':'大豆','おから':'大豆','大豆':'大豆','納豆':'大豆'};
 function prepRecipe(r){
     r.items = r.ings.map(parseIng); r.seasBase = r.seas;
     const p = r.items.find(i => FAMILY[i.key] && i.key !== '卵') || r.items.find(i => FAMILY[i.key]);
@@ -1460,7 +1495,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[]};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
 const BROKEN_PREFIX = 'gohancho.broken.';
 const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
@@ -1520,6 +1555,13 @@ function normalizeState(d){
     // 食品ロスの記録（{d: 記録した日, n: 食材名, r: 'u'=使い切った / 't'=捨てた}）。事実の記録だけ。400件まで。端末の中だけ
     st.foodLog = arr(st.foodLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim() && (x.r === 'u' || x.r === 't')).slice(-400)
         .map(x => ({d: x.d, n: x.n.slice(0, 40), r: x.r}));
+    // 備蓄（{id, n: 品名, q: 数 or null, e: 期限 or '', d: 登録した日}）と「1つ使った」の記録（{d, n}）。自分で入れた事実だけ。端末の中だけ
+    { const seenS = new Set();
+      st.stock = arr(st.stock).filter(x => x && typeof x === 'object' && typeof x.n === 'string' && x.n.trim()).map((x, i) => {
+          const q = Number(x.q), id = (typeof x.id === 'string' && x.id ? x.id : 's' + i).slice(0, 40);
+          return {id, n: x.n.trim().slice(0, 40), q: x.q !== null && x.q !== '' && Number.isInteger(q) && q >= 0 && q <= 999 ? q : null, e: isYmd(x.e) ? x.e : '', d: isYmd(x.d) ? x.d : ''}; })
+          .filter(x => !seenS.has(x.id) && seenS.add(x.id)).slice(0, 100); }
+    st.stockLog = arr(st.stockLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim()).slice(-400).map(x => ({d: x.d, n: x.n.slice(0, 40)}));
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
     if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
     if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
@@ -1562,7 +1604,7 @@ function quarantine(raw, strict){
 }
 // 読み込みで直した（捨てた）記録があるか。直したときは元の文字も残しておく
 function lostRecords(d, st){
-    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
+    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog', 'stock', 'stockLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
 }
 function load(){
     let raw = null;
@@ -2351,7 +2393,15 @@ function mixCc(slot){ const cc = (S.settings.mix || {})[slot]; return cc && cc !
 function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean))]; }
 // その枠の料理の候補（選んだ国のデータをまだ読みこめていないときは、いまの国）
 // 主菜の候補。おかゆは「おかゆの日」のときだけ出す（ふだんの献立・1週間プランの主菜には混ぜない）
-function poolFor(slot){ const cc = mixCc(slot), all = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; return slot === '主菜' && session.mood !== 'okayu' && all.some(isOkayu) ? all.filter(r => !isOkayu(r)) : all; }
+// 軽い食事（卵かけご飯・お茶漬け・おにぎり・雑炊）は、それだけで夕食の主菜にはおまかせで出さない。検索・作る記録・主菜にするでは選べる
+const LIGHT_MEALS = new Set(['tkg', 'ochazuke', 'onigiri', 'zosui']);
+function poolFor(slot){
+    const cc = mixCc(slot); let all = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES;
+    if (slot !== '主菜') return all;
+    if (session.mood !== 'okayu' && all.some(isOkayu)) all = all.filter(r => !isOkayu(r));
+    if (all.some(r => LIGHT_MEALS.has(r.id))) all = all.filter(r => !LIGHT_MEALS.has(r.id));
+    return all;
+}
 function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
 // 読みこめたら、その国を選んだ枠だけ選び直す
 function loadMix(){ const ccs = mixCountries().filter(cc => !BROWSE[cc] && !mixLoading.has(cc)); ccs.forEach(cc => { mixLoading.add(cc); loadBrowse(cc).then(() => { mixLoading.delete(cc); if (reconcileMenu() || tab === 'today') render(); }); }); }
@@ -2445,8 +2495,10 @@ function variantTwist(id, baseId){
     return Object.assign({}, r, {base: b, isVariant: true, changes: added.length ? [t('おかゆの具: {v}', {v: added.join(t('・'))})] : []});
 }
 const twistOf = id => String(id).startsWith('a~') ? buildTwist(id) : OKAYU_IDS.includes(id) ? variantTwist(id) : null;
+// できあがった形がそのまま完成の料理（おにぎり・お茶漬け・おでん・鍋など）は、ひとひねりの元にしない（「おでん丼」「おにぎりの焼きおにぎり」のような不自然な案になるため）
+const NO_TWIST = new Set(['onigiri', 'ochazuke', 'tkg', 'zosui', 'sekihan', 'inarizushi', 'oden', 'yudofu', 'shabushabu', 'yosenabe', 'chawanmushi']);
 function twistOptions(base){
-    if (isOkayu(base)) return {flavors:[], forms:[], swaps:[]};
+    if (isOkayu(base) || NO_TWIST.has(base.id)) return {flavors:[], forms:[], swaps:[]};
     const flavors = Object.entries(FLAVORS).filter(([k,f]) =>
         f.methods.includes(base.method) && !(f.skipGenre||[]).includes(base.genre) && !(f.skipId||[]).includes(base.id)).map(([k]) => k);
     const forms = Object.entries(FORMS).filter(([k,f]) =>
@@ -2512,7 +2564,7 @@ function buildTwist(id){
 function generateTwists(opts={}){
     const {baseId=null, level=2, flavor='any', form='any', swap='any', count=3, fromIds=null} = opts;
     let bases = baseId ? [RECIPES.find(r => r.id === baseId)] :
-        (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物' && !isOkayu(r)));   // おかゆは、選んだとき・お気に入りや作った記録があるときだけ元にする
+        (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物' && !isOkayu(r) && !NO_TWIST.has(r.id)));   // おかゆは、選んだとき・お気に入りや作った記録があるときだけ元にする
     // 苦手な食材が主役（主役を替えれば使わなくなる）の料理は、主役を替える案だけ出す
     const strict = r => r.items.filter(i => !i.opt && itemAvoided(i));
     bases = bases.filter(r => r && strict(r).every(i => i.key === r.protein));
@@ -4007,6 +4059,12 @@ function trapTab(e){
 }
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
+function obSave(){
+    const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
+    S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
+    S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
+    S.onboarded = true; save();
+}
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
 // はじめての画面に出す、この国の今日の献立（実際の献立と同じ料理・絵）
 function obTrayHtml(){
@@ -4052,6 +4110,7 @@ function renderSheetBody(){
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
+            <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
             <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
             <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
@@ -4383,7 +4442,7 @@ const AVOID_FAM = {
     dairy:{head:/^(乳製品|dairy)$/, jp:['牛乳','チーズ','ばたー','生くりーむ','ぷれーんよーぐると'],
         re:/^(?!.*\b(coconut|soy|almond|oat) milk\b)(?!.*peanut butter)(?!.*butter beans?)(?=.*(\bmilk\b|\bbutter\b|buttermilk|cheese|\bcream\b|yogh?urt|kefir|\bquark\b|paneer|mozzarella|parmesan|pecorino|ricotta|gruy[eè]re|reblochon|stilton|requeij|\bghee\b))/},
     nuts:{head:/^(ナッツ|nuts)$/, jp:['ピーナッツ','くるみ','アーモンド'], re:/\bnuts?\b|peanut|almond|cashew|walnut|pecan|pistachio|hazelnut/},
-    wheat:{head:/^(小麦|wheat)$/, jp:['小麦粉','パン粉','餃子の皮','わんたんの皮','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','シチュールウ','カレールウ','ハヤシルウ'],
+    wheat:{head:/^(小麦|wheat)$/, jp:['小麦粉','パン粉','餃子の皮','わんたんの皮','マカロニ','スパゲッティ','焼きそば麺','うどん','そうめん','天かす','シチュールウ','カレールウ','ハヤシルウ'],
         re:/^(?!rice\||butter\||.*\bsauce\b|.*\b(krupuk|emping)\b)(?!.*\b(rice|cassava|gram|corn|chickpea|buckwheat|tapioca|potato) (flour|noodles)\b)(?!.*\b(glass|rice) noodles\b)(?=.*(\bflour\b|\bwheat\b|semolina|couscous|bulgur|freekeh|\bfarro\b|\bpasta\b|spaghetti|macaroni|\borzo\b|pastina|tortellini|capeletti|\bramen\b|canton noodles|misua|mianxian|\bbread|\bbuns?\b|bolillo|\bpav\b|pastry|pie crust|crackers|dumpling wrapper|wonton|lumpia wrapper|spaetzle|schupfnudeln|maultaschen|\bmanti\b|egg noodles|\bnoodles\b|gnocchi|tarhana|\batta\b))/},
 };
 // アレルギーに設定した人にだけ、さらに広く見る言葉（食品表示で特定原材料が表示される加工品・調味料。苦手なだけの人には使わない＝出す料理を減らしすぎない）。
@@ -4402,11 +4461,11 @@ const ALLERGY_EXTRA = {
    re: その食材そのものを指す言葉 / eq: 短いひらがなの言葉（材料の名前がそれと同じ・それで終わるときだけ） / no: 当たらない言い方
    via: その食材をよく含む加工品・調味料 / ferm: 発酵調味料（しょうゆ・みそ。設定でオフにできる） / parts: ほかの id の合わせ / fam: 苦手のなかま（AVOID_FAM）の判定も使う */
 const ALG_G = {
-    jp8:['shrimp','crab','walnut','wheat','buckwheat','egg','milk','peanut'],
-    jp20:['abalone','squid','ikura','orange','cashew','kiwi','beef','sesame','salmon','mackerel','soy','chicken','banana','pork','macadamia','peach','yamaimo','apple','gelatin','almond'],
+    jp9:['shrimp','cashew','crab','walnut','wheat','buckwheat','egg','milk','peanut'],   // 消費者庁（2026年4月〜）: 特定原材料9品目（カシューナッツが加わった）
+    jp20:['abalone','squid','ikura','orange','kiwi','beef','sesame','salmon','mackerel','soy','chicken','banana','pistachio','pork','macadamia','peach','yamaimo','apple','gelatin','almond'],
     eu14:['gluten','crustacean','egg','fish','peanut','soy','milk','treenut','celery','mustard','sesame','sulphite','lupin','mollusc'],
     us9:['milk','egg','fish','crustacean','treenut','peanut','wheat','soy','sesame']};
-const ALG_ALL = [...new Set([].concat(ALG_G.jp8, ALG_G.jp20, ALG_G.eu14, ALG_G.us9))];
+const ALG_ALL = [...new Set([].concat(ALG_G.jp9, ALG_G.jp20, ALG_G.eu14, ALG_G.us9))];
 const ALG_DEF = {
     shrimp:{re:/えび|海老|蝦|虾|\b(?:shrimps?|prawns?|gambas?|krill)\b|camar[oó]n|crevette|garnele|gambero|camar[aã]o|새우|กุ้ง|tôm\b|udang|karides|krewetk|झींगा|hipon/, no:/えびす|ebisu/,
         via:/\bxo sauce\b|xo醤|terasi|belacan|belachan|\bkapi\b|saeujeot|새우젓|mắm tôm|えびだし/},
@@ -4440,6 +4499,7 @@ const ALG_DEF = {
     pork:{fam:'pork', re:/豚|ぶた肉|ぽーく|ばらにく|\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bjam[oó]n\b|\bspeck\b|kasseler|chorizo|salami|\blard\b|\btocino\b|\bcerdo\b|\bporc\b|schwein|maiale|\bporco\b|돼지|삼겹|猪肉|หมู|thịt heo|thịt lợn|\bbabi\b|domuz|wieprzow|सुअर|\bbaboy\b|べーこん|うぃんなー|ういんなー|そーせーじ|\bsausages?\b|\bwurst\b|luncheon meat|\bspam\b|lingui[cç]a|bratwurst|frankfurter|\bhot ?dogs?\b|mortadella|\bnduja\b|\bsobrasada\b|rillettes|chicharr[oó]n|\blechon\b|合いびき|あいびき|\bmince\b|\bground meat\b|\bminced meat\b/, no:/turkey ham|chicken ham|beef sausage|chicken sausage|turkey sausage|veggie sausage|vegetarian sausage|plant.?based sausage|(?:beef|lamb|chicken|veal) (?:mince|minced)/,
         via:/(?<![ぁ-ん])らーど|ぽーくえきす|豚骨|とんこつ|ぜらちん|ゼラチン|\bgelatin/},
     banana:{re:/ばなな|\bbananas?\b|\bpl[aá]tanos?\b|\bbanane\b|\bbanan\b|바나나|香蕉|กล้วย|chuối|\bpisang\b|\bmuz\b|banany|केला|\bsaging\b|\bplantains?\b/, no:/banana (?:leaf|leaves|blossom|flower|heart|stem|pepper)|ばななの葉|pl[aá]tano macho verde|plantain leaves|pisang daun/},
+    pistachio:{re:/ぴすたちお|\bpistachios?\b|\bpistacho\b|\bpistache\b|pistazie|pistacja|피스타치오|开心果|antep fıstığı|पिस्ता/},
     macadamia:{re:/まかだみあ|\bmacadamias?\b|마카다미아|夏威夷果|แมคคาเดเมีย|\bmacadâmia\b/},
     peach:{re:/桃|\bpeach(?:es)?\b|nectarine|melocot[oó]n|durazno|\bp[eê]che\b|pfirsich|\bpesca\b|p[eê]ssego|복숭아|พีช|\bđào\b|persik|şeftali|brzoskwini|आड़ू/, eq:['もも','ももの缶詰'], no:/桃源|桃の花|もも肉|ももにく/},
     yamaimo:{re:/やまいも|山芋|山いも|長いも(?!の)|長芋|ながいも|自然薯|じねんじょ|つくね芋|大和芋|やまのいも|とろろ|\bnagaimo\b|\byamaimo\b|\bjinenjo\b|\bmountain yam\b|\bchinese yam\b|\bjapanese yam\b|山药|참마/},
@@ -4451,7 +4511,7 @@ const ALG_DEF = {
     fish:{fam:'fish', re:/魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|鱧|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|つな|\bfish(?!er|erman)\b|\bfishes\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|pollock|hairtail|\bcod\b|haddock|sea ?bream|whitebait|croaker|sardines?|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|\bsea ?bass\b|\bhalibut\b|swordfish|\bplaice\b|\bsole\b|\bmullet\b|\bcarp\b|\beel\b|\bperch\b|\bpike\b|\bturbot\b|\bmonkfish\b|\bgrouper\b|\bsturgeon\b|\bcaviar\b|\bkippers?\b|\bsprats?\b|\bpilchards?\b|\bbarramundi\b|\bpangasius\b|\bbasa\b|\bdorado\b|\bmahi.?mahi\b|\bmarlin\b|\bkingfish\b|\bpescado\b|\bbacalao\b|\bat[uú]n\b|\bsalm[oó]n\b|\bsardinas?\b|\bpoisson\b|\bthon\b|\bsaumon\b|\bmorue\b|\bfisch\b|\blachs\b|\bthunfisch\b|\bpesce\b|\btonno\b|\bsalmone\b|\bmerluzzo\b|\bpeixe\b|\batum\b|\bbacalhau\b|\bsalm[aã]o\b|생선|어묵|멸치|참치|연어|고등어|鱼|鳕|ปลา|\bcá\b|\bikan\b|\bbalık\b|\bryba\b|\brybn|मछली|\bisda\b|\bbagoong\b|\bdaing\b|\btinapa\b/,
         no:/fish.?free|\bselfish\b|jellyfish|crayfish|cuttlefish|starfish|shellfish|\bcrawfish\b|さかなクン|\bfishcake rice\b|魚介(?:類)?なし/, eq:['さけ','たい','たら','ぶり','あじ','さば','ふぐ','はも','きす','ほっけ','あゆ','こい','ます'],
         via:/かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしの素|和風だし|あごだし|\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
-    treenut:{parts:['walnut','cashew','macadamia','almond'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
+    treenut:{parts:['walnut','cashew','pistachio','macadamia','almond'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
         no:/nutmeg|nut ?meg|ナツメグ|なつめぐ|\bpeanuts?\b|ぴーなっつ|ピーナッツ|doughnuts?|donuts?|nutrient|nutritional|nutrition|\bcoconut\b|butternut|\bnutty\b|\bnut.?free\b|water chestnuts?|くわい|nuez moscada|noix de muscade|chestnut|栗|ぐりーん/, via:/\bmole\b|\bsatay\b|\bgado.?gado\b|\bpecel\b|ぬがー|ぷらりね|ぬてら|\bfrangipane\b|\bbaklava\b|\bkunafa\b|\bmaamoul\b|\bromesco\b/},
     celery:{re:/せろり|\bcelery\b|\bceleriac\b|\bcéleri\b|\bapio\b|\bsellerie\b|\bsedano\b|\baipo\b|\bselleri\b|\bseler\b|\bkereviz\b|\bselderij\b|\bkintsay\b|芹菜|西芹|셀러리|เซเลอรี่|\bcần tây\b|\bseledri\b|セロリアック/, via:/\bmirepoix\b/},
     mustard:{re:/からし|(?<!唐)辛子|芥子|ますたーど|\bmustard\b|\bmoutarde\b|\bsenf\b|\bsenape\b|\bmostarda\b|\bmostaza\b|\bmusztard|\bhardal\b|겨자|芥末|มัสตาร์ด|mù tạt|\bmustar\b|सरसों|\bsarson\b|\bdijon\b|\bkasundi\b/, no:/mustard (?:greens?|leaf|leaves|spinach|cabbage)|からし菜|からしな|高菜|たかな|\bsawi\b|sarson ka saag|saag|mizuna|みずな|水菜|からしれんこん/, via:/\bpiccalilli\b/},
@@ -4522,15 +4582,17 @@ function algSig(){ return algIds().join() + '|' + algFerm(); }
 function algStyle(){ const cc = currentCountry(); return cc === 'JP' ? 'jp' : ['US', 'MX', 'PE', 'BR', 'PH'].includes(cc) ? 'us' : 'eu'; }
 function algLabel(id){
     return {shrimp:t('えび'), crab:t('かに'), walnut:t('くるみ'), wheat:t('小麦'), buckwheat:t('そば'), egg:t('卵'), milk:t('乳（牛乳・乳製品）'), peanut:t('落花生（ピーナッツ）'),
-        abalone:t('あわび'), squid:t('いか'), ikura:t('いくら'), orange:t('オレンジ'), cashew:t('カシューナッツ'), kiwi:t('キウイフルーツ'), beef:t('牛肉'), sesame:t('ごま'), salmon:t('さけ'), mackerel:t('さば'),
+        abalone:t('あわび'), squid:t('いか'), ikura:t('いくら'), orange:t('オレンジ'), cashew:t('カシューナッツ'), pistachio:t('ピスタチオ'), kiwi:t('キウイフルーツ'), beef:t('牛肉'), sesame:t('ごま'), salmon:t('さけ'), mackerel:t('さば'),
         soy:t('大豆'), chicken:t('鶏肉'), banana:t('バナナ'), pork:t('豚肉'), macadamia:t('マカダミアナッツ'), peach:t('もも'), yamaimo:t('やまいも'), apple:t('りんご'), gelatin:t('ゼラチン'), almond:t('アーモンド'),
         gluten:t('グルテンを含む穀物（小麦・ライ麦・大麦・オーツ麦など）'), crustacean:t('甲殻類（えび・かになど）'), fish:t('魚'), treenut:t('ナッツ類（アーモンド・くるみ・カシューナッツなど）'), celery:t('セロリ'),
         mustard:t('マスタード（からし）'), sulphite:t('亜硫酸塩（二酸化硫黄）'), lupin:t('ルピナス'), mollusc:t('軟体動物（貝・いか・たこなど）')}[id] || id;
 }
 // 画面に出す並び: [[見出し, [id...]], ...]
+// アレルゲンの区分表（ALG_G）を最後に更新した日。表を直したら、この日付も直す（国の表示の決まりとの照合は別に行う）
+const ALG_TABLE_DATE = '2026-10-27';
 function algSections(){
     const st = algStyle();
-    const main = st === 'jp' ? [[t('特定原材料（表示が義務の8品目）'), ALG_G.jp8], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
+    const main = st === 'jp' ? [[t('特定原材料（表示が義務の9品目）'), ALG_G.jp9], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
         : st === 'us' ? [[t('米国の主要アレルゲン（9品目）'), ALG_G.us9]] : [[t('EUの主要アレルゲン（14品目）'), ALG_G.eu14]];
     const shown = new Set([].concat(...main.map(m => m[1])));
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
@@ -5036,7 +5098,9 @@ function allergySettingsHtml(){
         <div class="field"><span class="small">${esc(t('家族ごとのアレルギーは、家族のプロフィールで登録します（「今日食べる人」に合わせて効きます）。'))}</span>
             ${fm.length ? `<span class="small muted">${esc(t('⚠ アレルギー: {list}', {list: joinNames(fm.map(m => famLabel(m, famMembers().indexOf(m)) + '（' + joinNames([...new Set(m.allergy.map(avoidName))]) + '）'))}))}</span>` : ''}
             <div class="row"><button class="btn sm" data-act="alg-family">${esc(famMembers().length ? t('家族のプロフィールへ') : t('家族を登録する'))}</button></div></div>
+        <span class="small muted alg-ver">${esc(t('アレルゲンの区分表の更新日: {date}（アプリの中の表）。国の表示の決まりが改められても、アプリを更新するまではこの表のままです。', {date: ALG_TABLE_DATE}))}</span>
         <span class="small warn">${esc(t('アプリの判定は参考です。重度のアレルギーの方は、必ず原材料表示・医師の指示に従ってください。'))}</span>
+        <span class="small muted">${esc(t('判定はレシピの材料の名前から行います。加工品の中身や調理中の混入までは分かりません。外食・お惣菜はお店に確かめてください。'))}</span>
     </div>`;
 }
 function viewSettings(){
@@ -5239,7 +5303,7 @@ function shopBase(label){ return shopMemo('b|' + label, () => shopNorm(shopClean
 // 同じ食材キーの中では「A または B」の A だけで見たものとも同じ行にする（Milk or buttermilk ＝ Milk）
 function shopLoose(label){ return shopMemo('l|' + label, () => shopNorm(shopClean(label).split(SHOP_ALT)[0].trim())); }
 // 買い物メモの売り場: veg（野菜）・meat（肉・魚）・dairy（乳製品・卵）・other（その他）
-const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節'];
+const SHOP_OTHER_JP = ['こんにゃく','シチュールウ','カレールウ','ハヤシルウ','パン粉','豆腐','厚揚げ','油揚げ','おから','大豆','餃子の皮','わんたんの皮','春雨','キムチ','マカロニ','スパゲッティ','焼きそば麺','うどん','天かす','ご飯','ひじき','わかめ','昆布','塩昆布','刻みのり','トマト缶','梅干し','切り干し大根','酒粕','小麦粉','切り餅','赤わいん','紅しょうが','かつお節','そうめん','蕎麦','もち米','納豆','ささげ','焼きのり'];
 function shopSec(i){ return shopMemo('s\u0001' + i.key + '\u0001' + (i.en || '') + '\u0001' + (i.label || ''), () => shopSecRaw(i)); }
 function shopSecRaw(i){
     const w = (i.key + '|' + (i.en || '')).toLowerCase();
@@ -5410,6 +5474,7 @@ function shoppingHtml(){
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
         ${list.length ? `<p class="shop-prog" role="status">${esc(nDone === list.length ? t('すべてチェックしました') : t('買った {done} / {total}品', {done:nDone, total:list.length}))}</p>` : ''}
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
+        ${algIds().length || famMembers().some(m => m.allergy.length) ? `<p class="pantry-hint alg-shop">${esc(t('アレルギーの設定があります。買うときは、原材料表示を必ず確かめてください。'))}</p>` : ''}
         ${nFridge ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
         <div class="list shop${session.shopMode ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
@@ -6198,6 +6263,52 @@ function lossHtml(){
         <p class="foot"><a href="https://www.caa.go.jp/policies/policy/consumer_policy/information/food_loss/" target="_blank" rel="noopener">${esc(t('食品ロスについて（消費者庁）'))}</a></p>
         </div></section>`;
 }
+/* ---- 備蓄（ローリングストック） ----
+   S.stock = [{id, n: 品名, q: 数（任意。入れていなければ null）, e: 期限（任意。自分で入れた日付）, d: 登録した日}]、S.stockLog = [{d, n}]（「1つ使った」を押した記録）。
+   端末の中だけ。冷蔵庫・「早めに使う」・献立・買い物メモの計算には入れない（ほかの料理が連動して変わらないように）。
+   備える量・期間の目安は出さない（出典を確かめられるまで）。食べられるかどうかも判断しない */
+const STOCK_MAX = 100, STOCK_LOG_MAX = 400;
+function stockSorted(){ return (S.stock || []).slice().sort((a, b) => (a.e ? 0 : 1) - (b.e ? 0 : 1) || (a.e < b.e ? -1 : a.e > b.e ? 1 : 0) || (a.d < b.d ? -1 : a.d > b.d ? 1 : 0) || String(a.id).localeCompare(String(b.id))); }
+function stockOf(id){ return (S.stock || []).find(x => x.id === id) || null; }
+function stockAdd(name, q, e){
+    const n = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (!n){ toast(t('品名を入れてください')); return false; }
+    if (S.stock.some(x => x.n.toLowerCase() === n.toLowerCase())){ toast(t('「{name}」はもう備蓄にあります', {name:n})); return false; }
+    if (S.stock.length >= STOCK_MAX){ toast(t('備蓄に入れられるのは{n}品までです', {n:STOCK_MAX})); return false; }
+    const qn = q === '' || q == null ? null : Math.round(Number(q));
+    const it = {id: 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), n, q: Number.isFinite(qn) && qn >= 0 && qn <= 999 ? qn : null, e: /^\d{4}-\d{2}-\d{2}$/.test(e || '') && realYmd(e) ? e : '', d: TODAY};
+    S.stock.push(it); save(); render();
+    toast(t('「{name}」を備蓄に入れました', {name:n}), false, () => { S.stock = S.stock.filter(x => x !== it); save(); render(); });
+    return true;
+}
+// 1つ使った: 数を1減らし（数を入れていなければ減らさない）、使った記録を残す
+function stockUse(id){
+    const it = stockOf(id); if (!it || it.q === 0) return;
+    const wasQ = it.q, entry = {d: TODAY, n: it.n};
+    if (typeof it.q === 'number') it.q--;
+    S.stockLog.push(entry); if (S.stockLog.length > STOCK_LOG_MAX) S.stockLog.splice(0, S.stockLog.length - STOCK_LOG_MAX);
+    save(); render();
+    toast(t('「{name}」を1つ使ったと記録しました', {name:it.n}), false, () => { it.q = wasQ; S.stockLog = S.stockLog.filter(x => x !== entry); save(); render(); });
+}
+function stockCount(from, to){ return (S.stockLog || []).filter(x => x.d >= from && x.d <= to).length; }
+function stockRowHtml(x){
+    const nm = x.n, days = x.e ? daysBetween(TODAY, x.e) : null, shop = !!(S.week && visiblePlanDays().length);
+    return `<div class="loss-row stock-row"><span class="loss-nm">${esc(nm)}</span>${typeof x.q === 'number' ? `<span class="stock-q${x.q === 0 ? ' over' : ''}">${esc(t('残り{n}', {n:x.q}))}</span>` : ''}<span class="loss-d${days !== null && days < 0 ? ' over' : ''}">${esc(days === null ? t('期限なし') : expLabel(days))}</span>
+        <span class="loss-btns"><button class="btn sm" data-act="stock-use" data-id="${esc(x.id)}"${x.q === 0 ? ' disabled' : ''} aria-label="${esc(t('{name}を1つ使った', {name:nm}))}">${esc(t('1つ使った'))}</button>${typeof x.q === 'number' ? `<button class="btn sm ghost" data-act="stock-plus" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を1つ足す', {name:nm}))}">＋1</button>` : ''}${shop ? `<button class="btn sm ghost" data-act="stock-shop" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を買い物メモに足す', {name:nm}))}">${esc(t('買い物メモに足す'))}</button>` : ''}<input type="date" class="stock-exp" data-act="stock-exp" data-id="${esc(x.id)}" value="${esc(x.e)}" style="width:auto" aria-label="${esc(t('{name}の期限', {name:nm}))}"><button class="btn sm ghost danger" data-act="stock-rm" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を備蓄から消す', {name:nm}))}">${esc(t('消す'))}</button></span></div>`;
+}
+function stockHtml(){
+    const list = stockSorted();
+    return `<section class="sec stock-sec" id="stock-sec">
+        <div class="sec-head"><h2>${esc(t('備蓄（ローリングストック）'))}</h2><span class="hint">${esc(t('期限が近い順。数と期限は自分で入れたものです'))}</span></div>
+        <div class="card">
+        ${list.length ? list.map(stockRowHtml).join('') : `<p class="small muted" style="margin:0">${esc(t('まだ登録していません。水・缶詰・レトルトなど、家に置いてあるものを入れられます。'))}</p>`}
+        <form class="row small stock-add" data-form="stock-add">
+            <input type="text" id="stock-name" maxlength="40" placeholder="${esc(t('品名（例: 水、さば缶）'))}" aria-label="${esc(t('品名'))}" autocomplete="off" style="flex:1 1 8rem;width:auto">
+            <input type="number" id="stock-q" min="0" max="999" inputmode="numeric" placeholder="${esc(t('数（任意）'))}" aria-label="${esc(t('数（任意）'))}" style="width:6.5rem">
+            <input type="date" id="stock-exp" aria-label="${esc(t('期限（任意）'))}" style="width:auto">
+            <button class="btn sm" type="submit">${esc(t('備蓄に入れる'))}</button></form>
+        <p class="small muted" style="margin:4px 0">${esc(t('使ったら「1つ使った」を押し、買い足すものは買い物メモに足せます（1週間プランがあるとき）。この端末の中だけに残り、献立や冷蔵庫の食材には使いません。備える量の目安は、このアプリでは出しません。'))}</p>
+        </div></section>`;
+}
 function fridgeUseInfo(){
     const m = session.menu, main = m && m.items[0] && m.items[0].r;
     if (!main || !S.fridge.length) return null;
@@ -6908,6 +7019,7 @@ function viewFridge(){
         </div>
     </section>
     ${lossHtml()}
+    ${stockHtml()}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('いつも家にある食材'))}</h2><span class="hint">${esc(t('卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます'))}</span></div>
         <div class="card">
@@ -7251,6 +7363,7 @@ function viewLog(){
         <div class="sec-head"><h2>${esc(t('今週の主菜の内訳'))}</h2><span class="hint">${esc(t('主な材料とジャンルを、回数だけ数えています。置き換えて作った料理も、元の料理で数えます。'))}</span></div>
         ${h}
     </section>` : '')(tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()))}
+    ${myRecordHtml()}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
@@ -7301,6 +7414,29 @@ function viewLog(){
         </details>
     </section>
 `;
+}
+
+/* ---- あなたの記録: この端末の記録を、今月の件数として並べるだけ（S は読むだけ。評価・比較・「減らせた」などの言葉は出さない。0件でもそのまま出す） ---- */
+function myRecordStats(ym = TODAY.slice(0, 7)){
+    const from = ym + '-01', to = ym + '-31', hs = (S.history || []).filter(h => h.d >= from && h.d <= to);
+    const ccs = new Set(hs.filter(h => !isCustomId(h.id)).map(h => histCountry(h.id)));
+    const l = lossCount(from, to);
+    return {ym, made: hs.length, countries: ccs.size, used: l.u, tossed: l.t, stockUsed: stockCount(from, to), custom: (S.custom || []).length};
+}
+function myRecordHtml(){
+    if (!S.history.length && !S.foodLog.length && !S.stockLog.length && !S.custom.length) return '';
+    const s = myRecordStats(), row = (k, v) => `<dt class="small">${esc(k)}</dt><dd class="small">${esc(v)}</dd>`;
+    return `<section class="sec my-rec" id="my-record">
+        <div class="sec-head"><h2>${esc(t('あなたの記録'))}</h2><span class="hint">${esc(t('{month}の件数。この端末の中で数えています（外には送りません）', {month: monthLabel(s.ym)}))}</span></div>
+        <div class="card"><dl>
+            ${row(t('作った料理の記録'), t('{n}品', {n: s.made}))}
+            ${s.countries ? row(t('料理の国'), t('{n}か国', {n: s.countries})) : ''}
+            ${row(t('使い切ったと記録した食材'), t('{n}件', {n: s.used}))}
+            ${row(t('捨てたと記録した食材'), t('{n}件', {n: s.tossed}))}
+            ${row(t('備蓄を使ったと記録した回数'), t('{n}回', {n: s.stockUsed}))}
+            ${row(t('わが家のレシピ（全部）'), t('{n}品', {n: s.custom}))}
+        </dl></div>
+    </section>`;
 }
 
 /* ---- 詳細（モーダル） ---- */
@@ -8136,12 +8272,13 @@ document.addEventListener('click', e => {
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
+        case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
+            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('settings');
+            const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
+        }
         case 'ob-done': {
             // 日本を日本語以外で使うとき、画面の名前（Pork など）ではなく食材の名前（豚肉）で保存する。言語を変えても効くように
-            const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
-            S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
-            S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
-            S.onboarded = true; save(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
+            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
             if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
         case 'decide': {
@@ -8209,6 +8346,11 @@ document.addEventListener('click', e => {
         }
         case 'soon-ing': { const v = el.dataset.v; if (S.fridge.includes(v)){ const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); if (e.soon) delete e.soon; else e.soon = true; save(); render(); } break; }
         case 'loss-use': lossLogAdd(el.dataset.v, 'u'); break;
+        case 'stock-use': stockUse(el.dataset.id); break;
+        case 'stock-plus': { const it = stockOf(el.dataset.id); if (it && typeof it.q === 'number' && it.q < 999){ it.q++; save(); render(); } break; }
+        case 'stock-shop': { const it = stockOf(el.dataset.id); if (it) shopAddExtra(it.n); break; }
+        case 'stock-rm': { const it = stockOf(el.dataset.id); if (!it) break; const i = S.stock.indexOf(it); S.stock.splice(i, 1); save(); render();
+            toast(t('「{name}」を備蓄から消しました', {name:it.n}), false, () => { if (!stockOf(it.id)) S.stock.splice(Math.min(i, S.stock.length), 0, it); save(); render(); }); break; }
         case 'loss-toss': lossLogAdd(el.dataset.v, 't'); break;
         case 'loss-exp-clear': { const e = S.fridgeMeta[el.dataset.v]; if (e && e.exp){ const was = e.exp; delete e.exp; save(); render(); toast(t('期限を消しました'), false, () => { if (S.fridgeMeta[el.dataset.v]){ S.fridgeMeta[el.dataset.v].exp = was; save(); render(); } }); } break; }
         case 'loss-exp-add': { const it = $('#loss-exp-item'), dt = $('#loss-exp-date'), v = it && it.value, d = dt && dt.value;
@@ -8467,7 +8609,7 @@ function parseBackup(txt){
     let d; try{ d = JSON.parse(txt, (k, v) => k === '__proto__' ? undefined : v); }catch(e){ return {ok:false, reason:'broken'}; }
     if (!d || typeof d !== 'object' || Array.isArray(d)) return {ok:false, reason:'notmine'};
     // ご飯帖のデータの目印: 記録・お気に入りなどの配列、または設定（古い版は history だけでなく項目が少ない）
-    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','foodLog','hidden','usedDays'];
+    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','foodLog','stock','hidden','usedDays'];
     const known = A.some(k => Array.isArray(d[k])) || (d.settings && typeof d.settings === 'object' && !Array.isArray(d.settings) && Object.keys(d.settings).length > 0) || (d.week && typeof d.week === 'object' && Array.isArray(d.week.days));
     if (!known) return {ok:false, reason:'notmine'};
     const v = d._gohancho && Number(d._gohancho.v);
@@ -8504,6 +8646,7 @@ function stateSummary(d){
     if (d.leftovers.length) a.push(t('作り置きメモ{n}件', {n: d.leftovers.length}));
     if (d.spend.length) a.push(t('食費メモ{n}件', {n: d.spend.length}));
     if (d.foodLog.length) a.push(t('使い切り・捨ての記録{n}件', {n: d.foodLog.length}));
+    if (d.stock.length) a.push(t('備蓄{n}品', {n: d.stock.length}));
     if (wk.length) a.push(t('1週間の予定{n}日分', {n: wk.length}) + (skip ? t('（作らない日{n}日）', {n: skip}) : '') + (who ? t('（担当を決めた日{n}日）', {n: who}) : ''));
     a.push(c.flag + ' ' + countryLabel(c));
     return a.join(t('・'));
@@ -8565,6 +8708,7 @@ document.addEventListener('change', e => {
         fl.text().then(txt => { if (!askImport(txt, 'file')) toast(importErrMsg('file')); }, () => toast(t('読み込めませんでした')));
         return;
     }
+    if (el.dataset && el.dataset.act === 'stock-exp'){ const it = stockOf(el.dataset.id); if (it){ it.e = /^\d{4}-\d{2}-\d{2}$/.test(el.value) && realYmd(el.value) ? el.value : ''; save(); render(); } return; }
     if (el.id === 'eat-at'){ S.settings.dinnerAt = /^([01]\d|2[0-3]):[0-5]\d$/.test(el.value) ? el.value : null; session.eatOpen = true; save(); render(); return; }
     if (el.id === 'tw-base'){ if (twistState.results && !useTwistQuota()){ render(); return; } twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }   // 無料版の回数がないときは、元の料理も案も変えない
     if (el.dataset && el.dataset.act === 'mix'){
@@ -8578,6 +8722,7 @@ document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
     if (f === 'spend'){ spendAdd(); return; }
+    if (f === 'stock-add'){ const n = $('#stock-name'), q = $('#stock-q'), e2 = $('#stock-exp'); if (n && stockAdd(n.value, q ? q.value : '', e2 ? e2.value : '')){ const x = $('#stock-name'); if (x) x.focus({preventScroll:true}); } return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
     if (f === 'fp-add'){ const inp = $('#fp-add-input'); if (inp && inp.value.trim()) fphotoAddTyped(inp.value); return; }

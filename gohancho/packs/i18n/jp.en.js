@@ -1282,6 +1282,186 @@ GOHAN_PACK_TR('JP', 'en', {
       seas: 'Sesame oil 1 tbsp · Dried red chili 1/2 · Soy sauce 1.5 tbsp · Mirin 1 tbsp · Sugar 1 tsp',
       steps: ['Tear the konnyaku into bite-size pieces with a spoon, parboil 3 minutes and drain.', 'Dry-fry in a frying pan to drive off the moisture.', 'Add the sesame oil and sliced chili and stir-fry until the surface of the konnyaku sizzles.', 'Add the soy sauce, mirin and sugar, cook until dry and toss with bonito flakes.'],
       tip: { add: 'Make it ahead', why: 'It tastes even better the next day and keeps 3–4 days.', skill: 'Tearing, not cutting', how: 'Rough torn edges have more surface area, so the seasoning clings better.' }
+    },
+    onigiri: {
+      name: 'Onigiri (salmon, umeboshi and bonito flakes)',
+      ings: [['Cooked rice', '3 bowls (about 450 g)'], ['Salted salmon (lightly salted)', '1/2 fillet'], ['Umeboshi (pickled plum)', '1'], ['Bonito flakes', '1 pack (about 2 g)'], ['Toasted nori', '1 sheet']],
+      seas: 'Salt a little · Soy sauce 1/2 tsp (for the bonito flakes)',
+      steps: ['Grill or pan-fry the salmon until cooked through, remove the skin and bones and flake coarsely. Remove the pit from the umeboshi and mash the flesh. Mix the bonito flakes with the soy sauce.', 'Cut the nori into 6 strips. Divide the rice into 6 portions (about 75 g each).', 'Wet your hands, spread a little salt on your palm, make a hollow in the middle of a portion of rice, put in a filling (salmon, umeboshi or bonito) and cover with rice. Make 2 of each.', 'While still warm, shape each into a triangle by lightly pressing and turning it in your hands, then wrap with nori (plastic wrap makes hot rice easier to handle).']
+    },
+    tendon: {
+      name: 'Tendon (tempura rice bowl)',
+      ings: [['Shrimp', '4'], ['Kabocha squash', '80 g'], ['Eggplant', '1'], ['Shishito peppers', '4'], ['Egg', '1/2'], ['Cooked rice', '2 bowls']],
+      seas: '(Batter) Flour 70 g · Cold water 100 ml · (Dusting) Flour 1 tbsp · Oil for frying · (Sauce) Dashi 100 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 1 tsp',
+      steps: ['Peel the shrimp and remove the veins, then make several cuts on the belly and stretch them straight. Slice the kabocha 5 mm thick, halve the eggplant and score the skin, and poke a hole in each shishito.', 'Bring the dashi, soy sauce, mirin and sugar to a boil in a small pan for the sauce.', 'Beat the egg into the cold water, then fold in 70 g flour lightly for the batter (do not overmix). Dust the ingredients with flour.', 'Fry in oil at 170–180°C: kabocha (3 minutes), eggplant and shishito (2 minutes), then shrimp (2–3 minutes), dipping each in batter first. Drain when crisp and floating.', 'Put the rice in bowls, top with the tempura and pour the sauce over.']
+    },
+    ochazuke: {
+      name: 'Salmon ochazuke (rice with tea)',
+      ings: [['Cooked rice', '2 bowls'], ['Salted salmon (lightly salted)', '1 fillet'], ['Toasted nori', 'a little'], ['Mitsuba', 'a little'], ['White sesame seeds', 'a little'], ['Wasabi', 'a little']],
+      seas: 'Hot green tea (sencha or hojicha) 300 ml · Salt a little',
+      steps: ['Grill or pan-fry the salmon until cooked through, remove the skin and bones and flake it.', 'Put the rice in bowls and top with the salmon, torn nori, chopped mitsuba and sesame seeds.', 'Pour on the hot tea and add a little salt to taste. Add wasabi if you like.']
+    },
+    tkg: {
+      name: 'Tamago kake gohan (raw egg over rice)',
+      ings: [['Cooked rice', '2 bowls'], ['Eggs (labeled for raw eating)', '2'], ['Shredded nori', 'a little'], ['Leek (naganegi)', 'a little']],
+      seas: 'Soy sauce 2 tsp (to taste)',
+      steps: ['To eat eggs raw, use eggs labeled for raw consumption and use them before the best-before date.', 'Crack the eggs into a small bowl, add the soy sauce and beat, cutting through the whites.', 'Put warm rice in bowls, pour the egg over and top with shredded nori and sliced leek. Small children, pregnant women, older people and anyone unwell should use thoroughly cooked eggs instead.']
+    },
+    sekihan: {
+      name: 'Sekihan (red bean sticky rice)',
+      ings: [['Glutinous rice (mochigome)', '1 go (180 ml)'], ['Sasage (black-eyed peas) or azuki beans', '2 tbsp (about 20 g)']],
+      seas: 'Water about 180 ml (together with the bean cooking liquid) · Salt 1/4 tsp · Black sesame seeds a little (optional)',
+      steps: ['Rinse the glutinous rice, drain in a colander, soak in water for at least 30 minutes and drain again.', 'Rinse the beans, put them in a pot with 300 ml water (not included in the amounts) and boil for 10 minutes. Separate the beans from the cooking liquid and let the liquid cool.', 'Put the glutinous rice, beans and salt in a rice cooker, and add the cooking liquid topped up with water to 180 ml (the liquid turns the rice red). Cook on the sticky rice setting or the normal setting.', 'When done, let it steam for 10 minutes, fluff lightly, serve in bowls and sprinkle with black sesame seeds.']
+    },
+    gomokutakikomi: {
+      name: 'Gomoku takikomi gohan (mixed rice cooked with chicken and vegetables)',
+      ings: [['Rice', '2 go'], ['Chicken thigh', '80 g'], ['Carrot', '1/3'], ['Burdock root (gobo)', '1/3'], ['Shiitake mushrooms', '2'], ['Aburaage (fried tofu)', '1/2 piece']],
+      seas: 'Dashi about 360 ml (adjust to the rice cooker line) · Soy sauce 2 tbsp · Mirin 2 tbsp · Sake 1 tbsp · Salt 1/3 tsp',
+      steps: ['Rinse the rice, drain in a colander and soak for 30 minutes.', 'Cut the chicken into 1 cm cubes. Cut the carrot into thin strips, shave the burdock and soak in water, slice the shiitake, and pour boiling water over the aburaage before cutting it into thin strips.', 'Put the rice in the rice cooker, add the soy sauce, mirin, sake and salt, then pour in dashi up to the 2-go line and stir lightly. Top with the ingredients (do not mix).', 'Cook on the normal setting, then let it steam for 10 minutes and mix gently from the bottom.']
+    },
+    inarizushi: {
+      name: 'Inarizushi (sushi rice in sweet fried tofu pouches)',
+      ings: [['Aburaage (fried tofu)', '4 sheets'], ['Cooked rice', '1 go (about 330 g, freshly cooked)'], ['White sesame seeds', '1 tbsp'], ['Pickled red ginger', 'a little']],
+      seas: '(Simmering liquid) Dashi 200 ml · Sugar 3 tbsp · Soy sauce 2 tbsp · Mirin 1 tbsp · (Sushi vinegar) Vinegar 2 tbsp · Sugar 1 tbsp · Salt 1/2 tsp',
+      steps: ['Halve the aburaage, open each half into a pouch and pour boiling water over to remove the oil.', 'Put the simmering liquid and aburaage in a pot, cover with a drop lid and simmer over low heat for 15 minutes until little liquid is left. Let it cool in the liquid to absorb the flavor, then drain lightly.', 'Mix the sushi vinegar ingredients and pour over the hot rice, folding with cutting motions, then add the sesame seeds. When cool enough to handle, divide into 8 and roll lightly into balls.', 'Stuff the rice into the pouches, fold the openings over and shape. Serve with pickled red ginger if you like.']
+    },
+    zosui: {
+      name: 'Egg zosui (rice soup with egg)',
+      ings: [['Cooked rice', '2 bowls'], ['Eggs', '2'], ['Leek (naganegi)', '1/2'], ['Shiitake mushrooms', '2'], ['Mitsuba', 'a little']],
+      seas: 'Dashi 500 ml · Sake 1 tbsp · Soy sauce 2 tsp · Salt 1/3 tsp',
+      steps: ['Put the rice in a colander and rinse briefly under running water to remove the stickiness. Slice the leek and thinly slice the shiitake.', 'Bring the dashi, sake, soy sauce and salt to a boil, add the shiitake and leek and simmer for 2 minutes.', 'Add the rice and simmer over low heat for 3–4 minutes without stirring too much.', 'Pour in the beaten eggs in a circle, cover, turn off the heat and leave for about 1 minute until the egg is cooked. Serve topped with mitsuba.']
+    },
+    somen: {
+      name: 'Somen (chilled thin wheat noodles)',
+      ings: [['Somen noodles', '4 bundles (about 200 g)'], ['Cucumber', '1/2'], ['Egg', '1'], ['Myoga ginger', '1'], ['Shiso leaves', '3'], ['Leek (naganegi)', 'a little']],
+      seas: 'Mentsuyu (3x concentrate) 4 tbsp · Cold water 120 ml · Sugar 1/2 tsp · Oil a little',
+      steps: ['Dilute the mentsuyu with the cold water to make the dipping sauce and chill it.', 'Mix the egg with the sugar, make a thin omelet and slice into fine threads. Cut the cucumber and shiso into thin strips and thinly slice the myoga and leek.', 'Boil the somen in plenty of water for the time on the package, drain, rub and rinse under running water to remove the slime, then chill in ice water.', 'Drain well, serve in bowls with the toppings and condiments, and dip in the sauce to eat.']
+    },
+    zarusoba: {
+      name: 'Zaru soba (chilled buckwheat noodles)',
+      ings: [['Dried soba', '200 g'], ['Leek (naganegi)', '1/3'], ['Toasted nori', '1/2 sheet'], ['Wasabi', 'a little']],
+      seas: 'Mentsuyu (3x concentrate) 4 tbsp · Cold water 120 ml',
+      steps: ['Dilute the mentsuyu with the cold water to make the dipping sauce and chill it. Slice the leek and cut the nori into thin strips.', 'Boil the soba in plenty of water for the time on the package.', 'Drain, rub and rinse under running water to remove the slime, chill in ice water and drain well.', 'Serve on a bamboo tray or in bowls topped with nori, with the sauce, leek and wasabi on the side.']
+    },
+    kitsuneudon: {
+      name: 'Kitsune udon (udon with sweet fried tofu)',
+      ings: [['Boiled udon', '2 portions'], ['Aburaage (fried tofu)', '1 piece'], ['Leek (naganegi)', '1/2'], ['Kamaboko (fish cake)', '4 slices']],
+      seas: '(Broth) Dashi 600 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Salt 1/4 tsp · (Simmering liquid for the aburaage) Dashi 100 ml · Sugar 1 tbsp · Soy sauce 1 tbsp',
+      steps: ['Pour boiling water over the aburaage to remove the oil and halve it. Slice the leek diagonally.', 'Put the simmering liquid ingredients and aburaage in a small pan, cover with a drop lid and simmer over low heat for 8 minutes until little liquid is left.', 'In another pot, bring the dashi, soy sauce, mirin and salt to a boil and warm the udon in it.', 'Put the udon and broth in bowls and top with the aburaage, leek and kamaboko.']
+    },
+    curryudon: {
+      name: 'Curry udon',
+      ings: [['Boiled udon', '2 portions'], ['Pork, thinly sliced pieces', '100 g'], ['Onion', '1/2'], ['Leek (naganegi)', '1/2']],
+      seas: 'Oil 1 tsp · Dashi 500 ml · Curry roux 2 cubes (about 40 g) · Soy sauce 2 tsp · Mirin 1 tbsp',
+      steps: ['Slice the onion thinly, slice the leek diagonally and cut the pork into bite-size pieces.', 'Heat the oil in a pot, stir-fry the pork and onion until the pork changes color, then add the dashi.', 'When it boils, skim off the scum and simmer over low heat for 5 minutes. Turn off the heat, dissolve in the curry roux, and add the soy sauce and mirin.', 'Add the udon and leek and simmer for 2–3 minutes, then serve (the broth splashes easily, so take care).']
+    },
+    ramen: {
+      name: 'Shoyu ramen (soy sauce ramen)',
+      ings: [['Fresh ramen noodles', '2 portions'], ['Pork belly, thinly sliced', '100 g'], ['Bean sprouts', '1/2 bag'], ['Leek (naganegi)', '1/3'], ['Eggs', '2']],
+      seas: 'Water 600 ml · Chicken bouillon powder 1 1/2 tbsp · Soy sauce 2 tbsp · Mirin 1 tbsp · Sesame oil 1 tsp · Pepper a little',
+      steps: ['Lower the eggs, straight from the refrigerator, into boiling water and boil for 7 minutes, then cool in cold water and peel (soft-boiled).', 'Cut the pork into 3 cm strips and stir-fry in the sesame oil until it changes color, then add the bean sprouts, stir-fry briefly and season with pepper.', 'Bring the water, bouillon powder, soy sauce and mirin to a boil for the soup. Boil the noodles in a separate pot for the time on the package and drain well.', 'Pour the soup into bowls, add the noodles and top with the stir-fried pork and sprouts, halved eggs and sliced leek.']
+    },
+    shakeshio: {
+      name: 'Salt-grilled salmon',
+      ings: [['Salted salmon (lightly salted)', '2 fillets'], ['Daikon radish', '3 cm'], ['Lemon', '1/4']],
+      seas: 'Oil a little (for a frying pan) · Soy sauce a little',
+      steps: ['Pat the salmon dry with paper towels. Grate the daikon and drain lightly.', 'Under a grill, preheat and grill skin side up over medium heat for 7–8 minutes. In a frying pan, grease lightly and cook skin side down over medium heat for 4 minutes, then turn, cover and cook 3–4 minutes more until cooked through.', 'Serve with grated daikon and lemon. Add a little soy sauce to the daikon.']
+    },
+    ajihimono: {
+      name: 'Dried horse mackerel (himono), grilled',
+      ings: [['Dried horse mackerel (himono, butterflied)', '2'], ['Daikon radish', '3 cm'], ['Sudachi (or lemon)', '1']],
+      seas: 'Oil a little (for a frying pan) · Soy sauce a little',
+      steps: ['Grate the daikon and drain lightly.', 'Under a grill, preheat and grill flesh side up over medium heat for 5–6 minutes, then turn and grill the skin side for 2–3 minutes. In a frying pan, line with cooking parchment and cook flesh side down over medium heat for 4 minutes, then turn and cook 3 minutes.', 'Serve with grated daikon and sudachi. Dried fish is already salty, so go easy on the soy sauce.']
+    },
+    hamuegg: {
+      name: 'Ham and eggs',
+      ings: [['Ham', '4 slices'], ['Eggs', '4'], ['Cherry tomatoes', '4'], ['Lettuce', '1 leaf']],
+      seas: 'Oil 2 tsp · Water 1 tbsp · Salt and pepper a little',
+      steps: ['Heat the oil in a frying pan and lightly brown the ham, 2 slices at a time without overlapping.', 'Crack 2 eggs onto each pair of ham slices, add the water, cover and steam over low heat for 2–3 minutes until the whites are set (for small children and pregnant women, cook until the yolks are firm too).', 'Serve and season with salt and pepper, with the cherry tomatoes and lettuce on the side.']
+    },
+    yakiniku: {
+      name: 'Yakiniku (Japanese-style grilled beef)',
+      ings: [['Beef short rib (for yakiniku)', '250 g'], ['Onion', '1/2'], ['Green peppers', '2'], ['Shiitake mushrooms', '4'], ['Sangchu (or lettuce)', '4 leaves']],
+      seas: '(Sauce) Soy sauce 3 tbsp · Sugar 1 1/2 tbsp · Sake 1 tbsp · Grated garlic 1 tsp · Grated ginger 1/2 tsp · Sesame oil 1 tbsp · White sesame seeds 1 tsp · Oil a little',
+      steps: ['Mix the sauce ingredients. Cut the onion into 1 cm wedges, quarter the green peppers and halve the shiitake after removing the stems.', 'Heat a hot plate or frying pan, grease it and grill the vegetables first, then set aside.', 'Spread the beef out in single layers and grill both sides until browned and cooked through.', 'Dip in the sauce to eat. Wrapping in sangchu leaves also works well.']
+    },
+    oden: {
+      name: 'Oden (simmered fish cakes, daikon and eggs)',
+      ings: [['Daikon radish', '1/3 (about 400 g)'], ['Eggs', '4'], ['Konnyaku', '1 block'], ['Atsuage (thick fried tofu)', '1 block'], ['Chikuwa (fish cake tubes)', '2'], ['Kombu (for tying)', '20 cm'], ['Prepared mustard', 'a little']],
+      seas: 'Dashi 1000 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Sake 2 tbsp · Salt 1/2 tsp · Rice-washing water as needed (for parboiling the daikon)',
+      steps: ['Cut the daikon into 3 cm rounds, peel and bevel the edges. Parboil in rice-washing water (or water with 1 tbsp of rice) for 15–20 minutes until a skewer goes in easily.', 'Boil the eggs for 10 minutes and peel. Score the konnyaku in a grid on both sides, cut into triangles and boil for 2–3 minutes. Pour boiling water over the atsuage and chikuwa to remove the oil and halve the chikuwa diagonally. Soften the kombu in water and tie into knots.', 'Bring the dashi, soy sauce, mirin, sake and salt to a boil, add the daikon, eggs, konnyaku and kombu, cover with a drop lid and simmer over low heat for 30 minutes.', 'Add the atsuage and chikuwa and simmer 10 minutes more. Let it sit, ideally overnight, so the flavors soak in. Serve with mustard.']
+    },
+    yudofu: {
+      name: 'Yudofu (simmered tofu hot pot)',
+      ings: [['Firm (momen) tofu', '2 blocks'], ['Kombu', '10 cm'], ['Leek (naganegi)', '1/2'], ['Bonito flakes', '1 pack'], ['Grated ginger', 'a little']],
+      seas: 'Water 700 ml · Ponzu (or soy sauce for dipping) 4 tbsp',
+      steps: ['Put the water and kombu in a clay pot or heavy pot and, if you have time, leave for 30 minutes. Cut each tofu block into 8 pieces and slice the leek.', 'Heat over medium heat and take out the kombu just before it boils.', 'Gently add the tofu, turn the heat to low and heat for 3–5 minutes until warmed through (a hard boil makes tofu tough).', 'Add the leek, bonito flakes and ginger to the ponzu and dip the warm tofu to eat.']
+    },
+    shabushabu: {
+      name: 'Pork shabu-shabu hot pot',
+      ings: [['Pork loin, shabu-shabu slices', '250 g'], ['Napa cabbage', '1/8'], ['Shungiku (garland chrysanthemum)', '1/2 bunch'], ['Leek (naganegi)', '1/2'], ['Firm (momen) tofu', '1/2 block'], ['Enoki mushrooms', '1/2 bag']],
+      seas: 'Kombu 10 cm · Water 800 ml · (Sesame sauce) Ground white sesame 2 tbsp · Soy sauce 1 tbsp · Sugar 2 tsp · Vinegar 1 tbsp · Water 1 tbsp · Ponzu 4 tbsp',
+      steps: ['Cut the napa cabbage into chunks, the shungiku into bite-size pieces and the leek diagonally. Trim and separate the enoki and cut the tofu into pieces.', 'Mix the sesame sauce ingredients.', 'Heat the water and kombu in a pot and take out the kombu just before it boils. Add the napa stems, tofu, leek and enoki and simmer.', 'Swish the pork slice by slice in the broth until it is no longer pink at all. Add the shungiku and napa leaves too, and eat with the ponzu or sesame sauce.']
+    },
+    yosenabe: {
+      name: 'Yosenabe (mixed hot pot)',
+      ings: [['Chicken thigh', '150 g'], ['Cod fillets', '2'], ['Shrimp', '4'], ['Napa cabbage', '1/8'], ['Leek (naganegi)', '1'], ['Shiitake mushrooms', '4'], ['Firm (momen) tofu', '1 block'], ['Shungiku (garland chrysanthemum)', '1/2 bunch']],
+      seas: 'Dashi 800 ml · Soy sauce 2 tbsp · Mirin 2 tbsp · Sake 2 tbsp · Salt 1/2 tsp',
+      steps: ['Cut the chicken and cod into bite-size pieces. Pour boiling water over the cod and rinse to remove any fishy smell. Devein the shrimp.', 'Cut the napa cabbage into chunks and the leek diagonally, remove the shiitake stems and slice or score the caps, cut the tofu into pieces and the shungiku into bite-size lengths.', 'Bring the dashi, soy sauce, mirin, sake and salt to a boil, add the chicken, napa stems, leek and shiitake and simmer for 5 minutes.', 'Add the tofu, cod and shrimp and simmer 5 minutes, until the seafood and chicken are cooked through. Add the shungiku at the end, cook briefly and eat.']
+    },
+    chawanmushi: {
+      name: 'Chawanmushi (savory steamed egg custard)',
+      ings: [['Eggs', '2'], ['Chicken thigh', '40 g'], ['Shrimp', '2'], ['Shiitake mushroom', '1'], ['Mitsuba', 'a little']],
+      seas: 'Dashi 300 ml · Salt 1/3 tsp · Soy sauce 1/2 tsp · Mirin 1 tsp · (For seasoning the chicken) Sake 1 tsp · Soy sauce a little',
+      steps: ['Slice the chicken into small pieces and coat with the sake and soy sauce. Peel and devein the shrimp and slice the shiitake.', 'Beat the eggs gently without making foam, mix with the cooled dashi, salt, soy sauce and mirin, and strain through a sieve.', 'Divide the fillings between 2 cups, pour in the egg mixture and cover with aluminum foil.', 'Set a cloth in a frying pan, arrange the cups and add hot water to half the height of the cups. Cover and bring to a boil, then lower the heat, set the lid slightly ajar and steam for 12–15 minutes. It is done when a skewer releases clear liquid. Garnish with mitsuba.']
+    },
+    agedashidofu: {
+      name: 'Agedashi tofu (fried tofu in dashi sauce)',
+      ings: [['Firm (momen) tofu', '1 block'], ['Potato starch', '3 tbsp'], ['Grated daikon', '4 cm worth'], ['Leek (naganegi)', 'a little'], ['Bonito flakes', 'a little']],
+      seas: 'Dashi 150 ml · Soy sauce 1 1/2 tbsp · Mirin 1 1/2 tbsp · Oil for frying',
+      steps: ['Wrap the tofu in paper towels, set a plate on top and leave for 15 minutes to drain.', 'Bring the dashi, soy sauce and mirin to a boil in a small pan for the sauce.', 'Cut the tofu into 4 pieces and coat all over with starch. Fry in oil at 170°C for 4–5 minutes until golden, and drain.', 'Serve in bowls, pour the sauce over and top with grated daikon, sliced leek and bonito flakes.']
+    },
+    natto: {
+      name: 'Natto with leek',
+      ings: [['Natto (fermented soybeans)', '2 packs (about 90 g)'], ['Leek (naganegi)', '3 cm']],
+      seas: 'Sauce packets that come with the natto 2 · Mustard a little',
+      steps: ['Slice the leek thinly.', 'Put the natto in a bowl and stir about 20 times until sticky.', 'Add the sauce and mustard, mix again and top with the leek.']
+    },
+    yakinasu: {
+      name: 'Yaki-nasu (grilled eggplant)',
+      ings: [['Eggplant', '3'], ['Grated ginger', 'a little'], ['Bonito flakes', '1 pack']],
+      seas: 'Soy sauce 1 tbsp',
+      steps: ['Make shallow cuts around the stem of each eggplant and prick the skin in several places with a skewer.', 'Grill over medium-high heat under a grill or on a rack, turning occasionally, for about 10 minutes until the skin is charred all over.', 'Plunge into cold or ice water while hot and peel from the stem end. Squeeze gently, cut off the stem and tear lengthwise.', 'Serve topped with bonito flakes and grated ginger, and pour the soy sauce over.']
+    },
+    kyuriasazuke: {
+      name: 'Lightly pickled cucumber (asazuke)',
+      ings: [['Cucumbers', '2'], ['Kombu', '3 cm'], ['Dried red chili', '1/2']],
+      seas: 'Salt 1/2 tsp',
+      steps: ['Trim the ends, halve the cucumbers lengthwise and slice diagonally 1 cm thick. Cut the kombu into thin strips with scissors and slice the chili into rings.', 'Put everything with the salt in a plastic bag and massage lightly through the bag.', 'Press out the air, seal and leave for at least 10 minutes (30 minutes in the refrigerator lets the flavor develop).', 'Squeeze lightly and serve.']
+    },
+    greensalad: {
+      name: 'Green salad with Japanese-style dressing',
+      ings: [['Lettuce', '1/4 head'], ['Tomato', '1'], ['Cucumber', '1/2'], ['Onion', '1/8']],
+      seas: '(Dressing) Soy sauce 1 tbsp · Vinegar 1 tbsp · Oil 1 tbsp · Sugar 1/2 tsp · White sesame seeds a little',
+      steps: ['Tear the lettuce into bite-size pieces, soak in cold water for 5 minutes and drain well. Cut the tomato into wedges, slice the cucumber thinly on the diagonal, and slice the onion thinly, soak in water and drain.', 'Mix the dressing ingredients well.', 'Arrange the vegetables in a bowl and pour the dressing over just before eating.']
+    },
+    jagaimomiso: {
+      name: 'Miso soup with potato and onion',
+      ings: [['Potato', '1'], ['Onion', '1/2'], ['Leek (naganegi)', 'a little']],
+      seas: 'Dashi 400 ml · Miso 2 tbsp',
+      steps: ['Cut the potato into 5 mm quarter rounds and soak in water. Slice the onion thinly.', 'Put the potato and onion in the dashi and bring to a boil, then simmer over medium-low heat for 6–7 minutes until the potato is tender.', 'Lower the heat and dissolve in the miso.', 'Warm it without letting it boil, serve and scatter with sliced leek.']
+    },
+    nasuagemiso: {
+      name: 'Miso soup with eggplant and aburaage',
+      ings: [['Eggplant', '1'], ['Aburaage (fried tofu)', '1/2 piece'], ['Leek (naganegi)', 'a little']],
+      seas: 'Dashi 400 ml · Miso 2 tbsp',
+      steps: ['Remove the stem, halve the eggplant lengthwise, slice thinly on the diagonal and soak in water for 5 minutes. Pour boiling water over the aburaage and cut into strips.', 'Warm the dashi, add the drained eggplant and simmer over medium heat for 4 minutes.', 'Add the aburaage, simmer for 1 minute, lower the heat and dissolve in the miso.', 'Warm it without letting it boil, serve and scatter with sliced leek.']
+    },
+    cabbagemiso: {
+      name: 'Miso soup with cabbage and aburaage',
+      ings: [['Cabbage', '2 leaves (about 100 g)'], ['Aburaage (fried tofu)', '1/2 piece'], ['Leek (naganegi)', 'a little']],
+      seas: 'Dashi 400 ml · Miso 2 tbsp',
+      steps: ['Cut the cabbage into 1 cm strips. Pour boiling water over the aburaage and cut into strips.', 'Warm the dashi, add the cabbage and aburaage and, once it boils, simmer over medium-low heat for 3 minutes.', 'Lower the heat and dissolve in the miso.', 'Warm it without letting it boil, serve and scatter with sliced leek.']
     }
   }
 });
