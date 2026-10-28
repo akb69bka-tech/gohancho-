@@ -2644,10 +2644,10 @@
     "us_spaghetti": {
       "file": "us_spaghetti.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_spaghetti.webp",
-      "v": "a508b126"
+      "v": "872d57aa"
     },
     "us_porkchops": {
       "file": "us_porkchops.svg",
@@ -2676,10 +2676,10 @@
     "us_macncheese": {
       "file": "us_macncheese.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_macncheese.webp",
-      "v": "82cb4932"
+      "v": "524dbaf3"
     },
     "us_beefbroccoli": {
       "file": "us_beefbroccoli.svg",
@@ -2711,7 +2711,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/us_salad.webp",
-      "v": "ab6451d9"
+      "v": "c9824627"
     },
     "us_coleslaw": {
       "file": "us_coleslaw.svg",
@@ -4271,7 +4271,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/us_gumbo.webp",
-      "v": "86b25998"
+      "v": "0a56c5a1"
     },
     "us_tortillasoup": {
       "file": "us_tortillasoup.svg",
@@ -7231,7 +7231,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/us_meatloaf.webp",
-      "v": "3550e22f"
+      "v": "24ce9681"
     },
     "us_potroast": {
       "file": "us_potroast.svg",
@@ -7308,10 +7308,10 @@
     "us_tunacasserole": {
       "file": "us_tunacasserole.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_tunacasserole.webp",
-      "v": "ae2176bc"
+      "v": "8ea7a973"
     },
     "us_potpie": {
       "file": "us_potpie.svg",
@@ -7324,18 +7324,18 @@
     "us_jambalaya": {
       "file": "us_jambalaya.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_jambalaya.webp",
-      "v": "6c8a8068"
+      "v": "1eb2e05e"
     },
     "us_redbeans": {
       "file": "us_redbeans.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_redbeans.webp",
-      "v": "51f81a9c"
+      "v": "3008ea3d"
     },
     "us_denveromelet": {
       "file": "us_denveromelet.svg",
@@ -7348,18 +7348,18 @@
     "us_stuffedshells": {
       "file": "us_stuffedshells.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_stuffedshells.webp",
-      "v": "9c9e8a93"
+      "v": "cb80cb83"
     },
     "us_alfredo": {
       "file": "us_alfredo.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_alfredo.webp",
-      "v": "df800740"
+      "v": "dcd964dc"
     },
     "us_beanburgers": {
       "file": "us_beanburgers.svg",
@@ -7380,10 +7380,10 @@
     "us_lasagna": {
       "file": "us_lasagna.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/us_lasagna.webp",
-      "v": "95aa63d5"
+      "v": "d0ed9dc5"
     },
     "us_potatosalad": {
       "file": "us_potatosalad.svg",
@@ -7415,7 +7415,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/us_caesar.webp",
-      "v": "6f5944b8"
+      "v": "d1d3ad7d"
     },
     "us_threebean": {
       "file": "us_threebean.svg",
@@ -7471,7 +7471,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/us_brussels.webp",
-      "v": "a277261a"
+      "v": "0c4e4a68"
     },
     "us_squash": {
       "file": "us_squash.svg",
