@@ -28,8 +28,8 @@ function meshiwan(p, { outer = '#f4f0e6', lip = '#fbf9f3', inner = '#ece6d8', ed
 }
 // 鋼の器（韓国のご飯の器・ステンレス）: 灰の金属。口に細い灰の線
 function steelBowl(p, o = {}){
-    const V = Q.vessel(p, { cx: 100, cy: 92, rx: 84, h: 50, fx: 34, ft: 4, t: 2.4, outer: '#b7bcc2', lip: '#e2e5e8', inner: '#cfd3d8', line: 'none', belly: .7, gloss: .85, ...o });
-    return { ...V, s: V.s + ringLine(100, o.cy ?? 92, (o.rx ?? 84) - 1.2, '#8c9298', 1) };
+    const V = Q.vessel(p, { cx: 100, cy: 92, rx: 84, h: 50, fx: 34, ft: 4, t: 2.4, outer: '#bbbcba', lip: '#e5e6e4', inner: '#d2d3d0', line: 'none', belly: .7, gloss: .85, ...o });
+    return { ...V, s: V.s + ringLine(100, o.cy ?? 92, (o.rx ?? 84) - 1.2, '#90918e', 1) };
 }
 // 平皿（藍なし）。edge で縁の細い線（朱・金・緑・錆）
 const dish = (p, edge = '#c8a050', o = {}) => Q.plate(p, { line: 'none', edge, ...o });
@@ -486,7 +486,7 @@ export default {
     },
     // ロティとご飯（インドのふだんの主食）: ステンレスのターリー（縁の立った丸い盆）に、重ねたロティと、バスマティライス
     in_staple: p => {
-        const D = Q.plate(p, { base: '#cdd1d6', line: 'none', edge: '#9aa0a6', well: .84 }), o = D.o;
+        const D = Q.plate(p, { base: '#d0d1cf', line: 'none', edge: '#9d9e9a', well: .84 }), o = D.o;
         const [rx0, ry0] = at(o, 30, 10), [fx, fy] = at(o, -24, -6);
         return D.s + flatStack(p, fx, fy, 40, 3, { c: '#e8c88e', edge: '#c09a5a', spot: '#9a5a22', spots: 14, th: 2, sy: SYF }) +
             grainDome(p, rx0, ry0, 34, 34 * SYF, 26, { pal: W, n: 300, size: 1.05, mixes: [['#fbf8f0', .25, 1.2]] }) + foldedFlat(p, fx - 4, fy + 22, 24, 0, { c: '#e2bc7e', spot: '#9a5a22', lift: 12, sy: SYF });

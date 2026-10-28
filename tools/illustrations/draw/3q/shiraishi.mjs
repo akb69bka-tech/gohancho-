@@ -1,7 +1,7 @@
 // 白石 凪 担当（斜め上35度）: 主菜の焼き物・ごはん・麺 77品
 // 基準: docs/illustration_3q.md。材料は gohancho/index.html の R(...) 行どおり（「?」はお好みで）
 import * as Q from '../kit3q.mjs';
-const { f, rng, lt, dk, mix, T, SY, CZ, SHADE, INDIGO } = Q;
+const { f, rng, lt, dk, mix, T, SY, CZ, SHADE } = Q;
 
 // =========================================================
 // 共通の小道具
@@ -49,7 +49,7 @@ const grillLines = (x, y, w, rot, c = '#5e2c12', n = 3, op = .45) => `<g ${T(x, 
 
 // ---------- 魚 ----------
 // 切り身（皮の縁・身・焼き色）。面で w × d、皮は奥側
-function fillet(p, x, y, w, d, rot, seed, { flesh = '#f0b48a', skin = '#7a8792', hgt = 9, char = .35, glaze = null } = {}){
+function fillet(p, x, y, w, d, rot, seed, { flesh = '#f0b48a', skin = '#868884', hgt = 9, char = .35, glaze = null } = {}){
     const ck = chunk(p, x, y, w / 2, d / 2, hgt, glaze || flesh, dk(flesh, .12), 'fl' + seed, { rot, jit: .1, n: 14 });
     let s = ck.s;
     s += `<g ${Q.clip(p, ck.d)}><path d="${Q.blob(x, ck.y - d * SY * .5, w * .55, d * SY * .22, 'fls' + seed, { rot, jit: .2 })}" fill="${skin}"/><path d="${Q.blob(x, ck.y - d * SY * .5, w * .5, d * SY * .12, 'fls2' + seed, { rot, jit: .3 })}" fill="${lt(skin, .35)}" opacity=".7"/>`;
@@ -58,7 +58,7 @@ function fillet(p, x, y, w, d, rot, seed, { flesh = '#f0b48a', skin = '#7a8792',
     return s + gl(x - w * .15, ck.y - 1, w * .3, rot - 6, .7);
 }
 // 1尾の魚（さんま・あじの開きは open）
-function wholeFish(p, x, y, L, rot, seed, { skin = '#6f7f8f', belly = '#e8e2d4', char = .5, open = false, hgt = 7 } = {}){
+function wholeFish(p, x, y, L, rot, seed, { skin = '#727670', belly = '#e8e2d4', char = .5, open = false, hgt = 7 } = {}){
     const w = open ? L * .26 : L * .09;
     const pts = [];
     for (let i = 0; i <= 12; i++){ const t = i / 12, u = -L / 2 + t * L * .86, hw = w * Math.sin(Math.min(1, t * 1.25) * Math.PI) ** .7 * (t < .1 ? .8 : 1); pts.push([u, -hw]); }
@@ -191,7 +191,7 @@ function roux(p, x, y, rx, c, seed){
 }
 
 // 長皿の上の魚の切り身（皮を上に）: 皮の縞・焼き目・脂の照り
-function skinFillet(p, x, y, w, d, rot, seed, { skin = '#6e7c88', stripe = '#3e4e5c', flesh = '#e8dccb', hgt = 9, char = .45 } = {}){
+function skinFillet(p, x, y, w, d, rot, seed, { skin = '#7a7e7a', stripe = '#464c46', flesh = '#e8dccb', hgt = 9, char = .45 } = {}){
     const ck = chunk(p, x, y, w / 2, d / 2, hgt, skin, flesh, 'sf' + seed, { rot, jit: .08, n: 14, dome: .4 });
     const R = rng('sfs' + seed);
     let t = '';
@@ -262,7 +262,7 @@ export default {
     meuniere: p => {
         const D = Q.plate(p), o = D.o;
         let s = D.s + pool(p, 96, 118, 50, '#e8b850', 4, { op: .45 });
-        const it = [[-22, -14, 0], [24, 16, 1]].map(([u, v, i]) => { const [x, y] = P(o, u, v); return [y, () => fillet(p, x, y, 72, 42, i ? 8 : -12, 'mn' + i, { flesh: '#e8955e', skin: '#8a98a4', char: .55 }) + `<path d="${Q.blob(x, y - 9 * CZ - 2, 14, 4, 'bt' + i)}" fill="#f6d872" opacity=".85"/>`]; });
+        const it = [[-22, -14, 0], [24, 16, 1]].map(([u, v, i]) => { const [x, y] = P(o, u, v); return [y, () => fillet(p, x, y, 72, 42, i ? 8 : -12, 'mn' + i, { flesh: '#e8955e', skin: '#9a9890', char: .55 }) + `<path d="${Q.blob(x, y - 9 * CZ - 2, 14, 4, 'bt' + i)}" fill="#f6d872" opacity=".85"/>`]; });
         const [lx, ly] = P(o, 42, -30); it.push([ly, () => citrus(p, lx, ly, 26, -20)]);
         return s + Q.byDepth(it);
     },
@@ -270,7 +270,7 @@ export default {
     buriteri: p => {
         const D = Q.plate(p), o = D.o;
         let s = D.s + pool(p, 94, 116, 48, '#6e3412', 5, { op: .6 });
-        const it = [[-22, -8, -10, 0], [22, 12, 8, 1]].map(([u, v, r, i]) => { const [x, y] = P(o, u, v); return [y, () => fillet(p, x, y, 70, 42, r, 'bt' + i, { flesh: '#d8b48a', skin: '#5a6672', glaze: '#8a4a1e', hgt: 10 })]; });
+        const it = [[-22, -8, -10, 0], [22, 12, 8, 1]].map(([u, v, r, i]) => { const [x, y] = P(o, u, v); return [y, () => fillet(p, x, y, 70, 42, r, 'bt' + i, { flesh: '#d8b48a', skin: '#62665f', glaze: '#8a4a1e', hgt: 10 })]; });
         [[38, -34, -20], [48, -22, -30], [-42, 30, 20]].forEach(([u, v, r], i) => { const [x, y] = P(o, u, v); it.push([y, () => greenPod(p, x, y, 26, r)]); });
         return s + Q.byDepth(it);
     },
@@ -281,7 +281,7 @@ export default {
         scatter('cc', 34, 72, 12).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v); it.push([y, () => i % 3 === 0 ? onionStrip(x, y, 16, r * 180, '#ead8a0') : Q.leaf(p, x, y, 32, r * 180, i % 3 === 1 ? '#c8e09a' : '#9ec46a', 'cb' + i, { wave: 2 })]); });
         scatter('ccc', 7, 66, 22).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v, 2); it.push([y + .1, () => i % 2 ? carrotStick(p, x, y, 16, r * 180) : shimeji(p, x, y, 16, r * 30 - 15, 3, i)]); });
         const [x, y] = P(o, 0, 0, 3);
-        it.push([y + 30, () => fillet(p, x, y, 80, 46, -6, 'cc', { flesh: '#ee9a64', skin: '#8a98a4', char: .25 }) + `<path d="${Q.blob(x, y - 13, 28, 10, 'miso')}" fill="${Q.rg(p, [[0, '#d8a050'], [1, '#9a6020']])}"/><path d="${Q.blob(x - 4, y - 14, 8, 4, 'butter')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
+        it.push([y + 30, () => fillet(p, x, y, 80, 46, -6, 'cc', { flesh: '#ee9a64', skin: '#9a9890', char: .25 }) + `<path d="${Q.blob(x, y - 13, 28, 10, 'miso')}" fill="${Q.rg(p, [[0, '#d8a050'], [1, '#9a6020']])}"/><path d="${Q.blob(x - 4, y - 14, 8, 4, 'butter')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
         return V.s + `<g ${V.inside}>${Q.byDepth(it)}</g>` + V.shine(.5);
     },
     // マカロニグラタン: 楕円のグラタン皿に、焼き色のついたチーズとパン粉
@@ -439,24 +439,24 @@ export default {
     // さばの塩焼き: 長皿に皮を上にした切り身、大根おろし（お好みで）に醤油
     sabashio: p => {
         const D = Q.slabPlate(p), o = D.o, [x, y] = P(o, -14, 0), [ox, oy] = P(o, 54, 12);
-        return D.s + skinFillet(p, x, y, 116, 62, -4, 'sb', { skin: '#7e8c96', stripe: '#38506a' }) + oroshi(p, ox, oy, 26) + soyDot(ox, oy - 12);
+        return D.s + skinFillet(p, x, y, 116, 62, -4, 'sb', { skin: '#888a86', stripe: '#424a44' }) + oroshi(p, ox, oy, 26) + soyDot(ox, oy - 12);
     },
     // さんまの塩焼き: 長皿に1尾、大根おろしとすだち（お好みで）
     sanma: p => {
         const D = Q.slabPlate(p), o = D.o, [x, y] = P(o, 0, -6), [ox, oy] = P(o, 40, 22), [sx, sy] = P(o, 64, 20);
-        return D.s + wholeFish(p, x, y, 170, -3, 'sm', { skin: '#5e6e80', belly: '#e8e2d4', char: .6 }) + oroshi(p, ox, oy, 24) + citrus(p, sx, sy, 18, 0, { c: '#7ab83a', half: true });
+        return D.s + wholeFish(p, x, y, 170, -3, 'sm', { skin: '#686c68', belly: '#e8e2d4', char: .6 }) + oroshi(p, ox, oy, 24) + citrus(p, sx, sy, 18, 0, { c: '#7ab83a', half: true });
     },
     // 鮭のホイル焼き: 開いたアルミホイルの中に鮭・玉ねぎ・しめじ・ピーマン（お好みで）、バター
     hoilyaki: p => {
         const D = Q.plate(p), o = D.o, [x, y] = P(o, 0, 2), R = rng('hf');
         const pts = []; for (let i = 0; i < 18; i++){ const a = i / 18 * 6.283, r = 66 + (R() - .5) * 12; pts.push([x + Math.cos(a) * r, y + Math.sin(a) * r * SY * .92 - (Math.sin(a) < 0 ? 10 : 0)]); }
         const foil = Q.smooth(pts, true, .7), inner = Q.blob(x, y, 52, 52 * SY * .85, 'hfi', { n: 14, jit: .12 });
-        let s = D.s + Q.dropOf(p, foil, 2.5, 4, .32, 2.4) + `<path d="${foil}" fill="${Q.lg(p, [[0, '#f4f6f8'], [.4, '#c8ccd2'], [.7, '#e6e8ec'], [1, '#9aa0a8']], 0, 0, 1, 1)}" stroke="#8a9098" stroke-width=".7"/>`;
+        let s = D.s + Q.dropOf(p, foil, 2.5, 4, .32, 2.4) + `<path d="${foil}" fill="${Q.lg(p, [[0, '#f5f5f2'], [.4, '#cbcbc6'], [.7, '#e8e8e4'], [1, '#a0a09a']], 0, 0, 1, 1)}" stroke="#8e8e88" stroke-width=".7"/>`;
         for (let i = 0; i < 10; i++) s += `<path d="M${f(x + (R() - .5) * 120)},${f(y + (R() - .5) * 60 * SY)} l${f((R() - .5) * 14)},${f((R() - .5) * 8)}" stroke="#fff" stroke-width="1" opacity=".6"/>`;
         s += `<path d="${inner}" fill="${Q.rg(p, [[0, '#f0e2c4'], [1, '#c8b48e']], .4, .4, .8)}"/>`;
         const it = [];
         scatter('hfo', 7, 40, 14).forEach(([u, v, r], i) => { const [px, py] = P({ cx: x, cy: y }, u, v, 2); it.push([py, () => i % 3 === 0 ? shimeji(p, px, py, 14, r * 40 - 20, 3, i) : i % 3 === 1 ? onionStrip(px, py, 14, r * 180, '#efe0b0') : `<ellipse cx="${f(px)}" cy="${f(py)}" rx="5" ry="3" fill="none" stroke="#3f8f2f" stroke-width="2"/>`]); });
-        it.push([y + 30, () => fillet(p, x - 4, y + 2, 64, 34, -6, 'hf', { flesh: '#ee9a64', skin: '#8a98a4', char: .15 }) + `<path d="${Q.blob(x - 6, y - 8, 9, 5, 'hfb')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
+        it.push([y + 30, () => fillet(p, x - 4, y + 2, 64, 34, -6, 'hf', { flesh: '#ee9a64', skin: '#9a9890', char: .15 }) + `<path d="${Q.blob(x - 6, y - 8, 9, 5, 'hfb')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
         return s + Q.byDepth(it);
     },
     // 鶏むね肉のピカタ: 卵の衣をまとった鶏肉、ケチャップ
@@ -633,7 +633,7 @@ export default {
     },
     // ちらし寿司: 赤い器の酢飯に、錦糸卵・しいたけ・にんじん・れんこん・えび・いんげん・のり（お好みで）
     chirashi: p => {
-        const V = Q.vessel(p, { cy: 84, rx: 92, h: 40, fx: 54, ft: 5, outer: '#9a2c1e', lip: '#b23a28', inner: '#4a2018', line: 'thin', belly: .5 }), S = Q.surface(p, V, { drop: 5, c: '#f6f1e2', glow: .3 });
+        const V = Q.vessel(p, { cy: 84, rx: 92, h: 40, fx: 54, ft: 5, outer: '#9a2c1e', lip: '#b23a28', inner: '#4a2018', line: 'thin', rim: Q.RIM.kin, belly: .5 }), S = Q.surface(p, V, { drop: 5, c: '#f6f1e2', glow: .3 });
         let t = kinshi(S.cx, S.cy, S.rx * 1.4, 2) + kinshi(S.cx - 10, S.cy + 6, S.rx * 1.2, 3);
         const it = scatter('cs', 22, 62, 10).map(([u, v, r], i) => { const [x, y] = P(S.o, u, v, 2); const k = i % 6; return [y, () => k === 0 ? Q.prawn3q(p, x, y, 14, r * 40 - 20, r < .5 ? 1 : -1) : k === 1 ? shiitake(p, x, y, 10) : k === 2 ? carrotStick(p, x, y, 10, r * 180) : k === 3 ? `<ellipse cx="${f(x)}" cy="${f(y)}" rx="6" ry="3.6" fill="#f2ead8" stroke="#c8b898" stroke-width=".6"/>${[0, 1, 2, 3].map(j => `<circle cx="${f(x - 3 + j * 2)}" cy="${f(y)}" r=".9" fill="#c8b898"/>`).join('')}` : k === 4 ? greenPod(p, x, y, 12, r * 180, { w: 3 }) : `<path d="M${f(x - 4)},${f(y)} l8,1" stroke="#2e3a26" stroke-width="1.4"/>`]; });
         return V.s + S.s + `<g ${V.inside}>${t}${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, 40, 130) + V.shine(.4);
@@ -747,7 +747,7 @@ export default {
     zosui: p => kayu(p, 'zosui', S => softEgg(p, S.cx, S.cy, S.rx * .85, 9, { n: 14 }) + Q.byDepth(scatter('zs', 12, S.rx * .75, 12).map(([u, v, r], i) => { const [x, y] = P(S.o, u, v * .9, 1); return [y, () => i % 3 === 0 ? shiitake(p, x, y, 14) : Q.negi(p, x, y, 6.4)]; })) + (() => { const [x, y] = P(S.o, 16, -18, 2); return herb(p, x, y, 22, 0, '#5aa83a'); })(), { c: '#ecdcb0', vessel: p => Q.donabe(p) }),
     // そうめん: ガラスの鉢の冷水にそうめん、きゅうり・錦糸卵・みょうが・大葉・長ねぎ（お好みで）
     somen: p => {
-        const V = Q.vessel(p, { cy: 82, rx: 92, h: 44, fx: 50, ft: 4, outer: '#bcd8e4', lip: '#e2f0f6', inner: '#d4e8f0', line: 'thin', belly: .5, gloss: .8 }), S = Q.surface(p, V, { drop: 8, c: '#d8ecf4', glow: .5, rimShade: .1 });
+        const V = Q.vessel(p, { cy: 82, rx: 92, h: 44, fx: 50, ft: 4, outer: '#c8dcc4', lip: '#e8f2e4', inner: '#dcead8', line: 'thin', rim: Q.RIM.wakakusa, belly: .5, gloss: .8 }), S = Q.surface(p, V, { drop: 8, c: '#e2eedc', glow: .5, rimShade: .1 });
         let t = noodles(p, S.cx, S.cy, S.rx * .9, 0, '#fbf8ee', 'sm', { w: 1.6, n: 120, len: 40, curl: .5, flat: true, edge: '#d8d0bc' });
         const [ex, ey] = P(S.o, -10, -6, 2);
         t += kinshi(ex, ey, 30, 6) + Array.from({ length: 10 }, (_, i) => { const [x, y] = P(S.o, 18 + (i % 5) * 3, -10 + i * 2, 2); return `<path d="M${f(x - 5)},${f(y)} l10,1" stroke="#2f7a2a" stroke-width="2.6" stroke-linecap="round"/><path d="M${f(x - 5)},${f(y - .5)} l10,1" stroke="#9ccc6a" stroke-width="1.2" stroke-linecap="round"/>`; }).join('');
@@ -764,7 +764,7 @@ export default {
         s += Q.cast(p, x, y + 6, 54, 16, .3) + noodles(p, x, y, 54, 20, '#a89a86', 'zs', { w: 2, n: 110, len: 34 });
         s += onTop(x, y, 54, 20, 'zn', 1, 1, () => '') + (() => { const [cx, cy] = onMound(x, y, 54, 20, 0, 0, 2); return noriStrips(cx, cy, 34, 9) + noriStrips(cx - 6, cy + 6, 26, 10); })();
         const [cx, cy] = P(o, 62, 28);
-        s += Q.cast(p, cx, cy + 12, 16, 6, .3) + `<path d="M${cx - 16},${cy} L${cx - 13},${cy + 14} A13,${f(13 * SY)} 0 0 0 ${cx + 13},${cy + 14} L${cx + 16},${cy}Z" fill="${Q.lg(p, [[0, '#f6f3ec'], [1, '#c8c0b0']])}"/><path d="${Q.eD(cx, cy, 16, 16 * SY)}" fill="#fbfaf6" stroke="${INDIGO}" stroke-width="1.4"/><path d="${Q.eD(cx, cy + 1.6, 13.4, 13.4 * SY)}" fill="${Q.rg(p, [[0, '#7a4a24'], [1, '#4a2a14']])}"/>`;
+        s += Q.cast(p, cx, cy + 12, 16, 6, .3) + `<path d="M${cx - 16},${cy} L${cx - 13},${cy + 14} A13,${f(13 * SY)} 0 0 0 ${cx + 13},${cy + 14} L${cx + 16},${cy}Z" fill="${Q.lg(p, [[0, '#f6f3ec'], [1, '#c8c0b0']])}"/><path d="${Q.eD(cx, cy, 16, 16 * SY)}" fill="#fbfaf6" stroke="${Q.RIM.kaki}" stroke-width="1.4"/><path d="${Q.eD(cx, cy + 1.6, 13.4, 13.4 * SY)}" fill="${Q.rg(p, [[0, '#7a4a24'], [1, '#4a2a14']])}"/>`;
         return s;
     },
     // きつねうどん: どんぶりのつゆにうどん、甘く煮た油揚げ・長ねぎ・かまぼこ（お好みで）
@@ -800,7 +800,7 @@ export default {
     // 鮭の塩焼き: 長皿に塩鮭の切り身、大根おろしとレモン（お好みで）
     shakeshio: p => {
         const D = Q.slabPlate(p), o = D.o, [x, y] = P(o, -14, 0), [ox, oy] = P(o, 52, 12), [lx, ly] = P(o, 62, -14);
-        return D.s + fillet(p, x, y, 110, 64, -4, 'ss', { flesh: '#f08a58', skin: '#8a96a0', char: .45, hgt: 10 }) + oroshi(p, ox, oy, 24) + soyDot(ox, oy - 12) + citrus(p, lx, ly, 22, -10);
+        return D.s + fillet(p, x, y, 110, 64, -4, 'ss', { flesh: '#f08a58', skin: '#96968e', char: .45, hgt: 10 }) + oroshi(p, ox, oy, 24) + soyDot(ox, oy - 12) + citrus(p, lx, ly, 22, -10);
     },
     // あじの開き（干物）: 長皿に開いたあじ、大根おろしとすだち（お好みで）
     ajihimono: p => {

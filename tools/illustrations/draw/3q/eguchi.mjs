@@ -107,7 +107,7 @@ const satsumaimo = (p, x, y, s, rot, liq) => cyl(p, x, y, s / 2, 4, '#7a2e4a', l
 // バター（溶けかけの小さな角）
 const butter = (p, x, y, s) => `<ellipse cx="${f(x + 1)}" cy="${f(y + 2)}" rx="${f(s * .9)}" ry="${f(s * .9 * SY)}" fill="#f4d870" opacity=".5"/>` + Q.prism(p, x, y, [[-s / 2, -s / 2], [s / 2, -s / 2], [s / 2, s / 2], [-s / 2, s / 2]].map(([u, v]) => [u * (1 + (v > 0 ? .15 : 0)), v]), s * .4, '#f6dc78', { rot: 20, top: Q.lit(p, '#fff0b0', .4, .1) });
 // 魚のぶつ切り（さば: 青銀の皮、淡い身）
-function fishChunk(p, x, y, s, rot, liq, { skin = '#6e7e8c', flesh = '#e8dcc4' } = {}){
+function fishChunk(p, x, y, s, rot, liq, { skin = '#7a7e7a', flesh = '#e8dcc4' } = {}){
     const pts = [[-s / 2, -s * .3], [s / 2, -s * .34], [s * .5, s * .3], [-s * .48, s * .32]];
     return Q.prism(p, x, y, pts, s * .4, skin, { rot, sink: liq ? 2 : 0, liquid: liq, top: Q.lit(p, flesh, .3, .12) }) +
         `<g ${T(x, y - s * .4 * CZ, rot * .4)}><path d="M${f(-s * .3)},-1.6 Q0,0 ${f(s * .3)},-2" stroke="${dk(flesh, .15)}" stroke-width=".8" fill="none"/></g>`;
@@ -291,7 +291,7 @@ const lay = (pl, list, kinds) => list.map(([k, u, v, ...a], i) => { const [x, y]
 
 // ---------- 煮魚・鍋 ----------
 // 煮魚の切り身（皮目を上に。十字の切り込み、たれの照り）
-function fishFillet(p, x, y, w, rot, { skin = '#8a9aaa', stripe = '#4e5e70', flesh = '#d8b07a', glaze = '#a86a30', seed = 1, cut = true, fins = false, sq = 1 } = {}){
+function fishFillet(p, x, y, w, rot, { skin = '#949690', stripe = '#545a52', flesh = '#d8b07a', glaze = '#a86a30', seed = 1, cut = true, fins = false, sq = 1 } = {}){
     const sl = Q.slab(p, x, y, w / 2, w * .2 * sq, 7, skin, 'ff' + seed, { n: 12, jit: .1, rot, edgeC: flesh });
     const a = rot * Math.PI / 180, c = (u, v) => [x + u * Math.cos(a) - v * Math.sin(a), y + u * Math.sin(a) + v * Math.cos(a)];
     let o = sl.s;

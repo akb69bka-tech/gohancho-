@@ -947,7 +947,7 @@ export default {
     },
     // 揚げ出し豆腐: 青灰の小鉢に、だしの面、衣の狐色の豆腐、大根おろし・長ねぎ・かつお節（お好みで）
     agedashidofu: p => {
-        const V = deepOf(p, '#6a84a4'), S = Q.surface(p, V, { drop: 12, c: '#c8944a', glow: .3 }), o = S.o;
+        const V = deepOf(p, '#8a5a3a'), S = Q.surface(p, V, { drop: 12, c: '#c8944a', glow: .3 }), o = S.o;
         const it = [[-26, -14, 10], [22, -16, -6], [-4, 18, 20]].map(([u, v, r]) => { const [x, y] = P(o, u, v); return [y, () => Q.cube(p, x, y, 32, r, '#d89a48', { sink: 6, liquid: '#c8944a', top: Q.lg(p, [[0, '#f4d088'], [.6, '#dca050'], [1, '#b87a30']], 0, 0, 1, 1) })]; });
         const [ox, oy] = P(o, 0, -6, 26);
         it.push([400, () => oroshi(p, ox, oy, 24, 4) + negis(p, ox, oy - 12, 22, 6, 'ag', '#5fa03a') + katsuobushi(ox + 4, oy - 14, 20, 'ag', 8)]);
