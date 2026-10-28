@@ -349,30 +349,6 @@ export default {
         ].join('');
     },
 
-    // 酸辣湯: 白い中華碗（朱の線）、とろみのある濃い茶色のスープに細切りの豆腐・しいたけ・たけのこ、溶き卵、ラー油の赤い粒、ねぎ
-    sanratan: p => {
-        const R = rng(p.id + 'st');
-        const tf = [], sh = [], bm = [];
-        for (let i = 0; i < 36; i++){
-            const a = R() * 6.28, d = Math.sqrt(R()) * 62, x = 100 + Math.cos(a) * d, y = 100 + Math.sin(a) * d, r = R() * 180, t = R();
-            if (t < .42) tf.push(zsStrip(p, x, y, 20 + R() * 6, 4.6, r, '#f7f1e2'));
-            else if (t < .72) sh.push(zsStrip(p, x, y, 17 + R() * 5, 4, r, '#6e4528'));
-            else bm.push(zsStrip(p, x, y, 16 + R() * 5, 4, r, '#ead79a'));
-        }
-        return [
-            zsChinaBowl(p, '#b8321f'),
-            K.liquid(p, { R: 76, c: '#7c4a22', op: 1 }),
-            `<circle cx="100" cy="100" r="62" fill="#9a6232" opacity=".3"/>`,
-            `<g ${p.sh(.4)}>${bm.join('')}${sh.join('')}${tf.join('')}</g>`,
-            zsEgg(p, 94, 90, 42, 20, { seed: 1, c: '#f1cf5a', op: .9 }), zsEgg(p, 124, 122, 36, -30, { seed: 2, c: '#f1cf5a', op: .9 }), zsEgg(p, 72, 122, 32, 60, { seed: 3, c: '#f1cf5a', op: .9 }), zsEgg(p, 124, 74, 30, -10, { seed: 4, c: '#f1cf5a', op: .9 }),
-            zsVeil(100, 100, 76, '#7c4a22', .12),
-            zsOil(p, 100, 100, 144, { n: 22, c: '#e8461c', op: .85, rmax: 2.6, seed: 2 }),
-            K.scallions(p, 100, 100, 50, { n: 12, c: '#5fa03a' }),
-            K.sprinkle(p, 100, 100, 110, { c: '#2a1d14', n: 30, r: .55 }),
-            zsShine(100, 100, 76, .4),
-        ].join('');
-    },
-
     // トマトと卵のスープ: 青磁の碗、澄んだ淡いトマト色のスープにくし切りトマトとふんわり卵、ねぎ、ごま油
     tomatoeggsoup: p => [
         K.kobachi(p, { glaze: '#9fbfae', inside: '#f3f5ee' }),
