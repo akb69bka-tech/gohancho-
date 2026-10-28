@@ -522,6 +522,10 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 @media (max-height:500px) and (orientation:landscape){.dsheet .hero{aspect-ratio:auto;height:34vh}.dsheet .dhead h2{font-size:var(--fs24,1.5rem)}}
 .toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.625rem 1.25rem;border-radius:var(--r-lg);font-size:var(--fs14);line-height:1.5;box-shadow:var(--shadow-2);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
 .toast .btn{margin-inline-start:8px;min-height:44px;vertical-align:middle}
+#view{padding-bottom:var(--toast-room,0px)}   /* お知らせを出すときに、見えている押す場所・文を上に送る分の余白（toastPlace。画面を切りかえると消す） */
+.toast.placing{opacity:0}.toast{pointer-events:none}.toast [data-act="toast-undo"]{pointer-events:auto}   /* お知らせの文の上を押しても下に届く。「元に戻す」だけ押せる（第3回b N4） */
+.toast.at-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto !important;inset-inline-end:auto;margin-inline:0}   /* 同じ画面のまま出すお知らせで、下の場所に押す場所が見えているとき（toastPlace） */
+#toast-root:has(.toast.docked)::before{content:'';position:fixed;inset-inline:0;top:var(--toast-shelf-top);height:var(--toast-shelf-h);z-index:59;pointer-events:none;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}   /* お知らせの棚（toastPlace）。主ボタンと同じすりガラス */
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
 .muted{color:var(--muted)}
@@ -2763,12 +2767,79 @@ function redoSheetHtml(){
 }
 function toast(msg, praise=false, undo=null){
     const root = $('#toast-root'); toast.undo = undo;
-    root.innerHTML = `<div class="toast pop${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
+    const pb = root.firstElementChild, prev = pb && pb.offsetHeight ? {left: pb.offsetLeft, top: pb.offsetTop, right: pb.offsetLeft + pb.offsetWidth, bottom: pb.offsetTop + pb.offsetHeight} : null;   // いま出ているお知らせの場所
+    root.innerHTML = `<div class="toast pop placing${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
     // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
     const hide = () => { root.innerHTML = ''; toast.undo = null; };
     const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 6000 : 4500); };
     arm();
+    // 置き場所は描き直し（押した操作の続き）が終わってから決める。描く前のフレームなので、ちらつかない。
+    // 前のお知らせが出ていたところ（その裏は見えていなかった）は、次のお知らせで画面を送る理由にしない（続けて押しても画面が何度も動かない）
+    // 置き場所が決まるまでは透明にしておく（下の場所で一度描いてから上へ動かすと、画面のずれ（layout shift）として数えられる）。読み上げは透明でも届く
+    const box = root.firstElementChild, show = () => box.classList.remove('placing');
+    cancelAnimationFrame(toast.raf); clearTimeout(toast.rt);
+    toast.raf = requestAnimationFrame(() => { try{ toastPlace(box, prev); }catch(e){} show(); }); toast.rt = setTimeout(show, 200);
 }
+/* お知らせ（トースト）の置き場所（第3回b N4・第2回 D4・三宅）
+   ・いつもの場所は、下の固定の帯（下のタブ、決める段・作る段の主ボタン .actionbar）のすぐ上。主ボタンが2行で高くなっても、その上に出す（主ボタン・下のタブには重ねない）。
+   ・お知らせの文の上は押しても下に届く（「元に戻す」だけが押せる）。「元に戻す」付きで8秒出ていても、下の操作を邪魔しない（CSS の pointer-events）。
+   ・押して画面（タブ・段）が切りかわったとき（例: 買う段の「そろった」→ 作る段）: いつもの場所に見えている文・押す場所（「最初にすること」など）があれば、
+     その分だけ新しい画面を上に送って、お知らせの後ろに主ボタンと同じすりガラスの棚を敷く（裏に入るのは、もともと下の帯の裏で見えていなかったところだけ）。
+   ・同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift と S7 の約束）。いつもの場所に見えている押す場所・文があれば、
+     画面のいちばん上（左寄せ）とくらべて、押した指のまわりにかからず、隠す押す場所・文の少ないほうに出す。
+   シート・料理の詳しい画面・キーボード表示中は CSS の場所のまま（画面ではなくシートが動くため） */
+const TOAST_SEE = 'button, a[href], input, select, textarea, summary, label, [data-act], [role=button], h1, h2, h3, h4, p, li, dt, dd, .eyebrow, .chip, .p2m-first';
+const TOAST_TAP = {y: -1, at: -1e9, view: '', tapView: ''};   // 最後に押した指の高さ・時刻と、そのとき出ていた画面（タブと段。render が view に書く）
+['pointerdown', 'touchstart'].forEach(k => document.addEventListener(k, e => { const p = e.touches ? e.touches[0] : e; if (p){ TOAST_TAP.y = p.clientY; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; } }, {capture: true, passive: true}));
+function toastViewMark(){ TOAST_TAP.view = tab + '|' + (session.stage || ''); }
+function toastPlace(box, prev){
+    const root = $('#toast-root'), v = $('#view');
+    if (!box || !box.isConnected || !v || sheet || modalId || document.body.classList.contains('kb')) return;
+    // 下の固定の帯の上端（下のタブ・画面の下に貼りついている主ボタン）
+    let floor = innerHeight;
+    document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor) floor = r.top; });
+    if (floor < innerHeight) box.style.bottom = Math.round(innerHeight - floor + 8) + 'px';
+    // 出るときの動き（.pop の rise）で位置がずれないよう、動きを除いた場所（offset）で数える。position:fixed なので画面の左上からの位置
+    const rectOf = () => ({left: box.offsetLeft, top: box.offsetTop, right: box.offsetLeft + box.offsetWidth, bottom: box.offsetTop + box.offsetHeight});
+    let T = rectOf();
+    if (!box.offsetHeight || T.bottom > innerHeight || T.top < 0) return;
+    const under = (x, y) => prev && x > prev.left && x < prev.right && y > prev.top && y < prev.bottom;   // 前のお知らせの裏（見えていなかった）
+    // 帯 band（お知らせの場所と、その下の固定の帯までのすき間）に見えている文・押す場所。need: それをお知らせの上に出すのに送る量、n: 数、taps: そのうち押す場所の数
+    const scan = band => { let need = 0, n = 0, taps = 0;
+        for (const e of document.body.querySelectorAll(TOAST_SEE)){
+            if (e.closest('#toast-root, nav.tabs, .actionbar, .cook-ctl, #modal-root, #sheet-root, #timer-float')) continue;   // 画面の中身（見出し・上の端のボタンを含む）だけ。下の固定の帯は別に避けている
+            const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.bottom <= band.t + 1 || r.top >= band.b - 1 || r.right <= band.l + 1 || r.left >= band.r - 1) continue;
+            const x = (Math.max(r.left, band.l) + Math.min(r.right, band.r)) / 2, y = (Math.max(r.top, band.t) + Math.min(r.bottom, band.b)) / 2;
+            if (under(x, y)) continue;
+            const top = document.elementsFromPoint(x, y).find(z => !root.contains(z));
+            if (!top || !(top === e || e.contains(top) || top.contains(e))) continue;   // 下の帯・上の端の裏に隠れているものは数えない
+            n++; if (e.matches('button, a[href], input, select, textarea, summary, [data-act], [role=button], .chip')) taps++;
+            // 文の行・ボタン・小さな枠は、下の帯で切れていた部分も含めて丸ごとお知らせの上に出す（半分だけ見える行を残さない）。大きな枠は見えていたところまで
+            need = Math.max(need, (r.height <= 160 ? r.bottom : Math.min(r.bottom, band.b)) - band.t + 6);
+        }
+        return {need, n, taps}; };
+    const low = scan({l: T.left, r: T.right, t: T.top, b: Math.max(T.bottom, floor)});
+    if (!low.n) return;
+    const tapped = performance.now() - TOAST_TAP.at < 3000, fresh = tapped && TOAST_TAP.tapView !== TOAST_TAP.view;   // 押して画面（タブ・段）が切りかわった直後
+    // 新しい画面へ送る: 見えていた文・押す場所をお知らせの上に送り、後ろに棚を敷く（一度に送るのは、お知らせの高さ＋少しまで）
+    const lift = () => {
+        const need = Math.ceil(Math.min(low.need, Math.max(T.bottom, floor) - T.top + 6 + 120));
+        root.style.setProperty('--toast-shelf-top', Math.round(T.top - 8) + 'px'); root.style.setProperty('--toast-shelf-h', Math.round(Math.max(T.bottom, floor) - T.top + 8) + 'px'); box.classList.add('docked');
+        const room = document.documentElement.scrollHeight - innerHeight - scrollY;
+        if (room < need){ const cur = parseFloat(v.style.getPropertyValue('--toast-room')) || 0; v.style.setProperty('--toast-room', Math.ceil(cur + need - room) + 'px'); }
+        window.scrollBy({top: need, behavior: 'instant'});
+    };
+    if (fresh){ lift(); return; }   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
+    // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
+    // ① 押した指のまわり（続けて押すところ）にかからない ② 隠す押す場所が少ない ③ 隠す文が少ない 順に選ぶ（同じならいつもの場所）。隠れた押す場所も、お知らせの文の上から押せる
+    const judge = (R, b) => { const sc = scan({l: R.left, r: R.right, t: R.top, b}); return [tapped && TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < b + 40 ? 1 : 0, sc.taps, sc.n]; };
+    const lowJ = judge(T, Math.max(T.bottom, floor));
+    if (!lowJ[0] && !lowJ[1]) return;
+    box.classList.add('at-top'); T = rectOf();
+    const highJ = judge(T, T.bottom), better = (x, y) => x[0] !== y[0] ? x[0] < y[0] : x[1] !== y[1] ? x[1] < y[1] : x[2] < y[2];
+    if (!better(highJ, lowJ)) box.classList.remove('at-top');
+}
+
 // 最後に食べた日からの日数（食べていなければ Infinity）
 // 料理 id → 最後に食べてからの日数の表。S.history が変わったとき（配列が入れ替わる・件数が変わる）か日付が変わったときだけ作り直す
 let DS_CACHE = null;
@@ -3759,6 +3830,7 @@ function setTab(tb){
     const nt = NAV_OF[tb] || tb;   // 作り方は「今日」、材料から・ひとひねり・世界のレシピは「さがす」のタブを選んだ表示にする
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
     window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
+    { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
     render();
     const vw = document.getElementById('view'); if (vw){ vw.classList.remove('view-in'); void vw.offsetWidth; vw.classList.add('view-in'); }
 }
@@ -4091,6 +4163,7 @@ function render(){
     const fk = guard('focus', () => v.contains(document.activeElement) && kbFocused(document.activeElement) ? focusKey(document.activeElement) : '') || '';
     const keep = guard('hold', () => tab === lastRenderTab ? holdView(v) : null);   // 同じ画面の描き直しでは、見ている場所と横に動かした列を動かさない
     lastRenderTab = tab;
+    guard('toastview', toastViewMark);   // お知らせの置き場所（toastPlace）: 押して画面が切りかわったかを控える
     let html = null, failed = false;   // 知らない画面名のときは、いまの中身をそのまま残す
     if (VIEWS[tab]){
         try{ html = VIEWS[tab](); if (typeof html !== 'string') throw new Error('view'); }
@@ -6564,7 +6637,8 @@ function familySettingsHtml(){
         const open = session.famOpen === m.id;
         avoidSumHtml.off = true;
         // アレルギーは1回押すだけで登録する（食べられない食材にも入る）。食べられない食材から「⚠」で切りかえる方法も残す
-        let chips, algChips; try { algChips = famAlgChipsHtml(m); chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
+        // 食べられない食材（苦手）のチップも、アレルギーと同じく押しても畳まず・並びも変えない（続けて選べる。第3回b N6。more=false）
+        let chips, algChips; try { algChips = famAlgChipsHtml(m); chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', false); } finally { avoidSumHtml.off = false; }
         return `<details class="box fam-member" data-fm="${esc(m.id)}" ${open ? 'open' : ''}><summary><span class="fam-nm">${esc(famLabel(m, i))}</span> <span class="small muted">${esc(m.role === 'child' ? t('子ども') : t('大人'))}${m.avoid.length ? ' · ' + esc(joinNames([...new Set(m.avoid.map(avoidName))])) : ''}${m.allergy.length ? ' ⚠' : ''}${m.mild ? ' 🌶' : ''}</span></summary>
             <div class="field"><input type="text" class="fam-name" data-act="fam-name" value="${esc(m.name)}" maxlength="12" placeholder="${esc(t('名前か絵文字（例: 長女、👧）'))}" aria-label="${esc(t('名前か絵文字（例: 長女、👧）'))}" autocomplete="off">
                 <div class="chips" role="group">${[['adult', t('大人')], ['child', t('子ども')]].map(([k, l]) => `<button class="chip" data-act="fam-role" data-v="${k}" aria-pressed="${m.role === k}">${esc(l)}</button>`).join('')}</div></div>
@@ -8686,14 +8760,17 @@ function eatPlanHtml(items){
     const at = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(S.settings.dinnerAt || '');
     const mins = rs.map(r => Number(r.min)), total = mins.reduce((a, b) => a + b, 0), mx = Math.max(...mins), longest = rs[mins.indexOf(mx)];
     const MIN = 60000, now = new Date();
-    let eat = at ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), +at[1], +at[2]) : null;
-    if (eat && eat <= now && +at[1] < 4) eat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +at[1], +at[2]);   // 0時〜3時台の指定は、もう過ぎているなら「あすの未明」（夜の食事のあとの時刻）とみなす
-    // 第3回モニター R6: もう過ぎた時刻は、朝（4時〜10時台）なら明日の朝ごはん、それ以外は「もう過ぎています。今から作ると○時ごろ」
+    // 食べる時刻は、画面の日付（TODAY。午前4時で替わる）の時刻として数える（第3回b N3）。0時〜3時台に開いても画面は前の日のままなので、
+    // 暦の日付で数えると、もう過ぎた夕方の時刻に「間に合います」と出てしまう。0時〜3時台の指定は、その日の夜ふけ（暦では翌日の未明）
+    const day0 = parseYmd(TODAY), at4 = (h, m, plus) => new Date(day0.getFullYear(), day0.getMonth(), day0.getDate() + plus, h, m);
+    const dayKey = d => { const x = new Date(d.getTime()); x.setHours(x.getHours() - 4); return ymd(x); };   // その時刻が画面のどの日か（dayNow と同じ数え方）
+    let eat = at ? at4(+at[1], +at[2], +at[1] < 4 ? 1 : 0) : null;
+    // 第3回モニター R6: もう過ぎた時刻は、朝（4時〜10時台）なら明日の朝ごはん（画面の日の昼より後＝4時から8時間以上たっていれば）、それ以外は「もう過ぎています。今から作ると○時ごろ」
     let morning = false;
-    if (eat && eat <= now && +at[1] >= 4 && +at[1] < 11 && now.getHours() >= 12){ eat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, +at[1], +at[2]); morning = true; }
+    if (eat && eat <= now && +at[1] >= 4 && +at[1] < 11 && (now.getHours() + 20) % 24 >= 8){ eat = at4(+at[1], +at[2], 1); morning = true; }
     const end1 = new Date(now.getTime() + total * MIN), end2 = new Date(now.getTime() + mx * MIN), c0 = clockText;
     const c = d => d === eat && morning ? t('明日の{time}', {time: c0(d)}) : c0(d);   // 明日の朝の時刻には「明日の」を付ける（作り始めの時刻も明日）
-    const cs = d => morning && d.getDate() !== now.getDate() ? t('明日の{time}', {time: c0(d)}) : c0(d);
+    const cs = d => morning && dayKey(d) !== TODAY ? t('明日の{time}', {time: c0(d)}) : c0(d);
     const lines = []; let nowLine = '';
     if (eat){
         const startBy = n => cs(new Date(eat.getTime() - n * MIN));
@@ -9473,13 +9550,14 @@ function logTodayHtml(){
     if (!decidedToday()) return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の一膳'))}</div><p class="small muted" style="margin:0">${esc(t('まだ決めていません'))}</p><div class="row"><button class="btn" data-act="goto-today">${esc(t('今日の一膳を決める'))}</button></div></div></div>`;
     const its = cookItems();
     return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の一膳'))}</div>
-        <div class="list log-today-list">${its.map(x => { const h = histEntry(x.r.id, TODAY); return `<div class="item"><span class="t" data-act="open" data-id="${esc(x.r.id)}">${esc(x.r.name)}</span><span class="s">${h ? '✓ ' + esc(t('記録済み')) : ''}</span></div>`; }).join('')}</div></div></div>`;
+        <div class="list log-today-list">${its.map(x => { const h = histEntry(x.r.id, TODAY); return `<div class="item"><span class="t" data-act="open" data-id="${esc(x.r.id)}">${esc(x.r.name)}</span><span class="s">${h ? '✓ ' + esc(t('記録済み')) : esc(t('まだ記録していません'))}</span></div>`; }).join('')}</div></div></div>`;   // 決めただけ（まだ作っていない）料理は、記録していないとはっきり書く（第3回b N7。カレンダーの下に料理名だけ並ぶと、記録したように見える）
 }
 // 最近作った料理（新しい順に、同じ料理は1回だけ。最大6品）。押すと、その料理の詳しい画面
 function recentMadeHtml(){
     const seen = new Set(), xs = [];
     S.history.slice().sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0).forEach(h => { if (xs.length < 6 && !seen.has(h.id)){ seen.add(h.id); xs.push(h); } });
-    if (!xs.length) return `<div class="list"><div class="empty ill ill-book">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div></div>`;
+    // 案2では「決めた」だけでは記録しない（作り終えたとき・「記録して おしまい」・料理の詳しい画面の「今日作った」で記録する）。決めたあとに「決定を押すと記録されます」と出していた（第3回b N7）
+    if (!xs.length) return `<div class="list"><div class="empty ill ill-book">${esc(t('まだ記録がありません。決めた献立は、作り終えて「{done}」を押すと記録されます。料理の詳しい画面の「{made}」でも記録できます。', {done: t('記録して おしまい'), made: t('今日作った')}))}</div></div>`;
     return `<div class="recent-grid">${xs.map(h => { const r = byId(h.id), nm = r ? r.name : h.name; return `<button type="button" class="recent-card" data-act="open-hist" data-id="${esc(h.id)}">${r ? thumbHtml(r) : '<span class="thumb none" aria-hidden="true"></span>'}<span class="nm">${esc(nm)}</span><span class="d">${esc(jpDate(h.d, false))}${h.slot ? esc(GAP() + typeLabel(h.slot)) : ''}</span></button>`; }).join('')}</div>`;
 }
 /* ---- あなたの記録: この端末の記録を、今月の件数として並べるだけ（S は読むだけ。評価・比較・「減らせた」などの言葉は出さない。0件でもそのまま出す） ---- */
