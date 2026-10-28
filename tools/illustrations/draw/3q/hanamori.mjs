@@ -185,6 +185,23 @@ function glassNoodles(p, o, R, H, seed, { n = 40, c = '#d8c8a8', w = 1.6 } = {})
 
 // なすの乱切り（花森の角柱）: 上は照りのある身、側面は紫の皮
 const nasu = (p, x, y, s, rot, seed = 1, flesh = '#d8b070') => { const R = rng('ns' + seed); const pts = Array.from({ length: 5 }, (_, i) => { const a = i / 5 * 6.283, r = s / 2 * (.75 + R() * .35); return [Math.cos(a) * r, Math.sin(a) * r * .8]; }); return Q.prism(p, x, y, pts, s * .4, '#5a2c66', { rot, top: Q.lg(p, [[0, lt(flesh, .35)], [.6, flesh], [1, dk(flesh, .3)]], 0, 0, 1, 1), line: .6 }) + gl(x - s * .15, y - s * .4, s * .35, -8, .7); };
+// 小鉢（今の絵の器の色）: outer は外の色。中身は V.above で手前の口より上だけ見せ、最後に depthVeil
+const bowlOf = (p, outer, o = {}) => Q.kobachi(p, { outer, lip: lt(outer, .22), inner: '#f2ede2', ...o });
+const inBowl = (p, V, body) => V.s + `<g ${V.above}>${body}</g>` + Q.depthVeil(p, V, V.cy - 56, V.cy + V.iry) + V.shine(.5);
+// あえ衣の山（ポテトサラダ・白和え・かぼちゃサラダ）: 斜めから見たこんもりした形。返り値 { s, top(u, v) }
+function creamMound(p, cx, cy, rx, H, c, seed, { bump = 10, shade = .2 } = {}){
+    const ry = rx * SY, R = rng('cm' + seed), prof = q => Math.pow(Math.max(0, 1 - q), .7);
+    const top = []; for (let i = 0; i <= 30; i++){ const u = -1 + 2 * i / 30; top.push([cx + u * rx, cy - H * prof(u * u) - Math.sqrt(Math.max(0, 1 - u * u)) * ry * .3 + (R() - .5) * 3]); }
+    const outline = `M${f(cx - rx)},${f(cy)} ${Q.smooth(top, false).slice(1).replace(/^[^C]*/, m => 'L' + m)} L${f(cx + rx)},${f(cy)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx)},${f(cy)}Z`;
+    let tex = '';
+    for (let i = 0; i < bump; i++){ const a = R() * 6.283, d = Math.sqrt(R()) * .9, u = Math.cos(a) * d, v = Math.sin(a) * d; tex += `<ellipse cx="${f(cx + u * rx)}" cy="${f(cy + v * ry - H * prof(d * d))}" rx="${f(5 + R() * 6)}" ry="${f(3 + R() * 3)}" fill="${lt(c, .35)}" opacity=".5"/>`; }
+    return { s: Q.dropOf(p, outline, 2, 3, .28, 2) + `<path d="${outline}" fill="${Q.rg(p, [[0, lt(c, .4)], [.55, c], [1, dk(c, .22)]], .36, .3, .8)}"/>` + `<g ${Q.clip(p, outline)}>${tex}</g>` + `<path d="${outline}" fill="${Q.lg(p, [[0, SHADE, 0], [.5, SHADE, 0], [1, SHADE, shade]], 0, 0, 1, 1)}"/>`,
+        at: (u, v, lift = 0) => Q.at({ cx, cy }, u * rx, v * rx, H * prof(u * u + v * v) + lift) };
+}
+// 山の上に具を散らす（creamMound の at を使う）
+const onCream = (M, seed, n, minD, draw, lift = 0) => scatter(seed, n, .85, minD).map(([u, v, r], i) => { const [x, y] = M.at(u, v, lift); return [y, () => draw(x, y, r * 360, i)]; });
+// オクラの輪切り（星形の断面と白い種）を面に寝かせる
+const okraSlice = (p, x, y, s) => flat(p, x, y, K.okra(p, 0, 0, s), { th: 1.6, tc: '#2a5a1e', sq: .66 });
 // むきえび（エビチリ）: 殻のない身。ゆるく曲がった胴に節の線と背の明るい帯、小さな尾。丸い輪にしない（海老の頭つきは Q.prawn3q）
 function peeledShrimp(p, x, y, s, rot = 0, flip = 1, c = '#fbd0bc'){
     const L = s * 1.1, P0 = [-L / 2, 0], P1 = [0, -L * .42], P2 = [L / 2, L * .05];
@@ -528,5 +545,275 @@ export default {
         it.push([o.cy - 2, () => Q.greensMound(p, 100, o.cy - 2, 66, 34, '#2f6e24', 3, { n: 30 })]);
         it.push([o.cy + 40, () => katsuobushi(100, o.cy - 28, 56, 'oh', 22)]);
         return V.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, V.cy - 50, V.cy + V.iry) + V.shine(.5);
+    },
+    // ポテトサラダ: 青灰の小鉢に、じゃがいものあえ衣の山。きゅうりの輪切り・ハム・玉ねぎ（お好みで）
+    potesala: p => {
+        const V = bowlOf(p, '#4a6a9a'), M = creamMound(p, 100, V.cy + 10, 70, 36, '#f4e2a8', 'ps', { bump: 16 });
+        const it = onCream(M, 'ps', 16, .3, (x, y, r, i) => i % 3 === 0 ? cucumber(p, x, y, 13, r, { thick: 1 }) : i % 3 === 1 ? hamBit(p, x, y, 12, r) : Q.lump(p, x, y, 6, 4.5, '#f6e2a0', 'pp' + i, { hi: .4 }), 1);
+        return inBowl(p, V, M.s + Q.byDepth(it));
+    },
+    // たたききゅうり: 赤茶の小鉢に、割れたきゅうりの塊（皮の濃い緑の側面と淡い身の面）、白ごま
+    tatakikyuri: p => {
+        const V = bowlOf(p, '#9a3a2a'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 62, 20, 'tk', 20, 18, [[1, (x, y, r, i) => { const R = rng('tq' + i), pts = Array.from({ length: 6 }, (_, k) => { const a = k / 6 * 6.283, rr = 10 * (.6 + R() * .5); return [Math.cos(a) * rr * 1.3, Math.sin(a) * rr * .8]; }); return Q.prism(p, x, y, pts, 8, '#3a7a2a', { rot: r, top: Q.lg(p, [[0, '#eef6d0'], [.6, '#cfe4a0'], [1, '#9cc46a']], 0, 0, 1, 1), line: .7 }) + gl(x - 4, y - 8, 8, -8, .6); }]], { ry: 50 });
+        it.push([300, () => sesame(100, o.cy - 14, 90, 'tk', '#f6ecd0', 20)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // もやしのナムル: 灰の小鉢に、もやし・ほうれん草（お好みで）・にんじん（お好みで）を3つの山に、白ごま
+    namul: p => {
+        const V = bowlOf(p, '#a8a49c'), o = { cx: 100, cy: V.cy + 8 };
+        const it = [];
+        it.push([o.cy - 6, () => Q.shredMound(p, 76, o.cy - 2, 34, 22, ['#fffcee', '#f2ecd4', '#d8ceb0'], 'nm1', { n: 90, w: 2 })]);
+        it.push([o.cy - 8, () => Q.greensMound(p, 128, o.cy - 8, 30, 18, '#2f7a2a', 5, { n: 12 })]);
+        it.push([o.cy + 14, () => Q.shredMound(p, 112, o.cy + 18, 28, 16, ['#ffb070', '#f07a2a', '#c85a18'], 'nm3', { n: 70, w: 1.6 })]);
+        it.push([300, () => sesame(100, o.cy - 14, 90, 'nm', '#f6ecd0', 22)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // コールスロー: 緑の小鉢に、細かいキャベツ・にんじん（お好みで）・コーン（お好みで）をマヨネーズであえた山
+    coleslaw: p => {
+        const V = bowlOf(p, '#3a6a4a'), o = { cx: 100, cy: V.cy + 10 };
+        let b = Q.shredMound(p, 100, o.cy, 68, 30, ['#fbfcec', '#e2eec0', '#bcd494'], 'cs', { n: 220, w: 1.4 });
+        const it = [];
+        const R = rng('csv');
+        for (let i = 0; i < 30; i++){ const u = (R() - .5) * 1.6, v = (R() - .5) * 1.4; if (u * u + v * v > .8) continue; const [x, y] = P(o, u * 66, v * 66, hill(u * 66, v * 66, 72, 30) + 2); it.push([y, () => i % 3 ? `<path d="M${f(x - 5)},${f(y)} l10,${f((R() - .5) * 4)}" stroke="#e8701e" stroke-width="1.8" stroke-linecap="round"/>` : `<rect x="${f(x - 1.8)}" y="${f(y - 1.6)}" width="3.6" height="3.2" rx="1" fill="${Q.dome(p, '#f6cf3a')}" stroke="#c99a12" stroke-width=".4"/>`]); }
+        return inBowl(p, V, b + Q.byDepth(it));
+    },
+    // 冷ややっこ: 藍の器に絹ごし豆腐の大きな角柱。上に長ねぎ（お好みで）・おろし生姜・かつお節、醤油
+    hiyayakko: p => {
+        const V = bowlOf(p, '#2c4c7c'), o = { cx: 100, cy: V.cy + 10 };
+        const [x, y] = P(o, 0, 4);
+        let b = pool(p, 104, o.cy + 10, 50, '#8a5a2a', 'hy', { op: .45, gloss: false });
+        b += Q.prism(p, x, y + 8, [[-40, -30], [40, -30], [40, 30], [-40, 30]], 30, '#f8f4e8', { rot: -8, top: Q.lg(p, [[0, '#ffffff'], [.6, '#f8f4ea'], [1, '#e8e0cc']], 0, 0, 1, 1), line: .7 });
+        const ty = y + 8 - 30 * CZ;
+        b += pool(p, x + 6, ty + 4, 22, '#7a4a20', 'hys', { op: .5 });
+        b += negis(p, x - 8, ty, 40, 10, 'hy', '#5fa03a') + ginger(p, x + 16, ty - 2, 14) + katsuobushi(x - 6, ty - 4, 34, 'hy', 12);
+        return inBowl(p, V, b);
+    },
+    // きゅうりとわかめの酢の物: 水色の小鉢に、薄い輪切りのきゅうりとわかめを甘酢に
+    sunomono: p => {
+        const V = bowlOf(p, '#9cc4d4'), S = Q.surface(p, V, { drop: 12, c: '#f2ecd0', glow: .2, rimShade: .18 }), o = S.o;
+        const it = mound(o, 56, 16, 'sn', 22, 15, [
+            [3, (x, y, r) => cucumber(p, x, y, 16, r, { thick: 1.2 })],
+            [2, (x, y, r, i) => Q.leaf(p, x, y, 26, r, '#2f5a2a', 'snw' + i, { wave: 3, vein: false })],
+        ], { lift: 2 });
+        return V.s + S.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, V.cy - 56, V.cy + V.iry) + V.shine(.5);
+    },
+    // ほうれん草の胡麻和え: 焦げ茶の小鉢に、すりごまをまとったほうれん草の山
+    gomaae: p => {
+        const V = bowlOf(p, '#4a3428'), o = { cx: 100, cy: V.cy + 8 };
+        const g = Q.greensMound(p, 100, o.cy, 64, 34, '#2f6e24', 7, { n: 44 });
+        const R = rng('gma'); let d = '';
+        for (let i = 0; i < 70; i++){ const u = (R() - .5) * 1.7, v = (R() - .5) * 1.5; if (u * u + v * v > .85) continue; const [x, y] = P(o, u * 60, v * 60, hill(u * 60, v * 60, 64, 30) + 2); d += `<ellipse cx="${f(x)}" cy="${f(y)}" rx="1.5" ry=".9" fill="${R() < .6 ? '#c8a878' : '#e8d4a8'}" stroke="#8a6a44" stroke-width=".25"/>`; }
+        return inBowl(p, V, g + d);
+    },
+    // オクラのおかか和え: 黄土の小鉢に、星形のオクラの輪切りとかつお節
+    okraokaka: p => {
+        const V = bowlOf(p, '#c8a070'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 16, 'ok', 26, 13, [[1, (x, y) => okraSlice(p, x, y, 16)]]);
+        it.push([300, () => katsuobushi(100, o.cy - 10, 70, 'ok', 26)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // 春雨サラダ: 水色の小鉢に、春雨・きゅうり・ハム・にんじん（お好みで）の細切り、白ごま
+    harusamesalad: p => {
+        const V = bowlOf(p, '#9cc4d4'), o = { cx: 100, cy: V.cy + 8 };
+        const it = glassNoodles(p, o, 60, 24, 'hs', { n: 70, c: '#f2f0e8', w: 1.6 });
+        it.push(...mound(o, 56, 24, 'hsv', 26, 11, [
+            [3, (x, y, r) => stick(p, x, y - 2, 20, r, '#5a9a3a', .07)],
+            [2, (x, y, r) => hamBit(p, x, y - 2, 18, r)],
+            [2, (x, y, r) => stick(p, x, y - 2, 18, r, '#ec7b2d', .07)],
+        ]));
+        it.push([300, () => sesame(100, o.cy - 14, 80, 'hs', '#f6ecd0', 18)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // マカロニサラダ: 生成りの小鉢に、マヨネーズであえたマカロニの山。きゅうり・ハム・玉ねぎ（お好みで）
+    macaronisalad: p => {
+        const V = bowlOf(p, '#d8d0c0'), M = creamMound(p, 100, V.cy + 10, 68, 30, '#f6eccc', 'mc', { bump: 6 });
+        const it = onCream(M, 'mc', 34, .2, (x, y, r, i) => i % 5 === 0 ? cucumber(p, x, y, 12, r, { thick: 1 }) : i % 5 === 1 ? hamBit(p, x, y, 11, r) : flat(p, x, y, K.macaroni(p, 0, 0, 14, r), { th: 1.2, tc: '#a8803a', sq: .75 }));
+        return inBowl(p, V, M.s + Q.byDepth(it));
+    },
+    // かぼちゃサラダ: 焦げ茶の小鉢に、かぼちゃのあえ衣の山（緑の皮のかけら）。玉ねぎ・ハム（お好みで）
+    kabochasalad: p => {
+        const V = bowlOf(p, '#4a3428'), M = creamMound(p, 100, V.cy + 10, 70, 36, '#f2b83e', 'kb', { bump: 14 });
+        const it = onCream(M, 'kb', 20, .25, (x, y, r, i) => i % 3 === 0 ? `<path d="${Q.blob(x, y, 5, 2.6, 'kbs' + i, { n: 6, jit: .4, rot: r })}" fill="${Q.dome(p, '#3f7a2a')}" stroke="#2a5a1e" stroke-width=".4"/>` : i % 3 === 1 ? hamBit(p, x, y, 11, r) : onionStrip(x, y, 10, r, '#f6ecc8'), 1);
+        return inBowl(p, V, M.s + Q.byDepth(it));
+    },
+    // 白菜の浅漬け: 青磁の小鉢に、白い軸と淡い緑の葉の白菜、昆布の細切り（お好みで）、赤唐辛子
+    hakusaiasazuke: p => {
+        const V = bowlOf(p, '#9ab8a8'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 20, 'hz', 20, 18, [
+            [3, (x, y, r) => flat(p, x, y, K.napaStem(p, 0, 0, 28, r), { tc: '#a8a488', th: 2 })],
+            [2, (x, y, r, i) => Q.leaf(p, x, y, 28, r, '#c4e090', 'hzl' + i, { wave: 3 })],
+        ]);
+        const R = rng('hzk');
+        for (let i = 0; i < 8; i++){ const [x, y] = P(o, (R() - .5) * 100, (R() - .5) * 80, 20); it.push([y + 50, () => i % 2 ? chiliRing(x, y, 2.6) : `<path d="M${f(x - 6)},${f(y)} l12,${f((R() - .5) * 4)}" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>`]); }
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // ブロッコリーのごまマヨ和え: 黄土の小鉢に、小房のブロッコリー（丸いつぼみの集まり）とごまマヨ
+    broccoligoma: p => {
+        const V = bowlOf(p, '#c8a060'), o = { cx: 100, cy: V.cy + 8 };
+        const floret = (x, y, s, i) => { const R = rng('bf' + i); let g = Q.cast(p, x, y + s * .3, s * .5, s * .18, .3) + `<path d="M${f(x - 3)},${f(y + s * .05)} l1,${f(s * .32)} l4,0 l1,${f(-s * .32)}Z" fill="#a8cc78" stroke="#6a9a44" stroke-width=".5"/>`; for (let k = 0; k < 7; k++){ const a = k / 7 * 6.283 + R(), d = k ? s * .24 : 0; g += `<circle cx="${f(x + Math.cos(a) * d)}" cy="${f(y - s * .12 + Math.sin(a) * d * .6)}" r="${f(s * .2)}" fill="${Q.dome(p, '#3f8a34')}" stroke="#2a5e22" stroke-width=".5"/>`; } return g + `<path d="${Q.blob(x + 2, y - s * .05, s * .22, s * .1, 'bm' + i)}" fill="#f8f0d4" opacity=".85"/>` + sesame(x, y - s * .15, s * .5, 'bfs' + i, '#e8d4a8', 4); };
+        const it = mound(o, 58, 20, 'bc', 14, 22, [[1, (x, y, r, i) => floret(x, y, 26, i)]]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // 長いもの梅和え: 藍の小鉢に、拍子木切りの長いも（白い角柱）を重ね、梅肉と大葉（お好みで）のせん切り
+    nagaimoume: p => {
+        const V = bowlOf(p, '#2c4c7c'), o = { cx: 100, cy: V.cy + 10 };
+        const it = [];
+        for (let layer = 0; layer < 3; layer++) for (let i = 0; i < 5 - layer; i++){ const u = (i - (4 - layer) / 2) * 16, [x, y] = P(o, u, layer * -4, layer * 8); it.push([layer * 100 + y, () => Q.prism(p, x, y, [[-6, -30], [6, -30], [6, 30], [-6, 30]], 7, '#f4f0e2', { rot: 72, top: Q.lg(p, [[0, '#ffffff'], [1, '#e8e2cc']], 0, 0, 1, 1), line: .5 })]); }
+        const [ux, uy] = P(o, 0, -6, 30);
+        it.push([999, () => `<path d="${Q.blob(ux, uy, 12, 6, 'ume', { n: 10, jit: .3 })}" fill="${Q.dome(p, '#c42c35')}" stroke="#8a1a24" stroke-width=".5"/>` + gl(ux - 4, uy - 2, 8, -8, .8) + Array.from({ length: 7 }, (_, i) => `<path d="M${f(ux - 14 + i * 4)},${f(uy - 7 + (i % 2) * 3)} l6,-2" stroke="#3f8a2c" stroke-width="1.6" stroke-linecap="round"/>`).join('')]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // ごぼうサラダ: 藍の小鉢に、ごぼうとにんじんの細切りをマヨネーズであえた山、すりごま
+    gobosalad: p => {
+        const V = bowlOf(p, '#34508a'), o = { cx: 100, cy: V.cy + 10 };
+        let b = Q.shredMound(p, 100, o.cy, 66, 30, ['#e8d8b4', '#b8986a', '#8a6a44'], 'gb', { n: 160, w: 2 });
+        const R = rng('gbc'); const it = [];
+        for (let i = 0; i < 40; i++){ const u = (R() - .5) * 1.7, v = (R() - .5) * 1.5; if (u * u + v * v > .8) continue; const [x, y] = P(o, u * 66, v * 66, hill(u * 66, v * 66, 70, 30) + 2); const a = R() * 180; it.push([y, () => `<g ${T(x, y, a)}><path d="M-6,0 l12,0" stroke="#b85a18" stroke-width="2.6" stroke-linecap="round"/><path d="M-6,0 l12,0" stroke="#f07a2a" stroke-width="1.6" stroke-linecap="round"/></g>`]); }
+        for (let i = 0; i < 8; i++){ const u = (R() - .5) * 1.2, v = (R() - .5) * 1; const [x, y] = P(o, u * 60, v * 60, hill(u * 60, v * 60, 70, 30) + 3); it.push([y + .5, () => `<path d="${Q.blob(x, y, 7, 3, 'gbm' + i, { n: 8, jit: .4 })}" fill="#fbf4dc" opacity=".85"/>`]); }
+        it.push([300, () => sesame(100, o.cy - 18, 80, 'gb', '#e8d4a8', 18)]);
+        return inBowl(p, V, b + Q.byDepth(it));
+    },
+    // たこときゅうりの酢の物: 青灰の小鉢に、たこのそぎ切り（赤紫の縁と白い身）・きゅうり・わかめ（お好みで）
+    takosunomono: p => {
+        const V = bowlOf(p, '#5a7a9a'), S = Q.surface(p, V, { drop: 12, c: '#f2ecd0', glow: .2, rimShade: .18 }), o = S.o;
+        const tako = (x, y, r, i) => { const sl = Q.slab(p, x, y, 11, 6, 2.6, '#f6eee6', 'tk' + i, { rot: r, jit: .2, edgeC: '#8a2a3a' }); return sl.s + `<g ${Q.clip(p, sl.d)}><path d="${Q.eD(x + 7, y + 3, 9, 6)}" fill="none" stroke="#a83448" stroke-width="5"/></g>` + `<circle cx="${f(x + 5)}" cy="${f(y - 1)}" r="1.6" fill="#f0d4d8" stroke="#a83448" stroke-width=".5"/>`; };
+        const it = mound(o, 56, 16, 'ts', 22, 15, [
+            [3, tako],
+            [3, (x, y, r) => cucumber(p, x, y, 15, r, { thick: 1.2 })],
+            [2, (x, y, r, i) => Q.leaf(p, x, y, 24, r, '#2f5a2a', 'tsw' + i, { wave: 3, vein: false })],
+        ], { lift: 2 });
+        return V.s + S.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, V.cy - 56, V.cy + V.iry) + V.shine(.5);
+    },
+    // かぶの甘酢漬け: 淡い青灰の小鉢に、くし切りのかぶ（白い角柱）、かぶの葉・昆布（お好みで）、赤唐辛子
+    kabuamazu: p => {
+        const V = bowlOf(p, '#a8bccc'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 58, 18, 'kz', 16, 22, [[1, (x, y, r) => Q.prism(p, x, y, [[-14, -6], [12, -8], [16, 2], [6, 8], [-12, 6]], 9, '#f2eee4', { rot: r, top: Q.lg(p, [[0, '#ffffff'], [.6, '#f6f2e8'], [1, '#ddd6c4']], 0, 0, 1, 1), line: .55 })]]);
+        const R = rng('kzv');
+        for (let i = 0; i < 10; i++){ const [x, y] = P(o, (R() - .5) * 100, (R() - .5) * 80, 20); const k = i % 3; it.push([y + 30, () => k === 0 ? chiliRing(x, y, 2.6) : k === 1 ? `<path d="M${f(x - 5)},${f(y)} l10,${f((R() - .5) * 4)}" stroke="#4f9a34" stroke-width="2.4" stroke-linecap="round"/>` : `<path d="M${f(x - 6)},${f(y)} l12,${f((R() - .5) * 3)}" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>`]); }
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // 白和え: 焦げ茶の小鉢に、豆腐とごまの白いあえ衣。ほうれん草・にんじん・こんにゃく（お好みで）
+    shiraae: p => {
+        const V = bowlOf(p, '#4a3428'), M = creamMound(p, 100, V.cy + 10, 70, 32, '#f2ece0', 'sr', { bump: 14, shade: .16 });
+        const it = onCream(M, 'sr', 22, .22, (x, y, r, i) => i % 3 === 0 ? Q.leaf(p, x, y, 14, r, '#3f8a2c', 'srl' + i, { wave: 1, vein: false }) : i % 3 === 1 ? stick(p, x, y, 13, r, '#ec7b2d', .12) : stick(p, x, y, 12, r, '#9a948a', .14), 1);
+        return inBowl(p, V, M.s + Q.byDepth(it));
+    },
+    // キャベツの塩昆布和え: 白い小鉢に、ざく切りのキャベツ・きゅうり（お好みで）と塩昆布の細切り、白ごま
+    shiokombu: p => {
+        const V = bowlOf(p, '#d8d4cc'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 22, 'sk', 22, 17, [
+            [4, (x, y, r, i) => flat(p, x, y, K.leafPiece(p, 0, 0, 28, r, { c: '#cfe6a4', seed: i }), { tc: '#8aa860' })],
+            [1, (x, y, r) => cucumber(p, x, y, 13, r, { thick: 1 })],
+        ]);
+        const R = rng('skk');
+        for (let i = 0; i < 22; i++){ const u = (R() - .5) * 110, v = (R() - .5) * 90; const [x, y] = P(o, u, v, hill(u, v, 64, 22) + 3); const a = R() * 180; it.push([y + 30, () => `<path d="M${f(x - 4)},${f(y)} l8,${f((R() - .5) * 3)}" stroke="#4a3a24" stroke-width="1.8" stroke-linecap="round" transform="rotate(${f(a * .3)} ${f(x)} ${f(y)})"/>`]); }
+        it.push([400, () => sesame(100, o.cy - 14, 80, 'sk', '#f6ecd0', 16)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // 大根サラダ: 淡い水色の器に、大根の細切りの山。水菜・かいわれ・ツナ・かつお節（お好みで）、刻みのり
+    daikonsalad: p => {
+        const V = bowlOf(p, '#c8dce0'), o = { cx: 100, cy: V.cy + 10 };
+        let b = Q.shredMound(p, 100, o.cy, 66, 32, ['#ffffff', '#f2f0e6', '#d6d2c2'], 'dk', { n: 200, w: 1.8 });
+        const R = rng('dkv'), it = [];
+        for (let i = 0; i < 30; i++){ const u = (R() - .5) * 1.7, v = (R() - .5) * 1.5; if (u * u + v * v > .8) continue; const [x, y] = P(o, u * 64, v * 64, hill(u * 64, v * 64, 70, 32) + 2); const a = R() * 180, k = i % 3; it.push([y, () => k === 0 ? `<g ${T(x, y, a)}><path d="M-8,0 Q0,-2 8,0" stroke="#3f8a2c" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>` : k === 1 ? `<g ${T(x, y, a)}><path d="M-6,0 L5,0" stroke="#f4f4e4" stroke-width="1.4"/><ellipse cx="6.5" cy="0" rx="2.4" ry="1.4" fill="#6ab040"/></g>` : `<path d="${Q.blob(x, y, 3.4, 2.2, 'tn' + i, { n: 6, jit: .5 })}" fill="${Q.dome(p, '#d8b890')}" stroke="#a8885a" stroke-width=".4"/>`]); }
+        it.push([400, () => katsuobushi(100, o.cy - 26, 40, 'dk', 12) + Array.from({ length: 10 }, (_, i) => { const x = 82 + R() * 36, y = o.cy - 30 + R() * 14; return `<path d="M${f(x)},${f(y)} l${f(4 + R() * 3)},${f((R() - .5) * 3)}" stroke="#34442c" stroke-width="1.3" stroke-linecap="round"/>`; }).join('')]);
+        return inBowl(p, V, b + Q.byDepth(it));
+    },
+    // トマトのマリネ: 淡い平皿に、くし切りのトマトを放射に重ね、玉ねぎの薄切り・大葉（お好みで）のせん切り、オリーブ油の照り
+    tomatomarine: p => {
+        const D = Q.plate(p, { base: '#f6f8f6' }), o = D.o;
+        const it = [];
+        for (let ring2 = 0; ring2 < 2; ring2++){ const n = ring2 ? 4 : 9, rr = ring2 ? 18 : 44; for (let i = 0; i < n; i++){ const a = i / n * 6.283 + ring2 * .4, u = Math.cos(a) * rr, v = Math.sin(a) * rr, [x, y] = P(o, u, v, ring2 * 8); it.push([ring2 * 200 + y, () => tomatoWedge(p, x, y, 30, a * 57.3 + 90)]); } }
+        const R = rng('tmo');
+        for (let i = 0; i < 8; i++){ const [x, y] = P(o, (R() - .5) * 80, (R() - .5) * 60, 14); it.push([500 + i, () => onionStrip(x, y, 14, R() * 360, '#f4ecf2')]); }
+        for (let i = 0; i < 12; i++){ const [x, y] = P(o, (R() - .5) * 50, (R() - .5) * 36, 16); it.push([600 + i, () => `<path d="M${f(x - 4)},${f(y)} l8,${f((R() - .5) * 3)}" stroke="#3f8a2c" stroke-width="1.6" stroke-linecap="round"/>`]); }
+        return D.s + pool(p, 100, 112, 54, '#e8c860', 'tm', { op: .3, gloss: false }) + Q.byDepth(it) + veil(p, D);
+    },
+    // 菜の花のからし和え: 辛子色の小鉢に、緑の茎と黄緑のつぼみの菜の花
+    karashiae: p => {
+        const V = bowlOf(p, '#c8a840'), o = { cx: 100, cy: V.cy + 8 };
+        const nano = (x, y, r, i) => { const R = rng('nh' + i); let g = `<g ${T(x, y, r)}>${Q.cast(p, 0, 3, 14, 3, .28)}<path d="M-14,2 L8,0" stroke="#2f6a22" stroke-width="4.4" stroke-linecap="round"/><path d="M-14,2 L8,0" stroke="#5aa03a" stroke-width="3" stroke-linecap="round"/><path d="M-12,1 L6,-.6" stroke="#a8d870" stroke-width=".9"/>`; g += `<path d="M-4,1 Q-8,-6 -2,-8 Q2,-4 -4,1Z" fill="#3f8a2c" stroke="#2a5e22" stroke-width=".5"/>`; for (let k = 0; k < 7; k++) g += `<circle cx="${f(10 + (R() - .5) * 8)}" cy="${f(-1 + (R() - .5) * 6)}" r="${f(1.6 + R())}" fill="${R() < .7 ? '#a8c848' : '#e8d840'}" stroke="#6a8a2a" stroke-width=".4"/>`; return g + '</g>'; };
+        const it = mound(o, 60, 22, 'kr', 26, 14, [[1, nano]]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // ねぎ納豆: 黄土の小鉢に、糸を引く納豆の山（豆は光と影の球）、長ねぎの小口切り、からし
+    natto: p => {
+        const V = bowlOf(p, '#c8b090'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 24, 'nt', 170, 5, [[1, (x, y) => Q.pea(p, x, y, 3.6, '#9a6a34')]]);
+        const R = rng('ntt');
+        it.push([300, () => { let t = ''; for (let i = 0; i < 16; i++){ const [x1, y1] = P(o, (R() - .5) * 100, (R() - .5) * 80, 16), [x2, y2] = P(o, (R() - .5) * 100, (R() - .5) * 80, 16); t += `<path d="M${f(x1)},${f(y1)} Q${f((x1 + x2) / 2)},${f(Math.min(y1, y2) - 10)} ${f(x2)},${f(y2)}" stroke="#fffaf0" stroke-width=".6" fill="none" opacity=".75"/>`; } return t; }]);
+        it.push([310, () => negis(p, 100, o.cy - 14, 50, 9, 'nt', '#5fa03a')]);
+        const [kx, ky] = P(o, 30, -20, 14); it.push([320, () => `<path d="${Q.blob(kx, ky, 6, 3.4, 'kr2')}" fill="${Q.dome(p, '#e8c030')}" stroke="#b8901a" stroke-width=".5"/>`]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // きゅうりの浅漬け: 青磁の小鉢に、厚めのきゅうりの輪切り、昆布・赤唐辛子（お好みで）
+    kyuriasazuke: p => {
+        const V = bowlOf(p, '#9ab8a8'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 16, 'ka', 22, 17, [[1, (x, y, r) => cucumber(p, x, y, 20, r, { thick: 3.4 })]]);
+        const R = rng('kak');
+        for (let i = 0; i < 9; i++){ const [x, y] = P(o, (R() - .5) * 100, (R() - .5) * 80, 18); it.push([y + 40, () => i % 2 ? chiliRing(x, y, 2.6) : `<path d="M${f(x - 6)},${f(y)} l12,${f((R() - .5) * 4)}" stroke="#4a5a34" stroke-width="2" stroke-linecap="round"/>`]); }
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // グリーンサラダ: 緑の小鉢に、レタスの山、トマトのくし切り・きゅうり・玉ねぎ（お好みで）、和風ドレッシングと白ごま
+    greensalad: p => {
+        const V = bowlOf(p, '#8ab0a0'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 62, 22, 'gs', 16, 20, [[1, (x, y, r, i) => Q.leaf(p, x, y, 42, r, i % 2 ? '#b8dc80' : '#8cc458', 'gsl' + i, { wave: 5 })]]);
+        mound(o, 50, 22, 'gsv', 9, 22, [
+            [2, (x, y, r) => tomatoWedge(p, x, y - 4, 24, r)],
+            [2, (x, y, r) => cucumber(p, x, y - 4, 15, r, { thick: 1.2 })],
+            [1, (x, y, r) => onionStrip(x, y - 4, 14, r, '#f6f0f2')],
+        ]).forEach(q => it.push([q[0] + 40, q[1]]));
+        it.push([400, () => sesame(100, o.cy - 14, 80, 'gs', '#f6ecd0', 16) + gl(84, o.cy - 22, 16, -8, .5)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+
+    // ---------- 副菜・炒 ----------
+    // きんぴらごぼう: 生成りの小鉢に、照りのあるごぼうとにんじんの細切り、白ごまと赤唐辛子
+    kinpira: p => {
+        const V = bowlOf(p, '#d0c8b8'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 60, 22, 'kp', 110, 5, [
+            [3, (x, y, r) => stick(p, x, y, 22, r, '#8a5a32', .07)],
+            [2, (x, y, r) => stick(p, x, y, 20, r, '#e0702a', .07)],
+        ]);
+        it.push([400, () => sesame(100, o.cy - 16, 80, 'kp', '#f6ecd0', 18) + chiliRing(90, o.cy - 18, 2.4) + chiliRing(114, o.cy - 10, 2.4) + gl(86, o.cy - 20, 16, -8, .7)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // トマトと卵の炒め物: 平皿に、ふんわりした炒り卵の塊と、照りのあるトマトのくし切り
+    tomatotamago: p => {
+        const D = Q.plate(p), o = D.o;
+        const it = mound(o, 56, 16, 'tt', 20, 17, [
+            [3, (x, y, r, i) => `<path d="${Q.blob(x, y, 13, 8, 'te' + i, { n: 10, jit: .4, rot: r })}" fill="${Q.rg(p, [[0, '#fff2a0'], [.55, '#f8d04a'], [1, '#d8a020']], .36, .3, .8)}" stroke="#c8961a" stroke-width=".5"/>` + gl(x - 4, y - 3, 8, -8, .7)],
+            [2, (x, y, r) => tomatoWedge(p, x, y, 26, r)],
+        ]);
+        return D.s + pool(p, 100, 116, 50, '#e8704a', 'ttp', { op: .4, gloss: false }) + Q.byDepth(it) + veil(p, D);
+    },
+    // チンゲン菜のにんにく炒め: 茶の小鉢に、匙形の白緑の軸と濃い緑の葉、にんにくの照り
+    chingensai: p => {
+        const V = bowlOf(p, '#6a4a30'), o = { cx: 100, cy: V.cy + 8 };
+        const stalk = (x, y, r, i) => Q.leaf(p, x + Math.cos(r / 57.3) * 20, y + Math.sin(r / 57.3) * 11, 34, r, '#2f6e24', 'cg' + i, { wave: 3 }) + `<g ${T(x, y, r, 1.25)}>${Q.cast(p, 0, 4, 16, 4, .28)}<path d="M-18,2 Q-6,-5 6,-4 Q12,0 6,4 Q-6,6 -18,2Z" fill="${Q.lg(p, [[0, '#f0f8dc'], [.6, '#c8e4a0'], [1, '#8ab860']], 0, 0, 0, 1)}" stroke="#6a9a44" stroke-width=".6"/><path d="M-14,1 Q-4,-2 6,-1" stroke="#fff" stroke-width="1" fill="none" opacity=".7"/></g>`;
+        const it = mound(o, 60, 26, 'cg', 22, 15, [[1, stalk]]);
+        it.push([400, () => gl(84, o.cy - 20, 18, -8, .7)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // きのこのバター醤油炒め: 青灰の小鉢に、しめじ・エリンギ・まいたけ（お好みで）、バターの照り
+    kinokobutter: p => {
+        const V = bowlOf(p, '#4a5a6a'), o = { cx: 100, cy: V.cy + 8 };
+        const it = mound(o, 62, 24, 'kn', 34, 13, [
+            [3, (x, y, r) => flat(p, x, y, K.shimeji(p, 0, 0, 30, r, { n: 4, cap: '#8a6a4c' }), { tc: '#6a5038', sq: .75 })],
+            [3, (x, y, r) => flat(p, x, y, K.eringi(p, 0, 0, 28, r), { tc: '#8a6a44', sq: .7 })],
+            [2, (x, y, r) => flat(p, x, y, K.maitake(p, 0, 0, 30, r), { tc: '#3a2a1a', sq: .75 })],
+        ]);
+        it.push([400, () => `<path d="${Q.blob(104, o.cy - 18, 8, 4, 'bt')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5" opacity=".9"/>` + gl(86, o.cy - 20, 18, -8, .75)]);
+        return inBowl(p, V, Q.byDepth(it));
+    },
+    // ほうれん草とベーコンのソテー: 生成りの小鉢に、ほうれん草の山とベーコンの短冊
+    spinachbacon: p => {
+        const V = bowlOf(p, '#d8d0c0'), o = { cx: 100, cy: V.cy + 8 };
+        const it = [[o.cy, () => Q.greensMound(p, 100, o.cy, 62, 26, '#2f6e24', 9, { n: 34 })]];
+        const R = rng('sbb');
+        for (let i = 0; i < 9; i++){ const u = (R() - .5) * 90, v = (R() - .5) * 70; const [x, y] = P(o, u, v, hill(u, v, 66, 26) + 4); it.push([200 + y, () => flat(p, x, y, K.bacon(p, 0, 0, 18, 8, R() * 180), { tc: '#6a2418', th: 1.8, sq: .7 })]); }
+        it.push([400, () => gl(84, o.cy - 20, 18, -8, .6)]);
+        return inBowl(p, V, Q.byDepth(it));
     },
 };
