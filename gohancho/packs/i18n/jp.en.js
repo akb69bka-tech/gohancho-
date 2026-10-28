@@ -1048,6 +1048,13 @@ GOHAN_PACK_TR('JP', 'en', {
       steps: ['Slice the liver and soak 10 minutes, changing the water 2–3 times to remove blood. Pat dry.', 'Rub in the marinade soy sauce, sake and ginger and leave 10 minutes, then coat with starch. Cut the chives into 4 cm lengths and the carrot into thin rectangles.', 'Heat 1 tbsp oil, sear the liver on both sides until cooked and take it out.', 'Stir-fry the carrot and bean sprouts in the remaining oil over high heat, return the liver and chives, add the sauce, toss quickly and finish with sesame oil.'],
       tip: { add: 'A pinch of black pepper', why: 'It masks any liver smell and adds punch.', skill: 'Removing liver odor', how: 'Soak in water (or milk) to draw out blood, then marinate with ginger; it becomes mild and easy to eat.' }
     },
+    nirabuta: {
+      name: 'Nira-buta (pork and garlic chive stir-fry)',
+      ings: [['Pork scraps', '200 g'], ['Garlic chives', '1 bunch'], ['Bean sprouts', '1/2 bag']],
+      seas: '(Marinade) Sake 1 tsp · Potato starch 1 tsp · Vegetable oil 1/2 tbsp · Grated garlic 1/2 tsp · Soy sauce 1 tbsp · Oyster sauce 2 tsp · Sake 1 tbsp · Sugar 1/2 tsp · Pepper a little · Sesame oil 1 tsp',
+      steps: ['Cut the garlic chives into 4 cm lengths and keep the stem ends and leafy tops apart. Cut the pork into bite-size pieces if large and rub in the marinade sake and starch. Mix the soy sauce, oyster sauce, sake and sugar.', 'Put the oil and garlic in a frying pan over medium heat and spread the pork in the pan. Break it up as it cooks and cook it through until no pink remains.', 'Turn the heat to high, add the bean sprouts and the chive stem ends and stir-fry for 1 minute.', 'Add the leafy chive tops and the sauce, toss quickly, season with pepper and finish with sesame oil.'],
+      tip: { add: 'Plenty of black pepper at the end', why: 'It sharpens the chive aroma and the pork flavor and makes you want more rice.', skill: 'Add the chives in two stages', how: 'Add the firm stem ends first and the tender tops at the very end, tossing briefly. They stay crisp and bright green.' }
+    },
     yasaiitame: {
       name: 'Yasai itame (pork and vegetable stir-fry)',
       ings: [['Pork scraps', '120 g'], ['Cabbage', '1/4 head'], ['Bean sprouts', '1 bag'], ['Carrot', '1/4'], ['Green pepper', '1'], ['Dried wood ear mushrooms', '3 g']],

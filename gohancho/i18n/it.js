@@ -1041,6 +1041,7 @@ GOHAN_I18N('it', {
     "聞いています…（タップで止める）": "In ascolto… (tocca per fermare)",
     "見つかりませんでした。別の言い方や、食材の名前だけで試してください": "Nessun risultato. Prova un'altra parola o solo il nome dell'ingrediente",
     "食材の名前が読み取れませんでした。文字を直して「追加」を押してください": "Ingrediente non riconosciuto. Correggi il testo e tocca «Aggiungi»",
+    "「{name}」は料理の名前なので、料理をさがしました": "«{name}» è il nome di un piatto: abbiamo cercato il piatto.",
     "苦手な食材を使わない料理がありません": "Nessun piatto senza gli ingredienti da evitare",
     "{date}に決めた献立の作り方": "Come cucinare il menu del {date}",
     "{name}、できあがり！": "{name} è pronto!",

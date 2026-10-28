@@ -986,6 +986,19 @@ export default {
         ...lay(pl, [[-30, -40, 36, 10], [22, -42, 36, -20], [52, -6, 34, 40], [-50, 4, 34, -30], [-6, -4, 40, 0], [28, 30, 36, 60], [-30, 36, 34, 20]].map(a => ['t', ...a]), { t: (x, y, s, r, i) => takenoko(p, x, y, s, r, i) }),
         [999, () => { const [x, y] = pl(0, 0, 18); return bonito(p, x, y, 50, 40, 1) + mitsubaLeaf(p, x + 6, y - 10); }],
     ] }),
+
+    // ニラ豚炒め（オーナーの追加。豚キムチ・レバニラと同じ平皿の炒め物）: 白い平皿（藍の線なし）に、照りのある豚こまを重ね、ニラの緑を散らし、もやし（お好みで）。下にしょうゆとオイスターソースのたれだまり
+    nirabuta: p => {
+        const D = Q.plate(p, { line: 'none' }), o = D.o, sy = Q.SYF;
+        const hill = (u, v, H) => H * Math.max(0, 1 - (u * u + v * v) / 64 / 64) ** .8;
+        const it = [];
+        spots('nbm', 12, 58, 14).forEach(([u, v, r], i) => { const [x, y] = at(o, u, v, hill(u, v, 9)); it.push([y - 1, () => sproutBit(p, x, y, 20, r, i)]); });
+        spots('nbp', 15, 56, 20).forEach(([u, v, r], i) => { const [x, y] = at(o, u, v, hill(u, v, 11)); it.push([y, () => slice3q(p, x, y, 40, r % 70 - 35, { c: i % 2 ? '#c08048' : '#cc8e52', fat: '#f4dfc4', seed: i, gloss: .9 }, { th: 2, tc: '#7a4018', sq: .64 })]); });
+        spots('nbn', 30, 58, 9).forEach(([u, v, r], i) => { const [x, y] = at(o, u, v, hill(u, v, 11) + 3); it.push([y + .5, () => niraBlade(p, x, y, 22 + (i % 3) * 3, r, i)]); });
+        return D.s + tarePool(p, 100, D.cy, 40, '#a86a32', 'nbt', { sy }) + byDepth(it) +
+            shine(80, D.cy - 6, 16, -6) + shine(108, D.cy + 6, 12, -8, .7) + shine(90, D.cy + 18, 10, -4, .6) +
+            Q.depthVeil(p, { inside: Q.clip(p, Q.eD(D.cx, D.cy, D.rx + 10, D.ry + 8)) }, D.cy - D.ry - 30, D.cy + D.ry);
+    },
 };
 // 木の芽（小さな羽状の葉）
 function mitsubaLeaf(p, x, y){
@@ -998,4 +1011,22 @@ function enoki(p, x, y, L, rot){
     let o = '';
     for (let i = 0; i < 6; i++){ const dy = (i - 2.5) * 1.6; o += `<path d="M${f(-L / 2)},${f(dy)} Q0,${f(dy - 1.4)} ${f(L / 2)},${f(dy * .6)}" stroke="#d8d0b8" stroke-width="1.9" fill="none" stroke-linecap="round"/><path d="M${f(-L / 2)},${f(dy)} Q0,${f(dy - 1.4)} ${f(L / 2)},${f(dy * .6)}" stroke="#fbf8ee" stroke-width="1.1" fill="none" stroke-linecap="round"/><circle cx="${f(L / 2 + 1)}" cy="${f(dy * .6)}" r="1.5" fill="#efe4c8" stroke="#c8b890" stroke-width=".4"/>`; }
     return `<g ${T(x, y, rot)}><g transform="scale(1 ${f(SY * 1.2)})">${o}</g></g>`;
+}
+
+// ニラ（4cm に切った平たい葉）: 面に寝かせた細い葉。縁は濃い緑、まん中に明るい筋、ところどころ白い根元
+function niraBlade(p, x, y, L, rot, seed){
+    const R = rng('nb' + seed), a = rot * Math.PI / 180, dx = Math.cos(a) * L / 2, dy = Math.sin(a) * L / 2 * Q.SYF, bend = (R() - .5) * 6;
+    const d = `M${f(x - dx)},${f(y - dy)} Q${f(x + bend)},${f(y - 2.2 + bend * .3)} ${f(x + dx)},${f(y + dy)}`;
+    const root = seed % 5 === 0;
+    return `<path d="${d}" stroke="#1f5a1c" stroke-width="4.4" fill="none" stroke-linecap="round" transform="translate(.8 1.6)" opacity=".55"/>` +
+        `<path d="${d}" stroke="#2a6e24" stroke-width="4" fill="none" stroke-linecap="round"/>` +
+        `<path d="${d}" stroke="${root ? '#cfe6a0' : '#4f9a36'}" stroke-width="2.6" fill="none" stroke-linecap="round"/>` +
+        `<path d="${d}" stroke="#a8d878" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".8" transform="translate(-.4 -.7)"/>`;
+}
+// もやし（白い軸と黄色い豆）
+function sproutBit(p, x, y, L, rot, seed){
+    const R = rng('sb' + seed), a = rot * Math.PI / 180, dx = Math.cos(a) * L / 2, dy = Math.sin(a) * L / 2 * Q.SYF, b = (R() - .5) * 5;
+    const d = `M${f(x - dx)},${f(y - dy)} Q${f(x + b)},${f(y - 2 + b * .3)} ${f(x + dx)},${f(y + dy)}`;
+    return `<path d="${d}" stroke="#c8bc98" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="${d}" stroke="#f8f4e4" stroke-width="2.2" fill="none" stroke-linecap="round"/>` +
+        `<ellipse cx="${f(x - dx)}" cy="${f(y - dy)}" rx="2.4" ry="1.7" fill="${Q.dome(p, '#ecd878', .35, .25)}" stroke="#c0a848" stroke-width=".5"/>`;
 }
