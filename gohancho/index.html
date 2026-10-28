@@ -7914,7 +7914,7 @@ const ICO_SPEAK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3
    段取り buildRunOrder(): 料理の順に並べ、待ち時間のある手順（3分以上の時間が書いてあり、揚げ物・グリル・オーブンでない）のあとにだけ、
    次の料理の手順を差し込む。差し込むのは、待ちのない手順で、火を使う手順はコンロの空き（台所の設定のコンロの数 − 待っている手順の1つ）まで。
    揚げ物・グリル・オーブンの手順は差し込まないし、それらの待ちのあいだにも差し込まない（同時にできるか分からない・油の前を離れない）。
-   台所の設定は S.settings.kitchen（八木の設定画面が書く）を読むだけ。無ければコンロ2つ・グリルあり。
+   台所の設定は S.settings.kitchen（八木の設定画面が書く）を読むだけ。無ければコンロ2つ・グリルあり。炊く時間 riceMin は既定値を置かない（入っているときだけスイッチの時刻を出す）。
    どの手順が済んだかは今までどおり S.cook.done（料理ごと）だけに書く。段取りの並びは毎回同じ計算で出すので、正本は増やさない。 */
 const P2M_FRY = /揚げ|揚が|素揚|天ぷら|フライにする|deep[- ]?fr|fry (?:in|until) |in hot oil|into the (?:hot )?oil/i;
 const P2M_GRILL = /グリル|魚焼き|grill|broil/i;
@@ -7932,8 +7932,8 @@ function kanjiNum(n){   // 1→一、10→十、12→十二、20→二十
     return (tn ? (tn > 1 ? d[tn] : '') + '十' : '') + (one ? d[one] : '');
 }
 const p2mNo = n => LANG === 'ja' ? kanjiNum(n) : String(n);
-function altGrillOf(r, k){   // グリルの代わりの手順（レシピの印。柊・小野寺が入れる。r.alt は別名の一覧に使っているので altGrill も読む）
-    const a = r.altGrill || (r.alt && !Array.isArray(r.alt) && typeof r.alt === 'object' ? r.alt.grill : null);
+function altGrillOf(r, k){   // グリルの代わりの手順（レシピの印 r.altGrill。柊・小野寺が入れる。文1つ、または手順の番号ごとの文）
+    const a = r.altGrill;
     if (!a) return null;
     if (typeof a === 'string') return a;
     if (Array.isArray(a)) return a[k] || null;
