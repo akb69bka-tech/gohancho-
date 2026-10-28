@@ -60,11 +60,7 @@ else
   add "t-week-skip"      app "" "node tools/tests/week-skip.mjs"
   add "t-needs-tally"    app "" "node tools/tests/needs-tally.mjs"
 fi
-<<<<<<< HEAD
-for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy stock menu-trust; do
-=======
-for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy stock promises; do
->>>>>>> claude/w13
+for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy stock menu-trust promises; do
   add "t-$T" app "" "node tools/tests/$T.mjs"
 done
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
