@@ -160,12 +160,13 @@ export default {
         ...W.spots('cdc', 6, 60, 16).map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => i % 2 ? carrotCoin(p, x, y, 5, '#e8cc8a') : celery(p, x, y, 8, i * 40)]; }),
         ...W.spots('cdk', 4, 58, 22).map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => chickenBit(p, x, y, 13, i)]; }),
     ] }),
-    // ミートローフ: ケチャップのたれを塗って焼いた、ひき肉と玉ねぎのローフを2切れ
+    // ミートローフ: ケチャップのたれを塗って焼いたローフ（奥）と、切り分けた2切れ（手前）。切り口にひき肉と玉ねぎ
     us_meatloaf: p => { const D = plate(p), o = D.o;
-        const slice = (u, v, r, i) => { const [x, y] = P(o, u, v); const w = 58, d = 32; return [y, () => Q.prism(p, x, y, [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]], 9, '#7a4224', { rot: r, top: Q.rg(p, [[0, '#b87a52'], [.6, '#9a5a38'], [1, '#7a4224']], .4, .35, .8), line: .6 }) +
-            `<g ${T(x, y - 9 * CZ, r)}><path d="M${f(-w / 2)},${f(-d / 2 * SY)} L${f(w / 2)},${f(-d / 2 * SY)}" stroke="#b8301e" stroke-width="5" stroke-linecap="round"/><path d="M${f(-w / 2 + 4)},${f(-d / 2 * SY - 1)} L${f(w / 2 - 6)},${f(-d / 2 * SY - 1)}" stroke="#f08a6a" stroke-width="1.2" stroke-linecap="round" opacity=".8"/></g>` +
-            W.flecks(p, x, y - 9 * CZ, 22, 26, 'ml' + i, ['#e8d4a0', '#5a2c14', '#c88a50', '#6a3a1e'], { ry: 7, s: 1.1 })]; };
-        return D.s + byDepth([slice(-12, -18, -8, 1), slice(10, 16, -14, 2)]) + W.drizzle([[120, 70], [130, 74], [140, 72]], '#c8341e', 2.6); },
+        const loafTop = c => Q.lg(p, [[0, '#e8583a'], [.5, '#c03a22'], [1, '#8a2414']], 0, 0, 1, 1);
+        const [lx, ly] = P(o, 18, -24);
+        const loaf = Q.prism(p, lx, ly, [[-40, -16], [30, -16], [30, 16], [-40, 16]], 26, '#8a4a28', { rot: -8, top: loafTop(), line: .6 }) + Q.shine(lx - 16, ly - 30, 22, -8, .85);
+        const slice = (u, v, i) => { const [x, y] = P(o, u, v); const w = 50, d = 14, h = 30; return [y, () => Q.prism(p, x, y, [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]], h, '#9a5a38', { rot: -8, top: loafTop(), line: .6 }) + W.flecks(p, x - 2, y - h * .45 * CZ + 4, 20, 26, 'ml' + i, ['#e8d4a0', '#5a2c14', '#c88a50', '#6a3a1e'], { ry: 9, s: 1.1 })]; };
+        return D.s + W.pool(p, 104, 116, 30, '#a8341e', 'mlp') + byDepth([[ly, () => loaf], slice(-20, 10, 1), slice(10, 30, 2)]); },
     // ポットロースト: 牛の塊をじゃがいも・にんじん・玉ねぎと煮込み、肉汁のソース、タイム
     us_potroast: p => { const D = plate(p), o = D.o; const [x, y] = P(o, -6, -6);
         const it = [[y, () => Q.lump(p, x, y, 36, 24, '#7a4022', 'prm', { n: 11, jit: .14, hi: .5 }) + W.flecks(p, x, y - 6, 26, 26, 'prf', ['#5a2c14', '#9a5a32'], { ry: 12 }) + Array.from({ length: 5 }, (_, i) => `<path d="M${f(x - 24 + i * 12)},${f(y - 16)} q3,10 -2,22" stroke="#5a2c14" stroke-width="1.2" fill="none" opacity=".6"/>`).join('')]];
@@ -251,14 +252,15 @@ export default {
     // ガーリックいんげん: いんげんをバターとにんにくで炒め、レモンを絞る
     us_greenbeans: p => { const D = plate(p), o = D.o; const it = W.spots('gb', 22, 56, 9).map(([u, v, r], i) => { const [x, y] = P(o, u, v, 6 + W.hill(u, v, 56, 12)); return [y, () => W.pod(p, x, y, 34 + (i % 3) * 4, r)]; });
         return D.s + byDepth(it) + W.flecks(p, 100, 96, 44, 22, 'gbg', ['#f4e8c4', '#e8d098'], { ry: 26, s: 1.4 }) + W.lemon(p, ...P(o, 50, 34), 18, { wedge: true, rot: -20 }); },
-    // ガーデンサラダ: 木のボウルにロメイン・ミニトマト・きゅうり・にんじん、ランチドレッシング、クルトン（お好みで）
+    // ガーデンサラダ: 木のボウルにロメイン・ミニトマト・きゅうり・にんじん、ランチドレッシング、クルトン（お好みで）。立てた葉と寝かせた葉で山に
     us_salad: p => W.inBowl(p, W.woodBowl(p), { R: 74, H: 40, base: '#3f7a26', items: (o, R, H) => [
-        ...W.onHill(o, 'sl', 20, R, 14, H, (x, y, r, i) => romaine(p, x, y, 32, r, i), { lift: 2 }),
-        ...W.onHill(o, 'slt', 4, R * .8, 26, H, (x, y) => W.tomatoBall(p, x, y - 4, 13), { lift: 4 }),
-        ...W.onHill(o, 'slc', 5, R * .8, 22, H, (x, y, r) => W.coin(p, x, y, 6.4, '#3f7a2a', { h: 1.4, top: Q.rg(p, [[0, '#eef6d0'], [.7, '#c8e090'], [1, '#5a9a3a']], .4, .35, .8) }), { lift: 3 }),
-        ...W.onHill(o, 'slr', 4, R * .8, 20, H, (x, y, r) => [0, 1, 2].map(k => `<path d="M${f(x - 6 + k * 3)},${f(y - 2 + k)} l10,${f(-2 + k)}" stroke="#ec7b2d" stroke-width="1.8" stroke-linecap="round"/>`).join(''), { lift: 4 }),
-        ...W.onHill(o, 'slk', 4, R * .7, 22, H, (x, y, r, i) => crouton(p, x, y, 8, i), { lift: 4 }),
-        [999, () => W.drizzle([[o.cx - 30, o.cy - H * CZ + 2], [o.cx - 10, o.cy - H * CZ - 4], [o.cx + 8, o.cy - H * CZ + 2], [o.cx + 26, o.cy - H * CZ - 2]], '#f8f4e8', 2.4)],
+        ...W.onHill(o, 'sl', 14, R, 16, H, (x, y, r, i) => romaine(p, x, y, 32, r, i), { lift: 2 }),
+        ...W.onHill(o, 'sls', 11, R * .85, 18, H, (x, y, r, i) => W.standLeaf(p, x, y, 26 + (i % 3) * 4, 18 + (i % 2) * 6, r % 50 - 25, i % 3 ? '#5a9a34' : '#86c050', i), { lift: 4 }),
+        ...W.onHill(o, 'slt', 4, R * .8, 26, H, (x, y) => W.tomatoBall(p, x, y - 6, 13), { lift: 8 }),
+        ...W.onHill(o, 'slc', 5, R * .8, 22, H, (x, y, r) => W.coin(p, x, y, 6.4, '#3f7a2a', { h: 1.4, top: Q.rg(p, [[0, '#eef6d0'], [.7, '#c8e090'], [1, '#5a9a3a']], .4, .35, .8) }), { lift: 8 }),
+        ...W.onHill(o, 'slr', 4, R * .8, 20, H, (x, y) => [0, 1, 2].map(k => `<path d="M${f(x - 6 + k * 3)},${f(y - 2 + k)} l10,${f(-2 + k)}" stroke="#ec7b2d" stroke-width="1.8" stroke-linecap="round"/>`).join(''), { lift: 8 }),
+        ...W.onHill(o, 'slk', 4, R * .7, 22, H, (x, y, r, i) => crouton(p, x, y, 8, i), { lift: 8 }),
+        [999, () => W.drizzle([[o.cx - 30, o.cy - H * CZ - 2], [o.cx - 10, o.cy - H * CZ - 8], [o.cx + 8, o.cy - H * CZ - 2], [o.cx + 26, o.cy - H * CZ - 6]], '#f8f4e8', 2.4)],
     ] }),
     // コールスロー: キャベツとにんじんの千切りをマヨネーズと酢で和える
     us_coleslaw: p => W.inBowl(p, W.sideBowl(p), { R: 70, H: 32, items: (o, R, H) => [[0, () => slaw(p, o.cx, o.cy + 4, R, H, 'cs')]] }),
@@ -286,12 +288,13 @@ export default {
         ...W.spots('bk', 40, 62, 8).map(([u, v, r]) => { const [x, y] = pl(u, v, 1); return [y, () => Q.bean(p, x, y, 8.4, r, '#b8642e')]; }),
         ...W.spots('bkb', 6, 52, 20).map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y + 1, () => W.baconBit(p, x, y, 8, i)]; }),
     ], oil: 6, oilC: '#c8702a' }),
-    // シーザーサラダ: 木のボウルにロメイン、自家製クルトン、パルメザン、レモン、こしょう
+    // シーザーサラダ: 木のボウルにロメイン、自家製クルトン、パルメザン、レモン、こしょう。立てた葉と寝かせた葉で山に
     us_caesar: p => W.inBowl(p, W.woodBowl(p), { R: 74, H: 40, base: '#4a8a2c', items: (o, R, H) => [
-        ...W.onHill(o, 'cz', 20, R, 14, H, (x, y, r, i) => romaine(p, x, y, 32, r, i), { lift: 2 }),
-        ...W.onHill(o, 'czk', 7, R * .8, 20, H, (x, y, r, i) => crouton(p, x, y, 10, i), { lift: 4 }),
-        [998, () => W.drizzle([[o.cx - 34, o.cy - H * CZ + 6], [o.cx - 12, o.cy - H * CZ], [o.cx + 10, o.cy - H * CZ + 4], [o.cx + 32, o.cy - H * CZ]], '#f4ecd0', 2.6)],
-        [999, () => W.flecks(p, o.cx, o.cy - H * CZ * .8, 48, 50, 'czp', ['#fbf6e4', '#f0e2b8', '#5a3a20'], { ry: 16, s: 1.3 }) + W.lemon(p, o.cx + 46, o.cy - 4, 18, { wedge: true, rot: -14 })],
+        ...W.onHill(o, 'cz', 14, R, 16, H, (x, y, r, i) => romaine(p, x, y, 32, r, i), { lift: 2 }),
+        ...W.onHill(o, 'czs', 12, R * .85, 17, H, (x, y, r, i) => W.standLeaf(p, x, y, 28 + (i % 3) * 4, 20 + (i % 2) * 6, r % 50 - 25, i % 3 ? '#6aa83a' : '#9ccc60', i), { lift: 4 }),
+        ...W.onHill(o, 'czk', 7, R * .8, 20, H, (x, y, r, i) => crouton(p, x, y, 10, i), { lift: 9 }),
+        [998, () => W.drizzle([[o.cx - 34, o.cy - H * CZ + 2], [o.cx - 12, o.cy - H * CZ - 6], [o.cx + 10, o.cy - H * CZ - 1], [o.cx + 32, o.cy - H * CZ - 5]], '#f4ecd0', 2.6)],
+        [999, () => W.flecks(p, o.cx, o.cy - H * CZ * .9, 48, 60, 'czp', ['#fbf6e4', '#f0e2b8', '#5a3a20'], { ry: 16, s: 1.3 }) + W.lemon(p, o.cx + 50, o.cy - 2, 18, { wedge: true, rot: -14 })],
     ] }),
     // スリービーン・サラダ: いんげん・赤いんげん豆・ひよこ豆と赤玉ねぎを甘酢で、パセリ
     us_threebean: p => W.inBowl(p, W.sideBowl(p), { R: 70, H: 26, base: '#c8a070', items: (o, R, H) => [
@@ -322,10 +325,10 @@ export default {
         ...W.onHill(o, 'gc', 26, R * .95, 11, H, (x, y) => W.coin(p, x, y, 8, '#d8641e', { h: 3, top: Q.rg(p, [[0, '#ffc080'], [.5, '#f08a3a'], [1, '#c85a1a']], .4, .35, .8) }) + `<ellipse cx="${f(x - 2)}" cy="${f(y - 4)}" rx="2.4" ry="1" fill="#fff" opacity=".75"/>`),
         [999, () => W.flecks(p, o.cx, o.cy - H * CZ * .6, 44, 22, 'gcp', PARS, { ry: 14, s: 1.3 })],
     ] }),
-    // 芽キャベツのロースト、ベーコン: 半分に切って焼き、バルサミコ（またはメープル）
+    // 芽キャベツのロースト、ベーコン: 半分に切って切り口を焼き、バルサミコ（またはメープル）
     us_brussels: p => { const D = plate(p), o = D.o;
-        const sprout = (x, y, s, i) => Q.lump(p, x, y, s / 2, s * .42, '#3f6e24', 'bs' + i, { n: 9, jit: .12, hi: .35 }) + `<path d="${Q.blob(x - 1, y - 3, s * .38, s * .26, 'bsi' + i)}" fill="${Q.rg(p, [[0, '#e8e8a0'], [.5, '#b8cc68'], [.85, '#8a7a2a'], [1, '#6a5a1e']], .4, .35, .8)}"/><path d="M${f(x - s * .2)},${f(y - 1)} q${f(s * .2)},-3 ${f(s * .4)},0" stroke="#8aa84a" stroke-width=".8" fill="none"/><ellipse cx="${f(x + s * .1)}" cy="${f(y)}" rx="${f(s * .12)}" ry="${f(s * .06)}" fill="#7a5a22" opacity=".55"/>`;
-        return D.s + byDepth(W.spots('bsp', 14, 54, 18).map(([u, v], i) => { const [x, y] = P(o, u, v, 4); return [y, () => i % 4 === 3 ? W.baconBit(p, x, y, 10, i) : sprout(x, y, 28, i)]; })) + W.flecks(p, 100, 92, 46, 12, 'bsg', '#6a2a14', { ry: 24, s: 1.2 }); },
+        const sprout = (x, y, s, r, i) => { const R = rng('bsx' + i); let t = Q.lump(p, x, y, s / 2, s * .4, '#4a7a2a', 'bs' + i, { n: 10, jit: .1, hi: .3 }); t += `<g ${T(x, y - s * .08, r % 40 - 20)}><path d="M${f(-s * .42)},0 A${f(s * .42)},${f(s * .3)} 0 0 1 ${f(s * .42)},0 Z" fill="${Q.rg(p, [[0, '#f0f0b0'], [.55, '#c8d478'], [.85, '#a88a2a'], [1, '#7a5a1a']], .45, .7, .8)}" stroke="#5a6a22" stroke-width=".6"/>${[.3, .2, .1].map(k => `<path d="M${f(-s * k)},0 A${f(s * k)},${f(s * k * .75)} 0 0 1 ${f(s * k)},0" stroke="#8aa040" stroke-width=".8" fill="none"/>`).join('')}<path d="M${f(-s * .42)},0 L${f(s * .42)},0" stroke="#6a4a1a" stroke-width="1.6" opacity=".7"/></g>`; return t; };
+        return D.s + byDepth(W.spots('bsp', 13, 54, 19).map(([u, v, r], i) => { const [x, y] = P(o, u, v, 4); return [y, () => i % 4 === 3 ? W.baconBit(p, x, y, 10, i) : sprout(x, y, 28, r, i)]; })) + W.flecks(p, 100, 92, 46, 12, 'bsg', '#6a2a14', { ry: 24, s: 1.2 }); },
     // ズッキーニと黄色いズッキーニのソテー: 半月切りを玉ねぎとバターで、パルメザン（お好みで）
     us_squash: p => { const D = plate(p), o = D.o; return D.s + byDepth(W.spots('sq', 26, 56, 12).map(([u, v, r], i) => { const [x, y] = P(o, u, v, 4 + W.hill(u, v, 56, 8)); return [y, () => i % 5 === 4 ? W.onionStrip(x, y, 12, r) : Q.hangetsu(p, x, y, 13, r, i % 2 ? '#e8a82a' : '#3f7a24', null, { h: 4, top: Q.rg(p, [[0, '#fffae0'], [.55, i % 2 ? '#f6e6a0' : '#e4ecb8'], [.85, i % 2 ? '#e8c450' : '#a8c870'], [1, i % 2 ? '#c88a1a' : '#4a7a2a']], .4, .3, .8) })]; })) + W.flecks(p, 100, 92, 46, 26, 'sqp', ['#fbf4dc', '#6a8a3a'], { ry: 24, s: 1.1 }); },
     // サコタッシュ: コーンとライ豆（枝豆）・赤ピーマン・玉ねぎをバターで炒める
@@ -421,13 +424,14 @@ export default {
         const lug = side => `<path d="M${f(cx + side * 84)},${f(cy + 6)} q${side * 14},0 ${side * 14},8 q0,6 ${-side * 14},6Z" fill="${Q.lg(p, [[0, '#a8643a'], [1, '#6a3418']])}" stroke="#5a2c14" stroke-width=".6"/>`;
         const top = `M${f(cx - 80)},${f(cy + 2)} C${f(cx - 84)},${f(cy - 24)} ${f(cx - 30)},${f(cy - 34)} ${f(cx)},${f(cy - 30)} C${f(cx + 36)},${f(cy - 36)} ${f(cx + 86)},${f(cy - 20)} ${f(cx + 80)},${f(cy + 4)} Q${f(cx + 60)},${f(cy + 18)} ${f(cx + 40)},${f(cy + 12)} Q${f(cx + 20)},${f(cy + 26)} ${f(cx)},${f(cy + 14)} Q${f(cx - 24)},${f(cy + 26)} ${f(cx - 46)},${f(cy + 12)} Q${f(cx - 66)},${f(cy + 20)} ${f(cx - 80)},${f(cy + 2)}Z`;
         return lug(-1) + lug(1) + V.s + `<g ${V.above}><path d="${top}" fill="${Q.rg(p, [[0, '#fbe6a0'], [.45, '#f2c060'], [.8, '#d8902e'], [1, '#a8601e']], .4, .3, .8)}" stroke="#9a5a1e" stroke-width=".7"/>${W.flecks(p, cx, cy - 12, 60, 40, 'fo', ['#a8601e', '#c8782a', '#7a3e12'], { ry: 16, s: 1.8 })}<path d="M${f(cx - 50)},${f(cy - 14)} Q${f(cx - 30)},${f(cy - 28)} ${f(cx)},${f(cy - 26)}" stroke="#fff6d0" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/></g>` + V.shine(.4); },
-    // チキン＆ソーセージのガンボ: 濃い茶色のルウのスープに、鶏肉・スモークソーセージ・ピーマン・セロリ・オクラ（お好みで）、白いご飯
-    us_gumbo: p => W.soup(p, W.bowl(p, { outer: '#e6dac4', inner: '#f4eee2' }), { c: '#7a3e1a', drop: 8, glow: .2, oil: 8, oilC: '#c87a2a', flecks: [['#3f8a2a', '#5aa83a'], 16, 1.2], items: (pl, S) => [
-        [S.cy - 4, () => Q.riceDome(p, S.cx + 2, S.cy + 2, 26, 26 * SY, 16, { n: 200 })],
-        ...[[-44, -6], [-30, 14], [40, -10], [30, 16], [-10, 22]].map(([u, v], i) => { const [x, y] = pl(u, v, 1); return [y, () => W.sausageCoin(p, x, y, 7, { liq: '#7a3e1a' })]; }),
-        ...[[-36, -22], [36, 4], [10, -24]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => chickenBit(p, x, y, 13, i, '#c8945a')]; }),
-        ...[[-50, 8], [50, -2], [20, 26]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => W.coin(p, x, y, 4.4, '#4a8a2a', { h: 2, liq: '#7a3e1a', top: Q.rg(p, [[0, '#e8f0c8'], [.5, '#a8c870'], [1, '#4a8a2a']], .4, .35, .8) })]; }),
-        ...[[-20, -16], [44, 18]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => W.pepperStrip(p, x, y, 9, i * 60, '#3f8a2a')]; }),
+    // チキン＆ソーセージのガンボ: 白いご飯の山を真ん中に、濃い茶色のルウのとろみに鶏肉・スモークソーセージ・ピーマン・セロリ・オクラ（お好みで）
+    us_gumbo: p => W.soup(p, W.bowl(p, { outer: '#e6dac4', inner: '#f4eee2' }), { c: '#7a3e1a', drop: 5, glow: .15, rimShade: .35, oil: 6, oilC: '#c87a2a', items: (pl, S) => [
+        [S.cy - 8, () => Q.riceDome(p, S.cx + 4, S.cy + 4, 34, 34 * SY * .9, 30, { n: 300 })],
+        ...[[-46, -4], [-34, 14], [44, -8], [34, 16], [-14, 24], [10, 26]].map(([u, v], i) => { const [x, y] = pl(u, v, 3); return [y, () => W.sausageCoin(p, x, y, 8)]; }),
+        ...[[-38, -20], [40, 6], [-50, 10]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y, () => chickenBit(p, x, y, 15, i, '#c8945a')]; }),
+        ...[[-24, 18], [52, -2], [24, 28]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y, () => W.coin(p, x, y, 5, '#4a8a2a', { h: 2.6, top: Q.rg(p, [[0, '#e8f0c8'], [.5, '#a8c870'], [1, '#4a8a2a']], .4, .35, .8) })]; }),
+        ...[[-20, -24], [48, 22]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y, () => W.pepperStrip(p, x, y, 10, i * 60, '#3f8a2a')]; }),
+        [999, () => W.flecks(p, S.cx + 4, S.cy - 18, 20, 12, 'gmb', ['#3f8a2a', '#5aa83a'], { ry: 6, s: 1.4 })],
     ] }),
     // チキントルティーヤスープ: トマトのスープに鶏肉・黒豆・コーン、トルティーヤチップス・アボカド（お好みで）・ライム・パクチー
     us_tortillasoup: p => W.soup(p, W.bowl(p, { outer: '#c8603a', inner: '#f2e6d0' }), { c: '#c8542a', drop: 8, glow: .3, oil: 6, oilC: '#e87a2a', items: (pl, S) => [
@@ -478,6 +482,46 @@ export default {
         ...W.spots('ws', 6, 56, 18).map(([u, v, r], i) => { const [x, y] = pl(u, v, 1); return [y + .5, () => Q.leaf(p, x, y, 18, r, '#2f6a2a', 'wsl' + i, { wave: 2 })]; }),
         ...W.spots('wc', 6, 58, 16).map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => W.dice(p, x, y, 4.6, '#e8782a', 'wc' + i, { h: 2, sink: 1, liq: '#e8c87a' })]; }),
     ] }),
+    // ---------- 麺・ご飯もの（2回目に追加） ----------
+    // スパゲッティ・ミートボール: 平皿にスパゲッティ、トマトソースと肉団子、パルメザン、パセリ（バジル）
+    us_spaghetti: p => { const D = plate(p), o = D.o, cx = 100, cy = 104;
+        return D.s + W.noodleMound(p, cx, cy, 60, 22, '#f2d690', 'sp', { w: 2.2, n: 150, len: 34, sy: SYF }) + `<path d="${Q.blob(cx, cy - 22, 38, 20, 'sps', { n: 12, jit: .25 })}" fill="${Q.rg(p, [[0, '#ee5a3a'], [.6, '#c8321e'], [1, '#9a2414']], .4, .35, .8)}" opacity=".95"/>` +
+            byDepth([[-16, -26], [12, -30], [-2, -14], [22, -14]].map(([u, v], i) => { const [x, y] = [cx + u, cy + v]; return [y, () => W.ball(p, x, y - 4, 18, '#8a4424', 'm' + i, { hi: .6 })]; })) + W.flecks(p, cx, cy - 24, 30, 30, 'spp', ['#fbf6e4', '#f0e2b8', '#3f8a2a'], { ry: 14, s: 1.2 }); },
+    // ベイクド・マカロニチーズ: 耐熱皿でマカロニとチェダーのソースを焼き、パン粉（お好みで）とパプリカ
+    us_macncheese: p => { const V = W.casserole(p, { base: '#e8e0d0', inner: '#f4eee2' }), o = V.o;
+        const R = rng('mc'); let m = '';
+        for (let i = 0; i < 70; i++){ const u = (R() - .5) * 150, v = (R() - .5) * 100, [x, y] = P(o, u, v); m += `<g ${T(x, y, R() * 360)}><path d="M-6,2 Q-6,-5 2,-5" stroke="#c8902a" stroke-width="5.6" fill="none" stroke-linecap="round"/><path d="M-6,2 Q-6,-5 2,-5" stroke="${R() < .5 ? '#f6c450' : '#f8d878'}" stroke-width="4" fill="none" stroke-linecap="round"/></g>`; }
+        return V.s + `<g ${V.inside}><rect width="200" height="200" fill="#f0b840"/>${m}${Array.from({ length: 12 }, (_, i) => { const [x, y] = P(o, (R() - .5) * 140, (R() - .5) * 90); return `<path d="${Q.blob(x, y, 12, 6, 'mcb' + i, { n: 9, jit: .4 })}" fill="#c8782a" opacity=".55"/>`; }).join('')}${W.flecks(p, 100, 96, 70, 60, 'mcc', ['#e8c070', '#c8822a', '#a8601e'], { ry: 40, s: 1.2 })}</g>` + W.flecks(p, 100, 94, 60, 20, 'mcp', '#c8401c', { ry: 34, s: .8 }); },
+    // ツナヌードル・キャセロール: 卵麺・ツナ・グリーンピースをマッシュルームのクリームで和え、チェダーとパン粉をのせて焼く
+    us_tunacasserole: p => { const V = W.casserole(p, { base: '#c87a46', inner: '#f2e6d0' }), o = V.o;
+        return V.s + `<g ${V.inside}><rect width="200" height="200" fill="#f2deb0"/>${W.noodleMound(p, 100, 100, 80, 0, '#f2d690', 'tc', { w: 3.4, n: 70, len: 26, flat: true, sy: SYF })}${byDepth(W.spots('tcp', 14, 70, 14, { ry: 40 }).map(([u, v], i) => { const [x, y] = P(o, u, v); return [y, () => i % 2 ? Q.pea(p, x, y, 3) : Q.lump(p, x, y, 6, 4, '#e8c8a0', 'tn' + i, { n: 8, jit: .4, hi: .4 })]; }))}${W.flecks(p, 100, 96, 72, 120, 'tcc', ['#d8a048', '#c8822a', '#e8c070', '#f2a83a'], { ry: 44, s: 1.5 })}</g>`; },
+    // ジャンバラヤ: 鶏肉・スモークソーセージ・ピーマン・セロリ・玉ねぎ・トマトとご飯をケイジャンの香りで炊く、青ねぎ（お好みで）
+    us_jambalaya: p => { const D = plate(p), o = D.o, cx = 100, cy = 104;
+        return D.s + W.friedRice(p, cx, cy, 58, 22, 'jb', { cols: ['#d8783a', '#c8642a', '#e8925a'], edge: '#9a4a1e', sy: SYF }) + byDepth(W.spots('jbs', 16, 50, 13).map(([u, v, r], i) => { const [x, y] = P(o, u, v, 4 + W.hill(u, v, 58, 22)); const k = i % 4; return [y, () => k === 0 ? W.sausageCoin(p, x, y, 6.4) : k === 1 ? chickenBit(p, x, y, 11, i, '#d8a070') : k === 2 ? W.pepperStrip(p, x, y, 8, r, '#3f8a2a') : celery(p, x, y, 6, r)]; })) + W.flecks(p, cx, cy - 18, 40, 20, 'jbn', ['#4a9a2c', '#7ac050'], { ry: 14, s: 1.4 }); },
+    // レッドビーンズ＆ライス: 赤いんげん豆をソーセージ（お好みで）・ピーマン・セロリ・玉ねぎと煮て、白いご飯にかける（深皿）
+    us_redbeans: p => W.soup(p, W.soupPlate(p), { c: '#8a3a22', drop: 4, glow: .2, items: (pl, S) => [
+        [S.cy - 4, () => Q.riceDome(p, S.cx + 2, S.cy + 2, 30, 30 * SYF * .7, 26, { n: 260 })],
+        ...W.spots('rbb', 24, 60, 9).filter(([u, v]) => Math.hypot(u, v) > 26).map(([u, v, r]) => { const [x, y] = pl(u, v, 1); return [y, () => kidney(p, x, y, 9, r)]; }),
+        ...[[-44, 6], [40, -6], [30, 22]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y + 1, () => W.sausageCoin(p, x, y, 6.4)]; }),
+        ...[[-30, -18], [48, 12]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y + 1, () => W.pepperStrip(p, x, y, 8, i * 50, '#3f8a2a')]; }),
+        [999, () => W.flecks(p, S.cx + 2, S.cy - 16, 16, 8, 'rbn', ['#4a9a2c'], { ry: 5, s: 1.4 })],
+    ] }),
+    // ほうれん草とリコッタの詰めものパスタ: 大きな貝殻のパスタにリコッタとほうれん草を詰め、マリナラとモッツァレラで焼く（耐熱皿）
+    us_stuffedshells: p => { const V = W.casserole(p, { base: '#c87a46', inner: '#e8d0b0' }), o = V.o;
+        const shell = (x, y, r, i) => `<g ${T(x, y, r)}>${Q.cast(p, 0, 6, 18, 5, .3)}<path d="M-18,4 Q-18,-12 0,-13 Q18,-12 18,4 Q0,10 -18,4Z" fill="${Q.lg(p, [[0, '#f8e2a8'], [1, '#d8a860']], 0, 0, 0, 1)}" stroke="#b8823a" stroke-width=".7"/>${[-10, -4, 2, 8].map(u => `<path d="M${u},-11 q1,8 0,14" stroke="#c8944a" stroke-width=".8" fill="none"/>`).join('')}<path d="M-14,-2 Q0,-12 14,-2 Q0,2 -14,-2Z" fill="${Q.rg(p, [[0, '#fffdf4'], [1, '#ece4d0']], .4, .35, .8)}"/>${W.flecks(p, 0, -5, 10, 8, 'ss' + i, '#3f7a2a', { ry: 3, s: 1.2 })}</g>`;
+        const it = W.spots('ssh', 9, 64, 30, { ry: 38 }).map(([u, v, r], i) => { const [x, y] = P(o, u, v); return [y, () => shell(x, y, r % 40 - 20, i)]; });
+        return V.s + `<g ${V.inside}><rect width="200" height="200" fill="#b8341e" opacity=".85"/>${byDepth(it)}${[[-40, -10], [10, -20], [44, 10], [-10, 20]].map(([u, v], i) => { const [x, y] = P(o, u, v); return `<path d="${Q.blob(x, y - 6, 16, 7, 'sm' + i, { n: 10, jit: .35 })}" fill="${Q.rg(p, [[0, '#fff6d0'], [.6, '#f6dc90'], [1, '#d8a850']], .4, .35, .8)}" opacity=".95"/>`; }).join('')}</g>` + W.flecks(p, 100, 92, 60, 24, 'ssp', ['#fbf4dc', '#3f8a2a'], { ry: 30, s: 1.2 }); },
+    // チキン・フェットチーネ・アルフレード: 平たい麺に生クリームとパルメザンのソース、焼いた鶏むね肉、ブロッコリー（お好みで）、パセリ
+    us_alfredo: p => { const D = plate(p), o = D.o, cx = 100, cy = 106;
+        return D.s + W.noodleMound(p, cx, cy, 60, 20, '#f4e2b0', 'al', { w: 4, n: 110, len: 38, sy: SYF, edge: '#d8bc80' }) + `<path d="${Q.blob(cx, cy - 16, 44, 22, 'als', { n: 12, jit: .3 })}" fill="#fbf4e0" opacity=".55"/>` +
+            byDepth([[-18, -20, -20], [4, -24, -10], [24, -16, 0]].map(([u, v, r], i) => { const [x, y] = [cx + u, cy + v]; return [y, () => W.cutSlab(p, x, y - 4, 13, 7, 4, '#e8c8a0', i, { rot: r, sear: '#b8783a', edgeC: '#f6ead8' })]; })) + W.broc(p, cx - 40, cy - 6, 18, 1) + W.broc(p, cx + 42, cy - 2, 18, 2) + W.flecks(p, cx, cy - 18, 40, 34, 'alp', ['#3f8a2a', '#fbf4dc', '#5a3a20'], { ry: 16, s: 1.2 }); },
+    // ラザニア: ラザニアの板・ミートソース・リコッタ・モッツァレラを重ねて焼き、四角く切り分けた1切れ
+    us_lasagna: p => { const D = plate(p), o = D.o; const [x, y] = P(o, -2, 6);
+        const w = 74, d = 56, layers = [['#f2d690', 4], ['#a8341e', 5], ['#fbf6ea', 3], ['#f2d690', 4], ['#a8341e', 5], ['#fbf6ea', 3], ['#f2d690', 4]];
+        let s = D.s + W.pool(p, x + 14, y + 14, 26, '#b8341e', 'lsp'), z = 0;
+        for (const [c, h] of layers){ s += Q.prism(p, x, y - z * CZ, [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]], h, c, { rot: -10, line: .3, top: c }); z += h; }
+        s += Q.prism(p, x, y - z * CZ, [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]], 3, '#e8b050', { rot: -10, top: Q.rg(p, [[0, '#fff2c0'], [.5, '#f6cc60'], [.85, '#d8902a'], [1, '#a85a1e']], .4, .35, .8), line: .5 });
+        return s + W.flecks(p, x, y - (z + 3) * CZ, 30, 30, 'lsf', ['#c8702a', '#3f8a2a', '#a8341e'], { ry: 14, s: 1.3 }) + Q.shine(x - 18, y - (z + 3) * CZ - 8, 20, -10, .8); },
 };
 // アスパラ（サーモンの添え物）
 function asp(p, x, y, i){ return W.asparagus(p, x, y, 70, -6 + i * 1.5); }

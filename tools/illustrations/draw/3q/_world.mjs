@@ -373,3 +373,42 @@ export function jeon(p, x, y, r, seed, { c = '#e8b84a', sy = SYF, h = 3.2, rot =
 export const sesame = (p, x, y, rx, n, seed, c = '#f4e8c8') => flecks(p, x, y, rx, n, 'ss' + seed, c, { s: 1.1, shape: 'seed' });
 // 唐辛子の粉（コチュカル）
 export const gochugaru = (p, x, y, rx, n, seed) => flecks(p, x, y, rx, n, 'gc' + seed, ['#b8281a', '#d8402a', '#8a1e10'], { s: .7 });
+
+// ---------- 2回目に足した部品（麺・ご飯もの、見直し） ----------
+// 麺の山（スパゲッティ・フェットチーネ・そうめん・中華麺）: 山の上に曲がった麺を奥から手前へ重ねる。w は麺の太さ
+export function noodleMound(p, cx, cy, rx, H, c, seed, { w = 2.4, n = 90, len = 30, curl = 1, sy = SY, edge = null, flat = false } = {}){
+    const R = rng(p.id + 'nm' + seed), ry = rx * sy, it = [], e = edge || dk(c, .3);
+    for (let i = 0; i < n; i++){
+        const a = R() * 6.283, d = Math.sqrt(R()) * .95, u = Math.cos(a) * d, v = Math.sin(a) * d, z = flat ? 0 : H * Math.pow(Math.max(0, 1 - d * d), .7);
+        const x = cx + u * rx, y = cy + v * ry - z * CZ, ang = R() * 6.283, L = len * (.6 + R() * .6), k = curl * (R() - .5) * L * .6;
+        const x1 = x - Math.cos(ang) * L / 2, y1 = y - Math.sin(ang) * L / 2 * sy, x2 = x + Math.cos(ang) * L / 2, y2 = y + Math.sin(ang) * L / 2 * sy;
+        const mx = x - Math.sin(ang) * k, my = y + Math.cos(ang) * k * sy, lite = (-u - v) > .2;
+        it.push([v, `<path d="M${f(x1)},${f(y1)} Q${f(mx)},${f(my)} ${f(x2)},${f(y2)}" stroke="${e}" stroke-width="${f(w + 1)}" fill="none" stroke-linecap="round" opacity=".6"/><path d="M${f(x1)},${f(y1)} Q${f(mx)},${f(my)} ${f(x2)},${f(y2)}" stroke="${lite ? lt(c, .25) : R() < .5 ? c : dk(c, .08)}" stroke-width="${f(w)}" fill="none" stroke-linecap="round"/>`]);
+    }
+    it.sort((a, b) => a[0] - b[0]);
+    const base = flat ? '' : mound(p, cx, cy, rx * .92, H * .85, dk(c, .1), 'nmb' + seed, sy);
+    return base + it.map(q => q[1]).join('');
+}
+// 立ち上がった葉（サラダの葉を横から見た形）: 下が濃く、上の縁が明るい弧。山に混ぜて高さを出す
+export function standLeaf(p, x, y, w, h, rot, c, seed){
+    const R = rng(p.id + 'sl' + seed), pts = [];
+    for (let i = 0; i <= 10; i++){ const t = i / 10, u = -w / 2 + t * w; pts.push([u, -h * Math.sin(t * Math.PI) * (.8 + R() * .3) - (i % 2 ? 2 : 0)]); }
+    const top = pts.map(([u, v]) => `${f(u)},${f(v)}`).join(' L');
+    const d = `M${top} Q${f(w * .3)},${f(h * .25)} 0,${f(h * .2)} Q${f(-w * .3)},${f(h * .25)} ${f(-w / 2)},0Z`;
+    return `<g ${T(x, y, rot)}><path d="${d}" transform="translate(1.6 2.6)" fill="${SHADE}" opacity=".25"/><path d="${d}" fill="${Q.lg(p, [[0, lt(c, .35)], [.5, c], [1, dk(c, .3)]], 0, 0, 0, 1)}" stroke="${dk(c, .4)}" stroke-width=".7"/><path d="M${top}" fill="none" stroke="${lt(c, .5)}" stroke-width="1.2" opacity=".8"/><path d="M0,${f(h * .15)} Q${f(w * .05)},${f(-h * .4)} ${f(-w * .05)},${f(-h * .85)}" stroke="${lt(c, .55)}" stroke-width="1.6" fill="none" opacity=".75"/></g>`;
+}
+// おかゆの面（米粒が見える白い面）: S は surface の返り値
+export function porridge(p, S, seed, { c = '#f4ecd8', n = 140 } = {}){
+    const R = rng(p.id + 'pg' + seed), sy = S.o.sy ?? SY; let s = '';
+    for (let i = 0; i < n; i++){ const a = R() * 6.283, d = Math.sqrt(R()) * .92, x = S.cx + Math.cos(a) * d * S.rx, y = S.cy + Math.sin(a) * d * S.rx * sy; s += `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.2" ry="1.2" transform="rotate(${f(R() * 180)} ${f(x)} ${f(y)})" fill="${R() < .5 ? lt(c, .5) : c}" stroke="${dk(c, .12)}" stroke-width=".35" opacity=".9"/>`; }
+    return `<g ${S.inside}>${s}</g>`;
+}
+// ご飯の山（型抜き・盛り）
+export const riceMound = (p, cx, cy, rx, H, o = {}) => Q.riceDome(p, cx, cy, rx, rx * (o.sy ?? SY) * .9, H, { n: Math.round(rx * 9), ...o });
+// 炒めたご飯（チャーハン・ジャンバラヤ・キムチポックンパ）: 色つきの粒の山
+export function friedRice(p, cx, cy, rx, H, seed, { cols = ['#f2d6a0', '#e8c488', '#f8e6c0'], edge = '#b8823a', n = 520, sy = SY } = {}){
+    const R = rng(p.id + 'fr' + seed), ry = rx * sy, gs = [];
+    for (let i = 0; i < n; i++){ const a = R() * 6.283, d = Math.sqrt(R()), u = Math.cos(a) * d, v = Math.sin(a) * d, z = H * Math.pow(Math.max(0, 1 - d * d), .7); gs.push([v, cx + u * rx, cy + v * ry - z * CZ, R() * 180, (-u - v) > .3]); }
+    gs.sort((a, b) => a[0] - b[0]);
+    return mound(p, cx, cy, rx, H, cols[1], 'frb' + seed, sy) + gs.map(([, x, y, r, lite], i) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.5" ry="1.35" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="${lite ? lt(cols[i % cols.length], .3) : cols[i % cols.length]}" stroke="${edge}" stroke-width=".35"/>`).join('');
+}
