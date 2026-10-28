@@ -1374,6 +1374,38 @@ body.kb .wrap,body.kb:has(.actionbar,.cook-ctl) .wrap{padding-bottom:calc(24px +
 .w4x_dl{font-size:var(--fs12);font-weight:700;letter-spacing:.08em;color:var(--yolk-ink)}
 .w4x_twdiff .changes li{font-size:var(--fs14);background:var(--surface);color:var(--ink);padding:2px var(--s12);box-shadow:inset 0 0 0 1px var(--yolk)}
 @media (prefers-reduced-motion:reduce){.w4x_seg button,.w4x_ct,.w4x_wgrid .match.w4x_wc{transition:none}.w4x_seg button:active,.w4x_ct:active,.w4x_wgrid .match.w4x_wc:active{transform:none}}
+
+/* ===== 案2「今日の一膳」の共通部品（三宅） ===== */
+nav.tabs button,nav.tabs.many button{font-size:min(.875rem,5vw)}   /* タブは3つなので、文字の大きさの設定に合わせて最大 約20px まで大きくする */
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* 四段の印（一 決める／二 買う／三 作る／四 食卓）。済み＝若草の字と✓・細い若草の罫、いま＝若草の淡い地にこげ茶の字と若草の下線3px、まだ＝うす茶。
+   若草の塗りつぶしと柿色は使わない（主ボタンと張り合わないように）。押しても状態は変わらない。並びは文字の向きに従う（アラビア語は右から） */
+.stages{margin:calc(-1 * var(--s8)) 0 0}
+.stages ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s4)}
+.stage{width:100%;min-height:48px;display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 4px;border:0;border-radius:var(--r-md) var(--r-md) 0 0;background:transparent;color:var(--muted);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.2;box-shadow:inset 0 -1px 0 var(--line);cursor:pointer;text-align:center;transition:background var(--dur-2) var(--ease)}
+.stage .sg-n{font-family:var(--font-display);font-size:var(--fs16);font-weight:600;flex:none}
+.stage .sg-l{min-width:0;overflow-wrap:anywhere;text-wrap:balance}
+.stage.done{color:var(--leaf);box-shadow:inset 0 -1px 0 var(--leaf)}
+.stage.done .sg-n{font-family:var(--font-body)}
+.stage.now{background:var(--leaf-soft);color:var(--ink);box-shadow:inset 0 -3px 0 var(--leaf)}
+.stage.viewing:not(.now){color:var(--ink);box-shadow:inset 0 -3px 0 var(--ink)}
+.stage:active{transform:scale(.97)}
+html[data-ts="2"] .stages ol{grid-template-columns:repeat(2,minmax(0,1fr))}   /* もっと大きい文字: ラベルを略さず 2×2 に */
+@media (max-width:359px){.stage{flex-direction:column;gap:0;font-size:var(--fs12)}}
+/* 段の画面の入れ物。中身のない段は理由と前の段への入口を出す */
+.stage-empty p{margin:0}
+.stage-links{gap:var(--s4)}
+.stage-body .list .item .s bdi{unicode-bidi:isolate}
+/* さがすタブの中の切りかえ（料理・材料から／ひとひねり／世界のレシピ） */
+.subnav{display:flex;flex-wrap:wrap;gap:var(--s8);margin:calc(-1 * var(--s8)) 0 0}
+/* 下に固定の主ボタンの帯は不透明にする（後ろの文字が透けて押せる物と重ならないように） */
+.actionbar{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}
+.actionbar.stack{flex-direction:column;border-radius:var(--r-xl)}   /* 主ボタンの下に副ボタン（買う段の「買わずに作る」） */
+.actionbar.stack>.btn{flex:none;width:100%}
+.actionbar.stack>.btn:not(.primary){min-height:var(--tap);font-size:var(--fs14)}
+/* 元に戻すつきのお知らせ: 文と［元に戻す］を1行に。ボタンは暗い地の上で読める枠ボタン */
+.toast:has([data-act="toast-undo"]){display:flex;align-items:center;gap:var(--s12);text-align:start;border-radius:var(--r-lg)}
+.toast [data-act="toast-undo"]{margin:0;flex:none;background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 60%,transparent);font-weight:700}
 </style>
 </head>
 <body>
@@ -1393,11 +1425,8 @@ body.kb .wrap,body.kb:has(.actionbar,.cook-ctl) .wrap{padding-bottom:calc(24px +
 
 <nav class="tabs" aria-label="画面の切りかえ">
     <div class="in" role="tablist">
-        <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日の献立</button>
-        <button role="tab" data-tab="cook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z"/><path d="M2 10h2M20 10h2M9 6.5c-.8 1 .8 1.8 0 3M13 5.5c-.8 1 .8 1.8 0 3"/></svg>作り方</button>
-        <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/></svg>材料から</button>
-        <button role="tab" data-tab="twist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>ひとひねり</button>
-        <button role="tab" data-tab="world"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-5.8-3.9-9S9.4 5.8 12 3z"/></svg>世界のレシピ</button>
+        <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日</button>
+        <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></svg>さがす</button>
         <button role="tab" data-tab="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 17 21H6z"/><path d="M6 3v18M9.5 8h5.5M9.5 12h5.5M9.5 16h3"/></svg>記録</button>
     </div>
 </nav>
@@ -2519,7 +2548,7 @@ function applyStaticText(){
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:tc('tab', '今日の献立'), cook:tc('tab', '作り方'), fridge:t('材料から'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:t('記録')};
+    const labels = {today:tc('tab', '今日'), fridge:tc('tab', 'さがす'), log:t('記録')};   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         const n = [...b.childNodes].reverse().find(x => x.nodeType === 3);
         if (n && labels[b.dataset.tab]) n.textContent = labels[b.dataset.tab];
@@ -3423,7 +3452,8 @@ try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','twis
 function setTab(tb){
     if (tb === 'settings' && tab !== 'settings') prevTab = tab;
     tab = tb;
-    document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tb ? 'true' : 'false'));
+    const nt = NAV_OF[tb] || tb;   // 作り方は「今日」、材料から・ひとひねり・世界のレシピは「さがす」のタブを選んだ表示にする
+    document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
     window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
     render();
     const vw = document.getElementById('view'); if (vw){ vw.classList.remove('view-in'); void vw.offsetWidth; vw.classList.add('view-in'); }
@@ -3519,7 +3549,75 @@ document.addEventListener('toggle', e => { if (e.target && e.target.tagName === 
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
 function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
 const renderFail = new Set();
-const VIEWS = {today: () => viewToday(), cook: () => viewCook(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), log: () => viewLog(), settings: () => viewSettings()};
+const NAV_OF = {cook:'today', twist:'fridge', world:'fridge'};
+const VIEWS = {today: () => stageBar() + viewStage(), cook: () => stageBar() + viewCook(), fridge: () => findNav() + viewFridge(), twist: () => findNav() + viewTwist(), world: () => findNav() + viewWorld(), log: () => viewLog(), settings: () => viewSettings()};
+/* ===== 案2「今日の一膳」の共通部品（三宅）: 今日タブの四段の印・段ごとの画面の入れ物・さがすの中の切りかえ =====
+   段: decide（一 決める）→ shop（二 買う）→ cook（三 作る）→ table（四 食卓）。
+   いま見ている段は session.stage（本人が印を押して選ぶ。押しても献立や状態は変わらない）。作る段は tab 'cook'（作り方の画面）。
+   進み具合 dayProgress() は、決めた献立（S.cook）・買い物の印（S.cook.shopOK）・手順の済み・記録から読むだけ（書き換えない）。
+   ※ 開いたときにどの段を出すか（設計書 §3）と S.day の正本は戸川の担当。ここでは今の画面をそのまま段の入れ物に入れている */
+const STAGES = ['decide', 'shop', 'cook', 'table'];
+function stageNames(){ return [tc('stage', '決める'), tc('stage', '買う'), tc('stage', '作る'), tc('stage', '食卓')]; }
+function stageNum(i){ return LANG === 'ja' ? '一二三四'[i] : String(i + 1); }
+function decidedToday(){ return !!(S.cook && S.cook.d === TODAY && Array.isArray(S.cook.ids) && S.cook.ids.length); }
+function cookAllDone(){
+    if (!decidedToday()) return false;
+    const its = cookItems(); if (!its.length) return false;
+    return its.every(x => histEntry(x.r.id, TODAY) || (((S.cook.done || {})[x.r.id]) || []).length >= ((x.r.steps || []).length || 1));
+}
+function dayProgress(){   // 0=決める 1=買う 2=作る 3=食卓 4=おしまい
+    if (!decidedToday()) return 0;
+    if (S.cook.tableAt) return 4;
+    if (cookAllDone()) return 3;
+    if (S.cook.shopOK || Object.values(S.cook.done || {}).some(a => Array.isArray(a) && a.length)) return 2;
+    return 1;
+}
+function viewingStage(){ return tab === 'cook' ? 'cook' : (STAGES.includes(session.stage) && session.stage !== 'cook' ? session.stage : 'decide'); }
+function stageBar(){
+    const pg = dayProgress(), vw = STAGES.indexOf(viewingStage()), names = stageNames();
+    return `<nav class="stages" aria-label="${esc(t('今日の段'))}"><ol>${STAGES.map((k, i) => {
+        const st = i < pg ? 'done' : i === pg ? 'now' : 'todo';
+        const say = st === 'done' ? t('済み') : st === 'now' ? t('いまここ') : '';
+        return `<li><button type="button" class="stage ${st}${i === vw ? ' viewing' : ''}" data-act="stage" data-k="${k}"${i === pg ? ' aria-current="step"' : ''}${i === vw ? ' aria-pressed="true"' : ' aria-pressed="false"'}><span class="sg-n" aria-hidden="true">${st === 'done' ? '✓' : esc(stageNum(i))}</span><span class="sg-l">${esc(names[i])}</span>${say ? `<span class="vh">（${esc(say)}）</span>` : ''}</button></li>`;
+    }).join('')}</ol></nav>`;
+}
+function viewStage(){
+    const k = viewingStage();
+    return k === 'shop' ? viewShopStage() : k === 'table' ? viewTableStage() : viewToday();
+}
+// 中身のない段も隠さず、理由と前の段への入口を出す
+function stageEmpty(msg, k, label){
+    return `<section class="sec stage-body"><div class="card stage-empty"><p>${esc(msg)}</p><div class="row"><button class="btn" data-act="stage" data-k="${k}">${esc(label)}</button></div></div></section>`;
+}
+// 二 買う: 決めた献立の材料のうち、冷蔵庫・常備品にないもの（いまの「今日の買い物メモ」と同じ中身）。家にある／買うの切りかえ・冷蔵庫シートは日向が入れる
+function viewShopStage(){
+    if (!decidedToday()) return stageEmpty(t('決めると、ここに今日の買い物メモが出ます'), 'decide', tc('stage', '決める へ'));
+    const list = todayShopItems(), done = !!S.cook.shopOK;
+    const names = cookItems().map(x => x.r.name);
+    return `<section class="sec stage-body stage-shop">
+        <div class="sec-head"><h2>${esc(list.length ? t('買う物 {n}つ', {n:list.length}) : t('買う物はありません'))}</h2><span class="hint">${esc(joinNames(names))}</span></div>
+        ${list.length ? `<div class="list">${list.map(e => `<div class="item"><span class="t">${esc(e.label)}</span>${e.qty ? `<span class="s"><bdi>${esc(e.qty)}</bdi></span>` : ''}</div>`).join('')}</div>
+        <p class="foot">${esc(t('冷蔵庫・常備品に登録した食材と、調味料は入れていません'))}</p>` : `<div class="card"><p>${esc(t('今日の献立の材料は、調味料のほかは冷蔵庫・常備品に登録されています'))}</p></div>`}
+        <div class="row stage-links">${list.length ? `<button class="btn text" data-act="shop-today">${esc(t('買い物メモを送る'))}</button>` : ''}<button class="btn text" data-act="find-go" data-k="fridge">${esc(t('冷蔵庫を開く'))}</button></div>
+        <div class="actionbar stack"><button class="btn primary" data-act="shop-ok">${esc(done ? t('作りはじめる') : t('そろった・作りはじめる'))}</button>${done || !list.length ? '' : `<button class="btn" data-act="shop-ok" data-v="skip">${esc(t('買わずに作る'))}</button>`}</div>
+    </section>`;
+}
+// 四 食卓: 作り終えた料理を並べ、まだ記録していない料理をまとめて記録する（料理ごとの「おいしかった」などは八木が入れる）
+function viewTableStage(){
+    const pg = dayProgress();
+    if (pg < 3) return stageEmpty(pg === 0 ? t('決めて作り終えたら、ここで今日の一膳を記録します') : t('作り終えたら、ここで今日の一膳を記録します'), pg === 0 ? 'decide' : 'cook', pg === 0 ? tc('stage', '決める へ') : tc('stage', '作る へ'));
+    const its = cookItems(), fin = pg >= 4;
+    return `<section class="sec stage-body stage-table">
+        <div class="sec-head"><h2>${esc(fin ? t('今日はおしまい。おつかれさまでした') : t('いただきます'))}</h2></div>
+        <div class="list">${its.map(x => `<div class="item"><span class="t" data-act="open" data-id="${esc(x.r.id)}">${esc(x.r.name)}</span><span class="s">${histEntry(x.r.id, TODAY) ? '✓ ' + esc(t('記録済み')) : ''}</span></div>`).join('')}</div>
+        ${fin ? '' : `<div class="actionbar"><button class="btn primary" data-act="table-done">${esc(t('記録して おしまい'))}</button></div>`}
+    </section>`;
+}
+// さがすタブの中の切りかえ（料理をさがす・材料から／ひとひねり／世界のレシピ）。中身は小野寺が「さがす」の画面にまとめる
+function findNav(){
+    const its = [['fridge', t('材料から')], ...(twistAvailable() ? [['twist', t('ひとひねり')]] : []), ['world', tc('tab', '世界のレシピ')]];
+    return `<nav class="subnav" aria-label="${esc(tc('tab', 'さがす'))}">${its.map(([k, l]) => `<button type="button" class="chip" data-act="find-go" data-k="${k}" aria-pressed="${tab === k}">${esc(l)}</button>`).join('')}</nav>`;
+}
 function render(){
     renderFail.clear();
     guard('head', () => {
@@ -7442,17 +7540,20 @@ function dishWhy(r, slot){   // 押していない料理に左右されない、
     return '';
 }
 // 決めた献立のうち、冷蔵庫・常備品に登録のない材料（買い物メモにして送る・コピーする）
-function todayShopText(){
-    const its = cookItems(); if (!its.length) return '';
+function todayShopItems(){
+    const its = cookItems(); if (!its.length) return [];
     const have = fridgeKeys(), fac = servingFactor(), map = new Map();
     its.forEach(x => (swappedRecipe(x.r) || x.r).items.forEach(i => {
         if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
         const nm = shopName(i, x.r), lab = /[\u0E00-\u0E7F]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm);   // 名前のちがう材料（鶏もも肉・鶏むね肉）は別の行
         const e = map.get(k) || {label: lab, qty: []}; if (i.qty) e.qty.push(scaleText(i.qty, fac)); map.set(k, e);
     }));
-    if (!map.size) return '';
+    return [...map.values()].map(e => ({label: e.label, qty: e.qty.length ? sumQty(e.qty).join(t('＋')) : ''}));
+}
+function todayShopText(){
+    const list = todayShopItems(); if (!list.length) return '';
     const lines = [t('【{date}の買い物メモ】', {date:jpDate(S.cook.d)}), t('今日の献立の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {sv:Number(S.settings.servings) || 2})];
-    map.forEach(e => lines.push(t('□ {name}', {name: e.label + (e.qty.length ? ' ' + sumQty(e.qty).join(t('＋')) : '')})));
+    list.forEach(e => lines.push(t('□ {name}', {name: e.label + (e.qty ? ' ' + e.qty : '')})));
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
@@ -9545,6 +9646,27 @@ document.addEventListener('click', e => {
             S.history = S.history.filter(h => !(h.d === el.dataset.d && h.id === id)); reactVer++; settleAwards(); save(); render();
             toast(t('記録を消しました'), false, () => { S.history = before; reactVer++; settleAwards(); save(); render(); });
             break;
+        }
+        case 'stage': {   // 四段の印: 段を見るだけ（献立・状態は変えない）
+            const k = el.dataset.k; if (!STAGES.includes(k)) break;
+            if (k === 'cook'){ if (tab !== 'cook') setTab('cook'); else window.scrollTo({top:0}); break; }
+            session.stage = k; if (tab !== 'today') setTab('today'); else { window.scrollTo({top:0}); render(); }
+            break;
+        }
+        case 'find-go': { const k = el.dataset.k; if (['fridge', 'twist', 'world'].includes(k)) setTab(k); break; }
+        case 'shop-ok': {   // 二 買う の主ボタン: 買い物の印を付けて作る段へ（元に戻す8秒）
+            if (!decidedToday()) break;
+            const had = !!S.cook.shopOK; S.cook.shopOK = 1; save(); haptic();
+            setTab('cook');
+            if (!had) toast(el.dataset.v === 'skip' ? t('買わずに作ります') : t('買い物そろいました'), false, () => { if (S.cook && S.cook.d === TODAY){ delete S.cook.shopOK; save(); render(); } });
+            break;
+        }
+        case 'table-done': {   // 四 食卓 の主ボタン: まだ記録していない料理を記録して、今日をおしまいにする
+            if (dayProgress() < 3) break;
+            const its = cookItems(), added = its.filter(x => !histEntry(x.r.id, TODAY));
+            added.forEach(x => record(x.r.id, x.slot || slotOf(x.r)));
+            S.cook.tableAt = Date.now(); save(); haptic(); render();
+            toast(added.length ? praiseFor(added.map(x => x.r.id)) : t('記録しました'), true); break;
         }
         case 'toast-undo': { const f = toast.undo; $('#toast-root').innerHTML = ''; toast.undo = null; if (f) f(); break; }
         case 'rm-custom': {

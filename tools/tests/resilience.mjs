@@ -62,7 +62,7 @@ const patchHtml = fn => async ctx => ctx.route(u => new URL(u).pathname === '/' 
     eq(await p.locator('#view .gh-view-fail').count(), 1, 'A1 失敗した画面には案内');
     eq(await p.locator('#view .gh-view-fail button[data-gh]').count(), 2, 'A1 再読み込みと書き出しの2つ');
     ok((await p.locator('#view .gh-view-fail p').textContent()).includes('うまく表示できませんでした'), 'A1 文言');
-    eq(await p.locator('nav.tabs button:visible').count() >= 5, true, 'A1 下のタブは残る');
+    eq(await p.locator('nav.tabs button:visible').count() >= 3, true, 'A1 下のタブは残る');   // 案2: 下のタブは3つ（今日・さがす・記録）
     ok(await p.locator('header.top h1').isVisible(), 'A1 見出しは残る');
     await p.evaluate(() => setTab('log'));
     eq(await p.locator('#view .gh-view-fail').count(), 0, 'A1 ほかのタブは動く');

@@ -193,8 +193,11 @@ const ACTIONS = {
   },
   async tab(p, A) {
     const ts = ['cook', 'fridge', 'twist', 'world', 'log'], t = ts[A.p % ts.length];
-    if (!await p.locator('nav.tabs [data-tab="' + t + '"]').isVisible()) return null;
-    if (!await click(p, 'nav.tabs [data-tab="' + t + '"]')) return null; await p.waitForTimeout(250); await toToday(p); await p.waitForTimeout(150);
+    // 案2: 作り方は今日の四段の印「三 作る」、材料から・ひとひねり・世界は「さがす」タブの中の切りかえ
+    const sel = t === 'cook' ? '.stages [data-act="stage"][data-k="cook"]' : t === 'log' ? 'nav.tabs [data-tab="log"]' : t === 'fridge' ? 'nav.tabs [data-tab="fridge"]' : '.subnav [data-act="find-go"][data-k="' + t + '"]';
+    if (t === 'twist' || t === 'world'){ if (!await click(p, 'nav.tabs [data-tab="fridge"]')) return null; await p.waitForTimeout(200); }
+    if (!await p.locator(sel).isVisible()) return null;
+    if (!await click(p, sel)) return null; await p.waitForTimeout(250); await toToday(p); await p.waitForTimeout(150);
     return { desc: 'タブ ' + t + ' を見て戻る', pressed: null, o: {} };
   },
   async decide(p, A) {
@@ -204,7 +207,7 @@ const ACTIONS = {
   },
   async undo(p) {
     if (!await p.evaluate(() => !!(S.cook && S.cook.d === TODAY))) return null;
-    if (!await click(p, 'nav.tabs [data-tab="cook"]')) return null; await p.waitForTimeout(250);
+    if (!await click(p, '.stages [data-act="stage"][data-k="cook"]')) return null; await p.waitForTimeout(250);
     if (!await count(p, '[data-act="undo-decide"]')) { await toToday(p); return null; }
     if (!await click(p, '[data-act="undo-decide"]')) return null; await p.waitForTimeout(400); await toToday(p);
     return { desc: '決定の取り消し', pressed: null, o: { skip: ['hist', 'cook', 'shop'] } };
