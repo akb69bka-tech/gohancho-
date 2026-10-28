@@ -6,6 +6,11 @@
 //  W4 苦手・アレルギーに当たる料理は候補にならない（受けとる画面で知らせる。あとからアレルギーを足しても入らない）
 //  W5 一人暮らしには出ない（今日・記録タブに入口・印・言葉なし。設定 › 家族の1行だけ）。赤い丸の印を使わない・相手に自動で返さない
 //  W6 こわれたリンク・長すぎるリンク・形のちがうリンク・知らない料理・同じリンク2回・名前のタグで落ちない
+// 案B ○つけ表
+//  V1 作る人が候補（主菜6品）を選んで送る。苦手・アレルギーの料理は案に出ない
+//  V2 家族の端末で○をつけて返す（リンクの往復）。V3 作る人の端末で返事を読み「そろった」が分かる。手渡しでも入る
+//  V4 「そろった」から来週を組む: 来週のまだ決めていない日にだけ入り、決めた日・今日の決めた献立は変わらない。元に戻せる。その日の決める段に札となぜの1行
+//  V5 古い週・作り直した表への返事・同じ返事2回は入れない。V6 一人暮らしには入口がない。V7 こわれた○つけ表のリンクで落ちない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
@@ -235,6 +240,128 @@ let link = '', text = '';
     const w2 = await p2.evaluate(() => ({w: S.wants.map(x => x.id + ':' + x.n + ':' + x.m).join(), s: S.wantSeen.join(), v: !!document.querySelector('#view > *')}));
     ok(w2.v && w2.w === 'nikujaga::null' && w2.s === 'ok1', 'W6h 形のちがう保存データでも起動して、使える分だけ残す: ' + JSON.stringify(w2));
     await c2.close();
+    await ctx.close();
+}
+
+// ---- 案B ○つけ表 ----
+{
+    const fam = [{id: 'f1', name: 'ゆうき', role: 'adult', avoid: [], allergy: []}, {id: 'f2', name: 'そら', role: 'child', avoid: ['えび'], allergy: ['えび']}];
+    const {p, ctx} = await open({family: fam});
+    // 今日の一膳を決めておく（来週を組んでも変わらないことを見る）
+    await p.evaluate(() => { session.stage = 'decide'; setTab('today'); render(); document.querySelector('[data-act="decide"]').click(); });
+    await p.waitForTimeout(450);
+    const cook0 = await p.evaluate(() => JSON.stringify(S.cook));
+    await p.evaluate(() => { session.stage = 'decide'; setTab('today'); render(); });
+    ok(await p.evaluate(() => !!document.querySelector('[data-act="vote-open"]')), 'V1a 1週間の主菜に「○つけ表をつくる」（家族がいるとき）');
+    await p.evaluate(() => document.querySelector('[data-act="vote-open"]').click());
+    const mk = await p.evaluate(() => ({k: sheet.kind, ids: sheet.ids.slice(), bad: sheet.ids.filter(id => isAvoided(recipeById(id)) || !recipeById(id).main || /えび|海老/.test(recipeById(id).name))}));
+    ok(mk.k === 'vote-make' && mk.ids.length === 6, 'V1b 6品の案が先に出る: ' + mk.ids.join());
+    ok(!mk.bad.length, 'V1c 案に苦手・アレルギーの料理・主菜でない料理を入れない: ' + mk.bad.join());
+    // 1品の ✓ を外して入れかえ → ✓ の料理は残る
+    await p.click('.sheet [data-act="vote-tog"][data-id="' + mk.ids[5] + '"]');
+    await p.click('.sheet [data-act="vote-reroll"]');
+    const ids2 = await p.evaluate(() => sheet.ids.slice());
+    ok(ids2.slice(0, 5).join() === mk.ids.slice(0, 5).join() && ids2[5] !== mk.ids[5] && ids2.length === 6, 'V1d 料理を入れかえる（✓ を外した料理だけ）: ' + ids2.join());
+    await p.click('.sheet [data-act="vote-send"]');
+    const qtext = await p.evaluate(() => document.querySelector('#share-text').value), qlink = (qtext.match(/https:\/\/\S+/) || [''])[0];
+    const v0 = await p.evaluate(() => S.votes[0] && {w: S.votes[0].w, ids: S.votes[0].ids, wk: voteWeek()});
+    ok(v0 && v0.w === v0.wk && v0.ids.join() === ids2.join(), 'V1e 来週の表として残す: ' + JSON.stringify(v0));
+    ok(qlink.includes('#g=') && qtext.includes('○つけ表'), 'V1f 送る文とリンク: ' + qtext.split('\n')[0]);
+
+    // V2 家族（そら）の端末で開いて○をつけて返す
+    const {p: e, ctx: ec} = await open({settings: {sendName: 'そら'}}, hashOf(qlink));
+    ok(await sheetKind(e) === 'vote-in', 'V2a 家族の端末で○つけ表が開く');
+    ok(await e.evaluate(() => location.hash === ''), 'V2b 読んだらアドレス欄から消す');
+    ok(await e.evaluate(() => document.querySelectorAll('.vt-row').length) === 6, 'V2c 6品が並ぶ');
+    await e.click('.sheet [data-act="vote-mark"][data-i="0"][data-v="2"]');
+    await e.click('.sheet [data-act="vote-mark"][data-i="1"][data-v="2"]');
+    await e.click('.sheet [data-act="vote-mark"][data-i="2"][data-v="2"]');
+    await e.click('.sheet [data-act="vote-mark"][data-i="3"][data-v="0"]');
+    await e.click('.sheet [data-act="vote-return"]');
+    const atext = await e.evaluate(() => document.querySelector('#share-text').value), alink = (atext.match(/https:\/\/\S+/) || [''])[0];
+    ok(alink.includes('#g=') && atext.includes('そら'), 'V2d 返す文とリンク: ' + atext.split('\n')[0]);
+    ok(await e.evaluate(() => !S.votes || !S.votes.length), 'V2e 家族の端末には表を残さない（送るだけ）');
+    await ec.close();
+
+    // V3 作る人の端末で返事を読む
+    await p.evaluate(() => closeSheet());
+    await p.evaluate(h => { location.hash = h; }, hashOf(alink));
+    await p.waitForTimeout(300);
+    ok(await sheetKind(p) === 'vote-table', 'V3a 返事を開くと表が出る');
+    let st = await sheetText(p);
+    ok(st.includes('そらの返事を入れました') && st.includes('1人から返ってきました') && st.includes('そろった 3品'), 'V3b 1人分の返事で「そろった 3品」: ' + st.slice(0, 160));
+    // 同じ返事をもう一度
+    await p.evaluate(h => { closeSheet(); location.hash = h; }, hashOf(alink));
+    await p.waitForTimeout(300);
+    ok((await sheetText(p)).includes('前に読みこみました') && await p.evaluate(() => Object.keys(S.votes[0].ans).length) === 1, 'V3c 同じ返事は2回入れない');
+    // 手渡しで ゆうき が○（1品目だけ○）
+    await p.evaluate(() => { closeSheet(); voteOpen(); });
+    await p.click('.sheet [data-act="vote-hand"]');
+    ok(await sheetKind(p) === 'vote-in' && await p.evaluate(() => sheet.hand), 'V3d 手渡しで○をつける画面');
+    ok(await p.evaluate(() => document.querySelector('[data-act="vote-hand-ok"]').disabled), 'V3e 名前を選ぶまで入れられない');
+    await p.click('.sheet [data-act="vote-who"][data-v="ゆうき"]');
+    await p.click('.sheet [data-act="vote-mark"][data-i="0"][data-v="2"]');
+    await p.click('.sheet [data-act="vote-mark"][data-i="1"][data-v="1"]');
+    await p.click('.sheet [data-act="vote-hand-ok"]');
+    const ans = await p.evaluate(() => S.votes[0].ans);
+    ok(ans['ゆうき'] === '211111' && ans['そら'] === '222011', 'V3f 手渡しの○も表に入る（送信なし）: ' + JSON.stringify(ans));
+    await p.evaluate(() => { sheet = {kind: 'vote-table', w: voteWeek()}; renderSheet(); });
+    st = await sheetText(p);
+    ok(st.includes('2人から返ってきました') && st.includes('そろった 1品') && await p.evaluate(() => document.querySelectorAll('.vt-res.ok').length) === 1, 'V3g 全員が○の料理だけ「そろった」');
+    ok(!st.includes('そろわなかった'), 'V3h 「そろわなかった」とは書かない');
+
+    // V4 来週を組む: 来週の1日を「決めた」にしておく → その日は変えない
+    const al = ids2[0];
+    const pre = await p.evaluate(() => { const w = voteWeek(), dd = addDays(w, 0); S.day = S.day || {}; S.day[dd] = {state: 'decided', items: [{slot: '主菜', id: 'nikujaga'}]}; return {w, dd, week: JSON.stringify(S.week)}; });
+    await p.click('.sheet [data-act="vote-week"]');
+    const wk = await p.evaluate(w => ({days: (S.week && S.week.days || []).filter(x => x.d >= w && x.d < addDays(w, 7)).map(x => x.d + ':' + x.id), dec: S.day[w].items[0].id, cook: JSON.stringify(S.cook)}), pre.w);
+    ok(wk.days.some(x => x.endsWith(':' + al)) && !wk.days.some(x => x.startsWith(pre.dd + ':' + al)), 'V4a そろった料理を、来週のまだ決めていない日にだけ入れる: ' + wk.days.join(' '));
+    ok(wk.dec === 'nikujaga', 'V4b 来週の決めた日は変わらない');
+    ok(wk.cook === cook0, 'V4c 今日の決めた献立は変わらない');
+    ok((await p.evaluate(() => document.querySelector('#toast-root').textContent)).includes('来週の1週間プランに入れました'), 'V4d 入れた日を知らせる');
+    await p.click('[data-act="toast-undo"]');
+    ok(await p.evaluate(() => JSON.stringify(S.week)) === pre.week, 'V4e 元に戻せる');
+    await p.evaluate(() => { sheet = {kind: 'vote-table', w: voteWeek()}; renderSheet(); document.querySelector('[data-act="vote-week"]').click(); });
+    // その日になったら決める段の主菜に「そろった」の札となぜの1行
+    const day = await p.evaluate(id => { const x = S.week.days.find(y => y.id === id && y.d >= voteWeek()); TODAY = x.d; S.cook = null; session.menu = null; session.rejected.clear(); draftTried = true; ensureMenu(); session.stage = 'decide'; setTab('today'); render(); return {d: x.d, main: menuIds()[0]}; }, al);
+    const vt = await viewText(p);
+    ok(day.main === al && vt.includes('そろった') && vt.includes('○つけ表で、みんなの○がそろった料理'), 'V4f その日の決める段に「そろった」の札となぜの1行: ' + JSON.stringify(day));
+
+    // V5 古い週・作り直した表への返事は入れない
+    const res = await p.evaluate(async () => {
+        const out = {}, v = S.votes[0], code = o => '#g=' + btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        const old = addDays(weekStart(TODAY), -14);
+        closeSheet(); location.hash = code({v: 1, k: 'a', n: 'まご', w: ymdPack(old), h: voteHash(old, v.ids), r: '222222'}); await new Promise(r => setTimeout(r, 200)); out.old = sheet && sheet.note;
+        closeSheet(); location.hash = code({v: 1, k: 'a', n: 'まご', w: ymdPack(v.w), h: voteHash(v.w, ['karaage']), r: '222222'}); await new Promise(r => setTimeout(r, 200)); out.changed = sheet && sheet.note;
+        closeSheet(); location.hash = code({v: 1, k: 'a', n: 'まご', w: ymdPack(v.w), h: voteHash(v.w, v.ids), r: '22'}); await new Promise(r => setTimeout(r, 200)); out.short = sheet && sheet.note;
+        out.n = Object.keys(v.ans).length; return out;
+    });
+    ok(res.old === 'old' && res.changed === 'changed' && res.short === 'changed' && res.n === 2, 'V5 古い週・作り直した表・数の合わない返事は入れない: ' + JSON.stringify(res));
+    await ctx.close();
+}
+// V6 一人暮らしには入口がない・V7 こわれた○つけ表のリンク
+{
+    const {p, ctx} = await open({family: []});
+    await p.evaluate(() => { session.stage = 'decide'; setTab('today'); render(); makeWeek(); render(); });
+    ok(!(await p.evaluate(() => !!document.querySelector('[data-act="vote-open"]'))) && !(await viewText(p)).includes('○つけ表'), 'V6 一人暮らしには○つけ表の入口を出さない');
+    const bad = [
+        {v: 1, k: 'q', w: '20261102', d: Array.from({length: 11}, (_, i) => 'karaage' + i)},
+        {v: 1, k: 'q', w: '20261102', d: ['karaage', 'karaage']},
+        {v: 1, k: 'q', w: '20261199', d: ['karaage']},
+        {v: 1, k: 'q', w: '20261102', d: ['karaage', 5]},
+        {v: 1, k: 'a', w: '20261102', h: 'zz', r: '2x1'},
+        {v: 1, k: 'a', w: '20261102', h: 'ABC!', r: '21'},
+        {v: 1, k: 'a', w: '20261102', h: 'abc', r: '2'.repeat(11)},
+    ];
+    for (const o of bad){
+        await p.evaluate(h => { if (sheet) closeSheet(); location.hash = h; }, hashOf(linkOf(o)));
+        await p.waitForTimeout(200);
+        ok(await sheetKind(p) === 'wish-bad', 'V7 こわれた○つけ表のリンク → 読めない: ' + JSON.stringify(o).slice(0, 70));
+    }
+    // 知らない料理まじりの表は、知っている料理だけ出して、返事の並びはそろえる
+    await p.evaluate(h => { closeSheet(); location.hash = h; }, hashOf(linkOf({v: 1, k: 'q', w: '20261102', d: ['karaage', 'nosuch', 'hamburg']})));
+    await p.waitForTimeout(250);
+    ok(await p.evaluate(() => sheet.kind === 'vote-in' && document.querySelectorAll('.vt-row').length === 2 && sheet.ans.length === 3), 'V7b 知らない料理は出さず、返事の並びはそろえる');
     await ctx.close();
 }
 

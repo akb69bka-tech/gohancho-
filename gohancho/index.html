@@ -1520,7 +1520,7 @@ html[data-ts="1"] .buy-row,html[data-ts="2"] .buy-row{grid-template-columns:28px
 .wsh-name{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8)}
 .wsh-name input{min-height:var(--tap-sm);border:1px solid var(--line);border-radius:var(--r-sm);padding:0 var(--s8);font:inherit;background:var(--surface);color:var(--ink);width:10em;max-width:100%}
 .wsh-name{margin-bottom:var(--s8)}
-.wsh-actions{position:sticky;bottom:0;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--s8);background:var(--sheet-bg);padding:var(--s12) 0 var(--s8);box-shadow:0 -8px 8px -4px var(--sheet-bg)}
+.wsh-actions{position:sticky;bottom:calc(-24px - env(safe-area-inset-bottom,0px));margin-bottom:calc(-24px - env(safe-area-inset-bottom,0px));z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--s8);background:var(--sheet-bg);padding:var(--s12) 0 calc(var(--s8) + 24px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .wsh-actions .btn.primary{width:100%;min-height:var(--tap-lg)}
 .wsh-actions .btn.text{text-decoration:underline;text-underline-offset:4px}
 .wsh-from{display:flex;align-items:center;gap:var(--s12)}
@@ -1548,6 +1548,23 @@ html[data-ts="1"] .buy-row,html[data-ts="2"] .buy-row{grid-template-columns:28px
 .wsh-tag .wsh-ic{width:14px;height:14px}
 .note.wsh-served{background:var(--leaf-soft);justify-content:flex-start;flex-wrap:nowrap}
 .note.wsh-served .wsh-ic{color:var(--leaf)}
+/* ○つけ表（案B） */
+.vt-ck{width:48px;height:48px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:transparent;font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 auto;cursor:pointer}
+.vt-ck[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);color:var(--ink)}
+.vt-ck:focus-visible,.vt-opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vt-row{display:flex;flex-direction:column;gap:var(--s12);padding:var(--s16);border-top:1px solid var(--line-soft)}
+.vt-row:first-child{border-top:0}
+.vt-head{display:flex;align-items:center;gap:var(--s12)}
+.vt-head .thumb{width:52px;height:52px}
+.vt-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s8)}
+.vt-opt{min-height:var(--tap);border-radius:var(--r-md);border:2px solid var(--line);background:var(--surface);color:var(--muted);font:inherit;font-weight:700;font-size:var(--fs14);padding:4px;cursor:pointer;overflow-wrap:anywhere}
+.vt-opt[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);color:var(--ink)}
+.vt-res.ok{background:var(--leaf-soft)}
+.vt-stamp{flex:0 0 auto;font-family:var(--mincho);font-weight:600;font-size:var(--fs20);color:var(--leaf);border:2px solid var(--leaf);border-radius:var(--r-sm);padding:2px var(--s12);transform:rotate(-4deg);background:var(--surface)}
+.vt-marks{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;flex:0 1 auto;max-width:50%}
+.vt-chip{border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted);font-size:var(--fs12);padding:4px 10px;white-space:nowrap}
+.vt-chip.on{background:var(--leaf-soft);color:var(--leaf)}
+.note.wsh-served b{margin-inline-start:4px}
 </style>
 </head>
 <body>
@@ -2317,6 +2334,9 @@ function normalizeState(d){
     { const ids = new Set();
       st.wants = arr(st.wants).filter(w => w && typeof w === 'object' && typeof w.id === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(w.id) && isYmd(w.at) && (Date.now() - new Date(w.at + 'T00:00:00').getTime()) < 30 * 864e5 && !ids.has(w.id) && ids.add(w.id)).slice(0, 30)
           .map(w => ({k: typeof w.k === 'string' ? w.k.slice(0, 12) : '', n: typeof w.n === 'string' ? [...w.n.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join('') : '', id: w.id, m: [0, 1, 2].includes(w.m) ? w.m : null, t: isYmd(w.t) ? w.t : w.at, at: w.at})); }
+    // ○つけ表（案B）。4週分まで。返事は候補と同じ長さの 0・1・2 の並びだけ
+    st.votes = arr(st.votes).filter(v => v && typeof v === 'object' && isYmd(v.w) && Array.isArray(v.ids) && v.ids.length && v.ids.length <= 10 && v.ids.every(x => typeof x === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(x))).slice(0, 4)
+        .map(v => { const ans = {}; Object.entries(obj(v.ans)).slice(0, 12).forEach(([k, a]) => { const nk = [...String(k).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 12).join(''); if (nk && typeof a === 'string' && a.length === v.ids.length && /^[012]+$/.test(a)) ans[nk] = a; }); return {w: v.w, ids: v.ids.slice(), at: isYmd(v.at) ? v.at : v.w, ans}; });
     st.wantSeen = arr(st.wantSeen).filter(x => typeof x === 'string' && /^[0-9a-z]{1,12}$/.test(x)).slice(0, 60);
     if (typeof st.settings.sendName === 'string') st.settings.sendName = [...st.settings.sendName.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join(''); else delete st.settings.sendName;
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
@@ -5570,6 +5590,9 @@ function renderSheetBody(){
     if (sheet.kind === 'wish-bad') body = wishBadSheetHtml();
     if (sheet.kind === 'wish-paste') body = wishPasteSheetHtml();
     if (sheet.kind === 'wish-list') body = wishListSheetHtml();
+    if (sheet.kind === 'vote-make') body = voteMakeSheetHtml();
+    if (sheet.kind === 'vote-in') body = voteInSheetHtml();
+    if (sheet.kind === 'vote-table') body = voteTableSheetHtml();
     if (sheet.kind === 'clearing') body = `<h2>${esc(t('冷蔵庫の材料を全部外しますか？（{n}品）', {n:S.fridge.length}))}</h2>
         <p class="muted small">${esc(t('外したあと8秒のあいだは「元に戻す」で戻せます。'))}</p>
         <button class="btn danger" data-act="clear-ing-go">${esc(t('全部外す'))}</button>
@@ -7901,8 +7924,9 @@ function shareSheetHtml(){
    ・数を目立たせない（入口の「（1）」だけ。赤い丸の印は使わない）。受けとったことを相手に自動で返さない
    S.wants = [{k: リンクの印, n: 呼び名, id: 料理, m: 0 いつでも / 1 週末でいい / 2 急がない / null, t: 送った日, at: 受けとった日}]（30件・30日まで）
    S.wantSeen = [リンクの印]（同じリンクを2回読みこまない）
+   S.votes = [{w: 週のはじめ（月曜）, ids: [主菜], at: 作った日, ans: {呼び名: '210…'（2=○ 1=どちらでも 0=今週はいい）}}]（4週分まで）
    ========================================================= */
-const WISH_KEY = 'g', WISH_CODE_MAX = 1600, WISH_TEXT_MAX = 4000, WISH_MAX = 30, WISH_ACTIVE_DAYS = 14, WISH_KEEP_DAYS = 30, WISH_SEEN_MAX = 60, WISH_PICK_MAX = 3;
+const WISH_KEY = 'g', WISH_CODE_MAX = 1600, WISH_TEXT_MAX = 4000, WISH_MAX = 30, WISH_ACTIVE_DAYS = 14, WISH_KEEP_DAYS = 30, WISH_SEEN_MAX = 60, WISH_PICK_MAX = 3, VOTE_MAX = 4, VOTE_DISHES = 10, VOTE_FIRST = 6;
 const WISH_ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
 const ICO_MAIL = '<svg class="wsh-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 12 13l7.5-5.5"/></svg>';
 const ICO_LOCK = '<svg class="wsh-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>';
@@ -7928,14 +7952,21 @@ function wishParse(text){
     if (code.length > WISH_CODE_MAX) return {err: 'long'};
     if (!/^[A-Za-z0-9_-]+$/.test(code)) return {err: 'broken'};
     let o; try{ o = JSON.parse(b64uDec(code)); }catch(e){ return {err: 'broken'}; }
-    if (!o || typeof o !== 'object' || Array.isArray(o) || o.v !== 1 || !['w'].includes(o.k)) return {err: 'broken'};
+    if (!o || typeof o !== 'object' || Array.isArray(o) || o.v !== 1 || !['w', 'q', 'a'].includes(o.k)) return {err: 'broken'};
     const key = wishHash(code), idsOf = a => Array.isArray(a) ? a.filter(x => typeof x === 'string' && WISH_ID_RE.test(x)) : [];
     if (o.k === 'w'){
         const d = [...new Set(idsOf(o.d))].slice(0, WISH_PICK_MAX); if (!d.length) return {err: 'broken'};
         const known = d.filter(id => { const r = recipeById(id); return !!r && !r.isTwist && !isCustomId(id); });
         return {k: 'w', key, n: wishName(o.n), ids: known, unknown: d.length - known.length, m: [0, 1, 2].includes(o.m) ? o.m : null, t: ymdUnpack(o.t)};
     }
-    return {err: 'broken'};
+    if (o.k === 'q'){   // ○つけ表（行き）: 返事と並びを合わせるので、この端末にない料理も番号は残す（画面には出さない）
+        const w = ymdUnpack(o.w), d = idsOf(o.d);
+        if (!w || !d.length || d.length > VOTE_DISHES || !Array.isArray(o.d) || d.length !== o.d.length || new Set(d).size !== d.length) return {err: 'broken'};
+        return {k: 'q', key, w, ids: d, t: ymdUnpack(o.t)};
+    }
+    const w = ymdUnpack(o.w);   // ○つけ表（帰り）
+    if (!w || typeof o.h !== 'string' || !/^[0-9a-z]{1,8}$/.test(o.h) || typeof o.r !== 'string' || !/^[012]{1,10}$/.test(o.r)) return {err: 'broken'};
+    return {k: 'a', key, w, h: o.h, r: o.r, n: wishName(o.n)};
 }
 function wishList(){ if (!Array.isArray(S.wants)) S.wants = []; return S.wants; }
 function wishSeen(k){ return Array.isArray(S.wantSeen) && S.wantSeen.includes(k); }
@@ -8108,6 +8139,8 @@ function wishToToday(id){
 function wishOpenParsed(p){
     if (p.err) sheet = {kind: 'wish-bad', err: p.err};
     else if (p.k === 'w') sheet = {kind: 'wish-in', p, seen: wishSeen(p.key)};
+    else if (p.k === 'q') sheet = {kind: 'vote-in', w: p.w, ids: p.ids, ans: p.ids.map(() => 1), hand: false};
+    else { const res = voteReceive(p); sheet = {kind: 'vote-table', w: p.w, note: res}; }
     renderSheet();
 }
 function wishBoot(){
@@ -8119,6 +8152,140 @@ function wishBoot(){
 }
 // 閉じたあと、まだはじめての設定をしていない人（リンクから初めて開いた人）には、いつもの案内を出す
 function wishClose(){ closeSheet(); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); else render(); }
+/* ---- 案B ○つけ表（作る人が来週の候補を送り、家族が「食べたい」に○をつけて返す。返事をくれた全員が○の料理に「そろった」）----
+   行き: {k:'q', w: 来週の月曜, d: [主菜の番号（10まで）]}／帰り: {k:'a', n: 呼び名, w, h: 候補の印, r: '210…'}。手渡しなら送信なし。
+   返事は、送ったときの候補と週が合うときだけ受けとる（古い表・作り直した表への返事は入れない）。返事を待たずに献立は組める（返事はあとからでも効く）。
+   「来週を組む」は、来週のまだ決めていない日の1週間プランにだけ入れる（決めた日・作らない日・今日は変えない）。苦手・アレルギーに当たる料理は入れない */
+function voteList(){ if (!Array.isArray(S.votes)) S.votes = []; return S.votes; }
+function voteHash(w, ids){ return wishHash(w + '|' + ids.join(',')); }
+function voteWeek(){ return addDays(weekStart(TODAY), 7); }   // 来週の月曜
+function voteOf(w){ return voteList().find(v => v.w === w) || null; }
+function voteAligned(v){ const ns = Object.keys(v.ans); return ns.length ? v.ids.filter((id, i) => ns.every(n => v.ans[n][i] === '2')) : []; }
+function voteAnyO(v){ const ns = Object.keys(v.ans); return v.ids.filter((id, i) => ns.some(n => v.ans[n][i] === '2')); }
+function voteAlignedNow(id){ return voteList().some(v => TODAY >= v.w && TODAY < addDays(v.w, 7) && voteAligned(v).includes(id)); }
+function voteOk(r){ return !!r && RECIPES.includes(r) && !isAvoided(r) && !wishBlockWhy(r) && !S.hidden.includes(r.id); }
+// 来週の候補の案（主菜を6品。同じ肉・魚が続かないように）。keep は残す料理
+function voteSuggest(n, keep){
+    const out = [], fams = new Set(keep.map(id => (recipeById(id) || {}).family).filter(f => f && f !== '野菜'));
+    let cands = poolFor('主菜').filter(r => r.main && !isOkayu(r) && !keep.includes(r.id) && voteOk(r));
+    while (out.length < n && cands.length){
+        const fresh = cands.filter(r => !fams.has(r.family));
+        const r = pick(fresh.length ? fresh : cands, {recent: [], relax: true}) || cands[0];
+        out.push(r.id); if (r.family && r.family !== '野菜') fams.add(r.family); cands = cands.filter(x => x !== r);
+    }
+    return out;
+}
+function voteMakeOpen(){
+    const v = voteOf(voteWeek()), ids = v ? v.ids.filter(id => voteOk(recipeById(id))) : voteSuggest(VOTE_FIRST, []);
+    sheet = {kind: 'vote-make', ids, on: ids.slice()}; renderSheet();
+}
+// 1週間の主菜（決める段の下）の入口。家族の欄に自分以外がいるときだけ
+function voteEntryHtml(){
+    if (!famMulti()) return '';
+    const v = voteOf(voteWeek()), n = v ? Object.keys(v.ans).length : 0;
+    return `<div class="row wsh-set wk-vote"><button type="button" class="btn text" data-act="vote-open">${esc(n ? t('○つけ表（返事 {n}人）', {n}) : v ? t('○つけ表（返事を待っています）') : t('○つけ表をつくる'))}</button></div>`;
+}
+function voteOpen(){ const v = voteOf(voteWeek()); if (v && Object.keys(v.ans).length){ sheet = {kind: 'vote-table', w: v.w}; renderSheet(); } else voteMakeOpen(); }
+// 表を残す（同じ候補なら返事もそのまま。候補を変えたら、前の返事は入れない＝作り直し）
+function voteSave(ids){
+    const w = voteWeek(); let v = voteOf(w);
+    if (v && v.ids.join() === ids.join()) return v;
+    v = {w, ids: ids.slice(0, VOTE_DISHES), at: TODAY, ans: {}};
+    S.votes = [v, ...voteList().filter(x => x.w !== w)].sort((a, b) => a.w < b.w ? 1 : a.w > b.w ? -1 : 0).slice(0, VOTE_MAX);
+    save(); return v;
+}
+function voteSendText(v){
+    const rs = v.ids.map(id => recipeById(id)).filter(Boolean);
+    return [t('【ご飯帖】来週の○つけ表（{date}〜）：{list}', {date: jpDate(v.w), list: rs.map(r => r.name).join(t('・'))}), t('食べたいものに○をつけて返してください。'), t('ご飯帖で開く → {url}', {url: wishLink({v: 1, k: 'q', w: ymdPack(v.w), d: v.ids, t: ymdPack(TODAY)})})].join('\n');
+}
+/* B-1 作る人が候補を選ぶ */
+function voteMakeSheetHtml(){
+    const s = sheet, n = s.on.length, v = voteOf(voteWeek()), got = v ? Object.keys(v.ans).length : 0;
+    return `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="wish-close">× ${esc(t('とじる'))}</button></div>
+        <h2 class="wsh-h">${esc(t('○つけ表'))}</h2>
+        <p class="wsh-lead">${esc(t('来週、作ってもいい料理を選んで送ると、家族が食べたいものに○をつけて返せます。'))}</p>
+        ${s.ids.length ? `<div class="wsh-list">${s.ids.map(id => { const r = recipeById(id); if (!r) return ''; const on = s.on.includes(id);
+            return `<div class="wsh-row">${thumbHtml(r)}<div class="wsh-row-t"><span class="wsh-nm">${esc(r.name)}</span></div><button type="button" class="vt-ck" data-act="vote-tog" data-id="${esc(id)}" aria-pressed="${on}" aria-label="${esc(r.name)}"><span aria-hidden="true">✓</span></button></div>`; }).join('')}</div>`
+            : `<p class="small muted">${esc(t('この条件で出せる主菜がありません'))}</p>`}
+        <div class="row wsh-set"><button type="button" class="btn text" data-act="vote-reroll">${esc(t('料理を入れかえる'))}</button><button type="button" class="btn text" data-act="vote-hand" ${n ? '' : 'disabled'}>${esc(t('手渡しで○をつけてもらう'))}</button>${got ? `<button type="button" class="btn text" data-act="vote-see">${esc(t('返事を見る（{n}人）', {n: got}))}</button>` : ''}</div>
+        <p class="small muted">${esc(t('返事を待たなくても、献立はいつもどおり組めます。返事は、あとから届いても表に入ります。'))}</p>
+        <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="vote-send" ${n ? '' : 'disabled'}>${esc(n ? t('家族に送る（{n}品）', {n}) : t('家族に送る'))}</button></div>`;
+}
+/* B-2 家族が○をつける（届いたリンク／作る人のスマホを手渡し） */
+function voteInSheetHtml(){
+    const s = sheet, name = sendName(), names = famMembers().filter(m => !m.me).map((m, i) => famLabel(m, i));
+    const opts = [[2, '○ ' + t('食べたい')], [1, t('どちらでも')], [0, t('今週はいい')]];
+    const rows = s.ids.map((id, i) => { const r = recipeById(id); if (!r) return '';
+        return `<div class="vt-row"><div class="vt-head">${thumbHtml(r)}<div class="wsh-row-t"><span class="wsh-nm">${esc(r.name)}</span>${allergyBadge(r)}</div></div>
+            <div class="vt-opts" role="radiogroup" aria-label="${esc(r.name)}">${opts.map(([v, l]) => `<button type="button" class="vt-opt" role="radio" data-act="vote-mark" data-i="${i}" data-v="${v}" aria-checked="${s.ans[i] === v}" aria-pressed="${s.ans[i] === v}">${esc(l)}</button>`).join('')}</div></div>`; }).join('');
+    const shown = s.ids.filter(id => recipeById(id)).length;
+    return `${s.hand ? `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="vote-back">‹ ${esc(t('○つけ表'))}</button></div>` : `<div class="wsh-from"><span class="wsh-av" aria-hidden="true">${esc([...t('作る人')][0])}</span><div><b>${esc(t('{name} から', {name: t('作る人')}))}</b><div class="small muted">${esc(t('来週の○つけ表・{n}品', {n: shown}))}</div></div></div>`}
+        <h2 class="wsh-h">${esc(t('○つけ表'))}</h2>
+        ${s.hand ? `<p class="small muted">${esc(t('名前を選んでから、食べたいものに○をつけてください。'))}</p><div class="chips" role="radiogroup" aria-label="${esc(t('名前'))}">${names.map(n => `<button type="button" class="chip" role="radio" data-act="vote-who" data-v="${esc(n)}" aria-checked="${s.who === n}" aria-pressed="${s.who === n}">${esc(n)}</button>`).join('')}</div>` : ''}
+        <p class="small muted">${esc(t('食べたいものに○を。全部「どちらでも」でも大丈夫です。'))}</p>
+        ${shown ? `<div class="wsh-list vt-list">${rows}</div>` : `<div class="wsh-info">${esc(t('この端末で読める料理がありませんでした'))}</div>`}
+        ${shown < s.ids.length ? `<p class="small muted">${esc(t('この端末にない料理（{n}品）は読みとばしました', {n: s.ids.length - shown}))}</p>` : ''}
+        ${s.hand ? '' : `<div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
+            : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>`}
+        <div class="wsh-actions">${s.hand ? `<button type="button" class="btn primary wide" data-act="vote-hand-ok" ${s.who ? '' : 'disabled'}>${esc(s.who ? t('{name}の○を入れる', {name: s.who}) : t('名前を選んでください'))}</button>`
+            : `<button type="button" class="btn primary wide" data-act="vote-return" ${shown ? '' : 'disabled'}>${esc(t('○を返す'))}</button><button type="button" class="btn text" data-act="wish-close">${esc(t('今回は返さない'))}</button>`}</div>
+        ${s.hand ? '' : `<p class="tiny muted wsh-lock">${ICO_LOCK}${esc(t('リンクの中身はこのスマホの中だけで読みました'))}</p>`}`;
+}
+function voteReturnText(s){
+    const name = sendName(), r = s.ans.map(x => String(x)).join('');
+    const o = {v: 1, k: 'a', w: ymdPack(s.w), h: voteHash(s.w, s.ids), r}; if (name) o.n = name;
+    const ok = s.ids.filter((id, i) => s.ans[i] === 2).map(id => (recipeById(id) || {}).name).filter(Boolean);
+    return [name ? t('【ご飯帖】{name}の○つけ表の返事', {name}) : t('【ご飯帖】○つけ表の返事'), ok.length ? t('○ 食べたい：{list}', {list: ok.join(t('・'))}) : t('どれでも大丈夫です'), t('ご飯帖で開く → {url}', {url: wishLink(o)})].join('\n');
+}
+// 届いた返事を表に入れる。'ok:呼び名' / 'old' 前の週 / 'changed' 作り直した表 / 'seen' 2回目 / 'none' 表がない
+function voteReceive(p){
+    if (wishSeen(p.key)) return 'seen';
+    const v = voteOf(p.w);
+    if (!v) return p.w < weekStart(TODAY) || voteList().some(x => x.w > p.w) ? 'old' : 'none';
+    if (v.w < weekStart(TODAY)) return 'old';
+    if (voteHash(v.w, v.ids) !== p.h || p.r.length !== v.ids.length) return 'changed';
+    let nm = p.n || t('家族'); if (!p.n){ let k = 2; while (v.ans[nm]) nm = t('家族') + k++; }
+    v.ans[nm] = p.r; wishSeenAdd(p.key); save();
+    return 'ok:' + nm;
+}
+/* B-3 「そろった」が分かる */
+function voteTableSheetHtml(){
+    const v = voteOf(sheet.w || voteWeek()), note = sheet.note || '';
+    const noteTx = note.startsWith('ok:') ? t('{name}の返事を入れました', {name: note.slice(3)}) : note === 'old' ? t('前の週の返事です。表には入れません。') : note === 'changed' ? t('表を作り直す前の返事なので、入れません。') : note === 'seen' ? t('この返事は、前に読みこみました') : note === 'none' ? t('この返事の○つけ表は、このスマホにはありません。') : '';
+    if (!v) return `<h2 class="wsh-h">${esc(t('○つけ表'))}</h2>${noteTx ? `<div class="wsh-info" role="status">${esc(noteTx)}</div>` : ''}<div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
+    const ns = Object.keys(v.ans), al = voteAligned(v).filter(id => voteOk(recipeById(id))), anyO = voteAnyO(v).filter(id => voteOk(recipeById(id)));
+    const order = [...v.ids.filter(id => al.includes(id)), ...v.ids.filter(id => !al.includes(id))];
+    const mark = m => m === 2 ? '○' : m === 1 ? '–' : t('今週はいい');
+    const rows = order.map(id => { const r = recipeById(id), i = v.ids.indexOf(id); if (!r) return ''; const ok = al.includes(id), why = voteOk(r) ? '' : wishBlockWhy(r) || t('合わないので候補に入れていません');
+        return `<div class="wsh-row vt-res${ok ? ' ok' : ''}">${thumbHtml(r)}<div class="wsh-row-t"><span class="wsh-nm">${esc(r.name)}</span>${why ? `<span class="small muted">${esc(why)}</span>` : ''}</div>
+            ${ok ? `<span class="vt-stamp">${esc(t('そろった'))}</span>` : `<span class="vt-marks">${ns.map(n => { const m = Number(v.ans[n][i]); return `<span class="vt-chip${m === 2 ? ' on' : ''}" title="${esc(n)}"><b>${esc([...n][0] || '')}</b> ${esc(mark(m))}</span>`; }).join('')}</span>`}</div>`; }).join('');
+    const btn = al.length ? t('そろった{n}品から来週を組む', {n: al.length}) : anyO.length ? t('○がついた{n}品から来週を組む', {n: anyO.length}) : '';
+    return `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="wish-close">× ${esc(t('とじる'))}</button></div>
+        <h2 class="wsh-h">${esc(t('○つけ表'))}</h2>
+        ${noteTx ? `<p class="small muted" role="status">${esc(noteTx)}</p>` : ''}
+        <div class="note wsh-served" role="status">${ns.length ? `<span>✓ ${esc(t('{n}人から返ってきました。', {n: ns.length}))}${al.length ? `<b>${esc(t('そろった {n}品', {n: al.length}))}</b>` : ''}</span>` : `<span>${esc(t('まだ返事はありません。返事は、あとから届いても表に入ります。'))}</span>`}</div>
+        <div class="wsh-list vt-table">${rows}</div>
+        <p class="small muted">${esc(t('○＝食べたい　–＝どちらでも。「そろった」＝作る人の候補で、返事をくれた全員が○。'))}</p>
+        <div class="row wsh-set"><button type="button" class="btn text" data-act="vote-hand">${esc(t('手渡しで○をつけてもらう'))}</button><button type="button" class="btn text" data-act="vote-resend">${esc(t('もう一度送る'))}</button><button type="button" class="btn text" data-act="vote-remake">${esc(t('表を作り直す'))}</button></div>
+        <div class="wsh-actions">${btn ? `<button type="button" class="btn primary wide" data-act="vote-week" data-w="${esc(v.w)}">${esc(btn)}</button>` : `<button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button>`}</div>`;
+}
+// 来週のまだ決めていない日の1週間プランに入れる（1日おきに。決めた日・作らない日・今日より前は変えない）。入れた日を返す
+function voteToWeek(ids, w){
+    const days = Array.from({length: 7}, (_, i) => addDays(w, i)).filter(d => d > TODAY);
+    if (!S.week) S.week = {start: TODAY, days: []};
+    const wk = S.week.days;
+    const free = days.filter(d => { const r = dayRec(d), x = wk.find(y => y.d === d); return !(r && ['decided', 'cooking', 'cooked', 'skipped'].includes(r.state)) && !(x && x.skip) && !(S.cook && S.cook.d === d); });
+    const spread = [0, 2, 4, 6, 1, 3, 5].map(i => free[i]).filter(Boolean).concat(free).filter((d, i, a) => a.indexOf(d) === i);
+    const put = [];
+    ids.filter(id => voteOk(recipeById(id)) && !wk.some(x => x.d >= w && x.d < addDays(w, 7) && x.id === id && !x.skip)).forEach(id => {
+        const d = spread[put.length]; if (!d) return;
+        let x = wk.find(y => y.d === d); if (!x){ x = {d}; wk.push(x); }
+        x.id = id; delete x.extra; put.push(d);
+    });
+    wk.sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
+    if (put.length) save();
+    return put;
+}
 
 /* =========================================================
    毎日のお知らせ（iPhone アプリ版のみ。端末の通知で献立を決める時間を知らせる）
@@ -8867,6 +9034,7 @@ function dishFacts(r){ const ings = dishIngs(r); return (Number(r.min) > 0 ? `<b
 function dishWhy(r, slot){   // 押していない料理に左右されない、その料理だけの事実（1週間プランの今日の主菜・冷蔵庫の食材・お気に入り）
     if (!r) return '';
     const wf = wishList().length ? wishFor(r.id) : null; if (wf) return wishWhyText(wf);   // 家族から届いた「食べたい」
+    if (slot === '主菜' && voteList().length && voteAlignedNow(r.id)) return t('○つけ表で、みんなの○がそろった料理');
     const p = slot === '主菜' ? weekToday() : null;
     if (p && p.id === r.id) return t('1週間プランの今日の主菜です');
     if (S.fridge.length){
@@ -9099,7 +9267,8 @@ function viewToday(){
     const SCENE = ['all', 'easy', 'quick', 'bento', 'okayu'];   // 気分は「手間・場面」と「料理の種類」に分けて並べる（選べるのはどちらか1つ）
     const moodGroups = [[t('手間・場面'), MOODS.filter(x => SCENE.includes(x.k))], [t('料理の種類'), MOODS.filter(x => !SCENE.includes(x.k))]];
     const wishN = wishList().length ? wishesActive().length : 0;   // 届いている「食べたい」の数（入口の「（1）」だけに使う。印は出さない）
-    const exWhy = S.fridge.length || S.favs.length || planUsable(weekToday()) || wishN ? 1 : 0;   // 「なぜこの料理か」の1行。出る可能性があれば、どの料理にも同じ高さを取る
+    const voteOn = voteList().length > 0;   // ○つけ表の「そろった」
+    const exWhy = S.fridge.length || S.favs.length || planUsable(weekToday()) || wishN || voteOn ? 1 : 0;   // 「なぜこの料理か」の1行。出る可能性があれば、どの料理にも同じ高さを取る
     const exAlg = allergyOn() ? 1 : 0;   // ⚠ アレルゲンの行（決めたあとにアレルゲンを足したときなどに出る）。たたんだお膳でも出す
     const exSwap = swapOn() && effAvoid().length ? 1 : 0, exSpice = mildOn() ? 1 : 0, exLast = S.history.length ? 1 : 0, exLeft = eaterMembers().length && S.history.some(h => leftOf(h).length) ? 1 : 0;   // 押した料理以外の高さが動かないよう、出る可能性のある行ぶんの高さを前もって確保する
     const spot = (it, idx, w) => {
@@ -9114,8 +9283,9 @@ function viewToday(){
         const soupNone = it.slot === '汁物' && !r && (soupyMain(main) || primoDay);   // 汁ものの麺・汁ものが主菜なら、足すボタンも出さない（イタリアの Primo の日も）
         const empty = idx === 0 && it.slot === '主菜' ? t('この条件で出せる主菜がありません') : primoDay ? t('プリモ（パスタ・リゾット）の日なので、ズッパはなし') : it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
         const wTag = r && it.slot === '主菜' && wishN ? wishFor(r.id) : null;   // 届いた「食べたい」の札（主菜の絵の上。位置は重ねるだけで、ほかの物を動かさない）
-        return `<div class="spot ${cls}${wTag ? ' has-wtag' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
-            ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : ''}
+        const vTag = r && it.slot === '主菜' && !wTag && voteOn && voteAlignedNow(r.id);   // ○つけ表で、みんなの○がそろった料理
+        return `<div class="spot ${cls}${wTag || vTag ? ' has-wtag' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
+            ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
                 ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
@@ -9238,9 +9408,10 @@ function viewToday(){
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
             <div class="row wk-foot"><button class="btn wide" data-act="goto-shop">${esc(t('買い物メモを見る'))}</button><button class="btn ghost" data-act="make-week">${esc(t('作り直す'))}</button></div>
+            ${voteEntryHtml()}
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
-           <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
+           <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>${voteEntryHtml()}`}
         <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${scarceList().length ? (/^(ja|zh)/.test(LANG) ? '' : ' ') + esc(t('手に入りにくい食材（{list}）を使う料理は出しません。', {list: joinNames(scarceList())})) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
 `)}
 
@@ -11080,8 +11251,8 @@ document.addEventListener('click', e => {
             if (i >= 0) sheet.sel.splice(i, 1); else if (sheet.sel.length < WISH_PICK_MAX) sheet.sel.push(id); else { toast(t('3つまで選べます')); break; }
             renderSheet(); break; }
         case 'wish-word': if (sheet && sheet.kind === 'wish-send'){ const v = Number(el.dataset.v); sheet.m = sheet.m === v ? null : v; renderSheet(); } break;
-        case 'wish-name': if (sheet && sheet.kind === 'wish-send'){ sheet.nameEdit = true; renderSheet(); const x = $('#wish-name'); if (x) x.focus(); } break;
-        case 'wish-name-ok': if (sheet && sheet.kind === 'wish-send'){ const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); } sheet.nameEdit = false; renderSheet(); } break;
+        case 'wish-name': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in')){ sheet.nameEdit = true; renderSheet(); const x = $('#wish-name'); if (x) x.focus(); } break;
+        case 'wish-name-ok': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in')){ const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); } sheet.nameEdit = false; renderSheet(); } break;
         case 'wish-make': { if (!sheet || sheet.kind !== 'wish-send' || !sheet.sel.length) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
             const text = wishSendText(sheet.sel, sheet.m, sendName()); if (!text) break;
             sheet = {kind: 'share', card: 'wish', text, title: t('食べたいもの')}; renderSheet(); break; }
@@ -11089,6 +11260,32 @@ document.addEventListener('click', e => {
             toast(t('受けとりました。次に献立を決めるときの候補になります')); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); break; }
         case 'wish-decline': { if (sheet && sheet.kind === 'wish-in' && !sheet.seen){ wishSeenAdd(sheet.p.key); save(); } wishClose(); break; }
         case 'wish-list': sheet = {kind: 'wish-list'}; renderSheet(); break;
+        // ---- ○つけ表（案B） ----
+        case 'vote-open': voteOpen(); break;
+        case 'vote-tog': if (sheet && sheet.kind === 'vote-make'){ const i = sheet.on.indexOf(id); if (i >= 0) sheet.on.splice(i, 1); else sheet.on.push(id); sheet.on.sort((a, b) => sheet.ids.indexOf(a) - sheet.ids.indexOf(b)); renderSheet(); } break;
+        case 'vote-reroll': { if (!sheet || sheet.kind !== 'vote-make') break;   // ✓を外した料理だけ入れかえる（✓の料理は残す）
+            const keep = sheet.ids.filter(x => sheet.on.includes(x)); if (keep.length === sheet.ids.length && sheet.ids.length >= VOTE_FIRST){ toast(t('入れかえたい料理の ✓ を外してください')); break; }
+            const add = voteSuggest(Math.max(VOTE_FIRST, sheet.ids.length) - keep.length, [...keep, ...sheet.ids.filter(x => !keep.includes(x))]);
+            sheet.ids = [...keep, ...add].slice(0, VOTE_DISHES); sheet.on = sheet.ids.slice(); renderSheet(); break; }
+        case 'vote-send': { if (!sheet || sheet.kind !== 'vote-make' || !sheet.on.length) break; const v = voteSave(sheet.on);
+            sheet = {kind: 'share', card: 'vote', text: voteSendText(v), title: t('○つけ表')}; renderSheet(); break; }
+        case 'vote-hand': { let v = voteOf(voteWeek()); if (sheet && sheet.kind === 'vote-make'){ if (!sheet.on.length) break; v = voteSave(sheet.on); } if (!v) break;
+            sheet = {kind: 'vote-in', w: v.w, ids: v.ids.slice(), ans: v.ids.map(() => 1), hand: true, who: null}; renderSheet(); break; }
+        case 'vote-see': case 'vote-back': { const v = voteOf(voteWeek()); if (!v) break; sheet = {kind: 'vote-table', w: v.w}; renderSheet(); break; }
+        case 'vote-mark': if (sheet && sheet.kind === 'vote-in'){ const i = Number(el.dataset.i), v = Number(el.dataset.v); if (i >= 0 && i < sheet.ans.length && [0, 1, 2].includes(v)){ sheet.ans[i] = v; renderSheet(); } } break;
+        case 'vote-who': if (sheet && sheet.kind === 'vote-in' && sheet.hand){ sheet.who = el.dataset.v; const v = voteOf(sheet.w), a = v && v.ans[sheet.who]; sheet.ans = a ? [...a].map(Number) : sheet.ids.map(() => 1); renderSheet(); } break;
+        case 'vote-hand-ok': { if (!sheet || sheet.kind !== 'vote-in' || !sheet.hand || !sheet.who) break; const v = voteOf(sheet.w); if (!v || v.ids.join() !== sheet.ids.join()) break;
+            v.ans[wishName(sheet.who) || t('家族')] = sheet.ans.join(''); save(); toast(t('{name}の○を入れました。次の人に渡せます', {name: sheet.who})); sheet.who = null; sheet.ans = sheet.ids.map(() => 1); renderSheet(); break; }
+        case 'vote-return': { if (!sheet || sheet.kind !== 'vote-in' || sheet.hand) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
+            sheet = {kind: 'share', card: 'vote', text: voteReturnText(sheet), title: t('○つけ表')}; renderSheet(); break; }
+        case 'vote-resend': { const v = voteOf(voteWeek()); if (!v) break; sheet = {kind: 'share', card: 'vote', text: voteSendText(v), title: t('○つけ表')}; renderSheet(); break; }
+        case 'vote-remake': { const v = voteOf(voteWeek()); sheet = {kind: 'vote-make', ids: v ? v.ids.slice() : [], on: v ? v.ids.slice() : []}; if (!sheet.ids.length){ sheet.ids = voteSuggest(VOTE_FIRST, []); sheet.on = sheet.ids.slice(); } renderSheet(); break; }
+        case 'vote-week': { const v = voteOf(el.dataset.w || ''); if (!v) break;
+            const al = voteAligned(v), ids = (al.length ? al : voteAnyO(v)).filter(x => voteOk(recipeById(x)));
+            const prev = S.week ? JSON.parse(JSON.stringify(S.week)) : null, put = voteToWeek(ids, v.w);
+            closeSheet(); render();
+            if (!put.length){ toast(t('来週のまだ決めていない日がないため、プランは変えませんでした')); break; }
+            toast(t('来週の1週間プランに入れました（{days}）', {days: joinNames(put.map(d => jpDate(d)))}), false, () => { S.week = prev; save(); render(); }); break; }
         case 'wish-rm': { const i = wishList().findIndex(w => w.id === id); if (i < 0) break; const w0 = wishList()[i]; wishList().splice(i, 1); save(); if (sheet && sheet.kind === 'wish-list') renderSheet(); render();
             toast(t('外しました: {name}', {name: (recipeById(w0.id) || {}).name || ''}), false, () => { if (!wishList().some(w => w.id === w0.id)){ wishList().splice(Math.min(i, wishList().length), 0, w0); save(); } if (sheet && sheet.kind === 'wish-list') renderSheet(); render(); }); break; }
         case 'wish-today': if (sheet && sheet.kind === 'wish-list'){ sheet.confirm = id || ''; renderSheet(); } break;
