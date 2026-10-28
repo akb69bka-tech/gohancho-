@@ -452,10 +452,10 @@
     "rice": {
       "file": "rice.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/rice.webp",
-      "v": "2f0db26f"
+      "v": "9b31f419"
     },
     "curry": {
       "file": "curry.svg",
@@ -1004,10 +1004,10 @@
     "br_staple": {
       "file": "br_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/br_staple.webp",
-      "v": "c6ff7d36"
+      "v": "a967033c"
     },
     "br_strogonoff": {
       "file": "br_strogonoff.svg",
@@ -1140,10 +1140,10 @@
     "cn_staple": {
       "file": "cn_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/cn_staple.webp",
-      "v": "f11fa7d4"
+      "v": "0cb16352"
     },
     "cn_fanqie_chaodan": {
       "file": "cn_fanqie_chaodan.svg",
@@ -1276,10 +1276,10 @@
     "de_staple": {
       "file": "de_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/de_staple.webp",
-      "v": "299e0979"
+      "v": "d89e6664"
     },
     "de_frikadellen": {
       "file": "de_frikadellen.svg",
@@ -1412,10 +1412,10 @@
     "eg_staple": {
       "file": "eg_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/eg_staple.webp",
-      "v": "e6fcdddb"
+      "v": "fa21c1e1"
     },
     "eg_koshari": {
       "file": "eg_koshari.svg",
@@ -1548,10 +1548,10 @@
     "es_staple": {
       "file": "es_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/es_staple.webp",
-      "v": "88e2da5a"
+      "v": "2ef8c28a"
     },
     "es_tortilla": {
       "file": "es_tortilla.svg",
@@ -1684,10 +1684,10 @@
     "fr_staple": {
       "file": "fr_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/fr_staple.webp",
-      "v": "47a833dc"
+      "v": "653a0144"
     },
     "fr_basquaise": {
       "file": "fr_basquaise.svg",
@@ -1820,10 +1820,10 @@
     "in_staple": {
       "file": "in_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/in_staple.webp",
-      "v": "315fce13"
+      "v": "38e6a705"
     },
     "in_chickencurry": {
       "file": "in_chickencurry.svg",
@@ -1956,10 +1956,10 @@
     "it_staple": {
       "file": "it_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/it_staple.webp",
-      "v": "6bcff832"
+      "v": "63324a35"
     },
     "it_pomodoro": {
       "file": "it_pomodoro.svg",
@@ -2092,10 +2092,10 @@
     "kr_staple": {
       "file": "kr_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_staple.webp",
-      "v": "06839c88"
+      "v": "7b7e84d0"
     },
     "kr_jeyuk": {
       "file": "kr_jeyuk.svg",
@@ -2228,10 +2228,10 @@
     "ph_staple": {
       "file": "ph_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/ph_staple.webp",
-      "v": "b39e83bb"
+      "v": "8585383c"
     },
     "ph_adobo": {
       "file": "ph_adobo.svg",
@@ -2364,10 +2364,10 @@
     "pl_staple": {
       "file": "pl_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/pl_staple.webp",
-      "v": "9317ab72"
+      "v": "5beb82ca"
     },
     "pl_schabowy": {
       "file": "pl_schabowy.svg",
@@ -2500,10 +2500,10 @@
     "tr_staple": {
       "file": "tr_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/tr_staple.webp",
-      "v": "3e8c39f2"
+      "v": "070d1a34"
     },
     "tr_kurufasulye": {
       "file": "tr_kurufasulye.svg",
@@ -2764,10 +2764,10 @@
     "vn_staple": {
       "file": "vn_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/vn_staple.webp",
-      "v": "22b90fab"
+      "v": "0fa80d0c"
     },
     "vn_thitkhotrung": {
       "file": "vn_thitkhotrung.svg",
@@ -2900,10 +2900,10 @@
     "gb_staple": {
       "file": "gb_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/gb_staple.webp",
-      "v": "f3543817"
+      "v": "0c26efae"
     },
     "gb_shepherdspie": {
       "file": "gb_shepherdspie.svg",
@@ -3036,10 +3036,10 @@
     "id_staple": {
       "file": "id_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/id_staple.webp",
-      "v": "43d6bd01"
+      "v": "46f78492"
     },
     "id_ayamgoreng": {
       "file": "id_ayamgoreng.svg",
@@ -3172,10 +3172,10 @@
     "mx_staple": {
       "file": "mx_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/mx_staple.webp",
-      "v": "d64adcb5"
+      "v": "6953ab9a"
     },
     "mx_tinga": {
       "file": "mx_tinga.svg",
@@ -3308,10 +3308,10 @@
     "pe_staple": {
       "file": "pe_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/pe_staple.webp",
-      "v": "2354ca20"
+      "v": "0a46a7b1"
     },
     "pe_lomo_saltado": {
       "file": "pe_lomo_saltado.svg",
@@ -3444,10 +3444,10 @@
     "th_staple": {
       "file": "th_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/th_staple.webp",
-      "v": "778cae3e"
+      "v": "ce1232cf"
     },
     "th_kaprao": {
       "file": "th_kaprao.svg",
@@ -3580,10 +3580,10 @@
     "tw_staple": {
       "file": "tw_staple.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/tw_staple.webp",
-      "v": "66e07640"
+      "v": "d7a85dd2"
     },
     "tw_lurou_fan": {
       "file": "tw_lurou_fan.svg",
@@ -3716,154 +3716,154 @@
     "st_genmai": {
       "file": "st_genmai.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_genmai.webp",
-      "v": "87e12b4e"
+      "v": "c19e1b13"
     },
     "st_zakkoku": {
       "file": "st_zakkoku.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_zakkoku.webp",
-      "v": "c80ecad2"
+      "v": "998139a1"
     },
     "st_toast": {
       "file": "st_toast.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_toast.webp",
-      "v": "5fcd00fb"
+      "v": "9660a51c"
     },
     "st_potatoes": {
       "file": "st_potatoes.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_potatoes.webp",
-      "v": "68e13bcd"
+      "v": "3dbac21e"
     },
     "st_roti": {
       "file": "st_roti.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_roti.webp",
-      "v": "b5d4f3d4"
+      "v": "20b3d6db"
     },
     "st_mantou": {
       "file": "st_mantou.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_mantou.webp",
-      "v": "945f831e"
+      "v": "fa9bc589"
     },
     "st_sticky": {
       "file": "st_sticky.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_sticky.webp",
-      "v": "6d60e3a2"
+      "v": "dbd223a7"
     },
     "st_japgok": {
       "file": "st_japgok.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_japgok.webp",
-      "v": "aba4878e"
+      "v": "36494f23"
     },
     "st_flourtort": {
       "file": "st_flourtort.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_flourtort.webp",
-      "v": "8ed6f3a3"
+      "v": "61bdff04"
     },
     "st_bolillo": {
       "file": "st_bolillo.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_bolillo.webp",
-      "v": "eb1c891a"
+      "v": "30722b36"
     },
     "st_rolls": {
       "file": "st_rolls.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_rolls.webp",
-      "v": "5e68139f"
+      "v": "e49ff2c4"
     },
     "st_ricebeans": {
       "file": "st_ricebeans.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_ricebeans.webp",
-      "v": "aebb72a6"
+      "v": "7e6bece6"
     },
     "st_bulgur": {
       "file": "st_bulgur.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_bulgur.webp",
-      "v": "15a63d87"
+      "v": "6bd6502a"
     },
     "st_pilav": {
       "file": "st_pilav.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_pilav.webp",
-      "v": "dee62cc0"
+      "v": "d961bb68"
     },
     "st_kasza": {
       "file": "st_kasza.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_kasza.webp",
-      "v": "f67f367e"
+      "v": "a46088a5"
     },
     "st_polenta": {
       "file": "st_polenta.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_polenta.webp",
-      "v": "fd9cf20e"
+      "v": "2f15c29f"
     },
     "st_garlicrice": {
       "file": "st_garlicrice.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_garlicrice.webp",
-      "v": "04a99911"
+      "v": "22fbda35"
     },
     "st_pandesal": {
       "file": "st_pandesal.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_pandesal.webp",
-      "v": "d9b90aed"
+      "v": "f41cb252"
     },
     "st_banhmi": {
       "file": "st_banhmi.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/st_banhmi.webp",
-      "v": "389035ce"
+      "v": "224a88fd"
     },
     "sumashijiru": {
       "file": "sumashijiru.svg",
