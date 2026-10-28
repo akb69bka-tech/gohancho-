@@ -28,7 +28,7 @@
 ## プロモーション用テキスト（170文字まで）
 
 ```
-今夜の献立、もう迷いません。主菜・副菜・汁ものをお膳ごと提案し、作った記録から同じ料理が続かないように選びます。苦手な食材は置き換え、冷蔵庫の残りものからも探せて、1週間の献立と売り場ごとの買い物リストも自動で。最初の1か月は無料、その後は月額380円（自動更新・いつでも解約可）。
+今夜の献立、もう迷いません。主菜・副菜・汁ものをお膳ごと提案し、作った記録から同じ料理が続かないように選びます。苦手な食材は置き換え、冷蔵庫の残りものからも探せて、1週間の献立と売り場ごとの買い物リストも自動で。最初の1か月は無料、その後は月額300円（自動更新・いつでも解約可）。
 ```
 
 ## 説明（4000文字まで）
@@ -72,7 +72,7 @@
 ■ ご利用には「ご飯帖プラス」が必要です
 献立の提案をはじめとするアプリの機能は、自動更新のサブスクリプション「ご飯帖プラス」でお使いいただけます。
 ・はじめての方は、最初の1か月を無料でお試しいただけます（Apple の無料お試し。対象となる方のみ）
-・無料期間のあとは、月額380円（税込）で自動更新されます
+・無料期間のあとは、月額300円（税込）で自動更新されます
 ・無料期間が終わる24時間前までに解約すれば、料金はかかりません
 ・年の縛りはなく、いつでも解約できます
 
@@ -120,7 +120,7 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 | 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly_loyal |
 | 参照名 | ご飯帖プラス 月額 | ご飯帖プラス 年額（1年ありがとう価格） |
 | 期間 | 1か月 | 1年 |
-| 価格（日本） | **380円**（クラシル プレミアム 480円より安く） | **3,500円**（月額の約9か月分） |
+| 価格（日本） | **300円**（クラシル プレミアム 480円より安く） | **3,500円**（月額300円の約11.7か月分。12か月分 3,600円との差は100円。年額は今回の申請では作らない。値段の見直しはオーナー判断） |
 | お試しオファー | **1か月 無料**（新規の利用者。すべての国） | なし |
 | 表示名 | ご飯帖プラス | ご飯帖プラス 年額 |
 | 説明（45文字まで） | 献立・買い物メモ・世界のレシピが使えます | 1年つづけてくださった方への特別価格です |
@@ -129,7 +129,7 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 - 審査用スクリーンショット: アプリの「ご飯帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
 - RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額と年額（1年ありがとう価格）の2つを入れる（年額はアプリ側で12か月以上の会員にだけ表示する）
-- 無料期間は App Store Connect のお試しオファー（1か月無料）です。アプリは RevenueCat から実際の長さを取って「最初の1か月は無料」と表示します（`PLAN.trialMode: 'store'`）。1か月が終わると、解約していなければ月額380円が自動で始まります
+- 無料期間は App Store Connect のお試しオファー（1か月無料）です。アプリは RevenueCat から実際の長さを取って「最初の1か月は無料」と表示します（`PLAN.trialMode: 'store'`）。1か月が終わると、解約していなければ月額300円が自動で始まります
 - 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
@@ -169,7 +169,7 @@ Other notes for review:
 - The app gives cooking suggestions only. It makes no medical, nutrition or health claims. Allergy notices say to check ingredient labels yourself.
 - Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any outside payment page.
 
-In-app purchase: "Gohancho Plus", a monthly auto-renewable subscription (product ID gohancho_plus_monthly, JPY 380/month in Japan) with a 1-month free introductory offer for eligible new subscribers. This submission contains the monthly plan only; there is no yearly plan. After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+In-app purchase: "Gohancho Plus", a monthly auto-renewable subscription (product ID gohancho_plus_monthly, JPY 300/month in Japan) with a 1-month free introductory offer for eligible new subscribers. This submission contains the monthly plan only; there is no yearly plan. After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 
 How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes).
 ```
