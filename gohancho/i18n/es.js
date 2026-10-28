@@ -1216,4 +1216,11 @@ GOHAN_I18N('es', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Aprox. {max}–{n} min (menos si cocinas a la vez)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Come con nosotros a veces (no está en «Quién come hoy» por defecto)",
     "いつものメンバー": "Los de siempre",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "El temporizador de {name} sigue en marcha. Si ya está listo, toca otra vez",
+    "国を「{name}」に変えますか？": "¿Cambiar el país a «{name}»?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "El menú de hoy pasará a platos de {name}. Puedes volver cuando quieras.",
+    "決めた献立は「作り方」にそのまま残ります。": "El menú que elegiste se queda tal cual en «Cocinar».",
+    "{name}に変える": "Cambiar a {name}",
+    "肉や魚の部位がちがう料理": "Platos con otro corte de carne o pescado",
+    "冷蔵庫の部位とはちがう部位を使います": "Usa otro corte distinto del que tienes en la nevera",
 });

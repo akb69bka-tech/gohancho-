@@ -1217,4 +1217,11 @@ GOHAN_I18N('en', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "About {max}–{n} min (shorter if you cook them side by side)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Eats with us sometimes (not in “Who’s eating today” by default)",
     "いつものメンバー": "The usual crew",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "The timer for {name} is still running. If it’s ready, tap again",
+    "国を「{name}」に変えますか？": "Switch country to “{name}”?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Today’s menu will switch to dishes from {name}. You can switch back anytime.",
+    "決めた献立は「作り方」にそのまま残ります。": "The menu you picked stays in “Cook” as it is.",
+    "{name}に変える": "Switch to {name}",
+    "肉や魚の部位がちがう料理": "Dishes that use a different cut",
+    "冷蔵庫の部位とはちがう部位を使います": "Uses a different cut from the one in your fridge",
 });
