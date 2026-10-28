@@ -1396,6 +1396,7 @@ GOHAN_I18N('de', {
     "決めた献立を作り直しますか？": "Festgelegtes Menü neu erstellen?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Noch nicht festgelegtes Menü an deine Einstellungen angepasst: {list}",
     "{name}（外しました）": "{name} (entfernt)",
+    "この条件で出せる主菜がありません": "Mit diesen Einstellungen gibt es kein passendes Hauptgericht",
     "「{name}」にかえました": "Gewechselt zu „{name}“",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Alle {n} Gerichte von heute sind fertig. Gut gemacht!",
     "ほかの食材（例: セロリ）": "Andere Zutat (z. B. Sellerie)",

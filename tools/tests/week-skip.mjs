@@ -7,14 +7,15 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_, N = Number(process.env.N || 6);
 const CCS = (process.env.CCS || 'JP,US,KR,FR,IN,TH').split(',');
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
-const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 for (const cc of CCS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('week-skip', String(++seedN))));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(cc => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, cc);
     await p.goto(URL_); await ready(p); await p.evaluate(() => { hasPro = () => true; });
@@ -98,6 +99,7 @@ for (const cc of CCS){
 // 390px のスマホで、週の行（担当・別の案・作らない・作る日に戻す）が画面からはみ出さず、ボタンが44px以上で押せる
 for (const lang of (process.env.LAYOUT_LANGS || 'ja,de,ar,th,fr,vi').split(',')){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('week-skip', String(++seedN))));
     const p = await ctx.newPage();
     await p.addInitScript(lang => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), lang, settings:{country:'JP', dishCount:3, lang}, family:[{id:'f1', name:'母', role:'adult', avoid:[], allergy:[], mild:false}]})); } }, lang);
     await p.goto(URL_); await ready(p);

@@ -8,15 +8,16 @@
 //  17言語: 新しい画面に日本語が残らないこと
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const CCS = (process.env.CCS || 'JP,TW,CN,KR,US,TH,VN,FR,DE,IN,MX,BR,GB,IT,ES,TR,EG,PE,PL,PH,ID').split(',');
 const LANGS = (process.env.LANGS || 'en,ar,de,es,fil,fr,hi,id,it,ko,pl,pt-BR,th,tr,vi,zh-Hans,zh-Hant').split(',');
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
-const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const open = async (state = {}, cc = 'JP', uiLang = 'ja') => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('stock', String(++seedN))));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(([cc, st, ul]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded:true, firstUse:'2026-01-01'}, st, {settings: Object.assign({country:cc, dishCount:3, uiLang:ul}, st.settings || {})}))); } }, [cc, state, uiLang]);
     await p.goto(URL_); await ready(p); return p;

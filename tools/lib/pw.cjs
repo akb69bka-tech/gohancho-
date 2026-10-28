@@ -26,7 +26,9 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
 // 乱数シード: SEED があればそれ、なければ今回限りの値。失敗時に表示するので同じ値で再現できる
 const SEED = process.env.SEED != null && process.env.SEED !== '' ? (Number(process.env.SEED) >>> 0) : ((Math.random() * 2 ** 32) >>> 0);
 // ページの Math.random を seed から作る決まった乱数に置き換える init script（context.addInitScript に渡す）
-const seedScript = (seed) => `(() => { window.__swapDirect = true; let a = ${seed >>> 0}; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; })();`;
+// 乱数だけを決まった値にする（Math.random を置き換えるだけ。ほかの動きは変えない）
+const rngScript = (seed) => `(() => { let a = ${seed >>> 0}; Math.random = function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; })();`;
+const seedScript = (seed) => `(() => { window.__swapDirect = true; })();` + rngScript(seed);   // 案2: テストでは「かえる」をその場で入れ替える
 // 国・件ごとのシード（SEED と国と通し番号から決まる）
 const seedFor = (...parts) => { let h = SEED >>> 0; for (const c of parts.join('|')) h = Math.imul(h ^ c.charCodeAt(0), 2654435761) >>> 0; return h; };
 // アプリが起動して今日の献立が描かれるまで待つ（固定の待ち時間ではなく条件待ち。負荷が高くても落ちない）
@@ -34,4 +36,4 @@ async function ready(p, timeout = 30000) {
   try { await p.waitForFunction(() => typeof S !== 'undefined' && typeof session !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && document.readyState === 'complete' && !!document.querySelector('#view > *'), null, { timeout }); } catch (e) {}
   await p.waitForTimeout(100);
 }
-module.exports = { chromium, LAUNCH, BASE, SEED, seedScript, seedFor, ready };
+module.exports = { chromium, LAUNCH, BASE, SEED, seedScript, rngScript, seedFor, ready };

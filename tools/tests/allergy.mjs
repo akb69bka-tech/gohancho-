@@ -7,17 +7,20 @@
 //  4) 全経路: 献立・かえる・1週間プラン・買い物メモ・保存献立の警告・お気に入り・あと1品・ひとひねり・世界のレシピで同じ判定
 //  5) 連動なし: アレルゲンを足しても、当たっていない枠は動かない（当たった枠だけ選び直す）
 //  6) 表示: 詳細に「この料理に含まれる主なアレルゲン」・設定の「アレルギー対策」カード（日本=9+20、米国系=9、ほか=14）・免責
+//  乱数: ページの Math.random は SEED から決まる（開くページごとに seedFor('allergy', 通し番号)）。失敗したら表示された SEED=… を付けて実行すると同じ献立で再現する
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
+const { SEED, rngScript, seedFor } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
 const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-let fails = 0; const errs = [];
-const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0, opened = 0; const errs = [];
+const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 async function open(cc = 'JP', settings = {}, store = {}){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('allergy', String(++opened))));   // 同じ SEED なら、同じ順に開いたページは同じ献立になる
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) errs.push(cc + ': ' + m.text()); });
     await p.addInitScript(([cc, settings, store]) => { window.__swapDirect = true; if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3, ...settings}, ...store})); } }, [cc, settings, store]);
     await p.goto(URL_); await p.waitForTimeout(900); await p.evaluate(() => { hasPro = () => true; });
@@ -301,6 +304,93 @@ for (const cc of ['JP', 'US', 'DE']){
     console.log('5b) 汁けの多い主菜に替わるとき:', r.n, '通り');
     await ctx.close();
 }
+// 5c) 替わりがない（null）ときも、当たる料理を残さない: 全経路（かえる・まるごと入れ替え・気分・品数・冷蔵庫から・1週間プラン・保存献立・
+//     家族のアレルギー・苦手・品薄・国の切り替え・プランの主菜を献立に・ひとひねり案を主菜に・案2の明日の一膳）。主菜も残さず空けて「この条件で出せる主菜がありません」
+{
+    const { ctx, p } = await open('JP', { dishCount: 3 });
+    const r = await p.evaluate(async () => {
+        const bad = [], note = [];
+        const slotOut = r => !!r && (isAvoided(r) || S.hidden.includes(r.id));   // 献立に残してはいけない料理（アプリの判定をそのまま使う）
+        const left = (tag) => (session.menu ? session.menu.items : []).forEach((x, i) => { if (x.r && slotOut(x.r)) bad.push(tag + ' slot' + i + ' ' + x.r.id); });
+        const click = (act, ds = {}) => { const b = document.createElement('button'); b.dataset.act = act; Object.assign(b.dataset, ds); document.body.appendChild(b); b.click(); b.remove(); };
+        const reset = () => { S.settings.allergens = []; S.settings.avoid = []; S.settings.scarce = []; S.family = []; S.eaters = null; S.cook = null; S.hidden = []; session.mood = 'all'; session.useFridge = false; save(); };
+        const orig = { main: suggestMain, any: suggestOrAny };
+        const noRepl = run => { suggestMain = () => null; suggestOrAny = () => null; try{ run(); } finally { suggestMain = orig.main; suggestOrAny = orig.any; } };
+        const mainMsg = () => { render(); const nm = document.querySelector('.tray .spot.main .nm'); return nm ? nm.textContent : ''; };
+        // (a) 出せる主菜が1つもない（全アレルゲン）: 設定変更の照合で、当たる主菜を残さず空ける・知らせる・決められない
+        reset(); session.menu = null; setTab('today'); ensureMenu();
+        S.settings.allergens = [...ALG_ALL]; save(); reconcileMenu(); left('照合(全アレルゲン)');
+        if (session.menu.items[0].r) bad.push('照合: 主菜が空いていない ' + session.menu.items[0].r.id);
+        if (!/この条件で出せる主菜がありません/.test(mainMsg())) bad.push('照合: 主菜の枠の知らせ: ' + mainMsg());
+        if (!/外しました/.test((document.querySelector('#toast-root') || {}).textContent || '')) bad.push('照合: 外したことを知らせていない');
+        if (!document.querySelector('[data-act="decide"][disabled]')) bad.push('照合: 主菜がないのに決められる');
+        // 同じ条件で: まるごと入れ替え・気分・品数・冷蔵庫から・かえる・保存献立
+        click('new-menu'); left('まるごと入れ替え');
+        for (const k of ['quick', 'easy', 'fish', 'meat', 'okayu', 'bento', 'all']){ click('mood', { k }); left('気分 ' + k); }
+        for (const v of ['2', '4', '3']){ click('count', { v }); render(); left('品数 ' + v); }
+        const uf = document.createElement('input'); uf.type = 'checkbox'; uf.dataset.act = 'use-fridge'; document.body.appendChild(uf); uf.click(); uf.remove(); left('冷蔵庫から');
+        for (let i = 0; i < session.menu.items.length; i++){ click('reroll', { i: String(i) }); left('かえる slot' + i); }
+        S.settings.allergens = []; save(); session.menu = null; ensureMenu(); saveMenu(); const sm = S.savedMenus[0];
+        S.settings.allergens = [...ALG_ALL]; save(); reconcileMenu(); applySavedMenu(sm.id); left('保存献立');   // 設定の画面と同じく照合してから（保存献立は使えなければ今日の献立を変えない）
+        // 1週間プラン: 作り直しても当たる主菜で埋めない（作ってあったプランの当たる日は「作らない日」）
+        S.settings.allergens = []; makeWeek(); S.settings.allergens = [...ALG_ALL]; save(); refreshWeek(); makeWeek();
+        S.week.days.filter(x => !x.skip && byId(x.id) && isAvoided(byId(x.id))).forEach(x => bad.push('1週間プラン ' + x.d + ' ' + x.id));
+        S.week = null; makeWeek(); if (S.week && S.week.days.some(x => !x.skip && isAvoided(byId(x.id)))) bad.push('1週間プラン: 当たる主菜でプランを作った');
+        // (b) 替わりがない（候補の関数が null）とき: アレルゲン・家族のアレルギー・苦手・品薄のどれでも枠を空ける（主菜も）
+        const keyOfDish = r => (r.items.find(i => !i.opt && FAMILY[i.key]) || r.items.find(i => !i.opt) || {}).key;
+        const cases = [
+            ['アレルゲン', r => { const a = ALG_ALL.find(id => { S.settings.allergens = [id]; const h = allergyConflict(r); S.settings.allergens = []; return h; }); if (!a) return false; S.settings.allergens = [a]; return isAvoided(r); }],
+            ['家族のアレルギー', r => { const k = keyOfDish(r); if (!k) return false; S.family = [{ id: 'a', name: '長女', role: 'child', avoid: [], allergy: [k], mild: false }]; return isAvoided(r); }],
+            ['苦手', r => { const k = keyOfDish(r); if (!k) return false; S.settings.avoid = [k]; S.settings.avoidSwap = false; return isAvoided(r); }],
+            ['品薄', r => { const k = keyOfDish(r); if (!k) return false; S.settings.scarce = [k]; return isAvoided(r); }],
+        ];
+        let n = 0;
+        for (const [tag, set] of cases) for (let slot = 0; slot < 3; slot++) for (let rep = 0; rep < 3; rep++){
+            reset(); session.menu = null; ensureMenu(); const m = session.menu, it = m.items[slot]; if (!it || !it.r) continue;
+            if (!set(it.r)){ reset(); continue; } save(); n++;
+            // 設定変更の照合（家族のアレルギーの追加・苦手・品薄・アレルゲンのどれも、ここを通る）
+            noRepl(() => reconcileMenu()); left('照合・替わりなし ' + tag);
+            // 決めた献立にあとから当たったときの「かえる」（替わりがない）
+            reset(); session.menu = null; ensureMenu(); const m2 = session.menu, it2 = m2.items[slot]; if (!it2.r) continue;
+            S.cook = {d: TODAY, ids: menuIds(), slots: m2.items.filter(x => x.r).map(x => x.slot)};
+            if (!set(it2.r)) continue; save(); render();
+            noRepl(() => click('reroll', { i: String(slot), ok: '1' }));   // ok: 決めた一膳でも確かめずに（案2の確かめるシートを飛ばす） if (it2.r && slotOut(it2.r)) bad.push('かえる・替わりなし ' + tag + ' slot' + slot + ' 残った ' + it2.r.id);
+        }
+        // (c) 案内を出したあとに当たるようになった「1週間プランの主菜を献立にする」・ひとひねり案の「主菜にする」
+        reset(); session.menu = null; ensureMenu(); makeWeek(); const wt = weekToday();
+        if (wt){ const a = ALG_ALL.find(id => { S.settings.allergens = [id]; const h = isAvoided(wt); S.settings.allergens = []; return h; }); if (a){ S.settings.allergens = [a]; save(); click('use-plan'); if (session.menu.items[0].r && session.menu.items[0].r.id === wt.id) bad.push('プランの主菜を献立に: 当たる主菜を入れた ' + wt.id); } else note.push('プランの主菜に当たるアレルゲンなし'); }
+        reset(); S.week = null; session.menu = null; ensureMenu();
+        let tw = null, ta = null; for (let k = 0; k < 20 && !ta; k++){ tw = suggestTwist(); ta = tw && ALG_ALL.find(id => { S.settings.allergens = [id]; const h = twistAvoided(tw); S.settings.allergens = []; return h; }); }
+        if (ta){ session.twist = tw; S.settings.allergens = [ta]; save(); reconcileMenu(); if (session.twist && twistAvoided(session.twist)) bad.push('ひとひねり案: 当たる案が残った ' + tw.id);
+            session.twist = tw; click('twist-main'); const r0 = session.menu.items[0].r; if (r0 && r0.isTwist && twistAvoided(r0)) bad.push('ひとひねり案を主菜に: 当たる案を入れた ' + tw.id); }
+        else note.push('ひとひねり案: 当たる案が作れなかった');
+        // (e) 案2: 明日の一膳を見たあとにアレルギー・苦手を足しても、明日の案に当たる料理を残さない（当たる枠だけ選び直す。出せる主菜がなければ空けて知らせる）
+        reset(); session.menu = null; ensureMenu(); render(); if (S.day) delete S.day[addDays(TODAY, 1)];
+        const t1 = tomorrowDraft(); const tm = byId(t1[0].id);
+        const ta2 = ALG_ALL.find(id => { S.settings.allergens = [id]; const h = allergyConflict(tm); S.settings.allergens = []; return h; });
+        if (ta2){
+            const hitIds = t1.filter(x => { S.settings.allergens = [ta2]; const h = isAvoided(byId(x.id)); S.settings.allergens = []; return h; }).map(x => x.id);
+            S.settings.allergens = [ta2]; save(); reconcileMenu();
+            const t2 = tomorrowDraft(); t2.forEach(x => { if (slotOut(byId(x.id))) bad.push('明日の一膳 ' + ta2 + ' ' + x.id); });
+            t1.forEach(x => { if (!hitIds.includes(x.id) && !t2.some(y => y.id === x.id)) bad.push('明日の一膳: 当たっていない料理まで替えた ' + x.id); });
+            sheet = {kind: 'tomorrow'}; renderSheet(); const st = (document.querySelector('#sheet-root') || document.body).textContent;
+            t2.forEach(x => { if (!st.includes(byId(x.id).name)) bad.push('明日の一膳の画面に出ていない ' + x.id); }); closeSheet();
+        } else note.push('明日の主菜に当たるアレルゲンなし');
+        S.settings.allergens = [...ALG_ALL]; save(); reconcileMenu(); const t3 = tomorrowDraft();
+        t3.forEach(x => { if (slotOut(byId(x.id))) bad.push('明日の一膳(全アレルゲン) ' + x.id); });
+        if (t3.length && t3[0].slot === '主菜') bad.push('明日の一膳(全アレルゲン): 主菜が空いていない');
+        sheet = {kind: 'tomorrow'}; renderSheet(); if (!/この条件で出せる主菜がありません/.test(document.body.textContent)) bad.push('明日の一膳: 主菜がないことを知らせていない'); closeSheet();
+        // (d) 国の切り替え: 切り替えた国の献立にも、当たる料理を出さない（出せる主菜がない国では主菜の枠を空ける）
+        reset(); S.settings.allergens = [...ALG_ALL]; save();
+        for (const cc of ['US', 'KR', 'JP']){ await setCountry(cc); session.menu = null; setTab('today'); render(); left('国 ' + cc); }
+        reset();
+        return { bad, note, n };
+    });
+    ok(!r.bad.length, '5c) 替わりがないときも当たる料理を残さない: ' + r.bad.slice(0, 6).join(' ; '));
+    ok(r.n >= 20, '5c) 替わりなしの組み合わせを試した: ' + r.n);
+    console.log('5c) 替わりがないとき:', r.n, '通り', r.note.join(' / '));
+    await ctx.close();
+}
 
 // 保存献立・決定済み・お気に入り・世界のレシピ・詳細の表示・設定カード
 {
@@ -422,5 +512,5 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
 await b.close();
 console.log(errs.length ? 'ページのエラー: ' + errs.slice(0, 5).join(' | ') : 'ページのエラーなし');
 ok(errs.length === 0, 'ページのエラー');
-console.log(fails ? `NG ${fails}` : 'ALL OK');
+console.log((fails ? `NG ${fails}` : 'ALL OK') + `  SEED=${SEED}`);
 process.exit(fails ? 1 : 0);

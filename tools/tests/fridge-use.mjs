@@ -4,13 +4,14 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
 const b = await chromium.launch(LAUNCH);
-let fails = 0, shown = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0, shown = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 for (const cc of CCS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('fridge-use', String(++seedN))));
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(cc => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, cc);
     await p.goto(URL_); await ready(p);

@@ -3150,6 +3150,8 @@ function mixHtml(){
 /* ---- 設定を変えたとき、献立を丸ごと作り直さない ----
    苦手な食材・置き換え・国の組み合わせ・設定のやり直しなどを変えても、条件に合わなくなった料理の枠だけを選び直す。
    ほかの料理・ご飯の欄は動かさない（品数が変わったときだけ作り直す） */
+// 献立に残してはいけない料理（アレルゲン・家族のアレルギー・苦手・品薄・今は出さない）。替わりがないときも、この料理は枠に残さない
+function slotOut(r){ return !!r && (isAvoided(r) || S.hidden.includes(r.id)); }
 function slotStillOk(it){
     const r = it.r; if (!r) return false;
     if (S.hidden.includes(r.id) || isAvoided(r)) return false;
@@ -3162,6 +3164,7 @@ function slotStillOk(it){
 //  - まだ決めていない案: 合わなくなった枠だけ選び直し、何を替えたかを知らせる。下書きもその場で書き直す（開き直したときに古い案が戻らないように）
 //  - 決めた献立: 黙って替えない。合わない料理は cookWarnHtml で知らせ、本人に［かえる］［このまま］を選んでもらう
 function reconcileMenu(){
+    if (session.twist && twistAvoided(session.twist)) session.twist = twistAvailable() ? suggestTwist() : null;   // 前に作ったひとひねり案がアレルゲン・苦手に当たるようになったら作り直す（「主菜にする」で献立に入らないように）
     const m = session.menu; if (!m) return false;
     if (menuIsDecided()) return false;
     if (m.n !== menuCount() && !m.adj){ newMenu(); keepDraft(); return true; }   // 「あと1品」で足した品数は、設定が変わらないかぎり、そのまま
@@ -3176,8 +3179,9 @@ function reconcileMenu(){
             nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
         } else nr = suggestOrAny(it.slot, others, m.items[0].r);
         if (nr && nr !== it.r){ if (it.r) swaps.push([it.r, nr]); it.r = nr; changed = true; }
-        // 替わりがない（先に選び直した主菜が汁けの多い料理になり、汁ものの枠を空けるときなど）: アレルゲン・苦手・出さない料理は残さず、枠を空ける
-        else if (!nr && i > 0 && it.r && (isAvoided(it.r) || S.hidden.includes(it.r.id))){ swaps.push([it.r, null]); it.r = null; changed = true; }
+        // 替わりがない（先に選び直した主菜が汁けの多い料理になり、汁ものの枠を空けるとき・この条件で出せる主菜が1つもないときなど）:
+        // アレルゲン・苦手・品薄・出さない料理は残さず、枠を空ける。主菜も同じ（空けた主菜の枠には「この条件で出せる主菜がありません」と出す）
+        else if (!nr && it.r && slotOut(it.r)){ swaps.push([it.r, null]); it.r = null; changed = true; }
     });
     if (changed){
         keepDraft();
@@ -3504,13 +3508,15 @@ function makeWeek(){
         let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
-        if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度
-            const okAll = poolFor('主菜').filter(x => x.main && !isAvoided(x)); let all = okAll.length ? okAll : poolFor('主菜').filter(x => x.main); const order = days.map(x => x.id);
+        if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度（アレルゲン・苦手・品薄の主菜には戻らない）
+            let all = poolFor('主菜').filter(x => x.main && !isAvoided(x)); const order = days.map(x => x.id);
             const fr = all.filter(x => weekFresh(x, i)); if (fr.length) all = fr;
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
         if (r){ used.add(r.id); days.push({d, id:r.id}); }
     }
+    // この条件（アレルギー・苦手・品薄）で出せる主菜が1つもない: 当たる主菜でプランを作らず、知らせる（作ってあるプランはそのまま。当たる日は refreshWeek が「作らない日」にしている）
+    if (!days.length){ toast(t('この条件で出せる主菜がありません')); return; }
     const skipped = new Set(((S.week && S.week.days) || []).filter(x => x.skip).map(x => x.d));   // 作り直しても、「作らない日」にした日はそのまま（日付で引き継ぐ）
     days.forEach(x => { if (skipped.has(x.d)) x.skip = true; });
     const whoBy = new Map(((S.week && S.week.days) || []).filter(x => x.who).map(x => [x.d, x.who]));   // 日ごとの担当も、作り直しても日付で引き継ぐ
@@ -8321,21 +8327,34 @@ function pendingNoteHtml(withMood){
 /* ---- 明日の一膳を見る: 明日の下書きを先に作って見せる（明日、開いたときにこの案から始める） ---- */
 function tomorrowDraft(){
     const td = addDays(TODAY, 1), rec = dayRec(td), ok = x => x && x.id && x.id !== 'none' && byId(x.id);
-    if (rec && Array.isArray(rec.items) && (rec.state === 'decided' || rec.items.some(ok))) return rec.items.filter(ok);   // 先に決めた明日の一膳は、作り直さない
+    const kept = rec && Array.isArray(rec.items) && rec.state !== 'decided' && rec.items.some(ok) ? rec.items.filter(ok) : null;
+    if (rec && Array.isArray(rec.items) && rec.state === 'decided') return rec.items.filter(ok);   // 先に決めた明日の一膳は、作り直さない（当たる料理は一覧に印を出す）
+    if (kept && kept[0].slot === '主菜' && !kept.some(x => slotOut(byId(x.id)))) return kept;   // 前に見せた明日の案のまま
     // 明日の案は、明日からにした品数・気分で作る（明日開いたときと同じ条件）
     const keepMenu = session.menu, keepTw = session.twist, keepRej = new Set(session.rejected), pd = S.settings.pending, st0 = {dc: S.settings.dishCount, ns: S.settings.noSoup, mood: session.mood, salt: session.countSalt};
     try{
         if (pd && dayKeyOk(pd.d) && pd.d <= td){ if ('dishCount' in pd) S.settings.dishCount = pd.dishCount; if ('noSoup' in pd) S.settings.noSoup = pd.noSoup; }
         if (rec && rec.mood && MOODS.some(x => x.k === rec.mood)) session.mood = rec.mood;
         session.countSalt = 0;
-        menuIds().forEach(id => session.rejected.add(id)); newMenu(); const its = session.menu.items.filter(x => x.r).map(x => ({slot: x.slot, id: x.r.id}));
+        menuIds().forEach(id => session.rejected.add(id));
+        if (kept){
+            // 前に見せた明日の案に、あとから足したアレルギー・苦手・品薄に当たる料理がある（または主菜がない）: その枠だけ選び直す。ほかの枠はそのまま。替わりがなければ空ける
+            const m = session.menu = {n: kept.length, items: (kept[0].slot === '主菜' ? [] : [{slot: '主菜', r: null}]).concat(kept.map(x => ({slot: x.slot, r: byId(x.id)}))), adj: true};
+            m.items.forEach((it, i) => {
+                if (it.r ? !slotOut(it.r) : i > 0) return;
+                const others = m.items.filter((_, k) => k !== i);
+                it.r = i === 0 ? suggestMain(others.filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}))) : suggestOrAny(it.slot, others, m.items[0].r);
+            });
+        } else newMenu();
+        const its = session.menu.items.filter(x => x.r).map(x => ({slot: x.slot, id: x.r.id}));
         Object.assign(dayObj(td), {state: 'draft', items: its, shape: shapeKey()}); return its; }
     finally { S.settings.dishCount = st0.dc; S.settings.noSoup = st0.ns; session.mood = st0.mood; session.countSalt = st0.salt; session.menu = keepMenu; session.twist = keepTw; session.rejected = keepRej; save(); }
 }
 function tomorrowSheetHtml(){
     const its = tomorrowDraft(), rs = its.map(x => ({x, r: byId(x.id)})).filter(y => y.r), fixed = tomorrowDecided();
     return `<h2>${esc(t('明日の一膳'))}</h2>
-        <div class="list swap-list">${rs.map(({x, r}) => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><div class="small muted">${esc(slotLabel(x.slot))}</div><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div></div></div>`).join('')}</div>
+        ${rs.length && rs[0].x.slot === '主菜' ? '' : `<p class="small">${esc(t('この条件で出せる主菜がありません'))}</p>`}
+        <div class="list swap-list">${rs.map(({x, r}) => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><div class="small muted">${esc(slotLabel(x.slot))}</div><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${allergyBadge(r) ? `<div class="s">${allergyBadge(r)}</div>` : ''}</div></div>`).join('')}</div>
         <p class="small muted">${esc(fixed ? t('明日の一膳はもう決めてあります。') : t('明日、開いたときにこの案から始めます。決めるのは明日です。'))}</p>
         <div class="row">${fixed ? '' : `<button class="btn" data-act="tomorrow-new">${esc(t('別の案にする'))}</button>`}<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
@@ -8393,7 +8412,7 @@ function viewToday(){
         const last = r ? lastLabel(r.id) : '';
         const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoidedCore(x));
         const soupNone = it.slot === '汁物' && !r && soupyMain(main);   // 汁ものの麺・汁ものが主菜なら、足すボタンも出さない
-        const empty = it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
+        const empty = idx === 0 && it.slot === '主菜' ? t('この条件で出せる主菜がありません') : it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
@@ -10182,10 +10201,12 @@ document.addEventListener('click', e => {
             if (i === 0){
                 // 主菜だけをかえる。ほかの料理・ご飯の欄は絶対に動かさない（合わない主菜は最初から選ばない）
                 const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
-                const nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null, true);
+                let nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null, true);
+                if (!nr && slotOut(it.r)) nr = suggestMain(keep, null);   // 当たる主菜（決めたあとにアレルギーを足したときなど）は、別の種類にしてでも替える
                 if (nr && !keep.some(k => k.id === nr.id)) it.r = nr;
+                else if (slotOut(it.r)) it.r = null;   // 替わりがない: 当たる主菜は残さず空ける（「この条件で出せる主菜がありません」）
             }
-            else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
+            else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || (slotOut(it.r) ? null : it.r);   // 替わりがないときも、当たる料理は残さない
             render();
             // 何に変わったかを言い、元に戻せるようにする（押しまちがい・子どもに腕を引かれたとき。佐々木 3-12・田村 3-13）。
             // 戻すのは押した枠だけ。そのあいだに献立が作り直された・同じ枠がまた変わったときは戻さない
@@ -10486,12 +10507,13 @@ document.addEventListener('click', e => {
             toast(t('決めた献立を取り消しました'), false, () => { S.cook = prevCook; session.cookIdx = 0; reactVer++; save(); setTab('cook'); }); break;
         }
         case 'use-plan': {
-            const p = weekToday(); if (!p) break;
+            const p = weekToday(); if (!planUsable(p)){ render(); break; }   // 案内を出したあとにアレルギー・苦手を足したときは、当たる主菜を入れない
             setMenuMain(p); render(); break;
         }
         case 'new-twist': if (!useTwistQuota()) break; if (session.twist) markSeen([session.twist]); session.twist = suggestTwist(); render(); break;
         case 'twist-main': {
             const tw = session.twist; if (!tw) break;
+            if (twistAvoided(tw)){ session.twist = suggestTwist(); render(); break; }   // 前に作った案がアレルゲン・苦手に当たるようになっていたら、入れずに案を作り直す
             setMenuMain(tw);
             markSeen([tw]); toast(t('主菜をひとひねり案にしました')); render(); break;
         }
@@ -10695,7 +10717,7 @@ document.addEventListener('click', e => {
             { const m = session.menu, i = m ? m.items.findIndex(x => x.r && x.r.id === id) : -1;   // 外した料理の枠だけ選び直す
               if (i === 0){ const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot})); const bowl = isBowlMain(m.items[0].r); let nr = suggestMain(keep, bowl);
                 if (!nr || S.hidden.includes(nr.id)) nr = suggestMain(keep, null);   // 同じ種類（ご飯もの・麺／ふつうの主菜）の候補が尽きたら、外した料理を出し直さず、別の種類から選ぶ
-                if (nr && !S.hidden.includes(nr.id)) m.items[0].r = nr; }
+                m.items[0].r = nr && !S.hidden.includes(nr.id) ? nr : null; }   // 替わりがなければ、外した料理を残さず空ける
               else if (i > 0) m.items[i].r = suggestOrAny(m.items[i].slot, m.items.filter((_, k) => k !== i), m.items[0].r); }
             refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;

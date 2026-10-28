@@ -4,12 +4,13 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
-let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const open = async (state, cc = 'JP') => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('use-soon', String(++seedN))));
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(([cc, st]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded:true, firstUse:'2026-01-01', settings:{country:cc, dishCount:3}}, st))); } }, [cc, state]);
     await p.goto(URL_); await ready(p); return {ctx, p, errs};

@@ -10,12 +10,14 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
+const { SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
-let fails = 0, checks = 0; const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0, checks = 0; const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const open = async (cc = 'JP', ui = 'auto', extra = {}) => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('fridge-search-twist', String(++seedN))));
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(([cc, ui, extra]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, uiLang:ui, dishCount:4}}, extra))); } }, [cc, ui, extra]);
     await p.goto(URL_); await p.waitForTimeout(2500); return {ctx, p, errs};
