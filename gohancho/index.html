@@ -2015,7 +2015,8 @@ function variantIn(x, n, w){ return x.re ? x.re.test(w) : n.includes(x.v); }
 const CANON_NOT = [['ルピナス','なす'], ['キャッサバ','さば'], ['マジパン','パン'], ['ビーフン','ビーフ'], ['たらば','たら'], ['いかそうめん','そうめん'], ['鶏卵','鶏'],
     ['牛乳','牛'], ['牛奶','牛'], ['牛油果','牛'], ['牛蒡','牛'], ['ぎゅうにゅう','ぎゅう'], ['ココナッツ','ミルク'], ['ココナッツ','ナッツ'], ['ライムギ','ライム'], ['タコシェル','タコ'], ['タコス','タコ'],
     ['ブリゼ','ブリ'], ['卵豆腐','豆腐'], ['かにみそ','みそ'], ['鲍鱼','鱼'], ['鱿鱼','鱼'], ['章鱼','鱼'], ['墨鱼','鱼'], ['鮑魚','魚'], ['魷魚','魚'], ['章魚','魚'], ['墨魚','魚'],
-    ['ข้าวสาลี','ข้าว'], ['ข้าวโอ๊ต','ข้าว'], ['เต้าหู้ไข่','เต้าหู้'], ['완두콩','콩']].map(([a, b]) => [norm(a), norm(b)]);
+    ['ข้าวสาลี','ข้าว'], ['ข้าวโอ๊ต','ข้าว'], ['เต้าหู้ไข่','เต้าหู้'], ['완두콩','콩'],
+    ['かぼちゃの種','かぼちゃ'], ['かぼちゃのたね','かぼちゃ'], ['南瓜子','南瓜'], ['南瓜子','かぼちゃ'], ['호박씨','호박'], ['호박씨','애호박'], ['เมล็ดฟักทอง','ฟักทอง'], ['เมล็ดฟักทอง','ฟัก'], ['ひまわりの種','ひまわり']].map(([a, b]) => [norm(a), norm(b)]);
 function canonNot(n, v){ return CANON_NOT.some(([a, b]) => b === v && n.includes(a)); }
 function canonOf(name){
     const k = typeof name === 'string' ? name : String(name);
@@ -6016,8 +6017,17 @@ const ALG_G = {
     jp9:['shrimp','cashew','crab','walnut','wheat','buckwheat','egg','milk','peanut'],   // 消費者庁（2026年4月〜）: 特定原材料9品目（カシューナッツが加わった）
     jp20:['abalone','squid','ikura','orange','kiwi','beef','sesame','salmon','mackerel','soy','chicken','banana','pistachio','pork','macadamia','peach','yamaimo','apple','gelatin','almond'],
     eu14:['gluten','crustacean','egg','fish','peanut','soy','milk','treenut','celery','mustard','sesame','sulphite','lupin','mollusc'],
-    us9:['milk','egg','fish','crustacean','treenut','peanut','wheat','soy','sesame']};
-const ALG_ALL = [...new Set([].concat(ALG_G.jp9, ALG_G.jp20, ALG_G.eu14, ALG_G.us9))];
+    us9:['milk','egg','fish','crustacean','treenut','peanut','wheat','soy','sesame'],
+    // 国ごとの表示制度の品目（オーナーの決定12番「国ごとの区分は、その国の決まりに合わせる」。出典と調べた日は docs/allergen_regions.md）
+    kr:['egg','milk','buckwheat','peanut','soy','wheat','mackerel','crab','shrimp','pork','peach','tomato','sulphite','walnut','chicken','beef','squid','shellfish','pinenut'],   // 韓国: 식품등의 표시·광고에 관한 법률 시행규칙 [별표 2]
+    tw:['crustacean','mango','peanut','milk','egg','treenut','sesame','gluten','soy','fish','sulphite'], twRec:['mollusc','seeds','kiwi'],   // 台湾: 食品過敏原標示規定（11項）・建議標示事項
+    cn:['gluten','crustacean','fish','egg','peanut','soy','milk','treenut'],   // 中国: GB 7718-2011 は推奨、GB 7718-2025（2027-03-16 施行）で義務
+    in:['gluten','crustacean','milk','egg','fish','peanut','treenut','soy','sulphite'],   // インド: FSS (Labelling and Display) Regulations 2020, 5(14)
+    mx:['gluten','crustacean','egg','fish','peanut','soy','milk','treenut','sulphite'],   // メキシコ: NOM-051-SCFI/SSA1-2010 4.2.2.2.3
+    br:['gluten','crustacean','egg','fish','peanut','soy','milk','treenut','pinenut'],   // ブラジル: RDC 727/2022 Anexo III（確かめられた分。ナッツ類は1つにまとめて出す）
+    id:['gluten','egg','fish','crustacean','mollusc','peanut','soy','milk','treenut'],   // インドネシア: PerBPOM 31/2018（確かめられた分）
+    th:['gluten','crustacean','peanut','soy','mollusc','sulphite']};   // タイ: 保健省告示 450号（2024）（確かめられた分）
+const ALG_ALL = [...new Set([].concat(ALG_G.jp9, ALG_G.jp20, ALG_G.eu14, ALG_G.us9, ALG_G.kr, ALG_G.tw, ALG_G.twRec))];
 const ALG_DEF = {
     shrimp:{may: mayRe(MAY_KIMCHI, MAY_JAKO), re:/えび|海老|蝦|虾|\b(?:shrimps?|prawns?|gambas?|krill)\b|camar[oó]n|crevette|garnele|gambero|camar[aã]o|새우|กุ้ง|tôm\b|udang|karides|krewetk|झींगा|hipon/, no:/えびす|ebisu/,
         via:/\bxo sauce\b|xo醤|terasi|belacan|belachan|\bkapi\b|saeujeot|새우젓|mắm tôm|えびだし|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b/},
@@ -6065,13 +6075,22 @@ const ALG_DEF = {
     fish:{fam:'fish', may:/ぽんず|ぽん酢|\bponzu\b|納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|きむち|\bkimchi\b|김치|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b/, re:/魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|鱧|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|(?<!こま)つな|\bfish(?!er|erman)\b|\bfishes\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|pollock|hairtail|\bcod\b|haddock|sea ?bream|whitebait|croaker|sardines?|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|\bsea ?bass\b|\bhalibut\b|swordfish|\bplaice\b|\bsole\b|\bmullet\b|\bcarp\b|\beel\b|\bperch\b|\bpike\b|\bturbot\b|\bmonkfish\b|\bgrouper\b|\bsturgeon\b|\bcaviar\b|\bkippers?\b|\bsprats?\b|\bpilchards?\b|\bbarramundi\b|\bpangasius\b|\bbasa\b|\bdorado\b|\bmahi.?mahi\b|\bmarlin\b|\bkingfish\b|\bpescado\b|\bbacalao\b|\bat[uú]n\b|\bsalm[oó]n\b|\bsardinas?\b|\bpoisson\b|\bthon\b|\bsaumon\b|\bmorue\b|\bfisch\b|\blachs\b|\bthunfisch\b|\bpesce\b|\btonno\b|\bsalmone\b|\bmerluzzo\b|\bpeixe\b|\batum\b|\bbacalhau\b|\bsalm[aã]o\b|생선|어묵|멸치|참치|연어|고등어|鱼|鳕|ปลา|\bcá\b|\bikan\b|\bbalık\b|\bryba\b|\brybn|मछली|\bisda\b|\bbagoong\b|\bdaing\b|\btinapa\b/,
         no:/fish.?free|\bselfish\b|jellyfish|crayfish|cuttlefish|starfish|shellfish|\bcrawfish\b|さかなクン|\bfishcake rice\b|魚介(?:類)?なし/, eq:['さけ','たい','たら','ぶり','あじ','さば','ふぐ','はも','きす','ほっけ','あゆ','こい','ます'],
         via:/(?:^|[|)])だし(?:じる|汁)?(?=$|\|)|めんつゆ|\bmentsuyu\b|かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしの素|和風だし|あごだし|(?<!kombu |konbu |kelp |vegetable |shiitake |mushroom )\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
-    treenut:{parts:['walnut','cashew','pistachio','macadamia','almond'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
+    treenut:{parts:['walnut','cashew','pistachio','macadamia','almond','pinenut'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
         no:/nutmeg|nut ?meg|ナツメグ|なつめぐ|\bpeanuts?\b|ぴーなっつ|ピーナッツ|doughnuts?|donuts?|nutrient|nutritional|nutrition|\bcoconut\b|butternut|\bnutty\b|\bnut.?free\b|water chestnuts?|くわい|nuez moscada|noix de muscade|chestnut|栗|ぐりーん/, via:/\bmole\b|\bsatay\b|\bgado.?gado\b|\bpecel\b|ぬがー|ぷらりね|ぬてら|\bfrangipane\b|\bbaklava\b|\bkunafa\b|\bmaamoul\b|\bromesco\b/},
     celery:{re:/せろり|\bcelery\b|\bceleriac\b|\bcéleri\b|\bapio\b|\bsellerie\b|\bsedano\b|\baipo\b|\bselleri\b|\bseler\b|\bkereviz\b|\bselderij\b|\bkintsay\b|芹菜|西芹|셀러리|เซเลอรี่|\bcần tây\b|\bseledri\b|セロリアック/, via:/\bmirepoix\b/},
     mustard:{re:/からし|(?<!唐)辛子|芥子|ますたーど|\bmustard\b|\bmoutarde\b|\bsenf\b|\bsenape\b|\bmostarda\b|\bmostaza\b|\bmusztard|\bhardal\b|겨자|芥末|มัสตาร์ด|mù tạt|\bmustar\b|सरसों|\bsarson\b|\bdijon\b|\bkasundi\b/, no:/mustard (?:greens?|leaf|leaves|spinach|cabbage)|からし菜|からしな|高菜|たかな|\bsawi\b|sarson ka saag|saag|mizuna|みずな|水菜|からしれんこん/, via:/\bpiccalilli\b/},
-    sulphite:{re:/\bsulphites?\b|\bsulfites?\b|\bsulphur dioxide\b|\bsulfur dioxide\b|亜硫酸/, vno:/rice wine|mijiu|shaoxing|紹興|日本酒|みりん|料理酒/, via:/\bwine\b|わいん|\bsherry\b|しぇりー|\bvermouth\b|\bmarsala\b|\bmadeira\b|\bport wine\b|ぽーとわいん|\bwine vinegar\b|\bcooking wine\b|\bdried apricots?\b|\braisins?\b|\bsultanas?\b|\bdried fruits?\b|\bdried figs?\b|どらいふるーつ|ほしぶどう|干しぶどう|れーずん|\bvin\b|\bvino\b|\bvinho\b|\bwein\b|\bvinaigre de vin\b|\bvinagre de vino\b|\bbalsamic\b|ばるさみこ|\bcider\b|\bgrape juice\b|\bsauerkraut\b|\bshaoxing\b|紹興酒|\bpickled (?:onions?|cucumbers?|gherkins?)\b/},
+    sulphite:{re:/\bsulphites?\b|\bsulfites?\b|\bsulphur dioxide\b|\bsulfur dioxide\b|亜硫酸|亞硫酸|亚硫酸|아황산|ซัลไฟต์|\bsulfitos?\b|\bsolfiti\b|\bschwefeldioxid\b|\bsiarczyn\w*|\bsülfit\w*|\banhydride sulfureux\b|\bsulfit\b/, vno:/rice wine|mijiu|shaoxing|紹興|日本酒|みりん|料理酒/, via:/\bwine\b|わいん|\bsherry\b|しぇりー|\bvermouth\b|\bmarsala\b|\bmadeira\b|\bport wine\b|ぽーとわいん|\bwine vinegar\b|\bcooking wine\b|\bdried apricots?\b|\braisins?\b|\bsultanas?\b|\bdried fruits?\b|\bdried figs?\b|どらいふるーつ|ほしぶどう|干しぶどう|れーずん|\bvin\b|\bvino\b|\bvinho\b|\bwein\b|\bvinaigre de vin\b|\bvinagre de vino\b|\bbalsamic\b|ばるさみこ|\bcider\b|\bgrape juice\b|\bsauerkraut\b|\bshaoxing\b|紹興酒|\bpickled (?:onions?|cucumbers?|gherkins?)\b/},
     lupin:{re:/るぴなす|\blupin(?:e|s)?\b|\blupini\b|\blupino\b|\btremoço\b|\btarwi\b|\bchocho\b|\btermos\b|\blupinen\b|羽扇豆/},
-    mollusc:{parts:['abalone','squid'], re:/蛸|あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\boctopus\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\bpulpo\b|\bpoulpe\b|\bkrake\b|\bpolpo\b|\bpolvo\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|굴\b|낙지|문어|蛤蜊|牡蛎|蚝|扇贝|章鱼|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsea urchin\b|\bsaeng.?gul\b/, eq:['たこ','かき','あさり','はまぐり','いか'], no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bmussel shells?\b(?=x)|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤/}
+    mollusc:{parts:['abalone','squid'], re:/蛸|あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\boctopus\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\bpulpo\b|\bpoulpe\b|\bkrake\b|\bpolpo\b|\bpolvo\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|낙지|문어|蛤蜊|牡蛎|蚝|扇贝|章鱼|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsea urchin\b|\bsaeng.?gul\b/, eq:['たこ','かき','あさり','はまぐり','いか'], no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bmussel shells?\b(?=x)|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤/},
+    // 韓国・台湾の区分で使う品目（韓国 토마토・잣・조개류、台湾 芒果・種子類）
+    tomato:{may: mayRe(MAY_SAUCE_FRUIT, '\\bharissa\\b|\\bchil[ie] sauce\\b|ちりそーす'), re:/とまと|蕃茄|番茄|西红柿|西紅柿|\btomato(?:es)?\b|\btomates?\b|\btomaten?\b|\bpomodor[oi]\b|\bpelati\b|\bjitomates?\b|\bpomidor\w*|\bdomates\w*|토마토|มะเขือเทศ|cà chua|\btomat\b|\bkamatis\b|टमाटर|طماطم|بندورة/, no:/tomatillo|tamarillo|tree tomato/,
+        via:/けちゃっぷ|\bketchup\b|\bcatsup\b|\bmarinara\b|\bpassata\b|\bsugo\b|\bpizza sauce\b|\bpico de gallo\b|\bsalsa (?:roja|ranchera|mexicana|de tomate|criolla)\b|\bshakshuka\b|\bgazpacho\b|\bmenemen\b|\btomatillos?\b|\btamarillos?\b|\btree tomato(?:es)?\b/},
+    mango:{re:/まんごー|\bmangos?\b|\bmangoes\b|\bmangues?\b|\bmangas?\b|芒果|망고|มะม่วง|\bxoài\b|\bmangga\b|\bmanggang\b|\bmanggahan\b|(?<![ऀ-ॿ])आम(?![ऀ-ॿ])|मैंगो|مانجو|مانجا|منجا|\bmangowy\b/, no:/มะม่วงหิมพานต์|mangold|mangosteen|\bmangas? de (?:confeitar|pastelero)\b/,
+        via:/\bamchu?r\b|\bamchoor\b|आमचूर|\bmango chutney\b|\bmango powder\b|\baam ?panna\b/},
+    pinenut:{re:/松の実|まつのみ|\bpine ?nuts?\b|\bpine kernels?\b|\bpinoli\b|\bpignoli\b|\bpi[ñn]ones?\b|\bpignons?\b|\bpinienkerne?n?\b|\bpinh[ãa]o\b|\bpinh[õo]es\b|çam fıstı|orzeszk\w* piniow|잣|松子|松仁|hạt thông|\bchilgoza\b|चिलगोज़ा/, via:/\bpesto\b|ぺすと/},
+    shellfish:{parts:['abalone'], re:/あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|홍합|바지락|가리비|蛤蜊|牡蛎|牡蠣|蚵|蚝|扇贝|干貝|贻贝|淡菜|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsaeng.?gul\b/, eq:['かき','あさり','はまぐり'],
+        no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤|蚝油|蠔油|굴소스/},
+    seeds:{parts:['pinenut'], re:/ひまわりの種|かぼちゃの種|\bsunflower seeds?\b|\bpumpkin seeds?\b|\bpepitas?\b|\bmelon seeds?\b|\bwatermelon seeds?\b|\begusi\b|葵花籽|葵瓜子|瓜子|南瓜子|西瓜子|해바라기씨|호박씨|เมล็ดทานตะวัน|เมล็ดฟักทอง|hạt hướng dương|hạt bí|\bkuaci\b|biji bunga matahari|biji labu|\bsemillas de (?:girasol|calabaza)\b|\bgraines de (?:tournesol|courge)\b|sonnenblumenkerne|kürbiskerne|\bsemi di (?:girasole|zucca)\b|\bsementes de (?:girassol|ab[óo]bora)\b|ay çekirdeği|kabak çekirdeği|pestki dyni|słonecznik(?! ?oil)/}
 };
 const ALG_INFO = {};   // 食材の言葉の整え済み版（i._at）
 
@@ -6169,22 +6188,63 @@ function algSelectedHits(r, ids0){
     return ids.filter(id => (m[id] || []).some(x => x.kind !== 4 && (x.kind !== 3 || algFerm())));
 }
 function algSig(){ return algIds().join() + '|' + algFerm(); }
-// 国ごとの並び: 日本は特定原材料8品目＋準ずる20品目、アメリカ・メキシコ・ペルー・ブラジル・フィリピンは米国の主要9品目、ほかの国は EU の14品目
-function algStyle(){ const cc = currentCountry(); return cc === 'JP' ? 'jp' : ['US', 'MX', 'PE', 'BR', 'PH'].includes(cc) ? 'us' : 'eu'; }
+// 国ごとの区分（オーナーの決定12番: その国の表示制度に合わせる。出典・調べた日・わからなかった国は docs/allergen_regions.md）
+//  ok   = 公的資料で品目を確かめた国（義務 m・推奨 r）
+//  part = 一部だけ確かめられた国。確かめた品目を義務として出し、前に出していた並び（prev）の残りは「主なアレルゲン（各国の表示制度の品目とは限りません）」として続けて出す（安全側。前に出ていた品目を引っこめない）
+//  none = 公的資料で確かめられなかった国。前の並び（prev）を「主なアレルゲン（各国の表示制度の品目とは限りません）」として出す（統括の判断 F-1）
+const ALG_REGION = {
+    JP: {k: 'ok', m: 'jp9', r: 'jp20'}, US: {k: 'ok', m: 'us9'},
+    FR: {k: 'ok', m: 'eu14', eu: true}, DE: {k: 'ok', m: 'eu14', eu: true}, IT: {k: 'ok', m: 'eu14', eu: true}, ES: {k: 'ok', m: 'eu14', eu: true}, PL: {k: 'ok', m: 'eu14', eu: true},
+    GB: {k: 'ok', m: 'eu14'}, TR: {k: 'ok', m: 'eu14'}, IN: {k: 'ok', m: 'in'}, KR: {k: 'ok', m: 'kr'}, TW: {k: 'ok', m: 'tw', r: 'twRec'},
+    CN: {k: 'ok', r: 'cn', until: '2027-03-16'},   // いまは推奨（GB 7718-2011）。2027-03-16 から義務（GB 7718-2025）
+    MX: {k: 'part', m: 'mx', prev: 'us9'}, BR: {k: 'part', m: 'br', prev: 'us9'}, ID: {k: 'part', m: 'id', prev: 'eu14'}, TH: {k: 'part', m: 'th', prev: 'eu14'},
+    VN: {k: 'none', prev: 'eu14'}, EG: {k: 'none', prev: 'eu14'}, PH: {k: 'none', prev: 'us9'}, PE: {k: 'none', prev: 'us9'}};
+function algRegion(){ return ALG_REGION[currentCountry()] || {k: 'none', prev: 'eu14'}; }
+function algStyle(){ const cc = currentCountry(); return ALG_REGION[cc] ? cc.toLowerCase() : 'eu'; }
+// その国の言葉で画面を出しているときは、法令・公的機関の呼び方で出す（国の言葉でないとき・載せていない品目は、ふだんの名前）
+const ALG_OFFICIAL = {
+    US: ['en', {milk:'Milk', egg:'Eggs', fish:'Fish', crustacean:'Crustacean shellfish', treenut:'Tree nuts', peanut:'Peanuts', wheat:'Wheat', soy:'Soybeans', sesame:'Sesame'}],
+    GB: ['en', {celery:'Celery', gluten:'Cereals containing gluten', crustacean:'Crustaceans', egg:'Eggs', fish:'Fish', lupin:'Lupin', milk:'Milk', mollusc:'Molluscs', mustard:'Mustard', peanut:'Peanuts', sesame:'Sesame', soy:'Soybeans', sulphite:'Sulphur dioxide and sulphites', treenut:'Tree nuts'}],
+    IN: ['en', {gluten:'Cereals containing gluten', crustacean:'Crustacean', milk:'Milk', egg:'Eggs', fish:'Fish', peanut:'Peanuts', treenut:'Tree nuts', soy:'Soy', sulphite:'Sulphite'}],
+    FR: ['fr', {gluten:'Céréales contenant du gluten', crustacean:'Crustacés', egg:'Œufs', fish:'Poissons', peanut:'Arachides', soy:'Soja', milk:'Lait', treenut:'Fruits à coque', celery:'Céleri', mustard:'Moutarde', sesame:'Graines de sésame', sulphite:'Anhydride sulfureux et sulfites', lupin:'Lupin', mollusc:'Mollusques'}],
+    DE: ['de', {gluten:'Glutenhaltiges Getreide', crustacean:'Krebstiere', egg:'Eier', fish:'Fische', peanut:'Erdnüsse', soy:'Sojabohnen', milk:'Milch', treenut:'Schalenfrüchte', celery:'Sellerie', mustard:'Senf', sesame:'Sesamsamen', sulphite:'Schwefeldioxid und Sulphite', lupin:'Lupinen', mollusc:'Weichtiere'}],
+    IT: ['it', {gluten:'Cereali contenenti glutine', crustacean:'Crostacei', egg:'Uova', fish:'Pesce', peanut:'Arachidi', soy:'Soia', milk:'Latte', treenut:'Frutta a guscio', celery:'Sedano', mustard:'Senape', sesame:'Semi di sesamo', sulphite:'Anidride solforosa e solfiti', lupin:'Lupini', mollusc:'Molluschi'}],
+    ES: ['es', {gluten:'Cereales que contengan gluten', crustacean:'Crustáceos', egg:'Huevos', fish:'Pescado', peanut:'Cacahuetes', soy:'Soja', milk:'Leche', treenut:'Frutos de cáscara', celery:'Apio', mustard:'Mostaza', sesame:'Granos de sésamo', sulphite:'Dióxido de azufre y sulfitos', lupin:'Altramuces', mollusc:'Moluscos'}],
+    PL: ['pl', {gluten:'Zboża zawierające gluten', crustacean:'Skorupiaki', egg:'Jaja', fish:'Ryby', peanut:'Orzeszki ziemne (arachidowe)', soy:'Soja', milk:'Mleko', treenut:'Orzechy', celery:'Seler', mustard:'Gorczyca', sesame:'Nasiona sezamu', sulphite:'Dwutlenek siarki i siarczyny', lupin:'Łubin', mollusc:'Mięczaki'}],
+    TR: ['tr', {gluten:'Gluten içeren tahıllar', crustacean:'Kabuklular', egg:'Yumurta', fish:'Balık', peanut:'Yer fıstığı', soy:'Soya', milk:'Süt', treenut:'Sert kabuklu meyveler', celery:'Kereviz', mustard:'Hardal', sesame:'Susam tohumu', sulphite:'Kükürt dioksit ve sülfitler', lupin:'Acı bakla (lupin)', mollusc:'Yumuşakçalar'}],
+    KR: ['ko', {egg:'알류(가금류만 해당)', milk:'우유', buckwheat:'메밀', peanut:'땅콩', soy:'대두', wheat:'밀', mackerel:'고등어', crab:'게', shrimp:'새우', pork:'돼지고기', peach:'복숭아', tomato:'토마토', sulphite:'아황산류', walnut:'호두', chicken:'닭고기', beef:'쇠고기', squid:'오징어', shellfish:'조개류(굴, 전복, 홍합 포함)', pinenut:'잣'}],
+    TW: ['zh-Hant', {crustacean:'甲殼類', mango:'芒果', peanut:'花生', milk:'牛奶、羊奶', egg:'蛋', treenut:'堅果類', sesame:'芝麻', gluten:'含麩質之穀物', soy:'大豆', fish:'魚類', sulphite:'亞硫酸鹽類', mollusc:'頭足類、螺貝類', seeds:'種子類（葵花籽、瓜子、松子仁等）', kiwi:'奇異果'}],
+    CN: ['zh-Hans', {gluten:'含有麸质的谷物及其制品', crustacean:'甲壳纲类动物及其制品', fish:'鱼类及其制品', egg:'蛋类及其制品', peanut:'花生及其制品', soy:'大豆及其制品', milk:'乳及乳制品', treenut:'坚果及其果仁类制品'}],
+    MX: ['es', {gluten:'Cereales que contienen gluten', crustacean:'Crustáceos', egg:'Huevo', fish:'Pescado', peanut:'Cacahuate', soy:'Soya', milk:'Leche', treenut:'Nueces de árboles', sulphite:'Sulfito'}],
+    BR: ['pt-BR', {gluten:'Trigo, centeio, cevada, aveia e suas estirpes', crustacean:'Crustáceos', egg:'Ovos', fish:'Peixes', peanut:'Amendoim', soy:'Soja', milk:'Leites de todas as espécies de animais mamíferos', pinenut:'Pinoli'}],
+    ID: ['id', {gluten:'Serealia mengandung gluten', egg:'Telur', fish:'Ikan', crustacean:'Krustasea', mollusc:'Moluska', peanut:'Kacang tanah', soy:'Kedelai', milk:'Susu', treenut:'Kacang pohon'}],
+    TH: ['th', {gluten:'ธัญพืชที่มีกลูเตน', crustacean:'สัตว์น้ำที่มีเปลือกแข็ง', peanut:'ถั่วลิสง', soy:'ถั่วเหลือง', mollusc:'หอย หมึก', sulphite:'ซัลไฟต์'}]};
 function algLabel(id){
+    const o = ALG_OFFICIAL[currentCountry()];
+    if (o && o[0] === LANG && o[1][id]) return o[1][id];
     return {shrimp:t('えび'), crab:t('かに'), walnut:t('くるみ'), wheat:t('小麦'), buckwheat:t('そば'), egg:t('卵'), milk:t('乳（牛乳・乳製品）'), peanut:t('落花生（ピーナッツ）'),
         abalone:t('あわび'), squid:t('いか'), ikura:t('いくら'), orange:t('オレンジ'), cashew:t('カシューナッツ'), pistachio:t('ピスタチオ'), kiwi:t('キウイフルーツ'), beef:t('牛肉'), sesame:t('ごま'), salmon:t('さけ'), mackerel:t('さば'),
         soy:t('大豆'), chicken:t('鶏肉'), banana:t('バナナ'), pork:t('豚肉'), macadamia:t('マカダミアナッツ'), peach:t('もも'), yamaimo:t('やまいも'), apple:t('りんご'), gelatin:t('ゼラチン'), almond:t('アーモンド'),
         gluten:t('グルテンを含む穀物（小麦・ライ麦・大麦・オーツ麦など）'), crustacean:t('甲殻類（えび・かになど）'), fish:t('魚'), treenut:t('ナッツ類（アーモンド・くるみ・カシューナッツなど）'), celery:t('セロリ'),
-        mustard:t('マスタード（からし）'), sulphite:t('亜硫酸塩（二酸化硫黄）'), lupin:t('ルピナス'), mollusc:t('軟体動物（貝・いか・たこなど）')}[id] || id;
+        mustard:t('マスタード（からし）'), sulphite:t('亜硫酸塩（二酸化硫黄）'), lupin:t('ルピナス'), mollusc:t('軟体動物（貝・いか・たこなど）'),
+        tomato:t('トマト'), mango:t('マンゴー'), pinenut:t('松の実'), shellfish:t('貝類（かき・あわび・ムール貝など）'), seeds:t('種子類（ひまわりの種・かぼちゃの種・松の実など）')}[id] || id;
 }
 // 画面に出す並び: [[見出し, [id...]], ...]
 // アレルゲンの区分表（ALG_G）を最後に更新した日。表を直したら、この日付も直す（国の表示の決まりとの照合は別に行う）
-const ALG_TABLE_DATE = '2026-10-27';
+const ALG_TABLE_DATE = '2026-10-28';
 function algSections(){
-    const st = algStyle();
-    const main = st === 'jp' ? [[t('特定原材料（表示が義務の9品目）'), ALG_G.jp9], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
-        : st === 'us' ? [[t('米国の主要アレルゲン（9品目）'), ALG_G.us9]] : [[t('EUの主要アレルゲン（14品目）'), ALG_G.eu14]];
+    const cc = currentCountry(), R = algRegion(), main = [];
+    if (cc === 'JP') main.push([t('特定原材料（表示が義務の9品目）'), ALG_G.jp9], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]);
+    else if (cc === 'US') main.push([t('米国の主要アレルゲン（9品目）'), ALG_G.us9]);
+    else if (R.eu) main.push([t('EUの主要アレルゲン（14品目）'), ALG_G.eu14]);
+    else {
+        if (R.m) main.push([R.k === 'part' ? t('表示が義務のアレルゲン（公的資料で確かめた分）') : t('表示が義務のアレルゲン'), ALG_G[R.m]]);
+        if (R.r) main.push([R.until ? t('表示をすすめるアレルゲン（{date}から義務）', {date: R.until}) : t('表示をすすめるアレルゲン'), ALG_G[R.r]]);
+        const have = new Set([].concat(...main.map(m => m[1])));
+        // 確かめられなかった分: 前に出していた並びの残り（グルテンを含む穀物を出していれば、小麦はその中に入るので重ねない）
+        const prev = R.prev ? ALG_G[R.prev].filter(id => !have.has(id) && !(id === 'wheat' && have.has('gluten'))) : [];
+        if (prev.length) main.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), prev]);
+    }
     const shown = new Set([].concat(...main.map(m => m[1])));
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
 }
@@ -6318,8 +6378,8 @@ function avoidChipsHtml(list, act, famAct, more){
 }
 // 家族のアレルギーのチップ（モニター第3回 S7）: なかま（卵・乳製品・小麦…）と、その国の主なアレルゲン（日本は特定原材料・準ずるもの）を、押しても畳まずに並べる（続けて押せる）。
 // 主なアレルゲンは、全員共通の判定と同じ id に読みかわる言葉で持つ（famAlgIds。保存の形は今までと同じ「食材の名前」）。なかまのチップで足りるもの（卵・乳・小麦・肉・魚・貝・ナッツ類）は出さない
-const ALG_WORD = {shrimp:'えび', crab:'かに', walnut:'くるみ', buckwheat:'そば', peanut:'落花生', cashew:'カシューナッツ', abalone:'あわび', squid:'いか', ikura:'いくら', orange:'オレンジ', kiwi:'キウイフルーツ', sesame:'ごま', salmon:'鮭', mackerel:'さば', soy:'大豆', banana:'バナナ', pistachio:'ピスタチオ', macadamia:'マカダミアナッツ', peach:'もも', yamaimo:'やまいも', apple:'りんご', gelatin:'ゼラチン', almond:'アーモンド', celery:'セロリ', mustard:'からし', lupin:'ルピナス', sulphite:'亜硫酸塩', gluten:'ライ麦'};
-const FAM_ALG_COVER = ['egg', 'milk', 'wheat', 'pork', 'chicken', 'beef', 'fish', 'crustacean', 'mollusc', 'treenut'];
+const ALG_WORD = {shrimp:'えび', crab:'かに', walnut:'くるみ', buckwheat:'そば', peanut:'落花生', cashew:'カシューナッツ', abalone:'あわび', squid:'いか', ikura:'いくら', orange:'オレンジ', kiwi:'キウイフルーツ', sesame:'ごま', salmon:'鮭', mackerel:'さば', soy:'大豆', banana:'バナナ', pistachio:'ピスタチオ', macadamia:'マカダミアナッツ', peach:'もも', yamaimo:'やまいも', apple:'りんご', gelatin:'ゼラチン', almond:'アーモンド', celery:'セロリ', mustard:'からし', lupin:'ルピナス', sulphite:'亜硫酸塩', gluten:'ライ麦', tomato:'トマト', mango:'マンゴー', pinenut:'松の実', seeds:'ひまわりの種'};
+const FAM_ALG_COVER = ['egg', 'milk', 'wheat', 'pork', 'chicken', 'beef', 'fish', 'crustacean', 'mollusc', 'treenut', 'shellfish'];
 function famAlgChipsHtml(m){
     const list = m.allergy, sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
     const fam = avoidFamChips().map(f => `<button class="chip" data-act="fam-alg-fam" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`);
