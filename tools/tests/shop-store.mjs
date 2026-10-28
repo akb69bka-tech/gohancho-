@@ -6,13 +6,14 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
-let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const errs = [];
 async function open(cc, opts = {}){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: opts.dark ? 'dark' : 'light', hasTouch: true }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('shop-store', String(++seedN))));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(([cc, wake]) => {
         if (wake){ window.__wl = {req:0, rel:0}; Object.defineProperty(navigator, 'wakeLock', {configurable:true, value:{request: async () => { __wl.req++; const l = {addEventListener(){}, release: async () => { __wl.rel++; }}; return l; }}}); }

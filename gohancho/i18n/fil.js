@@ -1216,6 +1216,7 @@ GOHAN_I18N('fil', {
     "決めた献立を作り直しますか？": "Ulitin ang menu na napagpasyahan mo?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Inayon sa settings mo ang menu ngayon na hindi pa napagpasyahan: {list}",
     "{name}（外しました）": "{name} (inalis)",
+    "この条件で出せる主菜がありません": "Walang ulam na pasok sa mga setting na ito",
     "「{name}」にかえました": "Pinalitan ng “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Tapos na ang lahat ng {n} putahe ngayon. Magaling!",
     "ほかの食材（例: セロリ）": "Iba pa (hal. kintsay)",

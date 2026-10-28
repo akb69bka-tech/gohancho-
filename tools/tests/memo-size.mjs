@@ -7,12 +7,13 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
-let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
+let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 async function open(cc, extra = {}, lang){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('memo-size', String(++seedN))));
     const p = await ctx.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
     p.reqs = []; p.on('request', r => { if (r.method() !== 'GET' || /[?&](amount|spend)/i.test(r.url())) p.reqs.push(r.method() + ' ' + r.url()); });
     await p.addInitScript(([cc, extra, lang]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1);
@@ -122,6 +123,7 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
 // 2c) 冷蔵庫の食材チップ（⏰と日数）は、狭い幅・大きい文字でもはみ出さない
 for (const [w, sz, lang] of [[320, 2, 'de'], [320, 2, 'en'], [360, 1, 'ar'], [320, 2, 'ja']]){
     const ctx = await b.newContext({ viewport: { width: w, height: 800 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('memo-size', String(++seedN))));
     const p = await ctx.newPage(); p.errs = [];
     const d0 = new Date(Date.now() - 6 * 86400000).toISOString().slice(0, 10);
     await p.addInitScript(([lang, sz, d0]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:d0, settings:{country:'JP', dishCount:3, uiLang:lang, textSize:sz}, fridge:['豚肉', '玉ねぎ', 'キャベツ', 'じゃがいも'], fridgeMeta:{'豚肉':{d:d0, soon:true}, '玉ねぎ':{d:d0, soon:true}, 'キャベツ':{d:d0}, 'じゃがいも':{d:d0, soon:true}}})); } }, [lang, sz, d0]);
@@ -134,6 +136,7 @@ for (const [w, sz, lang] of [[320, 2, 'de'], [320, 2, 'en'], [360, 1, 'ar'], [32
 // 5) 食べる時刻から逆算: 0時台の指定は、過ぎていれば「あすの未明」。時刻を入れなくても「いま始めたら」を出す
 {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('memo-size', String(++seedN))));
     const p = await ctx.newPage(); p.errs = [];
     const d = '2026-10-27';
     await p.addInitScript(d => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:d, settings:{country:'JP', dishCount:3, uiLang:'ja'}, cook:{d, ids:['nikujaga', 'hamburg'], slots:['主菜', '主菜'], done:{}}})); } }, d);
@@ -172,6 +175,7 @@ for (const [cc, lang] of [['JP'], ['US'], ['DE', 'de'], ['EG', 'ar'], ['TH', 'th
 // 3b) 下のタブの名前は、単語の途中で折れない・はみ出さない（独語・葡語など長い言葉。狭い画面・大きい文字でも）
 for (const [lang, w, sz] of [['de', 320, 2], ['de', 360, 1], ['de', 390, 0], ['pt-BR', 320, 2], ['fr', 360, 2], ['tr', 320, 1]]){
     const ctx = await b.newContext({ viewport: { width: w, height: 800 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('memo-size', String(++seedN))));
     const p = await ctx.newPage();
     await p.addInitScript(([lang, sz]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-20', settings:{country:'DE', dishCount:3, uiLang:lang, textSize:sz || undefined}})); } }, [lang, sz]);
     await p.goto(URL_); await ready(p);
