@@ -1506,17 +1506,6 @@ export default {
         xmxShine(100, 100, 74, .4),
     ].join(''),
 
-    // Crema de calabacita: red-rimmed white enamel bowl, pale-green zucchini cream soup with crema swirl, queso fresco, croutons and black pepper
-    mx_crema_calabacita: p => [
-        xmxPeltreBowl(p, { out: '#f1eee6', rim: '#b8301c' }),
-        xmxBroth(p, 78, '#b8c77a', { glow: .4 }),
-        xmxSwirl(98, 100, 46, { c: '#fbf6ea', w: 3.4, turns: 1.5 }),
-        `<g ${p.sh(.6)}>`, ...[[112, 86, 20], [128, 100, -10], [116, 116, 40], [82, 118, 10], [96, 82, -30], [70, 98, 25], [100, 128, -15], [136, 82, 50]].map(([x, y, r]) => `<g ${T(x, y, r)}><g ${p.crumb(.9)}><rect x="-7" y="-7" width="14" height="14" rx="2.6" fill="${p.g('#dca04a', .35, .3)}" stroke="#a46a24" stroke-width=".5"/></g></g>`), `</g>`,
-        xmxQueso(p, 100, 100, 70, { n: 16, seed: 1, size: 3 }),
-        K.sprinkle(p, 100, 100, 90, { c: '#3a2a20', n: 26, r: .6 }),
-        xmxShine(100, 100, 76, .5),
-    ].join(''),
-
     // Caldo de huevo: clay bowl, tomato-serrano broth with two softly poached eggs, potato dice, a whole serrano and cilantro
     mx_caldo_huevo: p => [
         K.bowl(p, { R: 92, glaze: '#c0703c', inside: '#f3e6cc' }),

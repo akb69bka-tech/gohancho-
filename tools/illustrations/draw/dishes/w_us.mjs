@@ -408,18 +408,6 @@ export default {
         K.glaze(p, 128, 104, 70, '#a85a1c', { seed: 3, op: .2 }),
     ].join(''),
 
-    // Mashed potatoes: turquoise stoneware bowl, creamy swirled mash, melting butter, chives, pepper
-    us_mashed: p => [
-        K.bowl(p, { glaze: '#3f97a0', inside: '#f6f2e8' }),
-        `<g ${p.sh(1.3)}>`, usMound(p, 100, 102, 66, 62, '#f6e7bd', { seed: 2, l: .35, d: .22 }), `</g>`,
-        `<path d="M58,104 C60,74 92,58 118,68 C140,78 140,108 118,118 C100,126 82,114 88,98 C92,88 108,86 112,96" stroke="#e2cc94" stroke-width="3.2" fill="none" stroke-linecap="round" opacity=".8"/>`,
-        `<path d="M58,102 C60,72 92,56 118,66 C140,76 140,106 118,116 C100,124 82,112 88,96 C92,86 108,84 112,94" stroke="#fffaf0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>`,
-        `<path d="M70,140 Q100,154 136,134" stroke="#e2cc94" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/>`,
-        usButter(p, 104, 98, 22, 12),
-        K.scallions(p, 100, 104, 90, { n: 22, c: '#3f8f2c' }),
-        K.sprinkle(p, 100, 104, 96, { c: '#3a2e26', n: 22, r: .55 }),
-    ].join(''),
-
     // Garlic green beans: mustard stoneware bowl, glossy green beans with golden garlic slices
     us_greenbeans: p => {
         const R = rng(p.id + 'gb');

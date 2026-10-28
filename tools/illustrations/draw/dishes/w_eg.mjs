@@ -449,17 +449,6 @@ export default {
         return out.join('');
     },
 
-    // molokhia: dark green, glossy, with golden garlic flecks
-    eg_molokhia: p => {
-        const R = rng('molo');
-        let tex = '';
-        for (let i = 0; i < 18; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 64, x = 100 + Math.cos(a) * d, y = 100 + Math.sin(a) * d; tex += `<path ${T(x, y)} d="${smooth(ring(4 + R() * 8, 8, .5, R, 1.4, .7))}" fill="${R() < .5 ? '#6a8a28' : '#2f4512'}" opacity=".35"/>`; }
-        let garlic = '';
-        for (let i = 0; i < 26; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 52; garlic += `<circle cx="${f(100 + Math.cos(a) * d)}" cy="${f(100 + Math.sin(a) * d)}" r="${f(.8 + R() * 1.2)}" fill="${R() < .5 ? '#e0b04a' : '#c98a2a'}"/>`; }
-        return [wegSoupBowl(p, '#3f7a3a'), K.liquid(p, { R: 76, c: '#46641c', op: 1, shine: false }), tex, garlic,
-            wegOil(p, 100, 100, 100, { n: 9, c: '#d9b23a', op: .55, rmax: 2.6 }), wegShine(100, 100, 76, .5)].join('');
-    },
-
     // orzo chicken soup: golden broth, orzo, shredded chicken, parsley
     eg_lesanasfour: p => {
         const R = rng('orzo');

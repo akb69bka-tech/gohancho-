@@ -16,16 +16,6 @@ function spots(seed, n, R, minD, { cx = 100, cy = 100, sy = 1 } = {}){
     return out;
 }
 
-function beads(p, x, y, s, { n = 10, c = '#f0b84a', op = .7, rmax = 2.6, seed = 1 } = {}){
-    const r = rng(p.id + 'bd' + seed);
-    let o = '';
-    for (let i = 0; i < n; i++){
-        const a = r() * 6.283, d = Math.sqrt(r()) * s / 2, rr = 1.1 + r() * rmax, cx = x + Math.cos(a) * d, cy = y + Math.sin(a) * d;
-        o += `<circle cx="${f(cx)}" cy="${f(cy)}" r="${f(rr)}" fill="${c}" opacity="${op}" stroke="${dk(c, .2)}" stroke-width=".3"/><circle cx="${f(cx - rr * .35)}" cy="${f(cy - rr * .35)}" r="${f(rr * .32)}" fill="#fff" opacity=".85"/>`;
-    }
-    return o;
-}
-
 function sheen(cx, cy, R, op = .45){
     return `<path d="M${f(cx - R * .62)},${f(cy - R * .3)} A${f(R * .72)},${f(R * .72)} 0 0 1 ${f(cx - R * .15)},${f(cy - R * .66)}" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="${op}"/>`;
 }
@@ -82,42 +72,6 @@ function kr_yangpajangajji(p){
     return out.join('');
 }
 
-function spLeaf(p, x, y, s, r, c, seed){
-    const R = rng(p.id + 'spl' + seed);
-    const k = s / 20;
-    const a = 7 + R() * 2, b = 5 + R() * 2;
-    const d = `M${f(-a - 3)},${f((R() - .5) * 2)} Q${f(-a)},${f(-b - 1)} ${f(-1)},${f(-b)} Q${f(a)},${f(-b + R() * 2)} ${f(a + 4)},${f((R() - .5) * 3)} Q${f(a)},${f(b)} ${f(-1)},${f(b + 1)} Q${f(-a)},${f(b - 1)} ${f(-a - 3)},${f((R() - .5) * 2)}Z`;
-    return `<g ${T(x, y, r, k)}><path d="M${f(-a - 3)},0 L${f(-a - 6)},${f((R() - .5) * 2)}" stroke="#8fb85a" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="${d}" fill="${p.g(c, .34, .3)}" stroke="${dk(c, .4)}" stroke-width=".6"/>
-        <path d="M${f(-a - 1)},0 Q0,${f((R() - .5) * 2)} ${f(a + 2)},0" stroke="${lt(c, .3)}" stroke-width=".7" fill="none" opacity=".55"/>
-        <path d="M${f(-a * .7)},${f(-b * .5)} Q${f(-a * .1)},${f(-b * .95)} ${f(a * .5)},${f(-b * .7)}" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".55"/></g>`;
-}
-
-function it_spinaci(p){
-    const R = rng(p.id + 'spn');
-    const cols = ['#245c1c', '#2e6c22', '#3a7c2a', '#4a8c32', '#5a9a3a'];
-    const leaves = [];
-    for (let i = 0; i < 52; i++){
-        const a = R() * 6.283, d = Math.sqrt(R()) * 50, x = 100 + Math.cos(a) * d, y = 100 + Math.sin(a) * d * .88;
-        // 中心に近いほど明るい（上に重なる）葉
-        const k = Math.min(4, Math.floor((1 - d / 50) * 4.6 + R() * .8));
-        leaves.push({ x, y, r: R() * 360, s: 22 + R() * 12, c: cols[k], d });
-    }
-    leaves.sort((a, b) => b.d - a.d);   // まわりが下、中心が上
-    const out = [K.plate(p, { well: .8 }),
-        // 皿にしみ出したオリーブオイルと水分
-        `<path d="${smooth(ring(60, 11, .12, rng('spo'), 1, .92))}" transform="translate(100 102)" fill="#c4cf72" opacity=".28"/>`,
-        `<path d="${smooth(ring(52, 11, .15, rng('spo2'), 1, .9))}" transform="translate(100 102)" fill="#1f4a14" opacity=".4"/>`];
-    out.push(`<g ${p.sh(.8)}>${leaves.map((l, i) => spLeaf(p, l.x, l.y, l.s, l.r, l.c, i)).join('')}</g>`);
-    // オリーブオイルのつや
-    out.push(beads(p, 100, 100, 100, { n: 10, c: '#d8c24a', op: .55, rmax: 1.5, seed: 2 }));
-    // ガーリック1片（色づいた）と唐辛子フレーク
-    out.push(`<g ${T(108, 92, 25)}><g ${p.sh(.6)}><path d="M-8,0 Q-6,-6 1,-6 Q9,-5 8,1 Q5,6 -3,5 Q-8,4 -8,0Z" fill="${p.g('#f2dc9a', .35, .2)}" stroke="#b8923a" stroke-width=".8"/></g><path d="M-6,-1 Q0,-4 6,-1" stroke="#fff" stroke-width="1" fill="none" stroke-linecap="round" opacity=".8"/><path d="M-6,2 Q-2,3.6 3,2.6" stroke="#c89a40" stroke-width=".8" fill="none"/></g>`);
-    out.push(K.sprinkle(p, 100, 100, 90, { c: '#d42a1c', n: 12, r: .8 }));
-    return out.join('');
-}
-
 export default {
     kr_yangpajangajji: p => kr_yangpajangajji(p),
-    it_spinaci: p => it_spinaci(p),
 };

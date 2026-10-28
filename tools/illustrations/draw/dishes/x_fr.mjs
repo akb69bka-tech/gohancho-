@@ -798,20 +798,6 @@ const XFR = {
             xfrHerbs(p, 100, 100, 120, { n: 20 }),
         ].join('');
     },
-    // セロリアックのレムラード: 白い鉢（青い線）に、細い千切りのセロリアックをマスタード入りマヨネーズであえた山、パセリ
-    fr_celeri: p => [
-        K.bowl(p, { glaze: '#f3efe6', inside: '#fbf9f3', lip: .9 }),
-        `<circle cx="100" cy="100" r="80" fill="none" stroke="#3c6a9a" stroke-width="1.6" opacity=".8"/>`,
-        `<g ${p.sh(1.2)}><path d="${smooth(ring(66, 14, .12, rng('xfrcel')).map(([a, b]) => [a + 100, b + 100]))}" fill="${p.rg('#dccb98', .2, .25)}"/></g>`,
-        K.shreds(p, 100, 100, 172, { c: '#d6c48e', n: 56, w: 2.8, len: .17, seed: 1, curve: .7 }),
-        K.shreds(p, 98, 98, 160, { c: '#f2e8c8', n: 60, w: 2.6, len: .17, seed: 2, curve: .7 }),
-        K.shreds(p, 96, 96, 120, { c: '#fcf8ea', n: 34, w: 2.4, len: .2, seed: 3, curve: .7 }),
-        K.glaze(p, 98, 98, 96, '#fbf6e2', { seed: 1, op: .4 }),
-        xfrGrains(p, 100, 100, 100, { cols: ['#b08632'], n: 16, rx: 1, ry: .8, seed: 3 }),
-        xfrHerbs(p, 98, 96, 86, { n: 24 }),
-        K.sprinkle(p, 100, 100, 100, { c: '#2a2420', n: 12, r: .5 }),
-    ].join(''),
-
     // きゅうりのクリームサラダ: 青磁の小鉢に、薄い輪切りのきゅうり、白いクリームのドレッシング、ディル、シブレット
     fr_concombre: p => [
         K.kobachi(p, { glaze: '#8fb8a6', inside: '#eef3ea' }),
@@ -1176,18 +1162,6 @@ const XFR = {
         xfrSwirl(p, 98, 100, 36, { turns: 1.4, w: 4.2, c: '#f8f4e8' }),
         `<g ${p.sh(.5)}>`, xfrCress(p, 126, 74, 46, -30), xfrCress(p, 70, 128, 42, 150), xfrCress(p, 138, 120, 36, 60), xfrCress(p, 66, 78, 32, -120), `</g>`,
         K.sprinkle(p, 100, 100, 100, { c: '#2a2420', n: 12, r: .55 }),
-        xfrShine(100, 100, 73, .45),
-    ].join(''),
-
-    // ポタージュ・クレシー: 白い鉢（オレンジの線）に、明るいオレンジのにんじんのポタージュ、クリームのしずく、セルフイユ
-    fr_crecy: p => [
-        K.bowl(p, { glaze: '#5d7f98', inside: '#f3eee2' }),
-        K.liquid(p, { R: 73, c: '#ec8a2c', op: 1 }),
-        `<circle cx="96" cy="94" r="46" fill="#f6a848" opacity=".45"/>`,
-        ...Array.from({ length: 8 }, (_, i) => { const a = i / 8 * 6.28, x = 100 + Math.cos(a) * 44, y = 100 + Math.sin(a) * 40; return `<g ${T(x, y, a * 57.3 + 90)}><path d="M-4,-1 Q0,-6 4,-1 Q2,4 0,6 Q-2,4 -4,-1Z" fill="#fbf4e2" stroke="#e6c8a0" stroke-width=".5"/></g>`; }),
-        `<g ${p.sh(.5)}>`, K.shreds(p, 100, 100, 30, { c: '#f4a04a', n: 12, w: 1.6, len: .7, seed: 2, curve: .5 }), `</g>`,
-        `<g ${p.sh(.4)}>`, xfrDill(p, 106, 94, 22, -30), xfrDill(p, 94, 104, 18, 60), `</g>`,
-        K.sprinkle(p, 100, 100, 100, { c: '#2a2420', n: 10, r: .55 }),
         xfrShine(100, 100, 73, .45),
     ].join(''),
 
