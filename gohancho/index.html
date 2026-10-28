@@ -104,65 +104,80 @@ window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
    色: 操作はすべて藍の1色。山吹は「変えたところ・プラス」の目印だけ。器は染付・漆・青磁。書体: 見出しは明朝（品書き）、本文は角ゴシック
    形: 白いカード（.card）1種類・角丸16px・見出しは「章（h2）」と「カードの小見出し（.eyebrow）」の2段だけ */
 :root{
-    /* デザイン v2: 地は生成り（和紙の白）、操作は藍の1色。変数の一覧は scratchpad/design_v2/tokens.md */
-    --bg:#f4f3ef;
+    /* デザイン v3（オーナー決定）: 地は生成り、文字はこげ茶、主ボタンだけ柿色、時間・できたは若草。変数の一覧は scratchpad/design_v2/tokens.md */
+    --bg:#fbf5ec;
     --surface:#ffffff;
-    --surface-2:#ebe9e3;
+    --surface-2:#f4ebdd;
     --sheet-bg:var(--bg);       /* 下から出るシート。ライトはページと同じ、ダークは一段明るくして浮かせる */
     --sheet-edge:transparent;
-    --ink:#1a2233;
-    --muted:#586174;
-    --line:#dfdcd4;
-    --line-soft:#ebe8e1;       /* カードの縁・行の区切り（--line より薄い） */
-    --accent:#22406b;          /* 藍 */
+    --ink:#3a2a1f;             /* こげ茶 */
+    --muted:#756354;           /* 補足（表の #7d6a5b を少し濃くして、--surface-2・--accent-soft の上でも 4.5:1 以上に） */
+    --line:#eadccb;
+    --line-soft:#f1e6d8;       /* カードの縁・行の区切り（--line より薄い） */
+    --accent:#b8521f;          /* 柿色: 主ボタンの地・選んだタブ */
     --accent-ink:#ffffff;
-    --accent-soft:#e1e8f2;
-    --accent-press:#1a3254;    /* 主ボタンを押したとき */
-    --accent-line:color-mix(in srgb,var(--accent) 45%,var(--surface));   /* 副ボタンの枠 */
+    --accent-soft:#fdece2;
+    --accent-press:#9c4418;    /* 主ボタンを押したとき */
+    --accent-text:#a84a1b;     /* 柿色の文字（淡い地の上でも 4.5:1 以上） */
+    --accent-line:color-mix(in srgb,var(--ink) 22%,var(--surface));   /* 副ボタンの枠（こげ茶を薄く） */
+    --sel:var(--ink);--sel-ink:var(--surface);   /* 選んだチップの地と文字（柿色は主ボタンだけにするので、こげ茶で示す） */
+    --leaf:#3f6e24;--leaf-soft:#e3efd6;          /* 若草: 時間・できた */
+    --stage:#fde7d3;--stage-2:#e6f0dc;--stage-3:#f8eccf;   /* 絵の台: 主菜=桃・副菜=若草・汁もの/ご飯=卵色 */
     /* 余白（4/8/12/16/24/32） */
     --s4:4px;--s8:8px;--s12:12px;--s16:16px;--s24:24px;--s32:32px;
-    /* 文字（12/14/16/20/24/32。rem なので、アプリ内と端末の文字の大きさの設定が効く） */
+    /* 文字（12/14/16/20/24/32。rem なので、アプリ内と端末の文字の大きさの設定が効く）。名前用に 17/28/30 */
     --fs12:.75rem;--fs14:.875rem;--fs16:1rem;--fs20:1.25rem;--fs24:1.5rem;--fs32:2rem;
+    --fs-head:1.0625rem;--fs-screen:1.75rem;--fs-dish:1.875rem;
     --lh:1.6;--lh-tight:1.35;
-    /* 角丸 */
-    --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:24px;--r-pill:999px;
+    /* 名前（明朝）の字間: 画面名 .16em・料理名 .2em・欄の見出し .14em（日本語以外は下で詰める） */
+    --ls-screen:.16em;--ls-dish:.2em;--ls-head:.14em;
+    /* 角丸: カードは 28 / 20 / 14 の3段 */
+    --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-pill:999px;
     /* 押せる高さ */
-    --tap:48px;--tap-sm:44px;
-    /* 影（1段目=カード、2段目=浮いているもの：固定バー・トースト・シート） */
-    --shadow-1:0 1px 2px rgba(26,34,51,.04),0 2px 12px rgba(26,34,51,.05);
-    --shadow-2:0 2px 6px rgba(26,34,51,.06),0 12px 32px rgba(26,34,51,.12);
-    --shadow-accent:0 1px 0 rgba(255,255,255,.14) inset,0 4px 14px color-mix(in srgb,var(--accent) 28%,transparent);
+    --tap:48px;--tap-sm:44px;--tap-lg:56px;
+    /* 影（茶色がかったふんわりした影。1段目=カード、2段目=浮いているもの：固定バー・トースト・シート） */
+    --shadow-1:0 2px 4px rgba(122,74,34,.06),0 12px 28px rgba(122,74,34,.10);
+    --shadow-2:0 4px 8px rgba(122,74,34,.08),0 18px 40px rgba(122,74,34,.16);
+    --shadow-accent:0 6px 16px rgba(184,82,31,.28);
     /* 動き */
     --ease:cubic-bezier(.2,.7,.3,1);--dur-1:.12s;--dur-2:.2s;--dur-3:.32s;
     --yolk:#c98e0c;            /* 山吹: 変えたところ・プラスの目印だけ */
     --yolk-soft:#f6ecd2;
     --yolk-ink:#5b3f00;
-    --danger:#b23a2a;
-    --sun:#b23a2a; --sat:#2d5b9a;
+    --danger:#b3261e;          /* 注意・アレルギー専用（柿色とは分ける） */
+    --danger-soft:#fbe7e5;
+    --sun:#b3261e; --sat:#2d5b9a;
     /* 器と膳（イラスト。どちらのテーマでも同じ色） */
     --tray:#2b211d; --tray-2:#3a2b25; --tray-edge:#7d2a1f; --tray-ink:#f5eee3; --tray-muted:#c9b9a6;
     --porcelain:#fbfaf6; --rim:#2c4c7c; --lacquer:#8f2b1f; --lacquer-dark:#1c1210; --celadon:#a4c3b2; --celadon-dark:#7e9f8d; --rice:#f6f3ea;
     --shadow:var(--shadow-1);
-    --font-display:'Hiragino Mincho ProN','Hiragino Mincho Pro','Yu Mincho','YuMincho','Noto Serif JP','Noto Serif CJK JP','Noto Serif',ui-serif,'Times New Roman',serif;   /* 外部フォントは読まない（端末の書体のみ） */
-    --font-body:'Hiragino Kaku Gothic ProN','Hiragino Sans',-apple-system,BlinkMacSystemFont,system-ui,'PingFang TC','PingFang SC','Apple SD Gothic Neo','Yu Gothic','Noto Sans JP','Noto Sans KR','Noto Sans SC','Noto Sans Arabic','Noto Sans Thai','Noto Sans Devanagari','Segoe UI',Roboto,sans-serif;
-    --r:16px;
+    /* 書体: 明朝は「名前」だけ（画面名・料理名・欄の見出し・手順番号）。読む文・ボタン・数字・材料はゴシック。外部フォントは読まない */
+    --mincho:'Hiragino Mincho ProN','Hiragino Mincho Pro','Yu Mincho','YuMincho','Noto Serif JP','Noto Serif CJK JP','IPAMincho','IPAexMincho',serif;
+    --gothic:'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','YuGothic','Noto Sans JP','Noto Sans CJK JP','IPAPGothic',-apple-system,BlinkMacSystemFont,'PingFang TC','PingFang SC','Apple SD Gothic Neo','Noto Sans KR','Noto Sans SC','Noto Sans Arabic','Noto Sans Thai','Noto Sans Devanagari','Segoe UI',Roboto,system-ui,sans-serif;
+    --font-display:var(--mincho);
+    --font-body:var(--gothic);
+    --r:20px;
 }
+/* 日本語以外: 明朝の代わりにその言語のセリフ体、字間は詰める（アラビア語・タイ語・ヒンディー語は下の規則で 0） */
+html:not([lang="ja"]){--mincho:ui-serif,Georgia,'Noto Serif','Times New Roman',serif;--ls-screen:.02em;--ls-dish:.02em;--ls-head:.02em}
 @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-        --bg:#0f141b;--surface:#171f2a;--surface-2:#202a37;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e8ecf2;--muted:#9aa6b8;--line:#2d3847;--line-soft:#232d3a;
-        --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;--accent-press:#b5cbec;
-        --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
+        --bg:#1d1814;--surface:#2a231d;--surface-2:#352c24;--sheet-bg:#2a231d;--sheet-edge:#43372d;--ink:#f6ece0;--muted:#c2ae9b;--line:#43372d;--line-soft:#382e26;
+        --accent:#f08a5c;--accent-ink:#2a1508;--accent-soft:#4a2c1d;--accent-press:#f4a37e;--accent-text:#f08a5c;
+        --leaf:#a6cf86;--leaf-soft:#2f3b26;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
+        --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#9dbbe6;
         --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
-        --shadow-1:0 0 0 1px rgba(255,255,255,.02),0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.22);--shadow-2:0 2px 6px rgba(0,0,0,.35),0 14px 36px rgba(0,0,0,.45);--shadow-accent:0 4px 14px rgba(0,0,0,.35);--shadow:var(--shadow-1);
+        --shadow-1:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);--shadow-2:0 4px 8px rgba(0,0,0,.35),0 18px 40px rgba(0,0,0,.45);--shadow-accent:0 6px 16px rgba(0,0,0,.35);--shadow:var(--shadow-1);
         color-scheme:dark;
     }
 }
 :root[data-theme="dark"]{
-    --bg:#0f141b;--surface:#171f2a;--surface-2:#202a37;--sheet-bg:#1a2330;--sheet-edge:#33404f;--ink:#e8ecf2;--muted:#9aa6b8;--line:#2d3847;--line-soft:#232d3a;
-    --accent:#9dbbe6;--accent-ink:#0c1522;--accent-soft:#1f2d42;--accent-press:#b5cbec;
-    --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#ef8b7a;--sun:#ef8b7a;--sat:#9dbbe6;
+    --bg:#1d1814;--surface:#2a231d;--surface-2:#352c24;--sheet-bg:#2a231d;--sheet-edge:#43372d;--ink:#f6ece0;--muted:#c2ae9b;--line:#43372d;--line-soft:#382e26;
+    --accent:#f08a5c;--accent-ink:#2a1508;--accent-soft:#4a2c1d;--accent-press:#f4a37e;--accent-text:#f08a5c;
+    --leaf:#a6cf86;--leaf-soft:#2f3b26;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
+    --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#9dbbe6;
     --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
-    --shadow-1:0 0 0 1px rgba(255,255,255,.02),0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.22);--shadow-2:0 2px 6px rgba(0,0,0,.35),0 14px 36px rgba(0,0,0,.45);--shadow-accent:0 4px 14px rgba(0,0,0,.35);--shadow:var(--shadow-1);
+    --shadow-1:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);--shadow-2:0 4px 8px rgba(0,0,0,.35),0 18px 40px rgba(0,0,0,.45);--shadow-accent:0 6px 16px rgba(0,0,0,.35);--shadow:var(--shadow-1);
     color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -171,47 +186,48 @@ html{font-size:calc(100% * var(--ts,1))}html[data-ts="1"]{--ts:1.15}html[data-ts
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--fs16);line-height:var(--lh);-webkit-font-smoothing:antialiased;padding-inline:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))}   /* 横向きのノッチ・角の丸みに本文がかからない */
 .wrap{max-width:680px;margin:0 auto;padding-block:var(--s16) 128px;display:flex;flex-direction:column;gap:var(--s24)}
 #view{display:flex;flex-direction:column;gap:var(--s32)}
-h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:var(--lh-tight);letter-spacing:.04em;font-feature-settings:"palt"}   /* 明朝の見出しは、かなを詰めて（palt）少し字間をあける */
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;text-wrap:balance;line-height:var(--lh-tight);letter-spacing:var(--ls-head);font-feature-settings:"palt"}   /* 名前は明朝・太さ600（かなを詰めて字間をあける） */
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-a{color:var(--accent)}
+a{color:var(--accent-text)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 ::selection{background:var(--accent-soft);color:var(--ink)}
 
 /* ヘッダー: 品書きの題字＋落款 */
 .top{display:flex;align-items:center;gap:var(--s12);padding-block:var(--s4)}
 .seal{width:40px;height:40px;flex-shrink:0;border:2px solid var(--seal,var(--lacquer));color:var(--seal,var(--lacquer));border-radius:6px;display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1.25rem;line-height:1;transform:rotate(-4deg)}
-.top h1{font-size:var(--fs24)}
+.top h1{font-size:var(--fs24);letter-spacing:.04em}
 .top .date{font-size:var(--fs12);color:var(--muted);letter-spacing:.12em}
 
 /* 見出し */
 .sec{display:flex;flex-direction:column;gap:var(--s16)}
 .sec-head{display:flex;flex-direction:column;gap:var(--s4)}
 .sec-head h2{min-width:0;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}   /* 長い1語の見出し（トルコ語など）で、文字を大きくした狭い画面が横に広がらないように */
-.sec-head h2{font-size:var(--fs24);padding-inline-start:var(--s12);border-inline-start:3px solid var(--accent)}   /* 章の見出し: 明朝24px・藍の細い縦線 */
+.sec-head h2{font-size:var(--fs-screen);letter-spacing:var(--ls-screen)}   /* 画面名: 明朝28px・字間 .16em */
 .sec-head h3{font-size:var(--fs16);margin-top:var(--s8)}
 .sec-head .hint{font-size:var(--fs14);color:var(--muted);line-height:1.5}
-.sec-head h2+.hint{padding-inline-start:15px}
+.sec-head h2+.hint{padding-inline-start:0}
 .sec-head .hint.hint2{line-height:1.5;min-height:3em}   /* 品数・理由の一文は1〜2行で変わる。2行ぶんの高さを取って、気分や品数を変えても、下のお膳が動かないように */
 /* カード: 画面の中の囲みはすべてこれ */
 .card{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1);padding:var(--s16);display:flex;flex-direction:column;gap:var(--s12);min-width:0}   /* カード: 見出し（.eyebrow）→ 本文 → 操作（.row）の順に並べる */
 .fphoto-box{margin:4px 0 12px}
-.eyebrow{font-size:var(--fs12);letter-spacing:.14em;color:var(--accent);font-weight:700;line-height:1.4}
+.eyebrow{font-family:var(--font-display);font-size:var(--fs-head);letter-spacing:var(--ls-head);color:var(--ink);font-weight:600;line-height:1.4}   /* 欄の見出し: 明朝17px */
 .foot{font-size:var(--fs12);color:var(--muted);margin:0;line-height:1.7}
 .sec-head.split{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.label{font-size:var(--fs12);letter-spacing:.14em;color:var(--accent);font-weight:700}
+.label{font-family:var(--font-display);font-size:var(--fs-head);letter-spacing:var(--ls-head);color:var(--ink);font-weight:600}
 
 /* ボタン */
-/* ボタンは3種類: 主（.btn.primary 藍の塗り・1画面に1つ）／副（.btn 藍の枠）／文字だけ（.btn.ghost＝.btn.text）。高さ48px（.sm は44px）。押すと少し沈む */
-.btn{border:1px solid var(--accent-line);background:var(--surface);border-radius:var(--r-md);padding:.5rem 1.125rem;font-size:var(--fs14);font-weight:600;line-height:1.35;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease),transform var(--dur-1) var(--ease);min-height:var(--tap);text-decoration:none;color:var(--accent);-webkit-tap-highlight-color:transparent}
-.btn:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 40%,var(--surface))}
+/* ボタンは3種類: 主（.btn.primary 柿色の塗り・56px・1画面に1つ）／副（.btn 白地にこげ茶の細い枠）／文字だけ（.btn.ghost＝.btn.text）。角は丸。高さ48px（.sm は44px）。押すと少し沈む */
+.btn{border:1px solid var(--accent-line);background:var(--surface);border-radius:var(--r-pill);padding:.5rem var(--btn-px,1.25rem);font-size:var(--btn-fs,var(--fs14));font-weight:600;line-height:1.35;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;transition:background var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease),transform var(--dur-1) var(--ease);min-height:var(--btn-h,var(--tap));text-decoration:none;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.btn:hover{border-color:color-mix(in srgb,var(--ink) 40%,var(--surface));background:color-mix(in srgb,var(--surface-2) 50%,var(--surface))}
 .btn:active{transform:translateY(1px) scale(.985)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:var(--shadow-accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:var(--shadow-accent);--btn-h:var(--tap-lg);--btn-fs:var(--fs16);--btn-px:var(--s24)}   /* 大きさは変数で（各画面の .big-decide などが自分で決めた大きさを上書きしないように） */
 .btn.primary:hover{background:var(--accent);border-color:var(--accent)}
 .btn.primary:active{background:var(--accent-press);border-color:var(--accent-press);box-shadow:none}
-.btn.ghost,.btn.text{background:transparent;border-color:transparent;color:var(--accent)}
-.btn.ghost:hover,.btn.text:hover{background:var(--accent-soft);border-color:transparent}
+.btn.ghost,.btn.text{background:transparent;border-color:transparent;color:var(--ink)}
+.btn.ghost:hover,.btn.text:hover{background:var(--surface-2);border-color:transparent}
 .btn.sm{min-height:var(--tap-sm);min-width:var(--tap-sm);padding:.25rem .875rem;font-size:var(--fs14)}
+.btn.primary.sm{--btn-fs:var(--fs14)}
 .btn.danger{color:var(--danger)}
 .btn.wide{flex:1 1 auto}
 .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
@@ -222,7 +238,7 @@ a{color:var(--accent)}
 .chips:not(.scroll) .chip{white-space:normal;flex-shrink:1;max-width:100%;text-align:start}   /* 長い言葉のチップ（苦手な食材のなかまなど）は折り返して、画面からはみ出さない */
 .chips.scroll{flex-wrap:wrap;padding-block:2px}   /* 以前は横スクロール。最後の項目が隠れるので折り返しに */
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-pill);padding:.3rem .875rem;font-size:var(--fs14);display:inline-flex;align-items:center;justify-content:center;gap:.35rem;min-height:44px;min-width:44px;white-space:normal;overflow-wrap:anywhere;max-width:100%;flex-shrink:0}   /* 長い名前（国名など）でも画面の幅を超えない。収まるチップは今までどおり1行 */
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
 .chip[aria-pressed="true"]::before{content:"✓";content:"✓" / "";font-weight:700}   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
 .chip[aria-pressed="false"]::before{content:"✓";content:"✓" / "";font-weight:700;visibility:hidden}   /* 選んだ・選んでいないで幅が変わると、となりのチップが横にずれる。✓の分の幅を、選んでいないチップにも前もって取る */   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
@@ -235,7 +251,7 @@ a{color:var(--accent)}
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
 .badge{display:inline-block;font-size:var(--fs12);padding:.0625rem .5rem;border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
-.badge.new{background:var(--accent-soft);color:var(--accent)}
+.badge.new{background:var(--leaf-soft);color:var(--leaf)}
 
 /* お膳 */
 .tray{
@@ -308,7 +324,7 @@ a{color:var(--accent)}
 .pw-ready{background:var(--accent-soft);border-radius:12px;padding:.6rem .8rem;margin:.2rem 0;font-size:.9rem}.pw-offer{font-size:1.15rem;margin:.3rem 0}.pw-steps{list-style:none;margin:.2rem 0 .4rem;padding:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 8px;font-size:.84rem}.pw-steps li{display:grid;grid-column:1/-1;grid-template-columns:subgrid;gap:8px;padding-inline-start:10px;border-inline-start:3px solid var(--accent)}.pw-price.cta{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);grid-column:1/-1;align-items:center;text-align:center;min-height:64px}.pw-price.cta .l{color:inherit;font-size:.9rem;font-weight:600}.pw-price.cta .p{font-size:1.1rem;font-weight:700}   /* 請求額をいちばん目立たせる（App Store Review Guidelines 3.1.2）*/
 .swap-note{display:block}.swap-line{color:var(--accent);font-weight:600}.swap-note ul{margin:.3rem 0;padding-inline-start:1.2em}
 .tally{display:flex;flex-direction:column;gap:2px;font-size:.9rem;padding:.6rem .9rem;border:1px solid var(--line);border-radius:12px}
-.note{font-size:var(--fs14);background:var(--accent-soft);border-radius:var(--r-md);padding:var(--s12) var(--s16);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.note{font-size:var(--fs14);background:var(--surface-2);border-radius:var(--r-md);padding:var(--s12) var(--s16);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .cook-warn{margin:.6rem 0}
 
 /* 入力 */
@@ -377,7 +393,7 @@ nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%
 @media (min-width:700px){nav.tabs .in{max-width:680px}}   /* iPad など広い画面では、本文の幅にそろえる */
 nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:min(calc(.75rem / var(--ts,1)), 3.1vw);min-width:0;overflow-wrap:break-word;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
 nav.tabs svg{width:24px;height:24px;padding:3px 12px;box-sizing:content-box;border-radius:var(--r-pill);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:background var(--dur-2) var(--ease)}   /* 選んだタブは、絵の後ろに藍の淡い丸（余白は選んでいないタブも同じ。切り替えで動かない） */
-nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
+nav.tabs button[aria-selected="true"]{color:var(--accent-text);font-weight:700}
 nav.tabs button[aria-selected="true"] svg{stroke-width:2;background:var(--accent-soft)}
 
 /* 詳細シート */
@@ -410,7 +426,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 6px;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:.75rem;line-height:1.4}
 .hero .cap a{color:#fff}
 .sheet-body{padding:var(--s24) var(--s16) 0;display:flex;flex-direction:column;gap:var(--s16)}
-.sheet h2{font-size:var(--fs24)}
+.sheet h2{font-size:var(--fs-dish);letter-spacing:var(--ls-dish)}   /* 料理名（詳細）: 明朝30px・字間 .2em */
 .facts{display:flex;flex-wrap:wrap;gap:6px}
 .fact{font-size:var(--fs12);border:1px solid var(--line);border-radius:var(--r-pill);padding:.125rem .625rem;background:var(--surface)}
 .recipe-ings{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1)}
@@ -422,7 +438,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .seasoning{font-size:var(--fs14);color:var(--muted);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:var(--s12) var(--s16);box-shadow:var(--shadow-1)}
 .steps{margin:0;padding:0;list-style:none;counter-reset:st;display:flex;flex-direction:column;gap:12px}
 .steps li{counter-increment:st;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
-.steps li::before{content:counter(st);width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;margin-top:1px}
+.steps li::before{content:counter(st);width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;margin-top:1px}
 .steps li.add{background:var(--yolk-soft);border-radius:10px;padding:.35rem .5rem .35rem .35rem}
 .steps li.add::before{background:var(--yolk);color:#231800}
 .confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
@@ -545,6 +561,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .badge.avoid{background:transparent;box-shadow:inset 0 0 0 1px var(--line);margin-right:0}
 .badge.allergy{background:transparent;box-shadow:inset 0 0 0 1px var(--danger);color:var(--danger);white-space:normal}
 .allergy-card{border-color:var(--danger);border-width:2px}.allergy-card .alg-now{font-weight:600}.allergy-card .chip.allergy{background:var(--surface-2);font-weight:600}.allergy-card .alg-more{margin-top:2px}
+.note.allergen-box{background:var(--danger-soft)}   /* アレルゲンは注意の色（柿色と分ける） */
 .allergen-box ul{margin:6px 0;padding-inline-start:1.2em}.allergen-box li.mine{color:var(--danger);font-weight:600}
 .trial-note{background:var(--yolk-soft);color:var(--yolk-ink)}
 .top .gear{margin-inline-start:auto;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
@@ -670,8 +687,8 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .fold-sum::-webkit-details-marker{display:none}
 .fold-sum:active{transform:scale(.985)}
 .fold-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
-.fold-tx h2{font-size:var(--fs16);padding-inline-start:10px;border-inline-start:3px solid var(--accent)}
-.fold-tx .hint{font-size:var(--fs12);color:var(--muted);padding-inline-start:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fold-tx h2{font-size:var(--fs-head)}
+.fold-tx .hint{font-size:var(--fs12);color:var(--muted);padding-inline-start:0;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .fold-chev{width:9px;height:9px;flex:none;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
 .fold[open]>.fold-sum .fold-chev{transform:rotate(225deg) translate(-2px,-2px)}
 .fold-body{display:flex;flex-direction:column;gap:12px;margin-top:12px}
@@ -793,7 +810,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-steps li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* 声で読む・ハンズフリー・大きく表示・できた！ */
 .cook-tools{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
-.cook-tools .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.cook-tools .chip[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 .hf-hint{margin:0;font-size:.82rem;color:var(--muted)}
 .step-say{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;min-width:44px;min-height:44px;font:inherit;line-height:1;cursor:pointer;margin-inline-start:6px;vertical-align:middle}
 .cook-card.big .cook-steps li{display:none;font-size:1.4rem;line-height:1.6}
@@ -866,15 +883,15 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
     nav.tabs svg{width:20px;height:20px;padding-block:1px}
 }
 
-/* ===== デザイン v2: 新しい共通部品（三宅）。変数の一覧は scratchpad/design_v2/tokens.md ===== */
+/* ===== デザイン v2/v3: 新しい共通部品（三宅）。変数の一覧は scratchpad/design_v2/tokens.md ===== */
 /* ボタンの大きさ: .btn.lg は主役のボタン（56px・16px）。.btn.block は横いっぱい */
-.btn.lg{min-height:56px;font-size:var(--fs16);padding-inline:var(--s24);border-radius:var(--r-lg)}
+.btn.lg{min-height:var(--tap-lg);font-size:var(--fs16);padding-inline:var(--s24)}
 .btn.block{display:flex;width:100%}
 /* 画面下の固定アクションバー: その画面で「いちばん押してほしい1つ」を、下のタブのすぐ上に貼りつける。
    <div class="actionbar"><button class="btn primary">…</button></div> を section の最後に置く（sticky。本文の最後では元の位置に戻る）。
    副ボタンを1つ並べるときは .btn（主が2、副が1の幅） */
-.actionbar{position:sticky;bottom:calc(var(--nav-h,72px) + var(--s8));z-index:6;display:flex;gap:var(--s8);padding:var(--s8);margin-inline:calc(-1 * var(--s8));background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:calc(var(--r-lg) + var(--s8))}
-.actionbar>.btn{flex:1 1 0;min-width:0;min-height:56px;font-size:var(--fs16);white-space:normal;overflow-wrap:anywhere;text-align:center}
+.actionbar{position:sticky;bottom:calc(var(--nav-h,72px) + var(--s8));z-index:6;display:flex;gap:var(--s8);padding:var(--s8);margin-inline:calc(-1 * var(--s8));background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:var(--r-pill)}
+.actionbar>.btn{flex:1 1 0;min-width:0;min-height:var(--tap-lg);font-size:var(--fs16);white-space:normal;overflow-wrap:anywhere;text-align:center}
 .actionbar>.btn.primary{flex-grow:2}
 body.kb .actionbar{position:static}
 /* セクション見出しの小さい版（カードの外で、章より下の区切り） */
@@ -882,10 +899,24 @@ body.kb .actionbar{position:static}
 /* 淡い囲み（カードの中の補足・注意） */
 .panel{background:var(--surface-2);border-radius:var(--r-md);padding:var(--s12) var(--s16);font-size:var(--fs14)}
 .panel.accent{background:var(--accent-soft)}
+.panel.leaf{background:var(--leaf-soft)}
+.panel.warn{background:var(--danger-soft);color:var(--ink)}   /* 注意・アレルギー（柿色ではなく赤系） */
+/* 小さな札: .tag（地は --surface-2）、.tag.time（若草: 時間・できた）、.tag.warn（注意） */
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs12);font-weight:600;line-height:1.4;padding:.25rem .625rem;border-radius:var(--r-pill);background:var(--surface-2);color:var(--ink)}
+.tag.time{background:var(--leaf-soft);color:var(--leaf)}
+.tag.warn{background:var(--danger-soft);color:var(--danger)}
+/* 絵の台（料理の絵の後ろの色）: .stage＝主菜（桃）、.stage.s2＝副菜（若草）、.stage.s3＝汁もの・ご飯（卵色） */
+.stage{background:var(--stage);border-radius:var(--r-xl)}.stage.s2{background:var(--stage-2)}.stage.s3{background:var(--stage-3)}
+/* v3: 明朝は名前だけ。数字・文・材料はゴシックにもどす */
+.stat .n,.timer .tm,.timer-sum .tm,.day .dd,.review p,.greet .hello,.hint-row .k,.pw-price .p,.title-lv,.skill .add,.celebrate .cel-t,.ob-points b,.toast.praise{font-family:var(--font-body)}
+/* 手順番号: 日本語は漢数字（一・二・三…）、ほかの言語は算用数字 */
+html[lang="ja"] .steps li::before{content:counter(st,cjk-decimal)}
+/* 料理名（一覧・お膳）は明朝16px・字間0 */
+.tw-name,.match .head .name,.cook-head h3{letter-spacing:0}
 /* カードの中の区切り線 */
 .divider{height:0;border:0;border-top:1px solid var(--line-soft);margin:var(--s4) 0}
 /* 選んだチップは少し浮かせる */
-.chip[aria-pressed="true"]{box-shadow:0 1px 4px color-mix(in srgb,var(--accent) 30%,transparent)}
+.chip[aria-pressed="true"]{box-shadow:0 1px 4px rgba(58,42,31,.25)}
 </style>
 </head>
 <body>
