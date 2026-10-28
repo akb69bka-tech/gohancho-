@@ -3034,10 +3034,12 @@ function reconcileMenu(){
             nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
         } else nr = suggestOrAny(it.slot, others, m.items[0].r);
         if (nr && nr !== it.r){ if (it.r) swaps.push([it.r, nr]); it.r = nr; changed = true; }
+        // 替わりがない（先に選び直した主菜が汁けの多い料理になり、汁ものの枠を空けるときなど）: アレルゲン・苦手・出さない料理は残さず、枠を空ける
+        else if (!nr && i > 0 && it.r && (isAvoided(it.r) || S.hidden.includes(it.r.id))){ swaps.push([it.r, null]); it.r = null; changed = true; }
     });
     if (changed){
         keepDraft();
-        if (swaps.length) toast(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: joinNames(swaps.map(([a, b]) => a.name + ' → ' + b.name))}));
+        if (swaps.length) toast(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: joinNames(swaps.map(([a, b]) => b ? a.name + ' → ' + b.name : t('{name}（外しました）', {name: a.name})))}));
     }
     return changed;
 }

@@ -1215,6 +1215,7 @@ GOHAN_I18N('id', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Menu hari ini sudah Anda putuskan ({names}). Membuat ulang akan menampilkan saran baru di Hari ini. Menu yang diputuskan tetap ada di Masak.",
     "決めた献立を作り直しますか？": "Buat ulang menu yang sudah diputuskan?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Menu hari ini yang belum diputuskan disesuaikan dengan pengaturan: {list}",
+    "{name}（外しました）": "{name} (dihapus)",
     "「{name}」にかえました": "Diganti dengan “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Semua {n} hidangan hari ini sudah jadi. Kerja bagus!",
     "ほかの食材（例: セロリ）": "Lainnya (mis. seledri)",
