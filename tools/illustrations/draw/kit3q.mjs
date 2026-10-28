@@ -276,3 +276,30 @@ export function tarePool(p, cx, cy, rx, c = '#94521c', seed = 'tare'){
     return `<path d="${smooth(ring(rx, 10, .2, rng(seed), 1, SY * 1.05))}" transform="translate(${f(cx)} ${f(cy)})" fill="${rg(p, [[0, lt(c, .3)], [.6, c], [1, dk(c, .35)]], .4, .36, .6)}" opacity=".92"/>
         <path d="M${f(cx - rx * .78)},${f(cy - 2)} Q${f(cx - rx * .48)},${f(cy - rx * SY * .5)} ${f(cx - rx * .09)},${f(cy - rx * SY * .55)}" stroke="#ffd9a0" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>`;
 }
+
+// 海老（花森の描き方。オーナーの指摘で「耳に見えない」形に直したもの）: 丸まった胴を横から見せ、頭・殻の節・尾・脚・ひげで一目で海老と分かる。
+// 海老を使う料理（えびフライ・天丼・エビチリ・パエリアなど）は全員これを使う。s は胴の長さの目安、flip = -1 で左右反転
+export function prawn3q(p, x, y, s, rot = 0, flip = 1, { c = '#f2743e', line = '#a83a20' } = {}){
+    const L = s * 1.25, P0 = [-L / 2, 2], P1 = [-L * .05, -L * .36], P2 = [L / 2, L * .02];
+    const B = t => [(1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * P1[0] + t * t * P2[0], (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * P1[1] + t * t * P2[1]];
+    const N = t => { const dx = 2 * (1 - t) * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0]), dy = 2 * (1 - t) * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1]), l = Math.hypot(dx, dy); return [dy / l, -dx / l]; };
+    const W = t => t < .3 ? s * (.15 + .03 * Math.sin(t / .3 * Math.PI)) : s * (.17 - (t - .3) / .62 * .1);
+    const off = (t, k) => { const [bx, by] = B(t), [nx, ny] = N(t), w = W(t) * k; return [bx + nx * w, by + ny * w]; };
+    const ts = Array.from({ length: 25 }, (_, i) => .02 + i / 24 * .9);
+    const body = 'M' + ts.map(t => off(t, 1).map(f).join(',')).join('L') + 'L' + ts.slice().reverse().map(t => off(t, -1).map(f).join(',')).join('L') + 'Z';
+    const red = dk(c, .1), deep = dk(c, .25);
+    let legs = '';
+    for (let i = 0; i < 7; i++){ const t = .12 + i * .1, [lx, ly] = off(t, -.9), [nx, ny] = N(t); legs += `<path d="M${f(lx)},${f(ly)} l${f(-nx * 5 - 1.5)},${f(-ny * 5)}" stroke="${deep}" stroke-width="1" stroke-linecap="round"/>`; }
+    const [ex, ey] = B(.92), base = Math.atan2(N(.92)[1], N(.92)[0]) - Math.PI / 2;
+    const tail = [-.5, 0, .5].map(a => { const ang = base + a * .9, tl = s * .26; return `<path d="M${f(ex)},${f(ey)} L${f(ex + Math.cos(ang - .22) * tl)},${f(ey + Math.sin(ang - .22) * tl)} Q${f(ex + Math.cos(ang) * tl * 1.12)},${f(ey + Math.sin(ang) * tl * 1.12)} ${f(ex + Math.cos(ang + .22) * tl)},${f(ey + Math.sin(ang + .22) * tl)}Z" fill="${red}" stroke="${line}" stroke-width=".6" stroke-linejoin="round"/>`; }).join('');
+    let seg = '';
+    for (let i = 0; i < 6; i++){ const t = .32 + i * .1, a = off(t, 1.05), b = off(t, -1.05); seg += `<path d="M${f(a[0])},${f(a[1])} Q${f((a[0] + b[0]) / 2 + 2)},${f((a[1] + b[1]) / 2)} ${f(b[0])},${f(b[1])}" stroke="${dk(c, .2)}" stroke-width="1.1" fill="none"/>`; }
+    const back = 'M' + Array.from({ length: 14 }, (_, i) => off(.05 + i / 13 * .82, .55).map(f).join(',')).join('L');
+    const [hx, hy] = B(.04), [n0x, n0y] = N(.04), [cx2, cy2] = B(.18);
+    const head = `<path d="M${f(hx + n0x * s * .1)},${f(hy + n0y * s * .1)} L${f(hx - s * .22)},${f(hy - s * .16)} L${f(hx - s * .02)},${f(hy - n0y * s * .02)}Z" fill="${red}" stroke="${line}" stroke-width=".6" stroke-linejoin="round"/>` +
+        `<circle cx="${f(hx + s * .05)}" cy="${f(hy - s * .02)}" r="${f(s * .04)}" fill="#4a1e12"/>` +
+        `<path d="M${f(hx)},${f(hy + s * .04)} C${f(hx - s * .3)},${f(hy + s * .1)} ${f(hx - s * .2)},${f(hy - s * .5)} ${f(hx + s * .25)},${f(hy - s * .62)}" stroke="${deep}" stroke-width=".9" fill="none"/>` +
+        `<path d="M${f(hx)},${f(hy + s * .06)} C${f(hx - s * .36)},${f(hy + s * .2)} ${f(hx - s * .44)},${f(hy - s * .3)} ${f(hx - s * .3)},${f(hy - s * .52)}" stroke="${deep}" stroke-width=".8" fill="none"/>`;
+    const carapace = `<path d="M${f(off(.02, 1)[0])},${f(off(.02, 1)[1])} Q${f(cx2)},${f(cy2 + s * .02)} ${f(off(.3, -1)[0])},${f(off(.3, -1)[1])}" stroke="${dk(c, .2)}" stroke-width="1" fill="none" opacity=".8"/>`;
+    return `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${flip} 1)"><path d="${body}" fill="${SHADE}" opacity=".3" transform="translate(2 4)" ${blur(p, 1.4)}/>${legs}${tail}<path d="${body}" fill="${lg(p, [[0, lt(c, .45)], [.45, c], [1, dk(c, .2)]], 0, 0, 0, 1)}" stroke="${line}" stroke-width=".8" stroke-linejoin="round"/>${seg}${carapace}<path d="${back}" stroke="${lt(c, .62)}" stroke-width="${f(s * .05)}" fill="none" stroke-linecap="round" opacity=".85"/>${head}</g>`;
+}
