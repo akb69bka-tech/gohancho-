@@ -30,7 +30,7 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     const {p, ctx} = await open();
     await p.evaluate(() => { setTab('today'); render(); });
     await p.evaluate(() => document.querySelector('[data-act="decide"]').click());
-    await p.waitForTimeout(150);
+    await p.waitForTimeout(450);   // 決定の直後 350ms は、続けて押したタップを受けつけない（tapGuard。二度押し・ゴースト防止）
     const ids = await p.evaluate(() => S.cook.ids);
     ok(ids.length >= 2, 'A0 献立が決まる');
     ok(await todayIds(p) === '', 'A1 決めただけでは記録しない: ' + await todayIds(p));

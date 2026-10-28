@@ -36,7 +36,8 @@ for (const k of [0, 1, 2]){
     const { ctx, p } = await open(null, true);
     await p.waitForSelector('[data-act="pick-country"][data-cc="JP"]', { timeout: 30000 });
     await p.click('[data-act="pick-country"][data-cc="JP"]');
-    await p.waitForSelector('[data-act="ob-next"]'); await p.click('[data-act="ob-next"]'); await p.click('[data-act="ob-next"]');
+    // はじめての設定は「人数・品数」→「苦手・アレルギー」の2枚（椎名の新しい流れ）。苦手の画面まで「次へ」を1回
+    await p.waitForSelector('[data-act="ob-next"]'); await p.click('[data-act="ob-next"]'); await p.waitForSelector('[data-act="ob-avoid"][data-v="えび"]');
     await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); });   // 設定の後ろの案（と下書き）がえびフライ
     await p.click('[data-act="ob-avoid"][data-v="えび"]');
     await p.click('[data-act="ob-allergy"]'); await p.waitForTimeout(300);
