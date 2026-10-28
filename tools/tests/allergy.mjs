@@ -6,7 +6,7 @@
 //  3) 厳格さ: 置き換えで「安全」に見せない（苦手の置き換え先にアレルゲンを選ばない・アレルゲンの料理は置き換えず出さない）
 //  4) 全経路: 献立・かえる・1週間プラン・買い物メモ・保存献立の警告・お気に入り・あと1品・ひとひねり・世界のレシピで同じ判定
 //  5) 連動なし: アレルゲンを足しても、当たっていない枠は動かない（当たった枠だけ選び直す）
-//  6) 表示: 詳細に「この料理に含まれる主なアレルゲン」・設定の「アレルギー対策」カード（日本=8+20、米国系=9、ほか=14）・免責
+//  6) 表示: 詳細に「この料理に含まれる主なアレルゲン」・設定の「アレルギー対策」カード（日本=9+20、米国系=9、ほか=14）・免責
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
@@ -49,6 +49,7 @@ const CASES = {
     chicken: [['鶏肉','鶏むね肉','鶏もも肉','ささみ','Chicken breast','Chicken thighs','Chicken stock','鶏ガラスープの素','チキンブイヨン','コンソメ'], ['ひよこ豆','Chickpeas','Chicken of the woods'.replace('Chicken of the woods','Mushrooms'),'野菜ブイヨン','Vegetable stock','ビーフブイヨン']],
     banana: [['バナナ','Bananas','料理用バナナ','plátano','Plantains','Ripe plantain'], ['Banana leaf','バナナの葉','Banana pepper','Apple']],
     pork: [['豚肉','豚バラ肉','豚ひき肉','ベーコン','ハム','ウインナー','Pork belly','Bacon','Ham','Chorizo','Pork sausage','Lard','ラード','合いびき肉','Spare ribs'.replace('Spare ribs','Pork ribs')], ['Beef sausage','Turkey sausage','Chicken','Plant-based sausage','牛肉']],
+    pistachio: [['ピスタチオ','Pistachios','pistachio nuts','pistacho','Pistazien'], ['Peanuts','Walnuts','Coconut','Pumpkin seeds']],
     macadamia: [['マカダミアナッツ','Macadamia nuts','Macadamias'], ['Almonds','Walnuts']],
     peach: [['桃','もも','Peaches','Peach','Nectarine'], ['鶏もも肉','豚もも肉','Chicken thighs','Thigh']],
     yamaimo: [['やまいも','山芋','長いも','とろろ','自然薯','Nagaimo','Mountain yam'], ['さつまいも','さといも','Sweet potato','Potato','Taro']],
@@ -112,7 +113,7 @@ const OBVIOUS = {
     peanut: /ピーナッツ|落花生|\bpeanut/i, abalone: /あわび|\babalone/i, squid: /\bsquid\b|\bcalamari|いか(?!り)/i, ikura: /いくら|イクラ|salmon roe/i, orange: /オレンジ|\borange (juice|zest)|\boranges?\b/i,
     cashew: /カシュー|\bcashew/i, kiwi: /キウイ|\bkiwi/i, beef: /牛肉|牛ひき|\bbeef\b|\bveal\b/i, sesame: /ごま油|白ごま|すりごま|練りごま|\bsesame (seed|oil)|\btahini/i, salmon: /鮭|サーモン|\bsalmon\b/i,
     mackerel: /\bmackerel\b|鯖|塩さば/i, soy: /豆腐|納豆|\btofu\b|\btempeh\b|\bedamame|大豆|油揚げ|厚揚げ/i, chicken: /鶏肉|鶏もも|鶏むね|\bchicken\b/i, banana: /バナナ|\bbananas?\b/i, pork: /豚肉|豚ひき|豚バラ|\bpork\b|\bbacon\b/i,
-    macadamia: /マカダミア|\bmacadamia/i, peach: /桃|\bpeach/i, yamaimo: /長いも|山芋|やまいも|とろろ|自然薯/i, apple: /りんご|\bapples?\b/i, gelatin: /ゼラチン|\bgelatin/i, almond: /アーモンド|\balmond/i,
+    macadamia: /マカダミア|\bmacadamia/i, pistachio: /ピスタチオ|\bpistach|\bpistaz/i, peach: /桃|\bpeach/i, yamaimo: /長いも|山芋|やまいも|とろろ|自然薯/i, apple: /りんご|\bapples?\b/i, gelatin: /ゼラチン|\bgelatin/i, almond: /アーモンド|\balmond/i,
     gluten: /小麦粉|薄力粉|強力粉|パン粉|\bwheat flour|\bbread\b|\bspaghetti|うどん|\brye\b|\bbarley|ライ麦|大麦/i, crustacean: /えび|海老|蟹|\bshrimp|\bprawn|\bcrab|\blobster/i,
     fish: /鮭|サーモン|\bsalmon\b|\btuna\b|\bcod\b|\bmackerel\b|\banchov|ツナ|\bfish\b|鯖|かつお節|さんま|いわし/i, treenut: /アーモンド|くるみ|カシュー|ピスタチオ|\balmond|\bwalnut|\bcashew|\bhazelnut|\bpecan|\bpistachio/i,
     celery: /セロリ|\bcelery\b/i, mustard: /粒マスタード|練りからし|\bmustard\b/i, sulphite: /\bwine\b|ワイン|\braisins?\b/i, lupin: /\blupin/i, mollusc: /あさり|しじみ|ほたて|牡蠣|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops\b|\boctopus\b|\bsquid\b/i,
@@ -124,7 +125,7 @@ const LOOSE = {
     buckwheat: /そば|蕎麦|soba|buckwheat|sarrasin|kasha|カーシャ|ガレット|galette/i, egg: /卵|たまご|玉子|egg|yolk|mayo|マヨ|aioli|alioli|hollandaise|meringue|brioche|tagliatelle|tortellini|ravioli|pasta|noodle|麺|ワンタン|wonton|タルタル|tartar|カステラ|cake|ケーキ|custard|pancake|crepe|batter|パン|bread|bun|tempura|天ぷら|mochi|ピータン|蛋|egg-?fried|carbonara|カルボナーラ|gnocchi|ニョッキ|spaetzle|spätzle|fresh/i,
     milk: /乳|milk|ミルク|cream|クリーム|butter|バター|cheese|チーズ|yogh?urt|ヨーグルト|ghee|ギー|paneer|パニール|queso|quark|クワルク|ricotta|mozzarella|parmesan|パルメ|パルミ|pecorino|ペコリ|cheddar|feta|crema|crème|creme|lait|leche|latte|burro|panna|roux|ルウ|デミ|demi|white sauce|ホワイト|béchamel|bechamel|brioche|croissant|custard|cajeta|dulce|kaymak|labneh|ayran|raita|tzatziki|khoa|mawa|chocolate|チョコ|ice|アイス|whey|casein|kefir|skyr|curd|cottage|mascarpone|gouda|brie|camembert|gruy|emmental|raclette|halloumi|requeij|cuajada|coalho|coalhada|queijo|manteiga|natilla|crema|nata|kaymak|süt|peynir|tereyağ|yoğurt|mleko|ser|śmietan|masło|twaróg|serek|kefir|jogurt|maślank|susu|keju|mentega|gatas|keso|mantikilya|우유|치즈|버터|牛奶|奶酪|黄油|นม|เนย|sữa|phô mai|bơ|दूध|दही|घी|पनीर|مثل|حليب|جبن|زبدة|لبن|قشطة|سمن/i,
     peanut: /ピーナッツ|ぴーなっつ|落花生|南京豆|peanut|groundnut|cacahu|mani\b|maní|arachide|amendoim|satay|saté|gado|pecel|kare|mole|땅콩|花生|ถั่วลิสง|đậu phộng|kacang|yerfıstığı|orzeszk|मूंगफली|mani/i,
-    abalone: /あわび|鮑|abalone|鲍/i, squid: /いか|烏賊|squid|calamar|calmar|kalmar|sepia|cuttlefish|sotong|오징어|鱿|หมึก|mực|kałamarn|pusit|するめ|ika/i, ikura: /いくら|イクラ|筋子|すじこ|roe|ikura|caviar/i,
+    pistachio: /ピスタチオ|ぴすたちお|pistach|pistaz|pistacj|피스타치오|开心果|antep|पिस्ता/i, abalone: /あわび|鮑|abalone|鲍/i, squid: /いか|烏賊|squid|calamar|calmar|kalmar|sepia|cuttlefish|sotong|오징어|鱿|หมึก|mực|kałamarn|pusit|するめ|ika/i, ikura: /いくら|イクラ|筋子|すじこ|roe|ikura|caviar/i,
     orange: /オレンジ|みかん|蜜柑|orange|naranja|arancia|laranja|tangerine|mandarin|clementine|柑橘|pomelo|satsuma|橙/i, cashew: /カシュー|cashew|cajou|anacardo|caju|캐슈|腰果|kaju|nerkow|काजू/i, kiwi: /キウイ|kiwi|奇异果|猕猴桃/i,
     beef: /牛|ビーフ|beef|veal|oxtail|suet|brisket|sirloin|rib|steak|bresaola|pastrami|ternera|boeuf|bœuf|rindfleisch|manzo|vitello|carne|소고기|쇠고기|wagyu|ひき肉|びき肉|mince|ground|ルウ|roux|デミ|demi|ブイヨン|コンソメ|bouillon|stock|broth|hamburger|ハンバーグ|burger|meatball|meatloaf|kofta|köfte|kebab|bolognese|ragu|ragù|chili con|tacos?|picadillo|empanada|samosa|keema|kheema|kima|dolma|sarma|lasagn|cannelloni|stew|goulash|gulasch|rouladen|sauerbraten|bulgogi|galbi|kalbi|bibimbap|yukgaejang|seolleongtang|gomtang|tteokgalbi|churrasco|feijoada|rendang|rawon|soto|bakso|sate|satay|lomo|ropa vieja|bistec|bife|milanesa|asado|cecina|tasajo|barbacoa|carnitas|machaca|birria|pozole|menudo|mondongo|sancocho|ajiaco|arroz|cachupa|stroganoff|carbonnade|waterzooi|pot-au-feu|bourguignon|daube|blanquette|cassoulet|hachis|parmentier|tartare|carpaccio|bresaola|ossobuco|brasato|bollito|stracotto|peposo|spezzatino|polpett|cotoletta|saltimbocca|vitello tonnato/i,
     sesame: /ごま|胡麻|芝麻|sesame|tahini|tahina|gomashio|sésamo|sésame|sesam|gergelim|참깨|참기름|깨|wijen|susam|sezam|तिल|hummus|za.?atar|dukkah|furikake|ふりかけ|halva|halwa|helva|baba|麻/i,
@@ -301,7 +302,7 @@ for (const cc of ['JP', 'US', 'DE']){
     await ctx.close();
 }
 // 世界のレシピ・設定カード・ひとひねり・並び
-for (const [cc, style, n] of [['JP', 'jp', 28], ['US', 'us', 9], ['FR', 'eu', 14], ['IN', 'eu', 14], ['MX', 'us', 9]]){
+for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14], ['IN', 'eu', 14], ['MX', 'us', 9]]){
     const { ctx, p } = await open(cc);
     await p.evaluate(() => { setTab('settings'); });
     const r = await p.evaluate(() => {
@@ -312,9 +313,9 @@ for (const [cc, style, n] of [['JP', 'jp', 28], ['US', 'us', 9], ['FR', 'eu', 14
     });
     ok(!!r, cc + ' 設定に「アレルギー対策」カード');
     if (r){
-        ok(r.style === style, cc + ' 並び: ' + r.style); ok(r.main === n, cc + ' 主な品目の数 ' + n + ': ' + r.main); ok(r.chips === 37 || r.chips > r.main, cc + ' ほかのアレルゲンも選べる: ' + r.chips);
+        ok(r.style === style, cc + ' 並び: ' + r.style); ok(r.main === n, cc + ' 主な品目の数 ' + n + ': ' + r.main); ok(r.chips === 38 || r.chips > r.main, cc + ' ほかのアレルゲンも選べる: ' + r.chips);
         ok(r.text.includes(r.disclaimer) && (/[\u3040-\u30ff]/.test(r.disclaimer) === (cc === 'JP')), cc + ' 免責: ' + r.disclaimer); ok(r.first, cc + ' カードがいちばん上');
-        if (style === 'jp') ok(r.order.startsWith('shrimp,crab,walnut,wheat,buckwheat,egg,milk,peanut,abalone,squid'), 'JP の並び: ' + r.order);
+        if (style === 'jp') ok(r.order.startsWith('shrimp,cashew,crab,walnut,wheat,buckwheat,egg,milk,peanut,abalone,squid'), 'JP の並び: ' + r.order);
         if (style === 'eu') ok(r.order.startsWith('gluten,crustacean,egg,fish,peanut,soy,milk,treenut,celery,mustard,sesame,sulphite,lupin,mollusc'), 'EU の並び: ' + r.order);
         if (style === 'us') ok(r.order === 'milk,egg,fish,crustacean,treenut,peanut,wheat,soy,sesame', 'US の並び: ' + r.order);
     }
@@ -328,6 +329,23 @@ for (const [cc, style, n] of [['JP', 'jp', 28], ['US', 'us', 9], ['FR', 'eu', 14
         ok(JSON.stringify(after.al) === JSON.stringify([target]) && after.bad === 0 && after.pressed, cc + ' チップで選ぶ: ' + JSON.stringify(after.al));
         ok(after.ids[0] !== before[0], cc + ' 当たった主菜は選び直される');
     }
+    await ctx.close();
+}
+// おかゆ（具を変えた9品）: 卵・さけ・小麦などを選んだら、その具のおかゆは提案にも献立にも出ない
+{
+    const { ctx, p } = await open('JP');
+    const r = await p.evaluate(() => {
+        const out = { bad: [], n: 0, shown: 0 };
+        for (const id of ['egg', 'salmon', 'sesame', 'soy', 'chicken', 'milk', 'wheat']){
+            S.settings.allergens = [id]; S.settings.allergenFerm = true;
+            for (let k = 0; k < 4; k++){ generateTwists({baseId: 'okayu', count: 9}).forEach(tw => { out.n++; if (allergyConflict(tw)) out.bad.push(id + ' ' + tw.id); }); }
+            for (let k = 0; k < 6; k++){ session.mood = 'okayu'; session.menu = null; ensureMenu(); session.menu.items.forEach(x => { if (x.r && allergyConflict(x.r)) out.bad.push(id + ' menu ' + x.r.id); }); }
+            OKAYU_IDS.forEach(oid => { const rr = RECIPES.find(x => x.id === oid); if (rr && !allergyConflict(rr)) out.shown++; });
+        }
+        session.mood = null; S.settings.allergens = [];
+        return out;
+    });
+    ok(!r.bad.length, 'おかゆ: アレルゲンの具が出ない: ' + r.bad.slice(0, 3).join(',')); ok(r.shown > 0, 'おかゆ: 当たらない具は残る');
     await ctx.close();
 }
 // 世界のレシピ: アレルゲンの料理は出さない
