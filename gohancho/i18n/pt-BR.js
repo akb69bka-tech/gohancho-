@@ -1216,4 +1216,5 @@ GOHAN_I18N('pt-BR', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Cerca de {max}–{n} min (menos se cozinhar ao mesmo tempo)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Come com a gente às vezes (fora de “Quem come hoje” por padrão)",
     "いつものメンバー": "A turma de sempre",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} não aparece como acompanhamento porque coincide com uma alergia ou um alimento a evitar (o pão costuma ter leite ou ovo).",
 });

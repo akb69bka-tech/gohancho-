@@ -1216,4 +1216,5 @@ GOHAN_I18N('it', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Circa {max}–{n} min (meno se cucini in parallelo)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Mangia con noi a volte (di solito non in «Chi mangia oggi»)",
     "いつものメンバー": "I soliti",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} non viene proposto come base perché corrisponde a un’allergia o a un cibo da evitare (il pane contiene spesso latte o uova).",
 });

@@ -1216,4 +1216,5 @@ GOHAN_I18N('tr', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Yaklaşık {max}–{n} dk (aynı anda yaparsan daha kısa)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Bazen bizimle yer (normalde “Bugün kim yiyor”da değil)",
     "いつものメンバー": "Her zamanki ekip",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} bir alerjiye veya kaçınılan bir malzemeye denk geldiği için ana yiyecek olarak gösterilmiyor (ekmekte çoğu zaman süt veya yumurta olur).",
 });

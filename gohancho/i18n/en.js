@@ -1217,4 +1217,5 @@ GOHAN_I18N('en', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "About {max}–{n} min (shorter if you cook them side by side)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Eats with us sometimes (not in “Who’s eating today” by default)",
     "いつものメンバー": "The usual crew",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} isn't shown as the staple because it matches an allergy or a food to avoid (bread often contains milk or egg).",
 });

@@ -1216,4 +1216,5 @@ GOHAN_I18N('vi', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Khoảng {max}–{n} phút (nấu song song sẽ nhanh hơn)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Thỉnh thoảng ăn cùng (thường không có trong “Ai ăn hôm nay”)",
     "いつものメンバー": "Thành viên thường ngày",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Không đưa {name} làm món chính vì trùng với dị ứng hoặc món không ăn (bánh mì thường có sữa hoặc trứng).",
 });

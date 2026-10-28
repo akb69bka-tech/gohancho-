@@ -1216,4 +1216,5 @@ GOHAN_I18N('fil', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Mga {max}–{n} min (mas maikli kung sabay-sabay)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Paminsan-minsang kasalo (hindi kasama sa “Kakain ngayon” bilang default)",
     "いつものメンバー": "Ang dati",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Hindi ipinapakita ang {name} bilang pangunahing pagkain dahil tugma ito sa allergy o iniiwasang pagkain (madalas may gatas o itlog ang tinapay).",
 });

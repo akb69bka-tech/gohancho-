@@ -5260,9 +5260,29 @@ function algRecipeMap(r){
     ALG_ALL.forEach(id => items.forEach(({i, opt}) => { const k = algKind(id, i); if (!k) return; (out[id] = out[id] || []).push({name: i.name || i.label || i.key, kind: k, opt}); }));
     return out;
 }
-// その料理が含む、選んだアレルゲン（全員共通）の id
-function algSelectedHits(r){
-    const ids = algIds(); if (!ids.length || !r || !r.items) return [];
+// 家族のアレルギー（今日食べる人の ⚠）を、全体のアレルゲンと同じ id に読みかえる。
+// 家族の側も、加工品（マヨネーズの卵など）・調味料・発酵調味料（醤油の小麦。設定のスイッチに従う）まで、全体と同じ判定にするため
+const FAM_ALG = {egg: ['egg'], dairy: ['milk'], wheat: ['wheat'], shellfish: ['crustacean', 'mollusc'], pork: ['pork'], chicken: ['chicken'], beef: ['beef'], fish: ['fish'], nuts: ['peanut', 'treenut']};
+function famAlgIds(){
+    const list = allergyList(), sig = JSON.stringify(list);
+    if (famAlgIds.c && famAlgIds.c.sig === sig) return famAlgIds.c.ids;
+    const out = new Set();
+    list.forEach(v => {
+        v = String(v); const f = avoidFamOf(v);
+        if (v[0] === '@'){ (FAM_ALG[f] || []).forEach(x => out.add(x)); return; }
+        const i = /[぀-ヿ㐀-鿿]/.test(v) ? parseIng(v) : Object.assign(parseIng(v), {en: v, key: v.toLowerCase()});
+        const hit = ALG_ALL.filter(id => algKind(id, i) === 1);
+        // 「小麦」なら小麦だけ（グルテンを含む穀物のような、まとめた区分は、その中の1つが当たったら入れない）
+        hit.filter(id => !(ALG_DEF[id].parts && ALG_DEF[id].parts.some(q => hit.includes(q)))).forEach(x => out.add(x));
+        if (!hit.length && f) (FAM_ALG[f] || []).forEach(x => out.add(x));
+    });
+    famAlgIds.c = {sig, ids: [...out]}; return famAlgIds.c.ids;
+}
+// 全員共通のアレルゲンと、今日食べる家族のアレルギー（読みかえたもの）
+function algIdsEff(){ return [...new Set([...algIds(), ...famAlgIds()])]; }
+// その料理が含む、選んだアレルゲン（全員共通と、今日食べる家族の分）の id
+function algSelectedHits(r, ids0){
+    const ids = ids0 || algIdsEff(); if (!ids.length || !r || !r.items) return [];
     const m = algRecipeMap(r);
     return ids.filter(id => (m[id] || []).some(x => x.kind !== 4 && (x.kind !== 3 || algFerm())));
 }
@@ -5287,11 +5307,11 @@ function algSections(){
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
 }
 // いまの国の料理のうち、選んだアレルゲン（全員共通）を含むので出さない品数
-function algExcludedCount(){ const ids = algIds(); return ids.length ? RECIPES.filter(r => algSelectedHits(r).length).length : 0; }
+function algExcludedCount(){ const ids = algIds(); return ids.length ? RECIPES.filter(r => algSelectedHits(r, ids).length).length : 0; }
 // 料理の詳細に出す「この料理に含まれる主なアレルゲン」（材料の言葉からの推測。断定しない）
 function allergenDetailHtml(r){
     if (!r || !r.items) return '';
-    const m = algRecipeMap(r), sel = new Set(algIds()), sec = algSections();
+    const m = algRecipeMap(r), sel = new Set(algIdsEff()), sec = algSections();   // 家族のアレルギーにも ⚠ をつける
     const ids = [...new Set([].concat(...sec.main.map(x => x[1]), [...sel]))].filter(id => m[id]);
     const mine = algSelectedHits(r), may = [...sel].filter(id => !mine.includes(id) && (m[id] || []).some(x => x.kind === 4));
     const kindText = x => x.kind === 2 ? t('{name}（よく含まれる加工品・調味料）', {name: x.name}) : x.kind === 3 ? t('{name}（しょうゆ・みそなどの発酵調味料）', {name: x.name}) : x.kind === 4 ? t('{name}（入っていることがある加工品。袋の表示を確認）', {name: x.name}) : x.name + (x.opt ? t('（なくても可）') : '');
@@ -5534,7 +5554,7 @@ function avoidKeys(av){ return new Set((av || []).filter(x => String(x)[0] !== '
 function avoidCtx(){ return avoidCtxFor(effAvoid(), 'c'); }
 function allergyCtx(){ return avoidCtxFor(allergyList(), 'g'); }   // アレルギーの食材だけ（置き換えない）
 function avoidCtxFor(av, slot){
-    const ax = S.settings.avoidX || {}, alg = slot === 'g' ? algIds() : [], sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG + '|' + (slot === 'g' ? algSig() : '');
+    const ax = S.settings.avoidX || {}, alg = slot === 'g' ? algIdsEff() : [], sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG + '|' + (slot === 'g' ? algSig() : '');
     const hit = avoidCtxFor[slot]; if (hit && hit.sig === sig) return hit;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
     // 食材の表（AVOID_CON）で見分けられる言葉は、言語・国をまたいで同じ食材として照らす（足したときに覚えた食材を先に使う）
@@ -5698,6 +5718,11 @@ function swappedRecipe(r){
         const sl = stepLangOf(r) || LANG, jp = sl === 'ja', mark = sl === LANG ? t('入れない') : jp ? '入れない' : ((I18N[sl] || {})['入れない'] || 'leave out');
         // 英語などの言葉は、ほかの単語の一部に当たらないように語の切れ目で見る（韓国語・中国語・タイ語などは助詞が続いたり切れ目がなかったりするので見ない）
         const W = '(?:' + omitWords.map(o => (/^[A-Za-zÀ-ÿ]/.test(o) ? '(?<![\\p{L}])' : '') + esc_(o) + (/[A-Za-zÀ-ÿ]$/.test(o) ? '(?![\\p{L}])' : '')).join('|') + ')';
+        // 入れない材料だけの下ごしらえの1文（ほかの材料が出てこない）は、まるごと外す
+        // （ほかの材料の名前・キーが出てくる文と、外すと手順が空になる文は外さず、下の「（入れない）」にする）
+        const others = items.flatMap(i => [i.name, i.label, i.key]).filter(n => n && n.length > 1 && !omitWords.includes(n));
+        if (jp) u = u.replace(new RegExp('(^|。)\\s*' + W + '(?:は|を)[^。]*。', 'giu'), (m0, pre, off, str) =>
+            others.some(n => m0.includes(n)) || /\u0001/.test(m0) || !(str.slice(0, off) + str.slice(off + m0.length)).trim() ? m0 : pre);
         if (jp) u = u.replace(new RegExp('(^|[、。・\\s])' + W + '(?:と|や|・|、)', 'giu'), '$1').replace(new RegExp('(?:と|や|・)' + W + '(?=[をはのにとや・、。\\s]|$)', 'giu'), '')
             .replace(new RegExp(W, 'giu'), m => m + '（' + mark + '）');
         else u = u.replace(new RegExp(',\\s*' + W, 'giu'), '').replace(new RegExp(W + ',\\s*', 'giu'), '')
@@ -7563,6 +7588,7 @@ function viewToday(){
             ${(sm => sm.length ? `<div class="tray-small" style="--cols:${sm.length}">${sm.join('')}</div>` : '')([...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot || stapleAdd ? [riceSpot || stapleAdd] : []), ...soups.map(x => spot(x.it, x.i, ''))])}
         </div>`}
         ${eatersLine() ? `<p class="small muted eaters-line" role="status">${esc(eatersLine())}</p>` : ''}
+        ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${cookWarnHtml()}
         <div class="menu-tools"><button class="${msgBtnClass()} sm" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
         ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() || okayuNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote() || okayuNote())}</p>` : ''}
@@ -9410,7 +9436,9 @@ document.addEventListener('click', e => {
         case 'mic': startMic(el.dataset.target); break;
         case 'goto-today': setTab('today'); break;
         case 'staple-next': {
-            const opts = stapleOptions(), cur = currentStapleOpt(); const nx = opts[(opts.findIndex(o => o.k === cur.k) + 1) % opts.length];
+            // アレルギー・苦手に当たる主食は飛ばす（「なし」はいつでも選べる）
+            const opts = stapleOptions().filter(o => o.k === 'none' || !stapleBlocked(o)), all = stapleOptions(), cur = currentStapleOpt();
+            const nx = all.slice(all.findIndex(o => o.k === cur.k) + 1).concat(all).find(o => opts.includes(o)) || {k: 'none'};
             setStaple(nx.k); render(); toast(nx.k === 'none' ? t('主食はなしにしました') : t('主食を「{name}」にしました', {name: stapleName(nx)})); break;
         }
         case 'staple-set': setStaple(el.dataset.v); render(); break;
@@ -10357,10 +10385,33 @@ function currentStapleOpt(cc = currentCountry()){
 function setStaple(k){
     const cc = currentCountry(); S.settings.stapleBy = Object.assign({}, S.settings.stapleBy, {[cc]: k}); save();
 }
-// お膳に出す主食（なしなら null）。{id: 絵の ID, name}
+// 主食の材料（お膳に出す主食も、料理と同じアレルギー・苦手の判定に通す）
+const STAPLE_BREAD = /bread|toast|baguette|\brolls?\b|pandesal|bolillo|b[aá]nh m[iì]|\bbrot\b|\bpane\b|\bpan\b|chleb|ekmek|\baish\b|\bp[aã]o\b|トースト|パン/i;
+const STAPLE_ADD = {toast: ['食パン', 'バター'], bread: ['bread'], rolls: ['bread'], pandesal: ['bread'], banhmi: ['bread'], bolillo: ['bread'], pao: ['bread'], mantou: ['wheat flour'], roti: ['wheat flour'], flour: ['flour tortillas'], bulgur: ['bulgur'], kasza: ['buckwheat']};
+function stapleItems(o){
+    if (!o || o.k === 'none') return [];
+    const words = [o.key, o.en, o.local, o.ja].filter(Boolean), add = (STAPLE_ADD[o.k] || []).slice();
+    if (/\broti\b|chapati|रोटी/i.test(words.join(' '))) add.push('wheat flour');
+    if (STAPLE_BREAD.test(words.join(' '))) add.push('bread');
+    return [...new Set([...words, ...add])].map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+}
+// 主食がアレルギー・苦手に当たるか。パン類は乳・卵が入っていることも多い（主食は詳しい画面がなく注意を出せないので、そのときも出さない）
+function stapleBlocked(o){
+    const items = stapleItems(o); if (!items.length) return false;
+    if (allergyOn()){ const g = allergyCtx(); if (items.some(i => itemAvoided(i, g))) return true; }
+    if (STAPLE_BREAD.test(items.map(i => i.name).join(' ')) && ['milk', 'egg'].some(id => algIdsEff().includes(id))) return true;
+    if (effAvoid().length){ const c = avoidCtx(); if (items.some(i => itemAvoided(i, c))) return true; }
+    return false;
+}
+// お膳に出す主食（なし・アレルギーや苦手に当たるときは null）。{id: 絵の ID, name}
 function stapleSpot(){
     const o = currentStapleOpt();
-    return o && o.k !== 'none' ? {id: o.img, name: stapleName(o), k: o.k} : null;
+    return o && o.k !== 'none' && !stapleBlocked(o) ? {id: o.img, name: stapleName(o), k: o.k} : null;
+}
+// 選んでいる主食を、アレルギー・苦手のために今日は出していないときの一言
+function stapleBlockedNote(){
+    const o = currentStapleOpt();
+    return o && o.k !== 'none' && stapleBlocked(o) ? t('主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません', {name: stapleName(o)}) : '';
 }
 function countrySheetHtml(){
     const cur = S.settings.country || guessCountry();

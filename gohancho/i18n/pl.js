@@ -1216,4 +1216,5 @@ GOHAN_I18N('pl', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Około {max}–{n} min (krócej, gdy gotujesz równolegle)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Je z nami czasem (domyślnie nie w „Kto dziś je”)",
     "いつものメンバー": "Stały skład",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} nie jest pokazywane jako dodatek, bo pasuje do alergii lub nielubianego produktu (pieczywo często zawiera mleko lub jajka).",
 });
