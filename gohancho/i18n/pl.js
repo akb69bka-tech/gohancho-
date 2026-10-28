@@ -1559,4 +1559,7 @@ GOHAN_I18N('pl', {
     "食べたい": "Chętnie",
     "食べたいものに○を。全部「どちらでも」でも大丈夫です。": "Zaznacz ○ to, na co masz ochotę. Można też zostawić wszystko na „Wszystko jedno”.",
     "食べたいものに○をつけて返してください。": "Zaznacz ○ to, na co masz ochotę, i odeślij.",
+    "だし入りの味噌も、袋の表示を確かめてください。": "Miso z dashi też może zawierać rybę: sprawdź etykietę.",
+    "魚を外しているので、だしは昆布だしにしています（かつお節・煮干し・だしの素は使いません）。": "Ponieważ ryby są wykluczone, dashi robimy z kombu (bez płatków bonito, suszonych sardynek i dashi w proszku).",
+    "ほか{n}つの袋": "+{n} innych opakowań",
 });

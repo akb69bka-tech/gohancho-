@@ -1560,4 +1560,7 @@ GOHAN_I18N('en', {
     "食べたい": "Want it",
     "食べたいものに○を。全部「どちらでも」でも大丈夫です。": "Mark ○ on what you'd like. It's fine to leave everything as “Either is fine”.",
     "食べたいものに○をつけて返してください。": "Mark ○ on what you'd like and send it back.",
+    "だし入りの味噌も、袋の表示を確かめてください。": "Miso with dashi in it can contain fish too: check the package label.",
+    "魚を外しているので、だしは昆布だしにしています（かつお節・煮干し・だしの素は使いません）。": "Since fish is off your list, the dashi is made with kombu (no bonito flakes, dried sardines or dashi powder).",
+    "ほか{n}つの袋": "+{n} more packages",
 });

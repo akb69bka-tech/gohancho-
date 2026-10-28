@@ -1559,4 +1559,7 @@ GOHAN_I18N('it', {
     "食べたい": "Lo voglio",
     "食べたいものに○を。全部「どちらでも」でも大丈夫です。": "Segna con ○ ciò che vuoi. Va bene anche lasciare tutto su «Va bene tutto».",
     "食べたいものに○をつけて返してください。": "Segna con ○ ciò che vuoi e rimandalo.",
+    "だし入りの味噌も、袋の表示を確かめてください。": "Anche il miso con dashi può contenere pesce: controlla l'etichetta.",
+    "魚を外しているので、だしは昆布だしにしています（かつお節・煮干し・だしの素は使いません）。": "Poiché il pesce è escluso, il dashi è fatto con kombu (senza fiocchi di bonito, sardine essiccate o dashi in polvere).",
+    "ほか{n}つの袋": "+{n} altre confezioni",
 });

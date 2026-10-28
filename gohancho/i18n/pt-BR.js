@@ -1559,4 +1559,7 @@ GOHAN_I18N('pt-BR', {
     "食べたい": "Quero",
     "食べたいものに○を。全部「どちらでも」でも大丈夫です。": "Marque ○ no que quer. Tudo bem deixar tudo em “Tanto faz”.",
     "食べたいものに○をつけて返してください。": "Marque ○ no que quer e mande de volta.",
+    "だし入りの味噌も、袋の表示を確かめてください。": "Missô com dashi também pode conter peixe: confira o rótulo.",
+    "魚を外しているので、だしは昆布だしにしています（かつお節・煮干し・だしの素は使いません）。": "Como o peixe foi retirado, o dashi é feito com kombu (sem flocos de bonito, sardinhas secas ou dashi em pó).",
+    "ほか{n}つの袋": "+{n} embalagens",
 });

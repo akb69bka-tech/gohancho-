@@ -744,6 +744,59 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
         await ctx.close();
     }
 }
+// モニター第3回d NEW3: 魚のアレルギーで、味噌（だし入りのことが多い）に「袋の表示を確認」。だし入り味噌・白だし・だし醤油・あごは出さない（だしそのものと同じ扱い）
+{
+    const TABLE = [['味噌', 'fish', 4], ['合わせ味噌', 'fish', 4], ['白味噌', 'fish', 4], ['Miso', 'fish', 4], ['だし入り味噌', 'fish', 2], ['だし入りみそ', 'fish', 2], ['白だし', 'fish', 2], ['だし醤油', 'fish', 2], ['あご', 'fish', 1], ['焼きあご', 'fish', 2],
+        ['味噌', 'soy', 3], ['かにみそ', 'fish', 0], ['昆布だし', 'fish', 0], ['醤油', 'fish', 0]];
+    const { ctx, p } = await open('JP');
+    const r = await p.evaluate(T => {
+        const mk = n => { const j = /[぀-ヿ㐀-鿿]/.test(n); const it = parseIng(n); if (!j){ it.en = n; it.key = n.toLowerCase(); } return it; };
+        return T.filter(([n, id, k]) => algKind(id, mk(n)) !== k).map(([n, id, k]) => n + '/' + id + ' = ' + algKind(id, mk(n)) + '（' + k + ' のはず）');
+    }, TABLE);
+    ok(!r.length, 'NEW3 味噌・だし入り味噌・白だし・あごの判定の表: ' + r.join('、'));
+    await ctx.close();
+    for (const ui of ['ja', 'en']){
+        const { ctx, p } = await open('JP', { uiLang: ui }, { family: [{ id: 'a', name: '夫', role: 'adult', avoid: ['@fish'], allergy: ['@fish'], mild: false }] });
+        const g = await p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '汁物'); m.items[i >= 0 ? i : 2] = Object.assign({}, m.items[i >= 0 ? i : 2], { r: byId('misoshiru') }); render();
+            const r = byId('misoshiru'), d = document.createElement('div'); d.innerHTML = allergenDetailHtml(r);
+            const tagEl = [...document.querySelectorAll('.alg-tag')].find(x => /味噌|miso/i.test(x.innerText + x.getAttribute('aria-label')));
+            return { av: isAvoided(r), may: algMayHits(r), note: d.innerText, line: eatersLine(), tag: tagEl ? tagEl.getAttribute('aria-label') : '',
+                miso16: RECIPES.filter(x => !x.pack && !isAvoided(x) && /味噌/.test(String(x.seasBase != null ? x.seasBase : x.seas)) && !algMayHits(x).some(h => h.id === 'fish')).map(x => x.id) }; });
+        ok(!g.av && g.may.some(x => x.id === 'fish' && x.names.some(n => /味噌|miso/i.test(n))), `NEW3 魚のアレルギー（${ui}）: 味噌汁は出すが、味噌に「袋の表示を確認（魚）」: ` + JSON.stringify(g.may));
+        ok(/味噌|miso/i.test(g.tag) && /袋の表示を確認|package|label/i.test(g.tag), `NEW3 魚のアレルギー（${ui}）: カードの印に「魚（味噌の袋の表示を確認）」: ` + g.tag);
+        ok(/だし入りの味噌も|miso with dashi/i.test(g.note), `NEW3 魚のアレルギー（${ui}）: 昆布だしの一言に「だし入りの味噌も袋の表示を確かめて」: ` + g.note.slice(0, 300));
+        ok(!/^夫も食べられるお膳です$/m.test(g.line) && (ui !== 'ja' || /食べられそう/.test(g.line)), `NEW3 魚のアレルギー（${ui}）: 「夫も食べられるお膳です」と言い切らない: ` + g.line);
+        ok(!g.miso16.length, `NEW3 魚のアレルギー（${ui}）: 味噌を使って出す料理には、すべて魚の「袋の表示を確認」: ` + g.miso16.join(','));
+        await ctx.close();
+    }
+}
+// モニター第3回d: 苦手で魚を外した人（菜食など）にも、だしは昆布だしにして出す（魚のアレルギーと同じ置き換え）
+for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfish'] }, null]){
+    const { ctx, p } = await open('JP', store || {}, store ? {} : { family: [{ id: 'a', name: '', role: 'adult', avoid: ['@fish'], allergy: [], mild: false }] });
+    const g = await p.evaluate(() => { const m = byId('misoshiru'); const d = document.createElement('div'); d.innerHTML = allergenDetailHtml(m);
+        const dashi = RECIPES.filter(x => !x.pack && /(?<!和風|昆布|白)だし(?!の素|巻)/.test(String(x.seasBase != null ? x.seasBase : x.seas)));
+        return { av: isAvoided(m), seas: seasFor(m), steps: stepTextsOf(m, 1).join(' '), tag: swapTagHtml(m), note: d.innerText,
+            bad: dashi.filter(x => !isAvoided(x) && /(?:^|[^布])だし(?!の素|巻)/.test(seasFor(x) + stepTextsOf(x, 1).join(' ').replace(/だし巻き/g, ''))).map(x => x.id) }; });
+    const who = store ? '全員の苦手' : '家族の苦手';
+    ok(!g.av && /昆布だし/.test(g.seas) && /昆布だし/.test(g.steps), `veg ${who}で魚を外す: 味噌汁を昆布だしで出す: ` + JSON.stringify(g).slice(0, 300));
+    ok(/🔁/.test(g.tag) && /昆布だし/.test(g.note) && !/魚のアレルギー/.test(g.note), `veg ${who}で魚を外す: カードと詳細に置き換えの一言（アレルギーとは言わない）: ` + g.tag + ' / ' + g.note.slice(0, 200));
+    ok(!g.bad.length, `veg ${who}で魚を外す: 出す料理に、置き換えていない「だし」が残らない: ` + g.bad.join(','));
+    await ctx.close();
+}
+// モニター第3回d（デザイン）: 「袋の表示を確認」の印は、当たる印（赤い ⚠）と色・形で見分ける。カードではアレルゲンの名前を先に、2行まで出す。「ほか2品」と言わない
+{
+    const { ctx, p } = await open('JP', { allergens: ['sesame', 'soy', 'egg'] });
+    const g = await p.evaluate(() => { setTab('today'); const m = session.menu; m.items[0] = Object.assign({}, m.items[0], { r: byId('chawanmushi') }); const i = m.items.findIndex(x => x.slot === '汁物'); m.items[i >= 0 ? i : 2] = Object.assign({}, m.items[i >= 0 ? i : 2], { r: byId('tomyumkung') }); render();
+        const spotOf = n => [...document.querySelectorAll('.spot')].find(x => (x.querySelector('.nm') || {}).textContent === n) || document, may = spotOf('トムヤムクン').querySelector('.alg-tag.may'), hit = spotOf('茶碗蒸し').querySelector('.alg-tag:not(.may)'), cs = e => e ? getComputedStyle(e) : {};
+        return { mayText: may ? may.innerText : '', hitText: hit ? hit.innerText : '', mayColor: cs(may).color, hitColor: cs(hit).color, clamp: cs(may).webkitLineClamp, ws: cs(may).whiteSpace,
+            names: algMayNames([byId('tomyumkung'), byId('consomme'), byId('tonkatsu')]).join('') }; });
+    ok(g.mayText && g.hitText, 'design 茶碗蒸し（卵）とトムヤムクン（ごま・大豆の袋）のカードに印: ' + JSON.stringify(g));
+    ok(g.mayColor !== g.hitColor && !/^⚠/.test(g.mayText) && /^⚠/.test(g.hitText), 'design 「袋の表示を確認」は赤い ⚠ と色・記号で見分ける: ' + JSON.stringify(g));
+    ok(/^\S*\s*(?:ごま・大豆|大豆・ごま)/.test(g.mayText), 'design カードの印はアレルゲンの名前を先に（2つ目も見える）: ' + g.mayText);
+    ok(g.clamp === '2', 'design カードの印は2行まで出す: ' + g.clamp + ' ' + g.ws);
+    ok(!/ほか\d+品/.test(g.names), 'design 加工品の数を「ほか○品」と言わない（料理の数と取り違える）: ' + g.names);
+    await ctx.close();
+}
 // モニター第3回c: 「袋の表示を確認」の文・カード・買い物メモに、どの加工品の袋を見ればよいかを書く。「入れていません」と「○品は」のあいだに「。」
 {
     const { ctx, p } = await open('JP', { allergens: ['sesame', 'soy'] });
@@ -779,8 +832,8 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
         return { ids, rows, fold: fold ? fold.innerText.replace(/\s+/g, ' ') : '', seasRows, ham: ham ? ham.id : '' };
     });
     ok(g.fold && /袋の表示を確かめるもの/.test(g.fold) && /(?:ソース|コンソメ)（大豆）/.test(g.fold), '案2 買う段: 畳んだ調味料の欄の見出しに、袋を見る調味料の名前: ' + JSON.stringify(g).slice(0, 400));
-    ok(g.seasRows.some(x => /(?:ソース|コンソメ).*⚠ 大豆（袋の表示を確認）/.test(x)), '案2 買う段: 調味料の行に「⚠ 大豆（袋の表示を確認）」: ' + g.seasRows.join(' | '));
-    ok(!g.ham || g.rows.concat(g.seasRows).some(x => /ハム.*⚠ [^（]*大豆[^（]*（袋の表示を確認）/.test(x)), '案2 買う段: ハムの行に「⚠ 大豆（袋の表示を確認）」: ' + g.rows.join(' | '));
+    ok(g.seasRows.some(x => /(?:ソース|コンソメ).*🔍 大豆（袋の表示を確認）/.test(x)), '案2 買う段: 調味料の行に「🔍 大豆（袋の表示を確認）」: ' + g.seasRows.join(' | '));
+    ok(!g.ham || g.rows.concat(g.seasRows).some(x => /ハム.*🔍 [^（]*大豆[^（]*（袋の表示を確認）/.test(x)), '案2 買う段: ハムの行に「🔍 大豆（袋の表示を確認）」: ' + g.rows.join(' | '));
     await ctx.close();
 }
 // モニター第3回c（案2）: 設定で家族のアレルギーを足して決める段にもどると、「献立をかえました」は段の上の知らせだけ（お知らせを重ねて2回出さない）
@@ -822,6 +875,7 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
     ok(r.n > 20, 'S6 元にする料理が並ぶ（' + r.n + '品）');
     ok(!r.bad.length, 'S6 えび・卵アレルギーで、案が作れないえびフライ・茶碗蒸し・だし巻き卵を元にする料理に並べない: ' + r.bad.join(','));
     ok(r.ebi.every(n => !/^(?:[^ ]+ )?(?:えび|エビ|海老)/.test(n)), 'S6 エビチリは主役を鶏肉に替えた案だけ作る: ' + r.ebi.join('、'));
+    ok(r.ebi.every(n => !/えび|エビ|海老/.test(n)), 'S6 エビチリの案の名前（かっこの中も）に、えびの言葉を出さない（モニター第3回d）: ' + r.ebi.join('、'));
     ok(!r.dead.length, 'S6 並べた料理は、選ぶと案が作れる（行き止まりにしない）: ' + r.dead.slice(0, 5).join(','));
     await ctx.close();
 }

@@ -1559,4 +1559,7 @@ GOHAN_I18N('id', {
     "食べたい": "Mau",
     "食べたいものに○を。全部「どちらでも」でも大丈夫です。": "Beri ○ pada yang kamu mau. Semua “Terserah” juga tidak apa-apa.",
     "食べたいものに○をつけて返してください。": "Beri ○ pada yang kamu mau lalu kirim balik.",
+    "だし入りの味噌も、袋の表示を確かめてください。": "Miso yang berisi dashi juga bisa mengandung ikan: periksa label kemasan.",
+    "魚を外しているので、だしは昆布だしにしています（かつお節・煮干し・だしの素は使いません）。": "Karena ikan tidak dipakai, dashi dibuat dengan kombu (tanpa serpihan bonito, sarden kering, atau dashi bubuk).",
+    "ほか{n}つの袋": "+{n} kemasan lagi",
 });
