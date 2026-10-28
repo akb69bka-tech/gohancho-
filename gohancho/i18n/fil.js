@@ -710,7 +710,6 @@ GOHAN_I18N('fil', {
     "ご飯帖プラスを見る": "Tingnan ang Gohancho Plus",
     "無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。": "Ang larawan sa libreng bersyon ay para lang sa makikita mo. Sa Gohancho Plus, magkakasya ang buong linggo sa isang card.",
     "別の案": "Iba pa",
-    "予定と買い物メモを送る": "Ipadala ang plano at listahan",
     "変更": "Baguhin",
     "{date}の変更（別の案・作らない・担当）": "Baguhin ang {date} (palitan, laktawan, sino ang magluluto)",
     "送る・カレンダーに入れる": "Ipadala / idagdag sa kalendaryo",

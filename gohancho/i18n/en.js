@@ -711,7 +711,6 @@ GOHAN_I18N('en', {
     "ご飯帖プラスを見る": "See Gohancho Plus",
     "無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。": "The free version's image only covers what you can see. Gohancho Plus puts the whole week on one card.",
     "別の案": "Swap",
-    "予定と買い物メモを送る": "Send plan & list",
     "変更": "Edit",
     "{date}の変更（別の案・作らない・担当）": "Edit {date} (swap, skip, who cooks)",
     "送る・カレンダーに入れる": "Send / add to calendar",
