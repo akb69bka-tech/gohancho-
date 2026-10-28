@@ -3,8 +3,9 @@
  * 料理イラスト（SVG）を作る
  *   node tools/illustrations/draw/build.mjs            全部作る → gohancho/img/dish/{id}.svg と manifest.json
  *   node tools/illustrations/draw/build.mjs nikujaga   1品だけ
- *   --file f_side1.mjs  その盛りつけファイルだけ読む　--no-manifest  manifest.json を書きかえない（試し描き用）
+ *   --file f_side1.mjs  その盛りつけファイルだけ読む（3q/<名前>.mjs も指定できる）　--no-manifest  manifest.json を書きかえない（試し描き用）
  * dishes/*.mjs に料理ごとの盛りつけ（どの器に、どの具を、どこに置くか）を書く。部品は kit.mjs
+ * 3q/*.mjs は斜め上35度の絵（部品は kit3q.mjs、基準は docs/illustration_3q.md）。同じ ID があれば 3q/ を使う
  * ChatGPT で作った画像（manifest の via が api / chatgpt）がある料理は、manifest をそのままにする
  */
 import fs from 'node:fs';
@@ -28,6 +29,15 @@ for (const f of fs.readdirSync(path.join(HERE, 'dishes')).filter(f => f.endsWith
         DISHES[id] = fn;
     }
 }
+// 斜め上35度の絵（3q/*.mjs。_ で始まるファイルは見本なので読まない）。同じ ID は dishes/ の真上の絵より優先する
+const Q3 = new Set();
+if (!fileOnly || fileOnly.startsWith('3q/')) for (const f of fs.readdirSync(path.join(HERE, '3q')).filter(f => f.endsWith('.mjs') && !f.startsWith('_') && (!fileOnly || fileOnly === '3q/' + f)).sort()){
+    const mod = await import(pathToFileURL(path.join(HERE, '3q', f)));
+    for (const [id, fn] of Object.entries(mod.default)){
+        if (Q3.has(id)) throw new Error(`${id} が 3q/ に2回出てきます（${f}）`);
+        Q3.add(id); DISHES[id] = fn;
+    }
+}
 const only = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--file');
 const ids = Object.keys(DISHES).filter(id => !only.length || only.includes(id));
 let m; try{ m = JSON.parse(fs.readFileSync(MANIFEST, 'utf8')); }catch(e){ m = { version: 1, items: {} }; }
@@ -42,7 +52,7 @@ for (const id of ids){
     if (!same) fs.writeFileSync(file, svg);
     bytes += svg.length; n++;
     const cur = m.items[id];
-    if (!cur || (cur.via === 'svg' && !same)) m.items[id] = { file: `${id}.svg`, via: 'svg', model: 'hand-drawn', date: new Date().toISOString().slice(0, 10) };
+    if (!cur || (cur.via === 'svg' && !same)) m.items[id] = { file: `${id}.svg`, via: 'svg', model: Q3.has(id) ? 'hand-drawn-3q' : 'hand-drawn', date: new Date().toISOString().slice(0, 10) };
 }
 if (!noManifest) fs.writeFileSync(MANIFEST, JSON.stringify(m, null, 2) + '\n');
 console.log(`${n}品の絵を作りました（合計 ${Math.round(bytes / 1024)}KB）`);
