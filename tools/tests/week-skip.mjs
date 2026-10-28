@@ -7,17 +7,17 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/', N = Number(process.env.N || 6);
+const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_, N = Number(process.env.N || 6);
 const CCS = (process.env.CCS || 'JP,US,KR,FR,IN,TH').split(',');
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 for (const cc of CCS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message));
     await p.addInitScript(cc => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:cc, dishCount:3}})); } }, cc);
-    await p.goto(URL_); await p.waitForTimeout(900); await p.evaluate(() => { hasPro = () => true; });
+    await p.goto(URL_); await ready(p); await p.evaluate(() => { hasPro = () => true; });
     const r = await p.evaluate(async N => {
         const bad = [], snapDay = x => JSON.stringify({d:x.d, id:x.id, extra:x.extra, skip:!!x.skip});
         const outside = () => JSON.stringify([S.fridge, S.history, S.favs, S.cook, session.menu && session.menu.items.map(i => i.r && i.r.id)]);
@@ -100,7 +100,7 @@ for (const lang of (process.env.LAYOUT_LANGS || 'ja,de,ar,th,fr,vi').split(','))
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage();
     await p.addInitScript(lang => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), lang, settings:{country:'JP', dishCount:3, lang}, family:[{id:'f1', name:'母', role:'adult', avoid:[], allergy:[], mild:false}]})); } }, lang);
-    await p.goto(URL_); await p.waitForTimeout(900);
+    await p.goto(URL_); await ready(p);
     await p.evaluate(async lang => { await setLang(lang); hasPro = () => true; if (!S.week) makeWeek(); S.week.days[0].skip = true; S.week.days[1].who = '長い名前の人長い名前'; render(); }, lang);
     const m = await p.evaluate(() => { const bad = [], W = document.documentElement.clientWidth;
         if (document.documentElement.scrollWidth > W) bad.push('横にはみ出す ' + document.documentElement.scrollWidth);
