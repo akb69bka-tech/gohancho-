@@ -204,7 +204,7 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
-.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}.stock-q{font-size:.9em}.stock-q.over{color:var(--warn,#b3261e)}.stock-add{margin-top:8px;align-items:center;gap:.4rem}.stock-add input{min-width:0;max-width:100%;text-overflow:ellipsis}.my-rec dl{display:grid;grid-template-columns:1fr auto;gap:.3rem .8rem;margin:0}.my-rec dt{margin:0}.my-rec dd{margin:0;font-weight:600;text-align:end}
+.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}.stock-q{font-size:.9em}.stock-q.over{color:var(--warn,#b3261e)}.stock-add{margin-top:8px;align-items:center;gap:.4rem}.stock-add input{min-width:0;max-width:100%;text-overflow:ellipsis}
 .chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
@@ -442,10 +442,25 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .item .item-acts{display:flex;gap:4px;align-items:center}
 @media (max-width:400px){.item:has(> .item-acts){grid-template-columns:1fr}.item > .item-acts{justify-content:flex-end}}   /* 狭い画面では料理名を1行目に広く、ボタンは下の段に */
 .item.react-item{grid-template-columns:1fr;background:var(--surface-2)}
-/* ふりかえり・称号 */
-.review{gap:10px}
-.review p{margin:0;font-family:var(--font-display);font-weight:700;font-size:1rem;line-height:1.6}
-.review p.foot{font-family:var(--font-body);font-weight:400;font-size:.76rem}
+/* 記録タブ（v2）: いちばん上に「最近作った料理」を大きく。目次で各欄へ。数字は大きく、件数だけ（評価の言葉は出さない） */
+.recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,6.75rem),1fr));gap:var(--s8,8px)}
+.recent-card{display:flex;flex-direction:column;align-items:center;gap:var(--s8,8px);padding:var(--s12,12px) var(--s8,8px);background:var(--surface);border:1px solid var(--line-soft,var(--line));border-radius:var(--r-lg,16px);box-shadow:var(--shadow-1,var(--shadow));text-align:center;min-width:0;min-height:var(--tap,48px);color:var(--ink);transition:transform var(--dur-1,.12s) var(--ease,ease),border-color var(--dur-1,.12s)}
+.recent-card:hover{border-color:var(--accent)}
+.recent-card:active{transform:translateY(1px) scale(.98)}
+.recent-card .thumb{width:76px;height:76px}
+.recent-card .nm{font-weight:700;font-size:var(--fs14,.875rem);line-height:var(--lh-tight,1.35);overflow-wrap:break-word;hyphens:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:100%}
+.recent-card .d{font-size:var(--fs12,.75rem);color:var(--muted);line-height:var(--lh-tight,1.35)}
+.jump-toc{display:flex;flex-wrap:wrap;gap:var(--s8,8px);margin-top:calc(-1 * var(--s16,16px))}
+.jump-toc .chip{font-size:var(--fs14,.875rem)}
+#view>.sec[id],#view>details.sec{scroll-margin-top:var(--s16,16px)}
+.nums{gap:var(--s12,12px)}
+.stats.big{grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr))}
+.stats.big .stat{padding:var(--s12,12px) var(--s16,16px)}
+.stats.big .n{font-size:var(--fs32,2rem);line-height:1.1;color:var(--accent)}
+.stats.big .k{font-size:var(--fs14,.875rem)}
+.rec-stats .n{font-size:var(--fs20,1.25rem);color:var(--accent);overflow-wrap:anywhere}
+#log-spend .spend-sum{font-family:var(--font-display);font-size:var(--fs24,1.5rem);font-weight:700;color:var(--accent)}
+/* 称号 */
 .titles{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
 .title-row{padding:12px 14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
 .title-row:first-child{border-top:0}
@@ -531,6 +546,27 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
 .left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.left-chips .chip{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:40px;padding-block:0}   /* 料理名の長さで、列の折り返しと高さが変わらないように（2列・1行は…で切る） */.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
+/* 設定（v2）: 上に目次。7つのまとまりに分け、「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま先頭に。ほかは見出し1行に畳む */
+.settings{gap:var(--s16,16px)}
+.set-toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,9.5rem),1fr));gap:var(--s8,8px)}
+.set-toc-btn{display:flex;align-items:center;gap:var(--s8,8px);min-height:var(--tap,48px);padding:var(--s8,8px) var(--s12,12px);background:var(--surface);border:1px solid var(--line-soft,var(--line));border-radius:var(--r-md,12px);box-shadow:var(--shadow-1,var(--shadow));font-size:var(--fs14,.875rem);font-weight:600;line-height:var(--lh-tight,1.35);text-align:start;color:var(--ink);min-width:0;overflow-wrap:anywhere;transition:transform var(--dur-1,.12s) var(--ease,ease),border-color var(--dur-1,.12s)}
+.set-toc-btn:hover{border-color:var(--accent)}
+.set-toc-btn:active{transform:translateY(1px) scale(.98)}
+.set-toc-btn.first{grid-column:1/-1;background:var(--accent-soft);border-color:transparent}
+.set-ic{width:22px;height:22px;flex-shrink:0;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.set-sec{display:flex;flex-direction:column;gap:var(--s12,12px);scroll-margin-top:var(--s16,16px)}
+.set-sec-h{display:flex;align-items:center;gap:var(--s8,8px);font-family:var(--font-display);font-weight:700;font-size:var(--fs20,1.25rem);line-height:var(--lh-tight,1.35);margin:0}
+.set-sec.open-always>.set-sec-h{padding-inline-start:var(--s4,4px)}
+.set-body{display:flex;flex-direction:column;gap:var(--s12,12px)}
+details.set-sec>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--s12,12px);min-height:56px;padding:var(--s12,12px) var(--s16,16px);background:var(--surface);border:1px solid var(--line-soft,var(--line));border-radius:var(--r-lg,16px);box-shadow:var(--shadow-1,var(--shadow));cursor:pointer}
+details.set-sec>summary::-webkit-details-marker{display:none}
+details.set-sec>summary:hover{border-color:var(--accent)}
+details.set-sec[open]>summary{background:var(--accent-soft);border-color:transparent;box-shadow:none}
+.set-sum-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.set-sum-tx .set-sec-h{font-size:var(--fs16,1rem)}
+.set-sum-v{font-size:var(--fs12,.75rem);color:var(--muted);overflow-wrap:anywhere;padding-inline-start:30px}
+details.set-sec>summary .fold-chev{flex-shrink:0}
+details.set-sec[open]>summary .fold-chev{transform:rotate(225deg) translate(-2px,-2px)}
 .set-group{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
 .set-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
@@ -796,7 +832,6 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}.cook-nav .btn{min-width:0;white-space:normal;text-wrap:balance;overflow-wrap:anywhere}   /* 文字を大きくした狭い画面でも「次の料理 →」が画面の外にはみ出さない */
 /* わが家のアルバム */
 .cal{display:flex;flex-direction:column;gap:10px;padding:12px;margin-bottom:10px}
-.cal-week{margin:0;font-weight:700}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .cal-nav .btn{min-width:44px;min-height:44px}
 [dir="rtl"] .cal-nav .btn span{display:inline-block;transform:scaleX(-1)}
@@ -3726,31 +3761,6 @@ function titlesHtml(){
         </div>`;
     }).join('');
 }
-function reviewHtml(){
-    const ws = weekStats();
-    const from = weekStart();
-    let msg;
-    if (!S.history.length) msg = t('記録がたまると、ここに一週間のふりかえりが出ます。最初の一日を記録してみてください。');
-    else if (!ws.days) msg = t('今週はまだ記録がありません。忙しい週もあります。今日の分だけ、決めてみませんか。');
-    else {
-        const parts = [t('今週は{n}日分、{d}品', {n:ws.days, d:ws.dishes})];
-        if (ws.fresh.length) parts.push(t('新しい料理が{n}つ増えました', {n:ws.fresh.length}));
-        if (ws.skills) parts.push(t('ひと手間を{n}つ試しました', {n:ws.skills}));
-        if (ws.genres >= 3) parts.push(t('{n}つのジャンルを行き来しています', {n:ws.genres}));
-        msg = parts.join(t('。')) + t('。') + (ws.days >= 5 ? t('よく回した一週間です。') : ws.days >= 3 ? t('いいペースです。') : t('一日一日が積み重なっています。'));
-    }
-    const allDays = new Set(S.history.map(h => h.d)).size, monthCount = S.history.filter(h => h.d.startsWith(TODAY.slice(0,7))).length;
-    return `<div class="card review">
-        <div class="eyebrow">${esc(t('今週のふりかえり（{date}〜）', {date:jpDate(from, false)}))}</div>
-        <p>${esc(msg)}</p>
-        <div class="stats">
-            <div class="stat"><div class="n">${ws.days}</div><div class="k">${esc(t('記録した日'))}</div></div>
-            <div class="stat"><div class="n">${ws.fresh.length}</div><div class="k">${esc(t('新しい料理'))}</div></div>
-            <div class="stat"><div class="n">${ws.skills}</div><div class="k">${esc(tc('stat', 'ひと手間'))}</div></div>
-        </div>
-        <p class="foot">${esc(t('これまで {n}日記録', {n:allDays}))}${esc(t('・'))}${esc(t('今月 {n}品', {n:monthCount}))}${esc(t('・'))}${esc(t('{n}日続けて記録中', {n:streak()}))}</p>
-    </div>`;
-}
 
 /* ---- スマホのアプリとして使う（PWA） ---- */
 let installEvent = null;
@@ -5109,35 +5119,26 @@ function viewSettings(){
     const uiLang = S.settings.uiLang || 'auto';
     const langChips = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])]
         .map(([v, l]) => `<button class="chip" data-act="ui-lang" data-v="${esc(v)}" aria-pressed="${uiLang === v}" lang="${v === 'auto' ? LANG : v}">${esc(l)}</button>`).join('');
+    // 設定は7つのまとまりに分け、上の目次から開く。「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま、いちばん上に出す
+    // （ほかのまとまりの開き閉じは、この起動のあいだだけ覚える。読み込み・全消去の確認中は「データとバックアップ」を開いておく）
+    const so = session.setOpen || {}, isOpen = k => !!so[k] || (k === 'data' && (pendingConfirm === 'import' || pendingConfirm === 'reset'));
+    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['notify', t('お知らせ')], ['display', t('表示と言語')], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
+    const title = k => groups.find(g => g[0] === k)[1];
+    const grp = (k, sum, body) => `<details class="set-sec" id="set-${k}" data-sk="${k}" ${isOpen(k) ? 'open' : ''}><summary class="set-sum"><span class="set-sum-tx"><span class="set-sec-h">${SET_ICONS[k]}${esc(title(k))}</span>${sum ? `<span class="set-sum-v">${esc(sum)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="set-body">${body}</div></details>`;
+    const remindSum = isNative() ? t('毎日のお知らせ') + GAP() + (typeof S.settings.remind === 'number' ? hourLabel(S.settings.remind) : t('なし')) : t('お知らせは iPhone アプリ版で使えます');
     return `
-    <section class="sec">
+    <section class="sec settings">
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
+        <nav class="set-toc" aria-label="${esc(t('設定の目次'))}">${groups.map(([k, l]) => `<button type="button" class="set-toc-btn${k === 'family' ? ' first' : ''}" data-act="set-jump" data-k="${k}">${SET_ICONS[k]}<span>${esc(l)}</span></button>`).join('')}</nav>
+        <section class="set-sec open-always" id="set-family" aria-labelledby="set-family-h">
+            <h3 class="set-sec-h" id="set-family-h">${SET_ICONS.family}${esc(title('family'))}</h3>
+            <div class="set-body">
         ${allergySettingsHtml()}
+        ${familySettingsHtml()}
         <div class="set-group">
-            <div class="set-title">${esc(t('国・地域'))}</div>
-            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + countryLabel(cur)}))}</button>
-            <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
-            <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
-                <div class="chips">${langChips}</div>
-                <span class="small muted">${esc(t('国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
-        </div>
-        <div class="set-group">
-            <div class="set-title">${esc(t('文字の大きさ'))}</div>
-            <div class="chips" role="group" aria-label="${esc(t('文字の大きさ'))}">${[[0, t('ふつう')], [1, t('大きい')], [2, t('もっと大きい')]].map(([v, l]) => `<button class="chip" data-act="text-size" data-v="${v}" aria-pressed="${(S.settings.textSize || 0) === v}">${esc(l)}</button>`).join('')}</div>
-            <span class="small muted">${esc(t('アプリの中の文字の大きさを変えます。端末の文字サイズの設定とも合わせて大きくなります。'))}</span>
-        </div>
-        <div class="set-group">
-            <div class="set-title">${esc(t('家族と献立'))}</div>
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
                 <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
-            <div class="field"><label>${esc(t('ふだんの主食'))}</label>
-                <div class="chips">${(o => stapleOptions().map(x => `<button class="chip" data-act="staple-set" data-v="${esc(x.k)}" aria-pressed="${x.k === o.k}">${esc(stapleName(x))}</button>`).join(''))(currentStapleOpt())}</div>
-                <span class="small muted">${esc(t('献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。'))}</span></div>
-            <div class="field"><label>${esc(t('ふだんの品数'))}</label>
-                <div class="chips">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
-            <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
-                <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
             <div class="field"><label>${esc(t('苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）'))}</label>
                 ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
@@ -5149,28 +5150,36 @@ function viewSettings(){
                 <form class="inputbar" data-form="add-scarce"><input type="text" id="scarce-input" placeholder="${esc(t('食材の名前（例: 長ねぎ、しらたき）'))}" autocomplete="off" aria-label="${esc(t('手に入りにくい食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
                 <span class="small muted">${esc(t('登録した食材は、「なくても可」ではない材料にあるときだけ見ます。調味料の欄は見ません。ほかの食材への置き換えはしません。'))}</span></div>
         </div>
-        ${familySettingsHtml()}
-        <div class="set-group">
-            <div class="set-title">${esc(PLAN.name)}</div>
-            ${PLAN.billingEnabled
-                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
-                  : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
-                            : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
-                : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
-            ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
+            </div>
+        </section>
+        ${grp('menu', cur.flag + ' ' + countryLabel(cur) + GAP() + stapleName(currentStapleOpt()), `<div class="set-group">
+            <div class="set-title">${esc(t('国・地域'))}</div>
+            <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + countryLabel(cur)}))}</button>
+            <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
         </div>
-        ${loyalEligible() ? `<div class="note"><span>${esc(t('1年間ありがとうございます。年額プランを特別価格でご案内します。'))}</span><button class="btn sm" data-act="paywall">${esc(t('年額プラン（1年ありがとう価格）'))}</button></div>` : ''}
         <div class="set-group">
-            <div class="set-title">${esc(t('お知らせ'))}</div>
+            <div class="field"><label>${esc(t('ふだんの主食'))}</label>
+                <div class="chips">${(o => stapleOptions().map(x => `<button class="chip" data-act="staple-set" data-v="${esc(x.k)}" aria-pressed="${x.k === o.k}">${esc(stapleName(x))}</button>`).join(''))(currentStapleOpt())}</div>
+                <span class="small muted">${esc(t('献立のお膳に添える主食です。国ごとに覚えます。お膳の主食の「かえる」でも切りかえられます。'))}</span></div>
+            <div class="field"><label>${esc(t('ふだんの品数'))}</label>
+                <div class="chips">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
+            <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
+                <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
+        </div>`)}
+        ${grp('notify', remindSum, `<div class="set-group">
             ${reminderHtml()}
+        </div>`)}
+        ${grp('display', (LANG_NAMES[LANG] || LANG) + GAP() + [t('ふつう'), t('大きい'), t('もっと大きい')][S.settings.textSize || 0], `<div class="set-group">
+            <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
+                <div class="chips">${langChips}</div>
+                <span class="small muted">${esc(t('国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
         </div>
         <div class="set-group">
-            <div class="set-title">${esc(t('アプリ'))}</div>
-            ${isNative() ? '' : installHtml()}
-            <button class="btn sm" data-act="ob-again">${esc(t('はじめての設定をもう一度'))}</button>
-        </div>
-        <div class="set-group">
-            <div class="set-title">${esc(t('データ'))}</div>
+            <div class="set-title">${esc(t('文字の大きさ'))}</div>
+            <div class="chips" role="group" aria-label="${esc(t('文字の大きさ'))}">${[[0, t('ふつう')], [1, t('大きい')], [2, t('もっと大きい')]].map(([v, l]) => `<button class="chip" data-act="text-size" data-v="${v}" aria-pressed="${(S.settings.textSize || 0) === v}">${esc(l)}</button>`).join('')}</div>
+            <span class="small muted">${esc(t('アプリの中の文字の大きさを変えます。端末の文字サイズの設定とも合わせて大きくなります。'))}</span>
+        </div>`)}
+        ${grp('data', S.lastBackup ? t('最後に書き出した日: {d}', {d: S.lastBackup}) : t('まだ書き出していません'), `<div class="set-group">
             <div class="box backup-card" id="backup-card" style="padding:12px 14px;margin-bottom:8px">
                 <b>${esc(t('データのバックアップ'))}</b>
                 <p class="small muted" style="margin:6px 0">${esc(t('記録・お気に入り・保存した献立・家族・冷蔵庫などは、この端末の中だけに保存されています。機種変更・アプリの削除・ブラウザのデータ削除で消えることがあります。ときどきファイルに書き出しておくと安心です。'))}</p>
@@ -5178,7 +5187,7 @@ function viewSettings(){
                 <p class="small" style="margin:0 0 8px">${esc(S.lastBackup ? t('最後に書き出した日: {d}', {d: S.lastBackup}) : t('まだ書き出していません'))}</p>
                 <div class="row"><button class="btn" data-act="export-file">${esc(t('ファイルで書き出す'))}</button></div>
             </div>
-            <details class="box"><summary>${esc(t('データの引っ越し・バックアップ'))}</summary>
+            <details class="box" id="backup-move"><summary>${esc(t('データの引っ越し・バックアップ'))}</summary>
                 <div class="inner">
                     <p class="small muted" style="margin:0">${esc(t('登録した「わが家の写真」は、この文字には入りません（端末の中にだけ保存されます）。'))}</p>
                     <p class="small muted" style="margin:0">${esc(t('記録はこの端末の中だけに保存されています。別のスマホに移すときは、下の文字をコピーして、移し先の同じ欄に貼りつけて「読み込む」を押してください。'))}</p>
@@ -5197,14 +5206,43 @@ function viewSettings(){
                     ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
                 </div>
             </details>
+        </div>`)}
+        ${grp('plan', PLAN.name, `<div class="set-group">
+            <div class="set-title">${esc(PLAN.name)}</div>
+            ${PLAN.billingEnabled
+                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
+                  : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
+                            : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
+                : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
+            ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
+        </div>
+        ${loyalEligible() ? `<div class="note"><span>${esc(t('1年間ありがとうございます。年額プランを特別価格でご案内します。'))}</span><button class="btn sm" data-act="paywall">${esc(t('年額プラン（1年ありがとう価格）'))}</button></div>` : ''}
+`)}
+        ${grp('help', 'v' + APP_VERSION, `<div class="set-group">
+            <div class="set-title">${esc(t('アプリ'))}</div>
+            ${isNative() ? '' : installHtml()}
+            <button class="btn sm" data-act="ob-again">${esc(t('はじめての設定をもう一度'))}</button>
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
             <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
             <div class="row">${docLink('privacy', t('プライバシーポリシー'), 'btn sm')}${docLink('support', t('サポート・よくある質問'), 'btn sm')}${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
-        </div>
+        </div>`)}
     </section>`;
 }
+// 設定の目次・見出しの小さな絵（線だけ。色は文字色に合わせる）
+const SET_ICONS = (() => {
+    const svg = d => `<svg class="set-ic" viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+    return {
+        family: svg('<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M3.5 19c.6-3.3 2.8-5 5.5-5s4.9 1.7 5.5 5M14.5 15.2c.8-.5 1.6-.7 2.5-.7 2.1 0 3.6 1.4 4 4.5"/>'),
+        menu: svg('<path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M12 4.5v4"/>'),
+        notify: svg('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'),
+        display: svg('<path d="M4 18 8.5 6h1L14 18M5.6 14h6.8"/><path d="M15.5 18l2.7-7h.6l2.7 7M16.5 15.6h4"/>'),
+        data: svg('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v7M8.8 12 12 15.2 15.2 12"/>'),
+        plan: svg('<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>'),
+        help: svg('<circle cx="12" cy="12" r="9"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/>'),
+    };
+})();
 const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせる（申請の自動化がここも書きかえる）
 // 外から直せる設定（審査なしで変えられる）: GitHub 上の gohancho/remote.json を起動時に読む。読めなくても、古くても、そのまま動く
 //   notice: {id, ja, en, fr…, until:'YYYY-MM-DD', url?, linkLabel?:{ja, en, fr…}}  今日の画面に出すお知らせ（×で閉じられる）
@@ -6625,9 +6663,9 @@ function parseMoney(raw){
     return n > 0 && n <= 1e9 ? n : null;
 }
 function spendWeek(){ const from = addDays(TODAY, -6); return S.spend.filter(x => x.d >= from && x.d <= TODAY).sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0); }
-function spendHtml(){
+function spendHtml(openFirst = false){   // openFirst: 記録タブでは、はじめから開いて出す（食費メモの欄そのものなので）
     const w = spendWeek(), sum = Math.round(w.reduce((a, x) => a + Math.round(x.a * 100), 0)) / 100;
-    return `<details class="card memo-card spend-card" ${session.spendOpen === undefined ? (w.length ? 'open' : '') : (session.spendOpen ? 'open' : '')}><summary class="memo-sum"><span>${esc(t('食費メモ（直近7日）'))}</span><span class="small muted">${w.length ? esc(moneyText(sum)) : ''}</span></summary>
+    return `<details class="card memo-card spend-card" ${session.spendOpen === undefined ? (openFirst || w.length ? 'open' : '') : (session.spendOpen ? 'open' : '')}><summary class="memo-sum"><span>${esc(t('食費メモ（直近7日）'))}</span><span class="small muted">${w.length ? esc(moneyText(sum)) : ''}</span></summary>
         <form class="spend-row" data-form="spend"><label class="small" for="spend-a">${esc(t('今日使った金額'))}</label><input id="spend-a" type="text" inputmode="decimal" autocomplete="off" aria-describedby="spend-foot"><button class="btn sm primary" type="submit">${esc(t('記録する'))}</button></form>
         ${session.spendErr ? `<p class="small" role="alert" style="color:var(--danger);margin:4px 0">${esc(t('金額を数字で入れてください'))}</p>` : ''}
         ${w.length ? `<div class="spend-sum">${esc(t('入力した金額の合計: {amount}', {amount:moneyText(sum)}))}</div>
@@ -7309,9 +7347,7 @@ function calMonthHtml(byDay){
         cells.push(`<button type="button" class="cal-d${key === TODAY ? ' today' : ''}${key === session.logDay ? ' sel' : ''}" data-act="cal-day" data-d="${key}" aria-pressed="${key === session.logDay}" aria-label="${esc(jpDate(key) + (n ? GAP() + t('{n}品', {n}) : ''))}"><span>${d}</span><i class="${n ? 'on' : ''}"></i></button>`);
     }
     const dayHs = session.logDay && session.logDay.slice(0,7) === ym ? byDay[session.logDay] || [] : null;
-    const ws = weekStats();
     return `<div class="card cal">
-        <p class="cal-week">${esc(t('今週は{n}日つくりました・{m}品', {n:ws.days, m:ws.dishes}))}</p>
         <div class="cal-nav"><button type="button" class="btn sm ghost" data-act="cal-nav" data-v="-1" aria-label="${esc(t('前の月'))}"><span aria-hidden="true">‹</span></button><b>${esc(monthLabel(ym))}</b><button type="button" class="btn sm ghost" data-act="cal-nav" data-v="1" aria-label="${esc(t('次の月'))}" ${ym >= TODAY.slice(0,7) ? 'disabled' : ''}><span aria-hidden="true">›</span></button></div>
         <div class="cal-grid">${[1,2,3,4,5,6,0].map(i => `<span class="cal-wd">${esc(LANG === 'ar' ? new Intl.DateTimeFormat(LANG, {weekday:'narrow'}).format(new Date(2026, 0, 4 + i)) : wdName(i))}</span>`).join('')}${cells.join('')}</div>
         ${dayHs ? `<div class="cal-day"><b>${esc(jpDate(session.logDay))}</b>${dayHs.length ? dayHs.map(h => { const r = byId(h.id); return `<div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(r ? r.name : h.name)}${h.slot ? `<span class="s">${GAP()}${esc(typeLabel(h.slot))}</span>` : ''}</div>`; }).join('') : `<span class="small muted">${esc(t('この日の記録はありません'))}</span>`}</div>` : ''}
@@ -7335,56 +7371,62 @@ function viewLog(){
     const logDays = Object.entries(byDay).slice(0, 30), logShown = moreOpen.has('log') ? logDays : logDays.slice(0, 7);
     const logRest = logDays.slice(logShown.length).reduce((n, [, hs]) => n + hs.length, 0);
     const ed = session.editCustom ? S.custom.find(r => r.id === session.editCustom) : null;   // 編集中の「わが家のレシピ」
+    const ws = weekStats(), allDays = new Set(S.history.map(h => h.d)).size, monthCount = S.history.filter(h => h.d.startsWith(TODAY.slice(0,7))).length;
+    const tally = tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()), rec = myRecordHtml();
+    // 目次: 押すと、その欄へ移る（折りたたんだ欄は開く）。数字は件数だけで、評価の言葉は出さない
+    const toc = [['log-cal', t('作った記録')], ['log-album', t('わが家のアルバム')], tally && ['week-tally', t('今週の主菜の内訳')], rec && ['my-record', t('あなたの記録')], ['log-spend', t('食費メモ')], ['saved-menus', t('保存した献立')], ['log-favs', t('お気に入り')], ['log-custom', t('わが家のレシピ')]].filter(Boolean);
+    const stat = (n, k) => `<div class="stat"><div class="n">${esc(n)}</div><div class="k">${esc(k)}</div></div>`;
     return `
-    <section class="sec">
-        ${reviewHtml()}
+    <section class="sec" id="log-recent">
+        <div class="sec-head"><h2>${esc(t('最近作った料理'))}</h2></div>
+        ${recentMadeHtml()}
     </section>
-    <section class="sec">
-        ${awardHtml()}
+    <section class="sec" id="log-nums">
+        <div class="card nums">
+            <div class="eyebrow">${esc(t('今週のふりかえり（{date}〜）', {date:jpDate(weekStart(), false)}))}</div>
+            <div class="stats big">${stat(ws.days, t('記録した日'))}${stat(ws.dishes, t('品数'))}${stat(ws.fresh.length, t('新しい料理'))}${stat(ws.skills, tc('stat', 'ひと手間'))}</div>
+            <p class="foot">${esc(t('これまで {n}日記録', {n:allDays}))}${esc(t('・'))}${esc(t('今月 {n}品', {n:monthCount}))}${esc(t('・'))}${esc(t('{n}日続けて記録中', {n:streak()}))}</p>
+        </div>
     </section>
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('わが家のアルバム'))}</h2><span class="hint">${esc(t('作った料理の写真を、日付つきで残しています'))}</span></div>
-        ${albumHtml()}
-    </section>
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('台所の腕前'))}</h2><span class="hint">${esc(t('続けるほど、称号が上がっていきます'))}</span></div>
-        <div class="titles">${titlesHtml()}</div>
-    </section>
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('身についたひと手間'))}</h2><span class="hint">${esc(t('料理の詳しい画面の「やってみた」で増えます'))}</span></div>
-        <div class="list">${skillList.length ? skillList.map(sk => { const r = byId(sk.id); return `<div class="item"><div class="t" ${r?`data-act="open" data-id="${esc(sk.id)}"`:''}>${esc(sk.skill)}<div class="s">${esc(r ? r.name : '')}${GAP()}${esc(jpDate(sk.d))}</div></div><span class="badge fav">${esc(t('習得'))}</span></div>`; }).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「今日のひと手間」から、ひとつ試してみてください。'))}</div>`}</div>
-    </section>
-    <section class="sec" id="saved-menus">
-        <div class="sec-head"><h2>${esc(t('保存した献立'))}</h2><span class="hint">${esc(t('いつもの献立を残しておくと、ワンタップで今日の献立にできます'))}</span></div>
-        <div class="list">${(S.savedMenus || []).length ? S.savedMenus.map(sm => { const ab = sm.ids.map(byId).filter(r => r && allergyConflict(r)); return `<div class="item"><div class="t">${esc(sm.name)}${ab.length ? `<div class="s warn" role="alert">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の献立にするときは、その枠だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</div>` : ''}<div class="s">${esc(joinNames(sm.ids.map(id => (byId(id) || {}).name).filter(Boolean)) || joinNames(sm.names || []) || '')}${GAP()}${esc(jpDate(sm.d))}${sm.mix && Object.keys(sm.mix).length ? '<br>🌏 ' + esc(joinNames(Object.entries(sm.mix).map(([sl, cc]) => t('{slot}：{name}', {slot: slotLabel(sl), name: countryLabel(countryOf(cc))})))) : ''}</div></div>
-            <div class="item-acts"><button class="btn sm primary" data-act="saved-apply" data-id="${esc(sm.id)}">${esc(t('今日の献立にする'))}</button><button class="btn sm ghost danger" data-act="saved-rm" data-id="${esc(sm.id)}" aria-label="${esc(t('保存した献立を消す'))}">${esc(t('消す'))}</button></div></div>`; }).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「この献立を保存」で、いつもの献立を残せます。'))}</div>`}</div>
-    </section>
-    ${(h => h ? `<section class="sec" id="week-tally">
-        <div class="sec-head"><h2>${esc(t('今週の主菜の内訳'))}</h2><span class="hint">${esc(t('主な材料とジャンルを、回数だけ数えています。置き換えて作った料理も、元の料理で数えます。'))}</span></div>
-        ${h}
-    </section>` : '')(tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()))}
-    ${myRecordHtml()}
-    <section class="sec">
+    <nav class="jump-toc" aria-label="${esc(t('記録の目次'))}">${toc.map(([id, l]) => `<button type="button" class="chip" data-act="jump" data-to="${id}">${esc(l)}</button>`).join('')}</nav>
+    <section class="sec" id="log-cal">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
-        <div class="list">${Object.keys(byDay).length ? logShown.map(([d, hs]) => hs.map((h,i) => `
+        ${Object.keys(byDay).length ? `<div class="list">${logShown.map(([d, hs]) => hs.map((h,i) => `
             <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
             <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
             ${yumOf(h) ? `<button class="btn sm ghost" data-act="yum-minus" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}
             <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
-`).join('')).join('')
-            : `<div class="empty ill ill-book">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div>`}</div>
+`).join('')).join('')}</div>`
+            : ''}
         ${logRest ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="log">${esc(t('すべて見る（{n}品）', {n: logRest}))}</button></div>` : ''}
     </section>
-    ${top.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('よく作る料理'))}</h2></div>
-        <div class="list">${top.map(([n,c]) => `<div class="item"><div>${esc(n)}</div><span class="small muted">${esc(t('{n}回', {n:c}))}</span></div>`).join('')}</div></section>` : ''}
+    <section class="sec" id="log-album">
+        <div class="sec-head"><h2>${esc(t('わが家のアルバム'))}</h2><span class="hint">${esc(t('作った料理の写真を、日付つきで残しています'))}</span></div>
+        ${albumHtml()}
+    </section>
+    ${tally ? `<section class="sec" id="week-tally">
+        <div class="sec-head"><h2>${esc(t('今週の主菜の内訳'))}</h2><span class="hint">${esc(t('主な材料とジャンルを、回数だけ数えています。置き換えて作った料理も、元の料理で数えます。'))}</span></div>
+        ${tally}
+    </section>` : ''}
+    ${rec}
+    <section class="sec" id="log-spend">
+        <div class="sec-head"><h2>${esc(t('食費メモ'))}</h2></div>
+        ${spendHtml(true)}
+    </section>
+    <section class="sec" id="saved-menus">
+        <div class="sec-head"><h2>${esc(t('保存した献立'))}</h2><span class="hint">${esc(t('いつもの献立を残しておくと、ワンタップで今日の献立にできます'))}</span></div>
+        <div class="list">${(S.savedMenus || []).length ? S.savedMenus.map(sm => { const ab = sm.ids.map(byId).filter(r => r && allergyConflict(r)); return `<div class="item"><div class="t">${esc(sm.name)}${ab.length ? `<div class="s warn" role="alert">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の献立にするときは、その枠だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</div>` : ''}<div class="s">${esc(joinNames(sm.ids.map(id => (byId(id) || {}).name).filter(Boolean)) || joinNames(sm.names || []) || '')}${GAP()}${esc(jpDate(sm.d))}${sm.mix && Object.keys(sm.mix).length ? '<br>🌏 ' + esc(joinNames(Object.entries(sm.mix).map(([sl, cc]) => t('{slot}：{name}', {slot: slotLabel(sl), name: countryLabel(countryOf(cc))})))) : ''}</div></div>
+            <div class="item-acts"><button class="btn sm" data-act="saved-apply" data-id="${esc(sm.id)}">${esc(t('今日の献立にする'))}</button><button class="btn sm ghost danger" data-act="saved-rm" data-id="${esc(sm.id)}" aria-label="${esc(t('保存した献立を消す'))}">${esc(t('消す'))}</button></div></div>`; }).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「この献立を保存」で、いつもの献立を残せます。'))}</div>`}</div>
+    </section>
     <section class="sec">
+        ${awardHtml()}
+    </section>
+    <section class="sec" id="log-favs">
         <div class="sec-head"><h2>${esc(t('お気に入り'))}</h2></div>
         <div class="list">${favs.length ? favs.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}${allergyBadge(r) ? ' ' + allergyBadge(r) : ''}</div></div><span class="small muted">${esc(lastLabel(r.id))}</span></div>`).join('') : `<div class="empty">${esc(t('料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。'))}</div>`}</div>
     </section>
-    ${hidden.length ? `<section class="sec"><div class="sec-head"><h2>${esc(t('今は出さない料理'))}</h2></div>
-        <div class="list">${hidden.map(r => `<div class="item"><div>${esc(r.name)}</div><button class="btn sm" data-act="unhide" data-id="${esc(r.id)}">${esc(t('また出す'))}</button></div>`).join('')}</div></section>` : ''}
-    <section class="sec">
+    <section class="sec" id="log-custom">
         <div class="sec-head"><h2>${esc(t('わが家のレシピ'))}</h2><span class="hint">${esc(PACK ? t('追加した料理も献立・材料さがしに使われます') : t('追加した料理も献立・材料さがし・ひとひねりに使われます'))}</span></div>
         ${S.custom.length ? `<div class="list">${S.custom.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(typeLabel(r.type))}${esc(t('・'))}${esc(t('{n}分', {n:r.min}))}${esc(t('・'))}${esc(customMadeLabel(r.id))}${allergyBadge(r) ? ' ' + allergyBadge(r) : ''}</div>${r.src ? `<div class="s">${esc(r.src)}</div>` : ''}</div><div class="item-acts"><button class="btn sm ghost" data-act="edit-custom" data-id="${esc(r.id)}">${esc(t('編集'))}</button><button class="btn sm ghost danger" data-act="rm-custom" data-id="${esc(r.id)}">${esc(t('消す'))}</button></div></div>`).join('')}</div>` : ''}
         <details class="box" id="custom-box"${ed ? ' open' : ''}><summary>${esc(ed ? t('レシピを編集する') : t('レシピを追加する'))}</summary>
@@ -7413,9 +7455,19 @@ function viewLog(){
             </form>
         </details>
     </section>
+    ${foldHtml('log-titles', t('台所の腕前'), t('続けるほど、称号が上がっていきます'), `<div class="titles">${titlesHtml()}</div>`)}
+    ${foldHtml('log-skills', t('身についたひと手間'), t('料理の詳しい画面の「やってみた」で増えます'), `<div class="list">${skillList.length ? skillList.map(sk => { const r = byId(sk.id); return `<div class="item"><div class="t" ${r?`data-act="open" data-id="${esc(sk.id)}"`:''}>${esc(sk.skill)}<div class="s">${esc(r ? r.name : '')}${GAP()}${esc(jpDate(sk.d))}</div></div><span class="badge fav">${esc(t('習得'))}</span></div>`; }).join('') : `<div class="empty">${esc(t('まだありません。今日の献立の「今日のひと手間」から、ひとつ試してみてください。'))}</div>`}</div>`)}
+    ${top.length ? foldHtml('log-top', t('よく作る料理'), '', `<div class="list">${top.map(([n,c]) => `<div class="item"><div>${esc(n)}</div><span class="small muted">${esc(t('{n}回', {n:c}))}</span></div>`).join('')}</div>`) : ''}
+    ${hidden.length ? foldHtml('log-hidden', t('今は出さない料理'), '', `<div class="list">${hidden.map(r => `<div class="item"><div>${esc(r.name)}</div><button class="btn sm" data-act="unhide" data-id="${esc(r.id)}">${esc(t('また出す'))}</button></div>`).join('')}</div>`) : ''}
 `;
 }
-
+// 最近作った料理（新しい順に、同じ料理は1回だけ。最大6品）。押すと、その料理の詳しい画面
+function recentMadeHtml(){
+    const seen = new Set(), xs = [];
+    S.history.slice().sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0).forEach(h => { if (xs.length < 6 && !seen.has(h.id)){ seen.add(h.id); xs.push(h); } });
+    if (!xs.length) return `<div class="list"><div class="empty ill ill-book">${esc(t('まだ記録がありません。「今日の献立」で「この献立に決定」を押すか、料理の詳しい画面で「作った」を押すと記録されます。'))}</div></div>`;
+    return `<div class="recent-grid">${xs.map(h => { const r = byId(h.id), nm = r ? r.name : h.name; return `<button type="button" class="recent-card" data-act="open-hist" data-id="${esc(h.id)}">${r ? thumbHtml(r) : '<span class="thumb none" aria-hidden="true"></span>'}<span class="nm">${esc(nm)}</span><span class="d">${esc(jpDate(h.d, false))}${h.slot ? esc(GAP() + typeLabel(h.slot)) : ''}</span></button>`; }).join('')}</div>`;
+}
 /* ---- あなたの記録: この端末の記録を、今月の件数として並べるだけ（S は読むだけ。評価・比較・「減らせた」などの言葉は出さない。0件でもそのまま出す） ---- */
 function myRecordStats(ym = TODAY.slice(0, 7)){
     const from = ym + '-01', to = ym + '-31', hs = (S.history || []).filter(h => h.d >= from && h.d <= to);
@@ -7425,17 +7477,17 @@ function myRecordStats(ym = TODAY.slice(0, 7)){
 }
 function myRecordHtml(){
     if (!S.history.length && !S.foodLog.length && !S.stockLog.length && !S.custom.length) return '';
-    const s = myRecordStats(), row = (k, v) => `<dt class="small">${esc(k)}</dt><dd class="small">${esc(v)}</dd>`;
+    const s = myRecordStats(), row = (k, v) => `<div class="stat"><div class="n">${esc(v)}</div><div class="k">${esc(k)}</div></div>`;
     return `<section class="sec my-rec" id="my-record">
         <div class="sec-head"><h2>${esc(t('あなたの記録'))}</h2><span class="hint">${esc(t('{month}の件数。この端末の中で数えています（外には送りません）', {month: monthLabel(s.ym)}))}</span></div>
-        <div class="card"><dl>
+        <div class="card"><div class="stats rec-stats">
             ${row(t('作った料理の記録'), t('{n}品', {n: s.made}))}
             ${s.countries ? row(t('料理の国'), t('{n}か国', {n: s.countries})) : ''}
             ${row(t('使い切ったと記録した食材'), t('{n}件', {n: s.used}))}
             ${row(t('捨てたと記録した食材'), t('{n}件', {n: s.tossed}))}
             ${row(t('備蓄を使ったと記録した回数'), t('{n}回', {n: s.stockUsed}))}
             ${row(t('わが家のレシピ（全部）'), t('{n}品', {n: s.custom}))}
-        </dl></div>
+        </div></div>
     </section>`;
 }
 
@@ -8069,6 +8121,11 @@ document.addEventListener('click', e => {
     switch(act){
         case 'open': openModal(id); break;
         case 'open-hist': openHist(id); break;
+        case 'jump': {   // 記録の目次: その欄へ移る（折りたたんだ欄は開く）
+            const to = document.getElementById(el.dataset.to || ''); if (!to) break;
+            if (to.tagName === 'DETAILS' && !to.open) to.open = true;
+            to.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break;
+        }
         case 'close': case 'modal-bg': closeModal(); break;
         case 'mix-reset': S.settings.mix = {}; save(); reconcileMenu(); render(); break;
         case 'mood': if (session.mood === el.dataset.k) break; session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
@@ -8176,6 +8233,11 @@ document.addEventListener('click', e => {
         }
         case 'settings': setTab('settings'); break;
         case 'settings-back': setTab(prevTab || 'today'); break;
+        case 'set-jump': {   // 設定の目次: そのまとまりを開いて、そこへ移る
+            const k = el.dataset.k, g = document.getElementById('set-' + k); if (!g) break;
+            if (g.tagName === 'DETAILS' && !g.open){ g.open = true; if (!session.setOpen) session.setOpen = {}; session.setOpen[k] = true; }
+            g.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break;
+        }
         case 'paywall': openPaywall('info'); break;
         case 'share-menu': openShare('menu'); break;
         case 'share-week': openShare('week'); break;
@@ -8667,7 +8729,7 @@ function backupNoteHtml(){
     const msg = S.lastBackup ? t('最後に書き出してから{n}日たちました。機種変更や削除に備えて、ファイルに書き出しておくと安心です。', {n: daysBetween(S.lastBackup, TODAY)}) : t('記録はこの端末の中だけにあります。機種変更や削除に備えて、ファイルに書き出しておくと安心です。');
     return `<div class="note trial-note" role="note"><span dir="auto">${esc(msg)}</span><button class="btn sm" data-act="export-file">${esc(t('ファイルで書き出す'))}</button><button class="btn sm ghost" data-act="backup-snooze">${esc(t('あとで'))}</button></div>`;
 }
-function keepDetailsOpen(){ const b = document.querySelectorAll('details.box'); if (b.length) b[b.length-1].open = true; }
+function keepDetailsOpen(){ const m = document.getElementById('backup-move'); if (m){ m.open = true; return; } const b = document.querySelectorAll('details.box'); if (b.length) b[b.length-1].open = true; }   // 設定の「データの引っ越し・バックアップ」（確認を出す欄）を開いておく
 let searchDeb = 0;
 let customChkDeb = 0;
 document.addEventListener('input', e => {
@@ -8687,6 +8749,7 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
+    if (e.target.matches('details.set-sec')) { if (!session.setOpen) session.setOpen = {}; session.setOpen[e.target.dataset.sk] = e.target.open; }   // 設定のまとまりの開き閉じ（描き直しても同じ）
     if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
     else if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
