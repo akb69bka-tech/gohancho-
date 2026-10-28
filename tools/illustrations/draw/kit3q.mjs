@@ -10,7 +10,12 @@ export const SY = .56, CZ = .82;
 const SY0 = SY;
 // 平たい器（平皿・楕円皿・長皿・角皿）だけは約49度: 楕円の縦 SYF 倍（.68 では 96px の塗りが46%、.75 で50%に届くため .75）。皿の返り値 o に sy: SYF が入り、at(o, …) はそれを使う
 export const SYF = .75;
-export const INDIGO = '#2c4c7c', SHADE = '#3a2212';
+export const SHADE = '#3a2212';
+// 器の縁の色（2026-10-28 オーナーの決定「器の藍の縁をなくし、青のない色にそろえる」。基準書「2. 縁の色」）
+// 青は使わない。器の雰囲気に合わせて 錆・こげ茶・柿・若草・灰・金 から選ぶ
+export const RIM = { sabi: '#9a5f34', koge: '#5a3826', kaki: '#bf5a2c', wakakusa: '#7d9a46', hai: '#8a8076', kin: '#c49a42' };
+// 古い名前（藍）。いまは藍を使わないので、呼ばれても こげ茶 になる
+export const INDIGO = RIM.koge;
 export const FRAME = { cx: 100, w: 184 };   // 器の幅は 200 の約92%
 
 // ---------- 塗り・効果（同じ内容は defs を使い回す） ----------
@@ -52,16 +57,16 @@ export const dropOf = (p, d, dx = 1.8, dy = 2.4, op = .32, sd = 1.4) => `<path d
 // =========================================================
 // 器
 // =========================================================
-// 口の上面の藍: 'white' = 白い器（口の内側に藍の線 2.2）／ 'thin' = 漆・鋼・土鍋（細い藍の線 1.2）／ 'none' = 線なし（肉じゃがの鉢など今の絵が線なしのもの）
-function rimLine(cx, cy, rx, line, SY = SY0){
+// 口の上面の縁の線: 'white' = 白い器（口の内側に線 2.2）／ 'thin' = 漆・鋼・土鍋（細い線 1.2）／ 'none' = 線なし。色は rim（RIM の色。青は使わない）
+function rimLine(cx, cy, rx, line, SY = SY0, rim = RIM.sabi){
     if (line === 'none') return '';
     const w = line === 'thin' ? 1.2 : 2.2, inset = line === 'thin' ? 1.4 : 2.2;
-    return `<path d="${eD(cx, cy, rx - inset, (rx - inset) * SY)}" fill="none" stroke="${INDIGO}" stroke-width="${w}"/>`;
+    return `<path d="${eD(cx, cy, rx - inset, (rx - inset) * SY)}" fill="none" stroke="${rim}" stroke-width="${w}"/>`;
 }
 // 鉢・椀・茶碗・どんぶり・小鉢の共通形
 // cx, cy: 口の楕円の中心 / rx: 口の半径 / h: 口から胴の底まで / fx: 高台の半径 / ft: 高台の高さ / t: 口の厚み
-// outer: 外の色 / lip: 口の上面の色 / inner: 内側の色 / line: 藍（上） / bands: 胴の藍の帯 [[口からの深さ, 太さ]] / dots: 口のまわりの藍の点（どんぶり）
-export function vessel(p, { cx = 100, cy = 82, rx = 92, h = 50, fx = 40, ft = 6, t = 3.4, outer, lip = null, inner, line = 'none', bands = [], dots = false, belly = .62, gloss = .38 }){
+// outer: 外の色 / lip: 口の上面の色 / inner: 内側の色 / line: 縁の線（上） / bands: 胴の帯 [[口からの深さ, 太さ]] / dots: 口のまわりの点（どんぶり） / rim: 線・帯・点の色（青は使わない）
+export function vessel(p, { cx = 100, cy = 82, rx = 92, h = 50, fx = 40, ft = 6, t = 3.4, outer, lip = null, inner, line = 'none', bands = [], dots = false, belly = .62, gloss = .38, rim = RIM.sabi }){
     const ry = rx * SY, bx = fx + 14, by = cy + h, bry = bx * SY;
     const body = `M${f(cx - rx)},${f(cy)} C${f(cx - rx)},${f(cy + h * belly)} ${f(cx - bx - 10)},${f(by)} ${f(cx - bx * .6)},${f(by + bry * .8)} Q${f(cx)},${f(by + bry * 1.12)} ${f(cx + bx * .6)},${f(by + bry * .8)} C${f(cx + bx + 10)},${f(by)} ${f(cx + rx)},${f(cy + h * belly)} ${f(cx + rx)},${f(cy)}Z`;
     const fTop = by + bry * 1.12 - (fx - 2) * SY;   // 高台の底が胴の底より ft だけ下に出る
@@ -72,56 +77,56 @@ export function vessel(p, { cx = 100, cy = 82, rx = 92, h = 50, fx = 40, ft = 6,
     if (ft) s += `<path d="${foot}" fill="${lg(p, [[0, lt(outer, .1)], [.6, dk(outer, .15)], [1, dk(outer, .4)]])}" stroke="${dk(outer, .45)}" stroke-width=".6"/>`;
     s += `<path d="${body}" fill="${lg(p, [[0, lt(outer, .32)], [.28, lt(outer, .08)], [.7, outer], [1, dk(outer, .4)]])}" stroke="${dk(outer, .45)}" stroke-width=".7"/>` +
         `<path d="${body}" fill="${lg(p, [[0, SHADE, 0], [.7, SHADE, 0], [1, SHADE, .22]], 0, 0, 0, 1)}"/>`;
-    for (const [dy, w] of bands) s += `<g ${clip(p, body)}><path d="M${f(cx - rx - 4)},${f(cy + dy)} A${f(rx + 4)},${f((rx + 4) * SY)} 0 0 0 ${f(cx + rx + 4)},${f(cy + dy)}" stroke="${INDIGO}" stroke-width="${w}" fill="none"/></g>`;
+    for (const [dy, w] of bands) s += `<g ${clip(p, body)}><path d="M${f(cx - rx - 4)},${f(cy + dy)} A${f(rx + 4)},${f((rx + 4) * SY)} 0 0 0 ${f(cx + rx + 4)},${f(cy + dy)}" stroke="${rim}" stroke-width="${w}" fill="none"/></g>`;
     s += `<path d="M${f(cx - rx + 8)},${f(cy + 10)} Q${f(cx - rx + 12)},${f(cy + h * .6)} ${f(cx - bx * .7)},${f(by + bry * .3)}" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity="${gloss}"/>`;
     s += `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(lip, .25)], [.6, lip], [1, dk(lip, .15)]])}" stroke="${dk(outer, .4)}" stroke-width=".7"/>`;
     s += `<path d="${mouth}" fill="${lg(p, [[0, dk(inner, .3)], [.45, dk(inner, .08)], [1, lt(inner, .12)]])}"/>`;
     // 左上の口が内壁に落とす影
     s += `<g ${clip(p, mouth)}><path d="${eD(cx - 6, cy - 3, irx + 2, iry + 2)}" fill="none" stroke="${SHADE}" stroke-width="9" opacity=".16" ${blur(p, 2.5)}/></g>`;
-    s += rimLine(cx, cy, rx, line);
-    if (dots) for (let i = 0; i < 30; i++){ const a = i / 30 * 6.283; if (Math.sin(a) < -.98) continue; s += `<circle cx="${f(cx + Math.cos(a) * (rx - 5.2))}" cy="${f(cy + Math.sin(a) * (rx - 5.2) * SY)}" r="1.5" fill="${INDIGO}"/>`; }
+    s += rimLine(cx, cy, rx, line, SY0, rim);
+    if (dots) for (let i = 0; i < 30; i++){ const a = i / 30 * 6.283; if (Math.sin(a) < -.98) continue; s += `<circle cx="${f(cx + Math.cos(a) * (rx - 5.2))}" cy="${f(cy + Math.sin(a) * (rx - 5.2) * SY)}" r="1.5" fill="${rim}"/>`; }
     // 手前の口より上だけを見せる形（盛り上がった中身が手前の口に隠れる）
     const aboveD = `M${f(cx - irx)},${f(cy + .6)} A${f(irx)},${f(iry)} 0 0 0 ${f(cx + irx)},${f(cy + .6)} L200,${f(cy + .6)} L200,0 L0,0 L0,${f(cy + .6)}Z`;
     return { s, cx, cy, rx, ry, irx, iry, mouth, inside: clip(p, mouth), above: clip(p, aboveD),
         shine: (op = .6) => `<path d="M${f(cx - rx * .92)},${f(cy - ry * .38)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity="${op}"/>` };
 }
 // --- 鉢・椀の決まった形（大きさと位置は基準書の表どおり。変えるときは o で上書き） ---
-export const hachi = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, t: 6, outer: '#6e4b33', lip: '#8a6448', inner: '#efe5d3', line: 'white', ...o });          // 深めの鉢（煮物。口に藍の線 2.2: 採用の肉じゃがにそろえる）
-export const wan = (p, o = {}) => vessel(p, { cy: 72, rx: 90, h: 64, fx: 36, ft: 8, t: 3, outer: '#9a2c1e', lip: '#b23a28', inner: '#4a2018', line: 'thin', gloss: .32, ...o });   // 汁椀（朱の漆。内側は焦げ茶の漆）
-export const chawan = (p, o = {}) => vessel(p, { cy: 96, rx: 86, h: 52, fx: 30, ft: 7, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#ece6d8', line: 'white', bands: [[12, 2.6], [18, 1]], gloss: .6, ...o });   // 茶碗
-export const donburi = (p, o = {}) => vessel(p, { cy: 80, rx: 92, h: 62, fx: 38, ft: 7, outer: '#f6f3ec', lip: '#fbfaf6', inner: '#f2eee4', line: 'white', dots: true, bands: [[30, 1.4]], gloss: .6, ...o });   // どんぶり
-export const kobachi = (p, o = {}) => vessel(p, { cy: 84, rx: 92, h: 44, fx: 54, ft: 5, outer: '#9fbfae', lip: '#b7d0c2', inner: '#eef2ea', line: 'none', belly: .5, ...o });   // 小鉢（青磁。今の絵も線なし）
-export const shiroBowl = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#f2eee4', line: 'white', gloss: .6, ...o });   // 白い鉢（洋のスープなど）
+export const hachi = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, t: 6, outer: '#6e4b33', lip: '#8a6448', inner: '#efe5d3', line: 'white', rim: RIM.kaki, ...o });          // 深めの鉢（煮物。口に柿の線 2.2: もとは藍）
+export const wan = (p, o = {}) => vessel(p, { cy: 72, rx: 90, h: 64, fx: 36, ft: 8, t: 3, outer: '#9a2c1e', lip: '#b23a28', inner: '#4a2018', line: 'thin', gloss: .32, rim: RIM.kin, ...o });   // 汁椀（朱の漆。内側は焦げ茶の漆。口に金の細い線）
+export const chawan = (p, o = {}) => vessel(p, { cy: 96, rx: 86, h: 52, fx: 30, ft: 7, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#ece6d8', line: 'white', bands: [[12, 2.6], [18, 1]], gloss: .6, rim: RIM.koge, ...o });   // 茶碗（鉄絵のこげ茶の線と帯）
+export const donburi = (p, o = {}) => vessel(p, { cy: 80, rx: 92, h: 62, fx: 38, ft: 7, outer: '#f6f3ec', lip: '#fbfaf6', inner: '#f2eee4', line: 'white', dots: true, bands: [[30, 1.4]], gloss: .6, rim: RIM.kaki, ...o });   // どんぶり（赤絵の柿の線・点・帯）
+export const kobachi = (p, o = {}) => vessel(p, { cy: 84, rx: 92, h: 44, fx: 54, ft: 5, outer: '#9fbfae', lip: '#b7d0c2', inner: '#eef2ea', line: 'none', belly: .5, ...o });   // 小鉢（青磁。線なし）
+export const shiroBowl = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#f2eee4', line: 'white', gloss: .6, rim: RIM.hai, ...o });   // 白い鉢（中華碗・粥碗。灰の線）
 
-// 平皿（白・藍の線）。中身は見込み（well）の上に置く。返り値の o は面の中心
+// 平皿（白・錆の線）。中身は見込み（well）の上に置く。返り値の o は面の中心
 // 小皿（副菜の炒め物・漬物）は kozara: 色のある釉で藍の線なし。edge で口に錆の細い線
 export const kozara = (p, { base = '#efe6d2', edge = '#9a6a3a', ...o } = {}) => plate(p, { base, line: 'none', edge, ...o });
-export function plate(p, { cx = 100, cy = 98, rx = 92, h = 22, well = .7, base = '#fbfaf6', line = 'white', edge = null } = {}){
+export function plate(p, { cx = 100, cy = 98, rx = 92, h = 22, well = .7, base = '#fbfaf6', line = 'white', edge = null, rim = RIM.sabi } = {}){
     const SY = SYF;
     const ry = rx * SY, fx = rx * .62, fy = fx * SY, by = cy + h, w = rx * well;
     const side = `M${f(cx - rx)},${f(cy)} C${f(cx - rx)},${f(cy + h)} ${f(cx - fx - 12)},${f(by + fy * .5)} ${f(cx - fx)},${f(by + fy * .55)} L${f(cx + fx)},${f(by + fy * .55)} C${f(cx + fx + 12)},${f(by + fy * .5)} ${f(cx + rx)},${f(cy + h)} ${f(cx + rx)},${f(cy)}Z`;
     const s = ground(p, cx, by + fy * .45, rx * .78, { k: SY }) +
         `<path d="${side}" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .22)]])}" stroke="${dk(base, .28)}" stroke-width=".6"/>` +
         `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .05)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
-        rimLine(cx, cy, rx - 2.2, line, SY) + edgeLine(cx, cy, rx - 2, (rx - 2) * SY, edge, 1.6) +
+        rimLine(cx, cy, rx - 2.2, line, SY, rim) + edgeLine(cx, cy, rx - 2, (rx - 2) * SY, edge, 1.6) +
         `<path d="${eD(cx, cy + 2, w, w * SY)}" fill="${lg(p, [[0, dk(base, .08)], [.35, base], [1, lt(base, .3)]], 0, 0, 0, 1)}"/>` +
         `<path d="M${f(cx - w)},${f(cy + 2)} A${f(w)},${f(w * SY)} 0 0 1 ${f(cx + w)},${f(cy + 2)}" stroke="${dk(base, .15)}" stroke-width="1.6" fill="none" opacity=".8"/>` +
         `<path d="M${f(cx - rx * .9)},${f(cy - ry * .4)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>`;
     return { s, cx, cy: cy + 2, rx: w, ry: w * SY, sy: SY, o: { cx, cy: cy + 2, sy: SY } };
 }
 // 楕円の皿（カレー・グラタン）: 面で rx × rz の楕円
-export function ovalPlate(p, { cx = 100, cy = 98, rx = 92, rz = 82, h = 20, well = .78, base = '#fbfaf6', line = 'white' } = {}){
+export function ovalPlate(p, { cx = 100, cy = 98, rx = 92, rz = 82, h = 20, well = .78, base = '#fbfaf6', line = 'white', rim = RIM.sabi } = {}){
     const SY = SYF;
     const ry = rz * SY, wx = rx * well, wy = ry * well;
     const s = ground(p, cx, cy + h + ry * .5, rx * .8, { k: SY }) +
         `<path d="M${f(cx - rx)},${f(cy)} L${f(cx - rx + 6)},${f(cy + h)} A${f(rx - 6)},${f(ry - 3)} 0 0 0 ${f(cx + rx - 6)},${f(cy + h)} L${f(cx + rx)},${f(cy)}Z" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .22)]])}"/>` +
         `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .05)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
-        (line === 'none' ? '' : `<path d="${eD(cx, cy, rx - 4, ry - 2.4)}" fill="none" stroke="${INDIGO}" stroke-width="2"/>`) +
+        (line === 'none' ? '' : `<path d="${eD(cx, cy, rx - 4, ry - 2.4)}" fill="none" stroke="${rim}" stroke-width="2"/>`) +
         `<path d="${eD(cx, cy + 2, wx, wy)}" fill="${lg(p, [[0, dk(base, .1)], [.35, base], [1, lt(base, .3)]], 0, 0, 0, 1)}"/>`;
     return { s, cx, cy: cy + 2, rx: wx, ry: wy, sy: SY, o: { cx, cy: cy + 2, sy: SY } };
 }
 // 長皿・角皿（焼き魚・香の物）: 面で w × d の角丸の板。面の座標で描いて縦につぶす
-export function slabPlate(p, { cx = 100, cy = 98, w = 184, d = 136, r = 18, h = 16, base = '#f4f1ea', line = 'white' } = {}){
+export function slabPlate(p, { cx = 100, cy = 98, w = 184, d = 136, r = 18, h = 16, base = '#f4f1ea', line = 'white', rim = RIM.koge } = {}){
     const SY = SYF;
     const rect = (ww, dd, rr) => `<rect x="${f(-ww / 2)}" y="${f(-dd / 2)}" width="${f(ww)}" height="${f(dd)}" rx="${f(rr)}"/>`;
     const tr = (y) => `transform="translate(${cx} ${f(y)}) scale(1 ${SY})"`;
@@ -129,26 +134,26 @@ export function slabPlate(p, { cx = 100, cy = 98, w = 184, d = 136, r = 18, h = 
         `<g ${tr(cy + h)} fill="${dk(base, .22)}">${rect(w - 4, d - 4, r)}</g>` +
         `<g ${tr(cy + h * .5)} fill="${dk(base, .1)}">${rect(w - 2, d - 2, r)}</g>` +
         `<g ${tr(cy)} fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .06)]], 0, 0, 1, 1)}" stroke="${dk(base, .2)}" stroke-width=".8" vector-effect="non-scaling-stroke">${rect(w, d, r)}</g>` +
-        (line === 'none' ? '' : `<g ${tr(cy)} fill="none" stroke="${INDIGO}" stroke-width="2" vector-effect="non-scaling-stroke">${rect(w - 9, d - 9, r - 4)}</g>`) +
+        (line === 'none' ? '' : `<g ${tr(cy)} fill="none" stroke="${rim}" stroke-width="2" vector-effect="non-scaling-stroke">${rect(w - 9, d - 9, r - 4)}</g>`) +
         `<g ${tr(cy + 1.5)} fill="${lg(p, [[0, dk(base, .08)], [.3, base], [1, lt(base, .2)]], 0, 0, 0, 1)}">${rect(w - 22, d - 22, r - 8)}</g>`;
     return { s, cx, cy: cy + 1.5, sy: SY, o: { cx, cy: cy + 1.5, sy: SY } };
 }
 // 浅い鍋（パエリア鍋・フライパン）: 鋼の色。取っ手 2つ（handles: 'loop' = 両側の輪／'long' = 右に長い柄）
-export function pan(p, { cx = 100, cy = 100, rx = 84, h = 13, outer = '#9ea3aa', lip = '#b4b9bf', inner = '#8a9097', handles = 'loop', handleC = '#d2402c', handleLen = 30, handleRise = 12 } = {}){
+export function pan(p, { cx = 100, cy = 100, rx = 84, h = 13, outer = '#9ea3aa', lip = '#b4b9bf', inner = '#8a9097', handles = 'loop', handleC = '#d2402c', handleLen = 30, handleRise = 12, rim = RIM.hai } = {}){
     const ry = rx * SY, irx = rx - 3.5, iry = irx * SY, mouth = eD(cx, cy + .5, irx, iry);
     let s = ground(p, cx, cy + h + ry * .6, rx * .9);
     const loop = side => { const x = cx + side * (rx - 1); return `<path d="M${f(x)},${f(cy - 4)} q${side * 17},-2 ${side * 17},9 q0,10 ${-side * 17},8" stroke="${dk(handleC, .4)}" stroke-width="5.6" fill="none" stroke-linecap="round"/><path d="M${f(x)},${f(cy - 4)} q${side * 17},-2 ${side * 17},9 q0,10 ${-side * 17},8" stroke="${side < 0 ? handleC : dk(handleC, .15)}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`; };
     if (handles === 'loop') s += loop(-1) + loop(1);
     if (handles === 'long') s += `<path d="M${f(cx + rx - 4)},${f(cy + 2)} L${f(cx + rx + handleLen)},${f(cy - handleRise)}" stroke="#5a4636" stroke-width="7" stroke-linecap="round"/><path d="M${f(cx + rx - 4)},${f(cy + 1)} L${f(cx + rx + handleLen)},${f(cy - handleRise - 1)}" stroke="#8a6a50" stroke-width="3.6" stroke-linecap="round"/>`;
     s += `<path d="M${f(cx - rx)},${f(cy)} L${f(cx - rx + 4)},${f(cy + h)} A${f(rx - 4)},${f((rx - 4) * SY)} 0 0 0 ${f(cx + rx - 4)},${f(cy + h)} L${f(cx + rx)},${f(cy)}Z" fill="${lg(p, [[0, lt(outer, .3)], [.35, outer], [1, dk(outer, .4)]])}" stroke="${dk(outer, .45)}" stroke-width=".7"/>`;
-    s += `<path d="${eD(cx, cy, rx, ry)}" fill="${lip}" stroke="${dk(outer, .4)}" stroke-width=".7"/>` + `<path d="${mouth}" fill="${lg(p, [[0, dk(inner, .25)], [1, lt(inner, .15)]])}"/>` + rimLine(cx, cy, rx, 'thin');
+    s += `<path d="${eD(cx, cy, rx, ry)}" fill="${lip}" stroke="${dk(outer, .4)}" stroke-width=".7"/>` + `<path d="${mouth}" fill="${lg(p, [[0, dk(inner, .25)], [1, lt(inner, .15)]])}"/>` + rimLine(cx, cy, rx, 'thin', SY0, rim);
     return { s, cx, cy, rx, ry, irx, iry, mouth, inside: clip(p, mouth),
         shine: (op = .65) => `<path d="M${f(cx - rx * .92)},${f(cy - ry * .38)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity="${op}"/>` };
 }
 // 土鍋（ふたなし。土色の外・飴釉の口・小さな耳）。石鍋は stone: true（焦げ茶の石。黒は使わない）
 export function donabe(p, { cx = 100, cy = 80, rx = 92, h = 54, stone = false, ...o } = {}){
     const outer = stone ? '#5a4a42' : '#7a5236', lip = stone ? '#6e5e56' : '#5e3a22', inner = stone ? '#4a3c36' : '#e9dcc4';
-    const v = vessel(p, { cx, cy, rx, h, fx: 52, ft: 0, t: 5, outer, lip, inner, line: 'thin', belly: .7, gloss: .3, ...o });
+    const v = vessel(p, { cx, cy, rx, h, fx: 52, ft: 0, t: 5, outer, lip, inner, line: 'thin', belly: .7, gloss: .3, rim: stone ? RIM.hai : RIM.kin, ...o });
     const ear = side => `<path d="M${f(cx + side * (rx - 2))},${f(cy + 4)} q${side * 12},0 ${side * 12},7 q0,6 ${-side * 12},6Z" fill="${lg(p, [[0, lt(outer, .2)], [1, dk(outer, .3)]])}" stroke="${dk(outer, .45)}" stroke-width=".6"/>`;
     return { ...v, s: ear(-1) + ear(1) + v.s };
 }
