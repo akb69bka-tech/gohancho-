@@ -1217,6 +1217,7 @@ GOHAN_I18N('en', {
     "決めた献立を作り直しますか？": "Remake the menu you decided on?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Updated today's undecided menu to match your settings: {list}",
     "{name}（外しました）": "{name} (removed)",
+    "この条件で出せる主菜がありません": "No main dish fits these settings",
     "「{name}」にかえました": "Swapped for “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "All {n} dishes for today are done. Great work!",
     "ほかの食材（例: セロリ）": "Something else (e.g. celery)",

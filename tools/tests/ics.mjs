@@ -7,12 +7,12 @@
 import { createRequire } from 'node:module';
 import { execSync, spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const LANGS = (process.env.LANGS || 'ja,en,ar,th,ko,zh-Hans,de').split(',');
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
-const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const unesc = s => s.replace(/\\([\\;,nN])/g, (_, c) => c === 'n' || c === 'N' ? '\n' : c);
 // 厳密パーサ: CRLF 必須・75 オクテット以内・展開・BEGIN/END の入れ子・必須項目
 function parse(ics, bad){
@@ -37,6 +37,7 @@ function parse(ics, bad){
 }
 for (const lang of LANGS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('ics', String(++seedN))));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(lang + ': ' + e.message));
     await p.addInitScript(lang => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), lang, settings:{country:'JP', dishCount:3, lang}})); } }, lang);
     await p.goto(URL_); await ready(p);
@@ -97,6 +98,7 @@ for (const lang of LANGS){
 // 画面: 週の共有シートにボタンがあり、押すと .ics のダウンロードが始まる（ブラウザ版）
 {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(rngScript(seedFor('ics', String(++seedN))));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push('ui: ' + e.message));
     await p.addInitScript(() => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:'JP', dishCount:3}})); } });
     await p.goto(URL_); await ready(p);

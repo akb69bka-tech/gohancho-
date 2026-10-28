@@ -11,11 +11,11 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
-const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
+const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
 
 // 正解（UTC の暦計算。端末の時間帯に依存しない）
@@ -28,6 +28,7 @@ const localYmdOf = (iso, tz) => new Intl.DateTimeFormat('en-CA', { timeZone: tz,
 
 async function open(tz, time, state, opt = {}){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, timezoneId: tz, locale: opt.locale || 'ja-JP' });
+    await ctx.addInitScript(rngScript(seedFor('dates', String(++seedN))));
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(tz + ' ' + time + ': ' + e.message));
     if (time) await p.clock.install({ time: new Date(time) });

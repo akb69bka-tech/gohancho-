@@ -1216,6 +1216,7 @@ GOHAN_I18N('tr', {
     "決めた献立を作り直しますか？": "Karar verdiğiniz menü yeniden yapılsın mı?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Henüz karar verilmemiş bugünkü menü ayarlarınıza göre değiştirildi: {list}",
     "{name}（外しました）": "{name} (çıkarıldı)",
+    "この条件で出せる主菜がありません": "Bu koşullara uyan bir ana yemek yok",
     "「{name}」にかえました": "“{name}” ile değiştirildi",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Bugünün {n} yemeğinin hepsi hazır. Eline sağlık!",
     "ほかの食材（例: セロリ）": "Başka bir şey (örn. kereviz)",
