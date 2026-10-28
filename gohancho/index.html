@@ -9415,14 +9415,15 @@ document.addEventListener('click', e => {
             const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); e.exp = d; save(); render(); break; }
         case 'rm-ing': {   // 外したら8秒の「元に戻す」（同じ位置に戻す。印と日数も残してある）
             const v = el.dataset.v, i = S.fridge.indexOf(v); if (i < 0) break;
+            const meta = S.fridgeMeta && S.fridgeMeta[v] ? Object.assign({}, S.fridgeMeta[v]) : null;   // 保存のときに外した食材の印は消えるので、戻すときのために控える
             S.fridge.splice(i, 1); save(); render();
-            toast(t('「{name}」を外しました', {name:labelOf(v)}), false, () => { if (!S.fridge.includes(v)) S.fridge.splice(Math.min(i, S.fridge.length), 0, v); save(); render(); });
+            toast(t('「{name}」を外しました', {name:labelOf(v)}), false, () => { if (!S.fridge.includes(v)) S.fridge.splice(Math.min(i, S.fridge.length), 0, v); if (meta) S.fridgeMeta[v] = meta; save(); render(); });
             break;
         }
         case 'clear-ing': if (S.fridge.length){ sheet = {kind:'clearing'}; renderSheet(); } break;   // 全部外す前に確かめる
         case 'clear-ing-go': {
-            const before = S.fridge.slice(); closeSheet(); S.fridge = []; save(); render();
-            toast(t('{n}品を外しました', {n:before.length}), false, () => { S.fridge = before.concat(S.fridge.filter(x => !before.includes(x))); save(); render(); });
+            const before = S.fridge.slice(), meta = JSON.parse(JSON.stringify(S.fridgeMeta || {})); closeSheet(); S.fridge = []; save(); render();
+            toast(t('{n}品を外しました', {n:before.length}), false, () => { S.fridge = before.concat(S.fridge.filter(x => !before.includes(x))); before.forEach(f => { if (meta[f]) S.fridgeMeta[f] = meta[f]; }); save(); render(); });
             break;
         }
         case 'fridge-fix': { const i = S.fridge.indexOf(el.dataset.v); if (i >= 0){ const nk = keyOf(el.dataset.name); if (S.fridge.some(x => keyOf(x) === nk)) S.fridge.splice(i, 1); else S.fridge[i] = el.dataset.name; save(); render(); } break; }   // 打ちまちがいを、近い名前に直す（早めに使う印は付け直し）
