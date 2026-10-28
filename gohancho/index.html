@@ -3063,8 +3063,11 @@ const WEEK_BOWL_MAX = 3;
 const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){
     const days = [], used = new Set();
+    // 今日の献立をもう決めていれば、プランの今日はその主菜にする（決めた献立とプランが食い違わないように）
+    const decidedMain = S.cook && S.cook.d === TODAY ? ((cookItems().find(x => x.slot === '主菜') || {}).r || null) : null;
     for (let i = 0; i < 7; i++){
         const d = addDays(TODAY, i);
+        if (i === 0 && decidedMain && decidedMain.main){ used.add(decidedMain.id); days.push({d, id: decidedMain.id}); continue; }
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
@@ -5814,18 +5817,24 @@ function itemAltName(i, r){
     return LANG === 'ja' ? jpEnName(i.name) : '';
 }
 function shopAltOn(){ return !!S.settings.shopAlt; }
+// 買い物メモに出す名前: 日本語の画面の日本の料理は、レシピに書いた名前のまま（干ししいたけを「しいたけ」、鶏もも肉と鶏むね肉を「鶏肉」にまとめない）。
+// ほかは表示用の名前（訳・国の名前）。置き換えた材料は、置き換えたあとの名前
+function shopName(i, r){
+    const raw = String(i.name || '').replace(/\u00a0/g, ' ').trim();
+    return LANG === 'ja' && (!r.pack || r.pack === 'JP') && raw && /[ぁ-んァ-ヶー一-龠]/.test(raw) ? raw : i.label;
+}
 function shoppingList(){
     const have = fridgeKeys(), fac = servingFactor(), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set();
     const add = r => {
         if (!r) return;
         r.items.forEach(i => {
             if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
-            const b = shopBase(i.label), lb = shopLoose(i.label);
+            const nm = shopName(i, r), b = shopBase(nm), lb = shopLoose(nm);
             // 名前が同じなら食材キーがちがっても1行に（猪里脊 / 猪里脊肉）。同じキーなら「A または B」も A の行に
             let id = byBase.get(b) || byLoose.get(i.key + '|' + lb);
             if (!id){ id = keySeen.has(i.key) ? i.key + '|' + b : i.key; keySeen.add(i.key); }   // チェックの記録と合うよう、最初の名前はキーのまま
             byBase.set(b, id); if (!byLoose.has(i.key + '|' + b)) byLoose.set(i.key + '|' + b, id); if (!byLoose.has(i.key + '|' + lb)) byLoose.set(i.key + '|' + lb, id);
-            const lab = /[\u0E00-\u0E7F]/.test(i.label) ? i.label.split(/\s+/)[0] : i.label;   // タイ語は下ごしらえの説明（หั่นท่อน 4 ซม. など）を出さない
+            const lab = /[\u0E00-\u0E7F]/.test(nm) ? nm.split(/\s+/)[0] : nm;   // タイ語は下ごしらえの説明（หั่นท่อน 4 ซม. など）を出さない
             const e = map.get(id) || {key:id, label:lab, qty:[], dishes:[], sec:shopSec(i), alt:itemAltName(i, r)};
             if (lab.length < e.label.length){ e.label = lab; e.alt = itemAltName(i, r); }                  // まとめた行は、いちばん短い名前で出す（もうひとつの名前もその材料のもの）
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
@@ -7169,8 +7178,8 @@ function todayShopText(){
     const have = fridgeKeys(), fac = servingFactor(), map = new Map();
     its.forEach(x => (swappedRecipe(x.r) || x.r).items.forEach(i => {
         if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
-        const lab = /[\u0E00-\u0E7F]/.test(i.label) ? i.label.split(/\s+/)[0] : i.label;
-        const e = map.get(i.key) || {label: lab, qty: []}; if (i.qty) e.qty.push(scaleText(i.qty, fac)); map.set(i.key, e);
+        const nm = shopName(i, x.r), lab = /[\u0E00-\u0E7F]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm);   // 名前のちがう材料（鶏もも肉・鶏むね肉）は別の行
+        const e = map.get(k) || {label: lab, qty: []}; if (i.qty) e.qty.push(scaleText(i.qty, fac)); map.set(k, e);
     }));
     if (!map.size) return '';
     const lines = [t('【{date}の買い物メモ】', {date:jpDate(S.cook.d)}), t('今日の献立の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {sv:Number(S.settings.servings) || 2})];
@@ -7196,7 +7205,7 @@ function viewToday(){
     const prevShown = session.trayShown;   // 前に描いたお膳。器を弾ませるのは、入れ替わった料理だけにする
     session.trayShown = {ids: m.items.map(x => x.r ? x.r.id : '-'), rice: ''};
     const main = m.items[0] && m.items[0].r;
-    const planned = (p => planUsable(p) && !(main && main.id === p.id) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない
+    const planned = (p => planUsable(p) && !(main && main.id === p.id) && !(S.cook && S.cook.d === TODAY) ? p : null)(weekToday());   // 1週間プランの主菜がもう献立にあれば案内しない。今日の献立を決めたあとも出さない（決めた献立を黙って替えない）
     const decided = !!(S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join());   // 「決める」ボタンは1つだけ（画面の下）。決めた献立のままなら「作り方を見る」
     const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChip = x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood===x.k}">${esc(x.label)}</button>`;
