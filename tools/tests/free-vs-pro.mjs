@@ -40,7 +40,7 @@ for (const cc of CCS){
         }
         S.settings.dishCount = 3; session.mood = moods[0]; session.menu = null; render();
         // 汁ものの麺（肉うどん）や汁ものが主菜のときは、汁ものの枠を空にする仕様（suggestOrAny）。その空きは「出ない」に数えない
-        const soupMain = m => m && (m.id === 'nikuudon' || m.type === '汁物');
+        const soupMain = m => typeof soupyMain === 'function' ? soupyMain(m) : !!m && (m.id === 'nikuudon' || m.type === '汁物');   // 汁けの多い主菜（A5: ラーメン・鍋・シチューなど）の日も同じ
         if (!session.menu || session.menu.n !== 3 || !session.menu.items.every(x => x.r || (x.slot === '汁物' && soupMain(session.menu.items[0].r)))) bad.push('無料で今日の献立が出ない');
         paywalls.length = 0;
         click('count', {v: 5}); if (paywalls[0] !== 'dishes' || S.settings.dishCount !== 3) bad.push('5品で購入画面が出ない/設定が変わった');
