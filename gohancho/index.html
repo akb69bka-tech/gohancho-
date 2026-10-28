@@ -643,6 +643,8 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .week.wk2 .item.skipped .t b{font-weight:700}
 .week.wk2 .item.skipped .week-acts .btn{max-width:8.5em;white-space:normal;line-height:1.2;border:1px solid var(--line);background:var(--surface);width:auto}
 @media (max-width:400px){.week.wk2 .week-acts{display:flex;grid-template-columns:none}.week.wk2 .week-acts .btn{width:auto;padding-inline:8px}}
+@media (max-width:360px){.week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}.week.wk2 .item.skipped .week-acts .btn{max-width:none}}   /* 狭い画面では「作る日に戻す」を2段目に回し、文字の欄を細くしない */
+html[data-ts="2"] .week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}html[data-ts="2"] .week.wk2 .item.skipped .week-acts .btn{max-width:none}
 html[data-ts="2"] .week.wk2 .item{grid-template-columns:auto minmax(0,1fr) auto}html[data-ts="2"] .week.wk2 .wk-pic,html[data-ts="2"] .week.wk2 .thumb.wk-none{display:none}html[data-ts="2"] .week.wk2 .item .t{grid-column:2}html[data-ts="2"] .week.wk2 .week-acts,html[data-ts="2"] .week.wk2 .plus-mark{grid-column:3}   /* 文字がいちばん大きいときは、名前の幅を取るため絵を省く */
 .wk-foot{margin-top:4px}.wk-foot .btn.wide{flex:1 1 12em}
 /* その日の操作の画面 */
