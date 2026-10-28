@@ -4453,13 +4453,13 @@ function installHtml(){
 
 /* =========================================================
    ご飯帖プラス（課金のしくみ）
-   billingMode:'native' のため、Web 版（PWA）は全機能無料。iPhone アプリ版は revenueCatApiKey を入れると課金が有効になる。
+   billingMode:'off' のため、Web 版も iPhone アプリ版も全機能無料（オーナー決定）。課金を有効にするのはオーナーの判断だけ。
    価格・商品ID・お試しの内容は App Store Connect の設定と合わせる。
    ========================================================= */
 const PLAN_WEEK_FREE = 1;   // 無料版で見られる献立プランの日数
 const PLAN = {
     // 課金を有効にする範囲: 'off'＝全員無料 / 'native'＝iPhone アプリ版だけ（RevenueCat のキーを入れたとき）/ 'all'＝Web 版も
-    billingMode: 'native',
+    billingMode: 'off',                 // オーナー決定（2026-10-28）: 全員無料。課金を入れるかどうか・時期はオーナーだけが決める
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     get name(){ return t('ご飯帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
