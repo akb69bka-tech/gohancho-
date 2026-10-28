@@ -241,7 +241,7 @@ const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).
     ok(r1.today === '2026-10-28' && String(r1.dc) === '3' && r1.pending && JSON.stringify(r1.ids) === JSON.stringify(decided), '午前4時: 3:59 はまだ前の日（品数3・決めた一膳のまま） ' + JSON.stringify(r1));
     await goTime(p, '2026-10-28T19:01:00Z');   // 東京 4:01（10/29）
     await until(p, () => TODAY === '2026-10-29' && !!session.menu);
-    const r2 = await p.evaluate(() => { setTab('today'); return { today: TODAY, dc: S.settings.dishCount, pending: S.settings.pending || null, mood: session.mood, n: session.menu && session.menu.n, cnt: menuCount(), okayu: !!(session.menu && session.menu.items[0].r && isOkayu(session.menu.items[0].r)), decided: decidedToday(), note: (() => { setTab('settings'); const x = !!document.querySelector('.pending-note'); setTab('today'); return x; })() }; });
+    const r2 = await p.evaluate(() => { setTab('today'); return { today: TODAY, dc: S.settings.dishCount, pending: S.settings.pending || null, mood: session.mood, n: session.menu && session.menu.n, cnt: menuCount(), okayu: !!(session.menu && session.menu.items[0].r && okayuDayOk(session.menu.items[0].r)), decided: decidedToday(), note: (() => { setTab('settings'); const x = !!document.querySelector('.pending-note'); setTab('today'); return x; })() }; });
     ok(r2.today === '2026-10-29' && String(r2.dc) === '2' && !r2.pending, '午前4時: 4:01 に applyPending で品数が2になり、pending は消える ' + JSON.stringify(r2));
     ok(r2.n === 2 && r2.cnt === 2 && !r2.decided && !r2.note, '午前4時: 次の日の案は2品で作られ、「明日から」の1行は消える ' + JSON.stringify(r2));
     ok(r2.mood === 'okayu' && r2.okayu, '午前4時: 次の日は明日からにした気分（おかゆの日）で作られる ' + JSON.stringify(r2));

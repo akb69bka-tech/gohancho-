@@ -199,7 +199,8 @@ ok(cp.json && cp.meta && cp.date, '文字で書き出すと目印つきで、書
 const fl = await p.evaluate(() => { const i = document.querySelector('#backup-file'); return !!i; });
 ok(fl, '設定にファイル選択がある');
 await p.setInputFiles('#backup-file', { name:'ok.json', mimeType:'application/json', buffer: Buffer.from(JSON.stringify({history:[], favs:[], fridge:['トマト']})) });
-await p.waitForTimeout(400);
+await p.waitForFunction(() => pendingConfirm === 'import', null, { timeout: 5000 }).catch(() => {});   // 固定の 400ms では、並列で重いときに確認が出る前に見てしまう（run-all で時々落ちていた）
+await p.waitForTimeout(100);
 ok(await p.evaluate(() => pendingConfirm === 'import' && /置き換わります|replaced/.test(document.body.innerText) && /トマト|1/.test(document.body.innerText)), 'ファイルを選ぶと置き換えの確認が出る');
 await p.setInputFiles('#backup-file', { name:'bad.json', mimeType:'application/json', buffer: Buffer.from('not json') });
 await p.waitForTimeout(400);

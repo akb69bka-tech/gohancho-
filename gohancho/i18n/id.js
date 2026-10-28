@@ -722,7 +722,6 @@ GOHAN_I18N('id', {
     "元の料理: {name}": "Berdasarkan: {name}",
     "変えたところ": "Yang diubah",
     "味・かたち・主役の食材": "Rasa, bentuk, bahan utama",
-    "おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）": "Pada hari okayu, hidangan utamanya okayu (lauk pendamping dan sup seperti biasa)",
     "おかゆの具: {v}": "Isian okayu: {v}",
     "作り方を見る": "Lihat resep",
     "主菜にする": "Jadikan lauk utama",
@@ -1433,4 +1432,10 @@ GOHAN_I18N('id', {
     "明日の気分: {mood}": "Suasana besok: {mood}",
     "取り消す": "Batalkan",
     "明日の一膳はもう決めてあります。": "Menu besok sudah ditentukan.",
+    "明日の{time}": "besok pukul {time}",
+    "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} sudah lewat. Kalau mulai sekarang, memasak satu per satu selesai sekitar {t1}; bersamaan, sekitar {t2}",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Pada hari okayu, kami sarankan zosui atau okayu yang cepat, dengan lauk dan sup yang lembut dan ringan",
+    "おかゆの日なので{n}品にしました": "Hari okayu: {n} hidangan",
+    "プリモ（一皿目）": "Primo (hidangan pertama)",
+    "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta atau risotto sudah jadi primo, jadi tanpa sup",
 });

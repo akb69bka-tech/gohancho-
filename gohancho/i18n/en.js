@@ -723,7 +723,6 @@ GOHAN_I18N('en', {
     "元の料理: {name}": "Based on: {name}",
     "変えたところ": "What changed",
     "味・かたち・主役の食材": "Flavor, form, main ingredient",
-    "おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）": "On okayu day, the main dish is okayu (side dishes and soup are chosen as usual)",
     "おかゆの具: {v}": "Okayu topping: {v}",
     "作り方を見る": "See recipe",
     "主菜にする": "Make it the main",
@@ -1434,4 +1433,10 @@ GOHAN_I18N('en', {
     "明日の気分: {mood}": "Tomorrow's mood: {mood}",
     "取り消す": "Cancel",
     "明日の一膳はもう決めてあります。": "Tomorrow's meal is already decided.",
+    "明日の{time}": "tomorrow at {time}",
+    "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} has already passed. If you start now, cooking one dish at a time you'll be done around {t1}; working in parallel, around {t2}",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "On okayu day, we suggest quick zosui or okayu with soft, mild side dishes and soup",
+    "おかゆの日なので{n}品にしました": "Okayu day, so {n} dishes",
+    "プリモ（一皿目）": "Primo (first course)",
+    "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta or risotto is the primo, so no soup",
 });

@@ -621,7 +621,6 @@ GOHAN_I18N('vi', {
     "元の料理: {name}": "Dựa trên: {name}",
     "変えたところ": "Điểm thay đổi",
     "味・かたち・主役の食材": "Hương vị, hình thức, nguyên liệu chính",
-    "おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）": "Vào ngày okayu, món chính là okayu (món phụ và canh vẫn như thường)",
     "おかゆの具: {v}": "Nguyên liệu của okayu: {v}",
     "元の料理「{name}」の絵": "Hình món gốc “{name}”",
     "全部外す": "Bỏ hết",
@@ -1433,4 +1432,10 @@ GOHAN_I18N('vi', {
     "明日の気分: {mood}": "Tâm trạng ngày mai: {mood}",
     "取り消す": "Hủy",
     "明日の一膳はもう決めてあります。": "Bữa ngày mai đã chọn xong.",
+    "明日の{time}": "{time} ngày mai",
+    "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "Đã quá {eat}. Nếu bắt đầu bây giờ, nấu lần lượt từng món sẽ xong khoảng {t1}; nấu song song khoảng {t2}",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Vào ngày okayu, chúng tôi gợi ý zosui hoặc okayu nấu nhanh, cùng món phụ và canh mềm, thanh nhẹ",
+    "おかゆの日なので{n}品にしました": "Ngày okayu: {n} món",
+    "プリモ（一皿目）": "Primo (món đầu)",
+    "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Mì Ý hoặc risotto là món primo nên không có canh",
 });
