@@ -1104,6 +1104,82 @@ html[lang="ja"] .steps li::before{content:counter(st,cjk-decimal)}
 .divider{height:0;border:0;border-top:1px solid var(--line-soft);margin:var(--s4) 0}
 /* 選んだチップは少し浮かせる */
 .chip[aria-pressed="true"]{box-shadow:0 1px 4px color-mix(in srgb,var(--leaf) 35%,transparent)}
+/* ---- 材料から・世界のレシピ・ひとひねり（小野寺。接頭辞 w4x_）。v3: 色・余白・角丸は :root の変数だけ。選んでいる状態は若草、柿色は主ボタンだけ、青は使わない ---- */
+/* 材料から: 材料の入れ方を1か所に（文字で・よく使う食材・写真から） */
+.w4x_in{display:flex;flex-direction:column;gap:var(--s8)}
+.w4x_seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4);padding:var(--s4);background:var(--surface-2);border-radius:var(--r-pill)}
+.w4x_seg button{border:0;background:transparent;border-radius:var(--r-pill);min-height:var(--tap-sm);padding:var(--s4) var(--s8);font-size:var(--fs14);font-weight:600;line-height:1.3;color:var(--muted);overflow-wrap:anywhere;transition:background var(--dur-2) var(--ease),color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
+.w4x_seg button[aria-pressed="true"]{background:var(--surface);color:var(--leaf);box-shadow:var(--shadow-1)}
+.w4x_seg button:active{transform:translateY(1px)}
+.w4x_pane .fphoto-box{margin:0}
+.w4x_have{display:flex;flex-direction:column;gap:var(--s8);border-top:1px solid var(--line-soft);padding-top:var(--s12)}
+.w4x_have:empty{display:none}
+/* 作れる料理: 状態（そろっている・代わりで作れる・あと◯品）と、足りない食材を別の行に。札は共通の .tag */
+.match.w4x_m{grid-template-columns:64px minmax(0,1fr);padding:var(--s12) var(--s16)}
+.match.w4x_m .thumb{width:64px;height:64px}
+.w4x_m .head{align-items:flex-start;flex-wrap:wrap;justify-content:flex-start;column-gap:var(--s8);row-gap:var(--s4)}
+.w4x_m .head .name{flex:1 1 8rem;min-width:0}
+.w4x_m .tag{max-width:100%;overflow-wrap:anywhere}
+.tag.w4x_ok{background:var(--leaf-soft);color:var(--leaf)}
+.tag.w4x_sub{background:var(--yolk-soft);color:var(--yolk-ink)}
+.tag.w4x_soon{box-shadow:inset 0 0 0 1px var(--leaf);font-weight:700}
+.tag.warn.w4x_miss{text-decoration:underline dotted;text-underline-offset:3px}   /* 足りないものは色だけでなく点線の下線でも */
+.w4x_ps{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:var(--s4)}
+.w4x_missrow{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s4) var(--s8)}
+.w4x_ml{font-size:var(--fs12);font-weight:700;color:var(--danger)}
+/* 毎日は使わない欄（使い切りたい食材・備蓄・いつも家にある食材）は、見出し1行＋品数に畳む */
+.w4x_folds{display:flex;flex-direction:column;gap:var(--s12)}
+.w4x_folds:empty{display:none}
+.w4x_folds .fold+.fold{margin-top:0}
+.w4x_fold .fold-sum{gap:var(--s8)}
+.w4x_fold .fold-tx{flex:1 1 auto}
+.w4x_fold .fold-body>.sec{gap:0}
+.w4x_cnt{flex:none;white-space:nowrap}
+/* 世界のレシピ: 国はタイル（国旗を大きく）、料理は2列のカード */
+.w4x_cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(5rem,calc((100% - 16px) / 3)),1fr));gap:var(--s8)}   /* 大きい文字・狭い画面でも3列（国を選ぶ欄が長くなりすぎない） */
+.w4x_ct{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:var(--s4);min-height:64px;padding:var(--s8) var(--s4);border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);text-align:center;line-height:1.3;min-width:0;transition:background var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),transform var(--dur-1) var(--ease)}
+.w4x_ct:active{transform:translateY(1px)}
+.w4x_ct .fl{font-size:var(--fs24);line-height:1.1}
+.w4x_cn{font-size:var(--fs12);font-weight:600;max-width:100%;overflow-wrap:break-word;hyphens:auto}
+.w4x_ct[aria-pressed="true"]{background:var(--leaf-soft);border-color:var(--leaf);box-shadow:inset 0 0 0 1px var(--leaf);color:var(--ink)}
+.world-head.w4x_whero{display:flex;align-items:center;gap:var(--s12);border-radius:var(--r-lg);font-size:var(--fs16)}
+.w4x_whero .fl{font-size:2.5rem;line-height:1}
+.w4x_wht{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.w4x_wht b{font-family:var(--mincho);font-weight:600;font-size:var(--fs20);line-height:var(--lh-tight);overflow-wrap:anywhere}
+.w4x_whero .w4x_cnt{background:var(--surface)}
+.list.w4x_wgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s12);background:none;border:0;box-shadow:none;overflow:visible;border-radius:0}
+.w4x_wgrid .match.w4x_wc{display:flex;flex-direction:column;align-items:center;gap:var(--s8);text-align:center;padding:var(--s12);border:1px solid var(--line-soft);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1);cursor:pointer;content-visibility:visible;contain-intrinsic-size:none;min-width:0;transition:transform var(--dur-1) var(--ease)}
+.w4x_wgrid .match.w4x_wc:active{transform:translateY(1px)}
+.w4x_wc .w4x_wimg{display:grid;place-items:center;width:100%;padding:var(--s8) 0;border-radius:var(--r-md)}
+.w4x_wc .thumb{width:96px;height:96px}
+.w4x_wc .info{align-items:center;gap:2px;width:100%}
+.w4x_wc .head{justify-content:center;cursor:pointer}
+.w4x_wc .head .name{line-height:1.4;overflow-wrap:anywhere}
+.w4x_wc .w4x_wsub{overflow-wrap:anywhere;line-height:1.4}
+.w4x_wload{min-height:100vh}   /* 国を読みこむあいだも、ページが急に短くならない（下の欄が上に跳ねない） */
+.w4x_wc .badge.avoid{margin:var(--s4) 0 0;white-space:normal}
+/* ひとひねり: ①元の料理を選ぶ → ②案（元の料理 → 新しい一品・変えたところ） */
+.w4x_no{display:inline-grid;place-items:center;width:1.5em;height:1.5em;border-radius:50%;background:var(--leaf);color:var(--leaf-ink);font-family:var(--font-body);font-size:var(--fs12);font-weight:700;letter-spacing:0;margin-inline-end:var(--s8);vertical-align:.15em}
+.w4x_twmore{border-top:1px solid var(--line-soft);padding-top:var(--s4)}
+.w4x_twmore>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:var(--s8);min-height:var(--tap);font-weight:600;font-size:var(--fs14)}
+.w4x_twmore>summary::-webkit-details-marker{display:none}
+.w4x_twmore[open]>summary::after{transform:rotate(225deg) translate(-2px,-2px)}
+.w4x_twmore>.field{margin-bottom:var(--s12)}
+.w4x_twlist{display:flex;flex-direction:column;gap:var(--s16)}
+.card.tw-item.w4x_tw{display:flex;flex-direction:column;align-items:stretch;gap:var(--s8);padding:var(--s16);border-top:1px solid var(--line-soft)}
+.w4x_twfrom{display:flex;align-items:center;gap:var(--s8);font-size:var(--fs14);color:var(--muted);min-width:0}
+.w4x_twfrom .thumb{width:36px;height:36px;box-shadow:inset 0 0 0 2px var(--porcelain);opacity:.9}
+.w4x_twfrom>span:last-child{min-width:0;overflow-wrap:anywhere}
+.w4x_twarrow{width:2px;height:var(--s16);margin-inline-start:17px;background:var(--line);position:relative}
+.w4x_twarrow::after{content:"";position:absolute;bottom:-2px;inset-inline-start:-4px;width:8px;height:8px;border-inline-end:2px solid var(--line);border-bottom:2px solid var(--line);transform:rotate(45deg)}
+.w4x_twnew{display:grid;grid-template-columns:88px minmax(0,1fr);gap:var(--s12);align-items:center}
+.w4x_twnew .stage{display:grid;place-items:center;width:88px;height:88px;border-radius:var(--r-lg)}
+.w4x_twnew .thumb{width:76px;height:76px;cursor:pointer}
+.w4x_twnew .tw-name{font-family:var(--mincho);font-weight:600;font-size:var(--fs20);line-height:var(--lh-tight);cursor:pointer}
+.w4x_twdiff{display:flex;flex-direction:column;gap:var(--s4);background:var(--yolk-soft);border-inline-start:4px solid var(--yolk)}
+.w4x_dl{font-size:var(--fs12);font-weight:700;letter-spacing:.08em;color:var(--yolk-ink)}
+.w4x_twdiff .changes li{font-size:var(--fs14);background:var(--surface);color:var(--ink);padding:2px var(--s12);box-shadow:inset 0 0 0 1px var(--yolk)}
+@media (prefers-reduced-motion:reduce){.w4x_seg button,.w4x_ct,.w4x_wgrid .match.w4x_wc{transition:none}.w4x_seg button:active,.w4x_ct:active,.w4x_wgrid .match.w4x_wc:active{transform:none}}
 </style>
 </head>
 <body>
@@ -6572,8 +6648,8 @@ function lossHtml(){
     const mon = TODAY.slice(0, 7), m = lossCount(mon + '-01', mon + '-31'), w = lossCount(addDays(TODAY, -6), TODAY);
     const sum = S.foodLog.length ? `<p class="small" style="margin:6px 0 0">${esc(t('今月: 使い切った食材{n}件・捨てた食材{m}件', {n:m.u, m:m.t}))}<br>${esc(t('直近7日: 使い切った食材{n}件・捨てた食材{m}件', {n:w.u, m:w.t}))}</p>` : '';
     const opts = S.fridge.map(f => `<option value="${esc(f)}">${esc(labelOf(f))}</option>`).join('');
-    return `<section class="sec loss-sec">
-        <div class="sec-head"><h2>${esc(t('使い切りたい食材'))}</h2><span class="hint">${esc(t('期限が近い順。期限は自分で入れた日付です'))}</span></div>
+    // 畳める見出し（w4xFold）の中に入れる。期限が近い・印のある食材があるときは、はじめから開いておく
+    return w4xFold('fr-loss', t('使い切りたい食材'), t('期限が近い順。期限は自分で入れた日付です'), urg.length, urg.length > 0, `<section class="sec loss-sec">
         <div class="card">
         ${urg.length ? urg.map(lossRowHtml).join('') : (S.fridge.length ? `<p class="small muted" style="margin:0">${esc(t('期限が近い食材・「早めに使う」の印をつけた食材は、いまありません。'))}</p>` : '')}
         ${S.fridge.length ? `<div class="row small loss-exp"><select id="loss-exp-item" aria-label="${esc(t('期限を入れる食材'))}">${opts}</select>
@@ -6583,7 +6659,7 @@ function lossHtml(){
         ${rest.length ? `<details class="loss-rest"><summary class="small">${esc(t('ほかの食材（{n}品）', {n:rest.length}))}</summary>${rest.map(lossRowHtml).join('')}</details>` : ''}
         ${sum}
         <p class="foot"><a href="https://www.caa.go.jp/policies/policy/consumer_policy/information/food_loss/" target="_blank" rel="noopener">${esc(t('食品ロスについて（消費者庁）'))}</a></p>
-        </div></section>`;
+        </div></section>`);
 }
 /* ---- 備蓄（ローリングストック） ----
    S.stock = [{id, n: 品名, q: 数（任意。入れていなければ null）, e: 期限（任意。自分で入れた日付）, d: 登録した日}]、S.stockLog = [{d, n}]（「1つ使った」を押した記録）。
@@ -6619,8 +6695,8 @@ function stockRowHtml(x){
 }
 function stockHtml(){
     const list = stockSorted();
-    return `<section class="sec stock-sec" id="stock-sec">
-        <div class="sec-head"><h2>${esc(t('備蓄（ローリングストック）'))}</h2><span class="hint">${esc(t('期限が近い順。数と期限は自分で入れたものです'))}</span></div>
+    const near = list.filter(x => x.q === 0 || (x.e && daysBetween(TODAY, x.e) <= LOSS_URGENT_DAYS)).length;   // 残り0・期限が近い品があるときは、はじめから開いておく
+    return w4xFold('fr-stock', t('備蓄（ローリングストック）'), t('期限が近い順。数と期限は自分で入れたものです'), list.length, near > 0, `<section class="sec stock-sec" id="stock-sec">
         <div class="card">
         ${list.length ? list.map(stockRowHtml).join('') : `<p class="small muted" style="margin:0">${esc(t('まだ登録していません。水・缶詰・レトルトなど、家に置いてあるものを入れられます。'))}</p>`}
         <form class="row small stock-add" data-form="stock-add">
@@ -6629,7 +6705,7 @@ function stockHtml(){
             <input type="date" id="stock-exp" aria-label="${esc(t('期限（任意）'))}" style="width:auto">
             <button class="btn sm" type="submit">${esc(t('備蓄に入れる'))}</button></form>
         <p class="small muted" style="margin:4px 0">${esc(t('使ったら「1つ使った」を押し、買い足すものは買い物メモに足せます（1週間プランがあるとき）。この端末の中だけに残り、献立や冷蔵庫の食材には使いません。備える量の目安は、このアプリでは出しません。'))}</p>
-        </div></section>`;
+        </div></section>`);
 }
 function fridgeUseInfo(){
     const m = session.menu, main = m && m.items[0] && m.items[0].r;
@@ -6983,6 +7059,11 @@ function spendAdd(){
 function foldHtml(key, title, hint, body){
     return `<details class="sec fold" data-fold="${key}" ${S.foldOpen && S.foldOpen[key] ? 'open' : ''}><summary class="fold-sum"><span class="fold-tx"><h2>${esc(title)}</h2>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="fold-body">${body}</div></details>`;
 }
+// 材料からタブの、毎日は使わない欄（使い切りたい食材・備蓄・いつも家にある食材）。見出し1行＋品数に畳む。開き方は端末に覚え、覚えがないときは def（急ぎのものがあるときだけ開く）
+function w4xFold(key, title, hint, n, def, body){
+    const open = S.foldOpen && key in S.foldOpen ? !!S.foldOpen[key] : def;
+    return `<details class="sec fold w4x_fold" data-fold="${key}" data-def="${def ? 1 : 0}" ${open ? 'open' : ''}><summary class="fold-sum"><span class="fold-tx"><h2>${esc(title)}</h2>${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</span>${n ? `<span class="tag w4x_cnt">${esc(t('{n}品', {n}))}</span>` : ''}<span class="fold-chev" aria-hidden="true"></span></summary><div class="fold-body">${body}</div></details>`;
+}
 function viewToday(){
     if (mixWaiting()) loadMix();
     if (!session.menu && (mixWaiting() || !bootReady)){ return `<section class="sec"><div class="list"><div class="empty">${esc(t('読みこみ中…'))}</div></div></section>`; }
@@ -7327,74 +7408,84 @@ function viewFridge(){
         const soonList = soon.size ? [...ready, ...withSub].filter(m => hitN(m) > 0).sort((a,b) => hitN(b) - hitN(a) || b.used - a.used) : [];
         const soonIds = new Set(soonList.map(m => m.r.id)), notSoon = m => !soonIds.has(m.r.id);
         // 長いときは20品まで。「すべて見る」で全部（長い一覧を一度に作らない）
-        const block = (title, hint, arr, key) => arr.length ? `
-            <div class="sec-head"><h3>${title}</h3><span class="hint">${hint}</span></div>
-            <div class="list">${(moreOpen.has(key) ? arr : arr.slice(0, LIST_FIRST)).map(matchRow).join('')}</div>
+        const block = (title, hint, arr, key, showSt) => arr.length ? `
+            <div class="sec-head w4x_grp"><h3>${title}</h3><span class="hint">${hint}</span></div>
+            <div class="list w4x_mlist">${(moreOpen.has(key) ? arr : arr.slice(0, LIST_FIRST)).map(m => matchRow(m, showSt)).join('')}</div>
             ${arr.length > LIST_FIRST && !moreOpen.has(key) ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="${key}">${esc(t('すべて見る（{n}品）', {n: arr.length}))}</button></div>` : ''}` : '';
         results = `
-        <section class="sec" id="fridge-results">
+        <section class="sec w4x_res" id="fridge-results">
             <div class="sec-head split"><h2>${esc(t('作れる料理'))}</h2>
                 ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
-            ${block('⏰ ' + esc(t('早めに使う食材を使う料理')), esc(t('{n}品', {n:soonList.length})), soonList, 'fr-soon')}
+            ${block('⏰ ' + esc(t('早めに使う食材を使う料理')), esc(t('{n}品', {n:soonList.length})), soonList, 'fr-soon', true)}
             ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.filter(notSoon).length})), ready.filter(notSoon), 'fr-ready')}
             ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub.filter(notSoon), 'fr-sub')}
             ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near, 'fr-near')}
             ${!ready.length && !withSub.length && !near.length ? `<div class="list"><div class="empty">${esc(t('この組み合わせに合う料理が見つかりませんでした。食材をもう少し足してみてください。'))}</div></div>` : ''}
+            ${hintsHtml}
             <p class="foot">${esc(PACK ? t('調味料と主食、それに「いつも家にある食材」は、あるものとして数えています。') : t('調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。'))}</p>
         </section>`;
     }
-    return `
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
-        <div class="card">
-        <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] && RECIPES[0].name.length <= 14 ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
-            <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
-        </form>
-        <div id="search-results">${searchResultsHtml(session.search || '')}</div>
-        <div class="row"><button class="btn sm" data-act="one-open">${esc(t('あと1品'))}</button><span class="small muted">${esc(t('いまある料理に合う副菜・汁ものを提案'))}</span></div>
-        </div>
-    </section>
-    <section class="sec">
+    // 材料の入れ方（文字・よく使う食材・写真）を1か所に。はじめは「文字で」。選んだ入れ方は、アプリを開いているあいだだけ覚える
+    const inMode = session.w4xIn || 'text';
+    const pane = (k, body) => `<div class="w4x_pane" data-pane="${k}" id="w4x-pane-${k}"${k === inMode ? '' : ' hidden'}>${body}</div>`;
+    const segs = [['text', t('文字で')], ['quick', t('よく使う食材')], ['photo', t('写真から')]];
+    const hub = `
+    <section class="sec w4x_hub">
         <div class="sec-head"><h2>${esc(t('冷蔵庫にある材料'))}</h2><span class="hint">${esc(t('ここに登録した食材は次に開いたときも残ります'))}</span></div>
         <div class="card">
-        <form class="inputbar" data-form="add-ing">
-            <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:(LANG === 'ja' ? sampleIngs().join(', ') : joinNames(sampleIngs()))}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
-            <button class="btn primary" type="submit">${esc(t('追加'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
-        </form>
-        <div class="fphoto-box">
-            <div class="eyebrow">${esc(t('冷蔵庫の写真から選ぶ'))}</div>
-            <div class="row"><label class="btn" for="fp-cam">${esc(t('写真を撮る'))}</label><label class="btn" for="fp-lib">${esc(t('写真を選ぶ'))}</label>
-                <input type="file" id="fp-cam" accept="image/*" capture="environment" hidden><input type="file" id="fp-lib" accept="image/*" hidden></div>
-            <p class="small muted" style="margin:4px 0">${esc(t('写真は端末の外に送らず、保存もしません。'))}</p>
+        <div class="w4x_in">
+            <div class="eyebrow">${esc(t('材料を入れる'))}</div>
+            <div class="w4x_seg" role="group" aria-label="${esc(t('材料を入れる'))}">${segs.map(([k, l]) => `<button type="button" aria-controls="w4x-pane-${k}" aria-pressed="${k === inMode}" data-act="w4x-in" data-v="${k}">${esc(l)}</button>`).join('')}</div>
+            ${pane('text', `<form class="inputbar" data-form="add-ing">
+                <input type="text" id="ing-input" placeholder="${esc(PACK ? t('例: {list}', {list:(LANG === 'ja' ? sampleIngs().join(', ') : joinNames(sampleIngs()))}) : t('例: 豚肉と玉ねぎとキャベツ'))}" autocomplete="off" aria-label="${esc(t('材料を入力'))}">
+                <button class="btn primary" type="submit">${esc(t('追加'))}</button>
+                ${speech ? `<button class="btn" type="button" data-act="mic" data-target="ing-input" id="mic-btn" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+            </form>`)}
+            ${pane('quick', `<div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>`)}
+            ${pane('photo', `<div class="fphoto-box">
+                <div class="row"><label class="btn" for="fp-cam">${esc(t('写真を撮る'))}</label><label class="btn" for="fp-lib">${esc(t('写真を選ぶ'))}</label>
+                    <input type="file" id="fp-cam" accept="image/*" capture="environment" hidden><input type="file" id="fp-lib" accept="image/*" hidden></div>
+                <p class="small muted" style="margin:4px 0">${esc(t('冷蔵庫の写真から選ぶ'))}${GAP()}${esc(t('写真は端末の外に送らず、保存もしません。'))}</p>
+            </div>`)}
         </div>
+        <div class="w4x_have">
         ${S.fridge.length ? `<div class="chips">${S.fridge.map(f => { const e = S.fridgeMeta[f] || {}, n = e.d ? daysBetween(e.d, ymd()) : 0;
             return `<span class="chip have${e.soon ? ' soon' : ''}"><button type="button" class="lab" data-act="soon-ing" data-v="${esc(f)}" aria-pressed="${!!e.soon}" title="${esc([e.soon ? t('早めに使う') : '', n >= 1 ? t('登録から{n}日', {n}) : ''].filter(Boolean).join(' · '))}" aria-label="${esc(t('{name}の「早めに使う」の印を切り替える', {name:labelOf(f)}))}">${esc(labelOf(f))}${e.soon ? ` <span class="soon-tag" aria-hidden="true">⏰</span>` : ''}${n >= 1 ? ` <span class="chip-d">${esc(t('{n}日', {n}))}</span>` : ''}${e.exp ? ` <span class="chip-d">${esc(expLabel(daysBetween(TODAY, e.exp)))}</span>` : ''}</button><button class="x" data-act="rm-ing" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`; }).join('')}</div>
             ${fridgeUnknownHtml()}
             <p class="small muted" style="margin:4px 0">${esc(t('食材をタップすると「早めに使う」の印がつき、その食材を使う料理を先に出します。印と日数はこの端末の中だけに残ります。'))}</p>
             <div class="row"><button class="btn sm ghost danger" data-act="clear-ing">${esc(t('全部外す'))}</button></div>`
-        : `<div class="note">${esc(t('まだ材料が登録されていません。下のよく使う食材をタップするか、「{list}」のようにまとめて入力できます。', {list:(LANG === 'ja' ? sampleIngs().join('、') : joinNames(sampleIngs()))}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
-        <div class="eyebrow">${esc(t('よく使う食材'))}</div>
-        <div class="chips">${QUICK.map(q => { const on = S.fridge.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-ing" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        : `<div class="note">${esc(t('まだ材料が登録されていません。上で「よく使う食材」を選ぶか、「{list}」のようにまとめて入力できます。', {list:(LANG === 'ja' ? sampleIngs().join('、') : joinNames(sampleIngs()))}))} <button class="btn sm" data-act="sample-ing">${esc(t('例: {list}で試す', {list:joinNames(sampleIngs())}))}</button></div>`}
         </div>
-    </section>
-    ${lossHtml()}
-    ${stockHtml()}
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('いつも家にある食材'))}</h2><span class="hint">${esc(t('卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます'))}</span></div>
-        <div class="card">
+        </div>
+    </section>`;
+    const staples = w4xFold('fr-staple', t('いつも家にある食材'), t('卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます'), S.staples.length, false, `<div class="card">
         <form class="inputbar" data-form="add-staple">
             <input type="text" id="staple-input" placeholder="${esc(t('例: 卵、玉ねぎ、ツナ缶'))}" autocomplete="off" aria-label="${esc(t('常備品を入力'))}">
             <button class="btn primary" type="submit">${esc(t('登録'))}</button>
         </form>
         ${S.staples.length ? `<div class="chips">${S.staples.map(f => `<span class="chip have">${esc(labelOf(f))}<button class="x" data-act="rm-staple" data-v="${esc(f)}" aria-label="${esc(t('{name}を外す', {name:labelOf(f)}))}">×</button></span>`).join('')}</div>` : ''}
         <div class="chips">${STAPLE_QUICK.map(q => { const on = S.staples.some(x => keyOf(x) === keyOf(q)); return `<button class="chip" data-act="toggle-staple" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`; }).join('')}</div>
+        </div>`);
+    // 並び: 材料を入れる → 作れる料理 → 料理をさがす → 毎日は使わない欄（畳んだ見出し）
+    return `${hub}
+    ${results}
+    <section class="sec">
+        <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
+        <div class="card">
+        <form class="inputbar search" data-form="search" role="search">
+            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] && RECIPES[0].name.length <= 14 ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
+            <button class="btn" type="submit">${esc(t('さがす'))}</button>
+            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
+        </form>
+        <div id="search-results">${searchResultsHtml(session.search || '')}</div>
+        <div class="row"><button class="btn sm" data-act="one-open">${esc(t('あと1品'))}</button><span class="small muted">${esc(t('いまある料理に合う副菜・汁ものを提案'))}</span></div>
         </div>
-        ${hintsHtml}
     </section>
-    ${results}`;
+    <div class="w4x_folds">
+    ${lossHtml()}
+    ${stockHtml()}
+    ${staples}
+    </div>`;
 }
 /* ---- 冷蔵庫の写真から選ぶ ----
    写真は端末の中のメモリにだけ置く（blob URL。保存も送信もしない。閉じたら破棄）。
@@ -7583,25 +7674,29 @@ function runSearch(q){
     const box = $('#search-results'); if (box) box.innerHTML = searchResultsHtml(q);
 }
 function sampleIngs(){ return PACK ? QUICK.slice(0, 3) : ['豚肉','キャベツ','卵'].map(labelOf); }
-function matchRow(m){
+function matchRow(m, showSt){
     const r = m.r;
     // 使い切りたい食材を、1個や1本に満たない量（1/2個など）で使う料理には、半端が残ることがある、と添える（分量は人数に合わせた値）
     const sk = soonKeys(), part = sk.size ? m.got.filter(i => sk.has(i.key) && i.qty && /\d\/\d|[½¼¾⅓⅔]|半/.test(scaleText(i.qty, servingFactor()))) : [];
-    const parts = [
-        ...m.got.map(i => `<b>${esc(i.label)}</b>`),
-        ...m.subs.map(x => `<span class="sub">${esc(x.i.label)}→${esc(PACK_NAMES[x.alt] || labelOf(x.alt))}</span>`),
-        ...m.miss.map(i => `<span class="miss">${esc(i.label)}</span>`),
+    // 状態（そろっている・代わりで作れる・あと◯品）は、欄の見出しで分からないとき（早めに使う欄）と、足りないものがあるときだけ出す
+    // 使う食材（あるもの・使い切りたいものに⏰）・置きかえ・足りないもの を分けて並べる。足りないものは別の行に「足りない」と書いて、ひと目で分かるように
+    const pill = (cls, html) => `<li class="tag ${cls}">${html}</li>`;
+    const have = [
+        ...m.got.map(i => pill(sk.has(i.key) ? 'w4x_soon' : '', `${sk.has(i.key) ? '<span aria-hidden="true">⏰</span>' : ''}${esc(i.label)}`)),
+        ...m.subs.map(x => pill('w4x_sub' + (sk.has(x.alt) ? ' w4x_soon' : ''), `${esc(x.i.label)}${document.dir === 'rtl' || LANG === 'ar' ? '←' : '→'}${esc(PACK_NAMES[x.alt] || labelOf(x.alt))}`)),
     ];
-    return `<div class="match">
+    const st = m.miss.length ? ['warn', t('あと{n}品', {n: m.miss.length})] : m.subs.length ? ['w4x_sub', t('代わりの食材で作れる')] : ['w4x_ok', t('材料がそろっています')];
+    return `<div class="match w4x_m">
         <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
         <div class="info">
             <div class="head" data-act="open" data-id="${esc(r.id)}">
                 <span class="name">${esc(r.name)}</span>
-                <span class="meter" role="img" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}"><i style="width:${Math.round(Math.min(1,m.ratio)*100)}%"></i></span>
+                ${showSt || m.miss.length ? `<span class="tag ${st[0]}">${esc(st[1])}</span>` : ''}
             </div>
-            <div class="ings">${parts.join(t('・'))}</div>
-            ${part.length ? `<div class="small muted">${esc(t('{name}は{qty}使います（半端な量が残ることがあります）', {name:joinNames(part.map(i => i.label)), qty:part.map(i => scaleText(i.qty, servingFactor())).join(t('・'))}))}</div>` : ''}
             <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
+            <ul class="w4x_ps" aria-label="${esc(t('材料のそろい具合 {p}%', {p:Math.round(m.ratio*100)}))}">${have.join('')}</ul>
+            ${m.miss.length ? `<div class="w4x_missrow"><span class="w4x_ml">${esc(t('足りない'))}</span><ul class="w4x_ps">${m.miss.map(i => pill('warn w4x_miss', esc(i.label))).join('')}</ul></div>` : ''}
+            ${part.length ? `<div class="small muted">${esc(t('{name}は{qty}使います（半端な量が残ることがあります）', {name:joinNames(part.map(i => i.label)), qty:part.map(i => scaleText(i.qty, servingFactor())).join(t('・'))}))}</div>` : ''}
         </div>
     </div>`;
 }
@@ -7620,35 +7715,39 @@ function viewTwist(){
     const formList = [['any',t('おまかせ')],['none',t('かたちはそのまま')], ...Object.keys(FORMS).map(k => [k, formLabel(k)])];
     const res = twistState.results || [];
     const seen = S.seenTwists.slice(-8).reverse().map(twistOf).filter(Boolean);
+    // 流れ: ①元にする料理と、ひねり具合を選ぶ → ②案（元の料理 → 新しい一品・変えたところ）。味・かたち・主役の食材の細かい条件は、畳んでおく。主役の「別の案を出す」は、案の下の固定バー（.actionbar）に
+    const detailOn = ['flavor', 'form', 'swap'].filter(k => twistState[k] !== 'any').length;
     return `
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('定番をひとひねり'))}</h2><span class="hint">${esc(t('味の方向・かたち・主役の食材を入れかえて、新しい一品を考えます'))}</span></div>
-        <div class="card${popOnce('twTab', (twistState.results || []).map(x => x.id).join())}">
-            <div class="eyebrow">${esc(t('ひとひねり案'))}</div>
-            ${res.length ? res.map(tw => `
-                <div class="tw-item">
-                    ${thumbHtml(tw)}
-                    <div style="display:flex;flex-direction:column;gap:5px;min-width:0">
-                        <div class="tw-name" data-act="open" data-id="${esc(tw.id)}">${esc(tw.name)}</div>
-                        <div class="from">${esc(t('元の料理: {name}', {name:tw.base.name}))}</div>
-                        <ul class="changes">${tw.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-                        <div class="row" style="margin-top:4px"><button class="btn sm primary" data-act="open" data-id="${esc(tw.id)}">${esc(t('作り方を見る'))}</button>
-                        <button class="btn sm" data-act="fav" data-id="${esc(tw.id)}">${esc(S.favs.includes(tw.id) ? t('お気に入り解除') : t('お気に入り'))}</button></div>
-                    </div>
-                </div>`).join('') : `<div class="small">${esc(t('この組み合わせでは案が作れませんでした。条件を「おまかせ」に戻してみてください。'))}</div>`}
-            <div class="row"><button class="btn wide" data-act="tw-run">${esc(t('別の案を出す'))}</button></div>
+        <div class="card w4x_twpick">
+            <div class="field"><label for="tw-base"><span class="w4x_no" aria-hidden="true">1</span>${esc(t('元にする料理'))}</label>${baseSel}</div>
+            <div class="field"><label>${esc(t('ひねり具合'))}</label>${seg('level', [[1,t('ちょっとだけ')],[2,t('しっかり')],[3,t('大胆に')]])}</div>
+            <details class="w4x_twmore"${session.w4xTwMore || detailOn ? ' open' : ''}><summary class="memo-sum"><span>${esc(t('味・かたち・主役の食材'))}</span>${detailOn ? `<span class="tag w4x_cnt">${esc(t('{n}件', {n: detailOn}))}</span>` : ''}</summary>
+                <div class="field"><label>${esc(t('味の方向'))}</label>${seg('flavor', flavorList)}</div>
+                <div class="field"><label>${esc(t('かたち'))}</label>${seg('form', formList)}</div>
+                <div class="field"><label>${esc(t('主役の食材'))}</label>${seg('swap', [['any',t('おまかせ')],['none',t('そのまま')],['yes',t('別の食材にかえる')]])}</div>
+            </details>
             ${twistLeftHtml()}
         </div>
     </section>
     <section class="sec">
-        <div class="sec-head"><h2>${esc(t('条件を変える'))}</h2></div>
-        <div class="card">
-        <div class="field"><label for="tw-base">${esc(t('元にする料理'))}</label>${baseSel}</div>
-        <div class="field"><label>${esc(t('ひねり具合'))}</label>${seg('level', [[1,t('ちょっとだけ')],[2,t('しっかり')],[3,t('大胆に')]])}</div>
-        <div class="field"><label>${esc(t('味の方向'))}</label>${seg('flavor', flavorList)}</div>
-        <div class="field"><label>${esc(t('かたち'))}</label>${seg('form', formList)}</div>
-        <div class="field"><label>${esc(t('主役の食材'))}</label>${seg('swap', [['any',t('おまかせ')],['none',t('そのまま')],['yes',t('別の食材にかえる')]])}</div>
+        <div class="sec-head"><h2><span class="w4x_no" aria-hidden="true">2</span>${esc(t('ひとひねり案'))}</h2></div>
+        <div class="w4x_twlist${popOnce('twTab', (twistState.results || []).map(x => x.id).join())}">
+            ${res.length ? res.map(tw => `
+                <article class="card tw-item w4x_tw">
+                    <div class="w4x_twfrom">${thumbHtml(tw.base)}<span>${esc(t('元の料理: {name}', {name:tw.base.name}))}</span></div>
+                    <div class="w4x_twarrow" aria-hidden="true"></div>
+                    <div class="w4x_twnew">
+                        <span class="stage" data-act="open" data-id="${esc(tw.id)}">${thumbHtml(tw)}</span>
+                        <div class="tw-name" data-act="open" data-id="${esc(tw.id)}">${esc(tw.name)}</div>
+                    </div>
+                    <div class="panel w4x_twdiff"><span class="w4x_dl">${esc(t('変えたところ'))}</span><ul class="changes">${tw.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>
+                    <div class="row"><button class="btn sm" data-act="open" data-id="${esc(tw.id)}">${esc(t('作り方を見る'))}</button>
+                    <button class="btn sm ghost" data-act="fav" data-id="${esc(tw.id)}" aria-pressed="${S.favs.includes(tw.id)}">${esc(S.favs.includes(tw.id) ? t('お気に入り解除') : t('お気に入り'))}</button></div>
+                </article>`).join('') : `<div class="card"><div class="small">${esc(t('この組み合わせでは案が作れませんでした。条件を「おまかせ」に戻してみてください。'))}</div></div>`}
         </div>
+        <div class="actionbar"><button class="btn primary" data-act="tw-run">${esc(t('別の案を出す'))}</button></div>
     </section>
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('最近考えたひとひねり'))}</h2><span class="hint">${esc(t('一度出した案は、しばらく出にくくなります'))}</span></div>
@@ -8896,6 +8995,11 @@ document.addEventListener('click', e => {
         case 'left': toggleLeft(id, el.dataset.d, el.dataset.m); if (modalId) renderModal(); render(); break;
         case 'react-open': { const k = el.dataset.d + '|' + id; session.reactOpen = session.reactOpen === k ? null : k; render(); break; }
         case 'more-list': moreOpen.add(el.dataset.k); render(); break;
+        // 材料の入れ方を切りかえる（描き直さずに、見せる欄だけ入れかえる。入力中の文字やフォーカスを消さない）
+        case 'w4x-in': { session.w4xIn = el.dataset.v;
+            document.querySelectorAll('#view .w4x_seg [data-act="w4x-in"]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === session.w4xIn)));
+            document.querySelectorAll('#view .w4x_pane').forEach(x => { x.hidden = x.dataset.pane !== session.w4xIn; });
+            break; }
         case 'rm-hist': {
             // 消したあとに「元に戻す」を出す（押しまちがい・すばやい2回押しで消えたときに戻せるように）
             const before = S.history.slice();
@@ -9116,9 +9220,10 @@ document.addEventListener('input', e => {
 document.addEventListener('toggle', e => {
     if (!e.target.matches) return;
     if (e.target.matches('details.cond')) { if (!!S.condOpen !== e.target.open){ S.condOpen = e.target.open; save(); } }   // 開き直しても同じ開き方で出す
-    if (e.target.matches('details.fold')) { const k = e.target.dataset.fold, was = !!(S.foldOpen && S.foldOpen[k]); if (k && was !== e.target.open){ if (!S.foldOpen) S.foldOpen = {}; S.foldOpen[k] = e.target.open; save(); } }
+    if (e.target.matches('details.fold')) { const k = e.target.dataset.fold, was = S.foldOpen && k in S.foldOpen ? !!S.foldOpen[k] : e.target.dataset.def === '1'; if (k && was !== e.target.open){ if (!S.foldOpen) S.foldOpen = {}; S.foldOpen[k] = e.target.open; save(); } }
     if (e.target.matches('details.left-card')) session.leftOpen = e.target.open;
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
+    if (e.target.matches('details.w4x_twmore')) session.w4xTwMore = e.target.open;
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
     if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
@@ -9549,12 +9654,13 @@ function viewWorld(){
     // 描き直し（絵が届いたときなど）では、もう並べた行までは一度に描く（ページが縮んで見ている場所がずれないように）
     const sec = document.querySelector('#view .world-sec');
     let budget = sec && sec.dataset.cc === worldCC ? Math.max(WORLD_NOW, sec.querySelectorAll('.world-list .match').length) : WORLD_NOW;
+    // 料理は2列のカード（絵を大きく・名前・その国の言葉の名前・時間）。国旗は上の国の見出しに出すので、カードには出さない
     const row = r => { const nm = worldNames(r, c), av = !hide && wl.bad.has(r);
-        return `<div class="match" data-act="open" data-id="${esc(r.id)}">
-                <span>${thumbHtml(r)}</span>
-                <div class="info"><div class="head"><span class="name"><span aria-hidden="true">${c.flag}</span> <span${nm.mainLang ? ` lang="${esc(nm.mainLang)}"` : ''}>${esc(nm.main)}</span></span>${av ? `<span class="badge avoid">${esc(t('苦手な食材あり'))}</span>` : ''}</div>
-                    ${nm.sub ? `<div class="small muted" lang="${esc(c.lang)}">${esc(nm.sub)}</div>` : ''}
-                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div></div></div>`; };
+        return `<div class="match w4x_wc" data-act="open" data-id="${esc(r.id)}">
+                <span class="w4x_wimg stage${r.type === '副菜' ? ' s2' : r.type === '汁物' || r.type === 'ごはん' ? ' s3' : ''}">${thumbHtml(r)}</span>
+                <div class="info"><div class="head"><span class="name"${nm.mainLang ? ` lang="${esc(nm.mainLang)}"` : ''}>${esc(nm.main)}</span></div>
+                    ${nm.sub ? `<div class="small muted w4x_wsub" lang="${esc(c.lang)}">${esc(nm.sub)}</div>` : ''}
+                    <div class="small muted">${esc(t('{n}分', {n: r.min}))}</div>${av ? `<span class="badge avoid">${esc(t('苦手な食材あり'))}</span>` : ''}</div></div>`; };
     const pd = {jobs: []}; let hidden = 0;
     const group = ({code, all}, title) => {
         if (hide){ const n = all.length; all = all.filter(r => !wl.bad.has(r)); hidden += n - all.length; }
@@ -9564,7 +9670,7 @@ function viewWorld(){
         const now = rs.slice(0, budget); budget -= now.length;
         if (rs.length > now.length) pd.jobs.push({sel: `.world-list[data-k="${CSS.escape(key)}"]`, rs: rs.slice(now.length), html: row});
         return `<div class="sec-head"><h3>${esc(title)}</h3></div>
-            <div class="list world-list" data-k="${esc(key)}">${now.map(row).join('')}</div>
+            <div class="list world-list w4x_wgrid" data-k="${esc(key)}">${now.map(row).join('')}</div>
             ${all.length > rs.length ? `<div class="row"><button class="btn sm" data-act="world-all" data-k="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: all.length}))}</button></div>` : ''}`;
     };
     const body = list ? group(wl.groups[0], t('主菜')) + group(wl.groups[1], t('副菜')) + group(wl.groups[2], t('汁もの')) : '';
@@ -9573,13 +9679,13 @@ function viewWorld(){
     return `
     <section class="sec world-sec" data-cc="${esc(worldCC)}">
         <div class="sec-head"><h2>${esc(t('世界のレシピ'))}</h2><span class="hint">${esc(t('ほかの国の家庭料理を見られます。毎日の献立は、選んだ国のままです。'))}</span></div>
-        <div class="chips scroll" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button class="chip" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span aria-hidden="true">${o.flag}</span> <span lang="${esc(o.lang)}">${esc(o.nameLocal)}</span>${countryLabel(o) !== o.nameLocal ? ` <small class="muted">${esc(countryLabel(o))}</small>` : ''}</button>`).join('')}</div>
-        <div class="world-head"><span class="fl" aria-hidden="true">${c.flag}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small">${esc(countryLabel(c))}</span>` : ''}</div>
+        <div class="w4x_cgrid" role="group" aria-label="${esc(t('国・地域'))}">${others.map(o => `<button type="button" class="w4x_ct" data-act="world-cc" data-cc="${o.cc}" aria-pressed="${o.cc === worldCC}"><span class="fl" aria-hidden="true">${o.flag}</span><span class="w4x_cn">${esc(countryLabel(o))}</span></button>`).join('')}</div>
+        <div class="world-head panel w4x_whero"><span class="fl" aria-hidden="true">${c.flag}</span><div class="w4x_wht"><b>${esc(countryLabel(c))}</b>${countryLabel(c) !== c.nameLocal ? `<span class="muted small" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span>` : ''}</div>${list ? `<span class="tag w4x_cnt">${esc(t('{n}品', {n: wl.groups.reduce((a, g) => a + (hide ? g.all.filter(r => !wl.bad.has(r)).length : g.all.length), 0)}))}</span>` : ''}</div>
         ${wl && wl.alg.size ? `<div class="small muted alg-hidden" role="status">⚠ ${esc(t('{n}品は、アレルギー（選んだアレルゲン・家族）に当たるため、表示していません', {n: wl.alg.size}))}</div>` : ''}
         ${list && (effAvoid().length || mildOn()) ? `<div><label class="check"><input type="checkbox" data-act="world-hide-avoid" ${hide ? 'checked' : ''}><span>${esc(t('苦手な食材を使う料理を隠す'))}</span></label>${hide && hidden ? `<div class="small muted">${esc(t('{n}品を隠しています', {n: hidden}))}</div>` : ''}</div>` : ''}
         ${list ? body || `<div class="list"><div class="empty">${esc(t('苦手な食材を使わない料理がありません'))}</div></div>`
             : failed ? `<div class="list"><div class="empty" role="alert">${esc(t('読みこめませんでした。電波のあるところでもう一度お試しください'))}<div class="row"><button class="btn sm" data-act="world-retry">${esc(t('もう一度読みこむ'))}</button></div></div></div>`
-            : `<div class="list"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
+            : `<div class="list w4x_wload"><div class="empty">${esc(t('読みこんでいます…'))}</div></div>`}
     </section>`;
 }
 // 国ごとに、冷蔵庫・常備品・苦手な食材を分けて持つ（食材の呼び名が国で違うため）
