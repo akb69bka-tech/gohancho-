@@ -59,7 +59,8 @@ const BASE = BASE_;
     const before = await snap();
     await p.evaluate(async () => { S.settings.uiLang = 'en'; save(); await setLang('en'); await refreshRecipes(); render(); }); await p.waitForTimeout(1500);
     const after = await snap();
-    if (after.ids.includes('-') || JSON.stringify(before.ids) !== JSON.stringify(after.ids)) bad('lang-keeps-menu', cc + JSON.stringify(before.ids) + '->' + JSON.stringify(after.ids)); else ok('lang-keeps-menu');
+    // 言語を変える前から空いていた枠（汁けの多い主菜のあとに空けた汁ものの枠は、設定を変えたついでには埋めない設計）は数えない。言語を変えて空いた枠・変わった料理だけを不具合にする
+    if (after.ids.some((id, j) => id === '-' && before.ids[j] !== '-') || JSON.stringify(before.ids) !== JSON.stringify(after.ids)) bad('lang-keeps-menu', cc + JSON.stringify(before.ids) + '->' + JSON.stringify(after.ids)); else ok('lang-keeps-menu');
     if (after.mood !== 'fish') bad('lang-keeps-mood', after.mood); else ok('lang-keeps-mood');
     await ctx.close();
   }
