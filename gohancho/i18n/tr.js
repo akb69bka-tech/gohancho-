@@ -1152,4 +1152,6 @@ GOHAN_I18N('tr', {
     "App Store の価格を読み込んでいます…": "App Store fiyatı yükleniyor…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Fiyat yüklenemedi. İnternet varken tekrar deneyin.",
     "{date}まで使えます（更新しません）": "{date} tarihine kadar geçerli (yenilenmeyecek)",
+    "「{name}」にかえました": "“{name}” ile değiştirildi",
+    "今日の{n}品、ぜんぶできました。おつかれさまです。": "Bugünün {n} yemeğinin hepsi hazır. Eline sağlık!",
 });

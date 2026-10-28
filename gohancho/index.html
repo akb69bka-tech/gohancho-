@@ -2806,6 +2806,24 @@ function record(id, slot, d=TODAY){
     save();
 }
 function slotOf(r){ return r.main ? '主菜' : r.type === '汁物' ? '汁物' : '副菜'; }
+// 作り方で料理の手順を全部終えたとき、その料理を今日の記録に入れる（「決めた」だけでは記録しない）。
+// 作り方で付けた記録には c:1 を付け、手順を戻したときに外せるようにする。初めての料理などのほめ言葉を返す（記録済みなら空）
+function cookRecord(x){
+    const id = x.r.id; if (histEntry(id, TODAY)) return '';
+    record(id, x.slot || slotOf(x.r));
+    const h = histEntry(id, TODAY); if (h) h.c = 1;
+    save(); reactVer++;
+    return praiseFor([id]);
+}
+function cookUnrecord(id){
+    const h = histEntry(id, TODAY); if (!h || !h.c || yumOf(h) || (h.left && h.left.length)) return;
+    S.history = S.history.filter(x => x !== h); save(); reactVer++;
+}
+// 今日の決めた献立の料理を、作り方で全部作り終えたか
+function cookAllDone(){
+    const its = cookItems(); if (!its.length || !S.cook || S.cook.d !== TODAY) return false;
+    return its.every(x => (((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length);
+}
 
 /* ---- 「おいしかった！」と今月の料理自慢（サーバーなし・端末の中だけ）----
    作った記録（S.history の1件）に h.y = おいしかったと押した人数を付ける（家族ひとりにつき1回押す）。
@@ -4427,6 +4445,7 @@ function stepHasAmount(text){
     const v = stepHasAmountRaw(k); STEP_AMT.set(k, v); return v;
 }
 function stepHasAmountRaw(text){
+    if (/[\u3040-\u30ff]/.test(text) && new RegExp(STEP_PORTION.source).test(text)) return true;   // 「2等分して小判形に」も人数で変わる
     const t0 = String(text).replace(STEP_NOAMT, '').replace(/\d+\s*(?:x|×)\s*\d+/g, '');
     return /\d/.test(t0) || /كوباية|كوبين/.test(t0);
 }
@@ -4499,8 +4518,16 @@ function scaleSteps(text, factor, names){
         const w = part ? (top === 1 ? part.replace(/s$/i, '') : /s$/i.test(part) ? part : part + 's') : '', e = part ? egg.replace(/s$/i, '') : (top === 1 ? egg.replace(/s$/i, '') : /s$/i.test(egg) ? egg : egg + 's');
         return na + (b ? dash + nb : '') + mid + e + (part ? sp + w : '');
     });
-    return {s: s2, n, k};
+    // 日本語の「2等分して小判形に」「練り、6等分する」「6等分（1個あたり約75g）」: 人数ぶんに分ける数も人数に合わせる（4人分なら4等分。佐々木 3-6）。
+    // 切る（「豆腐は4等分に切る」）は大きさの話なので変えない。1つにしかならないときは元の文のまま
+    const s3 = !ja ? s2 : s2.replace(STEP_PORTION, (m, a, b, c) => {
+        const k0 = Number(a || b || c), v = Math.round(k0 * factor);
+        if (v < 2 || v === k0) return m;
+        n++; return v + '等分';
+    });
+    return {s: s3, n, k};
 }
+const STEP_PORTION = /(\d+)等分(?=(?:して|する|にして|にし)?[^。、]*?(?:小判形|丸め|丸く|まとめ|包))|(?<=練り、)(\d+)等分|(\d+)等分(?=（1個あたり)/g;
 
 /* ---- 苦手な食材 ---- */
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
@@ -8151,7 +8178,7 @@ document.addEventListener('click', e => {
         case 'mood': if (session.mood === el.dataset.k) break; session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
         case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;
         case 'reroll': {
-            const i = Number(el.dataset.i), m = session.menu, it = m.items[i];
+            const i = Number(el.dataset.i), m = session.menu, it = m.items[i], prev = it.r;
             if (it.r) session.rejected.add(it.r.id);
             if (i === 0){
                 // 主菜だけをかえる。ほかの料理・ご飯の欄は絶対に動かさない（合わない主菜は最初から選ばない）
@@ -8160,7 +8187,15 @@ document.addEventListener('click', e => {
                 if (nr && !keep.some(k => k.id === nr.id)) it.r = nr;
             }
             else it.r = suggestOrAny(it.slot, m.items.filter((_, k) => k !== i).concat(it.r ? [{r: it.r}] : []), m.items[0].r) || it.r;
-            render(); break;
+            render();
+            // 何に変わったかを言い、元に戻せるようにする（押しまちがい・子どもに腕を引かれたとき。佐々木 3-12・田村 3-13）。
+            // 戻すのは押した枠だけ。そのあいだに献立が作り直された・同じ枠がまた変わったときは戻さない
+            const nr = it.r;
+            if (prev && nr && nr !== prev) toast(t('「{name}」にかえました', {name: nr.name}), false, () => {
+                if (session.menu !== m || m.items[i] !== it || it.r !== nr || m.items.some((x, k) => k !== i && x.r && x.r.id === prev.id)) return;
+                it.r = prev; session.rejected.delete(prev.id); render();
+            });
+            break;
         }
         case 'soup-add': {
             // 空の汁もの枠だけに、押したときに1品選ぶ（ほかの料理は動かさない）
@@ -8361,23 +8396,19 @@ document.addEventListener('click', e => {
         case 'decide': {
             const m = session.menu;
             const ids = menuIds();
-            // 同じ日に決め直したときは、前に決めた献立の記録を消してから記録する（両方の料理が「今日作った」にならないように）
-            if (S.cook && S.cook.d === TODAY && S.cook.ids){ const prev = S.cook.ids.filter(id => !ids.includes(id)); S.history = S.history.filter(h => !(h.d === TODAY && prev.includes(h.id))); }
-            const before = new Set(S.history.filter(h => h.d !== TODAY || (S.cook && S.cook.d === TODAY && S.cook.ids.includes(h.id))).map(h => h.id));
-            ids.forEach(id => record(id, slotOf(byId(id))));
+            // 「決めた」だけでは記録しない（作った記録は、作り方で料理の手順を全部終えたとき・「今日作った」を押したときに付ける）。
+            // 決めただけで「今日作った」「レパートリーが増えました」と出ると、作らなかった日も作ったことになるため（モニター 佐々木 3-7・田村 3-12）
             const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
             S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0}; save(); haptic();
             session.cookIdx = 0;
-            toast(endSent(t('献立が決まりました。作り方はこちらです')) + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
+            toast(endSent(t('献立が決まりました。作り方はこちらです')), true); setTab('cook'); break;
         }
         case 'undo-decide': {
-            // 「この献立に決定」の取り消し: 決めたときに記録した今日の料理を記録から消す（「おいしかった！」を押した料理は残す）
+            // 「この献立に決定」の取り消し。決めただけでは記録していないので、記録（作った料理）はそのまま残す
             if (!S.cook || S.cook.d !== TODAY) break;
-            const ids = S.cook.ids || [];
-            const prevHist = S.history, prevCook = S.cook;
-            S.history = S.history.filter(h => !(h.d === TODAY && ids.includes(h.id) && !yumOf(h)));
+            const prevCook = S.cook;
             S.cook = null; save(); reactVer++; setTab('today');
-            toast(t('決めた献立を取り消しました'), false, () => { S.history = prevHist; S.cook = prevCook; session.cookIdx = 0; reactVer++; settleAwards(); save(); setTab('cook'); }); break;
+            toast(t('決めた献立を取り消しました'), false, () => { S.cook = prevCook; session.cookIdx = 0; reactVer++; save(); setTab('cook'); }); break;
         }
         case 'use-plan': {
             const p = weekToday(); if (!p) break;
@@ -8459,7 +8490,11 @@ document.addEventListener('click', e => {
             const j = a.indexOf(k); if (j >= 0) a.splice(j, 1); else { a.push(k); (usageOf().lastStep = usageOf().lastStep || {})[cur.r.id] = k; } save();
             li.classList.toggle('done', j < 0); li.setAttribute('aria-pressed', String(j < 0));
             voiceStop(true);
-            if (a.length >= cur.r.steps.length){ session.celeb = cur.r.id; const wasHf = hf.on; voiceStop(); render(); toast(t('{name}、できあがり！', {name:cur.r.name}), true); if (wasHf) voiceSay(t('{name}、できあがり！', {name:cur.r.name})); setTimeout(() => { const c = document.querySelector('.celebrate'); if (c) c.scrollIntoView({block:'center'}); }, 80); break; }
+            if (wasAll && a.length < cur.r.steps.length) cookUnrecord(cur.r.id);   // 全部できたあとに手順を1つ戻した: 作り方で付けた記録だけ外す（「おいしかった！」を押した記録は残す）
+            const praise = a.length >= cur.r.steps.length && !wasAll && S.cook.d === TODAY ? cookRecord(cur) : '';
+            if (a.length >= cur.r.steps.length){ session.celeb = cur.r.id; const wasHf = hf.on; voiceStop(); render();
+                const n = cookItems().length, all = n > 1 && cookAllDone();   // 献立の料理を全部作り終えたら、献立全体の区切りを伝える（田村 3-15）
+                toast((all ? t('今日の{n}品、ぜんぶできました。おつかれさまです。', {n}) : t('{name}、できあがり！', {name:cur.r.name})) + (praise ? sentGap() + praise : ''), true); if (wasHf) voiceSay(t('{name}、できあがり！', {name:cur.r.name})); setTimeout(() => { const c = document.querySelector('.celebrate'); if (c) c.scrollIntoView({block:'center'}); }, 80); break; }
             const smooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
             if (wasAll){   // 全部できたあとに1つ取り消した: 「できた！」とタブの✓を消すため描き直す
                 session.celeb = null; render();

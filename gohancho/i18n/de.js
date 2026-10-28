@@ -1152,4 +1152,6 @@ GOHAN_I18N('de', {
     "App Store の価格を読み込んでいます…": "App-Store-Preis wird geladen …",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Preis konnte nicht geladen werden. Bitte versuche es mit Internetverbindung erneut.",
     "{date}まで使えます（更新しません）": "Aktiv bis {date} (keine Verlängerung)",
+    "「{name}」にかえました": "Gewechselt zu „{name}“",
+    "今日の{n}品、ぜんぶできました。おつかれさまです。": "Alle {n} Gerichte von heute sind fertig. Gut gemacht!",
 });

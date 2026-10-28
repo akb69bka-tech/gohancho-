@@ -1152,4 +1152,6 @@ GOHAN_I18N('vi', {
     "App Store の価格を読み込んでいます…": "Đang tải giá trên App Store…",
     "価格を読み込めませんでした。電波のあるところでもう一度お試しください": "Không tải được giá. Hãy thử lại khi có mạng.",
     "{date}まで使えます（更新しません）": "Dùng được đến {date} (không gia hạn)",
+    "「{name}」にかえました": "Đã đổi sang “{name}”",
+    "今日の{n}品、ぜんぶできました。おつかれさまです。": "Đã nấu xong cả {n} món hôm nay. Vất vả rồi!",
 });
