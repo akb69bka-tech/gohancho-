@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#22406b">
-<script>window.ASSET_V='v18';/* sw.js の VERSION（gohancho-v18）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v19';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -2189,24 +2189,24 @@ const BENTO_OK = new Set(`
     eg_salatabatates
     in_tandoori in_fishfry in_andabhurji in_aloogobi in_bhindi in_poriyal
     in_jeeraaloo in_gajarmatar in_aloomethi in_karelafry in_begunbhaja in_besanmirch
-    in_arbifry
+    in_arbifry in_alooparatha
     cn_gongbao_jiding cn_qingjiao_rousi cn_haoyou_niurou cn_congbao_yangrou cn_kele_jichi cn_tangcu_paigu
     cn_suanrong_qingcai cn_suanla_tudousi cn_disanxian cn_qincai_xianggan cn_ganbian_doujiao cn_shousi_baocai
     cn_jiucai_jidan cn_suanrong_xilanhua cn_youzha_huasheng cn_hupi_qingjiao cn_qingchao_oupian cn_roumo_suandoujiao
-    cn_youmen_sun
+    cn_youmen_sun cn_huiguo_rou
     tw_sanbeiji tw_caipu_dan tw_jian_shimuyu tw_congbao_niurou tw_zha_paigu tw_yansuji
     tw_jian_daiyu tw_jian_xiangchang tw_hongzao_rou tw_kejia_xiaochao tw_hujiao_xia tw_shacha_yangrou
     tw_chao_gaolicai tw_lu_dougan tw_cangyingtou tw_xiandan_kugua tw_taxiang_qiezi tw_chao_longxucai
-    tw_chao_suancai tw_xiangjian_doufu tw_shacha_kongxincai tw_yansu_xingbaogu
+    tw_chao_suancai tw_xiangjian_doufu tw_shacha_kongxincai tw_yansu_xingbaogu tw_conghua_dan
     kr_jeyuk kr_bulgogi kr_godeungeo kr_dakgangjeong kr_tteokgalbi kr_jogigui
     kr_haemulpajeon kr_dubujorim kr_sigeumchi kr_gyeranmari kr_myeolchi kr_gamjajorim
     kr_kongnamul kr_sukjunamul kr_gosarinamul kr_beoseotbokkeum kr_eomukbokkeum kr_jangjorim
     kr_kongjaban kr_yeongeunjorim kr_hobakjeon kr_kimchijeon kr_dongeurangttaeng kr_miyeokjulgi
-    kr_jinmichae kr_gamjachae
+    kr_jinmichae kr_gamjachae kr_aehobakbokkeum
     th_kaprao th_khaijiao th_platutod th_nueanammanhoi th_mootodkratiam th_kaiphadkhing
     th_kaimetmamuang th_kaiyang th_nueadaddiao th_thodmanpla th_moophadphrikkaeng th_padpakbung
     th_phadkhana th_kalamphadnampla th_faktongphadkhai th_hetnangfa th_khaijiaochaom th_plakhemthod
-    th_moowan th_phadthualantao
+    th_moowan th_phadthualantao th_mooping
     vn_garang vn_boxao vn_tomrim vn_suonram vn_thitrangchay vn_gachiennuocmam
     vn_gaxaosa vn_boluclac vn_bolalot vn_chaca vn_dauhusaot vn_raumuongxao
     vn_trungchien vn_susuxao vn_bongcaixao vn_dauquexao vn_caithiaxaonam vn_bapxao

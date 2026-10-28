@@ -67,7 +67,9 @@ GOHAN_PACK_TR('DE', 'de', {
     'walnuts': 'Walnüsse',
     'mayonnaise': 'Mayonnaise',
     'potato starch': 'Kartoffelstärke',
-    'raisins': 'Rosinen'
+    'raisins': 'Rosinen',
+    'bread': 'Brot',
+    'butter': 'Butter',
   },
   recipes: {
     'de_frikadellen': {
@@ -961,6 +963,30 @@ GOHAN_PACK_TR('DE', 'de', {
         '50–60 Minuten backen, bis die Oberfläche goldbraun ist und ein Messer leicht durch die Kartoffeln gleitet. Vor dem Servieren 10 Minuten ruhen lassen.'
       ],
       tip: { add: 'Ein paar Thymianblättchen zwischen den Schichten', why: 'Eine leichte Kräuternote zur reichhaltigen Sahne', skill: 'Gleichmäßig dünne Scheiben', how: 'Gleich dicke Scheiben garen gleichzeitig, so bleiben in der Mitte keine harten Stellen.' }
-    }
+    },
+    'de_abendbrot': {
+      name: 'Abendbrot',
+      ings: [['Roggen- oder Vollkornbrot', '4 Scheiben'], ['Butter', '30 g'], ['Schinken oder Wurstaufschnitt', '100 g'], ['Käsescheiben (Gouda oder Emmentaler)', '100 g'], ['Tomaten', '2'], ['Salatgurke', '1/2'], ['Gewürzgurken', '2?'], ['Radieschen', '4?']],
+      seas: 'Salz · Pfeffer · Schnittlauch · Senf',
+      steps: [
+        'Die Butter 10 Minuten vorher aus dem Kühlschrank nehmen, damit sie sich gut streichen lässt.',
+        'Tomaten und Gurke in Scheiben schneiden, die Radieschen halbieren und alles mit Schinken, Käse und Gewürzgurken auf einem Brett oder großen Teller anrichten.',
+        'Das Brot mit Butter bestreichen. Jede Scheibe nach Belieben mit Schinken oder Käse und dem Gemüse belegen.',
+        'Die Tomaten mit Salz und Pfeffer würzen, Schnittlauch über den Käse streuen und mit Senf servieren.'
+      ],
+      tip: { add: 'Ein gekochtes Ei oder ein Klecks Quark mit Schnittlauch', why: 'Das bringt Eiweiß und macht das kalte Abendessen sättigender', skill: 'Die Butter bis zum Rand streichen', how: 'Eine geschlossene Butterschicht verhindert, dass das Brot unter dem Gemüse durchweicht.' }
+    },
+    'de_pfannkuchen': {
+      name: 'Eierpfannkuchen mit Apfelmus',
+      ings: [['Weizenmehl', '150 g'], ['Milch', '300 ml'], ['Eier', '3'], ['Apfelmus', '150 g']],
+      seas: 'Prise Salz · 1 EL Zucker · 2 EL Butter oder Öl für die Pfanne · Zimtzucker zum Servieren',
+      steps: [
+        'Mehl, Salz und Zucker mit der Milch glatt rühren, dann die Eier unterschlagen. Den Teig 10 Minuten ruhen lassen.',
+        'Etwas Butter in einer beschichteten Pfanne bei mittlerer Hitze erhitzen. Eine Kelle Teig hineingießen und die Pfanne schwenken, bis der Boden dünn bedeckt ist.',
+        '1–2 Minuten backen, bis die Oberfläche gestockt und die Unterseite goldbraun ist, dann wenden und noch eine Minute backen. Auf einen Teller geben und warm halten. Mit dem restlichen Teig wiederholen und bei Bedarf Butter nachgeben. Es ergibt 4–5 Pfannkuchen.',
+        'Jeden mit Apfelmus bestreichen, aufrollen oder zusammenklappen und mit Zimtzucker bestreuen.'
+      ],
+      tip: { add: 'Speckwürfel oder Schinken im Teig für eine herzhafte Variante', why: 'In Deutschland isst man sie auch als deftiges Hauptgericht mit Salat', skill: 'Den Teig ruhen lassen', how: 'Beim Ruhen nimmt das Mehl die Milch auf, sodass die Pfannkuchen zart bleiben und beim Wenden nicht reißen.' }
+    },
   }
 });

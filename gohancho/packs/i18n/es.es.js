@@ -61,7 +61,9 @@ GOHAN_PACK_TR('ES', 'es', {
     'asparagus': 'Espárragos trigueros',
     'chard': 'Acelgas',
     'banana': 'Plátanos',
-    'breadcrumbs': 'Pan rallado'
+    'breadcrumbs': 'Pan rallado',
+    'garlic': 'Ajo',
+    'flour': 'Harina',
   },
   recipes: {
     'es_tortilla': {
@@ -981,6 +983,30 @@ GOHAN_PACK_TR('ES', 'es', {
         'Escurre sobre papel de cocina y sirve caliente, con un poco de sal.'
       ],
       tip: { add: 'Unas gotas de limón o un poco de allioli', why: 'Frescor frente al rebozado', skill: 'Sala y seca antes', how: 'La sal saca el agua; las rodajas secas mantienen el rebozado crujiente en vez de blando.' }
-    }
+    },
+    'es_gambas': {
+      name: 'Gambas al ajillo',
+      ings: [['Gambas peladas crudas', '300 g'], ['Ajo', '5 dientes'], ['Pan crujiente, para acompañar', '4 rebanadas'], ['Perejil', '1 cda?']],
+      seas: '100 ml de aceite de oliva · 1 guindilla seca (o 1/2 cdta de chile en copos) · 1 cda de jerez seco (opcional) · sal',
+      steps: [
+        'Seca las gambas con papel de cocina y sazónalas con sal. Corta el ajo en láminas finas y desmenuza la guindilla.',
+        'Calienta el aceite con el ajo y la guindilla en una sartén pequeña o cazuela de barro a fuego medio-bajo durante 2-3 minutos, hasta que el ajo empiece a dorarse.',
+        'Sube el fuego, añade las gambas y cocínalas 1-2 minutos por lado, hasta que estén rosadas y enroscadas. Si usas jerez, añádelo y deja que burbujee 10 segundos.',
+        'Espolvorea con perejil y sirve enseguida, chisporroteando, con el pan para mojar en el aceite.'
+      ],
+      tip: { add: 'Mucho pan crujiente para mojar', why: 'El aceite de ajo y guindilla es lo mejor del plato', skill: 'Secar bien las gambas', how: 'Las gambas mojadas salpican y se cuecen en lugar de dorarse; secarlas mantiene el aceite tranquilo y la carne firme.' }
+    },
+    'es_calamaresromana': {
+      name: 'Calamares a la romana',
+      ings: [['Calamares limpios, cortados en anillas', '400 g'], ['Harina de trigo', '100 g'], ['Huevos', '2'], ['Limón', '1']],
+      seas: 'sal · aceite de girasol o de oliva para freír (unos 300 ml) · perejil picado (opcional)',
+      steps: [
+        'Seca muy bien las anillas de calamar con papel de cocina y sazónalas con sal.',
+        'Bate los huevos en un bol y pon la harina en un plato. Pasa las anillas por el huevo y luego por la harina, sacudiendo el exceso.',
+        'Calienta el aceite en una sartén honda a fuego medio-alto hasta que una pizca de harina chisporrotee al instante (unos 180 °C). Fríe las anillas en 3 tandas durante 1-2 minutos cada una, hasta que estén doradas claras. No las pases de punto o quedarán duras.',
+        'Escúrrelas sobre papel de cocina, espolvorea con un poco más de sal y sirve enseguida con gajos de limón.'
+      ],
+      tip: { add: 'Alioli o un chorrito de limón', why: 'La acidez o la crema de ajo cortan lo graso de la fritura', skill: 'Freír en tandas pequeñas', how: 'Con demasiadas anillas a la vez el aceite se enfría y el rebozado lo absorbe en vez de quedar crujiente.' }
+    },
   }
 });
