@@ -276,12 +276,12 @@ export default {
     },
     // 鮭のちゃんちゃん焼き: 鉄のフライパンに野菜を広げ、鮭に味噌とバター
     chanchan: p => {
-        const V = Q.pan(p, { outer: '#5e5650', lip: '#6e6660', inner: '#4a4440', handles: 'long', rx: 80, cx: 88, cy: 96, h: 18 }), o = { cx: V.cx, cy: V.cy + 4 };
+        const V = Q.pan(p, { outer: '#5e5650', lip: '#6e6660', inner: '#4a4440', handles: 'long', rx: 90, cx: 94, cy: 90, h: 30, handleLen: 6, handleRise: 36 }), o = { cx: V.cx, cy: V.cy + 4 };
         const it = [];
-        scatter('cc', 30, 62, 11).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v); it.push([y, () => i % 3 === 0 ? onionStrip(x, y, 16, r * 180, '#ead8a0') : Q.leaf(p, x, y, 26, r * 180, i % 3 === 1 ? '#c8e09a' : '#9ec46a', 'cb' + i, { wave: 2 })]); });
-        scatter('ccc', 6, 60, 22).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v, 2); it.push([y + .1, () => i % 2 ? carrotStick(p, x, y, 16, r * 180) : shimeji(p, x, y, 16, r * 30 - 15, 3, i)]); });
+        scatter('cc', 34, 72, 12).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v); it.push([y, () => i % 3 === 0 ? onionStrip(x, y, 16, r * 180, '#ead8a0') : Q.leaf(p, x, y, 32, r * 180, i % 3 === 1 ? '#c8e09a' : '#9ec46a', 'cb' + i, { wave: 2 })]); });
+        scatter('ccc', 7, 66, 22).forEach(([u, v, r], i) => { const [x, y] = P(o, u, v, 2); it.push([y + .1, () => i % 2 ? carrotStick(p, x, y, 16, r * 180) : shimeji(p, x, y, 16, r * 30 - 15, 3, i)]); });
         const [x, y] = P(o, 0, 0, 3);
-        it.push([y + 30, () => fillet(p, x, y, 60, 34, -6, 'cc', { flesh: '#ee9a64', skin: '#8a98a4', char: .25 }) + `<path d="${Q.blob(x, y - 11, 22, 8, 'miso')}" fill="${Q.rg(p, [[0, '#d8a050'], [1, '#9a6020']])}"/><path d="${Q.blob(x - 4, y - 14, 8, 4, 'butter')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
+        it.push([y + 30, () => fillet(p, x, y, 80, 46, -6, 'cc', { flesh: '#ee9a64', skin: '#8a98a4', char: .25 }) + `<path d="${Q.blob(x, y - 13, 28, 10, 'miso')}" fill="${Q.rg(p, [[0, '#d8a050'], [1, '#9a6020']])}"/><path d="${Q.blob(x - 4, y - 14, 8, 4, 'butter')}" fill="#fbe490" stroke="#d8b450" stroke-width=".5"/>`]);
         return V.s + `<g ${V.inside}>${Q.byDepth(it)}</g>` + V.shine(.5);
     },
     // マカロニグラタン: 楕円のグラタン皿に、焼き色のついたチーズとパン粉

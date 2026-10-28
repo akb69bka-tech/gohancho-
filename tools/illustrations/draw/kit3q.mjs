@@ -132,12 +132,12 @@ export function slabPlate(p, { cx = 100, cy = 98, w = 184, d = 136, r = 18, h = 
     return { s, cx, cy: cy + 1.5, sy: SY, o: { cx, cy: cy + 1.5, sy: SY } };
 }
 // 浅い鍋（パエリア鍋・フライパン）: 鋼の色。取っ手 2つ（handles: 'loop' = 両側の輪／'long' = 右に長い柄）
-export function pan(p, { cx = 100, cy = 100, rx = 84, h = 13, outer = '#9ea3aa', lip = '#b4b9bf', inner = '#8a9097', handles = 'loop', handleC = '#d2402c' } = {}){
+export function pan(p, { cx = 100, cy = 100, rx = 84, h = 13, outer = '#9ea3aa', lip = '#b4b9bf', inner = '#8a9097', handles = 'loop', handleC = '#d2402c', handleLen = 30, handleRise = 12 } = {}){
     const ry = rx * SY, irx = rx - 3.5, iry = irx * SY, mouth = eD(cx, cy + .5, irx, iry);
     let s = ground(p, cx, cy + h + ry * .6, rx * .9);
     const loop = side => { const x = cx + side * (rx - 1); return `<path d="M${f(x)},${f(cy - 4)} q${side * 17},-2 ${side * 17},9 q0,10 ${-side * 17},8" stroke="${dk(handleC, .4)}" stroke-width="5.6" fill="none" stroke-linecap="round"/><path d="M${f(x)},${f(cy - 4)} q${side * 17},-2 ${side * 17},9 q0,10 ${-side * 17},8" stroke="${side < 0 ? handleC : dk(handleC, .15)}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`; };
     if (handles === 'loop') s += loop(-1) + loop(1);
-    if (handles === 'long') s += `<path d="M${f(cx + rx - 4)},${f(cy + 2)} L${f(cx + rx + 30)},${f(cy - 10)}" stroke="#5a4636" stroke-width="7" stroke-linecap="round"/><path d="M${f(cx + rx - 4)},${f(cy + 1)} L${f(cx + rx + 30)},${f(cy - 11)}" stroke="#8a6a50" stroke-width="3.6" stroke-linecap="round"/>`;
+    if (handles === 'long') s += `<path d="M${f(cx + rx - 4)},${f(cy + 2)} L${f(cx + rx + handleLen)},${f(cy - handleRise)}" stroke="#5a4636" stroke-width="7" stroke-linecap="round"/><path d="M${f(cx + rx - 4)},${f(cy + 1)} L${f(cx + rx + handleLen)},${f(cy - handleRise - 1)}" stroke="#8a6a50" stroke-width="3.6" stroke-linecap="round"/>`;
     s += `<path d="M${f(cx - rx)},${f(cy)} L${f(cx - rx + 4)},${f(cy + h)} A${f(rx - 4)},${f((rx - 4) * SY)} 0 0 0 ${f(cx + rx - 4)},${f(cy + h)} L${f(cx + rx)},${f(cy)}Z" fill="${lg(p, [[0, lt(outer, .3)], [.35, outer], [1, dk(outer, .4)]])}" stroke="${dk(outer, .45)}" stroke-width=".7"/>`;
     s += `<path d="${eD(cx, cy, rx, ry)}" fill="${lip}" stroke="${dk(outer, .4)}" stroke-width=".7"/>` + `<path d="${mouth}" fill="${lg(p, [[0, dk(inner, .25)], [1, lt(inner, .15)]])}"/>` + rimLine(cx, cy, rx, 'thin');
     return { s, cx, cy, rx, ry, irx, iry, mouth, inside: clip(p, mouth),
