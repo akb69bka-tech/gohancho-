@@ -94,14 +94,16 @@ export const kobachi = (p, o = {}) => vessel(p, { cy: 84, rx: 92, h: 44, fx: 54,
 export const shiroBowl = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#f2eee4', line: 'white', gloss: .6, ...o });   // 白い鉢（洋のスープなど）
 
 // 平皿（白・藍の線）。中身は見込み（well）の上に置く。返り値の o は面の中心
-export function plate(p, { cx = 100, cy = 98, rx = 92, h = 22, well = .7, base = '#fbfaf6', line = 'white' } = {}){
+// 小皿（副菜の炒め物・漬物）は kozara: 色のある釉で藍の線なし。edge で口に錆の細い線
+export const kozara = (p, { base = '#efe6d2', edge = '#9a6a3a', ...o } = {}) => plate(p, { base, line: 'none', edge, ...o });
+export function plate(p, { cx = 100, cy = 98, rx = 92, h = 22, well = .7, base = '#fbfaf6', line = 'white', edge = null } = {}){
     const SY = SYF;
     const ry = rx * SY, fx = rx * .62, fy = fx * SY, by = cy + h, w = rx * well;
     const side = `M${f(cx - rx)},${f(cy)} C${f(cx - rx)},${f(cy + h)} ${f(cx - fx - 12)},${f(by + fy * .5)} ${f(cx - fx)},${f(by + fy * .55)} L${f(cx + fx)},${f(by + fy * .55)} C${f(cx + fx + 12)},${f(by + fy * .5)} ${f(cx + rx)},${f(cy + h)} ${f(cx + rx)},${f(cy)}Z`;
     const s = ground(p, cx, by + fy * .45, rx * .78, { k: SY }) +
         `<path d="${side}" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .22)]])}" stroke="${dk(base, .28)}" stroke-width=".6"/>` +
         `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .05)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
-        rimLine(cx, cy, rx - 2.2, line, SY) +
+        rimLine(cx, cy, rx - 2.2, line, SY) + edgeLine(cx, cy, rx - 2, (rx - 2) * SY, edge, 1.6) +
         `<path d="${eD(cx, cy + 2, w, w * SY)}" fill="${lg(p, [[0, dk(base, .08)], [.35, base], [1, lt(base, .3)]], 0, 0, 0, 1)}"/>` +
         `<path d="M${f(cx - w)},${f(cy + 2)} A${f(w)},${f(w * SY)} 0 0 1 ${f(cx + w)},${f(cy + 2)}" stroke="${dk(base, .15)}" stroke-width="1.6" fill="none" opacity=".8"/>` +
         `<path d="M${f(cx - rx * .9)},${f(cy - ry * .4)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>`;
@@ -151,15 +153,64 @@ export function donabe(p, { cx = 100, cy = 80, rx = 92, h = 54, stone = false, .
     return { ...v, s: ear(-1) + ear(1) + v.s };
 }
 
+// =========================================================
+// 器の決まり（docs/illustration_3q.md「器の決まり」）で足した器。新しい器に藍は使わない
+// =========================================================
+// 口の上面の細い線（藍以外）: 金・朱・錆など
+const edgeLine = (cx, cy, rx, ry, c, w = 1.2) => c ? `<path d="${eD(cx, cy, rx, ry)}" fill="none" stroke="${c}" stroke-width="${w}"/>` : '';
+// 浅めの小鉢（和え物・おひたし・酢の物・サラダ・きんぴら・ひじき・漬物）: 背の低い胴に、中身を口より高く山に盛る。
+// 釉の色は outer（外）・inner（見込み）・lip（口）。edge で口に錆・朱の細い線
+export function asabachi(p, { cx = 100, cy = 82, rx = 92, h = 40, fx = 47, ft = 6, outer = '#e4dccb', inner = '#f3eee2', lip = null, edge = null, ...o } = {}){
+    const v = vessel(p, { cx, cy, rx, h, fx, ft, t: 4, outer, lip: lip || lt(outer, .2), inner, line: 'none', belly: .42, gloss: .45, ...o });
+    return { ...v, s: v.s + edgeLine(cx, cy, rx - 1.2, (rx - 1.2) * SY, edge) };
+}
+// 洋の深皿（スープ皿・シチュー皿）: 広い縁（リム）と浅い見込み。平たい器なので縦は SYF。
+// 返り値は鉢と同じ形（汁の面 surface と soup() がそのまま使える。sy に SYF が入る）。line は縁の細い線の色（金・朱。藍は使わない）
+export function fukazara(p, { cx = 100, cy = 98, rx = 92, well = .7, h = 16, dip = 5, base = '#fbfaf6', line = '#c8a050' } = {}){
+    const sy = SYF, ry = rx * sy, wr = rx * well, wry = wr * sy, wy = cy + dip, fx = rx * .6, fy = fx * sy, by = cy + h;
+    const side = `M${f(cx - rx)},${f(cy)} C${f(cx - rx)},${f(cy + h)} ${f(cx - fx - 12)},${f(by + fy * .5)} ${f(cx - fx)},${f(by + fy * .55)} L${f(cx + fx)},${f(by + fy * .55)} C${f(cx + fx + 12)},${f(by + fy * .5)} ${f(cx + rx)},${f(cy + h)} ${f(cx + rx)},${f(cy)}Z`;
+    const mouth = eD(cx, wy, wr, wry);
+    let s = ground(p, cx, by + fy * .45, rx * .78, { k: sy }) +
+        `<path d="${side}" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .24)]])}" stroke="${dk(base, .28)}" stroke-width=".6"/>` +
+        // 縁（リム）: 外が明るく、見込みへ下る面
+        `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .06)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
+        edgeLine(cx, cy, rx - 4, ry - 4 * sy, line, 1.4) +
+        // 見込みへの段（左上が陰、右下に光）
+        `<path d="${eD(cx, wy - 1.5, wr + 5, wry + 5 * sy)}" fill="${lg(p, [[0, dk(base, .16)], [.5, dk(base, .05)], [1, lt(base, .2)]], 0, 0, .4, 1)}"/>` +
+        `<path d="${mouth}" fill="${lg(p, [[0, dk(base, .2)], [.45, dk(base, .06)], [1, lt(base, .15)]])}"/>` +
+        `<g ${clip(p, mouth)}><path d="${eD(cx - 6, wy - 4, wr + 2, wry + 2)}" fill="none" stroke="${SHADE}" stroke-width="8" opacity=".14" ${blur(p, 2.5)}/></g>`;
+    const aboveD = `M${f(cx - wr)},${f(wy)} A${f(wr)},${f(wry)} 0 0 0 ${f(cx + wr)},${f(wy)} L200,${f(wy)} L200,0 L0,0 L0,${f(wy)}Z`;
+    return { s, cx, cy: wy, rx, ry, irx: wr, iry: wry, sy, mouth, inside: clip(p, mouth), above: clip(p, aboveD), o: { cx, cy: wy, sy },
+        shine: (op = .6) => `<path d="M${f(cx - rx * .9)},${f(cy - ry * .4)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity="${op}"/>` };
+}
+// 洋のスープカップ（両手の白いカップと受け皿）: ポタージュ・コーンスープ・コンソメ。返り値はカップ（鉢と同じ形）
+export function soupCup(p, { cx = 100, cy = 60, rx = 66, h = 46, base = '#fbf9f3', line = '#c8a050', saucer = true } = {}){
+    let s = '';
+    if (saucer){
+        const sy0 = cy + h + 26, srx = 92, sry = srx * SY;
+        s += ground(p, cx, sy0 + 9, srx * .8) +
+            `<path d="M${f(cx - srx)},${f(sy0)} L${f(cx - srx + 8)},${f(sy0 + 7)} A${f(srx - 8)},${f((srx - 8) * SY)} 0 0 0 ${f(cx + srx - 8)},${f(sy0 + 7)} L${f(cx + srx)},${f(sy0)}Z" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .24)]])}" stroke="${dk(base, .28)}" stroke-width=".6"/>` +
+            `<path d="${eD(cx, sy0, srx, sry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .06)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
+            edgeLine(cx, sy0, srx - 4, (srx - 4) * SY, line, 1.2) +
+            `<path d="${eD(cx, sy0 + 2, srx * .58, srx * .58 * SY)}" fill="${lg(p, [[0, dk(base, .1)], [.4, base], [1, lt(base, .25)]], 0, 0, 0, 1)}"/>`;
+    }
+    // 取っ手（両側の輪）
+    const handle = side => { const x = cx + side * (rx - 4), y = cy + 12; const d = `M${f(x)},${f(y)} q${side * 22},-4 ${side * 20},12 q-2,12 ${-side * 18},12`; return `<path d="${d}" stroke="${dk(base, .3)}" stroke-width="7.4" fill="none" stroke-linecap="round"/><path d="${d}" stroke="${side < 0 ? lt(base, .3) : dk(base, .08)}" stroke-width="5" fill="none" stroke-linecap="round"/>`; };
+    const v = vessel(p, { cx, cy, rx, h, fx: 30, ft: 4, t: 3, outer: base, lip: lt(base, .3), inner: dk(base, .03), line: 'none', belly: .78, gloss: .6 });
+    // vessel の接地の影は受け皿の上に落ちる（受け皿があるときは薄く）
+    return { ...v, s: s + handle(-1) + handle(1) + v.s + edgeLine(cx, cy, rx - 1.6, (rx - 1.6) * SY, line, 1.4) };
+}
+
 // 汁・煮汁の面（江口の描き方）: 口より drop 下の楕円。中心が明るく縁が濃い面、縁の陰、左上の照り。
 // 返り値 s は器の口で切ってある。具を汁に沈めるときは inside（面の形の clip）を使う
+// 平たい器（fukazara）は V.sy（SYF）で面をつぶす
 export function surface(p, V, { drop = 10, rx = null, c, glow = .25, rimShade = .26 }){
     rx = rx ?? V.irx - drop * .45;
-    const cy = V.cy + drop, ry = rx * SY, sd = eD(V.cx, cy, rx, ry);
+    const sy = V.sy ?? SY, cy = V.cy + drop, ry = rx * sy, sd = eD(V.cx, cy, rx, ry);
     const s = `<g ${V.inside}><path d="${sd}" fill="${rg(p, [[0, lt(c, glow)], [.6, c], [1, dk(c, .22)]], .42, .36, .62)}"/>
         <g ${clip(p, sd)}><path fill-rule="evenodd" d="M0,0 H200 V200 H0Z ${eD(V.cx + 7, cy + 4, rx * .98, ry * .96)}" fill="${SHADE}" opacity="${rimShade}" ${blur(p, 3)}/>
         <path d="M${f(V.cx - rx * .9)},${f(cy - ry * .2)} A${f(rx * .95)},${f(ry * .9)} 0 0 1 ${f(V.cx + rx * .5)},${f(cy - ry * .84)}" stroke="${lt(c, .55)}" stroke-width="1.6" fill="none" opacity=".65"/></g></g>`;
-    return { s, cx: V.cx, cy, rx, ry, o: { cx: V.cx, cy }, inside: clip(p, sd) };
+    return { s, cx: V.cx, cy, rx, ry, o: V.sy ? { cx: V.cx, cy, sy } : { cx: V.cx, cy }, inside: clip(p, sd) };
 }
 // 奥を淡く・手前を濃く（空気の層）: 中身を描いたあとに重ねる
 export const depthVeil = (p, V, top, bottom) => `<rect x="0" y="${f(top)}" width="200" height="${f(bottom - top)}" fill="${lg(p, [[0, '#fff8ec', .2], [.45, '#fff8ec', 0], [.75, SHADE, 0], [1, SHADE, .1]], 0, 0, 0, 1)}" ${V.inside}/>`;
