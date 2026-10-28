@@ -1955,7 +1955,7 @@ const FLAVORS = {
         step:'醤油・味噌などの調味料をいつもの半量にし、トマト缶を加えて水分を飛ばすように煮詰める。油はオリーブオイルに替える。', need:/醤油|味噌/, step2:'トマト缶を加えて水分を飛ばすように煮詰める。油はオリーブオイルに替える。', garnish:'粉チーズと乾燥バジル'},
     cn:{label:'中華風', prefix:'中華風', skipGenre:['中'], methods:['煮','炒','焼','揚','汁'],
         add:['オイスターソース 大さじ1','鶏ガラスープの素 小さじ1','ごま油 小さじ1'],
-        step:'味つけの醤油・みりんをオイスターソースと鶏ガラスープの素に置きかえ、仕上げにごま油で香りを立たせる。', need:/醤油|みりん/, step2:'味つけにオイスターソースと鶏ガラスープの素を使い、仕上げにごま油で香りを立たせる。', garnish:'刻んだ長ねぎ'},
+        step:'味つけの醤油・みりんをオイスターソースと鶏ガラスープの素に置きかえる。仕上げにごま油で香りを立たせる。', need:/醤油|みりん/, step2:'味つけにオイスターソースと鶏ガラスープの素を使う。仕上げにごま油で香りを立たせる。', garnish:'刻んだ長ねぎ'},
     et:{label:'エスニック風', prefix:'エスニック風', skipGenre:['エスニック'], methods:['炒','焼','揚','和え','汁'],
         add:['ナンプラー 大さじ1','スイートチリソース 大さじ1','レモン汁 大さじ1'],
         step:'醤油をナンプラーに置きかえ、スイートチリソースで甘みを足す。火を止めてからレモン汁をかける。', need:/醤油/, step2:'ナンプラーで味をつけ、スイートチリソースで甘みを足す。火を止めてからレモン汁をかける。', garnish:'パクチー（苦手なら大葉）'},
@@ -3085,6 +3085,38 @@ function formLabel(k){
 }
 function swapOf(k){ if (!k) return null; const [f,i] = k.split(':'); return (SWAPS[f]||[])[+i] || null; }
 function twistId(baseId, fl, fo, sw){ return ['a', baseId, fl||'', fo||'', sw||''].join('~'); }
+// 味の方向を変える手順を、元の手順の正しい場所に入れる（以前はいつも「最後から2番目」に入れていて、「はじめに」が途中に来る・「仕上げ」のあとに煮る・
+// 置きかえた調味料をそのあとの手順でまた加える、という順番の狂いが出ていた）
+//  - 「はじめに…」: 火を使う最初の手順の前
+//  - 元の調味料を置きかえる・減らす文: その調味料を加える手順そのものに書き添える（別の手順にすると、次の手順でもとの調味料を加えてしまう）
+//  - 置きかえない文（カレー粉を加える など）: 最後に味をつける手順のすぐあと
+//  - 「最後に／火を止めてから／仕上げに…」: 火を使う手順がすべて終わったあと（盛りつけの前）
+//  - 「油は…に替える」: 油を使う最初の手順（なければ火を使う最初の手順）に書き添える
+const TW_HEAT = /熱し|火にかけ|フライパン|鍋|焼(?:く|き|い)|炒め|揚げ|煮(?:る|て|込|立|詰)|ゆで|茹で|蒸(?:す|し)|レンジ|トースター|オーブン|炊(?:く|い)/;
+const TW_SEAS = /醤油|しょうゆ|砂糖|みりん|味噌|酒|塩|こしょう|調味料|たれ|タレ|煮汁|合わせ|味をつけ|味つけ|味をととの|ソース|ケチャップ|コンソメ|だし|ポン酢|めんつゆ/;
+const TW_SERVE = /盛(?:る|り|って)|器に|皿に|散らす|添える/;
+function twistFlavorSteps(steps, F, fl, base){
+    // 「醤油・砂糖はいつもの半量に」のように元の調味料に触れる文は、元の料理がその調味料を使っているときだけ。使っていなければ、触れない版にする
+    const uses = (base.seas || '') + ' ' + base.items.map(i => i.name).join(' ');
+    let fs = F.need && F.step2 && !F.need.test(uses) ? F.step2 : F.step;
+    const replacing = fs === F.step && !!F.need && F.need.test(uses);
+    fs = fs.replace(/(?:醤油|砂糖|みりん|味噌)(?:・(?:醤油|砂糖|みりん|味噌))+/, m => m.split('・').filter(w => uses.includes(w)).join('・') || m);   // 「醤油・みりん」のうち、元の料理にある方だけ言う
+    const sents = fs.split(/(?<=。)/).map(x => x.trim()).filter(Boolean);
+    const first = sents.filter(x => /^はじめに/.test(x)), oil = sents.filter(x => /^油は/.test(x)), fin = sents.filter(x => /^(?:最後に|火を止めてから|仕上げに)/.test(x));
+    const main = sents.filter(x => !first.includes(x) && !oil.includes(x) && !fin.includes(x)).join('');
+    const note = (i, txt) => { steps[i] = {t: steps[i].t + `（${F.label}: ${txt.replace(/。$/, '')}）`, add: true}; };
+    // 盛りつけだけの手順（火を使わない「器に盛る」など）が最後に続くところの手前まで
+    const cookEnd = () => { let e = steps.length; while (e > 1 && TW_SERVE.test(steps[e - 1].t) && !TW_HEAT.test(steps[e - 1].t)) e--; return e; };
+    if (main){
+        const e = cookEnd(), at = replacing ? steps.findIndex(x => F.need.test(x.t)) : -1;   // 調味料を加える手順（盛りつけの手順で味をととのえる料理もある）
+        if (at >= 0){ note(at, main); steps.forEach((x, i) => { if (i > at && !x.add && F.need.test(x.t)) note(i, `味つけは手順${at + 1}のとおりに変える`); }); }   // あとの手順でまた同じ調味料を加えるときも、変えたことが分かるように
+        else if (replacing){ const k = steps.findIndex((x, i) => i < e && TW_SEAS.test(x.t)); steps.splice(k >= 0 ? k : e, 0, {t: main, add: true}); }   // 置きかえる文は、味をつける最初の手順の前に（置きかえを先に知っておく）
+        else { let k = -1; steps.forEach((x, i) => { if (i < e && TW_SEAS.test(x.t)) k = i; }); steps.splice(k >= 0 ? k + 1 : e, 0, {t: main, add: true}); }
+    }
+    if (fin.length) steps.splice(cookEnd(), 0, {t: fin.join(''), add: true});
+    if (oil.length){ let i = steps.findIndex(x => /油/.test(x.t) && !x.add); if (i < 0) i = steps.findIndex(x => TW_HEAT.test(x.t)); if (i >= 0) note(i, oil.join('')); else steps.unshift({t: oil.join(''), add: true}); }
+    if (first.length){ const i = steps.findIndex(x => TW_HEAT.test(x.t)); steps.splice(Math.max(0, i), 0, {t: first.join(''), add: true}); }
+}
 function buildTwist(id){
     const [, baseId, fl, fo, sw] = String(id).split('~');
     const base = RECIPES.find(r => r.id === baseId); if (!base) return null;
@@ -3095,15 +3127,12 @@ function buildTwist(id){
         if (W && i.key === base.protein) return Object.assign({}, i, {name:W.word, key:keyOf(W.word), label:labelOf(W.word), changed:true});
         return i;
     });
-    const addItems = [...(F ? F.add : []), ...(M ? M.add : [])].map(s => Object.assign(parseIng(s), {opt:false, added:true}));
+    // 足す食材: 「鶏ガラスープの素」は鶏肉ではない（調味料。食材の表では鶏肉に寄せられてしまうので、名前のまま持つ）。
+    // 元の料理に同じ食材があるもの（鍋にするときの豆腐など）は、二重に並べない（温泉卵と卵・粉チーズとピザ用チーズのように別の品は残す）
+    const addItems = [...(F ? F.add : []), ...(M ? M.add : [])].map(s => { const x = Object.assign(parseIng(s), {opt:false, added:true}); return /スープの素|スープのもと/.test(x.name) ? Object.assign(x, {key: x.name, label: x.name}) : x; })
+        .filter(x => !items.some(y => !y.opt && y.key === x.key && x.name !== '温泉卵' && (String(y.name).endsWith(x.name) || String(x.name).endsWith(y.name))));   // 「木綿豆腐」があれば「豆腐」、「キャベツ」があれば「千切りキャベツ」は足さない（温泉卵は別に買う品なので残す）
     const steps = base.steps.map(t => { const x = repl(t); return x !== t ? {t:x, add:true} : {t:x}; });   // 主役の食材を言いかえた手順は、変えたところ（黄色）にする
-    if (F){
-        // 「醤油・砂糖はいつもの半量に」のように元の調味料に触れる手順は、元の料理がその調味料を使っているときだけ。使っていなければ、触れない版にする
-        const uses = (base.seas || '') + ' ' + base.items.map(i => i.name).join(' ');
-        let fs = F.need && F.step2 && !F.need.test(uses) ? F.step2 : F.step;
-        if (fl === 'kr') fs = fs.replace('醤油・砂糖', ['醤油', '砂糖'].filter(w => uses.includes(w)).join('・'));   // 元の料理にある方だけ言う
-        steps.splice(Math.max(steps.length-1, 1), 0, {t: fs, add:true});
-    }
+    if (F) twistFlavorSteps(steps, F, fl, base);
     if (M) M.steps.forEach(t => steps.push({t, add:true}));
     if (F && F.garnish) steps.push({t:`仕上げに${F.garnish}を添える。`, add:true});
     let name = base.name;
@@ -4184,7 +4213,7 @@ function shoppingHints(have, limit=3){
         const m = matchRecipe(swappedRecipe(r), have);   // 苦手な食材は買い足す候補にしない（置き換えた食材で数える）
         if (m.miss.length === 1 && (m.got.length + m.subs.length) >= 1){
             const k = m.miss[0].key, lbl = m.miss[0].label;
-            (gain[k] = gain[k] || {label:lbl, names:[]}).names.push(r.name);
+            (gain[k] = gain[k] || {label:lbl, names:[]}).names.push(r.name + swapShare(r));   // 置き換えて作る料理は「（豚肉で作る）」と添える（元の名前だけだと、元の食材で作ると読める）
         }
     });
     return Object.entries(gain).map(([k,v]) => ({key:k, label:v.label, n:v.names.length, names:v.names.slice(0,3)}))
@@ -8032,7 +8061,9 @@ const SEARCH_SYN = Object.fromEntries([['どんぶり','丼'], ['ドンブリ','
 const SEARCH_CAT = Object.fromEntries([['さかな',['魚','魚介']], ['お魚',['魚','魚介']], ['魚',['魚','魚介']], ['魚料理',['魚','魚介']], ['焼き魚',['魚']], ['お肉',['豚','鶏','牛','ひき肉','加工肉']], ['肉',['豚','鶏','牛','ひき肉','加工肉']], ['肉料理',['豚','鶏','牛','ひき肉','加工肉']], ['豚肉料理',['豚']], ['鶏肉料理',['鶏']]].map(([k, v]) => [norm(k), v]));
 const SEARCH_STOP = new Set(['and','the','with','for','of','n']);
 const searchJa = () => !PACK && LANG === 'ja';
-function searchIngText(q){ return searchJa() ? searchTerms(q).filter(x => { const n = norm(x); return !SEARCH_SYN[n] && !(SEARCH_CAT[n] && n.length >= 2); }).join('、') : q; }
+// 読みが変わる言葉（おかゆ・かゆ・がゆ・粥）は、どれで入れても同じ料理に当てる（「おかゆ」で2品、「がゆ」で16品、「粥」で0品、だった）
+const SEARCH_ALT = Object.fromEntries([['おかゆ', ['かゆ', 'がゆ']], ['お粥', ['かゆ', 'がゆ']], ['粥', ['かゆ', 'がゆ']], ['かゆ', ['がゆ']], ['がゆ', ['かゆ']]].map(([k, v]) => [norm(k), v.map(norm)]));
+function searchIngText(q){ return searchJa() ? searchTerms(q).filter(x => { const n = norm(x); return !SEARCH_SYN[n] && !SEARCH_ALT[n] && !(SEARCH_CAT[n] && n.length >= 2); }).join('、') : q; }
 function searchRecipes(q, withHidden){
     const raw = searchTerms(q);
     if (!raw.length) return {terms:[], hits:[]};
@@ -8041,7 +8072,7 @@ function searchRecipes(q, withHidden){
     const terms = raw.map(norm).filter(Boolean);
     const score = r => {
         let sc = 0;
-        terms.forEach(tm => { if (nameHit(r, tm) || (ja && SEARCH_SYN[tm] && nameHit(r, SEARCH_SYN[tm]))) sc += 3; });
+        terms.forEach(tm => { if (nameHit(r, tm) || (ja && SEARCH_SYN[tm] && nameHit(r, SEARCH_SYN[tm])) || (ja && (SEARCH_ALT[tm] || []).some(a => nameHit(r, a)))) sc += 3; });
         // 「chicken soup」のように語を並べたときは、語順どおりの名前でなくても、すべての語が名前や材料に入っていれば当たり（Chicken noodle soup）
         if (!sc) raw.forEach(rw => { if (!isLatinText(rw) || !/\s/.test(rw)) return; const ws = rw.toLowerCase().split(/\s+/).filter(w => w.length >= 3 && !SEARCH_STOP.has(w)); const hay = searchIdx(r).hay; if (ws.length >= 2 && ws.every(w => hay.includes(norm(w)))) sc += 2; });
         if (ja) terms.forEach(tm => { if (SEARCH_CAT[tm] && SEARCH_CAT[tm].includes(r.family) && (tm !== norm('焼き魚') || r.method === '焼')) sc += 2; });
@@ -8061,7 +8092,7 @@ function searchResultsHtml(q){
     const {terms, hits, hidden} = searchRecipes(q, true);
     // 料理名（肉じゃが・ハンバーグ・麻婆）だけを入れたときは、それを食材として冷蔵庫に入れる案は出さない
     const ings = extractIngredients(searchIngText(q)).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)))
-        .filter(x => canonOf(x) || !RECIPES.some(r => nameHit(r, norm(x))));
+        .filter(x => canonOf(x) || fridgeKnownKeys().has(keyOf(x)));   // 食材として知っている言葉だけ（「離乳食」「作り置き」のような料理でない言葉は、冷蔵庫に入れる案を出さない）
     const addBtn = ings.length ? `<div class="row"><button class="btn sm" data-act="search-to-fridge" data-v="${esc(ings.join('、'))}">${esc(t('{list} を冷蔵庫の材料に追加', {list:joinNames(ings)}))}</button></div>` : '';
     if (!hits.length){
         const sug = [...new Set(terms.flatMap(x => ingSuggest(x)))].filter(c => !terms.some(x => norm(c) === norm(x))).slice(0, 3);   // 打ちまちがいに、近い名前を添える
@@ -8097,7 +8128,7 @@ function matchRow(m, showSt){
         <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
         <div class="info">
             <div class="head" data-act="open" data-id="${esc(r.id)}">
-                <span class="name">${esc(r.name)}</span>
+                <span class="name">${esc(r.name + swapShare(r))}</span>
                 ${showSt || m.miss.length ? `<span class="tag ${st[0]}">${esc(st[1])}</span>` : ''}
             </div>
             <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
