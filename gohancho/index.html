@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
-<meta name="theme-color" content="#22406b">
+<meta name="theme-color" content="#fbf5ec">
 <script>window.ASSET_V='v19';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
@@ -120,8 +120,8 @@ window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
     --accent-press:#9c4418;    /* 主ボタンを押したとき */
     --accent-text:#a84a1b;     /* 柿色の文字（淡い地の上でも 4.5:1 以上） */
     --accent-line:color-mix(in srgb,var(--ink) 22%,var(--surface));   /* 副ボタンの枠（こげ茶を薄く） */
-    --sel:var(--ink);--sel-ink:var(--surface);   /* 選んだチップの地と文字（柿色は主ボタンだけにするので、こげ茶で示す） */
-    --leaf:#3f6e24;--leaf-soft:#e3efd6;          /* 若草: 時間・できた */
+    --leaf:#3f6e24;--leaf-soft:#e3efd6;--leaf-ink:#ffffff;   /* 若草: 選んでいる・今日・時間・できた */
+    --sel:var(--leaf);--sel-ink:var(--leaf-ink);   /* 選んだチップの地と文字（青は使わない。柿色は主ボタンだけ） */
     --stage:#fde7d3;--stage-2:#e6f0dc;--stage-3:#f8eccf;   /* 絵の台: 主菜=桃・副菜=若草・汁もの/ご飯=卵色 */
     /* 余白（4/8/12/16/24/32） */
     --s4:4px;--s8:8px;--s12:12px;--s16:16px;--s24:24px;--s32:32px;
@@ -146,7 +146,7 @@ window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
     --yolk-ink:#5b3f00;
     --danger:#b3261e;          /* 注意・アレルギー専用（柿色とは分ける） */
     --danger-soft:#fbe7e5;
-    --sun:#b3261e; --sat:#2d5b9a;
+    --sun:#b3261e; --sat:#3f6e24;   /* 日曜=赤・土曜=若草（青は使わない） */
     /* 器と膳（イラスト。どちらのテーマでも同じ色） */
     --tray:#2b211d; --tray-2:#3a2b25; --tray-edge:#7d2a1f; --tray-ink:#f5eee3; --tray-muted:#c9b9a6;
     --porcelain:#fbfaf6; --rim:#2c4c7c; --lacquer:#8f2b1f; --lacquer-dark:#1c1210; --celadon:#a4c3b2; --celadon-dark:#7e9f8d; --rice:#f6f3ea;
@@ -164,8 +164,8 @@ html:not([lang="ja"]){--mincho:ui-serif,Georgia,'Noto Serif','Times New Roman',s
     :root:not([data-theme="light"]){
         --bg:#1d1814;--surface:#2a231d;--surface-2:#352c24;--sheet-bg:#2a231d;--sheet-edge:#43372d;--ink:#f6ece0;--muted:#c2ae9b;--line:#43372d;--line-soft:#382e26;
         --accent:#f08a5c;--accent-ink:#2a1508;--accent-soft:#4a2c1d;--accent-press:#f4a37e;--accent-text:#f08a5c;
-        --leaf:#a6cf86;--leaf-soft:#2f3b26;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
-        --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#9dbbe6;
+        --leaf:#a6cf86;--leaf-soft:#2f3b26;--leaf-ink:#1d1814;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
+        --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#a6cf86;
         --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
         --shadow-1:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);--shadow-2:0 4px 8px rgba(0,0,0,.35),0 18px 40px rgba(0,0,0,.45);--shadow-accent:0 6px 16px rgba(0,0,0,.35);--shadow:var(--shadow-1);
         color-scheme:dark;
@@ -174,8 +174,8 @@ html:not([lang="ja"]){--mincho:ui-serif,Georgia,'Noto Serif','Times New Roman',s
 :root[data-theme="dark"]{
     --bg:#1d1814;--surface:#2a231d;--surface-2:#352c24;--sheet-bg:#2a231d;--sheet-edge:#43372d;--ink:#f6ece0;--muted:#c2ae9b;--line:#43372d;--line-soft:#382e26;
     --accent:#f08a5c;--accent-ink:#2a1508;--accent-soft:#4a2c1d;--accent-press:#f4a37e;--accent-text:#f08a5c;
-    --leaf:#a6cf86;--leaf-soft:#2f3b26;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
-    --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#9dbbe6;
+    --leaf:#a6cf86;--leaf-soft:#2f3b26;--leaf-ink:#1d1814;--stage:#4a3427;--stage-2:#30392a;--stage-3:#423724;
+    --yolk:#e9b53c;--yolk-soft:#33290f;--yolk-ink:#f6e0a6;--danger:#f2b8b5;--danger-soft:#43211f;--sun:#f2b8b5;--sat:#a6cf86;
     --tray:#231a17;--tray-2:#30241f;--seal:#e8806f;
     --shadow-1:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.35);--shadow-2:0 4px 8px rgba(0,0,0,.35),0 18px 40px rgba(0,0,0,.45);--shadow-accent:0 6px 16px rgba(0,0,0,.35);--shadow:var(--shadow-1);
     color-scheme:dark;
@@ -189,8 +189,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-siz
 h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;text-wrap:balance;line-height:var(--lh-tight);letter-spacing:var(--ls-head);font-feature-settings:"palt"}   /* 名前は明朝・太さ600（かなを詰めて字間をあける） */
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-a{color:var(--accent-text)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:1px}   /* リンクはこげ茶＋下線 */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}   /* フォーカスの輪は柿色 */
 ::selection{background:var(--accent-soft);color:var(--ink)}
 
 /* ヘッダー: 品書きの題字＋落款 */
@@ -388,17 +388,17 @@ details.box[open]>summary::after{content:'－'}
 details.box .inner{padding-bottom:14px;display:flex;flex-direction:column;gap:12px}
 
 /* タブ */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--line-soft);box-shadow:0 -4px 20px rgba(26,34,51,.05);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));display:flex;justify-content:center}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--line-soft);box-shadow:0 -4px 20px rgba(122,74,34,.06);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));display:flex;justify-content:center}
 nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;max-width:520px}
 @media (min-width:700px){nav.tabs .in{max-width:680px}}   /* iPad など広い画面では、本文の幅にそろえる */
 nav.tabs button{border:0;background:transparent;border-radius:12px;padding:.35rem 0;font-size:min(calc(.75rem / var(--ts,1)), 3.1vw);min-width:0;overflow-wrap:break-word;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px}
 nav.tabs svg{width:24px;height:24px;padding:3px 12px;box-sizing:content-box;border-radius:var(--r-pill);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:background var(--dur-2) var(--ease)}   /* 選んだタブは、絵の後ろに藍の淡い丸（余白は選んでいないタブも同じ。切り替えで動かない） */
-nav.tabs button[aria-selected="true"]{color:var(--accent-text);font-weight:700}
-nav.tabs button[aria-selected="true"] svg{stroke-width:2;background:var(--accent-soft)}
+nav.tabs button[aria-selected="true"]{color:var(--leaf);font-weight:700}
+nav.tabs button[aria-selected="true"] svg{stroke-width:2;background:var(--leaf-soft)}   /* 選んでいるタブは若草 */
 
 /* 詳細シート */
 .sheet [tabindex="-1"]:focus{outline:none}
-.modal{position:fixed;inset:0;z-index:40;background:rgba(10,14,22,.55);display:flex;align-items:flex-end;justify-content:center;padding:0 env(safe-area-inset-right,0px) var(--kb,0px) env(safe-area-inset-left,0px)}   /* --kb: キーボードの高さ（下に隠れないよう、シートを持ち上げる） */
+.modal{position:fixed;inset:0;z-index:40;background:rgba(29,20,14,.55);display:flex;align-items:flex-end;justify-content:center;padding:0 env(safe-area-inset-right,0px) var(--kb,0px) env(safe-area-inset-left,0px)}   /* --kb: キーボードの高さ（下に隠れないよう、シートを持ち上げる） */
 .sheet{background:var(--sheet-bg);box-shadow:0 0 0 1px var(--sheet-edge),var(--shadow-2);width:100%;max-width:680px;max-height:94vh;max-height:min(94dvh,calc(var(--vvh,100vh) * .94));overflow-y:auto;overscroll-behavior:contain;border-radius:var(--r-xl) var(--r-xl) 0 0;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
 @media (min-width:760px){.modal{align-items:center}.sheet{border-radius:var(--r-xl);max-height:90vh;max-height:min(90dvh,calc(var(--vvh,100vh) * .9))}}
 /* 横向き（高さが低い）: 下のタブを細くして本文を広く。シートの絵も画面を埋めないよう低く */
@@ -510,7 +510,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .shuffle{flex:0 0 auto;border:0;background:none;color:var(--tray-ink);
     display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;padding:0;cursor:pointer;max-width:min(11rem,56vw);
     font:inherit;font-size:.75rem;font-weight:700;line-height:1.25;text-align:center;transition:transform .15s ease}
-.shuffle .sh-ic{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+.shuffle .sh-ic{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#3a2a1f;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
     box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08)}
 .shuffle svg{width:28px;height:28px;flex:0 0 auto}
 .shuffle span.sh-tx{display:block;min-height:2.5em;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
@@ -552,7 +552,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .country .nm{font-weight:700;font-size:.92rem;line-height:1.3;min-width:0;overflow-wrap:anywhere}
 .country .sub{font-size:.75rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
 @media (max-width:360px){.country{padding:10px 8px;column-gap:6px}.country .fl{font-size:1.3rem}.country .nm{font-size:.86rem;hyphens:auto}}
-.country.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.country.on{border-color:var(--leaf);box-shadow:0 0 0 2px var(--leaf-soft)}
 .v-staple{width:62%}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
@@ -581,7 +581,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .sheet-onboard h2,.sheet-paywall h2{font-size:1.4rem}
 .ob-dots{display:flex;gap:6px;justify-content:center}
 .ob-dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
-.ob-dots i.on{background:var(--accent);width:20px;border-radius:4px}
+.ob-dots i.on{background:var(--leaf);width:20px;border-radius:4px}
 .ob-hero{display:grid;place-items:center;padding:6px 0;background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%);border-radius:16px}
 .ob-hero .vessel{width:150px;margin:18px 0}
 .ob-tray{padding:14px 8px 12px;border-radius:16px;pointer-events:none}
@@ -755,7 +755,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-tab .thumb{width:44px;height:44px;margin-bottom:2px}
 .cook-tab .ct-slot{font-size:.75rem;color:var(--muted);letter-spacing:.08em}
 .cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語で、タブが画面の幅を超えて、画面全体が横に広がらないように */
-.cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.cook-tab[aria-selected="true"]{border-color:var(--leaf);box-shadow:inset 0 0 0 1px var(--leaf);background:var(--leaf-soft)}
 .cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
 .cook-card{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .cook-head{display:flex;gap:12px;align-items:center}
@@ -778,9 +778,9 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .steps li.resume{background:var(--accent-soft);border-radius:8px}
 .cook-steps li{cursor:pointer;border-radius:8px;transition:opacity .15s}
 .cook-steps li.done{opacity:.45;text-decoration:line-through}
-.cook-steps li.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
+.cook-steps li.now{background:var(--leaf-soft);box-shadow:inset 0 0 0 2px var(--leaf);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
 .cook-steps li .now-tag{display:none}
-.cook-steps li.now .now-tag{display:block;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:2px}
+.cook-steps li.now .now-tag{display:block;font-size:.75rem;font-weight:700;color:var(--leaf);letter-spacing:.02em;margin-bottom:2px}
 .cook-run{display:flex;flex-direction:column;gap:12px}   /* 「次の手順」は手順が見えているあいだだけ下に貼りつく */
 .cook-ctl{position:sticky;bottom:calc(var(--nav-h,84px) + 8px);z-index:4;display:flex;gap:8px}
 .cook-next{flex:2 1 0;min-width:0;min-height:56px;font-size:1.05rem;box-shadow:var(--shadow)}
@@ -846,9 +846,9 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cal-wd{font-size:.75rem;color:var(--muted);padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cal-d{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:44px;padding:2px 0;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer}
 .cal-d.today span{font-weight:800;text-decoration:underline}
-.cal-d.sel{background:var(--accent);color:var(--accent-ink)}
+.cal-d.sel{background:var(--leaf);color:var(--leaf-ink)}
 .cal-d i{width:6px;height:6px;border-radius:50%;background:transparent}
-.cal-d i.on{background:var(--accent)}.cal-d.sel i.on{background:var(--accent-ink)}
+.cal-d i.on{background:var(--leaf)}.cal-d.sel i.on{background:var(--leaf-ink)}
 .cal-day{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
 .cal-day .t{cursor:pointer;padding:4px 0}.cal-day .s{color:var(--muted);font-size:.8rem}
 .album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -916,7 +916,7 @@ html[lang="ja"] .steps li::before{content:counter(st,cjk-decimal)}
 /* カードの中の区切り線 */
 .divider{height:0;border:0;border-top:1px solid var(--line-soft);margin:var(--s4) 0}
 /* 選んだチップは少し浮かせる */
-.chip[aria-pressed="true"]{box-shadow:0 1px 4px rgba(58,42,31,.25)}
+.chip[aria-pressed="true"]{box-shadow:0 1px 4px color-mix(in srgb,var(--leaf) 35%,transparent)}
 </style>
 </head>
 <body>
@@ -5648,7 +5648,7 @@ function openNeeds(mid){
 const CARD_W = 1080, CARD_H = 1350;
 const CARD_SANS = "'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP','Noto Sans JP','Noto Sans Arabic','Noto Sans Thai','Noto Sans Devanagari','Noto Sans KR','Noto Sans SC','Noto Sans TC','Segoe UI','Helvetica Neue',Arial,system-ui,sans-serif";
 const CARD_SERIF = "'Hiragino Mincho ProN','Yu Mincho','Noto Serif CJK JP','Noto Serif JP','Noto Serif',serif";
-const CARD_C = {ink:'#1d2733', muted:'#66758a', accent:'#22406b', soft:'#dde6f2', line:'#d5dde8'};
+const CARD_C = {ink:'#3a2a1f', muted:'#756354', accent:'#b8521f', soft:'#fdece2', line:'#eadccb'};   // v3: 青は使わない（こげ茶・柿色・生成り）
 // kind: 'menu'（今日の案）/ 'cook'（決めた献立）/ 'week'（1週間の予定）→ 描くための材料
 function cardData(kind){
     if (kind === 'week'){
@@ -5698,7 +5698,7 @@ function cardWrap(ctx, text, maxW, maxLines){
 function cardRound(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h); }
 // 丸いお皿に絵を入れる（絵がなければ色のお皿に頭文字）
 function cardPlate(ctx, cx, cy, rad, img, r, name){
-    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.22)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12;
+    ctx.save(); ctx.shadowColor = 'rgba(122,74,34,.22)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12;
     ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, rad - 7, 0, Math.PI * 2); ctx.clip();
     if (img){
@@ -5712,7 +5712,7 @@ function cardPlate(ctx, cx, cy, rad, img, r, name){
         ctx.direction = 'ltr'; ctx.fillText(Array.from(name || '')[0] || '', cx, cy + rad * .04);
     }
     ctx.restore();
-    ctx.beginPath(); ctx.arc(cx, cy, rad - 3.5, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(34,64,107,.14)'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, rad - 3.5, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(122,74,34,.14)'; ctx.lineWidth = 3; ctx.stroke();
 }
 function cardChip(ctx, text, cx, cy, size){
     ctx.font = `600 ${size}px ${CARD_SANS}`; const w = Math.min(ctx.measureText(text).width + size * 1.4, 300), h = size * 1.75;
@@ -5731,7 +5731,7 @@ function cardBackdrop(ctx, rtl, big, sub){
     ctx.fillStyle = '#fff'; ctx.font = `700 76px ${CARD_SERIF}`;
     let ds = big, fs = 76; while (ctx.measureText(ds).width > W - 120 && fs > 40){ fs -= 4; ctx.font = `700 ${fs}px ${CARD_SERIF}`; }
     ctx.fillText(ds, W / 2, 128, W - 100);
-    ctx.fillStyle = '#cfdcf0'; ctx.font = `500 38px ${CARD_SANS}`; ctx.fillText(sub, W / 2, 196, W - 120);
+    ctx.fillStyle = '#fde7d3'; ctx.font = `500 38px ${CARD_SANS}`; ctx.fillText(sub, W / 2, 196, W - 120);
 }
 function cardSeal(ctx, rtl){
     const W = CARD_W;
@@ -5752,7 +5752,7 @@ async function needsCardCanvas(arg){
     const ctx = cv.getContext('2d'); ctx.direction = rtl ? 'rtl' : 'ltr';
     cardBackdrop(ctx, rtl, D.head, t('預けるときのメモ'));
     const px = 44, py = 292, pw = W - 88, ph = 836, inner = pw - 96, left = px + 48;
-    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
+    ctx.save(); ctx.shadowColor = 'rgba(122,74,34,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
     ctx.textBaseline = 'middle';
     // 注意（下）
     const note = t('このメモは、ご飯帖に登録した内容です。アレルギーや食べられないものは、調味料や加工品の原材料もふくめて、預かる方がご自身で必ず確かめてください。');
@@ -5824,7 +5824,7 @@ async function cardCanvas(kind, arg){
     cardBackdrop(ctx, rtl, jpDate(D.date), D.line);
     // 本体（白いパネル）
     const px = 44, py = 292, pw = W - 88, ph = 836;
-    ctx.save(); ctx.shadowColor = 'rgba(34,64,107,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
+    ctx.save(); ctx.shadowColor = 'rgba(122,74,34,.16)'; ctx.shadowBlur = 36; ctx.shadowOffsetY = 12; cardRound(ctx, px, py, pw, ph, 44); ctx.fillStyle = '#fff'; ctx.fill(); ctx.restore();
     if (D.kind === 'week'){
         const n = D.days.length, rh = Math.min(116, (ph - 40) / n), top = py + (ph - rh * n) / 2;
         D.days.forEach((x, i) => {
@@ -5834,7 +5834,7 @@ async function cardCanvas(kind, arg){
             cardRound(ctx, bx, mid - 40, 92, 80, 20); ctx.fillStyle = x.d === TODAY ? CARD_C.accent : CARD_C.soft; ctx.fill();
             ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = x.d === TODAY ? '#fff' : CARD_C.accent;
             ctx.font = `700 38px ${CARD_SERIF}`; ctx.fillText(String(dt.getDate()), bx + 46, mid + 6);
-            ctx.fillStyle = x.d === TODAY ? '#dbe6f6' : (wd === 0 ? '#b3402f' : wd === 6 ? '#2f6aa8' : CARD_C.muted); ctx.font = `600 22px ${CARD_SANS}`; ctx.fillText(wdName(wd), bx + 46, mid + 32, 84);
+            ctx.fillStyle = x.d === TODAY ? '#fde7d3' : (wd === 0 ? '#b3402f' : wd === 6 ? '#3f6e24' : CARD_C.muted); ctx.font = `600 22px ${CARD_SANS}`; ctx.fillText(wdName(wd), bx + 46, mid + 32, 84);
             if (x.skip){
                 ctx.fillStyle = CARD_C.muted; ctx.textBaseline = 'middle'; ctx.textAlign = rtl ? 'right' : 'left'; ctx.font = `600 36px ${CARD_SANS}`;
                 ctx.fillText(t('作らない日'), rtl ? bx - 24 : bx + 92 + 24, mid, pw - 80 - 92 - 24 - 24); return;
