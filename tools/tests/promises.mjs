@@ -34,7 +34,7 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     const ids = await p.evaluate(() => S.cook.ids);
     ok(ids.length >= 2, 'A0 献立が決まる');
     ok(await todayIds(p) === '', 'A1 決めただけでは記録しない: ' + await todayIds(p));
-    ok(!(await p.evaluate(() => document.querySelector('#toast-root').textContent)).includes('レパートリー'), 'A2 決めただけで「レパートリーが増えました」と出さない');
+    ok(!(await p.evaluate(() => document.querySelector('#toast-root').textContent)).includes('増えました'), 'A2 決めただけで「作った料理が増えました」と出さない');
     // 1品目の手順を全部終える
     const finish = async k => p.evaluate(k => { session.cookIdx = k; setTab('cook'); render(); const r = cookItems()[k].r;
         for (let i = 0; i < r.steps.length + 2; i++){ const b = document.querySelector('[data-act="cook-next"]'); if (!b || (((S.cook.done || {})[r.id]) || []).length >= r.steps.length) break; b.click(); } return (((S.cook.done || {})[r.id]) || []).length >= r.steps.length; }, k);
@@ -70,6 +70,35 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
         ok(r.mid[r.k] === r.before[r.k] || (r.hasUndo && r.msg.includes('にかえました')), 'B2 何に変わったかを知らせ、元に戻すが出る: ' + r.msg);
         ok(r.after.join() === r.before.join(), 'B3 元に戻すで、押した枠だけ前の料理に戻る: ' + r.before + ' → ' + r.after);
     } else ok(false, 'B0 かえるを押せる副菜がない');
+    await ctx.close();
+}
+
+// ---- D モニターの小さな指摘（X5・X6・X9） ----
+{
+    // D1 「鶏もも」と入れたら、作れる料理でもも肉の料理を先に出す（むね肉・手羽より前）
+    const {p, ctx} = await open();
+    await p.evaluate(() => { setTab('fridge'); render(); });
+    await p.fill('#ing-input', '鶏もも、キャベツ、卵'); await p.press('#ing-input', 'Enter'); await p.waitForTimeout(200);
+    const r = await p.evaluate(() => ({cut: Object.values(S.fridgeMeta).map(e => e.cut).filter(Boolean).join(), names: [...document.querySelectorAll('#fridge-results .w4x_m .name')].map(e => e.textContent)}));
+    ok(r.cut === 'もも', 'D1 入力した部位（もも）を覚える: ' + r.cut);
+    const firstChicken = await p.evaluate(names => { const i = names.findIndex(n => RECIPES.some(x => x.name === n && x.items.some(it => it.key === '鶏肉'))); const x = RECIPES.find(x => x.name === names[i]); return x ? x.items.filter(it => it.key === '鶏肉').map(it => it.name || it.label).join() : ''; }, r.names);
+    ok(/もも/.test(firstChicken), 'D2 鶏肉の料理の先頭は、もも肉を使う料理: ' + firstChicken);
+    // D3 作り方の時間は「目安 最長〜合計」
+    await p.evaluate(() => { setTab('today'); render(); document.querySelector('[data-act="decide"]').click(); setTab('cook'); render(); });
+    const hint = await p.evaluate(() => document.querySelector('#view').textContent);
+    ok(/目安 \d+〜\d+分/.test(hint) && !hint.includes('同時に進めればもっと短く'), 'D3 作り方の時間は目安の幅で出す');
+    await ctx.close();
+}
+{
+    // D4 「ときどき一緒に食べる」家族は、ふだんの「今日食べる人」に入らない。「いつものメンバー」で戻せる
+    const {p, ctx} = await open({family: [{id: 'a', name: '夫', role: 'adult', avoid: [], allergy: []}, {id: 'b', name: '母', role: 'adult', avoid: ['えび'], allergy: [], sometimes: true}]});
+    const r = await p.evaluate(() => { const a = eaterMembers().map(m => m.name).join(); const av = effAvoid().includes('えび');
+        S.eaters = ['a', 'b']; const b2 = eaterMembers().map(m => m.name).join(), av2 = effAvoid().includes('えび');
+        setTab('today'); render(); document.querySelectorAll('details').forEach(d => d.open = true);
+        const btn = document.querySelector('[data-act="eaters-usual"]'); return {a, av, b2, av2, hasBtn: !!btn, line: eatersLine()}; });
+    ok(r.a === '夫' && !r.av, 'D4 ふだんは「ときどき」の人を入れない: ' + r.a);
+    ok(r.b2.includes('母') && r.av2, 'D5 今日食べる人に選べば、その人の苦手も効く: ' + JSON.stringify(r));
+    ok(r.hasBtn, 'D6 「いつものメンバー」で戻せる');
     await ctx.close();
 }
 
