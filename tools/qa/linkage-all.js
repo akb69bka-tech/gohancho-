@@ -157,7 +157,7 @@ async function secMix(b, cc) {
     const s0 = await snap(p);
     for (const [slot, mc] of Object.entries(mix)) {
       const before = await snap(p);
-      await p.evaluate(([slot, mc]) => { const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', { bubbles: true })); }, [slot, mc]);
+      await p.evaluate(([slot, mc]) => { if (typeof openCondSheet === 'function') openCondSheet(); const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', { bubbles: true })); }, [slot, mc]);
       await p.waitForTimeout(1800);   // その国のデータを読みこむ
       const after = await snap(p); area('mix').taps++;
       const slots = before.ids.map(x => x.split(':')[0]);
@@ -235,7 +235,7 @@ async function secSavedMix(b, cc) {
   for (const mix of [{ '主菜': pick(0), '汁物': pick(1) }, { '副菜': pick(2) }, { '主菜': pick(3), '副菜': pick(4), '汁物': pick(5) }]) {
     const { ctx, p } = await open(b, { cc, n: 4 });
     for (const [slot, mc] of Object.entries(mix)) {
-      await p.evaluate(([slot, mc]) => { const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', { bubbles: true })); }, [slot, mc]);
+      await p.evaluate(([slot, mc]) => { if (typeof openCondSheet === 'function') openCondSheet(); const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', { bubbles: true })); }, [slot, mc]);
       await p.waitForTimeout(1800);
     }
     const s0 = await snap(p);

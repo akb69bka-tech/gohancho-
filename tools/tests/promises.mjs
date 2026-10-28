@@ -96,7 +96,7 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     const r = await p.evaluate(() => { const a = eaterMembers().map(m => m.name).join(); const av = effAvoid().includes('えび');
         S.eaters = ['a', 'b']; const b2 = eaterMembers().map(m => m.name).join(), av2 = effAvoid().includes('えび');
         setTab('today'); render(); document.querySelectorAll('details').forEach(d => d.open = true);
-        const btn = document.querySelector('[data-act="eaters-usual"]'); return {a, av, b2, av2, hasBtn: !!btn, line: eatersLine()}; });
+        if (typeof openCondSheet === 'function') openCondSheet(); const btn = document.querySelector('[data-act="eaters-usual"]'); return {a, av, b2, av2, hasBtn: (x => (closeSheet(), x))(!!btn), line: eatersLine()}; });
     ok(r.a === '夫' && !r.av, 'D4 ふだんは「ときどき」の人を入れない: ' + r.a);
     ok(r.b2.includes('母') && r.av2, 'D5 今日食べる人に選べば、その人の苦手も効く: ' + JSON.stringify(r));
     ok(r.hasBtn, 'D6 「いつものメンバー」で戻せる');
@@ -135,11 +135,11 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     ok(!r2.both.length, 'F6 買う物に入っている食材を「家にあるかも」に重ねて出さない: ' + r2.both);
     ok(r2.famMax >= 10, 'F7 家族・人数は10人まで登録できる');
     const r3 = await p.evaluate(() => {
-        S.family = [{id: 'a', name: '母', avoid: [], allergy: [], mild: false}, {id: 'b', name: '子', avoid: [], allergy: [], mild: false}]; S.eaters = null; S.condOpen = true; setTab('today'); render();
+        S.family = [{id: 'a', name: '母', avoid: [], allergy: [], mild: false}, {id: 'b', name: '子', avoid: [], allergy: [], mild: false}]; S.eaters = null; S.condOpen = true; setTab('today'); render(); if (typeof openCondSheet === 'function') openCondSheet();
         const meChip = !!document.querySelector('[data-act="eater"][data-v="__me"][aria-pressed="true"]');
         S.eaters = ['__me', 'a']; const sv2 = svToday();
-        S.family[1].me = true; render(); const noChip = !document.querySelector('[data-act="eater"][data-v="__me"]'); S.eaters = ['a', 'b']; const sv3 = svToday();
-        S.family = []; S.eaters = null; render();
+        S.family[1].me = true; render(); if (typeof openCondSheet === 'function') openCondSheet(); const noChip = !document.querySelector('[data-act="eater"][data-v="__me"]'); S.eaters = ['a', 'b']; const sv3 = svToday();
+        closeSheet(); S.family = []; S.eaters = null; render();
         return {meChip, sv2, noChip, sv3};
     });
     ok(r3.meChip && r3.sv2 === 2 && r3.noChip && r3.sv3 === 2, 'F8 「わたし」ははじめから選ばれ、人数に数える。家族に「これはわたし」を付けたら出さない: ' + JSON.stringify(r3));

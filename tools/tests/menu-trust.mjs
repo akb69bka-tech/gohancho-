@@ -28,7 +28,7 @@ async function open(store, fresh = false){
     return { ctx, p };
 }
 const booted = p => p.waitForFunction(() => typeof GH !== 'undefined' && GH.booted && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && !!session.menu, null, { timeout: 30000 });
-const openMood = p => p.evaluate(() => document.querySelectorAll('details').forEach(d => { if (d.querySelector('[data-act="mood"]')) d.open = true; }));
+const openMood = p => p.evaluate(() => { if (typeof openCondSheet === 'function') openCondSheet(); document.querySelectorAll('details').forEach(d => { if (d.querySelector('[data-act="mood"]')) d.open = true; }); });   // 案2: 気分は条件シートの中
 
 // ---------- 1) 設定を変える → 開き直す ----------
 for (const k of [0, 1, 2]){

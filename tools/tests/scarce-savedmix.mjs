@@ -98,7 +98,7 @@ for (const cc of CCS){
         const mixCcs = {'主菜': others[0], '汁物': others[1]};
         // 画面の選択から国を混ぜる
         for (const [slot, mc] of Object.entries(mixCcs)){
-            await p.evaluate(([slot, mc]) => { const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', {bubbles: true})); }, [slot, mc]);
+            await p.evaluate(([slot, mc]) => { if (typeof openCondSheet === 'function') openCondSheet(); const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', {bubbles: true})); }, [slot, mc]);
             await p.waitForTimeout(2000);
         }
         const s = await p.evaluate(() => {
