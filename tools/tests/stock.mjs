@@ -145,6 +145,7 @@ for (const cc of CCS){
     });
     ok(o.s.made === 3 && o.s.countries === 2 && o.s.used === 2 && o.s.tossed === 1 && o.s.stockUsed === 1 && o.s.custom === 0, 'stats ' + JSON.stringify(o.s));
     ok(o.same, 'stats do not write S');
+    await p.evaluate(() => { S.foldOpen = Object.assign({}, S.foldOpen, {'log-more': true}); render(); });   // 「あなたの記録」は記録タブの「もっと見る」の中（案2）
     const txt = await p.locator('#my-record').innerText();
     ok(/あなたの記録/.test(txt) && /3品/.test(txt) && /2か国/.test(txt) && /1回/.test(txt), 'record text ' + txt.replace(/\n/g, ' '));
     ok(/外には送りません/.test(txt), 'local note');
@@ -169,7 +170,7 @@ for (const L of LANGS){
     const o = await p.evaluate(() => {
         S.history = [{d: TODAY, id: RECIPES[0].id, name: RECIPES[0].name, slot: '主菜'}]; S.stockLog.push({d: TODAY, n: 'Water'});
         S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render(); const a = document.querySelector('#stock-sec').innerText;
-        setTab('log'); render(); const m = (document.querySelector('#my-record') || {}).innerText || '';
+        setTab('log'); render(); const mo = document.querySelector('#log-more'); if (mo) mo.open = true; const m = (document.querySelector('#my-record') || {}).innerText || '';
         setTab('settings'); render(); const al = [...document.querySelectorAll('#allergy-card .alg-ver')].map(e => e.innerText).join(' ');
         makeWeek(); const sh = shoppingHtml().match(/class="pantry-hint alg-shop">([^<]*)/);
         return {lang: LANG, a, m, al, sh: sh ? sh[1] : ''};
