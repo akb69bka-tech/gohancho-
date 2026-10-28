@@ -324,6 +324,10 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
     const target = await p.evaluate(() => { const r = session.menu.items[0].r; for (const id of ['egg', 'milk', 'wheat', 'pork', 'chicken', 'beef', 'fish', 'soy', 'shrimp']){ S.settings.allergens = [id]; if (allergyConflict(r)){ S.settings.allergens = []; return id; } } S.settings.allergens = []; return null; });
     await p.evaluate(() => { S.settings.allergens = []; save(); setTab('settings'); });
     if (target){
+        // その国の主なアレルゲンでないもの（米国の豚肉・欧州の小麦など）は「ほかのアレルゲン」に畳まれている。人と同じく、開いてから押す
+        if (await p.evaluate(id => { const d = document.querySelector(`#allergy-card .chip[data-v="${id}"]`).closest('details'); return !!d && !d.open; }, target)){
+            await p.click('#allergy-card details.alg-more > summary'); await p.waitForTimeout(100);
+        }
         await p.click(`#allergy-card .chip[data-v="${target}"]`); await p.waitForTimeout(200);
         const after = await p.evaluate(() => ({ al: S.settings.allergens, ids: session.menu.items.map(x => x.r && x.r.id), bad: session.menu.items.filter(x => x.r && allergyConflict(x.r)).length, pressed: document.querySelector(`#allergy-card .chip[aria-pressed="true"]`) !== null }));
         ok(JSON.stringify(after.al) === JSON.stringify([target]) && after.bad === 0 && after.pressed, cc + ' チップで選ぶ: ' + JSON.stringify(after.al));

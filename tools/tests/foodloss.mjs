@@ -21,7 +21,7 @@ const stored = p => p.evaluate(() => { saveNow(); return JSON.parse(localStorage
 for (const cc of ['JP', 'US', 'KR']){
     const p = await open({}, cc);
     const q = await p.evaluate(() => QUICK.slice(0, 5));
-    await p.evaluate(q => { S.fridge = q.slice(); S.fridgeMeta = {}; save(); setTab('fridge'); render(); }, q);
+    await p.evaluate(q => { S.fridge = q.slice(); S.fridgeMeta = {}; save(); S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render(); }, q);
     ok(await p.locator('.loss-sec').count() === 1, cc + ' section');
     ok(await p.locator('.loss-sec > .card > .loss-row').count() === 0, cc + ' no urgent rows before expiry');
     // 期限を3つ入れる（今日・3日後・10日後）
