@@ -43,8 +43,10 @@ const PAGE_LIB = `
 window.__snap = () => {
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
-    const b = sp.querySelector('[data-act="reroll"]'); const c = sp.cloneNode(true); c.querySelectorAll('.swap, .last, .spice-tag, .swap-line').forEach(x => x.remove());   // 「今日作った」など記録の表示は料理の入れ替わりではない
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '')};
+    const sa = sp.querySelector('[data-act="soup-add"]');
+    const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap, .last, .spice-tag, .swap-line').forEach(x => x.remove());   // 「今日作った」など記録の表示は料理の入れ替わりではない
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: (sa || sp.querySelector('.nm.none')) ? 'EMPTY' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
+   };
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }
@@ -97,7 +99,7 @@ function makeRun(i, rng) {
   const avoid = rng() < 0.3 ? [pickOf(['@pork', '@chicken', '@fish', '@egg', '@dairy', '@beef', '@shellfish'])] : [];
   const family = rng() < 0.25 ? [{ id: 'f1', name: 'A', role: 'child', avoid: ['@' + pickOf(['egg', 'fish', 'dairy', 'wheat'])], allergy: [], mild: false }, { id: 'f2', name: 'B', role: 'adult', avoid: [], allergy: [], mild: rng() < 0.5 }] : null;
   const cfg = { cc, n: pickOf(['auto', 2, 3, 4, 5, 6]), mix, avoid, family, off: Math.floor(rng() * 9), seed: Math.floor(rng() * 1e9) };
-  const W = [['reroll', 30], ['staple', 3], ['one', 7], ['count', 6], ['mood', 4], ['mix', 4], ['soupadd', 4], ['settings', 4], ['tab', 6], ['decide', 4], ['undo', 3], ['week', 3], ['useplan', 3], ['twist', 3], ['avoidtoggle', 3], ['avoidswap', 1], ['eater', 2], ['lang', 2], ['reload', 6], ['reopen', 4], ['day', 4], ['monday', 1], ['swup', 2]];
+  const W = [['reroll', 30], ['staple', 3], ['one', 7], ['count', 6], ['mood', 4], ['mix', 4], ['soupadd', 4], ['settings', 4], ['tab', 6], ['decide', 4], ['undo', 3], ['week', 3], ['useplan', 3], ['twist', 3], ['avoidtoggle', 3], ['alg', 3], ['weekskip', 2], ['hide', 3], ['avoidswap', 1], ['eater', 2], ['lang', 2], ['reload', 6], ['reopen', 4], ['day', 4], ['monday', 1], ['swup', 2]];
   const tot = W.reduce((s, x) => s + x[1], 0), acts = [];
   for (let k = 0; k < STEPS; k++) { let r = rng() * tot, a = W[0][0]; for (const [n, w] of W) { if ((r -= w) < 0) { a = n; break; } } acts.push({ a, p: Math.floor(rng() * 1e6), q: Math.floor(rng() * 1e6) }); }
   return { cfg, acts };
@@ -224,6 +226,30 @@ const ACTIONS = {
     await p.waitForTimeout(250); await click(p, '[data-act="settings-back"]'); await p.waitForTimeout(250); await toToday(p);
     return { desc: '苦手食材を入れる/外す', pressed: null, o: {}, special: 'avoidchg' };
   },
+  async alg(p, A) {
+    await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
+    const n = await count(p, '[data-act="alg-toggle"]');
+    if (!n) { await click(p, '[data-act="settings-back"]'); return null; }
+    const ferm = A.q % 5 === 0 && await count(p, 'input[data-act="alg-ferm"]');
+    if (ferm) await click(p, 'input[data-act="alg-ferm"]'); else await click(p, '[data-act="alg-toggle"]', A.p % n);
+    await p.waitForTimeout(250); await click(p, '[data-act="settings-back"]'); await p.waitForTimeout(250); await toToday(p);
+    return { desc: 'アレルゲンを入れる/外す', pressed: null, o: {}, special: 'avoidchg' };
+  },
+  async weekskip(p, A) {
+    await toToday(p); const n = await count(p, '[data-act="week-skip"], [data-act="week-who"]'); if (!n) return null;
+    const k = A.p % n, el = p.locator('[data-act="week-skip"], [data-act="week-who"]').nth(k), act = await el.getAttribute('data-act');
+    if (!await click(p, '[data-act="week-skip"], [data-act="week-who"]', k)) return null; await p.waitForTimeout(250);
+    if (act === 'week-who') { const m = await count(p, '#sheet-root [data-act="who-pick"]'); if (m) await click(p, '#sheet-root [data-act="who-pick"]', A.q % m); else await click(p, '#sheet-root [data-act="sheet-close"]'); await p.waitForTimeout(250); }
+    return { desc: act === 'week-skip' ? '作らない日/戻す' : '担当を決める', pressed: null, o: { skip: ['week', 'shop'] } };
+  },
+  async hide(p, A) {
+    await toToday(p); const n = await count(p, '.tray [data-act="open"]'); if (!n) return null;
+    const k = A.p % n, id = await p.locator('.tray [data-act="open"]').nth(k).getAttribute('data-id');
+    if (!await click(p, '.tray [data-act="open"]', k)) return null; await p.waitForTimeout(300);
+    if (!await count(p, '[data-act="hide"]')) { await click(p, '[data-act="close"]'); return null; }
+    await click(p, '[data-act="hide"]'); await p.waitForTimeout(200); await click(p, '[data-act="hide-yes"]'); await p.waitForTimeout(400);
+    return { desc: '作らない(' + id + ')', pressed: null, o: {}, special: 'hide', hideId: id };
+  },
   async avoidswap(p) {
     await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
     if (!await count(p, 'input[data-act="avoid-swap"]')) { await click(p, '[data-act="settings-back"]'); return null; }
@@ -276,6 +302,7 @@ async function exec(b, run, onStep) {
     const A = acts[k], p = st.p;
     let r; try { r = await Promise.race([ACTIONS[A.a](p, A, st), new Promise((_, rej) => setTimeout(() => rej(new Error('HANG 90秒たっても終わらない（ページが固まった可能性）')), 90000))]); } catch (e) {
       if (/^HANG/.test(e.message)) { fails.push({ step: k, act: A.a, kind: 'HANG', msg: '#' + k + ' ' + A.a + ' ' + e.message }); break; } fails.push({ step: k, act: A.a, kind: 'エラー', msg: 'ACTION ERROR ' + e.message.split('\n')[0] }); try { st.p = st.p; await toToday(st.p); } catch (e2) { break; } continue; }
+    if (process.env.PROGRESS) console.error('step', k, A.a, r ? 'ok' : 'skip', new Date().toISOString().slice(11, 19));
     if (!r) continue;
     const q = st.p; await q.waitForTimeout(80);
     let s1; try { s1 = await snap(q); } catch (e) { fails.push({ step: k, act: A.a, kind: 'エラー', msg: 'SNAP ERROR ' + e.message.split('\n')[0] }); break; }
@@ -291,10 +318,21 @@ async function exec(b, run, onStep) {
       else d.push('あと1品: 品数 ' + a.length + '->' + c.length);
       ['week', 'favs', 'hidden'].forEach(x => { if (prev[x] !== s1[x]) d.push(x); });
     }
+    else if (r.special === 'hide') {
+      // 「作らない」にした料理の枠だけ選び直してよい。ほかの枠は変えない
+      if (prev.ids.length !== s1.ids.length) d.push('品数 ' + prev.ids.length + '->' + s1.ids.length);
+      else prev.ids.forEach((x, j) => { if (x.split(':')[1] === r.hideId) return; if (x !== s1.ids[j]) d.push('作らないにした料理以外 #' + j + ' ' + x + ' -> ' + s1.ids[j]); });
+      if (s1.ids.some(x => x.split(':')[1] === r.hideId)) {
+        // 代わりになる料理が1つも残っていない（ほかを全部「作らない」にした）ときは、残って当然
+        const hs = prev.ids.find(x => x.split(':')[1] === r.hideId).split(':')[0];
+        const alt = await q.evaluate(hs => poolFor(hs).filter(x => (hs === '主菜' ? x.main : slotOf(x) === hs) && !isAvoided(x) && !S.hidden.includes(x.id) && !menuIds().includes(x.id)).length, hs);
+        if (alt > 0) d.push('作らないにした料理が残った（代わりの候補は' + alt + '品あった）');
+      }
+    }
     else if (r.special === 'idsonly') { d.push(...diff(prev, s1, null, { idsOnly: true })); }
     else if (r.special === 'avoidchg') {
       // 苦手・食べる人を変えたら、「いま苦手に当たる料理の枠」だけ選び直してよい。ほかの枠は変えない
-      const gone = await q.evaluate(ids => ids.map(x => { const id = x.split(':')[1]; const r = id === '-' ? null : byId(id); return !!(r && isAvoided(r)); }), prev.ids);
+      const gone = await q.evaluate(ids => ids.map(x => { const id = x.split(':')[1]; const r = id === '-' ? null : byId(id); return !!(r && (isAvoided(r) || S.hidden.includes(id))); }), prev.ids);
       if (prev.ids.length !== s1.ids.length) d.push('品数 ' + prev.ids.length + '->' + s1.ids.length);
       else prev.ids.forEach((x, j) => {
         if (gone[j]) return;
@@ -313,20 +351,28 @@ async function exec(b, run, onStep) {
     else if (r.rebuild) { /* 全体の作り直しは仕様。設定の保存だけ確かめる */ }
     else if (r.mixSlot) {
       const sl = prev.ids.map(x => x.split(':')[0]);
-      prev.ids.forEach((x, j) => { if (sl[j] !== r.mixSlot && x !== s1.ids[j]) d.push('混ぜた枠(' + r.mixSlot + ')以外 #' + j + ' ' + x + ' -> ' + s1.ids[j]); });
+      const bad0 = await q.evaluate(ids => ids.map(x => { const id = x.split(':')[1]; const r = id === '-' ? null : byId(id); return !!(r && (isAvoided(r) || S.hidden.includes(id))); }), prev.ids);   // もう使えない料理（今は出さない・苦手）の枠は、どの再調整でも選び直される
+      prev.ids.forEach((x, j) => { if (!bad0[j] && sl[j] !== r.mixSlot && x !== s1.ids[j]) d.push('混ぜた枠(' + r.mixSlot + ')以外 #' + j + ' ' + x + ' -> ' + s1.ids[j]); });
       if (!r.mixChanged && prev.ids.join() !== s1.ids.join()) d.push('同じ国を選び直しただけなのに変わった');
     }
     else {
       const dd = diff(prev, s1, r.pressed, r.o); d.push(...dd);
-      if (r.soupAdd !== undefined && s1.ids[r.soupAdd] && s1.ids[r.soupAdd].endsWith(':-')) d.push('汁ものを足すを押したのに空のまま');
+      if (r.soupAdd !== undefined && s1.ids[r.soupAdd] && s1.ids[r.soupAdd].endsWith(':-')) {
+        const alt = await q.evaluate(() => poolFor('汁物').filter(x => slotOf(x) === '汁物' && !isAvoided(x) && !menuIds().includes(x.id)).length);   // 候補が1つもなければ、空のままで正しい（画面には「合う料理がありません」と出る）
+        if (alt > 0) d.push('汁ものを足すを押したのに空のまま（候補は' + alt + '品あった）');
+      }
     }
-    if (s1.bad.length && (cfg.avoid.length || cfg.family || r.special === 'avoidchg')) d.push('苦手/アレルギーの料理が出た ' + s1.bad.join());
-    if (d.length && process.env.DBG) console.log('DBG state', JSON.stringify(await q.evaluate(() => ({ tab, menu: !!session.menu, n: session.menu && session.menu.n, view: document.querySelector('#view').innerText.slice(0, 200), lang: LANG, mw: mixWaiting(), boot: bootReady, td: TODAY }))), q.errs);
+    if (s1.bad.length && (cfg.avoid.length || cfg.family || r.special === 'avoidchg')) {
+      // 代わりになる料理が1つもない（苦手・アレルゲンを重ねて候補がなくなった）ときは、その料理が残って当然（画面には注意が出る）
+      const real = await q.evaluate(ids => ids.filter(id => { const sl = (session.menu.items.find(x => x.r && x.r.id === id) || {}).slot; return sl && poolFor(sl).some(x => (sl === '主菜' ? x.main : slotOf(x) === sl) && !isAvoided(x) && !S.hidden.includes(x.id) && !menuIds().includes(x.id)); }), s1.bad);
+      if (real.length) d.push('苦手/アレルギーの料理が出た ' + real.join());
+    }
+    if (d.length && process.env.DBG) console.log('DBG state', JSON.stringify(await q.evaluate(() => ({ tab, menu: !!session.menu, n: session.menu && session.menu.n, view: document.querySelector('.tray') && document.querySelector('.tray').innerText.replace(/\s+/g, ' ') + ' | ' + session.menu.items.map(x => x.slot + ':' + (x.r ? x.r.id + '(' + x.r.type + ')' : '-')).join(), lang: LANG, set: JSON.stringify([S.settings.avoid, S.settings.allergens, S.settings.avoidSwap, S.settings.allergenFerm, S.hidden]), eaters: S.eaters, pool: poolFor('汁物').length + '/' + poolFor('汁物').filter(x => slotOf(x) === '汁物').length + '/' + poolFor('汁物').filter(x => slotOf(x) === '汁物' && !isAvoided(x)).length, mix: JSON.stringify(S.settings.mix), mood: session.mood, mw: mixWaiting(), boot: bootReady, td: TODAY }))), q.errs);
     if (d.length) fails.push({ step: k, act: A.a, kind: A.a + ':' + d[0].replace(/[0-9]+|[A-Za-z_]+\d*/g, '').slice(0, 24), msg: '#' + k + ' ' + tag + ' 前=' + prev.ids.join() + ' => ' + d.join(' | ') });
     if (onStep) onStep(k);
     prev = s1;
   }
-  try { await st.ctx.close(); } catch (e) {}
+  try { await Promise.race([st.ctx.close(), new Promise(r => setTimeout(r, 20000))]); } catch (e) {}
   fails.steps = done; return fails;
 }
 
@@ -351,7 +397,7 @@ async function shrink(b, run, f0) {
   if (process.env.REPLAY) runs = [JSON.parse(fs.readFileSync(process.env.REPLAY, 'utf8').trim().split('\n').pop().replace(/^.*replay /, ''))];
   else for (let i = 0; i < RUNS; i++) runs.push(makeRun(i, rng));
   const stat = {}, bads = []; let steps = 0, doneRuns = 0; const t0 = Date.now();
-  const q = runs.map((r, i) => [r, i]);
+  const q = runs.map((r, i) => [r, i]).filter(([r, i]) => !process.env.ONLY || process.env.ONLY.split(',').includes(String(i)));   // ONLY=60,61 で試行番号を絞る
   await Promise.all(Array.from({ length: JOBS }, async () => {
     while (q.length) {
       const [run, i] = q.shift(); let fl;
