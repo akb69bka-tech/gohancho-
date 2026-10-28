@@ -327,6 +327,64 @@ for (let run = 0; run < 6; run++){
     ok(!/鶏ガラ/.test(r), '鶏が苦手のワンタンスープ: 置き換えた鶏ガラスープの素がアレルゲン欄に残らない: ' + r.slice(0, 120));
     await ctx.close();
 }
+// ---------- 16) モニター第3回 安全（S1・S2・S3・S7） ----------
+// S1: 決めた献立にあとからアレルゲンを足す → 決めた献立は替わらないが、「入れていません」と出さない。当たる料理のカードに ⚠、知らせに［かえる］
+{
+    const { ctx, p } = await open({});
+    await p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '副菜'); if (i >= 0) m.items[i].r = byId('chawanmushi');
+        m.items.forEach((x, k) => { if (x.r && x.r.id !== 'chawanmushi'){ const a0 = S.settings.allergens; S.settings.allergens = ['shrimp']; if (isAvoidedCore(x.r)) x.r = suggestOrAny(x.slot, m.items.filter((_, j) => j !== k), m.items[0].r); S.settings.allergens = a0; } });
+        render(); });
+    await p.click('[data-act="decide"]'); await afterDecide(p);
+    await p.evaluate(() => setTab('settings'));
+    await p.click('#allergy-card .chip[data-v="shrimp"]'); await until(p, () => algIds().includes('shrimp'));
+    const r = await p.evaluate(() => { setTab('today'); if (typeof session.stage !== 'undefined'){ session.stage = 'decide'; render(); }
+        const v = document.querySelector('#view').innerText;
+        const card = [...document.querySelectorAll('#view .spot')].find(s => /茶碗蒸し/.test(s.innerText));
+        return { cook: S.cook.ids.includes('chawanmushi'), none: /えび）を使う料理は入れていません/.test(v), line: (v.match(/[^\n]*えび[^\n]*使う料理が[^\n]*/) || [''])[0],
+            mark: !!(card && card.querySelector('.alg-tag')) && /⚠/.test(card.innerText), swap: !!document.querySelector('.cook-warn [data-act="cook-swap"][data-id="chawanmushi"]') }; });
+    ok(r.cook, 'S1 決めたあとにえび: 決めた茶碗蒸しは黙って替わらない');
+    ok(!r.none, 'S1 決めたあとにえび: 茶碗蒸しが残っているのに「えびを使う料理は入れていません」と出さない');
+    ok(!!r.line, 'S1 決めたあとにえび: 「えびを使う料理が1品あります」のように知らせる');
+    ok(r.mark, 'S1 決めたあとにえび: 茶碗蒸しのカードに ⚠');
+    ok(r.swap, 'S1 決めたあとにえび: ［かえる］が出る');
+    await ctx.close();
+}
+// S2: 苦手のえびを鶏肉に置き換えた天丼: 手順に「殻と背わた」が残らない。分量は元のえびの量（4尾≒80g）に合わせ、「2枚（500g）」にしない
+{
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, avoid: ['えび'] } });
+    const r = await p.evaluate(() => { const out = { bad: [], qty: '' };
+        const tn = swappedRecipe(byId('tendon')); const it = tn.items.find(i => i.changed); out.qty = it ? it.name + ' ' + it.qty : '(置き換えなし)';
+        RECIPES.forEach(r0 => { const s = swappedRecipe(r0); if (!s || !s.swapped || !s.swapped.swaps.some(x => inFam('shellfish', x.from))) return;
+            const st = s.steps.map(x => typeof x === 'string' ? x : x.t).join(' '); if (/背わた|殻を|殻と/.test(st)) out.bad.push(r0.id + ': ' + st.slice(0, 50)); });
+        return out; });
+    ok(!r.bad.length, 'S2 えびを置き換えた料理の手順に「殻・背わた」が残らない: ' + r.bad.slice(0, 3).join(' | '));
+    const g = Number((r.qty.match(/(\d+)\s*g/) || [])[1] || 0);
+    ok(/鶏/.test(r.qty) && g >= 40 && g <= 200 && !/枚/.test(r.qty), 'S2 天丼の置き換えの分量はえびの量に合わせる（4尾≒80g）: ' + r.qty);
+    await ctx.close();
+}
+// S3: 家族の名前を打った直後（入力欄から離れる前）に押した卵⚠が、1回目で登録される
+// S7: 家族のアレルギーを1つ押しても一覧が畳まれず、続けて押せる。そば・大豆・ごま・落花生などもチップで選べる
+{
+    const { ctx, p } = await open({});
+    await p.evaluate(() => setTab('settings'));
+    await p.evaluate(() => { const b = document.querySelector('[data-act="fam-add"]'); b.scrollIntoView(); });
+    await p.click('[data-act="fam-add"]'); await until(p, () => famMembers().length === 1 && !!document.querySelector('[data-act="fam-name"]'));
+    await p.click('[data-act="fam-name"]'); await p.keyboard.type('長女');
+    await p.click('[data-fm] [data-act="fam-alg-fam"][data-v="egg"]'); await p.waitForTimeout(200);
+    const r3 = await p.evaluate(() => ({ name: famMembers()[0].name, al: famMembers()[0].allergy.slice() }));
+    ok(r3.name === '長女' && r3.al.includes('@egg'), 'S3 名前を打った直後の卵⚠が1回目で登録される: ' + JSON.stringify(r3));
+    await p.click('[data-fm] [data-act="fam-alg-fam"][data-v="dairy"]'); await p.waitForTimeout(150);
+    const vis = await p.evaluate(() => { const b = document.querySelector('[data-fm] [data-act="fam-alg-fam"][data-v="wheat"]'); return !!b && !b.closest('details:not([open]):not(.fam-member)'); });
+    ok(vis, 'S7 アレルギーを押しても、ほかのアレルギーのチップが畳まれない');
+    const ids = await p.evaluate(() => [...document.querySelectorAll('[data-fm] [data-act="fam-alg-w"]')].map(b => b.dataset.v));
+    for (const w of ['そば', '落花生', '大豆', 'ごま']) ok(ids.includes(w), 'S7 家族のアレルギーに「' + w + '」のチップ: ' + ids.join(','));
+    for (const w of ['そば', '大豆']){ const sel = `[data-fm] [data-act="fam-alg-w"][data-v="${w}"]`; if (!(await p.$(sel))) continue;
+        await p.evaluate(s => { const b = document.querySelector(s); const d = b.closest('details:not(.fam-member)'); if (d) d.open = true; }, sel); await p.click(sel); await p.waitForTimeout(150); }
+    const r7 = await p.evaluate(() => ({ al: famMembers()[0].allergy.slice(), eff: algIdsEff().slice().sort(), dbl: [...document.querySelectorAll('[data-fm] .chip')].filter(b => /^\s*✓/.test(b.textContent)).length }));
+    ok(['egg', 'milk', 'buckwheat', 'soy'].every(x => r7.eff.includes(x)), 'S7 続けて押したアレルギーがすべて効く: ' + JSON.stringify(r7));
+    ok(r7.dbl === 0, 'S7 チップに ✓ が二重に並ばない');
+    await ctx.close();
+}
 await b.close();
 ok(errs.length === 0, 'ページのエラー: ' + errs.slice(0, 3).join(' | '));
 console.log(fails ? `NG ${fails}/${checks}` : `ALL OK ${checks} checks`);
