@@ -7,6 +7,7 @@
 //    C1 苦手を足して今日の献立を見ずに開き直しても、苦手の料理が戻らない
 //    C2 決めたあとにアレルギーを足しても、決めた献立が黙って変わらず、画面の献立と作り方が食い違わない
 //    C3 決めたあとに気分（おかゆの日）を押しても、確認なしに決めた献立が変わらない
+//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F7 食べる人の人数と辛さ・買い物の重なり・10人まで
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
@@ -99,6 +100,40 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     ok(r.a === '夫' && !r.av, 'D4 ふだんは「ときどき」の人を入れない: ' + r.a);
     ok(r.b2.includes('母') && r.av2, 'D5 今日食べる人に選べば、その人の苦手も効く: ' + JSON.stringify(r));
     ok(r.hasBtn, 'D6 「いつものメンバー」で戻せる');
+    await ctx.close();
+}
+
+// ---- F 献立の組み立て（戸川 A2・A4・A5） ----
+{
+    const {p, ctx} = await open({settings: {country: 'JP', uiLang: 'ja', dishCount: 4}});
+    const r = await p.evaluate(() => {
+        const over = [];
+        for (const mood of ['quick', 'easy']){ session.mood = mood; for (let k = 0; k < 20; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && (mood === 'quick' ? x.r.min > 20 : (x.slot !== '主菜' && x.r.min > 10))) over.push(mood + ':' + x.slot + ':' + x.r.name + x.r.min); }); } }
+        session.mood = 'all'; const season = [];
+        const ym = parseYmd(TODAY).getMonth() + 1;
+        for (let k = 0; k < 30; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && !inSeason(x.r)) season.push(x.r.id); }); }
+        const soupy = ['ramen', 'oden', 'yosenabe', 'stew', 'curryudon'].filter(id => byId(id) && suggestOrAny('汁物', [{r: byId(id)}], byId(id)));
+        return {over, season, soupy, ym};
+    });
+    ok(!r.over.length, 'F1 20分以内・ラクの日は、副菜・汁ものにも時間の条件が効く: ' + r.over.slice(0, 3));
+    ok(!r.season.length, 'F2 季節外れの行事料理（' + r.ym + '月）をおまかせに出さない: ' + r.season);
+    ok(!r.soupy.length, 'F3 汁けの多い主菜（ラーメン・鍋・シチューなど）に汁ものを付けない: ' + r.soupy);
+    // A9・A15・A19
+    const r2 = await p.evaluate(() => {
+        S.family = [{id: 'a', name: '母', avoid: [], allergy: [], mild: true}, {id: 'b', name: '父', avoid: [], allergy: [], mild: false}];
+        S.eaters = ['a']; S.settings.servings = 2;
+        const sv = svToday(), wk = servingFactor(true), mild = allMild();
+        const spicy = RECIPES.filter(x => x.main && spiceLevel(x) === 1).slice(0, 5).filter(x => !isAvoided(x)).map(x => x.id);
+        S.eaters = undefined; S.family = [];
+        S.week = {start: TODAY, days: ['chirashi'].map(id => ({d: TODAY, id}))};
+        const buy = new Set(shoppingList().map(e => e.key.split('|')[0])), both = pantryList().filter(e => buy.has(e.key.slice(2))).map(e => e.label);
+        S.week = null;
+        return {sv, wk, mild, spicy, both, famMax: FAM_MAX};
+    });
+    ok(r2.sv === 1 && r2.wk === 1, 'F4 今日食べる人を1人にすると今日の分量は1人分（1週間の買い物メモは設定の人数）: ' + JSON.stringify(r2));
+    ok(r2.mild && !r2.spicy.length, 'F5 食べる人が全員辛いのが苦手な日は、辛みのある料理を出さない: ' + r2.spicy);
+    ok(!r2.both.length, 'F6 買う物に入っている食材を「家にあるかも」に重ねて出さない: ' + r2.both);
+    ok(r2.famMax >= 10, 'F7 家族・人数は10人まで登録できる');
     await ctx.close();
 }
 
