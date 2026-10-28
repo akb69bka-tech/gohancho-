@@ -130,7 +130,7 @@ window.addEventListener('load', function(){ if (window.__gohanOK) return; try{
     --fs-head:1.0625rem;--fs-screen:1.75rem;--fs-dish:1.875rem;
     --lh:1.6;--lh-tight:1.35;
     /* 名前（明朝）の字間: 画面名 .16em・料理名 .2em・欄の見出し .14em（日本語以外は下で詰める） */
-    --ls-screen:.16em;--ls-dish:.2em;--ls-head:.14em;
+    --ls-screen:.08em;--ls-dish:.08em;--ls-head:.06em;   /* 利用者モニターの指摘で、設計書の .16/.2/.14em から控えめに（広いと言葉の途中で折れる） */
     /* 角丸: カードは 28 / 20 / 14 の3段 */
     --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;--r-pill:999px;
     /* 押せる高さ */
@@ -913,6 +913,49 @@ body.kb .actionbar{position:static}
 html[lang="ja"] .steps li::before{content:counter(st,cjk-decimal)}
 /* 料理名（一覧・お膳）は明朝16px・字間0 */
 .tw-name,.match .head .name,.cook-head h3{letter-spacing:0}
+
+/* ===== 利用者モニター第1回の指摘（共通部分・三宅） ===== */
+/* (2) ブラウザ標準の水色のタップ光を消す。押した手ごたえは各部品の :active（沈む・地の色）で出す */
+*{-webkit-tap-highlight-color:rgba(58,42,31,.08)}   /* 透明にすると別の光り方が出る端末があるので、こげ茶をごく薄く */
+.swap:active{background:rgba(245,238,227,.18)}
+.cook-tab:active,.country:active,.album-ph:active{transform:scale(.97)}
+.cook-tab,.country{transition:transform var(--dur-1) var(--ease),background var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease)}
+summary:active,.item .t:active,.tw-name:active,.match .head:active{opacity:.7}
+.term-chip:active,.timer-chip:active,.step-say:active{background:var(--surface-2)}
+/* (1) 選んだ状態の配色: 地と字の組み合わせを 4.5:1 以上に。アレルギーのチップは選ぶと注意の淡い地に注意の色の字（✓つき） */
+.chip.allergy[aria-pressed="true"],.chip.allergy[aria-pressed="true"] .lab{background:var(--danger-soft);border-color:var(--danger);color:var(--danger);font-weight:700}
+.chip.allergy[aria-pressed="true"]{box-shadow:none}
+.chip[aria-pressed="true"] .muted,.chip[aria-pressed="true"] small{color:inherit;opacity:1}
+/* 持っている材料の札は若草の淡い地（柿色は主ボタンだけ）。なかまに入っている食材は沈んだ地 */
+.chip.have{background:var(--leaf-soft);border-color:transparent;color:var(--ink)}
+.chip.inc{background:var(--surface-2);border-color:transparent;color:var(--ink);opacity:1}
+.chip.soon{border-color:var(--leaf)}
+/* 入力欄の横のボタンは欄と同じ 48px（主ボタンでも 56px にしない） */
+.inputbar .btn{--btn-h:var(--tap);--btn-fs:var(--fs14);--btn-px:1.125rem}
+/* (3) 下のタブの文字: アプリの文字の大きさに合わせて大きくする（画面の幅で上限）。2行のときは言葉の区切りで半分ずつ */
+nav.tabs button{font-size:min(.75rem,3.6vw);line-height:1.15;text-align:center;text-wrap:balance;line-break:strict}
+nav.tabs.many button{font-size:min(.75rem,3.6vw)}
+html[lang="ja"] nav.tabs button,html[lang="zh-Hans"] nav.tabs button,html[lang="zh-Hant"] nav.tabs button{word-break:auto-phrase}
+/* (4) 見出し・料理名は言葉の途中で折らない（日本語は文節で折る。対応していない端末は従来どおり） */
+h1,h2,h3,.eyebrow,.label,.spot-label .nm,.tw-name,.match .head .name,.cook-tab .ct-name,.fold-tx h2{line-break:strict}
+html[lang="ja"] :is(h1,h2,h3,.eyebrow,.label,.spot-label .nm,.tw-name,.match .head .name,.fold-tx h2,.sec-head .hint,.why,.greet .hello),
+html[lang^="zh"] :is(h1,h2,h3,.eyebrow,.label,.spot-label .nm,.tw-name,.match .head .name,.fold-tx h2){word-break:auto-phrase}
+html[lang="ja"] :is(h1,h2,h3){text-wrap:pretty}
+.spot-label .slot{letter-spacing:.08em}
+/* (7) 画面下に貼りつくボタンの列（作り方の「前／次の手順」・.actionbar）は、後ろの文字が透けないように地の帯を敷く */
+.cook-ctl{padding:var(--s8);margin-inline:calc(-1 * var(--s8));background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:var(--r-xl)}
+.cook-steps li{scroll-margin-bottom:calc(var(--nav-h,84px) + var(--tap-lg) + 48px)}
+.wrap{padding-bottom:calc(var(--nav-h,72px) + var(--s32) + env(safe-area-inset-bottom,0px))}
+body:has(.actionbar,.cook-ctl) .wrap{padding-bottom:calc(var(--nav-h,72px) + var(--tap-lg) + var(--s32) + env(safe-area-inset-bottom,0px))}
+body.kb .wrap,body.kb:has(.actionbar,.cook-ctl) .wrap{padding-bottom:calc(24px + var(--kb,0px))}   /* キーボード表示中は下のタブがないので詰める */
+/* (6) 入力例が欄に収まらないときは、欄の下に全文を出す（JS: fitPlaceholders） */
+.ph-ex{margin:var(--s4) 0 0;font-size:var(--fs14);color:var(--muted);line-height:1.5;overflow-wrap:anywhere;flex:0 0 100%;grid-column:1 / -1}
+/* (8) 小さい字の底上げ: 灰色の説明・補足は 14px、札・バッジだけ 12px */
+.foot,.small,.item .s,.hf-hint,.pantry-hint,.fold-tx .hint,.review p.foot,.spot-label .mt,.from,.ings,.credit,.cal-day .s{font-size:var(--fs14)}
+.tiny{font-size:var(--fs14)}
+.tray.compact .spot-label .mt{display:none}
+.cal-d i{width:8px;height:8px}
+.cal-nav .btn{font-size:var(--fs20);min-width:var(--tap);min-height:var(--tap)}
 /* カードの中の区切り線 */
 .divider{height:0;border:0;border-top:1px solid var(--line-soft);margin:var(--s4) 0}
 /* 選んだチップは少し浮かせる */
@@ -2968,6 +3011,41 @@ function failedView(name, e){
     try{ console.error('[render] ' + name, e); }catch(_){}
     return `<section class="sec gh-view-fail" role="alert"><p>${esc(t('うまく表示できませんでした。もう一度開くか、データを書き出してください'))}</p><div class="row"><button type="button" class="btn sm" data-gh="reload">${esc(t('再読み込み'))}</button><button type="button" class="btn sm" data-gh="export">${esc(t('データを書き出す'))}</button></div></section>`;
 }
+// 押したボタンを、押す前と同じ高さに戻す（文字の大きさを変えたときなど、上の行が伸びて押したボタンが下のタブの裏に隠れないように）
+function keepPressed(sel, y0){
+    const b = document.querySelector(sel); if (!b) return;
+    const nv = document.querySelector('nav.tabs'), navTop = nv && nv.offsetHeight ? nv.getBoundingClientRect().top : window.innerHeight;
+    let d = b.getBoundingClientRect().top - y0;
+    const r = b.getBoundingClientRect(), over = (r.bottom - d) - (navTop - 12);
+    if (over > 0) d += over;
+    if (Math.abs(d) > 0.5) window.scrollBy(0, d);
+    try{ b.focus({preventScroll:true}); }catch(e){}
+}
+// 入力例（placeholder）が欄の幅に収まらないとき: 欄の中は「（」より前だけにして、全文を欄の下に出す（途中で … と切れて例が読めないのを防ぐ）
+let phCanvas = null;
+function fitPlaceholders(root){
+    if (!root) return;
+    root.querySelectorAll('.ph-ex[data-ph-for]').forEach(n => n.remove());
+    root.querySelectorAll('input[placeholder]:not([type=number]):not([type=date]):not([type=time]), input[data-ph-full]').forEach((el, i) => {
+        const full = el.dataset.phFull || el.getAttribute('placeholder') || ''; if (!full) return;
+        el.setAttribute('placeholder', full);
+        const w = el.clientWidth; if (!w) return;
+        const cs = getComputedStyle(el), avail = w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
+        phCanvas = phCanvas || document.createElement('canvas'); const cx = phCanvas.getContext('2d');
+        cx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+        if (cx.measureText(full).width <= avail){ delete el.dataset.phFull; return; }
+        el.dataset.phFull = full;
+        const m = full.match(/^(.*?)\s*[（(]\s*(.+?)\s*[）)]\s*$/);
+        el.setAttribute('placeholder', m && m[1] ? m[1] : '');
+        const id = 'phx-' + (el.id || el.className.replace(/\W+/g, '') || 'in') + '-' + i;
+        const note = document.createElement('p'); note.className = 'ph-ex'; note.id = id; note.dataset.phFor = '1'; note.textContent = m && m[1] ? m[2] : full;
+        const box = el.closest('.inputbar,.stock-add,.spend-row,.shop-add') || el;
+        box.insertAdjacentElement('afterend', note);
+        el.setAttribute('aria-describedby', id);
+    });
+}
+document.addEventListener('toggle', e => { if (e.target && e.target.tagName === 'DETAILS' && e.target.open) guard('ph', () => fitPlaceholders(e.target)); }, true);   // 畳んだ欄を開いたとき
+{ let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
 function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
 const renderFail = new Set();
 const VIEWS = {today: () => viewToday(), cook: () => viewCook(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), log: () => viewLog(), settings: () => viewSettings()};
@@ -2991,6 +3069,7 @@ function render(){
         catch(e){ failed = true; html = failedView(tab, e); }
     }
     if (html !== null) v.innerHTML = html;
+    guard('ph', () => fitPlaceholders(v));
     if (failed) GH.shown.view = 1; else if (GH.shown.view || GH.shown.fatal){ delete GH.shown.view; GH.clear('fatal'); }
     if (fk && !sheet && !modalId) guard('focus', () => { const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); });
     if (keep) guard('release', () => releaseView(v, keep));
@@ -7064,7 +7143,7 @@ function viewFridge(){
         <div class="card">
         <form class="inputbar search" data-form="search" role="search">
             <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] && RECIPES[0].name.length <= 14 ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
-            <button class="btn primary" type="submit">${esc(t('さがす'))}</button>
+            <button class="btn" type="submit">${esc(t('さがす'))}</button>
             ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
         </form>
         <div id="search-results">${searchResultsHtml(session.search || '')}</div>
@@ -8479,7 +8558,7 @@ document.addEventListener('click', e => {
         case 'left-clean': { const old = S.leftovers.filter(x => leftDay(x) >= 4); if (old.length){ S.leftovers = S.leftovers.filter(x => leftDay(x) < 4); save(); render(); toast(t('消しました'), false, () => { S.leftovers = S.leftovers.concat(old); save(); render(); }); } break; }
         case 'left-done': { const [id, d] = String(el.dataset.i).split('|'); const i = S.leftovers.findIndex(x => String(x.id) === id && x.d === d); if (i >= 0){ const was = S.leftovers.splice(i, 1)[0]; save(); render(); toast(t('消しました'), false, () => { S.leftovers.push(was); save(); render(); }); } break; }
         case 'spend-del': { const i = S.spend.findIndex(x => x.id === el.dataset.i); if (i >= 0){ const was = S.spend.splice(i, 1)[0]; session.spendOpen = true; save(); render(); toast(t('消しました'), false, () => { S.spend.push(was); save(); render(); }); } break; }
-        case 'text-size': { const v = Number(el.dataset.v); if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); break; }
+        case 'text-size': { const v = Number(el.dataset.v), y0 = el.getBoundingClientRect().top; if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); keepPressed(`[data-act="text-size"][data-v="${v}"]`, y0); break; }
         case 'eat-clear': S.settings.dinnerAt = null; session.eatOpen = true; save(); render(); break;
         case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
         case 'share-cook': openShare('cook'); break;
