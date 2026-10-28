@@ -83,13 +83,13 @@
 
 ### 作業の決まり
 
-- 各自、自分のブランチで描く。盛りつけは `dishes/<名前>_r2.mjs` にまとめて書き、元のファイルの同じ ID は採用が決まるまで消さない。
-- 試しの build は `--no-manifest` で行う。
+- 各自、自分のブランチで描く。盛りつけは `tools/illustrations/draw/r2/<名前>_r2.mjs`（dishes/ と同じ形の `export default { id: p => ... }`）にまとめて書く。dishes/ に置くと本体の同じ ID と重なって build.mjs が止まるため、採用が決まるまで dishes/ には入れない。
+- 書き出しは `node tools/illustrations/draw/r2/render_r2.mjs <案のファイル> <出力フォルダ> [id ...]`。gohancho/img/dish と manifest には触らない。svg・512px・192px と、96px の確認画像（明るい背景・暗い背景）を出す。`PAIRS` を書けば明るさの比も出る。各自の render_r2.mjs は、統合のときに1本にまとめる。
 - 提出物:
   - 置き場所: scratchpad/meeting/illust_r2/<名前>/
   - `<id>.svg`、`<id>.png`（512px）、`<id>_s.png`（192px）
   - `notes.md`（1品1〜2行で「何を直したか」と「材料の照合」）
-- 提出前に、2章の「基準（守ること）」の1〜8を自分で確かめる。
+- 提出前に、2章の「基準（守ること）」の1〜8を自分で確かめる。小さい表示の判定は 96px で行う。
 - 他の人の案は、審査が終わるまで見ない。
 
 ### 審査（第1回と同じ）
