@@ -15,7 +15,7 @@ const { chromium } = require(execSync('npm root -g').toString().trim() + '/playw
 const { SEED, rngScript, seedFor } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let fails = 0, opened = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 async function open(cc = 'JP', settings = {}, store = {}){

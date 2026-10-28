@@ -14,7 +14,7 @@ const ORIGIN = new URL(URL_).origin;
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
 // 偽の写真（1x1 の PNG ではなく、縮小処理を通る小さな JPEG 相当の PNG を canvas で作らず、固定バイト列）
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFUlEQVR4nGP8z8Dwn4EIwESMolGFqAIAwYsBDxm3ZzoAAAAASUVORK5CYII=', 'base64');
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let fails = 0; const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
 const MOCK = {
     ok: `window.Capacitor = {Plugins:{FridgeVision:{calls:0, classify: async (o) => { window.__fvCalls = (window.__fvCalls||0)+1; window.__fvImg = typeof o.image === 'string' && o.image.length > 20;

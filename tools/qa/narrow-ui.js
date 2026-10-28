@@ -12,7 +12,7 @@
 const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
 const fs = require('fs'), path = require('path');
 const BASE = process.env.BASE || 'http://localhost:8765/';
-const EXE = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const EXE = process.env.CHROME;
 const quick = process.argv.includes('--quick');
 const ALL = 'ar,de,en,es,fil,fr,hi,id,it,ko,pl,pt-BR,th,tr,vi,zh-Hans,zh-Hant,ja'.split(',');
 const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : quick ? ['ja', 'en', 'de', 'fil'] : ALL;
@@ -25,7 +25,7 @@ let ng = 0, ok = 0; const bad = m => { ng++; console.log('NG', m); }; const chk 
   for (const w of ['"Southeast Asian"', '"Allergy"', '"Privacy Policy"', '"Terms of Use"', '"Southeast Asian-style"']) chk(!fil.includes(': ' + w), `fil に英語のまま: ${w}`);
   for (const l of ['fr', 'es', 'pt-BR']) chk(!new RegExp('"合計 \\{n\\}分": "Total \\{n\\} min"').test(fs.readFileSync(path.join(__dirname, `../../gohancho/i18n/${l}.js`), 'utf8')), `${l}: 「合計 {n}分」が英語の語順のまま`);
 
-  const b = await chromium.launch({executablePath: EXE});
+  const b = await chromium.launch(EXE ? { executablePath: EXE } : {});
   for (const l of LANGS) for (const ts of SIZES) {
     const tag = `320 ${l} ts${ts}`;
     const ctx = await b.newContext({viewport: {width: 320, height: 700}}); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());

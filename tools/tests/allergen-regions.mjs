@@ -48,7 +48,7 @@ const OBV = {
 const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|peanut butter|butternut|cocoa butter|oyster mushroom|oyster crackers|eggplant|water chestnut|rice wine|shaoxing|mustard (?:greens?|leaf|leaves)|ビーフン|ココナッツ|たまねぎ|玉ねぎ|tomatillo/i;
 const ALL = Object.keys(EXP);
 const CCS = (process.env.CCS || ALL.join(',')).split(',').filter(Boolean);
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let fails = 0, opened = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 async function open(cc, settings = {}){
