@@ -31,7 +31,8 @@ if (jobs > 1 && !process.env.LS_CHILD) {   // 国ごとに分けて並列に走�
 const INJECT = () => {
   window.__swapDirect = true;   // 案2: かえるは候補のシートから選ぶ。このテストはその場で入れ替える
   window.__cls = 0; window.__shifts = [];
-  try { new PerformanceObserver(l => { for (const e of l.getEntries()) { window.__cls += e.value; window.__shifts.push({v: +e.value.toFixed(4), t: Math.round(e.startTime), src: (e.sources || []).slice(0, 3).map(s => (s.node && (s.node.className || s.node.nodeName)) + '').join('|')}); } }).observe({type: 'layout-shift', buffered: true}); } catch (e) {}
+  try { new PerformanceObserver(l => { for (const e of l.getEntries()) { if ((e.sources || []).length && e.sources.every(s => s.node && s.node.closest && s.node.closest('.toast'))) continue;   // 知らせ（画面に固定。レイアウトは押さない）だけが動いたものは数えない（位置の比べ方と同じ）
+ window.__cls += e.value; window.__shifts.push({v: +e.value.toFixed(4), t: Math.round(e.startTime), src: (e.sources || []).slice(0, 3).map(s => (s.node && (s.node.className || s.node.nodeName)) + '').join('|')}); } }).observe({type: 'layout-shift', buffered: true}); } catch (e) {}
   const keyOf = el => { const a = []; for (let n = el; n && n !== document.body; n = n.parentElement) { const p = n.parentElement; a.push(n.tagName + (p ? ':' + [...p.children].indexOf(n) : '')); } return a.reverse().join('>'); };
   window.__keyOf = keyOf;
   window.__snap = () => {
@@ -139,6 +140,12 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       for (let rep = 0; rep < 2; rep++) for (let k = 0; k < nBtn; k++) {
         await act('かえる', 'reroll', k, 'press:.spot', rep === 1 ? 'btn' : 0);
       }
+      // ⚠ アレルゲンの行がある献立（決めたあとにアレルゲンを足したときなど。安全第4回）: かえるで、ほかの料理が動かない。⚠ の料理をかえて行が消えても、まわりが動かない
+      const algOn = await p.evaluate(() => { const m = session.menu; if (!m) return false;
+        for (const id of ['egg', 'milk', 'wheat', 'soy', 'fish', 'shrimp', 'pork', 'chicken', 'beef', 'sesame']){ const hit = m.items.filter(x => x.r && algSelectedHits(x.r, [id]).length).length; if (hit && hit < m.items.filter(x => x.r).length){ S.settings.allergens = [id]; render(); return !!document.querySelector('.tray .alg-tag'); } }
+        return false; });
+      if (algOn) { await p.waitForTimeout(300); for (let k = 0; k < nBtn; k++) await act('かえる（⚠アレルゲンの行あり）', 'reroll', k, 'press:.spot', 0); }
+      await p.evaluate(() => { S.settings.allergens = []; render(); }); await p.waitForTimeout(200);
       // 主食
       if (await p.evaluate(() => !!document.querySelector('[data-act="staple-next"]'))) for (let i = 0; i < 2; i++) await act('主食かえる', 'sel', '[data-act="staple-next"]', 'press:.spot', 'btn');
       await p.evaluate(() => { S.condOpen = true; render(); }); await p.waitForTimeout(200);

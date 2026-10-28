@@ -538,6 +538,64 @@ for (let run = 0; run < 6; run++){
     ok(r7.dbl === 0, 'S7 チップに ✓ が二重に並ばない');
     await ctx.close();
 }
+// ---------- 17) 安全第4回: えび以外の魚介（貝・いか・たこ・魚の切り身）の置き換え ----------
+// 置き換えた料理・主役を替えた案（ひとひねり）の手順に、元の食材の名前と、魚介だけの下ごしらえ（殻が開いたら身と蒸し汁に分ける・砂抜き・うろこ…）が残らない。
+// 分量は元の重さ（尾・切れ・缶・杯のまま肉にしない）。各国の料理は手順の言語が多く直しきれないので、魚介は置き換えない（出さない）
+{
+    const SEA_CHECK = () => {
+        const sea = i => inFam('shellfish', i) || inFam('fish', i);
+        const JA = /殻|砂抜|背わた|うろこ|内臓|軟骨|墨|吸盤|開いたら|開くまで|開かない|蒸し汁|中骨|小骨|腹側|身の側/, EN = /\b(?:shells?|devein\w*|veins?|tails?|belly|scales?|gills?|ink|tentacles?|beards?|grit)\b/i;
+        const strip = x => String(x || '').replace(/[（(][^）)]*[）)]/g, '').trim();
+        const jaRe = w => new RegExp((/^[ぁ-ん]/.test(w) ? '(?<!(?![とのはをにでやもがへ])[ぁ-ん])' : '') + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const left = (steps, from, to) => {
+            const out = [];
+            steps.forEach(txt => {
+                const ja = /[ぁ-ん]/.test(txt), toN = [to.name, to.label, to.jp].filter(Boolean).map(x => strip(x).toLowerCase());
+                const fw = ja ? [from.jp, from.name, from.label].map(strip).filter(w => /[ぁ-ん一-龠ァ-ヶ]/.test(w) && w.length >= 2) : strip(from.label).toLowerCase().split(/[^a-z]+/).filter(w => w.length >= 3 && !/^(?:fillets?|fresh|raw|peeled|large|small|whole|frozen|manila|with|and)$/.test(w));
+                fw.filter(w => !toN.some(n => n.includes(w.toLowerCase()))).forEach(w => { if ((ja ? jaRe(w) : new RegExp('\\b' + w.replace(/s$/, '') + '(?:e?s)?\\b', 'i')).test(txt)) out.push('「' + w + '」が残る: ' + txt.slice(0, 60)); });
+                if (!sea(to)) txt.split(ja ? '。' : /\.\s/).forEach(se => { if (toN.some(n => se.toLowerCase().includes(n)) && (ja ? JA : EN).test(se)) out.push('下ごしらえが残る: ' + se.slice(0, 60)); });
+            });
+            return out;
+        };
+        const bad = [], seen = new Set(); let n = 0;
+        RECIPES.forEach(r => (r.items || []).filter(i => sea(i) && !i.opt).forEach(i => {
+            for (const av of [[i.name], [i.key], ['@fish'], ['@shellfish']]){
+                S.settings.avoid = av; const s = swappedRecipe(r); if (!s || s === r || !s.swapped) continue;
+                const sw = s.swapped.swaps.filter(x => sea(x.from)); if (!sw.length) continue;
+                const k = r.id + '|' + sw.map(x => x.from.name + '>' + x.to.name).join(); if (seen.has(k)) continue; seen.add(k); n++;
+                if (r.pack){ bad.push(r.id + ': 各国の料理の魚介を置き換えている（' + sw.map(x => x.from.label + '→' + x.to.label).join('、') + '）'); continue; }
+                const steps = s.steps.map(x => typeof x === 'string' ? x : x.t);
+                sw.forEach(x => left(steps, x.from, x.to).forEach(m => bad.push(r.id + ': ' + m)));
+                s.items.filter(x => x.changed && sea({key: x.key, en: x.en}) === false && sw.some(y => y.from.name === x.from)).forEach(x => { if (!/\d\s*g$/.test(String(x.qty))) bad.push(r.id + ': 分量が重さでない（' + x.label + ' ' + x.qty + '）'); });
+            }
+        }));
+        S.settings.avoid = [];
+        // ひとひねりの「主役を替える」案（日本の料理だけ）
+        const tw = [];
+        if (currentCountry() === 'JP' && LANG === 'ja') RECIPES.filter(r => ['魚', '魚介'].includes(r.family)).forEach(r => twistOptions(r).swaps.forEach(k => {
+            const t0 = buildTwist(twistId(r.id, '', '', k)); if (!t0) return;
+            const from = r.items.find(i => i.key === r.protein), to = t0.items.find(i => i.changed); if (!from || !to) return;
+            left(t0.steps.map(x => x.t), from, to).forEach(m => tw.push(r.id + '(' + k + '): ' + m));
+            if (!sea(parseIng(to.name)) && !/\d\s*g$/.test(String(to.qty))) tw.push(r.id + '(' + k + '): 分量が重さでない（' + to.name + ' ' + to.qty + '）');
+        }));
+        return { n, bad, tw };
+    };
+    for (const [cc, ui] of [['JP', 'ja'], ['JP', 'en'], ['KR', 'ja'], ['KR', 'ko'], ['IT', 'it'], ['ES', 'ja'], ['ES', 'es'], ['PE', 'es'], ['EG', 'ar'], ['VN', 'vi'], ['TH', 'th'], ['ID', 'id'], ['GB', 'en'], ['PH', 'fil'], ['CN', 'zh-Hans'], ['US', 'en'], ['FR', 'fr']]){
+        const { ctx, p } = await open({ settings: { country: cc, dishCount: 3, uiLang: ui } });
+        await until(p, () => !!(PACK || currentCountry() === 'JP'));
+        const r = await p.evaluate(SEA_CHECK);
+        ok(!r.bad.length, `魚介の置き換え（${cc}/${ui}・${r.n}件）: 手順に元の食材・下ごしらえを残さない・分量は重さ: ` + r.bad.slice(0, 4).join(' | '));
+        ok(!r.tw.length, `ひとひねりの主役替え（${cc}/${ui}）: 手順に元の食材・下ごしらえを残さない・分量は重さ: ` + r.tw.slice(0, 4).join(' | '));
+        await ctx.close();
+    }
+    // クラムチャウダー（あさり → 鶏肉）: 「殻が開いたら身と蒸し汁に分ける」が残らない。分量はあさりの重さ（200g）。料理の詳しい画面でも
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, avoid: ['あさり'] } });
+    const c = await p.evaluate(() => { const s = swappedRecipe(byId('clamchowder')); const it = s.items.find(i => i.changed);
+        openModal('clamchowder'); const m = document.querySelector('#modal-root'); return { qty: it ? it.name + ' ' + it.qty : '(置き換えなし)', steps: s.steps.map(x => typeof x === 'string' ? x : x.t).join(' '), modal: m ? m.innerText : '' }; });
+    ok(/鶏/.test(c.qty) && /200\s*g/.test(c.qty), 'クラムチャウダーの置き換えの分量はあさりの重さ（200g）: ' + c.qty);
+    ok(!/殻|蒸し汁/.test(c.steps) && !/殻|蒸し汁/.test(c.modal), 'クラムチャウダーの手順に「殻が開いたら身と蒸し汁」が残らない: ' + c.steps.slice(0, 80));
+    await ctx.close();
+}
 await b.close();
 ok(errs.length === 0, 'ページのエラー: ' + errs.slice(0, 3).join(' | '));
 console.log(fails ? `NG ${fails}/${checks}` : `ALL OK ${checks} checks`);
