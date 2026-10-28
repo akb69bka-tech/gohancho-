@@ -7,6 +7,9 @@ import * as K from './kit.mjs';
 export { Pic } from './kit.mjs';
 export const { lt, dk, mix, rng, smooth, ring, f, T } = K;
 export const SY = .56, CZ = .82;
+const SY0 = SY;
+// 平たい器（平皿・楕円皿・長皿・角皿）だけは約49度: 楕円の縦 SYF 倍（.68 では 96px の塗りが46%、.75 で50%に届くため .75）。皿の返り値 o に sy: SYF が入り、at(o, …) はそれを使う
+export const SYF = .75;
 export const INDIGO = '#2c4c7c', SHADE = '#3a2212';
 export const FRAME = { cx: 100, w: 184 };   // 器の幅は 200 の約92%
 
@@ -24,7 +27,7 @@ export const dome = (p, c, l = .34, d = .3) => rg(p, [[0, lt(c, l)], [.55, c], [
 // ---------- 形 ----------
 export const eD = (cx, cy, rx, ry) => `M${f(cx - rx)},${f(cy)}A${f(rx)},${f(ry)} 0 1 0 ${f(cx + rx)},${f(cy)}A${f(rx)},${f(ry)} 0 1 0 ${f(cx - rx)},${f(cy)}Z`;
 // 面の座標 (u, v, 高さ z) → 画面。o は面の中心 { cx, cy }
-export const at = (o, u, v, z = 0) => [o.cx + u, o.cy + v * SY - z * CZ];
+export const at = (o, u, v, z = 0) => [o.cx + u, o.cy + v * (o.sy ?? SY) - z * CZ];
 // 不定形（平面に置いた形を縦につぶす）。sharp で角ばった多角形
 export function blob(x, y, rx, ry, seed, { n = 9, jit = .25, rot = 0, sharp = false, sy = 1 } = {}){
     const R = rng('blob' + seed), a0 = rot * Math.PI / 180;
@@ -36,8 +39,8 @@ export const byDepth = items => items.sort((a, b) => a[0] - b[0]).map(i => i[1](
 
 // ---------- 影 ----------
 // 接地の影（器の下）。広く薄い影＋真下の濃い芯。右下へずらす
-export function ground(p, cx, cy, rx, { op = 1, sy = .8 } = {}){
-    const ry = rx * SY * sy;
+export function ground(p, cx, cy, rx, { op = 1, sy = .8, k = SY } = {}){
+    const ry = rx * k * sy;
     return `<ellipse cx="${f(cx + 6)}" cy="${f(cy + 2)}" rx="${f(rx * 1.12)}" ry="${f(ry * 1.1)}" fill="${SHADE}" opacity="${f(.14 * op)}" ${blur(p, 4)}/>` +
         `<ellipse cx="${f(cx + 2)}" cy="${f(cy)}" rx="${f(rx * .92)}" ry="${f(ry * .75)}" fill="${SHADE}" opacity="${f(.28 * op)}" ${blur(p, 1.6)}/>`;
 }
@@ -50,7 +53,7 @@ export const dropOf = (p, d, dx = 1.8, dy = 2.4, op = .32, sd = 1.4) => `<path d
 // 器
 // =========================================================
 // 口の上面の藍: 'white' = 白い器（口の内側に藍の線 2.2）／ 'thin' = 漆・鋼・土鍋（細い藍の線 1.2）／ 'none' = 線なし（肉じゃがの鉢など今の絵が線なしのもの）
-function rimLine(cx, cy, rx, line){
+function rimLine(cx, cy, rx, line, SY = SY0){
     if (line === 'none') return '';
     const w = line === 'thin' ? 1.2 : 2.2, inset = line === 'thin' ? 1.4 : 2.2;
     return `<path d="${eD(cx, cy, rx - inset, (rx - inset) * SY)}" fill="none" stroke="${INDIGO}" stroke-width="${w}"/>`;
@@ -91,39 +94,42 @@ export const kobachi = (p, o = {}) => vessel(p, { cy: 84, rx: 92, h: 44, fx: 54,
 export const shiroBowl = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#f2eee4', line: 'white', gloss: .6, ...o });   // 白い鉢（洋のスープなど）
 
 // 平皿（白・藍の線）。中身は見込み（well）の上に置く。返り値の o は面の中心
-export function plate(p, { cx = 100, cy = 106, rx = 92, h = 12, well = .7, base = '#fbfaf6', line = 'white' } = {}){
+export function plate(p, { cx = 100, cy = 98, rx = 92, h = 22, well = .7, base = '#fbfaf6', line = 'white' } = {}){
+    const SY = SYF;
     const ry = rx * SY, fx = rx * .62, fy = fx * SY, by = cy + h, w = rx * well;
     const side = `M${f(cx - rx)},${f(cy)} C${f(cx - rx)},${f(cy + h)} ${f(cx - fx - 12)},${f(by + fy * .5)} ${f(cx - fx)},${f(by + fy * .55)} L${f(cx + fx)},${f(by + fy * .55)} C${f(cx + fx + 12)},${f(by + fy * .5)} ${f(cx + rx)},${f(cy + h)} ${f(cx + rx)},${f(cy)}Z`;
-    const s = ground(p, cx, by + fy * .45, rx * .78) +
+    const s = ground(p, cx, by + fy * .45, rx * .78, { k: SY }) +
         `<path d="${side}" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .22)]])}" stroke="${dk(base, .28)}" stroke-width=".6"/>` +
         `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .05)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
-        rimLine(cx, cy, rx - 2.2, line) +
+        rimLine(cx, cy, rx - 2.2, line, SY) +
         `<path d="${eD(cx, cy + 2, w, w * SY)}" fill="${lg(p, [[0, dk(base, .08)], [.35, base], [1, lt(base, .3)]], 0, 0, 0, 1)}"/>` +
         `<path d="M${f(cx - w)},${f(cy + 2)} A${f(w)},${f(w * SY)} 0 0 1 ${f(cx + w)},${f(cy + 2)}" stroke="${dk(base, .15)}" stroke-width="1.6" fill="none" opacity=".8"/>` +
         `<path d="M${f(cx - rx * .9)},${f(cy - ry * .4)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>`;
-    return { s, cx, cy: cy + 2, rx: w, ry: w * SY, o: { cx, cy: cy + 2 } };
+    return { s, cx, cy: cy + 2, rx: w, ry: w * SY, sy: SY, o: { cx, cy: cy + 2, sy: SY } };
 }
 // 楕円の皿（カレー・グラタン）: 面で rx × rz の楕円
-export function ovalPlate(p, { cx = 100, cy = 104, rx = 92, rz = 70, h = 10, well = .78, base = '#fbfaf6', line = 'white' } = {}){
+export function ovalPlate(p, { cx = 100, cy = 98, rx = 92, rz = 82, h = 20, well = .78, base = '#fbfaf6', line = 'white' } = {}){
+    const SY = SYF;
     const ry = rz * SY, wx = rx * well, wy = ry * well;
-    const s = ground(p, cx, cy + h + ry * .5, rx * .8) +
+    const s = ground(p, cx, cy + h + ry * .5, rx * .8, { k: SY }) +
         `<path d="M${f(cx - rx)},${f(cy)} L${f(cx - rx + 6)},${f(cy + h)} A${f(rx - 6)},${f(ry - 3)} 0 0 0 ${f(cx + rx - 6)},${f(cy + h)} L${f(cx + rx)},${f(cy)}Z" fill="${lg(p, [[0, lt(base, .1)], [.6, dk(base, .08)], [1, dk(base, .22)]])}"/>` +
         `<path d="${eD(cx, cy, rx, ry)}" fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .05)]])}" stroke="${dk(base, .2)}" stroke-width=".6"/>` +
         (line === 'none' ? '' : `<path d="${eD(cx, cy, rx - 4, ry - 2.4)}" fill="none" stroke="${INDIGO}" stroke-width="2"/>`) +
         `<path d="${eD(cx, cy + 2, wx, wy)}" fill="${lg(p, [[0, dk(base, .1)], [.35, base], [1, lt(base, .3)]], 0, 0, 0, 1)}"/>`;
-    return { s, cx, cy: cy + 2, rx: wx, ry: wy, o: { cx, cy: cy + 2 } };
+    return { s, cx, cy: cy + 2, rx: wx, ry: wy, sy: SY, o: { cx, cy: cy + 2, sy: SY } };
 }
 // 長皿・角皿（焼き魚・香の物）: 面で w × d の角丸の板。面の座標で描いて縦につぶす
-export function slabPlate(p, { cx = 100, cy = 104, w = 184, d = 120, r = 18, h = 8, base = '#f4f1ea', line = 'white' } = {}){
+export function slabPlate(p, { cx = 100, cy = 98, w = 184, d = 136, r = 18, h = 16, base = '#f4f1ea', line = 'white' } = {}){
+    const SY = SYF;
     const rect = (ww, dd, rr) => `<rect x="${f(-ww / 2)}" y="${f(-dd / 2)}" width="${f(ww)}" height="${f(dd)}" rx="${f(rr)}"/>`;
     const tr = (y) => `transform="translate(${cx} ${f(y)}) scale(1 ${SY})"`;
-    const s = ground(p, cx, cy + h + d * SY * .32, w * .46, { sy: .6 }) +
+    const s = ground(p, cx, cy + h + d * SY * .32, w * .46, { sy: .6 , k: SY }) +
         `<g ${tr(cy + h)} fill="${dk(base, .22)}">${rect(w - 4, d - 4, r)}</g>` +
         `<g ${tr(cy + h * .5)} fill="${dk(base, .1)}">${rect(w - 2, d - 2, r)}</g>` +
         `<g ${tr(cy)} fill="${lg(p, [[0, lt(base, .4)], [1, dk(base, .06)]], 0, 0, 1, 1)}" stroke="${dk(base, .2)}" stroke-width=".8" vector-effect="non-scaling-stroke">${rect(w, d, r)}</g>` +
         (line === 'none' ? '' : `<g ${tr(cy)} fill="none" stroke="${INDIGO}" stroke-width="2" vector-effect="non-scaling-stroke">${rect(w - 9, d - 9, r - 4)}</g>`) +
         `<g ${tr(cy + 1.5)} fill="${lg(p, [[0, dk(base, .08)], [.3, base], [1, lt(base, .2)]], 0, 0, 0, 1)}">${rect(w - 22, d - 22, r - 8)}</g>`;
-    return { s, cx, cy: cy + 1.5, o: { cx, cy: cy + 1.5 } };
+    return { s, cx, cy: cy + 1.5, sy: SY, o: { cx, cy: cy + 1.5, sy: SY } };
 }
 // 浅い鍋（パエリア鍋・フライパン）: 鋼の色。取っ手 2つ（handles: 'loop' = 両側の輪／'long' = 右に長い柄）
 export function pan(p, { cx = 100, cy = 100, rx = 84, h = 13, outer = '#9ea3aa', lip = '#b4b9bf', inner = '#8a9097', handles = 'loop', handleC = '#d2402c' } = {}){
@@ -217,7 +223,7 @@ export function greensMound(p, cx, cy, rx, H, c = '#3d7d2a', seed = 1, { n = 16,
     return cast(p, cx, cy + 2, rx * 1.05, rx * SY * .7, .3) + byDepth(it);
 }
 // 千切りの山（キャベツ・大根・ごぼう）: 江口の描き方を一般化。colors = [明るい, ふつう, 暗い]
-export function shredMound(p, cx, cy, rx, H, colors = ['#f4f8e4', '#cfe3a2', '#a9c87a'], seed = 1, { n = 150, w = 1.5 } = {}){
+export function shredMound(p, cx, cy, rx, H, colors = ['#f4f8e4', '#cfe3a2', '#a9c87a'], seed = 1, { n = 150, w = 1.5, sy: SY = SY0 } = {}){
     const R = rng('sm' + seed), ry = rx * SY, pts = [];
     for (let i = 0; i < n; i++){ const a = R() * 6.283, d = Math.sqrt(R()), u = Math.cos(a) * d, v = Math.sin(a) * d; pts.push([cx + u * rx, cy + v * ry - H * Math.pow(1 - d * d, .7), v, u]); }
     pts.sort((a, b) => a[2] - b[2]);
@@ -272,7 +278,7 @@ export function thick(p, dy = 2, c = '#6a3a18', k = .7){
 // 平皿の肉（基準）: kit.mjs の porkSlice を縦に sq 倍につぶし、thick で厚み。opt は porkSlice の設定（c・fat・seed・gloss・bend・char）
 export const slice3q = (p, x, y, s, r, opt, { th = 2, tc = '#6a3a18', sq = .6 } = {}) => `<g ${thick(p, th, tc, .8)}><g transform="translate(${f(x)} ${f(y)}) scale(1 ${sq})">${K.porkSlice(p, 0, 0, s, r, opt)}</g></g>`;
 // たれだまり（平皿）: 中心が明るく縁が濃い面、左上に照り
-export function tarePool(p, cx, cy, rx, c = '#94521c', seed = 'tare'){
+export function tarePool(p, cx, cy, rx, c = '#94521c', seed = 'tare', { sy: SY = SY0 } = {}){
     return `<path d="${smooth(ring(rx, 10, .2, rng(seed), 1, SY * 1.05))}" transform="translate(${f(cx)} ${f(cy)})" fill="${rg(p, [[0, lt(c, .3)], [.6, c], [1, dk(c, .35)]], .4, .36, .6)}" opacity=".92"/>
         <path d="M${f(cx - rx * .78)},${f(cy - 2)} Q${f(cx - rx * .48)},${f(cy - rx * SY * .5)} ${f(cx - rx * .09)},${f(cy - rx * SY * .55)}" stroke="#ffd9a0" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>`;
 }
@@ -302,4 +308,92 @@ export function prawn3q(p, x, y, s, rot = 0, flip = 1, { c = '#f2743e', line = '
         `<path d="M${f(hx)},${f(hy + s * .06)} C${f(hx - s * .36)},${f(hy + s * .2)} ${f(hx - s * .44)},${f(hy - s * .3)} ${f(hx - s * .3)},${f(hy - s * .52)}" stroke="${deep}" stroke-width=".8" fill="none"/>`;
     const carapace = `<path d="M${f(off(.02, 1)[0])},${f(off(.02, 1)[1])} Q${f(cx2)},${f(cy2 + s * .02)} ${f(off(.3, -1)[0])},${f(off(.3, -1)[1])}" stroke="${dk(c, .2)}" stroke-width="1" fill="none" opacity=".8"/>`;
     return `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(${flip} 1)"><path d="${body}" fill="${SHADE}" opacity=".3" transform="translate(2 4)" ${blur(p, 1.4)}/>${legs}${tail}<path d="${body}" fill="${lg(p, [[0, lt(c, .45)], [.45, c], [1, dk(c, .2)]], 0, 0, 0, 1)}" stroke="${line}" stroke-width=".8" stroke-linejoin="round"/>${seg}${carapace}<path d="${back}" stroke="${lt(c, .62)}" stroke-width="${f(s * .05)}" fill="none" stroke-linecap="round" opacity=".85"/>${head}</g>`;
+}
+
+// =========================================================
+// 江口の共通の形（eguchi.mjs fbb778c から中身・引数そのままで移した。cyl には sy を足した）
+// =========================================================
+// 面の座標の多角形を、中心が (0,0) になるようにずらす
+export const centered = pts => { const cx = pts.reduce((a, q) => a + q[0], 0) / pts.length, cy = pts.reduce((a, q) => a + q[1], 0) / pts.length; return pts.map(([u, v]) => [u - cx, v - cy]); };
+export const arcPts = (r, a0, a1, n = 8, withCenter = true) => { const pts = Array.from({ length: n + 1 }, (_, i) => { const a = (a0 + (a1 - a0) * i / n) * Math.PI / 180; return [Math.cos(a) * r, Math.sin(a) * r]; }); return centered(withCenter ? [[0, 0], ...pts] : pts); };
+// kit3q の glossLump の色ちがい（染みる煮汁の色 soak と強さ k、つぶれ sy、照り hi を変えられる。里芋・鶏肉など）
+export function soakLump(p, x, y, s, seed, { c = '#ecc77c', soak = '#b9853f', k = .45, sy = .82, hi = .7 } = {}){
+    const R = rng(p.id + 'gl' + seed);
+    const d = smooth(ring(s / 2, 7, .28, R, 1.08, sy, R()), true, .6);
+    return cast(p, x, y + s * .3, s * .5, s * .16, .35) + `<g ${T(x, y)}>
+        <path d="${d}" fill="${rg(p, [[0, lt(c, .4)], [.55, c], [.85, mix(c, soak, k)], [1, dk(c, .35)]], .36, .3, .72)}" stroke="${dk(c, .32)}" stroke-width=".8"/>
+        <path d="M${f(-s * .3)},${f(-s * .12)} Q${f(-s * .18)},${f(-s * .34)} ${f(s * .08)},${f(-s * .34)}" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="${hi}"/>
+        <ellipse cx="${f(-s * .14)}" cy="${f(-s * .2)}" rx="${f(s * .06)}" ry="${f(s * .035)}" fill="#fff" opacity="${f(hi + .15)}"/></g>`;
+}
+// 円柱（大根・にんじんの輪切り、餅など）: 半径 r、厚み h
+export function cyl(p, x, y, r, h, c, liq, { top = null, rimC = null, sy = SY } = {}){
+    const ry = r * sy, H = h * CZ;
+    return (liq ? '' : cast(p, x, y + ry * .5, r * 1.05, ry * .7, .3)) +
+        `<path d="M${f(x - r)},${f(y - H)} L${f(x - r)},${f(y)} A${f(r)},${f(ry)} 0 0 0 ${f(x + r)},${f(y)} L${f(x + r)},${f(y - H)}Z" fill="${lg(p, [[0, lt(c, .1)], [.5, c], [1, dk(c, .3)]])}" stroke="${dk(c, .4)}" stroke-width=".5"/>` +
+        (liq ? `<path d="M${f(x - r)},${f(y - H * .4)} A${f(r)},${f(ry)} 0 0 0 ${f(x + r)},${f(y - H * .4)} L${f(x + r)},${f(y + .5)} A${f(r)},${f(ry)} 0 0 1 ${f(x - r)},${f(y + .5)}Z" fill="${liq}" opacity=".5"/>` : '') +
+        `<ellipse cx="${f(x)}" cy="${f(y - H)}" rx="${f(r)}" ry="${f(ry)}" fill="${top || lit(p, c, .35, .1)}" stroke="${rimC || dk(c, .35)}" stroke-width=".6"/>`;
+}
+// いちょう切り・半月切り（大根・にんじん）
+export const icho = (p, x, y, s, rot, c, liq, h = 2.6) => prism(p, x, y, arcPts(s, 0, 90, 6), h, c, { rot, sink: liq ? 1 : 0, liquid: liq, top: lit(p, c, .35, .12) });
+export const hangetsu = (p, x, y, s, rot, c, liq, { h = 2.6, top = null } = {}) => prism(p, x, y, arcPts(s, 0, 180, 9), h, c, { rot, sink: liq ? 1 : 0, liquid: liq, top: top || lit(p, c, .35, .12) });
+// 二枚貝（あさり・しじみ）: ひらいた殻を面に寝かせ、片方に身。殻の外側の縞が見える縁を太く
+export const ASARI = { shell: '#c8b8a0', band: '#6e5e4c', inner: '#f4ede4', meat: '#eaa878' };
+export const SHIJIMI = { shell: '#6e6048', band: '#3e3426', inner: '#d4c8cc', meat: '#dca070' };
+export function clam(p, x, y, s, rot, o = {}){
+    const { band, inner, meat, seed = 1 } = { ...ASARI, ...o };
+    const valve = `M0,0 C${f(-s * .58)},${f(-s * .1)} ${f(-s * .64)},${f(-s * .8)} 0,${f(-s * .84)} C${f(s * .64)},${f(-s * .8)} ${f(s * .58)},${f(-s * .1)} 0,0Z`;
+    const one = (a, withMeat) => `<g transform="rotate(${a})"><path d="${valve}" fill="${band}" stroke="${dk(band, .3)}" stroke-width=".6"/>
+        <path d="${valve}" transform="translate(0 ${f(-s * .1)}) scale(.7)" fill="${lg(p, [[0, '#fff'], [1, inner]], 0, 0, 1, 1)}"/>
+        ${withMeat ? `<ellipse cx="0" cy="${f(-s * .42)}" rx="${f(s * .3)}" ry="${f(s * .24)}" fill="${dome(p, meat, .35, .3)}" stroke="${dk(meat, .35)}" stroke-width=".5"/><ellipse cx="${f(-s * .1)}" cy="${f(-s * .5)}" rx="${f(s * .08)}" ry="${f(s * .04)}" fill="#fff" opacity=".8"/>` : ''}</g>`;
+    const flip = rng(p.id + 'cl' + seed)() < .5;
+    return cast(p, x, y + 2, s * .75, s * .22, .32) + `<g transform="translate(${f(x)} ${f(y + s * .22)}) scale(1 ${f(SY * 1.3)}) rotate(${f(rot % 60 - 30)})">${one(-64, flip)}${one(64, !flip)}</g>`;
+}
+// 閉じた殻（外側の縞と模様）
+export function shut(p, x, y, s, rot, seed, o = {}){
+    const { shell, band } = { ...ASARI, ...o };
+    const d = `M0,${f(s * .36)} C${f(-s * .6)},${f(s * .34)} ${f(-s * .56)},${f(-s * .2)} ${f(-s * .1)},${f(-s * .38)} Q0,${f(-s * .44)} ${f(s * .1)},${f(-s * .38)} C${f(s * .56)},${f(-s * .2)} ${f(s * .6)},${f(s * .34)} 0,${f(s * .36)}Z`;
+    const R = rng(p.id + 'sh' + seed);
+    let pat = '';
+    for (let i = 1; i <= 3; i++) pat += `<path d="M${f(-s * .5 * i / 3.4)},${f(s * .3 - s * .5 * i / 3.4)} Q0,${f(-s * .38 * i / 3)} ${f(s * .5 * i / 3.4)},${f(s * .3 - s * .5 * i / 3.4)}" stroke="${band}" stroke-width=".9" fill="none" opacity=".8" transform="translate(0 ${f(s * .5 * (1 - i / 3) * .4)})"/>`;
+    for (let i = 0; i < 7; i++) pat += `<path d="M${f((R() - .5) * s * .5)},${f((R() - .3) * s * .3)} l${f(s * .08)},${f(-s * .1)} l${f(s * .08)},${f(s * .1)}" stroke="${dk(band, .2)}" stroke-width=".8" fill="none" opacity=".7"/>`;
+    return cast(p, x, y + 2, s * .55, s * .2, .32) + `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot % 50 - 25)}) scale(1 .78)"><path d="${d}" fill="${dome(p, shell, .3, .35)}" stroke="${dk(band, .3)}" stroke-width=".7"/>${pat}<path d="M${f(-s * .3)},${f(-s * .1)} Q${f(-s * .2)},${f(-s * .28)} 0,${f(-s * .3)}" stroke="#fff" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// 汁の面の質感 ---------------------------------------------------
+// 味噌の雲（汁の中で沈みかけた味噌の対流）: ぼかした明るい塊と、やや濃い筋
+export function misoCloud(p, S, c, seed = 1, op = .5){
+    const R = rng(p.id + 'mc' + seed);
+    const blobs = Array.from({ length: 7 }, (_, i) => { const a = i / 7 * 6.283 + R(), d = S.rx * (.2 + R() * .45); return `<ellipse cx="${f(S.cx + Math.cos(a) * d)}" cy="${f(S.cy + Math.sin(a) * d * SY)}" rx="${f(10 + R() * 10)}" ry="${f(5 + R() * 4)}" fill="${lt(c, .3)}" opacity="${op}"/>`; }).join('');
+    return `<g ${S.inside}><g ${blur(p, 4)}>${blobs}</g>
+        <path d="M${f(S.cx - S.rx * .65)},${f(S.cy + 6)} Q${f(S.cx - S.rx * .35)},${f(S.cy - 4)} ${f(S.cx - 4)},${f(S.cy + 4)} T${f(S.cx + S.rx * .6)},${f(S.cy + 2)}" stroke="${dk(c, .18)}" stroke-width="2.4" fill="none" opacity=".3"/>
+        <path d="M${f(S.cx - S.rx * .45)},${f(S.cy + 20)} Q${f(S.cx - 4)},${f(S.cy + 11)} ${f(S.cx + S.rx * .45)},${f(S.cy + 20)}" stroke="${lt(c, .3)}" stroke-width="3" fill="none" opacity=".4"/></g>`;
+}
+// ポタージュのとろみ（面にうっすら残るうねり）と、クリームのうず（r2 の描き方を斜めに）
+export function velvet(p, S, c, op = .35){
+    const { cx, cy, rx } = S, ry = rx * SY;
+    return `<g ${S.inside}><path d="M${f(cx - rx * .55)},${f(cy + ry * .25)} Q${f(cx - rx * .1)},${f(cy + ry * .05)} ${f(cx + rx * .25)},${f(cy + ry * .3)} T${f(cx + rx * .6)},${f(cy + ry * .2)}" stroke="${lt(c, .4)}" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="${op}"/>
+        <path d="M${f(cx - rx * .35)},${f(cy + ry * .55)} Q${f(cx)},${f(cy + ry * .4)} ${f(cx + rx * .35)},${f(cy + ry * .56)}" stroke="${dk(c, .12)}" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="${f(op * .7)}"/></g>`;
+}
+export function swirl(cx, cy, R, { c = '#fffdf6', w = 3, turns = 1.5, op = .95 } = {}){
+    let d = '';
+    for (let i = 0; i <= 40; i++){ const t = i / 40, a = t * turns * 6.283 - 1.2, rr = R * (.15 + .85 * t); d += `${i ? 'L' : 'M'}${f(cx + Math.cos(a) * rr)},${f(cy + Math.sin(a) * rr * SY)}`; }
+    return `<path d="${d}" stroke="#b8a888" stroke-width="${w + 1}" fill="none" stroke-linecap="round" opacity=".25" transform="translate(.8 1.2)"/><path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity="${op}"/>`;
+}
+// 溶き卵（汁にふわりと広がる黄色）
+export function eggRibbon(p, x, y, s, seed){
+    const R = rng(p.id + 'eg' + seed);
+    const d = smooth(ring(s / 2, 11, .55, R, 1.3, SY * .9), true, 1);
+    return `<path d="${d}" transform="translate(${f(x)} ${f(y + 1)})" fill="#e8b830" opacity=".45"/><path d="${d}" transform="translate(${f(x)} ${f(y)})" fill="${lit(p, '#f8d860', .35, .1)}" stroke="#e0b030" stroke-width=".6"/>
+        <path d="M${f(x - s * .3)},${f(y - 1)} Q${f(x - s * .1)},${f(y - s * .2)} ${f(x + s * .2)},${f(y - s * .12)}" stroke="#fffbe0" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".9"/>
+        <path d="${smooth(ring(s / 5, 7, .5, R, 1.3, SY))}" transform="translate(${f(x + s * .15)} ${f(y + 1)})" fill="#fbf6e6" opacity=".9"/>`;
+}
+// ---------- 副菜の煮物 ----------
+// 細いものの山（ひじき・切り干し大根）: 中心が高いドームに短い線を重ねる
+export function strandMound(p, cx, cy, rx, H, cols, seed, { n = 160, L = 9, w = 1.8 } = {}){
+    const R = rng(p.id + 'stm' + seed), ry = rx * SY, pts = [];
+    for (let i = 0; i < n; i++){ const a = R() * 6.283, d = Math.sqrt(R()), u = Math.cos(a) * d, v = Math.sin(a) * d; pts.push([cx + u * rx, cy + v * ry - H * Math.pow(1 - d * d, .7), v, u]); }
+    pts.sort((a, b) => a[2] - b[2]);
+    const base = `<path d="M${f(cx - rx)},${f(cy)} Q${f(cx - rx * .5)},${f(cy - H * 1.3)} ${f(cx)},${f(cy - H * 1.05)} Q${f(cx + rx * .5)},${f(cy - H * 1.3)} ${f(cx + rx)},${f(cy)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx)},${f(cy)}Z" fill="${rg(p, [[0, cols[1]], [1, dk(cols[1], .3)]], .36, .3, .8)}"/>`;
+    let o = '';
+    for (const [x, y, v, u] of pts){ const c = cols[Math.floor(R() * cols.length)], ll = L * (.6 + R() * .7), bend = (R() - .5) * 4; o += `<g ${T(x, y, R() * 180)}><path d="M${f(-ll / 2)},0 Q0,${f(bend)} ${f(ll / 2)},0" stroke="${dk(c, .35)}" stroke-width="${f(w + .9)}" fill="none" stroke-linecap="round" opacity=".55"/><path d="M${f(-ll / 2)},0 Q0,${f(bend)} ${f(ll / 2)},0" stroke="${(-u - v) > .3 ? lt(c, .25) : c}" stroke-width="${w}" fill="none" stroke-linecap="round"/></g>`; }
+    return cast(p, cx, cy + ry * .4, rx * 1.02, ry * .6, .3) + base + o;
 }
