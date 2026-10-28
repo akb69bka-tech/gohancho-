@@ -204,7 +204,7 @@ a{color:var(--accent)}
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
 .chip.have{background:var(--accent-soft);border-color:transparent}
-.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}
+.loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}.stock-q{font-size:.9em}.stock-q.over{color:var(--warn,#b3261e)}.stock-add{margin-top:8px;align-items:center;gap:.4rem}.stock-add input{min-width:0;max-width:100%;text-overflow:ellipsis}.my-rec dl{display:grid;grid-template-columns:1fr auto;gap:.3rem .8rem;margin:0}.my-rec dt{margin:0}.my-rec dd{margin:0;font-weight:600;text-align:end}
 .chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
@@ -1495,7 +1495,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[]};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
 const BROKEN_PREFIX = 'gohancho.broken.';
 const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
@@ -1555,6 +1555,13 @@ function normalizeState(d){
     // 食品ロスの記録（{d: 記録した日, n: 食材名, r: 'u'=使い切った / 't'=捨てた}）。事実の記録だけ。400件まで。端末の中だけ
     st.foodLog = arr(st.foodLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim() && (x.r === 'u' || x.r === 't')).slice(-400)
         .map(x => ({d: x.d, n: x.n.slice(0, 40), r: x.r}));
+    // 備蓄（{id, n: 品名, q: 数 or null, e: 期限 or '', d: 登録した日}）と「1つ使った」の記録（{d, n}）。自分で入れた事実だけ。端末の中だけ
+    { const seenS = new Set();
+      st.stock = arr(st.stock).filter(x => x && typeof x === 'object' && typeof x.n === 'string' && x.n.trim()).map((x, i) => {
+          const q = Number(x.q), id = (typeof x.id === 'string' && x.id ? x.id : 's' + i).slice(0, 40);
+          return {id, n: x.n.trim().slice(0, 40), q: x.q !== null && x.q !== '' && Number.isInteger(q) && q >= 0 && q <= 999 ? q : null, e: isYmd(x.e) ? x.e : '', d: isYmd(x.d) ? x.d : ''}; })
+          .filter(x => !seenS.has(x.id) && seenS.add(x.id)).slice(0, 100); }
+    st.stockLog = arr(st.stockLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim()).slice(-400).map(x => ({d: x.d, n: x.n.slice(0, 40)}));
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
     if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
     if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
@@ -1597,7 +1604,7 @@ function quarantine(raw, strict){
 }
 // 読み込みで直した（捨てた）記録があるか。直したときは元の文字も残しておく
 function lostRecords(d, st){
-    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
+    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog', 'stock', 'stockLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
 }
 function load(){
     let raw = null;
@@ -4581,6 +4588,8 @@ function algLabel(id){
         mustard:t('マスタード（からし）'), sulphite:t('亜硫酸塩（二酸化硫黄）'), lupin:t('ルピナス'), mollusc:t('軟体動物（貝・いか・たこなど）')}[id] || id;
 }
 // 画面に出す並び: [[見出し, [id...]], ...]
+// アレルゲンの区分表（ALG_G）を最後に更新した日。表を直したら、この日付も直す（国の表示の決まりとの照合は別に行う）
+const ALG_TABLE_DATE = '2026-10-27';
 function algSections(){
     const st = algStyle();
     const main = st === 'jp' ? [[t('特定原材料（表示が義務の9品目）'), ALG_G.jp9], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
@@ -5089,7 +5098,9 @@ function allergySettingsHtml(){
         <div class="field"><span class="small">${esc(t('家族ごとのアレルギーは、家族のプロフィールで登録します（「今日食べる人」に合わせて効きます）。'))}</span>
             ${fm.length ? `<span class="small muted">${esc(t('⚠ アレルギー: {list}', {list: joinNames(fm.map(m => famLabel(m, famMembers().indexOf(m)) + '（' + joinNames([...new Set(m.allergy.map(avoidName))]) + '）'))}))}</span>` : ''}
             <div class="row"><button class="btn sm" data-act="alg-family">${esc(famMembers().length ? t('家族のプロフィールへ') : t('家族を登録する'))}</button></div></div>
+        <span class="small muted alg-ver">${esc(t('アレルゲンの区分表の更新日: {date}（アプリの中の表）。国の表示の決まりが改められても、アプリを更新するまではこの表のままです。', {date: ALG_TABLE_DATE}))}</span>
         <span class="small warn">${esc(t('アプリの判定は参考です。重度のアレルギーの方は、必ず原材料表示・医師の指示に従ってください。'))}</span>
+        <span class="small muted">${esc(t('判定はレシピの材料の名前から行います。加工品の中身や調理中の混入までは分かりません。外食・お惣菜はお店に確かめてください。'))}</span>
     </div>`;
 }
 function viewSettings(){
@@ -5463,6 +5474,7 @@ function shoppingHtml(){
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
         ${list.length ? `<p class="shop-prog" role="status">${esc(nDone === list.length ? t('すべてチェックしました') : t('買った {done} / {total}品', {done:nDone, total:list.length}))}</p>` : ''}
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
+        ${algIds().length || famMembers().some(m => m.allergy.length) ? `<p class="pantry-hint alg-shop">${esc(t('アレルギーの設定があります。買うときは、原材料表示を必ず確かめてください。'))}</p>` : ''}
         ${nFridge ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
         <div class="list shop${session.shopMode ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
@@ -6251,6 +6263,52 @@ function lossHtml(){
         <p class="foot"><a href="https://www.caa.go.jp/policies/policy/consumer_policy/information/food_loss/" target="_blank" rel="noopener">${esc(t('食品ロスについて（消費者庁）'))}</a></p>
         </div></section>`;
 }
+/* ---- 備蓄（ローリングストック） ----
+   S.stock = [{id, n: 品名, q: 数（任意。入れていなければ null）, e: 期限（任意。自分で入れた日付）, d: 登録した日}]、S.stockLog = [{d, n}]（「1つ使った」を押した記録）。
+   端末の中だけ。冷蔵庫・「早めに使う」・献立・買い物メモの計算には入れない（ほかの料理が連動して変わらないように）。
+   備える量・期間の目安は出さない（出典を確かめられるまで）。食べられるかどうかも判断しない */
+const STOCK_MAX = 100, STOCK_LOG_MAX = 400;
+function stockSorted(){ return (S.stock || []).slice().sort((a, b) => (a.e ? 0 : 1) - (b.e ? 0 : 1) || (a.e < b.e ? -1 : a.e > b.e ? 1 : 0) || (a.d < b.d ? -1 : a.d > b.d ? 1 : 0) || String(a.id).localeCompare(String(b.id))); }
+function stockOf(id){ return (S.stock || []).find(x => x.id === id) || null; }
+function stockAdd(name, q, e){
+    const n = String(name || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (!n){ toast(t('品名を入れてください')); return false; }
+    if (S.stock.some(x => x.n.toLowerCase() === n.toLowerCase())){ toast(t('「{name}」はもう備蓄にあります', {name:n})); return false; }
+    if (S.stock.length >= STOCK_MAX){ toast(t('備蓄に入れられるのは{n}品までです', {n:STOCK_MAX})); return false; }
+    const qn = q === '' || q == null ? null : Math.round(Number(q));
+    const it = {id: 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), n, q: Number.isFinite(qn) && qn >= 0 && qn <= 999 ? qn : null, e: /^\d{4}-\d{2}-\d{2}$/.test(e || '') && realYmd(e) ? e : '', d: TODAY};
+    S.stock.push(it); save(); render();
+    toast(t('「{name}」を備蓄に入れました', {name:n}), false, () => { S.stock = S.stock.filter(x => x !== it); save(); render(); });
+    return true;
+}
+// 1つ使った: 数を1減らし（数を入れていなければ減らさない）、使った記録を残す
+function stockUse(id){
+    const it = stockOf(id); if (!it || it.q === 0) return;
+    const wasQ = it.q, entry = {d: TODAY, n: it.n};
+    if (typeof it.q === 'number') it.q--;
+    S.stockLog.push(entry); if (S.stockLog.length > STOCK_LOG_MAX) S.stockLog.splice(0, S.stockLog.length - STOCK_LOG_MAX);
+    save(); render();
+    toast(t('「{name}」を1つ使ったと記録しました', {name:it.n}), false, () => { it.q = wasQ; S.stockLog = S.stockLog.filter(x => x !== entry); save(); render(); });
+}
+function stockCount(from, to){ return (S.stockLog || []).filter(x => x.d >= from && x.d <= to).length; }
+function stockRowHtml(x){
+    const nm = x.n, days = x.e ? daysBetween(TODAY, x.e) : null, shop = !!(S.week && visiblePlanDays().length);
+    return `<div class="loss-row stock-row"><span class="loss-nm">${esc(nm)}</span>${typeof x.q === 'number' ? `<span class="stock-q${x.q === 0 ? ' over' : ''}">${esc(t('残り{n}', {n:x.q}))}</span>` : ''}<span class="loss-d${days !== null && days < 0 ? ' over' : ''}">${esc(days === null ? t('期限なし') : expLabel(days))}</span>
+        <span class="loss-btns"><button class="btn sm" data-act="stock-use" data-id="${esc(x.id)}"${x.q === 0 ? ' disabled' : ''} aria-label="${esc(t('{name}を1つ使った', {name:nm}))}">${esc(t('1つ使った'))}</button>${typeof x.q === 'number' ? `<button class="btn sm ghost" data-act="stock-plus" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を1つ足す', {name:nm}))}">＋1</button>` : ''}${shop ? `<button class="btn sm ghost" data-act="stock-shop" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を買い物メモに足す', {name:nm}))}">${esc(t('買い物メモに足す'))}</button>` : ''}<input type="date" class="stock-exp" data-act="stock-exp" data-id="${esc(x.id)}" value="${esc(x.e)}" style="width:auto" aria-label="${esc(t('{name}の期限', {name:nm}))}"><button class="btn sm ghost danger" data-act="stock-rm" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を備蓄から消す', {name:nm}))}">${esc(t('消す'))}</button></span></div>`;
+}
+function stockHtml(){
+    const list = stockSorted();
+    return `<section class="sec stock-sec" id="stock-sec">
+        <div class="sec-head"><h2>${esc(t('備蓄（ローリングストック）'))}</h2><span class="hint">${esc(t('期限が近い順。数と期限は自分で入れたものです'))}</span></div>
+        <div class="card">
+        ${list.length ? list.map(stockRowHtml).join('') : `<p class="small muted" style="margin:0">${esc(t('まだ登録していません。水・缶詰・レトルトなど、家に置いてあるものを入れられます。'))}</p>`}
+        <form class="row small stock-add" data-form="stock-add">
+            <input type="text" id="stock-name" maxlength="40" placeholder="${esc(t('品名（例: 水、さば缶）'))}" aria-label="${esc(t('品名'))}" autocomplete="off" style="flex:1 1 8rem;width:auto">
+            <input type="number" id="stock-q" min="0" max="999" inputmode="numeric" placeholder="${esc(t('数（任意）'))}" aria-label="${esc(t('数（任意）'))}" style="width:6.5rem">
+            <input type="date" id="stock-exp" aria-label="${esc(t('期限（任意）'))}" style="width:auto">
+            <button class="btn sm" type="submit">${esc(t('備蓄に入れる'))}</button></form>
+        <p class="small muted" style="margin:4px 0">${esc(t('使ったら「1つ使った」を押し、買い足すものは買い物メモに足せます（1週間プランがあるとき）。この端末の中だけに残り、献立や冷蔵庫の食材には使いません。備える量の目安は、このアプリでは出しません。'))}</p>
+        </div></section>`;
+}
 function fridgeUseInfo(){
     const m = session.menu, main = m && m.items[0] && m.items[0].r;
     if (!main || !S.fridge.length) return null;
@@ -6961,6 +7019,7 @@ function viewFridge(){
         </div>
     </section>
     ${lossHtml()}
+    ${stockHtml()}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('いつも家にある食材'))}</h2><span class="hint">${esc(t('卵・玉ねぎなど、切らさない常備品。毎回入れなくても「ある」として数えます'))}</span></div>
         <div class="card">
@@ -7304,6 +7363,7 @@ function viewLog(){
         <div class="sec-head"><h2>${esc(t('今週の主菜の内訳'))}</h2><span class="hint">${esc(t('主な材料とジャンルを、回数だけ数えています。置き換えて作った料理も、元の料理で数えます。'))}</span></div>
         ${h}
     </section>` : '')(tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()))}
+    ${myRecordHtml()}
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
@@ -7354,6 +7414,29 @@ function viewLog(){
         </details>
     </section>
 `;
+}
+
+/* ---- あなたの記録: この端末の記録を、今月の件数として並べるだけ（S は読むだけ。評価・比較・「減らせた」などの言葉は出さない。0件でもそのまま出す） ---- */
+function myRecordStats(ym = TODAY.slice(0, 7)){
+    const from = ym + '-01', to = ym + '-31', hs = (S.history || []).filter(h => h.d >= from && h.d <= to);
+    const ccs = new Set(hs.filter(h => !isCustomId(h.id)).map(h => histCountry(h.id)));
+    const l = lossCount(from, to);
+    return {ym, made: hs.length, countries: ccs.size, used: l.u, tossed: l.t, stockUsed: stockCount(from, to), custom: (S.custom || []).length};
+}
+function myRecordHtml(){
+    if (!S.history.length && !S.foodLog.length && !S.stockLog.length && !S.custom.length) return '';
+    const s = myRecordStats(), row = (k, v) => `<dt class="small">${esc(k)}</dt><dd class="small">${esc(v)}</dd>`;
+    return `<section class="sec my-rec" id="my-record">
+        <div class="sec-head"><h2>${esc(t('あなたの記録'))}</h2><span class="hint">${esc(t('{month}の件数。この端末の中で数えています（外には送りません）', {month: monthLabel(s.ym)}))}</span></div>
+        <div class="card"><dl>
+            ${row(t('作った料理の記録'), t('{n}品', {n: s.made}))}
+            ${s.countries ? row(t('料理の国'), t('{n}か国', {n: s.countries})) : ''}
+            ${row(t('使い切ったと記録した食材'), t('{n}件', {n: s.used}))}
+            ${row(t('捨てたと記録した食材'), t('{n}件', {n: s.tossed}))}
+            ${row(t('備蓄を使ったと記録した回数'), t('{n}回', {n: s.stockUsed}))}
+            ${row(t('わが家のレシピ（全部）'), t('{n}品', {n: s.custom}))}
+        </dl></div>
+    </section>`;
 }
 
 /* ---- 詳細（モーダル） ---- */
@@ -8263,6 +8346,11 @@ document.addEventListener('click', e => {
         }
         case 'soon-ing': { const v = el.dataset.v; if (S.fridge.includes(v)){ const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); if (e.soon) delete e.soon; else e.soon = true; save(); render(); } break; }
         case 'loss-use': lossLogAdd(el.dataset.v, 'u'); break;
+        case 'stock-use': stockUse(el.dataset.id); break;
+        case 'stock-plus': { const it = stockOf(el.dataset.id); if (it && typeof it.q === 'number' && it.q < 999){ it.q++; save(); render(); } break; }
+        case 'stock-shop': { const it = stockOf(el.dataset.id); if (it) shopAddExtra(it.n); break; }
+        case 'stock-rm': { const it = stockOf(el.dataset.id); if (!it) break; const i = S.stock.indexOf(it); S.stock.splice(i, 1); save(); render();
+            toast(t('「{name}」を備蓄から消しました', {name:it.n}), false, () => { if (!stockOf(it.id)) S.stock.splice(Math.min(i, S.stock.length), 0, it); save(); render(); }); break; }
         case 'loss-toss': lossLogAdd(el.dataset.v, 't'); break;
         case 'loss-exp-clear': { const e = S.fridgeMeta[el.dataset.v]; if (e && e.exp){ const was = e.exp; delete e.exp; save(); render(); toast(t('期限を消しました'), false, () => { if (S.fridgeMeta[el.dataset.v]){ S.fridgeMeta[el.dataset.v].exp = was; save(); render(); } }); } break; }
         case 'loss-exp-add': { const it = $('#loss-exp-item'), dt = $('#loss-exp-date'), v = it && it.value, d = dt && dt.value;
@@ -8521,7 +8609,7 @@ function parseBackup(txt){
     let d; try{ d = JSON.parse(txt, (k, v) => k === '__proto__' ? undefined : v); }catch(e){ return {ok:false, reason:'broken'}; }
     if (!d || typeof d !== 'object' || Array.isArray(d)) return {ok:false, reason:'notmine'};
     // ご飯帖のデータの目印: 記録・お気に入りなどの配列、または設定（古い版は history だけでなく項目が少ない）
-    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','foodLog','hidden','usedDays'];
+    const A = ['history','favs','fridge','savedMenus','custom','family','staples','leftovers','spend','foodLog','stock','hidden','usedDays'];
     const known = A.some(k => Array.isArray(d[k])) || (d.settings && typeof d.settings === 'object' && !Array.isArray(d.settings) && Object.keys(d.settings).length > 0) || (d.week && typeof d.week === 'object' && Array.isArray(d.week.days));
     if (!known) return {ok:false, reason:'notmine'};
     const v = d._gohancho && Number(d._gohancho.v);
@@ -8558,6 +8646,7 @@ function stateSummary(d){
     if (d.leftovers.length) a.push(t('作り置きメモ{n}件', {n: d.leftovers.length}));
     if (d.spend.length) a.push(t('食費メモ{n}件', {n: d.spend.length}));
     if (d.foodLog.length) a.push(t('使い切り・捨ての記録{n}件', {n: d.foodLog.length}));
+    if (d.stock.length) a.push(t('備蓄{n}品', {n: d.stock.length}));
     if (wk.length) a.push(t('1週間の予定{n}日分', {n: wk.length}) + (skip ? t('（作らない日{n}日）', {n: skip}) : '') + (who ? t('（担当を決めた日{n}日）', {n: who}) : ''));
     a.push(c.flag + ' ' + countryLabel(c));
     return a.join(t('・'));
@@ -8619,6 +8708,7 @@ document.addEventListener('change', e => {
         fl.text().then(txt => { if (!askImport(txt, 'file')) toast(importErrMsg('file')); }, () => toast(t('読み込めませんでした')));
         return;
     }
+    if (el.dataset && el.dataset.act === 'stock-exp'){ const it = stockOf(el.dataset.id); if (it){ it.e = /^\d{4}-\d{2}-\d{2}$/.test(el.value) && realYmd(el.value) ? el.value : ''; save(); render(); } return; }
     if (el.id === 'eat-at'){ S.settings.dinnerAt = /^([01]\d|2[0-3]):[0-5]\d$/.test(el.value) ? el.value : null; session.eatOpen = true; save(); render(); return; }
     if (el.id === 'tw-base'){ if (twistState.results && !useTwistQuota()){ render(); return; } twistState.baseId = el.value; twistState.fromIds = null; runTwist(); render(); }   // 無料版の回数がないときは、元の料理も案も変えない
     if (el.dataset && el.dataset.act === 'mix'){
@@ -8632,6 +8722,7 @@ document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
     if (f === 'spend'){ spendAdd(); return; }
+    if (f === 'stock-add'){ const n = $('#stock-name'), q = $('#stock-q'), e2 = $('#stock-exp'); if (n && stockAdd(n.value, q ? q.value : '', e2 ? e2.value : '')){ const x = $('#stock-name'); if (x) x.focus({preventScroll:true}); } return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
     if (f === 'fp-add'){ const inp = $('#fp-add-input'); if (inp && inp.value.trim()) fphotoAddTyped(inp.value); return; }
