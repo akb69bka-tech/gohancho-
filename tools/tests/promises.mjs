@@ -102,6 +102,24 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     await ctx.close();
 }
 
+// ---- E 献立の組み立て（戸川 A2・A4・A5） ----
+{
+    const {p, ctx} = await open({settings: {country: 'JP', uiLang: 'ja', dishCount: 4}});
+    const r = await p.evaluate(() => {
+        const over = [];
+        for (const mood of ['quick', 'easy']){ session.mood = mood; for (let k = 0; k < 20; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && (mood === 'quick' ? x.r.min > 20 : (x.slot !== '主菜' && x.r.min > 10))) over.push(mood + ':' + x.slot + ':' + x.r.name + x.r.min); }); } }
+        session.mood = 'all'; const season = [];
+        const ym = parseYmd(TODAY).getMonth() + 1;
+        for (let k = 0; k < 30; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && !inSeason(x.r)) season.push(x.r.id); }); }
+        const soupy = ['ramen', 'oden', 'yosenabe', 'stew', 'curryudon'].filter(id => byId(id) && suggestOrAny('汁物', [{r: byId(id)}], byId(id)));
+        return {over, season, soupy, ym};
+    });
+    ok(!r.over.length, 'E1 20分以内・ラクの日は、副菜・汁ものにも時間の条件が効く: ' + r.over.slice(0, 3));
+    ok(!r.season.length, 'E2 季節外れの行事料理（' + r.ym + '月）をおまかせに出さない: ' + r.season);
+    ok(!r.soupy.length, 'E3 汁けの多い主菜（ラーメン・鍋・シチューなど）に汁ものを付けない: ' + r.soupy);
+    await ctx.close();
+}
+
 // ---- C 設定と決めた献立（北条の修正待ち） ----
 {
     // C1 下書きにえびフライ → 設定でえびを苦手に → 今日の献立を見ずに開き直す
