@@ -1217,4 +1217,5 @@ GOHAN_I18N('pl', {
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Je z nami czasem (domyślnie nie w „Kto dziś je”)",
     "いつものメンバー": "Stały skład",
     "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} nie jest pokazywane jako dodatek, bo pasuje do alergii lub nielubianego produktu (pieczywo często zawiera mleko lub jajka).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Żadne danie główne nie pasuje do alergii i nielubianych produktów, więc {days} w planie tygodnia to teraz dzień bez gotowania.",
 });

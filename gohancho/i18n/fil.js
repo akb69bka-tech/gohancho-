@@ -1217,4 +1217,5 @@ GOHAN_I18N('fil', {
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Paminsan-minsang kasalo (hindi kasama sa “Kakain ngayon” bilang default)",
     "いつものメンバー": "Ang dati",
     "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Hindi ipinapakita ang {name} bilang pangunahing pagkain dahil tugma ito sa allergy o iniiwasang pagkain (madalas may gatas o itlog ang tinapay).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Walang pangunahing ulam na bagay sa allergy at iniiwasang pagkain, kaya ginawang araw na walang lutuin ang {days} sa plano ng linggo.",
 });

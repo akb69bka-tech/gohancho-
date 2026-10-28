@@ -3243,16 +3243,23 @@ function makeWeek(){
 function refreshWeek(){
     if (!S.week) return 0;
     const out = r => !r || isAvoided(r) || S.hidden.includes(r.id);
-    const used = new Set(S.week.days.map(x => x.id)); let n = 0;
+    const used = new Set(S.week.days.map(x => x.id)); let n = 0; const skipped = [];
     S.week.days.forEach((x, i) => {
-        if (x.d < TODAY || !out(byId(x.id))) return;
+        if (x.d < TODAY || x.skip || !out(byId(x.id))) return;
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
         const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
-        const r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
+        let r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
+        // アレルギーをいくつも足して、まだ使っていない主菜がなくなったときは、ほかの日の料理をもう一度使う（当たる料理をプランに残さない）
+        if (!r){ const again = poolFor('主菜').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
         if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
+        else { x.skip = true; delete x.extra; skipped.push(x.d); n++; }   // 合う主菜が1つもない日は「作らない日」にして知らせる（当たる料理は残さない）
     });
+    // 主菜はそのままの日も、副菜・汁もの（買い物メモ用に選んだもの）に当たる料理があれば外して選び直す
+    S.week.days.forEach(x => { const e = x.extra; if (x.d < TODAY || !e || typeof e !== 'object') return; ['side', 'soup'].forEach(k => { if (e[k] && out(byId(e[k]))){ delete e[k]; n++; } }); });
+    if (n && weekSidesOn()) ensureWeekExtras();
     if (n) save();
+    if (skipped.length) toast(t('アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました', {days: joinNames(skipped.map(d => jpDate(d)))}));
     return n;
 }
 // 1週間プランの各日の副菜・汁もの（主菜だけを決めるので、買い物メモに入れるときに主菜に合う副菜と汁ものを1品ずつ選び、S.week.days[i].extra = {side, soup} に残す。作り直さないかぎり同じ）
@@ -4278,9 +4285,23 @@ function upgradeByMethod(m){
     };
     return U[m] || U['炒'];
 }
+// ひと手間も、料理と同じアレルギー・苦手の判定に通す。当たるものは出さず、作り方ごとの一言に替える（それも当たれば出さない）
 function upgradeOf(r){
     const base = r.isTwist ? r.base : r;
-    return base.tip || UPGRADES[base.id] || upgradeByMethod(base.method);
+    return [base.tip, UPGRADES[base.id], upgradeByMethod(base.method)].filter(Boolean).find(upgradeSafe) || null;
+}
+function upgradeSafe(u){
+    const txt = String(u && u.add || ''); if (!txt) return true;
+    // 「白ごまかかつお節」「白ワイン（または酒）」のような書き方も、全体と、区切った1つずつで見る
+    const words = [txt, ...txt.split(/[・、,，／/（）()]|または|を|\s+or\s+|\s+and\s+/).map(x => x.trim()).filter(x => x.length > 1)];
+    const items = words.map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+    if (allergyOn()){
+        const g = allergyCtx(), ids = algIdsEff();
+        if (items.some(i => itemAvoided(i, g))) return false;
+        if (items.some(i => ids.some(id => { const k = algKind(id, i); return k && (k !== 3 || algFerm()); }))) return false;   // 入っていることがある加工品（かにかまの卵など）も、足す物としてはすすめない
+    }
+    if (effAvoid().length){ const c = avoidCtx(); if (items.some(i => itemAvoided(i, c))) return false; }
+    return true;
 }
 function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
 function upgradeHtml(r, compact=false, soft=false){   // soft: 詳細画面（主ボタンは下の「今日これを作る」だけにする）
@@ -5266,7 +5287,7 @@ const FAM_ALG = {egg: ['egg'], dairy: ['milk'], wheat: ['wheat'], shellfish: ['c
 function famAlgIds(){
     const list = allergyList(), sig = JSON.stringify(list);
     if (famAlgIds.c && famAlgIds.c.sig === sig) return famAlgIds.c.ids;
-    const out = new Set();
+    const out = new Set(), mapped = new Set();   // mapped: アレルゲンの名前そのもの（そば・牛乳など）として読みかえた登録。名前の照らし合わせには使わない（全体と同じ判定だけにする）
     list.forEach(v => {
         v = String(v); const f = avoidFamOf(v);
         if (v[0] === '@'){ (FAM_ALG[f] || []).forEach(x => out.add(x)); return; }
@@ -5274,9 +5295,10 @@ function famAlgIds(){
         const hit = ALG_ALL.filter(id => algKind(id, i) === 1);
         // 「小麦」なら小麦だけ（グルテンを含む穀物のような、まとめた区分は、その中の1つが当たったら入れない）
         hit.filter(id => !(ALG_DEF[id].parts && ALG_DEF[id].parts.some(q => hit.includes(q)))).forEach(x => out.add(x));
+        if (hit.length) mapped.add(v);
         if (!hit.length && f) (FAM_ALG[f] || []).forEach(x => out.add(x));
     });
-    famAlgIds.c = {sig, ids: [...out]}; return famAlgIds.c.ids;
+    famAlgIds.c = {sig, ids: [...out], mapped}; return famAlgIds.c.ids;
 }
 // 全員共通のアレルゲンと、今日食べる家族のアレルギー（読みかえたもの）
 function algIdsEff(){ return [...new Set([...algIds(), ...famAlgIds()])]; }
@@ -5311,6 +5333,9 @@ function algExcludedCount(){ const ids = algIds(); return ids.length ? RECIPES.f
 // 料理の詳細に出す「この料理に含まれる主なアレルゲン」（材料の言葉からの推測。断定しない）
 function allergenDetailHtml(r){
     if (!r || !r.items) return '';
+    // 画面に出す料理（苦手な食材を置き換え・抜いたあと、調味料の置き換え（鶏ガラスープの素 → 昆布だしなど）もしたあと）で数える
+    const rs = swappedRecipe(r) || r, sb = String(r.seasBase != null ? r.seasBase : r.seas || ''), sw = seasSwapText(sb, r);
+    if (rs !== r || sw !== sb) r = Object.assign({}, rs, {seasBase: sw});
     const m = algRecipeMap(r), sel = new Set(algIdsEff()), sec = algSections();   // 家族のアレルギーにも ⚠ をつける
     const ids = [...new Set([].concat(...sec.main.map(x => x[1]), [...sel]))].filter(id => m[id]);
     const mine = algSelectedHits(r), may = [...sel].filter(id => !mine.includes(id) && (m[id] || []).some(x => x.kind === 4));
@@ -5473,7 +5498,9 @@ function famNameSet(){ return new Set(famMembers().map(m => (m.name || '').trim(
 function eaterMembers(){ const fm = famMembers(); return !fm.length ? [] : Array.isArray(S.eaters) ? fm.filter(m => S.eaters.includes(m.id)) : fm.filter(m => !m.sometimes); }
 function effAvoid(){
     const base = S.settings.avoid || [], ms = eaterMembers(); if (!ms.length) return base;
-    return [...new Set(base.concat(...ms.map(m => m.avoid)))];
+    // 家族の ⚠ のうち、アレルゲンの名前そのもの（そば・牛乳など）は、アレルギーの判定（全体と同じ）で見るので、苦手の名前の照らし合わせには入れない（「そば」で焼きそばを外さない）
+    algIdsEff(); const mp = (famAlgIds.c && famAlgIds.c.mapped) || new Set();
+    return [...new Set(base.concat(...ms.map(m => m.avoid.filter(v => !(m.allergy.includes(v) && mp.has(String(v)))))))];
 }
 function allergyList(){ const ms = eaterMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
 function mildOn(){ return eaterMembers().some(m => m.mild); }
@@ -5554,6 +5581,8 @@ function avoidKeys(av){ return new Set((av || []).filter(x => String(x)[0] !== '
 function avoidCtx(){ return avoidCtxFor(effAvoid(), 'c'); }
 function allergyCtx(){ return avoidCtxFor(allergyList(), 'g'); }   // アレルギーの食材だけ（置き換えない）
 function avoidCtxFor(av, slot){
+    // 家族のアレルギーで、アレルゲンの名前そのもの（そば・牛乳など）の登録は、全体と同じ判定（alg）だけで見る（「そば」の文字で焼きそばまで外さない）
+    if (slot === 'g'){ algIdsEff(); const mp = famAlgIds.c && famAlgIds.c.mapped; if (mp && mp.size) av = av.filter(v => !mp.has(String(v))); }
     const ax = S.settings.avoidX || {}, alg = slot === 'g' ? algIdsEff() : [], sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG + '|' + (slot === 'g' ? algSig() : '');
     const hit = avoidCtxFor[slot]; if (hit && hit.sig === sig) return hit;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
@@ -5610,7 +5639,7 @@ function isAvoidedCore(r){
 // 代わりの食材は、いまの国のレシピによく出てくる食材から選ぶ（その国で手に入りやすく、名前もその国の言葉で出せる）。
 // 卵・乳製品・ナッツ・小麦や、ハム・だしの素のような加工品は置き換えない（その料理は今までどおり出さない）
 const SWAP_TXT = i => (i.key + '|' + (i.en || '') + '|' + i.label).toLowerCase();
-const SWAP_BAD = /stock|broth|soup|condensed|\beggs?\b|\bhead\b|\bwhole\b|poussin|tripe|mondongo|offal|kidney|tongue|oxtail|\bsalt(ed)? (cod|fish|herring|mackerel|pork|beef)|bacalhau|matj|charqui|carne seca|bouillon|powder|cube|granule|seasoning|sauce|paste|\bfat\b|lard|skin|bones?\b|liver|gizzard|heart|feet|trotter|canned|tinned|\bcan\b|dried|smoked|cured|ガラ|スープの素|だし|ルウ|ソース|缶/;
+const SWAP_BAD = /レバー|もつ|ホルモン|砂肝|ハツ|ミノ|センマイ|stock|broth|soup|condensed|\beggs?\b|\bhead\b|\bwhole\b|poussin|tripe|mondongo|offal|kidney|tongue|oxtail|\bsalt(ed)? (cod|fish|herring|mackerel|pork|beef)|bacalhau|matj|charqui|carne seca|bouillon|powder|cube|granule|seasoning|sauce|paste|\bfat\b|lard|skin|bones?\b|liver|gizzard|heart|feet|trotter|canned|tinned|\bcan\b|dried|smoked|cured|ガラ|スープの素|だし|ルウ|ソース|缶/;
 const SWAP_PROC = /\bham\b|bacon|sausage|salami|chorizo|pancetta|prosciutto|guanciale|\bspam\b|wiener|hot ?dog|frankfurter|wurst|corned|pastrami|bresaola|sucuk|ハム|ベーコン|ウインナー|ソーセージ|ツナ|かまぼこ|ちくわ|かに風味|ちりめん|surimi|anchov|\btuna\b|bonito|katsuobushi|fish ball|fish ?cakes?|eomuk|\bballs?\b|morcilla|blood|black pudding|haggis|gammon|moo yor|pork roll|meatball|nugget|dumpling|wonton|wrapper|mandu|餃子|しゅうまい|\bpie\b|pastry|patt(y|ies)|burger|leftover|cooked|shredded/;
 const SWAP_SHAPED = /ball|loaf|burger|patt(y|ies)|ko?fte|köfte|kofta|kebab|kabab|frikadel|albóndiga|polpett|boulette|dumpling|gyoza|stuffed|dolma|nugget|sausage|croquet|hamburg|ハンバーグ|つくね|団子|肉だんご|餃子|しゅうまい|肉詰め|コロッケ|丸|köfte|sarma|musakka|moussaka|lasagn|meat ?pie|empanada|samosa|momo|lumpia|siu mai|shumai|bao|bun|roll|meat sauce|bolognese|ragù|ragu|chili|tacos?|picadillo/;
 const swapMince = i => /ひき肉|びき肉|ミンチ|\bground\b|\bmince/.test(SWAP_TXT(i));
@@ -5674,6 +5703,9 @@ function recipeSwaps(r){
         if (!itemAvoided(i, c)) continue;
         if (g && itemAvoided(i, g)) return null;   // アレルギーの食材は、置き換えたり抜いたりせず、その料理を出さない
         if (i.opt){ omit.push(i); continue; }
+        // レバー・もつなどの内臓が主役の料理は、ほかの肉に置き換えると別の料理になる（血抜きの手順も残る）ので置き換えず、出さない。
+        // 材料のキーは「豚肉」のようにまとめてあるので、材料の名前（豚レバー）でも見る
+        if (/レバー|もつ|ホルモン|砂肝|ハツ|ミノ|センマイ|\bliver|\btripe|\boffal|\bkidney|\bgizzard/i.test(i.name + '|' + SWAP_TXT(i))) return null;
         const w = swapFor(i);
         if (!w || r.items.some(x => x !== i && x.key === w.i.key)) return null;   // 代わりがない・同じ食材がもう入っている
         if ([i.label, i.name].some(n => n && n.length >= 2 && String(r.name).includes(n))) return null;   // 料理の名前の食材（ピーマンの肉詰めのピーマンなど）は置き換えない
@@ -5695,7 +5727,9 @@ function swappedRecipe(r){
         return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: x.to.qty || i.qty, changed: true, from: i.name, jp: x.to.jp}); }).filter(Boolean);
     // 肉・魚の種類も置き換えた主役に合わせる
     const pw = w.swaps.find(x => x.from.key === r.protein), famOf = {chicken:'鶏', pork:'豚', tofu:'大豆', fish:'魚'};
-    const fam = pw ? (FAMILY[pw.to.key] || famOf[pw.tip] || (/ground|mince/.test(SWAP_TXT(pw.to)) ? 'ひき肉' : r.family)) : r.family;
+    let fam = pw ? (FAMILY[pw.to.key] || famOf[pw.tip] || (/ground|mince/.test(SWAP_TXT(pw.to)) ? 'ひき肉' : r.family)) : r.family;
+    // 主役の肉・魚（ハムなど）を入れないときは、料理の印（「ハム・ベーコン」など）も残りの材料から付け直す（なければ野菜）
+    if (!pw && w.omit.some(i => i.key === r.protein || FAMILY[i.key] === r.family)){ const k = items.find(i => FAMILY[i.key] && FAMILY[i.key] !== '野菜'); fam = k ? FAMILY[k.key] : '野菜'; }
     const esc_ = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const repl = txt => w.swaps.reduce((s, x) => {
         // 作り方の文の中の名前も入れかえる（日本語の料理は「豚肉」「豚バラ肉」のような言い方も）
@@ -5707,9 +5741,10 @@ function swappedRecipe(r){
     // 入れない材料（なくても作れる苦手な材料）は、作り方の文からも外す（「えびといんげんはゆでる」→「いんげんはゆでる」、「錦糸卵・えび・いんげん」→「錦糸卵・いんげん」）。
     // 外すと文が崩れるところ（「えびは粗く刻む」）は「えび（入れない）」と添える。残る材料と同じ言葉・ほかの材料の名前の一部（玉ねぎの「ねぎ」など）は触らない
     const lc = s => String(s).toLowerCase();
-    const omitWords = [...new Set(w.omit.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => n && n.length > 1))]
+    const wordOk = n => n && (n.length > 1 || /[一-龠]/.test(n));   // 「卵」「鮭」のような1文字の漢字も見る（ひらがな1文字は見ない）
+    const omitWords = [...new Set(w.omit.flatMap(i => [i.name, i.label, i.key, i.en]).filter(wordOk))]
         .filter(o => !items.some(i => [i.name, i.label, i.key, i.en].some(n => n && lc(n) === lc(o)))).sort((a, b) => b.length - a.length);
-    const keepWords = [...new Set(items.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => n && n.length > 1 && omitWords.some(o => lc(n) !== lc(o) && lc(n).includes(lc(o)))))].sort((a, b) => b.length - a.length);
+    const keepWords = [...new Set(items.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => wordOk(n) && omitWords.some(o => lc(n) !== lc(o) && lc(n).includes(lc(o)))))].sort((a, b) => b.length - a.length);
     const omitTxt = txt => {
         if (!omitWords.length) return txt;
         const hold = []; let u = String(txt);
@@ -5731,7 +5766,7 @@ function swappedRecipe(r){
         return u.replace(/\u0001(\d+)\u0002/g, (_, k) => hold[k]);
     };
     const steps = r.steps.map(st => typeof st === 'string' ? omitTxt(repl(st)) : Object.assign({}, st, {t: omitTxt(repl(st.t))}));
-    return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : r.protein});
+    return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
 }
 // 献立の一覧に出す置き換えの一言（例: 🔁 さば の代わりに 鶏肉）
 function swapLineHtml(r){
@@ -5762,7 +5797,7 @@ function swapTagHtml(r){
 // 調味料の欄の苦手な食材（日本の料理の日本語の文だけ）: 鶏ガラスープの素・牛脂・オイスターソースを、苦手でないものに替える
 const SEAS_SWAP = [['chicken', /鶏ガラスープの素/g, '顆粒昆布だし'], ['beef', /牛脂（またはサラダ油）|牛脂/g, 'サラダ油'], ['pork', /ラード/g, 'サラダ油'], ['shellfish', /オイスターソース/g, '醤油（オイスターソースの代わり）']];
 // 調味料の置き換え先が、選んだアレルゲンを含むときは替えない（その料理は出さない）
-function seasToOk(to){ const ids = algIds(); return !ids.length || !algItemHit(ids, {name: to, label: to, key: norm(to), en: ''}); }
+function seasToOk(to){ const ids = algIdsEff(); return !ids.length || !algItemHit(ids, {name: to, label: to, key: norm(to), en: ''}); }
 function seasSwapText(txt, r){
     if (!txt || !r || r.pack || r.trLang || !swapOn()) return txt;
     const fams = avoidCtx().fams; let s1 = String(txt);
@@ -8420,7 +8455,7 @@ ${after}${tail}`;
 // 「ポイント」: そのレシピにコツ（tip）があるときだけ出す。最初の手順のくり返しや、見出しにもある時間・人数は出さない（新しい情報がないため）
 // 肉・卵の料理には、火の通しの注意を添える
 function pointsHtml(r){
-    const tp = r.tip, tipTxt = typeof tp === 'string' ? tp : tp && (tp.how || tp.why);
+    const tp = r.tip, tipTxt = typeof tp === 'string' ? tp : tp && upgradeSafe(tp) && (tp.how || tp.why);   // 足す物（tip.add）がアレルギー・苦手に当たるコツは出さない（ひと手間と同じ）
     // 肉・卵の「中までしっかり加熱」は食中毒予防の一般的な注意（出典: 厚生労働省 https://www.mhlw.go.jp/stf/web_magazine/closeup/08.html 「中心部まで加熱」、消費者庁 https://www.caa.go.jp/policies/policy/consumer_safety/food_safety/food_safety_portal/microorganism_virus/ 「中心部75℃で1分以上」）。温度の数字は画面に出さない
     const safe = ['豚', '鶏', '牛', 'ひき肉', '羊', '卵'].includes(r.family);
     if (!tipTxt && !safe) return '';
@@ -9626,7 +9661,7 @@ document.addEventListener('click', e => {
         case 'rm-staple': S.staples = S.staples.filter(x => x !== el.dataset.v); save(); render(); break;
         case 'skill-done': {
             if (!hasPro()){ openPaywall('skill'); break; }
-            const r = byId(id); const u = upgradeOf(r);
+            const r = byId(id); const u = r && upgradeOf(r); if (!u) break;
             if (!S.skills.some(sk => sk.id === id)){ S.skills.push({d:TODAY, id, skill:u.skill}); save(); }
             const n = S.skills.length;
             toast(n === 1 ? t('「{skill}」を習得しました。最初のひと手間です。', {skill:u.skill}) : t('「{skill}」を習得しました。これで{n}つ目のコツです。', {skill:u.skill, n}), true);

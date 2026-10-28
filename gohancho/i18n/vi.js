@@ -1217,4 +1217,5 @@ GOHAN_I18N('vi', {
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Thỉnh thoảng ăn cùng (thường không có trong “Ai ăn hôm nay”)",
     "いつものメンバー": "Thành viên thường ngày",
     "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Không đưa {name} làm món chính vì trùng với dị ứng hoặc món không ăn (bánh mì thường có sữa hoặc trứng).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Không còn món chính phù hợp với dị ứng và món không ăn, nên {days} trong kế hoạch tuần thành ngày không nấu.",
 });

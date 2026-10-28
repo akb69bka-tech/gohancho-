@@ -1217,4 +1217,5 @@ GOHAN_I18N('fr', {
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Mange parfois avec nous (pas dans « Qui mange aujourd’hui » par défaut)",
     "いつものメンバー": "Les habitués",
     "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} n’est pas proposé comme accompagnement car il correspond à une allergie ou un aliment à éviter (le pain contient souvent du lait ou des œufs).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Aucun plat principal ne convient à vos allergies et aliments à éviter : {days} devient un jour sans cuisine dans le plan de la semaine.",
 });

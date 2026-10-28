@@ -1218,4 +1218,5 @@ GOHAN_I18N('en', {
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Eats with us sometimes (not in “Who’s eating today” by default)",
     "いつものメンバー": "The usual crew",
     "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} isn't shown as the staple because it matches an allergy or a food to avoid (bread often contains milk or egg).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "No main dish fits your allergies and foods to avoid, so {days} in the weekly plan is now a no-cook day.",
 });
