@@ -2,7 +2,7 @@
 // 日付・時刻・タイムゾーンの回帰テスト（Playwright の timezoneId と page.clock。使い方: node tools/tests/dates.mjs [http://localhost:8795/]）
 //  ・複数の時間帯（東京・LA・NY・ロンドン・シドニー・UTC+14・UTC-11）×時刻（0時前後・夏時間の切り替え日・閏日・年末年始）で、
 //    ymd / parseYmd / addDays / daysBetween / weekStart が、UTC で数えた正解と一致する（UTCずれ・夏時間の23/25時間日で1日ずれない）
-//  ・開いたまま0時を過ぎると、画面に戻る操作がなくても今日の日付が新しくなる。入力中は邪魔しない
+//  ・1日の切りかえは午前4時（案2・dayNow）。0時〜3時台は前の日のまま。開いたまま4時を過ぎると、画面に戻る操作がなくても今日の日付が新しくなる。入力中は邪魔しない
 //  ・夏時間の切り替え日をまたぐ14日分の通知予約が、すべて指定の「時」ちょうど。買い物前日の18時も同じ
 //  ・お試し終了の解約期限は、夏時間でもちょうど24時間前。夜食時刻（0〜3時台）の「あす」も壁時計で数える
 //  ・東京で保存→LA で開く、端末の日付を過去に戻す、でも落ちず、日数の計算が壊れない
@@ -79,37 +79,65 @@ for (const tz of TZS){
     await p.ctx.close();
 }
 
-// ---------- 2. 開いたまま0時を過ぎる ----------
-for (const [tz, before] of [['Asia/Tokyo', '2026-06-10T14:59:45Z'], ['America/Los_Angeles', '2026-06-11T06:59:45Z'], ['Europe/London', '2026-06-10T22:59:45Z'], ['Pacific/Kiritimati', '2026-06-10T09:59:45Z']]){
+// ---------- 2. 開いたまま0時・午前4時を過ぎる（1日の切りかえは午前4時。0時〜3時台は前の日） ----------
+// before: 現地 23:59:45。four: 現地 翌日 3:59:45
+for (const [tz, before, four] of [['Asia/Tokyo', '2026-06-10T14:59:45Z', '2026-06-10T18:59:45Z'], ['America/Los_Angeles', '2026-06-11T06:59:45Z', '2026-06-11T10:59:45Z'], ['Europe/London', '2026-06-10T22:59:45Z', '2026-06-11T02:59:45Z'], ['Pacific/Kiritimati', '2026-06-10T09:59:45Z', '2026-06-10T13:59:45Z']]){
     const p = await open(tz, before);
-    const a = await p.evaluate(() => ({today: TODAY, label: document.querySelector('#today-label').textContent, used: S.usedDays.slice(-1)[0]}));
+    const snap = () => p.evaluate(() => ({today: TODAY, label: document.querySelector('#today-label').textContent, used: S.usedDays.slice(-2)}));
+    const a = await snap();
     eq(a.today, localYmdOf(before, tz), `${tz} 0時前の TODAY`);
     await p.clock.runFor(31000);   // 30秒ごとの確認が0時の後に走る
     await p.waitForTimeout(200);
-    const c = await p.evaluate(() => ({today: TODAY, label: document.querySelector('#today-label').textContent, used: S.usedDays.slice(-2), menuNull: session.menu === null || session.menu != null}));
-    eq(c.today, addD(a.today, 1), `${tz} 0時を過ぎたら TODAY が翌日に`);
-    ok(c.label !== a.label, `${tz} 0時を過ぎたら画面の日付ラベルも変わる (${a.label} → ${c.label})`);
+    const m = await snap();
+    eq(m.today, a.today, `${tz} 0時を過ぎても、午前4時までは前の日のまま`);
+    eq(m.label, a.label, `${tz} 0時を過ぎても、画面の日付ラベルは前の日のまま`);
+    ok(!m.used.includes(addD(a.today, 1)), `${tz} 0時〜4時の間は、使った日(usedDays)に翌日を入れない`);
+    for (const [iso, hh] of [[new Date(Date.parse(before) + 2 * 3600000 + 15000).toISOString(), '2:00'], [four, '3:59:45']]){
+        await p.clock.setSystemTime(new Date(iso)); await p.evaluate(() => window.dispatchEvent(new Event('focus'))); await p.waitForTimeout(100);   // 確かめる操作（focus）を走らせても
+        eq(await p.evaluate(() => TODAY), a.today, `${tz} ${hh}（${localYmdOf(iso, tz)}）はまだ前の日`);
+    }
+    await p.clock.runFor(61000);   // 3:59:45 から、30秒ごとの確認が午前4時の後に少なくとも1回走る
+    await p.waitForTimeout(200);
+    const c = await snap();
+    eq(c.today, addD(a.today, 1), `${tz} 午前4時を過ぎたら TODAY が翌日に`);
+    ok(c.label !== a.label, `${tz} 午前4時を過ぎたら画面の日付ラベルも変わる (${a.label} → ${c.label})`);
     ok(c.used.includes(c.today), `${tz} 使った日(usedDays)に翌日が入る`);
     await p.ctx.close();
 }
-{   // 入力中は0時でも画面を作り直さない（食費の金額入力が消えない）。入力をやめたら次の確認で更新
-    const p = await open('Asia/Tokyo', '2026-06-10T14:59:45Z');
+{   // 入力中は午前4時でも画面を作り直さない（食費の金額入力が消えない）。入力をやめたら次の確認で更新
+    const p = await open('Asia/Tokyo', '2026-06-10T18:59:45Z');   // 東京 6/11 3:59:45（まだ 6/10）
+    eq(await p.evaluate(() => TODAY), '2026-06-10', '東京 3:59:45 に開くと前の日');
     await p.evaluate(() => { setTab('today'); const i = document.createElement('input'); i.id = 'tmp-in'; document.body.appendChild(i); i.focus(); i.value = '123'; });
     await p.clock.runFor(31000); await p.waitForTimeout(100);
-    ok(await p.evaluate(() => TODAY === '2026-06-10' && document.activeElement.id === 'tmp-in' && document.activeElement.value === '123'), '入力中は0時を過ぎても日付を切り替えない（入力は消えない）');
+    ok(await p.evaluate(() => TODAY === '2026-06-10' && document.activeElement.id === 'tmp-in' && document.activeElement.value === '123'), '入力中は午前4時を過ぎても日付を切り替えない（入力は消えない）');
     await p.evaluate(() => document.activeElement.blur());
     await p.clock.runFor(31000); await p.waitForTimeout(100);
     ok(await p.evaluate(() => TODAY === '2026-06-11'), '入力が終われば次の確認で日付が新しくなる');
     await p.ctx.close();
 }
-{   // 夜中に開く（0:05）と、その日の日付で始まる。0:05 → 画面に戻る操作（visibilitychange）でも更新
-    const p = await open('America/New_York', '2026-06-11T04:05:00Z');
-    eq(await p.evaluate(() => TODAY), '2026-06-11', 'NY 0:05 に開いた日付');
+{   // 夜中に開く（0:05）と、前の日の日付で始まる（その夜の一膳のまま）。4時を過ぎてからの画面に戻る操作（focus）で更新
+    const p = await open('America/New_York', '2026-06-11T04:05:00Z');   // NY 6/11 0:05
+    eq(await p.evaluate(() => TODAY), '2026-06-10', 'NY 0:05 に開くと前の日（6/10）');
+    await p.clock.setSystemTime(new Date('2026-06-11T07:59:30Z'));   // NY 3:59:30
+    await p.evaluate(() => window.dispatchEvent(new Event('focus'))); eq(await p.evaluate(() => TODAY), '2026-06-10', 'NY 3:59 のフォーカスでも前の日のまま');
+    await p.clock.setSystemTime(new Date('2026-06-11T08:00:30Z'));   // NY 4:00:30
+    await p.evaluate(() => window.dispatchEvent(new Event('focus'))); eq(await p.evaluate(() => TODAY), '2026-06-11', 'NY 4:00 を過ぎたフォーカスで 6/11 に');
     await p.clock.setSystemTime(new Date('2026-06-11T14:00:00Z'));   // 同じ日の昼
     await p.evaluate(() => refreshToday()); eq(await p.evaluate(() => TODAY), '2026-06-11', '同じ日の昼は変わらない');
-    await p.clock.setSystemTime(new Date('2026-06-12T04:00:30Z'));
-    await p.evaluate(() => window.dispatchEvent(new Event('focus'))); eq(await p.evaluate(() => TODAY), '2026-06-12', 'フォーカスで翌日に');
+    await p.clock.setSystemTime(new Date('2026-06-12T04:00:30Z'));   // NY 6/12 0:00:30
+    await p.evaluate(() => window.dispatchEvent(new Event('focus'))); eq(await p.evaluate(() => TODAY), '2026-06-11', 'NY 6/12 0:00 のフォーカスではまだ 6/11');
+    await p.clock.setSystemTime(new Date('2026-06-12T08:00:30Z'));   // NY 6/12 4:00:30
+    await p.evaluate(() => window.dispatchEvent(new Event('focus'))); eq(await p.evaluate(() => TODAY), '2026-06-12', 'フォーカスで翌日に（4時を過ぎてから）');
     await p.ctx.close();
+}
+{   // 夏時間の切り替え日でも、午前4時は壁時計の4時（24時間の足し引きではない）
+    for (const [label, iso, exp] of [
+        ['NY春 3/8 1:59 EST', '2026-03-08T06:59:00Z', '2026-03-07'], ['NY春 3/8 3:30 EDT', '2026-03-08T07:30:00Z', '2026-03-07'], ['NY春 3/8 3:59 EDT', '2026-03-08T07:59:30Z', '2026-03-07'], ['NY春 3/8 4:00 EDT', '2026-03-08T08:00:30Z', '2026-03-08'],
+        ['NY秋 11/1 1:30 EDT', '2026-11-01T05:30:00Z', '2026-10-31'], ['NY秋 11/1 1:30 EST', '2026-11-01T06:30:00Z', '2026-10-31'], ['NY秋 11/1 3:59 EST', '2026-11-01T08:59:30Z', '2026-10-31'], ['NY秋 11/1 4:00 EST', '2026-11-01T09:00:30Z', '2026-11-01']]){
+        const p = await open('America/New_York', iso);
+        eq(await p.evaluate(() => [TODAY, dayNow()]), [exp, exp], `${label} の今日`);
+        await p.ctx.close();
+    }
 }
 
 // ---------- 3. 夏時間の切り替え日をまたぐ通知・解約期限・夜食 ----------
@@ -223,15 +251,20 @@ for (const tz of ['Asia/Tokyo', 'America/Los_Angeles', 'America/New_York', 'Euro
     eq(r.streak, 3, `${tz} 連続日数`); eq(r.streak2, 2, `${tz} 連続日数(今日まだ)`);
     await p.ctx.close();
 }
-{   // 月曜の境界: 日曜 23:59 と 月曜 0:00 で今週の集計が切り替わる
+{   // 月曜の境界: 1日の切りかえは午前4時。日曜 23:59 と 月曜 0:00〜3:59 はまだ日曜（前の週）、月曜 4:00 で今週の集計が切り替わる
     for (const tz of ['Asia/Tokyo', 'America/Los_Angeles']){
         const sun = tz === 'Asia/Tokyo' ? '2026-06-14T14:59:30Z' : '2026-06-15T06:59:30Z';   // 現地 6/14(日) 23:59:30
         const p = await open(tz, sun);
         const a = await p.evaluate(() => { S.history = [{d: '2026-06-08', id: RECIPES[0].id, slot: '主菜'}, {d: '2026-06-14', id: RECIPES[1].id, slot: '主菜'}, {d: '2026-06-07', id: RECIPES[2].id, slot: '主菜'}]; return [TODAY, weekStart(), weekStats().days]; });
         eq(a, ['2026-06-14', '2026-06-08', 2], `${tz} 日曜 23:59 は月曜はじまりの週の最終日`);
         await p.clock.runFor(31000); await p.waitForTimeout(150);
+        const m = await p.evaluate(() => [TODAY, weekStart(), weekStats().days]);
+        eq(m, ['2026-06-14', '2026-06-08', 2], `${tz} 月曜 0:00 を過ぎても、午前4時までは日曜（前の週）のまま`);
+        await p.clock.setSystemTime(new Date(Date.parse(sun) + 4 * 3600000)); await p.evaluate(() => window.dispatchEvent(new Event('focus'))); await p.waitForTimeout(100);   // 現地 月曜 3:59:30
+        eq(await p.evaluate(() => [TODAY, weekStart()]), ['2026-06-14', '2026-06-08'], `${tz} 月曜 3:59 はまだ日曜（前の週）`);
+        await p.clock.runFor(61000); await p.waitForTimeout(150);   // 現地 月曜 4:00:30 まで。30秒ごとの確認が4時の後に走る
         const c = await p.evaluate(() => [TODAY, weekStart(), weekStats().days]);
-        eq(c, ['2026-06-15', '2026-06-15', 0], `${tz} 月曜 0:00 を過ぎたら新しい週`);
+        eq(c, ['2026-06-15', '2026-06-15', 0], `${tz} 月曜 4:00 を過ぎたら新しい週`);
         await p.ctx.close();
     }
 }
@@ -291,8 +324,11 @@ for (const [tz, iso, T0] of [['Asia/Tokyo', '2028-02-26T03:00:00Z', '2028-02-26'
     eq(r.spend, 0, 'LA: 未来日付の食費は直近7日に入れない（東京の今日の分）');
     ok(r.week >= 1 && r.hasNote, 'LA: 週のプランと設定画面が落ちずに開く');
     eq(r.cookRestored, false, 'LA: 未来の日の「決めた献立」を今日のものとして復元しない');
-    // 現地が追いつく（LA が 6/11 になる）と、保存した記録がそのまま「今日」として使える
+    // 現地が 6/11 の 1:00 になっても、午前4時までは前の日（6/10）のまま
     await la.clock.setSystemTime(new Date('2026-06-11T08:00:00Z')); await la.evaluate(() => refreshToday());
+    eq(await la.evaluate(() => [TODAY, lastDays().get(RECIPES[0].id)]), ['2026-06-10', undefined], 'LA 6/11 1:00 はまだ 6/10（東京の今日の記録はまだ未来）');
+    // 現地が追いつく（LA が 6/11 の 4時を過ぎる）と、保存した記録がそのまま「今日」として使える
+    await la.clock.setSystemTime(new Date('2026-06-11T11:00:30Z')); await la.evaluate(() => refreshToday());
     const r2 = await la.evaluate(() => ({T: TODAY, d0: lastDays().get(RECIPES[0].id), left: S.leftovers.map(leftDay), spend: spendWeek().length}));
     eq([r2.T, r2.d0, r2.left, r2.spend], ['2026-06-11', 0, [1], 1], 'LA が6/11になれば、保存した今日の記録が今日として使える');
     await la.ctx.close();

@@ -7943,7 +7943,8 @@ function applySavedMenu(id, loaded){
     applyMenuIds(sm.ids, sm.slots, mix, null);
 }
 // 料理の id と枠から、今日の案（まだ決めていない献立）を作る。いまは出せない料理（苦手・アレルギーなど）の枠だけ選び直す
-function applyMenuIds(ids, slots, mix, msg){
+// msg: 知らせの文（省略時は「保存した献立を…」）。msgRedo(n): 今は出せない料理を n 品替えたときの知らせ（msg と替えたことを1つの知らせにまとめる）
+function applyMenuIds(ids, slots, mix, msg, msgRedo){
     const n = ids.length; if (!COMPOSE[n]){ toast(t('この献立は今は使えません')); return; }
     const prevMix = S.settings.mix; if (mix) S.settings.mix = mix;
     const items = ids.map((rid, i) => { const r = byId(rid), it = {slot: (slots || [])[i] || (r ? slotOf(r) : '副菜'), r}; return slotStillOk(it) ? it : {slot: it.slot, r: null}; });
@@ -7958,7 +7959,7 @@ function applyMenuIds(ids, slots, mix, msg){
     if (mix) save();
     session.menu = {n, items, adj: n !== menuCount()}; session.twist = twistAvailable() ? suggestTwist() : null;   // 設定の品数と違う保存献立でも、あとの設定変更で丸ごと作り直さない
     setTab('today');
-    toast(msg ? msg : redo ? t('保存した献立を今日の献立にしました（{n}品は今は出せないので別の料理にしました）', {n: redo}) : t('保存した献立を今日の献立にしました'));
+    toast(redo && msgRedo ? msgRedo(redo) : msg ? msg : redo ? t('保存した献立を今日の献立にしました（{n}品は今は出せないので別の料理にしました）', {n: redo}) : t('保存した献立を今日の献立にしました'));
 }
 // 買い物メモの「家にあるかも」: 調味料・いつもある前提の材料（塩・油・しょうゆ・砂糖など）のうち、プランの料理が使うもの
 const PANTRY_UNIT = /^(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|cloves?|pinch|dash|large|small|medium|g|kg|ml|l|oz|lbs?|to|taste|of|a|some|pieces?|sprigs?|大さじ|小さじ|適量|少々|ひとつまみ|カップ|큰술|작은술|컵|꼬집|약간|적당량|ملعقة|ملاعق|كوب|رشة|حسب|الذوق)$/i;
@@ -10821,7 +10822,8 @@ document.addEventListener('click', e => {
         case 'keep-apply': {
             const k = keepGet(TODAY) || yesterdayOffer(); if (!k) break;
             if (keepGet(TODAY)) keepSet(null); else dayObj(addDays(TODAY, -1)).offered = 1;
-            save(); applyMenuIds(k.ids, k.slots, null, k.y ? t('きのうの一膳を、今日の案にしました') : t('きのうまわした一膳を、今日の案にしました')); render(); break;
+            save(); applyMenuIds(k.ids, k.slots, null, k.y ? t('きのうの一膳を、今日の案にしました') : t('きのうまわした一膳を、今日の案にしました'),
+                n => k.y ? t('きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n}) : t('きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n})); render(); break;   // 今は出せない料理を替えたときは、替えたことも同じ知らせで伝える
         }
         case 'keep-drop': { const k = keepAny(), y = dayRec(addDays(TODAY, -1)); if (keepGet(TODAY)) keepSet(null); else if (y) y.offered = 1; save(); render(); toast(t('閉じました'), false, () => { if (k) keepSet(k); if (y) delete y.offered; save(); render(); }); break; }
         case 'table-done': {   // 四 食卓 の主ボタン: まだ記録していない料理を記録して、今日をおしまいにする

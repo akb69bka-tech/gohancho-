@@ -1175,6 +1175,8 @@ GOHAN_I18N('tr', {
     "{slot}を {name} に変えました": "{slot}, {name} ile değiştirildi",
     "{slot}をかえる": "{slot} değiştir",
     "きのうの一膳を、今日の案にしました": "Dünkü yemek bugünün önerisi oldu",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Dünkü yemek bugünün önerisi oldu (şu an uygun olmayan {n} yemek değiştirildi)",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Dünden ertelenen öğün bugünün önerisi oldu (şu an uygun olmayan {n} yemek değiştirildi)",
     "これにする": "Bunu seç",
     "ほかの候補": "Diğer seçenekler",
     "ほかをさがす": "Daha fazla ara",

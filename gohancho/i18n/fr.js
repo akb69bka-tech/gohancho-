@@ -1175,6 +1175,8 @@ GOHAN_I18N('fr', {
     "{slot}を {name} に変えました": "{slot} remplacé par {name}",
     "{slot}をかえる": "Changer {slot}",
     "きのうの一膳を、今日の案にしました": "Le repas d’hier devient la proposition du jour",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Le repas d’hier devient la proposition du jour ({n:# plat remplacé car indisponible:# plats remplacés car indisponibles})",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Le repas reporté d’hier est le menu proposé aujourd’hui ({n:# plat remplacé car indisponible:# plats remplacés car indisponibles})",
     "これにする": "Choisir",
     "ほかの候補": "Autres idées",
     "ほかをさがす": "Chercher autre chose",

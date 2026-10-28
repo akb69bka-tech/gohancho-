@@ -1175,6 +1175,8 @@ GOHAN_I18N('vi', {
     "{slot}を {name} に変えました": "Đã đổi {slot} thành {name}",
     "{slot}をかえる": "Đổi {slot}",
     "きのうの一膳を、今日の案にしました": "Đã lấy bữa hôm qua làm gợi ý hôm nay",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Đã lấy bữa hôm qua làm gợi ý hôm nay (đã đổi {n} món vì hiện không có)",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Bữa dời từ hôm qua đã thành gợi ý hôm nay (đã đổi {n} món vì hiện không có)",
     "これにする": "Chọn món này",
     "ほかの候補": "Lựa chọn khác",
     "ほかをさがす": "Tìm thêm",

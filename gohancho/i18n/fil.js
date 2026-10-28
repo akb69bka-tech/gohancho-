@@ -1175,6 +1175,8 @@ GOHAN_I18N('fil', {
     "{slot}を {name} に変えました": "Pinalitan ang {slot} ng {name}",
     "{slot}をかえる": "Palitan ang {slot}",
     "きのうの一膳を、今日の案にしました": "Ang ulam kahapon na ang mungkahi ngayon",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Ang ulam kahapon na ang mungkahi ngayon (napalitan ang {n} putahe dahil hindi available ngayon)",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Ginawa nang mungkahi ngayon ang inilipat na pagkain kahapon (napalitan ang {n} putahe dahil hindi available ngayon)",
     "これにする": "Ito na",
     "ほかの候補": "Iba pang mungkahi",
     "ほかをさがす": "Maghanap pa",

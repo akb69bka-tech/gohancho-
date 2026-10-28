@@ -1175,6 +1175,8 @@ GOHAN_I18N('es', {
     "{slot}を {name} に変えました": "{slot} cambiado a {name}",
     "{slot}をかえる": "Cambiar {slot}",
     "きのうの一膳を、今日の案にしました": "La comida de ayer es ahora la propuesta de hoy",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "La comida de ayer es ahora la propuesta de hoy ({n:# plato cambiado por no estar disponible:# platos cambiados por no estar disponibles})",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "La comida que pasaste ayer es ahora la propuesta de hoy ({n:# plato cambiado por no estar disponible:# platos cambiados por no estar disponibles})",
     "これにする": "Elegir este",
     "ほかの候補": "Otras opciones",
     "ほかをさがす": "Buscar más",

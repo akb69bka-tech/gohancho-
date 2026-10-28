@@ -1175,6 +1175,8 @@ GOHAN_I18N('id', {
     "{slot}を {name} に変えました": "{slot} diganti jadi {name}",
     "{slot}をかえる": "Ganti {slot}",
     "きのうの一膳を、今日の案にしました": "Menu kemarin jadi usulan hari ini",
+    "きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Menu kemarin jadi usulan hari ini ({n} hidangan diganti karena tidak tersedia)",
+    "きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）": "Hidangan yang ditunda kemarin kini jadi usulan hari ini ({n} hidangan diganti karena tidak tersedia)",
     "これにする": "Pilih ini",
     "ほかの候補": "Pilihan lain",
     "ほかをさがす": "Cari yang lain",
