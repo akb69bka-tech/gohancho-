@@ -187,6 +187,7 @@ a{color:var(--accent)}
 /* 見出し */
 .sec{display:flex;flex-direction:column;gap:var(--s16)}
 .sec-head{display:flex;flex-direction:column;gap:var(--s4)}
+.sec-head h2{min-width:0;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}   /* 長い1語の見出し（トルコ語など）で、文字を大きくした狭い画面が横に広がらないように */
 .sec-head h2{font-size:var(--fs24);padding-inline-start:var(--s12);border-inline-start:3px solid var(--accent)}   /* 章の見出し: 明朝24px・藍の細い縦線 */
 .sec-head h3{font-size:var(--fs16);margin-top:var(--s8)}
 .sec-head .hint{font-size:var(--fs14);color:var(--muted);line-height:1.5}
@@ -496,7 +497,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .shuffle .sh-ic{width:68px;height:68px;border-radius:50%;flex:0 0 auto;border:2px solid var(--tray-edge);background:radial-gradient(circle at 35% 30%,#fffaf0,var(--porcelain) 70%);color:#22406b;display:flex;align-items:center;justify-content:center;box-sizing:border-box;
     box-shadow:0 6px 14px rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.08)}
 .shuffle svg{width:28px;height:28px;flex:0 0 auto}
-.shuffle span.sh-tx{display:block;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
+.shuffle span.sh-tx{display:block;min-height:2.5em;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
 .shuffle:hover{transform:scale(1.05)}
 .shuffle:active{transform:scale(.94)}
 .shuffle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -651,7 +652,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel.rise-in{animation:rise .35s ease-out backwards}   /* 入れ替わった料理の器だけ（描き直しのたびに全部が弾むと、押していない料理まで動いて見える） */
-.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-sum > .small{white-space:nowrap;flex:none}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35}.cond-sum > span:first-child{flex:0 1 auto}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-sum > .small{white-space:nowrap;flex:none}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media (max-width:400px){.cond-sum{flex-wrap:wrap;row-gap:0}.cond-sum > span:first-child{flex:1 1 0;min-width:0}.cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}}html[data-ts] .cond-sum{flex-wrap:wrap;row-gap:0}html[data-ts] .cond-sum > span:first-child{flex:1 1 0;min-width:0}html[data-ts] .cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}   /* 狭い・文字が大きいときだけ2行まで。いつも2行ぶんの高さを取り、気分を変えても下がずれない */.cond-sum > span:first-child{flex:0 1 auto}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}   /* 1fr のままだと、長い言葉（イタリア語・ドイツ語など）で列が広がって、画面全体が横にはみ出す */
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
 .big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
