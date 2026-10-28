@@ -4945,18 +4945,35 @@ function countReason(n){
     if (session.mood === 'easy') return t('ラクの日なので少なめの{n}品', {n});
     return t('{wd}曜日なので{n}品にしました', {wd: LANG === 'ja' ? WD[wd] : wdName(wd, true), n});
 }
+// 1つの献立の中で「ほぼ同じ料理」が重ならないように（Adobong pusit と Adobong kangkong、かに玉とニラ玉。第2回モニター g10・g19）
+// 料理の型の言葉（英語の名前の最後の語・その国の名前の最初の語。「soup」「salad」などのよくある語は除く）が同じか、どちらも卵が主役の料理なら「似ている」
+const DISH_GENERIC = new Set(['soup','salad','stew','rice','noodles','noodle','sauce','side','greens','vegetables','vegetable','fry','stir-fry','dish','style','with','and','sopa','salade','ensalada','insalata','suppe','salat','zuppa','canh','sayur','sup','sabaw','çorbası','çorba','zupa','sałatka','soupe','pork','chicken','beef','fish','shrimp','prawns','tofu','lamb','mutton','squid','mince','sausage','tomato','tomatoes','potato','potatoes','cabbage','spinach','beans','garlic','onion','onions','pepper','peppers','sweet','spicy','fried','grilled','steamed','braised']);   // 肉・魚・野菜・調理法の語は「同じ料理」の手がかりにしない（同じ肉魚の重なりは点数で別に避けている）
+const EGG_NAME = /卵|玉子|たまご|玉$|オムレツ|オムライス|eggs?|omelet|omelette|frittata|tortilla de patatas|tortang|trứng|telur|계란|달걀|鸡蛋|雞蛋|蛋$|ไข่|yumurta|jajk|huevos?|œufs?|uov[ao]|ovos?|eier|अंडा|अंडे|بيض|itlog/i;
+function dishWords(r){
+    const w = new Set(), en = String((r.alt && r.alt[0]) || '').toLowerCase().replace(/\([^)]*\)/g, '').trim(), loc = String((r.alt && r.alt[1]) || '').toLowerCase().trim();
+    const last = en.split(/\s+/).pop(), first = loc.split(/\s+/)[0];
+    [last, first].forEach(x => { if (x && x.length >= 4 && !DISH_GENERIC.has(x)) w.add(x); });
+    return w;
+}
+function eggDish(r){ const nm = r.pack ? [r.name, ...(r.alt || [])].join(' ') : (r.trLang ? r.nameEn : r.name); return EGG_NAME.test(String(nm || '')); }
+function tooSimilar(a, b){
+    if (!a || !b || a.id === b.id) return !!a && !!b;
+    if (eggDish(a) && eggDish(b)) return true;
+    const wa = dishWords(a); return [...dishWords(b)].some(x => wa.has(x));
+}
 function suggestFor(slot, items, main){
     if (!main) return null;
     const used = items.map(x => x.r && x.r.id).filter(Boolean);
     const others = items.map(x => x.r).filter(r => r && r !== main);
+    const sim = r => [main, ...others].some(o => tooSimilar(o, r)), unlike = ps => { const ok = ps.filter(r => !sim(r)); return ok.length ? ok : ps; };   // 似ていない候補があるときだけ絞る（枠を空にしない）
     const ctx = {main, others, fridge: session.useFridge ? fridgeKeys() : null};
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物') return null;
-        const ps = poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id));
+        const ps = unlike(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id)));
         return pick(easyPool('汁物', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
-        const ps = poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id));
+        const ps = unlike(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id)));
         return pick(easyPool('副菜', ps), ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(ps, ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
@@ -4974,7 +4991,7 @@ function suggestFor(slot, items, main){
     ];
     // 最近作った料理は、どの段階にも作っていない主菜がないときだけ使う（段階の中でゆるめると、まだある主菜より先に最近の料理が出てしまう）
     for (const strict of [true, false]) for (const ok of tiers){
-        const pool = easyPool('主菜', poolFor('主菜').filter(r => free(r) && ok(r)));
+        const pool = easyPool('主菜', unlike(poolFor('主菜').filter(r => free(r) && ok(r))));
         const r = pool.length ? pick(pool, Object.assign({}, ctx, {strict})) : null; if (r) return r;
     }
     return null;
@@ -5175,7 +5192,11 @@ function scaleSteps(text, factor, names){
     });
     // 日本語の「2等分して小判形に」「練り、6等分する」「6等分（1個あたり約75g）」: 人数ぶんに分ける数も人数に合わせる（4人分なら4等分。佐々木 3-6）。
     // 切る（「豆腐は4等分に切る」）は大きさの話なので変えない。1つにしかならないときは元の文のまま
-    const s3 = !ja ? s2 : s2.replace(STEP_PORTION, (m, a, b, c) => {
+    const s3 = !ja ? s2.replace(STEP_PORTION_X, (m, ...g) => {   // 韓国語・ベトナム語・英語の「N개로 빚어」「chia thành N phần rồi nặn」「knead and divide into N」も、日本語の「N等分して小判形に」と同じに
+        const d = g.slice(0, 5).find(x => x != null), k0 = Number(d), v = Math.round(k0 * factor);
+        if (!d || v < 2 || v === k0) return m;
+        n++; return m.replace(d, String(v));
+    }) : s2.replace(STEP_PORTION, (m, a, b, c) => {
         const k0 = Number(a || b || c), v = Math.round(k0 * factor);
         if (v < 2 || v === k0) return m;
         n++; return v + '等分';
@@ -5183,6 +5204,8 @@ function scaleSteps(text, factor, names){
     return {s: s3, n, k};
 }
 const STEP_PORTION = /(\d+)等分(?=(?:して|する|にして|にし)?[^。、]*?(?:小判形|丸め|丸く|まとめ|包))|(?<=練り、)(\d+)等分|(\d+)等分(?=（1個あたり)/g;
+// 人数ぶんに分けて形にする数（日本語の STEP_PORTION と同じ考え。切る大きさ・「Roll into 10 meatballs」のような個数は変えない）
+const STEP_PORTION_X = /(\d+)\s*(?:개|등분)(?:으)?로\s*(?=[^.。]*?(?:빚|동그랗|둥글|납작|뭉쳐))|(\d+)\s*등분(?:해|하여|한)\s*(?=[^.。]*?(?:빚|동그랗|둥글|납작|뭉쳐))|\b(?:chia|nặn|vo)\b[^.]{0,30}?\bthành (\d+) (?=(?:phần|viên|miếng|cục)\b[^.]*?(?:nặn|\bvo\b|viên|dẹt|tròn))|\b[Dd]ivide\b(?: (?:it|them|the [a-z]+(?: [a-z]+)?|everything))? into (\d+)\b(?! ?(?:cm|mm|inch|in\b|pieces? of))(?=[^.]*?\b(?:shape|form|roll|balls?|patt(?:y|ies)|ovals?|rounds?|wrap)\b)|\b[Kk]nead\b[^.]*?\bdivide (?:it |them |everything )?into (\d+)\b(?! ?(?:cm|mm|inch|pieces? of))/g;
 
 /* ---- 苦手な食材 ---- */
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
@@ -5336,13 +5359,16 @@ function algRecipeMap(r){
     ALG_ALL.forEach(id => items.forEach(({i, opt, k: sk}) => { const k = algKind(id, i); if (!k) return;
         // 訳した調味料の欄に同じ数が並んでいれば同じ位置の名前、そうでなければ同じアレルゲンに当たる訳の名前（なければ元の言葉）
         const show = sk && tr.length ? (same ? tr[sk - 1].name : (tr.find(x => algKind(id, x)) || {}).name) : '';
-        (out[id] = out[id] || []).push({name: show || i.name || i.label || i.key, kind: k, opt}); }));
+        (out[id] = out[id] || []).push({name: show || i.disp || i.name || i.label || i.key, kind: k, opt}); }));
     return out;
 }
 // 画面に出している（訳した）調味料の欄を、材料の形にしたもの。訳がない料理は空
+// 区切りは seasSplit（かっこの中では分けない）。元の文より多く分かれたときは、小文字で始まる切れ端を前に戻して数を合わせる（seasAlign）
+// 名前は分量ごと出す（「2 EL Butter」のように分量が前に来る言語もあるので、最初の語だけを名前にしない）
 function seasShownItems(r){
     if (r.seasBase == null || !r.seas || String(r.seas) === String(r.seasBase)) return [];
-    return String(r.seas).split(/\s*[·•;・、]\s*|,\s+/).map(x => x.trim()).filter(Boolean).map(x => { const p = parseIng(x); return Object.assign({}, p, {name: p.name || x}); });
+    const sh = seasSplit(r.seas, 'tr'), n = seasItems(r).length, a = sh.length === n ? sh : (seasAlign(sh, n) || sh);
+    return a.map(x => Object.assign({}, parseIng(x), {name: x, label: x}));
 }
 // その料理が含む、選んだアレルゲン（全員共通）の id
 function algSelectedHits(r){
@@ -5379,7 +5405,9 @@ function allergenDetailHtml(r){
     const ids = [...new Set([].concat(...sec.main.map(x => x[1]), [...sel]))].filter(id => m[id]);
     const mine = algSelectedHits(r), may = [...sel].filter(id => !mine.includes(id) && (m[id] || []).some(x => x.kind === 4));
     const kindText = x => x.kind === 2 ? t('{name}（よく含まれる加工品・調味料）', {name: x.name}) : x.kind === 3 ? t('{name}（しょうゆ・みそなどの発酵調味料）', {name: x.name}) : x.kind === 4 ? t('{name}（入っていることがある加工品。袋の表示を確認）', {name: x.name}) : x.name + (x.opt ? t('（なくても可）') : '');
-    const li = id => `<li class="${mine.includes(id) ? 'mine' : ''}">${esc(t('{slot}：{name}', {slot: (mine.includes(id) ? '⚠ ' : '') + algLabel(id), name: joinNames([...new Set(m[id].map(kindText))])}))}</li>`;
+    // 材料の名前は1つずつ <bdi> で囲む（右から左の言語の文に英語などが入っても、数字や「:」の並びが入れかわらないように）
+    const li = id => { const nm = [...new Set(m[id].map(kindText))], ph = joinNames(nm.map((x, k) => '\u0002' + k + '\u0003'));
+        return `<li class="${mine.includes(id) ? 'mine' : ''}">${esc(t('{slot}：{name}', {slot: (mine.includes(id) ? '⚠ ' : '') + algLabel(id), name: ph})).replace(/\u0002(\d+)\u0003/g, (z, k) => `<bdi>${esc(nm[k])}</bdi>`)}</li>`; };
     return `<div class="note allergen-box" id="allergen-box"><b>${esc(t('この料理に含まれる主なアレルゲン'))}</b>
         ${mine.length ? `<div class="small warn" role="alert">${esc(t('⚠ 選んでいるアレルゲン（{list}）を使う料理です。', {list: joinNames(mine.map(algLabel))}))}</div>` : ''}
         ${may.length ? `<div class="small warn" role="note">${esc(t('選んでいるアレルゲン（{list}）が入っていることがある加工品を使います。袋の表示を確かめてください。', {list: joinNames(may.map(algLabel))}))}</div>` : ''}
@@ -5636,11 +5664,49 @@ function itemAvoided(i, c){
 }
 // 苦手な食材を使う料理か（置き換えて作れる料理は、置き換えて出すので苦手にしない）
 // 調味料の欄の食材（天ぷらの衣の小麦粉・卵、ムニエルのバターなど）。元の言葉の文から取り出す（日本は日本語、各国は英語）
+// 調味料の欄を1つずつに分ける。かっこの中の区切り（「salt (use less than usual, the cheese is salty)」の「,」など）では分けない
+// jp: 日本のレシピの元の文（・、で区切る）。ほかは · • ; 、 ， と「, 」で区切る（訳した文は ・ も区切りにする）
+function seasSplit(src, mode){
+    const s = String(src || ''), out = []; let cur = '', depth = 0;
+    for (let k = 0; k < s.length; k++){
+        const c = s[k];
+        if ('(（[［【'.includes(c)) depth++;
+        else if (')）]］】'.includes(c)) depth = Math.max(0, depth - 1);
+        const sep = depth === 0 && (mode === 'jp' ? (c === '・' || c === '、') : ('·•;；、，'.includes(c) || (mode === 'tr' && c === '・') || (c === ',' && /\s/.test(s[k + 1] || ''))));
+        if (sep){ out.push(cur); cur = ''; } else cur += c;
+    }
+    out.push(cur);
+    const parts = out.map(x => x.trim()).filter(Boolean), res = [];
+    // 「2 garlic cloves, smashed」「Salt, to serve」のような、前の調味料の説明（切り方・添え方）は前に戻す（1つの調味料として見る）
+    parts.forEach(x => { if (res.length && mode !== 'jp' && SEAS_TAIL.test(x)) res[res.length - 1] += ', ' + x; else res.push(x); });
+    return res;
+}
+const SEAS_TAIL = /^(?:[a-z]+(?:ed|en)(?:\s+(?:and|or)\s+[a-z]+(?:ed|en))?|to (?:serve|taste|garnish|finish)|plus more(?: to serve)?|minus [\w ./]+|or more|as (?:needed|required)|optional|divided|(?:finely|roughly|thinly|coarsely|freshly) [a-z]+(?:ed|en))$/;   // 説明だけの切れ端（smashed・minced・to serve など）。材料の名前（chopped parsley など）は入れない
+// 訳した文の区切りが元の文より多いときは、小文字で始まる切れ端（「Salt, pepper a little」の「pepper a little」など）を前に戻して数を合わせる
+function seasAlign(sh, n){
+    const a = sh.slice();
+    for (let k = a.length - 1; k > 0 && a.length > n; k--) if (/^[a-zà-ÿ]/.test(a[k])){ a[k - 1] += ', ' + a[k]; a.splice(k, 1); }
+    return a.length === n ? a : null;
+}
+// 判定に使う言葉: 「for the pasta water」のような使い道の説明（for 〜）は、その調味料そのものではないので外す（かっこの中はそのまま見る）
+// かっこの中の for（「or seasoned soy for fish」など）は、見落としを避けるため外さない
+function seasJudgeText(x){
+    let depth = 0;
+    for (let k = 0; k < x.length; k++){
+        const c = x[k];
+        if ('(（'.includes(c)) depth++; else if (')）'.includes(c)) depth = Math.max(0, depth - 1);
+        else if (!depth && /\s/.test(c) && /^\s+for\s/i.test(x.slice(k))){
+            let e = k; while (e < x.length && !'(（'.includes(x[e])) e++;
+            return (x.slice(0, k) + ' ' + x.slice(e)).replace(/\s+/g, ' ').trim() || x;
+        }
+    }
+    return x;
+}
 function seasItems(r){
     if (r._seas) return r._seas;
     const src = String(r.seasBase != null ? r.seasBase : (r.seas || ''));
-    const out = r.pack ? src.split(/\s*[·•;]\s*|,\s+/).map(x => x.trim()).filter(Boolean).map(x => { const l = x.toLowerCase(); return {name:x, label:x, key:l, en:l, qty:'', opt:false}; })
-        : src.split(/[・、]/).map(x => x.trim()).filter(Boolean).map(x => parseIng(x));
+    const base = seasSplit(src, r.pack ? 'pack' : 'jp');
+    const out = base.map(x => r.pack ? (j => { const l = j.toLowerCase(); return {name:j, label:j, key:l, en:l, qty:'', opt:false, disp:x}; })(seasJudgeText(x)) : parseIng(x));   // 判定は使い道の説明（for 〜）を外した言葉、表示は元の文（disp）
     Object.defineProperty(r, '_seas', {value: out, enumerable: false, configurable: true});
     return out;
 }
@@ -7441,9 +7507,11 @@ const CURRENCY = {JP:'JPY', US:'USD', GB:'GBP', FR:'EUR', DE:'EUR', IT:'EUR', ES
 function moneyText(a){
     const cur = CURRENCY[currentCountry()] || 'JPY';
     // 地域設定の国の通貨で、国の書き方（記号の位置・区切り）で出す。端数があるときは、丸めて見せないよう小数も出す（例: 円でも ￥2,460.50）
-    const base = LANG === 'pt-BR' ? 'pt' : LANG, frac = Math.round(a * 100) % 100 !== 0 ? {minimumFractionDigits:2, maximumFractionDigits:2} : {};
-    try{ return new Intl.NumberFormat(base + '-' + currentCountry() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a); }catch(e){}
-    try{ return new Intl.NumberFormat(dateLoc() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a); }catch(e){ return a + ' ' + cur; }
+    // 端数がないときは小数を出さない（台湾ドル「$600.00」・ルピア「Rp 150.000,00」とならないように）。台湾ドルは「$」だけだと米ドルと区別できないので「NT$」
+    const base = LANG === 'pt-BR' ? 'pt' : LANG, frac = Math.round(a * 100) % 100 !== 0 ? {minimumFractionDigits:2, maximumFractionDigits:2} : {minimumFractionDigits:0, maximumFractionDigits:0};
+    const fix = v => cur === 'TWD' && !/NT\$|NT\s?\$|TWD|新台幣/.test(v) ? v.replace('$', 'NT$') : v;
+    try{ return fix(new Intl.NumberFormat(base + '-' + currentCountry() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a)); }catch(e){}
+    try{ return fix(new Intl.NumberFormat(dateLoc() + '-u-nu-latn', Object.assign({style:'currency', currency:cur}, frac)).format(a)); }catch(e){ return a + ' ' + cur; }
 }
 function parseMoney(raw){
     // 通貨記号・円/元/원/zł などの文字・空白・アポストロフィ区切りは読み飛ばす。区切りは「その言語の小数点」を基準に、末尾1〜2桁だけを小数とみなす
@@ -8419,7 +8487,9 @@ function loadHistCountries(){
 function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document.body.style.overflow = ''; dlgClosed('modal-root'); }
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 // アメリカの料理・アメリカで使うときは、オーブンの温度に華氏を添える（190°C → 190°C (375°F)）
-function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${Math.round((c * 9 / 5 + 32) / 5) * 5}°F)`) : txt; }
+// オーブン・揚げ油の温度（250°F 以上）は、ダイヤルの目盛りにある 25°F きざみ（300・325・350・375・400・425・450°F）に丸める。それより低い温度は 5°F きざみ
+function fOf(c){ const f = c * 9 / 5 + 32; return f >= 250 ? Math.round(f / 25) * 25 : Math.round(f / 5) * 5; }
+function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${fOf(Number(c))}°F)`) : txt; }
 // opts.modal: 詳細画面（人数の切りかえ・買い物メモに足す・材料のあとにポイント・作り方の見出しの横に動画。アレルゲンは見出しの近くに出すので、ここでは出さない）
 function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方タブで、手順のすぐ下に入れるもの（できた！）
     const r0 = r, md = !!opts.modal;
