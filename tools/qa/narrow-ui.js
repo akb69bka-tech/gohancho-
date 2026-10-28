@@ -46,8 +46,9 @@ let ng = 0, ok = 0; const bad = m => { ng++; console.log('NG', m); }; const chk 
     const c = await p.evaluate(() => { const e = document.querySelector('.cond-sum > .small'); return e ? {clip: e.scrollHeight > e.clientHeight + 1, lines: Math.round(e.clientHeight / parseFloat(getComputedStyle(e).lineHeight))} : null; });
     chk(!c || (!c.clip), `${tag}: 「条件を変える」の要約が切れる ${JSON.stringify(c)}`);
     // 1週間の各日ボタン
-    const w = await p.evaluate(() => { makeWeek(); S.foldOpen = Object.assign({}, S.foldOpen, {week: 1}); render(); const a = document.querySelector('.week-acts .who') && document.querySelector('.week-acts .who').parentElement; if (!a) return null; const k = [...a.children].map(e => e.getBoundingClientRect()); return {who: k[0].width, a: k[1].width, b: k[2].width, ya: k[1].top, yb: k[2].top, yw: k[0].top, clip: [...a.children].some(e => e.scrollWidth > e.clientWidth + 1), right: Math.max(...k.map(r => r.right))}; });
-    chk(w && Math.abs(w.a - w.b) < 2 && w.yw < w.ya && Math.abs(w.ya - w.yb) < 1 && !w.clip && w.right <= 320, `${tag}: 週プランの各日ボタンの並び ${JSON.stringify(w)}`);
+    // 各日の行: 「変更」ボタン（別の案・作らない・担当はこの中）が行の中に収まり、44px 以上で、文字が切れない
+    const w = await p.evaluate(() => { makeWeek(); S.foldOpen = Object.assign({}, S.foldOpen, {week: 1}); render(); const bs = [...document.querySelectorAll('.week .item [data-act="week-day"]')]; if (!bs.length) return null; const k = bs.map(e => e.getBoundingClientRect()); return {n: bs.length, minW: Math.min(...k.map(r => r.width)), minH: Math.min(...k.map(r => r.height)), clip: bs.some(e => e.scrollWidth > e.clientWidth + 1), right: Math.max(...k.map(r => r.right)), left: Math.min(...k.map(r => r.left))}; });
+    chk(w && w.minW >= 44 && w.minH >= 44 && !w.clip && w.right <= 320 && w.left >= 0, `${tag}: 週プランの各日ボタンの並び ${JSON.stringify(w)}`);
     // 入力欄・作り方・買い物
     for (const tb of ['fridge', 'settings']) { await p.evaluate(t => setTab(t), tb); await p.waitForTimeout(150); const o = await p.evaluate(() => [...document.querySelectorAll('input[placeholder]')].every(e => getComputedStyle(e).textOverflow === 'ellipsis') && document.documentElement.scrollWidth <= innerWidth); chk(o, `${tag} ${tb}: 入力例の … または横はみ出し`); }
     await p.evaluate(() => { try { const m = session.menu; S.cook = {d: TODAY, menu: m && m.items.map(x => x.r.id)}; } catch (e) {} });
