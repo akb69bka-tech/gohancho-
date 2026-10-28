@@ -7,7 +7,7 @@
 //    C1 苦手を足して今日の献立を見ずに開き直しても、苦手の料理が戻らない
 //    C2 決めたあとにアレルギーを足しても、決めた献立が黙って変わらず、画面の献立と作り方が食い違わない
 //    C3 決めたあとに気分（おかゆの日）を押しても、確認なしに決めた献立が変わらない
-//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F8 食べる人の人数（わたし）と辛さ・買い物の重なり・10人まで
+//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F8 食べる人の人数（わたし）と辛さ・買い物の重なり・10人まで / F9〜F12 かえるシート・午前4時・昨日の一膳・明日の一膳
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
@@ -143,6 +143,27 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
         return {meChip, sv2, noChip, sv3};
     });
     ok(r3.meChip && r3.sv2 === 2 && r3.noChip && r3.sv3 === 2, 'F8 「わたし」ははじめから選ばれ、人数に数える。家族に「これはわたし」を付けたら出さない: ' + JSON.stringify(r3));
+    // 案2 一 決める（戸川）: かえるシート・午前4時・昨日の一膳・明日の一膳
+    const r4 = await p.evaluate(() => {
+        closeSheet(); session.menu = null; S.cook = null; setTab('today'); session.stage = 'decide'; render();
+        window.__swapDirect = false;
+        const before = menuIds(), m = session.menu, k = m.items.findIndex((x, i) => i > 0 && x.r);
+        document.querySelector(`.tray [data-act="reroll"][data-i="${k}"]`).click();
+        const kind = sheet && sheet.kind, n = sheet && sheet.cands ? sheet.cands.length : 0, pick = sheet && sheet.cands[0];
+        if (pick) document.querySelector(`[data-act="swap-pick"][data-id="${pick.id}"]`).click();
+        const after = menuIds(); window.__swapDirect = true;
+        const only = before.every((id, i) => i === k || id === after[i]) && (!pick || after[k] === pick.id);
+        const four = dayNow() === ymd(new Date(Date.now() - 4 * 3600e3));
+        const yd = addDays(TODAY, -1); S.day[yd] = {state: 'decided', items: [{slot: '主菜', id: before[0]}]}; render();
+        const offer = !!document.querySelector('[data-act="keep-apply"]') && /昨日/.test(document.querySelector('.kept-offer').textContent);
+        delete S.day[yd];
+        sheet = {kind: 'tomorrow'}; renderSheet(); const tm = ((S.day[addDays(TODAY, 1)] || {}).items || []).length; closeSheet(); delete S.day[addDays(TODAY, 1)];
+        return {kind, n, only, four, offer, tm};
+    });
+    ok(r4.kind === 'swap' && r4.n >= 1 && r4.n <= 3 && r4.only, 'F9 かえるは候補3つのシートから選び、変わるのはその1品だけ: ' + JSON.stringify(r4));
+    ok(r4.four, 'F10 1日の切りかえは午前4時');
+    ok(r4.offer, 'F11 昨日決めたまま作らなかった一膳を「今日にしますか？」と聞く');
+    ok(r4.tm > 0, 'F12 明日の一膳を見ると、明日の下書きができる');
     await ctx.close();
 }
 

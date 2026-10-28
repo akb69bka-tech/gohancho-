@@ -111,7 +111,7 @@ async function openCtx(b, cfg, state, off, hold) {
   await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
   const p = await ctx.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
   await p.addInitScript(([off, seed]) => { if (sessionStorage.getItem('__off') == null) sessionStorage.setItem('__off', off); sessionStorage.setItem('__seed', seed); }, [off, cfg.seed]);
-  await p.addInitScript(dateShim); await p.addInitScript(randShim); await p.addInitScript(PAGE_LIB);
+  await p.addInitScript(() => { window.__swapDirect = true; }); await p.addInitScript(dateShim); await p.addInitScript(randShim); await p.addInitScript(PAGE_LIB);
   if (!state || !state.storage) {
     await p.addInitScript(([cfg, firstUse]) => {
       if (sessionStorage.getItem('__init')) return; sessionStorage.setItem('__init', 1);

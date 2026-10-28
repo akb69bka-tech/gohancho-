@@ -35,13 +35,15 @@ let ng = 0, ok = 0; const bad = m => { ng++; console.log('NG', m); }; const chk 
     await p.evaluate(() => { window.hasPro = () => true; window.isLocked = () => false; });
     // 今日: 丸ボタン・枠名
     const a = await p.evaluate(() => {
+      const sw0 = document.documentElement.scrollWidth;
+      if (typeof openCondSheet === 'function') openCondSheet();   // 案2: まるごと入れ替えは条件シートのいちばん下
       const s = document.querySelector('.shuffle'), tx = s && s.querySelector('.sh-tx'), ic = s && s.querySelector('.sh-ic');
       const slots = [...document.querySelectorAll('.spot-label .slot')].map(e => e.scrollWidth <= e.clientWidth + 1 && getComputedStyle(e).textOverflow !== 'ellipsis' || getComputedStyle(e).whiteSpace !== 'nowrap');
       const r = s ? s.getBoundingClientRect() : null;
-      return {has: !!s, txClip: tx ? tx.scrollHeight > tx.clientHeight + 1 || tx.scrollWidth > tx.clientWidth + 1 : true, below: tx && ic ? tx.getBoundingClientRect().top >= ic.getBoundingClientRect().bottom - 1 : false, inside: r ? r.left >= 0 && r.right <= innerWidth : false, slotsOk: slots.every(Boolean), n: slots.length, sw: document.documentElement.scrollWidth};
+      const res = {has: !!s, txClip: tx ? tx.scrollHeight > tx.clientHeight + 1 || tx.scrollWidth > tx.clientWidth + 1 : true, below: tx && ic ? (tx.getBoundingClientRect().top >= ic.getBoundingClientRect().bottom - 1 || (getComputedStyle(document.documentElement).direction === 'rtl' ? tx.getBoundingClientRect().right <= ic.getBoundingClientRect().left + 1 : tx.getBoundingClientRect().left >= ic.getBoundingClientRect().right - 1)) : false, inside: r ? r.left >= 0 && r.right <= innerWidth : false, slotsOk: slots.every(Boolean), n: slots.length, sw: Math.max(sw0, document.documentElement.scrollWidth)}; if (typeof closeSheet === 'function') closeSheet(); return res;
     });
     chk(a.has && !a.txClip, `${tag}: 丸ボタンの文字が切れる ${JSON.stringify(a)}`);
-    chk(a.below, `${tag}: 丸ボタンの文字が丸の下に出ていない`); chk(a.inside, `${tag}: 丸ボタンが画面からはみ出す`);
+    chk(a.below, `${tag}: 丸ボタンの文字が丸に重なる（下か横に出す）`); chk(a.inside, `${tag}: 丸ボタンが画面からはみ出す`);
     chk(a.slotsOk && a.n > 0, `${tag}: 枠名が省略される`); chk(a.sw <= 320, `${tag}: 今日が横にはみ出す ${a.sw}`);
     const c = await p.evaluate(() => { const e = document.querySelector('.cond-sum > .small'); return e ? {clip: e.scrollHeight > e.clientHeight + 1, lines: Math.round(e.clientHeight / parseFloat(getComputedStyle(e).lineHeight))} : null; });
     chk(!c || (!c.clip), `${tag}: 「条件を変える」の要約が切れる ${JSON.stringify(c)}`);

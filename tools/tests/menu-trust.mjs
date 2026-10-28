@@ -120,7 +120,15 @@ for (const k of [0, 1, 2]){
     await p.click('[data-act="decide"]'); await p.waitForTimeout(200);
     await p.evaluate(() => setTab('today'));
     const decided = await p.evaluate(() => S.cook.ids.slice());
-    for (const [name, sel] of [['気分（おかゆの日）', '[data-act="mood"][data-k="okayu"]'], ['品数', '[data-act="count"][data-v="4"]'], ['まるごと入れ替え', '[data-act="new-menu"]']]){
+    // 案2（設計書 §7-1）: 決めた一膳があるときの気分・品数は「明日から」。今日の決めた一膳は変えず、確認も出さない
+    for (const [name, sel] of [['気分（おかゆの日）', '[data-act="mood"][data-k="okayu"]'], ['品数', '[data-act="count"][data-v="4"]']]){
+        await openMood(p);
+        const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await p.waitForTimeout(200);
+        const r = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), ids: menuIds(), cook: S.cook.ids.slice(), mood: session.mood, dc: S.settings.dishCount, msg: document.querySelector('#toast-root').textContent, later: !!((S.day[addDays(TODAY, 1)] || {}).mood || S.settings.pending) }));
+        ok(!r.sheet && JSON.stringify(r.ids) === JSON.stringify(decided) && JSON.stringify(r.cook) === JSON.stringify(decided) && r.mood !== 'okayu' && String(r.dc) === '3' && /明日/.test(r.msg) && r.later, name + ': 決めた一膳はそのまま、明日から変わる ' + JSON.stringify(r));
+        await p.evaluate(() => { closeSheet(); const td = addDays(TODAY, 1); if (S.day[td]) delete S.day[td].mood; delete S.settings.pending; save(); });
+    }
+    for (const [name, sel] of [['まるごと入れ替え', '[data-act="new-menu"]']]){
         await openMood(p);
         const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await p.waitForTimeout(200);
         const ask = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));

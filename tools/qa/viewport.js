@@ -65,7 +65,7 @@ const overflow = p => p.evaluate(() => {
   // (3) キーボード
   for (const [w, h, kh] of [[390, 844, 336], [844, 390, 200], [820, 1180, 380], [320, 568, 260]]) {
     for (const mode of ['resize', 'overlay']) {
-      for (const [tb, sel, pre] of [['fridge', '#ing-input'], ['log', '#spend-a'], ['log', '#c-name', "document.querySelector('#custom-box').open=true"]]) {
+      for (const [tb, sel, pre] of [['fridge', '#ing-input'], ['log', '#spend-a', "document.querySelector('#log-more').open=true"], ['log', '#c-name', "document.querySelector('#custom-box').open=true"]]) {
         const {ctx, p} = await open(b, w, h, 'ja'); const tag = `kb ${w}x${h} ${mode} ${sel}`;
         await p.evaluate(t => setTab(t), tb); await p.waitForTimeout(1000);
         if (pre) await p.evaluate(pre);

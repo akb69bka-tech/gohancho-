@@ -29,6 +29,7 @@ if (jobs > 1 && !process.env.LS_CHILD) {   // 国ごとに分けて並列に走�
 
 // ページ内に入れる計測の道具
 const INJECT = () => {
+  window.__swapDirect = true;   // 案2: かえるは候補のシートから選ぶ。このテストはその場で入れ替える
   window.__cls = 0; window.__shifts = [];
   try { new PerformanceObserver(l => { for (const e of l.getEntries()) { window.__cls += e.value; window.__shifts.push({v: +e.value.toFixed(4), t: Math.round(e.startTime), src: (e.sources || []).slice(0, 3).map(s => (s.node && (s.node.className || s.node.nodeName)) + '').join('|')}); } }).observe({type: 'layout-shift', buffered: true}); } catch (e) {}
   const keyOf = el => { const a = []; for (let n = el; n && n !== document.body; n = n.parentElement) { const p = n.parentElement; a.push(n.tagName + (p ? ':' + [...p.children].indexOf(n) : '')); } return a.reverse().join('>'); };
