@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v21';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v22';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -6692,11 +6692,7 @@ function shareSheetHtml(){
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
         ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
-<<<<<<< HEAD
-        ${sheet.card === 'recipe' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
-=======
-        ${sheet.card === 'shop' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
->>>>>>> claude/w1
+        ${sheet.card === 'recipe' || sheet.card === 'shop' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
         ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
@@ -7827,29 +7823,12 @@ function viewFridge(){
             <p class="foot">${esc(PACK ? t('調味料と主食、それに「いつも家にある食材」は、あるものとして数えています。') : t('調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。'))}</p>
         </section>`;
     }
-<<<<<<< HEAD
     // 材料の入れ方（文字・よく使う食材・写真）を1か所に。はじめは「文字で」。選んだ入れ方は、アプリを開いているあいだだけ覚える
     const inMode = session.w4xIn || 'text';
     const pane = (k, body) => `<div class="w4x_pane" data-pane="${k}" id="w4x-pane-${k}"${k === inMode ? '' : ' hidden'}>${body}</div>`;
     const segs = [['text', t('文字で')], ['quick', t('よく使う食材')], ['photo', t('写真から')]];
     const hub = `
     <section class="sec w4x_hub">
-=======
-    return `
-    <section class="sec">
-        <div class="sec-head"><h2>${esc(t('料理をさがす'))}</h2><span class="hint">${esc(t('料理名か材料名を入れると、その食材を使う料理がすぐ出ます'))}</span></div>
-        <div class="card">
-        <form class="inputbar search" data-form="search" role="search">
-            <input type="search" id="search-input" value="${esc(session.search || '')}" placeholder="${esc(t('例: {list}', {list:(PACK ? QUICK.slice(0,2) : ['なす','鶏肉'].map(labelOf)).concat([RECIPES[0] && RECIPES[0].name.length <= 14 ? RECIPES[0].name : '']).filter(Boolean).join(LANG === 'ja' ? '、' : LANG === 'ar' ? '، ' : ', ')}))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理をさがす'))}">
-            <button class="btn" type="submit">${esc(t('さがす'))}</button>
-            ${speech ? `<button class="btn" type="button" data-act="mic" data-target="search-input" id="mic-search" aria-pressed="false" aria-label="${esc(t('声で入力'))}">${esc(t('声で入力'))}</button>` : ''}
-        </form>
-        <div id="search-results">${searchResultsHtml(session.search || '')}</div>
-        <div class="row"><button class="btn sm" data-act="one-open">${esc(t('あと1品'))}</button><span class="small muted">${esc(t('いまある料理に合う副菜・汁ものを提案'))}</span></div>
-        </div>
-    </section>
-    <section class="sec">
->>>>>>> claude/w8
         <div class="sec-head"><h2>${esc(t('冷蔵庫にある材料'))}</h2><span class="hint">${esc(t('ここに登録した食材は次に開いたときも残ります'))}</span></div>
         <div class="card">
         <div class="w4x_in">
