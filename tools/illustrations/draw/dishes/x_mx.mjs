@@ -1517,18 +1517,6 @@ export default {
         xmxShine(100, 100, 76, .5),
     ].join(''),
 
-    // Sopa de habas（凪案）: 金色のそら豆ピューレを明るく、ノパルの角切りを大きな緑に、トマトの赤をアクセントに、揚げたパシージャの黒い帯とコリアンダー
-    mx_sopa_habas: p => [
-        xmxBarro(p, { clay: '#b0562a' }),
-        xmxBroth(p, 76, '#dcb458', { glow: .4 }),
-        `<path d="M62,92 C78,80 94,96 110,86 C124,78 136,86 142,96" stroke="#f4d870" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".9"/><path d="M60,118 C80,108 96,124 116,114" stroke="#f4d870" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/>`,
-        `<g ${p.edge('#2a4a14', .7, .55)}><g ${p.sh(.5)}>`, ...xmxSpots('hb', 10, 52, 24).map(([x, y, r], i) => xmxDice(p, x, y, 18, r, i % 2 ? '#5f9a34' : '#6fac3e')), `</g></g>`,
-        `<g ${p.edge('#6a1408', .6, .5)}>`, ...[[88, 100, 10], [122, 124, 40], [108, 70, 70], [66, 80, 0]].map(([x, y, r]) => xmxDice(p, x, y, 11, r, '#e63a22')), `</g>`,
-        xmxStrip(p, 112, 100, 38, 8, 30, { c: '#3a1810', bend: .2 }), xmxStrip(p, 90, 118, 32, 8, -40, { c: '#3a1810', bend: .2 }), xmxStrip(p, 126, 112, 26, 7, 80, { c: '#4a2014', bend: .2 }),
-        xmxCilantro(p, 92, 90, 15, 20), xmxCilantro(p, 112, 128, 13, -50), xmxCilantro(p, 140, 84, 12, 100),
-        xmxShine(100, 100, 74, .45),
-    ].join(''),
-
     // Caldo de huevo: clay bowl, tomato-serrano broth with two softly poached eggs, potato dice, a whole serrano and cilantro
     mx_caldo_huevo: p => [
         K.bowl(p, { R: 92, glaze: '#c0703c', inside: '#f3e6cc' }),

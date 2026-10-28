@@ -1296,21 +1296,6 @@ export default {
         xtrShine(100, 100, 74, .45),
     ].join(''),
 
-    // バルク・チョルバス（凪案）: 卵黄とレモンのやや黄みのスープに、ほぐし魚を大きな白い塊で、にんじんとじゃがいもの角切りを大きく、レモンのくし切りを手前に大きく
-    tr_balik: p => [
-        xtrBowl(p, { glaze: '#f3efe6', inside: '#fbf9f2', line: TURQ, dots: TURQ }),
-        xtrSoup(p, '#ecd078', { R: 74, veil: '#f6e6a8', vop: .3 }),
-        `<g ${p.edge('#a8935a', .7, .6)}>`,
-        ...xtrSpots('bl', 6, 50, 32).map(([x, y, r], i) => `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${xtrSm(ring(13, 7, .35, rng('blf' + i), 1.3, .8))}" fill="${p.g('#fffaf0', .2, .15)}" stroke="#d4c6a8" stroke-width=".7"/></g><path d="M-8,-3 q8,-4 16,0 M-8,3 q8,-4 16,0" stroke="#e2d6bc" stroke-width="1" fill="none"/></g>`),
-        `</g>`,
-        `<g ${p.edge('#7a3208', .6, .5)}>`, xtrCubes(p, [[96, 72, 20], [62, 96, -10], [138, 110, 30], [108, 128, 0], [76, 132, 40], [128, 82, 15]], { c: '#f27a1c', s: 12 }), `</g>`,
-        `<g ${p.edge('#9a7a2a', .6, .5)}>`, xtrCubes(p, [[112, 96, 10], [84, 108, -20], [146, 92, 30], [100, 148, 0]], { c: '#f6dc8a', s: 13 }), `</g>`,
-        K.sprinkle(p, 100, 100, 110, { c: '#2a2420', n: 8, r: .7 }),
-        xtrParsley(p, 100, 100, 100, { n: 16 }),
-        xtrLemonWedge(p, 138, 138, 46, -40),
-        xtrShine(100, 100, 74, .45),
-    ].join(''),
-
     // ウスパナック・チョルバス: 緑の線の白い鉢に、ほうれん草とお米のヨーグルト入りの淡い緑のスープ、唐辛子のバター
     tr_ispanak: p => [
         xtrBowl(p, { glaze: '#f3efe6', inside: '#fbf9f2', line: '#4a7a3a', inner: '#4a7a3a' }),

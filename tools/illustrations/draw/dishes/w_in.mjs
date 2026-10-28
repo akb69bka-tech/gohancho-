@@ -259,7 +259,7 @@ export default {
 
     // Fish curry（凪案）: 土鍋のグレービーを少し明るくし、白っぽい魚の輪切りを大きく、玉ねぎ・トマト・ココナッツミルクの渦・カレーリーフを見える大きさで足す
     in_fishcurry: p => {
-        const out = [winClay(p), winGravy(p, { R: 76, c: '#cc4a1c', oil: '#e8742a' })];
+        const out = [winClay(p), `<circle cx="100" cy="100" r="89" fill="none" stroke="#2c4c7c" stroke-width="2.4"/>`, winGravy(p, { R: 76, c: '#cc4a1c', oil: '#e8742a' })];
         out.push(`<path d="${smooth(ring(40, 10, .4, rng('coco'), 1.3, .8))}" transform="translate(98 106)" fill="#f2c08a" opacity=".5"/>`);
         out.push(`<path d="M62,112 C80,98 96,122 120,106 C134,98 142,108 146,116" stroke="#fbe6c4" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".85"/>`);
         [[138, 70, 20], [60, 130, -30], [112, 62, 50]].forEach(([x, y, r]) => out.push(`<g ${p.edge('#7a2a0c', .7, .45)}>${K.onion(p, x, y, 26, r, { c: '#f0cf9a' })}</g>`));
