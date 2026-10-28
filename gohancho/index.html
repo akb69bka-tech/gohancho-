@@ -4052,6 +4052,12 @@ function trapTab(e){
 }
 function openPaywall(reason){ sheet = {kind:'paywall', reason}; renderSheet(); if (!Object.keys(storePrices).length) loadStorePrices(); }
 const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','鮭','卵','牛乳','チーズ','なす','ゴーヤ','ピーマン','しいたけ','トマト','キムチ'];
+function obSave(){
+    const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
+    S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
+    S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
+    S.onboarded = true; save();
+}
 function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
 // はじめての画面に出す、この国の今日の献立（実際の献立と同じ料理・絵）
 function obTrayHtml(){
@@ -4097,6 +4103,7 @@ function renderSheetBody(){
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
+            <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
             <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
             <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
             <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
@@ -4447,11 +4454,11 @@ const ALLERGY_EXTRA = {
    re: その食材そのものを指す言葉 / eq: 短いひらがなの言葉（材料の名前がそれと同じ・それで終わるときだけ） / no: 当たらない言い方
    via: その食材をよく含む加工品・調味料 / ferm: 発酵調味料（しょうゆ・みそ。設定でオフにできる） / parts: ほかの id の合わせ / fam: 苦手のなかま（AVOID_FAM）の判定も使う */
 const ALG_G = {
-    jp8:['shrimp','crab','walnut','wheat','buckwheat','egg','milk','peanut'],
-    jp20:['abalone','squid','ikura','orange','cashew','kiwi','beef','sesame','salmon','mackerel','soy','chicken','banana','pork','macadamia','peach','yamaimo','apple','gelatin','almond'],
+    jp9:['shrimp','cashew','crab','walnut','wheat','buckwheat','egg','milk','peanut'],   // 消費者庁（2026年4月〜）: 特定原材料9品目（カシューナッツが加わった）
+    jp20:['abalone','squid','ikura','orange','kiwi','beef','sesame','salmon','mackerel','soy','chicken','banana','pistachio','pork','macadamia','peach','yamaimo','apple','gelatin','almond'],
     eu14:['gluten','crustacean','egg','fish','peanut','soy','milk','treenut','celery','mustard','sesame','sulphite','lupin','mollusc'],
     us9:['milk','egg','fish','crustacean','treenut','peanut','wheat','soy','sesame']};
-const ALG_ALL = [...new Set([].concat(ALG_G.jp8, ALG_G.jp20, ALG_G.eu14, ALG_G.us9))];
+const ALG_ALL = [...new Set([].concat(ALG_G.jp9, ALG_G.jp20, ALG_G.eu14, ALG_G.us9))];
 const ALG_DEF = {
     shrimp:{re:/えび|海老|蝦|虾|\b(?:shrimps?|prawns?|gambas?|krill)\b|camar[oó]n|crevette|garnele|gambero|camar[aã]o|새우|กุ้ง|tôm\b|udang|karides|krewetk|झींगा|hipon/, no:/えびす|ebisu/,
         via:/\bxo sauce\b|xo醤|terasi|belacan|belachan|\bkapi\b|saeujeot|새우젓|mắm tôm|えびだし/},
@@ -4485,6 +4492,7 @@ const ALG_DEF = {
     pork:{fam:'pork', re:/豚|ぶた肉|ぽーく|ばらにく|\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bjam[oó]n\b|\bspeck\b|kasseler|chorizo|salami|\blard\b|\btocino\b|\bcerdo\b|\bporc\b|schwein|maiale|\bporco\b|돼지|삼겹|猪肉|หมู|thịt heo|thịt lợn|\bbabi\b|domuz|wieprzow|सुअर|\bbaboy\b|べーこん|うぃんなー|ういんなー|そーせーじ|\bsausages?\b|\bwurst\b|luncheon meat|\bspam\b|lingui[cç]a|bratwurst|frankfurter|\bhot ?dogs?\b|mortadella|\bnduja\b|\bsobrasada\b|rillettes|chicharr[oó]n|\blechon\b|合いびき|あいびき|\bmince\b|\bground meat\b|\bminced meat\b/, no:/turkey ham|chicken ham|beef sausage|chicken sausage|turkey sausage|veggie sausage|vegetarian sausage|plant.?based sausage|(?:beef|lamb|chicken|veal) (?:mince|minced)/,
         via:/(?<![ぁ-ん])らーど|ぽーくえきす|豚骨|とんこつ|ぜらちん|ゼラチン|\bgelatin/},
     banana:{re:/ばなな|\bbananas?\b|\bpl[aá]tanos?\b|\bbanane\b|\bbanan\b|바나나|香蕉|กล้วย|chuối|\bpisang\b|\bmuz\b|banany|केला|\bsaging\b|\bplantains?\b/, no:/banana (?:leaf|leaves|blossom|flower|heart|stem|pepper)|ばななの葉|pl[aá]tano macho verde|plantain leaves|pisang daun/},
+    pistachio:{re:/ぴすたちお|\bpistachios?\b|\bpistacho\b|\bpistache\b|pistazie|pistacja|피스타치오|开心果|antep fıstığı|पिस्ता/},
     macadamia:{re:/まかだみあ|\bmacadamias?\b|마카다미아|夏威夷果|แมคคาเดเมีย|\bmacadâmia\b/},
     peach:{re:/桃|\bpeach(?:es)?\b|nectarine|melocot[oó]n|durazno|\bp[eê]che\b|pfirsich|\bpesca\b|p[eê]ssego|복숭아|พีช|\bđào\b|persik|şeftali|brzoskwini|आड़ू/, eq:['もも','ももの缶詰'], no:/桃源|桃の花|もも肉|ももにく/},
     yamaimo:{re:/やまいも|山芋|山いも|長いも(?!の)|長芋|ながいも|自然薯|じねんじょ|つくね芋|大和芋|やまのいも|とろろ|\bnagaimo\b|\byamaimo\b|\bjinenjo\b|\bmountain yam\b|\bchinese yam\b|\bjapanese yam\b|山药|참마/},
@@ -4496,7 +4504,7 @@ const ALG_DEF = {
     fish:{fam:'fish', re:/魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|鱧|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|つな|\bfish(?!er|erman)\b|\bfishes\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|pollock|hairtail|\bcod\b|haddock|sea ?bream|whitebait|croaker|sardines?|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|\bsea ?bass\b|\bhalibut\b|swordfish|\bplaice\b|\bsole\b|\bmullet\b|\bcarp\b|\beel\b|\bperch\b|\bpike\b|\bturbot\b|\bmonkfish\b|\bgrouper\b|\bsturgeon\b|\bcaviar\b|\bkippers?\b|\bsprats?\b|\bpilchards?\b|\bbarramundi\b|\bpangasius\b|\bbasa\b|\bdorado\b|\bmahi.?mahi\b|\bmarlin\b|\bkingfish\b|\bpescado\b|\bbacalao\b|\bat[uú]n\b|\bsalm[oó]n\b|\bsardinas?\b|\bpoisson\b|\bthon\b|\bsaumon\b|\bmorue\b|\bfisch\b|\blachs\b|\bthunfisch\b|\bpesce\b|\btonno\b|\bsalmone\b|\bmerluzzo\b|\bpeixe\b|\batum\b|\bbacalhau\b|\bsalm[aã]o\b|생선|어묵|멸치|참치|연어|고등어|鱼|鳕|ปลา|\bcá\b|\bikan\b|\bbalık\b|\bryba\b|\brybn|मछली|\bisda\b|\bbagoong\b|\bdaing\b|\btinapa\b/,
         no:/fish.?free|\bselfish\b|jellyfish|crayfish|cuttlefish|starfish|shellfish|\bcrawfish\b|さかなクン|\bfishcake rice\b|魚介(?:類)?なし/, eq:['さけ','たい','たら','ぶり','あじ','さば','ふぐ','はも','きす','ほっけ','あゆ','こい','ます'],
         via:/かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしの素|和風だし|あごだし|\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
-    treenut:{parts:['walnut','cashew','macadamia','almond'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
+    treenut:{parts:['walnut','cashew','pistachio','macadamia','almond'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
         no:/nutmeg|nut ?meg|ナツメグ|なつめぐ|\bpeanuts?\b|ぴーなっつ|ピーナッツ|doughnuts?|donuts?|nutrient|nutritional|nutrition|\bcoconut\b|butternut|\bnutty\b|\bnut.?free\b|water chestnuts?|くわい|nuez moscada|noix de muscade|chestnut|栗|ぐりーん/, via:/\bmole\b|\bsatay\b|\bgado.?gado\b|\bpecel\b|ぬがー|ぷらりね|ぬてら|\bfrangipane\b|\bbaklava\b|\bkunafa\b|\bmaamoul\b|\bromesco\b/},
     celery:{re:/せろり|\bcelery\b|\bceleriac\b|\bcéleri\b|\bapio\b|\bsellerie\b|\bsedano\b|\baipo\b|\bselleri\b|\bseler\b|\bkereviz\b|\bselderij\b|\bkintsay\b|芹菜|西芹|셀러리|เซเลอรี่|\bcần tây\b|\bseledri\b|セロリアック/, via:/\bmirepoix\b/},
     mustard:{re:/からし|(?<!唐)辛子|芥子|ますたーど|\bmustard\b|\bmoutarde\b|\bsenf\b|\bsenape\b|\bmostarda\b|\bmostaza\b|\bmusztard|\bhardal\b|겨자|芥末|มัสตาร์ด|mù tạt|\bmustar\b|सरसों|\bsarson\b|\bdijon\b|\bkasundi\b/, no:/mustard (?:greens?|leaf|leaves|spinach|cabbage)|からし菜|からしな|高菜|たかな|\bsawi\b|sarson ka saag|saag|mizuna|みずな|水菜|からしれんこん/, via:/\bpiccalilli\b/},
@@ -4567,7 +4575,7 @@ function algSig(){ return algIds().join() + '|' + algFerm(); }
 function algStyle(){ const cc = currentCountry(); return cc === 'JP' ? 'jp' : ['US', 'MX', 'PE', 'BR', 'PH'].includes(cc) ? 'us' : 'eu'; }
 function algLabel(id){
     return {shrimp:t('えび'), crab:t('かに'), walnut:t('くるみ'), wheat:t('小麦'), buckwheat:t('そば'), egg:t('卵'), milk:t('乳（牛乳・乳製品）'), peanut:t('落花生（ピーナッツ）'),
-        abalone:t('あわび'), squid:t('いか'), ikura:t('いくら'), orange:t('オレンジ'), cashew:t('カシューナッツ'), kiwi:t('キウイフルーツ'), beef:t('牛肉'), sesame:t('ごま'), salmon:t('さけ'), mackerel:t('さば'),
+        abalone:t('あわび'), squid:t('いか'), ikura:t('いくら'), orange:t('オレンジ'), cashew:t('カシューナッツ'), pistachio:t('ピスタチオ'), kiwi:t('キウイフルーツ'), beef:t('牛肉'), sesame:t('ごま'), salmon:t('さけ'), mackerel:t('さば'),
         soy:t('大豆'), chicken:t('鶏肉'), banana:t('バナナ'), pork:t('豚肉'), macadamia:t('マカダミアナッツ'), peach:t('もも'), yamaimo:t('やまいも'), apple:t('りんご'), gelatin:t('ゼラチン'), almond:t('アーモンド'),
         gluten:t('グルテンを含む穀物（小麦・ライ麦・大麦・オーツ麦など）'), crustacean:t('甲殻類（えび・かになど）'), fish:t('魚'), treenut:t('ナッツ類（アーモンド・くるみ・カシューナッツなど）'), celery:t('セロリ'),
         mustard:t('マスタード（からし）'), sulphite:t('亜硫酸塩（二酸化硫黄）'), lupin:t('ルピナス'), mollusc:t('軟体動物（貝・いか・たこなど）')}[id] || id;
@@ -4575,7 +4583,7 @@ function algLabel(id){
 // 画面に出す並び: [[見出し, [id...]], ...]
 function algSections(){
     const st = algStyle();
-    const main = st === 'jp' ? [[t('特定原材料（表示が義務の8品目）'), ALG_G.jp8], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
+    const main = st === 'jp' ? [[t('特定原材料（表示が義務の9品目）'), ALG_G.jp9], [t('特定原材料に準ずるもの（表示をすすめる20品目）'), ALG_G.jp20]]
         : st === 'us' ? [[t('米国の主要アレルゲン（9品目）'), ALG_G.us9]] : [[t('EUの主要アレルゲン（14品目）'), ALG_G.eu14]];
     const shown = new Set([].concat(...main.map(m => m[1])));
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
@@ -8181,12 +8189,13 @@ document.addEventListener('click', e => {
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
+        case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
+            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('settings');
+            const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
+        }
         case 'ob-done': {
             // 日本を日本語以外で使うとき、画面の名前（Pork など）ではなく食材の名前（豚肉）で保存する。言語を変えても効くように
-            const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
-            S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
-            S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
-            S.onboarded = true; save(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
+            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
             if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true); break;
         }
         case 'decide': {
