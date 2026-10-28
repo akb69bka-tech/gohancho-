@@ -238,5 +238,39 @@ for (const [cc, ui] of [['JP', 'ja'], ['US', 'en']]){
     ok(await p.evaluate(() => S.favs.length === 1), cc + ' お気に入り');
     ok(errs.length === 0, cc + ' errs ' + errs); await ctx.close();
 }
+// ---- 7. ひとひねりの手順の順番（全部の組み合わせ）・さがすの読みの言いかえ・料理でない言葉
+{
+    const {ctx, p, errs} = await open('JP', 'ja');
+    const r = await p.evaluate(() => {
+        const bad = {first: [], fin: [], reAdd: [], broth: []}; let n = 0;
+        const FIN = /^(?:最後に|火を止めてから|仕上げに)/;
+        RECIPES.forEach(base => { const o = twistOptions(base), combos = [];
+            o.flavors.forEach(f => combos.push([f, '', ''])); o.forms.forEach(m => combos.push(['', m, ''])); o.flavors.forEach(f => o.forms.forEach(m => combos.push([f, m, '']))); o.swaps.forEach(s => combos.push(['', '', s]));
+            combos.forEach(([f, m, s]) => { const id = twistId(base.id, f, m, s), tw = buildTwist(id); if (!tw) return; n++;
+                const st = tw.steps.map(x => x.t), core = st.slice(0, st.length - (m ? FORMS[m].steps.length : 0) - (f && FLAVORS[f].garnish ? 1 : 0));
+                // 「はじめに」は火を使う最初の手順より前
+                const fi = core.findIndex(x => /^はじめに/.test(x)), hi = core.findIndex(x => TW_HEAT.test(x) && !/^はじめに/.test(x));
+                if (fi >= 0 && hi >= 0 && fi > hi) bad.first.push(id);
+                // 「最後に／火を止めてから／仕上げに」のあとに、火を使う手順が来ない
+                const fn = core.findIndex((x, i) => FIN.test(x) && tw.steps[i].add);
+                if (fn >= 0 && core.slice(fn + 1).some(x => TW_HEAT.test(x) && !TW_SERVE.test(x))) bad.fin.push(id);
+                // 置きかえた・減らした調味料を、あとの手順で（変えたことを書かずに）また加えない
+                const F = FLAVORS[f]; if (F && F.need){ const ti = tw.steps.findIndex(x => x.add && /置きかえ|半量/.test(x.t)); if (ti >= 0 && tw.steps.some((x, i) => i > ti && !x.add && F.need.test(x.t))) bad.reAdd.push(id); }
+                // 鶏ガラスープの素を「鶏肉」として並べない
+                if (tw.items.some(i => i.added && /スープの素/.test(i.name) && i.label !== i.name)) bad.broth.push(id);
+            }); });
+        return {n, first: bad.first.slice(0, 3), fin: bad.fin.slice(0, 3), reAdd: bad.reAdd.slice(0, 3), broth: bad.broth.slice(0, 3),
+            kayu: ['おかゆ', 'がゆ', '粥', 'お粥'].map(q => searchRecipes(q).hits.length),
+            addBtn: ['離乳食', '作り置き', 'なす'].map(q => /search-to-fridge/.test(searchResultsHtml(q)))};
+    });
+    ok(r.n > 1000, 'ひとひねりの組み合わせ ' + r.n);
+    ok(!r.first.length, '「はじめに」が途中に来る ' + r.first);
+    ok(!r.fin.length, '「仕上げ」のあとに火を使う ' + r.fin);
+    ok(!r.reAdd.length, '置きかえた調味料をあとでまた加える ' + r.reAdd);
+    ok(!r.broth.length, '鶏ガラスープの素が鶏肉になる ' + r.broth);
+    ok(r.kayu[0] > 2 && r.kayu.every(x => x === r.kayu[0]), 'おかゆ・がゆ・粥・お粥で同じ件数 ' + r.kayu);
+    ok(!r.addBtn[0] && !r.addBtn[1] && r.addBtn[2], '料理でない言葉に「冷蔵庫に追加」を出さない ' + r.addBtn);
+    ok(errs.length === 0, 'errs ' + errs); await ctx.close();
+}
 await b.close();
 console.log(fails ? `FAIL ${fails}/${checks}` : `OK ${checks}`); process.exit(fails ? 1 : 0);
