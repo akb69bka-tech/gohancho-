@@ -243,6 +243,12 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .chip[aria-pressed="false"]::before{content:"✓";content:"✓" / "";font-weight:700;visibility:hidden}   /* 選んだ・選んでいないで幅が変わると、となりのチップが横にずれる。✓の分の幅を、選んでいないチップにも前もって取る */   /* 色だけでなく、チェックの形でも「選んでいる」を示す */
 .chip[aria-pressed="true"] .muted{color:inherit}   /* 選んだチップの小さい補足（国名など）は、藍の地の上で読める色に */
 .chip .x{border:0;background:transparent;padding:0 0 0 .1rem;font-size:1rem;line-height:1;color:inherit;opacity:.7}
+.w4x_have .chips{gap:var(--s8)}
+.chip.have{padding-inline-end:0}
+.chip.have .x{min-width:44px;min-height:44px;display:inline-grid;place-items:center;padding:0;margin-inline-start:var(--s4);border-inline-start:1px solid var(--line);border-radius:0 var(--r-pill) var(--r-pill) 0;font-size:var(--fs20);opacity:.85}   /* 外す「×」は44pxで、名前（早めに使う）との間に区切り線。押しまちがいを減らす */
+[dir="rtl"] .chip.have .x{border-radius:var(--r-pill) 0 0 var(--r-pill)}
+.recipe-ings li.add .ci-nm::before,.recipe-ings li.add > span:first-child::before,.steps li.add .st-txt::before{content:"★";content:"★" / "";margin-inline-end:var(--s4);color:var(--yolk-ink);font-weight:700}   /* 変えたところは、色だけでなく★の印でも示す */
+.tag.w4x_sub{font-weight:700}
 .chip.have{background:var(--accent-soft);border-color:transparent}
 .loss-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:6px 0;border-bottom:1px solid var(--line,rgba(128,128,128,.25))}.loss-nm{font-weight:600;flex:1 1 7rem;min-width:0;overflow-wrap:anywhere}.loss-d.over{color:var(--warn,#b3261e)}.loss-btns{display:flex;flex-wrap:wrap;gap:.35rem}.loss-exp{margin-top:8px;align-items:center;gap:.4rem}.loss-exp select{min-width:0;max-width:100%}.stock-q{font-size:.9em}.stock-q.over{color:var(--warn,#b3261e)}.stock-add{margin-top:8px;align-items:center;gap:.4rem}.stock-add input{min-width:0;max-width:100%;text-overflow:ellipsis}
 .chip .lab{border:0;background:transparent;font:inherit;color:inherit;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:.35rem;white-space:normal;text-align:start;min-width:0}.chip.have{white-space:normal;max-width:100%;min-width:0}.chip .chip-d{font-size:.72rem;opacity:.75}.chip.soon{border:1px solid var(--accent)}.chip .soon-tag{font-size:.72rem;font-weight:700}
@@ -547,7 +553,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .hint-row .v b{color:var(--ink)}
 /* 家族の反応・今月の料理自慢 */
 .react{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.react .chip{font-size:.8rem;padding:.2rem .75rem}
+.react .chip{font-size:var(--fs14);padding:.2rem .75rem}
 .award{border-inline-start:4px solid var(--yolk)}
 .award-main{display:flex;gap:12px;align-items:center}
 .award h3{font-size:1.15rem;margin:2px 0;cursor:pointer}
@@ -1047,7 +1053,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .cook-tab .ct-ok{position:absolute;top:var(--s4);inset-inline-end:var(--s8);font-size:var(--fs12);color:var(--leaf);font-weight:700}
 .cook-kit{display:flex;flex-direction:column;gap:var(--s8);background:var(--surface-2);border-radius:var(--r-lg);padding:var(--s8)}
 .kit-row{display:flex;gap:var(--s8)}
-.kit-btn{flex:1 1 0;min-width:0;min-height:var(--tap-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s4);padding:var(--s8) var(--s4);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r-md);font:inherit;font-size:var(--fs12);font-weight:600;line-height:var(--lh-tight);text-align:center;cursor:pointer;overflow-wrap:anywhere;transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
+.kit-btn{flex:1 1 0;min-width:0;min-height:var(--tap-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s4);padding:var(--s8) var(--s4);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r-md);font:inherit;font-size:var(--fs14);font-weight:600;line-height:var(--lh-tight);text-align:center;cursor:pointer;overflow-wrap:anywhere;transition:background var(--dur-1) var(--ease),border-color var(--dur-1) var(--ease),transform var(--dur-1) var(--ease)}
 .kit-btn:active{transform:translateY(1px)}
 .kit-btn .kit-ico{display:grid;place-items:center;line-height:0}.kit-btn .kit-ico svg,.step-say svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .kit-btn[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
@@ -4838,6 +4844,10 @@ function renderSheetBody(){
     if (sheet.kind === 'wday') body = wdaySheetHtml();
     if (sheet.kind === 'fphoto') body = fphotoSheetHtml();
     if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
+    if (sheet.kind === 'clearing') body = `<h2>${esc(t('冷蔵庫の材料を全部外しますか？（{n}品）', {n:S.fridge.length}))}</h2>
+        <p class="muted small">${esc(t('外したあと8秒のあいだは「元に戻す」で戻せます。'))}</p>
+        <button class="btn danger" data-act="clear-ing-go">${esc(t('全部外す'))}</button>
+        <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
     if (sheet.kind === 'paywall'){
         const reason = paywallReason(sheet.reason);
         const native = !!purchasesPlugin();
@@ -7892,9 +7902,9 @@ function viewFridge(){
                 ${!twistAvailable() ? '' : `<button class="btn sm" data-act="fridge-twist">${esc(t('この材料でひとひねり案'))}</button>`}</div>
             ${block('⏰ ' + esc(t('早めに使う食材を使う料理')), esc(t('{n}品', {n:soonList.length})), soonList, 'fr-soon', true)}
             ${block(esc(t('今ある材料で作れる')), esc(t('{n}品', {n:ready.filter(notSoon).length})), ready.filter(notSoon), 'fr-ready')}
-            ${block(esc(t('代わりの食材で作れる')), esc(t('黄色の食材を置きかえます')), withSub.filter(notSoon), 'fr-sub')}
+            ${block(esc(t('代わりの食材で作れる')), esc(t('「→」の左の食材を、右の食材に置きかえます')), withSub.filter(notSoon), 'fr-sub')}
             ${block(esc(t('肉や魚の部位がちがう料理')), esc(t('冷蔵庫の部位とはちがう部位を使います')), otherCut.filter(notSoon), 'fr-cut')}
-            ${block(esc(t('あと1〜2品あれば作れる')), esc(t('赤字が足りない食材')), near, 'fr-near')}
+            ${block(esc(t('あと1〜2品あれば作れる')), esc(t('「足りない」の行が、買い足す食材です')), near, 'fr-near')}
             ${!ready.length && !withSub.length && !near.length && !otherCut.length ? `<div class="list"><div class="empty">${esc(t('この組み合わせに合う料理が見つかりませんでした。食材をもう少し足してみてください。'))}</div></div>` : ''}
             ${hintsHtml}
             <p class="foot">${esc(PACK ? t('調味料と主食、それに「いつも家にある食材」は、あるものとして数えています。') : t('調味料（醤油・砂糖・みりん・味噌・油など）とご飯、それに「いつも家にある食材」は、あるものとして数えています。'))}</p>
@@ -8984,7 +8994,7 @@ function renderModalBody(){
                 ${r.isTwist ? `<div class="card"><div class="eyebrow">${esc(t('ひとひねり'))}</div>
                     <div class="from">${esc(t('元の料理:'))} <b>${esc(r.base.name)}</b></div>
                     <ul class="changes">${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
-                    <div class="small muted">${esc(t('黄色の部分が、元のレシピから変えたところです。絵は元の料理のものです。'))}</div></div>` : ''}
+                    <div class="small muted">${esc(t('★の印が、元のレシピから変えたところです。絵は元の料理のものです。'))}</div></div>` : ''}
                 ${recipeCoreHtml(r, null, '', {modal: true})}
                 ${upgradeOf(r) ? `<div class="dsec-t">${esc(t('ひと手間でスキルアップ'))}</div>${upgradeHtml(r, false, true)}` : ''}
                 <div class="drec">
@@ -9489,8 +9499,18 @@ document.addEventListener('click', e => {
         case 'loss-exp-add': { const it = $('#loss-exp-item'), dt = $('#loss-exp-date'), v = it && it.value, d = dt && dt.value;
             if (!v || !S.fridge.includes(v) || !/^\d{4}-\d{2}-\d{2}$/.test(d || '') || !realYmd(d)){ toast(t('日付を入れてください')); break; }
             const e = S.fridgeMeta[v] || (S.fridgeMeta[v] = {d: ymd()}); e.exp = d; save(); render(); break; }
-        case 'rm-ing': S.fridge = S.fridge.filter(x => x !== el.dataset.v); save(); render(); break;
-        case 'clear-ing': S.fridge = []; save(); render(); break;
+        case 'rm-ing': {   // 外したら8秒の「元に戻す」（同じ位置に戻す。印と日数も残してある）
+            const v = el.dataset.v, i = S.fridge.indexOf(v); if (i < 0) break;
+            S.fridge.splice(i, 1); save(); render();
+            toast(t('「{name}」を外しました', {name:labelOf(v)}), false, () => { if (!S.fridge.includes(v)) S.fridge.splice(Math.min(i, S.fridge.length), 0, v); save(); render(); });
+            break;
+        }
+        case 'clear-ing': if (S.fridge.length){ sheet = {kind:'clearing'}; renderSheet(); } break;   // 全部外す前に確かめる
+        case 'clear-ing-go': {
+            const before = S.fridge.slice(); closeSheet(); S.fridge = []; save(); render();
+            toast(t('{n}品を外しました', {n:before.length}), false, () => { S.fridge = before.concat(S.fridge.filter(x => !before.includes(x))); save(); render(); });
+            break;
+        }
         case 'fridge-fix': { const i = S.fridge.indexOf(el.dataset.v); if (i >= 0){ const nk = keyOf(el.dataset.name); if (S.fridge.some(x => keyOf(x) === nk)) S.fridge.splice(i, 1); else S.fridge[i] = el.dataset.name; save(); render(); } break; }   // 打ちまちがいを、近い名前に直す（早めに使う印は付け直し）
         case 'sample-ing': S.fridge = sampleIngs(); save(); render(); break;
         case 'mic': startMic(el.dataset.target); break;
