@@ -354,7 +354,8 @@ for (const cc of ['JP', 'US', 'DE']){
             reset(); session.menu = null; ensureMenu(); const m2 = session.menu, it2 = m2.items[slot]; if (!it2.r) continue;
             S.cook = {d: TODAY, ids: menuIds(), slots: m2.items.filter(x => x.r).map(x => x.slot)};
             if (!set(it2.r)) continue; save(); render();
-            noRepl(() => click('reroll', { i: String(slot), ok: '1' }));   // ok: 決めた一膳でも確かめずに（案2の確かめるシートを飛ばす） if (it2.r && slotOut(it2.r)) bad.push('かえる・替わりなし ' + tag + ' slot' + slot + ' 残った ' + it2.r.id);
+            noRepl(() => click('reroll', { i: String(slot), ok: '1' }));   // ok: 決めた一膳でも確かめずに（案2の確かめるシートを飛ばす）
+            if (it2.r && slotOut(it2.r)) bad.push('かえる・替わりなし ' + tag + ' slot' + slot + ' 残った ' + it2.r.id);
         }
         // (c) 案内を出したあとに当たるようになった「1週間プランの主菜を献立にする」・ひとひねり案の「主菜にする」
         reset(); session.menu = null; ensureMenu(); makeWeek(); const wt = weekToday();
