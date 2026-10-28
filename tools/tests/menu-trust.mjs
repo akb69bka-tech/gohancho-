@@ -29,6 +29,12 @@ async function open(store, fresh = false){
 }
 const booted = p => p.waitForFunction(() => typeof GH !== 'undefined' && GH.booted && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && !!session.menu, null, { timeout: 30000 });
 const openMood = p => p.evaluate(() => document.querySelectorAll('details').forEach(d => { if (d.querySelector('[data-act="mood"]')) d.open = true; }));
+// 固定の待ち時間ではなく、画面・状態がそうなるまで待つ（負荷が高くても遅れるだけで落ちない）。待ちきれなくても続け、あとの ok() で判定する
+const until = (p, fn, arg) => p.waitForFunction(fn, arg, { timeout: 15000 }).then(() => true, () => false);
+// 「決める」のあと 350ms は次のタップを受けつけない（tapGuard）。それが明けるまで待つ（速いマシンで次のクリックが捨てられないように）
+const afterDecide = p => until(p, () => !!(S.cook && S.cook.d === TODAY) && Date.now() >= tapGuard);
+// いまの献立の枠のうち、アレルゲン al を足したら当たる枠の番号（設定は元に戻す）。献立はランダムなので、主菜以外が当たることもある
+const hitSlots = (p, al) => p.evaluate(al => { const a0 = S.settings.allergens; S.settings.allergens = [...(a0 || []), al]; const h = session.menu.items.map((x, i) => x.r && isAvoidedCore(x.r) ? i : -1).filter(i => i >= 0); S.settings.allergens = a0; return h; }, al);
 
 // ---------- 1) 設定を変える → 開き直す ----------
 for (const k of [0, 1, 2]){
@@ -38,10 +44,10 @@ for (const k of [0, 1, 2]){
     await p.click('[data-act="pick-country"][data-cc="JP"]');
     // 苦手な食材の画面が出るまで「次へ」（はじめての流れの段の数が変わっても動くように）
     await p.waitForSelector('[data-act="ob-next"]');
-    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; await nx.click(); await p.waitForTimeout(150); }
+    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; const st = await p.evaluate(() => sheet && sheet.step); await nx.click(); await until(p, st => !sheet || sheet.step !== st, st); }
     await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); });   // 設定の後ろの案（と下書き）がえびフライ
     await p.click('[data-act="ob-avoid"][data-v="えび"]');
-    await p.click('[data-act="ob-allergy"]'); await p.waitForTimeout(300);
+    await p.click('[data-act="ob-allergy"]'); await until(p, () => tab === 'settings' && !sheet);
     const others = await p.evaluate(() => session.menu.items.slice(1).map(x => x.r && x.r.id));
     await p.reload(); await booted(p);
     const r = await p.evaluate(() => ({ ids: session.menu.items.map(x => x.r && x.r.id), hit: session.menu.items.filter(x => x.r && isAvoided(x.r)).map(x => x.r.id), draft: S.draft && S.draft.ids }));
@@ -69,12 +75,14 @@ for (const k of [0, 1, 2]){
 {
     const { ctx, p } = await open({});
     await p.evaluate(() => setTab('today'));
-    // 主菜がえびの料理の献立に決める
-    await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); render(); });
-    await p.click('[data-act="decide"]'); await p.waitForTimeout(200);
+    // 主菜がえびの料理の献立に決める。ほかの枠はえびに当たらない料理にしておく（献立はランダムで、汁ものにトムヤムクンなどが来ると「その1品だけ」の確かめにならない）
+    await p.evaluate(() => { const m = session.menu; m.items[0].r = byId('ebifry'); const a0 = S.settings.allergens; S.settings.allergens = [...(a0 || []), 'shrimp'];
+        m.items.forEach((x, i) => { if (i > 0 && x.r && isAvoidedCore(x.r)) x.r = suggestOrAny(x.slot, m.items.filter((_, k) => k !== i), m.items[0].r); });
+        S.settings.allergens = a0; render(); });
+    await p.click('[data-act="decide"]'); await afterDecide(p);
     const decided = await p.evaluate(() => S.cook.ids.slice());
     await p.evaluate(() => setTab('settings'));
-    await p.click('#allergy-card .chip[data-v="shrimp"]'); await p.waitForTimeout(200);
+    await p.click('#allergy-card .chip[data-v="shrimp"]'); await until(p, () => algIds().includes('shrimp'));
     const r = await p.evaluate(() => { setTab('today'); return { ids: menuIds(), cook: S.cook.ids.slice(), warn: !!document.querySelector('.cook-warn [data-act="cook-swap"][data-id="ebifry"]'), keep: !!document.querySelector('.cook-warn [data-act="cook-keep"][data-id="ebifry"]') }; });
     ok(JSON.stringify(r.ids) === JSON.stringify(decided) && JSON.stringify(r.cook) === JSON.stringify(decided), '決めたあとにアレルゲン: 今日の画面も決めた献立も黙って替わらない ' + JSON.stringify(r));
     ok(r.warn && r.keep, '決めたあとにアレルゲン: 今日の画面に［かえる］［このまま］');
@@ -85,32 +93,37 @@ for (const k of [0, 1, 2]){
     const r2 = await p.evaluate(() => { setTab('today'); return { ids: menuIds(), warn: !!document.querySelector('.cook-warn [data-act="cook-swap"]') }; });
     ok(JSON.stringify(r2.ids) === JSON.stringify(decided) && r2.warn, '開き直しても、決めた献立は替わらず知らせが出る ' + JSON.stringify(r2));
     // ［かえる］: その1品だけ替わる。決めた献立・画面・記録がそろう
-    await p.click('.cook-warn [data-act="cook-swap"][data-id="ebifry"]'); await p.waitForTimeout(200);
+    await p.click('.cook-warn [data-act="cook-swap"][data-id="ebifry"]'); await until(p, () => !S.cook.ids.includes('ebifry'));
     const r3 = await p.evaluate(() => ({ ids: menuIds(), cook: S.cook.ids.slice(), hist: S.history.filter(h => h.d === TODAY).map(h => h.id), bad: S.cook.ids.filter(id => isAvoidedCore(byId(id))), warn: !!document.querySelector('.cook-warn') }));
     ok(r3.cook[0] !== 'ebifry' && JSON.stringify(r3.cook.slice(1)) === JSON.stringify(decided.slice(1)), '［かえる］: 当たった1品だけ替わる ' + JSON.stringify(r3.cook));
     ok(JSON.stringify(r3.ids) === JSON.stringify(r3.cook) && !r3.bad.length && !r3.warn, '［かえる］: 今日の画面と決めた献立がそろい、知らせが消える');
     ok(!r3.hist.includes('ebifry') && r3.hist.includes(r3.cook[0]), '［かえる］: 記録も替えた料理になる ' + JSON.stringify(r3.hist));
-    // ［このまま］: 知らせを消す（料理はそのまま）
-    await p.evaluate(() => { S.settings.allergens = ['egg']; save(); setTab('today'); });
-    const eggy = await p.evaluate(() => S.cook.ids.find(id => isAvoidedCore(byId(id))) || null);
-    if (eggy){
-        await p.click(`.cook-warn [data-act="cook-keep"][data-id="${eggy}"]`); await p.waitForTimeout(150);
-        const r4 = await p.evaluate(id => ({ still: S.cook.ids.includes(id), warn: !!document.querySelector(`.cook-warn [data-id="${id}"]`) }), eggy);
-        ok(r4.still && !r4.warn, '［このまま］: 料理は替えず、知らせを消す ' + JSON.stringify(r4));
+    // ［このまま］: 知らせを消す（料理はそのまま）。決めた料理のどれかに当たるアレルゲンを選ぶ（まず卵。献立はランダムなので、当たらなければ次のアレルゲン）。
+    // 以前は卵に当たる料理がないとこの点検を飛ばしていて、実行ごとに点検の数が 96 と 97 で揺れていた
+    const hit = await p.evaluate(() => { for (const a of ['egg', ...Object.keys(ALG_DEF)]){ S.settings.allergens = [a]; const id = S.cook.ids.find(id => isAvoidedCore(byId(id))); if (id){ save(); setTab('today'); return { a, id }; } } return null; });
+    ok(!!hit, '［このまま］: 決めた料理に当たるアレルゲンがある（点検の前提） ' + JSON.stringify(hit));
+    if (hit){
+        await p.click(`.cook-warn [data-act="cook-keep"][data-id="${hit.id}"]`); await until(p, id => (S.cook.keep || []).includes(id), hit.id);
+        const r4 = await p.evaluate(id => ({ still: S.cook.ids.includes(id), warn: !!document.querySelector(`.cook-warn [data-id="${id}"]`) }), hit.id);
+        ok(r4.still && !r4.warn, '［このまま］: 料理は替えず、知らせを消す ' + JSON.stringify(Object.assign(r4, hit)));
     }
     await ctx.close();
 }
 {
     // まだ決めていない案: 当たった枠だけ替わり、何を替えたかを知らせる
     const { ctx, p } = await open({});
+    // 献立はランダムなので、主菜のえびフライのほかに汁もの（トムヤムクンなど）も当たることがある。当たる枠は足す前に数えておき、その枠だけが替わることを確かめる。
+    // 空の枠（汁けの多い主菜のときの汁もの）は null のまま。下書きは枠ごとに持つので、null も含めて比べる（menuIds() は空の枠を詰めるので比べられない）
     await p.evaluate(() => { setTab('today'); session.menu.items[0].r = byId('ebifry'); keepDraft(); render(); });
-    const before = await p.evaluate(() => menuIds());
+    const before = await p.evaluate(() => session.menu.items.map(x => ({ id: x.r ? x.r.id : null, name: x.r ? x.r.name : '' })));
+    const hits = await hitSlots(p, 'shrimp');
     await p.evaluate(() => setTab('settings'));
-    await p.click('#allergy-card .chip[data-v="shrimp"]'); await p.waitForTimeout(200);
-    const r = await p.evaluate(() => ({ ids: menuIds(), toast: (document.querySelector('#toast-root') || {}).innerText || '', draft: S.draft.ids }));
-    ok(r.ids[0] !== 'ebifry' && JSON.stringify(r.ids.slice(1)) === JSON.stringify(before.slice(1)), 'まだ決めていない案: 当たった枠だけ替わる ' + JSON.stringify(before) + ' → ' + JSON.stringify(r.ids));
-    ok(/えびフライ/.test(r.toast), 'まだ決めていない案: 何を替えたかを知らせる: ' + r.toast);
-    ok(JSON.stringify(r.draft) === JSON.stringify(r.ids), 'まだ決めていない案: 下書きもその場で書き直す');
+    await p.click('#allergy-card .chip[data-v="shrimp"]'); await until(p, () => algIds().includes('shrimp') && !!document.querySelector('#toast-root .toast'));
+    const r = await p.evaluate(() => ({ slots: session.menu.items.map(x => x.r ? x.r.id : null), bad: session.menu.items.filter(x => x.r && isAvoidedCore(x.r)).map(x => x.r.id), toast: (document.querySelector('#toast-root') || {}).innerText || '', draft: S.draft.ids }));
+    ok(hits.includes(0) && r.slots[0] !== 'ebifry' && !r.bad.length && r.slots.every((id, i) => hits.includes(i) ? id !== before[i].id : id === before[i].id),
+        'まだ決めていない案: 当たった枠だけ替わる ' + JSON.stringify(before.map(x => x.id)) + ' 当たる枠 ' + JSON.stringify(hits) + ' → ' + JSON.stringify(r.slots));
+    ok(hits.every(i => r.toast.includes(before[i].name)), 'まだ決めていない案: 何を替えたかを知らせる: ' + r.toast);
+    ok(JSON.stringify(r.draft) === JSON.stringify(r.slots), 'まだ決めていない案: 下書きもその場で書き直す ' + JSON.stringify(r.draft) + ' / ' + JSON.stringify(r.slots));
     await ctx.close();
 }
 
@@ -118,30 +131,30 @@ for (const k of [0, 1, 2]){
 {
     const { ctx, p } = await open({});
     await p.evaluate(() => setTab('today'));
-    await p.click('[data-act="decide"]'); await p.waitForTimeout(200);
+    await p.click('[data-act="decide"]'); await afterDecide(p);
     await p.evaluate(() => setTab('today'));
     const decided = await p.evaluate(() => S.cook.ids.slice());
     for (const [name, sel] of [['気分（おかゆの日）', '[data-act="mood"][data-k="okayu"]'], ['品数', '[data-act="count"][data-v="4"]'], ['まるごと入れ替え', '[data-act="new-menu"]']]){
         await openMood(p);
-        const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await p.waitForTimeout(200);
+        const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
         const ask = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));
         ok(ask.sheet && JSON.stringify(ask.ids) === JSON.stringify(decided), name + ': 決めた献立があるときは確認を出し、まだ替えない ' + JSON.stringify(ask));
-        await p.click('[data-act="sheet-close"]'); await p.waitForTimeout(150);
+        await p.click('[data-act="sheet-close"]'); await until(p, () => !sheet && !document.querySelector('[data-act="redo-yes"]'));
         const kept = await p.evaluate(() => ({ ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));
         ok(JSON.stringify(kept.ids) === JSON.stringify(decided) && kept.mood !== 'okayu' && String(kept.dc) === '3', name + ': 「やめる」で元のまま ' + JSON.stringify(kept));
         await openMood(p);
-        await p.locator(sel).first().click(); await p.waitForTimeout(150);
-        await p.click('[data-act="redo-yes"]'); await p.waitForTimeout(200);
+        await p.locator(sel).first().click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
+        await p.click('[data-act="redo-yes"]'); await until(p, () => !sheet && !!document.querySelector('#toast-root [data-act="toast-undo"]'));
         const done = await p.evaluate(() => ({ ids: menuIds(), cook: S.cook.ids.slice(), undo: !!document.querySelector('#toast-root [data-act="toast-undo"]') }));
         ok(JSON.stringify(done.ids) !== JSON.stringify(decided) && JSON.stringify(done.cook) === JSON.stringify(decided) && done.undo, name + ': 作り直すと案が替わり、決めた献立は残り、「元に戻す」が出る ' + JSON.stringify(done));
-        await p.click('#toast-root [data-act="toast-undo"]'); await p.waitForTimeout(200);
+        await p.click('#toast-root [data-act="toast-undo"]'); await until(p, () => !toast.undo && !document.querySelector('#toast-root [data-act="toast-undo"]'));
         const back = await p.evaluate(() => ({ ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));
         ok(JSON.stringify(back.ids) === JSON.stringify(decided) && String(back.dc) === '3', name + ': 「元に戻す」で決めた献立に戻る ' + JSON.stringify(back));
     }
     // 決めていないときは、今までどおり確認なしで作り直す
     await p.evaluate(() => { S.cook = null; save(); render(); });
     await openMood(p);
-    await p.click('[data-act="mood"][data-k="okayu"]'); await p.waitForTimeout(200);
+    await p.click('[data-act="mood"][data-k="okayu"]'); await until(p, () => session.mood === 'okayu' || !!document.querySelector('[data-act="redo-yes"]'));
     const free = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), mood: session.mood }));
     ok(!free.sheet && free.mood === 'okayu', '決めていないときは確認なしで気分を変える ' + JSON.stringify(free));
     await ctx.close();
@@ -184,17 +197,17 @@ for (const k of [0, 1, 2]){
 {
     const { ctx, p } = await open({});
     await p.evaluate(() => setTab('settings'));
-    await p.click('[data-act="fam-add"]'); await p.waitForTimeout(150);
-    await p.locator('#family-profile .fam-member[open] [data-act="fam-alg-fam"][data-v="egg"]').click(); await p.waitForTimeout(150);
+    await p.click('[data-act="fam-add"]'); await until(p, () => !!document.querySelector('#family-profile .fam-member[open] [data-act="fam-alg-fam"][data-v="egg"]'));
+    await p.locator('#family-profile .fam-member[open] [data-act="fam-alg-fam"][data-v="egg"]').click(); await until(p, () => S.family[0].allergy.includes('@egg'));
     const r = await p.evaluate(() => ({ avoid: S.family[0].avoid, allergy: S.family[0].allergy, menuEgg: session.menu.items.filter(x => x.r && allergyConflict(x.r)).length }));
     ok(r.allergy.includes('@egg') && r.avoid.includes('@egg') && r.menuEgg === 0, '家族のアレルギー: 1回押すだけで登録され、献立に卵の料理が残らない ' + JSON.stringify(r));
-    await p.locator('#family-profile .fam-member[open] [data-act="fam-alg-fam"][data-v="egg"]').click(); await p.waitForTimeout(150);
+    await p.locator('#family-profile .fam-member[open] [data-act="fam-alg-fam"][data-v="egg"]').click(); await until(p, () => !S.family[0].allergy.length);
     const off = await p.evaluate(() => ({ avoid: S.family[0].avoid, allergy: S.family[0].allergy }));
     ok(!off.allergy.length && !off.avoid.length, '家族のアレルギー: もう一度押すと外れる ' + JSON.stringify(off));
     // 以前の方法（食べられない食材 → ⚠）も使える
     await p.evaluate(() => { const e = document.querySelector('#family-profile .fam-member[open] [data-act="fam-avoid"][data-v="なす"]'); const d = e && e.closest('details.avoid-more'); if (d && !d.open) d.querySelector('summary').click(); });
-    await p.click('#family-profile .fam-member[open] [data-act="fam-avoid"][data-v="なす"]'); await p.waitForTimeout(150);
-    await p.click('#family-profile .fam-member[open] [data-act="fam-allergy"][data-v="なす"]'); await p.waitForTimeout(150);
+    await p.click('#family-profile .fam-member[open] [data-act="fam-avoid"][data-v="なす"]'); await until(p, () => S.family[0].avoid.includes('なす') && !!document.querySelector('#family-profile .fam-member[open] [data-act="fam-allergy"][data-v="なす"]'));
+    await p.click('#family-profile .fam-member[open] [data-act="fam-allergy"][data-v="なす"]'); await until(p, () => S.family[0].allergy.includes('なす'));
     const old = await p.evaluate(() => S.family[0].allergy);
     ok(old.includes('なす'), '家族: 食べられない食材 → ⚠ でアレルギーにする方法も残る ' + JSON.stringify(old));
     await ctx.close();
@@ -285,7 +298,7 @@ for (const [al, re] of [['sesame', /ごま/], ['milk', /バター|チーズ|牛�
 for (let run = 0; run < 6; run++){
     const { ctx, p } = await open({});
     await p.evaluate(() => { hasPro = () => true; makeWeek(); S.settings.weekSides = true; ensureWeekExtras(); save(); setTab('settings'); });
-    for (const v of ['egg', 'wheat', 'milk']){ await p.click(`#allergy-card .chip[data-v="${v}"]`); await p.waitForTimeout(150); }
+    for (const v of ['egg', 'wheat', 'milk']){ await p.click(`#allergy-card .chip[data-v="${v}"]`); await until(p, v => algIds().includes(v), v); }
     const r = await p.evaluate(() => { const days = S.week.days.filter(x => x.d >= TODAY && !x.skip);
         return { main: days.map(x => byId(x.id)).filter(r => r && allergyConflict(r)).map(r => r.id), extra: days.flatMap(x => x.extra ? [x.extra.side, x.extra.soup] : []).map(byId).filter(r => r && allergyConflict(r)).map(r => r.id),
             shop: shoppingList().filter(e => algItemHit(algIds(), { key: keyOf(e.label), name: e.label, label: e.label, en: e.en || '' })).map(e => e.label) }; });
