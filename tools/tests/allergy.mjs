@@ -493,6 +493,44 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
     ok(r.norm === '["egg"]true' || r.norm === '["xx","egg"]true', '保存データの正規化: ' + r.norm); ok(r.ids === '["egg"]', '使えない id は無視: ' + r.ids);
     await ctx.close();
 }
+// モニター第3回 S5: 家族の1人に乳製品⚠のあと、手入力の大豆⚠を足す → すぐ照らし直す（再読み込みしなくても）。当たる料理があるあいだ「食べられるお膳です」と出さない
+{
+    const { ctx, p } = await open('JP', {}, { family: [{ id: 'a', name: '', role: 'adult', avoid: ['@dairy'], allergy: ['@dairy'], mild: false }] });
+    const r = await p.evaluate(() => {
+        const out = { left: [], label: [], tries: 0, warm: 0 };
+        const m = famMembers()[0];
+        for (let k = 0; k < 8; k++){
+            m.avoid = ['@dairy']; m.allergy = ['@dairy']; session.menu = null; ensureMenu();
+            const soy0 = session.menu.items.filter(x => x.r && algSelectedHits(x.r, ['soy']).length).length; if (!soy0) continue;
+            out.tries++; session.menu.items.forEach(x => { if (x.r && isAvoidedCore(x.r)) out.warm++; });   // 乳製品だけの判定を一度使っておく（画面を描いたのと同じ状態）
+            m.avoid.push('大豆'); m.allergy.push('大豆'); reconcileMenu();
+            session.menu.items.forEach(x => { if (x.r && algSelectedHits(x.r).includes('soy')) out.left.push(x.r.name); });
+            // 照らし直したあとに当たる料理を戻しても、「食べられるお膳です」は出さない
+            const soyDish = RECIPES.find(r0 => r0.type === '汁物' && algSelectedHits(r0).includes('soy')); const i = session.menu.items.findIndex(x => x.slot === '汁物');
+            if (soyDish && i >= 0){ const keep = session.menu.items[i].r; session.menu.items[i].r = soyDish; if (/食べられるお膳/.test(eatersLine())) out.label.push(soyDish.name); session.menu.items[i].r = keep; }
+        }
+        return out;
+    });
+    ok(r.tries > 0, 'S5 前提: 大豆を使う料理が献立にあった（' + r.tries + '回）');
+    ok(!r.left.length, 'S5 家族に乳製品⚠のあと大豆⚠を足すと、すぐ照らし直す（残った料理: ' + r.left.slice(0, 3).join('、') + '）');
+    ok(!r.label.length, 'S5 当たる料理があるあいだは「食べられるお膳です」と出さない: ' + r.label.slice(0, 2).join('、'));
+    await ctx.close();
+}
+// モニター第3回 S6: えびアレルギーで「エビチリ（鶏むね肉で）」のように、外した食材の名前を先頭にした料理名を出さない（手順にも背わたを残さない）
+{
+    const { ctx, p } = await open('JP', { allergens: ['shrimp'] });
+    const r = await p.evaluate(() => {
+        const out = { bad: [], steps: [], n: 0, name: '' };
+        const tw = buildTwist('a~ebichili~~~魚介:0'); out.name = tw ? tw.name : '';
+        if (tw && tw.steps.some(s => /背わた/.test(s.t))) out.steps.push(tw.name);
+        for (let k = 0; k < 6; k++) generateTwists({ level: 2, count: 30 }).concat(generateTwists({ baseId: 'ebichili', count: 6 })).forEach(x => { out.n++; if (/^(?:[^ ]+ )?(?:えび|エビ|海老)/.test(x.name)) out.bad.push(x.name); if (x.steps.some(s => /背わた/.test(s.t))) out.steps.push(x.name); });
+        return out;
+    });
+    ok(!/^(?:えび|エビ|海老)/.test(r.name), 'S6 エビチリの主役を鶏むね肉にした名前は、えびで始めない: ' + r.name);
+    ok(!r.bad.length, 'S6 えびアレルギーで、えびで始まる名前の案を出さない: ' + [...new Set(r.bad)].slice(0, 3).join('、'));
+    ok(!r.steps.length, 'S6 置き換えた案の手順に「背わた」が残らない: ' + [...new Set(r.steps)].slice(0, 3).join('、'));
+    await ctx.close();
+}
 await b.close();
 console.log(errs.length ? 'ページのエラー: ' + errs.slice(0, 5).join(' | ') : 'ページのエラーなし');
 ok(errs.length === 0, 'ページのエラー');
