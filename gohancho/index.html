@@ -536,33 +536,62 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .set-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
 /* はじめての設定・プラス案内 */
 .sheet-pad{padding:22px 18px 8px;gap:14px}
-.sheet-onboard h2,.sheet-paywall h2{font-size:1.4rem}
-.ob-dots{display:flex;gap:6px;justify-content:center}
-.ob-dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
-.ob-dots i.on{background:var(--accent);width:20px;border-radius:4px}
-.ob-hero{display:grid;place-items:center;padding:6px 0;background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%);border-radius:16px}
-.ob-hero .vessel{width:150px;margin:18px 0}
-.ob-tray{padding:14px 8px 12px;border-radius:16px;pointer-events:none}
-.ob-lead{margin:0;color:var(--muted);font-size:.9rem}
-.ob-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.ob-points li{display:flex;flex-direction:column;padding-inline-start:14px;border-inline-start:3px solid var(--accent)}
-.ob-points b{font-family:var(--font-display)}
-.ob-points span{font-size:.85rem;color:var(--muted)}
-.ob-actions{display:flex;gap:8px;margin-top:6px}.sheet-onboard .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:10px 0 calc(14px + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
-.ob-skip{align-self:center}
-.pw-head{display:flex;align-items:center;gap:10px}
+.sheet-onboard h2,.sheet-paywall h2,.sheet-country h2{font-size:1.5rem;line-height:1.35;margin:0}
+.sheet-onboard h3,.sheet-paywall h3{font-size:1rem;margin:8px 0 0;font-family:var(--font-display)}
+/* はじめての流れ: 手順の見える化（ステップ n / 3 と、3つの区切り） */
+.ob-head{display:flex;flex-direction:column;gap:8px}
+.ob-count{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;font-size:.875rem;color:var(--muted);font-weight:600;letter-spacing:.04em}
+.ob-count .ob-skip{min-height:48px;padding-inline:12px;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.ob-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ob-steps li{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:.75rem;color:var(--muted);line-height:1.4;overflow-wrap:anywhere}
+.ob-steps i{display:block;height:4px;border-radius:2px;background:var(--line)}
+.ob-steps li.done i,.ob-steps li.on i{background:var(--accent)}
+.ob-steps li.on{color:var(--ink);font-weight:700}
+.ob-eyebrow{margin:8px 0 0;font-family:var(--font-display);color:var(--accent);font-weight:700;letter-spacing:.06em}
+.ob-lang{display:flex;flex-direction:column;gap:4px}
+.ob-lang select{min-height:48px;font:inherit;font-size:1rem;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);max-width:100%}
+.sheet-country .country-list{max-height:min(46vh,46dvh)}
+.ob-sv .chip{min-width:56px;min-height:48px;font-size:1rem}
+.ob-staples summary{min-height:48px;display:flex;align-items:center}
+.ob-actions{display:flex;gap:8px;margin-top:8px}
+.ob-actions .btn{min-height:52px;font-size:1rem}
+.sheet-onboard .ob-actions,.sheet-country .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:12px 0 calc(16px + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
+.country[aria-busy="true"],.ob-actions [aria-busy="true"]{opacity:.6;cursor:progress}
+/* 献立が出た瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では出さない） */
+@media (prefers-reduced-motion:no-preference){
+  .tray.ob-reveal .spot{animation:obIn .52s cubic-bezier(.2,.75,.3,1) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
+  @keyframes obIn{from{opacity:0;transform:translateY(12px) scale(.94)}to{opacity:1;transform:none}}
+}
+/* 購入画面 */
+.pw-head{display:flex;align-items:center;gap:12px}
+.pw-head .pw-x{margin-inline-start:auto;min-height:48px}
 .pw-badge{background:var(--yolk);color:#231800;font-weight:700;font-size:.75rem;letter-spacing:.14em;border-radius:6px;padding:.15rem .5rem}
 .pw-reason{margin:0;font-weight:700}
+.pw-ready{margin:0;background:var(--surface-2);border-radius:12px;padding:12px 16px}
+.pw-compare{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:600px){.pw-compare{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pw-col{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pw-col h3{margin:0;font-size:1rem}
+.pw-col.plus{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .pw-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.pw-list li{padding-inline-start:26px;position:relative}
+.pw-list li{padding-inline-start:26px;position:relative;overflow-wrap:anywhere}
 .pw-list li::before{content:"";position:absolute;inset-inline-start:4px;top:.45em;width:12px;height:7px;border-left:2.5px solid var(--accent);border-bottom:2.5px solid var(--accent);transform:rotate(-45deg)}
-.pw-prices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pw-price{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start}
+.pw-list.free li::before{border-color:var(--muted)}
+.pw-cta{position:sticky;bottom:0;z-index:1;background:var(--sheet-bg);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 8px -4px var(--sheet-bg);display:flex;flex-direction:column;gap:8px}
+.pw-prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px}
+.pw-price{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:12px 16px;min-height:56px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;transition:transform .1s}
+.pw-price:active{transform:translateY(1px)}
 .pw-price.best{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.pw-price .l{font-size:.78rem;color:var(--muted)}
-.pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.05rem}.pw-price.cta .p{font-size:1.35rem}.pw-offer .ot{font-weight:400;font-size:.95rem}.pw-offer .op{font-size:1.4rem}
+.pw-price.cta{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);align-items:center;text-align:center}
+.pw-price .l{font-size:.875rem;opacity:.85}
+.pw-price .p{font-family:var(--font-display);font-weight:700;font-size:1.25rem}.pw-price.cta .p{font-size:1.5rem}.pw-offer{margin:0}.pw-offer .ot{font-weight:400;font-size:1rem}.pw-offer .op{font-size:1.25rem}
 .pw-price .n{font-size:.75rem;color:var(--accent);font-weight:700}
-.pw-free{margin:0;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;font-weight:500}
+.pw-free{margin:0;background:var(--accent-soft);border-radius:12px;padding:12px 16px;font-weight:500}
+.pw-terms{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:12px}
+.pw-terms h3{margin:0;font-size:1rem}
+.pw-terms ul{margin:0;padding-inline-start:1.2em;display:flex;flex-direction:column;gap:8px;font-size:.875rem;color:var(--muted);line-height:1.6}
+.pw-links{display:flex;flex-wrap:wrap;gap:8px}.pw-links .btn{min-height:48px}
+.pw-terms a{display:inline-flex;align-items:center;min-height:48px}
 
 .locked .veil{filter:blur(3px);color:var(--muted);letter-spacing:.1em;user-select:none}
 .week .item.locked .t{cursor:pointer}
@@ -3998,6 +4027,21 @@ function paywallReason(k){
         default: return '';
     }
 }
+// 購入画面の「できること」。無料版がある（freeTier）ときは、無料で使えることとプラスで楽になることを並べる。
+// 無料版がない（いまのしくみ）ときは、無料の列を作らない（ないものを「無料」と書かない）
+function pwCompareHtml(reason){
+    const li = xs => xs.map(b => `<li>${esc(b)}</li>`).join('');
+    if (PLAN.billingEnabled && PLAN.freeTier){
+        const free = [t('今日の献立（{n}品まで）', {n:PLAN.freeLimits.dishes}), t('作り方と材料'), t('冷蔵庫の材料から探せる'), t('世界のレシピ'), t('今日の分の買い物メモ'), t('記録'), t('家族に送る'),
+            ...(twistAvailable() ? [t('定番をひとひねり（1日{n}回まで）', {n:PLAN.freeLimits.twistPerDay})] : []), t('わが家の写真（{n}枚まで）', {n:PLAN.freeLimits.myPhotos})];
+        return `<div class="pw-compare">
+            <section class="pw-col"><h3>${esc(t('無料で使えること'))}</h3><ul class="pw-list free">${li(free)}</ul></section>
+            <section class="pw-col plus"><h3><span class="plus-mark">${esc(t('プラス'))}</span> ${esc(t('プラスで楽になること'))}</h3><ul class="pw-list">${li(PLAN.benefits)}</ul></section>
+        </div>`;
+    }
+    const ben = reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits;
+    return `<section class="pw-col plus">${PLAN.billingEnabled ? `<h3>${esc(t('プラスで使えること'))}</h3>` : ''}<ul class="pw-list">${li(ben)}</ul></section>`;
+}
 
 /* ---- 下から出るシート（はじめての設定・プラス案内） ---- */
 let sheet = null;   // {kind:'onboard'|'paywall', ...}
@@ -4063,22 +4107,37 @@ function obSave(){
     const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
     S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
     S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
+    if (sheet.alg){ const keep = algIds().filter(id => !sheet.algShown.includes(id)); S.settings.allergens = [...new Set([...keep, ...sheet.alg])]; }   // はじめての画面に出していないアレルゲン（設定で選んだもの）は、そのまま残す
     S.onboarded = true; save();
 }
-function startOnboard(){ sheet = {kind:'onboard', step:0, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples)}; renderSheet(); }
-// はじめての画面に出す、この国の今日の献立（実際の献立と同じ料理・絵）
-function obTrayHtml(){
-    try{
-        if (!session.menu && bootReady && !mixWaiting() && !restoreDraft() && !restoreDecided()) newMenu();
-        const m = session.menu; if (!m) return '';
-        const tiles = m.items.filter(it => it.r).map(it => {
-            const kind = it.slot === '主菜' ? vesselKind(it.r) : it.slot === '副菜' ? 'kobachi' : 'wan';
-            return `<div class="spot ${it.slot === '主菜' ? 'main' : it.slot === '副菜' ? 'side' : 'soup'}" style="--w:31%">${vesselHtml(kind, it.r, true)}<div class="spot-label"><span class="slot">${esc(slotLabel(it.slot))}</span><span class="nm">${esc(it.r.name)}</span></div></div>`;
-        });
-        if (!tiles.length) return '';
-        const rows = []; for (let i = 0; i < tiles.length; i += 3) rows.push(tiles.slice(i, i + 3));
-        return `<div class="tray compact ob-tray" role="img" aria-label="${esc(t('今日のお膳（{n}品）', {n:tiles.length}))}">${rows.map(r => `<div class="tray-row">${r.join('')}</div>`).join('')}</div>`;
-    }catch(e){ return ''; }
+// はじめての設定を終えて、今日の献立を見せる（日本を日本語以外で使うときも、食材の名前（豚肉）で保存する: obSave）
+function obFinish(){
+    obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
+    try{ window.scrollTo(0, 0); }catch(e){}
+    obReveal();
+    if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
+}
+function startOnboard(keep){
+    const algShown = ((algSections().main[0] || [])[1] || []).slice();
+    sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
+    if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; }   // 国を選び直したときも、人数と品数はそのまま
+    renderSheet();
+}
+// はじめての流れの手順（何番目か・全部でいくつか・名前）。国のシートと同じ見た目で出す
+const OB_STEPS = () => [t('国と言語'), t('人数と品数'), t('苦手・アレルギー')];
+function obProgHtml(n, skip){
+    const names = OB_STEPS();
+    return `<div class="ob-head">
+        <div class="ob-count"><span>${esc(t('ステップ {n} / {total}', {n, total:names.length}))}</span>${skip ? `<button class="btn ghost ob-skip" data-act="ob-skipstep">${esc(t('スキップ'))}</button>` : ''}</div>
+        <ol class="ob-steps" aria-label="${esc(t('ステップ {n} / {total}', {n, total:names.length}))}">${names.map((x, i) => `<li class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}" ${i + 1 === n ? 'aria-current="step"' : ''}><i></i><span>${esc(x)}</span></li>`).join('')}</ol>
+    </div>`;
+}
+// 献立が決まった瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では、CSS で止める）
+function obReveal(){
+    const tr = document.querySelector('#view .tray'); if (!tr) return;
+    tr.querySelectorAll('.spot').forEach((s, i) => s.style.setProperty('--i', i));
+    tr.classList.add('ob-reveal');
+    setTimeout(() => { tr.classList.remove('ob-reveal'); }, 1800);
 }
 function renderSheet(){
     try{ renderSheetBody(); }
@@ -4089,34 +4148,36 @@ function renderSheetBody(){
     if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
     let body = '';
     if (sheet.kind === 'onboard'){
+        // はじめての流れは3つの手順: 1 国と言語（国のシート）→ 2 人数と品数 → 3 苦手・アレルギー → 献立
         const st = sheet.step;
-        const dots = [0,1,2].map(i => `<i class="${i === st ? 'on' : ''}"></i>`).join('');
         if (st === 0) body = `
-            ${obTrayHtml() || `<div class="ob-hero">${vesselHtml('plate', byId('nikujaga') || RECIPES.find(r => r.type === '主菜'), true)}</div>`}
-            <h2>${esc(t('ご飯帖へようこそ'))}</h2>
-            <p class="ob-lead">${esc(t('こんな献立を、毎日お膳ごと提案します。人数や苦手な食材を設定すると、あなたの家に合わせて選びます。'))}</p>
-            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
-            <div class="ob-actions"><button class="btn primary wide" data-act="ob-next">${esc(t('はじめる'))}</button></div>`;
-        if (st === 1) body = `
+            ${obProgHtml(2, true)}
             <h2>${esc(t('何人分つくりますか'))}</h2>
             <p class="muted small">${esc(t('材料の分量をこの人数に合わせて表示します。あとから設定で変えられます。'))}</p>
-            <div class="chips">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="ob-sv" data-v="${n}" aria-pressed="${sheet.servings===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
-            <h3 style="margin-top:8px">${esc(t('ふだんの品数'))}</h3>
+            <div class="chips ob-sv">${[1,2,3,4,5,6].map(n => `<button class="chip" data-act="ob-sv" data-v="${n}" aria-pressed="${sheet.servings===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
+            <h3>${esc(t('ふだんの品数'))}</h3>
             <p class="muted small">${esc(t('「おまかせ」は、平日は3〜4品、週末は4〜6品のように日によって変えます。'))}</p>
             <div class="chips">${countChips(sheet.count, 'ob-count')}</div>
+            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-next">${esc(t('次へ'))}</button></div>`;
-        if (st === 2) body = `
+        if (st === 1){
+            const algMain = (algSections().main[0] || [])[1] || [];
+            body = `
+            ${obProgHtml(3, true)}
             <h2>${esc(t('苦手な食材はありますか'))}</h2>
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
+            <h3>⚠ ${esc(t('アレルギー対策'))}</h3>
+            <p class="muted small">${esc(algSections().main[0][0])}</p>
+            <div class="chips">${algMain.map(id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`).join('')}</div>
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
-            <h3 style="margin-top:8px">${esc(t('いつも家にある食材'))}</h3>
-            <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
-            <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
+            <details class="box ob-staples" ${sheet.stOpen ? 'open' : ''}><summary>${esc(t('いつも家にある食材'))}</summary><div class="inner">
+                <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
+                <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
+            </div></details>
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
-        body = `<div class="ob-dots" aria-hidden="true">${dots}</div>${body}
-            ${st > 0 ? '' : `<button class="btn sm ghost ob-skip" data-act="ob-skip">${esc(t('設定せずに使う'))}</button>`}`;
+        }
     }
     if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'one') body = oneSheetHtml();
@@ -4134,25 +4195,38 @@ function renderSheetBody(){
         const startOffer = PLAN.billingEnabled && PLAN.trialMode === 'store' && introEligible && (!native || (introChecked && introOffer)) && priced && !monitorOn() && !isSubscribed();
         // 献立はもうできている: 購入の前に、この人の今日の献立を名前で見せる
         const ready = sheet.reason === 'start' && session.menu ? session.menu.items.map(x => x.r && x.r.name).filter(Boolean) : [];
+        const startPrice = startOffer && monthlyPrice();
+        // 購入のボタン（価格がいちばん目立つように。お試しの言葉は小さく上に）
+        const buyHtml = !PLAN.billingEnabled ? '' : !priced
+            ? `<div class="note"><span>${esc(storeState === 'fail' ? t('価格を読み込めませんでした。電波のあるところでもう一度お試しください') : t('App Store の価格を読み込んでいます…'))}</span>${storeState === 'fail' ? `<button class="btn sm" data-act="store-retry">${esc(t('もう一度読みこむ'))}</button>` : ''}</div>`
+            : `<div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`;
         body = `
-            <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
+            <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2>${isLocked() ? '' : `<button class="btn ghost pw-x" data-act="sheet-close">${esc(t('閉じる'))}</button>`}</div>
             ${ready.length ? `<p class="pw-ready"><b>${esc(t('あなたの今日の献立ができています'))}</b><br>${esc(joinNames(ready))}</p>` : ''}
-            ${startOffer ? `<p class="pw-offer">${monthlyPrice() ? esc(t('{trial}。そのあと{price}', {trial:'\u0001' + introShort() + '\u0002', price:'\u0003' + monthlyPrice() + '\u0004'})).replace(/\u0001/g, '<span class="ot">').replace(/\u0002/g, '</span>').replace(/\u0003/g, '<b class="op">').replace(/\u0004/g, '</b>') : `<b>${esc(introShort())}</b>`}</p>${trialTimelineHtml()}` : ''}
-            ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
             ${reason && !(startOffer && sheet.reason === 'start') ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
+            ${startOffer ? `<p class="pw-offer">${startPrice ? esc(t('{trial}。そのあと{price}', {trial:'\u0001' + introShort() + '\u0002', price:'\u0003' + startPrice + '\u0004'})).replace(/\u0001/g, '<span class="ot">').replace(/\u0002/g, '</span>').replace(/\u0003/g, '<b class="op">').replace(/\u0004/g, '</b>') : `<b>${esc(introShort())}</b>`}</p>${trialTimelineHtml()}` : ''}
+            ${trialActive() && !isSubscribed() ? `<p class="pw-free">${esc(t('いまはお試し期間です（あと{n}日）。期間中はすべての機能が使えます。', {n:trialDaysLeft()}))}</p>` : ''}
             ${sheet.reason === 'monitor' ? `<div class="row">${monitorCanSend() ? `<button class="btn primary" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small muted">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : ''}
-            <ul class="pw-list">${(sheet.reason === 'start' ? [0, 1, 4, 3].map(i => PLAN.benefits[i]) : PLAN.benefits).map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+            ${pwCompareHtml(sheet.reason)}
             ${PLAN.billingEnabled ? `
-                ${startOffer ? `<p class="pw-free">${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:introCancelBy()}))}</p>` : ''}
-                ${!priced ? `<div class="note"><span>${esc(storeState === 'fail' ? t('価格を読み込めませんでした。電波のあるところでもう一度お試しください') : t('App Store の価格を読み込んでいます…'))}</span>${storeState === 'fail' ? `<button class="btn sm" data-act="store-retry">${esc(t('もう一度読みこむ'))}</button>` : ''}</div>` : `<div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`}
-                ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}
-                <button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>
-                ${isLocked() && S.history.length ? `<button class="btn sm ghost" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
-                ${isSubscribed() && native ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}
-                <p class="small muted">${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</p>
-                <p class="tiny"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>`
-            : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}
-            ${isLocked() ? '' : `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`}`;
+                <div class="pw-cta">${buyHtml}
+                    ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}</div>
+                <section class="pw-terms" aria-labelledby="pw-terms-h">
+                    <h3 id="pw-terms-h">${esc(t('料金と解約'))}</h3>
+                    <ul>
+                        ${PLAN.prices.map(p => priceLabel(p) ? `<li>${esc(t('{plan}（{price}・1か月ごとに自動更新）', {plan:p.label, price:priceLabel(p)}))}</li>` : '').join('')}
+                        ${startOffer ? `<li>${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:introCancelBy()}))}</li>` : ''}
+                        <li>${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</li>
+                        <li>${esc(t('解約しても、記録や設定はこの端末に残ります。'))}</li>
+                    </ul>
+                    <div class="pw-links">
+                        <button class="btn" data-act="restore">${esc(t('購入を復元'))}</button>
+                        ${isSubscribed() && native ? `<button class="btn" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}
+                        ${isLocked() && S.history.length ? `<button class="btn" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
+                    </div>
+                    <p class="small"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>
+                </section>`
+            : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}`;
     }
     const sheetPop = root.querySelector('.sheet') ? '' : ' pop';   // もう開いている画面を描き直すときは、弾ませない
     root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind}${sheetPop}" role="dialog" aria-modal="true"><div class="sheet-body sheet-pad">${body}</div></div></div>`;
@@ -8252,35 +8326,45 @@ document.addEventListener('click', e => {
         case 'vid-go': vidAwayStart(id); break;
         case 'vid-start': startCooking(id); break;
         case 'vid-chk': { const u = vidDay(), a = u.vidChk[id] = u.vidChk[id] || [], k = Number(el.dataset.k), j = a.indexOf(k); if (el.checked && j < 0) a.push(k); else if (!el.checked && j >= 0) a.splice(j, 1); save(); break; }
-        case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); break;
+        case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); break;
         case 'country': openCountrySheet(); break;
         case 'world-cc': worldCC = el.dataset.cc; browseErr.delete(worldCC); render(); break;
         case 'world-retry': browseErr.delete(worldCC); render(); break;
         case 'pick-country': {
             const cc = el.dataset.cc;
-            setCountry(cc).then(ok => { if (!ok) return; render(); if (!S.onboarded) startOnboard(); else closeSheet(); });
+            const draft = sheet && sheet.kind === 'country' && sheet.ob;   // はじめての流れで「もどる」から来たときの、入力の途中
+            document.querySelectorAll('#sheet-root [data-act="pick-country"]').forEach(b => b.setAttribute('aria-busy', String(b === el)));
+            setCountry(cc).then(ok => {
+                document.querySelectorAll('#sheet-root [aria-busy]').forEach(b => b.removeAttribute('aria-busy'));
+                if (!ok) return; render();
+                if (S.onboarded) closeSheet();
+                else if (draft && draft.cc === cc){ sheet = draft; sheet.step = 0; renderSheet(); }
+                else startOnboard(draft);
+            });
             break;
         }
         case 'ob-again': startOnboard(); break;
         case 'ob-next': sheet.step++; renderSheet(); break;
-        case 'ob-back': sheet.step--; renderSheet(); break;
+        case 'ob-back': if (sheet.step > 0){ sheet.step--; renderSheet(); } else { sheet = {kind:'country', ob:sheet}; renderSheet(); } break;
+        case 'ob-skipstep': {   // この手順は変えずに次へ（入力した分は元にもどす）。最後の手順なら献立へ
+            if (sheet.step === 0){ sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount; sheet.step = 1; renderSheet(); break; }
+            const algShown = sheet.algShown; Object.assign(sheet, {avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id)))});
+            obFinish(); break;
+        }
+        case 'ob-alg': { const v = el.dataset.v; if (!ALG_DEF[v]) break; sheet.alg.has(v) ? sheet.alg.delete(v) : sheet.alg.add(v); renderSheet(); break; }
         case 'cal-nav': { const [y, m] = (session.logMonth || TODAY.slice(0,7)).split('-').map(Number), d = new Date(y, m - 1 + Number(el.dataset.v), 1); const nm = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; if (nm <= TODAY.slice(0,7)){ session.logMonth = nm; session.logDay = null; render(); } break; }
         case 'cal-day': session.logDay = session.logDay === el.dataset.d ? null : el.dataset.d; render(); break;
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (Number(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
-        case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
+        case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
             obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('settings');
             const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
         }
-        case 'ob-done': {
-            // 日本を日本語以外で使うとき、画面の名前（Pork など）ではなく食材の名前（豚肉）で保存する。言語を変えても効くように
-            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
-            if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true); break;
-        }
+        case 'ob-done': obFinish(); break;
         case 'decide': {
             const m = session.menu;
             const ids = menuIds();
@@ -8692,6 +8776,11 @@ document.addEventListener('toggle', e => {
 }, true);
 document.addEventListener('change', e => {
     const el = e.target;
+    if (el.dataset && el.dataset.ob === 'lang'){   // はじめての流れで表示する言語を選んだ: 言葉を読みこんでから、シートを描き直す
+        const v = el.value, n = ++uiLangSeq; el.disabled = true;
+        uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}).then(() => { if (sheet) renderSheet(); });
+        return;
+    }
     if ((el.id === 'fp-cam' || el.id === 'fp-lib') && el.files && el.files[0]){ const f = el.files[0]; el.value = ''; fphotoStart(f); return; }
     if (el.id === 'photo-input-cook' && el.files && el.files[0]){
         const cur = cookItems()[session.cookIdx || 0]; if (!cur){ el.value = ''; return; }
@@ -9279,11 +9368,26 @@ function stapleSpot(){
 function countrySheetHtml(){
     const cur = S.settings.country || guessCountry();
     const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
+    if (!S.onboarded) return obCountryHtml(cur, subOf);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
         <div class="country-list">${(S.settings.country ? COUNTRIES : [...COUNTRIES].sort((a, b) => (b.cc === cur) - (a.cc === cur))).map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
             <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
         ${S.settings.country ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : ''}`;
+}
+// はじめての流れの1つめ（国と言語）。端末から推した国をいちばん上に出し、下のボタン1つで次へ進める
+function obCountryHtml(cur, subOf){
+    const c0 = countryOf(cur), ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;
+    const langs = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])];
+    return `${obProgHtml(1, false)}
+        <p class="ob-eyebrow">${esc(t('ご飯帖へようこそ'))}</p>
+        <h2>${esc(t('国・地域を選んでください'))}</h2>
+        <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
+        <div class="country-list">${(S.settings.country ? COUNTRIES : [...COUNTRIES].sort((a, b) => (b.cc === cur) - (a.cc === cur))).map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
+            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
+        <label class="ob-lang"><span class="small">${esc(t('表示する言語 / Language'))}</span>
+            <select data-ob="lang">${langs.map(([v, l]) => `<option value="${esc(v)}" lang="${esc(v)}" ${v === ui ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
+        <div class="ob-actions"><button class="btn primary wide" data-act="pick-country" data-cc="${esc(c0.cc)}">${esc(S.settings.country ? t('次へ') : t('{country}ではじめる', {country: c0.flag + ' ' + c0.nameLocal}))}</button></div>`;
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
 function relocalize(){
@@ -9305,7 +9409,7 @@ function a11yActs(root=document){ root.querySelectorAll(A11Y_SEL).forEach(a11yFi
 a11yActs();
 // 足された要素の中だけ見る（描き直しのたびに全部を数え直して属性を書きかえない）
 new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(n => { if (n.nodeType !== 1 || !n.isConnected) return; if (n.matches(A11Y_SEL)) a11yFix(n); if (n.firstElementChild) a11yActs(n); }); }).observe(document.body, {childList:true, subtree:true});
-document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && !S.settings.country)) closeSheet(); else if (modalId) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
 // 「自動（国に合わせる）」だった人は、いま表示している言語に決める。これからは国を変えても言語は変わらない
