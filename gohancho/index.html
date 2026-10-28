@@ -664,67 +664,67 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .shop .shop-row.done{background:transparent}
 .shop .shop-row.done .nm{font-weight:400}
 @media (prefers-reduced-motion:no-preference){.shop .shop-row{transition:background .15s}}
-/* v2（日向）: 1週間プラン — 7日を1行ずつ。曜日・料理の絵・名前・担当をひと目で。日ごとの操作は「変更」1つにまとめ、開いた画面で日付を確かめてから押す */
-.week.wk2 .item{grid-template-columns:40px 52px minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:12px;min-height:80px}
+/* v3（日向）: 1週間プラン — 7日を1行ずつ。曜日・料理の絵・名前・担当をひと目で。日ごとの操作は「変更」1つにまとめ、開いた画面で日付を確かめてから押す */
+.week.wk2 .item{grid-template-columns:40px 52px minmax(0,1fr) auto;gap:var(--s4) var(--s12);align-items:center;padding:var(--s12);min-height:80px}
 .week.wk2 .item .day{grid-column:1;grid-row:1;align-self:center;padding:0;gap:2px}
-.week.wk2 .day .wd{font-size:.75rem;font-weight:700;letter-spacing:.04em}
+.week.wk2 .day .wd{font-size:var(--fs12);font-weight:700;letter-spacing:.04em}
 .week.wk2 .day.sun .wd{color:var(--sun)}.week.wk2 .day.sat .wd{color:var(--sat)}
-.week.wk2 .day .dd{font-size:1.25rem}
-.week.wk2 .item:has(.day.today){background:color-mix(in srgb,var(--accent-soft) 55%,var(--surface));box-shadow:inset 4px 0 0 var(--accent)}
-[dir="rtl"] .week.wk2 .item:has(.day.today){box-shadow:inset -4px 0 0 var(--accent)}
+.week.wk2 .day .dd{font-size:var(--fs20)}
+.week.wk2 .item:has(.day.today){background:var(--leaf-soft);box-shadow:inset 4px 0 0 var(--leaf)}
+[dir="rtl"] .week.wk2 .item:has(.day.today){box-shadow:inset -4px 0 0 var(--leaf)}
 .week.wk2 .wk-pic,.week.wk2 .thumb.wk-none{grid-column:2;grid-row:1;cursor:pointer}
 .week.wk2 .thumb{width:52px;height:52px}
 .week.wk2 .thumb.wk-none{background:transparent;box-shadow:none;border:2px dashed var(--line);cursor:default}
 .week.wk2 .item .t{grid-column:3;grid-row:1}
-.week.wk2 .item .t .wnm{font-weight:700;font-size:1rem}
-.week.wk2 .who-b{display:inline-block;max-width:100%;vertical-align:baseline;background:var(--accent-soft);color:var(--accent);font-weight:700;border-radius:999px;padding:0 8px;margin-inline-end:6px;font-size:.75rem;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.week.wk2 .item .t .wnm{font-family:var(--mincho);font-weight:600;font-size:var(--fs16)}
+.week.wk2 .who-b{display:inline-block;max-width:100%;vertical-align:baseline;background:var(--surface-2);color:var(--ink);font-weight:700;border-radius:var(--r-pill);padding:0 var(--s8);margin-inline-end:var(--s4);font-size:var(--fs12);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .week.wk2 .week-acts,.week.wk2 .plus-mark{grid-column:4;grid-row:1;margin:0;align-self:center}
 .week.wk2 .week-acts{display:flex}
-.week.wk2 .wk-edit{flex-direction:column;gap:0;min-width:56px;min-height:48px;padding:4px 8px;font-size:.75rem;line-height:1.2;border-radius:12px;background:var(--surface);border-color:var(--line);color:var(--accent);font-weight:700}
+.week.wk2 .wk-edit{flex-direction:column;gap:0;min-width:56px;min-height:var(--tap);padding:var(--s4) var(--s8);font-size:var(--fs12);line-height:1.2;border-radius:var(--r-md);font-weight:700}
 .week.wk2 .wk-edit svg{width:20px;height:20px;fill:currentColor}
 .week.wk2 .item.skipped .t b{font-weight:700}
 .week.wk2 .item.skipped .week-acts .btn{max-width:8.5em;white-space:normal;line-height:1.2;border:1px solid var(--line);background:var(--surface);width:auto}
-@media (max-width:400px){.week.wk2 .week-acts{display:flex;grid-template-columns:none}.week.wk2 .week-acts .btn{width:auto;padding-inline:8px}}
+@media (max-width:400px){.week.wk2 .week-acts{display:flex;grid-template-columns:none}.week.wk2 .week-acts .btn{width:auto;padding-inline:var(--s8)}}
 @media (max-width:360px){.week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}.week.wk2 .item.skipped .week-acts .btn{max-width:none}}   /* 狭い画面では「作る日に戻す」を2段目に回し、文字の欄を細くしない */
 html[data-ts="2"] .week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}html[data-ts="2"] .week.wk2 .item.skipped .week-acts .btn{max-width:none}
 html[data-ts="2"] .week.wk2 .item{grid-template-columns:auto minmax(0,1fr) auto}html[data-ts="2"] .week.wk2 .wk-pic,html[data-ts="2"] .week.wk2 .thumb.wk-none{display:none}html[data-ts="2"] .week.wk2 .item .t{grid-column:2}html[data-ts="2"] .week.wk2 .week-acts,html[data-ts="2"] .week.wk2 .plus-mark{grid-column:3}   /* 文字がいちばん大きいときは、名前の幅を取るため絵を省く */
-.wk-foot{margin-top:4px}.wk-foot .btn.wide{flex:1 1 12em}
+.wk-foot{margin-top:var(--s4)}.wk-foot .btn.wide{flex:1 1 12em}
 /* その日の操作の画面 */
-.wd-head{display:flex;gap:16px;align-items:center}
+.wd-head{display:flex;gap:var(--s16);align-items:center}
 .wd-head .thumb{width:72px;height:72px;cursor:pointer}
-.wd-tx{min-width:0;display:flex;flex-direction:column;gap:4px}
-.wd-tx h2{font-size:1.25rem;overflow-wrap:anywhere}
-.wd-acts{display:flex;flex-direction:column;gap:8px}
-.wd-acts .btn{min-height:52px;justify-content:flex-start;font-size:1rem;gap:12px;padding-inline:16px;text-align:start}
+.wd-tx{min-width:0;display:flex;flex-direction:column;gap:var(--s4)}
+.wd-tx h2{font-size:var(--fs20);letter-spacing:0;overflow-wrap:anywhere}
+.wd-acts{display:flex;flex-direction:column;gap:var(--s8)}
+.wd-acts .btn{min-height:var(--tap);justify-content:flex-start;font-size:var(--fs16);gap:var(--s12);padding-inline:var(--s16);text-align:start}
 .wd-acts .btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;flex:none}
-.wd-sep{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.wd-sep{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s8);padding-top:var(--s12);border-top:1px solid var(--line-soft)}
 .wd-sep .btn{color:var(--muted)}
-/* v2（日向）: 買い物メモ — 進み具合と店内モードを1つの帯に。売り場ごとに見出しと品数。家にあるものは下に控えめに。送る・カレンダーは最後の1か所 */
-.shop-opts{margin-top:8px}
-.shop-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 8px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
-.shop-bar.on{position:sticky;top:8px;z-index:5;border-color:var(--accent)}
-.shop-meter{flex:1 1 10em;min-width:0;display:flex;flex-direction:column;gap:4px}
+/* v3（日向）: 買い物メモ — 進み具合と店内モードを1つの帯に。売り場ごとに見出しと品数。家にあるものは下に控えめに。送る・カレンダーは最後の1か所 */
+.shop-opts{margin-top:var(--s8)}
+.shop-bar{display:flex;align-items:center;gap:var(--s12);flex-wrap:wrap;margin:var(--s12) 0 var(--s8);padding:var(--s12) var(--s16);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1)}
+.shop-bar.on{position:sticky;top:var(--s8);z-index:5;border-color:var(--leaf)}
+.shop-meter{flex:1 1 10em;min-width:0;display:flex;flex-direction:column;gap:var(--s4)}
 .shop-meter .shop-prog{margin:0}
-.shop-meter .bar{display:block;height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden}
-.shop-meter .bar i{display:block;height:100%;background:var(--accent);border-radius:inherit}
-@media (prefers-reduced-motion:no-preference){.shop-meter .bar i{transition:width .2s ease-out}}
-.shop-store{flex:1 1 auto;min-height:48px;white-space:normal;text-align:center}
+.shop-meter .bar{display:block;height:8px;border-radius:var(--r-pill);background:var(--surface-2);overflow:hidden}
+.shop-meter .bar i{display:block;height:100%;background:var(--leaf);border-radius:inherit}
+@media (prefers-reduced-motion:no-preference){.shop-meter .bar i{transition:width var(--dur-2) var(--ease)}}
+.shop-store{flex:1 1 auto;min-height:var(--tap);white-space:normal;text-align:center}
 .shop-store svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;flex:none}
-.shop .shop-sec:not(.done){display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px 8px;font-size:.875rem;font-family:var(--font-display);color:var(--accent);background:color-mix(in srgb,var(--surface-2) 50%,var(--surface));border-top:1px solid var(--line)}
+.shop .shop-sec:not(.done){display:flex;align-items:center;justify-content:space-between;gap:var(--s8);padding:var(--s12) var(--s16) var(--s8);font-size:var(--fs14);font-family:var(--gothic);font-weight:700;color:var(--ink);background:var(--surface-2);border-top:1px solid var(--line-soft)}
 .shop .shop-sec:not(.done):first-child{border-top:0}
-.shop .shop-sec .n{font-family:var(--font-body);font-size:.75rem;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;min-width:28px;padding:0 8px;text-align:center;line-height:1.6}
-.shop .shop-sec.done{padding:12px 16px 4px}
+.shop .shop-sec .n{font-family:var(--font-body);font-size:var(--fs12);font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill);min-width:28px;padding:0 var(--s8);text-align:center;line-height:1.6}
+.shop .shop-sec.done{padding:var(--s12) var(--s16) var(--s4)}
 .shop .shop-row.done{background:color-mix(in srgb,var(--surface-2) 40%,transparent)}
-.shop.big .shop-sec:not(.done){font-size:1rem;padding:16px}
-.shop-fridge{margin-top:12px;display:flex;flex-direction:column;align-items:flex-start;gap:0}
-.shop-fridge .pantry-hint{padding-inline:4px}
-.shop-quiet{margin-top:16px;padding-top:8px;border-top:1px dashed var(--line)}
-.shop-quiet .shop-have{padding-inline:4px}
+.shop.big .shop-sec:not(.done){font-size:var(--fs16);padding:var(--s16)}
+.shop-fridge{margin-top:var(--s12);display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.shop-fridge .pantry-hint{padding-inline:var(--s4)}
+.shop-quiet{margin-top:var(--s16);padding-top:var(--s8);border-top:1px dashed var(--line)}
+.shop-quiet .shop-have{padding-inline:var(--s4)}
 .shop-quiet .pantry-box{box-shadow:none;background:transparent}
-.shop-quiet .pantry-box summary{color:var(--muted);font-size:.875rem}
-.shop-send{margin-top:24px;display:flex;flex-direction:column;gap:0}
-.shop-send .btn{width:100%;min-height:48px}
-.shop-send .pantry-hint{padding-inline:4px;text-align:center}
+.shop-quiet .pantry-box summary{color:var(--muted);font-size:var(--fs14)}
+.shop-send{margin-top:var(--s24);display:flex;flex-direction:column;gap:0}
+.shop-send .btn{width:100%;min-height:var(--tap)}
+.shop-send .pantry-hint{padding-inline:var(--s4);text-align:center}
 /* 料理のイラスト */
 .vessel .food.svg{background:#fbf8f1}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
