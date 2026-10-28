@@ -3412,11 +3412,6 @@ function cookUnrecord(id){
     const h = histEntry(id, TODAY); if (!h || !h.c || yumOf(h) || (h.left && h.left.length)) return;
     S.history = S.history.filter(x => x !== h); save(); reactVer++;
 }
-// 今日の決めた献立の料理を、作り方で全部作り終えたか
-function cookAllDone(){
-    const its = cookItems(); if (!its.length || !S.cook || S.cook.d !== TODAY) return false;
-    return its.every(x => (((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length);
-}
 
 /* ---- 「おいしかった！」と今月の料理自慢（サーバーなし・端末の中だけ）----
    作った記録（S.history の1件）に h.y = おいしかったと押した人数を付ける（家族ひとりにつき1回押す）。
