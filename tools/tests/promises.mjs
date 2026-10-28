@@ -3,7 +3,7 @@
 //  A 決めた≠作った: 「この献立に決定」では記録しない / 料理の手順を全部終えたら記録 / 手順を戻したら記録を外す /
 //    献立の料理を全部作ったら「ぜんぶできました」/ 決定の取り消しで作った記録は消えない
 //  B かえる: 何に変わったかを知らせ、「元に戻す」で押した枠だけ前の料理に戻る（ほかの枠は動かない）
-//  C 設定と決めた献立（北条の修正 H1・H3・H4 の確認。直るまでは「待ち」として表示し、STRICT=1 のときだけ失敗にする）
+//  C 設定と決めた献立（北条の修正 H1・H3・H4 の再発防止。ふだんから失敗扱い。STRICT=0 のときだけ「待ち」表示にできる）
 //    C1 苦手を足して今日の献立を見ずに開き直しても、苦手の料理が戻らない
 //    C2 決めたあとにアレルギーを足しても、決めた献立が黙って変わらず、画面の献立と作り方が食い違わない
 //    C3 決めたあとに気分（おかゆの日）を押しても、確認なしに決めた献立が変わらない
@@ -11,11 +11,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
-const STRICT = process.env.STRICT === '1';
+const STRICT = process.env.STRICT !== '0';
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0, waits = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
-const pend = (c, m) => { checks++; if (!c){ if (STRICT){ fails++; console.log('FAIL', m); } else { waits++; console.log('待ち（北条の修正待ち）', m); } } };
+const pend = (c, m) => { checks++; if (!c){ if (STRICT){ fails++; console.log('FAIL', m); } else { waits++; console.log('待ち（STRICT=0）', m); } } };
 const open = async (state = {}, ctxIn) => {
     const ctx = ctxIn || await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' });
     if (!ctxIn){ await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort()); await ctx.addInitScript(seedScript(SEED));
@@ -138,5 +138,5 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
 
 await b.close();
 if (errs.length){ fails++; console.log('ページのエラー:', [...new Set(errs)].slice(0, 5).join(' / ')); }
-console.log(`${checks - fails - waits}/${checks} ok${waits ? `（待ち ${waits}: 北条の修正 H1・H3・H4 のあと STRICT=1 で確認）` : ''}  SEED=${SEED}`);
+console.log(`${checks - fails - waits}/${checks} ok${waits ? `（待ち ${waits}: STRICT=0 で失敗を待ちにしている）` : ''}  SEED=${SEED}`);
 process.exit(fails ? 1 : 0);
