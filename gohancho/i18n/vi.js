@@ -16,7 +16,7 @@ GOHAN_I18N('vi', {
     "お弁当向きが少ない国です（主菜{m}品・副菜{s}品から選んでいます）": "Nước này có ít món hợp để làm cơm hộp (chọn từ {m} món chính và {s} món phụ)",
     "この国にはお弁当向きの料理が足りないので、お弁当に向かない料理が含まれています": "Nước này không đủ món hợp làm cơm hộp nên có cả món không hợp với cơm hộp",
     "お弁当向きのおかずです（冷ましてから詰めてください）": "Những món này hợp làm cơm hộp (để nguội rồi hãy xếp vào hộp)",
-    "380円 / 月": "¥380 / tháng",
+    "300円 / 月": "¥300 / tháng",
     "5品・6品の献立は、ご飯帖プラスで使えます。": "Thực đơn 5–6 món nằm trong Gohancho Plus.",
     "5品・6品の献立（おもてなし・作り置きの日に）": "Thực đơn 5–6 món (cho ngày có khách hoặc nấu sẵn cả tuần)",
     "7日間、同じ料理や同じ肉・魚が続かないように組みます": "Bảy ngày món chính không lặp món hay lặp loại thịt, cá liên tiếp",

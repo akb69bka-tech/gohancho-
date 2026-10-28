@@ -4507,7 +4507,7 @@ const PLAN = {
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     get name(){ return t('ご飯帖プラス'); },
     prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
-        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('380円 / 月'); }, per:'月', note:''},
+        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('300円 / 月'); }, per:'月', note:''},
     ],
     // 年額は「1年つづけてくれた人」にだけ案内する特別価格（App Store Connect に製品を作り、アプリは12か月以上の会員にだけ表示する）
     loyaltyEnabled: false,              // 年額（1年ありがとう価格）はこの版では出さない。true にすると loyalEligible() の人に案内する

@@ -197,7 +197,7 @@ GOHAN_I18N('de', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Als App startest du Gohancho im Vollbild über das Symbol, und Menüs, Rezepte und Tagebuch funktionieren auch ohne Netz. Hinzufügen kannst du sie, wenn du die App-Seite öffnest (die „gohancho“-Adresse auf GitHub Pages).",
     "ご飯帖プラス": "Gohancho Plus",
     "月額プラン": "Monatlich",
-    "380円 / 月": "380 ¥ / Monat",
+    "300円 / 月": "300 ¥ / Monat",
     "{n}か月分無料": {"one": "1 Monat gratis", "other": "{n} Monate gratis"},
     "ひと手間の「やってみた」で腕前を記録": "Fortschritt mit „Ausprobiert“ bei Küchentipps festhalten",
     "買い足すと作れる料理が増える食材をすべて表示": "Alle Zutaten sehen, mit denen mehr Gerichte möglich werden",

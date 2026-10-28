@@ -39,7 +39,7 @@ tr.total td{font-weight:700;border-top:2px solid var(--accent)}
 <main>
   <div>
     <h1>わが家のご飯帖 収益シミュレーター</h1>
-    <p class="muted">月額380円（海外は国ごとの価格）、最初の1か月無料、Apple の手数料（日本・EU 26%／他 30%、Small Business なら15%）、RevenueCat 1% を入れた、1年目の年間の見込みです。税金は含みません。</p>
+    <p class="muted">月額300円（海外は国ごとの価格）、最初の1か月無料、Apple の手数料（日本・EU 26%／他 30%、Small Business なら15%）、RevenueCat 1% を入れた、1年目の年間の見込みです。税金は含みません。</p>
   </div>
 
   <section class="card">
@@ -54,7 +54,7 @@ tr.total td{font-weight:700;border-top:2px solid var(--accent)}
       <div class="seg" id="mode"><button data-m="paid" aria-pressed="true">有料会員の数</button><button data-m="dl">ダウンロード数（一部が有料）</button></div>
     </div>
     <div class="grid">
-      <label class="f">日本（380円/月）<input type="number" id="n_jp" min="0" step="100" value="10000"></label>
+      <label class="f">日本（300円/月）<input type="number" id="n_jp" min="0" step="100" value="10000"></label>
       <label class="f">高単価8か国 米英仏独伊西韓台（約450円/月）<input type="number" id="n_hi" min="0" step="100" value="80000"></label>
       <label class="f">中価格6か国 伯墨波土秘泰（約190円/月）<input type="number" id="n_mid" min="0" step="100" value="60000"></label>
       <label class="f">低価格5か国 印尼比越埃（約95円/月）<input type="number" id="n_lo" min="0" step="100" value="50000"></label>
@@ -97,7 +97,7 @@ function calc(){
   const paidMonths = churn === 0 ? 11 : (1 - Math.pow(1 - churn, 11)) / churn;
   // 区分: 名前, 人数, 月額(円), 手数料の地域
   const groups = [
-    ['日本', n[0]*conv, 380, 'jp'],
+    ['日本', n[0]*conv, 300, 'jp'],
     ['EU 4か国（仏独伊西）', n[1]*conv/2, 450, 'eu'],
     ['米英韓台', n[1]*conv/2, 450, 'other'],
     ['中価格6か国', n[2]*conv, 190, 'other'],

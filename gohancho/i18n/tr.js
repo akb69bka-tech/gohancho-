@@ -197,7 +197,7 @@ GOHAN_I18N('tr', {
     "アプリにすると、アイコンから全画面で開けて、電波がないところでも献立・レシピ・記録が使えます。アプリ用のページ（GitHub Pages で公開した「gohancho」のアドレス）で開いたときに追加できます。": "Uygulama olarak simgesinden tam ekran açılır; menüler, tarifler ve kayıtlarınız internet olmadan da çalışır. Uygulamanın kendi sayfasını (GitHub Pages'teki “gohancho” adresi) açtığınızda ekleyebilirsiniz.",
     "ご飯帖プラス": "Gohancho Plus",
     "月額プラン": "Aylık",
-    "380円 / 月": "¥380 / ay",
+    "300円 / 月": "¥300 / ay",
     "ひと手間の「やってみた」で腕前を記録": "Püf noktalarında “Denedim” ile becerilerinizi takip edin",
     "買い足すと作れる料理が増える食材をすべて表示": "Daha fazla yemek açan tüm malzemeleri görün",
     "5品・6品の献立（おもてなし・作り置きの日に）": "5 ve 6 yemekli menüler (misafir ya da hazırlık günleri için)",

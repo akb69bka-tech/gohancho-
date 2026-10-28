@@ -4,7 +4,7 @@
 参照名: ご飯帖プラス 月額
 製品 ID: gohancho_plus_monthly
 期間: 1か月
-価格（日本）: 380円
+価格（日本）: 300円
 お試しオファー: 無料トライアル 1か月（新規の利用者・すべての国）
 表示名（日本語）: ご飯帖プラス ／ 説明: 献立・買い物メモ・世界のレシピが使えます
 Display name (English): Gohancho Plus / Description: Meal plans, shopping lists and world recipes
