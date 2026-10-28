@@ -7,7 +7,7 @@
 //    C1 苦手を足して今日の献立を見ずに開き直しても、苦手の料理が戻らない
 //    C2 決めたあとにアレルギーを足しても、決めた献立が黙って変わらず、画面の献立と作り方が食い違わない
 //    C3 決めたあとに気分（おかゆの日）を押しても、確認なしに決めた献立が変わらない
-//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F7 食べる人の人数と辛さ・買い物の重なり・10人まで
+//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F8 食べる人の人数（わたし）と辛さ・買い物の重なり・10人まで
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
@@ -134,6 +134,15 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     ok(r2.mild && !r2.spicy.length, 'F5 食べる人が全員辛いのが苦手な日は、辛みのある料理を出さない: ' + r2.spicy);
     ok(!r2.both.length, 'F6 買う物に入っている食材を「家にあるかも」に重ねて出さない: ' + r2.both);
     ok(r2.famMax >= 10, 'F7 家族・人数は10人まで登録できる');
+    const r3 = await p.evaluate(() => {
+        S.family = [{id: 'a', name: '母', avoid: [], allergy: [], mild: false}, {id: 'b', name: '子', avoid: [], allergy: [], mild: false}]; S.eaters = null; S.condOpen = true; setTab('today'); render();
+        const meChip = !!document.querySelector('[data-act="eater"][data-v="__me"][aria-pressed="true"]');
+        S.eaters = ['__me', 'a']; const sv2 = svToday();
+        S.family[1].me = true; render(); const noChip = !document.querySelector('[data-act="eater"][data-v="__me"]'); S.eaters = ['a', 'b']; const sv3 = svToday();
+        S.family = []; S.eaters = null; render();
+        return {meChip, sv2, noChip, sv3};
+    });
+    ok(r3.meChip && r3.sv2 === 2 && r3.noChip && r3.sv3 === 2, 'F8 「わたし」ははじめから選ばれ、人数に数える。家族に「これはわたし」を付けたら出さない: ' + JSON.stringify(r3));
     await ctx.close();
 }
 
