@@ -2136,6 +2136,7 @@ function normalizeState(d){
       if (typeof k.grill === 'boolean') o.grill = k.grill;
       if (typeof k.oven === 'boolean') o.oven = k.oven;
       if (['new', 'some', 'ok'].includes(k.skill)) o.skill = k.skill;
+      if (Number.isInteger(k.riceMin) && k.riceMin >= 10 && k.riceMin <= 180) o.riceMin = k.riceMin;   // 炊飯器の炊く時間（分）。既定の値はない
       if (Object.keys(o).length) st.settings.kitchen = o; else delete st.settings.kitchen; }
     st.settings.seasNo = [...new Set(arr(st.settings.seasNo).filter(x => typeof x === 'string' && x.startsWith('p|')))].slice(0, 80); if (!st.settings.seasNo.length) delete st.settings.seasNo;
     st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => st.family.some(m => m.id === x)) : null;
@@ -5996,6 +5997,8 @@ function kitchenSettingsHtml(){
         <div class="field"><label>${esc(t('魚焼きグリル'))}</label>${seg('grill', {label: t('魚焼きグリル'), opts: yn}, b(k.grill))}</div>
         <div class="field"><label>${esc(t('オーブン'))}</label>${seg('oven', {label: t('オーブン'), opts: yn}, b(k.oven))}</div>
         <div class="field"><label>${esc(t('料理の慣れ'))}</label>${seg('skill', {label: t('料理の慣れ'), opts: [['new', t('はじめて')], ['some', t('少し')], ['ok', t('ふつう')]]}, k.skill || '')}</div>
+        <div class="field"><label for="kitchen-rice">${esc(t('炊飯器の炊く時間（分）'))}</label><input type="number" id="kitchen-rice" inputmode="numeric" min="10" max="180" step="1" value="${k.riceMin ? esc(k.riceMin) : ''}" placeholder="${esc(t('例: 50'))}">
+            <span class="small muted">${esc(t('入れたときだけ、作る段で炊飯器のスイッチを入れる時刻の目安を出します。空のままなら出しません。'))}</span></div>
         <span class="small muted">${esc(t('いまは設定を残しておくだけで、献立の選び方はまだ変わりません。'))}</span>
     </div>`;
 }
@@ -10130,6 +10133,11 @@ document.addEventListener('change', e => {
         reconcileMenu(); render(); return;   // 選んだ枠だけ選び直す
     }
     if (el.dataset && el.dataset.act === 'fam-name'){ const m = famOf(el); if (m){ m.name = el.value.trim().slice(0, 12); session.famOpen = m.id; save(); render(); } return; }
+    if (el.id === 'kitchen-rice'){   // 炊飯器の炊く時間（分）。空なら持たない（既定の値は置かない）
+        const v = Math.round(Number(el.value)), kc = Object.assign({}, S.settings.kitchen);
+        if (el.value.trim() === '') delete kc.riceMin; else if (v >= 10 && v <= 180) kc.riceMin = v; else { el.value = kc.riceMin || ''; toast(t('10〜180分で入れてください')); return; }
+        if (Object.keys(kc).length) S.settings.kitchen = kc; else delete S.settings.kitchen; save(); return;
+    }
     if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
 });
 document.addEventListener('submit', e => {
