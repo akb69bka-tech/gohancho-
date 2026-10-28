@@ -2119,7 +2119,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/kr_dakbokkeumtang.webp",
-      "v": "9ed15ee8"
+      "v": "ad49585b"
     },
     "kr_godeungeo": {
       "file": "kr_godeungeo.svg",
@@ -2140,10 +2140,10 @@
     "kr_kimchibokkeumbap": {
       "file": "kr_kimchibokkeumbap.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_kimchibokkeumbap.webp",
-      "v": "e14476b6"
+      "v": "f6e50614"
     },
     "kr_ojingeobokkeum": {
       "file": "kr_ojingeobokkeum.svg",
@@ -10127,7 +10127,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/kr_galbijjim.webp",
-      "v": "8c9f5183"
+      "v": "e81be691"
     },
     "kr_chadolsukju": {
       "file": "kr_chadolsukju.svg",
@@ -10159,7 +10159,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/kr_tteokgalbi.webp",
-      "v": "89c8e05c"
+      "v": "b7b31531"
     },
     "kr_galchijorim": {
       "file": "kr_galchijorim.svg",
@@ -10204,58 +10204,58 @@
     "kr_omurice": {
       "file": "kr_omurice.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_omurice.webp",
-      "v": "3b8ca8ba"
+      "v": "76e2c759"
     },
     "kr_bibimbap": {
       "file": "kr_bibimbap.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_bibimbap.webp",
-      "v": "e1d389ec"
+      "v": "a56f1ce6"
     },
     "kr_kongnamulbap": {
       "file": "kr_kongnamulbap.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_kongnamulbap.webp",
-      "v": "d0d5278c"
+      "v": "8f8a9702"
     },
     "kr_japchae": {
       "file": "kr_japchae.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_japchae.webp",
-      "v": "d0a7c59a"
+      "v": "8a6ff335"
     },
     "kr_janchiguksu": {
       "file": "kr_janchiguksu.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_janchiguksu.webp",
-      "v": "1cb1d9a6"
+      "v": "d6521619"
     },
     "kr_bibimguksu": {
       "file": "kr_bibimguksu.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_bibimguksu.webp",
-      "v": "d23fa589"
+      "v": "b537f626"
     },
     "kr_kimbap": {
       "file": "kr_kimbap.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-23",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_kimbap.webp",
-      "v": "fc9c5d46"
+      "v": "8b03a8a5"
     },
     "kr_kimchijjim": {
       "file": "kr_kimchijjim.svg",
@@ -10319,7 +10319,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/kr_jangjorim.webp",
-      "v": "08e3840b"
+      "v": "3723f0d2"
     },
     "kr_kongjaban": {
       "file": "kr_kongjaban.svg",
@@ -10359,7 +10359,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-28",
       "thumb": "t/kr_hobakjeon.webp",
-      "v": "6b6f37d3"
+      "v": "a30d1dab"
     },
     "kr_kimchijeon": {
       "file": "kr_kimchijeon.svg",
@@ -14028,18 +14028,18 @@
     "kr_dakjuk": {
       "file": "kr_dakjuk.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-27",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_dakjuk.webp",
-      "v": "74b59069"
+      "v": "3208ffb0"
     },
     "kr_soegogiyachaejuk": {
       "file": "kr_soegogiyachaejuk.svg",
       "via": "svg",
-      "model": "hand-drawn",
-      "date": "2026-10-27",
+      "model": "hand-drawn-3q",
+      "date": "2026-10-28",
       "thumb": "t/kr_soegogiyachaejuk.webp",
-      "v": "4b3f8e18"
+      "v": "8c9c9110"
     },
     "kr_tteokbokki": {
       "file": "kr_tteokbokki.svg",
