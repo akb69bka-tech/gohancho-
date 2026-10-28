@@ -1,4 +1,4 @@
-// 花森ゆず 案（第1回競作で採用された2品: ソパ・デ・ハバス、蓮根とスペアリブのスープ）。器の縁は統一画風の藍にそろえた（白石）
+// 花森ゆず 案（採用: ソパ・デ・ハバス、蓮根とスペアリブのスープ＝第1回、ブルギニョン＝第1回b）。器の縁は藍（統合は白石）
 import * as K from '../kit.mjs';
 
 const { T, f, smooth, ring, rng, lt, dk, mix } = K;
@@ -25,6 +25,22 @@ function oil(p, x, y, s, { n = 10, c = '#f3c45a', seed = 1, op = .75, rmax = 2.6
 const veil = (cx, cy, R, c, op) => `<circle cx="${cx}" cy="${cy}" r="${R}" fill="${c}" opacity="${op}"/>`;
 
 export default {
+    // ブフ・ブルギニョン（1b）: 材料どおり牛肉・にんじん・玉ねぎ・ベーコン・マッシュルームと赤ワインだけ（香草は描かない）。牛肉は大きく5つ、ソースより明るい赤茶で分ける。藍のほうろう鍋
+    fr_bourguignon: p => {
+        const R = 86, c = '#2c4c7c';
+        const hd = s => `<rect x="${s < 0 ? 100 - R - 11 : 100 + R - 9}" y="86" width="20" height="28" rx="9" fill="${p.g(c, .25, .3)}" stroke="${dk(c, .3)}" stroke-width=".8"/>`;
+        const out = [`<g ${p.sh(1.8)}>${hd(-1)}${hd(1)}<circle cx="100" cy="100" r="${R}" fill="${p.rg(c, .25, .3, .35, .3)}"/></g><circle cx="100" cy="100" r="${R - 2.5}" fill="none" stroke="${lt(c, .35)}" stroke-width="1.4" opacity=".7"/><circle cx="100" cy="100" r="${f(R * .88)}" fill="${p.rg('#f1e8d8', .1, .3, .62, .64)}"/>`,
+            K.liquid(p, { R: 75, c: '#4a1420', op: 1, shine: false }), `<circle cx="94" cy="92" r="50" fill="#6e2232" opacity=".35"/>`];
+        const beef = [[80, 78, 20], [126, 76, -30], [70, 122, 60], [118, 124, 10], [100, 100, 40]];
+        out.push(...beef.map(([x, y, r], i) => K.yzBraisedBeef(p, x, y, 40, r, { seed: i, c: '#b06a42' })));
+        [[100, 56], [150, 100], [58, 98], [96, 150], [140, 140]].forEach(([x, y]) => out.push(K.carrotRound(p, x, y, 20, { c: '#f58a2a' })));
+        [[148, 70, -30], [60, 150, 20], [140, 120, 60]].forEach(([x, y, r]) => out.push(K.yzMushroomHalf(p, x, y, 22, r)));
+        [[56, 70, 30], [126, 154, -20], [100, 78, 80], [80, 146, 0]].forEach(([x, y, r]) => out.push(K.yzLardon(p, x, y, 16, r)));
+        [[124, 100, 30], [80, 100, -40]].forEach(([x, y, r]) => out.push(K.onion(p, x, y, 20, r, { c: '#f4dcae', layers: 2 })));
+        out.push(shine(100, 100, 74, .35, 2.2));
+        return out.join('');
+    },
+
     // そら豆のスープ（ソパ・デ・ハバス）: クリーム色の豆のスープに、割れたそら豆・トマト・玉ねぎ・ノパル・パクチー、揚げた乾燥唐辛子
     mx_sopa_habas: p => {
         const n = 16, r0 = 85;

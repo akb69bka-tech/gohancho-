@@ -5,19 +5,23 @@
 
 ## 1. 第1回の取りまとめ（ブランチ claude/w10）
 
-採用された10品を、本体にそのまま入れられる形で1つのブランチにまとめた。
+採用された絵を、本体にそのまま入れられる形で1つのブランチにまとめた。再審査（第1回b）の結果で入れ替えた後の割り当て（採用: 白石7・花森3・江口2。12品すべて描き直し）:
 
 | 料理 | 採用案 | 盛りつけのファイル |
 | --- | --- | --- |
-| subuta, kr_yangpajangajji, us_beefbroccoli, in_fishcurry, fr_bourguignon | 白石 | 元のファイル（d_main_chuka / x_kr / w_us / w_in / x_fr）の中で書きかえ |
-| sanratan, eg_ful, tr_balik | 江口 | `dishes/zz_hinata_r1.mjs`（採用3品と、その3品が使う部品だけを残した） |
-| mx_sopa_habas, cn_lianou_paigu | 花森 | `dishes/yuzu_r1.mjs`（採用2品だけを残した）と kit.mjs の `yz*` 部品 |
-| th_yamplakrapong, it_spinaci | 現行 | 現行の盛りつけのまま（変更なし） |
+| subuta, sanratan, th_yamplakrapong, eg_ful, tr_balik | 白石（第1回b） | `dishes/nagi_r1b.mjs` |
+| us_beefbroccoli, in_fishcurry | 白石（第1回） | 元のファイル（w_us / w_in）の中で書きかえ |
+| fr_bourguignon | 花森（第1回b） | `dishes/yuzu_r1.mjs` と kit.mjs の `yz*` 部品 |
+| mx_sopa_habas, cn_lianou_paigu | 花森（第1回） | `dishes/yuzu_r1.mjs` |
+| kr_yangpajangajji | 江口（第1回b） | `dishes/zz_hinata_r1.mjs` |
+| it_spinaci | 江口（第1回） | `dishes/zz_hinata_r1.mjs` |
+
+（第1回の時点の採用は 白石5・江口3・花森2・現行2。）
 
 - ID の重複: 採用されなかった版は消し、1つの ID につき盛りつけが1つになるようにした（build.mjs は重複があると止まる）。
-- 器の縁: 10品とも藍（#2c4c7c）にそろえた。赤（酸辣湯・ビーフブロッコリー）、青緑（バルク）、薄い青（フール）、青磁（玉ねぎ漬け）、赤いホーロー（ブルギニヨン）を藍に変えた。土鍋・素焼き（カレー・ソパ・排骨湯）は器の色を残し、縁に藍の線を1本入れた。
+- 器の縁: 12品とも藍（#2c4c7c）にそろえた。赤（酸辣湯・ビーフブロッコリー）、青緑（バルク）、薄い青（フール）、青磁（玉ねぎ漬け）、赤いホーロー（ブルギニヨン）を藍に変えた。土鍋・素焼き（カレー・ソパ・排骨湯）は器の色を残し、縁に藍の線を1本入れた。
 - 材料: 審査の指摘を受けて、材料にない具を外した。ビーフブロッコリーのごま、ブルギニヨンの小玉ねぎ（材料は薄切りの玉ねぎ）とパセリ。
-- 台帳: `build.mjs` と `thumbs.mjs` で SVG・一覧用の小さい絵（t/*.webp）・manifest.json を更新した。変わったのはこの10品だけ（全1,791品を作り直して確認）。
+- 台帳: `build.mjs` と `thumbs.mjs` で SVG・一覧用の小さい絵（t/*.webp）・manifest.json を更新した。変わったのは対象の品だけ（全品を作り直して確認）。
 - kit.mjs に足した部品:
   - `Pic.edge()`: 主役の具の外形に細い暗色の縁をつけ、192px でも形が潰れないようにする。
   - 花森案の `yz*` 部品: 葉・豆・角切りなど。第2回でも使える。
@@ -55,7 +59,7 @@
 
 ### 縁が基準から外れている現行の絵（第2回とは別に直す）
 
-第1回の現行採用2品（th_yamplakrapong は緑、it_spinaci は青緑）と、見本候補のうち hayashi・th_kaprao・in_hakkanoodles・st_ricebeans が藍以外の縁になっている。これは見た範囲の話で、全体の数は数えていない。縁の色だけを機械的に洗い出す作業は、リーダー（白石）が別に行う。
+見本候補のうち hayashi・th_kaprao・in_hakkanoodles・st_ricebeans が藍以外の縁になっている。これは見た範囲の話で、全体の数は数えていない。縁の色だけを機械的に洗い出す作業は、リーダー（白石）が別に行う。
 
 ## 3. 第2回の進め方（優先50品）
 

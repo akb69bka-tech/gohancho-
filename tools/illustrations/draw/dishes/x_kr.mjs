@@ -1437,15 +1437,6 @@ const DISHES = {
         xkrSesame(p, 100, 100, 52, 48, 30),
     ].join(''),
 
-    // 양파장아찌（凪案）: 白い小鉢に藍の縁、醤油の漬け汁を深い色に、玉ねぎの角切りを大きく明るく、青唐辛子の輪切りを鮮やかな緑で
-    kr_yangpajangajji: p => [
-        K.kobachi(p, { glaze: '#f3efe6', inside: '#f6f2ea' }), `<circle cx="100" cy="100" r="87" fill="none" stroke="#2c4c7c" stroke-width="2.4"/>`,
-        K.liquid(p, { R: 68, c: '#5a2c10', op: .96, shine: false }),
-        `<g ${p.sh(.5)}>`, ...xkrSpots('ypj', 11, 50, 24).map(([x, y, r], i) => xkrOnionPickle(p, x, y, 36, r, { seed: i, c: i % 3 ? '#e2bb74' : '#f0d398' })), `</g>`,
-        ...[[84, 84, 20], [120, 112, -30], [106, 70, 50], [72, 118, 0], [130, 82, 70], [100, 130, -50], [58, 92, 10]].map(([x, y, r], i) => `<g ${p.edge('#14400c', .6, .6)}>${xkrChili(p, x, y, 13, r, { c: '#3aa22a' })}</g>`),
-        `<path d="M50,84 A52,52 0 0 1 84,50" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".5"/>`,
-    ].join(''),
-
     // 미역줄기볶음: 白磁の小鉢に、ごま油で炒めたつやのある濃い緑のわかめの茎、にんじん、玉ねぎ、ごま
     kr_miyeokjulgi: p => [
         xkrDish(p, { glaze: '#d8e0d0' }),

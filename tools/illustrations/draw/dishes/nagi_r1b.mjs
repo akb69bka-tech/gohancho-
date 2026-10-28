@@ -1,28 +1,11 @@
-#!/usr/bin/env node
 /*
- * 白石 凪の研修（Web 出張のあと）: 第1回の弱かった6品の描き直し
- *   node tools/illustrations/draw/study/nagi_r1b.mjs <出力フォルダ>
- * 本体の dishes/ には入れない（ID が重複するため build.mjs は読まない）。<id>.svg を出力フォルダに書き、
- * 主役の具と下地の「明るさの比（コントラスト比）」を表で出す。
- *
- * 使った原則（出典は scratchpad/meeting/shiraishi_study.md）
- *   1. 主役を1つ決め、形の数を減らす（細部より、まとまった形）
- *   2. 色相だけでなく明るさ（トーン）で分ける。同じ明るさの色は並べない
- *   3. 色だけに頼らず、形でも区別する（赤と緑の具は形も変える）
- *   4. 細すぎる線・小さな粒は小さい表示で消えるので使わない
- *   5. 具の縁をはっきりさせる（ぼかしで溶かさない）
- *   6. 余白（下地が見える隙間）でまとまりを作る
+ * 白石 凪 案（再審査で採用: 酢豚・酸辣湯・タイのヤム・フール・バルク＝第1回b）
+ * 原則: 主役を大きく少なく／明るさ（トーン）で分ける／形でも分ける／細かい粒を減らす／縁をはっきり／縁は藍／材料にない具は描かない
  */
-import fs from 'node:fs';
-import path from 'node:path';
 import * as K from '../kit.mjs';
 
 const { T, f, rng, ring, smooth, lt, dk, mix } = K;
 const INDIGO = '#2c4c7c';
-
-// ---------- 明るさの比（WCAG の相対輝度の式） ----------
-const lum = c => { const v = c.replace('#', '').match(/../g).map(h => parseInt(h, 16) / 255).map(u => u <= .03928 ? u / 12.92 : ((u + .055) / 1.055) ** 2.4); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
-const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + .05) / (y + .05); };
 
 // 重ならない位置（中心からの距離 R 以内、互いに minD 以上離す）
 function spots(seed, n, R, minD, { cx = 100, cy = 100, sy = 1, avoid = [], avoidD = 0 } = {}){
@@ -122,23 +105,9 @@ function mintLeaf(p, x, y, s, r){
 function chiliRing(p, x, y, s, c = '#e02a14'){
     return `<g ${T(x, y)}><circle r="${f(s / 2)}" fill="#fff4dc" stroke="${c}" stroke-width="${f(s * .2)}"/>${[0, 2.1, 4.2].map(a => `<circle cx="${f(Math.cos(a) * s * .12)}" cy="${f(Math.sin(a) * s * .12)}" r="${f(s * .07)}" fill="#f0d070"/>`).join('')}</g>`;
 }
-// ほうれん草の葉（さじ形の葉身＋明るい茎。3段の緑で重なりを見せる）
-function spinachLeaf(p, x, y, s, r, tone){
-    const c = ['#2f7a22', '#3f9230', '#56aa3c'][tone], k = s / 30;
-    return `<g ${T(x, y, r, k)}><g ${p.sh(.5)}><path d="M-15,0 C-13,-9 -2,-11 6,-8 C13,-6 16,-2 15,1 C13,7 3,10 -5,8 C-11,7 -15,4 -15,0Z" fill="${p.g(c, .3, .3)}" stroke="#123a0c" stroke-width="1"/></g>
-        <path d="M-15,0 C-5,-1 5,-1 14,0" stroke="${lt(c, .55)}" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-        <path d="M-6,-.5 L-3,-6 M2,-.8 L5,-6 M-4,0 L-1,5.6 M4,0 L7,5" stroke="${lt(c, .4)}" stroke-width=".9" fill="none" stroke-linecap="round"/>
-        <path d="M-15,0 L-20,1" stroke="#b6d884" stroke-width="3" stroke-linecap="round"/></g>`;
-}
-// にんにく1片（つぶしたもの。油で金色）
-function garlicClove(p, x, y, s, r){
-    const k = s / 20;
-    return `<g ${T(x, y, r, k)}><g ${p.sh(.5)}><path d="M-9,4 C-10,-3 -4,-9 2,-8 C8,-7 10,-1 8,4 C5,8 -6,8 -9,4Z" fill="${p.g('#f2d48a', .35, .25)}" stroke="#8a5a14" stroke-width="1"/></g>
-        <path d="M-4,-5 C-1,-1 1,2 6,4" stroke="#c8962a" stroke-width="1.1" fill="none"/><path d="M-6,-2 Q-3,-6 1,-6" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".85"/></g>`;
-}
 
 // ---------- 6品 ----------
-const DISH = {
+export default {
     // 酢豚: 豚5・ピーマン4・にんじん4・玉ねぎ3 に絞る。豚は明るい揚げ色（下地の赤より明るい）、余白を残して並べる
     subuta: p => {
         const pork = [[76, 78, 10], [124, 76, 70], [100, 112, -20], [64, 128, 40], [136, 124, 120]];
@@ -216,37 +185,4 @@ const DISH = {
         ...[[100, 80, -20], [84, 104, 50], [138, 104, 100], [70, 146, 20], [116, 136, -50], [52, 80, -80]].map(([x, y, r]) => mintLeaf(p, x, y, 20, r)),
         ...[[112, 72], [64, 106], [128, 140], [90, 130]].map(([x, y]) => chiliRing(p, x, y, 9)),
     ].join(''),
-
-    // ほうれん草のソテー: 1つの暗い塊ではなく、3段の緑の葉を重ねて葉の形を見せる。茎は明るい黄緑、オリーブ油のつや、にんにく1片、唐辛子は少し
-    it_spinaci: p => {
-        const L = [];
-        const pos = spots('sp', 15, 46, 17);
-        pos.forEach(([x, y, r], i) => L.push(spinachLeaf(p, x, y, 38, r, (i * 7) % 3)));
-        return [
-            whiteBowl(p),
-            `<path ${T(100, 100)} d="${smooth(ring(64, 12, .14, rng('nbspb')))}" fill="${p.rg('#3a6a20', .2, .3)}" opacity=".9"/>`,
-            `<path ${T(100, 100)} d="${smooth(ring(66, 12, .1, rng('nbspo')))}" fill="#c8b440" opacity=".18"/>`,
-            L.join(''),
-            garlicClove(p, 108, 102, 24, 30),
-            K.sprinkle(p, 100, 100, 90, { c: '#d02a14', n: 7, r: 1.2 }),
-        ].join('');
-    },
 };
-
-// 主役の具と、その下地の明るさの比（大きいほど小さい表示でも分かれる）
-const PAIRS = {
-    subuta: [['豚（揚げ色）', '#c77a34', '甘酢', '#9e2814'], ['ピーマン', '#3cb02e', '甘酢', '#9e2814'], ['にんじん', '#ff8a20', '甘酢', '#9e2814']],
-    sanratan: [['卵', '#ffe684', '汁', '#8e4a20'], ['豆腐', '#fbf6ea', '汁', '#8e4a20'], ['しいたけ', '#4a2a14', '汁', '#8e4a20']],
-    eg_ful: [['豆', '#6e4222', 'ペースト', '#a07040'], ['オイル', '#f4c430', 'ペースト', '#a07040'], ['トマト', '#e83a22', 'オイル', '#f4c430']],
-    tr_balik: [['魚', '#fffaf0', '汁', '#deb444'], ['にんじん', '#f27a1c', '汁', '#deb444'], ['レモン果肉', '#fbe878', '皮', '#e2b010']],
-    th_yamplakrapong: [['いわしの背', '#c4ccd2', 'ソース', '#c0361a'], ['ミント', '#4cae3a', 'ソース', '#c0361a'], ['エシャロット', '#f6e8f0', 'ソース', '#c0361a']],
-    it_spinaci: [['明るい葉', '#56aa3c', '暗い葉', '#2f7a22'], ['茎', '#b6d884', '葉', '#3f9230'], ['にんにく', '#f2d48a', '葉', '#3f9230']],
-};
-
-const out = process.argv[2] || '.';
-fs.mkdirSync(out, { recursive: true });
-for (const [id, fn] of Object.entries(DISH)){
-    const p = new K.Pic(id);
-    fs.writeFileSync(path.join(out, `${id}.svg`), p.svg(fn(p)));
-    console.log(id, PAIRS[id].map(([a, ca, b, cb]) => `${a}/${b} ${ratio(ca, cb).toFixed(2)}`).join('  '));
-}

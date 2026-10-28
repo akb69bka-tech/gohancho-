@@ -1005,3 +1005,34 @@ export function yzBambooStrip(p, x, y, L, w, r = 0){
 export function yzShiitakeStrip(p, x, y, L, w, r = 0){
     return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .42)}" fill="${p.g('#5a3220', .3, .3)}" stroke="#2c170c" stroke-width=".6"/></g><rect x="${f(-L / 2 + 1.5)}" y="${f(-w / 2 + 1)}" width="${L - 3}" height="${f(w * .32)}" rx="${f(w * .16)}" fill="#8a5a3a" opacity=".8"/><path d="M${f(-L / 2 + 2)},${f(w * .22)} L${f(L / 2 - 2)},${f(w * .22)}" stroke="#e6d4b0" stroke-width=".9" opacity=".85"/></g>`;
 }
+
+// ---- 第1回の反省から（明度で分ける・細部を減らす・形の特徴を誇張する） ----
+// 揚げ豚（甘酢がらめ）: 衣のノイズはやめ、明るい黄金色の面＋あんの赤い縁＋小さく鋭い照り。ソースより明るく見えるように
+export function yzPorkNugget(p, x, y, s, r = 0, { seed = 1, c = '#d8963e', sauce = '#c8321a' } = {}){
+    const R = rng(p.id + 'yzpn' + seed + x + y);
+    const pts = ring(1, 9, .22, R, s / 2, s * .44), d = smooth(pts, true, .7);
+    const inner = smooth(pts.map(([a, b]) => [a * .84 - s * .03, b * .8 - s * .04]), true, .7);
+    return `<g ${T(x, y, r)}><g ${p.sh(1)}><path d="${d}" fill="${sauce}" stroke="${dk(sauce, .45)}" stroke-width="1"/></g>
+        <path d="${inner}" fill="${p.g(c, .35, .2)}"/>
+        ${Array.from({ length: 5 }, () => `<path ${T((R() - .5) * s * .5, (R() - .5) * s * .4)} d="${smooth(ring(1.6 + R() * 2.4, 6, .5, R))}" fill="${dk(c, .28)}" opacity=".45"/>`).join('')}
+        <path d="${smooth(pts.map(([a, b]) => [a * .84 - s * .03, b * .8 - s * .04]), true, .7)}" fill="${sauce}" opacity=".18"/>
+        <ellipse cx="${f(-s * .18)}" cy="${f(-s * .2)}" rx="${f(s * .1)}" ry="${f(s * .045)}" transform="rotate(-25 ${f(-s * .18)} ${f(-s * .2)})" fill="#fff" opacity=".95"/></g>`;
+}
+// ほうれん草（三角の葉先・波打つ縁・細い葉脈。くたっと折れた葉は fold で幅を詰める）
+export function yzSpinach2(p, x, y, s, r = 0, { c = '#2f8a2c', seed = 1, fold = 1 } = {}){
+    const R = rng(p.id + 'yzs2' + seed + x + y), k = s / 24, w = fold;
+    const e = () => (R() - .5) * 1.4;
+    const d = `M0,-12 C${f(3 * w + e())},-9 ${f(9 * w)},${f(-4 + e())} ${f(8 * w + e())},1 C${f(9 * w)},4 ${f(5 * w + e())},7 ${f(3 * w)},8 C2,10 1,11 .7,12 L-.7,12 C-1,11 -2,10 ${f(-3 * w)},8 C${f(-5 * w + e())},7 ${f(-9 * w)},4 ${f(-8 * w + e())},1 C${f(-9 * w)},${f(-4 + e())} ${f(-3 * w + e())},-9 0,-12Z`;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.6)}><path d="${d}" fill="${p.g(c, .28, .32)}" stroke="${dk(c, .4)}" stroke-width=".6"/></g>
+        <path d="M0,-10 L0,12 M0,-4 L${f(-4 * w)},-7 M0,-4 L${f(4 * w)},-7 M0,2 L${f(-5 * w)},-1 M0,2 L${f(5 * w)},-1" stroke="${lt(c, .35)}" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".7"/>
+        <path d="M${f(-5 * w)},-4 Q${f(-3 * w)},-8 -.5,-9" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".55"/>
+        <path d="M-.8,11.6 L-1,19 L1,19 L.8,11.6Z" fill="#c9e09a" stroke="#7aa24e" stroke-width=".4"/></g>`;
+}
+// マッシュルームの縦半割り（かさの弧と軸がつながった、きのこと一目で分かる断面）
+export function yzMushroomHalf(p, x, y, s, r = 0){
+    const h = s / 2;
+    const d = `M${-h},${f(s * .05)} C${-h},${f(-s * .5)} ${h},${f(-s * .5)} ${h},${f(s * .05)} L${f(s * .2)},${f(s * .08)} L${f(s * .22)},${f(s * .48)} Q0,${f(s * .54)} ${f(-s * .22)},${f(s * .48)} L${f(-s * .2)},${f(s * .08)}Z`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.7)}><path d="${d}" fill="#f6ecd8" stroke="#8a6638" stroke-width="1"/></g>
+        <path d="M${-h + 1},${f(s * .05)} C${-h + 1},${f(-s * .46)} ${h - 1},${f(-s * .46)} ${h - 1},${f(s * .05)}" fill="none" stroke="#b08458" stroke-width="${f(s * .1)}"/>
+        <path d="M${f(-s * .34)},${f(s * .06)} L${f(s * .34)},${f(s * .06)}" stroke="#a88a64" stroke-width="1.1"/></g>`;
+}
