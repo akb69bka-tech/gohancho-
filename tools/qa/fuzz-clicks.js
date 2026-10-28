@@ -357,14 +357,17 @@ async function exec(b, run, onStep) {
     }
     else {
       const dd = diff(prev, s1, r.pressed, r.o); d.push(...dd);
-      if (r.soupAdd !== undefined && s1.ids[r.soupAdd] && s1.ids[r.soupAdd].endsWith(':-')) d.push('汁ものを足すを押したのに空のまま');
+      if (r.soupAdd !== undefined && s1.ids[r.soupAdd] && s1.ids[r.soupAdd].endsWith(':-')) {
+        const alt = await q.evaluate(() => poolFor('汁物').filter(x => slotOf(x) === '汁物' && !isAvoided(x) && !menuIds().includes(x.id)).length);   // 候補が1つもなければ、空のままで正しい（画面には「合う料理がありません」と出る）
+        if (alt > 0) d.push('汁ものを足すを押したのに空のまま（候補は' + alt + '品あった）');
+      }
     }
     if (s1.bad.length && (cfg.avoid.length || cfg.family || r.special === 'avoidchg')) {
       // 代わりになる料理が1つもない（苦手・アレルゲンを重ねて候補がなくなった）ときは、その料理が残って当然（画面には注意が出る）
       const real = await q.evaluate(ids => ids.filter(id => { const sl = (session.menu.items.find(x => x.r && x.r.id === id) || {}).slot; return sl && poolFor(sl).some(x => (sl === '主菜' ? x.main : slotOf(x) === sl) && !isAvoided(x) && !S.hidden.includes(x.id) && !menuIds().includes(x.id)); }), s1.bad);
       if (real.length) d.push('苦手/アレルギーの料理が出た ' + real.join());
     }
-    if (d.length && process.env.DBG) console.log('DBG state', JSON.stringify(await q.evaluate(() => ({ tab, menu: !!session.menu, n: session.menu && session.menu.n, view: document.querySelector('.tray') && document.querySelector('.tray').innerText.replace(/\s+/g, ' ') + ' | ' + session.menu.items.map(x => x.slot + ':' + (x.r ? x.r.id + '(' + x.r.type + ')' : '-')).join(), lang: LANG, set: JSON.stringify([S.settings.avoid, S.settings.allergens, S.settings.avoidSwap, S.settings.allergenFerm, S.hidden]), eaters: S.eaters, mw: mixWaiting(), boot: bootReady, td: TODAY }))), q.errs);
+    if (d.length && process.env.DBG) console.log('DBG state', JSON.stringify(await q.evaluate(() => ({ tab, menu: !!session.menu, n: session.menu && session.menu.n, view: document.querySelector('.tray') && document.querySelector('.tray').innerText.replace(/\s+/g, ' ') + ' | ' + session.menu.items.map(x => x.slot + ':' + (x.r ? x.r.id + '(' + x.r.type + ')' : '-')).join(), lang: LANG, set: JSON.stringify([S.settings.avoid, S.settings.allergens, S.settings.avoidSwap, S.settings.allergenFerm, S.hidden]), eaters: S.eaters, pool: poolFor('汁物').length + '/' + poolFor('汁物').filter(x => slotOf(x) === '汁物').length + '/' + poolFor('汁物').filter(x => slotOf(x) === '汁物' && !isAvoided(x)).length, mix: JSON.stringify(S.settings.mix), mood: session.mood, mw: mixWaiting(), boot: bootReady, td: TODAY }))), q.errs);
     if (d.length) fails.push({ step: k, act: A.a, kind: A.a + ':' + d[0].replace(/[0-9]+|[A-Za-z_]+\d*/g, '').slice(0, 24), msg: '#' + k + ' ' + tag + ' 前=' + prev.ids.join() + ' => ' + d.join(' | ') });
     if (onStep) onStep(k);
     prev = s1;
