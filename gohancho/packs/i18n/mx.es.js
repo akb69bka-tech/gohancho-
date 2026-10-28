@@ -987,6 +987,30 @@ GOHAN_PACK_TR('MX', 'es', {
         'Agrega el epazote, sazona y sirve con limón, en tacos o junto a la carne.'
       ],
       tip: { add: 'Queso fresco desmoronado', why: 'Cremoso y saladito', skill: 'No llenes de más la sartén', how: 'Si pones demasiados champiñones, se cuecen al vapor en vez de dorarse.' }
-    }
+    },
+    'mx_quesadillas': {
+      name: 'Quesadillas de queso',
+      ings: [['Tortillas de harina o de maíz', '4'], ['Queso Oaxaca o Chihuahua, rallado', '200 g'], ['Champiñones en rebanadas', '100 g?'], ['Cebolla picada fina', '1/4?']],
+      seas: '1 cda de aceite · una pizca de sal · salsa, para acompañar',
+      steps: [
+        'Si los usas, saltea la cebolla y los champiñones en el aceite 4 minutos, hasta que se evapore el agua, y sazona con sal.',
+        'Calienta un comal o sartén seca a fuego medio. Pon una tortilla y caliéntala 30 segundos.',
+        'Cubre la mitad de la tortilla con una cuarta parte del queso (y el relleno), dobla y presiona suavemente con la espátula.',
+        'Cocina 2 minutos por lado, hasta que la tortilla tenga manchas doradas y el queso se derrita. Repite con las demás y sirve con salsa.'
+      ],
+      tip: { add: 'Salsa verde y aguacate en rebanadas', why: 'El toque fresco y ácido contrasta con el queso derretido', skill: 'No las rellenes de más', how: 'Demasiado relleno se sale y se quema; una capa fina y pareja se derrite por completo.' }
+    },
+    'mx_frijoles_olla': {
+      name: 'Frijoles de la olla',
+      ings: [['Frijoles secos (pintos o negros)', '250 g'], ['Cebolla', '1/2'], ['Ramitas de epazote', '2?']],
+      seas: '1.5 litros de agua · 3 dientes de ajo · 1 cda de manteca o aceite (opcional) · 1 1/2 cdta de sal',
+      steps: [
+        'Limpia los frijoles de piedritas y enjuágalos. No hace falta remojarlos.',
+        'Pon los frijoles en una olla grande con el agua, la media cebolla, el ajo y el epazote, y lleva a ebullición. Retira la espuma.',
+        'Baja el fuego, tapa a medias y cuece 1 1/2 horas, agregando agua caliente si baja el nivel por debajo de los frijoles.',
+        'Cuando estén suaves, agrega la sal y la manteca o el aceite y cocina 15 minutos más. Sirve en tazones con un poco de caldo.'
+      ],
+      tip: { add: 'Cebolla picada, cilantro y un chorrito de limón por encima', why: 'Lo fresco realza el sabor terroso de los frijoles', skill: 'La sal al final', how: 'Si la sal entra tarde, las cáscaras se suavizan de manera pareja; al principio pueden quedar duras.' }
+    },
   }
 });

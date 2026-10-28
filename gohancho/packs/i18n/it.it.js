@@ -76,7 +76,9 @@ GOHAN_PACK_TR('IT', 'it', {
     'artichoke': 'Carciofi',
     'ham': 'Prosciutto',
     'cauliflower': 'Cavolfiore',
-    'asparagus': 'Asparagi'
+    'asparagus': 'Asparagi',
+    'garlic': 'Aglio',
+    'black pepper': 'Pepe nero',
   },
   recipes: {
     'it_pomodoro': {
@@ -1377,6 +1379,30 @@ GOHAN_PACK_TR('IT', 'it', {
         'Gratina per 5-8 minuti, finché il formaggio fonde e diventa dorato. Servili così, o con le uova all\'occhio di bue sopra, alla milanese.'
       ],
       tip: { add: 'Un uovo all\'occhio di bue sopra', why: 'Intingere gli asparagi nel tuorlo è l\'uso milanese', skill: 'Pelare i gambi', how: 'Pelare la parte bassa fa cuocere l\'asparago in modo uniforme e tenero.' }
-    }
+    },
+    'it_aglioolio': {
+      name: 'Spaghetti aglio, olio e peperoncino',
+      ings: [['Spaghetti', '200 g'], ['Aglio', '3 spicchi'], ['Prezzemolo', 'un piccolo ciuffo']],
+      seas: '4 cucchiai di olio extravergine di oliva · 1 peperoncino secco (o 1/2 cucchiaino di peperoncino in fiocchi) · sale per l’acqua della pasta',
+      steps: [
+        'Portate a ebollizione una pentola grande d’acqua e salatela bene (circa 10 g per litro). Cuocete gli spaghetti 1 minuto meno di quanto indicato sulla confezione.',
+        'Nel frattempo affettate sottilmente l’aglio, sbriciolate il peperoncino e tritate il prezzemolo. Scaldate l’olio con l’aglio e il peperoncino in una padella ampia a fuoco basso per 3-4 minuti, finché l’aglio è dorato chiaro e profumato; non deve scurirsi.',
+        'Tenete da parte una tazza di acqua di cottura. Trasferite gli spaghetti in padella con le pinze, aggiungete 4 cucchiai di acqua di cottura e saltate a fuoco medio per 1 minuto, finché il condimento diventa cremoso e avvolge la pasta.',
+        'Aggiungete il prezzemolo, mescolate e servite subito con un filo d’olio a crudo.'
+      ],
+      tip: { add: 'Un mestolino di acqua di cottura, e altro se serve', why: 'L’amido dell’acqua lega l’olio in una crema vellutata', skill: 'Partire con l’aglio nell’olio freddo', how: 'Il calore dolce insaporisce l’olio; l’aglio nell’olio già caldo brucia subito e diventa amaro.' }
+    },
+    'it_cacioepepe': {
+      name: 'Spaghetti cacio e pepe',
+      ings: [['Spaghetti o tonnarelli', '200 g'], ['Pecorino romano grattugiato finemente', '80 g'], ['Pepe nero in grani', '2 cucchiaini']],
+      seas: 'sale per l’acqua della pasta (meno del solito, il formaggio è sapido)',
+      steps: [
+        'Portate a ebollizione una pentola d’acqua e salatela poco (circa 5 g per litro). Cuocete la pasta al dente, 1 minuto meno di quanto indicato sulla confezione.',
+        'Mentre cuoce, tostate il pepe schiacciato grossolanamente in una padella ampia asciutta a fuoco medio per 1 minuto, finché profuma. Aggiungete un mestolo di acqua di cottura e spegnete il fuoco.',
+        'In una ciotola mescolate il pecorino con 4 cucchiai di acqua di cottura tiepida (non bollente) fino a ottenere una crema densa e liscia.',
+        'Aggiungete la pasta scolata alla padella del pepe con un altro po’ di acqua di cottura e saltate a fuoco basso per 30 secondi. Togliete dal fuoco, unite la crema di pecorino e mescolate rapidamente finché la salsa è lucida e avvolge la pasta. Servite subito con altro pepe.'
+      ],
+      tip: { add: 'Grattugiare il pecorino finissimo, quasi in polvere', why: 'Il formaggio fine si scioglie liscio; se è grosso fa grumi', skill: 'Mantecare il formaggio fuori dal fuoco', how: 'Con la temperatura bassa il pecorino non si fila in grumi nella padella.' }
+    },
   }
 });
