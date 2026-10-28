@@ -264,6 +264,43 @@ for (const cc of ['JP', 'US', 'DE']){
     ok(!r.bad.length, cc + ' 連動なし: ' + r.bad.slice(0, 4).join(' ; ')); console.log('5)', cc, '当たらない枠は不動:', r.same, '枠 / 選び直し:', r.changedOk, '枠');
     await ctx.close();
 }
+// 5b) 主菜と汁ものの両方に当たり、主菜の選び直し先が汁けの多い主菜（鍋・おでん・うどんなど）になったとき: 汁ものの替わりは出せないが、アレルゲンの汁ものは残さず枠を空ける
+//     （ランダムでは約0.4%でしか起きないので、主菜の選び直し先を決めて必ず通す。run-all で1回だけ「milk slot3 残った kabochapotage」になった件）
+{
+    const { ctx, p } = await open('JP', { dishCount: 4 });
+    const r = await p.evaluate(() => {
+        const out = { n: 0, bad: [], kept: [] };
+        const origMain = suggestMain;
+        for (const id of ALG_ALL){
+            S.settings.allergens = [id];
+            const mains = RECIPES.filter(r => r.main && !soupyMain(r) && allergyConflict(r));
+            const soups = RECIPES.filter(r => r.type === '汁物' && allergyConflict(r));
+            const soupy = RECIPES.filter(r => r.main && soupyMain(r) && !isAvoided(r));
+            const sides = RECIPES.filter(r => r.type === '副菜' && !isAvoided(r));
+            S.settings.allergens = [];
+            if (!mains.length || !soups.length || !soupy.length) continue;
+            for (const sp of soupy.slice(0, 3)){
+                session.menu = null; ensureMenu(); const m = session.menu; const si = m.items.findIndex(x => x.slot === '汁物');
+                m.items[0].r = mains[0]; m.items[si].r = id === 'milk' && soups.some(s => s.id === 'kabochapotage') ? byId('kabochapotage') : soups[0];
+                m.items.forEach((x, k) => { if (k && k !== si) x.r = sides[k]; });
+                const sideIds = m.items.map((x, k) => k && k !== si ? x.r.id : null);
+                suggestMain = () => sp;
+                try{ S.settings.allergens = [id]; save(); reconcileMenu(); } finally { suggestMain = origMain; }
+                out.n++;
+                const left = m.items.filter(x => x.r && allergyConflict(x.r)).map(x => x.r.id);
+                if (left.length) out.bad.push(id + ' 主菜=' + sp.id + ' 残った ' + left.join(','));
+                if (m.items[si].r) out.bad.push(id + ' 主菜=' + sp.id + ' 汁ものの枠に ' + m.items[si].r.id);
+                m.items.forEach((x, k) => { if (sideIds[k] && (!x.r || x.r.id !== sideIds[k])) out.kept.push(id + ' slot' + k); });
+                S.settings.allergens = []; save();
+            }
+        }
+        return out;
+    });
+    ok(r.n > 20 && !r.bad.length, '5b) 汁けの多い主菜に替わっても、アレルゲンの汁ものが残らない（' + r.n + '通り）: ' + r.bad.slice(0, 4).join(' ; '));
+    ok(!r.kept.length, '5b) 当たっていない副菜は動かない: ' + r.kept.slice(0, 4).join(' ; '));
+    console.log('5b) 汁けの多い主菜に替わるとき:', r.n, '通り');
+    await ctx.close();
+}
 
 // 保存献立・決定済み・お気に入り・世界のレシピ・詳細の表示・設定カード
 {

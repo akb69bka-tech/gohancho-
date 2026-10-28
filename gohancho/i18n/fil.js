@@ -1395,6 +1395,7 @@ GOHAN_I18N('fil', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Napagpasyahan mo na ang menu ngayon ({names}). Kapag inulit, bagong mungkahi ang lalabas sa Ngayon. Mananatili sa Lutuin ang napagpasyahang menu.",
     "決めた献立を作り直しますか？": "Ulitin ang menu na napagpasyahan mo?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Inayon sa settings mo ang menu ngayon na hindi pa napagpasyahan: {list}",
+    "{name}（外しました）": "{name} (inalis)",
     "「{name}」にかえました": "Pinalitan ng “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Tapos na ang lahat ng {n} putahe ngayon. Magaling!",
     "ほかの食材（例: セロリ）": "Iba pa (hal. kintsay)",

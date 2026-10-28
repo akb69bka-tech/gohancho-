@@ -1395,6 +1395,7 @@ GOHAN_I18N('pt-BR', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Você já decidiu o cardápio de hoje ({names}). Refazer mostra uma nova sugestão em Hoje. O cardápio decidido continua em Preparar.",
     "決めた献立を作り直しますか？": "Refazer o cardápio que você decidiu?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Cardápio de hoje ainda não decidido ajustado às suas configurações: {list}",
+    "{name}（外しました）": "{name} (removido)",
     "「{name}」にかえました": "Trocado por “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Os {n} pratos de hoje estão prontos. Bom trabalho!",
     "ほかの食材（例: セロリ）": "Outro ingrediente (ex.: aipo)",

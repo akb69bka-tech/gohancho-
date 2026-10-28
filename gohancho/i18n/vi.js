@@ -1395,6 +1395,7 @@ GOHAN_I18N('vi', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Bạn đã chọn thực đơn hôm nay ({names}). Làm lại sẽ hiện gợi ý mới ở Hôm nay. Thực đơn đã chọn vẫn ở mục Nấu.",
     "決めた献立を作り直しますか？": "Làm lại thực đơn bạn đã chọn?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Đã điều chỉnh thực đơn hôm nay chưa chọn theo cài đặt: {list}",
+    "{name}（外しました）": "{name} (đã bỏ)",
     "「{name}」にかえました": "Đã đổi sang “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Đã nấu xong cả {n} món hôm nay. Vất vả rồi!",
     "ほかの食材（例: セロリ）": "Nguyên liệu khác (VD: cần tây)",

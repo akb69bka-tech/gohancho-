@@ -1396,6 +1396,7 @@ GOHAN_I18N('en', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "You've already decided today's menu ({names}). Remaking it shows a new suggestion on Today. The decided menu stays in Cook.",
     "決めた献立を作り直しますか？": "Remake the menu you decided on?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Updated today's undecided menu to match your settings: {list}",
+    "{name}（外しました）": "{name} (removed)",
     "「{name}」にかえました": "Swapped for “{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "All {n} dishes for today are done. Great work!",
     "ほかの食材（例: セロリ）": "Something else (e.g. celery)",

@@ -1395,6 +1395,7 @@ GOHAN_I18N('pl', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Dzisiejsze menu jest już wybrane ({names}). Ułożenie od nowa pokaże nową propozycję w zakładce Dziś. Wybrane menu zostaje w Gotowaniu.",
     "決めた献立を作り直しますか？": "Ułożyć wybrane menu od nowa?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Niewybrane jeszcze dzisiejsze menu dopasowano do ustawień: {list}",
+    "{name}（外しました）": "{name} (usunięto)",
     "「{name}」にかえました": "Zamieniono na „{name}”",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Wszystkie dzisiejsze dania ({n}) gotowe. Dobra robota!",
     "ほかの食材（例: セロリ）": "Inny składnik (np. seler)",

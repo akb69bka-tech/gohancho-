@@ -1395,6 +1395,7 @@ GOHAN_I18N('tr', {
     "今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。": "Bugünün menüsüne zaten karar verdiniz ({names}). Yeniden yapmak Bugün'de yeni bir öneri gösterir. Karar verilen menü Pişir'de kalır.",
     "決めた献立を作り直しますか？": "Karar verdiğiniz menü yeniden yapılsın mı?",
     "設定に合わせて、まだ決めていない今日の献立をかえました: {list}": "Henüz karar verilmemiş bugünkü menü ayarlarınıza göre değiştirildi: {list}",
+    "{name}（外しました）": "{name} (çıkarıldı)",
     "「{name}」にかえました": "“{name}” ile değiştirildi",
     "今日の{n}品、ぜんぶできました。おつかれさまです。": "Bugünün {n} yemeğinin hepsi hazır. Eline sağlık!",
     "ほかの食材（例: セロリ）": "Başka bir şey (örn. kereviz)",
