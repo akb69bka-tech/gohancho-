@@ -708,17 +708,52 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
     nav.tabs.many button{white-space:normal;letter-spacing:0;font-size:min(calc(.75rem / var(--ts,1)), 2.9vw);text-wrap:balance;word-break:auto-phrase;padding-left:1px;padding-right:1px}
 }
 /* 作り方タブ */
-.cook-tabs{display:flex;flex-wrap:wrap;gap:6px}
-.cook-tab{flex:1 1 30%;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:8px 6px 7px;font:inherit;cursor:pointer;position:relative}
-.cook-tab .thumb{width:44px;height:44px;margin-bottom:2px}
-.cook-tab .ct-slot{font-size:.75rem;color:var(--muted);letter-spacing:.08em}
-.cook-tab .ct-name{font-size:.78rem;font-weight:700;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語で、タブが画面の幅を超えて、画面全体が横に広がらないように */
+/* 作り方タブ v2（森本）: 料理は横に並べて進み具合の線つき。いまの手順を主役に、道具は1か所、「次の手順」は親指の位置に固定 */
+.cook-v2{gap:16px}
+.cook-tabs{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding:2px 2px 4px;scrollbar-width:none}
+.cook-tabs::-webkit-scrollbar{display:none}
+.cook-tab{flex:0 0 auto;inline-size:min(46%,176px);min-height:64px;display:flex;align-items:center;gap:8px;text-align:start;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:8px 12px 8px 8px;font:inherit;cursor:pointer;position:relative;scroll-snap-align:start;transition:background .2s,border-color .2s,transform .1s}
+.cook-tab:active{transform:scale(.98)}
+.cook-tab .thumb{width:40px;height:40px;flex:0 0 auto}
+.cook-tab .ct-txt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 auto}
+.cook-tab .ct-slot{font-size:.75rem;color:var(--muted);line-height:1.3}
+.cook-tab .ct-name{font-size:.875rem;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:auto-phrase;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;max-width:100%}   /* ドイツ語の長い1語でも、タブの幅を超えない */
+.cook-tab .ct-bar{display:block;block-size:4px;border-radius:2px;background:var(--line);overflow:hidden;margin-top:4px}
+.cook-tab .ct-bar i{display:block;block-size:100%;background:var(--accent);border-radius:2px;transition:inline-size .3s}
 .cook-tab[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
-.cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:6px;font-size:.75rem;color:var(--accent);font-weight:700}
-.cook-card{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.cook-tab .ct-ok{position:absolute;top:4px;inset-inline-end:8px;font-size:.75rem;color:var(--accent);font-weight:700}
+.cook-kit{display:flex;flex-direction:column;gap:8px;background:var(--surface-2);border-radius:16px;padding:8px}
+.kit-row{display:flex;gap:8px}
+.kit-btn{flex:1 1 0;min-width:0;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;font:inherit;font-size:.75rem;font-weight:600;line-height:1.3;text-align:center;cursor:pointer;overflow-wrap:anywhere;transition:background .15s,border-color .15s,transform .1s}
+.kit-btn:active{transform:scale(.97)}
+.kit-btn .kit-ico{font-size:1.25rem;line-height:1}
+.kit-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.cook-kit .eat-plan{box-shadow:none;padding:4px 12px}
+.cook-kit .hf-hint{padding-inline:8px}
+.cook-card{display:flex;flex-direction:column;gap:16px;padding:16px}
 .cook-head{display:flex;gap:12px;align-items:center}
-.cook-head .thumb{width:64px;height:64px;flex:0 0 auto}
-.cook-head h3{margin:0 0 4px;font-size:1.1rem}
+.cook-head .thumb{width:72px;height:72px;flex:0 0 auto}
+.cook-head .ch-txt{min-width:0}
+.cook-head h3{margin:0 0 4px;font-size:1.25rem;font-family:var(--font-display)}
+.cook-prog{display:flex;align-items:center;gap:12px}
+.cook-prog .cp-bar{flex:1 1 auto;block-size:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.cook-prog .cp-bar i{display:block;block-size:100%;background:var(--accent);border-radius:4px;transition:inline-size .3s}
+.cook-prog .cp-t{font-size:.875rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cook-ings{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:0 12px}
+.cook-ings[open]{padding-bottom:12px}
+.cook-ings[open] > :not(summary){margin-top:8px}
+.ci-sum{display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;list-style:none}
+.ci-sum::-webkit-details-marker{display:none}
+.ci-sum::after{content:'▾';color:var(--muted)}
+.cook-ings[open] .ci-sum::after{content:'▴'}
+.ci-sum .ci-n{margin-inline-start:auto;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent);font-size:.875rem}
+.ci-list{box-shadow:none}
+.ci-list li{padding:0}
+.ci-row{display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:48px;cursor:pointer;flex:1 1 auto;min-width:0}
+.ci-row input{width:22px;height:22px;flex:0 0 auto;accent-color:var(--accent);margin:0}
+.ci-row .ci-nm{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.ci-row input:checked ~ .ci-nm,.ci-row input:checked ~ .q{text-decoration:line-through;opacity:.5}
+.ci-back{margin-inline:auto;display:flex}
 .points{background:var(--accent-soft);border-radius:var(--r);padding:8px 12px;display:flex;flex-direction:column;gap:2px}
 .pt-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .pt-l{margin:0;font-size:.88rem;line-height:1.55;overflow-wrap:anywhere}   /* コツや火の通しの注意は、途中で切らずに全文を出す */
@@ -734,19 +769,27 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .vs-time{color:var(--accent);font-size:.8rem}
 .vid-btns{display:flex;flex-direction:column;gap:8px;margin-top:6px}.vid-btns .btn.sm{align-self:center}
 .steps li.resume{background:var(--accent-soft);border-radius:8px}
-.cook-steps li{cursor:pointer;border-radius:8px;transition:opacity .15s}
-.cook-steps li.done{opacity:.45;text-decoration:line-through}
-.cook-steps li.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:10px;padding:.45rem .5rem .45rem .35rem}
+.cook-steps{gap:8px}
+.cook-steps li{cursor:pointer;border-radius:12px;padding:8px;line-height:1.6;transition:opacity .2s,background .2s,font-size .2s}
+.cook-steps li.done{opacity:.5;text-decoration:line-through;font-size:.875rem}
+.cook-steps li.now{font-size:1.25rem;line-height:1.6;grid-template-columns:36px 1fr;background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent);border-radius:16px;padding:16px 12px}
+.cook-steps li.now::before{width:36px;height:36px;font-size:1rem}
 .cook-steps li .now-tag{display:none}
-.cook-steps li.now .now-tag{display:block;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:2px}
-.cook-run{display:flex;flex-direction:column;gap:12px}   /* 「次の手順」は手順が見えているあいだだけ下に貼りつく */
-.cook-ctl{position:sticky;bottom:calc(var(--nav-h,84px) + 8px);z-index:4;display:flex;gap:8px}
-.cook-next{flex:2 1 0;min-width:0;min-height:56px;font-size:1.05rem;box-shadow:var(--shadow)}
-.cook-prev{flex:1 1 0;min-width:0;min-height:56px;box-shadow:var(--shadow)}
+.cook-steps li.now .now-tag{display:block;font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.02em;margin-bottom:4px}
+.cook-steps li:not(.now) .step-say{border-color:transparent;background:transparent}
+/* 「前の手順」「材料」「次の手順」: 料理の画面を開いているあいだ、下のタブのすぐ上（親指の位置）に固定 */
+.cook-ctl{position:fixed;z-index:15;left:0;right:0;bottom:calc(var(--nav-h,84px) + 8px);max-width:680px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));display:flex;gap:8px;pointer-events:none}
+.cook-ctl > .btn{pointer-events:auto;min-width:0;min-height:56px;box-shadow:var(--shadow);white-space:normal;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;line-height:1.25;padding-inline:8px;text-align:center}
+.cook-prev,.cook-ingbtn{flex:1 1 0;font-size:.75rem}
+.cook-next,.cook-done-next{flex:1.7 1 0;font-size:1rem;flex-direction:column;gap:0}
+.cook-next .cn-n{font-size:.75rem;font-weight:500;opacity:.85;font-variant-numeric:tabular-nums}
+.cook-next .cn-n:empty{display:none}
+body.on-cook .wrap{padding-bottom:calc(var(--nav-h,84px) + 112px)}
+body.kb .cook-ctl{display:none}
 .cook-steps li{scroll-margin-bottom:calc(var(--nav-h,84px) + 90px)}
+.cook-ings{scroll-margin-top:72px}
 body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-next[hidden]{display:none}
-.wake-toggle{min-height:44px;align-self:flex-start}
 .term-chip{background:none;border:0;border-bottom:2px dotted currentColor;border-radius:0;padding:.25em 0;margin:-.25em 0;font:inherit;color:inherit;cursor:pointer;line-height:inherit;-webkit-tap-highlight-color:transparent}
 .term-w{margin:0}.term-def{margin:0;line-height:1.7}
 .timer-chip{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 .6rem;font:inherit;font-weight:700;cursor:pointer;line-height:1.5;min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
@@ -767,11 +810,9 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 @media (prefers-reduced-motion:reduce){.timer.ring,.timer-sum.ring{animation:none}}
 .cook-steps li:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* 声で読む・ハンズフリー・大きく表示・できた！ */
-.cook-tools{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
-.cook-tools .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .hf-hint{margin:0;font-size:.82rem;color:var(--muted)}
 .step-say{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;min-width:44px;min-height:44px;font:inherit;line-height:1;cursor:pointer;margin-inline-start:6px;vertical-align:middle}
-.cook-card.big .cook-steps li{display:none;font-size:1.4rem;line-height:1.6}
+.cook-card.big .cook-steps li{display:none;font-size:1.5rem;line-height:1.6}
 .cook-card.big .cook-steps li.now,.cook-card.big .cook-steps li.nextp{display:grid}
 .cook-card.big .cook-steps li.now{background:var(--ink);color:var(--bg);box-shadow:none;padding:.7rem .7rem .7rem .5rem}
 .cook-card.big .cook-steps li.now .now-tag{color:var(--bg)}
@@ -783,7 +824,7 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .cook-card.big .cook-steps li.prevp .prev-tag{display:block;font-size:.75rem;font-weight:700;color:var(--muted)}
 .cook-steps li .next-tag{display:none}
 .cook-card.big .cook-steps li.nextp .next-tag{display:block;font-size:.75rem;font-weight:700;color:var(--muted)}
-.celebrate{position:relative;overflow:hidden;text-align:center;padding:1rem .8rem;border-radius:14px;background:var(--accent-soft);border:1px solid var(--accent);display:flex;flex-direction:column;gap:8px;align-items:center}
+.celebrate{position:relative;overflow:hidden;text-align:center;padding:24px 16px;border-radius:16px;background:var(--accent-soft);border:1px solid var(--accent);display:flex;flex-direction:column;gap:8px;align-items:center}
 .celebrate .cel-ico{font-size:2.6rem;line-height:1}
 .celebrate .cel-t{font-family:var(--font-display);font-weight:700;font-size:1.5rem}
 .celebrate p{margin:0}
@@ -793,7 +834,15 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 @keyframes celPop{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 @keyframes celFall{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(120px) rotate(40deg);opacity:0}}
 @media (prefers-reduced-motion:reduce){.celebrate.pop .cel-ico,.celebrate.pop .cf{animation:none}}
-.cook-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}.cook-nav .btn{min-width:0;white-space:normal;text-wrap:balance;overflow-wrap:anywhere}   /* 文字を大きくした狭い画面でも「次の料理 →」が画面の外にはみ出さない */
+.cel-flow{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;inline-size:100%;text-align:start}
+.cel-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start;background:var(--surface);border-radius:12px;padding:12px}
+.cel-step .cs-n{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:.875rem;margin-top:10px}
+.cel-step .cs-b{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.cel-step .react{flex:1 1 100%}
+.cel-photo{width:72px;height:72px;object-fit:cover;border-radius:12px;flex:0 0 auto}
+.cook-after{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:12px}
+.cook-foot{display:flex;flex-direction:column;gap:8px}
+.cook-nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.cook-nav .btn{min-width:0;white-space:normal;text-wrap:balance;overflow-wrap:anywhere}   /* 文字を大きくした狭い画面でも「次の料理 →」が画面の外にはみ出さない */
 /* わが家のアルバム */
 .cal{display:flex;flex-direction:column;gap:10px;padding:12px;margin-bottom:10px}
 .cal-week{margin:0;font-weight:700}
@@ -2373,6 +2422,10 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
     if (again) return again;
     const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
+    if (!rest.length){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
+        const wide = poolFor('主菜').filter(x => x.main && !isAvoided(x) && !S.hidden.includes(x.id) && !prev.has(x.id));
+        if (wide.length) return wide[Math.floor(Math.random() * wide.length)];
+    }
     const pool = rest.length ? rest : cands;
     return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
 }
@@ -6877,45 +6930,67 @@ function viewCook(){
         <div class="row"><button class="btn primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div></section>`;
     let i = Math.min(Math.max(0, session.cookIdx || 0), items.length - 1); session.cookIdx = i;
     const cur = items[i].r;
-    const done = ((S.cook.done || {})[cur.id]) || [];
+    const doneOf = x => ((S.cook.done || {})[x.r.id]) || [];
+    const done = doneOf(items[i]);
     const isToday = S.cook.d === TODAY;
     const sv = Number(S.settings.servings) || 2;
     const facts = [typeLabel(cur.type), genreLabel(cur), t('{n}分', {n:cur.min}), t('{n}人分', {n:sv})].filter(Boolean);
     const total = items.reduce((a, x) => a + (x.r.min || 0), 0);
-    const allDone = done.length >= cur.steps.length, fresh = allDone && session.celeb === cur.id; if (fresh) session.celeb = null;
-    return `<section class="sec">
+    const nSt = cur.steps.length, nDone = cur.steps.filter((st, k) => done.includes(k)).length;
+    const allDone = done.length >= nSt, fresh = allDone && session.celeb === cur.id; if (fresh) session.celeb = null;
+    const nowK = cur.steps.findIndex((st, k) => !done.includes(k));
+    let prevK = -1; cur.steps.forEach((st, k) => { if (done.includes(k) && (nowK < 0 || k < nowK)) prevK = k; });
+    // できた！のあとに進む先: この料理より後ろの、まだの料理（なければ前の、まだの料理）
+    const undone = k => k !== i && doneOf(items[k]).length < items[k].r.steps.length;
+    let nextDish = items.findIndex((x, k) => k > i && undone(k)); if (nextDish < 0) nextDish = items.findIndex((x, k) => undone(k));
+    const celHtml = allDone ? `<div class="celebrate${fresh ? ' pop' : ''}" role="status" id="cook-celebrate"><span class="cf" style="--i:0;inset-inline-start:12%" aria-hidden="true">✨</span><span class="cf" style="--i:1;inset-inline-start:30%" aria-hidden="true">🎊</span><span class="cf" style="--i:2;inset-inline-start:50%" aria-hidden="true">⭐</span><span class="cf" style="--i:3;inset-inline-start:70%" aria-hidden="true">🎊</span><span class="cf" style="--i:4;inset-inline-start:88%" aria-hidden="true">✨</span>
+                <div class="cel-ico" aria-hidden="true">🎉</div><div class="cel-t">${esc(t('できた！'))}</div><p>${esc(t('{name}、できあがり！', {name:cur.name}))} ${esc(t('今日もおつかれさまです。'))}</p>
+                <ol class="cel-flow">
+                    <li class="cel-step"><span class="cs-n" aria-hidden="true">1</span><div class="cs-b">${MINE[cur.id] ? `<img class="cel-photo" src="${esc(MINE[cur.id].src)}" alt="${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(MINE[cur.id].d)}))}" width="72" height="72">` : ''}<label class="btn ${MINE[cur.id] ? '' : 'primary'}" for="photo-input-cook">📷 ${esc(MINE[cur.id] ? t('写真を撮り直す') : t('写真を撮る'))}</label></div></li>
+                    ${histEntry(cur.id, S.cook.d) ? `<li class="cel-step"><span class="cs-n" aria-hidden="true">2</span><div class="cs-b">${reactRowHtml(cur.id, S.cook.d)}</div></li>
+                    <li class="cel-step"><span class="cs-n" aria-hidden="true">3</span><div class="cs-b"><span class="small">${esc(t('「{name}」は、記録タブの「作った記録」に入っています', {name:cur.name}))}</span><button type="button" class="btn sm" data-act="cook-log">${esc(t('記録を見る'))}</button></div></li>` : ''}
+                </ol></div>` : '';
+    const tool = (act, on, ico, label, extra = '') => `<button type="button" class="kit-btn" data-act="${act}" aria-pressed="${!!on}"${extra}><span class="kit-ico" aria-hidden="true">${ico}</span><span class="kit-l">${esc(label)}</span></button>`;
+    const stepNo = k => esc(t('手順 {n}/{m}', {n: Math.min(k + 1, nSt), m: nSt}));
+    return `<section class="sec cook-v2">
         <div class="sec-head"><h2>${esc(isToday ? t('今日の献立の作り方') : t('{date}に決めた献立の作り方', {date:jpDate(S.cook.d)}))}</h2>
             <span class="hint">${esc(t('{n}品', {n:items.length}))}${SLASH()}${esc(t('合計{n}分（同時に進めればもっと短く）', {n:total}))}</span></div>
         ${cookWarnHtml()}
         ${isToday && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm${h === 17 ? ' primary' : ''}" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${!isToday ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm primary" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div>` : ''}
-        ${isToday ? eatPlanHtml(items) : ''}
+        <div class="cook-tabs scroll" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => { const dn = doneOf(x).length, n = x.r.steps.length, ok = dn >= n;
+            return `<button class="cook-tab${ok ? ' ok' : ''}" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
+            ${thumbHtml(x.r)}<span class="ct-txt"><span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span><span class="ct-bar" aria-hidden="true"><i style="inline-size:${Math.round(Math.min(dn, n) / Math.max(1, n) * 100)}%"></i></span></span>${ok ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`; }).join('')}</div>
         <div class="timers" id="cook-timers" aria-live="polite">${timersHtml()}</div>
-        ${wakeOK() ? `<label class="check wake-toggle"><input type="checkbox" data-act="keep-awake" ${S.settings.keepAwake !== false ? 'checked' : ''}><span>${esc(t('画面を消さない'))}</span></label>` : ''}
-        <div class="cook-tools">${ttsOK() ? `<button type="button" class="chip" data-act="hf-toggle" aria-pressed="${hf.on}">🔊 ${esc(t('ハンズフリー'))}</button>` : ''}<label class="check"><input type="checkbox" data-act="big-cook" ${S.settings.bigCook ? 'checked' : ''}><span>${esc(t('大きく表示'))}</span></label></div>
-        ${hf.on ? `<p class="hf-hint" role="status">${esc(hfSR() ? t('「次」と言うか、「次の手順」をタップすると進みます') : t('「次の手順」をタップすると、次を読み上げます'))}</p>` : ''}
-        <div class="cook-tabs" role="tablist" aria-label="${esc(t('料理を選ぶ'))}">${items.map((x, k) => `<button class="cook-tab" role="tab" data-act="cook-tab" data-k="${k}" aria-selected="${k === i}">
-            ${thumbHtml(x.r)}<span class="ct-slot">${esc(slotLabel(x.slot || slotOf(x.r)))}</span><span class="ct-name">${esc(x.r.name)}</span>${(((S.cook.done || {})[x.r.id]) || []).length >= x.r.steps.length ? `<span class="ct-ok" aria-label="${esc(t('完了'))}">✓</span>` : ''}</button>`).join('')}</div>
+        <div class="cook-kit" role="group" aria-label="${esc(t('道具'))}">
+            <div class="kit-row">${ttsOK() ? tool('hf-toggle', hf.on, '🔊', t('ハンズフリー')) : ''}${tool('big-cook', S.settings.bigCook, '🔍', t('大きく表示'))}${wakeOK() ? tool('keep-awake', S.settings.keepAwake !== false, '☀️', t('画面を消さない')) : ''}</div>
+            ${hf.on ? `<p class="hf-hint" role="status">${esc(hfSR() ? t('「次」と言うか、「次の手順」をタップすると進みます') : t('「次の手順」をタップすると、次を読み上げます'))}</p>` : ''}
+            ${isToday ? eatPlanHtml(items) : ''}
+        </div>
         <div class="card cook-card${S.settings.bigCook ? ' big' : ''}" role="tabpanel">
-            <div class="cook-head">${thumbHtml(cur)}<div style="min-width:0"><h3>${esc(cur.name)}</h3><div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div></div></div>
-            ${recipeCoreHtml(cur, done)}
-            ${allDone ? `<div class="celebrate${fresh ? ' pop' : ''}" role="status"><span class="cf" style="--i:0;inset-inline-start:12%" aria-hidden="true">✨</span><span class="cf" style="--i:1;inset-inline-start:30%" aria-hidden="true">🎊</span><span class="cf" style="--i:2;inset-inline-start:50%" aria-hidden="true">⭐</span><span class="cf" style="--i:3;inset-inline-start:70%" aria-hidden="true">🎊</span><span class="cf" style="--i:4;inset-inline-start:88%" aria-hidden="true">✨</span>
-                <div class="cel-ico" aria-hidden="true">🎉</div><div class="cel-t">${esc(t('できた！'))}</div><p>${esc(t('{name}、できあがり！', {name:cur.name}))} ${esc(t('今日もおつかれさまです。'))}</p>
-                <label class="btn primary" for="photo-input-cook">${esc(MINE[cur.id] ? t('写真を撮り直す') : t('写真を撮る'))}</label>${reactRowHtml(cur.id, S.cook.d)}</div>` : ''}
-            <div class="row">
-                ${allDone ? '' : `<label class="btn sm primary" for="photo-input-cook">${esc(MINE[cur.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>`}
-                <input type="file" id="photo-input-cook" accept="image/*" hidden>
-                ${MINE[cur.id] ? `<span class="small muted">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(MINE[cur.id].d)}))}</span>` : ''}
-            </div>
-            ${allDone ? '' : reactRowHtml(cur.id, S.cook.d)}
+            <div class="cook-head">${thumbHtml(cur)}<div class="ch-txt"><h3>${esc(cur.name)}</h3><div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div></div></div>
+            <div class="cook-prog"><span class="cp-bar" aria-hidden="true"><i style="inline-size:${Math.round(nDone / Math.max(1, nSt) * 100)}%"></i></span><span class="cp-t">${allDone ? esc(t('完了')) : stepNo(nowK)}</span></div>
+            ${recipeCoreHtml(cur, done, celHtml)}
+            <input type="file" id="photo-input-cook" accept="image/*" hidden>
+            ${allDone ? '' : `<div class="cook-after"><div class="row"><label class="btn sm" for="photo-input-cook">📷 ${esc(MINE[cur.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
+                ${MINE[cur.id] ? `<span class="small muted">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(MINE[cur.id].d)}))}</span>` : ''}</div>
+                ${reactRowHtml(cur.id, S.cook.d)}</div>`}
             <div class="row"><button class="btn sm ghost" data-act="open" data-id="${esc(cur.id)}">${esc(t('くわしく見る（ひと手間・お気に入り）'))}</button></div>
         </div>
-        <div class="cook-nav">
-            <button class="btn" data-act="cook-tab" data-k="${i - 1}" ${i === 0 ? 'disabled' : ''}>${esc(t('← 前の料理'))}</button>
-            <button class="btn primary" data-act="cook-tab" data-k="${i + 1}" ${i === items.length - 1 ? 'disabled' : ''}>${esc(t('次の料理 →'))}</button>
+        <div class="cook-foot">
+            ${items.length > 1 ? `<div class="cook-nav">
+                <button class="btn sm" data-act="cook-tab" data-k="${i - 1}" ${i === 0 ? 'disabled' : ''}>${esc(t('← 前の料理'))}</button>
+                <button class="btn sm" data-act="cook-tab" data-k="${i + 1}" ${i === items.length - 1 ? 'disabled' : ''}>${esc(t('次の料理 →'))}</button>
+            </div>` : ''}
+            <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-cook">${esc(t('家族に送る'))}</button><button class="btn ghost" data-act="goto-today">${esc(t('献立を変える'))}</button>
+            ${isToday ? `<button class="btn sm ghost" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button>` : ''}</div>
         </div>
-        <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-cook">${esc(t('家族に送る'))}</button><button class="btn ghost" data-act="goto-today">${esc(t('献立を変える'))}</button></div>
-        ${isToday ? `<div class="row"><button class="btn sm ghost" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>` : ''}
+        <div class="cook-ctl" role="group" aria-label="${esc(cur.name)}">
+            <button type="button" class="btn cook-prev" data-act="cook-prev"${prevK < 0 ? ' disabled' : ''}>${esc(t('前の手順'))}</button>
+            <button type="button" class="btn cook-ingbtn" data-act="cook-ings" aria-controls="cook-ings">${esc(t('材料'))}</button>
+            <button type="button" class="btn primary cook-next" data-act="cook-next"${nowK < 0 ? ' hidden' : ''}><span class="cn-l">${esc(nSt - nDone === 1 ? t('完了') : t('次の手順'))}</span><span class="cn-n">${nowK < 0 ? '' : stepNo(nowK)}</span></button>
+            ${nowK < 0 ? (nextDish >= 0 ? `<button type="button" class="btn primary cook-done-next" data-act="cook-tab" data-k="${nextDish}">${esc(t('次の料理 →'))}</button>` : histEntry(cur.id, S.cook.d) ? `<button type="button" class="btn primary cook-done-next" data-act="cook-log">${esc(t('記録を見る'))}</button>` : '') : ''}
+        </div>
     </section>`;
 }
 
@@ -7364,7 +7439,7 @@ function viewLog(){
         ${h}
     </section>` : '')(tallyHtml(t('この7日間に作った主菜（{n}品）', {n: recentMainRecipes().length}), recentMainRecipes()))}
     ${myRecordHtml()}
-    <section class="sec">
+    <section class="sec" id="made-log">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
         <div class="list">${Object.keys(byDay).length ? logShown.map(([d, hs]) => hs.map((h,i) => `
@@ -7458,7 +7533,7 @@ function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 // アメリカの料理・アメリカで使うときは、オーブンの温度に華氏を添える（190°C → 190°C (375°F)）
 function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${Math.round((c * 9 / 5 + 32) / 5) * 5}°F)`) : txt; }
-function recipeCoreHtml(r, done){
+function recipeCoreHtml(r, done, after = ''){   // after: 作り方タブで、手順のすぐ下に入れるもの（できた！）
     const r0 = r;
     r = swappedRecipe(r);
     const have = fridgeKeys();
@@ -7471,20 +7546,36 @@ function recipeCoreHtml(r, done){
     const termHint = sl && r.steps.some((st, k) => slOf(st) && termFind(texts[k], sl).some(h => termDef(h.id))) ? `<p class="small muted" style="margin:0">${esc(t('点線の言葉をタップすると、意味がわかります'))}</p>` : '';
     const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
     let prevK = -1; if (done) r.steps.forEach((st, k) => { if (done.includes(k) && (nowK < 0 || k < nowK)) prevK = k; });   // 「前の手順」: いまの手順の手前で、終わっている最後の手順
-    return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
-                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
-                ${r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : ''}
-                <div class="label">${esc(t('作り方'))}</div>
-                ${fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:sv}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : ''}
-                ${done ? `<p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>${termHint}
-                <div class="cook-run"><ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k, slOf(st))}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">🔊</button>` : ''}</span></li>`).join('')}</ol>
-                <div class="cook-ctl"><button type="button" class="btn cook-prev" data-act="cook-prev"${prevK < 0 ? ' disabled' : ''}>${esc(t('前の手順'))}</button><button type="button" class="btn primary cook-next" data-act="cook-next"${nowK < 0 ? ' hidden' : ''}>${esc(left === 1 ? t('完了') : t('次の手順'))}</button></div></div>`
-                : `${termHint}<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${termsHtml(texts[k], sl)}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>`}
-                ${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
+    const seasHtml = r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:sv}))}</span><br>${esc(scaleText(seasFor(r), fac))}</div>` : '';
+    const scaleNote = fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:sv}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : '';
+    const tail = `${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
                 <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
                     <a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>
                     <a class="btn sm ghost" href="${esc(imageSearchUrl(r0))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
                 </div></div>`;
+    if (done){   // 作り方タブ: 材料はそろえた印をつけられる一覧（たたむと手順が近くなる）、手順は「いまの手順」を大きく
+        const got = ((session.cookGot || {})[r0.id]) || [], nIng = r.items.length, nGot = r.items.filter((x, k) => got.includes(k)).length;
+        const open = (session.ingsOpen || {})[r0.id] ?? !done.length;
+        return `${swapNoteHtml(r)}${pointsHtml(r)}
+                <details class="cook-ings" id="cook-ings"${open ? ' open' : ''}><summary class="ci-sum"><span class="label">${esc(t('材料（{n}人分）', {n:sv}))}</span><span class="ci-n">${nGot}/${nIng}</span></summary>
+                ${allergenDetailHtml(r)}
+                ${have.size ? `<p class="small muted" style="margin:0">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
+                <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
+                ${seasHtml}
+                <button type="button" class="btn sm ghost ci-back" data-act="cook-goto-now">${esc(t('手順に戻る'))}</button></details>
+                <div class="label">${esc(t('作り方'))}</div>
+                ${scaleNote}
+                <p class="small muted" style="margin:0">${esc(t('手順をタップすると、終わった印がつきます'))}</p>${termHint}
+                <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k, slOf(st))}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">🔊</button>` : ''}</span></li>`).join('')}</ol>
+${after}${tail}`;
+    }
+    return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
+                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
+                ${seasHtml}
+                <div class="label">${esc(t('作り方'))}</div>
+                ${scaleNote}
+                ${termHint}<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${termsHtml(texts[k], sl)}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>
+                ${tail}`;
 }
 // 「ポイント」: そのレシピにコツ（tip）があるときだけ出す。最初の手順のくり返しや、見出しにもある時間・人数は出さない（新しい情報がないため）
 // 肉・卵の料理には、火の通しの注意を添える
@@ -7563,7 +7654,10 @@ function cookNow(){
     let pk = -1; lis.forEach((li, j) => { if (li.classList.contains('done') && (k < 0 || j < k)) pk = j; });
     lis.forEach((li, j) => { li.classList.toggle('nextp', k >= 0 && j === k + 1); li.classList.toggle('prevp', j === pk); li.classList.toggle('now', j === k); if (j === k) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current'); });
     const b = document.querySelector('.cook-next');
-    if (b){ b.hidden = k < 0; b.textContent = lis.filter(li => !li.classList.contains('done')).length === 1 ? t('完了') : t('次の手順'); }
+    const nd = lis.filter(li => li.classList.contains('done')).length, nsum = t('手順 {n}/{m}', {n: Math.min(k + 1, lis.length), m: lis.length});
+    if (b){ b.hidden = k < 0; const l = b.querySelector('.cn-l'), n = b.querySelector('.cn-n'); if (l) l.textContent = lis.length - nd === 1 ? t('完了') : t('次の手順'); if (n) n.textContent = k < 0 ? '' : nsum; }
+    const cp = document.querySelector('.cook-prog'); if (cp){ const i = cp.querySelector('.cp-bar i'), tx = cp.querySelector('.cp-t'); if (i) i.style.inlineSize = Math.round(nd / Math.max(1, lis.length) * 100) + '%'; if (tx) tx.textContent = k < 0 ? t('完了') : nsum; }
+    const ct = document.querySelector('.cook-tab[aria-selected="true"] .ct-bar i'); if (ct) ct.style.inlineSize = Math.round(nd / Math.max(1, lis.length) * 100) + '%';
     const pb = document.querySelector('.cook-prev'); if (pb) pb.disabled = pk < 0;
     return lis[k];
 }
@@ -8396,7 +8490,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'hf-toggle': if (hf.on){ voiceStop(); render(); } else { hf.on = true; hf.noMic = false; render(); hfReadNow(); } break;
-        case 'big-cook': S.settings.bigCook = el.checked; save(); render(); setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 30); break;
+        case 'big-cook': S.settings.bigCook = el.type === 'checkbox' ? el.checked : !S.settings.bigCook; save(); render(); setTimeout(() => { const li = document.querySelector('.cook-steps li.now'); if (li) li.scrollIntoView({block:'center'}); }, 30); break;
         case 'say-step': { const li = el.closest('li'); voiceStop(true); hfListenStop(); voiceSay(stepSpeech(li), hf.on ? hfListen : null); break; }
         case 'left-add': leftoverToggle(el.dataset.id); break;
         case 'left-clean': { const old = S.leftovers.filter(x => leftDay(x) >= 4); if (old.length){ S.leftovers = S.leftovers.filter(x => leftDay(x) < 4); save(); render(); toast(t('消しました'), false, () => { S.leftovers = S.leftovers.concat(old); save(); render(); }); } break; }
@@ -8404,7 +8498,26 @@ document.addEventListener('click', e => {
         case 'spend-del': { const i = S.spend.findIndex(x => x.id === el.dataset.i); if (i >= 0){ const was = S.spend.splice(i, 1)[0]; session.spendOpen = true; save(); render(); toast(t('消しました'), false, () => { S.spend.push(was); save(); render(); }); } break; }
         case 'text-size': { const v = Number(el.dataset.v); if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); break; }
         case 'eat-clear': S.settings.dinnerAt = null; session.eatOpen = true; save(); render(); break;
-        case 'keep-awake': S.settings.keepAwake = el.checked; save(); syncWake(); break;
+        case 'keep-awake': S.settings.keepAwake = el.type === 'checkbox' ? el.checked : S.settings.keepAwake === false; save(); syncWake(); if (el.type !== 'checkbox') el.setAttribute('aria-pressed', String(S.settings.keepAwake !== false)); break;
+        case 'cook-ing': {   // 材料の「そろえた」印（この画面を開いているあいだだけ。献立や記録は変えない）
+            const cur = cookItems()[session.cookIdx || 0]; if (!cur) break;
+            const g = (session.cookGot = session.cookGot || {})[cur.r.id] = (session.cookGot[cur.r.id] || []).filter(k => k !== Number(el.dataset.k));
+            if (el.checked) g.push(Number(el.dataset.k));
+            const n = document.querySelector('#cook-ings .ci-n'); if (n) n.textContent = `${g.length}/${document.querySelectorAll('#cook-ings .ci-list li').length}`;
+            break;
+        }
+        case 'cook-ings': {   // 下の「材料」: 材料の一覧を開いて見せる
+            const d = document.getElementById('cook-ings'); if (!d) break;
+            d.open = true; d.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+            break;
+        }
+        case 'cook-goto-now': {   // 材料から、いまの手順へ戻る（材料の一覧はたたむ）
+            const d = document.getElementById('cook-ings'); if (d) d.open = false;
+            const li = document.querySelector('.cook-steps li.now') || document.getElementById('cook-celebrate');
+            if (li) li.scrollIntoView({block:'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+            break;
+        }
+        case 'cook-log': setTab('log'); setTimeout(() => { const e = $('#made-log'); if (e) e.scrollIntoView({block:'start'}); }, 30); break;
         case 'share-cook': openShare('cook'); break;
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label, el.dataset.rid, el.dataset.k == null ? null : Number(el.dataset.k)); break;
         case 'timers-toggle': session.timersOpen = !session.timersOpen; { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
@@ -8447,7 +8560,9 @@ document.addEventListener('click', e => {
             if (!S.hidden.includes(id)) S.hidden.push(id); save();
             closeModal();
             { const m = session.menu, i = m ? m.items.findIndex(x => x.r && x.r.id === id) : -1;   // 外した料理の枠だけ選び直す
-              if (i === 0){ const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot})); const nr = suggestMain(keep, isBowlMain(m.items[0].r)); if (nr) m.items[0].r = nr; }
+              if (i === 0){ const keep = m.items.slice(1).filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot})); const bowl = isBowlMain(m.items[0].r); let nr = suggestMain(keep, bowl);
+                if (!nr || S.hidden.includes(nr.id)) nr = suggestMain(keep, null);   // 同じ種類（ご飯もの・麺／ふつうの主菜）の候補が尽きたら、外した料理を出し直さず、別の種類から選ぶ
+                if (nr && !S.hidden.includes(nr.id)) m.items[0].r = nr; }
               else if (i > 0) m.items[i].r = suggestOrAny(m.items[i].slot, m.items.filter((_, k) => k !== i), m.items[0].r); }
             refreshWeek();
             toast(t('献立の候補から外しました')); render(); break;
@@ -8686,6 +8801,7 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.left-card')) session.leftOpen = e.target.open;
     if (e.target.matches('details.mix')) session.mixOpen = e.target.open;
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
+    if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
     if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
     else if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
