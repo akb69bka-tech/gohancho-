@@ -3,23 +3,20 @@ import * as Q from '../kit3q.mjs';
 const { f, rng, lt, dk } = Q;
 
 export default {
-    // 深めの鉢（線なし）: 煮汁の面＋じゃがいもの山
+    // 煮物の鉢（藍の線）: 煮汁の面＋glossLump の山（江口の描き方）
     nikujaga: p => {
-        const V = Q.hachi(p), S = Q.surface(p, V, { drop: 12, c: '#b98a4a', glow: .3 });
-        const o = { cx: 100, cy: V.cy + 6 }, m = (u, v) => 34 * Math.max(0, 1 - (u * u + v * v) / 80 / 80);
-        const it = [['pork', -34, -50], ['onion', 6, -60], ['carrot', 44, -30], ['pot', -46, -22], ['pot', 10, -26], ['pork', 52, 2], ['onion', -58, 12], ['carrot', -20, 4], ['pot', 26, 14], ['pot', -36, 34], ['carrot', 54, 34], ['pork', 4, 44], ['pot', -6, 52]]
-            .map(([k, u, v], i) => { const [x, y] = Q.at(o, u, v, m(u, v)); return [y, () => k === 'pot' ? Q.lump(p, x, y, 20, 15, '#e0b458', 'nj' + i, { hi: .3 })
-                : k === 'carrot' ? Q.rangiri(p, x, y, 20, i * 40, '#e97a2a', i)
-                : k === 'pork' ? Q.slab(p, x, y, 19, 8, 2, '#a8694a', 'pk' + i, { rot: i * 17 % 40 - 20 }).s
-                : `<g ${Q.T(x, y, i * 13 % 50 - 25)}><path d="M-17,3 Q0,-14 17,3 Q0,-7 -17,3Z" fill="#e8d49a" stroke="#b39456" stroke-width=".6"/></g>`]; });
-        return V.s + S.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + V.shine(.45);
+        const V = Q.hachi(p), S = Q.surface(p, V, { drop: 12, c: '#b9853f', glow: .3 });
+        const o = { cx: 100, cy: V.cy + 6 }, m = (u, v) => 30 * Math.max(0, 1 - (u * u + v * v) / 80 / 80);
+        const it = [['pot', -40, -24], ['pot', 14, -30], ['carrot', 46, -10], ['pot', -10, 6], ['carrot', -40, 26], ['pot', 30, 26]]
+            .map(([k, u, v], i) => { const [x, y] = Q.at(o, u, v, m(u, v)); return [y, () => k === 'pot' ? Q.glossLump(p, x, y, 34, i) : Q.rangiri(p, x, y, 20, i * 40, '#e97a2a', i)]; });
+        return V.s + S.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, 40, 140) + V.shine(.45);
     },
-    // 平皿（白・藍）: 豚肉を重ね、奥にキャベツの山
+    // 平皿（白・藍）: たれだまりに slice3q の豚肉を重ね、奥にキャベツの山（江口の描き方）
     shogayaki: p => {
-        const P = Q.plate(p);
-        let s = P.s + Q.shredMound(p, 132, 86, 30, 26);
-        [[80, 92, -16], [114, 108, 12], [70, 112, 4], [104, 126, -8]].forEach(([x, y, r], i) => { const sl = Q.slab(p, x, y, 31, 14, 1.8, '#a85a28', 'sg' + i, { n: 15, jit: .3, rot: r }); s += sl.s + Q.shine(x - 8, y - 4, 16, -8, .7); });
-        return s;
+        const D = Q.plate(p);
+        let s = D.s + Q.shredMound(p, 138, 88, 32, 28) + Q.tarePool(p, 90, 114, 46);
+        [[82, 88, 14, 4, '#bd7c38'], [98, 102, -10, 3, '#c4843e'], [80, 114, 8, 2, '#b9783a'], [100, 128, -16, 1, '#c0803a']].forEach(([x, y, r, sd, c]) => { s += Q.slice3q(p, x, y, 72, r, { c, seed: sd, gloss: .8 }, { th: 2.6, tc: '#6a3010', sq: .72 }); });
+        return s + Q.shine(78, 120, 18, -4) + Q.shine(96, 132, 14, -8);
     },
     // 汁椀（朱・細い藍）: 汁の面に豆腐を沈め、わかめとねぎ
     misoshiru: p => {
@@ -28,7 +25,7 @@ export default {
         const it = [[90, 76, 20], [116, 80, 50], [74, 94, 35], [106, 96, 10], [130, 100, 60], [90, 110, 45]].map(([x, y, a]) => [y, () => Q.cube(p, x, y, 15, a, '#f6f1e2', { sink: 5, liquid: '#c99a5a' })]);
         it.push([80, () => Q.leaf(p, 66, 80, 28, 15, '#2f5a2a', 1)], [96, () => Q.leaf(p, 132, 90, 24, -25, '#2f5a2a', 2)]);
         for (let i = 0; i < 9; i++){ const x = 66 + R() * 70, y = 80 + R() * 30; it.push([y, () => Q.negi(p, x, y)]); }
-        return V.s + S.s + `<g ${V.inside}>${Q.byDepth(it)}</g>` + V.shine(.5);
+        return V.s + S.s + `<g ${V.inside}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, 40, 130) + V.shine(.5);
     },
     // 茶碗（白・藍の線と帯）: ご飯の山。輪郭は淡い影
     rice: p => {

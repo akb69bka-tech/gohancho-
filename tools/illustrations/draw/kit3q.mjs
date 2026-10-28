@@ -83,7 +83,7 @@ export function vessel(p, { cx = 100, cy = 82, rx = 92, h = 50, fx = 40, ft = 6,
         shine: (op = .6) => `<path d="M${f(cx - rx * .92)},${f(cy - ry * .38)} A${f(rx)},${f(ry)} 0 0 1 ${f(cx - rx * .35)},${f(cy - ry * .93)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity="${op}"/>` };
 }
 // --- 鉢・椀の決まった形（大きさと位置は基準書の表どおり。変えるときは o で上書き） ---
-export const hachi = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, outer: '#6e4b33', lip: '#8a6448', inner: '#efe5d3', line: 'none', ...o });          // 深めの鉢（煮物）
+export const hachi = (p, o = {}) => vessel(p, { cy: 76, rx: 92, h: 58, fx: 42, ft: 6, t: 6, outer: '#6e4b33', lip: '#8a6448', inner: '#efe5d3', line: 'white', ...o });          // 深めの鉢（煮物。口に藍の線 2.2: 採用の肉じゃがにそろえる）
 export const wan = (p, o = {}) => vessel(p, { cy: 72, rx: 90, h: 64, fx: 36, ft: 8, t: 3, outer: '#9a2c1e', lip: '#b23a28', inner: '#4a2018', line: 'thin', gloss: .32, ...o });   // 汁椀（朱の漆。内側は焦げ茶の漆）
 export const chawan = (p, o = {}) => vessel(p, { cy: 96, rx: 86, h: 52, fx: 30, ft: 7, outer: '#f4f0e6', lip: '#fbf9f3', inner: '#ece6d8', line: 'white', bands: [[12, 2.6], [18, 1]], gloss: .6, ...o });   // 茶碗
 export const donburi = (p, o = {}) => vessel(p, { cy: 80, rx: 92, h: 62, fx: 38, ft: 7, outer: '#f6f3ec', lip: '#fbfaf6', inner: '#f2eee4', line: 'white', dots: true, bands: [[30, 1.4]], gloss: .6, ...o });   // どんぶり
@@ -249,5 +249,30 @@ export function grainsPlane(p, cx, cy, rx, { n = 400, seed = 1, color = () => '#
 export const negi = (p, x, y, s = 5.4, c = '#5fa03a') => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s / 2)}" ry="${f(s / 2 * SY * 1.1)}" fill="${lt(c, .55)}" stroke="${c}" stroke-width="1.2"/>`;
 // 湯気（器の上）
 export const steam = (cx, top, op = .5) => `<path d="M${cx - 16},${top + 20} c-5,-7 5,-12 0,-19 M${cx + 2},${top + 16} c-5,-7 5,-12 0,-19 M${cx + 20},${top + 20} c-5,-7 5,-12 0,-19" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="${op}"/>`;
-// 照り（たれ・煮汁）の細い白い弧
-export const shine = (x, y, w, r = 0, op = .8) => `<g ${T(x, y, r)}><path d="M${f(-w / 2)},0 Q0,${f(-w * .18)} ${f(w / 2)},0" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="${op}"/></g>`;
+// 照り（たれ・煮汁）の細い白い弧と、右端の白い点（江口の描き方）
+export const shine = (x, y, w, r = 0, op = .85) => `<g ${T(x, y, r)}><path d="M${f(-w / 2)},0 Q0,${f(-w * .18)} ${f(w / 2)},0" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="${op}"/><circle cx="${f(w / 2 + 2.4)}" cy="-.4" r=".9" fill="#fff" opacity="${op}"/></g>`;
+
+// =========================================================
+// 江口の描き方（オーナー採用: 肉じゃが・生姜焼き・ご飯）
+// =========================================================
+// 煮物の具（じゃがいも・里芋・大根の面取りなど）: 放射状の塗り、縁は煮汁の飴色、左上に白い照りの弧と鏡の白い点
+export function glossLump(p, x, y, s, seed, { c = '#ecc77c' } = {}){
+    const R = rng(p.id + 'po' + seed);
+    const d = smooth(ring(s / 2, 7, .28, R, 1.08, .82, R()), true, .6);
+    return `${cast(p, x, y + s * .3, s * .5, s * .16, .35)}<g ${T(x, y)}>
+        <path d="${d}" fill="${rg(p, [[0, lt(c, .4)], [.55, c], [.85, mix(c, '#b9853f', .45)], [1, dk(c, .35)]], .36, .3, .72)}" stroke="${dk(c, .32)}" stroke-width=".8"/>
+        <path d="M${f(-s * .3)},${f(-s * .12)} Q${f(-s * .18)},${f(-s * .34)} ${f(s * .08)},${f(-s * .34)}" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
+        <ellipse cx="${f(-s * .14)}" cy="${f(-s * .2)}" rx="${f(s * .06)}" ry="${f(s * .035)}" fill="#fff" opacity=".85"/></g>`;
+}
+// 平たい具の厚み: 真下にずらした濃い縁（dy）＋ 右下にぼかした影。filter として使う: `<g ${thick(p)}>…</g>`
+export function thick(p, dy = 2, c = '#6a3a18', k = .7){
+    const id = p.def('th' + dy + c + k, id => `<filter id="${id}" x="-20%" y="-20%" width="140%" height="160%"><feOffset in="SourceAlpha" dy="${dy}" result="o"/><feFlood flood-color="${c}"/><feComposite in2="o" operator="in" result="t"/><feOffset in="SourceAlpha" dx="${1.6 * k}" dy="${dy + 1.8 * k}" result="o2"/><feGaussianBlur in="o2" stdDeviation="${1.2 * k}" result="b"/><feFlood flood-color="${SHADE}" flood-opacity=".32"/><feComposite in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="t"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`);
+    return `filter="url(#${id})"`;
+}
+// 平皿の肉（基準）: kit.mjs の porkSlice を縦に sq 倍につぶし、thick で厚み。opt は porkSlice の設定（c・fat・seed・gloss・bend・char）
+export const slice3q = (p, x, y, s, r, opt, { th = 2, tc = '#6a3a18', sq = .6 } = {}) => `<g ${thick(p, th, tc, .8)}><g transform="translate(${f(x)} ${f(y)}) scale(1 ${sq})">${K.porkSlice(p, 0, 0, s, r, opt)}</g></g>`;
+// たれだまり（平皿）: 中心が明るく縁が濃い面、左上に照り
+export function tarePool(p, cx, cy, rx, c = '#94521c', seed = 'tare'){
+    return `<path d="${smooth(ring(rx, 10, .2, rng(seed), 1, SY * 1.05))}" transform="translate(${f(cx)} ${f(cy)})" fill="${rg(p, [[0, lt(c, .3)], [.6, c], [1, dk(c, .35)]], .4, .36, .6)}" opacity=".92"/>
+        <path d="M${f(cx - rx * .78)},${f(cy - 2)} Q${f(cx - rx * .48)},${f(cy - rx * SY * .5)} ${f(cx - rx * .09)},${f(cy - rx * SY * .55)}" stroke="#ffd9a0" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>`;
+}
