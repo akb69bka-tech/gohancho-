@@ -27,7 +27,7 @@ const undo = async p => { await p.locator('.toast button, #toast button').first(
 // ---- 画面の操作（日本語） ----
 {
     const p = await open({});
-    await p.evaluate(() => { setTab('fridge'); render(); });
+    await p.evaluate(() => { S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render(); });
     ok(await p.locator('#stock-sec').count() === 1, 'stock section');
     ok(/まだ登録していません/.test(await p.locator('#stock-sec').innerText()), 'empty text');
     const d = await p.evaluate(() => ({a: addDays(TODAY, 40), b: addDays(TODAY, 5), y: addDays(TODAY, -2)}));
@@ -79,7 +79,7 @@ const undo = async p => { await p.locator('.toast button, #toast button').first(
 {
     const p = await open({});
     const o = await p.evaluate(() => {
-        makeWeek(); S.stock = [{id:'s1', n:'さば缶', q:2, e:'', d:TODAY}]; save(); setTab('fridge'); render();
+        makeWeek(); S.stock = [{id:'s1', n:'さば缶', q:2, e:'', d:TODAY}]; save(); S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render();
         return {btn: !!document.querySelector('#stock-sec [data-act="stock-shop"]'), before: shoppingList().filter(e => !e.extra).map(e => e.key).join('|')};
     });
     ok(o.btn, 'shop button with week');
@@ -94,7 +94,7 @@ for (const cc of CCS){
     const snap = () => p.evaluate(() => JSON.stringify({m: (session.menu ? session.menu.items : []).map(x => x.slot + ':' + (x.r && x.r.id)), w: S.week, f: S.fridge, fm: S.fridgeMeta, sk: [...soonKeys()].sort(), sl: S.week ? shoppingList().filter(e => !e.extra).map(e => e.key) : [], h: S.history.length}));
     await p.evaluate(() => { makeWeek(); S.fridge = QUICK.slice(0, 3); S.fridgeMeta = {}; save(); setTab('today'); render(); });
     const s1 = await snap();
-    await p.evaluate(() => { setTab('fridge'); render(); });
+    await p.evaluate(() => { S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render(); });
     await p.fill('#stock-name', await p.evaluate(() => QUICK[4] || 'rice')); await p.fill('#stock-q', '2'); await p.fill('#stock-exp', await p.evaluate(() => addDays(TODAY, 1)));
     await p.locator('#stock-sec button[type=submit]').click();
     await p.fill('#stock-name', 'water'); await p.locator('#stock-sec button[type=submit]').click();
@@ -104,7 +104,7 @@ for (const cc of CCS){
     await p.evaluate(() => { setTab('today'); render(); });
     const s2 = await snap();
     ok(s1 === s2, cc + ' menu/week/fridge/shopping unchanged by stock');
-    ok((await stored(p)).stock.length === 1, cc + ' stock kept');
+    { const st = (await stored(p)).stock; ok(st.length === 1, cc + ' stock kept ' + JSON.stringify(st.map(x => x.n))); }
     await p.context().close();
 }
 // ---- normalizeState / バックアップ / 要約 ----
@@ -168,7 +168,7 @@ for (const L of LANGS){
     const p = await open({stock: [{id:'s1', n:'Water', q:2, e:'2030-01-01', d:'2026-10-01'}], stockLog: [{d:'2026-10-01', n:'Water'}], settings: {allergens: ['egg']}}, 'US', L);
     const o = await p.evaluate(() => {
         S.history = [{d: TODAY, id: RECIPES[0].id, name: RECIPES[0].name, slot: '主菜'}]; S.stockLog.push({d: TODAY, n: 'Water'});
-        setTab('fridge'); render(); const a = document.querySelector('#stock-sec').innerText;
+        S.foldOpen = Object.assign({}, S.foldOpen, {'fr-loss': true, 'fr-stock': true}); setTab('fridge'); render(); const a = document.querySelector('#stock-sec').innerText;
         setTab('log'); render(); const m = (document.querySelector('#my-record') || {}).innerText || '';
         setTab('settings'); render(); const al = [...document.querySelectorAll('#allergy-card .alg-ver')].map(e => e.innerText).join(' ');
         makeWeek(); const sh = shoppingHtml().match(/class="pantry-hint alg-shop">([^<]*)/);

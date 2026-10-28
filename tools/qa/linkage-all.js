@@ -33,7 +33,8 @@ window.__snap = (opts) => {
     const sa = sp.querySelector('[data-act="soup-add"]');
     const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
     // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '')};   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
+   };   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }

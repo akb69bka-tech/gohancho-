@@ -57,11 +57,11 @@ for (const [cc, ui, sets] of [['JP', 'ja', [['豚肉', 'キャベツ', '卵'], [
                 if (!miss && !subs) exp.ready.add(r.id); else if (!miss) exp.sub.add(r.id); else if (miss <= 2 && ratio >= 0.4) exp.near.add(r.id);
             });
             const shown = {ready: new Set(), sub: new Set(), near: new Set()};
-            const secs = [...document.querySelectorAll('#view section.sec')].pop();
+            const secs = document.querySelector('#fridge-results');
             const titles = {[t('今ある材料で作れる')]: 'ready', [t('代わりの食材で作れる')]: 'sub', [t('あと1〜2品あれば作れる')]: 'near'};
             // 「すべて見る」で全部出す
             ['fr-ready', 'fr-sub', 'fr-near'].forEach(k => moreOpen.add(k)); render();
-            const s2 = [...document.querySelectorAll('#view section.sec')].pop();
+            const s2 = document.querySelector('#fridge-results');
             [...s2.children].forEach((el, k, all) => {
                 if (!el.classList.contains('sec-head')) return; const h = el.querySelector('h3'); const kind = h && titles[h.textContent.trim()]; if (!kind) return;
                 const list = all[k + 1]; list.querySelectorAll('.match [data-act="open"][data-id]').forEach(e => shown[kind].add(e.dataset.id));
