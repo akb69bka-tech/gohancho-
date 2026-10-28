@@ -2124,6 +2124,25 @@ function byId(id){
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 // undo を渡すと「元に戻す」ボタンを付けて少し長めに出す
+// 決めた献立を出しているときに、献立をまるごと変える操作（気分・材料から・まるごと入れ替え）をしたら、知らせて元に戻せるようにする
+// （決めた献立の記録と「作り方」はそのまま。戻すと、今日の画面も決めた献立に戻る）。決めた献立を出していなければ null
+function decidedUndo(){
+    if (!menuIsDecided()) return null;
+    const prev = {menu: session.menu, mood: session.mood, useFridge: session.useFridge, salt: session.countSalt, twist: session.twist, dc: S.settings.dishCount};
+    return () => toast(t('決めた献立から入れ替えました。決めた献立は「作り方」にそのまま残っています'), false, () => {
+        S.settings.dishCount = prev.dc; save();
+        session.menu = prev.menu; session.mood = prev.mood; session.useFridge = prev.useFridge; session.countSalt = prev.salt; session.twist = prev.twist; keepDraft(); render(); });
+}
+// 決めた献立を出しているときに、献立をまるごと作り直す操作は、先に確かめる（作り直したら「元に戻す」を出す）。決めていなければ、そのまま行う
+function guardDecided(run){
+    if (!menuIsDecided()){ run(); return; }
+    sheet = {kind: 'redo', run}; render();   // 描き直して、押したチェックなどを元の見た目に戻してから聞く
+}
+function redoSheetHtml(){
+    return `<h2>${esc(t('決めた献立を作り直しますか？'))}</h2>
+        <p>${esc(t('今日の献立はもう決めてあります（{names}）。作り直すと、今日の画面は新しい案になります。決めた献立は「作り方」に残ります。', {names: joinNames(cookItems().map(x => x.r.name))}))}</p>
+        <div class="ob-actions"><button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button><button class="btn primary wide" data-act="redo-yes">${esc(t('作り直す'))}</button></div>`;
+}
 function toast(msg, praise=false, undo=null){
     const root = $('#toast-root'); toast.undo = undo;
     root.innerHTML = `<div class="toast pop${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
@@ -2505,10 +2524,14 @@ function slotStillOk(it){
     if (want !== currentCountry() && !(BROWSE[want] && BROWSE[want].length)) return true;   // 選んだ国のデータを読みこむまでは、その枠を選び直さない（家の国の別の料理に変わってしまう）。読みこんだあとに選び直す
     return have === want;
 }
+// 設定（苦手・アレルギー・食べる人・国の組み合わせなど）が変わったときに、今日の献立を確かめる入口。どのタブから変えても、開き直しても、ここを通す
+//  - まだ決めていない案: 合わなくなった枠だけ選び直し、何を替えたかを知らせる。下書きもその場で書き直す（開き直したときに古い案が戻らないように）
+//  - 決めた献立: 黙って替えない。合わない料理は cookWarnHtml で知らせ、本人に［かえる］［このまま］を選んでもらう
 function reconcileMenu(){
     const m = session.menu; if (!m) return false;
-    if (m.n !== menuCount() && !m.adj){ newMenu(); return true; }   // 「あと1品」で足した品数は、設定が変わらないかぎり、そのまま
-    let changed = false;
+    if (menuIsDecided()) return false;
+    if (m.n !== menuCount() && !m.adj){ newMenu(); keepDraft(); return true; }   // 「あと1品」で足した品数は、設定が変わらないかぎり、そのまま
+    let changed = false; const swaps = [];
     m.items.forEach((it, i) => {
         if (!it.r && i > 0) return;   // 空の枠（汁ものの麺が主菜のとき・候補がなかったとき）は、設定を変えたついでには埋めない。汁ものは「汁ものを足す」で選ぶ
         if (slotStillOk(it)) return;
@@ -2518,9 +2541,18 @@ function reconcileMenu(){
             const keep = others.filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
             nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
         } else nr = suggestOrAny(it.slot, others, m.items[0].r);
-        if (nr && nr !== it.r){ it.r = nr; changed = true; }
+        if (nr && nr !== it.r){ if (it.r) swaps.push([it.r, nr]); it.r = nr; changed = true; }
     });
+    if (changed){
+        keepDraft();
+        if (swaps.length) toast(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: joinNames(swaps.map(([a, b]) => a.name + ' → ' + b.name))}));
+    }
     return changed;
+}
+// いま今日の画面に出ている献立が、今日「決めた」献立か
+function menuIsDecided(){
+    const c = S.cook, m = session.menu;
+    return !!(m && c && c.d === TODAY && Array.isArray(c.ids) && c.ids.length && c.ids.join() === menuIds().join());
 }
 function newMenu(){
     const n = menuCount();
@@ -4198,6 +4230,7 @@ function renderSheetBody(){
     if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'one') body = oneSheetHtml();
     if (sheet.kind === 'share') body = shareSheetHtml();
+    if (sheet.kind === 'redo') body = redoSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
@@ -4553,7 +4586,9 @@ const ALG_DEF = {
         ferm:/しょうゆ|醤油|soy sauce|shoyu|めんつゆ|ぽんず|ぽん酢|てりやき|teriyaki|酱油|간장|ganjang|kecap|hoisin/},
     buckwheat:{re:/そば粉|そばこ|蕎麦|荞麦|\bsoba\b|\bbuckwheat\b|sarrasin|buchweizen|grano saraceno|trigo.?sarraceno|trigo mouro|메밀|karabuğday|\bgryka\b|कुट्टू|bakwit|บัควีท|ざるそば|かけそば|ざるそば|そばの実|そばがき|そば茶/, eq:['そば','おそば','とうじそば','にしんそば','とろろそば'], no:/やきそば|焼きそば|焼そば|中華そば|ちゅうかそば|沖縄そば|そばめし|yakisoba|chow ?mein/},
     egg:{fam:'egg', re:/卵|たまご|玉子|\beggs?\b|\byolks?\b|albumen|\bhuevos?\b|œufs?|\boeufs?\b|\beier\b|\buova?\b|\bovos?\b|\bjajk?a?\b|\bjajo\b|계란|달걀|鸡蛋|鸭蛋|ไข่|trứng|\btelur\b|yumurta|بيض|अंडा|itlog/, no:/eggplant|egg ?plant|卵巣|卵黄なし|eggless|egg.?free/,
-        via:/まよ|たるたる|\bmayo(?:nnaise)?\b|aioli|allioli|alioli|hollandaise|meringue|brioche|castella|かすてら|wonton wrapper|tagliatelle|tortellini|fresh pasta|ravioli|\beggnog\b/},
+        via:/まよ|たるたる|\bmayo(?:nnaise)?\b|aioli|allioli|alioli|hollandaise|meringue|brioche|castella|かすてら|wonton wrapper|tagliatelle|tortellini|fresh pasta|ravioli|\beggnog\b/,
+        // 入っていることがある加工品（ちくわ・かまぼこの卵白、皮・衣・ハムなど。商品によるので、料理は外さず「袋の表示を確かめて」と出す）
+        may:/ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|パン粉|ぱんこ|中華めん|中華麺|ちゅうかめん|ラーメン|(?<![ぁ-ん])ハム(?![ぁ-ん])|ベーコン|ウインナー|ソーセージ|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bhanpen\b|\bsurimi\b|\b(?:dumpling|gyoza|potsticker|spring roll|shumai|siu mai) (?:wrappers?|skins?)\b|\bpanko\b|\bbread ?crumbs\b|\btempura (?:flour|batter)\b|\bramen noodles?\b|\bchinese (?:egg )?noodles?\b|어묵|오뎅|만두피/},
     milk:{fam:'dairy', re:/牛乳|ぎゅうにゅう|みるく|乳(?!化|酸|液|房)|ちーず|ばたー|くりーむ|よーぐると|\bmilk\b|buttermilk|\bcream\b|\bbutter\b|cheese|\bwhey\b|casein|\bghee\b|yogh?urt|lactose|kefir|\bpaneer\b|\bcurds?\b|\bqueso\b|\bleche\b|\blait\b|fromage|beurre|\bcrème\b|\bcreme fra|\bmilch\b|k[äa]se\b|sahne|\blatte\b|formaggio|\bburro\b|\bpanna\b|\bleite\b|manteiga|queijo|mantequilla|우유|치즈|버터|牛奶|奶酪|芝士|黄油|奶油|นม|เนย|sữa|phô mai|\bsusu\b|\bkeju\b|mentega|\bsüt\b|peynir|tereyağ|\bmleko\b|\bmasło\b|śmietan|दूध|दही|घी|पनीर|ricotta|mozzarella|parmesan|cheddar|mascarpone|\bfeta\b|halloumi|gruy[eè]re|\bgouda\b|\bbrie\b|camembert|pecorino|\bquark\b|\bskyr\b|kaymak|labneh|\bayran\b|\braita\b|tzatziki|dulce de leche|\bcajeta\b|\bkhoa\b|\bmawa\b|ミルクチョコ|white chocolate|ホワイトチョコ|ice cream|あいすくりーむ/,
         no:/coconut (?:milk|cream)|cream of coconut|(?:soy|almond|oat|rice|cashew|nut|hemp|pea) milk|peanut butter|butter ?beans?|cocoa butter|shea butter|butternut|cream of tartar|lait de coco|leche de (?:coco|soja|almendra)|santan|豆乳|ここなっつ|ぴーなっつばたー|ぴーなつばたー|あーもんどばたー|ごまばたー|ここあばたー|まっしゅるーむばたー|almond butter|nut butter|apple butter|sunflower butter|butter ?lettuce|mantequilla de (?:cacahuete|man)|\btahini\b|ミルクティ|milkfish|\bbangus\b|kokosmilch/,
         vno:/coconut (?:milk|cream)|cream of coconut|(?:soy|almond|oat|rice|cashew|nut|hemp|pea) milk|peanut butter|butter ?beans?|cocoa butter|shea butter|butternut|cream of tartar|lait de coco|leche de (?:coco|soja|almendra)|santan|豆乳|ここなっつ|ぴーなっつばたー|ぴーなつばたー|あーもんどばたー|ごまばたー|ここあばたー|まっしゅるーむばたー|almond butter|nut butter|apple butter|sunflower butter|butter ?lettuce|mantequilla de (?:cacahuete|man)|\btahini\b|ミルクティ|milkfish|\bbangus\b|kokosmilch/,
@@ -4600,7 +4635,7 @@ const ALG_INFO = {};   // 食材の言葉の整え済み版（i._at）
 
 // 判定の言葉は、カタカナで書いてあってもひらがなにそろえる（材料の言葉も algNorm でひらがなにそろえるため）
 Object.values(ALG_DEF).forEach(d => {
-    ['re', 'no', 'vno', 'via', 'ferm'].forEach(k => { if (d[k]) d[k] = new RegExp(d[k].source.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)), d[k].flags); });
+    ['re', 'no', 'vno', 'via', 'ferm', 'may'].forEach(k => { if (d[k]) d[k] = new RegExp(d[k].source.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)), d[k].flags); });
     if (d.eq) d.eq = d.eq.map(x => x.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)));
 });
 const algNorm = s => String(s == null ? '' : s).normalize('NFKC').toLowerCase().replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
@@ -4613,6 +4648,7 @@ function algTok(i){
     return a;
 }
 // 材料1つが、そのアレルゲンを含むか。0 = 見つからない / 1 = その食材そのもの / 2 = 加工品・調味料などによく入っている / 3 = しょうゆ・みそなどの発酵調味料
+// 4 = 入っていることがある加工品（ちくわの卵白など）。料理は外さず、詳細で「袋の表示を確かめて」と注意だけ出す
 const ALG_MEMO = new Map();   // 同じ言葉の材料は、同じ答え（料理を何百品も見るので）
 function algKind(id, i){
     const k = id + '\u0001' + algTok(i).x; let v = ALG_MEMO.get(k);
@@ -4631,14 +4667,15 @@ function algKindRaw(id, i){
     const via = d => !(d.vno && d.vno.test(a.t)) && (d.via && d.via.test(a.t)) || (d.fam && ALLERGY_EXTRA[d.fam] && ALLERGY_EXTRA[d.fam].test(a.x)) || (!!d.parts && d.parts.some(p => via(ALG_DEF[p])));
     if (via(d)) return 2;
     const ferm = d => (d.ferm && d.ferm.test(a.t)) || (!!d.parts && d.parts.some(p => ferm(ALG_DEF[p])));
-    return ferm(d) ? 3 : 0;
+    if (ferm(d)) return 3;
+    return d.may && d.may.test(a.t) && !(d.no && d.no.test(a.t)) ? 4 : 0;
 }
 function algIds(){ const a = S.settings.allergens; return Array.isArray(a) ? [...new Set(a.filter(x => ALG_DEF[x]))] : []; }
 function algFerm(){ return S.settings.allergenFerm !== false; }
 function allergyOn(){ return algIds().length > 0 || allergyList().length > 0; }
 // 選んだアレルゲン（ids）のうち、材料1つが含むもの（なければ null）
 function algItemHit(ids, i){
-    for (const id of ids){ const k = algKind(id, i); if (k && (k !== 3 || algFerm())) return id; }
+    for (const id of ids){ const k = algKind(id, i); if (k && k !== 4 && (k !== 3 || algFerm())) return id; }   // 4（入っていることがある）は外す理由にしない
     return null;
 }
 // 料理が含むアレルゲン: {id: [{name, kind, opt}]}。材料・調味料の欄の両方を見る（全部のアレルゲン。表示用）
@@ -4652,7 +4689,7 @@ function algRecipeMap(r){
 function algSelectedHits(r){
     const ids = algIds(); if (!ids.length || !r || !r.items) return [];
     const m = algRecipeMap(r);
-    return ids.filter(id => (m[id] || []).some(x => x.kind !== 3 || algFerm()));
+    return ids.filter(id => (m[id] || []).some(x => x.kind !== 4 && (x.kind !== 3 || algFerm())));
 }
 function algSig(){ return algIds().join() + '|' + algFerm(); }
 // 国ごとの並び: 日本は特定原材料8品目＋準ずる20品目、アメリカ・メキシコ・ペルー・ブラジル・フィリピンは米国の主要9品目、ほかの国は EU の14品目
@@ -4681,11 +4718,12 @@ function allergenDetailHtml(r){
     if (!r || !r.items) return '';
     const m = algRecipeMap(r), sel = new Set(algIds()), sec = algSections();
     const ids = [...new Set([].concat(...sec.main.map(x => x[1]), [...sel]))].filter(id => m[id]);
-    const mine = algSelectedHits(r);
-    const kindText = x => x.kind === 2 ? t('{name}（よく含まれる加工品・調味料）', {name: x.name}) : x.kind === 3 ? t('{name}（しょうゆ・みそなどの発酵調味料）', {name: x.name}) : x.name + (x.opt ? t('（なくても可）') : '');
-    const li = id => `<li class="${sel.has(id) ? 'mine' : ''}">${esc(t('{slot}：{name}', {slot: (sel.has(id) ? '⚠ ' : '') + algLabel(id), name: joinNames([...new Set(m[id].map(kindText))])}))}</li>`;
+    const mine = algSelectedHits(r), may = [...sel].filter(id => !mine.includes(id) && (m[id] || []).some(x => x.kind === 4));
+    const kindText = x => x.kind === 2 ? t('{name}（よく含まれる加工品・調味料）', {name: x.name}) : x.kind === 3 ? t('{name}（しょうゆ・みそなどの発酵調味料）', {name: x.name}) : x.kind === 4 ? t('{name}（入っていることがある加工品。袋の表示を確認）', {name: x.name}) : x.name + (x.opt ? t('（なくても可）') : '');
+    const li = id => `<li class="${mine.includes(id) ? 'mine' : ''}">${esc(t('{slot}：{name}', {slot: (mine.includes(id) ? '⚠ ' : '') + algLabel(id), name: joinNames([...new Set(m[id].map(kindText))])}))}</li>`;
     return `<div class="note allergen-box" id="allergen-box"><b>${esc(t('この料理に含まれる主なアレルゲン'))}</b>
         ${mine.length ? `<div class="small warn" role="alert">${esc(t('⚠ 選んでいるアレルゲン（{list}）を使う料理です。', {list: joinNames(mine.map(algLabel))}))}</div>` : ''}
+        ${may.length ? `<div class="small warn" role="note">${esc(t('選んでいるアレルゲン（{list}）が入っていることがある加工品を使います。袋の表示を確かめてください。', {list: joinNames(may.map(algLabel))}))}</div>` : ''}
         ${ids.length ? `<ul>${ids.map(li).join('')}</ul>` : `<div class="small muted">${esc(t('材料の名前からは、見つかりませんでした。'))}</div>`}
         <span class="small muted">${esc(t('材料の名前から推測した目安です。調味料や加工品の中身まではわかりません。原材料表示を必ず確認してください。'))}</span></div>`;
 }
@@ -5070,7 +5108,28 @@ function swappedRecipe(r){
         return [...new Set([x.from.name, x.from.label])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
             .reduce((u, n) => u.replace(new RegExp(esc_(n), 'gi'), x.to.label), s);
     }, String(txt));
-    const steps = r.steps.map(st => typeof st === 'string' ? repl(st) : Object.assign({}, st, {t: repl(st.t)}));
+    // 入れない材料（なくても作れる苦手な材料）は、作り方の文からも外す（「えびといんげんはゆでる」→「いんげんはゆでる」、「錦糸卵・えび・いんげん」→「錦糸卵・いんげん」）。
+    // 外すと文が崩れるところ（「えびは粗く刻む」）は「えび（入れない）」と添える。残る材料と同じ言葉・ほかの材料の名前の一部（玉ねぎの「ねぎ」など）は触らない
+    const lc = s => String(s).toLowerCase();
+    const omitWords = [...new Set(w.omit.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => n && n.length > 1))]
+        .filter(o => !items.some(i => [i.name, i.label, i.key, i.en].some(n => n && lc(n) === lc(o)))).sort((a, b) => b.length - a.length);
+    const keepWords = [...new Set(items.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => n && n.length > 1 && omitWords.some(o => lc(n) !== lc(o) && lc(n).includes(lc(o)))))].sort((a, b) => b.length - a.length);
+    const omitTxt = txt => {
+        if (!omitWords.length) return txt;
+        const hold = []; let u = String(txt);
+        keepWords.forEach(k => { u = u.replace(new RegExp(esc_(k), 'gi'), m => { hold.push(m); return '\u0001' + (hold.length - 1) + '\u0002'; }); });
+        // 添える言葉は、作り方の文の言語で（日本の料理を英語の画面で見ているときなど、画面の言語と違うことがある）
+        const sl = stepLangOf(r) || LANG, jp = sl === 'ja', mark = sl === LANG ? t('入れない') : jp ? '入れない' : ((I18N[sl] || {})['入れない'] || 'leave out');
+        // 英語などの言葉は、ほかの単語の一部に当たらないように語の切れ目で見る（韓国語・中国語・タイ語などは助詞が続いたり切れ目がなかったりするので見ない）
+        const W = '(?:' + omitWords.map(o => (/^[A-Za-zÀ-ÿ]/.test(o) ? '(?<![\\p{L}])' : '') + esc_(o) + (/[A-Za-zÀ-ÿ]$/.test(o) ? '(?![\\p{L}])' : '')).join('|') + ')';
+        if (jp) u = u.replace(new RegExp('(^|[、。・\\s])' + W + '(?:と|や|・|、)', 'giu'), '$1').replace(new RegExp('(?:と|や|・)' + W + '(?=[をはのにとや・、。\\s]|$)', 'giu'), '')
+            .replace(new RegExp(W, 'giu'), m => m + '（' + mark + '）');
+        else u = u.replace(new RegExp(',\\s*' + W, 'giu'), '').replace(new RegExp(W + ',\\s*', 'giu'), '')
+            .replace(new RegExp('\\s+(?:and|or)\\s+' + W, 'giu'), '').replace(new RegExp(W + '\\s+(?:and|or)\\s+', 'giu'), '')
+            .replace(new RegExp(W, 'giu'), m => m + (/^zh/.test(sl) ? '（' + mark + '）' : ' (' + mark + ')'));
+        return u.replace(/\u0001(\d+)\u0002/g, (_, k) => hold[k]);
+    };
+    const steps = r.steps.map(st => typeof st === 'string' ? omitTxt(repl(st)) : Object.assign({}, st, {t: omitTxt(repl(st.t))}));
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : r.protein});
 }
 // 献立の一覧に出す置き換えの一言（例: 🔁 さば の代わりに 鶏肉）
@@ -5132,10 +5191,12 @@ function familySettingsHtml(){
     const one = (m, i) => {
         const open = session.famOpen === m.id;
         avoidSumHtml.off = true;
-        let chips; try { chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
+        // アレルギーは1回押すだけで登録する（食べられない食材にも入る）。食べられない食材から「⚠」で切りかえる方法も残す
+        let chips, algChips; try { algChips = avoidChipsHtml(m.allergy, 'fam-alg', 'fam-alg-fam', true); chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
         return `<details class="box fam-member" data-fm="${esc(m.id)}" ${open ? 'open' : ''}><summary>${esc(famLabel(m, i))} <span class="small muted">${esc(m.role === 'child' ? t('子ども') : t('大人'))}${m.avoid.length ? ' · ' + esc(joinNames([...new Set(m.avoid.map(avoidName))])) : ''}${m.allergy.length ? ' ⚠' : ''}${m.mild ? ' 🌶' : ''}</span></summary>
             <div class="field"><input type="text" class="fam-name" data-act="fam-name" value="${esc(m.name)}" maxlength="12" placeholder="${esc(t('名前か絵文字（例: 長女、👧）'))}" aria-label="${esc(t('名前か絵文字（例: 長女、👧）'))}" autocomplete="off">
                 <div class="chips" role="group">${[['adult', t('大人')], ['child', t('子ども')]].map(([k, l]) => `<button class="chip" data-act="fam-role" data-v="${k}" aria-pressed="${m.role === k}">${esc(l)}</button>`).join('')}</div></div>
+            <div class="field"><label>${esc(t('この人のアレルギー（押すとすぐ登録します。置き換えずに、その食材を使う料理を出しません）'))}</label>${algChips}</div>
             <div class="field"><label>${esc(t('食べられない食材'))}</label>${chips}
                 <form class="inputbar" data-form="fam-add-avoid"><input type="text" class="fam-avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ、パクチー）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form></div>
             ${m.avoid.length ? `<div class="field"><label>${esc(t('アレルギーの食材（⚠ をつけると、置き換えずに、その食材を使う料理を出しません）'))}</label>
@@ -6182,6 +6243,8 @@ function restoreDraft(){
     if ((n !== menuCount() && !c.adj) || !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
     if ((n !== menuCount() && !c.adj) || !composeOf(n) || composeOf(n).slots.join() !== items.map(x => x.slot).join() || items.some((x, i) => c.ids[i] && !x.r)) return false;
     session.menu = {n, items, adj: !!c.adj && n !== menuCount()}; session.mood = c.mood || 'all'; session.useFridge = !!c.useFridge;
+    // 下書きを残したあとに苦手・アレルギーなどを変えていたら（設定の途中で閉じた・設定の画面から献立に戻らずに閉じた）、合わなくなった枠だけ選び直す。ほかの枠はそのまま
+    reconcileMenu();
     session.twist = PACK ? null : lazyTwist();
     return true;
 }
@@ -6902,9 +6965,12 @@ function cookItems(){
 // 食べる人や苦手な食材を変えたあとも、決めた献立の中身は黙って変えない。知らせて、取り消して選び直せるようにする
 function cookWarnHtml(){
     const c = S.cook; if (!c || c.d !== TODAY) return '';
-    const bad = cookItems().filter(x => isAvoidedCore(x.r));
+    const keep = Array.isArray(c.keep) ? c.keep : [];   // 「このまま」を選んだ料理（以前のデータにはない＝なし）
+    const bad = cookItems().filter(x => isAvoidedCore(x.r) && !keep.includes(x.r.id));
     if (!bad.length) return '';
-    return `<div class="note warn cook-warn" role="alert"><span>${esc(t('決めた献立の「{names}」は、いま食べる人のアレルギー・苦手な食材・辛さに合いません。作る前に確かめるか、取り消して選び直してください。', {names: joinNames(bad.map(x => x.r.name))}))}</span><button class="btn sm" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>`;
+    return `<div class="note warn cook-warn" role="alert"><span>${esc(t('決めた献立の「{names}」は、いま食べる人のアレルギー・苦手な食材・辛さに合いません。作る前に確かめるか、取り消して選び直してください。', {names: joinNames(bad.map(x => x.r.name))}))}</span>
+        ${bad.map(x => `<div class="row"><span class="small"><b>${esc(x.r.name)}</b></span><button class="btn sm" data-act="cook-swap" data-id="${esc(x.r.id)}">${esc(t('かえる'))}</button><button class="btn sm ghost" data-act="cook-keep" data-id="${esc(x.r.id)}">${esc(t('このまま'))}</button></div>`).join('')}
+        <button class="btn sm" data-act="undo-decide">${esc(t('決めた献立を取り消す'))}</button></div>`;
 }
 /* ---- 食べる時刻から逆算（作り方の画面） ----
    食べたい時刻を入れると、決めた献立の「各料理に書かれた所要時間」だけから、作り始める目安を出す。
@@ -7251,7 +7317,7 @@ const SEARCH_CAT = Object.fromEntries([['さかな',['魚','魚介']], ['お魚'
 const SEARCH_STOP = new Set(['and','the','with','for','of','n']);
 const searchJa = () => !PACK && LANG === 'ja';
 function searchIngText(q){ return searchJa() ? searchTerms(q).filter(x => { const n = norm(x); return !SEARCH_SYN[n] && !(SEARCH_CAT[n] && n.length >= 2); }).join('、') : q; }
-function searchRecipes(q){
+function searchRecipes(q, withHidden){
     const raw = searchTerms(q);
     if (!raw.length) return {terms:[], hits:[]};
     const ja = searchJa();
@@ -7270,18 +7336,23 @@ function searchRecipes(q){
     };
     const i_main = (r, k) => r.items.findIndex(i => i.key === k) < 3;
     const hits = RECIPES.filter(r => !isAvoided(r)).map(r => ({r, sc:score(r)})).filter(x => x.sc > 0).sort((a,b) => b.sc - a.sc).map(x => x.r);
-    return {terms:raw, hits};
+    // 見つからなかったときに理由を言えるように、設定（アレルギー・苦手など）で出していない料理のうち当たるものも数える
+    const hidden = withHidden ? RECIPES.filter(r => isAvoided(r) && score(r) > 0) : [];
+    return {terms:raw, hits, hidden};
 }
 function searchResultsHtml(q){
     if (!String(q || '').trim()) return '';
-    const {terms, hits} = searchRecipes(q);
+    const {terms, hits, hidden} = searchRecipes(q, true);
     // 料理名（肉じゃが・ハンバーグ・麻婆）だけを入れたときは、それを食材として冷蔵庫に入れる案は出さない
     const ings = extractIngredients(searchIngText(q)).filter(x => !S.fridge.some(f => keyOf(f) === keyOf(x)))
         .filter(x => canonOf(x) || !RECIPES.some(r => nameHit(r, norm(x))));
     const addBtn = ings.length ? `<div class="row"><button class="btn sm" data-act="search-to-fridge" data-v="${esc(ings.join('、'))}">${esc(t('{list} を冷蔵庫の材料に追加', {list:joinNames(ings)}))}</button></div>` : '';
     if (!hits.length){
         const sug = [...new Set(terms.flatMap(x => ingSuggest(x)))].filter(c => !terms.some(x => norm(c) === norm(x))).slice(0, 3);   // 打ちまちがいに、近い名前を添える
-        return `<div class="list"><div class="empty">${esc(t('見つかりませんでした。別の言い方や、食材の名前だけで試してください'))}${sug.length ? `<div class="row">${sug.map(c => `<button type="button" class="btn sm" data-act="search-sugg" data-v="${esc(c)}">${esc(t('もしかして：{name}', {name: c}))}</button>`).join('')}</div>` : ''}</div></div>${addBtn}`;
+        // 設定で出していない料理には当たるときは、壊れたと思われないように理由を言う（アレルギーは別に数える）
+        const hAlg = hidden.filter(allergyConflict).length, hOther = hidden.length - hAlg;
+        const why = [hAlg ? t('{n}品は、アレルギー（選んだアレルゲン・家族）に当たる材料を使うので出していません。', {n: hAlg}) : '', hOther ? t('{n}品は、苦手な食材・辛さ・手に入りにくい食材の設定で出していません。', {n: hOther}) : ''].filter(Boolean);
+        return `<div class="list"><div class="empty">${esc(t('見つかりませんでした。別の言い方や、食材の名前だけで試してください'))}${why.length ? `<div class="small" role="status">${esc(why.join(sentGap()))}</div>` : ''}${sug.length ? `<div class="row">${sug.map(c => `<button type="button" class="btn sm" data-act="search-sugg" data-v="${esc(c)}">${esc(t('もしかして：{name}', {name: c}))}</button>`).join('')}</div>` : ''}</div></div>${addBtn}`;
     }
     const shown = hits.slice(0, 30);
     return `<div class="sec-head"><h3>${esc(t('「{q}」の料理', {q:terms.join(LANG === 'ja' ? '、' : ', ')}))}</h3><span class="hint">${esc(t('{n}品', {n:hits.length}))}</span></div>
@@ -8148,8 +8219,9 @@ document.addEventListener('click', e => {
         case 'open-hist': openHist(id); break;
         case 'close': case 'modal-bg': closeModal(); break;
         case 'mix-reset': S.settings.mix = {}; save(); reconcileMenu(); render(); break;
-        case 'mood': if (session.mood === el.dataset.k) break; session.mood = el.dataset.k; session.rejected.clear(); newMenu(); render(); break;
-        case 'use-fridge': session.useFridge = el.checked; newMenu(); render(); break;
+        case 'mood': { if (session.mood === el.dataset.k) break; const k = el.dataset.k; guardDecided(() => { session.mood = k; session.rejected.clear(); newMenu(); render(); }); break; }
+        case 'use-fridge': { const v = el.checked; guardDecided(() => { session.useFridge = v; newMenu(); render(); }); break; }
+        case 'redo-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'redo') break; closeSheet(); const u = decidedUndo(); s0.run(); if (u) u(); break; }
         case 'reroll': {
             const i = Number(el.dataset.i), m = session.menu, it = m.items[i];
             if (it.r) session.rejected.add(it.r.id);
@@ -8169,18 +8241,21 @@ document.addEventListener('click', e => {
             if (nr) it.r = nr; else toast(t('合う料理がありません'));
             render(); break;
         }
-        case 'new-menu':
-            menuIds().forEach(id => session.rejected.add(id));
-            session.countSalt = (session.countSalt || 0) + 1;
-            newMenu(); render();
-            { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (el.classList.contains('shuffle') && kbNav()) b.focus({preventScroll:true}); } }
+        case 'new-menu': {
+            const fromShuffle = el.classList.contains('shuffle');
+            guardDecided(() => {
+                menuIds().forEach(id => session.rejected.add(id));
+                session.countSalt = (session.countSalt || 0) + 1;
+                newMenu(); render();
+                { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (fromShuffle && kbNav()) b.focus({preventScroll:true}); } }
+            });
             break;
+        }
         case 'count': {
             const v = el.dataset.v;
             if (String(S.settings.dishCount) === String(v) && !(session.menu && session.menu.adj)) break;   // 選んでいる品数をもう一度押しても、献立はそのまま（「あと1品」で増やしたときは、設定の品数に戻す）
             if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; }
-            S.settings.dishCount = v === 'auto' ? 'auto' : Number(v); save();
-            session.menu = null; render(); break;
+            guardDecided(() => { S.settings.dishCount = v === 'auto' ? 'auto' : Number(v); save(); session.menu = null; render(); }); break;
         }
         case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
         case 'ui-lang': { const v = el.dataset.v, n = ++uiLangSeq; uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}); break; }
@@ -8223,6 +8298,20 @@ document.addEventListener('click', e => {
             const m = famOf(el); if (!m) break;
             const v = el.dataset.v, k = keyOf(v), a = m.avoid, i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
             if (i >= 0){ m.allergy = m.allergy.filter(x => x !== a[i]); a.splice(i, 1); } else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
+        case 'fam-alg': {   // 家族のアレルギーを1回で登録する（食べられない食材にも入れる）。もう一度押すと、アレルギーと食べられない食材の両方から外す
+            const m = famOf(el); if (!m) break;
+            const v = el.dataset.v, k = keyOf(v), on = m.allergy.find(x => x[0] !== '@' && keyOf(x) === k);
+            if (on){ m.allergy = m.allergy.filter(x => x !== on); m.avoid = m.avoid.filter(x => x !== on); }
+            else { let a = m.avoid.find(x => x[0] !== '@' && keyOf(x) === k); if (!a){ a = canonOf(v) || v; m.avoid.push(a); rememberAvoidX(a, v); } m.allergy.push(a); }
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
+        case 'fam-alg-fam': {
+            const m = famOf(el); if (!m) break;
+            const f = el.dataset.v;
+            if (m.allergy.some(x => avoidFamOf(x) === f)){ m.allergy = m.allergy.filter(x => avoidFamOf(x) !== f); m.avoid = m.avoid.filter(x => avoidFamOf(x) !== f); }
+            else { if (!m.avoid.includes('@' + f)) m.avoid = m.avoid.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f); m.allergy = m.allergy.filter(x => m.avoid.includes(x)).concat('@' + f); }
             session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'fam-avoid-fam': {
@@ -8350,7 +8439,7 @@ document.addEventListener('click', e => {
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
-            obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('settings');
+            obSave(); closeSheet(); reconcileMenu(); keepDraft(); refreshWeek(); setTab('settings');   // 献立の画面を通らないので、選び直した献立をここで下書きに残す（開き直したときに前の献立に戻らないように）
             const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
         }
         case 'ob-done': {
@@ -8369,6 +8458,23 @@ document.addEventListener('click', e => {
             S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0}; save(); haptic();
             session.cookIdx = 0;
             toast(endSent(t('献立が決まりました。作り方はこちらです')) + sentGap() + praiseFor(ids, before), true); setTab('cook'); break;
+        }
+        case 'cook-swap': {   // 決めた献立のうち、合わなくなった1品だけを、本人が押したときに替える（ほかの料理は動かさない）
+            const c = S.cook, id = el.dataset.id; if (!c || c.d !== TODAY || !Array.isArray(c.ids)) break;
+            const j = c.ids.indexOf(id), old = byId(id); if (j < 0 || !old) break;
+            const items = cookItems(), slot = (c.slots || [])[j] || slotOf(old), others = items.filter(x => x.r.id !== id);
+            const nr = j === 0 && slot === '主菜' ? suggestMain(others.map(x => Object.assign({}, x.r, {slot: x.slot})), isBowlMain(old)) : suggestOrAny(slot, others, items[0] && items[0].r);
+            if (!nr || c.ids.includes(nr.id)){ toast(t('合う料理がありません')); break; }
+            const shown = menuIsDecided();
+            c.ids = c.ids.map(x => x === id ? nr.id : x); if (c.done) delete c.done[id];
+            S.history = S.history.filter(h => !(h.d === TODAY && h.id === id && !yumOf(h))); record(nr.id, slot);   // 記録も替えた料理にする
+            if (shown) session.menu.items.forEach(x => { if (x.r && x.r.id === id) x.r = nr; });
+            save(); keepDraft(); reactVer++; render();
+            toast(t('「{from}」を「{to}」にかえました', {from: old.name, to: nr.name})); break;
+        }
+        case 'cook-keep': {   // 合わないと知ったうえで、このまま作る（知らせを消す。料理の詳細のアレルゲンの欄はそのまま出る）
+            const c = S.cook, id = el.dataset.id; if (!c || c.d !== TODAY) break;
+            c.keep = [...new Set([...(Array.isArray(c.keep) ? c.keep : []), id])]; save(); render(); break;
         }
         case 'undo-decide': {
             // 「この献立に決定」の取り消し: 決めたときに記録した今日の料理を記録から消す（「おいしかった！」を押した料理は残す）
