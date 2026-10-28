@@ -1216,4 +1216,11 @@ GOHAN_I18N('tr', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Yaklaşık {max}–{n} dk (aynı anda yaparsan daha kısa)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Bazen bizimle yer (normalde “Bugün kim yiyor”da değil)",
     "いつものメンバー": "Her zamanki ekip",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "{name} zamanlayıcısı hâlâ çalışıyor. Hazırsa bir kez daha dokun",
+    "国を「{name}」に変えますか？": "Ülkeyi “{name}” olarak değiştirelim mi?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Bugünün menüsü {name} yemeklerine dönecek. İstediğin zaman geri dönebilirsin.",
+    "決めた献立は「作り方」にそのまま残ります。": "Seçtiğin menü “Pişir” bölümünde aynen kalır.",
+    "{name}に変える": "{name} olarak değiştir",
+    "肉や魚の部位がちがう料理": "Farklı et ya da balık parçası kullanan yemekler",
+    "冷蔵庫の部位とはちがう部位を使います": "Buzdolabındakinden farklı bir parça kullanır",
 });

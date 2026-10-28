@@ -102,6 +102,43 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     await ctx.close();
 }
 
+// ---- E 第2回モニターの不具合（A4・A7・A8・A11・A12） ----
+{
+    const {p, ctx} = await open();
+    const r = await p.evaluate(() => {
+        const out = {};
+        // A4 季節の料理: 10月はおまかせの候補にお雑煮が出ない／1月は出る（検索では出る）
+        const t0 = TODAY; TODAY = t0.slice(0, 4) + '-10-28'; out.oct = poolFor('汁物').some(r => r.id === 'zoni'); out.search = searchRecipes('お雑煮').hits.some(h => (h.r || h).id === 'zoni');
+        TODAY = t0.slice(0, 4) + '-01-05'; out.jan = poolFor('汁物').some(r => r.id === 'zoni'); TODAY = t0;
+        // A12 調味料の欄: 小さじ3以上は大さじに
+        out.tsp = scaleSeas('醤油 小さじ1・砂糖 小さじ2', 2.5);
+        return out; });
+    ok(!r.oct && r.jan && r.search, 'E1 季節の料理は時期だけおまかせに出る（検索では出る）: ' + JSON.stringify(r));
+    ok(r.tsp === '醤油 小さじ2と1/2・砂糖 大さじ1と小さじ2', 'E2 調味料の小さじ5は「大さじ1と小さじ2」: ' + r.tsp);
+    // A7 タイマーが動いているあいだに最後の手順を押しても、1回目は「できた」にしない
+    await p.evaluate(() => { setTab('today'); render(); document.querySelector('[data-act="decide"]').click(); });
+    await p.waitForTimeout(450);
+    const t7 = await p.evaluate(() => { session.cookIdx = 0; setTab('cook'); render(); const x = cookItems()[0]; const n = x.r.steps.length;
+        S.cook.done = {[x.r.id]: [...Array(n - 1).keys()]}; render(); startTimer(300, x.r.name, 'test', x.r.id, n - 1);
+        document.querySelector('[data-act="cook-next"]').click(); const first = (S.cook.done[x.r.id] || []).length >= n;
+        document.querySelector('[data-act="cook-next"]').click(); const second = (S.cook.done[x.r.id] || []).length >= n;
+        TIMERS.forEach(t => stopTimer(t.id)); return {first, second}; });
+    ok(!t7.first && t7.second, 'E3 タイマー中の最後の手順は、1回目は止めて知らせ、2回目で「できた」: ' + JSON.stringify(t7));
+    // A8 国旗から国を選ぶと、先に聞く（やめると変わらない）
+    await p.evaluate(() => openCountrySheet()); await p.waitForTimeout(200);
+    await p.click('[data-act="pick-country"][data-cc="US"]'); await p.waitForTimeout(200);
+    const k8 = await p.evaluate(() => ({kind: sheet && sheet.kind, cc: S.settings.country}));
+    await p.evaluate(() => document.querySelector('[data-act="sheet-close"]').click()); await p.waitForTimeout(200);
+    ok(k8.kind === 'country-ok' && k8.cc === 'JP' && await p.evaluate(() => S.settings.country) === 'JP', 'E4 国を変える前に聞き、やめると変わらない: ' + JSON.stringify(k8));
+    // A11 こま切れの冷蔵庫では、とんかつ・角煮は「今ある材料で作れる」に入らない
+    await p.evaluate(() => { setTab('fridge'); render(); });
+    await p.fill('#ing-input', '豚こま、キャベツ、玉ねぎ、卵、パン粉、小麦粉'); await p.press('#ing-input', 'Enter'); await p.waitForTimeout(200);
+    const k11 = await p.evaluate(() => { const box = [...document.querySelectorAll('#fridge-results .w4x_grp')].find(h => h.textContent.includes('今ある材料で作れる'));
+        const list = box ? box.nextElementSibling : null; return list ? [...list.querySelectorAll('.name')].map(e => e.textContent) : []; });
+    ok(!k11.some(n => /とんかつ|角煮/.test(n)), 'E5 こま切れでとんかつ・角煮を「今ある材料で作れる」に入れない: ' + k11.slice(0, 8).join('・'));
+    await ctx.close();
+}
+
 // ---- C 設定と決めた献立（北条の修正待ち） ----
 {
     // C1 下書きにえびフライ → 設定でえびを苦手に → 今日の献立を見ずに開き直す

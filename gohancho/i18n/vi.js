@@ -1216,4 +1216,11 @@ GOHAN_I18N('vi', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Khoảng {max}–{n} phút (nấu song song sẽ nhanh hơn)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Thỉnh thoảng ăn cùng (thường không có trong “Ai ăn hôm nay”)",
     "いつものメンバー": "Thành viên thường ngày",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Hẹn giờ của {name} vẫn đang chạy. Nếu đã xong, hãy chạm lần nữa",
+    "国を「{name}」に変えますか？": "Đổi quốc gia sang “{name}”?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Thực đơn hôm nay sẽ đổi sang món của {name}. Bạn có thể đổi lại bất cứ lúc nào.",
+    "決めた献立は「作り方」にそのまま残ります。": "Thực đơn đã chọn vẫn giữ nguyên trong “Cách nấu”.",
+    "{name}に変える": "Đổi sang {name}",
+    "肉や魚の部位がちがう料理": "Món dùng phần thịt hoặc cá khác",
+    "冷蔵庫の部位とはちがう部位を使います": "Dùng phần khác với phần đang có trong tủ lạnh",
 });

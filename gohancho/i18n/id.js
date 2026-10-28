@@ -1216,4 +1216,11 @@ GOHAN_I18N('id', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Sekitar {max}–{n} mnt (lebih singkat jika dimasak bersamaan)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Kadang ikut makan (biasanya tidak di “Yang makan hari ini”)",
     "いつものメンバー": "Yang biasa",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Timer {name} masih berjalan. Jika sudah jadi, ketuk lagi",
+    "国を「{name}」に変えますか？": "Ganti negara ke “{name}”?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Menu hari ini akan berganti ke masakan {name}. Kamu bisa kembali kapan saja.",
+    "決めた献立は「作り方」にそのまま残ります。": "Menu yang sudah dipilih tetap ada di “Masak”.",
+    "{name}に変える": "Ganti ke {name}",
+    "肉や魚の部位がちがう料理": "Masakan dengan bagian daging atau ikan yang berbeda",
+    "冷蔵庫の部位とはちがう部位を使います": "Memakai bagian yang berbeda dari yang ada di kulkas",
 });
