@@ -45,7 +45,8 @@ window.__snap = () => {
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
     const sa = sp.querySelector('[data-act="soup-add"]');
     const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap, .last, .spice-tag, .swap-line').forEach(x => x.remove());   // 「今日作った」など記録の表示は料理の入れ替わりではない
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: (sa || sp.querySelector('.nm.none')) ? 'EMPTY' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '')};
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: (sa || sp.querySelector('.nm.none')) ? 'EMPTY' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
+   };
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }
@@ -301,6 +302,7 @@ async function exec(b, run, onStep) {
     const A = acts[k], p = st.p;
     let r; try { r = await Promise.race([ACTIONS[A.a](p, A, st), new Promise((_, rej) => setTimeout(() => rej(new Error('HANG 90秒たっても終わらない（ページが固まった可能性）')), 90000))]); } catch (e) {
       if (/^HANG/.test(e.message)) { fails.push({ step: k, act: A.a, kind: 'HANG', msg: '#' + k + ' ' + A.a + ' ' + e.message }); break; } fails.push({ step: k, act: A.a, kind: 'エラー', msg: 'ACTION ERROR ' + e.message.split('\n')[0] }); try { st.p = st.p; await toToday(st.p); } catch (e2) { break; } continue; }
+    if (process.env.PROGRESS) console.error('step', k, A.a, r ? 'ok' : 'skip', new Date().toISOString().slice(11, 19));
     if (!r) continue;
     const q = st.p; await q.waitForTimeout(80);
     let s1; try { s1 = await snap(q); } catch (e) { fails.push({ step: k, act: A.a, kind: 'エラー', msg: 'SNAP ERROR ' + e.message.split('\n')[0] }); break; }
@@ -367,7 +369,7 @@ async function exec(b, run, onStep) {
     if (onStep) onStep(k);
     prev = s1;
   }
-  try { await st.ctx.close(); } catch (e) {}
+  try { await Promise.race([st.ctx.close(), new Promise(r => setTimeout(r, 20000))]); } catch (e) {}
   fails.steps = done; return fails;
 }
 
@@ -392,7 +394,7 @@ async function shrink(b, run, f0) {
   if (process.env.REPLAY) runs = [JSON.parse(fs.readFileSync(process.env.REPLAY, 'utf8').trim().split('\n').pop().replace(/^.*replay /, ''))];
   else for (let i = 0; i < RUNS; i++) runs.push(makeRun(i, rng));
   const stat = {}, bads = []; let steps = 0, doneRuns = 0; const t0 = Date.now();
-  const q = runs.map((r, i) => [r, i]);
+  const q = runs.map((r, i) => [r, i]).filter(([r, i]) => !process.env.ONLY || process.env.ONLY.split(',').includes(String(i)));   // ONLY=60,61 で試行番号を絞る
   await Promise.all(Array.from({ length: JOBS }, async () => {
     while (q.length) {
       const [run, i] = q.shift(); let fl;
