@@ -874,12 +874,17 @@ body.on-cook .toast{bottom:calc(var(--nav-h,84px) + 76px)}
 .celebrate .cel-ico{font-size:2.6rem;line-height:1}
 .celebrate .cel-t{font-weight:700;font-size:var(--fs24);color:var(--leaf)}
 .celebrate p{margin:0}
-.celebrate .cf{position:absolute;top:8px;font-size:1.2rem;pointer-events:none;opacity:0}
+.celebrate .cf{position:absolute;top:var(--s8);inline-size:10px;block-size:10px;pointer-events:none;opacity:0}
+.celebrate .cf-dot{border-radius:50%}
+.celebrate .cf-sq{inline-size:9px;block-size:9px;border-radius:1px}
+.celebrate .cf-band{inline-size:5px;block-size:14px;border-radius:2px}
+.celebrate .cf-c0{background:var(--accent)}.celebrate .cf-c1{background:var(--leaf)}.celebrate .cf-c2{background:var(--stage-3);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 18%,transparent)}.celebrate .cf-c3{background:var(--stage);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
+.celebrate .cel-ico svg{width:56px;height:56px;display:block}.celebrate .cel-ico circle{fill:var(--leaf)}.celebrate .cel-ico path{fill:none;stroke:var(--leaf-ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 .celebrate.pop .cel-ico{animation:celPop .7s cubic-bezier(.3,1.6,.5,1) both}
-.celebrate.pop .cf{animation:celFall 1.6s ease-out calc(var(--i)*.12s) both}
+.celebrate.pop .cf{animation:celFall 1.6s ease-out calc(var(--i)*.08s) both}
 @keyframes celPop{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 @keyframes celFall{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(120px) rotate(40deg);opacity:0}}
-@media (prefers-reduced-motion:reduce){.celebrate.pop .cel-ico,.celebrate.pop .cf{animation:none}}
+@media (prefers-reduced-motion:reduce){.celebrate.pop .cel-ico,.celebrate.pop .cf{animation:none}.celebrate .cf{display:none}}
 .cel-flow{list-style:none;margin:var(--s8) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--s8);inline-size:100%;text-align:start}
 .cel-step{display:grid;grid-template-columns:28px minmax(0,1fr);gap:var(--s12);align-items:start;background:var(--surface);border-radius:var(--r-md);padding:var(--s12)}
 .cel-step .cs-n{width:28px;height:28px;border-radius:50%;background:var(--leaf);color:var(--leaf-ink);display:grid;place-items:center;font-weight:700;font-size:var(--fs14);margin-top:10px}
@@ -7003,6 +7008,8 @@ function eatPlanHtml(items){
         ${lines.length ? `<p class="foot">${esc(t('料理ごとの所要時間の目安から数えています。実際の手順や待ち時間までは見ていません。'))}</p>` : ''}
     </details>`;
 }
+// できた！の紙ふぶき: 絵文字は端末によって青が出るので、CSS の小さな形（丸・四角・細い帯）を v3 の色で降らせる。動きを減らす設定では出さない
+const CONFETTI = Array.from({length: 12}, (_, k) => `<span class="cf cf-${['dot', 'sq', 'band'][k % 3]} cf-c${k % 4}" style="--i:${k};inset-inline-start:${6 + Math.round(k * 88 / 11)}%" aria-hidden="true"></span>`).join('');
 const ICO_SPEAK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>';   // 声で読む・ハンズフリーの印（線の絵。色は文字の色）
 function viewCook(){
     const items = cookItems();
@@ -7025,8 +7032,8 @@ function viewCook(){
     // できた！のあとに進む先: この料理より後ろの、まだの料理（なければ前の、まだの料理）
     const undone = k => k !== i && doneOf(items[k]).length < items[k].r.steps.length;
     let nextDish = items.findIndex((x, k) => k > i && undone(k)); if (nextDish < 0) nextDish = items.findIndex((x, k) => undone(k));
-    const celHtml = allDone ? `<div class="celebrate${fresh ? ' pop' : ''}" role="status" id="cook-celebrate"><span class="cf" style="--i:0;inset-inline-start:12%" aria-hidden="true">✨</span><span class="cf" style="--i:1;inset-inline-start:30%" aria-hidden="true">🎊</span><span class="cf" style="--i:2;inset-inline-start:50%" aria-hidden="true">⭐</span><span class="cf" style="--i:3;inset-inline-start:70%" aria-hidden="true">🎊</span><span class="cf" style="--i:4;inset-inline-start:88%" aria-hidden="true">✨</span>
-                <div class="cel-ico" aria-hidden="true">🎉</div><div class="cel-t">${esc(t('できた！'))}</div><p>${esc(t('{name}、できあがり！', {name:cur.name}))} ${esc(t('今日もおつかれさまです。'))}</p>
+    const celHtml = allDone ? `<div class="celebrate${fresh ? ' pop' : ''}" role="status" id="cook-celebrate">${CONFETTI}
+                <div class="cel-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22"/><path d="M14 24.5l7 7 13-14"/></svg></div><div class="cel-t">${esc(t('できた！'))}</div><p>${esc(t('{name}、できあがり！', {name:cur.name}))} ${esc(t('今日もおつかれさまです。'))}</p>
                 <ol class="cel-flow">
                     <li class="cel-step"><span class="cs-n" aria-hidden="true">1</span><div class="cs-b">${MINE[cur.id] ? `<img class="cel-photo" src="${esc(MINE[cur.id].src)}" alt="${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(MINE[cur.id].d)}))}" width="72" height="72">` : ''}<label class="btn" for="photo-input-cook">${esc(MINE[cur.id] ? t('写真を撮り直す') : t('写真を撮る'))}</label></div></li>
                     ${histEntry(cur.id, S.cook.d) ? `<li class="cel-step"><span class="cs-n" aria-hidden="true">2</span><div class="cs-b">${reactRowHtml(cur.id, S.cook.d)}</div></li>
