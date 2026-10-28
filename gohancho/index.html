@@ -3175,7 +3175,7 @@ async function loadMine(){
             cur.onsuccess = () => { const c = cur.result; if (!c) return; MINE[c.key] = {src: URL.createObjectURL(c.value.blob), d: c.value.d, mine: true}; c.continue(); };
             tx.oncomplete = res; tx.onerror = () => rej(tx.error);
         });
-        if (Object.keys(MINE).length){ render(); if (modalId) renderModal(); if (JP_DATA) loadRefs(); }
+        if (Object.keys(MINE).length){ scheduleRender(0); if (JP_DATA) loadRefs(); }
         // 以前に登録した写真（アルバムができる前の分）をアルバムにも入れる
         if (!S.albumMigrated){
             const n = await idbDo('readonly', st => st.count(), 'album');
@@ -3325,13 +3325,21 @@ async function pumpSketches(){
     sketchBusy = false;
 }
 let renderTimer = null;
-function scheduleRender(){
+// 絵が届いたときなどの描き直し。入力中・押している途中（指が触れてから離すまで）・入れかけの文字が残っているときは描き直さず、あとでもう一度試す
+// （描き直すと入力欄が作り直されて、入れかけの文字が消える。「備蓄に入れる」を押した瞬間に描き直しが入ると、品名が消えて追加されなかった）
+let pressing = false;
+document.addEventListener('pointerdown', () => { pressing = true; }, true);
+['pointerup', 'pointercancel'].forEach(ev => document.addEventListener(ev, () => { pressing = false; }, true));
+function viewDirty(){ return [...document.querySelectorAll('#view input, #view textarea')].some(e => !/^(checkbox|radio|file|button|submit|hidden|range|date)$/.test(e.type) && e.value !== e.defaultValue); }
+// 利用者の操作ではない描き直し（絵や訳の読みこみが終わったときなど）は、すべてこれを通す
+function scheduleRender(delay = 250, modalDone = false){
     clearTimeout(renderTimer);
     renderTimer = setTimeout(() => {
+        if (modalId && !modalDone) renderModal();   // 料理の詳しい画面は、前と同じく1回だけ描き直す
         const a = document.activeElement;
-        if (!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) render();
-        if (modalId) renderModal();
-    }, 250);
+        if (pressing || (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) || viewDirty()){ scheduleRender(1000, true); return; }
+        render();
+    }, delay);
 }
 function popIllustrate(src){
     return new Promise((resolve, reject) => {
@@ -5379,7 +5387,7 @@ async function loadRemote(){
         if (!res.ok) return;
         const j = await res.json(); if (!j || typeof j !== 'object') return;
         try{ localStorage.setItem('gohancho.remote', JSON.stringify({notice: j.notice, minVersion: j.minVersion})); }catch(e){}   // 最後に読めたお知らせだけ控える
-        applyRemote(j); render();
+        applyRemote(j); scheduleRender(0);
     }catch(e){}
 }
 function cmpVer(a, b){ const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++){ if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); } return 0; }
@@ -5616,7 +5624,7 @@ let jpEnTried = false;
 function shoppingHtml(){
     const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
     // 日本語の画面で日本の料理に英語の名前を添えるため、英語版の訳を（まだなら）一度だけ読む。読めなければ英語の名前は出さない
-    if (LANG === 'ja' && !PACK_TR['JP.en'] && !jpEnTried && (JP_DATA || currentCountry() === 'JP')){ jpEnTried = true; loadPackTr('JP', 'en').then(tr => { if (tr){ JP_EN_MAP = null; render(); } }); }
+    if (LANG === 'ja' && !PACK_TR['JP.en'] && !jpEnTried && (JP_DATA || currentCountry() === 'JP')){ jpEnTried = true; loadPackTr('JP', 'en').then(tr => { if (tr){ JP_EN_MAP = null; scheduleRender(0); } }); }
     const done = shopDoneSet(), sv = Number(S.settings.servings) || 2, on = weekSidesOn();
     const days = visiblePlanDays(), n = on ? days.length : days.filter(x => byId(x.id)).length;
     const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
@@ -9225,7 +9233,7 @@ function buildBrowse(cc){
 const browseErr = new Set();   // 読みこめなかった国（失敗は覚えない。もう一度押すと読みに行く）
 async function loadBrowse(cc){
     try{ if (cc !== 'JP') await loadPack(cc); await ensureTr(cc); BROWSE[cc] = buildBrowse(cc); browseErr.delete(cc); }catch(e){ delete BROWSE[cc]; browseErr.add(cc); }
-    if (tab === 'world' || tab === 'today') render();
+    if (tab === 'world' || tab === 'today') scheduleRender(0);   // 読みこみが終わったときの描き直しは、入力中・押している途中を待つ（scheduleRender）
 }
 // お気に入り・作った記録・アルバムにあるほかの国の料理を開けるように、その国のレシピだけ読みこんでおく（起動したときと国・言語を変えたとき）
 function refCountries(){
@@ -9248,7 +9256,7 @@ async function loadRefs(){
     ccs.forEach(cc => refLoading.add(cc));
     await Promise.all(ccs.map(loadBrowse));
     ccs.forEach(cc => refLoading.delete(cc));
-    render(); if (modalId) renderModal();
+    scheduleRender(0);   // 入力中・押している途中・入れかけの文字があれば、待ってから描き直す（料理の詳しい画面も描き直す）
 }
 // 苦手な食材を使う料理を隠すか（苦手な食材があるときだけ。はじめは隠す）
 function worldHide(){ return (effAvoid().length > 0 || mildOn()) && S.settings.worldHideAvoid !== false; }
