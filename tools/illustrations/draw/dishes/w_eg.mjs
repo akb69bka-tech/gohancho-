@@ -427,22 +427,23 @@ export default {
         wegTaameya(p, 90, 146, 44, 160, { seed: 6, broken: true }),
     ].join(''),
 
-    // ful medames: mashed fava beans in a small metal bowl, oil, cumin, tomato, parsley
+    // ful medames（凪案）: 銀の鉢の中で、豆のペーストをやや明るい茶に、金色のオイルの輪、中央にトマトとパセリ、縁にレモンを大きく置いて色の層を作る
     eg_ful: p => {
-        const out = [K.bowl(p, { glaze: '#b5bac0', inside: '#9aa0a6', lip: .9 }),
-            `<circle cx="100" cy="100" r="76" fill="${p.rg('#8f6236', .2, .3)}"/>`];
+        const out = [K.bowl(p, { glaze: '#a8aeb6', inside: '#9aa0a6', lip: .9 }),
+            `<circle cx="100" cy="100" r="76" fill="${p.rg('#b4824a', .2, .3)}"/>`];
         const R = rng('fulmash');
         let mash = '';
-        for (let i = 0; i < 22; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 64; mash += `<path ${T(100 + Math.cos(a) * d, 100 + Math.sin(a) * d)} d="${smooth(ring(4 + R() * 5, 7, .5, R))}" fill="${R() < .5 ? '#a0703e' : '#7a4f2a'}" opacity=".7"/>`; }
+        for (let i = 0; i < 18; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 64; mash += `<path ${T(100 + Math.cos(a) * d, 100 + Math.sin(a) * d)} d="${smooth(ring(4 + R() * 5, 7, .5, R))}" fill="${R() < .5 ? '#c8985a' : '#8a5a30'}" opacity=".6"/>`; }
         out.push(mash);
-        wegSpots('ful-b', 28, 66, 14).forEach(([x, y, r]) => out.push(wegFul(p, x, y, 14, r)));
-        out.push(K.pool(p, 98, 98, 70, '#e8b828', { op: .42, seed: 4, sy: .85 }));
-        out.push(wegOil(p, 98, 98, 60, { n: 8, c: '#f2c838', op: .7, rmax: 2.6, seed: 3 }));
-        out.push(K.sprinkle(p, 100, 100, 50, { c: '#8a3a12', n: 16, r: .9 }));
-        out.push(`<g ${p.sh(.4)}>`);
-        [[86, 88], [110, 92], [98, 110], [114, 108], [90, 104]].forEach(([x, y], i) => out.push(wegDice(p, x, y, 8, i * 25, 'tom')));
-        out.push('</g>');
-        out.push(wegHerb(p, 100, 100, 46, { n: 12, seed: 6 }));
+        wegSpots('ful-b', 16, 62, 18).forEach(([x, y, r]) => out.push(wegFul(p, x, y, 18, r)));
+        out.push(`<circle cx="100" cy="100" r="40" fill="none" stroke="#f0c02a" stroke-width="7" opacity=".6"/>`);
+        out.push(K.pool(p, 100, 100, 58, '#f2c838', { op: .5, seed: 4, sy: .9 }));
+        out.push(wegOil(p, 100, 100, 70, { n: 8, c: '#f8d848', op: .85, rmax: 3, seed: 3 }));
+        out.push(`<g ${p.edge('#5a1008', .6, .5)}><g ${p.sh(.5)}>`);
+        [[86, 88], [112, 90], [98, 112], [118, 110], [88, 108], [104, 76]].forEach(([x, y], i) => out.push(wegDice(p, x, y, 12, i * 25, 'tom')));
+        out.push('</g></g>');
+        out.push(wegHerb(p, 100, 100, 56, { n: 18, seed: 6 }));
+        out.push(`<g ${p.edge('#a88410', .7, .6)}>${K.lemon(p, 140, 142, 38, -40)}</g>`);
         return out.join('');
     },
 

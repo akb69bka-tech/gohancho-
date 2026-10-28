@@ -257,13 +257,16 @@ export default {
         winCoriander(p, 104, 98, 64, { n: 9, seed: 2 }),
     ].join(''),
 
-    // South-style fish curry in a clay pot
+    // Fish curry（凪案）: 土鍋のグレービーを少し明るくし、白っぽい魚の輪切りを大きく、玉ねぎ・トマト・ココナッツミルクの渦・カレーリーフを見える大きさで足す
     in_fishcurry: p => {
-        const out = [winClay(p), winGravy(p, { R: 76, c: '#c1441a', oil: '#e06a22' })];
-        out.push(`<path d="${smooth(ring(40, 10, .4, rng('coco'), 1.3, .8))}" transform="translate(96 106)" fill="#e08a4a" opacity=".35"/>`);
-        out.push(winFishSteak(p, 76, 82, 40, 20, { seed: 1 }), winFishSteak(p, 124, 86, 38, -30, { seed: 2 }), winFishSteak(p, 96, 126, 42, 10, { seed: 3 }));
-        out.push(winOil(p, 100, 100, 130, { n: 10, c: '#e8802a', op: .55 }));
-        [[66, 112, 20], [138, 120, -50], [100, 64, 80], [104, 98, 140], [130, 60, 30]].forEach(([x, y, r]) => out.push(winCurryLeaf(p, x, y, 16, r)));
+        const out = [winClay(p), winGravy(p, { R: 76, c: '#cc4a1c', oil: '#e8742a' })];
+        out.push(`<path d="${smooth(ring(40, 10, .4, rng('coco'), 1.3, .8))}" transform="translate(98 106)" fill="#f2c08a" opacity=".5"/>`);
+        out.push(`<path d="M62,112 C80,98 96,122 120,106 C134,98 142,108 146,116" stroke="#fbe6c4" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".85"/>`);
+        [[138, 70, 20], [60, 130, -30], [112, 62, 50]].forEach(([x, y, r]) => out.push(`<g ${p.edge('#7a2a0c', .7, .45)}>${K.onion(p, x, y, 26, r, { c: '#f0cf9a' })}</g>`));
+        [[130, 134, 30], [70, 62, -40]].forEach(([x, y, r]) => out.push(`<g ${p.edge('#5a1408', .7, .5)}>${K.tomatoWedge(p, x, y, 24, r)}</g>`));
+        out.push(`<g ${p.edge('#3a2a1c', .9, .6)}>`, winFishSteak(p, 72, 84, 50, 20, { seed: 1 }), winFishSteak(p, 128, 90, 48, -30, { seed: 2 }), winFishSteak(p, 96, 130, 52, 10, { seed: 3 }), `</g>`);
+        out.push(winOil(p, 100, 100, 130, { n: 8, c: '#f09a3a', op: .6 }));
+        [[56, 108, 20], [148, 116, -50], [104, 62, 80], [100, 100, 140], [150, 70, 30]].forEach(([x, y, r]) => out.push(winCurryLeaf(p, x, y, 20, r)));
         return out.join('');
     },
 

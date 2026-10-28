@@ -394,17 +394,19 @@ export default {
         ].join('');
     },
 
-    // Beef and broccoli: white rice beside glossy soy-glazed beef strips and broccoli, sesame
+    // Beef and broccoli（凪案）: ご飯は大きな白い塊で粒を控えめにし、牛肉は照りのある明るい茶、ブロッコリーを大きく鮮やかな緑にして色の境目をはっきり
     us_beefbroccoli: p => [
         K.plate(p, { rim: '#9a2a24' }),
-        usRice(p, 66, 100, 76, { sy: 1.2, seed: 1 }),
-        K.pool(p, 126, 102, 80, '#7a3a14', { op: .45, seed: 2, sy: 1.3 }),
-        `<g ${p.sh(.8)}>`,
-        ...[[116, 72, 40, 30], [144, 92, 38, -40], [110, 128, 40, 70], [142, 140, 36, 10], [112, 100, 38, -15], [150, 64, 30, 60], [128, 120, 34, 120]].map(([x, y, sz, r], i) => usBeef(p, x, y, sz, r, { seed: i + 1 })),
-        K.broccoli(p, 134, 66, 30, 20, { c: '#3a8a30' }), K.broccoli(p, 152, 116, 30, -30, { c: '#3a8a30' }), K.broccoli(p, 120, 150, 28, 60, { c: '#3a8a30' }), K.broccoli(p, 126, 108, 28, 0, { c: '#3a8a30' }), K.broccoli(p, 104, 80, 24, -40, { c: '#3a8a30' }),
+        `<g ${p.edge('#b6ad98', .8, .8)}>`, usRice(p, 62, 100, 78, { sy: 1.22, seed: 1, density: .5, grain: 4 }), `</g>`,
+        K.pool(p, 128, 102, 84, '#6a3010', { op: .6, seed: 2, sy: 1.3 }),
+        `<g ${p.edge('#3a1a08', .8, .6)}>`,
+        ...[[118, 76, 40, 30], [150, 98, 38, -40], [112, 126, 40, 70], [146, 140, 34, 10], [116, 100, 36, -15], [150, 60, 28, 60]].map(([x, y, sz, r], i) => usBeef(p, x, y, sz, r, { seed: i + 1, c: '#9a5630' })),
         `</g>`,
-        K.glaze(p, 128, 104, 70, '#8a4416', { seed: 3, op: .22 }),
-        K.sesame(p, 126, 104, 60, { n: 16 }),
+        `<g ${p.edge('#133a0e', .8, .6)}>`,
+        K.broccoli(p, 132, 62, 36, 20, { c: '#2f9a2c' }), K.broccoli(p, 152, 122, 36, -30, { c: '#2f9a2c' }), K.broccoli(p, 120, 154, 32, 60, { c: '#2f9a2c' }), K.broccoli(p, 126, 108, 34, 0, { c: '#2f9a2c' }), K.broccoli(p, 98, 78, 28, -40, { c: '#2f9a2c' }),
+        `</g>`,
+        K.glaze(p, 128, 104, 70, '#a85a1c', { seed: 3, op: .2 }),
+        K.sesame(p, 126, 104, 56, { n: 12 }),
     ].join(''),
 
     // Mashed potatoes: turquoise stoneware bowl, creamy swirled mash, melting butter, chives, pepper

@@ -72,6 +72,11 @@ export class Pic {
         const id = this.def(`ro${k}${freq}`, id => `<filter id="${id}" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="2" seed="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="${k}" xChannelSelector="R" yChannelSelector="G"/></filter>`);
         return `filter="url(#${id})"`;
     }
+    // 小さく表示しても形が潰れないよう、主役の具のまわりに細い暗色の縁をつける（グループの外形をなぞる）
+    edge(c = '#3a1d0c', w = .9, op = .55){
+        const id = this.def(`ed${c}${w}${op}`, id => `<filter id="${id}" x="-8%" y="-8%" width="116%" height="116%"><feMorphology in="SourceAlpha" operator="dilate" radius="${w}" result="d"/><feFlood flood-color="${c}" flood-opacity="${op}"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`);
+        return `filter="url(#${id})"`;
+    }
     svg(body){
         return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400"><defs>${[...this.defs.values()].map(d => d.body).join('')}</defs>${body}</svg>\n`;
     }
