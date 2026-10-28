@@ -7527,7 +7527,7 @@ function viewLog(){
                 <p class="small muted" style="margin:0">${esc(t('2人分以外のときは、材料と調味料を2人分に換算して使います（端数は丸めます）。作り方の文章は換算しません。'))}</p>
                 <div class="field"><label for="c-seas">${esc(t('調味料'))}</label><input type="text" id="c-seas" value="${esc(ed ? ed.seas : '')}" placeholder="${esc(t('醤油 大さじ2・みりん 大さじ2'))}"></div>
                 <div class="field"><label for="c-steps">${esc(t('作り方（1行に1手順）'))}</label><textarea id="c-steps">${ed ? esc(ed.steps.filter(x => x !== t('（作り方は未入力です）')).join('\n')) : ''}</textarea></div>
-                <div class="row"><button class="btn primary" type="submit">${esc(ed ? t('保存する') : t('追加する'))}</button>${ed ? `<button class="btn" type="button" data-act="edit-custom-cancel">${esc(t('やめる'))}</button>` : ''}</div>
+                <div class="row"><button class="btn" type="submit">${esc(ed ? t('保存する') : t('追加する'))}</button>${ed ? `<button class="btn" type="button" data-act="edit-custom-cancel">${esc(t('やめる'))}</button>` : ''}</div>
             </form>
         </details>
     </section>
