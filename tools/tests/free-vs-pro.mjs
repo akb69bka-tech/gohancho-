@@ -39,7 +39,9 @@ for (const cc of CCS){
             const n = menuCount(); if (n > 4) bad.push('無料で ' + n + '品 dc=' + dc + ' mood=' + mood);
         }
         S.settings.dishCount = 3; session.mood = moods[0]; session.menu = null; render();
-        if (!session.menu || session.menu.n !== 3 || !session.menu.items.every(x => x.r)) bad.push('無料で今日の献立が出ない');
+        // 汁ものの麺（肉うどん）や汁ものが主菜のときは、汁ものの枠を空にする仕様（suggestOrAny）。その空きは「出ない」に数えない
+        const soupMain = m => m && (m.id === 'nikuudon' || m.type === '汁物');
+        if (!session.menu || session.menu.n !== 3 || !session.menu.items.every(x => x.r || (x.slot === '汁物' && soupMain(session.menu.items[0].r)))) bad.push('無料で今日の献立が出ない');
         paywalls.length = 0;
         click('count', {v: 5}); if (paywalls[0] !== 'dishes' || S.settings.dishCount !== 3) bad.push('5品で購入画面が出ない/設定が変わった');
         click('count', {v: 6}); if (S.settings.dishCount !== 3) bad.push('6品で設定が変わった');

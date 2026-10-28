@@ -13,7 +13,7 @@ tools/qa/run-all.sh --list     # 項目の一覧だけ
 - 項目ごとの結果（PASS / FAIL / TIMEOUT・秒数）を表で出し、失敗した項目のログ末尾を続けて出します。1つでも失敗すれば終了コード 1。ログは `/tmp/gohancho-qa.*/` に残ります。
 - 重くて落ちるときは `--jobs 1` にする。待ちは「アプリの起動と描画を待つ」条件待ち（`tools/lib/pw.cjs` の `ready`）なので、並列度を上げても固定の待ち時間で落ちることはありません。
 - 必要なもの: Node 20 以上・playwright（グローバルでも `node_modules` でも可。`PLAYWRIGHT_DIR` で場所を指定可）・Chromium（`CHROME` で指定可。`/opt/pw-browsers` にあれば自動で使う）・python3。
-- 短縮モードに入るもの: JS 構文（`check-syntax.mjs`）・packs 検査・17言語の翻訳（0 missing / 0 mismatch）・手順の人数換算・規約文・「かえる」「設定変更」の連動なし（国と回数を減らした版）・買い物メモ・冷蔵庫に入れる・手に入りにくい食材と保存献立・1週間プラン・落ちない／バックアップ／自作レシピ／無料版とPro／.ics／早めに使う／店内メモ／冷蔵庫。`--full` はこれに加えて全国・全回数の版と、linkage-all・layout-shift・sw-offline・polish・dates・memo-size・needs-tally。
+- 短縮モードに入るもの: JS 構文（`check-syntax.mjs`）・packs 検査・17言語の翻訳（0 missing / 0 mismatch）・手順の人数換算・規約文・「かえる」「設定変更」の連動なし（国と回数を減らした版）・買い物メモ・冷蔵庫に入れる・手に入りにくい食材と保存献立・1週間プラン・落ちない／バックアップ／自作レシピ／無料版とPro／.ics／早めに使う／店内メモ／冷蔵庫／守る約束（`promises.mjs`: 決めた≠作った・かえるの元に戻す。設定と決めた献立の3件（北条の H1・H3・H4 の再発防止）もふだんから失敗扱い、`STRICT=0` で「待ち」表示）。`--full` はこれに加えて全国・全回数の版と、linkage-all・layout-shift・sw-offline・polish・dates・memo-size・needs-tally。
 
 ## 乱数と再現（SEED）
 
