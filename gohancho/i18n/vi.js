@@ -518,7 +518,6 @@ GOHAN_I18N('vi', {
     "主菜をひとひねり案にしました": "Món chính của bạn đã thành món biến tấu",
     "主食": "Cơm / bánh mì",
     "丼にする": "Cơm tô",
-    "予定と買い物メモを送る": "Gửi kế hoạch & danh sách",
     "変更": "Thay đổi",
     "{date}の変更（別の案・作らない・担当）": "Thay đổi {date} (món khác, không nấu, ai nấu)",
     "送る・カレンダーに入れる": "Gửi / thêm vào lịch",
