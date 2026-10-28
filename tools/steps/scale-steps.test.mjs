@@ -1875,6 +1875,32 @@ const SAME = [
   "why": "the last egg があるときは卵の個数をそのまま（1個残す書き方）",
   "before": "Crack 5 eggs over the top. Beat the last egg with the milk.",
   "after": null
+ },
+ {
+  "lang": "ko",
+  "cc": "KR",
+  "id": "kr_tteokgalbi",
+  "k": 1,
+  "before": "1.5cm 두께의 납작한 타원형 6개로 빚고 가운데를 살짝 눌러 준다.",
+  "after": {
+   "1": "1.5cm 두께의 납작한 타원형 3개로 빚고 가운데를 살짝 눌러 준다.",
+   "3": "1.5cm 두께의 납작한 타원형 9개로 빚고 가운데를 살짝 눌러 준다.",
+   "4": "1.5cm 두께의 납작한 타원형 12개로 빚고 가운데를 살짝 눌러 준다.",
+   "6": "1.5cm 두께의 납작한 타원형 18개로 빚고 가운데를 살짝 눌러 준다."
+  }
+ },
+ {
+  "lang": "en",
+  "cc": "JP",
+  "id": "rollcabbage",
+  "k": 1,
+  "before": "Knead the meat with the minced onion, egg, breadcrumbs, salt and pepper and divide into 6.",
+  "after": {
+   "1": "Knead the meat with the minced onion, egg, breadcrumbs, salt and pepper and divide into 3.",
+   "3": "Knead the meat with the minced onion, egg, breadcrumbs, salt and pepper and divide into 9.",
+   "4": "Knead the meat with the minced onion, egg, breadcrumbs, salt and pepper and divide into 12.",
+   "6": "Knead the meat with the minced onion, egg, breadcrumbs, salt and pepper and divide into 18."
+  }
  }
 ];
 let fail = 0, n = 0;

@@ -40,13 +40,6 @@ function oyFlakes(p, cx, cy, R, { n = 10, c = '#f08d5c', seed = 1, w = 11, h = 5
 const steam = () => `<path d="M88,34 c-5,-7 5,-12 0,-19 M104,32 c-5,-7 5,-12 0,-19 M120,34 c-5,-7 5,-12 0,-19" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".55"/>`;
 
 export default {
-    // おかゆ（白がゆ）: 茶碗に、白いおかゆだけ（具なし）
-    okayu: p => [
-        K.chawan(p),
-        oyPorridge(p, { n: 90 }),
-        steam(),
-    ].join(''),
-
     // 卵がゆ: ふわっと固まった卵と小口ねぎ
     tamagogayu: p => [
         K.chawan(p),
