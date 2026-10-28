@@ -155,9 +155,10 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       // 1週間プラン: 日の入れ替え
       await p.evaluate(() => { makeWeek(); setTab('today'); render(); });
       await p.waitForTimeout(600);
-      const wd = await p.evaluate(() => document.querySelectorAll('[data-act="week-reroll"]').length);
+      // 日ごとの「別の案」は、その日の「変更」から開く画面の中にある。画面を開かずに同じ操作（data-act=week-reroll と日付）を送って、週の一覧が動かないことを見る
+      const wd = await p.evaluate(() => document.querySelectorAll('.week .item [data-act="week-day"]').length);
       for (let k = 0; k < Math.min(wd, 3); k++) {
-        await act('週プラン日かえる', 'eval', `(()=>{const el=document.querySelectorAll('[data-act="week-reroll"]')[${k}]; el.click();})()`, '.week .item:nth-child(' + (k + 1) + '),.week ~ *', 0, '.list.shop');
+        await act('週プラン日かえる', 'eval', `(()=>{const d=document.querySelectorAll('.week .item [data-act="week-day"]')[${k}].dataset.d; const el=document.createElement('button'); el.dataset.act='week-reroll'; el.dataset.d=d; document.body.appendChild(el); el.click(); el.remove();})()`, '.week .item:nth-child(' + (k + 1) + '),.week ~ *', 0, '.list.shop');
       }
       if (lv !== 'core') {
       // 作り方タブ: 料理のタブを切り替える（タブの列と、その上は動かない）
