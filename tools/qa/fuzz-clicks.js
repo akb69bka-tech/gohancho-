@@ -349,7 +349,8 @@ async function exec(b, run, onStep) {
     else if (r.rebuild) { /* 全体の作り直しは仕様。設定の保存だけ確かめる */ }
     else if (r.mixSlot) {
       const sl = prev.ids.map(x => x.split(':')[0]);
-      prev.ids.forEach((x, j) => { if (sl[j] !== r.mixSlot && x !== s1.ids[j]) d.push('混ぜた枠(' + r.mixSlot + ')以外 #' + j + ' ' + x + ' -> ' + s1.ids[j]); });
+      const bad0 = await q.evaluate(ids => ids.map(x => { const id = x.split(':')[1]; const r = id === '-' ? null : byId(id); return !!(r && (isAvoided(r) || S.hidden.includes(id))); }), prev.ids);   // もう使えない料理（今は出さない・苦手）の枠は、どの再調整でも選び直される
+      prev.ids.forEach((x, j) => { if (!bad0[j] && sl[j] !== r.mixSlot && x !== s1.ids[j]) d.push('混ぜた枠(' + r.mixSlot + ')以外 #' + j + ' ' + x + ' -> ' + s1.ids[j]); });
       if (!r.mixChanged && prev.ids.join() !== s1.ids.join()) d.push('同じ国を選び直しただけなのに変わった');
     }
     else {
