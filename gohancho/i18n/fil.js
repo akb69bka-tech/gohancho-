@@ -1403,6 +1403,8 @@ GOHAN_I18N('fil', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Mga {max}–{n} min (mas maikli kung sabay-sabay)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Paminsan-minsang kasalo (hindi kasama sa “Kakain ngayon” bilang default)",
     "いつものメンバー": "Ang dati",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Hindi ipinapakita ang {name} bilang pangunahing pagkain dahil tugma ito sa allergy o iniiwasang pagkain (madalas may gatas o itlog ang tinapay).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Walang pangunahing ulam na bagay sa allergy at iniiwasang pagkain, kaya ginawang araw na walang lutuin ang {days} sa plano ng linggo.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Tumatakbo pa ang timer ng {name}. Kung handa na, pindutin ulit",
     "国を「{name}」に変えますか？": "Palitan ang bansa ng “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Magiging putahe ng {name} ang menu ngayon. Puwede kang bumalik kahit kailan.",

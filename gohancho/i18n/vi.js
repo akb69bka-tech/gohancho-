@@ -1403,6 +1403,8 @@ GOHAN_I18N('vi', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Khoảng {max}–{n} phút (nấu song song sẽ nhanh hơn)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Thỉnh thoảng ăn cùng (thường không có trong “Ai ăn hôm nay”)",
     "いつものメンバー": "Thành viên thường ngày",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "Không đưa {name} làm món chính vì trùng với dị ứng hoặc món không ăn (bánh mì thường có sữa hoặc trứng).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Không còn món chính phù hợp với dị ứng và món không ăn, nên {days} trong kế hoạch tuần thành ngày không nấu.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Hẹn giờ của {name} vẫn đang chạy. Nếu đã xong, hãy chạm lần nữa",
     "国を「{name}」に変えますか？": "Đổi quốc gia sang “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Thực đơn hôm nay sẽ đổi sang món của {name}. Bạn có thể đổi lại bất cứ lúc nào.",

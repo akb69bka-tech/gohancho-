@@ -1403,6 +1403,8 @@ GOHAN_I18N('tr', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Yaklaşık {max}–{n} dk (aynı anda yaparsan daha kısa)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Bazen bizimle yer (normalde “Bugün kim yiyor”da değil)",
     "いつものメンバー": "Her zamanki ekip",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} bir alerjiye veya kaçınılan bir malzemeye denk geldiği için ana yiyecek olarak gösterilmiyor (ekmekte çoğu zaman süt veya yumurta olur).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Alerjilere ve kaçınılan malzemelere uyan ana yemek olmadığından haftalık plandaki {days} artık yemek yapılmayan gün.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "{name} zamanlayıcısı hâlâ çalışıyor. Hazırsa bir kez daha dokun",
     "国を「{name}」に変えますか？": "Ülkeyi “{name}” olarak değiştirelim mi?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Bugünün menüsü {name} yemeklerine dönecek. İstediğin zaman geri dönebilirsin.",

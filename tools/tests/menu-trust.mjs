@@ -36,8 +36,9 @@ for (const k of [0, 1, 2]){
     const { ctx, p } = await open(null, true);
     await p.waitForSelector('[data-act="pick-country"][data-cc="JP"]', { timeout: 30000 });
     await p.click('[data-act="pick-country"][data-cc="JP"]');
-    // はじめての設定は「人数・品数」→「苦手・アレルギー」の2枚（椎名の新しい流れ）。苦手の画面まで「次へ」を1回
-    await p.waitForSelector('[data-act="ob-next"]'); await p.click('[data-act="ob-next"]'); await p.waitForSelector('[data-act="ob-avoid"][data-v="えび"]');
+    // 苦手な食材の画面が出るまで「次へ」（はじめての流れの段の数が変わっても動くように）
+    await p.waitForSelector('[data-act="ob-next"]');
+    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; await nx.click(); await p.waitForTimeout(150); }
     await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); });   // 設定の後ろの案（と下書き）がえびフライ
     await p.click('[data-act="ob-avoid"][data-v="えび"]');
     await p.click('[data-act="ob-allergy"]'); await p.waitForTimeout(300);
@@ -204,6 +205,120 @@ for (const k of [0, 1, 2]){
     await p.click('#family-profile .fam-member[open] [data-act="fam-allergy"][data-v="なす"]'); await p.waitForTimeout(150);
     const old = await p.evaluate(() => S.family[0].allergy);
     ok(old.includes('なす'), '家族: 食べられない食材 → ⚠ でアレルギーにする方法も残る ' + JSON.stringify(old));
+    await ctx.close();
+}
+// ---------- 9) 家族のアレルギーも、全体と同じ判定（モニター第2回 P06: ⚠ 小麦の子に醤油の筑前煮が出た） ----------
+for (const v of ['@wheat', '小麦', '小麦粉']){
+    const { ctx, p } = await open({ family: [{ id: 's', name: '長男', role: 'child', avoid: [v], allergy: [v], mild: false }] });
+    const r = await p.evaluate(() => {
+        const out = { chikuzen: isAvoidedCore(byId('chikuzen')) };
+        modalId = 'chikuzen'; renderModal(); out.box = (document.querySelector('#allergen-box li.mine') || {}).innerText || ''; closeModal();
+        S.settings.allergenFerm = false; out.fermOff = isAvoidedCore(byId('chikuzen')); S.settings.allergenFerm = true;   // 全体のスイッチ（発酵調味料も除く）に家族も従う
+        out.menu = 0; for (let k = 0; k < 15; k++){ session.menu = null; ensureMenu(); out.menu += session.menu.items.filter(x => x.r && x.r.items && x.r.items.concat(seasItems(x.r)).some(i => /醤油|しょうゆ|小麦/.test(i.name))).length; }
+        return out;
+    });
+    ok(r.chikuzen === true, '家族の小麦アレルギー（' + v + '）: 醤油を使う筑前煮を出さない');
+    ok(/⚠/.test(r.box) && /小麦/.test(r.box), '家族の小麦アレルギー（' + v + '）: 料理の詳細の小麦の行に ⚠: ' + r.box);
+    ok(r.fermOff === false, '家族の小麦アレルギー（' + v + '）: 「発酵調味料も除く」をオフにすると、全体と同じく醤油だけでは外さない');
+    ok(r.menu === 0, '家族の小麦アレルギー（' + v + '）: 15回作った献立に、醤油・小麦の料理が0 (' + r.menu + ')');
+    await ctx.close();
+}
+{
+    // 家族の卵: マヨネーズ（よく含まれる加工品）の料理も、全体と同じく外す
+    const { ctx, p } = await open({ family: [{ id: 's', name: '夫', role: 'adult', avoid: ['@egg'], allergy: ['@egg'], mild: false }] });
+    const r = await p.evaluate(() => ({ potesala: isAvoidedCore(byId('potesala')) }));
+    ok(r.potesala === true, '家族の卵アレルギー: マヨネーズの料理（ポテトサラダ）を出さない');
+    await ctx.close();
+}
+// ---------- 10) 主食（パン・トースト）も判定に通す（モニター第2回 P06・P07） ----------
+for (const [name, store, blocked] of [
+    ['小麦（全体）', { settings: { country: 'JP', dishCount: 3, allergens: ['wheat'], stapleBy: { JP: 'toast' } } }, true],
+    ['乳（全体・パンは乳が入っていることも多い）', { settings: { country: 'JP', dishCount: 3, allergens: ['milk'], stapleBy: { JP: 'toast' } } }, true],
+    ['卵（家族）', { settings: { country: 'JP', dishCount: 3, stapleBy: { JP: 'toast' } }, family: [{ id: 's', name: '夫', role: 'adult', avoid: ['卵'], allergy: ['卵'], mild: false }] }, true],
+    ['小麦（家族）', { settings: { country: 'JP', dishCount: 3, stapleBy: { JP: 'toast' } }, family: [{ id: 's', name: '長男', role: 'child', avoid: ['@wheat'], allergy: ['@wheat'], mild: false }] }, true],
+    ['アレルギーなし', { settings: { country: 'JP', dishCount: 3, stapleBy: { JP: 'toast' } } }, false],
+    ['ご飯は小麦でも出る', { settings: { country: 'JP', dishCount: 3, allergens: ['wheat'], stapleBy: { JP: 'rice' } } }, false]]){
+    const { ctx, p } = await open(store);
+    const r = await p.evaluate(() => {
+        session.menu.items[0].r = byId('hamburg'); setTab('today'); render();
+        const spot = document.querySelector('.tray .spot.rice'), view = document.querySelector('#view').innerText;
+        return { st: stapleSpot(), spot: spot ? spot.innerText : '', note: /主食の「.*」は、アレルギー/.test(view) };
+    });
+    if (blocked){
+        ok(!r.st && !/トースト/.test(r.spot) && r.note, '主食 ' + name + ': トーストを出さず、理由を出す ' + JSON.stringify(r));
+        const nx = await p.evaluate(() => { const before = currentStapleOpt().k; document.querySelector('[data-act="staple-next"]').click(); return { before, after: currentStapleOpt().k, blocked: stapleBlocked(currentStapleOpt()) }; });
+        ok(!nx.blocked, '主食 ' + name + ': 「かえる」で、当たる主食は飛ばす ' + JSON.stringify(nx));
+    } else ok(!!r.st && !r.note, '主食 ' + name + ': 出す ' + JSON.stringify(r));
+    await ctx.close();
+}
+for (const cc of ['DE', 'FR']){
+    // 各国のパンの主食も、小麦なら出さない
+    const { ctx, p } = await open({ settings: { country: cc, dishCount: 3, allergens: ['wheat'] } });
+    const r = await p.evaluate(() => ({ st: stapleSpot(), o: currentStapleOpt().k }));
+    ok(!r.st, cc + ' のパンの主食: 小麦アレルギーでは出さない ' + JSON.stringify(r));
+    await ctx.close();
+}
+// ---------- 11) 家族の食べられない食材も、手順の文から外す（モニター第2回 C: のっぺい汁のこんにゃく） ----------
+{
+    const { ctx, p } = await open({ family: [{ id: 'm', name: '母', role: 'adult', avoid: ['ごぼう', 'たこ', 'こんにゃく'], allergy: [], mild: false }] });
+    const r = await p.evaluate(() => { const w = swappedRecipe(byId('noppeijiru')); return { omit: w.swapped ? w.swapped.omit.map(i => i.name) : [], items: w.items.map(i => i.name).join('、'), steps: w.steps.map(s => typeof s === 'string' ? s : s.t).join(' / ') }; });
+    ok(r.omit.includes('こんにゃく') && !/こんにゃく/.test(r.items), '家族の苦手: のっぺい汁の材料からこんにゃくを外す');
+    ok(!/こんにゃく/.test(r.steps), '家族の苦手: のっぺい汁の手順にもこんにゃくが残らない: ' + r.steps.slice(0, 200));
+    ok(/鍋にだし・野菜を入れて/.test(r.steps) && /しいたけは薄切りにする。/.test(r.steps), '家族の苦手: ほかの文はそのまま残る');
+    await ctx.close();
+}
+// ---------- 12) 家族の ⚠ は、全体のアレルギー対策と同じ料理を外す（モニター第2回 アレルギー層 P15: そば→ざるそば・牛乳と大豆→31品・魚→かつお節） ----------
+for (const [name, fam, ids, must] of [['そば・ピーナッツ', ['そば', 'ピーナッツ'], ['buckwheat', 'peanut'], 'zarusoba'], ['牛乳・大豆', ['牛乳', '大豆'], ['milk', 'soy'], 'hiyayakko'], ['魚', ['@fish'], ['fish'], 'hiyayakko'], ['卵', ['@egg'], ['egg'], 'potesala']]){
+    const { ctx, p } = await open({ family: [{ id: 'c', name: '👧', role: 'child', avoid: fam, allergy: fam, mild: false }] });
+    const r = await p.evaluate(([ids, must]) => {
+        const famOut = new Set(RECIPES.filter(r => isAvoidedCore(r)).map(r => r.id));
+        const fam = S.family; S.family = []; S.settings.allergens = ids; const glob = new Set(RECIPES.filter(r => isAvoidedCore(r)).map(r => r.id)); S.family = fam; S.settings.allergens = [];
+        return { missing: [...glob].filter(id => !famOut.has(id)), extra: [...famOut].filter(id => !glob.has(id)), must: famOut.has(must), glob: glob.size };
+    }, [ids, must]);
+    ok(!r.missing.length && r.must, '家族の ⚠ ' + name + ': 全体のアレルギー対策で外れる料理（' + r.glob + '品）は家族でも外れる。漏れ: ' + r.missing.slice(0, 5).join(','));
+    ok(!r.extra.length || name === '卵' || name === '魚', '家族の ⚠ ' + name + ': 名前だけで別の料理（焼きそばなど）まで外さない: ' + r.extra.slice(0, 5).join(','));
+    await ctx.close();
+}
+// ---------- 13) ひと手間も、アレルギー・苦手の判定に通す（モニター第2回 アレルギー層: ごま→白ごま・乳→バター・かに→かにかま・りんご→りんご） ----------
+for (const [al, re] of [['sesame', /ごま/], ['milk', /バター|チーズ|牛乳|生クリーム/], ['crab', /かに/], ['apple', /りんご/], ['egg', /卵|マヨ/], ['fish', /かつお節|ツナ|魚/]]){
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, allergens: [al] } });
+    const r = await p.evaluate(src => { const re = new RegExp(src); const bad = [];
+        RECIPES.forEach(r => { const u = upgradeOf(r); if (u && re.test(u.add)) bad.push(r.id + ':' + u.add); });
+        const kofuki = byId('kofukiimo'); modalId = kofuki.id; renderModal(); const txt = (document.querySelector('.modal') || {}).innerText || ''; closeModal();
+        return { bad, modal: re.test((txt.split('ひと手間でスキルアップ')[1] || '').split('やってみた')[0] || '') }; }, re.source);
+    ok(!r.bad.length && !r.modal, 'ひと手間 ' + al + ': 当たる食材をすすめない: ' + r.bad.slice(0, 4).join(' ; '));
+    await ctx.close();
+}
+// ---------- 14) 1週間プラン: アレルギーを続けて足しても、プランと買い物メモに残らない（モニター第2回 アレルギー層 P01: 卵→小麦→乳） ----------
+for (let run = 0; run < 6; run++){
+    const { ctx, p } = await open({});
+    await p.evaluate(() => { hasPro = () => true; makeWeek(); S.settings.weekSides = true; ensureWeekExtras(); save(); setTab('settings'); });
+    for (const v of ['egg', 'wheat', 'milk']){ await p.click(`#allergy-card .chip[data-v="${v}"]`); await p.waitForTimeout(150); }
+    const r = await p.evaluate(() => { const days = S.week.days.filter(x => x.d >= TODAY && !x.skip);
+        return { main: days.map(x => byId(x.id)).filter(r => r && allergyConflict(r)).map(r => r.id), extra: days.flatMap(x => x.extra ? [x.extra.side, x.extra.soup] : []).map(byId).filter(r => r && allergyConflict(r)).map(r => r.id),
+            shop: shoppingList().filter(e => algItemHit(algIds(), { key: keyOf(e.label), name: e.label, label: e.label, en: e.en || '' })).map(e => e.label) }; });
+    ok(!r.main.length && !r.extra.length && !r.shop.length, '1週間プラン: 卵→小麦→乳と足しても、当たる料理・材料が残らない（' + run + '）' + JSON.stringify(r));
+    await ctx.close();
+}
+// ---------- 15) 置き換え・抜いたあと、タグ・手順・アレルゲン欄に元の食材が残らない（モニター第2回 アレルギー層 P03・P04） ----------
+{
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, avoid: ['@pork'] } });
+    const r = await p.evaluate(() => ({ potesalaMeta: metaLine(byId('potesala')), potesalaSteps: swappedRecipe(byId('potesala')).steps.map(s => typeof s === 'string' ? s : s.t).join(' '), rebanira: isAvoidedCore(byId('rebanira')), rebaniraSwapped: !!swappedRecipe(byId('rebanira')).swapped }));
+    ok(!/ハム/.test(r.potesalaMeta) && !/ハム/.test(r.potesalaSteps), 'ハムを入れないポテトサラダ: タグ・手順にハムが残らない: ' + r.potesalaMeta);
+    ok(r.rebanira && !r.rebaniraSwapped, 'レバニラ（豚が苦手）: レバーは鶏肉に置き換えず、出さない');
+    await ctx.close();
+}
+{
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, avoid: ['えび', 'うずらの卵', '卵'] } });
+    const r = await p.evaluate(() => { const st = id => swappedRecipe(byId(id)).steps.map(s => typeof s === 'string' ? s : s.t).join(' / '); return { ankake: st('ankakeyakisoba'), ramen: st('ramen') }; });
+    ok(!/えび|うずら/.test(r.ankake), 'あんかけ焼きそば: えび・うずらの卵が手順に残らない: ' + r.ankake.slice(0, 120));
+    ok(!/卵/.test(r.ramen.replace(/卵（入れない）/g, '')), 'ラーメン: 卵が手順にそのまま残らない（残るときは「（入れない）」）: ' + r.ramen.slice(0, 80));
+    await ctx.close();
+}
+{
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 3, avoid: ['@chicken'] } });
+    const r = await p.evaluate(() => { modalId = 'wantansoup'; renderModal(); const box = (document.querySelector('#allergen-box') || {}).innerText || ''; closeModal(); return box; });
+    ok(!/鶏ガラ/.test(r), '鶏が苦手のワンタンスープ: 置き換えた鶏ガラスープの素がアレルゲン欄に残らない: ' + r.slice(0, 120));
     await ctx.close();
 }
 await b.close();

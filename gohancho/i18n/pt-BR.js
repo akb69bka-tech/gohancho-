@@ -1403,6 +1403,8 @@ GOHAN_I18N('pt-BR', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Cerca de {max}–{n} min (menos se cozinhar ao mesmo tempo)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Come com a gente às vezes (fora de “Quem come hoje” por padrão)",
     "いつものメンバー": "A turma de sempre",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} não aparece como acompanhamento porque coincide com uma alergia ou um alimento a evitar (o pão costuma ter leite ou ovo).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Nenhum prato principal combina com as alergias e alimentos a evitar, então {days} no plano da semana virou um dia sem cozinhar.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "O timer de {name} ainda está correndo. Se já estiver pronto, toque de novo",
     "国を「{name}」に変えますか？": "Mudar o país para “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "O cardápio de hoje passa a ser de pratos de {name}. Você pode voltar quando quiser.",

@@ -1404,6 +1404,8 @@ GOHAN_I18N('en', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "About {max}–{n} min (shorter if you cook them side by side)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Eats with us sometimes (not in “Who’s eating today” by default)",
     "いつものメンバー": "The usual crew",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} isn't shown as the staple because it matches an allergy or a food to avoid (bread often contains milk or egg).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "No main dish fits your allergies and foods to avoid, so {days} in the weekly plan is now a no-cook day.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "The timer for {name} is still running. If it’s ready, tap again",
     "国を「{name}」に変えますか？": "Switch country to “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Today’s menu will switch to dishes from {name}. You can switch back anytime.",

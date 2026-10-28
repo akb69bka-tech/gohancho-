@@ -1403,6 +1403,8 @@ GOHAN_I18N('id', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Sekitar {max}–{n} mnt (lebih singkat jika dimasak bersamaan)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Kadang ikut makan (biasanya tidak di “Yang makan hari ini”)",
     "いつものメンバー": "Yang biasa",
+    "主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません": "{name} tidak ditampilkan sebagai makanan pokok karena cocok dengan alergi atau bahan yang dihindari (roti sering mengandung susu atau telur).",
+    "アレルギー・苦手な食材に合う主菜がないため、1週間プランの{days}を「作らない日」にしました": "Tidak ada hidangan utama yang cocok dengan alergi dan bahan yang dihindari, jadi {days} di rencana mingguan dijadikan hari tidak memasak.",
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Timer {name} masih berjalan. Jika sudah jadi, ketuk lagi",
     "国を「{name}」に変えますか？": "Ganti negara ke “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Menu hari ini akan berganti ke masakan {name}. Kamu bisa kembali kapan saja.",
