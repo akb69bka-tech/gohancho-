@@ -722,7 +722,6 @@ GOHAN_I18N('fil', {
     "元の料理: {name}": "Batay sa: {name}",
     "変えたところ": "Ano ang binago",
     "味・かたち・主役の食材": "Lasa, anyo, pangunahing sangkap",
-    "おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）": "Sa araw ng okayu, okayu ang pangunahing putahe (karaniwan pa rin ang mga side dish at sabaw)",
     "おかゆの具: {v}": "Sangkap ng okayu: {v}",
     "作り方を見る": "Tingnan ang recipe",
     "主菜にする": "Gawing ulam",
@@ -1428,4 +1427,10 @@ GOHAN_I18N('fil', {
     "明日の気分: {mood}": "Mood bukas: {mood}",
     "取り消す": "Kanselahin",
     "明日の一膳はもう決めてあります。": "Napagpasyahan na ang pagkain bukas.",
+    "明日の{time}": "bukas nang {time}",
+    "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "Lampas na ang {eat}. Kung magsisimula ka ngayon, matatapos bandang {t1} kung isa-isa, at bandang {t2} kung sabay-sabay",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Sa araw ng okayu, mabilis na zosui o okayu at malambot at magaan na side dish at sabaw ang mungkahi namin",
+    "おかゆの日なので{n}品にしました": "Araw ng okayu: {n} putahe",
+    "プリモ（一皿目）": "Primo (unang putahe)",
+    "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta o risotto ang primo, kaya walang sabaw",
 });

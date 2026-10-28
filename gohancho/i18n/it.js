@@ -723,7 +723,6 @@ GOHAN_I18N('it', {
     "元の料理: {name}": "Da: {name}",
     "変えたところ": "Cosa cambia",
     "味・かたち・主役の食材": "Sapore, forma, ingrediente principale",
-    "おかゆの日は、主菜をおかゆにします（副菜・汁ものはいつもどおり）": "Nel giorno dell'okayu il piatto principale è l'okayu (contorni e zuppa come al solito)",
     "おかゆの具: {v}": "Ingrediente dell'okayu: {v}",
     "作り方を見る": "Vedi ricetta",
     "主菜にする": "Fallo come secondo",
@@ -1428,4 +1427,10 @@ GOHAN_I18N('it', {
     "明日の気分: {mood}": "Umore di domani: {mood}",
     "取り消す": "Annulla",
     "明日の一膳はもう決めてあります。": "Il pasto di domani è già deciso.",
+    "明日の{time}": "domani alle {time}",
+    "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "Le {eat} sono già passate. Se inizi adesso, cucinando un piatto alla volta finisci verso le {t1}; in parallelo verso le {t2}",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Nel giorno dell'okayu proponiamo zosui o okayu veloci, con contorni e zuppa morbidi e delicati",
+    "おかゆの日なので{n}品にしました": "Giorno dell'okayu: {n} piatti",
+    "プリモ（一皿目）": "Primo",
+    "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Con un primo di pasta o risotto, niente zuppa",
 });
