@@ -1275,16 +1275,6 @@ export default {
         xtrShine(100, 100, 76, .45),
     ].join(''),
 
-    // ウン・チョルバス: 茶色の素焼きの鉢に、バターで炒った小麦粉の淡い茶色のスープ、唐辛子とミントのバター、クルトン
-    tr_un: p => [
-        xtrBowl(p, { glaze: '#9a5a32', inside: '#f6eee0', inner: '#5a2e14' }),
-        xtrSoup(p, '#cf9a68', { R: 76, veil: '#e4b888', vop: .4 }),
-        xtrRedButter(p, 100, 100, 92, { n: 10, op: .8 }),
-        xtrMint(p, 100, 100, 100, { n: 26 }),
-        ...[[70, 84, 10], [132, 80, 30], [130, 124, -20], [84, 130, 40], [104, 108, 15]].map(([x, y, r]) => xtrCrouton(p, x, y, 13, r)),
-        xtrShine(100, 100, 76, .45),
-    ].join(''),
-
     // パタテス・チョルバス: 藍の点の白い鉢に、なめらかなじゃがいものクリームスープ、角切りじゃがいも、カシャルチーズ、パセリ
     tr_patatescorba: p => [
         xtrBowl(p, { glaze: '#f3efe6', inside: '#fbf9f2', line: COBALT, dots: COBALT }),
@@ -1296,29 +1286,6 @@ export default {
         xtrShine(100, 100, 74, .45),
     ].join(''),
 
-    // バルク・チョルバス: トルコ石の点の白い鉢に、卵黄とレモンでにごった白身魚のスープ、ほぐした魚、じゃがいもとにんじん、パセリ、レモン
-    tr_balik: p => [
-        xtrBowl(p, { glaze: '#f3efe6', inside: '#fbf9f2', line: TURQ, dots: TURQ }),
-        xtrSoup(p, '#e6d8ac', { R: 74, veil: '#f6eed4', vop: .45 }),
-        ...xtrSpots('bl', 9, 54, 22).map(([x, y, r], i) => `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${xtrSm(ring(9, 7, .35, rng('blf' + i), 1.3, .8))}" fill="${p.g('#f8f2e6', .2, .2)}" stroke="#d4c6a8" stroke-width=".7"/></g><path d="M-6,-2 q6,-3 12,0 M-6,2 q6,-3 12,0" stroke="#e2d6bc" stroke-width=".8" fill="none"/></g>`),
-        `<g ${p.sh(.4)}>`, xtrCubes(p, [[96, 72, 20], [62, 96, -10], [138, 110, 30], [108, 128, 0], [76, 132, 40], [128, 82, 15]], { c: '#ec7b2d', s: 8 }), xtrCubes(p, [[112, 96, 10], [84, 108, -20], [146, 92, 30], [100, 148, 0]], { c: '#f0d68e', s: 10 }), `</g>`,
-        K.sprinkle(p, 100, 100, 110, { c: '#2a2420', n: 14, r: .7 }),
-        xtrParsley(p, 100, 100, 110, { n: 24 }),
-        xtrLemonWedge(p, 142, 140, 30, -40),
-        xtrShine(100, 100, 74, .45),
-    ].join(''),
-
-    // ウスパナック・チョルバス: 緑の線の白い鉢に、ほうれん草とお米のヨーグルト入りの淡い緑のスープ、唐辛子のバター
-    tr_ispanak: p => [
-        xtrBowl(p, { glaze: '#f3efe6', inside: '#fbf9f2', line: '#4a7a3a', inner: '#4a7a3a' }),
-        xtrSoup(p, '#a8b46a', { R: 76, veil: '#c8d090', vop: .4 }),
-        `<g opacity=".9">`, xtrWilted(p, 100, 100, 130, { n: 34, seed: 1, cols: ['#3e6e26', '#4f7f2e'] }), `</g>`,
-        xtrGrains(p, 100, 100, 124, { cols: ['#f8f4e6', '#e8e0c8'], n: 40, size: 2.2, long: 1.5, seed: 3 }),
-        `<circle cx="100" cy="100" r="70" fill="#d8dcb0" opacity=".25"/>`,
-        xtrRedButter(p, 100, 100, 70, { n: 7, op: .75 }),
-        xtrShine(100, 100, 76, .45),
-    ].join(''),
-
     // ムスル・チョルバス: イズニック風の鉢に、ミルクとクリームの黄色いコーンスープ、クリームの渦、コーンの粒
     tr_misir: p => [
         xtrIznikBowl(p),
@@ -1328,17 +1295,6 @@ export default {
         K.sprinkle(p, 100, 100, 100, { c: '#b8281a', n: 16, r: .8 }),
         xtrParsley(p, 104, 98, 30, { n: 6 }),
         xtrShine(100, 100, 74, .45),
-    ].join(''),
-
-    // カバック・チョルバス: 赤い釉の鉢に、淡い緑のズッキーニのクリームスープ、クリームの渦、ディル
-    tr_kabak: p => [
-        xtrBowl(p, { glaze: '#b8382a', inside: '#fbf6ee', inner: '#7a1e14' }),
-        xtrSoup(p, '#b4bc72', { R: 76, veil: '#d0d698', vop: .45 }),
-        xtrSwirl(p, 100, 100, 88, { c: '#f6f2e2', turns: 1.6, w: 3.4, r0: 3 }),
-        ...[[134, 118, 20], [72, 76, -30]].map(([x, y, r]) => xtrZuc(p, x, y, 18, r, { half: true })),
-        xtrDill(p, 104, 98, 60, { n: 4 }),
-        K.sprinkle(p, 100, 100, 110, { c: '#2a2420', n: 14, r: .7 }),
-        xtrShine(100, 100, 76, .45),
     ].join(''),
 
     // ハヴチ・チョルバス: トルコ石の釉の鉢に、なめらかな明るい橙色のにんじんのスープ、ヨーグルトの渦、パセリ

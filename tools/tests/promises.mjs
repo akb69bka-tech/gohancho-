@@ -3,19 +3,20 @@
 //  A 決めた≠作った: 「この献立に決定」では記録しない / 料理の手順を全部終えたら記録 / 手順を戻したら記録を外す /
 //    献立の料理を全部作ったら「ぜんぶできました」/ 決定の取り消しで作った記録は消えない
 //  B かえる: 何に変わったかを知らせ、「元に戻す」で押した枠だけ前の料理に戻る（ほかの枠は動かない）
-//  C 設定と決めた献立（北条の修正 H1・H3・H4 の確認。直るまでは「待ち」として表示し、STRICT=1 のときだけ失敗にする）
+//  C 設定と決めた献立（北条の修正 H1・H3・H4 の再発防止。ふだんから失敗扱い。STRICT=0 のときだけ「待ち」表示にできる）
 //    C1 苦手を足して今日の献立を見ずに開き直しても、苦手の料理が戻らない
 //    C2 決めたあとにアレルギーを足しても、決めた献立が黙って変わらず、画面の献立と作り方が食い違わない
 //    C3 決めたあとに気分（おかゆの日）を押しても、確認なしに決めた献立が変わらない
+//  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F7 食べる人の人数と辛さ・買い物の重なり・10人まで
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
-const STRICT = process.env.STRICT === '1';
+const STRICT = process.env.STRICT !== '0';
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0, waits = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
-const pend = (c, m) => { checks++; if (!c){ if (STRICT){ fails++; console.log('FAIL', m); } else { waits++; console.log('待ち（北条の修正待ち）', m); } } };
+const pend = (c, m) => { checks++; if (!c){ if (STRICT){ fails++; console.log('FAIL', m); } else { waits++; console.log('待ち（STRICT=0）', m); } } };
 const open = async (state = {}, ctxIn) => {
     const ctx = ctxIn || await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' });
     if (!ctxIn){ await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort()); await ctx.addInitScript(seedScript(SEED));
@@ -102,6 +103,77 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     await ctx.close();
 }
 
+// ---- F 献立の組み立て（戸川 A2・A4・A5） ----
+{
+    const {p, ctx} = await open({settings: {country: 'JP', uiLang: 'ja', dishCount: 4}});
+    const r = await p.evaluate(() => {
+        const over = [];
+        for (const mood of ['quick', 'easy']){ session.mood = mood; for (let k = 0; k < 20; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && (mood === 'quick' ? x.r.min > 20 : (x.slot !== '主菜' && x.r.min > 10))) over.push(mood + ':' + x.slot + ':' + x.r.name + x.r.min); }); } }
+        session.mood = 'all'; const season = [];
+        const ym = parseYmd(TODAY).getMonth() + 1;
+        for (let k = 0; k < 30; k++){ session.rejected.clear(); newMenu(); session.menu.items.forEach(x => { if (x.r && !inSeason(x.r)) season.push(x.r.id); }); }
+        const soupy = ['ramen', 'oden', 'yosenabe', 'stew', 'curryudon'].filter(id => byId(id) && suggestOrAny('汁物', [{r: byId(id)}], byId(id)));
+        return {over, season, soupy, ym};
+    });
+    ok(!r.over.length, 'F1 20分以内・ラクの日は、副菜・汁ものにも時間の条件が効く: ' + r.over.slice(0, 3));
+    ok(!r.season.length, 'F2 季節外れの行事料理（' + r.ym + '月）をおまかせに出さない: ' + r.season);
+    ok(!r.soupy.length, 'F3 汁けの多い主菜（ラーメン・鍋・シチューなど）に汁ものを付けない: ' + r.soupy);
+    // A9・A15・A19
+    const r2 = await p.evaluate(() => {
+        S.family = [{id: 'a', name: '母', avoid: [], allergy: [], mild: true}, {id: 'b', name: '父', avoid: [], allergy: [], mild: false}];
+        S.eaters = ['a']; S.settings.servings = 2;
+        const sv = svToday(), wk = servingFactor(true), mild = allMild();
+        const spicy = RECIPES.filter(x => x.main && spiceLevel(x) === 1).slice(0, 5).filter(x => !isAvoided(x)).map(x => x.id);
+        S.eaters = undefined; S.family = [];
+        S.week = {start: TODAY, days: ['chirashi'].map(id => ({d: TODAY, id}))};
+        const buy = new Set(shoppingList().map(e => e.key.split('|')[0])), both = pantryList().filter(e => buy.has(e.key.slice(2))).map(e => e.label);
+        S.week = null;
+        return {sv, wk, mild, spicy, both, famMax: FAM_MAX};
+    });
+    ok(r2.sv === 1 && r2.wk === 1, 'F4 今日食べる人を1人にすると今日の分量は1人分（1週間の買い物メモは設定の人数）: ' + JSON.stringify(r2));
+    ok(r2.mild && !r2.spicy.length, 'F5 食べる人が全員辛いのが苦手な日は、辛みのある料理を出さない: ' + r2.spicy);
+    ok(!r2.both.length, 'F6 買う物に入っている食材を「家にあるかも」に重ねて出さない: ' + r2.both);
+    ok(r2.famMax >= 10, 'F7 家族・人数は10人まで登録できる');
+    await ctx.close();
+}
+
+// ---- E 第2回モニターの不具合（A4・A7・A8・A11・A12） ----
+{
+    const {p, ctx} = await open();
+    const r = await p.evaluate(() => {
+        const out = {};
+        // A4 季節の料理: 10月はおまかせの候補にお雑煮が出ない／1月は出る（検索では出る）
+        const t0 = TODAY; TODAY = t0.slice(0, 4) + '-10-28'; out.oct = poolFor('汁物').some(r => r.id === 'zoni'); out.search = searchRecipes('お雑煮').hits.some(h => (h.r || h).id === 'zoni');
+        TODAY = t0.slice(0, 4) + '-01-05'; out.jan = poolFor('汁物').some(r => r.id === 'zoni'); TODAY = t0;
+        // A12 調味料の欄: 小さじ3以上は大さじに
+        out.tsp = scaleSeas('醤油 小さじ1・砂糖 小さじ2', 2.5);
+        return out; });
+    ok(!r.oct && r.jan && r.search, 'E1 季節の料理は時期だけおまかせに出る（検索では出る）: ' + JSON.stringify(r));
+    ok(r.tsp === '醤油 小さじ2と1/2・砂糖 大さじ1と小さじ2', 'E2 調味料の小さじ5は「大さじ1と小さじ2」: ' + r.tsp);
+    // A7 タイマーが動いているあいだに最後の手順を押しても、1回目は「できた」にしない
+    await p.evaluate(() => { setTab('today'); render(); document.querySelector('[data-act="decide"]').click(); });
+    await p.waitForTimeout(450);
+    const t7 = await p.evaluate(() => { session.cookIdx = 0; setTab('cook'); render(); const x = cookItems()[0]; const n = x.r.steps.length;
+        S.cook.done = {[x.r.id]: [...Array(n - 1).keys()]}; render(); startTimer(300, x.r.name, 'test', x.r.id, n - 1);
+        document.querySelector('[data-act="cook-next"]').click(); const first = (S.cook.done[x.r.id] || []).length >= n;
+        document.querySelector('[data-act="cook-next"]').click(); const second = (S.cook.done[x.r.id] || []).length >= n;
+        TIMERS.forEach(t => stopTimer(t.id)); return {first, second}; });
+    ok(!t7.first && t7.second, 'E3 タイマー中の最後の手順は、1回目は止めて知らせ、2回目で「できた」: ' + JSON.stringify(t7));
+    // A8 国旗から国を選ぶと、先に聞く（やめると変わらない）
+    await p.evaluate(() => openCountrySheet()); await p.waitForTimeout(200);
+    await p.click('[data-act="pick-country"][data-cc="US"]'); await p.waitForTimeout(200);
+    const k8 = await p.evaluate(() => ({kind: sheet && sheet.kind, cc: S.settings.country}));
+    await p.evaluate(() => document.querySelector('[data-act="sheet-close"]').click()); await p.waitForTimeout(200);
+    ok(k8.kind === 'country-ok' && k8.cc === 'JP' && await p.evaluate(() => S.settings.country) === 'JP', 'E4 国を変える前に聞き、やめると変わらない: ' + JSON.stringify(k8));
+    // A11 こま切れの冷蔵庫では、とんかつ・角煮は「今ある材料で作れる」に入らない
+    await p.evaluate(() => { setTab('fridge'); render(); });
+    await p.fill('#ing-input', '豚こま、キャベツ、玉ねぎ、卵、パン粉、小麦粉'); await p.press('#ing-input', 'Enter'); await p.waitForTimeout(200);
+    const k11 = await p.evaluate(() => { const box = [...document.querySelectorAll('#fridge-results .w4x_grp')].find(h => h.textContent.includes('今ある材料で作れる'));
+        const list = box ? box.nextElementSibling : null; return list ? [...list.querySelectorAll('.name')].map(e => e.textContent) : []; });
+    ok(!k11.some(n => /とんかつ|角煮/.test(n)), 'E5 こま切れでとんかつ・角煮を「今ある材料で作れる」に入れない: ' + k11.slice(0, 8).join('・'));
+    await ctx.close();
+}
+
 // ---- C 設定と決めた献立（北条の修正待ち） ----
 {
     // C1 下書きにえびフライ → 設定でえびを苦手に → 今日の献立を見ずに開き直す
@@ -138,5 +210,5 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
 
 await b.close();
 if (errs.length){ fails++; console.log('ページのエラー:', [...new Set(errs)].slice(0, 5).join(' / ')); }
-console.log(`${checks - fails - waits}/${checks} ok${waits ? `（待ち ${waits}: 北条の修正 H1・H3・H4 のあと STRICT=1 で確認）` : ''}  SEED=${SEED}`);
+console.log(`${checks - fails - waits}/${checks} ok${waits ? `（待ち ${waits}: STRICT=0 で失敗を待ちにしている）` : ''}  SEED=${SEED}`);
 process.exit(fails ? 1 : 0);

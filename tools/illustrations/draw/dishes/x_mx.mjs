@@ -1506,28 +1506,6 @@ export default {
         xmxShine(100, 100, 74, .4),
     ].join(''),
 
-    // Crema de calabacita: red-rimmed white enamel bowl, pale-green zucchini cream soup with crema swirl, queso fresco, croutons and black pepper
-    mx_crema_calabacita: p => [
-        xmxPeltreBowl(p, { out: '#f1eee6', rim: '#b8301c' }),
-        xmxBroth(p, 78, '#b8c77a', { glow: .4 }),
-        xmxSwirl(98, 100, 46, { c: '#fbf6ea', w: 3.4, turns: 1.5 }),
-        `<g ${p.sh(.6)}>`, ...[[112, 86, 20], [128, 100, -10], [116, 116, 40], [82, 118, 10], [96, 82, -30], [70, 98, 25], [100, 128, -15], [136, 82, 50]].map(([x, y, r]) => `<g ${T(x, y, r)}><g ${p.crumb(.9)}><rect x="-7" y="-7" width="14" height="14" rx="2.6" fill="${p.g('#dca04a', .35, .3)}" stroke="#a46a24" stroke-width=".5"/></g></g>`), `</g>`,
-        xmxQueso(p, 100, 100, 70, { n: 16, seed: 1, size: 3 }),
-        K.sprinkle(p, 100, 100, 90, { c: '#3a2a20', n: 26, r: .6 }),
-        xmxShine(100, 100, 76, .5),
-    ].join(''),
-
-    // Sopa de habas: painted barro bowl, golden fava bean purée with diced nopal, cilantro, a ribbon of olive oil and fried pasilla strips
-    mx_sopa_habas: p => [
-        xmxBarro(p, { clay: '#a8562a' }),
-        xmxBroth(p, 76, '#c9a052', { glow: .35 }),
-        `<path d="M62,92 C78,80 94,96 110,86 C124,78 136,86 142,96" stroke="#e8c45a" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/><path d="M60,116 C80,106 96,122 116,112" stroke="#e8c45a" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".85"/>`,
-        `<g ${p.sh(.5)}>`, ...xmxSpots('hb', 16, 58, 15).map(([x, y, r], i) => xmxDice(p, x, y, 13, r, i % 2 ? '#6f8f3a' : '#7f9c44')), `</g>`,
-        xmxStrip(p, 112, 98, 30, 6, 30, { c: '#3e1a10', bend: .2 }), xmxStrip(p, 96, 112, 26, 6, -40, { c: '#3e1a10', bend: .2 }), xmxStrip(p, 124, 112, 22, 5, 80, { c: '#4a2014', bend: .2 }),
-        xmxCilantro(p, 92, 92, 12, 20), xmxCilantro(p, 110, 124, 10, -50),
-        xmxShine(100, 100, 74, .45),
-    ].join(''),
-
     // Caldo de huevo: clay bowl, tomato-serrano broth with two softly poached eggs, potato dice, a whole serrano and cilantro
     mx_caldo_huevo: p => [
         K.bowl(p, { R: 92, glaze: '#c0703c', inside: '#f3e6cc' }),

@@ -1186,18 +1186,6 @@ Object.assign(D, {
         xthCoriander(p, 110, 110, 15, 20),
     ].join(''),
 
-    // ヤムプラーガポン（ยำปลากระป๋อง）: トマト煮のいわし缶、エシャロット、レモングラス、ミント、唐辛子
-    th_yamplakrapong: p => [
-        xthSmallBowl(p),
-        K.pool(p, 100, 102, 132, '#c8401e', { op: .9, seed: 3, sy: .92 }),
-        ...[[78, 80, 20], [122, 76, -30], [70, 120, 70], [120, 120, 10], [98, 100, 100], [144, 98, 80], [96, 142, -10], [60, 96, 40]].map(([x, y, r], i) => xthSardine(p, x, y, 36, r, { seed: i })),
-        xthShallot(p, 92, 70, 16, 20), xthShallot(p, 140, 128, 15, -30), xthShallot(p, 60, 98, 14, 60), xthShallot(p, 112, 96, 14, 10), xthShallot(p, 82, 140, 13, 80),
-        ...[[70, 76], [130, 64], [146, 116], [100, 120], [62, 134], [118, 146]].map(([x, y]) => `<g ${T(x, y)}><circle r="3.6" fill="#e6e8b0" stroke="#9a9a52" stroke-width=".6"/><circle r="1.8" fill="none" stroke="#c4c47a" stroke-width=".6"/></g>`),
-        xthShallot(p, 108, 132, 14, 40), xthShallot(p, 134, 84, 13, -20),
-        `<g ${p.sh(.4)}>`, ...[[106, 82, -20], [84, 102, 50], [128, 96, 100], [92, 124, 20], [136, 138, -50], [64, 112, 140], [112, 60, 30], [70, 70, -80], [150, 116, 10], [86, 150, 60]].map(([x, y, r]) => xthMint(p, x, y, 17, r)), `</g>`,
-        xthChiliRing(p, 112, 108, 5.5), xthChiliRing(p, 76, 92, 5), xthChiliRing(p, 126, 134, 5), xthChiliRing(p, 98, 64, 5),
-    ].join(''),
-
     // ヤムムーヨー（ยำหมูยอ）: 淡いピンクのムーヨーの輪切り、玉ねぎ、トマト、キンチャイ、唐辛子
     th_yammuyo: p => [
         xthVessel(p, 'blue'),
