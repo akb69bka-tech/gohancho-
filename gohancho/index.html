@@ -632,7 +632,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .swap:hover{background:rgba(245,238,227,.1)}
 .swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
 .spot .swap-line{color:var(--tray-ink)}
-.spice-tag{white-space:nowrap}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
+.spice-tag{white-space:nowrap}.alg-tag{color:var(--danger);font-weight:700;white-space:normal}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
 .tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .spot.ghost .vessel{background:transparent;box-shadow:none;border:2px dashed rgba(245,238,227,.28);box-sizing:border-box;opacity:.8}
 .vessel .food.svg{border-radius:50%;overflow:hidden}
@@ -3384,7 +3384,7 @@ function buildTwist(id){
     // 元の料理に同じ食材があるもの（鍋にするときの豆腐など）は、二重に並べない（温泉卵と卵・粉チーズとピザ用チーズのように別の品は残す）
     const addItems = [...(F ? F.add : []), ...(M ? M.add : [])].map(s => { const x = Object.assign(parseIng(s), {opt:false, added:true}); return /スープの素|スープのもと/.test(x.name) ? Object.assign(x, {key: x.name, label: x.name}) : x; })
         .filter(x => !items.some(y => !y.opt && y.key === x.key && x.name !== '温泉卵' && (String(y.name).endsWith(x.name) || String(x.name).endsWith(y.name))));   // 「木綿豆腐」があれば「豆腐」、「キャベツ」があれば「千切りキャベツ」は足さない（温泉卵は別に買う品なので残す）
-    const steps = base.steps.map(t => { const x = repl(t); return x !== t ? {t:x, add:true} : {t:x}; });   // 主役の食材を言いかえた手順は、変えたところ（黄色）にする
+    const steps = base.steps.map(t => { let x = repl(t); if (W && base.family === '魚介' && !/えび|あさり/.test(W.word)) x = shellPrepFix(x); return x !== t ? {t:x, add:true} : {t:x}; });   // 主役の食材を言いかえた手順は、変えたところ（黄色）にする。えびを肉にしたら、殻・背わたの下ごしらえは外す
     if (F) twistFlavorSteps(steps, F, fl, base);
     if (M) M.steps.forEach(t => steps.push({t, add:true}));
     if (F && F.garnish) steps.push({t:`仕上げに${F.garnish}を添える。`, add:true});
@@ -3393,7 +3393,10 @@ function buildTwist(id){
     if (W && re){ name = name.replace(re, m => /肉$/.test(m) ? W.to : W.to.replace(/肉$/, '')); name = name.replace(/^(豚|鶏|牛)(?=の)/, W.to.replace(/肉$/, '')); if (base.family === '鶏') name = name.replace('チキン', {'豚肉':'ポーク', '牛肉':'ビーフ'}[W.to] || W.to.replace(/肉$/, '')); }
     if (M) name = name + M.suffix;
     if (F) name = `${F.prefix} ${name}`;
-    if (W) name = `${name}（${W.label}）`;
+    // 魚・えびを肉に替えた案（モニター第3回 S6）: 外した食材（エビ・鮭など）を名前の先頭に出さない。名前の主役の言葉を替え（エビチリ→鶏チリ）、元の料理はかっこの中で言う（鶏チリ（エビチリの鶏むね肉版））
+    const SEA_NAME = {'魚介': /むきえび|えび|エビ|海老|あさり|アサリ/g, '魚': /生鮭|鮭|さけ|サーモン|さば|サバ|鯖|ぶり|ブリ|鰤/g}[base.family];
+    if (W && SEA_NAME && (SEA_NAME.lastIndex = 0, SEA_NAME.test(name))) name = name.replace(SEA_NAME, W.to.replace(/肉$/, '')) + `（${base.name}の${W.word}版）`;
+    else if (W) name = `${name}（${W.label}）`;
     const changes = [];
     if (F) changes.push(t('味: {v}', {v:flavorLabel(fl)}));
     if (M) changes.push(t('かたち: {v}', {v:formLabel(fo)}));
@@ -5940,7 +5943,21 @@ function allergyBadge(r){
     return `<span class="badge allergy">⚠ ${esc(t('アレルゲンあり'))}${ids.length ? ': ' + esc(joinNames(ids.map(algLabel))) : ''}</span>`;
 }
 // お膳の下・家族に送る文に添える、選んだアレルゲンの一言
-function algLine(){ const ids = algIds(); return ids.length ? t('アレルゲン（{list}）を使う料理は入れていません', {list: joinNames(ids.map(algLabel))}) : ''; }
+// いまお膳に出している料理（今日の画面の献立。まだなければ決めた献立）
+function shownDishes(){ return session.menu ? session.menu.items.map(x => x.r).filter(Boolean) : cookItems().map(x => x.r); }
+// 決めた献立にあとからアレルゲンを足したときなど、当たる料理が残っているあいだは「入れていません」と言わない（何品あるかを言う）
+function algLine(){
+    const ids = algIds(); if (!ids.length) return '';
+    const hit = shownDishes().filter(r => algSelectedHits(r, ids).length);
+    if (hit.length) return t('アレルゲン（{list}）を使う料理が{n}品あります', {list: joinNames([...new Set([].concat(...hit.map(r => algSelectedHits(r, ids))))].map(algLabel)), n: hit.length});
+    return t('アレルゲン（{list}）を使う料理は入れていません', {list: joinNames(ids.map(algLabel))});
+}
+// お膳の料理につける ⚠（選んだアレルゲン・今日食べる家族のアレルギーに当たる料理。決めた献立は黙って替えないので、残っている料理に印をつける）
+function algTagHtml(r){
+    if (!r || !allergyConflict(r)) return '';
+    const ids = algSelectedHits(r);
+    return `<span class="mt alg-tag" role="note">⚠ ${esc(ids.length ? t('アレルゲン: {list}', {list: joinNames(ids.map(algLabel))}) : t('アレルゲンあり'))}</span>`;
+}
 
 // 苦手の一覧の1件（'@pork' のようななかまの印、または食材の名前）が、なかま全部を避けるものなら、そのなかまを返す
 function avoidFamOf(x){
@@ -5956,7 +5973,7 @@ function avoidFamLabel(f){
         egg:t('卵（うずらの卵なども）'), dairy:t('乳製品（牛乳・チーズ・バター）'), nuts:t('ナッツ・ピーナッツ'), wheat:t('小麦（パン・麺・小麦粉）')}[f] || f;
 }
 // 画面に出す苦手の名前（なかまを避けるものは、なかまの名前で出す）
-function avoidName(x){ const f = avoidFamOf(x); return f ? avoidFamLabel(f) : String(x); }
+function avoidName(x){ const f = avoidFamOf(x); if (f) return avoidFamLabel(f); const a = Object.keys(ALG_WORD).find(id => ALG_WORD[id] === String(x)); return a ? algLabel(a) : String(x); }
 // 1つずつの食材が、選んだなかま（fams）に入っていれば、そのなかま（いまの国の料理の材料で見分ける）
 function avoidCoveredBy(q, fams){
     if (!fams.length) return null;
@@ -5970,7 +5987,7 @@ function avoidChipsHtml(list, act, famAct, more){
     const sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
     const fam = avoidFamChips().map(f => ({on: sel.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
     const one = AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => { const by = avoidCoveredBy(q, sel);
-        if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">✓ ${esc(q)}</button>`};
+        if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">${esc(q)}</button>`};   // ✓ は押した形の印（CSS）で出る。文字でも書くと「✓ ✓」になる
         const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
         return {on, h: `<button class="chip" data-act="${act}" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`}; })
         // 入力して足した食材（チップにないもの）
@@ -5981,6 +5998,28 @@ function avoidChipsHtml(list, act, famAct, more){
     const rest = fam.concat(one).filter(x => !x.on).length;
     if (!list.length || rest <= 8) return groups(xs => xs.filter(x => x.on).concat(xs.filter(x => !x.on))) + avoidSumHtml(list);
     return groups(xs => xs.filter(x => x.on)) + avoidSumHtml(list) + `<details class="avoid-more" ${session.avoidMore ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${groups(xs => xs.filter(x => !x.on))}</details>`;
+}
+// 家族のアレルギーのチップ（モニター第3回 S7）: なかま（卵・乳製品・小麦…）と、その国の主なアレルゲン（日本は特定原材料・準ずるもの）を、押しても畳まずに並べる（続けて押せる）。
+// 主なアレルゲンは、全員共通の判定と同じ id に読みかわる言葉で持つ（famAlgIds。保存の形は今までと同じ「食材の名前」）。なかまのチップで足りるもの（卵・乳・小麦・肉・魚・貝・ナッツ類）は出さない
+const ALG_WORD = {shrimp:'えび', crab:'かに', walnut:'くるみ', buckwheat:'そば', peanut:'落花生', cashew:'カシューナッツ', abalone:'あわび', squid:'いか', ikura:'いくら', orange:'オレンジ', kiwi:'キウイフルーツ', sesame:'ごま', salmon:'鮭', mackerel:'さば', soy:'大豆', banana:'バナナ', pistachio:'ピスタチオ', macadamia:'マカダミアナッツ', peach:'もも', yamaimo:'やまいも', apple:'りんご', gelatin:'ゼラチン', almond:'アーモンド', celery:'セロリ', mustard:'からし', lupin:'ルピナス', sulphite:'亜硫酸塩', gluten:'ライ麦'};
+const FAM_ALG_COVER = ['egg', 'milk', 'wheat', 'pork', 'chicken', 'beef', 'fish', 'crustacean', 'mollusc', 'treenut'];
+function famAlgChipsHtml(m){
+    const list = m.allergy, sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
+    const fam = avoidFamChips().map(f => `<button class="chip" data-act="fam-alg-fam" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`);
+    const ids = [...new Set([].concat(...algSections().main.map(x => x[1])))].filter(id => ALG_WORD[id] && !FAM_ALG_COVER.includes(id));
+    const words = ids.map(id => ALG_WORD[id]);
+    const alg = ids.map(id => { const w = ALG_WORD[id], on = list.includes(w); return `<button class="chip" data-act="fam-alg-w" data-v="${esc(w)}" aria-pressed="${on}">${esc(algLabel(id))}</button>`; });
+    // そのほかの食材（チップの一覧にあるもの）と、入力して足した食材
+    const other = AVOID_QUICK.filter(q => !avoidFamOf(q) && !words.includes(q)).map(q => { const by = avoidCovered(q);
+        if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">${esc(q)}</button>`};
+        const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
+        return {on, h: `<button class="chip" data-act="fam-alg" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`}; });
+    function avoidCovered(q){ return avoidCoveredBy(q, sel); }
+    const typed = list.filter(x => !avoidFamOf(x) && !words.includes(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => `<span class="chip have">${esc(avoidName(x))}<button class="x" data-act="fam-alg-w" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name: avoidName(x)}))}">×</button></span>`);
+    const grp = (label, xs) => xs.length ? `<div class="avoid-grp"><span class="small muted">${esc(label)}</span><div class="chips">${xs.join('')}</div></div>` : '';
+    const open = (session.famAlgMore || {})[m.id] || other.some(x => x.on && !/ inc"/.test(x.h));
+    return grp(t('なかまごと（豚肉ならハム・ベーコンも）'), fam) + grp(t('主なアレルゲン'), alg) + grp(t('入力して足した食材'), typed)
+        + `<details class="avoid-more fam-alg-more" data-fm-more="${esc(m.id)}" ${open ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${grp(t('その食材だけ'), other.map(x => x.h))}</details>`;
 }
 // 苦手な食材を変えたあとの一言: いまの国の料理のうち、置き換えて出す品数と、出さない品数
 function avoidSumHtml(list){
@@ -6097,7 +6136,9 @@ function famLabel(m, i){ return (m.name || '').trim() || t('{n}人目', {n: i + 
 function eatersLine(){
     const ms = eaterMembers(), al = algLine();
     if (!ms.some(m => m.avoid.length || m.mild)) return al;
-    const base = t('{names}も食べられるお膳です', {names: joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))))});
+    const names = joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))));
+    // 合わない料理（アレルギー・苦手・辛さ）が残っているあいだは「食べられるお膳です」と言わない
+    const base = shownDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : t('{names}も食べられるお膳です', {names});
     return al ? base + '\n' + al : base;
 }
 // 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理・唐辛子の調味料を大さじ1ほど使う料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる・キムチ）、0 = 辛くない
@@ -6171,7 +6212,7 @@ function allergyCtx(){ return avoidCtxFor(allergyList(), 'g'); }   // アレル�
 function avoidCtxFor(av, slot){
     // 家族のアレルギーで、アレルゲンの名前そのもの（そば・牛乳など）の登録は、全体と同じ判定（alg）だけで見る（「そば」の文字で焼きそばまで外さない）
     if (slot === 'g'){ algIdsEff(); const mp = famAlgIds.c && famAlgIds.c.mapped; if (mp && mp.size) av = av.filter(v => !mp.has(String(v))); }
-    const ax = S.settings.avoidX || {}, alg = slot === 'g' ? algIdsEff() : [], sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG + '|' + (slot === 'g' ? algSig() : '');
+    const ax = S.settings.avoidX || {}, alg = slot === 'g' ? algIdsEff() : [], sig = JSON.stringify(av) + JSON.stringify(ax) + (PACK ? PACK.country : 'JP') + LANG + '|' + (slot === 'g' ? algSig() + '|' + alg.join() : '');   // 家族の ⚠ を読みかえたアレルゲン（alg）も鍵に入れる（入れないと、2つ目の家族のアレルギー（大豆など）を足しても前の判定が残る）
     const hit = avoidCtxFor[slot]; if (hit && hit.sig === sig) return hit;
     const free = av.filter(x => String(x)[0] !== '@' && !canonOf(x)).map(x => { const raw = String(x).normalize('NFKC').toLowerCase().trim(); return {x, re: LATIN_RE.test(raw) ? wordRe(raw) : null}; });
     // 食材の表（AVOID_CON）で見分けられる言葉は、言語・国をまたいで同じ食材として照らす（足したときに覚えた食材を先に使う）
@@ -6350,7 +6391,7 @@ function swappedRecipe(r){
     // 分量は代わりの食材のふだんの分量（尾・杯・本のような数え方がそのまま残らないように）。同じ食材への置き換えが2つあれば1行にまとめる
     const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); if (!x) return i;
         if (seen.has(x.to.key)) return null; seen.add(x.to.key);
-        return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: x.to.qty || i.qty, changed: true, from: i.name, jp: x.to.jp}); }).filter(Boolean);
+        return Object.assign({}, i, {name: x.to.name, label: x.to.label, key: x.to.key, en: x.to.en, qty: swapQty(i, x.to), changed: true, from: i.name, jp: x.to.jp}); }).filter(Boolean);
     // 肉・魚の種類も置き換えた主役に合わせる
     const pw = w.swaps.find(x => x.from.key === r.protein), famOf = {chicken:'鶏', pork:'豚', tofu:'大豆', fish:'魚'};
     let fam = pw ? (FAMILY[pw.to.key] || famOf[pw.tip] || (/ground|mince/.test(SWAP_TXT(pw.to)) ? 'ひき肉' : r.family)) : r.family;
@@ -6391,8 +6432,25 @@ function swappedRecipe(r){
             .replace(new RegExp(W, 'giu'), m => m + (/^zh/.test(sl) ? '（' + mark + '）' : ' (' + mark + ')'));
         return u.replace(/\u0001(\d+)\u0002/g, (_, k) => hold[k]);
     };
-    const steps = r.steps.map(st => typeof st === 'string' ? omitTxt(repl(st)) : Object.assign({}, st, {t: omitTxt(repl(st.t))}));
+    const shell = w.swaps.filter(x => inFam('shellfish', x.from) && !inFam('shellfish', x.to)), shellFix = txt => (shell.length ? shellPrepFix(txt) : txt);   // えびを肉にしたら、殻・背わたの下ごしらえを残さない
+    const steps = r.steps.map(st => typeof st === 'string' ? shellFix(omitTxt(repl(st))) : Object.assign({}, st, {t: shellFix(omitTxt(repl(st.t)))}));
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
+}
+// えび・魚を肉に置き換えたときの分量（モニター第3回 S2）: 元の重さに合わせる。「えび 4尾」なら 80g（尾・切れの数え方も、肉のふだんの分量「2枚（500g）」も使わない）
+const SWAP_UNIT_G = {'尾': 20, '切れ': 90, '杯': 200, '匹': 100};
+function swapQty(from, to){
+    const sea = i => inFam('shellfish', i) || inFam('fish', i);
+    if (!sea(from) || sea(to)) return to.qty || from.qty;
+    const q = String(from.qty || ''), num = x => /\//.test(x) ? x.split('/')[0] / x.split('/')[1] : Number(x);
+    const g = q.match(/(\d+(?:\.\d+)?)\s*g\b/), c = q.match(/^(\d+\/\d+|\d+(?:\.\d+)?)\s*(尾|切れ|杯|匹)/);
+    if (g) return g[1] + 'g';
+    if (c) return Math.round(num(c[1]) * SWAP_UNIT_G[c[2]] / 10) * 10 + 'g';
+    return to.qty || from.qty;
+}
+// えびを肉に置き換えた手順の文から、えびだけの下ごしらえ（殻・背わた・尾）を外す（日本語の手順だけ。「鶏もも肉は殻と背わたを取り」にしない）
+function shellPrepFix(txt){
+    return String(txt).replace(/尾を残して殻をむき、背わたを取る|殻と背わたを取り、腹側に(?:数か所)?切(?:れ目|れ込み|り込み)を入れて伸ばす|背わたを取り、殻をむく（尾は残す）|背わたを取る/g, '一口大に切る')
+        .replace(/背わたを取り、片栗粉と水少々でもみ洗いして/g, '一口大に切り、').replace(/(?:殻と)?背わたを取り、|殻をむき、/g, '一口大に切り、');
 }
 // 献立の一覧に出す置き換えの一言（例: 🔁 さば の代わりに 鶏肉）
 function swapLineHtml(r){
@@ -6454,8 +6512,8 @@ function familySettingsHtml(){
         const open = session.famOpen === m.id;
         avoidSumHtml.off = true;
         // アレルギーは1回押すだけで登録する（食べられない食材にも入る）。食べられない食材から「⚠」で切りかえる方法も残す
-        let chips, algChips; try { algChips = avoidChipsHtml(m.allergy, 'fam-alg', 'fam-alg-fam', true); chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
-        return `<details class="box fam-member" data-fm="${esc(m.id)}" ${open ? 'open' : ''}><summary>${esc(famLabel(m, i))} <span class="small muted">${esc(m.role === 'child' ? t('子ども') : t('大人'))}${m.avoid.length ? ' · ' + esc(joinNames([...new Set(m.avoid.map(avoidName))])) : ''}${m.allergy.length ? ' ⚠' : ''}${m.mild ? ' 🌶' : ''}</span></summary>
+        let chips, algChips; try { algChips = famAlgChipsHtml(m); chips = avoidChipsHtml(m.avoid, 'fam-avoid', 'fam-avoid-fam', true); } finally { avoidSumHtml.off = false; }
+        return `<details class="box fam-member" data-fm="${esc(m.id)}" ${open ? 'open' : ''}><summary><span class="fam-nm">${esc(famLabel(m, i))}</span> <span class="small muted">${esc(m.role === 'child' ? t('子ども') : t('大人'))}${m.avoid.length ? ' · ' + esc(joinNames([...new Set(m.avoid.map(avoidName))])) : ''}${m.allergy.length ? ' ⚠' : ''}${m.mild ? ' 🌶' : ''}</span></summary>
             <div class="field"><input type="text" class="fam-name" data-act="fam-name" value="${esc(m.name)}" maxlength="12" placeholder="${esc(t('名前か絵文字（例: 長女、👧）'))}" aria-label="${esc(t('名前か絵文字（例: 長女、👧）'))}" autocomplete="off">
                 <div class="chips" role="group">${[['adult', t('大人')], ['child', t('子ども')]].map(([k, l]) => `<button class="chip" data-act="fam-role" data-v="${k}" aria-pressed="${m.role === k}">${esc(l)}</button>`).join('')}</div></div>
             <div class="field"><label>${esc(t('食べる量'))}</label><div class="chips" role="group" aria-label="${esc(t('食べる量'))}">${[[0.5, t('少なめ')], [1, t('ふつう')], [1.5, t('多め')]].map(([v, l]) => `<button class="chip" data-act="fam-portion" data-v="${v}" aria-pressed="${(m.portion || 1) === v}">${esc(l)}</button>`).join('')}</div></div>
@@ -8417,7 +8475,7 @@ function viewToday(){
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}">${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span>${algTagHtml(r)}<span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}">${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
                     : `<span class="nm none">${esc(empty)}</span><span class="mt meta"></span>${exWhy ? '<span class="dwhy"></span>' : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}"></span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>`
@@ -10306,6 +10364,13 @@ document.addEventListener('click', e => {
             else { let a = m.avoid.find(x => x[0] !== '@' && keyOf(x) === k); if (!a){ a = canonOf(v) || v; m.avoid.push(a); rememberAvoidX(a, v); } m.allergy.push(a); }
             session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
         }
+        case 'fam-alg-w': {   // 主なアレルゲンのチップ（そば・大豆など）・入力して足したアレルギーの ×: その言葉のまま、アレルギーと食べられない食材に入れる・外す（canonOf で別の食材に寄せない）
+            const m = famOf(el); if (!m) break;
+            const v = el.dataset.v;
+            if (m.allergy.includes(v)){ m.allergy = m.allergy.filter(x => x !== v); m.avoid = m.avoid.filter(x => x !== v); }
+            else { if (!m.avoid.includes(v)) m.avoid.push(v); m.allergy.push(v); }
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
         case 'fam-alg-fam': {
             const m = famOf(el); if (!m) break;
             const f = el.dataset.v;
@@ -11058,7 +11123,8 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
     if (e.target.matches('details.set-sec')) { if (!session.setOpen) session.setOpen = {}; session.setOpen[e.target.dataset.sk] = e.target.open; }   // 設定のまとまりの開き閉じ（描き直しても同じ）
-    if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
+    if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
+    else if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
     else if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
 document.addEventListener('change', e => {
@@ -11092,7 +11158,8 @@ document.addEventListener('change', e => {
         if (laterIfDecided(t('国'), () => {}, () => { if (mix0) S.settings.mix = mix0; else delete S.settings.mix; })) return;   // 決めた一膳はそのまま（国の組み合わせは明日の一膳から）
         reconcileMenu(); render(); return;   // 選んだ枠だけ選び直す
     }
-    if (el.dataset && el.dataset.act === 'fam-name'){ const m = famOf(el); if (m){ m.name = el.value.trim().slice(0, 12); session.famOpen = m.id; save(); render(); } return; }
+    // 名前は、ここでは描き直さない（名前の欄から離れたのが、となりのアレルギーのチップを押したためなら、描き直すとその1回目のタップが消える）。見出しの名前だけ書きかえる
+    if (el.dataset && el.dataset.act === 'fam-name'){ const m = famOf(el); if (m){ m.name = el.value.trim().slice(0, 12); session.famOpen = m.id; save(); const d = el.closest('[data-fm]'), nm = d && d.querySelector('.fam-nm'); if (nm) nm.textContent = famLabel(m, famMembers().indexOf(m)); } return; }
     if (el.id === 'kitchen-rice'){   // 炊飯器の炊く時間（分）。空なら持たない（既定の値は置かない）
         const v = Math.round(Number(el.value)), kc = Object.assign({}, S.settings.kitchen);
         if (el.value.trim() === '') delete kc.riceMin; else if (v >= 10 && v <= 180) kc.riceMin = v; else { el.value = kc.riceMin || ''; toast(t('10〜180分で入れてください')); return; }
