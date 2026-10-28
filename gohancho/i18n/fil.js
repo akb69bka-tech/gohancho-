@@ -1216,4 +1216,11 @@ GOHAN_I18N('fil', {
     "目安 {max}〜{n}分（同時に進めると短くなります）": "Mga {max}–{n} min (mas maikli kung sabay-sabay)",
     "ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）": "Paminsan-minsang kasalo (hindi kasama sa “Kakain ngayon” bilang default)",
     "いつものメンバー": "Ang dati",
+    "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Tumatakbo pa ang timer ng {name}. Kung handa na, pindutin ulit",
+    "国を「{name}」に変えますか？": "Palitan ang bansa ng “{name}”?",
+    "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Magiging putahe ng {name} ang menu ngayon. Puwede kang bumalik kahit kailan.",
+    "決めた献立は「作り方」にそのまま残ります。": "Mananatili sa “Lutuin” ang napiling menu.",
+    "{name}に変える": "Palitan ng {name}",
+    "肉や魚の部位がちがう料理": "Putaheng ibang hiwa ng karne o isda",
+    "冷蔵庫の部位とはちがう部位を使います": "Ibang hiwa sa nasa ref mo ang gamit",
 });
