@@ -104,7 +104,7 @@ for (const cc of CCS){
     await p.evaluate(() => { setTab('today'); render(); });
     const s2 = await snap();
     ok(s1 === s2, cc + ' menu/week/fridge/shopping unchanged by stock');
-    ok((await stored(p)).stock.length === 1, cc + ' stock kept');
+    { const st = (await stored(p)).stock; ok(st.length === 1, cc + ' stock kept ' + JSON.stringify(st.map(x => x.n))); }
     await p.context().close();
 }
 // ---- normalizeState / バックアップ / 要約 ----
