@@ -1,26 +1,30 @@
 // 「押していない料理は絶対に変わらない」ことを、設定まわりの操作ごとに繰り返し確かめる
-const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
-const BASE = process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
+const QUICK = process.env.QUICK === '1', REPS = Number(process.env.REPS || (QUICK ? 1 : 5));   // 失敗したら SEED=<表示された値> で同じ乱数・同じ国・同じ操作列を再現できる
+const BASE = BASE_;
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const b = await chromium.launch(LAUNCH);
   const res = {}; const errs = [];
-  const bad = (name, info) => { res[name] = (res[name] || 0) + 1; if (res[name] <= 2) console.log('BAD', name, info); };
+  let cur = '';   // いまの国・回・直前までの操作列（失敗時に表示する）
+  const trail = [];
+  const bad = (name, info) => { res[name] = (res[name] || 0) + 1; if (res[name] <= 2) console.log('BAD', name, info, '\n  再現: SEED=' + SEED + ' ' + cur + ' 操作列=' + trail.join('>')); };
   const ok = name => { res['ok:' + name] = (res['ok:' + name] || 0) + 1; };
-  for (let rep = 0; rep < 5; rep++) for (const [cc, extra] of [['JP', {}], ['US', {}], ['KR', {}]]) {
+  for (let rep = 0; rep < REPS; rep++) for (const [cc, extra] of [['JP', {}], ['US', {}], ['KR', {}]]) {
     const ctx = await b.newContext({viewport:{width:390,height:900}}); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    cur = 'CC=' + cc + ' rep=' + rep; trail.length = 0; await ctx.addInitScript(seedScript(seedFor('menu-stable', cc, rep)));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + e.message));
     await p.addInitScript(([cc]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:4}})); } }, [cc]);
-    await p.goto(BASE); await p.waitForTimeout(1800);
+    await p.goto(BASE); await ready(p);
     await p.evaluate(() => { window.hasPro = () => true; session.menu = null; render(); });
     const snap = () => p.evaluate(() => ({ids: session.menu.items.map(x => x.r ? x.r.id : '-'), mood: session.mood, rice: (document.querySelector('.tray .spot.rice') || {}).textContent || ''}));
     const same = (a, c) => JSON.stringify(a.ids) === JSON.stringify(c.ids) && a.rice.replace(/かえる|Change|\s/g, '') === c.rice.replace(/かえる|Change|\s/g, '');
     const act = async (name, fn, expectSame = true) => {
-      const a = await snap(); await p.evaluate(fn); await p.waitForTimeout(500); const c = await snap();
+      trail.push(name); const a = await snap(); await p.evaluate(fn); await p.waitForTimeout(500); const c = await snap();
       if (expectSame && !same(a, c)) bad(name, cc + ' ' + JSON.stringify(a.ids) + ' -> ' + JSON.stringify(c.ids)); else ok(name);
       return {a, c};
     };
-    // 献立に出ていない食材を苦手にする
-    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (ings.size && [...ings].some(k => /shrimp|clam|えび|あさり|しじみ|たこ|いか|squid|prawn|crab/.test(k))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
+    // 献立に出ていない食材を苦手にする（たこ・いか・貝なども「魚介」に入るので、献立にあれば無関係な苦手にならない）
+    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (session.menu.items.some(x => x.r && isAvoidedCore(x.r))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap', () => { S.settings.avoidSwap = false; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('toggle-swap-back', () => { S.settings.avoidSwap = true; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('avoid-days', () => { S.settings.avoidDays = 21; save(); render(); });
@@ -48,6 +52,7 @@ const BASE = process.env.BASE || 'http://localhost:8765/';
     if (after.mood !== 'fish') bad('lang-keeps-mood', after.mood); else ok('lang-keeps-mood');
     await ctx.close();
   }
-  console.log(JSON.stringify(res), 'errs', errs.slice(0, 3));
+  console.log(JSON.stringify(res), 'errs', errs.slice(0, 3), 'SEED', SEED);
   await b.close();
+  if (Object.keys(res).some(k => !k.startsWith('ok:')) || errs.length) process.exitCode = 1;
 })();

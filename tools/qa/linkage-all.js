@@ -9,8 +9,8 @@
 //   JOBS=3    並列数（既定 3）    LOG=path  不一致を全部このファイルに書く
 // 合格は「BAD 0」。BAD の行に、国・品数・操作・変わった枠が出る。
 const fs = require('fs');
-const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
-const BASE = process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, ready, SEED, seedScript, seedFor } = require('../lib/pw.cjs');
+const BASE = BASE_;
 const REPS = Number(process.env.REPS || 3), JOBS = Number(process.env.JOBS || 3);
 const ALL_CC = 'JP,US,GB,FR,DE,IT,ES,PL,TR,EG,IN,CN,TW,KR,TH,VN,ID,PH,MX,BR,PE'.split(',');
 const CCS = (process.env.CCS || ALL_CC.join()).split(',');
@@ -30,8 +30,10 @@ window.__snap = (opts) => {
   opts = opts || {};
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
-    const b = sp.querySelector('[data-act="reroll"]'); const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: c.outerHTML.replace(/ style="[^"]*"/g, '')};   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
+    const sa = sp.querySelector('[data-act="soup-add"]');
+    const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
+    // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '')};   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
   let shop = ''; try { shop = JSON.stringify(shoppingList()); } catch (e) { shop = 'ERR'; }
@@ -79,12 +81,13 @@ function diff(a, c, pressed, o = {}) {
 async function open(b, { cc, n = 'auto', settings = {}, state = {}, wait = 1500, pro = true }) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 900 } });
   await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+  await ctx.addInitScript(seedScript(seedFor('linkage', cc, n)));   // 失敗は SEED=... で再現
   const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ' ' + e.message));
   await p.addInitScript(([cc, n, settings, state]) => {
     if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({ onboarded: true, firstUse: '2026-10-26', settings: Object.assign({ country: cc, dishCount: n }, settings) }, state))); }
   }, [cc, n, settings, state]);
   await p.addInitScript(PAGE_LIB);
-  await p.goto(BASE); await p.waitForTimeout(wait);
+  await p.goto(BASE); await ready(p);
   await p.evaluate(pro => { if (pro) window.hasPro = () => true; session.menu = null; render(); }, pro);
   await p.waitForTimeout(100);
   return { ctx, p };
@@ -301,7 +304,8 @@ async function secDecided(b, cc) {
     const { ctx, p } = await open(b, { cc, n });
     await p.evaluate(() => { document.querySelector('[data-act="decide"]').click(); }); await p.waitForTimeout(500);
     await p.evaluate(() => setTab('today')); await p.waitForTimeout(200);
-    const cookTab = async () => { await p.evaluate(() => setTab('cook')); const h = await p.evaluate(() => document.querySelector('#view').innerHTML.replace(/\s+/g, ' ')); await p.evaluate(() => setTab('today')); return h; };
+    // 「食べる時刻から逆算」は現在時刻の文字が入るので比べない
+    const cookTab = async () => { await p.evaluate(() => setTab('cook')); const h = await p.evaluate(() => { const c = document.querySelector('#view').cloneNode(true); c.querySelectorAll('.eat-plan').forEach(x => x.remove()); return c.innerHTML.replace(/\s+/g, ' '); }); await p.evaluate(() => setTab('today')); return h; };
     const c0 = await cookTab();
     await pressAll(p, 'decided', cc + ' 決定後 n=' + n, { reps: 2 });
     // 作り方タブは「決めた献立」のまま（かえる で作り方タブの料理が変わらない）
@@ -343,7 +347,7 @@ async function secLang(b, cc) {
 const SECTIONS = [['matrix', secMatrix], ['soup', secSoup], ['mix', secMix], ['mood', secMood], ['one', secOne], ['saved', secSaved], ['savedmix', secSavedMix], ['scarce', secScarce], ['family', secFamily], ['avoid', secAvoid], ['decided', secDecided], ['week', secWeek], ['lang', secLang]];
 
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const b = await chromium.launch(LAUNCH);
   const jobs = [];
   for (const [name, fn] of SECTIONS) if (want(name)) { area(name); for (const cc of CCS) jobs.push([name, fn, cc]); }
   let done = 0; const t0 = Date.now();

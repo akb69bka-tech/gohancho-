@@ -4,8 +4,8 @@
 //  - スクロール位置のずれ
 // 使い方: BASE=http://localhost:8791/ node tools/qa/layout-shift.js [--quick] [--json out.json]
 //   環境変数 CCS=JP,US  国を絞る / WIDTHS=320,390  幅を絞る / SCALES=1,1.25  文字の拡大 / IMG=ok,fail,slow  画像の状態
-const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
-const BASE = process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_ } = require('../lib/pw.cjs');
+const BASE = BASE_;
 const quick = process.argv.includes('--quick');
 const jsonOut = process.argv.includes('--json') ? process.argv[process.argv.indexOf('--json') + 1] : null;
 const list = (k, d) => (process.env[k] ? process.env[k].split(',') : d);
@@ -17,7 +17,7 @@ const jobs = process.argv.includes('--jobs') ? Number(process.argv[process.argv.
 if (jobs > 1 && !process.env.LS_CHILD) {   // 国ごとに分けて並列に走らせ、結果を合わせる
   (async () => {
     const { chromium: c0 } = { chromium };
-    const br = await c0.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'}); const pg = await br.newPage(); await pg.goto(BASE); await pg.waitForTimeout(500);
+    const br = await c0.launch(LAUNCH); const pg = await br.newPage(); await pg.goto(BASE); await pg.waitForTimeout(500);
     const all = process.env.CCS ? process.env.CCS.split(',') : await pg.evaluate(() => COUNTRIES.map(c => c.cc)); await br.close();
     const fs = require('fs'), os = require('os'), path = require('path'), { spawn } = require('child_process');
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ls-')); const parts = Array.from({length: jobs}, (_, i) => all.filter((_, k) => k % jobs === i)).filter(a => a.length);
@@ -72,7 +72,7 @@ var results = []; // {scn, cc, w, sc, img, cls, worst, n, dsy, off}
 const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY)) return; results.push(r); if ((r.worst > TOL || r.cls > 0.001) && results.filter(x => x.scn === r.scn && (x.worst > TOL || x.cls > 0.001)).length <= 2) console.log('SHIFT', r.scn, r.cc, r.w, 'x' + r.sc, r.img, 'cls=' + r.cls.toFixed(3), 'worst=' + r.worst, 'n=' + r.n, 'dSY=' + r.dsy, (r.off || []).join(' / ')); };
 
 (async () => {
-  let b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  let b = await chromium.launch(LAUNCH);
   const errs = [];
   const probe = await b.newPage(); await probe.goto(BASE); await probe.waitForTimeout(500);
   const allCC = await probe.evaluate(() => COUNTRIES.map(c => c.cc)); await probe.close();
@@ -235,7 +235,7 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         record(Object.assign({}, base, {scn: '横はみ出し（7つのタブ）', cls: 0, worst: Math.max(0, ov), n: 0, all: Math.max(0, ov), dsy: 0, off: [tb + ' +' + ov + 'px']}));
       }
       await ctx.close();
-    } catch (e) { errs.push(`${cc} ${w} x${sc} ${img} n${n}: ${String(e.message).split('\n')[0]}`); try { await b.close(); } catch (e2) {} b = await chromium.launch({executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'}); }
+    } catch (e) { errs.push(`${cc} ${w} x${sc} ${img} n${n}: ${String(e.message).split('\n')[0]}`); try { await b.close(); } catch (e2) {} b = await chromium.launch(LAUNCH); }
   }
   await b.close();
 
@@ -247,5 +247,6 @@ function report(results, errs, jsonOut) {
   console.log('\n操作 | 回数 | 違反 | CLS合計 | CLS最大 | 画面内の最大ずれpx | ページ全体の最大ずれpx | 最大スクロールずれ');
   for (const k in groups) { const g = groups[k]; console.log(`${k} | ${g.runs} | ${g.bad} | ${g.cls.toFixed(3)} | ${g.clsMax.toFixed(3)} | ${g.worst} | ${g.all} | ${g.dsy}`); }
   console.log('errs', errs.slice(0, 3));
+  if (Object.values(groups).some(g => g.bad) || errs.length) process.exitCode = 1;   // 違反があれば失敗
   if (jsonOut) require('fs').writeFileSync(jsonOut, JSON.stringify({groups, results}, null, 1));
 }

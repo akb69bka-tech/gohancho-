@@ -7,10 +7,10 @@
 import { createRequire } from 'node:module';
 import { execSync, spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const LANGS = (process.env.LANGS || 'ja,en,ar,th,ko,zh-Hans,de').split(',');
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const unesc = s => s.replace(/\\([\\;,nN])/g, (_, c) => c === 'n' || c === 'N' ? '\n' : c);
@@ -39,7 +39,7 @@ for (const lang of LANGS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(lang + ': ' + e.message));
     await p.addInitScript(lang => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), lang, settings:{country:'JP', dishCount:3, lang}})); } }, lang);
-    await p.goto(URL_); await p.waitForTimeout(900);
+    await p.goto(URL_); await ready(p);
     for (const pro of [true, false]){
         const r = await p.evaluate(async ([lang, pro]) => {
             await setLang(lang); hasPro = () => pro; S.staples = []; S.fridge = []; S.settings.weekSides = true;
@@ -99,7 +99,7 @@ for (const lang of LANGS){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push('ui: ' + e.message));
     await p.addInitScript(() => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:'JP', dishCount:3}})); } });
-    await p.goto(URL_); await p.waitForTimeout(900);
+    await p.goto(URL_); await ready(p);
     await p.evaluate(() => { hasPro = () => true; makeWeek(); openShare('week'); });
     const btn = p.locator('[data-act="share-ics"]'); ok(await btn.count() === 1, 'ボタンがない');
     await p.evaluate(() => { navigator.canShare = undefined; });

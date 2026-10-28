@@ -11,9 +11,9 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
+const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
@@ -33,7 +33,7 @@ async function open(tz, time, state, opt = {}){
     if (time) await p.clock.install({ time: new Date(time) });
     const st = state || { onboarded: true, firstUse: '2026-01-01', settings: { country: 'JP', dishCount: 3 } };
     await p.addInitScript(x => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); if (x) localStorage.setItem('gohancho.v1', JSON.stringify(x)); } }, st);
-    await p.goto(URL_); await p.waitForTimeout(700); p.ctx = ctx; return p;
+    await p.goto(URL_); await ready(p); p.ctx = ctx; return p;
 }
 
 // ---------- 1. 日付の部品: 時間帯 × 時刻 × 夏時間・閏日・年末年始 ----------

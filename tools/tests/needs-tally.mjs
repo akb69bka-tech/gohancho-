@@ -7,17 +7,17 @@
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
-const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
+const { chromium, LAUNCH, BASE: BASE_, ready } = require('../lib/pw.cjs');
+const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const LANGS = ['ja','en','de','es','fil','fr','hi','id','it','ko','pl','pt-BR','th','tr','vi','zh-Hans','zh-Hant','ar'];
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(LAUNCH);
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m); } };
 async function open(lang, store = {}){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(lang + ': ' + e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) errs.push(lang + ': ' + m.text()); });
     await p.addInitScript(([lang, store]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({foldOpen:{upg:true,tw:true,week:true}, onboarded:true, firstUse:new Date().toISOString().slice(0,10), settings:{country:'JP', dishCount:3, uiLang:lang, avoidDays:10, servings:2, avoid:[]}, ...store})); } }, [lang, store]);
-    await p.goto(URL_); await p.waitForTimeout(900); await p.evaluate(() => { hasPro = () => true; });
+    await p.goto(URL_); await ready(p); await p.evaluate(() => { hasPro = () => true; });
     return { ctx, p };
 }
 const FAM = [{id:'f1', name:'はな', role:'child', avoid:['卵','えび','ピーマン'], allergy:['卵','えび'], mild:true}, {id:'f2', name:'', role:'adult', avoid:[], allergy:[], mild:false}, {id:'f3', name:'祖母', role:'adult', avoid:[], allergy:[], mild:true}];
