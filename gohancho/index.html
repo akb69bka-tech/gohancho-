@@ -2144,10 +2144,11 @@ function normalizeState(d){
     // 家族のプロフィール（最大6人）と、今日食べる人（null = 全員）
     const strs = x => arr(x).filter(v => typeof v === 'string' && v.trim());
     const seenF = new Set();
-    st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, 6).map(m => {
+    st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, 10).map(m => {
         const avoid = [...new Set(strs(m.avoid))]; return {id: m.id, name: typeof m.name === 'string' ? m.name.slice(0, 12) : '', role: m.role === 'child' ? 'child' : 'adult',
-            avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true, sometimes: m.sometimes === true}; });
-    st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => st.family.some(m => m.id === x)) : null;
+            avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true, sometimes: m.sometimes === true, me: m.me === true}; });
+    { let meSeen = false; st.family.forEach(m => { if (m.me && meSeen) m.me = false; if (m.me) meSeen = true; }); }   // 「これはわたし」は1人だけ
+    st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => x === '__me' || st.family.some(m => m.id === x)) : null;
     if (!isYmd(st.firstUse)) st.firstUse = '';
     // 作り置き・残り物メモ（{id, name, d}: 「冷蔵庫に入れた」と押した日 d を 1日目として数える）と、食費メモ（{id, d, a}: 自分で入れた金額）。端末の中だけ
     st.leftovers = arr(st.leftovers).filter(x => x && typeof x === 'object' && typeof x.name === 'string' && x.name.trim() && isYmd(x.d)).slice(0, 30)
@@ -5264,7 +5265,7 @@ function scaleText(str, factor){
     }).replace(/(\d+(?:[.,]\d+)?(?:\s+\d+\/\d+|\/\d+)?)(\s+)([^\s\d()（）,;·.]+)/g, (m, n, sp, w) => unitForm(unitSing(w), stepNum(n)) === w ? m : n + sp + unitForm(unitSing(w), stepNum(n)));   // 数が変わったら、数え方の単数・複数も合わせる（2 taza → 2 tazas、4 حبة → 4 حبات）
 }
 // 今日の分量の人数: 「今日食べる人」を選んでいればその人数、選んでいなければ設定の人数（1週間プランの買い物メモは設定の人数のまま）
-function svToday(){ const ms = Array.isArray(S.eaters) ? eaterMembers() : []; return ms.length ? ms.length : (Number(S.settings.servings) || 2); }
+function svToday(){ const n = Array.isArray(S.eaters) ? eaterMembers().length + (meOn() ? 1 : 0) : 0; return n ? n : (Number(S.settings.servings) || 2); }   // 「わたし」も1人に数える
 function servingFactor(week){ return (week ? (Number(S.settings.servings) || 2) : svToday()) / 2; }
 // 日本語の「小さじ5」は「大さじ1と小さじ2」のように大さじにまとめる（小さじ3 = 大さじ1）
 function tspToTbsp(str){
@@ -5796,6 +5797,11 @@ function rememberAvoidX(word, typed){
    実際に避ける食材 = 家の苦手な食材 ∪ 今日食べる人の苦手な食材 */
 const FAM_MAX = 10;   // 家族は10人まで（第2回モニター F-P09: 6人では足りない）
 function famOf(el){ const w = el.closest && el.closest('[data-fm]'); return w ? famMembers().find(m => m.id === w.dataset.fm) || null : null; }
+// 「わたし」: 家族の登録に自分がいない人のための、今日食べる人の1つ（はじめから選んだ状態）。家族の誰かに「これはわたし」を付けたら出さない
+const ME_ID = '__me';
+function meMember(){ return famMembers().find(m => m.me) || null; }
+function meOn(){ return !meMember() && (Array.isArray(S.eaters) ? S.eaters.includes(ME_ID) : true); }
+function eaterIds(){ return [...(meOn() ? [ME_ID] : []), ...eaterMembers().map(m => m.id)]; }
 function famMembers(){ return Array.isArray(S.family) ? S.family : []; }
 function famNameSet(){ return new Set(famMembers().map(m => (m.name || '').trim()).filter(Boolean)); }
 // 今日食べる人を選んでいないときは「いつものメンバー」= 「ときどき一緒に食べる」にした人（実家の母など）を除いた家族（田村 3-10）
@@ -6166,6 +6172,7 @@ function familySettingsHtml(){
             ${m.avoid.length ? `<div class="field"><label>${esc(t('アレルギーの食材（⚠ をつけると、置き換えずに、その食材を使う料理を出しません）'))}</label>
                 <div class="chips">${m.avoid.map(x => `<button class="chip ${m.allergy.includes(x) ? 'allergy' : ''}" data-act="fam-allergy" data-v="${esc(x)}" aria-pressed="${m.allergy.includes(x)}" aria-label="${esc(t('{name}をアレルギーにする', {name: avoidName(x)}))}">⚠ ${esc(avoidName(x))}</button>`).join('')}</div></div>` : ''}
             <label class="check"><input type="checkbox" data-act="fam-mild" ${m.mild ? 'checked' : ''}><span>${esc(t('辛いのが苦手'))} 🌶</span></label>
+            <label class="check"><input type="checkbox" data-act="fam-me" ${m.me ? 'checked' : ''}><span>${esc(t('これはわたし（今日食べる人の「わたし」として数える）'))}</span></label>
             <label class="check"><input type="checkbox" data-act="fam-sometimes" ${m.sometimes ? 'checked' : ''}><span>${esc(t('ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）'))}</span></label>
             ${m.avoid.length || m.mild ? `<div class="row"><button class="btn sm" data-act="needs-open">${esc(t('食べられないものを伝える'))}</button></div>` : ''}
             <div class="row"><button class="btn sm ghost" data-act="fam-del">${esc(t('この人を削除'))}</button></div>
@@ -7938,7 +7945,7 @@ function viewToday(){
             <span class="hint hint2 cond-hint">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:svToday(), reason:countReason(m.n)}) : st.id === 'rice' ? t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:svToday(), reason:countReason(m.n)}) : t('{compose}・{n}品と{staple}・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, staple:st.name, sv:svToday(), reason:countReason(m.n)})))}</span>
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span>${moodGroups.map(([lab, xs]) => `<span class="cond-sub">${esc(lab)}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分') + t('・') + lab)}">${xs.map(moodChip).join('')}</div>`).join('')}</div>
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
-            ${famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(m => m.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${famMembers().map((m, i) => `<button class="chip" data-act="eater" data-v="${esc(m.id)}" aria-pressed="${eaterMembers().includes(m)}">${esc(famLabel(m, i))}</button>`).join('')}</div></div>` : ''}
+            ${famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(m => m.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((m, i) => `<button class="chip" data-act="eater" data-v="${esc(m.id)}" aria-pressed="${eaterMembers().includes(m)}">${esc(famLabel(m, i))}</button>`).join('')}</div></div>` : ''}
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
         </details></div>
@@ -9652,7 +9659,7 @@ document.addEventListener('click', e => {
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'eater': {
-            const id = el.dataset.v, cur = eaterMembers().map(m => m.id), on = cur.includes(id);
+            const id = el.dataset.v, cur = eaterIds(), on = cur.includes(id);
             S.eaters = on ? cur.filter(x => x !== id) : cur.concat(id);
             save(); reconcileMenu(); refreshWeek(); render(); break;   // 影響する枠だけ選び直す
         }
@@ -9660,17 +9667,18 @@ document.addEventListener('click', e => {
             if (famMembers().length >= FAM_MAX){ toast(t('家族は{n}人まで登録できます', {n: FAM_MAX})); break; }
             const m = {id: 'f' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), name: '', role: 'adult', avoid: [], allergy: [], mild: false};
             if (!Array.isArray(S.family)) S.family = [];
-            const was = eaterMembers().map(x => x.id), all = !Array.isArray(S.eaters);
+            const was = eaterIds(), all = !Array.isArray(S.eaters);
             S.family.push(m); if (!all) S.eaters = was.concat(m.id);
             session.famOpen = m.id; save(); render(); break;
         }
         case 'fam-del': {
             const m = famOf(el); if (!m) break;
-            S.family = S.family.filter(x => x !== m); if (Array.isArray(S.eaters)) S.eaters = S.eaters.filter(x => x !== m.id);
+            S.family = S.family.filter(x => x !== m); if (Array.isArray(S.eaters)){ const wasMe = m.me && S.eaters.includes(m.id); S.eaters = S.eaters.filter(x => x !== m.id); if (wasMe) S.eaters.push(ME_ID); }   // 「わたし」の人を消したら、「わたし」に戻す
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'fam-role': { const m = famOf(el); if (m){ m.role = el.dataset.v === 'child' ? 'child' : 'adult'; session.famOpen = m.id; save(); render(); } break; }
         case 'fam-mild': { const m = famOf(el); if (m){ m.mild = el.checked; session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); } break; }
+        case 'fam-me': { const m = famOf(el); if (m){ famMembers().forEach(x => { x.me = false; }); m.me = el.checked; if (m.me && Array.isArray(S.eaters) && S.eaters.includes(ME_ID)){ S.eaters = S.eaters.filter(x => x !== ME_ID); if (!S.eaters.includes(m.id)) S.eaters.push(m.id); } session.famOpen = m.id; save(); render(); } break; }   // 「これはわたし」は1人だけ
         case 'fam-sometimes': { const m = famOf(el); if (m){ m.sometimes = el.checked; session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); } break; }
         case 'eaters-usual': { if (!Array.isArray(S.eaters)) break; S.eaters = null; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-allergy': {
