@@ -5708,7 +5708,7 @@ function cardPlate(ctx, cx, cy, rad, img, r, name){
         let col = '#e9d9b8'; try{ if (r) col = foodColor(r) || col; }catch(e){}
         ctx.fillStyle = col; ctx.fillRect(cx - rad, cy - rad, rad * 2, rad * 2);
         ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.beginPath(); ctx.arc(cx, cy, rad * .62, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = 'rgba(29,39,51,.55)'; ctx.font = `700 ${Math.round(rad * .6)}px ${CARD_SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(42,30,22,.55)'; ctx.font = `700 ${Math.round(rad * .6)}px ${CARD_SERIF}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.direction = 'ltr'; ctx.fillText(Array.from(name || '')[0] || '', cx, cy + rad * .04);
     }
     ctx.restore();
