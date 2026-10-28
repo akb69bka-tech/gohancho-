@@ -733,6 +733,67 @@ details.set-sec[open]>summary .fold-chev{transform:rotate(225deg) translate(-2px
 .shop .shop-row.done{background:transparent}
 .shop .shop-row.done .nm{font-weight:400}
 @media (prefers-reduced-motion:no-preference){.shop .shop-row{transition:background .15s}}
+/* v3（日向）: 1週間プラン — 7日を1行ずつ。曜日・料理の絵・名前・担当をひと目で。日ごとの操作は「変更」1つにまとめ、開いた画面で日付を確かめてから押す */
+.week.wk2 .item{grid-template-columns:40px 52px minmax(0,1fr) auto;gap:var(--s4) var(--s12);align-items:center;padding:var(--s12);min-height:80px}
+.week.wk2 .item .day{grid-column:1;grid-row:1;align-self:center;padding:0;gap:2px}
+.week.wk2 .day .wd{font-size:var(--fs12);font-weight:700;letter-spacing:.04em}
+.week.wk2 .day.sun .wd{color:var(--sun)}.week.wk2 .day.sat .wd{color:var(--sat)}
+.week.wk2 .day .dd{font-size:var(--fs20)}
+.week.wk2 .item:has(.day.today){background:var(--leaf-soft);box-shadow:inset 4px 0 0 var(--leaf)}
+[dir="rtl"] .week.wk2 .item:has(.day.today){box-shadow:inset -4px 0 0 var(--leaf)}
+.week.wk2 .wk-pic,.week.wk2 .thumb.wk-none{grid-column:2;grid-row:1;cursor:pointer}
+.week.wk2 .thumb{width:52px;height:52px}
+.week.wk2 .thumb.wk-none{background:transparent;box-shadow:none;border:2px dashed var(--line);cursor:default}
+.week.wk2 .item .t{grid-column:3;grid-row:1}
+.week.wk2 .item .t .wnm{font-family:var(--mincho);font-weight:600;font-size:var(--fs16)}
+.week.wk2 .who-b{display:inline-block;max-width:100%;vertical-align:baseline;background:var(--surface-2);color:var(--ink);font-weight:700;border-radius:var(--r-pill);padding:0 var(--s8);margin-inline-end:var(--s4);font-size:var(--fs12);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.week.wk2 .week-acts,.week.wk2 .plus-mark{grid-column:4;grid-row:1;margin:0;align-self:center}
+.week.wk2 .week-acts{display:flex}
+.week.wk2 .wk-edit{flex-direction:column;gap:0;min-width:56px;min-height:var(--tap);padding:var(--s4) var(--s8);font-size:var(--fs12);line-height:1.2;border-radius:var(--r-md);font-weight:700}
+.week.wk2 .wk-edit svg{width:20px;height:20px;fill:currentColor}
+.week.wk2 .item.skipped .t b{font-weight:700}
+.week.wk2 .item.skipped .week-acts .btn{max-width:8.5em;white-space:normal;line-height:1.2;border:1px solid var(--line);background:var(--surface);width:auto}
+@media (max-width:400px){.week.wk2 .week-acts{display:flex;grid-template-columns:none}.week.wk2 .week-acts .btn{width:auto;padding-inline:var(--s8)}}
+@media (max-width:360px){.week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}.week.wk2 .item.skipped .week-acts .btn{max-width:none}}   /* 狭い画面では「作る日に戻す」を2段目に回し、文字の欄を細くしない */
+html[data-ts="2"] .week.wk2 .item.skipped .week-acts{grid-row:2;grid-column:2 / -1;justify-self:end}html[data-ts="2"] .week.wk2 .item.skipped .week-acts .btn{max-width:none}
+html[data-ts="2"] .week.wk2 .item{grid-template-columns:auto minmax(0,1fr) auto}html[data-ts="2"] .week.wk2 .wk-pic,html[data-ts="2"] .week.wk2 .thumb.wk-none{display:none}html[data-ts="2"] .week.wk2 .item .t{grid-column:2}html[data-ts="2"] .week.wk2 .week-acts,html[data-ts="2"] .week.wk2 .plus-mark{grid-column:3}   /* 文字がいちばん大きいときは、名前の幅を取るため絵を省く */
+.wk-foot{margin-top:var(--s4)}.wk-foot .btn.wide{flex:1 1 12em}
+/* その日の操作の画面 */
+.wd-head{display:flex;gap:var(--s16);align-items:center}
+.wd-head .thumb{width:72px;height:72px;cursor:pointer}
+.wd-tx{min-width:0;display:flex;flex-direction:column;gap:var(--s4)}
+.wd-tx h2{font-size:var(--fs20);letter-spacing:0;overflow-wrap:anywhere}
+.wd-acts{display:flex;flex-direction:column;gap:var(--s8)}
+.wd-acts .btn{min-height:var(--tap);justify-content:flex-start;font-size:var(--fs16);gap:var(--s12);padding-inline:var(--s16);text-align:start}
+.wd-acts .btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;flex:none}
+.wd-sep{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s8);padding-top:var(--s12);border-top:1px solid var(--line-soft)}
+.wd-sep .btn{color:var(--muted)}
+/* v3（日向）: 買い物メモ — 進み具合と店内モードを1つの帯に。売り場ごとに見出しと品数。家にあるものは下に控えめに。送る・カレンダーは最後の1か所 */
+.shop-opts{margin-top:var(--s8)}
+.shop-bar{display:flex;align-items:center;gap:var(--s12);flex-wrap:wrap;margin:var(--s12) 0 var(--s8);padding:var(--s12) var(--s16);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1)}
+.shop-bar.on{position:sticky;top:var(--s8);z-index:5;border-color:var(--leaf)}
+.shop-meter{flex:1 1 10em;min-width:0;display:flex;flex-direction:column;gap:var(--s4)}
+.shop-meter .shop-prog{margin:0}
+.shop-meter .bar{display:block;height:8px;border-radius:var(--r-pill);background:var(--surface-2);overflow:hidden}
+.shop-meter .bar i{display:block;height:100%;background:var(--leaf);border-radius:inherit}
+@media (prefers-reduced-motion:no-preference){.shop-meter .bar i{transition:width var(--dur-2) var(--ease)}}
+.shop-store{flex:1 1 auto;min-height:var(--tap);white-space:normal;text-align:center}
+.shop-store svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;flex:none}
+.shop .shop-sec:not(.done){display:flex;align-items:center;justify-content:space-between;gap:var(--s8);padding:var(--s12) var(--s16) var(--s8);font-size:var(--fs14);font-family:var(--gothic);font-weight:700;color:var(--ink);background:var(--surface-2);border-top:1px solid var(--line-soft)}
+.shop .shop-sec:not(.done):first-child{border-top:0}
+.shop .shop-sec .n{font-family:var(--font-body);font-size:var(--fs12);font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill);min-width:28px;padding:0 var(--s8);text-align:center;line-height:1.6}
+.shop .shop-sec.done{padding:var(--s12) var(--s16) var(--s4)}
+.shop .shop-row.done{background:color-mix(in srgb,var(--surface-2) 40%,transparent)}
+.shop.big .shop-sec:not(.done){font-size:var(--fs16);padding:var(--s16)}
+.shop-fridge{margin-top:var(--s12);display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.shop-fridge .pantry-hint{padding-inline:var(--s4)}
+.shop-quiet{margin-top:var(--s16);padding-top:var(--s8);border-top:1px dashed var(--line)}
+.shop-quiet .shop-have{padding-inline:var(--s4)}
+.shop-quiet .pantry-box{box-shadow:none;background:transparent}
+.shop-quiet .pantry-box summary{color:var(--muted);font-size:var(--fs14)}
+.shop-send{margin-top:var(--s24);display:flex;flex-direction:column;gap:0}
+.shop-send .btn{width:100%;min-height:var(--tap)}
+.shop-send .pantry-hint{padding-inline:var(--s4);text-align:center}
 /* 料理のイラスト */
 .vessel .food.svg{background:#fbf8f1}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
@@ -4338,6 +4399,7 @@ function renderSheetBody(){
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
+    if (sheet.kind === 'wday') body = wdaySheetHtml();
     if (sheet.kind === 'fphoto') body = fphotoSheetHtml();
     if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
     if (sheet.kind === 'paywall'){
@@ -5669,7 +5731,7 @@ function shopRowsHtml(list, done){
     const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
     return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
-        const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec">${esc(l)}</div>${xs.map(row).join('')}` : '';
+        const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec sec-${k}"><span>${esc(l)}</span><span class="n" aria-hidden="true">${xs.length}</span></div>${xs.map(row).join('')}` : '';
     }).join('') + (got.length ? `<div class="shop-sec done">${esc(t('買った（{n}）', {n:got.length}))}</div>${got.map(row).join('')}` : '');
 }
 // 買ったもの（チェックした品）を冷蔵庫に入れる。自分で足した品は食材ではないので入れない
@@ -5723,18 +5785,23 @@ function shoppingHtml(){
     const days = visiblePlanDays(), n = on ? days.length : days.filter(x => byId(x.id)).length;
     const head = on ? t('主菜・副菜・汁もの{n}日分の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv}) : t('主菜{n}品の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {n, sv});
     const nDone = list.filter(e => done.has(e.key)).length, nFridge = list.filter(e => done.has(e.key) && !e.extra).length;
+    // 並び: 見出し → 設定のチップ → 進み具合と店内モード → 追加 → 売り場ごとの一覧（買ったものは下）→ 冷蔵庫へ → 家にあるもの（控えめ）→ 送る・カレンダー（1か所）
+    const pct = list.length ? Math.round(nDone / list.length * 100) : 0, big = !!session.shopMode;
     return `<div class="sec-head" id="shop-memo"><h3>${esc(t('買い物メモ'))}</h3><span class="hint">${esc(head)}</span></div>
-        <div class="chips"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button><button class="chip" data-act="shop-mode" aria-pressed="${!!session.shopMode}">${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button>${list.some(e => e.alt) || shopAltOn() ? `<button class="chip" data-act="toggle-shop-alt" aria-pressed="${shopAltOn()}">${esc(t('もうひとつの名前も併記'))}</button>` : ''}</div>
-        <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
+        <div class="chips shop-opts"><button class="chip" data-act="toggle-week-sides" aria-pressed="${on}">${esc(t('副菜・汁ものも含める'))}</button>${list.some(e => e.alt) || shopAltOn() ? `<button class="chip" data-act="toggle-shop-alt" aria-pressed="${shopAltOn()}">${esc(t('もうひとつの名前も併記'))}</button>` : ''}</div>
+        <div class="shop-bar${big ? ' on' : ''}">
+            ${list.length ? `<div class="shop-meter"><p class="shop-prog" role="status">${esc(nDone === list.length ? t('すべてチェックしました') : t('買った {done} / {total}品', {done:nDone, total:list.length}))}</p><span class="bar" aria-hidden="true"><i style="width:${pct}%"></i></span></div>` : ''}
+            <button class="btn${big ? ' primary' : ''} shop-store" data-act="shop-mode" aria-pressed="${big}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h2l2.2 10.2a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button>
+        </div>
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
-        ${list.length ? `<p class="shop-prog" role="status">${esc(nDone === list.length ? t('すべてチェックしました') : t('買った {done} / {total}品', {done:nDone, total:list.length}))}</p>` : ''}
+        <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
         ${algIds().length || famMembers().some(m => m.allergy.length) ? `<p class="pantry-hint alg-shop">${esc(t('アレルギーの設定があります。買うときは、原材料表示を必ず確かめてください。'))}</p>` : ''}
-        ${nFridge ? `<div class="chips"><button class="chip" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button></div><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p>` : ''}
-        <div class="list shop${session.shopMode ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
+        <div class="list shop${big ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
-        ${shopHaveHtml()}
-        ${pantryHtml()}`;
+        ${nFridge ? `<div class="shop-fridge"><button class="btn" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p></div>` : ''}
+        ${(q => q ? `<div class="shop-quiet">${q}</div>` : '')(shopHaveHtml() + pantryHtml())}
+        <div class="shop-send"><button class="${msgBtnClass()} wide" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('送る・カレンダーに入れる'))}</button><p class="pantry-hint">${esc(t('予定と買い物メモを送れます。作る日をカレンダーに入れることもできます。'))}</p></div>`;
 }
 // 冷蔵庫にあるので買い物メモに入れていない食材（買いすぎ・重複購入を防ぐため、省いた分を見せる）。期限を入れた食材は期限も添える
 function shopHaveHtml(){
@@ -6652,6 +6719,18 @@ function whoNames(){
     const used = ((S.week && S.week.days) || []).map(x => x.who).filter(Boolean);
     return [...fam, ...used].filter(n => !seen.has(n) && seen.add(n));
 }
+// 1週間プランの1日分の操作（別の案・担当・作らない）。押したのがどの日かを見出しで確かめられる。ほかの日・料理は動かさない
+function wdaySheetHtml(){
+    const x = S.week && S.week.days.find(y => y.d === sheet.d), r = x && byId(x.id);
+    if (!x || !r || x.skip) return `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+    return `<div class="wd-head"><span class="wd-pic${sheet.pop ? ' pop' : ''}" data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span><div class="wd-tx"><span class="eyebrow">${esc(jpDate(x.d))}</span><h2>${esc(r.name)}</h2><div class="small muted">${x.who ? esc(t('担当：{name}', {name:x.who})) + esc(t('・')) : ''}${esc(metaLine(r))}</div></div></div>
+        <div class="wd-acts">
+            <button class="btn" data-act="week-reroll" data-d="${x.d}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4.5h-4.5"/></svg>${esc(t('別の案'))}</button>
+            <button class="btn" data-act="week-who" data-d="${x.d}">${esc(x.who ? t('担当：{name}', {name:x.who}) : t('担当を決める'))}</button>
+            <button class="btn" data-act="open" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button>
+        </div>
+        <div class="wd-sep"><button class="btn ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作らない'))}</button><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
+}
 function whoSheetHtml(){
     const x = S.week && S.week.days.find(y => y.d === sheet.d); if (!x) return `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
     const ns = whoNames();
@@ -7040,28 +7119,31 @@ function viewToday(){
         </div>`) : ''}
 
     ${foldHtml('week', t('1週間の主菜'), t('7日間、同じ料理や同じ肉・魚が続かないように組みます'), `
-        ${upcoming.length ? `<div class="list week" style="--wm:${swapOn() && effAvoid().length ? 3 : 1}">${upcoming.map((x, wi) => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay();
+        ${upcoming.length ? `<div class="list week wk2" style="--wm:${swapOn() && effAvoid().length ? 3 : 1}">${upcoming.map((x, wi) => { const r = byId(x.id); if (!r) return ''; const dt = parseYmd(x.d), wd = dt.getDay();
+            const day = `<div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="wd">${esc(wdName(wd))}</span><span class="dd">${dt.getDate()}</span></div>`;
             if (!hasPro() && wi >= PLAN.freeLimits.weekDays) return `
             <div class="item locked">
-                <div class="day ${wd===0?'sun':wd===6?'sat':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
+                ${day}<span class="thumb wk-none" aria-hidden="true"></span>
                 <div class="t" data-act="paywall-week"><span class="veil">${'●'.repeat(Math.min(8, r.name.length))}</span><div class="s">${esc(t('プラスで見られます'))}</div></div>
                 <span class="plus-mark">${esc(t('プラス'))}</span>
             </div>`;
+            // 作らない日: 料理は消さずに残している（戻すと同じ料理に戻る）。戻すボタンは1つだけなので、この行に直接置く
             if (x.skip) return `
             <div class="item skipped">
-                <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
+                ${day}<span class="thumb wk-none" aria-hidden="true"></span>
                 <div class="t"><b>${esc(t('作らない日'))}</b><div class="s">${esc(t('買い物メモに入れていません'))}</div></div>
                 <div class="week-acts"><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作る日に戻す'))}</button></div>
             </div>`;
+            // 作る日: 料理の絵・名前・担当をひと目で。日ごとの操作（別の案・担当・作らない）は「変更」から開く画面にまとめ、となりの日のボタンを押しまちがえないようにする
             return `
             <div class="item">
-                <div class="day ${wd===0?'sun':wd===6?'sat':''} ${x.d===TODAY?'today':''}"><span class="dd">${dt.getDate()}</span><span class="wd">${esc(wdName(wd))}</span></div>
-                <div class="t" data-act="open" data-id="${esc(r.id)}"><span class="wnm">${esc(r.name)}</span><div class="s wmeta">${esc(metaLine(r))}${swapLineHtml(r)}</div>${allergyBadge(r) ? `<div class="s">${allergyBadge(r)}</div>` : ''}${weekExtraHtml(x)}</div>
-                <div class="week-acts"><button class="btn sm who${x.who ? ' set' : ''}" data-act="week-who" data-d="${x.d}">${esc(x.who ? t('担当：{name}', {name:x.who}) : t('担当を決める'))}</button><button class="btn sm ghost" data-act="week-reroll" data-d="${x.d}">${esc(t('別の案'))}</button><button class="btn sm ghost" data-act="week-skip" data-d="${x.d}">${esc(t('作らない'))}</button></div>
+                ${day}<span class="wk-pic" data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
+                <div class="t" data-act="open" data-id="${esc(r.id)}"><span class="wnm">${esc(r.name)}</span><div class="s wmeta">${x.who ? `<span class="who-b">${esc(t('担当：{name}', {name:x.who}))}</span>` : ''}${esc(metaLine(r))}${swapLineHtml(r)}</div>${allergyBadge(r) ? `<div class="s">${allergyBadge(r)}</div>` : ''}${weekExtraHtml(x)}</div>
+                <div class="week-acts"><button class="btn sm wk-edit" data-act="week-day" data-d="${x.d}" aria-label="${esc(t('{date}の変更（別の案・作らない・担当）', {date:jpDate(x.d)}))}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg><span>${esc(t('変更'))}</span></button></div>
             </div>`; }).join('')}</div>
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
-            <div class="row"><button class="${msgBtnClass()}" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('予定と買い物メモを送る'))}</button><button class="btn" data-act="make-week">${esc(t('作り直す'))}</button><button class="btn" data-act="goto-shop">${esc(t('買い物メモを見る'))}</button></div>
+            <div class="row wk-foot"><button class="btn wide" data-act="goto-shop">${esc(t('買い物メモを見る'))}</button><button class="btn ghost" data-act="make-week">${esc(t('作り直す'))}</button></div>
             ${shoppingHtml()}`
         : `<div class="list"><div class="empty">${esc(t('今日から7日分の主菜をまとめて考えます。買い物の前に便利です。'))}${!hasPro() ? esc(t('無料版では{n}日分まで見られます。', {n:PLAN.freeLimits.weekDays})) : ''}</div></div>
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>`}
@@ -8656,19 +8738,17 @@ document.addEventListener('click', e => {
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
             const r = pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
             if (r){ w.days[idx].id = r.id; delete w.days[idx].extra; save(); }
-            else {   // 主菜が7つしかない国: ほかの日と入れかえる（となりの日は避ける）
-                const others = w.days.map((x, j) => j).filter(j => j !== idx && Math.abs(j - idx) > 1 && !w.days[j].skip && w.days[j].id !== w.days[idx].id);
-                const j = others.length ? others[Math.floor(Math.random() * others.length)] : -1;
-                if (j >= 0){ const tmp = w.days[idx].id; w.days[idx].id = w.days[j].id; w.days[j].id = tmp; delete w.days[idx].extra; delete w.days[j].extra; save(); }
-            }
-            render(); break;
+            else toast(t('合う料理がありません'));   // ほかの日と入れかえると、押していない日が変わってしまうので、入れかえない
+            render(); if (sheet && sheet.kind === 'wday'){ sheet.pop = !!r; renderSheet(); } break;
         }
+        case 'week-day': { const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x || x.skip) break; sheet = {kind:'wday', d:x.d}; renderSheet(); break; }
         case 'week-who': { const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x || x.skip) break; sheet = {kind:'who', d:x.d}; renderSheet(); break; }
         case 'who-pick': if (sheet && sheet.kind === 'who') setWho(sheet.d, el.dataset.v); break;
         case 'who-clear': if (sheet && sheet.kind === 'who') setWho(sheet.d, ''); break;
         case 'week-skip': {   // その日だけを「作らない日」にする／戻す。料理は消さずに残すので、戻すと同じ料理に戻る。ほかの日・料理は動かない
             const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x) break;
             if (x.skip) delete x.skip; else x.skip = true;
+            if (sheet && sheet.kind === 'wday') closeSheet();
             save(); render(); break;
         }
         case 'toggle-ing': {
