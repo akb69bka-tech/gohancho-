@@ -641,7 +641,7 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .decide-bar .btn{flex:1 1 0;min-width:0;min-height:56px;border-radius:var(--r);box-shadow:var(--shadow);font-size:1rem;font-weight:700;text-align:center;overflow-wrap:anywhere;line-height:1.3}
 .decide-bar.done .btn.primary{flex:2 1 0}
 .decide-bar .btn:not(.primary){background:var(--surface)}
-.decide-bar .big-decide{min-height:60px;font-size:1.1rem;gap:0;padding:.45rem 1rem}
+.decide-bar .big-decide{min-height:56px;font-size:1.05rem;gap:0;padding:.3rem 1rem;line-height:1.25}
 .decide-bar .big-decide small{font-weight:500}
 body.kb .decide-bar{position:static}
 @media (max-height:500px) and (orientation:landscape){.decide-bar{position:static}}
@@ -649,9 +649,68 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .cond-ttl{display:inline-flex;align-items:center;gap:6px;color:var(--leaf,var(--ink))}   /* 青は使わない（v3）。若草は三宅の :root で入る */.cond-ttl svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .cond-sub{display:block;font-size:.75rem;color:var(--muted);margin-top:2px}
 /* お膳の料理ごと: 名前 → 時間・主な食材 → なぜこの料理か（事実だけ、1行） */
-.tray-row.pair{align-items:flex-end}
-.spot-label .mt.meta{color:var(--tray-ink);opacity:.86}
+.spot-label .mt.meta{color:var(--tray-ink)}
+.spot-label .mt.meta .tm{font-weight:700;color:var(--leaf,var(--tray-ink))}
 .tray:not(.compact) .spot-label{--ml:2}   /* 時間と主な食材は2行まで（どの料理も同じ高さ） */
+/* 今日の献立 v3（案C）: 明るいお膳。主菜の絵を大きく（画面幅の約6割）、副菜・ご飯・汁ものは下に丸い小カード。色はすべて変数（青は使わない） */
+.tray.lite{--tray-ink:var(--ink);--tray-muted:var(--muted);background:var(--surface);border-radius:28px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tray.lite .swap{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.tray.lite .swap:hover{background:var(--surface-2)}
+.tray.lite :focus-visible{outline-color:var(--accent)}
+.tray.lite .tray-shuffle::before,.tray.lite .tray-shuffle::after{background:var(--line)}
+.tray.lite .spot.ghost .vessel{border-color:var(--line)}
+.tray.lite .spot-label .last{color:var(--yolk-ink,var(--muted))}
+.tray.v3{display:flex;flex-direction:column;gap:10px;padding:10px}
+.tray.v3 .spot{width:auto}
+.tray-hero{position:relative;display:flex;justify-content:center;gap:8px;background:var(--stage,var(--surface-2));border-radius:20px;padding:12px 10px 10px}
+.tray-hero .spot{flex:1 1 0;min-width:0;gap:6px}
+.tray-hero .spot .vessel,.tray.v3 .tray-hero .spot.main .vessel{width:min(50vw,236px);max-width:100%}
+.tray-hero.two .spot .vessel,.tray.v3 .tray-hero.two .spot.main .vessel{width:86%}
+.tray.v3 .tray-hero .spot-label{--nl:2;--ml:1}
+.tray-hero .spot-label .nm{font-size:1.15rem}
+.tray-hero:not(.two) .spot .swap{position:absolute;top:10px;inset-inline-start:10px;height:36px;padding-inline:.8rem;box-shadow:var(--shadow);max-width:min(7.5rem,30vw)}   /* 主菜の「かえる」は左上、「まるごと入れ替え」は右上 */
+.tray-hero:not(.two) .tray-shuffle{position:absolute;top:8px;inset-inline-end:8px;margin:0;z-index:1}
+.tray.v3 .tray-shuffle::before,.tray.v3 .tray-shuffle::after{display:none}
+.tray.v3 .shuffle{max-width:min(4.8rem,19vw);font-size:.7rem;gap:3px}
+.tray.v3 .shuffle .sh-ic{width:48px;height:48px;border-width:1px;border-color:var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tray.v3 .shuffle svg{width:22px;height:22px}
+.tray.v3 .shuffle .sh-tx{line-height:1.25;color:var(--ink)}
+.tray-small{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:8px}
+.tray-small .spot{position:relative;gap:4px;padding:10px 6px 8px;border-radius:20px;background:var(--stage-3,var(--surface-2))}
+.tray-small .spot.side{background:var(--stage-2,var(--surface-2))}
+.tray-small .spot .vessel,.tray.v3 .tray-small .spot.side .v-kobachi{width:64px}
+.tray-small .spot .vessel.v-konomono{width:52px;margin-block:6px}
+.tray.v3 .tray-small .spot-label{--nl:2;--ml:1}
+.tray-small .spot-label .nm{font-size:.86rem}
+.tray-small .spot-label .slot{letter-spacing:.08em}
+/* 小カードの「かえる」「＋」は、カードの角の丸いボタン（押せる範囲は44px以上。読み上げは aria-label） */
+.tray-small .spot .swap{position:absolute;top:4px;inset-inline-end:4px;width:36px;height:36px;min-height:0;padding:0;border-radius:50%;font-size:0;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.tray-small .spot .swap::before{font-size:1.05rem;margin:0}
+.tray-small .spot .swap[data-act="soup-add"]::before,.tray-small .spot .swap.tray-add::before{content:"+";font-weight:700}
+.tray-small .spot .swap::after{inset:-4px}
+.tray-small[style*="--cols:4"] .spot .vessel,.tray.v3 .tray-small[style*="--cols:4"] .spot.side .v-kobachi{width:52px}
+.tray-small[style*="--cols:4"] .spot .swap{width:32px;height:32px;top:2px;inset-inline-end:2px}
+.tray-small[style*="--cols:4"]{gap:6px}
+.tray-small[style*="--cols:4"] .spot{padding-inline:4px}
+@media (max-width:359px){.tray.v3 .tray-small .spot-label{--nl:3}.tray-small .spot .vessel,.tray.v3 .tray-small .spot.side .v-kobachi{width:52px}.tray.v3{padding:8px}.tray-small{gap:6px}}
+.spot-label .dwhy::before{content:"\1F4A1";margin-inline-end:.25em;font-size:.9em}
+.spot-label .dwhy:empty::before{content:none}
+/* 見出しと条件を1行に。あいさつは2行まで（390×844 で汁もの・ご飯まで最初の画面に入るように） */
+.today-head{display:grid;grid-template-columns:fit-content(55%) minmax(0,1fr);align-items:center;gap:8px 12px}
+.today-head h2{font-size:1.3rem;padding-inline-start:10px;border-inline-start:4px solid var(--leaf,var(--line));overflow-wrap:anywhere}
+.today-head details.cond{min-width:0;border-radius:999px;padding:0 14px;box-shadow:none}
+.today-head details.cond[open]{grid-column:1 / -1;border-radius:var(--r);padding:4px 16px 14px;box-shadow:var(--shadow)}
+.today-head .cond-sum{min-height:44px;gap:8px}
+.today-head .cond-sum > .small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:unset;line-clamp:none}
+.today-head .cond-sum::after{flex:none}
+.today-head .cond-ttl{min-width:0;flex:0 1 auto;overflow-wrap:anywhere;line-height:1.3}
+.today-head .cond-sum > .small{flex:1 1 0}
+.cond-hint{display:block;font-size:.8rem;color:var(--muted);line-height:1.5;min-height:3em}   /* 品数・理由の一文は1〜2行で変わる。2行ぶんの高さを取って、気分や品数を変えても下のお膳が動かないように */
+body.on-today .greet{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;line-height:1.5;margin-top:-10px}
+body.on-today .greet .hello,body.on-today .greet .line{display:inline;font-size:.84rem;line-height:1.5}
+body.on-today .greet .hello{margin-inline-end:.4em}
+body.on-today .greet .line{display:none}   /* 今日の献立では、あいさつは1行だけ（献立を上に） */
+body.on-today .greet:empty{display:none}
 .spot-label .dwhy{display:block;align-self:center;max-width:100%;box-sizing:border-box;font-size:.75rem;line-height:1.4;height:calc(1.4em + 4px);margin-top:3px;padding:2px .55em 0;border-radius:999px;background:color-mix(in srgb,var(--tray-ink) 10%,transparent);color:var(--tray-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .spot-label .dwhy:empty{background:none}
 .tray.compact .spot-label .dwhy{display:none}
@@ -6683,7 +6742,7 @@ function dishIngs(r){   // 主な食材: 「なくても可」と常備の調味
     (r.items || []).forEach(i => { if (out.length >= 2 || i.opt || PANTRY.has(i.key)) return; const lab = shortIng(i.label); if (!out.includes(lab)) out.push(lab); });
     return out;
 }
-function dishFacts(r){ const ings = dishIngs(r); return (Number(r.min) > 0 ? t('{n}分', {n:r.min}) : '') + (Number(r.min) > 0 && ings.length ? t('・') : '') + joinNames(ings); }
+function dishFacts(r){ const ings = dishIngs(r); return (Number(r.min) > 0 ? `<b class="tm">${esc(t('{n}分', {n:r.min}))}</b>` : '') + (Number(r.min) > 0 && ings.length ? esc(t('・')) : '') + esc(joinNames(ings)); }   // HTML（時間だけ若草の色）
 function dishWhy(r, slot){   // 押していない料理に左右されない、その料理だけの事実（1週間プランの今日の主菜・冷蔵庫の食材・お気に入り）
     if (!r) return '';
     const p = slot === '主菜' ? weekToday() : null;
@@ -6745,7 +6804,7 @@ function viewToday(){
         return `<div class="spot ${cls}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${esc(dishFacts(r))}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}">${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}">${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
                     : `<span class="nm none">${esc(empty)}</span><span class="mt meta"></span>${exWhy ? '<span class="dwhy"></span>' : ''}<span class="ex" style="--exn:${exN};--exl:${exLast}"></span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>`
@@ -6774,9 +6833,6 @@ function viewToday(){
     const stapleAdd = !oneBowl && !st && stapleOptions().length > 1
         ? `<div class="spot rice ghost" style="--w:40%"><div class="vessel v-staple" aria-hidden="true"></div>
         <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(stapleName({k:'none'}))}</span></div><button class="swap tray-add" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">＋ ${esc(t('主食'))}</button></div>` : '';
-    const sideW = sides.length >= 3 ? '31%' : '40%';
-    const pair = sides.length === 1 && mains.length === 1;   // 主菜1・副菜1は、奥の段に「副菜（左）・主菜（右）」を並べて、お膳を2段にする（ひと目で全部が見える）
-    const mainW = mains.length >= 2 ? '45%' : '56%';
     // 5品以上は、主菜→副菜→ご飯→汁ものの順に 3列（7つなら 4列＋3列）で並べ、1画面に収める
     const allSpots = [...mains.map(x => spot(x.it, x.i, '')), ...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot || stapleAdd ? [(riceSpot || stapleAdd).replace('style="--w:40%"', 'style=""')] : []), ...soups.map(x => spot(x.it, x.i, ''))];
     const compact = m.n >= 5 && allSpots.length >= 6;
@@ -6800,27 +6856,27 @@ function viewToday(){
         ${backupNoteHtml()}
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
-        <div class="sec-head"><h2>${esc(t('今日の献立'))}</h2><span class="hint hint2">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}) : t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)})))}</span></div>
+        <div class="today-head${S.condOpen ? ' open' : ''}"><h2>${esc(t('今日の献立'))}</h2>
         <details class="card cond" ${S.condOpen ? 'open' : ''}><summary class="cond-sum"><span class="cond-ttl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>${esc(t('条件を変える'))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n}), ...(mixCountries().length ? [t('国の組み合わせ')] : []), ...(session.useFridge ? [t('冷蔵庫の材料を優先')] : [])].join(t('・')))}</span></summary>
+            <span class="hint hint2 cond-hint">${esc((oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)}) : t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose:composeOf(m.n).name, n:m.n, sv:Number(S.settings.servings)||2, reason:countReason(m.n)})))}</span>
             <div class="field"><span class="eyebrow">${esc(t('気分'))}</span>${moodGroups.map(([lab, xs]) => `<span class="cond-sub">${esc(lab)}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日の気分') + t('・') + lab)}">${xs.map(moodChip).join('')}</div>`).join('')}</div>
             <div class="field"><span class="eyebrow">${esc(t('品数'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('品数'))}">${countChips(S.settings.dishCount !== 'auto' && Number(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? PLAN.freeLimits.dishes : S.settings.dishCount, 'count')}</div></div>
             ${famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips scroll" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().map((m, i) => `<button class="chip" data-act="eater" data-v="${esc(m.id)}" aria-pressed="${eaterMembers().includes(m)}">${esc(famLabel(m, i))}</button>`).join('')}</div></div>` : ''}
             ${mixHtml()}
             <label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge?'checked':''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f:S.fridge.length, s:S.staples.length}))}</span></label>
-        </details>
-        ${compact ? `<div class="tray compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}</div>`
-        : `<div class="tray" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
-            <div class="tray-row back${pair ? ' pair' : ''}">${pair ? spot(sides[0].it, sides[0].i, '40%') : ''}${mains.map(x => spot(x.it, x.i, mainW)).join('')}</div>
-            ${shuffleBtn}
-            ${sides.length && !pair ? `<div class="tray-row mid">${sides.map(x => spot(x.it, x.i, sideW)).join('')}</div>` : ''}
-            <div class="tray-row front">${riceSpot || stapleAdd}${soups.map(x => spot(x.it, x.i, '40%')).join('')}</div>
+        </details></div>
+        ${compact ? `<div class="tray lite compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map((row, ri) => `<div class="tray-row">${row.join('')}</div>${ri === 0 ? shuffleBtn : ''}`).join('')}</div>`
+        : `<div class="tray lite v3" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
+            <div class="tray-hero${mains.length >= 2 ? ' two' : ''}">${mains.map(x => spot(x.it, x.i, '')).join('')}${mains.length >= 2 ? '' : shuffleBtn}</div>
+            ${mains.length >= 2 ? shuffleBtn : ''}
+            ${(sm => sm.length ? `<div class="tray-small" style="--cols:${sm.length}">${sm.join('')}</div>` : '')([...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot || stapleAdd ? [riceSpot || stapleAdd] : []), ...soups.map(x => spot(x.it, x.i, ''))])}
         </div>`}
         ${eatersLine() ? `<p class="small muted eaters-line" role="status">${esc(eatersLine())}</p>` : ''}
         ${cookWarnHtml()}
         <div class="menu-tools"><button class="${msgBtnClass()} sm" data-app="${esc(msgLabel())}" data-act="share-menu" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button><button class="btn sm ghost" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button class="btn sm ghost" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button><button class="btn sm ghost" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button class="btn sm ghost" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
         ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() || okayuNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote() || okayuNote())}</p>` : ''}
         ${easyRelaxText() ? `<p class="small muted" style="margin:0">${esc(easyRelaxText())}</p>` : ''}
-        ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(whyLine())}</div>
+        ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
         ${leftoversHtml()}
         ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="decide-bar${decided ? ' done' : ''}">${decided
