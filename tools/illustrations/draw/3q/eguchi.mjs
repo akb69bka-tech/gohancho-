@@ -351,6 +351,58 @@ function nimono(p, V, { c = '#b98a4a', drop = 14, glow = .3, H = 26, R = 76, ite
 }
 // 並べる具の一覧から [[y, fn]] を作る: list = [[kind, u, v, ...args]]、kinds = { kind: (x, y, ...args, i) => svg }
 const lay = (pl, list, kinds) => list.map(([k, u, v, ...a], i) => { const [x, y] = pl(u, v); return [y, () => kinds[k](x, y, ...a, i)]; });
+
+// ---------- 煮魚・鍋 ----------
+// 煮魚の切り身（皮目を上に。十字の切り込み、たれの照り）
+function fishFillet(p, x, y, w, rot, { skin = '#8a9aaa', stripe = '#4e5e70', flesh = '#d8b07a', glaze = '#a86a30', seed = 1, cut = true, fins = false } = {}){
+    const sl = Q.slab(p, x, y, w / 2, w * .2, 7, skin, 'ff' + seed, { n: 12, jit: .1, rot, edgeC: flesh });
+    const a = rot * Math.PI / 180, c = (u, v) => [x + u * Math.cos(a) - v * Math.sin(a), y + u * Math.sin(a) + v * Math.cos(a)];
+    let o = sl.s;
+    if (fins) o = `<path d="${sl.d}" transform="translate(${f(x * -.08)} ${f(y * -.12 + 3)}) scale(1.08 1.12)" fill="none" stroke="${dk(skin, .2)}" stroke-width="3" stroke-dasharray="1.4 1.6" opacity=".9"/>` + o;
+    if (stripe) o += `<g clip-path="url(#${p.def('ffc' + seed + x, id => `<clipPath id="${id}"><path d="${sl.d}"/></clipPath>`)})">` + [-.3, -.1, .1, .3].map(k => { const [x1, y1] = c(w * k - 6, -w * .25), [x2, y2] = c(w * k + 6, w * .25); return `<path d="M${f(x1)},${f(y1)} Q${f((x1 + x2) / 2 + 4)},${f((y1 + y2) / 2)} ${f(x2)},${f(y2)}" stroke="${stripe}" stroke-width="2" fill="none" opacity=".55"/>`; }).join('') + '</g>';
+    o += `<path d="${sl.d}" fill="${glaze}" opacity=".32"/>`;
+    if (cut) o += [[-w * .12], [w * .14]].map(([u]) => { const [x1, y1] = c(u - 5, -4), [x2, y2] = c(u + 5, 4), [x3, y3] = c(u + 5, -4), [x4, y4] = c(u - 5, 4); return `<path d="M${f(x1)},${f(y1)} L${f(x2)},${f(y2)} M${f(x3)},${f(y3)} L${f(x4)},${f(y4)}" stroke="#f2e2c4" stroke-width="2" stroke-linecap="round"/>`; }).join('');
+    return o + shine(x - w * .15, y - w * .08, w * .4, rot * .5) + shine(x + w * .2, y + 1, w * .2, rot * .5, .6);
+}
+// 小さな丸ごとの魚（いわし）: 細長い体を横から寝かせ、照り
+function smallFish(p, x, y, L, rot, { c = '#8a6038', belly = '#c89a5a' } = {}){
+    const d = `M${f(-L / 2)},0 C${f(-L * .35)},${f(-L * .14)} ${f(L * .2)},${f(-L * .13)} ${f(L * .36)},${f(-L * .03)} L${f(L / 2)},${f(-L * .1)} L${f(L / 2)},${f(L * .1)} L${f(L * .36)},${f(L * .03)} C${f(L * .2)},${f(L * .12)} ${f(-L * .35)},${f(L * .13)} ${f(-L / 2)},0Z`;
+    return Q.cast(p, x, y + 3, L * .45, L * .07, .35) + `<g ${T(x, y, rot)}><g transform="scale(1 ${f(SY * 1.6)})"><path d="${d}" fill="${Q.lg(p, [[0, lt(c, .3)], [.5, c], [1, belly]], 0, 0, 0, 1)}" stroke="${dk(c, .4)}" stroke-width=".6"/>
+        <circle cx="${f(-L * .38)}" cy="${f(-L * .02)}" r="${f(L * .03)}" fill="#f2e2c4"/><path d="M${f(-L * .3)},${f(-L * .07)} Q${f(-L * .3)},${f(L * .02)} ${f(-L * .27)},${f(L * .08)}" stroke="${dk(c, .4)}" stroke-width=".7" fill="none"/>
+        <path d="M${f(-L * .2)},${f(-L * .07)} Q0,${f(-L * .1)} ${f(L * .25)},${f(-L * .05)}" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".75"/></g></g>`;
+}
+// 梅干し（しわのある赤い実）
+const umeboshi = (p, x, y, s) => Q.cast(p, x, y + s * .3, s * .5, s * .16, .35) + `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s / 2)}" ry="${f(s * .42)}" fill="${Q.dome(p, '#c8282a', .3, .35)}" stroke="#8a1a1a" stroke-width=".6"/><path d="M${f(x - s * .2)},${f(y + s * .05)} q${f(s * .1)},${f(-s * .1)} ${f(s * .2)},0 M${f(x + s * .02)},${f(y + s * .15)} q${f(s * .1)},${f(-s * .08)} ${f(s * .18)},0" stroke="#8a1a1a" stroke-width=".7" fill="none" opacity=".7"/><ellipse cx="${f(x - s * .14)}" cy="${f(y - s * .16)}" rx="${f(s * .1)}" ry="${f(s * .06)}" fill="#fff" opacity=".8"/>`;
+// ロールキャベツ（巻いた葉の筒を寝かせる。葉脈）
+function cabbageRoll(p, x, y, L, rot){
+    const w = L * .55;
+    return Q.cast(p, x, y + w * .4, L * .55, w * .3, .35) + `<g ${T(x, y, rot)}><g transform="scale(1 ${f(SY * 1.25)})"><rect x="${f(-L / 2)}" y="${f(-w / 2)}" width="${f(L)}" height="${f(w)}" rx="${f(w * .45)}" fill="${Q.lg(p, [[0, '#eef4d0'], [.45, '#cfe0a0'], [1, '#98b468']], 0, 0, 0, 1)}" stroke="#7a9a4a" stroke-width=".7"/>
+        <path d="M${f(-L * .3)},${f(-w * .48)} Q${f(-L * .2)},0 ${f(-L * .32)},${f(w * .48)} M${f(L * .05)},${f(-w * .5)} Q${f(L * .15)},0 ${f(L * .04)},${f(w * .5)}" stroke="#f4f8e4" stroke-width="1.6" fill="none" opacity=".85"/>
+        <path d="M${f(L * .38)},${f(-w * .45)} Q${f(L * .3)},0 ${f(L * .4)},${f(w * .45)}" stroke="#8aa85a" stroke-width="1" fill="none"/>
+        <path d="M${f(-L * .4)},${f(-w * .28)} L${f(L * .3)},${f(-w * .28)}" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/></g></g>`;
+}
+// 白菜（白い軸と淡い緑の葉）
+function hakusai(p, x, y, s, rot, seed){
+    return Q.leaf(p, x, y, s, rot, '#dcecb4', 'hk' + seed, { wave: 2.4 }) + `<g ${T(x, y, rot)}><g transform="scale(1 ${SY})"><path d="M${f(-s * .4)},${f(s * .05)} Q0,${f(-s * .05)} ${f(s * .4)},${f(s * .08)}" stroke="#fbfaf0" stroke-width="${f(s * .2)}" stroke-linecap="round"/><path d="M${f(-s * .35)},${f(s * .1)} Q0,0 ${f(s * .35)},${f(s * .13)}" stroke="#d8dcc0" stroke-width=".8" fill="none"/></g></g>`;
+}
+// 春菊（切れ込みの深い濃い緑の葉）
+const shungiku = (p, x, y, s, rot, seed) => Q.leaf(p, x, y, s, rot, '#2e6a26', 'sg' + seed, { wave: 5 }) + Q.leaf(p, x + 4, y - 2, s * .7, rot + 40, '#3a7a2c', 'sh' + seed, { wave: 5 });
+// ちくわ（焼き目のある筒）
+function chikuwa(p, x, y, L, rot){
+    const w = L * .34;
+    return Q.cast(p, x, y + w * .4, L * .5, w * .3, .35) + `<g ${T(x, y, rot)}><g transform="scale(1 ${f(SY * 1.3)})"><rect x="${f(-L / 2)}" y="${f(-w / 2)}" width="${f(L)}" height="${f(w)}" rx="${f(w * .3)}" fill="${Q.lg(p, [[0, '#e0a050'], [.4, '#c47a30'], [.6, '#f2e4c4'], [1, '#d8c8a0']], 0, 0, 0, 1)}" stroke="#8a5a24" stroke-width=".6"/>
+        <ellipse cx="${f(L / 2)}" cy="0" rx="${f(w * .22)}" ry="${f(w * .5)}" fill="#f2e8d0" stroke="#a88a5a" stroke-width=".5"/><ellipse cx="${f(L / 2)}" cy="0" rx="${f(w * .1)}" ry="${f(w * .24)}" fill="#a87a40"/></g></g>`;
+}
+// 結び昆布
+function kombuKnot(p, x, y, s, rot){
+    return `<g ${T(x, y, rot)}><g transform="scale(1 ${f(SY * 1.3)})"><path d="M${f(-s / 2)},${f(-s * .1)} Q0,${f(-s * .5)} ${f(s * .2)},0 Q${f(s * .5)},${f(s * .3)} ${f(s / 2)},${f(s * .1)}" stroke="#2e3a22" stroke-width="${f(s * .3)}" fill="none" stroke-linecap="round"/><path d="M${f(-s / 2)},${f(-s * .1)} Q0,${f(-s * .5)} ${f(s * .2)},0 Q${f(s * .5)},${f(s * .3)} ${f(s / 2)},${f(s * .1)}" stroke="#4a5a32" stroke-width="${f(s * .2)}" fill="none" stroke-linecap="round"/><path d="M${f(-s * .35)},${f(-s * .2)} Q${f(-s * .1)},${f(-s * .4)} ${f(s * .1)},${f(-s * .18)}" stroke="#8aa070" stroke-width="1" fill="none" opacity=".8"/></g></g>`;
+}
+// 丸ごとのゆで卵（煮汁で染まった）
+const wholeEgg = (p, x, y, s, c = '#c89a5a') => Q.cast(p, x, y + s * .35, s * .5, s * .16, .35) + `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .42)}" ry="${f(s * .5)}" fill="${Q.dome(p, c, .45, .3)}" stroke="${dk(c, .35)}" stroke-width=".6"/><ellipse cx="${f(x - s * .14)}" cy="${f(y - s * .2)}" rx="${f(s * .1)}" ry="${f(s * .06)}" fill="#fff" opacity=".85"/>`;
+// たらの切り身（白い身、灰色の皮）
+const tara = (p, x, y, s, rot, liq) => Q.prism(p, x, y, [[-s / 2, -s * .3], [s / 2, -s * .3], [s * .46, s * .3], [-s * .46, s * .3]], s * .4, '#8a8e94', { rot, sink: liq ? 2 : 0, liquid: liq, top: Q.lit(p, '#fbf8f0', .3, .08) });
+// 焼き豆腐（すき焼き）: 上の面に焼き目
+const yakidofu = (p, x, y, s, rot) => Q.cube(p, x, y, s, rot, '#f2e8d0', { top: Q.rg(p, [[0, '#f8ecd0'], [.5, '#e0bc80'], [1, '#b88a4a']], .4, .4, .7) });
 // 汁の面の質感 ---------------------------------------------------
 // 味噌の雲（汁の中で沈みかけた味噌の対流）: ぼかした明るい塊と、やや濃い筋
 function misoCloud(p, S, c, seed = 1, op = .5){
@@ -808,6 +860,82 @@ export default {
             ag: (x, y, r) => Q.prism(p, x, y, rect(46, 36), 18, '#c88a3a', { rot: r, top: Q.lit(p, '#f2e4c4', .3, .1) }) + `<path d="M${f(x - 14)},${f(y - 16 * CZ - 1)} l28,-2" stroke="#d8a050" stroke-width="2.4" opacity=".5"/>`,
         }),
         [999, () => { const [x, y] = pl(0, 0, 14); return ankake(p, x, y, 50, 1) + mince(p, x, y, 40, 40, 1) + Array.from({ length: 6 }, (_, i) => Q.negi(p, x - 30 + i * 12, y - 4 + (i % 2) * 8, 6.4)).join(''); }],
+    ] }),
+    // さばの味噌煮: 楕円の皿に、照りのある味噌だれ、皮目に十字の切り込みのさば2切れ、生姜の千切り
+    sabamiso: p => { const P = Q.ovalPlate(p); return P.s + tarePool(p, 100, P.cy + 6, 46, '#a87434', 'sbm') + fishFillet(p, 80, P.cy - 4, 70, -8, { glaze: '#b07a3a', seed: 1 }) + fishFillet(p, 120, P.cy + 12, 70, 6, { glaze: '#b07a3a', seed: 2 }) + gingerShreds(p, 100, P.cy - 10, 26); },
+
+    // かれいの煮付け: 楕円の皿に、煮汁と、大きなかれい（皮目に照りと切り込み）、ごぼう
+    kareini: p => { const P = Q.ovalPlate(p); return P.s + tarePool(p, 100, P.cy + 6, 48, '#8a5420', 'kr') + byDepth([[P.cy - 20, () => Q.rangiri(p, 150, P.cy - 18, 16, 20, '#9a7450', 1) + Q.rangiri(p, 160, P.cy - 4, 14, 70, '#9a7450', 2)], [P.cy, () => fishFillet(p, 96, P.cy - 2, 100, -4, { skin: '#8a6440', stripe: null, flesh: '#e0c08a', glaze: '#8a4a1c', seed: 3, fins: true })], [P.cy + 20, () => Q.rangiri(p, 44, P.cy + 14, 16, -20, '#9a7450', 3)]]); },
+
+    // いわしの梅煮: 楕円の皿に、煮汁と照りのある丸ごとのいわし、梅干し、生姜の千切り
+    iwashiume: p => { const P = Q.ovalPlate(p); return P.s + tarePool(p, 100, P.cy + 6, 48, '#8a5420', 'iw') + byDepth([
+        ...[[96, P.cy - 18, -6], [100, P.cy - 2, -4], [104, P.cy + 14, -2], [98, P.cy + 30, -6]].map(([x, y, r]) => [y, () => smallFish(p, x, y, 108, r)]),
+        [P.cy - 30, () => umeboshi(p, 150, P.cy - 30, 18)], [P.cy + 34, () => umeboshi(p, 44, P.cy + 30, 18)],
+        [999, () => gingerShreds(p, 112, P.cy - 4, 24)],
+    ]); },
+
+    // ロールキャベツ: 白い鉢、澄んだコンソメに、キャベツで巻いた筒を2本、ベーコン
+    rollcabbage: p => soup(p, Q.shiroBowl(p), { drop: 12, c: '#e2bc70', glow: .45, gl: .65, items: pl => [
+        ...[[-26, -16, -12], [28, 14, 14]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => cabbageRoll(p, x, y - 8, 70, r)]; }),
+        ...[[-22, -20, -14], [26, 10, 10]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y + 1, () => slice3q(p, x, y - 18, 34, r, { c: '#d06a52', fat: '#f6e2cc', char: false, seed: 4, gloss: .5 }, { th: 1.4, tc: '#8a3a28' })]; }),
+    ] }),
+
+    // 鶏肉のトマト煮: 白い鉢、とろりとしたトマトソースに、焼き色の鶏もも・玉ねぎ・しめじ
+    torinotomatoni: p => soup(p, Q.shiroBowl(p), { drop: 10, c: '#c8402a', glow: .3, gl: .6, oil: 8, oilC: '#e8b040', extra: S => velvet(p, S, '#c8402a', .4), items: pl => scatter(pl, 'tt', 10, 58, 28, [
+        (x, y, r, i) => soakLump(p, x, y - 3, 30, 'tc' + i, { c: '#d8984a', soak: '#b04a20', k: .4, sy: .7, hi: .8 }),
+        (x, y, r) => onionArc(p, x, y, 26, r, '#f0c8a0'),
+        (x, y, r, i) => shimeji(p, x, y, 16, r, i),
+        (x, y, r, i) => soakLump(p, x, y - 3, 28, 'td' + i, { c: '#d8984a', soak: '#b04a20', k: .4, sy: .7, hi: .8 }),
+    ]) }),
+
+    // すき焼き: 鉄鍋（焦げ茶の灰）に、割り下で煮た牛肉・焼き豆腐・長ねぎ・白菜・しらたき・しいたけ・春菊
+    sukiyaki: p => soup(p, Q.pan(p, { cy: 96, rx: 88, h: 16, outer: '#5a524c', lip: '#6e6660', inner: '#4a4440', handles: 'loop', handleC: '#5a524c' }), { drop: 5, c: '#8a4a1c', glow: .3, rimShade: .2, gl: .6, items: pl => [
+        ...[[-40, -28], [10, -34], [40, 2], [-8, 16], [-50, 22]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => beef(p, x, y, 44, i * 40, i, '#7a4224')]; }),
+        ...[[-18, -10, 10], [52, -30, -12]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => yakidofu(p, x, y, 26, r)]; }),
+        ...[[24, 30, 20], [-60, -8, -30]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => negiDiag(p, x, y, 28, r, '#e8dcb0')]; }),
+        ...[[60, 26, 20, 1], [-30, 44, -10, 2]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y - 2, () => hakusai(p, x, y, 34, r, i)]; }),
+        ...[[-10, -46]].map(([u, v]) => { const [x, y] = pl(u, v); return [y, () => shirataki(p, x, y, 40, 3)]; }),
+        ...[[30, -12, 1], [4, 44, 2]].map(([u, v, i]) => { const [x, y] = pl(u, v); return [y, () => shiitake(p, x, y, 22, i)]; }),
+        ...[[66, -8, 30, 1]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y, () => shungiku(p, x, y, 30, r, i)]; }),
+    ] }),
+
+    // おでん: 土鍋に、澄んだだし、飴色の大根・染みたゆで卵・こんにゃく・厚揚げ・ちくわ・結び昆布
+    oden: p => soup(p, Q.donabe(p), { drop: 12, c: '#dcb874', glow: .4, gl: .6, items: pl => [
+        ...[[-36, -26], [30, 20]].map(([u, v]) => { const [x, y] = pl(u, v); return [y, () => cyl(p, x, y - 2, 28, 16, '#d8a860', '#dcb874', { top: Q.rg(p, [[0, '#f6e0b0'], [.6, '#e4b878'], [1, '#c08a48']], .4, .36, .7) })]; }),
+        ...[[22, -30], [-52, 22]].map(([u, v]) => { const [x, y] = pl(u, v); return [y, () => wholeEgg(p, x, y - 8, 26, '#c8964e')]; }),
+        ...[[-8, 2, 20]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => Q.prism(p, x, y, centered([[0, 0], [30, 2], [12, 24]]), 8, '#8f8a84', { rot: r, sink: 2, liquid: '#dcb874' })]; }),
+        ...[[60, -8, 10]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => Q.prism(p, x, y, rect(30, 24), 14, '#b87a34', { rot: r, sink: 2, liquid: '#dcb874', top: Q.lit(p, '#d89a48', .3, .15) })]; }),
+        ...[[-12, 40, 10], [56, 40, -20]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => chikuwa(p, x, y - 4, 40, r)]; }),
+        ...[[-62, -14, 30]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => kombuKnot(p, x, y, 22, r)]; }),
+    ] }),
+
+    // 湯豆腐: 土鍋に、昆布を敷いた湯、大きな木綿豆腐、長ねぎ、かつお節
+    yudofu: p => soup(p, Q.donabe(p), { drop: 10, c: '#ece2c8', glow: .25, gl: .6, rimShade: .22, steamOp: .55, extra: S => `<g ${S.inside}><path d="${smooth(ring(46, 8, .2, rng('kb'), 1.3, SY))}" transform="translate(${f(S.cx + 4)} ${f(S.cy + 4)})" fill="#4a5a32" opacity=".35"/></g>`, items: pl => [
+        ...[[-32, -20, 8], [18, -26, -6], [-6, 16, 4], [44, 12, 10], [-50, 26, -4]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => tofu(p, x, y, 30, r, '#ece2c8')]; }),
+        ...[[36, 40], [-22, 46], [62, -12]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => Q.negi(p, x, y, 8, '#6aa83e') + Q.negi(p, x + 8, y + 3, 8, '#8cc05a')]; }),
+        [999, () => { const [x, y] = pl(-6, -6); const R = rng('kt'); return Array.from({ length: 6 }, () => `<path d="${smooth(ring(3 + R() * 2, 6, .6, R, 1.4, .6))}" transform="translate(${f(x + (R() - .5) * 20)} ${f(y - 18 + (R() - .5) * 6)})" fill="#d8a080" stroke="#a87050" stroke-width=".4"/>`).join(''); }],
+    ] }),
+
+    // 豚しゃぶ鍋: 土鍋に、昆布だし、淡い桃色の豚ロース・白菜・春菊・長ねぎ・豆腐・えのき
+    shabushabu: p => soup(p, Q.donabe(p), { drop: 10, c: '#ece0c0', glow: .3, gl: .6, rimShade: .22, steamOp: .5, items: pl => [
+        ...[[-30, -30], [26, -20], [-6, 20], [44, 30]].map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => slice3q(p, x, y, 52, i * 30 - 30, { c: '#e8b8a8', fat: '#fbf0e8', char: false, seed: i, gloss: .6 }, { th: 1.4, tc: '#b08070' })]; }),
+        ...[[-58, 10, 20, 1], [60, -10, -20, 2]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y, () => hakusai(p, x, y, 36, r, i)]; }),
+        ...[[2, -46, 10, 1], [-36, 44, -20, 2]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y - 3, () => shungiku(p, x, y, 30, r, i)]; }),
+        ...[[30, 6, 10]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => tofu(p, x, y, 26, r, '#ece0c0')]; }),
+        ...[[-30, 0, -20]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => negiDiag(p, x, y, 26, r)]; }),
+        ...[[10, 44, 30]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => enoki(p, x, y, 32, r)]; }),
+    ] }),
+
+    // 寄せ鍋: 土鍋に、醤油味のだし、鶏肉・たら・えび・白菜・長ねぎ・しいたけ・豆腐・春菊
+    yosenabe: p => soup(p, Q.donabe(p), { drop: 10, c: '#d8b06a', glow: .35, gl: .6, steamOp: .45, items: pl => [
+        ...[[-40, -30, 1], [36, 26, 2]].map(([u, v, i]) => { const [x, y] = pl(u, v); return [y, () => chickenBit(p, x, y - 2, 24, i)]; }),
+        ...[[20, -32, 10]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => tara(p, x, y, 30, r, '#d8b06a')]; }),
+        ...[[-14, 10, 1, -6], [56, -6, -1, 10]].map(([u, v, fl, r]) => { const [x, y] = pl(u, v); return [y, () => Q.prawn3q(p, x, y - 3, 38, r, fl)]; }),
+        ...[[-62, 8, 20, 1], [-24, 44, -10, 2]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y - 2, () => hakusai(p, x, y, 34, r, i)]; }),
+        ...[[12, 44, 20]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => negiDiag(p, x, y, 26, r, '#e8e0b8')]; }),
+        ...[[-10, -46, 1]].map(([u, v, i]) => { const [x, y] = pl(u, v); return [y, () => shiitake(p, x, y, 22, i)]; }),
+        ...[[52, 44, 10]].map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => tofu(p, x, y, 22, r, '#d8b06a')]; }),
+        ...[[62, -36, 20, 1]].map(([u, v, r, i]) => { const [x, y] = pl(u, v); return [y, () => shungiku(p, x, y, 28, r, i)]; }),
     ] }),
 };
 
