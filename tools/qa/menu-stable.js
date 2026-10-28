@@ -16,7 +16,10 @@ const BASE = BASE_;
     await p.addInitScript(([cc]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:4}})); } }, [cc]);
     await p.goto(BASE); await ready(p);
     await p.evaluate(() => { window.hasPro = () => true; session.menu = null; render(); });
-    const snap = () => p.evaluate(() => ({ids: session.menu.items.map(x => x.r ? x.r.id : '-'), mood: session.mood, rice: (document.querySelector('.tray .spot.rice') || {}).textContent || ''}));
+    // 献立は今日の画面を描いたときに作られる（起動・国の組み合わせの読みこみ中は「読みこみ中…」で、まだない）。できるまで待ってから読む
+    const menuReady = () => p.waitForFunction(() => typeof session !== 'undefined' && !!session.menu, null, {timeout: 30000}).catch(() => {});
+    await menuReady();
+    const snap = async () => { await menuReady(); return p.evaluate(() => ({ids: session.menu ? session.menu.items.map(x => x.r ? x.r.id : '-') : ['(献立なし)'], mood: session.mood, rice: (document.querySelector('.tray .spot.rice') || {}).textContent || ''})); };
     const same = (a, c) => JSON.stringify(a.ids) === JSON.stringify(c.ids) && a.rice.replace(/かえる|Change|\s/g, '') === c.rice.replace(/かえる|Change|\s/g, '');
     const act = async (name, fn, expectSame = true) => {
       trail.push(name); const a = await snap(); await p.evaluate(fn); await p.waitForTimeout(500); const c = await snap();
@@ -24,8 +27,16 @@ const BASE = BASE_;
       return {a, c};
     };
     // 献立に出ていない食材を苦手にする（たこ・いか・貝なども「魚介」に入るので、献立にあれば無関係な苦手にならない）
-    await act('avoid-chip-unrelated', () => { const ings = new Set(session.menu.items.flatMap(x => x.r.items.map(i => i.key))); const cand = ['えび','あさり','鮭','shrimp','shellfish','salmon'].find(k => !ings.has(k)); S.settings.avoid = ['@shellfish']; if (session.menu.items.some(x => x.r && isAvoidedCore(x.r))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
-    await act('toggle-swap', () => { S.settings.avoidSwap = false; save(); reconcileMenu(); refreshWeek(); render(); });
+    await act('avoid-chip-unrelated', () => { S.settings.avoid = ['@shellfish']; if (session.menu.items.some(x => x.r && isAvoidedCore(x.r))) S.settings.avoid = ['@dairy_unrelated_zzz']; save(); reconcileMenu(); refreshWeek(); render(); });
+    // 置き換えをオフにする: 置き換えて出していた料理（貝・えびを鶏肉にしたクラムチャウダー・トムヤムクン・海鮮チヂミなど）は出せなくなるので、その枠だけ選び直すのが正しい。
+    // ほかの枠は動かない・出せなくなった枠は残らない、を確かめる（「全部同じ」とは見ない）
+    {
+      trail.push('toggle-swap');
+      const dep = await p.evaluate(() => { S.settings.avoidSwap = false; const d = session.menu.items.map(x => !!x.r && isAvoidedCore(x.r)); S.settings.avoidSwap = true; return d; });
+      const a = await snap(); await p.evaluate(() => { S.settings.avoidSwap = false; save(); reconcileMenu(); refreshWeek(); render(); }); await p.waitForTimeout(500); const c = await snap();
+      const wrong = a.ids.map((id, j) => dep[j] ? (c.ids[j] === id ? 'slot' + j + ' 出せないのに残った ' + id : '') : (c.ids[j] !== id ? 'slot' + j + ' ' + id + '→' + c.ids[j] : '')).filter(Boolean);
+      if (wrong.length || a.ids.length !== c.ids.length || a.rice.replace(/かえる|Change|\s/g, '') !== c.rice.replace(/かえる|Change|\s/g, '')) bad('toggle-swap', cc + ' ' + JSON.stringify(a.ids) + ' -> ' + JSON.stringify(c.ids) + ' ' + wrong.join(' ; ')); else ok('toggle-swap');
+    }
     await act('toggle-swap-back', () => { S.settings.avoidSwap = true; save(); reconcileMenu(); refreshWeek(); render(); });
     await act('avoid-days', () => { S.settings.avoidDays = 21; save(); render(); });
     await act('make-week', () => { makeWeek(); render(); });

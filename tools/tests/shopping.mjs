@@ -69,8 +69,8 @@ for (const cc of ['JP', 'TW', 'KR', 'US']){
         S.week = { start: TODAY, days: [{ d: TODAY, id: r0.id }] };
         const labels = shoppingList().map(e => e.label), share = weekShareText();
         const to = sw.swapped.swaps.map(x => x.to && (x.to.label || x.to.name || x.to)).filter(Boolean);
-        const inList = sw.items.filter(i => !i.opt && !PANTRY.has(i.key)).every(i => labels.includes(i.label) || labels.some(l => l.includes(i.label) || i.label.includes(l)));
-        return { id: r0.id, labels, to, inList, pork: labels.filter(l => /豚|ベーコン|ハム/.test(l)), shareHas: sw.items.filter(i => !i.opt && !PANTRY.has(i.key)).every(i => share.includes(i.label)) };
+        const inList = sw.items.filter(i => !i.opt && !PANTRY.has(i.key)).every(i => labels.includes(i.label) || labels.includes(i.name) || labels.some(l => l.includes(i.label) || i.label.includes(l)));   // 日本語の画面ではレシピに書いた名前（鶏もも肉）で出る
+        return { id: r0.id, labels, to, inList, pork: labels.filter(l => /豚|ベーコン|ハム/.test(l)), shareHas: sw.items.filter(i => !i.opt && !PANTRY.has(i.key)).every(i => share.includes(i.label) || share.includes(i.name)) };
     });
     if (r.none) console.log('置き換えのある主菜が見つからない'); else { ok(r.inList, '置き換えた食材が買い物メモに入る ' + r.id); ok(!r.pork.length, '苦手な豚肉が買い物メモに残っていない ' + r.pork); ok(r.shareHas, '送る文面にも置き換えた食材が入る'); console.log('置き換え', r.id, r.to.join(','), r.labels.length, '行'); }
     await ctx.close();

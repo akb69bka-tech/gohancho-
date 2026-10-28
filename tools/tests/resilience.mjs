@@ -265,7 +265,7 @@ const countingAbort = (re) => async ctx => ctx.route(re, r => { hit.n++; r.abort
     await p.ctx.close();
 }
 {   // C5. 言語切替: 辞書が読めない / レシピの訳が読めない → 画面の言葉と料理の言葉がずれない
-    const goSettings = async p => { await p.evaluate(() => setTab('settings')); await p.waitForSelector('[data-act="ui-lang"][data-v="en"]'); };
+    const goSettings = async p => { await p.evaluate(() => { setTab('settings'); document.querySelector('[data-act="set-jump"][data-k="display"]').click(); }); await p.waitForSelector('[data-act="ui-lang"][data-v="en"]'); };   // 設定はまとまりごとに畳んである。目次から「表示と言語」を開く
     const p = await open({ route: async ctx => { await ctx.route(/\/i18n\/en\.js/, r => r.abort()); } });
     await goSettings(p);
     await p.click('[data-act="ui-lang"][data-v="en"]'); await sleep(2600);

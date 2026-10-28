@@ -112,7 +112,7 @@ const BK = await p.evaluate(() => {
     return { lab, serves: st.custom.map(r => r.serves), src: st.custom.map(r => r.src), back: JSON.stringify(S).includes('母のレシピ') };
 });
 ok(/1回/.test(BK.lab) || BK.lab.includes('1'), '作った回数 ' + BK.lab); ok(BK.back, 'バックアップに由来メモが入る'); ok(BK.serves.every(n => n >= 1 && n <= 12) && BK.src.every(x => typeof x === 'string'), '壊れた値は直る ' + BK.serves);
-await p.evaluate(() => { setTab('settings'); });
+await p.evaluate(() => { setTab('settings'); document.querySelector('[data-act="set-jump"][data-k="data"]').click(); });   // 設定はまとまりごとに畳んであるので、目次から「データとバックアップ」を開く
 ok((await p.evaluate(() => document.body.innerText)).includes('写真（わが家の一枚・アルバム）は入りません'), '設定のバックアップに写真の注意');
 // 7) 写真
 const ph = await p.evaluate(async () => { try{ await shrinkImage({size: 41e6}); return 'no'; }catch(e){ return e.message; } });

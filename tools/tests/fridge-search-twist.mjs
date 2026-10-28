@@ -204,11 +204,11 @@ for (const [cc, ui, sets] of [['JP', 'ja', [['豚肉', 'キャベツ', '卵'], [
         const click = (act) => { const e = document.createElement('button'); e.dataset.act = act; document.body.appendChild(e); e.click(); e.remove(); };
         for (let k = 0; k < 30; k++){
             newMenu(); const m = session.menu; if (m.items.length < 5) continue;
-            const second = m.items.find((x, j) => j && x.slot === '主菜'); if (!second) continue;
+            const second = m.items.find((x, j) => j && x.r && x.slot === '主菜'); if (!second) continue;
             // 2つ目の主菜と同じ種類（肉・魚）のひとひねり案を主菜にする
             const tw = generateTwists({level: 2, count: 12}).find(x => x.family === second.r.family && x.family !== '野菜'); if (!tw) continue;
-            const before = m.items.map(x => x.slot + ':' + x.r.id); session.twist = tw; click('twist-main');
-            const after = session.menu.items.map(x => x.slot + ':' + x.r.id);
+            const before = m.items.map(x => x.slot + ':' + (x.r ? x.r.id : '-')); session.twist = tw; click('twist-main');
+            const after = session.menu.items.map(x => x.slot + ':' + (x.r ? x.r.id : '-'));
             after.forEach((a, j) => { if (j && a !== before[j]) bad.push('枠' + j + ' ' + before[j] + ' → ' + a); });
             if (after[0] !== '主菜:' + tw.id) bad.push('主菜が替わらない');
         }
