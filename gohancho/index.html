@@ -1403,6 +1403,49 @@ html[data-ts="2"] .stages ol{grid-template-columns:repeat(2,minmax(0,1fr))}   /*
 .actionbar.stack{flex-direction:column;border-radius:var(--r-xl)}   /* 主ボタンの下に副ボタン（買う段の「買わずに作る」） */
 .actionbar.stack>.btn{flex:none;width:100%}
 .actionbar.stack>.btn:not(.primary){min-height:var(--tap);font-size:var(--fs14)}
+/* 二 買う（日向）: 買う物を買う単位で。行ごとに［買う］［家にある］（柿色にしない枠ボタン）。家にある物・なくても作れる物・調味料は畳む */
+.buy-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--s4) var(--s12)}
+.buy-head .eyebrow{grid-column:1 / -1;letter-spacing:0;overflow-wrap:anywhere}
+.buy-head h2{grid-column:1}
+.buy-head .buy-send{grid-column:2;grid-row:2}
+.buy-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s8)}
+.buy-tools .btn.on{background:var(--leaf-soft);border-color:var(--leaf)}
+.buy-list{padding:var(--s4) 0;gap:0}
+.card.buy-list{padding:var(--s4) var(--s16)}
+.buy-note{margin:var(--s8) 0 var(--s4);font-size:var(--fs12);color:var(--muted)}
+.buy-grp{font-size:var(--fs12);font-weight:700;color:var(--muted);padding:var(--s12) 0 var(--s4);border-top:1px solid var(--line-soft)}
+.buy-grp:first-of-type{border-top:0}
+.buy-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;align-items:center;gap:var(--s4) var(--s8);padding:var(--s8) 0;border-top:1px solid var(--line-soft);min-height:var(--tap)}
+.buy-grp + .buy-row,.buy-list > .buy-row:first-child,.buy-note + .buy-row{border-top:0}
+.buy-row .br-chk input{width:26px;height:26px;margin:0;accent-color:var(--leaf)}
+.buy-row .br-nm{min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}
+.buy-row .br-nm b{font-size:var(--fs16);font-weight:700}
+.buy-row .br-nm small{font-size:var(--fs12);color:var(--muted);line-height:1.4}
+.buy-row .br-nm .br-alt{color:var(--ink)}
+.buy-row .br-q{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.buy-row .br-ok{color:var(--leaf);margin-inline-end:var(--s4)}
+.buy-row.got .br-nm b{color:var(--ink)}
+.buy-row .br-after{grid-column:2 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s8)}
+.bt-grp{display:inline-flex;gap:var(--s4)}
+.bt{min-height:44px;min-width:56px;padding:0 var(--s8);border-radius:var(--r-pill);font:inherit;font-size:var(--fs14);font-weight:700;cursor:pointer;background:transparent;border:1.5px solid transparent;color:var(--muted)}
+.bt.buy[aria-pressed="true"]{background:var(--surface);border-color:var(--ink);color:var(--ink)}
+.bt.have[aria-pressed="true"]{background:var(--leaf-soft);border-color:var(--leaf-soft);color:var(--ink)}
+.bt[aria-pressed="false"]{border-color:var(--line)}
+.buy-folds{display:flex;flex-direction:column;gap:var(--s8)}
+.buy-fold{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:0 var(--s16)}
+.buy-fold summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:var(--s12);min-height:var(--tap-lg);padding:var(--s8) 0}
+.buy-fold summary::-webkit-details-marker{display:none}
+.buy-fold summary > span:first-child{display:flex;flex-direction:column;min-width:0}
+.buy-fold summary small{font-size:var(--fs12);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.buy-fold[open] summary small{white-space:normal}
+.share-lv{margin-bottom:var(--s4)}
+.stage-shop.big .buy-row .br-nm b{font-size:var(--fs20)}
+.stage-shop.big .buy-row .br-q{font-size:var(--fs16)}
+.stage-shop.big .buy-row{grid-template-columns:36px minmax(0,1fr) auto;padding:var(--s12) 0}
+.stage-shop.big .buy-row .br-chk input{width:34px;height:34px}
+.stage-shop.big .buy-row .bt-grp{grid-column:2 / -1;justify-self:start}
+@media (max-width:360px){.buy-row{grid-template-columns:28px minmax(0,1fr) auto}.buy-row .bt-grp{grid-column:2 / -1;justify-self:start}}
+html[data-ts="1"] .buy-row,html[data-ts="2"] .buy-row{grid-template-columns:28px minmax(0,1fr) auto}html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{grid-column:2 / -1;justify-self:start}
 /* 元に戻すつきのお知らせ: 文と［元に戻す］を1行に。ボタンは暗い地の上で読める枠ボタン */
 .toast:has([data-act="toast-undo"]){display:flex;align-items:center;gap:var(--s12);text-align:start;border-radius:var(--r-lg)}
 .toast [data-act="toast-undo"]{margin:0;flex:none;background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 60%,transparent);font-weight:700}
@@ -2072,7 +2115,7 @@ function normalizeState(d){
     // 冷蔵庫の食材の印（{食材: {soon: 早めに使う, d: 登録した日}}）。端末の中だけ。冷蔵庫にない食材・不正な値は捨てる。印がなかった頃から入っていた食材の登録日は不明なので d は空
     { const had = d.fridgeMeta && typeof d.fridgeMeta === 'object' && !Array.isArray(d.fridgeMeta), fm = had ? d.fridgeMeta : {}, out = {};
       st.fridge.forEach(f => { if (typeof f !== 'string' || out[f]) return; const e = fm[f] && typeof fm[f] === 'object' && !Array.isArray(fm[f]) ? fm[f] : null;
-          const o = {d: e && isYmd(e.d) ? e.d : (had ? ymd() : '')}; if (e && e.soon === true) o.soon = true; if (e && isYmd(e.exp)) o.exp = e.exp; if (e && typeof e.cut === 'string' && /^(もも|むね|ささみ|手羽元|手羽先|手羽|ロース|バラ|こま)$/.test(e.cut)) o.cut = e.cut; out[f] = o; });
+          const o = {d: e && isYmd(e.d) ? e.d : (had ? ymd() : '')}; if (e && e.soon === true) o.soon = true; if (e && isYmd(e.exp)) o.exp = e.exp; if (e && e.left && typeof e.left === 'object' && Number(e.left.qty) > 0 && typeof e.left.unit === 'string' && e.left.unit.length < 8) o.left = {qty: Number(e.left.qty), unit: e.left.unit, from: isYmd(e.left.from) ? e.left.from : ''}; if (e && typeof e.cut === 'string' && /^(もも|むね|ささみ|手羽元|手羽先|手羽|ロース|バラ|こま)$/.test(e.cut)) o.cut = e.cut; out[f] = o; });
       st.fridgeMeta = out; }
     st.savedMenus = arr(st.savedMenus).filter(m => m && typeof m.id === 'string' && typeof m.name === 'string' && Array.isArray(m.ids) && m.ids.length && Array.isArray(m.slots) && m.ids.every(x => typeof x === 'string' || typeof x === 'number')).slice(0, 30)   // 「保存した献立」は30件まで
         .map(m => { if (!('mix' in m) && !('names' in m)) return m; const mx = {}; Object.entries(obj(m.mix)).forEach(([k, v]) => { if (['主菜', '副菜', '汁物'].includes(k) && typeof v === 'string' && /^[A-Z]{2}$/.test(v)) mx[k] = v; });   // 国ミックス（枠 → 国）
@@ -3545,7 +3588,8 @@ function fitPlaceholders(root){
         el.setAttribute('aria-describedby', id);
     });
 }
-document.addEventListener('toggle', e => { if (e.target && e.target.tagName === 'DETAILS' && e.target.open) guard('ph', () => fitPlaceholders(e.target)); }, true);   // 畳んだ欄を開いたとき
+document.addEventListener('toggle', e => { if (e.target && e.target.tagName === 'DETAILS' && e.target.open) guard('ph', () => fitPlaceholders(e.target)); }, true);
+document.addEventListener('toggle', e => { const d = e.target; if (d && d.tagName === 'DETAILS' && d.dataset && d.dataset.bf) session['bf_' + d.dataset.bf] = d.open; }, true);   // 買う段の畳んだ欄は、描き直しても開いたまま   // 畳んだ欄を開いたとき
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
 function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
 const renderFail = new Set();
@@ -3589,18 +3633,114 @@ function viewStage(){
 function stageEmpty(msg, k, label){
     return `<section class="sec stage-body"><div class="card stage-empty"><p>${esc(msg)}</p><div class="row"><button class="btn" data-act="stage" data-k="${k}">${esc(label)}</button></div></div></section>`;
 }
-// 二 買う: 決めた献立の材料のうち、冷蔵庫・常備品にないもの（いまの「今日の買い物メモ」と同じ中身）。家にある／買うの切りかえ・冷蔵庫シートは日向が入れる
+/* ===== 二 買う（日向）: 今日の献立の材料を「買う／家にある」に分けて1枚に =====
+   正本は決めた献立（S.cook）。この段の印は S.cook.shop = {buy:[行], have:[行], got:[行], fr:[行]}（今日だけ・端末の中だけ）。
+   ・冷蔵庫といつも家にある食材にあるものは、はじめ「家にある」。行ごとに［買う］［家にある］で切りかえる（献立・ほかの行は変えない）
+   ・分量は買う単位で出す。売り単位の表（SELL_UNIT）は売り方を調べた物だけ載せる（いまは出典のある物がないので空）。
+     表にない物は、レシピの数え方（個・本・袋・パック…）のまま、端数を切り上げた数を「買う数」にして、使う量を添える（半端の数を買う数にしない）
+   ・買った（✓）物は、行の中で［冷蔵庫に入れる］。買う数 − 使う量 が分かる物は「使いかけ」として残りの量も冷蔵庫に入れる */
+const SELL_UNIT = {};   // {食材キー: {n:数, unit:'パック', src:'出典'}}。出典のない数は載せない
+const COUNT_UNIT = /^(個|本|束|袋|パック|丁|玉|枚|缶|尾|切れ|株|房|箱|片|かけ|節|把|房|株)$/;
+function shopState(){
+    const c = S.cook; if (!c) return {buy:new Set(), have:new Set(), got:new Set(), fr:new Set()};
+    const o = c.shop && typeof c.shop === 'object' ? c.shop : (c.shop = {});
+    const set = k => new Set((Array.isArray(o[k]) ? o[k] : (o[k] = [])).filter(x => typeof x === 'string'));
+    return {buy:set('buy'), have:set('have'), got:set('got'), fr:set('fr')};
+}
+function shopMark(k, key, on){   // 印を1つだけ付け外す（ほかの行・献立は触らない）
+    const o = S.cook.shop || (S.cook.shop = {}), a = Array.isArray(o[k]) ? o[k] : (o[k] = []), i = a.indexOf(key);
+    if (on && i < 0) a.push(key); if (!on && i >= 0) a.splice(i, 1);
+}
+// 「1/2袋」→ {buy:'1袋', use:'1/2袋', left:{qty:0.5, unit:'袋'}}。数え方の分からない量（g・大さじ・英語の言い方）はそのまま
+function buyUnitOf(key, qtys){
+    const use = qtys.length ? sumQty(qtys).join(t('＋')) : '';
+    const su = SELL_UNIT[key];
+    if (su){ const m = use.match(/^(\d+(?:\.\d+)?)\s*(g|ml)$/), need = m ? Number(m[1]) : null;
+        if (need && su.g){ const n = Math.max(1, Math.ceil(need / su.g)); return {buy: n + su.unit, use, left: n * su.g - need > 0 ? {qty: n * su.g - need, unit: m[2]} : null}; } }
+    const m = use.match(/^(?:(\d+)と)?(\d+)(?:\/(\d+))?\s*(\S+)$/);
+    if (m && COUNT_UNIT.test(m[4])){
+        const v = (m[1] ? Number(m[1]) : 0) + (m[3] ? Number(m[2]) / Number(m[3]) : Number(m[2]));
+        if (v > 0 && !Number.isInteger(+v.toFixed(6))){ const n = Math.ceil(v - 1e-6); return {buy: n + m[4], use, left: {qty: +(n - v).toFixed(3), unit: m[4]}}; }
+        return {buy: use, use: '', left: null};
+    }
+    return {buy: use, use: '', left: null};
+}
+function todayShopRows(){
+    const its = cookItems(); if (!its.length) return {rows: [], opt: [], seas: []};
+    const have = fridgeKeys(), fac = servingFactor(), st = shopState(), map = new Map(), opt = new Map(), seas = new Map(), cc = currentCountry();
+    its.forEach(x => { const r = swappedRecipe(x.r) || x.r;
+        r.items.forEach(i => {
+            if (PANTRY.has(i.key)) return;
+            const nm = shopName(i, r), lab = /[฀-๿]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm), into = i.opt ? opt : map;
+            const e = into.get(k) || {key: k, ik: i.key, label: lab, qty: [], dishes: [], sec: shopSec(i), alt: '', home: have.has(i.key)};
+            if (i.qty) e.qty.push(scaleText(i.qty, fac)); if (!e.dishes.includes(x.r.name)) e.dishes.push(x.r.name);
+            if (!e.alt && (r.pack || 'JP') !== cc) e.alt = itemAltName(i, r);   // ほかの国の料理は、もうひとつの名前（売り場で探す名前）も
+            into.set(k, e);
+        });
+        pantryOf(r).forEach(p => { if (/^p\|(水|お湯|湯|ご飯|water|hot water|ice water)$/i.test(p.key)) return; const o = seas.get(p.key) || {key: p.key, label: p.label, dishes: []}; if (!o.dishes.includes(x.r.name)) o.dishes.push(x.r.name); seas.set(p.key, o); });
+    });
+    const fin = e => { const u = buyUnitOf(e.ik, e.qty); e.buyQty = u.buy; e.use = u.use; e.left = u.left;
+        e.buying = st.got.has(e.key) || (e.home ? st.buy.has(e.key) : !st.have.has(e.key)); return e; };
+    return {rows: [...map.values()].map(fin), opt: [...opt.values()].map(e => { fin(e); e.buying = st.buy.has(e.key); return e; }),
+        seas: [...seas.values()].map(e => Object.assign(e, {buying: st.buy.has(e.key)}))};
+}
+function todayShopItems(){   // 買う物（送る文・数に使う）
+    const {rows, opt, seas} = todayShopRows();
+    return [...rows, ...opt].filter(e => e.buying).map(e => ({label: e.label, qty: e.buyQty})).concat(seas.filter(e => e.buying).map(e => ({label: e.label, qty: ''})));
+}
+function buyToggleHtml(e){   // ［買う］［家にある］の切りかえ（柿色にしない。押せる高さ44px）
+    return `<span class="bt-grp" role="group" aria-label="${esc(e.label)}"><button type="button" class="bt buy" data-act="sb-set" data-k="${esc(e.key)}" data-v="buy" aria-pressed="${!!e.buying}">${esc(t('買う'))}</button><button type="button" class="bt have" data-act="sb-set" data-k="${esc(e.key)}" data-v="have" aria-pressed="${!e.buying}">${esc(t('家にある'))}</button></span>`;
+}
+function buyRowHtml(e, st, plain){
+    const got = st.got.has(e.key), fr = st.fr.has(e.key);
+    const sub = [joinNames(e.dishes), e.use ? t('{qty}使う', {qty: e.use}) : ''].filter(Boolean).join(t('・'));
+    return `<div class="buy-row${got ? ' got' : ''}${e.buying ? '' : ' is-have'}">
+        ${e.buying && !plain ? `<label class="br-chk"><input type="checkbox" data-act="sb-got" data-k="${esc(e.key)}" ${got ? 'checked' : ''} aria-label="${esc(t('{name}を買った', {name: e.label}))}"></label>` : '<span class="br-chk" aria-hidden="true"></span>'}
+        <span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}</span>
+        ${e.buyQty ? `<span class="br-q"><bdi>${esc(e.buyQty)}</bdi></span>` : '<span></span>'}
+        ${got ? '' : buyToggleHtml(e)}
+        ${got ? `<span class="br-after">${fr ? `<span class="small muted">${esc(e.left ? t('冷蔵庫に入れました（使いかけ {qty}）', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}) : t('冷蔵庫に入れました'))}</span>`
+            : `<button type="button" class="btn sm" data-act="sb-fridge" data-k="${esc(e.key)}">${esc(t('冷蔵庫に入れる'))}</button>${e.left ? `<span class="small muted">${esc(t('残り {qty} は「使いかけ」として入れます', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}))}</span>` : ''}`}</span>` : ''}
+    </div>`;
+}
 function viewShopStage(){
     if (!decidedToday()) return stageEmpty(t('決めると、ここに今日の買い物メモが出ます'), 'decide', tc('stage', '決める へ'));
-    const list = todayShopItems(), done = !!S.cook.shopOK;
-    const names = cookItems().map(x => x.r.name);
-    return `<section class="sec stage-body stage-shop">
-        <div class="sec-head"><h2>${esc(list.length ? t('買う物 {n}つ', {n:list.length}) : t('買う物はありません'))}</h2><span class="hint">${esc(joinNames(names))}</span></div>
-        ${list.length ? `<div class="list">${list.map(e => `<div class="item"><span class="t">${esc(e.label)}</span>${e.qty ? `<span class="s"><bdi>${esc(e.qty)}</bdi></span>` : ''}</div>`).join('')}</div>
-        <p class="foot">${esc(t('冷蔵庫・常備品に登録した食材と、調味料は入れていません'))}</p>` : `<div class="card"><p>${esc(t('今日の献立の材料は、調味料のほかは冷蔵庫・常備品に登録されています'))}</p></div>`}
-        <div class="row stage-links">${list.length ? `<button class="btn text" data-act="shop-today">${esc(t('買い物メモを送る'))}</button>` : ''}<button class="btn text" data-act="find-go" data-k="fridge">${esc(t('冷蔵庫を開く'))}</button></div>
-        <div class="actionbar stack"><button class="btn primary" data-act="shop-ok">${esc(done ? t('作りはじめる') : t('そろった・作りはじめる'))}</button>${done || !list.length ? '' : `<button class="btn" data-act="shop-ok" data-v="skip">${esc(t('買わずに作る'))}</button>`}</div>
+    const {rows, opt, seas} = todayShopRows(), st = shopState(), done = !!S.cook.shopOK, big = !!session.shopMode;
+    const buy = rows.filter(e => e.buying).concat(opt.filter(e => e.buying)), home = rows.filter(e => !e.buying), nb = buy.length + seas.filter(e => e.buying).length;
+    const names = cookItems().map(x => x.r.name), by = session.shopBy === 'sec' ? 'sec' : 'dish';
+    const SECS = [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]];
+    const groups = by === 'sec' ? SECS.map(([k, l]) => [l, buy.filter(e => e.sec === k)]) : names.map(n => [n, buy.filter(e => e.dishes[0] === n)]);
+    const fold = (k, title, hint, body) => `<details class="buy-fold" ${session['bf_' + k] ? 'open' : ''} data-bf="${k}"><summary><span><b>${esc(title)}</b>${hint ? `<small>${esc(hint)}</small>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary>${body}</details>`;
+    return `<section class="sec stage-body stage-shop${big ? ' big' : ''}">
+        <div class="sec-head buy-head"><span class="eyebrow">${esc(joinNames(names))}</span><h2>${esc(nb ? t('買う物 {n}つ', {n: nb}) : t('買う物はありません'))}</h2>
+            <button type="button" class="btn sm buy-send" data-act="shop-share3">${esc(t('家族に送る'))}</button></div>
+        ${cookWarnHtml()}
+        <div class="buy-tools"><div class="chips" role="group" aria-label="${esc(t('並べ方'))}"><button class="chip" data-act="sb-by" data-v="dish" aria-pressed="${by === 'dish'}">${esc(t('料理ごと'))}</button><button class="chip" data-act="sb-by" data-v="sec" aria-pressed="${by === 'sec'}">${esc(t('売り場ごと'))}</button></div>
+            <button class="btn sm${big ? ' on' : ''}" data-act="shop-mode" aria-pressed="${big}">${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button></div>
+        ${buy.length ? `<div class="card buy-list"><p class="buy-note">${esc(t('買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。'))}</p>
+            ${groups.filter(g => g[1].length).map(([l, xs]) => `<div class="buy-grp">${esc(l)}</div>${xs.map(e => buyRowHtml(e, st)).join('')}`).join('')}</div>`
+          : `<div class="card"><p>${esc(t('今日の献立の材料は、調味料のほかは冷蔵庫・常備品に登録されています'))}</p></div>`}
+        ${seas.some(e => e.buying) ? `<div class="card buy-list">${seas.filter(e => e.buying).map(e => buyRowHtml(Object.assign({buyQty: '', use: '', alt: ''}, e), st, true)).join('')}</div>` : ''}
+        <div class="buy-folds">
+            ${home.length ? fold('home', t('家にある {n}つ', {n: home.length}), joinNames(home.map(e => e.label)), `<div class="buy-list">${home.map(e => buyRowHtml(e, st)).join('')}</div>`) : ''}
+            ${opt.filter(e => !e.buying).length ? fold('opt', t('なくても作れる {n}つ', {n: opt.filter(e => !e.buying).length}), joinNames(opt.filter(e => !e.buying).map(e => e.label)), `<div class="buy-list">${opt.filter(e => !e.buying).map(e => buyRowHtml(e, st)).join('')}</div>`) : ''}
+            ${seas.length ? fold('seas', t('調味料 {n}つ', {n: seas.length}), t('家にない物は［買う］にすると、買う物に入ります'), `<div class="buy-list">${seas.map(e => buyRowHtml(Object.assign({buyQty: '', use: '', alt: ''}, e), st, true)).join('')}</div>`) : ''}
+        </div>
+        <div class="row stage-links"><button class="btn text" data-act="find-go" data-k="fridge">${esc(t('冷蔵庫を開く'))}</button>${S.week && visiblePlanDays().length ? `<button class="btn text" data-act="shop-week">${esc(t('今週の買い物メモ'))}</button>` : ''}</div>
+        <div class="actionbar stack"><button class="btn primary" data-act="shop-ok">${esc(done ? t('作りはじめる') : t('そろった・作りはじめる'))}</button>${done || !nb ? '' : `<button class="btn" data-act="shop-ok" data-v="skip">${esc(t('買わずに作る'))}</button>`}</div>
     </section>`;
+}
+// 家族に送る文（3段）: 料理名だけ／買う物も（まだ買っていない物）／作り方も
+function todayShare3Text(lv){
+    const its = cookItems(); if (!its.length) return '';
+    const foot = t('― わが家のご飯帖'), cut = x => { const ls = x.split('\n'); while (ls.length && (ls[ls.length - 1] === foot || !ls[ls.length - 1].trim())) ls.pop(); return ls.join('\n'); };   // 文の終わりの「― わが家のご飯帖」は最後に1回だけ
+    const head = cut(menuShareText({items: its.map(x => ({r: x.r, slot: x.slot}))}, TODAY));
+    const out = [head];
+    if (lv >= 2){ const st = shopState(), {rows, opt, seas} = todayShopRows(), left = [...rows, ...opt].filter(e => e.buying && !st.got.has(e.key)).map(e => ({label: e.label, qty: e.buyQty})).concat(seas.filter(e => e.buying).map(e => ({label: e.label, qty: ''})));
+        out.push('', t('【買う物】'), ...(left.length ? left.map(e => t('□ {name}', {name: e.label + (e.qty ? ' ' + e.qty : '')})) : [t('買う物はありません')])); }
+    if (lv >= 3) its.forEach(x => out.push('', '――――', cut(recipeShareText(x.r))));
+    out.push('', t('― わが家のご飯帖'));
+    return out.join('\n');
 }
 // 四 食卓: 作り終えた料理を並べ、まだ記録していない料理をまとめて記録する（料理ごとの「おいしかった」などは八木が入れる）
 function viewTableStage(){
@@ -6783,6 +6923,7 @@ function copyText(text){
 function shareSheetHtml(){
     const canSystem = !!(nativePlugin('Share') || navigator.share);
     return `<h2>${esc(t('{title}を送る', {title:sheet.title}))}</h2>
+        ${sheet.card === 'today3' ? `<div class="chips share-lv" role="group" aria-label="${esc(t('送る内容'))}">${[[1, t('料理名だけ')], [2, t('買う物も')], [3, t('作り方も')]].map(([v, l]) => `<button class="chip" data-act="shop-share3" data-v="${v}" aria-pressed="${sheet.lv === v}">${esc(l)}</button>`).join('')}</div>` : ''}
         <textarea id="share-text" class="share-text" readonly aria-label="${esc(t('送る内容'))}">${esc(sheet.text)}</textarea>
         ${(m => m ? `<a class="btn msg ${m.cls} wide" href="${esc(m.url(sheet.text))}" target="_blank" rel="noopener">${esc(t('{app} で送る', {app:m.label}))}</a>` : '')(messengerFor())}
         <div class="row">
@@ -6790,7 +6931,7 @@ function shareSheetHtml(){
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
         ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
-        ${sheet.card === 'recipe' || sheet.card === 'shop' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
+        ${sheet.card === 'recipe' || sheet.card === 'shop' || sheet.card === 'today3' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
         ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
@@ -7540,16 +7681,6 @@ function dishWhy(r, slot){   // 押していない料理に左右されない、
     return '';
 }
 // 決めた献立のうち、冷蔵庫・常備品に登録のない材料（買い物メモにして送る・コピーする）
-function todayShopItems(){
-    const its = cookItems(); if (!its.length) return [];
-    const have = fridgeKeys(), fac = servingFactor(), map = new Map();
-    its.forEach(x => (swappedRecipe(x.r) || x.r).items.forEach(i => {
-        if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return;
-        const nm = shopName(i, x.r), lab = /[\u0E00-\u0E7F]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm);   // 名前のちがう材料（鶏もも肉・鶏むね肉）は別の行
-        const e = map.get(k) || {label: lab, qty: []}; if (i.qty) e.qty.push(scaleText(i.qty, fac)); map.set(k, e);
-    }));
-    return [...map.values()].map(e => ({label: e.label, qty: e.qty.length ? sumQty(e.qty).join(t('＋')) : ''}));
-}
 function todayShopText(){
     const list = todayShopItems(); if (!list.length) return '';
     const lines = [t('【{date}の買い物メモ】', {date:jpDate(S.cook.d)}), t('今日の献立の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {sv:Number(S.settings.servings) || 2})];
@@ -8580,7 +8711,7 @@ function cookNow(){
    画面を離れると端末が自動で解除するので、戻ってきたら取り直す ---- */
 let wakeLock = null, wakeBusy = false;
 const wakeOK = () => !!(navigator.wakeLock && navigator.wakeLock.request);
-const wakeWanted = () => wakeOK() && !document.hidden && ((tab === 'cook' && S.settings.keepAwake !== false && cookItems().length > 0) || (tab === 'today' && !!session.shopMode && !!S.week));   // 買い物モードは今日の画面（買い物メモ）で、スイッチを入れたあいだだけ
+const wakeWanted = () => wakeOK() && !document.hidden && ((tab === 'cook' && S.settings.keepAwake !== false && cookItems().length > 0) || (tab === 'today' && !!session.shopMode && (!!S.week || viewingStage() === 'shop')));   // 買い物モードは今日の画面（買い物メモ）で、スイッチを入れたあいだだけ
 function syncWake(){
     if (wakeWanted()){
         if (wakeLock || wakeBusy) return;
@@ -9654,6 +9785,27 @@ document.addEventListener('click', e => {
             break;
         }
         case 'find-go': { const k = el.dataset.k; if (['fridge', 'twist', 'world'].includes(k)) setTab(k); break; }
+        case 'sb-set': {   // 1行だけ［買う］［家にある］を切りかえる
+            if (!decidedToday()) break;
+            const k = el.dataset.k, want = el.dataset.v === 'buy', e = (r => [...r.rows, ...r.opt, ...r.seas])(todayShopRows()).find(x => x.key === k); if (!e) break;
+            shopMark('buy', k, want); shopMark('have', k, !want);
+            save(); render(); break;
+        }
+        case 'sb-got': { if (!decidedToday()) break; shopMark('got', el.dataset.k, !!el.checked); if (!el.checked) shopMark('fr', el.dataset.k, false); save(); render(); break; }
+        case 'sb-fridge': {   // 買った物を冷蔵庫へ。残りが分かる物は「使いかけ」の量も
+            if (!decidedToday()) break;
+            const k = el.dataset.k, e = todayShopRows().rows.concat(todayShopRows().opt).find(x => x.key === k); if (!e) break;
+            const before = S.fridge.slice(), metaBefore = JSON.stringify(S.fridgeMeta || {}), nm = [e.ik, e.label].find(x => keyOf(x) === e.ik) || e.label;
+            if (!S.fridge.some(f => keyOf(f) === keyOf(nm))) S.fridge.push(nm);
+            const f = S.fridge.find(x => keyOf(x) === keyOf(nm)); syncFridgeMeta();
+            if (e.left && f){ S.fridgeMeta[f] = Object.assign({}, S.fridgeMeta[f], {left: {qty: e.left.qty, unit: e.left.unit, from: TODAY}}); }
+            shopMark('fr', k, true); save(); render();
+            toast(t('「{name}」を冷蔵庫に入れました', {name: e.label}), false, () => { S.fridge = before; S.fridgeMeta = JSON.parse(metaBefore); shopMark('fr', k, false); save(); render(); });
+            break;
+        }
+        case 'sb-by': session.shopBy = el.dataset.v === 'sec' ? 'sec' : 'dish'; render(); break;
+        case 'shop-share3': { const lv = Number(el.dataset.v) || (sheet && sheet.kind === 'share' && sheet.card === 'today3' ? sheet.lv : 2); if (!cookItems().length) break; sheet = {kind:'share', card:'today3', lv, text: todayShare3Text(lv), title: t('今日の一膳')}; renderSheet(); break; }
+        case 'shop-week': { session.stage = 'decide'; S.foldOpen = Object.assign({}, S.foldOpen, {week: true}); render(); const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start'}); break; }
         case 'shop-ok': {   // 二 買う の主ボタン: 買い物の印を付けて作る段へ（元に戻す8秒）
             if (!decidedToday()) break;
             const had = !!S.cook.shopOK; S.cook.shopOK = 1; save(); haptic();
