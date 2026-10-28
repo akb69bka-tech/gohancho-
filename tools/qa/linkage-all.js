@@ -30,7 +30,7 @@ window.__snap = (opts) => {
   opts = opts || {};
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
-    const sa = sp.querySelector('[data-act="soup-add"]');
+    const sa = sp.querySelector('[data-act="soup-add"]') || sp.querySelector('.swap-ph');   // 汁ものがいらない日の空の枠（ボタンの高さだけ取ってある）も、汁ものを足せる空の枠と同じ「空」
     const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
     // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
     return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
@@ -243,7 +243,8 @@ async function secSavedMix(b, cc) {
     await p.evaluate(() => { S.settings.mix = {}; save(); session.menu = null; render(); }); await p.waitForTimeout(200);
     await p.evaluate(id => applySavedMenu(id), sm); await p.waitForTimeout(2500);
     const s1 = await snap(p); area('savedmix').taps++;
-    if (s1.ids.join() !== s0.ids.join()) bad('savedmix', cc + ' ' + JSON.stringify(mix) + ' 復元した献立が保存と違う ' + s0.ids.join() + ' -> ' + s1.ids.join());
+    const filled = s => s.ids.filter(x => !x.endsWith(':-')).join();   // 空の枠（汁けの多い主菜の日の汁もの）は保存しない設計なので、料理のある枠だけ比べる
+    if (filled(s1) !== filled(s0)) bad('savedmix', cc + ' ' + JSON.stringify(mix) + ' 復元した献立が保存と違う ' + s0.ids.join() + ' -> ' + s1.ids.join());
     await stays(p, 'savedmix', cc + ' 復元後 再調整 ' + JSON.stringify(mix), () => { reconcileMenu(); refreshWeek(); render(); });
     await pressAll(p, 'savedmix', cc + ' 復元後 ' + JSON.stringify(mix), { reps: 2 });
     // 復元した献立のあとの言語切替でも料理は変わらない
