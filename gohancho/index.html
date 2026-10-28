@@ -356,11 +356,35 @@ small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を
 .match .head{display:flex;justify-content:space-between;gap:8px;align-items:center;cursor:pointer}
 .match .head .name{font-family:var(--font-display);font-weight:700;font-size:1rem}
 .meter{height:5px;border-radius:999px;background:var(--surface-2);overflow:hidden;width:64px;flex-shrink:0}
-.meter i{display:block;height:100%;background:var(--accent)}
+.meter i{display:block;height:100%;background:var(--leaf)}
 .ings{font-size:.8rem;color:var(--muted);line-height:1.8}
-.ings b{color:var(--accent);font-weight:700}
+.ings b{color:var(--leaf);font-weight:700}
 .ings .miss{color:var(--danger);text-decoration:underline dotted;text-underline-offset:3px}   /* ないものは色だけでなく点線の下線でも示す */
 .ings .sub{color:var(--yolk-ink);background:var(--yolk-soft);border-radius:4px;padding:0 .25rem}
+/* 料理カード（v2・一覧で共通）: 1品ずつ離したカード。絵 72px・名前（明朝）・時間などの行・ひとこと の順にそろえる */
+.list.dlist{background:none;border:0;box-shadow:none;border-radius:0;overflow:visible;gap:var(--s8,8px)}
+.dlist>.match,.dlist>.empty{background:var(--surface);border:1px solid var(--line-soft,var(--line));border-radius:var(--r-lg,16px);box-shadow:var(--shadow-1,var(--shadow))}
+.dlist>.match{border-top:1px solid var(--line-soft,var(--line))}
+.match.dcard{grid-template-columns:72px minmax(0,1fr);gap:var(--s16,16px);padding:var(--s12,12px) var(--s16,16px);align-items:center;contain-intrinsic-size:auto 104px}
+.match.dcard .dc-pic{align-self:start;display:block}
+.match.dcard .thumb{width:72px;height:72px}
+.match.dcard .info{gap:var(--s4,4px)}
+.match.dcard .head{align-items:flex-start}
+.match.dcard .head .name{font-size:var(--fs16,1rem);line-height:var(--lh-tight,1.35);overflow-wrap:anywhere;min-width:0}
+.match.dcard .head .meter{margin-top:.55em}
+.dc-sub{font-size:var(--fs12,.75rem);color:var(--muted);overflow-wrap:anywhere}
+.dc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px var(--s8,8px);font-size:var(--fs12,.75rem);color:var(--muted);line-height:var(--lh,1.6)}
+.dc-meta>span+span::before{content:'・';margin-inline-end:var(--s4,4px);color:var(--line)}
+.dc-meta>.dc-time+span::before{content:none}
+.dc-time{display:inline-flex;align-items:center;gap:3px;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums}
+.dc-time .ic{display:inline-flex;color:var(--leaf)}.dc-time svg{width:14px;height:14px}
+.dc-note{font-size:var(--fs14,.875rem);line-height:var(--lh,1.6);color:var(--ink);overflow-wrap:anywhere}
+.dc-note .ings{font-size:inherit;line-height:inherit;color:var(--muted)}
+.dc-tags{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:var(--fs12,.75rem)}
+.dc-tags .badge{margin:0}
+.match.dcard .changes{margin-top:2px}
+.match.dcard .item-acts{display:flex;flex-wrap:wrap;gap:4px;margin-inline-start:calc(-1 * var(--s8,8px))}
+.card .dlist>.match{box-shadow:none}
 
 /* 週プラン */
 .week .item{grid-template-columns:48px minmax(0,1fr)}
@@ -442,6 +466,54 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .steps li.add{background:var(--yolk-soft);border-radius:10px;padding:.35rem .5rem .35rem .35rem}
 .steps li.add::before{background:var(--yolk);color:#231800}
 .confirm{background:var(--surface-2);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
+/* 料理の詳細（v2）: 絵が主役 → 名前・時間・人数・主な食材 → おすすめの理由 → アレルゲン → 材料 → 作り方 → 記録。主ボタンは下に固定の1つだけ */
+.dsheet{padding-bottom:0}
+.dsheet .hero{aspect-ratio:4/3;max-height:46vh;width:100%}
+.dsheet .hero.stage,.dsheet .hero.stage.gen,.dsheet .hero.stage.illust{background:var(--stage);border-radius:0}.dsheet .hero.stage.s2{background:var(--stage-2)}.dsheet .hero.stage.s3{background:var(--stage-3)}   /* 絵の台は種類別（主菜=桃・副菜=若草・汁もの/ご飯=卵色） */
+.dsheet .hero.gen img{filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--ink) 22%,transparent))}
+.dsheet .hero img{aspect-ratio:auto}
+.dsheet .hero .noimg .vessel{width:180px}
+.dsheet .hero .cap{padding-bottom:calc(var(--s16,16px) + 6px)}
+.dsheet .hero .close{top:var(--s12,12px);inset-inline-end:var(--s12,12px);min-height:var(--tap-sm,44px);padding:0 var(--s16,16px);font-size:var(--fs14,.875rem);font-weight:600;color:var(--ink);background:color-mix(in srgb,var(--surface) 86%,transparent);box-shadow:var(--shadow-1);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.dsheet .sheet-body{gap:var(--s24,24px);padding:var(--s24,24px) var(--s16,16px) var(--s32,32px);margin-top:calc(-1 * var(--s16,16px));border-radius:var(--r-xl,24px) var(--r-xl,24px) 0 0;background:var(--sheet-bg);position:relative}
+.dhead{display:flex;flex-direction:column;gap:var(--s8,8px)}
+.dkind{font-size:var(--fs12);letter-spacing:.12em;color:var(--muted);font-weight:700}
+.dsheet .dhead h2{font-family:var(--mincho);font-size:var(--fs-dish);letter-spacing:var(--ls-dish);font-weight:600;line-height:var(--lh-tight);margin:0;overflow-wrap:anywhere}
+.dstats{display:flex;flex-wrap:wrap;gap:var(--s8,8px);margin-top:var(--s4,4px)}
+.dstat{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 var(--s12,12px);border-radius:var(--r-pill,999px);background:var(--surface);border:1px solid var(--line-soft,var(--line));font-size:var(--fs14,.875rem);font-weight:600;font-variant-numeric:tabular-nums}
+.dstat .ic{display:inline-flex;color:var(--leaf)}
+.dmain{display:flex;flex-wrap:wrap;gap:4px var(--s8,8px);font-size:var(--fs14,.875rem);line-height:var(--lh,1.6)}
+.dmain .k{color:var(--muted);font-weight:600}
+.dmain .v{font-weight:600;overflow-wrap:anywhere}
+.dwhy{background:var(--surface-2);border-radius:var(--r-lg,16px);padding:var(--s12,12px) var(--s16,16px);display:flex;flex-direction:column;gap:var(--s4,4px)}
+.dwhy ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:var(--s4,4px)}
+.dwhy li{position:relative;padding-inline-start:var(--s16,16px);font-size:var(--fs14,.875rem);line-height:var(--lh,1.6);overflow-wrap:anywhere}
+.dwhy li::before{content:'';position:absolute;inset-inline-start:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.dwhy .eyebrow{display:inline-flex;align-items:center;gap:6px}.dwhy .eyebrow svg{color:var(--yolk-ink);flex:0 0 auto}
+.dsheet .allergen-box{display:block;background:var(--danger-soft);border:0;border-radius:var(--r-lg,16px);padding:var(--s12,12px) var(--s16,16px);line-height:var(--lh,1.6)}
+.dsec{display:flex;align-items:center;justify-content:space-between;gap:var(--s8,8px);flex-wrap:wrap;margin-bottom:calc(-1 * var(--s12,12px))}
+.dsec-t{font-family:var(--mincho);font-size:var(--fs-head);letter-spacing:var(--ls-head);font-weight:600;line-height:var(--lh-tight)}
+.drec>.dsec-t,.dsheet .sheet-body>.dsec-t{margin-bottom:calc(-1 * var(--s12,12px))}
+.dsv{display:inline-flex;align-items:center;gap:var(--s8,8px);font-variant-numeric:tabular-nums}
+.dleg{margin:calc(-1 * var(--s12,12px)) 0 0}
+.dsheet .recipe-ings li{padding:var(--s12,12px) var(--s16,16px);font-size:var(--fs16,1rem);border-top-style:solid;border-top-color:var(--line-soft,var(--line))}
+.dsheet .recipe-ings li .ok{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--leaf);color:var(--leaf-ink);font-size:.7rem;vertical-align:1px}
+.dshop{width:100%}
+.dvid{gap:6px}
+.dsteps{gap:var(--s16,16px)}
+.dsteps li{grid-template-columns:32px 1fr;gap:var(--s12,12px);font-size:var(--fs16,1rem);line-height:1.75;padding-bottom:var(--s16,16px);border-bottom:1px solid var(--line-soft,var(--line))}
+.dsteps li:last-child{border-bottom:0;padding-bottom:0}
+.dsteps li::before{width:32px;height:32px;font-size:var(--fs16,1rem)}
+.dsteps li.add{padding:var(--s8,8px)}
+.drec{display:flex;flex-direction:column;gap:var(--s12,12px)}
+.dbar{position:sticky;bottom:0;z-index:2;display:flex;gap:var(--s8,8px);align-items:center;padding:var(--s12,12px) var(--s16,16px) calc(var(--s12,12px) + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--sheet-bg) 92%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line-soft,var(--line));margin-top:auto}
+.btn.dicon{min-width:var(--tap,48px);min-height:var(--tap,48px);padding:0;border-radius:var(--r-pill,999px);flex:0 0 auto;font-size:var(--fs20,1.25rem);line-height:1}
+.btn.dicon.sm{min-width:var(--tap-sm,44px);min-height:var(--tap-sm,44px)}
+.btn.dicon.on{color:var(--leaf);border-color:currentColor;background:var(--leaf-soft)}
+.btn.dicon.on svg{fill:currentColor}
+.dbar .dgo{flex:1 1 auto;min-height:var(--tap-lg);padding-inline:var(--s12);line-height:var(--lh-tight)}
+body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}   /* 詳細を開いているあいだは、知らせを下の固定ボタンの上に出す */
+@media (max-height:500px) and (orientation:landscape){.dsheet .hero{aspect-ratio:auto;height:34vh}.dsheet .dhead h2{font-size:var(--fs24,1.5rem)}}
 .toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.625rem 1.25rem;border-radius:var(--r-lg);font-size:var(--fs14);line-height:1.5;box-shadow:var(--shadow-2);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
 .toast .btn{margin-inline-start:8px;min-height:44px;vertical-align:middle}
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
@@ -3676,6 +3748,32 @@ function thumbHtml(r){
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
+/* ---- 料理カード（材料から・検索・世界のレシピ・ひとひねり・記録で同じ形）: 絵 → 名前 → 時間など → ひとこと ----
+   o.whole: カード全体を押せる / o.act: 開く操作（open・open-hist）/ o.nameHtml・o.nameLang: 名前の差しかえ / o.headExtra: 名前の右（そろい具合など）
+   o.meta: 時間などの行（省略時は cardMeta）/ o.note: ひとこと（HTML）/ o.extra: その下（印・ボタンなど） */
+function cardMeta(r, timeOnly){
+    const rs = swappedRecipe(r) || r, parts = [];
+    if (!timeOnly){
+        if (!(rs.pack && rs.pack === currentCountry())) parts.push(genreLabel(rs) || t('和食'));   // いまの国の料理には国名を出さない（metaLine と同じ）
+        if (rs.family && rs.family !== '野菜') parts.push(familyLabel(rs.family));
+    }
+    return `${Number(rs.min) > 0 ? `<span class="dc-time"><span class="ic" aria-hidden="true">${iconClock()}</span>${esc(t('{n}分', {n: rs.min}))}</span>` : ''}${parts.map(x => `<span>${esc(x)}</span>`).join('')}`;
+}
+function dishCardHtml(r, o = {}){
+    const id = o.id || (r && r.id) || '', open = `data-act="${o.act || 'open'}" data-id="${esc(id)}"`, on = o.whole ? '' : ' ' + open;
+    const meta = o.meta != null ? o.meta : r ? cardMeta(r) : '';
+    return `<div class="match dcard"${o.whole ? ' ' + open : ''}>
+        <span class="dc-pic"${on}>${r ? thumbHtml(r) : '<span class="thumb none" aria-hidden="true"></span>'}</span>
+        <div class="info">
+            <div class="head"${on}><span class="name">${o.nameHtml || esc(o.name || (r && r.name) || '')}</span>${o.headExtra || ''}</div>
+            ${o.sub || ''}
+            ${meta ? `<div class="dc-meta">${meta}</div>` : ''}
+            ${o.note ? `<div class="dc-note">${o.note}</div>` : ''}
+            ${o.extra || ''}
+        </div>
+    </div>`;
+}
+
 /* ---- 料理のイラスト（SVG・真上から見た盛りつけ） ----
    材料の名前から具材の絵を選び、料理IDを種にして毎回同じ配置に並べる。
    写真がなくても、どの料理（アレンジ・わが家のレシピ含む）にも絵が付く。 */
@@ -4005,7 +4103,7 @@ function upgradeOf(r){
     return base.tip || UPGRADES[base.id] || upgradeByMethod(base.method);
 }
 function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
-function upgradeHtml(r, compact=false){
+function upgradeHtml(r, compact=false, soft=false){   // soft: 詳細画面（主ボタンは下の「今日これを作る」だけにする）
     const u = upgradeOf(r); if (!u) return '';
     const done = skillDone(r);
     const base = r.isTwist ? r.base : r;
@@ -4017,7 +4115,7 @@ function upgradeHtml(r, compact=false){
             ${compact ? '' : `<div class="row">${done
                 ? `<span class="badge fav">${esc(t('習得済み'))}</span><span class="small muted">${esc(t('「{skill}」はもう身についています', {skill:u.skill}))}</span>`
                 : hasPro()
-                ? `<button class="btn sm primary" data-act="skill-done" data-id="${esc(base.id)}">${esc(t('やってみた'))}</button><span class="small muted">${esc(t('できたら押してください。記録に残ります'))}</span>`
+                ? `<button class="btn sm${soft ? '' : ' primary'}" data-act="skill-done" data-id="${esc(base.id)}">${esc(t('やってみた'))}</button><span class="small muted">${esc(t('できたら押してください。記録に残ります'))}</span>`
                 : `<button class="btn sm" data-act="paywall-skill">${esc(t('やってみた'))}<span class="plus-mark">${esc(t('プラス'))}</span></button><span class="small muted">${esc(t('記録と腕前の称号はプラスで使えます'))}</span>`}</div>`}
     </div>`;
 }
@@ -6397,7 +6495,7 @@ function shareSheetHtml(){
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
         ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
-        <div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>
+        ${sheet.card === 'recipe' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
         ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
@@ -7732,13 +7830,9 @@ function searchResultsHtml(q){
     }
     const shown = hits.slice(0, 30);
     return `<div class="sec-head"><h3>${esc(t('「{q}」の料理', {q:terms.join(LANG === 'ja' ? '、' : ', ')}))}</h3><span class="hint">${esc(t('{n}品', {n:hits.length}))}</span></div>
-    <div class="list">${shown.map(r => `<div class="match">
-        <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
-        <div class="info">
-            <div class="head" data-act="open" data-id="${esc(r.id)}"><span class="name">${esc(r.name)}</span></div>
-            <div class="ings">${swappedRecipe(r).items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</div>
-            <div class="small muted">${esc(metaLine(r))} ${badges(r)}${swapLineHtml(r)}</div>
-        </div></div>`).join('')}</div>${hits.length > shown.length ? `<p class="foot">${esc(t('上位{n}品を表示しています。食材を足すと絞りこめます', {n:shown.length}))}</p>` : ''}${addBtn}`;
+    <div class="list dlist">${shown.map(r => dishCardHtml(r, {
+        note: `<span class="ings">${swappedRecipe(r).items.slice(0, 6).map(i => esc(i.label)).join(t('・'))}${r.items.length > 6 ? esc(t(' など')) : ''}</span>`,
+        extra: (b => b ? `<div class="dc-tags">${b}</div>` : '')(badges(r) + swapLineHtml(r))})).join('')}</div>${hits.length > shown.length ? `<p class="foot">${esc(t('上位{n}品を表示しています。食材を足すと絞りこめます', {n:shown.length}))}</p>` : ''}${addBtn}`;
 }
 function runSearch(q){
     session.search = q;
@@ -7822,7 +7916,7 @@ function viewTwist(){
     </section>
     <section class="sec">
         <div class="sec-head"><h2>${esc(t('最近考えたひとひねり'))}</h2><span class="hint">${esc(t('一度出した案は、しばらく出にくくなります'))}</span></div>
-        <div class="list">${seen.length ? seen.map(tw => `<div class="item"><div class="t" data-act="open" data-id="${esc(tw.id)}">${esc(tw.name)}<div class="s">${esc(t('元の料理: {name}', {name:tw.base.name}))}</div></div><span class="small muted">${esc(lastLabel(tw.id))}</span></div>`).join('') : `<div class="empty">${esc(t('まだありません。'))}</div>`}</div>
+        <div class="list dlist">${seen.length ? seen.map(tw => dishCardHtml(tw, {note: esc(t('元の料理: {name}', {name:tw.base.name})) + (lastLabel(tw.id) ? `${GAP()}<span class="muted">${esc(lastLabel(tw.id))}</span>` : '')})).join('') : `<div class="empty">${esc(t('まだありません。'))}</div>`}</div>
     </section>`;
 }
 function runTwist(){
@@ -7886,12 +7980,11 @@ function viewLog(){
     <section class="sec" id="log-cal">
         <div class="sec-head"><h2>${esc(t('作った記録'))}</h2><span class="hint">${esc(t('この記録をもとに、同じ料理が続かないようにしています'))}</span></div>
         ${calMonthHtml(byDay)}
-        ${Object.keys(byDay).length ? `<div class="list">${logShown.map(([d, hs]) => hs.map((h,i) => `
-            <div class="item"><div class="t" data-act="open-hist" data-id="${esc(h.id)}">${esc(histName(h))}<div class="s">${i===0?esc(jpDate(d)):''} ${esc(h.slot ? typeLabel(h.slot) : '')}</div></div>
-            <div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
+        ${Object.keys(byDay).length ? `<div class="list dlist">${logShown.map(([d, hs]) => hs.map((h,i) => dishCardHtml(byId(h.id), {act: 'open-hist', id: h.id, name: histName(h),
+            meta: `${i === 0 ? `<span class="dc-time">${esc(jpDate(d))}</span>` : ''}${h.slot ? `<span>${esc(typeLabel(h.slot))}</span>` : ''}`,
+            extra: `<div class="item-acts"><button class="btn sm ${yumOf(h) ? 'reacted' : 'ghost'}" data-act="yum" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('おいしかった人は押してください'))}">${yumOf(h) ? esc(t('おいしかった！')) + ' ' + esc(yumCount(yumOf(h))) : PLUS() + esc(t('おいしかった！'))}</button>
             ${yumOf(h) ? `<button class="btn sm ghost" data-act="yum-minus" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('ひとり分へらす'))}">−</button>` : ''}
-            <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div></div>
-`).join('')).join('')}</div>`
+            <button class="btn sm ghost danger" data-act="rm-hist" data-d="${d}" data-id="${esc(h.id)}" aria-label="${esc(t('記録を消す'))}">${esc(t('消す'))}</button></div>`})).join('')).join('')}</div>`
             : ''}
         ${logRest ? `<div class="row"><button class="btn sm" data-act="more-list" data-k="log">${esc(t('すべて見る（{n}品）', {n: logRest}))}</button></div>` : ''}
     </section>
@@ -7918,7 +8011,7 @@ function viewLog(){
     </section>
     <section class="sec" id="log-favs">
         <div class="sec-head"><h2>${esc(t('お気に入り'))}</h2></div>
-        <div class="list">${favs.length ? favs.map(r => `<div class="item"><div class="t" data-act="open" data-id="${esc(r.id)}">${esc(r.name)}<div class="s">${esc(metaLine(r))}${swapLineHtml(r)}${allergyBadge(r) ? ' ' + allergyBadge(r) : ''}</div></div><span class="small muted">${esc(lastLabel(r.id))}</span></div>`).join('') : `<div class="empty">${esc(t('料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。'))}</div>`}</div>
+        <div class="list dlist">${favs.length ? favs.map(r => dishCardHtml(r, {note: lastLabel(r.id) ? esc(lastLabel(r.id)) : '', extra: (b => b ? `<div class="dc-tags">${b}</div>` : '')(allergyBadge(r) + swapLineHtml(r))})).join('') : `<div class="empty">${esc(t('料理の詳しい画面で「お気に入り」を押すと、ここに並びます。お気に入りは献立に少し出やすくなります。'))}</div>`}</div>
     </section>
     <section class="sec" id="log-custom">
         <div class="sec-head"><h2>${esc(t('わが家のレシピ'))}</h2><span class="hint">${esc(PACK ? t('追加した料理も献立・材料さがしに使われます') : t('追加した料理も献立・材料さがし・ひとひねりに使われます'))}</span></div>
@@ -8004,8 +8097,9 @@ function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document
 // 材料・調味料・作り方・メモ（詳細画面と「作り方」タブで共通）。done は終わった手順の番号の配列（作り方タブだけ）
 // アメリカの料理・アメリカで使うときは、オーブンの温度に華氏を添える（190°C → 190°C (375°F)）
 function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${Math.round((c * 9 / 5 + 32) / 5) * 5}°F)`) : txt; }
-function recipeCoreHtml(r, done, after = ''){   // after: 作り方タブで、手順のすぐ下に入れるもの（できた！）
-    const r0 = r;
+// opts.modal: 詳細画面（人数の切りかえ・買い物メモに足す・材料のあとにポイント・作り方の見出しの横に動画。アレルゲンは見出しの近くに出すので、ここでは出さない）
+function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方タブで、手順のすぐ下に入れるもの（できた！）
+    const r0 = r, md = !!opts.modal;
     r = swappedRecipe(r);
     const have = fridgeKeys();
     const sv = Number(S.settings.servings) || 2, fac = servingFactor();
@@ -8021,7 +8115,7 @@ function recipeCoreHtml(r, done, after = ''){   // after: 作り方タブで、�
     const scaleNote = fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:sv}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : '';
     const tail = `${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
                 <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
-                    <a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>
+                    ${md ? '' : `<a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>`}
                     <a class="btn sm ghost" href="${esc(imageSearchUrl(r0))}" target="_blank" rel="noopener">${esc(t('完成写真を画像検索'))}</a>
                 </div></div>`;
     if (done){   // 作り方タブ: 材料はそろえた印をつけられる一覧（たたむと手順が近くなる）、手順は「いまの手順」を大きく
@@ -8040,12 +8134,27 @@ function recipeCoreHtml(r, done, after = ''){   // after: 作り方タブで、�
                 <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k, slOf(st))}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">${ICO_SPEAK}</button>` : ''}</span></li>`).join('')}</ol>
 ${after}${tail}`;
     }
+    const stepsHtml = `${termHint}<ol class="steps${md ? ' dsteps' : ''}">${r.steps.map((st, k) => typeof st === 'string' ? `<li><span class="st-txt">${termsHtml(texts[k], sl)}</span></li>` : `<li class="${st.add?'add':''}"><span class="st-txt">${esc(texts[k])}</span></li>`).join('')}</ol>`;   // 文は1つの箱に入れる（点線の用語で手順が縦に割れないように）
+    if (md){
+        const miss = shopMissingOf(r0);
+        return `${swapNoteHtml(r)}<div class="dsec"><div class="dsec-t">${esc(t('材料（{n}人分）', {n:sv}))}</div>
+                <div class="dsv" role="group" aria-label="${esc(t('材料（{n}人分）', {n:sv}))}"><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv - 1}"${sv <= 1 ? ' disabled' : ''} aria-label="${esc(t('人数を減らす'))}">−</button><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv + 1}"${sv >= 6 ? ' disabled' : ''} aria-label="${esc(t('人数を増やす'))}">＋</button></div></div>
+                ${have.size ? `<p class="small muted dleg">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
+                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
+                ${seasHtml}
+                ${miss && miss.length ? `<div class="row"><button type="button" class="btn dshop" data-act="shop-add-recipe" data-id="${esc(r0.id)}">${esc(t('足りない材料を買い物メモに足す（{n}品）', {n: miss.length}))}</button></div>` : ''}
+                ${pointsHtml(r)}
+                <div class="dsec"><div class="dsec-t">${esc(t('作り方'))}</div><a class="btn sm dvid" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a></div>
+                ${scaleNote}
+                ${stepsHtml}
+                ${tail}`;
+    }
     return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:sv}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${seasHtml}
                 <div class="label">${esc(t('作り方'))}</div>
                 ${scaleNote}
-                ${termHint}<ol class="steps">${r.steps.map((st, k) => typeof st === 'string' ? `<li>${termsHtml(texts[k], sl)}</li>` : `<li class="${st.add?'add':''}">${esc(texts[k])}</li>`).join('')}</ol>
+                ${stepsHtml}
                 ${tail}`;
 }
 // 「ポイント」: そのレシピにコツ（tip）があるときだけ出す。最初の手順のくり返しや、見出しにもある時間・人数は出さない（新しい情報がないため）
@@ -8473,11 +8582,58 @@ function renderModal(){
     try{ renderModalBody(); }
     catch(e){ try{ console.error('[modal]', e); }catch(_){} try{ closeModal(); }catch(_){ modalId = null; } try{ toast(t('うまく表示できませんでした。もう一度開くか、データを書き出してください')); }catch(_){} }
 }
+// 詳細に出す「主な食材」（なくても可・いつもある食材を除いた、材料の先頭から3つ。置き換えたあとの名前）
+// 短い食材名（各国の料理は食材の表の名前「Chicken」、なければ材料の名前からかっこ書きを除いたもの）
+function ingShort(i){ return (PACK && typeof PACK_NAMES !== 'undefined' && PACK_NAMES[i.key]) || shortLabel(i); }
+function mainIngNames(r, n = 3){
+    const rs = swappedRecipe(r) || r;
+    return [...new Set((rs.items || []).filter(i => !i.opt && !PANTRY.has(i.key)).map(ingShort))].slice(0, n);
+}
+// 「おすすめの理由」: 本当のことだけ（冷蔵庫の食材・作った記録・時間・お気に入り）。言えることがなければ出さない
+function dishWhyFacts(r){
+    const rs = swappedRecipe(r) || r, out = [], fk = fridgeKeys();
+    const got = [...new Set((rs.items || []).filter(i => !i.opt && fk.has(i.key)).map(ingShort))];
+    if (got.length) out.push(t('冷蔵庫の{names}が使えます', {names: joinNames(got.slice(0, 3))}));
+    const d = daysSince(r.id);
+    if (d === Infinity){ if (!r.isTwist) out.push(t('まだ作ったことのない料理です')); }
+    else if (d >= 14) out.push(t('最後に作ったのは{n}日前です', {n: d}));
+    if (Number(r.min) > 0 && Number(r.min) <= 20) out.push(t('目安{n}分で作れます', {n: r.min}));
+    if (S.favs.includes(r.id)) out.push(t('お気に入りに入れている料理です'));
+    return out.slice(0, 3);
+}
+// 詳細から買い物メモに足せる材料（買い物メモが出ているときだけ。冷蔵庫・常備品・なくても可・もうメモにある品は除く）
+function shopMissingOf(r){
+    if (!S.week || !visiblePlanDays().length) return null;
+    const rs = swappedRecipe(r) || r, have = fridgeKeys(), seen = new Set(shoppingList().map(e => shopBase(e.label))), out = [];
+    (rs.items || []).forEach(i => { if (i.opt || PANTRY.has(i.key) || have.has(i.key)) return; const l = String(i.label || i.name).trim().slice(0, 40), b = shopBase(l); if (!l || seen.has(b)) return; seen.add(b); out.push(l); });
+    return out;
+}
+function shopAddMany(labels){
+    shopDoneSet(); const beforeEx = (S.shopDone.extra || []).slice(), beforeKeys = S.shopDone.keys.slice();
+    let ex = beforeEx.filter(x => x && typeof x.k === 'string'); const added = [];
+    labels.forEach(l => { if (ex.length >= 40) return; const k = 'free|' + l; if (ex.some(x => x.k === k)) return; ex = ex.concat([{k, label: l}]); S.shopDone.keys = S.shopDone.keys.filter(x => x !== k); added.push(l); });
+    if (!added.length){ toast(t('自分で足せるのは40品までです')); return; }
+    S.shopDone.extra = ex; save(); render(); if (modalId) renderModal();
+    toast(t('{n}品を買い物メモに足しました', {n: added.length}), false, () => { shopDoneSet(); S.shopDone.extra = beforeEx; S.shopDone.keys = beforeKeys; save(); render(); if (modalId) renderModal(); });
+}
+// 料理1品を家族に送る文（名前・時間・人数・材料・作り方）
+function recipeShareText(r0){
+    const r = swappedRecipe(r0) || r0, sv = Number(S.settings.servings) || 2, fac = servingFactor();
+    const lines = [r0.name + swapShare(r0), t('{n}分', {n: r.min}) + t('・') + t('{n}人分', {n: sv}), '', t('材料（{n}人分）', {n: sv})];
+    r.items.forEach(i => lines.push(`・${i.name}${i.opt ? t('（なくても可）') : ''}${GAP()}${scaleText(i.qty, fac)}`));
+    if (r.seas) lines.push('', t('調味料（{n}人分）', {n: sv}), scaleText(seasFor(r), fac));
+    lines.push('', t('作り方'));
+    stepTextsOf(r, fac).forEach((x, k) => lines.push(`${k + 1}. ${x}`));
+    lines.push('', t('― わが家のご飯帖'));
+    return lines.join('\n');
+}
+function iconClock(){ return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>'; }
+function iconPeople(){ return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M15.8 14.2c2.4-.2 4.2 1.4 4.7 4.3"/></svg>'; }
+function iconHeart(){ return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.8 4 7.3 4c2 0 3.6 1.1 4.7 2.8C13.1 5.1 14.7 4 16.7 4c3.5 0 5.7 3.6 4.5 7.1-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>'; }
+function iconShare(){ return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>'; }
 function renderModalBody(){
     const r = byId(modalId); if (!r){ closeModal(); return; }
-    const have = fridgeKeys();
     const isFav = S.favs.includes(r.id);
-    const last = lastLabel(r.id);
     const ph = photoOf(r);
     const baseName = r.isTwist ? r.base.name : r.name;
     const hero = ph && ph.mine
@@ -8489,54 +8645,64 @@ function renderModalBody(){
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト（写真をもとに作成）', {name:baseName}))}">
            <div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + SLASH() : ''}${esc(t('写真をもとにイラスト化'))}${SLASH()}${esc(t('撮影: {artist}（{license}）', {artist:ph.artist || t('不明'), license:ph.license || t('ライセンス不明')}))} <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(t('出典: Wikimedia Commons'))}</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
-    const heroCls = ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust';
-    const genreName = genreLabel(r);
-    const sv = Number(S.settings.servings) || 2, fac = servingFactor();
+    const heroCls = (ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust') + (ph && !ph.gen ? '' : ' stage' + (r.type === '副菜' ? ' s2' : ['汁物', 'ごはん', '麺'].includes(r.type) ? ' s3' : ''));   // 絵の台は種類別（写真はそのまま）
+    const sv = Number(S.settings.servings) || 2;
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
-    const facts = [typeLabel(r.type), genreName, t('{n}分', {n:r.min}), t('{n}人分', {n:sv}), fam && fam !== '野菜' ? familyLabel(fam) : ''].filter(Boolean);
+    const kind = [typeLabel(r.type), r.pack && r.pack === currentCountry() ? '' : genreLabel(r)].filter(Boolean).join(t('・'));   // いまの国の料理には国名を出さない（metaLine と同じ）
     const sub = r.pack && r.nameEn && r.nameEn !== r.name && countryOf(r.pack).lang !== LANG ? r.nameEn : '';   // その国の言葉の画面では、英語の副題は出さない
-    const modalPop = $('#modal-root .sheet') ? '' : ' pop';   // もう開いている詳細を描き直すとき（絵が届いたときなど）は、弾ませない
+    const mains = mainIngNames(r), why = dishWhyFacts(r);
+    const stat = (ic, v) => `<span class="dstat">${ic ? `<span class="ic" aria-hidden="true">${ic}</span>` : ''}${esc(v)}</span>`;
+    const oldSheet = $('#modal-root .sheet'), modalPop = oldSheet ? '' : ' pop';   // もう開いている詳細を描き直すとき（絵が届いたときなど）は、弾ませない
+    const keepTop = oldSheet && oldSheet.dataset.id === r.id ? oldSheet.scrollTop : 0;   // 同じ料理を描き直すとき（人数・お気に入り・記録）は、読んでいた場所のまま
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
-        <div class="sheet${modalPop}" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
+        <div class="sheet dsheet${modalPop}" data-id="${esc(r.id)}" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
             <div class="${heroCls}">${hero}<button class="close" data-act="close">${esc(t('閉じる'))}</button></div>
             <div class="sheet-body">
-                <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="dhead">
+                    ${kind ? `<div class="dkind">${esc(kind)}</div>` : ''}
                     <h2>${esc(r.name)}</h2>${sub ? `<div class="name-en" lang="en">${esc(sub)}</div>` : ''}
-                    <div class="facts">${facts.map(f => `<span class="fact">${esc(f)}</span>`).join('')}</div>
+                    <div class="dstats">${stat(iconClock(), t('{n}分', {n:r.min}))}${stat(iconPeople(), t('{n}人分', {n:sv}))}${fam && fam !== '野菜' ? stat('', familyLabel(fam)) : ''}</div>
+                    ${mains.length ? `<div class="dmain"><span class="k">${esc(t('主な食材'))}</span><span class="v">${esc(joinNames(mains))}</span></div>` : ''}
                     ${isCustomId(r.id) && r.src ? `<div class="small muted">${esc(r.src)}</div>` : ''}
-                    <div class="small">${badges(r)}</div>
-                    <div class="row">
-                        <label class="btn sm primary" for="photo-input">${esc(MINE[r.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
-                        <input type="file" id="photo-input" accept="image/*" hidden>
-                        ${MINE[r.id] ? `<button class="btn sm ghost danger" data-act="photo-rm" data-id="${esc(r.id)}">${esc(t('写真を外す'))}</button>` : ''}
-                    </div>
                 </div>
+                ${why.length ? `<div class="dwhy"><div class="eyebrow"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>${esc(t('おすすめの理由'))}</div><ul>${why.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : ''}
+                ${allergenDetailHtml(r)}
                 ${r.isTwist ? `<div class="card"><div class="eyebrow">${esc(t('ひとひねり'))}</div>
                     <div class="from">${esc(t('元の料理:'))} <b>${esc(r.base.name)}</b></div>
                     <ul class="changes">${r.changes.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
                     <div class="small muted">${esc(t('黄色の部分が、元のレシピから変えたところです。絵は元の料理のものです。'))}</div></div>` : ''}
-                ${recipeCoreHtml(r)}
-                <div class="label">${esc(t('ひと手間でスキルアップ'))}</div>
-                ${upgradeHtml(r)}
-                <div class="row">
-                    <button class="btn primary wide" data-act="cooked" data-id="${esc(r.id)}">${esc(daysSince(r.id) === 0 ? t('今日の記録に入っています') : t('今日作った'))}</button>
-                    <button class="btn" data-act="fav" data-id="${esc(r.id)}">${esc(isFav ? t('お気に入り解除') : t('お気に入り'))}</button>
-                    ${twistAvailable() && !r.isTwist && !r.pack ? `<button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button>` : ''}
+                ${recipeCoreHtml(r, null, '', {modal: true})}
+                ${upgradeOf(r) ? `<div class="dsec-t">${esc(t('ひと手間でスキルアップ'))}</div>${upgradeHtml(r, false, true)}` : ''}
+                <div class="drec">
+                    <div class="dsec-t">${esc(t('作った記録'))}</div>
+                    <div class="row">
+                        <button class="btn" data-act="cooked" data-id="${esc(r.id)}">${esc(daysSince(r.id) === 0 ? t('今日の記録に入っています') : t('今日作った'))}</button>
+                        <label class="btn" for="photo-input">${esc(MINE[r.id] ? t('写真を撮り直す') : t('作った料理を撮って登録'))}</label>
+                        <input type="file" id="photo-input" accept="image/*" hidden>
+                        ${MINE[r.id] ? `<button class="btn ghost danger" data-act="photo-rm" data-id="${esc(r.id)}">${esc(t('写真を外す'))}</button>` : ''}
+                    </div>
+                    ${reactRowHtml(r.id, modalReactD || TODAY)}
+                    <div class="row small">
+                        <label for="cook-date" class="muted">${esc(t('別の日に作った:'))}</label>
+                        <input type="date" id="cook-date" value="${TODAY}" max="${TODAY}" style="width:auto">
+                        <button class="btn sm" data-act="cooked-date" data-id="${esc(r.id)}">${esc(t('その日に記録'))}</button>
+                        <button class="btn sm ghost" data-act="cooked-date" data-d="yesterday" data-id="${esc(r.id)}">${esc(t('昨日作った'))}</button>
+                    </div>
                 </div>
-                ${reactRowHtml(r.id, modalReactD || TODAY)}
-                <div class="row small">
-                    <label for="cook-date" class="muted">${esc(t('別の日に作った:'))}</label>
-                    <input type="date" id="cook-date" value="${TODAY}" max="${TODAY}" style="width:auto">
-                    <button class="btn sm" data-act="cooked-date" data-id="${esc(r.id)}">${esc(t('その日に記録'))}</button>
-                    <button class="btn sm ghost" data-act="cooked-date" data-d="yesterday" data-id="${esc(r.id)}">${esc(t('昨日作った'))}</button>
-                </div>
+                ${twistAvailable() && !r.isTwist && !r.pack ? `<div class="row"><button class="btn" data-act="twist-this" data-id="${esc(r.id)}">${esc(t('これをひとひねり'))}</button></div>` : ''}
                 ${!r.isTwist ? (modalConfirmHide
                     ? `<div class="confirm"><div class="small">${esc(t('「{name}」を献立の候補から外します。記録画面からいつでも戻せます。', {name:r.name}))}</div><div class="row"><button class="btn sm primary" data-act="hide-yes" data-id="${esc(r.id)}">${esc(t('外す'))}</button><button class="btn sm" data-act="hide-no">${esc(t('やめる'))}</button></div></div>`
                     : `<div class="row"><button class="btn sm ghost" data-act="hide" data-id="${esc(r.id)}">${esc(t('この料理は今は出さない'))}</button></div>`) : ''}
             </div>
+            <div class="dbar">
+                <button type="button" class="btn dicon${isFav ? ' on' : ''}" data-act="fav" data-id="${esc(r.id)}" aria-pressed="${isFav}" aria-label="${esc(t('お気に入り'))}" title="${esc(t('お気に入り'))}">${iconHeart()}</button>
+                <button type="button" class="btn dicon" data-act="share-recipe" data-id="${esc(r.id)}" aria-label="${esc(t('レシピを送る'))}" title="${esc(t('レシピを送る'))}">${iconShare()}</button>
+                <button type="button" class="btn primary dgo" data-act="vid-start" data-id="${esc(r.id)}">${esc(t('今日これを作る'))}</button>
+            </div>
         </div>
     </div>`;
+    if (keepTop){ const ns = $('#modal-root .sheet'); if (ns) ns.scrollTop = keepTop; }
     document.body.style.overflow = 'hidden';
     dlgOpened('modal-root');
 }
@@ -8679,7 +8845,7 @@ document.addEventListener('click', e => {
             if (Number(v) > PLAN.freeLimits.dishes && !hasPro()){ openPaywall('dishes'); break; }
             guardDecided(() => { S.settings.dishCount = v === 'auto' ? 'auto' : Number(v); save(); session.menu = null; render(); }); break;
         }
-        case 'servings': S.settings.servings = Number(el.dataset.v); save(); render(); toast(t('{n}人分の分量で表示します', {n:el.dataset.v})); break;
+        case 'servings': { const v = Math.min(6, Math.max(1, Number(el.dataset.v) || 2)); S.settings.servings = v; save(); render(); if (modalId) renderModal(); toast(t('{n}人分の分量で表示します', {n:v})); break; }
         case 'ui-lang': { const v = el.dataset.v, n = ++uiLangSeq; uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}); break; }
         case 'toggle-avoid': {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
@@ -8772,6 +8938,8 @@ document.addEventListener('click', e => {
         case 'paywall': openPaywall('info'); break;
         case 'share-menu': openShare('menu'); break;
         case 'share-week': openShare('week'); break;
+        case 'share-recipe': { const r = byId(id); if (r){ sheet = {kind:'share', card:'recipe', text: recipeShareText(r), title: r.name}; renderSheet(); } break; }
+        case 'shop-add-recipe': { const r = byId(id), ls = r ? shopMissingOf(r) : null; if (ls && ls.length) shopAddMany(ls); break; }
         case 'share-system': if (sheet) systemShare(sheet.text, sheet.title); break;
         case 'share-ics': exportWeekIcs(); break;
         case 'share-copy': if (sheet) copyText(sheet.text); break;
