@@ -259,7 +259,7 @@ GOHAN_PACK({
         'Warm the oil with the garlic clove (and chili) in a large pan, add the spinach and stir until wilted, 3-4 minutes.',
         'Season with salt, cook 1 more minute to evaporate the water and serve.',
       ],
-      tip: { add: 'A squeeze of lemon on the plate', why: 'Lifts the flavour and helps you absorb the iron', skill: 'Big pan', how: 'Add the spinach in handfuls; it shrinks to a fraction of its volume.' },
+      tip: { add: 'A squeeze of lemon on the plate', why: 'Lifts the flavour and freshens the earthy taste of spinach', skill: 'Big pan', how: 'Add the spinach in handfuls; it shrinks to a fraction of its volume.' },
     },
     {
       id: 'it_peperonata',
@@ -439,7 +439,7 @@ GOHAN_PACK({
         'Lift out the vegetables (eat them on the side with oil and salt, or mash them back in) and bring the broth back to the boil.',
         'Add the pastina and cook, stirring, for the time on the packet (4-6 minutes). Stir in the oil or butter and serve with Parmigiano.',
       ],
-      tip: { add: 'A knob of butter and Parmigiano at the end', why: 'This is the comforting supper Italian families make for children and anyone who is unwell', skill: 'Cook the pasta at the last minute', how: 'Pastina keeps soaking up broth; cook it just before eating so the soup stays brothy.' },
+      tip: { add: 'A knob of butter and Parmigiano at the end', why: 'This is the simple, comforting supper Italian families make, especially for children', skill: 'Cook the pasta at the last minute', how: 'Pastina keeps soaking up broth; cook it just before eating so the soup stays brothy.' },
     },
     {
       id: 'it_brodopollo',

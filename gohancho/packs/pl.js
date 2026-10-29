@@ -231,7 +231,7 @@ GOHAN_PACK({
         'Mix at once with lemon juice so the apple does not darken, then add sugar, salt and oil.',
         'Leave for 5 minutes before serving.',
       ],
-      tip: { add: 'A handful of raisins', why: 'Children love the sweetness', skill: 'Oil helps', how: 'The oil helps the body absorb the carrot vitamins, so do not skip it.' },
+      tip: { add: 'A handful of raisins', why: 'Children love the sweetness', skill: 'Oil helps', how: 'The oil carries the carrot flavour and softens its raw edge, so do not skip it.' },
     },
     {
       id: 'pl_buraczki',

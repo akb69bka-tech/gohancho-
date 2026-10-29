@@ -170,7 +170,7 @@ GOHAN_PACK({
         'Cook the noodles as on the pack, blanch the bean sprouts for 30 seconds, and drain.',
         'Put the noodles in bowls, spoon the meat sauce on top and arrange cucumber and sprouts around it. Mix everything together before eating.',
       ],
-      tip: { add: 'Diced dried tofu or edamame', why: 'Adds protein and texture to the sauce', skill: 'Low heat for the sauce', how: 'Bean paste burns easily; keep stirring and add a splash of water if it gets too thick.' },
+      tip: { add: 'Diced dried tofu or edamame', why: 'Adds bite and texture to the sauce', skill: 'Low heat for the sauce', how: 'Bean paste burns easily; keep stirring and add a splash of water if it gets too thick.' },
     },
 
     // ---------- side ----------
@@ -747,7 +747,7 @@ GOHAN_PACK({
         'Add the water and carrot, bring to a boil and simmer 10 minutes.',
         'Add the enoki and cook 2 minutes. Season with soy sauce, salt, pepper and sesame oil and sprinkle with spring onion.',
       ],
-      tip: { add: 'A beaten egg or a few cubes of tofu', why: 'Adds protein and makes it a more complete soup', skill: 'Fry the mushrooms first', how: 'Browning mushrooms in oil before adding water gives a much deeper flavour than just boiling them.' },
+      tip: { add: 'A beaten egg or a few cubes of tofu', why: 'Makes it a more satisfying, complete soup', skill: 'Fry the mushrooms first', how: 'Browning mushrooms in oil before adding water gives a much deeper flavour than just boiling them.' },
     },
     {
       id: 'cn_yumi_geng',
@@ -841,7 +841,7 @@ GOHAN_PACK({
         'Add the pitted red dates and rock sugar and simmer 15 minutes. Add the goji berries for the last 3 minutes.',
         'Serve warm, or chilled in summer.',
       ],
-      tip: { add: 'Chunks of peeled pear', why: 'A common autumn combination that is soothing for a dry throat', skill: 'Tear the fungus small', how: 'Small pieces release more gel, so the soup thickens by itself without any starch.' },
+      tip: { add: 'Chunks of peeled pear', why: 'A common autumn combination; the pear adds a fresh, juicy sweetness', skill: 'Tear the fungus small', how: 'Small pieces release more gel, so the soup thickens by itself without any starch.' },
     },
 
     // ---------- main (added) ----------

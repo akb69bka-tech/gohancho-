@@ -1394,7 +1394,7 @@ GOHAN_PACK({
         'Mix the carrots, apple, honey, salt and oil.',
         'Leave 5 minutes, then scatter with the chopped nuts. Do not give honey to babies under 1 year old, even cooked.',
       ],
-      tip: { add: 'A handful of raisins', why: 'Sweet bites that children like', skill: 'A little oil', how: 'Fat helps the body take up the vitamin A from carrots, and it makes the salad taste rounder.' },
+      tip: { add: 'A handful of raisins', why: 'Sweet bites that children like', skill: 'A little oil', how: 'Fat carries the flavour of the carrots and makes the salad taste rounder.' },
     },
     {
       id: 'de_nudelsalat',
@@ -1791,7 +1791,7 @@ GOHAN_PACK({
         'Butter the bread. Top each slice with ham or cheese and the vegetables as you like.',
         'Season the tomatoes with salt and pepper, sprinkle chives over the cheese and serve with mustard.',
       ],
-      tip: { add: 'A boiled egg or a spoonful of quark with chives', why: 'It adds protein and makes the cold supper more filling', skill: 'Butter to the edges', how: 'A complete layer of butter keeps the bread from going soggy under the vegetables.' },
+      tip: { add: 'A boiled egg or a spoonful of quark with chives', why: 'It makes the cold supper more filling', skill: 'Butter to the edges', how: 'A complete layer of butter keeps the bread from going soggy under the vegetables.' },
     },
     {
       id: 'de_pfannkuchen',

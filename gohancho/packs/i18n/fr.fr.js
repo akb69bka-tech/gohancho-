@@ -516,7 +516,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       seas: 'Poivre · un peu de sel · 1 gousse d\'ail · 1 feuille de laurier · 1 brin de thym · 1,2 litre d\'eau',
       steps: [
         'Coupez le chou en lanières en retirant le trognon dur ; épluchez et coupez en cubes les pommes de terre et les carottes ; émincez l\'oignon.',
-        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux et plus digeste.',
+        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux.',
         'Dans une grande marmite, faites dorer les lardons 4 minutes, ajoutez l\'oignon et l\'ail et poursuivez 3 minutes.',
         'Ajoutez l\'eau, le chou, les carottes, le thym et le laurier et laissez mijoter 20 minutes, puis ajoutez les pommes de terre (et la saucisse en rondelles) et poursuivez 20 minutes, jusqu\'à ce que tout soit tendre et la saucisse bien chaude à cœur.',
         'Goûtez avant de saler, poivrez bien et servez avec des tranches de pain de campagne.',

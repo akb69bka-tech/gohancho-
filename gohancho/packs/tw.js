@@ -612,7 +612,7 @@ GOHAN_PACK({
         'Put the ribs, herb mix, ginger and water in a pot, bring to a boil, then cover and simmer on low heat for 60 minutes, stirring now and then so the barley does not stick, until the barley is soft and the ribs are tender and cooked through.',
         'Season with salt and finish with a splash of rice wine.',
       ],
-      tip: { add: 'A few drops of angelica-infused rice wine', why: 'This is how Taiwanese stalls finish it, for a warming aroma', skill: 'Soak overnight', how: 'Unsoaked barley and foxnut stay hard even after an hour of simmering.' },
+      tip: { add: 'A few drops of angelica-infused rice wine', why: 'This is how Taiwanese stalls finish it, for a rich, fragrant aroma', skill: 'Soak overnight', how: 'Unsoaked barley and foxnut stay hard even after an hour of simmering.' },
     },
     {
       id: 'tw_paigusu_tang',
@@ -1257,7 +1257,7 @@ GOHAN_PACK({
         'Crack in the eggs and fry until the edges are crisp and the yolks are as you like.',
         'Add the noodles, soy sauce and rice wine and toss over low heat until the noodles are coated and glossy. Serve with the greens.',
       ],
-      tip: { add: 'A ladle of chicken broth', why: 'Turns it into a warming soup on cold days', skill: 'Low heat for sesame oil', how: 'Black sesame oil turns bitter if overheated; keep the flame low.' },
+      tip: { add: 'A ladle of chicken broth', why: 'Turns it into a hearty soup noodle for cold days', skill: 'Low heat for sesame oil', how: 'Black sesame oil turns bitter if overheated; keep the flame low.' },
     },
     {
       id: 'tw_dousu_xueyu',

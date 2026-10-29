@@ -771,7 +771,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Möhren, Apfel, Honig, Salz und Öl vermischen.',
         '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
-      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett hilft dem Körper, das Vitamin A aus Möhren aufzunehmen, und macht den Salat runder.' }
+      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett trägt den Geschmack der Möhren und macht den Salat runder.' }
     },
     'de_nudelsalat': {
       name: 'Nudelsalat',
@@ -974,7 +974,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Das Brot mit Butter bestreichen. Jede Scheibe nach Belieben mit Schinken oder Käse und dem Gemüse belegen.',
         'Die Tomaten mit Salz und Pfeffer würzen, Schnittlauch über den Käse streuen und mit Senf servieren.'
       ],
-      tip: { add: 'Ein gekochtes Ei oder ein Klecks Quark mit Schnittlauch', why: 'Das bringt Eiweiß und macht das kalte Abendessen sättigender', skill: 'Die Butter bis zum Rand streichen', how: 'Eine geschlossene Butterschicht verhindert, dass das Brot unter dem Gemüse durchweicht.' }
+      tip: { add: 'Ein gekochtes Ei oder ein Klecks Quark mit Schnittlauch', why: 'Das macht das kalte Abendessen sättigender', skill: 'Die Butter bis zum Rand streichen', how: 'Eine geschlossene Butterschicht verhindert, dass das Brot unter dem Gemüse durchweicht.' }
     },
     'de_pfannkuchen': {
       name: 'Eierpfannkuchen mit Apfelmus',

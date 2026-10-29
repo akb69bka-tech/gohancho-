@@ -1884,7 +1884,7 @@ GOHAN_PACK({
         'Stir in the oats and cinnamon, lower the heat to medium-low and simmer for 5 minutes, stirring often, until thick and creamy.',
         'Slice the banana. Spoon the oatmeal into bowls and top with the banana, walnuts and maple syrup.',
       ],
-      tip: { add: 'A spoonful of peanut butter stirred in', why: 'It adds protein and keeps you full until lunch', skill: 'Stir often', how: 'Oats stick to the base of the pan as the milk thickens; frequent stirring gives an even, creamy texture.' },
+      tip: { add: 'A spoonful of peanut butter stirred in', why: 'It makes it creamier and keeps you full until lunch', skill: 'Stir often', how: 'Oats stick to the base of the pan as the milk thickens; frequent stirring gives an even, creamy texture.' },
     },
     {
       id: 'us_grilledcheese',

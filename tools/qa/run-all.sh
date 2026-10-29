@@ -68,6 +68,7 @@ add "packs-check"      static "" "node tools/packs/check.mjs"
 for L in $LANGS; do add "i18n-$L" static "" "node tools/i18n/extract.mjs --check $L"; done
 add "steps-scale"      static "" "node tools/steps/scale-steps.test.mjs"
 add "terms"            static "" "node tools/tests/terms.mjs"
+add "health-claims"    static "" "node tools/tests/health-claims.mjs"   # 料理の文に健康・体への効き目の言い切りがない（全言語）
 
 match() { local name="$1" list="$2" w; [ -z "$list" ] && return 1; IFS=',' read -ra W <<<"$list"; for w in "${W[@]}"; do case "$name" in *"$w"*) return 0;; esac; done; return 1; }
 SEL=()

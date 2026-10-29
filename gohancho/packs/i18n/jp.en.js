@@ -416,7 +416,7 @@ GOHAN_PACK_TR('JP', 'en', {
       ings: [['Tofu', '1/2 block'], ['Dried wakame', '3 g'], ['Leek (naganegi)', 'a little']],
       seas: 'Dashi 400 ml · Miso 2 tbsp',
       steps: ['Dice the tofu and slice the leek thinly.', 'Heat the dashi and add the tofu and wakame.', 'When it comes to a simmer, lower the heat and dissolve in the miso.', 'Warm it without letting it boil and scatter with the leek.'],
-      tip: { add: 'Grated ginger', why: 'Just a little at the end warms the body.', skill: 'Miso off the heat', how: 'Boiling drives off the aroma. Turn off the heat, dissolve the miso and just reheat gently.' }
+      tip: { add: 'Grated ginger', why: 'Just a little at the end lifts the aroma and sharpens the flavour.', skill: 'Miso off the heat', how: 'Boiling drives off the aroma. Turn off the heat, dissolve the miso and just reheat gently.' }
     },
     tonjiru: {
       name: 'Tonjiru (pork and vegetable miso soup)',
@@ -815,14 +815,14 @@ GOHAN_PACK_TR('JP', 'en', {
       ings: [['Fresh salmon', '2 fillets'], ['Sake lees (sake kasu)', '50 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Konnyaku', '1/4 block'], ['Leek', '1/3']],
       seas: 'Dashi 600 ml · Miso 1 tbsp · Salt a little',
       steps: ['Cut the salmon into bite-size pieces, salt lightly, leave 10 minutes and pat dry. Tear the sake lees into small pieces and soak in 100 ml of the warm dashi to soften.', 'Cut the daikon and carrot into quarter rounds and the fried tofu into strips; tear the konnyaku and parboil for 2 minutes.', 'Simmer the vegetables and konnyaku in the rest of the dashi over medium heat for 8 minutes until tender.', 'Add the salmon and fried tofu and simmer over medium-low heat for 5 minutes, skimming, until the salmon is cooked through.', 'Mash the sake lees into its dashi, stir it in with the miso, warm over low heat for 2 minutes, add the sliced leek and turn off the heat.'],
-      tip: { add: 'A little grated ginger', why: 'Ginger cuts the richness of the lees and warms you up even more.', skill: 'Dissolving sake lees smoothly', how: 'Soak the lees in warm dashi first, then mash with a spoon or whisk until no lumps remain before adding to the pot.' }
+      tip: { add: 'A little grated ginger', why: 'Ginger cuts the richness of the lees and adds a clean, sharp finish.', skill: 'Dissolving sake lees smoothly', how: 'Soak the lees in warm dashi first, then mash with a spoon or whisk until no lumps remain before adding to the pot.' }
     },
     noppeijiru: {
       name: 'Thickened root vegetable soup (noppei-jiru)',
       ings: [['Chicken thigh', '100 g'], ['Taro', '3'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Shiitake mushrooms', '2'], ['Konnyaku', '1/4 block']],
       seas: 'Dashi 600 ml · Sake 1 tbsp · Soy sauce 1 tbsp · Salt 1/4 tsp · Starch slurry 1.5 tbsp',
       steps: ['Cut the chicken into small bite-size pieces, peel the taro and slice into 1 cm rounds, cut the daikon and carrot into quarter rounds and slice the shiitake. Tear the konnyaku and parboil for 2 minutes.', 'Put the dashi, vegetables and konnyaku in a pot over medium heat; when it boils, add the chicken and sake.', 'Skim, set the lid ajar and simmer over medium-low heat for 12 minutes, until a skewer slides into the taro and the chicken is cooked through.', 'Season with soy sauce and salt, stir in the starch slurry and boil for 1 minute, stirring, to thicken.'],
-      tip: { add: 'Grated ginger on top', why: 'The thick soup holds heat for a long time, and ginger adds a clean, warming finish.', skill: 'Lump-free thickening', how: 'Stir the slurry again right before adding, pour it in a thin stream while stirring, then let it bubble for a full minute so the starch sets.' }
+      tip: { add: 'Grated ginger on top', why: 'The thick soup holds heat for a long time, and ginger adds a clean, sharp finish.', skill: 'Lump-free thickening', how: 'Stir the slurry again right before adding, pour it in a thin stream while stirring, then let it bubble for a full minute so the starch sets.' }
     },
     satsumajiru: {
       name: 'Chicken and vegetable miso soup (satsuma-jiru)',

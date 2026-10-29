@@ -461,7 +461,7 @@ GOHAN_PACK({
         'Open the lid, add the garlic and soup soy sauce, season with salt and boil for 2 minutes.',
         'Add the sliced green onion and chili and turn off the heat. Serve hot, or cool it and chill in the fridge for a refreshing cold soup.',
       ],
-      tip: { add: 'A pinch of gochugaru in your bowl', why: 'A clean heat that makes it a famous hangover soup', skill: 'Decide on the lid at the start', how: 'Lifting the lid halfway through gives the sprouts a raw, grassy smell. Keep it shut until they are cooked, or leave it off from the very beginning.' },
+      tip: { add: 'A pinch of gochugaru in your bowl', why: 'A clean heat that makes the broth refreshing', skill: 'Decide on the lid at the start', how: 'Lifting the lid halfway through gives the sprouts a raw, grassy smell. Keep it shut until they are cooked, or leave it off from the very beginning.' },
     },
     {
       id: 'kr_sogogimuguk',
@@ -506,7 +506,7 @@ GOHAN_PACK({
         'Add the soaking water topped up with water to 800 ml and the garlic. Bring to the boil and simmer over medium heat for 10 minutes until the broth turns milky.',
         'Season with the rest of the soy sauce and salt. Pour in the beaten egg in a thin stream, wait 30 seconds, stir gently and simmer for 1 more minute until the egg is fully set. Add the green onion.',
       ],
-      tip: { add: 'A few slices of green chili', why: 'A sharp kick that wakes you up the morning after', skill: 'Fry the pollack in sesame oil', how: 'Frying the dried fish first draws out its flavour and turns the broth white and rich.' },
+      tip: { add: 'A few slices of green chili', why: 'A sharp kick with a clean, savoury broth', skill: 'Fry the pollack in sesame oil', how: 'Frying the dried fish first draws out its flavour and turns the broth white and rich.' },
     },
     {
       id: 'kr_gyeranguk',
@@ -1853,7 +1853,7 @@ GOHAN_PACK({
         'Pour in 800 ml of water, bring to the boil, then cook on low heat for 25 minutes, stirring from the bottom every few minutes.',
         'Add the vegetables and cook for 8 more minutes until everything is soft. Season with salt and finish with the remaining sesame oil.',
       ],
-      tip: { add: 'A soft-boiled or fried egg on top', why: 'The runny yolk makes the porridge richer and adds protein', skill: 'Dice the vegetables small', how: 'Tiny pieces soften in the short cooking time and melt into the porridge instead of staying hard.' },
+      tip: { add: 'A soft-boiled or fried egg on top', why: 'The runny yolk makes the porridge richer and silkier', skill: 'Dice the vegetables small', how: 'Tiny pieces soften in the short cooking time and melt into the porridge instead of staying hard.' },
     },
     {
       id: 'kr_tteokbokki',

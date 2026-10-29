@@ -811,7 +811,7 @@ GOHAN_PACK({
         'Add the green beans, chayote and corn and simmer 6 minutes.',
         'Add the zucchini and cilantro and cook 5 minutes more, until all the vegetables are tender. Season.',
       ],
-      tip: { add: 'Cubes of queso fresco in each bowl', why: 'Adds protein and a milky taste', skill: 'Cut everything the same size', how: 'Even pieces cook at the same pace, so nothing is hard or mushy.' },
+      tip: { add: 'Cubes of queso fresco in each bowl', why: 'Adds a mild, milky taste and makes it more filling', skill: 'Cut everything the same size', how: 'Even pieces cook at the same pace, so nothing is hard or mushy.' },
     },
     {
       id: 'mx_mole_olla',

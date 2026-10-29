@@ -1885,7 +1885,7 @@ GOHAN_PACK({
         'Meanwhile toast the bread and spread with the butter.',
         'Spoon the beans over the toast, grate the cheese on top if using, and finish with black pepper and a dash of Worcestershire sauce.',
       ],
-      tip: { add: 'A fried or poached egg on top', why: 'The runny yolk turns a snack into a proper meal with extra protein', skill: 'Warm the beans gently', how: 'High heat makes the sauce catch and burn on the pan; low and steady keeps it saucy.' },
+      tip: { add: 'A fried or poached egg on top', why: 'The runny yolk turns a snack into a proper meal', skill: 'Warm the beans gently', how: 'High heat makes the sauce catch and burn on the pan; low and steady keeps it saucy.' },
     },
   ],
   aliases: {

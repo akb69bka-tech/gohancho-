@@ -262,7 +262,7 @@ GOHAN_PACK_TR('IT', 'it', {
         'Scalda l\'olio con lo spicchio d\'aglio (e il peperoncino) in una padella grande, aggiungi gli spinaci e mescola finché appassiscono, 3-4 minuti.',
         'Sala, cuoci ancora 1 minuto per far evaporare l\'acqua e servi.'
       ],
-      tip: { add: 'Una spremuta di limone sul piatto', why: 'Esalta il sapore e aiuta ad assorbire il ferro', skill: 'Padella grande', how: 'Aggiungi gli spinaci a manciate; si riducono a una piccola parte del volume.' }
+      tip: { add: 'Una spremuta di limone sul piatto', why: 'Esalta il sapore e rinfresca il gusto terroso degli spinaci', skill: 'Padella grande', how: 'Aggiungi gli spinaci a manciate; si riducono a una piccola parte del volume.' }
     },
     'it_peperonata': {
       name: 'Peperonata',
@@ -393,7 +393,7 @@ GOHAN_PACK_TR('IT', 'it', {
         'Togli le verdure (mangiale a parte con olio e sale, oppure schiacciale e rimettile) e riporta il brodo a bollore.',
         'Aggiungi la pastina e cuoci, mescolando, per il tempo indicato sulla confezione (4-6 minuti). Unisci l\'olio o il burro e servi con il Parmigiano.'
       ],
-      tip: { add: 'Una noce di burro e Parmigiano alla fine', why: 'È la cena di conforto che le famiglie italiane preparano per i bambini e per chi non sta bene', skill: 'Cuocere la pastina all\'ultimo', how: 'La pastina continua ad assorbire brodo; cuocila poco prima di mangiare così la minestra resta brodosa.' }
+      tip: { add: 'Una noce di burro e Parmigiano alla fine', why: 'È la cena semplice e di conforto che le famiglie italiane preparano, soprattutto per i bambini', skill: 'Cuocere la pastina all\'ultimo', how: 'La pastina continua ad assorbire brodo; cuocila poco prima di mangiare così la minestra resta brodosa.' }
     },
     'it_brodopollo': {
       name: 'Brodo di pollo',

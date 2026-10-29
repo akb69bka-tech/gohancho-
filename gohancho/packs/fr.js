@@ -609,7 +609,7 @@ GOHAN_PACK({
       seas: 'Pepper · a little salt · 1 garlic clove · 1 bay leaf · 1 sprig thyme · 1.2 litres water',
       steps: [
         'Cut the cabbage into strips, discarding the hard core; peel and cube the potatoes and carrots; slice the onion.',
-        'Blanch the cabbage in boiling water for 5 minutes and drain; it becomes milder and easier to digest.',
+        'Blanch the cabbage in boiling water for 5 minutes and drain; it becomes milder and sweeter.',
         'In a large pot, cook the lardons for 4 minutes until golden, add the onion and garlic and cook 3 minutes.',
         'Add the water, cabbage, carrots, thyme and bay leaf and simmer 20 minutes, then add the potatoes (and the sliced sausage) and cook 20 minutes more, until everything is tender and the sausage is hot through.',
         'Taste before salting, pepper well and serve with slices of country bread.',

@@ -269,7 +269,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang sayote at lutuin ng 5 hanggang 7 minuto hanggang malambot lang at luto ang manok.',
         'Ilagay ang dahon, timplahan ng patis at paminta, at patayin ang apoy. Ihain na may kanin.'
       ],
-      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng init nito at nag-aalis ng amoy ng manok.' }
+      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng bango nito at nag-aalis ng amoy ng manok.' }
     },
     'ph_misua': {
       name: 'Misua at patola',
@@ -803,7 +803,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang tubig at patis, takpan at lutuin ng 4 hanggang 5 minuto hanggang lumambot ang sayote pero may kaunting lutong pa.',
         'Timplahan ng paminta at ihain.'
       ],
-      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sustansya', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
+      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sariwang lasa ng dahon', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
     },
     'ph_ginisang_upo': {
       name: 'Ginisang upo',
@@ -827,7 +827,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang togue (at tokwa) at haluin sa malakas na apoy ng 1 hanggang 2 minuto hanggang lumanta lang.',
         'Timplahan ng patis at paminta at ihain agad.'
       ],
-      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at kaunting protina', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
+      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at dagdag na linamnam', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
     },
     'ph_ginisang_repolyo': {
       name: 'Ginisang repolyo',
@@ -944,7 +944,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Maglagay ng 2 kutsarang palaman sa bawat balat, itupi ang gilid at irolyo nang mahigpit, idikit ng kaunting tubig.',
         'Iprito sa 2 cm na katamtamang-init na mantika ng 3 hanggang 4 na minuto, baligtarin, hanggang pumula. Patuluin at ihain na may sawsawang suka.'
       ],
-      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at kaunting protina', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
+      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at dagdag na linamnam', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
     },
     'ph_okoy': {
       name: 'Okoy',

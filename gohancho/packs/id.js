@@ -713,7 +713,7 @@ GOHAN_PACK({
         'Add the sliced sausages, nutmeg, pepper, salt and sugar and simmer 5 minutes, until the sausages are hot right through.',
         'Add the macaroni and chopped celery, heat 1 minute and top with fried shallots.',
       ],
-      tip: { add: 'Shredded chicken or a few meatballs', why: 'More protein for a one-bowl supper', skill: 'Cook the pasta apart', how: 'Macaroni keeps soaking up broth; cooking and storing it separately keeps the soup clear and leftovers soupy.' },
+      tip: { add: 'Shredded chicken or a few meatballs', why: 'More filling for a one-bowl supper', skill: 'Cook the pasta apart', how: 'Macaroni keeps soaking up broth; cooking and storing it separately keeps the soup clear and leftovers soupy.' },
     },
     {
       id: 'id_sayurbobor',

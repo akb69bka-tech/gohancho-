@@ -512,7 +512,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega el arroz y la zanahoria en rodajas y cocina 10 minutos; luego añade las papas en trozos y la col picada y cocina 20 minutos, hasta que estén suaves.',
         'Sazona con sal y orégano y agrega hierbabuena y la parte verde de la cebolla china picadas justo antes de servir, con rocoto al lado.'
       ],
-      tip: { add: 'Rocoto picado con un poco de limón', why: 'Calienta el cuerpo en el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
+      tip: { add: 'Rocoto picado con un poco de limón', why: 'Un toque picante y fresco que va bien con el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
     },
     'pe_dieta_pollo': {
       name: 'Dieta de pollo',
@@ -524,7 +524,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega la papa, la zanahoria y el zapallo en cubitos y cocina 15 minutos hasta que estén suaves; añade los fideos en los últimos 5 minutos.',
         'Devuelve el pollo, sazona con poca sal y termina con perejil.'
       ],
-      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo cuando uno está mal', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel la hace suave para el estómago.' }
+      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo con un toque ácido y fresco', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel deja el caldo ligero y claro.' }
     },
     'pe_lawa_choclo': {
       name: 'Lawa de choclo',

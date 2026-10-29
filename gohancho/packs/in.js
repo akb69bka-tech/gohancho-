@@ -390,7 +390,7 @@ GOHAN_PACK({
         'Add 200 ml water (and the dal water) and heat until it turns frothy on top; take it off before it boils hard.',
         'Temper mustard seeds, red chili, curry leaves and hing in the ghee, pour over and add plenty of coriander.',
       ],
-      tip: { add: 'Drink a cup when you have a cold', why: 'Pepper and garlic warm you up', skill: 'Frothy, not boiled', how: 'Turn off the heat as soon as foam rises; boiling makes rasam bitter and dull.' },
+      tip: { add: 'A cup on the side to sip', why: 'Pepper and garlic give it a warm, sharp kick', skill: 'Frothy, not boiled', how: 'Turn off the heat as soon as foam rises; boiling makes rasam bitter and dull.' },
     },
     {
       id: 'in_dalmakhani',
@@ -721,7 +721,7 @@ GOHAN_PACK({
         'Pour in 700 ml water with the chopped coriander stems, bring to a boil, skim, and simmer covered for 25–30 minutes until the chicken is cooked through (no pink near the bone, juices clear).',
         'Season with the crushed pepper and finish with coriander leaves and torn mint.',
       ],
-      tip: { add: 'A squeeze of lemon', why: 'Fresh and light, good when you have a cold', skill: 'Clear broth', how: 'Skim the foam right after it boils and keep it at a gentle simmer; hard boiling makes it cloudy.' },
+      tip: { add: 'A squeeze of lemon', why: 'Fresh and light, and it brightens the clear broth', skill: 'Clear broth', how: 'Skim the foam right after it boils and keep it at a gentle simmer; hard boiling makes it cloudy.' },
     },
     {
       id: 'in_tomatoshorba',
@@ -1508,7 +1508,7 @@ GOHAN_PACK({
         'Add the lauki and salt, mix, cover and cook on low 12–15 minutes; it releases its own water.',
         'When the pieces are soft and translucent, finish with garam masala.',
       ],
-      tip: { add: 'A handful of soaked chana dal cooked with it', why: 'More body and protein, as many homes make it', skill: 'Choosing lauki', how: 'Pick a young, light green gourd whose skin you can pierce with a nail; taste a raw piece and discard it if bitter.' },
+      tip: { add: 'A handful of soaked chana dal cooked with it', why: 'More body and bite, as many homes make it', skill: 'Choosing lauki', how: 'Pick a young, light green gourd whose skin you can pierce with a nail; taste a raw piece and discard it if bitter.' },
     },
     {
       id: 'in_aloomethi',

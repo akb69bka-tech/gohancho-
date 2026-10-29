@@ -923,7 +923,7 @@ GOHAN_PACK({
         'Add the rice and sliced carrot and cook for 10 minutes; then add the potatoes in chunks and the shredded cabbage and cook for 20 minutes until soft.',
         'Season with salt and oregano and add chopped hierbabuena and spring onion greens just before serving, with rocoto on the side.',
       ],
-      tip: { add: 'Chopped rocoto with a little lime', why: 'Warms you up in the cold highlands', skill: 'Skim the fat', how: 'Lamb gives off a lot of fat; skimming it as it cooks keeps the broth light.' },
+      tip: { add: 'Chopped rocoto with a little lime', why: 'A fresh, spicy kick that suits the cold highlands', skill: 'Skim the fat', how: 'Lamb gives off a lot of fat; skimming it as it cooks keeps the broth light.' },
     },
     {
       id: 'pe_dieta_pollo',
@@ -949,7 +949,7 @@ GOHAN_PACK({
         'Add the diced potato, carrot and pumpkin and simmer for 15 minutes until soft; add the pasta for the last 5 minutes.',
         'Return the chicken, season lightly with salt and finish with parsley.',
       ],
-      tip: { add: 'A squeeze of lime in the bowl', why: 'Lifts the plain broth when you are unwell', skill: 'No oil, no frying', how: 'Skipping the fried base and removing the skin keeps it gentle on the stomach.' },
+      tip: { add: 'A squeeze of lime in the bowl', why: 'Lifts the plain broth with a fresh, sour note', skill: 'No oil, no frying', how: 'Skipping the fried base and removing the skin keeps the broth light and clear.' },
     },
     {
       id: 'pe_lawa_choclo',

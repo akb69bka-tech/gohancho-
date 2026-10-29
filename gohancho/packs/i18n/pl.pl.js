@@ -184,7 +184,7 @@ GOHAN_PACK_TR('PL', 'pl', {
         "Od razu wymieszaj z sokiem z cytryny, żeby jabłko nie ściemniało, a potem dodaj cukier, sól i olej.",
         "Odstaw na 5 minut przed podaniem.",
       ],
-      tip: { add: "Garść rodzynek", why: "Dzieci uwielbiają słodycz", skill: "Olej pomaga", how: "Olej pomaga organizmowi przyswoić witaminy z marchewki, więc nie pomijaj go." }
+      tip: { add: "Garść rodzynek", why: "Dzieci uwielbiają słodycz", skill: "Olej pomaga", how: "Olej podkreśla smak marchewki i łagodzi jej surowy posmak, więc nie pomijaj go." }
     },
     'pl_buraczki': {
       name: "Buraczki zasmażane",

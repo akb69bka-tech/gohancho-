@@ -683,7 +683,7 @@ GOHAN_PACK({
         'Add the shrimp and cook for 2–3 minutes until pink and cooked through. Season with fish sauce.',
         'Turn off the heat and stir in the basil leaves.',
       ],
-      tip: { add: 'A few more white peppercorns', why: 'The peppery warmth is why Thai mothers cook it when someone has a cold', skill: 'Pound the paste fresh', how: 'Freshly pounded shallot, pepper and dried shrimp give the broth its sweet, peppery aroma; a ready-made paste tastes flat.' },
+      tip: { add: 'A few more white peppercorns', why: 'The peppery warmth is what gives kaeng liang its character', skill: 'Pound the paste fresh', how: 'Freshly pounded shallot, pepper and dried shrimp give the broth its sweet, peppery aroma; a ready-made paste tastes flat.' },
     },
     {
       id: 'th_kaengpa',

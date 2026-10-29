@@ -369,7 +369,7 @@ GOHAN_PACK({
         'Add the chayote and cook 5 to 7 minutes until just tender and the chicken is cooked through.',
         'Add the leaves, season with fish sauce and pepper, and turn off the heat. Serve with rice.',
       ],
-      tip: { add: 'Use the water from washing rice', why: 'Gives the broth a soft, milky body', skill: 'Saute the ginger well', how: 'Frying ginger first draws out its warmth and removes the chicken smell.' },
+      tip: { add: 'Use the water from washing rice', why: 'Gives the broth a soft, milky body', skill: 'Saute the ginger well', how: 'Frying ginger first draws out its aroma and removes the chicken smell.' },
     },
     {
       id: 'ph_misua',
@@ -1481,7 +1481,7 @@ GOHAN_PACK({
         'Add the water and fish sauce, cover and cook 4 to 5 minutes until the sayote is tender but still a little crisp.',
         'Season with pepper and serve.',
       ],
-      tip: { add: 'A few malunggay leaves at the end', why: 'Extra colour and nutrition', skill: 'Peel sayote under running water or with oil on your hands', how: 'The sticky sap dries your skin; water or oil stops it sticking.' },
+      tip: { add: 'A few malunggay leaves at the end', why: 'Extra colour and a fresh, leafy taste', skill: 'Peel sayote under running water or with oil on your hands', how: 'The sticky sap dries your skin; water or oil stops it sticking.' },
     },
     {
       id: 'ph_ginisang_upo',
@@ -1527,7 +1527,7 @@ GOHAN_PACK({
         'Add the sprouts (and tofu) and toss over high heat for 1 to 2 minutes until just wilted.',
         'Season with the fish sauce and pepper and serve right away.',
       ],
-      tip: { add: 'A few small shrimp', why: 'Sweetness and a little protein', skill: 'High heat, short time', how: 'Sprouts go watery and limp if cooked more than 2 minutes.' },
+      tip: { add: 'A few small shrimp', why: 'Sweetness and a savoury bite', skill: 'High heat, short time', how: 'Sprouts go watery and limp if cooked more than 2 minutes.' },
     },
     {
       id: 'ph_ginisang_repolyo',
@@ -1749,7 +1749,7 @@ GOHAN_PACK({
         'Put 2 tbsp of filling on each wrapper, fold in the sides and roll up tightly, sealing with a dab of water.',
         'Fry in 2 cm of medium-hot oil for 3 to 4 minutes, turning, until golden. Drain and serve with the vinegar dip.',
       ],
-      tip: { add: 'A few small shrimp in the filling', why: 'Sweetness and a little protein', skill: 'Cool the filling before rolling', how: 'Hot, wet filling soaks the wrapper and makes it tear or spatter in the oil.' },
+      tip: { add: 'A few small shrimp in the filling', why: 'Sweetness and a savoury bite', skill: 'Cool the filling before rolling', how: 'Hot, wet filling soaks the wrapper and makes it tear or spatter in the oil.' },
     },
     {
       id: 'ph_okoy',

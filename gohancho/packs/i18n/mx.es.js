@@ -456,7 +456,7 @@ GOHAN_PACK_TR('MX', 'es', {
         'Añade los ejotes, el chayote y el elote y cocina 6 minutos.',
         'Agrega la calabacita y el cilantro y cocina 5 minutos más, hasta que todas las verduras estén suaves. Sazona.'
       ],
-      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan proteína y un sabor lechoso', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
+      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan un sabor suave y lechoso, y la hacen más sustanciosa', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
     },
     'mx_mole_olla': {
       name: 'Mole de olla',

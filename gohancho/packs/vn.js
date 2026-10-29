@@ -381,7 +381,7 @@ GOHAN_PACK({
         'Stir the soup in a circle and pour in the egg in a thin stream; wait 20 seconds before stirring gently so it forms soft ribbons.',
         'Turn off the heat and add the spring onions and pepper.',
       ],
-      tip: { add: 'A few cubes of soft tofu', why: 'More protein and a silkier soup', skill: 'Thin stream, no stirring', how: 'Pour egg slowly into gently moving broth and leave it to set; stirring too early makes it cloudy.' },
+      tip: { add: 'A few cubes of soft tofu', why: 'A silkier, more filling soup', skill: 'Thin stream, no stirring', how: 'Pour egg slowly into gently moving broth and leave it to set; stirring too early makes it cloudy.' },
     },
     {
       id: 'vn_canhraungot',
@@ -427,7 +427,7 @@ GOHAN_PACK({
         'Add the greens and boil uncovered over medium-high heat for 4-5 minutes, until the stems are tender and the shrimp are cooked through.',
         'Season with the fish sauce and salt, then add the remaining ginger and pepper.',
       ],
-      tip: { add: 'A pinch of sugar', why: 'Rounds off the slight bitterness of the greens', skill: 'Ginger at the end', how: 'Add fresh ginger strips just before serving; their warmth balances the cooling, slightly bitter greens.' },
+      tip: { add: 'A pinch of sugar', why: 'Rounds off the slight bitterness of the greens', skill: 'Ginger at the end', how: 'Add fresh ginger strips just before serving; their sharp aroma balances the slightly bitter greens.' },
     },
     {
       id: 'vn_canhmongtoi',
@@ -769,7 +769,7 @@ GOHAN_PACK({
         'Add the crown daisy and cook for 1-2 minutes over high heat until just wilted.',
         'Season with the fish sauce and salt, add the spring onion and pepper, and serve at once.',
       ],
-      tip: { add: 'A few thin strips of ginger', why: 'Crown daisy is thought of as cooling; ginger balances it', skill: 'Fast and green', how: 'Add the leaves just before serving; they wilt in a minute and turn bitter if boiled long.' },
+      tip: { add: 'A few thin strips of ginger', why: 'The sharp aroma of ginger balances the grassy crown daisy', skill: 'Fast and green', how: 'Add the leaves just before serving; they wilt in a minute and turn bitter if boiled long.' },
     },
     {
       id: 'vn_canhmang',
@@ -864,7 +864,7 @@ GOHAN_PACK({
         'Add the shiitake and carrot and simmer 10-15 minutes more, until the chicken is cooked through with clear juices at the bone and the carrot is tender.',
         'Season with the fish sauce, salt and sugar, and add the spring onion and pepper.',
       ],
-      tip: { add: 'A handful of dried lotus seeds, soaked', why: 'Makes it a gentle, nourishing soup for cool days', skill: 'Sear the chicken', how: 'Stir-frying the chicken with ginger before adding water firms it, removes the raw smell and gives a clearer broth.' },
+      tip: { add: 'A handful of dried lotus seeds, soaked', why: 'Makes it a gentle, comforting soup for cool days', skill: 'Sear the chicken', how: 'Stir-frying the chicken with ginger before adding water firms it, removes the raw smell and gives a clearer broth.' },
     },
     // ---------- món mặn thêm (main) ----------
     {
@@ -1363,7 +1363,7 @@ GOHAN_PACK({
         'Add the sprouts (and sliced tofu) and toss for 1 minute.',
         'Add the chives, fish sauce and salt and toss 20 seconds more. Serve at once.',
       ],
-      tip: { add: 'A few peeled shrimp', why: 'A little sweetness and protein', skill: 'Fast and hot', how: 'Bean sprouts go watery if cooked longer than 2 minutes.' },
+      tip: { add: 'A few peeled shrimp', why: 'A little sweetness and savoury bite', skill: 'Fast and hot', how: 'Bean sprouts go watery if cooked longer than 2 minutes.' },
     },
     {
       id: 'vn_susuxao',
