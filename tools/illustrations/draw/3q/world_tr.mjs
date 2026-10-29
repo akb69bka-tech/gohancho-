@@ -30,8 +30,8 @@ const ing = {
     anchovy: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><path d="M${f(-s * .7)},0 Q0,${f(-s * .22)} ${f(s * .6)},0 L${f(s * .75)},${f(-s * .12)} L${f(s * .72)},${f(s * .12)} L${f(s * .6)},0 Q0,${f(s * .22)} ${f(-s * .7)},0Z" fill="${Q.lg(p, [[0, '#e8b048'], [1, '#a8702a']], 0, 0, 0, 1)}" stroke="#7a4a1a" stroke-width=".5"/></g>`,
     liver: (p, x, y, s, r, i) => W.crusty(p, x, y, s * .4, s * .3, i, { c: '#8a3a24', n: 12, h: 4, rot: r }),
     redOnionRing: (p, x, y, s, r) => W.onionStrip(x, y, s, r, '#c87aa8'),
-    manti: (p, x, y, s, r, i) => Q.prism(p, x, y, Q.square(s * .6), s * .3, '#f2dca0', { rot: r + 45, line: .45, top: Q.rg(p, [[0, '#fbf2d8'], [1, '#e8cc90']], .4, .35, .8) }),
-    dolmaPepper: (p, x, y, s, r, i) => W.ball(p, x, y - s * .3, s, '#5a8a2a', p.id + 'dp' + i, { hi: .7 }) + W.mound(p, x, y - s * .8, s * .3, 4, '#d8b080', 'dpm' + i, .5),
+    manti: (p, x, y, s, r, i) => Q.prism(p, x, y, Q.square(s * .6), s * .26, '#e8cc90', { rot: r + 45, line: .45, top: Q.rg(p, [[0, '#fbf2d8'], [1, '#e8cc90']], .4, .35, .8) }) + `<path d="M${f(x - s * .26)},${f(y - s * .3)} L${f(x)},${f(y - s * .55)} L${f(x + s * .26)},${f(y - s * .3)} M${f(x)},${f(y - s * .55)} L${f(x)},${f(y - s * .12)}" stroke="#c8a868" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="${f(x)}" cy="${f(y - s * .56)}" r="${f(s * .08)}" fill="#f6e6b8" stroke="#c8a868" stroke-width=".5"/>`,
+    dolmaPepper: (p, x, y, s, r, i) => W.bellPepper(p, x, y, s * 1.3, i % 2 ? '#5a8a2a' : '#7aa83a', p.id + i, { fill: '#d8b080', grain: '#fbf2dc', cap: true }),
     yaprak: (p, x, y, s, r) => `<g ${TR(x, y, r)}><rect x="${f(-s * .6)}" y="${f(-s * .24)}" width="${f(s * 1.2)}" height="${f(s * .48)}" rx="${f(s * .24)}" fill="${Q.lg(p, [[0, '#a8b060'], [.5, '#6a7a2a'], [1, '#4a5a1e']], 0, 0, 0, 1)}" stroke="#3a4a14" stroke-width=".6"/>${[-.3, 0, .3].map(k => `<path d="M${f(k * s)},${f(-s * .24)} q${f(s * .06)},${f(s * .24)} 0,${f(s * .48)}" stroke="#8a9a4a" stroke-width=".8" fill="none"/>`).join('')}</g>`,
     karniyarik: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><path d="M${f(-s)},0 C${f(-s)},${f(-s * .4)} ${f(s)},${f(-s * .4)} ${f(s)},0 C${f(s)},${f(s * .36)} ${f(-s)},${f(s * .36)} ${f(-s)},0Z" fill="#4a2038"/><path d="M${f(-s * .9)},${f(-s * .05)} C${f(-s * .9)},${f(-s * .3)} ${f(s * .9)},${f(-s * .3)} ${f(s * .9)},${f(-s * .05)}Z" fill="#8a4a24"/><path d="M${f(s * .95)},${f(-s * .05)} q${f(s * .16)},${f(-s * .1)} ${f(s * .22)},${f(-s * .28)}" stroke="#4a6a22" stroke-width="3" stroke-linecap="round" fill="none"/></g>` + W.flecks(p, x, y - s * .2, s * .7, 12, 'kn' + i, ['#c8281a', '#6a9a3a', '#e8401e'], { ry: s * .08, s: 2 }),
     imam: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><path d="M${f(-s)},0 C${f(-s)},${f(-s * .4)} ${f(s)},${f(-s * .4)} ${f(s)},0 C${f(s)},${f(s * .36)} ${f(-s)},${f(s * .36)} ${f(-s)},0Z" fill="#4a2038"/><path d="M${f(-s * .9)},${f(-s * .05)} C${f(-s * .9)},${f(-s * .3)} ${f(s * .9)},${f(-s * .3)} ${f(s * .9)},${f(-s * .05)}Z" fill="#e0a070"/></g>` + W.flecks(p, x, y - s * .2, s * .7, 14, 'im' + i, ['#c8401e', '#efdcae', '#3f8a2a'], { ry: s * .08, s: 2 }),
@@ -82,9 +82,9 @@ export default {
     // イズミル・キョフテ（肉団子とじゃがいものオーブン焼き）: キョフテ・じゃがいも・シヴリ・トマト（素焼きの耐熱皿）
     tr_izmirkofte: p => W.bake(p, { base: '#a8582e', inner: '#c87a4a', c: '#c8401e', fl: ['#a8301a'], n: 20, top: (o, V, pp) => byDepth(Array.from({ length: 12 }, (_, i) => { const u = -60 + (i % 6) * 24, v = -18 + Math.floor(i / 6) * 34; const [x, y] = at(o, u, v * .6, 4); return [y, () => [ing.kofte, W.ING.potatoRoast, ing.kofte, W.ING.tomato][i % 4](pp, x, y, i % 4 === 1 ? 16 : 22, -10, i)]; })) + byDepth([[-40, 0], [10, -4], [50, 2]].map(([u, v], i) => { const [x, y] = at(o, u, v, 10); return [y, () => ing.sivri(pp, x, y, 16, -14)]; })) }),
     // ビベル・ドルマス（ピーマンの肉と米詰め）: ピーマン・ひき肉・米・玉ねぎ・トマト
-    tr_biberdolmasi: B('#c8501e', [['dolmaPepper', 5, 26]], { minD: 22 }),
+    tr_biberdolmasi: B('#c8501e', [['dolmaPepper', 5, 26]], { minD: 28 }),
     // ムサカ（なすとひき肉の重ね煮）: なす・ひき肉・玉ねぎ・トマト・ピーマン
-    tr_musakka: B('#b8401e', [['eggplant', 8, 18], ['mince', 6, 14], ['sivri', 2, 12], ['tomato', 2, 12]], { ing: { ...ing, eggplant: (p, x, y, s, r, i) => W.coin(p, x, y, s * .55, '#4a2038', { h: 3, top: Q.rg(p, [[0, '#d8a068'], [.6, '#a8642a'], [1, '#6a3418']], .4, .35, .8) }) } }),
+    tr_musakka: p => W.bake(p, { base: '#a8582e', inner: '#c87a4a', c: '#b8401e', fl: ['#7a2410', '#d8603a'], n: 30, top: (o, V, pp) => byDepth(Array.from({ length: 15 }, (_, i) => { const u = -60 + (i % 5) * 28, v = -30 + Math.floor(i / 5) * 28; const [x, y] = at(o, u, v * .6, 3); return [y, () => W.coin(pp, x, y, 13, '#4a2038', { h: 3, sy: .5, top: Q.rg(pp, [[0, '#d8a068'], [.6, '#a8642a'], [.85, '#6a3418'], [1, '#4a2038']], .4, .35, .8) }) + W.flecks(pp, x, y - 3, 7, 6, 'mk' + i, ['#7a3a1a', '#5a2410'], { ry: 3, s: 1.8 })]; })) + byDepth([[-44, -6], [0, 4], [40, -2]].map(([u, v], i) => { const [x, y] = at(o, u, v, 8); return [y, () => W.pod(pp, x, y, 26, -10, { c: '#5a8a2a', w: 5 }) + W.tomatoDice(pp, x + 14, y + 2, 9, i)]; })), scoop: { layers: [['#b8401e', .18], ['#7a3a1a', .3], ['#5a2a3a', .12], ['#d8a068', .4]], dots: [['#4a2038', 4, 2.4]] } }),
     // アルナヴト・ジエリ（レバーのから揚げ）と赤玉ねぎのサラダ、フライドポテト（お好みで）
     tr_cigertava: plateOf((p, o) => side(p, o, [['liver', -26, -8, 28], ['liver', -6, -12, 28], ['liver', -16, 8, 28], ['liver', 4, 2, 28], ['liver', -32, 12, 28], ['redOnionRing', 32, -6, 22, 10], ['redOnionRing', 38, 8, 22, -20], ['redOnionRing', 28, 18, 22, 30]]) + W.flecks(p, ...at(o, 30, 4, 8), 18, 14, 'cg', PARS, { ry: 8, s: 1.6 })),
     // エトリ・ノフット（肉入りひよこ豆の煮込み）
@@ -118,11 +118,11 @@ export default {
 
     // ---------- ご飯・麺 ----------
     // マントゥ（トルコの小さな餃子とにんにくヨーグルト）、唐辛子バター
-    tr_manti: p => { const D = derin(p), o = { cx: 100, cy: D.cy ?? 100, sy: SYF }; return D.s + yogurt(p, 100, o.cy, 66) + byDepth(W.spots('mt', 26, 56, 10, { ry: 26 }).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => ing.manti(p, x, y, 18, r, i)]; })) + W.drizzle([[50, o.cy - 4], [76, o.cy - 10], [100, o.cy - 2], [124, o.cy - 10], [150, o.cy - 4]], '#d8501e', 3.4) + W.flecks(p, 100, o.cy - 6, 44, 20, 'mtm', [MINT, '#a8301a'], { ry: 16, s: 1.4 }); },
+    tr_manti: p => { const D = derin(p), o = { cx: 100, cy: D.cy ?? 100, sy: SYF }; return D.s + yogurt(p, 100, o.cy, 66) + byDepth(W.spots('mt', 20, 54, 15, { ry: 26 }).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => ing.manti(p, x, y, 26, r % 30, i)]; })) + W.drizzle([[50, o.cy - 4], [76, o.cy - 10], [100, o.cy - 2], [124, o.cy - 10], [150, o.cy - 4]], '#d8501e', 3.4) + W.flecks(p, 100, o.cy - 6, 44, 20, 'mtm', [MINT, '#a8301a'], { ry: 16, s: 1.4 }); },
     // タヴクル・ピラウ（鶏のピラウ）、ひよこ豆（お好みで）
     tr_tavuklupilav: P([['chickenShred', 16, 14], ['chickpea', 8, 13]], { rice: { cols: ['#fbf6ea', '#f4ecd8', '#fffdf6'], edge: '#d8ccb4' }, H: 24, R: 50 }),
     // フルン・マカルナ（ベシャメルのパスタのオーブン焼き）
-    tr_firinmakarna: p => W.bake(p, { base: '#e8dcc0', inner: '#f6efe2', c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110 }),
+    tr_firinmakarna: p => W.bake(p, { /*fx*/blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#f2c860', .6]], dots: [['#fbe8a0', 10, 3]] }, /*xf*/ base: '#e8dcc0', inner: '#f6efe2', c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110 }),
 
     // ---------- 副菜 ----------
     // チョバン・サラタス（羊飼いのサラダ）: トマト・きゅうり・シヴリ・玉ねぎ・パセリ・レモン
@@ -150,11 +150,11 @@ export default {
     // ギャヴルダー（刻みトマトとくるみのサラダ）: トマト・ピーマン・赤玉ねぎ・くるみ・パセリ
     tr_gavurdagi: K([['tomato', 14, 12], ['sivriRing', 5, 11], ['redOnion', 4, 10], ['walnut', 6, 12]], { flecks: [pars(16)] }),
     // エズメ（辛いトマトとピーマンのペースト）
-    tr_ezme: K([], { base: '#c8401e', H: 12, flecks: [['#5a8a2a', 20, 1.6], ['#a8281a', 30, 1.4], pars(10)] }),
+    tr_ezme: K([], { base: '#c8401e', H: 12, groove: true, oilTop: '#a8301a', crown: [['sivriRing', 4, 14], ['tomatoChunk', 2, 14], ['herb', 2, 12]], flecks: [['#5a8a2a', 20, 1.6], ['#a8281a', 30, 1.4], pars(10)] }),
     // シャクシュカ（揚げなすのトマトソース）、にんにくヨーグルト（お好みで）
     tr_saksuka: K([['eggplant', 14, 15], ['sivri', 3, 11]], { base: '#c8401e', ing: { ...ing, eggplant: (p, x, y, s, r, i) => W.dice(p, x, y, s, '#4a2038', p.id + 'eg' + i, { h: s * .55, top: Q.rg(p, [[0, '#e8b070'], [.6, '#c8803a'], [1, '#8a4a1e']], .4, .35, .8) }) } }),
     // 焼きなすのサラダ: なす・ピーマン・トマト・パセリ・レモン
-    tr_patlicansalatasi: K([['tomato', 5, 10], ['sivriRing', 4, 10]], { base: '#c8a070', H: 12, flecks: [['#8a6a3a', 30, 1.6], pars(14)] }),
+    tr_patlicansalatasi: K([['tomato', 5, 10], ['sivriRing', 4, 10]], { base: '#c8a070', H: 12, groove: true, oilTop: '#a8a030', crown: [['charEggplant', 1, 22]], flecks: [['#8a6a3a', 30, 1.6], pars(14)] }),
     // にんじんの炒め物とにんにくヨーグルト、くるみ（お好みで）
     tr_havuctarator: K([['walnut', 4, 12]], { base: '#f6f0dc', H: 14, flecks: [['#e8742a', 50, 1.8], ['#f08a3a', 30, 1.6], [DILL[0], 10, 1.2]] }),
     // メルジメッキ・キョフテ（赤レンズ豆とブルグルの団子）: レタス・レモン
@@ -180,13 +180,13 @@ export default {
 
     // ---------- 汁物 ----------
     // メルジメッキ・チョルバス（赤レンズ豆のスープ）、レモン
-    tr_mercimek: S('#e8902a', [], withLemon({ oil: [10, '#c8401e'], flecks: [pul(10), [MINT, 6, 1.4]] })),
+    tr_mercimek: S('#e8902a', [], withLemon({ top: [['redLentil', 18, 16]], oil: [10, '#c8401e'], flecks: [pul(10), [MINT, 6, 1.4]] })),
     // ヤイラ・チョルバス（ヨーグルトと米とミントのスープ）
     tr_yayla: S('#f4eedc', [['rice', 30, 10]], { minD: 6, oil: [10, '#c8501e'], flecks: [[MINT, 18, 1.4]] }),
     // トマトのスープ、チーズ（お好みで）
-    tr_domates: S('#d0502a', [], { cream: '#fbf2e0', flecks: [['#f6d070', 12, 1.8]] }),
+    tr_domates: S('#d0502a', [], { top: [['tomatoChunk', 4, 15]], cream: '#fbf2e0', flecks: [['#f6d070', 12, 1.8]] }),
     // エゾゲリン・チョルバス（赤レンズ豆とブルグルのスープ）
-    tr_ezogelin: S('#d8702a', [['grain', 20, 11]], withLemon({ minD: 6, oil: [10, '#c8401e'], flecks: [[MINT, 10, 1.4]] })),
+    tr_ezogelin: S('#d8702a', [['grain', 20, 11]], withLemon({ top: [['redLentil', 12, 16], ['grain', 6, 14]], minD: 6, oil: [10, '#c8401e'], flecks: [[MINT, 10, 1.4]] })),
     // タルハナ・チョルバス、チーズ（お好みで）
     tr_tarhana: S('#c8602a', [], { flecks: [['#f6d070', 14, 1.8], [MINT, 6, 1.4]] }),
     // デュン・チョルバス（羊の婚礼のスープ）: 羊・卵黄・レモン
@@ -196,15 +196,15 @@ export default {
     // シェフリイェ・チョルバス（細麺のスープ）、パセリ・レモン（お好みで）
     tr_sehriye: S('#d8702a', [['vermicelli', 20, 12]], withLemon({ minD: 6, flecks: [pars(10)] })),
     // マッシュルームのクリームスープ
-    tr_mantarcorba: S('#d8c098', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8' }),
+    tr_mantarcorba: S('#d8c098', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8' }),
     // 野菜のスープ: にんじん・じゃがいも・ズッキーニ・玉ねぎ、いんげん（お好みで）
     tr_sebze: S('#e0a050', [['carrot', 4, 11], ['potato', 4, 11], ['zucchini', 4, 11], ['greenBean', 3, 8]], { minD: 9 }),
     // トゥトマチ（緑レンズ豆と麺のヨーグルトスープ）
-    tr_tutmac: S('#efe4c8', [['lentil', 14, 12], ['erişte', 10, 13]], { minD: 7, oil: [8, '#c8501e'], flecks: [[MINT, 12, 1.4]] }),
+    tr_tutmac: S('#efe4c8', [['lentil', 14, 12], ['erişte', 10, 13]], { top: [['lentil', 12, 16]], minD: 7, oil: [8, '#c8501e'], flecks: [[MINT, 12, 1.4]] }),
     // ブロッコリーのスープ
-    tr_brokoli: S('#8aa850', [['broccoli', 2, 12]], { minD: 14, cream: '#fbf6e8' }),
+    tr_brokoli: S('#8aa850', [['broccoli', 2, 12]], { top: [['broccoli', 4, 16]], minD: 14, cream: '#fbf6e8' }),
     // かぼちゃのスープ
-    tr_balkabagi: S('#f0a030', [], { cream: '#fbf6e8', flecks: [pul(6)] }),
+    tr_balkabagi: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8', flecks: [pul(6)] }),
     // エクシリ・キョフテ（酸っぱい肉団子のスープ）: 肉団子・米・にんじん・じゃがいも・卵黄・レモン
     tr_eksilikofte: S('#f0d8a0', [['meatballSmall', 10, 13], ['carrot', 4, 10], ['potato', 3, 11]], withLemon({ minD: 8, flecks: [[MINT, 8, 1.4]] })),
     // ウン・チョルバス（小麦粉を炒ったスープ）
@@ -214,16 +214,16 @@ export default {
     // 魚のスープ（卵とレモン）: 白身魚・じゃがいも・にんじん・玉ねぎ・レモン
     tr_balik: S('#f0e0b0', [['fish', 3, 18], ['potato', 3, 11], ['carrot', 3, 10]], withLemon({ minD: 10, flecks: [pars(10)] })),
     // ほうれん草のヨーグルトスープ: ほうれん草・米・ヨーグルト
-    tr_ispanak: S('#9ab060', [['spinach', 6, 12], ['rice', 14, 10]], { minD: 7, cream: '#fbf8ee' }),
+    tr_ispanak: S('#9ab060', [['spinach', 6, 12], ['rice', 14, 10]], { top: [['spinach', 5, 15]], minD: 7, cream: '#fbf8ee' }),
     // コーンのクリームスープ
     tr_misir: S('#f2d880', [['corn', 10, 12]], { minD: 8 }),
     // ズッキーニのスープ、ディル（お好みで）
-    tr_kabak: S('#c8d090', [], { cream: '#fbf8ee', flecks: [[DILL, 12, 1.2]] }),
+    tr_kabak: S('#c8d090', [], { top: [['zucchini', 5, 16]], cream: '#fbf8ee', flecks: [[DILL, 12, 1.2]] }),
     // にんじんのスープ、ヨーグルト（お好みで）
-    tr_havuc: S('#f0902a', [], { cream: '#fbf8ee' }),
+    tr_havuc: S('#f0902a', [], { top: [['carrot', 7, 15]], cream: '#fbf8ee' }),
     // ハシュラマ（羊と野菜のゆでスープ）: 羊・じゃがいも・にんじん・玉ねぎ、レモン（お好みで）
     tr_haslama: S('#e8d0a0', [['lambBoiled', 4, 16], ['potato', 3, 14], ['carrot', 3, 12]], withLemon({ minD: 12, flecks: [pars(10)] })),
     // カララハナ・チョルバス（黒キャベツと豆のスープ）
-    tr_karalahana: S('#8a7a3a', [['cabbageBlack', 6, 13], ['whiteBean', 10, 12]], { minD: 8 }),
+    tr_karalahana: S('#8a7a3a', [['cabbageBlack', 6, 13], ['whiteBean', 10, 12]], { top: [['whiteBean', 10, 16]], minD: 8 }),
 };
 Object.assign(ing, { poached: (p, x, y, s, r, i) => W.ball(p, x, y - s * .2, s, '#fbf8f0', p.id + 'po' + i, { hi: .6 }) + `<ellipse cx="${f(x - 1)}" cy="${f(y - s * .45)}" rx="${f(s * .2)}" ry="${f(s * .13)}" fill="#f6c22a"/>` });

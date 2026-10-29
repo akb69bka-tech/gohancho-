@@ -61,7 +61,7 @@ const B = (c, items, o = {}) => M(gleboki, 'braise', c, items, { minD: 13, ...o 
 const K = (items, o = {}) => M(miska, 'bowl', null, items, { minD: 7, ...o });
 const plateOf = (draw) => p => { const D = talerz(p), o = D.o; return D.s + W.grow(o.cx, o.cy, 1.3, draw(p, o)); };
 const side = (p, o, list) => byDepth(list.map(([k, u, v, s, r = 0], i) => { const [x, y] = at(o, u, v, 4); return [y, () => (ing[k] || W.ING[k])(p, x, y, s, r, i)]; }));
-const cutlet = (p, o, { c = ['#f6d080', '#e0a848', '#a8702a'], rx = 48, ry = 26, u = -18, v = -4 } = {}) => { const [x, y] = at(o, u, v, 4); return `<path d="${Q.blob(x, y, rx, ry, 'ct' + p.id, { n: 14, jit: .12 })}" fill="${Q.rg(p, [[0, c[0]], [.6, c[1]], [1, c[2]]], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, rx * .8, 50, 'ctf' + p.id, ['#fbe8a8', '#c88a3a', '#e8b058'], { ry: ry * .8, s: 1.2 }); };
+const cutlet = (p, o, { c = ['#f6d080', '#e0a848', '#a8702a'], rx = 48, ry = 26, u = -18, v = -4, inner = '#f8ecdc', butter = false } = {}) => { const [x, y] = at(o, u, v, 4); return W.cutlet(p, x, y, rx, ry, -8, { c, inner, seed: 'ct' }) + (butter ? `<path d="${Q.blob(x + rx * .3, y + 2, 7, 4, 'dvb', { n: 8, jit: .3 })}" fill="#f6dc70"/>` : ''); };
 const potatoesDill = (p, o, u = 34, v = 0) => side(p, o, [['potatoBoiled', u, v - 12, 21], ['potatoBoiled', u + 10, v + 6, 21], ['potatoBoiled', u - 6, v + 16, 21]]) + W.flecks(p, ...at(o, u, v, 12), 14, 12, 'pd' + p.id, DILL, { ry: 8, s: 1.2 });
 const sauceCup = (p, o, c) => { const [x, y] = at(o, -46, 32); return `<ellipse cx="${f(x)}" cy="${f(y)}" rx="12" ry="${f(12 * SYF)}" fill="#f4f0e6" stroke="${RED}" stroke-width=".8"/><ellipse cx="${f(x)}" cy="${f(y - 1)}" rx="9" ry="${f(9 * SYF)}" fill="${c}"/>`; };
 
@@ -72,7 +72,7 @@ export default {
     // コトレット・ミェローネ（豚ひき肉のハンバーグ）とじゃがいも
     pl_mielone: plateOf((p, o) => side(p, o, [['patty', -26, -8, 38], ['patty', -8, 12, 38]]) + potatoesDill(p, o)),
     // 鱈のフライとじゃがいも、レモン
-    pl_dorsz: plateOf((p, o) => cutlet(p, o, { rx: 46, ry: 22 }) + potatoesDill(p, o) + lemon(p, ...at(o, -40, 28), 12)),
+    pl_dorsz: plateOf((p, o) => cutlet(p, o, { rx: 46, ry: 22, inner: '#fbf8f2' }) + potatoesDill(p, o) + lemon(p, ...at(o, -40, 28), 12)),
     // 鶏ももとじゃがいものロースト
     pl_udka: P([['drum', 4, 22], ['potatoRoast', 8, 15]], { minD: 16, ing: { ...ing, drum: (p, x, y, s, r, i) => W.drumstick(p, x, y, s * 1.6, r, i, { c: '#c8822e', fried: false }) } }),
     // グラシュ（牛肉の煮込み）とそばの実: 牛肉・玉ねぎ、赤ピーマン・ピクルス（お好みで）
@@ -92,7 +92,7 @@ export default {
     // マスの丸焼き、レモン・ハーブ・じゃがいも
     pl_pstrag: p => { const D = talerz(p), o = D.o; return W.fishOn(p, D, { L: 140, skin: '#a8946a', belly: '#f0e4d0', char: .3, on: (x, y) => lemon(p, x - 20, y - 10, 12) + W.flecks(p, x, y - 6, 40, 14, 'pt', DILL, { ry: 6, s: 1.4 }) + side(p, o, [['potatoBoiled', 40, 28, 14], ['potatoBoiled', 30, 34, 14]]) }); },
     // ド・ヴォライユ（バター入りの鶏カツ）とじゃがいも
-    pl_devolaille: plateOf((p, o) => cutlet(p, o, { rx: 42, ry: 20 }) + `<path d="${Q.blob(...at(o, -6, -6, 8), 10, 5, 'dv', { n: 8, jit: .3 })}" fill="#f6dc70"/>` + potatoesDill(p, o)),
+    pl_devolaille: plateOf((p, o) => cutlet(p, o, { rx: 42, ry: 22, butter: true }) + potatoesDill(p, o)),
     // 豚スペアリブのはちみつ焼き、じゃがいも（お好みで）
     pl_zeberka: P([['rib', 6, 24], ['potatoRoast', 5, 14], ['onion', 3, 12]], { minD: 14, ing: { ...ing, rib: (p, x, y, s, r, i) => W.rib(p, x, y, s, r, i, { c: '#a8542e', glaze: '#c8762e' }) } }),
     // カルクフカ（豚肩ロースの玉ねぎ煮）、そばの実（お好みで）
@@ -148,7 +148,7 @@ export default {
     // ポロねぎのサラダ: ポロねぎ・卵・りんご、コーン（お好みで）
     pl_porowa: K([['leek', 16, 13], ['egg', 3, 13], ['apple', 5, 11], ['corn', 8, 12]], { base: '#f6f0dc' }),
     // チフィクワ（ビーツとホースラディッシュ）
-    pl_cwikla: K([], { base: '#8a1e34', H: 14, flecks: [['#a82a48', 40, 2], ['#f6ecd8', 16, 1.6]] }),
+    pl_cwikla: K([], { base: '#8a1e34', H: 14, groove: true, crown: [['beet', 3, 14], ['horseradish', 4, 12]], flecks: [['#a82a48', 40, 2], ['#f6ecd8', 16, 1.6]] }),
     // 浅漬けきゅうり、ディル
     pl_malosolne: K([['pickleWhole', 7, 16], ['dillHead', 3, 14]], { minD: 12, base: '#d8d8a0', ing: { ...ing, dillHead: (p, x, y, s, r) => `<g ${TR(x, y, r)}>${[-5, -2, 1, 4].map((d, k) => `<path d="M0,0 l${d},-8" stroke="#6a9a3a" stroke-width=".8" fill="none"/><circle cx="${d}" cy="-8" r="1.2" fill="#d8c040"/>`).join('')}</g>` } }),
     // にしんの油漬けと玉ねぎ
@@ -158,7 +158,7 @@ export default {
     // にんじんとグリンピースのバター煮
     pl_marchewkagroszek: K([['carrot', 16, 13], ['pea', 24, 14]], { minD: 5, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 26, 8) }),
     // マッシュポテト、ディル（お好みで）
-    pl_puree: K([], { base: '#f6e8c0', H: 22, flecks: [dill(14)] }),
+    pl_puree: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], flecks: [dill(14)] }),
     // シロンスクのじゃがいも団子（くぼみつき）
     pl_kluskislaskie: P([['kluski', 8, 22]], { minD: 18, H: 8, after: (o, D, p) => W.pool(p, o.cx, o.cy + 6, 46, GRAVY, 'kl') }),
     // 詰め卵とあさつき
@@ -182,17 +182,17 @@ export default {
     // ロスウ（鶏のスープと細麺）: 鶏・にんじん・パースニップ・セロリアック・ポロねぎ、パセリ
     pl_rosol: S('#f0c860', [['pastaFine', 14, 14], ['carrot', 6, 11], ['chicken', 2, 12]], { minD: 8, flecks: [[DILL[0], 10, 1.4]], oil: [14, '#f6d040'] }),
     // トマトのスープとご飯、サワークリーム
-    pl_pomidorowa: S('#d8502a', [['rice', 24, 10]], { minD: 6, cream: SMIETANA, flecks: [[DILL[0], 8, 1.4]] }),
+    pl_pomidorowa: S('#d8502a', [['rice', 24, 10]], { top: [['tomatoChunk', 3, 15]], minD: 6, cream: SMIETANA, flecks: [[DILL[0], 8, 1.4]] }),
     // オグルコヴァ（ピクルスのスープ）: ピクルス・じゃがいも・にんじん・サワークリーム・ディル
     pl_ogorkowa: S('#e8dcb0', [['pickle', 8, 13], ['potato', 4, 12], ['carrot', 3, 11]], { minD: 8, flecks: [dill(16)] }),
     // ジュレック（ライ麦の酸っぱいスープ）: ソーセージ・ベーコン・じゃがいも・卵
     pl_zurek: S('#efe4c8', [['whiteSausage', 4, 16], ['bacon', 3, 12], ['potato', 3, 12], ['egg', 2, 15]], { minD: 10, flecks: [['#c8a868', 10, 1.2]] }),
     // バルシチ（澄んだビーツのスープ）
-    pl_barszcz: S('#a8182e', [], { flecks: [['#c8304a', 6, 1.4]] }),
+    pl_barszcz: S('#a8182e', [], { top: [['beet', 6, 14]], flecks: [['#c8304a', 6, 1.4]] }),
     // クルプニク（大麦と鶏のスープ）: 鶏・大麦・じゃがいも・にんじん・パースニップ・セロリアック
     pl_krupnik: S('#e8d8a8', [['barley', 30, 12], ['chicken', 3, 12], ['potato', 3, 11], ['carrot', 3, 10], ['rootVeg', 2, 10]], { minD: 6, flecks: [[DILL[0], 10, 1.4]] }),
     // グロホフカ（えんどう豆とスモークソーセージのスープ）
-    pl_grochowka: S('#d8b040', [['kielbasa', 5, 15], ['bacon', 3, 12], ['potato', 2, 11], ['carrot', 2, 11]], { minD: 10 }),
+    pl_grochowka: S('#d8b040', [['kielbasa', 5, 15], ['bacon', 3, 12], ['potato', 2, 11], ['carrot', 2, 11]], { top: [['pea', 12, 15]], minD: 10 }),
     // カプシニャク（ザワークラウトとスモークリブのスープ）
     pl_kapusniak: S('#e0cc90', [['kraut', 16, 13], ['smokedRib', 3, 16], ['potato', 3, 12], ['carrot', 3, 10]], { minD: 7 }),
     // カリフラワーのスープ、ディル
@@ -202,7 +202,7 @@ export default {
     // ピェチャルコヴァ（マッシュルームのスープ）: マッシュルーム・玉ねぎ・じゃがいも・サワークリーム
     pl_pieczarkowa: S('#e0cc98', [['mushroom', 6, 13], ['potato', 3, 11]], { minD: 10, flecks: [dill(12)] }),
     // ファソロヴァ（白いんげんとソーセージのスープ）
-    pl_fasolowa: S('#d8904a', [['whiteBean', 14, 13], ['kielbasa', 4, 14], ['potato', 2, 11], ['carrot', 2, 10]], { minD: 7 }),
+    pl_fasolowa: S('#d8904a', [['whiteBean', 14, 13], ['kielbasa', 4, 14], ['potato', 2, 11], ['carrot', 2, 10]], { top: [['whiteBean', 12, 16]], minD: 7 }),
     // シュチャヴィオヴァ（すかんぽのスープと卵）
     pl_szczawiowa: S('#a8a858', [['sorrel', 6, 13], ['egg', 2, 15], ['potato', 3, 11]], { minD: 10, cream: SMIETANA }),
     // ボトヴィンカ（若いビーツと葉のスープ）、ディル
@@ -212,19 +212,19 @@ export default {
     // カルトフランカ（マジョラムのじゃがいものスープ）、ベーコン（お好みで）
     pl_kartoflanka: S('#ead8a0', [['potato', 6, 13], ['carrot', 3, 11], ['bacon', 3, 11]], { minD: 9, flecks: [['#7a8a4a', 14, 1.2]] }),
     // ブロッコリーのクリームスープ、クルトン（お好みで）
-    pl_brokulowa: S('#8aa850', [['crouton', 6, 13]], { minD: 12, cream: SMIETANA }),
+    pl_brokulowa: S('#8aa850', [['crouton', 6, 13]], { top: [['broccoli', 3, 16], ['crouton', 3, 14]], minD: 12, cream: SMIETANA }),
     // かぼちゃのクリームスープ
-    pl_dyniowa: S('#f0a030', [], { cream: SMIETANA }),
+    pl_dyniowa: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: SMIETANA }),
     // 赤レンズ豆のスープ、パセリ（お好みで）
-    pl_soczewicowa: S('#e0802a', [['carrot', 4, 11]], { minD: 12, flecks: [[DILL[0], 10, 1.4]] }),
+    pl_soczewicowa: S('#e0802a', [['carrot', 4, 11]], { top: [['redLentil', 18, 16]], minD: 12, flecks: [[DILL[0], 10, 1.4]] }),
     // コペルコヴァ（ディルのスープ）
     pl_koperkowa: S('#e8e0b8', [['potato', 4, 12], ['carrot', 3, 11]], { minD: 10, flecks: [dill(40)] }),
     // グラショヴァ（グーラッシュスープ）: 牛肉・玉ねぎ・赤ピーマン・じゃがいも・にんじん
     pl_gulaszowa: S('#a8341a', [['beefStew', 5, 15], ['pepperR', 4, 12], ['potato', 3, 12], ['carrot', 2, 11]], { minD: 10, oil: [10, '#e8701e'] }),
     // グジボヴァ（干しきのこのスープ）と細麺
-    pl_grzybowa: S('#8a6a3a', [['driedMush', 8, 14], ['pastaFine', 8, 14]], { minD: 9, cream: SMIETANA }),
+    pl_grzybowa: S('#8a6a3a', [['driedMush', 8, 14], ['pastaFine', 8, 14]], { top: [['driedMush', 5, 16]], minD: 9, cream: SMIETANA }),
     // アスパラガスのスープ、パセリ（お好みで）
-    pl_szparagowa: S('#ece6c0', [['asparagus', 4, 12], ['potato', 2, 11]], { minD: 12, cream: SMIETANA }),
+    pl_szparagowa: S('#ece6c0', [['asparagus', 4, 12], ['potato', 2, 11]], { top: [['asparagus', 5, 14]], minD: 12, cream: SMIETANA }),
 };
 // 皿の上に置く具
 Object.assign(ing, {

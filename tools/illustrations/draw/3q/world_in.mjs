@@ -67,13 +67,13 @@ export default {
     // 卵のカレー: ゆで卵・玉ねぎ・トマト、香菜
     in_eggcurry: B('#b8481e', [['egg', 6, 18], ['onion', 3, 14], ['tomato', 3, 12]], { flecks: [cori(16)] }),
     // ラジマ（赤いんげん豆のカレー）、香菜
-    in_rajma: S('#8a2a1e', [['kidney', 34, 14], ['onion', 3, 12]], { minD: 7, flecks: [cori(14)], oil: [10, '#d8701e'] }),
+    in_rajma: S('#8a2a1e', [['kidney', 34, 14], ['onion', 3, 12]], { top: [['kidney', 14, 16]], minD: 7, flecks: [cori(14)], oil: [10, '#d8701e'] }),
     // パラク・パニール: ほうれん草のペーストにパニール、クリーム（お好みで）
     in_palakpaneer: S('#3f6a22', [['paneer', 9, 17]], { minD: 18, cream: '#f6f0e0' }),
     // バターチキン: 鶏のもも・トマト・バター・生クリーム
     in_butterchicken: B('#d8602a', [['chickenCurry', 11, 18]], { flecks: [['#6a7a3a', 12, 1.2]], after: (o, V, p) => W.butterPat(p, o.cx + 6, o.cy - 34, 10) }),
     // タンドリーチキン: 鶏もも・ヨーグルト・レモン、輪切りの玉ねぎ（お好みで）
-    in_tandoori: T([['tandoori', 3, 26], ['redOnion', 6, 18], ['lemon', 2, 14]], { minD: 24, flecks: [cori(10)] }),
+    in_tandoori: p => { const D = thali(p), o = D.o; return D.s + byDepth(W.spots('tdo', 10, 50, 12).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 2); return [y - 40, () => W.onionStrip(x, y, 18, r, '#c87aa8')]; })) + byDepth([[-26, -12, -30], [12, -16, 10], [-8, 14, -14]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 6); return [y, () => W.grow(x, y, 1.7, W.drumstick(p, x, y, 50, r, i, { c: '#c8401e', fried: false }) + W.flecks(p, x, y - 4, 12, 10, 'tdc' + i, ['#5a1a0a', '#3a1206'], { ry: 5, s: 1.4 }))]; })) + W.lemon(p, ...at(o, 48, 30), 18, { wedge: true }) + W.lemon(p, ...at(o, 52, 14), 16, { wedge: true, rot: 30 }) + W.flecks(p, o.cx, o.cy - 10, 40, 14, 'tdh', CORI, { ry: 16, s: 1.6 }); },
     // ローガン・ジョシュ（羊のカシミールカレー）
     in_roganjosh: B('#9a2414', [['lambRed', 11, 18]], { flecks: [['#e8d8a8', 8, 1.2]] }),
     // ポーク・ヴィンダルー: 豚の角切り・玉ねぎ
@@ -85,7 +85,7 @@ export default {
     // アンダ・ブルジ（スパイス入りのいり卵）: 卵・玉ねぎ・トマト・青唐辛子・香菜
     in_andabhurji: T([['scramble', 24, 20], ['tomato', 5, 11], ['onion', 4, 12], ['chiliG', 4, 12]], { flecks: [cori(20)] }),
     // チョレ（ひよこ豆のカレー）: ひよこ豆・玉ねぎ・トマト・青唐辛子・香菜
-    in_chole: S('#7a3a1a', [['chickpea', 30, 15], ['chiliG', 2, 12], ['onion', 3, 12]], { minD: 7, flecks: [cori(14)] }),
+    in_chole: S('#7a3a1a', [['chickpea', 30, 15], ['chiliG', 2, 12], ['onion', 3, 12]], { top: [['chickpea', 12, 16]], minD: 7, flecks: [cori(14)] }),
     // 大豆ミートのカレー: 大豆ミート・玉ねぎ・トマト、じゃがいも（お好みで）、香菜
     in_soyacurry: B('#9a4a1e', [['soya', 11, 16], ['potRed', 3, 14]], { flecks: [cori(14)] }),
     // マタル・パニール: パニール・グリンピース・玉ねぎ・トマト
@@ -135,17 +135,17 @@ export default {
     // キャベツのポリヤル: キャベツ・ココナッツ、青唐辛子（お好みで）
     in_poriyal: T([['shred', 44, 14], ['curryLeaf', 4, 12]], { minD: 6, flecks: [[COCO, 40, 1.6], [MUSTARD, 14, 1.1], [CHILI, 3, 2]] }),
     // バインガン・バルタ（焼きなすのペースト）: 玉ねぎ・トマト・青唐辛子・香菜
-    in_bharta: K([['tomato', 4, 11], ['chiliG', 3, 12], ['onion', 4, 12]], { base: '#8a5a2a', flecks: [cori(20), ['#f2e2b0', 10, 1.4]] }),
+    in_bharta: K([['tomato', 4, 11], ['chiliG', 3, 12], ['onion', 4, 12]], { base: '#8a5a2a', groove: true, crown: [['charEggplant', 1, 22], ['herb', 3, 12]], flecks: [cori(20), ['#f2e2b0', 10, 1.4]] }),
     // ジーラ・アルー（クミンのじゃがいも）: 青唐辛子（お好みで）・香菜
     in_jeeraaloo: T([['potTurmeric', 18, 16], ['chiliG', 3, 11]], { flecks: [[CUMIN, 24, 1.2], cori(16)] }),
     // ブーンディ・ライタ: ヨーグルトに揚げ玉（ブーンディ）
     in_boondiraita: S('#f6f2e6', [['boondi', 22, 14]], { minD: 7, flecks: [[CUMIN, 12, 1.1], [CHILI, 6, 1]] }),
     // ミントと香菜のチャトニ: ミント・香菜・青唐辛子・レモン
-    in_pudinachutney: S('#4a8a2a', [['mint', 3, 13]], { flecks: [['#2f6a22', 18, 1.2]] }),
+    in_pudinachutney: K([], { base: '#4a8a2a', H: 10, groove: true, crown: [['mint', 5, 15], ['chiliG', 1, 13], ['lemonWedge', 1, 16]], flecks: [['#2f6a22', 18, 1.2]] }),
     // ココナッツのチャトニ: ココナッツ・炒りひよこ豆・青唐辛子、マスタードシードとカレーリーフのテンパリング
-    in_coconutchutney: S('#f4f0e0', [['curryLeaf', 4, 13], ['chiliR', 1, 14]], { flecks: [[MUSTARD, 16, 1.2], ['#e8d8b0', 20, 1.2]] }),
+    in_coconutchutney: K([], { base: '#f4f0e0', H: 10, groove: true, crown: [['coco', 4, 16], ['curryLeaf', 3, 13], ['chiliR', 1, 14]], flecks: [[MUSTARD, 16, 1.2], ['#e8d8b0', 20, 1.2]] }),
     // 南インドのトマトのチャトニ: トマト・玉ねぎ
-    in_tomatochutney: S('#b8301a', [['curryLeaf', 3, 13]], { flecks: [[MUSTARD, 14, 1.2]], oil: [8, '#e8701e'] }),
+    in_tomatochutney: K([], { base: '#b8301a', H: 10, groove: true, oilTop: '#e8701e', crown: [['tomatoChunk', 3, 15], ['curryLeaf', 2, 13]], flecks: [[MUSTARD, 14, 1.2]] }),
     // アヴィヤル（ココナッツとヨーグルトの野菜）: 青いバナナ・にんじん・いんげん・ココナッツ
     in_avial: K([['banana', 8, 14], ['carrotStick', 8, 14], ['greenBean', 6, 8], ['moringa', 3, 12], ['curryLeaf', 4, 12]], { base: '#f2e8c8', flecks: [[COCO, 20, 1.4]] }),
     // にんじんと青唐辛子の即席漬け
@@ -179,29 +179,29 @@ export default {
 
     // ---------- 汁物 ----------
     // ダール・タルカ: 豆・トマト、にんにくと赤唐辛子とクミンの油、香菜
-    in_dal: S('#e8b030', [['garlic', 4, 14], ['chiliR', 2, 14], ['tomato', 2, 10], ['herb', 3, 11]], { flecks: [[CUMIN, 16, 1.2]], oil: [12, '#d8901a'] }),
+    in_dal: S('#e8b030', [['garlic', 4, 14], ['chiliR', 2, 14], ['tomato', 2, 10], ['herb', 3, 11]], { top: [['moong', 18, 16]], flecks: [[CUMIN, 16, 1.2]], oil: [12, '#d8901a'] }),
     // サンバル: 豆・小玉ねぎ・トマト・にんじん、なす・ドラムスティック（お好みで）
     in_sambar: S('#b8501e', [['carrot', 6, 12], ['onion', 4, 12], ['eggplant', 3, 11], ['moringa', 3, 12], ['curryLeaf', 4, 12]], { minD: 10 }),
     // トマトのラッサム: トマト・香菜、にんにく
     in_rasam: S('#c8401e', [['tomato', 4, 10], ['garlic', 3, 12], ['curryLeaf', 4, 12], ['herb', 3, 11]], { flecks: [['#5a3a1e', 12, 1]] }),
     // ダール・マカニ: 黒いウラド豆・赤いんげん豆・トマト・バター、生クリーム（お好みで）
-    in_dalmakhani: S('#5a2414', [['urad', 12, 12], ['kidney', 6, 13]], { minD: 8, cream: '#fbf6ea', after: (o, V, p) => W.butterPat(p, o.cx + 14, o.cy - 4, 9) }),
+    in_dalmakhani: S('#5a2414', [['urad', 12, 12], ['kidney', 6, 13]], { top: [['urad', 12, 16], ['kidney', 4, 16]], minD: 8, cream: '#fbf6ea', after: (o, V, p) => W.butterPat(p, o.cx + 14, o.cy - 4, 9) }),
     // ダール・パラク（豆とほうれん草）: 豆・ほうれん草・トマト・玉ねぎ
-    in_dalpalak: S('#b8a030', [['spinach', 8, 12], ['tomato', 2, 10], ['garlic', 2, 12]], { flecks: [[CUMIN, 12, 1.1]], oil: [8, '#d8901a'] }),
+    in_dalpalak: S('#b8a030', [['spinach', 8, 12], ['tomato', 2, 10], ['garlic', 2, 12]], { top: [['moong', 10, 16], ['spinach', 3, 14]], flecks: [[CUMIN, 12, 1.1]], oil: [8, '#d8901a'] }),
     // ラウキ・チャナ・ダール: ひよこ豆の割り豆・ゆうがお・トマト・青唐辛子・香菜
-    in_laukichana: S('#e0b040', [['lauki', 6, 12], ['grain', 12, 12], ['tomato', 2, 10], ['chiliG', 2, 11]], { minD: 8, flecks: [cori(12)] }),
+    in_laukichana: S('#e0b040', [['lauki', 6, 12], ['grain', 12, 12], ['tomato', 2, 10], ['chiliG', 2, 11]], { top: [['grain', 12, 16]], minD: 8, flecks: [cori(12)] }),
     // パンチメル・ダール（五つの豆）: 豆・トマト、玉ねぎ（お好みで）
-    in_panchmel: S('#d0982a', [['lentil', 10, 12], ['redLentil', 10, 12], ['moong', 10, 12], ['tomato', 2, 10]], { minD: 6, oil: [8, '#d8901a'] }),
+    in_panchmel: S('#d0982a', [['lentil', 10, 12], ['redLentil', 10, 12], ['moong', 10, 12], ['tomato', 2, 10]], { top: [['lentil', 8, 16], ['redLentil', 8, 16]], minD: 6, oil: [8, '#d8901a'] }),
     // アムティ（甘酸っぱいダール）: 豆・香菜、ココナッツ（お好みで）
-    in_amti: S('#d89a2a', [['herb', 5, 11], ['curryLeaf', 3, 12]], { flecks: [[COCO, 12, 1.4], [MUSTARD, 12, 1.1]], oil: [8, '#c8701e'] }),
+    in_amti: S('#d89a2a', [['herb', 5, 11], ['curryLeaf', 3, 12]], { top: [['moong', 14, 16]], flecks: [[COCO, 12, 1.4], [MUSTARD, 12, 1.1]], oil: [8, '#c8701e'] }),
     // グジャラートのダール: 豆・トマト・青唐辛子、ピーナッツ（お好みで）・香菜
-    in_gujaratidal: S('#e8b84a', [['peanut', 10, 14], ['tomato', 3, 10], ['chiliG', 2, 11], ['herb', 3, 11]], { minD: 9, flecks: [[MUSTARD, 10, 1.1]] }),
+    in_gujaratidal: S('#e8b84a', [['peanut', 10, 14], ['tomato', 3, 10], ['chiliG', 2, 11], ['herb', 3, 11]], { top: [['moong', 14, 16], ['peanut', 4, 15]], minD: 9, flecks: [[MUSTARD, 10, 1.1]] }),
     // ダール・ドクリ（豆の汁に小麦の生地）: 豆・トマト、ピーナッツ（お好みで）・香菜
     in_daldhokli: S('#e0a838', [['dhokli', 9, 18], ['peanut', 6, 14]], { minD: 12, flecks: [cori(10)] }),
     // ダルマ（オディシャの野菜入りダール）: 豆・かぼちゃ・なす・じゃがいも
     in_dalma: S('#d8a83a', [['pumpkin', 5, 12], ['eggplant', 4, 11], ['potato', 4, 11]], { minD: 12, flecks: [[CUMIN, 10, 1.1]] }),
     // チョラール・ダール（ココナッツ入りのベンガルのダール）: ひよこ豆の割り豆・ココナッツ・青唐辛子
-    in_cholardal: S('#e8c050', [['coco', 10, 14], ['raisin', 5, 12], ['chiliG', 2, 11]], { minD: 9, oil: [6, '#e0a030'] }),
+    in_cholardal: S('#e8c050', [['coco', 10, 14], ['raisin', 5, 12], ['chiliG', 2, 11]], { top: [['grain', 12, 16], ['coco', 3, 14]], minD: 9, oil: [6, '#e0a030'] }),
     // カディ・パコラ: ヨーグルトとひよこ豆粉の汁に、揚げた玉ねぎのパコラ
     in_kadhipakora: S('#f0c84a', [['pakora', 6, 20]], { minD: 22, flecks: [[CHILI, 10, 1.4], cori(10)] }),
     // グジャラートのカディ: ヨーグルト・ひよこ豆粉・青唐辛子・香菜
@@ -219,7 +219,7 @@ export default {
     // 野菜のマンチョウ・スープ: キャベツ・にんじん・ピーマン・青ねぎ、揚げ麺（お好みで）
     in_manchow: S('#6a3418', [['carrot', 6, 8], ['pepperG', 5, 10], ['shred', 5, 10], ['noodleBit', 8, 14]], { minD: 9, flecks: [['#4a9a2c', 12, 1.6]] }),
     // パラク・スープ（ほうれん草のスープ）: ほうれん草・玉ねぎ・牛乳
-    in_palaksoup: S('#4a7a2a', [], { cream: '#f6f0e0' }),
+    in_palaksoup: S('#4a7a2a', [], { top: [['spinach', 5, 16], ['crouton', 4, 14]], cream: '#f6f0e0' }),
     // ケーララの野菜シチュー（イシュトゥ）: じゃがいも・にんじん・いんげん・玉ねぎ・ココナッツミルク
     in_vegishtu: S('#f4ecd8', [['potato', 5, 12], ['carrot', 6, 12], ['greenBean', 4, 8], ['pea', 5, 13], ['curryLeaf', 4, 12], ['chiliG', 2, 11]], { minD: 9 }),
     // 鶏のトゥクパ（ヒマラヤの麺の汁）: 鶏・麺・玉ねぎ・トマト・にんじん・キャベツ・青ねぎ

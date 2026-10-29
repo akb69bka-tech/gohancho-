@@ -79,7 +79,7 @@ export default {
     // エストファド（鶏と野菜の煮込み）: 鶏・トマト・玉ねぎ・にんじん・黄色いじゃがいも・グリンピース
     pe_estofado: B('#c8401e', [['chickenStew', 6, 18], ['yellowPotato', 3, 15], ['carrot', 4, 12], ['pea', 6, 12]]),
     // ビステック・アパナード（牛肉の薄いカツ）、ライム
-    pe_bistec_apanado: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + `<path d="${Q.blob(x, y, 58, 32, 'ba', { n: 14, jit: .1 })}" fill="${Q.rg(p, [[0, '#f0c070'], [.6, '#d8963a'], [1, '#a8641e']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, 48, 60, 'baf', ['#f6d890', '#b8782a', '#e8b058'], { ry: 24, s: 1.4 }) + lime(p, ...at(o, 50, 32), 16); },
+    pe_bistec_apanado: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + W.cutlet(p, x, y, 62, 34, -6, { inner: '#c8907a', c: ['#f0c070', '#d8963a', '#a8641e'] }) + lime(p, ...at(o, 50, 32), 18); },
     // パパ・レジェーナ（ひき肉を詰めたじゃがいものコロッケ）
     pe_papa_rellena: P([['papaRellena', 3, 30]], { minD: 34, H: 8, ing: { ...ing, papaRellena: (p, x, y, s, r, i) => Q.lump(p, x, y - 6, s * .7, s * .42, '#c8822e', p.id + 'pr' + i, { n: 14, jit: .06, hi: .7, edge: '#8a5a1e' }) }, after: (o, D, p) => W.flecks(p, ...at(o, 44, 30), 14, 14, 'prs', ['#d880b0', '#c87aa8', CIL[0]], { ry: 6, s: 2 }) }),
     // カラプルクラ（乾燥じゃがいもと豚の煮込み）: 乾燥じゃがいも・豚・ピーナッツ・玉ねぎ
@@ -147,7 +147,7 @@ export default {
     // ライマ豆のサラダ: ライマ豆・赤玉ねぎ・トマト・アヒ・香菜・ライム
     pe_ensalada_pallares: K([['pallar', 16, 14], ['redOnion', 4, 11], ['tomato', 5, 11], ['ajiRing', 3, 11]], withLime({ flecks: [cil(12)] })),
     // ロコトのクリームソース
-    pe_crema_rocoto: K([], { base: '#e8502a', H: 12, flecks: [['#f6e0c0', 12, 1.4], [CIL[0], 6, 1.4]] }),
+    pe_crema_rocoto: K([], { base: '#e8502a', H: 12, groove: true, crown: [['rocoto', 3, 16], ['queso', 2, 13]], flecks: [['#f6e0c0', 12, 1.4], [CIL[0], 6, 1.4]] }),
     // エンクルティード（野菜のピクルス）: にんじん・カリフラワー・いんげん・赤玉ねぎ
     pe_encurtido: K([['carrot', 8, 12], ['cauliflower', 4, 12], ['greenBean', 5, 8], ['redOnion', 5, 11], ['rocoto', 2, 12]], { base: '#f0e8c0' }),
     // いんげんのトマト炒め: いんげん・赤玉ねぎ・トマト
@@ -159,9 +159,9 @@ export default {
     // フレホーレス（カナリオ豆の煮もの）、豚バラ（お好みで）
     pe_frejoles: K([['canary', 30, 13]], { minD: 5, base: '#d8b878' }),
     // ペピアン・デ・チョクロ（すりおろしとうもろこしの煮もの）
-    pe_pepian_choclo: K([], { base: '#f2d070', H: 14, flecks: [['#f6e8a0', 30, 1.8], cil(10)] }),
+    pe_pepian_choclo: K([], { base: '#f2d070', H: 14, groove: true, crown: [['choclo', 8, 16]], flecks: [['#f6e8a0', 30, 1.8], cil(10)] }),
     // ピュレ・デ・パパ（マッシュポテト）
-    pe_pure_papa: K([], { base: '#f6e4a0', H: 22, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 30, 10) }),
+    pe_pure_papa: K([], { base: '#f6e4a0', H: 22, groove: true, crown: [['yellowPotato', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 10) }),
     // アロス・アラベ（エンジェルヘアとレーズンとアーモンドのご飯）
     pe_arroz_arabe: P([['angelHair', 10, 14], ['raisin', 14, 13], ['nut', 6, 12]], { rice: { cols: ['#f2dcb0', '#e8c890', '#fbecc8'], edge: '#b8945a' }, H: 24, R: 50 }),
     // ユカ・フリタ（キャッサバのフライ）
@@ -171,9 +171,9 @@ export default {
     // トレハス・デ・チョクロ（とうもろこしのかき揚げ）
     pe_torrejas_choclo: P([['torreja', 6, 26]], { minD: 22, H: 10, ing: { ...ing, torreja: (p, x, y, s, r, i) => W.crusty(p, x, y, s * .6, s * .42, i, { c: '#e0a840', n: 18, h: 5, rot: r }) + W.flecks(p, x, y - 4, s * .4, 8, 'tj' + i, ['#fff0a0', '#4a9a2c'], { ry: s * .2, s: 1.6 }) } }),
     // パステル・デ・アセルガ（ふだん草のパイ）
-    pe_pastel_acelga: p => W.bake(p, { c: '#e0b060', fl: ['#c8862e', '#a8641e', '#f6dca0'], n: 60, top: (o, V, pp) => `<path d="M30,${f(o.cy + 30)} L170,${f(o.cy + 30)}" stroke="#3f6a22" stroke-width="0"/>` + W.flecks(pp, o.cx, o.cy - 2, 60, 30, 'pac', ['#3f6a22', '#5a8a2a'], { ry: 30, s: 2 }) }),
+    pe_pastel_acelga: p => W.bake(p, { base: '#e8dcc0', inner: '#f6efe2', c: '#e0a848', fl: ['#c8862e'], n: 10, dome: {}, scoop: { u0: 22, v0: 6, hf: 32, layers: [['#d8963a', .22], ['#4a7a2a', .78]], dots: [['#f6ecd8', 6, 3], ['#5a2a2a', 3, 1.8]] } }),
     // パステル・デ・パパ（じゃがいもとチーズのオーブン焼き）
-    pe_pastel_papa: p => W.bake(p, { c: '#f2d070', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90 }),
+    pe_pastel_papa: p => W.bake(p, { /*fx*/blister: 8, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .3]] }, /*xf*/ c: '#f2d070', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90 }),
 
     // ---------- 汁物 ----------
     // アグアディート（香菜の鶏と米のスープ）: 鶏・米・香菜・グリンピース・にんじん、じゃがいも（お好みで）
@@ -195,11 +195,11 @@ export default {
     // パリウエラ（辛い魚介のスープ）: 魚・えび・いか・ムール貝・トマト・アヒ・香菜
     pe_parihuela: S('#c8401e', [['fish', 2, 18], ['shrimp', 3, 15], ['squid', 4, 14], ['mussel', 3, 14]], withLime({ minD: 10, flecks: [cil(12)] })),
     // シャンバル（麦と豆の月曜のスープ）: 麦・豆・そら豆・えんどう豆・燻製豚・香菜
-    pe_shambar: S('#a8743a', [['grain', 20, 12], ['canary', 8, 12], ['fava', 6, 12], ['bacon', 4, 13]], { minD: 6, flecks: [cil(12)] }),
+    pe_shambar: S('#a8743a', [['grain', 20, 12], ['canary', 8, 12], ['fava', 6, 12], ['bacon', 4, 13]], { top: [['canary', 8, 16], ['fava', 5, 16]], minD: 6, flecks: [cil(12)] }),
     // ソパ・デ・モロン（ひき割り麦のスープ）: 麦・じゃがいも・にんじん、グリンピース・チーズ（お好みで）
     pe_sopa_moron: S('#e8d0a0', [['grain', 30, 11], ['potato', 4, 12], ['carrot', 4, 11], ['pea', 5, 12]], { minD: 6 }),
     // かぼちゃのクリームスープ、パンのクルトン（お好みで）
-    pe_crema_zapallo: S('#f0a030', [['crouton', 6, 13]], { minD: 12, cream: '#fbf6e8', ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#c8862e', p.id + 'cr' + i, { h: s * .5, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) } }),
+    pe_crema_zapallo: S('#f0a030', [['crouton', 6, 13]], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], minD: 12, cream: '#fbf6e8', ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#c8862e', p.id + 'cr' + i, { h: s * .5, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) } }),
     // ソパ・ワンタン: ワンタン・鶏・チンゲン菜・青ねぎ・生姜、えび（お好みで）
     pe_sopa_wantan: S('#ecd8a8', [['wonton', 5, 22], ['pakchoi', 3, 12], ['shrimp', 2, 13]], { minD: 14, flecks: [['#4a9a2c', 12, 1.6]] }),
     // パタスカ（胃袋とモテのスープ）: 胃袋・モテ・じゃがいも・ミント
@@ -211,7 +211,7 @@ export default {
     // スタンシア（牛肉のだしと麺）: 牛すね・細麺・じゃがいも・にんじん・セロリ・ポロねぎ
     pe_sustancia: S('#d8b070', [['beef', 3, 14], ['noodleBit', 8, 15], ['yellowPotato', 2, 13], ['carrot', 3, 11], ['leek', 3, 11]], { minD: 9 }),
     // アスパラガスのクリームスープ、粉チーズ（お好みで）
-    pe_crema_esparragos: S('#b8c870', [['asparagusTip', 4, 14]], { minD: 12, cream: '#fbf6e8', ing: { ...ing, asparagusTip: (p, x, y, s, r) => W.asparagus(p, x, y, s * 1.4, r) } }),
+    pe_crema_esparragos: S('#b8c870', [['asparagusTip', 4, 14]], { top: [['asparagusTip', 5, 16]], minD: 12, cream: '#fbf6e8', ing: { ...ing, asparagusTip: (p, x, y, s, r) => W.asparagus(p, x, y, s * 1.4, r) } }),
     // カルド・ベルデ（香草のスープとじゃがいもと卵）: じゃがいも・卵・チーズ・パセリ・香菜・ミント
     pe_caldo_verde: S('#6a9a3a', [['potato', 4, 14], ['eggPoached', 2, 18], ['queso', 3, 13]], { minD: 12, flecks: [cil(16)] }),
     // フチフ（ペルー中華の鶏そばと卵）: 鶏・中華麺・卵・青ねぎ・生姜、チンゲン菜（お好みで）
