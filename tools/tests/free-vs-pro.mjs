@@ -42,16 +42,19 @@ for (const cc of CCS){
         S.settings.dishCount = 3; session.mood = moods[0]; session.menu = null; render();
         // 汁ものの麺（肉うどん）や汁ものが主菜のときは、汁ものの枠を空にする仕様（suggestOrAny）。その空きは「出ない」に数えない
         const soupMain = m => typeof soupyMain === 'function' ? soupyMain(m) : !!m && (m.id === 'nikuudon' || m.type === '汁物');   // 汁けの多い主菜（A5: ラーメン・鍋・シチューなど）の日も同じ
-        if (!session.menu || session.menu.n !== 3 || !session.menu.items.every(x => x.r || (x.slot === '汁物' && soupMain(session.menu.items[0].r)))) bad.push('無料で今日の献立が出ない');
+        if (!session.menu || session.menu.n !== dishesFor(3) || !session.menu.items.every(x => x.r || (x.slot === '汁物' && soupMain(session.menu.items[0].r)))) bad.push('無料で今日の献立が出ない');
         paywalls.length = 0;
-        click('count', {v: 5}); if (paywalls[0] !== 'dishes' || S.settings.dishCount !== 3) bad.push('5品で購入画面が出ない/設定が変わった');
-        click('count', {v: 6}); if (S.settings.dishCount !== 3) bad.push('6品で設定が変わった');
-        click('count', {v: 4}); if (S.settings.dishCount !== 4) bad.push('4品は無料で選べるはず');
-        if (document.body.innerText.indexOf(t('無料版は{n}品までなので{n}品です', {n:4})) >= 0) bad.push('4品固定なのに「4品までなので」と出る');
+        // 品数の値は席の数（ご飯の席も1品。基準書 7章 4A）。無料版の上限はおかず4（ご飯のある国では5席）
+        const v5 = dishSeats(5), v6 = dishSeats(6), v4 = dishSeats(4);
+        click('count', {v: v5}); if (paywalls[0] !== 'dishes' || S.settings.dishCount !== 3) bad.push('おかず5（' + v5 + '品）で購入画面が出ない/設定が変わった');
+        click('count', {v: v6}); if (S.settings.dishCount !== 3) bad.push('おかず6（' + v6 + '品）で設定が変わった');
+        click('count', {v: v4}); if (S.settings.dishCount !== v4) bad.push('おかず4（' + v4 + '品）は無料で選べるはず');
+        // 画面の品数は、ご飯の席も1品と数える（基準書 7章 4A）。値（おかずの数）4 は、ご飯のある国では「5品」と出る
+        if (document.body.innerText.indexOf(t('無料版は{n}品までなので{n}品です', {n: dishSeats(4)})) >= 0) bad.push('4品固定なのに「4品までなので」と出る');
         S.settings.dishCount = 6;   // 以前 Pro で選んだ値: 無料では4品で、理由を言う
-        if (menuCount() !== 4 || countReason(4) !== t('無料版は{n}品までなので{n}品です', {n:4})) bad.push('6品設定の理由が正直でない');
+        if (menuCount() !== 4 || countReason(4) !== t('無料版は{n}品までなので{n}品です', {n: dishSeats(4)})) bad.push('6品設定の理由が正直でない');
         // あと1品: 4品を超えて足せない（入れかえになる）
-        S.settings.dishCount = 4; session.menu = null; render();
+        S.settings.dishCount = dishSeats(4); session.menu = null; render();   // おかず4（席の数で）
         const fake = RECIPES.find(r => slotOf(r) === '副菜' && !session.menu.items.some(x => x.r && x.r.id === r.id));
         if (fake && oneCanAdd(fake) && session.menu.items.every(x => x.r)) bad.push('あと1品で無料の5品目が足せる');
         // 買い物: 今日の分は無料
@@ -85,7 +88,7 @@ for (const cc of CCS){
         // 購入画面の文に、無料版にある機能を「ない」と書いていない（無料の範囲は理由文に正直）
         // --- Pro: 制限なし
         const hp = hasPro; hasPro = () => true;
-        S.settings.dishCount = 6; session.mood = moods[0]; if (menuCount() !== 6) bad.push('Pro で6品にならない');
+        S.settings.dishCount = dishSeats(6); session.mood = moods[0]; if (menuCount() !== 6) bad.push('Pro でおかず6（' + dishSeats(6) + '品）にならない');   // 値は席の数
         if (visiblePlanDaysAll().length !== S.week.days.filter(x => x.d >= TODAY).length) bad.push('Pro で全日見えない');
         paywalls.length = 0; openPaywall = reason => { paywalls.push(reason); sheet = null; };
         click('skill-done', {id: RECIPES[1].id}); click('count', {v: 5}); if (paywalls.length) bad.push('Pro なのに購入画面 ' + paywalls);

@@ -998,7 +998,7 @@ for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfis
     const g = await p.evaluate(() => {
         const ids = ['tonkatsu', 'consomme'].filter(id => byId(id) && !isAvoided(byId(id)));
         const ham = RECIPES.find(r => !isAvoided(r) && r.items.some(i => i.key === 'ハム' && !i.opt)); if (ham) ids.push(ham.id);
-        S.cook = {d: TODAY, ids, slots: ids.map(id => byId(id).type || '主菜'), done: {}, adj: true, salt: 0}; save(); session.stage = 'shop'; setTab('today'); render();
+        S.cook = {d: TODAY, ids, slots: ids.map(id => byId(id).type || '主菜'), done: {}, adj: true, salt: 0}; save(); gotoStage('shop');   // 買い物メモは作り方のタブの上（最初の版の6タブ）
         const rows = [...document.querySelectorAll('.stage-shop .buy-row')].map(x => x.innerText.replace(/\s+/g, ' '));
         const fold = document.querySelector('.buy-fold[data-bf="seas"] summary'); const seasRows = [...document.querySelectorAll('.buy-fold[data-bf="seas"] .buy-row')].map(x => x.textContent.replace(/\s+/g, ' '));
         return { ids, rows, fold: fold ? fold.innerText.replace(/\s+/g, ' ') : '', seasRows, ham: ham ? ham.id : '' };

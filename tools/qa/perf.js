@@ -86,12 +86,14 @@ const click = sel => sel;
 async function actions(b, cpu){
     const { ctx, p } = await newCtx(b, cpu);
     await p.goto(BASE); await waitMenu(p); await p.waitForTimeout(2000);
-    const out = { newMenu: [], swapOpen: [], swapPick: [], tabFridge: [], tabLog: [], tabToday: [], settings: [], settingsBack: [] };
+    const out = { newMenu: [], swapOpen: [], swapPick: [], tabCook: [], tabFridge: [], tabWorld: [], tabLog: [], tabToday: [], settings: [], settingsBack: [] };
     for (let i = 0; i < REPS; i++){
-        out.newMenu.push(await act(p, click('#view .tray .tray-shuffle .shuffle[data-act=new-menu]')));
+        out.newMenu.push(await act(p, click('#view .tray .tg-mid .shuffle[data-act=new-menu]')));
         out.swapOpen.push(await act(p, click('#view .tray button.swap[data-act=reroll][data-i="1"]')));
         out.swapPick.push(await act(p, click('#sheet-root [data-act=swap-pick]')));
+        out.tabCook.push(await act(p, click('nav.tabs [data-tab=cook]')));   // 最初の版の6つのタブ
         out.tabFridge.push(await act(p, click('nav.tabs [data-tab=fridge]')));
+        out.tabWorld.push(await act(p, click('nav.tabs [data-tab=world]')));
         out.tabLog.push(await act(p, click('nav.tabs [data-tab=log]')));
         out.tabToday.push(await act(p, click('nav.tabs [data-tab=today]')));
         out.settings.push(await act(p, click('header [data-act=settings]')));

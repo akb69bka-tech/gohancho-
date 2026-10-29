@@ -30,10 +30,7 @@ let bad = 0; const ok = (c, m) => { if (!c){ bad++; console.log('NG', m); } else
     await p.evaluate(() => document.getElementById('tmp-gs').click()); await p.waitForTimeout(200);
     ok(await p.locator('details.fold[data-fold="week"]').evaluate(e => e.open), tag + ' 買い物メモへ移ると週の欄が開く');
     for (const tab of ['today', 'cook', 'fridge', 'world', 'log']) {
-      // 案2: 作り方は今日の四段の印「三 作る」、世界は「さがす」の中の切りかえ
-      if (tab === 'cook') await p.locator('.stages [data-act="stage"][data-k="cook"]').click();
-      else if (tab === 'world'){ await p.locator('nav.tabs button[data-tab="fridge"]').click(); await p.waitForTimeout(200); await p.locator('.subnav [data-k="world"]').click(); }
-      else await p.locator(`nav.tabs button[data-tab="${tab}"]`).click();
+      await p.locator(`nav.tabs button[data-tab="${tab}"]`).click();   // 最初の版の6つのタブ
       await p.waitForTimeout(250);
       const hs = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       ok(hs <= 0, `${tag} ${tab} 横にはみ出さない (${hs})`);

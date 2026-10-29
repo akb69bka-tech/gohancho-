@@ -59,6 +59,7 @@ if (want('N3')){
     {
         const {p, ctx} = await open({dishCount: 3}, {time: '2026-10-29T00:21:00+09:00'});
         await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
+        await p.evaluate(() => gotoStage('shop')); await p.waitForTimeout(200);   // 買い物メモは作り方のタブの上（最初の版の6タブ）
         await p.click('button[data-act=shop-ok]'); await p.waitForTimeout(400);
         await p.evaluate(() => { session.eatOpen = true; render(); });
         await p.fill('#eat-at', '18:30'); await p.locator('#eat-at').dispatchEvent('change'); await p.waitForTimeout(400);
@@ -145,7 +146,7 @@ if (want('N4')){
     for (const vp of [[390, 844], [375, 667], [320, 568]]){
         const {p, ctx} = await open({dishCount: 3}, {time: '2026-10-28T17:00:00+09:00'});
         await p.setViewportSize({width: vp[0], height: vp[1]});
-        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await hookToast(p);
+        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => gotoStage('shop')); await p.waitForTimeout(200); await hookToast(p);
         await p.click('button[data-act=shop-ok]'); await p.waitForTimeout(500);
         const r = await toastCover(p);
         ok(!r.none && /買い物そろいました/.test(r.text), `N4-1 ${vp[0]}x${vp[1]} 作る段で「買い物そろいました」が出る: ` + r.text);
@@ -228,6 +229,7 @@ if (want('N7')){
     const {p, ctx} = await open({dishCount: 3}, {time: '2026-10-28T17:00:00+09:00'});
     await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
     await p.click('nav.tabs [data-tab=log]'); await p.waitForTimeout(500);
+    await p.evaluate(() => { const e = document.querySelector('#log-cal'); if (e) e.scrollIntoView({block: 'start'}); }); await p.waitForTimeout(200);   // 作った記録は記録のタブの中ほど（最初の版の並び）。画面の外は描かない（content-visibility）ので、見える所まで送ってから読む
     const r = await p.evaluate(() => ({today: (document.querySelector('#log-today') || {}).innerText || '', recent: (document.querySelector('#log-recent') || {}).innerText || '', hist: S.history.length}));
     ok(r.hist === 0, 'N7-0 決めただけでは記録しない（決めた≠作った）: ' + r.hist);
     ok(!/「この献立に決定」を押す/.test(r.recent), 'N7-1 決めたあとに「決定を押すと記録されます」と出さない: ' + r.recent.replace(/\n/g, '/'));

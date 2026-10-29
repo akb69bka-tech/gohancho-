@@ -60,9 +60,10 @@ else
   add "t-week-skip"      app "" "node tools/tests/week-skip.mjs"
   add "t-needs-tally"    app "" "node tools/tests/needs-tally.mjs"
 fi
-for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy allergen-regions stock menu-trust promises dish-alias panel-r3 panel-r3b panel-r4 panel-r4b panel-r4-ui marugoto upgrade-v36 wish first-country; do
+for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy allergen-regions stock menu-trust promises dish-alias panel-r3 panel-r3b panel-r4 panel-r4b panel-r4-ui marugoto upgrade-v36 upgrade-seats wish first-country; do
   add "t-$T" app "" "node tools/tests/$T.mjs"
 done
+add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
 add "packs-check"      static "" "node tools/packs/check.mjs"
 for L in $LANGS; do add "i18n-$L" static "" "node tools/i18n/extract.mjs --check $L"; done

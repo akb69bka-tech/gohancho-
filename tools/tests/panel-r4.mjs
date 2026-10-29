@@ -40,14 +40,14 @@ const stats = (p, n = 250) => p.evaluate(n => {
     return {sideNoStove: side / Math.max(1, sideN), steps: steps / n, empty, long: long / Math.max(1, all)};
 }, n);
 
-// ---- R2 台所の設定が献立に効く ----
+// ---- R2 台所の設定が献立に効く ----（品数は席の数なので、副菜のある 4 にする）
 if (want('R2')){
     for (const cc of ['JP', 'US']){
-        const base = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en'}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
+        const base = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en', dishCount: 4}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
         const s0 = await stats(base.p); await base.ctx.close();
-        const one = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en', kitchen: {burners: '1'}}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
+        const one = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en', dishCount: 4, kitchen: {burners: '1'}}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
         const s1 = await stats(one.p); await one.ctx.close();
-        const nw = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en', kitchen: {skill: 'new'}}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
+        const nw = await open({country: cc, uiLang: cc === 'JP' ? 'ja' : 'en', dishCount: 4, kitchen: {skill: 'new'}}, {locale: cc === 'JP' ? 'ja-JP' : 'en-US'});
         const s2 = await stats(nw.p); await nw.ctx.close();
         ok(s1.sideNoStove >= 0.8 && s1.sideNoStove > s0.sideNoStove + 0.2, `R2-1 ${cc} コンロ1つ: 副菜にコンロを使わない料理が多くなる: ${s0.sideNoStove.toFixed(2)} → ${s1.sideNoStove.toFixed(2)}`);
         ok(s2.steps < s0.steps - 0.1 && s0.long > 0 && s2.long <= s0.long * 0.5, `R2-2 ${cc} はじめて: 手順の平均が少なくなり、手順が5つ以上の料理が半分以下になる: ${s0.steps.toFixed(2)} → ${s2.steps.toFixed(2)}、${s0.long.toFixed(3)} → ${s2.long.toFixed(3)}`);

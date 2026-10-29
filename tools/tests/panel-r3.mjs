@@ -60,7 +60,7 @@ const open = async (settings = {}, opt = {}) => {
     const r = await p.evaluate(() => {
         S.cook = {d: TODAY, ids: ['teriyaki'], slots: ['主菜']};
         const row = todayShopRows().rows.find(e => /鶏もも肉/.test(e.key)) || {};
-        setTab('today'); session.stage = 'shop'; render();
+        gotoStage('shop');   // 買い物メモは作り方のタブの上
         const txt = (document.querySelector('.stage-shop') || document.body).textContent;
         return {buy: row.buyQty, use: row.use, left: row.left, txt: txt.slice(0, 2000)};
     });
