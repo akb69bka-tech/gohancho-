@@ -594,3 +594,8 @@ export function skewers(p, o, n, piece, { L = 120, k = 4, rot = -10, gap = 16, s
 }
 // 丸ごとの魚を皿に（焼き魚・揚げ魚）: 上にソースや薬味を on(x, y) で
 export const fishOn = (p, D, { L = 150, rot = -8, skin = '#a8763a', belly = '#e8c890', char = .6, on = () => '' } = {}) => D.s + wholeFish(p, D.o.cx, D.o.cy, L, rot, 1, { skin, belly, char }) + on(D.o.cx, D.o.cy);
+// オーブン焼き（グラタン・パルミジャーナ・エスコンジジーニョ・ムサカ）: 角の耐熱皿に焼き色の面、top(o) で上の具
+export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', ...o } = {}){
+    const V = casserole(p, { base, inner, ...o });
+    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${top(V.o, V, p)}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
+}
