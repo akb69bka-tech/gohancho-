@@ -5061,16 +5061,27 @@ function upgradeOf(r){
     return [base.tip, UPGRADES[base.id], upgradeByMethod(base.method)].filter(Boolean).find(upgradeSafe) || null;
 }
 function upgradeSafe(u){
-    const txt = String(u && u.add || ''); if (!txt) return true;
-    // 「白ごまかかつお節」「白ワイン（または酒）」のような書き方も、全体と、区切った1つずつで見る
-    const words = [txt, ...txt.split(/[・、,，／/（）()]|または|を|\s+or\s+|\s+and\s+/).map(x => x.trim()).filter(x => x.length > 1)];
-    const items = words.map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+    if (!u) return true;
+    const txt = String(u.add || '');
+    // 「白ごまかかつお節」「白ワイン（または酒）」のような書き方も、全体と、区切った1つずつで見る。「か」は、その前とうしろに分けた形も見る（「かつお節」の「か」で切れても、うしろ全体が残る。モニター第4回 S16）
+    const ka = []; if (/[぀-ヿ㐀-鿿]/.test(txt)) for (let k = txt.indexOf('か'); k > 0; k = txt.indexOf('か', k + 1)) ka.push(txt.slice(0, k), txt.slice(k + 1));
+    const words = txt ? [txt, ...txt.split(/[・、,，／/（）()]|または|を|\s+or\s+|\s+and\s+/), ...ka].map(x => x.trim()).filter(x => x.length > 1) : [];
+    const items = [...new Set(words)].map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+    // コツ・説明の文（why・skill・how）も照らす（「水にだしパックを入れて」「水（または牛乳）につけて」。モニター第4回 S15）。文は1つの言葉として、分けずに見る。道具の名前（魚焼きグリル）は外す
+    const prose = [u.why, u.skill, u.how].filter(Boolean).map(x => String(x).replace(/魚焼き(?:グリル|器|網)?|\bfish (?:grill|slice|spatula)s?\b/gi, ' ')).map(x => ({key: x, en: /[a-z]/i.test(x) ? x.toLowerCase() : '', name: x, label: x}));
+    const algHit = (ids, i, may) => ids.some(id => { const k = algKind(id, i); return k && (k !== 4 || may) && (k !== 3 || algFerm()); });
     if (allergyOn()){
         const g = allergyCtx(), ids = algIdsEff();
-        if (items.some(i => itemAvoided(i, g))) return false;
-        if (items.some(i => ids.some(id => { const k = algKind(id, i); return k && (k !== 3 || algFerm()); }))) return false;   // 入っていることがある加工品（かにかまの卵など）も、足す物としてはすすめない
+        if (items.some(i => itemAvoided(i, g)) || prose.some(i => itemAvoided(i, g))) return false;
+        if (items.some(i => algHit(ids, i, true))) return false;   // 入っていることがある加工品（かにかまの卵など）も、足す物としてはすすめない
+        if (prose.some(i => algHit(ids, i, false))) return false;   // 文では「入っていることがある」（味噌など）までは見ない
     }
-    if (effAvoid().length){ const c = avoidCtx(); if (items.some(i => itemAvoided(i, c))) return false; }
+    if (effAvoid().length){
+        const c = avoidCtx(); if (items.some(i => itemAvoided(i, c)) || prose.some(i => itemAvoided(i, c))) return false;
+        // 苦手のなかま（魚・乳製品など）は、だし・かつお節・牛乳のような調味料・加工品の言葉でも見る（置き換えて作る料理のコツに、外したものを出さない）
+        const fa = [...new Set(c.fams.flatMap(f => FAM_ALG[f] || []))];
+        if (fa.length && [...items, ...prose].some(i => fa.some(id => { const k = algKind(id, i); return k === 1 || k === 2; }))) return false;
+    }
     return true;
 }
 function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
@@ -5508,8 +5519,14 @@ function obFinish(){
     obReveal();
     if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
 }
+// はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
+// （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）
+function obAlgGroups(){
+    const sec = algSections(), top = sec.main.filter((g, k) => k === 0 || g[2] === 'prev'), inTop = new Set([].concat(...top.map(g => g[1])));
+    return {top, more: [...new Set([].concat(...sec.main.map(g => g[1])).concat(sec.rest))].filter(id => !inTop.has(id))};
+}
 function startOnboard(keep){
-    const algShown = ((algSections().main[0] || [])[1] || []).slice();
+    const og = obAlgGroups(), algShown = [...new Set([].concat(...og.top.map(g => g[1])).concat(og.more))];
     sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
     if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; }   // 国を選び直したときも、人数と品数はそのまま
     renderSheet();
@@ -5552,15 +5569,16 @@ function renderSheetBody(){
             ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-next">${esc(t('次へ'))}</button></div>`;
         if (st === 1){
-            const algMain = (algSections().main[0] || [])[1] || [];
+            const og = obAlgGroups(), obChip = id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`;
             body = `
             ${obProgHtml(3, true)}
             <h2>${esc(t('苦手な食材はありますか'))}</h2>
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
             <h3>⚠ ${esc(t('アレルギー対策'))}</h3>
-            <p class="muted small">${esc(algSections().main[0][0])}</p>
-            <div class="chips">${algMain.map(id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`).join('')}</div>
+            ${og.top.map(([title, ids]) => `<p class="muted small">${esc(title)}</p><div class="chips">${ids.map(obChip).join('')}</div>`).join('')}
+            ${og.more.length ? `<details class="avoid-more ob-alg-more" ${sheet.algMoreOpen || og.more.some(id => sheet.alg.has(id)) ? 'open' : ''}><summary>${esc(t('ほかのアレルゲン'))}</summary>
+                <div class="chips">${og.more.map(obChip).join('')}</div></details>` : ''}
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
             <details class="box ob-staples" ${sheet.stOpen ? 'open' : ''}><summary>${esc(t('いつも家にある食材'))}</summary><div class="inner">
@@ -6079,7 +6097,7 @@ const ALG_DEF = {
     // 魷魚（いか）・章魚（たこ）・墨魚・鮑魚（あわび）・甲魚（すっぽん）の「魚」は、魚ではない。沙茶醬は干した魚（扁魚）・干しえびが入ることが多い調味料（安全第7回）
     fish:{fam:'fish', may:/(?<![びに])みそ(?!ーす)|味噌|\bmiso\b|ぽんず|ぽん酢|\bponzu\b|納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|きむち|\bkimchi\b|김치|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b/, re:/(?<![魷章墨鱆鮑甲])魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|鱧|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|(?<!こま)つな|\bfish(?!er|erman)\b|\bfishes\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|pollock|hairtail|\bcod\b|haddock|sea ?bream|whitebait|croaker|sardines?|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|\bsea ?bass\b|\bhalibut\b|swordfish|\bplaice\b|\bsole\b|\bmullet\b|\bcarp\b|\beel\b|\bperch\b|\bpike\b|\bturbot\b|\bmonkfish\b|\bgrouper\b|\bsturgeon\b|\bcaviar\b|\bkippers?\b|\bsprats?\b|\bpilchards?\b|\bbarramundi\b|\bpangasius\b|\bbasa\b|\bdorado\b|\bmahi.?mahi\b|\bmarlin\b|\bkingfish\b|\bpescado\b|\bbacalao\b|\bat[uú]n\b|\bsalm[oó]n\b|\bsardinas?\b|\bpoisson\b|\bthon\b|\bsaumon\b|\bmorue\b|\bfisch\b|\blachs\b|\bthunfisch\b|\bpesce\b|\btonno\b|\bsalmone\b|\bmerluzzo\b|\bpeixe\b|\batum\b|\bbacalhau\b|\bsalm[aã]o\b|생선|어묵|멸치|참치|연어|고등어|(?<![鱿章墨鲍甲])鱼|鳕|ปลา|\bcá\b|\bikan\b|\bbalık\b|\bryba\b|\brybn|मछली|\bisda\b|\bbagoong\b|\bdaing\b|\btinapa\b/,
         no:/fish.?free|\bselfish\b|jellyfish|crayfish|cuttlefish|starfish|shellfish|\bcrawfish\b|さかなクン|\bfishcake rice\b|魚介(?:類)?なし/, eq:['さけ','たい','たら','ぶり','あじ','さば','ふぐ','はも','きす','ほっけ','あゆ','こい','ます','あご'],
-        via:/(?:^|[|)])だし(?:じる|汁)?(?=$|\|)|めんつゆ|\bmentsuyu\b|かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしの素|和風だし|あごだし|だし入り(?:味噌|みそ)|だしいりみそ|白だし|しろだし|だし(?:醤油|しょうゆ|じょうゆ)|焼きあご|やきあご|(?<!kombu |konbu |kelp |vegetable |shiitake |mushroom )\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
+        via:/(?:^|[|)])だし(?:じる|汁)?(?=$|\|)|めんつゆ|\bmentsuyu\b|かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしパック|\bdashi packs?\b|だしの素|和風だし|あごだし|だし入り(?:味噌|みそ)|だしいりみそ|白だし|しろだし|だし(?:醤油|しょうゆ|じょうゆ)|焼きあご|やきあご|(?<!kombu |konbu |kelp |vegetable |shiitake |mushroom )\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
     treenut:{parts:['walnut','cashew','pistachio','macadamia','almond','pinenut'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
         no:/nutmeg|nut ?meg|ナツメグ|なつめぐ|\bpeanuts?\b|ぴーなっつ|ピーナッツ|doughnuts?|donuts?|nutrient|nutritional|nutrition|\bcoconut\b|butternut|\bnutty\b|\bnut.?free\b|water chestnuts?|くわい|nuez moscada|noix de muscade|chestnut|栗|ぐりーん/, via:/\bmole\b|\bsatay\b|\bgado.?gado\b|\bpecel\b|ぬがー|ぷらりね|ぬてら|\bfrangipane\b|\bbaklava\b|\bkunafa\b|\bmaamoul\b|\bromesco\b/},
     celery:{re:/せろり|\bcelery\b|\bceleriac\b|\bcéleri\b|\bapio\b|\bsellerie\b|\bsedano\b|\baipo\b|\bselleri\b|\bseler\b|\bkereviz\b|\bselderij\b|\bkintsay\b|芹菜|西芹|셀러리|เซเลอรี่|\bcần tây\b|\bseledri\b|セロリアック/, via:/\bmirepoix\b/},
@@ -6249,7 +6267,7 @@ function algSections(){
         const have = new Set([].concat(...main.map(m => m[1])));
         // 確かめられなかった分: 前に出していた並びの残り（グルテンを含む穀物を出していれば、小麦はその中に入るので重ねない）
         const prev = R.prev ? ALG_G[R.prev].filter(id => !have.has(id) && !(id === 'wheat' && have.has('gluten'))) : [];
-        if (prev.length) main.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), prev]);
+        if (prev.length) main.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), prev, 'prev']);   // 3つ目の 'prev': 確かめきれていない分（はじめての設定でも必ず出す）
     }
     const shown = new Set([].concat(...main.map(m => m[1])));
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
@@ -12075,7 +12093,8 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
     if (e.target.matches('details.set-sec')) { if (!session.setOpen) session.setOpen = {}; session.setOpen[e.target.dataset.sk] = e.target.open; }   // 設定のまとまりの開き閉じ（描き直しても同じ）
-    if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
+    if (e.target.matches('details.ob-alg-more')){ if (sheet) sheet.algMoreOpen = e.target.open; }   // はじめての設定の「ほかのアレルゲン」（描き直しても開いたまま）
+    else if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
     else if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
     else if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
