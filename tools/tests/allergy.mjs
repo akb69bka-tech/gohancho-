@@ -6,7 +6,7 @@
 //  3) 厳格さ: 置き換えで「安全」に見せない（苦手の置き換え先にアレルゲンを選ばない・アレルゲンの料理は置き換えず出さない）
 //  4) 全経路: 献立・かえる・1週間プラン・買い物メモ・保存献立の警告・お気に入り・あと1品・ひとひねり・世界のレシピで同じ判定
 //  5) 連動なし: アレルゲンを足しても、当たっていない枠は動かない（当たった枠だけ選び直す）
-//  6) 表示: 詳細に「この料理に含まれる主なアレルゲン」・設定の「アレルギー対策」カード（日本=9+20、米国系=9、ほか=14）・免責
+//  6) 表示: 詳細に「この料理に含まれる主なアレルゲン」・設定の「アレルギー対策」カード（国ごとの区分。日本=9+20、米国=9、EU=14 など。各国は allergen-regions.mjs）・免責
 //  乱数: ページの Math.random は SEED から決まる（開くページごとに seedFor('allergy', 通し番号)）。失敗したら表示された SEED=… を付けて実行すると同じ献立で再現する
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
@@ -15,7 +15,7 @@ const { chromium } = require(execSync('npm root -g').toString().trim() + '/playw
 const { SEED, rngScript, seedFor } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
-const b = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let fails = 0, opened = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };
 async function open(cc = 'JP', settings = {}, store = {}){
@@ -67,6 +67,12 @@ const CASES = {
     mustard: [['からし','練りからし','粒マスタード','Mustard','Dijon mustard','Mustard seeds','Mustard oil','Piccalilli'], ['唐辛子','赤唐辛子','Chili','Mustard greens','からし菜','Mizuna']],
     sulphite: [['White wine','Red wine vinegar','Raisins','Dried apricots','Sherry','ワイン','Balsamic vinegar','Sauerkraut','Sulphites'], ['Rice wine','Shaoxing wine','みりん','Rice vinegar','Fresh grapes'.replace('Fresh grapes','Apple')]],
     lupin: [['Lupin flour','Lupini beans','ルピナス','Lupine'], ['Chickpeas','Lentils']],
+    // 国ごとの区分で足した品目（韓国 토마토・잣・조개류、台湾 芒果・種子類）
+    tomato: [['トマト','ミニトマト','トマト缶','Tomatoes','Cherry tomatoes','Tomato paste','Ketchup','ケチャップ','jitomate','pomodori','토마토','Passata','番茄'], ['Potato','じゃがいも','Tamarind','Pomegranate','Eggplant']],
+    mango: [['マンゴー','Mango','Mangoes','Dried mango','芒果','Amchur','Green mango','망고'], ['Mangosteen','Mangold','Mangetout','Melon','Papaya']],
+    pinenut: [['松の実','Pine nuts','pinoli','piñones','잣','Pesto'], ['Pineapple','パイナップル','Peanuts','Walnuts']],
+    shellfish: [['あさり','しじみ','ほたて','牡蠣','あわび','Clams','Mussels','Oysters','Scallops','Abalone','Oyster sauce','굴','홍합','蛤'], ['Octopus','Squid','たこ','いか','Oyster mushrooms','Scallions','Shrimp','貝割れ大根']],
+    seeds: [['ひまわりの種','かぼちゃの種','Sunflower seeds','Pumpkin seeds','Pepitas','瓜子','Pine nuts','松の実'], ['Sunflower oil','Pumpkin','かぼちゃ','Sesame seeds']],
     mollusc: [['あさり','しじみ','ほたて','牡蠣','たこ','いか','Clams','Mussels','Oysters','Scallops','Octopus','Squid','Oyster sauce','オイスターソース','Escargots','蛤'], ['Oyster mushrooms','ひらたけ（オイスターマッシュルーム）','Oyster crackers','Scallions','Shrimp','Crab','貝割れ大根']],
 };
 {
@@ -119,6 +125,8 @@ const OBVIOUS = {
     macadamia: /マカダミア|\bmacadamia/i, pistachio: /ピスタチオ|\bpistach|\bpistaz/i, peach: /桃|\bpeach/i, yamaimo: /長いも|山芋|やまいも|とろろ|自然薯/i, apple: /りんご|\bapples?\b/i, gelatin: /ゼラチン|\bgelatin/i, almond: /アーモンド|\balmond/i,
     gluten: /小麦粉|薄力粉|強力粉|パン粉|\bwheat flour|\bbread\b|\bspaghetti|うどん|\brye\b|\bbarley|ライ麦|大麦/i, crustacean: /えび|海老|蟹|\bshrimp|\bprawn|\bcrab|\blobster/i,
     fish: /鮭|サーモン|\bsalmon\b|\btuna\b|\bcod\b|\bmackerel\b|\banchov|ツナ|\bfish\b|鯖|かつお節|さんま|いわし/i, treenut: /アーモンド|くるみ|カシュー|ピスタチオ|\balmond|\bwalnut|\bcashew|\bhazelnut|\bpecan|\bpistachio/i,
+    tomato: /トマト|\btomato(?:es)?\b|\bketchup\b|ケチャップ/i, mango: /マンゴー|\bmangos?\b|\bmangoes\b/i, pinenut: /松の実|\bpine nuts?\b/i,
+    shellfish: /あさり|しじみ|ほたて|牡蠣|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops\b/i, seeds: /ひまわりの種|かぼちゃの種|\bsunflower seeds?\b|\bpumpkin seeds?\b|\bpine nuts?\b/i,
     celery: /セロリ|\bcelery\b/i, mustard: /粒マスタード|練りからし|\bmustard\b/i, sulphite: /\bwine\b|ワイン|\braisins?\b/i, lupin: /\blupin/i, mollusc: /あさり|しじみ|ほたて|牡蠣|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops\b|\boctopus\b|\bsquid\b/i,
 };
 // 除外の根拠になりうる言葉（広め）。オイスターソース（小麦・大豆）・コチュジャン・甜麺醤（小麦）・めんつゆ（魚）は安全第4回b N1、塩昆布・納豆付属のたれ（醤油と同じ）・ラー油（ごま）はモニター第3回c NEW2 で判定に入れた。除外された料理に、この言葉が材料か調味料に1つもなければ「誤って除外」
@@ -146,7 +154,12 @@ const LOOSE = {
     celery: /セロリ|celery|celeriac|céleri|apio|sellerie|sedano|aipo|selleri|seler|kereviz|selderij|kintsay|芹菜|西芹|셀러리|เซเลอรี่|cần tây|seledri|mirepoix/i, mustard: /からし|辛子|芥子|マスタード|mustard|moutarde|senf|senape|mostarda|mostaza|musztard|hardal|겨자|芥末|มัสตาร์ด|mù tạt|mustar|सरसों|sarson|dijon|kasundi|piccalilli/i,
     sulphite: /sulphite|sulfite|sulphur|sulfur|亜硫酸|wine|ワイン|わいん|sherry|シェリー|vermouth|marsala|madeira|port|vinegar|酢|raisin|sultana|dried fruit|dried apricot|dried fig|ドライフルーツ|干しぶどう|レーズン|vin\b|vino|vinho|wein|balsamic|バルサミコ|cider|sauerkraut|ザワークラウト|ザウアークラウト|pickl|ピクルス|漬物|jam|ジャム/i, lupin: /lupin|ルピナス|羽扇豆|tremoço|tarwi|chocho|termos/i,
     mollusc: /オイスター|おいすたー|あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|貝|蛸|たこ|いか|烏賊|するめ|clam|mussel|oyster|scallop|octopus|cockle|whelk|snail|escargot|periwinkle|limpet|conch|geoduck|pulpo|poulpe|krake|polpo|polvo|almeja|mejill|ostra|vieira|berberecho|chirla|palourde|moule|huître|coquille|vongole|cozze|ostrica|muschel|auster|midye|kerang|tiram|remis|조개|굴|낙지|문어|蛤蜊|牡蛎|蚝|扇贝|章鱼|หอย|nghêu|sò|hàu|tahong|talaba|sea urchin|squid|calamar|calmar|kalmar|sepia|cuttlefish|sotong|오징어|鱿|หมึก|mực|kałamarn|pusit|abalone|鮑|鲍|전복/i,
+    tomato: /トマト|とまと|tomat|ketchup|ケチャップ|けちゃっぷ|catsup|marinara|passata|sugo|pizza|pico de gallo|salsa|shakshuka|gazpacho|menemen|tomatillo|tamarillo|tree tomato|pomodor|pelati|jitomate|pomidor|domates|토마토|มะเขือเทศ|cà chua|kamatis|टमाटर|طماطم|بندورة|番茄|蕃茄|西红柿|西紅柿/i,
+    mango: /マンゴー|まんごー|mango|mangue|manga|芒果|망고|มะม่วง|xoài|mangga|manggahan|आम|मैंगो|مانج|منجا|amchu|amchoor|aam/i,
+    pinenut: /松の実|まつのみ|pine|pinoli|pignoli|piñon|pinon|pignon|pinien|pinh|çam|piniow|잣|松子|松仁|thông|chilgoza|चिलगोज़ा|pesto|ぺすと/i,
+    seeds: /種|seed|pepita|egusi|籽|瓜子|씨|เมล็ด|hạt|kuaci|biji|semilla|graine|kerne|semi|semente|çekirde|pestki|słonecznik|pine|pinoli|pignoli|piñon|pinien|pinh|çam|piniow|잣|松|chilgoza|pesto|ぺすと/i,
 };
+LOOSE.shellfish = new RegExp(LOOSE.mollusc.source + '|홍합|바지락|가리비|蚵|蠔|干貝|贻贝|淡菜|굴소스', 'i');
 // 料理1品の材料・調味料の言葉（材料のキー・英語名・名前・画面の名前＋調味料の欄）
 // 判定の表が「そのアレルゲンではない」と決めている言い方（ココナッツミルク・バナナの葉・料理酒・からし菜・りんご酢など）は、明らかな言葉の検査から外す
 const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|rice milk|peanut butter|banana leaf|banana leaves|バナナの葉|rice wine|shaoxing|紹興|mustard (?:greens?|leaf|leaves)|からし菜|高菜|apple cider vinegar|cider vinegar|細長いもの|oyster mushroom|oyster crackers|ひらたけ|ビーフン|water chestnut|cooking wine|chinese (?:rice )?wine|huangjiu|mijiu|orange.?fleshed|orange sweet potato|オレンジ色|eggs? \(chicken|鶏卵/gi;
@@ -430,7 +443,7 @@ for (const cc of ['JP', 'US', 'DE']){
     await ctx.close();
 }
 // 世界のレシピ・設定カード・ひとひねり・並び
-for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14], ['IN', 'eu', 14], ['MX', 'us', 9]]){
+for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14], ['IN', 'in', 9], ['MX', 'mx', 10]]){   // 国ごとの区分（オーナーの決定12番）。メキシコは確かめた9品目＋確かめられなかった前の並びの残り（ごま）
     const { ctx, p } = await open(cc);
     await p.evaluate(() => { setTab('settings'); });
     const r = await p.evaluate(() => {
@@ -444,7 +457,7 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
         ok(r.style === style, cc + ' 並び: ' + r.style); ok(r.main === n, cc + ' 主な品目の数 ' + n + ': ' + r.main); ok(r.chips === 38 || r.chips > r.main, cc + ' ほかのアレルゲンも選べる: ' + r.chips);
         ok(r.text.includes(r.disclaimer) && (/[\u3040-\u30ff]/.test(r.disclaimer) === (cc === 'JP')), cc + ' 免責: ' + r.disclaimer); ok(r.first, cc + ' カードがいちばん上');
         if (style === 'jp') ok(r.order.startsWith('shrimp,cashew,crab,walnut,wheat,buckwheat,egg,milk,peanut,abalone,squid'), 'JP の並び: ' + r.order);
-        if (style === 'eu') ok(r.order.startsWith('gluten,crustacean,egg,fish,peanut,soy,milk,treenut,celery,mustard,sesame,sulphite,lupin,mollusc'), 'EU の並び: ' + r.order);
+        if (style === 'fr') ok(r.order.startsWith('gluten,crustacean,egg,fish,peanut,soy,milk,treenut,celery,mustard,sesame,sulphite,lupin,mollusc'), 'EU の並び: ' + r.order);
         if (style === 'us') ok(r.order === 'milk,egg,fish,crustacean,treenut,peanut,wheat,soy,sesame', 'US の並び: ' + r.order);
     }
     // チップを押す: 設定に入り、献立の当たった枠だけ変わる
@@ -744,6 +757,59 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
         await ctx.close();
     }
 }
+// モニター第3回d NEW3: 魚のアレルギーで、味噌（だし入りのことが多い）に「袋の表示を確認」。だし入り味噌・白だし・だし醤油・あごは出さない（だしそのものと同じ扱い）
+{
+    const TABLE = [['味噌', 'fish', 4], ['合わせ味噌', 'fish', 4], ['白味噌', 'fish', 4], ['Miso', 'fish', 4], ['だし入り味噌', 'fish', 2], ['だし入りみそ', 'fish', 2], ['白だし', 'fish', 2], ['だし醤油', 'fish', 2], ['あご', 'fish', 1], ['焼きあご', 'fish', 2],
+        ['味噌', 'soy', 3], ['かにみそ', 'fish', 0], ['昆布だし', 'fish', 0], ['醤油', 'fish', 0]];
+    const { ctx, p } = await open('JP');
+    const r = await p.evaluate(T => {
+        const mk = n => { const j = /[぀-ヿ㐀-鿿]/.test(n); const it = parseIng(n); if (!j){ it.en = n; it.key = n.toLowerCase(); } return it; };
+        return T.filter(([n, id, k]) => algKind(id, mk(n)) !== k).map(([n, id, k]) => n + '/' + id + ' = ' + algKind(id, mk(n)) + '（' + k + ' のはず）');
+    }, TABLE);
+    ok(!r.length, 'NEW3 味噌・だし入り味噌・白だし・あごの判定の表: ' + r.join('、'));
+    await ctx.close();
+    for (const ui of ['ja', 'en']){
+        const { ctx, p } = await open('JP', { uiLang: ui }, { family: [{ id: 'a', name: '夫', role: 'adult', avoid: ['@fish'], allergy: ['@fish'], mild: false }] });
+        const g = await p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '汁物'); m.items[i >= 0 ? i : 2] = Object.assign({}, m.items[i >= 0 ? i : 2], { r: byId('misoshiru') }); render();
+            const r = byId('misoshiru'), d = document.createElement('div'); d.innerHTML = allergenDetailHtml(r);
+            const tagEl = [...document.querySelectorAll('.alg-tag')].find(x => /味噌|miso/i.test(x.innerText + x.getAttribute('aria-label')));
+            return { av: isAvoided(r), may: algMayHits(r), note: d.innerText, line: eatersLine(), tag: tagEl ? tagEl.getAttribute('aria-label') : '',
+                miso16: RECIPES.filter(x => !x.pack && !isAvoided(x) && /味噌/.test(String(x.seasBase != null ? x.seasBase : x.seas)) && !algMayHits(x).some(h => h.id === 'fish')).map(x => x.id) }; });
+        ok(!g.av && g.may.some(x => x.id === 'fish' && x.names.some(n => /味噌|miso/i.test(n))), `NEW3 魚のアレルギー（${ui}）: 味噌汁は出すが、味噌に「袋の表示を確認（魚）」: ` + JSON.stringify(g.may));
+        ok(/味噌|miso/i.test(g.tag) && /袋の表示を確認|package|label/i.test(g.tag), `NEW3 魚のアレルギー（${ui}）: カードの印に「魚（味噌の袋の表示を確認）」: ` + g.tag);
+        ok(/だし入りの味噌も|miso with dashi/i.test(g.note), `NEW3 魚のアレルギー（${ui}）: 昆布だしの一言に「だし入りの味噌も袋の表示を確かめて」: ` + g.note.slice(0, 300));
+        ok(!/^夫も食べられるお膳です$/m.test(g.line) && (ui !== 'ja' || /食べられそう/.test(g.line)), `NEW3 魚のアレルギー（${ui}）: 「夫も食べられるお膳です」と言い切らない: ` + g.line);
+        ok(!g.miso16.length, `NEW3 魚のアレルギー（${ui}）: 味噌を使って出す料理には、すべて魚の「袋の表示を確認」: ` + g.miso16.join(','));
+        await ctx.close();
+    }
+}
+// モニター第3回d: 苦手で魚を外した人（菜食など）にも、だしは昆布だしにして出す（魚のアレルギーと同じ置き換え）
+for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfish'] }, null]){
+    const { ctx, p } = await open('JP', store || {}, store ? {} : { family: [{ id: 'a', name: '', role: 'adult', avoid: ['@fish'], allergy: [], mild: false }] });
+    const g = await p.evaluate(() => { const m = byId('misoshiru'); const d = document.createElement('div'); d.innerHTML = allergenDetailHtml(m);
+        const dashi = RECIPES.filter(x => !x.pack && /(?<!和風|昆布|白)だし(?!の素|巻)/.test(String(x.seasBase != null ? x.seasBase : x.seas)));
+        return { av: isAvoided(m), seas: seasFor(m), steps: stepTextsOf(m, 1).join(' '), tag: swapTagHtml(m), note: d.innerText,
+            bad: dashi.filter(x => !isAvoided(x) && /(?:^|[^布])だし(?!の素|巻)/.test(seasFor(x) + stepTextsOf(x, 1).join(' ').replace(/だし巻き/g, ''))).map(x => x.id) }; });
+    const who = store ? '全員の苦手' : '家族の苦手';
+    ok(!g.av && /昆布だし/.test(g.seas) && /昆布だし/.test(g.steps), `veg ${who}で魚を外す: 味噌汁を昆布だしで出す: ` + JSON.stringify(g).slice(0, 300));
+    ok(/🔁/.test(g.tag) && /昆布だし/.test(g.note) && !/魚のアレルギー/.test(g.note), `veg ${who}で魚を外す: カードと詳細に置き換えの一言（アレルギーとは言わない）: ` + g.tag + ' / ' + g.note.slice(0, 200));
+    ok(!g.bad.length, `veg ${who}で魚を外す: 出す料理に、置き換えていない「だし」が残らない: ` + g.bad.join(','));
+    await ctx.close();
+}
+// モニター第3回d（デザイン）: 「袋の表示を確認」の印は、当たる印（赤い ⚠）と色・形で見分ける。カードではアレルゲンの名前を先に、2行まで出す。「ほか2品」と言わない
+{
+    const { ctx, p } = await open('JP', { allergens: ['sesame', 'soy', 'egg'] });
+    const g = await p.evaluate(() => { setTab('today'); const m = session.menu; m.items[0] = Object.assign({}, m.items[0], { r: byId('chawanmushi') }); const i = m.items.findIndex(x => x.slot === '汁物'); m.items[i >= 0 ? i : 2] = Object.assign({}, m.items[i >= 0 ? i : 2], { r: byId('tomyumkung') }); render();
+        const spotOf = n => [...document.querySelectorAll('.spot')].find(x => (x.querySelector('.nm') || {}).textContent === n) || document, may = spotOf('トムヤムクン').querySelector('.alg-tag.may'), hit = spotOf('茶碗蒸し').querySelector('.alg-tag:not(.may)'), cs = e => e ? getComputedStyle(e) : {};
+        return { mayText: may ? may.innerText : '', hitText: hit ? hit.innerText : '', mayColor: cs(may).color, hitColor: cs(hit).color, clamp: cs(may).webkitLineClamp, ws: cs(may).whiteSpace,
+            names: algMayNames([byId('tomyumkung'), byId('consomme'), byId('tonkatsu')]).join('') }; });
+    ok(g.mayText && g.hitText, 'design 茶碗蒸し（卵）とトムヤムクン（ごま・大豆の袋）のカードに印: ' + JSON.stringify(g));
+    ok(g.mayColor !== g.hitColor && !/^⚠/.test(g.mayText) && /^⚠/.test(g.hitText), 'design 「袋の表示を確認」は赤い ⚠ と色・記号で見分ける: ' + JSON.stringify(g));
+    ok(/^\S*\s*(?:ごま・大豆|大豆・ごま)/.test(g.mayText), 'design カードの印はアレルゲンの名前を先に（2つ目も見える）: ' + g.mayText);
+    ok(g.clamp === '2', 'design カードの印は2行まで出す: ' + g.clamp + ' ' + g.ws);
+    ok(!/ほか\d+品/.test(g.names), 'design 加工品の数を「ほか○品」と言わない（料理の数と取り違える）: ' + g.names);
+    await ctx.close();
+}
 // モニター第3回c: 「袋の表示を確認」の文・カード・買い物メモに、どの加工品の袋を見ればよいかを書く。「入れていません」と「○品は」のあいだに「。」
 {
     const { ctx, p } = await open('JP', { allergens: ['sesame', 'soy'] });
@@ -779,8 +845,8 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
         return { ids, rows, fold: fold ? fold.innerText.replace(/\s+/g, ' ') : '', seasRows, ham: ham ? ham.id : '' };
     });
     ok(g.fold && /袋の表示を確かめるもの/.test(g.fold) && /(?:ソース|コンソメ)（大豆）/.test(g.fold), '案2 買う段: 畳んだ調味料の欄の見出しに、袋を見る調味料の名前: ' + JSON.stringify(g).slice(0, 400));
-    ok(g.seasRows.some(x => /(?:ソース|コンソメ).*⚠ 大豆（袋の表示を確認）/.test(x)), '案2 買う段: 調味料の行に「⚠ 大豆（袋の表示を確認）」: ' + g.seasRows.join(' | '));
-    ok(!g.ham || g.rows.concat(g.seasRows).some(x => /ハム.*⚠ [^（]*大豆[^（]*（袋の表示を確認）/.test(x)), '案2 買う段: ハムの行に「⚠ 大豆（袋の表示を確認）」: ' + g.rows.join(' | '));
+    ok(g.seasRows.some(x => /(?:ソース|コンソメ).*🔍 大豆（袋の表示を確認）/.test(x)), '案2 買う段: 調味料の行に「🔍 大豆（袋の表示を確認）」: ' + g.seasRows.join(' | '));
+    ok(!g.ham || g.rows.concat(g.seasRows).some(x => /ハム.*🔍 [^（]*大豆[^（]*（袋の表示を確認）/.test(x)), '案2 買う段: ハムの行に「🔍 大豆（袋の表示を確認）」: ' + g.rows.join(' | '));
     await ctx.close();
 }
 // モニター第3回c（案2）: 設定で家族のアレルギーを足して決める段にもどると、「献立をかえました」は段の上の知らせだけ（お知らせを重ねて2回出さない）
@@ -822,6 +888,7 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'eu', 14
     ok(r.n > 20, 'S6 元にする料理が並ぶ（' + r.n + '品）');
     ok(!r.bad.length, 'S6 えび・卵アレルギーで、案が作れないえびフライ・茶碗蒸し・だし巻き卵を元にする料理に並べない: ' + r.bad.join(','));
     ok(r.ebi.every(n => !/^(?:[^ ]+ )?(?:えび|エビ|海老)/.test(n)), 'S6 エビチリは主役を鶏肉に替えた案だけ作る: ' + r.ebi.join('、'));
+    ok(r.ebi.every(n => !/えび|エビ|海老/.test(n)), 'S6 エビチリの案の名前（かっこの中も）に、えびの言葉を出さない（モニター第3回d）: ' + r.ebi.join('、'));
     ok(!r.dead.length, 'S6 並べた料理は、選ぶと案が作れる（行き止まりにしない）: ' + r.dead.slice(0, 5).join(','));
     await ctx.close();
 }

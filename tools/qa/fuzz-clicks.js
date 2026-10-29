@@ -19,7 +19,7 @@ const CCS = (process.env.CCS || ALL_CC.join()).split(',');
 const RUNS = Number(process.env.RUNS || CCS.length * 3), STEPS = Number(process.env.STEPS || 60), SEED = Number(process.env.SEED || 1), JOBS = Number(process.env.JOBS || 4);
 const SHRINK = process.env.SHRINK !== '0';
 const ROOT = path.resolve(__dirname, '../../gohancho');
-const EXE = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const EXE = process.env.CHROME;
 
 const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 
@@ -395,7 +395,7 @@ async function shrink(b, run, f0) {
 
 (async () => {
   let srv = null; if (!BASE) srv = await serve();
-  const b = await chromium.launch({ executablePath: EXE });
+  const b = await chromium.launch(EXE ? { executablePath: EXE } : {});
   const rng = mulberry(SEED); let runs = [];
   if (process.env.REPLAY) runs = [JSON.parse(fs.readFileSync(process.env.REPLAY, 'utf8').trim().split('\n').pop().replace(/^.*replay /, ''))];
   else for (let i = 0; i < RUNS; i++) runs.push(makeRun(i, rng));

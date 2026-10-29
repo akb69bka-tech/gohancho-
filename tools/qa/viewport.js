@@ -12,7 +12,7 @@ const quick = process.argv.includes('--quick');
 const VPS = (process.env.VPS || (quick ? '820x1180,844x390,320x568' : '768x1024,820x1180,1024x1366,844x390,932x430,667x375,375x667,320x568,320x400,390x844')).split(',').map(s => s.split('x').map(Number));
 const LANGS = (process.env.LANGS || (quick ? 'ja,ar' : 'ja,en,de,ar')).split(',');
 const TABS = ['today', 'cook', 'fridge', 'twist', 'world', 'log'];
-const EXE = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const EXE = process.env.CHROME;
 let ng = 0, ok = 0; const bad = (m) => { ng++; console.log('NG', m); }; const good = () => ok++;
 const chk = (c, m) => (c ? good() : bad(m));
 
@@ -31,7 +31,7 @@ const overflow = p => p.evaluate(() => {
 });
 
 (async () => {
-  const b = await chromium.launch({executablePath: EXE});
+  const b = await chromium.launch(EXE ? { executablePath: EXE } : {});
   // (5) ソースの確認
   const src = fs.readFileSync(path.join(__dirname, '../../gohancho/index.html'), 'utf8');
   chk(/body\{[^}]*padding-inline:max\(16px,env\(safe-area-inset-left/.test(src), 'safe-area: body の左右');
