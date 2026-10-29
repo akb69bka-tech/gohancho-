@@ -144,6 +144,7 @@ GOHAN_PACK({
       name: 'Mexican-style scrambled eggs',
       local: 'Huevos a la mexicana',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 10,
@@ -975,6 +976,7 @@ GOHAN_PACK({
       name: 'Red chilaquiles',
       local: 'Chilaquiles rojos',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'egg',
       min: 30,
@@ -1199,6 +1201,7 @@ GOHAN_PACK({
       name: 'Ranch-style eggs',
       local: 'Huevos rancheros',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'egg',
       min: 20,

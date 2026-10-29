@@ -1706,6 +1706,7 @@ GOHAN_PACK({
       name: 'Plain rice congee',
       local: '白粥',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'rice',
       protein: 'veg',
       min: 50,
@@ -1728,6 +1729,7 @@ GOHAN_PACK({
       name: 'Century egg and pork congee',
       local: '皮蛋瘦肉粥',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'rice',
       protein: 'pork',
       min: 60,

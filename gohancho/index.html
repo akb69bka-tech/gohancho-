@@ -3298,6 +3298,9 @@ function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean)
 // 主菜の候補。おかゆは「おかゆの日」のときだけ出す（ふだんの献立・1週間プランの主菜には混ぜない）
 // 軽い食事（卵かけご飯・お茶漬け・おにぎり・雑炊）は、それだけで夕食の主菜にはおまかせで出さない。検索・作る記録・主菜にするでは選べる
 const LIGHT_MEALS = new Set(['tkg', 'ochazuke', 'onigiri', 'zosui']);
+// 朝食の料理。各国はパックの印（meal: 'breakfast'）、日本はここに書く（ハムエッグ）
+const BREAKFAST_JP = new Set(['hamuegg']);
+function breakfastMeal(r){ return !!r && (r.meal === 'breakfast' || (!r.pack && BREAKFAST_JP.has(r.id))); }
 // 時期が決まっている料理（行事の料理・夏の冷たい麺）。おまかせ・1週間プラン・あと1品の候補には、この月だけ出す。検索・材料から・自分で選ぶときは出す（第2回モニター Sr-E・F-P03・P10・S-N3。月は柊のデータ待ち）
 const SEASON_MONTHS = {zoni: [1], nanakusagayu: [1], hiyashichuka: [6, 7, 8, 9], somen: [6, 7, 8, 9]};
 function inSeason(r, d){ const ms = r && SEASON_MONTHS[r.id]; return !ms || ms.includes(Number(String(typeof d === 'string' ? d : TODAY).slice(5, 7))); }   // d: 日付（'YYYY-MM-DD'）。filter にそのまま渡しても今日で見る
@@ -3357,7 +3360,7 @@ function poolFor(slot){
     if (slot !== '主菜') return all;
     if (session.mood !== 'okayu' && all.some(isOkayu)) all = all.filter(r => !isOkayu(r));
     if (all.some(r => LIGHT_MEALS.has(r.id))) all = all.filter(r => !LIGHT_MEALS.has(r.id) || (session.mood === 'okayu' && OKAYU_QUICK.includes(r.id)));   // おかゆの日は、ご飯から作る雑炊を出す（R3）
-    if (all.some(r => r.meal === 'breakfast')) all = all.filter(r => r.meal !== 'breakfast');   // 朝食の料理（Pancakes・Oatmeal など）は夕食の主菜にしない（第4回 R4。さがす・自分で選ぶでは出す）
+    if (session.mood !== 'okayu' && all.some(breakfastMeal)) all = all.filter(r => !breakfastMeal(r));   // 朝食の料理（Pancakes・Menemen・Poha・ハムエッグなど）は夕食の主菜にしない（第4回 R4。さがす・自分で選ぶでは出す。おかゆの日は今までどおり）
     return all;
 }
 function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
