@@ -13129,8 +13129,10 @@ window.addEventListener('hashchange', () => { if (bootReady && /^#g=/.test(Strin
     if (vv){ vv.addEventListener('resize', () => { sync(); reveal(); }); vv.addEventListener('scroll', sync); }
     addEventListener('resize', () => { sync(); reveal(); });
     addEventListener('orientationchange', () => setTimeout(sync, 250));
-    document.addEventListener('focusin', () => { sync(); reveal(); });
-    document.addEventListener('focusout', () => setTimeout(sync, 60));
+    // フォーカスの移り変わりで見直すのは、文字の入力欄にいる（いた）ときだけ（ボタン・シートの間の移り変わりで、毎回レイアウトを計算させない。大きさの変化は resize で見る）
+    const kbMaybe = () => editing() || document.body.classList.contains('kb');
+    document.addEventListener('focusin', () => { if (kbMaybe()){ sync(); reveal(); } });
+    document.addEventListener('focusout', () => setTimeout(() => { if (kbMaybe()) sync(); }, 60));
     sync();
 })();
 (() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
