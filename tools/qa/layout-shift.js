@@ -155,7 +155,9 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       for (let i = 0; i < 2; i++) await act('まるごと入れ替え', 'sel', '#view .shuffle', '.tray,#view .head-shuffle .sh-ic', 'btn');
       // 条件を開く/閉じる: 開いたぶん下が動くのは当然なので計測しない。品数を変える（同じ品数の中での入れ替えは上で確認済み）
       // あと1品
-      await act('あと1品を開く', 'sel', '[data-act="one-open"]', '.tray', 'btn');
+      // あと1品の入口は「条件を変える」のシートの中（お膳の下の行はやめた）。シートを開いてから押す
+      await p.evaluate(() => { if (typeof openCondSheet === 'function') openCondSheet(); }); await p.waitForTimeout(200);
+      await act('あと1品を開く', 'sel', '#sheet-root [data-act="one-open"]', '.tray', 'btn');
       await p.evaluate(() => { if (typeof closeSheet === 'function') closeSheet(); });
       // 保存した献立を適用
       await p.evaluate(() => { saveMenu(); });

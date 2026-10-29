@@ -157,7 +157,8 @@ const ACTIONS = {
   async staple(p, A) { await toToday(p); if (!await count(p, '.tray [data-act="staple-next"]')) return null; if (!await click(p, '.tray [data-act="staple-next"]')) return null; await p.waitForTimeout(150); return { desc: '主食かえる', pressed: 'staple', o: { staple: true } }; },
   async soupadd(p, A) { await toToday(p); if (!await count(p, '.tray [data-act="soup-add"]')) return null; const i = Number(await p.locator('.tray [data-act="soup-add"]').first().getAttribute('data-i')); if (!await click(p, '.tray [data-act="soup-add"]')) return null; await p.waitForTimeout(150); return { desc: '汁ものを足す#' + i, pressed: i, o: {}, soupAdd: i }; },
   async one(p, A) {
-    await toToday(p); if (!await click(p, '[data-act="one-open"]')) return null; await p.waitForTimeout(250);
+    await toToday(p); if (!await click(p, '[data-act="cond-open"]')) return null; await p.waitForTimeout(200);   // あと1品は「条件を変える」の中
+    if (!await click(p, '#sheet-root [data-act="one-open"]')) return null; await p.waitForTimeout(250);
     const chips = await count(p, '#sheet-root [data-act="one-pick"]');
     if (chips) { await click(p, '#sheet-root [data-act="one-pick"]', A.p % chips); await p.waitForTimeout(250); }
     const adds = await count(p, '#sheet-root [data-act="one-add"]');

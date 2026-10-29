@@ -4,10 +4,11 @@
 //  ・横にはみ出さない。お膳は上下2段（上 ⌈席/2⌉・下 ⌊席/2⌋）
 //  ・料理名は … で切れない、種類の字・「かえる」がお膳のふちで切れない、「かえる」は 44×44 以上（デザイン部長の点検1）
 //  ・長い料理名（点検2）: 18言語 × 7席 × 文字「もっと大きい」× 390・360 で、どの枠もいちばん長い名前の料理にしても、名前が帯の後ろに入らない・切れない・お膳ではかっこの説明を出さない
+//  ・お膳の下の押す場所が、決定の帯に半分かかっていない
 // 使い方: BASE=http://localhost:8890/ node tools/qa/tray-fit.js   （VPS=390x844:0,360x740:0 LANGS=ja,en で絞れる）
 const { chromium, LAUNCH, BASE, ready } = require('../lib/pw.cjs');
 // 末尾に :c を付けた画面は、帯の上に入るかは見ず、名前・字が切れない・「かえる」の大きさだけを見る（基準書 2-3 の対象外の 360×740 文字大）
-const VPS = (process.env.VPS || '390x844:0,360x740:0,390x844:2,360x740:2:c').split(',').map(x => { const [vp, ts, c] = x.split(':'); const [w, h] = vp.split('x').map(Number); return {w, h, ts: Number(ts) || 0, clipOnly: c === 'c'}; });
+const VPS = (process.env.VPS || '390x844:0,360x740:0,390x844:2,360x740:2').split(',').map(x => { const [vp, ts, c] = x.split(':'); const [w, h] = vp.split('x').map(Number); return {w, h, ts: Number(ts) || 0, clipOnly: c === 'c'}; });
 const LANGS = (process.env.LANGS || 'ja,en,ko,de,ar,th').split(',');
 const CC = {ja: 'JP', en: 'US', ko: 'KR', de: 'DE', ar: 'EG', th: 'TH'};
 let bad = 0, n = 0; const seen = new Set();
@@ -41,6 +42,8 @@ let bad = 0, n = 0; const seen = new Set();
         const textW = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().width; };   // 字の幅（::before の印は含まない）
         const clip = [...tr.querySelectorAll('.spot-label .slot, .spot .swap:not(.swap-ph)')].filter(e => { const q = e.getBoundingClientRect(), sp = e.closest('.spot').getBoundingClientRect(); return textW(e) > e.clientWidth + 1 || q.left < sp.left - .5 || q.right > sp.right + .5; }).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 10));
         const small = [...tr.querySelectorAll('.spot .swap:not(.swap-ph)')].filter(e => { const q = e.getBoundingClientRect(); return q.width < 44 - .5 || q.height < 44 - .5; }).map(e => Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height));
+        // お膳の下の押す場所が、決定の帯に半分かかっていない（帯の上に入るか、帯より下＝スクロールの先）
+        hid.push(...[...document.querySelectorAll('#view button, #view [data-act]')].filter(e => !e.closest('.actionbar') && !tr.contains(e)).filter(e => { const q = e.getBoundingClientRect(); return q.height > 0 && q.top < floor - 1 && q.bottom > floor + 1; }).map(e => 'straddle:' + (e.dataset.act || e.tagName)));
         if (clipOnly) hid.length = 0;
         hid.push(...cut, ...clip.map(x => 'clip ' + x), ...small.map(x => 'small ' + x));
         const rows = [...tr.querySelectorAll('.tg-row')].map(e => e.children.length), seats = rows.reduce((a, x) => a + x, 0);
@@ -72,8 +75,8 @@ let bad = 0, n = 0; const seen = new Set();
       render(); await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
       const tr = document.querySelector('#view .tray'); let floor = innerHeight;
       document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < floor) floor = q.top; });
-      // 帯の上に入るかは、基準書 2-3 の対象の 390 で見る。360（対象外）は、名前が切れない・かっこを出さないだけを見る（いちばん長い名前ばかりのポーランド語の7席は、360 では帯にかかる）
-      const hid = innerWidth < 380 ? [] : [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > floor + .5).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 14));
+      // 390・360 とも、帯の上に入ることを見る
+      const hid = [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > floor + .5).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 14));
       const cut = [...tr.querySelectorAll('.spot-label .nm')].filter(e => e.scrollHeight > e.clientHeight + 1).map(e => 'cut:' + e.textContent.trim().slice(0, 14));
       const paren = [...tr.querySelectorAll('.spot-label .nm')].filter(e => /[（(][^）)]*[）)]\s*$/.test(e.textContent.trim())).map(e => 'paren:' + e.textContent.trim().slice(0, 20));
       return {over: Math.round(Math.max(...[...tr.querySelectorAll('.spot .nm')].map(e => e.getBoundingClientRect().bottom)) - floor), seats: [...tr.querySelectorAll('.spot')].length, names: m.items.filter(x => x.r).map(x => x.r.name.length), bad: [...hid, ...cut, ...paren]};
