@@ -180,13 +180,13 @@ export default {
 
     // ---------- 汁物 ----------
     // メルジメッキ・チョルバス（赤レンズ豆のスープ）、レモン
-    tr_mercimek: S('#e8902a', [], withLemon({ oil: [10, '#c8401e'], flecks: [pul(10), [MINT, 6, 1.4]] })),
+    tr_mercimek: S('#e8902a', [], withLemon({ top: [['redLentil', 18, 16]], oil: [10, '#c8401e'], flecks: [pul(10), [MINT, 6, 1.4]] })),
     // ヤイラ・チョルバス（ヨーグルトと米とミントのスープ）
     tr_yayla: S('#f4eedc', [['rice', 30, 10]], { minD: 6, oil: [10, '#c8501e'], flecks: [[MINT, 18, 1.4]] }),
     // トマトのスープ、チーズ（お好みで）
-    tr_domates: S('#d0502a', [], { cream: '#fbf2e0', flecks: [['#f6d070', 12, 1.8]] }),
+    tr_domates: S('#d0502a', [], { top: [['tomatoChunk', 4, 15]], cream: '#fbf2e0', flecks: [['#f6d070', 12, 1.8]] }),
     // エゾゲリン・チョルバス（赤レンズ豆とブルグルのスープ）
-    tr_ezogelin: S('#d8702a', [['grain', 20, 11]], withLemon({ minD: 6, oil: [10, '#c8401e'], flecks: [[MINT, 10, 1.4]] })),
+    tr_ezogelin: S('#d8702a', [['grain', 20, 11]], withLemon({ top: [['redLentil', 12, 16], ['grain', 6, 14]], minD: 6, oil: [10, '#c8401e'], flecks: [[MINT, 10, 1.4]] })),
     // タルハナ・チョルバス、チーズ（お好みで）
     tr_tarhana: S('#c8602a', [], { flecks: [['#f6d070', 14, 1.8], [MINT, 6, 1.4]] }),
     // デュン・チョルバス（羊の婚礼のスープ）: 羊・卵黄・レモン
@@ -196,15 +196,15 @@ export default {
     // シェフリイェ・チョルバス（細麺のスープ）、パセリ・レモン（お好みで）
     tr_sehriye: S('#d8702a', [['vermicelli', 20, 12]], withLemon({ minD: 6, flecks: [pars(10)] })),
     // マッシュルームのクリームスープ
-    tr_mantarcorba: S('#d8c098', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8' }),
+    tr_mantarcorba: S('#d8c098', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8' }),
     // 野菜のスープ: にんじん・じゃがいも・ズッキーニ・玉ねぎ、いんげん（お好みで）
     tr_sebze: S('#e0a050', [['carrot', 4, 11], ['potato', 4, 11], ['zucchini', 4, 11], ['greenBean', 3, 8]], { minD: 9 }),
     // トゥトマチ（緑レンズ豆と麺のヨーグルトスープ）
-    tr_tutmac: S('#efe4c8', [['lentil', 14, 12], ['erişte', 10, 13]], { minD: 7, oil: [8, '#c8501e'], flecks: [[MINT, 12, 1.4]] }),
+    tr_tutmac: S('#efe4c8', [['lentil', 14, 12], ['erişte', 10, 13]], { top: [['lentil', 12, 16]], minD: 7, oil: [8, '#c8501e'], flecks: [[MINT, 12, 1.4]] }),
     // ブロッコリーのスープ
-    tr_brokoli: S('#8aa850', [['broccoli', 2, 12]], { minD: 14, cream: '#fbf6e8' }),
+    tr_brokoli: S('#8aa850', [['broccoli', 2, 12]], { top: [['broccoli', 4, 16]], minD: 14, cream: '#fbf6e8' }),
     // かぼちゃのスープ
-    tr_balkabagi: S('#f0a030', [], { cream: '#fbf6e8', flecks: [pul(6)] }),
+    tr_balkabagi: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8', flecks: [pul(6)] }),
     // エクシリ・キョフテ（酸っぱい肉団子のスープ）: 肉団子・米・にんじん・じゃがいも・卵黄・レモン
     tr_eksilikofte: S('#f0d8a0', [['meatballSmall', 10, 13], ['carrot', 4, 10], ['potato', 3, 11]], withLemon({ minD: 8, flecks: [[MINT, 8, 1.4]] })),
     // ウン・チョルバス（小麦粉を炒ったスープ）
@@ -214,16 +214,16 @@ export default {
     // 魚のスープ（卵とレモン）: 白身魚・じゃがいも・にんじん・玉ねぎ・レモン
     tr_balik: S('#f0e0b0', [['fish', 3, 18], ['potato', 3, 11], ['carrot', 3, 10]], withLemon({ minD: 10, flecks: [pars(10)] })),
     // ほうれん草のヨーグルトスープ: ほうれん草・米・ヨーグルト
-    tr_ispanak: S('#9ab060', [['spinach', 6, 12], ['rice', 14, 10]], { minD: 7, cream: '#fbf8ee' }),
+    tr_ispanak: S('#9ab060', [['spinach', 6, 12], ['rice', 14, 10]], { top: [['spinach', 5, 15]], minD: 7, cream: '#fbf8ee' }),
     // コーンのクリームスープ
     tr_misir: S('#f2d880', [['corn', 10, 12]], { minD: 8 }),
     // ズッキーニのスープ、ディル（お好みで）
-    tr_kabak: S('#c8d090', [], { cream: '#fbf8ee', flecks: [[DILL, 12, 1.2]] }),
+    tr_kabak: S('#c8d090', [], { top: [['zucchini', 5, 16]], cream: '#fbf8ee', flecks: [[DILL, 12, 1.2]] }),
     // にんじんのスープ、ヨーグルト（お好みで）
-    tr_havuc: S('#f0902a', [], { cream: '#fbf8ee' }),
+    tr_havuc: S('#f0902a', [], { top: [['carrot', 7, 15]], cream: '#fbf8ee' }),
     // ハシュラマ（羊と野菜のゆでスープ）: 羊・じゃがいも・にんじん・玉ねぎ、レモン（お好みで）
     tr_haslama: S('#e8d0a0', [['lambBoiled', 4, 16], ['potato', 3, 14], ['carrot', 3, 12]], withLemon({ minD: 12, flecks: [pars(10)] })),
     // カララハナ・チョルバス（黒キャベツと豆のスープ）
-    tr_karalahana: S('#8a7a3a', [['cabbageBlack', 6, 13], ['whiteBean', 10, 12]], { minD: 8 }),
+    tr_karalahana: S('#8a7a3a', [['cabbageBlack', 6, 13], ['whiteBean', 10, 12]], { top: [['whiteBean', 10, 16]], minD: 8 }),
 };
 Object.assign(ing, { poached: (p, x, y, s, r, i) => W.ball(p, x, y - s * .2, s, '#fbf8f0', p.id + 'po' + i, { hi: .6 }) + `<ellipse cx="${f(x - 1)}" cy="${f(y - s * .45)}" rx="${f(s * .2)}" ry="${f(s * .13)}" fill="#f6c22a"/>` });

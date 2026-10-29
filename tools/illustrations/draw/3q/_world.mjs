@@ -560,12 +560,18 @@ export const ING = {
     mushOyster: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * 1.2, r, '#c8b49a', 'mo' + p.id + i, { wave: 2.4 }),
     sausageLink: (p, x, y, s, r, i) => cutSlab(p, x, y, s * .9, s * .3, s * .3, '#a8502a', p.id + 'sl' + i, { rot: r, sear: '#6a2a10', jit: .03 }),
     omelette: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s * .6, -s * .3], [s * .6, -s * .3], [s * .6, s * .3], [-s * .6, s * .3]], 3, '#f2c040', { rot: r, line: .4, top: Q.rg(p, [[0, '#fff0a0'], [.6, '#f6d050'], [1, '#e0a830']], .4, .35, .8) }),
+    pumpkinSeed: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .26)}" ry="${f(s * .13)}" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="${Q.lg(p, [[0, '#a8c060'], [1, '#4a6a22']], 0, 0, 0, 1)}" stroke="#3a4a14" stroke-width=".4"/>`,
+    crouton: (p, x, y, s, r, i) => dice(p, x, y, s * .6, '#c8862e', p.id + 'cr' + i, { h: s * .45, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }),
+    basil: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * .9, r, '#3f8a2a', 'bs' + p.id + i, { wave: .4 }),
+    tomatoChunk: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s / 2, s * .2], [0, -s * .35], [s / 2, s * .2], [0, s * .32]], s * .4, '#c8301e', { rot: r, top: Q.rg(p, [[0, '#ff8a6a'], [.6, '#e0402a'], [1, '#a82a1a']], .4, .35, .8), line: .5 }),
+    pepperRoast: (p, x, y, s, r) => Q.prism(p, x, y, [[-s * .7, -s * .2], [s * .7, -s * .24], [s * .7, s * .2], [-s * .7, s * .22]], 2, '#b8301e', { rot: r, line: .4, top: Q.lg(p, [[0, '#e8603a'], [1, '#a8281a']], 0, 0, 0, 1) }),
     grain: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.5" fill="#e8d098" stroke="#b89858" stroke-width=".3"/>`,
 };
 // 盛りつけの組み立て: spec = { v: 器の関数(p) => V, mode: 'plate' | 'soup' | 'braise' | 'bowl'（小鉢・鉢に山高）, c: ソース・汁の色,
 //   items: [[kind, 数, 大きさ]], R, H, base, flecks: [[色, 数, 大きさ]], sauce, oil: [数, 色], cream, after(o, S) }
+const SMALL_TOP = new Set(['lentil', 'redLentil', 'moong', 'pea', 'corn', 'grain', 'kidney', 'blackBean', 'whiteBean', 'brownBean', 'chickpea', 'fava', 'favaSprout', 'canary', 'urad', 'pumpkinSeed', 'peanut']);
 export function make(p, spec){
-    const { v, mode = 'plate', c = '#c88a4a', items = [], R = 50, H = 16, base = null, flecks: fl = [], sauce = null, sauceR = 32, oil = null, cream = null, after = () => '', minD = 10, big = 1, steam = 0, rice = null, noodle = null, porr = null } = spec;
+    const { v, mode = 'plate', c = '#c88a4a', items = [], R = 50, H = 16, base = null, flecks: fl = [], sauce = null, sauceR = 32, oil = null, cream = null, after = () => '', minD = 10, big = 1, steam = 0, rice = null, noodle = null, porr = null, top = null, topR = 30 } = spec;
     const dens = spec.dens ?? (mode === 'plate' ? 1.5 : 1), list = []; items.forEach(([k, n, s = 12]) => { for (let j = 0; j < Math.round(n * (n > 3 ? dens : 1)); j++) list.push([k, s]); });
     const R0 = rng(p.id + 'mk'); for (let i = list.length - 1; i > 0; i--){ const j = Math.floor(R0() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
     const draw = (k, s, x, y, r, i, liq) => { const fn = (spec.ing && spec.ing[k]) || ING[k]; if (!fn) throw new Error('ING ' + k); return grow(x, y, big, fn(p, x, y, s, r, i, liq)); };
@@ -585,7 +591,13 @@ export function make(p, spec){
     }
     // soup
     const V = v(p);
-    return soup(p, V, { c, drop: V.sy ? 4 : 9, glow: .35, oil: oil ? oil[0] : 0, oilC: oil ? oil[1] : '#f0c040', cream, steamOp: steam, items: (pl, S) => [...(porr ? [[-999, () => porridge(p, S, p.id + 'po', porr)]] : []), ...spots(p.id + 'sp', list.length, S.rx * .8, minD * .9).map(([u, v2, r], i) => { const [x, y] = pl(u, v2, 1); return [y, () => draw(list[i][0], list[i][1], x, y, r, i, c)]; }), [999, () => flk(S.cx, S.cy, S.rx * .8, S.rx * (S.o.sy ?? SY) * .7) + after(S, V, p)]] });
+    return soup(p, V, { c, drop: V.sy ? 4 : 9, glow: .35, oil: oil ? oil[0] : 0, oilC: oil ? oil[1] : '#f0c040', cream, steamOp: steam, items: (pl, S) => [...(porr ? [[-999, () => porridge(p, S, p.id + 'po', porr)]] : []), ...spots(p.id + 'sp', list.length, S.rx * .8, minD * .9).map(([u, v2, r], i) => { const [x, y] = pl(u, v2, 1); return [y, () => draw(list[i][0], list[i][1], x, y, r, i, c)]; }), [998, () => top ? topCluster(S, pl) : ''], [999, () => flk(S.cx, S.cy, S.rx * .8, S.rx * (S.o.sy ?? SY) * .7) + after(S, V, p)]] });
+    // 汁物の真ん中に、何のスープか分かる具を小さな山に（ポタージュ・豆のスープ。2026-10-29 統括の見直し 4回目）
+    function topCluster(S, pl){
+        const tl = []; top.forEach(([k, n, s = 14]) => { for (let j = 0; j < n; j++) tl.push([k, s]); });
+        const H = Math.min(14, 4 + tl.length * .5);
+        return `<path d="${Q.blob(S.cx, S.cy, topR * 1.05, topR * (S.o.sy ?? SY) * .9, p.id + 'tpb', { n: 12, jit: .12 })}" fill="${SHADE}" opacity=".12"/>` + byDepth(spots(p.id + 'tp', tl.length, topR, Math.max(6, tl[0][1] * .55)).map(([u, v2, r], i) => { const [x, y] = pl(u, v2, 2 + hill(u, v2, topR + 2, H)); const g = grow(x, y, 1.25, draw(tl[i][0], tl[i][1], x, y, r, 500 + i)); return [y, () => SMALL_TOP.has(tl[i][0]) ? `<g ${p.edge('#2a1206', .5, .45)}>${g}</g>` : piece(p, x, y, g, { s: tl[i][1] * .8 })]; }));
+    }
 }
 
 // 串焼き（サテ・ケバブ・アンティクーチョ・シュハスコ）: 平行な串に具を通す。piece(x, y, i) で具をひとつ描く

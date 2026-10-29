@@ -179,9 +179,9 @@ export default {
 
     // ---------- 汁物 ----------
     // ポロねぎとじゃがいものスープ、クリーム（お好みで）
-    gb_leekpotato: S('#ece4c0', [['leek', 6, 13]], { minD: 12, cream: '#fbf8ee' }),
+    gb_leekpotato: S('#ece4c0', [['leek', 6, 13]], { top: [['leek', 6, 15]], minD: 12, cream: '#fbf8ee' }),
     // にんじんとコリアンダーのスープ
-    gb_carrotcoriander: S('#f0902a', [], { flecks: [pars(16)], cream: '#fbf6e8' }),
+    gb_carrotcoriander: S('#f0902a', [], { top: [['carrot', 6, 15], ['herb', 3, 14]], flecks: [pars(16)], cream: '#fbf6e8' }),
     // スコッチ・ブロス: 羊・大麦・にんじん・スウィード・ポロねぎ・玉ねぎ、キャベツ（お好みで）
     gb_scotchbroth: S('#e0c890', [['lamb', 4, 14], ['barley', 30, 12], ['carrot', 4, 11], ['swede', 3, 11], ['leek', 3, 11]], { minD: 6 }),
     // コッカ・リーキー（鶏とポロねぎのスープ）: 鶏・ポロねぎ・にんじん、プルーン（お好みで）
@@ -191,35 +191,35 @@ export default {
     // カウル（ウェールズの羊とポロねぎのスープ）: 羊・じゃがいも・にんじん・スウィード・ポロねぎ
     gb_cawl: S('#d8b878', [['lamb', 4, 15], ['potato', 3, 13], ['carrot', 3, 12], ['swede', 2, 12], ['leek', 4, 12]], { minD: 10 }),
     // えんどう豆とハムのスープ
-    gb_peaham: S('#a8a840', [['ham', 8, 13]], { minD: 10 }),
+    gb_peaham: S('#a8a840', [['ham', 8, 13]], { top: [['pea', 12, 15], ['ham', 3, 14]], minD: 10 }),
     // トマトのクリームスープ
-    gb_tomato: S('#d8502a', [], { cream: '#fbf2e8' }),
+    gb_tomato: S('#d8502a', [], { top: [['tomatoChunk', 4, 15], ['basil', 3, 14]], cream: '#fbf2e8' }),
     // マリガトーニー（カレー風味の鶏とレンズ豆のスープ）: 鶏・玉ねぎ・にんじん・りんご・レンズ豆、ご飯（お好みで）
     gb_mulligatawny: S('#d8902a', [['chicken', 4, 13], ['carrot', 4, 11], ['redLentil', 14, 12], ['rice', 14, 10]], { minD: 6 }),
     // ブロッコリーとスティルトンのスープ
-    gb_brocstilton: S('#8aa850', [['stilton', 4, 14], ['broccoli', 2, 12]], { minD: 12 }),
+    gb_brocstilton: S('#8aa850', [['stilton', 4, 14], ['broccoli', 2, 12]], { top: [['broccoli', 3, 15], ['stilton', 3, 14]], minD: 12 }),
     // バターナッツかぼちゃのロースト・スープ、クリーム（お好みで）
-    gb_butternut: S('#f0a030', [], { cream: '#fbf6e8' }),
+    gb_butternut: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8' }),
     // パースニップのカレースープ
-    gb_parsnip: S('#ead098', [['crouton', 5, 13]], { minD: 12, flecks: [['#c8802a', 10, 1.4]] }),
+    gb_parsnip: S('#ead098', [['crouton', 5, 13]], { top: [['parsnip', 4, 16]], minD: 12, flecks: [['#c8802a', 10, 1.4]] }),
     // 鶏と野菜のスープ: 鶏・にんじん・ポロねぎ・セロリ・じゃがいも、グリンピース（お好みで）
     gb_chickenveg: S('#ead8a0', [['chicken', 4, 13], ['carrot', 4, 11], ['leek', 3, 11], ['celery', 3, 11], ['potato', 3, 11], ['pea', 4, 12]], { minD: 8 }),
     // オックステール・スープ
     gb_oxtail: S('#6a3418', [['oxtail', 3, 22], ['carrot', 4, 12], ['celery', 3, 11]], { minD: 12 }),
     // スコットランドのレンズ豆のスープ、ベーコン（お好みで）
-    gb_lentil: S('#e0902a', [['carrot', 5, 11], ['lardon', 4, 12]], { minD: 10 }),
+    gb_lentil: S('#e0902a', [['carrot', 5, 11], ['lardon', 4, 12]], { top: [['redLentil', 18, 16], ['carrot', 2, 13]], minD: 10 }),
     // クレソンのスープ
-    gb_watercress: S('#5a8a2a', [['watercress', 3, 12]], { minD: 12, cream: '#fbf6e8', ing: { ...ing, watercress: (p, x, y, s, r, i) => Q.leaf(p, x, y, s, r, '#3f8a2a', 'wc' + p.id + i, { wave: 1 }) } }),
+    gb_watercress: S('#5a8a2a', [['watercress', 3, 12]], { top: [['watercress', 6, 15]], minD: 12, cream: '#fbf6e8', ing: { ...ing, watercress: (p, x, y, s, r, i) => Q.leaf(p, x, y, s, r, '#3f8a2a', 'wc' + p.id + i, { wave: 1 }) } }),
     // マッシュルームのクリームスープ
-    gb_mushroom: S('#c8a878', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8' }),
+    gb_mushroom: S('#c8a878', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8' }),
     // えんどう豆とミントのスープ、クレームフレッシュ（お好みで）
-    gb_peamint: S('#8ab048', [['mint', 2, 13]], { minD: 12, cream: '#fbf6e8' }),
+    gb_peamint: S('#8ab048', [['mint', 2, 13]], { top: [['pea', 12, 15], ['mint', 3, 14]], minD: 12, cream: '#fbf6e8' }),
     // セロリのクリームスープ
-    gb_celery: S('#d8dca8', [['celery', 3, 11]], { minD: 12, cream: '#fbf8ee' }),
+    gb_celery: S('#d8dca8', [['celery', 3, 11]], { top: [['celery', 5, 15], ['herb', 2, 13]], minD: 12, cream: '#fbf8ee' }),
     // 北アイルランドの野菜のブロス: 牛すね・大麦と豆・にんじん・ポロねぎ・玉ねぎ・パセリ
     gb_vegbroth: S('#d8b878', [['beef', 4, 13], ['barley', 24, 12], ['lentil', 10, 12], ['carrot', 4, 11], ['leek', 3, 11]], { minD: 6, flecks: [pars(10)] }),
     // カリフラワー・チーズのスープ
-    gb_caulicheese: S('#f2e4b0', [['cauliflower', 2, 12]], { minD: 14, flecks: [['#f2b030', 12, 1.4]] }),
+    gb_caulicheese: S('#f2e4b0', [['cauliflower', 2, 12]], { top: [['cauliflower', 3, 16]], minD: 14, flecks: [['#f2b030', 12, 1.4]] }),
     // 赤ピーマンとトマトのロースト・スープ
-    gb_redpepper: S('#d8402a', [], { flecks: [['#f6e0c0', 6, 1.4], pars(6)] }),
+    gb_redpepper: S('#d8402a', [], { top: [['pepperRoast', 4, 18], ['tomatoChunk', 2, 14]], flecks: [['#f6e0c0', 6, 1.4], pars(6)] }),
 };

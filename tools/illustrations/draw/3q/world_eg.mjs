@@ -177,7 +177,7 @@ export default {
 
     // ---------- 汁物 ----------
     // アッツ（赤レンズ豆のスープ）、レモン
-    eg_ads: S('#e8902a', [['crouton', 6, 12]], withLemon({ minD: 12, ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .6, '#c8862e', p.id + 'cr' + i, { h: s * .45, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) }, flecks: [['#a8743a', 10, 1.2]] })),
+    eg_ads: S('#e8902a', [['crouton', 6, 12]], withLemon({ top: [['redLentil', 18, 16]], minD: 12, ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .6, '#c8862e', p.id + 'cr' + i, { h: s * .45, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) }, flecks: [['#a8743a', 10, 1.2]] })),
     // モロヘイヤのスープ（鶏のだし）
     eg_molokhia: S('#3f6a22', [], { flecks: [['#5a8a2a', 30, 1.6], ['#2e5a1e', 20, 1.4]], oil: [8, '#a8a040'] }),
     // ルサーン・アスフール（オルゾの鶏スープ）、レモン（お好みで）
@@ -193,33 +193,33 @@ export default {
     // アレキサンドリアの魚のスープ: 白身魚・玉ねぎ・トマト・レモン、香菜（お好みで）
     eg_shorbetsamak: S('#d8802a', [['fish', 3, 18], ['tomato', 3, 10]], withLemon({ minD: 10, flecks: [[CORI, 12, 1.6]] })),
     // 茶色いレンズ豆のスープ、米（お好みで）・レモン
-    eg_adsbigebba: S('#8a5a2a', [['lentil', 24, 12], ['rice', 10, 10]], withLemon({ minD: 5 })),
+    eg_adsbigebba: S('#8a5a2a', [['lentil', 24, 12], ['rice', 10, 10]], withLemon({ top: [['lentil', 18, 16]], minD: 5 })),
     // トマトのスープとご飯、パセリ（お好みで）
     eg_tamatem: S('#d0402a', [['rice', 24, 10]], { minD: 6, flecks: [pars(8)] }),
     // ズッキーニのクリームスープ
-    eg_kosa: S('#c8d090', [], { cream: '#fbf8ee' }),
+    eg_kosa: S('#c8d090', [], { top: [['zucchini', 5, 16]], cream: '#fbf8ee' }),
     // オートミールと鶏のスープ: 鶏・オーツ・玉ねぎ・にんじん、トマト（お好みで）
     eg_shoofan: S('#efe0b8', [['chickenBoiled', 3, 13], ['carrot', 4, 10], ['oat', 30, 10]], { minD: 6, ing: { ...ing, oat: (p, x, y) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.6" ry="1.8" fill="#f2e6c8" stroke="#c8b080" stroke-width=".3"/>` } }),
     // ホンモス・エル・シャーム（スパイスのひよこ豆の汁）: ひよこ豆・トマト・レモン、青唐辛子・パセリ（お好みで）
-    eg_hommosesham: S('#d8a050', [['chickpea', 18, 14], ['tomato', 3, 10], ['chiliG', 2, 11]], withLemon({ minD: 7, flecks: [pars(10)] })),
+    eg_hommosesham: S('#d8a050', [['chickpea', 18, 14], ['tomato', 3, 10], ['chiliG', 2, 11]], withLemon({ top: [['chickpea', 12, 16]], minD: 7, flecks: [pars(10)] })),
     // フール・ナビト（芽を出したそら豆のスープ）、レモン・香菜（お好みで）
-    eg_fulnabit: S('#e0c890', [['favaSprout', 16, 14]], withLemon({ minD: 7, flecks: [[CORI, 10, 1.6]] })),
+    eg_fulnabit: S('#e0c890', [['favaSprout', 16, 14]], withLemon({ top: [['favaSprout', 10, 16]], minD: 7, flecks: [[CORI, 10, 1.6]] })),
     // キシュク（温かいヨーグルトのスープと鶏）
     eg_kishk: S('#f2ecd8', [['chickenBoiled', 3, 13]], { minD: 12, flecks: [['#a8641e', 20, 2]] }),
     // 鶏のクリームスープ、マッシュルーム（お好みで）
-    eg_kremafirakh: S('#f4ecd4', [['chickenBoiled', 3, 12], ['mushroom', 3, 12]], { minD: 10, cream: '#fbf8ee' }),
+    eg_kremafirakh: S('#f4ecd4', [['chickenBoiled', 3, 12], ['mushroom', 3, 12]], { top: [['chickenBoiled', 4, 15], ['mushroom', 3, 14]], minD: 10, cream: '#fbf8ee' }),
     // マッシュルームのクリームスープ
-    eg_mashroom: S('#d8c098', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8' }),
+    eg_mashroom: S('#d8c098', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8' }),
     // かぼちゃのスープ
-    eg_qar3: S('#f0a030', [], { cream: '#fbf6e8' }),
+    eg_qar3: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8' }),
     // ホベイザ（ゼニアオイの葉のスープ）: 葉・米・玉ねぎ・香菜
     eg_khobeiza: S('#4a7a2a', [['mallow', 8, 14], ['rice', 12, 10]], { minD: 7, flecks: [[CORI, 10, 1.6]] }),
     // 魚介のクリームスープ: えび・いか・玉ねぎ・牛乳・レモン、白身魚（お好みで）
     eg_seafood: S('#f2e4c8', [['shrimp', 5, 15], ['squidRing', 5, 14], ['fish', 2, 15]], withLemon({ minD: 10, flecks: [pars(8)] })),
     // ブロッコリーのクリームスープ、チーズ（お好みで）
-    eg_broccoli: S('#8aa850', [['broccoli', 2, 12]], { minD: 14, cream: '#fbf6e8' }),
+    eg_broccoli: S('#8aa850', [['broccoli', 2, 12]], { top: [['broccoli', 4, 16]], minD: 14, cream: '#fbf6e8' }),
     // 牛肉と野菜のスープ: 牛肉・じゃがいも・にんじん・ズッキーニ・玉ねぎ・トマト
     eg_lahmakhodar: S('#c8802a', [['beefStew', 4, 14], ['potato', 3, 12], ['carrot', 3, 11], ['zucchini', 3, 11]], { minD: 9 }),
     // グリンピースのスープ、にんじん（お好みで）
-    eg_besella: S('#8ab048', [['pea', 8, 12], ['carrot', 3, 10]], { minD: 8, cream: '#fbf6e8' }),
+    eg_besella: S('#8ab048', [['pea', 8, 12], ['carrot', 3, 10]], { top: [['pea', 12, 15]], minD: 8, cream: '#fbf6e8' }),
 };

@@ -72,7 +72,7 @@ export default {
     // トルティージャ・エスパニョーラ（じゃがいものオムレツ）、玉ねぎ（お好みで）
     es_tortilla: p => { const D = plato(p), o = D.o, [x, y] = at(o, 0, 0, 2), r = 50, h = 16; return D.s + `<path d="M${f(x - r)},${f(y - h)} L${f(x - r)},${f(y)} A${r},${f(r * SYF)} 0 0 0 ${f(x + r)},${f(y)} L${f(x + r)},${f(y - h)}Z" fill="${Q.lg(p, [[0, '#e8b048'], [.6, '#c8862e'], [1, '#8a5a1e']])}"/><ellipse cx="${f(x)}" cy="${f(y - h)}" rx="${r}" ry="${f(r * SYF)}" fill="${Q.rg(p, [[0, '#f6d070'], [.7, '#e8b048'], [1, '#c8862e']], .4, .35, .8)}" stroke="#a8702a" stroke-width=".7"/>` + `<path d="M${f(x)},${f(y - h)} L${f(x + r)},${f(y - h)} L${f(x + r)},${f(y)}" fill="none"/>` + `<path d="M${f(x + 8)},${f(y - h + 2)} L${f(x + r - 2)},${f(y - h - 6)} L${f(x + r - 2)},${f(y + 2)} L${f(x + 8)},${f(y + 10)}Z" fill="${Q.lg(p, [[0, '#fff2b0'], [1, '#f2d070']], 0, 0, 1, 0)}" stroke="#c8a040" stroke-width=".5"/>` + W.flecks(p, x + 30, y - 2, 12, 10, 'tl', ['#f8e8c0', '#e8c890'], { ry: 8, s: 2 }) + Q.shine(x - 26, y - h - 8, 20, -8, .7); },
     // レンテハス（チョリソ入りのレンズ豆の煮込み）: レンズ豆・チョリソ・じゃがいも・にんじん・玉ねぎ・ピーマン
-    es_lentejas: S('#7a4a24', [['lentil', 20, 13], ['chorizo', 5, 15], ['potato', 3, 12], ['carrot', 4, 11]], { minD: 6 }),
+    es_lentejas: S('#7a4a24', [['lentil', 20, 13], ['chorizo', 5, 15], ['potato', 3, 12], ['carrot', 4, 11]], { top: [['lentil', 18, 16], ['chorizo', 2, 15]], minD: 6 }),
     // アルボンディガス（肉団子のソース煮）: 合いびき肉・卵・パン・玉ねぎ・にんじん、グリンピース（お好みで）（カスエラ）
     es_albondigas: B('#b8642a', [['meatball', 9, 20], ['carrot', 3, 12], ['pea', 5, 12]], {}, cazuela),
     // メルルーサの衣揚げ、レモン、レタス（お好みで）
@@ -190,7 +190,7 @@ export default {
     // ガスパチョ（冷たいトマトのスープ）: トマト・きゅうり・ピーマン、パン（お好みで）
     es_gazpacho: S('#d8502a', [['cucumber', 4, 11], ['pepperG', 3, 10], ['breadCube', 4, 12]], { minD: 10, oil: [10, '#c8b040'] }),
     // ズッキーニのクリームスープ、チーズ（お好みで）
-    es_crema: S('#b8c870', [], { cream: '#fbf6e8' }),
+    es_crema: S('#b8c870', [], { top: [['zucchini', 5, 16]], cream: '#fbf6e8' }),
     // サルモレホ（濃いトマトのクリーム）、ゆで卵・生ハム（お好みで）
     es_salmorejo: S('#e8703a', [['egg', 2, 14], ['jamon', 6, 12]], { minD: 12, oil: [8, '#c8b040'] }),
     // アホブランコ（アーモンドとにんにくの冷たいスープ）、白ぶどう（お好みで）
@@ -204,7 +204,7 @@ export default {
     // ファバダ（アストゥリアスの白いんげんの煮込み）: 豆・チョリソ・モルシージャ・パンセタ（カスエラ）
     es_fabada: B('#c8803a', [['bigBean', 16, 14], ['chorizo', 4, 16], ['morcilla', 3, 16], ['panceta', 3, 14]], { minD: 8 }, cazuela),
     // カルド・ガジェゴ（青菜と豆とじゃがいものスープ）: 白いんげん・スペアリブ・じゃがいも・青菜、チョリソ（お好みで）
-    es_caldogallego: S('#e0d0a0', [['grelos', 6, 14], ['whiteBean', 8, 13], ['potato', 4, 13], ['chorizo', 2, 14]], { minD: 9 }),
+    es_caldogallego: S('#e0d0a0', [['grelos', 6, 14], ['whiteBean', 8, 13], ['potato', 4, 13], ['chorizo', 2, 14]], { top: [['whiteBean', 10, 16]], minD: 9 }),
     // ポタヘ（ひよこ豆とほうれん草と干しだらの煮込み）: ひよこ豆・たら・ほうれん草・ゆで卵・玉ねぎ・トマト
     es_potaje: S('#c8903a', [['chickpea', 14, 14], ['spinach', 5, 13], ['cod', 2, 16], ['egg', 2, 14]], { minD: 8 }),
     // マルミタコ（バスクのまぐろとじゃがいもの煮込み）: まぐろ・じゃがいも・玉ねぎ・ピーマン・トマト
@@ -214,15 +214,15 @@ export default {
     // ポルサルダ（バスクのポロねぎとじゃがいものスープ）
     es_porrusalda: S('#ece0b0', [['leek', 10, 14], ['potato', 5, 13], ['carrot', 3, 11]], { minD: 8 }),
     // かぼちゃのクリームスープ
-    es_cremacalabaza: S('#f0a030', [], { cream: '#fbf6e8', flecks: [pars(6)] }),
+    es_cremacalabaza: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8', flecks: [pars(6)] }),
     // ポロねぎのクリームスープ
-    es_cremapuerros: S('#e8e4c0', [['leek', 3, 12]], { minD: 12, cream: '#fbf8ee' }),
+    es_cremapuerros: S('#e8e4c0', [['leek', 3, 12]], { top: [['leek', 6, 15]], minD: 12, cream: '#fbf8ee' }),
     // マッシュルームのクリームスープ
-    es_cremachampi: S('#c8a878', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8' }),
+    es_cremachampi: S('#c8a878', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8' }),
     // にんじんのクリームスープ、チーズ（お好みで）
-    es_cremazanahoria: S('#f0902a', [], { cream: '#fbf6e8' }),
+    es_cremazanahoria: S('#f0902a', [], { top: [['carrot', 7, 15]], cream: '#fbf6e8' }),
     // 野菜のピュレスープ
-    es_purever: S('#d8a850', [], { flecks: [pars(10), ['#f8f0d0', 6, 1.4]] }),
+    es_purever: S('#d8a850', [], { top: [['carrot', 3, 13], ['potato', 2, 13], ['zucchini', 2, 13], ['greenBean', 2, 9], ['leek', 2, 13]], flecks: [pars(10), ['#f8f0d0', 6, 1.4]] }),
     // パタタス・ア・ラ・リオハナ（チョリソとじゃがいもの煮込み）
     es_riojana: S('#c8401e', [['potato', 7, 15], ['chorizo', 5, 15], ['pepperG', 2, 12]], { minD: 10 }),
     // ガスパチュエロ（マラガの温かい魚のスープとマヨネーズ）: 魚・じゃがいも・マヨネーズ、えび（お好みで）

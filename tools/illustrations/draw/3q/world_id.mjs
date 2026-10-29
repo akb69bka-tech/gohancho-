@@ -211,7 +211,7 @@ export default {
     // サユール・ボボール（ほうれん草のココナッツスープ）、ハヤトウリ（お好みで）
     id_sayurbobor: S('#ece0b8', [['spinach', 10, 14], ['chayote', 3, 12]], { minD: 9 }),
     // ブレネボン（赤いんげん豆のスープ）: 豆・牛すね・にんじん・セロリと青ねぎ
-    id_brenebon: S('#8a3a24', [['kidney', 20, 14], ['beef', 4, 13], ['carrot', 4, 12]], { minD: 7, flecks: [[CEL[0], 12, 1.6], fs(10)] }),
+    id_brenebon: S('#8a3a24', [['kidney', 20, 14], ['beef', 4, 13], ['carrot', 4, 12]], { top: [['kidney', 14, 16]], minD: 7, flecks: [[CEL[0], 12, 1.6], fs(10)] }),
     // ミー・ゴドッグ（ジャワの卵入り汁そば）: 卵麺・卵・キャベツ、鶏・トマト（お好みで）
     id_migodog: S('#d8b070', [['noodleBit', 14, 16], ['eggRibbon', 3, 14], ['cabbage', 3, 12], ['tomato', 2, 10]], { minD: 8, flecks: [[CEL[0], 10, 1.6], fs(12)] }),
     // ガラン・アセム（ビリンビの酸っぱい鶏スープ）: 鶏・ビリンビ・青トマト・唐辛子・ココナッツミルク

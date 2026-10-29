@@ -154,7 +154,7 @@ export default {
     // エスキーテ（コーンのカップ）: コーン・マヨネーズ・コティハ・ライム
     mx_esquites: K([['corn', 40, 14]], { minD: 5, base: '#f2d070', flecks: [queso(26), ['#c8401e', 10, 1]], after: (o, V, p) => crema([[o.cx - 20, o.cy - 26], [o.cx, o.cy - 32], [o.cx + 20, o.cy - 26]]) }),
     // フリホーレス・チャロス（ベーコンの豆煮）: 豆・ベーコン・トマト・玉ねぎ・セラーノ・香菜
-    mx_frijoles_charros: S('#7a4a2a', [['brownBean', 26, 13], ['bacon', 5, 12], ['tomato', 3, 10], ['jalapeno', 3, 11]], { minD: 7, flecks: [[CIL[0], 14, 1.6]] }),
+    mx_frijoles_charros: S('#7a4a2a', [['brownBean', 26, 13], ['bacon', 5, 12], ['tomato', 3, 10], ['jalapeno', 3, 11]], { top: [['brownBean', 14, 16]], minD: 7, flecks: [[CIL[0], 14, 1.6]] }),
     // アロス・ベルデ（緑のご飯）: 米・ポブラノ・香菜・玉ねぎ、コーン（お好みで）
     mx_arroz_verde: P([['corn', 12, 12]], { rice: { cols: ['#c8dc98', '#b0c880', '#dce8b0'], edge: '#7a9a4a' }, H: 24, R: 50 }),
     // パパス・ア・ラ・メヒカーナ: じゃがいも・トマト・玉ねぎ・セラーノ
@@ -178,7 +178,7 @@ export default {
     // マッシュルームのにんにくとグアヒージョ炒め
     mx_champinones: P([['mushroom', 20, 15], ['garlic', 4, 12], ['chiliR', 5, 13]], { sauce: '#a8501e' }),
     // フリホーレス・デ・ラ・オジャ（鍋の豆）
-    mx_frijoles_olla: S('#5a3020', [['brownBean', 30, 14]], { minD: 6, flecks: [['#4a8a2a', 4, 3]] }),
+    mx_frijoles_olla: S('#5a3020', [['brownBean', 30, 14]], { top: [['brownBean', 16, 16]], minD: 6, flecks: [['#4a8a2a', 4, 3]] }),
 
     // ---------- 汁物 ----------
     // ソパ・デ・フィデオ（トマトの細麺スープ）、ライム・クレマ（お好みで）
@@ -192,9 +192,9 @@ export default {
     // ソパ・デ・トルティーヤ: トマトとパシーヤの汁に揚げたトルティーヤ・アボカド・ケソ、クレマ（お好みで）
     mx_sopa_tortilla: S('#a8301a', [['tostadaStrip', 12, 16], ['avocado', 4, 13], ['cheese', 3, 12]], { minD: 8, cream: CREMA, ing: { ...ing, cheese: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#f6f2e6', p.id + 'qs' + i, { h: s * .4, top: Q.rg(p, [[0, '#ffffff'], [1, '#ece4d0']], .4, .35, .8) }) } }),
     // 黒豆のスープ、揚げトルティーヤ・ケソ・クレマ（お好みで）
-    mx_sopa_frijol: S('#3a2420', [['tostadaStrip', 6, 14]], { cream: CREMA, flecks: [queso(10)] }),
+    mx_sopa_frijol: S('#3a2420', [['tostadaStrip', 6, 14]], { top: [['blackBean', 14, 16], ['tostadaStrip', 3, 16]], cream: CREMA, flecks: [queso(10)] }),
     // レンズ豆のスープ: レンズ豆・トマト・玉ねぎ・にんじん、熟したバナナ（お好みで）
-    mx_lentejas: S('#9a5a2a', [['lentil', 20, 13], ['carrot', 5, 12], ['plantain', 3, 14]], { minD: 6 }),
+    mx_lentejas: S('#9a5a2a', [['lentil', 20, 13], ['carrot', 5, 12], ['plantain', 3, 14]], { top: [['lentil', 18, 16]], minD: 6 }),
     // アルボンディガス（肉団子のスープ）: 肉団子・トマト・にんじん・ズッキーニ
     mx_albondigas: S('#d8803a', [['meatball', 5, 20], ['carrot', 4, 13], ['zucchini', 3, 13]], withLime({ minD: 14 })),
     // カルド・デ・レス（牛すねと野菜のスープ）: 牛すね・とうもろこし・にんじん・じゃがいも・ハヤトウリ・キャベツ・ズッキーニ
@@ -206,9 +206,9 @@ export default {
     // えびのスープ: 殻つきのえび・グアヒージョ・トマト・じゃがいも・にんじん・ライム
     mx_caldo_camaron: S('#c8401e', [['shrimpRed', 5, 16], ['potato', 3, 12], ['carrot', 4, 11]], withLime({ minD: 12 })),
     // コーンのクリームスープ、ポブラノ・ケソ・クレマ（お好みで）
-    mx_crema_elote: S('#f2d880', [['corn', 8, 13], ['poblano', 3, 12]], { minD: 8, cream: CREMA }),
+    mx_crema_elote: S('#f2d880', [['corn', 8, 13], ['poblano', 3, 12]], { top: [['corn', 12, 15]], minD: 8, cream: CREMA }),
     // ポブラノのクリームスープ、パネラ（お好みで）
-    mx_crema_poblano: S('#8aa858', [['corn', 6, 12], ['cheese', 3, 12]], { minD: 10, cream: CREMA, ing: { ...ing, cheese: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#f6f2e6', p.id + 'qs' + i, { h: s * .4, top: Q.rg(p, [[0, '#ffffff'], [1, '#ece4d0']], .4, .35, .8) }) } }),
+    mx_crema_poblano: S('#8aa858', [['corn', 6, 12], ['cheese', 3, 12]], { top: [['poblano', 5, 16], ['corn', 5, 13]], minD: 10, cream: CREMA, ing: { ...ing, cheese: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#f6f2e6', p.id + 'qs' + i, { h: s * .4, top: Q.rg(p, [[0, '#ffffff'], [1, '#ece4d0']], .4, .35, .8) }) } }),
     // かぼちゃの花のスープ: かぼちゃの花・ズッキーニ・コーン・玉ねぎ・トマト
     mx_sopa_flor: S('#e8c070', [['squashFlower', 5, 16], ['zucchini', 4, 12], ['corn', 8, 12]], { minD: 9 }),
     // メヌード（牛の胃袋の赤いスープ）: 胃袋・ホミニー・グアヒージョ・ライム
@@ -218,9 +218,9 @@ export default {
     // モレ・デ・オジャ（牛肉と野菜の赤いスープ）: 牛すね・とうもろこし・ハヤトウリ・いんげん・ズッキーニ
     mx_mole_olla: S('#a8341a', [['beef', 3, 15], ['cornCob', 2, 17], ['chayote', 3, 12], ['greenBean', 3, 8], ['zucchini', 2, 12]], { minD: 12, ing: { ...ing, cornCob: (p, x, y, s, r, i, liq) => W.coin(p, x, y, s * .55, '#e8b830', { h: s * .5, liq, top: Q.rg(p, [[0, '#fff8d0'], [.3, '#f6e8a0'], [.4, '#f6c83a'], [1, '#d09a1a']], .4, .35, .8) }) } }),
     // ズッキーニのクリームスープ、ケソフレスコ（お好みで）
-    mx_crema_calabacita: S('#c8d890', [], { cream: CREMA, flecks: [queso(10)] }),
+    mx_crema_calabacita: S('#c8d890', [], { top: [['zucchini', 5, 16]], cream: CREMA, flecks: [queso(10)] }),
     // そら豆のスープ: 黄色いそら豆・トマト・玉ねぎ・香菜、ノパル（お好みで）
-    mx_sopa_habas: S('#d8a838', [['fava', 14, 14], ['nopal', 4, 12]], { minD: 8, flecks: [[CIL[0], 12, 1.6]] }),
+    mx_sopa_habas: S('#d8a838', [['fava', 14, 14], ['nopal', 4, 12]], { top: [['fava', 10, 16]], minD: 8, flecks: [[CIL[0], 12, 1.6]] }),
     // カルド・デ・ウエボ（トマトの汁に落とし卵）: 卵・トマト・玉ねぎ・セラーノ・香菜
     mx_caldo_huevo: S('#c8401e', [['eggPoached', 3, 22], ['jalapeno', 3, 12], ['potato', 3, 11]], { minD: 16, flecks: [[CIL[0], 12, 1.6]] }),
     // マッシュルームのスープ: マッシュルーム・トマト・玉ねぎ、セラーノ（お好みで）

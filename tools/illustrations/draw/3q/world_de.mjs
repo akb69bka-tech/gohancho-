@@ -81,7 +81,7 @@ export default {
     // 魚のマスタードソースとじゃがいも、レモン
     de_fisch: plateOf((p, o) => W.pool(p, ...at(o, -12, 6), 38, '#f2d870', 'fs') + side(p, o, [['fish', -14, 2, 30], ['potatoBoiled', 30, -8, 16], ['potatoBoiled', 40, 8, 16], ['potatoBoiled', 26, 18, 16]]) + W.flecks(p, ...at(o, 30, 4, 10), 18, 10, 'fsp', PARS, { ry: 8, s: 1.6 }) + lemon(p, ...at(o, -40, 30), 13)),
     // レンズ豆のアイントプフとウィンナー: レンズ豆・じゃがいも・にんじん・ポロねぎ
-    de_linsen: S('#7a4a24', [['lentil', 18, 13], ['wurst', 5, 15], ['potato', 3, 12], ['carrot', 3, 11], ['leek', 2, 11]], { minD: 6 }),
+    de_linsen: S('#7a4a24', [['lentil', 18, 13], ['wurst', 5, 15], ['potato', 3, 12], ['carrot', 3, 11], ['leek', 2, 11]], { top: [['lentil', 18, 16]], minD: 6 }),
     // カルトッフェルプッファー（じゃがいものパンケーキ）とアップルソース
     de_puffer: p => { const D = teller(p), o = D.o; return D.s + byDepth([[-24, -8], [8, -14], [-8, 14]].map(([u, v], i) => { const [x, y] = at(o, u, v, 2 + i * 2); return [y, () => W.jeon(p, x, y, 30, i, { c: '#d8a050', h: 4 }) + W.flecks(p, x, y - 2, 24, 24, 'pf' + i, ['#a8641e', '#f6dca0'], { ry: 10, s: 1.6 })]; })) + `<ellipse cx="${f(o.cx + 46)}" cy="${f(o.cy + 22)}" rx="18" ry="${f(18 * SYF)}" fill="#f4f0e6" stroke="${MOSS}" stroke-width=".8"/><ellipse cx="${f(o.cx + 46)}" cy="${f(o.cy + 21)}" rx="14" ry="${f(14 * SYF)}" fill="#e8d090"/>`; },
     // ルーラーデン（牛肉巻きの煮込み）: 牛肉・ベーコン・ピクルス・玉ねぎ・にんじん
@@ -195,13 +195,13 @@ export default {
     // 鶏の麺スープ: 鶏・にんじん・セロリアック・ポロねぎ・スープ麺
     de_huehnersuppe: S('#f0d898', [['noodleBit', 14, 12], ['chicken', 3, 12], ['carrot', 4, 10], ['celeriac', 3, 10]], { minD: 8, flecks: [pars(10)] }),
     // えんどう豆のアイントプフとソーセージ: 割りえんどう・じゃがいも・にんじん・セロリアック・ポロねぎ、ベーコン（お好みで）
-    de_erbsensuppe: S('#c8b040', [['wurst', 5, 15], ['potato', 3, 12], ['carrot', 3, 11], ['bacon', 3, 11]], { minD: 10 }),
+    de_erbsensuppe: S('#c8b040', [['wurst', 5, 15], ['potato', 3, 12], ['carrot', 3, 11], ['bacon', 3, 11]], { top: [['pea', 12, 15]], minD: 10 }),
     // グーラッシュスープ: 牛肉・玉ねぎ・赤ピーマン・じゃがいも・トマトペースト
     de_gulaschsuppe: S('#a8341a', [['beefStew', 5, 15], ['pepperR', 4, 12], ['potato', 3, 12]], { minD: 10, oil: [10, '#e8701e'] }),
     // かぼちゃのクリームスープ
-    de_kuerbissuppe: S('#f0a030', [], { cream: '#fbf6e8', flecks: [['#3a5a1e', 10, 1.6]] }),
+    de_kuerbissuppe: S('#f0a030', [], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], cream: '#fbf6e8', flecks: [['#3a5a1e', 10, 1.6]] }),
     // トマトのスープとご飯、クリーム（お好みで）
-    de_tomatensuppe: S('#d0402a', [['rice', 20, 10]], { minD: 6, cream: '#fbf2e8' }),
+    de_tomatensuppe: S('#d0402a', [['rice', 20, 10]], { top: [['tomatoChunk', 3, 15], ['basil', 2, 13]], minD: 6, cream: '#fbf2e8' }),
     // フレードレズッペ（パンケーキの細切りの澄んだスープ）
     de_flaedlesuppe: S('#e8c070', [['pancakeStrip', 16, 16]], { minD: 7, flecks: [[CHIVE, 14, 1.6]] }),
     // グリースノッケル（セモリナの団子のスープ）: にんじん
@@ -209,7 +209,7 @@ export default {
     // ケーゼラウフ（チーズとポロねぎとひき肉のスープ）、マッシュルーム（お好みで）
     de_kaeselauch: S('#f0dca0', [['leek', 8, 13], ['mince', 6, 12], ['mushroom', 3, 12]], { minD: 8 }),
     // 白アスパラガスのクリームスープ
-    de_spargelcreme: S('#f4ecc8', [['asparagusW', 4, 10]], { minD: 12, cream: '#fbf8ee' }),
+    de_spargelcreme: S('#f4ecc8', [['asparagusW', 4, 10]], { top: [['asparagusW', 4, 12]], minD: 12, cream: '#fbf8ee' }),
     // いんげんのアイントプフとスモークソーセージ: いんげん・じゃがいも・玉ねぎ・にんじん
     de_bohneneintopf: S('#d8c088', [['greenBean', 6, 9], ['smoked', 4, 15], ['potato', 3, 12], ['carrot', 3, 11]], { minD: 9 }),
     // キャベツとひき肉のアイントプフ: キャベツ・ひき肉・じゃがいも・玉ねぎ・にんじん
@@ -225,15 +225,15 @@ export default {
     // 大麦と燻製豚のアイントプフ: 大麦・カスラー・じゃがいも・にんじん・セロリアック・ポロねぎ
     de_graupeneintopf: S('#d8c090', [['barley', 30, 12], ['smokedPork', 3, 16], ['potato', 3, 11], ['carrot', 3, 11], ['leek', 2, 11]], { minD: 6, flecks: [pars(8)] }),
     // 白いんげんのアイントプフ: 白いんげん・じゃがいも・にんじん・ポロねぎ・トマト、ベーコン（お好みで）
-    de_weissebohnen: S('#c8803a', [['whiteBean', 16, 13], ['potato', 3, 11], ['carrot', 3, 11], ['bacon', 3, 11]], { minD: 7 }),
+    de_weissebohnen: S('#c8803a', [['whiteBean', 16, 13], ['potato', 3, 11], ['carrot', 3, 11], ['bacon', 3, 11]], { top: [['whiteBean', 12, 16]], minD: 7 }),
     // ブロッコリーのクリームスープ、チーズ（お好みで）
-    de_brokkolisuppe: S('#8aa850', [['broccoli', 2, 12]], { minD: 14, cream: '#fbf6e8' }),
+    de_brokkolisuppe: S('#8aa850', [['broccoli', 2, 12]], { top: [['broccoli', 4, 16]], minD: 14, cream: '#fbf6e8' }),
     // マッシュルームのクリームスープ
-    de_champignonsuppe: S('#c8a878', [['mushroom', 3, 12]], { minD: 12, cream: '#fbf6e8', flecks: [pars(8)] }),
+    de_champignonsuppe: S('#c8a878', [['mushroom', 3, 12]], { top: [['mushroom', 5, 16]], minD: 12, cream: '#fbf6e8', flecks: [pars(8)] }),
     // 北ドイツの魚のスープ: 白身魚・じゃがいも・にんじん・ポロねぎ、クリーム（お好みで）
     de_fischsuppe: S('#ecdcb0', [['fish', 3, 18], ['potato', 3, 12], ['carrot', 3, 11], ['leek', 3, 11]], { minD: 10, flecks: [['#5a9a3a', 14, 1.2]] }),
     // にんじんと生姜のスープ
-    de_moehrensuppe: S('#f0902a', [], { cream: '#fbf6e8', flecks: [pars(6)] }),
+    de_moehrensuppe: S('#f0902a', [], { top: [['carrot', 7, 15]], cream: '#fbf6e8', flecks: [pars(6)] }),
 };
 // 皿の上に置く小さな具（plateOf・side 用）
 Object.assign(ing, {

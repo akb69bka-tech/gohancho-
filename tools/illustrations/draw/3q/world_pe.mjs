@@ -195,11 +195,11 @@ export default {
     // パリウエラ（辛い魚介のスープ）: 魚・えび・いか・ムール貝・トマト・アヒ・香菜
     pe_parihuela: S('#c8401e', [['fish', 2, 18], ['shrimp', 3, 15], ['squid', 4, 14], ['mussel', 3, 14]], withLime({ minD: 10, flecks: [cil(12)] })),
     // シャンバル（麦と豆の月曜のスープ）: 麦・豆・そら豆・えんどう豆・燻製豚・香菜
-    pe_shambar: S('#a8743a', [['grain', 20, 12], ['canary', 8, 12], ['fava', 6, 12], ['bacon', 4, 13]], { minD: 6, flecks: [cil(12)] }),
+    pe_shambar: S('#a8743a', [['grain', 20, 12], ['canary', 8, 12], ['fava', 6, 12], ['bacon', 4, 13]], { top: [['canary', 8, 16], ['fava', 5, 16]], minD: 6, flecks: [cil(12)] }),
     // ソパ・デ・モロン（ひき割り麦のスープ）: 麦・じゃがいも・にんじん、グリンピース・チーズ（お好みで）
     pe_sopa_moron: S('#e8d0a0', [['grain', 30, 11], ['potato', 4, 12], ['carrot', 4, 11], ['pea', 5, 12]], { minD: 6 }),
     // かぼちゃのクリームスープ、パンのクルトン（お好みで）
-    pe_crema_zapallo: S('#f0a030', [['crouton', 6, 13]], { minD: 12, cream: '#fbf6e8', ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#c8862e', p.id + 'cr' + i, { h: s * .5, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) } }),
+    pe_crema_zapallo: S('#f0a030', [['crouton', 6, 13]], { top: [['pumpkin', 4, 15], ['pumpkinSeed', 6, 14]], minD: 12, cream: '#fbf6e8', ing: { ...ing, crouton: (p, x, y, s, r, i) => W.dice(p, x, y, s * .7, '#c8862e', p.id + 'cr' + i, { h: s * .5, top: Q.rg(p, [[0, '#f6d890'], [1, '#d8a050']], .4, .35, .8) }) } }),
     // ソパ・ワンタン: ワンタン・鶏・チンゲン菜・青ねぎ・生姜、えび（お好みで）
     pe_sopa_wantan: S('#ecd8a8', [['wonton', 5, 22], ['pakchoi', 3, 12], ['shrimp', 2, 13]], { minD: 14, flecks: [['#4a9a2c', 12, 1.6]] }),
     // パタスカ（胃袋とモテのスープ）: 胃袋・モテ・じゃがいも・ミント
@@ -211,7 +211,7 @@ export default {
     // スタンシア（牛肉のだしと麺）: 牛すね・細麺・じゃがいも・にんじん・セロリ・ポロねぎ
     pe_sustancia: S('#d8b070', [['beef', 3, 14], ['noodleBit', 8, 15], ['yellowPotato', 2, 13], ['carrot', 3, 11], ['leek', 3, 11]], { minD: 9 }),
     // アスパラガスのクリームスープ、粉チーズ（お好みで）
-    pe_crema_esparragos: S('#b8c870', [['asparagusTip', 4, 14]], { minD: 12, cream: '#fbf6e8', ing: { ...ing, asparagusTip: (p, x, y, s, r) => W.asparagus(p, x, y, s * 1.4, r) } }),
+    pe_crema_esparragos: S('#b8c870', [['asparagusTip', 4, 14]], { top: [['asparagusTip', 5, 16]], minD: 12, cream: '#fbf6e8', ing: { ...ing, asparagusTip: (p, x, y, s, r) => W.asparagus(p, x, y, s * 1.4, r) } }),
     // カルド・ベルデ（香草のスープとじゃがいもと卵）: じゃがいも・卵・チーズ・パセリ・香菜・ミント
     pe_caldo_verde: S('#6a9a3a', [['potato', 4, 14], ['eggPoached', 2, 18], ['queso', 3, 13]], { minD: 12, flecks: [cil(16)] }),
     // フチフ（ペルー中華の鶏そばと卵）: 鶏・中華麺・卵・青ねぎ・生姜、チンゲン菜（お好みで）

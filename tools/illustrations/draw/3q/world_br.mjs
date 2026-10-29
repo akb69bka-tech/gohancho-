@@ -111,7 +111,7 @@ export default {
 
     // ---------- 副菜 ----------
     // フェイジョン（ふだんの豆）: カリオカ豆・玉ねぎ、ベーコン（お好みで）
-    br_feijao: S('#6a4030', [['brownBean', 30, 13], ['bacon', 3, 12]], { minD: 6 }),
+    br_feijao: S('#6a4030', [['brownBean', 30, 13], ['bacon', 3, 12]], { top: [['brownBean', 16, 16]], minD: 6 }),
     // ファロッファ（キャッサバ粉の炒め）: キャッサバ粉・玉ねぎ・バター、ベーコン・卵（お好みで）
     br_farofa: K([['bacon', 6, 12], ['scramble', 4, 12]], { base: '#e8c888', H: 14, flecks: [['#d8a858', 50, 1.6], ['#f6e0b0', 30, 1.4]] }),
     // コウヴィ（ケールのにんにく炒め）
@@ -171,19 +171,19 @@ export default {
     // カンジャ（鶏と米のスープ）: 鶏・米・にんじん・玉ねぎ、じゃがいも（お好みで）
     br_canja: S('#f2e4b8', [['chicken', 4, 14], ['carrot', 6, 11], ['rice', 30, 10], ['potato', 2, 11]], { minD: 6, flecks: [cv(12)] }),
     // ソッパ・ジ・フェイジョン（豆とパスタのスープ）、ベーコン・じゃがいも（お好みで）
-    br_sopa_feijao: S('#6a4030', [['pasta', 10, 14], ['bacon', 3, 12]], { minD: 9, flecks: [cv(12)] }),
+    br_sopa_feijao: S('#6a4030', [['pasta', 10, 14], ['bacon', 3, 12]], { top: [['brownBean', 10, 16], ['pasta', 3, 14]], minD: 9, flecks: [cv(12)] }),
     // 牛肉と野菜のスープ: 牛すね・じゃがいも・にんじん、ハヤトウリ・ズッキーニ（お好みで）
     br_sopa_legumes: S('#e0b878', [['beef', 4, 14], ['potato', 4, 12], ['carrot', 5, 12], ['chuchu', 3, 12], ['zucchini', 3, 12]], { minD: 10, flecks: [cv(10)] }),
     // キャッサバとひき肉のスープ: キャッサバ・ひき肉・玉ねぎ・トマト
-    br_caldo_mandioca: S('#f2e4c0', [['mince', 6, 12], ['tomato', 2, 10]], { cream: '#fbf6e8', flecks: [cv(14)] }),
+    br_caldo_mandioca: S('#f2e4c0', [['mince', 6, 12], ['tomato', 2, 10]], { top: [['cassava', 5, 15]], cream: '#fbf6e8', flecks: [cv(14)] }),
     // えんどう豆のスープ、リングイッサ・ベーコン（お好みで）
-    br_sopa_ervilha: S('#b8b050', [['linguica', 5, 14], ['bacon', 3, 12], ['carrot', 3, 11]], { minD: 10 }),
+    br_sopa_ervilha: S('#b8b050', [['linguica', 5, 14], ['bacon', 3, 12], ['carrot', 3, 11]], { top: [['pea', 14, 15]], minD: 10 }),
     // レンズ豆のスープ、リングイッサ（お好みで）
-    br_sopa_lentilha: S('#8a5a2a', [['lentil', 20, 13], ['linguica', 4, 14], ['carrot', 4, 11], ['couve', 6, 12]], { minD: 6 }),
+    br_sopa_lentilha: S('#8a5a2a', [['lentil', 20, 13], ['linguica', 4, 14], ['carrot', 4, 11], ['couve', 6, 12]], { top: [['lentil', 18, 16]], minD: 6 }),
     // かぼちゃと干し肉のスープ
     br_caldo_abobora: S('#f0a030', [['driedBeef', 8, 14]], { minD: 9, flecks: [cv(14)] }),
     // マンジオキーニャのクリームスープと鶏
-    br_creme_mandioquinha: S('#f6d870', [['chicken', 4, 13]], { minD: 12, cream: '#fbf6e8', flecks: [cv(10)] }),
+    br_creme_mandioquinha: S('#f6d870', [['chicken', 4, 13]], { top: [['mandioquinha', 6, 14]], minD: 12, cream: '#fbf6e8', flecks: [cv(10)] }),
     // カンジキーニャ（とうもろこしのかゆとスペアリブ）: スペアリブ・とうもろこしの粗挽き・玉ねぎ・トマト、ケール（お好みで）
     br_canjiquinha: S('#f2d070', [['porkRib', 4, 18], ['couve', 6, 12]], { minD: 12, porr: { c: '#f6dc80', n: 150 }, flecks: [cv(14)] }),
     // アルファベットのパスタのスープ: パスタ・じゃがいも・にんじん・トマト・玉ねぎ
@@ -193,7 +193,7 @@ export default {
     // えびのクリームスープ: えび・じゃがいも・トマト・玉ねぎ・香菜
     br_caldo_camarao: S('#f0b878', [['shrimp', 6, 16], ['potato', 3, 11]], { minD: 12, flecks: [cv(14)] }),
     // コーンのクリームスープ、チーズ（お好みで）
-    br_creme_milho: S('#f6dc80', [['corn', 10, 13]], { minD: 8, flecks: [cv(10)] }),
+    br_creme_milho: S('#f6dc80', [['corn', 10, 13]], { top: [['corn', 12, 15]], minD: 8, flecks: [cv(10)] }),
     // フバー（とうもろこし粉）のスープとケールと卵、リングイッサ（お好みで）
     br_sopa_fuba: S('#f2d070', [['couve', 12, 13], ['eggRibbon', 3, 14], ['linguica', 3, 13]], { minD: 8 }),
     // 大麦と牛肉のスープ: 大麦・牛肉・にんじん・じゃがいも・トマト
@@ -201,13 +201,13 @@ export default {
     // カペレッチの鶏スープ、粉チーズ（お好みで）
     br_sopa_capeletti: S('#f0d080', [['capeletti', 9, 16], ['carrot', 3, 10]], { minD: 12, flecks: [cv(12), ['#fbf6e0', 14, 1.4]] }),
     // 里芋のスープ、ポロねぎ・ベーコン（お好みで）
-    br_caldo_inhame: S('#ece0d0', [['bacon', 4, 12], ['leek', 4, 12]], { minD: 12, cream: '#fbf6ee', flecks: [cv(10)] }),
+    br_caldo_inhame: S('#ece0d0', [['bacon', 4, 12], ['leek', 4, 12]], { top: [['taro', 5, 15]], minD: 12, cream: '#fbf6ee', flecks: [cv(10)] }),
     // ブロッコリーのクリームスープ、チーズ（お好みで）
-    br_creme_brocolis: S('#9ab860', [['broccoli', 3, 12]], { minD: 14, cream: '#fbf6e8' }),
+    br_creme_brocolis: S('#9ab860', [['broccoli', 3, 12]], { top: [['broccoli', 4, 16]], minD: 14, cream: '#fbf6e8' }),
     // オニオンスープ: 玉ねぎ・バター・パン・チーズ
     br_sopa_cebola: S('#a8641e', [['onion', 10, 14]], { minD: 8, after: (S, V, p) => `<path d="${Q.blob(S.cx + 4, S.cy - 2, 34, 18, 'sc', { n: 12, jit: .1 })}" fill="${Q.rg(p, [[0, '#fff2c0'], [.6, '#f2c860'], [1, '#c8862e']], .4, .35, .8)}" stroke="#a8641e" stroke-width=".7"/>` + W.flecks(p, S.cx + 4, S.cy - 2, 28, 20, 'scf', ['#c8782a', '#a8601e'], { ry: 12, s: 2 }) }),
     // ひよこ豆とリングイッサのスープ: ひよこ豆・リングイッサ・じゃがいも・玉ねぎ・トマト
-    br_sopa_grao_bico: S('#d89050', [['chickpea', 16, 14], ['linguica', 5, 14], ['potato', 3, 11]], { minD: 7, flecks: [cv(10)] }),
+    br_sopa_grao_bico: S('#d89050', [['chickpea', 16, 14], ['linguica', 5, 14], ['potato', 3, 11]], { top: [['chickpea', 12, 16]], minD: 7, flecks: [cv(10)] }),
     // にんじんと生姜のクリームスープ
-    br_creme_cenoura: S('#f0902a', [], { cream: '#fbf6e8', flecks: [cv(10)] }),
+    br_creme_cenoura: S('#f0902a', [], { top: [['carrot', 7, 15]], cream: '#fbf6e8', flecks: [cv(10)] }),
 };

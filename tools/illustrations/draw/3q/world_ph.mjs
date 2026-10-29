@@ -74,7 +74,7 @@ export default {
     // ティラピアの揚げ焼き、カラマンシー・トマト（お好みで）
     ph_tilapia: fishDish({ skin: '#a8682a', belly: '#d8a860', char: .5 }, (p, x, y) => W.tomatoBall(p, x + 50, y + 22, 14) + calamansi(p, x - 50, y + 24, 12)),
     // ムンゴ（緑豆の煮込み）: 緑豆・トマト・玉ねぎ・モリンガの葉、豚バラ（お好みで）
-    ph_munggo: S('#9a8a3a', [['leaf', 14, 14], ['porkBelly', 3, 12], ['tomato', 2, 10]], { minD: 8, flecks: [['#6a8a2a', 30, 1.6]] }),
+    ph_munggo: S('#9a8a3a', [['leaf', 14, 14], ['porkBelly', 3, 12], ['tomato', 2, 10]], { top: [['pea', 14, 14]], minD: 8, flecks: [['#6a8a2a', 30, 1.6]] }),
     // トルタン・タロン（焼きなすのオムレツ）
     ph_tortang_talong: P([['tortaTalong', 2, 32]], { minD: 30, H: 6 }),
     // メヌード（豚のトマト煮）: 豚・じゃがいも・にんじん・赤ピーマン・玉ねぎ、レバー・レーズン（お好みで）
