@@ -7042,7 +7042,10 @@ function tofuStepFix(txt, tofu, o){
    肉→肉は、元の肉の言い方を置き換えた肉の言い方に。肉→豆腐は、肉の総称も豆腐に（ほかに肉が残っていないときだけ） */
 const PM_B = '(?<![\\p{L}])', PM_E = '(?![\\p{L}])';
 const pmRe = (src, latin) => new RegExp(latin ? PM_B + '(?:' + src + ')' + PM_E : '(?:' + src + ')', 'giu');
-const PACK_MEAT = {
+// 17言語ぶんの正規表現は、置き換えの文を作るときに初めて作る（起動のたびに作らない。日本で置き換えを使わない人は作らない）
+let PACK_MEAT_C = null;
+const PACK_MEAT = new Proxy({}, {get: (_, k) => (PACK_MEAT_C = PACK_MEAT_C || packMeatAll())[k]});
+function packMeatAll(){ return {
     en: {pork: ['pork', pmRe('(?:ground |minced )?pork(?: (?:belly|loin|shoulder|chops?|mince))?(?! (?:stock|broth|fat|rinds?))', 1)], chicken: ['chicken', pmRe('(?:ground |minced )?chicken(?: (?:thighs?|breasts?|legs?|pieces))?(?! (?:stock|broth|bouillon|fat|skin))', 1)], beef: ['beef', pmRe('(?:ground |minced )?beef(?: (?:mince|shin|chuck|steak))?(?! (?:stock|broth|bouillon|fat))', 1)], meat: pmRe('meat|mince', 1), tofu: 'tofu'},
     fil: {pork: ['baboy', pmRe('baboy', 1)], chicken: ['manok', pmRe('manok', 1)], beef: ['baka', pmRe('baka', 1)], meat: pmRe('karne', 1), tofu: 'tokwa'},
     id: {pork: ['daging babi', pmRe('(?:daging )?babi', 1)], chicken: ['ayam', pmRe('(?:daging )?ayam', 1)], beef: ['daging sapi', pmRe('(?:daging )?sapi', 1)], meat: pmRe('daging', 1), tofu: 'tahu'},
@@ -7061,7 +7064,7 @@ const PACK_MEAT = {
     ar: {pork: ['لحم الخنزير', pmRe('لحم الخنزير')], chicken: ['الفراخ', pmRe('(?:ال)?(?:فراخ|دجاج)')], beef: ['اللحم البقري', pmRe('لحم بقري|اللحم البقري')], meat: pmRe('(?:ال)?لحمة?'), tofu: 'التوفو'},
     hi: {pork: ['पोर्क', pmRe('पोर्क')], chicken: ['चिकन', pmRe('चिकन|मुर्गी')], beef: ['बीफ़', pmRe('बीफ़|बीफ')], meat: pmRe('मांस|गोश्त|मटन'), tofu: 'टोफू'},
     ja: {pork: ['豚肉', /豚[^\s、。をはがとにでのへや・]{0,8}?肉|豚肉|豚(?:バラ|ロース|こま|肩|もも|ひき)|豚(?![汁骨脂])/g], chicken: ['鶏肉', /鶏[^\s、。をはがとにでのへや・]{0,8}?肉|鶏肉|鶏(?:もも|むね|手羽|ひき)|鶏(?![ガ卵がら])/g], beef: ['牛肉', /牛[^\s、。をはがとにでのへや・乳]{0,8}?肉|牛肉|牛(?:バラ|すね|ひき|もも|肩)|牛(?![乳脂])/g], meat: /(?<![一-龠ァ-ヶーきぎ])肉(?![一-龠ァ-ヶーじ])/g, tofu: '豆腐'},
-};
+}; }
 const PM_FAMS = ['pork', 'chicken', 'beef'];
 function meatFamOf(i){ return i ? PM_FAMS.find(f => inFam(f, i)) || null : null; }
 // 各国の料理の手順の文に入れる、置き換えた食材の名前（「Chicken thigh, bite-size」→ 文の途中なら「chicken thigh」。ドイツ語の名詞はそのまま）
