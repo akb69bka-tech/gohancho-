@@ -795,7 +795,8 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14
         ['蚵仔', 'mollusc', 1], ['蠔油', 'mollusc', 2], ['홍합', 'mollusc', 1], ['바지락', 'mollusc', 1], ['魷魚', 'mollusc', 1], ['花枝', 'squid', 1], ['透抽', 'squid', 1], ['小卷', 'squid', 1], ['章魚', 'mollusc', 1], ['주꾸미', 'mollusc', 1],
         ['南瓜籽', 'seeds', 1], ['葵花子', 'seeds', 1], ['海瓜子', 'seeds', 0], ['ひまわり油', 'seeds', 0],
         ['魷魚', 'fish', 0], ['乾魷魚', 'fish', 0], ['章魚', 'fish', 0], ['墨魚', 'fish', 0], ['鮑魚', 'fish', 0], ['鲍鱼', 'fish', 0], ['鱿鱼', 'fish', 0], ['魚丸', 'fish', 1], ['虱目魚', 'fish', 1], ['鳕鱼', 'fish', 1],
-        ['shacha sauce', 'fish', 2], ['1 tbsp sacha sauce', 'shrimp', 2], ['沙茶醬', 'fish', 2], ['沙茶醬', 'crustacean', 2], ['沙茶醬', 'peanut', 0], ['Sacha culantro or coriander', 'fish', 0], ['Sacha inchi', 'shrimp', 0],
+        ['shacha sauce', 'fish', 2], ['1 tbsp sacha sauce', 'shrimp', 2], ['沙茶醬', 'fish', 2], ['沙茶醬', 'crustacean', 2], ['沙茶醬', 'peanut', 4],   // 落花生は「袋の表示を確認」（安全第8回）
+        ['Sacha culantro or coriander', 'fish', 0], ['Sacha inchi', 'shrimp', 0],
         ['杏鮑菇', 'abalone', 0], ['杏鲍菇', 'abalone', 0], ['King oyster mushrooms', 'shellfish', 0], ['King oyster or other mushrooms', 'mollusc', 0], ['鮑魚', 'abalone', 1], ['九孔', 'abalone', 1]];
     const { ctx, p } = await open('JP');
     const r = await p.evaluate(T => {
@@ -824,6 +825,35 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14
             return { mush: mush.map(r => r.id + ':' + isAvoided(r)), clam: clam.map(r => r.id + ':' + isAvoided(r)) }; });
         ok(g.mush.length && g.mush.every(x => x.endsWith(':false')), '安全第7回 韓国・貝類のアレルギー: エリンギ（새송이）の料理は外さない: ' + g.mush.join(','));
         ok(g.clam.length && g.clam.every(x => x.endsWith(':true')), '安全第7回 韓国・貝類のアレルギー: あさり（바지락）の料理は外す: ' + g.clam.join(','));
+        await ctx.close();
+    }
+}
+// 安全第8回: 沙茶醬の落花生・ごまは「袋の表示を確認（🔍）」（外さない）。백합（ハマグリ／百合）は、前後の言葉で貝と読めるときだけ貝類
+{
+    const TABLE = [['沙茶醬', 'peanut', 4], ['沙茶醬', 'sesame', 4], ['shacha sauce', 'peanut', 4], ['1 tbsp sacha sauce', 'sesame', 4], ['2 tbsp shacha sauce', 'peanut', 4],
+        ['沙茶醬', 'fish', 2], ['沙茶醬', 'shrimp', 2], ['Sacha inchi', 'peanut', 0], ['Sacha culantro or coriander', 'sesame', 0], ['落花生', 'peanut', 1], ['ごま', 'sesame', 1],
+        ['백합탕', 'shellfish', 1], ['백합조개', 'shellfish', 1], ['백합 칼국수', 'shellfish', 1], ['백합죽', 'shellfish', 1], ['해감한 백합', 'shellfish', 1], ['생백합', 'shellfish', 1], ['해감한 백합', 'mollusc', 1], ['백합탕', 'mollusc', 1],
+        ['백합꽃', 'shellfish', 0], ['백합 뿌리', 'shellfish', 0], ['백합근', 'shellfish', 0], ['백합', 'shellfish', 0], ['백합꽃', 'mollusc', 0], ['백합', 'mollusc', 0]];
+    const { ctx, p } = await open('JP');
+    const r = await p.evaluate(T => {
+        const mk = n => { const j = /[぀-ヿ㐀-鿿가-힯]/.test(n); const it = parseIng(n); if (!j){ it.en = n; it.key = n.toLowerCase(); } return it; };
+        // 韓国語の言葉は、料理の材料（'clam|Hard clams|해감한 백합' のような形）と同じく、空白を含む名前のまま渡す（parseIng は「名前 分量」に分けてしまう）
+        const mk2 = n => /[가-힯]/.test(n) ? { key: n, en: '', name: n, label: n } : mk(n);
+        return T.filter(([n, id, k]) => algKind(id, mk2(n)) !== k).map(([n, id, k]) => n + '/' + id + ' = ' + algKind(id, mk2(n)) + '（' + k + ' のはず）');
+    }, TABLE);
+    ok(!r.length, '安全第8回 沙茶醬の落花生・ごま、백합の判定の表: ' + r.join('、'));
+    await ctx.close();
+    // 画面: 台湾で落花生・ごまのアレルギー。沙茶醬の料理は外さず、カードに 🔍（茶色）と「沙茶醬の袋の表示を確認」
+    for (const [ui, alg] of [['zh-Hant', 'peanut'], ['ja', 'sesame'], ['en', 'peanut']]){
+        const { ctx, p } = await open('TW', { uiLang: ui, allergens: [alg] });
+        const g = await p.evaluate(alg => {
+            const ids = ['tw_shacha_yangrou', 'tw_shacha_kongxincai', 'tw_youyu_geng'].filter(byId);
+            setTab('today'); const m = session.menu; m.items[0] = Object.assign({}, m.items[0], { r: byId('tw_shacha_yangrou') }); render();
+            const tag = [...document.querySelectorAll('.alg-tag.may')].map(x => x.getAttribute('aria-label') || '').find(x => /沙茶|shacha|sacha|サーチャー/i.test(x)) || '';
+            return { n: ids.length, av: ids.filter(id => isAvoided(byId(id))), may: ids.map(id => algMayHits(byId(id)).some(x => x.id === alg && x.names.some(n => /沙茶|shacha|sacha|サーチャー/i.test(n)))), tag }; }, alg);
+        ok(g.n === 3 && !g.av.length, `安全第8回 台湾・${alg}（${ui}）: 沙茶醬の料理を外さない: ` + JSON.stringify(g));
+        ok(g.may.every(Boolean), `安全第8回 台湾・${alg}（${ui}）: 沙茶醬の料理は、すべて「袋の表示を確認」: ` + JSON.stringify(g.may));
+        ok(/^🔍/.test(g.tag), `安全第8回 台湾・${alg}（${ui}）: カードに 🔍 の印（沙茶醬）: ` + g.tag);
         await ctx.close();
     }
 }
