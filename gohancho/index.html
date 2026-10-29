@@ -4587,7 +4587,7 @@ function addGenerated(items){
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
     });
 }
-// 起動のときは、ページの先頭で取りはじめた一覧（window.__genP）を使う。届いたらすぐ描き直す（ほかの読みこみとまとめる 250ms を待たない）
+// 起動のときは、ページの先頭で取りはじめた一覧（window.__genP）を使う。献立の画面が出ていれば、届いたらすぐ描き直す（ほかの読みこみとまとめる 250ms を待たない）
 async function loadGenerated(){
     try{
         const early = window.__genP; window.__genP = null;
@@ -4598,7 +4598,7 @@ async function loadGenerated(){
         addGenerated((m && m.items) || {});
         Object.assign(GEN_BUNDLES, (m && m.bundles) || {});
         loadGenBundle(currentCountry());
-        if (Object.keys(GEN).length) scheduleRender(early ? 0 : undefined);
+        if (Object.keys(GEN).length) scheduleRender(early && !sheet && !modalId ? 0 : undefined);   // シート・詳しい画面を開いているときは、いままでどおり（開いているものを急いで描き直さない）
     }catch(e){}
     finally{ genSettle(); }
 }
