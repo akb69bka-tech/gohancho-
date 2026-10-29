@@ -151,7 +151,8 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       await p.evaluate(() => { S.condOpen = true; render(); }); await p.waitForTimeout(200);
       // 気分・まるごと入れ替え（お膳の中は変わってよい。お膳の外は動かない）
       for (const k of ['fish', 'meat', 'quick']) await act('気分', 'sel', `[data-act="mood"][data-k="${k}"]`, '.tray,.cond-sum', 'btn');
-      for (let i = 0; i < 2; i++) await act('まるごと入れ替え', 'sel', '.shuffle', '.tray', 'btn');
+      // まるごと入れ替えは見出しの行にある（お膳の外）。押したボタンの印が回る動き（transform）は位置のずれではないので、印の中（svg）だけ除く。ボタンと印の枠は動いてはいけない
+      for (let i = 0; i < 2; i++) await act('まるごと入れ替え', 'sel', '#view .shuffle', '.tray,#view .head-shuffle .sh-ic', 'btn');
       // 条件を開く/閉じる: 開いたぶん下が動くのは当然なので計測しない。品数を変える（同じ品数の中での入れ替えは上で確認済み）
       // あと1品
       await act('あと1品を開く', 'sel', '[data-act="one-open"]', '.tray', 'btn');
