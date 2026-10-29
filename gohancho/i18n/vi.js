@@ -1601,5 +1601,11 @@ GOHAN_I18N('vi', {
     "決めました": "Đã chọn",
     "tab|作り方": "Nấu",
     "tab|材料から": "Tủ lạnh",
-    "tab|記録": "Nhật ký"
+    "tab|記録": "Nhật ký",
+    "tabs|今日": "Hôm nay",
+    "tabs|作る": "Nấu",
+    "tabs|材料": "Tủ lạnh",
+    "tabs|ひねり": "Biến tấu",
+    "tabs|世界": "Thế giới",
+    "tabs|記録": "Nhật ký"
 });

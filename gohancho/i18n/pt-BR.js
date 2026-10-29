@@ -1601,5 +1601,11 @@ GOHAN_I18N('pt-BR', {
     "決めました": "Decidido",
     "tab|作り方": "Cozinhar",
     "tab|材料から": "Geladeira",
-    "tab|記録": "Diário"
+    "tab|記録": "Diário",
+    "tabs|今日": "Hoje",
+    "tabs|作る": "Cozinha",
+    "tabs|材料": "Itens",
+    "tabs|ひねり": "Toque",
+    "tabs|世界": "Mundo",
+    "tabs|記録": "Diário"
 });

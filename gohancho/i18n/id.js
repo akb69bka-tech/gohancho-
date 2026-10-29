@@ -1601,5 +1601,11 @@ GOHAN_I18N('id', {
     "決めました": "Sudah diputuskan",
     "tab|作り方": "Masak",
     "tab|材料から": "Kulkas",
-    "tab|記録": "Catatan"
+    "tab|記録": "Catatan",
+    "tabs|今日": "Hari ini",
+    "tabs|作る": "Masak",
+    "tabs|材料": "Bahan",
+    "tabs|ひねり": "Twist",
+    "tabs|世界": "Dunia",
+    "tabs|記録": "Log"
 });

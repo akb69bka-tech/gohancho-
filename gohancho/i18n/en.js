@@ -1602,5 +1602,11 @@ GOHAN_I18N('en', {
     "決めました": "Decided",
     "tab|作り方": "Cook",
     "tab|材料から": "Fridge",
-    "tab|記録": "Log"
+    "tab|記録": "Log",
+    "tabs|今日": "Today",
+    "tabs|作る": "Cook",
+    "tabs|材料": "Food",
+    "tabs|ひねり": "Twist",
+    "tabs|世界": "World",
+    "tabs|記録": "Log"
 });

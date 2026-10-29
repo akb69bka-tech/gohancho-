@@ -157,12 +157,14 @@ for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1]]){
         const bs = [...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')];
         const tl = bs.map(b => b.querySelector('.tl')).filter(Boolean), vis = tl.filter(e => e.getBoundingClientRect().width > 2);
         const lines = vis.map(e => Math.round(e.getBoundingClientRect().height / (parseFloat(getComputedStyle(e).lineHeight) || 14)));
-        return {overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0)};
+        return {overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true'} : null; })};
     });
     const tag = `M1e ${w}x${h} 文字${ts}`;
     ok(!r.overlap, `${tag} 決定の帯をお盆に重ねない: ` + JSON.stringify(r));
     if (w < 300) ok(r.ico && r.shown === 0 && r.label, `${tag} 狭い幅ではタブは絵だけ（字は読み上げに残す）: ` + JSON.stringify(r));
-    else ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
+    if (w < 300) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 8 && !x.cut && x.hid), `${tag} 絵だけのタブに短い名前（2〜3文字・切れない・読み上げは長い名前）: ` + JSON.stringify(r.shorts));
+    if (w >= 300) ok(r.shorts.every(x => !x), `${tag} 字のあるタブには短い名前を出さない: ` + JSON.stringify(r.shorts));
+    if (w >= 300) ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
     await ctx.close();
 }
 
