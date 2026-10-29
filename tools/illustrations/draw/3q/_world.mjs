@@ -572,7 +572,7 @@ export const ING = {
 const SMALL_TOP = new Set(['lentil', 'redLentil', 'moong', 'pea', 'corn', 'grain', 'kidney', 'blackBean', 'whiteBean', 'brownBean', 'chickpea', 'fava', 'favaSprout', 'canary', 'urad', 'pumpkinSeed', 'peanut']);
 export function make(p, spec){
     const { v, mode = 'plate', c = '#c88a4a', items = [], R = 50, H = 16, base = null, flecks: fl = [], sauce = null, sauceR = 32, oil = null, cream = null, after = () => '', minD = 10, big = 1, steam = 0, rice = null, noodle = null, porr = null, top = null, topR = 30 } = spec;
-    const dens = spec.dens ?? (mode === 'plate' ? 1.5 : 1), list = []; items.forEach(([k, n, s = 12]) => { for (let j = 0; j < Math.round(n * (n > 3 ? dens : 1)); j++) list.push([k, s]); });
+    const dens = spec.dens ?? (mode === 'plate' ? 1.5 : mode === 'bowl' ? 1.7 : 1), list = []; items.forEach(([k, n, s = 12]) => { for (let j = 0; j < Math.round(n * (n > 3 ? dens : 1)); j++) list.push([k, s]); });
     const R0 = rng(p.id + 'mk'); for (let i = list.length - 1; i > 0; i--){ const j = Math.floor(R0() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
     const draw = (k, s, x, y, r, i, liq) => { const fn = (spec.ing && spec.ing[k]) || ING[k]; if (!fn) throw new Error('ING ' + k); return grow(x, y, big, fn(p, x, y, s, r, i, liq)); };
     const flk = (cx, cy, rx, ry) => fl.map(([col, n, sz = 1.4], j) => flecks(p, cx, cy, rx, n, 'mkf' + j, col, { ry, s: sz })).join('');
@@ -584,7 +584,7 @@ export function make(p, spec){
         return D.s + (sauce ? pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, 'mks') : '') + (base ? mound(p, D.o.cx, D.o.cy + 2, R * .92, H * .7, base, 'mkb', D.o.sy) : '') + bed + byDepth(it) + flk(D.o.cx, D.o.cy - H * CZ * .5, R * .8, R * .4) + after(D.o, D, p);
     }
     if (mode === 'bowl'){
-        const V = v(p); return inBowl(p, V, { R: R + 14, H: H + 10, base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .95, minD, HH, (x, y, r, i) => draw(list[i][0], list[i][1], x, y, r, i)), [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
+        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + 14, H: H + 18, base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
     }
     if (mode === 'braise'){
         const V = v(p); return braise(p, V, c, p.id + 'br', list.length, minD, H + 14, (x, y, r, i) => draw(list[i % list.length][0], list[i % list.length][1], x, y, r, i), { srx: 50, R: 50 }) + flk(100, V.cy - 4, 40, 14) + after({ cx: 100, cy: V.cy }, V, p);
