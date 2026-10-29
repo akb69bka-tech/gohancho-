@@ -47,9 +47,10 @@ for (const cc of CCS){
         click('count', {v: 5}); if (paywalls[0] !== 'dishes' || S.settings.dishCount !== 3) bad.push('5品で購入画面が出ない/設定が変わった');
         click('count', {v: 6}); if (S.settings.dishCount !== 3) bad.push('6品で設定が変わった');
         click('count', {v: 4}); if (S.settings.dishCount !== 4) bad.push('4品は無料で選べるはず');
-        if (document.body.innerText.indexOf(t('無料版は{n}品までなので{n}品です', {n:4})) >= 0) bad.push('4品固定なのに「4品までなので」と出る');
+        // 画面の品数は、ご飯の席も1品と数える（基準書 7章 4A）。値（おかずの数）4 は、ご飯のある国では「5品」と出る
+        if (document.body.innerText.indexOf(t('無料版は{n}品までなので{n}品です', {n: seatsOf(4)})) >= 0) bad.push('4品固定なのに「4品までなので」と出る');
         S.settings.dishCount = 6;   // 以前 Pro で選んだ値: 無料では4品で、理由を言う
-        if (menuCount() !== 4 || countReason(4) !== t('無料版は{n}品までなので{n}品です', {n:4})) bad.push('6品設定の理由が正直でない');
+        if (menuCount() !== 4 || countReason(4) !== t('無料版は{n}品までなので{n}品です', {n: seatsOf(4)})) bad.push('6品設定の理由が正直でない');
         // あと1品: 4品を超えて足せない（入れかえになる）
         S.settings.dishCount = 4; session.menu = null; render();
         const fake = RECIPES.find(r => slotOf(r) === '副菜' && !session.menu.items.some(x => x.r && x.r.id === r.id));

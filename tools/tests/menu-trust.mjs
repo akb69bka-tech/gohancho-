@@ -169,7 +169,9 @@ for (const k of [0, 1, 2]){
         const note = await p.evaluate(kind => { const c = document.querySelector(`.sheet .pending-note[data-pending="${kind}"]`), cond = c ? c.textContent : ''; closeSheet(); setTab('settings');
             const n = document.querySelector('#view .pending-note[data-pending="count"]'); for (let d = n; d; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
             const on = [...document.querySelectorAll('#view [data-act="count"][aria-pressed="true"]')].map(x => x.dataset.v); return { cond, set: n ? n.textContent : '', on }; }, kind);
-        if (kind === 'count') ok(/明日から4品/.test(note.set) && /明日から4品/.test(note.cond) && JSON.stringify(note.on) === '["3"]', name + ': 設定と条件シートに「明日から4品」と出る（いまの品数は3のまま） ' + JSON.stringify(note));
+        // 画面の品数は、ご飯の席も1品と数える（基準書 7章 4A）。値 4（おかず4）は、ご飯のある日本では「5品」と出る
+        const want4 = await p.evaluate(() => shapeName(4));
+        if (kind === 'count') ok(note.set.includes('明日から' + want4) && note.cond.includes('明日から' + want4) && JSON.stringify(note.on) === '["3"]', name + ': 設定と条件シートに「明日から' + want4 + '」と出る（いまの品数は3のまま） ' + JSON.stringify(note));
         else ok(/おかゆの日/.test(note.cond) && !note.set, name + ': 条件シートに明日の気分が出る ' + JSON.stringify(note));
         if (kind === 'count') await p.click('#view .pending-note [data-act="pending-cancel"]');
         else { await p.evaluate(() => setTab('today')); await openMood(p); await p.click('.sheet .pending-note [data-act="pending-cancel"]'); }

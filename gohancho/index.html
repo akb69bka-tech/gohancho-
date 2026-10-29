@@ -5557,7 +5557,7 @@ function paywallReason(k){
 function pwCompareHtml(reason){
     const li = xs => xs.map(b => `<li>${esc(b)}</li>`).join('');
     if (PLAN.billingEnabled && PLAN.freeTier){
-        const free = [t('今日の献立（{n}品まで）', {n:PLAN.freeLimits.dishes}), t('作り方と材料'), t('冷蔵庫の材料から探せる'), t('世界のレシピ'), t('今日の分の買い物メモ'), t('記録'), t('家族に送る'),
+        const free = [t('今日の献立（{n}品まで）', {n: seatsOf(PLAN.freeLimits.dishes)}), t('作り方と材料'), t('冷蔵庫の材料から探せる'), t('世界のレシピ'), t('今日の分の買い物メモ'), t('記録'), t('家族に送る'),
             ...(twistAvailable() ? [t('定番をひとひねり（1日{n}回まで）', {n:PLAN.freeLimits.twistPerDay})] : []), t('わが家の写真（{n}枚まで）', {n:PLAN.freeLimits.myPhotos})];
         return `<div class="pw-compare">
             <section class="pw-col"><h3>${esc(t('無料で使えること'))}</h3><ul class="pw-list free">${li(free)}</ul></section>
@@ -5817,10 +5817,19 @@ const BENTO_COMPOSE = {
 const ONE_COMPOSE = {slots:['主菜'], get name(){ return t('一品'); }};
 const NOSOUP_COMPOSE = {2:{slots:['主菜','副菜'], get name(){ return t('主菜と副菜'); }}};
 function composeOf(n){ return n === 1 ? ONE_COMPOSE : (session.mood === 'bento' && BENTO_COMPOSE[n]) || (S.settings.noSoup && NOSOUP_COMPOSE[n]) || COMPOSE[n]; }
+/* 品数の数え方（オーナーの指示・基準書 7章 4A）: ご飯（主食）の席も1品と数える。「6品」= 席6（上3・下3）。
+   保存する値（S.settings.dishCount）は今までどおり「おかずの数」のまま（前から使っている人の設定・献立は変わらない）。画面に出す数だけ、ご飯の席を足して数える */
+function seatsOf(n){ n = Number(n); return n === 1 ? 1 : n + (stapleSpot() ? 1 : 0); }
+function menuSeats(m){
+    if (!m) return 0;
+    const main = m.items[0] && m.items[0].r, oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
+    const pickles = !PACK && oneBowl && konomonoMain(main) && m.n > 1 && session.mood !== 'okayu';
+    return m.items.length + (oneBowl ? (pickles ? 1 : 0) : (stapleSpot() ? 1 : 0));
+}
 function countChips(cur, act){
     return ['auto',2,3,4,5,6].map(v => {
         const locked = (v === 5 || v === 6) ? proMark() : '';
-        return `<button class="chip" data-act="${act}" data-v="${v}" aria-pressed="${String(cur)===String(v)}">${v === 'auto' ? esc(t('おまかせ')) : esc(t('{n}品', {n:v}))}${locked}</button>`;
+        return `<button class="chip" data-act="${act}" data-v="${v}" aria-pressed="${String(cur)===String(v)}">${v === 'auto' ? esc(t('おまかせ')) : esc(t('{n}品', {n: seatsOf(v)}))}${locked}</button>`;
     }).join('');
 }
 function autoCount(){
@@ -5841,12 +5850,13 @@ function menuCount(){
     if (session.mood === 'okayu') return Math.min(3, Math.max(2, n));   // おかゆの日は3品まで（段取りを短くする。R3）
     return Math.min(6, Math.max(2, n));
 }
-function countReason(n){
-    if (session.menu && session.menu.adj && n !== menuCount()) return t('「あと1品」で足して{n}品にしました', {n});   // 設定の品数は変わらない（今日の献立だけ）
+function countReason(n0){
+    const n = session.menu && session.menu.n === n0 ? menuSeats(session.menu) : seatsOf(n0);   // 出す数は、ご飯の席も1品として数える
+    if (session.menu && session.menu.adj && n0 !== menuCount()) return t('「あと1品」で足して{n}品にしました', {n});   // 設定の品数は変わらない（今日の献立だけ）
     if (session.mood === 'bento') return t('お弁当なので主菜と副菜の{n}品', {n});   // お弁当は設定が何品でも3〜4品（汁ものなし）
-    if (session.mood === 'okayu' && n === 3 && (S.settings.dishCount === 'auto' ? autoCount() : Number(S.settings.dishCount) || 3) > 3) return t('おかゆの日なので{n}品にしました', {n});
+    if (session.mood === 'okayu' && n0 === 3 && (S.settings.dishCount === 'auto' ? autoCount() : Number(S.settings.dishCount) || 3) > 3) return t('おかゆの日なので{n}品にしました', {n});
     if (S.settings.dishCount !== 'auto'){
-        if (!hasPro() && Number(S.settings.dishCount) > n && n === PLAN.freeLimits.dishes) return t('無料版は{n}品までなので{n}品です', {n});
+        if (!hasPro() && Number(S.settings.dishCount) > n0 && n0 === PLAN.freeLimits.dishes) return t('無料版は{n}品までなので{n}品です', {n: seatsOf(n0)});   // 上限の数は、ご飯の席を足した決まった数で言う
         return t('{n}品に固定しています', {n});
     }
     const wd = parseYmd(TODAY).getDay();
@@ -9417,16 +9427,15 @@ function w4xFold(key, title, hint, n, def, body){
 /* ---- 決める段の条件シート（設計書 §4-1 見本 G）: 品数と形 → 時間 → 気分 → 食べる人 → 冷蔵庫 → 国 → まるごと入れ替え（いちばん下） ---- */
 function shapeChips(){
     const cur = S.settings.dishCount === 'auto' ? 'auto' : Number(S.settings.dishCount) === 2 && S.settings.noSoup ? '2s' : String(S.settings.dishCount);
-    const opts = [['auto', t('おまかせ')], ['1', t('1品（丼・麺・鍋）')], ['2s', t('2品（主菜＋副菜）')], ['2', t('2品（主菜＋汁もの）')], ['3', t('{n}品', {n: 3})], ['4', t('{n}品', {n: 4})], ['5', t('{n}品', {n: 5})], ['6', t('{n}品', {n: 6})]];
+    const n2 = t('{n}品', {n: seatsOf(2)}), opts = [['auto', t('おまかせ')], ['1', t('1品（丼・麺・鍋）')], ...(stapleSpot() ? [['2s', n2 + t('・') + t('主菜と副菜')], ['2', n2 + t('・') + t('一汁一菜')]] : [['2s', t('2品（主菜＋副菜）')], ['2', t('2品（主菜＋汁もの）')]]), ...[3, 4, 5, 6].map(n => [String(n), t('{n}品', {n: seatsOf(n)})])];   // ご飯の席も1品と数えた数で出す（値はおかずの数のまま）
     return opts.map(([v, l]) => `<button class="chip" data-act="${v === '1' || v === '2s' ? 'shape' : 'count'}" data-v="${v}" aria-pressed="${cur === v}">${esc(l)}${v === '5' || v === '6' ? proMark() : ''}</button>`).join('');
 }
 function condSheetHtml(){
     const m = session.menu || {n: menuCount(), items: []}, main = m.items[0] && m.items[0].r, st = stapleSpot(), oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChip = x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood === x.k}">${esc(x.label)}</button>`;
     const TIME = ['all', 'quick', 'easy'];
-    const hint = oneBowl || !st ? t('{compose}・{n}品・{sv}人分。{reason}', {compose: composeOf(m.n).name, n: m.n, sv: fmtPortion(svToday()), reason: countReason(m.n)})
-        : st.id === 'rice' ? t('{compose}・{n}品とご飯・{sv}人分。{reason}', {compose: composeOf(m.n).name, n: m.n, sv: fmtPortion(svToday()), reason: countReason(m.n)})
-        : t('{compose}・{n}品と{staple}・{sv}人分。{reason}', {compose: composeOf(m.n).name, n: m.n, staple: st.name, sv: fmtPortion(svToday()), reason: countReason(m.n)});
+    const hint = t('{compose}・{n}品・{sv}人分。{reason}', {compose: composeOf(m.n).name, n: m.items.length ? menuSeats(m) : seatsOf(m.n), sv: fmtPortion(svToday()), reason: countReason(m.n)});   // ご飯の席も1品と数える
+    void oneBowl; void st;
     const eaters = famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(x => x.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((x, i) => `<button class="chip" data-act="eater" data-v="${esc(x.id)}" aria-pressed="${eaterMembers().includes(x)}">${esc(famLabel(x, i))}</button>`).join('')}</div></div>`
         : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
     return `<h2>${esc(t('条件を変える'))}</h2>
@@ -9538,7 +9547,7 @@ function applyPending(){
     delete S.settings.pending; save();
 }
 // 明日から変わる品数・気分を、設定と条件シートに1行で出す（画面の品数は今日のままなので、明日から変わることが見えるように）。［取り消す］で明日からをやめる
-function shapeName(n, noSoup){ return n === 'auto' ? t('おまかせ') : Number(n) === 1 ? t('1品（丼・麺・鍋）') : Number(n) === 2 && noSoup ? t('2品（主菜＋副菜）') : Number(n) === 2 ? t('2品（主菜＋汁もの）') : t('{n}品', {n}); }
+function shapeName(n, noSoup){ return n === 'auto' ? t('おまかせ') : Number(n) === 1 ? t('1品（丼・麺・鍋）') : Number(n) === 2 && stapleSpot() ? t('{n}品', {n: seatsOf(2)}) + t('・') + (noSoup ? t('主菜と副菜') : t('一汁一菜')) : Number(n) === 2 && noSoup ? t('2品（主菜＋副菜）') : Number(n) === 2 ? t('2品（主菜＋汁もの）') : t('{n}品', {n: seatsOf(n)}); }
 function pendingNoteHtml(withMood){
     const pd = S.settings.pending, r = dayRec(addDays(TODAY, 1)), mood = withMood && r && r.mood && MOODS.find(x => x.k === r.mood), out = [];
     if (pd && dayKeyOk(pd.d) && pd.d > TODAY && 'dishCount' in pd) out.push(`<p class="small pending-note" data-pending="count">${esc(t('明日から{what}', {what: shapeName(pd.dishCount, pd.noSoup)}))} <button class="btn text sm" data-act="pending-cancel" data-k="count">${esc(t('取り消す'))}</button></p>`);
@@ -9710,10 +9719,10 @@ function viewToday(){
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="today-head p2-head"><h2>${esc(t('今日の一膳'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
-            <button type="button" class="p2-sv" data-act="cond-open" aria-label="${esc(t('条件を変える'))}"><span>${esc(t('{n}人分', {n: fmtPortion(svToday())}))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n})].join(t('・')))}</span></button>
+            <button type="button" class="p2-sv" data-act="cond-open" aria-label="${esc(t('条件を変える'))}"><span>${esc(t('{n}人分', {n: fmtPortion(svToday())}))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span></button>
             ${headShuffleBtn}</div>
         ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
-        <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
+        <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
             ${shuffleBtn}
             ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}

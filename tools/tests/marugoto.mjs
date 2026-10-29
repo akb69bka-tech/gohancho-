@@ -107,7 +107,8 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
         ok(g.sameSize, `${tag} 同じ段の器は同じ大きさ: ` + JSON.stringify(g));
         if (g.rtl && g.lowerX.length > 1) ok(g.lowerX[0] > g.lowerX[g.lowerX.length - 1], `${tag} 右から左の言語では、段の中の順も右から: ` + JSON.stringify(g.lowerX));
     }
-    const riceTx = () => p.evaluate(() => { const e = document.querySelector('#view .tray .spot.rice'); if (!e) return ''; const c = e.cloneNode(true); c.querySelectorAll('.fresh-tag').forEach(x => x.remove()); return c.textContent.replace(/\s/g, '') + '|' + (((e.querySelector('.vessel') || {}).className || '').match(/v-[a-z]+/) || [''])[0]; });
+    const riceTx = () => p.evaluate(() => { const e = document.querySelector('#view .tray .spot.rice'); if (!e || e.classList.contains('ghost')) return '';   // 主食「なし」の空の席は料理ではないので札は付けない
+        const c = e.cloneNode(true); c.querySelectorAll('.fresh-tag').forEach(x => x.remove()); return c.textContent.replace(/\s/g, '') + '|' + (((e.querySelector('.vessel') || {}).className || '').match(/v-[a-z]+/) || [''])[0]; });
     const a = await ids(p), r0 = await riceTx();
     await p.click(MID); await p.waitForTimeout(400);
     const c = await ids(p), r1 = await riceTx();
@@ -117,6 +118,24 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     const riceChanged = !!r1 && r0 !== r1;   // ご飯の席がなくなったとき（一品ものの主菜）は札を付ける席がない
     ok(JSON.stringify(fr.fresh.sort()) === JSON.stringify(changed.sort()) && fr.rice === riceChanged && fr.tags === changed.length + (riceChanged ? 1 : 0), `${tag} 変わった料理だけに「新」の札: ` + JSON.stringify([changed, fr, r0, r1]));
     await ctx.close();
+}
+
+// 1d 品数の数え方（基準書 7章 4A・オーナーの「6品なら上下3つずつ」）: ご飯の席も1品。「6品」を選ぶと席6（上3・下3）。
+//    前から使っている人の保存した品数（値はおかずの数）は変えず、同じ献立のまま、ご飯を足した数で出す
+{
+    const {p, ctx} = await open({dishCount: 3});
+    await p.evaluate(() => openCondSheet()); await p.waitForTimeout(200);
+    const chip = p.locator('#sheet-root [data-act="count"]', {hasText: /^6品/}).first();
+    ok(await chip.count() === 1, 'M1d 条件シートに「6品」がある');
+    await chip.click(); await p.waitForTimeout(400);
+    await p.evaluate(() => { if (sheet && sheet.kind === 'cond') closeSheet(); }); await p.waitForTimeout(200);
+    const r = await p.evaluate(() => ({rows: [...document.querySelectorAll('#view .tray .tg-row')].map(e => e.children.length), lab: document.querySelector('#view .p2-sv').textContent, dc: S.settings.dishCount}));
+    ok(JSON.stringify(r.rows) === '[3,3]' && /6品/.test(r.lab), 'M1d 「6品」で上3・下3（ご飯も1品）・条件の表示も6品: ' + JSON.stringify(r));
+    await ctx.close();
+    const q = await open({dishCount: 6});
+    const r2 = await q.p.evaluate(() => ({dc: S.settings.dishCount, n: session.menu.n, rows: [...document.querySelectorAll('#view .tray .tg-row')].map(e => e.children.length), lab: document.querySelector('#view .p2-sv').textContent, rice: !!document.querySelector('#view .tray .spot.rice')}));
+    ok(r2.dc === 6 && r2.n === 6 && (!r2.rice || (JSON.stringify(r2.rows) === '[4,3]' && /7品/.test(r2.lab))), 'M1d 前の版で「6品」にしていた人: 保存した値と献立（おかず6）はそのまま、ご飯を足して7品と出す: ' + JSON.stringify(r2));
+    await q.ctx.close();
 }
 
 // 3 決めた献立では先に確かめる → やめる／作り直す → 元に戻す
