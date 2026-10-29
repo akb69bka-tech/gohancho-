@@ -79,7 +79,7 @@ export default {
     // メサアア（揚げなすのトマト煮）: なす・ピーマン・トマト・玉ねぎ
     eg_mesaqaa: B('#c8401e', [['eggplantFry', 8, 18], ['pepperG', 4, 13]], { ing: { ...ing, eggplantFry: (p, x, y, s, r, i) => W.coin(p, x, y, s * .55, '#4a2038', { h: 3, top: Q.rg(p, [[0, '#e8b070'], [.6, '#c8803a'], [1, '#8a4a1e']], .4, .35, .8) }) } }),
     // パネ（鶏のカツ）、レモン
-    eg_pane: p => { const D = tabaq(p), o = D.o; return D.s + byDepth([[-16, -8, -10], [14, 10, 8]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => `<g ${TR(x, y, r)}><path d="${Q.blob(0, 0, 42, 22, 'pn' + i, { n: 12, jit: .1 })}" fill="${Q.rg(p, [[0, '#f0c070'], [.6, '#d8963a'], [1, '#a8641e']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/></g>` + W.flecks(p, x, y, 34, 30, 'pnf' + i, ['#f6d890', '#b8782a'], { ry: 14, s: 1.4 })]; })) + lemon(p, ...at(o, 50, 32), 15); },
+    eg_pane: p => { const D = tabaq(p), o = D.o; return D.s + byDepth([[-16, -10, -10], [16, 10, 8]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => W.cutlet(p, x, y, 46, 24, r, { inner: '#fbf2e8', seed: 'pn' + i, cuts: 2 })]; })) + lemon(p, ...at(o, 50, 32), 16); },
     // カブダ・エスカンダラーニ（アレキサンドリアのレバー炒め）: レバー・ピーマン・青唐辛子・レモン
     eg_kebda: P([['liver', 22, 16], ['pepperG', 8, 13], ['chiliG', 4, 12]], { after: (o, D, p) => lemon(p, ...at(o, 50, 32), 14) }),
     // トルリ（牛肉と野菜のオーブン焼き）: 牛肉・じゃがいも・ズッキーニ・にんじん・ピーマン・トマト（素焼きのタゲン）
@@ -109,7 +109,7 @@ export default {
 
     // ---------- ご飯・麺 ----------
     // コシャリ: レンズ豆・米・マカロニ・ひよこ豆・揚げ玉ねぎ・トマトソース、細麺（お好みで）
-    eg_koshari: p => { const V = ghawit(p), o = { cx: 100, cy: 100, sy: SYF }; return V.s + W.mound(p, 100, 104, 62, 18, '#c8a070', 'ks', SYF) + byDepth(W.spots('ksp', 40, 54, 7).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4 + W.hill(u, v, 56, 18)); return [y, () => [ing.pastaShort, W.ING.lentil, W.ING.chickpea, ing.pastaShort, W.ING.rice][i % 5](p, x, y, 14, r, i)]; })) + W.mound(p, 100, 92, 26, 6, '#c8301a', 'kss', SYF) + W.flecks(p, 100, 84, 22, 40, 'ksf', ['#8a4a1a', '#a8641e', '#6a3010'], { ry: 8, s: 2.2 }); },
+    eg_koshari: p => { const V = ghawit(p), o = { cx: 100, cy: 100, sy: SYF }; return V.s + W.friedRice(p, 100, 106, 64, 14, 'ksr', { cols: ['#d8b890', '#a8743a', '#f2e4c8', '#8a5a2a'], edge: '#8a6a3a', sy: SYF }) + byDepth(W.spots('ksp', 22, 50, 10).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 8 + W.hill(u, v, 56, 12)); return [y, () => i % 3 === 2 ? W.ING.chickpea(p, x, y, 18) : `<g transform="translate(${f(x)} ${f(y)}) rotate(${r % 60 - 30})"><rect x="-7" y="-3.2" width="14" height="6.4" rx="2" fill="#e8b860" stroke="#a8803a" stroke-width=".6"/><ellipse cx="7" cy="0" rx="1.6" ry="3" fill="#fbe8b0" stroke="#a8803a" stroke-width=".5"/><ellipse cx="7" cy="0" rx=".7" ry="1.6" fill="#a8803a"/></g>`]; })) + W.mound(p, 100, 94, 30, 6, '#c8301a', 'kss', SYF) + byDepth(W.spots('ksf', 26, 20, 4).map(([u, v, r], i) => { const [x, y] = at(o, u, v * .6 - 8, 20); return [y, () => W.onionStrip(x, y, 10, r, '#8a4a1a')]; })); },
     // マカロナ・ベシャメル（ひき肉とベシャメルのペンネ焼き）（素焼きの耐熱皿）
     eg_macarona: oven({ /*fx*/blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#7a3a1a', .2], ['#f2c860', .4]], dots: [['#fbe8a0', 8, 3] ] }, /*xf*/ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 120 }),
     // ファッタ（牛肉とご飯とパンのにんにく酢トマト）

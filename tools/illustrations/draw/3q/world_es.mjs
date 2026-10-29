@@ -82,7 +82,7 @@ export default {
     // ポジョ・アル・オルノ（鶏とじゃがいものロースト）、レモン（お好みで）
     es_pollohorno: P([['chickenRoast', 4, 22], ['potatoRoast', 8, 15], ['onion', 3, 12]], { minD: 16, after: (o, D, p) => lemon(p, ...at(o, 50, 32), 14) }),
     // ペチューガス・エンパナーダス（鶏むねのカツ）、レモン
-    es_pechugas: p => { const D = plato(p), o = D.o; return D.s + byDepth([[-16, -8, -10], [14, 10, 8]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => `<g ${TR(x, y, r)}><path d="${Q.blob(0, 0, 40, 20, 'pc' + i, { n: 12, jit: .1 })}" fill="${Q.rg(p, [[0, '#f0c070'], [.6, '#d8963a'], [1, '#a8641e']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/></g>` + W.flecks(p, x, y, 32, 30, 'pcf' + i, ['#f6d890', '#b8782a'], { ry: 14, s: 1.4 })]; })) + lemon(p, ...at(o, 50, 32), 15); },
+    es_pechugas: p => { const D = plato(p), o = D.o; return D.s + byDepth([[-16, -10, -10], [16, 10, 8]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4); return [y, () => W.cutlet(p, x, y, 46, 24, r, { inner: '#fbf2e8', seed: 'pc' + i, cuts: 2 })]; })) + lemon(p, ...at(o, 50, 32), 16); },
     // チリンドロン（鶏のピーマンとトマト煮）: 鶏・赤と緑のピーマン・玉ねぎ・トマト、ハム（お好みで）
     es_chilindron: B('#c8401e', [['chickenRed', 7, 18], ['redPepper', 4, 13], ['pepperG', 3, 13], ['jamon', 3, 12]]),
     // ロモ・アドバード（豚ロースのマリネ焼き）とフライドポテト、ピーマン（お好みで）

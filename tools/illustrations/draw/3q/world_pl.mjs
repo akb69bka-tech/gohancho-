@@ -61,7 +61,7 @@ const B = (c, items, o = {}) => M(gleboki, 'braise', c, items, { minD: 13, ...o 
 const K = (items, o = {}) => M(miska, 'bowl', null, items, { minD: 7, ...o });
 const plateOf = (draw) => p => { const D = talerz(p), o = D.o; return D.s + W.grow(o.cx, o.cy, 1.3, draw(p, o)); };
 const side = (p, o, list) => byDepth(list.map(([k, u, v, s, r = 0], i) => { const [x, y] = at(o, u, v, 4); return [y, () => (ing[k] || W.ING[k])(p, x, y, s, r, i)]; }));
-const cutlet = (p, o, { c = ['#f6d080', '#e0a848', '#a8702a'], rx = 48, ry = 26, u = -18, v = -4 } = {}) => { const [x, y] = at(o, u, v, 4); return `<path d="${Q.blob(x, y, rx, ry, 'ct' + p.id, { n: 14, jit: .12 })}" fill="${Q.rg(p, [[0, c[0]], [.6, c[1]], [1, c[2]]], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, rx * .8, 50, 'ctf' + p.id, ['#fbe8a8', '#c88a3a', '#e8b058'], { ry: ry * .8, s: 1.2 }); };
+const cutlet = (p, o, { c = ['#f6d080', '#e0a848', '#a8702a'], rx = 48, ry = 26, u = -18, v = -4, inner = '#f8ecdc', butter = false } = {}) => { const [x, y] = at(o, u, v, 4); return W.cutlet(p, x, y, rx, ry, -8, { c, inner, seed: 'ct' }) + (butter ? `<path d="${Q.blob(x + rx * .3, y + 2, 7, 4, 'dvb', { n: 8, jit: .3 })}" fill="#f6dc70"/>` : ''); };
 const potatoesDill = (p, o, u = 34, v = 0) => side(p, o, [['potatoBoiled', u, v - 12, 21], ['potatoBoiled', u + 10, v + 6, 21], ['potatoBoiled', u - 6, v + 16, 21]]) + W.flecks(p, ...at(o, u, v, 12), 14, 12, 'pd' + p.id, DILL, { ry: 8, s: 1.2 });
 const sauceCup = (p, o, c) => { const [x, y] = at(o, -46, 32); return `<ellipse cx="${f(x)}" cy="${f(y)}" rx="12" ry="${f(12 * SYF)}" fill="#f4f0e6" stroke="${RED}" stroke-width=".8"/><ellipse cx="${f(x)}" cy="${f(y - 1)}" rx="9" ry="${f(9 * SYF)}" fill="${c}"/>`; };
 
@@ -72,7 +72,7 @@ export default {
     // コトレット・ミェローネ（豚ひき肉のハンバーグ）とじゃがいも
     pl_mielone: plateOf((p, o) => side(p, o, [['patty', -26, -8, 38], ['patty', -8, 12, 38]]) + potatoesDill(p, o)),
     // 鱈のフライとじゃがいも、レモン
-    pl_dorsz: plateOf((p, o) => cutlet(p, o, { rx: 46, ry: 22 }) + potatoesDill(p, o) + lemon(p, ...at(o, -40, 28), 12)),
+    pl_dorsz: plateOf((p, o) => cutlet(p, o, { rx: 46, ry: 22, inner: '#fbf8f2' }) + potatoesDill(p, o) + lemon(p, ...at(o, -40, 28), 12)),
     // 鶏ももとじゃがいものロースト
     pl_udka: P([['drum', 4, 22], ['potatoRoast', 8, 15]], { minD: 16, ing: { ...ing, drum: (p, x, y, s, r, i) => W.drumstick(p, x, y, s * 1.6, r, i, { c: '#c8822e', fried: false }) } }),
     // グラシュ（牛肉の煮込み）とそばの実: 牛肉・玉ねぎ、赤ピーマン・ピクルス（お好みで）
@@ -92,7 +92,7 @@ export default {
     // マスの丸焼き、レモン・ハーブ・じゃがいも
     pl_pstrag: p => { const D = talerz(p), o = D.o; return W.fishOn(p, D, { L: 140, skin: '#a8946a', belly: '#f0e4d0', char: .3, on: (x, y) => lemon(p, x - 20, y - 10, 12) + W.flecks(p, x, y - 6, 40, 14, 'pt', DILL, { ry: 6, s: 1.4 }) + side(p, o, [['potatoBoiled', 40, 28, 14], ['potatoBoiled', 30, 34, 14]]) }); },
     // ド・ヴォライユ（バター入りの鶏カツ）とじゃがいも
-    pl_devolaille: plateOf((p, o) => cutlet(p, o, { rx: 42, ry: 20 }) + `<path d="${Q.blob(...at(o, -6, -6, 8), 10, 5, 'dv', { n: 8, jit: .3 })}" fill="#f6dc70"/>` + potatoesDill(p, o)),
+    pl_devolaille: plateOf((p, o) => cutlet(p, o, { rx: 42, ry: 22, butter: true }) + potatoesDill(p, o)),
     // 豚スペアリブのはちみつ焼き、じゃがいも（お好みで）
     pl_zeberka: P([['rib', 6, 24], ['potatoRoast', 5, 14], ['onion', 3, 12]], { minD: 14, ing: { ...ing, rib: (p, x, y, s, r, i) => W.rib(p, x, y, s, r, i, { c: '#a8542e', glaze: '#c8762e' }) } }),
     // カルクフカ（豚肩ロースの玉ねぎ煮）、そばの実（お好みで）

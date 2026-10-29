@@ -69,7 +69,7 @@ export default {
     // フランゴ・ア・パッサリーニョ（鶏の小さな揚げもの、にんにく）、ライム
     br_frango_passarinho: P([['chickenBite', 20, 18]], { minD: 12, flecks: [['#e8b048', 20, 2]], after: (o, D, p) => lime(p, ...at(o, 50, 32), 14) }),
     // フィレ・パルミジャーナ（牛カツのトマトとチーズのせ）
-    br_file_parmegiana: p => { const D = prato(p), o = D.o, [x, y] = at(o, -6, 0, 4); return D.s + `<path d="${Q.blob(x, y, 58, 30, 'fp', { n: 14, jit: .08 })}" fill="#a8641e"/><path d="${Q.blob(x, y - 3, 54, 27, 'fp2', { n: 14, jit: .1 })}" fill="#c8301a"/><path d="${Q.blob(x, y - 4, 42, 20, 'fp3', { n: 14, jit: .25 })}" fill="${Q.rg(p, [[0, '#fff6d0'], [.6, '#f8e090'], [1, '#e0a840']], .4, .35, .8)}"/>` + W.flecks(p, x, y - 4, 36, 20, 'fpf', ['#d8902a', '#a8601e'], { ry: 14, s: 2 }); },
+    br_file_parmegiana: p => { const D = prato(p), o = D.o, [x, y] = at(o, -6, 0, 4); return D.s + W.cutlet(p, x, y, 60, 32, -6, { inner: '#c8907a', c: ['#f0c070', '#d8963a', '#a8641e'], cuts: 2 }) + `<path d="${Q.blob(x - 8, y - 4, 44, 20, 'fp2', { n: 14, jit: .12 })}" fill="#c8301a"/><path d="${Q.blob(x - 8, y - 6, 32, 14, 'fp3', { n: 14, jit: .25 })}" fill="${Q.rg(p, [[0, '#fff6d0'], [.6, '#f8e090'], [1, '#e0a840']], .4, .35, .8)}"/>` + W.flecks(p, x - 8, y - 6, 26, 16, 'fpf', ['#d8902a', '#a8601e'], { ry: 10, s: 2 }); },
     // ピカジーニョ（牛肉の角切りの煮込み）: 牛肉・玉ねぎ・トマト、にんじん・じゃがいも（お好みで）
     br_picadinho: B('#7a3a1a', [['beef', 10, 15], ['carrot', 3, 12], ['potato', 3, 13]], { flecks: [cv(14)] }, deep),
     // カルネ・ジ・パネーラ（牛肉とじゃがいもの鍋煮）: 牛肉・玉ねぎ・トマト・じゃがいも、にんじん（お好みで）

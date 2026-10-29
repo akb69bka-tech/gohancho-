@@ -41,7 +41,7 @@ const ing = {
     meatball: (p, x, y, s, r, i) => W.ball(p, x, y - s * .2, s, '#d8c0a0', p.id + 'kl' + i, { hi: .6, edge: '#a8906a' }),
     roulade: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><rect x="${f(-s * .6)}" y="${f(-s * .32)}" width="${f(s * 1.2)}" height="${f(s * .64)}" rx="${f(s * .3)}" fill="${Q.lg(p, [[0, '#a8643a'], [.5, '#7a3a1a'], [1, '#4a2010']], 0, 0, 0, 1)}" stroke="#3a1a0a" stroke-width=".6"/><path d="M${f(-s * .2)},${f(-s * .32)} l0,${f(s * .64)} M${f(s * .2)},${f(-s * .32)} l0,${f(s * .64)}" stroke="#e8dcc0" stroke-width="1.2"/></g>`,
     cabbageRoll: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><rect x="${f(-s * .6)}" y="${f(-s * .34)}" width="${f(s * 1.2)}" height="${f(s * .68)}" rx="${f(s * .32)}" fill="${Q.lg(p, [[0, '#e8ecc0'], [.5, '#c8d098'], [1, '#98a868']], 0, 0, 0, 1)}" stroke="#7a8a4a" stroke-width=".6"/><path d="M${f(-s * .4)},${f(-s * .1)} q${f(s * .4)},${f(-s * .2)} ${f(s * .8)},0" stroke="#f6f8e0" stroke-width="1" fill="none"/></g>`,
-    stuffedPepper: (p, x, y, s, r, i) => W.ball(p, x, y - s * .3, s, ['#c8281a', '#f2b82a', '#3f8a2a'][i % 3], p.id + 'sp' + i, { hi: .7 }) + W.mound(p, x, y - s * .8, s * .32, 4, '#8a4a24', 'spm' + i, .5),
+    stuffedPepper: (p, x, y, s, r, i) => W.bellPepper(p, x, y, s * 1.3, ['#c8281a', '#f2b82a', '#3f8a2a'][i % 3], p.id + i, { cap: i % 2 === 0 }),
     egg: (p, x, y, s, r, i) => W.eggHalf(p, x, y, s * 1.4, r % 40 - 20),
     eggWhole: (p, x, y, s, r, i) => W.eggHalf(p, x, y, s * 1.4, 0),
     herring: (p, x, y, s, r, i) => `<g ${TR(x, y, r)}><path d="M${f(-s)},0 Q0,${f(-s * .3)} ${f(s)},0 Q0,${f(s * .25)} ${f(-s)},0Z" fill="${Q.lg(p, [[0, '#8a8478'], [.4, '#c8b8a8'], [1, '#f0e0d8']], 0, 0, 0, 1)}" stroke="#6a6458" stroke-width=".6"/></g>`,
@@ -75,7 +75,7 @@ export default {
     // フリカデレ（ドイツのハンバーグ）
     de_frikadellen: P([['patty', 3, 32]], { minD: 32, H: 8, ing: { ...ing, patty: (p, x, y, s, r, i) => W.crusty(p, x, y, s * .6, s * .45, i, { c: '#a8642e', n: 16, h: 7, rot: r }) }, after: (o, D, p) => W.flecks(p, ...at(o, 44, 30), 10, 6, 'fk', ['#e8b020'], { ry: 4, s: 2.4 }) }),
     // シュニッツェル（豚のカツ）、レモン
-    de_schnitzel: p => { const D = teller(p), o = D.o, [x, y] = at(o, -8, -2, 4); return D.s + `<path d="${Q.blob(x, y, 60, 32, 'sn', { n: 14, jit: .12 })}" fill="${Q.rg(p, [[0, '#f6d080'], [.6, '#e0a848'], [1, '#a8702a']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, 50, 70, 'snf', ['#fbe8a8', '#c88a3a', '#e8b058'], { ry: 26, s: 1.4 }) + lemon(p, ...at(o, 50, 32), 16) + W.ING.herb(p, ...at(o, 40, 36), 14, 10, 1); },
+    de_schnitzel: p => { const D = teller(p), o = D.o, [x, y] = at(o, -8, -2, 4); return D.s + W.cutlet(p, x, y, 64, 34, -8, { inner: '#f8ecdc' }) + lemon(p, ...at(o, 50, 32), 18) + W.ING.herb(p, ...at(o, 40, 38), 14, 10, 1); },
     // 鶏のフリカッセとご飯: 鶏・にんじん・グリンピース・マッシュルーム・クリーム、白アスパラガス（お好みで）
     de_frikassee: plateOf((p, o) => W.riceMound(p, ...at(o, 30, -14), 26, 20, { sy: SYF }) + W.pool(p, ...at(o, -16, 8), 40, '#f6ecd0', 'fr') + side(p, o, [['chickenCream', -24, 2, 16], ['chickenCream', -6, 12, 16], ['carrot', -30, 16, 11], ['pea', -14, 22, 12], ['pea', -2, 0, 12], ['mushroom', -20, -6, 13], ['asparagusW', 4, 18, 8, -20]])),
     // 魚のマスタードソースとじゃがいも、レモン
@@ -97,7 +97,7 @@ export default {
     // ロールキャベツ: キャベツ・ひき肉・玉ねぎ、ベーコン（お好みで）
     de_kohlrouladen: B('#8a4a24', [['cabbageRoll', 5, 28]], { minD: 16 }),
     // ピーマンの肉詰めのトマトソース、チーズ（お好みで）
-    de_gefuelltepaprika: B('#c8401e', [['stuffedPepper', 4, 30]], { minD: 26 }),
+    de_gefuelltepaprika: B('#c8401e', [['stuffedPepper', 4, 30]], { minD: 30 }),
     // カリーヴルスト（カレーケチャップのソーセージ）、パン（お好みで）
     de_currywurst: p => { const D = teller(p), o = D.o; return D.s + byDepth(Array.from({ length: 9 }, (_, i) => { const [x, y] = at(o, -30 + (i % 3) * 26, -20 + Math.floor(i / 3) * 20, 6); return [y, () => ing.wurst(p, x, y, 36, 0, i)]; })) + W.drizzle([[o.cx - 40, o.cy - 8], [o.cx - 16, o.cy - 14], [o.cx + 8, o.cy - 6], [o.cx + 30, o.cy - 12]], '#c8401e', 5) + W.flecks(p, o.cx - 6, o.cy - 10, 30, 30, 'cw', ['#d8a020', '#c88a1e'], { ry: 12, s: 1.2 }) + W.bread(p, ...at(o, 44, 26), 34, -20, { c: '#e8b060', crust: '#b87a3a', toast: .2 }); },
     // 鶏ももとじゃがいものオーブン焼き: 鶏・じゃがいも・玉ねぎ、赤ピーマン（お好みで）

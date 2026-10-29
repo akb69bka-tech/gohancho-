@@ -73,7 +73,7 @@ export default {
     // バターチキン: 鶏のもも・トマト・バター・生クリーム
     in_butterchicken: B('#d8602a', [['chickenCurry', 11, 18]], { flecks: [['#6a7a3a', 12, 1.2]], after: (o, V, p) => W.butterPat(p, o.cx + 6, o.cy - 34, 10) }),
     // タンドリーチキン: 鶏もも・ヨーグルト・レモン、輪切りの玉ねぎ（お好みで）
-    in_tandoori: T([['tandoori', 3, 26], ['redOnion', 6, 18], ['lemon', 2, 14]], { minD: 24, flecks: [cori(10)] }),
+    in_tandoori: p => { const D = thali(p), o = D.o; return D.s + byDepth(W.spots('tdo', 10, 50, 12).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 2); return [y - 40, () => W.onionStrip(x, y, 18, r, '#c87aa8')]; })) + byDepth([[-26, -12, -30], [12, -16, 10], [-8, 14, -14]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 6); return [y, () => W.grow(x, y, 1.7, W.drumstick(p, x, y, 50, r, i, { c: '#c8401e', fried: false }) + W.flecks(p, x, y - 4, 12, 10, 'tdc' + i, ['#5a1a0a', '#3a1206'], { ry: 5, s: 1.4 }))]; })) + W.lemon(p, ...at(o, 48, 30), 18, { wedge: true }) + W.lemon(p, ...at(o, 52, 14), 16, { wedge: true, rot: 30 }) + W.flecks(p, o.cx, o.cy - 10, 40, 14, 'tdh', CORI, { ry: 16, s: 1.6 }); },
     // ローガン・ジョシュ（羊のカシミールカレー）
     in_roganjosh: B('#9a2414', [['lambRed', 11, 18]], { flecks: [['#e8d8a8', 8, 1.2]] }),
     // ポーク・ヴィンダルー: 豚の角切り・玉ねぎ

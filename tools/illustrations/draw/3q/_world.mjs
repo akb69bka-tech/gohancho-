@@ -628,3 +628,23 @@ export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl
     }
     return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${bl}${top(V.o, V, p)}${dm}${sc}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
 }
+// カツ（シュニッツェル・ミラネサ・パネ・スハボヴィ）: ぎざぎざのころもに細かいパン粉の粒、切り分けた切れ目に白い中身が見える（2026-10-29 見直し 4回目）
+export function cutlet(p, x, y, rx, ry, rot = -8, { inner = '#f6eadc', c = ['#f6d080', '#e0a848', '#a8702a'], cuts = 3, seed = 'ct', lemonAt = null } = {}){
+    const sd = p.id + seed, body = Q.blob(0, 0, rx, ry, sd, { n: 18, jit: .1 });
+    let s = `<g ${T(x, y, rot)}><path d="${body}" transform="translate(1.5 3)" fill="${SHADE}" opacity=".25"/><path d="${body}" transform="translate(0 2.4)" fill="${dk(c[2], .15)}"/><path d="${body}" fill="${Q.rg(p, [[0, c[0]], [.6, c[1]], [1, c[2]]], .4, .35, .85)}" stroke="${dk(c[2], .3)}" stroke-width=".8"/>`;
+    const R = rng(sd + 'cr');
+    for (let k = 0; k < Math.round(rx * ry / 9); k++){ const a = R() * 6.283, d = Math.sqrt(R()) * .9; const px = Math.cos(a) * rx * d, py = Math.sin(a) * ry * d; s += `<circle cx="${f(px)}" cy="${f(py)}" r="${f(.6 + R() * .9)}" fill="${R() < .5 ? lt(c[0], .3) : dk(c[1], .25)}" opacity=".85"/>`; }
+    for (let k = 1; k <= cuts; k++){ const u = rx * (-.1 + k * .28); const h = ry * Math.sqrt(Math.max(0, 1 - (u / rx) ** 2)) * .95; s += `<path d="M${f(u + 1.6)},${f(-h)} L${f(u + .6)},${f(h)}" stroke="${SHADE}" stroke-width="1.6" opacity=".45"/><path d="M${f(u)},${f(-h)} L${f(u - 1)},${f(h)}" stroke="${inner}" stroke-width="2.6"/>`; }
+    s += `<path d="M${f(-rx * .7)},${f(-ry * .5)} Q${f(-rx * .2)},${f(-ry * .95)} ${f(rx * .3)},${f(-ry * .7)}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".5"/></g>`;
+    return s;
+}
+// ピーマンの肉詰め: 縦の筋のあるピーマン、切った口から中の詰めもの、へたのふた
+export function bellPepper(p, x, y, s, c, seed, { fill = '#8a4a24', grain = '#f2e4c0', cap = true } = {}){
+    const w = s * .5, h = s * .62, top = y - h;
+    const lob = `M${f(x - w)},${f(top + 2)} C${f(x - w * 1.08)},${f(y - h * .3)} ${f(x - w * .9)},${f(y + 2)} ${f(x - w * .45)},${f(y + 3)} Q${f(x - w * .2)},${f(y - 1)} ${f(x)},${f(y + 3.6)} Q${f(x + w * .2)},${f(y - 1)} ${f(x + w * .45)},${f(y + 3)} C${f(x + w * .9)},${f(y + 2)} ${f(x + w * 1.08)},${f(y - h * .3)} ${f(x + w)},${f(top + 2)}Z`;
+    return Q.cast(p, x, y + 3, w * 1.1, w * .3, .3) + `<path d="${lob}" fill="${Q.lg(p, [[0, lt(c, .35)], [.45, c], [1, dk(c, .35)]], 0, 0, 1, 0)}" stroke="${dk(c, .45)}" stroke-width=".7"/>` +
+        [-.45, 0, .45].map(k => `<path d="M${f(x + w * k)},${f(top + 4)} Q${f(x + w * k * 1.1)},${f(y - h * .4)} ${f(x + w * k * .9)},${f(y + 1)}" stroke="${dk(c, .3)}" stroke-width="1" fill="none" opacity=".6"/>`).join('') +
+        `<ellipse cx="${f(x)}" cy="${f(top + 2)}" rx="${f(w)}" ry="${f(w * .42)}" fill="${dk(c, .2)}"/><ellipse cx="${f(x)}" cy="${f(top + 1.4)}" rx="${f(w * .86)}" ry="${f(w * .34)}" fill="${Q.rg(p, [[0, lt(fill, .3)], [1, fill]], .4, .35, .8)}"/>` + flecks(p, x, top, w * .7, 8, 'bp' + seed, [grain, dk(fill, .2)], { ry: w * .25, s: 1.4 }) +
+        `<path d="M${f(x - w * .6)},${f(y - h * .35)} q${f(w * .2)},${f(-h * .3)} ${f(w * .1)},${f(-h * .5)}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".5"/>` +
+        (cap ? `<g transform="translate(${f(x + w * .9)} ${f(top - 2)}) rotate(24)"><ellipse rx="${f(w * .6)}" ry="${f(w * .26)}" fill="${dk(c, .1)}" stroke="${dk(c, .45)}" stroke-width=".6"/><path d="M0,${f(-w * .1)} l1,${f(-w * .5)}" stroke="#4a6a22" stroke-width="2.6" stroke-linecap="round"/></g>` : '');
+}

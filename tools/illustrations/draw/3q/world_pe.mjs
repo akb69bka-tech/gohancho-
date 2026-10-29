@@ -79,7 +79,7 @@ export default {
     // エストファド（鶏と野菜の煮込み）: 鶏・トマト・玉ねぎ・にんじん・黄色いじゃがいも・グリンピース
     pe_estofado: B('#c8401e', [['chickenStew', 6, 18], ['yellowPotato', 3, 15], ['carrot', 4, 12], ['pea', 6, 12]]),
     // ビステック・アパナード（牛肉の薄いカツ）、ライム
-    pe_bistec_apanado: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + `<path d="${Q.blob(x, y, 58, 32, 'ba', { n: 14, jit: .1 })}" fill="${Q.rg(p, [[0, '#f0c070'], [.6, '#d8963a'], [1, '#a8641e']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, 48, 60, 'baf', ['#f6d890', '#b8782a', '#e8b058'], { ry: 24, s: 1.4 }) + lime(p, ...at(o, 50, 32), 16); },
+    pe_bistec_apanado: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + W.cutlet(p, x, y, 62, 34, -6, { inner: '#c8907a', c: ['#f0c070', '#d8963a', '#a8641e'] }) + lime(p, ...at(o, 50, 32), 18); },
     // パパ・レジェーナ（ひき肉を詰めたじゃがいものコロッケ）
     pe_papa_rellena: P([['papaRellena', 3, 30]], { minD: 34, H: 8, ing: { ...ing, papaRellena: (p, x, y, s, r, i) => Q.lump(p, x, y - 6, s * .7, s * .42, '#c8822e', p.id + 'pr' + i, { n: 14, jit: .06, hi: .7, edge: '#8a5a1e' }) }, after: (o, D, p) => W.flecks(p, ...at(o, 44, 30), 14, 14, 'prs', ['#d880b0', '#c87aa8', CIL[0]], { ry: 6, s: 2 }) }),
     // カラプルクラ（乾燥じゃがいもと豚の煮込み）: 乾燥じゃがいも・豚・ピーナッツ・玉ねぎ

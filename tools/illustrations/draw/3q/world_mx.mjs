@@ -82,7 +82,7 @@ export default {
     // チラキレス（赤）: トルティーヤチップ・赤いソース・クレマ・ケソフレスコ・玉ねぎ、目玉焼き（お好みで）
     mx_chilaquiles: P([['chipRed', 30, 18]], { minD: 7, after: (o, D, p) => crema([[o.cx - 40, o.cy - 14], [o.cx - 20, o.cy - 20], [o.cx, o.cy - 14], [o.cx + 20, o.cy - 22], [o.cx + 40, o.cy - 16]]) + W.flecks(p, o.cx, o.cy - 18, 40, 30, 'chq', [QUESO], { ry: 14, s: 2.4 }) + W.ING.onion(p, o.cx + 10, o.cy - 22, 14, 10) + W.friedEgg(p, o.cx - 18, o.cy - 26, 34, 1), ing: { ...ing, chipRed: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s * .5, s * .3], [0, -s * .4], [s * .5, s * .3]], 1.8, '#a8301a', { rot: r, line: .45, top: Q.lg(p, [[0, '#e8602a'], [1, '#a8301a']], 0, 0, 1, 1) }) } }),
     // ミラネサ（牛肉のカツ）: ライム、レタス（お好みで）
-    mx_milanesa: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + `<path d="${Q.blob(x, y, 56, 30, 'ml', { n: 14, jit: .1 })}" fill="${Q.rg(p, [[0, '#f0c070'], [.6, '#d8963a'], [1, '#a8641e']], .4, .35, .8)}" stroke="#8a5a1e" stroke-width=".8"/>` + W.flecks(p, x, y, 48, 60, 'mlf', ['#f6d890', '#b8782a', '#e8b058'], { ry: 24, s: 1.4 }) + lime(p, ...at(o, 50, 30), 16) + W.ING.lettuce(p, ...at(o, -50, 32), 14, 10, 1); },
+    mx_milanesa: p => { const D = plato(p), o = D.o, [x, y] = at(o, -10, -2, 4); return D.s + W.cutlet(p, x, y, 62, 34, -6, { inner: '#c8907a', c: ['#f0c070', '#d8963a', '#a8641e'] }) + lime(p, ...at(o, 50, 30), 18) + W.ING.lettuce(p, ...at(o, -52, 32), 16, 10, 1); },
     // ポジョ・エン・モレ（鶏のモレ）: 鶏・モレ・玉ねぎ
     mx_pollo_mole: B('#4a1a10', [['chickenMole', 8, 20]], { flecks: [['#f6ecd0', 30, 1.4]] }),
     // コチニータ・ピビル（アチョーテの豚）: 赤玉ねぎの酢漬け・ライム（バナナの葉）
