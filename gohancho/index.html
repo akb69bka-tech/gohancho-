@@ -2639,7 +2639,7 @@ addCustomRecipes();
 if (!S.onboarded && (S.history.length || S.favs.length || S.fridge.length)) S.onboarded = true;   // 以前から使っている人には出さない
 if (!S.firstUse) S.firstUse = S.history.length ? S.history[S.history.length-1].d : ymd();
 save();
-function applyTextSize(){ const v = S.settings.textSize; if (v === 1 || v === 2) document.documentElement.setAttribute('data-ts', v); else document.documentElement.removeAttribute('data-ts'); }
+function applyTextSize(){ const v = S.settings.textSize; if (v === 1 || v === 2) document.documentElement.setAttribute('data-ts', v); else document.documentElement.removeAttribute('data-ts'); fitTabs(); }   // 下のタブの字も、文字の大きさに合わせて決め直す（R13）
 applyTextSize();
 
 /* =========================================================
@@ -4237,13 +4237,6 @@ function fitTray(){
         avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); }
     if (vs >= vs0) tr.style.removeProperty('--vs');
     // 詰めても入らない（幅195px・文字もっと大きい など）: 帯をお盆に重ねず（お膳の下に置く）、お膳は詰めない形（器・名前・その下の「かえる」）に戻す。スクロールで全部見られる
-    // まだ入らなければ、下のタブの字を 12px に戻して（タブが低くなる）もう一度
-    const nv = document.querySelector('nav.tabs');
-    if (over() > 0 && nv && parseFloat(nv.style.getPropertyValue('--tabfs')) > 12){
-        nv.style.setProperty('--tabfs', '12px'); document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); floor = innerHeight;   // 決定の帯もタブの高さに合わせて下がる
-        document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < floor) floor = r.top; });
-        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0 && vs > 60) setVs(Math.max(60, Math.floor(vs - d / rows)));
-    }
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
     const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].map(e => e.getBoundingClientRect().bottom + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
