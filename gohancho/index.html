@@ -337,7 +337,7 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 /* 入力 */
 .field{display:flex;flex-direction:column;gap:6px}
 .field>label{font-size:var(--fs14);color:var(--muted);font-weight:500}
-input[type=text],input[type=search]{text-overflow:ellipsis}   /* 長い入力例は、途中で切れたとわかるように … を付ける */
+input[type=text],input[type=search],input[type=number]{text-overflow:ellipsis}   /* 長い入力例は、途中で切れたとわかるように … を付ける */
 input[type=text],input[type=search],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:.625rem .875rem;width:100%;min-height:var(--tap);transition:border-color var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease)}
 input[type=text]:focus,input[type=search]:focus,input[type=number]:focus,input[type=date]:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}   /* 入力中の欄は藍の枠と淡い輪 */
 textarea{min-height:90px;resize:vertical}
@@ -1271,6 +1271,11 @@ html[data-ts] .cook-now .st-txt{font-size:calc(var(--fs24) * 1.25)}   /* 文字�
     .top{gap:8px}
     .top .gear.flagbtn+.gear{margin-inline-start:4px}
 }
+/* 幅がとても狭い（200%拡大の195pxなど）・文字が大きい: 題名と日付の欄が数十pxに縮み、縦に1文字ずつ並ぶ（第4回 A09）。
+   印・国・設定を1段目に、日付と題名を2段目に幅いっぱいで置く。日付は1行（入らなければ …）、題名は折り返す。文字が大きいほど広い幅から切りかえる */
+@media (max-width:289px){.top{flex-wrap:wrap;row-gap:var(--s4)}.top > div:not(.seal){order:1;flex:1 0 100%}.top .date{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top h1{overflow-wrap:anywhere}}
+@media (max-width:309px){html[data-ts="1"] .top{flex-wrap:wrap;row-gap:var(--s4)}html[data-ts="1"] .top > div:not(.seal){order:1;flex:1 0 100%}html[data-ts="1"] .top .date{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}html[data-ts="1"] .top h1{overflow-wrap:anywhere}}
+@media (max-width:339px){html[data-ts="2"] .top{flex-wrap:wrap;row-gap:var(--s4)}html[data-ts="2"] .top > div:not(.seal){order:1;flex:1 0 100%}html[data-ts="2"] .top .date{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}html[data-ts="2"] .top h1{overflow-wrap:anywhere}}
 @media (max-height:480px){
     .wrap{padding-block:10px 84px}
     nav.tabs{padding-top:3px;padding-bottom:calc(3px + env(safe-area-inset-bottom,0px))}
@@ -1433,7 +1438,7 @@ body.kb .wrap,body.kb:has(.actionbar,.cook-ctl) .wrap{padding-bottom:calc(24px +
 @media (prefers-reduced-motion:reduce){.w4x_seg button,.w4x_ct,.w4x_wgrid .match.w4x_wc{transition:none}.w4x_seg button:active,.w4x_ct:active,.w4x_wgrid .match.w4x_wc:active{transform:none}}
 
 /* ===== 案2「今日の一膳」の共通部品（三宅） ===== */
-nav.tabs button,nav.tabs.many button{font-size:min(.875rem,5vw)}   /* タブは3つなので、文字の大きさの設定に合わせて最大 約20px まで大きくする */
+nav.tabs button,nav.tabs.many button{font-size:max(min(.875rem,5vw),12px)}   /* タブは3つなので、文字の大きさの設定に合わせて最大 約20px まで大きくする。幅がとても狭くても12pxより小さくしない（第4回 A09: 195pxで9.75pxに縮んだ） */
 .vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 /* 四段の印（一 決める／二 買う／三 作る／四 食卓）。済み＝若草の字と✓・細い若草の罫、いま＝若草の淡い地にこげ茶の字と若草の下線3px、まだ＝うす茶。
    若草の塗りつぶしと柿色は使わない（主ボタンと張り合わないように）。押しても状態は変わらない。並びは文字の向きに従う（アラビア語は右から） */
@@ -2884,8 +2889,9 @@ function toast(msg, praise=false, undo=null){
      画面のいちばん上（左寄せ）とくらべて、押した指のまわりにかからず、隠す押す場所・文の少ないほうに出す。
    シート・料理の詳しい画面・キーボード表示中は CSS の場所のまま（画面ではなくシートが動くため） */
 const TOAST_SEE = 'button, a[href], input, select, textarea, summary, label, [data-act], [role=button], h1, h2, h3, h4, p, li, dt, dd, .eyebrow, .chip, .p2m-first';
-const TOAST_TAP = {y: -1, at: -1e9, view: '', tapView: ''};   // 最後に押した指の高さ・時刻と、そのとき出ていた画面（タブと段。render が view に書く）
-['pointerdown', 'touchstart'].forEach(k => document.addEventListener(k, e => { const p = e.touches ? e.touches[0] : e; if (p){ TOAST_TAP.y = p.clientY; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; } }, {capture: true, passive: true}));
+const TOAST_TAP = {y: -1, at: -1e9, view: '', tapView: '', layer: false};   // 最後に押した指の高さ・時刻と、そのとき出ていた画面（タブと段。render が view に書く）。layer: シート・料理の詳しい画面の中で押した
+['pointerdown', 'touchstart'].forEach(k => document.addEventListener(k, e => { const p = e.touches ? e.touches[0] : e; if (p){ TOAST_TAP.y = p.clientY; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = !!(e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')); } }, {capture: true, passive: true}));
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')){ TOAST_TAP.y = -1; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = true; } }, true);   // キーボードでシートのボタンを押したときも同じ
 function toastViewMark(){ TOAST_TAP.view = tab + '|' + (session.stage || ''); }
 function toastPlace(box, prev){
     const root = $('#toast-root'), v = $('#view');
@@ -2915,7 +2921,8 @@ function toastPlace(box, prev){
         return {need, n, taps}; };
     const low = scan({l: T.left, r: T.right, t: T.top, b: Math.max(T.bottom, floor)});
     if (!low.n) return;
-    const tapped = performance.now() - TOAST_TAP.at < 3000, fresh = tapped && TOAST_TAP.tapView !== TOAST_TAP.view;   // 押して画面（タブ・段）が切りかわった直後
+    // 押して画面（タブ・段）が切りかわった直後。シートの中で押してシートが閉じたとき（はじめての設定の「献立を見る」など）も、押したものは画面に残っていないので同じ（第4回 D4: 「準備ができました」が料理の行・かえるに重なった）
+    const tapped = performance.now() - TOAST_TAP.at < 3000, fresh = tapped && (TOAST_TAP.tapView !== TOAST_TAP.view || TOAST_TAP.layer);
     // 新しい画面へ送る: 見えていた文・押す場所をお知らせの上に送り、後ろに棚を敷く（一度に送るのは、お知らせの高さ＋少しまで）
     const lift = () => {
         const need = Math.ceil(Math.min(low.need, Math.max(T.bottom, floor) - T.top + 6 + 120));
@@ -3492,7 +3499,7 @@ function newMenu(){
         items.push({slot, r});
     });
     if (wUsed) wishTried().add(wp.r.id);   // 「まるごと入れ替え」で同じ日に何度も戻ってこない
-    session.menu = {n, items};
+    session.menu = {n, items}; session.avoidNote = null;   // 新しい案には「設定に合わせて…かえました」を残さない（気分・品数・まるごと入れ替えのあとに古い知らせが残った。第4回 R7）
     session.twist = twistAvailable() ? lazyTwist() : null;
 }
 // 起動して最初の献立だけ、ひとひねり案（重い）を最初の表示のあとに作る。それ以降は今までどおりその場で作る
@@ -5508,7 +5515,10 @@ function obSave(){
 }
 // はじめての設定を終えて、今日の献立を見せる（日本を日本語以外で使うときも、食材の名前（豚肉）で保存する: obSave）
 function obFinish(){
-    obSave(); closeSheet(); reconcileMenu(); refreshWeek(); setTab('today');
+    const first = !S.onboarded;   // はじめての設定（まだ献立を見ていない）
+    obSave(); closeSheet(); reconcileMenu(); refreshWeek();
+    if (first){ session.avoidNote = null; toast.avoidMsg = false; }   // はじめて見せる献立は、もう設定に合っている。「設定に合わせて…かえました」は出さない（第4回 R7・G02）
+    setTab('today');
     try{ window.scrollTo(0, 0); }catch(e){}
     obReveal();
     if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
@@ -9417,7 +9427,7 @@ function viewToday(){
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="today-head p2-head"><h2>${esc(t('今日の一膳'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
             <button type="button" class="p2-sv" data-act="cond-open" aria-label="${esc(t('条件を変える'))}"><span>${esc(t('{n}人分', {n: fmtPortion(svToday())}))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n})].join(t('・')))}</span></button></div>
-        ${session.avoidNote ? `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
+        ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
         ${compact ? `<div class="tray lite compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map(row => `<div class="tray-row">${row.join('')}</div>`).join('')}${shuffleBtn}</div>`
         : `<div class="tray lite v3" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
             <div class="tray-hero${mains.length >= 2 ? ' two' : ''}">${mains.map(x => spot(x.it, x.i, '')).join('')}</div>
@@ -11110,6 +11120,8 @@ document.addEventListener('click', e => {
     const act = el.dataset.act, id = el.dataset.id;
     if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
+    // 「設定に合わせて…かえました」は、決める段で見せたあとの次の操作で消す（第4回 R7: 気分を変えたあとも残った）。「ほかの候補」はこの知らせの続きなので除く
+    if (session.avoidNote && session.avoidNote.seen && act !== 'avoid-other'){ session.avoidNote = null; const n = document.querySelector('#view .avoid-note'); if (n) n.remove(); }
     switch(act){
         case 'open': openModal(id); break;
         case 'open-hist': openHist(id); break;
