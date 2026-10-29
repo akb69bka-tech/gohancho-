@@ -1,6 +1,6 @@
 // わが家のご飯帖: オフラインで開けるようにアプリ本体をキャッシュする
 // 版を上げるとき: VERSION と、index.html の ASSET_V を同じ値にする（tools/qa/sw-offline.js が一致を確かめる）
-const VERSION = 'gohancho-v39';
+const VERSION = 'gohancho-v40';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './i18n/en.js'];
 const IMG = 'gohancho-img-v1';
 const NET_WAIT = 3000;   // アプリの画面: ネットがこの時間（ms）で返らなければ、保存してある画面で開く（ネットの返事は裏で待って保存する）
