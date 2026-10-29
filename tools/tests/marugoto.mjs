@@ -157,12 +157,14 @@ for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1]]){
         const bs = [...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')];
         const tl = bs.map(b => b.querySelector('.tl')).filter(Boolean), vis = tl.filter(e => e.getBoundingClientRect().width > 2);
         const lines = vis.map(e => Math.round(e.getBoundingClientRect().height / (parseFloat(getComputedStyle(e).lineHeight) || 14)));
-        return {overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0)};
+        return {overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true'} : null; })};
     });
     const tag = `M1e ${w}x${h} 文字${ts}`;
     ok(!r.overlap, `${tag} 決定の帯をお盆に重ねない: ` + JSON.stringify(r));
     if (w < 300) ok(r.ico && r.shown === 0 && r.label, `${tag} 狭い幅ではタブは絵だけ（字は読み上げに残す）: ` + JSON.stringify(r));
-    else ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
+    if (w < 300) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 11 && !x.cut && x.hid), `${tag} 絵だけのタブに短い名前（2〜3文字・11px以上・切れない・読み上げは長い名前）: ` + JSON.stringify(r.shorts));
+    if (w >= 300) ok(r.shorts.every(x => !x), `${tag} 字のあるタブには短い名前を出さない: ` + JSON.stringify(r.shorts));
+    if (w >= 300) ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
     await ctx.close();
 }
 
@@ -229,6 +231,45 @@ for (const [lang, w, ts, n] of [['ja', 195, 2, 3], ['ja', 195, 0, 5], ['en', 195
     }, BTN);
     const tag = `M13 ${lang} ${w}px 文字${ts} ${n}品`;
     ok(r && r.inside && !r.clip && !r.overlap.length && r.sw <= r.iw, `${tag}: はみ出さず・文字が切れず・ほかのボタンに重ならない: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// 第7回 A09: 幅195px の絵だけのタブの短い名前は、どの言語でも 11px 以上で切れない。入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
+{
+    const CCL = {ja: 'JP', ar: 'EG', de: 'DE', en: 'US', es: 'ES', fil: 'PH', fr: 'FR', hi: 'IN', id: 'ID', it: 'IT', ko: 'KR', pl: 'PL', 'pt-BR': 'BR', th: 'TH', tr: 'TR', vi: 'VN', 'zh-Hans': 'CN', 'zh-Hant': 'TW'};
+    const bad = [], off = [];
+    for (const [lang, cc] of Object.entries(CCL)){
+        const {p, ctx} = await open({country: cc, uiLang: lang, textSize: 2}, [195, 422]);
+        await p.waitForTimeout(300);
+        const r = await p.evaluate(() => { const nv = document.querySelector('nav.tabs'); return {ico: nv.classList.contains('ico'), items: [...nv.querySelectorAll('button[data-tab]:not([hidden])')].map(b => { const e = b.querySelector('.tsn'), tl = b.querySelector('.tl'); const shown = e && e.getBoundingClientRect().width > 2; return {shown, t: e ? e.textContent : '', fs: shown ? parseFloat(getComputedStyle(e).fontSize) : 0, cut: shown && e.scrollWidth > e.clientWidth + .5, aria: !!(tl && tl.textContent.trim())}; })}; });
+        const sh = r.items.filter(x => x.shown);
+        if (!r.ico || (sh.length && sh.length !== r.items.length) || sh.some(x => x.fs < 11 || x.cut) || !r.items.every(x => x.aria)) bad.push(lang + ':' + JSON.stringify(r));
+        if (!sh.length) off.push(lang);
+        await ctx.close();
+    }
+    ok(!bad.length, 'A09 195px の絵だけのタブ: 短い名前は 11px 以上・切れない（出すときは全部のタブに）・読み上げの長い名前は残す: ' + bad.join(' / '));
+    ok(off.length <= 2 && !off.includes('ja'), 'A09 短い名前を出さない（絵だけ）の言語は2つまで・日本語は出す: ' + off.join(','));
+}
+
+// R14（第7回）: はじめての設定を終えた直後は「新」を付けない（設定に合わせて献立を作り直しても、まだ何も入れ替えていない）
+for (const [label, steps] of [['そのまま', []], ['人数・アレルギーを選ぶ', ['ob-sv:4', 'ob-alg:egg']]]){
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP', timezoneId: 'Asia/Tokyo' });
+    await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    await ctx.addInitScript(seedScript(seedFor('marugoto-ob', label)));
+    const p = await ctx.newPage(); p.on('pageerror', e => errs.push(e.message));
+    await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
+    const clickAct = async (act, v) => { const sel = `#sheet-root [data-act="${act}"]` + (v ? `[data-v="${v}"]` : ''); await p.evaluate(sel => { const e = document.querySelector(sel); if (e) e.click(); }, sel); await p.waitForTimeout(300); };
+    await p.evaluate(() => { const e = document.querySelector('button.btn.primary[data-act=pick-country]'); if (e) e.click(); }); await p.waitForTimeout(500);
+    for (const st of steps.filter(x => x.startsWith('ob-sv'))) await clickAct('ob-sv', st.split(':')[1]);
+    await clickAct('ob-next');
+    for (const st of steps.filter(x => x.startsWith('ob-alg'))) { await p.evaluate(() => document.querySelectorAll('details.ob-alg-more').forEach(d => d.open = true)); await clickAct('ob-alg', st.split(':')[1]); }
+    await clickAct('ob-done'); await p.waitForTimeout(800);
+    const r = await p.evaluate(() => ({onb: !!S.onboarded, spots: document.querySelectorAll('#view .tray .spot').length, fresh: document.querySelectorAll('#view .tray .spot.fresh, #view .tray .fresh-tag').length}));
+    ok(r.onb && r.spots > 0 && r.fresh === 0, `R14 はじめての設定（${label}）を終えた直後は「新」を付けない: ` + JSON.stringify(r));
+    // そのあと「かえる」で1品変えると、その1品にだけ「新」
+    await p.evaluate(() => { window.__swapDirect = true; const bt = document.querySelector('.tray [data-act="reroll"]'); if (bt) bt.click(); }); await p.waitForTimeout(500);
+    const r2 = await p.evaluate(() => document.querySelectorAll('#view .tray .spot.fresh').length);
+    ok(r2 === 1, `R14 はじめての設定（${label}）のあと、かえるで変えた1品にだけ「新」: ` + r2);
     await ctx.close();
 }
 

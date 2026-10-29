@@ -1502,6 +1502,7 @@ nav.tabs.many svg{padding-inline:6px}
 nav.tabs .tl{display:block;max-width:100%}
 nav.tabs.ico .tl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 狭い幅: 絵だけ（字は読み上げ） */
 nav.tabs.ico svg{padding-inline:2px}
+nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
 body.bar-static .actionbar.decide-bar{position:static}   /* お膳が帯の上に入りきらない狭い画面では、決定の帯をお盆に重ねない（お膳の下に置く。第6回 S21） */
 /* アプリ名は 360 幅でも1行（22px まで下げる。基準書 2-4） */
 @media (max-width:420px){html header.top h1{white-space:nowrap;text-wrap-mode:nowrap;letter-spacing:0;font-size:max(22px,min(var(--fs24),6.2vw))}}
@@ -2845,10 +2846,13 @@ function applyStaticText(){
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
     const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
+    const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         let sp = b.querySelector('.tl');
         if (!sp){ const n = [...b.childNodes].reverse().find(x => x.nodeType === 3); sp = document.createElement('span'); sp.className = 'tl'; if (n) n.replaceWith(sp); else b.appendChild(sp); }   // タブの字は span に（狭い幅では絵だけにして、字は読み上げに残す）
         if (labels[b.dataset.tab]) sp.textContent = labels[b.dataset.tab];
+        let sn = b.querySelector('.tsn'); if (!sn){ sn = document.createElement('span'); sn.className = 'tsn'; sn.setAttribute('aria-hidden', 'true'); b.appendChild(sn); }
+        if (shorts[b.dataset.tab]) sn.textContent = shorts[b.dataset.tab];
     });
     fitTabs();
 }
@@ -5756,6 +5760,7 @@ function obSave(){
 function obFinish(){
     const first = !S.onboarded;   // はじめての設定（まだ献立を見ていない）
     obSave(); closeSheet(); reconcileMenu(); refreshWeek();
+    session.freshArmed = false; session.trayPrev = null; session.trayCur = null;   // 設定を終えた直後の献立は「はじめて見る献立」。設定に合わせて作り直しても「新」は付けない（第7回 R14）
     if (first){ session.avoidNote = null; toast.avoidMsg = false; }   // はじめて見せる献立は、もう設定に合っている。「設定に合わせて…かえました」は出さない（第4回 R7・G02）
     setTab('today');
     try{ window.scrollTo(0, 0); }catch(e){}
@@ -11922,7 +11927,7 @@ document.addEventListener('click', e => {
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
-            obSave(); closeSheet(); reconcileMenu(); keepDraft(); refreshWeek(); setTab('settings');   // 献立の画面を通らないので、選び直した献立をここで下書きに残す（開き直したときに前の献立に戻らないように）
+            obSave(); closeSheet(); reconcileMenu(); keepDraft(); refreshWeek(); session.freshArmed = false; session.trayPrev = null; session.trayCur = null; setTab('settings');   // 献立の画面を通らないので、選び直した献立をここで下書きに残す（開き直したときに前の献立に戻らないように）
             const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
         }
         case 'ob-done': obFinish(); break;
@@ -12908,6 +12913,9 @@ function fitTabs(){
     const bs = [...nv.querySelectorAll('button[data-tab]:not([hidden])')]; if (!bs.length) return;
     const ts = Number(document.documentElement.getAttribute('data-ts')) || 0, w = nv.clientWidth / bs.length;
     nv.classList.toggle('ico', w < 50);
+    // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
+    nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
+    if (w < 50){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
     let fs = [12, 13.5, 15][ts] || 12;
     const fits = () => bs.every(b => { const sp = b.querySelector('.tl'); return !sp || sp.scrollWidth <= b.clientWidth + .5; });
     nv.style.setProperty('--tabfs', fs + 'px');

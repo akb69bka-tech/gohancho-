@@ -1601,5 +1601,11 @@ GOHAN_I18N('tr', {
     "決めました": "Karar verildi",
     "tab|作り方": "Pişir",
     "tab|材料から": "Dolap",
-    "tab|記録": "Kayıt"
+    "tab|記録": "Kayıt",
+    "tabs|今日": "Bugün",
+    "tabs|作る": "Pişir",
+    "tabs|材料": "Dolap",
+    "tabs|工夫": "Fikir",
+    "tabs|世界": "Dünya",
+    "tabs|記録": "Not"
 });

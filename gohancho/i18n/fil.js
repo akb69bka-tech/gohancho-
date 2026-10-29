@@ -1601,5 +1601,11 @@ GOHAN_I18N('fil', {
     "決めました": "Napagpasyahan na",
     "tab|作り方": "Magluto",
     "tab|材料から": "Sa ref",
-    "tab|記録": "Talaan"
+    "tab|記録": "Talaan",
+    "tabs|今日": "Araw",
+    "tabs|作る": "Luto",
+    "tabs|材料": "Sahog",
+    "tabs|工夫": "Twist",
+    "tabs|世界": "Mapa",
+    "tabs|記録": "Tala"
 });

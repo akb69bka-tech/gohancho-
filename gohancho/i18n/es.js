@@ -1601,5 +1601,11 @@ GOHAN_I18N('es', {
     "決めました": "Decidido",
     "tab|作り方": "Cocinar",
     "tab|材料から": "Nevera",
-    "tab|記録": "Diario"
+    "tab|記録": "Diario",
+    "tabs|今日": "Hoy",
+    "tabs|作る": "Cocer",
+    "tabs|材料": "Frigo",
+    "tabs|工夫": "Giro",
+    "tabs|世界": "Mapa",
+    "tabs|記録": "Notas"
 });
