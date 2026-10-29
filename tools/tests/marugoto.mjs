@@ -166,6 +166,23 @@ for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1]]){
     await ctx.close();
 }
 
+// R13（第7回）: 大きい文字のとき、お膳を画面に入れるために下のタブの字を 12px に戻さない（今日・作り方・記録のどのタブでも）
+for (const [w, h] of [[390, 844], [430, 932], [360, 740]]) for (const ts of [1, 2]) for (const dc of [4, 7]){
+    const {p, ctx} = await open({dishCount: dc}, [w, h]);   // はじめは標準の文字。設定の画面で文字の大きさを変える（はじめての設定・設定の画面と同じ道）
+    await p.waitForTimeout(300);
+    await p.evaluate(() => setTab('settings')); await p.waitForTimeout(300);
+    ok(await p.evaluate(ts => { const b = document.querySelector(`[data-act="text-size"][data-v="${ts}"]`); if (b) b.click(); return !!b; }, ts), `M1f ${w}x${h} 設定に文字の大きさのボタンがある`); await p.waitForTimeout(300);
+    const got = [];
+    for (const tb of ['today', 'cook', 'log', 'today']){
+        got.push(await p.evaluate(async tb => { setTab(tb); await new Promise(r => setTimeout(r, 250));
+            const b = document.querySelector('nav.tabs button[data-tab]'), fs = parseFloat(getComputedStyle(b).fontSize);
+            return tb + ':' + fs; }, tb));
+    }
+    const fs = got.map(x => parseFloat(x.split(':')[1]));
+    ok(fs.every(x => x >= 13.5), `M1f ${w}x${h} 文字${ts} ${dc}品 下のタブの字は 13.5px 以上（お膳のために 12px に戻さない）: ` + got.join(' '));
+    await ctx.close();
+}
+
 // 3 決めた献立では先に確かめる → やめる／作り直す → 元に戻す
 {
     const {p, ctx} = await open({dishCount: 3});
