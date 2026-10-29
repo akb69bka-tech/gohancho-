@@ -259,7 +259,8 @@ for (const [label, steps] of [['そのまま', []], ['人数・アレルギー�
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(e.message));
     await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
     const clickAct = async (act, v) => { const sel = `#sheet-root [data-act="${act}"]` + (v ? `[data-v="${v}"]` : ''); await p.evaluate(sel => { const e = document.querySelector(sel); if (e) e.click(); }, sel); await p.waitForTimeout(300); };
-    await p.evaluate(() => { const e = document.querySelector('button.btn.primary[data-act=pick-country]'); if (e) e.click(); }); await p.waitForTimeout(500);
+    // 国は自分で一覧から選ぶ（はじめから選ばれている国はない）
+    await p.evaluate(() => { const e = document.querySelector('#sheet-root .country-list [data-act=pick-country][data-cc="JP"]'); if (e) e.click(); }); await p.waitForTimeout(500);
     for (const st of steps.filter(x => x.startsWith('ob-sv'))) await clickAct('ob-sv', st.split(':')[1]);
     await clickAct('ob-next');
     for (const st of steps.filter(x => x.startsWith('ob-alg'))) { await p.evaluate(() => document.querySelectorAll('details.ob-alg-more').forEach(d => d.open = true)); await clickAct('ob-alg', st.split(':')[1]); }

@@ -652,6 +652,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .country .sub{font-size:.75rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
 @media (max-width:360px){.country{padding:10px 8px;column-gap:6px}.country .fl{font-size:1.3rem}.country .nm{font-size:.86rem;hyphens:auto}}
 .country.on{border-color:var(--leaf);box-shadow:0 0 0 2px var(--leaf-soft)}
+.country .cand{display:inline-block;font-size:.7rem;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-inline-end:4px;line-height:1.5;white-space:nowrap}
 .v-staple{width:62%}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
@@ -2322,6 +2323,8 @@ const FAMILY_RE = {
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
 const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
+// 国のコード（COUNTRIES と同じ21か国。保存データを読むときに使うので、ここに置く）
+const COUNTRY_CODES = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', 'CN', 'TW', 'KR', 'TH', 'VN', 'ID', 'PH', 'MX', 'BR', 'PE'];
 const BROKEN_PREFIX = 'gohancho.broken.';
 const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
@@ -2429,6 +2432,8 @@ function normalizeState(d){
     if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
     if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
     if (st.settings.textSize !== 1 && st.settings.textSize !== 2) delete st.settings.textSize;   // 文字の大きさ: なし=ふつう / 1=大きい / 2=もっと大きい
+    // 国: 読めない値（壊れた・知らないコード）は日本にせず、持たない（起動したときに国を選ぶ画面を出す）
+    if (!COUNTRY_CODES.includes(st.settings.country)) delete st.settings.country;
     return st;
 }
 /* ---- 保存の安全 ----
@@ -2467,7 +2472,8 @@ function quarantine(raw, strict){
 }
 // 読み込みで直した（捨てた）記録があるか。直したときは元の文字も残しておく
 function lostRecords(d, st){
-    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog', 'stock', 'stockLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length);
+    return ['history', 'custom', 'savedMenus', 'leftovers', 'spend', 'favs', 'foodLog', 'stock', 'stockLog'].some(k => Array.isArray(d[k]) && d[k].length > (st[k] || []).length)
+        || !!(d.settings && typeof d.settings === 'object' && d.settings.country != null && d.settings.country !== '' && !st.settings.country);   // 国が読めなかった（元の値は残す）
 }
 function load(){
     let raw = null;
@@ -2486,6 +2492,8 @@ function load(){
 }
 // packFail: 電波がなくて国のデータを読みこめず、いまだけ日本で開いている国（保存するときは元の国のまま残す）
 let packFail = null;
+// 保存・書き出し・控えに使う形。いまだけ日本で開いているときも、国は利用者が選んだ国のまま（日本を書きこまない）
+function stateToKeep(){ return packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S; }
 // 保存はまとめて書く（記録が増えると JSON にするだけで数十 ms かかる）。少し待って1回だけ書き、裏に回る・閉じるときは必ず書き切る
 let saveT = 0;
 function syncFridgeMeta(){   // 冷蔵庫にある食材だけ印・登録日を持つ（外した食材のぶんは消す。新しく入った食材は今日の日付）
@@ -2498,8 +2506,7 @@ function saveNow(){
     if (saveT){ clearTimeout(saveT); saveT = 0; }
     let json;
     try{
-        const out = packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S;
-        json = JSON.stringify(out);
+        json = JSON.stringify(stateToKeep());
     }catch(e){ storeWarn('unavailable'); return; }
     if (storeInfo.hold) return;   // 壊れたデータを退避できていないあいだは上書きしない（知らせは起動時に出している）
     const why = lsWriteFreeing(STORE_KEY, json);   // 前のデータは書き込みに失敗してもそのまま残る。足りないときは控えを空けて試す
@@ -8341,7 +8348,7 @@ async function shareFileOrDownload(blob, name, type, dlMsg){
 }
 // 記録（JSON）をファイルにして渡す（設定の「ファイルで書き出す」と購入画面の「書き出す」で共通）
 // 書き出すデータ（版・日時の目印つき。古いアプリは目印を無視して読める）
-function backupJson(){ return JSON.stringify(Object.assign({}, S, {_gohancho: {v: BACKUP_VER, at: new Date().toISOString()}})); }
+function backupJson(){ return JSON.stringify(Object.assign({}, stateToKeep(), {_gohancho: {v: BACKUP_VER, at: new Date().toISOString()}})); }
 function markBackedUp(){ S.lastBackup = TODAY; delete S.backupSnooze; save(); }
 async function exportDataFile(){
     const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json', json = backupJson();
@@ -12461,14 +12468,10 @@ document.addEventListener('click', e => {
             try{
                 const pr = parseBackup(importBuffer); if (!pr.ok) throw new Error('parse');
                 saveUndo();   // 読み込む前の状態を1回分だけ控える（「読み込む前の状態に戻す」用）
-                S = applyImported(pr.d);
-                if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
+                packFail = null; S = applyImported(pr.d);
                 applyTextSize(); save(); toast(t('読み込みました'));
                 // 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）
-                const cc = currentCountry();
-                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); flushNotes(); })
-                    .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
-                    .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
+                afterImportCountry();
             }catch(err){ toast(t('読み込めませんでした')); }
             pendingConfirm = null; session.menu = null; render(); break;
         }
@@ -12476,12 +12479,9 @@ document.addEventListener('click', e => {
             const u = loadUndo(); if (!u){ toast(t('戻せるデータがありません')); break; }
             try{
                 const cur = S; saveUndo();   // いまの状態を控え直す（もう一度押せば、読み込んだ状態に戻せる）
-                S = applyImported(u.data);
+                packFail = null; S = applyImported(u.data);
                 applyTextSize(); save(); toast(t('読み込む前の状態に戻しました')); void cur;
-                const cc = currentCountry();
-                (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); flushNotes(); })
-                    .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
-                    .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
+                afterImportCountry();
             }catch(err){ toast(t('読み込めませんでした')); }
             pendingConfirm = null; session.menu = null; render(); break;
         }
@@ -12528,17 +12528,24 @@ function applyImported(d){
     const keep = {pro: S.pro, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept, lastBackup: S.lastBackup, backupSnooze: S.backupSnooze};
     Object.keys(keep).forEach(k => { if (keep[k] === undefined) delete keep[k]; });
     const st = Object.assign(normalizeState(d), keep);
-    if (!st.settings.country && st.onboarded) st.settings.country = 'JP';   // 国を選ぶ前の版のデータは日本
     for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
     st.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepCustom(r)); }catch(e){} });
     return st;
 }
+// 読みこんだデータの国と言語に、その場で切りかえる（料理・食材の名前・画面の言葉）。国のないデータ（国を選ぶ前の版・壊れた値）は日本にせず、国を選ぶ画面を出す
+function afterImportCountry(){
+    const cc = S.settings.country;
+    if (!cc){ setLang(wantLang()).then(() => { applyCountry('JP'); session.menu = null; render(); openCountrySheet(); }).catch(() => openCountrySheet()); return; }
+    (cc === 'JP' ? Promise.resolve() : loadPack(cc)).catch(() => { packFail = cc; S.settings.country = 'JP'; storeInfo.pending.push('pack'); flushNotes(); })
+        .then(() => setLang(wantLang())).then(() => ensureTr(currentCountry()))
+        .then(() => { applyCountry(currentCountry()); session.menu = null; render(); });
+}
 // 読み込む前の状態を1世代だけ控える（端末の空きがなければ控えられない。そのときは何も言わず、読み込みは続ける）
-function saveUndo(){ try{ localStorage.setItem(UNDO_KEY, JSON.stringify({t: Date.now(), d: TODAY, data: S})); }catch(e){} }
+function saveUndo(){ try{ localStorage.setItem(UNDO_KEY, JSON.stringify({t: Date.now(), d: TODAY, data: stateToKeep()})); }catch(e){} }
 function loadUndo(){ try{ const u = JSON.parse(localStorage.getItem(UNDO_KEY) || 'null'); return u && u.data && typeof u.data === 'object' && !Array.isArray(u.data) ? u : null; }catch(e){ return null; } }
 // データの中身（件数）の要約。読みこむデータにも、いまのデータにも使う
 function stateSummary(d){
-    const c = countryOf(d.settings.country || 'JP'), wk = d.week ? d.week.days : [], skip = wk.filter(x => x.skip).length, who = wk.filter(x => x.who).length;
+    const c = d.settings.country ? countryOf(d.settings.country) : null, wk = d.week ? d.week.days : [], skip = wk.filter(x => x.skip).length, who = wk.filter(x => x.who).length;
     const a = [t('記録{n}件', {n: d.history.length}), t('お気に入り{n}件', {n: d.favs.length}), t('自作レシピ{n}件', {n: d.custom.length}), t('保存した献立{n}件', {n: d.savedMenus.length})];
     if (d.family.length) a.push(t('家族{n}人', {n: d.family.length}));
     if (d.fridge.length) a.push(t('冷蔵庫の食材{n}品', {n: d.fridge.length}));
@@ -12547,7 +12554,7 @@ function stateSummary(d){
     if (d.foodLog.length) a.push(t('使い切り・捨ての記録{n}件', {n: d.foodLog.length}));
     if (d.stock.length) a.push(t('備蓄{n}品', {n: d.stock.length}));
     if (wk.length) a.push(t('1週間の予定{n}日分', {n: wk.length}) + (skip ? t('（作らない日{n}日）', {n: skip}) : '') + (who ? t('（担当を決めた日{n}日）', {n: who}) : ''));
-    a.push(c.flag + ' ' + countryLabel(c));
+    if (c) a.push(c.flag + ' ' + countryLabel(c));   // 国のないデータは、読みこんだあとに国を選んでもらう（日本と書かない）
     return a.join(t('・'));
 }
 function importSummary(){ try{ const r = parseBackup(importBuffer); return r.ok ? stateSummary(normalizeState(r.d)) : ''; }catch(err){ return ''; } }
@@ -13203,7 +13210,7 @@ async function setCountryRun(cc){
         applyCountry(cc);
         // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
         if (PACK && fresh && !S.staples.length) S.staples = STAPLE_QUICK.slice();
-        if (first){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; }   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
+        if (first && !S.onboarded){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; }   // 国のないデータで使っていた人が選び直したときは、無料期間の始まりを変えない   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
         save();
         return true;
     }catch(e){
@@ -13296,29 +13303,33 @@ function stapleBlockedNote(){
     const o = currentStapleOpt();
     return o && o.k !== 'none' && stapleBlocked(o) ? t('主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません', {name: stapleName(o)}) : '';
 }
+// 国の一覧。sel: 利用者が選んで保存した国（枠つき）。cand: 国を選ぶ前だけ、端末の言語・タイムゾーンから推した国（いちばん上に「候補」と出すだけで、選んだ状態にはしない）
+function countryListHtml(sel, cand, subOf){
+    const list = cand ? [...COUNTRIES].sort((a, b) => (b.cc === cand) - (a.cc === cand)) : COUNTRIES;
+    return `<div class="country-list">${list.map(c => `<button class="country${c.cc === sel ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === sel ? 'aria-current="true"' : ''}>
+            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${c.cc === cand ? `<span class="cand">${esc(t('候補'))}</span> ` : ''}${esc(subOf(c))}</span></button>`).join('')}</div>`;
+}
 function countrySheetHtml(){
-    const cur = S.settings.country || guessCountry();
+    const sel = S.settings.country || '', cand = sel ? '' : guessCountry();
     const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
-    if (!S.onboarded) return obCountryHtml(cur, subOf);
+    if (!S.onboarded) return obCountryHtml(sel, cand, subOf);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        <div class="country-list">${(S.settings.country ? COUNTRIES : [...COUNTRIES].sort((a, b) => (b.cc === cur) - (a.cc === cur))).map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
-            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
-        ${S.settings.country ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : ''}`;
+        ${countryListHtml(sel, cand, subOf)}
+        ${sel ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}`;
 }
-// はじめての流れの1つめ（国と言語）。端末から推した国をいちばん上に出し、下のボタン1つで次へ進める
-function obCountryHtml(cur, subOf){
-    const c0 = cur ? countryOf(cur) : null, ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;   // 端末から国が決まらないときは、どの国も選ばずに一覧から選んでもらう（日本に決めつけない）
+// はじめての流れの1つめ（国と言語）。国は利用者が一覧から自分で選ぶまで進めない（端末から推した国は、いちばん上に候補として出すだけ）
+function obCountryHtml(sel, cand, subOf){
+    const ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;
     const langs = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])];
     return `${obProgHtml(1, false)}
         <p class="ob-eyebrow">${esc(t('ご飯帖へようこそ'))}</p>
         <h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        <div class="country-list">${(S.settings.country ? COUNTRIES : [...COUNTRIES].sort((a, b) => (b.cc === cur) - (a.cc === cur))).map(c => `<button class="country${c.cc === cur ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === cur ? 'aria-current="true"' : ''}>
-            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
+        ${countryListHtml(sel, cand, subOf)}
         <label class="ob-lang"><span class="small">${esc(t('表示する言語 / Language'))}</span>
             <select data-ob="lang">${langs.map(([v, l]) => `<option value="${esc(v)}" lang="${esc(v)}" ${v === ui ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
-        <div class="ob-actions">${c0 ? `<button class="btn primary wide" data-act="pick-country" data-cc="${esc(c0.cc)}">${esc(S.settings.country ? t('次へ') : t('{country}ではじめる', {country: c0.flag + ' ' + c0.nameLocal}))}</button>`
+        <div class="ob-actions">${sel ? `<button class="btn primary wide" data-act="pick-country" data-cc="${esc(sel)}">${esc(t('次へ'))}</button>`
             : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}</div>`;
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
@@ -13343,7 +13354,7 @@ a11yActs();
 new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(n => { if (n.nodeType !== 1 || !n.isConnected) return; if (n.matches(A11Y_SEL)) a11yFix(n); if (n.firstElementChild) a11yActs(n); }); }).observe(document.body, {childList:true, subtree:true});
 document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
-if (!S.settings.country && S.onboarded) S.settings.country = 'JP';   // 以前から使っている人は日本
+// 国のない保存データ（国を選ぶ前の版・壊れて読めなかった）は、日本に決めつけず、起動したときに国を選ぶ画面を出す
 // 「自動（国に合わせる）」だった人は、いま表示している言語に決める。これからは国を変えても言語は変わらない
 if (S.settings.country && (S.settings.uiLang || 'auto') === 'auto'){ S.settings.uiLang = wantLang(); save(); }
 // 起動のとき国のデータが読めず、いまだけ日本で開いているときに、もう一度読みこむ（読めたら元の国に戻す）
