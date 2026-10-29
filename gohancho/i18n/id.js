@@ -1572,4 +1572,5 @@ GOHAN_I18N('id', {
     "表示をすすめるアレルゲン": "Alergen yang dianjurkan dicantumkan",
     "表示をすすめるアレルゲン（{date}から義務）": "Alergen yang dianjurkan dicantumkan (wajib mulai {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Alergen umum (belum tentu daftar resmi negara ini)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "{to} menggantikan {from}; aduk perlahan agar tidak hancur dan panaskan sampai ke dalam.",
 });

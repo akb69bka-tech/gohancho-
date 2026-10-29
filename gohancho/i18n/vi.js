@@ -1572,4 +1572,5 @@ GOHAN_I18N('vi', {
     "表示をすすめるアレルゲン": "Chất gây dị ứng khuyến nghị ghi trên nhãn",
     "表示をすすめるアレルゲン（{date}から義務）": "Chất gây dị ứng khuyến nghị ghi trên nhãn (bắt buộc từ {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Chất gây dị ứng thường gặp (không nhất thiết là danh mục chính thức của nước này)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "Dùng {to} thay cho {from}; đảo nhẹ tay để không bị nát và làm nóng đều đến bên trong.",
 });

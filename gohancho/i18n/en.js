@@ -1573,4 +1573,5 @@ GOHAN_I18N('en', {
     "表示をすすめるアレルゲン": "Allergens recommended for labeling",
     "表示をすすめるアレルゲン（{date}から義務）": "Allergens recommended for labeling (mandatory from {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Common allergens (not necessarily this country's labeling list)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "The {to} replaces the {from}; handle it gently and heat it through.",
 });

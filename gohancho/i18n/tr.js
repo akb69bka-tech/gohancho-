@@ -1572,4 +1572,5 @@ GOHAN_I18N('tr', {
     "表示をすすめるアレルゲン": "Etikette belirtilmesi önerilen alerjenler",
     "表示をすすめるアレルゲン（{date}から義務）": "Etikette belirtilmesi önerilen alerjenler ({date} itibarıyla zorunlu)",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Yaygın alerjenler (bu ülkenin resmî listesi olmayabilir)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "{to}, {from} yerine kullanılıyor; dağılmaması için nazikçe çevirin ve içine kadar ısıtın.",
 });

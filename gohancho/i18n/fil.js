@@ -1572,4 +1572,5 @@ GOHAN_I18N('fil', {
     "表示をすすめるアレルゲン": "Mga allergen na inirerekomendang isulat sa label",
     "表示をすすめるアレルゲン（{date}から義務）": "Mga allergen na inirerekomendang isulat sa label (sapilitan simula {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Karaniwang allergen (hindi tiyak na listahan ng bansang ito)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "Ang {to} ang ipinalit sa {from}; haluin nang marahan para hindi madurog at painitin hanggang sa loob.",
 });

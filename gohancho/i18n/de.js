@@ -1572,4 +1572,5 @@ GOHAN_I18N('de', {
     "表示をすすめるアレルゲン": "Zur Kennzeichnung empfohlene Allergene",
     "表示をすすめるアレルゲン（{date}から義務）": "Zur Kennzeichnung empfohlene Allergene (Pflicht ab {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Häufige Allergene (nicht unbedingt die Liste dieses Landes)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "{to} ersetzt {from}: vorsichtig behandeln, damit es nicht zerfällt, und gut durchwärmen.",
 });

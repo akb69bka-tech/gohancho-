@@ -1572,4 +1572,5 @@ GOHAN_I18N('pl', {
     "表示をすすめるアレルゲン": "Alergeny, które zaleca się podawać na etykiecie",
     "表示をすすめるアレルゲン（{date}から義務）": "Alergeny, które zaleca się podawać na etykiecie (obowiązkowo od {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Częste alergeny (niekoniecznie urzędowa lista tego kraju)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "{to} zastępuje {from}: obchodź się z nim delikatnie, żeby się nie rozpadło, i dobrze je podgrzej.",
 });

@@ -84,6 +84,52 @@ if (want('R4X')){
     }
 }
 
+// ---- R9X 各国の料理で肉を置き換えた手順 ----
+if (want('R9X')){
+    const LANGS = {US: 'en', GB: 'en', FR: 'fr', DE: 'de', IT: 'it', ES: 'es', PL: 'pl', TR: 'tr', EG: 'ar', IN: 'hi', CN: 'zh-Hans', TW: 'zh-Hant', KR: 'ko', TH: 'th', VN: 'vi', ID: 'id', PH: 'fil', MX: 'es', BR: 'pt-BR', PE: 'es'};
+    // 置き換えが多い国（豆腐への置き換えがある国を先に）。QUICK=1 のときはこの国だけ、ふだんは20か国
+    const ccs = process.env.QUICK ? ['PH', 'TW', 'ID', 'KR', 'VN', 'CN', 'DE', 'ES', 'PL'] : ['PH', 'TW', 'ID', 'KR', 'VN', 'CN', 'DE', 'ES', 'PL', 'US', 'GB', 'FR', 'IT', 'TR', 'EG', 'IN', 'TH', 'MX', 'BR', 'PE'];
+    let total = 0, tofuN = 0;
+    for (const cc of ccs) for (const lang of [LANGS[cc], 'en', 'ja'].filter((v, i, a) => a.indexOf(v) === i)){
+        const bad = [];
+        for (const avoid of [['pork'], ['chicken'], ['beef'], ['pork', 'chicken', 'beef']]){
+            const {p, ctx} = await open({country: cc, uiLang: lang, avoid});
+            await p.waitForTimeout(300);
+            const r = await p.evaluate(() => {
+                const NOTE = /代わり|replaces|ipinalit|menggantikan|대신|thay cho|代替|แทน|ersetzt|remplace|sostituisce|sustituye|substitui|zastępuje|yerine|بدل|जगह/;
+                const COLOR = /pink|\brosa|rosad|różow|pembe|وردي|गुलाबी|kulay-rosas|pumula|merah muda|붉은|粉紅|粉红|赤み|赤い|ピンク|色が変わ|變色|变色|hồng|สีชมพู/i;
+                const out = {n: 0, tofu: 0, bad: []};
+                RECIPES.forEach(r0 => {
+                    const r = swappedRecipe(r0); if (!r.swapped || !r.swapped.swaps.length) return; out.n++;
+                    const fams = [...new Set(r.swapped.swaps.map(x => meatFamOf(x.from)).filter(Boolean))].filter(f => !r.items.some(i => meatFamOf(i) === f));
+                    const tofu = r.swapped.swaps.filter(x => x.tip === 'tofu'); if (tofu.length) out.tofu++;
+                    const tw = [PACK_MEAT[stepLangOf(r)] && PACK_MEAT[stepLangOf(r)].tofu, ...tofu.map(x => String(shortLabel(x.to)))].filter(Boolean).map(s => s.toLowerCase());
+                    r.steps.forEach((s, k) => String(typeof s === 'string' ? s : s.t).split(/(?<=[.!?。！？;；])\s*/).forEach(sn => {
+                        if (NOTE.test(sn)) return;
+                        const f = fams.find(f => NAME_FAM[f].test(sn.replace(/牛乳|牛脂/g, '')) && !/stock|broth|bouillon|caldo|brühe|bouillon|kaldu|sabaw|육수|高汤|高湯|ガラ/i.test(sn));
+                        if (f) out.bad.push(r0.id + '#' + k + ' 元の肉(' + f + '): ' + sn);
+                        if (tofu.length && tw.some(w => sn.toLowerCase().includes(w)) && COLOR.test(sn)) out.bad.push(r0.id + '#' + k + ' 豆腐に肉の色の目安: ' + sn);
+                    }));
+                });
+                return out;
+            });
+            total += r.n; tofuN += r.tofu; bad.push(...r.bad.map(x => avoid.join('+') + ' ' + x));
+            await ctx.close();
+        }
+        ok(!bad.length, `R9X-1 ${cc} ${lang}: 置き換えた手順に元の肉の言い方・肉の色の目安が残らない: ` + bad.slice(0, 3).join(' | '));
+    }
+    ok(total >= 30 && tofuN >= 5, `R9X-2 置き換えた料理を見た数: ${total}（豆腐 ${tofuN}）`);
+    // 画面: フィリピンで肉を外した人がパンシットの作り方を開く
+    {
+        const {p, ctx} = await open({country: 'PH', uiLang: 'fil', avoid: ['pork', 'chicken', 'beef']});
+        await p.evaluate(() => openModal('ph_pancit')); await p.waitForTimeout(400);
+        const txt = await p.evaluate(() => document.querySelector('#modal-root').innerText);
+        await p.screenshot({path: (process.env.SHOT_DIR || '/tmp') + '/R9X_pancit.png'}).catch(() => {});
+        ok(/ilagay ang tokwa/.test(txt) && /Ang tokwa ang ipinalit sa/.test(txt) && !/ilagay ang manok|Ibalik ang manok/.test(txt), 'R9X-3 パンシット（フィリピン語）の手順が豆腐の文と説明になる: ' + (txt.match(/[^\n]*tokwa[^\n]*/) || [''])[0].slice(0, 160));
+        await ctx.close();
+    }
+}
+
 await b.close();
 if (errs.length){ console.log('ページのエラー:', [...new Set(errs)].slice(0, 5)); }
 console.log(`panel-r4b: ${checks - fails}/${checks} 成功`);

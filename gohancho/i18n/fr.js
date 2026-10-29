@@ -1572,4 +1572,5 @@ GOHAN_I18N('fr', {
     "表示をすすめるアレルゲン": "Allergènes dont la déclaration est recommandée",
     "表示をすすめるアレルゲン（{date}から義務）": "Allergènes dont la déclaration est recommandée (obligatoire à partir du {date})",
     "主なアレルゲン（各国の表示制度の品目とは限りません）": "Allergènes courants (pas forcément la liste officielle de ce pays)",
+    "{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。": "Le {to} remplace {from} : manipulez-le délicatement et faites-le chauffer à cœur.",
 });
