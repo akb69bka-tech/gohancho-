@@ -414,6 +414,7 @@ GOHAN_I18N('pl', {
     "{country}　を変える": "{country} · Zmień",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Jadłospisy powstają z kuchni domowej wybranego kraju. Lodówka i zapasy są zapisywane osobno dla każdego kraju.",
     "表示する言語 / Language": "Język / Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Wybierz z listy powyżej kraj lub region, w którym mieszkasz",
     "家族のプロフィール": "Profile rodziny",
     "1つ": "1",
     "2つ以上": "2 lub więcej",

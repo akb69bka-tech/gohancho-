@@ -413,6 +413,7 @@ GOHAN_I18N('id', {
     "{country}　を変える": "{country} · Ganti",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Menu dibuat dari masakan rumahan negara pilihan Anda. Kulkas dan stok disimpan terpisah untuk tiap negara.",
     "表示する言語 / Language": "Bahasa / Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Pilih negara atau wilayah tempat Anda tinggal dari daftar di atas",
     "家族のプロフィール": "Profil keluarga",
     "1つ": "1",
     "2つ以上": "2 atau lebih",

@@ -4328,7 +4328,7 @@ function render(){
     renderFail.clear();
     guard('head', () => {
         $('#today-label').textContent = jpDate(TODAY);
-        $('#flag-btn').textContent = countryOf(currentCountry()).flag;
+        $('#flag-btn').textContent = S.settings.country ? countryOf(currentCountry()).flag : '🌐';   // 国を選ぶ前は、日本の旗を出さない
         const sl = (tab === 'today' || tab === 'cook') && bootReady ? stageLine() : '';   // 段の上の一言（1行）。あいさつの代わり
         if (tab === 'today' || tab === 'cook') guard('daysync', daySync);
         $('#greet').innerHTML = sl ? `<div class="hello stage-line">${esc(sl)}</div>` : '';
@@ -12471,16 +12471,49 @@ function countryLabel(c){
     return c.name;
 }
 function currentCountry(){ return S.settings.country || 'JP'; }
-function guessCountry(){
+/* はじめての設定で、端末の言語（navigator.languages）とタイムゾーンから国を推す（端末の中だけで決める。通信・位置情報は使わない）。
+   1) 言語に、ある国の地域が付いていればその国（en-US → US、es-MX → MX）。ja → JP
+   2) 地域がない・ない国の地域なら、その言語の国のうちタイムゾーンの国（es + America/Lima → PE）。なければその言語のいちばん近い国（en → US、es → ES、pt → BR、zh → CN、繁体字 → TW）
+   3) どの言語も当てはまらなければ、タイムゾーンの国。それもなければ ''（日本に決めつけず、国を選んでもらう） */
+const TZ_COUNTRY = {
+    JP: ['Asia/Tokyo', 'Japan'], KR: ['Asia/Seoul', 'ROK'], TW: ['Asia/Taipei', 'ROC'], TH: ['Asia/Bangkok'], VN: ['Asia/Ho_Chi_Minh', 'Asia/Saigon'], PH: ['Asia/Manila'],
+    CN: ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Chungking', 'Asia/Harbin', 'Asia/Urumqi', 'Asia/Kashgar', 'PRC'],
+    ID: ['Asia/Jakarta', 'Asia/Pontianak', 'Asia/Makassar', 'Asia/Ujung_Pandang', 'Asia/Jayapura'], IN: ['Asia/Kolkata', 'Asia/Calcutta'],
+    TR: ['Europe/Istanbul', 'Asia/Istanbul', 'Turkey'], EG: ['Africa/Cairo', 'Egypt'], GB: ['Europe/London', 'Europe/Belfast', 'GB', 'GB-Eire'],
+    FR: ['Europe/Paris'], DE: ['Europe/Berlin', 'Europe/Busingen'], IT: ['Europe/Rome'], ES: ['Europe/Madrid', 'Africa/Ceuta', 'Atlantic/Canary'], PL: ['Europe/Warsaw', 'Poland'],
+    US: ['America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles', 'America/Phoenix', 'America/Anchorage', 'America/Juneau', 'America/Sitka', 'America/Yakutat', 'America/Nome', 'America/Metlakatla', 'America/Adak', 'America/Boise', 'America/Detroit', 'America/Menominee', 'America/Indiana/*', 'America/Kentucky/*', 'America/North_Dakota/*', 'America/Louisville', 'America/Fort_Wayne', 'America/Indianapolis', 'Pacific/Honolulu', 'US/*'],
+    MX: ['America/Mexico_City', 'America/Cancun', 'America/Merida', 'America/Monterrey', 'America/Matamoros', 'America/Chihuahua', 'America/Ciudad_Juarez', 'America/Ojinaga', 'America/Hermosillo', 'America/Mazatlan', 'America/Bahia_Banderas', 'America/Tijuana', 'America/Ensenada', 'Mexico/*'],
+    BR: ['America/Sao_Paulo', 'America/Bahia', 'America/Fortaleza', 'America/Recife', 'America/Belem', 'America/Maceio', 'America/Araguaina', 'America/Santarem', 'America/Manaus', 'America/Cuiaba', 'America/Campo_Grande', 'America/Porto_Velho', 'America/Boa_Vista', 'America/Rio_Branco', 'America/Eirunepe', 'America/Noronha', 'Brazil/*'],
+    PE: ['America/Lima'],
+};
+function tzCountry(tz){
+    if (tz === undefined){ try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }catch(e){ tz = ''; } }
+    tz = String(tz || '');
+    for (const [cc, zs] of Object.entries(TZ_COUNTRY)) if (zs.some(z => z.endsWith('/*') ? tz.startsWith(z.slice(0, -1)) : tz === z)) return cc;
+    return '';
+}
+// 地域のない言語で、タイムゾーンが合わないときのいちばん近い国（en は US、es は ES など）
+const LANG_HOME = {en: 'US', es: 'ES', pt: 'BR', zh: 'CN', ar: 'EG', hi: 'IN', fil: 'PH', tl: 'PH'};
+function guessCountry(langs, tz){
     try{
-        const langs = navigator.languages || [navigator.language];
+        if (!langs) langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+        const tc = tzCountry(tz), has = cc => COUNTRIES.some(c => c.cc === cc);
         for (const l of langs){
-            const m = String(l).match(/-([A-Z]{2})\b/i); if (m && COUNTRIES.some(c => c.cc === m[1].toUpperCase())) return m[1].toUpperCase();
-            const base = String(l).split('-')[0].toLowerCase();
-            const hit = COUNTRIES.find(c => c.lang.split('-')[0] === base); if (hit) return hit.cc;
+            const parts = String(l || '').replace(/_/g, '-').split('-'), base = parts[0].toLowerCase();
+            if (!base) continue;
+            const script = (parts.slice(1).find(x => x.length === 4) || '').toLowerCase(), region = (parts.slice(1).find(x => /^([a-z]{2}|\d{3})$/i.test(x)) || '').toUpperCase();
+            if (base === 'ja') return 'JP';
+            if (region && has(region)) return region;
+            if (base === 'zh') return script === 'hant' || ['HK', 'MO', 'TW'].includes(region) || (script !== 'hans' && tc === 'TW') ? 'TW' : 'CN';
+            const b = base === 'tl' ? 'fil' : base;
+            const cands = COUNTRIES.filter(c => c.cc !== 'JP' && c.lang.split('-')[0] === b).map(c => c.cc).concat(b === 'en' ? ['IN', 'PH'] : []);   // 英語はインド・フィリピンでもふつうに使う
+            if (!cands.length) continue;
+            if (cands.includes(tc)) return tc;
+            return LANG_HOME[b] && cands.includes(LANG_HOME[b]) ? LANG_HOME[b] : cands[0];
         }
+        return tc;
     }catch(e){}
-    return 'JP';
+    return '';
 }
 // 国のデータとして使える形か（途中で切れた・壊れたファイルを、半分だけ使わない）
 function validPack(pk){
@@ -12826,7 +12859,8 @@ async function setCountryRun(cc){
     const old = packFail || currentCountry();
     // 先に必要なファイル（国のデータ・画面の言葉・レシピの訳）をすべて読みこむ（電波がなくて読みこめないときは、いまの国の冷蔵庫・1週間プランをそのまま残す）
     try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
-    const nextUi = first && (S.settings.uiLang || 'auto') === 'auto' ? (cc === 'JP' ? (deviceLang() || 'ja') : peekLang(cc, 'auto')) : S.settings.uiLang;
+    // はじめて国を選ぶときの言語は、端末の言語（辞書があれば。en-IN でインドを選んでも英語のまま）。端末の言語に辞書がなければ、その国の言語
+    const nextUi = first && (S.settings.uiLang || 'auto') === 'auto' ? (deviceLang() || (cc === 'JP' ? 'ja' : peekLang(cc, 'auto'))) : S.settings.uiLang;
     const nextLang = peekLang(cc, nextUi);
     await loadLang(nextLang);
     if (nextLang !== 'ja' && !I18N[nextLang]){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return false; }
@@ -12955,7 +12989,7 @@ function countrySheetHtml(){
 }
 // はじめての流れの1つめ（国と言語）。端末から推した国をいちばん上に出し、下のボタン1つで次へ進める
 function obCountryHtml(cur, subOf){
-    const c0 = countryOf(cur), ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;
+    const c0 = cur ? countryOf(cur) : null, ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;   // 端末から国が決まらないときは、どの国も選ばずに一覧から選んでもらう（日本に決めつけない）
     const langs = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])];
     return `${obProgHtml(1, false)}
         <p class="ob-eyebrow">${esc(t('ご飯帖へようこそ'))}</p>
@@ -12965,7 +12999,8 @@ function obCountryHtml(cur, subOf){
             <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${esc(subOf(c))}</span></button>`).join('')}</div>
         <label class="ob-lang"><span class="small">${esc(t('表示する言語 / Language'))}</span>
             <select data-ob="lang">${langs.map(([v, l]) => `<option value="${esc(v)}" lang="${esc(v)}" ${v === ui ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
-        <div class="ob-actions"><button class="btn primary wide" data-act="pick-country" data-cc="${esc(c0.cc)}">${esc(S.settings.country ? t('次へ') : t('{country}ではじめる', {country: c0.flag + ' ' + c0.nameLocal}))}</button></div>`;
+        <div class="ob-actions">${c0 ? `<button class="btn primary wide" data-act="pick-country" data-cc="${esc(c0.cc)}">${esc(S.settings.country ? t('次へ') : t('{country}ではじめる', {country: c0.flag + ' ' + c0.nameLocal}))}</button>`
+            : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}</div>`;
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
 function relocalize(){

@@ -413,6 +413,7 @@ GOHAN_I18N('fil', {
     "{country}　を変える": "{country} · Palitan",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Ang menu ay hango sa lutong-bahay ng bansang pipiliin mo. Hiwalay ang ref at pantry mo sa bawat bansa.",
     "表示する言語 / Language": "Wika / Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Piliin sa listahan sa itaas ang bansa o rehiyon kung saan ka nakatira",
     "家族のプロフィール": "Profile ng pamilya",
     "1つ": "1",
     "2つ以上": "2 o higit pa",

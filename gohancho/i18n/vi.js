@@ -887,6 +887,7 @@ GOHAN_I18N('vi', {
     "菜箸を入れて細かい泡が出れば170℃。衣を落として途中で浮けば180℃": "Cho đũa gỗ vào, nếu có bọt nhỏ li ti nổi quanh đũa là khoảng 170°C. Thả giọt bột vào, nếu chìm giữa chừng rồi nổi lên lại là khoảng 180°C",
     "薬味（ねぎ・生姜・七味）": "Rau gia vị (hành lá, gừng hoặc ớt bột)",
     "表示する言語 / Language": "Ngôn ngữ / Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Hãy chọn quốc gia hoặc khu vực bạn đang sống trong danh sách ở trên",
     "触らずに焼く": "Đừng động vào",
     "記録": "Nhật ký",
     "記録した日": "Ngày đã ghi",

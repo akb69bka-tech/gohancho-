@@ -413,6 +413,7 @@ GOHAN_I18N('tr', {
     "{country}　を変える": "{country} · Değiştir",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Menüler seçtiğiniz ülkenin ev yemeklerinden oluşturulur. Buzdolabınız ve kileriniz her ülke için ayrı kaydedilir.",
     "表示する言語 / Language": "Dil / Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Yukarıdaki listeden yaşadığınız ülkeyi veya bölgeyi seçin",
     "家族のプロフィール": "Aile profilleri",
     "1つ": "1",
     "2つ以上": "2 veya daha fazla",

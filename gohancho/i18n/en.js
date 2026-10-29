@@ -414,6 +414,7 @@ GOHAN_I18N('en', {
     "{country}　を変える": "{country} · Change",
     "選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。": "Menus are built from home cooking in the country you choose. Your fridge and pantry are saved separately for each country.",
     "表示する言語 / Language": "Language",
+    "上の一覧から、住んでいる国・地域を選んでください": "Choose the country or region where you live from the list above",
     "家族のプロフィール": "Family profiles",
     "1つ": "1",
     "2つ以上": "2 or more",
