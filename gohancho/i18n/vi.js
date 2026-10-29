@@ -1204,7 +1204,7 @@ GOHAN_I18N('vi', {
     "作る日に戻しました": "Đã đổi lại thành ngày nấu",
     "写真を残す": "Lưu ảnh",
     "外食": "Ăn ngoài",
-    "明日の一膳を見る": "Xem bữa ngày mai",
+    "明日の献立を見る": "Xem bữa ngày mai",
     "明日へまわさない": "Không dời sang mai",
     "明日へまわす": "Dời sang mai",
     "決めていた一膳は明日へ": "Bữa đã chọn dời sang mai",

@@ -1204,7 +1204,7 @@ GOHAN_I18N('id', {
     "作る日に戻しました": "Kembali jadi hari masak",
     "写真を残す": "Simpan foto",
     "外食": "Makan di luar",
-    "明日の一膳を見る": "Lihat hidangan besok",
+    "明日の献立を見る": "Lihat hidangan besok",
     "明日へまわさない": "Jangan tunda ke besok",
     "明日へまわす": "Tunda ke besok",
     "決めていた一膳は明日へ": "Hidangan yang direncanakan pindah ke besok",

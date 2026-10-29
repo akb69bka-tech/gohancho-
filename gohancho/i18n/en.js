@@ -1205,7 +1205,7 @@ GOHAN_I18N('en', {
     "作る日に戻しました": "Back to a cooking day",
     "写真を残す": "Save a photo",
     "外食": "Eating out",
-    "明日の一膳を見る": "See tomorrow's meal",
+    "明日の献立を見る": "See tomorrow's meal",
     "明日へまわさない": "Don't move to tomorrow",
     "明日へまわす": "Move to tomorrow",
     "決めていた一膳は明日へ": "The planned meal moves to tomorrow",
