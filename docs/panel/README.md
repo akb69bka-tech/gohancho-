@@ -1,7 +1,8 @@
 # 声の掲示板（利用者モニター100人）
 - board.md: 集めた声を「大・中・小」と担当つきで1つの表に。デザイン部・開発本部が状態（未着手／対応中／直した／見送り＋理由）を書きこむ。
 - personas.md: 100人の人物像（AIが演じる想定の利用者。実在の人ではない）。
-- 生の声と写真: scratchpad/panel/round2/<層>/（第3回は scratchpad/panel/round3/、第4〜6回は scratchpad/panel_r4/・panel_r5/・panel_r6/）
+- 生の声と写真: scratchpad/panel/round2/<層>/（第3回は scratchpad/panel/round3/、第4〜7回は scratchpad/panel_r4/〜panel_r7/）
+- round7.md: 第7回（v56・2026-10-29）の点数・第6回で下がった3人の確認・安全の点検
 - round6.md: 第6回（最初のデザイン v53・2026-10-29）の点数・安全の発見・料理の見え方・案2の機能の場所・データの引き継ぎ
 - round5.md: 第5回（v48・2026-10-29）の点数・安全の発見・第4回の項目の確認
 - round4.md: 第4回（v40・2026-10-29）の点数・安全の発見・層ごとの声・直してほしいこと上位10件
