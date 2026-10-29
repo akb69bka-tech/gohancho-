@@ -108,7 +108,9 @@ let link = '', text = '';
     await p.evaluate(() => wishClose());
     // 決める段の入口「食べたいもの（2）」（数は入口の（）だけ。赤い丸は使わない）
     await p.evaluate(() => { session.stage = 'decide'; setTab('today'); });
-    ok((await viewText(p)).includes('食べたいもの（2）'), 'W3e 決める段に小さな入口「食べたいもの（2）」');
+    // 小さな入口は、お膳の上の「条件を変える」のシートの中（お膳の下の行はやめた）
+    const entryTxt = await p.evaluate(() => { openCondSheet(); const x = (document.querySelector('#sheet-root .cond-entries') || {}).innerText || ''; closeSheet(); return x; });
+    ok(entryTxt.includes('食べたいもの（2）'), 'W3e 今日の献立の「条件を変える」に小さな入口「食べたいもの（2）」: ' + entryTxt.replace(/\n/g, '/'));
     ok(await p.evaluate(() => !document.querySelector('.badge-dot, .dot-badge, [class*="unread"]')), 'W3f 赤い丸の通知の印がない');
     // 今日は決めてあるので、決めた一膳はそのまま。次の日（まだ決めていない日）に新しく作る献立に1品だけ入る（週末でいい → 土曜日にする）
     const r = await p.evaluate(() => {
