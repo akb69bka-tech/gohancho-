@@ -5578,8 +5578,16 @@ function obFinish(){
 }
 // はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
 // （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）
+// 日本以外で、たたまずに出す区分に、よくあるアレルゲン（魚（全般）・ごま・ナッツ類など）がなければ「主なアレルゲン」として足す（韓国の区分には魚（全般）・ごまがない。モニター第5回 S18）
+const OB_ALG_COMMON = ['egg', 'milk', 'fish', 'crustacean', 'peanut', 'treenut', 'sesame', 'soy', 'wheat'];
 function obAlgGroups(){
-    const sec = algSections(), top = sec.main.filter((g, k) => k === 0 || g[2] === 'prev'), inTop = new Set([].concat(...top.map(g => g[1])));
+    const sec = algSections(), top = sec.main.filter((g, k) => k === 0 || g[2] === 'prev').map(g => g.slice()), shown = () => new Set([].concat(...top.map(g => g[1])));
+    if (currentCountry() !== 'JP'){
+        const s0 = shown(), covered = id => s0.has(id) || (id === 'wheat' && s0.has('gluten')) || (!!ALG_DEF[id].parts && ALG_DEF[id].parts.every(q => s0.has(q)));
+        const extra = OB_ALG_COMMON.filter(id => ALG_DEF[id] && !covered(id));
+        if (extra.length){ const pg = top.find(g => g[2] === 'prev'); if (pg) pg[1] = pg[1].concat(extra); else top.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), extra, 'prev']); }
+    }
+    const inTop = shown();
     return {top, more: [...new Set([].concat(...sec.main.map(g => g[1])).concat(sec.rest))].filter(id => !inTop.has(id))};
 }
 function startOnboard(keep){
@@ -6066,8 +6074,8 @@ const AVOID_FAM = {
     chicken:{head:/^(鶏肉|鶏ひき肉)$|^(ground )?chicken\b/, jp:['鶏肉','鶏ひき肉'], re:/\bchicken\b|\bturkey\b/},
     beef:{head:/^牛肉$|^(ground )?beef\b|^veal$|^oxtail$|^chuck roast$/, jp:['牛肉','合いびき肉'],
         re:/\bbeef\b|\bveal\b|\bcow\b|oxtail|chuck roast|\bsuet\b|sucuk|\bsogo\b|corned|\btripe\b|bresaola|pastrami|^(ground meat|minced meat)\|(?!.*\b(pork|lamb|chicken|mutton)\b(?!.*\b(beef|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^mince\|/},
-    fish:{head:/^(魚|fish)$/, jp:['鮭','さば','ぶり','たら','あじ','いわし','さんま','かれい','ツナ','さわら','かじき','ちりめんじゃこ','かまぼこ','ちくわ','かに風味かまぼこ'],
-        re:/\bfish(?! sauce)\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|hairtail|\bcod\b|haddock|sea bream|whitebait|croaker|sardine|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|surimi/},
+    fish:{head:/^(魚|fish)$/, jp:['鮭','さば','ぶり','たら','あじ','いわし','さんま','かれい','ツナ','さわら','かじき','ちりめんじゃこ','かまぼこ','ちくわ','かに風味かまぼこ','たらこ','明太子','めんたいこ','辛子明太子','いくら','すじこ','筋子','数の子','かずのこ','とびこ'],   // 魚卵（たらこ・明太子など）も魚のなかま（モニター第5回 S19）
+        re:/\bfish(?! sauce)\b|\b(?:fish|cod|salmon|pollock|herring|flying fish) roe\b|\broe\b|caviar|mentaiko|tarako|\bikura\b|tobiko|masago|bottarga|taramasalata|anchov|\btuna\b|salmon|mackerel|herring|pollack|hairtail|\bcod\b|haddock|sea bream|whitebait|croaker|sardine|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|surimi/},
     shellfish:{head:/^(えび・かに・いか・たこ・貝|shellfish)$/, jp:['えび','いか','たこ','あさり','しじみ'],
         re:/^(?!.*mushroom)(?=.*(shrimp|prawn|\bcrabs?\b|\bclams?\b|mussels?|\boysters?\b(?! sauce)|squid|cuttlefish|octopus|scallop|lobster|shellfish|cockle))/},
     egg:{head:/^(卵|eggs?)$/, jp:['卵','うずらの卵'], re:/\beggs?\b/},
@@ -6236,10 +6244,13 @@ function algRecipeMap(r){
     // 判定は元の言葉（seasBase）で行い、画面に出す名前は、調味料の欄と同じ訳した名前にする（訳があって数が合うときだけ。F-P08・S-N16）
     const sb = seasItems(r), tr = seasShownItems(r), same = tr.length === sb.length;
     const items = (r.items || []).map(i => ({i, opt: !!i.opt})).concat(sb.map((i, k) => ({i, opt: false, k: k + 1})));
+    const itn = !r.pack && r.trLang && r.trLang !== 'ja' ? ((trOf('JP') || {}).itemNames || null) : null, bare = x => String(x || '').replace(/^[（(][^）)]*[）)]/, '').replace(/[（(][^）)]*[）)]$/, '').trim();
     const out = {};
     ALG_ALL.forEach(id => items.forEach(({i, opt, k: sk}) => { const k = algKind(id, i); if (!k) return;
         // 訳した調味料の欄に同じ数が並んでいれば同じ位置の名前、そうでなければ同じアレルゲンに当たる訳の名前（なければ元の言葉）
-        const show = sk && tr.length ? (same ? tr[sk - 1].name : (tr.find(x => algKind(id, x)) || {}).name) : '';
+        // 名前だけの訳（ベトナム語。調味料の欄は英語を借りる）は、食材名の表（jp.vi.js の names）にある調味料は、その言葉の名前で出す（モニター第5回 S17）
+        const own = sk && itn ? (itn[i.name] || itn[i.key] || itn[bare(i.name)] || '') : '';
+        const show = own || (sk && tr.length ? (same ? tr[sk - 1].name : (tr.find(x => algKind(id, x)) || {}).name) : '');
         (out[id] = out[id] || []).push({name: show || i.disp || i.name || i.label || i.key, kind: k, opt}); }));
     return out;
 }

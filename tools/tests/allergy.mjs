@@ -885,8 +885,37 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14
         await ctx.close();
     }
 }
+// モニター第5回 S19: 苦手で魚のなかまを外した人には、たらこ・明太子など魚卵の料理も出さない（アレルギーの扱いは変えない）
+for (const [st, want, nm] of [[{ avoid: ['@fish'] }, true, '苦手で魚'], [{ avoid: ['@fish'], swapOn: false }, true, '苦手で魚（置き換えなし）'], [{ allergens: ['fish'] }, true, '魚のアレルギー'], [{}, false, 'なし'], [{ avoid: ['@pork'] }, false, '苦手で豚肉']]){
+    const { ctx, p } = await open('JP', st);
+    const g = await p.evaluate(() => ({ av: isAvoided(byId('tarakopasta')), roe: ['たらこ', '明太子', 'いくら', '数の子', 'Cod roe', 'Mentaiko'].map(n => { const it = /[a-z]/i.test(n) ? Object.assign(parseIng(n), { en: n, key: n.toLowerCase() }) : parseIng(n); return inFam('fish', it); }),
+        not: ['ローストビーフ', 'Roe deer'.replace('Roe deer', 'Rosemary'), 'Monroe'].map(n => inFam('fish', Object.assign(parseIng(n), { en: n, key: n.toLowerCase() }))) }));
+    ok(g.av === want, `S19 ${nm}: たらこスパゲッティを${want ? '出さない' : '出す'}: ` + g.av);
+    ok(g.roe.every(Boolean) && !g.not.some(Boolean), `S19 ${nm}: 魚卵は魚のなかま、ほかの言葉は入れない: ` + JSON.stringify(g));
+    await ctx.close();
+}
+// モニター第5回 S17: ベトナム語の画面で和食を開くと、アレルゲン欄の調味料・加工品の名前もベトナム語（英語のままにしない）。英語・日本語の画面は今までどおり
+{
+    const { ctx, p } = await open('JP', { uiLang: 'vi' });
+    await p.waitForTimeout(800);
+    const g = await p.evaluate(() => { const bad = [], OK = /^(?:nui|thanh cua|gan heo)$/i;
+        RECIPES.filter(r => !r.pack).forEach(r => { const d = document.createElement('div'); d.innerHTML = allergenDetailHtml(r);
+            [...d.querySelectorAll('li')].forEach(li => li.innerText.split(/:\s/).slice(1).join(': ').split(/,\s*/).forEach(x => { const w = x.replace(/\(.*?\)|（.*?）/g, '').replace(/[\d½¼¾⅓⅔.\/~〜-]+\s*(?:tbsp|tsp|g|ml|cups?)?/gi, '').trim();
+                if (/^[A-Za-z][A-Za-z' ]+$/.test(w) && !OK.test(w)) bad.push(r.id + ':' + w); })); });
+        const d = document.createElement('div'); d.innerHTML = allergenDetailHtml(byId('tonkatsu'));
+        return { bad, tonkatsu: d.innerText }; });
+    ok(!g.bad.length, 'S17 ベトナム語: 和食のアレルゲン欄に英語の名前が残らない: ' + g.bad.slice(0, 8).join(', '));
+    ok(/bột mì/.test(g.tonkatsu) && /sốt tonkatsu/.test(g.tonkatsu) && !/Flour|Panko/.test(g.tonkatsu), 'S17 ベトナム語: とんかつのアレルゲン欄（bột mì・sốt tonkatsu）: ' + g.tonkatsu.slice(0, 200));
+    await ctx.close();
+    for (const [ui, re] of [['en', /Flour|flour/], ['ja', /小麦粉/]]){
+        const o = await open('JP', { uiLang: ui }); await o.p.waitForTimeout(600);
+        const t = await o.p.evaluate(() => { const d = document.createElement('div'); d.innerHTML = allergenDetailHtml(byId('tonkatsu')); return d.innerText; });
+        ok(re.test(t), `S17 ${ui} の画面のとんかつのアレルゲン欄は今までどおり: ` + t.slice(0, 160));
+        await o.ctx.close();
+    }
+}
 // モニター第4回 S13・S14: はじめての設定でも、設定の画面と同じく「主なアレルゲン」と「ほかのアレルゲン」を選べる（国選択→設定の順で操作する）
-for (const [cc, pick, inMore] of [['TH', 'egg', false], ['TH', 'milk', false], ['VN', 'fish', false], ['KR', 'fish', true], ['KR', 'sesame', true], ['JP', 'sesame', true], ['MX', 'sesame', false]]){
+for (const [cc, pick, inMore] of [['TH', 'egg', false], ['TH', 'milk', false], ['VN', 'fish', false], ['KR', 'fish', false], ['KR', 'sesame', false], ['KR', 'treenut', false], ['KR', 'celery', true], ['JP', 'sesame', true], ['MX', 'sesame', false]]){   // 韓国の魚（全般）・ごまは、たたまずに出す（モニター第5回 S18）
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ' onboard: ' + e.message));
     await p.goto(URL_); await p.waitForTimeout(1200);
