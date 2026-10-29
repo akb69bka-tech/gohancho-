@@ -130,6 +130,39 @@ if (want('R9X')){
     }
 }
 
+// ---- R10 料理の国・種類に合わないひと手間（洋風・中華・韓国のスープに「だしパック」など。北条の報告） ----
+if (want('R10')){
+    const JA = /だし|かつお節|七味|油揚げ/, EN = /\bdashi\b|bonito|shichimi|aburaage|fried tofu pouch/i;
+    for (const [lang, locale, re] of [['ja', 'ja-JP', JA], ['en', 'en-US', EN]]){
+        const {p, ctx} = await open({country: 'JP', uiLang: lang}, {locale});
+        await p.waitForTimeout(400);
+        const r = await p.evaluate(src => {
+            const re = new RegExp(src[0], src[1]), out = {bad: [], wa: 0, n: 0};
+            RECIPES.forEach(r => { const u = upgradeOf(r); if (!u) return; const txt = [u.add, u.why, u.skill, u.how].join(' ');
+                if (r.genre !== '和'){ out.n++; if (re.test(txt)) out.bad.push(r.id + '(' + r.genre + '/' + r.method + '): ' + txt); }
+                else if (r.method === '汁' && re.test(txt)) out.wa++; });
+            const mine = RECIPES.find(x => x.id === 'minestrone'), mu = upgradeOf(mine);
+            return Object.assign(out, {mine: mu ? [mu.add, mu.skill, mu.how].join(' / ') : ''});
+        }, [re.source, re.flags]);
+        ok(r.n > 20 && !r.bad.length, `R10-1 ${lang}: 洋・中・韓・エスニックの料理（${r.n}品）のひと手間に、だし・かつお節・七味・油揚げが出ない: ` + r.bad.slice(0, 3).join(' | '));
+        ok(r.wa > 0, `R10-2 ${lang}: 和食の汁ものには、今までどおりだしのひと手間が出る: ${r.wa}品`);
+        ok(r.mine && !re.test(r.mine), `R10-3 ${lang}: ミネストローネのひと手間: ` + r.mine);
+        if (lang === 'ja'){
+            const JA = /だし|かつお節|七味|油揚げ/;
+            await p.evaluate(() => openModal('minestrone')); await p.waitForTimeout(400);
+            const txt = await p.evaluate(() => (document.querySelector('#modal-root .skill') || {}).innerText || '');
+            ok(txt && !JA.test(txt), 'R10-4 画面: ミネストローネの詳細のひと手間にだしパックが出ない: ' + txt.replace(/\n/g, ' / '));
+        }
+        await ctx.close();
+    }
+    for (const cc of ['US', 'IT', 'KR', 'CN']){
+        const {p, ctx} = await open({country: cc, uiLang: 'ja'}, {locale: 'ja-JP'});
+        const bad = await p.evaluate(src => { const re = new RegExp(src); return RECIPES.filter(r => { const u = upgradeOf(r); return u && re.test([u.add, u.why, u.skill, u.how].join(' ')) && /だしパック|七味/.test([u.add, u.how].join(' ')); }).map(r => r.id); }, JA.source);
+        ok(!bad.length, `R10-5 ${cc}: 各国の料理に日本のだしパック・七味のひと手間が出ない: ` + bad.join());
+        await ctx.close();
+    }
+}
+
 await b.close();
 if (errs.length){ console.log('ページのエラー:', [...new Set(errs)].slice(0, 5)); }
 console.log(`panel-r4b: ${checks - fails}/${checks} 成功`);
