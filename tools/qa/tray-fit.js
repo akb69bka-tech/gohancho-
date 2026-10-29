@@ -5,13 +5,15 @@
 //  ・料理名は … で切れない、種類の字・「かえる」がお膳のふちで切れない、「かえる」は 44×44 以上（デザイン部長の点検1）
 //  ・長い料理名（点検2）: 18言語 × 7席 × 文字「もっと大きい」× 390・360 で、どの枠もいちばん長い名前の料理にしても、名前が帯の後ろに入らない・切れない・お膳ではかっこの説明を出さない
 //  ・お膳の下の押す場所が、決定の帯に半分かかっていない
+//  ・375×667 は帯の上に入るかは見ない（:c）。器を覆わないこと・切れないことは見る
+//  ・器の面積の10%以上を、ほかの部品（かえる・札・名前・ほかの器・真ん中の丸）が覆わない（点検3。360・375×667・390・文字大 × 2〜8席）
 // 使い方: BASE=http://localhost:8890/ node tools/qa/tray-fit.js   （VPS=390x844:0,360x740:0 LANGS=ja,en で絞れる）
 const { chromium, LAUNCH, BASE, ready } = require('../lib/pw.cjs');
 // 末尾に :c を付けた画面は、帯の上に入るかは見ず、名前・字が切れない・「かえる」の大きさだけを見る（基準書 2-3 の対象外の 360×740 文字大）
-const VPS = (process.env.VPS || '390x844:0,360x740:0,390x844:2,360x740:2').split(',').map(x => { const [vp, ts, c] = x.split(':'); const [w, h] = vp.split('x').map(Number); return {w, h, ts: Number(ts) || 0, clipOnly: c === 'c'}; });
+const VPS = (process.env.VPS || '390x844:0,360x740:0,375x667:0:c,390x844:2,360x740:2').split(',').map(x => { const [vp, ts, c] = x.split(':'); const [w, h] = vp.split('x').map(Number); return {w, h, ts: Number(ts) || 0, clipOnly: c === 'c'}; });
 const LANGS = (process.env.LANGS || 'ja,en,ko,de,ar,th').split(',');
 const CC = {ja: 'JP', en: 'US', ko: 'KR', de: 'DE', ar: 'EG', th: 'TH'};
-let bad = 0, n = 0; const seen = new Set();
+let bad = 0, n = 0; const seen = new Set(), scrolled = [];
 (async () => {
   const b = await chromium.launch(LAUNCH);
   for (const vp of VPS) for (const lang of LANGS) for (const dark of [false, true]) {
@@ -44,14 +46,22 @@ let bad = 0, n = 0; const seen = new Set();
         const small = [...tr.querySelectorAll('.spot .swap:not(.swap-ph)')].filter(e => { const q = e.getBoundingClientRect(); return q.width < 44 - .5 || q.height < 44 - .5; }).map(e => Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height));
         // お膳の下の押す場所が、決定の帯に半分かかっていない（帯の上に入るか、帯より下＝スクロールの先）
         hid.push(...[...document.querySelectorAll('#view button, #view [data-act]')].filter(e => !e.closest('.actionbar') && !tr.contains(e)).filter(e => { const q = e.getBoundingClientRect(); return q.height > 0 && q.top < floor - 1 && q.bottom > floor + 1; }).map(e => 'straddle:' + (e.dataset.act || e.tagName)));
-        if (clipOnly) hid.length = 0;
-        hid.push(...cut, ...clip.map(x => 'clip ' + x), ...small.map(x => 'small ' + x));
+        // 360 の文字大で入らないときは、帯をお膳の下に置く形（bar-static：スクロールで全部見られる）でもよい。帯がお膳に重ならないことを見る（点検3: かえるを器に重ねないため）
+        const scrollOk = innerWidth < 390 && document.documentElement.getAttribute('data-ts') && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar');
+        if (clipOnly || scrollOk) hid.length = 0;
+        if (scrollOk && bar && bar.getBoundingClientRect().top < tr.getBoundingClientRect().bottom - .5) hid.push('bar-over-tray');
+        document.getAnimations().forEach(a => { try { a.finish(); } catch (e) {} });   // 器が下から上がる動き（rise）の途中ではなく、止まった形で見る
+        const cover = [...tr.querySelectorAll('.spot .vessel')].map(v => { const a = v.getBoundingClientRect(), area = a.width * a.height; if (!area) return null;
+          const by = [...tr.querySelectorAll('.spot .swap:not(.swap-ph), .spot .fresh-tag, .spot .wsh-tag, .spot-label .slot, .spot-label .nm, .spot-label .ex > *, .spot .vessel, .tg-mid .shuffle')].filter(e => e !== v && !v.contains(e) && !e.contains(v) && getComputedStyle(e).visibility !== 'hidden');
+          const hit = by.map(e => { const q = e.getBoundingClientRect(); return {e, s: Math.max(0, Math.min(a.right, q.right) - Math.max(a.left, q.left)) * Math.max(0, Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top))}; }).filter(x => x.s > 0);
+          const tot = hit.reduce((t, x) => t + x.s, 0); return tot > area * .1 ? 'cover:' + Math.round(tot / area * 100) + '%:' + hit.map(x => (x.e.className || '').split(' ')[0]).join('+') : null; }).filter(Boolean);   // 器の面積の10%以上を、ほかの部品（かえる・札・名前・ほかの器・真ん中の丸）が覆わない（点検3）
+        hid.push(...cover, ...cut, ...clip.map(x => 'clip ' + x), ...small.map(x => 'small ' + x));
         const rows = [...tr.querySelectorAll('.tg-row')].map(e => e.children.length), seats = rows.reduce((a, x) => a + x, 0);
-        return {seats, rows, hid, floor: Math.round(floor), top: Math.round(tr.getBoundingClientRect().top), sw: document.documentElement.scrollWidth - innerWidth, mid: !!tr.querySelector('.tg-mid .shuffle')};
+        return {scrollOk, seats, rows, hid, floor: Math.round(floor), top: Math.round(tr.getBoundingClientRect().top), sw: document.documentElement.scrollWidth - innerWidth, mid: !!tr.querySelector('.tg-mid .shuffle')};
       }, [v, vp.clipOnly]);
       n++;
       const tag = `${vp.w}x${vp.h}${vp.ts ? ' 文字' + vp.ts : ''} ${lang}${dark ? ' dark' : ''} 設定${v} 席${r.seats}`;
-      if (r.seats) seen.add(r.seats);
+      if (r.seats) seen.add(r.seats); if (r.scrollOk) scrolled.push(tag);
       const okRows = r.rows && r.rows[0] === Math.ceil(r.seats / 2) && (r.rows[1] || 0) === Math.floor(r.seats / 2);
       if (r.err || r.hid.length || r.sw > 0 || !r.mid || !okRows) { bad++; console.log('NG', tag, JSON.stringify(r)); }
     }
@@ -60,7 +70,7 @@ let bad = 0, n = 0; const seen = new Set();
   }
   // 長い料理名（点検2）: 17言語＋日本語 × 7席 × 文字「もっと大きい」 × 390・360。どの枠もその国でいちばん長い名前の料理にして、名前が帯の後ろに入らず・… で切れないことを見る
   const CC_ALL = {ja: 'JP', ar: 'EG', de: 'DE', en: 'US', es: 'ES', fil: 'PH', fr: 'FR', hi: 'IN', id: 'ID', it: 'IT', ko: 'KR', pl: 'PL', 'pt-BR': 'BR', th: 'TH', tr: 'TR', vi: 'VN', 'zh-Hans': 'CN', 'zh-Hant': 'TW'};
-  for (const [lang, cc] of Object.entries(CC_ALL)) for (const vp of [{w: 390, h: 844}, {w: 360, h: 740}]) {
+  for (const [lang, cc] of Object.entries(CC_ALL)) for (const vp of [{w: 390, h: 844}, {w: 360, h: 740}, {w: 375, h: 667}]) {
     if (process.env.LANGS && !LANGS.includes(lang)) continue;
     const ctx = await b.newContext({viewport: {width: vp.w, height: vp.h}, serviceWorkers: 'block'});
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
@@ -75,19 +85,28 @@ let bad = 0, n = 0; const seen = new Set();
       render(); await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
       const tr = document.querySelector('#view .tray'); let floor = innerHeight;
       document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < floor) floor = q.top; });
-      // 390・360 とも、帯の上に入ることを見る
-      const hid = [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > floor + .5).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 14));
+      // 390 は帯の上に入ることを見る。360・375×667 は、入らないときは帯をお膳の下に置く形（bar-static：スクロールで全部見られる）でもよい（点検3: かえるを器に重ねないため）
+      const scrollOk = innerWidth < 390 && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar.decide-bar, .actionbar');
+      if (scrollOk && bar && bar.getBoundingClientRect().top < tr.getBoundingClientRect().bottom - .5) return {bad: ['bar-over-tray']};   // 帯がお膳に重なっていない
+      const hid = scrollOk ? [] : [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > floor + .5).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 14));
       const cut = [...tr.querySelectorAll('.spot-label .nm')].filter(e => e.scrollHeight > e.clientHeight + 1).map(e => 'cut:' + e.textContent.trim().slice(0, 14));
+      document.getAnimations().forEach(a => { try { a.finish(); } catch (e) {} });   // 器が下から上がる動き（rise）の途中ではなく、止まった形で見る
+        const cover = [...tr.querySelectorAll('.spot .vessel')].map(v => { const a = v.getBoundingClientRect(), area = a.width * a.height; if (!area) return null;
+          const by = [...tr.querySelectorAll('.spot .swap:not(.swap-ph), .spot .fresh-tag, .spot .wsh-tag, .spot-label .slot, .spot-label .nm, .spot-label .ex > *, .spot .vessel, .tg-mid .shuffle')].filter(e => e !== v && !v.contains(e) && !e.contains(v) && getComputedStyle(e).visibility !== 'hidden');
+          const hit = by.map(e => { const q = e.getBoundingClientRect(); return {e, s: Math.max(0, Math.min(a.right, q.right) - Math.max(a.left, q.left)) * Math.max(0, Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top))}; }).filter(x => x.s > 0);
+          const tot = hit.reduce((t, x) => t + x.s, 0); return tot > area * .1 ? 'cover:' + Math.round(tot / area * 100) + '%:' + hit.map(x => (x.e.className || '').split(' ')[0]).join('+') : null; }).filter(Boolean);   // 器の面積の10%以上を、ほかの部品（かえる・札・名前・ほかの器・真ん中の丸）が覆わない（点検3）
       const paren = [...tr.querySelectorAll('.spot-label .nm')].filter(e => /[（(][^）)]*[）)]\s*$/.test(e.textContent.trim())).map(e => 'paren:' + e.textContent.trim().slice(0, 20));
-      return {over: Math.round(Math.max(...[...tr.querySelectorAll('.spot .nm')].map(e => e.getBoundingClientRect().bottom)) - floor), seats: [...tr.querySelectorAll('.spot')].length, names: m.items.filter(x => x.r).map(x => x.r.name.length), bad: [...hid, ...cut, ...paren]};
+      return {over: Math.round(Math.max(...[...tr.querySelectorAll('.spot .nm')].map(e => e.getBoundingClientRect().bottom)) - floor), seats: [...tr.querySelectorAll('.spot')].length, names: m.items.filter(x => x.r).map(x => x.r.name.length), bad: [...hid, ...cover, ...cut, ...paren], scrollOk, cls: document.body.className + '|' + tr.className};
     });
     n++;
+    if (r.scrollOk) scrolled.push(vp.w + 'x' + vp.h + ' ' + lang);
     if (r.bad.length || errs.length) { bad++; console.log('NG 長い名前', vp.w + 'x' + vp.h, '文字2', lang, JSON.stringify(r), errs.slice(0, 1).join('')); }
     await ctx.close();
   }
   await b.close();
   const want = [2, 3, 4, 5, 6, 7].filter(k => !seen.has(k));   // 席 8 は「あと1品」で足せるときだけ（おかず6のときは足せない）
   if (want.length) { bad++; console.log('NG 試せなかった席の数', want.join(',')); }
+  if (scrolled.length) console.log('帯をお膳の下に置いた（スクロール）:', scrolled.join(', '));
   console.log(bad ? `NG ${bad} / ${n}` : `OK ${n}（席 ${[...seen].sort((a, b) => a - b).join(',')}）`);
   process.exit(bad ? 1 : 0);
 })();
