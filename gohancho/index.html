@@ -5061,16 +5061,27 @@ function upgradeOf(r){
     return [base.tip, UPGRADES[base.id], upgradeByMethod(base.method)].filter(Boolean).find(upgradeSafe) || null;
 }
 function upgradeSafe(u){
-    const txt = String(u && u.add || ''); if (!txt) return true;
-    // 「白ごまかかつお節」「白ワイン（または酒）」のような書き方も、全体と、区切った1つずつで見る
-    const words = [txt, ...txt.split(/[・、,，／/（）()]|または|を|\s+or\s+|\s+and\s+/).map(x => x.trim()).filter(x => x.length > 1)];
-    const items = words.map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+    if (!u) return true;
+    const txt = String(u.add || '');
+    // 「白ごまかかつお節」「白ワイン（または酒）」のような書き方も、全体と、区切った1つずつで見る。「か」は、その前とうしろに分けた形も見る（「かつお節」の「か」で切れても、うしろ全体が残る。モニター第4回 S16）
+    const ka = []; if (/[぀-ヿ㐀-鿿]/.test(txt)) for (let k = txt.indexOf('か'); k > 0; k = txt.indexOf('か', k + 1)) ka.push(txt.slice(0, k), txt.slice(k + 1));
+    const words = txt ? [txt, ...txt.split(/[・、,，／/（）()]|または|を|\s+or\s+|\s+and\s+/), ...ka].map(x => x.trim()).filter(x => x.length > 1) : [];
+    const items = [...new Set(words)].map(w => /[぀-ヿ㐀-鿿]/.test(w) ? parseIng(w) : Object.assign(parseIng(w), {en: w, key: w.toLowerCase()}));
+    // コツ・説明の文（why・skill・how）も照らす（「水にだしパックを入れて」「水（または牛乳）につけて」。モニター第4回 S15）。文は1つの言葉として、分けずに見る。道具の名前（魚焼きグリル）は外す
+    const prose = [u.why, u.skill, u.how].filter(Boolean).map(x => String(x).replace(/魚焼き(?:グリル|器|網)?|\bfish (?:grill|slice|spatula)s?\b/gi, ' ')).map(x => ({key: x, en: /[a-z]/i.test(x) ? x.toLowerCase() : '', name: x, label: x}));
+    const algHit = (ids, i, may) => ids.some(id => { const k = algKind(id, i); return k && (k !== 4 || may) && (k !== 3 || algFerm()); });
     if (allergyOn()){
         const g = allergyCtx(), ids = algIdsEff();
-        if (items.some(i => itemAvoided(i, g))) return false;
-        if (items.some(i => ids.some(id => { const k = algKind(id, i); return k && (k !== 3 || algFerm()); }))) return false;   // 入っていることがある加工品（かにかまの卵など）も、足す物としてはすすめない
+        if (items.some(i => itemAvoided(i, g)) || prose.some(i => itemAvoided(i, g))) return false;
+        if (items.some(i => algHit(ids, i, true))) return false;   // 入っていることがある加工品（かにかまの卵など）も、足す物としてはすすめない
+        if (prose.some(i => algHit(ids, i, false))) return false;   // 文では「入っていることがある」（味噌など）までは見ない
     }
-    if (effAvoid().length){ const c = avoidCtx(); if (items.some(i => itemAvoided(i, c))) return false; }
+    if (effAvoid().length){
+        const c = avoidCtx(); if (items.some(i => itemAvoided(i, c)) || prose.some(i => itemAvoided(i, c))) return false;
+        // 苦手のなかま（魚・乳製品など）は、だし・かつお節・牛乳のような調味料・加工品の言葉でも見る（置き換えて作る料理のコツに、外したものを出さない）
+        const fa = [...new Set(c.fams.flatMap(f => FAM_ALG[f] || []))];
+        if (fa.length && [...items, ...prose].some(i => fa.some(id => { const k = algKind(id, i); return k === 1 || k === 2; }))) return false;
+    }
     return true;
 }
 function skillDone(r){ const base = r.isTwist ? r.base : r; return S.skills.some(s => s.id === base.id); }
@@ -5508,8 +5519,14 @@ function obFinish(){
     obReveal();
     if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
 }
+// はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
+// （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）
+function obAlgGroups(){
+    const sec = algSections(), top = sec.main.filter((g, k) => k === 0 || g[2] === 'prev'), inTop = new Set([].concat(...top.map(g => g[1])));
+    return {top, more: [...new Set([].concat(...sec.main.map(g => g[1])).concat(sec.rest))].filter(id => !inTop.has(id))};
+}
 function startOnboard(keep){
-    const algShown = ((algSections().main[0] || [])[1] || []).slice();
+    const og = obAlgGroups(), algShown = [...new Set([].concat(...og.top.map(g => g[1])).concat(og.more))];
     sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
     if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; }   // 国を選び直したときも、人数と品数はそのまま
     renderSheet();
@@ -5552,15 +5569,16 @@ function renderSheetBody(){
             ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-next">${esc(t('次へ'))}</button></div>`;
         if (st === 1){
-            const algMain = (algSections().main[0] || [])[1] || [];
+            const og = obAlgGroups(), obChip = id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`;
             body = `
             ${obProgHtml(3, true)}
             <h2>${esc(t('苦手な食材はありますか'))}</h2>
             <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
             ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
             <h3>⚠ ${esc(t('アレルギー対策'))}</h3>
-            <p class="muted small">${esc(algSections().main[0][0])}</p>
-            <div class="chips">${algMain.map(id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`).join('')}</div>
+            ${og.top.map(([title, ids]) => `<p class="muted small">${esc(title)}</p><div class="chips">${ids.map(obChip).join('')}</div>`).join('')}
+            ${og.more.length ? `<details class="avoid-more ob-alg-more" ${sheet.algMoreOpen || og.more.some(id => sheet.alg.has(id)) ? 'open' : ''}><summary>${esc(t('ほかのアレルゲン'))}</summary>
+                <div class="chips">${og.more.map(obChip).join('')}</div></details>` : ''}
             <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
             <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
             <details class="box ob-staples" ${sheet.stOpen ? 'open' : ''}><summary>${esc(t('いつも家にある食材'))}</summary><div class="inner">
@@ -6035,7 +6053,8 @@ const ALG_DEF = {
         via:/\bxo sauce\b|xo醤|xo醬|xo酱|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|terasi|belacan|belachan|\bkapi\b|saeujeot|새우젓|mắm tôm|えびだし|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b/},
     crab:{may: mayRe(MAY_KIMCHI, MAY_JAKO), re:/蟹|かにの|かに肉|かにみそ|かにかま|かに風味|かにくりーむ|かに缶|ずわい|たらば|けがに|毛がに|わたりがに|がざみ|\bcrabs?(?:meat| sticks?)?\b|cangrejo|jaiba|\bcrabe\b|krabbe|granchio|caranguejo|꽃게|게살|螃蟹|ปู\b|kepiting|yengeç|\bkrab\b|केकड़ा|alimango|\bkani\b|\bsurimi\b/, eq:['かに','かにあし','かにみそ']},
     walnut:{re:/くるみ|胡桃|核桃|\bwalnuts?\b|nueces|\bnuez\b(?! moscada)|\bnoix\b(?! de (?:coco|muscade|cajou|saint|st))|walnuss|\bnoci?\b(?! moscata)|\bnozes?\b|호두|วอลนัท|óc chó|\bceviz|orzech\w* włosk|अखरोट/},
-    peanut:{re:/ぴーなっつ|ぴーなつ|落花生|らっかせい|南京豆|なんきんまめ|\bpeanuts?\b|\bgroundnuts?\b|monkey nuts?|cacahu[eé]tes?|cacahuates?|\bman[ií]\b|arachides?|amendoins?|erdnuss|땅콩|花生|ถั่วลิสง|đậu phộng|kacang tanah|yerfıstığı|orzeszk\w* ziemn|मूंगफली/, via:/\bsatay\b|\bsaté\b|\bgado.?gado\b|\bpecel\b|kare.?kare|\bmole\b/},
+    // 沙茶醬の落花生・ごまは、銘柄によって入るので「袋の表示を確認」（外さない。安全第8回）
+    peanut:{may:/\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶/, re:/ぴーなっつ|ぴーなつ|落花生|らっかせい|南京豆|なんきんまめ|\bpeanuts?\b|\bgroundnuts?\b|monkey nuts?|cacahu[eé]tes?|cacahuates?|\bman[ií]\b|arachides?|amendoins?|erdnuss|땅콩|花生|ถั่วลิสง|đậu phộng|kacang tanah|yerfıstığı|orzeszk\w* ziemn|मूंगफली/, via:/\bsatay\b|\bsaté\b|\bgado.?gado\b|\bpecel\b|kare.?kare|\bmole\b/},
     wheat:{fam:'wheat', via:/おいすたーそーす|\boyster sauce\b|こちゅじゃん|\bgochujang\b|甜麺醤|てんめんじゃん|甜面酱|\btianmianjiang\b|\bsweet bean sauce\b/, may:/うすたー|中濃|ちゅうのう|とんかつそーす|おこのみ(?:焼き)?そーす|お好み(?:焼き)?そーす|ういんなー|そーせーじ|\bsausages?\b|\bwieners?\b|\bfrankfurters?\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bsurimi\b|어묵|\bworcestershire\b|\bbrown sauce\b|こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\bconsomm[eé]\b|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー|だしの素|だしのもと|ほんだし|顆粒だし|豆板醤|とうばんじゃん|\bdoubanjiang\b|豆瓣酱/, re:/小麦|こむぎ|\bwheat\b|薄力粉|強力粉|中力粉|はくりきこ|きょうりきこ|ぱんこ|食ぱん|うどん|そうめん|ひやむぎ|すぱげってぃ|まかろに|ぱすた|らーめん|中華めん|ちゅうかめん|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|ほっとけーき|やきそば|焼きそば|\bseitan\b|\b(?:bread|noodles?|pasta|flour|couscous|semolina|bulgur|freekeh|farro)\b/, no:/\b(?:rice|corn|cassava|gram|chickpea|potato|tapioca|coconut|almond|buckwheat|glass|mung bean|sweet potato|besan)\s+(?:flour|noodles?)\b|\brice noodles?\b|\bglass noodles?\b|\bcornbread\b|\bgluten.?free\b/,
         ferm:/納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|塩昆布|しおこんぶ|\bshio ?kombu\b|焼肉のたれ|やきにくのたれ|\byakiniku sauce\b|しょうゆ|醤油|soy sauce|shoyu|めんつゆ|ぽんず|ぽん酢|てりやき|teriyaki|酱油|간장|ganjang|kecap|hoisin/},
     buckwheat:{re:/そば粉|そばこ|蕎麦|荞麦|\bsoba\b|\bbuckwheat\b|sarrasin|buchweizen|grano saraceno|trigo.?sarraceno|trigo mouro|메밀|karabuğday|\bgryka\b|कुट्टू|bakwit|บัควีท|ざるそば|かけそば|ざるそば|そばの実|そばがき|そば茶/, eq:['そば','おそば','とうじそば','にしんそば','とろろそば'], no:/やきそば|焼きそば|焼そば|中華そば|ちゅうかそば|沖縄そば|そばめし|yakisoba|chow ?mein/},
@@ -6047,7 +6066,7 @@ const ALG_DEF = {
         no:/coconut (?:milk|cream)|cream of coconut|(?:soy|almond|oat|rice|cashew|nut|hemp|pea) milk|peanut butter|butter ?beans?|cocoa butter|shea butter|butternut|cream of tartar|lait de coco|leche de (?:coco|soja|almendra)|santan|豆乳|ここなっつ|ぴーなっつばたー|ぴーなつばたー|あーもんどばたー|ごまばたー|ここあばたー|まっしゅるーむばたー|almond butter|nut butter|apple butter|sunflower butter|butter ?lettuce|mantequilla de (?:cacahuete|man)|\btahini\b|ミルクティ|milkfish|\bbangus\b|kokosmilch/,
         vno:/coconut (?:milk|cream)|cream of coconut|(?:soy|almond|oat|rice|cashew|nut|hemp|pea) milk|peanut butter|butter ?beans?|cocoa butter|shea butter|butternut|cream of tartar|lait de coco|leche de (?:coco|soja|almendra)|santan|豆乳|ここなっつ|ぴーなっつばたー|ぴーなつばたー|あーもんどばたー|ごまばたー|ここあばたー|まっしゅるーむばたー|almond butter|nut butter|apple butter|sunflower butter|butter ?lettuce|mantequilla de (?:cacahuete|man)|\btahini\b|ミルクティ|milkfish|\bbangus\b|kokosmilch/,
         via:/(?:しちゅー|かれー|はやし)(?:る[うー]|ルウ|ルー)|でみぐら|ほわいとそーす|brioche|croissant|custard|粉ちーず|スキムミルク|ばたーすかっち/},
-    sesame:{may:/\bchil[il]i oil\b|\bchile oil\b|\bchili crisp\b|焼肉のたれ|やきにくのたれ|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー/, re:/(?<![えぷ])ごま(?![たを])|胡麻|芝麻|\bsesame\b|tahini|tahina|gomashio|s[eé]samo|s[eé]same|\bsesam\b|gergelim|참깨|참기름|깨소금|통깨|\bwijen\b|\bsusam\b|\bsezam\b|तिल/, no:/ごまかし|ごまめ/, via:/らー油|らーゆ|辣油|辣椒油|hummus|houmous|hommos|za.?atar|dukkah|furikake|ふりかけ(?!る)|halva|halwa|helva|baba ?ganou?sh|麻醤|麻酱/},
+    sesame:{may:/\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|\bchil[il]i oil\b|\bchile oil\b|\bchili crisp\b|焼肉のたれ|やきにくのたれ|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー/, re:/(?<![えぷ])ごま(?![たを])|胡麻|芝麻|\bsesame\b|tahini|tahina|gomashio|s[eé]samo|s[eé]same|\bsesam\b|gergelim|참깨|참기름|깨소금|통깨|\bwijen\b|\bsusam\b|\bsezam\b|तिल/, no:/ごまかし|ごまめ/, via:/らー油|らーゆ|辣油|辣椒油|hummus|houmous|hommos|za.?atar|dukkah|furikake|ふりかけ(?!る)|halva|halwa|helva|baba ?ganou?sh|麻醤|麻酱/},
     soy:{may:/うすたー|中濃|ちゅうのう|とんかつそーす|おこのみ(?:焼き)?そーす|お好み(?:焼き)?そーす|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b|(?<![ぁ-ん])はむ(?![ぁ-ん])|べーこん|ういんなー|そーせーじ|\bham\b|\bbacon\b|\bsausages?\b|\bwieners?\b|\bfrankfurters?\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bsurimi\b|어묵|\bworcestershire\b|\bbrown sauce\b|こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\bconsomm[eé]\b|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー|だしの素|だしのもと|ほんだし|顆粒だし|とうばんじゃん|豆板醤|(?:かれー|しちゅー|はやし)(?:るう|るー)|でみぐら/, re:/大豆|だいず|豆腐|とうふ|油揚げ|あぶらあげ|厚揚げ|あつあげ|がんもどき|おから|きなこ|豆乳|納豆|なっとう|えだまめ|枝豆|湯葉|高野豆腐|こうやどうふ|\btofu\b|bean curd|\bsoy ?(?:bean|beans|milk|flour|protein|lecithin)\b|\bsoy\b(?= ?(?:milk|beans?))|\bsoya\b|\bsoja\b|sojabohn|edamame|tempeh|\btempe\b|\bnatto\b|\btahu\b|두부|콩나물|豆浆|腐竹|เต้าหู้|đậu nành|đậu phụ|\btvp\b|textured vegetable protein|\byuba\b|\btokwa\b|\btaho\b/, eq:['ゆば'],
         ferm:/塩昆布|しおこんぶ|\bshio ?kombu\b|こちゅじゃん|おいすたーそーす|\boyster sauce\b|焼肉のたれ|やきにくのたれ|\byakiniku sauce\b|甜麺醤|てんめんじゃん|甜面酱|しょうゆ|醤油|(?<![びに])みそ(?!ーす)|味噌|\bmiso\b|soy sauce|shoyu|\btamari\b|ketjap|kecap|doenjang|ganjang|gochujang|된장|간장|고추장|酱油|豆瓣酱|豆豉|doubanjiang|めんつゆ|ぽんず|ぽん酢|てりやき|teriyaki|\bhoisin\b/},
     abalone:{re:/あわび|鮑|\babalone\b|鲍鱼|전복|bào ngư|\babul[oó]n\b|九孔/, no:/杏鮑菇|杏鲍菇|\bking oyster\b|\babalone mushrooms?\b/},   // 杏鮑菇（エリンギ）は、きのこ（安全第7回）
@@ -6078,21 +6097,22 @@ const ALG_DEF = {
     // 魷魚（いか）・章魚（たこ）・墨魚・鮑魚（あわび）・甲魚（すっぽん）の「魚」は、魚ではない。沙茶醬は干した魚（扁魚）・干しえびが入ることが多い調味料（安全第7回）
     fish:{fam:'fish', may:/(?<![びに])みそ(?!ーす)|味噌|\bmiso\b|ぽんず|ぽん酢|\bponzu\b|納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|きむち|\bkimchi\b|김치|とむやむぺーすと|とむやむくんぺーすと|\btom ?yum paste\b/, re:/(?<![魷章墨鱆鮑甲])魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|鱧|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|(?<!こま)つな|\bfish(?!er|erman)\b|\bfishes\b|anchov|\btuna\b|salmon|mackerel|herring|pollack|pollock|hairtail|\bcod\b|haddock|sea ?bream|whitebait|croaker|sardines?|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|\bsea ?bass\b|\bhalibut\b|swordfish|\bplaice\b|\bsole\b|\bmullet\b|\bcarp\b|\beel\b|\bperch\b|\bpike\b|\bturbot\b|\bmonkfish\b|\bgrouper\b|\bsturgeon\b|\bcaviar\b|\bkippers?\b|\bsprats?\b|\bpilchards?\b|\bbarramundi\b|\bpangasius\b|\bbasa\b|\bdorado\b|\bmahi.?mahi\b|\bmarlin\b|\bkingfish\b|\bpescado\b|\bbacalao\b|\bat[uú]n\b|\bsalm[oó]n\b|\bsardinas?\b|\bpoisson\b|\bthon\b|\bsaumon\b|\bmorue\b|\bfisch\b|\blachs\b|\bthunfisch\b|\bpesce\b|\btonno\b|\bsalmone\b|\bmerluzzo\b|\bpeixe\b|\batum\b|\bbacalhau\b|\bsalm[aã]o\b|생선|어묵|멸치|참치|연어|고등어|(?<![鱿章墨鲍甲])鱼|鳕|ปลา|\bcá\b|\bikan\b|\bbalık\b|\bryba\b|\brybn|मछली|\bisda\b|\bbagoong\b|\bdaing\b|\btinapa\b/,
         no:/fish.?free|\bselfish\b|jellyfish|crayfish|cuttlefish|starfish|shellfish|\bcrawfish\b|さかなクン|\bfishcake rice\b|魚介(?:類)?なし/, eq:['さけ','たい','たら','ぶり','あじ','さば','ふぐ','はも','きす','ほっけ','あゆ','こい','ます','あご'],
-        via:/(?:^|[|)])だし(?:じる|汁)?(?=$|\|)|めんつゆ|\bmentsuyu\b|かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしの素|和風だし|あごだし|だし入り(?:味噌|みそ)|だしいりみそ|白だし|しろだし|だし(?:醤油|しょうゆ|じょうゆ)|焼きあご|やきあご|(?<!kombu |konbu |kelp |vegetable |shiitake |mushroom )\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
+        via:/(?:^|[|)])だし(?:じる|汁)?(?=$|\|)|めんつゆ|\bmentsuyu\b|かつおだし|かつお節|かつおぶし|削り節|ほんだし|顆粒だし|だしパック|\bdashi packs?\b|だしの素|和風だし|あごだし|だし入り(?:味噌|みそ)|だしいりみそ|白だし|しろだし|だし(?:醤油|しょうゆ|じょうゆ)|焼きあご|やきあご|(?<!kombu |konbu |kelp |vegetable |shiitake |mushroom )\bdashi\b|bonito flakes|worcestershire|caesar|うすたー|魚醤|fish sauce|nam ?pla|nuoc ?mam|nước mắm|patis|なんぷらー|あんちょび|しーざー|bagna cauda|garum|colatura|salsa de pescado|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶|น้ำปลา|\bsurimi\b|かにかま|かまぼこ|なると|\bnarutomaki\b|ふりかけ(?!る)|\bfurikake\b|\bpissaladi/},
     treenut:{parts:['walnut','cashew','pistachio','macadamia','almond','pinenut'], re:/ナッツ|なっつ|へーぜる|ぴすたちお|ぴーかん|ぺかん|ぶらじるなっつ|松の実|まつのみ|ぎんなん|銀杏|\bnuts?\b|hazelnuts?|filberts?|pecans?|pistachios?|brazil nuts?|pine ?nuts?|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|\bnougat\b|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech\w* laskow|पिस्ता|\bpili nuts?\b|candlenut|\bkemiri\b|\bkola nuts?\b|\bhickory\b|\bginkgo\b/,
         no:/nutmeg|nut ?meg|ナツメグ|なつめぐ|\bpeanuts?\b|ぴーなっつ|ピーナッツ|doughnuts?|donuts?|nutrient|nutritional|nutrition|\bcoconut\b|butternut|\bnutty\b|\bnut.?free\b|water chestnuts?|くわい|nuez moscada|noix de muscade|chestnut|栗|ぐりーん/, via:/\bmole\b|\bsatay\b|\bgado.?gado\b|\bpecel\b|ぬがー|ぷらりね|ぬてら|\bfrangipane\b|\bbaklava\b|\bkunafa\b|\bmaamoul\b|\bromesco\b/},
     celery:{re:/せろり|\bcelery\b|\bceleriac\b|\bcéleri\b|\bapio\b|\bsellerie\b|\bsedano\b|\baipo\b|\bselleri\b|\bseler\b|\bkereviz\b|\bselderij\b|\bkintsay\b|芹菜|西芹|셀러리|เซเลอรี่|\bcần tây\b|\bseledri\b|セロリアック/, via:/\bmirepoix\b/},
     mustard:{re:/からし|(?<!唐)辛子|芥子|ますたーど|\bmustard\b|\bmoutarde\b|\bsenf\b|\bsenape\b|\bmostarda\b|\bmostaza\b|\bmusztard|\bhardal\b|겨자|芥末|มัสตาร์ด|mù tạt|\bmustar\b|सरसों|\bsarson\b|\bdijon\b|\bkasundi\b/, no:/mustard (?:greens?|leaf|leaves|spinach|cabbage)|からし菜|からしな|高菜|たかな|\bsawi\b|sarson ka saag|saag|mizuna|みずな|水菜|からしれんこん/, via:/\bpiccalilli\b/},
     sulphite:{re:/\bsulphites?\b|\bsulfites?\b|\bsulphur dioxide\b|\bsulfur dioxide\b|亜硫酸|亞硫酸|亚硫酸|아황산|ซัลไฟต์|\bsulfitos?\b|\bsolfiti\b|\bschwefeldioxid\b|\bsiarczyn\w*|\bsülfit\w*|\banhydride sulfureux\b|\bsulfit\b/, vno:/rice wine|mijiu|shaoxing|紹興|日本酒|みりん|料理酒/, via:/\bwine\b|わいん|\bsherry\b|しぇりー|\bvermouth\b|\bmarsala\b|\bmadeira\b|\bport wine\b|ぽーとわいん|\bwine vinegar\b|\bcooking wine\b|\bdried apricots?\b|\braisins?\b|\bsultanas?\b|\bdried fruits?\b|\bdried figs?\b|どらいふるーつ|ほしぶどう|干しぶどう|れーずん|\bvin\b|\bvino\b|\bvinho\b|\bwein\b|\bvinaigre de vin\b|\bvinagre de vino\b|\bbalsamic\b|ばるさみこ|\bcider\b|\bgrape juice\b|\bsauerkraut\b|\bshaoxing\b|紹興酒|\bpickled (?:onions?|cucumbers?|gherkins?)\b/},
     lupin:{re:/るぴなす|\blupin(?:e|s)?\b|\blupini\b|\blupino\b|\btremoço\b|\btarwi\b|\bchocho\b|\btermos\b|\blupinen\b|羽扇豆/},
-    mollusc:{parts:['abalone','squid'], re:/蛸|あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\boctopus\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\bpulpo\b|\bpoulpe\b|\bkrake\b|\bpolpo\b|\bpolvo\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|낙지|문어|주꾸미|홍합|바지락|가리비|꼬막|재첩|골뱅이|동죽|굴(?:젓|전|국|밥|무침|튀김|찜)|(?<![가-힣])소라(?![가-힣])|蛤蜊|牡蛎|蚝|蚵|蠔(?!油)|扇贝|干貝|干贝|瑤柱|瑶柱|贻贝|貽貝|淡菜|螺肉|蜆|海瓜子|章鱼|章魚|鱆魚|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsea urchin\b|\bsaeng.?gul\b/, eq:['たこ','かき','あさり','はまぐり','いか'], no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bmussel shells?\b(?=x)|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b|\bking oyster\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤|xo醬|xo酱|蠔油/},
+    mollusc:{parts:['abalone','squid'], re:/蛸|あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\boctopus\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\bpulpo\b|\bpoulpe\b|\bkrake\b|\bpolpo\b|\bpolvo\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|낙지|문어|주꾸미|홍합|바지락|가리비|꼬막|재첩|골뱅이|동죽|백합(?=\s*(?:조개|살|탕|국|구이|찜|칼국수|죽|젓|미역국|된장국|술찜))|(?:해감(?:한|된)?|생|손질한)\s*백합(?!\s*(?:꽃|뿌리|근|구근))|굴(?:젓|전|국|밥|무침|튀김|찜)|(?<![가-힣])소라(?![가-힣])|蛤蜊|牡蛎|蚝|蚵|蠔(?!油)|扇贝|干貝|干贝|瑤柱|瑶柱|贻贝|貽貝|淡菜|螺肉|蜆|海瓜子|章鱼|章魚|鱆魚|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsea urchin\b|\bsaeng.?gul\b/, eq:['たこ','かき','あさり','はまぐり','いか'], no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bmussel shells?\b(?=x)|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b|\bking oyster\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤|xo醬|xo酱|蠔油/},
     // 韓国・台湾の区分で使う品目（韓国 토마토・잣・조개류、台湾 芒果・種子類）
     tomato:{may: mayRe(MAY_SAUCE_FRUIT, '\\bharissa\\b|\\bchil[ie] sauce\\b|ちりそーす'), re:/とまと|蕃茄|番茄|西红柿|西紅柿|\btomato(?:es)?\b|\btomates?\b|\btomaten?\b|\bpomodor[oi]\b|\bpelati\b|\bjitomates?\b|\bpomidor\w*|\bdomates\w*|토마토|มะเขือเทศ|cà chua|\btomat\b|\bkamatis\b|टमाटर|طماطم|بندورة/, no:/tomatillo|tamarillo|tree tomato/,
         via:/けちゃっぷ|\bketchup\b|\bcatsup\b|\bmarinara\b|\bpassata\b|\bsugo\b|\bpizza sauce\b|\bpico de gallo\b|\bsalsa (?:roja|ranchera|mexicana|de tomate|criolla)\b|\bshakshuka\b|\bgazpacho\b|\bmenemen\b|\btomatillos?\b|\btamarillos?\b|\btree tomato(?:es)?\b/},
     mango:{re:/まんごー|\bmangos?\b|\bmangoes\b|\bmangues?\b|\bmangas?\b|芒果|망고|มะม่วง|\bxoài\b|\bmangga\b|\bmanggang\b|\bmanggahan\b|(?<![ऀ-ॿ])आम(?![ऀ-ॿ])|मैंगो|مانجو|مانجا|منجا|\bmangowy\b/, no:/มะม่วงหิมพานต์|mangold|mangosteen|\bmangas? de (?:confeitar|pastelero)\b/,
         via:/\bamchu?r\b|\bamchoor\b|आमचूर|\bmango chutney\b|\bmango powder\b|\baam ?panna\b/},
     pinenut:{re:/松の実|まつのみ|\bpine ?nuts?\b|\bpine kernels?\b|\bpinoli\b|\bpignoli\b|\bpi[ñn]ones?\b|\bpignons?\b|\bpinienkerne?n?\b|\bpinh[ãa]o\b|\bpinh[õo]es\b|çam fıstı|orzeszk\w* piniow|잣|松子|松仁|hạt thông|\bchilgoza\b|चिलगोज़ा/, via:/\bpesto\b|ぺすと|じぇのべーぜ|青醬|青酱|페스토/},
-    shellfish:{parts:['abalone'], re:/あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|굴(?:젓|전|국|밥|무침|튀김|찜)|홍합|바지락|가리비|꼬막|재첩|골뱅이|동죽|(?<![가-힣])소라(?![가-힣])|蛤蜊|牡蛎|牡蠣|蚵|蚝|扇贝|干貝|干贝|瑤柱|瑶柱|贻贝|貽貝|淡菜|螺肉|蜆|海瓜子|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsaeng.?gul\b/, eq:['かき','あさり','はまぐり'],
+    // 백합は、ハマグリとも百合とも読む。前後の言葉（백합탕・백합조개・해감한 백합など）で貝と読めるときだけ貝類に。백합꽃・백합 뿌리・백합근は当てない（安全第8回）
+    shellfish:{parts:['abalone'], re:/あさり|しじみ|はまぐり|蛤|ほたて|帆立|牡蠣|つぶ貝|さざえ|ばい貝|あかがい|赤貝|とりがい|ほっき|貝|\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops?\b|\bcockles?\b|\bwhelks?\b|\bsnails?\b|\bescargots?\b|\bperiwinkles?\b|\blimpets?\b|\bconch\b|\bgeoduck\b|\balmejas?\b|\bmejillones?\b|\bostras?\b|\bvieiras?\b|\bberberechos?\b|\bchirlas?\b|\bpalourdes?\b|\bmoules?\b|\bhuîtres?\b|\bcoquilles?\b|\bvongole\b|\bcozze\b|\bostriche\b|\bmuscheln?\b|\bausternn?\b|\bmidye\b|\bistiridye\b|\bkerang\b|\btiram\b|\bremis\b|조개|(?<![가-힣])굴(?![가-힣])|굴소스|생굴|굴(?:젓|전|국|밥|무침|튀김|찜)|홍합|바지락|가리비|꼬막|재첩|골뱅이|동죽|백합(?=\s*(?:조개|살|탕|국|구이|찜|칼국수|죽|젓|미역국|된장국|술찜))|(?:해감(?:한|된)?|생|손질한)\s*백합(?!\s*(?:꽃|뿌리|근|구근))|(?<![가-힣])소라(?![가-힣])|蛤蜊|牡蛎|牡蠣|蚵|蚝|扇贝|干貝|干贝|瑤柱|瑶柱|贻贝|貽貝|淡菜|螺肉|蜆|海瓜子|หอย|\bnghêu\b|\bsò\b|\bhàu\b|\btahong\b|\btalaba\b|\bsaeng.?gul\b/, eq:['かき','あさり','はまぐり'],
         no:/貝割れ|かいわれ|貝印|ホタテ味|\bscallions?\b|\bscalloped\b|scalloped potatoes|\boyster mushrooms?\b|\bcoquille?s? pasta\b|\bpasta shells?\b|snail pasta|oyster mushroom|oyster crackers|おいすたーまっしゅるーむ|ひらたけ|\boyster sauce\b|\bking oyster\b/, via:/\boyster sauce\b|おいすたーそーす|\bxo sauce\b|xo醤|xo醬|xo酱|蚝油|蠔油|굴소스/},
     seeds:{parts:['pinenut'], re:/ひまわりの種|かぼちゃの種|\bsunflower seeds?\b|\bpumpkin seeds?\b|\bpepitas?\b|\bmelon seeds?\b|\bwatermelon seeds?\b|\begusi\b|葵花籽|葵花子|葵瓜子|瓜子|瓜籽|南瓜子|西瓜子|해바라기씨|호박씨|เมล็ดทานตะวัน|เมล็ดฟักทอง|hạt hướng dương|hạt bí|\bkuaci\b|biji bunga matahari|biji labu|\bsemillas de (?:girasol|calabaza)\b|\bgraines de (?:tournesol|courge)\b|sonnenblumenkerne|kürbiskerne|\bsemi di (?:girasole|zucca)\b|\bsementes de (?:girassol|ab[óo]bora)\b|ay çekirdeği|kabak çekirdeği|pestki dyni|słonecznik(?! ?oil)/, no:/海瓜子/}   // 海瓜子は小さな貝（安全第7回）
 };
@@ -6247,7 +6267,7 @@ function algSections(){
         const have = new Set([].concat(...main.map(m => m[1])));
         // 確かめられなかった分: 前に出していた並びの残り（グルテンを含む穀物を出していれば、小麦はその中に入るので重ねない）
         const prev = R.prev ? ALG_G[R.prev].filter(id => !have.has(id) && !(id === 'wheat' && have.has('gluten'))) : [];
-        if (prev.length) main.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), prev]);
+        if (prev.length) main.push([t('主なアレルゲン（各国の表示制度の品目とは限りません）'), prev, 'prev']);   // 3つ目の 'prev': 確かめきれていない分（はじめての設定でも必ず出す）
     }
     const shown = new Set([].concat(...main.map(m => m[1])));
     return {main, rest: ALG_ALL.filter(id => !shown.has(id))};
@@ -12073,7 +12093,8 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
     if (e.target.matches('details.set-sec')) { if (!session.setOpen) session.setOpen = {}; session.setOpen[e.target.dataset.sk] = e.target.open; }   // 設定のまとまりの開き閉じ（描き直しても同じ）
-    if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
+    if (e.target.matches('details.ob-alg-more')){ if (sheet) sheet.algMoreOpen = e.target.open; }   // はじめての設定の「ほかのアレルゲン」（描き直しても開いたまま）
+    else if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
     else if (e.target.matches('details.alg-more')) session.algMore = e.target.open;
     else if (e.target.matches('details.avoid-more')) session.avoidMore = e.target.open;
 }, true);
