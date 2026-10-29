@@ -1598,4 +1598,10 @@ GOHAN_I18N('tr', {
     "ときどき底から混ぜる": "Ara sıra dipten karıştırın",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Dibine tutmaması için ara sıra dipten nazikçe karıştırın; fazla karıştırmak yapışkan yapar",
     "新": "Yeni",
+    "この献立に決定": "Bunu yapalım!",
+    "作り方へ進みます": "Sonra tariflere geçilir",
+    "決めました": "Karar verildi",
+    "tab|作り方": "Pişir",
+    "tab|材料から": "Dolap",
+    "tab|記録": "Kayıt"
 });

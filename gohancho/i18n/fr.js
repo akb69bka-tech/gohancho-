@@ -1598,4 +1598,10 @@ GOHAN_I18N('fr', {
     "ときどき底から混ぜる": "Remuer de temps en temps depuis le fond",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Remuez doucement depuis le fond de temps en temps pour que ça n'attache pas ; trop remuer rend le tout collant",
     "新": "Nouveau",
+    "この献立に決定": "On le fait !",
+    "作り方へ進みます": "Puis place aux recettes",
+    "決めました": "C'est décidé",
+    "tab|作り方": "Cuisiner",
+    "tab|材料から": "Frigo",
+    "tab|記録": "Journal"
 });

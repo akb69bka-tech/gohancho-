@@ -63,7 +63,7 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
     for (const cc of Object.keys(CUR)){
         const p = await open(cc);
         const o = await p.evaluate(() => {
-            setTab('today'); ensureMenu(); render();
+            setTab('log'); ensureMenu(); render();   // 食費メモは記録のタブ（最初の版の場所）
             const inp = () => document.querySelector('#spend-a'), go = v => { document.querySelector('details.spend-card').open = true; inp().value = v; document.querySelector('form[data-form="spend"]').dispatchEvent(new Event('submit', {cancelable:true, bubbles:true})); };
             go('abc'); const bad1 = S.spend.length, errShown = !!document.querySelector('[role=alert]');
             go('-5'); go('0'); go('1e3'); const bad2 = S.spend.length;
@@ -86,7 +86,7 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
     }
     // 合計の値（JP: 1200+350.5+900+10 = 2460.5）
     const p = await open('JP', {spend:[{id:'a', d:new Date().toISOString().slice(0,10), a:1200}, {id:'b', d:new Date().toISOString().slice(0,10), a:350.5}, {id:'c', d:'2000-01-01', a:5}]});
-    const s = await p.evaluate(() => { setTab('today'); ensureMenu(); render(); return document.querySelector('.spend-sum').textContent; });
+    const s = await p.evaluate(() => { setTab('log'); ensureMenu(); render(); return document.querySelector('.spend-sum').textContent; });
     ok(/1,550\.5|1,551|1550/.test(s), '合計 ' + s);
     await p.ctx.close();
 }

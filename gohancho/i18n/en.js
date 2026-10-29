@@ -1599,4 +1599,10 @@ GOHAN_I18N('en', {
     "ときどき底から混ぜる": "Stir from the bottom now and then",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Gently stir from the bottom now and then so it doesn't stick; stirring too much makes it gluey",
     "新": "New",
+    "この献立に決定": "Let's make this!",
+    "作り方へ進みます": "Then on to the recipes",
+    "決めました": "Decided",
+    "tab|作り方": "Cook",
+    "tab|材料から": "Fridge",
+    "tab|記録": "Log"
 });

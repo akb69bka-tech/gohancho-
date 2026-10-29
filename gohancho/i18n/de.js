@@ -17,7 +17,7 @@ GOHAN_I18N('de', {
     "ごはん": "Reisgericht",
     "ごはんもの": "Reisgerichte",
     "麺": "Nudeln",
-    "主食": "Sättigungsbeilage",
+    "主食": "Beilage",
     "ご飯": "Reis",
     "白ご飯": "Gekochter Reis",
     "香の物": "Eingelegtes",
@@ -1598,4 +1598,10 @@ GOHAN_I18N('de', {
     "ときどき底から混ぜる": "Ab und zu vom Boden her umrühren",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Ab und zu vorsichtig vom Boden her umrühren, damit nichts ansetzt; zu viel Rühren macht es klebrig",
     "新": "Neu",
+    "この献立に決定": "Das koche ich!",
+    "作り方へ進みます": "Dann geht's zu den Rezepten",
+    "決めました": "Entschieden",
+    "tab|作り方": "Kochen",
+    "tab|材料から": "Zutaten",
+    "tab|記録": "Tagebuch"
 });

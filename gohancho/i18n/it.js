@@ -1598,4 +1598,10 @@ GOHAN_I18N('it', {
     "ときどき底から混ぜる": "Mescola ogni tanto dal fondo",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Mescola delicatamente dal fondo ogni tanto perché non si attacchi; mescolare troppo la rende collosa",
     "新": "Nuovo",
+    "この献立に決定": "Facciamo questo!",
+    "作り方へ進みます": "Poi si passa alle ricette",
+    "決めました": "Deciso",
+    "tab|作り方": "Cucina",
+    "tab|材料から": "Frigo",
+    "tab|記録": "Diario"
 });

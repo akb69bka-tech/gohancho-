@@ -1598,4 +1598,10 @@ GOHAN_I18N('id', {
     "ときどき底から混ぜる": "Sesekali aduk dari dasar",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Sesekali aduk perlahan dari dasar panci agar tidak lengket; terlalu sering diaduk membuatnya lengket",
     "新": "Baru",
+    "この献立に決定": "Masak ini!",
+    "作り方へ進みます": "Lalu lanjut ke cara masak",
+    "決めました": "Sudah diputuskan",
+    "tab|作り方": "Masak",
+    "tab|材料から": "Kulkas",
+    "tab|記録": "Catatan"
 });

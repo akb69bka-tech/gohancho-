@@ -1598,4 +1598,10 @@ GOHAN_I18N('fil', {
     "ときどき底から混ぜる": "Haluin paminsan-minsan mula sa ilalim",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Haluin nang marahan mula sa ilalim paminsan-minsan para hindi dumikit; kapag sobrang hinalo, lalagkit",
     "新": "Bago",
+    "この献立に決定": "Ito na ang lulutuin!",
+    "作り方へ進みます": "Tapos, sa paraan ng pagluto",
+    "決めました": "Napagpasyahan na",
+    "tab|作り方": "Magluto",
+    "tab|材料から": "Sa ref",
+    "tab|記録": "Talaan"
 });

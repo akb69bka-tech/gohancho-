@@ -407,8 +407,13 @@ for (const [name, store, blocked] of [
     });
     if (blocked){
         ok(!r.st && !/トースト/.test(r.spot) && r.note, '主食 ' + name + ': トーストを出さず、理由を出す ' + JSON.stringify(r));
-        const nx = await p.evaluate(() => { const before = currentStapleOpt().k; document.querySelector('[data-act="staple-next"]').click(); return { before, after: currentStapleOpt().k, blocked: stapleBlocked(currentStapleOpt()) }; });
-        ok(!nx.blocked, '主食 ' + name + ': 「かえる」で、当たる主食は飛ばす ' + JSON.stringify(nx));
+        // 主食を選ぶのは「条件を変える」の中（空の主食の席はお膳に出さない。基準書 7章 5A）。当たる主食は選べない（押せない）。選べる主食を押すと、その主食になる
+        const nx = await p.evaluate(() => { const before = currentStapleOpt().k; openCondSheet();
+            const chips = [...document.querySelectorAll('#sheet-root [data-act="staple-set"]')], optOf = c => stapleOptions().find(o => o.k === c.dataset.v);
+            const disOk = chips.length > 1 && chips.filter(c => c.dataset.v !== 'none' && stapleBlocked(optOf(c))).every(c => c.disabled);
+            const pick = chips.find(c => !c.disabled && c.dataset.v !== 'none' && c.dataset.v !== before); if (pick) pick.click();
+            const o = { before, after: currentStapleOpt().k, blocked: stapleBlocked(currentStapleOpt()), disOk, picked: !!pick }; closeSheet(); return o; });
+        ok(!nx.blocked && nx.disOk && nx.picked, '主食 ' + name + ': 当たる主食は選べず、選べる主食にかえられる ' + JSON.stringify(nx));
     } else ok(!!r.st && !r.note, '主食 ' + name + ': 出す ' + JSON.stringify(r));
     await ctx.close();
 }

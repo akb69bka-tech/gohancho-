@@ -1598,4 +1598,10 @@ GOHAN_I18N('es', {
     "ときどき底から混ぜる": "Remueve de vez en cuando desde el fondo",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Remueve con suavidad desde el fondo de vez en cuando para que no se pegue; si remueves demasiado, queda pegajoso",
     "新": "Nuevo",
+    "この献立に決定": "¡Vamos a cocinar esto!",
+    "作り方へ進みます": "Y pasamos a las recetas",
+    "決めました": "Decidido",
+    "tab|作り方": "Cocinar",
+    "tab|材料から": "Nevera",
+    "tab|記録": "Diario"
 });

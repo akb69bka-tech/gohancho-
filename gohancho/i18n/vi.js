@@ -1598,4 +1598,10 @@ GOHAN_I18N('vi', {
     "ときどき底から混ぜる": "Thỉnh thoảng khuấy từ đáy nồi",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Thỉnh thoảng khuấy nhẹ từ đáy nồi để không bị dính; khuấy quá nhiều sẽ bị sệt dính",
     "新": "Mới",
+    "この献立に決定": "Chốt món này!",
+    "作り方へ進みます": "Rồi chuyển sang cách nấu",
+    "決めました": "Đã chọn",
+    "tab|作り方": "Nấu",
+    "tab|材料から": "Tủ lạnh",
+    "tab|記録": "Nhật ký"
 });

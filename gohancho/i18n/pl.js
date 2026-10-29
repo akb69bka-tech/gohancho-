@@ -1598,4 +1598,10 @@ GOHAN_I18N('pl', {
     "ときどき底から混ぜる": "Od czasu do czasu mieszaj od dna",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Od czasu do czasu delikatnie mieszaj od dna, żeby nie przywarło; zbyt częste mieszanie robi z tego kleistą masę",
     "新": "Nowe",
+    "この献立に決定": "Gotujemy to!",
+    "作り方へ進みます": "Potem przejdziesz do przepisów",
+    "決めました": "Wybrane",
+    "tab|作り方": "Gotuj",
+    "tab|材料から": "Lodówka",
+    "tab|記録": "Dziennik"
 });
