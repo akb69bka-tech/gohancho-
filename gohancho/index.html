@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v49';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v49';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -3530,15 +3530,20 @@ function newMenu(){
 }
 // 起動して最初の献立だけ、ひとひねり案（重い）を最初の表示のあとに作る。それ以降は今までどおりその場で作る
 let twistFirst = true;
+let genSettle = null;
+const genSettled = new Promise(r => { genSettle = r; });   // 起動のときの絵の一覧の読みこみが終わった（または失敗した）。最初のひとひねり案はこのあとに作る
 function lazyTwist(){
     if (!twistFirst) return suggestTwist();
     twistFirst = false;
     const m = session.menu;
-    requestAnimationFrame(() => setTimeout(() => {
+    // 起動直後の重い計算で、料理の絵の一覧の受け取り・描き直し・絵の読みこみを待たせない（献立の絵が届いてから作る。1.5秒たてば待たずに作る）
+    const cap = new Promise(r => setTimeout(r, 1500));
+    const pics = () => new Promise(r => setTimeout(r, 0)).then(() => Promise.all([...IMG_PROBED].map(src => new Promise(ok => { const im = new Image(); im.onload = im.onerror = ok; im.src = src; }))));   // 一覧が届いたあとの描き直し（すぐ）で頼んだ絵
+    Promise.race([genSettled.then(pics), cap]).then(() => requestAnimationFrame(() => setTimeout(() => {
         if (session.menu !== m || session.twist || !twistAvailable()) return;
         session.twist = suggestTwist();
         if (tab === 'today') scheduleRender();
-    }, 30));
+    }, 30)));
     return null;
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
@@ -4582,16 +4587,20 @@ function addGenerated(items){
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
     });
 }
+// 起動のときは、ページの先頭で取りはじめた一覧（window.__genP）を使う。届いたらすぐ描き直す（ほかの読みこみとまとめる 250ms を待たない）
 async function loadGenerated(){
     try{
-        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION + '.' + (window.ASSET_V || '')));
+        const early = window.__genP; window.__genP = null;
+        const url = 'img/dish/manifest.json?v=' + encodeURIComponent(window.ASSET_V || '');
+        const res = (early && await early) || await fetch(url);
         if (!res.ok) return;
         const m = await res.json();
         addGenerated((m && m.items) || {});
         Object.assign(GEN_BUNDLES, (m && m.bundles) || {});
         loadGenBundle(currentCountry());
-        if (Object.keys(GEN).length) scheduleRender();
+        if (Object.keys(GEN).length) scheduleRender(early ? 0 : undefined);
     }catch(e){}
+    finally{ genSettle(); }
 }
 // 国の絵のまとまりを、その国を使うときにだけ読みこむ（manifest に bundles があるときだけ）
 async function loadGenBundle(cc){
