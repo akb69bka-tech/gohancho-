@@ -150,11 +150,11 @@ export default {
     // ギャヴルダー（刻みトマトとくるみのサラダ）: トマト・ピーマン・赤玉ねぎ・くるみ・パセリ
     tr_gavurdagi: K([['tomato', 14, 12], ['sivriRing', 5, 11], ['redOnion', 4, 10], ['walnut', 6, 12]], { flecks: [pars(16)] }),
     // エズメ（辛いトマトとピーマンのペースト）
-    tr_ezme: K([], { base: '#c8401e', H: 12, flecks: [['#5a8a2a', 20, 1.6], ['#a8281a', 30, 1.4], pars(10)] }),
+    tr_ezme: K([], { base: '#c8401e', H: 12, groove: true, oilTop: '#a8301a', crown: [['sivriRing', 4, 14], ['tomatoChunk', 2, 14], ['herb', 2, 12]], flecks: [['#5a8a2a', 20, 1.6], ['#a8281a', 30, 1.4], pars(10)] }),
     // シャクシュカ（揚げなすのトマトソース）、にんにくヨーグルト（お好みで）
     tr_saksuka: K([['eggplant', 14, 15], ['sivri', 3, 11]], { base: '#c8401e', ing: { ...ing, eggplant: (p, x, y, s, r, i) => W.dice(p, x, y, s, '#4a2038', p.id + 'eg' + i, { h: s * .55, top: Q.rg(p, [[0, '#e8b070'], [.6, '#c8803a'], [1, '#8a4a1e']], .4, .35, .8) }) } }),
     // 焼きなすのサラダ: なす・ピーマン・トマト・パセリ・レモン
-    tr_patlicansalatasi: K([['tomato', 5, 10], ['sivriRing', 4, 10]], { base: '#c8a070', H: 12, flecks: [['#8a6a3a', 30, 1.6], pars(14)] }),
+    tr_patlicansalatasi: K([['tomato', 5, 10], ['sivriRing', 4, 10]], { base: '#c8a070', H: 12, groove: true, oilTop: '#a8a030', crown: [['charEggplant', 1, 22]], flecks: [['#8a6a3a', 30, 1.6], pars(14)] }),
     // にんじんの炒め物とにんにくヨーグルト、くるみ（お好みで）
     tr_havuctarator: K([['walnut', 4, 12]], { base: '#f6f0dc', H: 14, flecks: [['#e8742a', 50, 1.8], ['#f08a3a', 30, 1.6], [DILL[0], 10, 1.2]] }),
     // メルジメッキ・キョフテ（赤レンズ豆とブルグルの団子）: レタス・レモン

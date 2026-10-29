@@ -135,17 +135,17 @@ export default {
     // キャベツのポリヤル: キャベツ・ココナッツ、青唐辛子（お好みで）
     in_poriyal: T([['shred', 44, 14], ['curryLeaf', 4, 12]], { minD: 6, flecks: [[COCO, 40, 1.6], [MUSTARD, 14, 1.1], [CHILI, 3, 2]] }),
     // バインガン・バルタ（焼きなすのペースト）: 玉ねぎ・トマト・青唐辛子・香菜
-    in_bharta: K([['tomato', 4, 11], ['chiliG', 3, 12], ['onion', 4, 12]], { base: '#8a5a2a', flecks: [cori(20), ['#f2e2b0', 10, 1.4]] }),
+    in_bharta: K([['tomato', 4, 11], ['chiliG', 3, 12], ['onion', 4, 12]], { base: '#8a5a2a', groove: true, crown: [['charEggplant', 1, 22], ['herb', 3, 12]], flecks: [cori(20), ['#f2e2b0', 10, 1.4]] }),
     // ジーラ・アルー（クミンのじゃがいも）: 青唐辛子（お好みで）・香菜
     in_jeeraaloo: T([['potTurmeric', 18, 16], ['chiliG', 3, 11]], { flecks: [[CUMIN, 24, 1.2], cori(16)] }),
     // ブーンディ・ライタ: ヨーグルトに揚げ玉（ブーンディ）
     in_boondiraita: S('#f6f2e6', [['boondi', 22, 14]], { minD: 7, flecks: [[CUMIN, 12, 1.1], [CHILI, 6, 1]] }),
     // ミントと香菜のチャトニ: ミント・香菜・青唐辛子・レモン
-    in_pudinachutney: S('#4a8a2a', [['mint', 3, 13]], { flecks: [['#2f6a22', 18, 1.2]] }),
+    in_pudinachutney: K([], { base: '#4a8a2a', H: 10, groove: true, crown: [['mint', 5, 15], ['chiliG', 1, 13], ['lemonWedge', 1, 16]], flecks: [['#2f6a22', 18, 1.2]] }),
     // ココナッツのチャトニ: ココナッツ・炒りひよこ豆・青唐辛子、マスタードシードとカレーリーフのテンパリング
-    in_coconutchutney: S('#f4f0e0', [['curryLeaf', 4, 13], ['chiliR', 1, 14]], { flecks: [[MUSTARD, 16, 1.2], ['#e8d8b0', 20, 1.2]] }),
+    in_coconutchutney: K([], { base: '#f4f0e0', H: 10, groove: true, crown: [['coco', 4, 16], ['curryLeaf', 3, 13], ['chiliR', 1, 14]], flecks: [[MUSTARD, 16, 1.2], ['#e8d8b0', 20, 1.2]] }),
     // 南インドのトマトのチャトニ: トマト・玉ねぎ
-    in_tomatochutney: S('#b8301a', [['curryLeaf', 3, 13]], { flecks: [[MUSTARD, 14, 1.2]], oil: [8, '#e8701e'] }),
+    in_tomatochutney: K([], { base: '#b8301a', H: 10, groove: true, oilTop: '#e8701e', crown: [['tomatoChunk', 3, 15], ['curryLeaf', 2, 13]], flecks: [[MUSTARD, 14, 1.2]] }),
     // アヴィヤル（ココナッツとヨーグルトの野菜）: 青いバナナ・にんじん・いんげん・ココナッツ
     in_avial: K([['banana', 8, 14], ['carrotStick', 8, 14], ['greenBean', 6, 8], ['moringa', 3, 12], ['curryLeaf', 4, 12]], { base: '#f2e8c8', flecks: [[COCO, 20, 1.4]] }),
     // にんじんと青唐辛子の即席漬け

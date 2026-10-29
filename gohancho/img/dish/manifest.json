@@ -1375,7 +1375,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/de_rahmspinat.webp",
-      "v": "86db6251"
+      "v": "f74a03b6"
     },
     "de_erbsenmoehren": {
       "file": "de_erbsenmoehren.svg",
@@ -1487,7 +1487,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/eg_tahina.webp",
-      "v": "79840c33"
+      "v": "f7a45a28"
     },
     "eg_babaghanoug": {
       "file": "eg_babaghanoug.svg",
@@ -1495,7 +1495,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/eg_babaghanoug.webp",
-      "v": "ded2023c"
+      "v": "42e7420b"
     },
     "eg_taameya": {
       "file": "eg_taameya.svg",
@@ -1927,7 +1927,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/in_bharta.webp",
-      "v": "15b75dfe"
+      "v": "b187e772"
     },
     "in_dal": {
       "file": "in_dal.svg",
@@ -2999,7 +2999,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/gb_carrotswede.webp",
-      "v": "e96da93a"
+      "v": "efab4d67"
     },
     "gb_cabbage": {
       "file": "gb_cabbage.svg",
@@ -3127,7 +3127,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/id_sambal.webp",
-      "v": "64272b56"
+      "v": "11bd0cf0"
     },
     "id_urap": {
       "file": "id_urap.svg",
@@ -3247,7 +3247,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_frijoles.webp",
-      "v": "b91ebb4d"
+      "v": "a224ef96"
     },
     "mx_nopales": {
       "file": "mx_nopales.svg",
@@ -3271,7 +3271,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_guacamole.webp",
-      "v": "ac7e950f"
+      "v": "b56464ba"
     },
     "mx_pico": {
       "file": "mx_pico.svg",
@@ -7751,7 +7751,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/gb_champ.webp",
-      "v": "452a4a7d"
+      "v": "01439505"
     },
     "gb_bubble": {
       "file": "gb_bubble.svg",
@@ -7767,7 +7767,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/gb_mushypeas.webp",
-      "v": "c6c71e66"
+      "v": "01bd7a46"
     },
     "gb_runnerbeans": {
       "file": "gb_runnerbeans.svg",
@@ -7823,7 +7823,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/gb_spinach.webp",
-      "v": "a4e483df"
+      "v": "4ffab5b6"
     },
     "gb_rootveg": {
       "file": "gb_rootveg.svg",
@@ -8495,7 +8495,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/es_pure.webp",
-      "v": "4d1c28fc"
+      "v": "557d7934"
     },
     "es_calabacin": {
       "file": "es_calabacin.svg",
@@ -9319,7 +9319,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/br_pure_batata.webp",
-      "v": "55071e59"
+      "v": "71145cd6"
     },
     "br_batata_saute": {
       "file": "br_batata_saute.svg",
@@ -9399,7 +9399,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/br_quibebe.webp",
-      "v": "279ec3c9"
+      "v": "2e62800e"
     },
     "br_picles_legumes": {
       "file": "br_picles_legumes.svg",
@@ -9631,7 +9631,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_salsa_verde.webp",
-      "v": "6a36a968"
+      "v": "1a5a9664"
     },
     "mx_salsa_roja": {
       "file": "mx_salsa_roja.svg",
@@ -9639,7 +9639,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_salsa_roja.webp",
-      "v": "7738440d"
+      "v": "f7adf314"
     },
     "mx_salsa_aguacate": {
       "file": "mx_salsa_aguacate.svg",
@@ -9647,7 +9647,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_salsa_aguacate.webp",
-      "v": "6c01cbfa"
+      "v": "8abd7a7a"
     },
     "mx_salsa_macha": {
       "file": "mx_salsa_macha.svg",
@@ -9655,7 +9655,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/mx_salsa_macha.webp",
-      "v": "24e3bfc3"
+      "v": "db5d8fe7"
     },
     "mx_cebolla_morada": {
       "file": "mx_cebolla_morada.svg",
@@ -10559,7 +10559,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/eg_bessara.webp",
-      "v": "73d37b7d"
+      "v": "7cde8775"
     },
     "eg_salsamacarona": {
       "file": "eg_salsamacarona.svg",
@@ -10679,7 +10679,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/eg_hummus.webp",
-      "v": "11f0323d"
+      "v": "27440fc4"
     },
     "eg_gebnatamatem": {
       "file": "eg_gebnatamatem.svg",
@@ -10735,7 +10735,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/eg_pure.webp",
-      "v": "b7b2198d"
+      "v": "5d3afb2b"
     },
     "eg_salatamakarona": {
       "file": "eg_salatamakarona.svg",
@@ -10959,7 +10959,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/pe_crema_rocoto.webp",
-      "v": "cfe3181a"
+      "v": "9906f1ef"
     },
     "pe_encurtido": {
       "file": "pe_encurtido.svg",
@@ -11007,7 +11007,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/pe_pepian_choclo.webp",
-      "v": "d1f7b159"
+      "v": "69516341"
     },
     "pe_pure_papa": {
       "file": "pe_pure_papa.svg",
@@ -11015,7 +11015,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/pe_pure_papa.webp",
-      "v": "7a2df0a9"
+      "v": "da6ef5a2"
     },
     "pe_arroz_arabe": {
       "file": "pe_arroz_arabe.svg",
@@ -11247,7 +11247,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/in_pudinachutney.webp",
-      "v": "0af41f54"
+      "v": "cefa6e35"
     },
     "in_coconutchutney": {
       "file": "in_coconutchutney.svg",
@@ -11255,7 +11255,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/in_coconutchutney.webp",
-      "v": "7c8bd4db"
+      "v": "87e43770"
     },
     "in_tomatochutney": {
       "file": "in_tomatochutney.svg",
@@ -11263,7 +11263,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/in_tomatochutney.webp",
-      "v": "1554ce74"
+      "v": "b6032e32"
     },
     "in_avial": {
       "file": "in_avial.svg",
@@ -11591,7 +11591,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/pl_cwikla.webp",
-      "v": "dffbb9fe"
+      "v": "556c0485"
     },
     "pl_malosolne": {
       "file": "pl_malosolne.svg",
@@ -11631,7 +11631,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/pl_puree.webp",
-      "v": "fdc43956"
+      "v": "dc3de5d5"
     },
     "pl_kluskislaskie": {
       "file": "pl_kluskislaskie.svg",
@@ -12311,7 +12311,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/de_kartoffelpueree.webp",
-      "v": "d6a23cd2"
+      "v": "c4974822"
     },
     "de_blumenkohl": {
       "file": "de_blumenkohl.svg",
@@ -12895,7 +12895,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/tr_ezme.webp",
-      "v": "77b5d17f"
+      "v": "dd2e8eb1"
     },
     "tr_saksuka": {
       "file": "tr_saksuka.svg",
@@ -12911,7 +12911,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/tr_patlicansalatasi.webp",
-      "v": "6b908ec7"
+      "v": "642a0b05"
     },
     "tr_havuctarator": {
       "file": "tr_havuctarator.svg",
@@ -13807,7 +13807,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/id_sambalterasi.webp",
-      "v": "0b079b36"
+      "v": "834ea2af"
     },
     "id_sambalmatah": {
       "file": "id_sambalmatah.svg",
@@ -13823,7 +13823,7 @@
       "model": "hand-drawn-3q",
       "date": "2026-10-29",
       "thumb": "t/id_sambalijo.webp",
-      "v": "686e7389"
+      "v": "5159ecc8"
     },
     "id_tumistauge": {
       "file": "id_tumistauge.svg",

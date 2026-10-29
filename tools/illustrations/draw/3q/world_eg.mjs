@@ -101,7 +101,7 @@ export default {
     // ロビア（黒目豆のトマト煮）、牛肉（お好みで）
     eg_lobia: B('#b8401e', [['blackEyed', 24, 14], ['beefStew', 3, 14]], { minD: 7 }),
     // ベサーラ（そら豆とハーブのピュレ）、揚げ玉ねぎ
-    eg_bessara: K([], { base: '#6a8a2a', H: 12, flecks: [['#a8641e', 30, 2.2], ['#c8862e', 16, 1.8]] }, (p) => W.sideBowl(p, { edge: EARTH, rx: 92 })),
+    eg_bessara: K([], { base: '#6a8a2a', H: 12, groove: true, oilTop: '#c8b040', crown: [['fava', 5, 15], ['herb', 3, 13]], flecks: [['#a8641e', 30, 2.2], ['#c8862e', 16, 1.8]] }, (p) => W.sideBowl(p, { edge: EARTH, rx: 92 })),
     // ソゴ（アレキサンドリアのスパイスソーセージとピーマン）: ソゴ・ピーマン・トマト・玉ねぎ、青唐辛子（お好みで）
     eg_sogo: P([['sogo', 16, 16], ['pepperG', 8, 13], ['tomato', 4, 11], ['onion', 3, 12]], { sauce: '#a8401e' }),
     // ラヤシュ（羊のチョップの網焼き）: 玉ねぎ・レモン、ヨーグルト（お好みで）
@@ -125,9 +125,9 @@ export default {
     // サラタ・バラディ（刻みサラダ）: トマト・きゅうり・玉ねぎ・パセリ・レモン、青唐辛子（お好みで）
     eg_salata: K([['tomato', 12, 12], ['cucumber', 8, 11], ['onion', 4, 10], ['chiliG', 3, 10]], { flecks: [pars(16)], after: (o, V, p) => lemon(p, o.cx + 42, o.cy - 6, 13) }),
     // タヒーナ（ごまのディップ）、パセリ（お好みで）
-    eg_tahina: dip('#e8d8b0', [pars(8)]),
+    eg_tahina: dip('#e8d8b0', [pars(8)], { groove: true, oilTop: '#c8a838', crown: [['herb', 3, 13], ['lemonWedge', 1, 18]] }),
     // ババガヌーグ（焼きなすとごまのディップ）、トマト・パセリ（お好みで）
-    eg_babaghanoug: dip('#c8a878', [['#8a6a3a', 20, 1.4], ['#c8281a', 6, 1.6], pars(8)]),
+    eg_babaghanoug: dip('#c8a878', [['#8a6a3a', 20, 1.4], ['#c8281a', 6, 1.6], pars(8)], { groove: true, oilTop: '#a8a030', crown: [['charEggplant', 2, 18], ['tomato', 2, 11], ['herb', 2, 12]] }),
     // ターメイヤ（そら豆のファラフェル）
     eg_taameya: P([['taameya', 9, 22]], { minD: 16, H: 12, after: (o, D, p) => `<ellipse cx="${f(o.cx + 46)}" cy="${f(o.cy + 26)}" rx="14" ry="${f(14 * SYF)}" fill="#f4f0e6" stroke="${EARTH}" stroke-width=".8"/><ellipse cx="${f(o.cx + 46)}" cy="${f(o.cy + 25)}" rx="11" ry="${f(11 * SYF)}" fill="#e8d8b0"/>` }),
     // フール・メダミス（そら豆の煮込み）: レモン、トマト・パセリ（お好みで）（素焼きの鉢）
@@ -157,7 +157,7 @@ export default {
     // カリフラワーのフライ、レモン（お好みで）
     eg_arnabeet: P([['arnabeet', 10, 16]], { minD: 12, after: (o, D, p) => lemon(p, ...at(o, 50, 32), 14) }),
     // フムス、パセリ（お好みで）
-    eg_hummus: dip('#e8d4a8', [['#c8401e', 8, 1.4], pars(8), ['#e8c890', 6, 3]]),
+    eg_hummus: dip('#e8d4a8', [['#c8401e', 8, 1.4], pars(8)], { groove: true, oilTop: '#b8a830', crown: [['chickpea', 7, 16], ['herb', 2, 12]] }),
     // 白チーズとトマト、青唐辛子・ねぎ（お好みで）
     eg_gebnatamatem: K([['whiteCheese', 10, 15], ['tomato', 8, 12], ['chiliG', 3, 11]], { minD: 7, flecks: [['#c8b040', 10, 2]] }),
     // ビーツのサラダ、玉ねぎ（お好みで）・レモン
@@ -171,7 +171,7 @@ export default {
     // トマトのにんにくと唐辛子焼き
     eg_tamatemmeqaleya: P([['tomatoHalf', 7, 22], ['chiliG', 4, 12]], { minD: 16, H: 8, ing: { ...ing, tomatoHalf: (p, x, y, s) => W.coin(p, x, y, s * .5, '#c8281a', { h: 4, top: Q.rg(p, [[0, '#ff9a6a'], [.5, '#e0502a'], [.85, '#a8301a'], [1, '#c8281a']], .4, .35, .8) }) }, flecks: [['#f2e0b0', 14, 1.6]] }),
     // マッシュポテト
-    eg_pure: K([], { base: '#f6e8c0', H: 22, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 30, 9) }),
+    eg_pure: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 9) }),
     // マカロニのサラダ: パスタ・ピーマン・きゅうり、にんじん・チーズ（お好みで）
     eg_salatamakarona: K([['pastaShort', 20, 14], ['pepperG', 4, 10], ['pepperR', 4, 10], ['cucumber', 4, 11], ['whiteCheese', 4, 11]], { minD: 6 }),
 

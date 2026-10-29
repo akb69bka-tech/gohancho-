@@ -148,7 +148,7 @@ export default {
     // ポロねぎのサラダ: ポロねぎ・卵・りんご、コーン（お好みで）
     pl_porowa: K([['leek', 16, 13], ['egg', 3, 13], ['apple', 5, 11], ['corn', 8, 12]], { base: '#f6f0dc' }),
     // チフィクワ（ビーツとホースラディッシュ）
-    pl_cwikla: K([], { base: '#8a1e34', H: 14, flecks: [['#a82a48', 40, 2], ['#f6ecd8', 16, 1.6]] }),
+    pl_cwikla: K([], { base: '#8a1e34', H: 14, groove: true, crown: [['beet', 3, 14], ['horseradish', 4, 12]], flecks: [['#a82a48', 40, 2], ['#f6ecd8', 16, 1.6]] }),
     // 浅漬けきゅうり、ディル
     pl_malosolne: K([['pickleWhole', 7, 16], ['dillHead', 3, 14]], { minD: 12, base: '#d8d8a0', ing: { ...ing, dillHead: (p, x, y, s, r) => `<g ${TR(x, y, r)}>${[-5, -2, 1, 4].map((d, k) => `<path d="M0,0 l${d},-8" stroke="#6a9a3a" stroke-width=".8" fill="none"/><circle cx="${d}" cy="-8" r="1.2" fill="#d8c040"/>`).join('')}</g>` } }),
     // にしんの油漬けと玉ねぎ
@@ -158,7 +158,7 @@ export default {
     // にんじんとグリンピースのバター煮
     pl_marchewkagroszek: K([['carrot', 16, 13], ['pea', 24, 14]], { minD: 5, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 26, 8) }),
     // マッシュポテト、ディル（お好みで）
-    pl_puree: K([], { base: '#f6e8c0', H: 22, flecks: [dill(14)] }),
+    pl_puree: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], flecks: [dill(14)] }),
     // シロンスクのじゃがいも団子（くぼみつき）
     pl_kluskislaskie: P([['kluski', 8, 22]], { minD: 18, H: 8, after: (o, D, p) => W.pool(p, o.cx, o.cy + 6, 46, GRAVY, 'kl') }),
     // 詰め卵とあさつき

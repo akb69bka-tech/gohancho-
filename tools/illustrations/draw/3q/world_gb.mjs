@@ -131,7 +131,7 @@ export default {
     // コールスロー: キャベツ・にんじん・マヨネーズ、赤玉ねぎ（お好みで）
     gb_coleslaw: K([['whiteCab', 40, 14], ['carrotStickThin', 12, 12], ['redOnion', 3, 10]], { minD: 5, base: '#f6f0dc', ing: { ...ing, carrotStickThin: (p, x, y, s, r) => W.ING.carrotStick(p, x, y, s, r) } }),
     // にんじんとスウィードのマッシュ
-    gb_carrotswede: K([], { base: '#f0a040', H: 20, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 28, 9) + W.flecks(p, o.cx, o.cy - 22, 24, 10, 'cs', ['#d8802a'], { ry: 8, s: 2 }) }),
+    gb_carrotswede: K([], { base: '#f0a040', H: 20, groove: true, crown: [['carrot', 3, 15], ['swede', 2, 13]], after: (o, V, p) => W.butterPat(p, o.cx - 16, o.cy - 14, 9) }),
     // バターのキャベツ、ベーコン（お好みで）
     gb_cabbage: P([['savoy', 16, 16], ['lardon', 5, 12]]),
     // サイドサラダ: レタス・きゅうり・トマト、青ねぎ（お好みで）
@@ -147,11 +147,11 @@ export default {
     // 赤キャベツの蒸し煮: 赤キャベツ・りんご・赤玉ねぎ
     gb_redcabbage: K([['redCab', 44, 14], ['apple', 4, 12]], { minD: 5, base: '#7a2a5a' }),
     // チャンプ（青ねぎのマッシュ）
-    gb_champ: K([], { base: '#f6ecc8', H: 22, flecks: [['#4a9a2c', 30, 1.8]], after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 30, 10) }),
+    gb_champ: K([], { base: '#f6ecc8', H: 22, groove: true, crown: [['greenOnion', 6, 12]], flecks: [['#4a9a2c', 30, 1.8]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 10) }),
     // バブル・アンド・スクイーク（残りのじゃがいもとキャベツの焼きもの）
     gb_bubble: p => { const D = plate(p), o = D.o; return D.s + byDepth([[-20, -6], [20, 8]].map(([u, v], i) => { const [x, y] = at(o, u, v, 4); return [y, () => W.jeon(p, x, y, 34, i, { c: '#d8a050', h: 6 }) + W.flecks(p, x, y - 4, 26, 20, 'bs' + i, ['#6a9a3a', '#f6e0a0', '#a8641e'], { ry: 10, s: 2 })]; })); },
     // マッシーピー（つぶしたえんどう豆）
-    gb_mushypeas: K([], { base: '#7a9a3a', H: 16, flecks: [['#a8c060', 20, 2]] }),
+    gb_mushypeas: K([], { base: '#7a9a3a', H: 16, groove: true, crown: [['pea', 9, 15]], flecks: [['#a8c060', 20, 2]] }),
     // さやいんげんのバター和え
     gb_runnerbeans: P([['runner', 22, 16]], { after: (o, D, p) => W.butterPat(p, o.cx, o.cy - 20, 8) }),
     // はちみつとバターのにんじん
@@ -165,7 +165,7 @@ export default {
     // トマトと赤玉ねぎのサラダ
     gb_tomatosalad: P([['tomatoSlice', 8, 22], ['redOnion', 6, 14]], { minD: 14, H: 8, flecks: [['#4a9a2c', 20, 1.4]], ing: { ...ing, tomatoSlice: (p, x, y, s) => W.coin(p, x, y, s * .55, '#c8281a', { h: 3, top: Q.rg(p, [[0, '#ff9a7a'], [.5, '#e8503a'], [.85, '#f6c0a0'], [1, '#c8281a']], .4, .35, .8) }) } }),
     // クリームのほうれん草
-    gb_spinach: K([], { base: '#4a7a2a', H: 14, flecks: [['#f6f0dc', 14, 2], ['#6a9a3a', 20, 2]] }),
+    gb_spinach: K([], { base: '#4a7a2a', H: 14, groove: true, crown: [['spinach', 4, 14]], oilTop: '#f6f0dc' }),
     // 根菜のロースト: にんじん・パースニップ・スウィード・赤玉ねぎ、バターナッツ（お好みで）
     gb_rootveg: P([['carrotStick', 6, 18], ['parsnip', 5, 18], ['swede', 5, 14], ['redOnion', 4, 13], ['pumpkin', 3, 14]], { minD: 10 }),
     // ブロッコリーのにんにくとレモン

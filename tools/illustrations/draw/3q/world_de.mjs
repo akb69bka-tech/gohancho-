@@ -143,7 +143,7 @@ export default {
     // クラウトサラダ（キャベツのサラダ）: キャベツ・にんじん、赤ピーマン（お好みで）
     de_krautsalat: K([['whiteCab', 44, 14], ['carrotStick', 8, 10], ['pepperR', 4, 9]], { minD: 5 }),
     // ラームシュピナート（ほうれん草のクリーム煮）
-    de_rahmspinat: K([], { base: '#4a7a2a', H: 14, flecks: [['#f6f0dc', 14, 2], ['#6a9a3a', 20, 2]] }),
+    de_rahmspinat: K([], { base: '#4a7a2a', H: 14, groove: true, crown: [['spinach', 4, 14]], oilTop: '#f6f0dc' }),
     // グリンピースとにんじんのバター煮
     de_erbsenmoehren: K([['pea', 26, 14], ['carrot', 14, 12]], { minD: 5, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 26, 8) }),
     // ザルツカルトッフェルン（パセリのゆでじゃがいも）
@@ -163,7 +163,7 @@ export default {
     // シュモアグルケン（きゅうりのディル煮）: きゅうり・玉ねぎ・サワークリーム、ベーコン（お好みで）
     de_schmorgurken: B('#f0ead0', [['cucumberBraise', 12, 16], ['bacon', 3, 12]], { flecks: [['#5a9a3a', 20, 1.2]] }),
     // マッシュポテト（ナツメグ）
-    de_kartoffelpueree: K([], { base: '#f6e8c0', H: 22, after: (o, V, p) => W.flecks(p, o.cx, o.cy - 28, 20, 10, 'kp', ['#c8a060'], { ry: 6, s: 1.2 }) }),
+    de_kartoffelpueree: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 9) + W.flecks(p, o.cx, o.cy - 28, 20, 10, 'kp', ['#c8a060'], { ry: 6, s: 1.2 }) }),
     // カリフラワーのバターパン粉がけ、ゆで卵（お好みで）
     de_blumenkohl: P([['cauliflower', 10, 16]], { minD: 12, flecks: [['#d8a050', 40, 1.8], ['#f6e0a0', 20, 1.6]] }),
     // カルトッフェルクレーセ（じゃがいもの団子）

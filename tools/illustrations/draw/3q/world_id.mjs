@@ -131,7 +131,7 @@ export default {
     // ペルクデル（じゃがいものコロッケ）、セロリの葉（お好みで）
     id_perkedel: P([['perkedel', 6, 30]], { minD: 26, H: 10, flecks: [[CEL[0], 10, 1.4]] }),
     // トマトと唐辛子のサンバル、ライム（お好みで）
-    id_sambal: sambalPot('#c8301a', [['chiliR', 4, 12], ['tomato', 3, 10]], { after: (o, V, p) => W.lemon(p, o.cx + 44, o.cy - 4, 15, { wedge: true, c: '#8ab83a' }) }),
+    id_sambal: sambalPot('#c8301a', [['chiliR', 4, 12], ['tomato', 3, 10]], { groove: true, crown: [['chiliLarge', 2, 14], ['tomatoChunk', 2, 14]], after: (o, V, p) => W.lemon(p, o.cx + 44, o.cy - 4, 15, { wedge: true, c: '#8ab83a' }) }),
     // ウラップ（ゆで野菜のココナッツ和え）: ささげ・ほうれん草・もやし・キャベツ・ココナッツ
     id_urap: P([['longBean', 5, 10], ['spinach', 6, 12], ['beanSprout', 6, 12], ['cabbage', 3, 12]], { flecks: [['#fbf6ea', 50, 1.8], ['#e8c070', 20, 1.6]] }),
     // チャプチャイ（えびと野菜の炒め物）: えび・にんじん・カリフラワー・キャベツ・青菜
@@ -141,11 +141,11 @@ export default {
     // カレドック（生野菜のピーナッツソース）: きゅうり・ささげ・もやし・キャベツ・レモンバジル・ピーナッツ
     id_karedok: P([['cucumber', 5, 12], ['longBean', 4, 10], ['beanSprout', 5, 12], ['cabbage', 3, 12], ['herb', 3, 11]], { sauce: '#b8783a', sauceR: 48, flecks: [['#c8864a', 16, 2]] }),
     // サンバル・トラシ（えびみその唐辛子）: 唐辛子・ライム、トマト（お好みで）
-    id_sambalterasi: sambalPot('#a8281a', [['chiliR', 3, 12]], { after: (o, V, p) => W.lemon(p, o.cx + 44, o.cy - 4, 15, { wedge: true, c: '#8ab83a' }), flecks: [['#5a2a14', 10, 1.4]] }),
+    id_sambalterasi: sambalPot('#a8281a', [['chiliR', 3, 12]], { groove: true, crown: [['chiliR', 4, 15], ['shrimpPaste', 1, 16]], after: (o, V, p) => W.lemon(p, o.cx + 44, o.cy - 4, 15, { wedge: true, c: '#8ab83a' }), flecks: [['#5a2a14', 10, 1.4]] }),
     // サンバル・マタ（生のエシャロットの薬味）: エシャロット・唐辛子・ライム
     id_sambalmatah: M(W.sideBowl, 'bowl', null, [['redOnion', 14, 14], ['chiliR', 8, 12], ['chiliG', 3, 12]], { minD: 7, after: (o, V, p) => W.lemon(p, o.cx + 44, o.cy - 4, 15, { wedge: true, c: '#8ab83a' }) }),
     // サンバル・イジョ（青唐辛子のサンバル）、いりこ（お好みで）
-    id_sambalijo: sambalPot('#6a9a3a', [['chiliG', 5, 12], ['greenTomato', 3, 10], ['anchovy', 4, 10]]),
+    id_sambalijo: sambalPot('#6a9a3a', [['chiliG', 5, 12], ['greenTomato', 3, 10], ['anchovy', 4, 10]], { groove: true, crown: [['greenChiliLarge', 2, 14], ['greenTomato', 2, 13]] }),
     // もやし炒め、豆腐（お好みで）: もやし・赤唐辛子
     id_tumistauge: P([['beanSprout', 34, 14], ['tofuFried', 4, 10], ['chiliR', 3, 12]], { minD: 6 }),
     // いんげんとにんじんの炒め物、えび（お好みで）

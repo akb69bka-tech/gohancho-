@@ -565,6 +565,12 @@ export const ING = {
     basil: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * .9, r, '#3f8a2a', 'bs' + p.id + i, { wave: .4 }),
     tomatoChunk: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s / 2, s * .2], [0, -s * .35], [s / 2, s * .2], [0, s * .32]], s * .4, '#c8301e', { rot: r, top: Q.rg(p, [[0, '#ff8a6a'], [.6, '#e0402a'], [1, '#a82a1a']], .4, .35, .8), line: .5 }),
     pepperRoast: (p, x, y, s, r) => Q.prism(p, x, y, [[-s * .7, -s * .2], [s * .7, -s * .24], [s * .7, s * .2], [-s * .7, s * .22]], 2, '#b8301e', { rot: r, line: .4, top: Q.lg(p, [[0, '#e8603a'], [1, '#a8281a']], 0, 0, 0, 1) }),
+    lemonWedge: (p, x, y, s, r) => lemon(p, x, y, s, { wedge: true, rot: r % 40 - 20 }),
+    charEggplant: (p, x, y, s, r) => `<g ${T(x, y, r % 30 - 15)}><path d="M${f(-s * .7)},0 C${f(-s * .7)},${f(-s * .34)} ${f(s * .6)},${f(-s * .34)} ${f(s * .7)},0 C${f(s * .6)},${f(s * .3)} ${f(-s * .7)},${f(s * .3)} ${f(-s * .7)},0Z" fill="${Q.lg(p, [[0, '#6a4a5a'], [.5, '#3a2430'], [1, '#2a1a20']], 0, 0, 0, 1)}" stroke="#1e1418" stroke-width=".6"/><path d="M${f(-s * .5)},${f(-s * .05)} C${f(-s * .4)},${f(-s * .2)} ${f(s * .4)},${f(-s * .2)} ${f(s * .5)},${f(-s * .05)}" fill="#c8a070"/><path d="M${f(s * .7)},0 q${f(s * .14)},-2 ${f(s * .2)},${f(-s * .16)}" stroke="#4a6a22" stroke-width="2.4" stroke-linecap="round" fill="none"/></g>`,
+    greenOnion: (p, x, y, s) => coin(p, x, y, s * .3, '#4a9a2c', { h: 1.4, top: Q.rg(p, [[0, '#e8f4d0'], [.6, '#a8d070'], [1, '#4a9a2c']], .4, .35, .8) }),
+    horseradish: (p, x, y, s, r) => Q.prism(p, x, y, [[-s / 2, -1.2], [s / 2, -1.2], [s / 2, 1.2], [-s / 2, 1.2]], 1.4, '#f6f2e0', { rot: r, line: .3 }),
+    avocadoHalf: (p, x, y, s, r) => `<g ${T(x, y, -20)}><path d="M0,${f(-s * .55)} C${f(s * .4)},${f(-s * .5)} ${f(s * .5)},${f(s * .4)} 0,${f(s * .5)} C${f(-s * .5)},${f(s * .4)} ${f(-s * .4)},${f(-s * .5)} 0,${f(-s * .55)}Z" transform="scale(1 .62)" fill="#3a5a1e"/><path d="M0,${f(-s * .48)} C${f(s * .34)},${f(-s * .44)} ${f(s * .44)},${f(s * .34)} 0,${f(s * .44)} C${f(-s * .44)},${f(s * .34)} ${f(-s * .34)},${f(-s * .44)} 0,${f(-s * .48)}Z" transform="scale(1 .62)" fill="${Q.rg(p, [[0, '#f2f4b8'], [.6, '#c8dc78'], [1, '#7aa83a']], .4, .4, .8)}"/><ellipse cx="0" cy="${f(s * .06)}" rx="${f(s * .17)}" ry="${f(s * .12)}" fill="${Q.rg(p, [[0, '#c8946a'], [1, '#7a4a24']], .35, .3, .8)}"/></g>`,
+    shrimpPaste: (p, x, y, s, r) => Q.prism(p, x, y, Q.square(s * .5), s * .2, '#5a3020', { rot: r, line: .4, top: Q.lg(p, [[0, '#8a5a3a'], [1, '#5a3020']], 0, 0, 1, 1) }),
     grain: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.5" fill="#e8d098" stroke="#b89858" stroke-width=".3"/>`,
 };
 // 盛りつけの組み立て: spec = { v: 器の関数(p) => V, mode: 'plate' | 'soup' | 'braise' | 'bowl'（小鉢・鉢に山高）, c: ソース・汁の色,
@@ -583,8 +589,18 @@ export function make(p, spec){
             : noodle ? noodleMound(p, D.o.cx, D.o.cy + 4, R + 6, H, noodle.c, p.id + 'nd', { w: noodle.w ?? 2.4, n: noodle.n ?? 140, len: 32, sy: D.o.sy, edge: noodle.edge }) : '';
         return D.s + (sauce ? pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, 'mks') : '') + (base ? mound(p, D.o.cx, D.o.cy + 2, R * .92, H * .7, base, 'mkb', D.o.sy) : '') + bed + byDepth(it) + flk(D.o.cx, D.o.cy - H * CZ * .5, R * .8, R * .4) + after(D.o, D, p);
     }
+    // ディップ・ピュレの見分け（2026-10-29 見直し 4回目）: 山の上に、へらで回した溝・油のたまり・何で作ったか分かる飾り（crown）
+    const dipTop = (o, RR, HH) => {
+        if (!spec.groove && !spec.oilTop && !spec.crown) return '';
+        const tx = o.cx, ty = o.cy + 2 - HH * CZ * .95 + 2, bc = base || '#e8d8b0';
+        let s = '';
+        if (spec.groove) s += [.22, .38, .54].map((k, j) => { const rx = RR * k, ry = rx * SY * .5; return `<path d="M${f(tx - rx)},${f(ty + 1 + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + 1 + j * 2 - ry * .7)}" stroke="${dk(bc, .28)}" stroke-width="1.8" fill="none" opacity=".75"/><path d="M${f(tx - rx)},${f(ty + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + j * 2 - ry * .7)}" stroke="${lt(bc, .45)}" stroke-width="1" fill="none" opacity=".7"/>`; }).join('');
+        if (spec.oilTop) s += `<path d="${Q.blob(tx, ty + 2, RR * .26, RR * .26 * SY * .6, p.id + 'ot', { n: 10, jit: .2 })}" fill="${spec.oilTop}" opacity=".85"/><ellipse cx="${f(tx - RR * .08)}" cy="${f(ty + 1)}" rx="${f(RR * .08)}" ry="1.2" fill="#fff" opacity=".7"/>`;
+        if (spec.crown){ const tl = []; spec.crown.forEach(([k, n, sz = 14]) => { for (let j = 0; j < n; j++) tl.push([k, sz]); }); s += byDepth(spots(p.id + 'cw', tl.length, RR * .36, Math.max(6, tl[0][1] * .6)).map(([u, v2, r], i) => { const x = tx + u, y = ty + 2 + v2 * SY * .6; return [y, () => SMALL_TOP.has(tl[i][0]) ? `<g ${p.edge('#2a1206', .5, .45)}>${grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i))}</g>` : piece(p, x, y, grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i)), { s: tl[i][1] * .8 })]; })); }
+        return s;
+    };
     if (mode === 'bowl'){
-        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + 14, H: H + 18, base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
+        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + 14, H: H + (spec.groove || spec.oilTop ? 2 : 18), base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [990, () => dipTop(o, RR, HH)], [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
     }
     if (mode === 'braise'){
         const V = v(p); return braise(p, V, c, p.id + 'br', list.length, minD, H + 14, (x, y, r, i) => draw(list[i % list.length][0], list[i % list.length][1], x, y, r, i), { srx: 50, R: 50 }) + flk(100, V.cy - 4, 40, 14) + after({ cx: 100, cy: V.cy }, V, p);

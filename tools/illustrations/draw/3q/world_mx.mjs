@@ -126,25 +126,25 @@ export default {
     // メキシコの赤いご飯: 米・トマト・玉ねぎ、にんじん・グリンピース（お好みで）
     mx_arroz: P([['carrot', 8, 9], ['pea', 10, 12]], { rice: { cols: ['#f0a070', '#e8905a', '#f6b888'], edge: '#b8602a' }, H: 24, R: 50 }),
     // フリホーレス・レフリトス（豆のペースト）、ケソフレスコ（お好みで）
-    mx_frijoles: K([], { base: '#5a3020', H: 16, flecks: [queso(20), ['#f2e8c8', 6, 1.4]] }),
+    mx_frijoles: K([], { base: '#5a3020', H: 16, groove: true, crown: [['brownBean', 6, 16]], flecks: [queso(20), ['#f2e8c8', 6, 1.4]] }),
     // ノパレスのサラダ: ノパル・トマト・玉ねぎ・香菜・ライム、セラーノ・ケソフレスコ（お好みで）
     mx_nopales: K([['nopal', 14, 14], ['tomato', 8, 12], ['onion', 3, 11], ['herb', 4, 11]], withLime({ flecks: [queso(14)] })),
     // カラバシータス（ズッキーニとコーン）: ズッキーニ・コーン・トマト・玉ねぎ
     mx_calabacitas: P([['zucchini', 14, 14], ['corn', 16, 13], ['tomato', 4, 10]], { flecks: [queso(10)] }),
     // ワカモレ: アボカド・トマト・玉ねぎ・香菜・セラーノ・ライム（石のモルカヘテ）
-    mx_guacamole: salsa('#8ab040', [['tomato', 5, 10], ['onion', 3, 10], ['herb', 3, 10]], withLime({ H: 18, flecks: [['#c8dc78', 20, 2]] }), molcajete),
+    mx_guacamole: salsa('#8ab040', [['tomato', 5, 10], ['onion', 3, 10], ['herb', 3, 10]], withLime({ H: 18, groove: true, crown: [['avocadoHalf', 1, 26], ['herb', 2, 12]], flecks: [['#c8dc78', 20, 2]] }), molcajete),
     // ピコ・デ・ガジョ: トマト・白玉ねぎ・香菜・セラーノ・ライム
     mx_pico: K([['tomato', 16, 12], ['onion', 5, 11], ['herb', 5, 10], ['jalapeno', 4, 11]], withLime()),
     // ラハス（ポブラノのクリーム煮）、コーン（お好みで）
     mx_rajas: B('#f2ecd0', [['poblano', 12, 16], ['onion', 3, 13], ['corn', 6, 12]]),
     // サルサ・ベルデ: トマティーヨ・セラーノ・玉ねぎ・香菜
-    mx_salsa_verde: salsa('#7a9a3a', [], { flecks: [['#c8d890', 16, 1.4], [CIL[0], 10, 1.4]] }),
+    mx_salsa_verde: salsa('#7a9a3a', [], { groove: true, crown: [['tomatillo', 3, 15], ['herb', 2, 12], ['jalapeno', 2, 13]], flecks: [['#c8d890', 16, 1.4], [CIL[0], 10, 1.4]] }),
     // サルサ・ロハ（焼きトマトのサルサ）
-    mx_salsa_roja: salsa('#b8301a', [], { flecks: [['#5a1a0a', 14, 1.4], ['#f2c8a0', 10, 1.2]] }, molcajete),
+    mx_salsa_roja: salsa('#b8301a', [], { groove: true, crown: [['tomatoChunk', 3, 15], ['chiliR', 2, 14]], flecks: [['#5a1a0a', 14, 1.4], ['#f2c8a0', 10, 1.2]] }, molcajete),
     // サルサ・デ・アグアカテ（アボカドとトマティーヨ）
-    mx_salsa_aguacate: salsa('#a8c060', [], { flecks: [[CIL[0], 14, 1.4]] }),
+    mx_salsa_aguacate: salsa('#a8c060', [], { groove: true, crown: [['avocadoSlice', 2, 18], ['tomatillo', 2, 13], ['herb', 2, 12]], flecks: [[CIL[0], 14, 1.4]] }),
     // サルサ・マチャ（唐辛子の油）: 唐辛子・ピーナッツ・にんにく
-    mx_salsa_macha: salsa('#8a2410', [['peanut', 6, 12]], { flecks: [['#c8401e', 30, 1.4], ['#f2c060', 10, 1.4]] }),
+    mx_salsa_macha: salsa('#8a2410', [], { oilTop: '#c8401e', crown: [['peanut', 6, 15], ['chiliR', 2, 15], ['garlic', 2, 14]], flecks: [['#c8401e', 30, 1.4], ['#f2c060', 10, 1.4]] }),
     // 赤玉ねぎのライム漬け、ハバネロ（お好みで）
     mx_cebolla_morada: K([['redOnion', 24, 15]], { base: '#e8a8c8', H: 10, flecks: [['#f0901e', 6, 1.4]] }),
     // ハラペーニョとにんじんの酢漬け: ハラペーニョ・にんじん・玉ねぎ・にんにく

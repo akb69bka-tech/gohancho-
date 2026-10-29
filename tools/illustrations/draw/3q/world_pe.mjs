@@ -147,7 +147,7 @@ export default {
     // ライマ豆のサラダ: ライマ豆・赤玉ねぎ・トマト・アヒ・香菜・ライム
     pe_ensalada_pallares: K([['pallar', 16, 14], ['redOnion', 4, 11], ['tomato', 5, 11], ['ajiRing', 3, 11]], withLime({ flecks: [cil(12)] })),
     // ロコトのクリームソース
-    pe_crema_rocoto: K([], { base: '#e8502a', H: 12, flecks: [['#f6e0c0', 12, 1.4], [CIL[0], 6, 1.4]] }),
+    pe_crema_rocoto: K([], { base: '#e8502a', H: 12, groove: true, crown: [['rocoto', 3, 16], ['queso', 2, 13]], flecks: [['#f6e0c0', 12, 1.4], [CIL[0], 6, 1.4]] }),
     // エンクルティード（野菜のピクルス）: にんじん・カリフラワー・いんげん・赤玉ねぎ
     pe_encurtido: K([['carrot', 8, 12], ['cauliflower', 4, 12], ['greenBean', 5, 8], ['redOnion', 5, 11], ['rocoto', 2, 12]], { base: '#f0e8c0' }),
     // いんげんのトマト炒め: いんげん・赤玉ねぎ・トマト
@@ -159,9 +159,9 @@ export default {
     // フレホーレス（カナリオ豆の煮もの）、豚バラ（お好みで）
     pe_frejoles: K([['canary', 30, 13]], { minD: 5, base: '#d8b878' }),
     // ペピアン・デ・チョクロ（すりおろしとうもろこしの煮もの）
-    pe_pepian_choclo: K([], { base: '#f2d070', H: 14, flecks: [['#f6e8a0', 30, 1.8], cil(10)] }),
+    pe_pepian_choclo: K([], { base: '#f2d070', H: 14, groove: true, crown: [['choclo', 8, 16]], flecks: [['#f6e8a0', 30, 1.8], cil(10)] }),
     // ピュレ・デ・パパ（マッシュポテト）
-    pe_pure_papa: K([], { base: '#f6e4a0', H: 22, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 30, 10) }),
+    pe_pure_papa: K([], { base: '#f6e4a0', H: 22, groove: true, crown: [['yellowPotato', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 10) }),
     // アロス・アラベ（エンジェルヘアとレーズンとアーモンドのご飯）
     pe_arroz_arabe: P([['angelHair', 10, 14], ['raisin', 14, 13], ['nut', 6, 12]], { rice: { cols: ['#f2dcb0', '#e8c890', '#fbecc8'], edge: '#b8945a' }, H: 24, R: 50 }),
     // ユカ・フリタ（キャッサバのフライ）
