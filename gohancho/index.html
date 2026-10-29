@@ -4026,7 +4026,7 @@ function setTab(tb){
     tab = tb;
     const nt = NAV_OF[tb] || tb;   // 作り方は「今日」、材料から・ひとひねり・世界のレシピは「さがす」のタブを選んだ表示にする
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
-    window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
+    window.scrollTo(0, 0);   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）。(0, 0) で呼ぶと、古い画面のレイアウトを計算せずに戻せる（{top:0} だと横の位置を知るために計算が走る。横には動かない画面なので同じ）
     { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
     // 設定で出した「献立をかえました」のお知らせは、決める段にもどったら消す（段の上に同じ文が出るので。2回出さない・料理名に重ねない。モニター第3回c）
     if (toast.avoidMsg && session.avoidNote && tb === 'today' && viewingStage() === 'decide'){ clearTimeout(toast.t); const tr = $('#toast-root'); if (tr) tr.innerHTML = ''; toast.avoidMsg = false; toast.undo = null; }
