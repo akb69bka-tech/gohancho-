@@ -3556,8 +3556,8 @@ function stageLine(){
     const mx = its.length ? Math.max(...its.map(r => Number(r.min) || 0)) : 0, sum = its.reduce((a, r) => a + (Number(r.min) || 0), 0);
     if (st === 'skipped') return skipDayTitle(skipToday().k);
     if (vw === 'decide'){
-        if (st !== 'draft') return t('決めた一膳です');
-        if (h < 15 || !mx) return t('今夜の一膳を決めておくと、帰りに買えます');
+        if (st !== 'draft') return t('決めた献立です');
+        if (h < 15 || !mx) return t('今夜の献立を決めておくと、帰りに買えます');
         return its.length > 1 && sum > mx ? t('今からなら、目安{max}〜{n}分の献立です', {max: mx, n: sum}) : t('今からなら、目安{n}分の献立です', {n: mx});
     }
     if (vw === 'shop'){ const n = typeof todayShopItems === 'function' ? todayShopItems().length : 0; return S.cook && S.cook.shopOK ? t('買い物そろいました') : n ? t('買う物 {n}つ', {n}) : t('買う物はありません'); }
@@ -4475,7 +4475,7 @@ function skipSheetHtml(){
     const dec = decidedToday(), names = dec ? joinNames(cookItems().map(x => x.r.name)) : '';
     return `<h2>${esc(t('今日は作らない'))}</h2>
         <div class="chips" role="radiogroup" aria-label="${esc(t('今日は作らない'))}">${SKIP_KINDS.map(k => `<button class="chip" role="radio" data-act="skip-kind" data-v="${k}" aria-checked="${sheet.k === k}" aria-pressed="${sheet.k === k}">${esc(skipKindLabel(k))}</button>`).join('')}</div>
-        ${dec ? `<p>${esc(t('決めていた一膳（{names}）は消しません。', {names}))}</p>
+        ${dec ? `<p>${esc(t('決めていた献立（{names}）は消しません。', {names}))}</p>
         <label class="check"><input type="checkbox" data-act="skip-keep" ${sheet.keep ? 'checked' : ''}><span>${esc(t('この献立を明日にまわす'))}</span></label>` : ''}
         <p class="small muted">${esc(t('記録には「{kind}」の日として残ります。料理の記録には入りません。', {kind: skipKindLabel(sheet.k)}))}</p>
         <div class="ob-actions"><button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button><button class="btn primary wide" data-act="skip-ok">${esc(skipDayTitle(sheet.k))}</button></div>`;
@@ -4486,7 +4486,7 @@ function skipDayHtml(x){
         <div class="card skipcard"><h2>${esc(skipDayTitle(x.k))}</h2>
             <p>${esc(t('記録には「{kind}」の日として残ります。料理の記録には入りません。', {kind: skipKindLabel(x.k)}))}</p>
             <div class="chips" role="radiogroup" aria-label="${esc(t('今日は作らない'))}">${SKIP_KINDS.map(k => `<button class="chip" role="radio" data-act="skip-change" data-v="${k}" aria-checked="${x.k === k}" aria-pressed="${x.k === k}">${esc(skipKindLabel(k))}</button>`).join('')}</div></div>
-        ${kept.length ? `<div class="card kept"><div class="tbl-tray small-tray">${kept.map(thumbHtml).join('')}</div><p><b>${esc(t('決めていた一膳は明日へ'))}</b><br>${esc(joinNames(kept.map(r => r.name)))}</p></div>` : ''}
+        ${kept.length ? `<div class="card kept"><div class="tbl-tray small-tray">${kept.map(thumbHtml).join('')}</div><p><b>${esc(t('決めていた献立は明日へ'))}</b><br>${esc(joinNames(kept.map(r => r.name)))}</p></div>` : ''}
         <div class="row stage-links"><button class="btn text" data-act="skip-undo">${esc(t('やっぱり作る'))}</button><button class="btn text" data-act="tomorrow-open">${esc(t('明日の献立を見る'))}</button>${decidedToday() ? `<button class="btn text" data-act="skip-keep-toggle">${esc(kept.length ? t('明日へまわさない') : t('明日へまわす'))}</button>` : ''}</div>
     </section>`;
 }
@@ -4494,7 +4494,7 @@ function skipDayHtml(x){
 function keptOfferHtml(){
     const k = keepGet(TODAY) || yesterdayOffer(); if (!k || decidedToday()) return '';
     const rs = k.ids.map(byId).filter(Boolean); if (!rs.length) return '';
-    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた一膳（{names}）を今日にしますか？', {names: joinNames(rs.map(r => r.name))}) : t('きのう明日へまわした一膳（{names}）があります', {names: joinNames(rs.map(r => r.name))}))}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
+    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた献立（{names}）を今日にしますか？', {names: joinNames(rs.map(r => r.name))}) : t('きのう明日へまわした献立（{names}）があります', {names: joinNames(rs.map(r => r.name))}))}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
 }
 // さがすタブの中の切りかえ（料理をさがす・材料から／ひとひねり／世界のレシピ）。中身は小野寺が「さがす」の画面にまとめる
 function findNav(){
@@ -8566,7 +8566,7 @@ function wishInSheetHtml(){
     const p = sheet.p, seen = sheet.seen;
     const rs = p.ids.map(id => recipeById(id)).filter(Boolean), why = rs.map(r => wishBlockWhy(r)), okN = why.filter(x => !x).length;
     const dec = decidedToday() ? cookItems().map(x => x.r.name) : [];
-    const keep = dec.length ? t('今日の決めた一膳（{names}）は変わりません。', {names: joinNames(dec)}) : t('いま出ている今日の献立は変わりません。');
+    const keep = dec.length ? t('今日の決めた献立（{names}）は変わりません。', {names: joinNames(dec)}) : t('いま出ている今日の献立は変わりません。');
     return `<div class="wsh-from"><span class="wsh-av" aria-hidden="true">${esc([...wishWho(p.n)][0])}</span><div><b>${esc(t('{name} から', {name: wishWho(p.n)}))}</b>${p.t ? `<div class="small muted">${esc(jpDate(p.t))}</div>` : ''}</div></div>
         <h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
         ${rs.length ? `<div class="wsh-list">${rs.map((r, i) => `<div class="wsh-row${why[i] ? ' off' : ''}">${thumbHtml(r)}<div class="wsh-row-t"><span class="wsh-nm">${esc(r.name)}</span>${why[i] ? `<span class="small muted">${esc(why[i])}</span>` : ''}</div></div>`).join('')}</div>` : ''}
@@ -9576,7 +9576,7 @@ function condSheetHtml(){
     return `<h2>${esc(t('条件を変える'))}</h2>
         <p class="small muted cond-hint">${esc(hint)}</p>
         ${entries}
-        ${menuIsDecided() ? `<p class="small">${esc(t('決めた一膳は、条件を変えても変わりません（変えるときは確かめます）。'))}</p>` : ''}
+        ${menuIsDecided() ? `<p class="small">${esc(t('決めた献立は、条件を変えても変わりません（変えるときは確かめます）。'))}</p>` : ''}
         <div class="field"><span class="eyebrow">${esc(t('品数と形'))}</span><div class="chips" role="group" aria-label="${esc(t('品数と形'))}">${shapeChips()}</div>${pendingNoteHtml(true)}
             <p class="small muted">${esc(t('汁けの多い主菜（ラーメン・鍋・シチューなど）の日は、汁ものを付けません。'))}</p></div>
         <div class="field"><span class="eyebrow">${esc(t('時間'))}</span><div class="chips" role="group" aria-label="${esc(t('時間'))}">${MOODS.filter(x => TIME.includes(x.k)).map(moodChip).join('')}</div>
@@ -9655,7 +9655,7 @@ function laterSheetHtml(){
     return `<h2>${esc(t('{what}を変えるのは、今日から？明日から？', {what: sheet.what}))}</h2>
         <p>${esc(t('今日の献立はもう決めてあります（{names}）。', {names}))}</p>
         <p class="small muted">${esc(t('「今日の献立を作り直す」は、今日の案を新しくします。決めた献立は「作り方」に残り、あとで元に戻せます。'))}</p>
-        ${tomorrowDecided() ? `<p class="small">${esc(t('明日の一膳も決めてあります。明日からにしても、明日の決めた一膳は変わりません。'))}</p>` : ''}
+        ${tomorrowDecided() ? `<p class="small">${esc(t('明日の献立も決めてあります。明日からにしても、明日の決めた献立は変わりません。'))}</p>` : ''}
         <div class="ob-actions later-actions"><button class="btn" data-act="later-today">${esc(t('今日の献立を作り直す'))}</button><button class="btn primary" data-act="later-tomorrow">${esc(t('明日から'))}</button></div>
         <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
 }
@@ -9667,7 +9667,7 @@ function laterIfDecided(what, keep, undo){
     keep();
     const r = dayRec(td); if (r && r.state === 'draft' && Array.isArray(r.items) && r.items.length) r.items = [];
     save(); render();
-    toast(tomorrowDecided() ? t('決めた一膳はそのままです。明日の一膳も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた一膳はそのままです。{what}は明日の一膳から変わります', {what}), false, () => {
+    toast(tomorrowDecided() ? t('決めた献立はそのままです。明日の献立も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた献立はそのままです。{what}は明日の献立から変わります', {what}), false, () => {
         if (day0){ dayObj(td); S.day[td] = day0; } else if (S.day) delete S.day[td];
         if (pd0) S.settings.pending = pd0; else delete S.settings.pending;
         if (undo) undo();
@@ -9719,10 +9719,10 @@ function tomorrowDraft(){
 }
 function tomorrowSheetHtml(){
     const its = tomorrowDraft(), rs = its.map(x => ({x, r: byId(x.id)})).filter(y => y.r), fixed = tomorrowDecided();
-    return `<h2>${esc(t('明日の一膳'))}</h2>
+    return `<h2>${esc(t('明日の献立'))}</h2>
         ${rs.length && rs[0].x.slot === '主菜' ? '' : `<p class="small">${esc(t('この条件で出せる主菜がありません'))}</p>`}
         <div class="list swap-list">${rs.map(({x, r}) => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><div class="small muted">${esc(slotLabel(x.slot))}</div><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${allergyBadge(r) ? `<div class="s">${allergyBadge(r)}</div>` : ''}</div></div>`).join('')}</div>
-        <p class="small muted">${esc(fixed ? t('明日の一膳はもう決めてあります。') : t('明日、開いたときにこの案から始めます。決めるのは明日です。'))}</p>
+        <p class="small muted">${esc(fixed ? t('明日の献立はもう決めてあります。') : t('明日、開いたときにこの案から始めます。決めるのは明日です。'))}</p>
         <div class="row">${fixed ? '' : `<button class="btn" data-act="tomorrow-new">${esc(t('別の案にする'))}</button>`}<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
 // 今日の正本に、前の日に作った下書き（明日の一膳）があれば、それから始める
@@ -9745,7 +9745,7 @@ function adoptDayDecided(){
 }
 function openCondSheet(){ if (!sheet || sheet.kind !== 'cond'){ sheet = {kind: 'cond'}; renderSheet(); } }   // 条件シートを開く（テストからも使う）
 function rerollOkSheetHtml(){
-    return `<h2>${esc(t('決めた一膳を変えますか？'))}</h2>
+    return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
         <p>${esc(t('変わるのはこの1品だけです。買い物メモも変わります。'))}</p>
         <div class="ob-actions"><button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button><button class="btn primary wide" data-act="reroll-yes">${esc(t('変える'))}</button></div>`;
 }
@@ -12276,8 +12276,8 @@ document.addEventListener('click', e => {
         case 'keep-apply': {
             const k = keepGet(TODAY) || yesterdayOffer(); if (!k) break;
             if (keepGet(TODAY)) keepSet(null); else dayObj(addDays(TODAY, -1)).offered = 1;
-            save(); applyMenuIds(k.ids, k.slots, null, k.y ? t('きのうの一膳を、今日の案にしました') : t('きのうまわした一膳を、今日の案にしました'),
-                n => k.y ? t('きのうの一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n}) : t('きのうまわした一膳を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n})); render(); break;   // 今は出せない料理を替えたときは、替えたことも同じ知らせで伝える
+            save(); applyMenuIds(k.ids, k.slots, null, k.y ? t('きのうの献立を、今日の案にしました') : t('きのうまわした献立を、今日の案にしました'),
+                n => k.y ? t('きのうの献立を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n}) : t('きのうまわした献立を、今日の案にしました（{n}品は今は出せないので別の料理にしました）', {n})); render(); break;   // 今は出せない料理を替えたときは、替えたことも同じ知らせで伝える
         }
         case 'keep-drop': { const k = keepAny(), y = dayRec(addDays(TODAY, -1)); if (keepGet(TODAY)) keepSet(null); else if (y) y.offered = 1; save(); render(); toast(t('閉じました'), false, () => { if (k) keepSet(k); if (y) delete y.offered; save(); render(); }); break; }
         case 'table-done': {   // 四 食卓 の主ボタン: まだ記録していない料理を記録して、今日をおしまいにする

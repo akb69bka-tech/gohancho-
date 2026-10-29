@@ -285,10 +285,10 @@ const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).
     // 気分: 確かめのシートに「明日の決めた一膳は変わりません」。明日からにしても、明日の決めた献立は変わらない
     await openMood(p); await p.locator('[data-act="mood"][data-k="okayu"]').first().click(); await until(p, () => !!document.querySelector('[data-act="later-tomorrow"]'));
     const askTxt = await p.evaluate(() => document.querySelector('.sheet').innerText);
-    ok(/明日の一膳も決めてあります/.test(askTxt), '明日も決めてあるとき: 確かめのシートにそのことを出す ' + askTxt.slice(0, 80));
+    ok(/明日の献立も決めてあります/.test(askTxt), '明日も決めてあるとき: 確かめのシートにそのことを出す ' + askTxt.slice(0, 80));
     await p.click('[data-act="later-tomorrow"]'); await until(p, () => !sheet && !!document.querySelector('#toast-root .toast'));
     const msg = await p.evaluate(() => document.querySelector('#toast-root').textContent);
-    ok(await same() && /明日の一膳も決めてある/.test(msg), '明日も決めてあるとき: 気分を明日からにしても、明日の決めた献立は変わらない ' + msg);
+    ok(await same() && /明日の献立も決めてある/.test(msg), '明日も決めてあるとき: 気分を明日からにしても、明日の決めた献立は変わらない ' + msg);
     await later(p, '[data-act="count"][data-v="2"]');
     ok(await same(), '明日も決めてあるとき: 品数を明日からにしても、明日の決めた献立は変わらない');
     // 今日を作り直す→元に戻す・まるごと入れ替え・明日の一膳を見る（別の案にするは出さない）
