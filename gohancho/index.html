@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v51';/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v51';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -3535,15 +3535,20 @@ function newMenu(){
 }
 // 起動して最初の献立だけ、ひとひねり案（重い）を最初の表示のあとに作る。それ以降は今までどおりその場で作る
 let twistFirst = true;
+let genSettle = null;
+const genSettled = new Promise(r => { genSettle = r; });   // 起動のときの絵の一覧の読みこみが終わった（または失敗した）。最初のひとひねり案はこのあとに作る
 function lazyTwist(){
     if (!twistFirst) return suggestTwist();
     twistFirst = false;
     const m = session.menu;
-    requestAnimationFrame(() => setTimeout(() => {
+    // 起動直後の重い計算で、料理の絵の一覧の受け取り・描き直し・絵の読みこみを待たせない（献立の絵が届いてから作る。1.5秒たてば待たずに作る）
+    const cap = new Promise(r => setTimeout(r, 1500));
+    const pics = () => new Promise(r => setTimeout(r, 0)).then(() => Promise.all([...IMG_PROBED].map(src => new Promise(ok => { const im = new Image(); im.onload = im.onerror = ok; im.src = src; }))));   // 一覧が届いたあとの描き直し（すぐ）で頼んだ絵
+    Promise.race([genSettled.then(pics), cap]).then(() => requestAnimationFrame(() => setTimeout(() => {
         if (session.menu !== m || session.twist || !twistAvailable()) return;
         session.twist = suggestTwist();
         if (tab === 'today') scheduleRender();
-    }, 30));
+    }, 30)));
     return null;
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
@@ -3586,12 +3591,21 @@ function twistOptions(base){
     return {flavors, forms, swaps};
 }
 // 魚・えび・貝などを主役にした料理の主役を替える案（鶏むね肉で・たらで）は、手順の文が正しく直せるものだけ出す（いわし・いか・しじみ・ツナ缶などの下ごしらえや名前が残る案を出さない）
+// 答えは料理と案と言語だけで決まるので覚えておく（ひとひねりの候補を作るたびに、魚・えびの料理の案を作り直さない）。
+// 元の食材だけで決まる確かめ（加工品・塩鮭など）を先にして、だめなら案を作らない（結果は同じ）
+const twistSeaMemo = new WeakMap();
 function twistSeaOk(base, k){
     if (!['魚', '魚介'].includes(base.family)) return true;
-    const tw = buildTwist(twistId(base.id, '', '', k)); if (!tw) return false;
-    const from = base.items.find(i => i.key === base.protein), to = tw.items.find(i => i.changed);
-    if (!from || !to || !swapBody(seaItem(from) && inFam('fish', from) ? 'fish' : 'shellfish')(from)) return false;   // ツナ缶・ちくわ・かにかま・たらこ・じゃこなどの加工品は替えない
+    let mm = twistSeaMemo.get(base); if (!mm || mm.lang !== LANG){ mm = {lang: LANG, m: new Map()}; twistSeaMemo.set(base, mm); }
+    if (!mm.m.has(k)) mm.m.set(k, twistSeaCheck(base, k));
+    return mm.m.get(k);
+}
+function twistSeaCheck(base, k){
+    const from = base.items.find(i => i.key === base.protein);
+    if (!from || !swapBody(seaItem(from) && inFam('fish', from) ? 'fish' : 'shellfish')(from)) return false;   // ツナ缶・ちくわ・かにかま・たらこ・じゃこなどの加工品は替えない
     if (SEA_CURED.test(from.name + '|' + from.label)) return false;
+    const tw = buildTwist(twistId(base.id, '', '', k)); if (!tw) return false;
+    const to = tw.items.find(i => i.changed); if (!to) return false;
     if (!seaItem(to) && !/\d\s*g$/.test(String(to.qty))) return false;   // 分量を重さに直せない（1缶・4本など）
     return !seaLeft(tw.steps, [{from, to}]);
 }
@@ -3683,12 +3697,19 @@ function buildTwist(id){
 // 変化の数: 1=ちょっとだけ 2=しっかり 3=大胆に
 function generateTwists(opts={}){
     const {baseId=null, level=2, flavor='any', form='any', swap='any', count=3, fromIds=null} = opts;
+    // 全部の料理を元にするとき（よく作る料理・お気に入りがまだないとき）は、案の候補（数千）を作るのが重い。
+    // 候補は判定の鍵（苦手・アレルギーなど judgeSig）・言語・料理の並び・選んだ条件が同じあいだは同じなので覚えておく（乱数は使わない部分。点数をつける乱数は毎回いままでどおり引く）
+    const whole = !baseId && !(fromIds && fromIds.length);
+    const ck = whole ? [judgeSig(), allergyOn(), LANG, flavor, form, swap].join('\u0002') : null, C = generateTwists.c;
+    let all;
+    if (whole && C && C.key === ck && C.src.length === RECIPES.length && C.src.every((r, i) => r === RECIPES[i])) all = C.all;
+    else {
     let bases = baseId ? [RECIPES.find(r => r.id === baseId)] :
         (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物' && !isOkayu(r) && !NO_TWIST.has(r.id)));   // おかゆは、選んだとき・お気に入りや作った記録があるときだけ元にする
     // 苦手な食材が主役（主役を替えれば使わなくなる）の料理は、主役を替える案だけ出す
     const strict = r => r.items.filter(i => !i.opt && itemAvoided(i));
     bases = bases.filter(r => r && strict(r).every(i => i.key === r.protein));
-    const all = [];
+    all = [];
     bases.forEach(b => {
         const o = twistOptions(b);
         if (isOkayu(b)){
@@ -3705,9 +3726,11 @@ function generateTwists(opts={}){
             all.push({id: twistId(b.id, fl, fo, sw), n, base:b});
         })));
     });
+    if (whole) generateTwists.c = {key: ck, src: RECIPES.slice(), all};
+    }
     const seen = new Set(S.seenTwists);
     const eaten = new Set(S.history.map(h => h.id));
-    const scored = all.map(x => {
+    const scored0 = all.map(x => {
         let s = Math.random();
         s -= Math.abs(x.n - level) * 0.8;
         if (seen.has(x.id)) s -= 1.2;
@@ -3715,7 +3738,20 @@ function generateTwists(opts={}){
         if (S.favs.includes(x.base.id)) s += 0.25;
         if (daysSince(x.base.id) < 3) s -= 0.3;
         return {x, s};
-    }).sort((a,b) => b.s - a.s);
+    });
+    // 点数の高い順に、要るぶんだけ取り出す（数千の候補を毎回すべて並べかえない）。並びは sort（安定）と同じ: 点数の高い順、同じ点数は元の順。
+    // 上位 TOP 件で足りなければ、そこで全部を並べかえて続きから見る
+    const TOP = 48, sortAll = () => scored0.slice().sort((a,b) => b.s - a.s);
+    const scored = scored0.length <= TOP ? sortAll() : (() => {
+        const top = [];
+        for (const e of scored0){
+            if (top.length === TOP && e.s <= top[TOP - 1].s) continue;
+            let k = top.length; while (k > 0 && top[k - 1].s < e.s) k--;   // 同じ点数の後ろに入れる（元の順を保つ）
+            top.splice(k, 0, e); if (top.length > TOP) top.pop();
+        }
+        let full = null;
+        return {*[Symbol.iterator](){ for (const e of top) yield e; full = full || sortAll(); for (let i = TOP; i < full.length; i++) yield full[i]; }};
+    })();
     // 同じ元料理ばかりにならないように
     const out = [], usedBase = new Set();
     for (const {x} of scored){
@@ -4000,7 +4036,7 @@ function setTab(tb){
     tab = tb;
     const nt = NAV_OF[tb] || tb;   // 作り方は「今日」、材料から・ひとひねり・世界のレシピは「さがす」のタブを選んだ表示にする
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
-    window.scrollTo({top:0});   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）
+    window.scrollTo(0, 0);   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）。(0, 0) で呼ぶと、古い画面のレイアウトを計算せずに戻せる（{top:0} だと横の位置を知るために計算が走る。横には動かない画面なので同じ）
     { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
     // 設定で出した「献立をかえました」のお知らせは、決める段にもどったら消す（段の上に同じ文が出るので。2回出さない・料理名に重ねない。モニター第3回c）
     if (toast.avoidMsg && session.avoidNote && tb === 'today' && viewingStage() === 'decide'){ clearTimeout(toast.t); const tr = $('#toast-root'); if (tr) tr.innerHTML = ''; toast.avoidMsg = false; toast.undo = null; }
@@ -4078,12 +4114,12 @@ function fitPlaceholders(root){
     root.querySelectorAll('.ph-ex[data-ph-for]').forEach(n => n.remove());
     root.querySelectorAll('input[placeholder]:not([type=number]):not([type=date]):not([type=time]), input[data-ph-full]').forEach((el, i) => {
         const full = el.dataset.phFull || el.getAttribute('placeholder') || ''; if (!full) return;
-        el.setAttribute('placeholder', full);
+        if (el.getAttribute('placeholder') !== full) el.setAttribute('placeholder', full);   // 同じ値を入れ直さない（入れ直すと欄ごとにレイアウトの計算がやり直しになる）
         const w = el.clientWidth; if (!w) return;
         const cs = getComputedStyle(el), avail = w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
         phCanvas = phCanvas || document.createElement('canvas'); const cx = phCanvas.getContext('2d');
         cx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-        if (cx.measureText(full).width <= avail){ delete el.dataset.phFull; return; }
+        if (cx.measureText(full).width <= avail){ if (el.dataset.phFull != null) delete el.dataset.phFull; return; }
         el.dataset.phFull = full;
         const m = full.match(/^(.*?)\s*[（(]\s*(.+?)\s*[）)]\s*$/);
         el.setAttribute('placeholder', m && m[1] ? m[1] : '');
@@ -4546,8 +4582,10 @@ function photoOf(r){
    img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
    'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像。アプリから外部へは通信しない。 */
 const GEN = {};
+const GEN_INFO = {ok: false, any: false, ai: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
 const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名、読みこみ済みは true
 function addGenerated(items){
+    GEN_INFO.ok = false;
     Object.keys(items).forEach(id => {
         const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
         const v = '?v=' + encodeURIComponent(it.v || it.date || '');   // v は絵の中身から作った印（描き直すと変わる）
@@ -4556,16 +4594,20 @@ function addGenerated(items){
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
     });
 }
+// 起動のときは、ページの先頭で取りはじめた一覧（window.__genP）を使う。献立の画面が出ていれば、届いたらすぐ描き直す（ほかの読みこみとまとめる 250ms を待たない）
 async function loadGenerated(){
     try{
-        const res = await fetch('img/dish/manifest.json?v=' + encodeURIComponent(APP_VERSION + '.' + (window.ASSET_V || '')));
+        const early = window.__genP; window.__genP = null;
+        const url = 'img/dish/manifest.json?v=' + encodeURIComponent(window.ASSET_V || '');
+        const res = (early && await early) || await fetch(url);
         if (!res.ok) return;
         const m = await res.json();
         addGenerated((m && m.items) || {});
         Object.assign(GEN_BUNDLES, (m && m.bundles) || {});
         loadGenBundle(currentCountry());
-        if (Object.keys(GEN).length) scheduleRender();
+        if (Object.keys(GEN).length) scheduleRender(early && !sheet && !modalId ? 0 : undefined);   // シート・詳しい画面を開いているときは、いままでどおり（開いているものを急いで描き直さない）
     }catch(e){}
+    finally{ genSettle(); }
 }
 // 国の絵のまとまりを、その国を使うときにだけ読みこむ（manifest に bundles があるときだけ）
 async function loadGenBundle(cc){
@@ -4701,8 +4743,9 @@ function videoSearchUrl(r){ return 'https://www.youtube.com/results?search_query
 function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeURIComponent(c))}')`; }
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + (r.pack ? '' : ' 料理')); }
 function photoNote(){
-    let ai = false, anyGen = false;   // 数千件の GEN を配列にコピーしない
-    for (const k in GEN){ anyGen = true; if (GEN[k].ai){ ai = true; break; } }
+    // 数千件の GEN を描き直しのたびに見ない（GEN が変わるのは addGenerated だけ。そのときに覚え直す）
+    if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai){ GEN_INFO.ai = true; break; } } GEN_INFO.ok = true; }
+    const ai = GEN_INFO.ai, anyGen = GEN_INFO.any;
     const wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
     if (ai || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
     if (anyGen) return '';
@@ -7007,7 +7050,10 @@ function tofuStepFix(txt, tofu, o){
    肉→肉は、元の肉の言い方を置き換えた肉の言い方に。肉→豆腐は、肉の総称も豆腐に（ほかに肉が残っていないときだけ） */
 const PM_B = '(?<![\\p{L}])', PM_E = '(?![\\p{L}])';
 const pmRe = (src, latin) => new RegExp(latin ? PM_B + '(?:' + src + ')' + PM_E : '(?:' + src + ')', 'giu');
-const PACK_MEAT = {
+// 17言語ぶんの正規表現は、置き換えの文を作るときに初めて作る（起動のたびに作らない。日本で置き換えを使わない人は作らない）
+let PACK_MEAT_C = null;
+const PACK_MEAT = new Proxy({}, {get: (_, k) => (PACK_MEAT_C = PACK_MEAT_C || packMeatAll())[k]});
+function packMeatAll(){ return {
     en: {pork: ['pork', pmRe('(?:ground |minced )?pork(?: (?:belly|loin|shoulder|chops?|mince))?(?! (?:stock|broth|fat|rinds?))', 1)], chicken: ['chicken', pmRe('(?:ground |minced )?chicken(?: (?:thighs?|breasts?|legs?|pieces))?(?! (?:stock|broth|bouillon|fat|skin))', 1)], beef: ['beef', pmRe('(?:ground |minced )?beef(?: (?:mince|shin|chuck|steak))?(?! (?:stock|broth|bouillon|fat))', 1)], meat: pmRe('meat|mince', 1), tofu: 'tofu'},
     fil: {pork: ['baboy', pmRe('baboy', 1)], chicken: ['manok', pmRe('manok', 1)], beef: ['baka', pmRe('baka', 1)], meat: pmRe('karne', 1), tofu: 'tokwa'},
     id: {pork: ['daging babi', pmRe('(?:daging )?babi', 1)], chicken: ['ayam', pmRe('(?:daging )?ayam', 1)], beef: ['daging sapi', pmRe('(?:daging )?sapi', 1)], meat: pmRe('daging', 1), tofu: 'tahu'},
@@ -7026,7 +7072,7 @@ const PACK_MEAT = {
     ar: {pork: ['لحم الخنزير', pmRe('لحم الخنزير')], chicken: ['الفراخ', pmRe('(?:ال)?(?:فراخ|دجاج)')], beef: ['اللحم البقري', pmRe('لحم بقري|اللحم البقري')], meat: pmRe('(?:ال)?لحمة?'), tofu: 'التوفو'},
     hi: {pork: ['पोर्क', pmRe('पोर्क')], chicken: ['चिकन', pmRe('चिकन|मुर्गी')], beef: ['बीफ़', pmRe('बीफ़|बीफ')], meat: pmRe('मांस|गोश्त|मटन'), tofu: 'टोफू'},
     ja: {pork: ['豚肉', /豚[^\s、。をはがとにでのへや・]{0,8}?肉|豚肉|豚(?:バラ|ロース|こま|肩|もも|ひき)|豚(?![汁骨脂])/g], chicken: ['鶏肉', /鶏[^\s、。をはがとにでのへや・]{0,8}?肉|鶏肉|鶏(?:もも|むね|手羽|ひき)|鶏(?![ガ卵がら])/g], beef: ['牛肉', /牛[^\s、。をはがとにでのへや・乳]{0,8}?肉|牛肉|牛(?:バラ|すね|ひき|もも|肩)|牛(?![乳脂])/g], meat: /(?<![一-龠ァ-ヶーきぎ])肉(?![一-龠ァ-ヶーじ])/g, tofu: '豆腐'},
-};
+}; }
 const PM_FAMS = ['pork', 'chicken', 'beef'];
 function meatFamOf(i){ return i ? PM_FAMS.find(f => inFam(f, i)) || null : null; }
 // 各国の料理の手順の文に入れる、置き換えた食材の名前（「Chicken thigh, bite-size」→ 文の途中なら「chicken thigh」。ドイツ語の名詞はそのまま）
@@ -13124,8 +13170,10 @@ window.addEventListener('hashchange', () => { if (bootReady && /^#g=/.test(Strin
     if (vv){ vv.addEventListener('resize', () => { sync(); reveal(); }); vv.addEventListener('scroll', sync); }
     addEventListener('resize', () => { sync(); reveal(); });
     addEventListener('orientationchange', () => setTimeout(sync, 250));
-    document.addEventListener('focusin', () => { sync(); reveal(); });
-    document.addEventListener('focusout', () => setTimeout(sync, 60));
+    // フォーカスの移り変わりで見直すのは、文字の入力欄にいる（いた）ときだけ（ボタン・シートの間の移り変わりで、毎回レイアウトを計算させない。大きさの変化は resize で見る）
+    const kbMaybe = () => editing() || document.body.classList.contains('kb');
+    document.addEventListener('focusin', () => { if (kbMaybe()){ sync(); reveal(); } });
+    document.addEventListener('focusout', () => setTimeout(() => { if (kbMaybe()) sync(); }, 60));
     sync();
 })();
 (() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
