@@ -1855,6 +1855,7 @@ GOHAN_PACK({
       name: 'Thai rice porridge with pork balls (jok)',
       local: 'โจ๊กหมู',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'rice',
       protein: 'pork',
       min: 50,

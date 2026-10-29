@@ -1768,6 +1768,7 @@ GOHAN_PACK({
       name: 'Kanda poha (flattened rice with onion and peanuts)',
       local: 'कांदा पोहा',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'veg',
       min: 20,
@@ -1795,6 +1796,7 @@ GOHAN_PACK({
       name: 'Vegetable upma (savoury semolina)',
       local: 'सब्ज़ी उपमा',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'veg',
       min: 25,
@@ -1847,6 +1849,7 @@ GOHAN_PACK({
       name: 'Aloo paratha (potato-stuffed flatbread)',
       local: 'आलू पराठा',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'veg',
       min: 50,

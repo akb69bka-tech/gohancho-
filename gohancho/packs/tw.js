@@ -1789,6 +1789,7 @@ GOHAN_PACK({
       name: 'Taiwanese egg crepe',
       local: '蛋餅',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'egg',
       min: 20,

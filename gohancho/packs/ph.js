@@ -1316,6 +1316,7 @@ GOHAN_PACK({
       name: 'Garlic fried rice',
       local: 'Sinangag',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 15,
@@ -1338,6 +1339,7 @@ GOHAN_PACK({
       name: 'Chicken and ginger rice porridge',
       local: 'Arroz caldo',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'simmer',
       protein: 'chicken',
       min: 55,

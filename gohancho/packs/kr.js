@@ -1810,6 +1810,7 @@ GOHAN_PACK({
       name: 'Chicken and rice porridge',
       local: '닭죽',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'rice',
       protein: 'chicken',
       min: 60,
@@ -1835,6 +1836,7 @@ GOHAN_PACK({
       name: 'Beef and vegetable porridge',
       local: '소고기야채죽',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'rice',
       protein: 'beef',
       min: 45,

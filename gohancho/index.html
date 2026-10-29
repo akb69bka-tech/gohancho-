@@ -3303,6 +3303,9 @@ function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean)
 // 主菜の候補。おかゆは「おかゆの日」のときだけ出す（ふだんの献立・1週間プランの主菜には混ぜない）
 // 軽い食事（卵かけご飯・お茶漬け・おにぎり・雑炊）は、それだけで夕食の主菜にはおまかせで出さない。検索・作る記録・主菜にするでは選べる
 const LIGHT_MEALS = new Set(['tkg', 'ochazuke', 'onigiri', 'zosui']);
+// 朝食の料理。各国はパックの印（meal: 'breakfast'）、日本はここに書く（ハムエッグ）
+const BREAKFAST_JP = new Set(['hamuegg']);
+function breakfastMeal(r){ return !!r && (r.meal === 'breakfast' || (!r.pack && BREAKFAST_JP.has(r.id))); }
 // 時期が決まっている料理（行事の料理・夏の冷たい麺）。おまかせ・1週間プラン・あと1品の候補には、この月だけ出す。検索・材料から・自分で選ぶときは出す（第2回モニター Sr-E・F-P03・P10・S-N3。月は柊のデータ待ち）
 const SEASON_MONTHS = {zoni: [1], nanakusagayu: [1], hiyashichuka: [6, 7, 8, 9], somen: [6, 7, 8, 9]};
 function inSeason(r, d){ const ms = r && SEASON_MONTHS[r.id]; return !ms || ms.includes(Number(String(typeof d === 'string' ? d : TODAY).slice(5, 7))); }   // d: 日付（'YYYY-MM-DD'）。filter にそのまま渡しても今日で見る
@@ -3362,7 +3365,7 @@ function poolFor(slot){
     if (slot !== '主菜') return all;
     if (session.mood !== 'okayu' && all.some(isOkayu)) all = all.filter(r => !isOkayu(r));
     if (all.some(r => LIGHT_MEALS.has(r.id))) all = all.filter(r => !LIGHT_MEALS.has(r.id) || (session.mood === 'okayu' && OKAYU_QUICK.includes(r.id)));   // おかゆの日は、ご飯から作る雑炊を出す（R3）
-    if (all.some(r => r.meal === 'breakfast')) all = all.filter(r => r.meal !== 'breakfast');   // 朝食の料理（Pancakes・Oatmeal など）は夕食の主菜にしない（第4回 R4。さがす・自分で選ぶでは出す）
+    if (session.mood !== 'okayu' && all.some(breakfastMeal)) all = all.filter(r => !breakfastMeal(r));   // 朝食の料理（Pancakes・Menemen・Poha・ハムエッグなど）は夕食の主菜にしない（第4回 R4。さがす・自分で選ぶでは出す。おかゆの日は今までどおり）
     return all;
 }
 function mixWaiting(){ return mixCountries().some(cc => !BROWSE[cc] && !browseErr.has(cc)); }
@@ -5071,7 +5074,23 @@ const UPGRADES = {
     konnyakuitame:{add:'作りおき', why:'翌日のほうが味がしみておいしく、3〜4日もちます', skill:'切らずにちぎる', how:'ちぎった面はでこぼこが多く、味がよくからみます'},
 };
 // レシピに決まったひと手間がないときの、調理法ごとのひと手間（どの国でも出るので訳す）
-function upgradeByMethod(m){
+// 汁もの・あえもの・炊くもののひと手間は和食向き（だしパック・七味・かつお節・油揚げ）なので、洋・中・韓・エスニックの料理には、その料理に合うものを出す。
+// 各国の料理（genre 'local'）で合うものがないときは出さない（北条の報告: ミネストローネにだしパック）
+function upgradeByMethod(m, genre){
+    const g = !genre || genre === '和' ? '和' : genre === 'local' ? 'local' : genre;
+    if (g !== '和' && ['汁', '和え', '炊'].includes(m)){
+        const SOUP = {add: t('ごま油を数滴とこしょう'), why: t('仕上げに加えると、香りが立ってスープが引き締まります'), skill: t('味見してから塩'), how: t('スープの素や調味料は少なめに入れ、最後に味見して塩で整えると、塩辛くなりません')};
+        const DRAIN = {skill: t('水気をしっかり切る'), how: t('ゆでた野菜や塩もみした野菜は水気をしっかり切る。たれやドレッシングが薄まらず、水っぽくなりません')};
+        const V = {
+            '汁': {'洋': {add: t('パセリか粉チーズ'), why: t('仕上げにのせると、香りとこくが足されます'), skill: t('野菜を先に炒める'), how: t('玉ねぎなどの野菜を油でしんなりするまで炒めてから水を入れると、甘みが出ます')},
+                '中': SOUP, 'エスニック': Object.assign({}, SOUP, {add: t('レモンかライムをひとしぼり'), why: t('最後に加えると、酸味と香りが立ちます')}),
+                '韓': {add: t('白ごまと粉唐辛子少々'), why: t('韓国のスープらしい香りと色になります'), skill: t('具をごま油で炒める'), how: t('具を先にごま油で炒めてから水を入れると、こくのあるスープになります')}},
+            '和え': {'洋': Object.assign({add: t('粗びき黒こしょう'), why: t('仕上げにふると、香りが立って副菜が一品らしくなります')}, DRAIN),
+                '中': Object.assign({add: t('ごま油を数滴と白ごま'), why: t('香りが加わって、副菜が一品らしくなります')}, DRAIN)},
+            '炊': {'中': {add: t('ごま油を少しとこしょう'), why: t('仕上げにたらすと、香りが立ちます'), skill: t('ときどき底から混ぜる'), how: t('鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます')}},
+        }[m];
+        return V[g] || (g === '韓' || g === 'エスニック' ? V['中'] : null) || null;
+    }
     const U = {
         '煮':{add:t('絹さや・いんげんなど緑の野菜'), why:t('仕上げに散らすと彩りが出ます'), skill:t('冷まして味を含ませる'), how:t('煮物は冷めるときに味がしみます。火を止めて10分おく')},
         '炒':{add:t('にんにくか生姜のみじん切り'), why:t('油に香りを移してから炒めると、味に芯が通ります'), skill:t('強火で短時間'), how:t('フライパンをしっかり熱してから。野菜は水が出る前に仕上げる')},
@@ -5086,7 +5105,7 @@ function upgradeByMethod(m){
 // ひと手間も、料理と同じアレルギー・苦手の判定に通す。当たるものは出さず、作り方ごとの一言に替える（それも当たれば出さない）
 function upgradeOf(r){
     const base = r.isTwist ? r.base : r;
-    return [base.tip, UPGRADES[base.id], upgradeByMethod(base.method)].filter(Boolean).find(upgradeSafe) || null;
+    return [base.tip, UPGRADES[base.id], upgradeByMethod(base.method, base.genre)].filter(Boolean).find(upgradeSafe) || null;
 }
 function upgradeSafe(u){
     if (!u) return true;
@@ -6872,6 +6891,7 @@ function swappedRecipe(r){
     if (!pw && w.omit.some(i => i.key === r.protein || FAMILY[i.key] === r.family)){ const k = items.find(i => FAMILY[i.key] && FAMILY[i.key] !== '野菜'); fam = k ? FAMILY[k.key] : '野菜'; }
     const esc_ = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // 訳を重ねた日本の料理の手順は英語（stepLabel: 材料の名前を画面の言葉にしたとき（ベトナム語）の、手順の言葉での名前）
+    const meatLeftP = r.pack && items.some(i => !!meatFamOf(i));   // 各国の料理で、置き換えたあとも肉が残っているか（肉の総称を豆腐にしない）
     const enSteps = !r.pack && stepLangOf(r) === 'en', stepLab = i => (enSteps && i.stepLabel) || i.label;
     const repl = txt => w.swaps.reduce((s, x) => {
         // 作り方の文の中の名前も入れかえる（日本語の料理は「豚肉」「豚バラ肉」のような言い方も）
@@ -6880,8 +6900,9 @@ function swappedRecipe(r){
         // 英語の手順（日本の料理の訳）: 「the pork」「the chicken」のような短い言い方も入れかえる（第4回 L11。鶏ガラの「chicken stock」などは替えない）
         const famEn = enSteps ? MEAT_WORD_EN[FAMILY[x.from.key]] : null;
         if (famEn) s = s.replace(famEn, () => String(shortLabel({label: stepLab(x.to)})).toLowerCase());
-        return [...new Set([x.from.name, x.from.label, x.from.stepLabel])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
-            .reduce((u, n) => u.replace(/^[ぁ-ん]/.test(n) ? jaWordRe(n) : new RegExp(esc_(n), 'gi'), stepLab(x.to)), s);   // ひらがなの名前（たら）は「火が通ったら」の「たら」に当てない
+        s = [...new Set([x.from.name, x.from.label, x.from.stepLabel])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
+            .reduce((u, n) => u.replace(/^[ぁ-ん]/.test(n) ? jaWordRe(n) : new RegExp(esc_(n), 'gi'), m => r.pack ? packLabelIn(m, x.to, stepLangOf(r)) : stepLab(x.to)), s);   // ひらがなの名前（たら）は「火が通ったら」の「たら」に当てない
+        return r.pack ? packMeatRepl(s, x, stepLangOf(r), meatLeftP) : s;   // 各国の料理: 手順の言葉の「pollo」「ayam」「豬肉」「돼지고기」のような言い方も入れかえる（第4回 R9 の続き）
     }, String(txt));
     // 入れない材料（なくても作れる苦手な材料）は、作り方の文からも外す（「えびといんげんはゆでる」→「いんげんはゆでる」、「錦糸卵・えび・いんげん」→「錦糸卵・いんげん」）。
     // 外すと文が崩れるところ（「えびは粗く刻む」）は「えび（入れない）」と添える。残る材料と同じ言葉・ほかの材料の名前の一部（玉ねぎの「ねぎ」など）は触らない
@@ -6913,7 +6934,8 @@ function swappedRecipe(r){
     const shell = w.swaps.filter(x => inFam('shellfish', x.from) && !inFam('shellfish', x.to)), shellFix = txt => (shell.length ? shellPrepFix(txt) : txt);   // えびを肉にしたら、殻・背わたの下ごしらえを残さない
     // 魚・貝・いか・たこを置き換えたら、元の食材の言葉（英語の訳の「clams」「cod」など）と、その下ごしらえ（殻が開いたら…）も残さない（日本の料理だけ。各国の料理は recipeSwaps で置き換えない）
     const sea = w.swaps.filter(x => seaItem(x.from)), seaFix = txt => (sea.length ? (/[ぁ-ん]/.test(txt) ? seaPrepFix(txt) : seaPrepFixEn(sea.reduce((u, x) => seaReplEn(u, x.from, x.to), txt), sea.filter(x => !seaItem(x.to)).map(x => String(shortLabel(x.to)).toLowerCase()))) : txt);
-    const tofu = w.swaps.filter(x => x.tip === 'tofu'), meatLeft = items.some(i => ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key])), tofuFix = txt => (tofu.length ? tofuStepFix(txt, tofu, {en: enSteps, meatLeft, lab: stepLab}) : txt);
+    const tofu = w.swaps.filter(x => x.tip === 'tofu'), meatLeft = items.some(i => r.pack ? !!meatFamOf(i) : ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key]));
+    const tofuFix = txt => (!tofu.length ? txt : r.pack ? packTofuFix(txt, tofu, stepLangOf(r), meatLeft) : tofuStepFix(txt, tofu, {en: enSteps, meatLeft, lab: stepLab}));
     const steps = r.steps.map(st => typeof st === 'string' ? tofuFix(seaFix(shellFix(omitTxt(repl(st))))) : Object.assign({}, st, {t: tofuFix(seaFix(shellFix(omitTxt(repl(st.t)))))}));
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
 }
@@ -6953,6 +6975,80 @@ function tofuStepFix(txt, tofu, o){
         }
     }
     return u.trim();
+}
+/* 各国の料理の置き換え（第4回 R9 の続き）: 手順の文は、その国の言葉・日本語・英語のどれか（stepLangOf）。
+   PACK_MEAT[言語] = {pork, chicken, beef: [入れる言い方, 元の言い方の正規表現], meat: 肉の総称の正規表現, tofu: 豆腐の言い方, art: 冠詞の書きかえ}。
+   肉→肉は、元の肉の言い方を置き換えた肉の言い方に。肉→豆腐は、肉の総称も豆腐に（ほかに肉が残っていないときだけ） */
+const PM_B = '(?<![\\p{L}])', PM_E = '(?![\\p{L}])';
+const pmRe = (src, latin) => new RegExp(latin ? PM_B + '(?:' + src + ')' + PM_E : '(?:' + src + ')', 'giu');
+const PACK_MEAT = {
+    en: {pork: ['pork', pmRe('(?:ground |minced )?pork(?: (?:belly|loin|shoulder|chops?|mince))?(?! (?:stock|broth|fat|rinds?))', 1)], chicken: ['chicken', pmRe('(?:ground |minced )?chicken(?: (?:thighs?|breasts?|legs?|pieces))?(?! (?:stock|broth|bouillon|fat|skin))', 1)], beef: ['beef', pmRe('(?:ground |minced )?beef(?: (?:mince|shin|chuck|steak))?(?! (?:stock|broth|bouillon|fat))', 1)], meat: pmRe('meat|mince', 1), tofu: 'tofu'},
+    fil: {pork: ['baboy', pmRe('baboy', 1)], chicken: ['manok', pmRe('manok', 1)], beef: ['baka', pmRe('baka', 1)], meat: pmRe('karne', 1), tofu: 'tokwa'},
+    id: {pork: ['daging babi', pmRe('(?:daging )?babi', 1)], chicken: ['ayam', pmRe('(?:daging )?ayam', 1)], beef: ['daging sapi', pmRe('(?:daging )?sapi', 1)], meat: pmRe('daging', 1), tofu: 'tahu'},
+    'zh-Hans': {pork: ['猪肉', pmRe('五花肉|猪里脊|猪[^\\s，。、（）油骨]{0,3}?肉|猪肉')], chicken: ['鸡肉', pmRe('鸡[^\\s，。、（）蛋精汤粉油]{0,3}?肉|鸡块|鸡肉')], beef: ['牛肉', pmRe('牛腱|牛腩|牛[^\\s，。、（）奶油]{0,3}?肉|牛肉')], meat: pmRe('(?<![猪鸡牛羊鱼豆])肉(?![桂豆])'), tofu: '豆腐'},
+    'zh-Hant': {pork: ['豬肉', pmRe('五花肉|豬里肌|豬[^\\s，。、（）油骨]{0,3}?肉|豬肉')], chicken: ['雞肉', pmRe('雞[^\\s，。、（）蛋精湯粉油]{0,3}?肉|雞塊|雞肉')], beef: ['牛肉', pmRe('牛腱|牛腩|牛[^\\s，。、（）奶油]{0,3}?肉|牛肉')], meat: pmRe('(?<![豬雞牛羊魚豆])肉(?![桂豆])'), tofu: '豆腐'},
+    ko: {pork: ['돼지고기', pmRe('돼지고기|삼겹살|앞다리살|목살')], chicken: ['닭고기', pmRe('닭고기|닭가슴살|닭다리살|닭(?!걀)')], beef: ['소고기', pmRe('소고기|쇠고기|양지머리|양지|차돌박이')], meat: pmRe('(?<!물)고기'), tofu: '두부'},
+    vi: {pork: ['thịt heo', pmRe('thịt heo|thịt lợn|thịt ba chỉ|thịt nạc vai|heo', 1)], chicken: ['thịt gà', pmRe('thịt gà|(?<!trứng )gà', 1)], beef: ['thịt bò', pmRe('thịt bò|bò', 1)], meat: pmRe('thịt', 1), tofu: 'đậu hũ'},
+    th: {pork: ['หมู', pmRe('หมูสับ|หมู')], chicken: ['ไก่', pmRe('ไก่')], beef: ['เนื้อ', pmRe('เนื้อวัว|เนื้อ(?!ปลา)')], meat: pmRe('เนื้อสัตว์'), tofu: 'เต้าหู้'},
+    es: {pork: ['cerdo', pmRe('carne de cerdo|cerdo|puerco', 1), 'm'], chicken: ['pollo', pmRe('pollo', 1), 'm'], beef: ['carne de res', pmRe('carne de res|res|ternera|morcillo', 1), 'f'], meat: pmRe('carne(?! molida)|carne molida|carnes', 1), tofu: 'tofu', art: {m: {la: 'el', las: 'los', La: 'El', Las: 'Los'}, f: {el: 'la', los: 'las', del: 'de la', al: 'a la', El: 'La', Los: 'Las'}}},
+    'pt-BR': {pork: ['carne de porco', pmRe('carne de porco|porco|lombo', 1), 'f'], chicken: ['frango', pmRe('peito de frango|frango', 1), 'm'], beef: ['carne bovina', pmRe('carne bovina|patinho|alcatra|acém|músculo', 1), 'f'], meat: pmRe('carne', 1), tofu: 'tofu', art: {m: {a: 'o', as: 'os', da: 'do', 'à': 'ao', na: 'no', A: 'O'}, f: {o: 'a', os: 'as', do: 'da', ao: 'à', no: 'na', O: 'A'}}},
+    fr: {pork: ['porc', pmRe('porc', 1), 'm'], chicken: ['poulet', pmRe('poulet', 1), 'm'], beef: ['bœuf', pmRe('bœuf|boeuf|veau', 1), 'm'], meat: pmRe('viande', 1), tofu: 'tofu', art: {m: {la: 'le', La: 'Le'}, f: {}}},
+    it: {pork: ['maiale', pmRe('maiale', 1), 'm'], chicken: ['pollo', pmRe('pollo', 1), 'm'], beef: ['manzo', pmRe('manzo|vitello', 1), 'm'], meat: pmRe('carne|macinato', 1), tofu: 'tofu', art: {m: {la: 'il', La: 'Il', della: 'del', alla: 'al', nella: 'nel'}, f: {}}},
+    de: {pork: ['Schweinefleisch', pmRe('Schwein\\p{L}*', 1)], chicken: ['Hähnchenfleisch', pmRe('Hähnchen\\p{L}*|Hühner\\p{L}*', 1)], beef: ['Rindfleisch', pmRe('Rind\\p{L}*', 1)], meat: pmRe('Hackfleisch|Fleisch', 1), tofu: 'Tofu', art: {m: {das: 'den', Das: 'Den'}, f: {}}},
+    pl: {pork: ['wieprzowina', pmRe('wieprzow\\p{L}*|schab\\p{L}*|karków\\p{L}*', 1)], chicken: ['kurczak', pmRe('kurcza\\p{L}*|kurczę\\p{L}*', 1)], beef: ['wołowina', pmRe('wołow\\p{L}*', 1)], meat: pmRe('mięs\\p{L}*', 1), tofu: 'tofu'},
+    tr: {pork: ['domuz eti', pmRe('domuz eti', 1)], chicken: ['tavuk', pmRe('tavu\\p{L}*', 1)], beef: ['dana eti', pmRe('dana eti\\p{L}*|dana\\p{L}*|sığır eti', 1)], meat: pmRe('kıyma\\p{L}*|et(?:i|ini|in|le)?', 1), tofu: 'tofu'},
+    ar: {pork: ['لحم الخنزير', pmRe('لحم الخنزير')], chicken: ['الفراخ', pmRe('(?:ال)?(?:فراخ|دجاج)')], beef: ['اللحم البقري', pmRe('لحم بقري|اللحم البقري')], meat: pmRe('(?:ال)?لحمة?'), tofu: 'التوفو'},
+    hi: {pork: ['पोर्क', pmRe('पोर्क')], chicken: ['चिकन', pmRe('चिकन|मुर्गी')], beef: ['बीफ़', pmRe('बीफ़|बीफ')], meat: pmRe('मांस|गोश्त|मटन'), tofu: 'टोफू'},
+    ja: {pork: ['豚肉', /豚[^\s、。をはがとにでのへや・]{0,8}?肉|豚肉|豚(?:バラ|ロース|こま|肩|もも|ひき)|豚(?![汁骨脂])/g], chicken: ['鶏肉', /鶏[^\s、。をはがとにでのへや・]{0,8}?肉|鶏肉|鶏(?:もも|むね|手羽|ひき)|鶏(?![ガ卵がら])/g], beef: ['牛肉', /牛[^\s、。をはがとにでのへや・乳]{0,8}?肉|牛肉|牛(?:バラ|すね|ひき|もも|肩)|牛(?![乳脂])/g], meat: /(?<![一-龠ァ-ヶーきぎ])肉(?![一-龠ァ-ヶーじ])/g, tofu: '豆腐'},
+};
+const PM_FAMS = ['pork', 'chicken', 'beef'];
+function meatFamOf(i){ return i ? PM_FAMS.find(f => inFam(f, i)) || null : null; }
+// 各国の料理の手順の文に入れる、置き換えた食材の名前（「Chicken thigh, bite-size」→ 文の途中なら「chicken thigh」。ドイツ語の名詞はそのまま）
+function packLabelIn(m, to, sl){
+    const lab = String(shortLabel(to)) || to.label;
+    if (sl === 'de' || !/^[A-Za-zÀ-ɏ]/.test(lab)) return lab;
+    return /^\p{Lu}/u.test(m) ? lab.charAt(0).toUpperCase() + lab.slice(1) : lab.charAt(0).toLowerCase() + lab.slice(1);
+}
+function packMeatRepl(txt, x, sl, meatLeft){
+    const L = PACK_MEAT[sl], ff = meatFamOf(x.from); if (!L || !ff) return txt;
+    const tofu = x.tip === 'tofu', tf = tofu ? null : meatFamOf(x.to); if (!tofu && (!tf || tf === ff)) return txt;
+    const [word, gender] = tofu ? [L.tofu, 'm'] : [L[tf][0], L[tf][2]];
+    const sub = re => { const src = re.source, fl = re.flags.includes('g') ? re.flags : re.flags + 'g';
+        // 冠詞の性を入れる言葉に合わせる（la carne → el tofu、das Fleisch → den Tofu）
+        const art = L.art && gender && L.art[gender] || {}, arts = Object.keys(art);
+        if (arts.length) txt = txt.replace(new RegExp('(?<![\\p{L}])(' + arts.map(esc_re).join('|') + ')(\\s+)(?=' + src + ')', fl), (m, a, sp) => art[a] + sp);
+        txt = txt.replace(new RegExp(src, fl), m => {
+            if (sl === 'pl'){ const mm = m.match(/^(wołowin|wieprzowin)(\p{L}*)$/iu), ww = String(word).match(/^(wołowin|wieprzowin)a$/); if (mm && ww) return ww[1] + mm[2]; }   // ポーランド語: wołowinę → wieprzowinę（語尾をそのまま）
+            return /^\p{Lu}/u.test(m) && sl !== 'de' ? word[0].toUpperCase() + word.slice(1) : word; }); };
+    sub(L[ff][1]);
+    if (tofu && !meatLeft) sub(L.meat);
+    return txt;
+}
+// 肉を豆腐に置き換えた各国の料理: 豆腐が出てくる文に、肉の火の通しの目安が残っていたら直す。
+//  色で見る目安（ピンク色が消えるまで・色が変わるまで・脂が出るまで）の文は、置き換えの説明に差し替える。「火が通るまで」・長く煮る文は残し、あとに説明を添える
+const PACK_TOFU_COLOR = /赤い部分|赤いところ|脂が出|pink|\brosa|rosad|\brosé|\brose\b|różow|pembe|وردي|الأحمر|गुलाबी|ピンク|赤み|色が変わ|粉紅|粉红|變色|变色|出油|煸|붉은|kulay-rosas|pumula|merah muda|hồng|สีชมพู|เปลี่ยนสี|changes? colou?r|nirgends mehr/i;
+const PACK_TOFU_DONE = /火が通る|熟透|炒熟|煮熟|익을|익힌|익혀|maluto|sampai matang|chín|สุก|cooked through|until (?:done|cooked)|durchgegart|bien cuit|cuit à cœur|ben cott|bien cocid|bien hech|bem cozid|ugotowan|upieczon|iyice pişene/i;
+const PACK_MIN_RE = /(\d+)\s*(?:[-–〜~]|to|a|à|bis|hanggang|sampai|đến|до)?\s*(\d+)?\s*(?:min|minutes?|minuto|minutos|minuten|menit|phút|นาที|分|분|دقيقة|دقائق|मिनट|dakika|minut)/gi;
+function packTofuFix(txt, tofu, sl, meatLeft){
+    const L = PACK_MEAT[sl]; if (!L) return txt;
+    const words = [L.tofu, ...tofu.map(x => String(shortLabel(x.to)))].map(s => s.toLowerCase());
+    const has = sn => words.some(w => sn.toLowerCase().includes(w));
+    const long = sn => { let mx = 0; String(sn).replace(PACK_MIN_RE, (m, a, b) => { mx = Math.max(mx, Number(b || a)); return m; }); return mx >= 10 && /boil|simmer|stew|braise|rebus|lutuin|pakuluan|luộc|ninh|hầm|kho|煮|燉|炖|끓|삶|ต้ม|cuece|cocina|hierv|cozinh|cuire|bouill|mijot|cuoc|kochen|köchel|gotuj|dusić|pişir|haşla|اسلق|طبخ|पका|उबाल|煮る|ゆで/i.test(sn); };
+    const x = tofu[0], note = tofuNote(sl, String(shortLabel(x.to)), String(shortLabel(x.from)));
+    const parts = String(txt).split(/(?<=[.!?。！？])\s*/), out = [];
+    parts.forEach(sn => {
+        if (!has(sn)){ out.push(sn); return; }
+        if (PACK_TOFU_COLOR.test(sn)){ if (!out.includes(note)) out.push(note); return; }
+        out.push(sn); if ((PACK_TOFU_DONE.test(sn) || long(sn)) && !out.includes(note)) out.push(note);
+    });
+    return out.join(/^(?:zh|ja)/.test(sl) ? '' : ' ').trim();
+}
+// 置き換えの説明の1文（手順の文の言葉で。画面の言葉と同じなら辞書、日本語・英語はそのまま）
+function tofuNote(sl, to, from){
+    if (sl === 'ja') return to + 'は' + from + 'の代わりです。崩れないように扱い、中まで温めてください。';
+    if (/^(?:en|fr|it|es|pt|pl|tr|id|fil|vi)/.test(sl)){ to = to.toLowerCase(); from = from.toLowerCase(); }   // 文の途中の名前は小文字（ドイツ語の名詞はそのまま）
+    if (sl === LANG){ const s1 = t('{to}は{from}の代わりです。崩れないように扱い、中まで温めてください。', {to, from}); return s1.charAt(0).toUpperCase() + s1.slice(1); }
+    return `The ${to.toLowerCase()} replaces the ${from.toLowerCase()}; handle it gently and heat it through.`;
 }
 function esc_re(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 // えび・魚を肉に置き換えたときの分量（モニター第3回 S2）: 元の重さに合わせる。「えび 4尾」なら 80g（尾・切れの数え方も、肉のふだんの分量「2枚（500g）」も使わない）

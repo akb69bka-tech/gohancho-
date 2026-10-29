@@ -116,6 +116,7 @@ GOHAN_PACK({
       name: 'Eggs with tomatoes and peppers',
       local: 'Menemen',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 20,
@@ -1194,6 +1195,7 @@ GOHAN_PACK({
       name: 'Poached eggs on garlic yogurt',
       local: 'Çılbır',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'simmer',
       protein: 'egg',
       min: 20,
@@ -1316,6 +1318,7 @@ GOHAN_PACK({
       name: 'Eggs fried with sucuk',
       local: 'Sucuklu yumurta',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'processed',
       min: 15,
