@@ -11,13 +11,17 @@ const QUICK = process.env.QUICK === '1', REPS = Number(process.env.REPS || (QUIC
     await p.addInitScript(([cc, n]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded:true, firstUse:'2026-10-26', settings:{country:cc, dishCount:n}})); } }, [cc, n]);
     await p.goto(BASE_); await ready(p);
     await p.evaluate(() => { window.hasPro = () => true; session.menu = null; render(); });
-    const snap = () => p.evaluate(() => ({ids: session.menu.items.map(x => x.r ? x.r.id : '-'), rice: (document.querySelector('.tray .spot.rice') || {}).textContent || ''}));
+    // ご飯の欄の文字（「新」の札は、変わった印なので文字には入れない）と、「新」の札が付いている枠
+    const snap = () => p.evaluate(() => ({ids: session.menu.items.map(x => x.r ? x.r.id : '-'), rice: (e => { if (!e) return ''; const c = e.cloneNode(true); c.querySelectorAll('.fresh-tag').forEach(x => x.remove()); return c.textContent; })(document.querySelector('.tray .spot.rice')),
+      fresh: [...document.querySelectorAll('.tray .spot.fresh [data-act="reroll"]')].map(b => Number(b.dataset.i)), riceFresh: !!document.querySelector('.tray .spot.rice.fresh')}));
     const nBtn = await p.evaluate(() => document.querySelectorAll('.tray [data-act="reroll"]').length);
     for (let rep = 0; rep < REPS; rep++) for (let k = 0; k < nBtn; k++) {
       const a = await snap();
       const i = await p.evaluate(k => { const b = document.querySelectorAll('.tray [data-act="reroll"]')[k]; const i = b.dataset.i; b.click(); return Number(i); }, k);
       const c = await snap(); total++;
       const others = a.ids.some((x, j) => j !== i && x !== c.ids[j]);
+      // 「新」の札は、変わった料理（押した枠）だけに付く。ご飯の欄には付かない
+      if (a.ids[i] !== c.ids[i] && (c.fresh.join() !== String(i) || c.riceFresh)) { bad++; if (bad < 12) console.log('BAD 新の札', cc, n, 'i=' + i, JSON.stringify(c.fresh), c.riceFresh); }
       if (others || a.rice.replace(/かえる|Change|\s/g, '') !== c.rice.replace(/かえる|Change|\s/g, '')) { bad++; if (bad < 12) console.log('BAD', cc, n, 'i=' + i, 'rep=' + rep, 'k=' + k, '再現: SEED=' + SEED + ' CC=' + cc + ' n=' + n, JSON.stringify(a), '->', JSON.stringify(c)); }
     }
     await ctx.close();

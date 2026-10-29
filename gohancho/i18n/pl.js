@@ -1597,4 +1597,5 @@ GOHAN_I18N('pl', {
     "仕上げにたらすと、香りが立ちます": "Odrobina na koniec wydobywa aromat",
     "ときどき底から混ぜる": "Od czasu do czasu mieszaj od dna",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Od czasu do czasu delikatnie mieszaj od dna, żeby nie przywarło; zbyt częste mieszanie robi z tego kleistą masę",
+    "新": "Nowe",
 });

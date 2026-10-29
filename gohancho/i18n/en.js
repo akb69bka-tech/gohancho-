@@ -1598,4 +1598,5 @@ GOHAN_I18N('en', {
     "仕上げにたらすと、香りが立ちます": "A drizzle at the end brings out the aroma",
     "ときどき底から混ぜる": "Stir from the bottom now and then",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Gently stir from the bottom now and then so it doesn't stick; stirring too much makes it gluey",
+    "新": "New",
 });

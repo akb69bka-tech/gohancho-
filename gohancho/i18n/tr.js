@@ -1597,4 +1597,5 @@ GOHAN_I18N('tr', {
     "仕上げにたらすと、香りが立ちます": "Sonunda gezdirince kokusu açılır",
     "ときどき底から混ぜる": "Ara sıra dipten karıştırın",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Dibine tutmaması için ara sıra dipten nazikçe karıştırın; fazla karıştırmak yapışkan yapar",
+    "新": "Yeni",
 });

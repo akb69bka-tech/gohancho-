@@ -1597,4 +1597,5 @@ GOHAN_I18N('vi', {
     "仕上げにたらすと、香りが立ちます": "Rưới chút vào cuối cùng để dậy mùi",
     "ときどき底から混ぜる": "Thỉnh thoảng khuấy từ đáy nồi",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Thỉnh thoảng khuấy nhẹ từ đáy nồi để không bị dính; khuấy quá nhiều sẽ bị sệt dính",
+    "新": "Mới",
 });

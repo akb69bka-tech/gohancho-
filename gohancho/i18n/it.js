@@ -1597,4 +1597,5 @@ GOHAN_I18N('it', {
     "仕上げにたらすと、香りが立ちます": "Un filo alla fine fa uscire il profumo",
     "ときどき底から混ぜる": "Mescola ogni tanto dal fondo",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Mescola delicatamente dal fondo ogni tanto perché non si attacchi; mescolare troppo la rende collosa",
+    "新": "Nuovo",
 });

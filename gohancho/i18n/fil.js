@@ -1597,4 +1597,5 @@ GOHAN_I18N('fil', {
     "仕上げにたらすと、香りが立ちます": "Ipatak sa dulo para lumabas ang bango",
     "ときどき底から混ぜる": "Haluin paminsan-minsan mula sa ilalim",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Haluin nang marahan mula sa ilalim paminsan-minsan para hindi dumikit; kapag sobrang hinalo, lalagkit",
+    "新": "Bago",
 });

@@ -2,6 +2,7 @@
 // 「まるごと入れ替え」をお膳の表に出す（オーナーの指示）の回帰テスト（Playwright。使い方: node tools/tests/marugoto.mjs [http://localhost:8881/]）
 //  1. 決める段の表（条件シートを開かずに）に「まるごと入れ替え」があり、「今日の一膳」の見出しの行（狭いときはすぐ下の行）・「この一膳にする」より上にある。44px 以上で押しやすい
 //  1b. スクロールしなくても最初の画面で見えて押せる（360×740・390×844・大きい文字）。下の「この一膳にする」の帯やお知らせの後ろに隠れない（オーナーの指示）
+//  1c. お膳は全部の料理を上下2段（上 ⌈席/2⌉・下 ⌊席/2⌋、下は左端ご飯・右端汁もの）。段のあいだの真ん中に丸い「まるごと入れ替え」。押すと変わった料理だけに「新」の札
 //  2. 押すと献立がまるごと変わる（主菜も入れ替わる）。条件シートのいちばん下のボタンも残っている
 //  3. 決めた献立を出しているときは、先に確かめる（シート）。やめると何も変わらない。作り直すと決めた献立（S.cook）はそのままで「元に戻す」が出て、押すと元の案に戻る
 //  4. 「かえる」で1品を変えても、ほかの料理は変わらない
@@ -74,6 +75,47 @@ for (const [vp, ts, n, lang] of [[[360, 740], 0, 3, 'ja'], [[360, 740], 0, 6, 'j
     // 実際に押して（指で押す位置に出ている）献立が変わる
     const a = await ids(p); await p.locator(BTN).click({trial: false}); await p.waitForTimeout(300); const c = await ids(p);
     ok(c[0] && c[0] !== a[0] && await p.evaluate(() => scrollY) === 0, `${tag} そのまま押すと入れ替わる（画面は動かない）: ` + JSON.stringify([a, c]));
+    await ctx.close();
+}
+
+// 1c お膳（最初のデザイン・基準書 2章）: すべての料理を上下2段に（上 ⌈席/2⌉・下 ⌊席/2⌋。上は主菜→副菜、下は左端ご飯・右端汁もの）。段のあいだの真ん中に丸い「まるごと入れ替え」。
+//    押すと変わった料理だけに「新」の札（変わらなかった料理・ご飯には付かない）
+const MID = '#view .tray .tg-mid .shuffle[data-act=new-menu]';
+for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], ['JP', 5, 'ja'], ['JP', 6, 'ja'], ['US', 4, 'en'], ['KR', 5, 'ko'], ['EG', 3, 'ar']]){
+    const {p, ctx} = await open({country: cc, uiLang: lang, dishCount: n});
+    const tag = `M1c ${cc} ${n}品`;
+    const g = await p.evaluate(sel => {
+        const tr = document.querySelector('#view .tray'), rows = [...tr.querySelectorAll('.tg-row')], b = document.querySelector(sel); if (!b || !rows.length) return null;
+        const seat = e => e.classList.contains('rice') ? 'rice' : e.classList.contains('main') ? 'main' : e.classList.contains('side') ? 'side' : 'soup';
+        const R = b.getBoundingClientRect(), ic = b.querySelector('.sh-ic').getBoundingClientRect(), T = tr.getBoundingClientRect();
+        const rs = rows.map(r => [...r.children].map(seat)), rr = rows.map(r => r.getBoundingClientRect());
+        const vs = rows.map(r => [...new Set([...r.querySelectorAll('.vessel')].map(v => Math.round(v.parentElement.getBoundingClientRect().width)))]);
+        const rtl = getComputedStyle(tr).direction === 'rtl';
+        const lowerX = rows[1] ? [...rows[1].children].map(e => e.getBoundingClientRect().left) : [];
+        return {rows: rs, nItems: session.menu.items.filter(x => x.r || x.slot !== '汁物').length, mid: Math.abs((R.left + R.right) / 2 - (T.left + T.right) / 2), between: rr[0].bottom <= ic.top + 1 && (!rr[1] || ic.bottom <= rr[1].top + 1),
+            ic: Math.round(ic.width), label: b.textContent.trim(), sameSize: vs.every(x => x.length <= 1), rtl, lowerX};
+    }, MID);
+    ok(!!g, `${tag} お膳に2段と真ん中の丸がある: ` + JSON.stringify(g));
+    if (g){
+        const all = g.rows.flat(), top = g.rows[0].length, low = (g.rows[1] || []).length;
+        ok(top === Math.ceil(all.length / 2) && low === Math.floor(all.length / 2), `${tag} 上 ⌈席/2⌉・下 ⌊席/2⌋（${top}/${low}）: ` + JSON.stringify(g.rows));
+        const lo = g.rows[1] || [];
+        ok(!all.includes('rice') || (lo[0] === 'rice'), `${tag} ご飯の席は下の段の端: ` + JSON.stringify(g.rows));
+        ok(!lo.length || !lo.includes('soup') || lo[lo.length - 1] === 'soup' || (all.length === 3 && g.rows[0].includes('soup')), `${tag} 汁ものは下の段の反対の端: ` + JSON.stringify(g.rows));
+        ok(g.rows[0][0] === 'main', `${tag} 上の段は主菜から: ` + JSON.stringify(g.rows));
+        ok(g.mid <= 2 && g.between && g.ic >= 56 && g.ic <= 64 && g.label.length > 0, `${tag} 丸は段のあいだの横の真ん中（直径56〜64px・文字つき）: ` + JSON.stringify(g));
+        ok(g.sameSize, `${tag} 同じ段の器は同じ大きさ: ` + JSON.stringify(g));
+        if (g.rtl && g.lowerX.length > 1) ok(g.lowerX[0] > g.lowerX[g.lowerX.length - 1], `${tag} 右から左の言語では、段の中の順も右から: ` + JSON.stringify(g.lowerX));
+    }
+    const riceTx = () => p.evaluate(() => { const e = document.querySelector('#view .tray .spot.rice'); if (!e) return ''; const c = e.cloneNode(true); c.querySelectorAll('.fresh-tag').forEach(x => x.remove()); return c.textContent.replace(/\s/g, '') + '|' + (((e.querySelector('.vessel') || {}).className || '').match(/v-[a-z]+/) || [''])[0]; });
+    const a = await ids(p), r0 = await riceTx();
+    await p.click(MID); await p.waitForTimeout(400);
+    const c = await ids(p), r1 = await riceTx();
+    const fr = await p.evaluate(() => ({fresh: [...document.querySelectorAll('#view .tray .spot.fresh [data-act=reroll]')].map(b => Number(b.dataset.i)), tags: document.querySelectorAll('#view .tray .fresh-tag').length, rice: !!document.querySelector('#view .tray .spot.rice.fresh')}));
+    const changed = a.map((x, i) => x !== c[i] && c[i] ? i : -1).filter(i => i >= 0);
+    ok(c[0] && c[0] !== a[0], `${tag} 真ん中の丸で献立がまるごと変わる: ` + JSON.stringify([a, c]));
+    const riceChanged = !!r1 && r0 !== r1;   // ご飯の席がなくなったとき（一品ものの主菜）は札を付ける席がない
+    ok(JSON.stringify(fr.fresh.sort()) === JSON.stringify(changed.sort()) && fr.rice === riceChanged && fr.tags === changed.length + (riceChanged ? 1 : 0), `${tag} 変わった料理だけに「新」の札: ` + JSON.stringify([changed, fr, r0, r1]));
     await ctx.close();
 }
 

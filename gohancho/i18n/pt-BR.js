@@ -1597,4 +1597,5 @@ GOHAN_I18N('pt-BR', {
     "仕上げにたらすと、香りが立ちます": "Um fio no final realça o aroma",
     "ときどき底から混ぜる": "Mexa de vez em quando pelo fundo",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Mexa com cuidado pelo fundo de vez em quando para não grudar; mexer demais deixa grudento",
+    "新": "Novo",
 });

@@ -1597,4 +1597,5 @@ GOHAN_I18N('es', {
     "仕上げにたらすと、香りが立ちます": "Un chorrito al final saca el aroma",
     "ときどき底から混ぜる": "Remueve de vez en cuando desde el fondo",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Remueve con suavidad desde el fondo de vez en cuando para que no se pegue; si remueves demasiado, queda pegajoso",
+    "新": "Nuevo",
 });

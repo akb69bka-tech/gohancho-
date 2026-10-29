@@ -1597,4 +1597,5 @@ GOHAN_I18N('id', {
     "仕上げにたらすと、香りが立ちます": "Dituang sedikit di akhir, aromanya keluar",
     "ときどき底から混ぜる": "Sesekali aduk dari dasar",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Sesekali aduk perlahan dari dasar panci agar tidak lengket; terlalu sering diaduk membuatnya lengket",
+    "新": "Baru",
 });

@@ -1597,4 +1597,5 @@ GOHAN_I18N('de', {
     "仕上げにたらすと、香りが立ちます": "Zum Schluss darübergeträufelt, bringt es den Duft hervor",
     "ときどき底から混ぜる": "Ab und zu vom Boden her umrühren",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Ab und zu vorsichtig vom Boden her umrühren, damit nichts ansetzt; zu viel Rühren macht es klebrig",
+    "新": "Neu",
 });

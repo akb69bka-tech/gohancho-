@@ -1597,4 +1597,5 @@ GOHAN_I18N('fr', {
     "仕上げにたらすと、香りが立ちます": "Un filet à la fin fait ressortir le parfum",
     "ときどき底から混ぜる": "Remuer de temps en temps depuis le fond",
     "鍋底につかないよう、ときどき底からそっと混ぜる。混ぜすぎると粘りが出ます": "Remuez doucement depuis le fond de temps en temps pour que ça n'attache pas ; trop remuer rend le tout collant",
+    "新": "Nouveau",
 });

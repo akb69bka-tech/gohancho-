@@ -978,6 +978,46 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .p2-ok{font-family:var(--gothic,var(--font-body));font-size:var(--fs12);font-weight:600;letter-spacing:0;color:var(--leaf);border:1px solid var(--leaf);border-radius:var(--r-pill);padding:2px var(--s8)}
 .p2-sv{display:flex;flex-direction:column;align-items:flex-end;gap:0;min-height:var(--tap-sm,44px);padding:var(--s4) var(--s12);border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;cursor:pointer;max-width:60%;text-align:end}
 .p2-sv .small{font-weight:400;font-size:var(--fs12);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+/* お膳（最初のデザイン）: こげ茶のお膳に、すべての料理を上下2段で。器の縁は青を使わず、こげ茶・生成りにする */
+.tray.grid2{--rim:#9a6a48;display:flex;flex-direction:column;gap:0;padding:12px 8px;border-radius:var(--r-xl);--vs:clamp(48px,calc((100vw - 64px) / var(--c) - 20px),104px)}
+.tg-row{display:grid;grid-template-columns:repeat(var(--c),minmax(0,1fr));gap:4px;justify-content:center;align-items:start}
+.tg-row[style*="--n:"]{grid-template-columns:repeat(var(--n),minmax(0,calc((100% - (var(--c) - 1) * 4px) / var(--c))));}
+.tray.grid2 .spot{width:auto;display:grid;grid-template-rows:var(--vs) auto auto;justify-items:center;align-items:start;gap:3px;position:relative;padding:2px 0}
+.tray.grid2 .spot .vessel{align-self:center;width:var(--vs);max-width:100%}
+.tray.grid2 .spot .v-kobachi,.tray.grid2 .spot .v-wan{width:calc(var(--vs) * .86)}
+.tray.grid2 .spot .v-chawan{width:calc(var(--vs) * .8)}.tray.grid2 .spot .v-konomono{width:calc(var(--vs) * .66)}
+.tray.grid2 .spot .vessel.gen{width:var(--vs)}
+.tray.grid2 .spot-label{width:100%;align-items:center}
+.tray.grid2 .spot-label .slot{font-size:var(--fs12,.75rem);letter-spacing:.08em;line-height:1.3}
+.tray.grid2 .spot-label .slot{font-size:.6875rem}
+.tray.grid2 .spot-label .nm{font-size:.8125rem;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;height:2.6em}
+.tray.grid2[style*="--c:4"] .spot-label .nm{-webkit-line-clamp:3;line-clamp:3;height:3.9em}
+.tray.grid2 .spot-label .nm.none{font-size:var(--fs12,.75rem);font-weight:400}
+.tray.grid2 .spot-label .mt,.tray.grid2 .spot-label .dwhy{display:none}
+.tray.grid2 .spot .swap{position:relative;min-height:34px;height:auto;padding:0 .7rem;font-size:var(--fs12,.75rem);max-width:100%;white-space:nowrap;overflow:visible}
+.tray.grid2 .spot .swap::after{content:"";position:absolute;inset:-5px -2px}   /* 押せる範囲は 44px（見た目は 34px） */
+.tray.grid2 .spot .swap.swap-ph{display:block;height:36px;visibility:hidden}
+.tray.grid2 .wsh-tag{position:absolute;top:0;inset-inline-start:0;z-index:1;max-width:100%;font-size:.65rem}
+.tg-mid{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 4px}
+.tg-mid::before,.tg-mid::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18))}
+.tg-mid::after{background:linear-gradient(90deg,rgba(255,255,255,.18),transparent)}
+.tg-mid .shuffle{flex-direction:column;align-items:center;gap:3px;max-width:min(11rem,48vw);min-width:64px;color:var(--tray-ink);font-size:var(--fs12,.75rem)}
+.tg-mid .shuffle .sh-ic{width:var(--shd,64px);height:var(--shd,64px);border:2px solid var(--accent);background:var(--porcelain);color:var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.35)}
+@media (max-width:374px){.tg-mid .shuffle .sh-ic{--shd:56px}}
+.tg-mid .shuffle svg{width:28px;height:28px}
+.tg-mid .shuffle .sh-tx{min-height:0;line-height:1.2;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+/* 入れ替えで変わった料理: 器のまわりが一度光り、「新」の札（次に変わるまで） */
+.spot .fresh-tag{position:absolute;top:0;inset-inline-end:2px;z-index:2;font-size:.68rem;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;background:var(--accent);color:#fff;pointer-events:none}
+.spot.fresh .vessel{animation:freshGlow 1.4s ease-out 1}.spot.fresh .vessel.rise-in{animation:rise .35s ease-out backwards,freshGlow 1.4s ease-out .3s 1}
+@keyframes freshGlow{0%{box-shadow:0 0 0 0 rgba(240,200,116,.95)}60%{box-shadow:0 0 0 8px rgba(240,200,116,.35)}100%{box-shadow:0 0 0 0 rgba(240,200,116,0)}}
+@media (prefers-reduced-motion: reduce){.spot.fresh .vessel{animation:none}}
+/* 詰め（器が 60px を切りそうな画面）: 「かえる」を器の右上に重ねた丸いボタン（見た目 36px・押せる範囲 44px）にする。名前は2行のまま */
+.tray.grid2.tight .spot{grid-template-rows:var(--vs) auto}
+.tray.grid2.tight .spot .swap{position:absolute;top:calc(var(--vs) - 40px);inset-inline-end:0;width:36px;height:36px;min-height:0;padding:0;border-radius:50%;font-size:0;background:var(--tray-2);border:1.5px solid var(--tray-muted);display:flex;align-items:center;justify-content:center;z-index:2}
+.tray.grid2.tight .spot .swap::before{font-size:16px;margin:0;color:var(--tray-ink)}
+.tray.grid2.tight .spot .swap[data-act="soup-add"]::before,.tray.grid2.tight .spot .swap.tray-add::before{content:"+"}
+.tray.grid2.tight .spot .swap.swap-ph{display:none}
+.tray.grid2.tight .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
 /* 「まるごと入れ替え」: 見出しの行の右（入りきらないときは、すぐ下の行の右）。丸い印＋文字の横長のボタン、高さ48px。お膳や「この一膳にする」の帯に隠れない（オーナーの指示） */
 .p2-head .head-shuffle{flex-direction:row;align-items:center;gap:var(--s8);max-width:100%;min-height:48px;padding:var(--s4) var(--s16) var(--s4) var(--s4);border:1.5px solid var(--line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font-size:var(--fs14);font-weight:700;text-align:start;box-shadow:var(--shadow-1)}
 .p2-head .head-shuffle .sh-ic{width:40px;height:40px;border:0;background:var(--stage-2);color:var(--ink);box-shadow:none}
@@ -4096,6 +4136,29 @@ function fitPlaceholders(root){
 }
 document.addEventListener('toggle', e => { if (e.target && e.target.tagName === 'DETAILS' && e.target.open) guard('ph', () => fitPlaceholders(e.target)); }, true);
 document.addEventListener('toggle', e => { const d = e.target; if (d && d.tagName === 'DETAILS' && d.dataset && d.dataset.bf) session['bf_' + d.dataset.bf] = d.open; }, true);   // 買う段の畳んだ欄は、描き直しても開いたまま   // 畳んだ欄を開いたとき
+/* お膳の大きさ合わせ（最初のデザイン）: すべての料理が、最初の画面で下の固定の帯（この一膳にする・下のタブ）より上に収まるように、器の大きさ（--vs）を決める。
+   器が小さくなりすぎるときは「詰め」（枠名を隠す・名前1行）にする。同じ画面の大きさ・同じ並びなら同じ値を使い、入れ替えや「かえる」でお膳の大きさが変わらないようにする */
+const TRAY_FIT = {key: '', vs: 0, tight: false};
+function fitTray(){
+    const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
+    const key = [innerWidth, innerHeight, document.documentElement.getAttribute('data-ts') || '', tr.style.getPropertyValue('--c'), tr.querySelectorAll('.tg-row').length, tr.querySelector('.spot .ex') ? getComputedStyle(tr.querySelector('.spot .ex')).minHeight : '', tr.offsetTop > 0 ? Math.round(tr.getBoundingClientRect().top + scrollY) : 0].join('|');
+    const apply = () => { tr.classList.toggle('tight', TRAY_FIT.tight); if (TRAY_FIT.vs) tr.style.setProperty('--vs', TRAY_FIT.vs + 'px'); };
+    tr.classList.remove('tight'); tr.style.removeProperty('--vs');
+    let floor = innerHeight;
+    document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < floor) floor = r.top; });
+    const top = tr.getBoundingClientRect().top + scrollY, avail = floor - top - 8;
+    const rows = tr.querySelectorAll('.tg-row').length || 1;
+    const vessel = tr.querySelector('.spot'), vs0 = vessel ? parseFloat(getComputedStyle(vessel).gridTemplateRows) || 64 : 64;
+    let tight = false, vs = vs0;
+    const over = () => tr.getBoundingClientRect().height - avail;
+    let d = over();
+    // 器は 60px まで小さくしてよい（基準書 2-5）。それでも入らないときは「かえる」を器の右上の丸いボタンにして（7章 2A）、空いた高さのぶん器を大きく戻す
+    if (d > 0){ vs = Math.max(60, Math.floor(vs0 - d / rows)); tr.style.setProperty('--vs', vs + 'px'); d = over(); }
+    if (d > 0){ tight = true; tr.classList.add('tight'); d = over(); vs = Math.max(60, Math.min(vs0, Math.floor(vs - d / rows))); tr.style.setProperty('--vs', vs + 'px'); }
+    TRAY_FIT.key = key; TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
+    if (!TRAY_FIT.vs) tr.style.removeProperty('--vs');
+}
+window.addEventListener('resize', () => { TRAY_FIT.key = ''; guard('tray', fitTray); });
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
 function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
 const renderFail = new Set();
@@ -4361,6 +4424,7 @@ function render(){
     document.body.classList.toggle('on-today', tab === 'today');   // 今日の献立では、トーストを画面の下の「決める」ボタンより上に出す
     guard('voice', () => { if (tab !== 'cook' && (hf.on || voiceLive)) voiceStop(); });
     guard('navh', () => { const nv = document.querySelector('nav.tabs'); if (nv && nv.offsetHeight) document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); });   // 「次の手順」や画面下の固定アクションバー（.actionbar）を下のタブのすぐ上に置く（言語でタブの高さが変わる）
+    guard('tray', fitTray);   // お膳を、スクロールしなくても下の帯の上に全部収まる大きさにする
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
     guard('paywall', () => { if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked'); });
@@ -9576,7 +9640,9 @@ function viewToday(){
         const empty = idx === 0 && it.slot === '主菜' ? t('この条件で出せる主菜がありません') : primoDay ? t('プリモ（パスタ・リゾット）の日なので、ズッパはなし') : it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
         const wTag = r && it.slot === '主菜' && wishN ? wishFor(r.id) : null;   // 届いた「食べたい」の札（主菜の絵の上。位置は重ねるだけで、ほかの物を動かさない）
         const vTag = r && it.slot === '主菜' && !wTag && voteOn && voteAlignedNow(r.id);   // ○つけ表で、みんなの○がそろった料理
-        return `<div class="spot ${cls}${wTag || vTag ? ' has-wtag' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
+        const isFresh = !!(r && freshAt(idx));
+        return `<div class="spot ${cls}${wTag || vTag ? ' has-wtag' : ''}${isFresh ? ' fresh' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
+            ${isFresh ? `<span class="fresh-tag">${esc(t('新'))}</span>` : ''}
             ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
@@ -9596,6 +9662,12 @@ function viewToday(){
     const pickles = konomonoMain(main) && m.n > 1 && session.mood !== 'okayu';   // お漬物は、ご飯ものの主菜で2品以上の日だけ（1品の日・麺・パスタの日・おかゆの日は付けない。R3・R4）
     const riceKey = oneBowl ? (pickles ? 'konomono' : '') : st ? st.id : '';
     const riceAnim = !prevShown || prevShown.rice !== riceKey; session.trayShown.rice = riceKey;
+    // 「新」の印: いまの献立と、その前に出ていた（ちがう）献立をくらべて、変わった枠に付ける。決めた一膳には付けない。描き直し（言語・シート）では変わらない
+    { const ids = m.items.map(x => x.r ? x.r.id : '-'), key = ids.join('|') + '#' + riceKey;
+      if (session.trayCur && session.trayCur.key !== key) session.trayPrev = session.trayCur;
+      if (!session.trayCur || session.trayCur.key !== key) session.trayCur = {key, ids, rice: riceKey}; }
+    const riceFresh = !decided && !!session.trayPrev && !!riceKey && session.trayPrev.rice !== riceKey;
+    const freshAt = idx => { const pv = session.trayPrev; if (decided || !pv) return false; const ids = session.trayCur.ids; return pv.ids.length !== ids.length || pv.ids[idx] !== ids[idx]; };
     const riceSpot = !PACK && oneBowl && pickles
         ? `<div class="spot rice" style="--w:40%">${vesselHtml('konomono', null, false, riceAnim)}
         <div class="spot-label"><span class="slot">${esc(t('香の物'))}</span><span class="nm">${esc(t('お漬物'))}</span></div></div>`
@@ -9610,22 +9682,24 @@ function viewToday(){
     const stapleAdd = !oneBowl && !st && stapleOptions().length > 1
         ? `<div class="spot rice ghost" style="--w:40%"><div class="vessel v-staple" aria-hidden="true"></div>
         <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(stapleName({k:'none'}))}</span></div><button class="swap tray-add" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">＋ ${esc(t('主食'))}</button></div>` : '';
-    // 5品以上は、主菜→副菜→ご飯→汁ものの順に 3列（7つなら 4列＋3列）で並べ、1画面に収める
-    const allSpots = [...mains.map(x => spot(x.it, x.i, '')), ...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot || stapleAdd ? [(riceSpot || stapleAdd).replace('style="--w:40%"', 'style=""')] : []), ...soups.map(x => spot(x.it, x.i, ''))];
-    const compact = m.n >= 5 && allSpots.length >= 6;
-    const compactRows = [];
-    if (compact){
-        const per = allSpots.length >= 7 ? [4, 3] : [3, 3];
-        let k = 0; for (const c of per){ compactRows.push(allSpots.slice(k, k + c)); k += c; }
-        if (k < allSpots.length) compactRows.push(allSpots.slice(k));
-        const w4 = '23%', w3 = '31%';
-        compactRows.forEach((row, ri) => { row.forEach((h, ci) => { row[ci] = h.replace('style=""', `style="--w:${row.length >= 4 ? w4 : w3}"`); }); });
-    }
-    // まるごと入れ替え: 「今日の一膳」の見出しの行（人数と条件のボタンのとなり。狭いときはそのすぐ下の行の右）に置く。スクロールしなくても最初の画面で見えて押せる
-    // （オーナーの指示: お膳の下に置くと、最初の画面では下の「この一膳にする」の帯の後ろに隠れていた）。決めた一膳のときは guardDecided で先に確かめる。条件シートのいちばん下のボタンも残す
-    const shuffleBtn = `<button class="shuffle head-shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+    // お膳（最初のデザイン・オーナーの指示）: すべての料理（ご飯・主食の席も1品）を、絵・名前・「かえる」つきで上下2段に同じ数ずつ並べる（奇数なら上を1つ多く）。
+    // 段のあいだの真ん中に丸い「まるごと入れ替え」。料理が全部見えるので、入れ替えで何が変わったかがわかる。変わった料理には「新」の印
+    // 席の順（和食の配膳）: 上の段 = 主菜 → 副菜（奥）。下の段 = 左端にご飯・右端に汁もの（手前）、余った副菜はそのあいだ。上 = ⌈席/2⌉・下 = ⌊席/2⌋（基準書 2-1）
+    const riceH = riceSpot || stapleAdd ? (h => riceFresh ? h.replace('class="spot rice', 'class="spot rice fresh').replace('style="">', `style=""><span class="fresh-tag">${esc(t('新'))}</span>`) : h)((riceSpot || stapleAdd).replace('style="--w:40%"', 'style=""')) : '';
+    const nSeat = mains.length + sides.length + soups.length + (riceH ? 1 : 0), topN = Math.ceil(nSeat / 2);
+    const upper = [...mains, ...sides].slice(0, topN).map(x => spot(x.it, x.i, ''));
+    const lowerSides = [...mains, ...sides].slice(topN).map(x => spot(x.it, x.i, ''));
+    let lower = [...(riceH ? [riceH] : []), ...lowerSides, ...soups.map(x => spot(x.it, x.i, ''))];
+    while (upper.length < topN && lower.length > (riceH ? 1 : 0)) upper.push(lower.pop());   // 上が足りないとき（3席: 主菜・汁もの／ご飯）は、下の右端（汁もの）から上へ
+    while (upper.length < topN && lower.length) upper.push(lower.pop());
+    const rowsHtml = [upper, lower];
+    // 見出しの行の「まるごと入れ替え」（5cabebb6）は、お膳の上を詰めて真ん中の丸が最初の画面で見えるようになるまで残す（基準書 2-2）
+    const headShuffleBtn = `<button class="shuffle head-shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
         <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
         <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button>`;
+    const shuffleBtn = `<div class="tg-mid"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+        <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
+        <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button></div>`;
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     if (S.week && weekSidesOn()) ensureWeekExtras();
@@ -9637,13 +9711,13 @@ function viewToday(){
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         <div class="today-head p2-head"><h2>${esc(t('今日の一膳'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
             <button type="button" class="p2-sv" data-act="cond-open" aria-label="${esc(t('条件を変える'))}"><span>${esc(t('{n}人分', {n: fmtPortion(svToday())}))}</span><span class="small muted">${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n:m.n})].join(t('・')))}</span></button>
-            ${shuffleBtn}</div>
+            ${headShuffleBtn}</div>
         ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
-        ${compact ? `<div class="tray lite compact" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">${compactRows.map(row => `<div class="tray-row">${row.join('')}</div>`).join('')}</div>`
-        : `<div class="tray lite v3" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
-            <div class="tray-hero${mains.length >= 2 ? ' two' : ''}">${mains.map(x => spot(x.it, x.i, '')).join('')}</div>
-            ${(sm => sm.length ? `<div class="tray-small" style="--cols:${sm.length}">${sm.join('')}</div>` : '')([...sides.map(x => spot(x.it, x.i, '')), ...(riceSpot || stapleAdd ? [riceSpot || stapleAdd] : []), ...soups.map(x => spot(x.it, x.i, ''))])}
-        </div>`}
+        <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n:m.n}))}">
+            <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
+            ${shuffleBtn}
+            ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}
+        </div>
         ${eatersLine() ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${esc(eatersLine())}</p>` : ''}
         ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${cookWarnHtml()}
