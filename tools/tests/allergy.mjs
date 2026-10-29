@@ -131,7 +131,7 @@ const OBVIOUS = {
 };
 // 除外の根拠になりうる言葉（広め）。オイスターソース（小麦・大豆）・コチュジャン・甜麺醤（小麦）・めんつゆ（魚）は安全第4回b N1、塩昆布・納豆付属のたれ（醤油と同じ）・ラー油（ごま）はモニター第3回c NEW2 で判定に入れた。除外された料理に、この言葉が材料か調味料に1つもなければ「誤って除外」
 const LOOSE = {
-    shrimp: /えび|海老|shrimp|prawn|krill|terasi|belacan|kapi|bagoong|saeujeot|xo/i, crab: /かに|蟹|crab|kani|surimi/i, walnut: /くるみ|walnut|nuez|noix|nueces/i,
+    shrimp: /えび|海老|shrimp|prawn|krill|shacha|sacha sauce|沙茶|terasi|belacan|kapi|bagoong|saeujeot|xo/i, crab: /かに|蟹|crab|kani|surimi/i, walnut: /くるみ|walnut|nuez|noix|nueces/i,
     wheat: /塩昆布|納豆付属のたれ|コチュジャン|gochujang|고추장|甜麺醤|甜面酱|オイスター|oyster|タルハナ|tarhana|スープの素|発酵|小麦|粉|flour|パン|bread|麺|noodle|pasta|うどん|スパゲ|マカロニ|皮|wrapper|tortilla|bun|ルウ|roux|ソース|sauce|couscous|bulgur|semolina|farro|seitan|crumb|cracker|dough|pastry|pie|biscuit|醤油|soy|ポン酢|めんつゆ|てりやき|teriyaki|kecap|hoisin|コンソメ|ワンタン|餃子|春巻|焼売|ラーメン|ビール|beer|malt|orzo|ニョッキ|gnocchi|tempura|天ぷら|天かす|pav|roti|chapati|naan|paratha|puri|atta|maida|suji|rava|sooji|toast|baguette|croissant|pita|lavash|cake|カステラ|ケーキ|ホットケーキ|パンケーキ|pancake|waffle|wafer|crepe|クレープ|bagel|muffin|biscuit|cookie|pretzel|dumpling|manti|mandu|samosa|empanada|pizza|ピザ|burger|sandwich|lasagn|ravioli|tortellini|cannelloni|spaetzle|spätzle|knödel|schupfnudel|maultasche|bread|brötchen|semmel|brioche|focaccia|ciabatta|panko|breadcrumbs|batter|衣|フライ|揚げ|breaded|crusted|coated|schnitzel|katsu|カツ|コロッケ|croquette|ハンバーグ|つくね|肉団子|meatball|meatloaf|fritter|bhaji|pakora|vada|dosa|idli|uttapam|appam|paniyaram|thepla|poori|bhature|kulcha|dalia|daliya|vermicelli|seviyan|sewai|jalebi|gulab|halwa|kheer|payasam/i,
     buckwheat: /そば|蕎麦|soba|buckwheat|sarrasin|kasha|カーシャ|ガレット|galette/i, egg: /卵|たまご|玉子|egg|yolk|mayo|マヨ|aioli|alioli|hollandaise|meringue|brioche|tagliatelle|tortellini|ravioli|pasta|noodle|麺|ワンタン|wonton|タルタル|tartar|カステラ|cake|ケーキ|custard|pancake|crepe|batter|パン|bread|bun|tempura|天ぷら|mochi|ピータン|蛋|egg-?fried|carbonara|カルボナーラ|gnocchi|ニョッキ|spaetzle|spätzle|fresh/i,
     milk: /乳|milk|ミルク|cream|クリーム|butter|バター|cheese|チーズ|yogh?urt|ヨーグルト|ghee|ギー|paneer|パニール|queso|quark|クワルク|ricotta|mozzarella|parmesan|パルメ|パルミ|pecorino|ペコリ|cheddar|feta|crema|crème|creme|lait|leche|latte|burro|panna|roux|ルウ|デミ|demi|white sauce|ホワイト|béchamel|bechamel|brioche|croissant|custard|cajeta|dulce|kaymak|labneh|ayran|raita|tzatziki|khoa|mawa|chocolate|チョコ|ice|アイス|whey|casein|kefir|skyr|curd|cottage|mascarpone|gouda|brie|camembert|gruy|emmental|raclette|halloumi|requeij|cuajada|coalho|coalhada|queijo|manteiga|natilla|crema|nata|kaymak|süt|peynir|tereyağ|yoğurt|mleko|ser|śmietan|masło|twaróg|serek|kefir|jogurt|maślank|susu|keju|mentega|gatas|keso|mantikilya|우유|치즈|버터|牛奶|奶酪|黄油|นม|เนย|sữa|phô mai|bơ|दूध|दही|घी|पनीर|مثل|حليب|جبن|زبدة|لبن|قشطة|سمن/i,
@@ -148,8 +148,8 @@ const LOOSE = {
     yamaimo: /やまいも|山芋|山いも|長いも|長芋|ながいも|自然薯|とろろ|nagaimo|yamaimo|jinenjo|yam|山药|참마|dioscorea/i, apple: /りんご|林檎|apple|manzana|pomme|apfel|äpfel|mela|maçã|사과|苹果|แอปเปิ้ล|táo|apel|elma|jabłk|सेब|mansanas/i,
     gelatin: /ゼラチン|gelatin|gelatina|젤라틴|明胶|吉利丁|เจลาติน|żelatyn|marshmallow|マシュマロ|gummy|グミ|jello|jelly|ゼリー|aspic|panna cotta|mousse|bavarois|bavarian/i, almond: /アーモンド|almond|almendra|amande|mandel|mandorl|amêndoa|아몬드|杏仁|巴旦木|อัลมอนด์|hạnh nhân|badem|migdał|बादाम|badam|marzipan|マジパン|frangipane|amaretti|orgeat|horchata/i,
     gluten: /塩昆布|納豆付属のたれ|コチュジャン|gochujang|고추장|甜麺醤|甜面酱|オイスター|oyster|マウルタッシェン|タルハナ|tarhana|スープの素|発酵|小麦|麦|粉|flour|パン|bread|麺|noodle|pasta|うどん|スパゲ|マカロニ|皮|wrapper|tortilla|bun|ルウ|roux|ソース|sauce|couscous|bulgur|semolina|farro|seitan|crumb|cracker|dough|pastry|pie|biscuit|醤油|soy|ポン酢|めんつゆ|てりやき|teriyaki|kecap|hoisin|コンソメ|ワンタン|餃子|春巻|焼売|ビール|beer|malt|rye|barley|oat|spelt|kamut|freekeh|orzo|ニョッキ|gnocchi|tempura|天ぷら|天かす|pav|roti|chapati|naan|paratha|puri|atta|maida|suji|rava|sooji|toast|baguette|croissant|pita|lavash|cake|カステラ|ケーキ|pancake|waffle|crepe|クレープ|bagel|muffin|cookie|pretzel|dumpling|manti|mandu|samosa|empanada|pizza|burger|sandwich|lasagn|ravioli|tortellini|cannelloni|spaetzle|spätzle|knödel|schnitzel|katsu|カツ|コロッケ|croquette|ハンバーグ|つくね|meatball|meatloaf|fritter|bhaji|pakora|vada|dosa|idli|appam|thepla|poori|kulcha|dalia|vermicelli|seviyan|sewai|jalebi|batter|衣|フライ|揚げ|breaded|crusted|coated|gluten|brioche|focaccia|ciabatta|panko|brötchen|semmel|bread|trigo|blé|weizen|frumento|centeno|seigle|roggen|segale|cebada|orge|gerste|avena|avoine|hafer|aveia|buğday|arpa|yulaf|pšenic|żyto|jęczmień|owies|보리|호밀|귀리|燕麦|黑麦|gandum|jelai|gândum|गेहूं|जौ/i,
-    crustacean: /えび|海老|蟹|かに|shrimp|prawn|krill|crab|lobster|crayfish|langoustine|scampi|terasi|belacan|kapi|bagoong|saeujeot|xo|surimi|camar|gamba|crevette|garnele|gambero|krewetk|udang|karides|hipon|새우|虾|กุ้ง|tôm|झींगा|cangrejo|jaiba|crabe|krabbe|granchio|caranguejo|kepiting|yengeç|krab|alimango|ロブスター|ざりがに|しゃこ|mariscos|shellfish/i,
-    fish: /めんつゆ|つゆ|mentsuyu|さば|あじ|ぶり|たら|さけ|ふぐ|はも|きす|ほっけ|あゆ|こい|ます|たい|オイスター|魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|つな|ツナ|fish|anchov|tuna|salmon|mackerel|herring|pollack|pollock|hairtail|cod|haddock|bream|whitebait|croaker|sardine|tilapia|trout|hake|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|bass|halibut|swordfish|plaice|sole|mullet|carp|eel|perch|pike|turbot|monkfish|grouper|sturgeon|caviar|kipper|sprat|pilchard|barramundi|pangasius|basa|dorado|mahi|marlin|kingfish|pescado|bacalao|atún|salmón|sardina|poisson|thon|saumon|morue|fisch|lachs|thunfisch|pesce|tonno|salmone|merluzzo|peixe|atum|bacalhau|salmão|생선|어묵|멸치|참치|연어|고등어|鱼|鳕|ปลา|cá|ikan|balık|ryba|rybn|मछली|isda|bagoong|daing|tinapa|dashi|だし|ダシ|worcestershire|ウスター|caesar|シーザー|魚醤|nam ?pla|nuoc|patis|ナンプラー|アンチョビ|garum|surimi|furikake|ふりかけ|narutomaki|なると/i,
+    crustacean: /えび|海老|蟹|かに|shrimp|prawn|krill|shacha|sacha sauce|沙茶|crab|lobster|crayfish|langoustine|scampi|terasi|belacan|kapi|bagoong|saeujeot|xo|surimi|camar|gamba|crevette|garnele|gambero|krewetk|udang|karides|hipon|새우|虾|กุ้ง|tôm|झींगा|cangrejo|jaiba|crabe|krabbe|granchio|caranguejo|kepiting|yengeç|krab|alimango|ロブスター|ざりがに|しゃこ|mariscos|shellfish/i,
+    fish: /めんつゆ|つゆ|mentsuyu|shacha|sacha sauce|沙茶|さば|あじ|ぶり|たら|さけ|ふぐ|はも|きす|ほっけ|あゆ|こい|ます|たい|オイスター|魚|さかな|鮭|鯖|鯵|鰯|鰤|鱈|鯛|鰹|鮪|鰻|穴子|さんま|いわし|かつお|まぐろ|ひらめ|かれい|さわら|かじき|たらこ|めんたい|明太子|しらす|ししゃも|わかさぎ|ちりめんじゃこ|じゃこ|ちくわ|かまぼこ|はんぺん|さつま揚げ|ひもの|干物|煮干|にぼし|いりこ|あんこう|うなぎ|あなご|いくら|筋子|すじこ|つな|ツナ|fish|anchov|tuna|salmon|mackerel|herring|pollack|pollock|hairtail|cod|haddock|bream|whitebait|croaker|sardine|tilapia|trout|hake|milkfish|bangus|catfish|pomfret|snapper|bonito|katsuobushi|bass|halibut|swordfish|plaice|sole|mullet|carp|eel|perch|pike|turbot|monkfish|grouper|sturgeon|caviar|kipper|sprat|pilchard|barramundi|pangasius|basa|dorado|mahi|marlin|kingfish|pescado|bacalao|atún|salmón|sardina|poisson|thon|saumon|morue|fisch|lachs|thunfisch|pesce|tonno|salmone|merluzzo|peixe|atum|bacalhau|salmão|생선|어묵|멸치|참치|연어|고등어|鱼|鳕|ปลา|cá|ikan|balık|ryba|rybn|मछली|isda|bagoong|daing|tinapa|dashi|だし|ダシ|worcestershire|ウスター|caesar|シーザー|魚醤|nam ?pla|nuoc|patis|ナンプラー|アンチョビ|garum|surimi|furikake|ふりかけ|narutomaki|なると/i,
     treenut: /ナッツ|nut|アーモンド|くるみ|カシュー|ピスタチオ|ヘーゼル|ペカン|ピーカン|松の実|ぎんなん|銀杏|almond|walnut|cashew|hazelnut|filbert|pecan|pistachio|pine|pinoli|piñones|pignoli|nutella|praline|gianduja|pesto|nougat|avellana|noisette|haselnuss|nocciola|avelã|pistache|pistacho|pistazie|pekan|헤이즐넛|피스타치오|잣|榛子|开心果|碧根果|松子|fındık|fistik|antep|pistacja|orzech|पिस्ता|pili|candle|kemiri|kola|hickory|ginkgo|mole|satay|gado|pecel|ヌガー|プラリネ|ヌテラ|frangipane|baklava|kunafa|maamoul|romesco|marzipan|macadamia|マカダミア/i,
     celery: /セロリ|celery|celeriac|céleri|apio|sellerie|sedano|aipo|selleri|seler|kereviz|selderij|kintsay|芹菜|西芹|셀러리|เซเลอรี่|cần tây|seledri|mirepoix/i, mustard: /からし|辛子|芥子|マスタード|mustard|moutarde|senf|senape|mostarda|mostaza|musztard|hardal|겨자|芥末|มัสตาร์ด|mù tạt|mustar|सरसों|sarson|dijon|kasundi|piccalilli/i,
     sulphite: /sulphite|sulfite|sulphur|sulfur|亜硫酸|wine|ワイン|わいん|sherry|シェリー|vermouth|marsala|madeira|port|vinegar|酢|raisin|sultana|dried fruit|dried apricot|dried fig|ドライフルーツ|干しぶどう|レーズン|vin\b|vino|vinho|wein|balsamic|バルサミコ|cider|sauerkraut|ザワークラウト|ザウアークラウト|pickl|ピクルス|漬物|jam|ジャム/i, lupin: /lupin|ルピナス|羽扇豆|tremoço|tarwi|chocho|termos/i,
@@ -162,7 +162,7 @@ const LOOSE = {
 LOOSE.shellfish = new RegExp(LOOSE.mollusc.source + '|홍합|바지락|가리비|蚵|蠔|干貝|贻贝|淡菜|굴소스', 'i');
 // 料理1品の材料・調味料の言葉（材料のキー・英語名・名前・画面の名前＋調味料の欄）
 // 判定の表が「そのアレルゲンではない」と決めている言い方（ココナッツミルク・バナナの葉・料理酒・からし菜・りんご酢など）は、明らかな言葉の検査から外す
-const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|rice milk|peanut butter|banana leaf|banana leaves|バナナの葉|rice wine|shaoxing|紹興|mustard (?:greens?|leaf|leaves)|からし菜|高菜|apple cider vinegar|cider vinegar|細長いもの|oyster mushroom|oyster crackers|ひらたけ|ビーフン|water chestnut|cooking wine|chinese (?:rice )?wine|huangjiu|mijiu|orange.?fleshed|orange sweet potato|オレンジ色|eggs? \(chicken|鶏卵/gi;
+const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|rice milk|peanut butter|banana leaf|banana leaves|バナナの葉|rice wine|shaoxing|紹興|mustard (?:greens?|leaf|leaves)|からし菜|高菜|apple cider vinegar|cider vinegar|細長いもの|oyster mushroom|king oyster|oyster crackers|ひらたけ|ビーフン|water chestnut|cooking wine|chinese (?:rice )?wine|huangjiu|mijiu|orange.?fleshed|orange sweet potato|オレンジ色|eggs? \(chicken|鶏卵/gi;
 const TXT = `(r => [...(r.items || []).map(i => [i.key, i.en, i.name, i.label].join(' | ')), String(r.seasBase != null ? r.seasBase : r.seas || ''), r.name, r.nameEn || ''].join(' || '))`;
 {
     const { ctx, p } = await open('JP');
@@ -780,6 +780,50 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14
         ok(/だし入りの味噌も|miso with dashi/i.test(g.note), `NEW3 魚のアレルギー（${ui}）: 昆布だしの一言に「だし入りの味噌も袋の表示を確かめて」: ` + g.note.slice(0, 300));
         ok(!/^夫も食べられるお膳です$/m.test(g.line) && (ui !== 'ja' || /食べられそう/.test(g.line)), `NEW3 魚のアレルギー（${ui}）: 「夫も食べられるお膳です」と言い切らない: ` + g.line);
         ok(!g.miso16.length, `NEW3 魚のアレルギー（${ui}）: 味噌を使って出す料理には、すべて魚の「袋の表示を確認」: ` + g.miso16.join(','));
+        await ctx.close();
+    }
+}
+// 安全第7回: 韓国の貝類（조개류）・台湾の種子類と頭足類・螺貝類。味噌・白だし・だし醤油・ごまで出しすぎない／韓国・台湾の言い方を取りこぼさない
+//  - エリンギ（杏鮑菇・새송이・king oyster）は、あわび・貝ではない。魷魚（いか）・章魚（たこ）・鮑魚（あわび）の「魚」は魚ではない。海瓜子（貝）は種ではない
+{
+    // [言葉, アレルゲン, 0 = 当てない / 1 以上 = 当てる]
+    const TABLE = [
+        ...['味噌', '白だし', 'だし醤油', 'だし入り味噌', 'ごま', 'ごま油', '芝麻醬', 'Tahini'].flatMap(w => [[w, 'shellfish', 0], [w, 'seeds', 0], [w, 'pinenut', 0], [w, 'mollusc', 0]]),
+        ['ごま', 'sesame', 1], ['芝麻醬', 'sesame', 1], ['松の実', 'pinenut', 1], ['잣', 'pinenut', 1], ['松子仁', 'seeds', 1], ['ジェノベーゼ', 'pinenut', 2], ['青醬', 'pinenut', 2], ['페스토', 'seeds', 2],
+        ['굴젓', 'shellfish', 1], ['어리굴젓', 'shellfish', 1], ['꼬막', 'shellfish', 1], ['재첩', 'shellfish', 1], ['소라', 'shellfish', 1], ['골뱅이', 'shellfish', 1], ['소라빵', 'shellfish', 0],
+        ['蜆', 'shellfish', 1], ['瑤柱', 'shellfish', 1], ['螺肉', 'shellfish', 1], ['九孔', 'shellfish', 1], ['海瓜子', 'shellfish', 1], ['XO醬', 'shellfish', 2], ['XO醬', 'crustacean', 2],
+        ['蚵仔', 'mollusc', 1], ['蠔油', 'mollusc', 2], ['홍합', 'mollusc', 1], ['바지락', 'mollusc', 1], ['魷魚', 'mollusc', 1], ['花枝', 'squid', 1], ['透抽', 'squid', 1], ['小卷', 'squid', 1], ['章魚', 'mollusc', 1], ['주꾸미', 'mollusc', 1],
+        ['南瓜籽', 'seeds', 1], ['葵花子', 'seeds', 1], ['海瓜子', 'seeds', 0], ['ひまわり油', 'seeds', 0],
+        ['魷魚', 'fish', 0], ['乾魷魚', 'fish', 0], ['章魚', 'fish', 0], ['墨魚', 'fish', 0], ['鮑魚', 'fish', 0], ['鲍鱼', 'fish', 0], ['鱿鱼', 'fish', 0], ['魚丸', 'fish', 1], ['虱目魚', 'fish', 1], ['鳕鱼', 'fish', 1],
+        ['shacha sauce', 'fish', 2], ['1 tbsp sacha sauce', 'shrimp', 2], ['沙茶醬', 'fish', 2], ['沙茶醬', 'crustacean', 2], ['沙茶醬', 'peanut', 0], ['Sacha culantro or coriander', 'fish', 0], ['Sacha inchi', 'shrimp', 0],
+        ['杏鮑菇', 'abalone', 0], ['杏鲍菇', 'abalone', 0], ['King oyster mushrooms', 'shellfish', 0], ['King oyster or other mushrooms', 'mollusc', 0], ['鮑魚', 'abalone', 1], ['九孔', 'abalone', 1]];
+    const { ctx, p } = await open('JP');
+    const r = await p.evaluate(T => {
+        const mk = n => { const j = /[぀-ヿ㐀-鿿가-힯]/.test(n); const it = parseIng(n); if (!j){ it.en = n; it.key = n.toLowerCase(); } return it; };
+        return T.filter(([n, id, k]) => { const v = algKind(id, mk(n)); return k ? v !== k : v !== 0; }).map(([n, id, k]) => n + '/' + id + ' = ' + algKind(id, mk(n)) + '（' + k + ' のはず）');
+    }, TABLE);
+    ok(!r.length, '安全第7回 韓国の貝類・台湾の種子類・頭足類の判定の表: ' + r.join('、'));
+    await ctx.close();
+    // 各国の料理の材料: エリンギを貝・あわびにしない／いかを魚にしない
+    for (const [cc, ui] of [['KR', 'ko'], ['TW', 'zh-Hant'], ['CN', 'zh-Hans']]){
+        const { ctx, p } = await open(cc, { uiLang: ui });
+        const g = await p.evaluate(() => { const bad = [];
+            RECIPES.forEach(r => (r.items || []).concat(seasItems(r)).forEach(i => { const s = [i.key, i.en, i.name, i.label].join('|');
+                if (/king oyster|杏鮑菇|杏鲍菇|새송이/i.test(s)) ['abalone', 'shellfish', 'mollusc'].forEach(id => { if (algKind(id, i)) bad.push(r.id + ':' + id + ':' + s); });
+                if (/squid|octopus|cuttlefish|abalone/i.test(String(i.key) + '|' + String(i.en)) && algKind('fish', i)) bad.push(r.id + ':fish:' + s); }));
+            return bad; });
+        ok(!g.length, `安全第7回 ${cc}: エリンギを貝・あわびに、いか・たこ・あわびを魚にしない: ` + g.slice(0, 5).join(' / '));
+        await ctx.close();
+    }
+    // 画面: 韓国で貝類のアレルギーでも、エリンギの料理は外さない（外すのは貝の料理だけ）
+    {
+        const { ctx, p } = await open('KR', { uiLang: 'ko', allergens: ['shellfish'] });
+        const g = await p.evaluate(() => { const has = (r, re) => (r.items || []).concat(seasItems(r)).some(i => re.test([i.key, i.en, i.name, i.label].join('|')));
+            const mush = RECIPES.filter(r => has(r, /king oyster|새송이/i) && !has(r, /clam|oyster sauce|mussel|scallop|abalone|바지락|굴|조개/i));
+            const clam = RECIPES.filter(r => has(r, /\bclams?\b|바지락/i));
+            return { mush: mush.map(r => r.id + ':' + isAvoided(r)), clam: clam.map(r => r.id + ':' + isAvoided(r)) }; });
+        ok(g.mush.length && g.mush.every(x => x.endsWith(':false')), '安全第7回 韓国・貝類のアレルギー: エリンギ（새송이）の料理は外さない: ' + g.mush.join(','));
+        ok(g.clam.length && g.clam.every(x => x.endsWith(':true')), '安全第7回 韓国・貝類のアレルギー: あさり（바지락）の料理は外す: ' + g.clam.join(','));
         await ctx.close();
     }
 }

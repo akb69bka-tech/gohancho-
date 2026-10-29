@@ -1838,7 +1838,7 @@ GOHAN_PACK({
     'clam': ['clam', 'clams', '蜆', '蜆仔', '蛤蜊', '蛤仔', '文蛤', '蚋仔'],
     'pork rib': ['pork rib', 'pork ribs', 'ribs', '排骨', '豬排骨', '小排'],
     'corn': ['corn', 'sweet corn', '玉米', '玉蜀黍'],
-    'fish ball': ['fish ball', 'fish balls', '魚丸', '花枝丸'],
+    'fish ball': ['fish ball', 'fish balls', '魚丸'],   // 花枝丸（いかのつみれ）は魚丸ではない（安全第7回）
     'celery': ['celery', 'chinese celery', '芹菜', '芹菜珠'],
     'ginger': ['ginger', 'old ginger', 'mature ginger', '薑', '老薑', '薑母', '薑絲'],
     'fermented pineapple': ['fermented pineapple', 'pickled pineapple', '醬鳳梨', '鳳梨醬', '蔭鳳梨'],

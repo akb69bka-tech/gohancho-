@@ -45,7 +45,7 @@ const OBV = {
     mollusc: /\bclams?\b|\bmussels?\b|\boysters?\b|\bscallops\b|\boctopus\b|\bsquid\b|あさり/i, seeds: /\bsunflower seeds?\b|\bpumpkin seeds?\b|\bpine nuts?\b|ひまわりの種/i, kiwi: /\bkiwi\b|キウイ/i,
     celery: /\bcelery\b|セロリ/i, mustard: /\bmustard\b(?! (?:greens?|leaves?))|粒マスタード/i, lupin: /\blupin/i,
 };
-const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|peanut butter|butternut|cocoa butter|oyster mushroom|oyster crackers|eggplant|water chestnut|rice wine|shaoxing|mustard (?:greens?|leaf|leaves)|ビーフン|ココナッツ|たまねぎ|玉ねぎ|tomatillo/i;
+const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|peanut butter|butternut|cocoa butter|oyster mushroom|king oyster|oyster crackers|eggplant|water chestnut|rice wine|shaoxing|mustard (?:greens?|leaf|leaves)|ビーフン|ココナッツ|たまねぎ|玉ねぎ|tomatillo/i;
 const ALL = Object.keys(EXP);
 const CCS = (process.env.CCS || ALL.join(',')).split(',').filter(Boolean);
 const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
