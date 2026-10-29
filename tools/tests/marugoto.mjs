@@ -42,7 +42,7 @@ for (const n of [3, 4, 5]){
         ok(g.icW >= 56 && g.icH >= 56 && /まるごと入れ替え/.test(g.label), `M4 ${n}品 押しやすく目立つ大きさ（56px 以上）・文字つき: ` + JSON.stringify(g));
     }
     const a = await ids(p);
-    await p.locator(BTN).scrollIntoViewIfNeeded(); await p.click(BTN); await p.waitForTimeout(400);
+    await p.click(BTN);   // click は要素を探し直して見える所まで送るので、絵の読みこみで描き直されても外れない await p.waitForTimeout(400);
     const c = await ids(p);
     const changed = a.filter((x, i) => x && x !== c[i]).length;
     ok(c[0] && c[0] !== a[0] && changed >= Math.ceil(a.filter(Boolean).length / 2), `M5 ${n}品 押すと献立がまるごと変わる: ` + JSON.stringify([a, c]));
@@ -59,12 +59,12 @@ for (const n of [3, 4, 5]){
     await p.click('[data-act=stage][data-k=decide]'); await p.waitForTimeout(300);
     const a = await ids(p);
     ok(await p.locator(BTN).count() === 1, 'M7 決めたあとに決める段を見ても、表に「まるごと入れ替え」がある');
-    await p.locator(BTN).scrollIntoViewIfNeeded(); await p.click(BTN); await p.waitForTimeout(300);
+    await p.click(BTN);   // click は要素を探し直して見える所まで送るので、絵の読みこみで描き直されても外れない await p.waitForTimeout(300);
     const k1 = await p.evaluate(() => sheet && sheet.kind);
     ok(k1 === 'redo' && JSON.stringify(await ids(p)) === JSON.stringify(a), 'M8 決めた献立では、まず確かめる（まだ変えない）: ' + k1);
     await p.click('#sheet-root [data-act=sheet-close]'); await p.waitForTimeout(300);
     ok(JSON.stringify(await ids(p)) === JSON.stringify(a) && await p.evaluate(() => JSON.stringify(S.cook && S.cook.ids)) === cook0, 'M9 やめると献立も決めた献立も変わらない');
-    await p.locator(BTN).scrollIntoViewIfNeeded(); await p.click(BTN); await p.waitForTimeout(300);
+    await p.click(BTN);   // click は要素を探し直して見える所まで送るので、絵の読みこみで描き直されても外れない await p.waitForTimeout(300);
     await p.click('#sheet-root [data-act=redo-yes]'); await p.waitForTimeout(400);
     const c = await ids(p), cook1 = await p.evaluate(() => JSON.stringify(S.cook && S.cook.ids));
     const undo = p.locator('#toast-root [data-act=toast-undo]');
