@@ -146,7 +146,7 @@ for (const [cc, lang] of [['KR', 'ko'], ['FR', 'fr'], ['IN', 'hi'], ['ZZ', 'xx']
 // ---- お知らせ（30日以上） ----
 const nd = await p.evaluate(async () => {
     S.settings.country = 'JP'; S.settings.uiLang = 'auto'; await setLang('ja'); applyCountry('JP');
-    const o = {}, d = n => ymd(new Date(Date.now() - n * 86400000)), save0 = JSON.stringify(S);
+    const o = {}, d = n => { const t = new Date(TODAY + "T12:00:00"); t.setDate(t.getDate() - n); return ymd(t); }, save0 = JSON.stringify(S);
     S.history = [1, 2, 3].map(i => ({d:'2026-01-0' + i, id:RECIPES[0].id})); S.firstUse = d(10); delete S.lastBackup; delete S.backupSnooze;
     o.new10 = backupDue();
     S.firstUse = d(40); o.never40 = backupDue(); o.noteHtml = backupNoteHtml().includes('この端末');
@@ -156,8 +156,8 @@ const nd = await p.evaluate(async () => {
     S.history = []; S.favs = []; S.custom = []; S.savedMenus = []; S.family = []; S.backupSnooze = undefined; o.noData = backupDue();
     S.history = [1, 2, 3].map(i => ({d:'2026-01-0' + i, id:RECIPES[0].id})); S.lastBackup = d(60); delete S.backupSnooze;
     setTab('today'); o.shown = !!document.querySelector('[data-act="backup-snooze"]');
-    document.querySelector('[data-act="backup-snooze"]').click(); o.hidden = !document.querySelector('[data-act="backup-snooze"]') && S.backupSnooze === ymd();
-    markBackedUp(); o.marked = S.lastBackup === ymd() && !S.backupSnooze && !backupDue();
+    document.querySelector('[data-act="backup-snooze"]').click(); o.hidden = !document.querySelector('[data-act="backup-snooze"]') && S.backupSnooze === TODAY;
+    markBackedUp(); o.marked = S.lastBackup === TODAY && !S.backupSnooze && !backupDue();
     S.lastBackup = 'garbage'; S.backupSnooze = 5; const n = normalizeState(JSON.parse(JSON.stringify(S))); o.normalized = !('lastBackup' in n) && !('backupSnooze' in n);
     setTab('settings'); o.card = document.body.innerText.includes('バックアップ') && !!document.querySelector('#backup-card');
     return o;
@@ -173,10 +173,10 @@ const nat = await p.evaluate(async () => {
     let wrote = null, shared = null;
     setCap({Filesystem:{writeFile: async a => { wrote = a; return {uri:'file:///cache/' + a.path}; }}, Share:{share: async a => { shared = a; }}});
     reset(); await exportDataFile(); await wait(50);
-    o.fsShare = !!wrote && wrote.directory === 'CACHE' && /^gohancho-\d{8}\.json$/.test(wrote.path) && !!JSON.parse(wrote.data).history && shared && /^file:\/\//.test(shared.url) && S.lastBackup === ymd();
+    o.fsShare = !!wrote && wrote.directory === 'CACHE' && /^gohancho-\d{8}\.json$/.test(wrote.path) && !!JSON.parse(wrote.data).history && shared && /^file:\/\//.test(shared.url) && S.lastBackup === TODAY;
     // 2. Share だけ → 文字で渡す
     shared = null; wrote = null; setCap({Share:{share: async a => { shared = a; }}}); reset(); await exportDataFile(); await wait(50);
-    o.shareOnly = !wrote && shared && !!JSON.parse(shared.text).history && S.lastBackup === ymd();
+    o.shareOnly = !wrote && shared && !!JSON.parse(shared.text).history && S.lastBackup === TODAY;
     // 3. 取り消し → 日付を更新しない
     setCap({Share:{share: async () => { throw new Error('Share canceled'); }}}); reset(); await exportDataFile(); await wait(50);
     o.cancel = !S.lastBackup;
@@ -184,7 +184,7 @@ const nat = await p.evaluate(async () => {
     setCap({}); reset(); window.__dl = 0;
     const origClick = HTMLAnchorElement.prototype.click; HTMLAnchorElement.prototype.click = function(){ if (this.download) window.__dl++; else origClick.call(this); };
     await exportDataFile(); await wait(50);
-    o.none = window.__dl === 1 && S.lastBackup === ymd();
+    o.none = window.__dl === 1 && S.lastBackup === TODAY;
     // 5. Filesystem が失敗 → ダウンロードに落ちる
     window.__dl = 0; setCap({Filesystem:{writeFile: async () => { throw new Error('denied'); }}, Share:{share: async () => {}}}); reset(); await exportDataFile(); await wait(50);
     o.fsFail = window.__dl === 1;
@@ -193,7 +193,7 @@ const nat = await p.evaluate(async () => {
 });
 for (const k of ['fsShare', 'shareOnly', 'cancel', 'none', 'fsFail']) ok(nat[k], 'iOS プラグインの有無: ' + k + ' ' + JSON.stringify(nat));
 // ---- 文字でコピー（書き出し） ----
-const cp = await p.evaluate(async () => { setTab('settings'); document.querySelector('summary').click(); delete S.lastBackup; document.querySelector('[data-act="export"]').click(); await new Promise(r => setTimeout(r, 200)); const v = document.querySelector('#backup-text').value; return {json:!!JSON.parse(v).history, meta:!!JSON.parse(v)._gohancho, date:S.lastBackup === ymd()}; });
+const cp = await p.evaluate(async () => { setTab('settings'); document.querySelector('summary').click(); delete S.lastBackup; document.querySelector('[data-act="export"]').click(); await new Promise(r => setTimeout(r, 200)); const v = document.querySelector('#backup-text').value; return {json:!!JSON.parse(v).history, meta:!!JSON.parse(v)._gohancho, date:S.lastBackup === TODAY}; });
 ok(cp.json && cp.meta && cp.date, '文字で書き出すと目印つきで、書き出した日が付く');
 // ---- 全画面ファイル選択 ----
 const fl = await p.evaluate(() => { const i = document.querySelector('#backup-file'); return !!i; });
