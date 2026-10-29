@@ -1204,7 +1204,7 @@ GOHAN_I18N('fil', {
     "作る日に戻しました": "Ibinalik sa araw ng pagluluto",
     "写真を残す": "Mag-save ng larawan",
     "外食": "Kumain sa labas",
-    "明日の一膳を見る": "Tingnan ang pagkain bukas",
+    "明日の献立を見る": "Tingnan ang pagkain bukas",
     "明日へまわさない": "Huwag ilipat sa bukas",
     "明日へまわす": "Ilipat sa bukas",
     "決めていた一膳は明日へ": "Inilipat sa bukas ang napiling pagkain",

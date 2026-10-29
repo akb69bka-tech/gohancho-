@@ -1204,7 +1204,7 @@ GOHAN_I18N('tr', {
     "作る日に戻しました": "Yemek yapılan güne dönüldü",
     "写真を残す": "Fotoğraf kaydet",
     "外食": "Dışarıda",
-    "明日の一膳を見る": "Yarının sofrasını gör",
+    "明日の献立を見る": "Yarının sofrasını gör",
     "明日へまわさない": "Yarına erteleme",
     "明日へまわす": "Yarına ertele",
     "決めていた一膳は明日へ": "Planlanan sofra yarına kaldı",

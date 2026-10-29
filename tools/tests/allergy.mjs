@@ -953,12 +953,18 @@ for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfis
     const { ctx, p } = await open('JP', { allergens: ['sesame', 'soy', 'egg'] });
     const g = await p.evaluate(() => { setTab('today'); const m = session.menu; m.items[0] = Object.assign({}, m.items[0], { r: byId('chawanmushi') }); const i = m.items.findIndex(x => x.slot === '汁物'); m.items[i >= 0 ? i : 2] = Object.assign({}, m.items[i >= 0 ? i : 2], { r: byId('tomyumkung') }); render();
         const spotOf = n => [...document.querySelectorAll('.spot')].find(x => (x.querySelector('.nm') || {}).textContent === n) || document, may = spotOf('トムヤムクン').querySelector('.alg-tag.may'), hit = spotOf('茶碗蒸し').querySelector('.alg-tag:not(.may)'), cs = e => e ? getComputedStyle(e) : {};
+        // お盆の上の札: 淡い地に濃い字のコントラスト（4.5:1 以上）・読める大きさ・切れない（第6回 S20）
+        const rgb = c => (c.match(/[\d.]+/g) || []).slice(0, 3).map(Number), lum = c => { const v = rgb(c).map(x => { x /= 255; return x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4); }); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+        const ratio = e => { if (!e) return 0; const a = lum(cs(e).color), b2 = lum(cs(e).backgroundColor); return (Math.max(a, b2) + .05) / (Math.min(a, b2) + .05); };
+        const cut = e => !e || e.scrollHeight > e.clientHeight + 1 || cs(e).webkitLineClamp !== 'none';
         return { mayText: may ? may.innerText : '', hitText: hit ? hit.innerText : '', mayColor: cs(may).color, hitColor: cs(hit).color, clamp: cs(may).webkitLineClamp, ws: cs(may).whiteSpace,
+            ratioMay: Math.round(ratio(may) * 10) / 10, ratioHit: Math.round(ratio(hit) * 10) / 10, fs: Math.min(parseFloat(cs(may).fontSize), parseFloat(cs(hit).fontSize)), cut: cut(may) || cut(hit),
             names: algMayNames([byId('tomyumkung'), byId('consomme'), byId('tonkatsu')]).join('') }; });
     ok(g.mayText && g.hitText, 'design 茶碗蒸し（卵）とトムヤムクン（ごま・大豆の袋）のカードに印: ' + JSON.stringify(g));
     ok(g.mayColor !== g.hitColor && !/^⚠/.test(g.mayText) && /^⚠/.test(g.hitText), 'design 「袋の表示を確認」は赤い ⚠ と色・記号で見分ける: ' + JSON.stringify(g));
     ok(/^\S*\s*(?:ごま・大豆|大豆・ごま)/.test(g.mayText), 'design カードの印はアレルゲンの名前を先に（2つ目も見える）: ' + g.mayText);
-    ok(g.clamp === '2', 'design カードの印は2行まで出す: ' + g.clamp + ' ' + g.ws);
+    ok(!g.cut, 'design お盆の上の印は切らずに全部出す（第6回 S20。前は2行まで）: ' + g.clamp + ' ' + g.ws);
+    ok(g.ratioMay >= 4.5 && g.ratioHit >= 4.5 && g.fs >= 13, 'design お盆の上の印は、地との明るさの比 4.5:1 以上・13px 以上: ' + JSON.stringify([g.ratioMay, g.ratioHit, g.fs]));
     ok(!/ほか\d+品/.test(g.names), 'design 加工品の数を「ほか○品」と言わない（料理の数と取り違える）: ' + g.names);
     await ctx.close();
 }

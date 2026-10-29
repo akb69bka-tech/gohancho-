@@ -1204,7 +1204,7 @@ GOHAN_I18N('fr', {
     "作る日に戻しました": "Retour à un jour où l’on cuisine",
     "写真を残す": "Garder une photo",
     "外食": "Au restaurant",
-    "明日の一膳を見る": "Voir le repas de demain",
+    "明日の献立を見る": "Voir le repas de demain",
     "明日へまわさない": "Ne pas reporter à demain",
     "明日へまわす": "Reporter à demain",
     "決めていた一膳は明日へ": "Le repas prévu passe à demain",
