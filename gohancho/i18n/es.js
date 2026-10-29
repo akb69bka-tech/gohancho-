@@ -418,7 +418,7 @@ GOHAN_I18N('es', {
     "1つ": "1",
     "2つ以上": "2 o más",
     "ある": "Sí",
-    "いまは設定を残しておくだけで、献立の選び方はまだ変わりません。": "Por ahora solo se guarda; todavía no cambia cómo se eligen los menús.",
+    "コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。": "Con un solo fuego, intentamos no elegir dos platos que necesiten la estufa; para principiantes, platos con menos pasos. Se aplica desde el próximo menú (un menú ya decidido no cambia).",
     "ない": "No",
     "ないものを押して外すと、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入ります。": "Toca los que no tienes para quitarlos: en la lista de compras de la semana aparecerán ya marcados como «Comprar» en «Quizás ya lo tienes».",
     "はじめて": "Principiante",

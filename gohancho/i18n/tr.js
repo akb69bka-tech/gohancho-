@@ -417,7 +417,7 @@ GOHAN_I18N('tr', {
     "1つ": "1",
     "2つ以上": "2 veya daha fazla",
     "ある": "Var",
-    "いまは設定を残しておくだけで、献立の選び方はまだ変わりません。": "Şimdilik yalnızca kaydedilir; menülerin seçilmesini henüz değiştirmez.",
+    "コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。": "Tek ocak varsa, ocak gerektiren iki yemeği bir arada seçmemeye çalışırız; yeni başlayanlar için daha az adımlı yemekleri seçmeye çalışırız. Bir sonraki menüden itibaren geçerlidir (karar verdiğiniz menü değişmez).",
     "ない": "Yok",
     "ないものを押して外すと、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入ります。": "Evde olmayanlara dokunup kaldırın: haftalık alışveriş listesinde “Evde olabilir” kısmında baştan “Al” olarak işaretlenir.",
     "はじめて": "Yeni başlayan",

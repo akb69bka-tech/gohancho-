@@ -3185,6 +3185,26 @@ function moodOk(r, mood){
         default: return true;
     }
 }
+/* ---- 台所の設定を献立の選び方に効かせる（第4回モニター R2。どちらも点数で「できるだけ」。候補から外さないので、献立が作れなくなることはない） ----
+   コンロ1つ（電子レンジだけも）: 火を使う料理がもうあるときは、副菜・汁もの・2品目の主菜に、コンロを使わない料理（あえもの・電子レンジ・オーブン・炊飯器）を先に出す。
+   はじめて: 手順の少ない料理を先に出す（「少し」は半分だけ）。作り方の元の文（日本は日本語、各国は英語）で見るので、画面の言語に左右されない */
+const STOVE_RE = /火|煮|ゆで|茹で|炒め|焼|沸|蒸|加熱|温め|揚げ|\b(?:heat|boil|simmer|fry|fried|saut[eé]|sear|cook|poach|stew|steam|brown|toast)/i;
+const APPLIANCE_RE = /電子レンジ|レンジ|オーブン|トースター|グリル|魚焼き|炊飯器|\bmicrowave|\boven|\bbake|\broast|\bgrill|\bbroil|rice cooker/i;
+const STOVE = new WeakMap();
+function stoveUse(r){   // コンロを使う手順があるか（電子レンジ・オーブン・グリル・炊飯器の手順は数えない）
+    if (!r) return false;
+    let v = STOVE.get(r);
+    if (v === undefined){ v = (r.stepsBase || r.steps || []).some(st => { const s = String(typeof st === 'string' ? st : (st && st.t) || ''); return STOVE_RE.test(s) && !APPLIANCE_RE.test(s); }); STOVE.set(r, v); }
+    return v;
+}
+function kitchenBias(r, ctx){
+    const k = S.settings.kitchen || {}; let s = 0;
+    const others = [ctx.main, ...(ctx.others || [])].filter(Boolean);
+    if ((k.burners === '1' || k.burners === 'mw') && others.length && stoveUse(r) && others.some(stoveUse)) s -= 1;
+    const n = (r.steps || []).length, w = k.skill === 'new' ? 0.3 : k.skill === 'some' ? 0.15 : 0;
+    if (w && n > 3) s -= w * Math.min(4, n - 3);
+    return s;
+}
 function scoreRecipe(r, ctx){
     if (S.hidden.includes(r.id) || session.rejected.has(r.id) || isAvoided(r)) return -Infinity;
     const avoid = S.settings.avoidDays;
@@ -3217,6 +3237,7 @@ function scoreRecipe(r, ctx){
     });
     if (ctx.fridge && ctx.fridge.size){ s += matchRecipe(r, ctx.fridge).ratio * 0.8; }
     if (ctx.weekday && r.min > 45) s -= 0.7 * Math.min(1, (r.min - 45) / 45);   // 平日は時間のかかる主菜を出しにくく（土日はそのまま）
+    s += kitchenBias(r, ctx);   // 台所の設定（コンロ1つ・はじめて）。点数だけで、候補からは外さない
     return s;
 }
 function pick(cands, ctx){
@@ -7050,7 +7071,7 @@ function familySettingsHtml(){
     </div>`;
 }
 function fmtPortion(v){ return Number.isInteger(v) ? String(v) : (Math.round(v * 10) / 10).toLocaleString(LANG === 'pt-BR' ? 'pt' : LANG); }
-// 台所（八木）: コンロの数・魚焼きグリル・オーブン・料理の慣れ。S.settings.kitchen に残す（いまは残すだけで、献立の選び方はまだ変えない）
+// 台所（八木）: コンロの数・魚焼きグリル・オーブン・料理の慣れ。S.settings.kitchen に残す（コンロの数と料理の慣れは kitchenBias() で献立の選び方に効く）
 function kitchenSettingsHtml(){
     const k = S.settings.kitchen || {};
     const seg = (key, list, cur) => `<div class="chips" role="radiogroup" aria-label="${esc(list.label)}">${list.opts.map(([v, l]) => `<button class="chip" role="radio" data-act="kitchen" data-k="${key}" data-v="${v}" aria-checked="${cur === v}" aria-pressed="${cur === v}">${esc(l)}</button>`).join('')}</div>`;
@@ -7063,7 +7084,7 @@ function kitchenSettingsHtml(){
         <div class="field"><label>${esc(t('料理の慣れ'))}</label>${seg('skill', {label: t('料理の慣れ'), opts: [['new', t('はじめて')], ['some', t('少し')], ['ok', t('ふつう')]]}, k.skill || '')}</div>
         <div class="field"><label for="kitchen-rice">${esc(t('炊飯器の炊く時間（分）'))}</label><input type="number" id="kitchen-rice" inputmode="numeric" min="10" max="180" step="1" value="${k.riceMin ? esc(k.riceMin) : ''}" placeholder="${esc(t('例: 50'))}">
             <span class="small muted">${esc(t('入れたときだけ、作る段で炊飯器のスイッチを入れる時刻の目安を出します。空のままなら出しません。'))}</span></div>
-        <span class="small muted">${esc(t('いまは設定を残しておくだけで、献立の選び方はまだ変わりません。'))}</span>
+        <span class="small muted">${esc(t('コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。'))}</span>
     </div>`;
 }
 // 家にある調味料（八木）: いまの国の料理によく出る調味料。押して「ない」にした物は、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入る

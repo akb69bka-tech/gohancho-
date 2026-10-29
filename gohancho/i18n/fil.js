@@ -417,7 +417,7 @@ GOHAN_I18N('fil', {
     "1つ": "1",
     "2つ以上": "2 o higit pa",
     "ある": "Mayroon",
-    "いまは設定を残しておくだけで、献立の選び方はまだ変わりません。": "Sa ngayon, nai-save lang ito; hindi pa nito binabago kung paano pumipili ng menu.",
+    "コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。": "Kung isa lang ang kalan, sinisikap naming huwag pumili ng dalawang ulam na parehong niluluto sa kalan; para sa baguhan, mga ulam na kaunti ang hakbang. Magsisimula ito sa susunod na menu (hindi babaguhin ang menung napagpasyahan na).",
     "ない": "Wala",
     "ないものを押して外すと、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入ります。": "I-tap ang wala sa bahay para alisin: sa lingguhang listahan ng bibilhin, naka-check na itong “Bilhin” sa “Baka mayroon ka na”.",
     "はじめて": "Baguhan",

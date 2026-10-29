@@ -685,7 +685,7 @@ GOHAN_I18N('vi', {
     "1つ": "1",
     "2つ以上": "2 trở lên",
     "ある": "Có",
-    "いまは設定を残しておくだけで、献立の選び方はまだ変わりません。": "Hiện chỉ lưu lại thiết lập; cách chọn thực đơn chưa thay đổi.",
+    "コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。": "Nếu chỉ có một bếp, chúng tôi cố gắng không chọn hai món cùng phải nấu trên bếp; nếu mới tập nấu, chúng tôi cố gắng chọn món ít bước. Áp dụng từ thực đơn lần sau (thực đơn đã chốt vẫn giữ nguyên).",
     "ない": "Không",
     "ないものを押して外すと、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入ります。": "Chạm vào thứ nhà không có để bỏ chọn: trong danh sách đi chợ cả tuần, mục “Có thể có ở nhà” sẽ đánh dấu “Mua” sẵn.",
     "はじめて": "Mới bắt đầu",

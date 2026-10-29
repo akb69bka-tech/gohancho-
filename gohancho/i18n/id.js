@@ -417,7 +417,7 @@ GOHAN_I18N('id', {
     "1つ": "1",
     "2つ以上": "2 atau lebih",
     "ある": "Ada",
-    "いまは設定を残しておくだけで、献立の選び方はまだ変わりません。": "Untuk saat ini hanya disimpan; belum mengubah cara memilih menu.",
+    "コンロが1つなら火を使う料理が重ならないように、はじめてなら手順の少ない料理を、できるだけ選びます。次に献立を作るときから変わります（決めた献立はそのままです）。": "Jika kompor hanya satu, kami usahakan tidak memilih dua masakan yang sama-sama perlu kompor; untuk pemula, kami usahakan memilih masakan dengan langkah lebih sedikit. Berlaku mulai menu berikutnya (menu yang sudah ditetapkan tetap seperti semula).",
     "ない": "Tidak ada",
     "ないものを押して外すと、1週間の買い物メモの「家にあるかも」で、はじめから「買う」に入ります。": "Ketuk yang tidak ada untuk mematikannya: di daftar belanja mingguan, bagian “Mungkin sudah ada” akan langsung tercentang “Beli”.",
     "はじめて": "Pemula",
