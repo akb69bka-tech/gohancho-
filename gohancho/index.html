@@ -3354,9 +3354,11 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const wd = parseYmd(TODAY).getDay();
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
     const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
+    const okayuDay = session.mood === 'okayu';   // おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（ない国・ないときも、ほかの料理・麺で埋めない）
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
     if (menuCount() === 1){ const one = cands.filter(r => isBowlMain(r) || soupyMain(r)); if (one.length) cands = one; }   // 1品の日は、それだけで食事になる丼・麺・鍋
-    if (!cands.length) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (!cands.length && !okayuDay) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (!okayuDay && stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆの日は、ご飯もの・麺（きつねうどんなど）を主菜にしない
     if (!composeOf(menuCount()).slots.includes('副菜') && !mixCc('主菜') && !stapleSpot()){ const st = cands.filter(r => r.starch); if (st.length) cands = st; }   // 副菜の枠がない日（一汁一菜・1品）で主食が「なし」の国は、主食になる物が入った主菜を（R4。印のある国だけ）
     if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
     if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
@@ -3371,7 +3373,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
     if (again) return again;
     const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
-    if (!rest.length && !sameKind){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
+    if (!rest.length && !sameKind && !okayuDay){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
         const wide = poolFor('主菜').filter(x => x.main && !isAvoided(x) && !S.hidden.includes(x.id) && !prev.has(x.id));
         if (wide.length) return wide[Math.floor(Math.random() * wide.length)];
     }
@@ -3408,15 +3410,19 @@ const SOUPY_MAIN = new Set(['nikuudon', 'kitsuneudon', 'curryudon', 'ramen', 'st
 const SOUPY_RE = /ラーメン|うどん|鍋|シチュー|おでん|ポトフ|\b(?:ramen|udon|ph[oở]|hot ?pot|stew|chowder|pot-au-feu|laksa|soup|sopa|zuppa|suppe|soupe|caldo)\b|찌개|전골|국수|라면|탕$|火锅|火鍋|拉麺|拉面|汤面|湯麵|lẩu|bún bò/i;
 function soupyMain(r){ return !!r && (r.type === '汁物' || SOUPY_MAIN.has(r.id) || (r.pack && r.pack !== 'JP' && (r.type === '麺' || r.method === '煮') && SOUPY_RE.test(r.name))); }
 /* ---- おかゆの日（第3回モニター R3）----
-   主菜: ご飯から作る早いおかゆ（雑炊・うどん。いまあるレシピから）を先に出し、なければ米から炊くおかゆ。お漬物は付けない。
+   主菜: ご飯から作る早いおかゆ（雑炊）を先に出し、なければ米から炊くおかゆ。おかゆ・雑炊・粥のなかま以外（うどん・麺など）は出さない。お漬物は付けない。
    副菜・汁もの: やわらかい・あっさりした、短い料理（揚げる・焼く・炒める・辛い・生のサラダや漬物は出さない）。
    体調や病気に「よい」「効く」とは書かない（健康・医療の表示はしない） */
-const OKAYU_QUICK = ['zosui', 'kitsuneudon'];   // 卵雑炊（ご飯から15分）・きつねうどん（やわらかい麺）。にゅうめんはまだレシピがない
+const OKAYU_QUICK = ['zosui'];   // 卵雑炊（ご飯から15分）。おかゆの日に出すのは、おかゆ・雑炊のなかまだけ（うどん・麺は出さない。オーナーの指摘: おかゆの日にきつねうどんが入っていた）
 const OKAYU_SOFT = new Set(['ohitashi', 'kabocha', 'komatsuna', 'hiyayakko', 'gomaae', 'shiraae', 'koyadofu', 'unohana', 'satoimonikkorogashi', 'chawanmushi', 'kofukiimo', 'glace',
     'misoshiru', 'sumashijiru', 'kakitamajiru', 'namekomiso', 'daikonmiso', 'jagaimomiso', 'cabbagemiso', 'tamagosoup', 'tomatoeggsoup', 'cornsoup', 'kabochapotage']);
 const PORRIDGE_RE = /congee|porridge|粥|죽|\bjok\b|โจ๊ก|arroz caldo|lugaw|cháo|bubur/i;
 const RAW_SIDE_RE = /salad|salat|ensalada|insalata|salade|sałatka|salata|pickle|kimchi|김치|沙拉|凉拌|涼拌|ยำ|gỏi|achar|curtido|サラダ|漬け|酢の物/i;
 function okayuDayOk(r){ return !!r && (isOkayu(r) || OKAYU_QUICK.includes(r.id) || (!!r.pack && r.type === 'ごはん' && PORRIDGE_RE.test([r.name, ...(r.alt || [])].join(' ')))); }
+// いまの国（主菜の国）に、おかゆの日に出せる主菜（おかゆ・雑炊・粥）があるか。ない国では「おかゆの日」の絞りこみを出さない（ほかの料理で埋めない）
+function okayuAvail(){ return poolForMood('主菜', 'okayu').some(r => r.main && okayuDayOk(r) && !isAvoided(r)); }
+// 主食が「おかゆ」の日: 主菜は、おかゆを主食にして食べるおかず（ご飯もの・麺の一品料理にすると、選んだおかゆが出なくなる・主食が2つになる）
+function stapleOkayu(){ const o = typeof currentStapleOpt === 'function' ? currentStapleOpt() : null; return !!o && o.k === 'okayu' && !!stapleSpot(); }
 function okayuSoftOk(r){
     if (!r || r.min > 20 || spiceLevel(r) > 0 || ['揚', '焼', '炒'].includes(r.method) || easyHeavy(r) || sweetSoup(r)) return false;
     if (!r.pack) return OKAYU_SOFT.has(r.id);
@@ -3453,6 +3459,7 @@ function fitMain(ps, slot, main){
 // 気分の時間の条件（20分以内・ラクの日）を、副菜・汁もの・2品目の主菜にも効かせる（合う料理がその枠にないときだけ外す）
 function slotMoodOk(r, slot){ return session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
 function moodPrefer(ps, slot){ const ok = ps.filter(r => slotMoodOk(r, slot)); return ok.length ? ok : ps; }
+function poolForMood(slot, mood){ const m0 = session.mood; session.mood = mood; try{ return poolFor(slot); } finally { session.mood = m0; } }
 function poolFor(slot){
     const cc = mixCc(slot); let all = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES;
     if (all.some(r => !inSeason(r))) all = all.filter(r => inSeason(r));
@@ -3911,6 +3918,7 @@ function makeWeek(){
         const fresh = all0.filter(r => weekFresh(r, i)); let cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
         // ごはんもの・麺の一品料理は1週間で3日まで（中華圏などで主菜が丼・麺ばかりにならないように。候補が足りないときはそのまま）
         if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
+        if (stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆなら、ご飯もの・麺の日を作らない（選んだおかゆが出なくなる）
         const wdi = parseYmd(d).getDay();
         let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
@@ -9694,7 +9702,7 @@ function swapCands(i, f){
 }
 function swapSheetHtml(){
     const m = session.menu, it = m && m.items[sheet.i]; if (!it) return '';
-    const slot = slotLabel(it.slot), fs = Object.keys(SWAP_F).filter(k => k !== 'okayu' || sheet.i === 0);
+    const slot = slotLabel(it.slot), fs = Object.keys(SWAP_F).filter(k => k !== 'okayu' || (sheet.i === 0 && okayuAvail()));   // おかゆ・粥のない国では「おかゆの日」を出さない
     return `<h2>${esc(t('{slot}をかえる', {slot}))}</h2>
         <p class="small muted">${esc(t('変わるのはこの1品だけです'))}</p>
         <div class="chips" role="group" aria-label="${esc(t('条件'))}">${fs.map(k => `<button class="chip" data-act="swap-f" data-v="${k}" aria-pressed="${sheet.f === k}">${esc(SWAP_F[k]())}</button>`).join('')}</div>

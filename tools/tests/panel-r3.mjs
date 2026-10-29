@@ -78,7 +78,7 @@ const open = async (settings = {}, opt = {}) => {
         for (let k = 0; k < 30; k++){
             session.rejected.clear(); newMenu();
             const its = session.menu.items.filter(x => x.r);
-            mains.push(its[0] ? its[0].r.id + ':' + its[0].r.min : 'none');
+            mains.push(its[0] ? its[0].r.id + ':' + its[0].r.min + ':' + (okayuDayOk(its[0].r) && its[0].r.type !== '麺' ? 'ok' : 'ng') : 'none');
             its.slice(1).forEach(x => { const q = x.r; if (q.min > 20 || ['揚', '焼', '炒'].includes(q.method) || spiceLevel(q) > 0 || /サラダ|漬け|酢の物|チゲ|ワンタン/.test(q.name)) bad.push(x.slot + ':' + q.name + q.min); });
             totals.push(its.reduce((a, x) => a + x.r.min, 0));
         }
@@ -90,6 +90,7 @@ const open = async (settings = {}, opt = {}) => {
     });
     const slow = r.mains.filter(x => Number(x.split(':')[1]) > 20);
     ok(!slow.length, 'R3-1 おかゆの日の主菜は、早くできるおかゆ・雑炊（20分以内）を先に出す: ' + slow.slice(0, 5));
+    ok(!r.mains.some(x => /:ng$|^none/.test(x)), 'R3-1b おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（きつねうどんなどの麺を出さない）: ' + r.mains.filter(x => /:ng$|^none/.test(x)).slice(0, 5));
     ok(!r.bad.length, 'R3-2 おかゆの日の副菜・汁ものは、やわらかい・あっさりした20分以内の料理: ' + r.bad.slice(0, 6));
     ok(r.max <= 60, 'R3-3 おかゆの日の献立の合計は60分以内: ' + r.max);
     ok(r.note && !/副菜・汁ものはいつもどおり/.test(r.note), 'R3-4 説明は「副菜・汁ものはいつもどおり」ではない: ' + r.note);
