@@ -591,16 +591,20 @@ export function make(p, spec){
     }
     // ディップ・ピュレの見分け（2026-10-29 見直し 4回目）: 山の上に、へらで回した溝・油のたまり・何で作ったか分かる飾り（crown）
     const dipTop = (o, RR, HH) => {
-        if (!spec.groove && !spec.oilTop && !spec.crown) return '';
-        const tx = o.cx, ty = o.cy + 2 - HH * CZ * .95 + 2, bc = base || '#e8d8b0';
+        if (!spec.groove && !spec.oilTop && !spec.crown && !spec.mash) return '';
+        const tx = o.cx, ty = o.cy + 4 - HH * CZ * (spec.mash ? .62 : .95), bc = base || '#e8d8b0';
         let s = '';
         if (spec.groove) s += [.22, .38, .54].map((k, j) => { const rx = RR * k, ry = rx * SY * .5; return `<path d="M${f(tx - rx)},${f(ty + 1 + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + 1 + j * 2 - ry * .7)}" stroke="${dk(bc, .28)}" stroke-width="1.8" fill="none" opacity=".75"/><path d="M${f(tx - rx)},${f(ty + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + j * 2 - ry * .7)}" stroke="${lt(bc, .45)}" stroke-width="1" fill="none" opacity=".7"/>`; }).join('');
         if (spec.oilTop) s += `<path d="${Q.blob(tx, ty + 2, RR * .26, RR * .26 * SY * .6, p.id + 'ot', { n: 10, jit: .2 })}" fill="${spec.oilTop}" opacity=".85"/><ellipse cx="${f(tx - RR * .08)}" cy="${f(ty + 1)}" rx="${f(RR * .08)}" ry="1.2" fill="#fff" opacity=".7"/>`;
+        // マッシュの見分け（2026-10-29 見直し 5回目。お膳の 48〜64px で見分ける）
+        if (spec.mash === 'potato') s += `<ellipse cx="${f(tx)}" cy="${f(ty + 2)}" rx="${f(RR * .44)}" ry="${f(RR * .44 * SY * .6)}" fill="${dk(bc, .22)}"/><ellipse cx="${f(tx)}" cy="${f(ty + 3)}" rx="${f(RR * .37)}" ry="${f(RR * .37 * SY * .5)}" fill="${Q.rg(p, [[0, '#fff2a0'], [.6, '#f6c830'], [1, '#e0a020']], .4, .35, .8)}"/>` + butterPat(p, tx + RR * .04, ty, RR * .2) + `<ellipse cx="${f(tx - RR * .1)}" cy="${f(ty + 1)}" rx="${f(RR * .07)}" ry="1.4" fill="#fff" opacity=".8"/>`;
+        if (spec.mash === 'pea'){ const Rn = rng(p.id + 'mp'); for (let k = 0; k < 60; k++){ const a = Rn() * 6.283, d = Math.sqrt(Rn()); const x = tx + Math.cos(a) * d * RR * .85, y = ty + 4 + Math.sin(a) * d * RR * .85 * SY * .85; s += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(2.8 + Rn() * .8)}" fill="${Q.rg(p, [[0, '#d0f080'], [.6, '#7ab030'], [1, '#3f7a1e']], .35, .3, .8)}" stroke="#3a6a1a" stroke-width=".4"/>`; } }
+        if (spec.mash === 'carrot'){ const Rn = rng(p.id + 'mc'); for (let k = 0; k < 22; k++){ const a = Rn() * 6.283, d = Math.sqrt(Rn()) * .8; const x = tx + Math.cos(a) * d * RR, y = ty + 4 + Math.sin(a) * d * RR * SY * .85, L = 8 + Rn() * 8, r = (Rn() - .5) * 60; s += `<path d="M${f(x - L / 2)},${f(y)} q${f(L / 2)},-2.4 ${f(L)},0" transform="rotate(${f(r)} ${f(x)} ${f(y)})" stroke="${k % 2 ? '#ffd090' : '#a8401a'}" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>`; } }
         if (spec.crown){ const tl = []; spec.crown.forEach(([k, n, sz = 14]) => { for (let j = 0; j < n; j++) tl.push([k, sz]); }); s += byDepth(spots(p.id + 'cw', tl.length, RR * .36, Math.max(6, tl[0][1] * .6)).map(([u, v2, r], i) => { const x = tx + u, y = ty + 2 + v2 * SY * .6; return [y, () => SMALL_TOP.has(tl[i][0]) ? `<g ${p.edge('#2a1206', .5, .45)}>${grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i))}</g>` : piece(p, x, y, grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i)), { s: tl[i][1] * .8 })]; })); }
         return s;
     };
     if (mode === 'bowl'){
-        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + 14, H: H + (spec.groove || spec.oilTop ? 2 : 18), base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [990, () => dipTop(o, RR, HH)], [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
+        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + (spec.mash ? 22 : 14), H: H + (spec.mash ? 14 : spec.groove || spec.oilTop ? 2 : 18), base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [990, () => dipTop(o, RR, HH)], [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
     }
     if (mode === 'braise'){
         const V = v(p); return braise(p, V, c, p.id + 'br', list.length, minD, H + 14, (x, y, r, i) => draw(list[i % list.length][0], list[i % list.length][1], x, y, r, i), { srx: 50, R: 50 }) + flk(100, V.cy - 4, 40, 14) + after({ cx: 100, cy: V.cy }, V, p);
@@ -623,8 +627,16 @@ export function skewers(p, o, n, piece, { L = 120, k = 4, rot = -10, gap = 16, s
 // 丸ごとの魚を皿に（焼き魚・揚げ魚）: 上にソースや薬味を on(x, y) で
 export const fishOn = (p, D, { L = 150, rot = -8, skin = '#a8763a', belly = '#e8c890', char = .6, on = () => '' } = {}) => D.s + wholeFish(p, D.o.cx, D.o.cy, L, rot, 1, { skin, belly, char }) + on(D.o.cx, D.o.cy);
 // オーブン焼き（グラタン・パルミジャーナ・エスコンジジーニョ・ムサカ）: 角の耐熱皿に焼き色の面、top(o) で上の具
-export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', blister = 0, scoop = null, dome = null, ...o } = {}){
-    const V = casserole(p, { base, inner, ...o }), O = V.o;
+export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', blister = 0, scoop = null, dome = null, shape = 'rect', pattern = null, ...o } = {}){
+    // 器の形: rect（角の耐熱皿）・oval（楕円のグラタン皿。取っ手の耳つき）
+    const V = shape === 'oval' ? ovalBaker(p, { base, inner }) : casserole(p, { base, inner, ...o }), O = V.o;
+    // 表面の模様（お膳の小さい大きさで見分ける。2026-10-29 見直し 5回目）
+    let pt = '';
+    if (pattern === 'slices') for (let v = -40; v <= 40; v += 11) for (let u = -84 + ((v / 11) % 2 ? 8 : 0); u <= 84; u += 16){ const [x, y] = at(O, u, v * .62); pt += `<path d="M${f(x - 10)},${f(y + 2)} A10,${f(10 * O.sy * .7)} 0 0 1 ${f(x + 10)},${f(y + 2)}Z" fill="${Q.lg(p, [[0, '#fbe8a8'], [.6, '#f0c860'], [1, '#c8862e']], 0, 0, 0, 1)}" stroke="#a8641e" stroke-width="1"/>`; }
+    if (pattern === 'tubes') spots(p.id + 'tb', 30, 70, 13, { ry: 38 }).forEach(([u, v, r]) => { const [x, y] = at(O, u, v * .62); pt += `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(r % 90 - 45)})"><rect x="-9" y="-4.6" width="18" height="9.2" rx="3" fill="#e8b048" stroke="#8a5a1e" stroke-width=".8"/><ellipse cx="9" cy="0" rx="3" ry="4.6" fill="#fbe0a0" stroke="#8a5a1e" stroke-width=".6"/><ellipse cx="9" cy="0" rx="1.6" ry="2.8" fill="#7a3a14"/></g>`; });
+    if (pattern === 'florets') spots(p.id + 'fl', 9, 62, 26, { ry: 34 }).forEach(([u, v], k) => { const [x, y] = at(O, u, v * .62); pt += `<path d="${Q.blob(x, y, 15, 10, p.id + 'flb' + k, { n: 12, jit: .2 })}" fill="${Q.rg(p, [[0, '#fff8e0'], [.6, '#f2dca0'], [1, '#c8a060']], .4, .35, .8)}" stroke="#b8904a" stroke-width=".7"/>`; });
+    if (pattern === 'ridges') for (let v = -40; v <= 40; v += 7){ const [x0, y0] = at(O, -86, v * .62), [x1] = at(O, 86, v * .62); let d = `M${f(x0)},${f(y0)}`; for (let x = x0; x < x1; x += 10) d += ` q5,${(v / 7) % 2 ? -3 : 3} 10,0`; pt += `<path d="${d}" stroke="#a8641e" stroke-width="2.2" fill="none" opacity=".75"/><path d="${d}" transform="translate(0 -1.6)" stroke="#fff4c8" stroke-width="1" fill="none" opacity=".8"/>`; }
+    if (pattern === 'rolls') for (let v = -30; v <= 30; v += 20){ const [x, y] = at(O, 0, v * .62); pt += `<path d="M${f(x - 76)},${f(y + 6)} Q${f(x)},${f(y - 6)} ${f(x + 76)},${f(y + 6)}" stroke="#c89040" stroke-width="13" fill="none" stroke-linecap="round" opacity=".55"/><path d="M${f(x - 72)},${f(y + 3)} Q${f(x)},${f(y - 9)} ${f(x + 72)},${f(y + 3)}" stroke="#fbe8b0" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>`; }
     // 焼き色のふくれ（グラタン）: 濃い焼き色の斑と、ふちの明るい輪
     const bl = blister ? spots(p.id + 'bl', blister, 66, 14, { ry: 36 }).map(([u, v], k) => { const [x, y] = at(O, u, v * .62); const r = 6 + (k % 3) * 2.4; return `<path d="${Q.blob(x, y, r, r * .6, p.id + 'blb' + k, { n: 9, jit: .3 })}" fill="${Q.rg(p, [[0, '#7a3a10'], [.55, '#a8601e'], [1, '#e0a040']], .45, .4, .8)}" opacity=".85"/>`; }).join('') : '';
     // パイ: 生地が山にふくらみ、縁に指で押した波、まん中に空気穴、照り
@@ -632,17 +644,17 @@ export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl
     // ひとすくい取った跡（手前右）: 中の層が切り口に見える
     let sc = '';
     if (scoop){
-        const { u0 = 22, u1 = 90, v0 = 4, v1 = 70, hf = 30, layers = [[c, 1]], dots = [], bottom = null } = scoop;
+        const { u0 = -10, u1 = 96, v0 = 18, v1 = 90, hf = 40, layers = [[c, 1]], dots = [], bottom = null } = scoop;
         const P3 = (u, v, z) => at(O, u, v, z), pt = a => a.map(([x, y]) => `${f(x)},${f(y)}`).join(' ');
         const B = [P3(u0, v0, -hf), P3(u1, v0, -hf), P3(u1, v1, -hf), P3(u0, v1, -hf)];
         const back = [P3(u0, v0, 0), P3(u1, v0, 0), P3(u1, v0, -hf), P3(u0, v0, -hf)], left = [P3(u0, v0, 0), P3(u0, v1, 0), P3(u0, v1, -hf), P3(u0, v0, -hf)];
         let acc = 0; const stops = []; layers.forEach(([col, fr]) => { stops.push([acc, col]); acc += fr; stops.push([Math.min(1, acc - .001), col]); });
         const face = Q.lg(p, stops, 0, 0, 0, 1);
-        sc = `<polygon points="${pt(B)}" fill="${bottom || dk(inner, .12)}"/>` + `<polygon points="${pt(left)}" fill="${face}"/><polygon points="${pt(left)}" fill="${SHADE}" opacity=".25"/>` + `<polygon points="${pt(back)}" fill="${face}"/>` +
+        sc = `<polygon points="${pt(B)}" fill="${bottom || dk(inner, .3)}"/>` + `<polygon points="${pt(left)}" fill="${face}"/><polygon points="${pt(left)}" fill="${SHADE}" opacity=".25"/>` + `<polygon points="${pt(back)}" fill="${face}"/><polygon points="${pt(back)}" fill="${Q.lg(p, [[0, '#fff'], [.5, '#fff'], [1, SHADE]], 0, 0, 0, 1)}" opacity=".18"/><polyline points="${pt([back[3], back[2]])}" stroke="${SHADE}" stroke-width="1" opacity=".5"/>` +
             dots.map(([col, k, r = 2.4], j) => Array.from({ length: k }, (_, m) => { const R = rng(p.id + 'sd' + j + m)(), R2 = rng(p.id + 'se' + j + m)(); const [x, y] = P3(u0 + 4 + R * (u1 - u0 - 8), v0, -hf * (.15 + R2 * .75)); return `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(r)}" ry="${f(r * .8)}" fill="${col}" stroke="${dk(col, .3)}" stroke-width=".4"/>`; }).join('')).join('') +
             `<polyline points="${pt([P3(u0, v1, 0), P3(u0, v0, 0), P3(u1, v0, 0)])}" fill="none" stroke="${lt(layers[0][0], .3)}" stroke-width="1.2"/>`;
     }
-    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${bl}${top(V.o, V, p)}${dm}${sc}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
+    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${pt}${bl}${top(V.o, V, p)}${dm}${sc}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
 }
 // カツ（シュニッツェル・ミラネサ・パネ・スハボヴィ）: ぎざぎざのころもに細かいパン粉の粒、切り分けた切れ目に白い中身が見える（2026-10-29 見直し 4回目）
 export function cutlet(p, x, y, rx, ry, rot = -8, { inner = '#f6eadc', c = ['#f6d080', '#e0a848', '#a8702a'], cuts = 3, seed = 'ct', lemonAt = null } = {}){
@@ -663,4 +675,14 @@ export function bellPepper(p, x, y, s, c, seed, { fill = '#8a4a24', grain = '#f2
         `<ellipse cx="${f(x)}" cy="${f(top + 2)}" rx="${f(w)}" ry="${f(w * .42)}" fill="${dk(c, .2)}"/><ellipse cx="${f(x)}" cy="${f(top + 1.4)}" rx="${f(w * .86)}" ry="${f(w * .34)}" fill="${Q.rg(p, [[0, lt(fill, .3)], [1, fill]], .4, .35, .8)}"/>` + flecks(p, x, top, w * .7, 8, 'bp' + seed, [grain, dk(fill, .2)], { ry: w * .25, s: 1.4 }) +
         `<path d="M${f(x - w * .6)},${f(y - h * .35)} q${f(w * .2)},${f(-h * .3)} ${f(w * .1)},${f(-h * .5)}" stroke="#fff" stroke-width="1.6" fill="none" opacity=".5"/>` +
         (cap ? `<g transform="translate(${f(x + w * .9)} ${f(top - 2)}) rotate(24)"><ellipse rx="${f(w * .6)}" ry="${f(w * .26)}" fill="${dk(c, .1)}" stroke="${dk(c, .45)}" stroke-width=".6"/><path d="M0,${f(-w * .1)} l1,${f(-w * .5)}" stroke="#4a6a22" stroke-width="2.6" stroke-linecap="round"/></g>` : '');
+}
+
+// 楕円のグラタン皿（耳つき）: bake の shape: 'oval'
+export function ovalBaker(p, { base = '#e8dcc0', inner = '#f6efe2', cx = 100, cy = 94, rx = 84, ry = 64, h = 20 } = {}){
+    const sy = SYF, iy = ry - 7, ix = rx - 7, inD = `M${f(cx - ix)},${f(cy)} A${f(ix)},${f(iy * sy)} 0 1 0 ${f(cx + ix)},${f(cy)} A${f(ix)},${f(iy * sy)} 0 1 0 ${f(cx - ix)},${f(cy)}Z`;
+    let s = Q.ground(p, cx, cy + h + ry * sy * .4, rx * .9, { sy: .6, k: sy });
+    s += [-1, 1].map(k => `<ellipse cx="${f(cx + k * (rx + 6))}" cy="${f(cy + 2)}" rx="12" ry="6" fill="${dk(base, .15)}" stroke="${dk(base, .35)}" stroke-width=".7"/>`).join('');
+    s += `<path d="M${f(cx - rx)},${f(cy)} L${f(cx - rx + 4)},${f(cy + h)} A${f(rx - 4)},${f((ry - 4) * sy)} 0 0 0 ${f(cx + rx - 4)},${f(cy + h)} L${f(cx + rx)},${f(cy)}Z" fill="${Q.lg(p, [[0, lt(base, .15)], [.6, base], [1, dk(base, .35)]])}" stroke="${dk(base, .35)}" stroke-width=".7"/>`;
+    s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${f(ry * sy)}" fill="${Q.lg(p, [[0, lt(base, .3)], [1, dk(base, .06)]], 0, 0, 1, 1)}" stroke="${dk(base, .3)}" stroke-width=".8"/><path d="${inD}" fill="${dk(inner, .1)}"/>`;
+    return { s, cx, cy, sy, inside: Q.clip(p, inD), o: { cx, cy: cy + 2, sy } };
 }
