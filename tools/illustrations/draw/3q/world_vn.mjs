@@ -41,7 +41,7 @@ const plateHeap = (p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 34 
 const heapBowl = (p, seed, n, minD, H, draw, { base = null, R = 64, after = () => '' } = {}) => W.inBowl(p, smallBowl(p), { R, H, base, items: (o, RR, HH) => [...W.onHill(o, seed, n, RR * .95, minD, HH, draw), [999, () => after(o, HH)]] });
 const canh = (p, c, items, o = {}) => W.soup(p, o.V ? o.V(p) : bowl(p), { c, drop: 10, glow: .35, gl: .5, items, ...o });
 // 土鍋の煮つけ（kho）: 煮汁は少なく、具を山に
-const kho = (p, seed, n, minD, H, draw, c = KHO) => W.heap(p, claypot(p), { c, drop: 14, H, R: 56, srx: 60, items: (pl) => [...W.spots(seed, n, 52, minD), ...W.spots(seed + '2', Math.round(n / 3), 26, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => draw(x, y, r, i)]; }) });
+const kho = (p, seed, n, minD, H, draw, c = KHO) => W.heap(p, claypot(p), { c, drop: 14, H, R: 56, srx: 60, items: (pl) => [...W.spots(seed, n, 52, minD), ...W.spots(seed + '2', Math.round(n / 3), 26, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => W.piece(p, x, y, draw(x, y, r, i), { s: 13 })]; }), glow: .5 });
 
 // =========================================================
 // 品
@@ -167,7 +167,7 @@ export default {
     // カインビーサイン（冬瓜とえびのスープ）、青ねぎ・パクチー（お好みで）
     vn_canhbixanh: p => canh(p, '#efe6c4', (pl, S) => [...W.spots('bx', 7, 56, 17).map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => W.dice(p, x, y, 14, '#b8c890', 'bx' + i, { h: 6, sink: 2, liq: '#efe6c4', top: Q.rg(p, [[0, '#f4f6e0'], [.6, '#dce4b8'], [1, '#98b070']], .4, .35, .8) })]; }), ...W.spots('bxs', 5, 50, 16).map(([u, v, r]) => { const [x, y] = pl(u, v, 1); return [y, () => shrimpP(p, x, y, 13, r)]; }), ...negis(pl, 'bxn', 8, 56)]),
     // カインコーカー（ゴーヤの肉詰めスープ）: 豚ひき肉・きくらげ、春雨（お好みで）、青ねぎ・パクチー
-    vn_canhkhoqua: p => canh(p, '#e8dcb0', (pl, S) => [...W.spots('kq', 5, 50, 22).map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y, () => W.coin(p, x, y, 13, '#7aa848', { h: 8, top: Q.rg(p, [[0, '#d8b090'], [.6, '#b88a6a'], [.75, '#e8f0c8'], [1, '#6a9a3a']], .4, .35, .8) })]; }), ...negis(pl, 'kqn', 8, 56)]),
+    vn_canhkhoqua: p => canh(p, '#e8dcb0', (pl, S) => [...W.spots('kq', 5, 46, 26).map(([u, v], i) => { const [x, y] = pl(u, v, 3); return [y, () => W.stuffedMelon(p, x, y, 16, { h: 9 })]; }), ...negis(pl, 'kqn', 8, 56).map(([y, fn]) => [y + 20, fn])]),
     // カインバップカイ（キャベツ巻きのすまし汁）: 豚ひき肉をキャベツで巻き、青ねぎで結ぶ、きくらげ（お好みで）
     vn_canhbapcai: p => canh(p, '#ecdcb0', (pl, S) => [...W.spots('bc', 5, 50, 22).map(([u, v, r], i) => { const [x, y] = pl(u, v, 2); return [y, () => `<g ${T(x, y, r % 40 - 20)}><rect x="-12" y="-7" width="24" height="14" rx="7" fill="${Q.lg(p, [[0, '#f2f6d8'], [1, '#b8d080']], 0, 0, 0, 1)}" stroke="#8ab060" stroke-width=".6"/><path d="M-2,-7 L-2,7" stroke="#3f8a2a" stroke-width="2"/></g>`]; }), ...W.spots('bcw', 4, 54, 16).map(([u, v, r], i) => { const [x, y] = pl(u, v); return [y, () => woodEar(p, x, y, 11, r, i)]; })]),
     // カインヘーダウフー（ニラとやわらかい豆腐のスープ）、豚ひき肉（お好みで）
@@ -183,7 +183,7 @@ export default {
     // スップクア（かにと卵のとろみスープ）: 干ししいたけ、コーン（お好みで）、青ねぎ・パクチー
     vn_supcua: p => canh(p, '#f0e0b0', (pl, S) => [...W.spots('sc', 12, 56, 12).map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => W.pepperStrip(p, x, y, 12, r, '#f6d8c8')]; }), ...W.spots('scm', 4, 50, 16).map(([u, v], i) => { const [x, y] = pl(u, v); return [y, () => W.mushSlice(p, x, y, 10, i * 40)]; }), ...W.spots('sck', 10, 54, 9).map(([u, v]) => { const [x, y] = pl(u, v); return [y, () => W.kernel(p, x, y, 4)]; }), [S.cy, () => Q.eggRibbon(p, S.cx + 10, S.cy + 2, 24, 1)], [999, () => herbs(p, S.cx, S.cy, 40, 16, 'sc')]], { glow: .45 }),
     // カインコアイモー（紫山芋とえびのスープ）: ゴオム（パクチー）・青ねぎ
-    vn_canhkhoaimo: p => canh(p, '#a874b0', (pl, S) => [...W.spots('km', 5, 50, 16).map(([u, v, r]) => { const [x, y] = pl(u, v, 1); return [y, () => shrimpP(p, x, y, 13, r)]; }), ...negis(pl, 'kmn', 8, 56), [999, () => herbs(p, S.cx, S.cy, 40, 14, 'km')]], { glow: .35 }),
+    vn_canhkhoaimo: p => canh(p, '#a8589a', (pl, S) => [...W.spots('km', 5, 50, 16).map(([u, v, r]) => { const [x, y] = pl(u, v, 1); return [y, () => shrimpP(p, x, y, 13, r)]; }), ...negis(pl, 'kmn', 8, 56), [999, () => herbs(p, S.cx, S.cy, 40, 14, 'km')]], { glow: .35 }),
     // カインカーティーラー（魚とディルとトマトのスープ）: 生姜・青ねぎ
     vn_canhcathila: p => canh(p, '#e8b860', (pl, S) => [...[[-20, -6], [16, 10]].map(([u, v], i) => { const [x, y] = pl(u, v, 2); return [y, () => Q.prism(p, x, y, [[-11, -7], [11, -6], [10, 7], [-10, 6]], 6, '#f2ece0', { rot: i * 20, sink: 2, liquid: '#e8b860', top: Q.lit(p, '#fbf8f0', .2, .08), line: .5 })]; }), ...W.spots('ctt', 5, 54, 16).map(([u, v, r]) => { const [x, y] = pl(u, v); return [y, () => tomatoW(p, x, y, 11, r)]; }), ...W.spots('ctd', 7, 50, 11).map(([u, v, r]) => { const [x, y] = pl(u, v, 2); return [y + 1, () => dill(x, y, r)]; })]),
     // カインズアボー（高菜漬けと牛肉のスープ）: トマト・青ねぎ・パクチー（お好みで）

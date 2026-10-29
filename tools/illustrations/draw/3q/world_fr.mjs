@@ -30,7 +30,7 @@ const zucchiniRound = (p, x, y, r, liq = null) => W.coin(p, x, y, r, '#3f7a2a', 
 const eggplantRound = (p, x, y, r) => W.coin(p, x, y, r, '#5a2a4a', { h: 2.4, top: Q.rg(p, [[0, '#f2e4b8'], [.75, '#e0c890'], [.9, '#a8783a'], [1, '#5a2a4a']], .4, .35, .8) });
 const tomatoRound = (p, x, y, r) => W.coin(p, x, y, r, '#c8281a', { h: 2.4, top: Q.rg(p, [[0, '#ff9a7a'], [.5, '#e8503a'], [.7, '#f6c050'], [1, '#c8301e']], .45, .4, .7) });
 const olive = (p, x, y, s, c = '#4a3028') => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s / 2)}" ry="${f(s * .38)}" fill="${Q.rg(p, [[0, lt(c, .35)], [.6, c], [1, dk(c, .3)]], .35, .3, .8)}" stroke="${dk(c, .4)}" stroke-width=".5"/><ellipse cx="${f(x - s * .15)}" cy="${f(y - s * .12)}" rx="${f(s * .12)}" ry="${f(s * .07)}" fill="#fff" opacity=".7"/>`;
-const mussel = (p, x, y, s, r) => `<g ${T(x, y, r)}>${Q.cast(p, 0, s * .2, s * .5, s * .15, .3)}<path d="M${f(-s / 2)},0 Q${f(-s * .2)},${f(-s * .38)} ${f(s / 2)},${f(-s * .1)} Q${f(s * .1)},${f(s * .34)} ${f(-s / 2)},0Z" fill="${Q.lg(p, [[0, '#5a4a40'], [1, '#2e2420']], 0, 0, 0, 1)}" stroke="#2a1e18" stroke-width=".6"/><path d="M${f(-s * .38)},${f(-s * .02)} Q${f(-s * .1)},${f(-s * .26)} ${f(s * .38)},${f(-s * .08)} Q${f(s * .02)},${f(s * .16)} ${f(-s * .38)},${f(-s * .02)}Z" fill="${Q.rg(p, [[0, '#f8b080'], [1, '#d8703a']], .4, .35, .8)}"/></g>`;
+const mussel = (p, x, y, s, r) => W.musselOpen(p, x, y, s * 1.3, r);
 const sausage = (p, x, y, L, r, i, c = '#a8502a') => W.cutSlab(p, x, y, L / 2, 6, 7, c, 's' + i, { rot: r, sear: dk(c, .4), jit: .04 });
 const croutonB = (p, x, y, s, i) => W.dice(p, x, y, s, '#d89a48', 'cr' + i, { h: s * .7, top: Q.rg(p, [[0, '#f8d898'], [.6, '#e0a858'], [1, '#b8742a']], .4, .35, .8) });
 // タルト（キッシュ）: 菊型の縁の生地と、焼けた卵の面
@@ -51,7 +51,7 @@ function roastChicken(p, x, y, s){
 // ---------- 組み立て ----------
 const plateHeap = (p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 34 } = {}) => { R *= .92; H += 5; return D.s + (sauce ? W.pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, seed) : '') + byDepth(W.spots(seed, Math.round(n * 1.3), R, minD * .85).map(([u, v, r], i) => { const [x, y] = P(D.o, u, v, 4 + W.hill(u, v, R, H)); return [y, () => draw(x, y, r, i)]; })); };
 const heapBowl = (p, V, seed, n, minD, H, draw, { base = null, R = 64, after = () => '' } = {}) => W.inBowl(p, V, { R, H, base, items: (o, RR, HH) => [...W.onHill(o, seed, n, RR * .95, minD, HH, draw), [999, () => after(o, HH)]] });
-const braise = (p, V, c, seed, n, minD, H, draw, { srx = 54, R = 52 } = {}) => W.heap(p, V, { c, drop: 4, H, R, srx, items: (pl) => [...W.spots(seed, n, R - 4, minD), ...W.spots(seed + '2', Math.round(n / 3), R * .5, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => draw(x, y, r, i)]; }) });
+const braise = W.braise;
 const soupe = (p, c, items, o = {}) => W.soup(p, creuse(p), { c, drop: 4, glow: .35, gl: .5, items, ...o });
 const potage = (p, c, items = () => [], o = {}) => W.soup(p, cup(p), { c, drop: 6, glow: .35, items, ...o });
 const baked = (p, fill, top = () => '', o = {}) => { const V = gratinDish(p, o); return V.s + `<g ${V.inside}>${fill(V.o, V)}</g>` + top(V.o, V); };
@@ -111,7 +111,7 @@ export default {
     fr_nicoise: p => { const D = plate(p), o = D.o; return plateHeap(p, D, 'nc', 14, 50, 14, 10, (x, y, r, i) => Q.leaf(p, x, y, 28, r, i % 2 ? '#7ab848' : '#5a9a34', 'nl' + i, { wave: 3.4 })) + byDepth([[-30, -12, 'e'], [24, -16, 'e'], [0, 2, 't'], [-24, 20, 'm'], [30, 16, 'm'], [-6, -22, 'b'], [10, 24, 'p']].map(([u, v, k], i) => { const [x, y] = P(o, u, v, 16); return [y, () => k === 'e' ? W.eggHalf(p, x, y, 22, i * 10) : k === 't' ? Q.lump(p, x, y, 12, 8, '#e8c8a8', 'tu', { n: 9, jit: .35, hi: .4 }) : k === 'm' ? W.tomatoDice(p, x, y, 12, i) : k === 'b' ? W.pod(p, x, y, 22, 20) : Q.glossLump(p, x, y, 14, i, { c: '#f0d690' })]; })) + [[-12, 10], [18, 0], [-36, 0], [4, 30]].map(([u, v]) => olive(p, ...P(o, u, v, 18), 7)).join(''); },
     // ムール・マリニエール: ムール貝をエシャロットと白ワインで、生クリーム（お好みで）、パセリ（鋳物の鍋）
     fr_moules: p => { const V = cocotte(p), o = { cx: 100, cy: V.cy + 6 }, H = 26;
-        return V.s + `<g ${V.above}>${W.mound(p, o.cx, o.cy, 80, H * .7, '#3a2e28', 'ml')}${byDepth(W.onHill(o, 'ml', 30, 76, 13, H, (x, y, r) => mussel(p, x, y, 22, r), { lift: 2 }))}${parsley(p, o.cx, o.cy - H * CZ * .6, 50, 30, 'ml')}</g>` + V.shine(.5); },
+        return V.s + `<g ${V.above}>${W.mound(p, o.cx, o.cy, 80, H * .7, '#e8dcc0', 'ml')}${byDepth(W.onHill(o, 'ml', 18, 74, 18, H, (x, y, r) => mussel(p, x, y + 6, 24, r % 80 - 40), { lift: 2 }))}${parsley(p, o.cx, o.cy - H * CZ * .6, 50, 30, 'ml')}</g>` + V.shine(.5); },
     // 子羊のもものロースト: にんにくを差して焼き、ローズマリーとタイム、じゃがいも・玉ねぎ（お好みで）
     fr_gigot: p => { const D = plate(p), o = D.o; return D.s + W.pool(p, 104, 110, 46, '#9a5a2a', 'gg') + byDepth([-30, -12, 6, 24].map((u, i) => { const [x, y] = P(o, u, -u * .3 - 8); return [y, () => W.coin(p, x, y, 17, '#8a4a28', { h: 7, sy: SYF, top: Q.rg(p, [[0, '#f0b8a8'], [.5, '#d88a7a'], [.8, '#a8604a'], [1, '#6a3418']], .45, .4, .7) })]; }).concat([[-40, 30], [-14, 38], [14, 36], [42, 26]].map(([u, v], i) => { const [x, y] = P(o, u, v); return [y, () => roastPotato(p, x, y, 14, i)]; }))) + thyme(140, 70, 22, 20); },
     // カスレ（家庭風）: 白いんげん・鴨のコンフィ・トゥールーズソーセージ・豚肉をトマトで煮込み、焼く（土鍋のカソール）

@@ -412,3 +412,190 @@ export function friedRice(p, cx, cy, rx, H, seed, { cols = ['#f2d6a0', '#e8c488'
     gs.sort((a, b) => a[0] - b[0]);
     return mound(p, cx, cy, rx, H, cols[1], 'frb' + seed, sy) + gs.map(([, x, y, r, lite], i) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.5" ry="1.35" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="${lite ? lt(cols[i % cols.length], .3) : cols[i % cols.length]}" stroke="${edge}" stroke-width=".35"/>`).join('');
 }
+
+// ---------- 3回目に足した部品（統括の見直し: 炒め物の具を大きく多く、煮込みの具の形と照り） ----------
+// 具を (x, y) を中心に k 倍する
+export const grow = (x, y, k, svg) => k === 1 ? svg : `<g transform="translate(${f(x)} ${f(y)}) scale(${k}) translate(${f(-x)} ${f(-y)})">${svg}</g>`;
+// 平皿に山盛り（炒め物）: 具を big 倍に大きく、dens 倍に多く。皿の白が目立たないように山を広げる
+export function plateHeap(p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 34, big = 1.3, dens = 1.55 } = {}){
+    R *= .96; H += 8;
+    const it = spots(seed, Math.round(n * dens), R, minD * .9).map(([u, v, r], i) => { const [x, y] = at(D.o, u, v, 4 + hill(u, v, R, H)); return [y, () => grow(x, y, big, draw(x, y, r, i))]; });
+    return D.s + (sauce ? pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, seed) : '') + byDepth(it);
+}
+// 煮込み（滷・kho・紅焼など）: 具ひとつずつに細い焦げ茶の縁と照りの弧をつけ、茶色の塊に見えないようにする
+export const piece = (p, x, y, svg, { s = 10, edge = true } = {}) => (edge ? `<g ${p.edge('#2a1206', .7, .55)}>${svg}</g>` : svg) + Q.shine(x - s * .3, y - s * .9, s * .7, -10, .85);
+export function braise(p, V, c, seed, n, minD, H, draw, { srx = 50, R = 50, s = 12 } = {}){
+    return heap(p, V, { c, drop: 4, H, R, srx, glow: .5, items: (pl) => [...spots(seed, n, R - 4, minD), ...spots(seed + '2', Math.round(n / 3), R * .5, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => piece(p, x, y, draw(x, y, r, i), { s })]; }) });
+}
+// ムール貝（ひらいた殻の中に橙の身。殻は焦げ茶のオリーブ色で、縁に真珠色の内側。青にしない）
+export function musselOpen(p, x, y, s, rot = 0){
+    const valve = side => `<path d="M0,0 C${f(side * s * .3)},${f(-s * .16)} ${f(side * s * .5)},${f(-s * .6)} ${f(side * s * .2)},${f(-s * .84)} C${f(side * s * .02)},${f(-s * .96)} ${f(-side * s * .1)},${f(-s * .5)} 0,0Z" transform="rotate(${side * 28})"/>`;
+    const shell = side => `<g fill="${Q.lg(p, [[0, '#6a5a40'], [.5, '#3e3226'], [1, '#2a2018']], 0, 0, 1, 1)}" stroke="#1e1610" stroke-width=".6">${valve(side)}</g>`;
+    const inner = side => `<g transform="rotate(${side * 28}) translate(${f(side * s * .04)} ${f(-s * .1)}) scale(1.25 .74)"><path d="M0,${f(-s * .06)} C${f(side * s * .14)},${f(-s * .24)} ${f(side * s * .26)},${f(-s * .58)} ${f(side * s * .1)},${f(-s * .74)} C${f(side * s * .02)},${f(-s * .8)} ${f(-side * s * .02)},${f(-s * .48)} 0,${f(-s * .06)}Z" fill="#e8e0d0"/><path d="M0,${f(-s * .14)} C${f(side * s * .1)},${f(-s * .28)} ${f(side * s * .2)},${f(-s * .52)} ${f(side * s * .08)},${f(-s * .64)} C${f(side * s * .02)},${f(-s * .68)} ${f(-side * s * .01)},${f(-s * .46)} 0,${f(-s * .14)}Z" fill="${Q.rg(p, [[0, '#ffc890'], [.6, '#f09a50'], [1, '#c8682a']], .4, .35, .8)}"/></g>`;
+    return Q.cast(p, x, y + 2, s * .5, s * .16, .32) + `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(1 .8)">${shell(-1)}${shell(1)}${inner(-1)}${inner(1)}<path d="M${f(-s * .22)},${f(-s * .5)} q${f(-s * .05)},${f(-s * .14)} ${f(-s * .02)},${f(-s * .26)}" stroke="#fff" stroke-width="1" fill="none" opacity=".6"/></g>`;
+}
+// 輪切りのゴーヤの肉詰め: でこぼこの緑の皮・淡い緑の身の輪・中の豚ひき肉
+export function stuffedMelon(p, x, y, r, { h = 8, liq = null } = {}){
+    const R = rng(p.id + 'sm' + x), bumps = Array.from({ length: 18 }, (_, i) => { const a = i / 18 * 6.283, k = 1 + (i % 2 ? .08 : -.04) + (R() - .5) * .05; return [Math.cos(a) * r * k, Math.sin(a) * r * k * SY]; });
+    const top = smooth(bumps.map(([u, v]) => [x + u, y - h * CZ + v]), true, .6), side = smooth(bumps.map(([u, v]) => [x + u, y + v]), true, .6);
+    return (liq ? '' : Q.cast(p, x, y + r * SY * .5, r * 1.05, r * SY * .7, .3)) + `<path d="${side}" fill="#3f6a24"/>` + `<path d="M${f(x - r)},${f(y - h * CZ)} L${f(x - r)},${f(y)} A${f(r)},${f(r * SY)} 0 0 0 ${f(x + r)},${f(y)} L${f(x + r)},${f(y - h * CZ)}Z" fill="${Q.lg(p, [[0, '#8ab858'], [.5, '#5a8a34'], [1, '#2e5a1e']])}"/>` + (liq ? `<path d="M${f(x - r)},${f(y - h * CZ * .4)} A${f(r)},${f(r * SY)} 0 0 0 ${f(x + r)},${f(y - h * CZ * .4)} L${f(x + r)},${f(y + .5)} A${f(r)},${f(r * SY)} 0 0 1 ${f(x - r)},${f(y + .5)}Z" fill="${liq}" opacity=".55"/>` : '') +
+        `<path d="${top}" fill="#6a9a3a" stroke="#2e5a1e" stroke-width=".7"/><ellipse cx="${f(x)}" cy="${f(y - h * CZ)}" rx="${f(r * .8)}" ry="${f(r * .8 * SY)}" fill="${Q.rg(p, [[0, '#f2f6d8'], [1, '#c8dca0']], .4, .35, .8)}"/><ellipse cx="${f(x)}" cy="${f(y - h * CZ)}" rx="${f(r * .56)}" ry="${f(r * .56 * SY)}" fill="${Q.rg(p, [[0, '#d8a888'], [.6, '#b87a5a'], [1, '#8a5a3a']], .4, .35, .8)}"/>` + flecks(p, x, y - h * CZ, r * .45, 8, 'smf' + x, ['#7a4a2a', '#e8c8a8'], { ry: r * .45 * SY, s: 1 }) + `<ellipse cx="${f(x - r * .2)}" cy="${f(y - h * CZ - r * .22 * SY)}" rx="${f(r * .18)}" ry="${f(r * .07)}" fill="#fff" opacity=".7"/>`;
+}
+
+// =========================================================
+// 4回目（インドから先の国）: 材料の種類から具を描く辞書と、盛りつけの組み立て W.make
+// =========================================================
+const leafy = (p, x, y, s, r, i, c) => Q.leaf(p, x, y, s, r, c, 'lf' + p.id + i, { wave: 2.6 });
+const strip = (p, x, y, L, r, c, w = 2.6) => Q.prism(p, x, y, [[-L / 2, -w / 2], [L / 2, -w / 2], [L / 2, w / 2], [-L / 2, w / 2]], w * .8, c, { rot: r, line: .35, top: Q.lg(p, [[0, lt(c, .35)], [1, dk(c, .1)]], 0, 0, 0, 1) });
+const sliceMeat = (p, x, y, s, r, i, c, fat) => Q.slice3q(p, x, y, s, r, { c, fat, seed: i, gloss: .7, char: false }, { sq: .5 });
+const cubeOf = (p, x, y, s, i, c, top, liq) => dice(p, x, y, s, c, p.id + 'cu' + i, { h: s * .55, sink: liq ? 2 : 0, liq, top: Q.rg(p, top, .4, .35, .8) });
+// 具の辞書: ING[kind](p, x, y, s, r, i, liq) → svg。s は大きさの目安
+export const ING = {
+    chicken: (p, x, y, s, r, i, liq) => Q.soakLump(p, x, y, s, i, { c: '#e8c08a', soak: '#b8783a', k: .4, sy: .72 }),
+    chickenCurry: (p, x, y, s, r, i) => Q.soakLump(p, x, y, s, i, { c: '#d8904a', soak: '#a84a1e', k: .5, sy: .72 }),
+    chickenRoast: (p, x, y, s, r, i) => Q.soakLump(p, x, y, s, i, { c: '#c8803a', soak: '#7a3414', k: .5, sy: .72 }),
+    drumstick: (p, x, y, s, r, i) => drumstick(p, x, y, s * 1.6, r, i, { c: '#b8682a', fried: false }),
+    friedChicken: (p, x, y, s, r, i) => crusty(p, x, y, s * .5, s * .36, i, { c: '#c8822e', n: 14, h: 5, rot: r }),
+    beef: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#6a3418', [[0, '#a86a42'], [.6, '#7a4224'], [1, '#5a2c14']], liq),
+    beefSlice: (p, x, y, s, r, i) => sliceMeat(p, x, y, s * 1.4, r, i, '#7a4022', '#a8704a'),
+    pork: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#c8946a', [[0, '#f0d0b0'], [.6, '#d8a880'], [1, '#a8784a']], liq),
+    porkSlice: (p, x, y, s, r, i) => sliceMeat(p, x, y, s * 1.4, r, i, '#c87a4a', '#f2c8a0'),
+    lamb: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#7a3a24', [[0, '#b8785a'], [.6, '#8a4a30'], [1, '#5a2a18']], liq),
+    mince: (p, x, y, s, r, i) => crumble(p, x, y, s * .6, s * .3, 10, p.id + 'mc' + i, { c: '#8a4a24' }),
+    meatball: (p, x, y, s, r, i) => ball(p, x, y - s * .2, s, '#9a5228', p.id + 'mb' + i, { hi: .6 }),
+    sausage: (p, x, y, s, r, i) => cutSlab(p, x, y, s * 1.1, s * .3, s * .3, '#a8502a', p.id + 'sg' + i, { rot: r, sear: '#5a2410', jit: .04 }),
+    sausageCoin: (p, x, y, s, r, i, liq) => sausageCoin(p, x, y, s * .45, { liq }),
+    bacon: (p, x, y, s, r, i) => baconBit(p, x, y, s * .6, i),
+    ham: (p, x, y, s, r, i) => hamDice(p, x, y, s * .6, i),
+    fish: (p, x, y, s, r, i, liq) => liq ? Q.prism(p, x, y, [[-s * .6, -s * .4], [s * .6, -s * .35], [s * .55, s * .4], [-s * .55, s * .38]], s * .45, '#f2ece0', { rot: r, sink: 2, liquid: liq, top: Q.lit(p, '#fbf8f0', .2, .08), line: .5 }) : cutSlab(p, x, y, s * .8, s * .45, 6, '#f6f0e4', p.id + 'fs' + i, { rot: r, sear: '#c8903a', edgeC: '#e0d8c8' }),
+    fishFried: (p, x, y, s, r, i) => crusty(p, x, y, s * .7, s * .4, i, { c: '#d8a048', n: 16, h: 5, rot: r }),
+    salmon: (p, x, y, s, r, i) => cutSlab(p, x, y, s * .8, s * .45, 8, '#f08a5a', p.id + 'sa' + i, { rot: r, sear: '#c8602a', edgeC: '#f8b890' }),
+    shrimp: (p, x, y, s, r, i) => shrimp(p, x, y, s, r),
+    prawn: (p, x, y, s, r, i) => Q.prawn3q(p, x, y, s * 1.3, r, i % 2 ? 1 : -1),
+    clam: (p, x, y, s, r) => Q.clam(p, x, y, s, r),
+    mussel: (p, x, y, s, r) => musselOpen(p, x, y, s * 1.2, r),
+    squid: (p, x, y, s, r) => `<g ${T(x, y, r)}><ellipse rx="${f(s * .5)}" ry="${f(s * .36)}" fill="none" stroke="${Q.lg(p, [[0, '#fbece0'], [1, '#e0b8a0']])}" stroke-width="${f(s * .18)}"/></g>`,
+    egg: (p, x, y, s, r, i) => eggHalf(p, x, y, s * 1.4, r % 40 - 20),
+    eggRibbon: (p, x, y, s, r, i) => Q.eggRibbon(p, x, y, s * 1.6, i),
+    friedEgg: (p, x, y, s, r, i) => friedEgg(p, x, y, s * 2.4, i),
+    scramble: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .45, s * .3, i % 2 ? '#f8d050' : '#f6e080', p.id + 'sc' + i, { n: 8, jit: .38, hi: .5, edge: '#d8a830' }),
+    tofu: (p, x, y, s, r, i, liq) => tofuBlock(p, x, y, s, r, { liq, sink: liq ? s * .25 : 0 }),
+    paneer: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#f2e8d0', [[0, '#fffbf0'], [.7, '#f6eedc'], [1, '#e0cca8']], liq),
+    cheese: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#f2d890', [[0, '#fff2c0'], [1, '#e8c870']]),
+    feta: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#f6f2e6', [[0, '#ffffff'], [1, '#ece4d0']]),
+    potato: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#f2e2b0', [[0, '#fff6d8'], [.6, '#f6e4b0'], [1, '#d8c080']], liq),
+    potatoRoast: (p, x, y, s, r, i) => cubeOf(p, x, y, s, i, '#c8862e', [[0, '#fbe0a0'], [.6, '#e8b058'], [.9, '#c8802a'], [1, '#9a5a1a']]),
+    potatoBoiled: (p, x, y, s, r, i) => Q.glossLump(p, x, y, s, i, { c: '#f0d690' }),
+    sweetPotato: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#9a3e24', [[0, '#ffc070'], [.6, '#f0903a'], [1, '#c8661e']], liq),
+    pumpkin: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#3f6a2a', [[0, '#fbc860'], [.6, '#f0a030'], [1, '#c8781a']], liq),
+    cassava: (p, x, y, s, r, i) => cubeOf(p, x, y, s * 1.2, i, '#e8dcc0', [[0, '#fffbf0'], [1, '#e8dcb8']]),
+    plantain: (p, x, y, s, r, i) => coin(p, x, y, s * .45, '#c8822e', { h: 3, top: Q.rg(p, [[0, '#ffd890'], [.6, '#f0a840'], [1, '#c8742a']], .4, .35, .8) }),
+    carrot: (p, x, y, s, r, i, liq) => coin(p, x, y, s * .38, '#e8742a', { h: 2, liq, top: Q.rg(p, [[0, '#ffb070'], [.6, '#f08a3a'], [1, '#d8641e']], .4, .35, .8) }),
+    carrotStick: (p, x, y, s, r) => strip(p, x, y, s * 1.2, r, '#e8742a', 2.4),
+    onion: (p, x, y, s, r) => onionStrip(x, y, s, r),
+    redOnion: (p, x, y, s, r) => onionStrip(x, y, s, r, '#c87aa8'),
+    tomato: (p, x, y, s, r, i) => tomatoDice(p, x, y, s * .8, i),
+    cherryTomato: (p, x, y, s) => tomatoBall(p, x, y - s * .3, s * .8),
+    pepperR: (p, x, y, s, r) => pepperStrip(p, x, y, s * 1.2, r, '#d8302a'),
+    pepperG: (p, x, y, s, r) => pepperStrip(p, x, y, s * 1.2, r, '#3f8a2a'),
+    pepperY: (p, x, y, s, r) => pepperStrip(p, x, y, s * 1.2, r, '#f2b82a'),
+    chiliR: (p, x, y, s, r) => chiliRing(x, y, s * .25, '#d8281a'),
+    chiliG: (p, x, y, s, r) => chiliRing(x, y, s * .25, '#3f8f2f'),
+    garlic: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .35, s * .26, '#f4e8cc', p.id + 'ga' + i, { n: 8, jit: .14, hi: .6, edge: '#c8a870' }),
+    pea: (p, x, y, s) => Q.pea(p, x, y, s * .3),
+    chickpea: (p, x, y, s) => Q.pea(p, x, y, s * .36, '#e8c890'),
+    kidney: (p, x, y, s, r) => Q.bean(p, x, y, s * .8, r, '#8a2a24'),
+    blackBean: (p, x, y, s, r) => Q.bean(p, x, y, s * .7, r, '#4a3028'),
+    whiteBean: (p, x, y, s, r) => Q.bean(p, x, y, s * .8, r, '#efe6d0'),
+    favaBean: (p, x, y, s, r) => Q.bean(p, x, y, s * .8, r, '#a8b870'),
+    brownBean: (p, x, y, s, r) => Q.bean(p, x, y, s * .8, r, '#9a6a3a'),
+    lentil: (p, x, y, s) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .28)}" ry="${f(s * .17)}" fill="${Q.rg(p, [[0, '#c8945a'], [1, '#7a4a22']], .35, .3, .8)}" stroke="#5a3418" stroke-width=".3"/>`,
+    redLentil: (p, x, y, s) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .28)}" ry="${f(s * .17)}" fill="${Q.rg(p, [[0, '#f8b070'], [1, '#d8742a']], .35, .3, .8)}" stroke="#a8541e" stroke-width=".3"/>`,
+    greenBean: (p, x, y, s, r) => pod(p, x, y, s * 2, r),
+    okra: (p, x, y, s) => coin(p, x, y, s * .38, '#4a8a2a', { h: 2.4, top: Q.rg(p, [[0, '#e8f0c8'], [.5, '#a8c870'], [1, '#4a8a2a']], .4, .35, .8) }),
+    zucchini: (p, x, y, s, r, i, liq) => coin(p, x, y, s * .45, '#3f7a2a', { h: 2.2, liq, top: Q.rg(p, [[0, '#f8f6d8'], [.75, '#e4ecb8'], [.9, '#a8c870'], [1, '#3f7a2a']], .4, .35, .8) }),
+    eggplant: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#5a2a4a', [[0, '#e8c890'], [.6, '#c8945a'], [1, '#8a5a2a']], liq),
+    cauliflower: (p, x, y, s, r, i) => broc(p, x, y, s * 1.6, i, '#f2e8c8'),
+    broccoli: (p, x, y, s, r, i) => broc(p, x, y, s * 1.6, i),
+    cabbage: (p, x, y, s, r, i) => leafy(p, x, y, s * 1.6, r, i, i % 2 ? '#d8e8a8' : '#b8d488'),
+    redCabbage: (p, x, y, s, r) => strip(p, x, y, s * 1.2, r, '#7a2a5a', 2.4),
+    lettuce: (p, x, y, s, r, i) => leafy(p, x, y, s * 1.8, r, i, i % 2 ? '#7ab848' : '#5a9a34'),
+    spinach: (p, x, y, s, r, i) => leafy(p, x, y, s * 1.5, r, i, i % 2 ? '#2f6a22' : '#3f7a2a'),
+    kale: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * 1.5, r, '#2e4a22', 'kl' + p.id + i, { wave: 4 }),
+    herb: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * .8, r, '#3f8a2a', 'hb' + p.id + i, { wave: .6 }),
+    mint: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * .8, r, '#4a9a3a', 'mt' + p.id + i, { wave: .8 }),
+    mushroom: (p, x, y, s, r) => mushSlice(p, x, y, s * 1.2, r % 60 - 30),
+    mushCap: (p, x, y, s) => mushCap(p, x, y, s, '#a87a4a'),
+    corn: (p, x, y, s) => kernel(p, x, y, s * .4),
+    olive: (p, x, y, s) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .4)}" ry="${f(s * .3)}" fill="${Q.rg(p, [[0, '#7a5a50'], [.6, '#4a3028'], [1, '#2e1e18']], .35, .3, .8)}" stroke="#2a1a14" stroke-width=".5"/><ellipse cx="${f(x - s * .12)}" cy="${f(y - s * .1)}" rx="${f(s * .1)}" ry="${f(s * .05)}" fill="#fff" opacity=".7"/>`,
+    greenOlive: (p, x, y, s) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .4)}" ry="${f(s * .3)}" fill="${Q.rg(p, [[0, '#c8c870'], [.6, '#8a9a3a'], [1, '#5a6a22']], .35, .3, .8)}" stroke="#4a5a1a" stroke-width=".5"/>`,
+    lemon: (p, x, y, s, r) => lemon(p, x, y, s * 1.4, { wedge: true, rot: r % 40 - 20 }),
+    lime: (p, x, y, s, r) => lemon(p, x, y, s * 1.4, { wedge: true, rot: r % 40 - 20, c: '#8ab83a' }),
+    avocado: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#7aa83a', [[0, '#f0f4b0'], [.7, '#c8dc78'], [1, '#7aa83a']]),
+    cucumber: (p, x, y, s) => coin(p, x, y, s * .4, '#3f7a2a', { h: 1.6, top: Q.rg(p, [[0, '#f8faea'], [.6, '#e8f0d0'], [.85, '#c8dca0'], [1, '#3f7a2a']], .4, .35, .8) }),
+    radish: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#f2ecd8', [[0, '#ffffff'], [1, '#ece4cc']], liq),
+    beet: (p, x, y, s, r, i, liq) => cubeOf(p, x, y, s, i, '#7a1a34', [[0, '#d8506a'], [.6, '#a82a48'], [1, '#6a1428']], liq),
+    celery: (p, x, y, s, r) => Q.prism(p, x, y, [[-s * .4, -s * .16], [s * .4, -s * .16], [s * .32, s * .2], [-s * .32, s * .2]], 2.2, '#9ac860', { rot: r, line: .45 }),
+    leek: (p, x, y, s) => coin(p, x, y, s * .4, '#9ac860', { h: 1.6, top: Q.rg(p, [[0, '#f6f8e0'], [.6, '#dce8b0'], [1, '#8ab858']], .4, .35, .8) }),
+    apple: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#c8281e', [[0, '#fffbe8'], [.7, '#f6eccc'], [1, '#e8d8a8']]),
+    pineapple: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#e8b830', [[0, '#fff2a0'], [1, '#f0c040']]),
+    mango: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#e8a020', [[0, '#ffd870'], [1, '#f0a830']]),
+    peanut: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .26, s * .18, '#d8a868', p.id + 'pn' + i, { n: 8, jit: .12, hi: .55 }),
+    nut: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .3, s * .22, '#a8763a', p.id + 'nt' + i, { n: 8, jit: .4, hi: .3 }),
+    raisin: (p, x, y, s) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(s * .2)}" ry="${f(s * .14)}" fill="#5a2a2a"/>`,
+    noodleBit: (p, x, y, s, r) => `<g ${T(x, y, r)}><path d="M${f(-s * .6)},0 Q0,${f(-s * .25)} ${f(s * .6)},0" stroke="#d8b050" stroke-width="${f(s * .32)}" fill="none" stroke-linecap="round"/><path d="M${f(-s * .6)},0 Q0,${f(-s * .25)} ${f(s * .6)},0" stroke="#f6dc88" stroke-width="${f(s * .2)}" fill="none" stroke-linecap="round"/></g>`,
+    dumpling: (p, x, y, s, r, i) => ball(p, x, y - s * .2, s, '#f6eedc', p.id + 'dp' + i, { hi: .55, edge: '#d8c8a0' }),
+    bread: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#d89a48', [[0, '#f8d898'], [.6, '#e0a858'], [1, '#b8742a']]),
+    rice: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.2" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="#fbf6ea" stroke="#d8ccb4" stroke-width=".3"/>`,
+    tempeh: (p, x, y, s, r, i, liq) => dice(p, x, y, s, '#a8702e', p.id + 'tp' + i, { h: s * .45, liq, top: Q.rg(p, [[0, '#f0d8a0'], [.6, '#d8b070'], [1, '#a8783a']], .4, .35, .8) }) + flecks(p, x, y - s * .3, s * .3, 5, 'tpf' + i, ['#f6ecd0', '#8a5a2a'], { ry: s * .15, s: .9 }),
+    tempehSweet: (p, x, y, s, r) => strip(p, x, y, s * 1.3, r, '#7a3a14', 3),
+    beanSprout: (p, x, y, s, r) => sprout(p, x, y, s * 1.2, r),
+    longBean: (p, x, y, s, r) => pod(p, x, y, s * 2.2, r, { w: 3.4 }),
+    chayote: (p, x, y, s, r, i, liq) => strip(p, x, y, s * 1.1, r, i % 2 ? '#c8dc98' : '#b8d488', 3.4),
+    krupuk: (p, x, y, s, r, i) => `<path d="${Q.blob(x, y, s * .8, s * .55, p.id + 'kr' + i, { n: 12, jit: .2 })}" fill="${Q.rg(p, [[0, '#fff8e8'], [1, '#f2dcb0']], .4, .35, .8)}" stroke="#d8b878" stroke-width=".6"/>` + flecks(p, x, y, s * .5, 6, 'krf' + i, ['#e8a080'], { ry: s * .3, s: .8 }),
+    greensLong: (p, x, y, s, r, i) => `<g ${T(x, y, r)}><path d="M${f(-s)},0 Q0,-3 ${f(s)},1" stroke="#4a7a2a" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M${f(-s)},0 Q0,-3 ${f(s)},1" stroke="#8ab858" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/></g>` + Q.leaf(p, x + s * .6, y - 2, s * .9, r + 20, i % 2 ? '#2f6a22' : '#3f7a2a', 'gl' + p.id + i, { wave: 1.2 }),
+    sambalDab: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .45, s * .3, '#c8281a', p.id + 'sd' + i, { n: 10, jit: .3, hi: .7, edge: '#8a1a10' }) + flecks(p, x, y - s * .1, s * .3, 5, 'sdf' + i, ['#f2c8a0', '#e8501e'], { ry: s * .15, s: .8 }),
+    chiliLarge: (p, x, y, s, r) => pod(p, x, y, s * 1.8, r, { c: '#d8281a', w: 5 }),
+    greenChiliLarge: (p, x, y, s, r) => pod(p, x, y, s * 1.8, r, { c: '#4a8a2a', w: 5 }),
+    mushOyster: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * 1.2, r, '#c8b49a', 'mo' + p.id + i, { wave: 2.4 }),
+    sausageLink: (p, x, y, s, r, i) => cutSlab(p, x, y, s * .9, s * .3, s * .3, '#a8502a', p.id + 'sl' + i, { rot: r, sear: '#6a2a10', jit: .03 }),
+    omelette: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s * .6, -s * .3], [s * .6, -s * .3], [s * .6, s * .3], [-s * .6, s * .3]], 3, '#f2c040', { rot: r, line: .4, top: Q.rg(p, [[0, '#fff0a0'], [.6, '#f6d050'], [1, '#e0a830']], .4, .35, .8) }),
+    grain: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.5" fill="#e8d098" stroke="#b89858" stroke-width=".3"/>`,
+};
+// 盛りつけの組み立て: spec = { v: 器の関数(p) => V, mode: 'plate' | 'soup' | 'braise' | 'bowl'（小鉢・鉢に山高）, c: ソース・汁の色,
+//   items: [[kind, 数, 大きさ]], R, H, base, flecks: [[色, 数, 大きさ]], sauce, oil: [数, 色], cream, after(o, S) }
+export function make(p, spec){
+    const { v, mode = 'plate', c = '#c88a4a', items = [], R = 50, H = 16, base = null, flecks: fl = [], sauce = null, sauceR = 32, oil = null, cream = null, after = () => '', minD = 10, big = 1, steam = 0, rice = null, noodle = null, porr = null } = spec;
+    const dens = spec.dens ?? (mode === 'plate' ? 1.5 : 1), list = []; items.forEach(([k, n, s = 12]) => { for (let j = 0; j < Math.round(n * (n > 3 ? dens : 1)); j++) list.push([k, s]); });
+    const R0 = rng(p.id + 'mk'); for (let i = list.length - 1; i > 0; i--){ const j = Math.floor(R0() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+    const draw = (k, s, x, y, r, i, liq) => { const fn = (spec.ing && spec.ing[k]) || ING[k]; if (!fn) throw new Error('ING ' + k); return grow(x, y, big, fn(p, x, y, s, r, i, liq)); };
+    const flk = (cx, cy, rx, ry) => fl.map(([col, n, sz = 1.4], j) => flecks(p, cx, cy, rx, n, 'mkf' + j, col, { ry, s: sz })).join('');
+    if (mode === 'plate'){
+        const D = v(p), sp = spots(p.id + 'pl', list.length, R, minD), z0 = rice || noodle ? 6 : 4;
+        const it = sp.map(([u, v2, r], i) => { const [x, y] = at(D.o, u, v2, z0 + hill(u, v2, R + 4, H)); return [y, () => draw(list[i][0], list[i][1], x, y, r, i)]; });
+        const bed = rice ? friedRice(p, D.o.cx, D.o.cy + 4, R + 6, H, p.id + 'rc', { cols: rice.cols, edge: rice.edge, sy: D.o.sy, n: rice.n ?? 520 })
+            : noodle ? noodleMound(p, D.o.cx, D.o.cy + 4, R + 6, H, noodle.c, p.id + 'nd', { w: noodle.w ?? 2.4, n: noodle.n ?? 140, len: 32, sy: D.o.sy, edge: noodle.edge }) : '';
+        return D.s + (sauce ? pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, 'mks') : '') + (base ? mound(p, D.o.cx, D.o.cy + 2, R * .92, H * .7, base, 'mkb', D.o.sy) : '') + bed + byDepth(it) + flk(D.o.cx, D.o.cy - H * CZ * .5, R * .8, R * .4) + after(D.o, D, p);
+    }
+    if (mode === 'bowl'){
+        const V = v(p); return inBowl(p, V, { R: R + 14, H: H + 10, base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .95, minD, HH, (x, y, r, i) => draw(list[i][0], list[i][1], x, y, r, i)), [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
+    }
+    if (mode === 'braise'){
+        const V = v(p); return braise(p, V, c, p.id + 'br', list.length, minD, H + 14, (x, y, r, i) => draw(list[i % list.length][0], list[i % list.length][1], x, y, r, i), { srx: 50, R: 50 }) + flk(100, V.cy - 4, 40, 14) + after({ cx: 100, cy: V.cy }, V, p);
+    }
+    // soup
+    const V = v(p);
+    return soup(p, V, { c, drop: V.sy ? 4 : 9, glow: .35, oil: oil ? oil[0] : 0, oilC: oil ? oil[1] : '#f0c040', cream, steamOp: steam, items: (pl, S) => [...(porr ? [[-999, () => porridge(p, S, p.id + 'po', porr)]] : []), ...spots(p.id + 'sp', list.length, S.rx * .8, minD * .9).map(([u, v2, r], i) => { const [x, y] = pl(u, v2, 1); return [y, () => draw(list[i][0], list[i][1], x, y, r, i, c)]; }), [999, () => flk(S.cx, S.cy, S.rx * .8, S.rx * (S.o.sy ?? SY) * .7) + after(S, V, p)]] });
+}
+
+// 串焼き（サテ・ケバブ・アンティクーチョ・シュハスコ）: 平行な串に具を通す。piece(x, y, i) で具をひとつ描く
+export function skewers(p, o, n, piece, { L = 120, k = 4, rot = -10, gap = 16, stick = '#d8b878' } = {}){
+    return byDepth(Array.from({ length: n }, (_, j) => { const [x, y] = at(o, -4, (j - (n - 1) / 2) * gap); return [y, () => `<g ${T(x, y, rot)}><path d="M${f(-L / 2)},0 L${f(L / 2)},0" stroke="${dk(stick, .2)}" stroke-width="2.6" stroke-linecap="round"/><path d="M${f(-L / 2)},-.4 L${f(L / 2)},-.4" stroke="${stick}" stroke-width="1.6" stroke-linecap="round"/>${Array.from({ length: k }, (_, i) => piece(-L * .32 + i * (L * .64 / Math.max(1, k - 1)), 0, j * k + i)).join('')}</g>`]; }));
+}
+// 丸ごとの魚を皿に（焼き魚・揚げ魚）: 上にソースや薬味を on(x, y) で
+export const fishOn = (p, D, { L = 150, rot = -8, skin = '#a8763a', belly = '#e8c890', char = .6, on = () => '' } = {}) => D.s + wholeFish(p, D.o.cx, D.o.cy, L, rot, 1, { skin, belly, char }) + on(D.o.cx, D.o.cy);
+// オーブン焼き（グラタン・パルミジャーナ・エスコンジジーニョ・ムサカ）: 角の耐熱皿に焼き色の面、top(o) で上の具
+export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', ...o } = {}){
+    const V = casserole(p, { base, inner, ...o });
+    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${top(V.o, V, p)}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
+}
