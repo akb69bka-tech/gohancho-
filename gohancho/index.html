@@ -1073,6 +1073,18 @@ body.on-today .greet .hello,body.on-today .greet .line{display:inline;font-size:
 body.on-today .greet .hello{margin-inline-end:.4em}
 body.on-today .greet .line{display:none}   /* 今日の献立では、あいさつは1行だけ（献立を上に） */
 body.on-today .greet:empty{display:none}
+body.on-today .greet{display:block;-webkit-line-clamp:unset;line-clamp:none;overflow:visible;margin-top:-8px}
+.greet-row{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-height:0}
+.greet-tx{min-width:0;margin:0;font-size:.8125rem;line-height:1.4;color:var(--muted);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.req-btn{align-self:flex-start;max-width:100%;min-height:44px;display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:10px;padding:4px 12px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer;text-align:start}
+.req-btn.has{border-color:var(--accent-line);background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.req-btn .rq1{display:flex;align-items:center;gap:5px;font-size:.8125rem;font-weight:700;white-space:nowrap;max-width:100%}
+.req-btn .rq-l{min-width:0}
+.req-btn .wsh-ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.req-btn .rq-n{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:.75rem;line-height:20px;text-align:center}
+.req-btn .rq1{flex:none}.req-btn .rq2{flex:0 1 auto;min-width:0;font-size:.8125rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.on-today.bar-static .greet-tx,body.on-today.greet-1 .greet-tx{-webkit-line-clamp:1;line-clamp:1}body.on-today.greet-0 .greet-tx{display:none}   /* 詰めてもお膳が入りきらない画面（帯をお膳の下に置くとき）では、あいさつは1行に */
+html[lang="ja"] .greet-tx,html[lang^="zh"] .greet-tx{word-break:auto-phrase}html[lang="ko"] .greet-tx{word-break:keep-all}
 body.on-today .greet .stage-line{display:block}   /* 段の上の一言は行いっぱいの箱にする（文の長さが変わっても、右から書く言語で箱の端が動かない） */
 .spot-label .dwhy{display:block;align-self:stretch;background:none;padding:0;border-radius:0;max-width:100%;box-sizing:border-box;font-size:.75rem;line-height:1.4;height:calc(1.4em + 4px);margin-top:3px;text-align:center;white-space:nowrap;overflow:hidden}   /* 外の箱は行いっぱい・高さ一定（理由の文が変わっても、箱の位置と大きさは動かない。1週間プランの今日の主菜を変えたとき、理由の札が消えて箱が縮み、位置が動いた） */
 .spot-label .dwhy .dw{display:inline-block;vertical-align:top;max-width:100%;box-sizing:border-box;height:100%;padding:2px .55em 0;border-radius:999px;background:var(--surface);color:var(--tray-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -4233,7 +4245,7 @@ function fitTray(){
     // 同じ画面の大きさ・同じ並び（席の数）なら、前に決めた大きさ（器・名前の行数・詰め方）をそのまま使う。
     // 「かえる」・主食・まるごと入れ替えで料理が変わっても、お膳の大きさ・ほかの料理の位置を動かさない。新しい名前が入らないときだけ決め直す
     const viewEl = document.getElementById('view'), rowsEl = [...tr.querySelectorAll('.tg-row')];
-    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'bar-static');   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
+    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'bar-static', 'greet-1', 'greet-0');   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
     // 見出し「今日の献立」は1行に（言語で長さが違っても見出しの高さを同じにして、お膳の大きさが言語で変わらないように）。入らない言葉は 18px まで小さくする。それでも入らなければ2行
     { const h2 = document.querySelector('#view .today-head.p2-head h2'); if (h2){ h2.style.removeProperty('font-size'); let fs = parseFloat(getComputedStyle(h2).fontSize);
         const one = () => { const lh = parseFloat(getComputedStyle(h2).lineHeight) || fs * 1.3; return h2.getBoundingClientRect().height < lh * 1.5 && h2.scrollWidth <= h2.clientWidth + 1; };
@@ -4245,7 +4257,7 @@ function fitTray(){
     const prev = TRAY_FIT.base === base && TRAY_FIT.state ? TRAY_FIT.state : null;   // 同じ並びで前に決めた大きさ（言語を変えたときなど、決め直しても器を大きくしない・名前の欄を低くしない）
     if (TRAY_FIT.key === key && TRAY_FIT.state){
         const st = TRAY_FIT.state;
-        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); viewEl.classList.toggle('tray-tight', st.tight2 && !st.noFit); document.body.classList.toggle('tray-tight', st.tight2 && !st.noFit); document.body.classList.toggle('bar-static', st.noFit);
+        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); viewEl.classList.toggle('tray-tight', st.tight2 && !st.noFit); document.body.classList.toggle('tray-tight', st.tight2 && !st.noFit); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0);
         if (st.vs) tr.style.setProperty('--vs', st.vs); else tr.style.removeProperty('--vs');
         rowsEl.forEach((r, k) => { if (st.nml[k]) r.style.setProperty('--nml', st.nml[k]); else r.style.removeProperty('--nml'); });
         let ok = true;
@@ -4263,7 +4275,7 @@ function fitTray(){
             return;
         }
     }
-    tr.classList.remove('tight', 'tight2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'bar-static'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     const fixNames = (root = tr) => { let over = false;
         root.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
@@ -4303,16 +4315,19 @@ function fitTray(){
     if (d > 0){ tight = true; tr.classList.add('tight'); fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
     // それでも入らない（文字がとても大きい・名前が長い）ときは、お膳の上の見出しを1行の小さめの字にして詰める。器は 60px より小さくしない
     if (d > 0){ tr.classList.add('tight2'); document.getElementById('view').classList.add('tray-tight'); document.body.classList.add('tray-tight');   // 見出し「今日の献立」も1行の小さめの字に（お膳の上を詰める）
-        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); }
+        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows))));
+        // まだ入らなければ、献立の上のあいさつを1行にする（オーナーの指示: 収まらない画面では1行に省く）
+        d = over(); if (d > 0 && document.querySelector('#greet .greet-tx')){ document.body.classList.add('greet-1'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows))));
+            d = over(); if (d > 0){ document.body.classList.add('greet-0'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); } } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
     if (vs >= vs0) tr.style.removeProperty('--vs');
     // 詰めても入らない（幅195px・文字もっと大きい など）: 帯をお盆に重ねず（お膳の下に置く）、お膳は詰めない形（器・名前・その下の「かえる」）に戻す。スクロールで全部見られる
     if (prev && parseFloat(prev.vs) && vs > parseFloat(prev.vs)) setVs(parseFloat(prev.vs));   // 前より器を大きくしない（お膳の高さが変わって下が動かないように）
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
     const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].map(e => e.getBoundingClientRect().bottom + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
-    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); }
+    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'greet-0'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
-    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
@@ -4579,7 +4594,8 @@ function render(){
         $('#flag-btn').textContent = S.settings.country ? countryOf(currentCountry()).flag : '🌐';   // 国を選ぶ前は、日本の旗を出さない
         const sl = (tab === 'today' || tab === 'cook') && bootReady ? stageLine() : '';   // 段の上の一言（1行）。あいさつの代わり
         if (tab === 'today' || tab === 'cook') guard('daysync', daySync);
-        $('#greet').innerHTML = '';   // あいさつ・段の上の一言は出さない（お膳を最初の画面に入れるため。基準書 2-4・4-1）
+        // 今日の献立の上: 時間帯のあいさつ（1〜2行・小さめ）と、家族リクエストの入口（オーナーの指示）。ほかの画面では出さない
+        $('#greet').innerHTML = tab === 'today' && bootReady && S.onboarded ? greetRowHtml() : '';
         void sl;
     });
     const v = $('#view');
@@ -5450,6 +5466,45 @@ function greeting(){
     else if (ws.days) line = t('今週は{n}日分、{d}品を記録しています。今日はどうしましょう。', {n:ws.days, d:ws.dishes});
     else line = t('きのうまでのごはん、おつかれさまでした。今日の分をいっしょに考えましょう。');
     return {hello, line};
+}
+/* ---- 今日の献立の上のあいさつ（オーナーの指示: 朝から夜まで、ご飯作りを楽しく考えたくなる一言） ----
+   時間帯（朝・昼・午後・夕方・夜）と、献立を決めたか・料理名・季節・家族の「食べたい」の数で選ぶ。同じ日・同じ時間帯は同じ文（日付で選ぶ）。
+   体への効き目は言わない（health-claims）。責めない・急かさない */
+function greetBand(h){ return h >= 5 && h < 10 ? 'morning' : h >= 10 && h < 14 ? 'noon' : h >= 14 && h < 17 ? 'afternoon' : h >= 17 && h < 20 ? 'evening' : 'night'; }
+function seasonWord(){ const m = Number(TODAY.slice(5, 7)); return m >= 3 && m <= 5 ? tc('season', '春') : m >= 6 && m <= 8 ? tc('season', '夏') : m >= 9 && m <= 11 ? tc('season', '秋') : tc('season', '冬'); }
+function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wish: 届いている「食べたい」の数}
+    const season = seasonWord(), dish = o.dish, n = o.wish;
+    if (dish){
+        if (band === 'morning') return [t('おはようございます。今日は{dish}の日です', {dish})];
+        if (band === 'evening') return [t('夕方です。あとは作るだけ。今日は{dish}ですね', {dish})];
+        if (band === 'night') return [t('今日もおつかれさまでした。明日はどんな献立にしましょう')];
+        return [t('今日は{dish}ですね。できあがりが楽しみです', {dish})];
+    }
+    const wish = n ? [t('家族から「食べたい」が{n}件届いています。献立に入れてみませんか', {n})] : [];
+    if (band === 'morning') return [t('おはようございます。今日も食卓を豊かにしましょう'), t('おはようございます。今日は何を作りましょうか'), t('おはようございます。{season}の味を、今日の献立にどうぞ', {season}), ...wish];
+    if (band === 'noon') return [t('こんにちは。お昼のうちに夜の献立を決めると、帰りがらくです'), t('お昼休みに、今夜の献立をのぞいてみませんか'), ...wish];
+    if (band === 'afternoon') return [t('こんにちは。買い物の前に、今夜の献立を決めておきましょう'), t('午後のひと息に、今夜の献立を考えてみませんか'), ...wish];
+    if (band === 'evening') return [t('こんばんは。今夜の献立、いっしょに決めましょう'), t('夕方です。今日はどの献立にしましょう'), ...wish];
+    return [t('こんばんは。明日の献立を先にのぞいておくのも楽しいですよ'), ...wish];
+}
+function greetText(now){
+    const d = now || new Date(), band = greetBand(d.getHours());
+    const ck = decidedToday() && S.cook.ids.length ? recipeById(S.cook.ids[0]) : null;
+    const lines = greetLines(band, {dish: ck ? trayName(ck.name) : '', wish: wishList().length ? wishesActive().length : 0});
+    let hsh = 0; for (const c of TODAY + band) hsh = (hsh * 31 + c.charCodeAt(0)) >>> 0;   // 同じ日・同じ時間帯は同じ文
+    return lines[hsh % lines.length];
+}
+// 家族リクエストの入口: 届いた数と、いちばん新しいものの一言。家族を登録している人には 0件でも出す（送る・受けとる入口）。家族がいない人には出さない
+function familyReqHtml(){
+    const act = wishList().length ? wishesActive() : [];
+    if (!famMembers().length && !act.length) return '';
+    const last = act.slice().sort((a, b) => (b.at || '').localeCompare(a.at || ''))[0], r = last && recipeById(last.id);
+    const n = act.length, lab = t('家族リクエスト');
+    return `<button type="button" class="req-btn${n ? ' has' : ''}" data-act="wish-list" aria-label="${esc(n ? t('家族リクエスト（{n}件）', {n}) : lab)}">
+        <span class="rq1">${ICO_MAIL}<span class="rq-l">${esc(lab)}</span>${n ? `<span class="rq-n">${n}</span>` : ''}</span>${r ? `<span class="rq2">${esc(t('{name}：{dish}', {name: wishWho(last.n), dish: trayName(r.name)}))}</span>` : ''}</button>`;
+}
+function greetRowHtml(){
+    return `<div class="greet-row">${familyReqHtml()}<p class="greet-tx">${esc(greetText())}</p></div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
 }
 function praiseList(){ return [t('今日もおつかれさまです。'), t('献立が決まれば、半分は終わったようなものです。'), t('毎日のごはんが、ちゃんと回っています。'), t('記録しました。いつかの自分を助けます。'), t('今日の分、決まりました。あとは作るだけ。')]; }
 function praiseFor(ids, before){
@@ -8690,6 +8745,7 @@ function wishListSheetHtml(){
         <p class="small muted">${esc(dec ? t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。') : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
         ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(t('いまは届いているものはありません'))}</p>`}
         ${rest.length ? `<details class="box wsh-old"><summary>${esc(t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWho(w.n))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
+        <div class="row wsh-set"><button class="btn text" data-act="wish-open">${esc(t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
 }
 // 今日に入れる（本人が押したときだけ。決めた一膳には入れない）。入れかえた枠だけ変わり、「元に戻す」（8秒）を出す
