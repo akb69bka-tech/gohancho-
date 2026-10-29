@@ -1602,10 +1602,10 @@ GOHAN_I18N('fr', {
     "tab|作り方": "Cuisiner",
     "tab|材料から": "Frigo",
     "tab|記録": "Journal",
-    "tabs|今日": "Auj.",
-    "tabs|作る": "Cuisine",
+    "tabs|今日": "Jour",
+    "tabs|作る": "Cuire",
     "tabs|材料": "Frigo",
-    "tabs|ひねり": "Twist",
+    "tabs|工夫": "Twist",
     "tabs|世界": "Monde",
-    "tabs|記録": "Journal"
+    "tabs|記録": "Notes"
 });

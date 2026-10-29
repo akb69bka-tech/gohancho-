@@ -1603,9 +1603,9 @@ GOHAN_I18N('it', {
     "tab|材料から": "Frigo",
     "tab|記録": "Diario",
     "tabs|今日": "Oggi",
-    "tabs|作る": "Cucina",
+    "tabs|作る": "Cuoci",
     "tabs|材料": "Frigo",
-    "tabs|ひねり": "Twist",
-    "tabs|世界": "Mondo",
-    "tabs|記録": "Diario"
+    "tabs|工夫": "Twist",
+    "tabs|世界": "Mappa",
+    "tabs|記録": "Note"
 });

@@ -1602,10 +1602,10 @@ GOHAN_I18N('fil', {
     "tab|作り方": "Magluto",
     "tab|材料から": "Sa ref",
     "tab|記録": "Talaan",
-    "tabs|今日": "Ngayon",
+    "tabs|今日": "Araw",
     "tabs|作る": "Luto",
-    "tabs|材料": "Sangkap",
-    "tabs|ひねり": "Twist",
-    "tabs|世界": "Mundo",
+    "tabs|材料": "Sahog",
+    "tabs|工夫": "Twist",
+    "tabs|世界": "Mapa",
     "tabs|記録": "Tala"
 });

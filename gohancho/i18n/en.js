@@ -1606,7 +1606,7 @@ GOHAN_I18N('en', {
     "tabs|今日": "Today",
     "tabs|作る": "Cook",
     "tabs|材料": "Food",
-    "tabs|ひねり": "Twist",
+    "tabs|工夫": "Twist",
     "tabs|世界": "World",
     "tabs|記録": "Log"
 });

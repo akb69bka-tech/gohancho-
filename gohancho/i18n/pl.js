@@ -1604,8 +1604,8 @@ GOHAN_I18N('pl', {
     "tab|記録": "Dziennik",
     "tabs|今日": "Dziś",
     "tabs|作る": "Gotuj",
-    "tabs|材料": "Lodówka",
-    "tabs|ひねり": "Twist",
+    "tabs|材料": "Skład",
+    "tabs|工夫": "Twist",
     "tabs|世界": "Świat",
-    "tabs|記録": "Dziennik"
+    "tabs|記録": "Notes"
 });

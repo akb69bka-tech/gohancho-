@@ -1605,7 +1605,7 @@ GOHAN_I18N('vi', {
     "tabs|今日": "Hôm nay",
     "tabs|作る": "Nấu",
     "tabs|材料": "Tủ lạnh",
-    "tabs|ひねり": "Biến tấu",
+    "tabs|工夫": "Biến tấu",
     "tabs|世界": "Thế giới",
     "tabs|記録": "Nhật ký"
 });
