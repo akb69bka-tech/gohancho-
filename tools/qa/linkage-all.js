@@ -31,7 +31,7 @@ window.__snap = (opts) => {
   const m = session.menu;
   const spots = [...document.querySelectorAll('.tray .spot')].map((sp, k) => {
     const sa = sp.querySelector('[data-act="soup-add"]') || sp.querySelector('.swap-ph');   // 汁ものがいらない日の空の枠（ボタンの高さだけ取ってある）も、汁ものを足せる空の枠と同じ「空」
-    const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap').forEach(x => x.remove());
+    const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap,.fresh-tag').forEach(x => x.remove()); c.classList.remove('fresh');   // 「新」の印は最後に変わった料理に付けかわる（料理の入れ替わりではない）
     // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
     return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
    };   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
@@ -42,7 +42,7 @@ window.__snap = (opts) => {
   return {
     n: m && m.n, adj: !!(m && m.adj), mood: session.mood,
     ids: m ? m.items.map(x => x.slot + ':' + (x.r ? x.r.id : '-')) : [],
-    ings, spots, rice: (document.querySelector('.tray .spot.rice') || {}).textContent || '',
+    ings, spots, rice: (s => s ? (c => (c.querySelectorAll('.fresh-tag').forEach(x => x.remove()), c.textContent))(s.cloneNode(true)) : '')(document.querySelector('.tray .spot.rice')),
     staple: JSON.stringify((S.settings || {}).stapleBy || {}),
     week: JSON.stringify(S.week), hist: JSON.stringify(S.history), favs: JSON.stringify(S.favs), hidden: JSON.stringify(S.hidden),
     cook: JSON.stringify(S.cook), saved: JSON.stringify(S.savedMenus), shop, settings: JSON.stringify(st), draftIds: JSON.stringify(S.draft && S.draft.ids),
@@ -178,7 +178,9 @@ async function secMood(b, cc) {
   for (const mood of ['all', 'quick', 'easy', 'bento', '和', '洋', '中', 'asia', 'fish', 'meat']) {
     const { ctx, p } = await open(b, { cc, n: 'auto' });
     const has = await p.evaluate(m => MOODS.some(x => x.k === m), mood); if (!has) { await ctx.close(); continue; }
-    await p.evaluate(m => { document.querySelector('[data-act="mood"][data-k="' + m + '"]').click(); }, mood);
+    // 案2: 気分のチップは条件シート（「条件を変える」）の中。シートを開いて押し、閉じてから「かえる」を押す
+    const picked = await p.evaluate(m => { openCondSheet(); const c = document.querySelector('#sheet-root [data-act="mood"][data-k="' + m + '"]'); if (!c) return 'no-chip'; c.click(); if (typeof closeSheet === 'function' && sheet && sheet.kind === 'cond') closeSheet(); return session.mood; }, mood);
+    if (picked !== mood) { bad('mood', cc + ' mood=' + mood + ' 気分を選べない (' + picked + ')'); await ctx.close(); continue; }
     await p.waitForTimeout(200);
     await pressAll(p, 'mood', cc + ' mood=' + mood);
     await ctx.close();
@@ -243,8 +245,8 @@ async function secSavedMix(b, cc) {
     await p.evaluate(() => { S.settings.mix = {}; save(); session.menu = null; render(); }); await p.waitForTimeout(200);
     await p.evaluate(id => applySavedMenu(id), sm); await p.waitForTimeout(2500);
     const s1 = await snap(p); area('savedmix').taps++;
-    const filled = s => s.ids.filter(x => !x.endsWith(':-')).join();   // 空の枠（汁けの多い主菜の日の汁もの）は保存しない設計なので、料理のある枠だけ比べる
-    if (filled(s1) !== filled(s0)) bad('savedmix', cc + ' ' + JSON.stringify(mix) + ' 復元した献立が保存と違う ' + s0.ids.join() + ' -> ' + s1.ids.join());
+    // 空の枠（汁けの多い主菜・Primo の日の汁ものの席など）も、保存した位置に空けたまま戻す。料理のない枠も含めて、並びまで同じことを確かめる
+    if (s1.ids.join() !== s0.ids.join()) bad('savedmix', cc + ' ' + JSON.stringify(mix) + ' 復元した献立が保存と違う ' + s0.ids.join() + ' -> ' + s1.ids.join());
     await stays(p, 'savedmix', cc + ' 復元後 再調整 ' + JSON.stringify(mix), () => { reconcileMenu(); refreshWeek(); render(); });
     await pressAll(p, 'savedmix', cc + ' 復元後 ' + JSON.stringify(mix), { reps: 2 });
     // 復元した献立のあとの言語切替でも料理は変わらない

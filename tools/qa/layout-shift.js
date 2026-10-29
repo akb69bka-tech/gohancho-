@@ -44,9 +44,10 @@ const INJECT = () => {
       if (/^(SCRIPT|STYLE|PATH|CIRCLE|RECT|G|LINE|POLYGON|ELLIPSE|DEFS|LINEARGRADIENT|RADIALGRADIENT|STOP|USE|TEXT|TSPAN)$/i.test(el.tagName) || el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue;
       const r = el.getBoundingClientRect(); if (!r.width && !r.height) continue;
       const fx = isFixed(el); const dx = fx ? 0 : scrollX, dy = fx ? 0 : scrollY;
-      out[keyOf(el)] = [r.left + dx, r.top + dy, r.width, r.height, ((el.className && el.className.baseVal === undefined ? el.className : el.tagName) + '<' + (el.parentElement && el.parentElement.className && el.parentElement.className.baseVal === undefined ? el.parentElement.className : '')).toString().slice(0, 60), fx ? 1 : 0];
+      out[keyOf(el)] = [r.left + dx, r.top + dy, r.width, r.height, ((el.className && el.className.baseVal === undefined ? el.className : el.tagName) + '<' + (el.parentElement && el.parentElement.className && el.parentElement.className.baseVal === undefined ? el.parentElement.className : '')).toString().slice(0, 60), fx ? 1 : 0, el.closest('#sheet-root') ? 1 : 0];
     }
-    return {rects: out, sy: scrollY, docH: document.documentElement.scrollHeight};
+    const sh = document.querySelector('#sheet-root .sheet'), shTop = sh ? sh.getBoundingClientRect().top : null;   // 開いているシートの上端（画面の上から）。シートの後ろに隠れたところは見えない
+    return {rects: out, sy: scrollY, docH: document.documentElement.scrollHeight, shTop};
   };
 };
 
@@ -63,7 +64,8 @@ function compare(a, b, exempt, vh = 844, above = null) {   // above: この高�
     const sa = p[5] ? 0 : a.sy, sb = q[5] ? 0 : b.sy;   // 画面の上からの位置で比べる（スクロール位置を戻す対策が効いているかも見える）
     const py = p[1] - sa, qy = q[1] - sb;
     const d = Math.max(Math.abs(p[0] - q[0]), Math.abs(py - qy), isBox ? Math.abs(p[2] - q[2]) : 0, isBox ? Math.abs(p[3] - q[3]) : 0);
-    const vis = (py + p[3] > 0 && py < vh) || (qy + q[3] > 0 && qy < vh);   // 画面に見えているところだけ数える（画面の下の遠くが動くのは、見えない）
+    const vh1 = !p[6] && a.shTop != null ? Math.min(vh, a.shTop) : vh, vh2 = !q[6] && b.shTop != null ? Math.min(vh, b.shTop) : vh;   // シートの後ろ（シートの上端より下）は見えない
+    const vis = (py + p[3] > 0 && py < vh1) || (qy + q[3] > 0 && qy < vh2);   // 画面に見えているところだけ数える（画面の下の遠くが動くのは、見えない）
     if (d > TOL) worstAll = Math.max(worstAll, d);
     if (d > TOL && vis) { n++; if (d > worst) worst = d; if (offenders.length < 4) offenders.push(`${q[4]} ${p.slice(0, 4).map(Math.round)}->${q.slice(0, 4).map(Math.round)}`); }
   }
@@ -116,6 +118,7 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
           window.__cls = 0; window.__shifts = [];
           const el = fn === 'reroll' ? document.querySelectorAll('.tray [data-act="reroll"]')[arg] : fn === 'sel' ? document.querySelector(arg) : fn === 'nth' ? document.querySelectorAll(arg[0])[arg[1]] : null;
           const keys = ex.startsWith('press:') ? (el && el.closest(ex.slice(6)) ? [window.__keyOf(el.closest(ex.slice(6)))] : []) : [...document.querySelectorAll(ex)].map(window.__keyOf);
+          window.__pk = el ? window.__keyOf(el) : null;   // 押したもの（お膳の高さが変わったときの、画面の上での位置を見る）
           if (el) el.click(); else if (fn === 'eval') (0, eval)(arg);
           return keys;
         }, [doFn, arg, exemptSel]);
@@ -132,7 +135,11 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         if (exemptSel.startsWith('.tray') && tk) { const tb = before.rects[tk], ta = after.rects[tk]; if (tb && ta && Math.abs(tb[3] - ta[3]) > TOL) above = tb[1]; }
         const c1 = compare(before, imm, exempt, 844, above), c2 = compare(before, after, exempt, 844, above);
         const c = c2.worst >= c1.worst ? c2 : c1;
-        record(Object.assign({}, base, {scn, cls, worst: c.worst, n: c.n, all: c.worstAll, dsy: Math.round(after.sy - before.sy), off: c.offenders, dh: Math.round(after.docH - before.docH)}));
+        // お膳の高さが変わったとき（一品ものの主菜でご飯の席がなくなり、お膳の並びが変わるなど）、ブラウザはスクロール位置を合わせて、押したボタンを指の下に残す（scroll anchoring）。
+        // そのときだけ、押したボタンが画面の上で動いていなければ、スクロールのずれとは数えない（お膳より上で画面に見えているものが動けば、上の位置の比べで違反になる）
+        let dsy = Math.round(after.sy - before.sy);
+        if (dsy && above !== null) { const pk = await p.evaluate(() => window.__pk); const pb = pk && before.rects[pk], pa = pk && after.rects[pk]; if (pb && pa && Math.abs((pa[1] - (pa[5] ? 0 : after.sy)) - (pb[1] - (pb[5] ? 0 : before.sy))) <= TOL) dsy = 0; }
+        record(Object.assign({}, base, {scn, cls, worst: c.worst, n: c.n, all: c.worstAll, dsy, off: c.offenders, dh: Math.round(after.docH - before.docH)}));
       };
 
       const nBtn = await p.evaluate(() => document.querySelectorAll('.tray [data-act="reroll"]').length);
@@ -150,14 +157,21 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       if (await p.evaluate(() => !!document.querySelector('[data-act="staple-next"]'))) for (let i = 0; i < 2; i++) await act('主食かえる', 'sel', '[data-act="staple-next"]', 'press:.spot', 'btn');
       await p.evaluate(() => { S.condOpen = true; render(); }); await p.waitForTimeout(200);
       // 気分・まるごと入れ替え（お膳の中は変わってよい。お膳の外は動かない）
-      for (const k of ['fish', 'meat', 'quick']) await act('気分', 'sel', `[data-act="mood"][data-k="${k}"]`, '.tray,.cond-sum', 'btn');
+      // 案2: 気分のチップは条件シート（「条件を変える」）の中。シートを開いたまま選び、お膳の外（シートの中も）が動かないことを見る
+      await p.evaluate(() => { if (typeof openCondSheet === 'function') openCondSheet(); }); await p.waitForTimeout(300);
+      for (const k of ['fish', 'meat', 'quick']) {
+        const has = await p.evaluate(k => !!document.querySelector(`#sheet-root [data-act="mood"][data-k="${k}"]`) || !MOODS.some(x => x.k === k), k);
+        if (!has) { record(Object.assign({}, base, {scn: '気分', cls: 0, worst: 999, n: 1, all: 999, dsy: 0, off: ['気分のチップ ' + k + ' が見つからない']})); continue; }
+        await act('気分', 'sel', `#sheet-root [data-act="mood"][data-k="${k}"]`, '.tray,.cond-sum,.p2-sv', 'btn');
+      }
+      await p.evaluate(() => { if (typeof closeSheet === 'function' && sheet && sheet.kind === 'cond') closeSheet(); }); await p.waitForTimeout(200);
       // まるごと入れ替えは見出しの行にある（お膳の外）。押したボタンの印が回る動き（transform）は位置のずれではないので、印の中（svg）だけ除く。ボタンと印の枠は動いてはいけない
       for (let i = 0; i < 2; i++) await act('まるごと入れ替え', 'sel', '#view .shuffle', '.tray,#view .head-shuffle .sh-ic', 'btn');
       // 条件を開く/閉じる: 開いたぶん下が動くのは当然なので計測しない。品数を変える（同じ品数の中での入れ替えは上で確認済み）
       // あと1品
       // あと1品の入口は「条件を変える」のシートの中（お膳の下の行はやめた）。シートを開いてから押す
       await p.evaluate(() => { if (typeof openCondSheet === 'function') openCondSheet(); }); await p.waitForTimeout(200);
-      await act('あと1品を開く', 'sel', '#sheet-root [data-act="one-open"]', '.tray', 'btn');
+      await act('あと1品を開く', 'sel', '#sheet-root [data-act="one-open"]', '.tray,#sheet-root', 'btn');   // シートは条件からあと1品にかわる（シートの中は比べない）
       await p.evaluate(() => { if (typeof closeSheet === 'function') closeSheet(); });
       // 保存した献立を適用
       await p.evaluate(() => { saveMenu(); });
@@ -208,14 +222,22 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         const c1 = compare(a1, b1, [], 844);
         record(Object.assign({}, base, {scn: '料理の詳細（絵なし→絵が届く）', cls: 0, worst: c1.worst, n: c1.n, all: c1.worstAll, dsy: 0, off: c1.offenders}));
       }
-      // 言語を切り替える: 同じ献立のお膳の高さと、下のタブの高さが変わらない
+      // 言語を切り替える: 同じ献立のお膳の高さが変わらない。
+      // 最初のデザインのお膳は画面（決定の帯の上）に合わせて詰め方（器の大きさ・名前の行数・名前の字・見出し）を決める。言語で名前の長さが違って詰め方が変わるときだけ、高さが変わってよい。
+      // そのときも、お膳は帯の上に入っている（器・名前・かえる・真ん中の丸が帯の後ろに入らない）。詰め方が同じなのに高さが変わるのは違反
+      const trayState = () => p.evaluate(() => { const t = document.querySelector('.tray'); if (!t) return {h: 0}; let fl = innerHeight;
+        document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
+        const hid = document.body.classList.contains('bar-static') ? [] : [...t.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > fl + .5).map(e => e.className.split(' ')[0]);
+        const st = typeof TRAY_FIT !== 'undefined' && TRAY_FIT.state ? JSON.stringify([TRAY_FIT.state.tight, TRAY_FIT.state.tight2, TRAY_FIT.state.noFit, TRAY_FIT.state.vs, TRAY_FIT.state.nml]) : '';
+        return {h: Math.round(t.getBoundingClientRect().height), st, hid}; });
       for (const lg of (quick ? ['en', 'ar'] : ['en', 'ko', 'ar', 'th', 'de', 'vi', 'hi'])) {
-        await p.evaluate(() => setTab('today')); await p.waitForTimeout(200);
-        const bf = await p.evaluate(() => { const t = document.querySelector('.tray'); return t ? Math.round(t.getBoundingClientRect().height) : 0; });
+        await p.evaluate(() => { window.scrollTo(0, 0); setTab('today'); }); await p.waitForTimeout(200);
+        const bf = await trayState();
         await p.evaluate(async lg => { S.settings.uiLang = lg; save(); await setLang(lg); await refreshRecipes(); render(); }, lg);
         await p.waitForTimeout(img === 'slow' ? 1200 : 700);
-        const af = await p.evaluate(() => { const t = document.querySelector('.tray'); return t ? Math.round(t.getBoundingClientRect().height) : 0; });
-        record(Object.assign({}, base, {scn: '言語切替（お膳の高さ）', cls: 0, worst: Math.abs(af - bf) > 0 ? Math.abs(af - bf) : 0, n: 0, all: 0, dsy: 0, off: [lg + ' ' + bf + '->' + af]}));
+        const af = await trayState();
+        const jump = af.h !== bf.h && af.st === bf.st ? Math.abs(af.h - bf.h) : 0, hidN = af.hid.length ? 999 : 0;
+        record(Object.assign({}, base, {scn: '言語切替（お膳の高さ）', cls: 0, worst: Math.max(jump, hidN), n: 0, all: 0, dsy: 0, off: [lg + ' ' + bf.h + '->' + af.h + (af.st !== bf.st ? '（詰め方が変わった ' + bf.st + ' -> ' + af.st + '）' : '') + (af.hid.length ? ' 帯の後ろ: ' + af.hid.join(',') : '')]}));
       }
       }
       // 世界タブ: 国を切り替え、画像が読み込まれる
@@ -243,8 +265,9 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
       }
       // 横にはみ出して、画面全体が横に広がらない（固定の下タブがずれる原因になる）
       for (const tb of ['today', 'cook', 'fridge', 'twist', 'world', 'log', 'settings']) {
-        const ov = await p.evaluate(async tb => { setTab(tb); await new Promise(r => setTimeout(r, 350)); return document.documentElement.scrollWidth - document.documentElement.clientWidth; }, tb);
-        record(Object.assign({}, base, {scn: '横はみ出し（7つのタブ）', cls: 0, worst: Math.max(0, ov), n: 0, all: Math.max(0, ov), dsy: 0, off: [tb + ' +' + ov + 'px']}));
+        const [ov, who] = await p.evaluate(async tb => { setTab(tb); await new Promise(r => setTimeout(r, 350)); const W = document.documentElement.clientWidth, o = document.documentElement.scrollWidth - W;
+          return [o, o > 0 ? [...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > W + .5 && e.getBoundingClientRect().width > 0).slice(0, 2).map(e => { const q = e.getBoundingClientRect(), pq = e.parentElement.getBoundingClientRect(); return (e.className || e.tagName).toString().slice(0, 30) + ' ' + Math.round(q.left) + '-' + Math.round(q.right) + ' in ' + (e.parentElement.className || '').toString().slice(0, 20) + ' ' + Math.round(pq.left) + '-' + Math.round(pq.right) + ' "' + e.textContent.slice(0, 30) + '"'; }).join(' | ') : '']; }, tb);   // はみ出した要素（原因を探す手がかり）
+        record(Object.assign({}, base, {scn: '横はみ出し（7つのタブ）', cls: 0, worst: Math.max(0, ov), n: 0, all: Math.max(0, ov), dsy: 0, off: [tb + ' +' + ov + 'px' + (who ? ' ' + who : '')]}));
       }
       await ctx.close();
     } catch (e) { errs.push(`${cc} ${w} x${sc} ${img} n${n}: ${String(e.message).split('\n')[0]}`); try { await b.close(); } catch (e2) {} b = await chromium.launch(LAUNCH); }
