@@ -12350,8 +12350,10 @@ function loadPackTr(cc, lang){
     }));
 }
 function trLangFor(cc, lang = LANG){ return cc === 'JP' ? (lang === 'ja' ? null : lang) : (lang === 'en' ? null : lang); }
-// 用意してある訳: 日本のレシピは英語、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
-function trAvail(cc){ return cc === 'JP' ? ['en'] : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
+// 用意してある訳: 日本のレシピは英語（とベトナム語）、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
+// 日本のレシピのベトナム語（jp.vi.js）は料理名と食材名だけの訳で、分量・調味料・手順は英語の訳（base: 'en'）を借りる（第4回モニター R5）
+const JP_TR_LANGS = ['en', 'vi'];
+function trAvail(cc){ return cc === 'JP' ? JP_TR_LANGS : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
 // その国・言語で使う訳のファイル（なければ null）
 function trKey(cc, lang = LANG){
     const l = trLangFor(cc, lang); if (!l) return null;
@@ -12360,18 +12362,33 @@ function trKey(cc, lang = LANG){
 }
 async function ensureTr(cc, lang = LANG){
     const k = trKey(cc, lang); if (!k) return null;
-    const i = k.indexOf('.'); return loadPackTr(k.slice(0, i), k.slice(i + 1));
+    const i = k.indexOf('.'), d = await loadPackTr(k.slice(0, i), k.slice(i + 1));
+    if (d && d.base && k.startsWith('JP.')) await loadPackTr('JP', d.base);   // 名前だけの訳は、元にする訳も読む
+    return d;
 }
 // 訳が要るのに、読もうとして読めなかったときだけ false（切りかえの途中で、画面の言葉と料理の言葉がずれないよう確かめる）
 function trOk(cc, lang = LANG){ const k = trKey(cc, lang); return !k || !trFail[k]; }
 function trOf(cc){
     const l = trLangFor(cc); if (!l) return null;
-    return PACK_TR[cc + '.' + l] || (cc === 'JP' ? PACK_TR['JP.en'] : null) || null;
+    const d = PACK_TR[cc + '.' + l];
+    if (d && d.base && cc === 'JP') return jpTrMerged(d) || PACK_TR['JP.en'] || null;
+    return d || (cc === 'JP' ? PACK_TR['JP.en'] : null) || null;
+}
+// 名前だけの訳（d）を、元にする訳（英語）に重ねる。料理名と食材名は d、分量・調味料・手順・コツは元の訳。食材名は itemNames で材料の行に出す
+function jpTrMerged(d){
+    const b = PACK_TR['JP.' + d.base]; if (!b) return null;
+    if (d._m && d._m.b === b) return d._m.tr;
+    const al = {}; [b.aliases || {}, d.aliases || {}].forEach(a => Object.entries(a).forEach(([k, v]) => { al[k] = [...new Set([...(al[k] || []), ...v])]; }));
+    const recipes = {}; Object.entries(b.recipes || {}).forEach(([id, rt]) => { const v = d.recipes && d.recipes[id]; recipes[id] = v && v.name ? Object.assign({}, rt, {name: v.name}) : rt; });
+    const tr = {tlang: b.tlang, staple: d.staple || b.staple, aliases: al, names: Object.assign({}, b.names || {}, d.names || {}), itemNames: d.names || {}, recipes, nameLang: d.tlang};
+    d._m = {b, tr}; return tr;
 }
 // 日本のレシピに訳を重ねる（食材のキーはそのまま。表示の名前・分量・作り方だけ入れかえる）
 function jpRecipe(r, tr){
     const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
-    const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; return v ? Object.assign({}, i, {name: v[0], label: v[0], jp: i.name, qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}) : i; });
+    const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; if (!v) return i;
+        const nm = (tr.itemNames && (tr.itemNames[i.name] || tr.itemNames[i.key])) || v[0];   // 名前だけの訳（ベトナム語）は、材料の名前をその言葉で。手順の言葉（英語）の名前は stepLabel に残す
+        return Object.assign({}, i, {name: nm, label: nm, jp: i.name, stepLabel: nm !== v[0] ? v[0] : undefined, qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}); });
     return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, slang: rt.steps ? tr.tlang : 'ja', tip: rt.tip || r.tip || null, trLang: LANG});
 }
 function packRecipe(pk, x, tr){

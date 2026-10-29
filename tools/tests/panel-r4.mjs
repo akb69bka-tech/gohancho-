@@ -144,6 +144,41 @@ if (want('R4')){
     }
 }
 
+// ---- R5 ベトナム語の画面: 和食の料理名・冷蔵庫の「trứng」 ----
+if (want('R5')){
+    const {p, ctx} = await open({country: 'JP', uiLang: 'vi'}, {locale: 'vi-VN'});
+    await p.waitForFunction(() => typeof PACK_TR !== 'undefined' && PACK_TR['JP.vi'] && PACK_TR['JP.en'], null, {timeout: 20000}).catch(() => {});
+    await p.waitForTimeout(300);
+    const r = await p.evaluate(() => {
+        const en = PACK_TR['JP.en'], same = RECIPES.filter(x => en.recipes[x.id] && x.name === en.recipes[x.id].name).map(x => x.id);
+        const nk = RECIPES.find(x => x.id === 'nikuudon');
+        return {menu: session.menu.items.filter(x => x.r).map(x => x.r.name), same, nk: nk.name, ing: nk.items.map(i => i.name).join(' / '), steps: nk.steps.length, enSteps: en.recipes.nikuudon.steps.length, slang: nk.slang,
+            shown: document.querySelector('#view').innerText.includes(session.menu.items[0].r.name)};
+    });
+    ok(!r.same.length, 'R5-1 和食の料理名がすべてベトナム語（英語のままの料理: ' + r.same.length + '）: ' + r.same.slice(0, 5).join());
+    ok(/^Mì udon thịt bò/.test(r.nk) && /thịt bò/.test(r.ing), 'R5-2 肉うどんの名前と材料がベトナム語: ' + r.nk + ' | ' + r.ing);
+    ok(r.steps === r.enSteps && r.slang === 'en', 'R5-3 手順は英語の訳を使う（日本語のまま出さない）: ' + r.steps + '/' + r.enSteps + ' ' + r.slang);
+    ok(r.shown, 'R5-4 今日の献立にベトナム語の料理名が出る: ' + r.menu.join(' / '));
+    // 冷蔵庫に入れて、料理が見つかる
+    for (const w of ['trứng', 'Trứng, hành tây', 'thịt lợn', 'đậu hũ']){
+        await p.click('nav.tabs [data-tab="fridge"]'); await p.waitForTimeout(250);
+        await p.evaluate(() => { S.fridge = []; save(); render(); });
+        await p.fill('#ing-input', w); await p.click('form[data-form="add-ing"] button[type=submit]'); await p.waitForTimeout(400);
+        const q = await p.evaluate(() => ({fridge: S.fridge.map(keyOf), res: (document.querySelector('#fridge-results') || {}).innerText || '', bad: [...document.querySelectorAll('.c-bad')].map(e => e.textContent).join(' | ')}));
+        ok(q.fridge.length && !q.bad && !/Không tìm thấy món nào/.test(q.res) && q.res.length > 40, `R5-5 冷蔵庫に「${w}」→ 料理が見つかる: ` + q.fridge.join() + ' | ' + q.bad + ' | ' + q.res.slice(0, 80).replace(/\n/g, '/'));
+    }
+    ok(await p.evaluate(() => S.fridge.length > 0 && S.fridge.every(f => typeof f === 'string')), 'R5-6 冷蔵庫の保存の形は今までどおり（食材の名前の文字列）');
+    await ctx.close();
+    // 英語の画面は今までどおり
+    {
+        const {p, ctx} = await open({country: 'JP', uiLang: 'en'}, {locale: 'en-US'});
+        await p.waitForTimeout(500);
+        const n = await p.evaluate(() => RECIPES.find(x => x.id === 'nikuudon').name);
+        ok(/^Niku udon/.test(n), 'R5-7 英語の画面の和食の料理名は英語のまま: ' + n);
+        await ctx.close();
+    }
+}
+
 await b.close();
 if (errs.length){ console.log('ページのエラー:', [...new Set(errs)].slice(0, 5)); }
 console.log(`panel-r4: ${checks - fails}/${checks} 成功`);
