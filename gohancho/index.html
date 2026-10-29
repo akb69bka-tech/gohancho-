@@ -3581,12 +3581,21 @@ function twistOptions(base){
     return {flavors, forms, swaps};
 }
 // 魚・えび・貝などを主役にした料理の主役を替える案（鶏むね肉で・たらで）は、手順の文が正しく直せるものだけ出す（いわし・いか・しじみ・ツナ缶などの下ごしらえや名前が残る案を出さない）
+// 答えは料理と案と言語だけで決まるので覚えておく（ひとひねりの候補を作るたびに、魚・えびの料理の案を作り直さない）。
+// 元の食材だけで決まる確かめ（加工品・塩鮭など）を先にして、だめなら案を作らない（結果は同じ）
+const twistSeaMemo = new WeakMap();
 function twistSeaOk(base, k){
     if (!['魚', '魚介'].includes(base.family)) return true;
-    const tw = buildTwist(twistId(base.id, '', '', k)); if (!tw) return false;
-    const from = base.items.find(i => i.key === base.protein), to = tw.items.find(i => i.changed);
-    if (!from || !to || !swapBody(seaItem(from) && inFam('fish', from) ? 'fish' : 'shellfish')(from)) return false;   // ツナ缶・ちくわ・かにかま・たらこ・じゃこなどの加工品は替えない
+    let mm = twistSeaMemo.get(base); if (!mm || mm.lang !== LANG){ mm = {lang: LANG, m: new Map()}; twistSeaMemo.set(base, mm); }
+    if (!mm.m.has(k)) mm.m.set(k, twistSeaCheck(base, k));
+    return mm.m.get(k);
+}
+function twistSeaCheck(base, k){
+    const from = base.items.find(i => i.key === base.protein);
+    if (!from || !swapBody(seaItem(from) && inFam('fish', from) ? 'fish' : 'shellfish')(from)) return false;   // ツナ缶・ちくわ・かにかま・たらこ・じゃこなどの加工品は替えない
     if (SEA_CURED.test(from.name + '|' + from.label)) return false;
+    const tw = buildTwist(twistId(base.id, '', '', k)); if (!tw) return false;
+    const to = tw.items.find(i => i.changed); if (!to) return false;
     if (!seaItem(to) && !/\d\s*g$/.test(String(to.qty))) return false;   // 分量を重さに直せない（1缶・4本など）
     return !seaLeft(tw.steps, [{from, to}]);
 }
