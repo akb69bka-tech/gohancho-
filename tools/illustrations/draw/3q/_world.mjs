@@ -547,6 +547,19 @@ export const ING = {
     dumpling: (p, x, y, s, r, i) => ball(p, x, y - s * .2, s, '#f6eedc', p.id + 'dp' + i, { hi: .55, edge: '#d8c8a0' }),
     bread: (p, x, y, s, r, i) => cubeOf(p, x, y, s * .8, i, '#d89a48', [[0, '#f8d898'], [.6, '#e0a858'], [1, '#b8742a']]),
     rice: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.2" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="#fbf6ea" stroke="#d8ccb4" stroke-width=".3"/>`,
+    tempeh: (p, x, y, s, r, i, liq) => dice(p, x, y, s, '#a8702e', p.id + 'tp' + i, { h: s * .45, liq, top: Q.rg(p, [[0, '#f0d8a0'], [.6, '#d8b070'], [1, '#a8783a']], .4, .35, .8) }) + flecks(p, x, y - s * .3, s * .3, 5, 'tpf' + i, ['#f6ecd0', '#8a5a2a'], { ry: s * .15, s: .9 }),
+    tempehSweet: (p, x, y, s, r) => strip(p, x, y, s * 1.3, r, '#7a3a14', 3),
+    beanSprout: (p, x, y, s, r) => sprout(p, x, y, s * 1.2, r),
+    longBean: (p, x, y, s, r) => pod(p, x, y, s * 2.2, r, { w: 3.4 }),
+    chayote: (p, x, y, s, r, i, liq) => strip(p, x, y, s * 1.1, r, i % 2 ? '#c8dc98' : '#b8d488', 3.4),
+    krupuk: (p, x, y, s, r, i) => `<path d="${Q.blob(x, y, s * .8, s * .55, p.id + 'kr' + i, { n: 12, jit: .2 })}" fill="${Q.rg(p, [[0, '#fff8e8'], [1, '#f2dcb0']], .4, .35, .8)}" stroke="#d8b878" stroke-width=".6"/>` + flecks(p, x, y, s * .5, 6, 'krf' + i, ['#e8a080'], { ry: s * .3, s: .8 }),
+    greensLong: (p, x, y, s, r, i) => `<g ${T(x, y, r)}><path d="M${f(-s)},0 Q0,-3 ${f(s)},1" stroke="#4a7a2a" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M${f(-s)},0 Q0,-3 ${f(s)},1" stroke="#8ab858" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/></g>` + Q.leaf(p, x + s * .6, y - 2, s * .9, r + 20, i % 2 ? '#2f6a22' : '#3f7a2a', 'gl' + p.id + i, { wave: 1.2 }),
+    sambalDab: (p, x, y, s, r, i) => Q.lump(p, x, y, s * .45, s * .3, '#c8281a', p.id + 'sd' + i, { n: 10, jit: .3, hi: .7, edge: '#8a1a10' }) + flecks(p, x, y - s * .1, s * .3, 5, 'sdf' + i, ['#f2c8a0', '#e8501e'], { ry: s * .15, s: .8 }),
+    chiliLarge: (p, x, y, s, r) => pod(p, x, y, s * 1.8, r, { c: '#d8281a', w: 5 }),
+    greenChiliLarge: (p, x, y, s, r) => pod(p, x, y, s * 1.8, r, { c: '#4a8a2a', w: 5 }),
+    mushOyster: (p, x, y, s, r, i) => Q.leaf(p, x, y, s * 1.2, r, '#c8b49a', 'mo' + p.id + i, { wave: 2.4 }),
+    sausageLink: (p, x, y, s, r, i) => cutSlab(p, x, y, s * .9, s * .3, s * .3, '#a8502a', p.id + 'sl' + i, { rot: r, sear: '#6a2a10', jit: .03 }),
+    omelette: (p, x, y, s, r, i) => Q.prism(p, x, y, [[-s * .6, -s * .3], [s * .6, -s * .3], [s * .6, s * .3], [-s * .6, s * .3]], 3, '#f2c040', { rot: r, line: .4, top: Q.rg(p, [[0, '#fff0a0'], [.6, '#f6d050'], [1, '#e0a830']], .4, .35, .8) }),
     grain: (p, x, y, s, r) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.4" ry="1.5" fill="#e8d098" stroke="#b89858" stroke-width=".3"/>`,
 };
 // 盛りつけの組み立て: spec = { v: 器の関数(p) => V, mode: 'plate' | 'soup' | 'braise' | 'bowl'（小鉢・鉢に山高）, c: ソース・汁の色,
@@ -574,3 +587,10 @@ export function make(p, spec){
     const V = v(p);
     return soup(p, V, { c, drop: V.sy ? 4 : 9, glow: .35, oil: oil ? oil[0] : 0, oilC: oil ? oil[1] : '#f0c040', cream, steamOp: steam, items: (pl, S) => [...(porr ? [[-999, () => porridge(p, S, p.id + 'po', porr)]] : []), ...spots(p.id + 'sp', list.length, S.rx * .8, minD * .9).map(([u, v2, r], i) => { const [x, y] = pl(u, v2, 1); return [y, () => draw(list[i][0], list[i][1], x, y, r, i, c)]; }), [999, () => flk(S.cx, S.cy, S.rx * .8, S.rx * (S.o.sy ?? SY) * .7) + after(S, V, p)]] });
 }
+
+// 串焼き（サテ・ケバブ・アンティクーチョ・シュハスコ）: 平行な串に具を通す。piece(x, y, i) で具をひとつ描く
+export function skewers(p, o, n, piece, { L = 120, k = 4, rot = -10, gap = 16, stick = '#d8b878' } = {}){
+    return byDepth(Array.from({ length: n }, (_, j) => { const [x, y] = at(o, -4, (j - (n - 1) / 2) * gap); return [y, () => `<g ${T(x, y, rot)}><path d="M${f(-L / 2)},0 L${f(L / 2)},0" stroke="${dk(stick, .2)}" stroke-width="2.6" stroke-linecap="round"/><path d="M${f(-L / 2)},-.4 L${f(L / 2)},-.4" stroke="${stick}" stroke-width="1.6" stroke-linecap="round"/>${Array.from({ length: k }, (_, i) => piece(-L * .32 + i * (L * .64 / Math.max(1, k - 1)), 0, j * k + i)).join('')}</g>`]; }));
+}
+// 丸ごとの魚を皿に（焼き魚・揚げ魚）: 上にソースや薬味を on(x, y) で
+export const fishOn = (p, D, { L = 150, rot = -8, skin = '#a8763a', belly = '#e8c890', char = .6, on = () => '' } = {}) => D.s + wholeFish(p, D.o.cx, D.o.cy, L, rot, 1, { skin, belly, char }) + on(D.o.cx, D.o.cy);
