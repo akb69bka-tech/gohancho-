@@ -61,7 +61,7 @@ const roastPlate = (meat, { veg = [], gravy = true } = {}) => p => { const D = p
 export default {
     // ---------- 主菜 ----------
     // シェパーズパイ（羊ひき肉にマッシュポテトをのせて焼く）、チェダー（お好みで）
-    gb_shepherdspie: dish({ /*fx*/blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6e4b0', .38], ['#7a3a1a', .5]], dots: [['#6a9a3a', 5, 1.8], ['#e8742a', 5, 1.8]] }, /*xf*/ c: '#f2d890', fl: ['#d8902a', '#c8782a', '#fbe8b0', '#a8601e'], n: 120, top: (o) => [-40, -20, 0, 20, 40].map(u => `<path d="M${f(o.cx + u - 6)},${f(o.cy - 40)} q4,40 0,80" stroke="#e0b060" stroke-width="2" fill="none" opacity=".6"/>`).join('') }),
+    gb_shepherdspie: dish({ /*fx*/pattern: 'ridges', blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6e4b0', .38], ['#7a3a1a', .5]], dots: [['#6a9a3a', 5, 1.8], ['#e8742a', 5, 1.8]] }, /*xf*/ c: '#f6dca0', fl: ['#a8601e', '#c8782a'], n: 120, top: (o) => [-40, -20, 0, 20, 40].map(u => `<path d="M${f(o.cx + u - 6)},${f(o.cy - 40)} q4,40 0,80" stroke="#e0b060" stroke-width="2" fill="none" opacity=".6"/>`).join('') }),
     // バンガーズ・アンド・マッシュ（ソーセージとマッシュと玉ねぎのグレイビー）、グリンピース（お好みで）
     gb_bangers: roastPlate((p, o) => mash(p, ...at(o, -20, 0, 2), 36, 18) + byDepth([[14, -12, -20], [20, 2, -14], [10, 14, -24]].map(([u, v, r], i) => { const [x, y] = at(o, u, v, 18); return [y, () => ing.sausage(p, x, y, 28, r, i)]; })) + W.flecks(p, ...at(o, 0, 10, 10), 30, 16, 'bo', ['#c8864a', '#a8641e'], { ry: 10, s: 2.2 }), { veg: [['pea', 44, 32, 13], ['pea', 50, 26, 13], ['pea', 38, 38, 13], ['pea', 46, 40, 13]] }),
     // フィッシュケーキ、レモン
@@ -79,7 +79,7 @@ export default {
     // トード・イン・ザ・ホール（ソーセージのヨークシャープディング焼き）
     gb_toadinhole: dish({ c: '#e8b058', fl: ['#f6d890', '#c8862e', '#a8641e'], n: 40, top: (o, V, pp) => byDepth([[-44, -12], [-14, -16], [16, -12], [46, -16], [-30, 16], [0, 14], [30, 18]].map(([u, v], i) => { const [x, y] = at(o, u, v * .7, 4); return [y, () => ing.sausage(pp, x, y, 26, -10, i)]; })) }),
     // フィッシュパイ（白身魚・燻製ハドック・マッシュポテト）、えび・卵・チェダー（お好みで）
-    gb_fishpie: dish({ /*fx*/blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6e4b0', .38], ['#f6f0e0', .5]], dots: [['#fbf6ee', 5, 4], ['#f0a080', 4, 3], ['#e8d090', 3, 3.4]] }, /*xf*/ c: '#f2d890', fl: ['#d8902a', '#c8782a', '#fbe8b0', '#a8601e'], n: 140 }),
+    gb_fishpie: dish({ /*fx*/base: '#f4f0e8', shape: 'oval', pattern: 'ridges', blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6e4b0', .38], ['#f6f0e0', .5]], dots: [['#fbf6ee', 5, 4], ['#f0a080', 4, 3], ['#e8d090', 3, 3.4]] }, /*xf*/ c: '#fbf0d0', fl: ['#3f8a2a', '#e8b048'], n: 140 }),
     // チキンとポロねぎのパイ
     gb_chickenpie: p => pie(p, { fill: '#f2e4c0', dots: [['#fbf2e0', 6, 4], ['#a8c870', 5, 2.6], ['#c8a878', 3, 3]], leaves: true }),
     // ランカシャー・ホットポット（羊と野菜の煮込みに薄切りじゃがいもを重ねて焼く）
@@ -117,15 +117,15 @@ export default {
     // ケジャリー（燻製ハドックとカレーのご飯）: 卵・玉ねぎ・パセリ
     gb_kedgeree: P([['haddock', 8, 16], ['egg', 3, 16]], { rice: { cols: ['#f2d070', '#e8c050', '#f8e090'], edge: '#b8902a' }, H: 22, R: 50, flecks: [pars(16)] }),
     // マカロニ・チーズ、トマト（お好みで）
-    gb_macaroni: dish({ /*fx*/blister: 10, scoop: { layers: [['#d8902a', .15], ['#f2c860', .85]], dots: [['#fbe8a0', 14, 3]] }, /*xf*/ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110, top: (o, V, pp) => [[-30, -10], [10, -16], [36, 6]].map(([u, v]) => W.coin(pp, ...at(o, u, v * .6, 2), 12, '#c8281a', { h: 2, sy: .5, top: Q.rg(pp, [[0, '#ff8a6a'], [1, '#d8402a']], .4, .35, .8) })).join('') }),
+    gb_macaroni: dish({ /*fx*/pattern: 'tubes', blister: 10, scoop: { layers: [['#d8902a', .15], ['#f2c860', .85]], dots: [['#fbe8a0', 14, 3]] }, /*xf*/ c: '#f0a020', fl: ['#c86a14', '#fbe080'], n: 110, top: (o, V, pp) => [[-30, -10], [10, -16], [36, 6]].map(([u, v]) => W.coin(pp, ...at(o, u, v * .6, 2), 12, '#c8281a', { h: 2, sy: .5, top: Q.rg(pp, [[0, '#ff8a6a'], [1, '#d8402a']], .4, .35, .8) })).join('') }),
     // ツナとコーンのパスタベイク
-    gb_tunabake: dish({ /*fx*/blister: 8, scoop: { layers: [['#d8902a', .15], ['#f2c860', .85]], dots: [['#fbe8a0', 10, 3], ['#c8a888', 4, 3], ['#f6d040', 5, 1.8]] }, /*xf*/ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#f6d040', '#a8601e'], n: 130 }),
+    gb_tunabake: dish({ /*fx*/pattern: 'tubes', blister: 8, scoop: { layers: [['#d8902a', .15], ['#f2c860', .85]], dots: [['#fbe8a0', 10, 3], ['#c8a888', 4, 3], ['#f6d040', 5, 1.8]] }, /*xf*/ c: '#f0b030', fl: ['#c86a14', '#fbe080', '#f6d040'], n: 130 }),
 
     // ---------- 副菜 ----------
     // ミントのグリンピース
     gb_peas: K([['pea', 40, 14], ['mint', 2, 12]], { minD: 5, base: '#7aa040', after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 26, 8) }),
     // カリフラワー・チーズ
-    gb_cauliflowercheese: dish({ /*fx*/blister: 10, scoop: { layers: [['#e8b048', .2], ['#f6eedc', .8]], dots: [['#fbf6e4', 5, 5], ['#e8e0c0', 4, 4]] }, /*xf*/ c: '#f6d890', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90, top: (o, V, pp) => byDepth(W.spots('cc', 8, 56, 26, { ry: 36 }).map(([u, v], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="${Q.blob(x, y, 14, 9, 'ccb' + i, { n: 10, jit: .25 })}" fill="${Q.rg(pp, [[0, '#fff6d8'], [1, '#e8c070']], .4, .35, .8)}" opacity=".9"/>`]; })) }),
+    gb_cauliflowercheese: dish({ /*fx*/base: '#f4f0e8', shape: 'oval', pattern: 'florets', blister: 10, scoop: { layers: [['#e8b048', .2], ['#f6eedc', .8]], dots: [['#fbf6e4', 5, 5], ['#e8e0c0', 4, 4]] }, /*xf*/ c: '#f8eccc', fl: ['#e8b048', '#c8862e'], n: 90, top: (o, V, pp) => byDepth(W.spots('cc', 8, 56, 26, { ry: 36 }).map(([u, v], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="${Q.blob(x, y, 14, 9, 'ccb' + i, { n: 10, jit: .25 })}" fill="${Q.rg(pp, [[0, '#fff6d8'], [1, '#e8c070']], .4, .35, .8)}" opacity=".9"/>`]; })) }),
     // オーブンで焼いたチップス
     gb_chips: P([['chipsGb', 20, 22]], { minD: 9, H: 16 }),
     // コールスロー: キャベツ・にんじん・マヨネーズ、赤玉ねぎ（お好みで）

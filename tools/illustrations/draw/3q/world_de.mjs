@@ -125,7 +125,7 @@ export default {
 
     // ---------- 麺・ご飯 ----------
     // ケーゼシュペッツレ（チーズのシュペッツレと揚げ玉ねぎ）（耐熱皿）
-    de_spaetzle: auflauf({ /*fx*/scoop: { layers: [['#c8862e', .15], ['#f2d070', .85]], dots: [['#f8e8a0', 12, 2.6], ['#a8641e', 4, 2]] }, /*xf*/ c: '#f2d070', fl: ['#e8b030', '#f8e8a0', '#c8902e'], n: 80, top: (o, V, pp) => byDepth(W.spots('sz', 40, 64, 8, { ry: 36 }).map(([u, v, r], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => ing.spaetzle(pp, x, y, 12, r)]; })) + W.flecks(pp, o.cx, o.cy - 4, 40, 40, 'szo', ['#a8641e', '#c8862e', '#7a4a1a'], { ry: 20, s: 2.2 }) + W.flecks(pp, o.cx, o.cy - 4, 40, 10, 'szc', [CHIVE], { ry: 20, s: 1.6 }) }),
+    de_spaetzle: auflauf({ /*fx*/shape: 'oval', scoop: { layers: [['#c8862e', .15], ['#f2d070', .85]], dots: [['#f8e8a0', 12, 2.6], ['#a8641e', 4, 2]] }, /*xf*/ c: '#f2d070', fl: ['#e8b030', '#f8e8a0', '#c8902e'], n: 80, top: (o, V, pp) => byDepth(W.spots('sz', 40, 64, 8, { ry: 36 }).map(([u, v, r], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => ing.spaetzle(pp, x, y, 12, r)]; })) + W.flecks(pp, o.cx, o.cy - 4, 40, 40, 'szo', ['#a8641e', '#c8862e', '#7a4a1a'], { ry: 20, s: 2.2 }) + W.flecks(pp, o.cx, o.cy - 4, 40, 10, 'szc', [CHIVE], { ry: 20, s: 1.6 }) }),
     // マウルタッシェン（シュヴァーベンの包みパスタ）の焼きものと玉ねぎと卵、ベーコン（お好みで）
     de_maultaschen: P([['maultasche', 7, 22], ['scramble', 6, 14], ['onion', 4, 12], ['bacon', 3, 12]], { minD: 12, flecks: [[CHIVE, 14, 1.6]] }),
     // シュプフヌーデルン（じゃがいものニョッキ）とザウアークラウト、ベーコン（お好みで）
@@ -171,7 +171,7 @@ export default {
     // ラームヴィルジング（ちりめんキャベツのクリーム煮）、ベーコン（お好みで）
     de_rahmwirsing: K([['savoy', 14, 16], ['bacon', 4, 11]], { base: '#e8ecc8' }),
     // じゃがいものグラタン
-    de_kartoffelgratin: auflauf({ /*fx*/blister: 10, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .24]] }, /*xf*/ c: '#f2d890', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 100, top: (o, V, pp) => byDepth(Array.from({ length: 15 }, (_, i) => { const u = -56 + (i % 5) * 28, v = -26 + Math.floor(i / 5) * 26; const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="M${f(x - 14)},${f(y)} q14,-6 28,0" stroke="#e8b058" stroke-width="2" fill="none" opacity=".8"/>`]; })) }),
+    de_kartoffelgratin: auflauf({ /*fx*/base: '#8a5a3a', shape: 'oval', pattern: 'slices', blister: 10, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .14], ['#fbf2d8', .08], ['#f6e4a8', .24]] }, /*xf*/ c: '#e0a040', fl: ['#a8601e', '#7a4214', '#f6d070'], n: 100, top: (o, V, pp) => byDepth(Array.from({ length: 15 }, (_, i) => { const u = -56 + (i % 5) * 28, v = -26 + Math.floor(i / 5) * 26; const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="M${f(x - 14)},${f(y)} q14,-6 28,0" stroke="#e8b058" stroke-width="2" fill="none" opacity=".8"/>`]; })) }),
     // フェルトザラート（マーシュとベーコンとクルトン）: マーシュ・エシャロット、ベーコン・クルトン（お好みで）
     de_feldsalat: K([['lambLettuce', 30, 14], ['bacon', 5, 11], ['crouton', 5, 12]], { minD: 5 }),
     // トマトと玉ねぎのサラダ

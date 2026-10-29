@@ -122,7 +122,7 @@ export default {
     // タヴクル・ピラウ（鶏のピラウ）、ひよこ豆（お好みで）
     tr_tavuklupilav: P([['chickenShred', 16, 14], ['chickpea', 8, 13]], { rice: { cols: ['#fbf6ea', '#f4ecd8', '#fffdf6'], edge: '#d8ccb4' }, H: 24, R: 50 }),
     // フルン・マカルナ（ベシャメルのパスタのオーブン焼き）
-    tr_firinmakarna: p => W.bake(p, { /*fx*/blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#f2c860', .6]], dots: [['#fbe8a0', 10, 3]] }, /*xf*/ base: '#e8dcc0', inner: '#f6efe2', c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110 }),
+    tr_firinmakarna: p => W.bake(p, { /*fx*/pattern: 'tubes', blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#f2c860', .6]], dots: [['#fbe8a0', 10, 3]] }, /*xf*/ base: '#e8dcc0', inner: '#f6efe2', c: '#f2c050', fl: ['#b8641e', '#fbe8a0'], n: 110 }),
 
     // ---------- 副菜 ----------
     // チョバン・サラタス（羊飼いのサラダ）: トマト・きゅうり・シヴリ・玉ねぎ・パセリ・レモン

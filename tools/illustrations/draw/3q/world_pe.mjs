@@ -173,7 +173,7 @@ export default {
     // パステル・デ・アセルガ（ふだん草のパイ）
     pe_pastel_acelga: p => W.bake(p, { base: '#e8dcc0', inner: '#f6efe2', c: '#e0a848', fl: ['#c8862e'], n: 10, dome: {}, scoop: { u0: 22, v0: 6, hf: 32, layers: [['#d8963a', .22], ['#4a7a2a', .78]], dots: [['#f6ecd8', 6, 3], ['#5a2a2a', 3, 1.8]] } }),
     // パステル・デ・パパ（じゃがいもとチーズのオーブン焼き）
-    pe_pastel_papa: p => W.bake(p, { /*fx*/blister: 8, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .3]] }, /*xf*/ c: '#f2d070', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90 }),
+    pe_pastel_papa: p => W.bake(p, { /*fx*/base: '#8a5a3a', shape: 'oval', pattern: 'slices', blister: 8, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .3]] }, /*xf*/ c: '#e0a040', fl: ['#a8601e', '#7a4214', '#f6d070'], n: 90 }),
 
     // ---------- 汁物 ----------
     // アグアディート（香菜の鶏と米のスープ）: 鶏・米・香菜・グリンピース・にんじん、じゃがいも（お好みで）
