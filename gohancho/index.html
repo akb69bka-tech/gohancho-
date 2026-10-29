@@ -3678,12 +3678,19 @@ function buildTwist(id){
 // 変化の数: 1=ちょっとだけ 2=しっかり 3=大胆に
 function generateTwists(opts={}){
     const {baseId=null, level=2, flavor='any', form='any', swap='any', count=3, fromIds=null} = opts;
+    // 全部の料理を元にするとき（よく作る料理・お気に入りがまだないとき）は、案の候補（数千）を作るのが重い。
+    // 候補は判定の鍵（苦手・アレルギーなど judgeSig）・言語・料理の並び・選んだ条件が同じあいだは同じなので覚えておく（乱数は使わない部分。点数をつける乱数は毎回いままでどおり引く）
+    const whole = !baseId && !(fromIds && fromIds.length);
+    const ck = whole ? [judgeSig(), allergyOn(), LANG, flavor, form, swap].join('\u0002') : null, C = generateTwists.c;
+    let all;
+    if (whole && C && C.key === ck && C.src.length === RECIPES.length && C.src.every((r, i) => r === RECIPES[i])) all = C.all;
+    else {
     let bases = baseId ? [RECIPES.find(r => r.id === baseId)] :
         (fromIds && fromIds.length ? fromIds.map(id => RECIPES.find(r => r.id === id)) : RECIPES.filter(r => r.type !== '汁物' && !isOkayu(r) && !NO_TWIST.has(r.id)));   // おかゆは、選んだとき・お気に入りや作った記録があるときだけ元にする
     // 苦手な食材が主役（主役を替えれば使わなくなる）の料理は、主役を替える案だけ出す
     const strict = r => r.items.filter(i => !i.opt && itemAvoided(i));
     bases = bases.filter(r => r && strict(r).every(i => i.key === r.protein));
-    const all = [];
+    all = [];
     bases.forEach(b => {
         const o = twistOptions(b);
         if (isOkayu(b)){
@@ -3700,9 +3707,11 @@ function generateTwists(opts={}){
             all.push({id: twistId(b.id, fl, fo, sw), n, base:b});
         })));
     });
+    if (whole) generateTwists.c = {key: ck, src: RECIPES.slice(), all};
+    }
     const seen = new Set(S.seenTwists);
     const eaten = new Set(S.history.map(h => h.id));
-    const scored = all.map(x => {
+    const scored0 = all.map(x => {
         let s = Math.random();
         s -= Math.abs(x.n - level) * 0.8;
         if (seen.has(x.id)) s -= 1.2;
@@ -3710,7 +3719,20 @@ function generateTwists(opts={}){
         if (S.favs.includes(x.base.id)) s += 0.25;
         if (daysSince(x.base.id) < 3) s -= 0.3;
         return {x, s};
-    }).sort((a,b) => b.s - a.s);
+    });
+    // 点数の高い順に、要るぶんだけ取り出す（数千の候補を毎回すべて並べかえない）。並びは sort（安定）と同じ: 点数の高い順、同じ点数は元の順。
+    // 上位 TOP 件で足りなければ、そこで全部を並べかえて続きから見る
+    const TOP = 48, sortAll = () => scored0.slice().sort((a,b) => b.s - a.s);
+    const scored = scored0.length <= TOP ? sortAll() : (() => {
+        const top = [];
+        for (const e of scored0){
+            if (top.length === TOP && e.s <= top[TOP - 1].s) continue;
+            let k = top.length; while (k > 0 && top[k - 1].s < e.s) k--;   // 同じ点数の後ろに入れる（元の順を保つ）
+            top.splice(k, 0, e); if (top.length > TOP) top.pop();
+        }
+        let full = null;
+        return {*[Symbol.iterator](){ for (const e of top) yield e; full = full || sortAll(); for (let i = TOP; i < full.length; i++) yield full[i]; }};
+    })();
     // 同じ元料理ばかりにならないように
     const out = [], usedBase = new Set();
     for (const {x} of scored){
