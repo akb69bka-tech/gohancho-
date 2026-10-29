@@ -139,7 +139,7 @@ let link = '', text = '';
     // 食卓: 出せた日だけ1行。「作ったよと送る」は押した人だけ
     await p.evaluate(() => { if (menuIds()[0] !== 'karaage') setMenuMain(recipeById('karaage')); keepDraft(); render(); document.querySelector('[data-act="decide"]').click(); });
     await p.waitForTimeout(450);
-    await p.evaluate(() => { S.cook.done = {}; cookItems().forEach(x => { S.cook.done[x.r.id] = x.r.steps.map((_, i) => i); }); S.cook.shopOK = true; session.stage = 'table'; setTab('today'); render(); });
+    await p.evaluate(() => { S.cook.done = {}; cookItems().forEach(x => { S.cook.done[x.r.id] = x.r.steps.map((_, i) => i); }); S.cook.shopOK = true; gotoStage('table'); });   // 食卓は作り方のタブのいちばん下（最初の版の6タブ）
     const tt = await viewText(p);
     ok(tt.includes('ゆうきの食べたいもの、今日出せました'), 'W3n 食卓に「ゆうきの食べたいもの、今日出せました。」: ' + tt.slice(0, 80));
     ok(await p.evaluate(() => !!document.querySelector('[data-act="wish-made"]')), 'W3o 「作ったよと送る」がある（押したときだけ送る）');
@@ -173,7 +173,7 @@ let link = '', text = '';
 {
     const {p, ctx} = await open({family: []});
     for (const st of ['decide', 'shop', 'table']){
-        await p.evaluate(s => { session.stage = s; setTab('today'); render(); }, st);
+        await p.evaluate(s => { gotoStage(s); }, st);
         ok(!(await viewText(p)).includes('食べたい'), 'W5a 今日タブ（' + st + '）に食べたいの入口・言葉がない');
     }
     await p.evaluate(() => { setTab('log'); });

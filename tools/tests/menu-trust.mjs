@@ -188,7 +188,7 @@ for (const k of [0, 1, 2]){
         ok(same(b2), name + ': 作り直す→「元に戻す」で決めた献立・気分・品数に戻る ' + JSON.stringify(b2));
         await p.evaluate(() => closeSheet());
     }
-    for (const [name, sel] of [['まるごと入れ替え', '[data-act="new-menu"]']]){
+    for (const [name, sel] of [['まるごと入れ替え', '#sheet-root [data-act="new-menu"]']]){   // 条件シートの中のボタン（お膳の真ん中の丸はシートの下）
         await openMood(p);
         const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
         const ask = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));
@@ -267,8 +267,8 @@ const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).
     ok(String(r.dc) === '4' && !r.pending, '取り消し→今日の品数を4に: 前に明日からにした2品は残らない ' + JSON.stringify(r));
     await p.evaluate(() => closeSheet());
     await goTime(p, '2026-10-28T19:01:00Z'); await until(p, () => TODAY === '2026-10-29' && !!session.menu);
-    const r2 = await p.evaluate(() => ({ today: TODAY, dc: S.settings.dishCount, n: session.menu && session.menu.n }));
-    ok(r2.today === '2026-10-29' && String(r2.dc) === '4' && r2.n === 4, '取り消し→今日の品数を4に: 次の日も4品のまま ' + JSON.stringify(r2));
+    const r2 = await p.evaluate(() => ({ today: TODAY, dc: S.settings.dishCount, n: session.menu && session.menu.n, want: dishesFor(4) }));   // 品数の値は席の数（ご飯の席も1品）
+    ok(r2.today === '2026-10-29' && String(r2.dc) === '4' && r2.n === r2.want, '取り消し→今日の品数を4に: 次の日も4品のまま ' + JSON.stringify(r2));
     await ctx.close();
 }
 
@@ -296,14 +296,14 @@ const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).
     await p.click('[data-act="later-today"]'); await until(p, () => !!document.querySelector('#toast-root [data-act="toast-undo"]'));
     ok(await same(), '明日も決めてあるとき: 今日の一膳を作り直しても、明日の決めた献立は変わらない');
     await p.click('#toast-root [data-act="toast-undo"]'); await until(p, () => !toast.undo);
-    await openMood(p); await p.locator('[data-act="new-menu"]').first().click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
+    await openMood(p); await p.locator('#sheet-root [data-act="new-menu"]').first().click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
     await p.click('[data-act="redo-yes"]'); await until(p, () => !sheet);
     const tsheet = await p.evaluate(() => { sheet = {kind: 'tomorrow'}; renderSheet(); const o = { newBtn: !!document.querySelector('[data-act="tomorrow-new"]'), txt: document.querySelector('.sheet').innerText }; closeSheet(); return o; });
     ok(await same() && !tsheet.newBtn && /もう決めてあります/.test(tsheet.txt), '明日も決めてあるとき: まるごと入れ替え・明日の一膳を見るでも変わらず、［別の案にする］は出さない ' + JSON.stringify(tsheet).slice(0, 120));
     // 決めた一膳を取り消して今日の品数・気分を変えても変わらない
     await p.evaluate(() => setTab('cook')); await p.click('[data-act="undo-decide"]'); await until(p, () => !S.cook);
     await p.evaluate(() => setTab('today')); await openMood(p);
-    await p.locator('[data-act="count"][data-v="3"]').first().click(); await p.locator('[data-act="mood"][data-k="fish"]').first().click(); await until(p, () => session.mood === 'fish');
+    await p.locator('[data-act="count"][data-v="5"]').first().click(); await p.locator('[data-act="mood"][data-k="fish"]').first().click(); await until(p, () => session.mood === 'fish');
     await p.evaluate(() => closeSheet());
     ok(await same(), '明日も決めてあるとき: 今日の決定を取り消して品数・気分を変えても、明日の決めた献立は変わらない');
     // 午前4時を過ぎると、先に決めた一膳がそのまま今日の決めた献立になる（品数が2に変わっても作り直さない）。開き直しても同じ
@@ -485,7 +485,7 @@ for (let run = 0; run < 6; run++){
 // ---------- 16) モニター第3回 安全（S1・S2・S3・S7） ----------
 // S1: 決めた献立にあとからアレルゲンを足す → 決めた献立は替わらないが、「入れていません」と出さない。当たる料理のカードに ⚠、知らせに［かえる］
 {
-    const { ctx, p } = await open({});
+    const { ctx, p } = await open({ settings: { country: 'JP', dishCount: 4 } });   // 副菜のある品数（品数は席の数。4 = 主菜・副菜・汁もの・ご飯）
     await p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '副菜'); if (i >= 0) m.items[i].r = byId('chawanmushi');
         m.items.forEach((x, k) => { if (x.r && x.r.id !== 'chawanmushi'){ const a0 = S.settings.allergens; S.settings.allergens = ['shrimp']; if (isAvoidedCore(x.r)) x.r = suggestOrAny(x.slot, m.items.filter((_, j) => j !== k), m.items[0].r); S.settings.allergens = a0; } });
         render(); });

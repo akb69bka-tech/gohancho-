@@ -18,7 +18,8 @@ const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got $
 // 本体 v36（claude/int 13aba18）で、家族・アレルギー・苦手・冷蔵庫・記録を入れて今日の献立を決めたときの保存データ（2026-10-28）
 const OLD = {"history":[{"d":"2026-10-26","id":"nikujaga","name":"肉じゃが","slot":"主菜"},{"d":"2026-10-23","id":"shogayaki","name":"豚の生姜焼き","slot":"主菜"}],"favs":["tonjiru","karaage"],"hidden":["tosani"],"fridge":["鶏肉","キャベツ","にんじん","豆腐"],"fridgeMeta":{"鶏肉":{"d":"2026-10-28","cut":"もも"},"キャベツ":{"d":"2026-10-28"},"にんじん":{"d":"2026-10-28"},"豆腐":{"d":"2026-10-28"}},"staples":["米"],"savedMenus":[{"id":"sm1","name":"いつもの","ids":["tacorice","tonjiru"],"slots":["主菜","汁物"]}],"skills":[],"custom":[],"seenTwists":[],"awards":{},"week":{"start":"2026-10-26","days":[{"d":"2026-10-26","id":"tacorice"},{"d":"2026-10-29","id":"tonjiru","who":"夫"}]},"onboarded":true,"firstUse":"2026-09-01","pro":null,"usage":{},"usedDays":["2026-10-28"],"trialNoticeShown":false,"settings":{"avoidDays":10,"dishCount":3,"servings":3,"avoid":["セロリ"],"uiLang":"ja","country":"JP","allergens":["shrimp","crab"],"mix":{},"scarce":[]},"family":[{"id":"f1","name":"娘","role":"child","avoid":["@egg","ピーマン"],"allergy":["@egg"],"mild":true,"sometimes":false,"me":false},{"id":"f2","name":"夫","role":"adult","avoid":["なす"],"allergy":[],"mild":false,"sometimes":false,"me":false}],"eaters":["__me","f1"],"leftovers":[{"id":"tonjiru","name":"豚汁","d":"2026-10-27"}],"spend":[{"id":"sp1","d":"2026-10-27","a":1800}],"foodLog":[{"d":"2026-10-26","n":"キャベツ","r":"u"}],"stock":[{"id":"s0","n":"米","q":1,"e":"","d":""}],"stockLog":[{"d":"2026-10-25","n":"米"}],"draft":{"d":"2026-10-28","cc":"JP","n":3,"adj":false,"slots":["主菜","副菜","汁物"],"ids":["karaage","agedashidofu","ishikarijiru"],"mood":"all","useFridge":false,"salt":0},"shopDone":{"week":"2026-10-26","keys":[]},"albumMigrated":true,"cook":{"d":"2026-10-28","ids":["karaage","agedashidofu","ishikarijiru"],"slots":["主菜","副菜","汁物"],"done":{},"adj":false,"salt":0}};
 // 引き継ぐもの（v36 の形のまま残す）
-const KEEP = ['history', 'favs', 'hidden', 'fridge', 'fridgeMeta', 'staples', 'savedMenus', 'week', 'onboarded', 'firstUse', 'family', 'eaters', 'leftovers', 'spend', 'foodLog', 'stock', 'stockLog', 'draft'];
+// draft（まだ決めていない今日の案）は、品数を席の数で読むようになった版（基準書 7章 4A）では作り直してよい（3 で、決めた献立・記録が変わらないことと、新しい案の品数を見る）
+const KEEP = ['history', 'favs', 'hidden', 'fridge', 'fridgeMeta', 'staples', 'savedMenus', 'week', 'onboarded', 'firstUse', 'family', 'eaters', 'leftovers', 'spend', 'foodLog', 'stock', 'stockLog'];
 const KEEP_SET = ['avoidDays', 'dishCount', 'servings', 'avoid', 'uiLang', 'country', 'allergens'];
 
 async function open(state){
@@ -47,6 +48,7 @@ function kept(s, label){
     eq(a.today, '2026-10-28', '1 今日の日付');
     kept(a.S, '1 開いたとき'); kept(a.saved, '1 保存したデータ');
     eq(a.S.cook.ids, OLD.cook.ids, '1 決めた献立（S.cook）はそのまま');
+    eq(await p.evaluate(() => { setTab('today'); return menuIds(); }), OLD.cook.ids, '1 今日の献立のお膳は決めた献立のまま（品数を席の数で読む版でも作り直さない）');
     eq(a.S.day && a.S.day['2026-10-28'] && a.S.day['2026-10-28'].state, 'decided', '1 案2の正本 S.day[今日] は「決めた」');
     eq((((a.S.day || {})['2026-10-28'] || {}).items || []).map(x => x.id), OLD.cook.ids, '1 S.day[今日] の料理は決めた献立と同じ');
     eq(a.stage, 'shop', '1 買う段から始まる');
@@ -66,7 +68,8 @@ function kept(s, label){
     // 再読み込みしても同じ
     await p.reload(); await p.waitForTimeout(1200);
     const r = await snap(p);
-    kept(r.S, '1 再読み込み'); eq(r.S.cook.ids, OLD.cook.ids, '1 再読み込み: 決めた献立'); eq(r.stage, 'shop', '1 再読み込み: 買う段');
+    kept(r.S, '1 再読み込み'); eq(r.S.cook.ids, OLD.cook.ids, '1 再読み込み: 決めた献立');
+    eq(await p.evaluate(() => { setTab('today'); return menuIds(); }), OLD.cook.ids, '1 再読み込み: 今日の献立のお膳も決めた献立のまま'); eq(r.stage, 'shop', '1 再読み込み: 買う段');
     eq(p.errs, [], '1 例外なし');
     await p.ctx.close();
 }
@@ -77,6 +80,7 @@ function kept(s, label){
     const a = await snap(p);
     kept(a.S, '2 作りかけ');
     eq(a.S.cook.done, st.cook.done, '2 作った手順が残る');
+    eq(await p.evaluate(() => { setTab('today'); return menuIds(); }), st.cook.ids, '2 今日の献立のお膳は決めた献立のまま');
     eq(((a.S.day || {})['2026-10-28'] || {}).state, 'cooking', '2 S.day[今日] は「作っている」');
     eq(a.stage, 'cook', '2 作る段から始まる');
     eq(p.errs, [], '2 例外なし');
@@ -92,6 +96,9 @@ function kept(s, label){
     ok(!a.S.day || !a.S.day['2026-10-28'] || a.S.day['2026-10-28'].state === 'draft', '3 今日はまだ決めていない: ' + JSON.stringify(a.S.day));
     const av = await p.evaluate(() => session.menu ? session.menu.items.filter(x => x.r && isAvoided(x.r)).map(x => x.r.id) : ['(献立なし)']);
     eq(av, [], '3 今日の案にアレルギー・苦手の料理がない');
+    const dn = await p.evaluate(() => ({n: session.menu && session.menu.n, want: dishesFor(S.settings.dishCount), cook: S.cook}));
+    ok(dn.n === dn.want, '3 今日の案は、保存した品数（席の数）どおり: ' + JSON.stringify(dn));
+    eq(dn.cook, st.cook, '3 前の日に決めた献立（S.cook）は変えない');
     eq(p.errs, [], '3 例外なし');
     await p.ctx.close();
 }

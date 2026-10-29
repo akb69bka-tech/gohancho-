@@ -4,7 +4,8 @@ const QUICK = process.env.QUICK === '1', REPS = Number(process.env.REPS || (QUIC
 (async () => {
   const b = await chromium.launch(LAUNCH);
   let total = 0, bad = 0; const errs = [];
-  for (const cc of ['JP', 'US', 'TH', 'KR', 'EG', 'CN']) for (const n of [2, 3, 4, 5, 6, 'auto']) {
+  // 品数の値は席の数（ご飯の席も1品）。7 = おかず6＋ご飯（ご飯のない国はおかず6）
+  for (const cc of ['JP', 'US', 'TH', 'KR', 'EG', 'CN']) for (const n of [2, 3, 4, 5, 6, 7, 'auto']) {
     const ctx = await b.newContext({viewport:{width:390,height:900}}); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     await ctx.addInitScript(seedScript(seedFor('reroll', cc, n)));
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + n + e.message));

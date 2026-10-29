@@ -59,6 +59,7 @@ if (want('N3')){
     {
         const {p, ctx} = await open({dishCount: 3}, {time: '2026-10-29T00:21:00+09:00'});
         await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
+        await p.evaluate(() => gotoStage('shop')); await p.waitForTimeout(200);   // 買い物メモは作り方のタブの上（最初の版の6タブ）
         await p.click('button[data-act=shop-ok]'); await p.waitForTimeout(400);
         await p.evaluate(() => { session.eatOpen = true; render(); });
         await p.fill('#eat-at', '18:30'); await p.locator('#eat-at').dispatchEvent('change'); await p.waitForTimeout(400);
@@ -145,7 +146,7 @@ if (want('N4')){
     for (const vp of [[390, 844], [375, 667], [320, 568]]){
         const {p, ctx} = await open({dishCount: 3}, {time: '2026-10-28T17:00:00+09:00'});
         await p.setViewportSize({width: vp[0], height: vp[1]});
-        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await hookToast(p);
+        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => gotoStage('shop')); await p.waitForTimeout(200); await hookToast(p);
         await p.click('button[data-act=shop-ok]'); await p.waitForTimeout(500);
         const r = await toastCover(p);
         ok(!r.none && /買い物そろいました/.test(r.text), `N4-1 ${vp[0]}x${vp[1]} 作る段で「買い物そろいました」が出る: ` + r.text);

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 「まるごと入れ替え」をお膳の表に出す（オーナーの指示）の回帰テスト（Playwright。使い方: node tools/tests/marugoto.mjs [http://localhost:8881/]）
-//  1. 決める段の表（条件シートを開かずに）に「まるごと入れ替え」があり、「今日の一膳」の見出しの行（狭いときはすぐ下の行）・「この一膳にする」より上にある。44px 以上で押しやすい
+//  1. 今日の献立のお膳（条件シートを開かずに）の段のあいだに丸い「まるごと入れ替え」があり、「この献立に決定」より上にある。丸は56px 以上
 //  1b. スクロールしなくても最初の画面で見えて押せる（360×740・390×844・大きい文字）。下の「この一膳にする」の帯やお知らせの後ろに隠れない（オーナーの指示）
 //  1c. お膳は全部の料理を上下2段（上 ⌈席/2⌉・下 ⌊席/2⌋、下は左端ご飯・右端汁もの）。段のあいだの真ん中に丸い「まるごと入れ替え」。押すと変わった料理だけに「新」の札
 //  2. 押すと献立がまるごと変わる（主菜も入れ替わる）。条件シートのいちばん下のボタンも残っている
@@ -25,7 +25,7 @@ const open = async (settings = {}, vp = [390, 844]) => {
     return {p, ctx};
 };
 const ids = p => p.evaluate(() => session.menu.items.map(x => x.r && x.r.id));
-const BTN = '#view .p2-head .shuffle[data-act=new-menu]';
+const BTN = '#view .tray .tg-mid .shuffle[data-act=new-menu]';   // お膳の段のあいだの真ん中の丸（見出しの行のボタンは、お膳の上を詰めて外した）
 // 押せるか: ボタンの中の5点（真ん中と四隅の少し内側）がすべて、ほかのもの（下の帯・お知らせ・お膳）に覆われずにボタン自身に当たり、画面の中（下の帯より上）にある
 const reach = p => p.evaluate(sel => {
     const s = document.querySelector(sel); if (!s) return null;
@@ -40,16 +40,16 @@ for (const n of [3, 4, 5]){
     const {p, ctx} = await open({dishCount: n});
     const g = await p.evaluate(sel => {
         const s = document.querySelector(sel); if (!s) return null;
-        const dec = document.querySelector('[data-act=decide]'), tray = document.querySelector('#view .tray');
-        const R = s.getBoundingClientRect(), ic = s.querySelector('.sh-ic').getBoundingClientRect(), h2 = document.querySelector('#view .p2-head h2').getBoundingClientRect();
-        return {sheet: !!sheet, inHead: !!s.closest('.today-head'), aboveTray: !tray || tray.getBoundingClientRect().top >= R.bottom - 1, nearHead: R.top >= h2.top - 1 && R.top <= h2.bottom + 24,
+        const dec = document.querySelector('[data-act=decide]');
+        const R = s.getBoundingClientRect(), ic = s.querySelector('.sh-ic').getBoundingClientRect();
+        return {sheet: !!sheet, inTray: !!s.closest('.tray'), heads: document.querySelectorAll('#view .p2-head [data-act=new-menu]').length,
             aboveDecide: !dec || dec.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_PRECEDING, w: R.width, h: R.height, icW: ic.width, label: s.textContent.trim()};
     }, BTN);
     ok(g && !g.sheet, `M1 ${n}品 決める段のお膳の表に「まるごと入れ替え」がある（条件シートを開かずに）: ` + JSON.stringify(g));
     if (g){
-        ok(g.inHead && g.nearHead && g.aboveTray, `M2 ${n}品 「今日の一膳」の見出しの行（またはすぐ下）・お膳より上: ` + JSON.stringify(g));
+        ok(g.inTray && g.heads === 0, `M2 ${n}品 お膳の中（段のあいだ）にあり、見出しの行には同じボタンを置かない: ` + JSON.stringify(g));
         ok(g.aboveDecide, `M3 ${n}品 「この一膳にする」より上（画面の並び）`);
-        ok(g.h >= 44 && g.w >= 88 && g.icW >= 32 && /まるごと入れ替え/.test(g.label), `M4 ${n}品 押しやすい大きさ（高さ44px 以上）・印と文字つき: ` + JSON.stringify(g));
+        ok(g.h >= 56 && g.w >= 56 && g.icW >= 56 && /まるごと入れ替え/.test(g.label), `M4 ${n}品 押しやすい大きさ（丸は直径56px 以上）・文字つき: ` + JSON.stringify(g));
     }
     const a = await ids(p);
     await p.click(BTN);   // click は要素を探し直して見える所まで送るので、絵の読みこみで描き直されても外れない await p.waitForTimeout(400);
@@ -121,7 +121,7 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
 }
 
 // 1d 品数の数え方（基準書 7章 4A・オーナーの「6品なら上下3つずつ」）: ご飯の席も1品。「6品」を選ぶと席6（上3・下3）。
-//    前から使っている人の保存した品数（値はおかずの数）は変えず、同じ献立のまま、ご飯を足した数で出す
+//    前から使っている人の保存した品数は、席の数として読む（6品なら6席。決めた献立は upgrade-seats.mjs で確かめる）
 {
     const {p, ctx} = await open({dishCount: 3});
     await p.evaluate(() => openCondSheet()); await p.waitForTimeout(200);
@@ -134,7 +134,7 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     await ctx.close();
     const q = await open({dishCount: 6});
     const r2 = await q.p.evaluate(() => ({dc: S.settings.dishCount, n: session.menu.n, rows: [...document.querySelectorAll('#view .tray .tg-row')].map(e => e.children.length), lab: document.querySelector('#view .p2-sv').textContent, rice: !!document.querySelector('#view .tray .spot.rice')}));
-    ok(r2.dc === 6 && r2.n === 6 && (!r2.rice || (JSON.stringify(r2.rows) === '[4,3]' && /7品/.test(r2.lab))), 'M1d 前の版で「6品」にしていた人: 保存した値と献立（おかず6）はそのまま、ご飯を足して7品と出す: ' + JSON.stringify(r2));
+    ok(r2.dc === 6 && (r2.rice ? JSON.stringify(r2.rows) === '[3,3]' && r2.n === 5 : r2.n === 6) && /6品/.test(r2.lab), 'M1d 前の版で「6品」にしていた人: 保存した値 6 は席の数として読む（6席・上3・下3）: ' + JSON.stringify(r2));
     await q.ctx.close();
 }
 
@@ -143,9 +143,9 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     const {p, ctx} = await open({dishCount: 3});
     await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
     const cook0 = await p.evaluate(() => JSON.stringify(S.cook && S.cook.ids));
-    await p.click('[data-act=stage][data-k=decide]'); await p.waitForTimeout(300);
+    await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);   // 決めたあとも今日の献立のタブ（四段の印はやめた）
     const a = await ids(p);
-    ok(await p.locator(BTN).count() === 1, 'M7 決めたあとに決める段を見ても、表に「まるごと入れ替え」がある');
+    ok(await p.locator(BTN).count() === 1, 'M7 決めたあとに今日の献立を見ても、お膳に「まるごと入れ替え」がある');
     await p.click(BTN);   // click は要素を探し直して見える所まで送るので、絵の読みこみで描き直されても外れない await p.waitForTimeout(300);
     const k1 = await p.evaluate(() => sheet && sheet.kind);
     ok(k1 === 'redo' && JSON.stringify(await ids(p)) === JSON.stringify(a), 'M8 決めた献立では、まず確かめる（まだ変えない）: ' + k1);
@@ -178,7 +178,7 @@ for (const [lang, w, ts, n] of [['ja', 195, 2, 3], ['ja', 195, 0, 5], ['en', 195
     const r = await p.evaluate(sel => {
         const s = document.querySelector(sel); if (!s) return null;
         s.scrollIntoView({block: 'center'});
-        const R = s.getBoundingClientRect(), tx = s.querySelector('.sh-tx'), hd = s.closest('.today-head').getBoundingClientRect();
+        const R = s.getBoundingClientRect(), tx = s.querySelector('.sh-tx'), hd = s.closest('.tray').getBoundingClientRect();
         const others = [...document.querySelectorAll('#view button, #view [data-act]')].filter(e => !s.contains(e) && !e.closest('.actionbar')).filter(e => { const q = e.getBoundingClientRect(); return q.width > 1 && Math.min(q.right, R.right) - Math.max(q.left, R.left) > 1 && Math.min(q.bottom, R.bottom) - Math.max(q.top, R.top) > 1; }).map(e => e.dataset.act || e.tagName);
         return {inside: R.left >= hd.left - 1 && R.right <= hd.right + 1 && R.left >= 0 && R.right <= innerWidth, clip: tx.scrollWidth > tx.clientWidth + 1 || tx.scrollHeight > tx.clientHeight + 1, overlap: others, sw: document.documentElement.scrollWidth, iw: innerWidth};
     }, BTN);
