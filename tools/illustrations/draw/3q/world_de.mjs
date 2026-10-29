@@ -163,7 +163,7 @@ export default {
     // シュモアグルケン（きゅうりのディル煮）: きゅうり・玉ねぎ・サワークリーム、ベーコン（お好みで）
     de_schmorgurken: B('#f0ead0', [['cucumberBraise', 12, 16], ['bacon', 3, 12]], { flecks: [['#5a9a3a', 20, 1.2]] }),
     // マッシュポテト（ナツメグ）
-    de_kartoffelpueree: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 9) + W.flecks(p, o.cx, o.cy - 28, 20, 10, 'kp', ['#c8a060'], { ry: 6, s: 1.2 }) }),
+    de_kartoffelpueree: K([], { base: '#f8e8a8', H: 22, groove: true, mash: 'potato', flecks: [['#c8a060', 10, 1.2]] }),
     // カリフラワーのバターパン粉がけ、ゆで卵（お好みで）
     de_blumenkohl: P([['cauliflower', 10, 16]], { minD: 12, flecks: [['#d8a050', 40, 1.8], ['#f6e0a0', 20, 1.6]] }),
     // カルトッフェルクレーセ（じゃがいもの団子）

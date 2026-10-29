@@ -171,7 +171,7 @@ export default {
     // トマトのにんにくと唐辛子焼き
     eg_tamatemmeqaleya: P([['tomatoHalf', 7, 22], ['chiliG', 4, 12]], { minD: 16, H: 8, ing: { ...ing, tomatoHalf: (p, x, y, s) => W.coin(p, x, y, s * .5, '#c8281a', { h: 4, top: Q.rg(p, [[0, '#ff9a6a'], [.5, '#e0502a'], [.85, '#a8301a'], [1, '#c8281a']], .4, .35, .8) }) }, flecks: [['#f2e0b0', 14, 1.6]] }),
     // マッシュポテト
-    eg_pure: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 9) }),
+    eg_pure: K([], { base: '#f8e8a8', H: 22, groove: true, mash: 'potato' }),
     // マカロニのサラダ: パスタ・ピーマン・きゅうり、にんじん・チーズ（お好みで）
     eg_salatamakarona: K([['pastaShort', 20, 14], ['pepperG', 4, 10], ['pepperR', 4, 10], ['cucumber', 4, 11], ['whiteCheese', 4, 11]], { minD: 6 }),
 

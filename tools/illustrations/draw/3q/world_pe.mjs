@@ -161,7 +161,7 @@ export default {
     // ペピアン・デ・チョクロ（すりおろしとうもろこしの煮もの）
     pe_pepian_choclo: K([], { base: '#f2d070', H: 14, groove: true, crown: [['choclo', 8, 16]], flecks: [['#f6e8a0', 30, 1.8], cil(10)] }),
     // ピュレ・デ・パパ（マッシュポテト）
-    pe_pure_papa: K([], { base: '#f6e4a0', H: 22, groove: true, crown: [['yellowPotato', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 10) }),
+    pe_pure_papa: K([], { base: '#f8e4a0', H: 22, groove: true, mash: 'potato' }),
     // アロス・アラベ（エンジェルヘアとレーズンとアーモンドのご飯）
     pe_arroz_arabe: P([['angelHair', 10, 14], ['raisin', 14, 13], ['nut', 6, 12]], { rice: { cols: ['#f2dcb0', '#e8c890', '#fbecc8'], edge: '#b8945a' }, H: 24, R: 50 }),
     // ユカ・フリタ（キャッサバのフライ）

@@ -158,7 +158,7 @@ export default {
     // にんじんとグリンピースのバター煮
     pl_marchewkagroszek: K([['carrot', 16, 13], ['pea', 24, 14]], { minD: 5, after: (o, V, p) => W.butterPat(p, o.cx, o.cy - 26, 8) }),
     // マッシュポテト、ディル（お好みで）
-    pl_puree: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], flecks: [dill(14)] }),
+    pl_puree: K([], { base: '#f8e8a8', H: 22, groove: true, mash: 'potato', flecks: [dill(14)] }),
     // シロンスクのじゃがいも団子（くぼみつき）
     pl_kluskislaskie: P([['kluski', 8, 22]], { minD: 18, H: 8, after: (o, D, p) => W.pool(p, o.cx, o.cy + 6, 46, GRAVY, 'kl') }),
     // 詰め卵とあさつき

@@ -182,7 +182,7 @@ export default {
     // ウエボス・レジェーノス（ツナの詰め卵）
     es_huevosrellenos: P([['eggStuffed', 6, 20]], { minD: 22, H: 6, flecks: [['#c8401e', 10, 1.2]] }),
     // プレ（マッシュポテト）
-    es_pure: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], oilTop: '#e8c860' }),
+    es_pure: K([], { base: '#f8e8a8', H: 22, groove: true, mash: 'potato' }),
     // ズッキーニの衣揚げ
     es_calabacin: P([['courgetteBatter', 10, 24]], { minD: 16, H: 10 }),
 

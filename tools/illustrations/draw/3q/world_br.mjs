@@ -127,7 +127,7 @@ export default {
     // マンジョッカ・フリッタ（キャッサバのフライ）
     br_mandioca_frita: P([['cassavaFry', 12, 22]], { minD: 12, H: 14 }),
     // ピュレ・ジ・バタタ（マッシュポテト）
-    br_pure_batata: K([], { base: '#f6e8c0', H: 22, groove: true, crown: [['potatoBoiled', 2, 14]], after: (o, V, p) => W.butterPat(p, o.cx - 14, o.cy - 14, 10) }),
+    br_pure_batata: K([], { base: '#f8e8a8', H: 22, groove: true, mash: 'potato' }),
     // バタタ・ソテー（小いものバター炒め）、パセリ
     br_batata_saute: P([['potatoBoiled', 14, 18]], { minD: 12, flecks: [cv(16)] }),
     // ブロッコリーのご飯
@@ -147,7 +147,7 @@ export default {
     // パルミット（ヤシの芽）のサラダ: パルミット・トマト、レタス・オリーブ（お好みで）
     br_salada_palmito: P([['palmito', 10, 18], ['tomato', 6, 12], ['lettuce', 3, 14], ['greenOlive', 3, 12]]),
     // キベベ（かぼちゃのマッシュ）
-    br_quibebe: K([], { base: '#f0a030', H: 18, groove: true, crown: [['pumpkin', 3, 15]], flecks: [cv(14)] }),
+    br_quibebe: K([], { base: '#f0902a', H: 18, groove: true, mash: 'carrot', flecks: [cv(14)] }),
     // 野菜のピクルス: にんじん・カリフラワー・きゅうり・小玉ねぎ
     br_picles_legumes: K([['carrot', 8, 12], ['cauliflower', 4, 12], ['cucumber', 6, 12], ['pearlOnion', 4, 12]], { base: '#e8e0b8', ing: { ...ing, pearlOnion: (p, x, y, s, r, i) => W.ball(p, x, y - 2, s * .7, '#f6f0dc', p.id + 'po' + i, { hi: .7 }) } }),
     // ピラォン（魚のだしとキャッサバ粉のかゆ）: 玉ねぎ・トマト・香菜

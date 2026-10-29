@@ -591,16 +591,20 @@ export function make(p, spec){
     }
     // ディップ・ピュレの見分け（2026-10-29 見直し 4回目）: 山の上に、へらで回した溝・油のたまり・何で作ったか分かる飾り（crown）
     const dipTop = (o, RR, HH) => {
-        if (!spec.groove && !spec.oilTop && !spec.crown) return '';
-        const tx = o.cx, ty = o.cy + 2 - HH * CZ * .95 + 2, bc = base || '#e8d8b0';
+        if (!spec.groove && !spec.oilTop && !spec.crown && !spec.mash) return '';
+        const tx = o.cx, ty = o.cy + 4 - HH * CZ * (spec.mash ? .62 : .95), bc = base || '#e8d8b0';
         let s = '';
         if (spec.groove) s += [.22, .38, .54].map((k, j) => { const rx = RR * k, ry = rx * SY * .5; return `<path d="M${f(tx - rx)},${f(ty + 1 + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + 1 + j * 2 - ry * .7)}" stroke="${dk(bc, .28)}" stroke-width="1.8" fill="none" opacity=".75"/><path d="M${f(tx - rx)},${f(ty + j * 2)} A${f(rx)},${f(ry)} 0 1 0 ${f(tx + rx * .7)},${f(ty + j * 2 - ry * .7)}" stroke="${lt(bc, .45)}" stroke-width="1" fill="none" opacity=".7"/>`; }).join('');
         if (spec.oilTop) s += `<path d="${Q.blob(tx, ty + 2, RR * .26, RR * .26 * SY * .6, p.id + 'ot', { n: 10, jit: .2 })}" fill="${spec.oilTop}" opacity=".85"/><ellipse cx="${f(tx - RR * .08)}" cy="${f(ty + 1)}" rx="${f(RR * .08)}" ry="1.2" fill="#fff" opacity=".7"/>`;
+        // マッシュの見分け（2026-10-29 見直し 5回目。お膳の 48〜64px で見分ける）
+        if (spec.mash === 'potato') s += `<ellipse cx="${f(tx)}" cy="${f(ty + 2)}" rx="${f(RR * .44)}" ry="${f(RR * .44 * SY * .6)}" fill="${dk(bc, .22)}"/><ellipse cx="${f(tx)}" cy="${f(ty + 3)}" rx="${f(RR * .37)}" ry="${f(RR * .37 * SY * .5)}" fill="${Q.rg(p, [[0, '#fff2a0'], [.6, '#f6c830'], [1, '#e0a020']], .4, .35, .8)}"/>` + butterPat(p, tx + RR * .04, ty, RR * .2) + `<ellipse cx="${f(tx - RR * .1)}" cy="${f(ty + 1)}" rx="${f(RR * .07)}" ry="1.4" fill="#fff" opacity=".8"/>`;
+        if (spec.mash === 'pea'){ const Rn = rng(p.id + 'mp'); for (let k = 0; k < 60; k++){ const a = Rn() * 6.283, d = Math.sqrt(Rn()); const x = tx + Math.cos(a) * d * RR * .85, y = ty + 4 + Math.sin(a) * d * RR * .85 * SY * .85; s += `<circle cx="${f(x)}" cy="${f(y)}" r="${f(2.8 + Rn() * .8)}" fill="${Q.rg(p, [[0, '#d0f080'], [.6, '#7ab030'], [1, '#3f7a1e']], .35, .3, .8)}" stroke="#3a6a1a" stroke-width=".4"/>`; } }
+        if (spec.mash === 'carrot'){ const Rn = rng(p.id + 'mc'); for (let k = 0; k < 22; k++){ const a = Rn() * 6.283, d = Math.sqrt(Rn()) * .8; const x = tx + Math.cos(a) * d * RR, y = ty + 4 + Math.sin(a) * d * RR * SY * .85, L = 8 + Rn() * 8, r = (Rn() - .5) * 60; s += `<path d="M${f(x - L / 2)},${f(y)} q${f(L / 2)},-2.4 ${f(L)},0" transform="rotate(${f(r)} ${f(x)} ${f(y)})" stroke="${k % 2 ? '#ffd090' : '#a8401a'}" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".9"/>`; } }
         if (spec.crown){ const tl = []; spec.crown.forEach(([k, n, sz = 14]) => { for (let j = 0; j < n; j++) tl.push([k, sz]); }); s += byDepth(spots(p.id + 'cw', tl.length, RR * .36, Math.max(6, tl[0][1] * .6)).map(([u, v2, r], i) => { const x = tx + u, y = ty + 2 + v2 * SY * .6; return [y, () => SMALL_TOP.has(tl[i][0]) ? `<g ${p.edge('#2a1206', .5, .45)}>${grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i))}</g>` : piece(p, x, y, grow(x, y, 1.2, draw(tl[i][0], tl[i][1], x, y, r, 700 + i)), { s: tl[i][1] * .8 })]; })); }
         return s;
     };
     if (mode === 'bowl'){
-        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + 14, H: H + (spec.groove || spec.oilTop ? 2 : 18), base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [990, () => dipTop(o, RR, HH)], [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
+        const V = v(p), bg = spec.bowlBig ?? 1.3; return inBowl(p, V, { R: R + (spec.mash ? 22 : 14), H: H + (spec.mash ? 14 : spec.groove || spec.oilTop ? 2 : 18), base, items: (o, RR, HH) => [...onHill(o, p.id + 'bw', list.length, RR * .97, minD * .9, HH, (x, y, r, i) => grow(x, y, bg, draw(list[i][0], list[i][1], x, y, r, i))), [990, () => dipTop(o, RR, HH)], [999, () => flk(o.cx, o.cy - HH * CZ * .6, RR * .7, RR * .25) + after(o, V, p)]] });
     }
     if (mode === 'braise'){
         const V = v(p); return braise(p, V, c, p.id + 'br', list.length, minD, H + 14, (x, y, r, i) => draw(list[i % list.length][0], list[i % list.length][1], x, y, r, i), { srx: 50, R: 50 }) + flk(100, V.cy - 4, 40, 14) + after({ cx: 100, cy: V.cy }, V, p);
