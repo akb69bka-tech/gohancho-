@@ -3,6 +3,7 @@
 //  ・器（.vessel）・料理名（.nm）・かえる（.swap）・真ん中の丸（.tg-mid .shuffle）の下端 ≤ 帯の上端、上端 ≥ 0（1px も隠れない）
 //  ・横にはみ出さない。お膳は上下2段（上 ⌈席/2⌉・下 ⌊席/2⌋）
 //  ・料理名は … で切れない、種類の字・「かえる」がお膳のふちで切れない、「かえる」は 44×44 以上（デザイン部長の点検1）
+//  ・長い料理名（点検2）: 18言語 × 7席 × 文字「もっと大きい」× 390・360 で、どの枠もいちばん長い名前の料理にしても、名前が帯の後ろに入らない・切れない・お膳ではかっこの説明を出さない
 // 使い方: BASE=http://localhost:8890/ node tools/qa/tray-fit.js   （VPS=390x844:0,360x740:0 LANGS=ja,en で絞れる）
 const { chromium, LAUNCH, BASE, ready } = require('../lib/pw.cjs');
 // 末尾に :c を付けた画面は、帯の上に入るかは見ず、名前・字が切れない・「かえる」の大きさだけを見る（基準書 2-3 の対象外の 360×740 文字大）
@@ -52,6 +53,33 @@ let bad = 0, n = 0; const seen = new Set();
       if (r.err || r.hid.length || r.sw > 0 || !r.mid || !okRows) { bad++; console.log('NG', tag, JSON.stringify(r)); }
     }
     if (errs.length) { bad++; console.log('NG JSエラー', vp.w, lang, errs.slice(0, 2).join('|')); }
+    await ctx.close();
+  }
+  // 長い料理名（点検2）: 17言語＋日本語 × 7席 × 文字「もっと大きい」 × 390・360。どの枠もその国でいちばん長い名前の料理にして、名前が帯の後ろに入らず・… で切れないことを見る
+  const CC_ALL = {ja: 'JP', ar: 'EG', de: 'DE', en: 'US', es: 'ES', fil: 'PH', fr: 'FR', hi: 'IN', id: 'ID', it: 'IT', ko: 'KR', pl: 'PL', 'pt-BR': 'BR', th: 'TH', tr: 'TR', vi: 'VN', 'zh-Hans': 'CN', 'zh-Hant': 'TW'};
+  for (const [lang, cc] of Object.entries(CC_ALL)) for (const vp of [{w: 390, h: 844}, {w: 360, h: 740}]) {
+    if (process.env.LANGS && !LANGS.includes(lang)) continue;
+    const ctx = await b.newContext({viewport: {width: vp.w, height: vp.h}, serviceWorkers: 'block'});
+    await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+    await p.addInitScript(([cc, lang]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-10-01', settings: {country: cc, uiLang: lang, dishCount: 7, servings: 2, textSize: 2}})); } }, [cc, lang]);
+    await p.goto(BASE); await ready(p); await p.waitForTimeout(600);
+    if (cc !== 'JP') await p.waitForFunction(cc => typeof PACK !== 'undefined' && PACK && PACK.country === cc, cc, {timeout: 30000}).catch(() => {});
+    const r = await p.evaluate(async () => {
+      window.hasPro = () => true; window.scrollTo(0, 0); setTab('today'); session.menu = null; render();
+      const used = new Set(), m = session.menu;
+      m.items.forEach(it => { if (!it.r) return; const c = RECIPES.filter(x => slotOf(x) === it.slot && !used.has(x.id) && !isAvoided(x) && (it.slot !== '主菜' || x.main !== false)).sort((a, b) => b.name.length - a.name.length)[0]; if (c){ it.r = c; used.add(c.id); } });
+      render(); await new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+      const tr = document.querySelector('#view .tray'); let floor = innerHeight;
+      document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < floor) floor = q.top; });
+      // 帯の上に入るかは、基準書 2-3 の対象の 390 で見る。360（対象外）は、名前が切れない・かっこを出さないだけを見る（いちばん長い名前ばかりのポーランド語の7席は、360 では帯にかかる）
+      const hid = innerWidth < 380 ? [] : [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > floor + .5).map(e => (e.className || '').split(' ')[0] + ':' + e.textContent.trim().slice(0, 14));
+      const cut = [...tr.querySelectorAll('.spot-label .nm')].filter(e => e.scrollHeight > e.clientHeight + 1).map(e => 'cut:' + e.textContent.trim().slice(0, 14));
+      const paren = [...tr.querySelectorAll('.spot-label .nm')].filter(e => /[（(][^）)]*[）)]\s*$/.test(e.textContent.trim())).map(e => 'paren:' + e.textContent.trim().slice(0, 20));
+      return {over: Math.round(Math.max(...[...tr.querySelectorAll('.spot .nm')].map(e => e.getBoundingClientRect().bottom)) - floor), seats: [...tr.querySelectorAll('.spot')].length, names: m.items.filter(x => x.r).map(x => x.r.name.length), bad: [...hid, ...cut, ...paren]};
+    });
+    n++;
+    if (r.bad.length || errs.length) { bad++; console.log('NG 長い名前', vp.w + 'x' + vp.h, '文字2', lang, JSON.stringify(r), errs.slice(0, 1).join('')); }
     await ctx.close();
   }
   await b.close();

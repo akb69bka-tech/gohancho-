@@ -1001,7 +1001,9 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .tray.grid2 .spot-label .nm{font-size:.8125rem;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:var(--nml,2);line-clamp:var(--nml,2);overflow:hidden;height:calc(var(--nml,2) * 1.3em)}   /* 名前の行数はお膳ごとに同じ（fitTray が --nml を決める） */
 .tray.grid2[style*="--c:4"]{--nml:3}
 .tray.grid2 .spot-label .nm.nm-s{font-size:.75rem}
-.tray.grid2.tight .spot-label .nm{font-size:.75rem}.tray.grid2.tight .tg-mid .shuffle .sh-tx{font-size:.6875rem}   /* 入りきらない名前は 12px まで下げる（… で切らない） */
+.tray.grid2.tight .spot-label .nm{font-size:.75rem}
+.tray.grid2.tight2{padding:6px 6px}.tray.grid2.tight2 .tg-mid{margin:0}.tray.grid2.tight2 .tg-mid .shuffle .sh-ic{--shd:56px}.tray.grid2.tight2 .spot{gap:2px;padding:0}   /* いちばん詰めたとき: 余白を減らし、丸は 56px（基準書 2-2 の下限） */
+#view.tray-tight .today-head.p2-head h2{font-size:1.125rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#view.tray-tight .today-head.p2-head{margin-bottom:var(--s4)}
 .tray.grid2 .spot-label .slot{display:block;max-width:100%;white-space:nowrap;font-size:min(.6875rem,3vw)}
 .tray.grid2 .spot-label .nm.none{font-size:var(--fs12,.75rem);font-weight:400}
 .tray.grid2 .spot-label .mt,.tray.grid2 .spot-label .dwhy{display:none}
@@ -4194,7 +4196,7 @@ document.addEventListener('toggle', e => { const d = e.target; if (d && d.tagNam
 const TRAY_FIT = {key: '', vs: 0, tight: false};
 function fitTray(){
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
-    tr.classList.remove('tight', 'swap-ico'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     const fixNames = () => { let over = false;
         tr.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
@@ -4222,7 +4224,10 @@ function fitTray(){
     let d = over();
     // 器は 60px まで小さくしてよい（基準書 2-5）。それでも入らないときは「かえる」を器の右上の丸いボタン（44px）にして（7章 2A）、空いた高さのぶん器を大きく戻す
     if (d > 0){ setVs(Math.max(60, Math.floor(vs0 - d / rows))); d = over(); }
-    if (d > 0){ tight = true; tr.classList.add('tight'); fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); }
+    if (d > 0){ tight = true; tr.classList.add('tight'); fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+    // それでも入らない（文字がとても大きい・名前が長い）ときは、お膳の上の見出しを1行の小さめの字にして詰める。器は 60px より小さくしない
+    if (d > 0){ tr.classList.add('tight2'); document.getElementById('view').classList.add('tray-tight');   // 見出し「今日の献立」も1行の小さめの字に（お膳の上を詰める）
+        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); }
     if (vs >= vs0) tr.style.removeProperty('--vs');
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
 }
@@ -4263,6 +4268,8 @@ function stageBar(){
         return `<li><button type="button" class="stage ${st}${i === vw ? ' viewing' : ''}" data-act="stage" data-k="${k}"${i === pg ? ' aria-current="step"' : ''}${i === vw ? ' aria-pressed="true"' : ' aria-pressed="false"'}><span class="sg-n" aria-hidden="true">${st === 'done' ? '✓' : esc(stageNum(i))}</span><span class="sg-l">${esc(names[i])}</span>${say ? `<span class="vh">（${esc(say)}）</span>` : ''}</button></li>`;
     }).join('')}</ol></nav>`;
 }
+// お膳の中の料理名: かっこの説明（「(simmered dried daikon strips)」など）は出さず、料理名だけ（詳しい画面では今までどおり出す。点検2）
+function trayName(n){ const x = String(n || '').replace(/\s*[（(][^（）()]*[）)]\s*$/, '').trim(); return x || String(n || ''); }
 function viewTodayTab(){
     const sk = skipToday();
     if (sk) return skipDayHtml(sk);   // 外食・作らない日（八木）
@@ -4415,7 +4422,7 @@ function tableOff(){ const o = dayRec(); return new Set(o && o.table && Array.is
 function tableYum(id){ const h = histEntry(id, TODAY); const o = dayRec(); return h ? yumOf(h) : Number(((o && o.table && o.table.yum) || {})[id]) || 0; }
 function viewTableStage(){
     const pg = dayProgress();
-    if (pg < 3) return stageEmpty(pg === 0 ? t('決めて作り終えたら、ここで今日の一膳を記録します') : t('作り終えたら、ここで今日の一膳を記録します'), pg === 0 ? 'decide' : 'cook', pg === 0 ? tc('stage', '決める へ') : tc('stage', '作る へ'));
+    if (pg < 3) return stageEmpty(pg === 0 ? t('決めて作り終えたら、ここで今日の献立を記録します') : t('作り終えたら、ここで今日の献立を記録します'), pg === 0 ? 'decide' : 'cook', pg === 0 ? tc('stage', '決める へ') : tc('stage', '作る へ'));
     const its = cookItems(), fin = pg >= 4, off = tableOff(), served = its.filter(x => !off.has(x.r.id));
     const row = x => { const id = x.r.id, on = !off.has(id), y = tableYum(id);
         return `<div class="item tbl-row${on ? '' : ' off'}">
@@ -4426,7 +4433,7 @@ function viewTableStage(){
     const wsv = wishList().length ? wishServed(served.map(x => x.r.id)) : [];   // 届いていた「食べたい」を出せた日だけ1行（相手には自動で返さない。「作ったよと送る」は押したい人だけ）
     return `<section class="sec stage-body stage-table">
         <div class="sec-head"><h2>${esc(fin ? t('今日はおしまい。おつかれさまでした') : t('いただきます'))}</h2>${fin ? '' : `<span class="hint">${esc(t('今日の{n}品、ぜんぶできました', {n: its.length}))}</span>`}</div>
-        <div class="tbl-tray" aria-label="${esc(t('今日の一膳'))}">${served.map(x => thumbHtml(x.r)).join('')}${served.length ? `<span class="hanko" aria-hidden="true">${esc(t('作った'))}</span>` : ''}</div>
+        <div class="tbl-tray" aria-label="${esc(t('今日の献立'))}">${served.map(x => thumbHtml(x.r)).join('')}${served.length ? `<span class="hanko" aria-hidden="true">${esc(t('作った'))}</span>` : ''}</div>
         <div class="list tbl-list" role="group" aria-label="${esc(t('食卓に出した料理'))}">${its.map(row).join('')}</div>
         ${fin ? '' : `<p class="foot">${esc(t('作らなかった料理は ✓ を外すと、記録に入りません。'))}</p>`}
         ${wsv.length ? `<div class="note wsh-served" role="status">${ICO_MAIL}<span>${esc(t('{name}の食べたいもの、今日出せました。', {name: wishNames(wsv)}))}</span></div>` : ''}
@@ -8592,7 +8599,7 @@ function wishListSheetHtml(){
             ${conf ? `<span class="small">${esc(cur ? t('今日の{slot}（{name}）と入れかえますか？', {slot: slotLabel(slot), name: cur.name}) : t('今日の献立に入れますか？'))}</span><span class="row"><button type="button" class="btn sm" data-act="wish-today-ok" data-id="${esc(w.id)}">${esc(t('入れかえる'))}</button><button type="button" class="btn sm ghost" data-act="wish-today" data-id="">${esc(t('やめる'))}</button></span>` : ''}</div>
             <div class="wsh-row-a">${inMenu.has(w.id) ? `<span class="small muted">${esc(t('今日の献立にあります'))}</span>` : !dec && m && m.items.some(x => x.slot === slot) && !conf ? `<button type="button" class="btn sm" data-act="wish-today" data-id="${esc(w.id)}">${esc(t('今日に入れる'))}</button>` : ''}<button type="button" class="btn sm ghost" data-act="wish-rm" data-id="${esc(w.id)}">${esc(t('外す'))}</button></div></div>`; };
     return `<h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
-        <p class="small muted">${esc(dec ? t('今日の一膳は決めてあります。届いたものは、次に献立を決めるときの候補です。') : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
+        <p class="small muted">${esc(dec ? t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。') : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
         ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(t('いまは届いているものはありません'))}</p>`}
         ${rest.length ? `<details class="box wsh-old"><summary>${esc(t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWho(w.n))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
@@ -9630,10 +9637,10 @@ function askLater(what, later, today){
 function laterSheetHtml(){
     const names = joinNames(cookItems().map(x => x.r.name));
     return `<h2>${esc(t('{what}を変えるのは、今日から？明日から？', {what: sheet.what}))}</h2>
-        <p>${esc(t('今日の一膳はもう決めてあります（{names}）。', {names}))}</p>
-        <p class="small muted">${esc(t('「今日の一膳を作り直す」は、今日の案を新しくします。決めた献立は「作り方」に残り、あとで元に戻せます。'))}</p>
+        <p>${esc(t('今日の献立はもう決めてあります（{names}）。', {names}))}</p>
+        <p class="small muted">${esc(t('「今日の献立を作り直す」は、今日の案を新しくします。決めた献立は「作り方」に残り、あとで元に戻せます。'))}</p>
         ${tomorrowDecided() ? `<p class="small">${esc(t('明日の一膳も決めてあります。明日からにしても、明日の決めた一膳は変わりません。'))}</p>` : ''}
-        <div class="ob-actions later-actions"><button class="btn" data-act="later-today">${esc(t('今日の一膳を作り直す'))}</button><button class="btn primary" data-act="later-tomorrow">${esc(t('明日から'))}</button></div>
+        <div class="ob-actions later-actions"><button class="btn" data-act="later-today">${esc(t('今日の献立を作り直す'))}</button><button class="btn primary" data-act="later-tomorrow">${esc(t('明日から'))}</button></div>
         <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
 }
 // 決めた一膳があるときの気分・品数・国などを「明日から」にする（今日の決めた一膳は変えない。設計書 §7-1）。知らせに「元に戻す」を付ける。
@@ -9769,7 +9776,7 @@ function viewToday(){
             ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}</span>
-                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(r.name)}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
+                ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(trayName(r.name))}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
                     : `<span class="nm none">${esc(empty)}</span><span class="mt meta"></span>${exWhy ? '<span class="dwhy"></span>' : ''}<span class="ex" style="--exn:${exN};--exl:${exL}"></span>`}
             </div>
             ${r || it.slot !== '汁物' ? `<button class="swap" data-act="reroll" data-i="${idx}" aria-label="${esc(t('{slot}を別の料理にかえる', {slot:label}))}">${esc(t('かえる'))}</button>`
@@ -9842,7 +9849,7 @@ function viewToday(){
         ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${cookWarnHtml()}
         ${/* 小さな入口（文字のリンク）: 条件・あと1品・家族に送る・今日は作らない（設計書 §4-1）。画像・保存は記録・食卓へ移るまでここに */''}<div class="p2-links">
-            <button type="button" class="p2-link" data-act="cond-open">${esc(t('条件を変える'))}</button><button type="button" class="p2-link" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button type="button" class="p2-link" data-act="share-menu" data-app="${esc(msgLabel())}" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>${wishN ? `<button type="button" class="p2-link" data-act="wish-list">${esc(t('食べたいもの（{n}）', {n: wishN}))}</button>` : ''}<button type="button" class="p2-link" data-act="skip-open">${esc(t('今日は作らない'))}</button><button type="button" class="p2-link" data-act="card-menu" ${main?'':'disabled'}>${esc(t('画像でつくる'))}</button><button type="button" class="p2-link" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button type="button" class="p2-link" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
+            <button type="button" class="p2-link" data-act="cond-open">${esc(t('条件を変える'))}</button><button type="button" class="p2-link" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button type="button" class="p2-link" data-act="share-menu" data-app="${esc(msgLabel())}" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>${wishN ? `<button type="button" class="p2-link" data-act="wish-list">${esc(t('食べたいもの（{n}）', {n: wishN}))}</button>` : ''}<button type="button" class="p2-link" data-act="skip-open">${esc(t('今日は作らない'))}</button><button type="button" class="p2-link" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button type="button" class="p2-link" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>
         ${/* 気分で出る注意書きも、お膳の上ではなく下に置く（お膳が押し下げられないように） */''}${bentoNote() || okayuNote() ? `<p class="small muted" style="margin:0">${esc(bentoNote() || okayuNote())}</p>` : ''}
         ${easyRelaxText() ? `<p class="small muted" style="margin:0">${esc(easyRelaxText())}</p>` : ''}
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
@@ -10719,7 +10726,7 @@ function viewLog(){
 function logTodayHtml(){
     const sk = skipToday();
     if (sk) return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の献立'))}</div><p style="margin:0">${esc(skipDayTitle(sk.k))}</p></div></div>`;
-    if (!decidedToday()) return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の献立'))}</div><p class="small muted" style="margin:0">${esc(t('まだ決めていません'))}</p><div class="row"><button class="btn" data-act="goto-today">${esc(t('今日の一膳を決める'))}</button></div></div></div>`;
+    if (!decidedToday()) return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の献立'))}</div><p class="small muted" style="margin:0">${esc(t('まだ決めていません'))}</p><div class="row"><button class="btn" data-act="goto-today">${esc(t('今日の献立を決める'))}</button></div></div></div>`;
     const its = cookItems();
     return `<div id="log-today"><div class="card"><div class="eyebrow">${esc(t('今日の献立'))}</div>
         <div class="list log-today-list">${its.map(x => { const h = histEntry(x.r.id, TODAY); return `<div class="item"><span class="t" data-act="open" data-id="${esc(x.r.id)}">${esc(x.r.name)}</span><span class="s">${h ? '✓ ' + esc(t('記録済み')) : esc(t('まだ記録していません'))}</span></div>`; }).join('')}</div></div></div>`;   // 決めただけ（まだ作っていない）料理は、記録していないとはっきり書く（第3回b N7。カレンダーの下に料理名だけ並ぶと、記録したように見える）
@@ -12201,7 +12208,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'sb-by': session.shopBy = el.dataset.v === 'sec' ? 'sec' : 'dish'; render(); break;
-        case 'shop-share3': { const lv = Number(el.dataset.v) || (sheet && sheet.kind === 'share' && sheet.card === 'today3' ? sheet.lv : 2); if (!cookItems().length) break; sheet = {kind:'share', card:'today3', lv, text: todayShare3Text(lv), title: t('今日の一膳')}; renderSheet(); break; }
+        case 'shop-share3': { const lv = Number(el.dataset.v) || (sheet && sheet.kind === 'share' && sheet.card === 'today3' ? sheet.lv : 2); if (!cookItems().length) break; sheet = {kind:'share', card:'today3', lv, text: todayShare3Text(lv), title: t('今日の献立')}; renderSheet(); break; }
         case 'shop-week': { session.stage = 'decide'; S.foldOpen = Object.assign({}, S.foldOpen, {week: true}); render(); const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start'}); break; }
         case 'shop-ok': {   // 二 買う の主ボタン: 買い物の印を付けて作る段へ（元に戻す8秒）
             if (!decidedToday()) break;
