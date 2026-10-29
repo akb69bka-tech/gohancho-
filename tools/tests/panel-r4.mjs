@@ -93,6 +93,57 @@ if (want('R2')){
     }
 }
 
+// ---- R4 アメリカの夕食に朝食の料理を出さない・主食をそろえる ----
+if (want('R4')){
+    const BF = /^us_(pancakes|oatmeal|scrambledbacon|denveromelet)$/;
+    for (const n of [3, 4, 2]){
+        const {p, ctx} = await open({country: 'US', uiLang: 'en', dishCount: n}, {locale: 'en-US'});
+        const r = await p.evaluate(n => {
+            const keep = session.menu; let bf = [], noStarch = 0, ex = '';
+            for (let i = 0; i < 200; i++){
+                session.rejected.clear(); newMenu();
+                const it = session.menu.items;
+                it.filter(x => x.r && x.slot === '主菜').forEach(x => { if (x.r.meal === 'breakfast') bf.push(x.r.id); });
+                if (!it.some(x => x.r && x.r.starch)){ noStarch++; ex = ex || it.map(x => x.r && x.r.name).join(' / '); }
+            }
+            const week = (makeWeek(), (S.week.days || []).map(x => x.id));
+            session.menu = keep;
+            return {bf: [...new Set(bf)], noStarch, ex, week, inSearch: RECIPES.some(r => r.id === 'us_pancakes')};
+        }, n);
+        ok(!r.bf.length, `R4-1 ${n}品: 主菜に朝食の料理が出ない: ` + r.bf.join());
+        ok(r.noStarch === 0, `R4-2 ${n}品: 主食になる物（パン・じゃがいも・米・トルティーヤ・麺）がどの献立にもある: ${r.noStarch}/200 ` + r.ex);
+        if (n === 3){
+            ok(!r.week.some(id => BF.test(id)), 'R4-3 1週間プランにも朝食の料理を出さない: ' + r.week.join());
+            ok(r.inSearch, 'R4-4 Pancakes は料理の一覧（さがす・自分で選ぶ）には残っている');
+        }
+        await ctx.close();
+    }
+    // 画面: 副菜を「かえる」しても、主菜と汁ものは変わらず、副菜は主食になる物のまま
+    {
+        const {p, ctx} = await open({country: 'US', uiLang: 'en', dishCount: 3}, {locale: 'en-US'});
+        let bad = '';
+        for (let k = 0; k < 6; k++){
+            const before = await p.evaluate(() => session.menu.items.map(x => x.r && x.r.id));
+            const si = await p.evaluate(() => session.menu.items.findIndex((x, j) => j > 0 && x.slot === '副菜' && document.querySelector(`.tray [data-act="reroll"][data-i="${j}"]`)));
+            if (si < 0){ bad = 'かえるボタンがない'; break; }
+            await p.evaluate(j => document.querySelector(`.tray [data-act="reroll"][data-i="${j}"]`).click(), si); await p.waitForTimeout(250);
+            const after = await p.evaluate(() => session.menu.items.map(x => ({id: x.r && x.r.id, st: !!(x.r && x.r.starch)})));
+            const mainSt = await p.evaluate(() => !!(session.menu.items[0].r && session.menu.items[0].r.starch));
+            if (after.some((x, j) => j !== si && x.id !== before[j])) { bad = 'ほかの料理が変わった ' + before.join() + ' → ' + after.map(x => x.id).join(); break; }
+            if (!mainSt && !after[si].st){ bad = '主食のない献立になった ' + after.map(x => x.id).join(); break; }
+        }
+        ok(!bad, 'R4-5 副菜を続けて「かえる」しても、ほかの料理は変わらず、主食がなくならない: ' + bad);
+        await ctx.close();
+    }
+    // 主食に Dinner rolls を選んでいるときは、副菜を主食に寄せない（主食は1つで足りる）
+    {
+        const {p, ctx} = await open({country: 'US', uiLang: 'en', dishCount: 3, stapleBy: {US: 'rolls'}}, {locale: 'en-US'});
+        const r = await p.evaluate(() => { let st = 0, n = 0; for (let i = 0; i < 150; i++){ session.rejected.clear(); newMenu(); const x = session.menu.items.find(x => x.slot === '副菜' && x.r); if (x){ n++; if (x.r.starch) st++; } } return {spot: !!stapleSpot(), rate: st / Math.max(1, n)}; });
+        ok(r.spot && r.rate < 0.8, 'R4-6 主食を選んでいる日は、副菜を主食に寄せない: ' + JSON.stringify(r));
+        await ctx.close();
+    }
+}
+
 await b.close();
 if (errs.length){ console.log('ページのエラー:', [...new Set(errs)].slice(0, 5)); }
 console.log(`panel-r4: ${checks - fails}/${checks} 成功`);

@@ -16,6 +16,7 @@ GOHAN_PACK({
       name: 'Ground beef tacos',
       local: 'Beef tacos',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'mince',
       min: 20,
@@ -163,6 +164,7 @@ GOHAN_PACK({
       name: 'Beef and broccoli',
       local: 'Beef and broccoli stir-fry',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'beef',
       min: 25,
@@ -186,6 +188,7 @@ GOHAN_PACK({
       name: 'Mashed potatoes',
       local: 'Mashed potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'veg',
       min: 25,
@@ -311,6 +314,7 @@ GOHAN_PACK({
       name: 'Cornbread',
       local: 'Skillet cornbread',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 30,
@@ -845,6 +849,7 @@ GOHAN_PACK({
       name: 'Chicken and dumplings',
       local: 'Chicken and dumplings',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'chicken',
       min: 55,
@@ -927,6 +932,7 @@ GOHAN_PACK({
       name: 'Pot roast',
       local: 'Pot roast',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'beef',
       min: 200,
@@ -974,6 +980,7 @@ GOHAN_PACK({
       name: 'Chicken fajitas',
       local: 'Chicken fajitas',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'chicken',
       min: 30,
@@ -1000,6 +1007,7 @@ GOHAN_PACK({
       name: 'Cheeseburgers',
       local: 'Cheeseburgers',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'mince',
       min: 25,
@@ -1047,6 +1055,7 @@ GOHAN_PACK({
       name: 'Pulled pork sandwiches',
       local: 'Pulled pork',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'pork',
       min: 300,
@@ -1093,6 +1102,7 @@ GOHAN_PACK({
       name: 'Shrimp and grits',
       local: 'Shrimp and grits',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'seafood',
       min: 35,
@@ -1119,6 +1129,7 @@ GOHAN_PACK({
       name: 'Blackened tilapia',
       local: 'Blackened fish',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'fish',
       min: 20,
@@ -1169,6 +1180,7 @@ GOHAN_PACK({
       name: 'Chicken pot pie',
       local: 'Chicken pot pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'chicken',
       min: 60,
@@ -1252,6 +1264,7 @@ GOHAN_PACK({
       name: 'Denver omelet',
       local: 'Western omelet',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 15,
@@ -1328,6 +1341,7 @@ GOHAN_PACK({
       name: 'Black bean burgers',
       local: 'Black bean burgers',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'legume',
       min: 35,
@@ -1354,6 +1368,7 @@ GOHAN_PACK({
       name: 'Cheese enchiladas',
       local: 'Cheese enchiladas',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 40,
@@ -1407,6 +1422,7 @@ GOHAN_PACK({
       name: 'Potato salad',
       local: 'Potato salad',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'veg',
       min: 35,
@@ -1520,6 +1536,7 @@ GOHAN_PACK({
       name: 'Loaded baked potatoes',
       local: 'Baked potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 70,
@@ -1544,6 +1561,7 @@ GOHAN_PACK({
       name: 'Roasted sweet potatoes',
       local: 'Roasted sweet potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 35,
@@ -1737,6 +1755,7 @@ GOHAN_PACK({
       name: 'Rice pilaf',
       local: 'Rice pilaf',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'rice',
       protein: 'veg',
       min: 30,
@@ -1760,6 +1779,7 @@ GOHAN_PACK({
       name: 'Garlic bread',
       local: 'Garlic bread',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 15,
@@ -1801,6 +1821,7 @@ GOHAN_PACK({
       name: 'Macaroni salad',
       local: 'Macaroni salad',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'raw',
       protein: 'veg',
       min: 25,
@@ -1847,6 +1868,7 @@ GOHAN_PACK({
       name: 'Oatmeal with banana and cinnamon',
       local: 'Oatmeal',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'simmer',
       protein: 'veg',
       min: 10,
@@ -1869,6 +1891,7 @@ GOHAN_PACK({
       name: 'Grilled cheese sandwiches',
       local: 'Grilled cheese',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'fry',
       protein: 'veg',
       min: 10,
@@ -1891,6 +1914,7 @@ GOHAN_PACK({
       name: 'Buttermilk-style pancakes',
       local: 'Pancakes',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'egg',
       min: 25,
@@ -1915,6 +1939,7 @@ GOHAN_PACK({
       name: 'Scrambled eggs with bacon and toast',
       local: 'Scrambled eggs and bacon',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'egg',
       min: 15,
@@ -1938,6 +1963,7 @@ GOHAN_PACK({
       name: 'Sloppy joes',
       local: 'Sloppy joes',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'mince',
       min: 30,
