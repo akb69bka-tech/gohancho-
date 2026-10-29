@@ -87,7 +87,7 @@ export default {
     // カバーブ・ハッラ（牛肉と玉ねぎの煮込み）
     eg_kababhalla: B('#7a3a1a', [['beefStew', 9, 19], ['onion', 6, 14]]),
     // ズッキーニとひき肉のベシャメル焼き（素焼きの耐熱皿）
-    eg_kosabechamel: oven({ c: '#f2d890', fl: ['#d8902a', '#c8782a', '#fbe8b0', '#a8601e'], n: 110, top: (o, V, pp) => [[-40, -6], [0, -10], [40, -4]].map(([u, v]) => W.coin(pp, ...at(o, u, v * .6, 2), 12, '#6a8a3a', { h: 1.4, sy: .5, top: Q.rg(pp, [[0, '#e8f0c0'], [1, '#a8c070']], .4, .35, .8) })).join('') }),
+    eg_kosabechamel: oven({ /*fx*/blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .3], ['#7a3a1a', .28], ['#a8c070', .3]] }, /*xf*/ c: '#f2d890', fl: ['#d8902a', '#c8782a', '#fbe8b0', '#a8601e'], n: 110, top: (o, V, pp) => [[-40, -6], [0, -10], [40, -4]].map(([u, v]) => W.coin(pp, ...at(o, u, v * .6, 2), 12, '#6a8a3a', { h: 1.4, sy: .5, top: Q.rg(pp, [[0, '#e8f0c0'], [1, '#a8c070']], .4, .35, .8) })).join('') }),
     // シシ・タウーク（鶏の串焼き）: 鶏・ピーマン・玉ねぎ、ミニトマト（お好みで）
     eg_shishtawook: p => { const D = tabaq(p), o = D.o; return D.s + W.skewers(p, o, 3, (x, y, i) => i % 3 === 2 ? W.ING.pepperG(p, x, y, 8, 0) : ing.chickenSkewer(p, x, y, 22, 0, i), { L: 140, k: 6, gap: 22 }) + lemon(p, ...at(o, 46, 34), 13) + ing.cherryTomato(p, ...at(o, -46, 34), 14); },
     // タゲン・サマク（魚のトマトのタゲン焼き）: 魚・トマト・玉ねぎ・ピーマン・レモン、じゃがいも（お好みで）
@@ -111,7 +111,7 @@ export default {
     // コシャリ: レンズ豆・米・マカロニ・ひよこ豆・揚げ玉ねぎ・トマトソース、細麺（お好みで）
     eg_koshari: p => { const V = ghawit(p), o = { cx: 100, cy: 100, sy: SYF }; return V.s + W.mound(p, 100, 104, 62, 18, '#c8a070', 'ks', SYF) + byDepth(W.spots('ksp', 40, 54, 7).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 4 + W.hill(u, v, 56, 18)); return [y, () => [ing.pastaShort, W.ING.lentil, W.ING.chickpea, ing.pastaShort, W.ING.rice][i % 5](p, x, y, 14, r, i)]; })) + W.mound(p, 100, 92, 26, 6, '#c8301a', 'kss', SYF) + W.flecks(p, 100, 84, 22, 40, 'ksf', ['#8a4a1a', '#a8641e', '#6a3010'], { ry: 8, s: 2.2 }); },
     // マカロナ・ベシャメル（ひき肉とベシャメルのペンネ焼き）（素焼きの耐熱皿）
-    eg_macarona: oven({ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 120 }),
+    eg_macarona: oven({ /*fx*/blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#7a3a1a', .2], ['#f2c860', .4]], dots: [['#fbe8a0', 8, 3] ] }, /*xf*/ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 120 }),
     // ファッタ（牛肉とご飯とパンのにんにく酢トマト）
     eg_fatta: p => { const D = ghawit(p), o = { cx: 100, cy: 100, sy: SYF }; return D.s + W.friedRice(p, 100, 104, 60, 16, 'ft', { cols: ['#fbf6ea', '#f4ecd8', '#fffdf6'], edge: '#d8ccb4', sy: SYF }) + W.flecks(p, 100, 98, 50, 30, 'ftb', ['#d8a050', '#c8863a'], { ry: 18, s: 2.6 }) + W.pool(p, 92, 96, 26, '#c8401e', 'fts', SYF) + byDepth(W.spots('ftm', 7, 34, 16).map(([u, v, r], i) => { const [x, y] = at(o, u, v, 14); return [y, () => ing.beefBoiled(p, x, y, 18, r, i)]; })); },
     // サヤデイヤ（魚と茶色い玉ねぎご飯）: 魚・米・玉ねぎ・レモン、トマト（お好みで）

@@ -126,7 +126,7 @@ export default {
     // マカロネス（チョリソとトマトのマカロニ）、粉チーズ（お好みで）
     es_macarrones: B('#c8401e', [['penne', 18, 16], ['chorizo', 6, 15]], { minD: 8, flecks: [['#f8f0d0', 30, 1.6]], ing: { ...ing, penne: (p, x, y, s, r) => Q.prism(p, x, y, [[-s * .5, -s * .2], [s * .5, -s * .2], [s * .5, s * .2], [-s * .5, s * .2]], s * .3, '#e8a050', { rot: r, line: .4, top: Q.lg(p, [[0, '#f8d090'], [1, '#d8803a']], 0, 0, 0, 1) }) } }),
     // カネロニ（カタルーニャの肉のカネロニ）: ベシャメル・チーズ（素焼きの耐熱皿）
-    es_canelones: horno({ c: '#f2dca0', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 100, top: (o, V, pp) => [-28, 0, 28].map(v => { const [x, y] = at(o, 0, v); return `<path d="M${f(x - 66)},${f(y)} Q${f(x)},${f(y - 8)} ${f(x + 66)},${f(y)}" stroke="#e8c890" stroke-width="2" fill="none" opacity=".7"/>`; }).join('') }),
+    es_canelones: horno({ /*fx*/blister: 8, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .22], ['#f2dca0', .66]], dots: [['#a8643a', 6, 4]] }, /*xf*/ c: '#f2dca0', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 100, top: (o, V, pp) => [-28, 0, 28].map(v => { const [x, y] = at(o, 0, v); return `<path d="M${f(x - 66)},${f(y)} Q${f(x)},${f(y - 8)} ${f(x + 66)},${f(y)}" stroke="#e8c890" stroke-width="2" fill="none" opacity=".7"/>`; }).join('') }),
     // フィデウア（魚介のショートパスタのパエリア）: 麺・えび・いか・トマト、アリオリ（お好みで）
     es_fideua: p => paellera(p, '#d8903a', [['prawn', 5, 18], ['squidRing', 5, 14], ['noodleBit', 14, 12]], { fl: [[['#c8782a', '#a8601e'], 30, 1.6]] }) + `<ellipse cx="150" cy="122" rx="12" ry="7" fill="#fbf6e0" stroke="#d8c890" stroke-width=".6"/>`,
 

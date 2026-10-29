@@ -607,7 +607,24 @@ export function skewers(p, o, n, piece, { L = 120, k = 4, rot = -10, gap = 16, s
 // 丸ごとの魚を皿に（焼き魚・揚げ魚）: 上にソースや薬味を on(x, y) で
 export const fishOn = (p, D, { L = 150, rot = -8, skin = '#a8763a', belly = '#e8c890', char = .6, on = () => '' } = {}) => D.s + wholeFish(p, D.o.cx, D.o.cy, L, rot, 1, { skin, belly, char }) + on(D.o.cx, D.o.cy);
 // オーブン焼き（グラタン・パルミジャーナ・エスコンジジーニョ・ムサカ）: 角の耐熱皿に焼き色の面、top(o) で上の具
-export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', ...o } = {}){
-    const V = casserole(p, { base, inner, ...o });
-    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${top(V.o, V, p)}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
+export function bake(p, { base = '#e9dccb', inner = '#f6efe2', c = '#f2c860', fl = ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e'], n = 80, top = () => '', blister = 0, scoop = null, dome = null, ...o } = {}){
+    const V = casserole(p, { base, inner, ...o }), O = V.o;
+    // 焼き色のふくれ（グラタン）: 濃い焼き色の斑と、ふちの明るい輪
+    const bl = blister ? spots(p.id + 'bl', blister, 66, 14, { ry: 36 }).map(([u, v], k) => { const [x, y] = at(O, u, v * .62); const r = 6 + (k % 3) * 2.4; return `<path d="${Q.blob(x, y, r, r * .6, p.id + 'blb' + k, { n: 9, jit: .3 })}" fill="${Q.rg(p, [[0, '#7a3a10'], [.55, '#a8601e'], [1, '#e0a040']], .45, .4, .8)}" opacity=".85"/>`; }).join('') : '';
+    // パイ: 生地が山にふくらみ、縁に指で押した波、まん中に空気穴、照り
+    const dm = dome ? `<ellipse cx="${O.cx}" cy="${f(O.cy - 6)}" rx="70" ry="34" fill="${Q.rg(p, [[0, '#fbe0a0'], [.55, c], [1, dk(c, .25)]], .42, .32, .85)}"/>` + Array.from({ length: 30 }, (_, k) => { const a = k / 30 * 6.283, x = O.cx + Math.cos(a) * 74, y = O.cy - 4 + Math.sin(a) * 40; return `<ellipse cx="${f(x)}" cy="${f(y)}" rx="5.6" ry="4" fill="${Q.rg(p, [[0, '#f6d890'], [1, dk(c, .3)]], .4, .35, .8)}" stroke="${dk(c, .4)}" stroke-width=".4"/>`; }).join('') + [-10, 0, 10].map(d => `<path d="M${f(O.cx + d - 3)},${f(O.cy - 18 + Math.abs(d) * .2)} l6,-3" stroke="${dk(c, .5)}" stroke-width="1.8" stroke-linecap="round"/>`).join('') + (dome.leaves ? [[-30, -10, -30], [26, -14, 20]].map(([u, v, r], k) => Q.leaf(p, O.cx + u, O.cy + v, 22, r, c, 'pl' + k, { wave: .8 })).join('') : '') + Q.shine(O.cx - 34, O.cy - 26, 34, -8, .7) : '';
+    // ひとすくい取った跡（手前右）: 中の層が切り口に見える
+    let sc = '';
+    if (scoop){
+        const { u0 = 22, u1 = 90, v0 = 4, v1 = 70, hf = 30, layers = [[c, 1]], dots = [], bottom = null } = scoop;
+        const P3 = (u, v, z) => at(O, u, v, z), pt = a => a.map(([x, y]) => `${f(x)},${f(y)}`).join(' ');
+        const B = [P3(u0, v0, -hf), P3(u1, v0, -hf), P3(u1, v1, -hf), P3(u0, v1, -hf)];
+        const back = [P3(u0, v0, 0), P3(u1, v0, 0), P3(u1, v0, -hf), P3(u0, v0, -hf)], left = [P3(u0, v0, 0), P3(u0, v1, 0), P3(u0, v1, -hf), P3(u0, v0, -hf)];
+        let acc = 0; const stops = []; layers.forEach(([col, fr]) => { stops.push([acc, col]); acc += fr; stops.push([Math.min(1, acc - .001), col]); });
+        const face = Q.lg(p, stops, 0, 0, 0, 1);
+        sc = `<polygon points="${pt(B)}" fill="${bottom || dk(inner, .12)}"/>` + `<polygon points="${pt(left)}" fill="${face}"/><polygon points="${pt(left)}" fill="${SHADE}" opacity=".25"/>` + `<polygon points="${pt(back)}" fill="${face}"/>` +
+            dots.map(([col, k, r = 2.4], j) => Array.from({ length: k }, (_, m) => { const R = rng(p.id + 'sd' + j + m)(), R2 = rng(p.id + 'se' + j + m)(); const [x, y] = P3(u0 + 4 + R * (u1 - u0 - 8), v0, -hf * (.15 + R2 * .75)); return `<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(r)}" ry="${f(r * .8)}" fill="${col}" stroke="${dk(col, .3)}" stroke-width=".4"/>`; }).join('')).join('') +
+            `<polyline points="${pt([P3(u0, v1, 0), P3(u0, v0, 0), P3(u1, v0, 0)])}" fill="none" stroke="${lt(layers[0][0], .3)}" stroke-width="1.2"/>`;
+    }
+    return V.s + `<g ${V.inside}><rect width="200" height="200" fill="${c}"/>${flecks(p, 100, 96, 80, n, 'bk' + p.id, fl, { ry: 46, s: 2.4 })}${bl}${top(V.o, V, p)}${dm}${sc}</g>` + Q.shine(60, V.cy - 30, 30, -6, .5);
 }

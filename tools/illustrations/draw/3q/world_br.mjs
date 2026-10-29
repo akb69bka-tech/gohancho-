@@ -79,7 +79,7 @@ export default {
     // パンケッカ・ジ・カルネ（牛ひき肉を巻いたクレープのトマトソース）、チーズ（お好みで）
     br_panqueca_carne: bake({ c: '#c8401e', fl: ['#f8e0a0', '#fff2c0', '#e8b048'], n: 50, top: (o, V, p) => byDepth([-26, 0, 26].map((v, i) => { const [x, y] = at(o, 0, v, 4); return [y, () => `<g transform="translate(${f(x)} ${f(y)})"><rect x="-70" y="-11" width="140" height="22" rx="11" fill="#f2d8a0" stroke="#c8a060" stroke-width=".6"/><path d="M-60,-2 q20,-6 40,0 q20,6 40,0 q20,-6 40,0" stroke="#c8401e" stroke-width="6" fill="none" opacity=".85"/></g>`]; })) }),
     // エスコンジジーニョ（干し肉のキャッサバマッシュ焼き）
-    br_escondidinho: bake({ c: '#f2d890', top: (o, V) => '' }),
+    br_escondidinho: bake({ /*fx*/blister: 8, scoop: { layers: [['#e8b048', .12], ['#f6e8c0', .4], ['#a8502a', .48]], dots: [['#7a2e14', 6, 2.4]] }, /*xf*/ c: '#f2d890', top: (o, V) => '' }),
     // フェイジョアーダ（黒豆と豚の煮込み）: 黒豆・スペアリブ・リングイッサ・ベーコン、干し肉（お好みで）（黒い土鍋）
     br_feijoada: B('#2e2018', [['linguica', 5, 16], ['porkRib', 3, 18], ['bacon', 4, 14], ['blackBean', 12, 12], ['driedBeef', 3, 14]], { minD: 10 }),
     // ロンボ・アサード（豚ロースのロースト）、じゃがいも（お好みで）・ライム
@@ -95,13 +95,13 @@ export default {
     // クスクス・ノルデスチーノ（とうもろこしの蒸しクスクスと卵）、チーズ（お好みで）
     br_cuscuz_nordestino: p => { const D = prato(p), o = D.o; return D.s + W.mound(p, ...at(o, -10, 0), 46, 30, '#f6d870', 'cz', SYF) + W.flecks(p, ...at(o, -10, -6, 20), 38, 60, 'czf', ['#e8b830', '#fff2a0', '#f0c840'], { ry: 16, s: 1.8 }) + W.butterPat(p, ...at(o, -10, -8, 30), 9) + W.friedEgg(p, ...at(o, 42, 24, 2), 34, 1) + W.cutSlab(p, ...at(o, -46, 32, 4), 14, 8, 6, '#f6ecd0', 'czq', { sear: '#c8862e' }); },
     // なすのパルミジャーナ
-    br_berinjela_parmegiana: bake({ c: '#c8401e', fl: ['#fff6d0', '#f8e090', '#e0a840', '#a8601e'], n: 110 }),
+    br_berinjela_parmegiana: bake({ /*fx*/blister: 6, scoop: { layers: [['#f6d070', .14], ['#c8401e', .1], ['#5a2a3a', .1], ['#e8c070', .12], ['#c8401e', .1], ['#5a2a3a', .1], ['#e8c070', .12], ['#c8401e', .22]] }, /*xf*/ c: '#c8401e', fl: ['#fff6d0', '#f8e090', '#e0a840', '#a8601e'], n: 110 }),
 
     // ---------- ご飯・麺 ----------
     // ガリニャーダ（鶏の炊き込みご飯）: 鶏・米・玉ねぎ・トマト・チェイロ・ヴェルジ・ライム、ピーマン・コーン（お好みで）
     br_galinhada: M(deep, 'plate', null, [['chickenCream', 6, 18], ['corn', 8, 12], ['pepperG', 3, 10]], { rice: { cols: ['#f2c860', '#e8b040', '#f8dc90'], edge: '#b88a2a' }, H: 22, R: 48, minD: 10, flecks: [cv(16)] }),
     // アホス・ジ・フォルノ（鶏ご飯のオーブン焼き）: ご飯・鶏・グリンピース・コーン・トマトソース・チーズ
-    br_arroz_forno: bake({ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e', '#7aa83a', '#f6d040'], n: 110 }),
+    br_arroz_forno: bake({ /*fx*/blister: 8, scoop: { layers: [['#e8b048', .15], ['#fbf6ea', .85]], dots: [['#f2dcc0', 5, 3], ['#7aa83a', 5, 1.8], ['#f6d040', 5, 1.8]] }, /*xf*/ c: '#f2c860', fl: ['#d8902a', '#c8782a', '#f8e0a0', '#a8601e', '#7aa83a', '#f6d040'], n: 110 }),
     // バイアン・ジ・ドイス（ご飯と黒目豆とチーズ）: 豆・米・ベーコン・玉ねぎ・コアーリョ・香菜
     br_baiao_de_dois: P([['blackEyed', 18, 13], ['bacon', 5, 12], ['coalho', 6, 13]], { rice: { cols: ['#f2e4c8', '#e8d4b0', '#fbf2dc'], edge: '#c8a878' }, H: 24, R: 50, flecks: [cv(14)] }),
     // マカホン・コン・サルシッシャ（ソーセージのトマトパスタ）、コーン・粉チーズ（お好みで）
@@ -163,7 +163,7 @@ export default {
     // いんげんの炒め物、にんじん（お好みで）
     br_vagem_refogada: P([['greenBean', 20, 9], ['carrotStick', 4, 12], ['onion', 3, 12]]),
     // カリフラワーのグラタン
-    br_couve_flor_gratinada: bake({ c: '#f6e0a0', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90, top: (o, V, p) => byDepth(W.spots('cf', 8, 56, 26, { ry: 36 }).map(([u, v], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="${Q.blob(x, y, 14, 9, 'cfb' + i, { n: 10, jit: .25 })}" fill="${Q.rg(p, [[0, '#fff6d8'], [1, '#e8c070']], .4, .35, .8)}" opacity=".9"/>`]; })) }),
+    br_couve_flor_gratinada: bake({ /*fx*/blister: 10, scoop: { layers: [['#e8b048', .2], ['#f6eedc', .8]], dots: [['#fbf6e4', 5, 5], ['#e8e0c0', 4, 4]] }, /*xf*/ c: '#f6e0a0', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90, top: (o, V, p) => byDepth(W.spots('cf', 8, 56, 26, { ry: 36 }).map(([u, v], i) => { const [x, y] = at(o, u, v * .6, 2); return [y, () => `<path d="${Q.blob(x, y, 14, 9, 'cfb' + i, { n: 10, jit: .25 })}" fill="${Q.rg(p, [[0, '#fff6d8'], [1, '#e8c070']], .4, .35, .8)}" opacity=".9"/>`]; })) }),
 
     // ---------- 汁物 ----------
     // カルド・ヴェルジ（じゃがいもとケールのスープ）: じゃがいも・ケール・リングイッサ・玉ねぎ

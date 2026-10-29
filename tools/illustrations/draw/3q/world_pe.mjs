@@ -171,9 +171,9 @@ export default {
     // トレハス・デ・チョクロ（とうもろこしのかき揚げ）
     pe_torrejas_choclo: P([['torreja', 6, 26]], { minD: 22, H: 10, ing: { ...ing, torreja: (p, x, y, s, r, i) => W.crusty(p, x, y, s * .6, s * .42, i, { c: '#e0a840', n: 18, h: 5, rot: r }) + W.flecks(p, x, y - 4, s * .4, 8, 'tj' + i, ['#fff0a0', '#4a9a2c'], { ry: s * .2, s: 1.6 }) } }),
     // パステル・デ・アセルガ（ふだん草のパイ）
-    pe_pastel_acelga: p => W.bake(p, { c: '#e0b060', fl: ['#c8862e', '#a8641e', '#f6dca0'], n: 60, top: (o, V, pp) => `<path d="M30,${f(o.cy + 30)} L170,${f(o.cy + 30)}" stroke="#3f6a22" stroke-width="0"/>` + W.flecks(pp, o.cx, o.cy - 2, 60, 30, 'pac', ['#3f6a22', '#5a8a2a'], { ry: 30, s: 2 }) }),
+    pe_pastel_acelga: p => W.bake(p, { base: '#e8dcc0', inner: '#f6efe2', c: '#e0a848', fl: ['#c8862e'], n: 10, dome: {}, scoop: { u0: 22, v0: 6, hf: 32, layers: [['#d8963a', .22], ['#4a7a2a', .78]], dots: [['#f6ecd8', 6, 3], ['#5a2a2a', 3, 1.8]] } }),
     // パステル・デ・パパ（じゃがいもとチーズのオーブン焼き）
-    pe_pastel_papa: p => W.bake(p, { c: '#f2d070', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90 }),
+    pe_pastel_papa: p => W.bake(p, { /*fx*/blister: 8, scoop: { layers: [['#c8862e', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .2], ['#fbf2d8', .1], ['#f6e4a8', .3]] }, /*xf*/ c: '#f2d070', fl: ['#d8902a', '#c8782a', '#fff2c0', '#a8601e'], n: 90 }),
 
     // ---------- 汁物 ----------
     // アグアディート（香菜の鶏と米のスープ）: 鶏・米・香菜・グリンピース・にんじん、じゃがいも（お好みで）

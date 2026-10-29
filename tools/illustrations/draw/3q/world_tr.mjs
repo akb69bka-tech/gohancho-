@@ -84,7 +84,7 @@ export default {
     // ビベル・ドルマス（ピーマンの肉と米詰め）: ピーマン・ひき肉・米・玉ねぎ・トマト
     tr_biberdolmasi: B('#c8501e', [['dolmaPepper', 5, 26]], { minD: 22 }),
     // ムサカ（なすとひき肉の重ね煮）: なす・ひき肉・玉ねぎ・トマト・ピーマン
-    tr_musakka: B('#b8401e', [['eggplant', 8, 18], ['mince', 6, 14], ['sivri', 2, 12], ['tomato', 2, 12]], { ing: { ...ing, eggplant: (p, x, y, s, r, i) => W.coin(p, x, y, s * .55, '#4a2038', { h: 3, top: Q.rg(p, [[0, '#d8a068'], [.6, '#a8642a'], [1, '#6a3418']], .4, .35, .8) }) } }),
+    tr_musakka: p => W.bake(p, { base: '#a8582e', inner: '#c87a4a', c: '#b8401e', fl: ['#7a2410', '#d8603a'], n: 30, top: (o, V, pp) => byDepth(Array.from({ length: 15 }, (_, i) => { const u = -60 + (i % 5) * 28, v = -30 + Math.floor(i / 5) * 28; const [x, y] = at(o, u, v * .6, 3); return [y, () => W.coin(pp, x, y, 13, '#4a2038', { h: 3, sy: .5, top: Q.rg(pp, [[0, '#d8a068'], [.6, '#a8642a'], [.85, '#6a3418'], [1, '#4a2038']], .4, .35, .8) }) + W.flecks(pp, x, y - 3, 7, 6, 'mk' + i, ['#7a3a1a', '#5a2410'], { ry: 3, s: 1.8 })]; })) + byDepth([[-44, -6], [0, 4], [40, -2]].map(([u, v], i) => { const [x, y] = at(o, u, v, 8); return [y, () => W.pod(pp, x, y, 26, -10, { c: '#5a8a2a', w: 5 }) + W.tomatoDice(pp, x + 14, y + 2, 9, i)]; })), scoop: { layers: [['#b8401e', .18], ['#7a3a1a', .3], ['#5a2a3a', .12], ['#d8a068', .4]], dots: [['#4a2038', 4, 2.4]] } }),
     // アルナヴト・ジエリ（レバーのから揚げ）と赤玉ねぎのサラダ、フライドポテト（お好みで）
     tr_cigertava: plateOf((p, o) => side(p, o, [['liver', -26, -8, 28], ['liver', -6, -12, 28], ['liver', -16, 8, 28], ['liver', 4, 2, 28], ['liver', -32, 12, 28], ['redOnionRing', 32, -6, 22, 10], ['redOnionRing', 38, 8, 22, -20], ['redOnionRing', 28, 18, 22, 30]]) + W.flecks(p, ...at(o, 30, 4, 8), 18, 14, 'cg', PARS, { ry: 8, s: 1.6 })),
     // エトリ・ノフット（肉入りひよこ豆の煮込み）
@@ -122,7 +122,7 @@ export default {
     // タヴクル・ピラウ（鶏のピラウ）、ひよこ豆（お好みで）
     tr_tavuklupilav: P([['chickenShred', 16, 14], ['chickpea', 8, 13]], { rice: { cols: ['#fbf6ea', '#f4ecd8', '#fffdf6'], edge: '#d8ccb4' }, H: 24, R: 50 }),
     // フルン・マカルナ（ベシャメルのパスタのオーブン焼き）
-    tr_firinmakarna: p => W.bake(p, { base: '#e8dcc0', inner: '#f6efe2', c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110 }),
+    tr_firinmakarna: p => W.bake(p, { /*fx*/blister: 10, scoop: { layers: [['#e8c070', .12], ['#f6ecd0', .28], ['#f2c860', .6]], dots: [['#fbe8a0', 10, 3]] }, /*xf*/ base: '#e8dcc0', inner: '#f6efe2', c: '#f2c860', fl: ['#d8902a', '#c8782a', '#fff0b0', '#a8601e'], n: 110 }),
 
     // ---------- 副菜 ----------
     // チョバン・サラタス（羊飼いのサラダ）: トマト・きゅうり・シヴリ・玉ねぎ・パセリ・レモン
