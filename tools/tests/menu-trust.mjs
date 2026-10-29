@@ -141,7 +141,7 @@ for (const k of [0, 1, 2]){
     // 案2（設計書 §7-1・北条）: 決めた一膳があるときの気分・品数は、黙って明日に回さない。［今日の一膳を作り直す］［明日から］を本人が選ぶ
     for (const [name, sel, kind] of [['気分（おかゆの日）', '[data-act="mood"][data-k="okayu"]', 'mood'], ['品数', '[data-act="count"][data-v="4"]', 'count']]){
         const st = () => p.evaluate(() => { const r = S.day[addDays(TODAY, 1)] || {}; return { ids: menuIds(), cook: S.cook ? S.cook.ids.slice() : null, mood: session.mood, dc: S.settings.dishCount, tmood: r.mood || null, pending: S.settings.pending || null, sheet: sheet && sheet.kind }; });
-        const press = async () => { await openMood(p); const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await until(p, () => !!document.querySelector('[data-act="later-today"]')); };
+        const press = async () => { await openMood(p); const btn = p.locator(sel).first(); await btn.evaluate(e => e.scrollIntoView({block: 'center'})); await btn.click({timeout: 5000}).catch(() => btn.evaluate(e => e.click()));   /* 時計を止めているので、重いときにシートが「動いている」と見られて押せないことがある。そのときは要素を直接押す */ await until(p, () => !!document.querySelector('[data-act="later-today"]')); };
         const same = (r, m) => JSON.stringify(r.ids) === JSON.stringify(decided) && JSON.stringify(r.cook) === JSON.stringify(decided) && r.mood !== 'okayu' && String(r.dc) === '3' && (m || (!r.tmood && !r.pending));
         // 押すと確かめる（まだ何も変えない）
         await press();
@@ -190,7 +190,7 @@ for (const k of [0, 1, 2]){
     }
     for (const [name, sel] of [['まるごと入れ替え', '#sheet-root [data-act="new-menu"]']]){   // 条件シートの中のボタン（お膳の真ん中の丸はシートの下）
         await openMood(p);
-        const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
+        const btn = p.locator(sel).first(); await btn.evaluate(e => e.scrollIntoView({block: 'center'})); await btn.click({timeout: 5000}).catch(() => btn.evaluate(e => e.click()));   /* 時計を止めているので、重いときにシートが「動いている」と見られて押せないことがある。そのときは要素を直接押す */ await until(p, () => !!document.querySelector('[data-act="redo-yes"]'));
         const ask = await p.evaluate(() => ({ sheet: !!document.querySelector('[data-act="redo-yes"]'), ids: menuIds(), mood: session.mood, dc: S.settings.dishCount }));
         ok(ask.sheet && JSON.stringify(ask.ids) === JSON.stringify(decided), name + ': 決めた献立があるときは確認を出し、まだ替えない ' + JSON.stringify(ask));
         await p.click('[data-act="sheet-close"]'); await until(p, () => !sheet && !document.querySelector('[data-act="redo-yes"]'));
@@ -228,7 +228,7 @@ async function openAt(iso, store){
 }
 // 時計を進めて、画面に戻ってきたとき（focus）と同じく日付を確かめさせる
 const goTime = async (p, iso) => { await p.clock.setSystemTime(new Date(iso)); await p.evaluate(() => window.dispatchEvent(new Event('focus'))); };
-const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).first(); await btn.scrollIntoViewIfNeeded(); await btn.click(); await until(p, () => !!document.querySelector('[data-act="later-tomorrow"]')); await p.click('[data-act="later-tomorrow"]'); await until(p, () => !sheet); };
+const later = async (p, sel) => { await openMood(p); const btn = p.locator(sel).first(); await btn.evaluate(e => e.scrollIntoView({block: 'center'})); await btn.click({timeout: 5000}).catch(() => btn.evaluate(e => e.click()));   /* 時計を止めているので、重いときにシートが「動いている」と見られて押せないことがある。そのときは要素を直接押す */ await until(p, () => !!document.querySelector('[data-act="later-tomorrow"]')); await p.click('[data-act="later-tomorrow"]'); await until(p, () => !sheet); };
 {
     const { ctx, p } = await openAt('2026-10-28T11:00:00Z');   // 東京 20:00
     await p.evaluate(() => setTab('today'));
