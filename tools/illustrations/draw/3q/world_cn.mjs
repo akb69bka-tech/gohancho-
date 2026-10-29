@@ -61,11 +61,11 @@ function jiaozi(p, x, y, s, r, i, { fried = false } = {}){
 // 汁物の器（朱の線の中華碗）
 const soup = (p, c, items, o = {}) => W.soup(p, o.V ? o.V(p) : bowl(p), { c, drop: 10, glow: .35, gl: .55, items, ...o });
 // 平皿の山
-const plateHeap = (p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 32 } = {}) => { R *= .92; H += 5; return D.s + (sauce ? W.pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, seed) : '') + byDepth(W.spots(seed, Math.round(n * 1.4), R, minD * .85).map(([u, v, r], i) => { const [x, y] = P(D.o, u, v, 4 + W.hill(u, v, R, H)); return [y, () => draw(x, y, r, i)]; })); };
+const plateHeap = W.plateHeap;
 // 小鉢に山高
 const heapBowl = (p, seed, n, minD, H, draw, { base = null, R = 64, after = () => '' } = {}) => W.inBowl(p, smallBowl(p), { R, H, base, items: (o, RR, HH) => [...W.onHill(o, seed, n, RR * .95, minD, HH, draw), [999, () => after(o, HH)]] });
 // 深皿の煮込み（煮汁は中央に少し、具を山に）
-const braise = (p, V, c, seed, n, minD, H, draw, { srx = 50, R = 50 } = {}) => W.heap(p, V, { c, drop: 4, H, R, srx, items: (pl) => [...W.spots(seed, n, R - 4, minD), ...W.spots(seed + '2', Math.round(n / 3), R * .5, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => draw(x, y, r, i)]; }) });
+const braise = W.braise;
 // かゆ
 function congee(p, seed, items = () => [], { c = '#f4ecd8' } = {}){
     const V = bowl(p, { rim: Q.RIM.hai }), S = Q.surface(p, V, { drop: 9, c, glow: .4 }), pl = (u, v, z = 0) => at(S.o, u, v, z);

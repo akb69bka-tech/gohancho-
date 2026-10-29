@@ -412,3 +412,32 @@ export function friedRice(p, cx, cy, rx, H, seed, { cols = ['#f2d6a0', '#e8c488'
     gs.sort((a, b) => a[0] - b[0]);
     return mound(p, cx, cy, rx, H, cols[1], 'frb' + seed, sy) + gs.map(([, x, y, r, lite], i) => `<ellipse cx="${f(x)}" cy="${f(y)}" rx="2.5" ry="1.35" transform="rotate(${f(r)} ${f(x)} ${f(y)})" fill="${lite ? lt(cols[i % cols.length], .3) : cols[i % cols.length]}" stroke="${edge}" stroke-width=".35"/>`).join('');
 }
+
+// ---------- 3回目に足した部品（統括の見直し: 炒め物の具を大きく多く、煮込みの具の形と照り） ----------
+// 具を (x, y) を中心に k 倍する
+export const grow = (x, y, k, svg) => k === 1 ? svg : `<g transform="translate(${f(x)} ${f(y)}) scale(${k}) translate(${f(-x)} ${f(-y)})">${svg}</g>`;
+// 平皿に山盛り（炒め物）: 具を big 倍に大きく、dens 倍に多く。皿の白が目立たないように山を広げる
+export function plateHeap(p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 34, big = 1.3, dens = 1.55 } = {}){
+    R *= .96; H += 8;
+    const it = spots(seed, Math.round(n * dens), R, minD * .9).map(([u, v, r], i) => { const [x, y] = at(D.o, u, v, 4 + hill(u, v, R, H)); return [y, () => grow(x, y, big, draw(x, y, r, i))]; });
+    return D.s + (sauce ? pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, seed) : '') + byDepth(it);
+}
+// 煮込み（滷・kho・紅焼など）: 具ひとつずつに細い焦げ茶の縁と照りの弧をつけ、茶色の塊に見えないようにする
+export const piece = (p, x, y, svg, { s = 10, edge = true } = {}) => (edge ? `<g ${p.edge('#2a1206', .7, .55)}>${svg}</g>` : svg) + Q.shine(x - s * .3, y - s * .9, s * .7, -10, .85);
+export function braise(p, V, c, seed, n, minD, H, draw, { srx = 50, R = 50, s = 12 } = {}){
+    return heap(p, V, { c, drop: 4, H, R, srx, glow: .5, items: (pl) => [...spots(seed, n, R - 4, minD), ...spots(seed + '2', Math.round(n / 3), R * .5, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => piece(p, x, y, draw(x, y, r, i), { s })]; }) });
+}
+// ムール貝（ひらいた殻の中に橙の身。殻は焦げ茶のオリーブ色で、縁に真珠色の内側。青にしない）
+export function musselOpen(p, x, y, s, rot = 0){
+    const valve = side => `<path d="M0,0 C${f(side * s * .3)},${f(-s * .16)} ${f(side * s * .5)},${f(-s * .6)} ${f(side * s * .2)},${f(-s * .84)} C${f(side * s * .02)},${f(-s * .96)} ${f(-side * s * .1)},${f(-s * .5)} 0,0Z" transform="rotate(${side * 28})"/>`;
+    const shell = side => `<g fill="${Q.lg(p, [[0, '#6a5a40'], [.5, '#3e3226'], [1, '#2a2018']], 0, 0, 1, 1)}" stroke="#1e1610" stroke-width=".6">${valve(side)}</g>`;
+    const inner = side => `<g transform="rotate(${side * 28}) translate(${f(side * s * .04)} ${f(-s * .1)}) scale(1.25 .74)"><path d="M0,${f(-s * .06)} C${f(side * s * .14)},${f(-s * .24)} ${f(side * s * .26)},${f(-s * .58)} ${f(side * s * .1)},${f(-s * .74)} C${f(side * s * .02)},${f(-s * .8)} ${f(-side * s * .02)},${f(-s * .48)} 0,${f(-s * .06)}Z" fill="#e8e0d0"/><path d="M0,${f(-s * .14)} C${f(side * s * .1)},${f(-s * .28)} ${f(side * s * .2)},${f(-s * .52)} ${f(side * s * .08)},${f(-s * .64)} C${f(side * s * .02)},${f(-s * .68)} ${f(-side * s * .01)},${f(-s * .46)} 0,${f(-s * .14)}Z" fill="${Q.rg(p, [[0, '#ffc890'], [.6, '#f09a50'], [1, '#c8682a']], .4, .35, .8)}"/></g>`;
+    return Q.cast(p, x, y + 2, s * .5, s * .16, .32) + `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)}) scale(1 .8)">${shell(-1)}${shell(1)}${inner(-1)}${inner(1)}<path d="M${f(-s * .22)},${f(-s * .5)} q${f(-s * .05)},${f(-s * .14)} ${f(-s * .02)},${f(-s * .26)}" stroke="#fff" stroke-width="1" fill="none" opacity=".6"/></g>`;
+}
+// 輪切りのゴーヤの肉詰め: でこぼこの緑の皮・淡い緑の身の輪・中の豚ひき肉
+export function stuffedMelon(p, x, y, r, { h = 8, liq = null } = {}){
+    const R = rng(p.id + 'sm' + x), bumps = Array.from({ length: 18 }, (_, i) => { const a = i / 18 * 6.283, k = 1 + (i % 2 ? .08 : -.04) + (R() - .5) * .05; return [Math.cos(a) * r * k, Math.sin(a) * r * k * SY]; });
+    const top = smooth(bumps.map(([u, v]) => [x + u, y - h * CZ + v]), true, .6), side = smooth(bumps.map(([u, v]) => [x + u, y + v]), true, .6);
+    return (liq ? '' : Q.cast(p, x, y + r * SY * .5, r * 1.05, r * SY * .7, .3)) + `<path d="${side}" fill="#3f6a24"/>` + `<path d="M${f(x - r)},${f(y - h * CZ)} L${f(x - r)},${f(y)} A${f(r)},${f(r * SY)} 0 0 0 ${f(x + r)},${f(y)} L${f(x + r)},${f(y - h * CZ)}Z" fill="${Q.lg(p, [[0, '#8ab858'], [.5, '#5a8a34'], [1, '#2e5a1e']])}"/>` + (liq ? `<path d="M${f(x - r)},${f(y - h * CZ * .4)} A${f(r)},${f(r * SY)} 0 0 0 ${f(x + r)},${f(y - h * CZ * .4)} L${f(x + r)},${f(y + .5)} A${f(r)},${f(r * SY)} 0 0 1 ${f(x - r)},${f(y + .5)}Z" fill="${liq}" opacity=".55"/>` : '') +
+        `<path d="${top}" fill="#6a9a3a" stroke="#2e5a1e" stroke-width=".7"/><ellipse cx="${f(x)}" cy="${f(y - h * CZ)}" rx="${f(r * .8)}" ry="${f(r * .8 * SY)}" fill="${Q.rg(p, [[0, '#f2f6d8'], [1, '#c8dca0']], .4, .35, .8)}"/><ellipse cx="${f(x)}" cy="${f(y - h * CZ)}" rx="${f(r * .56)}" ry="${f(r * .56 * SY)}" fill="${Q.rg(p, [[0, '#d8a888'], [.6, '#b87a5a'], [1, '#8a5a3a']], .4, .35, .8)}"/>` + flecks(p, x, y - h * CZ, r * .45, 8, 'smf' + x, ['#7a4a2a', '#e8c8a8'], { ry: r * .45 * SY, s: 1 }) + `<ellipse cx="${f(x - r * .2)}" cy="${f(y - h * CZ - r * .22 * SY)}" rx="${f(r * .18)}" ry="${f(r * .07)}" fill="#fff" opacity=".7"/>`;
+}

@@ -35,9 +35,9 @@ const celery = (p, x, y, r) => Q.prism(p, x, y, [[-3.4, -1.8], [3.4, -1.8], [3, 
 const pidan = (p, x, y, s, r) => Q.prism(p, x, y, [[-s / 2, s * .2], [0, -s * .38], [s / 2, s * .2], [0, s * .3]], s * .45, '#5a3a1a', { rot: r, top: Q.rg(p, [[0, '#6a7048'], [.35, '#4a5230'], [.45, '#7a4a1c'], [1, '#4a2a10']], .5, .45, .7), line: .5 });
 const saltedYolk = (p, x, y, s) => `<path d="${Q.blob(x, y, s, s * .5, 'sy' + x, { n: 10, jit: .3 })}" fill="#f0a830" opacity=".85"/>` + W.flecks(p, x, y, s, 12, 'sy' + x, ['#e8902a', '#f8c850'], { ry: s * .4, s: 1.2 });
 const bambooSlice = (p, x, y, s, r, liq = null) => Q.prism(p, x, y, [[-s / 2, -s * .25], [s / 2, -s * .35], [s / 2, s * .3], [-s / 2, s * .3]], 3, '#e8d8a0', { rot: r, sink: liq ? 1 : 0, liquid: liq, top: Q.lg(p, [[0, '#fbf2d0'], [1, '#e0cc90']], 0, 0, 1, 1), line: .45 });
-const plateHeap = (p, D, seed, n, R, minD, H, draw, { sauce = null, sauceR = 32 } = {}) => { R *= .92; H += 5; return D.s + (sauce ? W.pool(p, D.o.cx + 4, D.o.cy + 8, sauceR, sauce, seed) : '') + byDepth(W.spots(seed, Math.round(n * 1.4), R, minD * .85).map(([u, v, r], i) => { const [x, y] = P(D.o, u, v, 4 + W.hill(u, v, R, H)); return [y, () => draw(x, y, r, i)]; })); };
+const plateHeap = W.plateHeap;
 const heapBowl = (p, seed, n, minD, H, draw, { base = null, R = 64, after = () => '' } = {}) => W.inBowl(p, smallBowl(p), { R, H, base, items: (o, RR, HH) => [...W.onHill(o, seed, n, RR * .95, minD, HH, draw), [999, () => after(o, HH)]] });
-const braise = (p, V, c, seed, n, minD, H, draw, { srx = 50, R = 50 } = {}) => W.heap(p, V, { c, drop: 4, H, R, srx, items: (pl) => [...W.spots(seed, n, R - 4, minD), ...W.spots(seed + '2', Math.round(n / 3), R * .5, minD).map(([u, v, r]) => [u, v, r, H * .35])].map(([u, v, r, z = 0], i) => { const [x, y] = pl(u, v, z); return [y, () => draw(x, y, r, i)]; }) });
+const braise = W.braise;
 const soup = (p, c, items, o = {}) => W.soup(p, o.V ? o.V(p) : bowl(p), { c, drop: 10, glow: .35, gl: .55, items, ...o });
 function congee(p, seed, items = () => [], { c = '#f4ecd8' } = {}){
     const V = bowl(p, { rim: Q.RIM.hai }), S = Q.surface(p, V, { drop: 9, c, glow: .4 }), pl = (u, v, z = 0) => at(S.o, u, v, z);
@@ -92,7 +92,9 @@ export default {
     // 黒胡椒蝦: 殻つきのえびをにんにくとバターで炒め、粗びきの黒こしょう、青ねぎ（お好みで）
     tw_hujiao_xia: p => { const D = plate(p), o = D.o; return D.s + byDepth([[-30, -18, 10, 1], [10, -24, -10, -1], [36, -6, 20, 1], [-20, 8, -20, -1], [16, 14, 10, 1], [-38, 30, 0, 1], [30, 32, -10, -1]].map(([u, v, r, fl]) => { const [x, y] = P(o, u, v, 4); return [y, () => Q.prawn3q(p, x, y, 30, r, fl)]; })) + W.flecks(p, 100, 92, 46, 70, 'hjp', ['#3a2414', '#5a3a20'], { ry: 26, s: 1 }) + W.flecks(p, 100, 92, 40, 12, 'hjn', ['#4a9a2c'], { ry: 20, s: 1.6 }); },
     // 紅糟肉: 豚バラを紅麹の漬け床に漬けて揚げ、切り分ける、きゅうり（お好みで）
-    tw_hongzao_rou: p => { const D = plate(p), o = D.o; return D.s + byDepth([-36, -18, 0, 18, 36].map((u, i) => { const [x, y] = P(o, u, -u * .3 - 6); return [y, () => Q.prism(p, x, y, [[-7, -16], [7, -16], [7, 16], [-7, 16]], 14, '#b8301e', { rot: -14, top: Q.lg(p, [[0, '#f2c8b8'], [.3, '#e89a8a'], [.5, '#f8e0d0'], [1, '#c8604a']], 0, 0, 1, 0), line: .5 })]; })) + [[34, 34], [48, 26]].map(([u, v]) => W.coin(p, ...P(o, u, v), 7, '#3f7a2a', { h: 1.6, top: Q.rg(p, [[0, '#eef6d0'], [1, '#6a9a3a']], .4, .35, .8) })).join(''); },
+    tw_hongzao_rou: p => { const D = plate(p), o = D.o;
+        const sl = (u, v, i) => { const [x, y] = P(o, u, v); const w = 40, d = 16; return [y, () => Q.prism(p, x, y, [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]], 7, '#a82a1a', { rot: -16, top: Q.lg(p, [[0, '#b8301e'], [.12, '#c8402a'], [.2, '#f6dcd0'], [.45, '#f0c4b8'], [.55, '#fbf0e6'], [.7, '#e8a898'], [.88, '#c8402a'], [1, '#9a2414']], 0, 0, 0, 1), line: .6 }) + Q.shine(x - 8, y - 9, 12, -16, .7)]; };
+        return D.s + byDepth([[-30, -26], [-14, -10], [2, 6], [18, 22]].map(([u, v], i) => sl(u, v, i))) + [[40, 34], [52, 20], [44, 6]].map(([u, v]) => W.coin(p, ...P(o, u, v), 8, '#3f7a2a', { h: 1.6, top: Q.rg(p, [[0, '#eef6d0'], [1, '#6a9a3a']], .4, .35, .8) })).join(''); },
     // 滷雞腿: 鶏のドラムスティックを醤油と氷砂糖で煮る、煮卵・押し豆腐（お好みで）（深皿）
     tw_lu_jitui: p => braise(p, deep(p), BRAISE, 'lj', 9, 20, 30, (x, y, r, i) => i % 4 === 3 ? Q.lump(p, x, y, 9, 7, '#a8642a', 'le' + i, { n: 12, jit: .06, hi: .7 }) : i % 4 === 2 ? W.dice(p, x, y, 13, '#8a4a1e', 'ld' + i, { h: 5 }) : W.drumstick(p, x, y, 34, r, i, { c: '#8a4018', fried: false })),
     // 客家小炒: 豚バラ・戻したするめ・押し豆腐の細切り・中国セロリ・青ねぎを炒める
