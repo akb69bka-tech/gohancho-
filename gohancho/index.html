@@ -6866,12 +6866,17 @@ function swappedRecipe(r){
     // 主役の肉・魚（ハムなど）を入れないときは、料理の印（「ハム・ベーコン」など）も残りの材料から付け直す（なければ野菜）
     if (!pw && w.omit.some(i => i.key === r.protein || FAMILY[i.key] === r.family)){ const k = items.find(i => FAMILY[i.key] && FAMILY[i.key] !== '野菜'); fam = k ? FAMILY[k.key] : '野菜'; }
     const esc_ = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // 訳を重ねた日本の料理の手順は英語（stepLabel: 材料の名前を画面の言葉にしたとき（ベトナム語）の、手順の言葉での名前）
+    const enSteps = !r.pack && stepLangOf(r) === 'en', stepLab = i => (enSteps && i.stepLabel) || i.label;
     const repl = txt => w.swaps.reduce((s, x) => {
         // 作り方の文の中の名前も入れかえる（日本語の料理は「豚肉」「豚バラ肉」のような言い方も）
         const fam = currentCountry() === 'JP' && !r.trLang ? FAMILY_RE[FAMILY[x.from.key]] : null;
         if (fam && /[ぁ-ん一-龠]/.test(x.to.name)) s = s.replace(fam, x.to.name);
-        return [...new Set([x.from.name, x.from.label])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
-            .reduce((u, n) => u.replace(/^[ぁ-ん]/.test(n) ? jaWordRe(n) : new RegExp(esc_(n), 'gi'), x.to.label), s);   // ひらがなの名前（たら）は「火が通ったら」の「たら」に当てない
+        // 英語の手順（日本の料理の訳）: 「the pork」「the chicken」のような短い言い方も入れかえる（第4回 L11。鶏ガラの「chicken stock」などは替えない）
+        const famEn = enSteps ? MEAT_WORD_EN[FAMILY[x.from.key]] : null;
+        if (famEn) s = s.replace(famEn, () => String(shortLabel({label: stepLab(x.to)})).toLowerCase());
+        return [...new Set([x.from.name, x.from.label, x.from.stepLabel])].filter(n => n && n.length > 1).sort((a, b) => b.length - a.length)
+            .reduce((u, n) => u.replace(/^[ぁ-ん]/.test(n) ? jaWordRe(n) : new RegExp(esc_(n), 'gi'), stepLab(x.to)), s);   // ひらがなの名前（たら）は「火が通ったら」の「たら」に当てない
     }, String(txt));
     // 入れない材料（なくても作れる苦手な材料）は、作り方の文からも外す（「えびといんげんはゆでる」→「いんげんはゆでる」、「錦糸卵・えび・いんげん」→「錦糸卵・いんげん」）。
     // 外すと文が崩れるところ（「えびは粗く刻む」）は「えび（入れない）」と添える。残る材料と同じ言葉・ほかの材料の名前の一部（玉ねぎの「ねぎ」など）は触らない
@@ -6903,9 +6908,48 @@ function swappedRecipe(r){
     const shell = w.swaps.filter(x => inFam('shellfish', x.from) && !inFam('shellfish', x.to)), shellFix = txt => (shell.length ? shellPrepFix(txt) : txt);   // えびを肉にしたら、殻・背わたの下ごしらえを残さない
     // 魚・貝・いか・たこを置き換えたら、元の食材の言葉（英語の訳の「clams」「cod」など）と、その下ごしらえ（殻が開いたら…）も残さない（日本の料理だけ。各国の料理は recipeSwaps で置き換えない）
     const sea = w.swaps.filter(x => seaItem(x.from)), seaFix = txt => (sea.length ? (/[ぁ-ん]/.test(txt) ? seaPrepFix(txt) : seaPrepFixEn(sea.reduce((u, x) => seaReplEn(u, x.from, x.to), txt), sea.filter(x => !seaItem(x.to)).map(x => String(shortLabel(x.to)).toLowerCase()))) : txt);
-    const steps = r.steps.map(st => typeof st === 'string' ? seaFix(shellFix(omitTxt(repl(st)))) : Object.assign({}, st, {t: seaFix(shellFix(omitTxt(repl(st.t))))}));
+    const tofu = w.swaps.filter(x => x.tip === 'tofu'), meatLeft = items.some(i => ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key])), tofuFix = txt => (tofu.length ? tofuStepFix(txt, tofu, {en: enSteps, meatLeft, lab: stepLab}) : txt);
+    const steps = r.steps.map(st => typeof st === 'string' ? tofuFix(seaFix(shellFix(omitTxt(repl(st))))) : Object.assign({}, st, {t: tofuFix(seaFix(shellFix(omitTxt(repl(st.t)))))}));
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
 }
+// 英語の手順の、肉の短い言い方（「the pork」「ground beef」）。スープの素・脂・骨の言い方は替えない
+const MEAT_WORD_EN = {'豚': /\b(?:ground |minced )?pork(?! (?:stock|broth|bouillon|fat|bones?|rinds?)\b)\b/gi, '鶏': /\b(?:ground |minced )?chicken(?! (?:stock|broth|bouillon|fat|bones?|skin|powder|granules)\b)\b/gi, '牛': /\b(?:ground |minced )?beef(?! (?:stock|broth|bouillon|fat|tallow|bones?)\b)\b/gi};
+/* 肉を豆腐に置き換えた手順の文（第4回モニター L11・R9）: 肉だけの言い方（1枚ずつ広げて・色が変わったら・赤みがなくなるまで・脂を出す・筋を切る）を、豆腐に合う言い方にする。
+   それでも肉の言い方が残る文は、置き換えの説明（「木綿豆腐は豚肉の代わりです…」）に差し替える。日本の料理の日本語・英語の手順だけ（各国の料理の手順の言葉は多いので見ない） */
+const TOFU_NG_JA = /1枚ずつ広げ|赤みがなくなる|脂を出|余分な脂|筋を切|色が変わ/, TOFU_NG_EN = /\bno pink\b|\bno longer pink\b|changes? colou?r|one (?:slice )?at a time|render(?:ed|s)? (?:the )?fat/i;
+function tofuStepFix(txt, tofu, o){
+    let u = String(txt);
+    for (const x of tofu){
+        if (!['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[x.from.key])) continue;
+        if (!o.en){
+            const N = x.to.name, T = '(?:' + [...new Set([x.to.name, x.to.label])].filter(Boolean).sort((a, b) => b.length - a.length).map(esc_re).join('|') + ')', has = sn => new RegExp(T).test(sn);   // 手順の文には名前（木綿豆腐）、短い名前（豆腐）のどちらも出る
+            u = u.replace(new RegExp(T + 'を1枚ずつ広げて色が変わるまでゆでる', 'g'), N + 'を食べやすく切って入れ、2分ほどゆでて温める')
+                .replace(new RegExp('(^|。)\\s*' + T + 'は赤みがなくなるまでしっかり火を通す。', 'g'), '$1')
+                .replace(new RegExp(T + 'の中まで火が通るまで', 'g'), N + 'が中まで温まるまで')
+                .replace(new RegExp(T + 'は筋を切って', 'g'), N + 'は水気をよく切って')
+                .replace(new RegExp(T + 'に下味をもみ込む', 'g'), N + 'に下味をからめる')
+                .replace(new RegExp(T + 'をほぐしながら炒め', 'g'), N + 'を崩さないように炒め')
+                .replace(/肉の色が変わったら/g, N + 'に焼き色がついたら');
+            if (!o.meatLeft) u = u.replace(/(?<![一-龠ァ-ヶーきぎ])肉(?![一-龠ァ-ヶーじ])/g, N);   // 「野菜と肉を切る」の「肉」（ほかに肉が入っていないときだけ）
+            u = u.split(/(?<=。)/).map(sn => {
+                if (!has(sn)) return sn;
+                sn = sn.replace(/表面の色が変わるまで/g, '表面が焼けるまで').replace(/、色が変わってから/g, '、')
+                    .replace(/色が変わったら/g, /炒め|焼/.test(sn) ? '焼き色がついたら' : '温まったら').replace(/色が変わるまで/g, '温まるまで')
+                    .replace(/炒めて脂を出し/g, '炒めて焼き色をつけ').replace(/余分な脂を落とす/g, '水気を切る');
+                return TOFU_NG_JA.test(sn) ? N + 'は' + x.from.name + 'の代わりです。崩れないように扱い、中まで温めてください。' : sn;
+            }).join('');
+        } else {
+            const T = String(shortLabel({label: o.lab(x.to)})).toLowerCase(), F = String(shortLabel({label: o.lab(x.from)})).toLowerCase(), Tr = esc_re(T);
+            u = u.replace(new RegExp('\\s*Cook the ' + Tr + ' until no (?:longer )?pink(?: remains)?\\.', 'gi'), '')
+                .replace(new RegExp('until (?:the ' + Tr + '|it) changes? colou?r', 'gi'), 'until lightly browned')
+                .replace(new RegExp('(the ' + Tr + ' (?:is|are)) cooked through', 'gi'), '$1 heated through');
+            if (!o.meatLeft) u = u.replace(/\b(?:the )?meat\b/gi, m => /^the /i.test(m) ? 'the ' + T : T);
+            u = u.split(/(?<=\.)\s+/).map(sn => sn.toLowerCase().includes(T) && TOFU_NG_EN.test(sn) ? `The ${T} replaces the ${F}; handle it gently and heat it through.` : sn).join(' ');
+        }
+    }
+    return u.trim();
+}
+function esc_re(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 // えび・魚を肉に置き換えたときの分量（モニター第3回 S2）: 元の重さに合わせる。「えび 4尾」なら 80g（尾・切れの数え方も、肉のふだんの分量「2枚（500g）」も使わない）
 const SWAP_UNIT_G = {'尾': 20, '切れ': 90, '杯': 200, '匹': 100};
 function swapQty(from, to){

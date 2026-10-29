@@ -179,6 +179,47 @@ if (want('R5')){
     }
 }
 
+// ---- R9 置き換えた料理の手順の文（豆腐に「1枚ずつ広げて色が変わるまで」が残らない） ----
+if (want('R9')){
+    const sweep = (p) => p.evaluate(() => {
+        const NG = /1枚ずつ広げ|赤みがなくなる|脂を出|余分な脂|筋を切|色が変わ|\bno pink\b|\bno longer pink\b|changes? colou?r/i, out = {n: 0, bad: [], left: []};
+        RECIPES.forEach(r0 => {
+            const r = swappedRecipe(r0); if (!r.swapped) return;
+            const tofu = r.swapped.swaps.filter(x => x.tip === 'tofu'); if (!tofu.length) return; out.n++;
+            r.steps.forEach((s, k) => { const tx = String(typeof s === 'string' ? s : s.t);
+                tx.split(/(?<=[。.])\s*/).forEach(sn => { if (tofu.some(x => [x.to.name, x.to.label, 'tofu'].some(n => n && sn.toLowerCase().includes(String(n).toLowerCase()))) && NG.test(sn)) out.bad.push(r0.id + '#' + k + ' ' + sn); });
+                if (/\b(?:pork|beef|meat)\b(?! (?:stock|broth|bouillon|fat))|(?<![一-龠ァ-ヶーきぎ])肉(?![一-龠ァ-ヶーじ])/.test(tx) && !r.items.some(i => ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key]))) out.left.push(r0.id + '#' + k + ' ' + tx); });
+        });
+        return out;
+    });
+    for (const [lang, avoid, locale] of [['ja', ['肉', '魚'], 'ja-JP'], ['en', ['pork', 'chicken', 'beef'], 'en-US'], ['vi', ['豚肉', '鶏肉', '牛肉'], 'vi-VN']]){
+        const {p, ctx} = await open({uiLang: lang, avoid}, {locale});
+        await p.waitForTimeout(400);
+        const r = await sweep(p);
+        ok(r.n >= 5 && !r.bad.length, `R9-1 ${lang}: 豆腐に置き換えた料理（${r.n}品）の手順に、肉だけの言い方が残らない: ` + r.bad.slice(0, 3).join(' | '));
+        ok(!r.left.length, `R9-2 ${lang}: 肉をすべて置き換えた料理の手順に「肉」「pork」などが残らない: ` + r.left.slice(0, 3).join(' | '));
+        await ctx.close();
+    }
+    // 英語の手順で、豚肉→鶏肉に置き換えたとき「the pork」が残らない
+    {
+        const {p, ctx} = await open({uiLang: 'en', avoid: ['pork']}, {locale: 'en-US'});
+        await p.waitForTimeout(400);
+        const r = await p.evaluate(() => RECIPES.map(r0 => swappedRecipe(r0)).filter(r => r.swapped && r.swapped.swaps.some(x => FAMILY[x.from.key] === '豚')).flatMap(r => r.steps.map(s => String(typeof s === 'string' ? s : s.t)).filter(t => /\bpork\b/i.test(t)).map(t => r.id + ' ' + t)));
+        ok(!r.length, 'R9-3 en: 豚肉を替えた料理の手順に「pork」が残らない: ' + r.slice(0, 3).join(' | '));
+        await ctx.close();
+    }
+    // 画面: 肉と魚を外した人が冷しゃぶサラダの作り方を開く
+    {
+        const {p, ctx} = await open({avoid: ['肉', '魚']});
+        await p.evaluate(() => openModal('reishabu')); await p.waitForTimeout(400);
+        const txt = await p.evaluate(() => document.querySelector('#modal-root').innerText);
+        await p.screenshot({path: (process.env.SHOT_DIR || '/tmp') + '/R9_reishabu.png'}).catch(() => {});
+        ok(/木綿豆腐を食べやすく切って入れ、2分ほどゆでて温める/.test(txt) && !/1枚ずつ広げて色が変わるまで/.test(txt), 'R9-4 冷しゃぶサラダ（豆腐）の手順が豆腐に合う文: ' + (txt.match(/[^\n]*木綿豆腐[^\n]*ゆで[^\n]*/) || [''])[0]);
+        ok(/豚しゃぶしゃぶ用肉 の代わりに 木綿豆腐/.test(txt), 'R9-5 置き換えの説明はそのまま出る');
+        await ctx.close();
+    }
+}
+
 await b.close();
 if (errs.length){ console.log('ページのエラー:', [...new Set(errs)].slice(0, 5)); }
 console.log(`panel-r4: ${checks - fails}/${checks} 成功`);
