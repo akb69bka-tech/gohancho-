@@ -232,6 +232,25 @@ for (const [lang, w, ts, n] of [['ja', 195, 2, 3], ['ja', 195, 0, 5], ['en', 195
     await ctx.close();
 }
 
+// R16（第7回）: 画面の文字に「一膳」を残さない（「献立」にそろえる。店の名前「わが家のご飯帖」の判子の「膳」は別）
+{
+    const src = (await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8');
+    const keys = [...src.matchAll(/\b(?:t|tc)\((?:'(?:[^'\\]|\\.)*'\s*,\s*)?'((?:[^'\\]|\\.)*)'/g)].map(m => m[1]).filter(k => k.includes('一膳'));
+    ok(!keys.length, 'R16 画面の文（t・tc）に「一膳」がない: ' + keys.slice(0, 5).join(' / '));
+    const {p, ctx} = await open({dishCount: 4});
+    const seen = [];
+    const look = async where => { const tx = await p.evaluate(() => document.body.innerText); if (tx.includes('一膳')) seen.push(where + ':' + tx.slice(Math.max(0, tx.indexOf('一膳') - 12), tx.indexOf('一膳') + 8)); };
+    await look('今日');
+    await p.evaluate(() => { const b = document.querySelector('[data-act="tomorrow-open"]'); if (b) b.click(); else { sheet = {kind: 'tomorrow'}; renderSheet(); } }); await p.waitForTimeout(300); await look('明日の献立');
+    await p.evaluate(() => closeSheet()); await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
+    for (const tb of ['today', 'cook', 'log']){ await p.evaluate(tb => setTab(tb), tb); await p.waitForTimeout(250); await look(tb); }
+    await p.evaluate(() => { setTab('today'); openCondSheet(); }); await p.waitForTimeout(300); await look('条件（決めたあと）');
+    await p.evaluate(() => { closeSheet(); sheet = {kind: 'tomorrow'}; renderSheet(); }); await p.waitForTimeout(300); await look('明日の献立（決めたあと）');
+    await p.evaluate(() => closeSheet()); await p.click(BTN); await p.waitForTimeout(300); await look('作り直しの確かめ');
+    ok(!seen.length, 'R16 画面に「一膳」が出ない（今日・明日の献立・決めたあとの各タブ・条件・作り直し）: ' + seen.join(' / '));
+    await ctx.close();
+}
+
 await b.close();
 if (errs.length){ fails++; console.log('FAIL JSエラー', errs.slice(0, 3)); }
 console.log(`\n${checks - fails}/${checks} ok` + (fails ? `  失敗 ${fails}  [再現: SEED=${SEED}]` : ''));
