@@ -943,8 +943,15 @@ for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfis
     await ctx.close();
     // 家族の文も同じ
     const o2 = await open('JP', {}, { family: [{ id: 'a', name: '息子', role: 'child', avoid: ['@dairy', '@egg'], allergy: ['@dairy', '@egg'], mild: false }] });
-    const g2 = await o2.p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '汁物'); if (i < 0) return { skip: true }; m.items[i].r = byId('wantansoup'); render(); return { line: eatersLine() }; });
+    // 文に出す加工品の名前は1つ（残りは「ほか○つの袋」）。乱数の献立に、ほかの「袋を見る」料理（ハムの春雨サラダなど）が先に来ると、その名前が出る（SEED=2754568521）。
+    // ほかの枠は、同じ枠の「袋を見る」もののない料理にかえてから確かめる（どの SEED でも、ワンタンスープの加工品の名前が出るはず）
+    const g2 = await o2.p.evaluate(() => { setTab('today'); const m = session.menu; const i = m.items.findIndex(x => x.slot === '汁物'); if (i < 0) return { skip: true }; m.items[i].r = byId('wantansoup');
+        m.items.forEach((x, k) => { if (k === i || !x.r || !algMayHits(x.r).length) return; const alt = RECIPES.find(r => slotOf(r) === slotOf(x.r) && !!r.main === !!x.r.main && !isAvoided(r) && !algMayHits(r).length && !m.items.some(y => y.r && y.r.id === r.id)); if (alt) x.r = alt; });
+        render(); const rs = m.items.map(x => x.r).filter(Boolean);
+        return { line: eatersLine(), others: rs.filter(r => r.id !== 'wantansoup' && algMayHits(r).length).map(r => r.id), first: (algMayNames(rs)[0] || '').split(' ')[0] }; });
+    ok(g2.skip || !g2.others.length, '家族の文（準備）: ワンタンスープのほかに「袋を見る」料理を残さない: ' + (g2.others || []).join(','));
     ok(g2.skip || /食べられそうなお膳です。\d品は袋の表示を確かめてください（[^）]*(?:ワンタンの皮|鶏ガラ)/.test(g2.line), '家族の文に袋を見る加工品の名前: ' + g2.line);
+    ok(g2.skip || (g2.first && g2.line.includes(g2.first)), '家族の文の加工品の名前は、お膳の「袋を見る」加工品の1つ目: ' + g2.first + ' / ' + g2.line);
     await o2.ctx.close();
     // 買い物メモ: ハムの行に「⚠ 大豆（袋の表示を確認）」。調味料は行がないので、袋を見るものの一覧に名前を出す
     const o3 = await open('JP', { allergens: ['soy'] });
