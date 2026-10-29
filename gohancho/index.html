@@ -4109,12 +4109,12 @@ function fitPlaceholders(root){
     root.querySelectorAll('.ph-ex[data-ph-for]').forEach(n => n.remove());
     root.querySelectorAll('input[placeholder]:not([type=number]):not([type=date]):not([type=time]), input[data-ph-full]').forEach((el, i) => {
         const full = el.dataset.phFull || el.getAttribute('placeholder') || ''; if (!full) return;
-        el.setAttribute('placeholder', full);
+        if (el.getAttribute('placeholder') !== full) el.setAttribute('placeholder', full);   // 同じ値を入れ直さない（入れ直すと欄ごとにレイアウトの計算がやり直しになる）
         const w = el.clientWidth; if (!w) return;
         const cs = getComputedStyle(el), avail = w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 2;
         phCanvas = phCanvas || document.createElement('canvas'); const cx = phCanvas.getContext('2d');
         cx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-        if (cx.measureText(full).width <= avail){ delete el.dataset.phFull; return; }
+        if (cx.measureText(full).width <= avail){ if (el.dataset.phFull != null) delete el.dataset.phFull; return; }
         el.dataset.phFull = full;
         const m = full.match(/^(.*?)\s*[（(]\s*(.+?)\s*[）)]\s*$/);
         el.setAttribute('placeholder', m && m[1] ? m[1] : '');
