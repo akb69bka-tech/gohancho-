@@ -48,7 +48,7 @@ for (const k of [0, 1, 2]){
     await p.click('[data-act="pick-country"][data-cc="JP"]');
     // 苦手な食材の画面が出るまで「次へ」（はじめての流れの段の数が変わっても動くように）
     await p.waitForSelector('[data-act="ob-next"]');
-    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; const st = await p.evaluate(() => sheet && sheet.step); await nx.click(); await until(p, st => !sheet || sheet.step !== st, st); }
+    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; const st = await p.evaluate(() => sheet && sheet.step); await p.click('[data-act="ob-next"]'); /* 手に持った要素は描き直しで外れることがあるので、押すときに探し直す */ await until(p, st => !sheet || sheet.step !== st, st); }
     await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); });   // 設定の後ろの案（と下書き）がえびフライ
     await p.click('[data-act="ob-avoid"][data-v="えび"]');
     await p.click('[data-act="ob-allergy"]'); await until(p, () => tab === 'settings' && !sheet);
