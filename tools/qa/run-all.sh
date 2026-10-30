@@ -63,6 +63,7 @@ fi
 for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy allergen-regions stock menu-trust promises dish-alias panel-r3 panel-r3b panel-r4 panel-r4b panel-r4-ui marugoto upgrade-v36 upgrade-seats wish first-country greet; do
   add "t-$T" app "" "node tools/tests/$T.mjs"
 done
+add "qa-category-audit" app "" "node tools/qa/category-audit.js"   # 仲間はずれの点検（21か国 × 気分・かえる・主食・席・1週間・明日）。1件でもあれば落ちる
 add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
 add "packs-check"      static "" "node tools/packs/check.mjs"
