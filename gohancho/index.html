@@ -1014,7 +1014,7 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .tray.grid2.tight .spot-label .nm{font-size:.75rem}
 .tray.grid2.tight2{padding:6px 6px}.tray.grid2.tight2 .tg-mid{margin:0}.tray.grid2.tight2 .tg-mid .shuffle .sh-ic{--shd:56px}.tray.grid2.tight2 .spot{gap:2px;padding:0}.tray.grid2.tight2 .tg-mid .shuffle{flex-direction:row;gap:8px;max-width:min(14rem,60vw)}.tray.grid2.tight2 .tg-mid .shuffle .sh-tx{text-align:start}   /* いちばん詰めたとき: 余白を減らし、丸は 56px（基準書 2-2 の下限） */
 #view.tray-tight .today-head.p2-head h2{font-size:1.125rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#view.tray-tight .today-head.p2-head{margin-bottom:var(--s4)}
-body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today.tray-tight3 .wrap{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight > section.sec:first-child{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight .today-head.p2-head{margin-bottom:0}   /* お膳が入りきらない狭い画面で、上の段を最初の画面に入れるための、いちばん小さい余白（第8回 R20） */#view.tray-tight > section.sec:first-child{gap:var(--s8)}   /* いちばん詰めたとき: 上の余白と、見出しとお膳のあいだを詰める（今日の献立だけ。日付は残す） */
+body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today.tray-tight3 .wrap{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight > section.sec:first-child{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight .today-head.p2-head{margin-bottom:0}body.on-today.tray-tight3 .tray.grid2.tight2{padding-top:2px}body.on-today.tray-tight3 .tray.grid2.tight2 .spot{gap:0}   /* お膳が入りきらない狭い画面で、上の段を最初の画面に入れるための、いちばん小さい余白（第8回 R20） */#view.tray-tight > section.sec:first-child{gap:var(--s8)}   /* いちばん詰めたとき: 上の余白と、見出しとお膳のあいだを詰める（今日の献立だけ。日付は残す） */
 .tray.grid2 .spot-label .slot{display:block;max-width:100%;white-space:nowrap;font-size:min(.6875rem,3vw)}
 .tray.grid2 .spot-label .nm.none{font-size:var(--fs12,.75rem);font-weight:400;align-self:stretch;text-align:center}   /* 空の枠の説明は欄の幅いっぱい（主菜が変わって言い方が変わっても、欄が動かない） */
 .tray.grid2 .spot-label .mt,.tray.grid2 .spot-label .dwhy{display:none}
@@ -4372,8 +4372,9 @@ function fitTray(){
             tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight'); setVs(Math.min(vs0, 60));
             if (!rowIn()){ tr.classList.add('tight'); fixText(); }
             if (!rowIn()) document.body.classList.add('tray-tight3');   // 見出しのまわりの余白もいちばん小さく
+            if (!rowIn()){ tr.classList.add('noslot'); fixText(); }   // 種類の字も出さない
             if (rowIn()) tight = tr.classList.contains('tight');
-            else { tr.classList.remove('tight', 'tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); } } }
+            else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
 }
