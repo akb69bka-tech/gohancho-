@@ -278,6 +278,14 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .thumb.gen{background-color:var(--porcelain);background-size:112%}
 .hero.gen{background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%)}
 .hero.gen img{object-fit:contain;padding:10px 0 26px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.35))}
+/* 写真風の絵（via:'photo'。Gemini などで作った、生成りの背景の正方形の写真）: 背景ごと丸く切って、器（お皿）のように見せる。
+   四角いまま出すと、暗い表示やお膳の上で、生成りの四角が浮いて見えるため。大きさ・場所は手描きの絵と同じ */
+.vessel.gen.gph .food.photo{inset:0;border-radius:50%;background-color:#FBF5EC;background-size:cover;filter:none;box-shadow:inset 0 0 0 1px rgba(60,40,20,.10),0 6px 12px rgba(0,0,0,.30)}
+.thumb.pic.gen.gph{background:#FBF5EC}
+.thumb.pic.gen.gph>img{inset:0;width:100%;height:100%}
+.hero.gen.gph img{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:auto;height:calc(100% - 84px);max-width:calc(100% - 24px);aspect-ratio:1;padding:0;object-fit:cover;border-radius:50%;background:#FBF5EC;filter:none;box-shadow:inset 0 0 0 1px rgba(60,40,20,.10),0 10px 22px rgba(0,0,0,.30)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gph .food.photo,:root:not([data-theme="light"]) .gph>img,:root:not([data-theme="light"]) .hero.gen.gph img{filter:brightness(.93)}}
+:root[data-theme="dark"] .gph .food.photo,:root[data-theme="dark"] .gph>img,:root[data-theme="dark"] .hero.gen.gph img{filter:brightness(.93)}   /* 暗い表示では、生成りのお皿が明るすぎて目立たないよう少しだけ落とす */
 .v-plate{width:92%;box-shadow:inset 0 0 0 6px var(--porcelain),inset 0 0 0 8px var(--rim),inset 0 -8px 18px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.45)}
 .v-plate .food{inset:20%}.v-plate .food.photo{inset:11%}
 .v-donburi{width:92%;background:repeating-conic-gradient(var(--rim) 0 5deg,var(--porcelain) 5deg 15deg);box-shadow:0 8px 16px rgba(0,0,0,.45)}
@@ -477,7 +485,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .dsheet{padding-bottom:0}
 .dsheet .hero{aspect-ratio:4/3;max-height:46vh;width:100%}
 .dsheet .hero.stage,.dsheet .hero.stage.gen,.dsheet .hero.stage.illust{background:var(--stage);border-radius:0}.dsheet .hero.stage.s2{background:var(--stage-2)}.dsheet .hero.stage.s3{background:var(--stage-3)}   /* 絵の台は種類別（主菜=桃・副菜=若草・汁もの/ご飯=卵色） */
-.dsheet .hero.gen img{filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--ink) 22%,transparent))}
+.dsheet .hero.gen img{filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--ink) 22%,transparent))}.dsheet .hero.gen.gph img{filter:none}
 .dsheet .hero img{aspect-ratio:auto}
 .dsheet .hero .noimg .vessel{width:180px}
 .dsheet .hero .cap{padding-bottom:calc(var(--s16,16px) + 6px)}
@@ -4809,9 +4817,10 @@ function photoOf(r){
 
 /* ---- アプリに同梱した料理の絵 ----
    img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
-   'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像。アプリから外部へは通信しない。 */
+   'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像、'photo' は Gemini（Google の画像生成）で前もって作った写真風の画像
+   （tools/illustrations/import-photos.mjs で 512px の WebP にして入れる。入っていない料理は手描きの SVG のまま）。アプリから外部へは通信しない。 */
 const GEN = {};
-const GEN_INFO = {ok: false, any: false, ai: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
+const GEN_INFO = {ok: false, any: false, ai: false, photo: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
 const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名、読みこみ済みは true
 function addGenerated(items){
     GEN_INFO.ok = false;
@@ -4819,6 +4828,7 @@ function addGenerated(items){
         const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
         const v = '?v=' + encodeURIComponent(it.v || it.date || '');   // v は絵の中身から作った印（描き直すと変わる）
         GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + v, gen: true, ai: it.via === 'api' || it.via === 'chatgpt',
+            photo: it.via === 'photo',   // 写真風の絵（Gemini で作った WebP。生成りの背景の正方形）: 丸く切って出す（gph）
             // 一覧用の小さい絵（192px）。一覧に何百品も並んでも、SVG の影を毎回計算しないので速い
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
     });
@@ -4973,10 +4983,10 @@ function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeU
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + (r.pack ? '' : ' 料理')); }
 function photoNote(){
     // 数千件の GEN を描き直しのたびに見ない（GEN が変わるのは addGenerated だけ。そのときに覚え直す）
-    if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai){ GEN_INFO.ai = true; break; } } GEN_INFO.ok = true; }
-    const ai = GEN_INFO.ai, anyGen = GEN_INFO.any;
+    if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; GEN_INFO.photo = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai) GEN_INFO.ai = true; if (GEN[k].photo) GEN_INFO.photo = true; if (GEN_INFO.ai && GEN_INFO.photo) break; } GEN_INFO.ok = true; }
+    const ai = GEN_INFO.ai, gem = GEN_INFO.photo, anyGen = GEN_INFO.any;
     const wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
-    if (ai || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
+    if (ai || gem || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', gem ? t('料理の写真風の絵は Gemini（Google の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
     if (anyGen) return '';
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return t('料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。');
     return '';
@@ -5007,7 +5017,7 @@ function vesselHtml(kind, r, still=false, anim=true){
     if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)) ph = null; }
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
     const food = ph ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
-    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}${anim ? ' rise-in' : ''}`;
+    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}${ph && ph.photo ? ' gph' : ''}${anim ? ' rise-in' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
@@ -5015,7 +5025,7 @@ function thumbHtml(r){
     let ph = photoOf(r);
     if (ph){ const src = ph.thumb || ph.src; probeImg(src); if (IMG_FAIL.has(src)) ph = null; }
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
-    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
@@ -11509,12 +11519,12 @@ function renderModalBody(){
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}の写真（わが家で作ったもの）', {name:r.name}))}"><div class="cap">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(ph.d)}))}</div>`
         : ph && ph.gen
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト', {name:baseName}))}">
-           ${r.isTwist || ph.ai ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ''}</div>` : ''}`
+           ${r.isTwist || ph.ai || ph.photo ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai || ph.photo ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ph.photo ? esc(t('写真風の絵は Gemini（Google の画像生成）で作成したイメージです。実際の料理・盛りつけとは異なります。')) : ''}</div>` : ''}`
         : ph
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト（写真をもとに作成）', {name:baseName}))}">
            <div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + SLASH() : ''}${esc(t('写真をもとにイラスト化'))}${SLASH()}${esc(t('撮影: {artist}（{license}）', {artist:ph.artist || t('不明'), license:ph.license || t('ライセンス不明')}))} <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(t('出典: Wikimedia Commons'))}</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
-    const heroCls = (ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust') + (ph && !ph.gen ? '' : ' stage' + (r.type === '副菜' ? ' s2' : ['汁物', 'ごはん', '麺'].includes(r.type) ? ' s3' : ''));   // 絵の台は種類別（写真はそのまま）
+    const heroCls = (ph ? (ph.gen ? 'hero gen' + (ph.photo ? ' gph' : '') : 'hero') : 'hero illust') + (ph && !ph.gen ? '' : ' stage' + (r.type === '副菜' ? ' s2' : ['汁物', 'ごはん', '麺'].includes(r.type) ? ' s3' : ''));   // 絵の台は種類別（写真はそのまま）
     const sv = svToday();
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
     const kind = [typeLabel(r.type), r.pack && r.pack === currentCountry() ? '' : genreLabel(r)].filter(Boolean).join(t('・'));   // いまの国の料理には国名を出さない（metaLine と同じ）

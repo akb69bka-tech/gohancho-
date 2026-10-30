@@ -6,7 +6,7 @@
  *   --file f_side1.mjs  その盛りつけファイルだけ読む（3q/<名前>.mjs も指定できる）　--no-manifest  manifest.json を書きかえない（試し描き用）
  * dishes/*.mjs に料理ごとの盛りつけ（どの器に、どの具を、どこに置くか）を書く。部品は kit.mjs
  * 3q/*.mjs は斜め上35度の絵（部品は kit3q.mjs、基準は docs/illustration_3q.md）。同じ ID があれば 3q/ を使う
- * ChatGPT で作った画像（manifest の via が api / chatgpt）がある料理は、manifest をそのままにする
+ * ChatGPT で作った画像（manifest の via が api / chatgpt）や、Gemini の写真風の絵（via が photo）がある料理は、manifest をそのままにする
  */
 import fs from 'node:fs';
 import path from 'node:path';

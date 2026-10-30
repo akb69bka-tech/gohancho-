@@ -19,6 +19,14 @@ node tools/illustrations/draw/thumbs.mjs           # 絵を作ったあとに必
 
 レシピを追加したら、`draw/dishes/` のどれかに同じ ID で盛りつけを書いて、上のコマンドを実行します。
 
+## 写真風の絵（Gemini）に入れ替える
+
+Gemini で作った写真風の画像（`<ID>.png`）は、`import-photos.mjs` で 512px の WebP にして入れます（manifest の via は `photo`）。入れていない料理は手描きの SVG のままです。手順は [docs/photo_swap.md](../../docs/photo_swap.md) を見てください。
+
+```bash
+node tools/illustrations/import-photos.mjs ~/gemini_in/2026-11-01   # フォルダの中の <ID>.png / .jpg / .webp を取りこむ
+```
+
 下の ChatGPT の方法で画像を作ると、その料理は手描きの絵の代わりに ChatGPT の画像が表示されます（手描きの SVG ファイルは残るので、`manifest.json` からその料理を消して `build.mjs` を実行すれば戻せます）。
 
 ---
