@@ -1037,6 +1037,7 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 @media (prefers-reduced-motion: reduce){.spot.fresh .vessel{animation:none}}
 /* 詰め（器が 60px を切りそうな画面）: 「かえる」は名前の下の行（器には重ねない。料理の絵を隠さない。点検3） */
 .tray.grid2.tight .spot{grid-template-rows:var(--vs) 1fr auto}
+.tray.grid2.noslot .spot-label .slot{display:none}   /* いちばん詰めても入らないとき（アレルギーの札のある日の狭い画面）: 種類の字を出さない（fitTray） */
 .tray.grid2.tight .spot .swap{grid-row:3}
 .tray.grid2.tight .spot .swap[data-act="soup-add"]::before,.tray.grid2.tight .spot .swap.tray-add::before{content:"+"}
 .tray.grid2.tight .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
@@ -4269,7 +4270,7 @@ function fitTray(){
     const prev = TRAY_FIT.base === base && TRAY_FIT.state ? TRAY_FIT.state : null;   // 同じ並びで前に決めた大きさ（言語を変えたときなど、決め直しても器を大きくしない・名前の欄を低くしない）
     if (TRAY_FIT.key === key && TRAY_FIT.state){
         const st = TRAY_FIT.state;
-        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3);
+        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); tr.classList.toggle('noslot', !!st.noslot); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3);
         if (st.vs) tr.style.setProperty('--vs', st.vs); else tr.style.removeProperty('--vs');
         rowsEl.forEach((r, k) => { if (st.nml[k]) r.style.setProperty('--nml', st.nml[k]); else r.style.removeProperty('--nml'); });
         let ok = true;
@@ -4287,7 +4288,7 @@ function fitTray(){
             return;
         }
     }
-    tr.classList.remove('tight', 'tight2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'noslot', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     const fixNames = (root = tr) => { let over = false;
         root.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
@@ -4332,7 +4333,10 @@ function fitTray(){
         // まだ入らなければ、献立の上のあいさつを1行にする（オーナーの指示: 収まらない画面では1行に省く）
         d = over(); if (d > 0 && document.querySelector('#greet .greet-tx')){ document.body.classList.add('greet-1'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows))));
             d = over(); if (d > 0){ document.body.classList.add('greet-0'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); } }
-        d = over(); if (d > 0){ nml1 = true; fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); if (d > 0){ nml1 = false; fixText(); } } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
+        d = over(); if (d > 0){ nml1 = true; fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        // それでも入らなければ、器の下の種類の字（主菜・汁もの）を出さない（器と名前で見分けられる。⚠ の札・名前・かえるは残す）
+        if (d > 0){ tr.classList.add('noslot'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        if (d > 0){ nml1 = false; tr.classList.remove('noslot'); fixText(); } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
     // 見出しを詰めずに入ったが、器がとても小さくなったとき（家族リクエスト・あいさつ・⚠ の札でお膳が下がった日）: 見出しを詰める形（tight2）で器がはっきり大きくなるなら、そちらにする
     if (!prev && d <= 0 && vs < Math.min(vs0, 80) && !tr.classList.contains('tight2')){
         const vs1 = vs; tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight');
@@ -4344,7 +4348,7 @@ function fitTray(){
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
     const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].map(e => e.getBoundingClientRect().bottom + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
-    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0;
+    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0;
         // お膳が入りきらない画面でも、あいさつは出さない（献立を上に。家族リクエストの入口は残す。第8回 R20）
         if (document.querySelector('#greet .greet-tx')) document.body.classList.add('greet-1', 'greet-0');
         fixText();
@@ -4358,7 +4362,7 @@ function fitTray(){
             if (rowIn()) tight = tr.classList.contains('tight');
             else { tr.classList.remove('tight', 'tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
-    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }

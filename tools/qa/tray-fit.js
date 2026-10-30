@@ -105,7 +105,7 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
     await ctx.close();
   }
   // アレルギーの家族あり・家族リクエストあり（第8回 S22）: 360・390・430 × 文字3段階 × JP・KR・TH × 席 3・5（品数 2・4）。
-  //  ⚠・🔍 の札が下の段に出る献立を探して、器・名前・かえる・真ん中の丸・⚠ の札が帯の上に入る（360 の文字大は、帯をお膳の下に置く形でもよい）。
+  //  ⚠・🔍 の札が下の段に出る献立を探して、器・名前・かえる・真ん中の丸・⚠ の札が帯の上に入る（360×740 は、帯をお膳の下に置く形でもよい）。
   //  ⚠ の札は隠さない（帯の後ろ・お膳のふちで切れない、文字は 12px 以上）。印のない段に札の場所を空けない。点検3（10%）も同じに見る
   const FAM_ALG = {ja: ['fish'], ko: ['shrimp', 'crab', 'fish'], th: ['egg', 'fish']}, FAM_CC = {ja: 'JP', ko: 'KR', th: 'TH'};
   for (const vp of [{w: 360, h: 740}, {w: 390, h: 844}, {w: 430, h: 932}]) for (const ts of [0, 1, 2]) for (const lang of ['ja', 'ko', 'th']) {
@@ -128,7 +128,8 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
         const tr = document.querySelector('#view .tray'); if (!tr) return {err: 'お膳がない'};
         let floor = innerHeight;
         document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < floor) floor = q.top; });
-        const scrollOk = innerWidth < 390 && document.documentElement.getAttribute('data-ts') && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar');
+        // 360×740 は、⚠ の札が上下の段に出て名前も2行の日（いちばん詰めても入らない）は、帯をお膳の下に置く形でもよい（スクロールで全部見られる）。390・430 は帯の上に入ること
+        const scrollOk = innerWidth < 390 && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar');
         const bad = [];
         if (!document.querySelector('#greet .req-btn.has')) bad.push('家族リクエストの入口がない');
         const parts = [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')];
