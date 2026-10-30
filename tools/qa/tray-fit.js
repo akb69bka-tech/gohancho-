@@ -7,6 +7,7 @@
 //  ・お膳の下の押す場所が、決定の帯に半分かかっていない
 //  ・375×667 は帯の上に入るかは見ない（:c）。器を覆わないこと・切れないことは見る
 //  ・器の面積の10%以上を、ほかの部品（かえる・札・名前・ほかの器・真ん中の丸）が覆わない（点検3。360・375×667・390・文字大 × 2〜8席）
+//  ・アレルギーの家族あり・家族リクエストあり（第8回 S22）: 360・390・430 × 文字3段階 × JP・KR・TH。⚠ の札も帯の上に入り、隠れない・12px 以上・印のない段に場所を空けない
 // 使い方: BASE=http://localhost:8890/ node tools/qa/tray-fit.js   （VPS=390x844:0,360x740:0 LANGS=ja,en で絞れる）
 const { chromium, LAUNCH, BASE, ready } = require('../lib/pw.cjs');
 // 末尾に :c を付けた画面は、帯の上に入るかは見ず、名前・字が切れない・「かえる」の大きさだけを見る（基準書 2-3 の対象外の 360×740 文字大）
@@ -101,6 +102,61 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
     n++;
     if (r.scrollOk) scrolled.push(vp.w + 'x' + vp.h + ' ' + lang);
     if (r.bad.length || errs.length) { bad++; console.log('NG 長い名前', vp.w + 'x' + vp.h, '文字2', lang, JSON.stringify(r), errs.slice(0, 1).join('')); }
+    await ctx.close();
+  }
+  // アレルギーの家族あり・家族リクエストあり（第8回 S22）: 360・390・430 × 文字3段階 × JP・KR・TH × 席 3・5（品数 2・4）。
+  //  ⚠・🔍 の札が下の段に出る献立を探して、器・名前・かえる・真ん中の丸・⚠ の札が帯の上に入る（360 の文字大は、帯をお膳の下に置く形でもよい）。
+  //  ⚠ の札は隠さない（帯の後ろ・お膳のふちで切れない、文字は 12px 以上）。印のない段に札の場所を空けない。点検3（10%）も同じに見る
+  const FAM_ALG = {ja: ['fish'], ko: ['shrimp', 'crab', 'fish'], th: ['egg', 'fish']}, FAM_CC = {ja: 'JP', ko: 'KR', th: 'TH'};
+  for (const vp of [{w: 360, h: 740}, {w: 390, h: 844}, {w: 430, h: 932}]) for (const ts of [0, 1, 2]) for (const lang of ['ja', 'ko', 'th']) {
+    if (process.env.LANGS && !LANGS.includes(lang)) continue;
+    const ctx = await b.newContext({viewport: {width: vp.w, height: vp.h}, serviceWorkers: 'block'});
+    await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
+    const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
+    await p.addInitScript(([cc, lang, ts, alg]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-10-01', family: [{id: 'f1', name: lang === 'ja' ? '夫' : 'A', role: 'adult', avoid: alg.map(x => '@' + x), allergy: alg.map(x => '@' + x), mild: false}], settings: {country: cc, uiLang: lang, dishCount: 4, servings: 2, textSize: ts || undefined}})); } }, [FAM_CC[lang], lang, ts, FAM_ALG[lang]]);
+    await p.goto(BASE); await ready(p); await p.waitForTimeout(600);
+    if (lang !== 'ja') await p.waitForFunction(cc => typeof PACK !== 'undefined' && PACK && PACK.country === cc, FAM_CC[lang], {timeout: 30000}).catch(() => {});
+    for (const v of [2, 4]) {
+      const r = await p.evaluate(async v => {
+        const tick = () => new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res)));
+        window.hasPro = () => true; window.scrollTo(0, 0); setTab('today'); S.settings.dishCount = v; session.mood = 'all';
+        const w = RECIPES.find(x => slotOf(x) === '主菜' && !isAvoided(x)); S.wants = w ? [{id: w.id, at: TODAY, n: famMembers()[0].name, m: 0}] : [];   // 家族リクエスト（届いた1件）
+        let tagRows = '';
+        for (let i = 0; i < 40; i++){ session.menu = null; render(); await tick(); const rows = [...document.querySelectorAll('#view .tray .tg-row')]; tagRows = rows.map(x => x.querySelector('.alg-tag') ? 1 : 0).join(''); if (rows.length > 1 && rows[1].querySelector('.alg-tag')) break; }
+        TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; render(); await tick();   // 開いたときと同じ（前の大きさを引きつがない）
+        document.getAnimations().forEach(a => { try { a.finish(); } catch (e) {} });
+        const tr = document.querySelector('#view .tray'); if (!tr) return {err: 'お膳がない'};
+        let floor = innerHeight;
+        document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < floor) floor = q.top; });
+        const scrollOk = innerWidth < 390 && document.documentElement.getAttribute('data-ts') && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar');
+        const bad = [];
+        if (!document.querySelector('#greet .req-btn.has')) bad.push('家族リクエストの入口がない');
+        const parts = [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')];
+        if (!scrollOk) bad.push(...parts.filter(e => { const q = e.getBoundingClientRect(); return q.bottom > floor + .5 || q.top < -.5; }).map(e => 'hid:' + (e.className || '').split(' ')[0] + ':' + Math.round(e.getBoundingClientRect().bottom)));
+        if (scrollOk && bar && bar.getBoundingClientRect().top < tr.getBoundingClientRect().bottom - .5) bad.push('bar-over-tray');
+        const tags = [...tr.querySelectorAll('.spot .alg-tag')];
+        tags.forEach(e => { const q = e.getBoundingClientRect(), sp = e.closest('.spot').getBoundingClientRect(), cs = getComputedStyle(e);
+          if (cs.display === 'none' || cs.visibility === 'hidden' || q.height < 8) bad.push('alg-hidden');
+          if (parseFloat(cs.fontSize) < 12) bad.push('alg-small:' + cs.fontSize);
+          if (e.scrollHeight > e.clientHeight + 1 || q.left < sp.left - .5 || q.right > sp.right + .5) bad.push('alg-cut:' + e.textContent.trim().slice(0, 10)); });
+        // 印のない段に札の場所を空けない（札のない段の .ex は高さ0。かえるで札が消えた段は残してよいが、ここは開いたばかり）
+        [...tr.querySelectorAll('.tg-row')].forEach((row, k) => { if (!row.querySelector('.alg-tag') && [...row.querySelectorAll('.spot-label .ex')].some(e => parseFloat(getComputedStyle(e).getPropertyValue('--exa')) > 0)) bad.push('alg-room-row' + k); });
+        const cover = [...tr.querySelectorAll('.spot .vessel')].map(v => { const a = v.getBoundingClientRect(), area = a.width * a.height; if (!area) return null;
+          const by = [...tr.querySelectorAll('.spot .swap:not(.swap-ph), .spot .fresh-tag, .spot-label .slot, .spot-label .nm, .spot-label .ex > *, .spot .vessel, .tg-mid .shuffle')].filter(e => e !== v && !v.contains(e) && !e.contains(v) && getComputedStyle(e).visibility !== 'hidden');
+          const hit = by.map(e => { const q = e.getBoundingClientRect(); return {e, s: Math.max(0, Math.min(a.right, q.right) - Math.max(a.left, q.left)) * Math.max(0, Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top))}; }).filter(x => x.s > 0);
+          const tot = hit.reduce((t, x) => t + x.s, 0); return tot > area * .1 ? 'cover:' + Math.round(tot / area * 100) + '%:' + hit.map(x => (x.e.className || '').split(' ')[0]).join('+') : null; }).filter(Boolean);
+        bad.push(...cover);
+        const rows = [...tr.querySelectorAll('.tg-row')].map(e => e.children.length), seats = rows.reduce((a, x) => a + x, 0);
+        if (!(rows[0] === Math.ceil(seats / 2) && (rows[1] || 0) === Math.floor(seats / 2)) || !tr.querySelector('.tg-mid .shuffle')) bad.push('rows:' + rows.join('/'));
+        return {bad, tags: tags.length, tagRows, scrollOk, seats, sw: document.documentElement.scrollWidth - innerWidth};
+      }, v);
+      n++;
+      const tag = `アレルギーの家族＋家族リクエスト ${vp.w}x${vp.h}${ts ? ' 文字' + ts : ''} ${lang} 品数${v} 席${r.seats} 札${r.tags}(${r.tagRows})`;
+      if (r.scrollOk) scrolled.push(tag);
+      if (r.err || r.bad.length || r.sw > 0) { bad++; console.log('NG', tag, JSON.stringify(r)); }
+      else if (process.env.VERBOSE) console.log('ok', tag, r.scrollOk ? '(帯はお膳の下)' : '');
+    }
+    if (errs.length) { bad++; console.log('NG JSエラー（アレルギーの家族）', vp.w, lang, errs.slice(0, 2).join('|')); }
     await ctx.close();
   }
   await b.close();
