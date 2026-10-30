@@ -1631,5 +1631,10 @@ GOHAN_I18N('fil', {
     "season|冬": "taglamig",
     "家族リクエスト": "Hiling ng pamilya",
     "家族リクエスト（{n}件）": "Hiling ng pamilya ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "May putaheng may ⚠. Pakisuri ulit bago magluto",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Sa araw ng okayu, malambot at magaan na side dish at sabaw ang mungkahi. Mga {n} min ang pagluto ng okayu",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "{dish} ngayong araw. Salamat sa pagod mo hanggang ngayon",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Gabi na, salamat sa lahat. Puwedeng pagkatapos magpahinga ang menu",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Hatinggabi na. Tingnan nang dahan-dahan ang menu ngayong araw"
 });

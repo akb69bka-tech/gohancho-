@@ -1631,5 +1631,10 @@ GOHAN_I18N('tr', {
     "season|冬": "kış",
     "家族リクエスト": "Aile istekleri",
     "家族リクエスト（{n}件）": "Aile istekleri ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "⚠ işaretli bir yemek var. Pişirmeden önce bir kez daha kontrol edin",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Okayu gününde yumuşak, hafif yan yemekler ve çorba. Okayu yaklaşık {n} dk sürer",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Bugün {dish} vardı. Geç saate kadar emeğin için teşekkürler",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Geç oldu, her şey için teşekkürler. Menü dinlendikten sonra da seçilebilir",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Gece yarısı oldu. Bugünün menüsüne acele etmeden bakın"
 });

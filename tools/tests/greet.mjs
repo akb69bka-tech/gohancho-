@@ -5,6 +5,8 @@
 //  G3 家族を登録している人: 「家族リクエスト」と届いた数・いちばん新しいものの一言（ゆい：豚の生姜焼き）が出る。押すと「食べたいもの」のシートが開き、届いたものが並ぶ。44px 以上
 //  G4 家族を登録していて届いていない人: 数字なしで出る（押すと送る・貼りつけるの入口がある）。家族がいない人には出ない
 //  G5 あいさつ・入口を足しても、お膳が最初の画面（決定の帯の上）に入る（390×844・360×740・文字大）
+//  G6 深夜0〜3時（アプリの「今日」はまだ前の日。dayNow の4時区切り）・4時は「明日の献立」と言わない（第8回 R23）
+//  G7 決めた献立に家族の ⚠ があると、「できあがりが楽しみです」ではなく、確かめてもらう一言。決めた献立は変わらない。⚠ がなければ今までどおり（第8回 R22）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -57,8 +59,8 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         const {p, ctx} = await open({hour: 12, settings: {country: cc, uiLang: lang}, state: FAM, tag: lang});
         // どの時間帯・決める前の文も、入口が並んだ幅で2行に入る
         const r = await p.evaluate(() => { const e = document.querySelector('#greet .greet-tx'); if (!e) return ['no greet']; const out = [], t0 = TODAY;
-            for (const band of ['morning', 'noon', 'afternoon', 'evening', 'night']) for (const wish of [0, 2]) for (const ln of greetLines(band, {dish: '', wish})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
-            for (const band of ['morning', 'noon', 'evening']) for (const ln of greetLines(band, {dish: trayName(session.menu.items[0].r.name), wish: 0})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
+            for (const band of ['morning', 'noon', 'afternoon', 'evening', 'night', 'late']) for (const wish of [0, 2]) for (const ln of greetLines(band, {dish: '', wish})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
+            for (const band of ['morning', 'noon', 'evening', 'late']) for (const warn of [false, true]) for (const ln of greetLines(band, {dish: trayName(session.menu.items[0].r.name), wish: 0, warn})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
             const rq = document.querySelector('#greet .req-btn .rq-l'); if (rq && rq.scrollWidth > rq.clientWidth + 1) out.push('入口: ' + rq.textContent);
             void t0; return out; });
         if (r.length) bad.push(lang + ': ' + r.slice(0, 2).join(' | '));
@@ -107,6 +109,45 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         await ctx.close();
     }
     ok(!bad.length, 'G5 あいさつ・入口を足しても、お膳が帯の上に入る（390×844 標準の文字では帯をお膳の下にしない）: ' + bad.join(' / '));
+}
+// G6 深夜
+{
+    const out = {}, bad = [];
+    for (const hour of [0, 2, 3, 4]){
+        const {p, ctx} = await open({hour, tag: 'g6'});
+        const g = await greet(p);
+        const all = await p.evaluate(() => { const o = new Set(), t0 = TODAY; for (let i = 0; i < 20; i++){ TODAY = addDays(t0, i); o.add(greetText()); } TODAY = t0; return [...o]; });
+        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);
+        const d = await p.evaluate(() => ({t: document.querySelector('#greet .greet-tx').textContent, dish: trayName(recipeById(S.cook.ids[0]).name), today: TODAY}));
+        out[hour] = [g && g.t, d.t];
+        [...all, d.t].forEach(x => { if (/明日/.test(x)) bad.push(hour + '時: ' + x); });
+        if (hour < 4 && !d.t.includes(d.dish)) bad.push(hour + '時 決めたあとに料理名がない: ' + d.t);
+        if (hour < 4 && d.today !== '2026-10-28') bad.push(hour + '時 今日が前の日になっていない: ' + d.today);
+        await ctx.close();
+    }
+    ok(!bad.length, 'G6 深夜0〜4時は「明日の献立」と言わない。0〜3時に決めた献立は料理名で: ' + bad.join(' / ') + ' ' + JSON.stringify(out));
+}
+// G7 決めた献立に ⚠
+{
+    for (const hour of [7, 12, 18]){
+        const {p, ctx} = await open({hour, state: {family: [{id: 'f1', name: '夫', role: 'adult', avoid: [], allergy: [], mild: false}]}, tag: 'g7'});
+        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);
+        const r = await p.evaluate(() => {
+            const before = S.cook.ids.slice(), g0 = document.querySelector('#greet .greet-tx').textContent;
+            const main = recipeById(S.cook.ids[0]); let hit = null;
+            for (const k of Object.keys(FAM_ALG)){ S.family[0].allergy = ['@' + k]; S.family[0].avoid = ['@' + k]; if (allergyConflict(main)){ hit = k; break; } }
+            if (!hit){ S.family[0].allergy = []; S.family[0].avoid = []; }
+            save(); render();
+            const g1 = document.querySelector('#greet .greet-tx').textContent;
+            return {hit, g0, g1, same: JSON.stringify(before) === JSON.stringify(S.cook.ids), tag: !!document.querySelector('#view .tray .alg-tag:not(.may)')};
+        });
+        if (!r.hit){ console.log('skip G7', hour, '（決めた主菜に当たる家族のアレルゲンがない）'); await ctx.close(); continue; }
+        ok(r.same && r.tag, `G7 ${hour}時: 家族の ⚠ を足しても、決めた献立は変わらず、⚠ の印が出る: ` + JSON.stringify(r));
+        ok(!/楽しみ/.test(r.g1) && /⚠/.test(r.g1) && /確かめ/.test(r.g1), `G7 ${hour}時: あいさつは「楽しみ」ではなく、確かめてもらう一言: ` + JSON.stringify(r));
+        ok(!/健康|危険|命|病|症状|必ず|絶対/.test(r.g1), `G7 ${hour}時: 医療・健康の言い切りをしない: ` + r.g1);
+        ok(r.g0 !== r.g1 && !/⚠/.test(r.g0), `G7 ${hour}時: ⚠ がないときは今までどおりの一言: ` + r.g0);
+        await ctx.close();
+    }
 }
 await b.close();
 if (errs.length){ fails++; console.log('FAIL JSエラー', errs.slice(0, 3)); }

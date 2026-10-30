@@ -27,6 +27,8 @@ const RULES = {
   'mood-easy':     'ラクの日は、ラクの日の条件に合う料理',
   'mood-bento':    'お弁当の日は、汁ものの席なし・汁けの多い料理なし・お弁当向きの料理',
   'mood-okayu':    'おかゆの日の主菜は、おかゆ・雑炊・粥だけ（麺・揚げ物は出さない）',
+  'okayu-quick':   'おかゆの日の主菜は、早くできる（20分以内の）おかゆ・雑炊があればそれを先に出す',
+  'event-main':    '行事のご飯（赤飯）を主菜にしない（献立・かえる・1週間プラン）',
   'mood-okayu-side': 'おかゆの日の副菜・汁ものは、やわらかい・あっさりした20分以内の料理（揚げ・焼き・炒め・辛い・生のサラダ・漬物は出さない）',
   'mood-genre':    '和・洋・中の日の主菜は、その料理のなかま',
   'mood-genre-side': '和・洋・中・韓国エスニックの日の副菜・汁もの・2品目の主菜も、そのなかま（韓国エスニックの日は中華も可。合う料理がその席にないときを除く）',
@@ -70,6 +72,7 @@ const page_audit = ({runs, seed}) => {
       if (breakfastMeal(r) && !(mood === 'okayu' && it.slot === '主菜' && okayuDayOk(r))) bad('breakfast', scene, it.slot, r);
       if (it.slot === '主菜' && LIGHT_MEALS.has(r.id) && !(mood === 'okayu' && OKAYU_QUICK.includes(r.id))) bad('light-main', scene, it.slot, r);
       if (it.slot === '主菜' && isOkayu(r) && mood !== 'okayu') bad('okayu-off', scene, it.slot, r);
+      if (it.slot === '主菜' && EVENT_RICE.has(r.id)) bad('event-main', scene, it.slot, r);
       if (!inSeason(r)) bad('season', scene, it.slot, r);
       if (isAvoided(r) || S.hidden.includes(r.id)) bad('avoid', scene, it.slot, r);
       const sl = it.slot === '主菜' ? '主菜' : it.slot;
@@ -83,6 +86,7 @@ const page_audit = ({runs, seed}) => {
       }
       if (mood === 'okayu' && i === 0 && (!okayuDayOk(r) || r.type === '麺' || r.method === '揚')) bad('mood-okayu', scene, it.slot, r, r.type + '/' + r.method);
       if (mood === 'okayu' && (it.slot === '副菜' || it.slot === '汁物') && !okayuSoftOk(r) && hasCand(sl, okayuSoftOk)) bad('mood-okayu-side', scene, it.slot, r, r.method + '/' + r.min + '分');
+      if (mood === 'okayu' && i === 0 && okayuDayOk(r) && r.min > OKAYU_TIERS[0] && hasCand('主菜', x => okayuDayOk(x) && x.min <= OKAYU_TIERS[0])) bad('okayu-quick', scene, it.slot, r, r.min + '分');
       if (i === 0 && ['和', '洋', '中'].includes(mood) && r.genre !== mood && hasCand('主菜', x => x.genre === mood)) bad('mood-genre', scene, it.slot, r, r.genre);
       if (i === 0 && mood === 'asia' && !['韓', 'エスニック'].includes(r.genre) && hasCand('主菜', x => ['韓', 'エスニック'].includes(x.genre))) bad('mood-asia', scene, it.slot, r, r.genre);
       const GM = {'和': ['和'], '洋': ['洋'], '中': ['中'], asia: ['韓', 'エスニック', '中']}[mood];   // 副菜・汁もの・2品目の主菜は、そのなかま（韓国・エスニックの日は中華も）
@@ -103,7 +107,9 @@ const page_audit = ({runs, seed}) => {
   const counts = [1, 2, 'ns2', 3, 4, 5, 6];
   const setCount = c => { S.settings.noSoup = c === 'ns2'; S.settings.dishCount = c === 'ns2' ? 2 : c; };
   const moods = MOODS.map(x => x.k);
-  // 各国の気分の一覧に「おかゆの日」はない（粥のある国は、かえるの「おかゆの日」の絞りこみで見る）
+  // 気分の一覧の「おかゆの日」は、おかゆ・粥の主菜がある国だけ。かえるの「おかゆの日」の絞りこみと同じ（第8回 R21）
+  if (MOODS.some(x => x.k === 'okayu') !== poolForMood('主菜', 'okayu').some(r => r.main && okayuDayOk(r))) bad('mood-okayu', '気分の一覧', '主菜', null, 'おかゆの日の有無が、粥の主菜の有無と合わない');
+  if (MOODS.some(x => x.k === 'okayu') !== okayuMoodOn()) bad('mood-okayu', '気分の一覧', '主菜', null, '気分とかえるで、おかゆの日の出し方が違う');
   let s0 = seed;
   // 1) 気分 × 品数 × 乱数
   for (const mood of moods) for (const c of counts) for (let k = 0; k < runs; k++){
@@ -122,7 +128,7 @@ const page_audit = ({runs, seed}) => {
     reseed(s0++); setCount(c); session.mood = mood; session.rejected.clear(); newMenu();
     const m = session.menu;
     m.items.forEach((it, i) => SWAPF.forEach(f => {
-      if (f === 'okayu' && (i !== 0 || !okayuAvail())) return;
+      if (f === 'okayu' && (i !== 0 || !okayuMoodOn())) return;
       const cs = swapCands(i, f); stat.swaps++;
       const scene = `かえる 気分=${mood} 品数=${c} 席${i}(${it.slot}) 絞り=${f || 'なし'} #${k}`;
       cs.forEach(r => {
@@ -131,6 +137,7 @@ const page_audit = ({runs, seed}) => {
         if (isAvoided(r) || S.hidden.includes(r.id)) bad('avoid', scene, it.slot, r);
         if (breakfastMeal(r) && !(f === 'okayu' || mood === 'okayu')) bad('breakfast', scene, it.slot, r);
         if (it.slot === '主菜' && isOkayu(r) && f !== 'okayu' && mood !== 'okayu') bad('okayu-off', scene, it.slot, r);
+        if (it.slot === '主菜' && EVENT_RICE.has(r.id)) bad('event-main', scene, it.slot, r);
         if (it.slot === '主菜' && LIGHT_MEALS.has(r.id) && !(f === 'okayu' || mood === 'okayu')) bad('light-main', scene, it.slot, r);
         if (f === 'quick' && r.min > 20) bad('swap-filter', scene, it.slot, r, r.min + '分');
         if (f === 'fish' && !['魚', '魚介'].includes(r.family)) bad('swap-filter', scene, it.slot, r, r.family);
@@ -174,6 +181,7 @@ const page_audit = ({runs, seed}) => {
       if (breakfastMeal(r)) bad('breakfast', scene, '主菜', r, x.d);
       if (LIGHT_MEALS.has(r.id)) bad('light-main', scene, '主菜', r, x.d);
       if (isOkayu(r)) bad('okayu-off', scene, '主菜', r, x.d);
+      if (EVENT_RICE.has(r.id)) bad('event-main', scene, '主菜', r, x.d);
       if (!inSeason(r, x.d)) bad('season', scene, '主菜', r, x.d);
       if (isAvoided(r)) bad('avoid', scene, '主菜', r, x.d);
       const e = x.extra || {};
@@ -199,6 +207,7 @@ const page_audit = ({runs, seed}) => {
       if (breakfastMeal(r)) bad('breakfast', scene, '主菜', r, x.d);
       if (LIGHT_MEALS.has(r.id)) bad('light-main', scene, '主菜', r, x.d);
       if (isOkayu(r)) bad('okayu-off', scene, '主菜', r, x.d);
+      if (EVENT_RICE.has(r.id)) bad('event-main', scene, '主菜', r, x.d);
       const sd = byId((x.extra || {}).side); if (sd && sd.type !== '副菜') bad('week-extra', scene, '副菜', sd, sd.type);
     });
     }

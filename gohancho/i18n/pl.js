@@ -1631,5 +1631,10 @@ GOHAN_I18N('pl', {
     "season|冬": "zimy",
     "家族リクエスト": "Życzenia rodziny",
     "家族リクエスト（{n}件）": "Życzenia rodziny ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "Jedno danie ma znak ⚠. Sprawdź je jeszcze raz przed gotowaniem",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "W dniu okayu: miękkie, łagodne dodatki i zupa. Okayu gotuje się około {n} min",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Dziś było {dish}. Dziękujemy za trud do późna",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Jest późno, dziękujemy za wszystko. Menu może poczekać, aż odpoczniesz",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Jest już późna noc. Przejrzyj dzisiejsze menu spokojnie"
 });
