@@ -3276,7 +3276,12 @@ function bentoCount(slot){
 }
 function bentoPool(slot, list){ const f = list.filter(bentoFits); return f.length ? f : list; }
 // 献立に出ている主菜・副菜の説明。弁当向きでない料理が混ざっているときは、そう書く（保証しない）
-function okayuNote(){ return session.mood === 'okayu' && session.menu && session.menu.items[0] && okayuDayOk(session.menu.items[0].r) ? t('おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします') : ''; }
+// 主菜が早くできる（20分以内の雑炊など）ときだけ「早くできる」と書く。米から炊くおかゆ・粥しかない国・日は、かかる時間をそのまま書く（第8回 R19）
+function okayuNote(){
+    const r = session.mood === 'okayu' && session.menu && session.menu.items[0] && session.menu.items[0].r;
+    if (!r || !okayuDayOk(r)) return '';
+    return r.min <= OKAYU_TIERS[0] ? t('おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします') : t('おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります', {n: r.min});
+}
 function bentoNote(){
     if (session.mood !== 'bento' || !session.menu) return '';
     const items = session.menu.items.filter(x => x.r && (x.slot === '主菜' || x.slot === '副菜'));
@@ -3384,12 +3389,13 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
     const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY && !x.skip).map(x => x.id));
     if (ahead.size){ const ok = cands.filter(r => !ahead.has(r.id)); if (ok.length) cands = ok; }
-    if (session.mood === 'okayu'){ const q = cands.filter(x => okayuDayOk(x) && x.min <= 20); if (q.length){ const r = pick(q, ctx); if (r) return r; } }   // おかゆの日は、早くできるおかゆ（雑炊など）を先に（R3）
-    const r = pick(cands, ctx); if (r) return r;
+    // おかゆの日は、早くできるおかゆ（雑炊など）を先に（R3）。そのあとも短い順の段（20分→45分→60分→それ以上）で選ぶ（入れ替え・かえるで 50〜80分の粥が先に出ていた。第8回 R19）
+    const pickT = (list, c) => { if (okayuDay) for (const lim of OKAYU_TIERS){ const q = list.filter(x => okayuDayOk(x) && x.min <= lim); if (q.length){ const r = pick(q, c); if (r) return r; } } return pick(list, c); };
+    const r = pickT(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
     cands.forEach(x => { if (!prev.has(x.id)) session.rejected.delete(x.id); });
-    const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
+    const again = pickT(cands.filter(x => !prev.has(x.id)), ctx) || pickT(cands, Object.assign({}, ctx, {relax:true}));
     if (again) return again;
     const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
     if (!rest.length && !sameKind && !okayuDay && !session.swapF){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
@@ -3418,6 +3424,8 @@ function mixCountries(){ return [...new Set(MIX_SLOTS.map(mixCc).filter(Boolean)
 // 主菜の候補。おかゆは「おかゆの日」のときだけ出す（ふだんの献立・1週間プランの主菜には混ぜない）
 // 軽い食事（卵かけご飯・お茶漬け・おにぎり・雑炊）は、それだけで夕食の主菜にはおまかせで出さない。検索・作る記録・主菜にするでは選べる
 const LIGHT_MEALS = new Set(['tkg', 'ochazuke', 'onigiri', 'zosui']);
+// 行事・お祝いのご飯（赤飯）。主菜にはしない（おまかせ・1週間プラン・かえる。さがす・自分で選ぶでは出す。第8回 R23）
+const EVENT_RICE = new Set(['sekihan']);
 // 朝食の料理。各国はパックの印（meal: 'breakfast'）、日本はここに書く（ハムエッグ）
 const BREAKFAST_JP = new Set(['hamuegg']);
 function breakfastMeal(r){ return !!r && (r.meal === 'breakfast' || (!r.pack && BREAKFAST_JP.has(r.id))); }
@@ -3432,6 +3440,7 @@ function soupyMain(r){ return !!r && (r.type === '汁物' || SOUPY_MAIN.has(r.id
    主菜: ご飯から作る早いおかゆ（雑炊）を先に出し、なければ米から炊くおかゆ。おかゆ・雑炊・粥のなかま以外（うどん・麺など）は出さない。お漬物は付けない。
    副菜・汁もの: やわらかい・あっさりした、短い料理（揚げる・焼く・炒める・辛い・生のサラダや漬物は出さない）。
    体調や病気に「よい」「効く」とは書かない（健康・医療の表示はしない） */
+const OKAYU_TIERS = [20, 45, 60];   // おかゆの日の主菜を選ぶ段（分）。早くできるものから
 const OKAYU_QUICK = ['zosui'];   // 卵雑炊（ご飯から15分）。おかゆの日に出すのは、おかゆ・雑炊のなかまだけ（うどん・麺は出さない。オーナーの指摘: おかゆの日にきつねうどんが入っていた）
 const OKAYU_SOFT = new Set(['ohitashi', 'kabocha', 'komatsuna', 'hiyayakko', 'gomaae', 'shiraae', 'koyadofu', 'unohana', 'satoimonikkorogashi', 'chawanmushi', 'kofukiimo', 'glace',
     'misoshiru', 'sumashijiru', 'kakitamajiru', 'namekomiso', 'daikonmiso', 'jagaimomiso', 'cabbagemiso', 'tamagosoup', 'tomatoeggsoup', 'cornsoup', 'kabochapotage']);
@@ -3440,6 +3449,9 @@ const RAW_SIDE_RE = /salad|salat|ensalada|insalata|salade|sałatka|salata|pickle
 function okayuDayOk(r){ return !!r && (isOkayu(r) || OKAYU_QUICK.includes(r.id) || (!!r.pack && r.type === 'ごはん' && PORRIDGE_RE.test([r.name, ...(r.alt || [])].join(' ')))); }
 // いまの国（主菜の国）に、おかゆの日に出せる主菜（おかゆ・雑炊・粥）があるか。ない国では「おかゆの日」の絞りこみを出さない（ほかの料理で埋めない）
 function okayuAvail(){ return poolForMood('主菜', 'okayu').some(r => r.main && okayuDayOk(r) && !isAvoided(r)); }
+// 気分の「おかゆの日」と、主菜の「かえる」の「おかゆの日」は、同じ条件で出す・出さない（第8回 R21: 国によって片方にだけあった）
+// その国の気分の一覧にあり（国のデータに、おかゆ・粥の主菜がある）、いまの主菜の国で出せるときだけ
+function okayuMoodOn(){ return MOODS.some(x => x.k === 'okayu') && okayuAvail(); }
 // 主食が「おかゆ」の日: 主菜は、おかゆを主食にして食べるおかず（ご飯もの・麺の一品料理にすると、選んだおかゆが出なくなる・主食が2つになる）
 function stapleOkayu(){ const o = typeof currentStapleOpt === 'function' ? currentStapleOpt() : null; return !!o && o.k === 'okayu' && !!stapleSpot(); }
 function okayuSoftOk(r){
@@ -3486,6 +3498,7 @@ function poolFor(slot){
     if (all.some(r => !inSeason(r))) all = all.filter(r => inSeason(r));
     if (slot !== '主菜') return all;
     if (session.mood !== 'okayu' && all.some(isOkayu)) all = all.filter(r => !isOkayu(r));
+    if (all.some(r => EVENT_RICE.has(r.id))) all = all.filter(r => !EVENT_RICE.has(r.id));
     if (all.some(r => LIGHT_MEALS.has(r.id))) all = all.filter(r => !LIGHT_MEALS.has(r.id) || (session.mood === 'okayu' && OKAYU_QUICK.includes(r.id)));   // おかゆの日は、ご飯から作る雑炊を出す（R3）
     if (session.mood !== 'okayu' && all.some(breakfastMeal)) all = all.filter(r => !breakfastMeal(r));   // 朝食の料理（Pancakes・Menemen・Poha・ハムエッグなど）は夕食の主菜にしない（第4回 R4。さがす・自分で選ぶでは出す。おかゆの日は今までどおり）
     return all;
@@ -5483,11 +5496,14 @@ function greeting(){
 /* ---- 今日の献立の上のあいさつ（オーナーの指示: 朝から夜まで、ご飯作りを楽しく考えたくなる一言） ----
    時間帯（朝・昼・午後・夕方・夜）と、献立を決めたか・料理名・季節・家族の「食べたい」の数で選ぶ。同じ日・同じ時間帯は同じ文（日付で選ぶ）。
    体への効き目は言わない（health-claims）。責めない・急かさない */
-function greetBand(h){ return h >= 5 && h < 10 ? 'morning' : h >= 10 && h < 14 ? 'noon' : h >= 14 && h < 17 ? 'afternoon' : h >= 17 && h < 20 ? 'evening' : 'night'; }
+// 深夜0〜4時は、アプリの「今日」（dayNow。4時区切り）がまだ前の日なので、「明日の献立」とは言わない（第8回 R23）
+function greetBand(h){ return h < 4 ? 'late' : h < 10 ? 'morning' : h >= 10 && h < 14 ? 'noon' : h >= 14 && h < 17 ? 'afternoon' : h >= 17 && h < 20 ? 'evening' : 'night'; }
 function seasonWord(){ const m = Number(TODAY.slice(5, 7)); return m >= 3 && m <= 5 ? tc('season', '春') : m >= 6 && m <= 8 ? tc('season', '夏') : m >= 9 && m <= 11 ? tc('season', '秋') : tc('season', '冬'); }
-function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wish: 届いている「食べたい」の数}
+function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wish: 届いている「食べたい」の数, warn: 決めた献立に ⚠ があるか}
     const season = seasonWord(), dish = o.dish, n = o.wish;
+    if (dish && o.warn && band !== 'night' && band !== 'late') return [t('⚠の印の料理があります。作る前に、もう一度確かめてください')];   // 決めた献立に ⚠（本人・家族のアレルゲン）があるときは、楽しみの一言ではなく、確かめてもらう一言（R22。体のことは言い切らない）
     if (dish){
+        if (band === 'late') return [t('今日は{dish}でしたね。夜おそくまでおつかれさまです', {dish})];
         if (band === 'morning') return [t('おはようございます。今日は{dish}の日です', {dish})];
         if (band === 'evening') return [t('夕方です。あとは作るだけ。今日は{dish}ですね', {dish})];
         if (band === 'night') return [t('今日もおつかれさまでした。明日はどんな献立にしましょう')];
@@ -5498,12 +5514,14 @@ function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wis
     if (band === 'noon') return [t('こんにちは。お昼のうちに夜の献立を決めると、帰りがらくです'), t('お昼休みに、今夜の献立をのぞいてみませんか'), ...wish];
     if (band === 'afternoon') return [t('こんにちは。買い物の前に、今夜の献立を決めておきましょう'), t('午後のひと息に、今夜の献立を考えてみませんか'), ...wish];
     if (band === 'evening') return [t('こんばんは。今夜の献立、いっしょに決めましょう'), t('夕方です。今日はどの献立にしましょう'), ...wish];
+    if (band === 'late') return [t('夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です'), t('夜ふけですね。今日の献立は、ゆっくりのぞいてみてください'), ...wish];
     return [t('こんばんは。明日の献立を先にのぞいておくのも楽しいですよ'), ...wish];
 }
 function greetText(now){
     const d = now || new Date(), band = greetBand(d.getHours());
     const ck = decidedToday() && S.cook.ids.length ? recipeById(S.cook.ids[0]) : null;
-    const lines = greetLines(band, {dish: ck ? trayName(ck.name) : '', wish: wishList().length ? wishesActive().length : 0});
+    const warn = !!ck && cookItems().some(x => x.r && allergyConflict(x.r));   // 決めた献立に ⚠ の料理がある（決めたあとに家族のアレルゲンを足したときなど）
+    const lines = greetLines(band, {dish: ck ? trayName(ck.name) : '', wish: wishList().length ? wishesActive().length : 0, warn});
     let hsh = 0; for (const c of TODAY + band) hsh = (hsh * 31 + c.charCodeAt(0)) >>> 0;   // 同じ日・同じ時間帯は同じ文
     return lines[hsh % lines.length];
 }
@@ -9148,6 +9166,7 @@ function oneSuggest(main, seen){
             if (inMenu.has(c.id) || (fam && c.family === fam)) tried.push(c); else r = c;
         }
         if (!r) r = tried.find(x => !inMenu.has(x.id)) || null;
+        if (r && session.mood === 'okayu' && !okayuSoftOk(r) && poolFor(slot).some(x => slotOf(x) === slot && okayuSoftOk(x))) r = null;   // おかゆの日のあと1品は、やわらかい・あっさりした料理だけ（尽きたら出さない。炒め物などで埋めない）
         if (r) out.push(r);
     }
     return out;
@@ -9742,7 +9761,7 @@ function condSheetHtml(){
             <p class="small muted">${esc(t('汁けの多い主菜（ラーメン・鍋・シチューなど）の日は、汁ものを付けません。'))}</p></div>
         <div class="field"><span class="eyebrow">${esc(t('時間'))}</span><div class="chips" role="group" aria-label="${esc(t('時間'))}">${MOODS.filter(x => TIME.includes(x.k)).map(moodChip).join('')}</div>
             <p class="small muted">${esc(t('献立の全部の料理に効きます（副菜・汁ものも）。'))}</p></div>
-        <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips" role="group" aria-label="${esc(t('気分'))}">${MOODS.filter(x => !TIME.includes(x.k)).map(moodChip).join('')}</div></div>
+        <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips" role="group" aria-label="${esc(t('気分'))}">${MOODS.filter(x => !TIME.includes(x.k) && (x.k !== 'okayu' || session.mood === 'okayu' || okayuMoodOn())).map(moodChip).join('')}</div></div>
         ${stapleOptions().length > 1 ? `<div class="field"><span class="eyebrow">${esc(t('主食'))}</span><div class="chips" role="group" aria-label="${esc(t('主食'))}">${stapleOptions().map(o => `<button class="chip" data-act="staple-set" data-v="${esc(o.k)}" aria-pressed="${currentStapleOpt().k === o.k}" ${o.k !== 'none' && stapleBlocked(o) ? 'disabled' : ''}>${esc(stapleName(o))}</button>`).join('')}</div></div>` : ''}
         ${eaters}
         <div class="field"><span class="eyebrow">${esc(t('冷蔵庫'))}</span><label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge ? 'checked' : ''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f: S.fridge.length, s: S.staples.length}))}</span></label></div>
@@ -9780,7 +9799,7 @@ function swapCands(i, f){
 }
 function swapSheetHtml(){
     const m = session.menu, it = m && m.items[sheet.i]; if (!it) return '';
-    const slot = slotLabel(it.slot), fs = Object.keys(SWAP_F).filter(k => k !== 'okayu' || (sheet.i === 0 && okayuAvail()));   // おかゆ・粥のない国では「おかゆの日」を出さない
+    const slot = slotLabel(it.slot), fs = Object.keys(SWAP_F).filter(k => k !== 'okayu' || (sheet.i === 0 && okayuMoodOn()));   // おかゆ・粥のない国では「おかゆの日」を出さない
     return `<h2>${esc(t('{slot}をかえる', {slot}))}</h2>
         <p class="small muted">${esc(t('変わるのはこの1品だけです'))}</p>
         <div class="chips" role="group" aria-label="${esc(t('条件'))}">${fs.map(k => `<button class="chip" data-act="swap-f" data-v="${k}" aria-pressed="${sheet.f === k}">${esc(SWAP_F[k]())}</button>`).join('')}</div>
@@ -13063,7 +13082,8 @@ function applyCountry(cc){
         replaceList(QUICK, (pk.quick || []).map(disp));
         replaceList(STAPLE_QUICK, (pk.pantry || []).map(disp));
         replaceList(AVOID_QUICK, (pk.quick || []).slice(0, 14).map(disp));
-        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'bento', 'fish', 'meat'].includes(m.k)));
+        const porridge = recipes.some(r => r.main && okayuDayOk(r));   // おかゆ・粥の主菜がある国（中国・台湾・韓国・タイ・フィリピンなど）は、気分にも「おかゆの日」を出す（R21）
+        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'bento', 'fish', 'meat'].concat(porridge ? ['okayu'] : []).includes(m.k)));
     }
     rebuildVariants();
     session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;

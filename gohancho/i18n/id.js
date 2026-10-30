@@ -1631,5 +1631,10 @@ GOHAN_I18N('id', {
     "season|冬": "musim dingin",
     "家族リクエスト": "Permintaan keluarga",
     "家族リクエスト（{n}件）": "Permintaan keluarga ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "Ada hidangan bertanda ⚠. Periksa sekali lagi sebelum memasak",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Pada hari okayu, lauk dan sup yang lembut dan ringan. Okayu perlu sekitar {n} menit",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Hari ini {dish}. Terima kasih sudah bekerja sampai larut",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Sudah larut, terima kasih atas kerja kerasmu. Menu bisa dipilih setelah istirahat",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Sudah larut malam. Lihat menu hari ini dengan santai"
 });

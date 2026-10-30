@@ -1631,5 +1631,10 @@ GOHAN_I18N('vi', {
     "season|冬": "mùa đông",
     "家族リクエスト": "Yêu cầu của gia đình",
     "家族リクエスト（{n}件）": "Yêu cầu của gia đình ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "Có món đánh dấu ⚠. Hãy kiểm tra lại trước khi nấu",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Ngày okayu, món phụ và canh mềm, thanh nhẹ. Okayu nấu mất khoảng {n} phút",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Hôm nay là {dish}. Cảm ơn bạn đã vất vả đến khuya",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Đã khuya rồi, cảm ơn bạn. Thực đơn có thể chọn sau khi nghỉ ngơi",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Đêm đã khuya. Hãy thong thả xem thực đơn hôm nay"
 });
