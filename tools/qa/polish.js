@@ -19,9 +19,11 @@ let bad = 0; const ok = (c, m) => { if (!c){ bad++; console.log('NG', m); } else
     const ids = () => p.evaluate(() => menuIds().join());
     const m0 = await ids();
     await p.locator('details.fold[data-fold="week"] summary').click(); await p.waitForTimeout(300);
+    await p.waitForFunction(() => { const d = document.querySelector('details.fold[data-fold="week"]'); return d && d.open; }, null, {timeout: 3000}).catch(() => {});   // 並列で重いときは描き直しを待つ
     ok(await p.locator('details.fold[data-fold="week"]').evaluate(e => e.open), tag + ' 週の欄が開く');
     ok(await ids() === m0, tag + ' 開いても献立は変わらない');
     await p.evaluate(() => saveNow()); await p.reload(); await p.waitForTimeout(1200);
+    await p.waitForFunction(() => { const d = document.querySelector('details.fold[data-fold="week"]'); return d && d.open; }, null, {timeout: 5000}).catch(() => {});
     ok(await p.locator('details.fold[data-fold="week"]').evaluate(e => e.open), tag + ' 開き方を覚えている');
     await p.locator('details.fold[data-fold="week"] summary').click(); await p.waitForTimeout(200);
     await p.evaluate(() => document.querySelector('details.fold[data-fold="week"] [data-act="make-week"]') && 0);

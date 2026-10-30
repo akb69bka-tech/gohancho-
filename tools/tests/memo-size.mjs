@@ -86,7 +86,7 @@ for (const cc of ['JP', 'US', 'FR', 'IN', 'BR']){
     }
     // 合計の値（JP: 1200+350.5+900+10 = 2460.5）
     const p = await open('JP', {spend:[{id:'a', d:new Date().toISOString().slice(0,10), a:1200}, {id:'b', d:new Date().toISOString().slice(0,10), a:350.5}, {id:'c', d:'2000-01-01', a:5}]});
-    const s = await p.evaluate(() => { setTab('log'); ensureMenu(); render(); return document.querySelector('.spend-sum').textContent; });
+    const s = await p.evaluate(() => { S.spend.forEach(x => { if (x.d !== '2000-01-01') x.d = TODAY; }); setTab('log'); ensureMenu(); render(); return (document.querySelector('.spend-sum') || {}).textContent || ''; });   // アプリの「今日」（午前4時まで前の日）に合わせる（夜中に流すと日付がずれていた）
     ok(/1,550\.5|1,551|1550/.test(s), '合計 ' + s);
     await p.ctx.close();
 }

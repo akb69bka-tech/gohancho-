@@ -184,7 +184,7 @@ html:not([lang="ja"]){--mincho:ui-serif,Georgia,'Noto Serif','Times New Roman',s
 *{box-sizing:border-box}
 html,body{margin:0}
 html{font-size:calc(100% * var(--ts,1))}html[data-ts="1"]{--ts:1.15}html[data-ts="2"]{--ts:1.3}   /* アプリ内の文字の大きさ（3段階）。端末の文字サイズの設定（ブラウザの基準 100%）にそのまま掛けるので、両方が効く */
-body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--fs16);line-height:var(--lh);-webkit-font-smoothing:antialiased;padding-inline:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))}   /* 横向きのノッチ・角の丸みに本文がかからない */
+html{overflow-x:clip}body{overflow-x:clip;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--fs16);line-height:var(--lh);-webkit-font-smoothing:antialiased;padding-inline:max(16px,env(safe-area-inset-left,0px),env(safe-area-inset-right,0px))}   /* 横向きのノッチ・角の丸みに本文がかからない */
 .wrap{max-width:680px;margin:0 auto;padding-block:var(--s16) 128px;display:flex;flex-direction:column;gap:var(--s24)}
 #view{display:flex;flex-direction:column;gap:var(--s32)}
 h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;text-wrap:balance;line-height:var(--lh-tight);letter-spacing:var(--ls-head);font-feature-settings:"palt"}   /* 名前は明朝・太さ600（かなを詰めて字間をあける） */
@@ -1039,7 +1039,6 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}#view.tray-ti
 .tray.grid2.tight .spot{grid-template-rows:var(--vs) auto auto}
 .tray.grid2.tight .spot .swap{grid-row:3}
 .tray.grid2.tight .spot .swap[data-act="soup-add"]::before,.tray.grid2.tight .spot .swap.tray-add::before{content:"+"}
-.tray.grid2.tight .spot .swap.swap-ph{display:none}
 .tray.grid2.tight .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
 .p2-links{display:flex;flex-wrap:wrap;justify-content:center;gap:0 var(--s4)}
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
@@ -4197,7 +4196,7 @@ function holdView(v){
 function releaseView(v, keep){
     const rows = v.querySelectorAll('.scroll');
     if (rows.length === keep.rows.length) rows.forEach((e, i) => { if (keep.rows[i]) e.scrollLeft = keep.rows[i]; });
-    if (keep.anchor && keep.anchor.k === '@tray'){ const tr = v.querySelector('.tray'); if (tr){ const d = tr.getBoundingClientRect().top - keep.anchor.top; if (Math.abs(d) > 0.5) window.scrollBy(0, d); } return; }
+    if (keep.anchor && keep.anchor.k === '@tray'){ const tr = v.querySelector('.tray'); if (tr){ const d = tr.getBoundingClientRect().top - keep.anchor.top; if (Math.abs(d) >= 1) window.scrollBy(0, Math.round(d)); } return; }   // 1px 未満のずれ（スクロール位置の端数）では動かさない
     if (keep.anchor){
         const seen = {};
         for (const e of v.querySelectorAll('[data-act]')){
@@ -4626,7 +4625,6 @@ function render(){
     guard('ph', () => fitPlaceholders(v));
     if (failed) GH.shown.view = 1; else if (GH.shown.view || GH.shown.fatal){ delete GH.shown.view; GH.clear('fatal'); }
     if (fk && !sheet && !modalId) guard('focus', () => { const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); });
-    if (keep) guard('release', () => releaseView(v, keep));
     guard('timer', floatTimer);
     guard('wake', syncWake);
     document.body.classList.toggle('on-cook', tab === 'cook');
@@ -4634,6 +4632,7 @@ function render(){
     guard('voice', () => { if (tab !== 'cook' && (hf.on || voiceLive)) voiceStop(); });
     guard('navh', () => { const nv = document.querySelector('nav.tabs'); if (nv && nv.offsetHeight) document.documentElement.style.setProperty('--nav-h', nv.offsetHeight + 'px'); });   // 「次の手順」や画面下の固定アクションバー（.actionbar）を下のタブのすぐ上に置く（言語でタブの高さが変わる）
     guard('tray', fitTray);   // お膳を、スクロールしなくても下の帯の上に全部収まる大きさにする
+    if (keep) guard('release', () => releaseView(v, keep));   // スクロール位置を戻すのは、お膳の大きさと見出しの詰め方が決まってから（途中の高さで戻すと、あとで動く）
     if (sheet) renderSheet();
     // 無料期間が終わって未購入なら、購入画面を閉じられない形で出す
     guard('paywall', () => { if (isLocked() && S.settings.country && S.onboarded && !(sheet && sheet.kind === 'paywall')) openPaywall(monitorOpen() ? 'monitor' : PLAN.trialMode === 'store' && !monitorOn() ? 'start' : 'locked'); });
@@ -13102,7 +13101,7 @@ window.addEventListener('resize', () => guard('tabs', fitTabs));
 function updateTabs(){
     const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !twistAvailable();
     const n = document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').length;
-    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},${n >= 6 ? 'minmax(0,1fr)' : '1fr'})`;
+    document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},minmax(0,1fr))`;   // 長い言葉の言語・大きい字でも、タブの列が画面より広がらない
     document.querySelector('nav.tabs').classList.toggle('many', n >= 5);   // 5〜6つ（ひとひねりは日本＋日本語だけ）は、文字を 12px に
     if (!twistAvailable() && tab === 'twist') tab = 'today';
     guard('tabs', fitTabs);

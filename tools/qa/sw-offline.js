@@ -164,6 +164,7 @@ const swVersion = p => p.evaluate(() => caches.keys().then(k => k.filter(x => x.
     ok('broken: 壊れた保存が正しいものに置きかわった', await p.evaluate(async () => (await (await caches.match('packs/us.js?v=' + ASSET_V)).text()).length > 10000));
 
     // 4c. 電波の入り口の案内ページ（HTML）が js の場所に返ってきても、保存しない
+    await p.waitForTimeout(1000);   // 前の手順の取り直し（裏で保存しなおす）が終わってから消す（並列で重いとき、消したあとに前の保存が入ることがあった）
     await p.evaluate(async () => { const k = (await caches.keys()).find(k => k.startsWith('gohancho-v')); await (await caches.open(k)).delete('packs/us.js?v=' + ASSET_V, {ignoreSearch: true}); });
     ctl.override['/packs/us.js'] = {type: 'text/html', body: '<html>captive portal</html>'};
     await p.evaluate(async () => { delete PACKS.US; try { await setCountry('US'); } catch (e) {} });
