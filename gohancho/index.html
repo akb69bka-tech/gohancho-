@@ -3355,9 +3355,9 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
     const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
     const okayuDay = session.mood === 'okayu';   // おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（ない国・ないときも、ほかの料理・麺で埋めない）
-    let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
+    let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && (!session.swapF || moodOk(r, session.swapF)) && !isAvoided(r));   // swapF: かえるの絞りこみ（気分に重ねる）
     if (menuCount() === 1){ const one = cands.filter(r => isBowlMain(r) || soupyMain(r)); if (one.length) cands = one; }   // 1品の日は、それだけで食事になる丼・麺・鍋
-    if (!cands.length && !okayuDay) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (!cands.length && !okayuDay && !session.swapF) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
     if (!okayuDay && stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆの日は、ご飯もの・麺（きつねうどんなど）を主菜にしない
     if (!composeOf(menuCount()).slots.includes('副菜') && !mixCc('主菜') && !stapleSpot()){ const st = cands.filter(r => r.starch); if (st.length) cands = st; }   // 副菜の枠がない日（一汁一菜・1品）で主食が「なし」の国は、主食になる物が入った主菜を（R4。印のある国だけ）
     if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
@@ -3373,7 +3373,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
     if (again) return again;
     const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
-    if (!rest.length && !sameKind && !okayuDay){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
+    if (!rest.length && !sameKind && !okayuDay && !session.swapF){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
         const wide = poolFor('主菜').filter(x => x.main && !isAvoided(x) && !S.hidden.includes(x.id) && !prev.has(x.id));
         if (wide.length) return wide[Math.floor(Math.random() * wide.length)];
     }
@@ -3457,7 +3457,9 @@ function fitMain(ps, slot, main){
     return ps;
 }
 // 気分の時間の条件（20分以内・ラクの日）を、副菜・汁もの・2品目の主菜にも効かせる（合う料理がその枠にないときだけ外す）
-function slotMoodOk(r, slot){ return session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
+// 料理の種類の気分（和食・洋食・中華・韓国エスニック）は、副菜・汁もの・2品目の主菜も、そのなかまを先に出す（和食の日に洋・中の副菜、洋食の日に味噌汁が入っていた。合う料理がその枠にないときだけ外す）
+const GENRE_MOOD = {'和': ['和'], '洋': ['洋'], '中': ['中'], asia: ['韓', 'エスニック', '中']};
+function slotMoodOk(r, slot){ return GENRE_MOOD[session.mood] ? GENRE_MOOD[session.mood].includes(r.genre) : session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
 function moodPrefer(ps, slot){ const ok = ps.filter(r => slotMoodOk(r, slot)); return ok.length ? ok : ps; }
 function poolForMood(slot, mood){ const m0 = session.mood; session.mood = mood; try{ return poolFor(slot); } finally { session.mood = m0; } }
 function poolFor(slot){
@@ -3905,6 +3907,7 @@ function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoid
 const WEEK_BOWL_MAX = 3;
 const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){
+    // 1週間プランは今日の気分に左右されない（おかゆの日に作ると、おかゆ・雑炊・ハムエッグがプランの主菜に入っていた）。候補は poolForMood('主菜', 'all')
     const days = [], used = new Set();
     // 今日の献立をもう決めていれば、プランの今日はその主菜にする（決めた献立とプランが食い違わないように）
     const decidedMain = S.cook && S.cook.d === TODAY ? ((cookItems().find(x => x.slot === '主菜') || {}).r || null) : null;
@@ -3914,7 +3917,7 @@ function makeWeek(){
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
-        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
+        const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
         const fresh = all0.filter(r => weekFresh(r, i)); let cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
         // ごはんもの・麺の一品料理は1週間で3日まで（中華圏などで主菜が丼・麺ばかりにならないように。候補が足りないときはそのまま）
         if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
@@ -3924,7 +3927,7 @@ function makeWeek(){
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度（アレルゲン・苦手・品薄の主菜には戻らない）
-            let all = poolFor('主菜').filter(x => x.main && !isAvoided(x)); const order = days.map(x => x.id);
+            let all = poolForMood('主菜', 'all').filter(x => x.main && !isAvoided(x)); const order = days.map(x => x.id);
             const fr = all.filter(x => weekFresh(x, i)); if (fr.length) all = fr;
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
@@ -3946,11 +3949,11 @@ function refreshWeek(){
     S.week.days.forEach((x, i) => {
         if (x.d < TODAY || x.skip || !out(byId(x.id))) return;
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
-        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
+        const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
         let r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
         // アレルギーをいくつも足して、まだ使っていない主菜がなくなったときは、ほかの日の料理をもう一度使う（当たる料理をプランに残さない）
-        if (!r){ const again = poolFor('主菜').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
+        if (!r){ const again = poolForMood('主菜', 'all').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
         if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
         else { x.skip = true; delete x.extra; skipped.push(x.d); n++; }   // 合う主菜が1つもない日は「作らない日」にして知らせる（当たる料理は残さない）
     });
@@ -3973,7 +3976,8 @@ function ensureWeekExtras(){
         const e = x.extra && typeof x.extra === 'object' ? x.extra : (x.extra = {});
         [['side', '副菜'], ['soup', '汁物']].forEach(([k, slot]) => {
             if (e[k] && ok(e[k])) return;
-            const r = suggestFor(slot, [{r:main}, ...[...taken].map(id => ({r:byId(id)})).filter(y => y.r)], main) || suggestFor(slot, [{r:main}], main);
+            const m0 = session.mood; session.mood = 'all';   // ほかの日の副菜・汁ものに、今日の気分（おかゆの日など）を効かせない
+            let r; try { r = suggestFor(slot, [{r:main}, ...[...taken].map(id => ({r:byId(id)})).filter(y => y.r)], main) || suggestFor(slot, [{r:main}], main); } finally { session.mood = m0; }
             if (r && ok(r.id)){ e[k] = r.id; taken.add(r.id); } else delete e[k];
             ch = true;
         });
@@ -6094,15 +6098,17 @@ function suggestFor(slot, items, main){
     const ctx = {main, others, fridge: session.useFridge ? fridgeKeys() : null};
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物' || soupyMain(main) || (primoMain(main) && !mixCc('汁物'))) return null;   // イタリアの Primo（パスタ・リゾット）にズッパ（これも Primo）を重ねない
-        const ps = unlike(moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id)), '汁物', main), '汁物'));
-        return pick(easyPool('汁物', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
+        // ラクの日・お弁当の日の絞りこみ（easyPool）を、「似ていない料理」の絞りこみより先にかける（似ていない料理を選ぶために、ラクの日に合わない料理が入っていた）
+        const base = moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物'), pre = easyPool('汁物', base);
+        return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
-        const ps = unlike(moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id)), '副菜', main), '副菜'));
+        const base = moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜'), pre = easyPool('副菜', base);
+        const ps = unlike(pre.length ? pre : base);   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
         if (starchWanted(items, main)){   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
-            const st = ps.filter(r => r.starch), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
+            const st = ps.filter(r => r.starch && (session.mood !== 'bento' || bentoFits(r))), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
         }
-        return pick(easyPool('副菜', ps), ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(ps, ctx) : null);
+        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(unlike(base), ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
@@ -9087,7 +9093,10 @@ function ensureMenu(){
     { const r = dayRec(); if (r && r.mood && MOODS.some(x => x.k === r.mood) && session.moodDay !== TODAY){ session.mood = r.mood; session.moodDay = TODAY; } }   // 前の日に「明日から」にした気分（開いたまま日付が替わったときも、その日に1回）
     if (!restoreDraft() && !restoreDecided() && !restoreDayDraft()){
         newMenu();
-        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)) setMenuMain(p);   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に
+        const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
+            setMenuMain(p);
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+        }   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に。気分（おかゆの日・魚の日など）に合わないプランの主菜は入れない
     }
 }
 // 「あと1品」で選んだ料理が、今日の献立のどこに入るか: fill = 空いた枠に入れる、add = 品数を1つ増やして入れる、replace = これ以上増やせないので、同じ種類の最後の料理とかえる
@@ -9683,7 +9692,11 @@ const SWAP_F = {fridge: () => t('冷蔵庫の物で'), quick: () => t('20分以�
 function swapCands(i, f){
     const m = session.menu; if (!m || !m.items[i]) return [];
     const it = m.items[i], cur = it.r, out = [], rej = new Set(session.rejected), mood0 = session.mood, fr0 = session.useFridge;
-    if (f === 'quick' || f === 'fish' || f === 'okayu') session.mood = f; if (f === 'fridge') session.useFridge = true;
+    // 絞りこみは、選んでいる気分に重ねる（魚の日に「20分以内」→ 20分以内の魚の料理。気分を絞りこみで置きかえると、魚の日に肉・お弁当の日にお弁当に向かない料理・おかゆの日に丼が出ていた）。
+    // おかゆの日の絞りこみ・気分がおまかせのときは、いままでどおり絞りこみを気分にする
+    if (f === 'okayu' || ((f === 'quick' || f === 'fish') && mood0 === 'all')) session.mood = f;
+    else if (f === 'quick' || f === 'fish') session.swapF = f;
+    if (f === 'fridge') session.useFridge = true;
     try{
         for (let k = 0; k < 14 && out.length < 3; k++){
             [cur, ...out].forEach(r => { if (r) session.rejected.add(r.id); });
@@ -9697,7 +9710,7 @@ function swapCands(i, f){
             if (f === 'okayu' && !okayuDayOk(r)) continue;
             out.push(r);
         }
-    } finally { session.rejected = rej; session.mood = mood0; session.useFridge = fr0; }
+    } finally { session.rejected = rej; session.mood = mood0; session.useFridge = fr0; delete session.swapF; }
     return out;
 }
 function swapSheetHtml(){
@@ -9842,7 +9855,10 @@ function viewToday(){
     if (!session.menu && !restoreDraft() && !restoreDecided()){
         newMenu();
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
-        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)) setMenuMain(p);
+        const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
+            setMenuMain(p);
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+        }
     }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
     const m = session.menu;
