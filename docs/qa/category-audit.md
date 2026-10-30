@@ -48,7 +48,9 @@ CCS=JP RUNS=8 OUT=/tmp/ca.json node tools/qa/category-audit.js           # 国�
 | mood-quick | 20分以内の日は、どの料理も20分以内 | min |
 | mood-easy | ラクの日は、ラクの日の条件（時間・材料の数・揚げ物/オーブンなし）に合う料理 | min・材料・作り方 |
 | mood-bento | お弁当の日は、汁ものの席なし・汁けの多い料理なし・お弁当向きの料理 | BENTO_OK・soupyMain |
-| mood-okayu | おかゆの日の主菜は、おかゆ・雑炊・粥だけ（麺・揚げ物は出さない） | id・type・名前（粥・congee・죽 など） |
+| mood-okayu | おかゆの日の主菜は、おかゆ・雑炊・粥だけ（麺・揚げ物は出さない）。気分の「おかゆの日」は粥の主菜がある国だけで、かえるの絞りこみと同じ出し方 | id・type・名前（粥・congee・죽 など） |
+| okayu-quick | おかゆの日の主菜は、早くできる（20分以内の）おかゆ・雑炊があればそれを先に出す | min |
+| event-main | 行事のご飯（赤飯）を主菜にしない（献立・かえる・1週間プラン） | id（EVENT_RICE） |
 | mood-okayu-side | おかゆの日の副菜・汁ものは、やわらかい・あっさりした20分以内の料理 | min・method・辛さ・名前（サラダ・漬物） |
 | mood-genre | 和・洋・中の日の主菜は、そのなかま | genre |
 | mood-genre-side | 和・洋・中・韓国エスニックの日の副菜・汁もの・2品目の主菜も、そのなかま（韓国エスニックの日は中華も可） | genre |

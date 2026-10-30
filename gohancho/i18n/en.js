@@ -1632,5 +1632,10 @@ GOHAN_I18N('en', {
     "season|冬": "winter",
     "家族リクエスト": "Family requests",
     "家族リクエスト（{n}件）": "Family requests ({n})",
-    "{name}：{dish}": "{name}: {dish}"
+    "{name}：{dish}": "{name}: {dish}",
+    "⚠の印の料理があります。作る前に、もう一度確かめてください": "A dish is marked ⚠. Please check it again before cooking",
+    "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "On okayu day, we suggest soft, mild side dishes and soup. Okayu takes about {n} min to cook",
+    "今日は{dish}でしたね。夜おそくまでおつかれさまです": "{dish} today. Thanks for your hard work tonight",
+    "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "It's late—thanks for all you do. The menu can wait until you've rested",
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "It's late at night. Take your time looking over today's menu"
 });
