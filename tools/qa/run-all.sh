@@ -63,6 +63,7 @@ fi
 for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy allergen-regions stock menu-trust promises dish-alias panel-r3 panel-r3b panel-r4 panel-r4b panel-r4-ui marugoto upgrade-v36 upgrade-seats wish first-country greet; do
   add "t-$T" app "" "node tools/tests/$T.mjs"
 done
+add "qa-category-audit" app "" "node tools/qa/category-audit.js"   # 仲間はずれの点検（21か国 × 気分・かえる・主食・席・1週間・明日）。1件でもあれば落ちる
 add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
 add "packs-check"      static "" "node tools/packs/check.mjs"
@@ -70,6 +71,7 @@ for L in $LANGS; do add "i18n-$L" static "" "node tools/i18n/extract.mjs --check
 add "steps-scale"      static "" "node tools/steps/scale-steps.test.mjs"
 add "terms"            static "" "node tools/tests/terms.mjs"
 add "health-claims"    static "" "node tools/tests/health-claims.mjs"   # 料理の文に健康・体への効き目の言い切りがない（全言語）
+add "t-photo-dish"     static "" "node tools/tests/photo-dish.mjs"      # 写真風の絵（Gemini）の取りこみと表示（自分でサーバーを立てる。オフラインも）
 
 match() { local name="$1" list="$2" w; [ -z "$list" ] && return 1; IFS=',' read -ra W <<<"$list"; for w in "${W[@]}"; do case "$name" in *"$w"*) return 0;; esac; done; return 1; }
 SEL=()

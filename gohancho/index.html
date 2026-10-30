@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v62';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v65';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -278,6 +278,14 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .thumb.gen{background-color:var(--porcelain);background-size:112%}
 .hero.gen{background:radial-gradient(120% 90% at 30% 0%,var(--tray-2),var(--tray) 70%)}
 .hero.gen img{object-fit:contain;padding:10px 0 26px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.35))}
+/* 写真風の絵（via:'photo'。Gemini などで作った、生成りの背景の正方形の写真）: 背景ごと丸く切って、器（お皿）のように見せる。
+   四角いまま出すと、暗い表示やお膳の上で、生成りの四角が浮いて見えるため。大きさ・場所は手描きの絵と同じ */
+.vessel.gen.gph .food.photo{inset:0;border-radius:50%;background-color:#FBF5EC;background-size:cover;filter:none;box-shadow:inset 0 0 0 1px rgba(60,40,20,.10),0 6px 12px rgba(0,0,0,.30)}
+.thumb.pic.gen.gph{background:#FBF5EC}
+.thumb.pic.gen.gph>img{inset:0;width:100%;height:100%}
+.hero.gen.gph img{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:auto;height:calc(100% - 84px);max-width:calc(100% - 24px);aspect-ratio:1;padding:0;object-fit:cover;border-radius:50%;background:#FBF5EC;filter:none;box-shadow:inset 0 0 0 1px rgba(60,40,20,.10),0 10px 22px rgba(0,0,0,.30)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gph .food.photo,:root:not([data-theme="light"]) .gph>img,:root:not([data-theme="light"]) .hero.gen.gph img{filter:brightness(.93)}}
+:root[data-theme="dark"] .gph .food.photo,:root[data-theme="dark"] .gph>img,:root[data-theme="dark"] .hero.gen.gph img{filter:brightness(.93)}   /* 暗い表示では、生成りのお皿が明るすぎて目立たないよう少しだけ落とす */
 .v-plate{width:92%;box-shadow:inset 0 0 0 6px var(--porcelain),inset 0 0 0 8px var(--rim),inset 0 -8px 18px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.45)}
 .v-plate .food{inset:20%}.v-plate .food.photo{inset:11%}
 .v-donburi{width:92%;background:repeating-conic-gradient(var(--rim) 0 5deg,var(--porcelain) 5deg 15deg);box-shadow:0 8px 16px rgba(0,0,0,.45)}
@@ -477,7 +485,7 @@ body.kb .wrap{padding-bottom:calc(24px + var(--kb,0px))}
 .dsheet{padding-bottom:0}
 .dsheet .hero{aspect-ratio:4/3;max-height:46vh;width:100%}
 .dsheet .hero.stage,.dsheet .hero.stage.gen,.dsheet .hero.stage.illust{background:var(--stage);border-radius:0}.dsheet .hero.stage.s2{background:var(--stage-2)}.dsheet .hero.stage.s3{background:var(--stage-3)}   /* 絵の台は種類別（主菜=桃・副菜=若草・汁もの/ご飯=卵色） */
-.dsheet .hero.gen img{filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--ink) 22%,transparent))}
+.dsheet .hero.gen img{filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--ink) 22%,transparent))}.dsheet .hero.gen.gph img{filter:none}
 .dsheet .hero img{aspect-ratio:auto}
 .dsheet .hero .noimg .vessel{width:180px}
 .dsheet .hero .cap{padding-bottom:calc(var(--s16,16px) + 6px)}
@@ -3366,9 +3374,9 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
     const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
     const okayuDay = session.mood === 'okayu';   // おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（ない国・ないときも、ほかの料理・麺で埋めない）
-    let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && !isAvoided(r));
+    let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && (!session.swapF || moodOk(r, session.swapF)) && !isAvoided(r));   // swapF: かえるの絞りこみ（気分に重ねる）
     if (menuCount() === 1){ const one = cands.filter(r => isBowlMain(r) || soupyMain(r)); if (one.length) cands = one; }   // 1品の日は、それだけで食事になる丼・麺・鍋
-    if (!cands.length && !okayuDay) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (!cands.length && !okayuDay && !session.swapF) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
     if (!okayuDay && stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆの日は、ご飯もの・麺（きつねうどんなど）を主菜にしない
     if (!composeOf(menuCount()).slots.includes('副菜') && !mixCc('主菜') && !stapleSpot()){ const st = cands.filter(r => r.starch); if (st.length) cands = st; }   // 副菜の枠がない日（一汁一菜・1品）で主食が「なし」の国は、主食になる物が入った主菜を（R4。印のある国だけ）
     if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
@@ -3384,7 +3392,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     const again = pick(cands.filter(x => !prev.has(x.id)), ctx) || pick(cands, Object.assign({}, ctx, {relax:true}));
     if (again) return again;
     const rest = cands.filter(x => !prev.has(x.id) && !S.hidden.includes(x.id));
-    if (!rest.length && !sameKind && !okayuDay){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
+    if (!rest.length && !sameKind && !okayuDay && !session.swapF){   // 気分・種類で絞った候補が「今は出さない」の料理だけになったら、絞りをはずして、出さないと決めた料理以外から選ぶ
         const wide = poolFor('主菜').filter(x => x.main && !isAvoided(x) && !S.hidden.includes(x.id) && !prev.has(x.id));
         if (wide.length) return wide[Math.floor(Math.random() * wide.length)];
     }
@@ -3468,7 +3476,9 @@ function fitMain(ps, slot, main){
     return ps;
 }
 // 気分の時間の条件（20分以内・ラクの日）を、副菜・汁もの・2品目の主菜にも効かせる（合う料理がその枠にないときだけ外す）
-function slotMoodOk(r, slot){ return session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
+// 料理の種類の気分（和食・洋食・中華・韓国エスニック）は、副菜・汁もの・2品目の主菜も、そのなかまを先に出す（和食の日に洋・中の副菜、洋食の日に味噌汁が入っていた。合う料理がその枠にないときだけ外す）
+const GENRE_MOOD = {'和': ['和'], '洋': ['洋'], '中': ['中'], asia: ['韓', 'エスニック', '中']};
+function slotMoodOk(r, slot){ return GENRE_MOOD[session.mood] ? GENRE_MOOD[session.mood].includes(r.genre) : session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
 function moodPrefer(ps, slot){ const ok = ps.filter(r => slotMoodOk(r, slot)); return ok.length ? ok : ps; }
 function poolForMood(slot, mood){ const m0 = session.mood; session.mood = mood; try{ return poolFor(slot); } finally { session.mood = m0; } }
 function poolFor(slot){
@@ -3916,6 +3926,7 @@ function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoid
 const WEEK_BOWL_MAX = 3;
 const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){
+    // 1週間プランは今日の気分に左右されない（おかゆの日に作ると、おかゆ・雑炊・ハムエッグがプランの主菜に入っていた）。候補は poolForMood('主菜', 'all')
     const days = [], used = new Set();
     // 今日の献立をもう決めていれば、プランの今日はその主菜にする（決めた献立とプランが食い違わないように）
     const decidedMain = S.cook && S.cook.d === TODAY ? ((cookItems().find(x => x.slot === '主菜') || {}).r || null) : null;
@@ -3925,7 +3936,7 @@ function makeWeek(){
         const recent = [];
         for (let k = 1; k <= 2 && days.length - k >= 0; k++){ const r = byId(days[days.length-k].id); if (r) recent.push({ago:k, family:r.family, genre:r.genre}); }
         if (i === 0) recent.push(...recentMainFamilies(2).map(x => Object.assign({}, x, {ago:x.ago+1})));
-        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
+        const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !isAvoided(r));
         const fresh = all0.filter(r => weekFresh(r, i)); let cands = fresh.length ? fresh : all0;   // 「○日以内に作った料理は出さない」はプランの主菜にも効かせる（足りないときだけ外す）
         // ごはんもの・麺の一品料理は1週間で3日まで（中華圏などで主菜が丼・麺ばかりにならないように。候補が足りないときはそのまま）
         if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
@@ -3935,7 +3946,7 @@ function makeWeek(){
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度（アレルゲン・苦手・品薄の主菜には戻らない）
-            let all = poolFor('主菜').filter(x => x.main && !isAvoided(x)); const order = days.map(x => x.id);
+            let all = poolForMood('主菜', 'all').filter(x => x.main && !isAvoided(x)); const order = days.map(x => x.id);
             const fr = all.filter(x => weekFresh(x, i)); if (fr.length) all = fr;
             r = all.slice().sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))[0] || null;
         }
@@ -3957,11 +3968,11 @@ function refreshWeek(){
     S.week.days.forEach((x, i) => {
         if (x.d < TODAY || x.skip || !out(byId(x.id))) return;
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
-        const all0 = poolFor('主菜').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
+        const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
         let r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
         // アレルギーをいくつも足して、まだ使っていない主菜がなくなったときは、ほかの日の料理をもう一度使う（当たる料理をプランに残さない）
-        if (!r){ const again = poolFor('主菜').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
+        if (!r){ const again = poolForMood('主菜', 'all').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
         if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
         else { x.skip = true; delete x.extra; skipped.push(x.d); n++; }   // 合う主菜が1つもない日は「作らない日」にして知らせる（当たる料理は残さない）
     });
@@ -3984,7 +3995,8 @@ function ensureWeekExtras(){
         const e = x.extra && typeof x.extra === 'object' ? x.extra : (x.extra = {});
         [['side', '副菜'], ['soup', '汁物']].forEach(([k, slot]) => {
             if (e[k] && ok(e[k])) return;
-            const r = suggestFor(slot, [{r:main}, ...[...taken].map(id => ({r:byId(id)})).filter(y => y.r)], main) || suggestFor(slot, [{r:main}], main);
+            const m0 = session.mood; session.mood = 'all';   // ほかの日の副菜・汁ものに、今日の気分（おかゆの日など）を効かせない
+            let r; try { r = suggestFor(slot, [{r:main}, ...[...taken].map(id => ({r:byId(id)})).filter(y => y.r)], main) || suggestFor(slot, [{r:main}], main); } finally { session.mood = m0; }
             if (r && ok(r.id)){ e[k] = r.id; taken.add(r.id); } else delete e[k];
             ch = true;
         });
@@ -4804,9 +4816,10 @@ function photoOf(r){
 
 /* ---- アプリに同梱した料理の絵 ----
    img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
-   'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像。アプリから外部へは通信しない。 */
+   'api' / 'chatgpt' は ChatGPT（OpenAI の画像生成）で前もって作った画像、'photo' は Gemini（Google の画像生成）で前もって作った写真風の画像
+   （tools/illustrations/import-photos.mjs で 512px の WebP にして入れる。入っていない料理は手描きの SVG のまま）。アプリから外部へは通信しない。 */
 const GEN = {};
-const GEN_INFO = {ok: false, any: false, ai: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
+const GEN_INFO = {ok: false, any: false, ai: false, photo: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
 const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名、読みこみ済みは true
 function addGenerated(items){
     GEN_INFO.ok = false;
@@ -4814,6 +4827,7 @@ function addGenerated(items){
         const it = items[id]; if (!it || !it.file || !/^[\w.-]+$/.test(it.file)) return;
         const v = '?v=' + encodeURIComponent(it.v || it.date || '');   // v は絵の中身から作った印（描き直すと変わる）
         GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + v, gen: true, ai: it.via === 'api' || it.via === 'chatgpt',
+            photo: it.via === 'photo',   // 写真風の絵（Gemini で作った WebP。生成りの背景の正方形）: 丸く切って出す（gph）
             // 一覧用の小さい絵（192px）。一覧に何百品も並んでも、SVG の影を毎回計算しないので速い
             thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
     });
@@ -4968,10 +4982,10 @@ function cssUrl(u){ return `url('${String(u).replace(/['"()\\\s]/g, c => encodeU
 function imageSearchUrl(r){ return 'https://www.google.com/search?tbm=isch&q=' + encodeURIComponent(r.name.replace(/（.*?）/g,'') + (r.pack ? '' : ' 料理')); }
 function photoNote(){
     // 数千件の GEN を描き直しのたびに見ない（GEN が変わるのは addGenerated だけ。そのときに覚え直す）
-    if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai){ GEN_INFO.ai = true; break; } } GEN_INFO.ok = true; }
-    const ai = GEN_INFO.ai, anyGen = GEN_INFO.any;
+    if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; GEN_INFO.photo = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai) GEN_INFO.ai = true; if (GEN[k].photo) GEN_INFO.photo = true; if (GEN_INFO.ai && GEN_INFO.photo) break; } GEN_INFO.ok = true; }
+    const ai = GEN_INFO.ai, gem = GEN_INFO.photo, anyGen = GEN_INFO.any;
     const wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
-    if (ai || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
+    if (ai || gem || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', gem ? t('料理の写真風の絵は Gemini（Google の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
     if (anyGen) return '';
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return t('料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。');
     return '';
@@ -5002,7 +5016,7 @@ function vesselHtml(kind, r, still=false, anim=true){
     if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)) ph = null; }
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
     const food = ph ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
-    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}${anim ? ' rise-in' : ''}`;
+    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}${ph && ph.photo ? ' gph' : ''}${anim ? ' rise-in' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
@@ -5010,7 +5024,7 @@ function thumbHtml(r){
     let ph = photoOf(r);
     if (ph){ const src = ph.thumb || ph.src; probeImg(src); if (IMG_FAIL.has(src)) ph = null; }
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
-    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
@@ -6148,15 +6162,17 @@ function suggestFor(slot, items, main){
     const ctx = {main, others, fridge: session.useFridge ? fridgeKeys() : null};
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物' || soupyMain(main) || (primoMain(main) && !mixCc('汁物'))) return null;   // イタリアの Primo（パスタ・リゾット）にズッパ（これも Primo）を重ねない
-        const ps = unlike(moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id)), '汁物', main), '汁物'));
-        return pick(easyPool('汁物', ps), ctx) || (session.mood === 'easy' ? pick(ps, ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
+        // ラクの日・お弁当の日の絞りこみ（easyPool）を、「似ていない料理」の絞りこみより先にかける（似ていない料理を選ぶために、ラクの日に合わない料理が入っていた）
+        const base = moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物'), pre = easyPool('汁物', base);
+        return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
-        const ps = unlike(moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id)), '副菜', main), '副菜'));
+        const base = moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜'), pre = easyPool('副菜', base);
+        const ps = unlike(pre.length ? pre : base);   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
         if (starchWanted(items, main)){   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
-            const st = ps.filter(r => r.starch), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
+            const st = ps.filter(r => r.starch && (session.mood !== 'bento' || bentoFits(r))), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
         }
-        return pick(easyPool('副菜', ps), ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(ps, ctx) : null);
+        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(unlike(base), ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
@@ -9142,7 +9158,10 @@ function ensureMenu(){
     { const r = dayRec(); if (r && r.mood && MOODS.some(x => x.k === r.mood) && session.moodDay !== TODAY){ session.mood = r.mood; session.moodDay = TODAY; } }   // 前の日に「明日から」にした気分（開いたまま日付が替わったときも、その日に1回）
     if (!restoreDraft() && !restoreDecided() && !restoreDayDraft()){
         newMenu();
-        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)) setMenuMain(p);   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に
+        const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
+            setMenuMain(p);
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+        }   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に。気分（おかゆの日・魚の日など）に合わないプランの主菜は入れない
     }
 }
 // 「あと1品」で選んだ料理が、今日の献立のどこに入るか: fill = 空いた枠に入れる、add = 品数を1つ増やして入れる、replace = これ以上増やせないので、同じ種類の最後の料理とかえる
@@ -9738,7 +9757,11 @@ const SWAP_F = {fridge: () => t('冷蔵庫の物で'), quick: () => t('20分以�
 function swapCands(i, f){
     const m = session.menu; if (!m || !m.items[i]) return [];
     const it = m.items[i], cur = it.r, out = [], rej = new Set(session.rejected), mood0 = session.mood, fr0 = session.useFridge;
-    if (f === 'quick' || f === 'fish' || f === 'okayu') session.mood = f; if (f === 'fridge') session.useFridge = true;
+    // 絞りこみは、選んでいる気分に重ねる（魚の日に「20分以内」→ 20分以内の魚の料理。気分を絞りこみで置きかえると、魚の日に肉・お弁当の日にお弁当に向かない料理・おかゆの日に丼が出ていた）。
+    // おかゆの日の絞りこみ・気分がおまかせのときは、いままでどおり絞りこみを気分にする
+    if (f === 'okayu' || ((f === 'quick' || f === 'fish') && mood0 === 'all')) session.mood = f;
+    else if (f === 'quick' || f === 'fish') session.swapF = f;
+    if (f === 'fridge') session.useFridge = true;
     try{
         for (let k = 0; k < 14 && out.length < 3; k++){
             [cur, ...out].forEach(r => { if (r) session.rejected.add(r.id); });
@@ -9752,7 +9775,7 @@ function swapCands(i, f){
             if (f === 'okayu' && !okayuDayOk(r)) continue;
             out.push(r);
         }
-    } finally { session.rejected = rej; session.mood = mood0; session.useFridge = fr0; }
+    } finally { session.rejected = rej; session.mood = mood0; session.useFridge = fr0; delete session.swapF; }
     return out;
 }
 function swapSheetHtml(){
@@ -9897,7 +9920,10 @@ function viewToday(){
     if (!session.menu && !restoreDraft() && !restoreDecided()){
         newMenu();
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
-        const p = weekToday(); if (planUsable(p) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)) setMenuMain(p);
+        const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
+            setMenuMain(p);
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+        }
     }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
     const m = session.menu;
@@ -11492,12 +11518,12 @@ function renderModalBody(){
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}の写真（わが家で作ったもの）', {name:r.name}))}"><div class="cap">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(ph.d)}))}</div>`
         : ph && ph.gen
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト', {name:baseName}))}">
-           ${r.isTwist || ph.ai ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ''}</div>` : ''}`
+           ${r.isTwist || ph.ai || ph.photo ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai || ph.photo ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ph.photo ? esc(t('写真風の絵は Gemini（Google の画像生成）で作成したイメージです。実際の料理・盛りつけとは異なります。')) : ''}</div>` : ''}`
         : ph
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト（写真をもとに作成）', {name:baseName}))}">
            <div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + SLASH() : ''}${esc(t('写真をもとにイラスト化'))}${SLASH()}${esc(t('撮影: {artist}（{license}）', {artist:ph.artist || t('不明'), license:ph.license || t('ライセンス不明')}))} <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(t('出典: Wikimedia Commons'))}</a></div>`
         : `<div class="noimg">${vesselHtml(vesselKind(r), r, true)}</div>`;
-    const heroCls = (ph ? (ph.gen ? 'hero gen' : 'hero') : 'hero illust') + (ph && !ph.gen ? '' : ' stage' + (r.type === '副菜' ? ' s2' : ['汁物', 'ごはん', '麺'].includes(r.type) ? ' s3' : ''));   // 絵の台は種類別（写真はそのまま）
+    const heroCls = (ph ? (ph.gen ? 'hero gen' + (ph.photo ? ' gph' : '') : 'hero') : 'hero illust') + (ph && !ph.gen ? '' : ' stage' + (r.type === '副菜' ? ' s2' : ['汁物', 'ごはん', '麺'].includes(r.type) ? ' s3' : ''));   // 絵の台は種類別（写真はそのまま）
     const sv = svToday();
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
     const kind = [typeLabel(r.type), r.pack && r.pack === currentCountry() ? '' : genreLabel(r)].filter(Boolean).join(t('・'));   // いまの国の料理には国名を出さない（metaLine と同じ）
