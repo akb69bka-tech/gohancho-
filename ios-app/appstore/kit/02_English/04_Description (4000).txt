@@ -28,11 +28,11 @@ Tap a time in the steps, like "simmer 8 minutes", and the timer starts right the
 Everything runs on your phone. No account needed. Your history, photos and settings never leave your device.
 
 ■ Gohancho Plus subscription required
-The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable monthly subscription.
-- New subscribers can try it free for the first month (Apple free trial, for eligible users)
-- After the trial, it renews monthly at the price shown in the App Store for your country
+The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable subscription. Choose monthly or yearly; the yearly plan costs less than 12 months of the monthly plan.
+- New subscribers can try either plan free for the first month (Apple free trial, for eligible users; one free trial per person)
+- After the trial, it renews at the price of the plan you chose, as shown in the App Store for your country
 - Cancel at least 24 hours before the trial ends and you won't be charged
-- No yearly commitment; cancel anytime
+- Cancel anytime; your plan stops at the next renewal
 
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 

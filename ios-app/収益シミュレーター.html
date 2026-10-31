@@ -39,7 +39,7 @@ tr.total td{font-weight:700;border-top:2px solid var(--accent)}
 <main>
   <div>
     <h1>わが家のご飯帖 収益シミュレーター</h1>
-    <p class="muted">月額300円（海外は国ごとの価格）、最初の1か月無料、Apple の手数料（日本・EU 26%／他 30%、Small Business なら15%）、RevenueCat 1% を入れた、1年目の年間の見込みです。税金は含みません。</p>
+    <p class="muted">月額300円・年額3,000円（月額の12か月分より600円お得。海外の価格は仮の目安で、App Store Connect の実際の価格は要確認）、どちらも最初の1か月無料、Apple の手数料（日本・EU 26%／他 30%、Small Business なら15%）、RevenueCat 1% を入れた、1年目の年間の見込みです。税金は含みません。</p>
   </div>
 
   <section class="card">
@@ -59,6 +59,7 @@ tr.total td{font-weight:700;border-top:2px solid var(--accent)}
       <label class="f">中価格6か国 伯墨波土秘泰（約190円/月）<input type="number" id="n_mid" min="0" step="100" value="60000"></label>
       <label class="f">低価格5か国 印尼比越埃（約95円/月）<input type="number" id="n_lo" min="0" step="100" value="50000"></label>
       <label class="f" id="convwrap" hidden>ダウンロードのうち有料になる割合（%）<input type="number" id="conv" min="0" max="100" step="0.5" value="3"></label>
+      <label class="f">年額を選ぶ人の割合（%・仮定）<input type="number" id="yshare" min="0" max="100" step="5" value="30"></label>
       <label class="f">月の解約率（%）<input type="number" id="churn" min="0" max="50" step="0.5" value="6"></label>
       <label class="f">1米ドル（円）<input type="number" id="fx" min="50" max="300" step="1" value="150"></label>
       <label class="f">Apple の手数料<select id="feeMode"><option value="auto">自動（手取りが年100万米ドル以下なら15%）</option><option value="small">ずっと15%（Small Business）</option><option value="std">通常（日本・EU 26%／他 30%）</option></select></label>
@@ -78,7 +79,8 @@ tr.total td{font-weight:700;border-top:2px solid var(--accent)}
   <section class="card">
     <h2>読み方</h2>
     <p>・「有料会員の数」は、無料の1か月を終えて払い始めた人の数です。1年目は最大11か月分の支払いになります。</p>
-    <p>・「月の解約率 6%」は、毎月 6% の人がやめる前提で、1人あたり平均 8.2 か月分の支払いになります（0% にすると 11 か月分）。業界の目安は月 5〜10%（出典不明）。</p>
+    <p>・「年額を選ぶ人の割合」は仮定です（実績がないので<b>わかりません</b>）。年額の人は1か月無料のあと年額（月額の10か月分＝日本 3,000円）を1回払い、1年目の途中ではやめない計算です。</p>
+    <p>・「月の解約率 6%」は、月額の人について、毎月 6% の人がやめる前提で、1人あたり平均 8.2 か月分の支払いになります（0% にすると 11 か月分）。業界の目安は月 5〜10%（出典不明）。</p>
     <p>・「ダウンロード数」を選ぶと、そのうち有料になる割合（初期値 3%）だけが会員になります。無料部分の広いアプリの中央値は約 2%、最初に購入画面を出す型は約 10% という調査があります（RevenueCat「State of Subscription Apps」の要約）。</p>
     <p>・2年目以降は、続いている会員の手数料が 15% に下がり、無料の1か月もないので、同じ会員数なら 1年目より手元が増えます。</p>
     <div class="note">税金（所得税・住民税、消費税）は引いていません。海外からの入金の税務は税理士に確認してください。</div>
@@ -95,6 +97,8 @@ function calc(){
   const churn = Math.min(0.5, Math.max(0, (+$('#churn').value || 0) / 100));
   const fx = Math.max(1, +$('#fx').value || 150);
   const paidMonths = churn === 0 ? 11 : (1 - Math.pow(1 - churn, 11)) / churn;
+  const ys = Math.min(100, Math.max(0, +$('#yshare').value || 0)) / 100;   // 年額を選ぶ人の割合（仮定）。年額＝月額×10（日本: 3,000円＝300円×10）。年額の人は1か月無料のあと1回払う
+  const perPayer = p => (1 - ys) * p * paidMonths + ys * p * 10;
   // 区分: 名前, 人数, 月額(円), 手数料の地域
   const groups = [
     ['日本', n[0]*conv, 300, 'jp'],
@@ -102,7 +106,7 @@ function calc(){
     ['米英韓台', n[1]*conv/2, 450, 'other'],
     ['中価格6か国', n[2]*conv, 190, 'other'],
     ['低価格5か国', n[3]*conv, 95, 'other'],
-  ].map(([g,c,p,reg]) => ({g, c, p, reg, gross: c*p*paidMonths}));
+  ].map(([g,c,p,reg]) => ({g, c, p, reg, gross: c*perPayer(p)}));
   const gross = groups.reduce((s,x) => s + x.gross, 0);
   const fm = $('#feeMode').value;
   const small = fm === 'small' ? true : fm === 'std' ? false : (gross*0.85/fx <= 1_000_000);
@@ -113,7 +117,7 @@ function calc(){
   const net = gross - fee - rc;
   const payers = groups.reduce((s,x) => s + x.c, 0);
   $('#net').textContent = '手元に残る額 ' + yen(net) + ' / 年';
-  $('#netsub').textContent = `売上 ${yen(gross)} − Apple ${yen(fee)}（${small ? 'Small Business 15%' : '通常 26〜30%'}） − RevenueCat ${yen(rc)}。有料会員 ${Math.round(payers).toLocaleString('ja-JP')}人、1人あたり平均 ${paidMonths.toFixed(1)}か月分の支払い。月平均 ${yen(net/12)}。`;
+  $('#netsub').textContent = `売上 ${yen(gross)} − Apple ${yen(fee)}（${small ? 'Small Business 15%' : '通常 26〜30%'}） − RevenueCat ${yen(rc)}。有料会員 ${Math.round(payers).toLocaleString('ja-JP')}人（年額 ${Math.round(ys*100)}%・仮定）。月額の人は1人あたり平均 ${paidMonths.toFixed(1)}か月分、年額の人は月額の10か月分の支払い。月平均 ${yen(net/12)}。`;
   $('#bar').innerHTML = gross ? `<i class="net" style="width:${net/gross*100}%"></i><i class="fee" style="width:${fee/gross*100}%"></i><i class="rc" style="width:${rc/gross*100}%"></i>` : '';
   $('#tbl').innerHTML = `<thead><tr><th>地域</th><th>有料会員</th><th>月額</th><th>売上/年</th><th>Apple</th><th>手元</th></tr></thead><tbody>` +
     groups.map(x => `<tr><td>${x.g}</td><td>${Math.round(x.c).toLocaleString('ja-JP')}人</td><td>${x.p}円</td><td>${yen(x.gross)}</td><td>${Math.round(rate(x.reg)*100)}%</td><td>${yen(x.gross - x.fee - (gross ? rc*x.gross/gross : 0))}</td></tr>`).join('') +
