@@ -799,13 +799,13 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     },
     'br_lombo_assado': {
       name: "Lombo de porco assado",
-      ings: [["Lombo de porco inteiro", "1 kg"], ["Cebolas", "2"], ["Limão", "1"], ["Batatas", "3"]],
-      seas: "Sal · Pimenta-do-reino · 5 dentes de alho · 1 colher (chá) de orégano · 1/2 xícara de vinho branco seco ou suco de laranja · 2 colheres (sopa) de óleo · 2 folhas de louro",
+      ings: [["Lombo de porco inteiro", "500 g"], ["Cebola", "1"], ["Limão", "1"], ["Batatas", "2"]],
+      seas: "Sal · Pimenta-do-reino · 3 dentes de alho · 1 colher (chá) de orégano · 1/3 xícara de vinho branco seco ou suco de laranja · 2 colheres (sopa) de óleo · 2 folhas de louro",
       steps: [
         "Fure o lombo todo e esfregue alho amassado, sal, pimenta, orégano, suco de limão e o vinho; deixe marinar pelo menos 2 horas (melhor de um dia para o outro).",
-        "Coloque numa assadeira com as cebolas fatiadas, as batatas, o louro e a marinada, e regue com o óleo.",
-        "Cubra com papel-alumínio e asse a 200 °C por 50 minutos.",
-        "Descubra, regue com o caldo e asse por mais 20 a 30 minutos, até dourar e o caldo sair claro.",
+        "Coloque numa assadeira com a cebola fatiada, as batatas, o louro e a marinada, e regue com o óleo.",
+        "Cubra com papel-alumínio e asse a 200 °C por 30 minutos.",
+        "Descubra, regue com o caldo e asse por mais 15 a 20 minutos, até dourar e o caldo sair claro.",
         "Descanse 10 minutos, fatie fino e regue com o caldo da assadeira.",
       ],
       tip: { add: "O caldo da assadeira", why: "Mantém as fatias magras suculentas", skill: "Descanse antes de fatiar", how: "Dez minutos de descanso assentam o caldo, que fica na carne e não na tábua." },

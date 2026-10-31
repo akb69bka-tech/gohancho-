@@ -456,7 +456,7 @@ GOHAN_PACK_TR('MX', 'es', {
         'Añade los ejotes, el chayote y el elote y cocina 6 minutos.',
         'Agrega la calabacita y el cilantro y cocina 5 minutos más, hasta que todas las verduras estén suaves. Sazona.'
       ],
-      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan proteína y un sabor lechoso', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
+      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan un sabor suave y lechoso, y la hacen más sustanciosa', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
     },
     'mx_mole_olla': {
       name: 'Mole de olla',
@@ -561,8 +561,8 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_pollo_mole': {
       name: 'Pollo en mole',
-      ings: [['Piezas de pollo (muslos, piernas)', '1 kg'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
-      seas: 'Sal · 2 dientes de ajo · 1 litro de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
+      ings: [['Piezas de pollo (muslos, piernas)', '600 g'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
+      seas: 'Sal · 2 dientes de ajo · 750 ml de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
       steps: [
         'Cuece el pollo en el agua con la cebolla, el ajo y sal durante 30 minutos. Guarda el caldo.',
         'En una cazuela honda disuelve la pasta de mole en 2 tazas de caldo caliente, aplastándola con una cuchara. Si usas el jitomate, lícualo con un poco de caldo y agrégalo.',
@@ -573,12 +573,12 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_cochinita': {
       name: 'Cochinita pibil',
-      ings: [['Espaldilla de puerco en trozos grandes', '1 kg'], ['Pasta de achiote', '100 g'], ['Jugo de naranja agria, o de naranja dulce', '250 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
+      ings: [['Espaldilla de puerco en trozos grandes', '500 g'], ['Pasta de achiote', '50 g'], ['Jugo de naranja agria, o de naranja dulce', '150 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
       seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino molido · 1/2 cucharadita de orégano seco · 1/4 de cucharadita de pimienta negra molida',
       steps: [
-        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1 cucharadita de sal.',
+        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1/2 cucharadita de sal.',
         'Unta la carne con el adobo y déjala reposar al menos 2 horas, o toda la noche en el refrigerador.',
-        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 1/2 a 3 horas, hasta que se deshaga.',
+        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 a 2 1/2 horas, hasta que se deshaga.',
         'Mientras, rebana la cebolla muy delgada y mézclala con el jugo del otro limón y una pizca de sal.',
         'Deshebra la carne en su jugo y sirve con la cebolla curtida y tortillas.'
       ],
@@ -987,6 +987,30 @@ GOHAN_PACK_TR('MX', 'es', {
         'Agrega el epazote, sazona y sirve con limón, en tacos o junto a la carne.'
       ],
       tip: { add: 'Queso fresco desmoronado', why: 'Cremoso y saladito', skill: 'No llenes de más la sartén', how: 'Si pones demasiados champiñones, se cuecen al vapor en vez de dorarse.' }
-    }
+    },
+    'mx_quesadillas': {
+      name: 'Quesadillas de queso',
+      ings: [['Tortillas de harina o de maíz', '4'], ['Queso Oaxaca o Chihuahua, rallado', '200 g'], ['Champiñones en rebanadas', '100 g?'], ['Cebolla picada fina', '1/4?']],
+      seas: '1 cda de aceite · una pizca de sal · salsa, para acompañar',
+      steps: [
+        'Si los usas, saltea la cebolla y los champiñones en el aceite 4 minutos, hasta que se evapore el agua, y sazona con sal.',
+        'Calienta un comal o sartén seca a fuego medio. Pon una tortilla y caliéntala 30 segundos.',
+        'Cubre la mitad de la tortilla con una cuarta parte del queso (y el relleno), dobla y presiona suavemente con la espátula.',
+        'Cocina 2 minutos por lado, hasta que la tortilla tenga manchas doradas y el queso se derrita. Repite con las demás y sirve con salsa.'
+      ],
+      tip: { add: 'Salsa verde y aguacate en rebanadas', why: 'El toque fresco y ácido contrasta con el queso derretido', skill: 'No las rellenes de más', how: 'Demasiado relleno se sale y se quema; una capa fina y pareja se derrite por completo.' }
+    },
+    'mx_frijoles_olla': {
+      name: 'Frijoles de la olla',
+      ings: [['Frijoles secos (pintos o negros)', '250 g'], ['Cebolla', '1/2'], ['Ramitas de epazote', '2?']],
+      seas: '1.5 litros de agua · 3 dientes de ajo · 1 cda de manteca o aceite (opcional) · 1 1/2 cdta de sal',
+      steps: [
+        'Limpia los frijoles de piedritas y enjuágalos. No hace falta remojarlos.',
+        'Pon los frijoles en una olla grande con el agua, la media cebolla, el ajo y el epazote, y lleva a ebullición. Retira la espuma.',
+        'Baja el fuego, tapa a medias y cuece 1 1/2 horas, agregando agua caliente si baja el nivel por debajo de los frijoles.',
+        'Cuando estén suaves, agrega la sal y la manteca o el aceite y cocina 15 minutos más. Sirve en tazones con un poco de caldo.'
+      ],
+      tip: { add: 'Cebolla picada, cilantro y un chorrito de limón por encima', why: 'Lo fresco realza el sabor terroso de los frijoles', skill: 'La sal al final', how: 'Si la sal entra tarde, las cáscaras se suavizan de manera pareja; al principio pueden quedar duras.' }
+    },
   }
 });

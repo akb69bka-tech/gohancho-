@@ -516,7 +516,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       seas: 'Poivre · un peu de sel · 1 gousse d\'ail · 1 feuille de laurier · 1 brin de thym · 1,2 litre d\'eau',
       steps: [
         'Coupez le chou en lanières en retirant le trognon dur ; épluchez et coupez en cubes les pommes de terre et les carottes ; émincez l\'oignon.',
-        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux et plus digeste.',
+        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux.',
         'Dans une grande marmite, faites dorer les lardons 4 minutes, ajoutez l\'oignon et l\'ail et poursuivez 3 minutes.',
         'Ajoutez l\'eau, le chou, les carottes, le thym et le laurier et laissez mijoter 20 minutes, puis ajoutez les pommes de terre (et la saucisse en rondelles) et poursuivez 20 minutes, jusqu\'à ce que tout soit tendre et la saucisse bien chaude à cœur.',
         'Goûtez avant de saler, poivrez bien et servez avec des tranches de pain de campagne.',
@@ -710,17 +710,17 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_bourguignon': {
       name: 'Bœuf bourguignon',
       ings: [
-        ['Bœuf à braiser (paleron, macreuse) en gros cubes', '1 kg'],
-        ['Vin rouge corsé (bourgogne ou autre)', '75 cl'],
-        ['Carottes', '3'],
-        ['Oignons', '2'],
-        ['Lardons fumés', '150 g'],
-        ['Champignons de Paris', '250 g'],
+        ['Bœuf à braiser (paleron, macreuse) en gros cubes', '500 g'],
+        ['Vin rouge corsé (bourgogne ou autre)', '40 cl'],
+        ['Carottes', '2'],
+        ['Oignon', '1'],
+        ['Lardons fumés', '80 g'],
+        ['Champignons de Paris', '150 g'],
       ],
-      seas: 'Sel · poivre · 2 c. à soupe de farine · 2 c. à soupe d\'huile · 20 g de beurre · 2 gousses d\'ail · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de concentré de tomate · un peu d\'eau',
+      seas: 'Sel · poivre · 1 c. à soupe de farine · 2 c. à soupe d\'huile · 10 g de beurre · 2 gousses d\'ail · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de concentré de tomate · un peu d\'eau',
       steps: [
         'Séchez la viande et faites-la dorer en plusieurs fois dans l\'huile, dans une cocotte en fonte, 3 à 4 minutes par face. Réservez.',
-        'Dans la même cocotte, faites revenir les lardons, les oignons émincés et les carottes en rondelles 5 minutes. Remettez la viande, saupoudrez de farine et remuez 2 minutes.',
+        'Dans la même cocotte, faites revenir les lardons, l\'oignon émincé et les carottes en rondelles 5 minutes. Remettez la viande, saupoudrez de farine et remuez 2 minutes.',
         'Ajoutez le vin, le concentré de tomate, l\'ail écrasé et le bouquet garni, avec un peu d\'eau si besoin pour couvrir juste la viande. Portez à ébullition, couvrez et laissez mijoter très doucement 2 h 30 à 3 h, jusqu\'à ce que la viande se coupe à la cuillère.',
         'Faites dorer les champignons dans le beurre 5 minutes et ajoutez-les 15 minutes avant la fin. Retirez le bouquet garni, rectifiez l\'assaisonnement et servez avec des pommes de terre vapeur, des pâtes fraîches ou une purée.',
       ],
@@ -729,19 +729,19 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_blanquette': {
       name: 'Blanquette de veau',
       ings: [
-        ['Veau à blanquette (épaule ou tendron) en morceaux', '1 kg'],
-        ['Carottes', '3'],
+        ['Veau à blanquette (épaule ou tendron) en morceaux', '500 g'],
+        ['Carottes', '2'],
         ['Oignon', '1'],
-        ['Champignons de Paris', '250 g'],
-        ['Crème fraîche', '20 cl'],
+        ['Champignons de Paris', '150 g'],
+        ['Crème fraîche', '10 cl'],
         ['Jaune d\'œuf', '1'],
-        ['Riz, pour servir', '300 g'],
+        ['Riz, pour servir', '150 g'],
       ],
-      seas: 'Sel · poivre · 40 g de beurre · 40 g de farine · 2 clous de girofle · 1 bouquet garni · 1 cube de bouillon de volaille · le jus d\'½ citron · eau à hauteur',
+      seas: 'Sel · poivre · 25 g de beurre · 25 g de farine · 2 clous de girofle · 1 bouquet garni · 1 cube de bouillon de volaille · le jus d\'½ citron · eau à hauteur',
       steps: [
         'Mettez la viande dans une cocotte, couvrez d\'eau froide, portez à ébullition et écumez. Ajoutez les carottes en tronçons, l\'oignon piqué des clous de girofle, le bouquet garni et le cube, couvrez et laissez frémir 1 h 30.',
         'Faites cuire les champignons coupés en quatre dans une louche de bouillon 10 minutes. Sortez la viande et les carottes et filtrez le bouillon.',
-        'Faites fondre le beurre, ajoutez la farine en remuant 1 minute, puis versez 75 cl de bouillon en fouettant et laissez épaissir 10 minutes en remuant.',
+        'Faites fondre le beurre, ajoutez la farine en remuant 1 minute, puis versez 40 cl de bouillon en fouettant et laissez épaissir 10 minutes en remuant.',
         'Hors du feu, incorporez la crème, le jaune d\'œuf et le jus de citron ; ne faites plus bouillir. Remettez la viande, les carottes et les champignons, réchauffez doucement et servez avec du riz.',
       ],
       tip: { add: 'Une pincée de muscade dans la sauce', why: 'Une note chaude qui va bien avec la crème', skill: 'Bien écumer au début', how: 'Retirer l\'écume grise garde la sauce bien blanche et le goût net.' },
@@ -785,19 +785,19 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_rotiporc': {
       name: 'Rôti de porc au four',
       ings: [
-        ['Rôti de porc dans l\'échine ou le filet, ficelé', '1 kg'],
+        ['Rôti de porc dans l\'échine ou le filet, ficelé', '500 g'],
         ['Petites pommes de terre', '600 g'],
-        ['Oignons', '2'],
+        ['Oignon', '1'],
         ['Carottes', '2'],
       ],
-      seas: 'Sel · poivre · 2 c. à soupe d\'huile · 20 g de beurre · 3 gousses d\'ail · 2 brins de thym ou de romarin · 1 c. à soupe de moutarde de Dijon · 15 cl d\'eau',
+      seas: 'Sel · poivre · 2 c. à soupe d\'huile · 20 g de beurre · 2 gousses d\'ail · 2 brins de thym ou de romarin · 1 c. à soupe de moutarde de Dijon · 10 cl d\'eau',
       steps: [
         'Préchauffez le four à 200 °C. Faites de petites entailles dans le rôti et glissez-y des éclats d\'ail ; badigeonnez de moutarde, salez et poivrez.',
         'Faites dorer le rôti sur toutes ses faces dans l\'huile et le beurre, dans un plat allant au four, environ 8 minutes.',
-        'Entourez-le des pommes de terre coupées en deux, des oignons en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 1 heure, en retournant et en arrosant à mi-cuisson, jusqu\'à 65 °C à cœur (le jus doit être clair).',
+        'Entourez-le des pommes de terre coupées en deux, de l\'oignon en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 35 à 40 minutes, en retournant et en arrosant à mi-cuisson, jusqu\'à 75 °C à cœur (le jus doit être clair).',
         'Laissez reposer 10 minutes sous une feuille d\'aluminium, tranchez et servez avec les légumes et le jus en grattant le fond du plat.',
       ],
-      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 65 °C à cœur, il finit de cuire en reposant.' },
+      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 75 °C à cœur, il finit de cuire en reposant.' },
     },
     'fr_tartiflette': {
       name: 'Tartiflette',
@@ -982,17 +982,17 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_gigot': {
       name: 'Gigot d\'agneau rôti',
       ings: [
-        ['Gigot d\'agneau avec os', '1 (environ 2 kg)'],
-        ['Ail', '6 gousses'],
-        ['Pommes de terre', '1 kg'],
-        ['Oignons', '2'],
+        ['Gigot d\'agneau désossé, roulé et ficelé', '500 g'],
+        ['Ail', '3 gousses'],
+        ['Pommes de terre', '500 g'],
+        ['Oignon', '1'],
       ],
-      seas: 'Sel · poivre · 3 c. à soupe d\'huile d\'olive · 30 g de beurre · quelques brins de romarin et de thym · 20 cl d\'eau',
+      seas: 'Sel · poivre · 2 c. à soupe d\'huile d\'olive · 20 g de beurre · quelques brins de romarin et de thym · 10 cl d\'eau',
       steps: [
         'Sortez le gigot du réfrigérateur 1 heure avant et préchauffez le four à 220 °C. Faites de petites entailles dans la viande et piquez-la d\'éclats d\'ail ; frottez-la d\'huile, de sel, de poivre et d\'herbes.',
-        'Mettez les pommes de terre en rondelles épaisses et les oignons émincés dans un plat, salez, poivrez et posez le gigot dessus avec des noisettes de beurre.',
-        'Enfournez 15 minutes à 220 °C, puis baissez à 180 °C et comptez environ 15 minutes par 500 g (environ 1 heure pour une viande rosée), en arrosant deux fois et en ajoutant l\'eau si le plat sèche.',
-        'Laissez reposer 15 minutes sous une feuille d\'aluminium, découpez en tranches et servez avec les pommes de terre et le jus.',
+        'Mettez les pommes de terre en rondelles épaisses et l\'oignon émincé dans un plat, salez, poivrez, parsemez de la moitié du beurre et enfournez 20 minutes.',
+        'Posez le gigot sur les pommes de terre avec le reste du beurre. Enfournez 15 minutes à 220 °C, puis baissez à 180 °C et comptez encore 20 à 25 minutes pour une viande rosée, en arrosant une fois et en ajoutant l\'eau si le plat sèche.',
+        'Laissez reposer 10 minutes sous une feuille d\'aluminium, découpez en tranches et servez avec les pommes de terre et le jus.',
       ],
       tip: { add: 'Des flageolets en accompagnement', why: 'Ce sont les compagnons traditionnels du gigot', skill: 'Laisser reposer la viande', how: 'Le repos laisse le jus se répartir : les tranches restent rosées et juteuses.' },
     },
@@ -1377,6 +1377,30 @@ GOHAN_PACK_TR('FR', 'fr', {
         'Laissez reposer 5 minutes à couvert hors du feu, puis égrenez à la fourchette et rectifiez l\'assaisonnement.',
       ],
       tip: { add: 'Une poignée d\'amandes effilées ou de petits pois à la fin', why: 'De la couleur et du croquant sans effort', skill: 'Nacrer le riz dans le beurre', how: 'Enrobé de matière grasse, chaque grain reste séparé et le riz ne colle pas.' },
+    },
+    'fr_steakhache': {
+      name: 'Steak haché maison à l’échalote',
+      ings: [['Bœuf haché (5 à 15 % de matière grasse)', '300 g'], ['Échalote', '1'], ['Jaune d’œuf', '1?'], ['Salade verte, pour servir', '1/2 salade?']],
+      seas: '1 c. à soupe de beurre · 1 c. à café d’huile · sel · poivre · 1 c. à café de moutarde de Dijon (facultatif)',
+      steps: [
+        'Hachez finement l’échalote. Mélangez-la délicatement à la viande avec une bonne pincée de sel, du poivre, la moutarde et le jaune d’œuf si vous en utilisez, sans trop travailler la viande. Formez 2 steaks de 2 cm d’épaisseur et creusez légèrement le centre.',
+        'Faites chauffer l’huile et la moitié du beurre dans une poêle à feu moyen-vif, jusqu’à ce qu’il mousse.',
+        'Faites cuire les steaks 3 à 4 minutes sur la première face sans les bouger, jusqu’à ce qu’ils soient bien dorés, puis retournez-les et comptez 3 minutes (un peu plus pour une cuisson bien cuite).',
+        'Ajoutez le reste du beurre, arrosez-en les steaks et laissez-les reposer 2 minutes. Servez avec des frites ou de la purée et une salade verte.'
+      ],
+      tip: { add: 'Une cuillerée de moutarde de Dijon à côté', why: 'Son piquant tranche avec la viande grasse, comme au bistrot', skill: 'Ne pas pétrir la viande', how: 'Un mélange léger garde la texture tendre ; pétrir donne un steak dense et caoutchouteux.' }
+    },
+    'fr_potaufeu': {
+      name: 'Pot-au-feu',
+      ings: [['Bœuf à pot-au-feu (jarret, macreuse ou plat de côtes)', '600 g'], ['Carottes', '3'], ['Poireaux', '2'], ['Navets', '2'], ['Pommes de terre', '3'], ['Oignon piqué de 2 clous de girofle', '1']],
+      seas: '2 litres d’eau · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de gros sel · 10 grains de poivre · moutarde de Dijon et cornichons, pour servir',
+      steps: [
+        'Mettez la viande dans une grande marmite, couvrez d’eau froide et portez lentement à ébullition. Écumez la mousse grise pendant quelques minutes.',
+        'Ajoutez l’oignon, le bouquet garni, le sel et le poivre. Couvrez et laissez frémir très doucement 1 h 30.',
+        'Coupez les carottes, les navets et les poireaux en gros morceaux (ficelez les poireaux en botte) et les pommes de terre en deux. Ajoutez-les dans la marmite et laissez mijoter encore 40 minutes, jusqu’à ce que la viande et les légumes soient tendres.',
+        'Retirez le bouquet garni. Tranchez la viande et servez dans des assiettes creuses avec les légumes et une louche de bouillon, avec moutarde, cornichons et gros sel.'
+      ],
+      tip: { add: 'Servir d’abord le bouillon avec un peu de vermicelle', why: 'C’est la façon traditionnelle de manger le pot-au-feu : bouillon, puis viande et légumes', skill: 'Ne pas faire bouillir fort', how: 'Un frémissement doux garde le bouillon clair et la viande tendre ; un gros bouillon le trouble et rend la viande filandreuse.' }
     },
   },
 });

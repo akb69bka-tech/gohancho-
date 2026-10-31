@@ -635,7 +635,7 @@ GOHAN_PACK({
         'Finely dice the tomato, chili and parsley.',
         'Serve the hot chickpeas in cups with plenty of cooking liquid. Top each with the tomato, chili, parsley, cumin, pepper and a good squeeze of lemon.',
       ],
-      tip: { add: 'A few drops of hot sauce', why: 'Warms you up on a winter night', skill: 'Fully soft chickpeas', how: 'Press one between your fingers; it should crush with no hard centre before you season.' },
+      tip: { add: 'A few drops of hot sauce', why: 'A little heat that suits a winter night', skill: 'Fully soft chickpeas', how: 'Press one between your fingers; it should crush with no hard centre before you season.' },
     },
     {
       id: 'eg_fulnabit',

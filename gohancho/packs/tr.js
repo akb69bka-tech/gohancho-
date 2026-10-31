@@ -116,6 +116,7 @@ GOHAN_PACK({
       name: 'Eggs with tomatoes and peppers',
       local: 'Menemen',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 20,
@@ -131,7 +132,7 @@ GOHAN_PACK({
         'Chop the peppers (and onion) and soften them in the butter in a pan, ideally a small copper or iron pan, for 4-5 minutes.',
         'Grate or finely chop the tomatoes, add them and cook until the juice reduces and it looks like a thick sauce, 6-8 minutes.',
         'Season, then crack in the eggs and stir gently a few times so they set in soft curds (or leave the yolks whole if you prefer).',
-        'Take off the heat while still slightly runny, crumble over the white cheese and pul biber. Eat straight from the pan with bread.',
+        'Take off the heat while still slightly runny, crumble over the white cheese and pul biber. Eat straight from the pan with bread. For small children and during pregnancy, cook their share until the eggs are fully set.',
       ],
       tip: { add: 'Crumbled white cheese', why: 'Salty and creamy against the sweet tomatoes', skill: 'Reduce the tomatoes first', how: 'Watery tomatoes make a soupy menemen; cook them down before the eggs go in.' },
     },
@@ -1024,14 +1025,14 @@ GOHAN_PACK({
       protein: 'chicken',
       min: 75,
       ings: [
-        'chicken|Chicken thighs or drumsticks, bone-in|1 kg',
-        'potato|Potatoes|4',
+        'chicken|Chicken thighs or drumsticks, bone-in|600 g',
+        'potato|Potatoes|3',
         'onion|Onion|1',
         'tomato paste|Tomato paste (salça)|1 tbsp',
         'green pepper|Green peppers|2?',
         'carrot|Carrot|1?',
       ],
-      seas: 'Salt · Black pepper · 1 tsp pul biber · 1 tsp paprika · 1 tsp dried thyme · 4 tbsp olive oil · 200 ml hot water',
+      seas: 'Salt · Black pepper · 1 tsp pul biber · 1 tsp paprika · 1 tsp dried thyme · 3 tbsp olive oil · 150 ml hot water',
       steps: [
         'Mix the paste, oil, spices, salt and pepper into a sauce and rub half of it over the chicken.',
         'Cut the potatoes (and carrot) into wedges and the onion (and peppers) into chunks. Toss with the rest of the sauce in a roasting tin.',
@@ -1194,6 +1195,7 @@ GOHAN_PACK({
       name: 'Poached eggs on garlic yogurt',
       local: 'Çılbır',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'simmer',
       protein: 'egg',
       min: 20,
@@ -1204,7 +1206,7 @@ GOHAN_PACK({
       ],
       seas: 'Salt · 1 garlic clove · 2 tbsp butter · 1 tsp pul biber · 1 tbsp vinegar for the water',
       steps: [
-        'Mix the yogurt with the crushed garlic and a little salt and spread it on two plates. It should be at room temperature.',
+        'Mix the yogurt with the crushed garlic and a little salt and spread it on the serving plates. It should be at room temperature.',
         'Bring a wide pan of water with the vinegar to a gentle simmer. Crack each egg into a cup and slide it in; poach for 3-4 minutes until the white is set (5 minutes for a firm yolk).',
         'Lift the eggs out with a slotted spoon, drain and place them on the yogurt.',
         'Sizzle the pul biber in the butter for a few seconds and drizzle over. Sprinkle with dill and serve with bread.',
@@ -1316,6 +1318,7 @@ GOHAN_PACK({
       name: 'Eggs fried with sucuk',
       local: 'Sucuklu yumurta',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',
       protein: 'processed',
       min: 15,

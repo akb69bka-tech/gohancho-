@@ -16,6 +16,7 @@ GOHAN_PACK({
       name: 'Ground beef tacos',
       local: 'Beef tacos',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'mince',
       min: 20,
@@ -82,7 +83,7 @@ GOHAN_PACK({
         'Pat the chops dry and season both sides with salt, pepper, paprika and garlic powder.',
         'Heat the oil in a heavy skillet over medium-high heat. Lay in the chops and sear 4-5 minutes without moving them until deep golden.',
         'Flip, lower the heat to medium and cook 3-4 minutes more. Add the butter, garlic and thyme and spoon the foaming butter over the chops for 1 minute.',
-        'Check the chops are cooked through (63°C in the center, juices clear), then rest them 5 minutes before serving.',
+        'Check the chops are cooked through (75°C in the center, juices clear), then rest them 5 minutes before serving.',
       ],
       tip: { add: 'Applesauce on the side', why: 'The classic sweet-tart partner for pork', skill: 'Rest before cutting', how: 'Five minutes on the plate lets the juices settle so the chop stays moist.' },
     },
@@ -163,6 +164,7 @@ GOHAN_PACK({
       name: 'Beef and broccoli',
       local: 'Beef and broccoli stir-fry',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'beef',
       min: 25,
@@ -186,6 +188,7 @@ GOHAN_PACK({
       name: 'Mashed potatoes',
       local: 'Mashed potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'veg',
       min: 25,
@@ -311,6 +314,7 @@ GOHAN_PACK({
       name: 'Cornbread',
       local: 'Skillet cornbread',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 30,
@@ -407,7 +411,7 @@ GOHAN_PACK({
       id: 'us_chili',
       name: 'Beef chili with beans',
       local: 'Chili con carne',
-      type: 'soup',
+      type: 'main',
       method: 'simmer',
       protein: 'mince',
       min: 50,
@@ -433,7 +437,7 @@ GOHAN_PACK({
       id: 'us_whitechili',
       name: 'White chicken chili',
       local: 'White chicken chili',
-      type: 'soup',
+      type: 'main',
       method: 'simmer',
       protein: 'chicken',
       min: 45,
@@ -844,7 +848,8 @@ GOHAN_PACK({
       id: 'us_chickendumplings',
       name: 'Chicken and dumplings',
       local: 'Chicken and dumplings',
-      type: 'soup',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'chicken',
       min: 55,
@@ -927,6 +932,7 @@ GOHAN_PACK({
       name: 'Pot roast',
       local: 'Pot roast',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'beef',
       min: 200,
@@ -974,6 +980,7 @@ GOHAN_PACK({
       name: 'Chicken fajitas',
       local: 'Chicken fajitas',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'stirfry',
       protein: 'chicken',
       min: 30,
@@ -1000,6 +1007,7 @@ GOHAN_PACK({
       name: 'Cheeseburgers',
       local: 'Cheeseburgers',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'mince',
       min: 25,
@@ -1047,6 +1055,7 @@ GOHAN_PACK({
       name: 'Pulled pork sandwiches',
       local: 'Pulled pork',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'pork',
       min: 300,
@@ -1083,8 +1092,8 @@ GOHAN_PACK({
       steps: [
         'Heat the oven to 200°C. Trim off the thin silver skin, pat the pork dry and season with salt and pepper. Mix the honey, soy sauce, garlic and mustard.',
         'Heat the oil in an oven-safe skillet over medium-high heat and brown the pork on all sides, about 6 minutes.',
-        'Pour half the honey mixture over the pork and roast 15-18 minutes, brushing with the rest halfway, until 63°C in the center.',
-        'Rest 5 minutes. Stir the butter into the pan juices, slice the pork and spoon the glaze over.',
+        'Pour half the honey mixture over the pork and roast 15-18 minutes, brushing with the rest halfway, until the center reaches 75°C and no pink remains.',
+        'Rest 5 minutes. Stir the butter into the pan juices, slice the pork and spoon the glaze over. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'Roasted sweet potatoes on the side', why: 'They share the oven and suit the sweet glaze', skill: 'Watch the glaze', how: 'Honey burns easily - if the pan darkens too much, add a splash of water.' },
     },
@@ -1093,6 +1102,7 @@ GOHAN_PACK({
       name: 'Shrimp and grits',
       local: 'Shrimp and grits',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'seafood',
       min: 35,
@@ -1119,6 +1129,7 @@ GOHAN_PACK({
       name: 'Blackened tilapia',
       local: 'Blackened fish',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'fish',
       min: 20,
@@ -1169,6 +1180,7 @@ GOHAN_PACK({
       name: 'Chicken pot pie',
       local: 'Chicken pot pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'chicken',
       min: 60,
@@ -1252,6 +1264,7 @@ GOHAN_PACK({
       name: 'Denver omelet',
       local: 'Western omelet',
       type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 15,
@@ -1328,6 +1341,7 @@ GOHAN_PACK({
       name: 'Black bean burgers',
       local: 'Black bean burgers',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'legume',
       min: 35,
@@ -1354,6 +1368,7 @@ GOHAN_PACK({
       name: 'Cheese enchiladas',
       local: 'Cheese enchiladas',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 40,
@@ -1407,6 +1422,7 @@ GOHAN_PACK({
       name: 'Potato salad',
       local: 'Potato salad',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'simmer',
       protein: 'veg',
       min: 35,
@@ -1500,7 +1516,7 @@ GOHAN_PACK({
       type: 'side',
       method: 'raw',
       protein: 'legume',
-      min: 15,
+      min: 75,
       ings: [
         'green beans|Green beans|150 g',
         'kidney beans|Canned kidney beans|1/2 can (200 g)',
@@ -1520,6 +1536,7 @@ GOHAN_PACK({
       name: 'Loaded baked potatoes',
       local: 'Baked potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 70,
@@ -1544,6 +1561,7 @@ GOHAN_PACK({
       name: 'Roasted sweet potatoes',
       local: 'Roasted sweet potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 35,
@@ -1620,7 +1638,7 @@ GOHAN_PACK({
       steps: [
         'Peel the carrots and slice on the diagonal about 7 mm thick.',
         'Put them in a skillet with the water, butter, honey and salt. Cover and simmer 6-8 minutes until nearly tender.',
-        'Uncover and cook over medium-high heat, stirring, 3-4 minutes until the liquid becomes a shiny glaze. Add pepper and parsley.',
+        'Uncover and cook over medium-high heat, stirring, 3-4 minutes until the liquid becomes a shiny glaze. Add pepper and parsley. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A squeeze of orange or a pinch of thyme', why: 'Lifts the sweetness', skill: 'Cook off the water', how: 'The glaze forms only when the water evaporates; keep stirring so it coats every slice without burning.' },
     },
@@ -1737,6 +1755,7 @@ GOHAN_PACK({
       name: 'Rice pilaf',
       local: 'Rice pilaf',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'rice',
       protein: 'veg',
       min: 30,
@@ -1760,6 +1779,7 @@ GOHAN_PACK({
       name: 'Garlic bread',
       local: 'Garlic bread',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'grill',
       protein: 'veg',
       min: 15,
@@ -1801,6 +1821,7 @@ GOHAN_PACK({
       name: 'Macaroni salad',
       local: 'Macaroni salad',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
       method: 'raw',
       protein: 'veg',
       min: 25,
@@ -1841,6 +1862,127 @@ GOHAN_PACK({
         'Heat 1.5 cm of oil in a skillet to about 175°C and fry in batches 3-4 minutes, turning, until golden and crisp. Drain on paper towels and salt lightly.',
       ],
       tip: { add: 'Ranch or remoulade for dipping', why: 'A cool, creamy dip for the hot crunchy okra', skill: 'Fry in small batches', how: 'Too much okra at once cools the oil and the coating turns greasy instead of crisp.' },
+    },
+    {
+      id: 'us_oatmeal',
+      name: 'Oatmeal with banana and cinnamon',
+      local: 'Oatmeal',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'oats|Old-fashioned rolled oats|1 cup (90 g)',
+        'milk|Milk (or water)|2 cups (480 ml)',
+        'banana|Banana|1',
+        'walnuts|Walnuts, chopped|2 tbsp?',
+      ],
+      seas: 'pinch of salt · 1 tsp cinnamon · 1–2 tbsp maple syrup or brown sugar',
+      steps: [
+        'Bring the milk and salt to a gentle boil in a small saucepan.',
+        'Stir in the oats and cinnamon, lower the heat to medium-low and simmer for 5 minutes, stirring often, until thick and creamy.',
+        'Slice the banana. Spoon the oatmeal into bowls and top with the banana, walnuts and maple syrup.',
+      ],
+      tip: { add: 'A spoonful of peanut butter stirred in', why: 'It makes it creamier and keeps you full until lunch', skill: 'Stir often', how: 'Oats stick to the base of the pan as the milk thickens; frequent stirring gives an even, creamy texture.' },
+    },
+    {
+      id: 'us_grilledcheese',
+      name: 'Grilled cheese sandwiches',
+      local: 'Grilled cheese',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      method: 'fry',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'bread|Sandwich bread|4 slices',
+        'cheese|Cheddar or American cheese, sliced|120 g',
+        'butter|Butter, softened|2 tbsp',
+      ],
+      seas: 'pinch of salt',
+      steps: [
+        'Spread the butter on one side of each slice of bread. Put 2 slices butter side down on a board and divide the cheese between them.',
+        'Top with the other slices, butter side up.',
+        'Heat a frying pan over medium-low heat. Cook the sandwiches for 3–4 minutes until the bottom is golden and crisp, then flip and cook another 3 minutes until the cheese melts.',
+        'Rest for 1 minute, then cut each sandwich in half diagonally.',
+      ],
+      tip: { add: 'Tomato soup on the side for dipping', why: 'It is the classic American pairing; the soup balances the rich, buttery sandwich', skill: 'Keep the heat low', how: 'Medium-low heat lets the cheese melt fully before the bread burns.' },
+    },
+    {
+      id: 'us_pancakes',
+      name: 'Buttermilk-style pancakes',
+      local: 'Pancakes',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'egg',
+      min: 25,
+      ings: [
+        'flour|All-purpose flour|1 1/2 cups (190 g)',
+        'milk|Milk|1 1/4 cups (300 ml)',
+        'egg|Egg|1',
+        'butter|Butter, melted|3 tbsp',
+      ],
+      seas: '1 tbsp sugar · 2 tsp baking powder · 1/2 tsp salt · maple syrup, to serve',
+      steps: [
+        'Whisk the flour, sugar, baking powder and salt in a large bowl.',
+        'In another bowl, beat the egg with the milk and 2 tbsp of the melted butter. Pour into the dry ingredients and stir just until combined; a few small lumps are fine.',
+        'Heat a non-stick frying pan over medium heat and brush with a little butter. Pour in 1/4 cup of batter per pancake.',
+        'Cook for 2 minutes until bubbles form on the surface and the edges look set, then flip and cook for 1–2 minutes until golden.',
+        'Stack on plates and serve with butter and maple syrup.',
+      ],
+      tip: { add: 'Blueberries or sliced bananas pressed into the batter', why: 'Fruit makes it a fuller breakfast with natural sweetness', skill: 'Do not overmix', how: 'Stirring until smooth develops gluten and makes the pancakes tough; a lumpy batter stays fluffy.' },
+    },
+    {
+      id: 'us_scrambledbacon',
+      name: 'Scrambled eggs with bacon and toast',
+      local: 'Scrambled eggs and bacon',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'egg',
+      min: 15,
+      ings: [
+        'egg|Eggs|4',
+        'bacon|Bacon strips|4',
+        'bread|Bread, for toast|2 slices',
+        'butter|Butter|1 tbsp',
+      ],
+      seas: '2 tbsp milk · salt · black pepper',
+      steps: [
+        'Cook the bacon in a cold frying pan over medium heat for 6–8 minutes, turning, until crisp. Drain on kitchen paper and wipe out most of the fat.',
+        'Beat the eggs with the milk, a pinch of salt and pepper. Toast the bread.',
+        'Melt the butter in the pan over medium-low heat. Pour in the eggs and let them sit for 20 seconds, then gently push from the edges to the middle with a spatula, until just set but still soft and glossy, about 2 minutes.',
+        'Serve at once with the bacon and buttered toast.',
+      ],
+      tip: { add: 'A pinch of chopped chives', why: 'It adds colour and a mild fresh onion taste', skill: 'Remove from the heat while still glossy', how: 'The eggs keep cooking on the plate; taking them off while slightly wet makes them tender instead of dry.' },
+    },
+    {
+      id: 'us_sloppyjoes',
+      name: 'Sloppy joes',
+      local: 'Sloppy joes',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      method: 'simmer',
+      protein: 'mince',
+      min: 30,
+      ings: [
+        'ground beef|Ground beef|300 g',
+        'onion|Onion|1/2',
+        'bell pepper|Green bell pepper|1/2?',
+        'ketchup|Ketchup|1/3 cup (80 ml)',
+        'buns|Hamburger buns|4',
+      ],
+      seas: '1 tbsp cooking oil · 1 tbsp brown sugar · 1 tbsp mustard · 1 tbsp Worcestershire sauce · 1 tsp garlic powder · 100 ml water · salt · black pepper',
+      steps: [
+        'Finely chop the onion and green pepper.',
+        'Heat the oil in a large frying pan over medium-high heat. Cook the beef, breaking it up, for 5 minutes until browned. Drain off excess fat.',
+        'Add the onion and pepper and cook for 3 minutes until soft.',
+        'Stir in the ketchup, sugar, mustard, Worcestershire sauce, garlic powder and water. Simmer for 10 minutes until thick and saucy but not dry. Season with salt and pepper.',
+        'Toast the buns lightly and spoon the meat mixture on the bottom halves. Add the tops and serve with napkins.',
+      ],
+      tip: { add: 'A slice of cheddar melted on the meat', why: 'Cheese gives a creamy contrast to the sweet-tangy sauce', skill: 'Toast the buns', how: 'A toasted cut side stops the buns from turning soggy under the wet filling.' },
     },
   ],
   aliases: {
@@ -1932,6 +2074,8 @@ GOHAN_PACK({
     'lima beans': ['lima beans', 'butter beans', 'edamame'],
     'grapes': ['grapes', 'red grapes', 'seedless grapes'],
     'walnuts': ['walnuts', 'walnut', 'pecans', 'nuts'],
+    'oats': ['oats', 'rolled oats', 'old-fashioned oats', 'oatmeal', 'quick oats'],
+    'banana': ['banana', 'bananas'],
   },
   quick: ['chicken', 'ground beef', 'beef', 'pork chop', 'salmon', 'egg', 'cheese', 'potato', 'onion', 'tomato', 'broccoli', 'carrot', 'lettuce', 'pasta', 'rice', 'milk', 'butter', 'green beans', 'corn'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'onion', 'potato', 'carrot', 'pasta', 'rice', 'flour', 'canned tomato', 'stock', 'breadcrumbs', 'mayonnaise', 'lemon', 'parmesan'],
@@ -2024,5 +2168,7 @@ GOHAN_PACK({
     'lima beans': 'Lima beans',
     'grapes': 'Grapes',
     'walnuts': 'Walnuts',
+    'oats': 'Rolled oats',
+    'banana': 'Banana',
   },
 });

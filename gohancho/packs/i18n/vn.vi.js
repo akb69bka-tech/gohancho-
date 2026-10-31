@@ -2,7 +2,7 @@
 GOHAN_PACK_TR('VN', 'vi', {
   staple: 'Cơm trắng',
   names: {
-    'pork': 'Thịt ba chỉ', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
+    'pork': 'Thịt heo', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
     'shrimp': 'Tôm', 'egg': 'Trứng', 'tofu': 'Đậu phụ', 'rice': 'Cơm', 'sausage': 'Lạp xưởng',
     'tomato': 'Cà chua', 'onion': 'Hành tây', 'scallion': 'Hành lá', 'ginger': 'Gừng', 'chili': 'Ớt',
     'coconut water': 'Nước dừa', 'water spinach': 'Rau muống', 'cabbage': 'Bắp cải', 'carrot': 'Cà rốt',
@@ -209,7 +209,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Khuấy nồi canh theo vòng tròn và rót trứng vào thành dòng mỏng; chờ 20 giây rồi mới khuấy nhẹ để trứng thành sợi mềm.',
         'Tắt bếp, cho hành lá và tiêu vào.'
       ],
-      tip: { add: 'Vài miếng đậu hũ non', why: 'Thêm đạm và canh mượt hơn', skill: 'Rót mỏng, đừng khuấy vội', how: 'Rót trứng từ từ vào nước canh đang sôi lăn tăn rồi để trứng đông; khuấy sớm quá làm canh bị đục.' }
+      tip: { add: 'Vài miếng đậu hũ non', why: 'Canh mượt hơn và đậm đà hơn', skill: 'Rót mỏng, đừng khuấy vội', how: 'Rót trứng từ từ vào nước canh đang sôi lăn tăn rồi để trứng đông; khuấy sớm quá làm canh bị đục.' }
     },
     'vn_canhraungot': {
       name: 'Canh rau ngót thịt bằm',
@@ -235,7 +235,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Cho cải vào, nấu không đậy nắp ở lửa vừa lớn 4-5 phút đến khi cọng cải mềm và tôm chín kỹ.',
         'Nêm nước mắm và muối, rồi cho phần gừng còn lại và tiêu vào.'
       ],
-      tip: { add: 'Một chút đường', why: 'Làm dịu vị đắng nhẹ của cải', skill: 'Cho gừng vào sau cùng', how: 'Cho gừng sợi vào ngay trước khi ăn; vị ấm của gừng cân bằng tính mát và vị hơi đắng của cải.' }
+      tip: { add: 'Một chút đường', why: 'Làm dịu vị đắng nhẹ của cải', skill: 'Cho gừng vào sau cùng', how: 'Cho gừng sợi vào ngay trước khi ăn; mùi thơm cay của gừng cân bằng vị hơi đắng của cải.' }
     },
     'vn_canhmongtoi': {
       name: 'Canh mồng tơi mướp',
@@ -415,7 +415,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Cho cải cúc vào nấu ở lửa lớn 1-2 phút đến khi rau vừa chín.',
         'Nêm nước mắm và muối, cho hành lá và tiêu, ăn ngay khi còn nóng.'
       ],
-      tip: { add: 'Vài sợi gừng thái mỏng', why: 'Cải cúc có tính mát, gừng giúp cân bằng', skill: 'Nấu nhanh cho rau xanh', how: 'Cho rau vào ngay trước khi ăn; rau chín trong một phút và sẽ đắng nếu đun lâu.' }
+      tip: { add: 'Vài sợi gừng thái mỏng', why: 'Mùi thơm cay của gừng cân bằng vị hăng của cải cúc', skill: 'Nấu nhanh cho rau xanh', how: 'Cho rau vào ngay trước khi ăn; rau chín trong một phút và sẽ đắng nếu đun lâu.' }
     },
     'vn_canhmang': {
       name: 'Canh măng móng giò',
@@ -465,7 +465,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Cho nấm và cà rốt vào nấu thêm 10-15 phút đến khi gà chín kỹ, nước ở xương trong và cà rốt mềm.',
         'Nêm nước mắm, muối và đường, cho hành lá và tiêu vào.'
       ],
-      tip: { add: 'Một nắm hạt sen khô đã ngâm', why: 'Thành món canh bồi bổ nhẹ nhàng cho ngày se lạnh', skill: 'Xào săn gà trước', how: 'Xào gà với gừng trước khi đổ nước giúp thịt săn, hết mùi hôi và nước dùng trong hơn.' }
+      tip: { add: 'Một nắm hạt sen khô đã ngâm', why: 'Thành món canh thanh nhẹ, ấm lòng cho ngày se lạnh', skill: 'Xào săn gà trước', how: 'Xào gà với gừng trước khi đổ nước giúp thịt săn, hết mùi hôi và nước dùng trong hơn.' }
     },
     'vn_suonram': {
       name: 'Sườn ram mặn ngọt',
@@ -691,7 +691,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Luộc bún, xả nước lạnh và để ráo.',
         'Nướng thịt trên than, trong lò hoặc áp chảo nóng 3-4 phút mỗi mặt đến khi chín và cháy cạnh.',
         'Cho xà lách thái, dưa leo và rau thơm vào tô, rồi bún và thịt nướng.',
-        'Rắc đậu phộng giã và mỡ hành nếu thích, chan nước mắm chua ngọt khi ăn.'
+        'Rắc đậu phộng giã và mỡ hành nếu thích, chan nước mắm chua ngọt khi ăn. Không cho trẻ dưới 1 tuổi ăn mật ong, kể cả đã nấu chín.'
       ],
       tip: { add: 'Vài cuốn chả giò cắt khúc', why: 'Thành bún thịt nướng chả giò đầy đủ', skill: 'Thái thật mỏng', how: 'Thái thịt khi còn hơi đông để miếng mỏng, nướng nhanh và xém cạnh trước khi bị khô.' }
     },
@@ -731,7 +731,7 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Cho giá (và đậu hũ thái lát) vào đảo 1 phút.',
         'Cho hẹ, nước mắm và muối vào đảo thêm 20 giây. Dọn ngay.'
       ],
-      tip: { add: 'Vài con tôm bóc vỏ', why: 'Thêm vị ngọt và đạm', skill: 'Xào nhanh lửa lớn', how: 'Giá xào quá 2 phút sẽ ra nước và bị nhũn.' }
+      tip: { add: 'Vài con tôm bóc vỏ', why: 'Thêm vị ngọt và đậm đà', skill: 'Xào nhanh lửa lớn', how: 'Giá xào quá 2 phút sẽ ra nước và bị nhũn.' }
     },
     'vn_susuxao': {
       name: 'Su su xào tỏi',
@@ -956,7 +956,7 @@ GOHAN_PACK_TR('VN', 'vi', {
       seas: '1 1/2 muỗng canh nước mắm · 1 muỗng canh đường · 1 tép tỏi · 1 quả ớt · 1 muỗng canh hành phi',
       steps: [
         'Thái bò thật mỏng ngang thớ (dễ hơn khi thịt còn hơi đông). Nhúng thịt qua nước sôi 10-15 giây đến khi mặt thịt chuyển màu rồi vớt ra để ráo.',
-        'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh.',
+        'Vắt chanh lên thịt bò, trộn đều; để 5-10 phút đến khi thịt chuyển màu tái. Vắt bỏ nước chanh. Với trẻ nhỏ hoặc phụ nữ mang thai, nhúng phần thịt của họ vào nước sôi 1 phút đến khi không còn màu hồng.',
         'Thái mỏng hành tây. Pha nước mắm, đường, tỏi băm và ớt.',
         'Trộn bò với hành tây, rau thơm và nước trộn, rắc đậu phộng và hành phi.'
       ],

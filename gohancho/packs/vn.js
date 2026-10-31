@@ -381,7 +381,7 @@ GOHAN_PACK({
         'Stir the soup in a circle and pour in the egg in a thin stream; wait 20 seconds before stirring gently so it forms soft ribbons.',
         'Turn off the heat and add the spring onions and pepper.',
       ],
-      tip: { add: 'A few cubes of soft tofu', why: 'More protein and a silkier soup', skill: 'Thin stream, no stirring', how: 'Pour egg slowly into gently moving broth and leave it to set; stirring too early makes it cloudy.' },
+      tip: { add: 'A few cubes of soft tofu', why: 'A silkier, more filling soup', skill: 'Thin stream, no stirring', how: 'Pour egg slowly into gently moving broth and leave it to set; stirring too early makes it cloudy.' },
     },
     {
       id: 'vn_canhraungot',
@@ -427,7 +427,7 @@ GOHAN_PACK({
         'Add the greens and boil uncovered over medium-high heat for 4-5 minutes, until the stems are tender and the shrimp are cooked through.',
         'Season with the fish sauce and salt, then add the remaining ginger and pepper.',
       ],
-      tip: { add: 'A pinch of sugar', why: 'Rounds off the slight bitterness of the greens', skill: 'Ginger at the end', how: 'Add fresh ginger strips just before serving; their warmth balances the cooling, slightly bitter greens.' },
+      tip: { add: 'A pinch of sugar', why: 'Rounds off the slight bitterness of the greens', skill: 'Ginger at the end', how: 'Add fresh ginger strips just before serving; their sharp aroma balances the slightly bitter greens.' },
     },
     {
       id: 'vn_canhmongtoi',
@@ -769,7 +769,7 @@ GOHAN_PACK({
         'Add the crown daisy and cook for 1-2 minutes over high heat until just wilted.',
         'Season with the fish sauce and salt, add the spring onion and pepper, and serve at once.',
       ],
-      tip: { add: 'A few thin strips of ginger', why: 'Crown daisy is thought of as cooling; ginger balances it', skill: 'Fast and green', how: 'Add the leaves just before serving; they wilt in a minute and turn bitter if boiled long.' },
+      tip: { add: 'A few thin strips of ginger', why: 'The sharp aroma of ginger balances the grassy crown daisy', skill: 'Fast and green', how: 'Add the leaves just before serving; they wilt in a minute and turn bitter if boiled long.' },
     },
     {
       id: 'vn_canhmang',
@@ -864,7 +864,7 @@ GOHAN_PACK({
         'Add the shiitake and carrot and simmer 10-15 minutes more, until the chicken is cooked through with clear juices at the bone and the carrot is tender.',
         'Season with the fish sauce, salt and sugar, and add the spring onion and pepper.',
       ],
-      tip: { add: 'A handful of dried lotus seeds, soaked', why: 'Makes it a gentle, nourishing soup for cool days', skill: 'Sear the chicken', how: 'Stir-frying the chicken with ginger before adding water firms it, removes the raw smell and gives a clearer broth.' },
+      tip: { add: 'A handful of dried lotus seeds, soaked', why: 'Makes it a gentle, comforting soup for cool days', skill: 'Sear the chicken', how: 'Stir-frying the chicken with ginger before adding water firms it, removes the raw smell and gives a clearer broth.' },
     },
     // ---------- món mặn thêm (main) ----------
     {
@@ -1247,7 +1247,7 @@ GOHAN_PACK({
       local: 'Cà tím xào thịt bằm',
       type: 'main',
       method: 'stirfry',
-      protein: 'veg',
+      protein: 'mince',
       min: 25,
       ings: [
         'eggplant|Long eggplants|2',
@@ -1286,7 +1286,7 @@ GOHAN_PACK({
         'Cook the rice vermicelli, rinse in cold water and drain.',
         'Grill the pork over charcoal, under the oven grill or in a hot pan for 3-4 minutes per side until cooked through and charred at the edges.',
         'In bowls, put shredded lettuce, cucumber and herbs, then the noodles and the pork.',
-        'Top with crushed peanuts and spring onion oil if you like, and pour over the dipping fish sauce at the table.',
+        'Top with crushed peanuts and spring onion oil if you like, and pour over the dipping fish sauce at the table. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A couple of chả giò cut in pieces', why: 'Makes it bún thịt nướng chả giò, the full version', skill: 'Thin slices', how: 'Slice the pork thin while slightly frozen so it cooks fast and chars before it dries out.' },
     },
@@ -1363,7 +1363,7 @@ GOHAN_PACK({
         'Add the sprouts (and sliced tofu) and toss for 1 minute.',
         'Add the chives, fish sauce and salt and toss 20 seconds more. Serve at once.',
       ],
-      tip: { add: 'A few peeled shrimp', why: 'A little sweetness and protein', skill: 'Fast and hot', how: 'Bean sprouts go watery if cooked longer than 2 minutes.' },
+      tip: { add: 'A few peeled shrimp', why: 'A little sweetness and savoury bite', skill: 'Fast and hot', how: 'Bean sprouts go watery if cooked longer than 2 minutes.' },
     },
     {
       id: 'vn_susuxao',
@@ -1788,7 +1788,7 @@ GOHAN_PACK({
       seas: '1 1/2 tbsp fish sauce · 1 tbsp sugar · 1 garlic clove · 1 chili · 1 tbsp fried shallots',
       steps: [
         'Slice the beef paper-thin across the grain (easier half-frozen). Dip the slices in boiling water for 10-15 seconds until the surface turns pale, then drain.',
-        'Squeeze the limes over the beef and mix; leave 5-10 minutes until it turns pale. Squeeze out the lime juice.',
+        'Squeeze the limes over the beef and mix; leave 5-10 minutes until it turns pale. Squeeze out the lime juice. For small children or during pregnancy, blanch their slices for 1 minute until no pink remains.',
         'Slice the onion thinly. Mix the fish sauce, sugar, minced garlic and chili.',
         'Toss the beef with the onion, herbs and dressing, and top with peanuts and fried shallots.',
       ],
@@ -1807,7 +1807,7 @@ GOHAN_PACK({
     'rice': ['rice', 'cooked rice', 'gạo', 'gao', 'cơm', 'com', 'cơm nguội', 'com nguoi'],
     'sausage': ['sausage', 'chinese sausage', 'lạp xưởng', 'lap xuong', 'lạp xường'],
     'tomato': ['tomato', 'tomatoes', 'cà chua', 'ca chua'],
-    'onion': ['onion', 'onions', 'hành tây', 'hanh tay'],
+    'onion': ['onion', 'onions', 'hành tây', 'hanh tay', 'củ hành', 'cu hanh'],
     'scallion': ['scallion', 'scallions', 'spring onion', 'spring onions', 'green onion', 'hành lá', 'hanh la', 'hành', 'hanh'],
     'ginger': ['ginger', 'gừng', 'gung'],
     'chili': ['chili', 'chilli', 'chilies', 'ớt', 'ot', 'ớt hiểm', 'ot hiem'],

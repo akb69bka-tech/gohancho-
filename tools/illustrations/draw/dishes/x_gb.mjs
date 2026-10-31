@@ -1325,18 +1325,6 @@ export default {
         xgbShine(100, 100, 72, .5),
     ].join(''),
 
-    // スコットランドのレンズ豆スープ: 黄の釉の鉢に、赤レンズ豆が煮くずれたとろりとしたオレンジのスープ、にんじん、カリカリのベーコン、黒こしょう
-    gb_lentil: p => [
-        K.bowl(p, { glaze: '#5a6e4a', inside: '#f1e9da' }),
-        xgbBroth(p, '#da8a38'),
-        xgbGrains(p, 100, 100, 136, { cols: ['#e8a050', '#d07a2a', '#f0b868'], n: 120, rx: 3, ry: 2.2, stroke: 0, jitter: .6, seed: 4 }),
-        xgbDice(p, 100, 100, 110, { n: 10, seed: 9, c: '#ec7a26', sz: 8 }),
-        `<g ${p.sh(.5)}>`, xgbGrains(p, 104, 96, 56, { cols: ['#8a3018', '#b0482a', '#6a2410'], n: 24, rx: 3.4, ry: 2.4, jitter: .8, seed: 6, stroke: .3, hi: .3 }), `</g>`,
-        K.sprinkle(p, 100, 100, 120, { c: '#2a2420', n: 22, r: .6 }),
-        xgbHerbs(p, 100, 100, 70, { n: 8 }),
-        xgbShine(100, 100, 72, .4),
-    ].join(''),
-
     // クレソンのスープ: 白いスープ皿に、あざやかな緑のなめらかなスープ、クリームのうず、クレソンの葉
     gb_watercress: p => [
         xgbSoupBowl(p, '#4a8a40'),

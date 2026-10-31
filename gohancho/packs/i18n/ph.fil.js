@@ -269,7 +269,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang sayote at lutuin ng 5 hanggang 7 minuto hanggang malambot lang at luto ang manok.',
         'Ilagay ang dahon, timplahan ng patis at paminta, at patayin ang apoy. Ihain na may kanin.'
       ],
-      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng init nito at nag-aalis ng amoy ng manok.' }
+      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng bango nito at nag-aalis ng amoy ng manok.' }
     },
     'ph_misua': {
       name: 'Misua at patola',
@@ -579,10 +579,10 @@ GOHAN_PACK_TR('PH', 'fil', {
     },
     'ph_kare_kare': {
       name: 'Kare-kare',
-      ings: [['Buntot o bulalo ng baka, hiniwa', '1 kg'], ['Peanut butter (walang tamis kung mayroon)', '1/2 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
-      seas: '4 butil ng bawang · 2 kutsara atsuete powder o atsuete oil · 3 kutsara giniling na sinangag na bigas · 1 kutsarita asin · 2 kutsara mantika · 2 litro tubig · Ginisang bagoong para sa sawsawan',
+      ings: [['Buntot o bulalo ng baka, hiniwa', '600 g'], ['Peanut butter (walang tamis kung mayroon)', '1/3 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 1/2 kutsara atsuete powder o atsuete oil · 2 kutsara giniling na sinangag na bigas · 1/2 kutsarita asin · 2 kutsara mantika · 1.5 litro tubig · Ginisang bagoong para sa sawsawan',
       steps: [
-        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 1 litrong sabaw.',
+        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 600 ml na sabaw.',
         'Igisa ang bawang at sibuyas sa mantika kasama ang atsuete. Ilagay ang karne at sabaw, ihalo ang peanut butter at pakuluan ng 10 minuto.',
         'Tunawin ang giniling na bigas sa kaunting tubig at ihalo para lumapot. Timplahan nang bahagya ng asin.',
         'Hiwalay na ilaga ang mga gulay sa kumukulong tubig ng 2 hanggang 3 minuto at iayos sa ibabaw. Ihain na may bagoong at kanin.'
@@ -803,7 +803,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang tubig at patis, takpan at lutuin ng 4 hanggang 5 minuto hanggang lumambot ang sayote pero may kaunting lutong pa.',
         'Timplahan ng paminta at ihain.'
       ],
-      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sustansya', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
+      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sariwang lasa ng dahon', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
     },
     'ph_ginisang_upo': {
       name: 'Ginisang upo',
@@ -827,7 +827,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang togue (at tokwa) at haluin sa malakas na apoy ng 1 hanggang 2 minuto hanggang lumanta lang.',
         'Timplahan ng patis at paminta at ihain agad.'
       ],
-      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at kaunting protina', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
+      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at dagdag na linamnam', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
     },
     'ph_ginisang_repolyo': {
       name: 'Ginisang repolyo',
@@ -894,7 +894,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Gumamit lang ng napakasariwang isda na puwedeng kainin nang hilaw. Hugasan ang mga cube sa kaunting suka at itapon ang sukang iyon.',
         'Ilagay ang isda sa mangkok na salamin kasama ang natirang suka at luya. Ilagay sa ref ng 10 hanggang 15 minuto hanggang pumuti ang labas.',
         'Itapon ang karamihan ng suka. Ihalo ang sibuyas, pipino, sili, katas ng kalamansi, asin at paminta.',
-        'Ihain agad nang malamig.'
+        'Ihain agad nang malamig. Hilaw na isda ito: bilhin sa mapagkakatiwalaang tindahan, at huwag ipakain sa maliliit na bata o sa buntis.'
       ],
       tip: { add: 'Kaunting gata', why: 'Malinamnam na estilong Bisaya na nagpapalambot ng asim', skill: 'Huwag ibabad nang matagal', how: 'Lampas 30 minuto, nanunuyo at nagiging pulbusin ang isda; kainin habang malambot pa ang gitna.' }
     },
@@ -944,7 +944,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Maglagay ng 2 kutsarang palaman sa bawat balat, itupi ang gilid at irolyo nang mahigpit, idikit ng kaunting tubig.',
         'Iprito sa 2 cm na katamtamang-init na mantika ng 3 hanggang 4 na minuto, baligtarin, hanggang pumula. Patuluin at ihain na may sawsawang suka.'
       ],
-      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at kaunting protina', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
+      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at dagdag na linamnam', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
     },
     'ph_okoy': {
       name: 'Okoy',

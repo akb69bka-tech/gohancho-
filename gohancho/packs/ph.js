@@ -369,7 +369,7 @@ GOHAN_PACK({
         'Add the chayote and cook 5 to 7 minutes until just tender and the chicken is cooked through.',
         'Add the leaves, season with fish sauce and pepper, and turn off the heat. Serve with rice.',
       ],
-      tip: { add: 'Use the water from washing rice', why: 'Gives the broth a soft, milky body', skill: 'Saute the ginger well', how: 'Frying ginger first draws out its warmth and removes the chicken smell.' },
+      tip: { add: 'Use the water from washing rice', why: 'Gives the broth a soft, milky body', skill: 'Saute the ginger well', how: 'Frying ginger first draws out its aroma and removes the chicken smell.' },
     },
     {
       id: 'ph_misua',
@@ -1035,16 +1035,16 @@ GOHAN_PACK({
       protein: 'beef',
       min: 150,
       ings: [
-        'beef|Oxtail or beef shank, pieces|1 kg',
-        'peanut butter|Peanut butter (unsweetened if possible)|1/2 cup',
+        'beef|Oxtail or beef shank, pieces|600 g',
+        'peanut butter|Peanut butter (unsweetened if possible)|1/3 cup',
         'eggplant|Eggplant, thick slices|1',
         'long beans|Sitaw, 5 cm pieces|100 g',
         'pechay|Pechay (bok choy)|1 bunch',
         'onion|Onion|1',
       ],
-      seas: '4 garlic cloves · 2 tbsp annatto (atsuete) powder or annatto oil · 3 tbsp toasted rice flour · 1 tsp salt · 2 tbsp oil · 2 litres water · Sauteed shrimp paste (bagoong) to serve',
+      seas: '3 garlic cloves · 1 1/2 tbsp annatto (atsuete) powder or annatto oil · 2 tbsp toasted rice flour · 1/2 tsp salt · 2 tbsp oil · 1.5 litres water · Sauteed shrimp paste (bagoong) to serve',
       steps: [
-        'Simmer the oxtail in the water for 2 hours (or 45 minutes in a pressure cooker) until tender. Keep 1 litre of the stock.',
+        'Simmer the oxtail in the water for 2 hours (or 45 minutes in a pressure cooker) until tender. Keep 600 ml of the stock.',
         'Saute the garlic and onion in the oil with the annatto. Add the meat and stock, stir in the peanut butter and simmer 10 minutes.',
         'Mix the rice flour with a little water and stir it in to thicken. Season lightly with salt.',
         'Blanch the vegetables separately in boiling water for 2 to 3 minutes and arrange them on top. Serve with bagoong and rice.',
@@ -1243,7 +1243,7 @@ GOHAN_PACK({
       local: 'Tokwa\'t baboy',
       type: 'main',
       method: 'fry',
-      protein: 'legume',
+      protein: 'pork',
       min: 45,
       ings: [
         'tofu|Firm tofu (tokwa)|300 g',
@@ -1316,6 +1316,7 @@ GOHAN_PACK({
       name: 'Garlic fried rice',
       local: 'Sinangag',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'stirfry',
       protein: 'egg',
       min: 15,
@@ -1338,6 +1339,7 @@ GOHAN_PACK({
       name: 'Chicken and ginger rice porridge',
       local: 'Arroz caldo',
       type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'simmer',
       protein: 'chicken',
       min: 55,
@@ -1481,7 +1483,7 @@ GOHAN_PACK({
         'Add the water and fish sauce, cover and cook 4 to 5 minutes until the sayote is tender but still a little crisp.',
         'Season with pepper and serve.',
       ],
-      tip: { add: 'A few malunggay leaves at the end', why: 'Extra colour and nutrition', skill: 'Peel sayote under running water or with oil on your hands', how: 'The sticky sap dries your skin; water or oil stops it sticking.' },
+      tip: { add: 'A few malunggay leaves at the end', why: 'Extra colour and a fresh, leafy taste', skill: 'Peel sayote under running water or with oil on your hands', how: 'The sticky sap dries your skin; water or oil stops it sticking.' },
     },
     {
       id: 'ph_ginisang_upo',
@@ -1527,7 +1529,7 @@ GOHAN_PACK({
         'Add the sprouts (and tofu) and toss over high heat for 1 to 2 minutes until just wilted.',
         'Season with the fish sauce and pepper and serve right away.',
       ],
-      tip: { add: 'A few small shrimp', why: 'Sweetness and a little protein', skill: 'High heat, short time', how: 'Sprouts go watery and limp if cooked more than 2 minutes.' },
+      tip: { add: 'A few small shrimp', why: 'Sweetness and a savoury bite', skill: 'High heat, short time', how: 'Sprouts go watery and limp if cooked more than 2 minutes.' },
     },
     {
       id: 'ph_ginisang_repolyo',
@@ -1657,7 +1659,7 @@ GOHAN_PACK({
         'Use only very fresh, sashimi-grade fish. Wash the cubes in a little of the vinegar and throw that vinegar away.',
         'Put the fish in a glass bowl with the rest of the vinegar and the ginger. Leave in the fridge 10 to 15 minutes, until the outside turns white.',
         'Drain off most of the vinegar. Mix in the onion, cucumber, chilies, calamansi juice, salt and pepper.',
-        'Serve cold right away.',
+        'Serve cold right away. This is raw fish: buy it from a trusted shop, and do not serve it to small children or during pregnancy.',
       ],
       tip: { add: 'A splash of coconut milk', why: 'The creamy Visayan style that softens the sourness', skill: 'Do not leave it too long', how: 'After 30 minutes the fish turns dry and chalky; eat it while the centre is still soft.' },
     },
@@ -1749,7 +1751,7 @@ GOHAN_PACK({
         'Put 2 tbsp of filling on each wrapper, fold in the sides and roll up tightly, sealing with a dab of water.',
         'Fry in 2 cm of medium-hot oil for 3 to 4 minutes, turning, until golden. Drain and serve with the vinegar dip.',
       ],
-      tip: { add: 'A few small shrimp in the filling', why: 'Sweetness and a little protein', skill: 'Cool the filling before rolling', how: 'Hot, wet filling soaks the wrapper and makes it tear or spatter in the oil.' },
+      tip: { add: 'A few small shrimp in the filling', why: 'Sweetness and a savoury bite', skill: 'Cool the filling before rolling', how: 'Hot, wet filling soaks the wrapper and makes it tear or spatter in the oil.' },
     },
     {
       id: 'ph_okoy',

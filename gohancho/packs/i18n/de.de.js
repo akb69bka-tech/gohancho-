@@ -67,7 +67,9 @@ GOHAN_PACK_TR('DE', 'de', {
     'walnuts': 'Walnüsse',
     'mayonnaise': 'Mayonnaise',
     'potato starch': 'Kartoffelstärke',
-    'raisins': 'Rosinen'
+    'raisins': 'Rosinen',
+    'bread': 'Brot',
+    'butter': 'Butter',
   },
   recipes: {
     'de_frikadellen': {
@@ -511,24 +513,24 @@ GOHAN_PACK_TR('DE', 'de', {
     },
     'de_sauerbraten': {
       name: 'Sauerbraten',
-      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '1 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g'], ['Rosinen', '2 EL']],
-      seas: 'Salz · Pfeffer · Beize: 400 ml Rotweinessig oder Weinessig · 400 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 2 zerbröselte Printen oder Lebkuchen oder 1 EL Zucker · 1 EL Speisestärke',
+      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '500 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g'], ['Rosinen', '1 EL']],
+      seas: 'Salz · Pfeffer · Beize: 250 ml Rotweinessig oder Weinessig · 250 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 1 zerbröselte Printe oder 1 Lebkuchen oder 2 TL Zucker · 2 TL Speisestärke',
       steps: [
-        'Zwei bis drei Tage vorher: Zwiebeln, Möhren und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
+        'Zwei bis drei Tage vorher: Zwiebel, Möhre und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
         'Am Kochtag das Fleisch herausnehmen und trocken tupfen; die Beize abseihen und mit dem Gemüse aufheben. Das Fleisch salzen und im Öl rundherum kräftig anbraten, dann Gemüse und Tomatenmark zugeben und 5 Minuten mitrösten.',
-        '500 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 1/2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
+        '300 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
         'Das Fleisch herausnehmen, die Soße passieren, Printen (und Rosinen) einrühren, 5 Minuten köcheln und mit der in Wasser angerührten Stärke binden. Mit Salz, Pfeffer und Zucker süßsauer abschmecken. Das Fleisch aufschneiden und mit Rotkohl und Kartoffelklößen servieren.'
       ],
       tip: { add: 'Eine Handvoll Rosinen in der Soße', why: 'Die rheinische Art: süß gegen sauer', skill: 'Zeit in der Beize', how: 'Zwei bis drei Tage in der kalten Essigbeize machen das Fleisch zart und geben den typischen Geschmack; das lässt sich nicht abkürzen.' }
     },
     'de_schweinebraten': {
       name: 'Schweinebraten mit Kruste',
-      ings: [['Schweineschulter mit Schwarte', '1,2 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g']],
-      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 500 ml Wasser oder Rinderbrühe · 250 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
+      ings: [['Schweineschulter mit Schwarte', '600 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g']],
+      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 400 ml Wasser oder Rinderbrühe · 150 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
       steps: [
         'Den Backofen auf 180 °C vorheizen. Die Schwarte mit einem sehr scharfen Messer im 1-cm-Rautenmuster einschneiden, nur durch Schwarte und Fett, nicht ins Fleisch. Das Fleisch (nicht die Schwarte) mit Salz, Pfeffer, Kümmel, Paprika und zerdrücktem Knoblauch einreiben, die Schwarte mit Salz.',
-        'Das grob geschnittene Gemüse in einen Bräter geben, 250 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
-        'Etwa 2 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
+        'Das grob geschnittene Gemüse in einen Bräter geben, 200 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
+        'Etwa 1 1/4 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
         'Den Braten 10 Minuten ruhen lassen. Den Bratensaft mit dem restlichen Wasser durch ein Sieb in einen Topf geben, mit der in kaltem Wasser angerührten Stärke binden und abschmecken. Den Braten aufschneiden und mit Soße, Semmelknödeln und Krautsalat servieren.'
       ],
       tip: { add: 'Bayerischer Krautsalat mit Speck', why: 'Der klassische Sonntagsteller in Bayern', skill: 'Trockene Schwarte', how: 'Die Schwarte sehr gut trocken tupfen und nicht begießen; nur trockene Haut wird zur knusprigen Kruste.' }
@@ -589,7 +591,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Die Zwiebel fein reiben oder hacken und in der Hälfte des Öls 3 Minuten andünsten. Currypulver und Paprika 30 Sekunden mitrösten, bis es duftet.',
         'Passierte Tomaten, Ketchup, Zucker, Essig und Wasser zugeben, 10 Minuten köcheln und mit Salz (und Cayenne) abschmecken. Nach Wunsch glatt pürieren.',
         'Inzwischen die Würste im restlichen Öl bei mittlerer Hitze 8–10 Minuten rundherum braun und heiß braten.',
-        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren.'
+        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine Prise geräuchertes Paprikapulver in der Soße', why: 'Bringt den Geschmack vom Grill und von der Imbissbude', skill: 'Curry anrösten', how: 'Ein paar Sekunden in heißem Fett wecken die Gewürze; direkt in die Flüssigkeit gegeben schmecken sie staubig.' }
     },
@@ -745,7 +747,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Den Feldsalat zwei- bis dreimal in reichlich Wasser waschen (er ist oft sandig), die Wurzelenden abknipsen, die Röschen aber ganz lassen, und trocken schleudern.',
         'Essig, Senf, Honig, fein gehackte Schalotte, Salz, Pfeffer, Wasser und Öl zu einem Dressing verschlagen.',
         'Das Brot würfeln. Den Speck in einer Pfanne ohne Fett knusprig braten, dann die Brotwürfel im Fett goldbraun rösten.',
-        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen.'
+        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine gekochte Kartoffel ins Dressing gedrückt', why: 'Die schwäbische und pfälzische Art: cremig und haftet an den Blättern', skill: 'Erst bei Tisch anmachen', how: 'Die zarten Blätter fallen wenige Minuten nach dem Anmachen zusammen; erst direkt vor dem Essen mischen.' }
     },
@@ -767,9 +769,9 @@ GOHAN_PACK_TR('DE', 'de', {
       steps: [
         'Die Möhren schälen und grob raspeln. Den Apfel mit Schale (ohne Kerngehäuse) raspeln und sofort mit dem Zitronensaft mischen, damit er nicht braun wird.',
         'Möhren, Apfel, Honig, Salz und Öl vermischen.',
-        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen.'
+        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
-      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett hilft dem Körper, das Vitamin A aus Möhren aufzunehmen, und macht den Salat runder.' }
+      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett trägt den Geschmack der Möhren und macht den Salat runder.' }
     },
     'de_nudelsalat': {
       name: 'Nudelsalat',
@@ -961,6 +963,30 @@ GOHAN_PACK_TR('DE', 'de', {
         '50–60 Minuten backen, bis die Oberfläche goldbraun ist und ein Messer leicht durch die Kartoffeln gleitet. Vor dem Servieren 10 Minuten ruhen lassen.'
       ],
       tip: { add: 'Ein paar Thymianblättchen zwischen den Schichten', why: 'Eine leichte Kräuternote zur reichhaltigen Sahne', skill: 'Gleichmäßig dünne Scheiben', how: 'Gleich dicke Scheiben garen gleichzeitig, so bleiben in der Mitte keine harten Stellen.' }
-    }
+    },
+    'de_abendbrot': {
+      name: 'Abendbrot',
+      ings: [['Roggen- oder Vollkornbrot', '4 Scheiben'], ['Butter', '30 g'], ['Schinken oder Wurstaufschnitt', '100 g'], ['Käsescheiben (Gouda oder Emmentaler)', '100 g'], ['Tomaten', '2'], ['Salatgurke', '1/2'], ['Gewürzgurken', '2?'], ['Radieschen', '4?']],
+      seas: 'Salz · Pfeffer · Schnittlauch · Senf',
+      steps: [
+        'Die Butter 10 Minuten vorher aus dem Kühlschrank nehmen, damit sie sich gut streichen lässt.',
+        'Tomaten und Gurke in Scheiben schneiden, die Radieschen halbieren und alles mit Schinken, Käse und Gewürzgurken auf einem Brett oder großen Teller anrichten.',
+        'Das Brot mit Butter bestreichen. Jede Scheibe nach Belieben mit Schinken oder Käse und dem Gemüse belegen.',
+        'Die Tomaten mit Salz und Pfeffer würzen, Schnittlauch über den Käse streuen und mit Senf servieren.'
+      ],
+      tip: { add: 'Ein gekochtes Ei oder ein Klecks Quark mit Schnittlauch', why: 'Das macht das kalte Abendessen sättigender', skill: 'Die Butter bis zum Rand streichen', how: 'Eine geschlossene Butterschicht verhindert, dass das Brot unter dem Gemüse durchweicht.' }
+    },
+    'de_pfannkuchen': {
+      name: 'Eierpfannkuchen mit Apfelmus',
+      ings: [['Weizenmehl', '150 g'], ['Milch', '300 ml'], ['Eier', '3'], ['Apfelmus', '150 g']],
+      seas: 'Prise Salz · 1 EL Zucker · 2 EL Butter oder Öl für die Pfanne · Zimtzucker zum Servieren',
+      steps: [
+        'Mehl, Salz und Zucker mit der Milch glatt rühren, dann die Eier unterschlagen. Den Teig 10 Minuten ruhen lassen.',
+        'Etwas Butter in einer beschichteten Pfanne bei mittlerer Hitze erhitzen. Eine Kelle Teig hineingießen und die Pfanne schwenken, bis der Boden dünn bedeckt ist.',
+        '1–2 Minuten backen, bis die Oberfläche gestockt und die Unterseite goldbraun ist, dann wenden und noch eine Minute backen. Auf einen Teller geben und warm halten. Mit dem restlichen Teig wiederholen und bei Bedarf Butter nachgeben. Es ergibt 4–5 Pfannkuchen.',
+        'Jeden mit Apfelmus bestreichen, aufrollen oder zusammenklappen und mit Zimtzucker bestreuen.'
+      ],
+      tip: { add: 'Speckwürfel oder Schinken im Teig für eine herzhafte Variante', why: 'In Deutschland isst man sie auch als deftiges Hauptgericht mit Salat', skill: 'Den Teig ruhen lassen', how: 'Beim Ruhen nimmt das Mehl die Milch auf, sodass die Pfannkuchen zart bleiben und beim Wenden nicht reißen.' }
+    },
   }
 });

@@ -170,7 +170,7 @@ GOHAN_PACK({
       steps: [
         'Rinse the lentils and simmer them in 750 ml of water for 20 minutes until almost soft.',
         'Meanwhile, fry the onion, garlic, ají panca, cumin and oregano in the oil for 5 minutes, then add the grated tomato and diced carrot for 3 minutes.',
-        'Stir this aderezo into the lentils and simmer for 10 more minutes until thick and creamy.',
+        'Stir this aderezo into the lentils and simmer for 10 more minutes until thick and creamy. Stir in the chopped coriander at the end.',
         'Season with salt and serve with white rice, salsa criolla and a fried egg or fried fish.',
       ],
       tip: { add: 'A fried egg on top', why: 'Makes it a complete Monday lunch', skill: 'Salt at the end', how: 'Salting too early keeps lentils firm; add it once they are soft.' },
@@ -923,7 +923,7 @@ GOHAN_PACK({
         'Add the rice and sliced carrot and cook for 10 minutes; then add the potatoes in chunks and the shredded cabbage and cook for 20 minutes until soft.',
         'Season with salt and oregano and add chopped hierbabuena and spring onion greens just before serving, with rocoto on the side.',
       ],
-      tip: { add: 'Chopped rocoto with a little lime', why: 'Warms you up in the cold highlands', skill: 'Skim the fat', how: 'Lamb gives off a lot of fat; skimming it as it cooks keeps the broth light.' },
+      tip: { add: 'Chopped rocoto with a little lime', why: 'A fresh, spicy kick that suits the cold highlands', skill: 'Skim the fat', how: 'Lamb gives off a lot of fat; skimming it as it cooks keeps the broth light.' },
     },
     {
       id: 'pe_dieta_pollo',
@@ -949,7 +949,7 @@ GOHAN_PACK({
         'Add the diced potato, carrot and pumpkin and simmer for 15 minutes until soft; add the pasta for the last 5 minutes.',
         'Return the chicken, season lightly with salt and finish with parsley.',
       ],
-      tip: { add: 'A squeeze of lime in the bowl', why: 'Lifts the plain broth when you are unwell', skill: 'No oil, no frying', how: 'Skipping the fried base and removing the skin keeps it gentle on the stomach.' },
+      tip: { add: 'A squeeze of lime in the bowl', why: 'Lifts the plain broth with a fresh, sour note', skill: 'No oil, no frying', how: 'Skipping the fried base and removing the skin keeps the broth light and clear.' },
     },
     {
       id: 'pe_lawa_choclo',
@@ -1011,7 +1011,7 @@ GOHAN_PACK({
       protein: 'chicken',
       min: 25,
       ings: [
-        'rice|Cooked white rice (day-old)|3 cups',
+        'rice|Cooked white rice (day-old)|3 cups (about 500 g)',
         'chicken|Chicken breast|200 g',
         'egg|Eggs|2',
         'spring onion|Spring onions|4',
@@ -1140,7 +1140,7 @@ GOHAN_PACK({
       protein: 'mince',
       min: 35,
       ings: [
-        'rice|Cooked white rice|3 cups',
+        'rice|Cooked white rice|3 cups (about 500 g)',
         'mince|Minced beef|250 g',
         'onion|Onion|1',
         'tomato|Tomato|1',
@@ -1255,7 +1255,7 @@ GOHAN_PACK({
         'Slice the onion into thin half-moons and rinse in cold water. Seed and chop the ají finely and chop the coriander.',
         'Cut the fish into 2 cm cubes, put it in a cold glass bowl and season with salt, the crushed garlic and the ají.',
         'Squeeze the limes gently (without pressing the bitter peel) straight over the fish, add the ice and stir for 2-3 minutes until the outside of the fish turns white.',
-        'Remove the ice, add the onion and coriander, check the salt and serve at once with the sweet potato and choclo.',
+        'Remove the ice, add the onion and coriander, check the salt and serve at once with the sweet potato and choclo. Ceviche is raw fish: buy fish sold for eating raw from a trusted shop, and do not serve it to small children or during pregnancy.',
       ],
       tip: { add: 'A handful of cancha on the side', why: 'Crunch against the soft fish', skill: 'Only very fresh fish, eaten at once', how: 'Use fish sold for eating raw and keep it cold; the lime flavours it but does not cook it like heat does.' },
     },
@@ -1372,7 +1372,7 @@ GOHAN_PACK({
       protein: 'egg',
       min: 20,
       ings: [
-        'rice|Cooked white rice|2 cups',
+        'rice|Cooked white rice|2 cups (about 330 g)',
         'egg|Eggs|2',
         'plantain|Ripe plantain|1',
         'tomato|Tomato|1?',
@@ -1396,7 +1396,7 @@ GOHAN_PACK({
       min: 30,
       ings: [
         'beans|Cooked canary beans (frejol canario)|2 cups',
-        'rice|Cooked white rice|2 cups',
+        'rice|Cooked white rice|2 cups (about 330 g)',
         'onion|Onion|1/2',
         'aji amarillo|Ají amarillo paste|1 tbsp',
         'egg|Eggs, to serve|2?',
@@ -1469,7 +1469,7 @@ GOHAN_PACK({
       local: 'Olluquito con carne',
       type: 'main',
       method: 'simmer',
-      protein: 'veg',
+      protein: 'beef',
       min: 45,
       ings: [
         'olluco|Ollucos|500 g',

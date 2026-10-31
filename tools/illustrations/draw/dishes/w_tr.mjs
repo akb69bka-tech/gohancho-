@@ -498,18 +498,6 @@ export default {
         trShine(100, 100, 74, .45),
     ].join(''),
 
-    // ヤイラ・チョルバス: 白い鉢に、とろりと白いヨーグルトのスープとご飯の粒、ミントを焦がしたバター
-    tr_yayla: p => [
-        K.bowl(p, { glaze: '#f3efe6', inside: '#fbf9f2' }),
-        `<circle cx="100" cy="100" r="86" fill="none" stroke="${COBALT}" stroke-width="2"/>`,
-        K.liquid(p, { R: 74, c: '#f4eedc', op: 1 }),
-        trGrains(p, 100, 102, 120, { cols: ['#fffdf6', '#efe7d2'], n: 60, size: 2.4, long: 1.5, seed: 1 }),
-        `<circle cx="100" cy="100" r="70" fill="#f4eedc" opacity=".25"/>`,
-        trOil(p, 100, 100, 90, { n: 12, c: '#e8c24a', op: .6, rmax: 3.4 }),
-        trMint(p, 100, 100, 96, { n: 40 }),
-        trShine(100, 100, 74, .5),
-    ].join(''),
-
     // ドマテス・チョルバス: イズニック風の鉢に、ミルクでまろやかなトマトのスープ、すりおろしたカシャルチーズ
     tr_domates: p => [
         trIznikBowl(p),

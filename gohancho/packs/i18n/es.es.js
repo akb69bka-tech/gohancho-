@@ -61,7 +61,9 @@ GOHAN_PACK_TR('ES', 'es', {
     'asparagus': 'Espárragos trigueros',
     'chard': 'Acelgas',
     'banana': 'Plátanos',
-    'breadcrumbs': 'Pan rallado'
+    'breadcrumbs': 'Pan rallado',
+    'garlic': 'Ajo',
+    'flour': 'Harina',
   },
   recipes: {
     'es_tortilla': {
@@ -504,8 +506,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_pollohorno': {
       name: 'Pollo asado al horno con patatas',
-      ings: [['Pollo troceado (muslos y contramuslos)', '1 kg'], ['Patatas', '600 g'], ['Cebolla', '1'], ['Limón', '1/2']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 4 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado (muslos y contramuslos)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1'], ['Limón', '1/2']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 200 °C. Pela las patatas y córtalas en rodajas gruesas; corta la cebolla en aros gruesos y ponlo todo en una bandeja de horno. Sala y riega con la mitad del aceite.',
         'Salpimienta el pollo, espolvorea el tomillo y colócalo con la piel hacia arriba sobre las patatas, con los ajos chafados y los trozos de limón.',
@@ -528,8 +530,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_chilindron': {
       name: 'Pollo al chilindrón',
-      ings: [['Pollo troceado', '1 kg'], ['Pimientos rojos y verdes', '3'], ['Cebolla', '1'], ['Tomates maduros', '3'], ['Taquitos de jamón serrano', '50 g']],
-      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado', '600 g'], ['Pimientos rojos y verdes', '2'], ['Cebolla', '1'], ['Tomates maduros', '2'], ['Taquitos de jamón serrano', '50 g']],
+      seas: 'Sal · pimienta · 2 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Salpimienta el pollo y dóralo en el aceite en una cazuela ancha durante 10 minutos. Reserva.',
         'En el mismo aceite sofríe la cebolla y el ajo picados y los pimientos en tiras durante 10 minutos. Añade el jamón y rehoga 2 minutos.',
@@ -564,8 +566,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_costillas': {
       name: 'Costillas de cerdo al horno',
-      ings: [['Costillas de cerdo (en tira o troceadas)', '1 kg'], ['Patatas', '500 g'], ['Cebolla', '1']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 150 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Costillas de cerdo (en tira o troceadas)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 2 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 180 °C. Unta las costillas con sal, pimienta, ajo machacado, pimentón, tomillo y el aceite.',
         'Corta las patatas y la cebolla en rodajas, ponlas en una bandeja, sálalas y coloca encima las costillas. Vierte el vino.',
@@ -712,7 +714,7 @@ GOHAN_PACK_TR('ES', 'es', {
       seas: 'Sal · 1 diente de ajo (opcional) · aceite de oliva para freír',
       steps: [
         'Pela las patatas y córtalas en bastones finos o rodajas. Fríelas en abundante aceite de oliva, primero a fuego medio hasta que estén blandas y luego a fuego fuerte hasta que se doren. Escurre y sala.',
-        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida.',
+        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida (para niños pequeños y embarazadas, cuaja bien la yema).',
         'Pon las patatas en una fuente, coloca encima el jamón y los huevos fritos.',
         'En la mesa, rompe los huevos con un tenedor y mézclalos con las patatas.'
       ],
@@ -725,7 +727,7 @@ GOHAN_PACK_TR('ES', 'es', {
       steps: [
         'Dora los ajos enteros en 1 cucharada de aceite, añade el arroz y rehoga 1 minuto. Agrega el agua, la sal y el laurel y cuece tapado a fuego suave 15-18 minutos hasta que esté tierno. Deja reposar 5 minutos.',
         'Calienta el tomate frito en un cazo.',
-        'Fríe los huevos en aceite caliente, con la yema jugosa. Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
+        'Fríe los huevos en aceite caliente, con la yema jugosa (para niños pequeños y embarazadas, cuaja bien la yema). Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
         'Aprieta el arroz en una taza y desmóldalo en cada plato. Sirve con el tomate, un huevo frito y el plátano.'
       ],
       tip: { add: 'Plátano frito', why: 'El toque dulce tradicional que da nombre al plato', skill: 'Moldea el arroz', how: 'Apretar el arroz en una taza untada de aceite y volcarla da la cúpula perfecta que esperan los niños.' }
@@ -834,7 +836,7 @@ GOHAN_PACK_TR('ES', 'es', {
         'Corta las berenjenas en bastones finos o rodajas de 5 mm y déjalas en remojo en la leche con una pizca de sal 30 minutos.',
         'Escúrrelas y pásalas por harina, sacudiendo el exceso.',
         'Fríelas en aceite muy caliente en tandas pequeñas 2-3 minutos hasta que estén doradas y crujientes. Escurre sobre papel y sala un poco.',
-        'Riega con la miel de caña y sirve enseguida.'
+        'Riega con la miel de caña y sirve enseguida. No des miel a bebés menores de 1 año, ni siquiera cocinada.'
       ],
       tip: { add: 'Sal en escamas con la miel', why: 'El contraste dulce y salado es lo que engancha', skill: 'Remójalas en leche', how: 'La leche suaviza el amargor y hace que la berenjena absorba menos aceite.' }
     },
@@ -981,6 +983,30 @@ GOHAN_PACK_TR('ES', 'es', {
         'Escurre sobre papel de cocina y sirve caliente, con un poco de sal.'
       ],
       tip: { add: 'Unas gotas de limón o un poco de allioli', why: 'Frescor frente al rebozado', skill: 'Sala y seca antes', how: 'La sal saca el agua; las rodajas secas mantienen el rebozado crujiente en vez de blando.' }
-    }
+    },
+    'es_gambas': {
+      name: 'Gambas al ajillo',
+      ings: [['Gambas peladas crudas', '300 g'], ['Ajo', '5 dientes'], ['Pan crujiente, para acompañar', '4 rebanadas'], ['Perejil', '1 cda?']],
+      seas: '100 ml de aceite de oliva · 1 guindilla seca (o 1/2 cdta de chile en copos) · 1 cda de jerez seco (opcional) · sal',
+      steps: [
+        'Seca las gambas con papel de cocina y sazónalas con sal. Corta el ajo en láminas finas y desmenuza la guindilla.',
+        'Calienta el aceite con el ajo y la guindilla en una sartén pequeña o cazuela de barro a fuego medio-bajo durante 2-3 minutos, hasta que el ajo empiece a dorarse.',
+        'Sube el fuego, añade las gambas y cocínalas 1-2 minutos por lado, hasta que estén rosadas y enroscadas. Si usas jerez, añádelo y deja que burbujee 10 segundos.',
+        'Espolvorea con perejil y sirve enseguida, chisporroteando, con el pan para mojar en el aceite.'
+      ],
+      tip: { add: 'Mucho pan crujiente para mojar', why: 'El aceite de ajo y guindilla es lo mejor del plato', skill: 'Secar bien las gambas', how: 'Las gambas mojadas salpican y se cuecen en lugar de dorarse; secarlas mantiene el aceite tranquilo y la carne firme.' }
+    },
+    'es_calamaresromana': {
+      name: 'Calamares a la romana',
+      ings: [['Calamares limpios, cortados en anillas', '400 g'], ['Harina de trigo', '100 g'], ['Huevos', '2'], ['Limón', '1']],
+      seas: 'sal · aceite de girasol o de oliva para freír (unos 300 ml) · perejil picado (opcional)',
+      steps: [
+        'Seca muy bien las anillas de calamar con papel de cocina y sazónalas con sal.',
+        'Bate los huevos en un bol y pon la harina en un plato. Pasa las anillas por el huevo y luego por la harina, sacudiendo el exceso.',
+        'Calienta el aceite en una sartén honda a fuego medio-alto hasta que una pizca de harina chisporrotee al instante (unos 180 °C). Fríe las anillas en 3 tandas durante 1-2 minutos cada una, hasta que estén doradas claras. No las pases de punto o quedarán duras.',
+        'Escúrrelas sobre papel de cocina, espolvorea con un poco más de sal y sirve enseguida con gajos de limón.'
+      ],
+      tip: { add: 'Alioli o un chorrito de limón', why: 'La acidez o la crema de ajo cortan lo graso de la fritura', skill: 'Freír en tandas pequeñas', how: 'Con demasiadas anillas a la vez el aceite se enfría y el rebozado lo absorbe en vez de quedar crujiente.' }
+    },
   }
 });

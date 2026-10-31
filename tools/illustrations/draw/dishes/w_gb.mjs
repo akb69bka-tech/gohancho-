@@ -529,18 +529,6 @@ export default {
         ].join('');
     },
 
-    // リーキとじゃがいものスープ: 紺の線の白いスープ皿に、淡いクリーム色のなめらかなスープ、生クリーム、チャイブ、白こしょう
-    gb_leekpotato: p => [
-        gbSoupBowl(p, '#2c4c7c'),
-        K.liquid(p, { R: 73, c: '#e4dcb0', op: 1 }),
-        `<circle cx="96" cy="94" r="48" fill="#efe8c6" opacity=".5"/>`,
-        gbSwirl(p, 100, 100, 34, { turns: 1.4, w: 3.8 }),
-        `<g ${p.sh(.4)}>`, ...[[70, 82, 13], [132, 78, 12], [136, 126, 13], [72, 130, 12], [112, 144, 11]].map(([x, y, s]) => `<g ${T(x, y)}><ellipse rx="${s / 2}" ry="${s * .44}" fill="${p.g('#e8efc8', .2, .2)}" stroke="#9ab86a" stroke-width="1"/><ellipse rx="${s * .32}" ry="${s * .27}" fill="none" stroke="#b8cf8a" stroke-width=".9"/><ellipse rx="${s * .14}" ry="${s * .11}" fill="none" stroke="#c9da9a" stroke-width=".8"/></g>`), `</g>`,
-        gbChives(p, 100, 100, 100, { n: 22 }),
-        K.sprinkle(p, 100, 100, 100, { c: '#5a4a3a', n: 12, r: .5 }),
-        gbShine(100, 100, 73, .45),
-    ].join(''),
-
     // にんじんとコリアンダーのスープ: オレンジの線の白いスープ皿に、鮮やかなオレンジのなめらかなスープ、ヨーグルトのうず、コリアンダーの葉
     gb_carrotcoriander: p => [
         gbSoupBowl(p, '#d9742a'),

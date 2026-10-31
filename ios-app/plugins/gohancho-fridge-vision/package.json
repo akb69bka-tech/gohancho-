@@ -1,0 +1,16 @@
+{
+  "name": "gohancho-fridge-vision",
+  "version": "1.0.0",
+  "private": true,
+  "description": "冷蔵庫の写真を、iPhone の中だけ（Apple Vision・オフライン）で分類する Capacitor プラグイン。画像は端末の外に出さず、保存もしない",
+  "main": "package.json",
+  "files": ["ios/Sources", "Package.swift"],
+  "keywords": ["capacitor", "plugin", "native"],
+  "license": "UNLICENSED",
+  "capacitor": {
+    "ios": { "src": "ios" }
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=8.0.0"
+  }
+}

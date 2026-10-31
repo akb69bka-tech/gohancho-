@@ -73,7 +73,7 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Biberleri (ve soğanı) doğrayın ve tercihen küçük bir bakır veya demir tavada tereyağında 4-5 dakika yumuşatın.',
         'Domatesleri rendeleyin veya ince doğrayın, ekleyin ve suyu çekilip koyu bir sos kıvamına gelene kadar 6-8 dakika pişirin.',
         'Tuz ve baharatı ekleyin, yumurtaları kırın ve yumuşak parçalar halinde pişmeleri için birkaç kez hafifçe karıştırın (isterseniz sarıları bütün bırakın).',
-        'Hâlâ hafif akışkanken ocaktan alın, beyaz peyniri ve pul biberi üstüne ufalayın. Doğrudan tavadan ekmekle yiyin.'
+        'Hâlâ hafif akışkanken ocaktan alın, beyaz peyniri ve pul biberi üstüne ufalayın. Doğrudan tavadan ekmekle yiyin. Küçük çocuklar ve hamileler için yumurtalar tamamen pişene kadar pişirin.'
       ],
       tip: { add: 'Ufalanmış beyaz peynir', why: 'Tatlı domatese karşı tuzlu ve kremsi', skill: 'Önce domatesleri kısıp suyunu çekin', how: 'Sulu domates menemeni çorbaya çevirir; yumurtaları koymadan önce domatesleri iyice pişirin.' }
     },
@@ -527,8 +527,8 @@ GOHAN_PACK_TR('TR', 'tr', {
     },
     'tr_firintavuk': {
       name: 'Fırında patatesli tavuk',
-      ings: [['Kemikli tavuk but veya baget', '1 kg'], ['Patates', '4 adet'], ['Soğan', '1 adet'], ['Salça', '1 yemek kaşığı'], ['Yeşil biber', '2 adet'], ['Havuç', '1 adet']],
-      seas: 'Tuz · Karabiber · 1 çay kaşığı pul biber · 1 çay kaşığı toz kırmızı biber · 1 çay kaşığı kekik · 4 yemek kaşığı zeytinyağı · 200 ml sıcak su',
+      ings: [['Kemikli tavuk but veya baget', '600 g'], ['Patates', '3 adet'], ['Soğan', '1 adet'], ['Salça', '1 yemek kaşığı'], ['Yeşil biber', '2 adet'], ['Havuç', '1 adet']],
+      seas: 'Tuz · Karabiber · 1 çay kaşığı pul biber · 1 çay kaşığı toz kırmızı biber · 1 çay kaşığı kekik · 3 yemek kaşığı zeytinyağı · 150 ml sıcak su',
       steps: [
         'Salçayı, yağı, baharatları, tuzu ve karabiberi karıştırıp sos yapın; yarısını tavuğa iyice sürün.',
         'Patatesleri (ve havucu) elma dilimi, soğanı (ve biberleri) iri parça doğrayın. Kalan sosla fırın tepsisinde harmanlayın.',
@@ -614,7 +614,7 @@ GOHAN_PACK_TR('TR', 'tr', {
       ings: [['Yumurta', '4 adet'], ['Süzme yoğurt', '300 g'], ['Dereotu', 'birkaç dal']],
       seas: 'Tuz · 1 diş sarımsak · 2 yemek kaşığı tereyağı · 1 çay kaşığı pul biber · Haşlama suyu için 1 yemek kaşığı sirke',
       steps: [
-        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp iki tabağa yayın. Oda sıcaklığında olmalı.',
+        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp servis tabaklarına yayın. Oda sıcaklığında olmalı.',
         'Geniş bir tencerede sirkeli suyu hafifçe kaynatın. Yumurtaları tek tek bir fincana kırıp suya kaydırın; beyazı pişene kadar 3-4 dakika (sarısı katı olsun isterseniz 5 dakika) haşlayın.',
         'Yumurtaları kevgirle alın, suyunu süzdürüp yoğurdun üstüne koyun.',
         'Pul biberi tereyağında birkaç saniye cızdırıp üzerine gezdirin. Dereotu serpip ekmekle servis edin.'

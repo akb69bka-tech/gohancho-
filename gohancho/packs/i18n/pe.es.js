@@ -154,7 +154,7 @@ GOHAN_PACK_TR('PE', 'es', {
       steps: [
         'Lava las lentejas y cocínalas en 750 ml de agua por 20 minutos, hasta que estén casi blandas.',
         'Mientras tanto, sofríe la cebolla, el ajo, el ají panca, el comino y el orégano en el aceite por 5 minutos; luego agrega el tomate rallado y la zanahoria en cubitos por 3 minutos.',
-        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas.',
+        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas. Al final, incorpora el cilantro picado.',
         'Sazona con sal y sirve con arroz blanco, salsa criolla y un huevo frito o pescado frito.'
       ],
       tip: { add: 'Un huevo frito encima', why: 'Lo convierte en un almuerzo de lunes completo', skill: 'Sala al final', how: 'Si sazonas muy pronto, las lentejas quedan duras; agrega la sal cuando ya estén blandas.' }
@@ -512,7 +512,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega el arroz y la zanahoria en rodajas y cocina 10 minutos; luego añade las papas en trozos y la col picada y cocina 20 minutos, hasta que estén suaves.',
         'Sazona con sal y orégano y agrega hierbabuena y la parte verde de la cebolla china picadas justo antes de servir, con rocoto al lado.'
       ],
-      tip: { add: 'Rocoto picado con un poco de limón', why: 'Calienta el cuerpo en el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
+      tip: { add: 'Rocoto picado con un poco de limón', why: 'Un toque picante y fresco que va bien con el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
     },
     'pe_dieta_pollo': {
       name: 'Dieta de pollo',
@@ -524,7 +524,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega la papa, la zanahoria y el zapallo en cubitos y cocina 15 minutos hasta que estén suaves; añade los fideos en los últimos 5 minutos.',
         'Devuelve el pollo, sazona con poca sal y termina con perejil.'
       ],
-      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo cuando uno está mal', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel la hace suave para el estómago.' }
+      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo con un toque ácido y fresco', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel deja el caldo ligero y claro.' }
     },
     'pe_lawa_choclo': {
       name: 'Lawa de choclo',
@@ -553,7 +553,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_chaufa': {
       name: 'Arroz chaufa de pollo',
-      ings: [['Arroz blanco cocido (del día anterior)', '3 tazas'], ['Pechuga de pollo', '200 g'], ['Huevos', '2'], ['Cebolla china', '4 tallos'], ['Kion', '2 cm'], ['Pimiento rojo', '1/2']],
+      ings: [['Arroz blanco cocido (del día anterior)', '3 tazas (unos 500 g)'], ['Pechuga de pollo', '200 g'], ['Huevos', '2'], ['Cebolla china', '4 tallos'], ['Kion', '2 cm'], ['Pimiento rojo', '1/2']],
       seas: 'Sal · 3 cucharadas de sillao · 1 cucharadita de aceite de ajonjolí · 1 diente de ajo · 3 cucharadas de aceite',
       steps: [
         'Corta el pollo en cubos pequeños y sazónalo con un poco de sillao. Pica fino el kion y el ajo, corta la cebolla china (separando la parte blanca de la verde) y el pimiento en cubitos.',
@@ -617,7 +617,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_tapado': {
       name: 'Arroz tapado',
-      ings: [['Arroz blanco cocido', '3 tazas'], ['Carne molida de res', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Huevo', '1'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
+      ings: [['Arroz blanco cocido', '3 tazas (unos 500 g)'], ['Carne molida de res', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Huevo', '1'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
       seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1 cucharada de aceite',
       steps: [
         'Sancocha el huevo 10 minutos, enfríalo y pícalo.',
@@ -675,7 +675,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Corta la cebolla en pluma fina y enjuágala en agua fría. Quita las semillas al ají y pícalo fino; pica el culantro.',
         'Corta el pescado en cubos de 2 cm, ponlo en un bol de vidrio frío y sazónalo con sal, el ajo machacado y el ají.',
         'Exprime los limones suavemente (sin apretar la cáscara amarga) directo sobre el pescado, agrega el hielo y mezcla de 2 a 3 minutos, hasta que el pescado se ponga blanco por fuera.',
-        'Retira el hielo, añade la cebolla y el culantro, prueba la sal y sirve de inmediato con el camote y el choclo.'
+        'Retira el hielo, añade la cebolla y el culantro, prueba la sal y sirve de inmediato con el camote y el choclo. El ceviche es pescado crudo: compra pescado apto para comer crudo en un lugar de confianza y no lo des a niños pequeños ni durante el embarazo.'
       ],
       tip: { add: 'Un puñado de cancha al lado', why: 'Lo crocante contrasta con el pescado suave', skill: 'Pescado fresquísimo y al momento', how: 'Usa pescado apto para comer crudo y mantenlo frío; el limón lo sazona, pero no lo cocina como el fuego.' }
     },
@@ -732,7 +732,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_cubana': {
       name: 'Arroz a la cubana',
-      ings: [['Arroz blanco cocido', '2 tazas'], ['Huevos', '2'], ['Plátano de freír maduro', '1'], ['Tomate', '1']],
+      ings: [['Arroz blanco cocido', '2 tazas (unos 330 g)'], ['Huevos', '2'], ['Plátano de freír maduro', '1'], ['Tomate', '1']],
       seas: 'Sal · 1 diente de ajo · Aceite para freír',
       steps: [
         'Calienta el arroz en una olla con un poco de aceite y el ajo molido por 2 minutos.',
@@ -744,7 +744,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_tacu_tacu': {
       name: 'Tacu tacu',
-      ings: [['Frejol canario cocido', '2 tazas'], ['Arroz blanco cocido', '2 tazas'], ['Cebolla', '1/2'], ['Pasta de ají amarillo', '1 cucharada'], ['Huevos, para acompañar', '2']],
+      ings: [['Frejol canario cocido', '2 tazas'], ['Arroz blanco cocido', '2 tazas (unos 330 g)'], ['Cebolla', '1/2'], ['Pasta de ají amarillo', '1 cucharada'], ['Huevos, para acompañar', '2']],
       seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 3 cucharadas de aceite',
       steps: [
         'Aplasta más o menos la mitad de los frejoles con un tenedor y deja el resto enteros.',

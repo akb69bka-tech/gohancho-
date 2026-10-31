@@ -5,3 +5,5 @@ ios-app/node_modules/
 *.p8
 *.p12
 *.mobileprovision
+# スクリーンショットの保存先が未設定のときにできるフォルダ（誤ってコミットしない）
+/undefined/

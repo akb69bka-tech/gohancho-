@@ -4,22 +4,22 @@
 参照名: ご飯帖プラス 月額
 製品 ID: gohancho_plus_monthly
 期間: 1か月
-価格（日本）: 380円
-お試しオファー: 無料トライアル 1か月（新規の利用者・すべての国）
-表示名（日本語）: ご飯帖プラス ／ 説明: 献立・買い物メモ・世界のレシピが使えます
-Display name (English): Gohancho Plus / Description: Meal plans, shopping lists and world recipes
+価格（日本）: 300円（基準の国: 日本。ほかの国は Apple の自動の価格）
+お試しオファー: 無料トライアル 1か月（新規の利用者・配信するすべての国）
+表示名（日本語）: ご飯帖プラス 月額 ／ 説明: 献立・買い物メモ・世界のレシピが使えます
+Display name (English): Gohancho Plus Monthly / Description: Meal plans, shopping lists and world recipes
 審査メモ: Monthly plan with 1-month free trial.
 
-[年額（1年ありがとう価格）]
-参照名: ご飯帖プラス 年額（1年ありがとう価格）
-製品 ID: gohancho_plus_yearly_loyal
+[年額]  ※オーナー決定（2026-10-31）: 最初から誰でも選べる。月額300円×12か月＝3,600円より600円お得
+参照名: ご飯帖プラス 年額
+製品 ID: gohancho_plus_yearly
 期間: 1年
-価格（日本）: 3,500円
-お試しオファー: なし
-表示名（日本語）: ご飯帖プラス 年額 ／ 説明: 1年つづけてくださった方への特別価格です
-Display name (English): Gohancho Plus Yearly / Description: Special price for members of one year or more
-審査メモ: Shown in the app only to users subscribed for 12+ months.
+価格（日本）: 3,000円（基準の国: 日本。ほかの国は Apple の自動の価格。どの国でも月額の12か月分より安いことを確かめる）
+お試しオファー: 無料トライアル 1か月（新規の利用者・配信するすべての国。お試しはグループで1人1回）
+表示名（日本語）: ご飯帖プラス 年額 ／ 説明: 1年分をまとめて。月額の12か月分よりお得です
+Display name (English): Gohancho Plus Yearly / Description: One year at once, for less than 12 months
+審査メモ: Yearly plan with 1-month free trial. Shown to every user.
 
 [RevenueCat]
-Entitlement: plus
+Entitlement: plus（月額・年額の両方を Attach）
 Offering: current（Current にする）。Package: $rc_monthly = 月額、$rc_annual = 年額

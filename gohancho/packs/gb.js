@@ -16,6 +16,7 @@ GOHAN_PACK({
       name: "Shepherd's pie",
       local: "Shepherd's pie",
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'lamb',
       min: 70,
@@ -45,6 +46,7 @@ GOHAN_PACK({
       name: 'Sausage and mash with onion gravy',
       local: 'Bangers and mash',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'processed',
       min: 35,
@@ -72,6 +74,7 @@ GOHAN_PACK({
       name: 'Fishcakes',
       local: 'Homemade fishcakes',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'fry',
       protein: 'fish',
       min: 40,
@@ -124,6 +127,7 @@ GOHAN_PACK({
       name: 'Chicken tikka masala',
       local: 'Chicken tikka masala',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'simmer',
       protein: 'chicken',
       min: 40,
@@ -150,6 +154,7 @@ GOHAN_PACK({
       name: 'Beef stew and dumplings',
       local: 'Beef stew with dumplings',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'simmer',
       protein: 'beef',
       min: 150,
@@ -176,6 +181,7 @@ GOHAN_PACK({
       name: 'Jacket potato with beans and cheese',
       local: 'Jacket potato, beans and cheese',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'legume',
       min: 75,
@@ -243,6 +249,7 @@ GOHAN_PACK({
       name: 'Oven chips',
       local: 'Homemade oven chips',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'veg',
       min: 40,
@@ -931,19 +938,19 @@ GOHAN_PACK({
       type: 'main',
       method: 'grill',
       protein: 'beef',
-      min: 100,
+      min: 60,
       ings: [
-        'beef|Beef topside or sirloin joint|1.2 kg',
+        'beef|Beef topside or sirloin joint|600 g',
         'onion|Onion|1',
         'carrot|Carrot|1',
-        'stock|Beef stock|400 ml',
+        'stock|Beef stock|300 ml',
       ],
       seas: '1 tbsp oil · 1 tsp English mustard powder · 1 tsp dried thyme · 1 tbsp plain flour · Salt · Pepper · Horseradish sauce to serve',
       steps: [
         'Take the beef out of the fridge an hour before cooking. Heat the oven to 220°C (200°C fan).',
         'Rub the beef with the oil, mustard powder, thyme, salt and pepper and sit it on the halved onion and carrot in a roasting tin.',
-        'Roast 20 minutes, then turn the oven down to 180°C (160°C fan) and roast 15 minutes per 500 g for medium-rare (20 minutes per 500 g for medium).',
-        'Lift out the beef and rest it under foil for 20-30 minutes.',
+        'Roast 15 minutes, then turn the oven down to 180°C (160°C fan) and roast 10-15 minutes more for medium-rare (20 minutes for medium).',
+        'Lift out the beef and rest it under foil for 15 minutes.',
         'Make the gravy in the tin: stir in the flour, then the stock, and bubble 5 minutes, scraping up the sticky bits. Strain and add the resting juices. Slice the beef thinly and serve with horseradish.',
       ],
       tip: { add: 'Yorkshire puddings', why: 'The classic Sunday partner for roast beef and gravy', skill: 'Slice across the grain', how: 'Cutting thin slices across the muscle fibres makes even a lean joint tender.' },
@@ -953,6 +960,7 @@ GOHAN_PACK({
       name: 'Toad in the hole',
       local: 'Toad in the hole',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'processed',
       min: 50,
@@ -977,6 +985,7 @@ GOHAN_PACK({
       name: 'Fish pie',
       local: 'Fish pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'fish',
       min: 70,
@@ -1005,6 +1014,7 @@ GOHAN_PACK({
       name: 'Chicken and leek pie',
       local: 'Chicken and leek pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'chicken',
       min: 60,
@@ -1033,6 +1043,7 @@ GOHAN_PACK({
       name: 'Lancashire hotpot',
       local: 'Lancashire hotpot',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'lamb',
       min: 150,
@@ -1058,6 +1069,7 @@ GOHAN_PACK({
       name: 'Pork chops with apple sauce',
       local: 'Pork chops and apple sauce',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'pork',
       min: 30,
@@ -1131,6 +1143,7 @@ GOHAN_PACK({
       name: 'Lamb chops with mint sauce',
       local: 'Lamb chops and mint sauce',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'lamb',
       min: 25,
@@ -1154,6 +1167,7 @@ GOHAN_PACK({
       name: 'Chilli con carne',
       local: 'Chilli con carne',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'simmer',
       protein: 'mince',
       min: 50,
@@ -1179,6 +1193,7 @@ GOHAN_PACK({
       name: 'Corned beef hash',
       local: 'Corned beef hash',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'stirfry',
       protein: 'processed',
       min: 35,
@@ -1227,6 +1242,7 @@ GOHAN_PACK({
       name: 'Steak and ale pie',
       local: 'Steak and ale pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'beef',
       min: 180,
@@ -1253,6 +1269,7 @@ GOHAN_PACK({
       name: 'Mince and tatties',
       local: 'Mince and tatties',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'simmer',
       protein: 'mince',
       min: 45,
@@ -1304,6 +1321,7 @@ GOHAN_PACK({
       name: 'Welsh rarebit',
       local: 'Caws pobi (Welsh rarebit)',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'veg',
       min: 15,
@@ -1328,6 +1346,7 @@ GOHAN_PACK({
       name: 'Bacon and egg pie',
       local: 'Bacon and egg pie',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'egg',
       min: 65,
@@ -1379,6 +1398,7 @@ GOHAN_PACK({
       name: 'Spicy bean burgers',
       local: 'Bean burgers',
       type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'fry',
       protein: 'legume',
       min: 30,
@@ -1407,6 +1427,7 @@ GOHAN_PACK({
       name: 'Roast potatoes',
       local: 'Roast potatoes',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'veg',
       min: 70,
@@ -1427,6 +1448,7 @@ GOHAN_PACK({
       name: 'Yorkshire puddings',
       local: 'Yorkshire puddings',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'grill',
       protein: 'egg',
       min: 35,
@@ -1460,7 +1482,7 @@ GOHAN_PACK({
         'Heat the oven to 200°C (180°C fan). Peel the parsnips and cut lengthways into quarters, cutting out any woody core.',
         'Parboil 3 minutes, drain and steam-dry.',
         'Toss with the oil, thyme, salt and pepper and roast 25 minutes.',
-        'Mix the honey and mustard, drizzle over and roast 5-10 minutes more until sticky and golden.',
+        'Mix the honey and mustard, drizzle over and roast 5-10 minutes more until sticky and golden. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A little grated Parmesan before the last roast', why: 'A salty crust against the sweetness', skill: 'Honey at the end', how: 'Honey burns quickly, so add it only for the last few minutes.' },
     },
@@ -1514,6 +1536,7 @@ GOHAN_PACK({
       name: 'Champ (spring onion mash)',
       local: 'Champ',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'simmer',
       protein: 'veg',
       min: 30,
@@ -1537,6 +1560,7 @@ GOHAN_PACK({
       name: 'Bubble and squeak',
       local: 'Bubble and squeak',
       type: 'side',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       method: 'fry',
       protein: 'veg',
       min: 25,
@@ -1614,7 +1638,7 @@ GOHAN_PACK({
         'Peel the carrots and cut into batons or thick rounds.',
         'Put in a pan with the butter, honey, a pinch of salt and enough water to just cover.',
         'Boil uncovered 12-15 minutes until the carrots are tender and the water has reduced to a shiny glaze. Shake the pan to coat.',
-        'Season and scatter with parsley.',
+        'Season and scatter with parsley. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A pinch of cumin or a little thyme', why: 'A warm aroma with the sweetness', skill: 'Boil the water away', how: 'As the water evaporates, the butter and honey coat the carrots in a glaze with no extra sauce.' },
     },
@@ -1648,7 +1672,7 @@ GOHAN_PACK({
       type: 'side',
       method: 'raw',
       protein: 'veg',
-      min: 15,
+      min: 195,
       ings: [
         'beetroot|Cooked beetroot (not in vinegar)|500 g',
         'onion|Red onion|1/2?',
@@ -1750,7 +1774,7 @@ GOHAN_PACK({
       steps: [
         'Heat the oven to 200°C (180°C fan). Peel the vegetables and cut into similar chunks, making the swede a little smaller as it is firmer. Cut the onion into wedges.',
         'Toss with the oil, herbs, salt and pepper and spread out in one layer on a large tray.',
-        'Roast 40-45 minutes, turning halfway, until tender and browned at the edges. Drizzle with honey for the last 5 minutes if you like.',
+        'Roast 40-45 minutes, turning halfway, until tender and browned at the edges. Drizzle with honey for the last 5 minutes if you like. Do not give honey to babies under 1 year old, even cooked.',
       ],
       tip: { add: 'A few whole garlic cloves', why: 'Soft, sweet garlic to squeeze over', skill: 'Do not crowd the tray', how: 'Space lets steam escape so the vegetables roast instead of stewing.' },
     },
@@ -1843,6 +1867,58 @@ GOHAN_PACK({
       ],
       tip: { add: 'A few chopped dried apricots or chestnuts', why: 'A festive sweetness', skill: 'Moist but not wet', how: 'It should just hold together when squeezed; add a splash of stock if it crumbles.' },
     },
+    {
+      id: 'gb_porridge',
+      name: 'Creamy porridge with honey and banana',
+      local: 'Porridge',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      method: 'simmer',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'oats|Porridge oats|80 g (1 cup)',
+        'milk|Milk|500 ml',
+        'apple|Apple or banana, sliced|1?',
+      ],
+      seas: 'pinch of salt · 1–2 tbsp honey or golden syrup · pinch of cinnamon (optional)',
+      steps: [
+        'Put the oats, milk and salt in a small saucepan.',
+        'Bring to a gentle simmer over medium heat, stirring all the time with a wooden spoon.',
+        'Cook for 4–5 minutes, still stirring, until the porridge is thick and creamy. Add a splash of milk if it gets too stiff.',
+        'Spoon into warm bowls and top with the sliced fruit, honey and a pinch of cinnamon.',
+      ],
+      tip: { add: 'A pinch of salt in the pot, not just on top', why: 'Salt brings out the nutty flavour of the oats and is the traditional Scottish way', skill: 'Stir constantly', how: 'Oats scorch on the base as they thicken; steady stirring gives a smooth, creamy porridge.' },
+    },
+    {
+      id: 'gb_beansontoast',
+      name: 'Beans on toast',
+      local: 'Beans on toast',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      method: 'simmer',
+      protein: 'legume',
+      min: 10,
+      ings: [
+        'baked beans|Baked beans in tomato sauce|1 can (400 g)',
+        'bread|Thick-sliced bread|4 slices',
+        'butter|Butter|1 tbsp',
+        'cheese|Cheddar, grated|30 g?',
+      ],
+      seas: 'black pepper · dash of Worcestershire sauce (optional)',
+      steps: [
+        'Tip the beans into a small saucepan and warm over medium-low heat for 4–5 minutes, stirring now and then, until bubbling gently.',
+        'Meanwhile toast the bread and spread with the butter.',
+        'Spoon the beans over the toast, grate the cheese on top if using, and finish with black pepper and a dash of Worcestershire sauce.',
+      ],
+      tip: { add: 'A fried or poached egg on top', why: 'The runny yolk turns a snack into a proper meal', skill: 'Warm the beans gently', how: 'High heat makes the sauce catch and burn on the pan; low and steady keeps it saucy.' },
+    },
   ],
   aliases: {
     'lamb mince': ['lamb mince', 'minced lamb', 'ground lamb', 'lamb'],
@@ -1920,6 +1996,7 @@ GOHAN_PACK({
     'beetroot': ['beetroot', 'beets', 'cooked beetroot'],
     'walnuts': ['walnuts', 'walnut', 'walnut pieces'],
     'spinach': ['spinach', 'baby spinach'],
+    'oats': ['oats', 'porridge oats', 'rolled oats', 'oatmeal'],
   },
   quick: ['chicken', 'ground beef', 'sausage', 'beef', 'lamb mince', 'fish', 'egg', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'tomato', 'mushroom', 'cabbage', 'leek', 'pasta', 'rice', 'baked beans', 'bacon'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'canned tomato', 'baked beans', 'pasta', 'rice', 'stock', 'self-raising flour', 'mayonnaise', 'breadcrumbs'],
@@ -1999,5 +2076,6 @@ GOHAN_PACK({
     'beetroot': 'Beetroot',
     'walnuts': 'Walnuts',
     'spinach': 'Spinach',
+    'oats': 'Porridge oats',
   },
 });

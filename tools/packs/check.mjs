@@ -35,6 +35,27 @@ function loadTr(file){
     return d;
 }
 const allIds = new Map();
+
+// 分量の文字列から数字だけを取り出す（並べかえて比べる。全角・アラビア・デーヴァナーガリー数字と ½ などにも対応）
+function qtyNums(q){
+    const s = String(q || '').replace(/[٠-٩]/g, c => c.charCodeAt(0) - 0x660).replace(/[०-९]/g, c => c.charCodeAt(0) - 0x966)
+        .replace(/[０-９]/g, c => c.charCodeAt(0) - 0xFF10).replace(/½/g, '1/2').replace(/¼/g, '1/4').replace(/¾/g, '3/4');
+    return [...new Set((s.match(/\d+(?:[.,]\d+)?/g) || []).map(x => +x.replace(',', '.')))].sort((a, b) => a - b).join(',');
+}
+// 肉・魚の量（g）。'1.2 kg' や '500 g' や '500g' を読む。最大値を返す
+function grams(q){
+    let g = 0; const s = String(q || '');
+    for (const m of s.matchAll(/(\d+(?:[.,]\d+)?)\s*(kg|g)(?![a-z])/gi)) g = Math.max(g, parseFloat(m[1].replace(',', '.')) * (/kg/i.test(m[2]) ? 1000 : 1));
+    return g;
+}
+const MEAT_KEY = /\b(beef|pork|lamb|mutton|goat|veal|chicken|duck|turkey|mince|ribs?|brisket|oxtail|meat|ham|bacon|sausage)\b/i;
+const MEAT_JA = /肉|ロース|もも|手羽|バラ|ひき/;
+const MEAT_LIMIT = 700;   // 2人分でこれより多い肉は量の書きまちがい（または大きな塊）のことが多い
+// 「20分以内」（min ≤ 20）なのに、漬けこみ・ひと晩おく料理
+const WAIT_EN = /overnight|next day|the day before|\b\d+(?:\s*(?:-|–|to)\s*\d+)?\s*(?:hours?|hrs?|h)\b|\bhours\b/i;
+// 「If the clams are not purged, …」のように、場合によってだけ必要な下ごしらえの文は数えない
+const unconditional = txt => txt.split(/(?<=[.!?])\s+/).filter(x => !/^\(?If\b/i.test(x)).join(' ');
+const WAIT_JA = /ひと晩|一晩|翌日|前日|\d+(?:〜\d+)?時間/;
 const rows = [];
 
 // ---------- 日本 ----------
@@ -53,6 +74,8 @@ function checkJP(){
         if (ings.length < 1) err('JP', `${r.id}: 材料がありません`);
         if (steps.length < 2) err('JP', `${r.id}: 手順が少なすぎます`);
         ings.forEach(s => { if (!/\S\s+\S/.test(s.replace(/\?$/, ''))) warn('JP', `${r.id}: 分量のない材料「${s}」`); });
+        ings.forEach(s => { const g = grams(s); if (MEAT_JA.test(s) && g > MEAT_LIMIT) warn('JP', `${r.id}: 肉が ${g}g（2人分としては多すぎ）「${s}」`); });
+        if (Number(r.min) <= 20 && WAIT_JA.test(r.steps)) warn('JP', `${r.id}: min=${r.min} で「20分以内」に入るが、手順に漬けこみ・ひと晩などの待ち時間がある`);
         const t = en.recipes && en.recipes[r.id];
         if (!t) err('JP', `${r.id}: 英訳（jp.en.js）がありません`);
         else {
@@ -96,6 +119,12 @@ function checkPack(file){
             else if (!nameKeys.has(parts[0].trim().toLowerCase())) err(cc, `${where}: 材料のキー「${parts[0]}」が names にありません`);
         });
         if (!Array.isArray(r.steps) || r.steps.length < 2) err(cc, `${where}: 手順（steps）が少なすぎます`);
+        (r.ings || []).forEach(s => {
+            const [key, , q] = s.replace(/\?$/, '').split('|'); const g = grams(q);
+            if (MEAT_KEY.test(key || '') && g > MEAT_LIMIT) warn(cc, `${where}: 肉が ${g}g（2人分としては多すぎ）「${s}」`);
+        });
+        if (Number(r.min) <= 20 && WAIT_EN.test(unconditional((r.steps || []).join(' ')))) warn(cc, `${where}: min=${r.min} で「20分以内」に入るが、手順に漬けこみ・ひと晩などの待ち時間がある`);
+        const baseNums = (r.ings || []).map(s => qtyNums(s.replace(/\?$/, '').split('|')[2]));
         if (r.seas == null) warn(cc, `${where}: seas（調味料）がありません`);
         for (const [l, tr] of Object.entries(trs)){
             const t = tr && tr.recipes && tr.recipes[r.id];
@@ -104,6 +133,16 @@ function checkPack(file){
             if (!t.ings || t.ings.length !== r.ings.length) err(cc, `${where}: ${l} の材料の数が違います（${t.ings ? t.ings.length : 0} / ${r.ings.length}）`);
             if (!t.steps || t.steps.length !== r.steps.length) err(cc, `${where}: ${l} の手順の数が違います（${t.steps ? t.steps.length : 0} / ${r.steps.length}）`);
             if (r.seas && t.seas == null) err(cc, `${where}: ${l} の調味料の翻訳がありません`);
+            // 材料の並び順：訳の i 行目の数字が、元の i 行目ではなく別の行の数字と同じなら、行がずれている
+            const trNums = (t.ings || []).map(x => qtyNums(Array.isArray(x) ? x[1] : x));
+            trNums.forEach((v, i) => {
+                if (!v || v === baseNums[i] || !baseNums[i]) return;
+                if (baseNums[i].split(',').every(n => v.split(',').includes(n))) return;   // '400 g can' → '1缶（400g）' のように数字が増えただけ
+                const j = baseNums.indexOf(v);
+                if (j < 0 || j === i) return;
+                if (trNums[j] === baseNums[i]){ if (i < j) err(cc, `${where}: ${l} の材料の順番が元と違います（${i + 1}行目と${j + 1}行目が入れかわっている）`); }
+                else warn(cc, `${where}: ${l} の材料 ${i + 1}行目の数字（${v}）が元（${baseNums[i]}）と違い、${j + 1}行目と同じ`);
+            });
         }
         const k = r.type === 'side' ? 'side' : r.type === 'soup' ? 'soup' : 'main';
         counts[k]++; if (manifest[r.id]) counts.art++;
@@ -128,7 +167,7 @@ let tot = [0, 0, 0, 0, 0];
 for (const r of rows){ console.log(`${r[0].padEnd(4)} ${pad(r[1], 6)} ${pad(r[2], 5)} ${pad(r[3], 5)} ${pad(r[4], 6)} ${pad(r[5], 7)}`); for (let i = 0; i < 5; i++) tot[i] += r[i + 1]; }
 console.log(`計   ${pad(tot[0], 6)} ${pad(tot[1], 5)} ${pad(tot[2], 5)} ${pad(tot[3], 6)} ${pad(tot[4], 7)}`);
 if (!summaryOnly){
-    if (warns.length) console.log(`\n注意 ${warns.length}件\n` + warns.slice(0, 40).join('\n') + (warns.length > 40 ? '\n…' : ''));
+    if (warns.length) console.log(`\n注意 ${warns.length}件\n` + warns.slice(0, 200).join('\n') + (warns.length > 200 ? '\n…' : ''));
     if (errors.length) console.log(`\nエラー ${errors.length}件\n` + errors.slice(0, 80).join('\n') + (errors.length > 80 ? '\n…' : ''));
     else console.log('\nエラーなし');
 }
