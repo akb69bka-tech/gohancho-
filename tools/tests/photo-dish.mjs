@@ -29,13 +29,17 @@ fs.mkdirSync(path.join(TMP, 'tools/illustrations'), { recursive: true }); fs.mkd
 fs.mkdirSync(path.join(TMP, 'gohancho/img/dish/t'), { recursive: true });
 fs.copyFileSync(path.join(REPO, 'tools/illustrations/import-photos.mjs'), path.join(TMP, 'tools/illustrations/import-photos.mjs'));
 fs.copyFileSync(path.join(REPO, 'tools/lib/pw.cjs'), path.join(TMP, 'tools/lib/pw.cjs'));
+// 本物の写真がすでに入っていても、この点検は「写真なし（手描きの SVG だけ）」から始める。SVG が残っている料理は SVG の形に戻した manifest を使う
 const ORIG = JSON.parse(fs.readFileSync(path.join(APP, 'img/dish/manifest.json'), 'utf8'));
-fs.copyFileSync(path.join(APP, 'img/dish/manifest.json'), path.join(TMP, 'gohancho/img/dish/manifest.json'));
+for (const [id, it] of Object.entries(ORIG.items)){
+    if (it.via === 'photo' && fs.existsSync(path.join(APP, 'img/dish', id + '.svg')))ORIG.items[id] = { ...it, file: id + '.svg', via: 'svg', model: 'hand-drawn-3q' };
+}
+fs.writeFileSync(path.join(TMP, 'gohancho/img/dish/manifest.json'), JSON.stringify(ORIG));
 const TDISH = path.join(TMP, 'gohancho/img/dish');
 
 // ---- サーバー: gohancho/ をそのまま出す。override に入れたもの（manifest・写真）だけ差しかえる ----
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
-const ctl = { down: false, override: {} };
+const ctl = { down: false, override: { '/img/dish/manifest.json': Buffer.from(JSON.stringify(ORIG)) } };
 const server = http.createServer((req, res) => {
     if (ctl.down) return req.destroy();
     let p = decodeURIComponent(new URL(req.url, 'http://x').pathname); if (p.endsWith('/')) p += 'index.html';
@@ -152,7 +156,7 @@ for (const scheme of ['light', 'dark']){
     // 暗い表示・明るい表示とも、器の四隅（丸の外）はお膳の色（生成りの四角が見えない）
     if (main){
         const el = p.locator(`main .tray .vessel[data-id="${PHOTO[0]}"]`);
-        const png = (await el.screenshot()).toString('base64');
+        let png; for (let k = 0; ; k++){ try{ png = (await el.screenshot()).toString('base64'); break; } catch(e){ if (k >= 2) throw e; await p.waitForTimeout(500); } }   // 描き直しの途中で器が入れかわることがあるので、取り直す
         const px = await p.evaluate(async b64 => {
             const im = new Image(); im.src = 'data:image/png;base64,' + b64; await im.decode();
             const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0);
