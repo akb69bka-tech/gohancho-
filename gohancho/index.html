@@ -1156,6 +1156,7 @@ html:not([lang="ja"]):not([lang^="zh"]) .tray.grid2{--algk:2.5}   /* 漢字・�
 .tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may{color:#6b3f00;font-weight:600}
 .spot-label .ex>.alg-tag{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow-wrap:anywhere}   /* アレルゲンの印は2行まで（2つ目のアレルゲン・加工品が … に隠れないように。モニター第3回d） */
 .tray.compact .spot-label .ex{min-height:calc(var(--exl,0) * 1.4em)}
+.tray.grid2.algfit .spot-label .ex{min-height:0}   /* いちばん詰めても入らないとき（文字大・⚠ の札が上下の段に出た日）: 札の場所は、出ている札の高さだけにする（札・名前・かえるを帯の上に入れるのを先に。fitTray） */
 .spot .swap{box-sizing:border-box;height:30px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
 .tray.compact .spot .swap{height:28px;padding-inline:.3rem;min-width:0}
 /* 320px ほどの狭い画面: お膳の余白と字を少し詰め、タブの名前は2行に分けてとなりとくっつかないようにする */
@@ -4266,6 +4267,8 @@ document.addEventListener('toggle', e => { const d = e.target; if (d && d.tagNam
 /* お膳の大きさ合わせ（最初のデザイン）: すべての料理が、最初の画面で下の固定の帯（この一膳にする・下のタブ）より上に収まるように、器の大きさ（--vs）を決める。
    器が小さくなりすぎるときは「詰め」（枠名を隠す・名前1行）にする。同じ画面の大きさ・同じ並びなら同じ値を使い、入れ替えや「かえる」でお膳の大きさが変わらないようにする */
 const TRAY_FIT = {key: '', vs: 0, tight: false};
+// 器が弾む動き（rise: translateY(8px) から戻る）の途中で測ると、器の下端が実際より下に見える。動きを除いた下端で測る（描いた直後でも、動きが進んだあとでも同じ値）
+function fitBottom(e){ const b = e.getBoundingClientRect().bottom, t = getComputedStyle(e).transform; if (!t || t === 'none') return b; const m = t.match(/^matrix\(([^)]+)\)$/); return m ? b - (parseFloat(m[1].split(',')[5]) || 0) : b; }
 function fitTray(){
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     // 同じ画面の大きさ・同じ並び（席の数）なら、前に決めた大きさ（器・名前の行数・詰め方）をそのまま使う。
@@ -4283,7 +4286,7 @@ function fitTray(){
     const prev = TRAY_FIT.base === base && TRAY_FIT.state ? TRAY_FIT.state : null;   // 同じ並びで前に決めた大きさ（言語を変えたときなど、決め直しても器を大きくしない・名前の欄を低くしない）
     if (TRAY_FIT.key === key && TRAY_FIT.state){
         const st = TRAY_FIT.state;
-        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); tr.classList.toggle('noslot', !!st.noslot); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3);
+        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); tr.classList.toggle('noslot', !!st.noslot); tr.classList.toggle('algfit', !!st.algfit); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3);
         if (st.vs) tr.style.setProperty('--vs', st.vs); else tr.style.removeProperty('--vs');
         rowsEl.forEach((r, k) => { if (st.nml[k]) r.style.setProperty('--nml', st.nml[k]); else r.style.removeProperty('--nml'); });
         let ok = true;
@@ -4292,7 +4295,7 @@ function fitTray(){
             let fl = innerHeight;
             document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
             const fl2 = fl + scrollY;
-            if (Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].map(e => e.getBoundingClientRect().bottom + scrollY)) > fl2 + .5 || tr.getBoundingClientRect().bottom + scrollY > fl2 + 1) ok = false;
+            if (Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > fl2 + .5 || tr.getBoundingClientRect().bottom + scrollY > fl2 + 1) ok = false;
         }
         if (ok){
             const textW = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().width; };
@@ -4301,7 +4304,7 @@ function fitTray(){
             return;
         }
     }
-    tr.classList.remove('tight', 'tight2', 'noslot', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     const fixNames = (root = tr) => { let over = false;
         root.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
@@ -4349,7 +4352,10 @@ function fitTray(){
         d = over(); if (d > 0){ nml1 = true; fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
         // それでも入らなければ、器の下の種類の字（主菜・汁もの）を出さない（器と名前で見分けられる。⚠ の札・名前・かえるは残す）
         if (d > 0){ tr.classList.add('noslot'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
-        if (d > 0){ nml1 = false; tr.classList.remove('noslot'); fixText(); } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
+        // それでも入らなければ、札の場所を出ている札の高さだけにし（2行ぶん取っておかない）、見出しのまわりの余白もいちばん小さくする（⚠ の札をタブの裏に隠さないのを先に）
+        if (d > 0){ tr.classList.add('algfit'); fixText(); d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        if (d > 0){ document.body.classList.add('tray-tight3'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        if (d > 0){ nml1 = false; tr.classList.remove('noslot', 'algfit'); document.body.classList.remove('tray-tight3'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
     // 見出しを詰めずに入ったが、器がとても小さくなったとき（家族リクエスト・あいさつ・⚠ の札でお膳が下がった日）: 見出しを詰める形（tight2）で器がはっきり大きくなるなら、そちらにする
     if (!prev && d <= 0 && vs < Math.min(vs0, 80) && !tr.classList.contains('tight2')){
         const vs1 = vs; tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight');
@@ -4359,9 +4365,9 @@ function fitTray(){
     // 詰めても入らない（幅195px・文字もっと大きい など）: 帯をお盆に重ねず（お膳の下に置く）、お膳は詰めない形（器・名前・その下の「かえる」）に戻す。スクロールで全部見られる
     if (prev && parseFloat(prev.vs) && vs > parseFloat(prev.vs)) setVs(parseFloat(prev.vs));   // 前より器を大きくしない（お膳の高さが変わって下が動かないように）
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
-    const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].map(e => e.getBoundingClientRect().bottom + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
+    const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
-    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0;
+    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0;
         // お膳が入りきらない画面でも、あいさつは出さない（献立を上に。家族リクエストの入口は残す。第8回 R20）
         if (document.querySelector('#greet .greet-tx')) document.body.classList.add('greet-1', 'greet-0');
         fixText();
@@ -4376,9 +4382,11 @@ function fitTray(){
             if (rowIn()) tight = tr.classList.contains('tight');
             else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
-    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
+// 字（フォント）が読みこまれて名前・札の高さが変わったら、測り直す（読みこみ前の字の高さで決めたままにしない）
+if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', () => { if (tab !== 'today') return; TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
 { let phT = 0; window.addEventListener('resize', () => { clearTimeout(phT); phT = setTimeout(() => guard('ph', () => fitPlaceholders(document.getElementById('view'))), 200); }); }
 function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[render] ' + name, e); }catch(_){} renderFail.add(name); return undefined; } }
 const renderFail = new Set();
