@@ -7,6 +7,7 @@
 //  ・ひとひねりは1日3回、買い足し提案は1件、やってみた/おいしかったは購入画面（データは変わらない）
 //  ・hasPro() が true なら 5/6品・全7日・制限なし。課金なし（既定）では何も制限しない
 //  ・購入画面の「プラスの内容」は、無料版にも入っている機能（世界のレシピ・冷蔵庫・家族に送る）を並べない
+//  ・料金: 月額300円・年額3,000円（誰でも選べる。月額×12＝3,600円より600円お得）。1か月無料は両方。App Store の価格が取れたらそちらとそのお得を出す。billingMode は 'off' のまま
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
@@ -93,6 +94,35 @@ for (const cc of CCS){
         paywalls.length = 0; openPaywall = reason => { paywalls.push(reason); sheet = null; };
         click('skill-done', {id: RECIPES[1].id}); click('count', {v: 5}); if (paywalls.length) bad.push('Pro なのに購入画面 ' + paywalls);
         hasPro = hp;
+        // --- 料金（オーナー決定 2026-10-31）: 月額300円・年額3,000円（最初から誰でも選べる）。どちらも1か月無料。App Store の価格が取れたらそちらを出す
+        const mo = PLAN.prices.find(x => x.id === 'gohancho_plus_monthly'), yr = PLAN.prices.find(x => x.id === 'gohancho_plus_yearly');
+        if (PLAN.prices.length !== 2 || !mo || !yr || mo.per !== '月' || yr.per !== '年') bad.push('プランが月額・年額の2つでない: ' + PLAN.prices.map(x => x.id));
+        if (mo && yr && (mo.yen !== 300 || yr.yen !== 3000 || mo.yen * 12 - yr.yen !== 600)) bad.push('目安の価格が 300円・3,000円（600円お得）でない');
+        if ('loyalty' in PLAN || 'loyaltyEnabled' in PLAN || typeof loyalEligible === 'function') bad.push('「1年つづいた人だけ」の年額のしくみが残っている');
+        const showPw = () => { op('info'); const bs = [...document.querySelectorAll('#sheet-root .pw-price')].map(e => ({id:e.dataset.id, l:(e.querySelector('.l') || {}).textContent || '', p:(e.querySelector('.p') || {}).textContent || '', n:(e.querySelector('.n') || {}).textContent || ''})); const terms = (document.querySelector('#sheet-root .pw-terms') || {}).textContent || ''; closeSheet(); return {bs, terms}; };
+        const ja = cc === 'JP' || LANG === 'ja';
+        let pw = showPw();
+        if (pw.bs.map(x => x.id).join() !== 'gohancho_plus_monthly,gohancho_plus_yearly') bad.push('購入画面に月額と年額の両方が出ない（誰でも選べるはず）: ' + pw.bs.map(x => x.id));
+        else if (ja){
+            if (pw.bs[0].p !== t('300円 / 月') || pw.bs[1].p !== t('3,000円 / 年')) bad.push('目安の価格の表示: ' + pw.bs.map(x => x.p));
+            const want = t('月額の12か月分（{total}）より{save}お得', {total:t('3,600円'), save:t('600円')});
+            if (pw.bs[1].n !== want) bad.push('年額のお得の文: ' + pw.bs[1].n);
+            if (LANG === 'ja' && pw.bs[1].n !== '月額の12か月分（3,600円）より600円お得') bad.push('年額のお得の文（日本語）: ' + pw.bs[1].n);
+            if (!pw.terms.includes(t('{plan}（{price}・1年ごとに自動更新）', {plan:yr.label, price:t('3,000円 / 年')})) || !pw.terms.includes(t('{plan}（{price}・1か月ごとに自動更新）', {plan:mo.label, price:t('300円 / 月')}))) bad.push('料金と解約に月額・年額の更新の文がない');
+            // 1か月無料は月額・年額の両方（はじめての人）
+            if (!pw.bs[0].l.includes(introShort()) || !pw.bs[1].l.includes(introShort())) bad.push('お試しの文が月額・年額の両方にない: ' + pw.bs.map(x => x.l));
+            if (!pw.terms.includes(t('年額プランを選んだ場合も、{trial}のあと{price}になります。', {trial:introShort(), price:t('3,000円 / 年')}))) bad.push('年額のお試しのあとの価格の文がない');
+        }else if (pw.bs.some(x => x.p || x.n)) bad.push('日本以外で、App Store の価格がないのに円の価格・お得の文が出る: ' + JSON.stringify(pw.bs));
+        // App Store の実際の価格が取れたら、その価格とその価格で計算したお得を出す（目安の円は出さない）
+        storePrices.gohancho_plus_monthly = {text:'$2.99', value:2.99, currency:'USD'}; storePrices.gohancho_plus_yearly = {text:'$29.99', value:29.99, currency:'USD'};
+        pw = showPw();
+        const fm = new Intl.NumberFormat(LANG, {style:'currency', currency:'USD', minimumFractionDigits:2, maximumFractionDigits:2});
+        if (pw.bs.length !== 2 || pw.bs[0].p !== t('{price} / 月', {price:'$2.99'}) || pw.bs[1].p !== t('{price} / 年', {price:'$29.99'})) bad.push('App Store の価格が優先されない: ' + pw.bs.map(x => x.p));
+        else if (pw.bs[1].n !== t('月額の12か月分（{total}）より{save}お得', {total:fm.format(35.88), save:fm.format(5.89)})) bad.push('App Store の価格でのお得の文: ' + pw.bs[1].n);
+        if (pw.bs.some(x => /円|¥/.test(x.p + x.n)) && !/¥/.test(fm.format(1))) bad.push('App Store の価格があるのに目安の円が出る');
+        storePrices.gohancho_plus_yearly = {text:'$40.00', value:40, currency:'USD'};   // 年額が月額×12以上ならお得と書かない
+        pw = showPw(); if (pw.bs[1] && pw.bs[1].n) bad.push('お得でないのにお得の文: ' + pw.bs[1].n);
+        delete storePrices.gohancho_plus_monthly; delete storePrices.gohancho_plus_yearly;
         // --- freeTier を切ると、お試し後はロック（いまの本番の動き）
         PLAN.freeTier = false; if (!isLocked()) bad.push('freeTier=false なのにロックされない');
         PLAN.billingMode = 'native'; PLAN.freeTier = false;
@@ -103,6 +133,9 @@ for (const cc of CCS){
 }
 // 静的: 門の理由はこの一覧だけ（足したら線引き表も更新する）
 const src = (await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8');
+// 静的: 課金は App Store に出してオーナーが価格を設定するまで始めない（Web 版は無料）
+ok(/billingMode: 'off',/.test(src), "PLAN.billingMode が 'off' でない（課金の開始はオーナーが App Store Connect で価格を設定してから）");
+ok(/trialMode: 'store',/.test(src), "PLAN.trialMode が 'store'（App Store のお試しオファー）でない");
 const reasons = new Set([...src.matchAll(/openPaywall\('([a-zA-Z]+)'\)/g)].map(m => m[1]));
 const known = ['twist', 'dishes', 'info', 'week', 'skill', 'hints', 'award', 'photos', 'monitor', 'start', 'locked'];
 reasons.forEach(x => ok(known.includes(x), '知らない購入画面の理由: ' + x));

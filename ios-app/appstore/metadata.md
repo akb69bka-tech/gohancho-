@@ -71,10 +71,11 @@
 
 ■ ご利用には「ご飯帖プラス」が必要です
 献立の提案をはじめとするアプリの機能は、自動更新のサブスクリプション「ご飯帖プラス」でお使いいただけます。
-・はじめての方は、最初の1か月を無料でお試しいただけます（Apple の無料お試し。対象となる方のみ）
-・無料期間のあとは、月額300円（税込）で自動更新されます
+・プランは月額300円（税込）と年額3,000円（税込）の2つから選べます（年額は月額の12か月分 3,600円より600円お得）
+・はじめての方は、どちらのプランでも最初の1か月を無料でお試しいただけます（Apple の無料お試し。対象となる方のみ。お試しはおひとり1回）
+・無料期間のあとは、選んだプランの料金で自動更新されます
 ・無料期間が終わる24時間前までに解約すれば、料金はかかりません
-・年の縛りはなく、いつでも解約できます
+・いつでも解約できます（解約すると、次の更新から止まります）
 
 【お支払いについて】
 お支払いは購入の確定時に Apple アカウントに請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
@@ -113,23 +114,24 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 
 **サブスクリプショングループ名**: ご飯帖プラス
 
-> **今回の申請は月額だけです。** 年額（1年ありがとう価格）は今回は作らない（作った場合も、このバージョンの審査には付けない）。審査メモも「月額のみ・年額なし」と書いています。年額は、あとのアップデートで審査メモを書き足してから出します。
+> **オーナー決定（2026-10-31）**: 月額300円・年額3,000円。年額は最初から誰でも選べる（以前の「1年つづいた会員だけ・3,500円」はやめた）。どちらも最初の1か月は無料。課金が始まるのは、App Store に出してオーナーが App Store Connect で価格を設定してから（それまで `billingMode: 'off'`）。
 
-| 項目 | 月額 | 年額（1年ありがとう価格） |
+| 項目 | 月額 | 年額 |
 | --- | --- | --- |
-| 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly_loyal |
-| 参照名 | ご飯帖プラス 月額 | ご飯帖プラス 年額（1年ありがとう価格） |
+| 製品 ID | gohancho_plus_monthly | gohancho_plus_yearly |
+| 参照名 | ご飯帖プラス 月額 | ご飯帖プラス 年額 |
 | 期間 | 1か月 | 1年 |
-| 価格（日本） | **300円**（クラシル プレミアム 480円より安く） | **3,500円**（月額300円の約11.7か月分。12か月分 3,600円との差は100円。年額は今回の申請では作らない。値段の見直しはオーナー判断） |
-| お試しオファー | **1か月 無料**（新規の利用者。すべての国） | なし |
-| 表示名 | ご飯帖プラス | ご飯帖プラス 年額 |
-| 説明（45文字まで） | 献立・買い物メモ・世界のレシピが使えます | 1年つづけてくださった方への特別価格です |
-| 誰に見せるか | 全員 | アプリが「12か月以上つづいている会員」にだけ表示（審査担当者向けに審査メモに記載） |
+| 価格（日本） | **300円**（クラシル プレミアム 480円より安く） | **3,000円**（月額300円×12か月＝3,600円より600円お得） |
+| お試しオファー | **1か月 無料**（新規の利用者。配信するすべての国） | **1か月 無料**（同じ。お試しはグループで1人1回: Apple の決まり） |
+| 表示名 | ご飯帖プラス 月額 | ご飯帖プラス 年額 |
+| 説明（45文字まで） | 献立・買い物メモ・世界のレシピが使えます | 1年分をまとめて。月額の12か月分よりお得です |
+| 誰に見せるか | 全員 | 全員 |
 
 - 審査用スクリーンショット: アプリの「ご飯帖プラス」画面（設定 → プラスの内容）を撮って添付
 - 製品 ID はアプリの `PLAN.prices` と同じにしてあります。変える場合は両方を変えてください
-- RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額と年額（1年ありがとう価格）の2つを入れる（年額はアプリ側で12か月以上の会員にだけ表示する）
-- 無料期間は App Store Connect のお試しオファー（1か月無料）です。アプリは RevenueCat から実際の長さを取って「最初の1か月は無料」と表示します（`PLAN.trialMode: 'store'`）。1か月が終わると、解約していなければ月額300円が自動で始まります
+- RevenueCat の Entitlement 名は `plus`、Offering は「current」に月額（`$rc_monthly`）と年額（`$rc_annual`）の2つを入れる
+- 無料期間は App Store Connect のお試しオファー（1か月無料）です。アプリは RevenueCat から実際の長さを取って「最初の1か月は無料」と表示します（`PLAN.trialMode: 'store'`）。1か月が終わると、解約していなければ選んだプランの料金（月額300円か年額3,000円）が自動で始まります
+- 年額のお得の文は、アプリが App Store の実際の価格から計算します（月額×12 − 年額。お得でない国では出さない）
 - 価格は国ごとに App Store Connect で設定します（`世界配信の計画と収支試算.md` の表）。アプリは登録した価格を自動で表示します
 
 ---
@@ -169,9 +171,9 @@ Other notes for review:
 - The app gives cooking suggestions only. It makes no medical, nutrition or health claims. Allergy notices say to check ingredient labels yourself.
 - Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any outside payment page.
 
-In-app purchase: "Gohancho Plus", a monthly auto-renewable subscription (product ID gohancho_plus_monthly, JPY 300/month in Japan) with a 1-month free introductory offer for eligible new subscribers. This submission contains the monthly plan only; there is no yearly plan. After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
+In-app purchase: "Gohancho Plus", two auto-renewable subscriptions in one subscription group: monthly (product ID gohancho_plus_monthly, JPY 300/month in Japan) and yearly (product ID gohancho_plus_yearly, JPY 3,000/year in Japan). Both are shown to every user, and both have a 1-month free introductory offer for eligible new subscribers (one introductory offer per subscription group). After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
 
-How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes).
+How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly or the yearly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes, 1 year = 1 hour).
 ```
 
 ---
@@ -240,11 +242,11 @@ Tap a time in the steps, like "simmer 8 minutes", and the timer starts right the
 Everything runs on your phone. No account needed. Your history, photos and settings never leave your device.
 
 ■ Gohancho Plus subscription required
-The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable monthly subscription.
-- New subscribers can try it free for the first month (Apple free trial, for eligible users)
-- After the trial, it renews monthly at the price shown in the App Store for your country
+The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable subscription. Choose monthly or yearly; the yearly plan costs less than 12 months of the monthly plan.
+- New subscribers can try either plan free for the first month (Apple free trial, for eligible users; one free trial per person)
+- After the trial, it renews at the price of the plan you chose, as shown in the App Store for your country
 - Cancel at least 24 hours before the trial ends and you won't be charged
-- No yearly commitment; cancel anytime
+- Cancel anytime; your plan stops at the next renewal
 
 Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
 
@@ -272,6 +274,6 @@ If you have allergies, always check the ingredients of seasonings and processed 
 
 ## 配信する国と言語
 
-- **配信する国**: App Store Connect →「価格および配信状況」で、**中国本土を外して**ほかはすべて選ぶ（中国本土での配信には ICP 備案が必要）
+- **配信する国**: App Store Connect →「価格および配信状況」で、**中国本土を外して**ほかはすべて選ぶ（中国本土での配信には ICP 備案が必要。オーナー決定 2026-10-31: 対応21か国・地域のうち中国本土を除く20か国に出す。手順は `申請の完全ガイド.md` の 4-4）
 - **アプリの対応言語（Xcode の Localizations に追加）**: 英語・日本語・フランス語・ドイツ語・イタリア語・スペイン語・ポルトガル語（ブラジル）・ポーランド語・トルコ語・アラビア語・ヒンディー語・インドネシア語・フィリピン語・タイ語・中国語（簡体）・中国語（繁体）・韓国語・ベトナム語
-- **国ごとの価格**: `世界配信の計画と収支試算.md` の表のとおり（月額のみ。年額プランはなし）
+- **国ごとの価格**: 基準の国を日本（月額300円・年額3,000円）にして Apple の自動の価格を使う。出た金額は `世界配信の計画と収支試算.md` の表（今は「要確認」）に書き写す

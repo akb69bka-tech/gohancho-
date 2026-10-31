@@ -775,7 +775,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .pw-prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:var(--s8)}
 .pw-price{border:1px solid var(--accent-line);background:var(--surface);color:var(--ink);border-radius:var(--r-lg);padding:var(--s12) var(--s16);min-height:var(--tap-lg);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;font-family:var(--gothic);transition:transform var(--dur-1)}
 .pw-price:active{transform:translateY(1px)}
-.pw-price.best{border-color:var(--leaf);box-shadow:0 0 0 3px var(--leaf-soft)}
+.pw-price.best{border-color:var(--leaf);box-shadow:0 0 0 3px var(--leaf-soft);grid-column:1/-1}   /* 年額（お得の文つき）は月額の下に1列で。半分の幅でひとつだけ残らないように */
 .pw-price.cta{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);align-items:center;text-align:center;border-radius:var(--r-pill);box-shadow:var(--shadow-accent);min-height:var(--tap-lg)}
 .pw-price.cta:active{background:var(--accent-press);box-shadow:none}
 .pw-price .l{font-size:var(--fs14);opacity:.9}
@@ -5632,12 +5632,12 @@ const PLAN = {
     billingMode: 'off',                 // オーナー決定（2026-10-28）: 全員無料。課金を入れるかどうか・時期はオーナーだけが決める
     get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     get name(){ return t('ご飯帖プラス'); },
-    prices: [                           // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する
-        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('300円 / 月'); }, per:'月', note:''},
+    // オーナー決定（2026-10-31）: 月額300円・年額3,000円（最初から誰でも選べる。月額×12か月＝3,600円より600円お得）。どちらも最初の1か月は無料（App Store のお試しオファー）
+    // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する。yen は目安の円の価格（App Store の価格が取れないときのお得の計算に使う）
+    prices: [
+        {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('300円 / 月'); }, per:'月', yen:300, note:''},
+        {id:'gohancho_plus_yearly', get label(){ return t('年額プラン'); }, get price(){ return t('3,000円 / 年'); }, per:'年', yen:3000, get note(){ return t('月額の12か月分（{total}）より{save}お得', {total:t('3,600円'), save:t('600円')}); }},
     ],
-    // 年額は「1年つづけてくれた人」にだけ案内する特別価格（App Store Connect に製品を作り、アプリは12か月以上の会員にだけ表示する）
-    loyaltyEnabled: false,              // 年額（1年ありがとう価格）はこの版では出さない。true にすると loyalEligible() の人に案内する
-    loyalty: {months:12, id:'gohancho_plus_yearly_loyal', get label(){ return t('年額プラン（1年ありがとう価格）'); }, get price(){ return t('3,500円 / 年'); }, per:'年', note:''},
     // （使っていない）アプリ側の無料体験キャンペーン: 登録なしで使いはじめ、毎週ひとこと感想を送ると1週間ずつ開く。Apple のお試しオファー方式で出すので false のまま
     campaign: {active:false,   /* 固定: remote.json からは変えられない（モニター関連の処理は active=false で動かない） */  days:60, weekDays:7, resendAfter:5},
     entitlement: 'plus',                // RevenueCat の Entitlement 名
@@ -5683,7 +5683,6 @@ function monitorSend(){
     else if (navigator.share) navigator.share({title: subject, text: subject}).catch(() => {});
     toast(t('ありがとうございます。次の1週間分が開きました。'), true); closeSheet(); render(); scheduleTrialReminder();
 }
-function loyalEligible(){ return PLAN.loyaltyEnabled && isSubscribed() && !!(S.pro && S.pro.since) && daysBetween(S.pro.since, TODAY) >= PLAN.loyalty.months * 30; }
 // 無料期間の終わる前の日に、端末の通知で知らせる（通知を許可している人だけ）
 async function scheduleTrialReminder(){
     const P = nativePlugin('LocalNotifications');
@@ -5731,18 +5730,19 @@ function applyCustomerInfo(ci){
     const since = ent && ent.originalPurchaseDate ? String(ent.originalPurchaseDate).slice(0, 10) : ((S.pro && S.pro.since) || null);
     // App Store のお試し中なら終わる日を覚えておき、3日前に知らせる
     const trialEnd = ent && /TRIAL|INTRO/i.test(String(ent.periodType || '')) && ent.expirationDate ? localYmd(ent.expirationDate) : null;
-    S.pro = {active: !!ent, since, checked: Date.now(), trialEnd, expires: ent && ent.expirationDate ? localYmd(ent.expirationDate) : null, willRenew: ent ? ent.willRenew !== false : null}; save(); render();
+    S.pro = {active: !!ent, since, checked: Date.now(), trialEnd, product: ent && ent.productIdentifier ? String(ent.productIdentifier) : null, expires: ent && ent.expirationDate ? localYmd(ent.expirationDate) : null, willRenew: ent ? ent.willRenew !== false : null}; save(); render();
     scheduleTrialReminder();
     return !!ent;
 }
 // App Store に登録した実際の価格（RevenueCat 経由）。表示と請求額がずれないように、取れたらこちらを出す
 const storePrices = {};
 let introEligible = true;   // App Store のお試しオファーを使えるか（一度でも登録した人は使えない）。RevenueCat で確認できたら更新
-let introOffer = null;      // App Store に登録したお試しの長さ {unit:'day'|'month', n}。国ごとに違うので RevenueCat から取る。取れなければ「1か月」として表示
+let introOffer = null;      // App Store に登録したお試しの長さ {unit:'day'|'month', n}。国ごとに違うので RevenueCat から取る。取れなければ「1か月」として表示（月額の製品のもの）
+const introOffers = {};     // 製品ごとのお試しの長さ（月額・年額の両方に付けられる。お試しを使えるのはグループで1回だけ: Apple の決まり）
 let introLoading = false;   // RevenueCat からお試しの長さを読みこみ中（その間は長さを書かない。はじめの案内と購入画面で長さが食い違わないように）
 // お試しの長さの文（購入画面・はじめの案内）
 // 短い言い方（「1か月無料」「7日間無料」）
-function introShort(){ const o = introOffer || {unit:'month', n:1}; return o.unit === 'day' ? t('{n}日間無料', {n:o.n}) : t('{n}か月無料', {n:o.n}); }
+function introShort(o){ o = o || introOffer || {unit:'month', n:1}; return o.unit === 'day' ? t('{n}日間無料', {n:o.n}) : t('{n}か月無料', {n:o.n}); }
 function introLabel(){
     if (!introOffer && introLoading) return t('お試し期間中は、すべての機能を無料で使えます。');
     const o = introOffer || {unit:'month', n:1};
@@ -5766,8 +5766,8 @@ async function loadStorePrices(){
     try{
         const P = await ready, offs = await P.getOfferings();
         ((offs && offs.current && offs.current.availablePackages) || []).forEach(pkg => {
-            const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price)};
-            if (pr && pr.identifier === 'gohancho_plus_monthly'){ const o = parseIntro(pr); if (o) introOffer = o; }
+            const pr = pkg.product; if (pr && pr.identifier && pr.priceString) storePrices[pr.identifier] = {text: pr.priceString, value: Number(pr.price), currency: pr.currencyCode || ''};
+            const o = pr && pr.identifier ? parseIntro(pr) : null; if (o){ introOffers[pr.identifier] = o; if (pr.identifier === 'gohancho_plus_monthly') introOffer = o; }
         });
         storeState = storePrices['gohancho_plus_monthly'] ? 'ok' : 'fail';
         introLoading = false; rerender();
@@ -5797,6 +5797,12 @@ function introCancelBy(){
     return jpDate(ymd(d)) + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0') + (tz ? ' ' + tz : '');
 }
 function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
+// 製品IDの価格の文（設定の「無料期間中：…から」に、選んだプランの価格を出す）
+function planPriceFor(id){ const p = PLAN.prices.find(x => x.id === id); return p ? priceLabel(p) : ''; }
+// 購入画面に出すプラン。iPhone アプリ版では App Store の価格が取れた製品だけ（価格のないボタンを出さない）
+function shownPlans(){ return PLAN.prices.filter(p => !purchasesPlugin() || storePrices[p.id]); }
+// その製品のお試し（iPhone アプリ版は App Store に登録したものだけ。Web の目安は1か月）
+function introFor(p){ return purchasesPlugin() ? introOffers[p.id] || null : {unit:'month', n:1}; }
 // お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
 function trialTimelineHtml(){
     const end = introEndYmd(), price = monthlyPrice();
@@ -5808,10 +5814,20 @@ function priceLabel(p){
     if (live) return p.per === '年' ? t('{price} / 年', {price:live.text}) : t('{price} / 月', {price:live.text});
     return !purchasesPlugin() && (LANG === 'ja' || currentCountry() === 'JP') ? p.price : '';   // 目安の円の価格は日本向けだけ。ほかの国は App Store の価格が取れたときだけ出す
 }
+// 年額のお得の文。App Store の実際の価格が取れたらその価格で計算し（月額×12 − 年額）、取れないときは目安の円の価格（3,600円より600円お得）
 function priceNote(p){
     if (p.per !== '年') return p.note;
     const m = storePrices['gohancho_plus_monthly'], y = storePrices[p.id];
-    if (!m || !y) return p.note;
+    if (!m || !y || !(m.value > 0) || !(y.value > 0)) return !purchasesPlugin() && priceLabel(p) ? p.note : '';
+    const total = Math.round(m.value * 12 * 100) / 100, save = Math.round((total - y.value) * 100) / 100;
+    if (save <= 0) return '';
+    if (m.currency && m.currency === y.currency){
+        try{
+            const whole = Number.isInteger(total) && Number.isInteger(save);
+            const f = new Intl.NumberFormat(LANG, {style:'currency', currency:m.currency, minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2});
+            return t('月額の12か月分（{total}）より{save}お得', {total:f.format(total), save:f.format(save)});
+        }catch(e){}
+    }
     const months = Math.round(12 - y.value / m.value);
     return months >= 1 ? t('{n}か月分無料', {n:months}) : '';
 }
@@ -6064,7 +6080,7 @@ function renderSheetBody(){
         // 購入のボタン（価格がいちばん目立つように。お試しの言葉は小さく上に）
         const buyHtml = !PLAN.billingEnabled ? '' : !priced
             ? `<div class="note"><span>${esc(storeState === 'fail' ? t('価格を読み込めませんでした。電波のあるところでもう一度お試しください') : t('App Store の価格を読み込んでいます…'))}</span>${storeState === 'fail' ? `<button class="btn sm" data-act="store-retry">${esc(t('もう一度読みこむ'))}</button>` : ''}</div>`
-            : `<div class="pw-prices">${[...PLAN.prices, ...(loyalEligible() ? [PLAN.loyalty] : [])].map(p => { const note = priceNote(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(startOffer && p.per === '月' ? t('{trial}ではじめる', {trial:introShort()}) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`;
+            : `<div class="pw-prices">${shownPlans().map(p => { const note = priceNote(p), intro = startOffer && introFor(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(intro ? (p.per === '月' ? t('{trial}ではじめる', {trial:introShort(intro)}) : t('{plan}（{trial}）', {plan:p.label, trial:introShort(intro)})) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`;
         body = `
             <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2>${isLocked() ? '' : `<button class="btn ghost pw-x" data-act="sheet-close">${esc(t('閉じる'))}</button>`}</div>
             ${ready.length ? `<p class="pw-ready"><b>${esc(t('あなたの今日の献立ができています'))}</b><br>${esc(joinNames(ready))}</p>` : ''}
@@ -6079,7 +6095,8 @@ function renderSheetBody(){
                 <section class="pw-terms" aria-labelledby="pw-terms-h">
                     <h3 id="pw-terms-h">${esc(t('料金と解約'))}</h3>
                     <ul>
-                        ${PLAN.prices.map(p => priceLabel(p) ? `<li>${esc(t('{plan}（{price}・1か月ごとに自動更新）', {plan:p.label, price:priceLabel(p)}))}</li>` : '').join('')}
+                        ${shownPlans().map(p => priceLabel(p) ? `<li>${esc(p.per === '年' ? t('{plan}（{price}・1年ごとに自動更新）', {plan:p.label, price:priceLabel(p)}) : t('{plan}（{price}・1か月ごとに自動更新）', {plan:p.label, price:priceLabel(p)}))}</li>` : '').join('')}
+                        ${startOffer ? shownPlans().filter(p => p.per === '年' && introFor(p) && priceLabel(p)).map(p => `<li>${esc(t('年額プランを選んだ場合も、{trial}のあと{price}になります。', {trial:introShort(introFor(p)), price:priceLabel(p)}))}</li>`).join('') : ''}
                         ${startOffer ? `<li>${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:introCancelBy()}))}</li>` : ''}
                         <li>${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</li>
                         <li>${esc(t('解約しても、記録や設定はこの端末に残ります。'))}</li>
@@ -7804,13 +7821,12 @@ function viewSettings(){
         ${grp('plan', PLAN.name, `<div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
-                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
+                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
                   : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
                             : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
                 : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
             ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
-        ${loyalEligible() ? `<div class="note"><span>${esc(t('1年間ありがとうございます。年額プランを特別価格でご案内します。'))}</span><button class="btn sm" data-act="paywall">${esc(t('年額プラン（1年ありがとう価格）'))}</button></div>` : ''}
 `)}
         ${grp('help', 'v' + APP_VERSION, `<div class="set-group">
             <div class="set-title">${esc(t('アプリ'))}</div>
