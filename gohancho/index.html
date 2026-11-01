@@ -3034,9 +3034,11 @@ function shuffle(a){ a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math
 function decidedUndo(){
     if (!menuIsDecided()) return null;
     const prev = {menu: session.menu, mood: session.mood, useFridge: session.useFridge, salt: session.countSalt, twist: session.twist, dc: S.settings.dishCount, ns: S.settings.noSoup, pd: S.settings.pending ? Object.assign({}, S.settings.pending) : null};
-    return () => toast(t('決めた献立から入れ替えました。決めた献立は「作り方」にそのまま残っています'), false, () => {
+    // 戻すと出る料理は、決めた献立（作り直す前の今日の画面）。アレルギー・苦手を変えたあとは戻さない（menuUndo。第13回: ⚠ の付いた決めた献立が今日の画面に戻っていた）
+    // 決めた献立の記録と「作り方」はどちらにしても変えない
+    return () => toast(t('決めた献立から入れ替えました。決めた献立は「作り方」にそのまま残っています'), false, menuUndo(() => prev.menu && prev.menu.items.map(x => x.r), () => {
         S.settings.dishCount = prev.dc; if (prev.ns === undefined) delete S.settings.noSoup; else S.settings.noSoup = prev.ns; if (prev.pd) S.settings.pending = prev.pd; else delete S.settings.pending; save();
-        session.menu = prev.menu; session.mood = prev.mood; session.useFridge = prev.useFridge; session.countSalt = prev.salt; session.twist = prev.twist; keepDraft(); render(); });
+        session.menu = prev.menu; session.mood = prev.mood; session.useFridge = prev.useFridge; session.countSalt = prev.salt; session.twist = prev.twist; keepDraft(); render(); }));
 }
 // 決めた献立を出しているときに、献立をまるごと作り直す操作は、先に確かめる（作り直したら「元に戻す」を出す）。決めていなければ、そのまま行う
 function guardDecided(run){
@@ -9566,12 +9568,13 @@ function oneAdd(id){
         const ex = riceExtraOn(m.n) && extraSlots(m.n).join() === m.items.map(x => x.slot).join();   // ご飯ものの日に足した副菜は、品数に数えない（席の数は品数どおり）
         m.items.splice(at, 0, {slot, r}); m.n = ex ? m.n + 1 : m.items.length; m.adj = m.n !== menuCount();
         msg = t('「{name}」を入れて{n}品にしました', {name:r.name, n:m.n});
-        toast(msg, false, () => { m.n = prev.n; m.items = prev.items; m.adj = prev.adj; render(); }); closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
+        toast(msg, false, menuUndo(() => prev.items.map(x => x.r), () => { if (session.menu !== m) return; m.n = prev.n; m.items = prev.items; m.adj = prev.adj; keepDraft(); render(); })); closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;   // アレルギー・苦手を変えたあとは戻さない（S25・第13回）
     } else {
         // 品数をこれ以上増やせない: 同じ種類の最後の枠だけをかえる（カードに先に書いてある・元に戻せる）
         if (w.mode === 'none'){ toast(t('合う料理がありません')); return; }
         const old = w.old; m.items[w.at].r = r;
-        toast(t('「{old}」を「{name}」にかえました', {old: old ? old.name : '', name:r.name}), false, () => { m.items[w.at].r = old; render(); });
+        const it = m.items[w.at];
+        toast(t('「{old}」を「{name}」にかえました', {old: old ? old.name : '', name:r.name}), false, menuUndo(() => [old], () => { if (session.menu !== m || m.items[w.at] !== it || it.r !== r) return; it.r = old; keepDraft(); render(); }));   // アレルギー・苦手を変えたあとは戻さない（S25・第13回: 戻すと、足したアレルゲンの汁ものが戻っていた）
         closeSheet(); if (tab !== 'today') setTab('today'); else render(); return;
     }
     toast(msg); closeSheet(); if (tab !== 'today') setTab('today'); else render();
@@ -10210,12 +10213,12 @@ function laterIfDecided(what, keep, undo){
     keep();
     const r = dayRec(td); if (r && r.state === 'draft' && Array.isArray(r.items) && r.items.length) r.items = [];
     save(); render();
-    toast(tomorrowDecided() ? t('決めた献立はそのままです。明日の献立も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた献立はそのままです。{what}は明日の献立から変わります', {what}), false, () => {
+    toast(tomorrowDecided() ? t('決めた献立はそのままです。明日の献立も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた献立はそのままです。{what}は明日の献立から変わります', {what}), false, menuUndo(() => day0 && day0.state === 'draft' && Array.isArray(day0.items) ? day0.items.map(x => x && x.id && x.id !== 'none' ? byId(x.id) : null) : [], () => {   // 明日の下書きの料理も戻すので、アレルギー・苦手を変えたあとは戻さない（S25・第13回）
         if (day0){ dayObj(td); S.day[td] = day0; } else if (S.day) delete S.day[td];
         if (pd0) S.settings.pending = pd0; else delete S.settings.pending;
         if (undo) undo();
         save(); render();
-    });
+    }));
     return true;
 }
 // 暦にある日付の文字列か（isYmd は読み込みの中だけのものなので、ここでは別に持つ。以前は applyPending がここで ReferenceError になり、明日からの品数が効かなかった）
@@ -12533,7 +12536,8 @@ document.addEventListener('click', e => {
             if (!S.cook || S.cook.d !== TODAY) break;
             const prevCook = S.cook;
             S.cook = null; save(); reactVer++; setTab('today');
-            toast(t('決めた献立を取り消しました'), false, () => { S.cook = prevCook; session.cookIdx = 0; reactVer++; save(); setTab('cook'); }); break;
+            // 取り消したあとにアレルギー・苦手を変えたら、決めた献立には戻さない（menuUndo。第13回: ボタンは消えるが、中の処理も守る）。ほかの日の決めた献立には触れない
+            toast(t('決めた献立を取り消しました'), false, menuUndo(() => (prevCook.ids || []).map(byId), () => { if (S.cook && S.cook.d === TODAY) return; S.cook = prevCook; session.cookIdx = 0; reactVer++; save(); setTab('cook'); })); break;
         }
         case 'use-plan': {
             const p = weekToday(); if (!planUsable(p)){ render(); break; }   // 案内を出したあとにアレルギー・苦手を足したときは、当たる主菜を入れない
