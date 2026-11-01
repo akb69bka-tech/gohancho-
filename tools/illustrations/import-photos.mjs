@@ -7,6 +7,8 @@
  * 入力: フォルダの中（下のフォルダも見る）の <料理のID>.png / .jpg / .jpeg / .webp
  *       （ID は gohancho/img/dish/manifest.json の items のキー。オーナーの一覧の C 列「画像ID」、D 列「<ID>.png」）
  * 出力: gohancho/img/dish/<ID>.webp   … 真ん中を正方形に切って 512×512 の WebP（品質 0.8。40KB を超えたら品質を少し下げる）
+ *                                       大きさの変更は Lanczos（a=3）。元が小さい（150px ほど）ときは、拡大のあとに軽いアンシャープマスクをかける（ぼやけないように）
+ *       元が小さい絵は --quality 0.88 で取りこむとよい（くっきりした分、品質 0.8 ではざらつきやすい）
  *       gohancho/img/dish/t/<ID>.webp … 一覧用の 192×192 の WebP
  *       manifest.json の items[<ID>] を { file:'<ID>.webp', via:'photo', model:'gemini', date, thumb:'t/<ID>.webp', v } に
  * 入っていない ID は、いまの絵（手描きの SVG）のまま。何回かに分けて入れ替えられる。
@@ -77,18 +79,40 @@ const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, BG, QUALITY, M
     const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     const bmp = await createImageBitmap(new Blob([bytes]));   // 拡張子と中身が違っても（.png の中身が JPEG など）読める
     const s = Math.min(bmp.width, bmp.height), sx = (bmp.width - s) / 2, sy = (bmp.height - s) / 2;
+    // 元の正方形（生成りの地で埋めたもの）を、そのままの画素で取り出す（大きすぎる元は、先に半分ずつ 1024px 前後まで縮める）
+    let base = bmp, S0 = s, bx = sx, by = sy;
+    while (S0 / 2 >= 1024){ const h = document.createElement('canvas'); h.width = h.height = Math.round(S0 / 2); const hg = h.getContext('2d'); hg.imageSmoothingQuality = 'high'; hg.drawImage(base, bx, by, S0, S0, 0, 0, h.width, h.height); base = h; S0 = h.width; bx = by = 0; }
+    S0 = Math.round(S0);
+    const bc = document.createElement('canvas'); bc.width = bc.height = S0;
+    { const g = bc.getContext('2d'); g.fillStyle = BG; g.fillRect(0, 0, S0, S0); g.drawImage(base, bx, by, S0 === s ? s : S0, S0 === s ? s : S0, 0, 0, S0, S0); }
+    const srcPx = bc.getContext('2d').getImageData(0, 0, S0, S0).data;
+    // Lanczos（a=3）で大きさを変える。canvas の拡大（双一次）は、元が 150px ほどの絵を 512px にするとぼやけるため（オーナーの指示: 絵がボケている）
+    const lanczos = (src, sw, n) => {
+        const scale = n / sw, fs = Math.min(1, scale), sup = 3 / fs;
+        const kern = x => { x = Math.abs(x); if (x < 1e-7) return 1; if (x >= 3) return 0; const p = Math.PI * x; return 3 * Math.sin(p) * Math.sin(p / 3) / (p * p); };
+        const ws = []; for (let i = 0; i < n; i++){ const c = (i + .5) / scale - .5, lo = Math.max(0, Math.ceil(c - sup)), hi = Math.min(sw - 1, Math.floor(c + sup)); const w = []; let t = 0; for (let j = lo; j <= hi; j++){ const v = kern((j - c) * fs); w.push(v); t += v; } ws.push({lo, w: w.map(v => v / t)}); }
+        const tmp = new Float32Array(n * sw * 3);   // 横 → 縦の順
+        for (let y = 0; y < sw; y++) for (let x = 0; x < n; x++){ const {lo, w} = ws[x]; let r = 0, g = 0, b = 0; for (let k = 0; k < w.length; k++){ const o = (y * sw + lo + k) * 4; r += src[o] * w[k]; g += src[o + 1] * w[k]; b += src[o + 2] * w[k]; } const q = (y * n + x) * 3; tmp[q] = r; tmp[q + 1] = g; tmp[q + 2] = b; }
+        const out = new Float32Array(n * n * 3);
+        for (let y = 0; y < n; y++){ const {lo, w} = ws[y]; for (let x = 0; x < n; x++){ let r = 0, g = 0, b = 0; for (let k = 0; k < w.length; k++){ const q = ((lo + k) * n + x) * 3; r += tmp[q] * w[k]; g += tmp[q + 1] * w[k]; b += tmp[q + 2] * w[k]; } const o = (y * n + x) * 3; out[o] = r; out[o + 1] = g; out[o + 2] = b; } }
+        return out;
+    };
+    // 拡大したときだけ、軽いアンシャープマスク（ぼかしとの差を少し足す。差の小さい所＝地のざらつきは強めない）
+    const unsharp = (px, n, sigma, amount, thr) => {
+        const r = Math.ceil(sigma * 3), k = []; let t = 0; for (let i = -r; i <= r; i++){ const v = Math.exp(-i * i / (2 * sigma * sigma)); k.push(v); t += v; } for (let i = 0; i < k.length; i++) k[i] /= t;
+        const b1 = new Float32Array(px.length), bl = new Float32Array(px.length), cl = v => v < 0 ? 0 : v > n - 1 ? n - 1 : v;
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) for (let c = 0; c < 3; c++){ let a = 0; for (let i = -r; i <= r; i++) a += px[(y * n + cl(x + i)) * 3 + c] * k[i + r]; b1[(y * n + x) * 3 + c] = a; }
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) for (let c = 0; c < 3; c++){ let a = 0; for (let i = -r; i <= r; i++) a += b1[(cl(y + i) * n + x) * 3 + c] * k[i + r]; bl[(y * n + x) * 3 + c] = a; }
+        for (let i = 0; i < px.length; i++){ const d = px[i] - bl[i]; if (Math.abs(d) > thr) px[i] += d * amount; }
+        return px;
+    };
     const draw = (n) => {
+        let px = lanczos(srcPx, S0, n);
+        if (n > S0 * 1.05) px = unsharp(px, n, Math.min(2, .5 * n / S0), .9, 2);
         const c = document.createElement('canvas'); c.width = c.height = n;
-        const g = c.getContext('2d'); g.fillStyle = BG; g.fillRect(0, 0, n, n);
-        g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
-        // 大きく縮めるときは半分ずつ縮める（いきなり縮めると、細かいところがざらつく）
-        let src = bmp, ss = s, x = sx, y = sy;
-        while (ss / 2 >= n * 1.5){
-            const h = document.createElement('canvas'); h.width = h.height = Math.round(ss / 2);
-            const hg = h.getContext('2d'); hg.imageSmoothingQuality = 'high'; hg.drawImage(src, x, y, ss, ss, 0, 0, h.width, h.height);
-            src = h; ss = h.width; x = y = 0;
-        }
-        g.drawImage(src, x, y, ss, ss, 0, 0, n, n);
+        const g = c.getContext('2d'), im = g.createImageData(n, n);
+        for (let i = 0, j = 0; i < px.length; i += 3, j += 4){ im.data[j] = px[i]; im.data[j + 1] = px[i + 1]; im.data[j + 2] = px[i + 2]; im.data[j + 3] = 255; }   // Uint8ClampedArray なので 0〜255 に丸まる
+        g.putImageData(im, 0, 0);
         return c;
     };
     const enc = (c, q) => c.toDataURL('image/webp', q).split(',')[1];
