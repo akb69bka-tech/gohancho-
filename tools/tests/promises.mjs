@@ -10,7 +10,7 @@
 //  F 献立の組み立て（戸川）: F1 気分の時間条件が副菜・汁ものにも効く / F2 季節外れの行事料理を出さない / F3 汁けの多い主菜に汁ものを付けない / F4〜F8 食べる人の人数（わたし）と辛さ・買い物の重なり・10人まで / F9〜F12 かえるシート・午前4時・昨日の一膳・明日の一膳
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, ready, pickCountry } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const STRICT = process.env.STRICT !== '0';
 const b = await chromium.launch(LAUNCH);
@@ -191,7 +191,7 @@ const todayIds = p => p.evaluate(() => S.history.filter(h => h.d === TODAY).map(
     ok(!t7.first && t7.second, 'E3 タイマー中の最後の手順は、1回目は止めて知らせ、2回目で「できた」: ' + JSON.stringify(t7));
     // A8 国旗から国を選ぶと、先に聞く（やめると変わらない）
     await p.evaluate(() => openCountrySheet()); await p.waitForTimeout(200);
-    await p.click('[data-act="pick-country"][data-cc="US"]'); await p.waitForTimeout(200);
+    await pickCountry(p, 'US'); await p.waitForTimeout(200);
     const k8 = await p.evaluate(() => ({kind: sheet && sheet.kind, cc: S.settings.country}));
     await p.evaluate(() => document.querySelector('[data-act="sheet-close"]').click()); await p.waitForTimeout(200);
     ok(k8.kind === 'country-ok' && k8.cc === 'JP' && await p.evaluate(() => S.settings.country) === 'JP', 'E4 国を変える前に聞き、やめると変わらない: ' + JSON.stringify(k8));

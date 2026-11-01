@@ -36,4 +36,11 @@ async function ready(p, timeout = 30000) {
   try { await p.waitForFunction(() => typeof S !== 'undefined' && typeof session !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && document.readyState === 'complete' && !!document.querySelector('#view > *'), null, { timeout }); } catch (e) {}
   await p.waitForTimeout(100);
 }
-module.exports = { chromium, LAUNCH, BASE, SEED, seedScript, rngScript, seedFor, ready };
+// 国を選ぶ画面で、国を選んで決める（人の操作と同じ順: その国の地域のタブ → 一覧の国 → 下の決定ボタン）
+async function pickCountry(p, cc, timeout = 30000) {
+  await p.waitForSelector(`#sheet-root [data-act=cc-tab][data-ccs~="${cc}"]`, { timeout });
+  await p.click(`#sheet-root [data-act=cc-tab][data-ccs~="${cc}"]`);
+  await p.click(`#sheet-root .country-list [data-act=cc-choose][data-cc="${cc}"]`);
+  await p.click(`#sheet-root .ob-actions [data-act=pick-country][data-cc="${cc}"]`);
+}
+module.exports = { chromium, LAUNCH, BASE, SEED, seedScript, rngScript, seedFor, ready, pickCountry };

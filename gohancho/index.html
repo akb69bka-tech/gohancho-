@@ -751,6 +751,38 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-actions .btn{min-height:var(--tap-lg);font-size:var(--fs16)}
 .sheet-onboard .ob-actions,.sheet-country .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:var(--s12) 0 calc(var(--s16) + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .country[aria-busy="true"],.ob-actions [aria-busy="true"]{opacity:.6;cursor:progress}
+/* 下から出る画面の上の「閉じる」（スクロールしても上に見えている。44px 以上） */
+.sheet-bar{position:sticky;top:0;z-index:4;display:flex;justify-content:flex-end;align-items:center;padding:var(--s8) var(--s12) 0;background:var(--sheet-bg);box-shadow:0 8px 8px -4px var(--sheet-bg)}
+.sheet.has-bar>.sheet-pad{padding-top:var(--s4)}
+.sheet-x{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap-sm);min-width:var(--tap-sm);padding:0 var(--s16) 0 var(--s12);border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;white-space:nowrap;cursor:pointer}
+.sheet-x svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.sheet-x:active{transform:translateY(1px)}
+/* 料理の詳しい画面の「閉じる」: 絵の上の右上に出し、スクロールしても上に残す */
+.sheet-float{position:sticky;top:0;height:0;z-index:5}
+.sheet-float .close{position:absolute;top:var(--s12,12px);inset-inline-end:var(--s12,12px);border:0;border-radius:999px;min-height:var(--tap-sm,44px);padding:0 var(--s16,16px);font-size:var(--fs14,.875rem);font-weight:600;color:var(--ink);background:color-mix(in srgb,var(--surface) 86%,transparent);box-shadow:var(--shadow-1);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* はじめての設定と国を選ぶ画面は、シートの高さを決めておく（手順・タブを替えても、決定ボタンと見出しの位置が動かない） */
+.sheet.sheet-country,.sheet.sheet-onboard{height:94vh;height:min(94dvh,calc(var(--vvh,100vh) * .94))}
+@media (min-width:760px){.sheet.sheet-country,.sheet.sheet-onboard{height:90vh;height:min(90dvh,calc(var(--vvh,100vh) * .9))}}
+@media (max-height:500px) and (orientation:landscape){.sheet.sheet-country,.sheet.sheet-onboard{height:98vh;height:min(98dvh,calc(var(--vvh,100vh) * .98))}}
+.sheet-country>.sheet-body,.sheet-onboard>.sheet-body{flex:1 0 auto;padding-bottom:0}
+.sheet-onboard .ob-actions,.sheet-country .ob-actions{margin-top:auto}
+/* 国を選ぶ: 地域のタブ（2列×2段。押すと下の一覧が替わる）→ 一覧（シートの中で二重にスクロールしない）→ 下に固定した「選んだ国」と決定ボタン */
+.cc-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s8)}
+.cc-tab{position:relative;min-height:var(--tap);padding:var(--s8) var(--s12);border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.25;text-align:center;overflow-wrap:anywhere;cursor:pointer}
+.cc-tab[aria-selected="true"]{background:var(--leaf);border-color:var(--leaf);color:var(--leaf-ink)}
+.cc-tab.has-pick::after{content:"";position:absolute;top:6px;inset-inline-end:6px;width:8px;height:8px;border-radius:50%;background:var(--accent)}   /* 選んだ国があるタブに小さな印 */
+.sheet-country .country-list{max-height:none;overflow:visible;align-content:start}
+.sheet-country .country{position:relative;cursor:pointer}
+.sheet-country .country.on{border-color:var(--leaf);border-width:2px;padding:9px 11px;background:var(--leaf-soft)}
+.sheet-country .country.on::after{content:"";position:absolute;top:8px;inset-inline-end:10px;width:10px;height:6px;border-left:2.5px solid var(--leaf);border-bottom:2.5px solid var(--leaf);transform:rotate(-45deg)}
+.cc-foot{flex-direction:column;align-items:stretch}
+.cc-pick{display:flex;align-items:center;gap:var(--s12);min-height:48px;min-width:0}
+.cc-pick .fl{font-size:1.6rem;line-height:1}
+.cc-pick-tx{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+.cc-pick-tx b{font-size:var(--fs16);overflow-wrap:anywhere}
+.cc-pick-l,.cc-pick-s{font-size:var(--fs12);color:var(--muted);overflow-wrap:anywhere}
+.cc-pick .ob-pick-hint{margin:0}
+.cc-foot .btn[disabled]{opacity:.45;cursor:default;box-shadow:none}
 /* 献立が出た瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では出さない） */
 @media (prefers-reduced-motion:no-preference){
   .tray.ob-reveal .spot{animation:obIn .52s var(--ease) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
@@ -6036,6 +6068,13 @@ function renderSheet(){
     try{ renderSheetBody(); }
     catch(e){ try{ console.error('[sheet]', e); }catch(_){} sheet = null; try{ $('#sheet-root').innerHTML = ''; dlgClosed('sheet-root'); }catch(_){} try{ toast(t('うまく表示できませんでした。もう一度開くか、データを書き出してください')); }catch(_){} }
 }
+// 上の「閉じる」に使う操作（はじめての設定・国を決める前・使えない期間の購入画面は閉じられないので出さない。背景を押したとき・Esc と同じ決まり）
+function sheetCloseAct(){
+    if (!sheet || sheet.kind === 'onboard') return '';
+    if (sheet.kind === 'country' && (!S.settings.country || !S.onboarded)) return '';
+    if (sheet.kind === 'paywall' && isLocked()) return '';
+    return /^(wish|vote)-/.test(sheet.kind) ? 'wish-close' : 'sheet-close';
+}
 function renderSheetBody(){
     const root = $('#sheet-root');
     if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
@@ -6117,7 +6156,7 @@ function renderSheetBody(){
             ? `<div class="note"><span>${esc(storeState === 'fail' ? t('価格を読み込めませんでした。電波のあるところでもう一度お試しください') : t('App Store の価格を読み込んでいます…'))}</span>${storeState === 'fail' ? `<button class="btn sm" data-act="store-retry">${esc(t('もう一度読みこむ'))}</button>` : ''}</div>`
             : `<div class="pw-prices">${shownPlans().map(p => { const note = priceNote(p), intro = startOffer && introFor(p); return `<button class="pw-price${note?' best':''}${p.per === '月' && PLAN.trialMode === 'store' && !isSubscribed() ? ' cta' : ''}" data-act="buy" data-id="${esc(p.id)}"><span class="l">${esc(intro ? (p.per === '月' ? t('{trial}ではじめる', {trial:introShort(intro)}) : t('{plan}（{trial}）', {plan:p.label, trial:introShort(intro)})) : p.label)}</span>${priceLabel(p) ? `<span class="p">${esc(priceLabel(p))}</span>` : ''}${note?`<span class="n">${esc(note)}</span>`:''}</button>`; }).join('')}</div>`;
         body = `
-            <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2>${isLocked() ? '' : `<button class="btn ghost pw-x" data-act="sheet-close">${esc(t('閉じる'))}</button>`}</div>
+            <div class="pw-head"><span class="pw-badge">PLUS</span><h2>${esc(PLAN.name)}</h2></div>
             ${ready.length ? `<p class="pw-ready"><b>${esc(t('あなたの今日の献立ができています'))}</b><br>${esc(joinNames(ready))}</p>` : ''}
             ${reason && !(startOffer && sheet.reason === 'start') ? `<p class="pw-reason">${esc(reason)}</p>` : ''}
             ${startOffer ? `<p class="pw-offer">${startPrice ? esc(t('{trial}。そのあと{price}', {trial:'\u0001' + introShort() + '\u0002', price:'\u0003' + startPrice + '\u0004'})).replace(/\u0001/g, '<span class="ot">').replace(/\u0002/g, '</span>').replace(/\u0003/g, '<b class="op">').replace(/\u0004/g, '</b>') : `<b>${esc(introShort())}</b>`}</p>${trialTimelineHtml()}` : ''}
@@ -6149,7 +6188,9 @@ function renderSheetBody(){
     // 同じシート（同じ手順）を描き直すときは、シートの中のスクロール位置をそのままにする（条件シートで気分のチップを押すと、いちばん上に戻って押したチップが動いた）
     const keepY = old && old.classList.contains('sheet-' + sheet.kind) && renderSheetBody.key === sheet.step + '|' + sheet.d ? old.scrollTop : 0;
     renderSheetBody.key = sheet.step + '|' + sheet.d;
-    root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind}${sheetPop}" role="dialog" aria-modal="true"><div class="sheet-body sheet-pad">${body}</div></div></div>`;
+    // 閉じられるシートには、上に「閉じる」の帯を貼りつける（スクロールしても見える。下まで行かなくても戻れる）。閉じたあとの動きは、背景を押したときと同じ
+    const xAct = sheetCloseAct(), xBar = xAct ? `<div class="sheet-bar"><button type="button" class="sheet-x" data-act="${xAct}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span>${esc(t('閉じる'))}</span></button></div>` : '';
+    root.innerHTML = `<div class="modal" data-act="sheet-bg"><div class="sheet sheet-${sheet.kind}${sheetPop}${xBar ? ' has-bar' : ''}" role="dialog" aria-modal="true">${xBar}<div class="sheet-body sheet-pad">${body}</div></div></div>`;
     if (keepY){ const nw = root.querySelector('.sheet'); if (nw) nw.scrollTop = keepY; }
     // 下に貼りつく帯（はじめての設定の「上の一覧から…」・次へ など）があるシートは、スクロールの下の余白を帯の高さぶん取る（選択・読み上げで送った先が帯の裏に隠れない。第8回 R18）
     { const sh = root.querySelector('.sheet'), bar = sh && sh.querySelector('.ob-actions'); if (bar && getComputedStyle(bar).position === 'sticky') sh.style.scrollPaddingBottom = Math.ceil(bar.getBoundingClientRect().height + (parseFloat(getComputedStyle(sh).paddingBottom) || 0) + 8) + 'px'; }   // 帯はシートの下の余白（padding）の上に貼りつく
@@ -11640,7 +11681,8 @@ function renderModalBody(){
     $('#modal-root').innerHTML = `
     <div class="modal" data-act="modal-bg">
         <div class="sheet dsheet${modalPop}" data-id="${esc(r.id)}" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
-            <div class="${heroCls}">${hero}<button class="close" data-act="close">${esc(t('閉じる'))}</button></div>
+            <div class="sheet-float"><button class="close" data-act="close">${esc(t('閉じる'))}</button></div>
+            <div class="${heroCls}">${hero}</div>
             <div class="sheet-body">
                 <div class="dhead">
                     ${kind ? `<div class="dkind">${esc(kind)}</div>` : ''}
@@ -12165,6 +12207,8 @@ document.addEventListener('click', e => {
             closeSheet(); setCountry(cc).then(ok => { if (ok) render(); });
             break;
         }
+        case 'cc-tab': if (sheet && sheet.kind === 'country' && el.dataset.reg && sheet.tab !== el.dataset.reg){ sheet.tab = el.dataset.reg; ccUpdate('tab'); } break;   // 地域のタブ（国はまだ決めない）
+        case 'cc-choose': if (sheet && sheet.kind === 'country' && COUNTRIES.some(c => c.cc === el.dataset.cc)){ sheet.pick = el.dataset.cc; ccUpdate('pick'); } break;   // 国に印を付けるだけ。決めるのは下の決定ボタン
         case 'pick-country': {
             const cc = el.dataset.cc;
             const draft = sheet && sheet.kind === 'country' && sheet.ob;   // はじめての流れで「もどる」から来たときの、入力の途中
@@ -13498,34 +13542,73 @@ function stapleBlockedNote(){
     const o = currentStapleOpt();
     return o && o.k !== 'none' && stapleBlocked(o) ? t('主食の「{name}」は、アレルギー・苦手な食材に当たる（パンは乳・卵が入っていることも多い）ので、出していません', {name: stapleName(o)}) : '';
 }
-// 国の一覧。sel: 利用者が選んで保存した国（枠つき）。cand: 国を選ぶ前だけ、端末の言語・タイムゾーンから推した国（いちばん上に「候補」と出すだけで、選んだ状態にはしない）
-function countryListHtml(sel, cand, subOf){
-    const list = cand ? [...COUNTRIES].sort((a, b) => (b.cc === cand) - (a.cc === cand)) : COUNTRIES;
-    return `<div class="country-list">${list.map(c => `<button class="country${c.cc === sel ? ' on' : ''}" data-act="pick-country" data-cc="${c.cc}" ${c.cc === sel ? 'aria-current="true"' : ''}>
-            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${c.cc === cand ? `<span class="cand">${esc(t('候補'))}</span> ` : ''}${esc(subOf(c))}</span></button>`).join('')}</div>`;
+// 国を選ぶ画面: 地域のタブ → タブの中の一覧で国を選ぶ（押すと印が付くだけで、まだ決めない）→ 下に固定した決定ボタンで決める。
+// 国の一覧はシートの中で二重にスクロールさせない（以前は一覧だけ小窓でスクロールし、下の「案内／次へ」の帯が一覧の途中に重なって動いて見えた。押すとすぐ次の手順へ進んだ）。
+// 国は利用者が自分で選ぶ。端末から推した国（cand）は、そのタブの先頭に「候補」と出すだけで、選んだ状態にはしない
+const CC_REGIONS = [
+    {k:'asia', label: () => t('アジア'), ccs: ['JP', 'KR', 'CN', 'TW', 'TH', 'VN', 'PH', 'ID', 'IN']},
+    {k:'europe', label: () => t('ヨーロッパ'), ccs: ['GB', 'FR', 'DE', 'IT', 'ES', 'PL']},
+    {k:'americas', label: () => t('南北アメリカ'), ccs: ['US', 'MX', 'BR', 'PE']},
+    {k:'mea', label: () => t('中東・アフリカ'), ccs: ['TR', 'EG']},
+];
+function ccRegions(){   // 表にない国があれば最初のタブに足す（国が増えても選べなくならない）
+    const all = COUNTRIES.map(c => c.cc), known = new Set([].concat(...CC_REGIONS.map(r => r.ccs)));
+    return CC_REGIONS.map((r, i) => ({k: r.k, label: r.label(), ccs: r.ccs.filter(cc => all.includes(cc)).concat(i ? [] : all.filter(cc => !known.has(cc)))}));
+}
+function ccState(){
+    const sel = S.settings.country || '', cand = S.onboarded && sel ? '' : guessCountry();
+    if (sheet.pick === undefined) sheet.pick = sel;
+    const regs = ccRegions();
+    if (!regs.some(r => r.k === sheet.tab)) sheet.tab = (regs.find(r => r.ccs.includes(sheet.pick || cand)) || regs[0]).k;
+    return {sel, cand, pick: sheet.pick, tab: sheet.tab, regs, ob: !S.onboarded, subOf: c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c)};
+}
+function ccTabsHtml(st){
+    return `<div class="cc-tabs" role="tablist" aria-label="${esc(t('国・地域'))}">${st.regs.map(r => `<button type="button" class="cc-tab${r.ccs.includes(st.pick) ? ' has-pick' : ''}" role="tab" id="cc-tab-${r.k}" aria-controls="cc-panel" aria-selected="${r.k === st.tab}" data-act="cc-tab" data-reg="${r.k}" data-ccs="${r.ccs.join(' ')}"><span>${esc(r.label)}</span></button>`).join('')}</div>`;
+}
+function countryListHtml(st){
+    const reg = st.regs.find(r => r.k === st.tab) || st.regs[0];
+    const list = reg.ccs.map(cc => COUNTRIES.find(c => c.cc === cc)).filter(Boolean).sort((a, b) => (b.cc === st.cand) - (a.cc === st.cand));
+    return `<div class="country-list" id="cc-panel" role="tabpanel" aria-labelledby="cc-tab-${reg.k}">${list.map(c => `<button type="button" class="country${c.cc === st.pick ? ' on' : ''}" data-act="cc-choose" data-cc="${c.cc}" aria-pressed="${c.cc === st.pick}" ${c.cc === st.sel ? 'aria-current="true"' : ''}>
+            <span class="fl" aria-hidden="true">${c.flag}</span><span class="nm" lang="${esc(c.lang)}">${esc(c.nameLocal)}</span><span class="sub">${c.cc === st.cand ? `<span class="cand">${esc(t('候補'))}</span> ` : ''}${esc(st.subOf(c))}</span></button>`).join('')}</div>`;
+}
+// 下に固定した帯: 選んだ国（まだなら案内）と決定ボタン。ボタンは選ぶ前も同じ場所・同じ大きさで出しておく（押せないだけ）
+function ccFootHtml(st){
+    const c = st.pick && COUNTRIES.find(x => x.cc === st.pick), first = st.ob || !st.sel;
+    const btn = !c ? `<button type="button" class="btn primary wide" disabled>${esc(t('次へ'))}</button>`
+        : !first && c.cc === st.sel ? `<button type="button" class="btn ghost wide" data-act="sheet-close">${esc(t('閉じる'))}</button>`
+        : `<button type="button" class="btn primary wide" data-act="pick-country" data-cc="${esc(c.cc)}">${esc(first ? t('次へ') : t('{name}に変える', {name: countryLabel(c)}))}</button>`;
+    return `<div class="ob-actions cc-foot"><div class="cc-pick" aria-live="polite">${c
+        ? `<span class="fl" aria-hidden="true">${c.flag}</span><span class="cc-pick-tx"><span class="cc-pick-l">${esc(t('選んだ国・地域'))}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${st.subOf(c) ? `<span class="cc-pick-s">${esc(st.subOf(c))}</span>` : ''}</span>`
+        : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}</div>${btn}</div>`;
+}
+function ccPickerHtml(st){ return `${ccTabsHtml(st)}${countryListHtml(st)}${ccFootHtml(st)}`; }
+// 国を押した・タブを替えたとき: シートを描き直さずに、その部分だけ替える（スクロールの位置・押したボタンが動かない）
+function ccUpdate(what){
+    const root = $('#sheet-root .sheet-country'); if (!root || !sheet || sheet.kind !== 'country'){ renderSheet(); return; }
+    const st = ccState();
+    root.querySelectorAll('.cc-tab').forEach(b => { b.setAttribute('aria-selected', String(b.dataset.reg === st.tab)); b.classList.toggle('has-pick', (b.dataset.ccs || '').split(' ').includes(st.pick)); });
+    if (what === 'tab'){ const l = root.querySelector('.country-list'); if (l) l.outerHTML = countryListHtml(st); }
+    else root.querySelectorAll('.country-list .country').forEach(b => { const on = b.dataset.cc === st.pick; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+    const f = root.querySelector('.cc-foot'); if (f) f.outerHTML = ccFootHtml(st);
 }
 function countrySheetHtml(){
-    const sel = S.settings.country || '', cand = sel ? '' : guessCountry();
-    const subOf = c => c.nameLocal === countryLabel(c) ? '' : countryLabel(c);
-    if (!S.onboarded) return obCountryHtml(sel, cand, subOf);
+    const st = ccState();
+    if (st.ob) return obCountryHtml(st);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        ${countryListHtml(sel, cand, subOf)}
-        ${sel ? `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>` : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}`;
+        ${ccPickerHtml(st)}`;
 }
-// はじめての流れの1つめ（国と言語）。国は利用者が一覧から自分で選ぶまで進めない（端末から推した国は、いちばん上に候補として出すだけ）
-function obCountryHtml(sel, cand, subOf){
+// はじめての流れの1つめ（国と言語）。国は利用者が一覧から自分で選び、下の「次へ」で決めるまで進めない
+function obCountryHtml(st){
     const ui = S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG;
     const langs = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])];
     return `${obProgHtml(1, false)}
         <p class="ob-eyebrow">${esc(t('ご飯帖へようこそ'))}</p>
         <h2>${esc(t('国・地域を選んでください'))}</h2>
         <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        ${countryListHtml(sel, cand, subOf)}
         <label class="ob-lang"><span class="small">${esc(t('表示する言語 / Language'))}</span>
             <select data-ob="lang">${langs.map(([v, l]) => `<option value="${esc(v)}" lang="${esc(v)}" ${v === ui ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
-        <div class="ob-actions">${sel ? `<button class="btn primary wide" data-act="pick-country" data-cc="${esc(sel)}">${esc(t('次へ'))}</button>`
-            : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}</div>`;
+        ${ccPickerHtml(st)}`;
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
 function relocalize(){

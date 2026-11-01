@@ -2,14 +2,14 @@
 // はじめての設定の国と言語（Playwright。使い方: node tools/tests/first-country.mjs [http://localhost:8887/]）
 //  C1 端末の言語とタイムゾーンから、21か国のどれかを推す（guessCountry の表。通信・位置情報は使わない）
 //  C2 21か国それぞれの locale・タイムゾーンで開くと、国は選ばれていない（推した国は一覧のいちばん上に「候補」と出るだけ）。
-//     自分で一覧から選ぶまで進めない（はじめるボタンはない・閉じられない）。選ぶとその国になり、画面の言語は端末の言語（ja-JP は日本・日本語）
+//     自分で一覧から選ぶまで進めない（決定ボタンは押せない・閉じられない。国を押しただけでは決まらず、下に固定した決定ボタンで決める）。選ぶとその国になり、画面の言語は端末の言語（ja-JP は日本・日本語）
 //  C3 どの国にも当てはまらない端末（nl-NL / Europe/Amsterdam など）では、候補も出さずに一覧から選んでもらう
 //  C4 一度選んだ国は、再読み込み・言語の切りかえ・国のデータが読めなかったとき・書き出し・読みこみのあとも変わらない
 //  C5 古い版のデータ（国がない）・壊れた国の値では、日本にせず、国を選ぶ画面を出す（無料期間の始まりも変えない）
 //  C6 保存済みの設定がある人の国は、端末の言語・タイムゾーンが違っても変えない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, pickCountry } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
@@ -24,7 +24,7 @@ const openFirst = async (locale, tz) => {
     const ctx = await ctxOf(locale, tz, locale + tz);
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(locale + ': ' + e.message));
     await p.goto(URL_);
-    await p.waitForSelector('#sheet-root [data-act=pick-country]', { timeout: 30000 });
+    await p.waitForSelector('#sheet-root [data-act=cc-choose]', { timeout: 30000 });
     await p.waitForTimeout(150);
     return { p, ctx };
 };
@@ -105,7 +105,15 @@ for (const [cc, locale, tz, lang] of CASES){
     await p.keyboard.press('Escape'); await p.mouse.click(5, 5); await p.waitForTimeout(200);
     const s2 = await screen(p);
     ok(s2.sheet === 'country' && s2.country === '' && s2.stored === '', `${tag}: Esc・背景を押しても閉じず、国は決まらない: ` + JSON.stringify(s2));
-    await p.click(`#sheet-root .country-list [data-act=pick-country][data-cc="${cc}"]`);
+    // 国を押しただけでは決まらない（印が付くだけ）。決定ボタンは選ぶ前と同じ場所にあり、選ぶと押せるようになる
+    const foot = () => p.evaluate(() => { const b = document.querySelector('#sheet-root .ob-actions .btn'), r = b && b.getBoundingClientRect(); return r ? [Math.round(r.top), Math.round(r.height), b.disabled] : null; });
+    const f0 = await foot();
+    await p.click(`#sheet-root [data-act=cc-tab][data-ccs~="${cc}"]`);
+    await p.click(`#sheet-root .country-list [data-act=cc-choose][data-cc="${cc}"]`); await p.waitForTimeout(100);
+    const f1 = await foot(), s3 = await screen(p);
+    ok(s3.country === '' && s3.stored === '' && s3.sheet === 'country' && s3.btn === cc, `${tag}: 国を押すと印が付くだけで、まだ決まらない: ` + JSON.stringify(s3));
+    ok(f0 && f1 && f0[2] === true && f1[2] === false && f0[0] === f1[0] && f0[1] === f1[1] && f1[1] >= 44 && f1[0] + f1[1] <= 844, `${tag}: 決定ボタンは下に固定（選ぶ前後で動かない・44px 以上）: ` + JSON.stringify([f0, f1]));
+    await p.click(`#sheet-root .ob-actions [data-act=pick-country][data-cc="${cc}"]`);
     await p.waitForFunction(() => !!S.settings.country, null, { timeout: 30000 }).catch(() => {});
     await p.waitForTimeout(200);
     const a = await p.evaluate(() => ({ country: S.settings.country, ui: S.settings.uiLang, lang: LANG }));
@@ -121,7 +129,7 @@ if (!ONLY.length){
         const s = await screen(p);
         ok(!s.on.length && !s.cand.length && !s.btn && s.hint && s.flag !== '🇯🇵', `${tag}: 候補も出さず、一覧から選んでもらう: ` + JSON.stringify(s));
         ok(s.lang === 'en', `${tag}: 端末の言語の辞書がなければ英語: ` + s.lang);
-        await p.click('#sheet-root .country-list [data-act=pick-country][data-cc="DE"]');
+        await pickCountry(p, 'DE');
         await p.waitForFunction(() => !!S.settings.country, null, { timeout: 30000 }).catch(() => {});
         const a = await p.evaluate(() => ({ country: S.settings.country, lang: LANG }));
         ok(a.country === 'DE', `${tag}: 一覧で選んだ国になる: ` + JSON.stringify(a));
@@ -144,8 +152,8 @@ if (!ONLY.length){
     let blockPack = false;
     await ctx.route(/\/packs\/kr\.js/, r => blockPack ? r.abort() : r.continue());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(tag + ': ' + e.message));
-    await p.goto(URL_); await p.waitForSelector('#sheet-root [data-act=pick-country]', { timeout: 30000 });
-    await p.click('#sheet-root .country-list [data-act=pick-country][data-cc="KR"]');
+    await p.goto(URL_); await p.waitForSelector('#sheet-root [data-act=cc-choose]', { timeout: 30000 });
+    await pickCountry(p, 'KR');
     await finishOnboard(p);
     let a = await stateOf(p);
     ok(a.country === 'KR' && a.stored === 'KR' && a.onboarded && a.lang === 'en', `${tag}: 候補（US）でなく、選んだ韓国になる: ` + JSON.stringify(a));
@@ -191,7 +199,7 @@ if (!ONLY.length){
         ok(a.country === '' && a.stored === '' && a.sheet === 'country' && s.btn === '' && !s.on.length, `${tag}: 日本にせず、国を選ぶ画面を出す: ` + JSON.stringify([a, s]));
         await p.keyboard.press('Escape'); await p.waitForTimeout(150);
         ok((await stateOf(p)).sheet === 'country', `${tag}: 選ぶまで閉じない`);
-        await p.click('#sheet-root .country-list [data-act=pick-country][data-cc="FR"]');
+        await pickCountry(p, 'FR');
         await p.waitForFunction(() => S.settings.country === 'FR', null, { timeout: 30000 }).catch(() => {});
         await p.waitForTimeout(300);
         a = await stateOf(p);
@@ -226,7 +234,7 @@ if (!ONLY.length){
         await p.waitForTimeout(800);
         const a = await stateOf(p);
         ok(a.country === '' && a.stored !== 'JP' && a.sheet === 'country', `${tag}: 日本にせず、国を選ぶ画面を出す: ` + JSON.stringify(a));
-        await p.click('#sheet-root .country-list [data-act=pick-country][data-cc="IT"]');
+        await pickCountry(p, 'IT');
         await p.waitForFunction(() => S.settings.country === 'IT', null, { timeout: 30000 }).catch(() => {});
         await p.waitForFunction(() => (JSON.parse(localStorage.getItem('gohancho.v1') || '{}').settings || {}).country === 'IT', null, { timeout: 5000 }).catch(() => {});
         const a2 = await stateOf(p);

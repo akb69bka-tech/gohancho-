@@ -6,7 +6,7 @@
 //  D4  はじめての設定の「準備ができました」のお知らせが、見えていた料理の行・「かえる」などの押す場所に重ならない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
+const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready, pickCountry } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const ONLY = (process.env.ONLY || '').split(',').filter(Boolean);
 const want = k => !ONLY.length || ONLY.includes(k);
@@ -54,8 +54,7 @@ if (want('A09')){
 
 // はじめての設定（国→設定）を画面で進める。avoid: 苦手に入れる食材
 const onboard = async (p, cc, avoid = [], before) => {
-    await p.waitForSelector('#sheet-root [data-act=pick-country]', {timeout: 20000});
-    await p.click(`#sheet-root [data-act=pick-country][data-cc="${cc}"]`);
+    await pickCountry(p, cc, 20000);
     await p.waitForSelector('#sheet-root [data-act=ob-next], #sheet-root [data-act=ob-done]', {timeout: 20000});
     for (let i = 0; i < 6; i++){
         for (const v of avoid){ const c = p.locator(`#sheet-root [data-act=ob-avoid][data-v="${v}"]`); if (await c.count() && (await c.first().getAttribute('aria-pressed')) !== 'true'){ await c.first().click(); await p.waitForTimeout(80); } }

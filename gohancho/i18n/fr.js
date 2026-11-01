@@ -1641,5 +1641,10 @@ GOHAN_I18N('fr', {
     "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Les jours d'okayu, accompagnements et soupe tendres et légers. L'okayu cuit en {n} min environ",
     "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Aujourd'hui, c'était {dish}. Merci pour cette longue journée",
     "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Il est tard, merci pour tout. Le menu peut attendre que vous soyez reposé",
-    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Il est tard. Regardez le menu du jour tranquillement"
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Il est tard. Regardez le menu du jour tranquillement",
+    "アジア": "Asie",
+    "ヨーロッパ": "Europe",
+    "南北アメリカ": "Amériques",
+    "中東・アフリカ": "Moyen-Orient et Afrique",
+    "選んだ国・地域": "Votre choix"
 });
