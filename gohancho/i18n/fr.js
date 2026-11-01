@@ -1444,7 +1444,7 @@ GOHAN_I18N('fr', {
     "明日の献立はもう決めてあります。": "Le repas de demain est déjà choisi.",
     "明日の{time}": "demain à {time}",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} est déjà passé. Si vous commencez maintenant, vous aurez fini vers {t1} en cuisinant un plat après l'autre, vers {t2} en parallèle",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Les jours de bouillie de riz, nous proposons un zosui ou une bouillie de riz rapide, avec des accompagnements et une soupe tendres et légers",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Les jours de bouillie de riz, nous proposons une soupe de riz ou une bouillie de riz rapide, avec des accompagnements et une soupe tendres et légers",
     "おかゆの日なので{n}品にしました": "Jour de bouillie de riz : {n} plats",
     "プリモ（一皿目）": "Primo (premier plat)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Les pâtes ou le risotto font le primo, donc pas de soupe",

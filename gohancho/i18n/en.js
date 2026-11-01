@@ -1445,7 +1445,7 @@ GOHAN_I18N('en', {
     "明日の献立はもう決めてあります。": "Tomorrow's meal is already decided.",
     "明日の{time}": "tomorrow at {time}",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} has already passed. If you start now, cooking one dish at a time you'll be done around {t1}; working in parallel, around {t2}",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "On rice porridge day, we suggest quick zosui or rice porridge with soft, mild side dishes and soup",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "On rice porridge day, we suggest a quick rice soup or rice porridge with soft, mild side dishes and soup",
     "おかゆの日なので{n}品にしました": "Rice porridge day, so {n} dishes",
     "プリモ（一皿目）": "Primo (first course)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta or risotto is the primo, so no soup",

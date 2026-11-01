@@ -1444,7 +1444,7 @@ GOHAN_I18N('vi', {
     "明日の献立はもう決めてあります。": "Bữa ngày mai đã chọn xong.",
     "明日の{time}": "{time} ngày mai",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "Đã quá {eat}. Nếu bắt đầu bây giờ, nấu lần lượt từng món sẽ xong khoảng {t1}; nấu song song khoảng {t2}",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Vào ngày ăn cháo, chúng tôi gợi ý zosui hoặc cháo nấu nhanh, cùng món phụ và canh mềm, thanh nhẹ",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Vào ngày ăn cháo, chúng tôi gợi ý cháo nấu nhanh từ cơm hoặc cháo gạo, cùng món phụ và canh mềm, thanh nhẹ",
     "おかゆの日なので{n}品にしました": "Ngày ăn cháo: {n} món",
     "プリモ（一皿目）": "Primo (món đầu)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Mì Ý hoặc risotto là món primo nên không có canh",

@@ -1444,7 +1444,7 @@ GOHAN_I18N('tr', {
     "明日の献立はもう決めてあります。": "Yarının yemeği zaten belirlendi.",
     "明日の{time}": "yarın {time}",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} geçti. Şimdi başlarsan, yemekleri sırayla yaparak {t1} civarında, aynı anda yaparak {t2} civarında hazır olur",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Pirinç lapası gününde hızlı zosui ya da lapa ile yumuşak, hafif yan yemekler ve çorba öneriyoruz",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Pirinç lapası gününde hızlı bir pirinç çorbası ya da lapa ile yumuşak, hafif yan yemekler ve çorba öneriyoruz",
     "おかゆの日なので{n}品にしました": "Pirinç lapası günü: {n} yemek",
     "プリモ（一皿目）": "Primo (ilk yemek)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Makarna ya da risotto primo olduğu için çorba yok",
