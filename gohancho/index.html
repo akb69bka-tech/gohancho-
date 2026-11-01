@@ -301,7 +301,9 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .v-konomono{width:50%;border-radius:14%;box-shadow:inset 0 0 0 3px var(--porcelain),inset 0 0 0 4px var(--rim),0 5px 10px rgba(0,0,0,.45)}
 .v-konomono .food.photo{inset:12%;border-radius:8%}
 .v-konomono .food{inset:26%;border-radius:4px;background:repeating-linear-gradient(90deg,#e7c34a 0 7px,#d9af2a 7px 8px)}
-.spot.tsuke .v-konomono .food{background:repeating-linear-gradient(90deg,#b8452e 0 6px,#963222 6px 7px)}
+/* 絵（img/dish/fukujinzuke.svg・rakkyo.svg）が読めたとき（.photo）は、しま模様の背景で絵を隠さない（第11回 R29: background の一括指定が絵を上書きしていた）。絵がないときだけの代わりの色。らっきょうは福神漬けと見分けられる淡い色 */
+.spot.tsuke .v-konomono .food:not(.photo){background:repeating-linear-gradient(90deg,#b8452e 0 6px,#963222 6px 7px)}
+.spot.tsuke-rakkyo .v-konomono .food:not(.photo){background:repeating-linear-gradient(90deg,#efe3b8 0 6px,#d9c98f 6px 7px)}
 .spot-label{display:flex;flex-direction:column;gap:0;min-width:0;max-width:100%}
 .spot-label .slot{font-size:.75rem;letter-spacing:.2em;color:var(--tray-muted)}
 .spot-label .nm{font-family:var(--font-display);font-weight:700;font-size:.98rem;line-height:1.35;overflow-wrap:anywhere}
@@ -3492,7 +3494,8 @@ function suggestOrAny(slot, items, main){
     // 予備: その枠に入る料理なら何でも（主菜の枠は主菜・ごはんもの・麺。以前は主菜の枠だと必ず空になっていた）
     const any = moodPrefer(fitMain(poolFor(slot).filter(x => slotOf(x) === slot && x !== main && !used.has(x.id) && !isAvoided(x)), slot, main), slot);
     const shown = any.filter(x => !S.hidden.includes(x.id));
-    const pool = shown.length ? shown : any;
+    let pool = shown.length ? shown : any;
+    if (slot === '副菜') pool = sideBalance(pool, items.map(x => x.r).filter(r => r && r !== main), main);   // 予備から選ぶときも、いも・かぼちゃ・マカロニを重ねない（R31）
     return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
 }
 /* ---- 国の組み合わせ（主菜は中華・副菜は和食・汁ものは韓国のように、枠ごとに国を選ぶ。選ばない枠はいまの国） ---- */
@@ -3565,13 +3568,32 @@ const TSUKE_DEF = [
 let TSUKE_SIDES = null;   // 材料の読みとり（parseIng）は、食材の表がそろってから（はじめて使うとき）
 function tsukeSides(){ return TSUKE_SIDES = TSUKE_SIDES || TSUKE_DEF.map(x => ({id: x.id, name: x.name, type: '副菜', genre: '和', items: x.ings.map(parseIng), seas: x.seas, seasBase: x.seas, steps: [], tsuke: true})); }
 function tsukeName(x){ return x.id === 'rakkyo' ? t('らっきょう漬け') : t('福神漬け'); }
+// 付け合わせの名前そのもの（「福神漬け」「らっきょう漬け」と、画面の言葉の名前）。苦手・家族の⚠に名前で入れたときも当てる（第11回 R32: 材料の大根・らっきょうだけを見ていて、「福神漬け」と入れても出ていた）
+function tsukeNameItems(x){ const k = LANG + '|' + tsukeName(x); if (x._nmK !== k){ x._nm = [...new Set([x.name, tsukeName(x)])].map(nm => Object.assign(parseIng(nm), {label: nm})); x._nmK = k; } return x._nm; }
+function tsukeNameAvoided(x){
+    const its = tsukeNameItems(x);
+    if (allergyOn() && its.some(i => itemAvoided(i, allergyCtx()))) return true;
+    return effAvoid().length > 0 && its.some(i => itemAvoided(i, avoidCtx()));
+}
+// いまのお膳の香の物の席の付け合わせ（福神漬け・らっきょう漬け）。なければ []
+function shownTsuke(){
+    const m = session.menu, its = m ? m.items : cookItems(), main = its[0] && its[0].r, s = main ? riceSideOf(main, m ? m.n : its.length) : null;
+    return s && s !== 'konomono' ? [s] : [];
+}
 function tsukeSideOf(r){
     if (!r || PACK || r.pack || r.type !== 'ごはん' || !CURRY_RICE.has(r.base ? r.base.id : r.id)) return null;
     return tsukeSides().find(x => !isAvoidedCore(x)) || null;   // アレルギー・苦手に当たらないもの（当たるものは出さない）
 }
 // ご飯ものの主菜で、ご飯の席を埋めるものがない日に、副菜を1品足すか（品数 n はおかずの数）
-function riceExtraOn(n = menuCount()){ return n > 1 && n < 6 && riceSeat() > 0 && session.mood !== 'okayu' && session.mood !== 'bento' && !!composeOf(n) && composeOf(n).slots.includes('汁物'); }   // 汁ものなしの形（主菜と副菜）は、お弁当の形と見分けがつかなくなるので足さない
-function riceExtraMain(r, n = menuCount()){ return !!r && (r.type === 'ごはん' || r.type === '麺') && !(!PACK && konomonoMain(r)) && !tsukeSideOf(r) && riceExtraOn(n); }
+function riceExtraOn(n = menuCount()){ return n > 1 && n <= 6 && riceSeat() > 0 && session.mood !== 'okayu' && session.mood !== 'bento' && !!composeOf(n) && composeOf(n).slots.includes('汁物'); }   // 汁ものなしの形（主菜と副菜）は、お弁当の形と見分けがつかなくなるので足さない
+function riceExtraMain(r, n = menuCount()){ return !!r && (((r.type === 'ごはん' || r.type === '麺') && !(!PACK && konomonoMain(r)) && !tsukeSideOf(r)) || nabeMain(r)) && riceExtraOn(n); }
+// 汁けの多い主菜（鍋・シチュー・おでんなど。ご飯もの・麺は除く）: 汁ものの席が空くので、ご飯ものの日と同じく副菜を1品足し、空いた汁ものの席は出さない（第11回 R30: 6品の鍋の日が料理5品だった）
+function nabeMain(r){ return !!r && r.type !== 'ごはん' && r.type !== '麺' && soupyMain(r); }
+// その献立で、空いた汁ものの席を出さない（数えない）か: 汁けの多い主菜で、副菜を1品足した形のとき
+function soupSeatHidden(m){
+    const main = m && m.items[0] && m.items[0].r;
+    return nabeMain(main) && riceExtraOn(m.n) && extraSlots(m.n).join() === m.items.map(x => x.slot).join() && m.items.some(x => x.slot === '汁物' && !x.r);
+}
 // 副菜を1品足した日の枠（汁ものの前に副菜を1つ）
 function extraSlots(n){ const s = composeOf(n).slots.slice(), i = s.lastIndexOf('汁物'); s.splice(i >= 0 ? i : s.length, 0, '副菜'); return s; }
 // 保存・決定した献立の枠が、品数 n の形（足した副菜があってもよい）に合うか
@@ -3781,6 +3803,13 @@ function lazyTwist(){
         if (tab === 'today') scheduleRender();
     }, 30)));
     return null;
+}
+// 作ったばかりの案（まだ誰も見ていない）の主菜を1週間プランの主菜にしたとき、品数どおりの席になるよう、足す副菜を足す・外す（ご飯もの・麺・汁けの多い主菜の日）
+function fitExtraSide(m){
+    if (!m || !m.items[0] || !riceExtraOn(m.n)) return;
+    const j = m.items.map(x => x.slot).join(), ex = extraSlots(m.n), main = m.items[0].r;
+    if (riceExtraMain(main, m.n) && j === composeOf(m.n).slots.join()){ const r = suggestOrAny('副菜', m.items, main); if (r) m.items.splice(ex.lastIndexOf('副菜'), 0, {slot: '副菜', r}); }
+    else if (!riceExtraMain(main, m.n) && j === ex.join()) m.items.splice(ex.lastIndexOf('副菜'), 1);
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
 function setMenuMain(r){
@@ -6296,7 +6325,7 @@ function countValues(){ return riceSeat() ? [3, 4, 5, 6, 7] : [2, 3, 4, 5, 6]; }
 function menuSeats(m){
     if (!m) return 0;
     const main = m.items[0] && m.items[0].r, oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
-    return m.items.length + (oneBowl ? (riceSideOf(main, m.n) ? 1 : 0) : (stapleSpot() ? 1 : 0));
+    return m.items.length - (soupSeatHidden(m) ? 1 : 0) + (oneBowl ? (riceSideOf(main, m.n) ? 1 : 0) : (stapleSpot() ? 1 : 0));
 }
 // ご飯ものの主菜の日に、ご飯の席に置く物: お漬物（'konomono'）・付け合わせ（福神漬けなど）。ない日は null（麺・1品・おかゆの日、各国の料理）
 function riceSideOf(main, n){
@@ -6365,6 +6394,17 @@ function starchWanted(items, main){
     if (items.some(x => x.r && x.slot && x.r !== main && x.r.starch)) return false;   // slot のない項目は「かえる」前の料理（同じ料理を選ばないための印）なので数えない
     return poolFor('副菜').some(r => r.starch);
 }
+// いも・かぼちゃ・マカロニなど、おなかにたまる副菜（各国はパックの印 starch）。1つの献立に2つ以上並べない（第11回 R31: パスタの日に ポテトサラダ・粉ふきいも・かぼちゃサラダ・マカロニサラダ が重なった）
+const STARCHY_SIDE_RE = /じゃがいも|ジャガイモ|さつまいも|里芋|さといも|かぼちゃ|マカロニ|ペンネ|スパゲッティ|パスタ|長いも|長芋|山芋/;
+function starchySide(r){ return !!r && (r.pack ? !!r.starch : (r.items || []).some(i => !i.opt && STARCHY_SIDE_RE.test(String(i.name || '')))); }
+const carbMain = r => !!r && (r.type === 'ごはん' || r.type === '麺');
+const PASTA_SIDE_RE = /マカロニ|ペンネ|スパゲッティ|パスタ/;
+// 副菜の候補を、おなかにたまる副菜の重なりのないものに絞る（絞ると空になるときは絞らない）
+function sideBalance(ps, others, main){
+    const has = others.some(starchySide), pasta = isPasta(main);
+    const ok = ps.filter(r => !starchySide(r) || (!has && !(pasta && PASTA_SIDE_RE.test((r.items || []).map(i => i.name).join('|')))));
+    return ok.length ? ok : ps;
+}
 function suggestFor(slot, items, main){
     if (!main) return null;
     const used = items.map(x => x.r && x.r.id).filter(Boolean);
@@ -6379,11 +6419,13 @@ function suggestFor(slot, items, main){
     }
     if (slot === '副菜'){
         const base = moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜'), pre = easyPool('副菜', base);
-        const ps = unlike(pre.length ? pre : base);   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
+        const ps0 = unlike(pre.length ? pre : base);   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
+        // おなかにたまる副菜（いも・かぼちゃ・マカロニ）は1献立に1つまで。パスタの日はマカロニ・パスタの副菜を付けない（ほかに候補があるときだけ絞る。R31）
+        const ps = sideBalance(ps0, others, main);
         if (starchWanted(items, main)){   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
             const st = ps.filter(r => r.starch && (session.mood !== 'bento' || bentoFits(r))), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
         }
-        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(unlike(base), ctx) : null);
+        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(sideBalance(unlike(base), others, main), ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
@@ -6395,15 +6437,20 @@ function suggestFor(slot, items, main){
         r => r.type === '主菜' && diff(r) && r.min <= 50,
         r => r.type === '主菜' && diff(r),
         r => r.type === '主菜' && r.family !== main.family,
-        r => r.main && diff(r),
-        r => r.main,
+        r => r.main && !carbMain(r) && diff(r),   // 2品目の主菜に、ご飯もの・麺は先に出さない（カレーライス＋ハヤシライス、ナポリタン＋ツナとトマトのパスタのような重なり。R31）
+        r => r.main && !carbMain(r),
+        r => r.main && diff(r) && !(carbMain(main) && carbMain(r)),
+        r => r.main && !(carbMain(main) && carbMain(r)),
     ];
     // 最近作った料理は、どの段階にも作っていない主菜がないときだけ使う（段階の中でゆるめると、まだある主菜より先に最近の料理が出てしまう）
-    for (const strict of [true, false]) for (const ok of tiers){
+    const tryTiers = ts => { for (const strict of [true, false]) for (const ok of ts){
         const pool = easyPool('主菜', unlike(moodPrefer(poolFor('主菜').filter(r => free(r) && ok(r)), '主菜')));
         const r = pool.length ? pick(pool, Object.assign({}, ctx, {strict})) : null; if (r) return r;
-    }
-    return null;
+    } return null; };
+    const r1 = tryTiers(tiers.slice(0, 6)); if (r1) return r1;
+    // 「まるごと入れ替え」で、ご飯もの・麺でない主菜を一巡したときは、それをもう一巡する（ご飯もの・麺を2品目にしない。suggestMain と同じ考え方）
+    if (session.rejected.size){ poolFor('主菜').forEach(r => { if (r.main && !carbMain(r) && free(r)) session.rejected.delete(r.id); }); const r2 = tryTiers(tiers.slice(0, 6)); if (r2) return r2; }
+    return tryTiers(tiers.slice(6));
 }
 
 /* =========================================================
@@ -6811,6 +6858,9 @@ function algRecipeMap(r){
         const own = sk && itn ? (itn[i.name] || itn[i.key] || itn[bare(i.name)] || '') : '';
         const show = own || (sk && tr.length ? (same ? tr[sk - 1].name : (tr.find(x => algKind(id, x)) || {}).name) : '');
         (out[id] = out[id] || []).push({name: show || i.disp || i.name || i.label || i.key, kind: k, opt}); }));
+    // 付け合わせ（福神漬け・らっきょう漬け）は市販品。原材料は商品でちがう（福神漬けの具に ごま・しいたけ を数える商品もある）ので、
+    // 決まった材料での判定（上。当たれば出さない）はそのままに、どのアレルゲンにも「袋の表示を確認」（kind 4）を足す（第11回 S24。カレールウ・ハムと同じ扱い）
+    if (r.tsuke) ALG_ALL.forEach(id => (out[id] = out[id] || []).push({name: tsukeName(r), kind: 4, opt: false}));
     return out;
 }
 // 画面に出している（訳した）調味料の欄を、材料の形にしたもの。訳がない料理は空
@@ -6950,8 +7000,8 @@ function algLine(){
     const ids = algIds(); if (!ids.length) return '';
     const hit = shownDishes().filter(r => algSelectedHits(r, ids).length);
     if (hit.length) return t('アレルゲン（{list}）を使う料理が{n}品あります', {list: joinNames([...new Set([].concat(...hit.map(r => algSelectedHits(r, ids))))].map(algLabel)), n: hit.length});
-    const may = shownDishes().filter(r => algMayHits(r, ids).length).length;   // 入っていることがある加工品を使う料理があれば、言い切らずに確かめてもらう（どの加工品かも書く）
-    return may ? t('アレルゲン（{list}）を使う料理は入れていません。{n}品は、袋の表示を確かめてください（{items}）', {list: joinNames(ids.map(algLabel)), n: may, items: joinNames(algMayNames(shownDishes(), ids))})
+    const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r, ids).length).length;   // 入っていることがある加工品を使う料理があれば、言い切らずに確かめてもらう（どの加工品かも書く）。付け合わせ（福神漬けなど）も市販品なので数える
+    return may ? t('アレルゲン（{list}）を使う料理は入れていません。{n}品は、袋の表示を確かめてください（{items}）', {list: joinNames(ids.map(algLabel)), n: may, items: joinNames(algMayNames(mayRs, ids))})
         : t('アレルゲン（{list}）を使う料理は入れていません', {list: joinNames(ids.map(algLabel))});
 }
 // お膳の料理につける ⚠（選んだアレルゲン・今日食べる家族のアレルギーに当たる料理。決めた献立は黙って替えないので、残っている料理に印をつける）
@@ -7180,8 +7230,8 @@ function eatersLine(){
     if (!ms.some(m => m.avoid.length || m.mild)) return al;
     const names = joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))));
     // 合わない料理（アレルギー・苦手・辛さ）が残っているあいだは「食べられるお膳です」と言わない
-    const may = shownDishes().filter(r => algMayHits(r).length).length;   // 入っていることがある加工品（ワンタンの皮の卵など）を使う料理があるときも、言い切らない
-    const base = shownDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(shownDishes()))}) : t('{names}も食べられるお膳です', {names});
+    const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r).length).length;   // 入っていることがある加工品（ワンタンの皮の卵など）・市販の付け合わせ（福神漬けなど）を使うときも、言い切らない
+    const base = shownDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
     return al ? base + '\n' + al : base;
 }
 // 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理・唐辛子の調味料を大さじ1ほど使う料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる・キムチ）、0 = 辛くない
@@ -7351,6 +7401,7 @@ function isAvoided(r){ return isScarce(r) || isAvoidedCore(r); }
 // 苦手な食材・アレルギー・辛さで出さない料理（手に入りにくい食材は含めない）
 function isAvoidedCore(r){
     if (!r || !r.items) return false;
+    if (r.tsuke && tsukeNameAvoided(r)) return true;   // 付け合わせは、名前（福神漬け）でも苦手・アレルギーの登録に当てる
     if (mildOn() && spiceLevel(r) >= (allMild() ? 1 : 2)) return true;   // 辛いのが苦手な人がいるときは、とても辛い料理は出さない。今日食べる人が全員辛いのが苦手なら、辛みのある料理も出さない
     if (allergyOn() && r.items.some(i => itemAvoided(i, allergyCtx()))) return true;
     if (allergyOn() && seasItems(r).some(i => itemAvoided(i, allergyCtx()))) return true;   // 調味料の欄のアレルギーの食材（マヨネーズの卵・オイスターソースの貝など）も   // アレルギーの食材は、なくても可の材料でも使う料理を出さない（置き換え・抜くこともしない）
@@ -8166,10 +8217,20 @@ function shoppingList(){
     };
     if (weekSidesOn()) ensureWeekExtras();
     visiblePlanDays().forEach(x => { dayDishes(x).forEach(r => add(swappedRecipe(r))); });
+    // カレーの日の付け合わせ（福神漬け・らっきょう漬け）も、買う物として1行に（第11回 S24・R32: メモになく、家にないのに気づかなかった）。
+    // 市販品なので、アレルギーの設定がある日は、どのアレルゲンにも「袋の表示を確認」を付ける
+    visiblePlanDays().forEach(x => { const r = byId(x.id), s = shopTsukeOf(r); if (!s) return;
+        const k = keyOf(s.name); if (have.has(k)) return;
+        const e = map.get(k) || {key: k, label: tsukeName(s), qty: [], dishes: [], sec: 'other', alt: ''};
+        if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
+        mayIds.forEach(id => { if (!(e.may || (e.may = [])).includes(id)) e.may.push(id); });
+        map.set(k, e); });
     // 自分で足した品（献立とは関係なく、買い物メモにだけ入る。売り場は「その他」）
     shopExtras().forEach(x => { if (!map.has(x.k)) map.set(x.k, {key:x.k, label:x.label, qty:[], dishes:[], sec:'other', alt:'', extra:true}); });
     return [...map.values()].sort((a, b) => b.dishes.length - a.dishes.length || a.label.localeCompare(b.label, LANG));
 }
+// 1週間プランの日の主菜に付く付け合わせ（福神漬け・らっきょう漬け。1品の日・おかゆの日はなし）
+function shopTsukeOf(r){ const s = r && menuCount() > 1 ? riceSideOf(r, menuCount()) : null; return s && s !== 'konomono' ? s : null; }
 // 同じ単位の分量は足し合わせる（例: 1/3本＋1/3本 → 2/3本、150g＋200g → 350g）
 // 数え方の単数・複数（買い物メモで足すときに同じ単位とみなし、足したあとの数に合う形で出す）
 const UNIT_PAIRS = [['clove','cloves'],['can','cans'],['tin','tins'],['slice','slices'],['piece','pieces'],['head','heads'],['bunch','bunches'],['stalk','stalks'],['sprig','sprigs'],['rasher','rashers'],['fillet','fillets'],['sheet','sheets'],
@@ -8294,7 +8355,7 @@ function shoppingHtml(){
 function shopMayList(){
     if (!S.week) return [];
     const g = new Map();
-    visiblePlanDays().forEach(x => dayDishes(x).forEach(r0 => { const r = swappedRecipe(r0); if (r) algMayHits(r).forEach(h => h.names.forEach(n => { if (!g.has(n)) g.set(n, []); if (!g.get(n).includes(h.id)) g.get(n).push(h.id); })); }));
+    visiblePlanDays().forEach(x => dayDishes(x).concat(shopTsukeOf(byId(x.id)) || []).forEach(r0 => { const r = r0 && r0.tsuke ? r0 : swappedRecipe(r0); if (r) algMayHits(r).forEach(h => h.names.forEach(n => { if (!g.has(n)) g.set(n, []); if (!g.get(n).includes(h.id)) g.get(n).push(h.id); })); }));
     return [...g.entries()].map(([n, ids]) => n + (/^(ja|zh)/.test(LANG) ? '（' + joinNames(ids.map(algLabel)) + '）' : ' (' + joinNames(ids.map(algLabel)) + ')'));
 }
 // 冷蔵庫にあるので買い物メモに入れていない食材（買いすぎ・重複購入を防ぐため、省いた分を見せる）。期限を入れた食材は期限も添える
@@ -9372,7 +9433,8 @@ function ensureMenu(){
         newMenu();
         const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
             setMenuMain(p);
-            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });
+            fitExtraSide(session.menu);   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
         }   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に。気分（おかゆの日・魚の日など）に合わないプランの主菜は入れない
     }
 }
@@ -10136,7 +10198,8 @@ function viewToday(){
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
         const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
             setMenuMain(p);
-            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
+            if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });
+            fitExtraSide(session.menu);   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
         }
     }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft();
@@ -10186,7 +10249,7 @@ function viewToday(){
     const indexed = m.items.map((it, i) => ({it, i}));
     const mains = indexed.filter(x => x.it.slot === '主菜');
     const sides = indexed.filter(x => x.it.slot === '副菜');
-    const soups = indexed.filter(x => x.it.slot === '汁物');
+    const soupHide = soupSeatHidden(m), soups = indexed.filter(x => x.it.slot === '汁物' && !(soupHide && !x.it.r));   // 汁けの多い主菜で副菜を足した日は、空いた汁ものの席を出さない（R30）
     const st = stapleSpot();
     const stapleBtn = `<button class="swap" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">${esc(t('かえる'))}</button>`;
     const side = oneBowl ? riceSideOf(main, m.n) : null;   // お漬物は、ご飯ものの主菜で2品以上の日だけ（1品の日・麺・パスタの日・おかゆの日は付けない。R3・R4）。カレーの日は福神漬け・らっきょう漬け
@@ -10200,7 +10263,7 @@ function viewToday(){
     const riceFresh = !decided && !!session.trayPrev && !!riceKey && session.trayPrev.rice !== riceKey;
     const freshAt = idx => { const pv = session.trayPrev; if (decided || !pv) return false; const id = session.trayCur.ids[idx]; return id !== '-' && !pv.ids.includes(id); };   // 前の献立になかった料理だけ（品数が変わっても、残った料理には付けない）
     const riceSpot = oneBowl && side
-        ? `<div class="spot rice${side === 'konomono' ? '' : ' tsuke'}" style="--w:40%">${vesselHtml('konomono', null, false, riceAnim, sideId)}
+        ? `<div class="spot rice${side === 'konomono' ? '' : ' tsuke tsuke-' + side.id}" style="--w:40%">${vesselHtml('konomono', null, false, riceAnim, sideId)}
         <div class="spot-label"><span class="slot">${esc(t('香の物'))}</span><span class="nm">${esc(side === 'konomono' ? t('お漬物') : tsukeName(side))}</span>${(h => h ? `<span class="ex" style="--exn:0;--exl:0;--exa:0">${h}</span>` : '')(side === 'konomono' ? '' : algTagHtml(side))}</div></div>`
         : oneBowl || !st ? ''
         : !PACK && st.id === 'rice'
