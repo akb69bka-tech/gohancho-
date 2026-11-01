@@ -22,6 +22,8 @@ GOHAN_I18N('en', {
     "ご飯": "Rice",
     "白ご飯": "Steamed rice",
     "香の物": "Pickles",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Pickles",
     "和食": "Japanese",
     "洋食": "Western",

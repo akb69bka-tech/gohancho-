@@ -21,6 +21,8 @@ GOHAN_I18N('id', {
     "ご飯": "Nasi",
     "白ご飯": "Nasi putih",
     "香の物": "Acar",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Acar",
     "和食": "Jepang",
     "洋食": "Barat",

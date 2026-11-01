@@ -21,6 +21,8 @@ GOHAN_I18N('fr', {
     "ご飯": "Riz",
     "白ご飯": "Riz blanc",
     "香の物": "Pickles",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Légumes au vinaigre",
     "和食": "Japonais",
     "洋食": "Occidental",

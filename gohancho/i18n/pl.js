@@ -21,6 +21,8 @@ GOHAN_I18N('pl', {
     "ご飯": "Ryż",
     "白ご飯": "Biały ryż",
     "香の物": "Kiszonki",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Kiszonki",
     "和食": "Japońska",
     "洋食": "Zachodnia",

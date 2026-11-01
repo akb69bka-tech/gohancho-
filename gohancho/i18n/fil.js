@@ -21,6 +21,8 @@ GOHAN_I18N('fil', {
     "ご飯": "Kanin",
     "白ご飯": "Puting kanin",
     "香の物": "Atsara",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Atsara",
     "和食": "Japanese",
     "洋食": "Western",

@@ -21,6 +21,8 @@ GOHAN_I18N('tr', {
     "ご飯": "Pilav",
     "白ご飯": "Beyaz pilav",
     "香の物": "Turşu",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Turşu",
     "和食": "Japon",
     "洋食": "Batı",

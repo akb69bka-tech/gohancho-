@@ -364,7 +364,7 @@ for (const cc of ['JP', 'US', 'DE']){
             // 設定変更の照合（家族のアレルギーの追加・苦手・品薄・アレルゲンのどれも、ここを通る）
             noRepl(() => reconcileMenu()); left('照合・替わりなし ' + tag);
             // 決めた献立にあとから当たったときの「かえる」（替わりがない）
-            reset(); session.menu = null; ensureMenu(); const m2 = session.menu, it2 = m2.items[slot]; if (!it2.r) continue;
+            reset(); session.menu = null; ensureMenu(); const m2 = session.menu, it2 = m2.items[slot]; if (!it2 || !it2.r) continue;   // ご飯もの・麺の主菜の日は副菜が1品多いので、献立ごとに料理の数が変わることがある
             S.cook = {d: TODAY, ids: menuIds(), slots: m2.items.filter(x => x.r).map(x => x.slot)};
             if (!set(it2.r)) continue; save(); render();
             noRepl(() => click('reroll', { i: String(slot), ok: '1' }));   // ok: 決めた一膳でも確かめずに（案2の確かめるシートを飛ばす）

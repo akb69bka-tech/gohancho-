@@ -953,4 +953,27 @@ export default {
         it.push([400, () => oroshi(p, ox, oy, 24, 4) + negis(p, ox, oy - 12, 22, 6, 'ag', '#5fa03a') + katsuobushi(ox + 4, oy - 14, 20, 'ag', 8)]);
         return V.s + S.s + `<g ${V.above}>${Q.byDepth(it)}</g>` + Q.depthVeil(p, V, V.cy - 56, V.cy + V.iry) + V.shine(.5);
     },
+
+    // 福神漬け（カレーの日の香の物の席）: 錆の縁の小皿に、醤油と砂糖で赤茶に漬かった大根・なす・きゅうりの小さな刻みと、れんこんの薄切り（穴あき）、なた豆の薄切り
+    fukujinzuke: p => {
+        const D = Q.kozara(p, { base: '#efe6d2' }), o = D.o;
+        const chip = c => (x, y, r, i) => Q.cube(p, x, y, 10 + (i % 3), r, c, { top: Q.lg(p, [[0, lt(c, .3)], [.6, c], [1, dk(c, .18)]], 0, 0, 1, 1) });
+        const renkon = (x, y, r, i) => { const R = rng('fjr' + i); let h = ''; for (let k = 0; k < 6; k++){ const a = k / 6 * 6.283 + r / 57.3; h += `<ellipse cx="${f(Math.cos(a) * 5.4)}" cy="${f(Math.sin(a) * 5.4)}" rx="1.9" ry="1.6" fill="#6a2414" opacity=".85"/>`; }
+            return Q.cast(p, x, y + 3, 10, 3, .26) + flat(p, x, y, `<circle r="10.5" fill="${Q.rg(p, [[0, '#e48a52'], [.6, '#c8602e'], [1, '#9c4020']], .38, .32, .8)}" stroke="#7a3016" stroke-width=".6"/>${h}<circle r="1.6" fill="#6a2414" opacity=".85"/>` + `<path d="M-6,-5 Q-2,-8 3,-8" stroke="#fff" stroke-width="1" fill="none" opacity="${f(.4 + R() * .2)}"/>`, { sq: .62, th: 1.6, tc: '#7a3016' }); };
+        const nata = (x, y, r) => flat(p, x, y, `<path d="M-9,0 Q-8,-5 0,-5 Q8,-5 9,0 Q8,5 0,5 Q-8,5 -9,0Z" fill="#b8502a" stroke="#7a3016" stroke-width=".6" transform="rotate(${f(r)})"/><path d="M-6,-1 Q0,-3 6,-1" stroke="#e08a58" stroke-width="1" fill="none" transform="rotate(${f(r)})"/>`, { sq: .62, th: 1.4, tc: '#7a3016' });
+        const it = mound(o, 44, 26, 'fj', 70, 7.5, [
+            [5, chip('#b8452e')], [3, chip('#a33a24')], [2, chip('#8a4a28')], [2, renkon], [1, nata],
+        ]);
+        it.push([400, () => gl(86, o.cy - 14, 16, -8, .7) + gl(110, o.cy - 8, 10, -8, .55)]);
+        return D.s + pool(p, 100, oy(o, 112), 54, '#a8442a', 'fjp', { op: .35, gloss: false }) + Q.byDepth(it) + veil(p, D);
+    },
+    // らっきょう漬け（カレーの日の香の物の席。福神漬けがアレルギー・苦手に当たるとき）: 錆の縁の小皿に、甘酢で透けた白いらっきょうを7つ（先のとがった粒、うすい黄みの縦すじ）
+    rakkyo: p => {
+        const D = Q.kozara(p, { base: '#e8dcc0' }), o = D.o;
+        const bulb = (x, y, r, i) => `<g ${T(x, y, r * .25 - 45, 1.7)}>${Q.cast(p, 0, 6, 9, 3.4, .26)}<path d="M0,-13 Q3,-9 8,-3 Q11,5 6,9 Q0,12 -6,9 Q-11,5 -8,-3 Q-3,-9 0,-13Z" fill="${Q.rg(p, [[0, '#fffdf2'], [.55, '#f2ebc8'], [1, '#d8cc96']], .38, .3, .8)}" stroke="#b8a868" stroke-width=".7"/>` +
+            `<path d="M-3,-6 Q-5,2 -3,8 M3,-6 Q5,2 3,8" stroke="#d8cc96" stroke-width=".7" fill="none" opacity=".8"/><path d="M-4,-4 Q-5,0 -4,4" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".85"/></g>`;
+        const it = [[-30, -18], [4, -24], [34, -10], [-16, 6], [18, 8], [-30, 28], [8, 32]].map(([u, v], i) => { const [x, y] = P(o, u, v, hill(u, v, 60, 14) + 8); return [y, () => bulb(x, y, (i * 53) % 90, i)]; });
+        it.push([400, () => gl(84, o.cy - 14, 14, -8, .5)]);
+        return D.s + pool(p, 100, oy(o, 112), 54, '#e8d48a', 'rkp', { op: .5, gloss: false }) + Q.byDepth(it) + veil(p, D);
+    },
 };

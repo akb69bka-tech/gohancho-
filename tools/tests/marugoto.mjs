@@ -113,7 +113,7 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     await p.click(MID); await p.waitForTimeout(400);
     const c = await ids(p), r1 = await riceTx();
     const fr = await p.evaluate(() => ({fresh: [...document.querySelectorAll('#view .tray .spot.fresh [data-act=reroll]')].map(b => Number(b.dataset.i)), tags: document.querySelectorAll('#view .tray .fresh-tag').length, rice: !!document.querySelector('#view .tray .spot.rice.fresh')}));
-    const changed = a.map((x, i) => x !== c[i] && c[i] ? i : -1).filter(i => i >= 0);
+    const changed = c.map((x, i) => x && x !== a[i] ? i : -1).filter(i => i >= 0);   // ご飯ものの主菜で副菜を1品足した日は、料理の数が変わる（増えた枠も新しい料理）
     ok(c[0] && c[0] !== a[0], `${tag} 真ん中の丸で献立がまるごと変わる: ` + JSON.stringify([a, c]));
     const riceChanged = !!r1 && r0 !== r1;   // ご飯の席がなくなったとき（一品ものの主菜）は札を付ける席がない
     ok(JSON.stringify(fr.fresh.sort()) === JSON.stringify(changed.sort()) && fr.rice === riceChanged && fr.tags === changed.length + (riceChanged ? 1 : 0), `${tag} 変わった料理だけに「新」の札: ` + JSON.stringify([changed, fr, r0, r1]));
@@ -133,8 +133,9 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     ok(JSON.stringify(r.rows) === '[3,3]' && /6品/.test(r.lab), 'M1d 「6品」で上3・下3（ご飯も1品）・条件の表示も6品: ' + JSON.stringify(r));
     await ctx.close();
     const q = await open({dishCount: 6});
-    const r2 = await q.p.evaluate(() => ({dc: S.settings.dishCount, n: session.menu.n, rows: [...document.querySelectorAll('#view .tray .tg-row')].map(e => e.children.length), lab: document.querySelector('#view .p2-sv').textContent, rice: !!document.querySelector('#view .tray .spot.rice')}));
-    ok(r2.dc === 6 && (r2.rice ? JSON.stringify(r2.rows) === '[3,3]' && r2.n === 5 : r2.n === 6) && /6品/.test(r2.lab), 'M1d 前の版で「6品」にしていた人: 保存した値 6 は席の数として読む（6席・上3・下3）: ' + JSON.stringify(r2));
+    // ご飯もの・麺の主菜の日（ご飯の席がない）は、副菜を1品足して6席（n は 5 のまま、料理は6つ）
+    const r2 = await q.p.evaluate(() => ({dc: S.settings.dishCount, n: session.menu.n, items: session.menu.items.length, rows: [...document.querySelectorAll('#view .tray .tg-row')].map(e => e.children.length), lab: document.querySelector('#view .p2-sv').textContent, rice: !!document.querySelector('#view .tray .spot.rice')}));
+    ok(r2.dc === 6 && (r2.rice ? JSON.stringify(r2.rows) === '[3,3]' && r2.n === 5 : r2.n === 6 || (r2.n === 5 && r2.items === 6 && JSON.stringify(r2.rows) === '[3,3]')) && /6品/.test(r2.lab), 'M1d 前の版で「6品」にしていた人: 保存した値 6 は席の数として読む（6席・上3・下3）: ' + JSON.stringify(r2));
     await q.ctx.close();
 }
 

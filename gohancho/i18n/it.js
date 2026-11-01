@@ -21,6 +21,8 @@ GOHAN_I18N('it', {
     "ご飯": "Riso",
     "白ご飯": "Riso bianco",
     "香の物": "Sottaceti",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Sottaceti",
     "和食": "Giapponese",
     "洋食": "Occidentale",

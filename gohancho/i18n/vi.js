@@ -1012,6 +1012,8 @@ GOHAN_I18N('vi', {
     "「{name}」を使う料理は見つかっていません。": "Không tìm thấy món nào dùng \"{name}\".",
     "{list} は調味料なので、登録しなくても「ある」ものとして数えます。": "Gia vị ({list}) không cần thêm vào. Luôn được tính là đã có sẵn trong nhà.",
     "香の物": "Đồ muối chua",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "香りが加わって、副菜が一品らしくなります": "Thêm hương thơm, làm món phụ giống một món thực thụ",
     "魚": "Cá",
     "魚の日": "Tối ăn cá",

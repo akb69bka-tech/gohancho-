@@ -14576,6 +14576,22 @@
       "date": "2026-10-31",
       "thumb": "t/nirabuta.webp",
       "v": "4eb958cf"
+    },
+    "fukujinzuke": {
+      "file": "fukujinzuke.svg",
+      "via": "svg",
+      "model": "hand-drawn-3q",
+      "date": "2026-11-01",
+      "thumb": "t/fukujinzuke.webp",
+      "v": "58dfe105"
+    },
+    "rakkyo": {
+      "file": "rakkyo.svg",
+      "via": "svg",
+      "model": "hand-drawn-3q",
+      "date": "2026-11-01",
+      "thumb": "t/rakkyo.webp",
+      "v": "2ff170a9"
     }
   }
 }

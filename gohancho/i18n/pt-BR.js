@@ -21,6 +21,8 @@ GOHAN_I18N('pt-BR', {
     "ご飯": "Arroz",
     "白ご飯": "Arroz branco",
     "香の物": "Conservas",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Conservas",
     "和食": "Japonesa",
     "洋食": "Ocidental",

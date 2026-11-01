@@ -21,6 +21,8 @@ GOHAN_I18N('de', {
     "ご飯": "Reis",
     "白ご飯": "Gekochter Reis",
     "香の物": "Eingelegtes",
+    "福神漬け": "Fukujinzuke",
+    "らっきょう漬け": "Rakkyo",
     "お漬物": "Eingelegtes",
     "和食": "Japanisch",
     "洋食": "Westlich",
