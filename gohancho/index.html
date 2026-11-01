@@ -606,6 +606,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .bar i{display:block;height:100%;background:var(--leaf);border-radius:999px}
 .title-foot{display:flex;justify-content:space-between;gap:8px;font-size:.76rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .toast.praise{border-radius:14px;padding:.8rem 1.1rem;font-family:var(--font-display);font-weight:700;font-size:.95rem;line-height:1.5}
+@media (max-width:299px){.toast,.toast.praise{left:8px;right:8px;max-width:calc(100% - 16px);padding:.375rem .75rem;font-size:14px;line-height:1.4}}   /* とても狭い画面（幅195px など）: お知らせを低く（第11回 D4: 4行の高さで料理名・かえるの上に出ていた） */
 
 /* お膳: 品数に合わせて 奥(主菜)・中(副菜)・手前(ご飯と汁) の3段に並べる */
 .tray{display:flex;flex-direction:column;gap:14px}
@@ -1169,6 +1170,7 @@ body.on-today .greet{display:block;-webkit-line-clamp:unset;line-clamp:none;over
 .req-btn .wsh-ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
 .req-btn .rq-n{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:.75rem;line-height:20px;text-align:center}
 .req-btn .rq1{flex:none}.req-btn .rq2{flex:0 1 auto;min-width:0;font-size:.8125rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.on-today.tray-tight4 header.top > div:not(.seal){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 第11回 R20: とても狭い画面の最後の詰め。日付・アプリの名前の行を畳む（読み上げには残す） */
 body.on-today.bar-static .greet-tx,body.on-today.greet-1 .greet-tx{-webkit-line-clamp:1;line-clamp:1}body.on-today.greet-0 .greet-tx{display:none}   /* 詰めてもお膳が入りきらない画面（帯をお膳の下に置くとき）では、あいさつは1行に */
 html[lang="ja"] .greet-tx,html[lang^="zh"] .greet-tx{word-break:auto-phrase}html[lang="ko"] .greet-tx{word-break:keep-all}
 body.on-today .greet .stage-line{display:block}   /* 段の上の一言は行いっぱいの箱にする（文の長さが変わっても、右から書く言語で箱の端が動かない） */
@@ -3110,14 +3112,55 @@ function toastPlace(box, prev){
     // 押して画面（タブ・段）が切りかわった直後。シートの中で押してシートが閉じたとき（はじめての設定の「献立を見る」など）も、押したものは画面に残っていないので同じ（第4回 D4: 「準備ができました」が料理の行・かえるに重なった）
     const tapped = performance.now() - TOAST_TAP.at < 3000, fresh = tapped && (TOAST_TAP.tapView !== TOAST_TAP.view || TOAST_TAP.layer);
     // 新しい画面へ送る: 見えていた文・押す場所をお知らせの上に送り、後ろに棚を敷く（一度に送るのは、お知らせの高さ＋少しまで）
+    // 送った先で、いまは下の固定の帯の裏にある文・押す場所が出てきて、お知らせ（と棚）の裏に入ることがある（第11回 D4: 決めた直後の「買い物メモを見る」）。
+    // 送ったあとにお知らせと棚の裏に来るもの（送る前の場所で T.top-8+need 〜 帯の上端+need）も、お知らせの上に出るまで送る量を増やす
+    const below = need => { let m = need;
+        const t = T.top - 8 + need, b = Math.max(T.bottom, floor) + need;
+        for (const e of document.body.querySelectorAll(TOAST_SEE)){
+            if (e.closest('#toast-root, nav.tabs, .actionbar, .cook-ctl, #modal-root, #sheet-root, #timer-float')) continue;
+            const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.bottom <= t + 1 || r.top >= b - 1 || r.right <= T.left + 1 || r.left >= T.right - 1) continue;
+            if (r.height > 160 || getComputedStyle(e).visibility === 'hidden') continue;   // 大きな枠は見ない（文の行・ボタン・小さな枠だけ）
+            m = Math.max(m, r.bottom - T.top + 6);
+        }
+        return m; };
     const lift = () => {
-        const need = Math.ceil(Math.min(low.need, Math.max(T.bottom, floor) - T.top + 6 + 120));
+        const cap = Math.max(T.bottom, floor) - T.top + 6 + 120;
+        // 画面の下に貼りついている（sticky の）決定の帯は、送りすぎると貼りつきが外れて、帯ごとお知らせの裏に上がってくる。増やすのは、帯が貼りついたままの量まで
+        let stick = Infinity;
+        for (const ab of document.querySelectorAll('.actionbar')){ const r = ab.getBoundingClientRect(); if (!r.height || r.top < floor - 1 || getComputedStyle(ab).position !== 'sticky') continue;
+            const pos = ab.style.position; ab.style.position = 'static'; const nat = ab.getBoundingClientRect().top; ab.style.position = pos; stick = Math.min(stick, nat - floor); }
+        let want = Math.min(low.need, cap);
+        for (let k = 0; k < 4; k++){ const m = Math.min(below(want), cap, Math.max(want, stick)); if (m <= want + .5) break; want = m; }
+        const need = Math.ceil(want);
         root.style.setProperty('--toast-shelf-top', Math.round(T.top - 8) + 'px'); root.style.setProperty('--toast-shelf-h', Math.round(Math.max(T.bottom, floor) - T.top + 8) + 'px'); box.classList.add('docked');
         const room = document.documentElement.scrollHeight - innerHeight - scrollY;
         if (room < need){ const cur = parseFloat(v.style.getPropertyValue('--toast-room')) || 0; v.style.setProperty('--toast-room', Math.ceil(cur + need - room) + 'px'); }
         window.scrollBy({top: need, behavior: 'instant'});
     };
-    if (fresh){ lift(); return; }   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
+    // お知らせ（と棚）の裏に入っている押す場所・料理名・札を数える → [押す場所, 料理名・札・買い物メモ, 文]。お膳の下に置いた（static の）決定の帯のボタンも数える（第11回 D4）
+    const cover = (R, b) => { const c = [0, 0, 0];
+        for (const e of document.body.querySelectorAll(TOAST_SEE + ', .actionbar button')){
+            if (e.closest('#toast-root, nav.tabs, .cook-ctl, #modal-root, #sheet-root, #timer-float')) continue;
+            const ab = e.closest('.actionbar'); if (ab && getComputedStyle(ab).position !== 'static') continue;
+            const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.bottom <= R.top + 1 || r.top >= b - 1 || r.right <= R.left + 1 || r.left >= R.right - 1 || r.top >= floor - 1) continue;
+            const x = (Math.max(r.left, R.left) + Math.min(r.right, R.right)) / 2, y = (Math.max(r.top, R.top) + Math.min(r.bottom, b, floor)) / 2;
+            const top = document.elementsFromPoint(x, y).find(z => !root.contains(z));
+            if (!top || !(top === e || e.contains(top) || top.contains(e))) continue;   // 下の固定の帯・上の端の裏に隠れているもの（見えていない）は数えない
+            c[2]++; if (e.matches('button, a[href], input, select, textarea, summary, [data-act], [role=button], .chip')) c[0]++; if (e.matches('.spot .nm, .spot .alg-tag, .p2-link')) c[1]++;
+        }
+        return c; };
+    const worse = (x, y) => x[0] !== y[0] ? x[0] > y[0] : x[1] !== y[1] ? x[1] > y[1] : x[2] > y[2];
+    if (fresh){   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
+        const y0 = scrollY; lift();
+        // とても狭い画面で、送っても、お知らせの裏に押す場所・料理名が残るとき（幅195px など、お膳が画面より高い）: 送らずに、画面の上から下まで、押す場所・料理名にかからない高さを探す
+        if (innerWidth >= 300) return;   // とても狭い画面（お知らせを低くする幅。CSS の max-width:299px）だけ
+        const L = rectOf(), lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
+        const y1 = scrollY; window.scrollTo({top: y0, behavior: 'instant'}); box.classList.remove('docked'); box.classList.add('at-top');
+        const h = box.offsetHeight; let best = null;
+        for (let y = 8; y + h <= floor - 8; y += 6){ box.style.top = y + 'px'; const R = rectOf(), c = cover(R, R.bottom + 4); if (!best || worse(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
+        if (best && !best.c[0] && !best.c[1]){ box.style.top = best.y + 'px'; return; }   // 押す場所・料理名にかからない高さがあれば、そこに出す（その中で、かかる文のいちばん少ない高さ）
+        box.style.removeProperty('top'); box.classList.remove('at-top'); box.classList.add('docked'); window.scrollTo({top: y1, behavior: 'instant'}); return;
+    }
     // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
     // ① 押した指のまわり（続けて押すところ）にかからない ② 隠す押す場所が少ない ③ 隠す文が少ない 順に選ぶ（同じならいつもの場所）。隠れた押す場所も、お知らせの文の上から押せる
     const judge = (R, b) => { const sc = scan({l: R.left, r: R.right, t: R.top, b}); return [tapped && TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < b + 40 ? 1 : 0, sc.taps, sc.n]; };
@@ -4417,7 +4460,7 @@ function fitTray(){
     // 同じ画面の大きさ・同じ並び（席の数）なら、前に決めた大きさ（器・名前の行数・詰め方）をそのまま使う。
     // 「かえる」・主食・まるごと入れ替えで料理が変わっても、お膳の大きさ・ほかの料理の位置を動かさない。新しい名前が入らないときだけ決め直す
     const viewEl = document.getElementById('view'), rowsEl = [...tr.querySelectorAll('.tg-row')];
-    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0');   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
+    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0');   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
     // 見出し「今日の献立」は1行に（言語で長さが違っても見出しの高さを同じにして、お膳の大きさが言語で変わらないように）。入らない言葉は 18px まで小さくする。それでも入らなければ2行
     { const h2 = document.querySelector('#view .today-head.p2-head h2'); if (h2){ h2.style.removeProperty('font-size'); let fs = parseFloat(getComputedStyle(h2).fontSize);
         const one = () => { const lh = parseFloat(getComputedStyle(h2).lineHeight) || fs * 1.3; return h2.getBoundingClientRect().height < lh * 1.5 && h2.scrollWidth <= h2.clientWidth + 1; };
@@ -4429,7 +4472,7 @@ function fitTray(){
     const prev = TRAY_FIT.base === base && TRAY_FIT.state ? TRAY_FIT.state : null;   // 同じ並びで前に決めた大きさ（言語を変えたときなど、決め直しても器を大きくしない・名前の欄を低くしない）
     if (TRAY_FIT.key === key && TRAY_FIT.state){
         const st = TRAY_FIT.state;
-        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); tr.classList.toggle('noslot', !!st.noslot); tr.classList.toggle('algfit', !!st.algfit); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3);
+        tr.classList.toggle('tight', st.tight); tr.classList.toggle('tight2', st.tight2); tr.classList.toggle('noslot', !!st.noslot); tr.classList.toggle('algfit', !!st.algfit); viewEl.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('tray-tight', st.tight2 && (!st.noFit || st.row0)); document.body.classList.toggle('bar-static', st.noFit); document.body.classList.toggle('greet-1', !!st.greet1); document.body.classList.toggle('greet-0', !!st.greet0); document.body.classList.toggle('tray-tight3', !!st.tight3); document.body.classList.toggle('tray-tight4', !!st.tight4);
         if (st.vs) tr.style.setProperty('--vs', st.vs); else tr.style.removeProperty('--vs');
         rowsEl.forEach((r, k) => { if (st.nml[k]) r.style.setProperty('--nml', st.nml[k]); else r.style.removeProperty('--nml'); });
         let ok = true;
@@ -4447,7 +4490,7 @@ function fitTray(){
             fixSwapWord(tr); return;
         }
     }
-    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     const fixNames = (root = tr) => { let over = false;
         root.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
@@ -4526,16 +4569,17 @@ function fitTray(){
         fixText();
         // 上の段（器・名前・かえる）が最初の画面に入らないとき（幅195px・文字もっと大きい など）: 見出しを詰め、器を小さくした形で上の段が入るなら、そちらにする（下の段・帯はスクロールの先）
         let fl0 = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl0) fl0 = r.top; });   // 帯をお膳の下に置いたあとの下端（下のタブの上端）
-        const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph)')].map(e => e.getBoundingClientRect().bottom)) <= fl0 + .5;
+        const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag')].map(e => e.getBoundingClientRect().bottom)) <= fl0 + .5;
         if (row0 && !rowIn()){
             tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight'); setVs(Math.min(vs0, 60));
             if (!rowIn()){ tr.classList.add('tight'); fixText(); }
             if (!rowIn()) document.body.classList.add('tray-tight3');   // 見出しのまわりの余白もいちばん小さく
             if (!rowIn()){ tr.classList.add('noslot'); fixText(); }   // 種類の字も出さない
+            if (!rowIn()){ document.body.classList.add('tray-tight4'); fixText(); }   // 第11回 R20（幅195px・文字大・家族リクエストあり）: 上の端の日付とアプリの名前の行も畳む（印・国・設定の行は残す。名前は読み上げには残る）。上の段の料理・札・かえるを最初の画面に、タブの裏に入れない
             if (rowIn()) tight = tr.classList.contains('tight');
-            else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); } } }
+            else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
-    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
     fixSwapWord(tr);
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
@@ -6280,7 +6324,7 @@ function renderSheetBody(){
                     </div>
                     <p class="small"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>
                 </section>`
-            : `<p class="pw-free">${esc(t('いまは無料公開中です。すべての機能を、そのままお使いいただけます。'))}</p>`}`;
+            : `<p class="pw-free">${esc(t('わが家のご飯帖は無料です。すべての機能を、そのままお使いいただけます。'))}</p>`}`;
     }
     const old = root.querySelector('.sheet'), sheetPop = old ? '' : ' pop';   // もう開いている画面を描き直すときは、弾ませない
     // 同じシート（同じ手順）を描き直すときは、シートの中のスクロール位置をそのままにする（条件シートで気分のチップを押すと、いちばん上に戻って押したチップが動いた）
@@ -8024,7 +8068,7 @@ function viewSettings(){
                 ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
                   : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
                             : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
-                : `<div class="note"><span>${esc(t('いまは無料公開中です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
+                : `<div class="note"><span>${esc(t('わが家のご飯帖は無料です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
             ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
 `)}
