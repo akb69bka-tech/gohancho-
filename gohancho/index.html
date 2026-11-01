@@ -268,7 +268,7 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 }
 .spot{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;text-align:center}
 .vessel{position:relative;aspect-ratio:1;border-radius:50%;border:0;padding:0;background:var(--porcelain);transition:transform .2s ease;max-width:100%}
-.vessel:hover{transform:translateY(-2px) scale(1.02)}
+@media (hover:hover){.vessel:hover{transform:translateY(-2px) scale(1.02)}}   /* 指で触れたあと拡大のまま残ると絵がぼやけるので、マウスのときだけ */
 .vessel .food{position:absolute;border-radius:47% 53% 50% 50%/55% 45% 55% 45%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.4),transparent 42%),var(--food,#a8652b);background-size:cover;background-position:center}
 .vessel .food.photo{border-radius:50%;background-image:var(--img);background-size:cover;background-position:center;background-repeat:no-repeat}
 /* ChatGPT で作った絵: 器ごと描いてあるので、アプリの器は消して絵だけを出す */
@@ -1073,6 +1073,20 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2.tight .spot .swap{grid-row:3}
 .tray.grid2.tight .spot .swap[data-act="soup-add"]::before,.tray.grid2.tight .spot .swap.tray-add::before{content:"+"}
 .tray.grid2.tight .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
+/* 絵を大きく（オーナーの指示: 絵が小さく見にくい。特に6品の日）: 器は列の幅いっぱい（両わき 4px ずつ）。お膳の幅（container）から決める（100vw から引くと、余白のぶん小さくなりすぎる） */
+@supports (container-type:inline-size){.tray.grid2{container-type:inline-size;--vs:clamp(48px,calc((100cqw - (var(--c) - 1) * 4px) / var(--c) - 8px),150px)}}
+/* 「かえる」は器の右上の角に重ねる丸（44×44・印だけ。読み上げは「…をかえる」）。名前の下の1行（44px）をなくして、そのぶん器を大きくする。
+   丸は器の外の角（四角の角は絵がない）にかかるだけにする: 器の上に 26px の帯を取り、丸の右端は器の右端から 12px 外（列に入る範囲で）。
+   器の面積の 10% 以上は覆わない（点検3）。器が 80px より小さくなる日は、前の形（名前の下の行に「かえる」）に戻す（fitTray の tight） */
+.tray.grid2:not(.tight){padding-top:6px}
+.tray.grid2:not(.tight) .spot{padding-top:26px;grid-template-rows:var(--vs) 1fr}
+.tray.grid2:not(.tight) .spot .swap{position:absolute;top:0;inset-inline-end:max(0px,calc(50% - var(--vs) / 2 - 12px));z-index:2;width:44px;height:44px;min-width:44px;min-height:44px;max-width:none;padding:0;border-radius:50%;font-size:0;display:flex;align-items:center;justify-content:center;border:0;color:#3a2a1f;background:radial-gradient(circle closest-side,var(--porcelain) calc(100% - 4.6px),#9a6a48 calc(100% - 4px),#9a6a48 calc(100% - 2.6px),transparent calc(100% - 2px));filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}   /* 見える丸は 40px（押せる範囲は 44×44） */
+.tray.grid2:not(.tight) .spot .swap:hover{background:radial-gradient(circle closest-side,#fff calc(100% - 4.6px),#9a6a48 calc(100% - 4px),#9a6a48 calc(100% - 2.6px),transparent calc(100% - 2px))}
+.tray.grid2:not(.tight) .spot .swap::before{font-size:20px;line-height:1;margin:0;font-weight:700}
+.tray.grid2:not(.tight) .spot .swap::after{inset:0}
+.tray.grid2:not(.tight) .spot .swap[data-act="soup-add"]::before,.tray.grid2:not(.tight) .spot .swap.tray-add::before{content:"+";font-size:24px}
+.tray.grid2:not(.tight) .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
+.tray.grid2:not(.tight) .wsh-tag{max-width:calc(100% - 48px)}
 .p2-links{display:flex;flex-wrap:wrap;justify-content:center;gap:0 var(--s4)}
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
 .p2-link[disabled]{opacity:.5;cursor:default}
@@ -4361,7 +4375,10 @@ function fitTray(){
     const vessel = tr.querySelector('.spot'), vs0 = vessel ? parseFloat(getComputedStyle(vessel).gridTemplateRows) || 64 : 64;
     let tight = false, vs = vs0;
     const over = () => tr.getBoundingClientRect().height - avail;
-    const setVs = v => { vs = v; tr.style.setProperty('--vs', v + 'px'); fixText(); };
+    // 器が CMIN より小さいときは、「かえる」を器の角に重ねず、名前の下の行に置く（tight）。角の丸が器の 10% 以上を覆わないように（点検3）
+    const CMIN = 80, toTight = v => { if (v < CMIN && !tr.classList.contains('tight')){ tight = true; tr.classList.add('tight'); } };
+    const setVs = v => { vs = v; tr.style.setProperty('--vs', v + 'px'); toTight(v); fixText(); };
+    toTight(vs0); if (tight) fixText();
     let d = over();
     // 器は 60px まで小さくしてよい（基準書 2-5）。それでも入らないときは名前の字を小さくして詰める（「かえる」は名前の下の行のまま。器には重ねない。点検3）
     // 同じ並びで前に決めた大きさがあれば（言語を変えたときなど）、まずその大きさで、器を小さくする前に詰め方（名前の字・見出し）で入れる
@@ -4373,7 +4390,13 @@ function fitTray(){
         if (d > 0 && !tight){ tight = true; tr.classList.add('tight'); fixText(); d = over(); }
         if (d > 0 && !tr.classList.contains('tight2')){ t2(); fixText(); d = over(); }
     }
-    if (d > 0){ setVs(Math.max(60, Math.floor(vs - d / rows))); d = over(); }
+    if (d > 0){ setVs(Math.max(tight ? 60 : CMIN, Math.floor(vs - d / rows))); d = over(); }
+    // 「かえる」を角に置いた形（器 CMIN 以上）で入らないときは、名前の下に戻す前に、見出しを詰める形（tight2）で器を角の形のまま入れられるか試す（絵を大きく）
+    if (d > 0 && !tight && !prev){ tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; const vsA = vs; setVs(vs0); d = over();
+        for (let k = 0; k < 2 && d > 0; k++){ setVs(Math.max(CMIN, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        // まだ入らなければ、あいさつを1行 → 出さない（下の tight の流れと同じ順）
+        for (const g of ['greet-1', 'greet-0']) if (d > 0 && document.querySelector('#greet .greet-tx')){ document.body.classList.add(g); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs0); d = over(); for (let k = 0; k < 2 && d > 0; k++){ setVs(Math.max(CMIN, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); } }
+        if (d > 0){ document.body.classList.remove('greet-1', 'greet-0'); setVs(vsA); tr.classList.remove('tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); d = over(); } }
     if (d > 0){ tight = true; tr.classList.add('tight'); fixText(); d = over(); setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
     // それでも入らない（文字がとても大きい・名前が長い）ときは、お膳の上の見出しを1行の小さめの字にして詰める。器は 60px より小さくしない
     if (d > 0){ tr.classList.add('tight2'); document.getElementById('view').classList.add('tray-tight'); document.body.classList.add('tray-tight');   // 見出し「今日の献立」も1行の小さめの字に（お膳の上を詰める）
@@ -4389,17 +4412,18 @@ function fitTray(){
         if (d > 0){ document.body.classList.add('tray-tight3'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); if (d > 0) setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
         if (d > 0){ nml1 = false; tr.classList.remove('noslot', 'algfit'); document.body.classList.remove('tray-tight3'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; fixText(); } }   // それでも入らない（文字もっと大きい・とても長い名前）ときは、あいさつを出さない（家族リクエストの入口は残す）
     // 見出しを詰めずに入ったが、器がとても小さくなったとき（家族リクエスト・あいさつ・⚠ の札でお膳が下がった日）: 見出しを詰める形（tight2）で器がはっきり大きくなるなら、そちらにする
-    if (!prev && d <= 0 && vs < Math.min(vs0, 80) && !tr.classList.contains('tight2')){
-        const vs1 = vs; tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight');
-        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs0); d = over(); if (d > 0){ setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
-        if (d > 0 || vs < vs1 + 12){ tr.classList.remove('tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs1); d = over(); } }
+    if (!prev && d <= 0 && vs < Math.min(vs0, 100) && !tr.classList.contains('tight2')){
+        const vs1 = vs, t1 = tr.classList.contains('tight'); tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight');
+        tr.classList.remove('tight'); tight = false;   // 見出しを詰めた形では、まず「かえる」を器の角に置く形（器が大きい）で試す
+        avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs0); d = over(); if (d > 0){ setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); } if (d > 0){ setVs(Math.max(60, Math.min(vs0, Math.floor(vs - d / rows)))); d = over(); }
+        if (d > 0 || vs < vs1 + 12){ tr.classList.remove('tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.classList.toggle('tight', t1); tight = t1; avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs1); d = over(); } }
     if (vs >= vs0) tr.style.removeProperty('--vs');
     // 詰めても入らない（幅195px・文字もっと大きい など）: 帯をお盆に重ねず（お膳の下に置く）、お膳は詰めない形（器・名前・その下の「かえる」）に戻す。スクロールで全部見られる
     if (prev && parseFloat(prev.vs) && vs > parseFloat(prev.vs)) setVs(parseFloat(prev.vs));   // 前より器を大きくしない（お膳の高さが変わって下が動かないように）
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
     const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
-    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0;
+    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0; toTight(vs0);
         // お膳が入りきらない画面でも、あいさつは出さない（献立を上に。家族リクエストの入口は残す。第8回 R20）
         if (document.querySelector('#greet .greet-tx')) document.body.classList.add('greet-1', 'greet-0');
         fixText();
@@ -4412,7 +4436,7 @@ function fitTray(){
             if (!rowIn()) document.body.classList.add('tray-tight3');   // 見出しのまわりの余白もいちばん小さく
             if (!rowIn()){ tr.classList.add('noslot'); fixText(); }   // 種類の字も出さない
             if (rowIn()) tight = tr.classList.contains('tight');
-            else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; fixText(); } } }
+            else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
 }
@@ -5098,11 +5122,14 @@ function vesselHtml(kind, r, still=false, anim=true){
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
+const hiDpi = () => (window.devicePixelRatio || 1) > 2.2;
 function thumbHtml(r){
     let ph = photoOf(r);
-    if (ph){ const src = ph.thumb || ph.src; probeImg(src); if (IMG_FAIL.has(src)) ph = null; }
+    // 高解像度の画面（DPR 3 など）では、一覧の絵（64〜96px）に 192px では足りずにぼやけるので、512px の絵を使う（DPR 2 までは 192px のまま。srcset の w 指定は naturalWidth が変わるので使わない）
+    let src = ph && (ph.thumb && !(hiDpi() && ph.src && !/^data:/.test(ph.src)) ? ph.thumb : ph.src);
+    if (ph){ probeImg(src); if (IMG_FAIL.has(src) && src !== ph.src){ src = ph.src; probeImg(src); } if (IMG_FAIL.has(src)) ph = null; }
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
-    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(ph.thumb || ph.src)}" alt="" decoding="async"></span>`
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(src)}" alt="" decoding="async"></span>`
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
