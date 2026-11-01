@@ -784,6 +784,26 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .cc-pick-l,.cc-pick-s{font-size:var(--fs12);color:var(--muted);overflow-wrap:anywhere}
 .cc-pick .ob-pick-hint{margin:0}
 .cc-foot .btn[disabled]{opacity:.45;cursor:default;box-shadow:none}
+/* R28: 開いたとき、どの幅・文字の大きさ・言語でも、国の一覧の1行目が下の帯より上に見えるように詰める
+   （手順の行・見出し・言語欄を詰め、説明は一覧のあと。帯の下にシートの余白を作らない＝一覧が帯の下にのぞかない） */
+.sheet.sheet-country{padding-bottom:0}
+.sheet-country>.sheet-body{gap:10px;padding-top:var(--s16)}
+.sheet-country .cc-tab{padding-block:6px}
+.sheet-country .country{padding-block:8px}.sheet-country .country.on{padding-block:7px}
+.sheet.has-bar.sheet-country>.sheet-pad{padding-top:var(--s4)}
+.sheet-country .ob-head{gap:var(--s4)}
+.sheet-country .ob-count{min-height:0}
+.sheet-country .ob-steps li{font-size:var(--fs12);line-height:1.25}
+.sheet-country .ob-eyebrow{margin:0;font-size:var(--fs14)}
+.sheet-country .ob-eyebrow+h2{margin-top:calc(-1 * var(--s8))}
+.sheet-country h2{font-size:var(--fs20,1.25rem)}
+.sheet-country .ob-lang{flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:var(--s12);row-gap:var(--s4)}
+.sheet-country .ob-lang>span{flex:0 1 auto;min-width:0}
+.sheet-country .ob-lang select{flex:1 1 7.5em;min-width:0}
+.sheet-country .ob-lang>span.small{font-size:var(--fs12);line-height:1.3}
+.sheet-country .cc-note{margin:0}
+.sheet-country .cc-foot{padding:var(--s8) 0 calc(var(--s12) + env(safe-area-inset-bottom,0px));gap:var(--s4)}
+.sheet-country .cc-pick{min-height:40px}
 /* 献立が出た瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では出さない） */
 @media (prefers-reduced-motion:no-preference){
   .tray.ob-reveal .spot{animation:obIn .52s var(--ease) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
@@ -1087,6 +1107,15 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2:not(.tight) .spot .swap::after{inset:0}
 .tray.grid2:not(.tight) .spot .swap[data-act="soup-add"]::before,.tray.grid2:not(.tight) .spot .swap.tray-add::before{content:"+";font-size:24px}
 .tray.grid2:not(.tight) .spot .fresh-tag{inset-inline-end:auto;inset-inline-start:2px}
+/* D8: 角の丸 ↻ に小さく「かえる」の字を添える（シニア層: 字のない ↻ は、まるごと入れ替えの矢印と見分けにくい）。
+   丸の大きさ（44×44）・位置は変えない（器を覆う広さは今のまま）。見える丸を 44px いっぱいにして、↻ の下に 10px の字。
+   字が丸に入らない言語（Tauschen など）は、今までどおり ↻ だけ（fitTray の fixSwapWord が決める。読み上げは「…をかえる」） */
+.tray.grid2:not(.tight) .spot .swap.sw-word{flex-direction:column;gap:0;font-size:10px;font-weight:700;line-height:1;letter-spacing:0;padding:1px 0 0;text-overflow:clip;background:radial-gradient(circle closest-side,var(--porcelain) calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
+.tray.grid2:not(.tight) .spot .swap.sw-word:hover{background:radial-gradient(circle closest-side,#fff calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
+.tray.grid2:not(.tight) .spot .swap.sw-word::before{font-size:17px;line-height:17px;height:17px;margin:0 0 1px}
+/* まるごと入れ替えの丸と、下の段の角の ↻ のあいだに余白（指のずれで ↻ を押さない。D8） */
+.tray.grid2:not(.tight) .tg-mid{margin-bottom:8px}
+.tray.grid2.tight .tg-mid{margin-top:8px}   /* 名前の下に「かえる」を置く形（tight）では、上の段の「かえる」と丸のあいだ */
 .tray.grid2:not(.tight) .wsh-tag{max-width:calc(100% - 48px)}
 .p2-links{display:flex;flex-wrap:wrap;justify-content:center;gap:0 var(--s4)}
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
@@ -4345,6 +4374,15 @@ document.addEventListener('toggle', e => { const d = e.target; if (d && d.tagNam
 const TRAY_FIT = {key: '', vs: 0, tight: false};
 // 器が弾む動き（rise: translateY(8px) から戻る）の途中で測ると、器の下端が実際より下に見える。動きを除いた下端で測る（描いた直後でも、動きが進んだあとでも同じ値）
 function fitBottom(e){ const b = e.getBoundingClientRect().bottom, t = getComputedStyle(e).transform; if (!t || t === 'none') return b; const m = t.match(/^matrix\(([^)]+)\)$/); return m ? b - (parseFloat(m[1].split(',')[5]) || 0) : b; }
+// D8: 器の角の丸（↻）に「かえる」の字を添える。字が丸に入らない言語・形では ↻ だけ
+function fixSwapWord(tr){
+    const corner = tr.classList.contains('grid2') && !tr.classList.contains('tight');
+    tr.querySelectorAll('.spot .swap[data-act="reroll"], .spot .swap[data-act="staple-next"]:not(.tray-add)').forEach(e => {
+        e.classList.remove('sw-word'); if (!corner) return;
+        e.classList.add('sw-word');
+        const r = document.createRange(); r.selectNodeContents(e); if (r.getBoundingClientRect().width > 32) e.classList.remove('sw-word');
+    });
+}
 function fitTray(){
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     // 同じ画面の大きさ・同じ並び（席の数）なら、前に決めた大きさ（器・名前の行数・詰め方）をそのまま使う。
@@ -4377,7 +4415,7 @@ function fitTray(){
             const textW = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().width; };
             tr.classList.remove('swap-ico'); if ([...tr.querySelectorAll('.spot .swap:not(.swap-ph)')].some(e => { const cs = getComputedStyle(e); return textW(e) + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 22 > e.closest('.spot').clientWidth; })) tr.classList.add('swap-ico');
             tr.querySelectorAll('.spot-label .slot').forEach(e => { e.style.removeProperty('font-size'); const w = textW(e), cw = e.clientWidth; if (w > cw + .5){ const fs = parseFloat(getComputedStyle(e).fontSize); e.style.fontSize = Math.max(8, Math.floor(fs * cw / w * 10) / 10) + 'px'; } });
-            return;
+            fixSwapWord(tr); return;
         }
     }
     tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
@@ -4469,6 +4507,7 @@ function fitTray(){
             else { tr.classList.remove('tight', 'tight2', 'noslot'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3'); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); } } }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    fixSwapWord(tr);
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
 // 字（フォント）が読みこまれて名前・札の高さが変わったら、測り直す（読みこみ前の字の高さで決めたままにしない）
@@ -13619,7 +13658,8 @@ function ccFootHtml(st){
         ? `<span class="fl" aria-hidden="true">${c.flag}</span><span class="cc-pick-tx"><span class="cc-pick-l">${esc(t('選んだ国・地域'))}</span><b lang="${esc(c.lang)}">${esc(c.nameLocal)}</b>${st.subOf(c) ? `<span class="cc-pick-s">${esc(st.subOf(c))}</span>` : ''}</span>`
         : `<p class="muted small ob-pick-hint" role="status">${esc(t('上の一覧から、住んでいる国・地域を選んでください'))}</p>`}</div>${btn}</div>`;
 }
-function ccPickerHtml(st){ return `${ccTabsHtml(st)}${countryListHtml(st)}${ccFootHtml(st)}`; }
+// note（国を選ぶとどうなるかの説明）は一覧のあとに置く。開いたときに、帯の上で国の1行目まで見えるように（R28）
+function ccPickerHtml(st, note){ return `${ccTabsHtml(st)}${countryListHtml(st)}${note ? `<p class="muted small cc-note">${esc(note)}</p>` : ''}${ccFootHtml(st)}`; }
 // 国を押した・タブを替えたとき: シートを描き直さずに、その部分だけ替える（スクロールの位置・押したボタンが動かない）
 function ccUpdate(what){
     const root = $('#sheet-root .sheet-country'); if (!root || !sheet || sheet.kind !== 'country'){ renderSheet(); return; }
@@ -13633,8 +13673,7 @@ function countrySheetHtml(){
     const st = ccState();
     if (st.ob) return obCountryHtml(st);
     return `<h2>${esc(t('国・地域を選んでください'))}</h2>
-        <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
-        ${ccPickerHtml(st)}`;
+        ${ccPickerHtml(st, t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}`;
 }
 // はじめての流れの1つめ（国と言語）。国は利用者が一覧から自分で選び、下の「次へ」で決めるまで進めない
 function obCountryHtml(st){
@@ -13643,10 +13682,9 @@ function obCountryHtml(st){
     return `${obProgHtml(1, false)}
         <p class="ob-eyebrow">${esc(t('ご飯帖へようこそ'))}</p>
         <h2>${esc(t('国・地域を選んでください'))}</h2>
-        <p class="muted small">${esc(t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}</p>
         <label class="ob-lang"><span class="small">${esc(t('表示する言語 / Language'))}</span>
             <select data-ob="lang">${langs.map(([v, l]) => `<option value="${esc(v)}" lang="${esc(v)}" ${v === ui ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>
-        ${ccPickerHtml(st)}`;
+        ${ccPickerHtml(st, t('選んだ国の家庭料理で、毎日の献立を提案します。あとから設定で変えられます。'))}`;
 }
 // 言語を切りかえたとき、作ってある案（ひとひねりの「変えたところ」など）を新しい言語で作り直す
 function relocalize(){
