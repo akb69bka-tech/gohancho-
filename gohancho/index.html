@@ -2812,7 +2812,7 @@ function t(ja, vars){
     });
     return LANG === 'ko' ? koParticles(out) : out;
 }
-// 韓国語の助詞: 訳に「{name}을(를)」「{list}이(가)」「{name}(으)로」と書いておくと、直前の字の받침（終声）の有無で 을/를・이/가・은/는・과/와・으로/로 に直す。
+// 韓国語の助詞: 訳に「{name}을(를)」「{list}이(가)」「{name}(으)로」「{dish}이었(였)네요」「{dish}(이)네요」と書いておくと、直前の字の받침（終声）の有無で 을/를・이/가・은/는・과/와・으로/로・이었/였・이/（なし）に直す。
 // 받침 は ハングル音節（U+AC00–D7A3）の終声で見る。数字は読み（영 일 삼 육 칠 팔 は받침あり）。引用符・かっこは飛ばして直前の字を見る
 function hasBatchim(str){
     const m = String(str).replace(/[”“"'’‘」』)\]\s]+$/, '').match(/([가-힣]|[0-9]|[A-Za-z])$/);
@@ -2828,8 +2828,10 @@ function isRieul(str){
 }
 function koParticles(s){
     if (s.indexOf('(') < 0) return s;
-    return s.replace(/(^|[\s\S])(을\(를\)|를\(을\)|이\(가\)|가\(이\)|은\(는\)|는\(은\)|과\(와\)|와\(과\)|\(으\)로)/g, (m, pre, pt, off, all) => {
+    return s.replace(/(^|[\s\S])(을\(를\)|를\(을\)|이\(가\)|가\(이\)|은\(는\)|는\(은\)|과\(와\)|와\(과\)|\(으\)로|이었\(였\)|\(이\))/g, (m, pre, pt, off, all) => {
         const before = all.slice(0, off) + pre, b = hasBatchim(before);
+        if (pt === '이었(였)') return pre + (b ? '이었' : '였');   // 「…이었네요」「…였네요」（第13回 R25: 두부조림였네요 → 두부조림이었네요）
+        if (pt === '(이)') return pre + (b ? '이' : '');   // 「…이네요」「…네요」
         if (pt.endsWith('로')) return pre + (b && !isRieul(before) ? '으로' : '로');
         const i = '을를이가은는과와'.indexOf(pt[0]) >> 1;   // 0:을/를 1:이/가 2:은/는 3:과/와
         return pre + '을이은과'[i].repeat(b) + (b ? '' : '를가는와'[i]) ;
@@ -3170,9 +3172,14 @@ function toastPlace(box, prev){
         if (innerWidth >= 300) return;   // とても狭い画面（お知らせを低くする幅。CSS の max-width:299px）だけ
         const L = rectOf(), lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
         const y1 = scrollY; window.scrollTo({top: y0, behavior: 'instant'}); box.classList.remove('docked'); box.classList.add('at-top');
+        // 点の順: 料理名・札・↻・まるごと入れ替え・決定 → ほかの押す場所（国・設定・家族リクエストなど。お知らせの文の上からでも押せる）→ 文。
+        // 第13回 R38: 家族ありでは上の端に「家族リクエスト」があり、押す場所にかからない高さがなかったので、送った画面のまま上の段の ↻・下の段の名前の上に出ていた。
+        // お膳（名前・↻・札）にかからない高さを先に選ぶ（そのうち、隠す押す場所・文のいちばん少ない高さ。同じなら上）。器と名前は出るときに下から上がるので、上下を少しあけて数える
+        // 「元に戻す」付きのお知らせ（幅195px の形はオーナーの判断待ち）は、これまでどおり押す場所・料理名にかからない高さだけを探す
+        const u = !!toast.undo, coreN = c => c[1] + c[4], worse2 = (x, y) => !u && coreN(x) !== coreN(y) ? coreN(x) > coreN(y) : worse(x, y);
         const h = box.offsetHeight; let best = null;
-        for (let y = 8; y + h <= floor - 8; y += 6){ box.style.top = y + 'px'; const R = rectOf(), c = cover(R, R.bottom + 4); if (!best || worse(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
-        if (best && !best.c[0] && !best.c[1]){ box.style.top = best.y + 'px'; return; }   // 押す場所・料理名にかからない高さがあれば、そこに出す（その中で、かかる文のいちばん少ない高さ）
+        for (let y = 8; y + h <= floor - 8; y += 6){ box.style.top = y + 'px'; const R = rectOf(), c = u ? cover(R, R.bottom + 4) : cover({left: R.left, right: R.right, top: R.top - 4}, R.bottom + 8); if (!best || worse2(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
+        if (best && (u ? !best.c[0] && !best.c[1] : !coreN(best.c))){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる文のいちばん少ない高さ）
         box.style.removeProperty('top'); box.classList.remove('at-top'); box.classList.add('docked'); window.scrollTo({top: y1, behavior: 'instant'}); return;
     }
     // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
@@ -3193,7 +3200,8 @@ function toastPlace(box, prev){
     box.classList.add('at-top'); T = rectOf();
     const highJ = judge(T, T.bottom), better = (x, y) => x[0] !== y[0] ? x[0] < y[0] : x[1] !== y[1] ? x[1] < y[1] : x[2] < y[2];
     if (!better(highJ, lowJ)) box.classList.remove('at-top');
-    const now = score(rectOf()); if (free(now)) return;
+    // 上の端に出すときは、ボタンにかからなくても、アプリの名前・見出しなどの文の上になる。画面の中に何にもかからない高さがあれば、そちらへ（第13回 R39。幅195px は別に決める）
+    const now = score(rectOf()); if (free(now) && !(now[4] && box.classList.contains('at-top') && innerWidth >= 300)) return;
     // 選んだ場所でもかかるとき: 決めた直後のお知らせ（D4・幅195px）と同じく、画面は動かさずに、上の端から下の帯まで高さを変えて、かからない高さを探す（点のいちばん少ない高さ）。
     // お膳が画面いっぱいの幅（360px など）では器の絵の上は許す（かえるの丸と名前のあいだの高さなら、名前・かえるは見えたまま）。いま選んだ場所より良いときだけ動かす
     const was = box.classList.contains('at-top'); box.classList.add('at-top');
