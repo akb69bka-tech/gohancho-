@@ -3057,7 +3057,7 @@ function toast(msg, praise=false, undo=null){
     const pb = root.firstElementChild, prev = pb && pb.offsetHeight ? {left: pb.offsetLeft, top: pb.offsetTop, right: pb.offsetLeft + pb.offsetWidth, bottom: pb.offsetTop + pb.offsetHeight} : null;   // いま出ているお知らせの場所
     root.innerHTML = `<div class="toast pop placing${praise?' praise':''}">${esc(msg)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
     // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
-    const hide = () => { root.innerHTML = ''; toast.undo = null; };
+    const hide = toast.hide = () => { root.innerHTML = ''; toast.undo = null; };
     const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 6000 : 4500); };
     arm();
     // 置き場所は描き直し（押した操作の続き）が終わってから決める。描く前のフレームなので、ちらつかない。
@@ -3067,6 +3067,16 @@ function toast(msg, praise=false, undo=null){
     cancelAnimationFrame(toast.raf); clearTimeout(toast.rt);
     toast.raf = requestAnimationFrame(() => { try{ toastPlace(box, prev); }catch(e){} show(); }); toast.rt = setTimeout(show, 200);
 }
+// 献立の料理を戻す「元に戻す」（まるごと入れ替え・1品かえる など。S25）。fn: 戻す処理、dishes: 戻すと出る料理を返す関数
+// 出したあとに、料理を出す・出さないの判定に効く設定（本人のアレルゲン・家族のアレルギー・苦手・今日食べる人・辛さなど。judgeSig の鍵）が変わったら、戻さない（お知らせも消す。render で見る）。
+// 念のため、戻すと出る料理に、いまの設定でアレルゲンに当たる料理（allergyConflict）があるときも戻さない
+function menuUndo(dishes, fn){
+    const sig = judgeSig();
+    const f = () => { if (judgeSig() !== sig || (dishes() || []).some(r => r && allergyConflict(r))) return; fn(); };
+    f.sig = sig; return f;
+}
+// 設定が変わって使えなくなった「元に戻す」のお知らせを消す（描き直すたびに見る）
+function menuUndoCheck(){ const u = toast.undo; if (u && u.sig != null && u.sig !== judgeSig() && toast.hide) toast.hide(); }
 /* お知らせ（トースト）の置き場所（第3回b N4・第2回 D4・三宅）
    ・いつもの場所は、下の固定の帯（下のタブ、決める段・作る段の主ボタン .actionbar）のすぐ上。主ボタンが2行で高くなっても、その上に出す（主ボタン・下のタブには重ねない）。
    ・お知らせの文の上は押しても下に届く（「元に戻す」だけが押せる）。「元に戻す」付きで8秒出ていても、下の操作を邪魔しない（CSS の pointer-events）。
@@ -4706,6 +4716,13 @@ function todayShopRows(){
             if (p.src) { const c = p.src.replace(/^[(（][^)）]*[)）]\s*/, ''); mayOf(o, r.pack ? {name: c, label: c, key: c.toLowerCase(), en: c.toLowerCase()} : parseIng(c)); }
             seas.set(p.key, o); });
     });
+    // カレーの日の付け合わせ（福神漬け・らっきょう漬け）も、1週間プランの買い物メモと同じく1行に（第12回 S24 の残り: 今日の買い物メモになかった）。
+    // 市販品なので、アレルギーの設定がある日は、どのアレルゲンにも「袋の表示を確認」を付ける（1週間プランの買い物メモと同じ）
+    { const main = its[0] && its[0].r, sd = main ? riceSideOf(main, its.length) : null;
+      if (sd && sd !== 'konomono'){ const k = keyOf(sd.name), e = map.get(k) || {key: k, ik: k, label: tsukeName(sd), qty: [], dishes: [], sec: 'other', alt: '', home: have.has(k)};
+        if (!e.dishes.includes(main.name)) e.dishes.push(main.name);
+        mayIds.forEach(id => { if (!(e.may || (e.may = [])).includes(id)) e.may.push(id); });
+        map.set(k, e); } }
     const fin = e => { const u = buyUnitOf(e.ik, e.qty); e.buyQty = u.buy; e.use = u.use; e.left = u.left;
         e.buying = st.got.has(e.key) || (e.home ? st.buy.has(e.key) : !st.have.has(e.key)); return e; };
     return {rows: [...map.values()].map(fin), opt: [...opt.values()].map(e => { fin(e); e.buying = st.buy.has(e.key); return e; }),
@@ -4845,6 +4862,7 @@ function findNav(){
 }
 function render(){
     renderFail.clear();
+    guard('undo', menuUndoCheck);   // アレルギー・苦手などを変えたあとは、献立の「元に戻す」を消す（S25）
     guard('head', () => {
         $('#today-label').textContent = jpDate(TODAY);
         $('#flag-btn').textContent = S.settings.country ? countryOf(currentCountry()).flag : '🌐';   // 国を選ぶ前は、日本の旗を出さない
@@ -9110,7 +9128,7 @@ function wishToToday(id){
     const prev = m.items.map(x => x.r);
     if (i === 0) setMenuMain(r); else m.items[i].r = r;
     wishTried().add(id); keepDraft();
-    toast(t('今日の献立に入れました: {name}', {name: r.name}), false, () => { if (session.menu !== m || decidedToday()) return; m.items.forEach((x, k) => { x.r = prev[k]; }); keepDraft(); render(); });
+    toast(t('今日の献立に入れました: {name}', {name: r.name}), false, menuUndo(() => prev, () => { if (session.menu !== m || decidedToday()) return; m.items.forEach((x, k) => { x.r = prev[k]; }); keepDraft(); render(); }));   // アレルギー・苦手を変えたあとは戻さない（S25）
     return true;
 }
 // 届いたリンクを開いたとき（起動時・開いたまま・貼りつけ）
@@ -10143,7 +10161,7 @@ function swapApply(i, nr, ok){
     if (wasDecided && prev){ const j = S.cook.ids.indexOf(prev.id); if (j >= 0){ if (nr){ S.cook.ids[j] = nr.id; } else { S.cook.ids.splice(j, 1); if (S.cook.slots) S.cook.slots.splice(j, 1); } if (S.cook.done) delete S.cook.done[prev.id]; S.cook.shop = {}; delete S.cook.shopOK; } }
     save(); keepDraft(); daySync(); render();
     const slot = slotLabel(it.slot);
-    toast(nr ? t('{slot}を {name} に変えました', {slot, name: nr.name}) : t('汁ものをなしにしました'), false, () => { if (session.menu !== m || m.items[i] !== it || it.r !== nr) return; it.r = prev; if (c0) S.cook = c0; save(); keepDraft(); render(); });
+    toast(nr ? t('{slot}を {name} に変えました', {slot, name: nr.name}) : t('汁ものをなしにしました'), false, menuUndo(() => [prev], () => { if (session.menu !== m || m.items[i] !== it || it.r !== nr) return; it.r = prev; if (c0) S.cook = c0; save(); keepDraft(); render(); }));   // アレルギー・苦手を変えたあとは戻さない（S25）
 }
 function riceSheetHtml(){
     const items = (session.menu ? session.menu.items : []).filter(x => x.r), rc = typeof riceRow === 'function' ? riceRow(items) : null;
@@ -12136,10 +12154,10 @@ document.addEventListener('click', e => {
             // 何に変わったかを言い、元に戻せるようにする（押しまちがい・子どもに腕を引かれたとき。佐々木 3-12・田村 3-13）。
             // 戻すのは押した枠だけ。そのあいだに献立が作り直された・同じ枠がまた変わったときは戻さない
             const nr = it.r;
-            if (prev && nr && nr !== prev) toast(t('「{name}」にかえました', {name: nr.name}), false, () => {
+            if (prev && nr && nr !== prev) toast(t('「{name}」にかえました', {name: nr.name}), false, menuUndo(() => [prev], () => {   // アレルギー・苦手を変えたあとは戻さない（S25）
                 if (session.menu !== m || m.items[i] !== it || it.r !== nr || m.items.some((x, k) => k !== i && x.r && x.r.id === prev.id)) return;
                 it.r = prev; session.rejected.delete(prev.id); render();
-            });
+            }));
             break;
         }
         case 'soup-add': {
@@ -12160,12 +12178,13 @@ document.addEventListener('click', e => {
                 newMenu(); render();
                 { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (fromShuffle && kbNav()) b.focus({preventScroll:true}); } }
                 const nm = session.menu;
-                if (!dec && prev.menu && nm !== prev.menu) toast(t('献立をまるごと入れ替えました'), false, () => {
+                // アレルギー・家族・苦手などの設定を変えたあとは戻さない（menuUndo。S25: 戻すと、外したはずのアレルゲンの料理が戻っていた）
+                if (!dec && prev.menu && nm !== prev.menu) toast(t('献立をまるごと入れ替えました'), false, menuUndo(() => prev.menu.items.map(x => x.r), () => {
                     if (session.menu !== nm || menuIsDecided()) return;   // そのあと別の操作で献立が変わった・この案に決めたときは戻さない
                     const rej = new Set(prev.rej); menuIds().forEach(id => rej.add(id));   // 戻したあとにもう一度押したら、今の案とも別の案にする
                     session.menu = prev.menu; session.twist = prev.twist; session.avoidNote = prev.note; session.rejected = rej; session.trayPrev = prev.tp; session.trayCur = prev.tc;
                     keepDraft(); render();
-                });
+                }));
             });
             break;
         }
