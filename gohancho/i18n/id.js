@@ -1444,7 +1444,7 @@ GOHAN_I18N('id', {
     "明日の献立はもう決めてあります。": "Menu besok sudah ditentukan.",
     "明日の{time}": "besok pukul {time}",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "{eat} sudah lewat. Kalau mulai sekarang, memasak satu per satu selesai sekitar {t1}; bersamaan, sekitar {t2}",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Pada hari bubur, kami sarankan zosui atau bubur yang cepat, dengan lauk dan sup yang lembut dan ringan",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Pada hari bubur, kami sarankan sup nasi atau bubur yang cepat, dengan lauk dan sup yang lembut dan ringan",
     "おかゆの日なので{n}品にしました": "Hari bubur: {n} hidangan",
     "プリモ（一皿目）": "Primo (hidangan pertama)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta atau risotto sudah jadi primo, jadi tanpa sup",

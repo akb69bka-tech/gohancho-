@@ -1444,7 +1444,7 @@ GOHAN_I18N('fil', {
     "明日の献立はもう決めてあります。": "Napagpasyahan na ang pagkain bukas.",
     "明日の{time}": "bukas nang {time}",
     "{eat}はもう過ぎています。今から作ると、1品ずつ順に作って{t1}ごろ、同時に進めても{t2}ごろにできます": "Lampas na ang {eat}. Kung magsisimula ka ngayon, matatapos bandang {t1} kung isa-isa, at bandang {t2} kung sabay-sabay",
-    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Sa araw ng lugaw, mabilis na zosui o lugaw at malambot at magaan na side dish at sabaw ang mungkahi namin",
+    "おかゆの日は、早くできる雑炊・おかゆと、やわらかい・あっさりした副菜・汁ものにします": "Sa araw ng lugaw, mabilis na lugaw mula sa kanin o lugaw, at malambot at magaan na side dish at sabaw ang mungkahi namin",
     "おかゆの日なので{n}品にしました": "Araw ng lugaw: {n} putahe",
     "プリモ（一皿目）": "Primo (unang putahe)",
     "プリモ（パスタ・リゾット）の日なので、ズッパはなし": "Pasta o risotto ang primo, kaya walang sabaw",
