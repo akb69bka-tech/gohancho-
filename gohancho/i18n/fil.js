@@ -1641,5 +1641,10 @@ GOHAN_I18N('fil', {
     "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Sa araw ng okayu, malambot at magaan na side dish at sabaw ang mungkahi. Mga {n} min ang pagluto ng okayu",
     "今日は{dish}でしたね。夜おそくまでおつかれさまです": "{dish} ngayong araw. Salamat sa pagod mo hanggang ngayon",
     "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Gabi na, salamat sa lahat. Puwedeng pagkatapos magpahinga ang menu",
-    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Hatinggabi na. Tingnan nang dahan-dahan ang menu ngayong araw"
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Hatinggabi na. Tingnan nang dahan-dahan ang menu ngayong araw",
+    "アジア": "Asya",
+    "ヨーロッパ": "Europa",
+    "南北アメリカ": "Amerika",
+    "中東・アフリカ": "Gitnang Silangan at Aprika",
+    "選んだ国・地域": "Pinili mo"
 });

@@ -12,7 +12,7 @@ import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { chromium } = require(execSync('npm root -g').toString().trim() + '/playwright');
-const { SEED, rngScript, seedFor } = require('../lib/pw.cjs');
+const { SEED, rngScript, seedFor, pickCountry } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
 const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
@@ -919,7 +919,7 @@ for (const [cc, pick, inMore] of [['TH', 'egg', false], ['TH', 'milk', false], [
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ' onboard: ' + e.message));
     await p.goto(URL_); await p.waitForTimeout(1200);
-    await p.locator(`[data-act="country-pick"][data-v="${cc}"], [data-act="ob-country"][data-v="${cc}"], [data-cc="${cc}"]`).first().click(); await p.waitForTimeout(600);
+    await pickCountry(p, cc); await p.waitForTimeout(600);   // 国のタブ → 国 → 決定ボタン
     for (let k = 0; k < 4 && !(await p.locator('[data-act="ob-alg"]').count()); k++){ const nx = p.locator('[data-act="ob-next"], [data-act="country-ok"], [data-act="ob-start"]').first(); if (!(await nx.count())) break; await nx.click(); await p.waitForTimeout(500); }
     const g = await p.evaluate(() => { const c = [...document.querySelectorAll('[data-act="ob-alg"]')]; return { all: c.map(e => e.dataset.v), more: c.filter(e => e.closest('details')).map(e => e.dataset.v), main: algSections().main.map(x => x[1]) }; });
     const main0 = g.main[0] || [], top = g.all.filter(v => !g.more.includes(v));

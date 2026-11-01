@@ -1641,5 +1641,10 @@ GOHAN_I18N('pl', {
     "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "W dniu okayu: miękkie, łagodne dodatki i zupa. Okayu gotuje się około {n} min",
     "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Dziś było {dish}. Dziękujemy za trud do późna",
     "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Jest późno, dziękujemy za wszystko. Menu może poczekać, aż odpoczniesz",
-    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Jest już późna noc. Przejrzyj dzisiejsze menu spokojnie"
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Jest już późna noc. Przejrzyj dzisiejsze menu spokojnie",
+    "アジア": "Azja",
+    "ヨーロッパ": "Europa",
+    "南北アメリカ": "Ameryka",
+    "中東・アフリカ": "Bliski Wschód i Afryka",
+    "選んだ国・地域": "Twój wybór"
 });

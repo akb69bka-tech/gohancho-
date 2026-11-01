@@ -1641,5 +1641,10 @@ GOHAN_I18N('id', {
     "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "Pada hari okayu, lauk dan sup yang lembut dan ringan. Okayu perlu sekitar {n} menit",
     "今日は{dish}でしたね。夜おそくまでおつかれさまです": "Hari ini {dish}. Terima kasih sudah bekerja sampai larut",
     "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "Sudah larut, terima kasih atas kerja kerasmu. Menu bisa dipilih setelah istirahat",
-    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Sudah larut malam. Lihat menu hari ini dengan santai"
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "Sudah larut malam. Lihat menu hari ini dengan santai",
+    "アジア": "Asia",
+    "ヨーロッパ": "Eropa",
+    "南北アメリカ": "Amerika",
+    "中東・アフリカ": "Timur Tengah & Afrika",
+    "選んだ国・地域": "Pilihan Anda"
 });

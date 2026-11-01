@@ -15,7 +15,7 @@
 //  8) 「卵」を卵アレルギーでさがして0件のとき、理由を出す
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { chromium, LAUNCH, BASE: BASE_, SEED, rngScript, seedFor } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
+const { chromium, LAUNCH, BASE: BASE_, SEED, rngScript, seedFor, pickCountry } = require('../lib/pw.cjs'); let seedN = 0;   // 乱数は SEED から（失敗したら表示の SEED=… を付けて実行すると同じ献立で再現する）
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const b = await chromium.launch(LAUNCH);
 let fails = 0, checks = 0; const errs = [];
@@ -44,8 +44,7 @@ const hitSlots = (p, al) => p.evaluate(al => { const a0 = S.settings.allergens; 
 for (const k of [0, 1, 2]){
     // はじめての設定で えび → 「アレルギー対策へ」（設定のタブへ移る）→ 開き直す
     const { ctx, p } = await open(null, true);
-    await p.waitForSelector('[data-act="pick-country"][data-cc="JP"]', { timeout: 30000 });
-    await p.click('[data-act="pick-country"][data-cc="JP"]');
+    await pickCountry(p, 'JP');
     // 苦手な食材の画面が出るまで「次へ」（はじめての流れの段の数が変わっても動くように）
     await p.waitForSelector('[data-act="ob-next"]');
     for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; const st = await p.evaluate(() => sheet && sheet.step); await p.click('[data-act="ob-next"]'); /* 手に持った要素は描き直しで外れることがあるので、押すときに探し直す */ await until(p, st => !sheet || sheet.step !== st, st); }

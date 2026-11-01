@@ -1642,5 +1642,10 @@ GOHAN_I18N('en', {
     "おかゆの日は、やわらかい・あっさりした副菜・汁ものにします。おかゆは炊くのに{n}分ほどかかります": "On okayu day, we suggest soft, mild side dishes and soup. Okayu takes about {n} min to cook",
     "今日は{dish}でしたね。夜おそくまでおつかれさまです": "{dish} today. Thanks for your hard work tonight",
     "夜おそくまでおつかれさまです。献立は、ひと休みしてからでも大丈夫です": "It's late—thanks for all you do. The menu can wait until you've rested",
-    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "It's late at night. Take your time looking over today's menu"
+    "夜ふけですね。今日の献立は、ゆっくりのぞいてみてください": "It's late at night. Take your time looking over today's menu",
+    "アジア": "Asia",
+    "ヨーロッパ": "Europe",
+    "南北アメリカ": "Americas",
+    "中東・アフリカ": "Middle East & Africa",
+    "選んだ国・地域": "Your choice"
 });
