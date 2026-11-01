@@ -3084,6 +3084,16 @@ function menuUndo(dishes, fn){
 }
 // 設定が変わって使えなくなった「元に戻す」のお知らせを消す（描き直すたびに見る）
 function menuUndoCheck(){ const u = toast.undo; if (u && u.sig != null && u.sig !== judgeSig() && toast.hide) toast.hide(); }
+// 1週間プランを戻す「元に戻す」（○つけ表の「そろった○品から来週を組む」など。S26・第14回: 守りの外で、8秒のうちにアレルギーを足して戻すと、選び直した今週のプランに足したアレルゲンの主菜が戻っていた）。
+// menuUndo と同じ守り（判定に効く設定が変わったら戻さない・お知らせも消す。戻すと出る料理が、いまの設定でアレルゲンに当たるなら戻さない）に、
+// 戻すと出る料理（今日から先の、作る日の主菜と、買い物メモ用の副菜・汁もの）に、いまの設定で出さない料理（苦手・品薄・辛さ・今は出さない）があるときも戻さない、を足す
+function weekDishesOf(w){
+    if (!w || !Array.isArray(w.days)) return [];
+    return w.days.filter(x => x && x.d >= TODAY && !x.skip).flatMap(x => [x.id].concat(x.extra && typeof x.extra === 'object' ? [x.extra.side, x.extra.soup] : [])).filter(Boolean).map(byId).filter(Boolean);
+}
+function weekUndo(prev, fn){
+    return menuUndo(() => weekDishesOf(prev), () => { if (weekDishesOf(prev).some(r => isAvoided(r) || S.hidden.includes(r.id))) return; fn(); });
+}
 /* お知らせ（トースト）の置き場所（第3回b N4・第2回 D4・三宅）
    ・いつもの場所は、下の固定の帯（下のタブ、決める段・作る段の主ボタン .actionbar）のすぐ上。主ボタンが2行で高くなっても、その上に出す（主ボタン・下のタブには重ねない）。
    ・お知らせの文の上は押しても下に届く（「元に戻す」だけが押せる）。「元に戻す」付きで8秒出ていても、下の操作を邪魔しない（CSS の pointer-events）。
@@ -8307,7 +8317,7 @@ function shopName(i, r){
     return LANG === 'ja' && (!r.pack || r.pack === 'JP') && raw && /[ぁ-んァ-ヶー一-龠]/.test(raw) ? raw : i.label;
 }
 function shoppingList(){
-    const have = fridgeKeys(), fac = servingFactor(true), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set(), mayIds = algIdsEff();
+    const have = fridgeKeys(), fac = servingFactor(true), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set(), mayIds = algIdsEff(), algG = allergyOn() ? allergyCtx() : null;
     const add = r => {
         if (!r) return;
         r.items.forEach(i => {
@@ -8323,6 +8333,8 @@ function shoppingList(){
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
             mayIds.forEach(id => { if (algKind(id, i) === 4 && !(e.may || (e.may = [])).includes(id)) e.may.push(id); });   // 入っていることがある加工品（ハム・ちくわなど）: 行に「袋の表示を確認」
+            // プランにアレルゲンに当たる料理が残っているとき（決めた日のあとに足した・作る日に戻したなど。S26）: 当たる材料の行に ⚠（プランの行の「⚠ アレルゲンあり」と同じ判定 itemAvoided）
+            if (algG && itemAvoided(i, algG)){ const hs = e.alg || (e.alg = []); mayIds.forEach(id => { const k = algKind(id, i); if (k && k !== 4 && (k !== 3 || algFerm()) && !hs.includes(id)) hs.push(id); }); }
             map.set(id, e);
         });
     };
@@ -8387,7 +8399,7 @@ function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone ||
 function shopExtras(){ shopDoneSet(); return (S.shopDone.extra || []).filter(x => x && typeof x.k === 'string' && typeof x.label === 'string'); }
 // 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
 function shopRowsHtml(list, done){
-    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}${e.may && e.may.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</span>` : ''}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}${e.alg ? `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + (e.alg.length ? t('アレルゲン: {list}', {list: joinNames(e.alg.map(algLabel))}) : t('アレルゲンあり')))}">⚠ ${esc(e.alg.length ? joinNames(e.alg.map(algLabel)) : t('アレルゲンあり'))}</span>` : ''}${(m => m.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(m.map(algLabel))}))}</span>` : '')((e.may || []).filter(id => !(e.alg || []).includes(id)))}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
     return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
         const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec sec-${k}"><span>${esc(l)}</span><span class="n" aria-hidden="true">${xs.length}</span></div>${xs.map(row).join('')}` : '';
@@ -8455,12 +8467,18 @@ function shoppingHtml(){
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
         <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
+        ${(ab => ab.length ? `<p class="small warn alg-shop-hit" role="alert">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の献立にするときは、その枠だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</p>` : '')(shopAlgDishes())}
         ${algIds().length || famMembers().some(m => m.allergy.length) ? `<p class="pantry-hint alg-shop">${esc(t('アレルギーの設定があります。買うときは、原材料表示を必ず確かめてください。'))}${(xs => xs.length ? ' ' + esc(t('袋の表示を確かめるもの（調味料も）：{list}', {list: joinNames(xs)})) : '')(shopMayList())}</p>` : ''}
         <div class="list shop${big ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
         ${nFridge ? `<div class="shop-fridge"><button class="btn" data-act="shop-to-fridge">${esc(t('買ったものを冷蔵庫に入れる（{n}品）', {n:nFridge}))}</button><p class="pantry-hint">${esc(t('入れると「材料から」で使え、買い物メモからは消えます。'))}</p></div>` : ''}
         ${(q => q ? `<div class="shop-quiet">${q}</div>` : '')(shopHaveHtml() + pantryHtml())}
         <div class="shop-send"><button class="${msgBtnClass()} wide" data-app="${esc(msgLabel())}" data-act="share-week">${esc(t('送る・カレンダーに入れる'))}</button><p class="pantry-hint">${esc(t('予定と買い物メモを送れます。作る日をカレンダーに入れることもできます。'))}</p></div>`;
+}
+// 買い物メモの日の料理のうち、いまの設定でアレルゲンに当たる料理（プランの行に「⚠ アレルゲンあり」が付く料理。S26: 買い物メモの側には ⚠ がなかった）。調味料だけで当たる料理もここで知らせる
+function shopAlgDishes(){
+    if (!S.week || !allergyOn()) return [];
+    return [...new Set(visiblePlanDays().flatMap(x => dayDishes(x)).filter(r => allergyConflict(r)))];
 }
 // 買い物メモの日の料理で「袋の表示を確認」になる加工品・調味料（調味料はメモの行にないので、ここに名前を出す）: 「コンソメ（大豆）」の形
 function shopMayList(){
@@ -12376,7 +12394,7 @@ document.addEventListener('click', e => {
             const prev = S.week ? JSON.parse(JSON.stringify(S.week)) : null, put = voteToWeek(ids, v.w);
             closeSheet(); render();
             if (!put.length){ toast(t('来週のまだ決めていない日がないため、プランは変えませんでした')); break; }
-            toast(t('来週の1週間プランに入れました（{days}）', {days: joinNames(put.map(d => jpDate(d)))}), false, () => { S.week = prev; save(); render(); }); break; }
+            toast(t('来週の1週間プランに入れました（{days}）', {days: joinNames(put.map(d => jpDate(d)))}), false, weekUndo(prev, () => { S.week = prev; save(); render(); })); break; }   // 設定を変えたあとは戻さない（S26。menuUndo と同じ守り）
         case 'wish-rm': { const i = wishList().findIndex(w => w.id === id); if (i < 0) break; const w0 = wishList()[i]; wishList().splice(i, 1); save(); if (sheet && sheet.kind === 'wish-list') renderSheet(); render();
             toast(t('外しました: {name}', {name: (recipeById(w0.id) || {}).name || ''}), false, () => { if (!wishList().some(w => w.id === w0.id)){ wishList().splice(Math.min(i, wishList().length), 0, w0); save(); } if (sheet && sheet.kind === 'wish-list') renderSheet(); render(); }); break; }
         case 'wish-today': if (sheet && sheet.kind === 'wish-list'){ sheet.confirm = id || ''; renderSheet(); } break;
@@ -12581,6 +12599,8 @@ document.addEventListener('click', e => {
             const x = S.week && S.week.days.find(y => y.d === el.dataset.d); if (!x) break;
             if (x.skip) delete x.skip; else x.skip = true;
             if (sheet && sheet.kind === 'wday') closeSheet();
+            // 作る日に戻すと、休んでいるあいだの料理が戻る。そのあいだにアレルギー・苦手を足していたら、その料理には戻さず選び直す（refreshWeek は作らない日を見ないため。S26 の見直し）
+            if (!x.skip) refreshWeek();
             save(); render(); break;
         }
         case 'toggle-ing': {
