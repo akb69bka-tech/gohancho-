@@ -42,9 +42,9 @@ const open = async (settings = {}, opt = {}) => {
         const rice = riceRow(cookItems());
         // 2人とも少なめ → 1人分
         S.family = [{id: 'a', name: '父', avoid: [], allergy: [], portion: 0.5}, {id: 'b', name: '母', avoid: [], allergy: [], portion: 0.5}]; S.eaters = ['a', 'b'];
-        const sv2 = svToday();
+        const sv2 = svToday(), fac2 = servingFactor(), lab2 = svText(); render(); const head2 = (document.querySelector('.p2-sv') || {}).textContent || '';
         S.family = []; S.eaters = null; S.cook = null;
-        return {sv, fac, head, buy: row.buyQty, use: row.use, steps, go: rice && rice.go, sv2};
+        return {sv, fac, head, buy: row.buyQty, use: row.use, steps, go: rice && rice.go, sv2, fac2, lab2, head2};
     });
     ok(r.sv === 4.5 && r.fac === 2.25, 'R1-1 4人（多め2人・少なめ1人）は4.5人分として分量の倍率に入る: ' + JSON.stringify([r.sv, r.fac]));
     ok(/4\.5人分/.test(r.head), 'R1-2 今日の一膳の人数の表示も4.5人分: ' + r.head);
@@ -52,6 +52,7 @@ const open = async (settings = {}, opt = {}) => {
     ok(/水1350ml/.test(r.steps), 'R1-4 手順の量も4.5人分（豚の角煮の水600ml → 1350ml）: ' + (r.steps.match(/水\d+ml/) || [])[0]);
     ok(r.go === 2.5, 'R1-5 ご飯の合数も4.5人分（2.5合）: ' + r.go);
     ok(r.sv2 === 1, 'R1-6 2人とも少なめなら1人分: ' + r.sv2);
+    ok(r.fac2 === 0.5 && r.lab2 === '2人分（少なめ）' && /2人分（少なめ）/.test(r.head2) && !/(^|[^0-9.])1人分/.test(r.head2), 'R11 夫婦とも少なめは、量は1人分のまま「2人分（少なめ）」と出す（「1人分」と出さない）: ' + JSON.stringify([r.fac2, r.lab2, r.head2]));
     await ctx.close();
 }
 {

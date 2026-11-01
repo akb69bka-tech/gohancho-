@@ -1047,6 +1047,7 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .p2-sv.one{flex-direction:row;align-items:center;gap:6px;min-height:44px;max-width:64%;padding:0 var(--s12);font-weight:600;font-size:var(--fs12)}
 .p2-sv.one svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .p2-sv.one .sv1{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p2-sv.one .sv1.sv1-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;text-align:end;overflow-wrap:anywhere}.p2-sv.one .sv1-2 .nw{white-space:nowrap}   /* 「2人分（少なめ）」のように人数の文が長いときは2行まで（ボタンの高さ44pxの中。品数が切れて見えなくならないように。R11） */
 .p2-sv.one .sv-chev{flex:none;font-size:.7em;color:var(--muted)}
 .cond-entries{gap:var(--s8);margin:var(--s8) 0 var(--s12)}
 .today-head.p2-head{display:flex;flex-wrap:nowrap;margin-bottom:var(--s8)}
@@ -6536,6 +6537,29 @@ function svToday(){
     if (n) return n;
     return Math.max(0.5, (Number(S.settings.servings) || 2) + ms.reduce((a, m) => a + por(m) - 1, 0));
 }
+// 今日の人数の見出し（R11: 夫婦とも少なめで「1人分」と出て、2人で食べるのに分かりにくかった）
+// 量（svToday）はそのまま。食べる人の数と量の人数がちがうときだけ、「2人分（少なめ）」「3人（2.5人分の量）」のように両方を見せる
+function svHeads(){
+    const ms = eaterMembers();
+    if (Array.isArray(S.eaters) && ms.length + (meOn() ? 1 : 0)) return {h: ms.length + (meOn() ? 1 : 0), ms, me: meOn()};
+    return {h: Number(S.settings.servings) || 2, ms, me: false};
+}
+function svQual(){
+    const sv = svToday(), {h, ms, me} = svHeads();
+    if (sv === h) return null;
+    const all = v => !me && ms.length === h && ms.every(m => m.portion === v);
+    return all(0.5) ? 'less' : all(1.5) ? 'more' : 'mix';
+}
+// 「{n}人分」の代わりに出す文（量の人数と食べる人の数が同じなら、今までどおり「{n}人分」）
+function svText(){
+    const sv = svToday(), q = svQual(), h = svHeads().h;
+    if (!q) return t('{n}人分', {n: fmtPortion(sv)});
+    if (q === 'less') return t('{v}（少なめ）', {v: t('{n}人分', {n: h})});
+    if (q === 'more') return t('{v}（多め）', {v: t('{n}人分', {n: h})});
+    return t('{p}（{a}の量）', {p: t('{n}人', {n: h}), a: t('{n}人分', {n: fmtPortion(sv)})});
+}
+// 「材料（{n}人分）」などの見出し。人数がちがうときは「材料：2人分（少なめ）」の形の文にする
+function svLab(fn, fv){ return svQual() ? fv(svText()) : fn(fmtPortion(svToday())); }   // fn(人数) / fv(文)。訳のキーは呼ぶ側にそのまま書く（tools/i18n/extract.mjs が拾えるように）
 function servingFactor(week){ return (week ? (Number(S.settings.servings) || 2) : svToday()) / 2; }
 // 日本語の「小さじ5」は「大さじ1と小さじ2」のように大さじにまとめる（小さじ3 = 大さじ1）
 function tspToTbsp(str){
@@ -10025,7 +10049,7 @@ function dishWhy(r, slot){   // 押していない料理に左右されない、
 // 決めた献立のうち、冷蔵庫・常備品に登録のない材料（買い物メモにして送る・コピーする）
 function todayShopText(){
     const list = todayShopItems(); if (!list.length) return '';
-    const lines = [t('【{date}の買い物メモ】', {date:jpDate(S.cook.d)}), t('今日の献立の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {sv:fmtPortion(svToday())})];
+    const lines = [t('【{date}の買い物メモ】', {date:jpDate(S.cook.d)}), (svQual() ? t('今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}', {v: svText()}) : t('今日の献立の材料のうち、冷蔵庫・常備品にないもの（{sv}人分）', {sv:fmtPortion(svToday())}))];
     list.forEach(e => lines.push(t('□ {name}', {name: e.label + (e.qty ? ' ' + e.qty : '')})));
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
@@ -10047,7 +10071,8 @@ function condSheetHtml(){
     const m = session.menu || {n: menuCount(), items: []}, main = m.items[0] && m.items[0].r, st = stapleSpot(), oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChip = x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood === x.k}">${esc(x.label)}</button>`;
     const TIME = ['all', 'quick', 'easy'];
-    const hint = t('{compose}・{n}品・{sv}人分。{reason}', {compose: composeOf(m.n).name, n: m.items.length ? menuSeats(m) : dishSeats(m.n), sv: fmtPortion(svToday()), reason: countReason(m.n)});   // ご飯の席も1品と数える
+    const hv = {compose: composeOf(m.n).name, n: m.items.length ? menuSeats(m) : dishSeats(m.n), reason: countReason(m.n)};
+    const hint = svQual() ? t('{compose}・{n}品・{v}。{reason}', {...hv, v: svText()}) : t('{compose}・{n}品・{sv}人分。{reason}', {...hv, sv: fmtPortion(svToday())});   // ご飯の席も1品と数える
     void oneBowl; void st;
     const eaters = famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(x => x.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((x, i) => `<button class="chip" data-act="eater" data-v="${esc(x.id)}" aria-pressed="${eaterMembers().includes(x)}">${esc(famLabel(x, i))}</button>`).join('')}</div></div>`
         : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
@@ -10123,7 +10148,7 @@ function swapApply(i, nr, ok){
 function riceSheetHtml(){
     const items = (session.menu ? session.menu.items : []).filter(x => x.r), rc = typeof riceRow === 'function' ? riceRow(items) : null;
     if (!rc) return `<h2>${esc(t('ご飯'))}</h2><p class="small muted">${esc(t('今日の献立には、炊くご飯がありません'))}</p><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
-    return `<h2>${esc(rc.name)}</h2><p><b>${esc(t('{n}合', {n: rc.go}))}</b>${esc(t('・'))}${esc(t('{n}人分', {n: fmtPortion(svToday())}))}</p>
+    return `<h2>${esc(rc.name)}</h2><p><b>${esc(t('{n}合', {n: rc.go}))}</b>${esc(t('・'))}${esc(svText())}</p>
         <p class="small">${esc(riceText(rc, kitchenOf()))}</p>
         <div class="row"><button class="btn" data-act="staple-next">${esc(t('主食をかえる'))}</button><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
@@ -10348,7 +10373,7 @@ function viewToday(){
     return `
     <section class="sec">
         <div class="today-head p2-head"><h2>${esc(t('今日の献立'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
-            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc(t('条件を変える'))}" title="${esc(t('条件を変える'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1">${esc([t('{n}人分', {n: fmtPortion(svToday())}), (MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
+            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc(t('条件を変える'))}" title="${esc(t('条件を変える'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
             ${shuffleBtn}
@@ -11312,8 +11337,8 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
     const termHint = sl && r.steps.some((st, k) => slOf(st) && termFind(texts[k], sl).some(h => termDef(h.id))) ? `<p class="small muted" style="margin:0">${esc(t('点線の言葉をタップすると、意味がわかります'))}</p>` : '';
     const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
     let prevK = -1; if (done) r.steps.forEach((st, k) => { if (done.includes(k) && (nowK < 0 || k < nowK)) prevK = k; });   // 「前の手順」: いまの手順の手前で、終わっている最後の手順
-    const seasHtml = r.seas ? `<div class="seasoning"><span class="label">${esc(t('調味料（{n}人分）', {n:fmtPortion(sv)}))}</span><br>${esc(scaleSeas(seasFor(r), fac))}</div>` : '';
-    const scaleNote = fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? t('作り方の分量も{n}人分にしています', {n:fmtPortion(sv)}) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : '';
+    const seasHtml = r.seas ? `<div class="seasoning"><span class="label">${esc(svLab(n => t('調味料（{n}人分）', {n}), v => t('調味料：{v}', {v})))}</span><br>${esc(scaleSeas(seasFor(r), fac))}</div>` : '';
+    const scaleNote = fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? svLab(n => t('作り方の分量も{n}人分にしています', {n}), v => t('作り方の分量も{v}にしています', {v})) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : '';
     const tail = `${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
                 <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
                     ${md ? '' : `<a class="btn sm ghost" href="${esc(videoSearchUrl(r0))}" target="_blank" rel="noopener" data-act="video" data-id="${esc(r0.id)}">${esc(t('作り方の動画を探す'))}</a>`}
@@ -11321,7 +11346,7 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
                 </div></div>`;
     if (opts.ingsOnly){   // 三 作る の「材料を見る」: 材料にそろえた印をつけられる一覧だけ
         const got = ((session.cookGot || {})[r0.id]) || [], nIng = r.items.length, nGot = r.items.filter((x, k) => got.includes(k)).length;
-        return `${swapNoteHtml(r)}<div class="ci-sum" id="cook-ings"><span class="label">${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}</span><span class="ci-n">${nGot}/${nIng}</span></div>
+        return `${swapNoteHtml(r)}<div class="ci-sum" id="cook-ings"><span class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</span><span class="ci-n">${nGot}/${nIng}</span></div>
                 ${allergenDetailHtml(r)}
                 <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
                 ${seasHtml}${pointsHtml(r)}`;
@@ -11330,7 +11355,7 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
         const got = ((session.cookGot || {})[r0.id]) || [], nIng = r.items.length, nGot = r.items.filter((x, k) => got.includes(k)).length;
         const open = (session.ingsOpen || {})[r0.id] ?? !done.length;
         return `${swapNoteHtml(r)}${pointsHtml(r)}
-                <details class="cook-ings" id="cook-ings"${open ? ' open' : ''}><summary class="ci-sum"><span class="label">${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}</span><span class="ci-n">${nGot}/${nIng}</span></summary>
+                <details class="cook-ings" id="cook-ings"${open ? ' open' : ''}><summary class="ci-sum"><span class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</span><span class="ci-n">${nGot}/${nIng}</span></summary>
                 ${allergenDetailHtml(r)}
                 ${have.size ? `<p class="small muted" style="margin:0">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
                 <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
@@ -11345,8 +11370,8 @@ ${after}${tail}`;
     const stepsHtml = `${termHint}<ol class="steps${md ? ' dsteps' : ''}">${r.steps.map((st, k) => typeof st === 'string' ? `<li><span class="st-txt">${termsHtml(texts[k], sl)}</span></li>` : `<li class="${st.add?'add':''}"><span class="st-txt">${esc(texts[k])}</span></li>`).join('')}</ol>`;   // 文は1つの箱に入れる（点線の用語で手順が縦に割れないように）
     if (md){
         const miss = shopMissingOf(r0);
-        return `${swapNoteHtml(r)}<div class="dsec"><div class="dsec-t">${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}</div>
-                <div class="dsv" role="group" aria-label="${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}"><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv - 1}"${sv <= 1 ? ' disabled' : ''} aria-label="${esc(t('人数を減らす'))}">−</button><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv + 1}"${sv >= 6 ? ' disabled' : ''} aria-label="${esc(t('人数を増やす'))}">＋</button></div></div>
+        return `${swapNoteHtml(r)}<div class="dsec"><div class="dsec-t">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</div>
+                <div class="dsv" role="group" aria-label="${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}"><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv - 1}"${sv <= 1 ? ' disabled' : ''} aria-label="${esc(t('人数を減らす'))}">−</button><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv + 1}"${sv >= 6 ? ' disabled' : ''} aria-label="${esc(t('人数を増やす'))}">＋</button></div></div>
                 ${have.size ? `<p class="small muted dleg">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${seasHtml}
@@ -11357,7 +11382,7 @@ ${after}${tail}`;
                 ${stepsHtml}
                 ${tail}`;
     }
-    return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
+    return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
                 <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
                 ${seasHtml}
                 <div class="label">${esc(t('作り方'))}</div>
@@ -11389,8 +11414,8 @@ function videoSheetHtml(id){
     const u = usageOf(), chk = (u.vidDay === TODAY && u.vidChk && u.vidChk[id]) || [];
     const texts = stepTextsOf(r, fac);
     return `<h3>${esc(t('動画の前に、30秒で流れを確認'))}</h3>
-        <div class="facts"><span class="fact">${esc(t('{n}分', {n:r.min}))}</span><span class="fact">${esc(t('{n}人分', {n:fmtPortion(sv)}))}</span><span class="fact">${esc(r0.name)}</span></div>
-        <div class="label">${esc(t('材料（{n}人分）', {n:fmtPortion(sv)}))}</div>
+        <div class="facts"><span class="fact">${esc(t('{n}分', {n:r.min}))}</span><span class="fact">${esc(svText())}</span><span class="fact">${esc(r0.name)}</span></div>
+        <div class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</div>
         <ul class="vid-ings">${r.items.map((i, k) => `<li><label class="vid-ing"><input type="checkbox" data-act="vid-chk" data-id="${esc(id)}" data-k="${k}"${chk.includes(k) ? ' checked' : ''}><span class="nm">${esc(i.name)}${i.opt ? ` <span class="small muted">${esc(t('（なくても可）'))}</span>` : ''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
         <div class="label">${esc(t('作り方'))}</div>
         <ol class="vid-steps">${texts.map(x => { const m = timerFind(x)[0]; return `<li><span class="vs-t">${esc(x)}</span>${m ? `<b class="vs-time">${esc(m.m)}</b>` : ''}</li>`; }).join('')}</ol>
@@ -11827,9 +11852,9 @@ function shopAddMany(labels){
 // 料理1品を家族に送る文（名前・時間・人数・材料・作り方）
 function recipeShareText(r0){
     const r = swappedRecipe(r0) || r0, sv = svToday(), fac = servingFactor();
-    const lines = [r0.name + swapShare(r0), t('{n}分', {n: r.min}) + t('・') + t('{n}人分', {n: fmtPortion(sv)}), '', t('材料（{n}人分）', {n: fmtPortion(sv)})];
+    const lines = [r0.name + swapShare(r0), t('{n}分', {n: r.min}) + t('・') + svText(), '', svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v}))];
     r.items.forEach(i => lines.push(`・${i.name}${i.opt ? t('（なくても可）') : ''}${GAP()}${scaleText(i.qty, fac)}`));
-    if (r.seas) lines.push('', t('調味料（{n}人分）', {n: fmtPortion(sv)}), scaleSeas(seasFor(r), fac));
+    if (r.seas) lines.push('', svLab(n => t('調味料（{n}人分）', {n}), v => t('調味料：{v}', {v})), scaleSeas(seasFor(r), fac));
     lines.push('', t('作り方'));
     stepTextsOf(r, fac).forEach((x, k) => lines.push(`${k + 1}. ${x}`));
     lines.push('', t('― わが家のご飯帖'));
@@ -11871,7 +11896,7 @@ function renderModalBody(){
                 <div class="dhead">
                     ${kind ? `<div class="dkind">${esc(kind)}</div>` : ''}
                     <h2>${esc(r.name)}</h2>${sub ? `<div class="name-en" lang="en">${esc(sub)}</div>` : ''}
-                    <div class="dstats">${stat(iconClock(), t('{n}分', {n:r.min}))}${stat(iconPeople(), t('{n}人分', {n:fmtPortion(sv)}))}${fam && fam !== '野菜' ? stat('', familyLabel(fam)) : ''}</div>
+                    <div class="dstats">${stat(iconClock(), t('{n}分', {n:r.min}))}${stat(iconPeople(), svText())}${fam && fam !== '野菜' ? stat('', familyLabel(fam)) : ''}</div>
                     ${mains.length ? `<div class="dmain"><span class="k">${esc(t('主な食材'))}</span><span class="v">${esc(joinNames(mains))}</span></div>` : ''}
                     ${isCustomId(r.id) && r.src ? `<div class="small muted">${esc(r.src)}</div>` : ''}
                 </div>
@@ -12127,10 +12152,20 @@ document.addEventListener('click', e => {
         case 'new-menu': {
             const fromShuffle = el.classList.contains('shuffle');
             guardDecided(() => {
+                // D8: まるごと入れ替えのあとに「元に戻す」を出す。戻すと、入れ替える前の献立（料理・ひとひねり案・「新」の札）がそのまま戻る
+                // （押した人が「元に戻す」を押したときだけ戻す。ほかの料理を勝手に変えない。決めた献立から作り直したときは decidedUndo の知らせを出す）
+                const dec = menuIsDecided(), prev = {menu: session.menu, twist: session.twist, note: session.avoidNote, rej: new Set(session.rejected), tp: session.trayPrev, tc: session.trayCur};
                 menuIds().forEach(id => session.rejected.add(id));
                 // おまかせの品数は変えない（countSalt を進めない）。入れ替えるのは料理だけ。品数が変わるのは、気分・品数を選び直したときだけ（第5回 R12: おまかせの日に2〜4品を行き来した）
                 newMenu(); render();
                 { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (fromShuffle && kbNav()) b.focus({preventScroll:true}); } }
+                const nm = session.menu;
+                if (!dec && prev.menu && nm !== prev.menu) toast(t('献立をまるごと入れ替えました'), false, () => {
+                    if (session.menu !== nm || menuIsDecided()) return;   // そのあと別の操作で献立が変わった・この案に決めたときは戻さない
+                    const rej = new Set(prev.rej); menuIds().forEach(id => rej.add(id));   // 戻したあとにもう一度押したら、今の案とも別の案にする
+                    session.menu = prev.menu; session.twist = prev.twist; session.avoidNote = prev.note; session.rejected = rej; session.trayPrev = prev.tp; session.trayCur = prev.tc;
+                    keepDraft(); render();
+                });
             });
             break;
         }
