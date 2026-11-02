@@ -688,7 +688,7 @@ GOHAN_I18N('de', {
     "汁ものは入れていません": "Keine Suppe dabei",
     "{slot}を別の料理にかえる": "{slot} gegen etwas anderes tauschen",
     "かえる": "Tauschen",
-    "器の丸|かえる": "Neu",
+    "器の丸|かえる": "Tausch",
     "入れ替えました": "Getauscht",
     "かえました": "Geändert",
     "入れました": "Hinzugefügt",

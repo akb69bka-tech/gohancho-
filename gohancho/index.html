@@ -1065,7 +1065,7 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .p2-sv.one .sv1{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p2-sv.one .sv1.sv1-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;text-align:end;overflow-wrap:anywhere}.p2-sv.one .sv1-2 .nw{white-space:nowrap}   /* 「2人分（少なめ）」のように人数の文が長いときは2行まで（ボタンの高さ44pxの中。品数が切れて見えなくならないように。R11） */
 .p2-sv.one .sv-chev{flex:none;font-size:.7em;color:var(--muted)}
-.p2-sv.one .sv1w{display:flex;flex-direction:column;align-items:flex-end;min-width:0;max-width:100%}.p2-sv.one .sv1w .sv1{line-height:1.2}.p2-sv.one .sv-relax{display:block;max-width:100%;font-weight:400;font-size:var(--fs12);line-height:1.15;color:var(--accent,#b5541c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p2-sv.one .sv1w{display:flex;flex-direction:column;align-items:flex-end;min-width:0;max-width:100%}.p2-sv.one .sv1w .sv1{line-height:1.2;max-width:100%}   /* 第18回 R54: 文の箱（sv1w）は縦の flex なので、中の文に幅の上限を付けないと … で切れず、見出し・左の印にはみ出していた（v88 の回帰）。300px 以上は1行＋…、300px 未満は下の2行の形 */.p2-sv.one .sv-relax{display:block;max-width:100%;font-weight:400;font-size:var(--fs12);line-height:1.15;color:var(--accent,#b5541c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html[data-ts="2"] .p2-sv.one:has(.sv-relax){padding:0 var(--s8)}html[data-ts="2"] .p2-sv.one .sv-relax{font-size:calc(var(--fs12) * .9)}   /* 文字もっと大きい: 2行がボタンの高さ 44px に入り、短い1行が切れないように、少しだけ詰める */   /* ゆるめた知らせの短い1行は、モードの名前の下（お膳の下では決定の帯とタブの裏に隠れた。第17回 R50）。ボタンの高さ 44px の中に入れ、お膳は押し下げない */
 .cond-entries{gap:var(--s8);margin:var(--s8) 0 var(--s12)}
 .today-head.p2-head{display:flex;flex-wrap:nowrap;margin-bottom:var(--s8)}
@@ -1135,7 +1135,7 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2:not(.tight) .spot .swap.sw-word{flex-direction:column;gap:0;font-size:10px;font-weight:700;line-height:1;letter-spacing:0;padding:1px 0 0;text-overflow:clip;background:radial-gradient(circle closest-side,var(--porcelain) calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
 .tray.grid2:not(.tight) .spot .swap.sw-word:hover{background:radial-gradient(circle closest-side,#fff calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
 .tray.grid2:not(.tight) .spot .swap.sw-word::before{font-size:17px;line-height:17px;height:17px;margin:0 0 1px}
-.spot .swap .sw-s{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-f{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-s{display:inline}   /* D8: 器の丸（↻）には短い1語（tc('器の丸','かえる')。独 Neu・仏 Autre など）。名前の下の行（tight）の「かえる」は長い訳のまま */
+.spot .swap .sw-s{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-f{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-s{display:inline}.tray.grid2:not(.tight) .spot .swap.sw-word.sw-word-s{font-size:9px}   /* 第18回 R58: 6字の語（独 Tausch など）は 9px にして丸に入れる */   /* D8: 器の丸（↻）には短い1語（tc('器の丸','かえる')。独 Neu・仏 Autre など）。名前の下の行（tight）の「かえる」は長い訳のまま */
 /* まるごと入れ替えの丸と、下の段の角の ↻ のあいだに余白（指のずれで ↻ を押さない。D8） */
 .tray.grid2:not(.tight) .tg-mid{margin-bottom:8px}
 .tray.grid2.tight .tg-mid{margin-top:8px}   /* 名前の下に「かえる」を置く形（tight）では、上の段の「かえる」と丸のあいだ */
@@ -1637,7 +1637,9 @@ nav.tabs .tl{display:block;max-width:100%}
 nav.tabs.ico .tl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 狭い幅: 絵だけ（字は読み上げ） */
 nav.tabs.ico svg{padding-inline:2px}
 nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
-body.bar-static .actionbar.decide-bar{position:static}   /* お膳が帯の上に入りきらない狭い画面では、決定の帯をお盆に重ねない（お膳の下に置く。第6回 S21） */
+body.bar-static .actionbar.decide-bar{position:static}
+.actionbar.decide-bar{flex-wrap:wrap}.alg-bar,.alg-top{flex:0 0 100%;min-width:0;margin:0;font-size:var(--fs12);line-height:1.25;font-weight:700;color:var(--danger);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alg-bar{text-align:center;padding:0 var(--s8) 2px}.alg-top{display:none;text-align:start;padding:0 0 4px}body.bar-static .alg-bar{display:none}body.bar-static .alg-top{display:block}   /* 第18回 R57: 決めたあとの ⚠ の短い1行。固定の帯の中（いつも見える）。帯をお膳の下に置く画面ではお膳のすぐ上 */
+body:has(.decide-bar .alg-bar) .wrap{padding-bottom:calc(var(--nav-h,72px) + var(--tap-lg) + var(--s32) + 20px + env(safe-area-inset-bottom,0px))}   /* 帯が1行ぶん高いので、いちばん下まで送れるように */   /* お膳が帯の上に入りきらない狭い画面では、決定の帯をお盆に重ねない（お膳の下に置く。第6回 S21） */
 /* アプリ名は 360 幅でも1行（22px まで下げる。基準書 2-4） */
 @media (max-width:420px){html header.top h1{white-space:nowrap;text-wrap-mode:nowrap;letter-spacing:0;font-size:max(22px,min(var(--fs24),6.2vw))}}
 .vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
@@ -3230,7 +3232,8 @@ function toastPlace(box, prev){
         // お膳（名前・↻・札）にかからない高さを先に選ぶ（そのうち、隠す押す場所・文のいちばん少ない高さ。同じなら上）。器と名前は出るときに下から上がるので、上下を少しあけて数える
         // 第18回 R41・R33: お知らせは低い形（compact。文字 12px・元に戻すは1語）。点の順は、料理名・札・↻・まるごと入れ替え・決定・「✓ 決めた」の印（must）→ ほかの押す場所（条件・家族リクエスト・国・設定など）→ 器の絵（押すと作り方。360px と同じく、ここだけは許す）→ 文。
         // must と押す場所が 0 の高さがあれば、そこに出す（器の絵・文だけにかかる高さ）。なければ送った画面のまま（下の帯の上）
-        const u = !!toast.undo, pt = c => [c[1] + c[4] + c[5], c[0] - c[3] - c[4], c[3], c[2]], worse2 = (x, y) => { const a = pt(x), b = pt(y); for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
+        // 第18回 R39（195px の残り）: その中では、アプリの名前（上の端の h1）より器の絵の帯を先に選ぶ（名前の上は、器の帯に入らない高いお知らせのときだけ）
+        const u = !!toast.undo, pt = c => [c[1] + c[4] + c[5], c[0] - c[3] - c[4], c[6], c[3], c[2]], worse2 = (x, y) => { const a = pt(x), b = pt(y); for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
         const h = box.offsetHeight; let best = null;
         for (let y = 8; y + h <= floor - 8; y += 4){ box.style.top = y + 'px'; const R = rectOf(), c = u ? cover(R, R.bottom + 4) : cover({left: R.left, right: R.right, top: R.top - 4}, R.bottom + 8); if (!best || worse2(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
         if (best && !pt(best.c)[0] && !pt(best.c)[1]){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる器・文のいちばん少ない高さ）
@@ -3250,7 +3253,8 @@ function toastPlace(box, prev){
     // 第18回 R39: アプリの名前（上の端の h1）は、ほかの文より先に避ける（器の絵より先。文だけにかかる高さがあればそちら、なければ低い形（compact）で探し直す）。「✓ 決めた」の印は料理名と同じ扱い（R41）
     // 幅 300px 未満（低い形。出るときの動きなし）は、上下のあけ方を 4px に（器の絵の帯 60px に 48px のお知らせが入る。名前は動かない）
     const mg = innerWidth < 300 ? [4, 4] : [6, 12];
-    const score = R => { const b = R.bottom + mg[1], c = cover({left: R.left, right: R.right, top: R.top - mg[0]}, b); return [finger(R), core.filter(r => r.bottom > R.top - mg[0] && r.top < b && r.right > R.left + 1 && r.left < R.right - 1).length + c[5], c[0] - c[3] - c[4], c[6], c[3], c[2]]; };
+    const score = R => { const b = R.bottom + mg[1], c = cover({left: R.left, right: R.right, top: R.top - mg[0]}, b); const s = [finger(R), core.filter(r => r.bottom > R.top - mg[0] && r.top < b && r.right > R.left + 1 && r.left < R.right - 1).length + c[5], c[0] - c[3] - c[4], c[6], c[3], c[2]]; return innerWidth < 300 ? [s[1], s[0], s[2], s[3], s[4], s[5]] : s; };
+    // 第18回 R33（195px の残り）: 幅 300px 未満（低い形）では、料理名・札・↻・まるごと入れ替え・決定にかからないことを、押した指のまわりより先に見る。スクロールした位置で入れ替えると、指のまわり（まるごと入れ替えの丸の近く）しか空いた高さがなく、下の段の名前・↻に 1〜11px かかっていた。お知らせの文の上は押しても下に届く
     const less = (x, y) => { for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] < y[i]; return false; }, free = s => !s[0] && !s[1] && !s[2] && !s[3] && !s[4];
     const lowJ = judge(T, Math.max(T.bottom, floor));
     if (!lowJ[0] && !lowJ[1] && free(score(T))) return;
@@ -3265,7 +3269,7 @@ function toastPlace(box, prev){
     let best = null;
     const cp0 = box.classList.contains('compact');
     const pass = (mw, cp) => { if (mw) box.style.maxWidth = mw + 'px'; else box.style.removeProperty('max-width'); box.classList.toggle('compact', cp0 || !!cp); const h = box.offsetHeight;
-        for (let y = 8; y + h <= floor - 8; y += 4){ box.style.top = y + 'px'; const s = score(rectOf()); if (!best || less(s, best.s)){ best = {y, s, mw, cp: !!cp}; if (!s.some(Boolean)) break; } } };
+        for (let y = 8; y + h <= floor - 8; y += innerWidth < 300 ? 2 : 4){ box.style.top = y + 'px'; const s = score(rectOf()); if (!best || less(s, best.s)){ best = {y, s, mw, cp: !!cp}; if (!s.some(Boolean)) break; } } };   // 幅 300px 未満は 2px 刻み（器の絵の帯 60px に低いお知らせ 50px＋上下 4px がちょうど入る高さを、4px 刻みでは飛ばすことがあった。第18回 R33 の残り）
     pass(0);
     // それでもボタンにかかるとき（文字もっと大きい・家族リクエストのある日）: お知らせの幅を画面の6割にして（文は折り返す）、上の端の文（あいさつ・見出し）の上に出せるか試す。右の国・設定・条件のボタンは避ける
     if ((!best || !free(best.s)) && innerWidth >= 300) pass(Math.round(innerWidth * .6));
@@ -4672,8 +4676,9 @@ function fixSwapWord(tr){
     const corner = tr.classList.contains('grid2') && !tr.classList.contains('tight');
     tr.querySelectorAll('.spot .swap[data-act="reroll"], .spot .swap[data-act="staple-next"]:not(.tray-add)').forEach(e => {
         e.classList.remove('sw-word'); if (!corner) return;
-        e.classList.add('sw-word');
-        const r = document.createRange(); r.selectNodeContents(e); if (r.getBoundingClientRect().width > 32) e.classList.remove('sw-word');
+        e.classList.add('sw-word'); e.classList.remove('sw-word-s');
+        const r = document.createRange(); r.selectNodeContents(e); const w = () => r.getBoundingClientRect().width;
+        if (w() > 32){ e.classList.add('sw-word-s'); if (w() > 32) e.classList.remove('sw-word', 'sw-word-s'); }   // 第18回 R58: 32px に入らない語は 9px で試し、それでも入らなければ ↻ だけ
     });
 }
 function trayIds(){ return session.menu && session.menu.items ? session.menu.items.map(x => x && x.r ? x.r.id : '-') : []; }   // お膳の料理（席の順）
@@ -7652,6 +7657,17 @@ function eatersLine(){
     const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r).length).length;   // 入っていることがある加工品（ワンタンの皮の卵など）・市販の付け合わせ（福神漬けなど）を使うときも、言い切らない
     const base = safeSayDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
     return al ? base + '\n' + al : base;
+}
+// 第18回 R57: 決めたあとの ⚠ の短い1行（決定の帯の中。お膳が帯の上に入らない画面〔bar-static〕ではお膳のすぐ上）。
+// 360×740・文字もっと大きい・家族の魚⚠で決めたあと、お膳の下の「夫に合わない料理があります」が帯とタブの裏、あいさつの ⚠ の文も greet-0 で隠れ、器の赤い札だけが見えていた。
+// 文は eatersLine・algLine と同じ判定（新しい判定はしない）。家族の文がなければ本人のアレルゲンの文、それもなければあいさつと同じ「⚠の印の料理があります…」
+function algWarnLine(){
+    if (!decidedToday() || !cookItems().some(x => x.r && allergyConflict(x.r))) return '';
+    const ms = eaterMembers();
+    if (ms.some(m => m.avoid.length || m.mild) && safeSayDishes().some(r => isAvoidedCore(r))) return t('{names}に合わない料理があります', {names: joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))))});
+    const ids = algIds(), hit = ids.length ? safeSayDishes().filter(r => algSelectedHits(r, ids).length) : [];
+    if (hit.length) return t('アレルゲン（{list}）を使う料理が{n}品あります', {list: joinNames([...new Set([].concat(...hit.map(r => algSelectedHits(r, ids))))].map(algLabel)), n: hit.length});
+    return t('⚠の印の料理があります。作る前に、もう一度確かめてください');
 }
 // 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理・唐辛子の調味料を大さじ1ほど使う料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる・キムチ）、0 = 辛くない
 // 材料の言葉は、英語の名前（key・en）のほか、各国の言葉（ハングル・ヒンディー語・アラビア語・タイ語・ベトナム語・インドネシア語・トルコ語など）でも見分ける。
@@ -10704,7 +10720,7 @@ function viewToday(){
     const sides = indexed.filter(x => x.it.slot === '副菜');
     const soupHide = soupSeatHidden(m), soups = indexed.filter(x => x.it.slot === '汁物' && !(soupHide && !x.it.r));   // 汁けの多い主菜で副菜を足した日は、空いた汁ものの席を出さない（R30）
     const st = stapleSpot();
-    const stapleBtn = `<button class="swap" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}">${esc(t('かえる'))}</button>`;
+    const stapleBtn = `<button class="swap" data-act="staple-next" aria-label="${esc(t('主食をかえる'))}"><span class="sw-f">${esc(t('かえる'))}</span><span class="sw-s">${esc(tc('器の丸', 'かえる'))}</span></button>`;   // 第18回 R58: 主食の ↻ の丸にも、主菜・副菜と同じ短い1語（独 Tausch・仏 Autre など）
     const side = oneBowl ? riceSideOf(main, m.n) : null;   // お漬物は、ご飯ものの主菜で2品以上の日だけ（1品の日・麺・パスタの日・おかゆの日は付けない。R3・R4）。カレーの日は福神漬け・らっきょう漬け
     const sideId = side ? (side === 'konomono' ? 'konomono' : side.id) : '';
     const riceKey = oneBowl ? sideId : st ? st.id : '';
@@ -10758,6 +10774,7 @@ function viewToday(){
     <section class="sec">
         <div class="today-head p2-head"><h2>${esc(t('今日の献立'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
             <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w"><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span>${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
+        ${(aw => aw ? `<p class="alg-top" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${/* 第18回 R57: 決定の帯をお膳の下に置く画面（bar-static）では、⚠ の1行はお膳のすぐ上（最初の画面に入る）。ほかの画面では帯の中の .alg-bar（CSS で切りかえ） */''}
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
             ${shuffleBtn}
@@ -10779,7 +10796,7 @@ function viewToday(){
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
         ${leftoversHtml()}
-        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${decided
+        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`
             : `<button class="btn primary big-decide" data-act="decide" ${main ? '' : 'disabled'}><span>${esc(S.cook && S.cook.d === TODAY ? t('この献立に決め直す') : t('この献立に決定'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`}</div>
     </section>
