@@ -1710,5 +1710,18 @@ GOHAN_I18N('tr', {
     "炊飯器": "Pilav makinesi",
     "包丁とまな板": "Bıçak ve kesme tahtası",
     "10分以内": "10 dk içinde",
-    "10分": "10 dk"
+    "10分": "10 dk",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "Bugünün yemeği zaten belli. Eklediklerin bir sonraki planlamada öneri olur.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Bu hafta yemek istediğin en fazla 3 şeyi seç. Bir sonraki menü planlamasında öneri olur.",
+    "候補に入れました。次に献立を決めるときに出ます": "Eklendi. Bir sonraki planlamada görünecek",
+    "候補に入れる": "Öneri olarak ekle",
+    "候補に入れる（{n}品）": "Öneri olarak ekle ({n})",
+    "前に入れたもの": "Daha önce eklenenler",
+    "家族に送る文をつくる": "Aileye mesaj oluştur",
+    "自分": "Ben",
+    "自分で入れた料理「{word}」（{date}）": "Kendim ekledim: “{word}” ({date})",
+    "自分で入れた料理（{date}）": "Kendim ekledim ({date})",
+    "送らずに、自分の候補に入れる": "Göndermeden kendi önerime ekle",
+    "食べたいものは、まだありません": "Henüz bir şey eklenmedi",
+    "食べたいものを選ぶ": "Ne yemek istediğini seç"
 });

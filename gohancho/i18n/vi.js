@@ -1710,5 +1710,18 @@ GOHAN_I18N('vi', {
     "炊飯器": "Nồi cơm điện",
     "包丁とまな板": "Dao và thớt",
     "10分以内": "Trong 10 phút",
-    "10分": "10 phút"
+    "10分": "10 phút",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "Bữa hôm nay đã chốt rồi. Những gì bạn thêm sẽ là gợi ý cho lần sau.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Chọn tối đa 3 món bạn muốn ăn tuần này. Món sẽ trở thành gợi ý khi lên thực đơn lần sau.",
+    "候補に入れました。次に献立を決めるときに出ます": "Đã thêm. Sẽ hiện khi lên thực đơn lần sau",
+    "候補に入れる": "Thêm vào gợi ý",
+    "候補に入れる（{n}品）": "Thêm vào gợi ý ({n} món)",
+    "前に入れたもの": "Đã thêm trước đó",
+    "家族に送る文をつくる": "Tạo tin nhắn gửi gia đình",
+    "自分": "Tôi",
+    "自分で入れた料理「{word}」（{date}）": "Tự thêm: “{word}” ({date})",
+    "自分で入れた料理（{date}）": "Tự thêm ({date})",
+    "送らずに、自分の候補に入れる": "Không gửi, chỉ thêm vào gợi ý của tôi",
+    "食べたいものは、まだありません": "Chưa có món muốn ăn",
+    "食べたいものを選ぶ": "Chọn món muốn ăn"
 });

@@ -1710,5 +1710,18 @@ GOHAN_I18N('pt-BR', {
     "炊飯器": "Panela de arroz",
     "包丁とまな板": "Faca e tábua",
     "10分以内": "Até 10 min",
-    "10分": "10 min"
+    "10分": "10 min",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "A refeição de hoje já está decidida. O que você adicionou vira opção na próxima vez.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Escolha até 3 pratos que você quer comer nesta semana. Eles viram opções na próxima vez que planejar.",
+    "候補に入れました。次に献立を決めるときに出ます": "Adicionado. Vai aparecer na próxima vez que planejar",
+    "候補に入れる": "Guardar como opção",
+    "候補に入れる（{n}品）": "Guardar como opções ({n})",
+    "前に入れたもの": "Adicionados antes",
+    "家族に送る文をつくる": "Criar mensagem para a família",
+    "自分": "Eu",
+    "自分で入れた料理「{word}」（{date}）": "Adicionado por mim: “{word}” ({date})",
+    "自分で入れた料理（{date}）": "Adicionado por mim ({date})",
+    "送らずに、自分の候補に入れる": "Guardar como opção sem enviar",
+    "食べたいものは、まだありません": "Nada adicionado ainda",
+    "食べたいものを選ぶ": "Escolher o que quer comer"
 });

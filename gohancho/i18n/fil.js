@@ -1710,5 +1710,18 @@ GOHAN_I18N('fil', {
     "炊飯器": "Rice cooker",
     "包丁とまな板": "Kutsilyo at sangkalan",
     "10分以内": "Wala pang 10 minuto",
-    "10分": "10 min"
+    "10分": "10 min",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "Napagpasyahan na ang kain ngayon. Magiging mungkahi sa susunod ang idinagdag mo.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Pumili ng hanggang 3 gusto mong kainin ngayong linggo. Magiging mungkahi ito sa susunod na pagpaplano.",
+    "候補に入れました。次に献立を決めるときに出ます": "Naidagdag. Lalabas ito sa susunod na pagpaplano",
+    "候補に入れる": "Idagdag bilang mungkahi",
+    "候補に入れる（{n}品）": "Idagdag bilang mungkahi ({n})",
+    "前に入れたもの": "Idinagdag noon",
+    "家族に送る文をつくる": "Gumawa ng mensahe para sa pamilya",
+    "自分": "Ako",
+    "自分で入れた料理「{word}」（{date}）": "Idinagdag ko: “{word}” ({date})",
+    "自分で入れた料理（{date}）": "Idinagdag ko ({date})",
+    "送らずに、自分の候補に入れる": "Itago bilang mungkahi ko, huwag ipadala",
+    "食べたいものは、まだありません": "Wala pang idinagdag",
+    "食べたいものを選ぶ": "Piliin ang gusto mong kainin"
 });

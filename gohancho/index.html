@@ -1188,9 +1188,11 @@ body.on-today .greet{display:block;-webkit-line-clamp:unset;line-clamp:none;over
 .req-btn .rq-l{min-width:0}
 .req-btn .wsh-ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
 .req-btn .rq-n{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:.75rem;line-height:20px;text-align:center}
+.greet-row.solo{flex-direction:row;align-items:center;gap:8px}.greet-row.solo .greet-tx{flex:1 1 auto}
+.req-btn.lite{flex:none;min-height:36px;padding:2px 10px;gap:5px;font-size:.8125rem;font-weight:700;white-space:nowrap}   /* 家族のいない人の小さな入口: あいさつと同じ行（お膳を下げない） */
 .req-btn .rq1{flex:none}.req-btn .rq2{flex:0 1 auto;min-width:0;font-size:.8125rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.on-today.tray-tight4 header.top > div:not(.seal){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 第11回 R20: とても狭い画面の最後の詰め。日付・アプリの名前の行を畳む（読み上げには残す） */
-body.on-today.bar-static .greet-tx,body.on-today.greet-1 .greet-tx{-webkit-line-clamp:1;line-clamp:1}body.on-today.greet-0 .greet-tx{display:none}   /* 詰めてもお膳が入りきらない画面（帯をお膳の下に置くとき）では、あいさつは1行に */
+body.on-today.bar-static .greet-tx,body.on-today.greet-1 .greet-tx{-webkit-line-clamp:1;line-clamp:1}body.on-today.greet-0 .greet-tx,body.on-today.greet-0 .req-btn.lite{display:none}   /* 詰めてもお膳が入りきらない画面（帯をお膳の下に置くとき）では、あいさつは1行に */
 html[lang="ja"] .greet-tx,html[lang^="zh"] .greet-tx{word-break:auto-phrase}html[lang="ko"] .greet-tx{word-break:keep-all}
 body.on-today .greet .stage-line{display:block}   /* 段の上の一言は行いっぱいの箱にする（文の長さが変わっても、右から書く言語で箱の端が動かない） */
 .spot-label .dwhy{display:block;align-self:stretch;background:none;padding:0;border-radius:0;max-width:100%;box-sizing:border-box;font-size:.75rem;line-height:1.4;height:calc(1.4em + 4px);margin-top:3px;text-align:center;white-space:nowrap;overflow:hidden}   /* 外の箱は行いっぱい・高さ一定（理由の文が変わっても、箱の位置と大きさは動かない。1週間プランの今日の主菜を変えたとき、理由の札が消えて箱が縮み、位置が動いた） */
@@ -2546,7 +2548,7 @@ function normalizeState(d){
     // 家族から届いた「食べたい」（案A）。料理は1件ずつ。30日・30件まで。形の合わないものは捨てる（料理がこの端末にあるかは使うときに見る）
     { const ids = new Set();
       st.wants = arr(st.wants).filter(w => w && typeof w === 'object' && typeof w.id === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(w.id) && isYmd(w.at) && (Date.now() - new Date(w.at + 'T00:00:00').getTime()) < 30 * 864e5 && !ids.has(w.id) && ids.add(w.id)).slice(0, 30)
-          .map(w => ({k: typeof w.k === 'string' ? w.k.slice(0, 12) : '', n: typeof w.n === 'string' ? [...w.n.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join('') : '', id: w.id, m: [0, 1, 2].includes(w.m) ? w.m : null, t: isYmd(w.t) ? w.t : w.at, at: w.at})); }
+          .map(w => ({k: typeof w.k === 'string' ? w.k.slice(0, 12) : '', n: typeof w.n === 'string' ? [...w.n.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join('') : '', id: w.id, m: [0, 1, 2].includes(w.m) ? w.m : null, t: isYmd(w.t) ? w.t : w.at, at: w.at, ...(w.self === true ? {self: true} : {})})); }   // self: 自分で入れたもの（第4回 R15）
     // ○つけ表（案B）。4週分まで。返事は候補と同じ長さの 0・1・2 の並びだけ
     st.votes = arr(st.votes).filter(v => v && typeof v === 'object' && isYmd(v.w) && Array.isArray(v.ids) && v.ids.length && v.ids.length <= 10 && v.ids.every(x => typeof x === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(x))).slice(0, 4)
         .map(v => { const ans = {}; Object.entries(obj(v.ans)).slice(0, 12).forEach(([k, a]) => { const nk = [...String(k).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 12).join(''); if (nk && typeof a === 'string' && a.length === v.ids.length && /^[012]+$/.test(a)) ans[nk] = a; }); return {w: v.w, ids: v.ids.slice(), at: isYmd(v.at) ? v.at : v.w, ans}; });
@@ -4796,6 +4798,7 @@ function viewCookTab(){
     return `<div id="sec-shop" class="cook-sec">${shop}</div><div id="sec-cook" class="cook-sec">${viewCook()}</div><div id="sec-table" class="cook-sec">${viewTableStage()}</div>`;   // 食卓（今日出せました・作ったよと送る）はいつも作り方のいちばん下。作り終える前は、何をするところかの案内
 }
 // 段（買う・作る・食卓）へ: 作り方のタブのその欄まで送る。決めるは今日の献立
+const COOK_NEXT_GAP = 600;   // 「次へ」を続けて押したとき、2回目を効かせない間（ms）
 function gotoStage(k){
     session.stage = k;
     if (k === 'decide'){ if (tab !== 'today') setTab('today'); else { window.scrollTo({top:0}); render(); } return; }
@@ -4958,7 +4961,7 @@ function viewTableStage(){
         ${fin ? '' : `<p class="foot">${esc(t('作らなかった料理は ✓ を外すと、記録に入りません。'))}</p>`}
         ${wsv.length ? `<div class="note wsh-served" role="status">${ICO_MAIL}<span>${esc(t('{name}の食べたいもの、今日出せました。', {name: wishNames(wsv)}))}</span></div>` : ''}
         <div class="row stage-links tbl-links">
-            ${wsv.length ? `<button class="btn text" data-act="wish-made">${esc(t('作ったよと送る'))}</button>` : ''}
+            ${wsv.some(w => !w.self) ? `<button class="btn text" data-act="wish-made">${esc(t('作ったよと送る'))}</button>` : ''}
             <button class="btn text" data-act="table-photo" data-id="${esc((served[0] || its[0]).r.id)}">${esc(t('写真を残す'))}</button>
             <button class="btn text" data-act="table-panel" data-k="left" aria-expanded="${panel === 'left'}">${esc(t('残り物メモ'))}</button>
             <button class="btn text" data-act="table-panel" data-k="spend" aria-expanded="${panel === 'spend'}">${esc(t('食費を書く'))}</button>
@@ -5963,17 +5966,19 @@ function greetText(now){
     let hsh = 0; for (const c of TODAY + band) hsh = (hsh * 31 + c.charCodeAt(0)) >>> 0;   // 同じ日・同じ時間帯は同じ文
     return lines[hsh % lines.length];
 }
-// 家族リクエストの入口: 届いた数と、いちばん新しいものの一言。家族を登録している人には 0件でも出す（送る・受けとる入口）。家族がいない人には出さない
+// 家族リクエストの入口: 届いた数と、いちばん新しいものの一言。家族を登録している人には 0件でも出す（送る・受けとる入口）。
+// 家族がいない人には、あいさつの横に小さな「食べたいもの」の入口（自分で候補に入れる。第4回 R15。お膳の高さは変えない）
+function soloWish(){ return !famMembers().length; }
 function familyReqHtml(){
     const act = wishList().length ? wishesActive() : [];
-    if (!famMembers().length && !act.length) return '';
+    if (soloWish() && !act.length) return `<button type="button" class="req-btn lite" data-act="wish-list">${ICO_MAIL}<span class="rq-l">${esc(t('食べたいもの'))}</span></button>`;
     const last = act.slice().sort((a, b) => (b.at || '').localeCompare(a.at || ''))[0], r = last && recipeById(last.id);
-    const n = act.length, lab = t('家族リクエスト');
+    const n = act.length, lab = soloWish() ? t('食べたいもの') : t('家族リクエスト');
     return `<button type="button" class="req-btn${n ? ' has' : ''}" data-act="wish-list" aria-label="${esc(n ? t('家族リクエスト（{n}件）', {n}) : lab)}">
-        <span class="rq1">${ICO_MAIL}<span class="rq-l">${esc(lab)}</span>${n ? `<span class="rq-n">${n}</span>` : ''}</span>${r ? `<span class="rq2">${esc(t('{name}：{dish}', {name: wishWho(last.n), dish: trayName(r.name)}))}</span>` : ''}</button>`;
+        <span class="rq1">${ICO_MAIL}<span class="rq-l">${esc(lab)}</span>${n ? `<span class="rq-n">${n}</span>` : ''}</span>${r ? `<span class="rq2">${esc(t('{name}：{dish}', {name: wishWhoOf(last), dish: trayName(r.name)}))}</span>` : ''}</button>`;
 }
 function greetRowHtml(){
-    return `<div class="greet-row">${familyReqHtml()}<p class="greet-tx">${esc(greetText())}</p></div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
+    return `<div class="greet-row${soloWish() && !(wishList().length && wishesActive().length) ? ' solo' : ''}">${familyReqHtml()}<p class="greet-tx">${esc(greetText())}</p></div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
 }
 function praiseList(){ return [t('今日もおつかれさまです。'), t('献立が決まれば、半分は終わったようなものです。'), t('毎日のごはんが、ちゃんと回っています。'), t('記録しました。いつかの自分を助けます。'), t('今日の分、決まりました。あとは作るだけ。')]; }
 function praiseFor(ids, before){
@@ -9188,6 +9193,7 @@ function famMulti(){ return famMembers().some(m => !m.me); }
 // 呼び名: 文字として出すだけ。見えない文字・向きを変える文字・< > は外し、10文字まで
 function wishName(s){ return [...String(s == null ? '' : s).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join(''); }
 function wishWho(n){ return n || t('家族'); }
+function wishWhoOf(w){ return w && w.self ? t('自分') : wishWho(w && w.n); }   // 自分で候補に入れたもの（家族のいない人・送らずに入れたもの）
 function sendName(){ const v = S.settings.sendName; if (typeof v === 'string') return wishName(v); const me = meMember(); return me ? wishName(me.name) : ''; }
 const ymdPack = d => String(d).replace(/-/g, '');
 function ymdUnpack(c){ const s = String(c == null ? '' : c); if (!/^\d{8}$/.test(s)) return ''; const d = s.slice(0, 4) + '-' + s.slice(4, 6) + '-' + s.slice(6, 8); return realYmd(d) ? d : ''; }
@@ -9273,11 +9279,12 @@ function wishPick(slots){
 }
 function wishWhyText(w){
     const d = jpDate(w.at);
+    if (w.self) return w.m != null ? t('自分で入れた料理「{word}」（{date}）', {word: wishWords()[w.m], date: d}) : t('自分で入れた料理（{date}）', {date: d});
     return w.m != null ? t('{name}から「{word}」と届いた料理（{date}）', {name: wishWho(w.n), word: wishWords()[w.m], date: d}) : t('{name}から届いた料理（{date}）', {name: wishWho(w.n), date: d});
 }
 // 今日の食卓に出した料理のうち、届いていた「食べたい」（今日より前に作って済んだものは除く）
 function wishServed(ids){ const set = new Set(ids); return wishList().filter(w => set.has(w.id) && w.at <= TODAY && !S.history.some(h => h.id === w.id && h.d >= w.at && h.d < TODAY)); }
-function wishNames(ws){ const ns = [...new Set(ws.map(w => w.n))]; return joinNames(ns.map(wishWho)); }
+function wishNames(ws){ const ns = [...new Set(ws.map(wishWhoOf))]; return joinNames(ns); }
 
 /* ---- A-1 食べる人が選ぶ ---- */
 function wishSendOpen(){ sheet = {kind: 'wish-send', sel: [], m: null, q: ''}; renderSheet(); }
@@ -9304,16 +9311,18 @@ function wishSendSheetHtml(){
     const s = sheet, n = s.sel.length, name = sendName(), q = s.q || '';
     return `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="wish-close">× ${esc(t('とじる'))}</button></div>
         <h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
-        <p class="wsh-lead">${esc(t('今週食べたいものを、3つまで選べます。作る人に届いて、次に献立を決めるときの候補になります。'))}</p>
+        <p class="wsh-lead">${esc(soloWish() ? t('今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。') : t('今週食べたいものを、3つまで選べます。作る人に届いて、次に献立を決めるときの候補になります。'))}</p>
         <form class="inputbar wsh-q" data-form="wish-q" role="search"><input type="search" id="wish-q" value="${esc(q)}" placeholder="${esc(t('料理名でさがす'))}" aria-label="${esc(t('料理名でさがす'))}" autocomplete="off" maxlength="40"></form>
         <h3 class="wsh-sub" id="wish-sub">${esc(q.trim() ? t('さがした料理') : t('家でよく出る料理'))}</h3>
         <div class="wsh-grid" id="wish-grid" role="group" aria-label="${esc(t('食べたいもの'))}">${wishGridHtml()}</div>
         <h3 class="wsh-sub">${esc(t('ひとこと（なくても可）'))}</h3>
         <div class="chips" role="group" aria-label="${esc(t('ひとこと（なくても可）'))}">${wishWords().map((l, v) => `<button type="button" class="chip" data-act="wish-word" data-v="${v}" aria-pressed="${s.m === v}">${esc(l)}</button>`).join('')}</div>
-        <div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
-            : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>
+        ${soloWish() ? '' : `<div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
+            : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>`}
         ${n >= WISH_PICK_MAX ? `<p class="small muted" role="status">${esc(t('3つまで選べます'))}</p>` : ''}
-        <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-make" ${n ? '' : 'disabled'}>${esc(n ? t('送る文をつくる（{n}品）', {n}) : t('送る文をつくる'))}</button></div>`;
+        ${soloWish()
+            ? `<div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-keep" ${n ? '' : 'disabled'}>${esc(n ? t('候補に入れる（{n}品）', {n}) : t('候補に入れる'))}</button><button type="button" class="btn text" data-act="wish-make" ${n ? '' : 'disabled'}>${esc(t('家族に送る文をつくる'))}</button></div>`
+            : `<div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-make" ${n ? '' : 'disabled'}>${esc(n ? t('送る文をつくる（{n}品）', {n}) : t('送る文をつくる'))}</button><button type="button" class="btn text" data-act="wish-keep" ${n ? '' : 'disabled'}>${esc(t('送らずに、自分の候補に入れる'))}</button></div>`}`;
 }
 function wishSendText(ids, m, name){
     const rs = ids.map(id => recipeById(id)).filter(Boolean); if (!rs.length) return '';
@@ -9337,6 +9346,16 @@ function wishInSheetHtml(){
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-accept">${esc(t('受けとる'))}</button><button type="button" class="btn text" data-act="wish-decline">${esc(t('今回は受けとらない'))}</button></div>`
             : `<div class="wsh-info" role="status">${esc(rs.length ? t('合わないので候補に入れていません') : t('この端末で読める料理がありませんでした'))}</div><div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-decline">${esc(t('閉じる'))}</button></div>`}
         <p class="tiny muted wsh-lock">${ICO_LOCK}${esc(t('リンクの中身はこのスマホの中だけで読みました'))}</p>`;
+}
+// 送らずに自分の候補に入れる（家族のいない人の「食べたいもの」。届いたものと同じ形で持ち、同じ決まりで候補になる）
+function wishKeep(ids, m){
+    const list = wishList(); let n = 0;
+    ids.forEach(id => {
+        const r = recipeById(id); if (!r || wishBlockWhy(r)) return;
+        const old = list.findIndex(w => w.id === id); if (old >= 0) list.splice(old, 1);
+        list.unshift({k: 'self', n: '', self: true, id, m, t: TODAY, at: TODAY}); n++;
+    });
+    S.wants = list.slice(0, WISH_MAX); save(); return n;
 }
 function wishAccept(p){
     const list = wishList();
@@ -9371,10 +9390,10 @@ function wishListSheetHtml(){
             ${conf ? `<span class="small">${esc(cur ? t('今日の{slot}（{name}）と入れかえますか？', {slot: slotLabel(slot), name: cur.name}) : t('今日の献立に入れますか？'))}</span><span class="row"><button type="button" class="btn sm" data-act="wish-today-ok" data-id="${esc(w.id)}">${esc(t('入れかえる'))}</button><button type="button" class="btn sm ghost" data-act="wish-today" data-id="">${esc(t('やめる'))}</button></span>` : ''}</div>
             <div class="wsh-row-a">${inMenu.has(w.id) ? `<span class="small muted">${esc(t('今日の献立にあります'))}</span>` : !dec && m && m.items.some(x => x.slot === slot) && !conf ? `<button type="button" class="btn sm" data-act="wish-today" data-id="${esc(w.id)}">${esc(t('今日に入れる'))}</button>` : ''}<button type="button" class="btn sm ghost" data-act="wish-rm" data-id="${esc(w.id)}">${esc(t('外す'))}</button></div></div>`; };
     return `<h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
-        <p class="small muted">${esc(dec ? t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。') : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
-        ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(t('いまは届いているものはありません'))}</p>`}
-        ${rest.length ? `<details class="box wsh-old"><summary>${esc(t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWho(w.n))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
-        <div class="row wsh-set"><button class="btn text" data-act="wish-open">${esc(t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
+        <p class="small muted">${esc(dec ? (soloWish() ? t('今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。') : t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。')) : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
+        ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(soloWish() ? t('食べたいものは、まだありません') : t('いまは届いているものはありません'))}</p>`}
+        ${rest.length ? `<details class="box wsh-old"><summary>${esc(soloWish() ? t('前に入れたもの') : t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWhoOf(w))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
+        <div class="row wsh-set"><button class="btn text" data-act="wish-open">${esc(soloWish() ? t('食べたいものを選ぶ') : t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
 }
 // 今日に入れる（本人が押したときだけ。決めた一膳には入れない）。入れかえた枠だけ変わり、「元に戻す」（8秒）を出す
@@ -10586,7 +10605,7 @@ function viewToday(){
         const isFresh = !!(r && freshAt(idx));
         return `<div class="spot ${cls}${wTag || vTag ? ' has-wtag' : ''}${isFresh ? ' fresh' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${isFresh ? `<span class="fresh-tag">${esc(t('新'))}</span>` : ''}
-            ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
+            ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWhoOf(wTag)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}${modeTagHtml(r, it.slot)}</span>
                 ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(trayName(r.name))}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL};--exa:${exAlg}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
@@ -11282,6 +11301,19 @@ const SEARCH_STOP = new Set(['and','the','with','for','of','n']);
 const searchJa = () => !PACK && LANG === 'ja';
 // 読みが変わる言葉（おかゆ・かゆ・がゆ・粥）は、どれで入れても同じ料理に当てる（「おかゆ」で2品、「がゆ」で16品、「粥」で0品、だった）
 const SEARCH_ALT = Object.fromEntries([['おかゆ', ['かゆ', 'がゆ']], ['お粥', ['かゆ', 'がゆ']], ['粥', ['かゆ', 'がゆ']], ['かゆ', ['がゆ']], ['がゆ', ['かゆ']]].map(([k, v]) => [norm(k), v.map(norm)]));
+// 漢字で入れた料理名（七草粥・玉子がゆ・饂飩・金平・おみそ汁）も、よみ（ひらがな）に直して当てる。漢字→かなの表（長い言葉から先に）と、頭の「お」を外した形を試す
+// （「おかゆ」のような決まった言いかえは SEARCH_ALT。ここは一般の読みかえで、料理の名前にもよみにも当たらないときの取りこぼしを減らす）
+const SEARCH_KANA = [['茶碗蒸し','ちゃわんむし'], ['唐揚げ','からあげ'], ['から揚げ','からあげ'], ['天ぷら','てんぷら'], ['冷やし','ひやし'], ['生姜','しょうが'], ['南瓜','かぼちゃ'], ['茄子','なす'], ['胡麻','ごま'], ['海老','えび'], ['大根','だいこん'],
+    ['七草','ななくさ'], ['中華','ちゅうか'], ['味噌','みそ'], ['饂飩','うどん'], ['蕎麦','そば'], ['金平','きんぴら'], ['餃子','ぎょうざ'], ['玉子','たまご'], ['豆腐','とうふ'], ['野菜','やさい'], ['炒め','いため'], ['焼き','やき'], ['揚げ','あげ'],
+    ['粥','がゆ'], ['卵','たまご'], ['汁','しる'], ['鶏','とり'], ['豚','ぶた'], ['牛','ぎゅう'], ['焼','やき'], ['煮','に'], ['丼','どん'], ['鍋','なべ'], ['麺','めん'], ['肉','にく'], ['魚','さかな'], ['鮭','さけ'], ['鯖','さば'], ['鰤','ぶり'], ['塩','しお'], ['梅','うめ'], ['芋','いも'], ['茸','たけ']]
+    .map(([a, b]) => [norm(a), norm(b)]).sort((x, y) => y[0].length - x[0].length);
+function searchKanaAlts(tm){
+    const out = new Set(), add = x => { if (x && x !== tm && x.length >= 2) out.add(x); };   // 1文字の読み（「煮」→「に」）だけでは当てない
+    const kana = x => SEARCH_KANA.reduce((acc, [a, b]) => acc.split(a).join(b), x);
+    add(kana(tm));
+    if (/^お./.test(tm) && tm.length >= 4){ add(tm.slice(1)); add(kana(tm.slice(1))); }   // おみそ汁 → みそ汁 → みそしる
+    return [...out];
+}
 // noDish: 料理の名前・別名そのもの（ニラトン・ニラ豚）も食材として読まない（「ニラ」を冷蔵庫に入れる案を出さない）
 function searchIngText(q, noDish){ return searchJa() ? searchTerms(q).filter(x => { const n = norm(x); return !SEARCH_SYN[n] && !SEARCH_ALT[n] && !(SEARCH_CAT[n] && n.length >= 2) && !(noDish && dishNamed(x)); }).join('、') : q; }
 function searchRecipes(q, withHidden){
@@ -11290,15 +11322,16 @@ function searchRecipes(q, withHidden){
     const ja = searchJa();
     const keys = extractIngredients(searchIngText(q)).map(keyOf);
     const terms = raw.map(norm).filter(Boolean);
+    const kalts = terms.map(tm => ja ? searchKanaAlts(tm) : []);   // 漢字→かなの読みかえ（材料の名前にも同じ読みかえで当てる: 饂飩→うどん）
     const score = r => {
         let sc = 0;
-        terms.forEach(tm => { if (nameHit(r, tm) || (ja && SEARCH_SYN[tm] && nameHit(r, SEARCH_SYN[tm])) || (ja && (SEARCH_ALT[tm] || []).some(a => nameHit(r, a)))) sc += 3; });
+        terms.forEach((tm, ti) => { if (nameHit(r, tm) || (ja && SEARCH_SYN[tm] && nameHit(r, SEARCH_SYN[tm])) || (ja && (SEARCH_ALT[tm] || []).some(a => nameHit(r, a))) || kalts[ti].some(a => nameHit(r, a))) sc += 3; });
         // 「chicken soup」のように語を並べたときは、語順どおりの名前でなくても、すべての語が名前や材料に入っていれば当たり（Chicken noodle soup）
         if (!sc) raw.forEach(rw => { if (!isLatinText(rw) || !/\s/.test(rw)) return; const ws = rw.toLowerCase().split(/\s+/).filter(w => w.length >= 3 && !SEARCH_STOP.has(w)); const hay = searchIdx(r).hay; if (ws.length >= 2 && ws.every(w => hay.includes(norm(w)))) sc += 2; });
         if (ja) terms.forEach(tm => { if (SEARCH_CAT[tm] && SEARCH_CAT[tm].includes(r.family) && (tm !== norm('焼き魚') || r.method === '焼')) sc += 2; });
         keys.forEach(k => { if (r.items.some(i => i.key === k)) sc += i_main(r, k) ? 2 : 1; });
         const labs = searchIdx(r).labs;
-        terms.forEach(tm => { if (r.items.some((i, ix) => labs[ix].includes(tm) || i.key.includes(tm))) sc += 1; });
+        terms.forEach((tm, ti) => { if ([tm, ...kalts[ti]].some(a => r.items.some((i, ix) => labs[ix].includes(a) || i.key.includes(a)))) sc += 1; });
         return sc;
     };
     const i_main = (r, k) => r.items.findIndex(i => i.key === k) < 3;
@@ -12641,6 +12674,8 @@ document.addEventListener('click', e => {
         case 'wish-make': { if (!sheet || sheet.kind !== 'wish-send' || !sheet.sel.length) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
             const text = wishSendText(sheet.sel, sheet.m, sendName()); if (!text) break;
             sheet = {kind: 'share', card: 'wish', text, title: t('食べたいもの')}; renderSheet(); break; }
+        case 'wish-keep': { if (!sheet || sheet.kind !== 'wish-send' || !sheet.sel.length) break; const n = wishKeep(sheet.sel, sheet.m); closeSheet(); render();
+            toast(n ? t('候補に入れました。次に献立を決めるときに出ます') : t('合わないので候補に入れていません')); break; }
         case 'wish-accept': { if (!sheet || sheet.kind !== 'wish-in') break; const p = sheet.p; wishAccept(p); closeSheet(); render();
             toast(t('受けとりました。次に献立を決めるときの候補になります')); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); break; }
         case 'wish-decline': { if (sheet && sheet.kind === 'wish-in' && !sheet.seen){ wishSeenAdd(sheet.p.key); save(); } wishClose(); break; }
@@ -12952,6 +12987,9 @@ document.addEventListener('click', e => {
                 if (!target && !cur){ const dn = p2mDone(ds.r); if (dn.length) target = {d: i, k: Math.max(...dn)}; }
                 if (!target) break;
             } else {
+                // 続けて押した「次へ」（タイマー中の「進む」も同じ場所に出る）は1回だけ効かせる。指が2度当たっただけで手順が2つ・3つ進んで「できた」にならないように（第2回 B6）
+                // （指で押したときだけ。声の「次」やテストの click() は今までどおり）
+                if (e.isTrusted){ const now = Date.now(); if (now - (session.cookNextAt || 0) < COOK_NEXT_GAP) break; session.cookNextAt = now; }
                 if (!cur){   // この料理はできあがり: 段取りの次のまだの手順へ。ぜんぶ済んでいれば食卓へ
                     const nx = p2mNextEntry(plan, null); session.timerAsk = null;
                     if (nx){ session.cookIdx = nx.d; session.cookPin = null; session.cookPeek = false; render(); window.scrollTo({top:0}); if (hf.on) hfReadNow(); }
