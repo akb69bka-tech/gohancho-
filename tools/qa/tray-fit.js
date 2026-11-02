@@ -129,7 +129,7 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
         // 360×740 は、⚠ の札が上下の段に出て名前も2行の日（いちばん詰めても入らない）は、帯をお膳の下に置く形でもよい（スクロールで全部見られる）。390・430 は帯の上に入ること
         const scrollOk = innerWidth < 390 && document.body.classList.contains('bar-static'), bar = document.querySelector('.actionbar');
         const bad = [];
-        if (!document.querySelector(opt.warn !== undefined ? '#greet .req-btn' : '#greet .req-btn.has')) bad.push('家族リクエストの入口がない');   // 決めたあとにアレルゲンを足すと、届いた料理が当たって数が消えることがある（入口は残る）
+        if (!document.querySelector(opt.warn !== undefined ? '#greet .req-btn, header.top .req-btn' : '#greet .req-btn.has, header.top .req-btn.has')) bad.push('家族リクエストの入口がない');   // 第18回 S22: いちばん詰めたとき（tray-tight5）は上の端の行に移る   // 決めたあとにアレルゲンを足すと、届いた料理が当たって数が消えることがある（入口は残る）
         const gt = document.querySelector('#greet .greet-tx'), greet = gt ? (getComputedStyle(gt).display === 'none' ? '(出さない)' : gt.textContent.slice(0, 14) + ' ' + Math.round(gt.getBoundingClientRect().height) + 'px') : '';
         if (opt.warn && !(gt && /⚠/.test(gt.textContent))) bad.push('⚠ のあいさつにならない');
         const parts = [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')];

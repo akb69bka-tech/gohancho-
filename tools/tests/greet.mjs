@@ -102,7 +102,7 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         const r = await p.evaluate(() => { const tr = document.querySelector('#view .tray'); let fl = innerHeight;
             document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top > innerHeight * .4 && q.top < fl) fl = q.top; });
             const hid = document.body.classList.contains('bar-static') ? [] : [...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => e.getBoundingClientRect().bottom > fl + .5).map(e => e.className.split(' ')[0]);
-            const g = document.querySelector('#greet .greet-tx'), bt = document.querySelector('#greet .req-btn');
+            const g = document.querySelector('#greet .greet-tx'), bt = document.querySelector('#greet .req-btn, header.top .req-btn');   // 第18回: いちばん詰めたとき（tray-tight5）は入口が上の端の行に移る（入口は残る）
             return {hid, scroll: document.body.classList.contains('bar-static'), g: !!g, bt: !!bt && bt.getBoundingClientRect().height >= 44}; });
         if (r.hid.length || !r.g || !r.bt) bad.push(`${w}x${h} 文字${ts} ${dc}品 ` + JSON.stringify(r));
         if (r.scroll && w === 390 && !ts) bad.push(`${w}x${h} ${dc}品 帯をお膳の下に置いた（390 標準の文字では入るはず）`);
