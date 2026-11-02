@@ -17,7 +17,7 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,4 +37,4 @@ jobs:
       - name: ブラウザテスト（短縮モード）
         run: |
           export NODE_PATH="$(npm root -g)"
-          tools/qa/run-all.sh --quick --jobs 3 --skip syntax,packs,i18n,steps,terms
+          tools/qa/run-all.sh --quick --jobs 4 --skip syntax,packs,i18n,steps,terms
