@@ -2427,7 +2427,7 @@ const FAMILY_RE = {
    保存データ
    ========================================================= */
 const STORE_KEY = 'gohancho.v1';
-const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
+const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, eatersD:'', leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
 // 国のコード（COUNTRIES と同じ21か国。保存データを読むときに使うので、ここに置く）
 const COUNTRY_CODES = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', 'CN', 'TW', 'KR', 'TH', 'VN', 'ID', 'PH', 'MX', 'BR', 'PE'];
 const BROKEN_PREFIX = 'gohancho.broken.';
@@ -2504,6 +2504,7 @@ function normalizeState(d){
       if (Object.keys(o).length) st.settings.kitchen = o; else delete st.settings.kitchen; }
     st.settings.seasNo = [...new Set(arr(st.settings.seasNo).filter(x => typeof x === 'string' && x.startsWith('p|')))].slice(0, 80); if (!st.settings.seasNo.length) delete st.settings.seasNo;
     st.eaters = Array.isArray(st.eaters) ? st.eaters.filter(x => x === '__me' || st.family.some(m => m.id === x)) : null;
+    st.eatersD = Array.isArray(st.eaters) && isYmd(st.eatersD) ? st.eatersD : '';   // 今日食べる人を選んだ日（日付が替わったら選んでいない形に戻す）。日付のない前の版のデータは、開いた日に選んだものとして扱い、次の日に戻す
     if (!isYmd(st.firstUse)) st.firstUse = '';
     // 作り置き・残り物メモ（{id, name, d}: 「冷蔵庫に入れた」と押した日 d を 1日目として数える）と、食費メモ（{id, d, a}: 自分で入れた金額）。端末の中だけ
     st.leftovers = arr(st.leftovers).filter(x => x && typeof x === 'object' && typeof x.name === 'string' && x.name.trim() && isYmd(x.d)).slice(0, 30)
@@ -3012,6 +3013,7 @@ function jpDate(s, withWeekday=true){
 // 1日の切りかえは午前4時（夜ふかしで0時を過ぎても、その夜の一膳のまま。設計書 §2・R15）
 function dayNow(){ const d = new Date(); d.setHours(d.getHours() - 4); return ymd(d); }
 let TODAY = dayNow();   // 開いたまま日付が変わったら refreshToday() で更新する
+try{ eatersDayCheck(); }catch(e){}   // 前の日に選んだ「今日食べる人」は、今日には持ちこまない（S27）
 // 起動して、国のデータ（料理）を読みこみ終わるまでは true にならない。それより前に献立を作ったり、前の案を探したりすると、料理がまだ引けず、開くたびに別の献立になる
 let bootReady = false;
 // RECIPES の id → 料理の索引（件数・先頭・末尾が変わったら作り直す）
@@ -3092,7 +3094,7 @@ function weekDishesOf(w){
     return w.days.filter(x => x && x.d >= TODAY && !x.skip).flatMap(x => [x.id].concat(x.extra && typeof x.extra === 'object' ? [x.extra.side, x.extra.soup] : [])).filter(Boolean).map(byId).filter(Boolean);
 }
 function weekUndo(prev, fn){
-    return menuUndo(() => weekDishesOf(prev), () => { if (weekDishesOf(prev).some(r => isAvoided(r) || S.hidden.includes(r.id))) return; fn(); });
+    return menuUndo(() => weekDishesOf(prev), () => { if (weekAlg(() => weekDishesOf(prev).some(r => isAvoided(r) || S.hidden.includes(r.id)))) return; fn(); });   // 家族みんなのアレルギーで見る（S27）
 }
 /* お知らせ（トースト）の置き場所（第3回b N4・第2回 D4・三宅）
    ・いつもの場所は、下の固定の帯（下のタブ、決める段・作る段の主ボタン .actionbar）のすぐ上。主ボタンが2行で高くなっても、その上に出す（主ボタン・下のタブには重ねない）。
@@ -4174,7 +4176,8 @@ function suggestTwist(){
 function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoidDays) || 0); }
 const WEEK_BOWL_MAX = 3;
 const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
-function makeWeek(){
+function makeWeek(){ return weekAlg(makeWeek0); }
+function makeWeek0(){
     // 1週間プランは今日の気分に左右されない（おかゆの日に作ると、おかゆ・雑炊・ハムエッグがプランの主菜に入っていた）。候補は poolForMood('主菜', 'all')
     const days = [], used = new Set();
     // 今日の献立をもう決めていれば、プランの今日はその主菜にする（決めた献立とプランが食い違わないように）
@@ -4210,7 +4213,8 @@ function makeWeek(){
     S.week = {start:TODAY, days}; save();
 }
 // 苦手な食材を足したり料理を「今は出さない」にしたりしたとき、作ってある1週間プランのうち、その料理の日だけ選び直す
-function refreshWeek(){
+function refreshWeek(){ return weekAlg(refreshWeek0); }
+function refreshWeek0(){
     if (!S.week) return 0;
     const out = r => !r || isAvoided(r) || S.hidden.includes(r.id);
     const used = new Set(S.week.days.map(x => x.id)); let n = 0; const skipped = [];
@@ -4234,7 +4238,8 @@ function refreshWeek(){
 }
 // 1週間プランの各日の副菜・汁もの（主菜だけを決めるので、買い物メモに入れるときに主菜に合う副菜と汁ものを1品ずつ選び、S.week.days[i].extra = {side, soup} に残す。作り直さないかぎり同じ）
 function weekSidesOn(){ return !!S.settings.weekSides; }
-function ensureWeekExtras(){
+function ensureWeekExtras(){ return weekAlg(ensureWeekExtras0); }
+function ensureWeekExtras0(){
     if (!S.week) return;
     const ok = id => { const r = byId(id); return !!r && !isAvoided(r) && !S.hidden.includes(id); };
     const taken = new Set(); let ch = false;
@@ -4888,7 +4893,9 @@ function skipDayHtml(x){
 function keptOfferHtml(){
     const k = keepGet(TODAY) || yesterdayOffer(); if (!k || decidedToday()) return '';
     const rs = k.ids.map(byId).filter(Boolean); if (!rs.length) return '';
-    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた献立（{names}）を今日にしますか？', {names: joinNames(rs.map(r => r.name))}) : t('きのう明日へまわした献立（{names}）があります', {names: joinNames(rs.map(r => r.name))}))}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
+    // あとから足したアレルギーに当たる料理には、名前に ⚠ を付け、今日の案にすると選び直すことを書く（第15回 R43。⚠ なしで名前が並んでいた）
+    const ab = rs.filter(r => allergyConflict(r)), nm = r => (ab.includes(r) ? '⚠ ' : '') + r.name, names = joinNames(rs.map(nm));
+    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた献立（{names}）を今日にしますか？', {names}) : t('きのう明日へまわした献立（{names}）があります', {names}))}${ab.length ? `<span class="small warn alg-kept" role="alert" style="display:block">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</span>` : ''}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
 }
 // さがすタブの中の切りかえ（料理をさがす・材料から／ひとひねり／世界のレシピ）。中身は小野寺が「さがす」の画面にまとめる
 function findNav(){
@@ -6321,6 +6328,7 @@ function renderSheetBody(){
     if (sheet.kind === 'country-ok') body = countryOkSheetHtml();
     if (sheet.kind === 'skip') body = skipSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
+    if (sheet.kind === 'start-alg') body = startAlgSheetHtml();
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
     if (sheet.kind === 'wday') body = wdaySheetHtml();
@@ -7116,10 +7124,12 @@ function allergyBadge(r){
 // お膳の下・家族に送る文に添える、選んだアレルゲンの一言
 // いまお膳に出している料理（今日の画面の献立。まだなければ決めた献立）
 function shownDishes(){ return session.menu ? session.menu.items.map(x => x.r).filter(Boolean) : cookItems().map(x => x.r); }
+// 「入れていません」「食べられるお膳です」と言ってよいかを見る料理: お膳の料理に、今日の作り方に入っている料理（「今日これを作る」で入れた料理も）を足したもの（第15回 R44）
+function safeSayDishes(){ const c = S.cook, xs = shownDishes(); return c && c.d === TODAY ? [...new Set(xs.concat(cookItems().map(x => x.r)))] : xs; }
 // 決めた献立にあとからアレルゲンを足したときなど、当たる料理が残っているあいだは「入れていません」と言わない（何品あるかを言う）
 function algLine(){
     const ids = algIds(); if (!ids.length) return '';
-    const hit = shownDishes().filter(r => algSelectedHits(r, ids).length);
+    const hit = safeSayDishes().filter(r => algSelectedHits(r, ids).length);
     if (hit.length) return t('アレルゲン（{list}）を使う料理が{n}品あります', {list: joinNames([...new Set([].concat(...hit.map(r => algSelectedHits(r, ids))))].map(algLabel)), n: hit.length});
     const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r, ids).length).length;   // 入っていることがある加工品を使う料理があれば、言い切らずに確かめてもらう（どの加工品かも書く）。付け合わせ（福神漬けなど）も市販品なので数える
     return may ? t('アレルゲン（{list}）を使う料理は入れていません。{n}品は、袋の表示を確かめてください（{items}）', {list: joinNames(ids.map(algLabel)), n: may, items: joinNames(algMayNames(mayRs, ids))})
@@ -7338,7 +7348,20 @@ function effAvoid(){
     algIdsEff(); const mp = (famAlgIds.c && famAlgIds.c.mapped) || new Set();
     return [...new Set(base.concat(...ms.map(m => m.avoid.filter(v => !(m.allergy.includes(v) && mp.has(String(v)))))))];
 }
-function allergyList(){ const ms = eaterMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
+// 1週間プラン（作る・選び直す・別の案・○つけ表から組む・行の ⚠・1週間の買い物メモ）は、「今日食べる人」の選び方にかかわらず、登録した家族みんな（ときどき一緒に食べる人も）のアレルギーで見る（第15回 S27）。
+// 今日食べる人から外した家族のアレルギーが、ほかの日の主菜や買い物メモに効かなくなっていた。苦手・辛さは今までどおり今日食べる人で見る（判定の関数そのものは変えず、渡す家族だけを広げる）
+let weekAlgN = 0;
+function weekAlg(fn){ weekAlgN++; try{ return fn(); } finally { weekAlgN--; } }
+function allergyMembers(){ return weekAlgN ? famMembers() : eaterMembers(); }
+function allergyList(){ const ms = allergyMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
+// 今日の献立で考えていない家族（今日食べる人から外した人・いつものメンバーにいない人）
+function eatersOut(){ const ms = eaterMembers(); return famMembers().filter(m => !ms.includes(m)); }
+function eatersOutLine(){ const xs = eatersOut(); return xs.length ? t('今日の献立は、{names}を除いて考えています', {names: joinNames(xs.map(m => famLabel(m, famMembers().indexOf(m))))}) : ''; }
+// 「今日食べる人」は今日だけ。日付が替わったら選んでいない形（いつものメンバー）に戻す（S27: 次の日も外れたままで、外した家族のアレルゲンの料理が ⚠ なしで出た）
+function setEaters(v){ S.eaters = v; S.eatersD = Array.isArray(v) ? TODAY : ''; }
+function eatersDayCheck(){
+    if (Array.isArray(S.eaters) && !S.eatersD){ S.eatersD = TODAY; save(); return false; }   // 前の版（日付を持たない）から上げた日は、そのまま使い、次の日に戻す
+    if (Array.isArray(S.eaters) && S.eatersD !== TODAY){ S.eaters = null; S.eatersD = ''; save(); return true; } return false; }
 function mildOn(){ return eaterMembers().some(m => m.mild); }
 // 料理を出す・出さないの判定（isAvoided・isAvoidedCore）に効くものを全部入れた鍵。判定の結果を覚えておく所（ラクの日・お弁当の候補の数・世界の料理）はこれを鍵にする
 // 苦手（全員の分と今日食べる家族の分・言いかえの覚え・国・言語は avoidCtx の鍵に入っている）・アレルゲン（発酵調味料のスイッチも）と家族のアレルギー（allergyCtx の鍵）・品薄・置き換えのオンオフ・辛さ
@@ -7352,7 +7375,7 @@ function eatersLine(){
     const names = joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))));
     // 合わない料理（アレルギー・苦手・辛さ）が残っているあいだは「食べられるお膳です」と言わない
     const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r).length).length;   // 入っていることがある加工品（ワンタンの皮の卵など）・市販の付け合わせ（福神漬けなど）を使うときも、言い切らない
-    const base = shownDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
+    const base = safeSayDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
     return al ? base + '\n' + al : base;
 }
 // 辛さ: 2 = とても辛い（唐辛子・豆板醤などを主な材料に使う・名前が辛い料理・唐辛子の調味料を大さじ1ほど使う料理）、1 = 少し辛みがある（薬味・調味料・作り方に辛みが出てくる・キムチ）、0 = 辛くない
@@ -8316,7 +8339,8 @@ function shopName(i, r){
     const raw = String(i.name || '').replace(/\u00a0/g, ' ').trim();
     return LANG === 'ja' && (!r.pack || r.pack === 'JP') && raw && /[ぁ-んァ-ヶー一-龠]/.test(raw) ? raw : i.label;
 }
-function shoppingList(){
+function shoppingList(){ return weekAlg(shoppingList0); }
+function shoppingList0(){
     const have = fridgeKeys(), fac = servingFactor(true), map = new Map(), byBase = new Map(), byLoose = new Map(), keySeen = new Set(), mayIds = algIdsEff(), algG = allergyOn() ? allergyCtx() : null;
     const add = r => {
         if (!r) return;
@@ -8448,7 +8472,8 @@ function shopDoneSheetHtml(){
         <button class="btn" data-act="shop-to-fridge-go">${esc(t('このまま冷蔵庫に入れる'))}</button>`;
 }
 let jpEnTried = false;
-function shoppingHtml(){
+function shoppingHtml(){ return weekAlg(shoppingHtml0); }
+function shoppingHtml0(){
     const list = shoppingList(); if (!S.week || !visiblePlanDays().length) return '';
     // 日本語の画面で日本の料理に英語の名前を添えるため、英語版の訳を（まだなら）一度だけ読む。読めなければ英語の名前は出さない
     if (LANG === 'ja' && !PACK_TR['JP.en'] && !jpEnTried && (JP_DATA || currentCountry() === 'JP')){ jpEnTried = true; loadPackTr('JP', 'en').then(tr => { if (tr){ JP_EN_MAP = null; scheduleRender(0); } }); }
@@ -8467,7 +8492,7 @@ function shoppingHtml(){
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
         <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
-        ${(ab => ab.length ? `<p class="small warn alg-shop-hit" role="alert">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の献立にするときは、その枠だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</p>` : '')(shopAlgDishes())}
+        ${(ab => ab.length ? `<p class="small warn alg-shop-hit" role="alert">${esc(t('⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。', {names: joinNames(ab.map(r => r.name))}))}</p>` : '')(shopAlgDishes())}
         ${algIds().length || famMembers().some(m => m.allergy.length) ? `<p class="pantry-hint alg-shop">${esc(t('アレルギーの設定があります。買うときは、原材料表示を必ず確かめてください。'))}${(xs => xs.length ? ' ' + esc(t('袋の表示を確かめるもの（調味料も）：{list}', {list: joinNames(xs)})) : '')(shopMayList())}</p>` : ''}
         <div class="list shop${big ? ' big' : ''}">${list.length ? shopRowsHtml(list, done)
             : `<div class="empty">${esc(t('必要な材料は、冷蔵庫と常備品でそろっています。'))}</div>`}</div>
@@ -8477,11 +8502,11 @@ function shoppingHtml(){
 }
 // 買い物メモの日の料理のうち、いまの設定でアレルゲンに当たる料理（プランの行に「⚠ アレルゲンあり」が付く料理。S26: 買い物メモの側には ⚠ がなかった）。調味料だけで当たる料理もここで知らせる
 function shopAlgDishes(){
-    if (!S.week || !allergyOn()) return [];
-    return [...new Set(visiblePlanDays().flatMap(x => dayDishes(x)).filter(r => allergyConflict(r)))];
+    return weekAlg(() => !S.week || !allergyOn() ? [] : [...new Set(visiblePlanDays().flatMap(x => dayDishes(x)).filter(r => allergyConflict(r)))]);
 }
 // 買い物メモの日の料理で「袋の表示を確認」になる加工品・調味料（調味料はメモの行にないので、ここに名前を出す）: 「コンソメ（大豆）」の形
-function shopMayList(){
+function shopMayList(){ return weekAlg(shopMayList0); }
+function shopMayList0(){
     if (!S.week) return [];
     const g = new Map();
     visiblePlanDays().forEach(x => dayDishes(x).concat(shopTsukeOf(byId(x.id)) || []).forEach(r0 => { const r = r0 && r0.tsuke ? r0 : swappedRecipe(r0); if (r) algMayHits(r).forEach(h => h.names.forEach(n => { if (!g.has(n)) g.set(n, []); if (!g.get(n).includes(h.id)) g.get(n).push(h.id); })); }));
@@ -8522,7 +8547,8 @@ function menuShareText(m = session.menu, d = TODAY){
     lines.push('', t('― わが家のご飯帖'));
     return lines.join('\n');
 }
-function weekShareText(){
+function weekShareText(){ return weekAlg(weekShareText0); }
+function weekShareText0(){
     const days = visiblePlanDaysAll(); if (!days.length) return '';
     if (weekSidesOn()) ensureWeekExtras();
     const lines = [t('【献立の予定】')];
@@ -10136,7 +10162,7 @@ function condSheetHtml(){
     const hv = {compose: composeOf(m.n).name, n: m.items.length ? menuSeats(m) : dishSeats(m.n), reason: countReason(m.n)};
     const hint = svQual() ? t('{compose}・{n}品・{v}。{reason}', {...hv, v: svText()}) : t('{compose}・{n}品・{sv}人分。{reason}', {...hv, sv: fmtPortion(svToday())});   // ご飯の席も1品と数える
     void oneBowl; void st;
-    const eaters = famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(x => x.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((x, i) => `<button class="chip" data-act="eater" data-v="${esc(x.id)}" aria-pressed="${eaterMembers().includes(x)}">${esc(famLabel(x, i))}</button>`).join('')}</div></div>`
+    const eaters = famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(x => x.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((x, i) => `<button class="chip" data-act="eater" data-v="${esc(x.id)}" aria-pressed="${eaterMembers().includes(x)}">${esc(famLabel(x, i))}</button>`).join('')}</div>${eatersOut().length ? `<p class="small eaters-out" role="status">${esc(eatersOutLine())}</p>` : ''}${Array.isArray(S.eaters) ? `<p class="small muted">${esc(t('今日食べる人は今日だけの設定です。明日は元に戻ります。'))}</p>` : ''}${eatersOut().some(m => m.allergy.length) ? `<p class="small muted">${esc(t('1週間プランと買い物メモは、家族みんなのアレルギーで考えます。'))}</p>` : ''}</div>`
         : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
     const wishN = wishList().length ? wishesActive().length : 0;
     // 今日の献立の小さな入口（もとはお膳の下の文字のリンク）。押すとこのシートを閉じて、それぞれの画面へ
@@ -10264,7 +10290,10 @@ function pendingNoteHtml(withMood){
     return out.join('');
 }
 /* ---- 明日の一膳を見る: 明日の下書きを先に作って見せる（明日、開いたときにこの案から始める） ---- */
-function tomorrowDraft(){
+// 明日の案・明日の献立のシートは、明日の「今日食べる人」（選んでいない形。今日だけの選び方は明日に持ちこまない。S27）で考える
+function asTomorrow(fn){ const e0 = S.eaters; if (!Array.isArray(e0)) return fn(); S.eaters = null; try{ return fn(); } finally { S.eaters = e0; } }
+function tomorrowDraft(){ return asTomorrow(tomorrowDraft0); }
+function tomorrowDraft0(){
     const td = addDays(TODAY, 1), rec = dayRec(td), ok = x => x && x.id && x.id !== 'none' && byId(x.id);
     const kept = rec && Array.isArray(rec.items) && rec.state !== 'decided' && rec.items.some(ok) ? rec.items.filter(ok) : null;
     if (rec && Array.isArray(rec.items) && rec.state === 'decided') return rec.items.filter(ok);   // 先に決めた明日の一膳は、作り直さない（当たる料理は一覧に印を出す）
@@ -10289,7 +10318,8 @@ function tomorrowDraft(){
         Object.assign(dayObj(td), {state: 'draft', items: its, shape: shapeKey()}); return its; }
     finally { S.settings.dishCount = st0.dc; S.settings.noSoup = st0.ns; session.mood = st0.mood; session.countSalt = st0.salt; session.menu = keepMenu; session.twist = keepTw; session.rejected = keepRej; save(); }
 }
-function tomorrowSheetHtml(){
+function tomorrowSheetHtml(){ return asTomorrow(tomorrowSheetHtml0); }
+function tomorrowSheetHtml0(){
     const its = tomorrowDraft(), rs = its.map(x => ({x, r: byId(x.id)})).filter(y => y.r), fixed = tomorrowDecided();
     return `<h2>${esc(t('明日の献立'))}</h2>
         ${rs.length && rs[0].x.slot === '主菜' ? '' : `<p class="small">${esc(t('この条件で出せる主菜がありません'))}</p>`}
@@ -10435,7 +10465,7 @@ function viewToday(){
     return `
     <section class="sec">
         <div class="today-head p2-head"><h2>${esc(t('今日の献立'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
-            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc(t('条件を変える'))}" title="${esc(t('条件を変える'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
+            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
             ${shuffleBtn}
@@ -10448,7 +10478,7 @@ function viewToday(){
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         ${keptOfferHtml()}
-        ${eatersLine() ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${esc(eatersLine())}</p>` : ''}
+        ${(el => el ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${esc(el)}</p>` : '')([eatersOutLine(), eatersLine()].filter(Boolean).join('\n'))}
         ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${cookWarnHtml()}
         ${/* 小さな入口（あと1品・家族に送る・今日は作らない・保存）は、お膳の上の「条件を変える」の中にまとめる（390 の6〜7席で、お膳の下の行が決定の帯にかかったため） */''}
@@ -10500,7 +10530,7 @@ function viewToday(){
             return `
             <div class="item">
                 ${day}<span class="wk-pic" data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
-                <div class="t" data-act="open" data-id="${esc(r.id)}"><span class="wnm">${esc(r.name)}</span><div class="s wmeta">${x.who ? `<span class="who-b">${esc(t('担当：{name}', {name:x.who}))}</span>` : ''}${esc(metaLine(r))}${swapLineHtml(r)}</div>${allergyBadge(r) ? `<div class="s">${allergyBadge(r)}</div>` : ''}${weekExtraHtml(x)}</div>
+                <div class="t" data-act="open" data-id="${esc(r.id)}"><span class="wnm">${esc(r.name)}</span><div class="s wmeta">${x.who ? `<span class="who-b">${esc(t('担当：{name}', {name:x.who}))}</span>` : ''}${esc(metaLine(r))}${swapLineHtml(r)}</div>${(b => b ? `<div class="s">${b}</div>` : '')(weekAlg(() => allergyBadge(r)))}${weekExtraHtml(x)}</div>
                 <div class="week-acts"><button class="btn sm wk-edit" data-act="week-day" data-d="${x.d}" aria-label="${esc(t('{date}の変更（別の案・作らない・担当）', {date:jpDate(x.d)}))}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg><span>${esc(t('変更'))}</span></button></div>
             </div>`; }).join('')}</div>
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
@@ -11490,6 +11520,16 @@ function videoSheetHtml(id){
 // 今日の作り方タブに入っていて、そのタブを見ている or 手順を進めている料理か
 function cookingNow(id){ const c = S.cook; return !!(c && c.d === TODAY && (c.ids || []).includes(id) && (tab === 'cook' || ((c.done || {})[id] || []).length)); }
 function vidAwayStart(id){ usageOf().away = {id, ts: Date.now(), hid: false}; save(); }
+// 当たる料理を「今日これを作る」で作り方に入れる前の確かめ（R44）。何のアレルゲンかを書く
+function startAlgSheetHtml(){
+    const r = byId(sheet.id); if (!r) return `<button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+    const g = allergyCtx(), ids = algSelectedHits(r), names = ids.map(algLabel);
+    (r.items || []).concat(seasItems(r)).forEach(i => { if (!algItemHit(ids, i) && itemAvoided(i, g)) names.push(shortIng(i.label || i.name)); });
+    return `<h2 class="warn">⚠ ${esc(t('「{name}」は、アレルゲン（{list}）を使う料理です', {name: r.name, list: joinNames([...new Set(names)]) || t('アレルゲンあり')}))}</h2>
+        <p>${esc(t('今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。'))}</p>
+        <button class="btn danger" data-act="start-alg-ok">${esc(t('⚠ 確かめたうえで作る'))}</button>
+        <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
+}
 // 作りはじめる: 今日の作り方タブに入れて、いまの手順（はじめは1番）を見せる
 function startCooking(id){
     const r = byId(id); if (!r) return;
@@ -12254,7 +12294,7 @@ document.addEventListener('click', e => {
         }
         case 'eater': {
             const id = el.dataset.v, cur = eaterIds(), on = cur.includes(id);
-            S.eaters = on ? cur.filter(x => x !== id) : cur.concat(id);
+            setEaters(on ? cur.filter(x => x !== id) : cur.concat(id));
             save(); reconcileMenu(); refreshWeek(); render(); break;   // 影響する枠だけ選び直す
         }
         case 'fam-add': {
@@ -12262,7 +12302,7 @@ document.addEventListener('click', e => {
             const m = {id: 'f' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), name: '', role: 'adult', avoid: [], allergy: [], mild: false};
             if (!Array.isArray(S.family)) S.family = [];
             const was = eaterIds(), all = !Array.isArray(S.eaters);
-            S.family.push(m); if (!all) S.eaters = was.concat(m.id);
+            S.family.push(m); if (!all) setEaters(was.concat(m.id));
             session.famOpen = m.id; save(); render(); break;
         }
         case 'fam-del': {
@@ -12284,7 +12324,7 @@ document.addEventListener('click', e => {
         case 'fam-mild': { const m = famOf(el); if (m){ m.mild = el.checked; session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); } break; }
         case 'fam-me': { const m = famOf(el); if (m){ famMembers().forEach(x => { x.me = false; }); m.me = el.checked; if (m.me && Array.isArray(S.eaters) && S.eaters.includes(ME_ID)){ S.eaters = S.eaters.filter(x => x !== ME_ID); if (!S.eaters.includes(m.id)) S.eaters.push(m.id); } session.famOpen = m.id; save(); render(); } break; }   // 「これはわたし」は1人だけ
         case 'fam-sometimes': { const m = famOf(el); if (m){ m.sometimes = el.checked; session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); } break; }
-        case 'eaters-usual': { if (!Array.isArray(S.eaters)) break; S.eaters = null; save(); reconcileMenu(); refreshWeek(); render(); break; }
+        case 'eaters-usual': { if (!Array.isArray(S.eaters)) break; setEaters(null); save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-allergy': {
             const m = famOf(el); if (!m) break; const v = el.dataset.v, i = m.allergy.indexOf(v);
             if (i >= 0) m.allergy.splice(i, 1); else if (m.avoid.includes(v)) m.allergy.push(v);
@@ -12390,8 +12430,8 @@ document.addEventListener('click', e => {
         case 'vote-resend': { const v = voteOf(voteWeek()); if (!v) break; sheet = {kind: 'share', card: 'vote', text: voteSendText(v), title: t('○つけ表')}; renderSheet(); break; }
         case 'vote-remake': { const v = voteOf(voteWeek()); sheet = {kind: 'vote-make', ids: v ? v.ids.slice() : [], on: v ? v.ids.slice() : []}; if (!sheet.ids.length){ sheet.ids = voteSuggest(VOTE_FIRST, []); sheet.on = sheet.ids.slice(); } renderSheet(); break; }
         case 'vote-week': { const v = voteOf(el.dataset.w || ''); if (!v) break;
-            const al = voteAligned(v), ids = (al.length ? al : voteAnyO(v)).filter(x => voteOk(recipeById(x)));
-            const prev = S.week ? JSON.parse(JSON.stringify(S.week)) : null, put = voteToWeek(ids, v.w);
+            const al = voteAligned(v), ids = weekAlg(() => (al.length ? al : voteAnyO(v)).filter(x => voteOk(recipeById(x))));
+            const prev = S.week ? JSON.parse(JSON.stringify(S.week)) : null, put = weekAlg(() => voteToWeek(ids, v.w));
             closeSheet(); render();
             if (!put.length){ toast(t('来週のまだ決めていない日がないため、プランは変えませんでした')); break; }
             toast(t('来週の1週間プランに入れました（{days}）', {days: joinNames(put.map(d => jpDate(d)))}), false, weekUndo(prev, () => { S.week = prev; save(); render(); })); break; }   // 設定を変えたあとは戻さない（S26。menuUndo と同じ守り）
@@ -12478,7 +12518,11 @@ document.addEventListener('click', e => {
         case 'video': if (vidDay().vidSeen.includes(id) || cookingNow(id)){ vidAwayStart(id); break; }   // 作り方タブで進めている料理は「動画の前に」の画面を出さず、そのまま開く
             e.preventDefault(); vidDay().vidSeen.push(id); save(); sheet = {kind:'video', id}; renderSheet(); break;
         case 'vid-go': vidAwayStart(id); break;
-        case 'vid-start': startCooking(id); break;
+        case 'vid-start': {   // 当たる料理（選んだアレルゲン・今日食べる家族のアレルギー）を今日の作り方に入れるときは、アレルゲンの名前を出して確かめる（第15回 R44。守りを通らずに入っていた）。決めた献立にもう入っている料理はそのまま
+            const r = byId(id), c = S.cook;
+            if (r && allergyConflict(r) && !(c && c.d === TODAY && (c.ids || []).includes(id))){ sheet = {kind: 'start-alg', id}; renderSheet(); break; }
+            startCooking(id); break; }
+        case 'start-alg-ok': if (sheet && sheet.kind === 'start-alg' && byId(sheet.id)) startCooking(sheet.id); break;
         case 'vid-chk': { const u = vidDay(), a = u.vidChk[id] = u.vidChk[id] || [], k = Number(el.dataset.k), j = a.indexOf(k); if (el.checked && j < 0) a.push(k); else if (!el.checked && j >= 0) a.splice(j, 1); save(); break; }
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); break;
         case 'country': openCountrySheet(); break;
@@ -12586,7 +12630,7 @@ document.addEventListener('click', e => {
             if (d === TODAY && session.menu && !(session.planHold && session.planHold.menu === session.menu)) session.planHold = {menu: session.menu, show: !!document.querySelector('#view .plan-note')};
             const used = new Set([...w.days.map(x => x.id), ...(d === TODAY && !(S.cook && S.cook.d === TODAY) ? menuIds() : [])]);   // 今日の別の案は、いまの今日の献立にある料理にしない（同じ料理になると「1週間プランでは…」の案内が消えて、今日のお膳が上下に動いた。押していない今日の献立は変えない）
             const recent = []; [idx-1, idx+1].forEach(j => { const x = w.days[j]; const r = x && byId(x.id); if (r) recent.push({ago:1, family:r.family, genre:r.genre}); });
-            const r = pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent});
+            const r = weekAlg(() => pick(poolFor('主菜').filter(r => r.main && !used.has(r.id) && !isAvoided(r)), {recent}));   // 別の案も家族みんなのアレルギーで選ぶ（S27）
             if (r){ w.days[idx].id = r.id; delete w.days[idx].extra; save(); }
             else toast(t('合う料理がありません'));   // ほかの日と入れかえると、押していない日が変わってしまうので、入れかえない
             render(); if (sheet && sheet.kind === 'wday'){ sheet.pop = !!r; renderSheet(); } break;
@@ -13972,6 +14016,7 @@ if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), T
 function refreshToday(){
     const d = dayNow(); if (d === TODAY) return;
     TODAY = d;
+    eatersDayCheck();   // 今日食べる人は今日だけ（S27）
     if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
     session.menu = null; session.countSalt = 0; session.rejected.clear();
     session.mood = 'all';   // 気分はその日だけ（開き直したときと同じ。前の日に明日からにした気分は ensureMenu で効かせる）

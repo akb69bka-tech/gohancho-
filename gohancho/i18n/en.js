@@ -1658,5 +1658,13 @@ GOHAN_I18N('en', {
     "作り方の分量も{v}にしています": "Amounts in the steps are scaled too ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Ingredients for today's menu that aren't in your fridge or pantry ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} dishes · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Swapped the whole menu"
+    "献立をまるごと入れ替えました": "Swapped the whole menu",
+    "今日の献立は、{names}を除いて考えています": "Today's menu leaves out {names}",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "\"Eating today\" applies to today only. It goes back to normal tomorrow.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "The weekly plan and shopping list always account for every family member's allergies.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ \"{names}\" in your weekly plan uses allergens you selected or a family member's allergy. Before you shop, you can swap it via \"Edit\" in the plan.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ \"{names}\" uses allergens you selected or a family member's allergy. If you use it as today's plan, only that dish will be re-chosen.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "\"{name}\" uses allergens ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Add it to today's cooking steps? Please double-check the allergies of everyone eating.",
+    "⚠ 確かめたうえで作る": "⚠ I've checked — cook it"
 });

@@ -1657,5 +1657,13 @@ GOHAN_I18N('de', {
     "作り方の分量も{v}にしています": "Auch die Mengen in den Schritten sind umgerechnet ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Zutaten für das heutige Menü, die nicht im Kühlschrank oder Vorrat sind ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} Gerichte · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Ganzes Menü getauscht"
+    "献立をまるごと入れ替えました": "Ganzes Menü getauscht",
+    "今日の献立は、{names}を除いて考えています": "Das heutige Menü ist ohne {names} geplant",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "„Wer heute isst“ gilt nur für heute. Morgen ist es wieder wie vorher.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "Wochenplan und Einkaufsliste berücksichtigen die Allergien der ganzen Familie.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ „{names}“ im Wochenplan enthält Allergene, die du gewählt hast, oder eine Allergie in der Familie. Vor dem Einkaufen kannst du es im Plan über „Ändern“ tauschen.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ „{names}“ enthält Allergene, die du gewählt hast, oder eine Allergie in der Familie. Wenn du es als heutigen Vorschlag nimmst, wird nur dieses Gericht neu gewählt.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "„{name}“ enthält Allergene ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Zu den heutigen Kochschritten hinzufügen? Bitte prüfe die Allergien aller, die mitessen, noch einmal.",
+    "⚠ 確かめたうえで作る": "⚠ Geprüft – jetzt kochen"
 });

@@ -1657,5 +1657,13 @@ GOHAN_I18N('fil', {
     "作り方の分量も{v}にしています": "Naka-adjust na rin ang mga sukat sa mga hakbang ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Mga sangkap ng menu ngayon na wala sa ref o pantry mo ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} ulam · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Pinalitan ang buong menu"
+    "献立をまるごと入れ替えました": "Pinalitan ang buong menu",
+    "今日の献立は、{names}を除いて考えています": "Hindi kasama si {names} sa menu ngayon",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "Para lang ngayong araw ang “Sino ang kakain ngayon.” Babalik ito sa dati bukas.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "Isinasaalang-alang ng weekly plan at listahan ng pamimili ang allergy ng buong pamilya.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ Gumagamit ang “{names}” sa weekly plan ng allergen na pinili mo o allergy ng kasapi ng pamilya. Bago mamili, mapapalitan mo ito sa “Baguhin” ng plan.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ Gumagamit ang “{names}” ng allergen na pinili mo o allergy ng kasapi ng pamilya. Kapag ginawa mo itong mungkahi ngayon, ang ulam lang na iyon ang pipiliing muli.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "Gumagamit ang “{name}” ng allergen ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Idagdag sa mga hakbang ngayon? Pakisuring muli ang allergy ng lahat ng kakain.",
+    "⚠ 確かめたうえで作る": "⚠ Nasuri ko na — lutuin"
 });

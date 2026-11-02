@@ -1657,5 +1657,13 @@ GOHAN_I18N('id', {
     "作り方の分量も{v}にしています": "Takaran di langkah-langkah juga sudah disesuaikan ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Bahan menu hari ini yang tidak ada di kulkas atau stok ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} hidangan · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Seluruh menu diganti"
+    "献立をまるごと入れ替えました": "Seluruh menu diganti",
+    "今日の献立は、{names}を除いて考えています": "Menu hari ini tidak memperhitungkan {names}",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "“Siapa yang makan hari ini” hanya berlaku hari ini. Besok kembali seperti semula.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "Rencana mingguan dan daftar belanja memperhitungkan alergi seluruh keluarga.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ “{names}” dalam rencana mingguan memakai alergen yang Anda pilih atau alergi anggota keluarga. Sebelum belanja, Anda bisa menggantinya lewat “Ubah” di rencana.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ “{names}” memakai alergen yang Anda pilih atau alergi anggota keluarga. Jika dijadikan usulan hari ini, hanya hidangan itu yang dipilih ulang.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "“{name}” memakai alergen ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Tambahkan ke langkah memasak hari ini? Periksa lagi alergi semua yang akan makan.",
+    "⚠ 確かめたうえで作る": "⚠ Sudah saya periksa — masak"
 });

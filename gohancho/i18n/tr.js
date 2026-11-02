@@ -1657,5 +1657,13 @@ GOHAN_I18N('tr', {
     "作り方の分量も{v}にしています": "Adımlardaki miktarlar da ayarlandı ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Bugünkü menü için dolapta ya da kilerde olmayan malzemeler ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} yemek · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Menünün tamamı değiştirildi"
+    "献立をまるごと入れ替えました": "Menünün tamamı değiştirildi",
+    "今日の献立は、{names}を除いて考えています": "Bugünün menüsünde {names} hesaba katılmadı",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "“Bugün kimler yiyor” yalnızca bugün için geçerli. Yarın eski haline döner.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "Haftalık plan ve alışveriş listesi tüm ailenin alerjilerini dikkate alır.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ Haftalık plandaki “{names}”, seçtiğiniz alerjenleri veya ailedeki bir alerjiyi içeriyor. Alışverişten önce plandaki “Değiştir” ile başka bir yemek seçebilirsiniz.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ “{names}”, seçtiğiniz alerjenleri veya ailedeki bir alerjiyi içeriyor. Bugünün önerisi yaparsanız yalnızca o yemek yeniden seçilir.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "“{name}” alerjen içeriyor ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Bugünün yapılışına eklensin mi? Lütfen yiyecek herkesin alerjilerini bir kez daha kontrol edin.",
+    "⚠ 確かめたうえで作る": "⚠ Kontrol ettim, pişir"
 });

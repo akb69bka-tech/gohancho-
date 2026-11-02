@@ -1657,5 +1657,13 @@ GOHAN_I18N('vi', {
     "作り方の分量も{v}にしています": "Định lượng trong các bước cũng đã đổi ({v})",
     "今日の献立の材料のうち、冷蔵庫・常備品にないもの：{v}": "Nguyên liệu của thực đơn hôm nay mà tủ lạnh và đồ sẵn có chưa có ({v})",
     "{compose}・{n}品・{v}。{reason}": "{compose} · {n} món · {v}. {reason}",
-    "献立をまるごと入れ替えました": "Đã đổi cả thực đơn"
+    "献立をまるごと入れ替えました": "Đã đổi cả thực đơn",
+    "今日の献立は、{names}を除いて考えています": "Thực đơn hôm nay không tính {names}",
+    "今日食べる人は今日だけの設定です。明日は元に戻ります。": "“Hôm nay ai ăn” chỉ áp dụng cho hôm nay. Ngày mai sẽ trở lại như cũ.",
+    "1週間プランと買い物メモは、家族みんなのアレルギーで考えます。": "Kế hoạch tuần và danh sách đi chợ luôn tính đến dị ứng của cả gia đình.",
+    "⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。": "⚠ “{names}” trong kế hoạch tuần dùng chất gây dị ứng bạn đã chọn hoặc của người trong gia đình. Trước khi đi chợ, bạn có thể đổi món bằng “Thay đổi” trong kế hoạch.",
+    "⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。": "⚠ “{names}” dùng chất gây dị ứng bạn đã chọn hoặc của người trong gia đình. Nếu dùng làm gợi ý hôm nay, chỉ món đó được chọn lại.",
+    "「{name}」は、アレルゲン（{list}）を使う料理です": "“{name}” dùng chất gây dị ứng ({list})",
+    "今日の作り方に入れますか？食べる人のアレルギーを、もう一度確かめてください。": "Thêm vào cách làm hôm nay? Hãy kiểm tra lại dị ứng của những người sẽ ăn.",
+    "⚠ 確かめたうえで作る": "⚠ Đã kiểm tra — nấu"
 });
