@@ -3156,10 +3156,14 @@ function toastViewMark(){ TOAST_TAP.view = tab + '|' + (session.stage || ''); }
 function toastScroll(){
     if (toast.sraf) return;
     toast.sraf = requestAnimationFrame(() => { toast.sraf = 0; const box = $('#toast-root .toast.anchored'); if (!box) return;
-        let floor = innerHeight; document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor) floor = r.top; });
+        // 留めた相手（お膳）からの距離を保つ（上の中身の高さが変わったとき）。相手が描き直されていたら、いまのお膳に
+        let A = toast.anchorEl; if (A && !A.isConnected){ A = toast.anchorEl = document.querySelector('#view .tray') || $('#view'); }
+        if (A && toast.anchorOff != null){ const t = Math.round(A.getBoundingClientRect().top + scrollY + toast.anchorOff); if (Math.abs(t - (parseFloat(box.style.top) || 0)) > .5){ box.style.top = t + 'px'; if (box.classList.contains('docked')) $('#toast-root').style.setProperty('--toast-shelf-top', (t - 8) + 'px'); } }
+        let floor = innerHeight; document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor && (e.matches('nav.tabs') || /fixed|sticky/.test(getComputedStyle(e).position))) floor = r.top; });   // 画面に貼りついた帯だけ（お膳の下に置いた static の帯は中身と一緒に動くので、裏に入らない）
         const top = (parseFloat(box.style.top) || 0) - scrollY, bottom = top + box.offsetHeight; box.classList.toggle('off', bottom > floor - 2 || top < 2); });
 }
 addEventListener('scroll', toastScroll, {passive: true}); addEventListener('resize', toastScroll, {passive: true});
+try{ const ve = document.getElementById('view'); if (ve && window.ResizeObserver) new ResizeObserver(() => toastScroll()).observe(ve); }catch(e){}   // 中身の高さが変わったときも合わせ直す
 function toastPlace(box, prev){
     const root = $('#toast-root'), v = $('#view');
     if (!box || !box.isConnected || !v || sheet || modalId || document.body.classList.contains('kb')) return;
@@ -3234,7 +3238,9 @@ function toastPlace(box, prev){
     // 第19回 R59・R60: 押して画面が切りかわった直後のお知らせ（決めた直後の「献立が決まりました…」・最初の「準備ができました…」）は、置いたあとページに留める（position:absolute。中身と一緒にスクロールする）。
     // 画面に固定（fixed）のままだと、送った（lift）位置で下の段の料理名・↻・札の上にかからなくても、上へ戻ると（お知らせは動かず、中身だけ下りてくるので）その上に乗っていた（360/375/390 × 文字3段階で 108/108）。
     // ページに留めれば、置いたときにかからなかったものには、どこへスクロールしてもかからない。下のタブ・帯より下、上の端より上へ出たあいだは隠す（toastScroll）。画面を切りかえたら消す（setTab）
-    const anchor = () => { if (!box.offsetHeight || box.classList.contains('anchored')) return; const R = rectOf(), sy = scrollY; box.classList.add('anchored'); box.style.bottom = ''; box.style.top = Math.round(R.top + sy) + 'px';
+    // 留める相手はお膳（なければ画面の中身）: 置いたあとにお膳を詰める処理などで上の中身の高さが変わっても、お膳からの距離を保つ（toastScroll で合わせ直す）
+    const anchor = () => { if (!box.offsetHeight || box.classList.contains('anchored')) return; const R = rectOf(), sy = scrollY, A = document.querySelector('#view .tray') || v; box.classList.add('anchored'); box.style.bottom = ''; box.style.top = Math.round(R.top + sy) + 'px';
+        toast.anchorEl = A; toast.anchorOff = R.top - A.getBoundingClientRect().top;
         if (box.classList.contains('docked')) root.style.setProperty('--toast-shelf-top', Math.round(R.top - 8 + sy) + 'px'); toastScroll(); };
     const freshPlace = () => {   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
         const y0 = scrollY; lift();
@@ -3254,7 +3260,7 @@ function toastPlace(box, prev){
         if (best && !pt(best.c)[0] && !pt(best.c)[1]){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる器・文のいちばん少ない高さ）
         box.style.removeProperty('top'); box.classList.remove('at-top'); box.classList.add('docked'); window.scrollTo({top: y1, behavior: 'instant'}); return;
     };
-    if (fresh){ freshPlace(); anchor(); return; }
+    if (fresh){ freshPlace(); if (!toast.undo) anchor(); return; }   // 「元に戻す」のボタン付きは留めない（今までどおり画面に固定。隠れて押せなくならないように）
     // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
     // ① 押した指のまわり（続けて押すところ）にかからない ② 隠す押す場所が少ない ③ 隠す文が少ない 順に選ぶ（同じならいつもの場所）。隠れた押す場所も、お知らせの文の上から押せる
     const judge = (R, b) => { const sc = scan({l: R.left, r: R.right, t: R.top, b}); return [tapped && TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < b + 40 ? 1 : 0, sc.taps, sc.n]; };
