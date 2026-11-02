@@ -259,6 +259,22 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .badge{display:inline-block;font-size:var(--fs12);padding:.0625rem .5rem;border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
 .badge.new{background:var(--leaf-soft);color:var(--leaf)}
+.badge.mode{background:var(--leaf-soft);color:var(--leaf);font-weight:700;margin-inline-start:4px;vertical-align:0}   /* モード（10分・かんたん・じっくり）の札。青は使わない */
+/* モードで変わる作り方の見え方（同じレシピの文を、並べ方だけ変える） */
+.mode-view{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.6rem .75rem;margin:0 0 var(--s8)}
+.mode-view .eyebrow{margin:0 0 .25rem}
+.mode-ings{margin:0 0 .4rem;font-size:var(--fs14);color:var(--muted)}
+.mode-tl{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.mode-tl li,.mode-waits li{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:start;font-size:var(--fs14);line-height:1.45}
+.mtl-no{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent-text);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:.8rem}
+.mtl-m{font-style:normal;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:2.5em;text-align:end}
+.mode-total{margin:.4rem 0 0;text-align:end;color:var(--leaf)}
+.mode-big{margin:0;font-size:var(--fs20);font-weight:700;line-height:1.5}
+.mode-waits{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.mode-waits li{align-items:center}
+.steps li.wait .st-txt{background:var(--leaf-soft);border-radius:10px;padding:.35rem .5rem;display:block}
+.wait-tag{display:block;font-size:var(--fs12);font-weight:700;color:var(--leaf);margin-bottom:2px}
+.wait-tag .timer-chip{margin-inline-start:6px}
 
 /* お膳 */
 .tray{
@@ -3310,7 +3326,7 @@ function matchRecipe(r, have){
    ========================================================= */
 let session = {rejected:new Set(), mood:'all', useFridge:false, menu:null, twist:null, search:''};
 const MOODS = [
-    {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'bento', get label(){ return t('お弁当'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
+    {k:'all', get label(){ return t('おまかせ'); }}, {k:'quick', get label(){ return t('20分以内'); }}, {k:'easy', get label(){ return t('ラクの日'); }}, {k:'ten', get label(){ return t('10分以内'); }}, {k:'simple', get label(){ return t('いちばん簡単'); }}, {k:'slow', get label(){ return t('じっくり'); }}, {k:'bento', get label(){ return t('お弁当'); }}, {k:'和', get label(){ return t('和食'); }}, {k:'洋', get label(){ return t('洋食'); }},
     {k:'中', get label(){ return t('中華'); }}, {k:'asia', get label(){ return t('韓国・エスニック'); }}, {k:'fish', get label(){ return t('魚の日'); }}, {k:'meat', get label(){ return t('がっつり肉'); }}, {k:'okayu', get label(){ return t('おかゆの日'); }},
 ];
 /* 「ラクの日」: 主菜は20分以内・材料7つまで（常備品を除く）、副菜・汁ものは10分以内。揚げ物・オーブン・圧力鍋を使う料理は出さない（洗いものと火加減の手間が増えるため）。
@@ -3354,6 +3370,7 @@ function easyInfo(slot){
 function easyOk(r, info){ return info.lv >= 5 || (info.ids ? info.ids.has(r.id) : easyFits(r, info.lv)); }
 // ゆるめた枠を、実際にゆるめたとおりに言う（主菜は分と材料の数、副菜・汁ものは分、手早い順に絞った枠はその品数と最長の分）
 function easyRelaxText(){
+    if (modeOf()) return modeRelaxText();
     if (session.mood !== 'easy') return '';
     const slots = [...new Set((session.menu ? session.menu.items : []).map(x => x.slot))].filter(sl => ['主菜', '副菜', '汁物'].includes(sl));
     const parts = [];
@@ -3366,6 +3383,86 @@ function easyRelaxText(){
         else parts.push(t('{slot}は{min}分以内', {slot: name, min: EASY_MIN.side[f.lv]}));
     }
     return parts.length ? t('この国には「ラク」な料理が少ないので、条件をゆるめています（{list}）', {list: parts.join(' / ')}) : '';
+}
+/* モード（オーナーの案）: 「10分以内」「いちばん簡単」「じっくり」。気分の「時間」の並びに入れる（ラクの日・20分以内と同じしくみ）。
+   ten:    どの料理も10分以内。少ない国は 10→15→20→30→45分 と枠ごとにゆるめ、ゆるめたことを画面に書く（空の席は作らない）
+   simple: 主菜は手順3つまで・材料6つまで（常備品を除く）、副菜・汁ものは手順2つまで。揚げ物・オーブン・圧力鍋は出さない。少ない国は段階でゆるめる
+   slow:   主菜は40分以上か手順5つ以上（煮込み・オーブンなど）。副菜・汁ものはふつう。少ない国は 30分以上か手順4つ以上 までゆるめる
+   段階を全部ゆるめても MODE_NEED そろわないときは、条件に近い順の MODE_NEED 品だけ（ids）。それもなければ条件なし（none）。
+   決めた献立は変えない（気分と同じ入口）。アレルギー・苦手の料理は、どのモードでも出さない（isAvoided はそのまま） */
+const MODE_KEYS = ['ten', 'simple', 'slow'];
+const MODE_TIERS = {
+    ten: {main: [10, 15, 20, 30, 45], side: [10, 15, 20, 30, 45]},                           // 分以内
+    simple: {main: [[3, 6], [4, 6], [4, 7], [4, 9], [5, 99]], side: [[2], [3], [4], [99]]},   // [手順の数まで, 材料の数まで]
+    slow: {main: [[40, 5], [30, 4]]},                                                          // [分以上, 手順の数以上]（どちらか）
+};
+const MODE_NEED = 3, modeMemo = new Map();
+const modeOf = () => MODE_KEYS.includes(session.mood) ? session.mood : null;
+function ingCount(r){ return (r.items || []).filter(i => !i.opt && !PANTRY.has(i.key)).length; }
+function stepCount(r){ return (r.steps || []).length; }
+function modeFits(mode, r, lv){
+    const k = easyKind(r), T = MODE_TIERS[mode] && MODE_TIERS[mode][k];
+    if (!T) return true;   // じっくりの副菜・汁ものはふつう
+    const c = T[Math.min(lv, T.length - 1)];
+    if (mode === 'ten') return r.min <= c;
+    if (mode === 'simple') return !easyHeavy(r) && stepCount(r) <= c[0] && (k !== 'main' || ingCount(r) <= c[1]);
+    return r.min >= c[0] || stepCount(r) >= c[1];
+}
+// その枠のモードの条件。{lv: 段階（0 = そのまま）, tiers: 段階の数, ids: 近い順の少数のときの id, none: 条件なし, n: 件数, max}
+function modeInfo(mode, slot){
+    const T = MODE_TIERS[mode][slot === '主菜' ? 'main' : 'side'];
+    if (!T) return {lv: 0, tiers: 0, ids: null, none: false, n: 0, max: 0};
+    const pool = poolFor(slot);
+    const key = mode + '|' + (mixCc(slot) || currentCountry()) + '|' + slot + '|' + pool.length + '|' + S.hidden.join() + '|' + judgeSig();
+    if (modeMemo.has(key)) return modeMemo.get(key);
+    const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
+    let lv = 0, hit = [];
+    for (; lv < T.length; lv++){ hit = base.filter(r => modeFits(mode, r, lv)); if (hit.length >= MODE_NEED) break; }
+    let info;
+    if (lv < T.length) info = {lv, tiers: T.length, ids: null, none: false, n: hit.length, max: Math.max(...hit.map(r => r.min))};
+    else {
+        const near = mode === 'ten' ? base.slice().sort((x, y) => x.min - y.min || stepCount(x) - stepCount(y))
+            : mode === 'simple' ? base.filter(r => !easyHeavy(r)).sort((x, y) => stepCount(x) - stepCount(y) || ingCount(x) - ingCount(y) || x.min - y.min)
+            : base.slice().sort((x, y) => y.min - x.min || stepCount(y) - stepCount(x));
+        const few = near.slice(0, MODE_NEED);
+        info = few.length ? {lv: T.length, tiers: T.length, ids: new Set(few.map(r => r.id)), none: false, n: few.length, max: Math.max(...few.map(r => r.min))} : {lv: T.length + 1, tiers: T.length, ids: null, none: true, n: 0, max: 0};
+    }
+    if (modeMemo.size > 90) modeMemo.clear();
+    modeMemo.set(key, info); return info;
+}
+function modeSlotOf(r, slot){ return slot === '汁物' || slot === '副菜' ? slot : slot === '主菜' ? '主菜' : (['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'); }
+function modeOk(r, mode, slot){ const f = modeInfo(mode, modeSlotOf(r, slot)); return f.none || (f.ids ? f.ids.has(r.id) : modeFits(mode, r, f.lv)); }
+// 札（10分・かんたん・じっくり）: 「10分」はゆるめない条件（10分以内）に合う料理にだけ。「かんたん」「じっくり」は、その国でいま効いている段階の条件に合う料理に（近い順の少数・条件なしのときは付けない）
+function modeStrict(r, mode){ mode = mode || modeOf(); const k = easyKind(r); if (mode === 'slow' && k !== 'main') return false; return modeFits(mode, r, 0); }
+function modeBadgeOk(r, mode, slot){
+    mode = mode || modeOf(); if (!mode || !r) return false;
+    if (mode === 'ten') return modeStrict(r, mode);
+    if (mode === 'slow' && (easyKind(r) !== 'main' || (slot && slot !== '主菜'))) return false;
+    const f = modeInfo(mode, modeSlotOf(r, slot)); return !f.none && !f.ids && modeFits(mode, r, f.lv);
+}
+function modeTagHtml(r, slot){
+    const mode = modeOf(); if (!mode || !r || !modeBadgeOk(r, mode, slot)) return '';
+    if (mode === 'slow' && slot && slot !== '主菜') return '';
+    return `<span class="badge mode">${esc(mode === 'ten' ? t('10分') : mode === 'simple' ? t('かんたん') : t('じっくり'))}</span>`;
+}
+// ゆるめた枠を、実際にゆるめたとおりに言う
+function modeRelaxText(){
+    const mode = modeOf(); if (!mode) return '';
+    const slots = [...new Set((session.menu ? session.menu.items : []).map(x => x.slot))].filter(sl => ['主菜', '副菜', '汁物'].includes(sl));
+    const parts = [];
+    for (const sl of (slots.length ? slots : ['主菜', '副菜', '汁物'])){
+        if (mode === 'slow' && sl !== '主菜') continue;
+        const f = modeInfo(mode, sl), k = sl === '主菜' ? 'main' : 'side', name = slotLabel(sl), T = MODE_TIERS[mode][k];
+        if (f.lv === 0) continue;
+        if (f.none) parts.push(t('{slot}は条件なし', {slot: name}));
+        else if (f.ids) parts.push(mode === 'ten' ? t('{slot}は手早い順の{n}品だけ（最長{min}分）', {slot: name, n: f.n, min: f.max}) : mode === 'simple' ? t('{slot}は手順と材料の少ない順の{n}品だけ', {slot: name, n: f.n}) : t('{slot}は条件なし', {slot: name}));
+        else if (mode === 'ten') parts.push(t('{slot}は{min}分以内', {slot: name, min: T[f.lv]}));
+        else if (mode === 'simple') parts.push(k === 'main' && T[f.lv][1] < 99 ? t('{slot}は手順{st}つまで・材料{ing}つまで', {slot: name, st: T[f.lv][0], ing: T[f.lv][1]}) : t('{slot}は手順{st}つまで', {slot: name, st: T[f.lv][0]}));
+        else parts.push(t('主菜は{min}分以上か手順{st}つ以上', {min: T[f.lv][0], st: T[f.lv][1]}));
+    }
+    if (!parts.length) return '';
+    const list = parts.join(' / ');
+    return mode === 'ten' ? t('この国には10分以内の料理が少ないので、条件をゆるめています（{list}）', {list}) : mode === 'simple' ? t('この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）', {list}) : t('この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）', {list});
 }
 /* 「お弁当」: 主菜1＋副菜2（汁ものなし）。冷めてもおいしい・汁気が漏れない・傷みにくい・手で詰められる、を材料と調理法から一品ずつ見て選んだ料理だけ（BENTO_OK）から出す。
    汁もの・鍋・カレー・シチュー・グラタン・生もの・マヨネーズやクリームで和えたもの・揚げ衣が湿るもの・ソースが多いものは入れていない。
@@ -3474,6 +3571,7 @@ function bentoNote(){
 }
 function easyPool(slot, list){
     if (session.mood === 'bento') return bentoPool(slot, list);
+    if (modeOf()){ const f = modeInfo(modeOf(), slot); return f.none || (!MODE_TIERS[modeOf()][slot === '主菜' ? 'main' : 'side']) ? list : list.filter(r => modeOk(r, modeOf(), slot)); }
     if (session.mood !== 'easy') return list;
     const f = easyInfo(slot); return f.lv >= 5 ? list : list.filter(r => easyOk(r, f));
 }
@@ -3481,6 +3579,7 @@ function moodOk(r, mood){
     switch(mood){
         case 'quick': return r.min <= 20;
         case 'easy': return easyOk(r, easyInfo(['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'));
+        case 'ten': case 'simple': case 'slow': return modeOk(r, mood, null);
         case 'bento': return bentoFits(r);
         case 'okayu': return okayuDayOk(r);
         case 'asia': return r.genre === '韓' || r.genre === 'エスニック';
@@ -3519,7 +3618,8 @@ function scoreRecipe(r, ctx){
     if (ds < avoid*2) s -= 0.35 * (1 - (ds - avoid) / avoid);
     if (ds === Infinity) s += 0.1;
     if (S.favs.includes(r.id)) s += 0.3;
-    if (session.mood === 'easy' && ['炒','焼','煮','炊','汁'].includes(r.method)) s += 0.2;   // ラクの日は、1つの鍋・フライパンで作れる調理法を少し優先
+    if ((session.mood === 'easy' || session.mood === 'simple') && ['炒','焼','煮','炊','汁'].includes(r.method)) s += 0.2;   // いちばん簡単も同じ
+    if (session.mood === 'slow' && easyKind(r) === 'main' && (r.method === '煮' || r.method === '炊')) s += 0.15;   // じっくりの日は煮込み・炊くものを少し先に   // ラクの日は、1つの鍋・フライパンで作れる調理法を少し優先
     if (mildOn() && spiceLevel(r) === 1) s -= 0.4;   // 辛いのが苦手な人がいるときは、辛みの少ない料理を先に
     s += reactBias(r.id);   // 家族の「おいしかった！」が多い料理は少し出やすく
     if (ctx.recent){
@@ -3720,7 +3820,7 @@ function fitMain(ps, slot, main){
 // 気分の時間の条件（20分以内・ラクの日）を、副菜・汁もの・2品目の主菜にも効かせる（合う料理がその枠にないときだけ外す）
 // 料理の種類の気分（和食・洋食・中華・韓国エスニック）は、副菜・汁もの・2品目の主菜も、そのなかまを先に出す（和食の日に洋・中の副菜、洋食の日に味噌汁が入っていた。合う料理がその枠にないときだけ外す）
 const GENRE_MOOD = {'和': ['和'], '洋': ['洋'], '中': ['中'], asia: ['韓', 'エスニック', '中']};
-function slotMoodOk(r, slot){ return GENRE_MOOD[session.mood] ? GENRE_MOOD[session.mood].includes(r.genre) : session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
+function slotMoodOk(r, slot){ return GENRE_MOOD[session.mood] ? GENRE_MOOD[session.mood].includes(r.genre) : session.mood === 'quick' ? r.min <= 20 : session.mood === 'easy' ? easyOk(r, easyInfo(slot === '汁物' || slot === '副菜' ? slot : '主菜')) : modeOf() ? modeOk(r, modeOf(), slot) : session.mood === 'okayu' && (slot === '汁物' || slot === '副菜') ? okayuSoftOk(r) : true; }
 function moodPrefer(ps, slot){ const ok = ps.filter(r => slotMoodOk(r, slot)); return ok.length ? ok : ps; }
 function poolForMood(slot, mood){ const m0 = session.mood; session.mood = mood; try{ return poolFor(slot); } finally { session.mood = m0; } }
 function poolFor(slot){
@@ -6486,7 +6586,7 @@ function autoCount(){
     if (wd === 0 || wd === 6) n = x < .45 ? 4 : x < .8 ? 5 : 6;
     else if (wd === 5) n = x < .5 ? 4 : x < .85 ? 3 : 5;
     else n = x < .12 ? 2 : x < .72 ? 3 : 4;
-    if (session.mood === 'quick' || session.mood === 'easy') n = Math.max(2, n - 1);
+    if (session.mood === 'quick' || session.mood === 'easy' || session.mood === 'ten' || session.mood === 'simple') n = Math.max(2, n - 1);
     return n;
 }
 function menuCount(){
@@ -6509,6 +6609,8 @@ function countReason(n0){
     const wd = parseYmd(TODAY).getDay();
     if (session.mood === 'quick') return t('急ぎの日なので少なめの{n}品', {n});
     if (session.mood === 'easy') return t('ラクの日なので少なめの{n}品', {n});
+    if (session.mood === 'ten') return t('10分以内の日なので少なめの{n}品', {n});
+    if (session.mood === 'simple') return t('かんたんの日なので少なめの{n}品', {n});
     return t('{wd}曜日なので{n}品にしました', {wd: LANG === 'ja' ? WD[wd] : wdName(wd, true), n});
 }
 // 1つの献立の中で「ほぼ同じ料理」が重ならないように（Adobong pusit と Adobong kangkong、かに玉とニラ玉。第2回モニター g10・g19）
@@ -6555,7 +6657,7 @@ function suggestFor(slot, items, main){
         if (main.id === 'nikuudon' || main.type === '汁物' || soupyMain(main) || (primoMain(main) && !mixCc('汁物'))) return null;   // イタリアの Primo（パスタ・リゾット）にズッパ（これも Primo）を重ねない
         // ラクの日・お弁当の日の絞りこみ（easyPool）を、「似ていない料理」の絞りこみより先にかける（似ていない料理を選ぶために、ラクの日に合わない料理が入っていた）
         const base = moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物'), pre = easyPool('汁物', base);
-        return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
+        return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' || modeOf() ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
         const base = moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜'), pre = easyPool('副菜', base);
@@ -6565,7 +6667,7 @@ function suggestFor(slot, items, main){
         if (starchWanted(items, main)){   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
             const st = ps.filter(r => r.starch && (session.mood !== 'bento' || bentoFits(r))), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
         }
-        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' ? pick(sideBalance(unlike(base), others, main), ctx) : null);
+        return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' || modeOf() ? pick(sideBalance(unlike(base), others, main), ctx) : null);
     }
     // 2品目の主菜: 1品目と違う肉・魚で、手のかからないもの。
     // 国によっては30分以内の主菜が少ないので、条件を少しずつゆるめて必ず1品えらぶ（空のお皿を出さない）
@@ -10193,7 +10295,7 @@ function shapeChips(){
 function condSheetHtml(){
     const m = session.menu || {n: menuCount(), items: []}, main = m.items[0] && m.items[0].r, st = stapleSpot(), oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChip = x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood === x.k}">${esc(x.label)}</button>`;
-    const TIME = ['all', 'quick', 'easy'];
+    const TIME = ['all', 'quick', 'easy', 'ten', 'simple', 'slow'];
     const hv = {compose: composeOf(m.n).name, n: m.items.length ? menuSeats(m) : dishSeats(m.n), reason: countReason(m.n)};
     const hint = svQual() ? t('{compose}・{n}品・{v}。{reason}', {...hv, v: svText()}) : t('{compose}・{n}品・{sv}人分。{reason}', {...hv, sv: fmtPortion(svToday())});   // ご飯の席も1品と数える
     void oneBowl; void st;
@@ -10409,7 +10511,7 @@ function viewToday(){
     const decided = !!(S.cook && S.cook.d === TODAY && S.cook.ids.join() === menuIds().join());   // 「決める」ボタンは1つだけ（画面の下）。決めた献立のままなら「作り方を見る」
     const oneBowl = main && (main.type === 'ごはん' || main.type === '麺');
     const moodChip = x => `<button class="chip" data-act="mood" data-k="${x.k}" aria-pressed="${session.mood===x.k}">${esc(x.label)}</button>`;
-    const SCENE = ['all', 'easy', 'quick', 'bento', 'okayu'];   // 気分は「手間・場面」と「料理の種類」に分けて並べる（選べるのはどちらか1つ）
+    const SCENE = ['all', 'easy', 'quick', 'ten', 'simple', 'slow', 'bento', 'okayu'];   // 気分は「手間・場面」と「料理の種類」に分けて並べる（選べるのはどちらか1つ）
     const moodGroups = [[t('手間・場面'), MOODS.filter(x => SCENE.includes(x.k))], [t('料理の種類'), MOODS.filter(x => !SCENE.includes(x.k))]];
     const wishN = wishList().length ? wishesActive().length : 0;   // 届いている「食べたい」の数（入口の「（1）」だけに使う。印は出さない）
     const voteOn = voteList().length > 0;   // ○つけ表の「そろった」
@@ -10434,7 +10536,7 @@ function viewToday(){
             ${isFresh ? `<span class="fresh-tag">${esc(t('新'))}</span>` : ''}
             ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWho(wTag.n)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
-            <div class="spot-label"><span class="slot">${esc(label)}</span>
+            <div class="spot-label"><span class="slot">${esc(label)}${modeTagHtml(r, it.slot)}</span>
                 ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(trayName(r.name))}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL};--exa:${exAlg}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`
                     : `<span class="nm none">${esc(empty)}</span><span class="mt meta"></span>${exWhy ? '<span class="dwhy"></span>' : ''}<span class="ex" style="--exn:${exN};--exl:${exL};--exa:${exAlg}"></span>`}
             </div>
@@ -10831,6 +10933,7 @@ function p2mStepHtml(plan, i){
     const list = `<details class="p2m-list"${session.p2mList ? ' open' : ''}><summary>${esc(t('{name}の手順（一覧）', {name: ds.r.name}))}</summary>
         <ol class="steps cook-steps">${ds.steps.map(s => `<li class="${dn.includes(s.k) ? 'done' : ''}${cur && s.k === cur.k ? ' now' : ''}" data-act="cook-step" data-k="${s.k}" role="button" tabindex="0" aria-pressed="${dn.includes(s.k)}"><span class="st-txt">${esc(s.text)}</span></li>`).join('')}</ol></details>`;
     return `<section class="sec stage-body p2m-step">${top}${dishes}${prog}${timers}${cookWarnHtml()}
+        ${modeViewHtml(swappedRecipe(ds.r), ds.r, ds.steps.map(s => s.text))}
         ${body}
         ${session.p2mIngs ? `<div class="card p2m-ings">${recipeCoreHtml(ds.r, dn, '', {ingsOnly: true})}</div>` : ''}
         ${list}
@@ -11451,6 +11554,32 @@ function closeModal(){ modalId = null; $('#modal-root').innerHTML = ''; document
 function fOf(c){ const f = c * 9 / 5 + 32; return f >= 250 ? Math.round(f / 25) * 25 : Math.round(f / 5) * 5; }
 function withF(txt, r){ return r && (r.pack === 'US' || currentCountry() === 'US') ? String(txt).replace(/(\d{2,3})\s*°C(?!\s*\()/g, (m, c) => `${m} (${fOf(Number(c))}°F)`) : txt; }
 // opts.modal: 詳細画面（人数の切りかえ・買い物メモに足す・材料のあとにポイント・作り方の見出しの横に動画。アレルゲンは見出しの近くに出すので、ここでは出さない）
+// モードで変わる作り方の見え方（同じレシピの文。新しい文は足さない）
+//  10分以内: 手順を番号つきの帯に、手順ごとの分と合計。材料は1行
+//  いちばん簡単: 上に大きな字で「これだけ」（材料の数・手順の数・道具）。手順はそのまま
+//  じっくり: 手順はそのままに、煮込む・休ませる手順（3分以上の待ち。揚げ・オーブン・グリルは除く）に「ここで待つ」とタイマー
+function stepSecOf(text){ return timerFind(text).reduce((a, h) => Math.max(a, h.sec || 0), 0); }
+function stepWaitSec(text){ text = String(text); const sec = stepSecOf(text); return sec >= 180 && !P2M_FRY.test(text) && !P2M_OVEN.test(text) && !P2M_GRILL.test(text) ? sec : 0; }
+const TOOL_RE = [[() => t('フライパン'), /フライパン|中華鍋|skillet|frying pan|\bpan\b|\bwok\b/i], [() => t('鍋'), /鍋(?!敷)|\bpot\b|saucepan|stockpot|dutch oven|casserole/i], [() => t('ボウル'), /ボウル|\bbowls?\b/i],
+    [() => t('電子レンジ'), /電子レンジ|レンジ|microwave/i], [() => t('オーブン'), /オーブン|\boven\b|\bbake|\broast/i], [() => t('グリル'), /グリル|魚焼き|\bgrill|\bbroil/i], [() => t('トースター'), /トースター|toaster/i],
+    [() => t('ミキサー'), /ミキサー|フードプロセッサー|blender|food processor/i], [() => t('炊飯器'), /炊飯器|rice cooker/i]];
+function modeTools(r){ const src = (r.stepsBase || r.steps || []).map(st => typeof st === 'string' ? st : (st && st.t) || '').join(' '); const out = TOOL_RE.filter(x => x[1].test(src)).map(x => x[0]()); return out.length ? out : [t('包丁とまな板')]; }
+const minOfSec = sec => Math.max(1, Math.round(sec / 60));
+function modeWaitTag(text, k, name, rid){
+    const sec = modeOf() === 'slow' ? stepWaitSec(text) : 0; if (!sec) return '';
+    return `<span class="wait-tag">${esc(t('ここで待つ'))}${esc(t('・'))}${esc(t('{n}分待つ', {n: minOfSec(sec)}))}<button type="button" class="timer-chip" data-act="timer" data-s="${sec}" data-name="${esc(name)}" data-label="${esc(t('{n}分', {n: minOfSec(sec)}))}"${rid ? ` data-rid="${esc(rid)}" data-k="${k}"` : ''} aria-label="${esc(t('タイマーを始める'))}: ${esc(t('{n}分', {n: minOfSec(sec)}))}">${esc(t('タイマーを始める'))}</button></span>`;
+}
+function modeViewHtml(r, r0, texts){
+    const mode = modeOf(); if (!mode || !texts || !texts.length) return '';
+    if (mode === 'ten'){
+        const rows = texts.map((x, k) => { const sec = stepSecOf(x); return `<li><b class="mtl-no" aria-hidden="true">${esc(p2mNo(k + 1))}</b><span class="mtl-t">${esc(x)}</span><em class="mtl-m">${sec ? esc(t('{n}分', {n: minOfSec(sec)})) : ''}</em></li>`; });
+        return `<div class="mode-view mode-ten"><p class="eyebrow">${esc(t('10分以内'))}</p><p class="mode-ings">${esc(t('材料: {list}', {list: joinNames(r.items.map(i => i.name))}))}</p><ol class="mode-tl">${rows.join('')}</ol><p class="mode-total"><b>${esc(t('ぜんぶで{n}分', {n: r.min}))}</b></p></div>`;
+    }
+    if (mode === 'simple') return `<div class="mode-view mode-simple"><p class="eyebrow">${esc(t('これだけ'))}</p><p class="mode-big">${esc(t('材料{n}つ', {n: r.items.length}))}</p><p class="mode-big">${esc(t('手順{n}つ', {n: texts.length}))}</p><p class="mode-big">${esc(t('道具: {list}', {list: joinNames(modeTools(r0))}))}</p></div>`;
+    const waits = texts.map((x, k) => ({k, sec: stepWaitSec(x)})).filter(w => w.sec);
+    if (!waits.length) return '';
+    return `<div class="mode-view mode-slow"><p class="eyebrow">${esc(t('ここで待つ'))}</p><ul class="mode-waits">${waits.map(w => `<li><b class="mtl-no" aria-hidden="true">${esc(p2mNo(w.k + 1))}</b><span>${esc(t('{n}分待つ', {n: minOfSec(w.sec)}))}</span><button type="button" class="timer-chip" data-act="timer" data-s="${w.sec}" data-name="${esc(r.name)}" data-label="${esc(t('{n}分', {n: minOfSec(w.sec)}))}" data-rid="${esc(r0.id)}" data-k="${w.k}" aria-label="${esc(t('タイマーを始める'))}: ${esc(t('{n}分', {n: minOfSec(w.sec)}))}">${esc(t('タイマーを始める'))}</button></li>`).join('')}</ul></div>`;
+}
 function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方タブで、手順のすぐ下に入れるもの（できた！）
     const r0 = r, md = !!opts.modal;
     r = swappedRecipe(r);
@@ -11494,7 +11623,8 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
                 <ol class="steps cook-steps">${r.steps.map((st, k) => `<li class="${typeof st !== 'string' && st.add ? 'add' : ''}${done.includes(k) ? ' done' : ''}${k === nowK ? ' now' : k === nowK + 1 && nowK >= 0 ? ' nextp' : ''}${k === prevK ? ' prevp' : ''}" data-act="cook-step" data-k="${k}" role="button" tabindex="0" aria-pressed="${done.includes(k)}"${k === nowK ? ' aria-current="step"' : ''}><span class="st-txt"><span class="now-tag">${esc(t('いまの手順'))}</span><span class="next-tag">${esc(t('次の手順'))}</span><span class="prev-tag">${esc(t('前の手順'))}</span>${timerStepHtml(texts[k], r.name, r0.id, k, slOf(st))}${ttsOK() ? `<button type="button" class="step-say" data-act="say-step" aria-label="${esc(t('声で読む'))}">${ICO_SPEAK}</button>` : ''}</span></li>`).join('')}</ol>
 ${after}${tail}`;
     }
-    const stepsHtml = `${termHint}<ol class="steps${md ? ' dsteps' : ''}">${r.steps.map((st, k) => typeof st === 'string' ? `<li><span class="st-txt">${termsHtml(texts[k], sl)}</span></li>` : `<li class="${st.add?'add':''}"><span class="st-txt">${esc(texts[k])}</span></li>`).join('')}</ol>`;   // 文は1つの箱に入れる（点線の用語で手順が縦に割れないように）
+    const modeV = modeViewHtml(r, r0, texts), wt = k => modeWaitTag(texts[k], k, r.name, r0.id);   // モードで変わる見え方（じっくりは手順に「ここで待つ」）
+    const stepsHtml = `${modeV}${termHint}<ol class="steps${md ? ' dsteps' : ''}">${r.steps.map((st, k) => typeof st === 'string' ? `<li${wt(k) ? ' class="wait"' : ''}><span class="st-txt">${wt(k)}${termsHtml(texts[k], sl)}</span></li>` : `<li class="${st.add?'add':''}${wt(k) ? ' wait' : ''}"><span class="st-txt">${wt(k)}${esc(texts[k])}</span></li>`).join('')}</ol>`;   // 文は1つの箱に入れる（点線の用語で手順が縦に割れないように）
     if (md){
         const miss = shopMissingOf(r0);
         return `${swapNoteHtml(r)}<div class="dsec"><div class="dsec-t">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</div>
@@ -13577,7 +13707,7 @@ function applyCountry(cc){
         replaceList(STAPLE_QUICK, (pk.pantry || []).map(disp));
         replaceList(AVOID_QUICK, (pk.quick || []).slice(0, 14).map(disp));
         const porridge = recipes.some(r => r.main && okayuDayOk(r));   // おかゆ・粥の主菜がある国（中国・台湾・韓国・タイ・フィリピンなど）は、気分にも「おかゆの日」を出す（R21）
-        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'bento', 'fish', 'meat'].concat(porridge ? ['okayu'] : []).includes(m.k)));
+        replaceList(MOODS, JP_DATA.moods.filter(m => ['all', 'quick', 'easy', 'ten', 'simple', 'slow', 'bento', 'fish', 'meat'].concat(porridge ? ['okayu'] : []).includes(m.k)));
     }
     rebuildVariants();
     session.menu = null; session.twist = null; session.mood = 'all'; twistState.results = null;
