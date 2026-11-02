@@ -127,7 +127,8 @@ const hookToast = p => p.evaluate(sel => {
 }, SEE);
 const toastCover = p => p.evaluate(() => {
     const tb = document.querySelector('#toast-root .toast'); if (!tb) return {none: true};
-    const T = {left: tb.offsetLeft, top: tb.offsetTop, right: tb.offsetLeft + tb.offsetWidth, bottom: tb.offsetTop + tb.offsetHeight}, hit = [], tapHit = [];
+    const oy = tb.classList.contains('anchored') ? tb.offsetTop - scrollY : tb.offsetTop;   // 第19回 R59: ページに留めたお知らせ（absolute）は、画面の中の高さに直す
+    const T = {left: tb.offsetLeft, top: oy, right: tb.offsetLeft + tb.offsetWidth, bottom: oy + tb.offsetHeight}, hit = [], tapHit = [];
     const pre = window.__toastPre || {sy: scrollY, out: []}, dy = scrollY - pre.sy;
     for (const r of pre.out){
         const d = r.fx ? 0 : dy, ix = Math.min(r.r, T.right) - Math.max(r.l, T.left), iy = Math.min(r.b - d, T.bottom) - Math.max(r.t - d, T.top);

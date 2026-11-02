@@ -554,6 +554,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .toast.placing{opacity:0}.toast{pointer-events:none}.toast [data-act="toast-undo"]{pointer-events:auto}   /* お知らせの文の上を押しても下に届く。「元に戻す」だけ押せる（第3回b N4） */
 .toast.at-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto !important;inset-inline-end:auto;margin-inline:0}   /* 同じ画面のまま出すお知らせで、下の場所に押す場所が見えているとき（toastPlace） */
 #toast-root:has(.toast.docked)::before{content:'';position:fixed;inset-inline:0;top:var(--toast-shelf-top);height:var(--toast-shelf-h);z-index:59;pointer-events:none;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}   /* お知らせの棚（toastPlace）。主ボタンと同じすりガラス */
+.toast.anchored{position:absolute;bottom:auto !important;z-index:19}#toast-root:has(.toast.anchored)::before{position:absolute;z-index:18}.toast.anchored.off,#toast-root:has(.toast.anchored.off)::before{visibility:hidden}   /* 第19回 R59・R60: 押して画面が切りかわった直後のお知らせは、置いたあとページに留める（中身と一緒にスクロール。toastPlace の anchor）。下のタブ・帯より下、上の端より上に出ているあいだは隠す（toastScroll）。z は下のタブ（20）より下 */
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
 .muted{color:var(--muted)}
@@ -1088,7 +1089,7 @@ html[data-ts="2"] .p2-sv.one:has(.sv-relax){padding:0 var(--s8)}html[data-ts="2"
 .tray.grid2 .spot-label .nm.nm-s{font-size:.75rem}
 .tray.grid2.tight .spot-label .nm{font-size:.75rem}
 .tray.grid2.tight2{padding:6px 6px}.tray.grid2.tight2 .tg-mid{margin:0}.tray.grid2.tight2 .tg-mid .shuffle .sh-ic{--shd:56px}.tray.grid2.tight2 .spot{gap:2px;padding:0}.tray.grid2.tight2 .tg-mid .shuffle{flex-direction:row;gap:8px;max-width:min(14rem,60vw)}.tray.grid2.tight2 .tg-mid .shuffle .sh-tx{text-align:start}   /* いちばん詰めたとき: 余白を減らし、丸は 56px（基準書 2-2 の下限） */
-#view.tray-tight .today-head.p2-head h2{font-size:1.125rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#view.tray-tight .today-head.p2-head{margin-bottom:var(--s4)}
+#view.tray-tight .today-head.p2-head h2{font-size:1.125rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#view.tray-tight .today-head.p2-head h2.h2-2l{white-space:normal;font-size:17px;line-height:1.25}   /* 第19回 R54 の残り: 1行に入らない見出しは 17px の2行（ボタンの高さの中）。切らない */#view.tray-tight .today-head.p2-head{margin-bottom:var(--s4)}
 body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today.tray-tight3 .wrap{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight > section.sec:first-child{gap:var(--s4)}body.on-today.tray-tight3 #view.tray-tight .today-head.p2-head{margin-bottom:0}body.on-today.tray-tight3 .tray.grid2.tight2{padding-top:2px}body.on-today.tray-tight3 .tray.grid2.tight2 .spot{gap:0}   /* お膳が入りきらない狭い画面で、上の段を最初の画面に入れるための、いちばん小さい余白（第8回 R20） */#view.tray-tight > section.sec:first-child{gap:var(--s8)}   /* いちばん詰めたとき: 上の余白と、見出しとお膳のあいだを詰める（今日の献立だけ。日付は残す） */
 .tray.grid2 .spot-label .slot{display:block;max-width:100%;white-space:nowrap;font-size:min(.6875rem,3vw)}
 .tray.grid2 .spot-label .nm.none{font-size:var(--fs12,.75rem);font-weight:400;align-self:stretch;text-align:center}   /* 空の枠の説明は欄の幅いっぱい（主菜が変わって言い方が変わっても、欄が動かない） */
@@ -1198,7 +1199,7 @@ body.on-today.tray-tight5 header.top .seal{display:none}body.on-today.tray-tight
 body.on-today.tray-tight5 header.top .req-btn{align-self:center;min-height:44px;max-width:calc(100% - 104px);margin-inline-end:auto;padding:2px 10px;gap:6px}
 body.on-today.tray-tight5 header.top .req-btn .rq2{display:none}body.on-today.tray-tight5 header.top .req-btn .rq1{min-width:0;max-width:100%}body.on-today.tray-tight5 header.top .req-btn .rq-l{overflow:hidden;text-overflow:ellipsis}
 body.on-today.tray-tight5 header.top{flex-wrap:nowrap}
-@media (max-width:299px){body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2{font-size:0;gap:0}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2 .p2-ok{font-size:var(--fs12)}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head .p2-sv.one{width:auto;max-width:calc(100% - 60px)}.p2-sv.one .sv1w .sv1{max-width:100%;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere;text-align:end}}   /* 幅195px: 条件のボタンの文は、1行の文がボタンの左の外（見出し「今日の献立」の上）にはみ出していたので、ボタンの中で2行まで（見出しの字を出さないときはボタンを広く。全文は読み上げに残る） */   /* 第18回 R20: 幅195px のいちばん詰めた形では、見出し「今日の献立」の字を出さない（読み上げには残る。「✓ 決めた」の印は残す）。決めたあとに印で見出しが2行になり、上の段がタブの裏に入っていた */
+@media (max-width:299px){body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2{font-size:0;gap:0}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2 .p2-ok{font-size:11px;padding:2px 5px;white-space:nowrap}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head .p2-sv.one{width:auto;max-width:calc(100% - 66px)}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2:has(.p2-ok) + .p2-sv.one{max-width:calc(100% - 84px)}body.on-today.tray-tight4 #view.tray-tight .today-head.p2-head h2:has(.p2-ok) + .p2-sv.one svg{display:none}.p2-sv.one .sv1w .sv1{max-width:100%;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere;text-align:end}}   /* 幅195px: 条件のボタンの文は、1行の文がボタンの左の外（見出し「今日の献立」の上）にはみ出していたので、ボタンの中で2行まで（見出しの字を出さないときはボタンを広く。全文は読み上げに残る） */   /* 第18回 R20: 幅195px のいちばん詰めた形では、見出し「今日の献立」の字を出さない（読み上げには残る。「✓ 決めた」の印は残す）。決めたあとに印で見出しが2行になり、上の段がタブの裏に入っていた */   /* 第19回（195px の残り）: 「✓ 決めた」の印は 11px・1行（条件のボタンの裏に入っていた）。決めたあとは条件のボタンの左の印を出さず、印の分（84px）をあける */
 @media (max-width:299px){body.on-today.tray-tight5 header.top .req-btn{padding:2px 6px;max-width:calc(100% - 112px)}body.on-today.tray-tight5 header.top .req-btn .rq-l{display:none}body.on-today.tray-tight5 header.top .req-btn .rq1{gap:4px}}   /* 幅195px: 印（封筒）と数だけ（名前は読み上げに残る）。国・設定と同じ行に入る幅 */
 body.on-today.tray-tight4 .tray.grid2.tight2{padding-bottom:2px}body.on-today.tray-tight4 .tray.grid2 .spot-label .ex>.alg-tag{line-height:1.2;margin-top:2px}@media (max-width:299px){body.on-today.tray-tight4 .tray.grid2 .spot-label .ex>.alg-tag{font-size:12px}}   /* 幅195px・文字もっと大きい: 札の字は 12px まで（R20。読める下限） */   /* 第18回 S22: 上の端まで畳んだときは、お盆の下の余白と ⚠🔍 の札の行間もいちばん小さく（字は 13px のまま） */
 body.on-today.bar-static .greet-tx,body.on-today.greet-1 .greet-tx{-webkit-line-clamp:1;line-clamp:1}body.on-today.greet-0 .greet-tx,body.on-today.greet-0 .req-btn.lite{display:none}   /* 詰めてもお膳が入りきらない画面（帯をお膳の下に置くとき）では、あいさつは1行に */
@@ -1639,6 +1640,7 @@ nav.tabs.ico svg{padding-inline:2px}
 nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
 body.bar-static .actionbar.decide-bar{position:static}
 .actionbar.decide-bar{flex-wrap:wrap}.alg-bar,.alg-top{flex:0 0 100%;min-width:0;margin:0;font-size:var(--fs12);line-height:1.25;font-weight:700;color:var(--danger);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alg-bar{text-align:center;padding:0 var(--s8) 2px}.alg-top{display:none;text-align:start;padding:0 0 4px}body.bar-static .alg-bar{display:none}body.bar-static .alg-top{display:block}   /* 第18回 R57: 決めたあとの ⚠ の短い1行。固定の帯の中（いつも見える）。帯をお膳の下に置く画面ではお膳のすぐ上 */
+@media (max-width:299px){body.bar-static .alg-top,body:not(.bar-static) .alg-bar{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:11px;line-height:1.2;overflow-wrap:anywhere}}   /* 第19回（195px の残り）: ⚠ の1行が「⚠ 夫に合わない料理…」と切れていたので、幅 300px 未満は 11px の2行まで */
 body:has(.decide-bar .alg-bar) .wrap{padding-bottom:calc(var(--nav-h,72px) + var(--tap-lg) + var(--s32) + 20px + env(safe-area-inset-bottom,0px))}   /* 帯が1行ぶん高いので、いちばん下まで送れるように */   /* お膳が帯の上に入りきらない狭い画面では、決定の帯をお盆に重ねない（お膳の下に置く。第6回 S21） */
 /* アプリ名は 360 幅でも1行（22px まで下げる。基準書 2-4） */
 @media (max-width:420px){html header.top h1{white-space:nowrap;text-wrap-mode:nowrap;letter-spacing:0;font-size:max(22px,min(var(--fs24),6.2vw))}}
@@ -3100,7 +3102,7 @@ function redoSheetHtml(){
 // short: とても狭い画面（幅 300px 未満。195px など）で「元に戻す」付きのお知らせに出す1語（「入れ替えました」など）。第18回 R33: 文を1語にして低く（compact）し、料理名・↻・札・ボタンにかからない高さに置く
 function toast(msg, praise=false, undo=null, short=''){
     const root = $('#toast-root'); toast.undo = undo; toast.avoidMsg = false;
-    const pb = root.firstElementChild, prev = pb && pb.offsetHeight ? {left: pb.offsetLeft, top: pb.offsetTop, right: pb.offsetLeft + pb.offsetWidth, bottom: pb.offsetTop + pb.offsetHeight} : null;   // いま出ているお知らせの場所
+    const pb = root.firstElementChild, pa = pb && pb.classList.contains('anchored') ? pb.getBoundingClientRect() : null, prev = pa ? (pa.height ? {left: pa.left, top: pa.top, right: pa.right, bottom: pa.bottom} : null) : pb && pb.offsetHeight ? {left: pb.offsetLeft, top: pb.offsetTop, right: pb.offsetLeft + pb.offsetWidth, bottom: pb.offsetTop + pb.offsetHeight} : null;   // いま出ているお知らせの場所（ページに留めたお知らせは画面の中の場所で）
     const short0 = short || toast.short || ''; toast.short = '';
     const narrow = innerWidth < 300 && !sheet && !modalId, text = narrow && undo && short0 ? short0 : msg;
     root.innerHTML = `<div class="toast pop placing${praise?' praise':''}${narrow ? ' compact' : ''}"${narrow && text !== msg ? ` aria-label="${esc(msg)}"` : ''}>${esc(text)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
@@ -3150,6 +3152,14 @@ const TOAST_TAP = {y: -1, at: -1e9, view: '', tapView: '', layer: false, box: nu
 ['pointerdown', 'touchstart'].forEach(k => document.addEventListener(k, e => { const p = e.touches ? e.touches[0] : e; if (p){ TOAST_TAP.y = p.clientY; TOAST_TAP.at = performance.now(); const tb = e.target && e.target.closest && e.target.closest('button, [data-act]'); TOAST_TAP.box = tb ? tb.getBoundingClientRect() : null; TOAST_TAP.act = tb && tb.dataset.act && !tb.dataset.id ? tb.dataset.act : ''; TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = !!(e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')); } }, {capture: true, passive: true}));
 document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')){ TOAST_TAP.y = -1; TOAST_TAP.box = null; TOAST_TAP.act = ''; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = true; } }, true);   // キーボードでシートのボタンを押したときも同じ
 function toastViewMark(){ TOAST_TAP.view = tab + '|' + (session.stage || ''); }
+// ページに留めたお知らせ（toastPlace の anchor）: スクロールで下のタブ・帯の裏や上の端の外へ出たあいだは隠す（1フレームに1回。出るときの動き（rise）の分を含めないよう、置いた高さから数える）
+function toastScroll(){
+    if (toast.sraf) return;
+    toast.sraf = requestAnimationFrame(() => { toast.sraf = 0; const box = $('#toast-root .toast.anchored'); if (!box) return;
+        let floor = innerHeight; document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor) floor = r.top; });
+        const top = (parseFloat(box.style.top) || 0) - scrollY, bottom = top + box.offsetHeight; box.classList.toggle('off', bottom > floor - 2 || top < 2); });
+}
+addEventListener('scroll', toastScroll, {passive: true}); addEventListener('resize', toastScroll, {passive: true});
 function toastPlace(box, prev){
     const root = $('#toast-root'), v = $('#view');
     if (!box || !box.isConnected || !v || sheet || modalId || document.body.classList.contains('kb')) return;
@@ -3221,7 +3231,12 @@ function toastPlace(box, prev){
         }
         return c; };   // c[3]: そのうち、お膳の器（絵。押すと作り方）の数、c[4]: かえる・まるごと入れ替え・決定の数（どちらも c[0] にも入っている）、c[5]: 「✓ 決めた」の印（第18回 R41）、c[6]: アプリの名前（第18回 R39）
     const worse = (x, y) => x[0] !== y[0] ? x[0] > y[0] : x[1] !== y[1] ? x[1] > y[1] : x[2] > y[2];
-    if (fresh){   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
+    // 第19回 R59・R60: 押して画面が切りかわった直後のお知らせ（決めた直後の「献立が決まりました…」・最初の「準備ができました…」）は、置いたあとページに留める（position:absolute。中身と一緒にスクロールする）。
+    // 画面に固定（fixed）のままだと、送った（lift）位置で下の段の料理名・↻・札の上にかからなくても、上へ戻ると（お知らせは動かず、中身だけ下りてくるので）その上に乗っていた（360/375/390 × 文字3段階で 108/108）。
+    // ページに留めれば、置いたときにかからなかったものには、どこへスクロールしてもかからない。下のタブ・帯より下、上の端より上へ出たあいだは隠す（toastScroll）。画面を切りかえたら消す（setTab）
+    const anchor = () => { if (!box.offsetHeight || box.classList.contains('anchored')) return; const R = rectOf(), sy = scrollY; box.classList.add('anchored'); box.style.bottom = ''; box.style.top = Math.round(R.top + sy) + 'px';
+        if (box.classList.contains('docked')) root.style.setProperty('--toast-shelf-top', Math.round(R.top - 8 + sy) + 'px'); toastScroll(); };
+    const freshPlace = () => {   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
         const y0 = scrollY; lift();
         // とても狭い画面で、送っても、お知らせの裏に押す場所・料理名が残るとき（幅195px など、お膳が画面より高い）: 送らずに、画面の上から下まで、押す場所・料理名にかからない高さを探す
         if (innerWidth >= 300) return;   // とても狭い画面（お知らせを低くする幅。CSS の max-width:299px）だけ
@@ -3238,7 +3253,8 @@ function toastPlace(box, prev){
         for (let y = 8; y + h <= floor - 8; y += 4){ box.style.top = y + 'px'; const R = rectOf(), c = u ? cover(R, R.bottom + 4) : cover({left: R.left, right: R.right, top: R.top - 4}, R.bottom + 8); if (!best || worse2(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
         if (best && !pt(best.c)[0] && !pt(best.c)[1]){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる器・文のいちばん少ない高さ）
         box.style.removeProperty('top'); box.classList.remove('at-top'); box.classList.add('docked'); window.scrollTo({top: y1, behavior: 'instant'}); return;
-    }
+    };
+    if (fresh){ freshPlace(); anchor(); return; }
     // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
     // ① 押した指のまわり（続けて押すところ）にかからない ② 隠す押す場所が少ない ③ 隠す文が少ない 順に選ぶ（同じならいつもの場所）。隠れた押す場所も、お知らせの文の上から押せる
     const judge = (R, b) => { const sc = scan({l: R.left, r: R.right, t: R.top, b}); return [tapped && TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < b + 40 ? 1 : 0, sc.taps, sc.n]; };
@@ -4569,6 +4585,7 @@ function setTab(tb){
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
     window.scrollTo(0, 0);   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）。(0, 0) で呼ぶと、古い画面のレイアウトを計算せずに戻せる（{top:0} だと横の位置を知るために計算が走る。横には動かない画面なので同じ）
     { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
+    if ($('#toast-root .toast.anchored') && toast.hide){ clearTimeout(toast.t); toast.hide(); }   // ページに留めたお知らせ（決めた直後・最初の「準備ができました…」）は、画面を切りかえたら消す（新しい画面の中身の上に残さない。第19回 R60）
     // 設定で出した「献立をかえました」のお知らせは、決める段にもどったら消す（段の上に同じ文が出るので。2回出さない・料理名に重ねない。モニター第3回c）
     if (toast.avoidMsg && session.avoidNote && tb === 'today' && viewingStage() === 'decide'){ clearTimeout(toast.t); const tr = $('#toast-root'); if (tr) tr.innerHTML = ''; toast.avoidMsg = false; toast.undo = null; }
     render();
@@ -4707,7 +4724,10 @@ function fitTray(){
     { const h2 = document.querySelector('#view .today-head.p2-head h2'); if (h2){ h2.style.removeProperty('font-size'); let fs = parseFloat(getComputedStyle(h2).fontSize);
         const one = () => { const lh = parseFloat(getComputedStyle(h2).lineHeight) || fs * 1.3; return h2.getBoundingClientRect().height < lh * 1.5 && h2.scrollWidth <= h2.clientWidth + 1; };
         while (!one() && fs > 18){ fs = Math.max(18, fs - 1); h2.style.fontSize = fs + 'px'; }
-        if (!one()) h2.style.removeProperty('font-size'); } }
+        // 第19回 R54 の残り: 18px でも見出しの字が1行に入らないとき（波 Dzisiejszy jadłospis・越 Thực đơn hôm nay の 360/375・文字大/もっと大きい）は、詰めた形（tray-tight。1行で切る）でも 17px の2行にする（CSS の h2-2l）。「✓ 決めた」の印が2段目に回るだけのときは、字が入っているので2行にしない。語の切れ目（空白）のない見出し（日・中・韓など）は今までどおり1行
+        let two = false;
+        if (!one()){ const tx = h2.firstChild && h2.firstChild.nodeType === 3 ? h2.firstChild : null; if (tx){ h2.style.fontSize = '18px'; h2.style.whiteSpace = 'nowrap'; const g = document.createRange(); g.selectNodeContents(tx); two = /\s/.test(tx.data) && g.getBoundingClientRect().width > h2.clientWidth + 1; h2.style.removeProperty('white-space'); } h2.style.removeProperty('font-size'); }
+        h2.classList.toggle('h2-2l', two); } }
     // base: 画面の大きさ・文字の大きさ・並び。key: それに見出しの高さ・下のタブの高さ（言語で変わる）を足したもの
     const base = [innerWidth, innerHeight, document.documentElement.getAttribute('data-ts') || '', tr.style.getPropertyValue('--c'), rowsEl.map(r => r.children.length).join('/'), rowsEl.map(r => (r.querySelector('.spot .ex') || {getAttribute: () => ''}).getAttribute('style')).join('/')].join('|');   // 段ごとの札の場所（⚠ の札の場所を取る段が変わったら、決め直す）
     const key = base + '|' + (document.querySelector('nav.tabs') || {}).offsetHeight + '|' + Math.round(tr.getBoundingClientRect().top + scrollY);
@@ -10773,7 +10793,7 @@ function viewToday(){
     return `
     <section class="sec">
         <div class="today-head p2-head"><h2>${esc(t('今日の献立'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
-            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w"><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? t('品数おまかせ') : t('{n}品', {n: menuSeats(m)})].join(t('・')))}</span>${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
+            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w"><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? (session.mood === 'all' || !session.mood ? '' : t('おまかせ')) : t('{n}品', {n: menuSeats(m)})].filter(Boolean).join(t('・')))}</span>${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
         ${(aw => aw ? `<p class="alg-top" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${/* 第18回 R57: 決定の帯をお膳の下に置く画面（bar-static）では、⚠ の1行はお膳のすぐ上（最初の画面に入る）。ほかの画面では帯の中の .alg-bar（CSS で切りかえ） */''}
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
