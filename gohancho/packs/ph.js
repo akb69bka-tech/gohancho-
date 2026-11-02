@@ -1900,7 +1900,7 @@ GOHAN_PACK({
     // ---------- おかゆの日の汁もの・副菜（R61）: 魚醤（パティス）・バゴオン・卵・魚介を使わない、辛くない料理。本人の魚・卵のアレルギーでも席が空かない ----------
     {
       id: 'ph_tinola_asin',
-      name: 'Chicken and ginger soup with salt (no patis)',
+      name: 'Salt-seasoned chicken tinola',
       local: 'Tinolang manok sa asin',
       type: 'soup',
       method: 'soup',
@@ -1948,7 +1948,7 @@ GOHAN_PACK({
     },
     {
       id: 'ph_sopas_manok',
-      name: 'Creamy chicken macaroni soup (no patis)',
+      name: 'Chicken sopas',
       local: 'Sopas na manok',
       type: 'soup',
       method: 'soup',
