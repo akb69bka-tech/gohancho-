@@ -4,6 +4,7 @@
 //       お膳の札（赤い ⚠ とは別の柿色の枠「⚠ ○○のアレルゲン（卵）入り」）・お膳の下の文（料理の名前と「○○は食べられません」）・料理の詳細・作り方（段取り・買い物メモ）・まわした献立のお知らせに同じ印を出す。
 //       「食べられるお膳です」などの安心の文とは並ばない。戻しても決めた献立は勝手に変わらない。17言語の訳
 //  R43: きのう明日へまわした献立のお知らせの ⚠（v84）は、家族のアレルギーでも付く（全員共通のアレルゲンは panel-r15 の R15-5）
+//  R53（第17回）: 2人のときの名前の並びは3つの文で同じ（家族の順）。英語は人数・品数で単数・複数（"Son can't eat this." / "Husband and Son can't eat this." / 2品は "these dishes use … can't eat them"）。韓国語の札はかっこが二重にならない
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -107,16 +108,32 @@ for (const fk of ['egg', 'fish', 'shellfish']){
 
 // R16-4 新しい文は17言語すべてにあり、⚠ と {names}（と {list}・{dishes}）を持ち、「食べられる（安心）」の文ではない
 {
-    const keys = ['⚠ {names}のアレルゲン（{list}）入り', '⚠ {names}のアレルゲン入り', '⚠ {names}のアレルゲン（{list}）を使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', '⚠ {names}のアレルゲンを使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', '⚠ 「{dishes}」は、{names}のアレルゲンを使う料理です。{names}は食べられません。'];
+    const keys = ['⚠ {names}のアレルゲン（{list}）入り', '⚠ {names}のアレルゲン入り', '⚠ {names}のアレルゲン（{list}）を使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', '⚠ {names}のアレルゲンを使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', '⚠ 「{dishes}」は、{names}のアレルゲンを使う料理です。{names}は食べられません。', '⚠ 「{dishes}」は、どれも{names}のアレルゲンを使う料理です。{names}は食べられません。'];
     const html = fs.readFileSync(path.join(ROOT, 'gohancho', 'index.html'), 'utf8');
-    ok(keys.every(k => html.includes(`t('${k}'`)), 'R16-4 5つの文を画面で使っている');
+    ok(keys.every(k => html.includes(`t('${k}'`)), 'R16-4 6つの文を画面で使っている');
     const miss = [];
     for (const L of 'ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant'.split(' ')){
         let d = null; const GOHAN_I18N = (l, o) => { d = o; }; new Function('GOHAN_I18N', fs.readFileSync(path.join(ROOT, 'gohancho', 'i18n', L + '.js'), 'utf8'))(GOHAN_I18N);
-        keys.forEach(k => { const v = d[k]; if (!v) return miss.push(L + ':' + k.slice(0, 14)); const ph = (k.match(/\{\w+\}/g) || []).filter((x, i, a) => a.indexOf(x) === i); if (!/^⚠/.test(v) || ph.some(x => !v.includes(x))) miss.push(L + ' ph:' + k.slice(0, 14)); });
-        if (L === 'en' && !/cannot eat/.test(d[keys[4]] || '')) miss.push('en: not "cannot eat"');
+        keys.forEach(k => { const v = d[k]; if (!v) return miss.push(L + ':' + k.slice(0, 14)); const forms = typeof v === 'object' ? Object.values(v) : [v]; if (typeof v === 'object' && !v.other) miss.push(L + ' other:' + k.slice(0, 14));   // 人数で変わる言い方は {one, other}
+            const ph = (k.match(/\{\w+\}/g) || []).filter((x, i, a) => a.indexOf(x) === i); forms.forEach(f => { if (!/^⚠/.test(f) || ph.some(x => !f.includes(x))) miss.push(L + ' ph:' + k.slice(0, 14)); }); });
+        if (L === 'en' && !(typeof d[keys[4]] === 'object' && /can't eat this/.test(d[keys[4]].one) && /allergens/.test(d[keys[4]].other))) miss.push('en: single/plural');
+        if (L === 'ko' && /\(\{list\}\)/.test(JSON.stringify(d[keys[0]]) + JSON.stringify(d[keys[2]]))) miss.push('ko: ({list}) のかっこ');
     }
     ok(!miss.length, 'R16-4 17言語にあり、⚠ と置き換え記号がそろっている: ' + JSON.stringify(miss.slice(0, 6)));
+}
+// R16-5 R53: 2人（長男 卵・夫 魚）を外した日の文。名前の並びは家族の順で3つの文とも同じ。英語の単数・複数。韓国語のかっこ
+for (const [lang, names] of [['ja', ['長男', '夫']], ['en', ['Son', 'Husband']], ['ko', ['아들', '남편']]]){
+    const {p, ctx} = await open({uiLang: lang}, 'r53-' + lang);
+    const r = await p.evaluate(([names]) => {
+        S.family = [{id: 'a', name: names[0], role: 'child', allergy: ['@egg'], avoid: ['@egg'], mild: false}, {id: 'b', name: names[1], role: 'husband', allergy: ['@fish'], avoid: ['@fish'], mild: false}]; setEaters(['__me']); save(); reconcileMenu(); render();
+        const hit = id => RECIPES.filter(r => outAlgHits(r).length === 1 && outAlgHits(r)[0].id === id), eggs = hit('a'), fishes = hit('b'), both = RECIPES.find(r => outAlgHits(r).length === 2);
+        return {eaters: eatersOutLine(), one: outAlgLine([eggs[0]]), two: outAlgLine([fishes[0], eggs[0]]), bothLine: both ? outAlgLine([both]) : '', bothTag: both ? outAlgTagHtml(both).replace(/<[^>]+>/g, '') : '', bothAria: both ? (outAlgTagHtml(both).match(/aria-label="([^"]*)"/) || [])[1] : '', tag1: outAlgTagHtml(eggs[0]).replace(/<[^>]+>/g, '')};
+    }, [names]);
+    const pair = lang === 'ja' ? '長男・夫' : lang === 'en' ? 'Son and Husband' : '아들과 남편';
+    ok(r.eaters.includes(pair) && r.two.includes(pair) && (!r.bothLine || r.bothLine.includes(pair)) && (!r.bothTag || r.bothTag.includes(pair)), `R16-5 ${lang} 2人の名前の並びは、どの文でも家族の順（${pair}。料理の順が逆でも）: ` + JSON.stringify(r));
+    if (lang === 'en') ok(/uses Son's allergen\. Son can't eat this\.$/.test(r.one) && /these dishes use Son and Husband's allergens\. Son and Husband can't eat them\.$/.test(r.two) && !/cannot eat it/.test(r.one + r.two + r.bothLine + r.bothAria), `R16-5 en 単数・複数（"Son can't eat this." / "Son and Husband can't eat them."）: ` + JSON.stringify(r));
+    if (lang === 'ko') ok(!/\(\(|\)\)/.test(r.bothTag + r.tag1 + r.bothAria) && /알레르겐 포함: /.test(r.tag1), 'R16-5 ko 札のかっこが二重にならない: ' + JSON.stringify({tag1: r.tag1, bothTag: r.bothTag, aria: r.bothAria}));
+    await ctx.close();
 }
 ok(!errs.length, 'ページのエラーなし: ' + errs.slice(0, 3).join(' / '));
 await b.close();

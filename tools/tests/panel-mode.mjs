@@ -7,6 +7,10 @@
 //  5. お膳の札（10分・かんたん・じっくり）は、モードのときだけ
 //  6. アレルギー・苦手は、どのモードでも守る
 //  7. 決めた献立は、モードを変えても変わらない
+//  8. 第17回の直し: R49 「かんたん」の札はゆるめない条件（主菜 25分・手順3つ・材料6つ、副菜・汁もの 15分・手順2つ）に合う料理だけ（ゆるめた段階には付けない）。
+//     R50 ゆるめた知らせは、お膳の上の「条件を変える」の中の短い1行（390×844 で、文字ふつう・もっと大きいとも決定の帯より上に見える）と、条件のシートの全文。お膳の下には出さない。お膳は押し下げない
+//     R51 「10分以内」の作り方の見出しは、いま効いている上限（15分以内など。近い順の少数は「手早い順」）。「おく・漬ける」の10分を超える待ちは「＋おく○分」と別に出し、合計には入れない。「10分」の札はその待ちがない料理だけ。知らせに「最長○分」は出ない
+//     R52 知らせに「手順99つまで」は出ない（「手順の数は問わない」）
 //  環境変数: BASE, SEED, CCS（既定 JP,US,KR）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -42,7 +46,11 @@ const checkMenu = (p, mode, n) => p.evaluate(([mode, n]) => {
         });
         ['主菜', '副菜', '汁物'].forEach(sl => { if (modeInfo(mode, sl).lv > 0) relaxed.add(sl); });
     }
-    const txt = easyRelaxText(), shown = [...document.querySelectorAll('#view .small.muted')].some(e => e.textContent === txt && txt);
+    const txt = easyRelaxText();
+    // R50: 短い1行はお膳の上の「条件を変える」の中、全文は条件のシート。お膳の下には出さない
+    const head = document.querySelector('#view .p2-sv .sv-relax'), under = [...document.querySelectorAll('#view .small.muted')].some(e => txt && e.textContent === txt);
+    openCondSheet(); const full = document.querySelector('#sheet-root .cond-relax'); const inSheet = !!full && full.textContent === txt; closeSheet();
+    const shown = !!head && head.textContent.length > 0 && inSheet && !under;
     const badges = document.querySelectorAll('.tray .badge.mode').length;
     const infos = Object.fromEntries(['主菜', '副菜', '汁物'].map(sl => [sl, (f => ({lv: f.lv, n: f.n, none: f.none, few: !!f.ids}))(modeInfo(mode, sl))]));
     return {bad, empty, strict, relaxed: [...relaxed], txt, shown, badges, infos, n: session.menu.items.length};
@@ -74,6 +82,14 @@ for (const cc of CCS){
         // 5. お膳の札: 段階 0 の条件に合う料理の数だけ札が出る
         const nStrict = await p.evaluate(mode => session.menu.items.filter(it => it.r && modeBadgeOk(it.r, mode, it.slot)).length, mode);
         ok(r.badges === nStrict && (mode !== 'ten' || r.badges === 0 || (await p.evaluate(() => [...document.querySelectorAll('.tray .badge.mode')].every(e => e.textContent === '10分')))), `${cc} M5 ${mode}: お膳の札（10分・かんたん・じっくり）は、条件に合う料理にだけ（札 ${r.badges} / 合う料理 ${nStrict}。「10分」は10分以内の料理だけ）`);
+        if (mode !== 'slow'){   // R49・R51: 札はゆるめない条件の料理だけ（かんたん: 主菜25分・手順3つ・材料6つ、副菜・汁もの15分・手順2つ。10分: 目安10分以内で、10分を超える「おく」待ちがない）。段階をゆるめた国でも、ゆるめた段階の料理には付けない
+            const bad = await p.evaluate(mode => { const out = []; for (let k = 0; k < 6; k++){ session.rejected.clear(); newMenu(); render();
+                session.menu.items.forEach(it => { if (!it.r || !modeBadgeOk(it.r, mode, it.slot)) return; const main = easyKind(it.r) === 'main';
+                    if (mode === 'simple' && (it.r.min > (main ? 25 : 15) || stepCount(it.r) > (main ? 3 : 2) || (main && ingCount(it.r) > 6) || easyHeavy(it.r))) out.push(it.r.name + '(' + it.r.min + '分/' + stepCount(it.r) + '手順/' + ingCount(it.r) + ')');
+                    if (mode === 'ten' && (it.r.min > 10 || passiveWaitMin(it.r) > 10)) out.push(it.r.name + '(' + it.r.min + '分/おく' + passiveWaitMin(it.r) + '分)'); }); } return out; }, mode);
+            ok(!bad.length, `${cc} M8 ${mode}: 札は、ゆるめない条件（分・手順・材料／10分を超える待ちなし）に合う料理にだけ: ` + JSON.stringify(bad.slice(0, 5)));
+        }
+        ok(!/99/.test(r.txt) && !/最長/.test(r.txt), `${cc} M8 ${mode}: 知らせに「手順99つまで」「最長○分」が出ない（R51・R52）: ` + r.txt);
         console.log(`    ${cc} ${mode} 段階: ` + JSON.stringify(r.infos));
     }
     // 3. かえる・まるごと入れ替えもモードの条件に合う
@@ -136,6 +152,30 @@ for (const cc of CCS){
         S.cook = null; save(); session.mood = mode; render();
         return out;
     }, mode);
+    // R50: 390×844 で、ゆるめた知らせの短い1行が決定の帯・下のタブより上に、スクロールなしで見える（文字ふつう・もっと大きい）。お膳の位置は1行を消しても変わらない（2px まで）
+    for (const ts of [0, 2]){
+        const r = await p.evaluate(ts => { S.settings.textSize = ts || undefined; applyTextSize(); session.mood = 'ten'; session.rejected.clear(); newMenu(); render(); window.scrollTo(0, 0);
+            const q = s => document.querySelector(s), rc = e => e ? e.getBoundingClientRect() : null, rl = q('#view .p2-sv .sv-relax'), tray = q('#view .tray'), bar = q('#view .decide-bar'), tabs = q('nav.tabs');
+            if (!rl) return {none: true, txt: easyRelaxText()};
+            const a = rc(rl), t0 = rc(tray).top, cut = rl.scrollWidth > rl.clientWidth + 1;
+            rl.style.display = 'none'; const t1 = rc(tray).top; rl.style.display = '';
+            const out = {top: Math.round(a.top), bottom: Math.round(a.bottom), barTop: bar ? Math.round(rc(bar).top) : null, tabTop: tabs ? Math.round(rc(tabs).top) : null, trayShift: Math.round(t0 - t1), cut, txt: rl.textContent, btnH: Math.round(rc(q('#view .p2-sv')).height)};
+            S.settings.textSize = undefined; applyTextSize(); return out; }, ts);
+        ok(!r.none && r.top >= 0 && r.bottom < Math.min(r.barTop || 9999, r.tabTop || 9999) && !r.cut && Math.abs(r.trayShift) <= 2 && r.btnH <= 48, `JP M8 R50 文字${ts ? 'もっと大きい' : 'ふつう'}: ゆるめた知らせの1行が決定の帯・タブより上に見え、切れず、お膳を押し下げない: ` + JSON.stringify(r));
+    }
+    // R51: 「10分以内」の作り方の見出しは、いま効いている上限。「おく」の待ちは「＋おく○分」で合計とは別
+    {
+        const r = await p.evaluate(() => { session.mood = 'ten'; session.rejected.clear(); newMenu(); render();
+            const out = [];
+            session.menu.items.filter(x => x.r).forEach(x => { openModal(x.r.id); const md = document.querySelector('#modal-root'), head = (md.querySelector('.mode-view .eyebrow') || {}).textContent || '', total = (md.querySelector('.mode-total') || {}).textContent || '';
+                const f = modeInfo('ten', x.slot), lim = f.ids || f.none ? null : MODE_TIERS.ten[x.slot === '主菜' ? 'main' : 'side'][f.lv];
+                out.push({name: x.r.name, min: x.r.min, head, total, want: lim === null ? '手早い順' : lim + '分以内', okMin: lim === null || x.r.min <= lim}); closeModal(); });
+            openModal('kabuamazu'); const md = document.querySelector('#modal-root');
+            const kabu = {mins: [...md.querySelectorAll('.mtl-m')].map(e => e.textContent), total: (md.querySelector('.mode-total') || {}).textContent || '', wait: (md.querySelector('.mode-total .mode-wait') || {}).textContent || '', badge: modeBadgeOk(byId('kabuamazu'), 'ten', '副菜'), pw: passiveWaitMin(byId('kabuamazu'))}; closeModal();
+            return {out, kabu}; });
+        ok(r.out.length && r.out.every(x => x.head === x.want && x.okMin), 'JP M8 R51 料理の詳細の見出しは、いま効いている上限（10分以内／15分以内など／手早い順）で、料理の分はその中: ' + JSON.stringify(r.out));
+        ok(r.kabu.mins.includes('＋おく30分') && r.kabu.wait === '＋おく30分' && /ぜんぶで10分/.test(r.kabu.total) && !r.kabu.badge && r.kabu.pw === 30, 'JP M8 R51 かぶの甘酢漬け: 「30分おく」は「＋おく30分」で別に出し、合計は10分のまま、「10分」の札は付かない: ' + JSON.stringify(r.kabu));
+    }
     const ten = await viewOf('ten');
     ok(ten.decided && ten.views.some(c => /mode-ten/.test(c)) && ten.steps === ten.nSteps && ten.total && ten.ings.length > 3, `JP M4 10分以内: 作り方に、手順の帯（${ten.steps}/${ten.nSteps}手順）・分の札・合計・材料1行: ` + JSON.stringify(ten));
     ok(ten.modal.views.some(c => /mode-ten/.test(c)), `JP M4 10分以内: 料理の詳細にも同じ帯: ` + JSON.stringify(ten.modal));
