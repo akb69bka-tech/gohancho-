@@ -1730,5 +1730,6 @@ GOHAN_I18N('pl', {
     "自分で入れた料理（{date}）": "Dodane przeze mnie ({date})",
     "送らずに、自分の候補に入れる": "Zapisz jako propozycję bez wysyłania",
     "食べたいものは、まだありません": "Jeszcze nic nie dodano",
-    "食べたいものを選ぶ": "Wybierz, na co masz ochotę"
+    "食べたいものを選ぶ": "Wybierz, na co masz ochotę",
+    "この条件では、おかゆの日の主菜がありません": "Przy tych warunkach nie ma dania głównego na dzień kleiku ryżowego"
 });

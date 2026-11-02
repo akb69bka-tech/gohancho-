@@ -1730,5 +1730,6 @@ GOHAN_I18N('de', {
     "自分で入れた料理（{date}）": "Selbst eingetragen ({date})",
     "送らずに、自分の候補に入れる": "Nicht senden, nur als Wunsch eintragen",
     "食べたいものは、まだありません": "Noch keine Wünsche eingetragen",
-    "食べたいものを選ぶ": "Essenswünsche wählen"
+    "食べたいものを選ぶ": "Essenswünsche wählen",
+    "この条件では、おかゆの日の主菜がありません": "Unter diesen Bedingungen gibt es kein Hauptgericht für den Reissuppen-Tag"
 });

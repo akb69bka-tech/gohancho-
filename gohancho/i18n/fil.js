@@ -1730,5 +1730,6 @@ GOHAN_I18N('fil', {
     "自分で入れた料理（{date}）": "Idinagdag ko ({date})",
     "送らずに、自分の候補に入れる": "Itago bilang mungkahi ko, huwag ipadala",
     "食べたいものは、まだありません": "Wala pang idinagdag",
-    "食べたいものを選ぶ": "Piliin ang gusto mong kainin"
+    "食べたいものを選ぶ": "Piliin ang gusto mong kainin",
+    "この条件では、おかゆの日の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa araw ng lugaw"
 });

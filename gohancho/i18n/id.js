@@ -1730,5 +1730,6 @@ GOHAN_I18N('id', {
     "自分で入れた料理（{date}）": "Ditambahkan sendiri ({date})",
     "送らずに、自分の候補に入れる": "Jadikan pilihan saya tanpa mengirim",
     "食べたいものは、まだありません": "Belum ada yang ditambahkan",
-    "食べたいものを選ぶ": "Pilih yang ingin dimakan"
+    "食べたいものを選ぶ": "Pilih yang ingin dimakan",
+    "この条件では、おかゆの日の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk hari bubur"
 });

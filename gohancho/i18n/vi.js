@@ -1730,5 +1730,6 @@ GOHAN_I18N('vi', {
     "自分で入れた料理（{date}）": "Tự thêm ({date})",
     "送らずに、自分の候補に入れる": "Không gửi, chỉ thêm vào gợi ý của tôi",
     "食べたいものは、まだありません": "Chưa có món muốn ăn",
-    "食べたいものを選ぶ": "Chọn món muốn ăn"
+    "食べたいものを選ぶ": "Chọn món muốn ăn",
+    "この条件では、おかゆの日の主菜がありません": "Với điều kiện này, không có món chính cho ngày ăn cháo"
 });

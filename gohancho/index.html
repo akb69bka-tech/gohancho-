@@ -3771,6 +3771,8 @@ function okayuAvail(){ return poolForMood('主菜', 'okayu').some(r => r.main &&
 // 気分の「おかゆの日」と、主菜の「かえる」の「おかゆの日」は、同じ条件で出す・出さない（第8回 R21: 国によって片方にだけあった）
 // その国の気分の一覧にあり（国のデータに、おかゆ・粥の主菜がある）、いまの主菜の国で出せるときだけ
 function okayuMoodOn(){ return MOODS.some(x => x.k === 'okayu') && okayuAvail(); }
+// その国に「おかゆの日」はあるが、いまの条件（アレルギー・苦手・手に入りにくい食材）でおかゆ・粥の主菜が全部止まり、気分の札が出ないとき（理由を一言出す。R56: タイで卵・魚のアレルギーだと黙って消えていた）
+function okayuMoodGone(){ return session.mood !== 'okayu' && MOODS.some(x => x.k === 'okayu') && !okayuAvail() && poolForMood('主菜', 'okayu').some(r => r.main && okayuDayOk(r)); }
 // 主食が「おかゆ」の日: 主菜は、おかゆを主食にして食べるおかず（ご飯もの・麺の一品料理にすると、選んだおかゆが出なくなる・主食が2つになる）
 function stapleOkayu(){ const o = typeof currentStapleOpt === 'function' ? currentStapleOpt() : null; return !!o && o.k === 'okayu' && !!stapleSpot(); }
 // おかゆの日の副菜・汁ものに出さない料理（やわらかい候補が尽きても、これで埋めない。第9回 S23: タイで生えびの唐辛子和え・ส้มตำ・米のスープが出ていた）
@@ -9245,7 +9247,7 @@ function shareSheetHtml(){
             <button class="btn wide" data-act="share-copy">${esc(t('コピーする'))}</button>
         </div>
         ${sheet.card === 'needs' && (needsData(sheet.mid, true) || {}).hasName ? `<label class="check"><input type="checkbox" data-act="needs-name" ${sheet.withName ? 'checked' : ''}><span>${esc(t('名前を入れる'))}</span></label>` : ''}
-        ${sheet.card === 'recipe' || sheet.card === 'shop' || sheet.card === 'today3' || sheet.card === 'wish' || sheet.card === 'vote' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
+        ${sheet.card === 'recipe' || sheet.card === 'shop' || sheet.card === 'wish' || sheet.card === 'vote' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card === 'today3' ? (sheet.src === 'cook' ? 'cook' : 'menu') : sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
         ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
         ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
@@ -10464,7 +10466,8 @@ function condSheetHtml(){
         <div class="field"><span class="eyebrow">${esc(t('時間'))}</span><div class="chips" role="group" aria-label="${esc(t('時間'))}">${MOODS.filter(x => TIME.includes(x.k)).map(moodChip).join('')}</div>
             ${easyRelaxText() ? `<p class="small cond-relax" role="status">${esc(easyRelaxText())}</p>` : ''}
             <p class="small muted">${esc(t('献立の全部の料理に効きます（副菜・汁ものも）。'))}</p></div>
-        <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips" role="group" aria-label="${esc(t('気分'))}">${MOODS.filter(x => !TIME.includes(x.k) && (x.k !== 'okayu' || session.mood === 'okayu' || okayuMoodOn())).map(moodChip).join('')}</div></div>
+        <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips" role="group" aria-label="${esc(t('気分'))}">${MOODS.filter(x => !TIME.includes(x.k) && (x.k !== 'okayu' || session.mood === 'okayu' || okayuMoodOn())).map(moodChip).join('')}</div>
+            ${okayuMoodGone() ? `<p class="small muted cond-okayu-none" role="status">${esc(t('この条件では、おかゆの日の主菜がありません'))}</p>` : ''}</div>
         ${stapleOptions().length > 1 ? `<div class="field"><span class="eyebrow">${esc(t('主食'))}</span><div class="chips" role="group" aria-label="${esc(t('主食'))}">${stapleOptions().map(o => `<button class="chip" data-act="staple-set" data-v="${esc(o.k)}" aria-pressed="${currentStapleOpt().k === o.k}" ${o.k !== 'none' && stapleBlocked(o) ? 'disabled' : ''}>${esc(stapleName(o))}</button>`).join('')}</div></div>` : ''}
         ${eaters}
         <div class="field"><span class="eyebrow">${esc(t('冷蔵庫'))}</span><label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge ? 'checked' : ''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f: S.fridge.length, s: S.staples.length}))}</span></label></div>
@@ -13135,7 +13138,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'cook-log': setTab('log'); setTimeout(() => { const e = $('#log-cal'); if (e) e.scrollIntoView({block:'start'}); }, 30); break;
-        case 'share-cook': openShare('cook'); break;
+        case 'share-cook': { if (!share3Items('cook').length){ openShare('cook'); break; } sheet = {kind:'share', card:'today3', src: 'cook', lv: 2, text: todayShare3Text(2, 'cook'), title: t('今日の献立')}; renderSheet(); break; }   // 決めたあと（作り方のタブ）も、決める前と同じ3段で送る（第18回 R8）
         case 'timer': startTimer(Number(el.dataset.s), el.dataset.name, el.dataset.label, el.dataset.rid, el.dataset.k == null ? null : Number(el.dataset.k)); break;
         case 'timers-toggle': session.timersOpen = !session.timersOpen; { const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml(); } break;
         case 'timer-stop': stopTimer(el.dataset.tid); break;

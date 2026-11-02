@@ -1002,6 +1002,18 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang gulay at haluin ng 2 minuto hanggang kumintab. Timplahan ng asin, asukal at paminta at ihain kasama ng pritong manok o pork chop.'
       ],
       tip: { add: 'Isang kutsarang kinayod na keso sa dulo', why: 'Maalat at creamy, gaya ng gusto ng mga bata', skill: 'Patuluing mabuti ang gulay', how: 'Nababalot ng mantikilya ang tuyong gulay sa halip na maging matubig.' }
-    }
+    },
+    'ph_lugaw': {
+      name: 'Lugaw',
+      ings: [['Bigas na hilaw (haluan ng malagkit kung mayroon)', '1 tasa'], ['Dahon ng sibuyas, hiniwa', '2'], ['Kalamansi', '2?']],
+      seas: '1 malaking hinlalaki na luya, hiniwa nang pino · 5 butil ng bawang, tinadtad (kalahati ay iprito hanggang malutong para sa ibabaw) · 1 kutsarita asin · 1 kutsara mantika · 1.5 litro tubig · Paminta',
+      steps: [
+        'Iprito ang kalahati ng bawang sa mantika hanggang ginintuan at hanguin para sa ibabaw. Sa parehong kaldero, igisa ang natitirang bawang at luya ng 1 minuto.',
+        'Ilagay ang hinugasang bigas at haluin ng 1 minuto, saka ibuhos ang tubig. Pakuluin at hayaang kumulo nang mahina ng 25 hanggang 30 minuto, habang hinahalo nang madalas, hanggang lumambot nang husto ang bigas at lumapot ang lugaw.',
+        'Dagdagan ng tubig kung masyadong malapot at timplahan ng asin at paminta.',
+        'Ihain na may dahon ng sibuyas at pritong bawang sa ibabaw, at kalamansi na pipigain.'
+      ],
+      tip: { add: 'Nilagang itlog o tokwa\'t baboy sa tabi', why: 'Ang lugaw ang base; ang sahog ang bumubuo ng pagkain', skill: 'Haluin nang madalas sa huli', how: 'Madaling dumikit at masunog sa ilalim ang malapot na lugaw.' }
+    },
   }
 });

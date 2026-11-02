@@ -484,6 +484,7 @@ GOHAN_PACK({
       local: '貢丸湯',
       type: 'soup',
       method: 'soup',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'processed',
       min: 25,
       ings: [
@@ -663,6 +664,7 @@ GOHAN_PACK({
       local: '豬肝湯',
       type: 'soup',
       method: 'soup',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'pork',
       min: 25,
       ings: [
@@ -1806,6 +1808,73 @@ GOHAN_PACK({
         'Flip back onto the egg side, roll up the crepe, and cut it into pieces. Repeat with the rest of the batter and serve with soy sauce and a pinch of white pepper.',
       ],
       tip: { add: 'Soy paste (jiangyou gao) or a little chili sauce for dipping', why: 'It is how it is eaten at breakfast shops in Taiwan', skill: 'Keep the batter thin', how: 'A thin batter gives a soft, chewy skin that rolls without tearing; thick batter makes it heavy and doughy.' },
+    },
+    // ---------- おかゆの日（R55。柊）: やわらかい・あっさりした副菜 ----------
+    {
+      id: 'tw_zhengdan',
+      name: 'Steamed egg',
+      local: '蒸蛋',
+      type: 'side',
+      method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55）
+      protein: 'egg',
+      min: 20,
+      ings: [
+        'egg|Eggs|3',
+        'scallion|Scallion|1?',
+      ],
+      seas: '300 ml warm water or stock · 1/2 tsp salt · a few drops of sesame oil · 1 tsp soy sauce to finish',
+      steps: [
+        'Beat the eggs with the salt, add the warm water and mix gently. Strain into a heatproof bowl and skim off the bubbles.',
+        'Cover the bowl with a plate or foil and steam over medium-low heat for 12–15 minutes until just set in the centre.',
+        'Finish with a few drops of sesame oil, the soy sauce and chopped scallion.',
+      ],
+      tip: { add: 'A few clams or a spoon of minced pork on the bottom', why: 'Their juices season the custard as it steams', skill: 'Low heat and a cover', how: 'A gentle steam keeps the surface smooth; strong heat makes holes and a spongy texture.' },
+    },
+    {
+      id: 'tw_pidan_doufu',
+      name: 'Cold tofu with century egg',
+      local: '皮蛋豆腐',
+      type: 'side',
+      method: 'raw',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55。火を使わない冷たい豆腐）
+      protein: 'legume',
+      min: 10,
+      ings: [
+        'tofu|Silken tofu|1 box (300 g)',
+        'century egg|Century egg|1',
+        'scallion|Scallion|1',
+        'fried shallot|Fried shallots|1 tbsp?',
+      ],
+      seas: '2 tbsp soy paste · 1 tsp sesame oil · 1 garlic clove, minced (optional)',
+      steps: [
+        'Slide the tofu out of its box onto a plate and pour off the water.',
+        'Peel the century egg and cut it into wedges; arrange them over the tofu.',
+        'Pour the soy paste and sesame oil over the top and finish with chopped scallion, garlic and fried shallots.',
+      ],
+      tip: { add: 'A spoon of pork floss on top', why: 'The sweet, savoury floss is the night-market version', skill: 'Chill the tofu', how: 'Cold tofu stays firm and clean on the plate; room-temperature tofu breaks when you cut it.' },
+    },
+    {
+      id: 'tw_tang_qingcai',
+      name: 'Blanched greens with garlic soy paste',
+      local: '燙青菜',
+      type: 'side',
+      method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55）
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'bok choy|Bok choy or water spinach|250 g',
+        'garlic|Garlic, minced|1 clove',
+        'fried shallot|Fried shallots|1 tbsp?',
+      ],
+      seas: '1 tbsp soy paste · 1 tsp sesame oil · 1 tsp oil · 1 tsp salt for the water',
+      steps: [
+        'Wash the greens and cut them into 5 cm lengths. Bring a pot of salted water to the boil with the oil.',
+        'Blanch the greens for 1 minute until just tender and bright, then drain well.',
+        'Pile them on a plate, spoon the soy paste over, add the garlic, sesame oil and fried shallots.',
+      ],
+      tip: { add: 'A spoon of the oil from a jar of fried shallots', why: 'The fragrant oil is what the lunchbox shops use', skill: 'Oil in the water', how: 'A spoon of oil in the blanching water keeps the leaves glossy and green.' },
     },
   ],
   aliases: {

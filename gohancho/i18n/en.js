@@ -1731,5 +1731,6 @@ GOHAN_I18N('en', {
     "自分で入れた料理（{date}）": "Added by me ({date})",
     "送らずに、自分の候補に入れる": "Keep as my idea instead of sending",
     "食べたいものは、まだありません": "Nothing added yet",
-    "食べたいものを選ぶ": "Pick what you'd like to eat"
+    "食べたいものを選ぶ": "Pick what you'd like to eat",
+    "この条件では、おかゆの日の主菜がありません": "With these conditions, there is no main dish for a rice porridge day"
 });

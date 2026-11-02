@@ -1730,5 +1730,6 @@ GOHAN_I18N('pt-BR', {
     "自分で入れた料理（{date}）": "Adicionado por mim ({date})",
     "送らずに、自分の候補に入れる": "Guardar como opção sem enviar",
     "食べたいものは、まだありません": "Nada adicionado ainda",
-    "食べたいものを選ぶ": "Escolher o que quer comer"
+    "食べたいものを選ぶ": "Escolher o que quer comer",
+    "この条件では、おかゆの日の主菜がありません": "Com essas condições, não há prato principal para o dia de sopa de arroz"
 });

@@ -1730,5 +1730,6 @@ GOHAN_I18N('es', {
     "自分で入れた料理（{date}）": "Lo agregué yo ({date})",
     "送らずに、自分の候補に入れる": "Guardar como opción sin enviar",
     "食べたいものは、まだありません": "Todavía no hay nada agregado",
-    "食べたいものを選ぶ": "Elegir lo que se te antoja"
+    "食べたいものを選ぶ": "Elegir lo que se te antoja",
+    "この条件では、おかゆの日の主菜がありません": "Con estas condiciones no hay plato principal para el día de gachas de arroz"
 });

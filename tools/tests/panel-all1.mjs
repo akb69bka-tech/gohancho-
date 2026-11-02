@@ -10,6 +10,9 @@
 //  B3: 汁けの多い主菜（カレーうどん・鍋）の日は汁ものの枠が空く
 //  B8: 華氏はダイヤルの目盛り（25°F きざみ）、同じ料理が献立に2つ入らない、韓国語・ベトナム語の作り方の卵の個数も人数に合わせる
 //  R12: おまかせの品数（auto）の日に、まるごと入れ替えで席の数が変わらない
+//  第18回 R55: おかゆの日のやわらかい副菜6品・汁もの3品以上（JP・TW・CN・KR・TH・PH）。えび・かに・魚のアレルギーの韓国でも汁ものの席が空かない
+//  第18回 R56: タイで卵・魚のアレルギーでも「おかゆの日」が出る（โจ๊กไก่）。粥の主菜が全部止まる条件では理由の一言
+//  第18回 R8: 決めたあとの作り方のタブの「家族に送る」も3段
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -139,6 +142,65 @@ for (const mood of ['quick', 'easy']){
     const look = () => p.evaluate(() => document.querySelectorAll('#view .tray .spot').length).then(n => ns.add(n));
     await look(); await reroll(p, 20, look);
     ok(ns.size === 1, 'R12 おまかせの品数で、まるごと入れ替え20回でお膳の席の数が変わらない: ' + JSON.stringify([...ns]));
+    await ctx.close();
+}
+
+// ---- R55（第18回）: おかゆの日の副菜・汁ものの顔ぶれ。やわらかい料理（soft）が各国で副菜6品・汁もの3品以上。えび・かに・魚のアレルギーの韓国でも汁ものの席が空かない ----
+for (const cc of ['JP', 'TW', 'CN', 'KR', 'TH', 'PH']){
+    const {p, ctx} = await open({country: cc}, {}, 'r55-' + cc);
+    const n = await p.evaluate(() => { session.mood = 'okayu'; const f = slot => poolFor(slot).filter(r => slotOf(r) === slot && !isAvoided(r)).filter(okayuSoftOk).length; return {side: f('副菜'), soup: f('汁物')}; });
+    ok(n.side >= 6 && n.soup >= 3, `R55 ${cc} おかゆの日のやわらかい副菜が6品以上・汁ものが3品以上: ` + JSON.stringify(n));
+    await ctx.close();
+}
+{
+    const {p, ctx} = await open({country: 'KR', uiLang: 'ko', allergens: ['shellfish', 'crab', 'fish']}, {}, 'r55-kr-alg', 'ko-KR');
+    await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
+    const empty = [], bad = [];
+    const look = async () => { const r = await p.evaluate(() => session.menu.items.map(x => ({slot: x.slot, id: x.r ? x.r.id : null, okk: x.r ? okayuSoftOk(x.r) || okayuMildOk(x.r) : null, av: x.r ? isAvoided(x.r) : null}))); r.slice(1).forEach(x => { if (!x.id) empty.push(x.slot); else if (!x.okk || x.av) bad.push(x); }); };
+    await look(); await reroll(p, 10, look);
+    const txt = await p.evaluate(() => document.querySelector('#view').textContent);
+    ok(!empty.length && !bad.length, 'R55 韓国・えび・かに・魚のアレルギー: おかゆの日の汁もの・副菜の席が空かず、やわらかい料理だけ（最初＋入れ替え10回）: ' + JSON.stringify({empty, bad}));
+    ok(!/국은 넣지 않았어요/.test(txt), 'R55 「국은 넣지 않았어요（汁ものは入れていません）」が出ない');
+    await ctx.close();
+}
+// ---- R56（第18回）: タイで本人の卵・魚アレルギーでも「おかゆの日」が出る（ナンプラー・卵を使わない鶏のジョーク）。主菜が全部止まる条件では、気分の一覧に理由の一言 ----
+for (const alg of [['egg'], ['fish'], ['egg', 'fish']]){
+    const {p, ctx} = await open({country: 'TH', uiLang: 'th', allergens: alg}, {}, 'r56-' + alg.join('-'), 'th-TH');
+    const u = await p.evaluate(() => { const on = okayuMoodOn(); session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); const m = session.menu.items[0].r; return {on, main: m ? m.id : null, okk: m ? okayuDayOk(m) && !isAvoided(m) : false, rest: session.menu.items.slice(1).map(x => x.r ? {id: x.r.id, av: isAvoided(x.r), okk: okayuSoftOk(x.r) || okayuMildOk(x.r)} : null)}; });
+    ok(u.on && u.main === 'th_jokgai' && u.okk, `R56 タイ・${alg.join('・')}のアレルギー: おかゆの日が出て、主菜は โจ๊กไก่: ` + JSON.stringify(u));
+    ok(u.rest.every(x => !x || (!x.av && x.okk)), `R56 タイ・${alg.join('・')}のアレルギー: 副菜・汁ものにアレルギーの料理がない: ` + JSON.stringify(u.rest));
+    await p.evaluate(() => { session.mood = 'all'; session.menu = null; ensureMenu(); render(); });
+    await p.click('[data-act=cond-open]'); await p.waitForTimeout(300);
+    const c = await p.evaluate(() => ({chip: !!document.querySelector('#sheet-root .chip[data-v="okayu"], #sheet-root [data-mood="okayu"], #sheet-root [data-act="mood"][data-v="okayu"]'), note: !!document.querySelector('#sheet-root .cond-okayu-none'), txt: document.querySelector('#sheet-root').textContent}));
+    ok(/วันกินโจ๊ก/.test(c.txt) && !c.note, `R56 タイ・${alg.join('・')}: 条件の画面に「วันกินโจ๊ก」の札があり、理由の一言は出ない: ` + JSON.stringify({chip: c.chip, note: c.note}));
+    await ctx.close();
+}
+{
+    const {p, ctx} = await open({country: 'TH', uiLang: 'th', allergens: ['fish', 'chicken']}, {}, 'r56-none', 'th-TH');
+    await p.click('[data-act=cond-open]'); await p.waitForTimeout(300);
+    const c = await p.evaluate(() => ({on: okayuMoodOn(), gone: okayuMoodGone(), note: (document.querySelector('#sheet-root .cond-okayu-none') || {}).textContent || null, txt: document.querySelector('#sheet-root').textContent}));
+    ok(!c.on && c.gone && c.note && /ไม่มีเมนูหลักสำหรับวันกินโจ๊ก/.test(c.note), 'R56 タイ・魚・鶏肉のアレルギー（粥の主菜が全部止まる）: 気分の一覧に理由の一言「ตามเงื่อนไขนี้ ไม่มีเมนูหลักสำหรับวันกินโจ๊ก」: ' + JSON.stringify({on: c.on, gone: c.gone, note: c.note}));
+    await ctx.close();
+}
+{
+    const {p, ctx} = await open({}, {}, 'r56-jp');
+    const c = await p.evaluate(() => ({on: okayuMoodOn(), gone: okayuMoodGone()}));
+    ok(c.on && !c.gone, 'R56 日本（アレルギーなし）: おかゆの日は出て、理由の一言は出ない: ' + JSON.stringify(c));
+    await ctx.close();
+}
+// ---- R8（第18回の残り）: 決めたあとの作り方のタブの「家族に送る」も、決める前と同じ3段（料理名だけ／買う物も／作り方も） ----
+{
+    const {p, ctx} = await open({}, {}, 'r8-cook');
+    await p.click('button[data-act=decide]'); await p.waitForTimeout(400);
+    await p.evaluate(() => { setTab('cook'); render(); });
+    await p.waitForTimeout(200);
+    await p.click('#view [data-act=share-cook]'); await p.waitForTimeout(300);
+    const u = await p.evaluate(() => ({card: sheet && sheet.card, src: sheet && sheet.src, lv: sheet && sheet.lv, chips: [...document.querySelectorAll('#sheet-root .share-lv .chip')].map(e => e.textContent), text: document.querySelector('#share-text').value, same: document.querySelector('#share-text').value === todayShare3Text(2, 'cook'), img: !!document.querySelector('#sheet-root [data-act=share-card][data-k="cook"]'), dishes: cookItems().map(x => x.r.name)}));
+    ok(u.card === 'today3' && u.src === 'cook' && u.lv === 2 && u.chips.length === 3 && /料理名だけ/.test(u.chips[0]) && /買う物も/.test(u.chips[1]) && /作り方も/.test(u.chips[2]), 'R8 決めたあとの「家族に送る」（作り方のタブ）も3段（料理名だけ／買う物も／作り方も）: ' + JSON.stringify(u.chips));
+    ok(u.same && /【買う物】/.test(u.text) && u.dishes.every(d => u.text.includes(d)) && u.img, 'R8 はじめは「買う物も」。決めた献立の料理名と買う物が入り、「画像でつくる」も残る: ' + u.text.slice(0, 120).replace(/\n/g, '/'));
+    await p.click('#sheet-root .share-lv .chip[data-v="3"]'); await p.waitForTimeout(200);
+    const t3 = await p.evaluate(() => ({src: sheet.src, text: document.querySelector('#share-text').value}));
+    ok(t3.src === 'cook' && /――――/.test(t3.text) && (t3.text.match(/― わが家のご飯帖/g) || []).length === 1, 'R8 「作り方も」で作り方が付き（決めた献立のまま）、署名は最後に1回: ' + t3.text.length);
     await ctx.close();
 }
 

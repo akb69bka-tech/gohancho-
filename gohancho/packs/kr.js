@@ -299,6 +299,7 @@ GOHAN_PACK({
       local: '감자조림',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 25,
       ings: [
@@ -1922,6 +1923,99 @@ GOHAN_PACK({
         'Slide onto a plate and drizzle with the soy sauce and sesame oil. Sprinkle with sesame seeds and chopped green onion.',
       ],
       tip: { add: 'Serve over hot rice and break the yolk', why: 'The yolk, soy sauce and sesame oil make a quick sauce for the rice', skill: 'Medium heat only', how: 'Too much heat makes the white rubbery and crisp-edged; steady medium heat keeps it tender and the yolk soft.' },
+    },
+    // ---------- おかゆの日（R55。柊）: やわらかい副菜と、煮干しだしを使わない澄んだ汁もの ----------
+    {
+      id: 'kr_munamul',
+      name: 'Simmered radish namul',
+      local: '무나물',
+      type: 'side',
+      method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55）
+      protein: 'veg',
+      min: 15,
+      ings: [
+        'radish|Korean radish (mu), cut into matchsticks|300 g',
+        'green onion|Green onion|1/2?',
+      ],
+      seas: '1 tbsp perilla or sesame oil · 1/2 tsp minced garlic · 1/2 tsp salt · 1 tsp soup soy sauce (gukganjang) · 100 ml water · sesame seeds',
+      steps: [
+        'Cut the radish into matchsticks about 5 cm long and toss with the salt; leave for 5 minutes.',
+        'Heat the oil in a pot over medium heat, add the radish and garlic and stir for 2 minutes.',
+        'Add the water and the soup soy sauce, cover and simmer on low for 6–8 minutes until the radish is soft and translucent.',
+        'Add the sliced green onion, toss once more and finish with sesame seeds.',
+      ],
+      tip: { add: 'A spoon of the cooking water kept in the bowl', why: 'The sweet radish juice is the best part', skill: 'Cook it covered', how: 'The lid keeps the steam in so the radish softens in its own juice without browning.' },
+    },
+    {
+      id: 'kr_ganjangdubujorim',
+      name: 'Soy-braised tofu',
+      local: '간장두부조림',
+      type: 'side',
+      method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55。唐辛子を使わないしょうゆ味）
+      protein: 'legume',
+      min: 20,
+      ings: [
+        'tofu|Firm tofu|1 block (300 g)',
+        'onion|Onion|1/4?',
+        'green onion|Green onion|1',
+      ],
+      seas: '2 tbsp soy sauce · 1 tsp sugar · 1/2 tsp minced garlic · 1 tsp sesame oil · 100 ml water · 1 tbsp cooking oil · sesame seeds',
+      steps: [
+        'Cut the tofu into 1 cm thick slices and pat dry. Slice the onion thinly and chop the green onion.',
+        'Heat the cooking oil in a pan over medium heat and cook the tofu for 2–3 minutes a side until lightly golden.',
+        'Add the onion, soy sauce, sugar, garlic and water, cover and simmer on low for 6–8 minutes, spooning the sauce over, until most of the liquid is gone.',
+        'Finish with the sesame oil, green onion and sesame seeds.',
+      ],
+      tip: { add: 'A few slices of green chili for the grown-ups', why: 'Adds a fresh bite without making the whole dish hot', skill: 'Dry the tofu well', how: 'Dry tofu takes on colour and does not splatter; press it between paper towels for a minute.' },
+    },
+    {
+      id: 'kr_dubuguk',
+      name: 'Clear tofu soup',
+      local: '맑은 두붓국',
+      type: 'soup',
+      method: 'soup',
+      soft: true,   // おかゆの日に出せる、あっさりした汁もの（R55。煮干しだしを使わない）
+      protein: 'legume',
+      min: 15,
+      ings: [
+        'tofu|Tofu|1/2 block (150 g)',
+        'zucchini|Korean zucchini|1/4?',
+        'green onion|Green onion|1',
+      ],
+      seas: '1 tbsp soup soy sauce (gukganjang) · 1/2 tsp minced garlic · salt · black pepper · 700 ml water or vegetable stock',
+      steps: [
+        'Cut the tofu into 2 cm cubes and the zucchini into half-moons. Chop the green onion.',
+        'Bring the water to the boil, add the zucchini and garlic and boil for 3 minutes.',
+        'Add the tofu and the soup soy sauce and simmer for 3 minutes. Season with salt.',
+        'Add the green onion and pepper and serve.',
+      ],
+      tip: { add: 'A beaten egg poured in at the end', why: 'Turns it into a fuller soup in a minute', skill: 'Salt at the end', how: 'Soup soy sauce brings the colour and aroma; adjust the salt only after the tofu has simmered.' },
+    },
+    {
+      id: 'kr_aehobakguk',
+      name: 'Zucchini and potato clear soup',
+      local: '애호박감자국',
+      type: 'soup',
+      method: 'soup',
+      soft: true,   // おかゆの日に出せる、あっさりした汁もの（R55。煮干しだしを使わない）
+      protein: 'veg',
+      min: 20,
+      ings: [
+        'zucchini|Korean zucchini|1/2',
+        'potato|Potato|1',
+        'onion|Onion|1/4?',
+        'green onion|Green onion|1',
+      ],
+      seas: '1 tbsp soup soy sauce (gukganjang) · 1/2 tsp minced garlic · 1/2 tsp salt · 1 tsp sesame oil · 700 ml water',
+      steps: [
+        'Cut the potato into thin bite-size pieces and the zucchini into half-moons. Slice the onion.',
+        'Heat the sesame oil in a pot, add the potato and garlic and stir for 1 minute.',
+        'Add the water and boil for 7–8 minutes until the potato is nearly soft.',
+        'Add the zucchini, onion and soup soy sauce and simmer for 4 minutes. Season with salt and finish with the chopped green onion.',
+      ],
+      tip: { add: 'A spoon of doenjang dissolved in', why: 'Turns the clear soup into a deeper, savoury one', skill: 'Potato first, zucchini later', how: 'Potato needs the full time; zucchini goes soft in minutes and loses its shape if cooked as long.' },
     },
   ],
   aliases: {

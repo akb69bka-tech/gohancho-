@@ -1730,5 +1730,6 @@ GOHAN_I18N('tr', {
     "自分で入れた料理（{date}）": "Kendim ekledim ({date})",
     "送らずに、自分の候補に入れる": "Göndermeden kendi önerime ekle",
     "食べたいものは、まだありません": "Henüz bir şey eklenmedi",
-    "食べたいものを選ぶ": "Ne yemek istediğini seç"
+    "食べたいものを選ぶ": "Ne yemek istediğini seç",
+    "この条件では、おかゆの日の主菜がありません": "Bu koşullarda pirinç lapası günü için ana yemek yok"
 });

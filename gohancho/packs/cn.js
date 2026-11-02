@@ -1315,6 +1315,7 @@ GOHAN_PACK({
       local: '凉拌菠菜',
       type: 'side',
       method: 'raw',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 15,
       ings: [
@@ -1418,6 +1419,7 @@ GOHAN_PACK({
       local: '蚝油生菜',
       type: 'side',
       method: 'stirfry',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 10,
       ings: [
@@ -1522,6 +1524,7 @@ GOHAN_PACK({
       local: '红烧冬瓜',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 25,
       ings: [
@@ -1816,6 +1819,28 @@ GOHAN_PACK({
         'Return the eggs to the pot, season to taste, and serve with the spring onion, a few drops of sesame oil and a pinch of white pepper.',
       ],
       tip: { add: 'A spoonful of ketchup if the tomatoes are pale', why: 'It deepens the colour and sweet-sour flavour of the soup', skill: 'Press the tomatoes while frying', how: 'Crushing them against the pot releases their juice and makes the broth rich without stock.' },
+    },
+    // ---------- おかゆの日（R55。柊）: やわらかい・あっさりした副菜 ----------
+    {
+      id: 'cn_zhengdangeng',
+      name: 'Steamed egg custard',
+      local: '水蒸蛋',
+      type: 'side',
+      method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（R55）
+      protein: 'egg',
+      min: 20,
+      ings: [
+        'egg|Eggs|3',
+        'scallion|Scallion|1?',
+      ],
+      seas: '300 ml warm water · 1/2 tsp salt · 1 tsp light soy sauce · a few drops of sesame oil',
+      steps: [
+        'Beat the eggs with the salt, add the warm water and mix gently. Strain into a heatproof bowl and skim off the bubbles.',
+        'Cover the bowl with a plate or cling film and steam over medium-low heat for 12–15 minutes until just set in the centre.',
+        'Pour the soy sauce and sesame oil over the top and finish with chopped scallion.',
+      ],
+      tip: { add: 'A few dried shrimp or a spoon of minced pork on the bottom', why: 'Their juices season the custard as it steams', skill: 'Warm water, low heat', how: 'Water at about body temperature and a gentle steam give a smooth, glossy surface; boiling water and high heat make holes.' },
     },
   ],
   aliases: {

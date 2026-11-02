@@ -274,6 +274,7 @@ GOHAN_PACK({
       local: 'Ginataang kalabasa at sitaw',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 25,
       ings: [
@@ -723,6 +724,7 @@ GOHAN_PACK({
       local: 'Sinabawang mais',
       type: 'soup',
       method: 'soup',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 30,
       ings: [
@@ -773,6 +775,7 @@ GOHAN_PACK({
       local: 'Picadillo',
       type: 'soup',
       method: 'soup',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'mince',
       min: 30,
       ings: [
@@ -798,6 +801,7 @@ GOHAN_PACK({
       local: 'Bulanglang',
       type: 'soup',
       method: 'soup',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 30,
       ings: [
@@ -1468,6 +1472,7 @@ GOHAN_PACK({
       local: 'Ginisang sayote',
       type: 'side',
       method: 'stirfry',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 20,
       ings: [
@@ -1713,6 +1718,7 @@ GOHAN_PACK({
       local: 'Adobong talong',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 25,
       ings: [
@@ -1850,6 +1856,7 @@ GOHAN_PACK({
       local: 'Buttered vegetables',
       type: 'side',
       method: 'stirfry',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（R55。柊が作り方を見て印を付けた）
       protein: 'veg',
       min: 15,
       ings: [
@@ -1865,6 +1872,30 @@ GOHAN_PACK({
         'Add the vegetables and toss 2 minutes until glossy. Season with the salt, sugar and pepper and serve with fried chicken or pork chops.',
       ],
       tip: { add: 'A spoon of grated cheese at the end', why: 'Salty and creamy, the way kids like it', skill: 'Drain the vegetables well', how: 'Dry vegetables get coated in butter instead of turning watery.' },
+    },
+    // ---------- おかゆの日（R56。柊）: パティス（魚醤）・卵を使わない、しょうがのルガウ ----------
+    {
+      id: 'ph_lugaw',
+      name: 'Plain rice porridge with ginger (lugaw)',
+      local: 'Lugaw',
+      type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（おかゆの日・さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'veg',
+      min: 40,
+      ings: [
+        'rice|Uncooked rice (part glutinous rice if you have it)|1 cup',
+        'spring onion|Spring onions, sliced|2',
+        'calamansi|Calamansi|2?',
+      ],
+      seas: '1 large thumb ginger, julienned · 5 garlic cloves, minced (half fried crisp for topping) · 1 tsp salt · 1 tbsp oil · 1.5 litres water · Pepper',
+      steps: [
+        'Fry half the garlic in the oil until golden and lift it out for the topping. In the same pot saute the rest of the garlic and the ginger for 1 minute.',
+        'Add the rinsed rice and stir for 1 minute, then pour in the water. Bring to a boil and simmer for 25 to 30 minutes, stirring often, until the rice is very soft and the porridge is thick.',
+        'Add more water if it gets too thick and season with the salt and pepper.',
+        'Serve topped with spring onion and the fried garlic, with calamansi to squeeze in.',
+      ],
+      tip: { add: 'A hard-boiled egg or tokwa\'t baboy on the side', why: 'The plain porridge is the base; the toppings make the meal', skill: 'Stir often near the end', how: 'Thick porridge sticks and burns on the bottom very easily.' },
     },
   ],
   aliases: {
