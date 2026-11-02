@@ -6,7 +6,8 @@
 //  G4 家族を登録していて届いていない人: 数字なしで出る（押すと送る・貼りつけるの入口がある）。家族がいない人には出ない
 //  G5 あいさつ・入口を足しても、お膳が最初の画面（決定の帯の上）に入る（390×844・360×740・文字大）
 //  G6 深夜0〜3時（アプリの「今日」はまだ前の日。dayNow の4時区切り）・4時は「明日の献立」と言わない（第8回 R23）
-//  G7 決めた献立に家族の ⚠ があると、「できあがりが楽しみです」ではなく、確かめてもらう一言。決めた献立は変わらない。⚠ がなければ今までどおり（第8回 R22）
+//  G7 決めた献立に家族の ⚠ があると、「できあがりが楽しみです」ではなく、確かめてもらう一言。決めた献立は変わらない。⚠ がなければ今までどおり（第8回 R22）。夜21時台・深夜2時台も同じ（第9〜17回 R22）
+//  G8 夜・深夜に決めた直後は過去の言い方（「でしたね」「おつかれさまでした。明日は」）をしない。作り終えた（記録した）あとは過去の言い方でよい（第9〜17回 R25。日本語・英語・韓国語・アラビア語）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -60,7 +61,7 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         // どの時間帯・決める前の文も、入口が並んだ幅で2行に入る
         const r = await p.evaluate(() => { const e = document.querySelector('#greet .greet-tx'); if (!e) return ['no greet']; const out = [], t0 = TODAY;
             for (const band of ['morning', 'noon', 'afternoon', 'evening', 'night', 'late']) for (const wish of [0, 2]) for (const ln of greetLines(band, {dish: '', wish})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
-            for (const band of ['morning', 'noon', 'evening', 'late']) for (const warn of [false, true]) for (const ln of greetLines(band, {dish: trayName(session.menu.items[0].r.name), wish: 0, warn})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
+            for (const band of ['morning', 'noon', 'evening', 'night', 'late']) for (const warn of [false, true]) for (const done of [false, true]) for (const ln of greetLines(band, {dish: trayName(session.menu.items[0].r.name), wish: 0, warn, done})){ e.textContent = ln; if (e.scrollHeight > e.clientHeight + 1) out.push(ln); }
             const rq = document.querySelector('#greet .req-btn .rq-l'); if (rq && rq.scrollWidth > rq.clientWidth + 1) out.push('入口: ' + rq.textContent);
             void t0; return out; });
         if (r.length) bad.push(lang + ': ' + r.slice(0, 2).join(' | '));
@@ -122,6 +123,7 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         out[hour] = [g && g.t, d.t];
         [...all, d.t].forEach(x => { if (/明日/.test(x)) bad.push(hour + '時: ' + x); });
         if (hour < 4 && !d.t.includes(d.dish)) bad.push(hour + '時 決めたあとに料理名がない: ' + d.t);
+        if (hour < 4 && /でした/.test(d.t)) bad.push(hour + '時 決めた直後なのに過去の言い方: ' + d.t);
         if (hour < 4 && d.today !== '2026-10-28') bad.push(hour + '時 今日が前の日になっていない: ' + d.today);
         await ctx.close();
     }
@@ -129,7 +131,7 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
 }
 // G7 決めた献立に ⚠
 {
-    for (const hour of [7, 12, 18]){
+    for (const hour of [7, 12, 18, 22, 2]){
         const {p, ctx} = await open({hour, state: {family: [{id: 'f1', name: '夫', role: 'adult', avoid: [], allergy: [], mild: false}]}, tag: 'g7'});
         await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);
         const r = await p.evaluate(() => {
@@ -148,6 +150,26 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
         ok(r.g0 !== r.g1 && !/⚠/.test(r.g0), `G7 ${hour}時: ⚠ がないときは今までどおりの一言: ` + r.g0);
         await ctx.close();
     }
+}
+// G8 夜・深夜に決めた直後の言い方（過去形にしない）。作り終えたあとは過去形
+{
+    const PAST = {ja: /でした|明日は/, en: /\bwas\b|tonight|tomorrow|another day/i, ko: /이었|였|내일/, ar: /كان|غدًا/};   // 過ぎた言い方（英語の深夜は tonight = 今夜の分はおしまい）
+    const CC = {ja: 'JP', en: 'US', ko: 'KR', ar: 'EG'};
+    for (const lang of Object.keys(PAST)) for (const hour of [22, 2]){
+        const {p, ctx} = await open({hour, settings: {country: CC[lang], uiLang: lang}, tag: 'g8' + lang});
+        await p.click('button[data-act=decide]'); await p.waitForTimeout(400); await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);
+        const r = await p.evaluate(() => { const g0 = document.querySelector('#greet .greet-tx').textContent, dish = trayName(recipeById(S.cook.ids[0]).name);
+            S.history.push({id: S.cook.ids[0], d: TODAY}); render(); const g1 = document.querySelector('#greet .greet-tx').textContent; S.history.pop(); render();
+            return {g0, g1, dish, lang: LANG}; });
+        ok(!PAST[lang].test(r.g0) && r.g0.includes(r.dish), `G8 ${lang} ${hour}時: 決めた直後は過去の言い方をせず、料理名が入る: ` + JSON.stringify(r));
+        ok(PAST[lang].test(r.g1) && r.g1 !== r.g0, `G8 ${lang} ${hour}時: 作り終えた（記録した）あとは過去の言い方: ` + JSON.stringify(r));
+        await ctx.close();
+    }
+    // 韓国語の 이네요/네요（받침の有無）: 받침あり（두부조림）→ 이네요、なし（불고기）→ 네요
+    const {p, ctx} = await open({hour: 2, settings: {country: 'KR', uiLang: 'ko'}, tag: 'g8ko2'});
+    const r = await p.evaluate(() => [greetLines('late', {dish: '두부조림', wish: 0, done: false})[0], greetLines('late', {dish: '불고기', wish: 0, done: false})[0], greetLines('late', {dish: '두부조림', wish: 0, done: true})[0], greetLines('late', {dish: '불고기', wish: 0, done: true})[0]]);
+    ok(/두부조림이네요/.test(r[0]) && /불고기네요/.test(r[1]) && /두부조림이었네요/.test(r[2]) && /불고기였네요/.test(r[3]), 'G8 韓国語の語尾（이네요/네요・이었네요/였네요）: ' + JSON.stringify(r));
+    await ctx.close();
 }
 await b.close();
 if (errs.length){ fails++; console.log('FAIL JSエラー', errs.slice(0, 3)); }

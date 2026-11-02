@@ -4845,9 +4845,9 @@ function buyUnitOf(key, qtys){
     }
     return {buy: use, use: '', left: null};
 }
-function todayShopRows(){
-    const its = cookItems(); if (!its.length) return {rows: [], opt: [], seas: []};
-    const have = fridgeKeys(), fac = servingFactor(), st = shopState(), map = new Map(), opt = new Map(), seas = new Map(), cc = currentCountry(), mayIds = algIdsEff();
+function todayShopRows(its0, st0){   // its0・st0: 決める前の献立（画面の献立と、空の買い物の状態）で見るとき（家族に送る3段。R8）
+    const its = its0 || cookItems(); if (!its.length) return {rows: [], opt: [], seas: []};
+    const have = fridgeKeys(), fac = servingFactor(), st = st0 || shopState(), map = new Map(), opt = new Map(), seas = new Map(), cc = currentCountry(), mayIds = algIdsEff();
     // 入っていることがある加工品・調味料（コンソメの大豆など）: 行に「🔍 大豆（袋の表示を確認）」（モニター第3回c。第3回d で ⚠ から 🔍 に）
     const mayOf = (e, it) => mayIds.forEach(id => { if (algKind(id, it) === 4 && !(e.may || (e.may = [])).includes(id)) e.may.push(id); });
     its.forEach(x => { const r = swappedRecipe(x.r) || x.r;
@@ -4924,12 +4924,14 @@ function viewShopStage(){
     </section>`;
 }
 // 家族に送る文（3段）: 料理名だけ／買う物も（まだ買っていない物）／作り方も
-function todayShare3Text(lv){
-    const its = cookItems(); if (!its.length) return '';
+// src: 'cook' = 決めた献立（既定）／'menu' = まだ決めていない、いま画面に出ている献立（決める前の「家族に送る」も同じ3段にする。第4回 R8。買う物は冷蔵庫・常備品だけで見る）
+function share3Items(src){ return src === 'menu' ? (session.menu ? session.menu.items.filter(x => x.r).map(x => ({r: x.r, slot: x.slot})) : []) : cookItems(); }
+function todayShare3Text(lv, src){
+    const its = share3Items(src); if (!its.length) return '';
     const foot = t('― わが家のご飯帖'), cut = x => { const ls = x.split('\n'); while (ls.length && (ls[ls.length - 1] === foot || !ls[ls.length - 1].trim())) ls.pop(); return ls.join('\n'); };   // 文の終わりの「― わが家のご飯帖」は最後に1回だけ
-    const head = cut(menuShareText({items: its.map(x => ({r: x.r, slot: x.slot}))}, TODAY));
+    const head = cut(src === 'menu' ? menuShareText() : menuShareText({items: its.map(x => ({r: x.r, slot: x.slot}))}, TODAY));
     const out = [head];
-    if (lv >= 2){ const st = shopState(), {rows, opt, seas} = todayShopRows(), left = [...rows, ...opt].filter(e => e.buying && !st.got.has(e.key)).map(e => ({label: e.label, qty: e.buyQty})).concat(seas.filter(e => e.buying).map(e => ({label: e.label, qty: ''})));
+    if (lv >= 2){ const st = src === 'menu' ? {buy: new Set(), have: new Set(), got: new Set(), fr: new Set()} : shopState(), {rows, opt, seas} = todayShopRows(its, st), left = [...rows, ...opt].filter(e => e.buying && !st.got.has(e.key)).map(e => ({label: e.label, qty: e.buyQty})).concat(seas.filter(e => e.buying).map(e => ({label: e.label, qty: ''})));
         out.push('', t('【買う物】'), ...(left.length ? left.map(e => t('□ {name}', {name: e.label + (e.qty ? ' ' + e.qty : '')})) : [t('買う物はありません')])); }
     if (lv >= 3) its.forEach(x => out.push('', '――――', cut(recipeShareText(x.r))));
     out.push('', t('― わが家のご飯帖'));
@@ -5937,14 +5939,15 @@ function greeting(){
 // 深夜0〜4時は、アプリの「今日」（dayNow。4時区切り）がまだ前の日なので、「明日の献立」とは言わない（第8回 R23）
 function greetBand(h){ return h < 4 ? 'late' : h < 10 ? 'morning' : h >= 10 && h < 14 ? 'noon' : h >= 14 && h < 17 ? 'afternoon' : h >= 17 && h < 20 ? 'evening' : 'night'; }
 function seasonWord(){ const m = Number(TODAY.slice(5, 7)); return m >= 3 && m <= 5 ? tc('season', '春') : m >= 6 && m <= 8 ? tc('season', '夏') : m >= 9 && m <= 11 ? tc('season', '秋') : tc('season', '冬'); }
-function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wish: 届いている「食べたい」の数, warn: 決めた献立に ⚠ があるか}
+function greetLines(band, o){   // o: {dish: 決めた主菜の名前 or '', wish: 届いている「食べたい」の数, warn: 決めた献立に ⚠ があるか, done: 決めた献立を作り終えた（記録した）か}
     const season = seasonWord(), dish = o.dish, n = o.wish;
-    if (dish && o.warn && band !== 'night' && band !== 'late') return [t('⚠の印の料理があります。作る前に、もう一度確かめてください')];   // 決めた献立に ⚠（本人・家族のアレルゲン）があるときは、楽しみの一言ではなく、確かめてもらう一言（R22。体のことは言い切らない）
+    if (dish && o.warn) return [t('⚠の印の料理があります。作る前に、もう一度確かめてください')];   // 決めた献立に ⚠（本人・家族のアレルゲン）があるときは、どの時間帯でも、楽しみの一言ではなく確かめてもらう一言（R22。夜・深夜も同じ〔第9〜17回〕。体のことは言い切らない）
     if (dish){
-        if (band === 'late') return [t('今日は{dish}でしたね。夜おそくまでおつかれさまです', {dish})];
+        // 夜・深夜は、作り終えたあとなら過ぎた言い方（「でしたね」「おつかれさまでした」）、まだ作っていなければ今の言い方（深夜0〜4時はアプリの「今日」がまだ前の日。決めた直後に「でしたね」と言わない。R25）
+        if (band === 'late') return [o.done ? t('今日は{dish}でしたね。夜おそくまでおつかれさまです', {dish}) : t('今日は{dish}ですね。夜おそくまでおつかれさまです', {dish})];
         if (band === 'morning') return [t('おはようございます。今日は{dish}の日です', {dish})];
         if (band === 'evening') return [t('夕方です。あとは作るだけ。今日は{dish}ですね', {dish})];
-        if (band === 'night') return [t('今日もおつかれさまでした。明日はどんな献立にしましょう')];
+        if (band === 'night' && o.done) return [t('今日もおつかれさまでした。明日はどんな献立にしましょう')];
         return [t('今日は{dish}ですね。できあがりが楽しみです', {dish})];
     }
     const wish = n ? [t('家族から「食べたい」が{n}件届いています。献立に入れてみませんか', {n})] : [];
@@ -5959,7 +5962,8 @@ function greetText(now){
     const d = now || new Date(), band = greetBand(d.getHours());
     const ck = decidedToday() && S.cook.ids.length ? recipeById(S.cook.ids[0]) : null;
     const warn = !!ck && cookItems().some(x => x.r && allergyConflict(x.r));   // 決めた献立に ⚠ の料理がある（決めたあとに家族のアレルゲンを足したときなど）
-    const lines = greetLines(band, {dish: ck ? trayName(ck.name) : '', wish: wishList().length ? wishesActive().length : 0, warn});
+    const done = !!ck && (dayProgress() >= 3 || S.history.some(x => x.d === TODAY));   // 決めた献立を作り終えた（食卓・おしまい、または今日の記録がある）
+    const lines = greetLines(band, {dish: ck ? trayName(ck.name) : '', wish: wishList().length ? wishesActive().length : 0, warn, done});
     let hsh = 0; for (const c of TODAY + band) hsh = (hsh * 31 + c.charCodeAt(0)) >>> 0;   // 同じ日・同じ時間帯は同じ文
     return lines[hsh % lines.length];
 }
@@ -7505,7 +7509,9 @@ function withAlgMembers(ms, fn){ const o = algMembersFor; algMembersFor = ms; tr
 function allergyList(){ const ms = allergyMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
 // 今日の献立で考えていない家族（今日食べる人から外した人・いつものメンバーにいない人）
 function eatersOut(){ const ms = eaterMembers(); return famMembers().filter(m => !ms.includes(m)); }
-function eatersOutLine(){ const xs = eatersOut(); return xs.length ? t('今日の献立は、{names}を除いて考えています', {names: joinPeople(xs.map(m => famLabel(m, famMembers().indexOf(m)))), n: xs.length}) : ''; }
+// 深夜0〜3時台はアプリの1日（4時区切り）がまだ前の日なので、「今日食べる人」の外しが残って見える。いつ戻るかを添える（第16回 R46）
+function eatersOutLine(){ const xs = eatersOut(); if (!xs.length) return ''; const v = {names: joinPeople(xs.map(m => famLabel(m, famMembers().indexOf(m)))), n: xs.length};
+    return new Date().getHours() < 4 ? t('今日の献立は、{names}を除いて考えています。朝4時に元に戻ります', v) : t('今日の献立は、{names}を除いて考えています', v); }
 // 今日食べる人から外した家族のアレルゲンを使う料理（R45）。今日の献立はその家族を除いて考える約束なので料理は出すが、赤い ⚠（いま食べる人に当たる）とは別の札と文で、どの料理が誰に当たるかを出す。
 // 判定は allergyConflict そのもの（渡す家族をその人だけにする）。いま食べる人に当たる料理（赤い ⚠）には重ねない。献立の選び方は変えない
 function outAlgHits(r){
@@ -12627,7 +12633,7 @@ document.addEventListener('click', e => {
             g.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break;
         }
         case 'paywall': openPaywall('info'); break;
-        case 'share-menu': openShare('menu'); break;
+        case 'share-menu': { if (!share3Items('menu').length){ openShare('menu'); break; } sheet = {kind:'share', card:'today3', src: 'menu', lv: 2, text: todayShare3Text(2, 'menu'), title: t('今日の献立')}; renderSheet(); break; }   // 決める前も、決めたあとと同じ3段（料理名だけ／買う物も／作り方も）で送る（第4回 R8）
         // ---- 家族の「食べたい」（案A） ----
         case 'wish-open': wishSendOpen(); break;
         case 'wish-paste-open': sheet = {kind: 'wish-paste'}; renderSheet(); break;
@@ -13112,7 +13118,7 @@ document.addEventListener('click', e => {
             break;
         }
         case 'sb-by': session.shopBy = el.dataset.v === 'sec' ? 'sec' : 'dish'; render(); break;
-        case 'shop-share3': { const lv = Number(el.dataset.v) || (sheet && sheet.kind === 'share' && sheet.card === 'today3' ? sheet.lv : 2); if (!cookItems().length) break; sheet = {kind:'share', card:'today3', lv, text: todayShare3Text(lv), title: t('今日の献立')}; renderSheet(); break; }
+        case 'shop-share3': { const cur = sheet && sheet.kind === 'share' && sheet.card === 'today3' ? sheet : null, src = (cur && cur.src) || 'cook', lv = Number(el.dataset.v) || (cur ? cur.lv : 2); if (!share3Items(src).length) break; sheet = {kind:'share', card:'today3', src, lv, text: todayShare3Text(lv, src), title: t('今日の献立')}; renderSheet(); break; }
         case 'shop-week': { session.stage = 'decide'; S.foldOpen = Object.assign({}, S.foldOpen, {week: true}); render(); const h = $('#shop-memo'); if (h) h.scrollIntoView({block:'start'}); break; }
         case 'shop-ok': {   // 二 買う の主ボタン: 買い物の印を付けて作る段へ（元に戻す8秒）
             if (!decidedToday()) break;
@@ -13658,8 +13664,8 @@ function loadPackTr(cc, lang){
 }
 function trLangFor(cc, lang = LANG){ return cc === 'JP' ? (lang === 'ja' ? null : lang) : (lang === 'en' ? null : lang); }
 // 用意してある訳: 日本のレシピは英語（とベトナム語）、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
-// 日本のレシピのベトナム語（jp.vi.js）は料理名と食材名だけの訳で、分量・調味料・手順は英語の訳（base: 'en'）を借りる（第4回モニター R5）
-const JP_TR_LANGS = ['en', 'vi'];
+// 日本のレシピのベトナム語（jp.vi.js）・韓国語（jp.ko.js）・タイ語（jp.th.js）は料理名と食材名だけの訳で、分量・調味料・手順は英語の訳（base: 'en'）を借りる（第4回モニター R5。冷蔵庫もその言葉で引ける）
+const JP_TR_LANGS = ['en', 'vi', 'ko', 'th'];
 function trAvail(cc){ return cc === 'JP' ? JP_TR_LANGS : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
 // その国・言語で使う訳のファイル（なければ null）
 function trKey(cc, lang = LANG){
