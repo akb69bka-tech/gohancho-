@@ -1712,5 +1712,18 @@ GOHAN_I18N('fr', {
     "炊飯器": "Cuiseur à riz",
     "包丁とまな板": "Couteau et planche",
     "10分以内": "Moins de 10 min",
-    "10分": "10 min"
+    "10分": "10 min",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "Le repas du jour est déjà choisi. Ce que vous avez ajouté sera une idée la prochaine fois.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Choisissez jusqu'à 3 plats dont vous avez envie cette semaine. Ils seront des idées la prochaine fois que vous planifiez un repas.",
+    "候補に入れました。次に献立を決めるときに出ます": "Ajouté. Ce sera une idée la prochaine fois que vous planifiez un repas",
+    "候補に入れる": "Garder comme idée",
+    "候補に入れる（{n}品）": "Garder comme idées ({n})",
+    "前に入れたもの": "Ajoutés plus tôt",
+    "家族に送る文をつくる": "Créer un message pour la famille",
+    "自分": "Moi",
+    "自分で入れた料理「{word}」（{date}）": "Ajouté par moi : « {word} » ({date})",
+    "自分で入れた料理（{date}）": "Ajouté par moi ({date})",
+    "送らずに、自分の候補に入れる": "Garder comme idée sans envoyer",
+    "食べたいものは、まだありません": "Rien d'ajouté pour l'instant",
+    "食べたいものを選ぶ": "Choisir vos envies"
 });

@@ -1712,5 +1712,18 @@ GOHAN_I18N('id', {
     "炊飯器": "Penanak nasi",
     "包丁とまな板": "Pisau dan talenan",
     "10分以内": "Maks. 10 menit",
-    "10分": "10 menit"
+    "10分": "10 menit",
+    "今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。": "Menu hari ini sudah ditentukan. Yang kamu tambahkan akan jadi pilihan saat berikutnya.",
+    "今週食べたいものを、3つまで選べます。次に献立を決めるときの候補になります。": "Pilih hingga 3 masakan yang ingin kamu makan minggu ini. Akan jadi pilihan saat menyusun menu berikutnya.",
+    "候補に入れました。次に献立を決めるときに出ます": "Ditambahkan. Akan muncul saat menyusun menu berikutnya",
+    "候補に入れる": "Jadikan pilihan",
+    "候補に入れる（{n}品）": "Jadikan pilihan ({n})",
+    "前に入れたもの": "Ditambahkan sebelumnya",
+    "家族に送る文をつくる": "Buat pesan untuk keluarga",
+    "自分": "Saya",
+    "自分で入れた料理「{word}」（{date}）": "Ditambahkan sendiri: “{word}” ({date})",
+    "自分で入れた料理（{date}）": "Ditambahkan sendiri ({date})",
+    "送らずに、自分の候補に入れる": "Jadikan pilihan saya tanpa mengirim",
+    "食べたいものは、まだありません": "Belum ada yang ditambahkan",
+    "食べたいものを選ぶ": "Pilih yang ingin dimakan"
 });

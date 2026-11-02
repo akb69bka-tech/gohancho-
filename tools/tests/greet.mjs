@@ -3,7 +3,7 @@
 //  G1 時間帯（朝・昼・午後・夕方・夜）であいさつが変わる。献立を決めたあとは料理名が入る。同じ日・同じ時間帯は同じ文。全部で10パターン以上
 //  G2 17言語＋日本語で、あいさつが切れない（390×844・標準の文字で2行まで）。体への効き目を言い切らない・急かさない
 //  G3 家族を登録している人: 「家族リクエスト」と届いた数・いちばん新しいものの一言（ゆい：豚の生姜焼き）が出る。押すと「食べたいもの」のシートが開き、届いたものが並ぶ。44px 以上
-//  G4 家族を登録していて届いていない人: 数字なしで出る（押すと送る・貼りつけるの入口がある）。家族がいない人には出ない
+//  G4 家族を登録していて届いていない人: 数字なしで出る（押すと送る・貼りつけるの入口がある）。家族がいない人には小さな「食べたいもの」の入口（R15）
 //  G5 あいさつ・入口を足しても、お膳が最初の画面（決定の帯の上）に入る（390×844・360×740・文字大）
 //  G6 深夜0〜3時（アプリの「今日」はまだ前の日。dayNow の4時区切り）・4時は「明日の献立」と言わない（第8回 R23）
 //  G7 決めた献立に家族の ⚠ があると、「できあがりが楽しみです」ではなく、確かめてもらう一言。決めた献立は変わらない。⚠ がなければ今までどおり（第8回 R22）。夜21時台・深夜2時台も同じ（第9〜17回 R22）
@@ -89,8 +89,8 @@ const greet = p => p.evaluate(() => { const e = document.querySelector('#greet .
     ok(s.kind === 'wish-list' && s.send && s.paste, 'G4 押すと、送る・貼りつけるの入口がある: ' + JSON.stringify(s));
     await ctx.close();
     ({p, ctx} = await open({hour: 9, tag: 'g4b'}));
-    r = await p.evaluate(() => ({btn: !!document.querySelector('#greet .req-btn'), g: !!document.querySelector('#greet .greet-tx')}));
-    ok(!r.btn && r.g, 'G4 家族がいない人には入口を出さない（あいさつは出る）: ' + JSON.stringify(r));
+    r = await p.evaluate(() => ({btn: !!document.querySelector('#greet .req-btn:not(.lite)'), lite: ((document.querySelector('#greet .req-btn.lite') || {}).textContent || '').trim(), g: !!document.querySelector('#greet .greet-tx')}));
+    ok(!r.btn && r.lite === '食べたいもの' && r.g, 'G4 家族がいない人には「家族リクエスト」は出さず、小さな「食べたいもの」の入口（第4回 R15。あいさつは出る）: ' + JSON.stringify(r));
     await p.evaluate(() => setTab('cook')); await p.waitForTimeout(200);
     ok(await p.evaluate(() => !document.querySelector('#greet .greet-tx')), 'G4 今日の献立のほかの画面では、あいさつを出さない');
     await ctx.close();
