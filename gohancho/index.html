@@ -3755,9 +3755,9 @@ function breakfastMeal(r){ return !!r && (r.meal === 'breakfast' || (!r.pack && 
 // 時期が決まっている料理（行事の料理・夏の冷たい麺）。おまかせ・1週間プラン・あと1品の候補には、この月だけ出す。検索・材料から・自分で選ぶときは出す（第2回モニター Sr-E・F-P03・P10・S-N3。月は柊のデータ待ち）
 const SEASON_MONTHS = {zoni: [1], nanakusagayu: [1], hiyashichuka: [6, 7, 8, 9], somen: [6, 7, 8, 9]};
 function inSeason(r, d){ const ms = r && SEASON_MONTHS[r.id]; return !ms || ms.includes(Number(String(typeof d === 'string' ? d : TODAY).slice(5, 7))); }   // d: 日付（'YYYY-MM-DD'）。filter にそのまま渡しても今日で見る
-// 汁けの多い主菜（汁の麺・鍋・シチュー・おでんなど）。汁ものの枠を足さない
+// 汁けの多い主菜（汁の麺・鍋・シチュー・おでんなど）。汁ものの枠を足さない（Arroz caldo は粥で、汁けの多い主菜ではない。R61: フィリピン語・英語の画面で粥の日の汁ものの席が空いていた）
 const SOUPY_MAIN = new Set(['nikuudon', 'kitsuneudon', 'curryudon', 'ramen', 'stew', 'beefstew', 'oden', 'shabushabu', 'yosenabe']);
-const SOUPY_RE = /ラーメン|うどん|鍋|シチュー|おでん|ポトフ|\b(?:ramen|udon|ph[oở]|hot ?pot|stew|chowder|pot-au-feu|laksa|soup|sopa|zuppa|suppe|soupe|caldo)\b|찌개|전골|국수|라면|탕$|火锅|火鍋|拉麺|拉面|汤面|湯麵|lẩu|bún bò/i;
+const SOUPY_RE = /ラーメン|うどん|鍋|シチュー|おでん|ポトフ|\b(?:ramen|udon|ph[oở]|hot ?pot|stew|chowder|pot-au-feu|laksa|soup|sopa|zuppa|suppe|soupe|(?<!arroz )caldo)\b|찌개|전골|국수|라면|탕$|火锅|火鍋|拉麺|拉面|汤面|湯麵|lẩu|bún bò/i;
 function soupyMain(r){ return !!r && (r.type === '汁物' || SOUPY_MAIN.has(r.id) || (r.pack && r.pack !== 'JP' && (r.type === '麺' || r.method === '煮') && SOUPY_RE.test(r.name))); }
 /* ---- おかゆの日（第3回モニター R3）----
    主菜: ご飯から作る早いおかゆ（雑炊）を先に出し、なければ米から炊くおかゆ。おかゆ・雑炊・粥のなかま以外（うどん・麺など）は出さない。お漬物は付けない。

@@ -13,6 +13,7 @@
 //  第18回 R55: おかゆの日のやわらかい副菜6品・汁もの3品以上（JP・TW・CN・KR・TH・PH）。えび・かに・魚のアレルギーの韓国でも汁ものの席が空かない
 //  第18回 R56: タイで卵・魚のアレルギーでも「おかゆの日」が出る（โจ๊กไก่）。粥の主菜が全部止まる条件では理由の一言
 //  第18回 R8: 決めたあとの作り方のタブの「家族に送る」も3段
+//  第19回 R61: タイ・フィリピンで本人の魚／卵／卵＋魚のアレルギーでも、おかゆの日の汁ものの席が埋まり（18/20以上）、副菜5品以上。フィリピン語の画面の Arroz caldo の日も汁ものが付く。6か国の顔ぶれは減らない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -186,6 +187,53 @@ for (const alg of [['egg'], ['fish'], ['egg', 'fish']]){
     const {p, ctx} = await open({}, {}, 'r56-jp');
     const c = await p.evaluate(() => ({on: okayuMoodOn(), gone: okayuMoodGone()}));
     ok(c.on && !c.gone, 'R56 日本（アレルギーなし）: おかゆの日は出て、理由の一言は出ない: ' + JSON.stringify(c));
+    await ctx.close();
+}
+// ---- R61（第19回）: タイ・フィリピンで本人の魚／卵／卵＋魚のアレルギーがあっても、おかゆの日の汁ものの席が埋まり（20回で18回以上）、副菜が5品以上。魚醤（ナンプラー・パティス・バゴオン）・卵・魚介・辛い料理は出ない ----
+const FISH_SAUCE_RE = /fish sauce|patis|bagoong|nam ?pla|น้ำปลา|กะปิ|shrimp paste/i;
+for (const [cc, ul, loc] of [['TH', 'th', 'th-TH'], ['PH', 'fil', 'fil-PH']]){
+    for (const alg of [['fish'], ['egg'], ['egg', 'fish']]){
+        const {p, ctx} = await open({country: cc, uiLang: ul, allergens: alg}, {}, 'r61-' + cc + '-' + alg.join('-'), loc);
+        await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
+        let soup = 0, n = 0; const sides = new Set(), soups = new Set(), bad = [];
+        const look = async () => {
+            n++;
+            const r = await p.evaluate(() => session.menu.items.map(x => ({slot: x.slot, id: x.r ? x.r.id : null, av: x.r ? isAvoided(x.r) : null, okk: x.r ? okayuSoftOk(x.r) || okayuMildOk(x.r) : null, spice: x.r ? spiceLevel(x.r) : 0, seas: x.r ? String(x.r.seasBase || x.r.seas || '') : '', ings: x.r ? (x.r.ings || []).join('|') : ''})));
+            for (const x of r){
+                if (x.slot === '汁物' && x.id){ soup++; soups.add(x.id); }
+                if (x.slot === '副菜' && x.id) sides.add(x.id);
+                if (x.id && (x.av || x.spice > 0 || (alg.includes('fish') && (FISH_SAUCE_RE.test(x.seas) || FISH_SAUCE_RE.test(x.ings))) || (x.slot !== '主菜' && !x.okk))) bad.push({slot: x.slot, id: x.id, av: x.av, spice: x.spice, okk: x.okk});
+            }
+        };
+        await look();
+        await reroll(p, 19, look);
+        const tag = `R61 ${cc}・本人の${alg.join('・')}のアレルギー`;
+        ok(n === 20 && soup >= 18, `${tag}: おかゆの日の汁ものの席が20回中18回以上埋まる: ${soup}/${n} ` + JSON.stringify([...soups]));
+        ok(sides.size >= 5, `${tag}: おかゆの日の副菜が20回で5品以上: ${sides.size} ` + JSON.stringify([...sides]));
+        ok(!bad.length, `${tag}: アレルギーの料理・辛い料理・やわらかくない料理（魚のアレルギーでは魚醤も）が出ない: ` + JSON.stringify(bad.slice(0, 5)));
+        await ctx.close();
+    }
+}
+// R61: フィリピン語・英語の画面で Arroz caldo の日も汁ものの席が埋まる（"caldo" を汁けの多い主菜と見ていた。粥は汁ものと重ならない）
+{
+    const {p, ctx} = await open({country: 'PH', uiLang: 'fil'}, {}, 'r61-ph-fil', 'fil-PH');
+    const u = await p.evaluate(() => { const by = id => RECIPES.find(r => r.id === id) || null; return {arroz: by('ph_arroz_caldo') ? {name: by('ph_arroz_caldo').name, soupy: soupyMain(by('ph_arroz_caldo'))} : null, re: {arroz: SOUPY_RE.test('Arroz caldo'), caldo: SOUPY_RE.test('Caldo de pollo'), caldoVerde: SOUPY_RE.test('Caldo verde')}}; });
+    ok(u.arroz && !u.arroz.soupy && !u.re.arroz && u.re.caldo && u.re.caldoVerde, 'R61 Arroz caldo は汁けの多い主菜ではない（Caldo de pollo・Caldo verde は今までどおり汁けの多い主菜）: ' + JSON.stringify(u));
+    await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
+    let soup = 0, n = 0; const mains = new Set(); let arrozDays = 0, arrozSoup = 0;
+    const look = async () => { n++; const r = await p.evaluate(() => ({main: session.menu.items[0].r ? session.menu.items[0].r.id : null, soup: session.menu.items.some(x => x.slot === '汁物' && x.r)})); if (r.main) mains.add(r.main); if (r.soup) soup++; if (r.main === 'ph_arroz_caldo'){ arrozDays++; if (r.soup) arrozSoup++; } };
+    await look(); await reroll(p, 19, look);
+    ok(n === 20 && soup === 20 && arrozDays > 0 && arrozSoup === arrozDays, `R61 フィリピン語の画面・おかゆの日: Arroz caldo の日（${arrozDays}回）も汁ものの席が埋まる: 汁もの ${soup}/${n}, Arroz caldo の日の汁もの ${arrozSoup}/${arrozDays} ` + JSON.stringify([...mains]));
+    await ctx.close();
+}
+// R61: おかゆの日のある6か国（アレルギーなし）は、汁ものの席が20回とも埋まり、副菜・汁ものの顔ぶれが減っていない（第19回の数: 副菜6品以上・汁もの3品以上）
+for (const cc of ['JP', 'TW', 'CN', 'KR', 'TH', 'PH']){
+    const {p, ctx} = await open({country: cc}, {}, 'r61-base-' + cc);
+    await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
+    let soup = 0, n = 0; const sides = new Set(), soups = new Set();
+    const look = async () => { n++; const r = await p.evaluate(() => session.menu.items.map(x => ({slot: x.slot, id: x.r ? x.r.id : null}))); for (const x of r){ if (x.slot === '汁物' && x.id){ soup++; soups.add(x.id); } if (x.slot === '副菜' && x.id) sides.add(x.id); } };
+    await look(); await reroll(p, 19, look);
+    ok(n === 20 && soup === 20 && sides.size >= 6 && soups.size >= 3, `R61 ${cc}（アレルギーなし）: おかゆの日の汁ものの席が20回とも埋まり、副菜6品以上・汁もの3品以上: 汁もの ${soup}/${n}, 副菜 ${sides.size}品, 汁もの ${soups.size}品`);
     await ctx.close();
 }
 // ---- R8（第18回の残り）: 決めたあとの作り方のタブの「家族に送る」も、決める前と同じ3段（料理名だけ／買う物も／作り方も） ----
