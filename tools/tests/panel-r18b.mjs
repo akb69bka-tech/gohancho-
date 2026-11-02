@@ -13,6 +13,12 @@
 //  R58: 主食の ↻ の丸にも短い1語（主菜と同じ語・32px 以内）。独語は "Tausch"（"Neues Menü" と別の語）
 //  R33 の残り: 195px の「元に戻す」のお知らせは、スクロールした位置（0・60・120・200px・まるごと入れ替えを真ん中にした位置）でも料理名・↻・札にかからない
 //  R39 の残り: 195px の「準備ができました…」（画面が切りかわった直後のお知らせ）は、アプリの名前ではなく器の絵の帯に出る
+//  第19回（R59・R60・R62・R54 の残り・195px の残り）:
+//  R59: 決めた直後の「献立が決まりました…」は、置いたあとページに留める（中身と一緒にスクロール）。360/375/390/430/195 × 文字3段階 × 家族の魚⚠ × 押し方2通りで、押した直後・上まで戻した位置・いちばん下・元の位置のどこでも、料理名・↻・札・決定・「✓ 決めた」にかからない（下の帯・タブより下へ出たあいだは隠れる）
+//  R60: 最初の「準備ができました…」も同じ出し方。360/390/430 × 文字3段階 × 家族で同じ
+//  R62: 条件のボタンの字は「2人分・おまかせ」（品数おまかせのときは3つ目を出さない。気分がおまかせ以外なら「2人分・ラクの日・おまかせ」）。17言語 × 390 × ふつう/文字大で、日本語・英語・韓国語・中国語・独・仏・西・伊は全部見える。ほかも「…」は最後の手段（見える字が 7 割以上）
+//  R54 の残り: 波・越 × 360/375 × 文字大/もっと大きい で、見出し "Dzisiejszy jadłospis"・"Thực đơn hôm nay" の字が条件のボタンの箱に隠れない（17px の2行）
+//  195px の残り: 決めたあとの「⚠ 夫に合わない料理があります」が途中で切れない（11px・2行まで）。「✓ 決めた」の印が条件のボタンの裏に入らない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -236,6 +242,110 @@ for (const ts of [0, 1, 2]) for (const fam of [0, 1]) {
     const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, fam, dc: 3, sv: 3, wants: fam}, `r39n-${ts}-${fam}`);
     const r = await p.evaluate(async () => { window.scrollTo(0, 0); TOAST_TAP.at = performance.now(); TOAST_TAP.layer = true; TOAST_TAP.y = 200; TOAST_TAP.box = null; TOAST_TAP.act = ''; toast(t('準備ができました。今日の献立はこちらです'), true); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.h1 = c.cover.some(x => /^H1/.test(x)); c.core = c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-ok)/.test(x)); return c; });
     ok(!r.none && !r.h1 && !r.core.length, `R18-12 R39 195px 文字${ts} 家族${fam}: 切りかわった直後のお知らせがアプリの名前・料理名・↻・ボタンを隠さない（器の絵の上は可）: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// 第19回の共通: お知らせの隠れ（ページに留めたお知らせは、下の帯・タブより下、上の端より上へ出たあいだは visibility:hidden）
+const coverCore = c => c.hidden ? [] : (c.cover || []).filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-ok)/.test(x));
+
+// R18-13（R59）決めた直後のお知らせ: 360/375/390/430/195 × 文字3段階 × 家族の魚⚠ × 押し方2通り（画面の上の固定の決定ボタン／下の段を真ん中にスクロールして押す）。押した直後（送った位置）・上まで戻した位置・いちばん下・元の位置のどこでも、料理名・↻・札・決定・「✓ 決めた」にかからない。送った位置では見える
+if (want('R18-13')) {
+    let n = 0; const bad = [];
+    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [430, 932], [195, 422]]) for (const ts of [0, 1, 2]) for (const fam of [0, 1]) for (const mode of ['top', 'mid']) {
+        const {p, ctx} = await open({w, h, lang: 'ja', ts, fam, dc: w === 195 ? 3 : 4, sv: 3, wants: fam}, `r59-${w}-${ts}-${fam}-${mode}`);
+        {
+            const r = await p.evaluate(async mode => { window.scrollTo(0, 0); session.menu = null; render(); await __tick();
+                if (!document.querySelector('#view [data-act=decide]')) return {err: '決定なし'};
+                if (mode === 'mid'){ const rows = document.querySelectorAll('#view .tray .tg-row'); rows[rows.length - 1].scrollIntoView({block: 'center'}); await __tick(); }
+                const hid = () => { const bx = document.querySelector('#toast-root .toast'); return !!bx && getComputedStyle(bx).visibility === 'hidden'; };
+                const at = async (sy, tag) => { if (sy != null){ window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
+                __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 400));
+                const a = await at(null, 'auto'); const bx = document.querySelector('#toast-root .toast'); a.pos = bx ? getComputedStyle(bx).position : '';
+                const b = await at(0, 'top'), c = await at(1e6, 'max'), d = await at(a.sy, 'back');
+                return {a, b, c, d}; }, mode);
+            n++;
+            if (r.err){ bad.push(`${w}px 文字${ts} 家族${fam} ${mode}: ` + r.err); continue; }
+            const hits = [r.a, r.b, r.c, r.d].map(x => [x.tag, coverCore(x)]).filter(x => x[1].length);
+            if (r.a.none || r.a.hidden || r.a.pos !== 'absolute' || hits.length) bad.push(`${w}px 文字${ts} 家族${fam} ${mode}: ` + JSON.stringify({auto: r.a, hits}).slice(0, 400));
+        }
+        await ctx.close();
+    }
+    ok(n >= 60 && !bad.length, `R18-13 R59 決めた直後のお知らせ ${n} 回（5幅 × 文字3段階 × 家族 × 押し方2通り）: ページに留まり、送った位置で見える。上まで戻しても・いちばん下でも・元の位置でも、料理名・↻・札・決定・「✓ 決めた」にかからない: ` + bad.slice(0, 3).join(' / '));
+}
+
+// R18-14（R60）最初の「準備ができました…」（画面が切りかわった直後の出し方）: 360/390/430 × 文字3段階 × 家族。送った位置・上まで戻した位置・いちばん下で、料理名・↻・札・決定にかからない
+if (want('R18-14')) {
+    let n = 0; const bad = [];
+    for (const [w, h] of [[360, 740], [390, 844], [430, 932]]) for (const fam of [0, 1]) {
+        const {p, ctx} = await open({w, h, lang: 'ja', fam, dc: 4, sv: fam ? 3 : 2}, `r60-${w}-${fam}`);
+        for (const ts of [0, 1, 2]) {
+            const r = await p.evaluate(async ts => { if (toast.hide) toast.hide(); if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; window.scrollTo(0, 0); session.menu = null; render(); await __tick();
+                const hid = () => { const bx = document.querySelector('#toast-root .toast'); return !!bx && getComputedStyle(bx).visibility === 'hidden'; };
+                const at = async (sy, tag) => { if (sy != null){ window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
+                TOAST_TAP.at = performance.now(); TOAST_TAP.layer = true; TOAST_TAP.y = 300; TOAST_TAP.box = null; TOAST_TAP.act = ''; toast(t('準備ができました。今日の献立はこちらです'), true); await __tick(); await new Promise(r => setTimeout(r, 400));
+                const a = await at(null, 'auto'), b = await at(0, 'top'), c = await at(1e6, 'max'); return {a, b, c}; }, ts);
+            n++;
+            const hits = [r.a, r.b, r.c].map(x => [x.tag, coverCore(x)]).filter(x => x[1].length);
+            if (r.a.none || r.a.hidden || hits.length) bad.push(`${w}px 文字${ts} 家族${fam}: ` + JSON.stringify({auto: r.a, hits}).slice(0, 400));
+            await p.waitForTimeout(150);
+        }
+        await ctx.close();
+    }
+    ok(n >= 18 && !bad.length, `R18-14 R60 最初の「準備ができました…」 ${n} 回（360/390/430 × 文字3段階 × 家族）: 送った位置で見える。上まで戻しても・いちばん下でも料理名・↻・札・決定にかからない: ` + bad.slice(0, 3).join(' / '));
+}
+
+// R18-15（R62）条件のボタンの字: 品数おまかせのときは「2人分・おまかせ」（3つ目を出さない）。17言語 × 390 × ふつう/文字大。日・英・韓・中・独・仏・西・伊は全部見える。ほかも見える字が 8 割以上。気分が「ラクの日」なら「2人分・ラクの日・おまかせ」。品数を決めているときは「2人分・おまかせ・4品」のまま
+if (want('R18-15')) {
+    let n = 0; const bad = [];
+    const FULL = ['ja', 'en', 'ko', 'zh-Hans', 'de', 'fr', 'es', 'it'];
+    for (const lang of Object.keys(CC)) {
+        const {p, ctx} = await open({w: 390, h: 844, lang, dc: 'auto', sv: 2}, `r62-${lang}`);
+        for (const ts of [0, 1]) for (const mood of ['all', 'easy']) {
+            const r = await p.evaluate(async ([ts, mood]) => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); session.mood = mood; session.menu = null; TRAY_FIT.key = ''; TRAY_FIT.base = ''; window.scrollTo(0, 0); render(); await __tick();
+                const ch = document.querySelector('#view [data-act=cond-open]'), sv = ch && ch.querySelector('.sv1'); if (!sv) return {err: 'なし'};
+                const sb = sv.getBoundingClientRect(), rg = document.createRange(); let vis = 0, all = 0; const tw = document.createTreeWalker(sv, NodeFilter.SHOW_TEXT); let node;
+                while ((node = tw.nextNode())) for (let i = 0; i < node.data.length; i++){ rg.setStart(node, i); rg.setEnd(node, i + 1); const q = rg.getBoundingClientRect(); if (!q.width) continue; all++; if (q.right <= sb.right + .5 && q.left >= sb.left - .5) vis++; }
+                return {text: sv.textContent, vis, all, sep: t('・'), auto: t('おまかせ'), dc: t('品数おまかせ'), easy: t('ラクの日')}; }, [ts, mood]);
+            n++;
+            if (r.err){ bad.push(`${lang} 文字${ts} ${mood}: なし`); continue; }
+            const parts = r.text.split(r.sep).map(x => x.trim()), wantParts = mood === 'all' ? 2 : 3;
+            const okText = parts.length === wantParts && !r.text.includes(r.dc) && (mood === 'all' ? parts[1] === r.auto : parts[1] === r.easy && parts[2] === r.auto);
+            const okVis = FULL.includes(lang) ? r.vis >= r.all : r.vis >= r.all * .7;
+            if (!okText || (mood === 'all' && !okVis)) bad.push(`${lang} 文字${ts} ${mood}: ` + JSON.stringify(r));
+        }
+        await ctx.close();
+    }
+    ok(n >= 68 && !bad.length, `R18-15 R62 条件のボタンの字 ${n} 画面（17言語 × 390 × ふつう/文字大 × 気分2通り）: 「2人分・おまかせ」の2つ（ラクの日なら3つ）。主な8言語は全部見える・ほかも 7 割以上: ` + bad.slice(0, 3).join(' / '));
+}
+
+// R18-16（R54 の残り）波・越 × 360/375 × 文字大/もっと大きい: 見出しの字が条件のボタンの箱に隠れない（1行に入らない見出しは 17px の2行。見出しの行は 48px 以下）
+for (const lang of ['pl', 'vi']) for (const [w, h] of [[360, 740], [375, 667]]) for (const ts of [1, 2]) {
+    if (!want('R18-16')) break;
+    const {p, ctx} = await open({w, h, lang, ts, dc: 'auto', sv: 2}, `r54b-${lang}-${w}-${ts}`);
+    const r = await p.evaluate(async () => { window.scrollTo(0, 0); session.menu = null; render(); await __tick();
+        const h2 = document.querySelector('#view .today-head h2'), ch = document.querySelector('#view [data-act=cond-open]'); if (!h2 || !ch) return {err: 'なし'};
+        const hb = h2.getBoundingClientRect(), cb = ch.getBoundingClientRect(), tx = h2.firstChild, rg = document.createRange(); rg.selectNodeContents(tx);
+        let hidden = 0, all = 0; for (let i = 0; i < tx.data.length; i++){ rg.setStart(tx, i); rg.setEnd(tx, i + 1); const q = rg.getBoundingClientRect(); if (!q.width) continue; all++; if (q.right > hb.right + .5 || q.right > cb.left + .5 && q.bottom > cb.top && q.top < cb.bottom) hidden++; }
+        return {text: tx.data, all, hidden, two: h2.classList.contains('h2-2l'), h2h: Math.round(hb.height), headH: Math.round(document.querySelector('#view .today-head').getBoundingClientRect().height), fs: getComputedStyle(h2).fontSize, tight: document.body.classList.contains('tray-tight')}; });
+    ok(!r.err && !r.hidden && r.headH <= 48, `R18-16 R54 ${lang} ${w}px 文字${ts}: 見出し「${r.text}」の字が全部見える（条件のボタンの箱に隠れない）・見出しの行は 48px 以下: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// R18-17（195px の残り）195×422 × 文字大/もっと大きい × 日本語/英語・家族の魚⚠で決めたあと: 「⚠ 夫に合わない料理があります」が切れない（2行まで・11px）。「✓ 決めた」の印が条件のボタンの箱に重ならず、見出しの箱からはみ出さない
+for (const ts of [1, 2]) for (const lang of ['ja', 'en']) {
+    if (!want('R18-17')) break;
+    const {p, ctx} = await open({w: 195, h: 422, lang, ts, fam: 1, dc: 3, sv: 2}, `n195-${ts}-${lang}`);
+    const r = await p.evaluate(async () => {
+        let hit = false; for (let i = 0; i < 60 && !hit; i++){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
+        if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }
+        __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
+        const lines = [...document.querySelectorAll('#view .alg-bar, #view .alg-top')].filter(e => getComputedStyle(e).display !== 'none').map(e => { const rg = document.createRange(); rg.selectNodeContents(e); return {text: e.textContent.trim(), h: Math.round(e.getBoundingClientRect().height), cutW: e.scrollWidth > e.clientWidth + 1, cutH: e.scrollHeight > e.clientHeight + 1, fs: getComputedStyle(e).fontSize}; });
+        const okB = document.querySelector('#view .p2-ok'), ch = document.querySelector('#view [data-act=cond-open]'), h2 = document.querySelector('#view .today-head h2'); if (!okB || !ch || !h2) return {err: 'なし', lines};
+        const q = okB.getBoundingClientRect(), cb = ch.getBoundingClientRect(), hb = h2.getBoundingClientRect();
+        const ov = q.right > cb.left + .5 && q.left < cb.right - .5 && q.bottom > cb.top + .5 && q.top < cb.bottom - .5, out = q.right > hb.right + .5 || q.left < hb.left - .5 || q.bottom > hb.bottom + .5 || q.top < hb.top - .5;
+        const top = document.elementsFromPoint(q.right - 2, (q.top + q.bottom) / 2)[0];
+        return {hit, lines, ok: {w: Math.round(q.width), h: Math.round(q.height), ov, out, topIsOk: !!top && (top === okB || okB.contains(top))}, row0: __rows()[0], cls: document.body.className.replace('on-today', '').trim()}; });
+    ok(!r.err && r.hit && r.lines.length && r.lines.every(x => !x.cutW && !x.cutH && x.h <= 32) && !r.ok.ov && !r.ok.out && r.ok.topIsOk && r.ok.h <= 24 && r.row0 && !r.row0.hid.length, `R18-17 195px ${lang} 文字${ts}: 決めたあとの ⚠ の行が切れない（32px 以下）・「✓ 決めた」が条件のボタンに重ならず見出しの箱の中（24px 以下）・上の段はタブより上: ` + JSON.stringify(r));
     await ctx.close();
 }
 
