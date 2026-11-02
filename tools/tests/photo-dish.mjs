@@ -9,6 +9,7 @@
 //  F5 暗い表示: 写真の生成りの四角い背景が、お膳の上に見えない（器のまわりの角はお膳の色）
 //  F6 オフライン: 一度見た写真の絵は、電波がなくても出る（sw.js のキャッシュ）
 //  F7 試せるページ（data URL で埋めこんだ絵）: image/webp の data URL も写真として出す
+//  F8 起動のとき: 絵の一覧が届くまでは、手描きの絵（dishSvg）を出さずに生成りの丸。届いたら絵になる（古い絵が一瞬見えない）
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -171,11 +172,11 @@ for (const scheme of ['light', 'dark']){
     const h1 = await p.evaluate(() => { const h = document.querySelector('.hero'), i = h && h.querySelector('img'), hr = h.getBoundingClientRect(), ir = i && i.getBoundingClientRect();
         return { cls: h.className, src: i && i.getAttribute('src'), nw: i && i.naturalWidth, cap: (h.querySelector('.cap') || {}).textContent || '', radius: i && getComputedStyle(i).borderRadius,
             inside: !!ir && ir.left >= hr.left && ir.right <= hr.right && ir.top >= hr.top && ir.bottom <= hr.bottom && Math.abs(ir.width - ir.height) < 2 && ir.width > 120 }; });
-    ok(/\bgph\b/.test(h1.cls) && (h1.src || '').includes(`img/dish/${PHOTO[0]}.webp`) && h1.nw === 512 && h1.radius === '50%' && h1.inside && /Gemini/.test(h1.cap), `F3 ${scheme}: 詳しい画面に丸い写真と Gemini の注記`, h1);
+    ok(/\bgph\b/.test(h1.cls) && (h1.src || '').includes(`img/dish/${PHOTO[0]}.webp`) && h1.nw === 512 && h1.radius === '50%' && h1.inside && /AI で作成/.test(h1.cap), `F3 ${scheme}: 詳しい画面に丸い写真と AI の注記`, h1);
     await p.evaluate(() => closeModal()); await p.waitForTimeout(200);
     await p.evaluate(id => openModal(id), KEEP[0]); await p.waitForTimeout(500);
     const h2 = await p.evaluate(() => { const h = document.querySelector('.hero'), i = h && h.querySelector('img'); return { cls: h.className, src: i && i.getAttribute('src'), cap: (h.querySelector('.cap') || {}).textContent || '' }; });
-    ok(!/\bgph\b/.test(h2.cls) && /\.svg\b/.test(h2.src || '') && !/Gemini/.test(h2.cap), `F3 ${scheme}: SVG の料理の詳しい画面はいままでどおり`, h2);
+    ok(!/\bgph\b/.test(h2.cls) && /\.svg\b/.test(h2.src || '') && !/AI で作成/.test(h2.cap), `F3 ${scheme}: SVG の料理の詳しい画面はいままでどおり`, h2);
     await p.evaluate(() => closeModal()); await p.waitForTimeout(200);
     // 一覧（材料から → 料理をさがす）
     await p.click('nav.tabs [data-tab="fridge"]'); await p.waitForSelector('#search-input');
@@ -217,6 +218,17 @@ for (const scheme of ['light', 'dark']){
     await p.evaluate(() => render()); await p.waitForTimeout(300);
     const v = (await vessels(p)).find(x => x.id === PHOTO[0]);
     ok(r.photo && r.data && v && /\bgph\b/.test(v.cls), 'F7 image/webp の data URL も写真として出す', { r, v });
+    await p.ctx.close();
+}
+
+// ---- 6. 起動のとき、絵の一覧が遅れて届く: そのあいだ手描きの絵を出さない ----
+{
+    const p = await newPage();
+    await p.ctx.route(/img\/dish\/manifest\.json/, async r => { await new Promise(ok => setTimeout(ok, 1500)); await r.continue(); });
+    await p.ctx.addInitScript(() => { window.__f8 = {svg: 0, wait: 0}; const mo = new MutationObserver(() => { if (document.querySelector('.vessel .food.svg svg, .thumb.svg svg')) __f8.svg++; if (document.querySelector('.vessel.pwait')) __f8.wait++; }); mo.observe(document, {childList: true, subtree: true}); });
+    await p.goto(URL_); await trayReady(p);
+    const r = await p.evaluate(() => ({ f8: window.__f8, waitLeft: document.querySelectorAll('.pwait').length, state: GEN_STATE }));
+    ok(r.f8.svg === 0 && r.f8.wait > 0 && r.waitLeft === 0 && r.state === 1, 'F8 一覧が届くまでは生成りの丸（手描きの絵は出ない）、届いたら絵', r);
     await p.ctx.close();
 }
 

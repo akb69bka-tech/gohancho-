@@ -2,7 +2,9 @@
 /*
  * 写真風の料理の絵（Gemini などで作った画像）を、アプリの絵として取りこむ
  *
- *   node tools/illustrations/import-photos.mjs <画像のフォルダ> [--dry-run] [--quality 0.8] [--max-kb 40]
+ *   node tools/illustrations/import-photos.mjs <画像のフォルダ> [--dry-run] [--quality 0.8] [--max-kb 40] [--keep-original] [--thumb 192] [--thumb-quality 0.8]
+ *   --keep-original: 元がもう 512×512 の WebP なら、作り直さずにそのままのバイトで入れる（オーナーの元の絵がいちばんくっきりしているため。品質・大きさの上限は使わない）
+ *   --thumb / --thumb-quality: 一覧用の小さい絵の大きさ（px）と品質。くっきりさせるなら --thumb 256 --thumb-quality 0.92
  *
  * 入力: フォルダの中（下のフォルダも見る）の <料理のID>.png / .jpg / .jpeg / .webp
  *       （ID は gohancho/img/dish/manifest.json の items のキー。オーナーの一覧の C 列「画像ID」、D 列「<ID>.png」）
@@ -25,20 +27,22 @@ import { fileURLToPath } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DISH = path.resolve(HERE, '../..', 'gohancho', 'img', 'dish');
 const MANIFEST = path.join(DISH, 'manifest.json');
-const SIZE = 512, THUMB = 192, BG = '#FBF5EC';   // 背景が透けている画像は、生成り（写真の背景と同じ色）で埋める
+const SIZE = 512, BG = '#FBF5EC';   // 背景が透けている画像は、生成り（写真の背景と同じ色）で埋める
 
 const args = process.argv.slice(2);
 const opt = (name, def) => { const i = args.indexOf(name); if (i < 0) return def; const v = args[i + 1]; args.splice(i, 2); return v; };
 const flag = name => { const i = args.indexOf(name); if (i < 0) return false; args.splice(i, 1); return true; };
 const DRY = flag('--dry-run');
 const QUALITY = Number(opt('--quality', '0.8'));
+const KEEP = flag('--keep-original');
+const THUMB = Number(opt('--thumb', '192')), THUMB_Q = Number(opt('--thumb-quality', '0.8'));
 const MAX_KB = Number(opt('--max-kb', '40'));
 const SRC = args[0];
 if (!SRC || !fs.existsSync(SRC) || !fs.statSync(SRC).isDirectory()){
     console.error('使い方: node tools/illustrations/import-photos.mjs <画像のフォルダ> [--dry-run] [--quality 0.8] [--max-kb 40]');
     process.exit(2);
 }
-if (!(QUALITY > 0 && QUALITY <= 1) || !(MAX_KB > 0)){ console.error('--quality は 0〜1、--max-kb は正の数で指定してください'); process.exit(2); }
+if (!(QUALITY > 0 && QUALITY <= 1) || !(MAX_KB > 0) || !(THUMB >= 64 && THUMB <= SIZE) || !(THUMB_Q > 0 && THUMB_Q <= 1)){ console.error('--quality は 0〜1、--max-kb は正の数で指定してください'); process.exit(2); }
 
 const m = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 const items = m.items || {};
@@ -75,7 +79,7 @@ const page = await ctx.newPage();
 await page.setContent('<!doctype html><title>import-photos</title>');
 
 // 1枚を「真ん中の正方形 → 512px と 192px の WebP」にする（大きいものは品質を少しずつ下げて MAX_KB 以内に）
-const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, BG, QUALITY, MAX }) => {
+const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX, KEEP }) => {
     const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     const bmp = await createImageBitmap(new Blob([bytes]));   // 拡張子と中身が違っても（.png の中身が JPEG など）読める
     const s = Math.min(bmp.width, bmp.height), sx = (bmp.width - s) / 2, sy = (bmp.height - s) / 2;
@@ -116,21 +120,25 @@ const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, BG, QUALITY, M
         return c;
     };
     const enc = (c, q) => c.toDataURL('image/webp', q).split(',')[1];
+    const thumb = enc(draw(THUMB), THUMB_Q);
+    // 元がもう 512×512 の WebP: 作り直さない（そのままのバイトを使う。null を返すと Node 側で元のファイルを写す）
+    const webp = bytes.length > 12 && String.fromCharCode(...bytes.slice(0, 4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8, 12)) === 'WEBP';
+    if (KEEP && webp && bmp.width === SIZE && bmp.height === SIZE) return { w: bmp.width, h: bmp.height, q: null, data: null, thumb };
     const big = draw(SIZE);
     let q = QUALITY, data = enc(big, q);
     while (data.length * 3 / 4 > MAX && q > 0.55){ q = Math.round((q - 0.05) * 100) / 100; data = enc(big, q); }
-    return { w: bmp.width, h: bmp.height, q, data, thumb: enc(draw(THUMB), 0.8) };
-}, { b64, SIZE, THUMB, BG, QUALITY, MAX: MAX_KB * 1024 });
+    return { w: bmp.width, h: bmp.height, q, data, thumb };
+}, { b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX: MAX_KB * 1024, KEEP });
 
 const today = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })();
 fs.mkdirSync(path.join(DISH, 't'), { recursive: true });
 let n = 0, total = 0, maxB = 0, maxId = '';
 const over = [], fail = [], notSquare = [];
 for (const [id, file] of [...found].sort((a, b) => a[0].localeCompare(b[0]))){
-    let r;
-    try{ r = await convert(fs.readFileSync(file).toString('base64')); }
+    let r; const raw = fs.readFileSync(file);
+    try{ r = await convert(raw.toString('base64')); }
     catch(e){ fail.push(`${path.basename(file)}（${String(e.message || e).split('\n')[0]}）`); continue; }
-    const big = Buffer.from(r.data, 'base64'), th = Buffer.from(r.thumb, 'base64');
+    const big = r.data == null ? raw : Buffer.from(r.data, 'base64'), th = Buffer.from(r.thumb, 'base64');
     if (big.slice(0, 4).toString() !== 'RIFF' || big.slice(8, 12).toString() !== 'WEBP'){ fail.push(`${path.basename(file)}（WebP にできませんでした）`); continue; }
     fs.writeFileSync(path.join(DISH, `${id}.webp`), big);
     fs.writeFileSync(path.join(DISH, 't', `${id}.webp`), th);
@@ -138,7 +146,7 @@ for (const [id, file] of [...found].sort((a, b) => a[0].localeCompare(b[0]))){
     items[id] = Object.assign({}, items[id], { file: `${id}.webp`, via: 'photo', model: 'gemini', date: today, thumb: `t/${id}.webp`, v });
     n++; total += big.length;
     if (big.length > maxB){ maxB = big.length; maxId = id; }
-    if (big.length > MAX_KB * 1024) over.push(`${id}（${Math.round(big.length / 1024)}KB）`);
+    if (big.length > MAX_KB * 1024 && r.data != null) over.push(`${id}（${Math.round(big.length / 1024)}KB）`);
     if (Math.abs(r.w - r.h) > 2) notSquare.push(`${id}（${r.w}×${r.h}）`);
 }
 await browser.close();

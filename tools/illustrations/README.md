@@ -25,6 +25,7 @@ Gemini で作った写真風の画像（`<ID>.png`）は、`import-photos.mjs` �
 
 ```bash
 node tools/illustrations/import-photos.mjs ~/gemini_in/2026-11-01   # フォルダの中の <ID>.png / .jpg / .webp を取りこむ
+node tools/illustrations/import-photos.mjs ~/gemini_in/2026-11-02 --keep-original --thumb 256 --thumb-quality 0.92   # 元がもう 512×512 の WebP なら作り直さずそのまま入れる（いちばんくっきり。いまの絵はこの形）
 ```
 
 下の ChatGPT の方法で画像を作ると、その料理は手描きの絵の代わりに ChatGPT の画像が表示されます（手描きの SVG ファイルは残るので、`manifest.json` からその料理を消して `build.mjs` を実行すれば戻せます）。

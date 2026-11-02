@@ -5116,8 +5116,12 @@ function photoOf(r){
     if (!r) return null;
     if (MINE[r.id]) return MINE[r.id];               // 自分で撮った写真はそのまま
     const id = r.isTwist ? r.base.id : r.id;
-    return GEN[id] || sketchOf(PHOTOS[id]);          // 次に同梱の絵（手描き・ChatGPT）、その次に写真をイラスト化したもの
+    if (GEN[id]) return GEN[id];                     // 次に同梱の絵（写真・手描き・ChatGPT）
+    return genPending(id) ? null : sketchOf(PHOTOS[id]);   // その次に写真をイラスト化したもの（同梱の絵の一覧が届く前は待つ）
 }
+// 同梱の絵がまだ届いていない（一覧・国のまとまりを読みこみ中）か、前の版の一覧しかない料理。このあいだは、絵のない生成りの丸（写真の背景と同じ色）を出す。
+// 手描きの絵（dishSvg や <ID>.svg）を先に出すと、写真に替わる前に古い絵が一瞬見えてしまうため（起動のとき、今日の献立で起きていた）
+function picWait(r){ return !!r && !MINE[r.id] && genPending(r.isTwist ? r.base.id : r.id); }
 
 /* ---- アプリに同梱した料理の絵 ----
    img/dish/manifest.json に並んだ絵を使う。via が 'svg' は tools/illustrations/draw で描いたイラスト、
@@ -5125,7 +5129,19 @@ function photoOf(r){
    （tools/illustrations/import-photos.mjs で 512px の WebP にして入れる。入っていない料理は手描きの SVG のまま）。アプリから外部へは通信しない。 */
 const GEN = {};
 const GEN_INFO = {ok: false, any: false, ai: false, photo: false};   // photoNote 用: 絵があるか・ChatGPT の絵があるか（addGenerated で作り直す）
-const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名、読みこみ済みは true
+const GEN_BUNDLES = {};   // 国ごとにまとめた絵（試せるページ用。ファイルの数に上限があるため）。国 → ファイル名
+const GEN_BSTATE = {};    // 国のまとまりの読みこみ: 1 読みこみ中 / 2 済み / 3 失敗
+// 一覧の状態: 0 起動のときの一覧を待っている / 1 届いた / 2 届かない・前の版の一覧（どの料理が写真かわからない。手描きの絵は出さずに生成りの丸）
+let GEN_STATE = 0;
+// 試せるページで、料理の絵が入っている国のまとまり（artifact-build: 「kr_」のような国の印がある料理はその国、ほかは JP）
+function genBundleFor(id){ const m = /^([a-z]{2})_/.exec(id), cc = m && GEN_BUNDLES[m[1].toUpperCase()] ? m[1].toUpperCase() : 'JP'; return GEN_BUNDLES[cc] ? cc : null; }
+function genPending(id){
+    if (!id || GEN[id]) return false;
+    if (GEN_STATE !== 1) return true;
+    const cc = genBundleFor(id), st = cc && GEN_BSTATE[cc];
+    if (!cc || st === 2 || st === 3) return false;
+    loadGenBundle(cc); return true;   // まだ読んでいない国のまとまりにある料理: 読みこんで、届くまで生成りの丸
+}
 function addGenerated(items){
     GEN_INFO.ok = false;
     Object.keys(items).forEach(id => {
@@ -5143,25 +5159,31 @@ async function loadGenerated(){
         const early = window.__genP; window.__genP = null;
         const url = 'img/dish/manifest.json?v=' + encodeURIComponent(window.ASSET_V || '');
         const res = (early && await early) || await fetch(url);
-        if (!res.ok) return;
-        const m = await res.json();
-        addGenerated((m && m.items) || {});
+        if (!res.ok){ GEN_STATE = 2; return; }
+        // 電波がなく、前の版で保存した一覧が返ってきたとき（sw.js は ?v= が違う保存でも出す）: 写真の料理だけ使う。前の版の一覧にある手描きの絵は出さない
+        let stale = false; try{ const got = new URL(res.url).searchParams.get('v'); stale = got != null && got !== String(window.ASSET_V || ''); }catch(e){}
+        const m = await res.json(), items = (m && m.items) || {};
+        if (stale) Object.keys(items).forEach(k => { if (!items[k] || items[k].via !== 'photo') delete items[k]; });
+        addGenerated(items);
         Object.assign(GEN_BUNDLES, (m && m.bundles) || {});
-        loadGenBundle(currentCountry());
-        if (Object.keys(GEN).length) scheduleRender(early && !sheet && !modalId ? 0 : undefined);   // シート・詳しい画面を開いているときは、いままでどおり（開いているものを急いで描き直さない）
-    }catch(e){}
+        GEN_STATE = stale ? 2 : 1;
+        loadGenBundle(currentCountry(), true);
+        scheduleRender(early && !sheet && !modalId ? 0 : undefined);   // シート・詳しい画面を開いているときは、いままでどおり（開いているものを急いで描き直さない）
+    }catch(e){ GEN_STATE = 2; }
     finally{ genSettle(); }
 }
 // 国の絵のまとまりを、その国を使うときにだけ読みこむ（manifest に bundles があるときだけ）
-async function loadGenBundle(cc){
-    const f = GEN_BUNDLES[cc];
-    if (!f || f === true || !/^[\w.-]+\.json$/.test(f)) return;
-    GEN_BUNDLES[cc] = true;
+// retry: 前に失敗したまとまりも読み直す（国を選び直したとき）。描くたびの頼みでは読み直さない（失敗をくり返さない）
+async function loadGenBundle(cc, retry){
+    const f = GEN_BUNDLES[cc], st = GEN_BSTATE[cc];
+    if (!f || !/^[\w.-]+\.json$/.test(f) || st === 1 || st === 2 || (st === 3 && !retry)) return;
+    GEN_BSTATE[cc] = 1;
     try{
-        const res = await fetch('img/dish/' + f);
+        const res = await fetch('img/dish/' + f + '?v=' + encodeURIComponent(window.ASSET_V || ''));   // 版ごとに取り直す（前の版の絵のまとまりを、ブラウザの一時保存から出さない）
         if (!res.ok) throw new Error(res.status);
-        const m = await res.json(); addGenerated((m && m.items) || {}); scheduleRender();
-    }catch(e){ GEN_BUNDLES[cc] = f; }
+        const m = await res.json(); addGenerated((m && m.items) || {}); GEN_BSTATE[cc] = 2;
+    }catch(e){ GEN_BSTATE[cc] = 3; }
+    scheduleRender();
 }
 
 /* ---- 参考写真をもとに、ポップなイラストに描き直す ----
@@ -5290,7 +5312,7 @@ function photoNote(){
     if (!GEN_INFO.ok){ GEN_INFO.any = false; GEN_INFO.ai = false; GEN_INFO.photo = false; for (const k in GEN){ GEN_INFO.any = true; if (GEN[k].ai) GEN_INFO.ai = true; if (GEN[k].photo) GEN_INFO.photo = true; if (GEN_INFO.ai && GEN_INFO.photo) break; } GEN_INFO.ok = true; }
     const ai = GEN_INFO.ai, gem = GEN_INFO.photo, anyGen = GEN_INFO.any;
     const wiki = Object.keys(PHOTOS).some(k => !GEN[k]);
-    if (ai || gem || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', gem ? t('料理の写真風の絵は Gemini（Google の画像生成）で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
+    if (ai || gem || wiki) return [ai ? t('料理の絵の一部は ChatGPT（OpenAI の画像生成）で作成したイメージです。') : '', gem ? t('料理の写真風の絵は AI で作成したイメージです。') : '', wiki ? t('一部は Wikipedia / Wikimedia Commons の写真をもとにイラスト化し、撮影者とライセンスを各料理の詳細に表示しています。') : ''].join('');
     if (anyGen) return '';
     if (Object.keys(PHOTOS).filter(k => k !== 'rice' && k !== 'konomono').length) return t('料理の絵の一部は、Wikipedia / Wikimedia Commons の写真をもとにイラスト化しています。撮影者とライセンスは各料理の詳細に表示しています。');
     return '';
@@ -5317,22 +5339,34 @@ function probeImg(src){
 }
 function vesselHtml(kind, r, still=false, anim=true, side=null){   // side: 香の物の席に置く物の絵（お漬物・福神漬け・らっきょう漬け）
     const extra = kind === 'chawan' ? 'rice' : kind === 'konomono' ? side || 'konomono' : null;
-    let ph = r ? photoOf(r) : extra ? (GEN[extra] || sketchOf(PHOTOS[extra])) : null;
-    if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)) ph = null; }
+    let ph = r ? photoOf(r) : extra ? (GEN[extra] || (genPending(extra) ? null : sketchOf(PHOTOS[extra]))) : null;
+    // 写真がまだ届いていない・読みこめなかった写真の料理: 手描きの絵は出さず、生成りの丸（写真の背景と同じ。絵が届けばそのまま写真になる）
+    let wait = !ph && (r ? picWait(r) : !!extra && genPending(extra));
+    if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)){ wait = !!ph.photo; ph = null; } }
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
-    const food = ph ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
-    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${ph && ph.gen ? ' gen' : ''}${ph && ph.photo ? ' gph' : ''}${anim ? ' rise-in' : ''}`;
+    const food = ph || wait ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
+    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${(ph && ph.gen) || wait ? ' gen' : ''}${(ph && ph.photo) || wait ? ' gph' : ''}${wait ? ' pwait' : ''}${anim ? ' rise-in' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
-const hiDpi = () => (window.devicePixelRatio || 1) > 2.2;
+// 一覧の絵（32〜96px）は小さい絵（t/。256px）で足りる画面（DPR 2 まで）では小さい絵、それより細かい画面（DPR 3 のスマホ）は 512px の絵を使う。
+// 小さい絵を出したあとも、読みこめたときに「表示の大きさ × DPR」が絵の画素より大きければ 512px に替える（data-full。小さい絵を引きのばしてぼやけさせない）
+// （srcset の w 指定は naturalWidth が変わるので使わない）
+const hiDpi = () => (window.devicePixelRatio || 1) > 2;
+document.addEventListener('load', e => {
+    const im = e.target; if (!im || im.tagName !== 'IMG' || !im.dataset.full) return;
+    const w = im.getBoundingClientRect().width * (window.devicePixelRatio || 1);
+    if (w > im.naturalWidth + 1){ const f = im.dataset.full; delete im.dataset.full; im.src = f; }
+}, true);
 function thumbHtml(r){
     let ph = photoOf(r);
-    // 高解像度の画面（DPR 3 など）では、一覧の絵（64〜96px）に 192px では足りずにぼやけるので、512px の絵を使う（DPR 2 までは 192px のまま。srcset の w 指定は naturalWidth が変わるので使わない）
-    let src = ph && (ph.thumb && !(hiDpi() && ph.src && !/^data:/.test(ph.src)) ? ph.thumb : ph.src);
-    if (ph){ probeImg(src); if (IMG_FAIL.has(src) && src !== ph.src){ src = ph.src; probeImg(src); } if (IMG_FAIL.has(src)) ph = null; }
+    let src = ph && (ph.thumb && !(hiDpi() && ph.src) ? ph.thumb : ph.src);
+    let wait = !ph && picWait(r);
+    if (ph){ probeImg(src); if (IMG_FAIL.has(src) && src !== ph.src){ src = ph.src; probeImg(src); } if (IMG_FAIL.has(src)){ wait = !!ph.photo; ph = null; } }
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
-    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(src)}" alt="" decoding="async"></span>`
+    const full = ph && src !== ph.src && !IMG_FAIL.has(ph.src) ? ` data-full="${esc(ph.src)}"` : '';
+    return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(src)}" alt="" decoding="async"${full}></span>`
+         : wait ? `<span class="thumb pic gen gph pwait" aria-hidden="true"></span>`   // 写真が届くまでの生成りの丸（手描きの絵は出さない）
               : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
 }
 
@@ -8658,6 +8692,7 @@ function cardPlate(ctx, cx, cy, rad, img, r, name){
     ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, rad - 7, 0, Math.PI * 2); ctx.clip();
     if (img){
         const iw = img.naturalWidth || 300, ih = img.naturalHeight || 300, k = Math.max((rad * 2) / iw, (rad * 2) / ih);
+        ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';   // 512px の絵を縮めて描くときも、粗くならないように
         ctx.drawImage(img, cx - iw * k / 2, cy - ih * k / 2, iw * k, ih * k);
     } else {
         let col = '#e9d9b8'; try{ if (r) col = foodColor(r) || col; }catch(e){}
@@ -11975,7 +12010,7 @@ function renderModalBody(){
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}の写真（わが家で作ったもの）', {name:r.name}))}"><div class="cap">${esc(t('わが家の一枚（{date}に登録）', {date:jpDate(ph.d)}))}</div>`
         : ph && ph.gen
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト', {name:baseName}))}">
-           ${r.isTwist || ph.ai || ph.photo ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai || ph.photo ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ph.photo ? esc(t('写真風の絵は Gemini（Google の画像生成）で作成したイメージです。実際の料理・盛りつけとは異なります。')) : ''}</div>` : ''}`
+           ${r.isTwist || ph.ai || ph.photo ? `<div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + (ph.ai || ph.photo ? SLASH() : '') : ''}${ph.ai ? esc(t('イラストは ChatGPT（OpenAI の画像生成）で作成したイメージです。実際の盛りつけとは異なります。')) : ph.photo ? esc(t('写真風の絵は AI で作成したイメージです。実際の料理・盛りつけとは異なります。')) : ''}</div>` : ''}`
         : ph
         ? `<img src="${esc(ph.src)}" alt="${esc(t('{name}のイラスト（写真をもとに作成）', {name:baseName}))}">
            <div class="cap">${r.isTwist ? esc(t('元の料理「{name}」の絵', {name:r.base.name})) + SLASH() : ''}${esc(t('写真をもとにイラスト化'))}${SLASH()}${esc(t('撮影: {artist}（{license}）', {artist:ph.artist || t('不明'), license:ph.license || t('ライセンス不明')}))} <a href="${esc(ph.page)}" target="_blank" rel="noopener">${esc(t('出典: Wikimedia Commons'))}</a></div>`
@@ -13502,7 +13537,7 @@ function addJpAliases(names, aliases){
 function replaceList(arr, list){ arr.length = 0; list.forEach(v => arr.push(v)); }
 function replaceObj(obj, src){ Object.keys(obj).forEach(k => delete obj[k]); Object.assign(obj, src); }
 function applyCountry(cc){
-    loadGenBundle(cc);
+    loadGenBundle(cc, true);
     if (!JP_DATA) JP_DATA = {recipes: RECIPES.slice(), canon: CANON.slice(), pantry: [...PANTRY], family: Object.assign({}, FAMILY), subs: Object.assign({}, SUBS),
         quick: QUICK.slice(), stapleQuick: STAPLE_QUICK.slice(), avoidQuick: AVOID_QUICK.slice(), moods: MOODS.slice()};
     const pk = cc === 'JP' ? null : PACKS[cc];
