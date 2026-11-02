@@ -649,7 +649,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .swap:hover{background:rgba(245,238,227,.1)}
 .swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
 .spot .swap-line{color:var(--tray-ink)}
-.spice-tag{white-space:nowrap}.alg-tag{color:var(--danger);font-weight:700;white-space:normal}.alg-tag.may,.caution{color:var(--caution)}.alg-tag.may{font-weight:600}.shop-row .alg-tag{display:block;font-size:.85em;font-weight:600}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.eaters-line.alg{line-height:1.5;min-height:4.5em}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
+.spice-tag{white-space:nowrap}.alg-tag{color:var(--danger);font-weight:700;white-space:normal}.alg-tag.may,.caution{color:var(--caution)}.alg-tag.may{font-weight:600}.alg-tag.out{color:var(--text);font-weight:600;box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:6px;padding:1px 6px}.out-alg{color:var(--text);box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:8px;padding:4px 8px}.note.out-alg-note{box-shadow:inset 0 0 0 1.5px var(--caution)}.eaters-line .out-alg{display:inline-block;margin-top:4px;text-align:start}.shop-row .alg-tag{display:block;font-size:.85em;font-weight:600}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.eaters-line.alg{line-height:1.5;min-height:4.5em}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
 .tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .swap-ph{visibility:hidden;pointer-events:none}   /* 汁ものがいらない日（汁の麺など）も、ボタンの高さを取っておく（主菜をかえて「汁ものを足す」が出ても、まわりが動かない） */
 .spot.ghost .vessel{background:transparent;box-shadow:none;border:2px dashed rgba(245,238,227,.28);box-sizing:border-box;opacity:.8}
@@ -1234,7 +1234,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .tray.grid2 .spot-label .ex>.alg-tag{display:block;white-space:normal;overflow:visible;text-overflow:clip;-webkit-line-clamp:unset;line-clamp:none;overflow-wrap:anywhere;font-size:.8125rem;line-height:1.3;margin-top:3px;padding:2px 6px;border-radius:6px;background:#fff8ee;color:#3a2a1f;text-align:start}   /* お盆の上の札は淡い地に濃い字（4.5:1 以上）。2行で切らない（第6回 S20） */
 .tray.grid2 .spot-label .ex{min-height:calc((var(--exn,0) - var(--exa,0)) * 1.4em + var(--exa,0) * var(--algk,2) * 1.3 * .8125rem + min(var(--exa,0), 1) * 7px)}   /* ⚠ の行はお膳では 13px・4行（日本語・中国語）／5行（ほかの言語）まで（… で切らない）＋余白（3+4px）。出る・消えるで枠の高さが動かないよう、その高さぶん取っておく */
 html:not([lang="ja"]):not([lang^="zh"]) .tray.grid2{--algk:2.5}   /* 漢字・かなでない言語は ⚠ の文が長い（「Contains: egg, wheat …」）。5行ぶん */
-.tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may{color:#6b3f00;font-weight:600}
+.tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may{color:#6b3f00;font-weight:600}.tray.grid2 .spot-label .ex>.alg-tag.out{color:#3a2a1f;font-weight:600;background:#fff8ee;box-shadow:inset 0 0 0 1.5px #c8641a}   /* 今日食べる人から外した家族のアレルゲンの札: 赤い ⚠（いま食べる人に当たる）と分ける。柿色の枠・濃い字（R45） */
 .spot-label .ex>.alg-tag{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow-wrap:anywhere}   /* アレルゲンの印は2行まで（2つ目のアレルゲン・加工品が … に隠れないように。モニター第3回d） */
 .tray.compact .spot-label .ex{min-height:calc(var(--exl,0) * 1.4em)}
 .tray.grid2.algfit .spot-label .ex{min-height:0}   /* いちばん詰めても入らないとき（文字大・⚠ の札が上下の段に出た日）: 札の場所は、出ている札の高さだけにする（札・名前・かえるを帯の上に入れるのを先に。fitTray） */
@@ -4799,6 +4799,7 @@ function viewShopStage(){
         <div class="sec-head buy-head"><span class="eyebrow">${esc(joinNames(names))}</span><h2>${esc(nb ? t('買う物 {n}つ', {n: nb}) : t('買う物はありません'))}</h2>
             <button type="button" class="btn sm buy-send" data-act="shop-share3">${esc(t('家族に送る'))}</button></div>
         ${cookWarnHtml()}
+        ${outAlgNoteHtml()}
         <div class="buy-tools"><div class="chips" role="group" aria-label="${esc(t('並べ方'))}"><button class="chip" data-act="sb-by" data-v="dish" aria-pressed="${by === 'dish'}">${esc(t('料理ごと'))}</button><button class="chip" data-act="sb-by" data-v="sec" aria-pressed="${by === 'sec'}">${esc(t('売り場ごと'))}</button></div>
             <button class="btn sm${big ? ' on' : ''}" data-act="shop-mode" aria-pressed="${big}">${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button></div>
         ${buy.length ? `<div class="card buy-list"><p class="buy-note">${esc(t('買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。'))}</p>
@@ -4895,7 +4896,7 @@ function keptOfferHtml(){
     const rs = k.ids.map(byId).filter(Boolean); if (!rs.length) return '';
     // あとから足したアレルギーに当たる料理には、名前に ⚠ を付け、今日の案にすると選び直すことを書く（第15回 R43。⚠ なしで名前が並んでいた）
     const ab = rs.filter(r => allergyConflict(r)), nm = r => (ab.includes(r) ? '⚠ ' : '') + r.name, names = joinNames(rs.map(nm));
-    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた献立（{names}）を今日にしますか？', {names}) : t('きのう明日へまわした献立（{names}）があります', {names}))}${ab.length ? `<span class="small warn alg-kept" role="alert" style="display:block">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</span>` : ''}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
+    return `<section class="sec"><div class="note kept-offer"><span>${esc(k.y ? t('昨日決めた献立（{names}）を今日にしますか？', {names}) : t('きのう明日へまわした献立（{names}）があります', {names}))}${(o => o ? `<span class="small out-alg alg-kept-out" role="alert" style="display:block">${esc(o)}</span>` : '')(outAlgLine(rs))}${ab.length ? `<span class="small warn alg-kept" role="alert" style="display:block">${esc(t('⚠ 「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。今日の案にすると、その料理だけ選び直します。', {names: joinNames(ab.map(r => r.name))}))}</span>` : ''}</span><button class="btn sm" data-act="keep-apply">${esc(t('今日の案にする'))}</button><button class="btn sm ghost" data-act="keep-drop">${esc(t('閉じる'))}</button></div></section>`;
 }
 // さがすタブの中の切りかえ（料理をさがす・材料から／ひとひねり／世界のレシピ）。中身は小野寺が「さがす」の画面にまとめる
 function findNav(){
@@ -7140,6 +7141,7 @@ function allergenDetailHtml(r){
         return `<li class="${mine.includes(id) ? 'mine' : ''}">${esc(t('{slot}：{name}', {slot: (mine.includes(id) ? '⚠ ' : '') + algLabel(id), name: ph})).replace(/\u0002(\d+)\u0003/g, (z, k) => `<bdi>${esc(nm[k])}</bdi>`)}</li>`; };
     return `<div class="note allergen-box" id="allergen-box"><b>${esc(t('この料理に含まれる主なアレルゲン'))}</b>
         ${mine.length ? `<div class="small warn" role="alert">${esc(t('⚠ 選んでいるアレルゲン（{list}）を使う料理です。', {list: joinNames(mine.map(algLabel))}))}</div>` : ''}
+        ${(ms => ms.length ? `<div class="small out-alg" role="alert">${esc(outAlgText(r0, ms))}</div>` : '')(outAlgHits(r0))}
         ${may.length ? `<div class="small caution" role="note">🔍 ${esc(t('選んでいるアレルゲン（{list}）が入っていることがある加工品を使います。袋の表示を確かめてください。', {list: joinNames(may.map(algLabel))}))}</div>` : ''}
         ${dashiSwapped(r0) ? `<div class="small" role="note">🔁 ${esc(dashiSwapWhy())}${seasItems(r0).some(i => algKind('fish', i) === 4 && /味噌|みそ|miso/i.test(i.name + '|' + (i.en || ''))) ? ' ' + esc(t('だし入りの味噌も、袋の表示を確かめてください。')) : ''}</div>` : ''}
         ${ids.length ? `<ul>${ids.map(li).join('')}</ul>` : `<div class="small muted">${esc(t('材料の名前からは、見つかりませんでした。'))}</div>`}
@@ -7173,13 +7175,14 @@ function algLine(){
 function algTagHtml(r){
     if (!r) return '';
     if (!allergyConflict(r)){
+        const out = outAlgTagHtml(r);   // 今日食べる人から外した家族のアレルゲンの札（R45）
         // 「入っていることがある」加工品（ワンタンの皮の卵など）だけで当たる料理: 料理は出すが、カードにも「袋の表示を確認」と出す（モニター第3回b N2）
-        const may = algMayHits(r); if (!may.length) return '';
+        const may = algMayHits(r); if (!may.length) return out;
         // 見える文字はアレルゲンの名前を先に（狭い枠で … に切れても何のアレルゲンかわかる）。読み上げには材料の名前（ワンタンの皮など）も入れる
         // 見える文字にも、どの加工品の袋を見ればよいかを書く（モニター第3回c）
         // 「袋を見る」印は、当たる印（赤い ⚠）と記号（🔍）と色（茶）で見分ける。見える文字はアレルゲンを全部先に並べ、そのあとに加工品（2行まで。モニター第3回d）
         const full = mayTagText(may), short = t('{alg}（{names}の袋の表示を確認）', {alg: joinNames([...new Set(may.map(x => x.id))].map(algLabel)), names: joinNames([...new Set([].concat(...may.map(x => x.names)))])});
-        return `<span class="alg-tag may" role="note" aria-label="${esc('🔍 ' + full)}" title="${esc('🔍 ' + full)}">🔍 ${esc(short)}</span>`;   // 狭い枠で … に切れても、全文（どの加工品がどのアレルゲンか）は読み上げと title で
+        return out + `<span class="alg-tag may" role="note" aria-label="${esc('🔍 ' + full)}" title="${esc('🔍 ' + full)}">🔍 ${esc(short)}</span>`;   // 狭い枠で … に切れても、全文（どの加工品がどのアレルゲンか）は読み上げと title で
     }
     const ids = algSelectedHits(r), full = ids.length ? t('アレルゲン: {list}', {list: joinNames(ids.map(algLabel))}) : t('アレルゲンあり');
     // お膳の文字の欄の1行（行数を固定した欄に入れて、⚠ の料理をかえても、まわりの料理が上下に動かないように）。狭い枠でもアレルゲンの名前が先に見えるよう、見える文字は「⚠ 名前」
@@ -7386,11 +7389,40 @@ function effAvoid(){
 // 今日食べる人から外した家族のアレルギーが、ほかの日の主菜や買い物メモに効かなくなっていた。苦手・辛さは今までどおり今日食べる人で見る（判定の関数そのものは変えず、渡す家族だけを広げる）
 let weekAlgN = 0;
 function weekAlg(fn){ weekAlgN++; try{ return fn(); } finally { weekAlgN--; } }
-function allergyMembers(){ return weekAlgN ? famMembers() : eaterMembers(); }
+let algMembersFor = null;   // 判定に使う家族を一時的に差しかえる（今日食べる人から外した家族の分だけを見るとき。R45）
+function allergyMembers(){ return algMembersFor || (weekAlgN ? famMembers() : eaterMembers()); }
+function withAlgMembers(ms, fn){ const o = algMembersFor; algMembersFor = ms; try{ return fn(); } finally { algMembersFor = o; } }
 function allergyList(){ const ms = allergyMembers(); return ms.length ? [...new Set([].concat(...ms.map(m => m.allergy)))] : []; }
 // 今日の献立で考えていない家族（今日食べる人から外した人・いつものメンバーにいない人）
 function eatersOut(){ const ms = eaterMembers(); return famMembers().filter(m => !ms.includes(m)); }
 function eatersOutLine(){ const xs = eatersOut(); return xs.length ? t('今日の献立は、{names}を除いて考えています', {names: joinNames(xs.map(m => famLabel(m, famMembers().indexOf(m))))}) : ''; }
+// 今日食べる人から外した家族のアレルゲンを使う料理（R45）。今日の献立はその家族を除いて考える約束なので料理は出すが、赤い ⚠（いま食べる人に当たる）とは別の札と文で、どの料理が誰に当たるかを出す。
+// 判定は allergyConflict そのもの（渡す家族をその人だけにする）。いま食べる人に当たる料理（赤い ⚠）には重ねない。献立の選び方は変えない
+function outAlgHits(r){
+    const xs = eatersOut(); if (!r || !r.items || !xs.length || allergyConflict(r)) return [];
+    return xs.filter(m => (m.allergy || []).length && withAlgMembers([m], () => allergyConflict(r)));
+}
+function outAlgNames(ms){ return joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m)))); }
+function outAlgIds(r, ms){ return [...new Set([].concat(...ms.map(m => withAlgMembers([m], () => algSelectedHits(r, famAlgIds())))))]; }
+// 料理1品の文（読み上げ・料理の詳細）: 「食べられません」と言い切り、「除いて考えている」が安心の文に読めないようにする
+function outAlgText(r, ms){
+    const names = outAlgNames(ms), list = joinNames(outAlgIds(r, ms).map(algLabel));
+    return list ? t('⚠ {names}のアレルゲン（{list}）を使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', {names, list}) : t('⚠ {names}のアレルゲンを使う料理です。今日の献立は{names}を除いて考えていますが、{names}は食べられません。', {names});
+}
+function outAlgTagHtml(r){
+    const ms = outAlgHits(r); if (!ms.length) return '';
+    const names = outAlgNames(ms), list = joinNames(outAlgIds(r, ms).map(algLabel)), full = outAlgText(r, ms);
+    const short = list ? t('⚠ {names}のアレルゲン（{list}）入り', {names, list}) : t('⚠ {names}のアレルゲン入り', {names});
+    return `<span class="alg-tag out" role="note" aria-label="${esc(full)}" title="${esc(full)}">${esc(short)}</span>`;
+}
+// お膳の下・作り方の画面の文: 当たる料理の名前を並べる（rs 省略時は、いま出している料理と決めた献立）
+function outAlgLine(rs){
+    if (!eatersOut().length) return '';
+    rs = (rs || safeSayDishes().concat(shownTsuke())).filter(r => outAlgHits(r).length); if (!rs.length) return '';
+    const ms = [...new Set([].concat(...rs.map(outAlgHits)))];
+    return t('⚠ 「{dishes}」は、{names}のアレルゲンを使う料理です。{names}は食べられません。', {dishes: joinNames(rs.map(r => r.name)), names: outAlgNames(ms)});
+}
+function outAlgNoteHtml(rs){ const s = outAlgLine(rs); return s ? `<div class="note out-alg-note" role="status"><span>${esc(s)}</span></div>` : ''; }
 // 「今日食べる人」は今日だけ。日付が替わったら選んでいない形（いつものメンバー）に戻す（S27: 次の日も外れたままで、外した家族のアレルゲンの料理が ⚠ なしで出た）
 function setEaters(v){ S.eaters = v; S.eatersD = Array.isArray(v) ? TODAY : ''; }
 function eatersDayCheck(){
@@ -10414,7 +10446,7 @@ function viewToday(){
     const wishN = wishList().length ? wishesActive().length : 0;   // 届いている「食べたい」の数（入口の「（1）」だけに使う。印は出さない）
     const voteOn = voteList().length > 0;   // ○つけ表の「そろった」
     const exWhy = S.fridge.length || S.favs.length || planUsable(weekToday()) || wishN || voteOn ? 1 : 0;   // 「なぜこの料理か」の1行。出る可能性があれば、どの料理にも同じ高さを取る
-    const exAlg = allergyOn() ? 2 : 0;   // ⚠ アレルゲンの行（決めたあとにアレルゲンを足したときなどに出る）。たたんだお膳でも出す。「袋の表示を確認」は2行まで出すので2行ぶん
+    const exAlg = allergyOn() || eatersOut().some(m => (m.allergy || []).length) ? 2 : 0;   // ⚠ アレルゲンの行（外した家族の札も同じ行。R45）（決めたあとにアレルゲンを足したときなどに出る）。たたんだお膳でも出す。「袋の表示を確認」は2行まで出すので2行ぶん
     const exSwap = swapOn() && effAvoid().length || algDashiSwap() ? 1 : 0, exSpice = mildOn() ? 1 : 0, exLast = S.history.length ? 1 : 0, exLeft = eaterMembers().length && S.history.some(h => leftOf(h).length) ? 1 : 0;   // 押した料理以外の高さが動かないよう、出る可能性のある行ぶんの高さを前もって確保する
     const spot = (it, idx, w) => {
         const r = it.r;
@@ -10513,7 +10545,7 @@ function viewToday(){
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         ${keptOfferHtml()}
-        ${(el => el ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${esc(el)}</p>` : '')([eatersOutLine(), eatersLine()].filter(Boolean).join('\n'))}
+        ${(el => el ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${esc(el)}${(o => o ? `\n<span class="out-alg">${esc(o)}</span>` : '')(outAlgLine())}</p>` : '')([eatersOutLine(), eatersLine()].filter(Boolean).join('\n'))}
         ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${cookWarnHtml()}
         ${/* 小さな入口（あと1品・家族に送る・今日は作らない・保存）は、お膳の上の「条件を変える」の中にまとめる（390 の6〜7席で、お膳の下の行が決定の帯にかかったため） */''}
@@ -10775,6 +10807,7 @@ function p2mPlanHtml(plan, started){
     return `<section class="sec stage-body p2m-plan">
         <div class="sec-head"><h2>${esc(t('{n}品の段取り', {n: items.length}))}</h2><span class="hint">${esc(items.length > 1 ? t('目安 {max}〜{n}分（同時に進めると短くなります）', {max: Math.max(...items.map(x => x.r.min || 0)), n: items.reduce((a, x) => a + (x.r.min || 0), 0)}) : t('{n}分', {n: items[0].r.min || 0}))}<br>${esc([eat ? t('{time}に食べるなら', {time: clockText(eat)}) : '', p2mBurnerLabel(kc)].filter(Boolean).join(LANG === 'ja' ? '・' : ' · '))}</span></div>
         ${cookWarnHtml()}
+        ${outAlgNoteHtml(items.map(x => x.r))}
         ${S.cook.d === TODAY && isNative() && S.settings.remind == null && !S.remindAsked ? `<div class="note"><span>${esc(t('明日から、献立を決める時間にお知らせしましょうか？'))}</span><span class="row">${[16, 17, 18, 19].map(h => `<button class="btn sm" data-act="remind" data-v="${h}">${esc(hourLabel(h))}</button>`).join('')}<button class="btn sm ghost" data-act="remind-no">${esc(t('いいえ'))}</button></span></div>` : ''}
         ${S.cook.d !== TODAY ? `<div class="note"><span>${esc(t('今日の献立はまだ決まっていません'))}</span><button class="btn sm" data-act="stage" data-k="decide">${esc(tc('stage', '決める へ'))}</button></div>` : ''}
         ${shopNote}
@@ -10810,6 +10843,7 @@ function p2mStepHtml(plan, i){
         const md = meanwhile && its[meanwhile.d];
         body = `<article class="card cook-now${S.settings.bigCook ? ' big' : ''}" data-k="${cur.k}" data-d="${cur.d}" aria-current="step">
             <p class="p2m-no"><b>${esc(p2mNo(cur.k + 1))}</b><span>${esc(ds.r.name)}${GAP()}${esc(t('手順 {n}/{m}', {n: cur.k + 1, m: n}))}</span></p>
+            ${(h => h ? `<p class="small">${h}</p>` : '')(outAlgTagHtml(ds.r))}
             ${runE && runE.during ? `<p class="p2m-during">${esc(t('{name}を待っているあいだに', {name: its[runE.during.d].r.name}))}</p>` : ''}
             <p class="st-txt">${timerStepHtml(s.text, ds.r.name, ds.r.id, cur.k, s.lang)}</p>
             ${s.alt ? `<p class="p2m-alt">${esc(t('グリルがないので、代わりの手順にしています'))}</p>` : s.noAlt ? `<p class="p2m-alt">${esc(t('この手順はグリルを使います。代わりの手順は、まだ入っていません'))}</p>` : ''}
