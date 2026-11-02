@@ -317,6 +317,7 @@ GOHAN_PACK({
       local: 'ไข่ตุ๋น',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜
       protein: 'egg',
       min: 25,
       ings: [
@@ -1748,6 +1749,7 @@ GOHAN_PACK({
       local: 'หมูหวาน',
       type: 'side',
       method: 'simmer',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（辛くない・30分）
       protein: 'pork',
       min: 30,
       ings: [

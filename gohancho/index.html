@@ -3745,11 +3745,33 @@ function okayuAvail(){ return poolForMood('主菜', 'okayu').some(r => r.main &&
 function okayuMoodOn(){ return MOODS.some(x => x.k === 'okayu') && okayuAvail(); }
 // 主食が「おかゆ」の日: 主菜は、おかゆを主食にして食べるおかず（ご飯もの・麺の一品料理にすると、選んだおかゆが出なくなる・主食が2つになる）
 function stapleOkayu(){ const o = typeof currentStapleOpt === 'function' ? currentStapleOpt() : null; return !!o && o.k === 'okayu' && !!stapleSpot(); }
-function okayuSoftOk(r){
-    if (!r || r.min > 20 || spiceLevel(r) > 0 || ['揚', '焼', '炒'].includes(r.method) || easyHeavy(r) || sweetSoup(r)) return false;
-    if (!r.pack) return OKAYU_SOFT.has(r.id);
-    return !RAW_SIDE_RE.test([r.name, ...(r.alt || [])].join(' '));
+// おかゆの日の副菜・汁ものに出さない料理（やわらかい候補が尽きても、これで埋めない。第9回 S23: タイで生えびの唐辛子和え・ส้มตำ・米のスープが出ていた）
+//  ・生の魚介（生えび・刺身・セビーチェ・ゴイ・フェ）。パックの作り方 raw（和え）や名前の言葉と、材料の魚・えび・貝で見る
+//  ・辛い料理（中辛以上）
+//  ・米のスープ・粥のなかま（ข้าวต้ม・cháo・雑炊など。主菜のおかゆと米の料理が2つになる）
+const OKAYU_RAW_RE = /\braw\b|刺身|お造り|たたき|ceviche|tartare|crudo|carpaccio|tataki|แช่น้ำปลา|ดิบ|\bgỏi\b|\btái\b|(?<![가-힣])회(?![가-힣])|膾|kinilaw|\bpoke\b|\bsashimi\b|\bsushi\b|寿司|刺し身/i;
+const OKAYU_RICE_SOUP_RE = /ข้าวต้ม|khao ?tom|rice soup|congee|porridge|粥|(?<![가-힣])죽(?![가-힣])|cháo|bubur|lugaw|arroz caldo|雑炊|おかゆ|お粥|おじや|リゾット|risotto/i;
+function okayuSea(r){ return (r.items || []).some(i => !i.opt && (inFam('fish', i) || inFam('shellfish', i))); }
+// 名前が生のサラダ・漬物・和え物（ナムルのようにゆでて和える料理は、名前では生に見えないので、やわらかい料理に残る）
+function okayuRawish(r){ const nm = [r.name, r.nameEn || '', ...(r.alt || [])].join(' '); return OKAYU_RAW_RE.test(nm) || RAW_SIDE_RE.test(nm); }
+function okayuNever(r){
+    if (!r) return true;
+    if (spiceLevel(r) >= 2) return true;
+    if (OKAYU_RICE_SOUP_RE.test([r.name, r.nameEn || '', ...(r.alt || [])].join(' '))) return true;
+    return (okayuRawish(r) || (!!r.pack && r.method === '和え')) && okayuSea(r);   // 魚介を火を通さずに和える料理（パックの作り方 raw）も生の魚介とみなす
 }
+// やわらかい・あっさりした料理（おかゆの日の副菜・汁もの）。パックの料理は、データの印 soft（柊）があればそれを先に見る（ไข่ตุ๋น のように25分でもやわらかい料理）
+function okayuSoftOk(r){
+    if (!r || okayuNever(r) || spiceLevel(r) > 0 || sweetSoup(r)) return false;
+    if (r.pack && r.soft) return r.min <= 30;
+    if (r.min > 20 || ['揚', '焼', '炒'].includes(r.method) || easyHeavy(r)) return false;
+    if (!r.pack) return OKAYU_SOFT.has(r.id);
+    return !okayuRawish(r);
+}
+// やわらかい候補がその国にないときの、ゆるめた条件: 辛くない・生ではない・揚げ焼き炒めではない・30分以内（これもなければ、枠は空のまま）
+function okayuMildOk(r){ return !!r && !okayuNever(r) && spiceLevel(r) === 0 && !okayuRawish(r) && !['揚', '焼', '炒'].includes(r.method) && !easyHeavy(r) && !sweetSoup(r) && r.min <= 30; }
+// おかゆの日の副菜・汁ものの候補: やわらかい料理だけ。なければゆるめた条件の料理だけ（炒め物・辛い料理・生の魚介で埋めない。空でもよい）
+function okayuSidePool(ps){ const soft = ps.filter(okayuSoftOk); return soft.length ? soft : ps.filter(okayuMildOk); }
 /* ---- 国の食べ方に合う組み合わせ（第3回モニター R4）----
    ・お漬物（香の物）は、和・中・韓のご飯ものの主菜で2品以上の日だけ（1品の日・麺・パスタの日は付けない）
    ・パスタ（洋の麺）の日は、副菜・汁ものを洋のものにする（味噌汁・和の副菜を付けない）
@@ -3822,7 +3844,7 @@ function fitMain(ps, slot, main){
     if (slot === '汁物') ps = ps.filter(r => !sweetSoup(r));   // 甘い羹は晩ごはんの汁ものにしない（替わりがなくても出さない）
     if (main && isPasta(main) && !main.pack) keep(r => r.genre === '洋');
     if (slot !== '汁物' && (stapleIsRice() || (main && main.type === 'ごはん'))) keep(r => !riceSide(r));
-    if (session.mood === 'okayu' && (slot === '副菜' || slot === '汁物')) keep(okayuSoftOk);
+    if (session.mood === 'okayu' && (slot === '副菜' || slot === '汁物')) ps = okayuSidePool(ps);   // 合う料理がなくても、ほかで埋めない（S23）
     return ps;
 }
 // 気分の時間の条件（20分以内・ラクの日）を、副菜・汁もの・2品目の主菜にも効かせる（合う料理がその枠にないときだけ外す）
@@ -6625,7 +6647,7 @@ function countReason(n0){
 // 1つの献立の中で「ほぼ同じ料理」が重ならないように（Adobong pusit と Adobong kangkong、かに玉とニラ玉。第2回モニター g10・g19）
 // 料理の型の言葉（英語の名前の最後の語・その国の名前の最初の語。「soup」「salad」などのよくある語は除く）が同じか、どちらも卵が主役の料理なら「似ている」
 const DISH_GENERIC = new Set(['soup','salad','stew','rice','noodles','noodle','sauce','side','greens','vegetables','vegetable','fry','stir-fry','dish','style','with','and','sopa','salade','ensalada','insalata','suppe','salat','zuppa','canh','sayur','sup','sabaw','çorbası','çorba','zupa','sałatka','soupe','pork','chicken','beef','fish','shrimp','prawns','tofu','lamb','mutton','squid','mince','sausage','tomato','tomatoes','potato','potatoes','cabbage','spinach','beans','garlic','onion','onions','pepper','peppers','sweet','spicy','fried','grilled','steamed','braised']);   // 肉・魚・野菜・調理法の語は「同じ料理」の手がかりにしない（同じ肉魚の重なりは点数で別に避けている）
-const EGG_NAME = /卵|玉子|たまご|玉$|オムレツ|オムライス|eggs?|omelet|omelette|frittata|tortilla de patatas|tortang|trứng|telur|계란|달걀|鸡蛋|雞蛋|蛋$|ไข่|yumurta|jajk|huevos?|œufs?|uov[ao]|ovos?|eier|अंडा|अंडे|بيض|itlog/i;
+const EGG_NAME = /卵|玉子|たまご|玉$|オムレツ|オムライス|eggs?|omelet|omelette|frittata|tortilla de patatas|tortang|trứng|telur|계란|달걀|鸡蛋|雞蛋|蛋$|ไข่|yumurta|jajk|huevos?|(?<![a-zà-ɏ])œufs?|uov[ao]|ovos?|eier|अंडा|अंडे|بيض|itlog/i;
 function dishWords(r){
     const w = new Set(), en = String((r.alt && r.alt[0]) || '').toLowerCase().replace(/\([^)]*\)/g, '').trim(), loc = String((r.alt && r.alt[1]) || '').toLowerCase().trim();
     const last = en.split(/\s+/).pop(), first = loc.split(/\s+/)[0];
@@ -6876,6 +6898,7 @@ function stepKept(all, off, len){
     return 0;
 }
 // 英語の卵の個数（2 eggs・1 egg yolk）。数え方が変わるので卵だけ（ほかの国の言葉は個数のまま）
+const STEP_EGG_KV = /(달걀|계란)\s*(\d+)\s*개(?![가-힣]*(?:씩|당))|(?<![\d./,-])(\d+)\s+(quả trứng)(?!\s+(?:mỗi|từng))/g;   // 「2개씩」「mỗi」（ひとつ分）は変えない
 const STEP_EGG = /(?<![\d./,-])(\d+)(?:(\s*[-–]\s*)(\d+))?(\s+(?:(?:large|medium|small|beaten|whole|hard-boiled|boiled|raw|cold)\s+)*)(eggs?)(?:(\s+)(yolks?|whites?))?\b/gi;
 // {s: 直した文, n: 直した数, k: 1人分・ひとつ分の量なのでそのままにした数}
 function scaleSteps(text, factor, names){
@@ -6928,9 +6951,16 @@ function scaleSteps(text, factor, names){
         const w = part ? (top === 1 ? part.replace(/s$/i, '') : /s$/i.test(part) ? part : part + 's') : '', e = part ? egg.replace(/s$/i, '') : (top === 1 ? egg.replace(/s$/i, '') : /s$/i.test(egg) ? egg : egg + 's');
         return na + (b ? dash + nb : '') + mid + e + (part ? sp + w : '');
     });
+    // 韓国語・ベトナム語の卵の個数（달걀 2개・계란 2개 / Đập vào 3 quả trứng）も、英語の卵と同じに人数に合わせる（切り上げ。第2回 B8: 韓・越で作り方の分量が人数に合わない）
+    const s2b = !names.some(nm => nm && /달걀|계란|trứng/i.test(nm)) ? s2 : s2.replace(STEP_EGG_KV, (m, kn, ka, va, vn, off, all) => {
+        const g = stepKept(all, off, m.length);
+        if (g){ if (g === 1) k++; return m; }
+        const a = Number(kn ? ka : va), v = Math.max(1, Math.ceil(a * factor - 0.001)); if (v === a) return m;
+        n++; return kn ? kn + ' ' + v + '개' : v + ' ' + vn;
+    });
     // 日本語の「2等分して小判形に」「練り、6等分する」「6等分（1個あたり約75g）」: 人数ぶんに分ける数も人数に合わせる（4人分なら4等分。佐々木 3-6）。
     // 切る（「豆腐は4等分に切る」）は大きさの話なので変えない。1つにしかならないときは元の文のまま
-    const s3 = !ja ? s2.replace(STEP_PORTION_X, (m, ...g) => {   // 韓国語・ベトナム語・英語の「N개로 빚어」「chia thành N phần rồi nặn」「knead and divide into N」も、日本語の「N等分して小判形に」と同じに
+    const s3 = !ja ? s2b.replace(STEP_PORTION_X, (m, ...g) => {   // 韓国語・ベトナム語・英語の「N개로 빚어」「chia thành N phần rồi nặn」「knead and divide into N」も、日本語の「N等分して小判形に」と同じに
         const d = g.slice(0, 5).find(x => x != null), k0 = Number(d), v = Math.round(k0 * factor);
         if (!d || v < 2 || v === k0) return m;
         n++; return m.replace(d, String(v));
@@ -7013,7 +7043,7 @@ const ALG_DEF = {
     wheat:{fam:'wheat', via:/おいすたーそーす|\boyster sauce\b|こちゅじゃん|\bgochujang\b|甜麺醤|てんめんじゃん|甜面酱|\btianmianjiang\b|\bsweet bean sauce\b/, may:/うすたー|中濃|ちゅうのう|とんかつそーす|おこのみ(?:焼き)?そーす|お好み(?:焼き)?そーす|ういんなー|そーせーじ|\bsausages?\b|\bwieners?\b|\bfrankfurters?\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bsurimi\b|어묵|\bworcestershire\b|\bbrown sauce\b|こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\bconsomm[eé]\b|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー|だしの素|だしのもと|ほんだし|顆粒だし|豆板醤|とうばんじゃん|\bdoubanjiang\b|豆瓣酱/, re:/小麦|こむぎ|\bwheat\b|薄力粉|強力粉|中力粉|はくりきこ|きょうりきこ|ぱんこ|食ぱん|うどん|そうめん|ひやむぎ|すぱげってぃ|まかろに|ぱすた|らーめん|中華めん|ちゅうかめん|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|ほっとけーき|やきそば|焼きそば|\bseitan\b|\b(?:bread|noodles?|pasta|flour|couscous|semolina|bulgur|freekeh|farro)\b/, no:/\b(?:rice|corn|cassava|gram|chickpea|potato|tapioca|coconut|almond|buckwheat|glass|mung bean|sweet potato|besan)\s+(?:flour|noodles?)\b|\brice noodles?\b|\bglass noodles?\b|\bcornbread\b|\bgluten.?free\b/,
         ferm:/納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|塩昆布|しおこんぶ|\bshio ?kombu\b|焼肉のたれ|やきにくのたれ|\byakiniku sauce\b|しょうゆ|醤油|soy sauce|shoyu|めんつゆ|ぽんず|ぽん酢|てりやき|teriyaki|酱油|간장|ganjang|kecap|hoisin/},
     buckwheat:{re:/そば粉|そばこ|蕎麦|荞麦|\bsoba\b|\bbuckwheat\b|sarrasin|buchweizen|grano saraceno|trigo.?sarraceno|trigo mouro|메밀|karabuğday|\bgryka\b|कुट्टू|bakwit|บัควีท|ざるそば|かけそば|ざるそば|そばの実|そばがき|そば茶/, eq:['そば','おそば','とうじそば','にしんそば','とろろそば'], no:/やきそば|焼きそば|焼そば|中華そば|ちゅうかそば|沖縄そば|そばめし|yakisoba|chow ?mein/},
-    egg:{fam:'egg', re:/卵|たまご|玉子|\beggs?\b|\byolks?\b|albumen|\bhuevos?\b|œufs?|\boeufs?\b|\beier\b|\buova?\b|\bovos?\b|\bjajk?a?\b|\bjajo\b|계란|달걀|鸡蛋|鸭蛋|ไข่|trứng|\btelur\b|yumurta|بيض|अंडा|itlog/, no:/eggplant|egg ?plant|卵巣|卵黄なし|eggless|egg.?free/,
+    egg:{fam:'egg', re:/卵|たまご|玉子|\beggs?\b|\byolks?\b|albumen|\bhuevos?\b|(?<![a-zà-ɏ])œufs?|\boeufs?\b|\beier\b|\buova?\b|\bovos?\b|\bjajk?a?\b|\bjajo\b|계란|달걀|鸡蛋|鸭蛋|ไข่|trứng|\btelur\b|yumurta|بيض|अंडा|itlog/, no:/eggplant|egg ?plant|卵巣|卵黄なし|eggless|egg.?free/,
         via:/まよ|たるたる|\bmayo(?:nnaise)?\b|aioli|allioli|alioli|hollandaise|meringue|brioche|castella|かすてら|wonton wrapper|tagliatelle|tortellini|fresh pasta|ravioli|\beggnog\b/,
         // 入っていることがある加工品（ちくわ・かまぼこの卵白、皮・衣・ハムなど。商品によるので、料理は外さず「袋の表示を確かめて」と出す）
         may:/天かす|てんかす|揚げ玉|あげだま|\btenkasu\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|パン粉|ぱんこ|中華めん|中華麺|ちゅうかめん|ラーメン|(?<![ぁ-ん])ハム(?![ぁ-ん])|ベーコン|ウインナー|ソーセージ|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bhanpen\b|\bsurimi\b|\b(?:dumpling|gyoza|potsticker|spring roll|shumai|siu mai) (?:wrappers?|skins?)\b|\bpanko\b|\bbread ?crumbs\b|\btempura (?:flour|batter)\b|\bramen noodles?\b|\bchinese (?:egg )?noodles?\b|어묵|오뎅|만두피/},
@@ -9763,7 +9793,7 @@ function oneSuggest(main, seen){
             if (inMenu.has(c.id) || (fam && c.family === fam)) tried.push(c); else r = c;
         }
         if (!r) r = tried.find(x => !inMenu.has(x.id)) || null;
-        if (r && session.mood === 'okayu' && !okayuSoftOk(r) && poolFor(slot).some(x => slotOf(x) === slot && okayuSoftOk(x))) r = null;   // おかゆの日のあと1品は、やわらかい・あっさりした料理だけ（尽きたら出さない。炒め物などで埋めない）
+        if (r && session.mood === 'okayu' && !okayuSoftOk(r) && (!okayuMildOk(r) || poolFor(slot).some(x => slotOf(x) === slot && okayuSoftOk(x)))) r = null;   // おかゆの日のあと1品は、やわらかい・あっさりした料理だけ（尽きたら出さない。炒め物などで埋めない）
         if (r) out.push(r);
     }
     return out;
@@ -13718,7 +13748,7 @@ function packRecipe(pk, x, tr){
         min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', stepsBase: x.steps || [], seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(), slang: rt && rt.steps ? tr.tlang : 'en',
         tip: (rt && rt.tip) || x.tip || null, pack: pk.country, alt: [x.name, x.local].filter(Boolean),
         protein: p ? p.key : null, family, main: ['main', 'rice', 'noodle'].includes(x.type),
-        meal: x.meal === 'breakfast' ? 'breakfast' : null, starch: x.starch === true || ['rice', 'noodle'].includes(x.type)};   // 朝食の料理・主食になる物が入っている料理（パックの印。R4）
+        meal: x.meal === 'breakfast' ? 'breakfast' : null, starch: x.starch === true || ['rice', 'noodle'].includes(x.type), soft: x.soft === true};   // soft: おかゆの日に出せる、やわらかい・あっさりした副菜・汁もの（パックの印。S23）   // 朝食の料理・主食になる物が入っている料理（パックの印。R4）
 }
 // 日本語の画面でほかの国を使うとき、日本の言い方（とりにく・たまねぎ・たまご・チキン・ビーフなど）でもその国の食材に入れられるようにする。
 // その国の食材の日本語名から日本の代表名を求め、代表名ごとにいちばん近い食材（名前がそのものか、いちばん短いもの）に日本の言い方をまとめて足す
