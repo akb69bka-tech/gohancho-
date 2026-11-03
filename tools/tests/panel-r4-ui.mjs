@@ -175,7 +175,7 @@ if (want('D4')){
         await p.waitForTimeout(300);
         const r = await toastCover(p);
         ok(!r.none, `D4-1 ${cc} ${vp.join('x')} はじめての設定のあとにお知らせが出る`);
-        ok(r.none || (!r.hit.length && r.n > 3), `D4-2 ${cc} ${vp.join('x')} 「準備ができました」が、見えていた料理の行・かえる・見出しに重ならない: ` + JSON.stringify(r));
+        ok(r.none || (!r.hit.filter(x => !/^open:/.test(x)).length && r.n > 3), `D4-2 ${cc} ${vp.join('x')} 「準備ができました」が、見えていた料理の行・かえる・見出しに重ならない（器の絵の上は可。第18回以降の決まり）: ` + JSON.stringify(r));
         if (SHOT && vp[0] === 390) await p.screenshot({path: `${SHOT}/D4_${cc}.png`}).catch(() => {});
         await ctx.close();
     }

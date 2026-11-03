@@ -554,6 +554,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .toast.placing{opacity:0}.toast{pointer-events:none}.toast [data-act="toast-undo"]{pointer-events:auto}   /* お知らせの文の上を押しても下に届く。「元に戻す」だけ押せる（第3回b N4） */
 .toast.at-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto !important;inset-inline-end:auto;margin-inline:0}   /* 同じ画面のまま出すお知らせで、下の場所に押す場所が見えているとき（toastPlace） */
 #toast-root:has(.toast.docked)::before{content:'';position:fixed;inset-inline:0;top:var(--toast-shelf-top);height:var(--toast-shelf-h);z-index:59;pointer-events:none;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}   /* お知らせの棚（toastPlace）。主ボタンと同じすりガラス */
+html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: 留めたお知らせが出ているあいだは、ブラウザのスクロールの合わせ直し（scroll anchoring）を止める（字の読みこみ後の測り直しなどで画面だけが 50px ほど上へ動き、お知らせが帯の裏に入っていた） */
 .toast.anchored{position:absolute;bottom:auto !important;z-index:19}#toast-root:has(.toast.anchored)::before{position:absolute;z-index:18}.toast.anchored.off,#toast-root:has(.toast.anchored.off)::before{visibility:hidden}   /* 第19回 R59・R60: 押して画面が切りかわった直後のお知らせは、置いたあとページに留める（中身と一緒にスクロール。toastPlace の anchor）。下のタブ・帯より下、上の端より上に出ているあいだは隠す（toastScroll）。z は下のタブ（20）より下 */
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
@@ -3115,7 +3116,7 @@ function toast(msg, praise=false, undo=null, short=''){
     // 置き場所が決まるまでは透明にしておく（下の場所で一度描いてから上へ動かすと、画面のずれ（layout shift）として数えられる）。読み上げは透明でも届く
     const box = root.firstElementChild, show = () => box.classList.remove('placing');
     cancelAnimationFrame(toast.raf); clearTimeout(toast.rt);
-    toast.raf = requestAnimationFrame(() => { try{ toastPlace(box, prev); }catch(e){} show(); }); toast.rt = setTimeout(show, 200);
+    toast.raf = requestAnimationFrame(() => { try{ toastPlace(box, prev); }catch(e){} show(); box.dataset.placed = '1'; }); toast.rt = setTimeout(show, 200);   // data-placed: 置き場所が決まった印（テストはこれを待って測る）
 }
 // 献立の料理を戻す「元に戻す」（まるごと入れ替え・1品かえる など。S25）。fn: 戻す処理、dishes: 戻すと出る料理を返す関数
 // 出したあとに、料理を出す・出さないの判定に効く設定（本人のアレルゲン・家族のアレルギー・苦手・今日食べる人・辛さなど。judgeSig の鍵）が変わったら、戻さない（お知らせも消す。render で見る）。
@@ -3147,22 +3148,34 @@ function weekUndo(prev, fn){
    ・同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift と S7 の約束）。いつもの場所に見えている押す場所・文があれば、
      画面のいちばん上（左寄せ）とくらべて、押した指のまわりにかからず、隠す押す場所・文の少ないほうに出す。
    シート・料理の詳しい画面・キーボード表示中は CSS の場所のまま（画面ではなくシートが動くため） */
-const TOAST_SEE = 'button, a[href], input, select, textarea, summary, label, [data-act], [role=button], h1, h2, h3, h4, p, li, dt, dd, .eyebrow, .chip, .p2m-first, .spot .nm, .spot .alg-tag';   // お膳の料理名・⚠ の札も（第8回 D4: 下の段の料理名に重なった）
+const TOAST_SEE = 'button, a[href], input, select, textarea, summary, label, [data-act], [role=button], h1, h2, h3, h4, p, li, dt, dd, .eyebrow, .chip, .p2m-first, .spot .nm, .spot .alg-tag, .spot .swap-line';   // 第20回 R66: 🔍 の札の2行目「🔁 昆布だしで作る」（swap-line）も   // お膳の料理名・⚠ の札も（第8回 D4: 下の段の料理名に重なった）
 const TOAST_TAP = {y: -1, at: -1e9, view: '', tapView: '', layer: false, box: null, act: ''};   // 最後に押した指の高さ・時刻と、そのとき出ていた画面（タブと段。render が view に書く）。layer: シート・料理の詳しい画面の中で押した
 ['pointerdown', 'touchstart'].forEach(k => document.addEventListener(k, e => { const p = e.touches ? e.touches[0] : e; if (p){ TOAST_TAP.y = p.clientY; TOAST_TAP.at = performance.now(); const tb = e.target && e.target.closest && e.target.closest('button, [data-act]'); TOAST_TAP.box = tb ? tb.getBoundingClientRect() : null; TOAST_TAP.act = tb && tb.dataset.act && !tb.dataset.id ? tb.dataset.act : ''; TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = !!(e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')); } }, {capture: true, passive: true}));
 document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.closest && e.target.closest('#sheet-root, #modal-root')){ TOAST_TAP.y = -1; TOAST_TAP.box = null; TOAST_TAP.act = ''; TOAST_TAP.at = performance.now(); TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = true; } }, true);   // キーボードでシートのボタンを押したときも同じ
 function toastViewMark(){ TOAST_TAP.view = tab + '|' + (session.stage || ''); }
 // ページに留めたお知らせ（toastPlace の anchor）: スクロールで下のタブ・帯の裏や上の端の外へ出たあいだは隠す（1フレームに1回。出るときの動き（rise）の分を含めないよう、置いた高さから数える）
-function toastScroll(){
-    if (toast.sraf) return;
-    toast.sraf = requestAnimationFrame(() => { toast.sraf = 0; const box = $('#toast-root .toast.anchored'); if (!box) return;
+// 同期で合わせる（お膳を詰める処理 fitTray の直後にも呼ぶ。字の読みこみ後に詰め直されて中身が縮んでも、同じ処理の中でお知らせが付いてくる。rAF 待ちにしない）
+function toastAlign(){
+    const box = $('#toast-root .toast.anchored'); if (!box) return;
         // 留めた相手（お膳）からの距離を保つ（上の中身の高さが変わったとき）。相手が描き直されていたら、いまのお膳に
         let A = toast.anchorEl; if (A && !A.isConnected){ A = toast.anchorEl = document.querySelector('#view .tray') || $('#view'); }
-        if (A && toast.anchorOff != null){ const t = Math.round(A.getBoundingClientRect().top + scrollY + toast.anchorOff); if (Math.abs(t - (parseFloat(box.style.top) || 0)) > .5){ box.style.top = t + 'px'; if (box.classList.contains('docked')) $('#toast-root').style.setProperty('--toast-shelf-top', (t - 8) + 'px'); } }
+        if (A && toast.anchorOff != null){ const ar = A.getBoundingClientRect(), t = Math.round((toast.anchorEdge === 'bottom' ? ar.bottom : ar.top) + scrollY + toast.anchorOff); if (Math.abs(t - (parseFloat(box.style.top) || 0)) > .5){ box.style.top = t + 'px'; if (box.classList.contains('docked')) $('#toast-root').style.setProperty('--toast-shelf-top', (t - 8) + 'px'); } }
         let floor = innerHeight; document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor && (e.matches('nav.tabs') || /fixed|sticky/.test(getComputedStyle(e).position))) floor = r.top; });   // 画面に貼りついた帯だけ（お膳の下に置いた static の帯は中身と一緒に動くので、裏に入らない）
-        const top = (parseFloat(box.style.top) || 0) - scrollY, bottom = top + box.offsetHeight; box.classList.toggle('off', bottom > floor - 2 || top < 2); });
+        let top = (parseFloat(box.style.top) || 0) - scrollY, bottom = top + box.offsetHeight;
+        // 置いたあとに中身が縮んでページがいちばん下まで来てしまい（スクロールが足りず）、お知らせが下の帯の裏に下りたとき（第20回 R66: 375px・家族の魚⚠）: 下に余白（--toast-room）を足して、置いたときの高さまで送る。人が上へ戻したとき（いちばん下でない）は触らない
+        // 置いてから 2.5 秒のあいだ、本人が触っていない（指・ホイール・キーなし）のに画面だけが動いて（字の読みこみ後の測り直し・ページが縮んだときのスクロールの詰めなど）お知らせが下の帯の裏に下りたときは、置いたときの高さまで送り返す（ページが足りなければ下に余白 --toast-room を足す）
+        if (bottom > floor - 2 && top > 2 && box.classList.contains('docked') && toast.anchorVY != null && performance.now() - (toast.anchorAt || 0) < 2500 && !(TOAST_TAP.at > toast.anchorAt || (toast.wheelAt || 0) > toast.anchorAt)){
+            const d = Math.round(top - toast.anchorVY), v = $('#view'); if (d > 0 && v){ const maxY = document.documentElement.scrollHeight - innerHeight; if (scrollY + d > maxY){ const cur = parseFloat(v.style.getPropertyValue('--toast-room')) || 0; v.style.setProperty('--toast-room', Math.ceil(cur + scrollY + d - maxY) + 'px'); } window.scrollBy({top: d, behavior: 'instant'}); top -= d; bottom -= d; } }
+        box.classList.toggle('off', bottom > floor - 2 || top < 2);
 }
+function toastScroll(){
+    if (toast.sraf) return;
+    toast.sraf = requestAnimationFrame(() => { toast.sraf = 0; toastAlign(); });
+}
+// 留めたお知らせが出ているあいだは毎フレーム合わせる（getBoundingClientRect 数回。お膳を詰めたあとのブラウザのスクロールの合わせ直しなど、イベントの来ない動きにも付いてくる。お知らせが消えたら止まる）
+function toastLoop(){ if (!$('#toast-root .toast.anchored')){ toast.loop = 0; return; } toastAlign(); toast.loop = requestAnimationFrame(toastLoop); }
 addEventListener('scroll', toastScroll, {passive: true}); addEventListener('resize', toastScroll, {passive: true});
+['wheel', 'keydown'].forEach(k => addEventListener(k, () => { toast.wheelAt = performance.now(); }, {passive: true}));   // 本人がスクロールした印（指は TOAST_TAP.at）
 try{ const ve = document.getElementById('view'); if (ve && window.ResizeObserver) new ResizeObserver(() => toastScroll()).observe(ve); }catch(e){}   // 中身の高さが変わったときも合わせ直す
 function toastPlace(box, prev){
     const root = $('#toast-root'), v = $('#view');
@@ -3231,7 +3244,7 @@ function toastPlace(box, prev){
             const x = (Math.max(r.left, R.left) + Math.min(r.right, R.right)) / 2, y = (Math.max(r.top, R.top) + Math.min(r.bottom, b, floor)) / 2;
             const top = document.elementsFromPoint(x, y).find(z => !root.contains(z));
             if (!top || !(top === e || e.contains(top) || top.contains(e))) continue;   // 下の固定の帯・上の端の裏に隠れているもの（見えていない）は数えない
-            c[2]++; if (e.matches('button, a[href], input, select, textarea, summary, [data-act], [role=button], .chip')) c[0]++; if (e.matches('.spot .nm, .spot .alg-tag, .p2-link')) c[1]++; if (e.matches('.spot .vessel')) c[3]++; if (e.matches('.spot .swap, .tg-mid .shuffle, .actionbar button')) c[4]++; if (e.matches('.p2-ok')) c[5]++; if (e.matches('header.top h1')) c[6]++;
+            c[2]++; if (e.matches('button, a[href], input, select, textarea, summary, [data-act], [role=button], .chip')) c[0]++; if (e.matches('.spot .nm, .spot .alg-tag, .spot .swap-line, .p2-link')) c[1]++; if (e.matches('.spot .vessel')) c[3]++; if (e.matches('.spot .swap, .tg-mid .shuffle, .actionbar button')) c[4]++; if (e.matches('.p2-ok')) c[5]++; if (e.matches('header.top h1')) c[6]++;
         }
         return c; };   // c[3]: そのうち、お膳の器（絵。押すと作り方）の数、c[4]: かえる・まるごと入れ替え・決定の数（どちらも c[0] にも入っている）、c[5]: 「✓ 決めた」の印（第18回 R41）、c[6]: アプリの名前（第18回 R39）
     const worse = (x, y) => x[0] !== y[0] ? x[0] > y[0] : x[1] !== y[1] ? x[1] > y[1] : x[2] > y[2];
@@ -3240,12 +3253,12 @@ function toastPlace(box, prev){
     // ページに留めれば、置いたときにかからなかったものには、どこへスクロールしてもかからない。下のタブ・帯より下、上の端より上へ出たあいだは隠す（toastScroll）。画面を切りかえたら消す（setTab）
     // 留める相手はお膳（なければ画面の中身）: 置いたあとにお膳を詰める処理などで上の中身の高さが変わっても、お膳からの距離を保つ（toastScroll で合わせ直す）
     const anchor = () => { if (!box.offsetHeight || box.classList.contains('anchored')) return; const R = rectOf(), sy = scrollY, A = document.querySelector('#view .tray') || v; box.classList.add('anchored'); box.style.bottom = ''; box.style.top = Math.round(R.top + sy) + 'px';
-        toast.anchorEl = A; toast.anchorOff = R.top - A.getBoundingClientRect().top;
-        if (box.classList.contains('docked')) root.style.setProperty('--toast-shelf-top', Math.round(R.top - 8 + sy) + 'px'); toastScroll(); };
+        const ar = A.getBoundingClientRect(); toast.anchorEdge = R.top >= ar.bottom - 1 ? 'bottom' : 'top'; toast.anchorEl = A; toast.anchorOff = R.top - (toast.anchorEdge === 'bottom' ? ar.bottom : ar.top); toast.anchorAt = performance.now(); toast.anchorVY = R.top;   // お膳より下に置いたときは、お膳の下端からの距離（お膳を詰めて縮んでも、その下の中身と一緒に動く）。お膳の中（195px の器の帯）なら上端から
+        if (box.classList.contains('docked')) root.style.setProperty('--toast-shelf-top', Math.round(R.top - 8 + sy) + 'px'); toastAlign(); if (!toast.loop) toast.loop = requestAnimationFrame(toastLoop); };
     const freshPlace = () => {   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
         const y0 = scrollY; lift();
         // とても狭い画面で、送っても、お知らせの裏に押す場所・料理名が残るとき（幅195px など、お膳が画面より高い）: 送らずに、画面の上から下まで、押す場所・料理名にかからない高さを探す
-        if (innerWidth >= 300) return;   // とても狭い画面（お知らせを低くする幅。CSS の max-width:299px）だけ
+        // 第20回 R66: 300px 以上でも、送りきれずに料理名・↻・札が裏に残るとき（家族の魚⚠で帯に ⚠ の行が付き、帯が貼りついたまま送れる量が足りない 375px など）は同じに探す。空いた高さがなければ送った画面のまま
         const L = rectOf(), lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
         const y1 = scrollY; window.scrollTo({top: y0, behavior: 'instant'}); box.classList.remove('docked'); box.classList.add('at-top');
         // 点の順: 料理名・札・↻・まるごと入れ替え・決定 → ほかの押す場所（国・設定・家族リクエストなど。お知らせの文の上からでも押せる）→ 文。
@@ -3257,10 +3270,9 @@ function toastPlace(box, prev){
         const u = !!toast.undo, pt = c => [c[1] + c[4] + c[5], c[0] - c[3] - c[4], c[6], c[3], c[2]], worse2 = (x, y) => { const a = pt(x), b = pt(y); for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] > b[i]; return false; };
         const h = box.offsetHeight; let best = null;
         for (let y = 8; y + h <= floor - 8; y += 4){ box.style.top = y + 'px'; const R = rectOf(), c = u ? cover(R, R.bottom + 4) : cover({left: R.left, right: R.right, top: R.top - 4}, R.bottom + 8); if (!best || worse2(best.c, c)){ best = {y, c}; if (!c[0] && !c[1] && !c[2]) break; } }
-        if (best && !pt(best.c)[0] && !pt(best.c)[1]){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる器・文のいちばん少ない高さ）
+        if (best && !pt(best.c)[0] && !pt(best.c)[1] && (innerWidth < 300 || pt(lc)[0] > 0 || (!best.c[3] && !best.c[6]))){ box.style.top = best.y + 'px'; return; }   // かからない高さがあれば、そこに出す（その中で、かかる器・文のいちばん少ない高さ）。300px 以上で、送った先が料理名・↻・札・決定にかかっていないとき（ほかの押す場所だけ）は、器の絵・アプリの名前にもかからない高さだけ（なければ送った画面のまま。第20回 R66）
         box.style.removeProperty('top'); box.classList.remove('at-top'); box.classList.add('docked'); window.scrollTo({top: y1, behavior: 'instant'}); return;
     };
-    if (fresh){ freshPlace(); if (!toast.undo) anchor(); return; }   // 「元に戻す」のボタン付きは留めない（今までどおり画面に固定。隠れて押せなくならないように）
     // 同じ画面のまま（かえる・設定のチップなど）: 画面は動かさない（押したものの位置を変えない。layout-shift・S7 の約束）。いつもの場所と、画面の上の端（左寄せ）の2か所から、
     // ① 押した指のまわり（続けて押すところ）にかからない ② 隠す押す場所が少ない ③ 隠す文が少ない 順に選ぶ（同じならいつもの場所）。隠れた押す場所も、お知らせの文の上から押せる
     const judge = (R, b) => { const sc = scan({l: R.left, r: R.right, t: R.top, b}); return [tapped && TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < b + 40 ? 1 : 0, sc.taps, sc.n]; };
@@ -3268,7 +3280,8 @@ function toastPlace(box, prev){
     //  ・料理名・札・かえる・まるごと入れ替え・決定（core）は、器の絵の裏に一部が入っていても、形（料理名は字の形）が少しでもかかれば数える。下に貼りついた決定の帯は floor より下なので数えない
     //  ・器と名前は出るときに下から 8px 上がってくる（rise）ので、お知らせの下は 12px・上は 6px あけて数える
     //  ・押した指のまわりと、押したボタン全体（まるごと入れ替えの丸と字。お膳の高さが変わると描き直したあとに少し動くので、いまの場所も）にはかけない
-    const core = [...document.querySelectorAll('#view .spot .nm, #view .spot .alg-tag, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button')].filter(e => getComputedStyle(e).visibility !== 'hidden').map(e => { let r = e.getBoundingClientRect(); if (e.matches('.nm')){ const g = document.createRange(); g.selectNodeContents(e); r = g.getBoundingClientRect(); } return r; }).filter(r => r.width > 1 && r.height > 1 && r.top < floor - 1);
+    const coreRects = () => [...document.querySelectorAll('#view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button')].filter(e => getComputedStyle(e).visibility !== 'hidden').map(e => { let r = e.getBoundingClientRect(); if (e.matches('.nm')){ const g = document.createRange(); g.selectNodeContents(e); r = g.getBoundingClientRect(); } return r; }).filter(r => r.width > 1 && r.height > 1 && r.top < floor - 1);
+    let core = coreRects();
     const tapBoxes = [TOAST_TAP.box]; if (tapped && TOAST_TAP.act) document.querySelectorAll('#view [data-act="' + TOAST_TAP.act + '"]').forEach(e => tapBoxes.push(e.getBoundingClientRect()));
     const finger = R => tapped && ((TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < R.bottom + 40) || tapBoxes.some(q => q && q.height && q.bottom > R.top - 8 && q.top < R.bottom + 8 && q.right > R.left && q.left < R.right)) ? 1 : 0;
     // 点の順: 押した指のまわり → 料理名・札・かえる・まるごと入れ替え・決定 → ほかのボタン（国・設定など。お知らせの文の上からでも押せる）→ 器の絵（押すと作り方）→ 文
@@ -3278,6 +3291,9 @@ function toastPlace(box, prev){
     const score = R => { const b = R.bottom + mg[1], c = cover({left: R.left, right: R.right, top: R.top - mg[0]}, b); const s = [finger(R), core.filter(r => r.bottom > R.top - mg[0] && r.top < b && r.right > R.left + 1 && r.left < R.right - 1).length + c[5], c[0] - c[3] - c[4], c[6], c[3], c[2]]; return innerWidth < 300 ? [s[1], s[0], s[2], s[3], s[4], s[5]] : s; };
     // 第18回 R33（195px の残り）: 幅 300px 未満（低い形）では、料理名・札・↻・まるごと入れ替え・決定にかからないことを、押した指のまわりより先に見る。スクロールした位置で入れ替えると、指のまわり（まるごと入れ替えの丸の近く）しか空いた高さがなく、下の段の名前・↻に 1〜11px かかっていた。お知らせの文の上は押しても下に届く
     const less = (x, y) => { for (let i = 0; i < x.length; i++) if (x[i] !== y[i]) return x[i] < y[i]; return false; }, free = s => !s[0] && !s[1] && !s[2] && !s[3] && !s[4];
+    if (fresh){ freshPlace(); if (!toast.undo){ anchor(); return; }
+        // 「元に戻す」のボタン付きは留めない（今までどおり画面に固定。隠れて押せなくならないように）。第20回 R63: 送った先で料理名・↻・札・決定の帯にかかるとき（430px の「明日から」）は、同じ画面のままの探し方（下）で、かからない高さを探す
+        core = coreRects(); T = rectOf(); if (free(score(T))) return; }
     const lowJ = judge(T, Math.max(T.bottom, floor));
     if (!lowJ[0] && !lowJ[1] && free(score(T))) return;
     box.classList.add('at-top'); T = rectOf();
@@ -4057,6 +4073,7 @@ function menuIsDecided(){
     return !!(m && c && c.d === TODAY && Array.isArray(c.ids) && c.ids.length && c.ids.join() === menuIds().join());
 }
 function newMenu(){
+    if (toast.undo && toast.hide){ clearTimeout(toast.t); toast.hide(); }   // 第20回 R64: 献立を作り直す（気分・品数を変えたなど）と、前の「元に戻す」（まるごと入れ替えなど）は戻す先が変わるので消す。新しいお知らせはこのあとに出す
     const n = menuCount();
     let items = [], slots = composeOf(n).slots;
     // 家族から届いた「食べたい」は、まだ決めていない日の献立を新しく作るときだけ、1品まで候補に入れる（届いた瞬間には画面の案を変えない）
@@ -4591,7 +4608,7 @@ function setTab(tb){
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
     window.scrollTo(0, 0);   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）。(0, 0) で呼ぶと、古い画面のレイアウトを計算せずに戻せる（{top:0} だと横の位置を知るために計算が走る。横には動かない画面なので同じ）
     { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
-    if ($('#toast-root .toast.anchored') && toast.hide){ clearTimeout(toast.t); toast.hide(); }   // ページに留めたお知らせ（決めた直後・最初の「準備ができました…」）は、画面を切りかえたら消す（新しい画面の中身の上に残さない。第19回 R60）
+    { const tb = $('#toast-root .toast'); if (tb && toast.hide && (tb.classList.contains('anchored') || (toast.undo && tb.dataset.placed))){ clearTimeout(toast.t); toast.hide(); } }   // ページに留めたお知らせ（決めた直後・最初の「準備ができました…」）と、置いたあとの「元に戻す」付きのお知らせ（買い物そろいました など）は、画面を切りかえたら消す（新しい画面の中身の上に残さない。第19回 R60・第20回 R65）
     // 設定で出した「献立をかえました」のお知らせは、決める段にもどったら消す（段の上に同じ文が出るので。2回出さない・料理名に重ねない。モニター第3回c）
     if (toast.avoidMsg && session.avoidNote && tb === 'today' && viewingStage() === 'decide'){ clearTimeout(toast.t); const tr = $('#toast-root'); if (tr) tr.innerHTML = ''; toast.avoidMsg = false; toast.undo = null; }
     render();
@@ -4725,6 +4742,7 @@ function fitTray(){
     // 前は同じ画面の大きさ・同じ並びなら前の詰め方をそのまま使っていたため、一度入らない献立（帯をお膳の下に置く形）になると、入る献立に入れ替えても戻らなかった（再読み込みで戻る）。
     // 献立が変わったときは、再読み込みしたときと同じ形になる。同じ献立で1品かえただけのときだけ、前の形が入るならそれを使う（下の last）
     const viewEl = document.getElementById('view'), rowsEl = [...tr.querySelectorAll('.tg-row')];
+    const sy0 = scrollY, tt0 = tr.getBoundingClientRect().top + sy0;   // 第20回 R66: スクロールした位置で測り直すとき（字の読みこみ後など）、測るために形を外す・戻すあいだにブラウザのスクロールの合わせ直し（scroll anchoring）で画面だけが動くことがある。終わりに、お膳が画面の中で同じ高さになるよう戻す
     viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); reqUp(false);   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
     // 見出し「今日の献立」は1行に（言語で長さが違っても見出しの高さを同じにして、お膳の大きさが言語で変わらないように）。入らない言葉は 18px まで小さくする。それでも入らなければ2行
     { const h2 = document.querySelector('#view .today-head.p2-head h2'); if (h2){ h2.style.removeProperty('font-size'); let fs = parseFloat(getComputedStyle(h2).fontSize);
@@ -4841,6 +4859,8 @@ function fitTray(){
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
     fixSwapWord(tr);
+    if (sy0 > 0){ const want = Math.round(sy0 + (tr.getBoundingClientRect().top + scrollY - tt0)), maxY = document.documentElement.scrollHeight - innerHeight; if (Math.abs(scrollY - want) > .5 && want >= 0 && want <= maxY + .5) window.scrollTo(0, want); }   // お膳の画面の中の高さを、測る前と同じに（お膳より上の中身が縮んだ分は動かす）
+    toastAlign();   // ページに留めたお知らせ（第19回 R59）を、詰めたあとのお膳に合わせる（同期）
 }
 window.addEventListener('resize', () => { TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); });
 // 字（フォント）が読みこまれて名前・札の高さが変わったら、測り直す（読みこみ前の字の高さで決めたままにしない）
@@ -10599,7 +10619,7 @@ function laterIfDecided(what, keep, undo){
     keep();
     const r = dayRec(td); if (r && r.state === 'draft' && Array.isArray(r.items) && r.items.length) r.items = [];
     save(); render();
-    toast(tomorrowDecided() ? t('決めた献立はそのままです。明日の献立も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた献立はそのままです。{what}は明日の献立から変わります', {what}), false, menuUndo(() => day0 && day0.state === 'draft' && Array.isArray(day0.items) ? day0.items.map(x => x && x.id && x.id !== 'none' ? byId(x.id) : null) : [], () => {   // 明日の下書きの料理も戻すので、アレルギー・苦手を変えたあとは戻さない（S25・第13回）
+    toastShort(t('明日から'))(tomorrowDecided() ? t('決めた献立はそのままです。明日の献立も決めてあるので変わりません。{what}はそのあとの案から変わります', {what}) : t('決めた献立はそのままです。{what}は明日の献立から変わります', {what}), false, menuUndo(() => day0 && day0.state === 'draft' && Array.isArray(day0.items) ? day0.items.map(x => x && x.id && x.id !== 'none' ? byId(x.id) : null) : [], () => {   // 明日の下書きの料理も戻すので、アレルギー・苦手を変えたあとは戻さない（S25・第13回）
         if (day0){ dayObj(td); S.day[td] = day0; } else if (S.day) delete S.day[td];
         if (pd0) S.settings.pending = pd0; else delete S.settings.pending;
         if (undo) undo();

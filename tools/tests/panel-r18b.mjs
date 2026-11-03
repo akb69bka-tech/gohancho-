@@ -19,6 +19,11 @@
 //  R62: 条件のボタンの字は「2人分・おまかせ」（品数おまかせのときは3つ目を出さない。気分がおまかせ以外なら「2人分・ラクの日・おまかせ」）。17言語 × 390 × ふつう/文字大で、日本語・英語・韓国語・中国語・独・仏・西・伊は全部見える。ほかも「…」は最後の手段（見える字が 7 割以上）
 //  R54 の残り: 波・越 × 360/375 × 文字大/もっと大きい で、見出し "Dzisiejszy jadłospis"・"Thực đơn hôm nay" の字が条件のボタンの箱に隠れない（17px の2行）
 //  195px の残り: 決めたあとの「⚠ 夫に合わない料理があります」が途中で切れない（11px・2行まで）。「✓ 決めた」の印が条件のボタンの裏に入らない
+//  第20回（R63〜R66）:
+//  R66: 家族の魚⚠で帯に ⚠ の行が付く 375/360 でも、決めた直後のお知らせが帯の裏に入らず置いた位置で見える。430 では 🔍 の札の2行目「🔁 昆布だしで作る」にもかからない
+//  R63: 「明日から」の「元に戻す」付きのお知らせは、195px では1語「明日から」＋ボタンの低い形。430 では「✓ 決めました」の帯にかからない
+//  R64: まるごと入れ替えの「元に戻す」が残るうちに気分を変えたら、お知らせは消える（newMenu）
+//  R65: 「買い物そろいました／元に戻す」は、タブを切りかえたら消える（setTab）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -258,8 +263,8 @@ if (want('R18-13')) {
                 if (!document.querySelector('#view [data-act=decide]')) return {err: '決定なし'};
                 if (mode === 'mid'){ const rows = document.querySelectorAll('#view .tray .tg-row'); rows[rows.length - 1].scrollIntoView({block: 'center'}); await __tick(); }
                 const hid = () => { const bx = document.querySelector('#toast-root .toast'); return !!bx && getComputedStyle(bx).visibility === 'hidden'; };
-                const at = async (sy, tag) => { if (sy != null){ window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
-                __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 400));
+                const at = async (sy, tag) => { if (sy != null){ TOAST_TAP.at = performance.now(); window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } toastAlign(); const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
+                __tap('#view [data-act=decide]', 'decide'); await __tick(); for (let i = 0; i < 100 && !document.querySelector('#toast-root .toast[data-placed]'); i++) await new Promise(r => setTimeout(r, 20)); await new Promise(r => setTimeout(r, 400)); await __tick(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); await __tick();   // 字の読みこみ後の測り直し（fonts loadingdone）と同じ: 置いたあとにお膳を詰め直しても、お知らせが付いてくる   // 置き場所が決まるのを待つ（CI の遅さに依らない）
                 const a = await at(null, 'auto'); const bx = document.querySelector('#toast-root .toast'); a.pos = bx ? getComputedStyle(bx).position : '';
                 const b = await at(0, 'top'), c = await at(1e6, 'max'), d = await at(a.sy, 'back');
                 return {a, b, c, d}; }, mode);
@@ -281,8 +286,8 @@ if (want('R18-14')) {
         for (const ts of [0, 1, 2]) {
             const r = await p.evaluate(async ts => { if (toast.hide) toast.hide(); if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; window.scrollTo(0, 0); session.menu = null; render(); await __tick();
                 const hid = () => { const bx = document.querySelector('#toast-root .toast'); return !!bx && getComputedStyle(bx).visibility === 'hidden'; };
-                const at = async (sy, tag) => { if (sy != null){ window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
-                TOAST_TAP.at = performance.now(); TOAST_TAP.layer = true; TOAST_TAP.y = 300; TOAST_TAP.box = null; TOAST_TAP.act = ''; toast(t('準備ができました。今日の献立はこちらです'), true); await __tick(); await new Promise(r => setTimeout(r, 400));
+                const at = async (sy, tag) => { if (sy != null){ TOAST_TAP.at = performance.now(); window.scrollTo(0, sy); await __tick(); await new Promise(r => setTimeout(r, 80)); } toastAlign(); const c = __toastCover(); c.hidden = hid(); c.sy = Math.round(scrollY); c.tag = tag; return c; };
+                TOAST_TAP.at = performance.now(); TOAST_TAP.layer = true; TOAST_TAP.y = 300; TOAST_TAP.box = null; TOAST_TAP.act = ''; toast(t('準備ができました。今日の献立はこちらです'), true); await __tick(); for (let i = 0; i < 100 && !document.querySelector('#toast-root .toast[data-placed]'); i++) await new Promise(r => setTimeout(r, 20)); await new Promise(r => setTimeout(r, 400)); await __tick(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); await __tick();   // 字の読みこみ後の測り直し（fonts loadingdone）と同じ: 置いたあとにお膳を詰め直しても、お知らせが付いてくる
                 const a = await at(null, 'auto'), b = await at(0, 'top'), c = await at(1e6, 'max'); return {a, b, c}; }, ts);
             n++;
             const hits = [r.a, r.b, r.c].map(x => [x.tag, coverCore(x)]).filter(x => x[1].length);
@@ -346,6 +351,69 @@ for (const ts of [1, 2]) for (const lang of ['ja', 'en']) {
         const top = document.elementsFromPoint(q.right - 2, (q.top + q.bottom) / 2)[0];
         return {hit, lines, ok: {w: Math.round(q.width), h: Math.round(q.height), ov, out, topIsOk: !!top && (top === okB || okB.contains(top))}, row0: __rows()[0], cls: document.body.className.replace('on-today', '').trim()}; });
     ok(!r.err && r.hit && r.lines.length && r.lines.every(x => !x.cutW && !x.cutH && x.h <= 32) && !r.ok.ov && !r.ok.out && r.ok.topIsOk && r.ok.h <= 24 && r.row0 && !r.row0.hid.length, `R18-17 195px ${lang} 文字${ts}: 決めたあとの ⚠ の行が切れない（32px 以下）・「✓ 決めた」が条件のボタンに重ならず見出しの箱の中（24px 以下）・上の段はタブより上: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// R18-18（R66）決めた直後のお知らせ: 家族の魚⚠で帯に ⚠ の行が付く 375/360 × 文字3段階 → 画面の上で決める → 置いた位置で見える（帯の裏に入らない）・料理名・↻・札・決定にかからない。430 × 文字3段階 × 家族で、🔍 の札の2行目「🔁 昆布だしで作る」（swap-line）にもかからない
+if (want('R18-18')) {
+    let n = 0; const bad = [];
+    for (const [w, h] of [[375, 667], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
+        const {p, ctx} = await open({w, h, lang: 'ja', ts, fam: 1, dc: 4, sv: 3}, `r66-${w}-${ts}`);
+        const r = await p.evaluate(async w => {
+            // 当たる主菜（⚠ の行）と、昆布だしにした汁もの（🔁 の2行目）を置く（判定はアプリのまま）
+            window.scrollTo(0, 0); session.menu = null; render(); await __tick();
+            const m = session.menu, bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)), soup = RECIPES.find(x => slotOf(x) === '汁物' && !isAvoided(x) && typeof dashiSwapped === 'function' && dashiSwapped(x));
+            if (bad) m.items[0].r = bad; const si = m.items.findIndex(x => x.slot === '汁物'); if (soup && si >= 0) m.items[si].r = soup;
+            TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); render(); await __tick();
+            const warn = !!bad && safeSayDishes().some(r => isAvoidedCore(r)), swapLine = !!document.querySelector('#view .spot .swap-line');
+            __tap('#view [data-act=decide]', 'decide'); await __tick(); for (let i = 0; i < 100 && !document.querySelector('#toast-root .toast[data-placed]'); i++) await new Promise(r => setTimeout(r, 20)); await new Promise(r => setTimeout(r, 400)); await __tick(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); await __tick();   // 字の読みこみ後の測り直し（fonts loadingdone）と同じ: 置いたあとにお膳を詰め直しても、お知らせが付いてくる toastAlign();
+            const c = __toastCover(); const box = document.querySelector('#toast-root .toast'); c.hidden = !!box && getComputedStyle(box).visibility === 'hidden';
+            const R = box && box.getBoundingClientRect(), ov = q => R && q.width > 1 && q.height > 1 && q.bottom > R.top + .5 && q.top < R.bottom - .5 && q.right > R.left + .5 && q.left < R.right - .5;
+            c.swap = [...document.querySelectorAll('#view .spot .swap-line')].filter(e => ov(e.getBoundingClientRect())).map(e => e.textContent.trim());
+            c.algLine = [...document.querySelectorAll('#view .alg-bar, #view .alg-top')].some(e => getComputedStyle(e).display !== 'none');
+            return Object.assign(c, {warn, swapLine, sy: Math.round(scrollY)}); }, w);
+        n++;
+        const core = r.none ? [] : (r.cover || []).filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-ok)/.test(x));
+        if (r.none || r.hidden || core.length || r.swap.length || !r.warn) bad.push(`${w}px 文字${ts}: ` + JSON.stringify(r).slice(0, 400));
+        await ctx.close();
+    }
+    ok(n >= 9 && !bad.length, `R18-18 R66 家族の魚⚠で決めた直後のお知らせ ${n} 回（375/360/430 × 文字3段階）: 帯に ⚠ の行が付いても置いた位置で見える。料理名・↻・札・🔁 の2行目・決定にかからない: ` + bad.slice(0, 3).join(' / '));
+}
+
+// R18-19（R63）「明日から」の「元に戻す」付きのお知らせ: 195×422・もっと大きい は1語＋ボタンの低い形（56px 以下）で下の段の料理名・↻にかからない。430 × ふつう/もっと大きい × 上/スクロールした位置 では「✓ 決めました」の帯にかからない
+for (const [w, h, ts, pos] of [[195, 422, 2, 'top'], [195, 422, 2, 'mid'], [430, 932, 0, 'top'], [430, 932, 0, 'mid'], [430, 932, 2, 'top'], [430, 932, 2, 'mid']]) {
+    if (!want('R18-19')) break;
+    const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: w === 195 ? 3 : 4, sv: 2}, `r63-${w}-${ts}-${pos}`);
+    const r = await p.evaluate(async pos => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 400)); tapGuard = 0; if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick();   // tapGuard: 決めた直後 350ms は押せない（テストは時計を止めているので外す）
+        if (pos === 'mid'){ const rows = document.querySelectorAll('#view .tray .tg-row'); rows[rows.length - 1].scrollIntoView({block: 'center'}); await __tick(); }
+        openCondSheet(); await __tick(); const mb = document.querySelector('#sheet-root [data-act=mood][data-k=ten]'); if (!mb) return {err: '気分なし'}; TOAST_TAP.layer = true; TOAST_TAP.at = performance.now(); mb.click(); await __tick(); await new Promise(r => setTimeout(r, 200));
+        const lt = document.querySelector('#sheet-root [data-act=later-tomorrow]'); if (!lt) return {err: '明日からなし'}; TOAST_TAP.layer = true; TOAST_TAP.at = performance.now(); TOAST_TAP.y = lt.getBoundingClientRect().top + 5; lt.click(); await __tick(); for (let i = 0; i < 100 && !document.querySelector('#toast-root .toast[data-placed]'); i++) await new Promise(r => setTimeout(r, 20)); await new Promise(r => setTimeout(r, 400)); await __tick(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; guard('tray', fitTray); await __tick();   // 字の読みこみ後の測り直し（fonts loadingdone）と同じ: 置いたあとにお膳を詰め直しても、お知らせが付いてくる
+        const c = __toastCover(); c.undo = !!document.querySelector('#toast-root [data-act=toast-undo]'); c.bar = c.cover.filter(x => /^btn/.test(x)); c.core = c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|p2-ok)/.test(x)); c.sy = Math.round(scrollY); return c; }, pos);
+    const okNarrow = w !== 195 || (r.h <= 56 && /compact/.test(r.cls || '') && /^明日から/.test(r.text || ''));
+    ok(!r.err && !r.none && r.undo && okNarrow && !r.core.length && !r.bar.length, `R18-19 R63 ${w}px 文字${ts} ${pos}: 「明日から」の元に戻すのお知らせが${w === 195 ? '1語＋ボタンの低い形で' : ''}料理名・↻・札・「✓ 決めました」の帯にかからない: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// R18-20（R64）まるごと入れ替えの「元に戻す」が残るうちに条件で気分を変えたら、お知らせは消える（戻す先が変わる）。390/375 × 文字3段階
+for (const [w, h] of [[390, 844], [375, 667]]) for (const ts of [0, 1, 2]) {
+    if (!want('R18-20')) break;
+    const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: 4, sv: 2}, `r64-${w}-${ts}`);
+    const r = await p.evaluate(async () => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const before = !!document.querySelector('#toast-root [data-act=toast-undo]'); openCondSheet(); await __tick(); const mb = document.querySelector('#sheet-root [data-act=mood][data-k=slow]'); if (!mb) return {err: '気分なし'}; mb.click(); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const sheetOpen = !!sheet; if (sheet) closeSheet(); await __tick(); const c = __toastCover(); return {before, sheetOpen, mood: session.mood, after: !!document.querySelector('#toast-root [data-act=toast-undo]'), none: c.none, core: c.none ? [] : c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-sv)/.test(x))}; });
+    ok(!r.err && r.before && r.mood === 'slow' && !r.after && !r.core.length, `R18-20 R64 ${w}px 文字${ts}: まるごと入れ替えの元に戻すが残るうちに気分を変えたら、お知らせは消えて新しいお膳の↻・条件のボタンに乗らない: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// R18-21（R65）「買い物そろいました／元に戻す」が、作る段から「今日の献立」のタブに戻ったら消える。390/195 × 文字3段階
+for (const [w, h] of [[390, 844], [195, 422]]) for (const ts of [0, 1, 2]) {
+    if (!want('R18-21')) break;
+    const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: w === 195 ? 3 : 4, sv: 2}, `r65-${w}-${ts}`);
+    const r = await p.evaluate(async () => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 400)); tapGuard = 0; if (toast.hide) toast.hide();
+        setTab('today'); gotoStage('shop'); render(); await __tick(); const okb = document.querySelector('#view [data-act=shop-ok]'); if (!okb) return {err: 'そろったなし'}; __tap('#view [data-act=shop-ok]', 'shop-ok'); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const before = !!document.querySelector('#toast-root [data-act=toast-undo]'), stage = session.stage; document.querySelector('nav.tabs [data-tab=today]').click(); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const c = __toastCover(); return {before, stage, tab, after: !c.none, core: c.none ? [] : c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn)/.test(x))}; });
+    ok(!r.err && r.before && !r.after && !r.core.length, `R18-21 R65 ${w}px 文字${ts}: 買い物そろいましたの元に戻すが、今日の献立のタブに戻ったら消える: ` + JSON.stringify(r));
     await ctx.close();
 }
 
