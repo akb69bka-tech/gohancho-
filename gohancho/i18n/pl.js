@@ -1733,5 +1733,14 @@ GOHAN_I18N('pl', {
     "送らずに、自分の候補に入れる": "Zapisz jako propozycję bez wysyłania",
     "食べたいものは、まだありません": "Jeszcze nic nie dodano",
     "食べたいものを選ぶ": "Wybierz, na co masz ochotę",
-    "この条件では、おかゆの日の主菜がありません": "Przy tych warunkach nie ma dania głównego na dzień kleiku ryżowego"
+    "この条件では、おかゆの日の主菜がありません": "Przy tych warunkach nie ma dania głównego na dzień kleiku ryżowego",
+    "家族に「何が食べたい？」と聞く": "Zapytaj rodzinę: „Na co masz ochotę?”",
+    "何が食べたい？": "Na co masz ochotę?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "To link „Na co masz ochotę?” dla rodziny. Po otwarciu można odpowiedzieć bez aplikacji.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] Od {name}: Na co masz ochotę? Dotknij i odeślij",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Na co masz ochotę? Dotknij i odeślij",
+    "押して答える → {url}": "Dotknij, aby odpowiedzieć → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Wybierz kilka pomysłów i wyślij. Rodzina odpowie jednym dotknięciem, nawet bez aplikacji. Po otwarciu linku z odpowiedzią trafi ona do Życzeń rodziny.",
+    "今日の献立の候補から": "Z pomysłów na dzisiejsze menu",
+    "{n}品まで選べます": "Możesz wybrać do {n} dań"
 });

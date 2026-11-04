@@ -1733,5 +1733,14 @@ GOHAN_I18N('tr', {
     "送らずに、自分の候補に入れる": "Göndermeden kendi önerime ekle",
     "食べたいものは、まだありません": "Henüz bir şey eklenmedi",
     "食べたいものを選ぶ": "Ne yemek istediğini seç",
-    "この条件では、おかゆの日の主菜がありません": "Bu koşullarda pirinç lapası günü için ana yemek yok"
+    "この条件では、おかゆの日の主菜がありません": "Bu koşullarda pirinç lapası günü için ana yemek yok",
+    "家族に「何が食べたい？」と聞く": "Aileye \"Ne yemek istersin?\" diye sor",
+    "何が食べたい？": "Ne yemek istersin?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "Bu, aileye gönderilen bir \"Ne yemek istersin?\" bağlantısıdır. Açtıklarında uygulama olmadan yanıt verebilirler.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] {name} soruyor: Ne yemek istersin? Dokun ve geri gönder",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Ne yemek istersin? Dokun ve geri gönder",
+    "押して答える → {url}": "Yanıtlamak için dokun → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Birkaç fikir seçip gönder. Ailen uygulama olmadan, tek dokunuşla yanıt verebilir. Yanıt bağlantısını açınca Aile istekleri'ne eklenir.",
+    "今日の献立の候補から": "Bugünkü menü fikirlerinden",
+    "{n}品まで選べます": "En fazla {n} yemek seçebilirsin"
 });

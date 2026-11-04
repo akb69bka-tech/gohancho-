@@ -488,6 +488,10 @@ GOHAN_PACK_TR('JP', 'vi', {
     "greensalad": {name: "Salad rau xanh sốt kiểu Nhật"},
     "jagaimomiso": {name: "Súp miso khoai tây hành tây"},
     "nasuagemiso": {name: "Súp miso cà tím đậu phụ chiên"},
-    "cabbagemiso": {name: "Súp miso bắp cải đậu phụ chiên"}
+    "cabbagemiso": {name: "Súp miso bắp cải đậu phụ chiên"},
+    "butamoyashi": {name: "Thịt heo xào giá sốt ponzu"},
+    "shakebutter": {name: "Cá hồi áp chảo bơ xì dầu"},
+    "gyusukini": {name: "Bò om hành tây kiểu sukiyaki"},
+    "butacabbage": {name: "Ba chỉ heo xào bắp cải vị muối"},
   }
 });

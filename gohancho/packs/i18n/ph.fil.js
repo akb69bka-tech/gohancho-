@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('PH', 'fil', {
   staple: 'Kanin',
   names: {
+    'corned beef': 'Corned beef (de-lata)',
+    'sardines': 'Sardinas (de-lata)',
     'chicken': 'Manok',
     'pork': 'Baboy',
     'beef': 'Baka',
@@ -1125,6 +1127,50 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Timplahan ng toyo at paminta at ihain.'
       ],
       tip: { add: 'Isang dakot ng misua sa huling minuto', why: 'Mas masabaw at nakabubusog', skill: 'Balatan lang ang matitigas na gilid', how: 'Alisin ang matitigas na gilid gamit ang peeler at iwan ang berdeng balat sa pagitan; nananatiling buo ang mga piraso.' }
+    },
+    'ph_ginisang_sardinas': {
+      name: 'Ginisang sardinas',
+      ings: [['Sardinas sa tomato sauce', '2 lata (155 g bawat isa)'], ['Sibuyas', '1'], ['Kamatis', '1'], ['Itlog, binati', '1'], ['Dahon ng sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 60 ml tubig · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang maliliit ang kamatis.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang, sibuyas, at kamatis nang 2–3 minuto hanggang lumambot.',
+        'Ilagay ang sardinas kasama ang sarsa at ang tubig, durugin nang kaunti, at pakuluan nang 3 minuto hanggang mainit. Ihalo ang binating itlog (kung gagamit) hanggang maluto, saka timplahan ng paminta at budburan ng dahon ng sibuyas.',
+      ],
+      tip: { add: 'Isang dakot na misua', why: 'Nagiging masabaw na ulam ito para sa mas maraming tao', skill: 'Igisa nang mabuti', how: 'Kapag nalutong malambot ang bawang, sibuyas at kamatis, nawawala ang lasang de-lata.' }
+    },
+    'ph_ginisang_corned_beef': {
+      name: 'Ginisang corned beef',
+      ings: [['Corned beef (de-lata)', '1 lata (260 g)'], ['Sibuyas', '1'], ['Repolyo, hiniwa nang manipis', '1/4 maliit na ulo'], ['Kamatis', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 60 ml tubig · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang manipis ang repolyo.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang at sibuyas (at kamatis) nang 2 minuto hanggang lumambot. Ilagay ang corned beef at durugin.',
+        'Ilagay ang repolyo at tubig, takpan, at lutuin nang 3–4 minuto, haluin nang isang beses, hanggang lumambot ang repolyo at mainit na ang lahat. Timplahan ng paminta.',
+      ],
+      tip: { add: 'Pritong itlog sa gilid', why: 'Buong ulam na kasama ang kanin', skill: 'Hayaang tumusta nang kaunti', how: 'Huwag munang haluin ang corned beef nang isang minuto para may bahaging tumusta; nagdadagdag ito ng lasa.' }
+    },
+    'ph_ginisang_kamatis_itlog': {
+      name: 'Ginisang kamatis at itlog',
+      ings: [['Kamatis', '3'], ['Itlog', '4'], ['Sibuyas', '1'], ['Dahon ng sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 1 kutsarita patis · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang maliliit ang kamatis. Batihin ang itlog kasama ang patis at paminta.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang, sibuyas, at kamatis nang 3 minuto hanggang lumambot at magkatas ang kamatis.',
+        'Ibuhos ang itlog at haluin nang dahan-dahan nang 1–2 minuto hanggang maluto. Budburan ng dahon ng sibuyas.',
+      ],
+      tip: { add: 'Kaunting giniling na baboy na iginisa muna', why: 'Mas nakabubusog na ulam', skill: 'Palambutin muna ang kamatis', how: 'Lutuin ang kamatis hanggang madurog para bumalot ang katas nito sa itlog.' }
+    },
+    'ph_garlic_butter_shrimp': {
+      name: 'Garlic butter shrimp',
+      ings: [['Hipon (may balat o binalatan)', '400 g'], ['Kalamansi', '3'], ['Dahon ng sibuyas', '1']],
+      seas: '3 kutsara mantikilya · 1 buong ulo ng bawang, tinadtad · 1/2 kutsarita asin · Paminta · 60 ml lemon-lime soda o tubig',
+      steps: [
+        'Gupitin ang balbas ng hipon at alisin ang itim na ugat. Tadtarin ang bawang.',
+        'Tunawin ang mantikilya sa katamtamang apoy at igisa ang bawang nang 1 minuto hanggang bumango, nang hindi masyadong pinapapula.',
+        'Ilagay ang hipon at ang soda (o tubig) at lutuin nang 3–4 minuto habang hinahalo, hanggang kumulay-kahel ang hipon, luto hanggang loob, at medyo lumapot ang sarsa. Timplahan ng asin at paminta at pigaan ng kalamansi.',
+      ],
+      tip: { add: 'Dagdag na kanin', why: 'Ang sarsa ng bawang at mantikilya ang pinakamasarap sa kanin', skill: 'Panatilihing ginintuan ang bawang', how: 'Sa katamtamang apoy, bumabango ang mantikilya sa bawang nang hindi ito nasusunog at pumapait.' }
     },
   }
 });

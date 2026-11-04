@@ -1733,5 +1733,14 @@ GOHAN_I18N('id', {
     "送らずに、自分の候補に入れる": "Jadikan pilihan saya tanpa mengirim",
     "食べたいものは、まだありません": "Belum ada yang ditambahkan",
     "食べたいものを選ぶ": "Pilih yang ingin dimakan",
-    "この条件では、おかゆの日の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk hari bubur"
+    "この条件では、おかゆの日の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk hari bubur",
+    "家族に「何が食べたい？」と聞く": "Tanya keluarga \"Mau makan apa?\"",
+    "何が食べたい？": "Mau makan apa?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "Ini tautan \"Mau makan apa?\" untuk keluarga. Saat dibuka, mereka bisa menjawab tanpa aplikasi.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] Dari {name}: Mau makan apa? Ketuk lalu kirim balik ya",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Mau makan apa? Ketuk lalu kirim balik ya",
+    "押して答える → {url}": "Ketuk untuk menjawab → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Pilih beberapa menu lalu kirim. Keluarga bisa membalas cukup dengan mengetuk, tanpa aplikasi. Membuka tautan balasan akan menambahkannya ke Permintaan keluarga.",
+    "今日の献立の候補から": "Dari pilihan menu hari ini",
+    "{n}品まで選べます": "Bisa pilih hingga {n} menu"
 });

@@ -156,7 +156,7 @@ for (const cc of CCS){
     }, mode);
     // R50: 390×844 で、ゆるめた知らせの短い1行が決定の帯・下のタブより上に、スクロールなしで見える（文字ふつう・もっと大きい）。お膳の位置は1行を消しても変わらない（2px まで）
     for (const ts of [0, 2]){
-        const r = await p.evaluate(ts => { S.settings.textSize = ts || undefined; applyTextSize(); session.mood = 'ten'; session.rejected.clear(); newMenu(); render(); window.scrollTo(0, 0);
+        const r = await p.evaluate(ts => { S.settings.textSize = ts || undefined; applyTextSize(); for (const m of ['ten', 'simple']){ session.mood = m; session.rejected.clear(); newMenu(); render(); if (easyRelaxText()) break; } window.scrollTo(0, 0);   // 日本の「10分以内」は10分の主菜を足して（決定9=A）ゆるめなくてよくなったので、ゆるめる「いちばん簡単」（副菜・汁もの）で確かめる
             const q = s => document.querySelector(s), rc = e => e ? e.getBoundingClientRect() : null, rl = q('#view .p2-sv .sv-relax'), tray = q('#view .tray'), bar = q('#view .decide-bar'), tabs = q('nav.tabs');
             if (!rl) return {none: true, txt: easyRelaxText()};
             const a = rc(rl), t0 = rc(tray).top, cut = rl.scrollWidth > rl.clientWidth + 1;

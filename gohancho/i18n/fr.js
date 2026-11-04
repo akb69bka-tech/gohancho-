@@ -1733,5 +1733,14 @@ GOHAN_I18N('fr', {
     "送らずに、自分の候補に入れる": "Garder comme idée sans envoyer",
     "食べたいものは、まだありません": "Rien d'ajouté pour l'instant",
     "食べたいものを選ぶ": "Choisir vos envies",
-    "この条件では、おかゆの日の主菜がありません": "Avec ces conditions, il n'y a pas de plat principal pour le jour de bouillie de riz"
+    "この条件では、おかゆの日の主菜がありません": "Avec ces conditions, il n'y a pas de plat principal pour le jour de bouillie de riz",
+    "家族に「何が食べたい？」と聞く": "Demander à la famille « Qu’as-tu envie de manger ? »",
+    "何が食べたい？": "Qu’as-tu envie de manger ?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "C’est un lien « Qu’as-tu envie de manger ? » pour ta famille. En l’ouvrant, ils peuvent répondre sans l’appli.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] De la part de {name} : Qu’as-tu envie de manger ? Touche et renvoie",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Qu’as-tu envie de manger ? Touche et renvoie",
+    "押して答える → {url}": "Toucher pour répondre → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Choisis quelques idées et envoie-les. Ta famille répond d’un simple toucher, même sans l’appli. En ouvrant le lien de réponse, il s’ajoute aux Envies de la famille.",
+    "今日の献立の候補から": "Parmi les idées du menu du jour",
+    "{n}品まで選べます": "Tu peux choisir jusqu’à {n} plats"
 });

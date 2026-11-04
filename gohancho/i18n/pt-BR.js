@@ -1733,5 +1733,14 @@ GOHAN_I18N('pt-BR', {
     "送らずに、自分の候補に入れる": "Guardar como opção sem enviar",
     "食べたいものは、まだありません": "Nada adicionado ainda",
     "食べたいものを選ぶ": "Escolher o que quer comer",
-    "この条件では、おかゆの日の主菜がありません": "Com essas condições, não há prato principal para o dia de sopa de arroz"
+    "この条件では、おかゆの日の主菜がありません": "Com essas condições, não há prato principal para o dia de sopa de arroz",
+    "家族に「何が食べたい？」と聞く": "Perguntar à família \"O que você quer comer?\"",
+    "何が食べたい？": "O que você quer comer?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "Este é um link \"O que você quer comer?\" para a família. Ao abrir, dá para responder sem o app.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] De {name}: O que você quer comer? Toque e responda",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] O que você quer comer? Toque e responda",
+    "押して答える → {url}": "Toque para responder → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Escolha algumas ideias e envie. A família responde com um toque, mesmo sem o app. Ao abrir o link da resposta, ele entra em Pedidos da família.",
+    "今日の献立の候補から": "Das ideias do cardápio de hoje",
+    "{n}品まで選べます": "Dá para escolher até {n} pratos"
 });
