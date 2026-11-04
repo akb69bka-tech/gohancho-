@@ -3264,7 +3264,17 @@ function toastPlace(box, prev){
         const y0 = scrollY; lift();
         // とても狭い画面で、送っても、お知らせの裏に押す場所・料理名が残るとき（幅195px など、お膳が画面より高い）: 送らずに、画面の上から下まで、押す場所・料理名にかからない高さを探す
         // 第20回 R66: 300px 以上でも、送りきれずに料理名・↻・札が裏に残るとき（家族の魚⚠で帯に ⚠ の行が付き、帯が貼りついたまま送れる量が足りない 375px など）は同じに探す。空いた高さがなければ送った画面のまま
-        const L = rectOf(), lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
+        let L = rectOf(), lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
+        // 第20回のあと（R66 の残り）: 決定の帯をお膳の下に置いた形（bar-static。上の段が3列で 🔍 が並ぶ 4品の献立など、お膳が画面に入りきらない日）では、送る量の上限（お知らせの高さ＋120px）では下の段の料理名・札が送りきれず、お知らせの裏に残っていた。
+        // 貼りついた帯がない（送っても帯がお知らせの裏に上がってこない）ときは、残った料理名・↻・札・決定の下端がお知らせの上に出るまで、もう1回だけ送る（ページが足りなければ下に余白を足す）
+        if (innerWidth >= 300 && ![...document.querySelectorAll('#view .actionbar')].some(ab => getComputedStyle(ab).position === 'sticky')){
+            const hit = [...document.querySelectorAll('#view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button, #view .p2-ok')].map(e => e.getBoundingClientRect()).filter(q => q.width > 1 && q.height > 1 && q.bottom > L.top - 6 && q.top < L.bottom + 12 && q.right > L.left && q.left < L.right);
+            const extra = hit.length ? Math.ceil(Math.max(...hit.map(q => q.bottom)) - L.top + 8) : 0;
+            if (extra > 0 && extra < innerHeight){
+                const room = document.documentElement.scrollHeight - innerHeight - scrollY; if (room < extra){ const cur = parseFloat(v.style.getPropertyValue('--toast-room')) || 0; v.style.setProperty('--toast-room', Math.ceil(cur + extra - room) + 'px'); }
+                window.scrollBy({top: extra, behavior: 'instant'}); L = rectOf(); lc = cover(L, L.bottom); if (!lc[0] && !lc[1]) return;
+            }
+        }
         const y1 = scrollY; window.scrollTo({top: y0, behavior: 'instant'}); box.classList.remove('docked'); box.classList.add('at-top');
         // 点の順: 料理名・札・↻・まるごと入れ替え・決定 → ほかの押す場所（国・設定・家族リクエストなど。お知らせの文の上からでも押せる）→ 文。
         // 第13回 R38: 家族ありでは上の端に「家族リクエスト」があり、押す場所にかからない高さがなかったので、送った画面のまま上の段の ↻・下の段の名前の上に出ていた。
