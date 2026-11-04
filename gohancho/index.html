@@ -1804,6 +1804,27 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .vt-chip{border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted);font-size:var(--fs12);padding:4px 10px;white-space:nowrap}
 .vt-chip.on{background:var(--leaf-soft);color:var(--leaf)}
 .note.wsh-served b{margin-inline-start:4px}
+/* よく行くスーパーと特売（椎名）: 今日の画面の1行・特売の欄・買い物メモの札・設定 */
+.sale-line{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:6px 0 0;font-size:var(--fs13,.8125rem);color:var(--ink)}
+.sale-line .sale-tx{flex:1 1 12rem;min-width:0;overflow-wrap:anywhere}
+.sale-day{margin:0 0 8px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);color:var(--ink);font-size:var(--fs13,.8125rem);font-weight:600;overflow-wrap:anywhere}
+.sale-card .chips{margin:4px 0 8px}
+.sale-add{grid-template-columns:minmax(0,1fr) auto}.sale-add #sale-name{grid-column:1/-1}
+.sale-list{display:flex;flex-direction:column;margin:6px 0}
+.sale-row{display:flex;align-items:center;flex-wrap:wrap;gap:2px 8px;padding:6px 0;border-top:1px solid var(--line)}
+.sale-row.past{opacity:.75}
+.sale-nm{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.sale-meta{flex:1 1 8rem;min-width:0;font-size:var(--fs12,.75rem);color:var(--muted);overflow-wrap:anywhere}
+.sale-x{min-width:44px}
+.badge.sale-pr{background:var(--accent-soft);color:var(--accent-text);font-weight:700;margin-inline-start:6px}
+.sale-tag{display:inline-block;margin-inline-start:6px;font-size:var(--fs12,.75rem);font-weight:700;color:var(--accent-text);white-space:normal}
+.sale-disc{margin:4px 0;color:var(--muted)}
+.sale-store{padding:10px 12px;margin-bottom:8px;overflow-wrap:anywhere}
+.sale-store .row{margin-top:6px}
+.sale-form{padding:10px 12px;margin-bottom:8px}.sale-form input,.sale-form select{max-width:100%}
+.sale-day-add{flex-wrap:wrap;gap:6px}.sale-day-add select{flex:1 1 7rem;min-width:0;width:auto}
+.sale-feed textarea{width:100%;max-width:100%;box-sizing:border-box;font-family:ui-monospace,monospace;font-size:.75rem}
+.sale-feed summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
 </style>
 </head>
 <body>
@@ -2594,6 +2615,7 @@ function normalizeState(d){
         .map(w => ({k: typeof w.k === 'string' ? w.k.slice(0, 12) : '', n: typeof w.n === 'string' ? [...w.n.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join('') : '', m: [0, 1, 2].includes(w.m) ? w.m : null, t: isYmd(w.t) ? w.t : w.at, at: w.at}));   // 「なんでもいい」の返事（第22回 R87）
     st.wantSeen = arr(st.wantSeen).filter(x => typeof x === 'string' && /^[0-9a-z]{1,12}$/.test(x)).slice(0, 60);
     if (typeof st.settings.sendName === 'string') st.settings.sendName = [...st.settings.sendName.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join(''); else delete st.settings.sendName;
+    normalizeSale(st, isYmd);   // よく行くスーパーと特売（S.sale。端末の中だけ）
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
     if (!isYmd(st.lastBackup)) delete st.lastBackup;   // 最後にファイルへ書き出した日（バックアップのお知らせ用）
     if (!isYmd(st.backupSnooze)) delete st.backupSnooze;   // お知らせを「あとで」にした日
@@ -8603,7 +8625,7 @@ function viewSettings(){
     // 設定は7つのまとまりに分け、上の目次から開く。「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま、いちばん上に出す
     // （ほかのまとまりの開き閉じは、この起動のあいだだけ覚える。読み込み・全消去の確認中は「データとバックアップ」を開いておく）
     const so = session.setOpen || {}, isOpen = k => !!so[k] || (k === 'data' && (pendingConfirm === 'import' || pendingConfirm === 'reset'));
-    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['notify', t('お知らせ')], ['display', langTitle(t('表示と言語'))], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
+    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['store', t('よく行くスーパー')], ['notify', t('お知らせ')], ['display', langTitle(t('表示と言語'))], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
     const title = k => groups.find(g => g[0] === k)[1];
     const grp = (k, sum, body) => `<details class="set-sec" id="set-${k}" data-sk="${k}" ${isOpen(k) ? 'open' : ''}><summary class="set-sum"><span class="set-sum-tx"><span class="set-sec-h">${SET_ICONS[k]}${esc(title(k))}</span>${sum ? `<span class="set-sum-v">${esc(sum)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="set-body">${body}</div></details>`;
     const remindSum = isNative() ? t('毎日のお知らせ') + GAP() + (typeof S.settings.remind === 'number' ? hourLabel(S.settings.remind) : t('なし')) : t('お知らせは iPhone アプリ版で使えます');
@@ -8651,6 +8673,7 @@ function viewSettings(){
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
         </div>`)}
+        ${grp('store', saleSettingsSum(), saleSettingsHtml())}
         ${grp('notify', remindSum, `<div class="set-group">
             ${reminderHtml()}
         </div>`)}
@@ -8723,6 +8746,7 @@ const SET_ICONS = (() => {
         notify: svg('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'),
         display: svg('<path d="M4 18 8.5 6h1L14 18M5.6 14h6.8"/><path d="M15.5 18l2.7-7h.6l2.7 7M16.5 15.6h4"/>'),
         data: svg('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v7M8.8 12 12 15.2 15.2 12"/>'),
+        store: svg('<path d="M4 9.5 5.5 4.5h13L20 9.5"/><path d="M4 9.5c0 1.5 1.2 2.5 2.7 2.5S9.3 11 9.3 9.5c0 1.5 1.2 2.5 2.7 2.5s2.7-1 2.7-2.5c0 1.5 1.2 2.5 2.6 2.5S20 11 20 9.5"/><path d="M5.5 12v7.5h13V12M10 19.5v-4.5h4v4.5"/>'),
         plan: svg('<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>'),
         help: svg('<circle cx="12" cy="12" r="9"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/>'),
     };
@@ -8953,10 +8977,11 @@ function shopDoneSet(){ const w = S.week ? S.week.start : ''; if (!S.shopDone ||
 function shopExtras(){ shopDoneSet(); return (S.shopDone.extra || []).filter(x => x && typeof x.k === 'string' && typeof x.label === 'string'); }
 // 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
 function shopRowsHtml(list, done){
-    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}${e.alg ? `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + (e.alg.length ? t('アレルゲン: {list}', {list: joinNames(e.alg.map(algLabel))}) : t('アレルゲンあり')))}">⚠ ${esc(e.alg.length ? joinNames(e.alg.map(algLabel)) : t('アレルゲンあり'))}</span>` : ''}${(m => m.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(m.map(algLabel))}))}</span>` : '')((e.may || []).filter(id => !(e.alg || []).includes(id)))}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
+    const sf = saleShopFirst();   // 特売日の売り場を先頭に（よく行くスーパー）
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}${saleShopTag(e)}${e.alg ? `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + (e.alg.length ? t('アレルゲン: {list}', {list: joinNames(e.alg.map(algLabel))}) : t('アレルゲンあり')))}">⚠ ${esc(e.alg.length ? joinNames(e.alg.map(algLabel)) : t('アレルゲンあり'))}</span>` : ''}${(m => m.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(m.map(algLabel))}))}</span>` : '')((e.may || []).filter(id => !(e.alg || []).includes(id)))}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
-    return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].map(([k, l]) => {
-        const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec sec-${k}"><span>${esc(l)}</span><span class="n" aria-hidden="true">${xs.length}</span></div>${xs.map(row).join('')}` : '';
+    return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].sort((a, b) => (sf.includes(a[0]) ? sf.indexOf(a[0]) : 9) - (sf.includes(b[0]) ? sf.indexOf(b[0]) : 9)).map(([k, l]) => {
+        const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec sec-${k}${sf.includes(k) ? ' sale-first' : ''}"><span>${esc(l)}${sf.includes(k) ? ` <span class="sale-tag">🏷 ${esc(t('特売日'))}</span>` : ''}</span><span class="n" aria-hidden="true">${xs.length}</span></div>${xs.map(row).join('')}` : '';
     }).join('') + (got.length ? `<div class="shop-sec done">${esc(t('買った（{n}）', {n:got.length}))}</div>${got.map(row).join('')}` : '');
 }
 // 買ったもの（チェックした品）を冷蔵庫に入れる。自分で足した品は食材ではないので入れない
@@ -9020,6 +9045,7 @@ function shoppingHtml0(){
             <button class="btn${big ? ' primary' : ''} shop-store" data-act="shop-mode" aria-pressed="${big}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h2l2.2 10.2a1 1 0 0 0 1 .8h9.6a1 1 0 0 0 1-.8L21 8H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button>
         </div>
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
+        ${saleShopBannerHtml()}
         <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
         ${(ab => ab.length ? `<p class="small warn alg-shop-hit" role="alert">${esc(t('⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。', {names: joinNames(ab.map(r => r.name))}))}</p>` : '')(shopAlgDishes())}
@@ -10057,6 +10083,7 @@ function notifBuild(now){
             out.push({id:NOTIFY_SHOP_ID + j++, title:t('明日は買い物の日です'), body:has ? [t('明日の分の買い物リストがあります（{n}品）', {n}), top.length ? t('主なもの：{items}', {items:joinNames(top)}) : ''].filter(Boolean).join(SLASH()) : t('1週間プランを作っておくと、買うものがまとまります。'), schedule:{at:when, allowWhileIdle:true}});
         }
     }
+    saleNotifs(now, at).forEach(n => out.push(n));   // 特売日の朝（よく行くスーパー。はじめはオフ）
     return out;
 }
 // お知らせを予約しなおす（プラン・設定・時間が変わったとき、アプリを開いたとき・戻ったときに呼ぶ。前の予約は全部消してから入れる）
@@ -10133,6 +10160,461 @@ function reminderHtml(){
         <span class="small muted">${esc(t('冷蔵庫の食材に自分で入れた期限の日の朝に、「今日使い切りたい食材があります」とお知らせします。'))}</span></div>
         <button class="btn sm" data-act="notif-test">${esc(t('テスト通知を送る'))}</button>`;
 }
+
+/* =========================================================
+   よく行くスーパーと特売（機能開発部 椎名 陸 / 2026-11-04）
+   ・店（3店まで）: {id, name, pref: 都道府県, city: 市区町村・地域, zip, days: [{w: 曜日 0-6, c: 売り場}], note, url, fid?: 提携データの店id}
+   ・特売の食材（S.sale.items）: {id, s: 店の id（なしは ''）, sn: 店の名前, k: 食材キー, n: 表示名, p: 値段のメモ, d: 特売の日, u: 最後の日,
+       v/cur/unit: 提携データの値段, src: 'feed'（提携データ）, pr: 広告（PR）, disc: 広告の表示文}
+   ・すべてこの端末の中だけ（S.sale）。どこにも送らない。チラシのサイト・店のページは読みに行かない（規約・著作権。URL は本人が開くリンクとして出すだけ）
+   ・最後の日（u）の次の日まで残し（「次の朝」に使う料理を出すため）、そのあとは消す
+   ・料理の提案は「冷蔵庫の食材と今日の献立」（fridgeUseInfo）と同じ並べ方（当たる食材の数 → 時間の短い順）。
+     アレルギー・苦手・今は出さない料理は、献立と同じ判定（isAvoided・S.hidden）で外す。今日の献立・決めた献立は自動では変えない
+   ・提携データ（docs/partner_flyer_feed.md）の品には、必ず「PR」か「提携」の札を付ける（景品表示法のステルスマーケティング規制）
+   ========================================================= */
+const SALE_MAX_STORES = 3, SALE_MAX_ITEMS = 80, SALE_FEED_MAX = 200000;
+const SALE_CATS = ['veg', 'meat', 'fish', 'dairy', 'other', 'all'];
+const SALE_CAT_SEC = {veg: 'veg', meat: 'meat', fish: 'meat', dairy: 'dairy', other: 'other'};   // 特売日の売り場 → 買い物メモの売り場
+const JP_PREFS = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県',
+    '滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+const NOTIFY_SALE_ID = 1400;      // 1400〜1406: 特売日の朝のお知らせ（今日から7日先まで）
+NOTIFY_ALL.push(...Array.from({length: 7}, (_, i) => NOTIFY_SALE_ID + i));
+function saleCatLabel(c){ return c === 'veg' ? t('野菜') : c === 'meat' ? t('肉') : c === 'fish' ? t('魚') : c === 'dairy' ? t('乳製品・卵') : c === 'all' ? t('全品') : t('その他'); }
+// 入力した文字を整える（制御文字・見えない文字・山かっこを除き、長さを切る）。load() からも呼ぶので、ここの外の const は使わない
+function saleClean(s, max){
+    return [...String(s == null ? '' : s).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, ' ').replace(/\s+/g, ' ').trim()].slice(0, max).join('').trim();
+}
+function saleUrl(s){ const u = saleClean(s, 300); return /^https?:\/\/[^\s"'<>`]+$/i.test(u) ? u : ''; }   // 本人が入れた http(s) の URL だけ。リンクとして出すだけで、アプリは読みに行かない
+function saleZip(s){ return saleClean(s, 10).replace(/[^0-9A-Za-z\- ]/g, '').trim(); }
+// 保存データ・読み込んだデータの形を直す（normalizeState から呼ぶ）
+function normalizeSale(st, isYmd){
+    const x = st.sale;
+    if (!x || typeof x !== 'object' || Array.isArray(x)){ delete st.sale; return; }
+    const cats = ['veg', 'meat', 'fish', 'dairy', 'other', 'all'], ids = new Set(), arr = v => Array.isArray(v) ? v : [];
+    const stores = arr(x.stores).filter(s => s && typeof s === 'object' && saleClean(s.name, 30)).slice(0, 3).map((s, i) => {
+        let id = typeof s.id === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(s.id) ? s.id : 'st' + i; while (ids.has(id)) id += 'x'; ids.add(id);
+        const seen = new Set();
+        const days = arr(s.days).filter(d => d && Number.isInteger(d.w) && d.w >= 0 && d.w <= 6 && cats.includes(d.c) && !seen.has(d.w + d.c) && seen.add(d.w + d.c)).slice(0, 14).map(d => ({w: d.w, c: d.c}));
+        const o = {id, name: saleClean(s.name, 30), pref: saleClean(s.pref, 10), city: saleClean(s.city, 30), zip: saleZip(s.zip), days, note: saleClean(s.note, 80), url: saleUrl(s.url)};
+        if (typeof s.fid === 'string' && saleClean(s.fid, 60)) o.fid = saleClean(s.fid, 60);
+        return o; });
+    const iids = new Set();
+    const items = arr(x.items).filter(it => it && typeof it === 'object' && saleClean(it.n, 30) && isYmd(it.d) && isYmd(it.u) && it.u >= it.d).slice(-80).map((it, i) => {
+        let id = typeof it.id === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(it.id) ? it.id : 'si' + i; while (iids.has(id)) id += 'x'; iids.add(id);
+        const o = {id, s: stores.some(z => z.id === it.s) ? it.s : '', sn: saleClean(it.sn, 30), k: saleClean(it.k || it.n, 40), n: saleClean(it.n, 30), p: saleClean(it.p, 20), d: it.d, u: it.u};
+        if (typeof it.v === 'number' && Number.isFinite(it.v) && it.v >= 0 && it.v <= 1e7) o.v = it.v;
+        if (typeof it.cur === 'string' && /^[A-Z]{3}$/.test(it.cur)) o.cur = it.cur;
+        if (saleClean(it.unit, 12)) o.unit = saleClean(it.unit, 12);
+        if (cats.includes(it.cat)) o.cat = it.cat;
+        if (it.src === 'feed'){ o.src = 'feed'; if (it.pr === true) o.pr = true; if (saleClean(it.disc, 120)) o.disc = saleClean(it.disc, 120); }
+        return o; });
+    const o = {stores, items};
+    if (Number.isInteger(x.remind) && x.remind >= 0 && x.remind <= 23) o.remind = x.remind;   // 特売日の朝のお知らせの時刻（なし = オフ。はじめはオフ）
+    st.sale = o;
+}
+function saleData(){ if (!S.sale || typeof S.sale !== 'object') S.sale = {stores: [], items: []}; if (!Array.isArray(S.sale.stores)) S.sale.stores = []; if (!Array.isArray(S.sale.items)) S.sale.items = []; return S.sale; }
+function saleStores(){ return S.sale && Array.isArray(S.sale.stores) ? S.sale.stores : []; }
+function saleStoreOf(id){ return saleStores().find(s => s.id === id) || null; }
+// 最後の日の次の日（「次の朝」）が過ぎた特売は消す
+function saleItemsAll(){
+    if (!S.sale || !Array.isArray(S.sale.items)) return [];
+    const lim = addDays(TODAY, -1), n0 = S.sale.items.length;
+    if (S.sale.items.some(x => x.u < lim)){ S.sale.items = S.sale.items.filter(x => x.u >= lim); if (S.sale.items.length !== n0) save(); }
+    return S.sale.items;
+}
+function saleActive(d = TODAY){ return saleItemsAll().filter(x => x.d <= d && d <= x.u); }   // その日が特売の食材
+function saleForUse(){ const y = addDays(TODAY, -1); return saleItemsAll().filter(x => x.d <= TODAY && x.u >= y); }   // 今日の特売と、きのうまでの特売（次の朝に、使う料理を出す）
+function saleKeyOf(x){ return keyOf(x.n) || x.k; }
+function saleStoreName(x){ const s = saleStoreOf(x.s); return s ? s.name : x.sn || ''; }
+// その日が特売日の店（登録した曜日）: [{s: 店, cats: [売り場]}]
+function saleDaysOn(d = TODAY){ const w = parseYmd(d).getDay(); return saleStores().map(s => ({s, cats: s.days.filter(x => x.w === w).map(x => x.c)})).filter(x => x.cats.length); }
+function saleDayText(on){ return on.slice(0, 2).map(x => t('今日は{store}の特売日（{cats}）', {store: x.s.name, cats: joinNames(x.cats.map(saleCatLabel))})).join(GAP()); }
+function salePrice(x){
+    if (x.p) return x.p;
+    if (typeof x.v !== 'number') return '';
+    let s = String(x.v); try{ s = new Intl.NumberFormat(dateLoc() + '-u-nu-latn', {style: 'currency', currency: x.cur || 'JPY', maximumFractionDigits: 2}).format(x.v); }catch(e){}
+    return s + (x.unit ? '/' + x.unit : '');
+}
+function saleBadge(x){ return x.src !== 'feed' ? '' : `<span class="badge sale-pr">${esc(x.pr ? t('PR') : t('提携'))}</span>`; }
+// 特売の食材を使う料理（fridgeUseInfo と同じ並べ方）。今日の献立・決めた献立は変えない
+function saleSuggest(limit = 3){
+    const items = saleForUse(); if (!items.length) return {names: new Map(), sugg: []};
+    const names = new Map(); items.forEach(x => { const k = saleKeyOf(x); if (k && !names.has(k)) names.set(k, x.n); });
+    const keys = [...names.keys()], seen = new Set(), sugg = [];
+    ['主菜', '副菜', '汁物'].forEach(sl => poolForMood(sl, 'all').forEach(r0 => {
+        if (seen.has(r0.id) || slotOf(r0) !== sl || isAvoided(r0) || S.hidden.includes(r0.id)) return;
+        const r = swappedRecipe(r0) || r0;
+        const hit = keys.filter(k => (r.items || []).some(i => !i.opt && i.key === k)); if (!hit.length) return;
+        seen.add(r0.id); sugg.push({r: r0, hit, sl});
+    }));
+    sugg.sort((a, b) => b.hit.length - a.hit.length || a.r.min - b.r.min || String(a.r.id).localeCompare(String(b.r.id)));
+    return {names, sugg: sugg.slice(0, limit)};
+}
+/* ---- 今日の画面: 特売があるときだけ、お膳の下に1行 ---- */
+function saleTodayLineHtml(){
+    if (!S.sale) return '';
+    const act = saleActive(), on = saleDaysOn();
+    if (!act.length && !on.length) return '';
+    const nm = [...new Set(act.map(x => x.n))], parts = [];
+    if (on.length) parts.push(saleDayText(on));
+    if (nm.length) parts.push(t('特売: {list}', {list: joinNames(nm.slice(0, 3)) + (nm.length > 3 ? t(' など') : '')}));
+    return `<p class="sale-line" role="status"><span class="sale-tx"><span aria-hidden="true">🏷 </span>${esc(parts.join(GAP()))}</span><button type="button" class="btn sm text" data-act="sale-goto">${esc(t('特売を使う料理'))}</button></p>`;
+}
+/* ---- 今日の画面の下（1週間の主菜・買い物メモのあと）: 特売を入れる・使う料理 ---- */
+function saleFoldHtml(){
+    if (!saleStores().length && !saleItemsAll().length) return '';   // 店を登録するまでは出さない（設定・買い物メモの案内から）
+    return foldHtml('sale', t('よく行くスーパーの特売'), t('特売の食材を入れると、それを使う料理を出します'), saleBodyHtml());
+}
+function saleCurStore(){ const ss = saleStores(); return ss.some(s => s.id === session.saleStore) ? session.saleStore : ss.length ? ss[0].id : ''; }
+function saleCurDay(){ return addDays(TODAY, session.saleDay === 1 ? 1 : 0); }
+function saleRowHtml(x){
+    const st = saleStoreName(x), pr = salePrice(x);
+    const when = x.u < TODAY ? t('{date}まで', {date: jpDate(x.u, false)}) : x.d > TODAY ? t('{date}から', {date: jpDate(x.d, false)}) : x.u > TODAY ? t('{date}まで', {date: jpDate(x.u, false)}) : t('今日');
+    return `<div class="sale-row${x.u < TODAY ? ' past' : ''}"><span class="sale-nm">${esc(x.n)}${saleBadge(x)}</span><span class="sale-meta">${esc([pr, st, when].filter(Boolean).join(GAP()))}</span>
+        <button type="button" class="btn sm ghost sale-x" data-act="sale-rm" data-id="${esc(x.id)}" aria-label="${esc(t('{name}を外す', {name: x.n}))}">×</button></div>`;
+}
+function saleBodyHtml(){
+    const ss = saleStores(), cur = saleCurStore(), day = saleCurDay(), on = saleDaysOn(), all = saleItemsAll().slice().sort((a, b) => (a.d < b.d ? -1 : a.d > b.d ? 1 : 0) || a.n.localeCompare(b.n, LANG));
+    const mine = new Set(all.filter(x => x.s === cur && x.d === day).map(saleKeyOf));
+    const discs = [...new Set(all.filter(x => x.src === 'feed').map(x => x.disc || (x.pr ? t('提携先から届いた広告（PR）を含む情報です') : t('提携先から届いた情報です'))))];
+    const f = saleSuggest(3);
+    return `<div class="card sale-card" id="sale-sec">
+        ${on.length ? `<p class="sale-day" role="status">🏷 ${esc(saleDayText(on))}</p>` : ''}
+        <div class="eyebrow">${esc(t('今日の特売を入れる'))}</div>
+        ${ss.length > 1 ? `<div class="chips" role="group" aria-label="${esc(t('お店'))}">${ss.map(s => `<button type="button" class="chip" data-act="sale-store" data-id="${esc(s.id)}" aria-pressed="${s.id === cur}">${esc(s.name)}</button>`).join('')}</div>` : ''}
+        <div class="chips" role="group" aria-label="${esc(t('特売の日'))}">${[[0, t('今日')], [1, t('あした')]].map(([v, l]) => `<button type="button" class="chip" data-act="sale-date" data-v="${v}" aria-pressed="${(session.saleDay === 1 ? 1 : 0) === v}">${esc(l)}</button>`).join('')}</div>
+        <div class="chips sale-quick">${QUICK.map(q => `<button type="button" class="chip" data-act="sale-chip" data-v="${esc(q)}" aria-pressed="${mine.has(keyOf(q))}">${esc(q)}</button>`).join('')}</div>
+        <form class="inputbar sale-add" data-form="sale-add"><input type="text" id="sale-name" maxlength="30" autocomplete="off" placeholder="${esc(t('食材の名前（例: キャベツ）'))}" aria-label="${esc(t('食材の名前（例: キャベツ）'))}"><input type="text" id="sale-price" maxlength="20" autocomplete="off" placeholder="${esc(t('値段のメモ（任意）'))}" aria-label="${esc(t('値段のメモ（任意）'))}"><button class="btn" type="submit">${esc(t('特売に入れる'))}</button></form>
+        ${saleOcrHtml()}
+        ${all.length ? `<div class="sale-list">${all.map(saleRowHtml).join('')}</div>` : `<p class="small muted">${esc(t('まだ特売の食材はありません。チラシを見て、安いものをタップして入れてください。'))}</p>`}
+        ${discs.map(d => `<p class="small sale-disc">${esc(t('{slot}：{name}', {slot: t('PR'), name: d}))}</p>`).join('')}
+        ${f.names.size ? `<div class="eyebrow sale-sugg-h">${esc(t('特売の食材を使う料理'))}</div>
+        ${f.sugg.length ? f.sugg.map(x => `<div class="match"><span data-act="open" data-id="${esc(x.r.id)}">${thumbHtml(x.r)}</span><div class="info">
+            <div class="head"><span class="name">${esc(x.r.name)}</span></div>
+            <div class="small muted">${esc(slotLabel(x.sl))}${esc(t('・'))}${esc(t('{list}が使えます', {list: joinNames(x.hit.map(k => f.names.get(k)))}))}</div>
+            <div class="row"><button type="button" class="btn sm" data-act="open" data-id="${esc(x.r.id)}">${esc(t('作り方を見る'))}</button></div></div></div>`).join('')
+            : `<p class="small muted">${esc(t('特売の食材を使う料理は見つかりませんでした。'))}</p>`}
+        <p class="small muted">${esc(t('今日の献立は自動では変えません。アレルギー・苦手な食材の設定は、献立と同じように守ります。'))}</p>` : ''}
+        <p class="small muted">${esc(t('入れた特売は、この端末の中だけに残ります。特売の日の次の日が過ぎると消えます。'))}</p>
+    </div>`;
+}
+/* ---- 条件を変えるシート: 特売を使う料理の小さな案内（献立は変えない） ---- */
+function saleCondHtml(){
+    if (!S.sale || !saleForUse().length) return '';
+    const f = saleSuggest(2), nm = [...f.names.values()];
+    return `<div class="field sale-cond"><span class="eyebrow">${esc(t('特売'))}</span>
+        <p class="small" style="margin:0">${esc(f.sugg.length ? t('特売の{list}を使う料理: {names}', {list: joinNames(nm.slice(0, 3)), names: joinNames(f.sugg.map(x => x.r.name))}) : t('特売: {list}', {list: joinNames(nm.slice(0, 3))}))}</p>
+        <div class="row"><button type="button" class="btn sm" data-act="sale-goto">${esc(t('特売を使う料理'))}</button></div></div>`;
+}
+/* ---- 買い物メモ: 特売日の知らせ・売り場の並び・特売の札 ---- */
+function saleShopBannerHtml(){
+    const on = saleDaysOn();
+    if (on.length) return `<p class="sale-day sale-shop-day" role="status">🏷 ${esc(saleDayText(on))}</p>`;
+    if (!saleStores().length) return `<p class="pantry-hint sale-setup-hint">${esc(t('設定でよく行くスーパーを登録すると、特売日をここでお知らせします。'))} <button type="button" class="btn sm text" data-act="sale-setup">${esc(t('登録する'))}</button></p>`;
+    return '';
+}
+function saleShopFirst(){ const out = []; saleDaysOn().forEach(x => x.cats.forEach(c => { const s = SALE_CAT_SEC[c]; if (s && !out.includes(s)) out.push(s); })); return out; }   // 特売日の売り場を先頭に
+function saleShopTag(e){
+    if (!S.sale) return '';
+    const k = String(e.key).split('|')[0], hits = saleActive().filter(y => saleKeyOf(y) === k || keyOf(y.n) === keyOf(e.label)), x = hits.find(y => salePrice(y)) || hits[0];   // 値段のある方を出す
+    return x ? `<span class="sale-tag">🏷 ${esc(t('特売'))}${salePrice(x) ? ' ' + esc(salePrice(x)) : ''}</span>${saleBadge(x)}` : '';
+}
+/* ---- 設定: よく行くスーパー ---- */
+function saleAreaText(s){ return [s.pref, s.city, s.zip ? (LANG === 'ja' ? '〒' : '') + s.zip : ''].filter(Boolean).join(' '); }
+function saleSettingsSum(){ const n = saleStores().length; return n ? t('{n}店を登録しています', {n}) : t('まだ登録していません'); }
+function saleSettingsHtml(){
+    const ss = saleStores(), ed = session.saleEdit ? session.saleDraft : null;
+    const card = s => `<div class="box sale-store" data-sid="${esc(s.id)}"><b>${esc(s.name)}</b>
+        ${saleAreaText(s) ? `<div class="small muted">${esc(saleAreaText(s))}</div>` : ''}
+        ${s.days.length ? `<div class="small">${esc(t('{slot}：{name}', {slot: t('特売日'), name: s.days.slice().sort((a, b) => a.w - b.w).map(d => t('{day}：{cat}', {day: wdName(d.w), cat: saleCatLabel(d.c)})).join(SLASH())}))}</div>` : ''}
+        ${s.note ? `<div class="small">${esc(s.note)}</div>` : ''}
+        ${s.url ? `<div class="small"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer nofollow" referrerpolicy="no-referrer">${esc(t('チラシのページを開く'))}</a></div>` : ''}
+        ${s.fid ? `<div class="small"><span class="badge sale-pr">${esc(t('提携'))}</span></div>` : ''}
+        <div class="row"><button type="button" class="btn sm" data-act="sale-edit" data-id="${esc(s.id)}">${esc(t('編集'))}</button><button type="button" class="btn sm ghost danger" data-act="sale-del" data-id="${esc(s.id)}">${esc(t('消す'))}</button></div></div>`;
+    const jp = currentCountry() === 'JP';
+    const form = ed ? `<form class="box sale-form" data-form="sale-store" id="sale-form">
+        <div class="field"><label for="sale-f-name">${esc(t('店の名前'))}</label><input type="text" id="sale-f-name" maxlength="30" autocomplete="off" value="${esc(ed.name)}" placeholder="${esc(t('例: ○○スーパー 駅前店'))}"></div>
+        ${jp ? `<div class="field"><label for="sale-f-pref">${esc(t('都道府県'))}</label><select id="sale-f-pref"><option value="">${esc(t('選ばない'))}</option>${JP_PREFS.map(p => `<option value="${esc(p)}"${ed.pref === p ? ' selected' : ''}>${esc(p)}</option>`).join('')}</select></div>` : ''}
+        <div class="field"><label for="sale-f-city">${esc(jp ? t('市区町村') : t('地域（市・区など）'))}</label><input type="text" id="sale-f-city" maxlength="30" autocomplete="off" value="${esc(ed.city)}"></div>
+        <div class="field"><label for="sale-f-zip">${esc(t('郵便番号'))}</label><input type="text" id="sale-f-zip" maxlength="10" inputmode="numeric" autocomplete="off" value="${esc(ed.zip)}"></div>
+        <div class="field"><label>${esc(t('特売日'))}</label>
+            ${ed.days.length ? `<div class="chips">${ed.days.map((d, i) => `<span class="chip have">${esc(t('{day}：{cat}', {day: wdName(d.w), cat: saleCatLabel(d.c)}))}<button type="button" class="x" data-act="sale-day-rm" data-i="${i}" aria-label="${esc(t('{name}を外す', {name: t('{day}：{cat}', {day: wdName(d.w), cat: saleCatLabel(d.c)})}))}">×</button></span>`).join('')}</div>` : ''}
+            <div class="row sale-day-add"><select id="sale-f-w" aria-label="${esc(t('曜日'))}">${[0, 1, 2, 3, 4, 5, 6].map(w => `<option value="${w}">${esc(wdName(w, true))}</option>`).join('')}</select>
+                <select id="sale-f-c" aria-label="${esc(t('売り場'))}">${SALE_CATS.map(c => `<option value="${c}">${esc(saleCatLabel(c))}</option>`).join('')}</select>
+                <button type="button" class="btn sm" data-act="sale-day-add">${esc(t('追加'))}</button></div>
+            <span class="small muted">${esc(t('曜日と、安くなる売り場を選んで「追加」を押します（例: 火曜は野菜）。'))}</span></div>
+        <div class="field"><label for="sale-f-note">${esc(t('メモ'))}</label><input type="text" id="sale-f-note" maxlength="80" autocomplete="off" value="${esc(ed.note)}"></div>
+        <div class="field"><label for="sale-f-url">${esc(t('チラシのページのURL'))}</label><input type="url" id="sale-f-url" maxlength="300" autocomplete="off" placeholder="https://" value="${esc(ed.url)}">
+            <span class="small muted">${esc(t('URL は、自分で開くためのリンクとして出すだけです。アプリがこのページを読みこむことはありません。'))}</span></div>
+        <span class="small muted">${esc(t('名前のほかは、書かなくてもかまいません。'))}</span>
+        <div class="row"><button class="btn primary" type="submit">${esc(t('保存する'))}</button><button type="button" class="btn ghost" data-act="sale-cancel">${esc(t('やめる'))}</button></div></form>` : '';
+    const rm = S.sale && S.sale.remind;
+    return `<div class="set-group sale-set">
+        <p class="small muted" style="margin:0 0 6px">${esc(t('よく行くスーパーを{n}店まで登録できます。登録した内容は、この端末の中だけに残り、どこにも送りません。', {n: SALE_MAX_STORES}))}</p>
+        ${ss.filter(s => !(ed && ed.id === s.id)).map(card).join('')}
+        ${form}
+        ${!ed && ss.length < SALE_MAX_STORES ? `<div class="row"><button type="button" class="btn" data-act="sale-new">${esc(t('店を追加'))}</button></div>` : ''}
+    </div>
+    <div class="set-group">
+        <div class="field"><label>${esc(t('特売日の朝のお知らせ'))}</label>
+        ${isNative() ? `<div class="chips">${[['off', t('なし')], [7, hourLabel(7)], [8, hourLabel(8)], [9, hourLabel(9)]].map(([v, l]) => `<button type="button" class="chip" data-act="sale-remind" data-v="${v}" aria-pressed="${v === 'off' ? typeof rm !== 'number' : rm === v}">${esc(l)}</button>`).join('')}</div>
+        <span class="small muted">${esc(t('登録した特売日の朝に、端末の通知でお知らせします。はじめはオフです。'))}</span>` : `<span class="small muted">${esc(t('お知らせは iPhone アプリ版で使えます'))}</span>`}</div>
+    </div>
+    <div class="set-group">
+        <details class="sale-feed"${session.saleFeedOpen ? ' open' : ''}><summary>${esc(t('提携先のチラシデータを読みこむ（試験用）'))}</summary>
+            <p class="small muted">${esc(t('提携先から届く形式（JSON）のデータを貼りつけて読みこみます。いまは提携先はなく、アプリが通信することもありません。'))}</p>
+            <textarea id="sale-feed-text" rows="4" maxlength="${SALE_FEED_MAX}" aria-label="${esc(t('提携先のチラシデータを読みこむ（試験用）'))}" spellcheck="false">${esc(session.saleFeedText || '')}</textarea>
+            <div class="row"><button type="button" class="btn sm" data-act="sale-feed-go">${esc(t('データを読みこむ'))}</button></div>
+        </details>
+    </div>`;
+}
+/* ---- 提携先のチラシデータ（docs/partner_flyer_feed.md）。いまは通信しない。貼りつけて試すときだけ使う ----
+   importFlyerFeed(json, today): 形を確かめて {ok:true, feed} か {ok:false, err} を返す（S は変えない）
+   mergeFlyerFeed(sale, feed, newId): 同じ「今日の特売」の形に入れた新しい S.sale を返す（引数は変えない） */
+function importFlyerFeed(json, today){
+    let d = json;
+    if (typeof json === 'string'){
+        if (json.length > SALE_FEED_MAX) return {ok: false, err: 'size'};
+        try{ d = JSON.parse(json.replace(/^\ufeff/, '')); }catch(e){ return {ok: false, err: 'json'}; }
+    }
+    if (!d || typeof d !== 'object' || Array.isArray(d)) return {ok: false, err: 'shape'};
+    if (d.format !== 'gohancho-flyer-feed' || d.version !== 1) return {ok: false, err: 'shape'};
+    const st = d.store && typeof d.store === 'object' && !Array.isArray(d.store) ? d.store : null, name = st && saleClean(st.name, 30);
+    if (!name) return {ok: false, err: 'shape'};
+    const v = d.valid && typeof d.valid === 'object' ? d.valid : {}, ok = x => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x) && realYmd(x);
+    if (!ok(v.from) || !ok(v.to) || v.to < v.from || addDays(v.from, 14) < v.to) return {ok: false, err: 'dates'};
+    if (today && v.to < today) return {ok: false, err: 'old'};
+    if (!Array.isArray(d.items) || !d.items.length || d.items.length > 100) return {ok: false, err: 'items'};
+    const area = st.area && typeof st.area === 'object' ? st.area : {}, sp = d.sponsored === true, cur = typeof d.currency === 'string' && /^[A-Z]{3}$/.test(d.currency) ? d.currency : 'JPY';
+    const items = d.items.filter(i => i && typeof i === 'object' && (saleClean(i.name, 30) || saleClean(i.key, 40))).map(i => {
+        const o = {k: saleClean(i.key || i.name, 40), n: saleClean(i.name || i.key, 30), pr: sp || i.sponsored === true};
+        if (typeof i.price === 'number' && Number.isFinite(i.price) && i.price >= 0 && i.price <= 1e7) o.v = i.price;
+        if (saleClean(i.unit, 12)) o.unit = saleClean(i.unit, 12);
+        if (SALE_CATS.includes(i.category)) o.cat = i.category;
+        return o; });
+    if (!items.length) return {ok: false, err: 'items'};
+    return {ok: true, feed: {store: {id: saleClean(st.id, 60), name, pref: saleClean(area.pref, 10), city: saleClean(area.city, 30), zip: saleZip(area.zip)},
+        from: v.from, to: v.to, cur, disc: saleClean(d.disclosure, 120), items}};
+}
+function mergeFlyerFeed(sale, feed, newId){
+    const base = sale && typeof sale === 'object' ? sale : {}, stores = (base.stores || []).map(s => Object.assign({}, s)), mk = newId || (p => p + Math.random().toString(36).slice(2, 10));
+    let s = stores.find(z => feed.store.id && z.fid === feed.store.id) || stores.find(z => z.name === feed.store.name);
+    if (!s && stores.length < SALE_MAX_STORES){ s = {id: mk('pf'), name: feed.store.name, pref: feed.store.pref, city: feed.store.city, zip: feed.store.zip, days: [], note: '', url: ''}; if (feed.store.id) s.fid = feed.store.id; stores.push(s); }
+    else if (s && feed.store.id && !s.fid) s.fid = feed.store.id;
+    const sid = s ? s.id : '', sn = s ? s.name : feed.store.name;
+    // 同じ店・同じ期間の提携データは入れ替える（同じデータを2回読んでも重ならない）
+    const keep = (base.items || []).filter(x => !(x.src === 'feed' && (sid ? x.s === sid : x.sn === sn) && x.d === feed.from && x.u === feed.to));
+    const add = feed.items.map(i => { const o = {id: mk('fi'), s: sid, sn, k: i.k, n: i.n, p: '', d: feed.from, u: feed.to, src: 'feed'};
+        if (typeof i.v === 'number'){ o.v = i.v; o.cur = feed.cur; } if (i.unit) o.unit = i.unit; if (i.cat) o.cat = i.cat; if (i.pr) o.pr = true; if (feed.disc) o.disc = feed.disc; return o; });
+    const out = Object.assign({}, base, {stores, items: keep.concat(add).slice(-SALE_MAX_ITEMS)});
+    return {sale: out, n: add.length};
+}
+function saleFeedErrText(err){
+    return err === 'json' ? t('JSON として読めませんでした。読みこみませんでした')
+        : err === 'old' ? t('特売の期間が過ぎたデータです。読みこみませんでした')
+        : err === 'size' ? t('データが大きすぎます。読みこみませんでした')
+        : t('データの形が正しくありません。読みこみませんでした');
+}
+/* ---- 操作 ---- */
+function saleNewId(p){ return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function saleSnap(){ return JSON.stringify(S.sale || null); }
+function saleRestore(snap){ const v = JSON.parse(snap); if (v) S.sale = v; else delete S.sale; save(); render(); }
+function saleReadForm(){
+    const d = session.saleDraft; if (!d) return;
+    const v = id => { const e = document.getElementById(id); return e ? e.value : null; };
+    [['name', 'sale-f-name'], ['pref', 'sale-f-pref'], ['city', 'sale-f-city'], ['zip', 'sale-f-zip'], ['note', 'sale-f-note'], ['url', 'sale-f-url']].forEach(([k, id]) => { const x = v(id); if (x !== null) d[k] = x; });
+}
+function saleSaveStore(){
+    saleReadForm(); const d = session.saleDraft; if (!d) return;
+    const name = saleClean(d.name, 30); if (!name){ toast(t('店の名前を入れてください')); const n = $('#sale-f-name'); if (n) n.focus(); return; }
+    const url = saleUrl(d.url); if (saleClean(d.url, 300) && !url){ toast(t('URL は https:// から入れてください')); return; }
+    const snap = saleSnap(), sd = saleData(), o = {id: d.id || saleNewId('st'), name, pref: JP_PREFS.includes(d.pref) ? d.pref : '', city: saleClean(d.city, 30), zip: saleZip(d.zip), days: d.days.slice(0, 14), note: saleClean(d.note, 80), url};
+    const i = sd.stores.findIndex(s => s.id === o.id);
+    if (i >= 0){ if (sd.stores[i].fid) o.fid = sd.stores[i].fid; sd.stores[i] = o; }
+    else { if (sd.stores.length >= SALE_MAX_STORES){ toast(t('登録できるのは{n}店までです', {n: SALE_MAX_STORES})); return; } sd.stores.push(o); }
+    session.saleEdit = false; session.saleDraft = null; save(); render();
+    toast(t('「{name}」を登録しました', {name}), false, () => saleRestore(snap));
+}
+function saleAddItem(text, price, quiet){
+    const raw = saleClean(text, 30); if (!raw){ toast(t('食材の名前を入れてください')); return false; }
+    const c = canonOf(raw), n = c ? labelOf(raw) : raw, k = keyOf(raw), day = saleCurDay(), s = saleCurStore(), sd = saleData();
+    const snap = saleSnap(), had = sd.items.find(x => x.s === s && x.d === day && x.src !== 'feed' && saleKeyOf(x) === k);
+    if (had){ if (price !== undefined) had.p = saleClean(price, 20); }
+    else { sd.items.push({id: saleNewId('si'), s, sn: '', k, n, p: saleClean(price, 20), d: day, u: day}); if (sd.items.length > SALE_MAX_ITEMS) sd.items.splice(0, sd.items.length - SALE_MAX_ITEMS); }
+    save(); render();
+    if (!quiet) toast(t('「{name}」を特売に入れました', {name: n}), false, () => saleRestore(snap));
+    return true;
+}
+function saleGoto(){
+    if (sheet) closeSheet();
+    if (!saleStores().length && !saleItemsAll().length){ saleSetup(); return; }
+    if (!S.foldOpen) S.foldOpen = {}; S.foldOpen.sale = true; save();
+    if (tab !== 'today') setTab('today'); else render();
+    const fd = document.querySelector('details.fold[data-fold="sale"]'); if (fd && !fd.open) fd.open = true;
+    const h = $('#sale-sec'); if (h) h.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
+function saleSetup(){
+    if (sheet) closeSheet();
+    if (!session.setOpen) session.setOpen = {}; session.setOpen.store = true;
+    if (!saleStores().length && !session.saleEdit){ session.saleEdit = true; session.saleDraft = {id: '', name: '', pref: '', city: '', zip: '', note: '', url: '', days: []}; }
+    if (tab !== 'settings') setTab('settings'); else render();
+    const g = document.getElementById('set-store'); if (g) g.scrollIntoView({block: 'start'});
+}
+async function setSaleRemind(h){
+    const P = nativePlugin('LocalNotifications');
+    if (!P){ toast(t('お知らせは iPhone アプリ版で使えます')); return; }
+    try{
+        if (h === null){ if (S.sale) delete S.sale.remind; save(); await syncNotifs(true); toast(t('お知らせを止めました')); render(); return; }
+        if (!(await notifAsk(P))) return;
+        saleData().remind = h; save(); await syncNotifs(true); toast(t('特売日の{time}にお知らせします', {time: hourLabel(h)})); render();
+    }catch(e){ toast(t('お知らせを設定できませんでした')); }
+}
+// 特売日（登録した曜日）か、特売の食材がある日の朝のお知らせ（notifBuild から呼ぶ）
+function saleNotifs(now, at){
+    const h = S.sale && S.sale.remind; if (typeof h !== 'number') return [];
+    const out = [];
+    for (let i = 0; i < 7; i++){
+        const d = addDays(TODAY, i), when = at(d, h); if (when <= now) continue;
+        const on = saleDaysOn(d), its = [...new Set(saleActive(d).map(x => x.n))];
+        if (!on.length && !its.length) continue;
+        out.push({id: NOTIFY_SALE_ID + i, title: on.length ? t('今日は{store}の特売日です', {store: on[0].s.name}) : t('今日の特売があります'),
+            body: on.length ? joinNames([...new Set(on.flatMap(x => x.cats))].map(saleCatLabel)) : joinNames(its.slice(0, 3)) + (its.length > 3 ? t(' など') : ''), schedule: {at: when, allowWhileIdle: true}});
+    }
+    return out;
+}
+function saleAct(el, act){
+    const id = el.dataset.id;
+    switch (act){
+        case 'sale-goto': saleGoto(); break;
+        case 'sale-ocr-tog': case 'sale-ocr-ok': case 'sale-ocr-cancel': saleOcrAct(act, el); break;
+        case 'sale-setup': saleSetup(); break;
+        case 'sale-new': if (saleStores().length >= SALE_MAX_STORES){ toast(t('登録できるのは{n}店までです', {n: SALE_MAX_STORES})); break; }
+            session.saleEdit = true; session.saleDraft = {id: '', name: '', pref: '', city: '', zip: '', note: '', url: '', days: []}; render(); { const n = $('#sale-f-name'); if (n) n.focus({preventScroll: true}); } break;
+        case 'sale-edit': { const s = saleStoreOf(id); if (!s) break; session.saleEdit = true; session.saleDraft = {id: s.id, name: s.name, pref: s.pref, city: s.city, zip: s.zip, note: s.note, url: s.url, days: s.days.map(d => ({w: d.w, c: d.c}))}; render(); break; }
+        case 'sale-cancel': session.saleEdit = false; session.saleDraft = null; render(); break;
+        case 'sale-day-add': { saleReadForm(); const d = session.saleDraft; if (!d) break; const w = Number(($('#sale-f-w') || {}).value), c = ($('#sale-f-c') || {}).value;
+            if (Number.isInteger(w) && w >= 0 && w <= 6 && SALE_CATS.includes(c) && !d.days.some(x => x.w === w && x.c === c) && d.days.length < 14) d.days.push({w, c});
+            render(); break; }
+        case 'sale-day-rm': { saleReadForm(); const d = session.saleDraft; if (d) d.days.splice(Number(el.dataset.i), 1); render(); break; }
+        case 'sale-del': { const s = saleStoreOf(id); if (!s) break; const snap = saleSnap(), sd = saleData();
+            sd.stores = sd.stores.filter(x => x.id !== id); sd.items = sd.items.filter(x => x.s !== id);
+            if (session.saleStore === id) session.saleStore = ''; save(); render();
+            toast(t('「{name}」を消しました', {name: s.name}), false, () => saleRestore(snap)); break; }
+        case 'sale-remind': setSaleRemind(el.dataset.v === 'off' ? null : Number(el.dataset.v)); break;
+        case 'sale-store': session.saleStore = id; render(); break;
+        case 'sale-date': session.saleDay = el.dataset.v === '1' ? 1 : 0; render(); break;
+        case 'sale-chip': { const k = keyOf(el.dataset.v), day = saleCurDay(), s = saleCurStore(), sd = saleData(), hit = sd.items.find(x => x.s === s && x.d === day && x.src !== 'feed' && saleKeyOf(x) === k);
+            if (hit){ const snap = saleSnap(); sd.items = sd.items.filter(x => x !== hit); save(); render(); toast(t('「{name}」を特売から外しました', {name: hit.n}), false, () => saleRestore(snap)); }
+            else saleAddItem(el.dataset.v);
+            break; }
+        case 'sale-rm': { const sd = saleData(), hit = sd.items.find(x => x.id === id); if (!hit) break; const snap = saleSnap();
+            sd.items = sd.items.filter(x => x !== hit); save(); render(); toast(t('「{name}」を特売から外しました', {name: hit.n}), false, () => saleRestore(snap)); break; }
+        case 'sale-feed-go': {
+            const ta = $('#sale-feed-text'), txt = ta ? ta.value : ''; session.saleFeedText = txt.slice(0, SALE_FEED_MAX); session.saleFeedOpen = true;
+            const r = importFlyerFeed(txt, TODAY);
+            if (!r.ok){ render(); toast(saleFeedErrText(r.err)); break; }
+            const snap = saleSnap(), m = mergeFlyerFeed(saleData(), r.feed, saleNewId);
+            S.sale = m.sale; session.saleFeedText = ''; session.saleFeedOpen = false; save(); render();
+            toast(t('{n}品の特売を読みこみました', {n: m.n}), false, () => saleRestore(snap)); break; }
+    }
+}
+function saleSubmit(f){
+    if (f === 'sale-store'){ saleSaveStore(); return; }
+    if (f === 'sale-add'){ const n = $('#sale-name'), p = $('#sale-price'); if (n && saleAddItem(n.value, p ? p.value : '')){ const x = $('#sale-name'); if (x) x.focus({preventScroll: true}); } }
+}
+
+/* ---- チラシの写真から特売品を読み取る（iPhone アプリのみ。オーナー決定 11/04 の C） ----
+   ・iPhone の中の Apple Vision の文字認識（自作プラグイン FlyerText = ios-app/plugins/gohancho-flyer-text）。写真は縮小して渡すだけで、端末の外に出さず、保存もしない
+   ・読んだ文字から、アプリの食材（冷蔵庫と同じ canon）に当たる品名と、近くの値段を拾って「候補」にする。使う人が選んで「特売に入れる」を押すまで入れない
+   ・ウェブ版・プラグインがないときはボタンを出さず「iPhone アプリで使えます」とだけ出す（手入力はそのまま）。外部の OCR サービスは使わない */
+function flyerText(){ const p = nativePlugin('FlyerText'); return p && typeof p.recognize === 'function' ? p : null; }
+// 値段: 「98円」「1,280円」「¥98」「128円（税込138円）」「税込 138円」。「10円引」「50%OFF」「ポイント」は値段ではない
+const FLYER_PRICE_RE = /(税込|税抜|本体)?\s*(?:価格)?\s*(?:[¥￥$€£]\s*(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d{1,2}))?|(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d{1,2}))?\s*(円|€|zł|TL|₫|฿|Rp|₹))(?!\s*(?:引|びき|OFF|off|%|％|割|ポイント|pt))/g;
+const FLYER_UNIT_RE = /(\d+(?:\.\d+)?)\s*(kg|g|ml|l|本|個|玉|袋|パック|尾|束|株|枚|切れ|切|丁|房|缶|杯)(\s*(?:当り|当たり|あたり))?/i;
+const FLYER_NOISE_RE = /国産|産|県|北海道|九州|特売|特価|お買い得|おすすめ|限り|お一人様|お1人様|本日|毎週|日替わり|各|よりどり|税込|税抜|本体|価格|当り|当たり|あたり|円|¥|￥/g;
+// 1行の値段を拾う: [{v: 数, text, tax: 'in'|'ex'|''}]
+function flyerPrices(line){
+    const out = []; let m; FLYER_PRICE_RE.lastIndex = 0;
+    while ((m = FLYER_PRICE_RE.exec(line))){
+        const n = (m[2] || m[4] || '').replace(/,/g, ''), dec = m[3] || m[5] || '', v = Number(n + (dec ? '.' + dec : ''));
+        if (!n || !Number.isFinite(v) || v <= 0 || v > 1e6) continue;
+        const before = line.slice(Math.max(0, m.index - 4), m.index);
+        const tax = m[1] === '税込' || /税込/.test(before) ? 'in' : m[1] === '税抜' || m[1] === '本体' || /税抜|本体/.test(before) ? 'ex' : '';
+        out.push({v, text: m[0].replace(/^(税込|税抜|本体)\s*(価格)?\s*/, '').trim(), tax});
+    }
+    return out;
+}
+// 読み取った文字（行の配列か、改行でつないだ文字列）→ 候補 [{key, name, price: 数|null, priceText, unit}]。S は変えない（canon・label は差しかえられる）
+function parseFlyerText(text, canon = canonOf, label = labelOf){
+    const lines = (Array.isArray(text) ? text : String(text || '').split(/\r?\n/)).map(x => String(x == null ? '' : x).normalize('NFKC').replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 400);
+    const out = [], seen = new Map();
+    const ingsOf = line => {
+        const body = line.replace(FLYER_PRICE_RE, ' ').replace(new RegExp(FLYER_UNIT_RE.source, 'gi'), ' ').replace(/[()（）［］\[\]【】「」『』]/g, ' ').replace(FLYER_NOISE_RE, ' ');
+        const ks = [];
+        body.split(/[\s・、,/／&＆]+/).filter(w => w && !/^\d+$/.test(w)).forEach(w => { const c = canon(w); if (c && !ks.includes(c)) ks.push(c); });
+        return ks;
+    };
+    const fmt = ps => { if (!ps.length) return {price: null, priceText: ''};
+        const main = ps.find(p => p.tax !== 'in') || ps[0], inc = ps.find(p => p.tax === 'in' && p !== main);
+        return {price: main.v, priceText: main.text + (inc ? (main.tax === 'in' ? '' : '（' + '税込' + inc.text + '）') : main.tax === 'in' ? '（税込）' : '')}; };
+    lines.forEach((line, i) => {
+        const ks = ingsOf(line); if (!ks.length) return;
+        let ps = flyerPrices(line);
+        // 値段が次の行にだけある（品名の行と値段の行が分かれているチラシ）
+        if (!ps.length && lines[i + 1] && !ingsOf(lines[i + 1]).length) ps = flyerPrices(lines[i + 1]);
+        const um = line.match(FLYER_UNIT_RE), unit = um ? um[0].replace(/\s+/g, '') : '';
+        const pr = fmt(ps);
+        ks.forEach(k => {
+            const prev = seen.get(k);
+            if (prev){ if (prev.price == null && pr.price != null){ Object.assign(prev, pr); prev.unit = unit; } return; }
+            const o = {key: k, name: label(k) || k, price: pr.price, priceText: pr.priceText, unit};
+            seen.set(k, o); out.push(o);
+        });
+    });
+    return out.slice(0, 40);
+}
+function saleOcrHtml(){
+    const vis = flyerText(), o = session.saleOcr;
+    if (!vis) return `<p class="small muted sale-ocr-off">${esc(t('チラシの写真から読み取る機能は、iPhone アプリで使えます。'))}</p>`;
+    const head = `<div class="row sale-ocr-btns"><label class="btn sm" for="sale-cam">${esc(t('チラシを撮る'))}</label><label class="btn sm" for="sale-lib">${esc(t('写真を選ぶ'))}</label>
+        <input type="file" id="sale-cam" accept="image/*" capture="environment" hidden><input type="file" id="sale-lib" accept="image/*" hidden></div>`;
+    if (!o) return head + `<p class="small muted">${esc(t('写真は端末の外に送らず、保存もしません。'))}</p>`;
+    if (o.phase === 'busy') return head + `<p class="small" role="status">${esc(t('チラシを読み取っています…'))}</p>`;
+    const cands = o.cands || [];
+    return head + `<div class="box sale-ocr" role="group" aria-label="${esc(t('チラシから読み取った候補'))}">
+        <p class="small warn" style="margin:0 0 6px">${esc(o.fail ? t('チラシの文字を読み取れませんでした。手で入れてください。') : cands.length ? t('チラシから読み取った候補です。読み取りの誤り（品名・値段）があり得ます。確かめて、特売に入れる品を選んでください。') : t('チラシから食材の名前を読み取れませんでした。手で入れてください。'))}</p>
+        ${cands.length ? `<div class="chips">${cands.map((c, i) => `<button type="button" class="chip" data-act="sale-ocr-tog" data-i="${i}" aria-pressed="${o.sel.includes(i)}">${esc(c.name)}${c.priceText ? ' ' + esc(c.priceText) : ''}${c.unit ? ' ' + esc(c.unit) : ''}</button>`).join('')}</div>` : ''}
+        <div class="row">${cands.length ? `<button type="button" class="btn sm primary" data-act="sale-ocr-ok"${o.sel.length ? '' : ' disabled'}>${esc(t('選んだ品を特売に入れる（{n}品）', {n: o.sel.length}))}</button>` : ''}<button type="button" class="btn sm ghost" data-act="sale-ocr-cancel">${esc(t('やめる'))}</button></div></div>`;
+}
+async function saleOcrStart(file){
+    const vis = flyerText(); if (!vis || !file) return;
+    if (file.size > PHOTO_MAX){ toast(t('ファイルが大きすぎて読み込めません')); return; }
+    const token = {}; session.saleOcr = {phase: 'busy', token, cands: [], sel: []}; render();
+    let lines = null;
+    try{
+        const blob = await shrinkImage(file, 1600); if (!blob) throw 0;   // 文字を読むので冷蔵庫の写真より大きめ。メモリの上だけ
+        const res = await Promise.race([vis.recognize({image: await blobB64(blob), languages: LANG === 'ja' || currentCountry() === 'JP' ? ['ja-JP', 'en-US'] : [navigator.language || 'en-US', 'en-US']}), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 30000))]);
+        lines = res && Array.isArray(res.lines) ? res.lines.map(x => typeof x === 'string' ? x : x && x.text).filter(x => typeof x === 'string') : null;
+    }catch(e){ lines = null; }
+    if (!session.saleOcr || session.saleOcr.token !== token) return;   // やめた
+    const cands = lines ? parseFlyerText(lines) : [];
+    session.saleOcr = {phase: 'review', token, cands, sel: [], fail: !lines};   // 自動では選ばない（使う人が選ぶ）
+    render();
+}
+function saleOcrAct(act, el){
+    const o = session.saleOcr; if (!o) return;
+    if (act === 'sale-ocr-cancel'){ session.saleOcr = null; render(); return; }
+    if (act === 'sale-ocr-tog'){ const i = Number(el.dataset.i), j = o.sel.indexOf(i); if (j >= 0) o.sel.splice(j, 1); else if (o.cands[i]) o.sel.push(i); render(); return; }
+    if (act === 'sale-ocr-ok'){
+        const pick = o.sel.map(i => o.cands[i]).filter(Boolean); if (!pick.length) return;
+        const snap = saleSnap();
+        pick.forEach(c => saleAddItem(c.name, [c.priceText, c.unit].filter(Boolean).join(' ').slice(0, 20), true));
+        session.saleOcr = null; render();
+        toast(t('{n}品を特売に入れました', {n: pick.length}), false, () => saleRestore(snap));
+    }
+}
+document.addEventListener('change', e => { const el = e.target; if ((el.id === 'sale-cam' || el.id === 'sale-lib') && el.files && el.files[0]){ const f = el.files[0]; el.value = ''; saleOcrStart(f); } });
+document.addEventListener('toggle', e => { if (e.target.matches && e.target.matches('details.sale-feed')) session.saleFeedOpen = e.target.open; }, true);
 
 /* ---- 今日の献立 ---- */
 // 今日「この献立に決定」した献立があれば、アプリを開き直しても同じ献立を出す
@@ -10827,6 +11309,7 @@ function condSheetHtml(){
         ${stapleOptions().length > 1 ? `<div class="field"><span class="eyebrow">${esc(t('主食'))}</span><div class="chips" role="group" aria-label="${esc(t('主食'))}">${stapleOptions().map(o => `<button class="chip" data-act="staple-set" data-v="${esc(o.k)}" aria-pressed="${currentStapleOpt().k === o.k}" ${o.k !== 'none' && stapleBlocked(o) ? 'disabled' : ''}>${esc(stapleName(o))}</button>`).join('')}</div></div>` : ''}
         ${eaters}
         <div class="field"><span class="eyebrow">${esc(t('冷蔵庫'))}</span><label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge ? 'checked' : ''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f: S.fridge.length, s: S.staples.length}))}</span></label></div>
+        ${saleCondHtml()}
         <div class="field"><span class="eyebrow">${esc(t('国'))}</span>${mixHtml()}</div>
         <div class="field cond-shuffle"><span class="eyebrow">${esc(t('まるごと入れ替え'))}</span>
             <div class="tray-shuffle"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}"><span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span><span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button></div>
@@ -11137,6 +11620,7 @@ function viewToday(){
         ${/* ゆるめた知らせ（10分以内・いちばん簡単・じっくり・ラクの日）は、お膳の上の「条件を変える」の中の短い1行と、条件のシートの全文（お膳の下では決定の帯とタブの裏に隠れた。第17回 R50） */''}
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
+        ${saleTodayLineHtml()}
         ${leftoversHtml()}
         ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`
@@ -11193,6 +11677,7 @@ function viewToday(){
            <div class="row"><button class="btn" data-act="make-week">${esc(t('1週間分を考える'))}</button></div>${voteEntryHtml()}`}
         <p class="foot">${esc(t('{n}日以内に作った料理は出しません。前日と同じ肉・魚やジャンルも続かないように選んでいます。', {n:S.settings.avoidDays}))}${effAvoid().length ? (L => esc(swapOn() ? t('苦手な食材（{list}）は、ほかの食材に置き換えて作れる料理なら置き換え、できない料理は出しません。', {list:L}) : t('苦手な食材（{list}）を使う料理は出しません。', {list:L})))(joinNames([...new Set(effAvoid().map(avoidName))])) : ''}${scarceList().length ? (/^(ja|zh)/.test(LANG) ? '' : ' ') + esc(t('手に入りにくい食材（{list}）を使う料理は出しません。', {list: joinNames(scarceList())})) : ''}${photoNote() ? '<br><span class="credit">' + esc(photoNote()) + '</span>' : ''}</p>
 `)}
+    ${saleFoldHtml()}
 `;   // 食費メモは記録（デザイン部長の点検1）
 }
 
@@ -12883,6 +13368,7 @@ document.addEventListener('click', e => {
     session.freshArmed = true;   // 「新」の札は、本人が何か押したあとの変化にだけ付ける
     if (el.closest('.cond-entries') && sheet && sheet.kind === 'cond') closeSheet();   // 条件シートの中の入口: シートを閉じてから、その画面へ
     // 「設定に合わせて…かえました」は、決める段で見せたあとの次の操作で消す（第4回 R7: 気分を変えたあとも残った）。「ほかの候補」はこの知らせの続きなので除く
+    if (act.startsWith('sale-')){ saleAct(el, act); return; }   // よく行くスーパーと特売
     if (session.avoidNote && session.avoidNote.seen && act !== 'avoid-other'){ session.avoidNote = null; const n = document.querySelector('#view .avoid-note'); if (n) n.remove(); }
     switch(act){
         case 'open': openModal(id); break;
@@ -13931,6 +14417,7 @@ document.addEventListener('change', e => {
 document.addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target.dataset.form;
+    if (f && f.startsWith('sale-')){ saleSubmit(f); return; }   // よく行くスーパーと特売
     if (f === 'spend'){ spendAdd(); return; }
     if (f === 'stock-add'){ const n = $('#stock-name'), q = $('#stock-q'), e2 = $('#stock-exp'); if (n && stockAdd(n.value, q ? q.value : '', e2 ? e2.value : '')){ const x = $('#stock-name'); if (x) x.focus({preventScroll:true}); } return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
