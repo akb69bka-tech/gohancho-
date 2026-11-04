@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('VN', 'vi', {
   staple: 'Cơm trắng',
   names: {
+    "enoki": "Nấm kim châm",
+    "choy sum": "Cải ngọt",
     'pork': 'Thịt heo', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
     'shrimp': 'Tôm', 'egg': 'Trứng', 'tofu': 'Đậu phụ', 'rice': 'Cơm', 'sausage': 'Lạp xưởng',
     'tomato': 'Cà chua', 'onion': 'Hành tây', 'scallion': 'Hành lá', 'ginger': 'Gừng', 'chili': 'Ớt',
@@ -11,6 +13,36 @@ GOHAN_PACK_TR('VN', 'vi', {
     'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay', 'lemongrass': 'Sả', 'bell pepper': 'Ớt chuông', 'lettuce': 'Xà lách', 'ground beef': 'Thịt bò xay', 'betel leaves': 'Lá lốt', 'squid': 'Mực', 'mushrooms': 'Nấm', 'rice vermicelli': 'Bún', 'cucumber': 'Dưa leo', 'egg noodles': 'Mì trứng', 'bok choy': 'Cải thìa', 'chayote': 'Su su', 'broccoli': 'Bông cải xanh', 'green beans': 'Đậu que', 'dried shrimp': 'Tôm khô', 'lotus stems': 'Ngó sen', 'green papaya': 'Đu đủ xanh', 'rice paper': 'Bánh tráng', 'small eggplants': 'Cà pháo'
   },
   recipes: {
+    "vn_canhdauhucachua": {
+      name: "Canh đậu phụ cà chua",
+      ings: [["Đậu phụ non", "200 g"], ["Cà chua", "2 quả"], ["Hành lá", "2 cây"]],
+      seas: "700 ml nước · 1 thìa cà phê dầu ăn · 1 thìa canh nước mắm · 1/2 thìa cà phê muối · Hạt tiêu",
+      steps: [
+        "Cà chua bổ múi cau, phi thơm đầu hành với dầu rồi xào cà chua 2 phút. Cho nước và đậu phụ cắt miếng vào, đun sôi 4 phút.",
+        "Nêm nước mắm, muối, hạt tiêu và cho hành lá vào.",
+      ],
+      tip: { add: "Vài nhánh thì là", why: "Thơm kiểu miền Bắc", skill: "Xào cà chua trước", how: "Xào cà chua trước giúp nước canh đỏ đẹp và đậm đà hơn." },
+    },
+    "vn_canhcaingot": {
+      name: "Canh cải ngọt thịt bằm",
+      ings: [["Thịt heo bằm", "100 g"], ["Cải ngọt", "200 g"], ["Hành lá", "1 cây"]],
+      seas: "700 ml nước · 1 thìa canh nước mắm · 1/2 thìa cà phê muối · Hạt tiêu",
+      steps: [
+        "Ướp thịt bằm với chút nước mắm và tiêu. Đun sôi nước, cho thịt vào đánh tơi, nấu 3 phút và hớt bọt.",
+        "Cho cải ngọt cắt khúc vào nấu 2 phút. Nêm nước mắm, muối và cho hành lá.",
+      ],
+      tip: { add: "Vài lát gừng", why: "Thơm và nước canh thanh hơn", skill: "Cho rau vào sau cùng", how: "Nấu 2 phút rau vẫn xanh và ngọt." },
+    },
+    "vn_canhnamkimcham": {
+      name: "Canh nấm kim châm trứng",
+      ings: [["Nấm kim châm", "150 g"], ["Trứng gà", "1 quả"], ["Hành lá", "1 cây"]],
+      seas: "700 ml nước hoặc nước dùng gà · 1 thìa canh nước mắm · 1/2 thìa cà phê muối · Hạt tiêu",
+      steps: [
+        "Cắt gốc nấm kim châm, tách thành từng chùm nhỏ. Đun sôi nước dùng, cho nấm vào nấu 2 phút.",
+        "Rót trứng đã đánh thành sợi mỏng, đợi 30 giây rồi khuấy nhẹ. Nêm nước mắm, muối, tiêu và cho hành lá.",
+      ],
+      tip: { add: "Thêm chút thịt bằm", why: "Canh no bụng hơn", skill: "Đừng nấu nấm quá lâu", how: "Nấu 2 phút nấm mềm mà vẫn giòn." },
+    },
     'vn_thitkhotrung': {
       name: 'Thịt kho trứng',
       ings: [['Thịt ba chỉ', '400 g'], ['Trứng (gà hoặc vịt)', '4 quả'], ['Nước dừa', '400 ml']],

@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "alphabet pasta": "Buchstabennudeln",
+    "chives": "Schnittlauch",
     'leberkaese': 'Leberkäse',
     'ground meat': 'Hackfleisch',
     'bread roll': 'Brötchen',
@@ -73,6 +75,36 @@ GOHAN_PACK_TR('DE', 'de', {
     'butter': 'Butter',
   },
   recipes: {
+    "de_eierflockensuppe": {
+      name: "Eierflockensuppe",
+      ings: [["Eier", "2"], ["Schnittlauch", "1/2 Bund"], ["Möhre", "1/2"]],
+      seas: "800 ml Rinder- oder Gemüsebrühe · Etwas geriebene Muskatnuss · Salz · Pfeffer",
+      steps: [
+        "Die Möhre raspeln und 3 Minuten in der Brühe köcheln. Die Eier mit Muskat, einer Prise Salz und Pfeffer verquirlen.",
+        "Das Ei in dünnem Strahl in die leicht köchelnde Brühe gießen, dabei langsam rühren, und 1 Minute stocken lassen. Abschmecken und mit Schnittlauchröllchen bestreuen.",
+      ],
+      tip: { add: "Eine Scheibe Roggenbrot mit Butter", why: "Macht die leichte Suppe sättigender", skill: "Köcheln, nicht sprudeln", how: "In leicht köchelnder Brühe stockt das Ei zu zarten Flocken, sprudelnd zerfällt es." },
+    },
+    "de_buchstabensuppe": {
+      name: "Buchstabensuppe",
+      ings: [["Buchstabennudeln", "50 g"], ["Möhre", "1"], ["TK-Erbsen", "50 g"]],
+      seas: "800 ml Gemüsebrühe · Salz · Pfeffer · Gehackte Petersilie",
+      steps: [
+        "Die Möhre klein würfeln und in der Brühe aufkochen. Nudeln und Erbsen zugeben.",
+        "5–6 Minuten köcheln, bis die Nudeln weich sind. Abschmecken und mit Petersilie bestreuen.",
+      ],
+      tip: { add: "Die Kinder ihre Namen suchen lassen", why: "So macht Suppe Spaß", skill: "Möhre klein schneiden", how: "Kleine Würfel garen in derselben Zeit wie die kleinen Nudeln." },
+    },
+    "de_erbsencreme_schnell": {
+      name: "Schnelle Erbsencremesuppe",
+      ings: [["TK-Erbsen", "300 g"], ["Zwiebel", "1/2"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Salz · Pfeffer · Eine Prise Zucker",
+      steps: [
+        "Die Zwiebel würfeln und 2 Minuten in der Butter andünsten. Erbsen und Brühe zugeben und 5 Minuten kochen.",
+        "Fein pürieren (Vorsicht, heiß), die Sahne einrühren und mit Salz, Pfeffer und Zucker abschmecken.",
+      ],
+      tip: { add: "Ein paar knusprige Brotcroûtons", why: "Knusper auf der cremigen Suppe", skill: "Erbsen nicht zu lange kochen", how: "Fünf Minuten genügen, sonst verliert die Suppe ihr frisches Grün." },
+    },
     'de_strammermax': {
       name: 'Strammer Max',
       ings: [['Eier', '4'], ['Bauernbrot', '4 Scheiben'], ['Gekochter oder geräucherter Schinken', '4 Scheiben'], ['Gewürzgurken', '4'], ['Tomaten', '2']],

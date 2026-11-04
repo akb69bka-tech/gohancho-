@@ -81,6 +81,36 @@ GOHAN_PACK_TR('IT', 'it', {
     'black pepper': 'Pepe nero',
   },
   recipes: {
+    "it_crema_piselli": {
+      name: "Crema di piselli veloce",
+      ings: [["Piselli surgelati", "300 g"], ["Cipollotto o cipolla piccola", "1"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "500 ml di brodo vegetale · 1 cucchiaio di olio extravergine d'oliva · Sale · Pepe",
+      steps: [
+        "Affettare la cipolla e farla appassire nell'olio per 2 minuti. Aggiungere i piselli e il brodo e cuocere 5 minuti.",
+        "Frullare fino a ottenere una crema liscia (attenzione, è caldo), regolare di sale e pepe e servire con il Parmigiano e un filo d'olio.",
+      ],
+      tip: { add: "Qualche crostino di pane tostato", why: "Croccante sulla crema vellutata", skill: "Frullare subito", how: "Frullando subito il colore resta vivo e la consistenza vellutata." },
+    },
+    "it_crema_zucchine": {
+      name: "Crema di zucchine veloce",
+      ings: [["Zucchine", "2 (300 g)"], ["Basilico", "4 foglie"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "400 ml di brodo vegetale · 1 cucchiaio di olio extravergine d'oliva · 1 spicchio d'aglio piccolo · Sale · Pepe",
+      steps: [
+        "Affettare sottili le zucchine e cuocerle coperte con l'aglio, l'olio e il brodo per 6 minuti, finché sono morbide.",
+        "Aggiungere il basilico e frullare (attenzione, è caldo). Regolare di sale e pepe e servire con il Parmigiano.",
+      ],
+      tip: { add: "Un cucchiaio di ricotta sopra", why: "Cremosa e delicata", skill: "Affettare sottile", how: "Le fette sottili si ammorbidiscono in 6 minuti: la crema è pronta in un attimo." },
+    },
+    "it_crema_ceci": {
+      name: "Crema di ceci veloce",
+      ings: [["Ceci in scatola, scolati", "1 scatola (240 g)"], ["Rosmarino", "1 rametto"]],
+      seas: "400 ml di brodo vegetale · 2 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Scaldare aglio e rosmarino in 1 cucchiaio d'olio per 1 minuto, aggiungere i ceci e il brodo e cuocere 5 minuti.",
+        "Togliere il rosmarino e frullare (attenzione, è caldo). Regolare di sale e completare con l'olio rimasto e pepe nero.",
+      ],
+      tip: { add: "Pane tostato a parte", why: "Perfetto da intingere nella crema", skill: "Tenere da parte qualche cece", how: "Metterne un cucchiaio da parte prima di frullare e aggiungerlo sopra." },
+    },
     'it_tagliata': {
       name: 'Tagliata rucola e grana',
       ings: [['Controfiletto o scamone di manzo', '1 (350 g)'], ['Rucola', '60 g'], ['Scaglie di Parmigiano', '30 g'], ['Pomodorini', '150 g']],

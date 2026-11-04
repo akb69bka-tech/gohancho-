@@ -12,6 +12,56 @@ GOHAN_PACK_TR('ID', 'id', {
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
+    "id_suptahu": {
+      name: "Sup tahu telur",
+      ings: [["Tahu sutra", "200 g"], ["Telur", "1 butir"], ["Daun bawang", "1 batang"], ["Wortel", "1/2 buah"]],
+      seas: "700 ml air · 2 siung bawang putih, iris · 1 sdt minyak · 1/2 sdt garam · 1/4 sdt merica putih · 1 sdt kecap manis · Bawang goreng (opsional)",
+      steps: [
+        "Tumis bawang putih 30 detik, masukkan air dan wortel iris tipis, rebus 3 menit. Masukkan tahu potong dadu, rebus 2 menit.",
+        "Tuang telur kocok, diamkan 30 detik lalu aduk perlahan. Bumbui garam, merica, dan kecap manis, taburi daun bawang dan bawang goreng.",
+      ],
+      tip: { add: "Sambal di samping", why: "Untuk yang suka pedas", skill: "Iris wortel tipis", how: "Wortel iris tipis empuk dalam 3 menit." },
+    },
+    "id_supayamcepat": {
+      name: "Sup ayam sayur cepat",
+      ings: [["Dada ayam, iris tipis", "150 g"], ["Sawi hijau", "1 ikat (150 g)"], ["Wortel", "1/2 buah"], ["Daun bawang", "1 batang"]],
+      seas: "800 ml air · 2 siung bawang putih, memarkan · 1/2 sdt garam · 1/4 sdt merica putih · 1/4 sdt pala bubuk · Bawang goreng · Daun seledri cincang",
+      steps: [
+        "Rebus air dengan bawang putih, merica, dan pala. Masukkan ayam dan wortel iris tipis, rebus 4 menit sambil dibuang buihnya sampai ayam matang.",
+        "Masukkan sawi, masak 2 menit. Bumbui garam, taburi daun bawang, seledri, dan bawang goreng.",
+      ],
+      tip: { add: "Perasan jeruk nipis dan sambal", why: "Segar dan pedas", skill: "Iris ayam tipis", how: "Ayam iris tipis matang dalam beberapa menit dan tetap empuk." },
+    },
+    "id_beningsawi": {
+      name: "Sayur bening sawi jagung",
+      ings: [["Sawi hijau", "1 ikat (150 g)"], ["Jagung pipil", "100 g"], ["Bawang merah", "3 siung"]],
+      seas: "700 ml air · 1 siung bawang putih · 1/2 sdt garam · 1/2 sdt gula · 1 iris temu kunci (opsional)",
+      steps: [
+        "Iris bawang merah dan bawang putih, rebus dengan air dan temu kunci 2 menit. Masukkan jagung, rebus 3 menit.",
+        "Masukkan sawi, masak 2 menit. Bumbui garam dan gula.",
+      ],
+      tip: { add: "Tempe goreng di samping", why: "Pasangan sehari-hari ala Jawa", skill: "Sayur dimasukkan terakhir", how: "Dua menit membuat sawi tetap hijau dan renyah." },
+    },
+    "id_tumissawi": {
+      name: "Tumis sawi bawang putih",
+      ings: [["Sawi hijau", "1 ikat (250 g)"], ["Cabai merah", "1 buah"]],
+      seas: "3 siung bawang putih, iris · 1 sdm minyak · 1 sdm saus tiram · 2 sdm air · Garam",
+      steps: [
+        "Potong sawi. Tumis bawang putih dan irisan cabai 30 detik.",
+        "Masukkan batang sawi lalu daunnya, saus tiram, dan air; tumis 2-3 menit dengan api besar, bumbui garam.",
+      ],
+      tip: { add: "Segenggam tauge", why: "Lebih renyah", skill: "Api besar, sebentar saja", how: "Wajan panas membuat sawi tetap hijau dan renyah." },
+    },
+    "id_tumiskol": {
+      name: "Tumis kol telur",
+      ings: [["Kol", "1/4 buah (250 g)"], ["Telur", "1 butir"], ["Daun bawang", "1 batang"]],
+      seas: "2 siung bawang putih, iris · 1 sdm minyak · 1 sdt kecap asin · Garam · Merica",
+      steps: [
+        "Iris tipis kol. Tumis bawang putih, sisihkan ke pinggir, orak-arik telur di wajan yang sama 1 menit.",
+        "Masukkan kol, tumis 3 menit dengan api besar. Bumbui kecap asin, garam, dan merica, tambahkan daun bawang.",
+      ],
+      tip: { add: "Irisan cabai merah", why: "Sedikit pedas", skill: "Iris tipis", how: "Kol iris tipis cepat matang dan tetap manis." },
+    },
     'id_ayamgoreng': {
       name: 'Ayam goreng bumbu kuning',
       ings: [
