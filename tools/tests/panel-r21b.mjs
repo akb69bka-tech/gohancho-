@@ -9,6 +9,9 @@
 //  R94: ↻（候補の「これにする」・その場でかえる）のあとの「元に戻す」の帯は、見出し「今日の献立」と条件のボタンも隠さない（画面のいちばん上の帯に出る）。
 //       字は何をかえたかが分かる文（料理名が入る。入らないときは料理名を短くして「…」）。料理の絵・料理名・↻にもかからない。「元に戻す」は押せる
 //  R93: 幅195px のはじめての設定で、見出し「何人分つくりますか」が1行（文字3段階）。「苦手な食材はありますか」は2行まで
+//  第23回:
+//  R99: 幅195px でも「元に戻す」の帯が国旗・設定のボタンを隠さない（R21-1・R22-1 で上の帯のボタンも数える。家族リクエストを上の帯に上げた形でも）
+//  R100: 幅195px のはじめての設定の2つめで、人数のボタンの1段目が下の「もどる／次へ」の帯より上に見える（文字3段階）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -50,7 +53,7 @@ const open = async (o, tag) => {
     return {p, ctx};
 };
 
-const DISH = '#view .spot .vessel, #view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok';
+const DISH = '#view .spot .vessel, #view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok, header.top button, header.top [data-act]';   // 第23回 R99: 上の帯のボタン（国旗・設定・家族リクエスト）にもかからない
 // お知らせが重なる料理の絵・料理名・↻・札・丸・印と、「元に戻す」が見えて押せるか
 const undoMeasure = (sel) => { const t = document.querySelector('#toast-root .toast'); if (!t) return {none: true}; const a = t.getBoundingClientRect();
     const ov = q => a.left < q.right - 1 && a.right > q.left + 1 && a.top < q.bottom - 1 && a.bottom > q.top + 1;
@@ -141,7 +144,7 @@ for (const [w, h] of [[195, 422], [360, 740], [375, 667], [390, 844], [430, 932]
             const now = session.menu.items.map(x => x.r && x.r.name), nw = now.find((n, i) => n && n !== before[i]) || '';
             const tx = t.querySelector('.tx'), vis = tx ? tx.textContent.trim() : '', head = nw ? [...nw].slice(0, 2).join('') : '';
             return {vis, nw, named: !!nw && (vis.includes(nw) || (vis.includes(head) && vis.includes('…'))), full: t.textContent.includes(nw), hits, undo: !!bt, clickable: !!(bt && at && (at === bt || bt.contains(at))), cls: t.className, top: Math.round(a.top), h: Math.round(a.height)}; },
-            ['#view .spot .vessel, #view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok, #view .today-head h2, #view .today-head .p2-sv', before]);
+            ['#view .spot .vessel, #view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok, #view .today-head h2, #view .today-head .p2-sv, header.top button, header.top [data-act]', before]);
         r.how = how; out.push(r);
     }
     const bad = out.filter(r => r.none || !r.undo || r.hits.length || !r.clickable || !r.named || !r.full);
@@ -156,6 +159,18 @@ for (const ts of [0, 1, 2]) {
     const r = await p.evaluate(async () => { const lines = () => { const h2 = document.querySelector('#sheet-root .sheet h2'); const rg = document.createRange(); rg.selectNodeContents(h2); return {text: h2.textContent, n: new Set([...rg.getClientRects()].map(q => Math.round(q.top))).size, over: h2.scrollWidth > h2.clientWidth + 1}; };
         startOnboard(); await __tick(); const a = lines(); sheet.step = 1; renderSheet(); await __tick(); const c = lines(); closeSheet(); return {a, c}; });
     ok(r.a.n === 1 && !r.a.over && r.c.n <= 2 && !r.c.over, `R22-2 R93 195px 文字${ts}: はじめての設定の見出し「${r.a.text}」が1行・「${r.c.text}」が2行まで: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// R23-1（R100）幅195px のはじめての設定の2つめ: 人数のボタンの1段目が、下の「もどる／次へ」の帯より上に見える。見出し・説明の文も見える（文字3段階）
+for (const ts of [0, 1, 2]) {
+    if (!want('R23-1')) break;
+    const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, dc: 3, sv: 2}, `r100-${ts}`);
+    const r = await p.evaluate(async () => { startOnboard(); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const sh = document.querySelector('#sheet-root .sheet'), foot = sh.querySelector('.ob-actions'), chip = sh.querySelector('[data-act=ob-sv]'), h2 = sh.querySelector('h2'), para = sh.querySelector('h2 + p');
+        const f = foot.getBoundingClientRect(), c = chip.getBoundingClientRect(), hq = h2.getBoundingClientRect(), pq = para ? para.getBoundingClientRect() : null;
+        const res = {footTop: Math.round(f.top), chip: [Math.round(c.top), Math.round(c.bottom)], h2: [Math.round(hq.top), Math.round(hq.bottom)], p: pq && [Math.round(pq.top), Math.round(pq.bottom)], back: !!foot.querySelector('[data-act]')}; closeSheet(); return res; });
+    ok(r.chip[1] <= r.footTop && r.h2[0] >= 0 && (!r.p || r.p[1] <= r.footTop) && r.back, `R23-1 R100 195px 文字${ts}: はじめての設定の人数のボタンの1段目・見出し・説明が「もどる／次へ」の帯より上に見える: ` + JSON.stringify(r));
     await ctx.close();
 }
 

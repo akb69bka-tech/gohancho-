@@ -559,7 +559,7 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .toast.at-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto !important;inset-inline-end:auto;margin-inline:0}   /* 同じ画面のまま出すお知らせで、下の場所に押す場所が見えているとき（toastPlace） */
 #toast-root:has(.toast.docked)::before{content:'';position:fixed;inset-inline:0;top:var(--toast-shelf-top);height:var(--toast-shelf-h);z-index:59;pointer-events:none;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}   /* お知らせの棚（toastPlace）。主ボタンと同じすりガラス */
 html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: 留めたお知らせが出ているあいだは、ブラウザのスクロールの合わせ直し（scroll anchoring）を止める（字の読みこみ後の測り直しなどで画面だけが 50px ほど上へ動き、お知らせが帯の裏に入っていた） */
-.toast.anchored{position:absolute;bottom:auto !important;z-index:19}.toast.headdock{position:absolute;bottom:auto !important;right:auto;inset-inline-end:auto;margin:0;max-width:none;z-index:19;display:flex;align-items:center;gap:8px;padding:.125rem .25rem .125rem .75rem;min-height:40px;text-align:start}.toast.headdock .tx,.toast.at-top .tx{flex:1 1 auto;min-width:0;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.25;overflow-wrap:anywhere}.toast.headdock [data-act=toast-undo]{flex:none;margin:0}.toast.headdock.slim{min-height:0;padding-block:0 !important}.toast.headdock.slim .tx{-webkit-line-clamp:1;line-clamp:1}.toast.headdock.slim [data-act=toast-undo]{min-height:36px}.toast.at-top:has(.tx){display:flex;align-items:center;gap:8px;margin:0;max-width:none}@media (max-width:299px){.toast.headdock{gap:4px;padding:.125rem .2rem .125rem .45rem}.toast.headdock [data-act=toast-undo]{padding-inline:.4rem}}   /* 第21回 R72: 「元に戻す」付きのお知らせを見出しの行（今日の献立・条件のボタン）に1行で重ねる（toastHeadDock）。料理の絵・料理名・↻にかけない */#toast-root:has(.toast.anchored)::before{position:absolute;z-index:18}.toast.anchored.off,#toast-root:has(.toast.anchored.off)::before{visibility:hidden}   /* 第19回 R59・R60: 押して画面が切りかわった直後のお知らせは、置いたあとページに留める（中身と一緒にスクロール。toastPlace の anchor）。下のタブ・帯より下、上の端より上に出ているあいだは隠す（toastScroll）。z は下のタブ（20）より下 */
+.toast.anchored{position:absolute;bottom:auto !important;z-index:19}.toast.headdock{position:absolute;bottom:auto !important;right:auto;inset-inline-end:auto;margin:0;max-width:none;z-index:19;display:flex;align-items:center;gap:8px;padding:.125rem .25rem .125rem .75rem;min-height:40px;text-align:start}.toast.headdock .tx,.toast.at-top .tx{flex:1 1 auto;min-width:0;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.25;overflow-wrap:anywhere}.toast.headdock [data-act=toast-undo]{flex:none;margin:0}.toast.headdock.slim,.toast.at-top.slim{min-height:0;padding-block:0 !important}.toast.headdock.slim .tx,.toast.at-top.slim .tx{-webkit-line-clamp:1;line-clamp:1}.toast.headdock.slim [data-act=toast-undo],.toast.at-top.slim [data-act=toast-undo]{min-height:36px}.toast.at-top:has(.tx){display:flex;align-items:center;gap:8px;margin:0;max-width:none}@media (max-width:299px){.toast.headdock{gap:4px;padding:.125rem .2rem .125rem .45rem}.toast.headdock [data-act=toast-undo]{padding-inline:.4rem}}   /* 第21回 R72: 「元に戻す」付きのお知らせを見出しの行（今日の献立・条件のボタン）に1行で重ねる（toastHeadDock）。料理の絵・料理名・↻にかけない */#toast-root:has(.toast.anchored)::before{position:absolute;z-index:18}.toast.anchored.off,#toast-root:has(.toast.anchored.off)::before{visibility:hidden}   /* 第19回 R59・R60: 押して画面が切りかわった直後のお知らせは、置いたあとページに留める（中身と一緒にスクロール。toastPlace の anchor）。下のタブ・帯より下、上の端より上に出ているあいだは隠す（toastScroll）。z は下のタブ（20）より下 */
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
 .muted{color:var(--muted)}
@@ -793,6 +793,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 @media (max-height:500px) and (orientation:landscape){.sheet.sheet-country,.sheet.sheet-onboard{height:98vh;height:min(98dvh,calc(var(--vvh,100vh) * .98))}}
 .sheet-country>.sheet-body,.sheet-onboard>.sheet-body{flex:1 0 auto;padding-bottom:0}
 .sheet-onboard .ob-actions,.sheet-country .ob-actions{margin-top:auto}
+@media (max-width:299px){.sheet-onboard .ob-steps span{display:none}.sheet-onboard .ob-head{gap:var(--s4)}.sheet-onboard>.sheet-body{gap:var(--s8)}.sheet-onboard>.sheet-body>*{margin-block:0}.sheet-onboard h2 + p{font-size:12px;line-height:1.4;margin:0}.sheet-onboard .ob-actions{padding:var(--s8) 0 calc(var(--s8) + env(safe-area-inset-bottom,0px))}}   /* 第23回 R100: 幅195px のはじめての設定の2つめで、人数のボタンが下の「もどる／次へ」の裏にあり最初は見えなかった。手順の名前（国と言語・人数と品数…）は出さず（ステップ 2 / 3 と線は残る）、説明の文は 12px、すき間と下の帯の余白を小さく */
 /* 国を選ぶ: 地域のタブ（2列×2段。押すと下の一覧が替わる）→ 一覧（シートの中で二重にスクロールしない）→ 下に固定した「選んだ国」と決定ボタン */
 .cc-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s8)}
 .cc-tab{position:relative;min-height:var(--tap);padding:var(--s8) var(--s12);border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.25;text-align:center;overflow-wrap:anywhere;cursor:pointer}
@@ -3252,13 +3253,16 @@ try{ const ve = document.getElementById('view'); if (ve && window.ResizeObserver
 // 第22回 R94: 見出しの行（「今日の献立」と条件のボタン）にも重ねない。画面のいちばん上の帯（印・日付・アプリの名前。右の国旗・設定・家族リクエストのボタンの左まで）に重ねる。
 // 字は何をかえたかが分かる文（「えびフライ」にかえました など）。2行まで。入らないときは料理名を短くする（toast.dish）。全文は読み上げ用に残す。
 // 上の帯が画面の外（スクロールした位置）なら、画面の中で料理の絵・料理名・↻・札・決定・見出し・条件のボタンにかからない高さを探す。なければ上の帯のまま（上へ戻すと見える。押せる）
-const TOAST_DISH = '#view .spot .vessel, #view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button, #view .p2-ok, #view .today-head h2, #view .today-head .p2-sv';
+const TOAST_DISH = '#view .spot .vessel, #view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button, #view .p2-ok, #view .today-head h2, #view .today-head .p2-sv, header.top button, header.top a[href], header.top [data-act]';   // 第23回 R99: 上の帯のボタン（国旗・設定・家族リクエスト）も
 function toastHeadArea(){
     const hd = document.querySelector('header.top'); if (!hd) return null; const q = hd.getBoundingClientRect(); if (!q.height) return null;
     let right = q.right; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.left > q.left + q.width * .35 && r.left - 8 < right) right = r.left - 8; });
-    if (right - q.left < 200) right = q.right;   // とても狭い画面（195px など）は、国旗・設定のボタンの上まで（8秒のあいだだけ。料理・見出し・条件のボタンは隠さない）
     const h2 = document.querySelector('#view .today-head.p2-head'), lim = h2 ? h2.getBoundingClientRect().top - 4 : Infinity;   // 下は見出しの行の上まで
-    return {left: q.left, right, top: q.top, bottom: q.bottom, height: q.height, lim};
+    // 第23回 R99: とても狭い画面（195px など）は、印と国旗のあいだが狭い。国旗・設定のボタンは隠さず、その下の行（アプリの名前の行）に、上の帯の幅いっぱいで出す
+    if (right - q.left < 200){ let bb = q.top; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.bottom > bb) bb = r.bottom; }); const top = bb + 4; return {left: q.left, right: q.right, top, bottom: Math.max(top, q.bottom), height: Math.max(0, Math.min(q.bottom, lim) - top), lim}; }
+    // 上の帯の左にもボタンがある形（家族リクエストを上の帯に上げた tray-tight5 など）: 上の帯に空いたところがない（blocked。画面の中の空いた高さを探す）
+    const blocked = [...hd.querySelectorAll('button, a[href], [data-act]')].some(e => { const r = e.getBoundingClientRect(); return r.width && r.right > q.left + 1 && r.left < right - 1; });
+    return {left: q.left, right, top: q.top, bottom: q.bottom, height: q.height, lim, blocked};
 }
 function toastHeadDock(box, floor){
     if (tab !== 'today' || !box.querySelector('[data-act=toast-undo]')) return false;
@@ -3267,12 +3271,17 @@ function toastHeadDock(box, floor){
     const tx = box.querySelector('.tx');
     if (tx && toast.lastMsg){ tx.textContent = toast.lastMsg; tx.removeAttribute('aria-hidden'); const old = box.querySelector('.vh'); if (old) old.remove(); }   // 字は全文（何をかえたか）。入らないときは toastHeadAlign で料理名を短くする
     box.classList.add('compact', 'headdock'); box.classList.remove('at-top', 'docked', 'pop'); box.style.removeProperty('max-width');
-    if (A.top >= 0 && A.bottom <= floor){ toastHeadAlign(box); return true; }
+    if (!A.blocked && A.top >= 0 && A.bottom <= floor){ toastHeadAlign(box); return true; }
     // 上の帯が見えていない: 画面の中で、料理の絵・料理名・↻・札・決定・見出し・条件のボタンにかからない高さ（固定）を探す
     const dish = [...document.querySelectorAll(TOAST_DISH)].map(e => e.getBoundingClientRect()).filter(r => r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < floor);
     const vw = document.documentElement.clientWidth, L0 = 16, W0 = vw - 32;
-    box.classList.remove('headdock'); box.classList.add('at-top'); box.style.left = L0 + 'px'; box.style.width = W0 + 'px'; toastFitText(box); const h = box.offsetHeight;
-    for (let y = 8; y + h <= floor - 8; y += 4){ if (!dish.some(r => r.bottom > y - 4 && r.top < y + h + 4 && r.right > L0 && r.left < L0 + W0)){ box.style.top = y + 'px'; return true; } }
+    box.classList.remove('headdock'); box.classList.add('at-top'); box.style.left = L0 + 'px'; box.style.width = W0 + 'px';
+    for (const slim of [false, true]){   // 入らなければ1行の細い形（お膳と決定の帯のあいだ 50px ほどに入る）
+        box.classList.toggle('slim', slim); toastFitText(box); const h = box.offsetHeight;
+        for (let y = 8; y + h <= floor - 8; y += 4){ if (!dish.some(r => r.bottom > y - 4 && r.top < y + h + 4 && r.right > L0 && r.left < L0 + W0)){ box.style.top = y + 'px'; return true; } }
+    }
+    box.classList.remove('slim');
+    if (A.blocked){ box.classList.remove('at-top'); return false; }   // 空いた高さがない: いつもの置き方（toastPlace）にまかせる
     box.classList.remove('at-top'); box.classList.add('headdock'); toastHeadAlign(box); return true;
 }
 // 字を帯に入れる: 2行に入らなければ料理名を短く（「えびフラ…」）。それでも入らなければ1語（かえました など。全文は読み上げ用に）
