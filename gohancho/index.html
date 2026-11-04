@@ -9629,7 +9629,8 @@ function wishParse(text){
     if (o.k === 'q'){   // ○つけ表（行き）: 返事と並びを合わせるので、この端末にない料理も番号は残す（画面には出さない）
         const w = ymdUnpack(o.w), d = idsOf(o.d);
         if (!w || !d.length || d.length > VOTE_DISHES || !Array.isArray(o.d) || d.length !== o.d.length || new Set(d).size !== d.length) return {err: 'broken'};
-        return {k: 'q', key, w, ids: d, t: ymdUnpack(o.t)};
+        const c = typeof o.c === 'string' && COUNTRIES.some(x => x.cc === o.c) ? o.c : '';   // 第26回 R115: 作る人の国（家族の端末の国がちがっても、その国の料理を読む）
+        return {k: 'q', key, w, ids: d, t: ymdUnpack(o.t), c};
     }
     const w = ymdUnpack(o.w);   // ○つけ表（帰り）
     if (!w || typeof o.h !== 'string' || !/^[0-9a-z]{1,8}$/.test(o.h) || typeof o.r !== 'string' || !/^[012]{1,10}$/.test(o.r)) return {err: 'broken'};
@@ -9923,7 +9924,7 @@ function wishToToday(id){
 function wishOpenParsed(p){
     if (p.err) sheet = {kind: 'wish-bad', err: p.err};
     else if (p.k === 'w') sheet = {kind: 'wish-in', p, seen: wishSeen(p.key)};
-    else if (p.k === 'q') sheet = {kind: 'vote-in', w: p.w, ids: p.ids, ans: p.ids.map(() => 1), hand: false};
+    else if (p.k === 'q'){ sheet = {kind: 'vote-in', w: p.w, ids: p.ids, ans: p.ids.map(() => 1), hand: false, cc: p.c || ''}; voteInLoad(sheet); }
     else { const res = voteReceive(p); sheet = {kind: 'vote-table', w: p.w, note: res}; }
     renderSheet();
 }
@@ -9980,7 +9981,7 @@ function voteSave(ids){
 }
 function voteSendText(v){
     const rs = v.ids.map(id => recipeById(id)).filter(Boolean);
-    return [t('【ご飯帖】来週の○つけ表（{date}〜）：{list}', {date: jpDate(v.w), list: rs.map(r => r.name).join(t('・'))}), t('食べたいものに○をつけて返してください。'), t('ご飯帖で開く → {url}', {url: wishLink({v: 1, k: 'q', w: ymdPack(v.w), d: v.ids, t: ymdPack(TODAY)})})].join('\n');
+    return [t('【ご飯帖】来週の○つけ表（{date}〜）：{list}', {date: jpDate(v.w), list: rs.map(r => r.name).join(t('・'))}), t('食べたいものに○をつけて返してください。'), t('ご飯帖で開く → {url}', {url: wishLink({v: 1, k: 'q', w: ymdPack(v.w), d: v.ids, t: ymdPack(TODAY), c: currentCountry()})})].join('\n');
 }
 /* B-1 作る人が候補を選ぶ */
 function voteMakeSheetHtml(){
@@ -9995,30 +9996,44 @@ function voteMakeSheetHtml(){
         <p class="small muted">${esc(t('返事を待たなくても、献立はいつもどおり組めます。返事は、あとから届いても表に入ります。'))}</p>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="vote-send" ${n ? '' : 'disabled'}>${esc(n ? t('家族に送る（{n}品）', {n}) : t('家族に送る'))}</button></div>`;
 }
+/* 第26回 R115: ○つけ表の料理を引く。この端末の国の料理になければ、その料理の国（番号の頭 us_ など。日本の料理は頭なし）のデータを
+   ○つけ表のためだけに読む（世界のレシピと同じ BROWSE。家族の端末の国・言葉の設定は変えない）。⚠/🔍 はこの端末のアレルギーの設定で、いつもどおり判定する */
+function voteRec(id){ return recipeById(id) || ((BROWSE[histCountry(id)] || []).find(r => r.id === id)) || null; }
+function voteInNeed(s){ const miss = s.ids.filter(id => !voteRec(id) && !isCustomId(id)); return [...new Set([...miss.map(histCountry), ...(miss.length && s.cc ? [s.cc] : [])])].filter(cc => cc !== currentCountry() && !BROWSE[cc]); }
+function voteInLoad(s, again){
+    const need = voteInNeed(s).filter(cc => again || !browseErr.has(cc)); if (!need.length || s.loading) return;
+    s.loading = true; s.loadErr = false;
+    Promise.all(need.map(loadBrowse)).then(() => {
+        s.loading = false; s.loadErr = need.some(cc => browseErr.has(cc));
+        if (sheet === s) renderSheet();
+    });
+}
 /* B-2 家族が○をつける（届いたリンク／作る人のスマホを手渡し） */
 function voteInSheetHtml(){
     const s = sheet, name = sendName(), names = famMembers().filter(m => !m.me).map((m, i) => famLabel(m, i));
     const opts = [[2, '○ ' + t('食べたい')], [1, t('どちらでも')], [0, t('今週はいい')]];
-    const rows = s.ids.map((id, i) => { const r = recipeById(id); if (!r) return '';
+    if (!s.loading && !s.loadErr && voteInNeed(s).some(cc => !browseErr.has(cc))) voteInLoad(s);   // 言葉を変えたあと（読んだ料理は作り直す）も読み直す
+    const rows = s.ids.map((id, i) => { const r = voteRec(id); if (!r) return '';
         return `<div class="vt-row"><div class="vt-head">${thumbHtml(r)}<div class="wsh-row-t"><span class="wsh-nm">${esc(r.name)}</span>${allergyBadge(r)}</div></div>
             <div class="vt-opts" role="radiogroup" aria-label="${esc(r.name)}">${opts.map(([v, l]) => `<button type="button" class="vt-opt" role="radio" data-act="vote-mark" data-i="${i}" data-v="${v}" aria-checked="${s.ans[i] === v}" aria-pressed="${s.ans[i] === v}">${esc(l)}</button>`).join('')}</div></div>`; }).join('');
-    const shown = s.ids.filter(id => recipeById(id)).length;
+    const shown = s.ids.filter(id => voteRec(id)).length, wait = !!s.loading && shown < s.ids.length;
     return `${s.hand ? `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="vote-back">‹ ${esc(t('○つけ表'))}</button></div>` : `<div class="wsh-from"><span class="wsh-av" aria-hidden="true">${esc([...t('作る人')][0])}</span><div><b>${esc(t('{name} から', {name: t('作る人')}))}</b><div class="small muted">${esc(t('来週の○つけ表・{n}品', {n: shown}))}</div></div></div>`}
         <h2 class="wsh-h">${esc(t('○つけ表'))}</h2>
         ${s.hand ? `<p class="small muted">${esc(t('名前を選んでから、食べたいものに○をつけてください。'))}</p><div class="chips" role="radiogroup" aria-label="${esc(t('名前'))}">${names.map(n => `<button type="button" class="chip" role="radio" data-act="vote-who" data-v="${esc(n)}" aria-checked="${s.who === n}" aria-pressed="${s.who === n}">${esc(n)}</button>`).join('')}</div>` : ''}
         <p class="small muted">${esc(t('食べたいものに○を。全部「どちらでも」でも大丈夫です。'))}</p>
-        ${shown ? `<div class="wsh-list vt-list">${rows}</div>` : `<div class="wsh-info">${esc(t('この端末で読める料理がありませんでした'))}</div>`}
-        ${shown < s.ids.length ? `<p class="small muted">${esc(t('この端末にない料理（{n}品）は読みとばしました', {n: s.ids.length - shown}))}</p>` : ''}
+        ${wait ? `<div class="wsh-info" role="status">${esc(t('○つけ表の料理を読みこんでいます…'))}</div>` : shown ? `<div class="wsh-list vt-list">${rows}</div>` : `<div class="wsh-info" role="status">${esc(t('この端末で読める料理がありませんでした'))}</div>`}
+        ${wait ? '' : s.loadErr ? `<p class="small" role="status">${esc(t('料理のデータを読みこめませんでした。電波のよいところで「もう一度読みこむ」を押してください。'))}</p><div class="row wsh-set"><button type="button" class="btn text" data-act="vote-in-retry">${esc(t('もう一度読みこむ'))}</button></div>`
+            : shown < s.ids.length ? `<p class="small muted">${esc(shown ? t('この端末にない料理（{n}品）は読みとばしました', {n: s.ids.length - shown}) : t('このスマホのご飯帖にない料理です（作る人が自分で入れた料理など）。作る人に、ほかの料理でもう一度送ってもらってください。'))}</p>` : ''}
         ${s.hand ? '' : `<div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
             : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>`}
         <div class="wsh-actions">${s.hand ? `<button type="button" class="btn primary wide" data-act="vote-hand-ok" ${s.who ? '' : 'disabled'}>${esc(s.who ? t('{name}の○を入れる', {name: s.who}) : t('名前を選んでください'))}</button>`
-            : `<button type="button" class="btn primary wide" data-act="vote-return" ${shown ? '' : 'disabled'}>${esc(t('○を返す'))}</button><button type="button" class="btn text" data-act="wish-close">${esc(t('今回は返さない'))}</button>`}</div>
+            : `<button type="button" class="btn primary wide" data-act="vote-return" ${shown && !wait ? '' : 'disabled'}>${esc(t('○を返す'))}</button><button type="button" class="btn text" data-act="wish-close">${esc(t('今回は返さない'))}</button>`}</div>
         ${s.hand ? '' : `<p class="tiny muted wsh-lock">${ICO_LOCK}${esc(t('リンクの中身はこのスマホの中だけで読みました'))}</p>`}`;
 }
 function voteReturnText(s){
     const name = sendName(), r = s.ans.map(x => String(x)).join('');
     const o = {v: 1, k: 'a', w: ymdPack(s.w), h: voteHash(s.w, s.ids), r}; if (name) o.n = name;
-    const ok = s.ids.filter((id, i) => s.ans[i] === 2).map(id => (recipeById(id) || {}).name).filter(Boolean);
+    const ok = s.ids.filter((id, i) => s.ans[i] === 2).map(id => (voteRec(id) || {}).name).filter(Boolean);
     return [name ? t('【ご飯帖】{name}の○つけ表の返事', {name}) : t('【ご飯帖】○つけ表の返事'), ok.length ? t('○ 食べたい：{list}', {list: ok.join(t('・'))}) : t('どれでも大丈夫です'), t('ご飯帖で開く → {url}', {url: wishLink(o)})].join('\n');
 }
 // 届いた返事を表に入れる。'ok:呼び名' / 'old' 前の週 / 'changed' 作り直した表 / 'seen' 2回目 / 'none' 表がない
@@ -13671,6 +13686,7 @@ document.addEventListener('click', e => {
         case 'vote-hand': { let v = voteOf(voteWeek()); if (sheet && sheet.kind === 'vote-make'){ if (!sheet.on.length) break; v = voteSave(sheet.on); } if (!v) break;
             sheet = {kind: 'vote-in', w: v.w, ids: v.ids.slice(), ans: v.ids.map(() => 1), hand: true, who: null}; renderSheet(); break; }
         case 'vote-see': case 'vote-back': { const v = voteOf(voteWeek()); if (!v) break; sheet = {kind: 'vote-table', w: v.w}; renderSheet(); break; }
+        case 'vote-in-retry': if (sheet && sheet.kind === 'vote-in'){ voteInLoad(sheet, true); renderSheet(); } break;
         case 'vote-mark': if (sheet && sheet.kind === 'vote-in'){ const i = Number(el.dataset.i), v = Number(el.dataset.v); if (i >= 0 && i < sheet.ans.length && [0, 1, 2].includes(v)){ sheet.ans[i] = v; renderSheet(); } } break;
         case 'vote-who': if (sheet && sheet.kind === 'vote-in' && sheet.hand){ sheet.who = el.dataset.v; const v = voteOf(sheet.w), a = v && v.ans[sheet.who]; sheet.ans = a ? [...a].map(Number) : sheet.ids.map(() => 1); renderSheet(); } break;
         case 'vote-hand-ok': { if (!sheet || sheet.kind !== 'vote-in' || !sheet.hand || !sheet.who) break; const v = voteOf(sheet.w); if (!v || v.ids.join() !== sheet.ids.join()) break;
