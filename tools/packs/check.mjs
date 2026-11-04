@@ -147,6 +147,15 @@ function checkPack(file){
         const k = r.type === 'side' ? 'side' : r.type === 'soup' ? 'soup' : 'main';
         counts[k]++; if (manifest[r.id]) counts.art++;
     }
+    // 料理名だけの訳（packs/i18n/<国>.<言葉>.js で nameOnly: true。第23回 R91 の残り）: 知らない料理の ID がない・名前が空でない。訳のない料理は「注意」に数だけ
+    for (const f of fs.readdirSync(path.join(APP, 'packs/i18n')).filter(f => f.startsWith(cc.toLowerCase() + '.') && f.endsWith('.js'))){
+        const l = f.slice(cc.length + 1, -3); if (langs.includes(l) || l === 'en') continue;
+        let d; try{ d = loadTr(path.join(APP, 'packs/i18n', f)); }catch(e){ err(cc, `${f} を読みこめません: ${e.message}`); continue; }
+        if (!d || !d.nameOnly){ err(cc, `${f}: パックの言葉と日本語のほかの訳は、料理名だけ（nameOnly: true）にしてください`); continue; }
+        const ids = new Set((pk.recipes || []).map(r => r.id));
+        Object.entries(d.recipes || {}).forEach(([id, v]) => { if (!ids.has(id)) err(cc, `${f}: 知らない料理 ${id}`); if (!v || !String(v.name || '').trim()) err(cc, `${f}: ${id} の名前が空`); });
+        const miss = [...ids].filter(id => !(d.recipes || {})[id]); if (miss.length) warn(cc, `${f}: 料理名の訳がない料理 ${miss.length}品（その国の名前か英語で出る）: ${miss.slice(0, 8).join(' ')}`);
+    }
     for (const [l, tr] of Object.entries(trs)){
         for (const key of nameKeys) if (!(tr.names && tr.names[key])) err(cc, `${l} の names に「${key}」の訳がありません`);
     }

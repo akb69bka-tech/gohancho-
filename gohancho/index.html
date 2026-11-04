@@ -14667,7 +14667,10 @@ function trLangFor(cc, lang = LANG){ return cc === 'JP' ? (lang === 'ja' ? null 
 // 用意してある訳: 日本のレシピは英語（とベトナム語）、各国のレシピはその国の言葉と日本語（ないものは読みに行かない）
 // 日本のレシピのベトナム語（jp.vi.js）・韓国語（jp.ko.js）・タイ語（jp.th.js）は料理名と食材名だけの訳で、分量・調味料・手順は英語の訳（base: 'en'）を借りる（第4回モニター R5。冷蔵庫もその言葉で引ける）
 const JP_TR_LANGS = ['en', 'vi', 'ko', 'th'];
-function trAvail(cc){ return cc === 'JP' ? JP_TR_LANGS : [PACKS[cc] && PACKS[cc].lang, 'ja'].filter(Boolean); }
+// 料理名だけの訳（第23回 R91 の残り: ベトナム語でタイ・韓国、アラビア語でタイの料理名が英語だった）。packs/i18n/<国>.<言葉>.js に nameOnly: true で料理名だけ。
+// 材料・分量・調味料・手順は国のパックの英語のまま（jp.vi.js などの日本の料理の名前だけの訳と同じ考え方）。訳のない料理は、その国の名前（読めない文字なら英語）
+const PACK_NAME_LANGS = {TH: ['vi', 'ar'], KR: ['vi']};
+function trAvail(cc){ return cc === 'JP' ? JP_TR_LANGS : [PACKS[cc] && PACKS[cc].lang, 'ja', ...(PACK_NAME_LANGS[cc] || [])].filter(Boolean); }
 // その国・言語で使う訳のファイル（なければ null）
 function trKey(cc, lang = LANG){
     const l = trLangFor(cc, lang); if (!l) return null;
