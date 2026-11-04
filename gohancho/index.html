@@ -1830,7 +1830,7 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .sale-greet-tx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sale-greet-go{flex:none;color:var(--accent-text);font-size:1rem}
 /* 第24回 R103: 「食べたいもの」と同じ行（solo）では、残りの幅に収める（品名は … で省き、› は見える）。残りが狭い（11rem 未満）ときは下の行へ */
-.greet-row.solo{flex-wrap:wrap;row-gap:4px}.greet-row.solo .sale-greet{width:auto;flex:1 1 11rem;min-width:0;max-width:100%}.sale-greet{box-sizing:border-box;max-width:100%}
+.greet-row.solo:has(.sale-greet){flex-wrap:wrap;row-gap:4px}.greet-row.solo .sale-greet{width:auto;flex:1 1 11rem;min-width:0;max-width:100%}.sale-greet{box-sizing:border-box;max-width:100%}
 body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
 .sale-tag.sale-kin{font-weight:600;color:var(--muted)}
 </style>
