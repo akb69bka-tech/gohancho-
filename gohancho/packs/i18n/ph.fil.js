@@ -86,6 +86,36 @@ GOHAN_PACK_TR('PH', 'fil', {
     'mayonnaise': 'Mayonnaise'
   },
   recipes: {
+    "ph_sardinas_misua": {
+      name: "Misua at sardinas",
+      ings: [["Sardinas na de-lata (tomato sauce)", "1 lata (155 g)"], ["Misua", "1 bungkos (50 g)"], ["Sibuyas", "1/2"], ["Dahon ng sibuyas", "1"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 600 ml na tubig · 1 kutsaritang patis · Paminta",
+      steps: [
+        "Igisa ang bawang at hiniwang sibuyas sa mantika nang 1 minuto, ilagay ang sardinas kasama ang sarsa at ang tubig, pakuluan nang 3 minuto.",
+        "Ilagay ang misua at lutuin nang 1–2 minuto hanggang lumambot. Timplahan ng patis at paminta at budburan ng dahon ng sibuyas.",
+      ],
+      tip: { add: "Batihing itlog na ihahalo", why: "Mas malinamnam", skill: "Huling ilagay ang misua", how: "Isang minuto lang luto na ang misua; kung maaga, lalata ito." },
+    },
+    "ph_sinabawang_pechay": {
+      name: "Sinabawang pechay at giniling",
+      ings: [["Giniling na baboy", "100 g"], ["Pechay", "1 tali (200 g)"], ["Kamatis", "1"], ["Sibuyas", "1/2"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 700 ml na tubig · 1 kutsarang patis · Paminta",
+      steps: [
+        "Igisa ang bawang, sibuyas at kamatis nang 1 minuto, ilagay ang giniling at lutuin nang 2 minuto hanggang mawala ang pula. Ilagay ang tubig at pakuluan nang 2 minuto.",
+        "Ilagay muna ang tangkay ng pechay, saka ang dahon, at lutuin nang 2 minuto. Timplahan ng patis at paminta.",
+      ],
+      tip: { add: "Ilang hiwa ng luya", why: "Mas mabango at sariwa ang sabaw", skill: "Tangkay muna bago dahon", how: "Mas matagal maluto ang tangkay; isang minuto lang ang dahon." },
+    },
+    "ph_cornedbeef_sabaw": {
+      name: "Sinabawang corned beef",
+      ings: [["Corned beef na de-lata", "1 maliit na lata (150 g)"], ["Repolyo", "1/8 ulo (150 g)"], ["Sibuyas", "1/2"], ["Kamatis", "1"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 700 ml na tubig · Paminta · Patis ayon sa panlasa",
+      steps: [
+        "Igisa ang bawang, sibuyas at kamatis nang 1 minuto, ilagay ang corned beef at durugin nang 1 minuto. Ilagay ang tubig at pakuluan nang 3 minuto.",
+        "Ilagay ang ginayat na repolyo at lutuin nang 2 minuto. Timplahan ng paminta at patis kung kailangan.",
+      ],
+      tip: { add: "Patatas na hiniwa, unang niluto", why: "Mas nakakabusog na sabaw", skill: "Tikman bago timplahan", how: "Maalat na ang corned beef kaya sa huli na lang ang patis." },
+    },
     'ph_adobo': {
       name: 'Adobong manok',
       ings: [['Hita at drumstick ng manok', '600 g'], ['Nilagang itlog', '2?']],

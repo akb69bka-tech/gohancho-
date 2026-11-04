@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('VN', 'ja', {
   staple: 'ごはん（白米）',
   names: {
+    "enoki": "えのきたけ",
+    "choy sum": "菜心（ツァイシン）",
     'pork': '豚バラ肉', 'ground pork': '豚ひき肉', 'beef': '牛肉', 'chicken': '鶏肉', 'fish': '魚',
     'shrimp': 'えび', 'egg': '卵', 'tofu': '豆腐', 'rice': '米', 'sausage': '中華ソーセージ（ラプスン）',
     'tomato': 'トマト', 'onion': '玉ねぎ', 'scallion': '青ねぎ', 'ginger': 'しょうが', 'chili': '唐辛子',
@@ -11,6 +13,36 @@ GOHAN_PACK_TR('VN', 'ja', {
     'katuk': 'ラウゴット（アマメシバ）', 'mustard greens': 'からし菜', 'malabar spinach': 'ツルムラサキ', 'luffa': 'へちま', 'winter melon': '冬瓜', 'bitter melon': 'ゴーヤ', 'wood ear': 'きくらげ', 'glass noodles': '春雨', 'garlic chives': 'にら', 'clams': 'はまぐり類の貝（ガオ）', 'dill': 'ディル', 'pork ribs': '豚スペアリブ', 'shiitake': '干ししいたけ', 'corn': 'スイートコーン', 'crab': 'かにの身', 'purple yam': '紫山芋', 'pickled mustard greens': 'からし菜の漬物', 'crown daisy': '春菊', 'bamboo shoots': 'たけのこ', 'pork hock': '豚足', 'seaweed': 'わかめ', 'field crab': '田がにのすり身', 'jute leaves': 'モロヘイヤ', 'lemongrass': 'レモングラス', 'bell pepper': 'パプリカ・ピーマン', 'lettuce': 'レタス', 'ground beef': '牛ひき肉', 'betel leaves': 'ラーロット（ハイゴショウの葉）', 'squid': 'いか', 'mushrooms': 'きのこ', 'rice vermicelli': 'ブン（米麺）', 'cucumber': 'きゅうり', 'egg noodles': '中華麺（卵麺）', 'bok choy': 'チンゲン菜', 'chayote': 'はやとうり', 'broccoli': 'ブロッコリー', 'green beans': 'さやいんげん', 'dried shrimp': '干しえび', 'lotus stems': 'はすの茎', 'green papaya': '青パパイヤ', 'rice paper': 'ライスペーパー', 'small eggplants': '小なす（カーファオ）'
   },
   recipes: {
+    "vn_canhdauhucachua": {
+      name: "豆腐とトマトのスープ（カイン・ダウフー・カーチュア）",
+      ings: [["絹ごし豆腐", "200g"], ["トマト", "2個"], ["青ねぎ", "2本"]],
+      seas: "水700ml・油小さじ1・ヌックマム大さじ1・塩小さじ1/2・こしょう",
+      steps: [
+        "トマトをくし形に切り、ねぎの白い部分と油で2分炒める。水と角切りの豆腐を入れて4分煮る。",
+        "ヌックマム、塩、こしょうで味を調え、ねぎの青い部分を入れる。",
+      ],
+      tip: { add: "ディルを少し", why: "北部風のさわやかな香り", skill: "トマトを先に炒める", how: "先に炒めると、スープが赤く、味も濃くなる。" },
+    },
+    "vn_canhcaingot": {
+      name: "菜心と豚ひき肉のスープ（カイン・カイゴット・ティットバム）",
+      ings: [["豚ひき肉", "100g"], ["菜心（ツァイシン）", "200g"], ["青ねぎ", "1本"]],
+      seas: "水700ml・ヌックマム大さじ1・塩小さじ1/2・こしょう",
+      steps: [
+        "ひき肉にヌックマム少々とこしょうで下味をつける。湯を沸かしてひき肉をほぐし入れ、あくを取りながら3分煮る。",
+        "菜心を短く切って入れ、2分煮る。ヌックマムと塩で味を調え、ねぎを入れる。",
+      ],
+      tip: { add: "しょうがの薄切りを少し", why: "香りがよく、スープがすっきりする", skill: "青菜は最後に", how: "2分なら青菜の色も甘みも残る。" },
+    },
+    "vn_canhnamkimcham": {
+      name: "えのきと卵のスープ（カイン・ナムキムチャム・チュン）",
+      ings: [["えのきたけ", "150g"], ["卵", "1個"], ["青ねぎ", "1本"]],
+      seas: "水か鶏ガラスープ700ml・ヌックマム大さじ1・塩小さじ1/2・こしょう",
+      steps: [
+        "えのきの根元を切り、小房に分ける。スープを煮立て、えのきを入れて2分煮る。",
+        "溶き卵を細く流し入れ、30秒おいてからそっと混ぜる。ヌックマム、塩、こしょうで味を調え、ねぎを入れる。",
+      ],
+      tip: { add: "豚ひき肉を少し", why: "おなかにたまる", skill: "えのきは煮すぎない", how: "2分ならやわらかく、しゃきっとした歯ごたえも残る。" },
+    },
     'vn_thitkhotrung': {
       name: '豚肉と卵のカラメル煮（ティットコーチュン）',
       ings: [['豚バラ肉', '400g'], ['卵（鶏卵またはあひるの卵）', '4個'], ['ココナッツウォーター', '400ml']],

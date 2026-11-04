@@ -80,6 +80,56 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    "pe_sopa_fideos_huevo": {
+      name: "Sopa de fideos con huevo",
+      ings: [["Fideos cabello de ángel", "50 g"], ["Huevos", "2"], ["Zanahoria", "1/2"], ["Cebollita china", "1"]],
+      seas: "800 ml de caldo de pollo · 1 cucharada de aceite · 1 diente de ajo · 1/2 cucharadita de comino molido · Sal · Pimienta",
+      steps: [
+        "Fríe el ajo y el comino en el aceite 30 segundos, agrega el caldo y la zanahoria rallada y lleva a hervor. Añade los fideos y cocina 4 minutos.",
+        "Vierte los huevos batidos, espera 30 segundos y mueve suavemente. Sazona y agrega la cebollita china.",
+      ],
+      tip: { add: "Una gotita de pasta de ají amarillo", why: "Un calorcito bien peruano", skill: "Parte los fideos", how: "En trozos cortos se comen mejor con cuchara." },
+    },
+    "pe_crema_arvejas": {
+      name: "Crema de arvejas rápida",
+      ings: [["Arvejas congeladas", "300 g"], ["Cebolla", "1/2"], ["Leche evaporada", "80 ml"]],
+      seas: "500 ml de caldo de verduras o de pollo · 1 cucharada de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y fríelos en el aceite 2 minutos. Agrega las arvejas y el caldo y cocina 5 minutos.",
+        "Añade la leche evaporada y licúa hasta que quede liso (cuidado, está caliente). Sazona con sal y pimienta.",
+      ],
+      tip: { add: "Unos crutones", why: "Crocante sobre la crema", skill: "Licúa enseguida", how: "Licuadas al toque, las arvejas conservan su verde." },
+    },
+    "pe_crema_espinaca": {
+      name: "Crema de espinaca rápida",
+      ings: [["Espinaca", "200 g"], ["Cebolla", "1/2"], ["Leche evaporada", "80 ml"]],
+      seas: "500 ml de caldo de verduras o de pollo · 1 cucharada de aceite · 1 diente de ajo · Una pizca de nuez moscada · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y fríelos en el aceite 2 minutos. Agrega el caldo, lleva a hervor, añade la espinaca y cocina 2 minutos.",
+        "Añade la leche evaporada y la nuez moscada y licúa (cuidado, está caliente). Sazona con sal y pimienta.",
+      ],
+      tip: { add: "Queso fresco desmenuzado encima", why: "Saladito y cremoso", skill: "Cocción corta", how: "Con 2 minutos la espinaca queda verde brillante." },
+    },
+    "pe_ensalada_palta": {
+      name: "Ensalada de palta y tomate",
+      ings: [["Palta", "1"], ["Tomates", "2"], ["Cebolla roja", "1/4"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta · Culantro picado (opcional)",
+      steps: [
+        "Corta la palta y los tomates en trozos y la cebolla roja en pluma bien fina.",
+        "Aliña con el jugo de limón, el aceite, sal y pimienta y sirve al toque.",
+      ],
+      tip: { add: "Unos granos de choclo", why: "Bien peruano", skill: "Corta la palta al final", how: "Córtala justo antes de servir para que no se oscurezca." },
+    },
+    "pe_choclo_mantequilla": {
+      name: "Choclo desgranado con mantequilla",
+      ings: [["Choclo desgranado (congelado)", "300 g"], ["Mantequilla", "15 g"], ["Queso fresco", "50 g"]],
+      seas: "Sal · Una pizca de pimienta · 2 cucharadas de agua",
+      steps: [
+        "Cocina el choclo con el agua, tapado, a fuego medio 5 a 6 minutos hasta que esté tierno.",
+        "Agrega la mantequilla, sal y pimienta y sirve con queso fresco desmenuzado.",
+      ],
+      tip: { add: "Un poquito de huacatay o hierbabuena", why: "Un toque fresco andino", skill: "Usa tapa", how: "Con tapa, el choclo queda jugoso." },
+    },
     'pe_pollosaltado': {
       name: 'Pollo saltado',
       ings: [['Pechuga de pollo', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo fresco, en tiras', '1/2'], ['Culantro', 'unas ramitas'], ['Arroz graneado, para acompañar', '2 platos']],

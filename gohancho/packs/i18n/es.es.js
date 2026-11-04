@@ -66,6 +66,36 @@ GOHAN_PACK_TR('ES', 'es', {
     'flour': 'Harina',
   },
   recipes: {
+    "es_sopa_picadillo": {
+      name: "Sopa de picadillo rápida",
+      ings: [["Fideos finos", "40 g"], ["Jamón serrano en taquitos", "40 g"], ["Huevo duro", "1"]],
+      seas: "800 ml de caldo de pollo · Hierbabuena o perejil picado (opcional) · Sal",
+      steps: [
+        "Lleva el caldo a ebullición, añade los fideos y el jamón y cuece 4-5 minutos hasta que los fideos estén tiernos.",
+        "Pica el huevo duro y añádelo a la sopa. Rectifica de sal y termina con la hierbabuena.",
+      ],
+      tip: { add: "Unas gotas de limón", why: "El toque andaluz de siempre", skill: "Ten huevos duros en la nevera", how: "Con un huevo duro listo, esta sopa se hace en minutos." },
+    },
+    "es_crema_guisantes": {
+      name: "Crema de guisantes rápida",
+      ings: [["Guisantes congelados", "300 g"], ["Cebolla", "1/2"], ["Quesitos", "2 (30 g)"]],
+      seas: "500 ml de caldo de verduras · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y póchala en el aceite 2 minutos. Añade los guisantes y el caldo y cuece 5 minutos.",
+        "Añade los quesitos y tritura hasta que quede fino (cuidado, está caliente). Salpimienta.",
+      ],
+      tip: { add: "Unos picatostes", why: "Crujiente sobre la crema", skill: "Tritura enseguida", how: "Triturados en cuanto están tiernos, los guisantes conservan su verde." },
+    },
+    "es_crema_espinacas": {
+      name: "Crema de espinacas rápida",
+      ings: [["Espinacas frescas", "200 g"], ["Puerro", "1/2"], ["Leche", "100 ml"]],
+      seas: "400 ml de caldo de verduras · 1 cucharada de aceite de oliva · Una pizca de nuez moscada · Sal · Pimienta",
+      steps: [
+        "Corta el puerro y póchalo en el aceite 3 minutos. Añade el caldo, lleva a ebullición, echa las espinacas y cuece 2 minutos.",
+        "Añade la leche y la nuez moscada y tritura (cuidado, está caliente). Salpimienta.",
+      ],
+      tip: { add: "Un hilo de aceite de oliva por encima", why: "Da brillo y sabor", skill: "Cocción corta", how: "Con 2 minutos basta; más tiempo y las espinacas pierden el color." },
+    },
     'es_revuelto': {
       name: 'Revuelto de setas y jamón',
       ings: [['Huevos', '5'], ['Setas o champiñones', '200 g'], ['Jamón serrano', '60 g'], ['Pan, para acompañar', '4 rebanadas']],

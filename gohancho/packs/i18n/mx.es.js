@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
+    "alphabet pasta": "Pasta de letras",
     'chicken': 'Pollo',
     'pork': 'Carne de puerco',
     'beef': 'Bistec de res',
@@ -69,6 +70,36 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    "mx_sopa_letras": {
+      name: "Sopa de letras",
+      ings: [["Pasta de letras", "60 g"], ["Jitomates", "2"], ["Cebolla", "1/4"]],
+      seas: "1 diente de ajo · 1 cucharada de aceite · 800 ml de caldo de pollo · Sal",
+      steps: [
+        "Licúa los jitomates, la cebolla y el ajo. Fríe la pasta en el aceite 1 minuto hasta que dore, agrega el jitomate licuado y fríe 1 minuto.",
+        "Añade el caldo y deja hervir 5 a 6 minutos hasta que la pasta esté suave. Sazona con sal.",
+      ],
+      tip: { add: "Unas gotas de limón y un poco de crema", why: "Así la terminan en muchas casas", skill: "Dora la pasta", how: "Dorar la pasta le da sabor y evita que se pegue." },
+    },
+    "mx_consome_rapido": {
+      name: "Consomé de pollo rápido",
+      ings: [["Pollo cocido deshebrado", "120 g"], ["Garbanzos de lata escurridos", "1/2 lata (120 g)"], ["Cilantro", "unas ramitas"], ["Limón", "1"]],
+      seas: "800 ml de caldo de pollo · 1/4 de cebolla picada fina · 1 chile chipotle en adobo (opcional) · Sal",
+      steps: [
+        "Pon a hervir el caldo con la cebolla y el chipotle. Agrega los garbanzos y el pollo y deja hervir 4 minutos.",
+        "Sazona con sal y sirve con cilantro picado y limón.",
+      ],
+      tip: { add: "Una cucharada de arroz en cada plato", why: "Como en la fonda", skill: "Usa el caldo que sobró", how: "Con el caldo de un pollo cocido antes, esta sopa sale en minutos." },
+    },
+    "mx_caldo_elote_calabacita": {
+      name: "Caldo de elote y calabacita",
+      ings: [["Granos de elote", "150 g"], ["Calabacita", "1"], ["Jitomate", "1"], ["Cilantro", "unas ramitas"]],
+      seas: "800 ml de caldo de pollo o de verduras · 1/4 de cebolla · 1 diente de ajo · 1 cucharada de aceite · Sal",
+      steps: [
+        "Fríe la cebolla, el ajo y el jitomate picados en el aceite 2 minutos. Agrega el caldo, el elote y la calabacita en cubos.",
+        "Deja hervir 5 minutos hasta que la calabacita esté suave. Sazona con sal y agrega el cilantro.",
+      ],
+      tip: { add: "Cubitos de queso fresco en el plato", why: "Suave y cremoso con el caldo caliente", skill: "Corta la calabacita en cubos", how: "En cubos pequeños se cuece en 5 minutos." },
+    },
     'mx_tacosbistec': {
       name: 'Tacos de bistec',
       ings: [['Bistec delgado de res', '300 g'], ['Tortillas de maíz', '8'], ['Cebolla blanca', '1/2'], ['Cilantro', 'un manojito'], ['Limones', '2'], ['Aguacate', '1']],

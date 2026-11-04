@@ -13,6 +13,36 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    "br_caldo_feijao_rapido": {
+      name: "Caldinho de feijão rápido",
+      ings: [["Feijão cozido com caldo (sobra ou enlatado)", "2 xícaras (400 g)"], ["Bacon", "2 fatias"], ["Cebola", "1/2"], ["Salsinha ou coentro", "alguns raminhos"]],
+      seas: "2 dentes de alho · 1 colher (sopa) de óleo · 300 ml de água · Sal · Pimenta-do-reino",
+      steps: [
+        "Frite o bacon, a cebola e o alho picados no óleo por 2 minutos. Junte o feijão e a água e ferva 3 minutos.",
+        "Bata no liquidificador até ficar liso (cuidado, está quente), acerte o sal e a pimenta e salpique a salsinha.",
+      ],
+      tip: { add: "Umas gotas de molho de pimenta", why: "Do jeito do boteco", skill: "Use o caldo do feijão", how: "O caldo do cozimento deixa o caldinho grosso e saboroso." },
+    },
+    "br_sopa_macarrao_ovo": {
+      name: "Sopa de macarrão com ovo",
+      ings: [["Macarrão para sopa (cabelo de anjo ou letrinhas)", "50 g"], ["Ovos", "2"], ["Cenoura", "1/2"], ["Salsinha ou cebolinha", "alguns raminhos"]],
+      seas: "800 ml de caldo de frango · Sal · Pimenta-do-reino",
+      steps: [
+        "Rale a cenoura e leve para ferver com o caldo. Junte o macarrão e cozinhe 4 minutos.",
+        "Despeje os ovos batidos, espere 30 segundos e mexa devagar. Acerte o tempero e salpique as ervas.",
+      ],
+      tip: { add: "Um pouco de queijo ralado por cima", why: "As crianças adoram", skill: "Rale a cenoura", how: "Ralada, a cenoura cozinha junto com o macarrão em poucos minutos." },
+    },
+    "br_creme_ervilha_rapido": {
+      name: "Creme de ervilha rápido",
+      ings: [["Ervilha congelada", "300 g"], ["Cebola", "1/2"], ["Requeijão", "2 colheres (sopa)"]],
+      seas: "500 ml de caldo de legumes · 1 colher (sopa) de manteiga · Sal · Pimenta-do-reino",
+      steps: [
+        "Pique a cebola e refogue na manteiga por 2 minutos. Junte a ervilha e o caldo e cozinhe 5 minutos.",
+        "Junte o requeijão e bata até ficar liso (cuidado, está quente). Acerte o sal e a pimenta.",
+      ],
+      tip: { add: "Bacon crocante por cima", why: "Sal e crocância na sopa adocicada", skill: "Bata logo", how: "Batida logo, a ervilha mantém a cor viva." },
+    },
     'br_filefrango': {
       name: 'Filé de frango grelhado com limão e alho',
       ings: [['Filés finos de peito de frango', '4 (350 g)'], ['Limão', '1'], ['Alface, para servir', '1/2 pé'], ['Tomates, para servir', '2']],

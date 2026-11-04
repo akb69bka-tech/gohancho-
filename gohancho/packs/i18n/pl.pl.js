@@ -19,6 +19,36 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    "pl_groszkowa": {
+      name: "Szybka zupa krem z zielonego groszku",
+      ings: [["Mrożony zielony groszek", "300 g"], ["Cebula", "1/2"], ["Śmietana 18%", "50 ml"]],
+      seas: "500 ml bulionu warzywnego · 1 łyżka masła · Sól · Pieprz · Posiekany koperek",
+      steps: [
+        "Cebulę pokrój w kostkę i zeszklij na maśle przez 2 minuty. Dodaj groszek i bulion i gotuj 5 minut.",
+        "Zmiksuj na gładko (uwaga, gorące), wmieszaj śmietanę, dopraw i posyp koperkiem.",
+      ],
+      tip: { add: "Garść grzanek", why: "Chrupiące na gładkim kremie", skill: "Miksuj od razu", how: "Zmiksowany od razu groszek zachowuje intensywny kolor." },
+    },
+    "pl_chlodnik_ogorkowy": {
+      name: "Chłodnik ogórkowy",
+      ings: [["Ogórki gruntowe", "2"], ["Kefir", "500 ml"], ["Rzodkiewki", "4"], ["Koperek", "1 mały pęczek"]],
+      seas: "1 mały ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Ogórki zetrzyj na grubych oczkach, rzodkiewki pokrój w cienkie plasterki, posiekaj koperek i zmiażdż czosnek.",
+        "Wszystko wymieszaj z zimnym kefirem, dopraw solą i pieprzem i od razu podawaj.",
+      ],
+      tip: { add: "Ziemniaki z koperkiem obok", why: "Klasyczne letnie połączenie", skill: "Kefir prosto z lodówki", how: "Zimny kefir sprawia, że zupy nie trzeba schładzać." },
+    },
+    "pl_szpinakowa": {
+      name: "Szybka zupa szpinakowa",
+      ings: [["Mrożony szpinak rozdrobniony", "200 g"], ["Jajka ugotowane na twardo", "2"], ["Śmietana 18%", "50 ml"]],
+      seas: "700 ml bulionu warzywnego · 1 ząbek czosnku · Sól · Pieprz · Szczypta gałki muszkatołowej",
+      steps: [
+        "Zagotuj bulion z mrożonym szpinakiem i zmiażdżonym czosnkiem i gotuj 5 minut, mieszając.",
+        "Wmieszaj śmietanę i gałkę, dopraw i podawaj z przekrojonymi jajkami.",
+      ],
+      tip: { add: "Kromka chleba żytniego", why: "Zupa staje się sycąca", skill: "Miej ugotowane jajka", how: "Z gotowymi jajkami zupa zajmuje kilka minut." },
+    },
     'pl_jajecznica': {
       name: 'Jajecznica z kiełbasą',
       ings: [['Jajka', '5'], ['Kiełbasa', '150 g'], ['Cebula', '1/2'], ['Szczypiorek', 'mały pęczek'], ['Chleb żytni, do podania', '4 kromki']],

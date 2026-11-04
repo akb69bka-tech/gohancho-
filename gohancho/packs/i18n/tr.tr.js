@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('TR', 'tr', {
   staple: 'Ekmek',
   names: {
+    "mint": "Nane",
     'white beans': 'Kuru fasulye', 'onion': 'Soğan', 'tomato paste': 'Salça', 'green pepper': 'Yeşil biber',
     'eggplant': 'Patlıcan', 'ground beef': 'Dana kıyma', 'tomato': 'Domates', 'parsley': 'Maydanoz', 'chicken': 'Tavuk',
     'mushroom': 'Mantar', 'fish': 'Balık', 'cornmeal': 'Mısır unu', 'lemon': 'Limon', 'arugula': 'Roka', 'egg': 'Yumurta',
@@ -15,6 +16,56 @@ GOHAN_PACK_TR('TR', 'tr', {
     'bread': 'Ekmek', 'liver': 'Ciğer', 'chickpeas': 'Nohut', 'sucuk': 'Sucuk', 'shrimp': 'Karides', 'pasta': 'Makarna', 'peas': 'Bezelye', 'walnuts': 'Ceviz', 'vine leaves': 'Asma yaprağı', 'leek': 'Pırasa', 'artichoke': 'Enginar', 'borlotti beans': 'Barbunya', 'purslane': 'Semizotu', 'beetroot': 'Pancar', 'cabbage': 'Lahana', 'lettuce': 'Marul', 'red pepper': 'Kapya biber', 'cauliflower': 'Karnabahar'
   },
   recipes: {
+    "tr_bezelyecorbasi": {
+      name: "Bezelye çorbası",
+      ings: [["Dondurulmuş bezelye", "300 g"], ["Soğan", "1/2"], ["Süt", "100 ml"]],
+      seas: "500 ml sebze ya da tavuk suyu · 1 yemek kaşığı tereyağı · Tuz · Karabiber",
+      steps: [
+        "Soğanı doğrayıp tereyağında 2 dakika kavurun. Bezelyeyi ve suyu ekleyip 5 dakika pişirin.",
+        "Sütü ekleyip pürüzsüz olana kadar blenderdan geçirin (sıcak, dikkat). Tuz ve karabiberle tatlandırın.",
+      ],
+      tip: { add: "Birkaç damla limon suyu", why: "Tatlı bezelyeye canlılık katar", skill: "Hemen blenderdan geçirin", how: "Hemen çekilen çorba yeşil rengini korur." },
+    },
+    "tr_ayranasi": {
+      name: "Soğuk ayran aşı",
+      ings: [["Yoğurt", "300 g"], ["Haşlanmış nohut (konserve, süzülmüş)", "1/2 kutu (120 g)"], ["Salatalık", "1"], ["Kuru nane", "1 tatlı kaşığı"]],
+      seas: "300 ml soğuk su · Tuz · Kıyılmış dereotu ya da maydanoz",
+      steps: [
+        "Yoğurdu soğuk su ve bir tutam tuzla pürüzsüz olana kadar çırpın.",
+        "Nohudu, küp doğranmış salatalığı, kuru naneyi ve dereotunu ekleyip karıştırın. Soğuk servis edin.",
+      ],
+      tip: { add: "Birkaç buz küpü", why: "Sıcak günlerde daha da ferahlatır", skill: "İyice çırpın", how: "Pürüzsüz yoğurt suyla eşit karışır, topak olmaz." },
+    },
+    "tr_rendedomates": {
+      name: "Rendelenmiş domates çorbası",
+      ings: [["Olgun domates, rendelenmiş", "3"], ["Rendelenmiş kaşar", "2 yemek kaşığı"]],
+      seas: "1 yemek kaşığı tereyağı · 1 yemek kaşığı un · 1 tatlı kaşığı domates salçası · 500 ml su ya da et suyu · Tuz · Karabiber",
+      steps: [
+        "Tereyağını eritip unu 1 dakika kavurun, salçayı ekleyin. Rendelenmiş domatesleri katıp 2 dakika çevirin.",
+        "Suyu çırparak ekleyin ve karıştırarak 5 dakika kaynatın. Tatlandırıp üzerine kaşar rendeleyerek servis edin.",
+      ],
+      tip: { add: "Kızarmış ekmek küpleri", why: "Klasik servis şekli", skill: "Suyu çırparak ekleyin", how: "Yavaş yavaş çırparak eklemek unun topaklanmasını önler." },
+    },
+    "tr_yesilsalata": {
+      name: "Yeşil salata",
+      ings: [["Marul", "1/2"], ["Roka", "1 avuç"], ["Taze soğan", "2"], ["Limon", "1/2"]],
+      seas: "2 yemek kaşığı zeytinyağı · Tuz · Bir tutam sumak (isteğe bağlı)",
+      steps: [
+        "Marulu yıkayıp ince doğrayın, rokayı koparın, taze soğanı doğrayın.",
+        "Servisten hemen önce limon suyu, zeytinyağı, tuz ve sumakla karıştırın.",
+      ],
+      tip: { add: "Birkaç nar tanesi", why: "Ekşi-tatlı bir çıtırlık", skill: "Yaprakları iyi kurulayın", how: "Kuru yapraklar sosu tutar, ıslaklar sulandırır." },
+    },
+    "tr_haydari": {
+      name: "Haydari",
+      ings: [["Süzme yoğurt", "250 g"], ["Ezilmiş beyaz peynir", "50 g"], ["Kuru nane", "1 tatlı kaşığı"], ["Dereotu", "birkaç dal"]],
+      seas: "1 diş sarımsak · 1 yemek kaşığı zeytinyağı · Tuz",
+      steps: [
+        "Yoğurdu ezilmiş sarımsak, ufalanmış peynir, kıyılmış dereotu, naneyi yarısı ve bir tutam tuzla karıştırın.",
+        "Bir tabağa yayın, zeytinyağı gezdirin ve kalan naneyi serpin.",
+      ],
+      tip: { add: "Sıcak ekmek ya da kraker", why: "Banmak için", skill: "Süzme yoğurt kullanın", how: "Süzme yoğurtla haydari kremamsı kalır, sulanmaz." },
+    },
     'tr_kiymaliyumurta': {
       name: 'Kıymalı yumurta',
       ings: [['Dana kıyma', '200 g'], ['Yumurta', '4'], ['Soğan', '1'], ['Sivri biber', '2'], ['Domates', '1'], ['Ekmek, yanına', '4 dilim']],

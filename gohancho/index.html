@@ -2516,6 +2516,7 @@ function normalizeState(d){
         serves: (n => n >= 1 && n <= 12 ? n : 2)(Math.round(Number(r.serves))), src: typeof r.src === 'string' ? r.src.trim().slice(0, 60) : ''}))
         .filter(r => r.ings.length);
     ['awards','usage','countryData','stapleBy'].forEach(k => { if (k in st) st[k] = obj(st[k]); });
+    if ('modeSeen' in st){ const ms = {}; Object.entries(obj(st.modeSeen)).forEach(([k, v]) => { if (/^(ten|simple)\|[A-Z]{2}$/.test(k) && Array.isArray(v)) ms[k] = v.filter(x => typeof x === 'string').slice(-12); }); st.modeSeen = ms; }   // 10分以内・いちばん簡単で出した主菜（R90）
     if (!(st.week && isYmd(st.week.start) && Array.isArray(st.week.days))) st.week = null;
     else st.week.days = st.week.days.filter(x => x && isYmd(x.d) && x.id).map(x => { if (typeof x.who === 'string' && x.who.trim()) x.who = x.who.trim().slice(0, 12); else delete x.who; return x; });
     if (st.cook && !(isYmd(st.cook.d) && Array.isArray(st.cook.ids))) st.cook = null;
@@ -3540,14 +3541,16 @@ function easyRelaxText(){
            それより長い料理では埋めない（第21回 R74: アメリカで45分のスープ・フランスで30分のスープが出ていた）。副菜・汁ものの上限の中に料理がない国は、その席をなしにする（品数を減らす）。
            主菜だけは席をなしにできないので、20分以内の主菜もない国では手早い順の少数（ids）にし、札にその料理の分を出す
    simple: 主菜は25分以内・手順3つまで・材料6つまで（常備品を除く）、副菜・汁ものは15分以内・手順2つまで。揚げ物・オーブン・圧力鍋は出さない。
-           少ない国は手順・材料の数から段階でゆるめ、分はいちばん最後に（35→45分まで）ゆるめる（第17回 R49: 分を見ずに90分の煮込みに「かんたん」が付いた）
+           少ない国は手順・材料の数から段階でゆるめ、分はいちばん最後に（主菜 35→45分、副菜・汁もの 20分まで）ゆるめる（第17回 R49: 分を見ずに90分の煮込みに「かんたん」が付いた）。
+           副菜・汁ものは10分以内と同じ決まり（第22回 R89: アメリカで40分のクラムチャウダー・フランスで45分のポタージュが札なしで出ていた）: 20分より長い料理では埋めず、上限の中に料理がなければ席をなしにして知らせる。
+           条件（主菜25分・副菜と汁もの15分）を超える料理には、料理ごとにその分の札（「20分」など）
    slow:   主菜は40分以上か手順5つ以上（煮込み・オーブンなど）。副菜・汁ものはふつう。少ない国は 30分以上か手順4つ以上 までゆるめる
    段階を全部ゆるめても MODE_NEED そろわないときは、条件に近い順の MODE_NEED 品だけ（ids）。それもなければ条件なし（none）。
    決めた献立は変えない（気分と同じ入口）。アレルギー・苦手の料理は、どのモードでも出さない（isAvoided はそのまま） */
 const MODE_KEYS = ['ten', 'simple', 'slow'];
 const MODE_TIERS = {
     ten: {main: [10, 15, 20], side: [10, 15]},                                                // 分以内（これより長い料理は出さない。第21回 R74）
-    simple: {main: [[3, 6, 25], [4, 6, 25], [4, 8, 25], [5, 99, 25], [5, 99, 35], [5, 99, 45]], side: [[2, 15], [3, 15], [4, 15], [99, 15], [99, 25], [99, 45]]},   // 主菜 [手順の数まで, 材料の数まで, 分以内]、副菜・汁もの [手順の数まで, 分以内]（99 = 数は問わない）
+    simple: {main: [[3, 6, 25], [4, 6, 25], [4, 8, 25], [5, 99, 25], [5, 99, 35], [5, 99, 45]], side: [[2, 15], [3, 15], [4, 15], [99, 15], [99, 20]]},   // 主菜 [手順の数まで, 材料の数まで, 分以内]、副菜・汁もの [手順の数まで, 分以内]（99 = 数は問わない）。副菜・汁ものは20分まで（それより長い料理は出さない。第22回 R89）
     slow: {main: [[40, 5], [30, 4]]},                                                          // [分以上, 手順の数以上]（どちらか）
 };
 const MODE_NEED = 3, modeMemo = new Map();
@@ -3572,7 +3575,7 @@ function modeInfo(mode, slot){
     const base = pool.filter(r => (slot === '主菜' ? r.main : slotOf(r) === slot) && !S.hidden.includes(r.id) && !isAvoided(r));
     let lv = 0, hit = [];
     for (; lv < T.length; lv++){ hit = base.filter(r => modeFits(mode, r, lv)); if (hit.length >= MODE_NEED) break; }
-    if (lv >= T.length && mode === 'ten'){   // 10分以内: 上限の中の料理が MODE_NEED に足りなくても、上限の中の料理だけで出す（上限を超える料理で埋めない。第21回 R74）
+    if (lv >= T.length && (mode === 'ten' || (mode === 'simple' && slot !== '主菜'))){   // 10分以内・いちばん簡単の副菜と汁もの: 上限の中の料理が MODE_NEED に足りなくても、上限の中の料理だけで出す（上限を超える料理で埋めない。第21回 R74・第22回 R89）
         const last = base.filter(r => modeFits(mode, r, T.length - 1));
         if (last.length){ lv = 0; while (base.filter(r => modeFits(mode, r, lv)).length < last.length) lv++; hit = last; }   // 同じ顔ぶれになるいちばん短い段（知らせの分を大きく言わない）
         else if (slot !== '主菜'){ const info = {lv: T.length, tiers: T.length, ids: null, none: false, drop: true, n: 0, max: 0}; modeMemo.set(key, info); return info; }   // 副菜・汁もの: 席をなしにする
@@ -3591,8 +3594,27 @@ function modeInfo(mode, slot){
 }
 function modeSlotOf(r, slot){ return slot === '汁物' || slot === '副菜' ? slot : slot === '主菜' ? '主菜' : (['副菜', '汁物'].includes(slotOf(r)) ? slotOf(r) : '主菜'); }
 function modeOk(r, mode, slot){ const f = modeInfo(mode, modeSlotOf(r, slot)); return !f.drop && (f.none || (f.ids ? f.ids.has(r.id) : modeFits(mode, r, f.lv))); }
-// 10分以内の日に、その料理を出してよいか（上限の段の中だけ。ほかの気分では使わない）。副菜・汁もの・2品目の主菜も、上限を超える料理では埋めない（第21回 R74）
-function tenHard(){ return modeOf() === 'ten'; }
+// 10分以内・いちばん簡単の日に、上限の段の中の料理だけを出す（ほかの気分では使わない）。副菜・汁もの・2品目の主菜も、上限を超える料理では埋めない（第21回 R74・第22回 R89）
+function tenHard(){ return modeOf() === 'ten' || modeOf() === 'simple'; }
+// その枠で、なしにした席の知らせに出す上限の分（10分以内 15分・いちばん簡単 20分）
+function modeCapMin(mode, slot){ const T = MODE_TIERS[mode] && MODE_TIERS[mode][slot === '主菜' ? 'main' : 'side']; if (!T) return 0; const c = T[T.length - 1]; return Array.isArray(c) ? c[slot === '主菜' ? 2 : 1] : c; }
+/* 10分以内・いちばん簡単で出した主菜のおぼえ（第22回 R90: 主菜の候補が1か国4〜6品なので、同じ主菜が続いていた）。
+   国とモードごとに、お膳に出した主菜を新しい順に12品まで（端末の中だけ）。主菜を選ぶときは、最近出した主菜ほど点を下げる（出していない主菜 → いちばん前に出した主菜 の順）。
+   決めた献立・ほかの席・ほかの気分には使わない。アレルギー・苦手・「今は出さない」は今までどおり外す（点を下げるだけで、候補を増やさない） */
+const MODE_SEEN_MAX = 12;
+function modeSeenKey(){ const m = modeOf(); return m === 'ten' || m === 'simple' ? m + '|' + (mixCc('主菜') || currentCountry()) : ''; }
+function modeSeenList(){ const k = modeSeenKey(), o = S.modeSeen; return k && o && typeof o === 'object' && Array.isArray(o[k]) ? o[k] : []; }
+function modeSeenNote(r){
+    const k = modeSeenKey(); if (!k || !r || !r.id) return;
+    if (!S.modeSeen || typeof S.modeSeen !== 'object' || Array.isArray(S.modeSeen)) S.modeSeen = {};
+    const a = Array.isArray(S.modeSeen[k]) ? S.modeSeen[k] : [];
+    if (a[a.length - 1] === r.id) return;
+    S.modeSeen[k] = [...a.filter(x => x !== r.id), r.id].slice(-MODE_SEEN_MAX); save();
+}
+// 主菜の点から引く分: 最近出した主菜ほど大きく（1以上の差があるので、乱数の足し分 0.7 では順番が入れ替わらない）
+function modeSeenPenalty(){ const a = modeSeenList(); return a.length ? new Map(a.map((id, i) => [id, 1 + i])) : null; }
+// いちばん簡単の条件（主菜25分・副菜と汁もの15分）より長い料理: 料理ごとにその分の札を出す
+function simpleOver(r, slot){ const main = slot ? slot === '主菜' : easyKind(r) === 'main', c = MODE_TIERS.simple[main ? 'main' : 'side'][0]; return r.min > c[main ? 2 : 1]; }
 // 10分を超える料理の札の分: その料理が入る段の上限（15分・20分）。段をすべて超える料理（手早い順の少数の主菜）は、その料理の分
 function tenCap(r, slot){ const T = MODE_TIERS.ten[(slot ? slot === '主菜' : easyKind(r) === 'main') ? 'main' : 'side']; return T.find(c => r.min <= c) || r.min; }
 // 札（10分・かんたん・じっくり）: 「10分」はゆるめない条件（目安10分以内で、10分を超える「おく・漬ける・冷ます」の待ちがない）料理にだけ。「かんたん」もゆるめない条件（主菜 25分・手順3つ・材料6つ、副菜・汁もの 15分・手順2つ）に合う料理にだけ（ゆるめた段階の料理には付けない。第17回 R49）。
@@ -3607,6 +3629,7 @@ function modeBadgeOk(r, mode, slot){
 function modeTagHtml(r, slot){
     const mode = modeOf();
     if (mode === 'ten' && r && r.min > 10) return `<span class="badge cap">${esc(t('{n}分', {n: tenCap(r, slot)}))}</span>`;   // 10分を超える料理には、ゆるめた上限を料理ごとに（第21回 R74: 知らせの小さな字だけだった）
+    if (mode === 'simple' && r && simpleOver(r, slot)) return `<span class="badge cap">${esc(t('{n}分', {n: r.min}))}</span>`;   // いちばん簡単の条件より長い料理には、その料理の分を（第22回 R89: 40分の汁ものに札も知らせもなかった）
     if (!mode || !r || !modeBadgeOk(r, mode, slot)) return '';
     if (mode === 'slow' && slot && slot !== '主菜') return '';
     return `<span class="badge mode">${esc(mode === 'ten' ? t('10分') : mode === 'simple' ? t('かんたん') : t('じっくり'))}</span>`;
@@ -3620,7 +3643,7 @@ function modeRelaxText(){
         if (mode === 'slow' && sl !== '主菜') continue;
         const f = modeInfo(mode, sl), k = sl === '主菜' ? 'main' : 'side', name = slotLabel(sl), T = MODE_TIERS[mode][k];
         if (f.lv === 0) continue;
-        if (f.drop) parts.push(t('{slot}は{min}分以内の料理がないので、なし', {slot: name, min: T[T.length - 1]}));
+        if (f.drop) parts.push(t('{slot}は{min}分以内の料理がないので、なし', {slot: name, min: modeCapMin(mode, sl)}));
         else if (f.none) parts.push(t('{slot}は条件なし', {slot: name}));
         else if (f.ids) parts.push(mode === 'ten' ? t('{slot}は手早い順の{n}品だけ', {slot: name, n: f.n}) : mode === 'simple' ? t('{slot}は手順と材料の少ない順の{n}品だけ', {slot: name, n: f.n}) : t('{slot}は条件なし', {slot: name}));   // 近い順の少数は、最長の分を書かない（190分などの数が「10分以内」の下に出て紛らわしい。第17回 R51）
         else if (mode === 'ten') parts.push(t('{slot}は{min}分以内', {slot: name, min: T[f.lv]}));
@@ -3793,6 +3816,7 @@ function scoreRecipe(r, ctx){
     if (session.mood === 'slow' && easyKind(r) === 'main' && (r.method === '煮' || r.method === '炊')) s += 0.15;   // じっくりの日は煮込み・炊くものを少し先に   // ラクの日は、1つの鍋・フライパンで作れる調理法を少し優先
     if (mildOn() && spiceLevel(r) === 1) s -= 0.4;   // 辛いのが苦手な人がいるときは、辛みの少ない料理を先に
     s += reactBias(r.id);   // 家族の「おいしかった！」が多い料理は少し出やすく
+    if (ctx.seen) s -= ctx.seen.get(r.id) || 0;   // 10分以内・いちばん簡単: 最近お膳に出した主菜は後に（R90）
     if (ctx.recent){
         ctx.recent.forEach(x => {
             if (x.family === r.family && r.family !== '野菜') s -= x.ago <= 1 ? 0.6 : 0.2;
@@ -3829,7 +3853,7 @@ function pick(cands, ctx){
 const isBowlMain = r => !!r && (r.type === 'ごはん' || r.type === '麺') ? (konomonoMain(r) ? 'pickles' : tsukeSideOf(r) ? 'tsuke' : riceExtraOn() ? 'extra' : 'bowl') : false;   // tsuke: カレーの日の福神漬け・らっきょうの席。extra: ご飯の席が空くので副菜を1品足す日（ほかのご飯もの・麺）   // ご飯の欄（お漬物に変わる・なくなる）に関わる種類だけ。お漬物の付くご飯ものと、付かない麺・パスタも分ける（R4）。汁ものの枠は主菜を変えても動かさない
 function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: 「かえる」では、同じ種類（ご飯もの・麺／ふつうの主菜）の候補がなければ null（別の種類にして、ご飯の欄を動かさない）
     const wd = parseYmd(TODAY).getDay();
-    const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all'};
+    const ctx = {recent: recentMainFamilies(3), fridge: session.useFridge ? fridgeKeys() : null, weekday: wd >= 1 && wd <= 5 && session.mood === 'all', seen: modeSeenPenalty()};
     const clash = r => keep.some(k => k && (k.id === r.id || ((k.slot || '主菜') === '主菜' && k.family === r.family && r.family !== '野菜'))) || (bowl != null && isBowlMain(r) !== bowl);
     const okayuDay = session.mood === 'okayu';   // おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（ない国・ないときも、ほかの料理・麺で埋めない）
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && (!session.swapF || moodOk(r, session.swapF)) && !isAvoided(r));   // swapF: かえるの絞りこみ（気分に重ねる）
@@ -3866,7 +3890,7 @@ function suggestOrAny(slot, items, main){
     const used = new Set(items.map(x => x.r && x.r.id).filter(Boolean));
     // 予備: その枠に入る料理なら何でも（主菜の枠は主菜・ごはんもの・麺。以前は主菜の枠だと必ず空になっていた）
     let any = moodPrefer(fitMain(poolFor(slot).filter(x => slotOf(x) === slot && x !== main && !used.has(x.id) && !isAvoided(x)), slot, main), slot);
-    if (tenHard()) any = any.filter(x => modeOk(x, 'ten', slot));   // 10分以内の日は、予備でも上限を超える料理で埋めない（第21回 R74）
+    if (tenHard()) any = any.filter(x => modeOk(x, modeOf(), slot));   // 10分以内・いちばん簡単の日は、予備でも上限を超える料理で埋めない（第21回 R74・第22回 R89）
     const shown = any.filter(x => !S.hidden.includes(x.id));
     let pool = shown.length ? shown : any;
     if (slot === '副菜') pool = sideBalance(pool, items.map(x => x.r).filter(r => r && r !== main), main);   // 予備から選ぶときも、いも・かぼちゃ・マカロニを重ねない（R31）
@@ -10903,6 +10927,7 @@ function viewToday(){
         }
     }   // 決めたあとに「かえる」で変えた案も、開き直して残す
     draftTried = true; keepDraft(); weekFollowToday();   // 1週間プランの今日を、いまの献立の主菜にそろえる（R76）
+    if (!decidedToday() && session.menu && session.menu.items[0] && session.menu.items[0].slot === '主菜') modeSeenNote(session.menu.items[0].r);   // 10分以内・いちばん簡単で出した主菜をおぼえる（R90）
     const m = session.menu;
     const prevShown = session.trayShown;   // 前に描いたお膳。器を弾ませるのは、入れ替わった料理だけにする
     session.trayShown = {ids: m.items.map(x => x.r ? x.r.id : '-'), rice: ''};
@@ -10929,9 +10954,9 @@ function viewToday(){
         const last = r ? lastLabel(r.id) : '';
         const byAvoid = !r && (effAvoid().length || mildOn()) && RECIPES.some(x => slotOf(x) === it.slot && isAvoidedCore(x));
         const primoDay = it.slot === '汁物' && !r && primoMain(main) && !mixCc('汁物');
-        const tenDrop = !r && idx > 0 && modeOf() === 'ten' && modeInfo('ten', it.slot).drop;   // 10分以内の日に、上限の中の料理がなくて、なしにした席（第21回 R74）
+        const tenDrop = !r && idx > 0 && tenHard() && modeInfo(modeOf(), it.slot).drop;   // 10分以内・いちばん簡単の日に、上限の中の料理がなくて、なしにした席（第21回 R74・第22回 R89）
         const soupNone = (it.slot === '汁物' && !r && (soupyMain(main) || primoDay)) || tenDrop;   // 汁ものの麺・汁ものが主菜なら、足すボタンも出さない（イタリアの Primo の日も）
-        const empty = idx === 0 && it.slot === '主菜' ? t('この条件で出せる主菜がありません') : tenDrop ? t('{slot}は{min}分以内の料理がないので、なし', {slot: slotLabel(it.slot), min: MODE_TIERS.ten.side[MODE_TIERS.ten.side.length - 1]}) : primoDay ? t('プリモ（パスタ・リゾット）の日なので、ズッパはなし') : it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
+        const empty = idx === 0 && it.slot === '主菜' ? t('この条件で出せる主菜がありません') : tenDrop ? t('{slot}は{min}分以内の料理がないので、なし', {slot: slotLabel(it.slot), min: modeCapMin(modeOf(), it.slot)}) : primoDay ? t('プリモ（パスタ・リゾット）の日なので、ズッパはなし') : it.slot === '汁物' && soupyMain(main) && main.type !== '汁物' ? (main.type === '麺' ? t('汁ものの麺なので、なし') : t('汁けの多い主菜なので、なし')) : byAvoid ? t('苦手な食材を使わない料理がありません') : it.slot === '汁物' && !soupNone ? t('汁ものは入れていません') : t('合う料理がありません');
         const wTag = r && it.slot === '主菜' && wishN ? wishFor(r.id) : null;   // 届いた「食べたい」の札（主菜の絵の上。位置は重ねるだけで、ほかの物を動かさない）
         const vTag = r && it.slot === '主菜' && !wTag && voteOn && voteAlignedNow(r.id);   // ○つけ表で、みんなの○がそろった料理
         const isFresh = !!(r && freshAt(idx));
@@ -12586,7 +12611,7 @@ function renderModalBody(){
     const sv = svToday();
     const fam = (swappedRecipe(r) || r).family;   // 苦手な食材を置き換えた料理は、置き換えた主役の種類
     const kind = [typeLabel(r.type), r.pack && r.pack === currentCountry() ? '' : genreLabel(r)].filter(Boolean).join(t('・'));   // いまの国の料理には国名を出さない（metaLine と同じ）
-    const sub = r.pack && r.nameEn && r.nameEn !== r.name && countryOf(r.pack).lang !== LANG ? r.nameEn : '';   // その国の言葉の画面では、英語の副題は出さない
+    const sub = r.pack && r.nameEn && r.nameEn !== r.name && countryOf(r.pack).lang !== LANG ? r.nameEn : !r.pack && r.trLang && r.name === r.nameEn && r.alt && r.alt.length ? r.alt[r.alt.length - 1] : '';   // その国の言葉の画面では、英語の副題は出さない。日本の料理名を漢字のまま出した中国語の画面では、借りた英語の名前を副題に（R91）
     const mains = mainIngNames(r), why = dishWhyFacts(r);
     const stat = (ic, v) => `<span class="dstat">${ic ? `<span class="ic" aria-hidden="true">${ic}</span>` : ''}${esc(v)}</span>`;
     const oldSheet = $('#modal-root .sheet'), modalPop = oldSheet ? '' : ' pop';   // もう開いている詳細を描き直すとき（絵が届いたときなど）は、弾ませない
@@ -14060,13 +14085,26 @@ function jpTrMerged(d){
     const tr = {tlang: b.tlang, staple: d.staple || b.staple, aliases: al, names: Object.assign({}, b.names || {}, d.names || {}), itemNames: d.names || {}, recipes, nameLang: d.tlang};
     d._m = {b, tr}; return tr;
 }
+/* 料理名の文字が、画面の言葉の人に読めるか（第22回 R91: 言葉を今のままにしてほかの国を見ると、訳のない料理名がいつも英語だった）。
+   ラテン文字（ベトナム語・インドネシア語の字を含む）はどの言葉の人にも読める扱い（今までどおり）。漢字だけの名前は中国語（簡体・繁体）と日本語、
+   ハングルは韓国語、タイ文字はタイ語、アラビア文字はアラビア語、デーヴァナーガリーはヒンディー語、かなは日本語の画面で読める */
+const NAME_SCRIPT = [['ko', /[\u1100-\u11ff\u3130-\u318f\uac00-\ud7af]/], ['th', /[\u0e00-\u0e7f]/], ['ar', /[\u0600-\u06ff\u0750-\u077f]/], ['hi', /[\u0900-\u097f]/], ['ja', /[\u3040-\u30ff]/]];
+function nameReadable(name, lang = LANG){
+    const s = String(name || ''), l = String(lang || '').slice(0, 2);
+    if (!/[^\u0000-\u036f\u1e00-\u1eff\u2000-\u206f\s]/.test(s)) return true;   // ラテン文字だけ
+    for (const [k, re] of NAME_SCRIPT) if (re.test(s)) return l === k || (k === 'ja' && l === 'ja');
+    if (/\p{Script=Han}/u.test(s)) return (l === 'zh' || l === 'ja') && !/[^\p{Script=Han}\u3005\u30f6\u3006\u0000-\u036f\s・（）()、，。·]/u.test(s);   // 漢字だけ（ほかの文字が混ざらない）
+    return false;
+}
 // 日本のレシピに訳を重ねる（食材のキーはそのまま。表示の名前・分量・作り方だけ入れかえる）
+// 訳のない言葉の画面（中国語など。英語の訳を借りる）で、日本の料理名が漢字だけ（麻婆豆腐・親子丼など）のときは、その名前のまま出す（R91。英語の名前は検索に残す）
 function jpRecipe(r, tr){
-    const rt = tr && tr.recipes && tr.recipes[r.id]; if (!rt) return r;
+    const rt0 = tr && tr.recipes && tr.recipes[r.id]; if (!rt0) return r;
+    const rt = rt0.name && tr.tlang !== LANG && !(tr.nameLang && tr.nameLang === LANG) && LANG !== 'en' && nameReadable(r.name) ? Object.assign({}, rt0, {name: r.name}) : rt0;
     const items = r.items.map((i, k) => { const v = rt.ings && rt.ings[k]; if (!v) return i;
         const nm = (tr.itemNames && (tr.itemNames[i.name] || tr.itemNames[i.key])) || v[0];   // 名前だけの訳（ベトナム語）は、材料の名前をその言葉で。手順の言葉（英語）の名前は stepLabel に残す
         return Object.assign({}, i, {name: nm, label: nm, jp: i.name, stepLabel: nm !== v[0] ? v[0] : undefined, qty: v[1] != null ? String(v[1]).replace(/[?？]\s*$/, "") : i.qty}); });
-    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, slang: rt.steps ? tr.tlang : 'ja', tip: rt.tip || r.tip || null, trLang: LANG});
+    return Object.assign({}, r, {name: rt.name || r.name, nameEn: r.name, alt: rt !== rt0 ? [...(r.alt || []), rt0.name] : r.alt, items, seasBase: r.seasBase || r.seas, stepsBase: r.stepsBase || r.steps, seas: rt.seas != null ? rt.seas : r.seas, steps: rt.steps || r.steps, slang: rt.steps ? tr.tlang : 'ja', tip: rt.tip || r.tip || null, trLang: LANG});
 }
 function packRecipe(pk, x, tr){
     const rt = tr && tr.recipes && tr.recipes[x.id];
@@ -14082,7 +14120,8 @@ function packRecipe(pk, x, tr){
     const re = PROTEIN_WORDS[x.protein];
     const p = family === '野菜' ? null : (items.find(i => re && re.test(i.key)) || items[0]);
     // 訳がないとき、その国の文字（中国語・ハングル・アラビア文字など）は、その言語の画面でないと読めないので、英語の名前を主に出し、元の名前は2行目に回す
-    const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || !/[^\u0000-\u036f\u1e00-\u1eff\u2000-\u206f\s]/.test(x.local);
+    // 訳がないときの順: 画面の言葉の訳 → その国の名前（画面の言葉の人に読める文字のとき。中国語の画面で台湾の料理名など。R91）→ 英語
+    const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || nameReadable(x.local);
     const name = rt && rt.name ? rt.name : (readable ? loc : x.name);
     return {id: x.id, name, nameEn: name === loc ? x.name : loc, genre: 'local', type: PACK_TYPE[x.type] || '主菜', method: PACK_METHOD[x.method] || '煮',
         min: Number(x.min) || 30, ings: x.ings, items, seasBase: x.seas || '', stepsBase: x.steps || [], seas: rt && rt.seas != null ? rt.seas : (x.seas || ''), steps: (rt && rt.steps ? rt.steps : (x.steps || [])).slice(), slang: rt && rt.steps ? tr.tlang : 'en',

@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('FR', 'fr', {
   staple: 'Baguette',
   names: {
+    "yogurt": "Yaourt nature",
+    "alphabet pasta": "Pâtes alphabet",
     'chicken': 'Poulet',
     'bell pepper': 'Poivron',
     'tomato': 'Tomates',
@@ -76,6 +78,36 @@ GOHAN_PACK_TR('FR', 'fr', {
     'red cabbage': 'Chou rouge',
   },
   recipes: {
+    "fr_petitspois_express": {
+      name: "Velouté de petits pois express",
+      ings: [["Petits pois surgelés", "300 g"], ["Échalote", "1"], ["Crème fraîche", "2 c. à soupe"]],
+      seas: "500 ml de bouillon de légumes (1 cube) · 1 c. à soupe de beurre · Quelques feuilles de menthe (facultatif) · Sel · Poivre",
+      steps: [
+        "Émincer l'échalote et la faire suer 2 minutes dans le beurre. Ajouter les petits pois et le bouillon et faire bouillir 5 minutes.",
+        "Ajouter la menthe et mixer finement (attention, c'est chaud). Incorporer la crème fraîche, saler et poivrer.",
+      ],
+      tip: { add: "Quelques croûtons", why: "Du croquant contre le velouté", skill: "Mixer tout de suite", how: "Mixés dès qu'ils sont tendres, les petits pois gardent un vert éclatant." },
+    },
+    "fr_concombre_froide": {
+      name: "Soupe froide de concombre au yaourt",
+      ings: [["Concombre", "1 gros (400 g)"], ["Yaourt nature", "250 g"], ["Menthe fraîche", "5 feuilles"]],
+      seas: "1 petite gousse d'ail · 1 c. à soupe d'huile d'olive · 100 ml d'eau froide · Sel · Poivre",
+      steps: [
+        "Peler le concombre, le couper en morceaux et le mixer avec le yaourt, la menthe, l'ail, l'eau froide et une pincée de sel jusqu'à ce que ce soit lisse.",
+        "Rectifier l'assaisonnement, verser dans les bols et arroser d'un filet d'huile d'olive. Servir froid.",
+      ],
+      tip: { add: "Des glaçons dans les bols", why: "Bien froid tout de suite par temps chaud", skill: "Un concombre bien frais", how: "Concombre et yaourt sortis du réfrigérateur : pas besoin de temps de repos au froid." },
+    },
+    "fr_bouillon_alphabet": {
+      name: "Bouillon de légumes aux pâtes alphabet",
+      ings: [["Pâtes alphabet", "50 g"], ["Carotte", "1"], ["Poireau, le blanc", "1/2"]],
+      seas: "800 ml de bouillon de légumes (1 cube) · 1 c. à café de beurre · Sel · Poivre · Persil haché (facultatif)",
+      steps: [
+        "Râper la carotte et émincer le poireau. Porter le bouillon à ébullition avec les légumes et cuire 3 minutes.",
+        "Ajouter les pâtes et cuire 4 à 5 minutes. Incorporer le beurre, rectifier l'assaisonnement et parsemer de persil.",
+      ],
+      tip: { add: "Une cuillerée de comté râpé", why: "Les enfants adorent le voir fondre dans le bol", skill: "Râper la carotte", how: "Râpée, la carotte cuit en même temps que les pâtes." },
+    },
     'fr_bavette': {
       name: 'Bavette à l\'échalote',
       ings: [['Bavettes de bœuf', '2 (300 g)'], ['Échalotes', '3'], ['Salade verte, pour servir', '1'], ['Baguette, pour servir', '1/2']],
