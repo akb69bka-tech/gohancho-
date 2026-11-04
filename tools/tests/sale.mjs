@@ -9,6 +9,7 @@
 //  S7 195px・390px で横にはみ出さない。日本語・英語・アラビア語。ほかのサイトへの通信なし（店の URL・名前・郵便番号を送らない）
 //  S8 書き出し・読み込み（バックアップ）に入る。壊れた S.sale でも起動する
 //  S9 チラシの写真（iPhone アプリのみ）: 文字から品名と値段を拾う純粋な関数（チラシ風の文字24件）・候補を選んで入れる・ウェブ版はボタンなし
+//  R107 特売の日でも器が特売のない日とほぼ同じ大きさ（360/390/430 × 文字3段階。差 6px まで）
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 const require = createRequire(import.meta.url);
@@ -287,6 +288,33 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
         await ctx.close();
     }
     ok(!bad.length, 'R97・R103 特売の1行が最初の画面に見え、右へはみ出さず › と品名が見え、お膳の上の段もタブ・帯の上（30通り） ' + JSON.stringify(bad));
+}
+// ---- R107 特売の日でも、お膳の器は特売のない日とほぼ同じ大きさ（360/390/430 × 文字3段階・家族なし。同じ献立で特売あり → なしを比べる） ----
+// 第25回: R103 で特売の1行が「食べたいもの」の下の行に回り、文字が大きいと器が 107→86・94→60（360）、113→95（390）に小さくなっていた
+{
+    const bad = [], rows = [];
+    for (const [w, h] of [[360, 800], [390, 844], [430, 932]]) for (const ts of [0, 1, 2]){
+        const init = Object.assign({}, storeInit, {family: [], sale: Object.assign({}, storeInit.sale, {items: [{id: 'g1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '98円', d: DAY[0], u: DAY[0]}, {id: 'g2', s: 'stA', sn: '', k: '豚肉', n: '豚こま切れ肉', p: '', d: DAY[0], u: DAY[0]}, {id: 'g3', s: 'stA', sn: '', k: 'にんじん', n: 'にんじん', p: '', d: DAY[0], u: DAY[0]}]})});
+        const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
+        await ctx.addInitScript(rngScript(seedFor('sale-r107', w + '-' + ts)));
+        const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r107: ' + e.message));
+        await p.addInitScript(([init, ts]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded: true, firstUse: new Date().toISOString().slice(0, 10)}, init, {settings: Object.assign({country: 'JP', dishCount: 3, uiLang: 'ja'}, ts ? {textSize: ts} : {})}))); } }, [init, ts]);
+        await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
+        const meas = () => p.evaluate(() => { const v = [...document.querySelectorAll('.tray .tg-row:first-child .spot .vessel')].map(e => e.getBoundingClientRect().width), g = document.querySelector('.sale-greet'), lt = document.querySelector('#greet .req-btn.lite');
+            const tx = g && g.querySelector('.sale-greet-tx'); let nameVis = !g; try{ const tn = tx.firstChild, i = tn.textContent.indexOf('キャベツ'); const rg = document.createRange(); rg.setStart(tn, 0); rg.setEnd(tn, i + 4); nameVis = i >= 0 && rg.getBoundingClientRect().right <= tx.getBoundingClientRect().right + .5; }catch(e){}
+            const r = g && g.getBoundingClientRect(), lr = lt && lt.getBoundingClientRect();
+            return {vs: Math.round(Math.max(...v)), sale: !!g, nameVis, inX: !r || r.left >= -.5 && r.right <= innerWidth + .5, over: document.documentElement.scrollWidth > innerWidth + 1,
+                lite: lt ? {name: lt.textContent.trim(), w: Math.round(lr.width), h: Math.round(lr.height), vis: lr.width > 0} : null}; });
+        const a = await meas();
+        await p.evaluate(() => { S.sale.items = []; S.sale.stores.forEach(st => { st.days = []; }); TRAY_FIT.state = null; render(); });   // 前の詰め方を引きつがない（開き直したときと同じ） await p.waitForTimeout(400);
+        const n = await meas();
+        rows.push(`${w}/ts${ts}: ${n.vs}→${a.vs}`);
+        // 器の差は 6px まで（前は −21〜−34px）。特売の1行は右へはみ出さず品名が見える（R103）。「食べたいもの」は押せる大きさ（44px）で、名前は読み上げに残る
+        if (!a.sale || n.sale || a.vs < n.vs - 6 || !a.nameVis || !a.inX || a.over || !a.lite || !a.lite.vis || a.lite.name !== '食べたいもの' || a.lite.h < 36 || a.lite.w < 36) bad.push([w, ts, {sale: a, normal: n}]);
+        await ctx.close();
+    }
+    console.log('R107 器（特売なし→あり）: ' + rows.join(' / '));
+    ok(!bad.length, 'R107 特売の日でも器が小さくならない（差 6px まで）・特売の1行は画面の中で品名が見える（9通り） ' + JSON.stringify(bad));
 }
 // ---- S8 バックアップ ----
 {
