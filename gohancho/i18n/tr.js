@@ -1431,6 +1431,7 @@ GOHAN_I18N('tr', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "{name} zamanlayıcısı hâlâ çalışıyor. Hazırsa bir kez daha dokun",
     "国を「{name}」に変えますか？": "Ülkeyi “{name}” olarak değiştirelim mi?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Bugünün menüsü {name} yemeklerine dönecek. İstediğin zaman geri dönebilirsin.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "Uygulamanın dili de seçilen ülkenin diline geçecek.",
     "決めた献立は「作り方」にそのまま残ります。": "Seçtiğin menü “Pişir” bölümünde aynen kalır.",
     "{name}に変える": "{name} olarak değiştir",
     "肉や魚の部位がちがう料理": "Farklı et ya da balık parçası kullanan yemekler",

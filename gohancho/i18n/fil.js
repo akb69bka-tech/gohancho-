@@ -1431,6 +1431,7 @@ GOHAN_I18N('fil', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Tumatakbo pa ang timer ng {name}. Kung handa na, pindutin ulit",
     "国を「{name}」に変えますか？": "Palitan ang bansa ng “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Magiging putahe ng {name} ang menu ngayon. Puwede kang bumalik kahit kailan.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "Mapapalitan din ang wika ng app sa wika ng napiling bansa.",
     "決めた献立は「作り方」にそのまま残ります。": "Mananatili sa “Lutuin” ang napiling menu.",
     "{name}に変える": "Palitan ng {name}",
     "肉や魚の部位がちがう料理": "Putaheng ibang hiwa ng karne o isda",

@@ -1431,6 +1431,7 @@ GOHAN_I18N('it', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Il timer di {name} è ancora attivo. Se è pronto, tocca di nuovo",
     "国を「{name}」に変えますか？": "Cambiare paese in «{name}»?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Il menu di oggi passerà ai piatti di {name}. Puoi tornare indietro quando vuoi.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "Anche la lingua dell’app passerà a quella del paese scelto.",
     "決めた献立は「作り方」にそのまま残ります。": "Il menu scelto resta così com’è in «Cucina».",
     "{name}に変える": "Passa a {name}",
     "肉や魚の部位がちがう料理": "Piatti con un altro taglio di carne o pesce",

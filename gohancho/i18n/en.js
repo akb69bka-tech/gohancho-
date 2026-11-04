@@ -1432,6 +1432,7 @@ GOHAN_I18N('en', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "The timer for {name} is still running. If it’s ready, tap again",
     "国を「{name}」に変えますか？": "Switch country to “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Today’s menu will switch to dishes from {name}. You can switch back anytime.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "The app language will also change to that of the country you choose.",
     "決めた献立は「作り方」にそのまま残ります。": "The menu you picked stays in “Cook” as it is.",
     "{name}に変える": "Switch to {name}",
     "肉や魚の部位がちがう料理": "Dishes that use a different cut",

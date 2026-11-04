@@ -1431,6 +1431,7 @@ GOHAN_I18N('vi', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Hẹn giờ của {name} vẫn đang chạy. Nếu đã xong, hãy chạm lần nữa",
     "国を「{name}」に変えますか？": "Đổi quốc gia sang “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Thực đơn hôm nay sẽ đổi sang món của {name}. Bạn có thể đổi lại bất cứ lúc nào.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "Ngôn ngữ của ứng dụng cũng sẽ đổi sang ngôn ngữ của quốc gia đã chọn.",
     "決めた献立は「作り方」にそのまま残ります。": "Thực đơn đã chọn vẫn giữ nguyên trong “Cách nấu”.",
     "{name}に変える": "Đổi sang {name}",
     "肉や魚の部位がちがう料理": "Món dùng phần thịt hoặc cá khác",

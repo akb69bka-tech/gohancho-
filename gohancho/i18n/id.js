@@ -1431,6 +1431,7 @@ GOHAN_I18N('id', {
     "{name}のタイマーがまだ動いています。できあがりなら、もう一度押してください": "Timer {name} masih berjalan. Jika sudah jadi, ketuk lagi",
     "国を「{name}」に変えますか？": "Ganti negara ke “{name}”?",
     "今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。": "Menu hari ini akan berganti ke masakan {name}. Kamu bisa kembali kapan saja.",
+    "画面の言葉も、選んだ国の言葉に変わります。": "Bahasa aplikasi juga akan berganti ke bahasa negara yang dipilih.",
     "決めた献立は「作り方」にそのまま残ります。": "Menu yang sudah dipilih tetap ada di “Masak”.",
     "{name}に変える": "Ganti ke {name}",
     "肉や魚の部位がちがう料理": "Masakan dengan bagian daging atau ikan yang berbeda",
