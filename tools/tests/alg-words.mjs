@@ -31,7 +31,7 @@ const FP = [
     ['fish', /^魚$/, /魷魚|鱿鱼/, 'いか（魚ではない）'],
     ['milk', /^(milk|दूध)$/i, /coconut milk|नारियल का दूध/i, 'ココナッツミルク'],
     ['milk', /^butter$/i, /peanut butter|butternut|butterfl/i, 'ピーナッツバター・バターナッツ・開き（落花生は別に判定）'],
-    ['milk', /^cream$/i, /creamed corn/i, 'クリームコーン（乳は入らない）'],
+    ['milk', /^cream$/i, /creamed corn/i, 'クリームコーン（第25回 R108 で 🔍 にしたので、ふつうはここに来ない）'],
     ['soy', /^tamari$/i, /tamarind/i, 'タマリンド'],
     ['soy', /^black bean$/i, /(?<!fermented )black beans?(?! sauce)/i, '黒いんげん豆（大豆ではない）'],
     ['soy', /^(酱|ซอส|ソース)$/, /玉米酱|ซอสมะเขือเทศ|タルタルソース/, 'コーンペースト・トマトソース・タルタルソース'],
