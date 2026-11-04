@@ -89,8 +89,8 @@ const open = async (settings = {}, opt = {}) => {
         session.mood = 'all';
         return {mains, bad, max: Math.max(...totals), note, pickles};
     });
-    const slow = r.mains.filter(x => Number(x.split(':')[1]) > 20);
-    ok(!slow.length, 'R3-1 おかゆの日の主菜は、早くできるおかゆ・雑炊（20分以内）を先に出す: ' + slow.slice(0, 5));
+    const slow = r.mains.filter(x => Number(x.split(':')[1]) > 45);   // 第21回 R82: 20分以内が卵雑炊1品だけなので、3品そろう45分の段まで（毎回卵雑炊にしない）
+    ok(!slow.length, 'R3-1 おかゆの日の主菜は、早くできるおかゆ・雑炊（3品そろう段まで。日本は45分以内）を先に出す: ' + slow.slice(0, 5));
     ok(!r.mains.some(x => /:ng$|^none/.test(x)), 'R3-1b おかゆの日の主菜は、おかゆ・雑炊のなかまだけ（きつねうどんなどの麺を出さない）: ' + r.mains.filter(x => /:ng$|^none/.test(x)).slice(0, 5));
     ok(!r.bad.length, 'R3-2 おかゆの日の副菜・汁ものは、やわらかい・あっさりした20分以内の料理: ' + r.bad.slice(0, 6));
     ok(r.max <= 60, 'R3-3 おかゆの日の献立の合計は60分以内: ' + r.max);

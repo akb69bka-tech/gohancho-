@@ -86,7 +86,7 @@ const page_audit = ({runs, seed}) => {
       }
       if (mood === 'okayu' && i === 0 && (!okayuDayOk(r) || r.type === '麺' || r.method === '揚')) bad('mood-okayu', scene, it.slot, r, r.type + '/' + r.method);
       if (mood === 'okayu' && (it.slot === '副菜' || it.slot === '汁物') && !okayuSoftOk(r) && hasCand(sl, okayuSoftOk)) bad('mood-okayu-side', scene, it.slot, r, r.method + '/' + r.min + '分');
-      if (mood === 'okayu' && i === 0 && okayuDayOk(r) && r.min > OKAYU_TIERS[0] && hasCand('主菜', x => okayuDayOk(x) && x.min <= OKAYU_TIERS[0])) bad('okayu-quick', scene, it.slot, r, r.min + '分');
+      if (mood === 'okayu' && i === 0 && okayuDayOk(r) && r.min > okayuTierLim(poolFor('主菜').filter(x => x.main && !isAvoided(x) && !S.hidden.includes(x.id) && !menuUsed.has(x.id)))) bad('okayu-quick', scene, it.slot, r, r.min + '分');   // 第21回 R82: 3品そろういちばん短い段まで
       if (i === 0 && ['和', '洋', '中'].includes(mood) && r.genre !== mood && hasCand('主菜', x => x.genre === mood)) bad('mood-genre', scene, it.slot, r, r.genre);
       if (i === 0 && mood === 'asia' && !['韓', 'エスニック'].includes(r.genre) && hasCand('主菜', x => ['韓', 'エスニック'].includes(x.genre))) bad('mood-asia', scene, it.slot, r, r.genre);
       const GM = {'和': ['和'], '洋': ['洋'], '中': ['中'], asia: ['韓', 'エスニック', '中']}[mood];   // 副菜・汁もの・2品目の主菜は、そのなかま（韓国・エスニックの日は中華も）
