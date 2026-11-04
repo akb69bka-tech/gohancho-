@@ -1728,8 +1728,8 @@ GOHAN_PACK({
       ings: [
         'rice|Rice|1/2 cup (100 g)',
         'sweet potato|Sweet potato (Taiwanese yellow or orange-fleshed)|200 g',
-        'pickled radish|Pickled radish or pickled cucumber, to serve|40 g?',
-        'egg|Salted or braised egg, to serve|2?',
+        'pickled radish|Pickled radish or soy-pickled cucumber (huagua), to serve|40 g?',
+        'egg|Salted or soy-braised egg, to serve|2?',
       ],
       seas: '1.2 liters water · pinch of salt (optional)',
       steps: [
