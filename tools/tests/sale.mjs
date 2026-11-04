@@ -235,7 +235,13 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
         S.foldOpen = Object.assign({}, S.foldOpen, {sale: true}); setTab('today'); });
     ok(await p.evaluate(() => !!document.querySelector('#sale-cam') && !!document.querySelector('#sale-lib')), 'S9 iPhone アプリでは「チラシを撮る」「写真を選ぶ」');
     const idb0 = await p.evaluate(() => Object.keys(localStorage).join());
-    await p.setInputFiles('#sale-lib', new URL('../../gohancho/icon-192.png', import.meta.url).pathname);
+    // 描き直しと重なって選んだ入力欄が入れかわると change が届かないことがある（負荷の高いとき）。届くまで3回まで選び直す
+    for (let k = 0; k < 3; k++){
+        await p.waitForTimeout(300);
+        await p.setInputFiles('#sale-lib', new URL('../../gohancho/icon-192.png', import.meta.url).pathname);
+        const got = await p.waitForFunction(() => session.saleOcr && session.saleOcr.phase === 'review', null, {timeout: 20000}).then(() => true, () => false);
+        if (got || await p.evaluate(() => !!session.saleOcr)) break;
+    }
     await p.waitForFunction(() => session.saleOcr && session.saleOcr.phase === 'review', null, {timeout: 40000}).catch(() => {});
     const r = await p.evaluate(() => ({n: (S.sale.items || []).length, cands: session.saleOcr && session.saleOcr.cands.map(c => c.name + ' ' + c.priceText), chips: document.querySelectorAll('[data-act="sale-ocr-tog"]').length, warn: (document.querySelector('.sale-ocr .warn') || {}).textContent || '', calls: window.__ocr, img: window.__img, phase: session.saleOcr && session.saleOcr.phase}));
     ok(r.n === 0 && r.chips === 2 && r.calls === 1 && r.img && /誤り/.test(r.warn), 'S9 読み取った候補を出す（自動では入れない・誤りがあり得ると書く） ' + JSON.stringify(r));
