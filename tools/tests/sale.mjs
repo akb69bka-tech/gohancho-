@@ -10,6 +10,7 @@
 //  S8 書き出し・読み込み（バックアップ）に入る。壊れた S.sale でも起動する
 //  S9 チラシの写真（iPhone アプリのみ）: 文字から品名と値段を拾う純粋な関数（チラシ風の文字24件）・候補を選んで入れる・ウェブ版はボタンなし
 //  R107・R109 特売の日でも器が特売のない日より小さくならない（360/390/430 × 文字3段階 × 家族なし/あり。差 6px まで）
+//  R112〜R116 特売の日も入口に名前か数・届いた一言（ゆい：鶏の唐揚げ）が見える・ひとりの読み上げは「食べたいもの」・お膳の札が「かえる」に重ならず切れない
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 const require = createRequire(import.meta.url);
@@ -317,6 +318,63 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
     }
     console.log('R107 器（特売なし→あり）: ' + rows.join(' / '));
     ok(!bad.length, 'R107 特売の日でも器が小さくならない（差 6px まで）・特売の1行は画面の中で品名が見える（家族なし/あり 18通り） ' + JSON.stringify(bad));
+}
+// ---- 第26回 R112・R113・R114・R116 特売の日の入口と届いた一言（360/375/390/430 × 文字3段階 × ひとり／ひとり＋自分で1件／家族0件／家族2件） ----
+// R112: 入口が封筒の印だけ（字も数もない）になっていた（8/60画面）→ 名前か数がいつも見える
+// R113: 届いた一言（「ゆい：鶏の唐揚げ」）が特売の日に消えていた（27/30画面）→ 今日の画面で見える。器は届いたものがないときより小さくしない（差 6px まで）
+// R114: 家族のいない人の入口が「家族リクエスト（1件）」と読まれていた → 「食べたいもの（1）」
+// R116: お膳の「ゆいの食べたいもの」の札が「かえる」の丸に重なり（17/24）、名前が切れていた（14/24）→ 重ならない・切れない
+{
+    const T0 = DAY[0], bad = [], rows = [];
+    const fam = [{id: 'f1', name: 'はは', role: 'adult', avoid: [], allergy: [], mild: false}, {id: 'f2', name: 'ゆい', role: 'child', avoid: [], allergy: [], mild: true}];
+    const MODES = {solo: {}, solo1: {wants: [{k: 's1', self: true, id: 'nikujaga', at: T0, t: T0}]}, fam0: {family: fam}, fam2: {family: fam, wants: [{k: 'a1', n: 'ゆい', id: 'karaage', m: 0, t: T0, at: T0}, {k: 'a2', n: 'はは', id: 'shogayaki', m: 0, t: T0, at: T0}]}};
+    const sale = {sale: {stores: [{id: 'st0', name: 'まるとくストア 本町店', pref: '', city: '', zip: '', days: [0, 1, 2, 3, 4, 5, 6].map(w => ({w, c: 'veg'})), note: '', url: ''}], items: ['キャベツ', '豚こま切れ肉', 'にんじん'].map((n, i) => ({id: 'i' + i, s: 'st0', sn: '', k: n, n, p: '', d: T0, u: T0}))}};
+    let tags = 0, oneSeen = 0;
+    for (const [w, h] of [[360, 800], [375, 667], [390, 844], [430, 932]]) for (const ts of [0, 1, 2]) for (const [mk, mv] of Object.entries(MODES)){
+        const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
+        await ctx.addInitScript(rngScript(seedFor('sale-r112', w + '-' + ts + mk)));
+        const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r112: ' + e.message));
+        await p.addInitScript(([init, ts]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded: true, firstUse: new Date().toISOString().slice(0, 10)}, init, {settings: Object.assign({country: 'JP', dishCount: 3, uiLang: 'ja'}, ts ? {textSize: ts} : {})}))); } }, [Object.assign({}, mv, sale), ts]);
+        await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
+        const meas = () => p.evaluate(() => {
+            const shown = e => { if (!e) return false; const r = e.getBoundingClientRect(), cs = getComputedStyle(e); return r.width > 4 && r.height > 4 && cs.visibility !== 'hidden' && cs.clipPath === 'none' && r.left >= -.5 && r.right <= innerWidth + .5; };
+            const full = e => shown(e) && e.scrollWidth <= e.clientWidth + 1 && e.scrollHeight <= e.clientHeight + 1;
+            const bt = document.querySelector('#greet .req-btn') || document.querySelector('header .req-btn'), lab = bt && bt.querySelector('.rq-l'), cnt = bt && bt.querySelector('.rq-n'), one = bt && bt.querySelector('.rq2');
+            const sg = document.querySelector('#greet .sale-greet'), tx = sg && sg.querySelector('.sale-greet-tx'), sh = sg && sg.querySelector('.sale-greet-s');
+            let saleName = false; try{ const tn = tx.firstChild, i = tn.textContent.indexOf('キャベツ'); const rg = document.createRange(); rg.setStart(tn, 0); rg.setEnd(tn, i + 4); saleName = shown(tx) && i >= 0 && rg.getBoundingClientRect().right <= tx.getBoundingClientRect().right + .5; }catch(e){}
+            const tg = [...document.querySelectorAll('#view .wsh-tag')].map(t => { const sw = t.closest('.spot').querySelector('.swap:not(.swap-ph)'), a = t.getBoundingClientRect(), q = sw && sw.getBoundingClientRect();
+                const ov = q ? Math.max(0, Math.min(a.right, q.right) - Math.max(a.left, q.left)) * (Math.min(a.bottom, q.bottom) > Math.max(a.top, q.top) ? 1 : 0) : 0;
+                const vis = [...t.querySelectorAll('.wt-f, .wt-s')].filter(e => getComputedStyle(e).display !== 'none');
+                return {tx: vis.map(e => e.textContent).join(''), ov: Math.round(ov * 10) / 10, cut: t.scrollWidth > t.clientWidth + 1 || vis.some(e => e.scrollWidth > e.clientWidth + 1)}; });
+            return {vs: Math.round(Math.max(...[...document.querySelectorAll('.tray .tg-row:first-child .spot .vessel')].map(e => e.getBoundingClientRect().width))),
+                labVis: full(lab), labTx: lab ? lab.textContent : '', cntVis: shown(cnt), aria: bt ? bt.getAttribute('aria-label') || bt.textContent.trim() : null, inHead: !!(bt && bt.closest('header')),
+                one: one ? (full(one) ? one.textContent : 'X:' + one.textContent) : null, saleName, saleShort: !!sh && shown(sh) && shown(sg.querySelector('.sale-greet-go')), saleVis: shown(sg),
+                over: document.documentElement.scrollWidth > innerWidth + 1, tags: tg}; });
+        const a = await meas(), n = mk === 'solo1' ? 1 : mk === 'fam2' ? 2 : 0;
+        const why = [];
+        // R112 入口に名前か数が見える（印だけにしない）
+        if (!a.labVis && !a.cntVis) why.push('R112 印だけ');
+        if (!n && !a.labVis) why.push('R112 名前が見えない');
+        // R114 読み上げの名前
+        if (mk === 'solo1' && a.aria !== '食べたいもの（1）') why.push('R114 ' + a.aria);
+        if (mk === 'solo' && a.aria !== '食べたいもの') why.push('R114 ' + a.aria);
+        if (mk.startsWith('fam') && !/^家族リクエスト/.test(a.aria || '')) why.push('名前 ' + a.aria);
+        // R113 届いた一言が見え、特売も（品名か「🏷 特売 ›」が）見える
+        if (n){ if (!a.one || a.one.startsWith('X:') || !/^(ゆい|自分)：/.test(a.one)) why.push('R113 一言 ' + a.one); else oneSeen++;
+            if (!a.saleName && !a.saleShort) why.push('R113 特売が見えない'); }
+        if (!n && !a.saleName) why.push('R103 特売の品名');
+        if (a.over) why.push('横にはみ出す');
+        // R116 札は丸に重ならず、名前が切れない
+        for (const t of a.tags){ tags++; if (t.ov > .5 || t.cut || !/ゆい|はは|自分/.test(t.tx)) why.push('R116 ' + JSON.stringify(t)); }
+        // 届いたものがあっても器は小さくしない（届いたものを消して開き直したときと比べる。差 6px まで）
+        if (n){ await p.evaluate(() => { S.wants = []; TRAY_FIT.state = null; render(); }); await p.waitForTimeout(400); const z = await meas(); rows.push(`${w}/ts${ts}${mk}: ${z.vs}→${a.vs}`); if (a.vs < z.vs - 6) why.push('器 ' + z.vs + '→' + a.vs); }
+        if (why.length) bad.push([w, ts, mk, why, a]);
+        if (w === 360 && ts === 2 || w === 390 && ts === 0) await shot(p, `r113-${w}-ts${ts}-${mk}`);
+        await ctx.close();
+    }
+    console.log('R113 器（届いたものなし→あり・特売の日）: ' + rows.join(' / '));
+    ok(!bad.length && oneSeen === 24, 'R112・R113・R114・R116 特売の日も入口に名前か数・届いた一言・特売・札が見え、重ならない（48通り。一言 ' + oneSeen + '/24） ' + JSON.stringify(bad).slice(0, 3000));
+    ok(tags >= 12, 'R116 お膳の札を確かめた数 ' + tags);
 }
 // ---- S8 バックアップ ----
 {
