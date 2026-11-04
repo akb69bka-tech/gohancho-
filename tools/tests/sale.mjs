@@ -260,12 +260,12 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
     await shot(p, 'ocr-390-ja');
     await ctx.close();
 }
-// ---- R97 特売の1行は最初の画面に見え、お膳の詰め方を崩さない（360/375/390/195 × 文字3段階 × 家族あり） ----
+// ---- R97・R103 特売の1行は最初の画面に見え、右へはみ出さず（› と最初の品名が見える）、お膳の詰め方を崩さない（360/375/390/430/195 × 文字3段階 × 家族あり/なし × 特売あり） ----
 {
     const fam = [{id: 'f1', name: 'はは', role: 'adult', avoid: ['えび'], allergy: ['えび'], mild: false}, {id: 'f2', name: 'こ', role: 'child', avoid: [], allergy: [], mild: true}];
     const bad = [];
-    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 422]]) for (const ts of [0, 1, 2]){
-        const init = Object.assign({}, storeInit, {family: fam});
+    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [430, 932], [195, 422]]) for (const ts of [0, 1, 2]) for (const withFam of [true, false]){
+        const init = Object.assign({}, storeInit, {family: withFam ? fam : [], sale: Object.assign({}, storeInit.sale, {items: [{id: 'g1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '98円', d: DAY[0], u: DAY[0]}, {id: 'g2', s: 'stA', sn: '', k: '豚肉', n: '豚こま切れ肉', p: '', d: DAY[0], u: DAY[0]}]})});
         const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
         await ctx.addInitScript(rngScript(seedFor('sale-r97', w + '-' + ts)));
         const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r97: ' + e.message));
@@ -277,13 +277,16 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
             const vis = !!r && r.height > 0 && r.top >= 0 && r.bottom <= fl + .5 && getComputedStyle(g).visibility !== 'hidden';
             const parts = [...document.querySelectorAll('.tray .tg-row:first-child .spot .vessel, .tray .tg-row:first-child .spot .nm')].map(e => e.getBoundingClientRect());
             const rowIn = parts.every(x => x.bottom <= fl + .5);
-            return {vis, top: r && Math.round(r.top), bottom: r && Math.round(r.bottom), fl: Math.round(fl), rowIn, over: document.documentElement.scrollWidth > innerWidth + 1, body: document.body.className};
+            const go = g && g.querySelector('.sale-greet-go'), gr = go && go.getBoundingClientRect(), tx = g && g.querySelector('.sale-greet-tx');
+            const inX = !!r && r.left >= -.5 && r.right <= innerWidth + .5, goVis = !!gr && gr.width > 0 && gr.left >= -.5 && gr.right <= Math.min(innerWidth, r.right) + .5;
+            let nameVis = false; try{ const tn = tx.firstChild, i = tn.textContent.indexOf('キャベツ'); const rg = document.createRange(); rg.setStart(tn, 0); rg.setEnd(tn, i + 4); nameVis = i >= 0 && rg.getBoundingClientRect().right <= tx.getBoundingClientRect().right + .5; }catch(e){}
+            return {vis, inX, goVis, nameVis, right: r && Math.round(r.right), top: r && Math.round(r.top), bottom: r && Math.round(r.bottom), fl: Math.round(fl), rowIn, over: document.documentElement.scrollWidth > innerWidth + 1, body: document.body.className};
         });
-        if (!m.vis || !m.rowIn || m.over) bad.push([w, h, ts, m]);
-        if (w === 195 && ts === 2 || w === 390 && ts === 0) await shot(p, `r97-${w}-ts${ts}`);
+        if (!m.vis || !m.rowIn || m.over || !m.inX || !m.goVis || !m.nameVis) bad.push([w, h, ts, withFam, m]);
+        if ((w === 195 || w === 375) && !withFam || w === 390 && ts === 0) await shot(p, `r103-${w}-ts${ts}-${withFam ? 'fam' : 'nofam'}`);
         await ctx.close();
     }
-    ok(!bad.length, 'R97 特売の1行が最初の画面に見え、お膳の上の段もタブ・帯の上（12通り） ' + JSON.stringify(bad));
+    ok(!bad.length, 'R97・R103 特売の1行が最初の画面に見え、右へはみ出さず › と品名が見え、お膳の上の段もタブ・帯の上（30通り） ' + JSON.stringify(bad));
 }
 // ---- S8 バックアップ ----
 {

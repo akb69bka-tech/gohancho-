@@ -1829,6 +1829,8 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .sale-greet{display:flex;align-items:center;gap:6px;width:100%;min-height:44px;margin:0;padding:2px 10px;border:0;border-radius:10px;background:var(--accent-soft);color:var(--ink);font:inherit;font-size:.8125rem;font-weight:600;line-height:1.3;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .sale-greet-tx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sale-greet-go{flex:none;color:var(--accent-text);font-size:1rem}
+/* 第24回 R103: 「食べたいもの」と同じ行（solo）では、残りの幅に収める（品名は … で省き、› は見える）。残りが狭い（11rem 未満）ときは下の行へ */
+.greet-row.solo{flex-wrap:wrap;row-gap:4px}.greet-row.solo .sale-greet{width:auto;flex:1 1 11rem;min-width:0;max-width:100%}.sale-greet{box-sizing:border-box;max-width:100%}
 body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
 .sale-tag.sale-kin{font-weight:600;color:var(--muted)}
 </style>
@@ -10289,8 +10291,8 @@ function saleGreetHtml(){
     const act = saleActive(), on = saleDaysOn();
     if (!act.length && !on.length) return '';
     const nm = [...new Set(act.map(x => x.n))], parts = [];
+    if (nm.length) parts.push(t('特売: {list}', {list: joinNames(nm.slice(0, 3)) + (nm.length > 3 ? t(' など') : '')}));   // 第24回 R103: 品名を先に（狭い幅で … に省いても品名が見える）
     if (on.length) parts.push(saleDayText(on));
-    if (nm.length) parts.push(t('特売: {list}', {list: joinNames(nm.slice(0, 3)) + (nm.length > 3 ? t(' など') : '')}));
     const tx = parts.join(GAP());
     return `<button type="button" class="sale-greet" data-act="sale-goto" aria-label="${esc(tx + GAP() + t('特売を使う料理'))}"><span aria-hidden="true">🏷</span><span class="sale-greet-tx">${esc(tx)}</span><span class="sale-greet-go" aria-hidden="true">›</span></button>`;
 }
