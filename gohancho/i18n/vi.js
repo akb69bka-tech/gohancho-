@@ -1732,5 +1732,14 @@ GOHAN_I18N('vi', {
     "送らずに、自分の候補に入れる": "Không gửi, chỉ thêm vào gợi ý của tôi",
     "食べたいものは、まだありません": "Chưa có món muốn ăn",
     "食べたいものを選ぶ": "Chọn món muốn ăn",
-    "この条件では、おかゆの日の主菜がありません": "Với điều kiện này, không có món chính cho ngày ăn cháo"
+    "この条件では、おかゆの日の主菜がありません": "Với điều kiện này, không có món chính cho ngày ăn cháo",
+    "家族に「何が食べたい？」と聞く": "Hỏi cả nhà \"Muốn ăn gì?\"",
+    "何が食べたい？": "Muốn ăn gì?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "Đây là liên kết \"Muốn ăn gì?\" gửi cho gia đình. Mở liên kết này, mọi người có thể trả lời mà không cần ứng dụng.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] Từ {name}: Muốn ăn gì? Chạm rồi gửi lại nhé",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Muốn ăn gì? Chạm rồi gửi lại nhé",
+    "押して答える → {url}": "Chạm để trả lời → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Chọn vài món rồi gửi đi. Gia đình chỉ cần chạm để trả lời, không cần ứng dụng. Mở liên kết trả lời sẽ thêm vào Yêu cầu của gia đình.",
+    "今日の献立の候補から": "Từ các món gợi ý hôm nay",
+    "{n}品まで選べます": "Chọn được tối đa {n} món"
 });

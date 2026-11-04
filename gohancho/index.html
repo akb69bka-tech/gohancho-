@@ -6553,7 +6553,7 @@ function sheetCloseAct(){
     if (!sheet || sheet.kind === 'onboard') return '';
     if (sheet.kind === 'country' && (!S.settings.country || !S.onboarded)) return '';
     if (sheet.kind === 'paywall' && isLocked()) return '';
-    return /^(wish|vote)-/.test(sheet.kind) ? 'wish-close' : 'sheet-close';
+    return /^(wish|vote|ask)-/.test(sheet.kind) ? 'wish-close' : 'sheet-close';
 }
 function renderSheetBody(){
     const root = $('#sheet-root');
@@ -6612,6 +6612,7 @@ function renderSheetBody(){
     if (sheet.kind === 'fphoto') body = fphotoSheetHtml();
     if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
     if (sheet.kind === 'wish-send') body = wishSendSheetHtml();
+    if (sheet.kind === 'ask-make') body = askMakeSheetHtml();
     if (sheet.kind === 'wish-in') body = wishInSheetHtml();
     if (sheet.kind === 'wish-bad') body = wishBadSheetHtml();
     if (sheet.kind === 'wish-paste') body = wishPasteSheetHtml();
@@ -8341,7 +8342,7 @@ function familySettingsHtml(){
         <span class="small muted">${esc(t('家族ごとに食べられないものを登録しておくと、「今日食べる人」を選ぶだけで、みんなが食べられる献立になります。'))}</span>
         ${fm.map(one).join('')}
         ${fm.length < FAM_MAX ? `<button class="btn" data-act="fam-add">＋ ${esc(t('家族を追加'))}</button>` : `<span class="small muted">${esc(t('家族は{n}人まで登録できます', {n: FAM_MAX}))}</span>`}
-        <div class="row wsh-set"><button class="btn text" data-act="wish-open">${esc(t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
+        <div class="row wsh-set"><button class="btn text" data-act="ask-open">${esc(t('家族に「何が食べたい？」と聞く'))}</button><button class="btn text" data-act="wish-open">${esc(t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
         ${fm.length ? `<span class="small">${esc(t('今日食べる人の量を合わせると、{n}人分です（少なめ＝0.5人・多め＝1.5人）', {n: fmtPortion(svToday())}))}</span>` : ''}
         <span class="small muted">${esc(t('辛いのが苦手な人がいるときは、とても辛い料理は出さず、少し辛みのある料理は後回しにします。'))}</span>
         <span class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も必ずご自身で確かめてください。'))}</span>
@@ -9335,6 +9336,8 @@ function shareSheetHtml(){
    ========================================================= */
 const WISH_KEY = 'g', WISH_CODE_MAX = 1600, WISH_TEXT_MAX = 4000, WISH_MAX = 30, WISH_ACTIVE_DAYS = 14, WISH_KEEP_DAYS = 30, WISH_SEEN_MAX = 60, WISH_PICK_MAX = 3, VOTE_MAX = 4, VOTE_DISHES = 10, VOTE_FIRST = 6;
 const WISH_ID_RE = /^[A-Za-z0-9_-]{1,40}$/;
+// 「何が食べたい？」を聞く（ask.html）: 作る人が候補を8品まで送り、家族はアプリなしで押して返す。返事はいつもの「食べたい」のリンク（k:'w'）
+const ASK_MAX = 8, ASK_NAME_MAX = 40, ASK_CODE_MAX = 3000, ASK_IMG_RE = /^img\/[a-z0-9_\/-]+\.(webp|jpg|png|svg)$/;
 const ICO_MAIL = '<svg class="wsh-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 12 13l7.5-5.5"/></svg>';
 const ICO_LOCK = '<svg class="wsh-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>';
 function wishWords(){ return [t('いつでも'), t('週末でいい'), t('急がない')]; }
@@ -9357,9 +9360,11 @@ function wishParse(text){
     if (s.length > WISH_TEXT_MAX) return {err: 'long'};
     const mm = s.match(/#g=([^\s#&?]*)/); if (!mm) return {err: 'none'};
     const code = mm[1];
-    if (code.length > WISH_CODE_MAX) return {err: 'long'};
+    if (code.length > ASK_CODE_MAX) return {err: 'long'};
     if (!/^[A-Za-z0-9_-]+$/.test(code)) return {err: 'broken'};
     let o; try{ o = JSON.parse(b64uDec(code)); }catch(e){ return {err: 'broken'}; }
+    if (o && typeof o === 'object' && !Array.isArray(o) && o.v === 1 && o.k === 'k') return {err: 'ask'};   // 家族に送る「何が食べたい？」（ask.html で開くもの）。アプリでは読まず、案内だけ出す
+    if (code.length > WISH_CODE_MAX) return {err: 'long'};
     if (!o || typeof o !== 'object' || Array.isArray(o) || o.v !== 1 || !['w', 'q', 'a'].includes(o.k)) return {err: 'broken'};
     const key = wishHash(code), idsOf = a => Array.isArray(a) ? a.filter(x => typeof x === 'string' && WISH_ID_RE.test(x)) : [];
     if (o.k === 'w'){
@@ -9480,6 +9485,44 @@ function wishSendText(ids, m, name){
     const list = rs.map(r => r.name).join(t('・')) + (m != null ? t('（{word}）', {word: wishWords()[m]}) : '');
     return [name ? t('【ご飯帖】{name}の食べたいもの：{list}', {name, list}) : t('【ご飯帖】食べたいもの：{list}', {list}), t('ご飯帖で開く → {url}', {url: wishLink(o)})].join('\n');
 }
+/* ---- A-4 作る人が家族に「何が食べたい？」と聞く（家族はアプリなしで ask.html を開いて押す。返事は A-2 と同じ「食べたい」のリンク） ----
+   行き: {v:1, k:'k', n: 送る名前, d: [[料理の番号, 料理名, 絵（img/… のときだけ）]…8品まで], l: 画面の言葉, t: 送った日}。送るのは文とリンクだけ（サーバーなし） */
+function askOpen(){ sheet = {kind: 'ask-make', sel: [], q: ''}; renderSheet(); }
+function askOk(r){ return !!r && RECIPES.includes(r) && !r.isTwist && !isCustomId(r.id) && WISH_ID_RE.test(r.id); }
+// 今日の献立の候補から: いま出ている献立の料理と、家族みんなが食べられる主菜の案で6品
+function askToday(){
+    const ids = [];
+    ((session.menu && session.menu.items) || []).forEach(x => { if (x && askOk(x.r) && !wishBlockWhy(x.r) && !ids.includes(x.r.id)) ids.push(x.r.id); });
+    voteSuggest(Math.max(0, 6 - ids.length), ids).forEach(id => { if (askOk(recipeById(id)) && !ids.includes(id)) ids.push(id); });
+    return ids.slice(0, 6);
+}
+function askImg(r){ const ph = photoOf(r), src = ph && String(ph.thumb || ph.src || '').replace(/[?#].*$/, ''); return src && ASK_IMG_RE.test(src) ? src : ''; }
+function askLink(ids, name){
+    const d = ids.map(id => recipeById(id)).filter(askOk).slice(0, ASK_MAX).map(r => { const a = [r.id, [...String(r.name)].slice(0, ASK_NAME_MAX).join('')], im = askImg(r); if (im) a.push(im); return a; });
+    if (!d.length) return '';
+    const o = {v: 1, k: 'k', d, l: LANG, t: ymdPack(TODAY)}; if (name) o.n = name;
+    let c = b64uEnc(JSON.stringify(o));
+    if (c.length > ASK_CODE_MAX){ d.forEach(a => { a.length = 2; }); c = b64uEnc(JSON.stringify(o)); }   // 長すぎるときは絵を外す
+    return c.length > ASK_CODE_MAX ? '' : DOC_BASE + 'ask.html#' + WISH_KEY + '=' + c;
+}
+function askSendText(ids, name){
+    const url = askLink(ids, name); if (!url) return '';
+    return [name ? t('【ご飯帖】{name}より：何が食べたい？押して返してね', {name}) : t('【ご飯帖】何が食べたい？押して返してね'), t('押して答える → {url}', {url})].join('\n');
+}
+function askMakeSheetHtml(){
+    const s = sheet, n = s.sel.length, name = sendName(), q = s.q || '';
+    return `<div class="wsh-top"><button type="button" class="btn text wsh-x" data-act="wish-close">× ${esc(t('とじる'))}</button></div>
+        <h2 class="wsh-h">${esc(t('何が食べたい？'))}</h2>
+        <p class="wsh-lead">${esc(t('候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。'))}</p>
+        <div class="row wsh-set"><button type="button" class="btn sm" data-act="ask-today">${esc(t('今日の献立の候補から'))}</button></div>
+        <form class="inputbar wsh-q" data-form="wish-q" role="search"><input type="search" id="wish-q" value="${esc(q)}" placeholder="${esc(t('料理名でさがす'))}" aria-label="${esc(t('料理名でさがす'))}" autocomplete="off" maxlength="40"></form>
+        <h3 class="wsh-sub" id="wish-sub">${esc(q.trim() ? t('さがした料理') : t('家でよく出る料理'))}</h3>
+        <div class="wsh-grid" id="wish-grid" role="group" aria-label="${esc(t('何が食べたい？'))}">${wishGridHtml()}</div>
+        <div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
+            : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>
+        ${n >= ASK_MAX ? `<p class="small muted" role="status">${esc(t('{n}品まで選べます', {n: ASK_MAX}))}</p>` : ''}
+        <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="ask-make" ${n ? '' : 'disabled'}>${esc(n ? t('送る文をつくる（{n}品）', {n}) : t('送る文をつくる'))}</button></div>`;
+}
 /* ---- A-2 作る人が受けとる ---- */
 function wishInSheetHtml(){
     const p = sheet.p, seen = sheet.seen;
@@ -9519,6 +9562,9 @@ function wishAccept(p){
 }
 // こわれた・長すぎるリンク
 function wishBadSheetHtml(){
+    if (sheet.err === 'ask') return `<h2 class="wsh-h">${esc(t('何が食べたい？'))}</h2>
+        <p>${esc(t('これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。'))}</p>
+        <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
     return `<h2 class="wsh-h">${esc(t('このリンクは読めませんでした'))}</h2>
         <p>${esc(sheet.err === 'long' ? t('リンクが長すぎます。送った人に、もう一度送ってもらってください。') : sheet.err === 'none' ? t('ご飯帖のリンクが見つかりませんでした。届いた文をそのまま貼りつけてください。') : t('リンクが途中で切れているか、形がちがいます。送った人に、もう一度送ってもらってください。'))}</p>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
@@ -9543,7 +9589,7 @@ function wishListSheetHtml(){
         <p class="small muted">${esc(dec ? (soloWish() ? t('今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。') : t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。')) : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
         ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(soloWish() ? t('食べたいものは、まだありません') : t('いまは届いているものはありません'))}</p>`}
         ${rest.length ? `<details class="box wsh-old"><summary>${esc(soloWish() ? t('前に入れたもの') : t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWhoOf(w))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
-        <div class="row wsh-set"><button class="btn text" data-act="wish-open">${esc(soloWish() ? t('食べたいものを選ぶ') : t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
+        <div class="row wsh-set"><button class="btn text" data-act="ask-open">${esc(t('家族に「何が食べたい？」と聞く'))}</button><button class="btn text" data-act="wish-open">${esc(soloWish() ? t('食べたいものを選ぶ') : t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
 }
 // 今日に入れる（本人が押したときだけ。決めた一膳には入れない）。入れかえた枠だけ変わり、「元に戻す」（8秒）を出す
@@ -12808,12 +12854,12 @@ document.addEventListener('click', e => {
         case 'wish-open': wishSendOpen(); break;
         case 'wish-paste-open': sheet = {kind: 'wish-paste'}; renderSheet(); break;
         case 'wish-close': wishClose(); break;
-        case 'wish-pick': { if (!sheet || sheet.kind !== 'wish-send') break; const i = sheet.sel.indexOf(id);
-            if (i >= 0) sheet.sel.splice(i, 1); else if (sheet.sel.length < WISH_PICK_MAX) sheet.sel.push(id); else { toast(t('3つまで選べます')); break; }
+        case 'wish-pick': { if (!sheet || (sheet.kind !== 'wish-send' && sheet.kind !== 'ask-make')) break; const i = sheet.sel.indexOf(id), mx = sheet.kind === 'ask-make' ? ASK_MAX : WISH_PICK_MAX;
+            if (i >= 0) sheet.sel.splice(i, 1); else if (sheet.sel.length < mx) sheet.sel.push(id); else { toast(sheet.kind === 'ask-make' ? t('{n}品まで選べます', {n: ASK_MAX}) : t('3つまで選べます')); break; }
             renderSheet(); break; }
         case 'wish-word': if (sheet && sheet.kind === 'wish-send'){ const v = Number(el.dataset.v); sheet.m = sheet.m === v ? null : v; renderSheet(); } break;
-        case 'wish-name': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in')){ sheet.nameEdit = true; renderSheet(); const x = $('#wish-name'); if (x) x.focus(); } break;
-        case 'wish-name-ok': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in')){ const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); } sheet.nameEdit = false; renderSheet(); } break;
+        case 'wish-name': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in' || sheet.kind === 'ask-make')){ sheet.nameEdit = true; renderSheet(); const x = $('#wish-name'); if (x) x.focus(); } break;
+        case 'wish-name-ok': if (sheet && (sheet.kind === 'wish-send' || sheet.kind === 'vote-in' || sheet.kind === 'ask-make')){ const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); } sheet.nameEdit = false; renderSheet(); } break;
         case 'wish-make': { if (!sheet || sheet.kind !== 'wish-send' || !sheet.sel.length) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
             const text = wishSendText(sheet.sel, sheet.m, sendName()); if (!text) break;
             sheet = {kind: 'share', card: 'wish', text, title: t('食べたいもの')}; renderSheet(); break; }
@@ -12823,6 +12869,11 @@ document.addEventListener('click', e => {
             toast(t('受けとりました。次に献立を決めるときの候補になります')); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); break; }
         case 'wish-decline': { if (sheet && sheet.kind === 'wish-in' && !sheet.seen){ wishSeenAdd(sheet.p.key); save(); } wishClose(); break; }
         case 'wish-list': sheet = {kind: 'wish-list'}; renderSheet(); break;
+        case 'ask-open': askOpen(); break;
+        case 'ask-today': if (sheet && sheet.kind === 'ask-make'){ const ids = askToday(); if (!ids.length){ toast(t('この条件で出せる主菜がありません')); break; } sheet.sel = ids; sheet.q = ''; renderSheet(); } break;
+        case 'ask-make': { if (!sheet || sheet.kind !== 'ask-make' || !sheet.sel.length) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
+            const text = askSendText(sheet.sel, sendName()); if (!text) break;
+            sheet = {kind: 'share', card: 'wish', text, title: t('何が食べたい？')}; renderSheet(); break; }
         // ---- ○つけ表（案B） ----
         case 'vote-open': voteOpen(); break;
         case 'vote-tog': if (sheet && sheet.kind === 'vote-make'){ const i = sheet.on.indexOf(id); if (i >= 0) sheet.on.splice(i, 1); else sheet.on.push(id); sheet.on.sort((a, b) => sheet.ids.indexOf(a) - sheet.ids.indexOf(b)); renderSheet(); } break;
@@ -13564,7 +13615,7 @@ document.addEventListener('input', e => {
     if (/^c-(name|ings)$/.test(e.target.id) && e.target.getAttribute('aria-invalid')){ e.target.removeAttribute('aria-invalid'); const m = $('#' + e.target.id + '-err'); if (m) m.remove(); }   // 入れはじめたら「足りない」の印を消す
     if (e.target.id === 'c-ings'){ clearTimeout(customChkDeb); const v = e.target.value; customChkDeb = setTimeout(() => { const c = $('#c-check'); if (c) c.innerHTML = customCheckHtml(v); }, 350); }
     if (e.target.id === 'one-input' && sheet && sheet.kind === 'one'){ sheet.q = e.target.value; oneRefresh(); return; }
-    if (e.target.id === 'wish-q' && sheet && sheet.kind === 'wish-send'){ sheet.q = e.target.value.slice(0, 40); clearTimeout(searchDeb); searchDeb = setTimeout(() => { const g = $('#wish-grid'), h = $('#wish-sub'); if (g) g.innerHTML = wishGridHtml(); if (h) h.textContent = sheet && sheet.q.trim() ? t('さがした料理') : t('家でよく出る料理'); }, 200); return; }
+    if (e.target.id === 'wish-q' && sheet && (sheet.kind === 'wish-send' || sheet.kind === 'ask-make')){ sheet.q = e.target.value.slice(0, 40); clearTimeout(searchDeb); searchDeb = setTimeout(() => { const g = $('#wish-grid'), h = $('#wish-sub'); if (g) g.innerHTML = wishGridHtml(); if (h) h.textContent = sheet && sheet.q.trim() ? t('さがした料理') : t('家でよく出る料理'); }, 200); return; }
     if (e.target.id !== 'search-input') return;
     clearTimeout(searchDeb); const q = e.target.value;
     searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
