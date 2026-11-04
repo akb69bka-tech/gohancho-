@@ -19,6 +19,61 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    'pl_jajecznica': {
+      name: 'Jajecznica z kiełbasą',
+      ings: [['Jajka', '5'], ['Kiełbasa', '150 g'], ['Cebula', '1/2'], ['Szczypiorek', 'mały pęczek'], ['Chleb żytni, do podania', '4 kromki']],
+      seas: '10 g masła · Sól · Pieprz',
+      steps: [
+        'Kiełbasę pokrój w kostkę, a cebulę drobno posiekaj.',
+        'Roztop masło na patelni na średnim ogniu i smaż kiełbasę z cebulą 4 minuty, aż się zrumienią.',
+        'Wlej jajka roztrzepane ze szczyptą soli i mieszaj delikatnie 1-2 minuty, aż się zetną. Dopraw pieprzem, posyp szczypiorkiem i podawaj z chlebem.',
+      ],
+      tip: { add: 'Pokrojony pomidor obok', why: 'Świeży i soczysty przy wędzonej kiełbasie', skill: 'Nie za sucha', how: 'Zdejmij jajka z ognia, póki są jeszcze miękkie; dojdą na gorącej patelni.' },
+    },
+    'pl_kielbasacebula': {
+      name: 'Kiełbasa smażona z cebulą',
+      ings: [['Kiełbasa', '300 g'], ['Cebula', '2'], ['Chleb, do podania', '4 kromki'], ['Ogórki kiszone, do podania', '2']],
+      seas: '1 łyżka oleju · 1 łyżeczka musztardy · 1/2 łyżeczki słodkiej papryki · Sól · Pieprz',
+      steps: [
+        'Kiełbasę pokrój w grube ukośne plastry, a cebulę w półplasterki.',
+        'Rozgrzej olej na patelni na średnio-wysokim ogniu i smaż kiełbasę 3 minuty, aż się zrumieni.',
+        'Dodaj cebulę i paprykę i smaż, mieszając, 4-5 minut, aż cebula zmięknie i się zezłoci. Dopraw i podawaj z musztardą, chlebem i ogórkami.',
+      ],
+      tip: { add: 'Odrobina piwa na koniec', why: 'Powstaje sosik, a smak jest głębszy', skill: 'Kroić ukośnie', how: 'Długie ukośne plastry mają więcej powierzchni do zrumienienia, więc są bardziej aromatyczne.' },
+    },
+    'pl_rybadokoperek': {
+      name: 'Filet rybny z patelni z koperkiem',
+      ings: [['Filety z białej ryby (dorsz lub mintaj)', '2 (300 g)'], ['Cytryna', '1/2'], ['Koperek', 'mały pęczek'], ['Ogórki, do podania', '1']],
+      seas: '2 łyżki mąki · 1 łyżka oleju · 15 g masła · Sól · Pieprz',
+      steps: [
+        'Osusz rybę, dopraw solą i pieprzem i obtocz w mące.',
+        'Rozgrzej olej z masłem na patelni na średnio-wysokim ogniu i smaż rybę 3 minuty z jednej strony i 2 minuty z drugiej, aż się zrumieni i zacznie się rozpadać.',
+        'Skrop cytryną, posyp obficie posiekanym koperkiem i podawaj z plasterkami ogórka.',
+      ],
+      tip: { add: 'Łyżka śmietany wymieszana z koperkiem', why: 'Szybki, kremowy sos', skill: 'Strzepnąć mąkę', how: 'Cienka warstwa rumieni się równo; za dużo mąki robi się klejące.' },
+    },
+    'pl_kurczakkoperek': {
+      name: 'Kurczak w sosie koperkowym',
+      ings: [['Pierś z kurczaka', '300 g'], ['Śmietana 18%', '150 g'], ['Koperek', 'mały pęczek'], ['Cebula', '1/2'], ['Chleb, do podania', '4 kromki']],
+      seas: '1 łyżka oleju · 1 łyżeczka mąki · Sól · Pieprz',
+      steps: [
+        'Kurczaka pokrój w cienkie paski, a cebulę i koperek drobno posiekaj.',
+        'Rozgrzej olej na patelni na dużym ogniu i smaż kurczaka z cebulą 4-5 minut, aż się zrumieni i będzie upieczony w środku.',
+        'Wymieszaj śmietanę z mąką, wmieszaj na patelnię poza ogniem, a potem podgrzewaj delikatnie 1 minutę, nie zagotowując. Dopraw i wmieszaj koperek.',
+      ],
+      tip: { add: 'Kilka plasterków pieczarek z kurczakiem', why: 'Głębszy smak sosu', skill: 'Mąka chroni śmietanę', how: 'Śmietana wymieszana z odrobiną mąki i niezagotowana nie zważy się.' },
+    },
+    'pl_omletpieczarki': {
+      name: 'Omlet z pieczarkami i szczypiorkiem',
+      ings: [['Jajka', '5'], ['Pieczarki', '200 g'], ['Szczypiorek', 'mały pęczek'], ['Pomidory, do podania', '2']],
+      seas: '15 g masła · 1 łyżka mleka · Sól · Pieprz',
+      steps: [
+        'Pieczarki pokrój w plasterki i smaż na połowie masła na średnio-wysokim ogniu 4 minuty, aż się zrumienią; odłóż.',
+        'Roztrzep jajka z mlekiem, solą i pieprzem. Roztop resztę masła, wlej jajka i smaż 2 minuty na średnim ogniu, unosząc brzegi, żeby płynne jajko spływało pod spód.',
+        'Rozłóż pieczarki na połowie, posyp szczypiorkiem, złóż na pół i podawaj z plasterkami pomidora.',
+      ],
+      tip: { add: 'Trochę startego twardego sera w środku', why: 'Rozpływa się w pieczarkach', skill: 'Unosić brzegi', how: 'Przesuwanie ściętych brzegów do środka pozwala płynnemu jajku dotknąć gorącej patelni, więc omlet smaży się szybko i równo.' },
+    },
     'pl_schabowy': {
       name: "Kotlet schabowy",
       ings: [

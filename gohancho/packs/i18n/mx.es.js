@@ -69,6 +69,61 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    'mx_tacosbistec': {
+      name: 'Tacos de bistec',
+      ings: [['Bistec delgado de res', '300 g'], ['Tortillas de maíz', '8'], ['Cebolla blanca', '1/2'], ['Cilantro', 'un manojito'], ['Limones', '2'], ['Aguacate', '1']],
+      seas: 'Sal · Pimienta · 1 cucharada de aceite · Salsa verde o roja, para servir',
+      steps: [
+        'Pica finamente la cebolla y el cilantro y mézclalos. Salpimienta los bisteces.',
+        'Calienta el aceite en un sartén a fuego alto y cocina los bisteces 1-2 minutos por lado; luego pícalos en trocitos sobre una tabla.',
+        'Calienta las tortillas en el sartén caliente, rellénalas con la carne, cebolla y cilantro, y sirve con limón, salsa y aguacate.',
+      ],
+      tip: { add: 'Una rebanada de queso derretido en el sartén (estilo campechano)', why: 'Tacos más ricos y con queso que se estira', skill: 'Doble tortilla', how: 'Como en los puestos, dos tortillas por taco aguantan el relleno jugoso sin romperse.' },
+    },
+    'mx_camaronesajo': {
+      name: 'Camarones al mojo de ajo',
+      ings: [['Camarones crudos pelados', '300 g'], ['Ajo', '6 dientes'], ['Limones', '2'], ['Cilantro', 'unas ramitas'], ['Tortillas de maíz, para servir', '6']],
+      seas: 'Sal · Pimienta · 3 cucharadas de aceite o mantequilla · 1 chile guajillo o de árbol seco (opcional)',
+      steps: [
+        'Pica finamente el ajo y el cilantro. Salpimienta los camarones.',
+        'Calienta suavemente el aceite con el ajo y el chile en un sartén a fuego medio-bajo 2 minutos, hasta que el ajo esté apenas dorado.',
+        'Sube el fuego, agrega los camarones y cocina 2-3 minutos, volteándolos, hasta que estén rosados y bien cocidos. Exprime un limón, espolvorea cilantro y sirve con tortillas y limones.',
+      ],
+      tip: { add: 'Una cucharada de mantequilla al final', why: 'Un mojo más redondo y sedoso', skill: 'Ajo a fuego lento', how: 'El ajo a fuego suave queda dulce y tostadito; a fuego alto se quema y amarga.' },
+    },
+    'mx_huevoschorizo': {
+      name: 'Huevos con chorizo',
+      ings: [['Huevos', '5'], ['Chorizo mexicano', '150 g'], ['Tortillas de maíz', '6'], ['Frijoles refritos, para servir', '200 g'], ['Aguacate', '1']],
+      seas: 'Sal · Salsa, para servir',
+      steps: [
+        'Quítale la piel al chorizo y fríelo en un sartén a fuego medio 4 minutos, desmoronándolo, hasta que suelte su grasa roja.',
+        'Agrega los huevos batidos con una pizca de sal y mueve 1-2 minutos, hasta que apenas cuajen.',
+        'Calienta las tortillas y sirve los huevos con frijoles, aguacate y salsa.',
+      ],
+      tip: { add: 'Unas papitas en cubos fritas con el chorizo', why: 'Más llenador, un clásico de taquería', skill: 'Sin aceite extra', how: 'El chorizo mexicano suelta mucha grasa, que cocina el huevo y lo pinta de rojo.' },
+    },
+    'mx_tacospescado': {
+      name: 'Tacos de pescado a la plancha',
+      ings: [['Filetes de pescado blanco', '300 g'], ['Tortillas de maíz', '8'], ['Col', '1/4'], ['Crema', '4 cucharadas'], ['Limones', '2'], ['Chipotle en adobo', '1']],
+      seas: 'Sal · 1/2 cucharadita de comino molido · 1/2 cucharadita de chile en polvo · 1 cucharada de aceite',
+      steps: [
+        'Rebana la col muy finita y mézclala con un chorrito de limón y una pizca de sal. Mezcla la crema con un poco de chipotle picado, si lo usas.',
+        'Sazona el pescado con comino, chile en polvo y sal, y cocínalo en el aceite en un sartén a fuego medio-alto 2-3 minutos por lado, hasta que se desmenuce. Pártelo en trozos.',
+        'Calienta las tortillas y rellénalas con pescado, col y crema. Sirve con limón.',
+      ],
+      tip: { add: 'Unas rebanadas de aguacate o cebolla encurtida', why: 'Cremoso o ácido, los dos le van al pescado', skill: 'Col delgadita', how: 'La col cortada como hilo queda crujiente y jugosa, no dura.' },
+    },
+    'mx_tacoshongos': {
+      name: 'Tacos de hongos con epazote',
+      ings: [['Hongos o champiñones', '400 g'], ['Tortillas de maíz', '8'], ['Cebolla', '1/2'], ['Chile serrano', '1'], ['Queso fresco', '80 g'], ['Epazote', 'unas hojas']],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · Salsa, para servir',
+      steps: [
+        'Rebana los hongos, la cebolla, el ajo y el chile.',
+        'Calienta el aceite en un sartén grande a fuego alto y fríe la cebolla, el ajo y el chile 1 minuto. Agrega los hongos y cocina 5 minutos, hasta que se seque el líquido y se doren; añade el epazote y la sal.',
+        'Calienta las tortillas, rellénalas con los hongos y desmorona el queso encima. Sirve con salsa.',
+      ],
+      tip: { add: 'Unas rajas de poblano con los hongos', why: 'Una combinación clásica y un poco picosa', skill: 'Sal al final', how: 'Si salas antes, los hongos sueltan agua y se cuecen; agrégala cuando ya estén dorados.' },
+    },
     'mx_tinga': {
       name: 'Tinga de pollo',
       ings: [['Pechuga de pollo', '400 g'], ['Jitomates', '3'], ['Cebolla', '1'], ['Chipotles en adobo', '2'], ['Tostadas', '6?'], ['Crema mexicana', '4 cucharadas?']],

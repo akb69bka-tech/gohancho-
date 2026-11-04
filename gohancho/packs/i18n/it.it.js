@@ -81,6 +81,61 @@ GOHAN_PACK_TR('IT', 'it', {
     'black pepper': 'Pepe nero',
   },
   recipes: {
+    'it_tagliata': {
+      name: 'Tagliata rucola e grana',
+      ings: [['Controfiletto o scamone di manzo', '1 (350 g)'], ['Rucola', '60 g'], ['Scaglie di Parmigiano', '30 g'], ['Pomodorini', '150 g']],
+      seas: '2 cucchiai d\'olio extravergine · 1 cucchiaino di aceto balsamico · 1 rametto di rosmarino · Sale grosso · Pepe',
+      steps: [
+        'Scalda bene una padella pesante o una piastra a fuoco vivo. Ungi la carne con poco olio e cuocila 2-3 minuti per lato con il rosmarino.',
+        'Lasciala su un tagliere 2 minuti, poi tagliala a fettine sottili.',
+        'Disponi la rucola e i pomodorini a metà su un piatto, adagia sopra la carne, condisci con sale grosso e pepe e completa con il Parmigiano, il resto dell\'olio e il balsamico.',
+      ],
+      tip: { add: 'Qualche goccia di limone sulla rucola', why: 'Rinfresca le foglie piccanti', skill: 'Padella rovente', how: 'La padella deve fumare: fuori si rosola subito e dentro resta rosata.' },
+    },
+    'it_saltimbocca': {
+      name: 'Saltimbocca alla romana',
+      ings: [['Fettine sottili di vitello', '4 (300 g)'], ['Prosciutto crudo', '4 fette'], ['Foglie di salvia fresca', '8'], ['Burro', '30 g']],
+      seas: 'Sale · Pepe · 1 cucchiaio di farina · 4 cucchiai di vino bianco secco',
+      steps: [
+        'Su ogni fettina metti una fetta di prosciutto e due foglie di salvia e fissa con uno stecchino. Infarina leggermente l’altro lato.',
+        'Sciogli metà del burro in padella a fuoco medio-alto e cuoci le fettine 2 minuti dal lato del prosciutto, poi 1 minuto dall’altro. Tienile in caldo su un piatto.',
+        'Versa il vino e il resto del burro in padella e lascia sobbollire 1 minuto raschiando il fondo. Pepa leggermente e versa il sughetto sulla carne.',
+      ],
+      tip: { add: 'Un contorno di spinaci ripassati', why: 'Come si serve a Roma', skill: 'Poco sale', how: 'Il prosciutto è già sapido: basta il pepe.' },
+    },
+    'it_gamberi': {
+      name: 'Gamberi aglio, olio e prezzemolo',
+      ings: [['Gamberi crudi sgusciati', '300 g'], ['Prezzemolo', 'un mazzetto'], ['Limone', '1/2'], ['Pane, per servire', '4 fette']],
+      seas: '3 cucchiai d\'olio extravergine · 2 spicchi d\'aglio · 1 peperoncino secco piccolo (facoltativo) · 3 cucchiai di vino bianco secco · Sale',
+      steps: [
+        'Affetta l\'aglio e trita il prezzemolo. Scalda l\'olio in una padella larga a fuoco medio con l\'aglio e il peperoncino per 1 minuto.',
+        'Alza la fiamma, aggiungi i gamberi e cuocili 1-2 minuti per lato, finché sono rosa e cotti.',
+        'Sfuma con il vino, lascia sobbollire 1 minuto, poi sala e salta con il prezzemolo e una spruzzata di limone. Servi con il pane per la scarpetta.',
+      ],
+      tip: { add: 'Qualche pomodorino a metà insieme al vino', why: 'Un sughetto dolce per la scarpetta', skill: 'Non cuocerli troppo', how: 'I gamberi diventano gommosi in fretta: toglili dal fuoco appena si arricciano e sono rosa.' },
+    },
+    'it_tonnofagioli': {
+      name: 'Tonno e fagioli con cipolla rossa',
+      ings: [['Tonno sott\'olio, sgocciolato', '2 scatolette (160 g)'], ['Fagioli cannellini in scatola, sgocciolati', '1 scatola (400 g)'], ['Cipolla rossa (di Tropea se possibile)', '1/2'], ['Prezzemolo', 'un mazzetto'], ['Pane, per servire', '4 fette']],
+      seas: '3 cucchiai d\'olio extravergine · 1 cucchiaio di aceto di vino rosso · Sale · Pepe',
+      steps: [
+        'Sciacqua e scola i fagioli. Affetta la cipolla molto sottile e trita il prezzemolo.',
+        'Condisci i fagioli con la cipolla, l\'olio, l\'aceto, sale e pepe.',
+        'Sbriciola sopra il tonno a pezzi grossi, cospargi di prezzemolo e servi con il pane.',
+      ],
+      tip: { add: 'Una manciata di rucola o di pomodorini', why: 'Più colore e freschezza nel piatto', skill: 'Addolcire la cipolla', how: 'Se la cipolla cruda ti sembra troppo forte, tienila in acqua fredda mentre apri le scatolette.' },
+    },
+    'it_gnocchiburro': {
+      name: 'Gnocchi burro e salvia',
+      ings: [['Gnocchi di patate freschi (pronti)', '500 g'], ['Burro', '50 g'], ['Foglie di salvia fresca', '10'], ['Parmigiano grattugiato', '40 g']],
+      seas: 'Sale per l\'acqua · Pepe',
+      steps: [
+        'Porta a bollore una pentola grande d\'acqua salata (con il bollitore fai prima).',
+        'Intanto sciogli il burro con la salvia in una padella larga a fuoco basso per 2-3 minuti, finché le foglie sono croccanti.',
+        'Cuoci gli gnocchi 2-3 minuti, finché vengono a galla, trasferiscili nel burro con una schiumarola, aggiungi un goccio di acqua di cottura e salta con il Parmigiano e il pepe.',
+      ],
+      tip: { add: 'Qualche gheriglio di noce tostato nel burro', why: 'Croccante e profumato con gli gnocchi morbidi', skill: 'Usa l\'acqua di cottura', how: 'Un cucchiaio d\'acqua ricca d\'amido lega burro e formaggio in una salsa lucida che avvolge.' },
+    },
     'it_pomodoro': {
       name: 'Spaghetti al pomodoro',
       ings: [
