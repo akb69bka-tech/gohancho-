@@ -26,16 +26,16 @@ await p.evaluate(() => { hasPro = () => true; });
 await p.evaluate(() => {
     window.__find = id => byId(id) || RECIPES.find(r => r.id === id) || Object.values(BROWSE || {}).flat().find(r => r && r.id === id) || null;
     window.__judge = r => !r || !r.items ? '' : allergyConflict(r) ? 'hit' : algMayHits(r).length ? 'may' : '';
-    window.__scan = (root, surf, out) => {
+    window.__scan = (root, surf, out, onlyMay) => {
         const el = typeof root === 'string' ? document.querySelector(root) : root; if (!el) return;
         const seen = new Set();
         el.querySelectorAll('.match, .dcard, .item, .recent-card, .wsh-row, .wd-head').forEach(card => {
-            const idEl = card.matches('[data-id]') ? card : card.querySelector('[data-id]'); if (!idEl) return;
-            const id = idEl.dataset.id; if (seen.has(card) || !id) return; seen.add(card);
+            const idEl = card.matches('[data-id]') ? card : card.querySelector('[data-id]'), nmEl = card.querySelector('.wsh-nm');
+            const id = idEl ? idEl.dataset.id : nmEl ? ((RECIPES.find(x => x.name === nmEl.textContent) || {}).id || '') : ''; if (seen.has(card) || !id) return; seen.add(card);   // 番号のない行（受けとる画面・○つけ表の結果）は料理名で
             if (card.querySelector('.match, .dcard, .item') && !card.matches('.wd-head')) return;   // 入れ子の外側は数えない
             const r = __find(id), j = __judge(r); const s = out[surf] || (out[surf] = {cards: 0, hit: 0, may: 0, hitNo: [], mayNo: []});
             s.cards++; const tx = card.textContent;
-            if (j === 'hit'){ s.hit++; if (!/⚠/.test(tx)) s.hitNo.push(id); }
+            if (j === 'hit' && !onlyMay){ s.hit++; if (!/⚠/.test(tx)) s.hitNo.push(id); }
             if (j === 'may'){ s.may++; if (!/🔍/.test(tx) && !/⚠/.test(tx)) s.mayNo.push(id); }
         });
     };
@@ -101,6 +101,23 @@ for (const [cc, a] of COMBOS){
         S.week.days.slice(0, tg.length).forEach(x => { sheet = {kind: 'wday', d: x.d}; renderSheet(); __scan('#sheet-root', '1週間の日の画面', out); closeSheet(); });
         setTab('today'); render(); __scan('#view .list.week', '1週間プランの行', out);
         sheet = {kind: 'vote-make', ids: tg.map(r => r.id), on: tg.map(r => r.id)}; renderSheet(); __scan('#sheet-root', '○つけ表をつくる', out); closeSheet();
+        // 第24回 R102: 家族から届いた「食べたいもの」（受けとる画面・一覧・上の帯の札）と ○つけ表の結果（当たる料理は「候補に入れません」と止めるので、🔍 を見る）
+        const fam0 = S.family; S.family = [{id: 'f0', name: 'ゆうき', role: 'adult', avoid: [], allergy: []}, {id: 'f1', name: '夫', role: 'adult', avoid: [], allergy: []}];
+        sheet = {kind: 'wish-in', p: {k: 'w', key: 'zz1', n: '夫', ids: tg.map(r => r.id), unknown: 0, m: null, t: TODAY}, seen: false}; renderSheet(); __scan('#sheet-root', '届いた食べたいもの（受けとる画面）', out, true); closeSheet();
+        S.wants = tg.map((r, k) => ({k: 'zz' + k, n: '夫', id: r.id, m: null, t: TODAY, at: TODAY})); save();
+        sheet = {kind: 'wish-list'}; renderSheet(); __scan('#sheet-root', '届いた食べたいもの（一覧）', out, true);
+        { const tx = document.querySelector('#sheet-root').textContent, s = out['届いた食べたいもの（前に届いたもの）'] = {cards: 0, hit: 0, may: 0, hitNo: [], mayNo: []};
+          tg.filter(r => wishBlockWhy(r)).forEach(r => { s.cards++; const j = __judge(r); if (j === 'hit'){ s.hit++; if (!tx.includes('⚠ ' + r.name) && !tx.includes(r.name + ' ')) s.hitNo.push(r.id); } }); }
+        closeSheet();
+        { const s = out['上の帯の札（家族リクエスト）'] = {cards: 0, hit: 0, may: 0, hitNo: [], mayNo: []};
+          tg.filter(r => __judge(r) === 'may').forEach((r, k) => { S.wants = [{k: 'zy' + k, n: '夫', id: r.id, m: null, t: TODAY, at: TODAY}]; setTab('today'); render(); const el = document.querySelector('.req-btn .rq2'); s.cards++; s.may++; if (!el || !/🔍/.test(el.textContent)) s.mayNo.push(r.id); }); }
+        S.wants = [];
+        S.votes = [{w: voteWeek(), ids: tg.map(r => r.id), at: TODAY, ans: {'夫': '2'.repeat(tg.length)}}]; save();
+        sheet = {kind: 'vote-table', w: voteWeek()}; renderSheet(); __scan('#sheet-root', '○つけ表の結果', out, true); closeSheet(); S.votes = [];
+        // 共有の文（今日の献立）
+        { const tx = menuShareText({items: tg.map(r => ({r, slot: slotOf(r)}))}), s = out['送る文（今日の献立）'] = {cards: 0, hit: 0, may: 0, hitNo: [], mayNo: []};
+          tg.forEach(r => { const j = __judge(r); s.cards++; if (j === 'hit'){ s.hit++; if (!tx.includes('⚠ ' + r.name)) s.hitNo.push(r.id); } if (j === 'may'){ s.may++; if (!tx.includes('🔍 ' + r.name)) s.mayNo.push(r.id); } }); }
+        S.family = fam0;
         S.history = []; S.favs = []; S.savedMenus = []; S.fridge = []; S.settings.allergens = []; save();
         return out;
     }, [cc, a]);

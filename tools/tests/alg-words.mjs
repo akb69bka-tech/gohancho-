@@ -47,6 +47,9 @@ const FP = [
     ['peanut', /^kacang$/i, /kacang (panjang|hijau|merah)/i, 'ささげ・緑豆・小豆'],
     ['sesame', /^dressing$/i, /ranch dressing/i, 'ランチドレッシング（ごまは入らない）'],
     ['crustacean', /^sacha$/i, /sacha culantro/i, '香草のサチャ・クラントロ'],
+    ['egg', /^بيض$/, /أبيض|بيضا|بيضاء/, 'アラビア語の「白い」（أبيض）。卵ではない'],
+    ['crustacean', /^蟹$/, /蟹味菇|蟹味茸/, 'ぶなしめじ（蟹味菇）。かにではない'],
+    ['wheat', /^pasta$/i, /pasta de (aj[ií]|achiote|tomate|chile|chipotle)/i, 'スペイン語の pasta（ペースト）'],
 ];
 const latin = c => /[a-zà-ɏœ]/i.test(c || '');
 // 当たった言葉が、もっと長い1語の途中か（複数形の s・es は同じ語とみなす）
@@ -68,8 +71,11 @@ await p.goto(URL_); await ready(p);
         ['salted or soy-braised egg', ['soy', 'wheat']], ['滷蛋', ['soy']],
         ['1 tsp bagoong', ['crustacean']], ['bagoong alamang', ['crustacean']], ['bagoong (shrimp or fish paste)', ['crustacean', 'fish']],
         ['1 crumbled gingerbread biscuit (Printen or Lebkuchen)', ['wheat']], ['Lebkuchen', ['wheat']], ['croutons (optional)', ['wheat']], ['Croûtons', ['wheat']],
-        ['2 tbsp doenjang', ['wheat', 'soy']], ['된장', ['wheat', 'soy']], ['kerupuk', ['crustacean', 'wheat']], ['schupfnudeln', ['wheat']], ['pancake mix', ['egg', 'wheat']]];
-    const NOT = [['soy milk', 'wheat'], ['soybeans', 'wheat'], ['pickled cucumber', 'soy'], ['cucumber', 'soy'], ['carrots', 'wheat'], ['black beans', 'soy'], ['bread crumbs', 'soy']];
+        ['2 tbsp doenjang', ['wheat', 'soy']], ['된장', ['wheat', 'soy']], ['kerupuk', ['crustacean', 'wheat']], ['schupfnudeln', ['wheat']], ['pancake mix', ['egg', 'wheat']],
+        // 第24回 R104: 紹興酒（小麦の麹）。R101: 加工肉の卵・乳・大豆は英語ほかでも
+        ['1 tbsp Shaoxing wine', ['wheat']], ['紹興酒', ['wheat']], ['绍兴酒', ['wheat']], ['黄酒', ['wheat']], ['花雕酒', ['wheat']], ['料酒', ['wheat']], ['Chinese cooking wine', ['wheat']],
+        ['4 slices bacon', ['egg', 'milk', 'soy']], ['smoked sausage', ['egg', 'milk', 'soy', 'wheat']], ['ham', ['egg', 'milk', 'soy']], ['hot dogs', ['egg', 'milk', 'soy']], ['Morcilla', ['egg', 'milk', 'soy', 'wheat']], ['kiełbasa', ['egg', 'milk', 'soy']]];
+    const NOT = [['rice wine', 'wheat'], ['hamburger buns', 'egg'], ['soy milk', 'wheat'], ['soybeans', 'wheat'], ['pickled cucumber', 'soy'], ['cucumber', 'soy'], ['carrots', 'wheat'], ['black beans', 'soy'], ['bread crumbs', 'soy']];
     const r = await p.evaluate(([W, NOT]) => {
         const it = n => /[ぁ-んァ-ヶ一-龯가-힣]/.test(n) ? parseIng(n) : Object.assign(parseIng(n), {en: n.toLowerCase(), key: n.toLowerCase()});
         return {miss: W.flatMap(([n, as]) => as.filter(a => !algKind(a, it(n))).map(a => n + '→' + a)), extra: NOT.filter(([n, a]) => algKind(a, it(n))).map(([n, a]) => n + '→' + a + '=' + algKind(a, it(n)))};
@@ -80,7 +86,7 @@ await p.goto(URL_); await ready(p);
 
 // ---- W1 名指しの料理・W3 全部の料理 ----
 const NAMED = {TW: [['tw_tang_qiukui', 'soy'], ['tw_fanqie_qiepan', 'soy'], ['tw_tang_qingcai', 'soy'], ['tw_tang_qiukui', 'wheat'], ['tw_fanqie_qiepan', 'wheat'], ['tw_tang_qingcai', 'wheat'], ['tw_bopi_lajiao_ji', 'soy'], ['tw_bopi_lajiao_ji', 'wheat'], ['tw_fengli_kugua_ji', 'soy'], ['tw_digua_zhou', 'soy'], ['tw_chao_shansu', 'soy']],
-    CN: [['cn_gongbao_jiding', 'soy'], ['cn_gongbao_jiding', 'wheat']], PH: [['ph_ensalada', 'crustacean'], ['ph_ensaladang_talong', 'crustacean'], ['ph_talbos_kamote', 'crustacean']],
+    CN: [['cn_gongbao_jiding', 'soy'], ['cn_gongbao_jiding', 'wheat'], ...['cn_donggua_paigu', 'cn_lianou_paigu', 'cn_jiyu_doufu', 'cn_xianggu_jitang', 'cn_yanduxian', 'cn_luobo_yangrou', 'cn_suancaiyu', 'cn_xiaren_chaodan'].map(id => [id, 'wheat'])], PH: [['ph_ensalada', 'crustacean'], ['ph_ensaladang_talong', 'crustacean'], ['ph_talbos_kamote', 'crustacean']],
     DE: [['de_sauerbraten', 'wheat']], US: [['us_salad', 'wheat']], KR: [['kr_doenjangjjigae', 'wheat'], ['kr_sigeumchidoenjangguk', 'wheat'], ['kr_cheonggukjangjjigae', 'wheat']]};
 let tot = {recipes: 0, kwHit: 0, flagged: 0, fp: 0, miss: 0}; const fpBy = {};
 for (const cc of CCS){
