@@ -1338,7 +1338,7 @@ GOHAN_I18N('vi', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Nếu món nấu được với nguyên liệu khác, mình sẽ thay (vd: gà thay cho heo). Món không thể thay sẽ không được gợi ý.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Thời gian tùy loại cá. Nấu đến khi thịt cá trắng đục bên trong.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Nấu gà chín kỹ; thêm 1–2 phút so với thời gian nấu.",
-    "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Đổi nước thì ngôn ngữ hiển thị vẫn giữ nguyên. Món của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
+    "国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Khi chọn lại quốc gia, ngôn ngữ hiển thị cũng đổi sang ngôn ngữ của nước đó (ở màn hình xác nhận, bạn có thể giữ ngôn ngữ hiện tại). Món ăn của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Kết hợp các nước (vd: món chính Trung Quốc, món phụ Nhật, canh Hàn)",
     "組み合わせをやめる": "Thôi kết hợp",
     "{date}の記録に入っています": "Đã ghi cho ngày {date}",
@@ -1732,5 +1732,6 @@ GOHAN_I18N('vi', {
     "送らずに、自分の候補に入れる": "Không gửi, chỉ thêm vào gợi ý của tôi",
     "食べたいものは、まだありません": "Chưa có món muốn ăn",
     "食べたいものを選ぶ": "Chọn món muốn ăn",
-    "この条件では、おかゆの日の主菜がありません": "Với điều kiện này, không có món chính cho ngày ăn cháo"
+    "この条件では、おかゆの日の主菜がありません": "Với điều kiện này, không có món chính cho ngày ăn cháo",
+    "言葉は今の{lang}のままにする": "Vẫn giữ ngôn ngữ {lang}"
 });

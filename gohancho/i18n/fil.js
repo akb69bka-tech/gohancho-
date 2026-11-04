@@ -1338,7 +1338,7 @@ GOHAN_I18N('fil', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Kung puwede ang ulam sa ibang sangkap, papalitan namin ito (hal. manok sa halip na baboy). Hindi imumungkahi ang mga ulam na walang kapalit.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Depende sa isda ang tagal ng luto. Lutuin hanggang pumuti ang laman hanggang loob.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Lutuin nang husto ang manok; dagdagan ng 1–2 minuto ang pagluluto.",
-    "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Hindi magbabago ang wika kahit palitan ang bansa. Ipapakita sa wikang ito ang mga ulam ng ibang bansa kung may salin (kung wala, sa Ingles).",
+    "国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Kapag pumili ka ng ibang bansa, magbabago rin ang wika sa wika ng bansang iyon (sa screen ng pagkumpirma, puwede mong panatilihin ang kasalukuyang wika). Ipinapakita sa wikang ito ang mga ulam ng ibang bansa kung may salin (kung wala, sa Ingles).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Paghaluin ang mga bansa (hal. Chinese na ulam, Japanese na side dish, Korean na sabaw)",
     "組み合わせをやめる": "Itigil ang paghahalo",
     "{date}の記録に入っています": "Naitala na para sa {date}",
@@ -1732,5 +1732,6 @@ GOHAN_I18N('fil', {
     "送らずに、自分の候補に入れる": "Itago bilang mungkahi ko, huwag ipadala",
     "食べたいものは、まだありません": "Wala pang idinagdag",
     "食べたいものを選ぶ": "Piliin ang gusto mong kainin",
-    "この条件では、おかゆの日の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa araw ng lugaw"
+    "この条件では、おかゆの日の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa araw ng lugaw",
+    "言葉は今の{lang}のままにする": "Panatilihin sa {lang} ang screen"
 });

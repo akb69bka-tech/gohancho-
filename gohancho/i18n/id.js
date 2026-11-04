@@ -1338,7 +1338,7 @@ GOHAN_I18N('id', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Jika masakan bisa dibuat dengan bahan lain, kami menggantinya (mis. ayam sebagai pengganti babi). Masakan yang tidak bisa diganti tidak disarankan.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Waktu masak tergantung jenis ikan. Masak sampai dagingnya putih hingga ke dalam.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Masak ayam sampai matang; tambah 1–2 menit waktu memasak.",
-    "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Bahasa tampilan tetap sama meski negara diganti. Masakan negara lain ditampilkan dalam bahasa ini jika ada terjemahannya (jika tidak, dalam bahasa Inggris).",
+    "国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Saat memilih negara lain, bahasa tampilan juga berganti ke bahasa negara itu (di layar konfirmasi Anda bisa tetap memakai bahasa sekarang). Masakan dari negara lain ditampilkan dalam bahasa ini jika ada terjemahannya (jika tidak, dalam bahasa Inggris).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Gabungkan negara (mis. lauk utama Tiongkok, lauk pendamping Jepang, sup Korea)",
     "組み合わせをやめる": "Berhenti menggabungkan",
     "{date}の記録に入っています": "Sudah dicatat untuk {date}",
@@ -1732,5 +1732,6 @@ GOHAN_I18N('id', {
     "送らずに、自分の候補に入れる": "Jadikan pilihan saya tanpa mengirim",
     "食べたいものは、まだありません": "Belum ada yang ditambahkan",
     "食べたいものを選ぶ": "Pilih yang ingin dimakan",
-    "この条件では、おかゆの日の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk hari bubur"
+    "この条件では、おかゆの日の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk hari bubur",
+    "言葉は今の{lang}のままにする": "Tetap pakai {lang}"
 });
