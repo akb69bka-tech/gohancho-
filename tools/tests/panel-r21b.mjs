@@ -1,10 +1,14 @@
 #!/usr/bin/env node
-// 利用者モニター 第21回の直し（画面・三宅）。Playwright。使い方: node tools/tests/panel-r21.mjs [http://localhost:8999/]
+// 利用者モニター 第21回・第22回の直し（画面・三宅）。Playwright。使い方: node tools/tests/panel-r21b.mjs [http://localhost:8999/]
 //  （panel-r18b と同じ準備。panel-r18b が run-all の1項目の上限 900 秒に近いので、別のファイルにした）
 //  R72: 今日の献立の画面の「元に戻す」付きのお知らせ（1品の「これにする」・家族リクエストの「入れかえる」・決めた献立の作り直し）は、見出しの行（今日の献立・条件のボタン）に1行で重ねる（見出しの行が画面の外なら、料理にかからない高さ）。
 //       料理の絵・料理名・↻・札・まるごと入れ替え・「✓ 決めた」にかからない。「元に戻す」は見えて押せる（195/360/375/390/430 × 文字ふつう/もっと大きい）
 //  R73: まるごと入れ替えの丸と、↻・料理の絵のすき間が 8px 以上（195/360/375/390/430 × 文字ふつう/もっと大きい）
 //  R81: 幅195px で、4品（上の段が3列）の日に決めた直後のお知らせが、料理名・↻・札・「買い物メモを見る」にかからない（文字3段階 × 家族 × 上/スクロールした位置）
+//  第22回:
+//  R94: ↻（候補の「これにする」・その場でかえる）のあとの「元に戻す」の帯は、見出し「今日の献立」と条件のボタンも隠さない（画面のいちばん上の帯に出る）。
+//       字は何をかえたかが分かる文（料理名が入る。入らないときは料理名を短くして「…」）。料理の絵・料理名・↻にもかからない。「元に戻す」は押せる
+//  R93: 幅195px のはじめての設定で、見出し「何人分つくりますか」が1行（文字3段階）。「苦手な食材はありますか」は2行まで
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
@@ -112,6 +116,46 @@ for (const ts of [0, 1, 2]) for (const fam of [0, 1]) {
             if (S.cook) S.cook = null; tapGuard = 0; if (toast.hide) toast.hide(); window.scrollTo(0, 0); render(); await __tick(); return res; }, [pos, '#view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok, #view .p2-link, #view .actionbar button']);
         ok(!r.err && !r.none && !r.hid && !r.hits.length, `R21-3 R81 195px 文字${ts} 家族${fam} ${pos}: 4品の日の決めた直後のお知らせが、料理名・↻・札・「買い物メモを見る」・決定にかからず見える: ` + JSON.stringify(r));
     }
+    await ctx.close();
+}
+
+// R22-1（R94）↻ のあとの「元に戻す」の帯: 1つの幅・文字の大きさに1ページで、候補の「これにする」と、その場でかえる（候補を通さない）の2通り
+for (const [w, h] of [[195, 422], [360, 740], [375, 667], [390, 844], [430, 932]]) for (const ts of [0, 2]) {
+    if (!want('R22-1')) break;
+    const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: w === 195 ? 3 : 4, sv: 2}, `r94-${w}-${ts}`);
+    const out = [];
+    for (const how of ['pick', 'direct']) {
+        await p.evaluate(direct => { if (toast.hide) toast.hide(); tapGuard = 0; window.__swapDirect = direct; window.scrollTo(0, 0); }, how === 'direct'); await p.waitForTimeout(150);
+        const before = await p.evaluate(() => session.menu.items.map(x => x.r && x.r.name));
+        const n0 = await p.locator('#view [data-act="reroll"]').count(); let done = false;
+        for (let i = 0; i < n0 && !done; i++){
+            await p.locator('#view [data-act="reroll"]').nth(i).click(); await p.waitForTimeout(400);
+            if (how === 'pick'){ if (await p.locator('#sheet-root [data-act="swap-pick"]').count()){ await p.locator('#sheet-root [data-act="swap-pick"]').first().click(); done = true; } else { await p.evaluate(() => { if (sheet) closeSheet(); tapGuard = 0; }); await p.waitForTimeout(150); } }
+            else done = true;
+        }
+        await p.waitForTimeout(450);
+        const r = await p.evaluate(([sel, before]) => { const t = document.querySelector('#toast-root .toast'); if (!t) return {none: true}; const a = t.getBoundingClientRect();
+            const ov = q => a.left < q.right - 1 && a.right > q.left + 1 && a.top < q.bottom - 1 && a.bottom > q.top + 1;
+            const hits = [...document.querySelectorAll(sel)].filter(e => { const q = e.getBoundingClientRect(); return q.width > 1 && ov(q); }).map(e => e.className.split(' ')[0] + ':' + (e.textContent || '').trim().slice(0, 8));
+            const bt = t.querySelector('[data-act=toast-undo]'), bq = bt && bt.getBoundingClientRect(), at = bq && document.elementFromPoint((bq.left + bq.right) / 2, (bq.top + bq.bottom) / 2);
+            const now = session.menu.items.map(x => x.r && x.r.name), nw = now.find((n, i) => n && n !== before[i]) || '';
+            const tx = t.querySelector('.tx'), vis = tx ? tx.textContent.trim() : '', head = nw ? [...nw].slice(0, 2).join('') : '';
+            return {vis, nw, named: !!nw && (vis.includes(nw) || (vis.includes(head) && vis.includes('…'))), full: t.textContent.includes(nw), hits, undo: !!bt, clickable: !!(bt && at && (at === bt || bt.contains(at))), cls: t.className, top: Math.round(a.top), h: Math.round(a.height)}; },
+            ['#view .spot .vessel, #view .spot .nm, #view .spot .swap:not(.swap-ph), #view .spot .alg-tag, #view .spot .swap-line, #view .tg-mid .shuffle, #view .p2-ok, #view .today-head h2, #view .today-head .p2-sv', before]);
+        r.how = how; out.push(r);
+    }
+    const bad = out.filter(r => r.none || !r.undo || r.hits.length || !r.clickable || !r.named || !r.full);
+    ok(out.length === 2 && !bad.length, `R22-1 R94 ${w}px 文字${ts}: ↻ のあとの「元に戻す」の帯が見出し・条件のボタン・料理の絵・料理名・↻にかからず押せる。字に料理名（短くしても頭の字と「…」）: ` + JSON.stringify(bad.slice(0, 2)));
+    await ctx.close();
+}
+
+// R22-2（R93）幅195px のはじめての設定の見出し（文字3段階）
+for (const ts of [0, 1, 2]) {
+    if (!want('R22-2')) break;
+    const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, dc: 3, sv: 2}, `r93-${ts}`);
+    const r = await p.evaluate(async () => { const lines = () => { const h2 = document.querySelector('#sheet-root .sheet h2'); const rg = document.createRange(); rg.selectNodeContents(h2); return {text: h2.textContent, n: new Set([...rg.getClientRects()].map(q => Math.round(q.top))).size, over: h2.scrollWidth > h2.clientWidth + 1}; };
+        startOnboard(); await __tick(); const a = lines(); sheet.step = 1; renderSheet(); await __tick(); const c = lines(); closeSheet(); return {a, c}; });
+    ok(r.a.n === 1 && !r.a.over && r.c.n <= 2 && !r.c.over, `R22-2 R93 195px 文字${ts}: はじめての設定の見出し「${r.a.text}」が1行・「${r.c.text}」が2行まで: ` + JSON.stringify(r));
     await ctx.close();
 }
 
