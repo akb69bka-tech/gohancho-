@@ -13,6 +13,50 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    'br_filefrango': {
+      name: 'Filé de frango grelhado com limão e alho',
+      ings: [['Filés finos de peito de frango', '4 (350 g)'], ['Limão', '1'], ['Alface, para servir', '1/2 pé'], ['Tomates, para servir', '2']],
+      seas: 'Sal · Pimenta-do-reino · 2 dentes de alho · 1 colher (sopa) de óleo · 1 colher (sopa) de cheiro-verde picado',
+      steps: [
+        'Tempere os filés com o alho amassado, o suco de limão, sal e pimenta.',
+        'Aqueça o óleo numa frigideira ou chapa em fogo alto e grelhe o frango 2-3 minutos de cada lado, até dourar e ficar bem cozido.',
+        'Salpique cheiro-verde e sirva com alface e tomate (e arroz e feijão, se já tiver pronto).',
+      ],
+      tip: { add: 'Umas rodelas de cebola na frigideira no final', why: 'Vira um acebolado simples', skill: 'Filés finos', how: 'Peça filé fino ou corte o peito ao meio na horizontal, para grelhar rápido e ficar suculento.' },
+    },
+    'br_camaraoalho': {
+      name: 'Camarão alho e óleo',
+      ings: [['Camarão cru descascado', '300 g'], ['Limão', '1'], ['Cheiro-verde', '1 maço pequeno'], ['Pão, para servir', '4 fatias']],
+      seas: 'Sal · Pimenta-do-reino · 4 dentes de alho · 3 colheres (sopa) de azeite',
+      steps: [
+        'Tempere o camarão com sal, pimenta e um pouco de suco de limão. Fatie o alho e pique o cheiro-verde.',
+        'Aqueça o azeite com o alho numa frigideira em fogo médio até começar a dourar.',
+        'Aumente o fogo, junte o camarão e refogue 2-3 minutos, mexendo, até ficar rosado e bem cozido. Salpique cheiro-verde e sirva com pão.',
+      ],
+      tip: { add: 'Uma pitada de pimenta calabresa com o alho', why: 'Um calorzinho de quiosque de praia', skill: 'Camarão por último', how: 'Ele precisa só de uns dois minutos; mais que isso encolhe e fica borrachudo.' },
+    },
+    'br_calabresa': {
+      name: 'Calabresa acebolada',
+      ings: [['Linguiça calabresa defumada', '300 g'], ['Cebolas', '2'], ['Pão francês, para servir', '2']],
+      seas: 'Pimenta-do-reino · Orégano · 1 colher (sopa) de óleo',
+      steps: [
+        'Corte a linguiça em rodelas e as cebolas em anéis.',
+        'Aqueça o óleo numa frigideira em fogo médio-alto e frite a calabresa 3 minutos, até dourar.',
+        'Junte a cebola e refogue 4-5 minutos, mexendo, até murchar e dourar. Tempere com pimenta e orégano e sirva assim ou no pão.',
+      ],
+      tip: { add: 'Um pouquinho de água no final', why: 'Solta o fundo da panela e vira um caldinho', skill: 'Sem sal', how: 'A calabresa já é salgada e defumada; pimenta e orégano bastam.' },
+    },
+    'br_peixegrelhado': {
+      name: 'Peixe grelhado com limão e vinagrete',
+      ings: [['Filés de peixe branco (tilápia ou merluza)', '2 (300 g)'], ['Limão', '1'], ['Tomates', '2'], ['Cebola', '1/2'], ['Cheiro-verde', '1 maço pequeno']],
+      seas: 'Sal · Pimenta-do-reino · 2 dentes de alho · 2 colheres (sopa) de óleo · 1 colher (sopa) de vinagre',
+      steps: [
+        'Tempere o peixe com o alho amassado, o suco de limão, sal e pimenta. Pique o tomate e a cebola em cubinhos e misture com o cheiro-verde, o vinagre, metade do óleo e sal (vinagrete).',
+        'Aqueça o resto do óleo numa frigideira em fogo médio-alto e grelhe o peixe 3 minutos de um lado e 2 do outro, até desfiar.',
+        'Sirva o peixe coberto com o vinagrete.',
+      ],
+      tip: { add: 'Uma colherada de farofa ao lado', why: 'Crocante, do jeito brasileiro', skill: 'Seque o peixe', how: 'Com a superfície seca o peixe doura e solta da frigideira sem grudar.' },
+    },
     'br_strogonoff': {
       name: "Strogonoff de frango",
       ings: [

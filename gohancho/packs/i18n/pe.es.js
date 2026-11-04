@@ -80,6 +80,61 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    'pe_pollosaltado': {
+      name: 'Pollo saltado',
+      ings: [['Pechuga de pollo', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo fresco, en tiras', '1/2'], ['Culantro', 'unas ramitas'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1/2 cucharadita de comino · 2 cucharadas de sillao · 1 cucharada de vinagre tinto · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta el pollo en tiras y sazónalo con sal, pimienta y comino. Corta la cebolla y los tomates en gajos gruesos y el ají en tiras.',
+        'Calienta el aceite en un wok o sartén grande a fuego muy alto y saltea el pollo 3-4 minutos, hasta que esté dorado y bien cocido.',
+        'Agrega el ajo, la cebolla y el ají y saltea 1 minuto; luego los tomates, el sillao y el vinagre, 1 minuto más. Espolvorea culantro y sirve con arroz.',
+      ],
+      tip: { add: 'Un puñado de papas fritas recién hechas encima', why: 'Al estilo completo del saltado, como el lomo', skill: 'Wok bien caliente', how: 'La cebolla y el tomate deben quedar crocantes y apenas calientes; el fuego fuerte y el salteo rápido dan el sabor ahumado.' },
+    },
+    'pe_pescadoplancha': {
+      name: 'Pescado a la plancha con salsa criolla',
+      ings: [['Filetes de pescado blanco', '2 (300 g)'], ['Cebolla roja', '1'], ['Limones', '2'], ['Ají amarillo', '1/2'], ['Culantro', 'unas ramitas']],
+      seas: 'Sal · Pimienta · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta la cebolla en pluma muy fina, lávala y mézclala con el jugo de limón, el ají en tiras finas, el culantro picado y sal (salsa criolla).',
+        'Sazona el pescado con el ajo molido, sal y pimienta. Calienta el aceite en una sartén a fuego medio-alto y cocina el pescado 3 minutos de un lado y 2 del otro, hasta que se desmenuce.',
+        'Sirve el pescado con la salsa criolla encima.',
+      ],
+      tip: { add: 'Unas rodajas de camote o choclo sancochado', why: 'Los acompañantes clásicos del plato peruano', skill: 'Lava la cebolla', how: 'Lavar la cebolla cortada le quita lo fuerte y la mantiene crocante.' },
+    },
+    'pe_camaronessaltados': {
+      name: 'Saltado de camarones',
+      ings: [['Camarones crudos pelados', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo', '1/2'], ['Cebolla china', '2'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 2 cucharadas de sillao · 1 cucharada de vinagre · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta la cebolla y los tomates en gajos y el ají en tiras. Sazona los camarones con sal y pimienta.',
+        'Calienta el aceite en un wok o sartén a fuego muy alto y saltea los camarones con el ajo 2 minutos, hasta que estén rosados y bien cocidos.',
+        'Agrega la cebolla y el ají y saltea 1 minuto; luego los tomates, el sillao y el vinagre, 1 minuto más. Espolvorea cebolla china y sirve con arroz.',
+      ],
+      tip: { add: 'Un chorrito de pisco o vino blanco con el sillao', why: 'Una salsa más aromática', skill: 'Todo listo antes', how: 'Se cocina en 4 minutos, así que corta todo antes de prender la cocina.' },
+    },
+    'pe_tortillaatun': {
+      name: 'Tortilla de atún',
+      ings: [['Huevos', '4'], ['Atún en lata, escurrido', '1 lata (170 g)'], ['Cebolla roja', '1/2'], ['Tomate', '1'], ['Culantro', 'unas ramitas'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1 cucharada de aceite',
+      steps: [
+        'Pica finamente la cebolla, el tomate y el culantro. Bate los huevos con sal y pimienta y mezcla el atún y las verduras.',
+        'Calienta el aceite en una sartén a fuego medio, vierte la mezcla y cocina 3 minutos, hasta que la base esté dorada.',
+        'Voltéala con ayuda de un plato y cocina 2 minutos más. Córtala en triángulos y sirve con arroz.',
+      ],
+      tip: { add: 'Unas gotas de ají o salsa picante', why: 'Realza el atún', skill: 'Voltear con un plato', how: 'Deslízala a un plato, cúbrela con la sartén y voltea; queda entera.' },
+    },
+    'pe_bistecencebollado': {
+      name: 'Bistec encebollado',
+      ings: [['Bisteces delgados de res', '2 (300 g)'], ['Cebollas rojas', '2'], ['Tomates', '2'], ['Ají amarillo', '1/2'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1/2 cucharadita de comino · 2 dientes de ajo · 1 cucharada de sillao · 1 cucharada de vinagre · 2 cucharadas de aceite',
+      steps: [
+        'Sazona los bisteces con el ajo molido, comino, sal y pimienta. Corta las cebollas en aros gruesos y los tomates en gajos.',
+        'Calienta el aceite en una sartén a fuego alto y cocina los bisteces 1-2 minutos por lado; resérvalos en un plato.',
+        'En la misma sartén saltea la cebolla y el ají 2 minutos, agrega los tomates, el sillao y el vinagre y saltea 1 minuto. Sírvelo sobre los bisteces con arroz.',
+      ],
+      tip: { add: 'Un huevo frito encima', why: 'Queda como un plato a lo pobre', skill: 'Cebolla crocante', how: 'La cebolla debe quedar apenas suave en los bordes, como en un saltado, no deshecha.' },
+    },
     'pe_lomo_saltado': {
       name: 'Lomo saltado',
       ings: [['Lomo fino o cuadril de res', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo fresco', '1?'], ['Papas (para freír)', '2'], ['Culantro', '1 puñado']],

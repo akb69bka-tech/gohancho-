@@ -66,6 +66,61 @@ GOHAN_PACK_TR('ES', 'es', {
     'flour': 'Harina',
   },
   recipes: {
+    'es_revuelto': {
+      name: 'Revuelto de setas y jamón',
+      ings: [['Huevos', '5'], ['Setas o champiñones', '200 g'], ['Jamón serrano', '60 g'], ['Pan, para acompañar', '4 rebanadas']],
+      seas: 'Sal · 2 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharada de perejil picado',
+      steps: [
+        'Lamina las setas y el ajo y corta el jamón en tiras.',
+        'Calienta el aceite en una sartén a fuego medio-alto y saltea las setas con el ajo 4 minutos, hasta que se doren. Añade el jamón el último minuto.',
+        'Baja el fuego, vierte los huevos batidos con una pizca de sal y remueve con suavidad 1-2 minutos, hasta que cuajen y queden jugosos. Espolvorea perejil y sirve con pan.',
+      ],
+      tip: { add: 'Unos espárragos trigueros con las setas', why: 'El otro revuelto clásico', skill: 'Fuego bajo para el huevo', how: 'Retíralo del fuego cuando aún parezca algo húmedo; termina de cuajar en el plato y queda jugoso.' },
+    },
+    'es_lomoplancha': {
+      name: 'Lomo a la plancha con pimientos de Padrón',
+      ings: [['Filetes finos de lomo de cerdo', '4 (350 g)'], ['Pimientos de Padrón', '150 g'], ['Pan, para acompañar', '4 rebanadas']],
+      seas: 'Sal gorda · 2 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de perejil picado',
+      steps: [
+        'Calienta una plancha o sartén a fuego fuerte con la mitad del aceite y haz los pimientos 3-4 minutos, dándoles la vuelta, hasta que se ampollen. Échales sal gorda y resérvalos.',
+        'Añade el resto del aceite y haz el lomo 1-2 minutos por cada lado, hasta que esté dorado y hecho por dentro.',
+        'Esparce por encima el ajo y el perejil muy picados y una pizca de sal, y sirve con los pimientos y pan.',
+      ],
+      tip: { add: 'Unas patatas cocidas en gajos, si tienes', why: 'Un plato de bar en casa', skill: 'Filetes finos', how: 'Con menos de 1 cm de grosor se hacen en un minuto o dos y quedan tiernos.' },
+    },
+    'es_calamaresplancha': {
+      name: 'Calamares a la plancha',
+      ings: [['Calamares limpios', '400 g'], ['Limón', '1'], ['Perejil', 'un manojo pequeño'], ['Ensalada verde, para acompañar', '1']],
+      seas: 'Sal gorda · 3 cucharadas de aceite de oliva · 2 dientes de ajo',
+      steps: [
+        'Corta los calamares en anillas o tiras anchas y sécalos muy bien. Mezcla el aceite con el ajo y el perejil muy picados.',
+        'Calienta la plancha o sartén a fuego fuerte hasta que humee y haz los calamares 1-2 minutos, dándoles la vuelta, hasta que estén blancos y hechos.',
+        'Riégalos con el aceite de ajo, echa sal gorda y sírvelos enseguida con limón y ensalada.',
+      ],
+      tip: { add: 'Una pizca de pimentón dulce', why: 'Color y un sabor ahumado', skill: 'Fuego fuerte y rápido', how: 'El calamar queda tierno en uno o dos minutos y luego se endurece; con la plancha muy caliente se hace antes de soltar agua.' },
+    },
+    'es_tortillaatun': {
+      name: 'Tortilla francesa de atún con tomate',
+      ings: [['Huevos', '5'], ['Atún en lata, escurrido', '2 latas (160 g)'], ['Tomate frito, para acompañar', '4 cucharadas'], ['Lechuga, para acompañar', '1/2']],
+      seas: 'Sal · 1 cucharada de aceite de oliva',
+      steps: [
+        'Bate los huevos con una pizca de sal y mezcla el atún desmigado.',
+        'Calienta la mitad del aceite en una sartén pequeña a fuego medio, vierte la mitad de la mezcla y cuaja 2 minutos; enróllala o dóblala. Haz la segunda igual.',
+        'Calienta el tomate frito y sírvelo por encima o al lado, con lechuga.',
+      ],
+      tip: { add: 'Unas aceitunas con el atún', why: 'Un toque salado y mediterráneo', skill: 'Jugosa por dentro', how: 'Dóblala cuando la superficie aún esté algo blanda; termina de cuajar dentro.' },
+    },
+    'es_pollo_plancha': {
+      name: 'Filetes de pollo a la plancha con ensalada',
+      ings: [['Filetes finos de pechuga de pollo', '4 (350 g)'], ['Lechuga', '1'], ['Tomates', '2'], ['Cebolla', '1/2'], ['Limón', '1/2']],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 1 cucharada de vinagre · 1 diente de ajo · 1 cucharadita de perejil picado',
+      steps: [
+        'Prepara la ensalada: trocea la lechuga, corta los tomates en gajos y la cebolla en aros finos, y aliña con 2 cucharadas de aceite, el vinagre y sal.',
+        'Calienta el resto del aceite en una plancha o sartén a fuego fuerte y haz el pollo 2-3 minutos por cada lado, hasta que esté dorado y hecho por dentro.',
+        'Echa sal, el ajo y el perejil muy picados y un chorrito de limón, y sirve con la ensalada.',
+      ],
+      tip: { add: 'Un poco de atún y aceitunas en la ensalada', why: 'Un plato más completo', skill: 'Pide filetes', how: 'Los filetes finos de pechuga se hacen rápido y por igual, sin quedar secos.' },
+    },
     'es_tortilla': {
       name: 'Tortilla de patatas',
       ings: [['Patatas', '500 g'], ['Huevos', '5'], ['Cebolla', '1?']],
