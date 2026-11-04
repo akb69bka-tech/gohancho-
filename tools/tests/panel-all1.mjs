@@ -61,9 +61,10 @@ for (const cc of ['TH', 'CN', 'KR', 'VN', 'JP', 'TW', 'PH']){
     await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
     const bad = [], empty = [], counts = new Set(), seen = {};
     const look = async () => {
-        const r = await p.evaluate(() => ({n: document.querySelectorAll('#view .tray .spot').length, its: session.menu.items.map(x => ({slot: x.slot, name: x.r ? x.r.name : null, soft: x.r ? okayuSoftOk(x.r) : null, mild: x.r ? okayuMildOk(x.r) : null, never: x.r ? okayuNever(x.r) : null, spice: x.r ? spiceLevel(x.r) : 0, rawSea: x.r ? (okayuRawish(x.r) || x.r.method === '和え') && okayuSea(x.r) : false}))}));
+        const r = await p.evaluate(() => ({n: document.querySelectorAll('#view .tray .spot').length, soupy: soupyMain(session.menu.items[0].r), its: session.menu.items.map(x => ({slot: x.slot, name: x.r ? x.r.name : null, soft: x.r ? okayuSoftOk(x.r) : null, mild: x.r ? okayuMildOk(x.r) : null, never: x.r ? okayuNever(x.r) : null, spice: x.r ? spiceLevel(x.r) : 0, rawSea: x.r ? (okayuRawish(x.r) || x.r.method === '和え') && okayuSea(x.r) : false}))}));
         counts.add(r.n);
-        r.its.slice(1).forEach(x => { if (!x.name){ empty.push(x.slot); return; } seen[x.name] = (seen[x.name] || 0) + 1; if (x.never || x.spice > 0 || x.rawSea || !(x.soft || x.mild)) bad.push(x.slot + ':' + x.name + ':' + JSON.stringify(x)); });
+        r.its.slice(1).forEach(x => { if (!x.name){ if (!(x.slot === '汁物' && r.soupy)) empty.push(x.slot); return; }   // 雑炊（汁けの多いご飯）の日の汁ものの席は空ける（第21回 R82）
+            seen[x.name] = (seen[x.name] || 0) + 1; if (x.never || x.spice > 0 || x.rawSea || !(x.soft || x.mild)) bad.push(x.slot + ':' + x.name + ':' + JSON.stringify(x)); });
     };
     await look(); await reroll(p, 20, look);
     ok(!bad.length, `S23 ${cc} おかゆの日の副菜・汁もの（最初＋入れ替え20回）に、生の魚介・辛い料理・米のスープ・炒め物はない: ` + JSON.stringify(bad.slice(0, 4)));
@@ -230,10 +231,10 @@ for (const [cc, ul, loc] of [['TH', 'th', 'th-TH'], ['PH', 'fil', 'fil-PH']]){
 for (const cc of ['JP', 'TW', 'CN', 'KR', 'TH', 'PH']){
     const {p, ctx} = await open({country: cc}, {}, 'r61-base-' + cc);
     await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
-    let soup = 0, n = 0; const sides = new Set(), soups = new Set();
-    const look = async () => { n++; const r = await p.evaluate(() => session.menu.items.map(x => ({slot: x.slot, id: x.r ? x.r.id : null}))); for (const x of r){ if (x.slot === '汁物' && x.id){ soup++; soups.add(x.id); } if (x.slot === '副菜' && x.id) sides.add(x.id); } };
+    let soup = 0, n = 0, soupy = 0; const sides = new Set(), soups = new Set();   // 第21回 R82: 雑炊（汁けの多いご飯）の日は汁ものを付けない。その日は数えない
+    const look = async () => { const r = await p.evaluate(() => session.menu.items.map((x, i) => ({slot: x.slot, id: x.r ? x.r.id : null, soupy: i === 0 && soupyMain(x.r)}))); if (r[0].soupy){ soupy++; r.forEach(x => { if (x.slot === '副菜' && x.id) sides.add(x.id); }); return; } n++; for (const x of r){ if (x.slot === '汁物' && x.id){ soup++; soups.add(x.id); } if (x.slot === '副菜' && x.id) sides.add(x.id); } };
     await look(); await reroll(p, 19, look);
-    ok(n === 20 && soup === 20 && sides.size >= 6 && soups.size >= 3, `R61 ${cc}（アレルギーなし）: おかゆの日の汁ものの席が20回とも埋まり、副菜6品以上・汁もの3品以上: 汁もの ${soup}/${n}, 副菜 ${sides.size}品, 汁もの ${soups.size}品`);
+    ok(n + soupy === 20 && n >= 10 && soup === n && sides.size >= 6 && soups.size >= 3, `R61 ${cc}（アレルギーなし）: おかゆの日の汁ものの席が（雑炊の日 ${soupy}回を除いて）全部埋まり、副菜6品以上・汁もの3品以上: 汁もの ${soup}/${n}, 副菜 ${sides.size}品, 汁もの ${soups.size}品`);
     await ctx.close();
 }
 // ---- R8（第18回の残り）: 決めたあとの作り方のタブの「家族に送る」も、決める前と同じ3段（料理名だけ／買う物も／作り方も） ----

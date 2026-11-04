@@ -1688,6 +1688,7 @@ GOHAN_I18N('vi', {
     "この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）": "Nước này có ít món \"đơn giản\" nên đã nới điều kiện ({list})",
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "Nước này có ít món chính nấu lâu nên đã nới điều kiện ({list})",
     "{slot}は条件なし": "{slot}: không giới hạn",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot}: không có (không có món trong {min} phút)",
     "{slot}は手早い順の{n}品だけ": "{slot}: chỉ {n} món nhanh nhất",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot}: trong {min} phút, tối đa {st} bước và {ing} nguyên liệu",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot}: trong {min} phút, tối đa {st} bước (không giới hạn số nguyên liệu)",

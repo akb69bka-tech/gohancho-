@@ -1688,6 +1688,7 @@ GOHAN_I18N('tr', {
     "この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）": "Bu ülkede \"kolay\" yemek az olduğundan sınırlar gevşetildi ({list})",
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "Bu ülkede uzun pişen ana yemek az olduğundan sınırlar gevşetildi ({list})",
     "{slot}は条件なし": "{slot}: sınırsız",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot}: yok ({min} dk içinde yemek yok)",
     "{slot}は手早い順の{n}品だけ": "{slot}: yalnızca en hızlı {n} yemek",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot}: en fazla {min} dk, {st} adım ve {ing} malzeme",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot}: en fazla {min} dk ve {st} adım (malzeme sayısı fark etmez)",

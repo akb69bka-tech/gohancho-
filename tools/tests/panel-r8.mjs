@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 利用者モニター第8回の直し（献立）。Playwright。使い方: node tools/tests/panel-r8.mjs [http://localhost:8952/]
-//  R19 おかゆの日の主菜は短い時間のものから（日本: 卵雑炊15分 → 入れ替えても 45分の おかゆ・卵がゆ・梅がゆ。小豆がゆ80分は出ない）。
+//  R19 おかゆの日の主菜は短い時間のものから（日本: 卵雑炊15分・45分の おかゆ・卵がゆ・梅がゆ。小豆がゆ80分は出ない）。
+//      第21回 R82 から、短い段が1品だけ（卵雑炊）のときは、3品そろう段（45分）までをまぜて選ぶ（毎回卵雑炊にしない）
 //      「かえる」の候補も短いものから。案内の「早くできる」は、主菜が20分以内のときだけ。そうでないときは、かかる時間をそのまま書く
 //  R21 おかゆ・粥の主菜がある国（JP・CN・TW・KR・TH・PH）は、条件の「気分」と主菜の「かえる」の両方に「おかゆの日」。ない国は両方ともなし
 //  R23 赤飯は主菜にしない（1週間プラン・おまかせ・かえる）。さがすでは出る
@@ -41,12 +42,12 @@ const ALL = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', '
         return out;
     });
     const mins = s => s.map(x => Number(x.split(':')[1]));
-    ok(/^zosui:15$/.test(r.first) && /早くできる/.test(r.note0), 'R19 おかゆの日の最初の主菜は卵雑炊（15分）で、案内は「早くできる」: ' + JSON.stringify([r.first, r.note0]));
+    { const m0 = Number(r.first.split(':')[1]); ok(m0 <= 45 && (m0 <= 20 ? /早くできる/.test(r.note0) : !/早くできる/.test(r.note0) && r.note0.includes(m0 + '分')), 'R19 おかゆの日の最初の主菜は45分まで（卵雑炊・おかゆ・卵がゆ・梅がゆ）で、20分以内なら案内は「早くできる」、それより長ければ分を書く: ' + JSON.stringify([r.first, r.note0])); }
     ok(mins(r.rolls).every(n => n <= 45), 'R19 まるごと入れ替え3回でも45分まで（小豆がゆ80分・50分の粥を先に出さない）: ' + r.rolls.join(' '));
-    ok(r.notes.every((x, i) => !/早くできる/.test(x) && x.includes(mins(r.rolls)[i] + '分')), 'R19 主菜が20分をこえるときは「早くできる」と言わず、かかる時間を書く: ' + JSON.stringify(r.notes[0]));
-    ok(r.swaps[0].length === 3 && mins(r.swaps[0]).every(n => n <= 45), 'R19 主菜の「かえる」の候補も短いものから（卵雑炊のときは45分の3品）: ' + JSON.stringify(r.swaps));
+    ok(r.notes.every((x, i) => mins(r.rolls)[i] <= 20 ? /早くできる/.test(x) : !/早くできる/.test(x) && x.includes(mins(r.rolls)[i] + '分')), 'R19 主菜が20分をこえるときは「早くできる」と言わず、かかる時間を書く: ' + JSON.stringify(r.notes));
+    ok(r.swaps[0].length === 3 && mins(r.swaps[0]).every(n => n <= 45), 'R19 主菜の「かえる」の候補も短いものから（45分までの3品）: ' + JSON.stringify(r.swaps));
     ok(r.swaps[1].length === 3 && mins(r.swaps[1]).every(n => n <= 60), 'R19 45分の粥を入れ替えで使ったあとも、小豆がゆ（80分）は先に出さない: ' + JSON.stringify(r.swaps));
-    ok(r.swapF.length && mins(r.swapF)[0] <= 20 && mins(r.swapF).every(n => n <= 45), 'R19 かえるの絞りこみ「おかゆの日」も短いものから: ' + JSON.stringify(r.swapF));
+    ok(r.swapF.length && mins(r.swapF).every(n => n <= 45), 'R19 かえるの絞りこみ「おかゆの日」も短いものから（45分まで）: ' + JSON.stringify(r.swapF));
     await ctx.close();
 }
 // R21 気分と「かえる」で、おかゆの日の出し方をそろえる（21か国）

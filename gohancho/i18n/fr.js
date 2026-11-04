@@ -1689,6 +1689,7 @@ GOHAN_I18N('fr', {
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "Ce pays a peu de plats principaux longs à préparer, donc les limites sont assouplies ({list})",
     "{slot}は条件なし": "{slot} : sans limite",
     "{slot}は手早い順の{n}品だけ": "{slot} : seulement {n:le plat le plus rapide:les # plats les plus rapides}",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot} : aucun (rien en {min} min ou moins)",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot} : {min} min maximum, {st} étapes et {ing} ingrédients max.",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot} : {min} min maximum, {st} étapes max. (nombre d'ingrédients libre)",
     "{slot}は{min}分以内・手順{st}つまで": "{slot} : {min} min maximum, {st} étapes max.",

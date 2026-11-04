@@ -11,6 +11,8 @@
 //     R50 ゆるめた知らせは、お膳の上の「条件を変える」の中の短い1行（390×844 で、文字ふつう・もっと大きいとも決定の帯より上に見える）と、条件のシートの全文。お膳の下には出さない。お膳は押し下げない
 //     R51 「10分以内」の作り方の見出しは、いま効いている上限（15分以内など。近い順の少数は「手早い順」）。「おく・漬ける」の10分を超える待ちは「＋おく○分」と別に出し、合計には入れない。「10分」の札はその待ちがない料理だけ。知らせに「最長○分」は出ない
 //     R52 知らせに「手順99つまで」は出ない（「手順の数は問わない」）
+//  9. 第21回 R74: 「10分以内」の献立の料理は、主菜 20分・副菜と汁もの 15分まで（それより長い料理で埋めない）。10分を超える料理には、料理ごとに上限の札（「15分」「20分」）。
+//     上限の中に料理がない副菜・汁ものは席をなしにし、席と知らせに「○○は15分以内の料理がないので、なし」。「かえる」の候補・まるごと入れ替え・汁ものの足しも同じ（JP・US・FR・KR・TH）
 //  環境変数: BASE, SEED, CCS（既定 JP,US,KR）
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -40,7 +42,7 @@ const checkMenu = (p, mode, n) => p.evaluate(([mode, n]) => {
         const m = session.menu;
         if (!m.items[0].r) empty.push('主菜');
         m.items.forEach((it, i) => {
-            if (!it.r){ if (!(it.slot === '汁物' && (soupyMain(m.items[0].r) || primoMain(m.items[0].r)))) empty.push(it.slot); return; }
+            if (!it.r){ if (!(it.slot === '汁物' && (soupyMain(m.items[0].r) || primoMain(m.items[0].r))) && !(i > 0 && modeInfo(mode, it.slot).drop)) empty.push(it.slot); return; }   // 10分以内で上限の中に料理がない副菜・汁ものは、席をなしにする（第21回 R74）
             if (!modeOk(it.r, mode, it.slot)) bad.push(it.slot + ':' + it.r.name + '(' + it.r.min + '分/' + stepCount(it.r) + '手順/' + ingCount(it.r) + '材料)');
             if (modeBadgeOk(it.r, mode, it.slot)) strict[it.slot] = (strict[it.slot] || 0) + 1;
         });
@@ -52,7 +54,7 @@ const checkMenu = (p, mode, n) => p.evaluate(([mode, n]) => {
     openCondSheet(); const full = document.querySelector('#sheet-root .cond-relax'); const inSheet = !!full && full.textContent === txt; closeSheet();
     const shown = !!head && head.textContent.length > 0 && inSheet && !under;
     const badges = document.querySelectorAll('.tray .badge.mode').length;
-    const infos = Object.fromEntries(['主菜', '副菜', '汁物'].map(sl => [sl, (f => ({lv: f.lv, n: f.n, none: f.none, few: !!f.ids}))(modeInfo(mode, sl))]));
+    const infos = Object.fromEntries(['主菜', '副菜', '汁物'].map(sl => [sl, (f => ({lv: f.lv, n: f.n, none: f.none, few: !!f.ids, drop: !!f.drop}))(modeInfo(mode, sl))]));
     return {bad, empty, strict, relaxed: [...relaxed], txt, shown, badges, infos, n: session.menu.items.length};
 }, [mode, n]);
 
@@ -209,6 +211,44 @@ for (const cc of CCS){
     ok(!slow.none && slow.modal.waitLi > 0 && slow.modal.chips === slow.modal.waitLi && /ここで待つ/.test(slow.modal.tag) && slow.timer === 1, `JP M4 じっくり: 料理の詳細の手順に「ここで待つ」の印とタイマー（押すといつものタイマーが動く）: ` + JSON.stringify(slow.modal) + ' timers=' + slow.timer);
     ok(slow.plain === 0 && slow.plainModal === 0, `JP M4 おまかせに戻すと、モードの見え方は出ない: ` + JSON.stringify({plain: slow.plain, modal: slow.plainModal}));
     await ctx.close();
+}
+// 9. 第21回 R74: 10分以内は、上限を超える料理で埋めない。10分を超える料理には上限の札
+{
+    const tot = {menus: 0, dishes: 0, over10: 0, overCap: 0, untagged: 0, drop: 0};
+    for (const cc of ['JP', 'US', 'FR', 'KR', 'TH']){
+        cur = cc;
+        const {p, ctx} = await open(cc, 'r74');
+        const r = await p.evaluate(() => {
+            const out = {menus: 0, dishes: 0, over10: 0, bad: [], untagged: [], drop: 0, dropTxt: [], relax: '', swaps: []};
+            const capOf = (slot, f) => f.ids ? Infinity : MODE_TIERS.ten[slot === '主菜' ? 'main' : 'side'].slice(-1)[0];
+            for (const dc of ['auto', 4]){
+                S.settings.dishCount = dc; save();
+                for (let k = 0; k < 5; k++){
+                    session.mood = 'ten'; session.rejected.clear(); newMenu(); render(); out.menus++;
+                    const spots = [...document.querySelectorAll('#view .tray .spot:not(.rice)')];
+                    session.menu.items.forEach((it, i) => {
+                        const f = modeInfo('ten', it.slot), sp = spots.find(e => e.querySelector('[data-i="' + i + '"]'));
+                        if (!it.r){ if (i > 0 && f.drop){ out.drop++; out.dropTxt.push(sp ? (sp.querySelector('.nm.none') || {}).textContent : '(席なし)'); } return; }
+                        out.dishes++;
+                        if (it.r.min > capOf(it.slot, f)) out.bad.push(it.slot + ':' + it.r.name + '(' + it.r.min + '分)');
+                        if (it.r.min > 10){ out.over10++; const tag = sp && sp.querySelector('.slot .badge.cap'); if (!tag || tag.textContent !== t('{n}分', {n: tenCap(it.r, it.slot)}) || tenCap(it.r, it.slot) < it.r.min) out.untagged.push(it.slot + ':' + it.r.name + '(' + it.r.min + '分) 札=' + (tag ? tag.textContent : 'なし')); }
+                    });
+                    // かえるの候補・汁ものを足す も上限の中
+                    session.menu.items.forEach((it, i) => { if (!it.r) return; swapCands(i, null).forEach(c => { if (c.min > capOf(it.slot, modeInfo('ten', it.slot))) out.swaps.push(it.slot + ':' + c.name + '(' + c.min + '分)'); }); });
+                    out.relax = easyRelaxText();
+                }
+            }
+            S.settings.dishCount = 4; save();
+            return out;
+        });
+        tot.menus += r.menus; tot.dishes += r.dishes; tot.over10 += r.over10; tot.overCap += r.bad.length; tot.untagged += r.untagged.length; tot.drop += r.drop;
+        ok(!r.bad.length, `${cc} M9 R74 10分以内の料理は主菜20分・副菜と汁もの15分まで（${r.menus}献立・${r.dishes}品）: ` + JSON.stringify(r.bad.slice(0, 5)));
+        ok(!r.untagged.length, `${cc} M9 R74 10分を超える料理（${r.over10}品）には、料理ごとに上限の札（15分・20分）: ` + JSON.stringify(r.untagged.slice(0, 5)));
+        ok(!r.swaps.length, `${cc} M9 R74 「かえる」の候補も上限の中: ` + JSON.stringify(r.swaps.slice(0, 5)));
+        ok(r.dropTxt.every(x => /15分以内の料理がないので、なし/.test(x)) && (!r.drop || /15分以内の料理がないので、なし/.test(r.relax)), `${cc} M9 R74 なしにした席（${r.drop}）は、席と知らせに「15分以内の料理がないので、なし」: ` + JSON.stringify({dropTxt: [...new Set(r.dropTxt)], relax: r.relax}));
+        await ctx.close();
+    }
+    console.log('    R74 まとめ: ' + JSON.stringify(tot));
 }
 await b.close();
 ok(!errs.length, 'ページのエラーなし: ' + errs.slice(0, 3).join(' | '));

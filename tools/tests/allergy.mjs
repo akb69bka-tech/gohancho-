@@ -371,7 +371,9 @@ for (const cc of ['JP', 'US', 'DE']){
             if (it2.r && slotOut(it2.r)) bad.push('かえる・替わりなし ' + tag + ' slot' + slot + ' 残った ' + it2.r.id);
         }
         // (c) 案内を出したあとに当たるようになった「1週間プランの主菜を献立にする」・ひとひねり案の「主菜にする」
-        reset(); session.menu = null; ensureMenu(); makeWeek(); const wt = weekToday();
+        reset(); session.menu = null; ensureMenu(); makeWeek();
+        { const x = S.week.days.find(y => y.d === TODAY), mm = session.menu.items[0].r, alt = x && poolForMood('主菜', 'all').find(r => r.main && r.id !== (mm && mm.id) && !isAvoided(r) && ALG_ALL.some(id => { S.settings.allergens = [id]; const h = isAvoided(r) && !(mm && isAvoided(mm)); S.settings.allergens = []; return h; })); if (alt) x.id = alt.id; }   // プランの今日は今日の献立の主菜にそろう（R76）ので、描き直す前のちがう主菜（前の日に組んだプランなど）で確かめる
+        const wt = weekToday();
         if (wt){ const a = ALG_ALL.find(id => { S.settings.allergens = [id]; const h = isAvoided(wt); S.settings.allergens = []; return h; }); if (a){ S.settings.allergens = [a]; save(); click('use-plan'); if (session.menu.items[0].r && session.menu.items[0].r.id === wt.id) bad.push('プランの主菜を献立に: 当たる主菜を入れた ' + wt.id); } else note.push('プランの主菜に当たるアレルゲンなし'); }
         reset(); S.week = null; session.menu = null; ensureMenu();
         let tw = null, ta = null; for (let k = 0; k < 20 && !ta; k++){ tw = suggestTwist(); ta = tw && ALG_ALL.find(id => { S.settings.allergens = [id]; const h = twistAvoided(tw); S.settings.allergens = []; return h; }); }
@@ -991,6 +993,7 @@ for (const store of [{ avoid: ['@pork', '@chicken', '@beef', '@fish', '@shellfis
     // 買い物メモ: ハムの行に「⚠ 大豆（袋の表示を確認）」。調味料は行がないので、袋を見るものの一覧に名前を出す
     const o3 = await open('JP', { allergens: ['soy'] });
     const g3 = await o3.p.evaluate(() => { const ids = RECIPES.filter(r => !isAvoided(r) && r.items.some(i => i.key === 'ハム' && !i.opt)).map(r => r.id); if (!ids.length) return { skip: true };
+        weekFollowToday = () => false;   // ここは買い物メモの行の確かめ。プランの今日を今日の献立の主菜にそろえる（第21回 R76）と、置いた料理が替わるので止める
         makeWeek(); S.week.days.forEach((d, k) => { d.id = k === 0 ? ids[0] : d.id; d.skip = k !== 0; }); save(); setTab('today'); render();
         const row = [...document.querySelectorAll('.shop-row')].find(x => /ハム/.test(x.innerText)); const hint = (document.querySelector('.alg-shop') || {}).innerText || '';
         return { row: row ? row.innerText : '', hint, id: ids[0] }; });

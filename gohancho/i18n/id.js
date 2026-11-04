@@ -1688,6 +1688,7 @@ GOHAN_I18N('id', {
     "この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）": "Negara ini punya sedikit hidangan \"sederhana\", jadi batasnya dilonggarkan ({list})",
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "Negara ini punya sedikit hidangan utama masak lambat, jadi batasnya dilonggarkan ({list})",
     "{slot}は条件なし": "{slot}: tanpa batas",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot}: tidak ada (tak ada yang {min} menit atau kurang)",
     "{slot}は手早い順の{n}品だけ": "{slot}: hanya {n} masakan tercepat",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot}: maksimal {min} menit, {st} langkah dan {ing} bahan",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot}: maksimal {min} menit dan {st} langkah (jumlah bahan bebas)",

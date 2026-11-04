@@ -1689,6 +1689,7 @@ GOHAN_I18N('en', {
     "この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）": "This country has few \"simple\" dishes, so the limits are relaxed ({list})",
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "This country has few slow-cooked mains, so the limits are relaxed ({list})",
     "{slot}は条件なし": "{slot}: no limit",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot}: none (nothing within {min} min)",
     "{slot}は手早い順の{n}品だけ": "{slot}: only the {n} quickest dishes",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot}: within {min} min, up to {st} steps and {ing} ingredients",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot}: within {min} min, up to {st} steps (any number of ingredients)",

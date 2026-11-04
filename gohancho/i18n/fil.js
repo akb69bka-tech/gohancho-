@@ -1688,6 +1688,7 @@ GOHAN_I18N('fil', {
     "この国には「かんたん」な料理が少ないので、条件をゆるめています（{list}）": "Kaunti ang \"simpleng\" putahe sa bansang ito, kaya niluwagan ang kondisyon ({list})",
     "この国にはじっくり作る主菜が少ないので、条件をゆるめています（{list}）": "Kaunti ang matagal lutuing ulam sa bansang ito, kaya niluwagan ang kondisyon ({list})",
     "{slot}は条件なし": "{slot}: walang kondisyon",
+    "{slot}は{min}分以内の料理がないので、なし": "{slot}: wala (walang luto sa loob ng {min} min)",
     "{slot}は手早い順の{n}品だけ": "{slot}: ang {n} pinakamabilis lang",
     "{slot}は{min}分以内・手順{st}つまで・材料{ing}つまで": "{slot}: hanggang {min} minuto, {st} hakbang at {ing} sangkap",
     "{slot}は{min}分以内・手順{st}つまで（材料の数は問わない）": "{slot}: hanggang {min} minuto at {st} hakbang (kahit ilang sangkap)",
