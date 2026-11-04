@@ -81,11 +81,12 @@ for (const cc of ['TH', 'CN', 'KR', 'VN', 'JP', 'TW', 'PH']){
     const {p, ctx} = await open({country: 'FR', uiLang: 'fr', allergens: ['egg']}, {}, 's6-fr', 'fr-FR');
     await p.waitForTimeout(1500);
     const r = await p.evaluate(() => { const by = nm => RECIPES.find(x => x.name === nm); const h = by('Hachis parmentier'), t = by('Tomates farcies'), bb = by('Bœuf bourguignon');
-        const beefEgg = RECIPES.flatMap(r => (algRecipeMap(r).egg || []).filter(x => /b[oœ]uf/i.test(x.name)).map(x => r.name + ':' + x.name));
+        // 第24回 R101: 「Chair à saucisse ou bœuf haché」はソーセージの肉（加工肉）なので卵の🔍（袋の表示を確認）が付く。bœuf だけで卵に当たらないことを見る
+        const beefEgg = RECIPES.flatMap(r => (algRecipeMap(r).egg || []).filter(x => /b[oœ]uf/i.test(x.name) && !/saucisse/i.test(x.name)).map(x => r.name + ':' + x.name));
         return {LANG, h: h ? {egg: algRecipeMap(h).egg || null, conflict: allergyConflict(h), avoided: isAvoided(h)} : null, t: t ? {egg: (algRecipeMap(t).egg || []).map(x => x.name), conflict: allergyConflict(t)} : null, bb: bb ? allergyConflict(bb) : null, beefEgg,
             unit: ['Bœuf haché', 'Œuf', '2 œufs', "blanc d'œuf", 'oeuf'].map(n => n + '=' + algKind('egg', Object.assign(parseIng(n), {en: n, key: n.toLowerCase()})))}; });
     ok(r.h && !r.h.egg && !r.h.conflict && !r.h.avoided && r.bb === false && !r.beefEgg.length, 'S6 仏語の bœuf（牛肉）の料理が卵に当たらない（Hachis parmentier・Bœuf bourguignon・卵の行に牛肉の名前 0件）: ' + JSON.stringify({h: r.h, bb: r.bb, beefEgg: r.beefEgg}));
-    ok(r.t && r.t.conflict && r.t.egg.some(n => /^Œuf/i.test(n)) && !r.t.egg.some(n => /b[oœ]uf/i.test(n)) && /Œuf=1/.test(r.unit.join()) && /2 œufs=1/.test(r.unit.join()) && /blanc d'œuf=1/.test(r.unit.join()) && /Bœuf haché=(0|null|undefined|false)/.test(r.unit.join()), 'S6 Œuf・œufs・blanc d\'œuf は卵に当たる（Tomates farcies は卵の料理のまま）: ' + JSON.stringify({t: r.t, unit: r.unit}));
+    ok(r.t && r.t.conflict && r.t.egg.some(n => /^Œuf/i.test(n)) && !r.t.egg.some(n => /b[oœ]uf/i.test(n) && !/saucisse/i.test(n)) && /Œuf=1/.test(r.unit.join()) && /2 œufs=1/.test(r.unit.join()) && /blanc d'œuf=1/.test(r.unit.join()) && /Bœuf haché=(0|null|undefined|false)/.test(r.unit.join()), 'S6 Œuf・œufs・blanc d\'œuf は卵に当たる（Tomates farcies は卵の料理のまま）: ' + JSON.stringify({t: r.t, unit: r.unit}));
     await ctx.close();
 }
 

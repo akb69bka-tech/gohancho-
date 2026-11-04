@@ -162,7 +162,7 @@ const LOOSE = {
 LOOSE.shellfish = new RegExp(LOOSE.mollusc.source + '|홍합|바지락|가리비|蚵|蠔|干貝|贻贝|淡菜|굴소스', 'i');
 // 料理1品の材料・調味料の言葉（材料のキー・英語名・名前・画面の名前＋調味料の欄）
 // 判定の表が「そのアレルゲンではない」と決めている言い方（ココナッツミルク・バナナの葉・料理酒・からし菜・りんご酢など）は、明らかな言葉の検査から外す
-const STRIP = /coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|rice milk|peanut butter|banana leaf|banana leaves|バナナの葉|rice wine|shaoxing|紹興|mustard (?:greens?|leaf|leaves)|からし菜|高菜|apple cider vinegar|cider vinegar|細長いもの|oyster mushroom|king oyster|oyster crackers|ひらたけ|ビーフン|water chestnut|cooking wine|chinese (?:rice )?wine|huangjiu|mijiu|orange.?fleshed|orange sweet potato|オレンジ色|eggs? \(chicken|鶏卵/gi;
+const STRIP = /butterhead|バターヘッド|butternut|バターナッツ|coconut (?:milk|cream)|soy ?milk|almond milk|oat milk|rice milk|peanut butter|banana leaf|banana leaves|バナナの葉|rice wine|shaoxing|紹興|mustard (?:greens?|leaf|leaves)|からし菜|高菜|apple cider vinegar|cider vinegar|細長いもの|oyster mushroom|king oyster|oyster crackers|ひらたけ|ビーフン|water chestnut|cooking wine|chinese (?:rice )?wine|huangjiu|mijiu|orange.?fleshed|orange sweet potato|オレンジ色|eggs? \(chicken|鶏卵/gi;
 const TXT = `(r => [...(r.items || []).map(i => [i.key, i.en, i.name, i.label].join(' | ')), String(r.seasBase != null ? r.seasBase : r.seas || ''), r.name, r.nameEn || ''].join(' || '))`;
 {
     const { ctx, p } = await open('JP');
