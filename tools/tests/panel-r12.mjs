@@ -54,7 +54,7 @@ const noRestore = async (p, tag, before, prevIds) => {
     ok(!!hit, 'S25 えびの料理がある献立が見つかる: ' + JSON.stringify(hit));
     if (hit){
         const prevIds = await ids(p);
-        ok(await swapKeep(p), 'S25 本人 入れ替えると「元に戻す」が出る');
+        ok(!(await swapKeep(p)), 'S25 本人 入れ替えても「元に戻す」は出ない（オーナー指示 11/04）');
         await openSettings(p);
         const bt = p.locator('button[data-act=alg-toggle][data-v="shrimp"]:visible').first(); await bt.scrollIntoViewIfNeeded(); await bt.click(); await p.waitForTimeout(250);
         ok(await undoShown(p) === 0, 'S25 本人 アレルギーを足したその場で「元に戻す」が消える');
@@ -70,7 +70,7 @@ const noRestore = async (p, tag, before, prevIds) => {
     ok(!!hit, 'S25 魚の料理がある献立が見つかる: ' + JSON.stringify(hit));
     if (hit){
         const prevIds = await ids(p);
-        ok(await swapKeep(p), 'S25 家族 入れ替えると「元に戻す」が出る');
+        ok(!(await swapKeep(p)), 'S25 家族 入れ替えても「元に戻す」は出ない（オーナー指示 11/04）');
         await openSettings(p);
         await p.click('[data-act=fam-add]'); await p.waitForTimeout(300);
         await p.evaluate(() => document.querySelectorAll('[data-fm] details').forEach(d => d.open = true));
@@ -84,7 +84,7 @@ const noRestore = async (p, tag, before, prevIds) => {
 for (const kind of ['avoid', 'mild']){
     const {p, ctx} = await open({}, 's25-' + kind);
     const prevIds = await ids(p);
-    ok(await swapKeep(p), `S25 ${kind} 入れ替えると「元に戻す」が出る`);
+    ok(!(await swapKeep(p)), `S25 ${kind} 入れ替えても「元に戻す」は出ない（オーナー指示 11/04）`);
     const add = await p.evaluate(([kind, prevIds]) => {
         if (kind === 'avoid'){
             const r = byId(prevIds[0]), i = r.items.find(x => !PANTRY.has(x.key)); const v = canonOf(i.label || i.name) || i.label || i.name;
@@ -108,7 +108,7 @@ for (const kind of ['avoid', 'mild']){
     ok(!!put, 'S25 えびの料理を仮に置ける: ' + put);
     if (put){
         const prevIds = await ids(p);
-        ok(await swapKeep(p), 'S25 守り 入れ替えると「元に戻す」が出る');
+        ok(!(await swapKeep(p)), 'S25 守り 入れ替えても「元に戻す」は出ない（オーナー指示 11/04）');
         const r = await p.evaluate(() => { const a = session.menu.items.map(x => x.r && x.r.id); toast.undo && toast.undo(); return {a, b: session.menu.items.map(x => x.r && x.r.id), hits: session.menu.items.filter(x => x.r && allergyConflict(x.r)).length}; });
         ok(JSON.stringify(r.a) === JSON.stringify(r.b) && JSON.stringify(r.b) !== JSON.stringify(prevIds) && !r.hits, 'S25 守り アレルゲンに当たる料理がある献立には戻さない: ' + JSON.stringify([prevIds, r]));
     }
@@ -119,9 +119,7 @@ for (const kind of ['avoid', 'mild']){
     const {p, ctx} = await open({allergens: ['milk']}, 's25-keep');
     const a = await ids(p);
     await p.click(BTN); await p.waitForTimeout(300);
-    ok(await undoShown(p) === 1, 'S25 設定を変えていないときは「元に戻す」が出ている');
-    await p.click('#toast-root [data-act=toast-undo]'); await p.waitForTimeout(300);
-    ok(JSON.stringify(await ids(p)) === JSON.stringify(a), 'S25 設定を変えていないときは、入れ替える前の献立にそっくり戻る');
+    ok(await undoShown(p) === 0 && JSON.stringify(await ids(p)) !== JSON.stringify(a), 'S25 まるごと入れ替えのあとは「元に戻す」を出さず、献立は入れ替わっている（オーナー指示 11/04）');
     const rr = await p.evaluate(() => {
         if (toast.hide) toast.hide();
         window.__swapDirect = true; let i = 1, prev, u, now, others0, add = [];

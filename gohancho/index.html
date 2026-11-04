@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v91';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v92';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -12670,21 +12670,12 @@ document.addEventListener('click', e => {
         case 'new-menu': {
             const fromShuffle = el.classList.contains('shuffle');
             guardDecided(() => {
-                // D8: まるごと入れ替えのあとに「元に戻す」を出す。戻すと、入れ替える前の献立（料理・ひとひねり案・「新」の札）がそのまま戻る
-                // （押した人が「元に戻す」を押したときだけ戻す。ほかの料理を勝手に変えない。決めた献立から作り直したときは decidedUndo の知らせを出す）
-                const dec = menuIsDecided(), prev = {menu: session.menu, twist: session.twist, note: session.avoidNote, rej: new Set(session.rejected), tp: session.trayPrev, tc: session.trayCur};
+                // オーナー指示（11/04）: まるごと入れ替えのあとに「入れ替えました／元に戻す」のお知らせを出さない（料理の絵の上に出て、絵が見えなかった）。
+                // 決めた献立から入れ替えたときは、確かめのシートで「作り直す」を押したあとに decidedUndo の知らせを出す（決めた献立を守るため。redo-yes）
                 menuIds().forEach(id => session.rejected.add(id));
                 // おまかせの品数は変えない（countSalt を進めない）。入れ替えるのは料理だけ。品数が変わるのは、気分・品数を選び直したときだけ（第5回 R12: おまかせの日に2〜4品を行き来した）
                 newMenu(); render();
                 { const b = document.querySelector('.shuffle'); if (b){ b.classList.add('spin'); if (fromShuffle && kbNav()) b.focus({preventScroll:true}); } }
-                const nm = session.menu;
-                // アレルギー・家族・苦手などの設定を変えたあとは戻さない（menuUndo。S25: 戻すと、外したはずのアレルゲンの料理が戻っていた）
-                if (!dec && prev.menu && nm !== prev.menu) toastShort(t('入れ替えました'))(t('献立をまるごと入れ替えました'), false, menuUndo(() => prev.menu.items.map(x => x.r), () => {
-                    if (session.menu !== nm || menuIsDecided()) return;   // そのあと別の操作で献立が変わった・この案に決めたときは戻さない
-                    const rej = new Set(prev.rej); menuIds().forEach(id => rej.add(id));   // 戻したあとにもう一度押したら、今の案とも別の案にする
-                    session.menu = prev.menu; session.twist = prev.twist; session.avoidNote = prev.note; session.rejected = rej; session.trayPrev = prev.tp; session.trayCur = prev.tc;
-                    keepDraft(); render();
-                }));
             });
             break;
         }
