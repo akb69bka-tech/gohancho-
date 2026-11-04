@@ -1833,6 +1833,9 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .greet-row.solo:has(.sale-greet){flex-wrap:wrap;row-gap:4px}.greet-row.solo .sale-greet{width:auto;flex:1 1 11rem;min-width:0;max-width:100%}.sale-greet{box-sizing:border-box;max-width:100%}
 /* 第25回 R107: 特売の1行が「食べたいもの」の下の行に回り、そのぶんお膳の器が小さくなるとき（360/390・文字大きい/もっと大きい）は、「食べたいもの」を印（封筒）だけにして同じ行に入れる（名前は読み上げに残す。残りが 11rem 未満なら今までどおり下の行。fitTray が決める） */
 body.on-today.greet-sale1 .greet-row.solo .req-btn.lite{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}body.on-today.greet-sale1 .greet-row.solo .req-btn.lite .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* 第25回 R109: 家族のいる人も同じ。特売の1行（あいさつの代わり。R97）が家族リクエストの下の行にあり、お膳が入らないときは、まず同じ行に並べ（greet-sale2）、それでも 11rem 入らなければ家族リクエストを印と数だけに（greet-sale3。名前と件数は読み上げに残す）。fitTray が決める */
+body.on-today.greet-sale2 .greet-row:not(.solo):has(.sale-greet){flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:4px}body.on-today.greet-sale2 .greet-row:not(.solo) .req-btn{flex:0 1 auto;min-width:0;align-self:center}body.on-today.greet-sale2 .greet-row:not(.solo) .sale-greet{width:auto;flex:1 1 11rem;min-width:0}
+body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq2{display:none}
 body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
 .sale-tag.sale-kin{font-weight:600;color:var(--muted)}
 </style>
@@ -4950,7 +4953,7 @@ function fitTray(){
     // 献立が変わったときは、再読み込みしたときと同じ形になる。同じ献立で1品かえただけのときだけ、前の形が入るならそれを使う（下の last）
     const viewEl = document.getElementById('view'), rowsEl = [...tr.querySelectorAll('.tg-row')];
     const sy0 = scrollY, tt0 = tr.getBoundingClientRect().top + sy0;   // 第20回 R66: スクロールした位置で測り直すとき（字の読みこみ後など）、測るために形を外す・戻すあいだにブラウザのスクロールの合わせ直し（scroll anchoring）で画面だけが動くことがある。終わりに、お膳が画面の中で同じ高さになるよう戻す
-    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0', 'greet-sale1'); reqUp(false);   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
+    viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0', 'greet-sale1', 'greet-sale2', 'greet-sale3'); reqUp(false);   // 見出しの詰め・帯の置き方を外した形で、お膳の上端を測る（同じ画面かどうかの目印）
     // 見出し「今日の献立」は1行に（言語で長さが違っても見出しの高さを同じにして、お膳の大きさが言語で変わらないように）。入らない言葉は 18px まで小さくする。それでも入らなければ2行
     { const h2 = document.querySelector('#view .today-head.p2-head h2'); if (h2){ h2.style.removeProperty('font-size'); let fs = parseFloat(getComputedStyle(h2).fontSize);
         const one = () => { const lh = parseFloat(getComputedStyle(h2).lineHeight) || fs * 1.3; return h2.getBoundingClientRect().height < lh * 1.5 && h2.scrollWidth <= h2.clientWidth + 1; };
@@ -4993,8 +4996,10 @@ function fitTray(){
     toTight(vs0); if (tight) fixText();
     let d = over();
     // 第25回 R107: 特売の1行が「食べたいもの」の下の行に回っていて、お膳が入らない（器が小さくなる）ときは、「食べたいもの」を印だけにして特売の1行を同じ行へ（1行ぶん＝約48px をお膳に返す）。同じ行に 11rem 入らない幅（195px など）では元のまま
-    if (d > 0){ const gr = document.querySelector('#greet .greet-row.solo'), sg = gr && gr.querySelector('.sale-greet'), lt = gr && gr.querySelector('.req-btn.lite'), below = () => sg.getBoundingClientRect().top >= lt.getBoundingClientRect().bottom - 1;
-        if (sg && lt && below()){ document.body.classList.add('greet-sale1'); if (below()) document.body.classList.remove('greet-sale1'); else { avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); } } }
+    // 第25回 R109: 家族のいる人（家族リクエストの入口の下に特売の1行）も、同じ行に並べる → 入らなければ入口を印と数だけにして並べる
+    if (d > 0){ const gr = document.querySelector('#greet .greet-row'), sg = gr && gr.querySelector('.sale-greet'), lt = gr && gr.querySelector('.req-btn'), below = () => sg.getBoundingClientRect().top >= lt.getBoundingClientRect().bottom - 1;
+        if (sg && lt && below()) for (const cs of gr.classList.contains('solo') ? [['greet-sale1']] : [['greet-sale2'], ['greet-sale2', 'greet-sale3']]){
+            document.body.classList.add(...cs); if (!below()){ avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); break; } document.body.classList.remove(...cs); } }
     // 器は 60px まで小さくしてよい（基準書 2-5）。それでも入らないときは名前の字を小さくして詰める（「かえる」は名前の下の行のまま。器には重ねない。点検3）
     if (d > 0){ setVs(Math.max(tight ? 60 : CMIN, Math.floor(vs - d / rows))); d = over(); }
     // 「かえる」を角に置いた形（器 CMIN 以上）で入らないときは、名前の下に戻す前に、見出しを詰める形（tight2）で器を角の形のまま入れられるか試す（絵を大きく）
