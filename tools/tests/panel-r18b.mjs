@@ -299,7 +299,7 @@ if (want('R18-14')) {
     ok(n >= 18 && !bad.length, `R18-14 R60 最初の「準備ができました…」 ${n} 回（360/390/430 × 文字3段階 × 家族）: 送った位置で見える。上まで戻しても・いちばん下でも料理名・↻・札・決定にかからない: ` + bad.slice(0, 3).join(' / '));
 }
 
-// R18-15（R62）条件のボタンの字: 品数おまかせのときは「2人分・おまかせ」（3つ目を出さない）。17言語 × 390 × ふつう/文字大。日・英・韓・中・独・仏・西・伊は全部見える。ほかも見える字が 8 割以上。気分が「ラクの日」なら「2人分・ラクの日・おまかせ」。品数を決めているときは「2人分・おまかせ・4品」のまま
+// R18-15（R62）条件のボタンの字: 品数おまかせのときは「2人分・おまかせ」（3つ目を出さない）。17言語 × 390 × ふつう/文字大。日・英・韓・中・独・仏・西・伊は全部見える。ほかも見える字が 8 割以上。気分が「ラクの日」なら「2人分・ラクの日」、品数を決めているときは「2人分・4品」（第21回 R77 で、おまかせの物は書かないことにした）
 if (want('R18-15')) {
     let n = 0; const bad = [];
     const FULL = ['ja', 'en', 'ko', 'zh-Hans', 'de', 'fr', 'es', 'it'];
@@ -313,14 +313,14 @@ if (want('R18-15')) {
                 return {text: sv.textContent, vis, all, sep: t('・'), auto: t('おまかせ'), dc: t('品数おまかせ'), easy: t('ラクの日')}; }, [ts, mood]);
             n++;
             if (r.err){ bad.push(`${lang} 文字${ts} ${mood}: なし`); continue; }
-            const parts = r.text.split(r.sep).map(x => x.trim()), wantParts = mood === 'all' ? 2 : 3;
-            const okText = parts.length === wantParts && !r.text.includes(r.dc) && (mood === 'all' ? parts[1] === r.auto : parts[1] === r.easy && parts[2] === r.auto);
+            const parts = r.text.split(r.sep).map(x => x.trim()), wantParts = 2;   // 第21回 R77: 気分を選んだときは「2人分・ラクの日」（品数おまかせの「おまかせ」は書かない）
+            const okText = parts.length === wantParts && !r.text.includes(r.dc) && (mood === 'all' ? parts[1] === r.auto : parts[1] === r.easy);
             const okVis = FULL.includes(lang) ? r.vis >= r.all : r.vis >= r.all * .7;
             if (!okText || (mood === 'all' && !okVis)) bad.push(`${lang} 文字${ts} ${mood}: ` + JSON.stringify(r));
         }
         await ctx.close();
     }
-    ok(n >= 68 && !bad.length, `R18-15 R62 条件のボタンの字 ${n} 画面（17言語 × 390 × ふつう/文字大 × 気分2通り）: 「2人分・おまかせ」の2つ（ラクの日なら3つ）。主な8言語は全部見える・ほかも 7 割以上: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 68 && !bad.length, `R18-15 R62 条件のボタンの字 ${n} 画面（17言語 × 390 × ふつう/文字大 × 気分2通り）: 「2人分・おまかせ」「2人分・ラクの日」の2つ。主な8言語は全部見える・ほかも 7 割以上: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R18-16（R54 の残り）波・越 × 360/375 × 文字大/もっと大きい: 見出しの字が条件のボタンの箱に隠れない（1行に入らない見出しは 17px の2行。見出しの行は 48px 以下）

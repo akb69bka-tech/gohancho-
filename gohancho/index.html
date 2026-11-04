@@ -772,6 +772,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-staples summary{min-height:var(--tap);display:flex;align-items:center}
 .ob-actions{display:flex;gap:var(--s8);margin-top:var(--s8)}
 .ob-actions .btn{min-height:var(--tap-lg);font-size:var(--fs16)}
+@media (max-width:300px){.ob-actions:not(.cc-foot){flex-wrap:wrap;column-gap:var(--s4)}.ob-actions:not(.cc-foot) .btn{--btn-px:var(--s8);font-size:var(--fs14)}.ob-count{font-size:var(--fs12);column-gap:var(--s4);flex-wrap:wrap}.ob-count > span{white-space:nowrap}.ob-count .ob-skip{padding-inline:var(--s8);white-space:nowrap;margin-inline-start:auto}}   /* 第21回 R79: 幅195px のはじめての設定で「ステップ 2 / 3」「もどる」「次へ」が1文字ずつ縦に割れ、高くなった下の帯が人数のボタンを覆っていた。狭い画面ではボタンの左右の余白を詰めて1行に（入らない言語は2段に折り返す） */
 .sheet-onboard .ob-actions,.sheet-country .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:var(--s12) 0 calc(var(--s16) + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .country[aria-busy="true"],.ob-actions [aria-busy="true"]{opacity:.6;cursor:progress}
 /* 下から出る画面の上の「閉じる」（スクロールしても上に見えている。44px 以上） */
@@ -1066,7 +1067,7 @@ body.on-today .toast{bottom:calc(var(--nav-h,84px) + 80px)}
 .p2-sv.one{flex-direction:row;align-items:center;gap:6px;min-height:44px;max-width:64%;padding:0 var(--s12);font-weight:600;font-size:var(--fs12)}
 .p2-sv.one svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
 .p2-sv.one .sv1{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.p2-sv.one .sv1.sv1-2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.25;text-align:end;overflow-wrap:anywhere}.p2-sv.one .sv1-2 .nw{white-space:nowrap}   /* 「2人分（少なめ）」のように人数の文が長いときは2行まで（ボタンの高さ44pxの中。品数が切れて見えなくならないように。R11） */
+.p2-sv.one .sv1{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2;text-align:end;overflow-wrap:anywhere}.p2-sv.one .sv1 .nw{white-space:nowrap}html[lang="ko"] .p2-sv.one .sv1{word-break:keep-all}.p2-sv.one.sv-nosv .sv-s{display:none}.p2-sv.one.sv-tight .sv1w .sv1{font-size:.9em;letter-spacing:-.01em;line-height:1.05}.p2-sv.one.sv-1l .sv1{-webkit-line-clamp:1}   /* 第21回 R77: 条件のボタンの字は2行まで（「2人分・」と「10分以内・3品」）。入らなければ svFit が人数を外す → 少し詰める → 1行（ゆるめた知らせの行があって高さが足りないとき）の順 */
 .p2-sv.one .sv-chev{flex:none;font-size:.7em;color:var(--muted)}
 .p2-sv.one .sv1w{display:flex;flex-direction:column;align-items:flex-end;min-width:0;max-width:100%}.p2-sv.one .sv1w .sv1{line-height:1.2;max-width:100%}   /* 第18回 R54: 文の箱（sv1w）は縦の flex なので、中の文に幅の上限を付けないと … で切れず、見出し・左の印にはみ出していた（v88 の回帰）。300px 以上は1行＋…、300px 未満は下の2行の形 */.p2-sv.one .sv-relax{display:block;max-width:100%;font-weight:400;font-size:var(--fs12);line-height:1.15;color:var(--accent,#b5541c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html[data-ts="2"] .p2-sv.one:has(.sv-relax){padding:0 var(--s8)}html[data-ts="2"] .p2-sv.one .sv-relax{font-size:calc(var(--fs12) * .9)}   /* 文字もっと大きい: 2行がボタンの高さ 44px に入り、短い1行が切れないように、少しだけ詰める */   /* ゆるめた知らせの短い1行は、モードの名前の下（お膳の下では決定の帯とタブの裏に隠れた。第17回 R50）。ボタンの高さ 44px の中に入れ、お膳は押し下げない */
@@ -1687,18 +1688,19 @@ html[data-ts="2"] .stages ol{grid-template-columns:repeat(2,minmax(0,1fr))}   /*
 .buy-note{margin:var(--s8) 0 var(--s4);font-size:var(--fs12);color:var(--muted)}
 .buy-grp{font-size:var(--fs12);font-weight:700;color:var(--muted);padding:var(--s12) 0 var(--s4);border-top:1px solid var(--line-soft)}
 .buy-grp:first-of-type{border-top:0}
-.buy-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;align-items:center;gap:var(--s4) var(--s8);padding:var(--s8) 0;border-top:1px solid var(--line-soft);min-height:var(--tap)}
+.buy-row{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:var(--s4) var(--s8);padding:var(--s8) 0;border-top:1px solid var(--line-soft);min-height:var(--tap)}
 .buy-grp + .buy-row,.buy-list > .buy-row:first-child,.buy-note + .buy-row{border-top:0}
 .buy-row .br-chk input{width:26px;height:26px;margin:0;accent-color:var(--leaf)}
-.buy-row .br-nm{min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}
+.buy-row .br-main{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s8);min-width:0}   /* 第21回 R75: 品名・量・［買う］［家にある］は1つの箱の中で折り返す（量の字が長い行で品名の幅が 0 になり1文字ずつ縦に割れていた。独語のボタンが画面の右に出ていた）。品名の幅は品名の字だけで決め（6字ぶん以上。下の小さい字〔料理名・使う量〕は品名の幅の中で折り返す）、品名・量・ボタンが1行に入らなければ、ボタン（と量）を次の行へ */
+.buy-row .br-nm{flex:1 1 auto;min-width:min(6em,100%);display:flex;flex-direction:column;overflow-wrap:anywhere}.buy-row .br-nm small{contain:inline-size}
 .buy-row .br-nm b{font-size:var(--fs16);font-weight:700}
 .buy-row .br-nm small{font-size:var(--fs12);color:var(--muted);line-height:1.4}
 .buy-row .br-nm .br-alt{color:var(--ink)}
-.buy-row .br-q{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.buy-row .br-q{flex:0 1 auto;max-width:100%;font-weight:700;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .buy-row .br-ok{color:var(--leaf);margin-inline-end:var(--s4)}
 .buy-row.got .br-nm b{color:var(--ink)}
 .buy-row .br-after{grid-column:2 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s8)}
-.bt-grp{display:inline-flex;gap:var(--s4)}
+.bt-grp{display:inline-flex;flex-wrap:wrap;gap:var(--s4);max-width:100%}.buy-row .bt-grp{flex:0 0 auto;margin-inline-start:auto}
 .bt{min-height:44px;min-width:56px;padding:0 var(--s8);border-radius:var(--r-pill);font:inherit;font-size:var(--fs14);font-weight:700;cursor:pointer;background:transparent;border:1.5px solid transparent;color:var(--muted)}
 .bt.buy[aria-pressed="true"]{background:var(--surface);border-color:var(--ink);color:var(--ink)}
 .bt.have[aria-pressed="true"]{background:var(--leaf-soft);border-color:var(--leaf-soft);color:var(--ink)}
@@ -1713,11 +1715,11 @@ html[data-ts="2"] .stages ol{grid-template-columns:repeat(2,minmax(0,1fr))}   /*
 .share-lv{margin-bottom:var(--s4)}
 .stage-shop.big .buy-row .br-nm b{font-size:var(--fs20)}
 .stage-shop.big .buy-row .br-q{font-size:var(--fs16)}
-.stage-shop.big .buy-row{grid-template-columns:36px minmax(0,1fr) auto;padding:var(--s12) 0}
+.stage-shop.big .buy-row{grid-template-columns:36px minmax(0,1fr);padding:var(--s12) 0}
 .stage-shop.big .buy-row .br-chk input{width:34px;height:34px}
-.stage-shop.big .buy-row .bt-grp{grid-column:2 / -1;justify-self:start}
-@media (max-width:360px){.buy-row{grid-template-columns:28px minmax(0,1fr) auto}.buy-row .bt-grp{grid-column:2 / -1;justify-self:start}}
-html[data-ts="1"] .buy-row,html[data-ts="2"] .buy-row{grid-template-columns:28px minmax(0,1fr) auto}html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{grid-column:2 / -1;justify-self:start}
+.stage-shop.big .buy-row .bt-grp{flex-basis:100%;margin-inline-start:0}
+@media (max-width:360px){.buy-row .bt-grp{flex-basis:100%;margin-inline-start:0}}
+html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis:100%;margin-inline-start:0}
 /* 元に戻すつきのお知らせ: 文と［元に戻す］を1行に。ボタンは暗い地の上で読める枠ボタン */
 .toast:has([data-act="toast-undo"]){display:flex;align-items:center;gap:var(--s12);text-align:start;border-radius:var(--r-lg)}
 .toast [data-act="toast-undo"]{margin:0;flex:none;background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 60%,transparent);font-weight:700}
@@ -4749,6 +4751,7 @@ function reqUp(on){
 }
 function fitTray(){
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
+    svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
     // 第12回 R34: 詰め方は毎回、何も詰めていない形から決め直す（前に決めた大きさ・詰め方を引きつがない）。
     // 前は同じ画面の大きさ・同じ並びなら前の詰め方をそのまま使っていたため、一度入らない献立（帯をお膳の下に置く形）になると、入る献立に入れ替えても戻らなかった（再読み込みで戻る）。
     // 献立が変わったときは、再読み込みしたときと同じ形になる。同じ献立で1品かえただけのときだけ、前の形が入るならそれを使う（下の last）
@@ -4869,6 +4872,7 @@ function fitTray(){
     }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    svFit();   // 詰めた形（195px の見出しを畳む形など）でボタンの幅が変わったときの測り直し
     fixSwapWord(tr);
     if (sy0 > 0){ const want = Math.round(sy0 + (tr.getBoundingClientRect().top + scrollY - tt0)), maxY = document.documentElement.scrollHeight - innerHeight; if (Math.abs(scrollY - want) > .5 && want >= 0 && want <= maxY + .5) window.scrollTo(0, want); }   // お膳の画面の中の高さを、測る前と同じに（お膳より上の中身が縮んだ分は動かす）
     toastAlign();   // ページに留めたお知らせ（第19回 R59）を、詰めたあとのお膳に合わせる（同期）
@@ -5021,9 +5025,9 @@ function buyRowHtml(e, st, plain){
     const sub = [joinNames(e.dishes), e.use ? t('{qty}使う', {qty: e.use}) : ''].filter(Boolean).join(t('・'));
     return `<div class="buy-row${got ? ' got' : ''}${e.buying ? '' : ' is-have'}">
         ${e.buying && !plain ? `<label class="br-chk"><input type="checkbox" data-act="sb-got" data-k="${esc(e.key)}" ${got ? 'checked' : ''} aria-label="${esc(t('{name}を買った', {name: e.label}))}"></label>` : '<span class="br-chk" aria-hidden="true"></span>'}
-        <span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
-        ${e.buyQty ? `<span class="br-q"><bdi>${esc(e.buyQty)}</bdi></span>` : '<span></span>'}
-        ${got ? '' : buyToggleHtml(e)}
+        <span class="br-main"><span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
+        ${e.buyQty ? `<span class="br-q"><bdi>${esc(e.buyQty)}</bdi></span>` : ''}
+        ${got ? '' : buyToggleHtml(e)}</span>
         ${got ? `<span class="br-after">${fr ? `<span class="small muted">${esc(e.left ? t('冷蔵庫に入れました（使いかけ {qty}）', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}) : t('冷蔵庫に入れました'))}</span>`
             : `<button type="button" class="btn sm" data-act="sb-fridge" data-k="${esc(e.key)}">${esc(t('冷蔵庫に入れる'))}</button>${e.left ? `<span class="small muted">${esc(t('残り {qty} は「使いかけ」として入れます', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}))}</span>` : ''}`}</span>` : ''}
     </div>`;
@@ -6900,6 +6904,23 @@ function svQual(){
     if (sv === h) return null;
     const all = v => !me && ms.length === h && ms.every(m => m.portion === v);
     return all(0.5) ? 'less' : all(1.5) ? 'more' : 'mix';
+}
+// 条件のボタンの字（第21回 R77・R62 の残り）: 「人数・気分・品数」。おまかせ（決めていない物）は書かない。気分も品数もおまかせなら「2人分・おまかせ」。
+// 1行に入らなければ2行（人数の行と、気分・品数の行）。それでも入らないときは svFit が人数を外す（人数は条件のシートの一番上にある）→ 少し詰める、の順で、気分と品数は必ず読めるようにする
+function svChipText(m){
+    const mood = session.mood && session.mood !== 'all' ? (MOODS.find(x => x.k === session.mood) || MOODS[0]).label : '';
+    const rest = [mood, S.settings.dishCount === 'auto' ? '' : t('{n}品', {n: menuSeats(m)})].filter(Boolean);
+    if (!rest.length) rest.push(t('おまかせ'));
+    const cjk = /^(ja|zh)/.test(LANG), part = x => cjk ? `<span class="nw">${esc(x)}</span>` : esc(x);   // 日本語・中国語は語の途中で折らない（区切りの「・」のあとで折る）
+    return `<span class="sv1"><span class="sv-s">${part(svText() + t('・'))}</span>${rest.map((x, i) => part(x + (i < rest.length - 1 ? t('・') : ''))).join('')}</span>`;
+}
+// 条件のボタンの字が箱（2行・ボタンの高さ 48px まで）に入らないときの詰め方。描いたあとに測る（fitTray の最初と最後）
+function svFit(){
+    const ch = document.querySelector('#view .p2-sv.one'); if (!ch) return;
+    const sv = ch.querySelector('.sv1'); if (!sv) return;
+    ch.classList.remove('sv-nosv', 'sv-tight', 'sv-1l');
+    const ok = () => sv.scrollHeight <= sv.clientHeight + 1 && sv.scrollWidth <= sv.clientWidth && ch.getBoundingClientRect().height <= 48.5;
+    for (const c of ['sv-nosv', 'sv-tight', 'sv-1l']){ if (ok()) return; ch.classList.add(c); }
 }
 // 「{n}人分」の代わりに出す文（量の人数と食べる人の数が同じなら、今までどおり「{n}人分」）
 function svText(){
@@ -10880,7 +10901,7 @@ function viewToday(){
     return `
     <section class="sec">
         <div class="today-head p2-head"><h2>${esc(t('今日の献立'))}${decided ? `<span class="p2-ok" role="status">✓ ${esc(t('決めた'))}</span>` : ''}</h2>
-            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w"><span class="sv1${svQual() ? ' sv1-2' : ''}">${svQual() && /^(ja|zh)/.test(LANG) ? `<span class="nw">${esc(svText() + t('・'))}</span>` : esc(svText() + t('・'))}${esc([(MOODS.find(x => x.k === session.mood) || MOODS[0]).label, S.settings.dishCount === 'auto' ? (session.mood === 'all' || !session.mood ? '' : t('おまかせ')) : t('{n}品', {n: menuSeats(m)})].filter(Boolean).join(t('・')))}</span>${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
+            <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w">${svChipText(m)}${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
         ${(aw => aw ? `<p class="alg-top" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${/* 第18回 R57: 決定の帯をお膳の下に置く画面（bar-static）では、⚠ の1行はお膳のすぐ上（最初の画面に入る）。ほかの画面では帯の中の .alg-bar（CSS で切りかえ） */''}
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
             <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
