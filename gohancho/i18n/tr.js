@@ -1338,7 +1338,7 @@ GOHAN_I18N('tr', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Bir yemek başka bir malzemeyle olabiliyorsa değiştiririz (ör. domuz yerine tavuk). Değiştirilemeyen yemekler önerilmez.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Pişme süresi balığa göre değişir. Eti içine kadar beyazlayana dek pişirin.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Tavuğu iyice pişirin; süreye 1-2 dakika ekleyin.",
-    "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Ülkeyi değiştirseniz de görüntüleme dili aynı kalır. Diğer ülkelerin yemekleri, çevirisi varsa bu dilde gösterilir (yoksa İngilizce).",
+    "国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Başka bir ülke seçtiğinizde ekran dili de o ülkenin diline geçer (onay ekranında şimdiki dilinizi koruyabilirsiniz). Diğer ülkelerin yemekleri, çevirisi varsa bu dilde gösterilir (yoksa İngilizce).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Ülkeleri karıştır (ör. Çin ana yemeği, Japon yan yemekleri, Kore çorbası)",
     "組み合わせをやめる": "Karıştırmayı bırak",
     "{date}の記録に入っています": "{date} için zaten kayıtlı",
@@ -1741,5 +1741,6 @@ GOHAN_I18N('tr', {
     "押して答える → {url}": "Yanıtlamak için dokun → {url}",
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Birkaç fikir seçip gönder. Ailen uygulama olmadan, tek dokunuşla yanıt verebilir. Yanıt bağlantısını açınca Aile istekleri'ne eklenir.",
     "今日の献立の候補から": "Bugünkü menü fikirlerinden",
-    "{n}品まで選べます": "En fazla {n} yemek seçebilirsin"
+    "{n}品まで選べます": "En fazla {n} yemek seçebilirsin",
+    "言葉は今の{lang}のままにする": "Ekran {lang} kalsın"
 });

@@ -409,6 +409,7 @@ small{font-size:max(.75rem,.83em)}   /* <small> の既定は親の83%。12px を
 .dc-sub{font-size:var(--fs12,.75rem);color:var(--muted);overflow-wrap:anywhere}
 .dc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px var(--s8,8px);font-size:var(--fs12,.75rem);color:var(--muted);line-height:var(--lh,1.6)}
 .dc-meta>span+span::before{content:'・';margin-inline-end:var(--s4,4px);color:var(--line)}
+html:not([lang=ja]) .dc-meta>span+span::before{content:'·'}   /* 日本語のほかは「・」でなく「·」（第21回 R80） */
 .dc-meta>.dc-time+span::before{content:none}
 .dc-time{display:inline-flex;align-items:center;gap:3px;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums}
 .dc-time .ic{display:inline-flex;color:var(--leaf)}.dc-time svg{width:14px;height:14px}
@@ -2817,6 +2818,10 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
    画面の文はすべて、日本語の文をそのまま t() に渡して書く。日本語のときはそのまま、ほかの言語では i18n/<lang>.js の訳を返す
    （その言語に訳がなければ英語、英語にもなければ日本語）。{n} などは vars で埋める。
    訳が {one:'…', other:'…'} のときは vars.n で単数・複数を選ぶ（Intl.PluralRules）。訳の中で {d:# dish:# dishes} とも書ける。
+   単数・複数（第21回 R71）: 訳の中の数のところに、次のどちらかで書く（# が数になる。日本語・中国語・韓国語・タイ語・ベトナム語・インドネシア語などは形が変わらないので書かない）
+     {n:# day:# days}                          2つの形（one / other）。英・独・仏・西・伊・葡・ヒンディー語など
+     {n:# dzień:# dni:# dni:# dnia}            4つの形（one / few / many / other）。ポーランド語
+     {n|one=يوم واحد|two=يومان|few=# أيام|many=# يومًا|other=# يوم}   形の名前で書く（Intl.PluralRules の zero/one/two/few/many/other）。アラビア語。ない形は other
    新しい言語: i18n/<lang>.js を作り（GOHAN_I18N('<lang>', {...})）、I18N_FILES に足す。
    tools/i18n/extract.mjs --check <lang> で、足りない訳を確かめられる。 */
 const I18N_FILES = ['en', 'fr', 'de', 'it', 'es', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'zh-Hans', 'zh-Hant', 'ko', 'vi'];                 // i18n/ にある辞書
@@ -2849,8 +2854,14 @@ function t(ja, vars){
         if (LANG === 'en' && isGB()) s = brit(s);
     }
     if (!vars) return LANG === 'ko' ? koParticles(s) : s;
-    // {n} は値に置きかえる。訳の中の {n:# day:# days} は数で単数・複数を選ぶ（# が数になる）
-    const out = String(s).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*)(?::([^:{}]*))?(?::([^:{}]*))?)?\}/g, (m, k, one, a2, a3, a4) => {
+    // {n} は値に置きかえる。訳の中の {n:# day:# days} は数で単数・複数を選ぶ（# が数になる）。{n|one=…|two=…|few=…|other=…} は形の名前で選ぶ
+    const out = String(s).replace(/\{(\w+)\|([^{}]*)\}/g, (m, k, body) => {
+        if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
+        const v = String(vars[k]), forms = {};
+        body.split('|').forEach(p => { const i = p.indexOf('='); if (i > 0) forms[p.slice(0, i).trim()] = p.slice(i + 1); });
+        const cat = pluralCat(LANG, Number(v)), f = forms[cat] != null ? forms[cat] : forms.other != null ? forms.other : v;
+        return f.replace(/#/g, v);
+    }).replace(/\{(\w+)(?::([^:{}]*):([^:{}]*)(?::([^:{}]*))?(?::([^:{}]*))?)?\}/g, (m, k, one, a2, a3, a4) => {
         if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
         const v = String(vars[k]);
         if (one === undefined) return v;
@@ -2902,6 +2913,8 @@ const sentGap = () => /^(ja|zh)/.test(LANG) ? '' : ' ';
 // 文が句点なしで終わっているときだけ、句点を足す（あとに別の文をつなげるとき用）
 const endSent = s => /[。．.!?！？।؟]$/.test(s) ? s : s + (/^(ja|zh)/.test(LANG) ? '。' : LANG === 'th' ? '' : '.');
 const afterText = s => s + (/[\u3000-\u303f\uff00-\uffef]$/.test(s) ? '' : ' ');
+// かっこの補足: 日本語・中国語は全角の（ ）、ほかの言語は半角の ( )（第21回 R80: 韓国語の画面に全角の（ ）が残っていた）
+const paren = s => /^(ja|zh)/.test(LANG) ? '（' + s + '）' : ' (' + s + ')';
 const PLUS = () => LANG === 'ja' ? '＋' : '+';
 const GAP = () => LANG === 'ja' ? '　' : ' · ';
 const SLASH = () => LANG === 'ja' ? ' ／ ' : ' / ';
@@ -3100,11 +3113,15 @@ function guardDecided(run){
 function countryOkSheetHtml(){
     const c = countryOf(sheet.cc), name = countryLabel(c);
     // その国の人が読めるように、国旗とその国の言葉での国名も出す（オーナー指示 11/04: 国を選ぶと画面の言葉もその国の言葉になる）
+    // 国の言葉と、いまの画面の言葉がちがうときだけ、「言葉は今のままにする」を小さく出す（第21回 R68: 自分の国の言葉ではない言葉で使っている人。ふだんはオーナー指示どおり、国の言葉に変える）
+    const toLang = peekLang(sheet.cc, 'auto'), differ = toLang !== LANG;
+    const langLine = differ ? `<p>${esc(t('画面の言葉も、選んだ国の言葉に変わります。'))}</p>
+        <label class="check cc-keep-lang"><input type="checkbox" data-act="cc-keep-lang" ${sheet.keepLang ? 'checked' : ''}><span>${esc(t('言葉は今の{lang}のままにする', {lang: LANG_NAMES[LANG] || LANG}))}</span></label>` : '';
     const local = c.nameLocal && c.nameLocal !== name ? `<p class="cc-local"><span aria-hidden="true">${c.flag || ''}</span> <span lang="${esc(c.lang || '')}">${esc(c.nameLocal)}</span></p>` : '';
     return `<h2>${esc(t('国を「{name}」に変えますか？', {name}))}</h2>
         ${local}
         <p>${esc(t('今日の献立は{name}の料理に変わります。元の国にはいつでも戻せます。', {name}))}</p>
-        <p>${esc(t('画面の言葉も、選んだ国の言葉に変わります。'))}</p>
+        ${langLine}
         ${menuIsDecided() ? `<p class="small muted">${esc(t('決めた献立は「作り方」にそのまま残ります。'))}</p>` : ''}
         <div class="ob-actions"><button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button><button class="btn primary wide" data-act="country-ok">${esc(t('{name}に変える', {name}))}</button></div>`;
 }
@@ -4913,7 +4930,7 @@ function stageBar(){
     return `<nav class="stages" aria-label="${esc(t('今日の段'))}"><ol>${STAGES.map((k, i) => {
         const st = i < pg ? 'done' : i === pg ? 'now' : 'todo';
         const say = st === 'done' ? t('済み') : st === 'now' ? t('いまここ') : '';
-        return `<li><button type="button" class="stage ${st}${i === vw ? ' viewing' : ''}" data-act="stage" data-k="${k}"${i === pg ? ' aria-current="step"' : ''}${i === vw ? ' aria-pressed="true"' : ' aria-pressed="false"'}><span class="sg-n" aria-hidden="true">${st === 'done' ? '✓' : esc(stageNum(i))}</span><span class="sg-l">${esc(names[i])}</span>${say ? `<span class="vh">（${esc(say)}）</span>` : ''}</button></li>`;
+        return `<li><button type="button" class="stage ${st}${i === vw ? ' viewing' : ''}" data-act="stage" data-k="${k}"${i === pg ? ' aria-current="step"' : ''}${i === vw ? ' aria-pressed="true"' : ' aria-pressed="false"'}><span class="sg-n" aria-hidden="true">${st === 'done' ? '✓' : esc(stageNum(i))}</span><span class="sg-l">${esc(names[i])}</span>${say ? `<span class="vh">${esc(paren(say))}</span>` : ''}</button></li>`;
     }).join('')}</ol></nav>`;
 }
 // お膳の中の料理名: かっこの説明（「(simmered dried daikon strips)」など）は出さず、料理名だけ（詳しい画面では今までどおり出す。点検2）
@@ -8431,13 +8448,15 @@ function allergySettingsHtml(){
         <span class="small muted">${esc(t('材料・調味料の欄（なくても可の材料も）と、加工品の別名（マヨネーズの卵、カレールウの小麦・乳など）まで見て外します。献立の中のほかの料理は動かさず、当たった料理だけ選び直します。'))}</span>
         ${sel.size ? `<span class="small alg-sum" role="status">${esc(t('いまの国の料理{total}品のうち、{n}品は、選んだアレルゲンを含むため出しません。', {total: RECIPES.length, n}))}</span>` : ''}
         <div class="field"><span class="small">${esc(t('家族ごとのアレルギーは、家族のプロフィールで登録します（「今日食べる人」に合わせて効きます）。'))}</span>
-            ${fm.length ? `<span class="small muted">${esc(t('⚠ アレルギー: {list}', {list: joinNames(fm.map(m => famLabel(m, famMembers().indexOf(m)) + '（' + joinNames([...new Set(m.allergy.map(avoidName))]) + '）'))}))}</span>` : ''}
+            ${fm.length ? `<span class="small muted">${esc(t('⚠ アレルギー: {list}', {list: joinNames(fm.map(m => famLabel(m, famMembers().indexOf(m)) + paren(joinNames([...new Set(m.allergy.map(avoidName))]))))}))}</span>` : ''}
             <div class="row"><button class="btn sm" data-act="alg-family">${esc(famMembers().length ? t('家族のプロフィールへ') : t('家族を登録する'))}</button></div></div>
         <span class="small muted alg-ver">${esc(t('アレルゲンの区分表の更新日: {date}（アプリの中の表）。国の表示の決まりが改められても、アプリを更新するまではこの表のままです。', {date: ALG_TABLE_DATE}))}</span>
         <span class="small warn">${esc(t('アプリの判定は参考です。重度のアレルギーの方は、必ず原材料表示・医師の指示に従ってください。'))}</span>
         <span class="small muted">${esc(t('判定はレシピの材料の名前から行います。加工品の中身や調理中の混入までは分かりません。外食・お惣菜はお店に確かめてください。'))}</span>
     </div>`;
 }
+// 設定の「表示と言語」には、どの言葉のときも "Language" と 🌐 を付ける（第21回 R70: 読めない言葉になった人が言語の場所をさがせるように）
+function langTitle(s){ return /\blanguage\b/i.test(s) ? s + ' 🌐' : s + ' · 🌐 Language'; }
 function viewSettings(){
     const sv = Number(S.settings.servings) || 2;
     const cur = countryOf(currentCountry());
@@ -8447,7 +8466,7 @@ function viewSettings(){
     // 設定は7つのまとまりに分け、上の目次から開く。「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま、いちばん上に出す
     // （ほかのまとまりの開き閉じは、この起動のあいだだけ覚える。読み込み・全消去の確認中は「データとバックアップ」を開いておく）
     const so = session.setOpen || {}, isOpen = k => !!so[k] || (k === 'data' && (pendingConfirm === 'import' || pendingConfirm === 'reset'));
-    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['notify', t('お知らせ')], ['display', t('表示と言語')], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
+    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['notify', t('お知らせ')], ['display', langTitle(t('表示と言語'))], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
     const title = k => groups.find(g => g[0] === k)[1];
     const grp = (k, sum, body) => `<details class="set-sec" id="set-${k}" data-sk="${k}" ${isOpen(k) ? 'open' : ''}><summary class="set-sum"><span class="set-sum-tx"><span class="set-sec-h">${SET_ICONS[k]}${esc(title(k))}</span>${sum ? `<span class="set-sum-v">${esc(sum)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="set-body">${body}</div></details>`;
     const remindSum = isNative() ? t('毎日のお知らせ') + GAP() + (typeof S.settings.remind === 'number' ? hourLabel(S.settings.remind) : t('なし')) : t('お知らせは iPhone アプリ版で使えます');
@@ -8499,9 +8518,9 @@ function viewSettings(){
             ${reminderHtml()}
         </div>`)}
         ${grp('display', (LANG_NAMES[LANG] || LANG) + GAP() + [t('ふつう'), t('大きい'), t('もっと大きい')][S.settings.textSize || 0], `<div class="set-group">
-            <div class="field"><label>${esc(t('表示する言語 / Language'))}</label>
+            <div class="field"><label>🌐 ${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
-                <span class="small muted">${esc(t('国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
+                <span class="small muted">${esc(t('国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('文字の大きさ'))}</div>
@@ -8892,7 +8911,7 @@ function shopHaveHtml(){
     const need = new Set(), list = shoppingList();
     const keyset = new Set(list.map(e => String(e.key).split('|')[0]));
     visiblePlanDays().forEach(x => dayDishes(x).forEach(r0 => { const r = swappedRecipe(r0); if (r) r.items.forEach(i => { if (!i.opt && !PANTRY.has(i.key) && fridgeKeys().has(i.key) && !keyset.has(i.key)) need.add(i.key); }); }));
-    const names = S.fridge.filter(f => need.has(keyOf(f))).map(f => { const n = expDays(f); return labelOf(f) + (n !== null ? '（' + expLabel(n) + '）' : ''); });
+    const names = S.fridge.filter(f => need.has(keyOf(f))).map(f => { const n = expDays(f); return labelOf(f) + (n !== null ? paren(expLabel(n)) : ''); });
     if (!names.length) return '';
     return `<p class="pantry-hint shop-have">${esc(t('冷蔵庫にあるので、買い物メモには入れていません：{list}', {list:joinNames(names)}))}</p>`;
 }
@@ -10220,7 +10239,7 @@ function oneBodyHtml(){
                 <span data-act="open" data-id="${esc(r.id)}">${thumbHtml(r)}</span>
                 <div class="info">
                     <div class="head"><span class="name">${esc(r.name)}</span></div>
-                    <div class="small muted">${esc(slotLabel(slotOf(r)))}・${esc(metaLine(r))}</div>
+                    <div class="small muted">${esc(slotLabel(slotOf(r)))}${esc(t('・'))}${esc(metaLine(r))}</div>
                     ${(w => w && w.mode === 'replace' && w.old ? `<div class="small warn">${esc(t('これ以上品数を増やせないので、足さずに「{old}」とかえます', {old: w.old.name}))}</div>` : '')(oneWhere(r))}
                     <div class="row"><button class="btn sm primary" data-act="one-add" data-id="${esc(r.id)}">${esc((w => w && w.mode === 'replace' && w.old ? t('「{old}」とかえる', {old: w.old.name}) : t('今日の献立に入れる'))(oneWhere(r)))}</button><button class="btn sm" data-act="one-view" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>
                 </div></div>`).join('')}</div>` : `<div class="list"><div class="empty">${esc(t('合う料理がありません'))}</div></div>`}
@@ -13026,9 +13045,11 @@ document.addEventListener('click', e => {
         case 'world-retry': browseErr.delete(worldCC); render(); break;
         case 'country-ok': {   // 確認のあとで国を変える
             const cc = sheet && sheet.kind === 'country-ok' ? sheet.cc : ''; if (!cc) break;
-            closeSheet(); setCountry(cc).then(ok => { if (ok) render(); });
+            const keepLang = !!sheet.keepLang;
+            closeSheet(); setCountry(cc, {keepLang}).then(ok => { if (ok) render(); });
             break;
         }
+        case 'cc-keep-lang': if (sheet && sheet.kind === 'country-ok') sheet.keepLang = el.checked; break;   // 確かめのシートの「言葉は今のままにする」（第21回 R68）
         case 'cc-tab': if (sheet && sheet.kind === 'country' && el.dataset.reg && sheet.tab !== el.dataset.reg){ sheet.tab = el.dataset.reg; ccUpdate('tab'); } break;   // 地域のタブ（国はまだ決めない）
         case 'cc-choose': if (sheet && sheet.kind === 'country' && COUNTRIES.some(c => c.cc === el.dataset.cc)){ sheet.pick = el.dataset.cc; ccUpdate('pick'); } break;   // 国に印を付けるだけ。決めるのは下の決定ボタン
         case 'pick-country': {
@@ -14240,21 +14261,23 @@ async function switchLang(v, n){
     }
 }
 let countryBusy = false;
-async function setCountry(cc){
+async function setCountry(cc, opt){
     if (S.settings.country && S.settings.country === cc && PACK_LOADED_OK(cc)) return true;   // 同じ国をもう一度選んでも何も変えない
     if (countryBusy) return false;   // 読みこみ中にもう一度押されても、重ねて切りかえない
     countryBusy = true;
-    try{ return await setCountryRun(cc); }finally{ countryBusy = false; }
+    try{ return await setCountryRun(cc, opt); }finally{ countryBusy = false; }
 }
-async function setCountryRun(cc){
+async function setCountryRun(cc, opt){
     const first = !S.settings.country;
+    // 確かめのシートで「言葉は今のままにする」を選んだときは、いまの画面の言葉に決める（第21回 R68。選ばなければオーナー指示どおり、その国の言葉）
+    const keepUi = !first && opt && opt.keepLang ? (S.settings.uiLang && S.settings.uiLang !== 'auto' ? S.settings.uiLang : LANG) : null;
     const fresh = !(S.countryData && S.countryData[cc]);   // この国をはじめて選ぶ
     const old = packFail || currentCountry();
     // 先に必要なファイル（国のデータ・画面の言葉・レシピの訳）をすべて読みこむ（電波がなくて読みこめないときは、いまの国の冷蔵庫・1週間プランをそのまま残す）
     try{ await loadPack(cc); }catch(e){ toast(t('この国のデータを読みこめませんでした')); return false; }
     // はじめて国を選ぶときの言語は、端末の言語（辞書があれば。en-IN でインドを選んでも英語のまま）。端末の言語に辞書がなければ、その国の言語
     // あとで国を選び直したときは、言葉もその国の言葉に戻す（オーナー指示 11/04: 日本のままだと、ほかの国の人が言語の設定の場所をさがせない。国旗から自分の国を選べば自分の言葉になる）。言葉だけ変えたいときは設定の「言語」から
-    const nextUi = first ? ((S.settings.uiLang || 'auto') === 'auto' ? (deviceLang() || (cc === 'JP' ? 'ja' : peekLang(cc, 'auto'))) : S.settings.uiLang) : 'auto';
+    const nextUi = first ? ((S.settings.uiLang || 'auto') === 'auto' ? (deviceLang() || (cc === 'JP' ? 'ja' : peekLang(cc, 'auto'))) : S.settings.uiLang) : keepUi || 'auto';
     const nextLang = peekLang(cc, nextUi);
     await loadLang(nextLang);
     if (nextLang !== 'ja' && !I18N[nextLang]){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); return false; }
@@ -14274,7 +14297,7 @@ async function setCountryRun(cc){
         S.settings.country = cc;
         // はじめて国を選ぶときは端末の言語（日本を選んでも、端末が日本語でなければ端末の言語のまま）。あとで国を選び直したときは、その国の言葉に戻す（オーナー指示 11/04）
         if (first && (S.settings.uiLang || 'auto') === 'auto') S.settings.uiLang = nextUi;
-        else if (!first) S.settings.uiLang = 'auto';
+        else if (!first) S.settings.uiLang = nextUi;
         await setLang(wantLang());
         applyCountry(cc);
         // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）

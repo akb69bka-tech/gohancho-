@@ -2,7 +2,7 @@
 // ごはん帖の翻訳キーを取り出す / 辞書を確かめる（依存なし）
 //
 //   node tools/i18n/extract.mjs                 → gohancho/index.html の t('…') をすべて集めて tools/i18n/keys.json に書き出す
-//   node tools/i18n/extract.mjs --check en      → gohancho/i18n/en.js に足りない訳・{n} などの置き換え記号の食い違いを表示
+//   node tools/i18n/extract.mjs --check en      → gohancho/i18n/en.js に足りない訳・{n} などの置き換え記号の食い違い・単数複数の書き方の誤りを表示
 //                                                 （問題があれば終了コード 1）
 //
 // キーは t('…') / t("…") / t(`…`) の最初の引数（文字列そのもの）。`…` の中に ${} は使えない（{n} などの置き換え記号を使う）。
@@ -67,7 +67,18 @@ export function extractKeys(src){
 }
 
 // {n} と、訳の中の {n:# day:# days}（単数・複数）を同じ置き換え記号として数える
-function placeholders(s){ return [...new Set([...String(s).matchAll(/\{(\w+)(?::[^:{}]*:[^:{}]*(?::[^:{}]*(?::[^:{}]*)?)?)?\}/g)].map(x => '{' + x[1] + '}'))].sort().join(','); }
+// {n|one=…|few=…|other=…}（形の名前で書く単数・複数。アラビア語など）も {n} として数える
+function placeholders(s){ return [...new Set([...String(s).matchAll(/\{(\w+)(?:\|[^{}]*|:[^:{}]*:[^:{}]*(?::[^:{}]*(?::[^:{}]*)?)?)?\}/g)].map(x => '{' + x[1] + '}'))].sort().join(','); }
+// 単数・複数の書き方の誤り（{n|…} に other がない・形の名前がちがう）
+function pluralErrors(s){
+    const errs = [];
+    for (const m of String(s).matchAll(/\{(\w+)\|([^{}]*)\}/g)){
+        const cats = m[2].split('|').map(p => p.slice(0, p.indexOf('=')).trim());
+        if (!cats.includes('other')) errs.push(`{${m[1]}|…} needs other=`);
+        cats.filter(c => !['zero', 'one', 'two', 'few', 'many', 'other'].includes(c)).forEach(c => errs.push(`unknown plural category "${c}"`));
+    }
+    return errs;
+}
 
 function loadDict(lang){
     const file = path.join(ROOT, 'gohancho', 'i18n', `${lang}.js`);
@@ -97,6 +108,7 @@ if (ci >= 0){
         const forms = v && typeof v === 'object' ? Object.values(v) : [v];
         if (typeof v === 'object' && !('other' in v)) mismatch.push(`${k}  (plural object needs "other")`);
         forms.forEach(f => {
+            pluralErrors(f).forEach(e => mismatch.push(`${k}  → ${JSON.stringify(f)}  (${e})`));
             // 複数形の one は {n} を書かなくてもよい（"1 day" → "a day" など）
             const have = placeholders(f);
             if (have !== want && !(typeof v === 'object' && f !== v.other && have.split(',').every(p => !p || want.split(',').includes(p))))

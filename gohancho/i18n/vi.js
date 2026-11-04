@@ -1338,7 +1338,7 @@ GOHAN_I18N('vi', {
     "選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。": "Nếu món nấu được với nguyên liệu khác, mình sẽ thay (vd: gà thay cho heo). Món không thể thay sẽ không được gợi ý.",
     "魚の種類で火の通りが変わります。身の中まで白くなるまで加熱してください。": "Thời gian tùy loại cá. Nấu đến khi thịt cá trắng đục bên trong.",
     "鶏肉は中まで火が通るよう、加熱を1〜2分長めにしてください。": "Nấu gà chín kỹ; thêm 1–2 phút so với thời gian nấu.",
-    "国を変えても、表示する言語はそのままです。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Đổi nước thì ngôn ngữ hiển thị vẫn giữ nguyên. Món của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
+    "国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。": "Khi chọn lại quốc gia, ngôn ngữ hiển thị cũng đổi sang ngôn ngữ của nước đó (ở màn hình xác nhận, bạn có thể giữ ngôn ngữ hiện tại). Món ăn của nước khác sẽ hiện bằng ngôn ngữ này nếu có bản dịch (nếu không thì bằng tiếng Anh).",
     "国を組み合わせる（例: 主菜は中華・副菜は和食・汁ものは韓国）": "Kết hợp các nước (vd: món chính Trung Quốc, món phụ Nhật, canh Hàn)",
     "組み合わせをやめる": "Thôi kết hợp",
     "{date}の記録に入っています": "Đã ghi cho ngày {date}",
@@ -1741,5 +1741,6 @@ GOHAN_I18N('vi', {
     "押して答える → {url}": "Chạm để trả lời → {url}",
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Chọn vài món rồi gửi đi. Gia đình chỉ cần chạm để trả lời, không cần ứng dụng. Mở liên kết trả lời sẽ thêm vào Yêu cầu của gia đình.",
     "今日の献立の候補から": "Từ các món gợi ý hôm nay",
-    "{n}品まで選べます": "Chọn được tối đa {n} món"
+    "{n}品まで選べます": "Chọn được tối đa {n} món",
+    "言葉は今の{lang}のままにする": "Vẫn giữ ngôn ngữ {lang}"
 });
