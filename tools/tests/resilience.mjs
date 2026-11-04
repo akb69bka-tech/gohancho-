@@ -254,13 +254,13 @@ const countingAbort = (re) => async ctx => ctx.route(re, r => { hit.n++; r.abort
         await p.ctx.close();
     }
 }
-{   // C4. 国のデータは読めたが、レシピの訳が読めない（電波）→ 変えない。ファイルがない（404）なら訳なしで進む
-    const re = /\/packs\/i18n\/fr\.ja\.js/;
-    let p = await open({ route: async ctx => ctx.route(re, r => r.abort()) });
-    eq(await p.evaluate(() => setCountry('FR')), false, 'C4 訳が読めないなら国を変えない');
+{   // C4. 国のデータは読めたが、その国の言葉の辞書が読めない（電波）→ 変えない（オーナー指示 11/04 から、国を選び直すと言葉もその国の言葉になる）。
+    //     レシピの訳のファイルがない（404）なら訳なしで進む
+    let p = await open({ route: async ctx => ctx.route(/\/i18n\/fr\.js/, r => r.abort()) });
+    eq(await p.evaluate(() => setCountry('FR')), false, 'C4 その国の言葉が読めないなら国を変えない');
     eq(await p.evaluate(() => [S.settings.country, PACK, LANG, JSON.stringify(S.fridge)]), ['JP', null, 'ja', JSON.stringify(['卵', '玉ねぎ'])], 'C4 何も変わらない');
     await p.ctx.close();
-    p = await open({ route: async ctx => ctx.route(re, r => r.fulfill({ status: 404, body: 'nf' })) });
+    p = await open({ route: async ctx => ctx.route(/\/packs\/i18n\/fr\.[a-z-]+\.js/i, r => r.fulfill({ status: 404, body: 'nf' })) });
     eq(await p.evaluate(() => setCountry('FR')), true, 'C4 訳のファイルがない（404）ときは訳なしで進む');
     await p.ctx.close();
 }
