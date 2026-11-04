@@ -208,7 +208,7 @@ const MUST = {us_tortellinisoup: ['wheat', 'egg', 'milk'], us_butteredpeas: ['mi
         const v = await open('TH', 'r91vi', {uiLang: 'vi'});
         const r2 = await v.p.evaluate(() => RECIPES.filter(x => x.main).slice(0, 5).map(x => ({name: x.name, local: x.nameEn})));
         await v.ctx.close();
-        ok(r2.every(x => /^[\x20-\x7e]+$/.test(x.name) && /[฀-๿]/.test(x.local)), 'R91 ベトナム語の画面でタイ: タイ文字は読めないので英語の名前（タイの名前は副題に。ベトナム語の訳はまだない＝残り）: ' + JSON.stringify(r2.slice(0, 2)));
+        ok(r2.every(x => x.name && !/[฀-๿]/.test(x.name) && /[฀-๿]/.test(x.local)) && r2.some(x => /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(x.name)), 'R91 ベトナム語の画面でタイ: ベトナム語の料理名（第23回の残りで訳を足した。タイの名前は副題に）: ' + JSON.stringify(r2.slice(0, 2)));
     }
 }
 
