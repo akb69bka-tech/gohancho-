@@ -127,7 +127,7 @@ const hookToast = p => p.evaluate(sel => {
 }, SEE);
 const toastCover = p => p.evaluate(() => {
     const tb = document.querySelector('#toast-root .toast'); if (!tb) return {none: true};
-    const oy = tb.classList.contains('anchored') ? tb.offsetTop - scrollY : tb.offsetTop;   // 第19回 R59: ページに留めたお知らせ（absolute）は、画面の中の高さに直す
+    const oy = (tb.classList.contains('anchored') || tb.classList.contains('headdock')) ? tb.offsetTop - scrollY : tb.offsetTop;   // 第19回 R59: ページに留めたお知らせ（absolute）は、画面の中の高さに直す
     const T = {left: tb.offsetLeft, top: oy, right: tb.offsetLeft + tb.offsetWidth, bottom: oy + tb.offsetHeight}, hit = [], tapHit = [];
     const pre = window.__toastPre || {sy: scrollY, out: []}, dy = scrollY - pre.sy;
     for (const r of pre.out){
@@ -140,7 +140,7 @@ const toastCover = p => p.evaluate(() => {
     // 「元に戻す」の下に、見えていた押す場所がないか（あると、続けて押したつもりで元に戻してしまう）
     let btnOverTap = false;
     if (br) for (const r of pre.out){ if (!r.tap) continue; const d = r.fx ? 0 : dy; if (Math.min(r.r, br.right) - Math.max(r.l, br.left) > 1 && Math.min(r.b - d, br.bottom) - Math.max(r.t - d, br.top) > 1) btnOverTap = true; }
-    return {hit: [...new Set(hit)], tapHit: [...new Set(tapHit)], tappedHit, btnOverTap, lifted: tb.classList.contains('docked'), tapMoved: tr ? Math.round(scrollY - tr.sy) : 0, tapped: tr && tr.k, finger: fy == null ? null : Math.round(fy), fingerClear: fy == null || fy < T.top - 60 || fy > T.bottom + 60, through: !!at && !at.closest('#toast-root'), n: pre.out.length, rect: [Math.round(T.top), Math.round(T.bottom)], dy: Math.round(dy), text: tb.textContent.trim().slice(0, 40), btnHit: btn ? !!(document.elementFromPoint(br.left + br.width / 2, br.top + br.height / 2) || {closest: () => null}).closest('[data-act=toast-undo]') : null};
+    return {hit: [...new Set(hit)], tapHit: [...new Set(tapHit)], tappedHit, btnOverTap, headdock: tb.classList.contains('headdock'), lifted: tb.classList.contains('docked'), tapMoved: tr ? Math.round(scrollY - tr.sy) : 0, tapped: tr && tr.k, finger: fy == null ? null : Math.round(fy), fingerClear: fy == null || fy < T.top - 60 || fy > T.bottom + 60, through: !!at && !at.closest('#toast-root'), n: pre.out.length, rect: [Math.round(T.top), Math.round(T.bottom)], dy: Math.round(dy), text: tb.textContent.trim().slice(0, 40), btnHit: btn ? !!(document.elementFromPoint(br.left + br.width / 2, br.top + br.height / 2) || {closest: () => null}).closest('[data-act=toast-undo]') : null};
 });
 if (want('N4')){
     // 作る段: 「買い物そろいました」（元に戻すつき）が「最初にすること」に重ならない（第2回 D4・第3回b F11_03）
@@ -164,7 +164,7 @@ if (want('N4')){
         await bs.nth(Math.min(k, c - 1)).click(); await p.waitForTimeout(400);
         const r = await toastCover(p);
         if (r.none){ ok(true, `N4-4 かえる(${k}) お知らせなし`); await ctx.close(); continue; }
-        ok(!r.tappedHit && r.fingerClear && !r.lifted, `N4-4 かえる(${k}) のお知らせ（元に戻すつき）は、押した「かえる」・指のまわりに重ならず、お知らせのために画面を送らない: ` + JSON.stringify(r));
+        ok(!r.tappedHit && (r.fingerClear || r.headdock) && !r.lifted, `N4-4 かえる(${k}) のお知らせ（元に戻すつき）は、押した「かえる」・指のまわりに重ならず（第21回 R72 からは、お膳の上の見出しの行に出る形でも可。押した「かえる」は隠さない）、お知らせのために画面を送らない: ` + JSON.stringify(r));
         ok(r.through && r.btnHit, `N4-4b かえる(${k}) お知らせの文の上を押すと下に届き、「元に戻す」は押せる: ` + JSON.stringify([r.through, r.btnHit]));
         if (k === 2) await p.screenshot({path: (process.env.SHOT_DIR || '/tmp') + '/N4_today_reroll_toast.png'}).catch(() => {});
         await ctx.close();

@@ -74,12 +74,19 @@ for (const lang of ['ja', 'ko']) for (const ts of [0, 1, 2]) for (const dark of 
         const out = [];
         // 🔍 の札（家族のアレルゲンの「袋の表示を確認」）が上下の段に出る献立を作る: 上の段の最初と下の段の最後の席を、その枠で 🔍 の出る料理にかえる（候補を変えて 3 通り）。日本は第17回の画面（なすと豚肉の味噌炒め・きんぴらごぼう・じゃがいもと玉ねぎの味噌汁）も
         const force = lang === 'ja' ? [['なすと豚肉の味噌炒め', 'きんぴらごぼう', 'じゃがいもと玉ねぎの味噌汁']] : [];
-        window.scrollTo(0, 0); session.menu = null; render(); await __tick();
+        // 第20回のあと（たまに落ちる件）: 献立は毎回作り直すので、席の形（おかずの並び）が 主菜・副菜・汁物 のときと、主菜・副菜・副菜・汁物（上の段が3列）のときがある。
+        // 前は最初の献立の並びで料理名を「何番目の席か」で入れていたため、作り直した献立の形がちがうと、汁ものを副菜の席に入れた（汁もの2つ・上の段に🔍が3つ）ありえない献立になり、
+        // それがお膳に入りきらずに決定の帯をお膳の下に置く形（bar-static）になって落ちていた（乱数しだいで3〜4回に1回。同じ SEED では毎回同じ。時間差ではない）。
+        // ここは S22（第17回の画面: 主菜・副菜・汁もの＋ご飯）の点検なので、席の形が 主菜・副菜・汁物 の献立になるまで作り直し、料理は同じ枠の席に入れる
+        const shape = () => session.menu.items.map(x => x.slot).filter(sl => ['主菜', '副菜', '汁物'].includes(sl)).join('/');
+        const roll = async () => { for (let i = 0; i < 40; i++){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); if (shape() === '主菜/副菜/汁物') return true; } return false; };
+        if (!await roll()) return [{bad: true, err: '主菜・副菜・汁物の献立にならない'}];
         const m = session.menu, n = m.items.length, pick = (slot, used, k) => RECIPES.filter(x => slotOf(x) === slot && !used.has(x.id) && !isAvoided(x) && (slot !== '主菜' || x.main !== false) && /🔍/.test(algTagHtml(x)))[k];
         for (let k = 0; k < 3; k++){ const used = new Set(); const a = pick(m.items[0].slot, used, k); if (!a) break; used.add(a.id); const z = pick(m.items[n - 1].slot, used, k); if (!z) break; force.push(m.items.map((it, i) => i === 0 ? a.name : i === n - 1 ? z.name : it.r ? it.r.name : null)); }
         for (const names of force){
-            session.menu = null; render(); await __tick();
-            const mm = session.menu; mm.items.forEach((it, i) => { const rr = names[i] && RECIPES.find(x => x.name === names[i]); if (rr) it.r = rr; });
+            if (!await roll()){ out.push({names: names.join('・'), bad: true, err: '主菜・副菜・汁物の献立にならない'}); continue; }
+            const mm = session.menu, done = new Set();
+            for (const nm of names){ const rr = nm && RECIPES.find(x => x.name === nm); if (!rr) continue; const it = mm.items.find((x, i) => !done.has(i) && x.slot === slotOf(rr)); if (!it) continue; done.add(mm.items.indexOf(it)); it.r = rr; }   // 料理は同じ枠の席に
             TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); render(); await __tick();
             const rows = __rows(); if (!(rows.length > 1 && rows.every(x => x.tags))) continue;
             const bar = __bar(); const bad = rows.some(x => x.hid.length) || !bar || bar.hidden;
@@ -161,12 +168,15 @@ for (const [w, h] of [[360, 740], [390, 844], [430, 932]]) for (const lang of ['
 }
 
 // R18-7（D8）独・仏・伊・亜・西・比・土・波: ↻ の丸に短い1語（幅 32px 以内・見える）。文字3段階 × 360/390/430。読み上げは「…を別の料理にかえる」のまま
-for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
+for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) {
     if (!want('R18-7')) break;
-    const {p, ctx} = await open({w, h, lang, ts, dc: 3, sv: 2}, `d8-${lang}-${w}-${ts}`);
-    const r = await p.evaluate(async () => { session.menu = null; render(); await __tick(); const tr = document.querySelector('#view .tray');
-        return {tight: tr.classList.contains('tight'), sw: [...tr.querySelectorAll('.spot .swap[data-act=reroll]')].map(e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), fs: parseFloat(getComputedStyle(e).fontSize), aria: e.getAttribute('aria-label') || ''}; })}; });
+    const {p, ctx} = await open({w: 390, h: 844, lang, dc: 3, sv: 2}, `d8-${lang}`);   // 1言語に1ページ。画面の幅・文字の大きさはその中で切りかえる（R18-8 と同じ。ページを開き直す時間を減らす）
+    for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
+    await p.setViewportSize({width: w, height: h});
+    const r = await p.evaluate(async ts => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); session.menu = null; render(); await __tick(); const tr = document.querySelector('#view .tray');
+        return {tight: tr.classList.contains('tight'), sw: [...tr.querySelectorAll('.spot .swap[data-act=reroll]')].map(e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), fs: parseFloat(getComputedStyle(e).fontSize), aria: e.getAttribute('aria-label') || ''}; })}; }, ts);
     ok(r.sw.length && (r.tight || r.sw.every(x => x.word && x.shown && x.text && x.w > 0 && x.w <= 32 && x.aria.length > 3)), `R18-7 D8 ${lang} ${w}px 文字${ts}: ↻ の丸に短い字（${r.sw[0] && r.sw[0].text}）が見えて 32px 以内: ` + JSON.stringify(r));
+    }
     await ctx.close();
 }
 
@@ -198,7 +208,7 @@ for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 422]]) for (cons
     if (!want('R18-9')) break;
     const {p, ctx} = await open({w, h, lang, ts, fam: 1, dc: w === 195 ? 3 : 4, sv: 3}, `r57-${w}-${ts}-${lang}`);
     const r = await p.evaluate(async () => {
-        let hit = false; for (let i = 0; i < 60 && !hit; i++){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
+        let hit = false; for (let i = 0; i < 3 && !hit; i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
         if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }   // 当たる主菜を置く（判定はアプリのまま）
         __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
         const tabTop = __tabTop(), ab = document.querySelector('#view .actionbar'), abFixed = ab && /fixed|sticky/.test(getComputedStyle(ab).position), lim = abFixed ? ab.getBoundingClientRect().top : tabTop;
@@ -212,15 +222,18 @@ for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 422]]) for (cons
 }
 
 // R18-10（R58）主食の ↻ の丸にも短い1語（主菜の ↻ と同じ語・32px 以内）。独 "Tausch"（まるごと入れ替えの "Neues Menü" と別の語）。8言語 × 360/390/430 × 文字3段階
-for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
+for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) {
     if (!want('R18-10')) break;
-    const {p, ctx} = await open({w, h, lang, ts, dc: 3, sv: 2}, `r58-${lang}-${w}-${ts}`);
-    const r = await p.evaluate(async () => { let st = null; for (let i = 0; i < 30 && !st; i++){ session.menu = null; render(); await __tick(); st = document.querySelector('#view .tray .spot .swap[data-act=staple-next]:not(.tray-add)'); }
+    const {p, ctx} = await open({w: 390, h: 844, lang, dc: 3, sv: 2}, `r58-${lang}`);   // 1言語に1ページ。画面の幅・文字の大きさはその中で切りかえる（R18-8 と同じ。ページを開き直す時間を減らす）
+    for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
+    await p.setViewportSize({width: w, height: h});
+    const r = await p.evaluate(async ts => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); let st = null; for (let i = 0; i < 30 && !st; i++){ session.menu = null; render(); await __tick(); st = document.querySelector('#view .tray .spot .swap[data-act=staple-next]:not(.tray-add)'); }
         const tr = document.querySelector('#view .tray'), info = e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), aria: e.getAttribute('aria-label') || ''}; };
         const re = tr.querySelector('.spot .swap[data-act=reroll]');
-        return {tight: tr.classList.contains('tight'), staple: st ? info(st) : null, reroll: re ? info(re) : null, whole: t('献立を変える')}; });
+        return {tight: tr.classList.contains('tight'), staple: st ? info(st) : null, reroll: re ? info(re) : null, whole: t('献立を変える')}; }, ts);
     const s = r.staple, q = r.reroll;
     ok(s && q && (r.tight || (s.word && s.shown && s.text && s.text === q.text && s.w > 0 && s.w <= 32 && s.aria.length > 3 && s.text !== r.whole && (lang !== 'de' || s.text === 'Tausch'))), `R18-10 R58 ${lang} ${w}px 文字${ts}: 主食の ↻ の丸に主菜と同じ短い字（${s && s.text}）が見えて 32px 以内: ` + JSON.stringify(r));
+    }
     await ctx.close();
 }
 
@@ -341,7 +354,7 @@ for (const ts of [1, 2]) for (const lang of ['ja', 'en']) {
     if (!want('R18-17')) break;
     const {p, ctx} = await open({w: 195, h: 422, lang, ts, fam: 1, dc: 3, sv: 2}, `n195-${ts}-${lang}`);
     const r = await p.evaluate(async () => {
-        let hit = false; for (let i = 0; i < 60 && !hit; i++){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
+        let hit = false; for (let i = 0; i < 3 && !hit; i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
         if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }
         __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
         const lines = [...document.querySelectorAll('#view .alg-bar, #view .alg-top')].filter(e => getComputedStyle(e).display !== 'none').map(e => { const rg = document.createRange(); rg.selectNodeContents(e); return {text: e.textContent.trim(), h: Math.round(e.getBoundingClientRect().height), cutW: e.scrollWidth > e.clientWidth + 1, cutH: e.scrollHeight > e.clientHeight + 1, fs: getComputedStyle(e).fontSize}; });
