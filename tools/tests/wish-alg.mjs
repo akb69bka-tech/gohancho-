@@ -38,7 +38,7 @@ for (const cc of CCS){
         const reset = () => { S.settings.allergens = []; S.settings.avoid = []; S.settings.scarce = []; S.family = [Object.assign({}, ME)]; setEaters(null); S.history = []; S.favs = []; S.wants = []; };
         const mains = RECIPES.filter(r => r.main && !r.isTwist && !isCustomId(r.id) && WISH_ID_RE.test(r.id));
         const hitOf = (r, id) => weekAlg(() => (algRecipeMap(r)[id] || []).some(x => x.kind !== 4 && (x.kind !== 3 || algFerm())));   // 家族みんな（ときどき一緒に食べる人も）で見たときの材料（だしを昆布だしにする などの置き換えのあと）
-        const tiles = () => [...document.querySelectorAll('#wish-grid .wsh-card')].map(x => ({id: x.dataset.id, tag: !!x.querySelector('.alg-tag')}));
+        const tiles = () => [...document.querySelectorAll('#wish-grid .wsh-card')].map(x => ({id: x.dataset.id, tag: !!x.querySelector('.alg-tag:not(.may)')}));
         for (const [id, fv] of ALGS) for (const sc of SCOPES){
             reset();
             if (sc === 'user') S.settings.allergens = [id];
@@ -84,7 +84,7 @@ for (const cc of CCS){
             ok(!o.linkMiss.length, `A5 ${tag} リンクに当たる料理の印がない: ${o.linkMiss.join(',')}`);
             if (o.hash){
                 await pa.evaluate(h => { location.hash = h; }, o.hash); await pa.waitForTimeout(30);
-                const a = await pa.evaluate(() => [...document.querySelectorAll('#grid .dish')].map(x => ({id: x.dataset.id, alg: !!x.querySelector('.alg') && /⚠/.test(x.querySelector('.alg').textContent)})));
+                const a = await pa.evaluate(() => [...document.querySelectorAll('#grid .dish')].map(x => ({id: x.dataset.id, alg: !!x.querySelector('.alg:not(.chk)') && /⚠/.test(x.querySelector('.alg:not(.chk)').textContent)})));
                 const miss = a.filter(x => o.sentHit.includes(x.id) && !x.alg), fal = a.filter(x => x.alg && !o.sentHit.includes(x.id));
                 const ft = a.findIndex(x => x.alg), ord = ft >= 0 && a.slice(ft).some(x => !x.alg);
                 tot.askTiles += a.length; tot.askNoTag += miss.length; tot.askFalse += fal.length; if (ord) tot.askOrder++;
