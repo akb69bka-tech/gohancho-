@@ -1750,6 +1750,11 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .wsh-card[aria-pressed="true"]::after{content:"✓";position:absolute;top:6px;inset-inline-end:6px;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:var(--leaf-ink);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 .wsh-card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .wsh-none{grid-column:1/-1;margin:0}
+.wsh-card .alg-tag{display:block;max-width:100%;font-size:.8125rem;line-height:1.25;font-weight:700;color:var(--danger);overflow-wrap:anywhere;text-align:center}   /* 第22回 R84: お膳の ⚠ の札と同じ（赤い ⚠・太字・アレルゲンの名前） */
+.wsh-card.alg{box-shadow:var(--shadow-1),inset 0 0 0 1.5px color-mix(in srgb,var(--danger) 55%,transparent)}
+.wsh-alg-note{grid-column:1/-1;margin:0}
+.wsh-lang{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8);margin:0 0 var(--s8)}.wsh-lang select{min-height:var(--tap-sm);max-width:100%;font:inherit;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);padding:0 var(--s8)}
+.wsh-any{font-family:var(--mincho);font-size:var(--fs20)}.wsh-any-list{display:flex;flex-direction:column;gap:var(--s4);margin:var(--s8) 0}
 .wsh-name{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8)}
 .wsh-name input{min-height:var(--tap-sm);border:1px solid var(--line);border-radius:var(--r-sm);padding:0 var(--s8);font:inherit;background:var(--surface);color:var(--ink);width:10em;max-width:100%}
 .wsh-name{margin-bottom:var(--s8)}
@@ -2583,6 +2588,8 @@ function normalizeState(d){
     // ○つけ表（案B）。4週分まで。返事は候補と同じ長さの 0・1・2 の並びだけ
     st.votes = arr(st.votes).filter(v => v && typeof v === 'object' && isYmd(v.w) && Array.isArray(v.ids) && v.ids.length && v.ids.length <= 10 && v.ids.every(x => typeof x === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(x))).slice(0, 4)
         .map(v => { const ans = {}; Object.entries(obj(v.ans)).slice(0, 12).forEach(([k, a]) => { const nk = [...String(k).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 12).join(''); if (nk && typeof a === 'string' && a.length === v.ids.length && /^[012]+$/.test(a)) ans[nk] = a; }); return {w: v.w, ids: v.ids.slice(), at: isYmd(v.at) ? v.at : v.w, ans}; });
+    st.wantAny = arr(st.wantAny).filter(w => w && typeof w === 'object' && isYmd(w.at) && (Date.now() - new Date(w.at + 'T00:00:00').getTime()) < 30 * 864e5).slice(0, 10)
+        .map(w => ({k: typeof w.k === 'string' ? w.k.slice(0, 12) : '', n: typeof w.n === 'string' ? [...w.n.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join('') : '', m: [0, 1, 2].includes(w.m) ? w.m : null, t: isYmd(w.t) ? w.t : w.at, at: w.at}));   // 「なんでもいい」の返事（第22回 R87）
     st.wantSeen = arr(st.wantSeen).filter(x => typeof x === 'string' && /^[0-9a-z]{1,12}$/.test(x)).slice(0, 60);
     if (typeof st.settings.sendName === 'string') st.settings.sendName = [...st.settings.sendName.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g, '').trim()].slice(0, 10).join(''); else delete st.settings.sendName;
     delete st._gohancho;   // 書き出したファイルの目印（版・日時）。アプリの中には持たない
@@ -9502,6 +9509,8 @@ function wishParse(text){
     if (!o || typeof o !== 'object' || Array.isArray(o) || o.v !== 1 || !['w', 'q', 'a'].includes(o.k)) return {err: 'broken'};
     const key = wishHash(code), idsOf = a => Array.isArray(a) ? a.filter(x => typeof x === 'string' && WISH_ID_RE.test(x)) : [];
     if (o.k === 'w'){
+        // 第22回 R87: 家族が ask.html で「なんでもいい」を押した返事（料理なし・x:1）。「なんでもいい」として受けとる
+        if (o.x === 1 && (o.d == null || (Array.isArray(o.d) && !o.d.length))) return {k: 'w', any: true, key, n: wishName(o.n), ids: [], unknown: 0, m: [0, 1, 2].includes(o.m) ? o.m : null, t: ymdUnpack(o.t)};
         const d = [...new Set(idsOf(o.d))].slice(0, WISH_PICK_MAX); if (!d.length) return {err: 'broken'};
         const known = d.filter(id => { const r = recipeById(id); return !!r && !r.isTwist && !isCustomId(id); });
         return {k: 'w', key, n: wishName(o.n), ids: known, unknown: d.length - known.length, m: [0, 1, 2].includes(o.m) ? o.m : null, t: ymdUnpack(o.t)};
@@ -9540,6 +9549,15 @@ function wishBlockWhy(r){
     WISH_BLOCK.set(sig, why);
     return why;
 }
+// 第22回 R84: 家族の「食べたい」の一覧（「何が食べたい？」と「食べたいものを送る」）の ⚠。献立と同じ判定（allergyConflict）を、
+// 家族みんな（ときどき一緒に食べる人も。1週間プランと同じ weekAlg）と全員共通のアレルゲンで見る。当たる料理は ⚠ を付けて、当たらない料理のうしろに並べる
+function wishAlg(r){ return !!r && weekAlg(() => allergyConflict(r)); }
+function wishAlgTagHtml(r){
+    if (!wishAlg(r)) return '';
+    const ids = weekAlg(() => algSelectedHits(r)), full = ids.length ? t('アレルゲン: {list}', {list: joinNames(ids.map(algLabel))}) : t('アレルゲンあり');
+    return `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + full)}">⚠ ${esc(ids.length ? joinNames(ids.map(algLabel)) : t('アレルゲンあり'))}</span>`;
+}
+function wishAlgSort(list){ return [...list.filter(r => !wishAlg(r)), ...list.filter(r => wishAlg(r))]; }
 function wishDone(w){ return S.history.some(h => h.id === w.id && h.d >= w.at); }
 function wishActive(w){ const r = recipeById(w.id); return !!r && !wishDone(w) && daysBetween(w.at, TODAY) < WISH_ACTIVE_DAYS && !wishBlockWhy(r); }
 function wishesActive(){ return wishList().filter(wishActive); }
@@ -9584,7 +9602,7 @@ function wishHomeDishes(){
     const add = r => { if (ok(r) && !out.includes(r) && out.length < 6) out.push(r); };
     Object.keys(n).sort((a, b) => n[b] - n[a]).forEach(id => add(recipeById(id)));
     S.favs.forEach(id => add(recipeById(id)));
-    RECIPES.filter(r => r.main && inSeason(r) && !isOkayu(r)).forEach(add);
+    RECIPES.filter(r => r.main && inSeason(r) && !isOkayu(r) && !wishAlg(r)).forEach(add);   // 足りない分は、家族みんなが食べられる料理で埋める（R84）
     return out;
 }
 function wishGridHtml(){
@@ -9592,9 +9610,11 @@ function wishGridHtml(){
     const q = (s.q || '').trim();
     let list = q ? searchRecipes(q).hits.filter(r => RECIPES.includes(r) && !r.isTwist && !isCustomId(r.id)).slice(0, 9) : wishHomeDishes();
     const picked = s.sel.map(id => recipeById(id)).filter(Boolean);
-    list = [...picked.filter(r => !list.includes(r)), ...list];
+    list = wishAlgSort([...picked.filter(r => !list.includes(r)), ...list]);   // ⚠ の料理は、当たらない料理のうしろ（R84）
     if (!list.length) return `<p class="small muted wsh-none">${esc(t('見つかりませんでした。ほかの言葉でさがしてください'))}</p>`;
-    return list.map(r => { const on = s.sel.includes(r.id); return `<button type="button" class="wsh-card" data-act="wish-pick" data-id="${esc(r.id)}" aria-pressed="${on}">${thumbHtml(r)}<span class="wsh-nm">${esc(r.name)}</span></button>`; }).join('');
+    const anyAlg = list.some(wishAlg);
+    return list.map(r => { const on = s.sel.includes(r.id), a = wishAlg(r); return `<button type="button" class="wsh-card${a ? ' alg' : ''}" data-act="wish-pick" data-id="${esc(r.id)}" aria-pressed="${on}">${thumbHtml(r)}<span class="wsh-nm">${esc(r.name)}</span>${a ? wishAlgTagHtml(r) : ''}</button>`; }).join('')
+        + (anyAlg ? `<p class="small warn wsh-alg-note" role="note">${esc(t('⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。'))}</p>` : '');
 }
 function wishSendSheetHtml(){
     const s = sheet, n = s.sel.length, name = sendName(), q = s.q || '';
@@ -9616,32 +9636,62 @@ function wishSendSheetHtml(){
 function wishSendText(ids, m, name){
     const rs = ids.map(id => recipeById(id)).filter(Boolean); if (!rs.length) return '';
     const o = {v: 1, k: 'w', d: rs.map(r => r.id), t: ymdPack(TODAY)}; if (name) o.n = name; if (m != null) o.m = m;
-    const list = rs.map(r => r.name).join(t('・')) + (m != null ? t('（{word}）', {word: wishWords()[m]}) : '');
+    const list = rs.map(r => (wishAlg(r) ? '⚠ ' : '') + r.name).join(t('・')) + (m != null ? t('（{word}）', {word: wishWords()[m]}) : '');
     return [name ? t('【ご飯帖】{name}の食べたいもの：{list}', {name, list}) : t('【ご飯帖】食べたいもの：{list}', {list}), t('ご飯帖で開く → {url}', {url: wishLink(o)})].join('\n');
 }
 /* ---- A-4 作る人が家族に「何が食べたい？」と聞く（家族はアプリなしで ask.html を開いて押す。返事は A-2 と同じ「食べたい」のリンク） ----
    行き: {v:1, k:'k', n: 送る名前, d: [[料理の番号, 料理名, 絵（img/… のときだけ）]…8品まで], l: 画面の言葉, t: 送った日}。送るのは文とリンクだけ（サーバーなし） */
-function askOpen(){ sheet = {kind: 'ask-make', sel: [], q: ''}; renderSheet(); }
+function askOpen(){ sheet = {kind: 'ask-make', sel: [], q: '', lang: askLangOf(session.askLang || LANG)}; renderSheet(); }
 function askOk(r){ return !!r && RECIPES.includes(r) && !r.isTwist && !isCustomId(r.id) && WISH_ID_RE.test(r.id); }
 // 今日の献立の候補から: いま出ている献立の料理と、家族みんなが食べられる主菜の案で6品
 function askToday(){
     const ids = [];
-    ((session.menu && session.menu.items) || []).forEach(x => { if (x && askOk(x.r) && !wishBlockWhy(x.r) && !ids.includes(x.r.id)) ids.push(x.r.id); });
-    voteSuggest(Math.max(0, 6 - ids.length), ids).forEach(id => { if (askOk(recipeById(id)) && !ids.includes(id)) ids.push(id); });
+    ((session.menu && session.menu.items) || []).forEach(x => { if (x && askOk(x.r) && !wishBlockWhy(x.r) && !wishAlg(x.r) && !ids.includes(x.r.id)) ids.push(x.r.id); });
+    voteSuggest(Math.max(0, 6 - ids.length), ids).forEach(id => { const r = recipeById(id); if (askOk(r) && !wishBlockWhy(r) && !wishAlg(r) && !ids.includes(id)) ids.push(id); });   // 家族みんなのアレルゲンに当たらない料理だけ（R84）
     return ids.slice(0, 6);
 }
 function askImg(r){ const ph = photoOf(r), src = ph && String(ph.thumb || ph.src || '').replace(/[?#].*$/, ''); return src && ASK_IMG_RE.test(src) ? src : ''; }
-function askLink(ids, name){
-    const d = ids.map(id => recipeById(id)).filter(askOk).slice(0, ASK_MAX).map(r => { const a = [r.id, [...String(r.name)].slice(0, ASK_NAME_MAX).join('')], im = askImg(r); if (im) a.push(im); return a; });
+// 第22回 R85: 家族の画面の言葉（ask.html の18言語。はじめは送る人の画面の言葉）。料理名は、アプリにその言葉の訳があればその言葉で
+const ASK_LANGS = ['ja', ...I18N_FILES];
+const ASK_Q = {ja: '何が食べたい？', en: 'What do you want to eat?', ko: '뭐 먹고 싶어?', 'zh-Hans': '想吃什么？', 'zh-Hant': '想吃什麼？', th: 'อยากกินอะไร?', vi: 'Muốn ăn gì?', id: 'Mau makan apa?', fil: 'Ano ang gusto mong kainin?', es: '¿Qué te apetece comer?', fr: 'Qu’as-tu envie de manger ?', de: 'Worauf hast du Lust?', it: 'Cosa ti va di mangiare?', 'pt-BR': 'O que você quer comer?', hi: 'क्या खाना है?', ar: 'ماذا تريد أن تأكل؟', tr: 'Ne yemek istersin?', pl: 'Na co masz ochotę?'};
+function askLangOf(l){ return ASK_LANGS.includes(l) ? l : LANG; }
+// 料理名をその言葉で（訳がなければ英語、英語もなければ今の画面の名前）
+function askNameIn(r, l){
+    if (!r || !l || l === LANG) return r ? r.name : '';
+    const rn = (cc, lg) => { const d = PACK_TR[cc + '.' + lg], x = d && d.recipes && d.recipes[r.id]; return x && x.name ? x.name : ''; };
+    if (r.pack){
+        if (l === 'en') return (r.alt && r.alt[0]) || r.name;
+        const pk = PACKS[r.pack];
+        return rn(r.pack, l) || (pk && pk.lang === l && r.alt && r.alt[1]) || (r.alt && r.alt[0]) || r.name;
+    }
+    const jp = r.trLang ? r.nameEn : r.name;
+    if (l === 'ja') return jp || r.name;
+    return rn('JP', l) || rn('JP', 'en') || r.name;
+}
+// その言葉の料理名の訳を読んでおく（読めなくても送れる。名前は英語などになる）
+function askPrepLang(ids, l){
+    if (!l || l === LANG) return Promise.resolve();
+    const ps = [];
+    ids.map(id => recipeById(id)).filter(Boolean).forEach(r => {
+        if (r.pack){ if (l !== 'en' && trAvail(r.pack).includes(l)) ps.push(loadPackTr(r.pack, l)); }
+        else if (l !== 'ja'){ if (JP_TR_LANGS.includes(l)) ps.push(loadPackTr('JP', l)); ps.push(loadPackTr('JP', 'en')); }
+    });
+    return Promise.all(ps.map(p => p.catch(() => null))).then(() => {});
+}
+function askLink(ids, name, lang){
+    const l = askLangOf(lang || LANG);
+    const rs = ids.map(id => recipeById(id)).filter(askOk).slice(0, ASK_MAX);
+    const d = rs.map(r => { const a = [r.id, [...String(askNameIn(r, l) || r.name)].slice(0, ASK_NAME_MAX).join('')], im = askImg(r); if (im) a.push(im); return a; });
     if (!d.length) return '';
-    const o = {v: 1, k: 'k', d, l: LANG, t: ymdPack(TODAY)}; if (name) o.n = name;
+    const o = {v: 1, k: 'k', d, l, t: ymdPack(TODAY)}; if (name) o.n = name;
+    const al = rs.filter(wishAlg).map(r => r.id); if (al.length) o.a = al;   // R84: 家族みんなのアレルゲンに当たる料理の番号。ask.html は ⚠「アレルギーに注意」を出す（受けとるときは今までどおり止める）
     let c = b64uEnc(JSON.stringify(o));
     if (c.length > ASK_CODE_MAX){ d.forEach(a => { a.length = 2; }); c = b64uEnc(JSON.stringify(o)); }   // 長すぎるときは絵を外す
     return c.length > ASK_CODE_MAX ? '' : DOC_BASE + 'ask.html#' + WISH_KEY + '=' + c;
 }
-function askSendText(ids, name){
-    const url = askLink(ids, name); if (!url) return '';
-    return [name ? t('【ご飯帖】{name}より：何が食べたい？押して返してね', {name}) : t('【ご飯帖】何が食べたい？押して返してね'), t('押して答える → {url}', {url})].join('\n');
+function askSendText(ids, name, lang){
+    const l = askLangOf(lang || LANG), url = askLink(ids, name, l); if (!url) return '';
+    return [name ? t('【ご飯帖】{name}より：何が食べたい？押して返してね', {name}) : t('【ご飯帖】何が食べたい？押して返してね'), ...(l !== LANG && ASK_Q[l] ? [ASK_Q[l]] : []), t('押して答える → {url}', {url})].join('\n');
 }
 function askMakeSheetHtml(){
     const s = sheet, n = s.sel.length, name = sendName(), q = s.q || '';
@@ -9654,12 +9704,20 @@ function askMakeSheetHtml(){
         <div class="wsh-grid" id="wish-grid" role="group" aria-label="${esc(t('何が食べたい？'))}">${wishGridHtml()}</div>
         <div class="small muted wsh-name">${s.nameEdit ? `<label>${esc(t('送る名前（空でもかまいません）'))} <input type="text" id="wish-name" value="${esc(name)}" maxlength="10" autocomplete="off"></label><button type="button" class="btn text" data-act="wish-name-ok">${esc(t('決める'))}</button>`
             : `<span>${esc(t('送る名前'))}: ${esc(name || t('（なし）'))}</span> <button type="button" class="btn text" data-act="wish-name">${esc(t('変える'))}</button>`}</div>
+        <label class="small wsh-lang">${esc(t('家族の画面の言葉'))} <select id="ask-lang">${ASK_LANGS.map(l => `<option value="${l}"${l === askLangOf(s.lang) ? ' selected' : ''}>${esc(LANG_NAMES[l] || l)}</option>`).join('')}</select></label>
         ${n >= ASK_MAX ? `<p class="small muted" role="status">${esc(t('{n}品まで選べます', {n: ASK_MAX}))}</p>` : ''}
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="ask-make" ${n ? '' : 'disabled'}>${esc(n ? t('送る文をつくる（{n}品）', {n}) : t('送る文をつくる'))}</button></div>`;
 }
 /* ---- A-2 作る人が受けとる ---- */
 function wishInSheetHtml(){
     const p = sheet.p, seen = sheet.seen;
+    if (p.any) return `<div class="wsh-from"><span class="wsh-av" aria-hidden="true">${esc([...wishWho(p.n)][0])}</span><div><b>${esc(t('{name} から', {name: wishWho(p.n)}))}</b>${p.t ? `<div class="small muted">${esc(jpDate(p.t))}</div>` : ''}</div></div>
+        <h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
+        <p class="wsh-word wsh-any"><b>${esc(t('なんでもいい'))}</b>${p.m != null ? esc(t('（{word}）', {word: wishWords()[p.m]})) : ''}</p>
+        ${seen ? `<div class="wsh-info" role="status">${esc(t('このリンクは、前に読みこみました'))}</div><div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`
+            : `<div class="wsh-info">${esc(t('「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。'))}</div>
+        <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-accept">${esc(t('受けとる'))}</button><button type="button" class="btn text" data-act="wish-decline">${esc(t('今回は受けとらない'))}</button></div>`}
+        <p class="tiny muted wsh-lock">${ICO_LOCK}${esc(t('リンクの中身はこのスマホの中だけで読みました'))}</p>`;
     const rs = p.ids.map(id => recipeById(id)).filter(Boolean), why = rs.map(r => wishBlockWhy(r)), okN = why.filter(x => !x).length;
     const dec = decidedToday() ? cookItems().map(x => x.r.name) : [];
     const keep = dec.length ? t('今日の決めた献立（{names}）は変わりません。', {names: joinNames(dec)}) : t('いま出ている今日の献立は変わりません。');
@@ -9684,7 +9742,11 @@ function wishKeep(ids, m){
     });
     S.wants = list.slice(0, WISH_MAX); save(); return n;
 }
+// 「なんでもいい」の返事（R87）: S.wantAny = [{k, n, m, t, at}]（10件・30日まで）。献立の候補にはしない。家族リクエストに「○○：なんでもいい」と残す
+function wishAnyList(){ if (!Array.isArray(S.wantAny)) S.wantAny = []; return S.wantAny; }
+function wishAnyRecent(){ return wishAnyList().filter(w => daysBetween(w.at, TODAY) < WISH_ACTIVE_DAYS); }
 function wishAccept(p){
+    if (p.any){ const a = wishAnyList().filter(w => w.n !== p.n); a.unshift({k: p.key, n: p.n, m: p.m, t: p.t || TODAY, at: TODAY}); S.wantAny = a.slice(0, 10); wishSeenAdd(p.key); save(); return; }
     const list = wishList();
     p.ids.forEach(id => {
         const r = recipeById(id); if (!r || wishBlockWhy(r)) return;
@@ -9712,7 +9774,7 @@ function wishPasteSheetHtml(){
 }
 /* ---- A-3 決める段の入口「食べたいもの（1）」: 届いているものの一覧 ---- */
 function wishListSheetHtml(){
-    const act = wishesActive(), rest = wishList().filter(w => !act.includes(w) && daysBetween(w.at, TODAY) < WISH_KEEP_DAYS);
+    const act = wishesActive(), rest = wishList().filter(w => !act.includes(w) && daysBetween(w.at, TODAY) < WISH_KEEP_DAYS), anyR = wishAnyRecent();
     const dec = decidedToday(), m = session.menu, inMenu = new Set(menuIds());
     const row = w => { const r = recipeById(w.id); if (!r) return '';
         const conf = sheet.confirm === w.id, slot = slotOf(r), cur = m && (m.items.find(x => x.slot === slot) || {}).r;
@@ -9721,7 +9783,8 @@ function wishListSheetHtml(){
             <div class="wsh-row-a">${inMenu.has(w.id) ? `<span class="small muted">${esc(t('今日の献立にあります'))}</span>` : !dec && m && m.items.some(x => x.slot === slot) && !conf ? `<button type="button" class="btn sm" data-act="wish-today" data-id="${esc(w.id)}">${esc(t('今日に入れる'))}</button>` : ''}<button type="button" class="btn sm ghost" data-act="wish-rm" data-id="${esc(w.id)}">${esc(t('外す'))}</button></div></div>`; };
     return `<h2 class="wsh-h">${esc(t('食べたいもの'))}</h2>
         <p class="small muted">${esc(dec ? (soloWish() ? t('今日の献立は決めてあります。入れたものは、次に献立を決めるときの候補です。') : t('今日の献立は決めてあります。届いたものは、次に献立を決めるときの候補です。')) : t('次に献立を決めるときの候補です。今日に入れたいときだけ押してください。'))}</p>
-        ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : `<p class="small muted">${esc(soloWish() ? t('食べたいものは、まだありません') : t('いまは届いているものはありません'))}</p>`}
+        ${act.length ? `<div class="wsh-list">${act.map(row).join('')}</div>` : anyR.length ? '' : `<p class="small muted">${esc(soloWish() ? t('食べたいものは、まだありません') : t('いまは届いているものはありません'))}</p>`}
+        ${anyR.length ? `<div class="wsh-any-list">${anyR.map(w => `<div class="small wsh-any-row"><b>${esc(t('{name}：{dish}', {name: wishWho(w.n), dish: t('なんでもいい')}))}</b><span class="muted">${GAP()}${esc(jpDate(w.at))}${w.m != null ? GAP() + esc(wishWords()[w.m]) : ''}</span></div>`).join('')}</div>` : ''}
         ${rest.length ? `<details class="box wsh-old"><summary>${esc(soloWish() ? t('前に入れたもの') : t('前に届いたもの'))}</summary><div class="inner">${rest.map(w => { const r = recipeById(w.id); return r ? `<div class="small">${esc(r.name)}<span class="muted">${GAP()}${esc(wishWhoOf(w))}${GAP()}${esc(jpDate(w.at))}${wishDone(w) ? GAP() + esc(t('作りました')) : (b => b ? GAP() + esc(b) : '')(wishBlockWhy(r))}</span></div>` : ''; }).join('')}</div></details>` : ''}
         <div class="row wsh-set"><button class="btn text" data-act="ask-open">${esc(t('家族に「何が食べたい？」と聞く'))}</button><button class="btn text" data-act="wish-open">${esc(soloWish() ? t('食べたいものを選ぶ') : t('食べたいものを送る'))}</button><button class="btn text" data-act="wish-paste-open">${esc(t('届いたものを貼りつける'))}</button></div>
         <div class="wsh-actions"><button type="button" class="btn primary wide" data-act="wish-close">${esc(t('閉じる'))}</button></div>`;
@@ -9785,7 +9848,7 @@ function voteMakeOpen(){
 function voteEntryHtml(){
     if (!famMulti()) return '';
     const v = voteOf(voteWeek()), n = v ? Object.keys(v.ans).length : 0;
-    return `<div class="row wsh-set wk-vote"><button type="button" class="btn text" data-act="vote-open">${esc(n ? t('○つけ表（返事 {n}人）', {n}) : v ? t('○つけ表（返事を待っています）') : t('○つけ表をつくる'))}</button></div>`;
+    return `<div class="row wsh-set wk-vote"><button type="button" class="btn text" data-act="ask-open">${esc(t('家族に「何が食べたい？」と聞く'))}</button><button type="button" class="btn text" data-act="vote-open">${esc(n ? t('○つけ表（返事 {n}人）', {n}) : v ? t('○つけ表（返事を待っています）') : t('○つけ表をつくる'))}</button></div>`;
 }
 function voteOpen(){ const v = voteOf(voteWeek()); if (v && Object.keys(v.ans).length){ sheet = {kind: 'vote-table', w: v.w}; renderSheet(); } else voteMakeOpen(); }
 // 表を残す（同じ候補なら返事もそのまま。候補を変えたら、前の返事は入れない＝作り直し）
@@ -13001,14 +13064,16 @@ document.addEventListener('click', e => {
         case 'wish-keep': { if (!sheet || sheet.kind !== 'wish-send' || !sheet.sel.length) break; const n = wishKeep(sheet.sel, sheet.m); closeSheet(); render();
             toast(n ? t('候補に入れました。次に献立を決めるときに出ます') : t('合わないので候補に入れていません')); break; }
         case 'wish-accept': { if (!sheet || sheet.kind !== 'wish-in') break; const p = sheet.p; wishAccept(p); closeSheet(); render();
-            toast(t('受けとりました。次に献立を決めるときの候補になります')); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); break; }
+            toast(p.any ? t('「なんでもいい」を受けとりました') : t('受けとりました。次に献立を決めるときの候補になります')); if (!S.settings.country) openCountrySheet(); else if (!S.onboarded) startOnboard(); break; }
         case 'wish-decline': { if (sheet && sheet.kind === 'wish-in' && !sheet.seen){ wishSeenAdd(sheet.p.key); save(); } wishClose(); break; }
         case 'wish-list': sheet = {kind: 'wish-list'}; renderSheet(); break;
         case 'ask-open': askOpen(); break;
         case 'ask-today': if (sheet && sheet.kind === 'ask-make'){ const ids = askToday(); if (!ids.length){ toast(t('この条件で出せる主菜がありません')); break; } sheet.sel = ids; sheet.q = ''; renderSheet(); } break;
         case 'ask-make': { if (!sheet || sheet.kind !== 'ask-make' || !sheet.sel.length) break; const x = $('#wish-name'); if (x){ S.settings.sendName = wishName(x.value); save(); }
-            const text = askSendText(sheet.sel, sendName()); if (!text) break;
-            sheet = {kind: 'share', card: 'wish', text, title: t('何が食べたい？')}; renderSheet(); break; }
+            const sh = sheet, l = askLangOf(sh.lang);
+            askPrepLang(sh.sel, l).then(() => { if (sheet !== sh) return; const text = askSendText(sh.sel, sendName(), l); if (!text) return;
+                sheet = {kind: 'share', card: 'wish', text, title: t('何が食べたい？')}; renderSheet(); });
+            break; }
         // ---- ○つけ表（案B） ----
         case 'vote-open': voteOpen(); break;
         case 'vote-tog': if (sheet && sheet.kind === 'vote-make'){ const i = sheet.on.indexOf(id); if (i >= 0) sheet.on.splice(i, 1); else sheet.on.push(id); sheet.on.sort((a, b) => sheet.ids.indexOf(a) - sheet.ids.indexOf(b)); renderSheet(); } break;
@@ -13782,6 +13847,7 @@ document.addEventListener('change', e => {
         uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}).then(() => { if (sheet) renderSheet(); });
         return;
     }
+    if (el.id === 'ask-lang' && sheet && sheet.kind === 'ask-make'){ sheet.lang = session.askLang = askLangOf(el.value); askPrepLang(sheet.sel, sheet.lang); return; }   // R85: 家族の画面の言葉（料理名の訳は先に読んでおく）
     if ((el.id === 'fp-cam' || el.id === 'fp-lib') && el.files && el.files[0]){ const f = el.files[0]; el.value = ''; fphotoStart(f); return; }
     if (el.id === 'photo-input-cook' && el.files && el.files[0]){
         const cur = cookItems()[session.cookIdx || 0]; if (!cur){ el.value = ''; return; }

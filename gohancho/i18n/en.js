@@ -1744,5 +1744,10 @@ GOHAN_I18N('en', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Pick some ideas and send them. Your family can reply with a tap, even without the app. Opening their reply link adds it to Family requests.",
     "今日の献立の候補から": "From today's menu ideas",
     "{n}品まで選べます": "You can pick up to {n} dishes",
-    "言葉は今の{lang}のままにする": "Keep the app in {lang}"
+    "言葉は今の{lang}のままにする": "Keep the app in {lang}",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "Dishes marked ⚠ use a family member's allergen. If you send them, your family will see “Allergy warning” too.",
+    "家族の画面の言葉": "Language for your family",
+    "なんでもいい": "Anything is fine",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "They replied “Anything is fine”. If you accept, it stays in Family requests. Menus are planned as usual.",
+    "「なんでもいい」を受けとりました": "Got “Anything is fine”"
 });

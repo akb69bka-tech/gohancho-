@@ -1743,5 +1743,10 @@ GOHAN_I18N('vi', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Chọn vài món rồi gửi đi. Gia đình chỉ cần chạm để trả lời, không cần ứng dụng. Mở liên kết trả lời sẽ thêm vào Yêu cầu của gia đình.",
     "今日の献立の候補から": "Từ các món gợi ý hôm nay",
     "{n}品まで選べます": "Chọn được tối đa {n} món",
-    "言葉は今の{lang}のままにする": "Vẫn giữ ngôn ngữ {lang}"
+    "言葉は今の{lang}のままにする": "Vẫn giữ ngôn ngữ {lang}",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "Món có ⚠ dùng chất gây dị ứng của người trong nhà. Nếu gửi, gia đình cũng sẽ thấy “Chú ý dị ứng”.",
+    "家族の画面の言葉": "Ngôn ngữ cho gia đình",
+    "なんでもいい": "Gì cũng được",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "Câu trả lời là “Gì cũng được”. Nếu nhận, câu này sẽ nằm trong yêu cầu của gia đình. Thực đơn vẫn chọn như thường lệ.",
+    "「なんでもいい」を受けとりました": "Đã nhận “Gì cũng được”"
 });

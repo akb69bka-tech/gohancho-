@@ -1743,5 +1743,10 @@ GOHAN_I18N('tr', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Birkaç fikir seçip gönder. Ailen uygulama olmadan, tek dokunuşla yanıt verebilir. Yanıt bağlantısını açınca Aile istekleri'ne eklenir.",
     "今日の献立の候補から": "Bugünkü menü fikirlerinden",
     "{n}品まで選べます": "En fazla {n} yemek seçebilirsin",
-    "言葉は今の{lang}のままにする": "Ekran {lang} kalsın"
+    "言葉は今の{lang}のままにする": "Ekran {lang} kalsın",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "⚠ işaretli yemekler aileden birinin alerjenini içerir. Gönderirsen ailen de “Alerji uyarısı” görür.",
+    "家族の画面の言葉": "Ailenin dili",
+    "なんでもいい": "Fark etmez",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "“Fark etmez” yanıtı geldi. Kabul edersen aile istekleri arasında kalır. Menüler her zamanki gibi seçilir.",
+    "「なんでもいい」を受けとりました": "“Fark etmez” alındı"
 });

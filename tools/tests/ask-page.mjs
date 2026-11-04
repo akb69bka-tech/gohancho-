@@ -5,6 +5,8 @@
 //  K3 料理を押す → 返事の文とリンク（いつもの「食べたい」のリンク k:'w'）。LINE・メール・SMS・コピー。3つまで。「なんでもいい」はリンクなしの文
 //  K4 返事のリンクはアプリの wishParse で読める → アプリで開くと受けとる画面 → 受けとると家族リクエストに入る
 //  K5 アプリで ask のリンクを開いたとき・貼りつけたときは、案内だけ出す（落ちない）
+//  K7 第22回: R84 家族のアレルゲンの料理に ⚠（一覧・リンクの a・ask.html の「⚠ アレルギーに注意」）／R85 家族の画面の言葉を選べる（料理名もその言葉）／
+//     R86 今日の画面（1週間の主菜の下、○つけ表の横）にも入口／R87「なんでもいい」もリンクで、アプリで「なんでもいい」として受けとれる
 //  K6 ask.html: こわれた・長すぎる・形のちがう・よその種類のリンク → 読めないと出して、ボタンは出さない。名前のタグ・よその絵の場所は使わない
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -94,7 +96,7 @@ let wife;
 
 // ---- K2・K3 家族の端末で ask.html を開く ----
 const HEAD = {ja: '何が食べたい？', en: 'What do you want to eat?', ar: 'ماذا تريد أن تأكل؟'};
-let reply = '';
+let reply = '', anyReply = '';
 for (const [lang, link] of [['ja', askJa], ['en', askEn], ['ar', askAr]]){
     for (const w of [390, 195]){
         const {p, ctx, foreign} = await openAsk(hashOf(link), w, lang === 'ja' ? 'ja-JP' : lang === 'en' ? 'en-US' : 'ar');
@@ -140,10 +142,11 @@ for (const [lang, link] of [['ja', askJa], ['en', askEn], ['ar', askAr]]){
             for (const id of ids) if (await p.getAttribute(`#grid .dish[data-id="${id}"]`, 'aria-pressed') !== 'true') await p.click(`#grid .dish[data-id="${id}"]`);
             const n = await p.evaluate(() => document.querySelectorAll('#grid .dish[aria-pressed="true"]').length);
             ok(n === Math.min(3, ids.length), 'K3f 3つまでしか選べない: ' + n);
-            // なんでもいい（リンクなしの文）
+            // なんでもいい（R87: アプリで受けとれるリンクつき）
             await p.click('#any');
             const t3 = await p.evaluate(() => ({t: document.querySelector('#reply-text').value, n: document.querySelectorAll('#grid .dish[aria-pressed="true"]').length}));
-            ok(t3.n === 0 && t3.t.includes('なんでもいいよ') && !/#g=/.test(t3.t), 'K3g 「なんでもいい」: ' + t3.t);
+            anyReply = (t3.t.match(/https:\/\/\S+/) || [''])[0];
+            ok(t3.n === 0 && t3.t.includes('なんでもいいよ') && anyReply.startsWith(DOC + '#g='), 'K3g 「なんでもいい」もリンクつき: ' + t3.t.split('\n')[0]);
             await p.click('#any');
             ok(await p.evaluate(() => document.querySelector('#reply').hidden), 'K3h 何も選ばないと返事の欄は出ない');
         }
@@ -185,6 +188,71 @@ for (const [lang, link] of [['ja', askJa], ['en', askEn], ['ar', askAr]]){
     await p.evaluate(() => closeSheet());
     ok(await p.evaluate(t => { const x = wishParse('届いた文\n' + t); return x.err; }, askJa) === 'ask', 'K5c 貼りつけても案内');
     ok(await p.evaluate(() => wishParse('#g=' + b64uEnc(JSON.stringify({v: 1, k: 'k', d: 'x'}))).err) === 'ask', 'K5d 形のちがう ask でも落ちない');
+    await ctx.close();
+}
+
+// ---- K7 第22回 R84〜R87 ----
+{
+    const FAMEGG = [{id: 'f1', name: 'ゆうき', role: 'adult', avoid: [], allergy: []}, {id: 'f2', name: 'はると', role: 'child', avoid: ['@egg'], allergy: ['@egg']}];
+    const {p, ctx} = await openApp({family: FAMEGG, settings: {sendName: 'ママ'}, history: [{d: '2026-10-20', id: 'hamburg', slot: '主菜'}, {d: '2026-10-21', id: 'hamburg', slot: '主菜'}, {d: '2026-10-22', id: 'karaage', slot: '主菜'}]});
+    // R86: 今日の画面（1週間の主菜の下）の入口
+    await p.evaluate(() => { setTab('today'); render(); });
+    ok(await p.evaluate(() => !!document.querySelector('#view .wk-vote [data-act="ask-open"]')), 'K7a 今日の画面（○つけ表の横）にも「家族に『何が食べたい？』と聞く」');
+    await p.evaluate(() => { const d = document.querySelector('#view .wk-vote [data-act="ask-open"]').closest('details'); if (d) d.open = true; });   // 「1週間の主菜」をひらく
+    await p.click('#view .wk-vote [data-act="ask-open"]');
+    ok(await sheetKind(p) === 'ask-make', 'K7b 押すと候補を選ぶ画面');
+    // R84: 家でよく出る料理のハンバーグ（卵）に ⚠。当たらない料理のうしろ
+    const g = await p.evaluate(() => [...document.querySelectorAll('#wish-grid .wsh-card')].map(x => ({id: x.dataset.id, tag: (x.querySelector('.alg-tag') || {}).textContent || ''})));
+    const hb = g.find(x => x.id === 'hamburg');
+    ok(hb && /^⚠ 卵/.test(hb.tag), 'K7c ハンバーグに ⚠ 卵: ' + JSON.stringify(hb));
+    ok(g.findIndex(x => x.tag) > g.findLastIndex(x => !x.tag), 'K7d ⚠ の料理はうしろ: ' + g.map(x => x.id + (x.tag ? '⚠' : '')).join(','));
+    ok(await p.evaluate(() => /アレルギーに注意/.test((document.querySelector('.wsh-alg-note') || {}).textContent || '')), 'K7e ⚠ の説明の一言');
+    await p.click('[data-act="ask-today"]');
+    ok(await p.evaluate(() => sheet.sel.every(id => !wishAlg(recipeById(id)) && !wishBlockWhy(recipeById(id)))), 'K7f 今日の献立の候補からは当たらない料理だけ');
+    // R85: 家族の画面の言葉 = English
+    await p.evaluate(() => { sheet.sel = ['karaage', 'hamburg']; renderSheet(); });
+    ok(await p.evaluate(() => (document.querySelector('#ask-lang') || {}).value) === 'ja', 'K7g 家族の画面の言葉は、はじめは送る人の言葉（ja）');
+    await p.selectOption('#ask-lang', 'en');
+    await p.waitForTimeout(300);
+    await p.click('[data-act="ask-make"]');
+    await p.waitForFunction(() => sheet && sheet.kind === 'share', null, {timeout: 5000}).catch(() => {});
+    const text = await p.evaluate(() => (document.querySelector('#share-text') || {}).value || '');
+    const link = (text.match(/https:\/\/\S+/) || [''])[0];
+    const o = link ? JSON.parse(Buffer.from(link.split('#g=')[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf8')) : {};
+    ok(o.l === 'en' && text.includes('What do you want to eat?'), 'K7h 送る文とリンクの言葉は en: ' + o.l + ' / ' + text.split('\n').join(' | ').slice(0, 90));
+    const nm = Object.fromEntries((o.d || []).map(a => [a[0], a[1]]));
+    ok(/Karaage/.test(nm.karaage || '') && /^[\x20-\x7e]+$/.test(nm.hamburg || ''), 'K7i 料理名も英語: ' + JSON.stringify(nm));
+    ok(Array.isArray(o.a) && o.a.includes('hamburg') && !o.a.includes('karaage'), 'K7j リンクに ⚠ の料理の印（a）: ' + JSON.stringify(o.a));
+    // 家族の端末（英語）: ⚠ Allergy warning
+    {
+        const a = await openAsk(hashOf(link), 390, 'ja-JP');
+        const r = await a.p.evaluate(() => ({lang: document.documentElement.lang, d: [...document.querySelectorAll('#grid .dish')].map(x => ({id: x.dataset.id, nm: x.querySelector('.nm').textContent, alg: (x.querySelector('.alg') || {}).textContent || ''})),
+            sw: document.documentElement.scrollWidth, vw: document.documentElement.clientWidth}));
+        ok(r.lang === 'en', 'K7k ask.html は選んだ言葉（端末が日本語でも en）: ' + r.lang);
+        const h = r.d.find(x => x.id === 'hamburg'), k = r.d.find(x => x.id === 'karaage');
+        ok(h && h.alg === '⚠ Allergy warning' && k && !k.alg && r.d[r.d.length - 1].id === 'hamburg', 'K7l ask.html の ⚠「Allergy warning」は当たる料理だけ・うしろ: ' + JSON.stringify(r.d));
+        ok(r.sw <= r.vw, 'K7m はみ出さない');
+        await shot(a.p, 'ask-en-alg-390');
+        for (const [lg, w] of [['ja', 'アレルギーに注意'], ['ar', 'تنبيه: حساسية']]){
+            const o2 = Object.assign({}, o, {l: lg}), h2 = '#g=' + b64u(JSON.stringify(o2));
+            await a.p.evaluate(x => { location.hash = x; }, h2); await a.p.waitForTimeout(80);
+            const t2 = await a.p.evaluate(() => (document.querySelector('#grid .dish[data-id="hamburg"] .alg') || {}).textContent || '');
+            ok(t2 === '⚠ ' + w, `K7n ask.html ${lg}: ${t2}`);
+        }
+        await a.ctx.close();
+    }
+    // R87: なんでもいい → アプリで受けとる
+    const pr = await p.evaluate(u => wishParse(u), anyReply);
+    ok(pr.k === 'w' && pr.any === true && pr.n === 'ゆうきb', 'K7o 「なんでもいい」のリンクは読める: ' + JSON.stringify(pr));
+    await p.evaluate(h => { closeSheet(); location.hash = h; }, hashOf(anyReply));
+    await p.waitForFunction(() => sheet && sheet.kind === 'wish-in', null, {timeout: 5000}).catch(() => {});
+    ok(await sheetKind(p) === 'wish-in' && (await sheetText(p)).includes('なんでもいい'), 'K7p 開くと「なんでもいい」の受けとる画面');
+    await p.click('[data-act="wish-accept"]');
+    ok(await p.evaluate(() => (S.wantAny || []).some(w => w.n === 'ゆうきb')), 'K7q 受けとると「なんでもいい」として残る');
+    await p.evaluate(() => { sheet = {kind: 'wish-list'}; renderSheet(); });
+    ok(/ゆうきb：なんでもいい/.test(await sheetText(p)), 'K7r 家族リクエストに「ゆうきb：なんでもいい」');
+    await p.evaluate(() => closeSheet());
+    ok(await p.evaluate(() => { saveNow(); const raw = JSON.parse(localStorage.getItem('gohancho.v1')); return Array.isArray(raw.wantAny) && raw.wantAny.length === 1; }), 'K7s 保存される');
     await ctx.close();
 }
 

@@ -1743,5 +1743,10 @@ GOHAN_I18N('fil', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Pumili ng ilang ulam at ipadala. Makakasagot ang pamilya sa isang tap, kahit walang app. Kapag binuksan ang link ng sagot, mapupunta ito sa Hiling ng pamilya.",
     "今日の献立の候補から": "Mula sa mga mungkahi sa menu ngayon",
     "{n}品まで選べます": "Hanggang {n} ulam ang mapipili",
-    "言葉は今の{lang}のままにする": "Panatilihin sa {lang} ang screen"
+    "言葉は今の{lang}のままにする": "Panatilihin sa {lang} ang screen",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "Ang mga ulam na may ⚠ ay may allergen ng isang kapamilya. Kapag ipinadala mo, makikita rin ng pamilya ang “Mag-ingat sa allergy”.",
+    "家族の画面の言葉": "Wika para sa pamilya",
+    "なんでもいい": "Kahit ano",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "“Kahit ano” ang sagot. Kapag tinanggap, mananatili ito sa mga request ng pamilya. Pipiliin ang menu gaya ng dati.",
+    "「なんでもいい」を受けとりました": "Natanggap ang “Kahit ano”"
 });

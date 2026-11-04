@@ -1743,5 +1743,10 @@ GOHAN_I18N('pl', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Wybierz kilka pomysłów i wyślij. Rodzina odpowie jednym dotknięciem, nawet bez aplikacji. Po otwarciu linku z odpowiedzią trafi ona do Życzeń rodziny.",
     "今日の献立の候補から": "Z pomysłów na dzisiejsze menu",
     "{n}品まで選べます": "Możesz wybrać do {n} dań",
-    "言葉は今の{lang}のままにする": "Zostaw ekran w języku: {lang}"
+    "言葉は今の{lang}のままにする": "Zostaw ekran w języku: {lang}",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "Dania oznaczone ⚠ zawierają alergen kogoś z rodziny. Jeśli je wyślesz, rodzina też zobaczy „Uwaga: alergia”.",
+    "家族の画面の言葉": "Język dla rodziny",
+    "なんでもいい": "Wszystko jedno",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "Odpowiedź: „Wszystko jedno”. Po przyjęciu zostanie w prośbach rodziny. Menu układamy jak zwykle.",
+    "「なんでもいい」を受けとりました": "Odebrano „Wszystko jedno”"
 });

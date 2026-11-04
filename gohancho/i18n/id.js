@@ -1743,5 +1743,10 @@ GOHAN_I18N('id', {
     "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Pilih beberapa menu lalu kirim. Keluarga bisa membalas cukup dengan mengetuk, tanpa aplikasi. Membuka tautan balasan akan menambahkannya ke Permintaan keluarga.",
     "今日の献立の候補から": "Dari pilihan menu hari ini",
     "{n}品まで選べます": "Bisa pilih hingga {n} menu",
-    "言葉は今の{lang}のままにする": "Tetap pakai {lang}"
+    "言葉は今の{lang}のままにする": "Tetap pakai {lang}",
+    "⚠ の料理は、家族のアレルゲンを使います。送ると、家族の画面にも「アレルギーに注意」と出ます。": "Hidangan bertanda ⚠ memakai alergen anggota keluarga. Jika dikirim, keluarga juga akan melihat “Awas alergi”.",
+    "家族の画面の言葉": "Bahasa untuk keluarga",
+    "なんでもいい": "Apa saja boleh",
+    "「なんでもいい」の返事です。受けとると、家族リクエストに残ります。献立はいつもどおり決めます。": "Jawabannya “Apa saja boleh”. Jika diterima, akan tetap ada di permintaan keluarga. Menu dipilih seperti biasa.",
+    "「なんでもいい」を受けとりました": "“Apa saja boleh” diterima"
 });
