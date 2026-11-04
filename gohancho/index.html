@@ -1148,7 +1148,8 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2:not(.tight) .tg-mid{margin-bottom:8px}
 .tray.grid2.tight .tg-mid{margin-top:8px}   /* 名前の下に「かえる」を置く形（tight）では、上の段の「かえる」と丸のあいだ */
 .tray.grid2.tight .tg-mid{margin-bottom:8px}.tray.grid2.tight .tg-mid .shuffle .sh-ic{--shd:48px}   /* 第21回 R73: 下の段の料理の絵と丸のあいだも 8px（まるごと入れ替えの「元に戻す」がなくなったので、押しまちがえないように。195・375 で 0px だった）。お膳の高さは変えない（丸を 56px → 48px。押す大きさ 44px 以上のまま。高さが増えるとお膳が入りきらなくなる画面があった: 波 375・もっと大きい） */
-.tray.grid2:not(.tight) .wsh-tag{max-width:calc(100% - 48px)}
+.tray.grid2:not(.tight) .wsh-tag{max-width:calc(100% - max(0px, 50% - var(--vs) / 2 - 12px) - 48px)}   /* 第26回 R116: 角の丸（かえる。右端は器の右端から 12px 外）の手前まで。丸に重ねない（前は列の右端から 48px で、器が列より小さいと 2〜26px 重なっていた） */
+.wsh-tag .wt-f,.wsh-tag .wt-s{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wsh-tag .wt-s,.wsh-tag.short .wt-f{display:none}.wsh-tag.short .wt-s{display:inline}.tray.grid2 .wsh-tag{padding-inline:6px;inset-inline-end:auto}   /* 第26回 R116: 「ゆいの食べたいもの」が入らない幅では、印と名前だけ（「✉ ゆい」。名前は切らない。fixWishTag） */
 .p2-links{display:flex;flex-wrap:wrap;justify-content:center;gap:0 var(--s4)}
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
 .p2-link[disabled]{opacity:.5;cursor:default}
@@ -1832,10 +1833,19 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 /* 第24回 R103: 「食べたいもの」と同じ行（solo）では、残りの幅に収める（品名は … で省き、› は見える）。残りが狭い（11rem 未満）ときは下の行へ */
 .greet-row.solo:has(.sale-greet){flex-wrap:wrap;row-gap:4px}.greet-row.solo .sale-greet{width:auto;flex:1 1 11rem;min-width:0;max-width:100%}.sale-greet{box-sizing:border-box;max-width:100%}
 /* 第25回 R107: 特売の1行が「食べたいもの」の下の行に回り、そのぶんお膳の器が小さくなるとき（360/390・文字大きい/もっと大きい）は、「食べたいもの」を印（封筒）だけにして同じ行に入れる（名前は読み上げに残す。残りが 11rem 未満なら今までどおり下の行。fitTray が決める） */
-body.on-today.greet-sale1 .greet-row.solo .req-btn.lite{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}body.on-today.greet-sale1 .greet-row.solo .req-btn.lite .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.on-today.greet-sale1 .greet-row.solo .req-btn.lite{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}
 /* 第25回 R109: 家族のいる人も同じ。特売の1行（あいさつの代わり。R97）が家族リクエストの下の行にあり、お膳が入らないときは、まず同じ行に並べ（greet-sale2）、それでも 11rem 入らなければ家族リクエストを印と数だけに（greet-sale3。名前と件数は読み上げに残す）。fitTray が決める */
 body.on-today.greet-sale2 .greet-row:not(.solo):has(.sale-greet){flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:4px}body.on-today.greet-sale2 .greet-row:not(.solo) .req-btn{flex:0 1 auto;min-width:0;align-self:center}body.on-today.greet-sale2 .greet-row:not(.solo) .sale-greet{width:auto;flex:1 1 11rem;min-width:0}
-body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq2{display:none}
+body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn{position:relative;min-width:44px;min-height:44px;justify-content:center;padding-inline:8px}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq2{display:none}
+/* 第26回 R112: 特売の日に入口を詰めるとき（greet-sale1・greet-sale3）も、印だけにしない。印の下に小さな名前（11px。器の丸の「かえる」と同じ形）を置き、何のボタンか分かるように。幅は名前のぶん（約 80px）だけ広がる */
+body.on-today.greet-sale1 .greet-row.solo .req-btn.lite{flex-direction:column;gap:1px;padding:1px 6px}body.on-today.greet-sale1 .greet-row.solo .req-btn.lite .rq-l,body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq-l{overflow:hidden;max-width:6.5rem;font-size:11px;line-height:1.15;font-weight:700;white-space:normal;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;word-break:keep-all;overflow-wrap:anywhere}
+body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn{padding:1px 6px}body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn .rq1{flex-direction:column;gap:1px}
+/* 第26回 R113: 特売の日に届いた「食べたい」があるとき（wsale）: 入口（印・数・「ゆい：鶏の唐揚げ」）と特売を1つの行に。届いた一言を先に残す。
+   入らないときは fixGreetFit が、まず入口の名前（家族リクエスト）を読み上げだけにし（wl-off）、それでも一言か特売の最初の品名が切れるなら、特売を「🏷 特売 ›」に縮める（sg-short。品名は押した先と読み上げに） */
+.greet-row.wsale{flex-direction:row;align-items:center;gap:8px}.greet-row.wsale .req-btn{flex:0 1 auto;min-width:0;align-self:center;gap:8px;padding-inline:10px}.greet-row.wsale .req-btn .rq1{flex:none}
+.greet-row.wsale .sale-greet{width:auto;flex:1 1 0;min-width:10rem}.greet-row.wsale.wl-off .req-btn .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.greet-row.wsale .req-btn{position:relative}
+.sale-greet-s{display:none;flex:none;white-space:nowrap}.greet-row.wsale.sg-short .sale-greet{flex:0 0 auto;min-width:0;margin-inline-start:auto}.greet-row.wsale.sg-short .sale-greet-tx{display:none}.greet-row.wsale.sg-short .sale-greet-s{display:inline}
+@media (min-width:300px){body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq2{display:block}body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq1{flex:none}body.on-today.tray-tight5 header.top .req-btn:has(.rq2){position:relative}body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}   /* 第26回 R113: 上の端の行へ移した入口（いちばん詰めた形）でも、届いた一言（「ゆい：鶏の唐揚げ」）を名前の代わりに見せる（印・数・一言。名前は読み上げに）。幅195px は今までどおり印と数 */
 body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
 .sale-tag.sale-kin{font-weight:600;color:var(--muted)}
 </style>
@@ -4930,6 +4940,20 @@ function fixSwapWord(tr){
         if (w() > 32){ e.classList.add('sw-word-s'); if (w() > 32) e.classList.remove('sw-word', 'sw-word-s'); }   // 第18回 R58: 32px に入らない語は 9px で試し、それでも入らなければ ↻ だけ
     });
 }
+// 第26回 R116: お膳の「ゆいの食べたいもの」の札が入らない幅では「✉ ゆい」（印と名前だけ）にする。名前まで切れる形にしない
+function fixWishTag(tr){ tr.querySelectorAll('.wsh-tag').forEach(e => { e.classList.remove('short'); const f = e.querySelector('.wt-f'); if (f && (f.scrollWidth > f.clientWidth + 1 || e.scrollWidth > e.clientWidth + 1)) e.classList.add('short'); }); }
+// 第26回 R113: 特売の日に届いた「食べたい」がある行（wsale）: 届いた一言（「ゆい：鶏の唐揚げ」）と特売の最初の品名が見えるように詰める。
+// ① そのまま → ② 入口の名前（家族リクエスト）を読み上げだけに → ③ 特売を「🏷 特売 ›」に。行の高さは変わらない（お膳の大きさに関わらない）
+function fixGreetFit(){
+    const gr = document.querySelector('#greet .greet-row.wsale'); if (!gr) return;
+    const sg = gr.querySelector('.sale-greet'), tx = sg && sg.querySelector('.sale-greet-tx'), bt = gr.querySelector('.req-btn'), q2 = bt && bt.querySelector('.rq2');
+    gr.classList.remove('wl-off', 'sg-short'); if (!bt || !sg) return;
+    const cut = e => !!e && e.scrollWidth > e.clientWidth + 1;
+    const saleOk = () => { const tn = tx && tx.firstChild; if (!tn || tn.nodeType !== 3) return true; const rg = document.createRange(); rg.setStart(tn, 0); rg.setEnd(tn, Math.min(+sg.dataset.k || 0, tn.length)); const a = rg.getBoundingClientRect(), b = tx.getBoundingClientRect(); return a.left >= b.left - .5 && a.right <= b.right + .5; };
+    if (!cut(q2) && saleOk()) return;
+    gr.classList.add('wl-off'); if (!cut(q2) && saleOk()) return;
+    gr.classList.add('sg-short');
+}
 function trayIds(){ return session.menu && session.menu.items ? session.menu.items.map(x => x && x.r ? x.r.id : '-') : []; }   // お膳の料理（席の順）
 // 第18回 S22・R20（360×740・文字もっと大きい・家族の🔍 が上下の段、幅195px・文字大・家族リクエストあり）: いちばん詰めても入らないときの最後の一手。
 // 家族リクエストの入口（#greet の .req-btn）を上の端の行（印・国・設定の行。日付・アプリの名前は tray-tight4 で畳んである）へ移し、印（膳）を隠す（行が1つ減る＝44px＋余白）。
@@ -4946,6 +4970,7 @@ function reqUp(on){
     document.body.classList.remove('tray-tight5'); return false;
 }
 function fitTray(){
+    if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
     // 第12回 R34: 詰め方は毎回、何も詰めていない形から決め直す（前に決めた大きさ・詰め方を引きつがない）。
@@ -5074,7 +5099,7 @@ function fitTray(){
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
     svFit();   // 詰めた形（195px の見出しを畳む形など）でボタンの幅が変わったときの測り直し
-    fixSwapWord(tr);
+    fixSwapWord(tr); fixWishTag(tr);
     if (sy0 > 0){ const want = Math.round(sy0 + (tr.getBoundingClientRect().top + scrollY - tt0)), maxY = document.documentElement.scrollHeight - innerHeight; if (Math.abs(scrollY - want) > .5 && want >= 0 && want <= maxY + .5) window.scrollTo(0, want); }   // お膳の画面の中の高さを、測る前と同じに（お膳より上の中身が縮んだ分は動かす）
     toastAlign();   // ページに留めたお知らせ（第19回 R59）を、詰めたあとのお膳に合わせる（同期）
 }
@@ -6318,11 +6343,14 @@ function familyReqHtml(){
     if (soloWish() && !act.length) return `<button type="button" class="req-btn lite" data-act="wish-list">${ICO_MAIL}<span class="rq-l">${esc(t('食べたいもの'))}</span></button>`;
     const last = act.slice().sort((a, b) => (b.at || '').localeCompare(a.at || ''))[0], r = last && recipeById(last.id);
     const n = act.length, lab = soloWish() ? t('食べたいもの') : t('家族リクエスト');
-    return `<button type="button" class="req-btn${n ? ' has' : ''}" data-act="wish-list" aria-label="${esc(n ? t('家族リクエスト（{n}件）', {n}) : lab)}">
+    // 第26回 R114: 家族のいない人（自分で入れた「食べたいもの」）の読み上げは「食べたいもの（n）」。「家族リクエスト」と読まない
+    return `<button type="button" class="req-btn${n ? ' has' : ''}" data-act="wish-list" aria-label="${esc(n ? (soloWish() ? t('食べたいもの（{n}）', {n}) : t('家族リクエスト（{n}件）', {n})) : lab)}">
         <span class="rq1">${ICO_MAIL}<span class="rq-l">${esc(lab)}</span>${n ? `<span class="rq-n">${n}</span>` : ''}</span>${r ? `<span class="rq2">${esc(t('{name}：{dish}', {name: wishWhoOf(last), dish: weekAlg(() => algMark(r)) + trayName(r.name)}))}</span>` : ''}</button>`;
 }
 function greetRowHtml(){
-    return `<div class="greet-row${soloWish() && !(wishList().length && wishesActive().length) ? ' solo' : ''}">${familyReqHtml()}${saleGreetHtml() || `<p class="greet-tx">${esc(greetText())}</p>`}</div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
+    const n = wishList().length ? wishesActive().length : 0, sg = saleGreetHtml();
+    // 第26回 R113: 特売の日に届いた「食べたい」があるときは、入口（印・数・「ゆい：鶏の唐揚げ」）と特売を1つの行に並べる（wsale）。届いた一言を先に残し、狭いときは特売を「🏷 特売 ›」に縮める（fixGreetFit）
+    return `<div class="greet-row${soloWish() && !n ? ' solo' : ''}${sg && n ? ' wsale' : ''}">${familyReqHtml()}${sg || `<p class="greet-tx">${esc(greetText())}</p>`}</div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
 }
 function praiseList(){ return [t('今日もおつかれさまです。'), t('献立が決まれば、半分は終わったようなものです。'), t('毎日のごはんが、ちゃんと回っています。'), t('記録しました。いつかの自分を助けます。'), t('今日の分、決まりました。あとは作るだけ。')]; }
 function praiseFor(ids, before){
@@ -10319,7 +10347,8 @@ function saleGreetHtml(){
     if (nm.length) parts.push(t('特売: {list}', {list: joinNames(nm.slice(0, 3)) + (nm.length > 3 ? t(' など') : '')}));   // 第24回 R103: 品名を先に（狭い幅で … に省いても品名が見える）
     if (on.length) parts.push(saleDayText(on));
     const tx = parts.join(GAP());
-    return `<button type="button" class="sale-greet" data-act="sale-goto" aria-label="${esc(tx + GAP() + t('特売を使う料理'))}"><span aria-hidden="true">🏷</span><span class="sale-greet-tx">${esc(tx)}</span><span class="sale-greet-go" aria-hidden="true">›</span></button>`;
+    const k = nm.length && tx.indexOf(nm[0]) >= 0 ? tx.indexOf(nm[0]) + nm[0].length : Math.min(tx.length, 8);   // 狭いときに見えていてほしい所まで（最初の品名の終わり。fixGreetFit）
+    return `<button type="button" class="sale-greet" data-act="sale-goto" data-k="${k}" aria-label="${esc(tx + GAP() + t('特売を使う料理'))}"><span aria-hidden="true">🏷</span><span class="sale-greet-tx">${esc(tx)}</span><span class="sale-greet-s" aria-hidden="true">${esc(t('特売'))}</span><span class="sale-greet-go" aria-hidden="true">›</span></button>`;
 }
 /* ---- 今日の画面の下（1週間の主菜・買い物メモのあと）: 特売を入れる・使う料理 ---- */
 function saleFoldHtml(){
@@ -11595,7 +11624,7 @@ function viewToday(){
         const isFresh = !!(r && freshAt(idx));
         return `<div class="spot ${cls}${wTag || vTag ? ' has-wtag' : ''}${isFresh ? ' fresh' : ''}" ${w ? `style="--w:${w}"` : 'style=""'}>
             ${isFresh ? `<span class="fresh-tag">${esc(t('新'))}</span>` : ''}
-            ${wTag ? `<span class="wsh-tag">${ICO_MAIL}${esc(t('{name}の食べたいもの', {name: wishWhoOf(wTag)}))}</span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
+            ${wTag ? `<span class="wsh-tag" title="${esc(t('{name}の食べたいもの', {name: wishWhoOf(wTag)}))}">${ICO_MAIL}<span class="wt-f">${esc(t('{name}の食べたいもの', {name: wishWhoOf(wTag)}))}</span><span class="wt-s">${esc(wishWhoOf(wTag))}</span></span>` : vTag ? `<span class="wsh-tag">○ ${esc(t('そろった'))}</span>` : ''}
             ${r ? vesselHtml(kind, r, false, !prevShown || prevShown.ids[idx] !== r.id) : `<div class="vessel v-${kind}" style="opacity:.3" aria-hidden="true"></div>`}
             <div class="spot-label"><span class="slot">${esc(label)}${modeTagHtml(r, it.slot)}</span>
                 ${r ? `<span class="nm">${(cc => cc !== currentCountry() ? `<span aria-hidden="true">${countryOf(cc).flag}</span> ` : '')(r.pack || 'JP')}${esc(trayName(r.name))}</span><span class="mt meta">${dishFacts(r)}</span>${exWhy ? (w => `<span class="dwhy">${w ? esc(w) : ''}</span>`)(dishWhy(r, it.slot)) : ''}<span class="ex" style="--exn:${exN};--exl:${exL};--exa:${exAlg}">${algTagHtml(r)}${swapTagHtml(r)}${spiceTagHtml(r)}${(n => n ? `<span class="mt">${esc(t('{names}が残したことがある料理', {names:n}))}</span>` : '')(leftWarnNames(r.id))}${last ? `<span class="last">${esc(last)}</span>` : ''}</span>`

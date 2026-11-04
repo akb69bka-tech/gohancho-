@@ -112,7 +112,7 @@ for (const ts of [1, 2]) for (const fam of [0, 1]) for (const wants of [0, 1]) {
     }, fam);
     const req = await reqEntry(p);
     ok(!r.before.hid.length && !r.after.hid.length && (!fam || r.tag), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 上の段の器・名前・↻・札が決める前も決めたあともタブより上: ` + JSON.stringify(r));
-    if (fam || wants) ok(req && req.inView && req.h >= 44 && /家族リクエスト/.test(req.aria), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 家族リクエストの入口が最初の画面に残る（44px 以上・読み上げの名前あり）: ` + JSON.stringify(req));
+    if (fam || wants) ok(req && req.inView && req.h >= 44 && (fam ? /家族リクエスト/ : /^食べたいもの/).test(req.aria), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 家族リクエストの入口が最初の画面に残る（44px 以上・読み上げの名前あり）: ` + JSON.stringify(req));
     await ctx.close();
 }
 
