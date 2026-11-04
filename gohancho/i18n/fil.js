@@ -1732,5 +1732,14 @@ GOHAN_I18N('fil', {
     "送らずに、自分の候補に入れる": "Itago bilang mungkahi ko, huwag ipadala",
     "食べたいものは、まだありません": "Wala pang idinagdag",
     "食べたいものを選ぶ": "Piliin ang gusto mong kainin",
-    "この条件では、おかゆの日の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa araw ng lugaw"
+    "この条件では、おかゆの日の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa araw ng lugaw",
+    "家族に「何が食べたい？」と聞く": "Itanong sa pamilya: \"Ano ang gusto mong kainin?\"",
+    "何が食べたい？": "Ano ang gusto mong kainin?",
+    "これは家族に送る「何が食べたい？」のリンクです。家族がこのリンクを開くと、アプリがなくても答えられます。": "Ito ay link na \"Ano ang gusto mong kainin?\" para sa pamilya. Kapag binuksan nila ito, makakasagot sila kahit walang app.",
+    "【ご飯帖】{name}より：何が食べたい？押して返してね": "[Gohancho] Mula kay {name}: Ano ang gusto mong kainin? I-tap at ibalik",
+    "【ご飯帖】何が食べたい？押して返してね": "[Gohancho] Ano ang gusto mong kainin? I-tap at ibalik",
+    "押して答える → {url}": "I-tap para sumagot → {url}",
+    "候補を選んで送ると、家族はアプリがなくても、押すだけで返事できます。返事のリンクを開くと、家族リクエストに入ります。": "Pumili ng ilang ulam at ipadala. Makakasagot ang pamilya sa isang tap, kahit walang app. Kapag binuksan ang link ng sagot, mapupunta ito sa Hiling ng pamilya.",
+    "今日の献立の候補から": "Mula sa mga mungkahi sa menu ngayon",
+    "{n}品まで選べます": "Hanggang {n} ulam ang mapipili"
 });

@@ -962,5 +962,49 @@ GOHAN_PACK_TR('VN', 'vi', {
       ],
       tip: { add: 'Thêm vài lát ớt và hành phi', why: 'Vị cay và giòn làm thịt bò nạc ngon hơn', skill: 'Nhúng thật nhanh', how: 'Dùng bò mua trong ngày, giữ lạnh; nhúng nhanh qua nước sôi để an toàn mà thịt vẫn mềm.' }
     },
+    'vn_boxaogia': {
+      name: 'Bò xào giá',
+      ings: [['Thịt bò thăn hoặc bắp bò thái mỏng', '200 g'], ['Giá đỗ', '200 g'], ['Hành lá', '2 cây'], ['Hẹ', '50 g']],
+      seas: '1 muỗng canh nước mắm · 1 muỗng cà phê dầu hào · 1/2 muỗng cà phê đường · tiêu · 3 tép tỏi · 1 1/2 muỗng canh dầu ăn',
+      steps: [
+        'Ướp thịt bò với một nửa nước mắm, tiêu và một nửa tỏi. Cắt hành lá (và hẹ) thành khúc 4 cm. Rửa giá, để ráo.',
+        'Đun nóng dầu trong chảo trên lửa lớn, cho bò vào xào 1–2 phút đến khi thịt săn, không còn màu hồng, rồi trút ra.',
+        'Cho phần tỏi còn lại, giá, hành lá và hẹ vào xào 1 phút. Nêm phần nước mắm còn lại, dầu hào và đường, cho bò vào lại, đảo đều 30 giây.',
+      ],
+      tip: { add: 'Vài lát ớt và chút nước cốt chanh', why: 'Làm vị xốt tươi và đậm đà hơn', skill: 'Xào bò riêng', how: 'Xào bò trước rồi trút ra để thịt mềm; giá chỉ cần một phút.' }
+    },
+    'vn_trungxaocachua': {
+      name: 'Trứng xào cà chua',
+      ings: [['Trứng gà', '4 quả'], ['Cà chua', '2 quả'], ['Hành lá', '2 cây']],
+      seas: '1 muỗng cà phê nước mắm · 1/2 muỗng cà phê đường · tiêu · 1 1/2 muỗng canh dầu ăn',
+      steps: [
+        'Cà chua cắt múi cau, hành lá thái nhỏ. Đánh tan trứng với nước mắm và tiêu.',
+        'Đun nóng dầu trong chảo trên lửa vừa lớn, cho cà chua và đường vào xào 2–3 phút đến khi mềm và ra nước.',
+        'Đổ trứng vào, rắc hành lá, đảo nhẹ 1–2 phút đến khi trứng chín.',
+      ],
+      tip: { add: 'Một nhúm muối vào cà chua', why: 'Giúp cà chua ra nước, món có nhiều nước sốt hơn', skill: 'Đảo nhẹ tay', how: 'Đảo trứng chậm trong cà chua để trứng chín thành miếng mềm, không bị vụn.' }
+    },
+    'vn_thitxaocaithia': {
+      name: 'Thịt heo xào cải thìa',
+      ings: [['Thịt heo thăn thái mỏng', '150 g'], ['Cải thìa', '300 g']],
+      seas: '1 muỗng canh dầu hào · 1 muỗng cà phê nước mắm · 1/2 muỗng cà phê đường · 3 tép tỏi · 1 muỗng canh dầu ăn',
+      steps: [
+        'Cải thìa chẻ đôi hoặc chẻ tư theo chiều dọc, rửa sạch. Ướp thịt với nước mắm, đập dập tỏi.',
+        'Đun nóng dầu trong chảo trên lửa lớn, phi thơm tỏi, cho thịt vào xào 2–3 phút đến khi không còn màu hồng.',
+        'Cho cải thìa, dầu hào và đường vào xào 2 phút đến khi cọng cải vừa mềm rồi tắt bếp.',
+      ],
+      tip: { add: 'Vài lát nấm hương', why: 'Tăng vị đậm đà cho rau', skill: 'Cọng trước, lá sau', how: 'Nếu cải to, cho cọng vào trước lá một phút để cả hai cùng vừa chín.' }
+    },
+    'vn_tomxaobongcai': {
+      name: 'Tôm xào bông cải xanh',
+      ings: [['Tôm bóc vỏ', '200 g'], ['Bông cải xanh', '1 cây nhỏ (250 g)'], ['Cà rốt', '1/2 củ']],
+      seas: '1 muỗng canh dầu hào · 1 muỗng cà phê nước mắm · 1/2 muỗng cà phê đường · 3 tép tỏi · 1 muỗng canh dầu ăn · 3 muỗng canh nước',
+      steps: [
+        'Bông cải cắt thành bông nhỏ, cà rốt thái lát mỏng. Tôm bỏ chỉ lưng, tỏi băm nhỏ.',
+        'Đun nóng dầu trong chảo trên lửa lớn, phi thơm tỏi, cho bông cải, cà rốt và nước vào, đậy nắp nấu 2 phút đến khi bông cải xanh tươi.',
+        'Cho tôm, dầu hào, nước mắm và đường vào xào 2–3 phút đến khi tôm đỏ và chín đều bên trong.',
+      ],
+      tip: { add: 'Chút bột năng pha nước lúc cuối', why: 'Nước sốt sánh bóng, bám vào bông cải', skill: 'Hấp với chút nước', how: 'Đậy nắp với ít nước giúp bông cải chín nhanh mà vẫn xanh giòn.' }
+    },
   }
 });

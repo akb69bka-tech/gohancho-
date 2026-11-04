@@ -76,6 +76,61 @@ GOHAN_PACK_TR('FR', 'fr', {
     'red cabbage': 'Chou rouge',
   },
   recipes: {
+    'fr_bavette': {
+      name: 'Bavette à l\'échalote',
+      ings: [['Bavettes de bœuf', '2 (300 g)'], ['Échalotes', '3'], ['Salade verte, pour servir', '1'], ['Baguette, pour servir', '1/2']],
+      seas: '20 g de beurre · 1 c. à soupe d\'huile · 2 c. à soupe de vinaigre de vin rouge · Sel · Poivre',
+      steps: [
+        'Hachez finement les échalotes. Faites bien chauffer l\'huile dans une poêle à feu vif.',
+        'Salez et poivrez la viande et saisissez-la 2 minutes de chaque côté pour saignant, 3 minutes pour à point. Réservez sur des assiettes chaudes.',
+        'Baissez à feu moyen, ajoutez le beurre et les échalotes et faites cuire 2 minutes en grattant les sucs. Versez le vinaigre, laissez bouillonner quelques secondes et nappez la viande. Servez avec la salade et le pain.',
+      ],
+      tip: { add: 'Une cuillerée de moutarde de Dijon dans l\'échalote', why: 'Une sauce plus relevée qui va bien à la bavette', skill: 'Couper dans le sens contraire des fibres', how: 'La bavette a de longues fibres ; la trancher en travers à table la garde tendre.' },
+    },
+    'fr_escalopecreme': {
+      name: 'Escalopes de poulet à la crème et aux champignons',
+      ings: [['Escalopes fines de poulet ou de dinde', '2 (300 g)'], ['Champignons de Paris', '150 g'], ['Crème fraîche', '100 ml'], ['Haricots verts, pour servir', '150 g']],
+      seas: '15 g de beurre · 1 c. à soupe d\'huile · 1 c. à café de moutarde de Dijon · Sel · Poivre',
+      steps: [
+        'Émincez les champignons. Salez et poivrez les escalopes et faites-les dorer dans l\'huile à feu moyen-vif 2 à 3 minutes de chaque côté, jusqu\'à ce qu\'elles soient cuites à cœur ; réservez.',
+        'Mettez le beurre et les champignons dans la poêle et faites-les dorer 3 minutes.',
+        'Ajoutez la crème et la moutarde, laissez bouillonner 1 minute, puis remettez les escalopes pour les réchauffer. Rectifiez l’assaisonnement et servez.',
+      ],
+      tip: { add: 'Un trait de vin blanc avant la crème', why: 'Il décolle les sucs et allège la sauce', skill: 'Aplatir la viande', how: 'Des escalopes d’épaisseur égale cuisent en quelques minutes sans sécher sur les bords.' },
+    },
+    'fr_meuniere': {
+      name: 'Filets de poisson meunière',
+      ings: [['Filets de poisson blanc (cabillaud, merlu ou sole)', '2 (300 g)'], ['Citron', '1'], ['Pommes de terre vapeur, pour servir', '300 g']],
+      seas: '30 g de beurre · 2 c. à soupe de farine · 1 c. à soupe d\'huile · 1 c. à soupe de persil haché · Sel · Poivre',
+      steps: [
+        'Séchez le poisson, salez, poivrez et farinez-le en tapotant pour retirer l\'excédent.',
+        'Chauffez l\'huile et la moitié du beurre dans une poêle à feu moyen-vif et faites cuire le poisson 2 à 3 minutes de chaque côté, jusqu\'à ce qu\'il soit doré et se défasse ; réservez sur des assiettes chaudes.',
+        'Mettez le reste du beurre dans la poêle et laissez-le devenir noisette, puis ajoutez le jus d\'un demi-citron et le persil. Nappez le poisson et servez avec des quartiers de citron.',
+      ],
+      tip: { add: 'Quelques câpres dans le beurre noisette', why: 'Une touche salée classique', skill: 'Surveiller le beurre', how: 'Retirez-le du feu dès qu\'il prend une couleur noisette ; quelques secondes de plus et il brûle.' },
+    },
+    'fr_omelettechampignons': {
+      name: 'Omelette aux champignons et au fromage',
+      ings: [['Œufs', '5'], ['Champignons de Paris', '150 g'], ['Comté ou emmental râpé', '50 g'], ['Salade verte, pour servir', '1']],
+      seas: '20 g de beurre · 1 c. à soupe de ciboulette ciselée · Sel · Poivre',
+      steps: [
+        'Émincez les champignons et faites-les dorer dans la moitié du beurre à feu moyen-vif 3 minutes ; réservez.',
+        'Battez les œufs avec sel et poivre. Faites fondre le reste du beurre, versez les œufs et remuez doucement à la fourchette 1 à 2 minutes, jusqu\'à ce qu\'ils soient juste pris mais encore moelleux.',
+        'Parsemez de champignons, de fromage et de ciboulette, repliez l\'omelette en deux et servez avec la salade.',
+      ],
+      tip: { add: 'Quelques lardons poêlés avec les champignons', why: 'Fumé et salé avec les œufs moelleux', skill: 'Baveuse', how: 'L\'intérieur reste un peu crémeux ; retirez la poêle du feu avant que le dessus soit complètement pris.' },
+    },
+    'fr_cotelettes': {
+      name: 'Côtelettes d\'agneau poêlées aux haricots verts',
+      ings: [['Côtelettes d\'agneau', '6 (450 g)'], ['Haricots verts', '200 g'], ['Ail', '2 gousses']],
+      seas: '1 c. à soupe d\'huile d\'olive · 15 g de beurre · 1/2 c. à café de thym ou d\'herbes de Provence · Sel · Poivre',
+      steps: [
+        'Faites cuire les haricots verts 5 minutes dans de l\'eau bouillante salée, puis égouttez.',
+        'Pendant ce temps, assaisonnez les côtelettes de sel, poivre et thym. Chauffez l\'huile dans une poêle à feu vif et faites-les cuire 2 à 3 minutes de chaque côté.',
+        'Poussez les côtelettes sur le côté, ajoutez le beurre, l\'ail écrasé et les haricots et faites sauter 1 minute pour qu\'ils prennent les sucs. Servez aussitôt.',
+      ],
+      tip: { add: 'Les sucs de cuisson sur un morceau de pain', why: 'Rien ne se perd et c’est délicieux', skill: 'Commencer par le gras', how: 'Tenez-les d\'abord 1 minute côté gras pour le rendre croustillant et graisser la poêle.' },
+    },
     'fr_basquaise': {
       name: 'Poulet basquaise',
       ings: [

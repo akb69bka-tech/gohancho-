@@ -545,6 +545,10 @@ GOHAN_PACK_TR('JP', 'ko', {
     "greensalad": {name: "그린 샐러드 (일본식 드레싱)"},
     "jagaimomiso": {name: "감자 양파 미소국"},
     "nasuagemiso": {name: "가지 유부 미소국"},
-    "cabbagemiso": {name: "양배추 유부 미소국"}
+    "cabbagemiso": {name: "양배추 유부 미소국"},
+    "butamoyashi": {name: "돼지고기 숙주 폰즈볶음"},
+    "shakebutter": {name: "연어 버터간장구이"},
+    "gyusukini": {name: "소고기 양파 스키야키풍 조림"},
+    "butacabbage": {name: "삼겹살 양배추 소금볶음"},
   }
 });

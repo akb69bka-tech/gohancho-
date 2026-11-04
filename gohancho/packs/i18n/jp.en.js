@@ -1469,6 +1469,34 @@ GOHAN_PACK_TR('JP', 'en', {
       ings: [['Cabbage', '2 leaves (about 100 g)'], ['Aburaage (fried tofu)', '1/2 piece'], ['Leek (naganegi)', 'a little']],
       seas: 'Dashi 400 ml · Miso 2 tbsp',
       steps: ['Cut the cabbage into 1 cm strips. Pour boiling water over the aburaage and cut into strips.', 'Warm the dashi, add the cabbage and aburaage and, once it boils, simmer over medium-low heat for 3 minutes.', 'Lower the heat and dissolve in the miso.', 'Warm it without letting it boil, serve and scatter with sliced leek.']
-    }
+    },
+    butamoyashi: {
+      name: 'Pork and bean sprout stir-fry with ponzu',
+      ings: [['Pork, thinly sliced scraps', '150 g'], ['Bean sprouts', '1 bag'], ['Garlic chives', '1/2 bunch']],
+      seas: 'Sesame oil 2 tsp · Ponzu 3 tbsp · Pepper a little',
+      steps: ['Cut the pork into bite-size pieces if large. Rinse the bean sprouts and drain well, and cut the garlic chives into 4 cm lengths.', 'Heat the sesame oil in a frying pan and stir-fry the pork over medium heat until it changes color and no pink remains, cooking it through.', 'Add the bean sprouts and garlic chives, stir-fry over high heat for 1 minute, pour in the ponzu, toss quickly and season with pepper.'],
+      tip: { add: 'Ground sesame seeds', why: 'Sprinkled at the end, they soften the sharpness of the ponzu.', skill: 'Bean sprouts last, on high heat', how: 'Give the sprouts just 1 minute. Drain them well beforehand so they stay crisp.' }
+    },
+    shakebutter: {
+      name: 'Salmon pan-fried with butter and soy sauce',
+      ings: [['Fresh salmon', '2 fillets'], ['Shimeji mushrooms', '1/2 pack']],
+      seas: 'Salt and pepper a little · Flour 2 tsp · Oil 1 tsp · Butter 10 g · Soy sauce 2 tsp',
+      steps: ['Pat the salmon dry with paper towels, season with salt and pepper and dust lightly with flour. Trim the shimeji and separate them.', 'Heat the oil in a frying pan and cook the salmon presentation side down over medium heat for 3 minutes. Turn it over, add the shimeji, cover and cook over low heat for 3 minutes until cooked through.', 'Add the butter and soy sauce, let them melt and coat the salmon and shimeji.'],
+      tip: { add: 'Lemon', why: 'A squeeze lightens the richness of the butter and soy sauce.', skill: 'Cook the presentation side first', how: 'The side cooked first browns best, so serve it facing up.' }
+    },
+    gyusukini: {
+      name: 'Beef and onion simmered sukiyaki-style',
+      ings: [['Beef, thinly sliced scraps', '200 g'], ['Onion', '1/2'], ['Japanese leek (negi)', '1/2']],
+      seas: 'Water 50 ml · Soy sauce 2 tbsp · Sugar 1 tbsp · Mirin 1 tbsp',
+      steps: ['Cut the onion into 1 cm wedges and the leek on the diagonal.', 'Bring the water and seasonings to a boil in a frying pan, add the onion and simmer over medium heat for 2 minutes.', 'Add the beef, loosening it, and the leek, and simmer for 3–4 minutes, skimming off any scum, until the meat changes color and the onion is soft.'],
+      tip: { add: 'Grilled tofu (yaki-dofu)', why: 'Simmered together, it soaks up the sauce and makes the dish more filling.', skill: 'Add the meat after the onion', how: 'Simmer the onion first and then add the meat so it does not get tough.' }
+    },
+    butacabbage: {
+      name: 'Pork belly and cabbage stir-fry with salt',
+      ings: [['Pork belly, thinly sliced', '150 g'], ['Cabbage', '1/4 head']],
+      seas: 'Sesame oil 2 tsp · Grated garlic 1/2 tsp · Chicken stock powder 1 tsp · Salt and pepper a little',
+      steps: ['Cut the pork into 4 cm pieces and the cabbage into large pieces.', 'Heat the sesame oil in a frying pan and stir-fry the pork over medium heat until the fat renders and no pink remains, cooking it through.', 'Add the cabbage and garlic, stir-fry over high heat for 2 minutes and season with the chicken stock powder, salt and pepper.'],
+      tip: { add: 'Lemon juice', why: 'A little at the end cuts the richness of the pork belly.', skill: 'Cabbage on high heat, briefly', how: 'Turn off the heat after 2 minutes to keep the cabbage sweet and crunchy.' }
+    },
   }
 });

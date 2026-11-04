@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    'leberkaese': 'Leberkäse',
     'ground meat': 'Hackfleisch',
     'bread roll': 'Brötchen',
     'egg': 'Eier',
@@ -72,6 +73,61 @@ GOHAN_PACK_TR('DE', 'de', {
     'butter': 'Butter',
   },
   recipes: {
+    'de_strammermax': {
+      name: 'Strammer Max',
+      ings: [['Eier', '4'], ['Bauernbrot', '4 Scheiben'], ['Gekochter oder geräucherter Schinken', '4 Scheiben'], ['Gewürzgurken', '4'], ['Tomaten', '2']],
+      seas: '20 g Butter · 1 EL Schnittlauch, gehackt · Salz · Pfeffer',
+      steps: [
+        'Das Brot mit der Hälfte der Butter bestreichen und mit je einer Scheibe Schinken belegen.',
+        'Die übrige Butter in einer Pfanne bei mittlerer Hitze schmelzen, die Eier hineinschlagen und 3-4 Minuten braten, bis das Eiweiß gestockt ist.',
+        'Je ein Spiegelei auf ein Brot setzen, würzen, mit Schnittlauch bestreuen und mit Gewürzgurken und Tomatenscheiben servieren.',
+      ],
+      tip: { add: 'Das Brot vorher in der Pfanne rösten', why: 'Knuspriger und weicht unter dem Ei nicht durch', skill: 'Deckel drauf', how: 'In der letzten Minute mit Deckel stockt das Eiweiß oben, während das Eigelb flüssig bleibt.' },
+    },
+    'de_leberkaese': {
+      name: 'Leberkäse mit Spiegelei',
+      ings: [['Leberkäse, dicke Scheiben', '2 (300 g)'], ['Eier', '2'], ['Brötchen, zum Servieren', '2'], ['Gewürzgurken, zum Servieren', '2']],
+      seas: '1 EL Öl · Süßer oder mittelscharfer Senf · Pfeffer',
+      steps: [
+        'Das Öl in einer Pfanne bei mittlerer Hitze erhitzen und den Leberkäse von jeder Seite 2-3 Minuten braten, bis er gebräunt und durch und durch heiß ist.',
+        'An den Rand schieben, die Eier in die Pfanne schlagen und 3 Minuten braten, bis das Eiweiß gestockt ist.',
+        'Je ein Ei auf eine Scheibe legen, pfeffern und mit Senf, Brötchen und Gewürzgurken servieren.',
+      ],
+      tip: { add: 'Ein Löffel Kartoffelsalat dazu', why: 'Der klassische Begleiter', skill: 'Rand einschneiden', how: 'Ein paar kleine Schnitte am Rand verhindern, dass sich die Scheibe beim Braten wölbt.' },
+    },
+    'de_hackpfanne': {
+      name: 'Hackfleisch-Paprika-Pfanne',
+      ings: [['Rinderhack oder gemischtes Hack', '300 g'], ['Paprikaschoten', '2'], ['Zwiebel', '1'], ['Tomaten', '2'], ['Brot, zum Servieren', '4 Scheiben']],
+      seas: '1 EL Öl · 1 TL Paprika edelsüß · 1 EL Tomatenmark · Salz · Pfeffer',
+      steps: [
+        'Zwiebel, Paprika und Tomaten würfeln.',
+        'Das Öl in einer großen Pfanne stark erhitzen und das Hack mit der Zwiebel 4 Minuten krümelig braun anbraten.',
+        'Paprika, Paprikapulver und Tomatenmark zugeben und 3 Minuten braten, dann die Tomaten 1 Minute mitbraten. Abschmecken und mit Brot servieren.',
+      ],
+      tip: { add: 'Ein Klecks saure Sahne obendrauf', why: 'Mild und cremig zum Paprika', skill: 'Pfanne nicht überfüllen', how: 'In einer großen Pfanne verteilt wird das Hack braun statt grau und wässrig.' },
+    },
+    'de_haehnchenpfanne': {
+      name: 'Hähnchen-Champignon-Pfanne mit Sahne',
+      ings: [['Hähnchenbrust', '300 g'], ['Champignons', '200 g'], ['Sahne', '100 ml'], ['Zwiebel', '1/2']],
+      seas: '1 EL Öl · 1 TL Paprika edelsüß · 1 EL Petersilie, gehackt · Salz · Pfeffer',
+      steps: [
+        'Das Hähnchen in dünne Streifen schneiden, die Champignons in Scheiben und die Zwiebel fein würfeln.',
+        'Das Öl in einer großen Pfanne stark erhitzen und das Hähnchen 3-4 Minuten goldbraun und durchgebraten anbraten. Zwiebel und Champignons 2 Minuten mitbraten.',
+        'Die Sahne angießen, Paprika zugeben und 1 Minute leicht einkochen lassen. Abschmecken und mit Petersilie bestreuen.',
+      ],
+      tip: { add: 'Ein Schuss Weißwein vor der Sahne', why: 'Eine frischere, leichtere Soße', skill: 'Dünne Streifen schneiden', how: 'Etwa 1 cm dicke Streifen sind in Minuten gar und bleiben saftig.' },
+    },
+    'de_fischfilet': {
+      name: 'Fischfilet in Zitronenbutter',
+      ings: [['Weißfischfilets (Seelachs oder Kabeljau)', '2 (300 g)'], ['Zitrone', '1'], ['Butter', '30 g'], ['Gurkensalat, zum Servieren', '1']],
+      seas: '1 EL Mehl · 1 EL Öl · 1 EL Dill oder Petersilie, gehackt · Salz · Pfeffer',
+      steps: [
+        'Den Fisch trocken tupfen, mit etwas Zitronensaft beträufeln, würzen und mit Mehl bestäuben.',
+        'Das Öl in einer Pfanne bei mittlerer bis starker Hitze erhitzen und den Fisch 3 Minuten auf der einen und 2 Minuten auf der anderen Seite braten, bis er zerfällt; auf Teller geben.',
+        'Die Butter in der Pfanne schmelzen, den übrigen Zitronensaft und die Kräuter zugeben und über den Fisch löffeln.',
+      ],
+      tip: { add: 'Übrig gebliebene Salzkartoffeln dazu', why: 'Sie saugen die Zitronenbutter auf', skill: 'Zitrone vor dem Mehl', how: 'Etwas Zitronensaft würzt den Fisch und lässt das Mehl dünn und gleichmäßig haften.' },
+    },
     'de_frikadellen': {
       name: 'Frikadellen',
       ings: [['Gemischtes Hackfleisch (Rind und Schwein)', '400 g'], ['Altbackenes Brötchen', '1'], ['Ei', '1'], ['Zwiebel', '1']],

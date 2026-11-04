@@ -1330,6 +1330,50 @@ GOHAN_PACK_TR('ID', 'id', {
         'Masukkan jamur dengan api besar dan tumis 3-4 menit sampai airnya keluar dan terserap lagi. Bumbui saus tiram, kecap manis, garam, lada, dan gula, lalu tambahkan daun bawang.',
       ],
       tip: { add: 'Segenggam daun kemangi di akhir', why: 'Aroma segar yang khas', skill: 'Peras sampai kering', how: 'Jamur tiram menyimpan banyak air; diperas supaya tumisan tidak berkuah.' },
-    }
+    },
+    'id_telurceplokkecap': {
+      name: 'Telur ceplok kecap',
+      ings: [['Telur', '4 butir'], ['Bawang merah', '3 siung'], ['Cabai merah', '2 buah'], ['Tomat', '1 buah'], ['Daun bawang', '1 batang']],
+      seas: '3 sdm kecap manis · 1 sdt kecap asin · 2 siung bawang putih · 2 sdm minyak · 3 sdm air',
+      steps: [
+        'Iris bawang merah, bawang putih, cabai, dan tomat. Panaskan minyak di wajan dengan api sedang, ceplok telur satu atau dua butir sekaligus selama 2–3 menit sampai putih dan kuningnya matang, lalu angkat.',
+        'Di wajan yang sama, tumis bawang merah, bawang putih, dan cabai selama 1 menit sampai harum, lalu masukkan tomat.',
+        'Tuang kecap manis, kecap asin, dan air, biarkan mendidih 30 detik. Masukkan kembali telur, siram dengan saus, dan taburi daun bawang.',
+      ],
+      tip: { add: 'Taburan bawang goreng', why: 'Menambah renyah dan aroma manis', skill: 'Pinggiran telur renyah', how: 'Minyak panas membuat pinggiran putih telur berenda dan renyah, lalu menyerap saus kecap.' }
+    },
+    'id_udangsaustiram': {
+      name: 'Udang saus tiram',
+      ings: [['Udang kupas', '300 g'], ['Daun bawang', '2 batang'], ['Cabai merah', '1 buah']],
+      seas: '2 sdm saus tiram · 1 sdm kecap manis · 1/2 sdt merica bubuk · 3 siung bawang putih · 1 sdm minyak · 3 sdm air',
+      steps: [
+        'Buang kotoran udang. Cincang bawang putih, potong daun bawang, dan iris cabai.',
+        'Panaskan minyak di wajan dengan api sedang-besar, tumis bawang putih 30 detik sampai harum. Masukkan udang dan tumis 2 menit.',
+        'Tambahkan saus tiram, kecap manis, merica, dan air, masak 1–2 menit sampai udang berwarna merah muda, matang sampai ke dalam, dan sausnya mengilap. Masukkan daun bawang dan cabai, aduk rata.',
+      ],
+      tip: { add: 'Perasan jeruk nipis', why: 'Menyegarkan saus yang gurih', skill: 'Jangan terlalu lama', how: 'Udang cepat alot; angkat begitu udang matang sampai ke dalam.' }
+    },
+    'id_sosisasammanis': {
+      name: 'Sosis asam manis',
+      ings: [['Sosis ayam atau sapi', '6 buah (250 g)'], ['Bawang merah', '4 siung'], ['Tomat', '1 buah'], ['Daun bawang', '1 batang'], ['Cabai merah', '1 buah']],
+      seas: '3 sdm saus tomat · 1 sdm saus sambal · 1 sdt saus tiram · 1/2 sdt gula · 2 siung bawang putih · 1 sdm minyak · 4 sdm air',
+      steps: [
+        'Iris sosis serong. Iris bawang merah dan bawang putih, potong tomat menjadi juring, dan potong daun bawang.',
+        'Panaskan minyak di wajan dengan api sedang, tumis bawang merah dan bawang putih 1 menit. Masukkan sosis dan masak 2–3 menit sampai panas merata dan sedikit kecokelatan.',
+        'Masukkan tomat, saus tomat, saus sambal, saus tiram, gula, dan air, masak 1–2 menit sampai sedikit mengental. Masukkan daun bawang dan cabai, aduk.',
+      ],
+      tip: { add: 'Beberapa potong nanas', why: 'Menambah rasa asam manis yang segar', skill: 'Sosis sedikit kecokelatan', how: 'Sedikit warna pada sosis membuat sausnya lebih gurih.' }
+    },
+    'id_tumisayamjamur': {
+      name: 'Tumis ayam jamur',
+      ings: [['Dada ayam iris tipis', '250 g'], ['Jamur kancing atau jamur merang', '150 g'], ['Bawang merah', '3 siung'], ['Daun bawang', '1 batang']],
+      seas: '1 sdm saus tiram · 1 sdm kecap manis · 1/2 sdt merica bubuk · 1/2 sdt garam · 2 siung bawang putih · 1 sdm minyak',
+      steps: [
+        'Iris tipis ayam, iris jamur, bawang merah, dan bawang putih, lalu potong daun bawang.',
+        'Panaskan minyak di wajan dengan api sedang-besar, tumis bawang merah dan bawang putih 1 menit, lalu masukkan ayam dan tumis 4 menit sampai putih matang sampai ke dalam.',
+        'Masukkan jamur, saus tiram, kecap manis, merica, dan garam, tumis 2 menit sampai jamur layu. Masukkan daun bawang, aduk.',
+      ],
+      tip: { add: 'Segenggam irisan kacang panjang', why: 'Menambah renyah dan warna', skill: 'Iris tipis dan rata', how: 'Ayam yang diiris tipis dan rata cepat matang tanpa menjadi kering.' }
+    },
   }
 });

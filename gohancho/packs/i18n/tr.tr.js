@@ -15,6 +15,61 @@ GOHAN_PACK_TR('TR', 'tr', {
     'bread': 'Ekmek', 'liver': 'Ciğer', 'chickpeas': 'Nohut', 'sucuk': 'Sucuk', 'shrimp': 'Karides', 'pasta': 'Makarna', 'peas': 'Bezelye', 'walnuts': 'Ceviz', 'vine leaves': 'Asma yaprağı', 'leek': 'Pırasa', 'artichoke': 'Enginar', 'borlotti beans': 'Barbunya', 'purslane': 'Semizotu', 'beetroot': 'Pancar', 'cabbage': 'Lahana', 'lettuce': 'Marul', 'red pepper': 'Kapya biber', 'cauliflower': 'Karnabahar'
   },
   recipes: {
+    'tr_kiymaliyumurta': {
+      name: 'Kıymalı yumurta',
+      ings: [['Dana kıyma', '200 g'], ['Yumurta', '4'], ['Soğan', '1'], ['Sivri biber', '2'], ['Domates', '1'], ['Ekmek, yanına', '4 dilim']],
+      seas: '1 yemek kaşığı sıvı yağ · 1 çay kaşığı pul biber · 1/2 çay kaşığı kimyon · Tuz · Karabiber',
+      steps: [
+        'Soğanı, biberleri ve domatesi ince ince doğrayın.',
+        'Yağı tavada yüksek ateşte kızdırın, kıymayı soğanla 4 dakika kavurun. Biberi, domatesi, kimyonu ve pul biberi ekleyip 2 dakika pişirin.',
+        'Dört çukur açıp her birine bir yumurta kırın, tuzlayın, kapağını kapatıp kısık ateşte 3 dakika, beyazları pişene kadar pişirin. Tavada, ekmekle servis edin.',
+      ],
+      tip: { add: 'Üstüne bir kaşık sarımsaklı yoğurt', why: 'Baharata serin ve ekşimsi bir denge', skill: 'Kapak kapalı, kısık ateş', how: 'Kapağın buharı beyazları pişirir, sarılar yumuşak kalır.' },
+    },
+    'tr_karidessote': {
+      name: 'Tereyağlı karides sote',
+      ings: [['Ayıklanmış çiğ karides', '300 g'], ['Sivri biber', '2'], ['Domates', '1'], ['Limon', '1/2'], ['Ekmek, yanına', '4 dilim']],
+      seas: '20 g tereyağı · 1 yemek kaşığı zeytinyağı · 3 diş sarımsak · 1 çay kaşığı pul biber · Tuz',
+      steps: [
+        'Biberleri ve sarımsağı dilimleyin, domatesi küp doğrayın.',
+        'Tereyağı ve zeytinyağını tavada yüksek ateşte ısıtın, biberleri 2 dakika soteleyin. Karidesi ve sarımsağı ekleyip 2-3 dakika, karidesler pembeleşip iyice pişene kadar soteleyin.',
+        'Domatesi ve pul biberi ekleyip 1 dakika daha pişirin. Tuzlayın, limon sıkın ve ekmekle servis edin.',
+      ],
+      tip: { add: 'Sonunda üstüne biraz rendelenmiş kaşar', why: 'Balıkçılardaki güveç gibi olur', skill: 'Karides en son', how: 'Önce biberleri pişirin; karidese birkaç dakika yeter, fazlası sertleştirir.' },
+    },
+    'tr_mantarliomlet': {
+      name: 'Kaşarlı mantarlı omlet',
+      ings: [['Yumurta', '5'], ['Mantar', '150 g'], ['Rendelenmiş kaşar', '60 g'], ['Maydanoz', 'birkaç dal'], ['Domates, yanına', '2']],
+      seas: '15 g tereyağı · Tuz · Karabiber · Pul biber',
+      steps: [
+        'Mantarları dilimleyin ve tavada tereyağında orta-yüksek ateşte 3 dakika, kızarana kadar soteleyin.',
+        'Bir tutam tuzla çırptığınız yumurtaları mantarların üzerine dökün ve orta ateşte 2 dakika, neredeyse pişene kadar pişirin.',
+        'Üzerine kaşarı ve maydanozu serpin, ikiye katlayın ve peynir eriyene kadar 1 dakika daha pişirin. Domatesle servis edin.',
+      ],
+      tip: { add: 'Mantarla birlikte birkaç dilim sucuk', why: 'Daha baharatlı, doyurucu bir omlet', skill: 'Orta ateş', how: 'Ateş çok yüksek olursa üstü pişmeden altı yanar; orta ateşte yumuşak kalır.' },
+    },
+    'tr_baliktava': {
+      name: 'Tavada balık fileto, roka ve soğanla',
+      ings: [['Balık fileto (levrek veya çipura)', '2 (300 g)'], ['Roka', '1 demet'], ['Kırmızı soğan', '1/2'], ['Limon', '1']],
+      seas: '2 yemek kaşığı un · 2 yemek kaşığı zeytinyağı · 1 çay kaşığı sumak · Tuz',
+      steps: [
+        'Soğanı ince dilimleyip sumak ve bir tutam tuzla karıştırın. Rokayı yıkayın.',
+        'Balığı kurulayın, tuzlayıp una bulayın. Tavada zeytinyağında orta-yüksek ateşte önce derisi altta 3 dakika, sonra diğer tarafı 2 dakika, lif lif ayrılana kadar pişirin.',
+        'Rokanın üzerinde, soğan ve bol limonla servis edin.',
+      ],
+      tip: { add: 'Sosunu sıyırmak için bir dilim ekmek', why: 'Deniz kenarında böyle yenir', skill: 'Önce deri tarafı', how: 'Pişirmenin çoğu deri tarafında olursa deri çıtır, eti sulu kalır.' },
+    },
+    'tr_pirzola': {
+      name: 'Tavada kuzu pirzola, domates ve biberle',
+      ings: [['Kuzu pirzola', '6 (450 g)'], ['Domates', '2'], ['Sivri biber', '3'], ['Soğan', '1/2'], ['Ekmek, yanına', '4 dilim']],
+      seas: '1 yemek kaşığı sıvı yağ · 1/2 çay kaşığı kekik · 1 çay kaşığı pul biber · Tuz · Karabiber',
+      steps: [
+        'Pirzolaları tuz, karabiber ve kekikle tatlandırın. Domatesleri ikiye kesin, soğanı dilimleyin.',
+        'Geniş bir tavada yağı yüksek ateşte kızdırın ve pirzolaları her yüzünü 2-3 dakika pişirip tabağa alın.',
+        'Aynı tavada biberleri ve domatesleri 3 dakika, kabukları kabarana kadar pişirin; pirzola, soğan ve pul biberle servis edin.',
+      ],
+      tip: { add: 'Soğanın üzerine bir tutam sumak', why: 'Kuzuya ekşi ve ferah bir tat', skill: 'Tava iyice kızsın', how: 'Çok sıcak tava pirzolayı hızla kızartır, içi pembe ve sulu kalır.' },
+    },
     'tr_kurufasulye': {
       name: 'Kuru fasulye',
       ings: [['Kuru fasulye', '250 g'], ['Soğan', '1 adet'], ['Salça', '2 yemek kaşığı'], ['Sivri biber', '2 adet']],
