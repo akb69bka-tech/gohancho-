@@ -255,7 +255,7 @@ const countingAbort = (re) => async ctx => ctx.route(re, r => { hit.n++; r.abort
     }
 }
 {   // C4. 国のデータは読めたが、レシピの訳が読めない（電波）→ 変えない。ファイルがない（404）なら訳なしで進む
-    const re = /\/packs\/i18n\/fr\.ja\.js/;
+    const re = /\/packs\/i18n\/fr\.(?:ja|fr)\.js/;   // v93 から、国を選ぶと画面の言葉もその国の言葉（fr）になるので、読む訳は fr.fr.js。どちらの訳も同じに扱う
     let p = await open({ route: async ctx => ctx.route(re, r => r.abort()) });
     eq(await p.evaluate(() => setCountry('FR')), false, 'C4 訳が読めないなら国を変えない');
     eq(await p.evaluate(() => [S.settings.country, PACK, LANG, JSON.stringify(S.fridge)]), ['JP', null, 'ja', JSON.stringify(['卵', '玉ねぎ'])], 'C4 何も変わらない');
