@@ -1827,5 +1827,6 @@ GOHAN_I18N('id', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Teks brosur tidak bisa dibaca. Masukkan secara manual.",
     "チラシを撮る": "Foto brosur",
     "チラシを読み取っています…": "Membaca brosur…",
-    "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})",
+    "{name}の特売": "{name} sedang promo"
 });

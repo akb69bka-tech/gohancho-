@@ -1806,8 +1806,6 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .vt-chip.on{background:var(--leaf-soft);color:var(--leaf)}
 .note.wsh-served b{margin-inline-start:4px}
 /* よく行くスーパーと特売（椎名）: 今日の画面の1行・特売の欄・買い物メモの札・設定 */
-.sale-line{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:6px 0 0;font-size:var(--fs13,.8125rem);color:var(--ink)}
-.sale-line .sale-tx{flex:1 1 12rem;min-width:0;overflow-wrap:anywhere}
 .sale-day{margin:0 0 8px;padding:6px 10px;border-radius:10px;background:var(--accent-soft);color:var(--ink);font-size:var(--fs13,.8125rem);font-weight:600;overflow-wrap:anywhere}
 .sale-card .chips{margin:4px 0 8px}
 .sale-add{grid-template-columns:minmax(0,1fr) auto}.sale-add #sale-name{grid-column:1/-1}
@@ -1826,6 +1824,12 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .sale-day-add{flex-wrap:wrap;gap:6px}.sale-day-add select{flex:1 1 7rem;min-width:0;width:auto}
 .sale-feed textarea{width:100%;max-width:100%;box-sizing:border-box;font-family:ui-monospace,monospace;font-size:.75rem}
 .sale-feed summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+/* 第23回 R97: 特売の1行（あいさつの行）。1行で、詰めた形でも残す */
+.sale-greet{display:flex;align-items:center;gap:6px;width:100%;min-height:44px;margin:0;padding:2px 10px;border:0;border-radius:10px;background:var(--accent-soft);color:var(--ink);font:inherit;font-size:.8125rem;font-weight:600;line-height:1.3;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sale-greet-tx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sale-greet-go{flex:none;color:var(--accent-text);font-size:1rem}
+body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
+.sale-tag.sale-kin{font-weight:600;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -6297,7 +6301,7 @@ function familyReqHtml(){
         <span class="rq1">${ICO_MAIL}<span class="rq-l">${esc(lab)}</span>${n ? `<span class="rq-n">${n}</span>` : ''}</span>${r ? `<span class="rq2">${esc(t('{name}：{dish}', {name: wishWhoOf(last), dish: trayName(r.name)}))}</span>` : ''}</button>`;
 }
 function greetRowHtml(){
-    return `<div class="greet-row${soloWish() && !(wishList().length && wishesActive().length) ? ' solo' : ''}">${familyReqHtml()}<p class="greet-tx">${esc(greetText())}</p></div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
+    return `<div class="greet-row${soloWish() && !(wishList().length && wishesActive().length) ? ' solo' : ''}">${familyReqHtml()}${saleGreetHtml() || `<p class="greet-tx">${esc(greetText())}</p>`}</div>`;   // タイトルのすぐ下に家族リクエスト、その下（献立の上）にあいさつ
 }
 function praiseList(){ return [t('今日もおつかれさまです。'), t('献立が決まれば、半分は終わったようなものです。'), t('毎日のごはんが、ちゃんと回っています。'), t('記録しました。いつかの自分を助けます。'), t('今日の分、決まりました。あとは作るだけ。')]; }
 function praiseFor(ids, before){
@@ -10264,15 +10268,17 @@ function saleSuggest(limit = 3){
     sugg.sort((a, b) => b.hit.length - a.hit.length || a.r.min - b.r.min || String(a.r.id).localeCompare(String(b.r.id)));
     return {names, sugg: sugg.slice(0, limit)};
 }
-/* ---- 今日の画面: 特売があるときだけ、お膳の下に1行 ---- */
-function saleTodayLineHtml(){
+// 第23回 R97: 特売の1行は、あいさつの行（お膳の上・最初の画面に入る所）に、あいさつの代わりに出す（お膳の下では決定の帯とタブの裏に隠れていた）。
+// 1行・押すと特売の欄へ。お膳を詰める形（greet-1・greet-0）でも消さない。いちばん詰めた形（tray-tight5）でもこの行だけは残す（CSS）
+function saleGreetHtml(){
     if (!S.sale) return '';
     const act = saleActive(), on = saleDaysOn();
     if (!act.length && !on.length) return '';
     const nm = [...new Set(act.map(x => x.n))], parts = [];
     if (on.length) parts.push(saleDayText(on));
     if (nm.length) parts.push(t('特売: {list}', {list: joinNames(nm.slice(0, 3)) + (nm.length > 3 ? t(' など') : '')}));
-    return `<p class="sale-line" role="status"><span class="sale-tx"><span aria-hidden="true">🏷 </span>${esc(parts.join(GAP()))}</span><button type="button" class="btn sm text" data-act="sale-goto">${esc(t('特売を使う料理'))}</button></p>`;
+    const tx = parts.join(GAP());
+    return `<button type="button" class="sale-greet" data-act="sale-goto" aria-label="${esc(tx + GAP() + t('特売を使う料理'))}"><span aria-hidden="true">🏷</span><span class="sale-greet-tx">${esc(tx)}</span><span class="sale-greet-go" aria-hidden="true">›</span></button>`;
 }
 /* ---- 今日の画面の下（1週間の主菜・買い物メモのあと）: 特売を入れる・使う料理 ---- */
 function saleFoldHtml(){
@@ -10330,9 +10336,13 @@ function saleShopBannerHtml(){
 function saleShopFirst(){ const out = []; saleDaysOn().forEach(x => x.cats.forEach(c => { const s = SALE_CAT_SEC[c]; if (s && !out.includes(s)) out.push(s); })); return out; }   // 特売日の売り場を先頭に
 function saleShopTag(e){
     if (!S.sale) return '';
-    const k = String(e.key).split('|')[0], hits = saleActive().filter(y => saleKeyOf(y) === k || keyOf(y.n) === keyOf(e.label)), x = hits.find(y => salePrice(y)) || hits[0];   // 値段のある方を出す
-    return x ? `<span class="sale-tag">🏷 ${esc(t('特売'))}${salePrice(x) ? ' ' + esc(salePrice(x)) : ''}</span>${saleBadge(x)}` : '';
+    // 第23回 R98: 値段・PR の札は、品名が同じ（どちらかがどちらかを含む）特売だけに付ける。食材のくくり（豚肉）だけが同じ特売（豚こま切れ肉 → 豚バラ薄切り肉）は「豚肉の特売」と分けて出す（値段・札は付けない）
+    const k = String(e.key).split('|')[0], same = saleActive().filter(y => saleSameName(y.n, e.label)), x = same.find(y => salePrice(y)) || same[0];   // 値段のある方を出す
+    if (x) return `<span class="sale-tag">🏷 ${esc(t('特売'))}${salePrice(x) ? ' ' + esc(salePrice(x)) : ''}</span>${saleBadge(x)}`;
+    const kin = saleActive().find(y => saleKeyOf(y) === k || keyOf(y.n) === keyOf(e.label));
+    return kin ? `<span class="sale-tag sale-kin">🏷 ${esc(t('{name}の特売', {name: labelOf(k) || kin.n}))}</span>` : '';
 }
+function saleSameName(a, b){ const x = norm(String(a || '')), y = norm(String(b || '')); return !!x && !!y && (x === y || x.includes(y) || y.includes(x)); }
 /* ---- 設定: よく行くスーパー ---- */
 function saleAreaText(s){ return [s.pref, s.city, s.zip ? (LANG === 'ja' ? '〒' : '') + s.zip : ''].filter(Boolean).join(' '); }
 function saleSettingsSum(){ const n = saleStores().length; return n ? t('{n}店を登録しています', {n}) : t('まだ登録していません'); }
@@ -11634,7 +11644,6 @@ function viewToday(){
         ${/* ゆるめた知らせ（10分以内・いちばん簡単・じっくり・ラクの日）は、お膳の上の「条件を変える」の中の短い1行と、条件のシートの全文（お膳の下では決定の帯とタブの裏に隠れた。第17回 R50） */''}
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
-        ${saleTodayLineHtml()}
         ${leftoversHtml()}
         ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`

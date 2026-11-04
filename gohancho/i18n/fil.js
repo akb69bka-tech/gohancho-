@@ -1827,5 +1827,6 @@ GOHAN_I18N('fil', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Hindi mabasa ang teksto sa flyer. Ilagay nang mano-mano.",
     "チラシを撮る": "Kunan ng litrato ang flyer",
     "チラシを読み取っています…": "Binabasa ang flyer…",
-    "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})",
+    "{name}の特売": "{name} naka-sale"
 });

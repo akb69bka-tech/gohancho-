@@ -1827,5 +1827,6 @@ GOHAN_I18N('vi', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Không đọc được chữ trên tờ rơi. Hãy nhập tay.",
     "チラシを撮る": "Chụp tờ rơi",
     "チラシを読み取っています…": "Đang đọc tờ rơi…",
-    "選んだ品を特売に入れる（{n}品）": "Thêm món đã chọn vào giảm giá ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Thêm món đã chọn vào giảm giá ({n})",
+    "{name}の特売": "{name} đang giảm giá"
 });

@@ -1828,5 +1828,6 @@ GOHAN_I18N('en', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Couldn't read the text on the flyer. Please enter items by hand.",
     "チラシを撮る": "Take a flyer photo",
     "チラシを読み取っています…": "Reading the flyer…",
-    "選んだ品を特売に入れる（{n}品）": "Add selected to sales ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Add selected to sales ({n})",
+    "{name}の特売": "{name} on sale"
 });

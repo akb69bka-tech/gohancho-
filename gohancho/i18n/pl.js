@@ -1827,5 +1827,6 @@ GOHAN_I18N('pl', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Nie udało się odczytać tekstu gazetki. Wpisz ręcznie.",
     "チラシを撮る": "Zrób zdjęcie gazetki",
     "チラシを読み取っています…": "Odczytywanie gazetki…",
-    "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
+    "{name}の特売": "{name} w promocji"
 });

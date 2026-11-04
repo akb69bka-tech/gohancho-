@@ -38,7 +38,7 @@ const noOverflow = p => p.evaluate(() => document.documentElement.scrollWidth <=
 {
     const { ctx, p } = await open();
     // 登録がないとき: 今日の画面に特売の行・欄はない
-    ok(await p.evaluate(() => { setTab('today'); return !document.querySelector('.sale-line') && !document.querySelector('[data-fold="sale"]'); }), 'S1 登録なし: 今日の画面に何も足さない');
+    ok(await p.evaluate(() => { setTab('today'); return !document.querySelector('.sale-greet') && !document.querySelector('[data-fold="sale"]'); }), 'S1 登録なし: 今日の画面に何も足さない');
     await p.evaluate(() => { setTab('settings'); session.setOpen = {store: true}; render(); });
     ok(await p.evaluate(() => !!document.querySelector('#set-store') && !!document.querySelector('.set-toc [data-k=store]')), 'S1 設定に「よく行くスーパー」');
     await p.click('[data-act="sale-new"]');
@@ -76,15 +76,15 @@ const storeInit = {sale: {stores: [{id: 'stA', name: 'ハッピーマート', pr
     const { ctx, p } = await open({init: storeInit});
     await p.evaluate(() => { S.fridge = []; S.staples = []; makeWeek(); setTab('today'); });
     await p.waitForTimeout(200);
-    const s2 = await p.evaluate(() => ({line: (document.querySelector('.sale-line') || {}).textContent || '', fold: !!document.querySelector('[data-fold="sale"]'),
+    const s2 = await p.evaluate(() => ({line: (document.querySelector('.sale-greet') || {}).textContent || '', fold: !!document.querySelector('[data-fold="sale"]'),
         banner: (document.querySelector('.sale-shop-day') || {}).textContent || '', firstSec: (document.querySelector('.list.shop .shop-sec') || {}).className || '',
-        trayBefore: !!document.querySelector('.tray + * .sale-line, .tray ~ .sale-line') }));
+        }));
     ok(/ハッピーマート/.test(s2.line) && /特売日/.test(s2.line) && /野菜/.test(s2.line), 'S2 今日の画面に特売日の1行 ' + JSON.stringify(s2));
     ok(!/まるやす/.test(s2.line), 'S2 特売日でない店は出ない');
     ok(s2.fold, 'S2 特売の欄がある');
     ok(/今日はハッピーマートの特売日/.test(s2.banner), 'S2 買い物メモに「今日は○○の特売日」 ' + JSON.stringify(s2.banner));
     ok(/sec-veg/.test(s2.firstSec) && /sale-first/.test(s2.firstSec), 'S2 特売日の売り場（野菜）が先頭 ' + s2.firstSec);
-    ok(await p.evaluate(() => { const tr = document.querySelector('.tray'), ln = document.querySelector('.sale-line'); return !!tr && !!ln && !!(tr.compareDocumentPosition(ln) & Node.DOCUMENT_POSITION_FOLLOWING) && !tr.contains(ln); }), 'S2 1行はお膳の下（お膳の中・上には足さない）');
+    ok(await p.evaluate(() => { const tr = document.querySelector('.tray'), ln = document.querySelector('#greet .sale-greet'); return !!tr && !!ln && !tr.contains(ln) && !document.querySelector('#greet .greet-tx'); }), 'S2 1行はあいさつの行（お膳の外・あいさつの代わり）（R97）');
     // S3 今日の特売を入れる
     const before = await p.evaluate(() => ({menu: menuIds().join(), week: JSON.stringify(S.week.days.map(x => x.id))}));
     await p.evaluate(() => { S.foldOpen = Object.assign({}, S.foldOpen, {sale: true}); render(); });
@@ -98,7 +98,7 @@ const storeInit = {sale: {stores: [{id: 'stA', name: 'ハッピーマート', pr
     await p.fill('#sale-name', '  '); await p.press('#sale-name', 'Enter'); await p.waitForTimeout(100);
     const its = await p.evaluate(() => S.sale.items.map(x => [x.n, x.p]));
     ok(its.length === 2 && its.some(x => x[0] === '卵' && x[1] === '1パック 198円'), 'S3 自由入力と値段のメモ（空は入れない） ' + JSON.stringify(its));
-    ok(await p.evaluate(() => /今日の特売|特売:/.test((document.querySelector('.sale-line') || {}).textContent) && /キャベツ/.test(document.querySelector('.sale-line').textContent)), 'S3 今日の画面の1行に特売の食材');
+    ok(await p.evaluate(() => /今日の特売|特売:/.test((document.querySelector('.sale-greet') || {}).textContent) && /キャベツ/.test(document.querySelector('.sale-greet').textContent)), 'S3 今日の画面の1行に特売の食材');
     // 買い物メモに特売の札（メモにある食材だけ）
     const tag = await p.evaluate(() => { const k = shoppingList().find(e => !e.extra && e.sec === 'veg'); if (!k) return null; saleData().items.push({id: 'tz', s: 'stA', sn: '', k: k.key, n: k.label, p: '88円', d: TODAY, u: TODAY}); render(); const row = [...document.querySelectorAll('.shop-row')].find(r => r.querySelector('[data-k]').dataset.k === k.key); const r = row && row.querySelector('.sale-tag') ? row.querySelector('.sale-tag').textContent : ''; S.sale.items = S.sale.items.filter(x => x.id !== 'tz'); render(); return r; });
     ok(tag === null || /特売/.test(tag) && /88円/.test(tag), 'S2 買い物メモの行に特売の札と値段 ' + JSON.stringify(tag));
@@ -125,7 +125,7 @@ const storeInit = {sale: {stores: [{id: 'stA', name: 'ハッピーマート', pr
     await shot(p, 'today-390-ja');
     // S3 期限: 特売の日の次の日まで残り、そのあとは消える
     const exp = await p.evaluate(() => { const y = addDays(TODAY, -1), y2 = addDays(TODAY, -2); S.sale.items = [{id: 'e1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '', d: y, u: y}, {id: 'e2', s: 'stA', sn: '', k: '大根', n: '大根', p: '', d: y2, u: y2}, {id: 'e3', s: 'stA', sn: '', k: 'なす', n: 'なす', p: '', d: addDays(TODAY, 1), u: addDays(TODAY, 1)}];
-        const all = saleItemsAll().map(x => x.id), act = saleActive().map(x => x.id), use = saleForUse().map(x => x.id), line = saleTodayLineHtml(); return {all, act, use, lineHasYesterday: /キャベツ/.test(line), sugg: saleSuggest(3).sugg.length}; });
+        const all = saleItemsAll().map(x => x.id), act = saleActive().map(x => x.id), use = saleForUse().map(x => x.id), line = saleGreetHtml(); return {all, act, use, lineHasYesterday: /キャベツ/.test(line), sugg: saleSuggest(3).sugg.length}; });
     ok(JSON.stringify(exp.all) === '["e1","e3"]', 'S3 特売の日の次の日が過ぎたら消える ' + JSON.stringify(exp));
     ok(exp.act.length === 0 && JSON.stringify(exp.use) === '["e1"]' && !exp.lineHasYesterday && exp.sugg > 0, 'S3 きのうの特売は「今日の特売」には出さず、次の朝は使う料理を出す（あしたの分はまだ） ' + JSON.stringify(exp));
     await ctx.close();
@@ -156,6 +156,13 @@ const storeInit = {sale: {stores: [{id: 'stA', name: 'ハッピーマート', pr
     const lab = await p.evaluate(() => ({pr: [...document.querySelectorAll('#sale-sec .sale-row')].map(r => r.textContent.replace(/\s+/g, ' ')), disc: [...document.querySelectorAll('#sale-sec .sale-disc')].map(x => x.textContent)}));
     ok(lab.pr.some(x => /豚こま切れ肉PR/.test(x)) && lab.pr.some(x => /キャベツ提携/.test(x)) && lab.pr.some(x => /98/.test(x)), 'S5 「PR」「提携」の札と値段 ' + JSON.stringify(lab));
     ok(lab.disc.some(x => /PR/.test(x) && /提供された特売情報/.test(x)), 'S5 表示文（広告であること）を出す');
+    // R98: 提携の「豚こま切れ肉 ¥128 PR」の値段・札は、買い物メモの「豚バラ薄切り肉」には付けない（付けるなら「豚肉の特売」と分けて出す）
+    const r98 = await p.evaluate(() => { const mk = label => shopRowsHtml([{key: '豚肉', label, qty: [], dishes: ['x'], sec: 'meat', alt: ''}], new Set());
+        const div = h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.replace(/\s+/g, ' '); };
+        return {bara: div(mk('豚バラ薄切り肉')), koma: div(mk('豚こま切れ肉')), cab: div(shopRowsHtml([{key: 'キャベツ', label: 'キャベツ', qty: [], dishes: ['x'], sec: 'veg', alt: ''}], new Set()))}; });
+    ok(!/128|PR/.test(r98.bara) && /豚肉の特売/.test(r98.bara), 'R98 ちがう部位（豚バラ）には値段・PR を付けず「豚肉の特売」 ' + JSON.stringify(r98.bara));
+    ok(/128/.test(r98.koma) && /PR/.test(r98.koma), 'R98 同じ品名（豚こま切れ肉）には値段と PR ' + JSON.stringify(r98.koma));
+    ok(/98/.test(r98.cab) && /提携/.test(r98.cab), 'R98 キャベツはキャベツに付く ' + JSON.stringify(r98.cab));
     // 純粋な関数: 引数を変えない
     ok(await p.evaluate(() => { const s0 = {stores: [], items: []}, f = importFlyerFeed({format: 'gohancho-flyer-feed', version: 1, store: {id: 'z', name: 'Z'}, valid: {from: TODAY, to: TODAY}, items: [{name: 'x', sponsored: true}]}).feed; const m = mergeFlyerFeed(s0, f, p => p + '1'); return s0.items.length === 0 && s0.stores.length === 0 && m.n === 1 && m.sale.items[0].pr === true && m.sale.stores[0].fid === 'z'; }), 'S5 mergeFlyerFeed は引数を変えない');
     await shot(p, 'feed-390-ja');
@@ -252,6 +259,31 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
     ok(await p.evaluate(k => Object.keys(localStorage).join() === k && !/base64|data:image/.test(localStorage.getItem('gohancho.v1')), idb0), 'S9 写真は保存しない');
     await shot(p, 'ocr-390-ja');
     await ctx.close();
+}
+// ---- R97 特売の1行は最初の画面に見え、お膳の詰め方を崩さない（360/375/390/195 × 文字3段階 × 家族あり） ----
+{
+    const fam = [{id: 'f1', name: 'はは', role: 'adult', avoid: ['えび'], allergy: ['えび'], mild: false}, {id: 'f2', name: 'こ', role: 'child', avoid: [], allergy: [], mild: true}];
+    const bad = [];
+    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 422]]) for (const ts of [0, 1, 2]){
+        const init = Object.assign({}, storeInit, {family: fam});
+        const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
+        await ctx.addInitScript(rngScript(seedFor('sale-r97', w + '-' + ts)));
+        const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r97: ' + e.message));
+        await p.addInitScript(([init, ts]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded: true, firstUse: new Date().toISOString().slice(0, 10)}, init, {settings: Object.assign({country: 'JP', dishCount: 3, uiLang: 'ja'}, ts ? {textSize: ts} : {})}))); } }, [init, ts]);
+        await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
+        const m = await p.evaluate(() => {
+            const fl = (() => { let f = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < f) f = r.top; }); return f; })();
+            const g = document.querySelector('.sale-greet'), r = g && g.getBoundingClientRect();
+            const vis = !!r && r.height > 0 && r.top >= 0 && r.bottom <= fl + .5 && getComputedStyle(g).visibility !== 'hidden';
+            const parts = [...document.querySelectorAll('.tray .tg-row:first-child .spot .vessel, .tray .tg-row:first-child .spot .nm')].map(e => e.getBoundingClientRect());
+            const rowIn = parts.every(x => x.bottom <= fl + .5);
+            return {vis, top: r && Math.round(r.top), bottom: r && Math.round(r.bottom), fl: Math.round(fl), rowIn, over: document.documentElement.scrollWidth > innerWidth + 1, body: document.body.className};
+        });
+        if (!m.vis || !m.rowIn || m.over) bad.push([w, h, ts, m]);
+        if (w === 195 && ts === 2 || w === 390 && ts === 0) await shot(p, `r97-${w}-ts${ts}`);
+        await ctx.close();
+    }
+    ok(!bad.length, 'R97 特売の1行が最初の画面に見え、お膳の上の段もタブ・帯の上（12通り） ' + JSON.stringify(bad));
 }
 // ---- S8 バックアップ ----
 {

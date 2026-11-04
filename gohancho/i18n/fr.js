@@ -1827,5 +1827,6 @@ GOHAN_I18N('fr', {
     "チラシの文字を読み取れませんでした。手で入れてください。": "Impossible de lire le texte du prospectus. Saisissez à la main.",
     "チラシを撮る": "Photographier le prospectus",
     "チラシを読み取っています…": "Lecture du prospectus…",
-    "選んだ品を特売に入れる（{n}品）": "Ajouter la sélection aux promos ({n})"
+    "選んだ品を特売に入れる（{n}品）": "Ajouter la sélection aux promos ({n})",
+    "{name}の特売": "{name} en promo"
 });
