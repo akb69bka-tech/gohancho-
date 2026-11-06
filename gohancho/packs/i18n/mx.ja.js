@@ -2,7 +2,7 @@
 GOHAN_PACK_TR('MX', 'ja', {
   staple: 'コーントルティーヤ',
   names: {
-    "masa harina": "マサ・アリーナ（トウモロコシの粉）",
+    "corn masa": "マサ・アリーナ（トウモロコシの粉）",
     "oats": "オートミール（押しオーツ）",
     "milk": "牛乳",
     "alphabet pasta": "アルファベットパスタ",

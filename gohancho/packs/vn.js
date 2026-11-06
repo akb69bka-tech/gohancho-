@@ -2008,6 +2008,44 @@ GOHAN_PACK({
         "Season with the salt and serve topped with spring onion.",
       ],
     },
+    {
+      id: "vn_bi_luoc",
+      name: "Steamed pumpkin with sesame salt",
+      local: "Bí đỏ hấp",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "pumpkin|Pumpkin, cut in wedges|300 g",
+      ],
+      seas: "1 tsp toasted sesame seeds · Pinch of salt",
+      steps: [
+        "Cut the pumpkin into wedges about 2 cm thick.",
+        "Steam over boiling water for 10–12 minutes until a knife slides in easily.",
+        "Sprinkle with the sesame seeds and a pinch of salt and serve warm.",
+      ],
+    },
+    {
+      id: "vn_cai_luoc",
+      name: "Boiled bok choy with garlic oil",
+      local: "Cải thìa luộc",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "bok choy|Bok choy, halved|300 g",
+      ],
+      seas: "1 garlic clove, minced · 1 tsp oil · Pinch of salt",
+      steps: [
+        "Bring a pot of lightly salted water to the boil and cook the bok choy for 2 minutes until tender. Drain well.",
+        "Warm the oil with the garlic for 30 seconds without browning.",
+        "Pour over the bok choy and serve warm.",
+      ],
+    },
   ],
   aliases: {
     "enoki": ["enoki","enoki mushrooms","nấm kim châm","kim cham"],

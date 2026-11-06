@@ -13,6 +13,26 @@ GOHAN_PACK_TR('VN', 'ja', {
     'katuk': 'ラウゴット（アマメシバ）', 'mustard greens': 'からし菜', 'malabar spinach': 'ツルムラサキ', 'luffa': 'へちま', 'winter melon': '冬瓜', 'bitter melon': 'ゴーヤ', 'wood ear': 'きくらげ', 'glass noodles': '春雨', 'garlic chives': 'にら', 'clams': 'はまぐり類の貝（ガオ）', 'dill': 'ディル', 'pork ribs': '豚スペアリブ', 'shiitake': '干ししいたけ', 'corn': 'スイートコーン', 'crab': 'かにの身', 'purple yam': '紫山芋', 'pickled mustard greens': 'からし菜の漬物', 'crown daisy': '春菊', 'bamboo shoots': 'たけのこ', 'pork hock': '豚足', 'seaweed': 'わかめ', 'field crab': '田がにのすり身', 'jute leaves': 'モロヘイヤ', 'lemongrass': 'レモングラス', 'bell pepper': 'パプリカ・ピーマン', 'lettuce': 'レタス', 'ground beef': '牛ひき肉', 'betel leaves': 'ラーロット（ハイゴショウの葉）', 'squid': 'いか', 'mushrooms': 'きのこ', 'rice vermicelli': 'ブン（米麺）', 'cucumber': 'きゅうり', 'egg noodles': '中華麺（卵麺）', 'bok choy': 'チンゲン菜', 'chayote': 'はやとうり', 'broccoli': 'ブロッコリー', 'green beans': 'さやいんげん', 'dried shrimp': '干しえび', 'lotus stems': 'はすの茎', 'green papaya': '青パパイヤ', 'rice paper': 'ライスペーパー', 'small eggplants': '小なす（カーファオ）'
   },
   recipes: {
+    "vn_bi_luoc": {
+      name: "かぼちゃの蒸し物（ビー・ドー・ハップ）",
+      ings: [["かぼちゃ（くし切り）", "300g"]],
+      seas: "炒りごま小さじ1・塩ひとつまみ",
+      steps: [
+        "かぼちゃを厚さ2cmほどのくし切りにする。",
+        "湯気の立った蒸し器で10〜12分、竹串がすっと通るまで蒸す。",
+        "ごまと塩少々をふって、温かいうちに盛る。",
+      ],
+    },
+    "vn_cai_luoc": {
+      name: "チンゲン菜のゆで物 にんにく油がけ（カイ・ティー・ルオック）",
+      ings: [["チンゲン菜（縦半分）", "300g"]],
+      seas: "にんにく（みじん切り）1かけ・油小さじ1・塩ひとつまみ",
+      steps: [
+        "軽く塩を入れた湯でチンゲン菜を2分、やわらかくなるまでゆで、よく水けをきる。",
+        "油とにんにくを30秒、色づけないように温める。",
+        "チンゲン菜にかけて、温かいうちに盛る。",
+      ],
+    },
     "vn_chao_ga": {
       name: "しょうがの鶏がゆ（チャオ・ガー）",
       ings: [["ジャスミン米", "100g"], ["骨付き鶏もも肉", "300g"], ["しょうが（せん切り）", "1かけ"], ["青ねぎ（小口切り）", "2本"]],

@@ -36,7 +36,7 @@ const FP = [
     ['soy', /^black bean$/i, /(?<!fermented )black beans?(?! sauce)/i, '黒いんげん豆（大豆ではない）'],
     ['soy', /^(酱|ซอส|ソース)$/, /玉米酱|ซอสมะเขือเทศ|タルタルソース/, 'コーンペースト・トマトソース・タルタルソース'],
     ['wheat', /^(味噌|miso)$/i, null, '米みそ・麦みそ（大麦）・豆みそ。小麦は入らない（韓国のテンジャンは 🔍）'],
-    ['wheat', /^flour$/i, /(corn|rice|cassava|chickpea|tapioca|potato) ?flour|cornflour|besan|farinha de mandioca/i, '小麦ではない粉'],
+    ['wheat', /^flour$/i, /(corn|rice|cassava|chickpea|tapioca|potato) ?flour|cornflour|besan|farinha de mandioca|masa harina|harina de ma[ií]z|harina de maíz nixtamalizado/i, '小麦ではない粉'],
     ['wheat', /^(tortilla)$/i, /corn tortillas|tortillas de ma[ií]z|tostadas o tortillas/i, 'とうもろこしのトルティーヤ'],
     ['wheat', /^(noodle|vermicelli)$/i, /glass noodles|rice noodles|rice vermicelli|thin rice noodles/i, '春雨・米の麺'],
     ['wheat', /^tepung$/i, /tepung (tapioka|beras|maizena|sagu)/i, 'タピオカ粉・米粉'],

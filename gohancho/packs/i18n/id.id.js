@@ -14,6 +14,26 @@ GOHAN_PACK_TR('ID', 'id', {
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
+    "id_tahu_kukus": {
+      name: "Tahu kukus",
+      ings: [["Tahu sutra", "300 g"], ["Daun bawang, iris", "1 batang"]],
+      seas: "1 sdt kecap manis · Sejumput garam",
+      steps: [
+        "Potong tahu agak tebal dan letakkan di piring tahan panas.",
+        "Kukus di atas air mendidih 8–10 menit sampai panas merata.",
+        "Taburi daun bawang, kecap manis, dan sedikit garam.",
+      ],
+    },
+    "id_sayur_rebus": {
+      name: "Kentang dan kol rebus",
+      ings: [["Kentang potong dadu", "2"], ["Kol iris", "200 g"]],
+      seas: "1/2 sdt garam · 1 sdt bawang merah goreng (opsional)",
+      steps: [
+        "Rebus kentang dalam air bergaram tipis 10 menit.",
+        "Masukkan kol, masak 3–4 menit lagi sampai lunak. Tiriskan.",
+        "Bumbui dengan garam dan sajikan hangat.",
+      ],
+    },
     "id_bubur_ayam": {
       name: "Bubur ayam",
       ings: [["Beras", "150 g"], ["Dada atau paha ayam", "250 g"], ["Seledri, iris", "1 batang"], ["Daun bawang, iris", "1 batang"]],

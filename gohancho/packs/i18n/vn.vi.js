@@ -13,6 +13,26 @@ GOHAN_PACK_TR('VN', 'vi', {
     'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay', 'lemongrass': 'Sả', 'bell pepper': 'Ớt chuông', 'lettuce': 'Xà lách', 'ground beef': 'Thịt bò xay', 'betel leaves': 'Lá lốt', 'squid': 'Mực', 'mushrooms': 'Nấm', 'rice vermicelli': 'Bún', 'cucumber': 'Dưa leo', 'egg noodles': 'Mì trứng', 'bok choy': 'Cải thìa', 'chayote': 'Su su', 'broccoli': 'Bông cải xanh', 'green beans': 'Đậu que', 'dried shrimp': 'Tôm khô', 'lotus stems': 'Ngó sen', 'green papaya': 'Đu đủ xanh', 'rice paper': 'Bánh tráng', 'small eggplants': 'Cà pháo'
   },
   recipes: {
+    "vn_bi_luoc": {
+      name: "Bí đỏ hấp",
+      ings: [["Bí đỏ cắt miếng", "300 g"]],
+      seas: "1 thìa cà phê mè rang · Chút muối",
+      steps: [
+        "Cắt bí đỏ thành miếng dày khoảng 2 cm.",
+        "Hấp trên nước sôi 10–12 phút đến khi xiên dễ dàng.",
+        "Rắc mè và chút muối, dùng nóng.",
+      ],
+    },
+    "vn_cai_luoc": {
+      name: "Cải thìa luộc",
+      ings: [["Cải thìa bổ đôi", "300 g"]],
+      seas: "1 tép tỏi băm · 1 thìa cà phê dầu ăn · Chút muối",
+      steps: [
+        "Đun sôi nước có chút muối, luộc cải thìa 2 phút đến khi mềm. Để ráo.",
+        "Phi tỏi với dầu 30 giây, đừng để cháy.",
+        "Rưới lên cải và dùng nóng.",
+      ],
+    },
     "vn_chao_ga": {
       name: "Cháo gà",
       ings: [["Gạo tẻ (gạo thơm)", "100 g"], ["Đùi gà có xương", "300 g"], ["Gừng thái sợi", "1 nhánh"], ["Hành lá thái nhỏ", "2 cây"]],

@@ -2,7 +2,7 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
-    "masa harina": "Harina de maíz nixtamalizado",
+    "corn masa": "Masa de maíz nixtamalizado (en polvo)",
     "oats": "Avena en hojuelas",
     "milk": "Leche",
     "alphabet pasta": "Pasta de letras",
@@ -75,10 +75,10 @@ GOHAN_PACK_TR('MX', 'es', {
   recipes: {
     "mx_atole_blanco": {
       name: "Atole blanco",
-      ings: [["Harina de maíz nixtamalizado", "50 g"], ["Leche", "500 ml"]],
+      ings: [["Masa de maíz nixtamalizado (en polvo)", "50 g"], ["Leche", "500 ml"]],
       seas: "250 ml de agua · 1 raja de canela · 2 cdas de piloncillo o azúcar morena",
       steps: [
-        "Disuelve la harina en el agua hasta que no queden grumos.",
+        "Disuelve la masa en polvo en el agua hasta que no queden grumos.",
         "Calienta la leche con la canela y el piloncillo; cuando suelte el hervor, vierte la masa colada sin dejar de mover.",
         "Cocina 8-10 minutos a fuego bajo, moviendo siempre, hasta que espese como un atole. Retira la canela y sirve caliente.",
       ],

@@ -2056,6 +2056,46 @@ GOHAN_PACK({
         "Pour in the coconut milk and heat 3 minutes, stirring, without boiling hard. Serve warm.",
       ],
     },
+    {
+      id: "id_tahu_kukus",
+      name: "Steamed tofu with spring onion",
+      local: "Tahu kukus",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "legume",
+      min: 15,
+      ings: [
+        "tofu|Soft tofu|300 g",
+        "spring onion|Spring onion, sliced|1?",
+      ],
+      seas: "1 tsp sweet soy sauce (kecap manis) · Pinch of salt",
+      steps: [
+        "Cut the tofu into thick slices and put them on a heatproof plate.",
+        "Steam over boiling water for 8–10 minutes until hot through.",
+        "Top with the spring onion, a little kecap manis and a pinch of salt.",
+      ],
+    },
+    {
+      id: "id_sayur_rebus",
+      name: "Boiled potato and cabbage",
+      local: "Kentang dan kol rebus",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 20,
+      ings: [
+        "potato|Potato, diced|2",
+        "cabbage|Cabbage, shredded|200 g",
+      ],
+      seas: "1/2 tsp salt · 1 tsp fried shallots (optional)",
+      steps: [
+        "Boil the potato in lightly salted water for 10 minutes.",
+        "Add the cabbage and cook 3–4 minutes more until soft. Drain.",
+        "Season with the salt and serve warm.",
+      ],
+    },
   ],
   aliases: {
     "pumpkin": ["pumpkin", "labu", "labu kuning", "waluh"],

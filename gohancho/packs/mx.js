@@ -2136,12 +2136,12 @@ GOHAN_PACK({
       protein: "veg",
       min: 20,
       ings: [
-        "masa harina|Masa harina (nixtamalized corn flour)|50 g",
+        "corn masa|Corn masa (nixtamalized corn dough flour)|50 g",
         "milk|Milk|500 ml",
       ],
       seas: "250 ml water · 1 cinnamon stick · 2 tbsp piloncillo or brown sugar",
       steps: [
-        "Whisk the masa harina into the water until there are no lumps.",
+        "Whisk the corn masa into the water until there are no lumps.",
         "Heat the milk with the cinnamon and piloncillo until it simmers, then pour in the masa mixture through a sieve, whisking.",
         "Cook 8–10 minutes on low heat, stirring constantly, until it thickens to a soft porridge. Remove the cinnamon and serve warm.",
       ],
@@ -2190,7 +2190,7 @@ GOHAN_PACK({
     },
   ],
   aliases: {
-    "masa harina": ["masa harina", "masa", "harina de maíz", "maseca"],
+    "corn masa": ["corn masa", "masa", "masa harina", "maseca"],
     "oats": ["oats", "rolled oats", "oatmeal", "avena", "hojuelas de avena"],
     "milk": ["milk", "leche"],
     "alphabet pasta": ["alphabet pasta","letras","pasta de letras","sopa de letras"],
@@ -2263,7 +2263,7 @@ GOHAN_PACK({
   quick: ['chicken', 'pork', 'beef', 'ground beef', 'fish', 'egg', 'beans', 'cheese', 'tomato', 'tomatillo', 'onion', 'chili', 'potato', 'zucchini', 'nopal', 'avocado', 'corn', 'poblano'],
   pantry: ['tortilla', 'beans', 'rice', 'egg', 'onion', 'tomato', 'chili', 'chipotle', 'lime', 'cheese', 'cream', 'pasta', 'cilantro', 'potato', 'garlic'],
   names: {
-    "masa harina": "Masa harina (nixtamalized corn flour)",
+    "corn masa": "Corn masa (nixtamalized corn dough flour)",
     "oats": "Rolled oats",
     "milk": "Milk",
     "alphabet pasta": "Alphabet pasta",

@@ -60,7 +60,7 @@ const ALL = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', '
         await p.evaluate(() => { closeSheet(); openSwap(0); }); await p.waitForTimeout(150);
         const swap = await p.evaluate(() => !!document.querySelector('#sheet-root [data-act=swap-f][data-v=okayu]'));
         await p.evaluate(() => closeSheet());
-        const want = PORRIDGE.includes(cc);
+        const want = true;   // オーナー決定 4B: 21か国すべてにおかゆの日
         if (mood !== want || swap !== want) bad.push(`${cc} 気分=${mood} かえる=${swap}`);
         if (want){
             const r = await p.evaluate(() => { session.mood = 'okayu'; session.rejected.clear(); newMenu(); const m = session.menu.items[0].r; return {m: m && m.id, ok: !!m && okayuDayOk(m), min: m && m.min, note: okayuNote()}; });
@@ -69,7 +69,7 @@ const ALL = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', '
         }
         await ctx.close();
     }
-    ok(!bad.length, 'R21 粥の主菜がある国（JP・CN・TW・KR・TH・PH）は気分とかえるの両方、ない15か国は両方なし。案内は時間に合う: ' + bad.join(' / ') + ' ' + notes.join(','));
+    ok(!bad.length, 'R21 粥の主菜がある国（JP・CN・TW・KR・TH・PH）は気分とかえるの両方、21か国すべて（4B）。案内は時間に合う: ' + bad.join(' / ') + ' ' + notes.join(','));
 }
 // R23 赤飯を主菜にしない
 {
