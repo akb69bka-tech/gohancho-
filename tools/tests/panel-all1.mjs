@@ -57,7 +57,7 @@ const reroll = async (p, n, f) => { for (let i = 0; i < n; i++){ await p.click('
 for (const cc of ['TH', 'CN', 'KR', 'VN', 'JP', 'TW', 'PH']){
     const {p, ctx} = await open({country: cc}, {}, 's23-' + cc);
     const on = await p.evaluate(() => okayuMoodOn());
-    if (!on){ ok(cc === 'VN', `S23 ${cc} おかゆの日がない国（おかゆ・粥の主菜がない）`); await ctx.close(); continue; }
+    if (!on){ ok(false, `S23 ${cc} おかゆの日がある（オーナー決定 4B: 21か国すべて）`); await ctx.close(); continue; }
     await p.evaluate(() => { session.mood = 'okayu'; session.menu = null; ensureMenu(); render(); });
     const bad = [], empty = [], counts = new Set(), seen = {};
     const look = async () => {

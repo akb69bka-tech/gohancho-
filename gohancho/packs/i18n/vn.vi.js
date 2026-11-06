@@ -13,6 +13,56 @@ GOHAN_PACK_TR('VN', 'vi', {
     'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay', 'lemongrass': 'Sả', 'bell pepper': 'Ớt chuông', 'lettuce': 'Xà lách', 'ground beef': 'Thịt bò xay', 'betel leaves': 'Lá lốt', 'squid': 'Mực', 'mushrooms': 'Nấm', 'rice vermicelli': 'Bún', 'cucumber': 'Dưa leo', 'egg noodles': 'Mì trứng', 'bok choy': 'Cải thìa', 'chayote': 'Su su', 'broccoli': 'Bông cải xanh', 'green beans': 'Đậu que', 'dried shrimp': 'Tôm khô', 'lotus stems': 'Ngó sen', 'green papaya': 'Đu đủ xanh', 'rice paper': 'Bánh tráng', 'small eggplants': 'Cà pháo'
   },
   recipes: {
+    "vn_bi_luoc": {
+      name: "Bí đỏ hấp",
+      ings: [["Bí đỏ cắt miếng", "300 g"]],
+      seas: "1 thìa cà phê mè rang · Chút muối",
+      steps: [
+        "Cắt bí đỏ thành miếng dày khoảng 2 cm.",
+        "Hấp trên nước sôi 10–12 phút đến khi xiên dễ dàng.",
+        "Rắc mè và chút muối, dùng nóng.",
+      ],
+    },
+    "vn_cai_luoc": {
+      name: "Cải thìa luộc",
+      ings: [["Cải thìa bổ đôi", "300 g"]],
+      seas: "1 tép tỏi băm · 1 thìa cà phê dầu ăn · Chút muối",
+      steps: [
+        "Đun sôi nước có chút muối, luộc cải thìa 2 phút đến khi mềm. Để ráo.",
+        "Phi tỏi với dầu 30 giây, đừng để cháy.",
+        "Rưới lên cải và dùng nóng.",
+      ],
+    },
+    "vn_chao_ga": {
+      name: "Cháo gà",
+      ings: [["Gạo tẻ (gạo thơm)", "100 g"], ["Đùi gà có xương", "300 g"], ["Gừng thái sợi", "1 nhánh"], ["Hành lá thái nhỏ", "2 cây"]],
+      seas: "1,5 lít nước · 1 thìa cà phê muối · Chút tiêu",
+      steps: [
+        "Cho gà, một nửa gừng và nước vào nồi, đun sôi, hớt bọt, nấu 25 phút cho gà chín kỹ. Vớt gà ra.",
+        "Vo gạo, cho vào nước dùng, nấu lửa nhỏ 20–25 phút, khuấy đều, đến khi gạo nở nhừ thành cháo mịn.",
+        "Xé gà, cho lại vào nồi cùng muối, múc ra bát, rắc phần gừng còn lại, hành lá và chút tiêu.",
+      ],
+    },
+    "vn_chao_thit_bam": {
+      name: "Cháo thịt bằm",
+      ings: [["Gạo tẻ (gạo thơm)", "100 g"], ["Thịt heo bằm", "150 g"], ["Hành lá thái nhỏ", "2 cây"]],
+      seas: "1,2 lít nước · 1 thìa cà phê muối · Chút tiêu",
+      steps: [
+        "Vo gạo, nấu với nước lửa nhỏ 25–30 phút, khuấy đều, đến khi cháo nhừ và mịn.",
+        "Ướp thịt với chút muối, cho từng ít vào cháo, khuấy 5 phút cho thịt chín kỹ.",
+        "Nêm muối vừa ăn, múc ra bát, rắc hành lá và chút tiêu.",
+      ],
+    },
+    "vn_chao_bi_do": {
+      name: "Cháo bí đỏ",
+      ings: [["Gạo tẻ (gạo thơm)", "80 g"], ["Bí đỏ gọt vỏ, thái hạt lựu", "250 g"], ["Hành lá thái nhỏ", "1 cây"]],
+      seas: "1,2 lít nước · 1/2 thìa cà phê muối",
+      steps: [
+        "Vo gạo, nấu cùng bí đỏ với nước lửa nhỏ 30 phút, khuấy đều.",
+        "Khi gạo và bí đã nhừ, dằm bí vào cháo cho mịn và vàng đều.",
+        "Nêm muối vừa ăn, múc ra bát, rắc hành lá.",
+      ],
+    },
     "vn_canhdauhucachua": {
       name: "Canh đậu phụ cà chua",
       ings: [["Đậu phụ non", "200 g"], ["Cà chua", "2 quả"], ["Hành lá", "2 cây"]],
@@ -1037,6 +1087,153 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Cho tôm, dầu hào, nước mắm và đường vào xào 2–3 phút đến khi tôm đỏ và chín đều bên trong.',
       ],
       tip: { add: 'Chút bột năng pha nước lúc cuối', why: 'Nước sốt sánh bóng, bám vào bông cải', skill: 'Hấp với chút nước', how: 'Đậy nắp với ít nước giúp bông cải chín nhanh mà vẫn xanh giòn.' }
+    },
+    vn_dau_hu_sot_ca: {
+      name: 'Đậu hũ sốt cà chua',
+      ings: [
+        ['Đậu hũ cứng', '300 g'],
+        ['Cà chua', '3 quả'],
+        ['Hành lá', '2 cây'],
+        ['Hành tây', '1/2 củ'],
+        ['Cơm trắng (ăn kèm)', '300 g'],
+      ],
+      seas: '3 muỗng canh dầu ăn · 2 tép tỏi · 1 muỗng canh nước tương · 1 muỗng cà phê đường · 1/2 muỗng cà phê muối · 100 ml nước · Tiêu',
+      steps: [
+        'Cắt đậu hũ thành khối vuông, chiên với 2 muỗng canh dầu đến khi vàng đều các mặt, để riêng.',
+        'Phi thơm tỏi và hành tây với phần dầu còn lại trong 2 phút, cho cà chua cắt múi cau vào xào 5 phút cho mềm nhừ.',
+        'Cho nước, nước tương, đường và muối vào, cho đậu hũ vào lại và nấu liu riu 8 phút. Rắc hành lá thái nhỏ và tiêu, ăn với cơm.',
+      ],
+    },
+    vn_com_chien_chay: {
+      name: 'Cơm chiên chay',
+      ings: [
+        ['Cơm nguội', '300 g'],
+        ['Cà rốt', '1/2 củ'],
+        ['Bắp', '60 g'],
+        ['Đậu cove', '60 g'],
+        ['Hành lá', '2 cây'],
+        ['Nấm', '80 g'],
+      ],
+      seas: '3 muỗng canh dầu ăn · 3 tép tỏi · 1 muỗng canh nước tương · 1 muỗng cà phê đường · 1/2 muỗng cà phê muối · Tiêu',
+      steps: [
+        'Cắt hạt lựu cà rốt, đậu cove và nấm, thái nhỏ hành lá.',
+        'Phi thơm tỏi với dầu 20 giây, cho cà rốt, đậu cove và nấm vào xào 4 phút, rồi cho bắp vào xào 1 phút.',
+        'Cho cơm, nước tương, đường và muối vào, xào lửa lớn 4 phút. Rắc hành lá và tiêu.',
+      ],
+    },
+    vn_bun_chay: {
+      name: 'Bún đậu hũ rau thơm chay',
+      ings: [
+        ['Bún tươi', '200 g'],
+        ['Đậu hũ cứng', '250 g'],
+        ['Xà lách', '4 lá'],
+        ['Dưa leo', '1/2 quả'],
+        ['Rau thơm (bạc hà, tía tô)', '1 nắm'],
+        ['Đậu phộng rang', '2 muỗng canh'],
+        ['Giá đỗ', '60 g'],
+      ],
+      seas: '3 muỗng canh dầu để chiên · Nước chấm: 3 muỗng canh nước tương, nước cốt 1 quả chanh, 1 muỗng canh đường, 2 muỗng canh nước, 1 tép tỏi, 1 trái ớt',
+      steps: [
+        'Luộc bún trong nước sôi 4 phút, xả nước lạnh và để ráo. Trộn nước chấm cho đến khi đường tan.',
+        'Cắt đậu hũ thành khối vuông, chiên vàng giòn. Thái nhỏ xà lách và thái lát dưa leo.',
+        'Chia xà lách, giá, bún, đậu hũ, dưa leo và rau thơm vào hai tô, rắc đậu phộng lên trên và chan nước chấm.',
+      ],
+    },
+    vn_nam_xao_sa_ot: {
+      name: 'Nấm xào sả ớt',
+      ings: [
+        ['Nấm các loại', '300 g'],
+        ['Sả', '2 cây'],
+        ['Ớt', '2 trái'],
+        ['Hành lá', '2 cây'],
+        ['Cơm trắng (ăn kèm)', '300 g'],
+      ],
+      seas: '3 muỗng canh dầu ăn · 3 tép tỏi · 1 muỗng canh nước tương · 1 muỗng cà phê đường · 1/2 muỗng cà phê muối · Tiêu',
+      steps: [
+        'Băm nhuyễn sả, thái lát ớt và tỏi. Xé nấm thành miếng vừa.',
+        'Phi thơm sả, tỏi và ớt với dầu ở lửa vừa trong 1 phút.',
+        'Cho nấm vào xào lửa lớn 5 phút. Nêm nước tương, đường và muối, xào thêm 2 phút. Rắc hành lá và tiêu, ăn với cơm.',
+      ],
+    },
+    vn_ca_tim_kho_dau_hu: {
+      name: 'Cà tím kho đậu hũ',
+      ings: [
+        ['Cà tím', '2 quả'],
+        ['Đậu hũ cứng', '200 g'],
+        ['Hành lá', '2 cây'],
+        ['Ớt', '1 trái'],
+        ['Cơm trắng (ăn kèm)', '300 g'],
+      ],
+      seas: '3 muỗng canh dầu ăn · 3 tép tỏi · 2 muỗng canh nước tương · 1 muỗng canh đường · 150 ml nước · Tiêu',
+      steps: [
+        'Cắt cà tím thành múi dày và đậu hũ thành khối vuông. Chiên đậu hũ với 2 muỗng canh dầu đến vàng, để riêng.',
+        'Phi thơm tỏi với phần dầu còn lại 30 giây, cho cà tím vào xào 4 phút.',
+        'Cho nước tương, đường và nước vào, cho đậu hũ vào lại, đậy nắp kho 12 phút cho sệt lại. Rắc hành lá, ớt và tiêu.',
+      ],
+    },
+    vn_pho_chay: {
+      name: 'Phở chay',
+      ings: [
+        ['Bánh phở', '200 g'],
+        ['Nấm đông cô khô', '6 tai'],
+        ['Củ cải trắng', '150 g'],
+        ['Hành tây', '1 củ'],
+        ['Đậu hũ cứng', '150 g'],
+        ['Giá đỗ', '60 g'],
+        ['Rau thơm', '1 nắm'],
+      ],
+      seas: '800 ml nước · 3 lát gừng · 1 hoa hồi · 1 thanh quế · 2 đinh hương · 2 muỗng canh nước tương · 1 muỗng cà phê đường · 1 muỗng cà phê muối · Chanh cắt múi · Ớt',
+      steps: [
+        'Nướng hành tây bổ đôi và gừng trong nồi khô cho xém. Cho nước, nấm đông cô đã ngâm, củ cải cắt hạt lựu, hoa hồi, quế và đinh hương vào hầm 25 phút.',
+        'Nêm nước dùng với nước tương, đường và muối rồi lọc lại. Chần bánh phở trong nước sôi 3 phút và để ráo.',
+        'Chia bánh phở và đậu hũ thái lát vào hai tô, chan nước dùng nóng, thêm giá và rau thơm. Ăn kèm chanh và ớt.',
+      ],
+    },
+    vn_rau_cu_xao_dau_hu: {
+      name: 'Rau củ xào đậu hũ',
+      ings: [
+        ['Đậu hũ cứng', '250 g'],
+        ['Bắp cải', '150 g'],
+        ['Cà rốt', '1 củ'],
+        ['Bông cải xanh', '100 g'],
+        ['Nấm', '100 g'],
+        ['Cơm trắng (ăn kèm)', '300 g'],
+      ],
+      seas: '3 muỗng canh dầu ăn · 3 tép tỏi · 2 muỗng canh nước tương · 1 muỗng cà phê đường · 1 muỗng cà phê bột bắp · 4 muỗng canh nước · Tiêu',
+      steps: [
+        'Cắt đậu hũ thành khối vuông, chiên với 2 muỗng canh dầu đến vàng, để riêng. Thái rau củ. Trộn nước tương, đường, bột bắp và nước.',
+        'Phi thơm tỏi với phần dầu còn lại 20 giây, cho cà rốt và bông cải vào xào 3 phút, rồi cho bắp cải và nấm vào xào 3 phút.',
+        'Cho đậu hũ vào lại, đổ nước sốt vào đảo 2 phút cho bóng sánh. Rắc tiêu và ăn với cơm.',
+      ],
+    },
+    vn_canh_bi_do_chay: {
+      name: 'Canh bí đỏ nấm',
+      ings: [
+        ['Bí đỏ', '250 g'],
+        ['Nấm', '100 g'],
+        ['Hành lá', '2 cây'],
+      ],
+      seas: '1 muỗng canh dầu ăn · 2 tép tỏi · 500 ml nước · 1/2 muỗng cà phê muối · 1 muỗng cà phê đường · Tiêu',
+      steps: [
+        'Cắt bí đỏ thành khối nhỏ. Phi thơm tỏi với dầu, cho bí đỏ và nước vào đun sôi.',
+        'Nấu liu riu 10 phút, cho nấm vào nấu thêm 4 phút.',
+        'Nêm muối và đường, rắc hành lá và tiêu, dùng nóng.',
+      ],
+    },
+    vn_canh_nam_dau_hu: {
+      name: 'Canh nấm đậu hũ',
+      ings: [
+        ['Nấm', '150 g'],
+        ['Đậu hũ non', '150 g'],
+        ['Cải thìa', '100 g'],
+        ['Hành lá', '2 cây'],
+      ],
+      seas: '500 ml nước · 3 lát gừng · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1 muỗng cà phê đường · Tiêu',
+      steps: [
+        'Đun sôi nước với gừng. Cho nấm vào nấu liu riu 5 phút.',
+        'Cho đậu hũ cắt khối vuông và cải thìa cắt khúc vào nấu 3 phút.',
+        'Nêm nước tương, muối và đường, rắc hành lá và tiêu rồi dùng.',
+      ],
     },
   }
 });

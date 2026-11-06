@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('ID', 'id', {
   staple: 'Nasi putih',
   names: {
+    "pumpkin": "Labu kuning",
+    "mung beans": "Kacang hijau",
     'chicken': 'Ayam', 'beef': 'Daging sapi', 'fish': 'Ikan', 'shrimp': 'Udang', 'egg': 'Telur', 'tofu': 'Tahu', 'tempeh': 'Tempe',
     'rice': 'Nasi', 'noodles': 'Mi telur', 'potato': 'Kentang', 'tomato': 'Tomat', 'chili': 'Cabai', 'lime': 'Jeruk nipis',
     'cucumber': 'Timun', 'cabbage': 'Kol', 'water spinach': 'Kangkung', 'spinach': 'Bayam', 'choy sum': 'Sawi hijau',
@@ -12,6 +14,56 @@ GOHAN_PACK_TR('ID', 'id', {
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
+    "id_tahu_kukus": {
+      name: "Tahu kukus",
+      ings: [["Tahu sutra", "300 g"], ["Daun bawang, iris", "1 batang"]],
+      seas: "1 sdt kecap manis · Sejumput garam",
+      steps: [
+        "Potong tahu agak tebal dan letakkan di piring tahan panas.",
+        "Kukus di atas air mendidih 8–10 menit sampai panas merata.",
+        "Taburi daun bawang, kecap manis, dan sedikit garam.",
+      ],
+    },
+    "id_sayur_rebus": {
+      name: "Kentang dan kol rebus",
+      ings: [["Kentang potong dadu", "2"], ["Kol iris", "200 g"]],
+      seas: "1/2 sdt garam · 1 sdt bawang merah goreng (opsional)",
+      steps: [
+        "Rebus kentang dalam air bergaram tipis 10 menit.",
+        "Masukkan kol, masak 3–4 menit lagi sampai lunak. Tiriskan.",
+        "Bumbui dengan garam dan sajikan hangat.",
+      ],
+    },
+    "id_bubur_ayam": {
+      name: "Bubur ayam",
+      ings: [["Beras", "150 g"], ["Dada atau paha ayam", "250 g"], ["Seledri, iris", "1 batang"], ["Daun bawang, iris", "1 batang"]],
+      seas: "1,5 liter air · 1 lembar daun salam · 1 sdt garam · 1 sdm kecap manis untuk penyajian (opsional)",
+      steps: [
+        "Rebus ayam dengan air dan daun salam 25 menit sampai matang. Angkat dan suwir ayamnya.",
+        "Cuci beras, masukkan ke kaldu, masak dengan api kecil 25 menit sambil sering diaduk sampai menjadi bubur yang lembut. Bumbui dengan garam.",
+        "Sajikan dengan suwiran ayam, seledri, daun bawang, dan sedikit kecap manis bila suka.",
+      ],
+    },
+    "id_tinutuan": {
+      name: "Bubur Manado (tinutuan)",
+      ings: [["Beras", "100 g"], ["Labu kuning, kupas dan potong dadu", "200 g"], ["Jagung manis, dipipil", "1 tongkol"], ["Daun bayam atau kangkung", "1 ikat"], ["Daun kemangi", "1 genggam"]],
+      seas: "1,5 liter air · 1 batang serai, memarkan · 1 sdt garam",
+      steps: [
+        "Cuci beras, masak bersama labu, jagung, dan serai dalam air dengan api kecil 35 menit sambil sering diaduk.",
+        "Setelah beras lembut dan labu hancur, masukkan bayam dan kemangi, masak 3 menit.",
+        "Bumbui dengan garam, buang serai, dan sajikan hangat.",
+      ],
+    },
+    "id_bubur_kacang_hijau": {
+      name: "Bubur kacang hijau",
+      ings: [["Kacang hijau", "150 g"], ["Santan", "200 ml"]],
+      seas: "1 liter air · 1 lembar daun pandan, simpulkan · 3 sdm gula merah · Sejumput garam · 1 iris jahe (opsional)",
+      steps: [
+        "Cuci kacang hijau, rebus dengan air dan daun pandan (serta jahe) dengan api kecil 40 menit sampai sangat lembut.",
+        "Masukkan gula merah dan garam, masak 5 menit sampai larut.",
+        "Tuang santan dan panaskan 3 menit sambil diaduk, jangan sampai mendidih keras. Sajikan hangat.",
+      ],
+    },
     "id_suptahu": {
       name: "Sup tahu telur",
       ings: [["Tahu sutra", "200 g"], ["Telur", "1 butir"], ["Daun bawang", "1 batang"], ["Wortel", "1/2 buah"]],
@@ -1424,6 +1476,75 @@ GOHAN_PACK_TR('ID', 'id', {
         'Masukkan jamur, saus tiram, kecap manis, merica, dan garam, tumis 2 menit sampai jamur layu. Masukkan daun bawang, aduk.',
       ],
       tip: { add: 'Segenggam irisan kacang panjang', why: 'Menambah renyah dan warna', skill: 'Iris tipis dan rata', how: 'Ayam yang diiris tipis dan rata cepat matang tanpa menjadi kering.' }
+    },
+    id_gado_gado_vegan: {
+      name: 'Gado-gado',
+      ings: [
+        ['Kubis', '150 g'],
+        ['Kacang panjang', '100 g'],
+        ['Tauge', '60 g'],
+        ['Kentang', '2'],
+        ['Tahu goreng', '150 g'],
+        ['Tempe', '100 g'],
+        ['Kacang tanah sangrai', '80 g'],
+        ['Timun', '1/2'],
+      ],
+      seas: 'Bumbu kacang: 2 siung bawang putih, 1 cabai, 2 sdm kecap manis, air jeruk nipis dari 1 buah, 1 sdt gula, 1/2 sdt garam, 150 ml air panas · 2 sdm minyak untuk menggoreng',
+      steps: [
+        'Rebus kentang dengan kulitnya selama 20 menit, kupas dan iris. Rebus sebentar kubis, kacang panjang (potong 4 cm), dan tauge secara terpisah, masing-masing 1-2 menit.',
+        'Goreng tempe iris sampai keemasan. Haluskan kacang dengan bawang putih, cabai, dan garam, lalu campur dengan kecap manis, gula, air jeruk nipis, dan air panas hingga menjadi saus kental.',
+        'Tata sayuran, kentang, tahu, tempe, dan timun di piring, lalu siram dengan bumbu kacang.',
+      ],
+    },
+    id_sayur_lodeh_v: {
+      name: 'Sayur lodeh',
+      ings: [
+        ['Santan', '400 ml'],
+        ['Labu siam', '1'],
+        ['Kacang panjang', '100 g'],
+        ['Terung', '1'],
+        ['Tahu', '150 g'],
+        ['Tempe', '100 g'],
+        ['Nasi putih (pendamping)', '300 g'],
+      ],
+      seas: '2 sdm minyak · 4 bawang merah · 3 siung bawang putih · 2 cabai · 1 sdt ketumbar bubuk · 1 lembar daun salam · 1 sdt garam · 1 sdt gula · 300 ml air',
+      steps: [
+        'Haluskan bawang merah, bawang putih, cabai, dan ketumbar, lalu tumis bersama daun salam dengan minyak selama 2 menit.',
+        'Tambahkan air dan didihkan. Masukkan labu siam dan terung yang dipotong-potong, masak 8 menit.',
+        'Masukkan kacang panjang, tahu, tempe, dan santan bersama garam dan gula, lalu masak dengan api kecil 10 menit tanpa mendidih keras. Sajikan dengan nasi.',
+      ],
+    },
+    id_tempe_orek: {
+      name: 'Tempe orek',
+      ings: [
+        ['Tempe', '250 g'],
+        ['Cabai hijau', '3'],
+        ['Bawang merah', '4'],
+        ['Nasi putih (pendamping)', '300 g'],
+      ],
+      seas: '4 sdm minyak untuk menggoreng · 3 siung bawang putih · 3 sdm kecap manis · 1 sdm air asam jawa · 1/2 sdt garam · 1 sdm air',
+      steps: [
+        'Potong tempe tipis memanjang, goreng dengan api sedang selama 6 menit sampai keemasan dan renyah. Tiriskan.',
+        'Tumis bawang merah iris, bawang putih, dan cabai hijau dengan 1 sdm minyak selama 2 menit.',
+        'Masukkan kembali tempe, tambahkan kecap manis, air asam jawa, garam, dan air, aduk 3 menit sampai bumbu lengket. Sajikan dengan nasi.',
+      ],
+    },
+    id_pecel_sayur: {
+      name: 'Pecel sayur',
+      ings: [
+        ['Bayam', '150 g'],
+        ['Tauge', '80 g'],
+        ['Kacang panjang', '100 g'],
+        ['Kubis', '100 g'],
+        ['Kacang tanah sangrai', '80 g'],
+        ['Nasi putih (pendamping)', '300 g'],
+      ],
+      seas: 'Bumbu pecel: 2 siung bawang putih, 2 cabai, 1 sdm gula merah, 1 sdm air asam jawa, 1/2 sdt garam, 120 ml air panas',
+      steps: [
+        'Rebus sebentar bayam 30 detik, tauge 1 menit, kacang panjang potong-potong dan kubis iris masing-masing 2 menit. Tiriskan dengan baik.',
+        'Haluskan kacang dengan bawang putih, cabai, dan garam, lalu campur dengan gula merah, air asam jawa, dan air panas hingga menjadi bumbu kental.',
+        'Tata nasi dan sayuran di piring, lalu siram dengan bumbu pecel.',
+      ],
     },
   }
 });

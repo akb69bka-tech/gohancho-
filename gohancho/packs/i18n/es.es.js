@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('ES', 'es', {
   staple: 'Pan',
   names: {
+    "semolina": "Sémola de trigo",
+    "oats": "Copos de avena",
     'potato': 'Patatas',
     'egg': 'Huevos',
     'onion': 'Cebolla',
@@ -66,6 +68,36 @@ GOHAN_PACK_TR('ES', 'es', {
     'flour': 'Harina',
   },
   recipes: {
+    "es_sopa_semola": {
+      name: "Sopa de sémola",
+      ings: [["Sémola de trigo", "50 g"], ["Huevo duro picado", "1"]],
+      seas: "1 litro de caldo de pollo · Sal",
+      steps: [
+        "Calienta el caldo hasta que hierva suavemente.",
+        "Añade la sémola en forma de lluvia, removiendo para que no se formen grumos.",
+        "Cuece 6-8 minutos a fuego bajo, removiendo, hasta que espese un poco. Rectifica de sal y sirve con el huevo duro picado por encima.",
+      ],
+    },
+    "es_gachas_avena": {
+      name: "Gachas de avena",
+      ings: [["Copos de avena", "80 g"], ["Leche", "400 ml"], ["Plátano en rodajas", "1"]],
+      seas: "Una pizca de sal · 1/2 cdta de canela molida · 1 cda de miel (opcional)",
+      steps: [
+        "Pon la avena, la leche, la sal y la canela en un cazo pequeño.",
+        "Lleva a un hervor suave y cuece 5 minutos, removiendo, hasta que quede cremoso.",
+        "Sirve caliente con el plátano y un poco de miel.",
+      ],
+    },
+    "es_arroz_caldoso": {
+      name: "Arroz caldoso de pollo",
+      ings: [["Arroz redondo", "150 g"], ["Contramuslo de pollo en trozos pequeños", "250 g"], ["Zanahoria en dados", "1"], ["Cebolla picada fina", "1/2"]],
+      seas: "1,2 litros de agua o caldo de pollo · 2 cdas de aceite de oliva · 1 hoja de laurel · Sal",
+      steps: [
+        "Pocha la cebolla y la zanahoria en el aceite 5 minutos sin que se doren. Añade el pollo y rehoga 3 minutos.",
+        "Agrega el agua o el caldo y el laurel, lleva a ebullición, añade el arroz y cuece 20-25 minutos a fuego bajo, removiendo de vez en cuando.",
+        "Cuando el arroz esté muy tierno y el caldo cremoso, sala al gusto. Comprueba que el pollo esté bien hecho y sirve.",
+      ],
+    },
     "es_sopa_picadillo": {
       name: "Sopa de picadillo rápida",
       ings: [["Fideos finos", "40 g"], ["Jamón serrano en taquitos", "40 g"], ["Huevo duro", "1"]],
@@ -1092,6 +1124,86 @@ GOHAN_PACK_TR('ES', 'es', {
         'Escúrrelas sobre papel de cocina, espolvorea con un poco más de sal y sirve enseguida con gajos de limón.'
       ],
       tip: { add: 'Alioli o un chorrito de limón', why: 'La acidez o la crema de ajo cortan lo graso de la fritura', skill: 'Freír en tandas pequeñas', how: 'Con demasiadas anillas a la vez el aceite se enfría y el rebozado lo absorbe en vez de quedar crujiente.' }
+    },
+    es_lentejas_verduras: {
+      name: 'Lentejas con verduras',
+      ings: [
+        ['Lentejas pardinas', '200 g'],
+        ['Patata', '1'],
+        ['Zanahorias', '2'],
+        ['Pimiento verde', '1'],
+        ['Cebolla', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 800 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados con el aceite durante 6 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada las lentejas lavadas, el laurel y el agua y cueza a fuego suave 20 minutos. Incorpore la patata troceada.',
+        'Cueza 15 minutos más, hasta que las lentejas y la patata estén tiernas y el guiso espese. Sale al gusto.',
+      ],
+    },
+    es_garbanzos_espinacas: {
+      name: 'Garbanzos con espinacas',
+      ings: [
+        ['Garbanzos cocidos', '1 bote (400 g)'],
+        ['Espinacas frescas', '300 g'],
+        ['Pan duro', '2 rebanadas'],
+        ['Ajo', '3 dientes'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 1 cucharadita de comino molido · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · 150 ml de agua',
+      steps: [
+        'Fría el pan y el ajo en 3 cucharadas de aceite hasta que estén dorados. Májelos en un mortero con el comino, el pimentón y el vinagre hasta formar una pasta.',
+        'Escalde las espinacas en agua hirviendo 1 minuto, escúrralas y píquelas.',
+        'Caliente el resto del aceite, añada la pasta, las espinacas, los garbanzos escurridos, la sal y el agua y cueza 10 minutos hasta que espese. Sirva caliente.',
+      ],
+    },
+    es_paella_verduras: {
+      name: 'Paella de verduras',
+      ings: [
+        ['Arroz de grano corto', '200 g'],
+        ['Pimiento rojo', '1'],
+        ['Judías verdes planas', '150 g'],
+        ['Corazones de alcachofa', '4'],
+        ['Tomate rallado', '2'],
+        ['Guisantes', '80 g'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón dulce · Una pizca de azafrán · 600 ml de agua caliente · Gajos de limón',
+      steps: [
+        'Caliente el aceite en una paellera y sofría el pimiento en tiras, las judías troceadas y las alcachofas 8 minutos. Añada el ajo y el tomate rallado y cocine 5 minutos hasta que espese. Incorpore el pimentón.',
+        'Añada el arroz y remueva 1 minuto. Vierta el agua caliente con el azafrán y la sal, reparta el arroz de forma uniforme y añada los guisantes.',
+        'Cueza a fuego medio 18 minutos sin remover, hasta que se absorba el agua. Deje reposar 5 minutos tapado y sirva con limón.',
+      ],
+    },
+    es_pisto_pan: {
+      name: 'Pisto con pan tostado',
+      ings: [
+        ['Calabacines', '2'],
+        ['Tomates maduros', '4'],
+        ['Pimientos (rojo y verde)', '2'],
+        ['Cebolla', '1'],
+        ['Pan de pueblo', '4 rebanadas'],
+      ],
+      seas: 'Sal · 5 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de azúcar · Pimienta',
+      steps: [
+        'Pique la cebolla, los pimientos y los calabacines en trozos pequeños. Sofría la cebolla y los pimientos en 3 cucharadas de aceite a fuego bajo 10 minutos.',
+        'Añada el calabacín y el ajo y cocine 8 minutos. Añada los tomates picados, el azúcar y la sal y cueza sin tapar 20 minutos, hasta que el pisto espese y suelte el aceite.',
+        'Tueste el pan y rocíelo con el resto del aceite. Sirva el pisto caliente sobre el pan o al lado.',
+      ],
+    },
+    es_alubias_estofadas: {
+      name: 'Alubias blancas estofadas',
+      ings: [
+        ['Alubias blancas cocidas', '2 botes (800 g)'],
+        ['Zanahorias', '2'],
+        ['Patata', '1'],
+        ['Cebolla', '1'],
+        ['Pimiento verde', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 500 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados en el aceite 8 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada la patata troceada, el laurel y el agua y cueza 15 minutos.',
+        'Añada las alubias escurridas y cueza 10 minutos más. Aplaste unas pocas para espesar el guiso, sale y sirva.',
+      ],
     },
   }
 });

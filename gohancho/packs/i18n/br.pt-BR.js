@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    "oats": "Aveia em flocos",
     'chicken': "Frango", 'beef': "Carne bovina", 'ground beef': "Carne moída", 'pork': "Carne de porco", 'fish': "Peixe", 'egg': "Ovos",
     'ham': "Presunto", 'bacon': "Bacon", 'sausage': "Linguiça", 'onion': "Cebola", 'tomato': "Tomate", 'potato': "Batata",
     'carrot': "Cenoura", 'bell pepper': "Pimentão", 'parsley': "Cheiro-verde", 'cilantro': "Coentro", 'lime': "Limão",
@@ -13,6 +14,36 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    "br_canja_grossa": {
+      name: "Canja grossa de galinha",
+      ings: [["Coxa ou peito de frango", "300 g"], ["Arroz branco", "150 g"], ["Cenoura em cubos", "1"], ["Batata em cubos", "1"], ["Cebola picada", "1/2"], ["Cheiro-verde picado", "1 colher (sopa)"]],
+      seas: "1,2 litro de água · 1 dente de alho · 1 colher (sopa) de óleo · Sal",
+      steps: [
+        "Refogue a cebola e o alho no óleo por 2 minutos. Junte o frango e mexa por 3 minutos.",
+        "Acrescente a água, deixe ferver, retire a espuma e cozinhe 20 minutos, até o frango ficar bem cozido. Retire e desfie.",
+        "Junte o arroz, a cenoura e a batata ao caldo e cozinhe 25 minutos, mexendo sempre, até o arroz ficar bem macio e a canja engrossar como um mingau. Volte o frango, acerte o sal e sirva com cheiro-verde.",
+      ],
+    },
+    "br_mingau_aveia": {
+      name: "Mingau de aveia",
+      ings: [["Aveia em flocos", "60 g"], ["Leite", "400 ml"], ["Banana em rodelas", "1"]],
+      seas: "1 colher (sopa) de açúcar · 1 pitada de canela",
+      steps: [
+        "Coloque a aveia, o leite e o açúcar numa panela pequena.",
+        "Cozinhe 5 minutos em fogo baixo, mexendo, até engrossar e ficar cremoso.",
+        "Sirva quente com a banana e uma pitada de canela.",
+      ],
+    },
+    "br_mingau_fuba": {
+      name: "Mingau de fubá",
+      ings: [["Fubá mimoso", "50 g"], ["Leite", "500 ml"]],
+      seas: "2 colheres (sopa) de açúcar · 1 pitada de sal · 1 pitada de canela",
+      steps: [
+        "Misture o fubá no leite frio com o açúcar e o sal até não ter grumos.",
+        "Cozinhe em fogo baixo por 8–10 minutos, mexendo sempre, até engrossar.",
+        "Sirva quente com uma pitada de canela.",
+      ],
+    },
     "br_caldo_feijao_rapido": {
       name: "Caldinho de feijão rápido",
       ings: [["Feijão cozido com caldo (sobra ou enlatado)", "2 xícaras (400 g)"], ["Bacon", "2 fatias"], ["Cebola", "1/2"], ["Salsinha ou coentro", "alguns raminhos"]],
@@ -1242,6 +1273,72 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
         "Leve ao forno a 200 °C por 15 a 20 minutos, até gratinar.",
       ],
       tip: { add: "Um pouco de farinha de rosca por cima", why: "Casquinha crocante", skill: "Escorra bem a couve-flor", how: "A água que sobra afina o molho; deixe os floretes soltarem o vapor por um minuto." },
+    },
+    br_moqueca_palmito: {
+      name: 'Moqueca de palmito',
+      ings: [
+        ['Palmito', '2 vidros (500 g)'],
+        ['Leite de coco', '400 ml'],
+        ['Tomates', '3'],
+        ['Pimentão', '1'],
+        ['Cebola', '1'],
+        ['Coentro', '1/2 maço'],
+        ['Arroz (para acompanhar)', '150 g'],
+      ],
+      seas: 'Sal · 2 colheres de sopa de azeite de dendê ou azeite de oliva · 2 dentes de alho · Suco de 1 limão · Pimenta-do-reino',
+      steps: [
+        'Escorra o palmito e corte em rodelas grossas. Tempere com o suco de limão, o alho, sal e pimenta e deixe descansar por 10 minutos.',
+        'Em uma panela, faça camadas de cebola em rodelas, pimentão e tomates, coloque o palmito por cima e adicione o azeite de dendê e o leite de coco.',
+        'Tampe e cozinhe em fogo baixo por 15 minutos. Salpique o coentro e sirva com arroz.',
+      ],
+    },
+    br_arroz_feijao_couve: {
+      name: 'Arroz, feijão e couve refogada',
+      ings: [
+        ['Arroz', '200 g'],
+        ['Feijão-preto cozido', '2 latas (800 g)'],
+        ['Couve', '200 g'],
+        ['Cebola', '1'],
+      ],
+      seas: 'Sal · 4 colheres de sopa de óleo · 5 dentes de alho · 1 folha de louro · Pimenta-do-reino · 400 ml de água',
+      steps: [
+        'Refogue metade da cebola picada e 2 dentes de alho picados em 1 colher de óleo, junte o arroz lavado e frite por 2 minutos. Adicione o sal e 400 ml de água e cozinhe tampado em fogo baixo por 15 minutos.',
+        'Refogue o restante da cebola e 2 dentes de alho em 1 colher de óleo, junte o feijão com o caldo e o louro e cozinhe por 15 minutos, amassando alguns grãos para engrossar.',
+        'Corte a couve em tiras bem finas. Doure o alho restante no restante do óleo por 30 segundos, junte a couve e refogue em fogo alto por 3 minutos. Sirva tudo junto.',
+      ],
+    },
+    br_escondidinho_lentilha: {
+      name: 'Escondidinho de lentilha com mandioca',
+      ings: [
+        ['Mandioca descascada', '600 g'],
+        ['Lentilha', '150 g'],
+        ['Cebola', '1'],
+        ['Tomates', '2'],
+        ['Pimentão', '1'],
+        ['Salsinha', '1/2 maço'],
+      ],
+      seas: 'Sal · pimenta-do-reino · 4 colheres de sopa de azeite · 3 dentes de alho · 1 colher de chá de cominho em pó · 400 ml de água',
+      steps: [
+        'Cozinhe a mandioca em água com sal por 25 minutos, até ficar bem macia. Retire o fio central, depois amasse com 2 colheres de azeite, sal e um pouco da água do cozimento até ficar lisa. Aqueça o forno a 200 °C.',
+        'Refogue a cebola picada, o pimentão e o alho em 1 colher de azeite por 5 minutos. Junte os tomates, a lentilha lavada, o cominho e a água e cozinhe por 25 minutos, até a lentilha ficar macia e o recheio encorpado. Tempere e junte a salsinha.',
+        'Espalhe a lentilha em um refratário, cubra com o purê de mandioca e regue com o azeite restante. Asse por 20 minutos, até dourar.',
+      ],
+    },
+    br_quibebe_abobora: {
+      name: 'Quibebe de abóbora com arroz',
+      ings: [
+        ['Abóbora', '600 g'],
+        ['Cebola', '1'],
+        ['Tomate', '1'],
+        ['Arroz', '150 g'],
+        ['Coentro', '1/2 maço'],
+      ],
+      seas: 'Sal · pimenta-do-reino · 2 colheres de sopa de óleo · 3 dentes de alho · 1 colher de chá de páprica · 200 ml de água',
+      steps: [
+        'Corte a abóbora em cubos. Refogue a cebola picada e o alho no óleo por 4 minutos, junte o tomate e a páprica e cozinhe por 3 minutos.',
+        'Junte a abóbora, o sal e a água, tampe e cozinhe em fogo baixo por 20 minutos, até a abóbora desmanchar.',
+        'Amasse levemente com uma colher, formando um purê rústico, e tempere com pimenta. Enquanto isso, cozinhe o arroz. Salpique o coentro e sirva sobre o arroz.',
+      ],
     },
   }
 });

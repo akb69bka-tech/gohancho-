@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "oats": "Haferflocken",
     "alphabet pasta": "Buchstabennudeln",
     "chives": "Schnittlauch",
     'leberkaese': 'Leberkäse',
@@ -75,6 +76,36 @@ GOHAN_PACK_TR('DE', 'de', {
     'butter': 'Butter',
   },
   recipes: {
+    "de_haferbrei": {
+      name: "Haferbrei",
+      ings: [["Zarte Haferflocken", "80 g"], ["Milch", "400 ml"], ["Apfel, gerieben", "1"]],
+      seas: "1 Prise Salz · 1 TL Honig (nach Wunsch) · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch und Salz in einem kleinen Topf aufkochen.",
+        "Haferflocken einrühren und bei schwacher Hitze 5 Minuten unter Rühren cremig kochen.",
+        "Mit dem geriebenen Apfel, etwas Honig und Zimt servieren.",
+      ],
+    },
+    "de_griessbrei": {
+      name: "Grießbrei",
+      ings: [["Weichweizengrieß", "60 g"], ["Milch", "500 ml"], ["Butter", "1 TL"]],
+      seas: "1–2 EL Zucker · 1 Prise Salz · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch, Zucker und Salz aufkochen.",
+        "Topf vom Herd nehmen, Grieß einrühren und bei schwacher Hitze 3–4 Minuten unter Rühren dick werden lassen.",
+        "Butter unterrühren und warm mit etwas Zimt servieren.",
+      ],
+    },
+    "de_haferschleim": {
+      name: "Haferschleimsuppe",
+      ings: [["Zarte Haferflocken", "50 g"], ["Möhre, fein gewürfelt", "1"], ["Lauch, in feinen Ringen", "1/2"]],
+      seas: "800 ml Gemüsebrühe (oder Wasser mit 1 TL Salz) · 1 TL Butter · 1 Prise Muskat",
+      steps: [
+        "Butter im Topf schmelzen, Möhre (und Lauch) 2 Minuten andünsten, ohne zu bräunen.",
+        "Haferflocken und Brühe zugeben, aufkochen und bei schwacher Hitze 15 Minuten köcheln, ab und zu umrühren.",
+        "Glatt rühren (oder kurz pürieren), mit Muskat und Salz abschmecken und warm servieren.",
+      ],
+    },
     "de_eierflockensuppe": {
       name: "Eierflockensuppe",
       ings: [["Eier", "2"], ["Schnittlauch", "1/2 Bund"], ["Möhre", "1/2"]],
@@ -1075,6 +1106,85 @@ GOHAN_PACK_TR('DE', 'de', {
         'Jeden mit Apfelmus bestreichen, aufrollen oder zusammenklappen und mit Zimtzucker bestreuen.'
       ],
       tip: { add: 'Speckwürfel oder Schinken im Teig für eine herzhafte Variante', why: 'In Deutschland isst man sie auch als deftiges Hauptgericht mit Salat', skill: 'Den Teig ruhen lassen', how: 'Beim Ruhen nimmt das Mehl die Milch auf, sodass die Pfannkuchen zart bleiben und beim Wenden nicht reißen.' }
+    },
+    de_linseneintopf_veg: {
+      name: 'Linseneintopf mit Gemüse',
+      ings: [
+        ['Braune Linsen', '200 g'],
+        ['Möhren', '2'],
+        ['Kartoffeln', '300 g'],
+        ['Sellerie', '150 g'],
+        ['Lauch', '1 Stange'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 Lorbeerblatt · 1 TL Majoran · 2 EL Essig · 900 ml Wasser',
+      steps: [
+        'Möhren, Kartoffeln und Sellerie schälen und würfeln, den Lauch in Ringe schneiden. Alles im Öl 5 Minuten anbraten.',
+        'Die gewaschenen Linsen, das Lorbeerblatt, den Majoran und das Wasser zugeben. 30 Minuten köcheln, bis Linsen und Kartoffeln weich sind.',
+        'Mit Salz, Pfeffer und Essig abschmecken, das Lorbeerblatt entfernen und mit Brot servieren.',
+      ],
+    },
+    de_bratkartoffeln_pilze: {
+      name: 'Bratkartoffeln mit Pilzen',
+      ings: [
+        ['Gekochte Kartoffeln (festkochend)', '600 g'],
+        ['Champignons', '250 g'],
+        ['Zwiebel', '1'],
+        ['Schnittlauch', '1 Bund'],
+      ],
+      seas: 'Salz · Pfeffer · 4 EL Öl · 1 TL Paprikapulver · etwas Petersilie',
+      steps: [
+        'Die gekochten, abgekühlten Kartoffeln in Scheiben schneiden. In 2 EL Öl bei mittlerer Hitze 12 Minuten braten, nur gelegentlich wenden, bis sie goldbraun sind.',
+        'Die Zwiebelscheiben zugeben und 4 Minuten mitbraten. Die Kartoffeln an den Rand schieben, das restliche Öl zugeben und die Champignonscheiben 6 Minuten braten.',
+        'Alles vermengen, mit Salz, Pfeffer und Paprika würzen und mit Schnittlauch und Petersilie bestreuen.',
+      ],
+    },
+    de_kartoffelgulasch: {
+      name: 'Kartoffelgulasch',
+      ings: [
+        ['Kartoffeln', '600 g'],
+        ['Paprika', '2'],
+        ['Zwiebeln', '2'],
+        ['Tomaten', '2'],
+        ['Möhre', '1'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 EL Tomatenmark · 2 TL Paprikapulver edelsüß · 1 TL Majoran · 1 Lorbeerblatt · 500 ml Wasser',
+      steps: [
+        'Zwiebeln, Paprika und Möhre in Stücke schneiden und im Öl 6 Minuten anbraten. Tomatenmark und Paprikapulver 1 Minute einrühren.',
+        'Die in Würfel geschnittenen Kartoffeln, die gehackten Tomaten, den Majoran, das Lorbeerblatt und das Wasser zugeben.',
+        '25 Minuten köcheln, bis die Kartoffeln weich und die Soße dick ist. Mit Salz und Pfeffer abschmecken und mit Brot servieren.',
+      ],
+    },
+    de_kuerbis_linsen_curry: {
+      name: 'Kürbis-Linsen-Curry',
+      ings: [
+        ['Kürbis', '400 g'],
+        ['Rote Linsen', '150 g'],
+        ['Ingwer', '1 Stück (20 g)'],
+        ['Zwiebel', '1'],
+        ['Reis', '150 g'],
+      ],
+      seas: 'Salz · 2 EL Öl · 2 Knoblauchzehen · 2 TL Currypulver · 600 ml Wasser · Saft von 1/2 Zitrone',
+      steps: [
+        'Die gehackte Zwiebel, den geriebenen Ingwer und den Knoblauch im Öl 5 Minuten anbraten. Das Currypulver 1 Minute einrühren.',
+        'Den in 2-cm-Würfel geschnittenen Kürbis, die gewaschenen Linsen, das Wasser und etwas Salz zugeben. 20 Minuten köcheln, bis Kürbis und Linsen weich sind und das Curry dick ist.',
+        'Inzwischen den Reis kochen. Das Curry mit Zitronensaft und Salz abschmecken und auf dem Reis servieren.',
+      ],
+    },
+    de_weisse_bohnen_eintopf: {
+      name: 'Weiße-Bohnen-Eintopf',
+      ings: [
+        ['Weiße Bohnen (gekocht oder aus der Dose)', '2 Dosen (800 g)'],
+        ['Möhren', '2'],
+        ['Sellerie', '150 g'],
+        ['Lauch', '1 Stange'],
+        ['Kartoffel', '1'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 Lorbeerblatt · 1 TL Bohnenkraut oder Thymian · 1 EL Essig · 700 ml Wasser',
+      steps: [
+        'Möhren, Sellerie und Kartoffel würfeln, den Lauch in Ringe schneiden. Im Öl 5 Minuten anbraten.',
+        'Die abgetropften Bohnen, das Lorbeerblatt, die Kräuter und das Wasser zugeben und 25 Minuten köcheln, bis das Gemüse weich ist.',
+        'Einige Bohnen im Topf zerdrücken, damit der Eintopf bindet, mit Salz, Pfeffer und Essig abschmecken und das Lorbeerblatt entfernen.',
+      ],
     },
   }
 });

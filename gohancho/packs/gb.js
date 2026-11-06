@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'en',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Porridge", "en": "Porridge day", "ja": "ポリッジ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: null,
   recipes: [
     // ---------- mains ----------
@@ -1990,11 +1991,13 @@ GOHAN_PACK({
       id: 'gb_porridge',
       name: 'Creamy porridge with honey and banana',
       local: 'Porridge',
-      type: 'main',
+      type: 'rice',
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
       method: 'simmer',
       protein: 'veg',
       min: 10,
@@ -2169,6 +2172,165 @@ GOHAN_PACK({
         "Cut in half and serve hot.",
       ],
       tip: { add: "A spoon of pickle inside", why: "The classic British toastie", skill: "Medium-low heat", how: "Gentle heat melts the cheese before the bread burns." },
+    },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "gb_porridge_salt",
+      name: "Scottish porridge with salt",
+      local: "Scots porridge",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Porridge oats|80 g (1 cup)",
+        "milk|Cold milk, to serve|100 ml?",
+      ],
+      seas: "500 ml water · 1/2 tsp salt",
+      steps: [
+        "Put the oats and water in a small saucepan and bring to a gentle simmer, stirring.",
+        "Cook 5 minutes, stirring often, until thick and smooth. Stir in the salt for the last minute.",
+        "Spoon into warm bowls and pour a little cold milk round the edge.",
+      ],
+    },
+    {
+      id: "gb_porridge_apple",
+      name: "Porridge with stewed apple",
+      local: "Porridge with stewed apple",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "oats|Porridge oats|80 g (1 cup)",
+        "milk|Milk|400 ml",
+        "apple|Eating apple, peeled and diced|1",
+      ],
+      seas: "Pinch of salt · 1 tbsp sugar · Pinch of cinnamon · 3 tbsp water (for the apple)",
+      steps: [
+        "Put the apple, sugar, cinnamon and the 3 tbsp water in a small pan, cover and cook 8 minutes on low until soft.",
+        "Meanwhile simmer the oats, milk and salt for 5 minutes, stirring, until thick and creamy.",
+        "Spoon the porridge into bowls and top with the soft apple and its juice.",
+      ],
+    },
+    {
+      id: 'gb_lentil_pie',
+      name: 'Lentil and vegetable shepherd\'s pie',
+      local: 'Lentil shepherd\'s pie',
+      type: 'main',
+      starch: true,
+      method: 'grill',
+      protein: 'legume',
+      min: 60,
+      ings: [
+        'red lentils|Green, brown or red lentils|150 g',
+        'carrot|Carrots|2',
+        'onion|Onion|1',
+        'peas|Frozen peas|80 g',
+        'potato|Potatoes|600 g',
+      ],
+      seas: '3 tbsp olive oil · 1 tbsp tomato purée · 1 tsp dried thyme · 1 tbsp soy sauce · 400 ml vegetable stock · Salt · Pepper',
+      steps: [
+        'Peel the potatoes, cut them into chunks and boil in salted water for 20 minutes until soft. Heat the oven to 200°C.',
+        'Meanwhile cook the chopped onion and diced carrots in 1 tbsp of the oil for 6 minutes. Add the lentils, tomato purée, thyme, soy sauce and stock and simmer for 25 minutes until the lentils are tender and the sauce is thick. Stir in the peas.',
+        'Drain and mash the potatoes with the rest of the oil, salt and pepper. Spoon the lentils into a baking dish, cover with the mash and rough it up with a fork.',
+        'Bake for 20 minutes until the top is golden.',
+      ],
+    },
+    {
+      id: 'gb_jacket_beans_corn',
+      name: 'Jacket potato with baked beans and sweetcorn',
+      local: 'Jacket potato, beans and sweetcorn',
+      type: 'main',
+      starch: true,
+      method: 'grill',
+      protein: 'legume',
+      min: 70,
+      ings: [
+        'potato|Large baking potatoes|2',
+        'baked beans|Baked beans|1 can (400 g)',
+        'sweetcorn|Sweetcorn|100 g',
+        'spring onion|Spring onions|2?',
+      ],
+      seas: 'Olive oil · Salt · Pepper · 1 tsp smoked paprika',
+      steps: [
+        'Heat the oven to 200°C. Scrub the potatoes, prick them with a fork, rub with a little oil and salt and bake for 60 minutes until the skin is crisp and the inside soft.',
+        'Warm the baked beans with the sweetcorn and the paprika in a small pan for 5 minutes.',
+        'Split the potatoes, season, spoon the beans and sweetcorn over and scatter with the sliced spring onions.',
+      ],
+    },
+    {
+      id: 'gb_red_dal',
+      name: 'Red lentil and spinach dal with rice',
+      local: 'Red lentil and spinach dal',
+      type: 'main',
+      starch: true,
+      method: 'simmer',
+      protein: 'legume',
+      min: 30,
+      ings: [
+        'red lentils|Red lentils|150 g',
+        'spinach|Spinach|100 g',
+        'onion|Onion|1',
+        'canned tomato|Chopped tomatoes|200 g',
+        'rice|Rice|150 g',
+      ],
+      seas: '1 tbsp oil · 2 garlic cloves · 1 tsp grated ginger · 2 tsp curry powder · 1/2 tsp turmeric · 1/2 tsp salt · 500 ml water',
+      steps: [
+        'Cook the chopped onion in the oil for 5 minutes, then add the garlic, the ginger and the spices for 1 minute.',
+        'Add the rinsed lentils, the tomatoes, the salt and the water. Simmer for 20 minutes, stirring now and then, until the lentils are soft and thick.',
+        'Meanwhile cook the rice. Stir the spinach into the dal until wilted and serve over the rice.',
+      ],
+    },
+    {
+      id: 'gb_barley_stew',
+      name: 'Mushroom and pearl barley stew',
+      local: 'Mushroom and pearl barley stew',
+      type: 'main',
+      method: 'simmer',
+      protein: 'veg',
+      min: 50,
+      ings: [
+        'pearl barley|Pearl barley|100 g',
+        'mushroom|Mushrooms|250 g',
+        'carrot|Carrots|2',
+        'onion|Onion|1',
+        'celery|Celery|2 sticks',
+      ],
+      seas: '2 tbsp oil · 1 tbsp tomato purée · 1 tsp dried thyme · 1 bay leaf · 1 tbsp soy sauce · Salt · Pepper · 800 ml vegetable stock',
+      steps: [
+        'Cook the chopped onion, carrots and celery in the oil for 6 minutes. Add the sliced mushrooms and cook for 4 minutes more until they release their water.',
+        'Stir in the tomato purée, thyme, bay leaf and soy sauce, then the rinsed barley and the stock.',
+        'Simmer, covered, for 35 minutes until the barley is tender and the stew is thick. Season with salt and pepper and remove the bay leaf.',
+      ],
+    },
+    {
+      id: 'gb_cauli_potato_curry',
+      name: 'Cauliflower and potato curry',
+      local: 'Cauliflower and potato curry',
+      type: 'main',
+      starch: true,
+      method: 'simmer',
+      protein: 'veg',
+      min: 35,
+      ings: [
+        'cauliflower|Cauliflower|1/2 head',
+        'potato|Potatoes|300 g',
+        'peas|Frozen peas|80 g',
+        'onion|Onion|1',
+        'canned tomato|Chopped tomatoes|200 g',
+        'rice|Rice, to serve|150 g?',
+      ],
+      seas: '1 tbsp oil · 2 garlic cloves · 1 tsp grated ginger · 2 tsp curry powder · 1/2 tsp turmeric · 1/2 tsp salt · 250 ml water',
+      steps: [
+        'Cook the chopped onion in the oil for 5 minutes. Add the garlic, ginger and spices for 1 minute.',
+        'Add the potatoes cut into 2 cm cubes, the tomatoes, the salt and the water. Cover and simmer for 10 minutes.',
+        'Add the cauliflower florets and cook for 10 more minutes, then the peas for 3 minutes. Serve with rice.',
+      ],
     },
   ],
   aliases: {

@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    "semolina": "Semolino",
     'pasta': 'Pasta',
     'passata': 'Passata di pomodoro',
     'basil': 'Basilico',
@@ -81,6 +82,36 @@ GOHAN_PACK_TR('IT', 'it', {
     'black pepper': 'Pepe nero',
   },
   recipes: {
+    "it_semolino_brodo": {
+      name: "Semolino in brodo",
+      ings: [["Semolino", "60 g"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "800 ml di brodo di pollo o vegetale · 1 cucchiaino di burro · Sale",
+      steps: [
+        "Porta il brodo a leggero bollore.",
+        "Versa il semolino a pioggia mescolando con la frusta, per non fare grumi.",
+        "Cuoci 6-8 minuti a fuoco basso, mescolando, finché è morbido e denso. Aggiungi il burro, regola di sale e servi con il parmigiano.",
+      ],
+    },
+    "it_semolino_latte": {
+      name: "Semolino al latte",
+      ings: [["Semolino", "60 g"], ["Latte", "500 ml"], ["Burro", "1 cucchiaino"]],
+      seas: "Un pizzico di sale · 1 cucchiaio di zucchero (facoltativo) · Una scorza di limone (facoltativa)",
+      steps: [
+        "Scalda il latte con il sale (e la scorza di limone) fino al bollore; togli la scorza.",
+        "Versa il semolino a pioggia mescolando con la frusta e abbassa la fiamma.",
+        "Cuoci 4-5 minuti mescolando, finché diventa cremoso. Unisci il burro e lo zucchero e servi tiepido.",
+      ],
+    },
+    "it_pappa_pomodoro": {
+      name: "Pappa al pomodoro",
+      ings: [["Pane toscano raffermo, senza crosta", "200 g"], ["Passata di pomodoro", "400 g"], ["Foglie di basilico", "6"]],
+      seas: "1 spicchio d'aglio · 3 cucchiai di olio extravergine · 600 ml di brodo vegetale · Sale",
+      steps: [
+        "Scalda l'olio con lo spicchio d'aglio intero per 2 minuti a fuoco basso, togli l'aglio e aggiungi la passata. Cuoci 10 minuti.",
+        "Unisci il brodo e il pane spezzettato e cuoci 10 minuti a fuoco basso, mescolando e schiacciando, finché il pane si sfalda in una pappa morbida.",
+        "Regola di sale, aggiungi il basilico spezzettato e servi tiepida con un filo d'olio.",
+      ],
+    },
     "it_crema_piselli": {
       name: "Crema di piselli veloce",
       ings: [["Piselli surgelati", "300 g"], ["Cipollotto o cipolla piccola", "1"], ["Parmigiano grattugiato", "2 cucchiai"]],
@@ -1488,6 +1519,38 @@ GOHAN_PACK_TR('IT', 'it', {
         'Aggiungete la pasta scolata alla padella del pepe con un altro po’ di acqua di cottura e saltate a fuoco basso per 30 secondi. Togliete dal fuoco, unite la crema di pecorino e mescolate rapidamente finché la salsa è lucida e avvolge la pasta. Servite subito con altro pepe.'
       ],
       tip: { add: 'Grattugiare il pecorino finissimo, quasi in polvere', why: 'Il formaggio fine si scioglie liscio; se è grosso fa grumi', skill: 'Mantecare il formaggio fuori dal fuoco', how: 'Con la temperatura bassa il pecorino non si fila in grumi nella padella.' }
+    },
+    it_pasta_ceci: {
+      name: 'Pasta e ceci',
+      ings: [
+        ['Pasta corta (ditalini)', '160 g'],
+        ['Ceci già cotti', '1 barattolo (400 g)'],
+        ['Passata di pomodoro', '150 g'],
+        ['Rosmarino', '1 rametto'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 2 spicchi d’aglio · Peperoncino (facoltativo) · 600 ml di acqua',
+      steps: [
+        'Scaldate 3 cucchiai di olio con l’aglio schiacciato e il rosmarino per 2 minuti. Aggiungete la passata e cuocete 5 minuti.',
+        'Unite i ceci scolati e l’acqua e cuocete 10 minuti. Schiacciate un mestolo di ceci con una forchetta per addensare.',
+        'Aggiungete la pasta e cuocete 8-10 minuti mescolando, finché è morbida e cremosa. Aggiustate di sale e pepe, togliete il rosmarino e servite con un filo di olio a crudo.',
+      ],
+    },
+    it_pasta_fagioli_v: {
+      name: 'Pasta e fagioli',
+      ings: [
+        ['Fagioli borlotti già cotti', '1 barattolo (400 g)'],
+        ['Pasta corta', '150 g'],
+        ['Passata di pomodoro', '150 g'],
+        ['Carota', '1'],
+        ['Sedano', '1 costa'],
+        ['Cipolla', '1/2'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 1 foglia di alloro · 700 ml di acqua',
+      steps: [
+        'Tritate finemente cipolla, carota e sedano e fateli soffriggere in 3 cucchiai di olio per 8 minuti.',
+        'Aggiungete la passata, l’alloro, i fagioli scolati e l’acqua e cuocete 15 minuti. Schiacciate alcuni fagioli con una forchetta per addensare.',
+        'Unite la pasta e cuocete 8-10 minuti finché è morbida, aggiungendo un po’ d’acqua se si asciuga troppo. Aggiustate di sale e pepe e completate con il resto dell’olio.',
+      ],
     },
   }
 });

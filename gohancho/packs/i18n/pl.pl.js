@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    "oats": "Płatki owsiane",
+    "semolina": "Kasza manna",
     'pork': "Wieprzowina", 'ground pork': "Mięso mielone", 'chicken': "Kurczak", 'beef': "Wołowina", 'fish': "Ryba", 'egg': "Jajka",
     'flour': "Mąka", 'breadcrumbs': "Bułka tarta", 'bread': "Chleb", 'potato': "Ziemniaki", 'onion': "Cebula", 'dill': "Koperek",
     'quark': "Twaróg", 'sour cream': "Śmietana", 'milk': "Mleko", 'lemon': "Cytryna", 'bell pepper': "Papryka",
@@ -19,6 +21,36 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    "pl_owsianka": {
+      name: "Owsianka",
+      ings: [["Płatki owsiane", "80 g"], ["Mleko", "400 ml"], ["Jabłko, starte", "1"]],
+      seas: "Szczypta soli · 1 łyżeczka miodu (opcjonalnie)",
+      steps: [
+        "Zagotuj mleko z solą.",
+        "Wsyp płatki i gotuj 5 minut na małym ogniu, mieszając, aż będzie kremowo.",
+        "Podawaj na ciepło z tartym jabłkiem i odrobiną miodu.",
+      ],
+    },
+    "pl_kaszka_manna": {
+      name: "Kaszka manna",
+      ings: [["Kasza manna", "60 g"], ["Mleko", "500 ml"]],
+      seas: "Szczypta soli · 1 łyżka cukru · 1 łyżeczka masła",
+      steps: [
+        "Zagotuj mleko z solą i cukrem.",
+        "Wsypuj kaszę cienkim strumieniem, mieszając trzepaczką, i zmniejsz ogień.",
+        "Gotuj 3–4 minuty, mieszając, aż zgęstnieje. Dodaj masło i podawaj na ciepło.",
+      ],
+    },
+    "pl_kleik_ryzowy": {
+      name: "Kleik ryżowy z marchewką",
+      ings: [["Ryż biały", "80 g"], ["Marchewka, drobno pokrojona", "1"]],
+      seas: "1,2 litra wody · 1/2 łyżeczki soli · 1 łyżeczka masła (opcjonalnie)",
+      steps: [
+        "Opłucz ryż i włóż go do garnka z wodą i marchewką.",
+        "Zagotuj i gotuj 35–40 minut na małym ogniu pod uchyloną pokrywką, od czasu do czasu mieszając, aż ryż będzie bardzo miękki, a płyn gęsty.",
+        "Lekko rozgnieć lub przemieszaj na gładko, posól, dodaj masło i podawaj na ciepło.",
+      ],
+    },
     "pl_groszkowa": {
       name: "Szybka zupa krem z zielonego groszku",
       ings: [["Mrożony zielony groszek", "300 g"], ["Cebula", "1/2"], ["Śmietana 18%", "50 ml"]],
@@ -1472,6 +1504,70 @@ GOHAN_PACK_TR('PL', 'pl', {
         "Dopraw solą i pieprzem i podawaj z ugotowanymi ziemniakami lub chlebem żytnim.",
       ],
       tip: { add: "Odrobina posiekanej cebuli", why: "Tak robi się wielkopolski gzik", skill: "Dopraw śmiało", how: "Twaróg jest mdły; nie żałuj soli i pieprzu i spróbuj." }
+    },
+    pl_golabki_wege: {
+      name: 'Gołąbki z kaszą i grzybami',
+      ings: [
+        ['Duże liście kapusty', '8'],
+        ['Kasza gryczana prażona', '100 g'],
+        ['Pieczarki', '200 g'],
+        ['Cebula', '1'],
+        ['Przecier pomidorowy', '300 g'],
+      ],
+      seas: 'Sól · pieprz · 3 łyżki oleju · 1 liść laurowy · 1 łyżeczka majeranku · 200 ml wody',
+      steps: [
+        'Liście kapusty sparzyć we wrzątku 3 minuty i wyciąć grubą nerwację. Kaszę gotować w 250 ml osolonej wody 12 minut.',
+        'Posiekaną cebulę i pieczarki smażyć na 2 łyżkach oleju 8 minut, wymieszać z kaszą, majerankiem, solą i pieprzem.',
+        'Na każdy liść nałożyć łyżkę farszu i zawinąć, zaginając boki. Ułożyć gołąbki szwem w dół w garnku z liściem laurowym, zalać przecierem rozrobionym z wodą i resztą oleju.',
+        'Przykryć i dusić na małym ogniu 40 minut, aż kapusta będzie miękka. Podawać z sosem.',
+      ],
+    },
+    pl_pierogi_kapusta: {
+      name: 'Pierogi z kapustą i grzybami',
+      ings: [
+        ['Mąka', '300 g'],
+        ['Kapusta kiszona', '300 g'],
+        ['Suszone grzyby', '20 g'],
+        ['Cebula', '1'],
+      ],
+      seas: 'Sól · pieprz · 4 łyżki oleju · 180 ml gorącej wody',
+      steps: [
+        'Suszone grzyby namoczyć w ciepłej wodzie 20 minut, ugotować 15 minut i posiekać. Mąkę wymieszać z solą, 1 łyżką oleju i gorącą wodą na gładkie ciasto i odstawić pod miską na 20 minut.',
+        'Posiekaną cebulę zeszklić na 2 łyżkach oleju, dodać opłukaną, posiekaną kapustę i grzyby i dusić 15 minut. Doprawić solą i pieprzem i ostudzić.',
+        'Ciasto cienko rozwałkować, wykrawać kółka, nałożyć łyżkę farszu i dokładnie zlepić brzegi.',
+        'Pierogi gotować w osolonej wodzie 4 minuty od wypłynięcia. Podawać od razu lub krótko podsmażyć na reszcie oleju.',
+      ],
+    },
+    pl_gulasz_soczewica: {
+      name: 'Gulasz z soczewicy',
+      ings: [
+        ['Brązowa soczewica', '200 g'],
+        ['Ziemniaki', '300 g'],
+        ['Marchewki', '2'],
+        ['Cebula', '1'],
+        ['Przecier pomidorowy', '200 g'],
+      ],
+      seas: 'Sól · pieprz · 2 łyżki oleju · 2 łyżeczki papryki słodkiej · 1 łyżeczka majeranku · 1 liść laurowy · 500 ml wody',
+      steps: [
+        'Posiekaną cebulę smażyć na oleju 5 minut. Dodać paprykę i majeranek i mieszać 30 sekund.',
+        'Dodać opłukaną soczewicę, marchewki w kostkę, ziemniaki w kostkę, przecier, liść laurowy i wodę.',
+        'Gotować 30 minut, aż soczewica i warzywa będą miękkie, a gulasz gęsty. Doprawić solą i pieprzem i podawać z chlebem.',
+      ],
+    },
+    pl_fasolka_wege: {
+      name: 'Fasolka po bretońsku bez mięsa',
+      ings: [
+        ['Biała fasola (gotowana lub z puszki)', '2 puszki (800 g)'],
+        ['Przecier pomidorowy', '300 g'],
+        ['Cebula', '1'],
+        ['Marchewka', '1'],
+      ],
+      seas: 'Sól · pieprz · 2 łyżki oleju · 3 ząbki czosnku · 1 łyżeczka papryki wędzonej · 1 łyżeczka majeranku · 1 liść laurowy · 100 ml wody',
+      steps: [
+        'Posiekaną cebulę i startą marchewkę smażyć na oleju 6 minut. Dodać czosnek, paprykę wędzoną i majeranek na 1 minutę.',
+        'Dodać przecier, liść laurowy, wodę i odsączoną fasolę.',
+        'Gotować 20 minut, aż sos zgęstnieje. Doprawić solą i pieprzem i podawać z chlebem.',
+      ],
     },
   }
 });

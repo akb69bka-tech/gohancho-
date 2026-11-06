@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
+    "corn masa": "Masa de maíz nixtamalizado (en polvo)",
+    "oats": "Avena en hojuelas",
+    "milk": "Leche",
     "alphabet pasta": "Pasta de letras",
     'chicken': 'Pollo',
     'pork': 'Carne de puerco',
@@ -70,6 +73,36 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    "mx_atole_blanco": {
+      name: "Atole blanco",
+      ings: [["Masa de maíz nixtamalizado (en polvo)", "50 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 2 cdas de piloncillo o azúcar morena",
+      steps: [
+        "Disuelve la masa en polvo en el agua hasta que no queden grumos.",
+        "Calienta la leche con la canela y el piloncillo; cuando suelte el hervor, vierte la masa colada sin dejar de mover.",
+        "Cocina 8-10 minutos a fuego bajo, moviendo siempre, hasta que espese como un atole. Retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_avena": {
+      name: "Avena con canela",
+      ings: [["Avena en hojuelas", "80 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 1-2 cdas de azúcar · Una pizca de sal",
+      steps: [
+        "Hierve el agua con la canela 3 minutos.",
+        "Agrega la avena y cocina 3 minutos; vierte la leche y cocina 5 minutos más a fuego bajo, moviendo, hasta que quede cremosa.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_atole_arroz": {
+      name: "Atole de arroz",
+      ings: [["Arroz blanco", "80 g"], ["Leche", "500 ml"]],
+      seas: "750 ml de agua · 1 raja de canela · 3 cdas de azúcar",
+      steps: [
+        "Enjuaga el arroz y cuécelo en el agua con la canela 25 minutos, hasta que esté muy suave.",
+        "Agrega la leche y cocina 8-10 minutos a fuego bajo, moviendo seguido, hasta que espese.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
     "mx_sopa_letras": {
       name: "Sopa de letras",
       ings: [["Pasta de letras", "60 g"], ["Jitomates", "2"], ["Cebolla", "1/4"]],
@@ -1097,6 +1130,91 @@ GOHAN_PACK_TR('MX', 'es', {
         'Cuando estén suaves, agrega la sal y la manteca o el aceite y cocina 15 minutos más. Sirve en tazones con un poco de caldo.'
       ],
       tip: { add: 'Cebolla picada, cilantro y un chorrito de limón por encima', why: 'Lo fresco realza el sabor terroso de los frijoles', skill: 'La sal al final', how: 'Si la sal entra tarde, las cáscaras se suavizan de manera pareja; al principio pueden quedar duras.' }
+    },
+    mx_tacos_nopales: {
+      name: 'Tacos de nopales',
+      ings: [
+        ['Nopales limpios', '4'],
+        ['Tortillas de maíz', '8'],
+        ['Cebolla', '1/2'],
+        ['Jitomates', '2'],
+        ['Cilantro', '1/2 manojo'],
+        ['Limón', '1'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 1 diente de ajo · 1 chile serrano · Salsa al gusto',
+      steps: [
+        'Corte los nopales en cubitos y hiérvalos en agua con sal 8 minutos hasta que estén suaves; escúrralos y enjuáguelos bien.',
+        'Sofría la mitad de la cebolla picada, el ajo y el chile en el aceite 3 minutos, añada el jitomate picado y cocine 4 minutos, luego los nopales 3 minutos. Sazone con sal.',
+        'Caliente las tortillas en un comal seco, rellénelas con los nopales y agregue el resto de la cebolla, el cilantro, jugo de limón y salsa.',
+      ],
+    },
+    mx_tinga_hongos: {
+      name: 'Tostadas de tinga de hongos',
+      ings: [
+        ['Hongos', '400 g'],
+        ['Chiles chipotles en adobo', '2'],
+        ['Jitomates', '3'],
+        ['Cebolla', '1'],
+        ['Tostadas', '6'],
+        ['Aguacate', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite · 2 dientes de ajo · 1 hoja de laurel · 1/2 cucharadita de orégano seco · 100 ml de agua',
+      steps: [
+        'Licúe los jitomates con los chipotles y el ajo hasta obtener una salsa lisa. Rebane los hongos y la cebolla.',
+        'Sofría la cebolla en el aceite 4 minutos, añada los hongos y cocine 8 minutos hasta que doren.',
+        'Vierta la salsa, el agua, el laurel y el orégano y cueza 10 minutos hasta que espese. Sazone con sal y sirva sobre las tostadas con aguacate en rebanadas.',
+      ],
+    },
+    mx_frijoles_arroz_rojo: {
+      name: 'Frijoles de la olla con arroz rojo',
+      ings: [
+        ['Frijoles pintos o negros cocidos', '2 botes (800 g)'],
+        ['Arroz', '200 g'],
+        ['Jitomates', '2'],
+        ['Cebolla', '1'],
+        ['Cilantro', '1/2 manojo'],
+        ['Chícharos', '60 g'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite · 2 dientes de ajo · 400 ml de agua · 1 cucharadita de comino',
+      steps: [
+        'Licúe los jitomates con la mitad de la cebolla y un diente de ajo. Fría el arroz enjuagado en 2 cucharadas de aceite hasta que dore ligeramente, unos 4 minutos.',
+        'Vierta el jitomate licuado y el agua, añada la sal y los chícharos, tape y cocine a fuego bajo 18 minutos. Deje reposar 5 minutos.',
+        'Mientras tanto sofría el resto de la cebolla y el ajo en el aceite restante, añada los frijoles con su caldo y el comino y cueza 15 minutos. Sirva con el arroz y el cilantro.',
+      ],
+    },
+    mx_calabacitas_elote: {
+      name: 'Calabacitas con elote',
+      ings: [
+        ['Calabacitas', '3'],
+        ['Granos de elote', '150 g'],
+        ['Jitomates', '2'],
+        ['Chile poblano', '1'],
+        ['Cebolla', '1/2'],
+        ['Tortillas de maíz (para acompañar)', '6'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · 1 ramita de epazote o cilantro · Pimienta',
+      steps: [
+        'Corte las calabacitas en cubos, el chile poblano en rajas y pique los jitomates.',
+        'Sofría la cebolla y el ajo en el aceite 3 minutos, añada el poblano y el elote y cocine 4 minutos.',
+        'Añada las calabacitas y los jitomates, tape y cocine a fuego bajo 10 minutos. Sazone con sal y pimienta, agregue el epazote y sirva con tortillas calientes.',
+      ],
+    },
+    mx_pozole_verde_hongos: {
+      name: 'Pozole verde de hongos',
+      ings: [
+        ['Maíz pozolero cocido', '2 botes (800 g)'],
+        ['Tomates verdes', '300 g'],
+        ['Pepitas', '60 g'],
+        ['Hongos', '300 g'],
+        ['Rábanos', '4'],
+        ['Limón', '1'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · 1 chile serrano · 1 puñado de cilantro · 1/2 cebolla · 800 ml de agua · 1 cucharadita de orégano seco',
+      steps: [
+        'Hierva los tomates verdes con el chile 5 minutos. Licúelos con las pepitas tostadas, el cilantro, el ajo y un poco de agua hasta obtener una salsa verde.',
+        'Sofría los hongos rebanados y la cebolla en el aceite 8 minutos hasta que doren. Vierta la salsa verde y fría 5 minutos.',
+        'Añada el maíz escurrido, el agua, el orégano y la sal y cueza 25 minutos. Sirva con rábanos en rodajas, orégano y limón.',
+      ],
     },
   }
 });

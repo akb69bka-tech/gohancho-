@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('PE', 'es', {
   staple: 'Arroz blanco',
   names: {
+    "oats": "Avena en hojuelas",
+    "apple": "Manzana",
+    "semolina": "Sémola",
     'beef': 'Carne de res',
     'chicken': 'Pollo',
     'fish': 'Pescado',
@@ -80,6 +83,36 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    "pe_quinua_leche": {
+      name: "Quinua con leche",
+      ings: [["Quinua bien lavada", "100 g"], ["Leche evaporada", "200 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 3 clavos de olor · 2 cdas de azúcar",
+      steps: [
+        "Lava la quinua varias veces, frotándola, hasta que el agua salga clara.",
+        "Cocínala en el agua con la canela y el clavo 20 minutos, hasta que esté muy suave.",
+        "Agrega la leche evaporada y el azúcar y cocina 5 minutos más, moviendo, hasta que quede cremosa. Retira las especias y sirve caliente.",
+      ],
+    },
+    "pe_avena_manzana": {
+      name: "Avena con manzana",
+      ings: [["Avena en hojuelas", "80 g"], ["Manzana pelada en cubos", "1"], ["Leche evaporada", "100 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve la manzana en el agua con la canela 8 minutos.",
+        "Agrega la avena y cocina 6-8 minutos a fuego bajo, moviendo, hasta que espese.",
+        "Añade la leche evaporada y el azúcar, calienta y sirve.",
+      ],
+    },
+    "pe_semola_leche": {
+      name: "Sémola con leche",
+      ings: [["Sémola", "60 g"], ["Leche evaporada", "200 ml"]],
+      seas: "400 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve el agua con la canela 3 minutos y agrega la leche evaporada.",
+        "Echa la sémola en forma de lluvia, moviendo para que no se formen grumos.",
+        "Cocina 5-6 minutos a fuego bajo, moviendo, hasta que espese. Endulza, retira la canela y sirve caliente.",
+      ],
+    },
     "pe_sopa_fideos_huevo": {
       name: "Sopa de fideos con huevo",
       ings: [["Fideos cabello de ángel", "50 g"], ["Huevos", "2"], ["Zanahoria", "1/2"], ["Cebollita china", "1"]],
@@ -1126,6 +1159,56 @@ GOHAN_PACK_TR('PE', 'es', {
         'Cubre con papel aluminio y hornea 30 minutos; luego destapa y hornea de 15 a 20 minutos más, hasta que esté dorado y un cuchillo atraviese fácilmente las papas.'
       ],
       tip: { add: 'Sírvelo con adobo o carne al horno', why: 'En Arequipa es el acompañante del domingo', skill: 'Corta muy fino', how: 'Las rodajas delgadas se cocinan parejo y absorben la mezcla de huevo.' }
-    }
+    },
+    pe_estofado_quinua: {
+      name: 'Estofado de quinua con verduras',
+      ings: [
+        ['Quinua', '150 g'],
+        ['Papas', '2'],
+        ['Zanahoria', '1'],
+        ['Arvejas', '80 g'],
+        ['Cebolla', '1'],
+        ['Pasta de ají amarillo', '1 cucharada'],
+      ],
+      seas: 'Sal · pimienta · 3 cucharadas de aceite · 2 dientes de ajo · 1 cucharadita de comino molido · 500 ml de agua · Un puñado de culantro',
+      steps: [
+        'Lave bien la quinua. Sofría la cebolla picada, el ajo y el ají amarillo en el aceite 5 minutos y luego el comino 30 segundos.',
+        'Añada la zanahoria y las papas en cubos, la quinua y el agua y cueza 15 minutos.',
+        'Añada las arvejas y cocine 5 minutos más hasta que la quinua esté tierna y el estofado espese. Sazone y esparza el culantro.',
+      ],
+    },
+    pe_saltado_verduras: {
+      name: 'Saltado de verduras con papas',
+      ings: [
+        ['Tomates', '2'],
+        ['Cebolla roja', '1'],
+        ['Pimiento', '1'],
+        ['Papas', '2'],
+        ['Ají amarillo', '1'],
+        ['Arroz blanco (para acompañar)', '300 g'],
+      ],
+      seas: 'Sal · pimienta · 4 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre · 1 cucharadita de comino · Culantro',
+      steps: [
+        'Corte las papas en bastones y fríalas hasta que doren y estén crocantes. Escúrralas. Corte la cebolla, el pimiento y los tomates en gajos gruesos y el ají en tiras.',
+        'Caliente muy bien un wok, añada 2 cucharadas de aceite, la cebolla y el pimiento y saltee 2 minutos. Añada el ajo, el ají y el comino, luego los tomates.',
+        'Vierta el sillao y el vinagre por el borde del wok, agregue las papas y el culantro, saltee 30 segundos y sirva con arroz.',
+      ],
+    },
+    pe_sopa_quinua_v: {
+      name: 'Sopa de quinua',
+      ings: [
+        ['Quinua', '80 g'],
+        ['Papa', '1'],
+        ['Zanahoria', '1'],
+        ['Cebolla', '1/2'],
+        ['Culantro', '1 puñado'],
+      ],
+      seas: 'Sal · pimienta · 1 cucharada de aceite · 1 diente de ajo · 1 cucharadita de orégano seco · 800 ml de agua',
+      steps: [
+        'Lave la quinua. Sofría la cebolla picada y el ajo en el aceite 4 minutos.',
+        'Añada la zanahoria y la papa en cubos, la quinua, el orégano y el agua y cueza 20 minutos hasta que todo esté suave.',
+        'Sazone con sal y pimienta y esparza el culantro.',
+      ],
+    },
   }
 });
