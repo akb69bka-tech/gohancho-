@@ -2583,6 +2583,7 @@ const STORE_KEY = 'gohancho.v1';
 const DEFAULT_STATE = {history:[], favs:[], hidden:[], fridge:[], fridgeMeta:{}, staples:[], savedMenus:[], skills:[], custom:[], seenTwists:[], awards:{}, week:null, onboarded:false, firstUse:'', pro:null, usage:{}, usedDays:[], trialNoticeShown:false, settings:{avoidDays:10, dishCount:'auto', servings:2, avoid:[], uiLang:'auto'}, family:[], eaters:null, eatersD:'', leftovers:[], spend:[], foodLog:[], stock:[], stockLog:[]};
 // 国のコード（COUNTRIES と同じ21か国。保存データを読むときに使うので、ここに置く）
 const COUNTRY_CODES = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', 'CN', 'TW', 'KR', 'TH', 'VN', 'ID', 'PH', 'MX', 'BR', 'PE'];
+const SV_MAX = 15, SV_LIST = Array.from({length: SV_MAX}, (_, i) => i + 1);   // 人数・家族の上限（R2-17: 親戚が集まる日の12〜15人。10人から広げた）
 const BROKEN_PREFIX = 'gohancho.broken.';
 const storeInfo = {fail: '', warned: false, hold: false, broken: '', pending: []};
 let S = load();
@@ -2602,7 +2603,7 @@ function normalizeState(d){
         .map(m => { if (!('mix' in m) && !('names' in m)) return m; const mx = {}; Object.entries(obj(m.mix)).forEach(([k, v]) => { if (['主菜', '副菜', '汁物'].includes(k) && typeof v === 'string' && /^[A-Z]{2}$/.test(v)) mx[k] = v; });   // 国ミックス（枠 → 国）
             return Object.assign({}, m, {mix: mx, names: arr(m.names).filter(x => typeof x === 'string').slice(0, 8)}); });
     st.skills = arr(st.skills).filter(x => x && typeof x === 'object');   // 「やってみた」の記録は {d, id, skill}
-    st.settings.servings = Math.min(10, Math.max(1, Math.round(Number(st.settings.servings)) || 2));
+    st.settings.servings = Math.min(SV_MAX, Math.max(1, Math.round(Number(st.settings.servings)) || 2));
     { const dflt = DEFAULT_STATE.settings, cl = (k, lo, hi) => { const n = Math.round(Number(st.settings[k])); st.settings[k] = Number.isFinite(n) && n >= lo && n <= hi ? n : (dflt[k] === undefined ? null : dflt[k]); };
       if (st.settings.remind != null && st.settings.remind !== false && st.settings.remind !== '') cl('remind', 0, 23);
       if (st.settings.shopRemind != null && st.settings.shopRemind !== false && st.settings.shopRemind !== '') cl('shopRemind', 0, 6);
@@ -2642,7 +2643,7 @@ function normalizeState(d){
     // 家族のプロフィール（最大6人）と、今日食べる人（null = 全員）
     const strs = x => arr(x).filter(v => typeof v === 'string' && v.trim());
     const seenF = new Set();
-    st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, 10).map(m => {
+    st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, SV_MAX).map(m => {
         const avoid = [...new Set(strs(m.avoid))], o = {id: m.id, name: typeof m.name === 'string' ? m.name.slice(0, 12) : '', role: m.role === 'child' ? 'child' : 'adult',
             avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true, sometimes: m.sometimes === true, me: m.me === true};
         if (m.portion === 0.5 || m.portion === 1.5) o.portion = m.portion;   // 食べる量: 少なめ 0.5・多め 1.5（ふつう 1 は持たない）
@@ -5484,6 +5485,21 @@ function skipDayHtml(x){
     </section>`;
 }
 // 昨日「明日へまわす」にした一膳。今日まだ決めていないときだけ、決める段の上に1行（押したときだけ今日の案にする）
+// R2-15: 夜勤明けの朝（4〜10時台）に開いたとき、いま食べる朝食を選ぶ小さな入口（今日の画面のお膳の下）。朝食の料理は既存のもの（パックの印 meal: 'breakfast'・日本はハムエッグ）で、
+// 出す料理の判定（アレルギー・苦手）は献立・さがすと同じ。決めた献立は変えない（朝食は見て作り方を開くだけ）。朝食の料理がない国では入口を出さない
+function breakfastTime(){ const h = new Date().getHours(); return h >= 4 && h < 11; }
+function breakfastDishes(){ return RECIPES.filter(r => breakfastMeal(r) && !isAvoided(r) && !allergyConflict(r)); }
+function breakfastEntryHtml(){
+    if (!breakfastTime() || !breakfastDishes().length) return '';
+    return `<section class="sec bf-entry"><button type="button" class="btn sm ghost" data-act="bf-open" style="min-height:44px;width:100%;white-space:normal;line-height:1.3">${esc(t('いま食べる朝食を選ぶ'))}</button></section>`;
+}
+function breakfastSheetHtml(){
+    const list = breakfastDishes();
+    return `<h2>${esc(t('いま食べる朝食'))}</h2>
+        <p class="small muted">${esc(t('今日の献立は変わりません。作り方を見るだけです'))}</p>
+        <div class="list swap-list">${list.length ? list.map(r => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}</div><button class="btn sm" data-act="bf-pick" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>`).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`}</div>
+        <div class="row"><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
+}
 function keptOfferHtml(){
     const k = keepGet(TODAY) || yesterdayOffer(); if (!k || decidedToday()) return '';
     const rs = k.ids.map(byId).filter(Boolean); if (!rs.length) return '';
@@ -6940,7 +6956,7 @@ function renderSheetBody(){
             ${obProgHtml(2, true)}
             <h2>${esc(t('何人分つくりますか'))}</h2>
             <p class="muted small">${esc(t('材料の分量をこの人数に合わせて表示します。あとから設定で変えられます。'))}</p>
-            <div class="chips ob-sv">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="ob-sv" data-v="${n}" aria-pressed="${sheet.servings===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
+            <div class="chips ob-sv">${SV_LIST.map(n => `<button class="chip" data-act="ob-sv" data-v="${n}" aria-pressed="${sheet.servings===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
             <h3>${esc(t('ふだんの品数'))}</h3>
             <p class="muted small">${esc(t('「おまかせ」は、平日は3〜4品、週末は4〜6品のように日によって変えます。'))}</p>
             <div class="chips">${countChips(sheet.count, 'ob-count')}</div>
@@ -6974,6 +6990,7 @@ function renderSheetBody(){
     if (sheet.kind === 'cond') body = condSheetHtml();
     if (sheet.kind === 'reroll-ok') body = rerollOkSheetHtml();
     if (sheet.kind === 'swap') body = swapSheetHtml();
+    if (sheet.kind === 'bf') body = breakfastSheetHtml();
     if (sheet.kind === 'rice') body = riceSheetHtml();
     if (sheet.kind === 'tomorrow') body = tomorrowSheetHtml();
     if (sheet.kind === 'country-ok') body = countryOkSheetHtml();
@@ -8136,7 +8153,7 @@ function rememberAvoidX(word, typed){
 /* ---- 家族のプロフィール ----
    S.family: [{id, name, role:'child'|'adult', avoid:[食材], allergy:[avoid の中でアレルギーのもの], mild:辛いのが苦手}]。S.eaters: 今日食べる人の id（null なら全員）
    実際に避ける食材 = 家の苦手な食材 ∪ 今日食べる人の苦手な食材 */
-const FAM_MAX = 10;   // 家族は10人まで（第2回モニター F-P09: 6人では足りない）
+const FAM_MAX = SV_MAX;   // 家族は15人まで（第2回モニター F-P09: 6人では足りない。R2-17: 親戚が集まる日の12〜15人）
 function famOf(el){ const w = el.closest && el.closest('[data-fm]'); return w ? famMembers().find(m => m.id === w.dataset.fm) || null : null; }
 // 「わたし」: 家族の登録に自分がいない人のための、今日食べる人の1つ（はじめから選んだ状態）。家族の誰かに「これはわたし」を付けたら出さない
 const ME_ID = '__me';
@@ -9018,7 +9035,7 @@ function viewSettings(){
         ${familySettingsHtml()}
         <div class="set-group">
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
-                <div class="chips">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
+                <div class="chips">${SV_LIST.map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
                 <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
             <div class="field"><label>${esc(t('開いたときの画面'))}</label>
                 <div class="chips">${[['auto', t('いまの段（おすすめ）')], ['decide', t('いつも「決める」から')]].map(([v, l]) => `<button class="chip" data-act="open-at" data-v="${v}" aria-pressed="${(S.settings.openAt === 'decide' ? 'decide' : 'auto') === v}">${esc(l)}</button>`).join('')}</div></div>
@@ -11998,7 +12015,7 @@ function condSheetHtml(){
     const hint = svQual() ? t('{compose}・{n}品・{v}。{reason}', {...hv, v: svText()}) : t('{compose}・{n}品・{sv}人分。{reason}', {...hv, sv: fmtPortion(svToday())});   // ご飯の席も1品と数える
     void oneBowl; void st;
     const eaters = famMembers().length ? `<div class="field"><span class="eyebrow">${esc(t('今日食べる人'))}</span><div class="chips" role="group" aria-label="${esc(t('今日食べる人'))}">${famMembers().some(x => x.sometimes) ? `<button class="chip" data-act="eaters-usual" aria-pressed="${!Array.isArray(S.eaters)}">${esc(t('いつものメンバー'))}</button>` : ''}${meMember() ? '' : `<button class="chip" data-act="eater" data-v="${ME_ID}" aria-pressed="${meOn()}">${esc(t('わたし'))}</button>`}${famMembers().map((x, i) => `<button class="chip" data-act="eater" data-v="${esc(x.id)}" aria-pressed="${eaterMembers().includes(x)}">${esc(famLabel(x, i))}</button>`).join('')}</div>${eatersOut().length ? `<p class="small eaters-out" role="status">${esc(eatersOutLine())}</p>` : ''}${Array.isArray(S.eaters) ? `<p class="small muted">${esc(t('今日食べる人は今日だけの設定です。明日は元に戻ります。'))}</p>` : ''}${eatersOut().some(m => m.allergy.length) ? `<p class="small muted">${esc(t('1週間プランと買い物メモは、家族みんなのアレルギーで考えます。'))}</p>` : ''}</div>`
-        : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
+        : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${SV_LIST.map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
     const wishN = wishList().length ? wishesActive().length : 0;
     // 今日の献立の小さな入口（もとはお膳の下の文字のリンク）。押すとこのシートを閉じて、それぞれの画面へ
     const entries = `<div class="row cond-entries" role="group" aria-label="${esc(t('今日の献立'))}"><button type="button" class="btn sm" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button type="button" class="btn sm" data-act="share-menu" data-app="${esc(msgLabel())}" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>${wishN ? `<button type="button" class="btn sm" data-act="wish-list">${esc(t('食べたいもの（{n}）', {n: wishN}))}</button>` : ''}<button type="button" class="btn sm" data-act="skip-open">${esc(t('今日は作らない'))}</button><button type="button" class="btn sm" data-act="cond-settings">${esc(t('設定'))}</button><button type="button" class="btn sm" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button type="button" class="btn sm" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>`;
@@ -12324,6 +12341,7 @@ function viewToday(){
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
         ${planned ? `<div class="note"><span class="plan-note">${esc(t('1週間プランでは、今日の主菜は'))}<b class="pn">${esc(planned.name)}</b></span><button class="btn sm" data-act="use-plan">${esc(t('献立にする'))}</button></div>` : ''}
         ${keptOfferHtml()}
+        ${breakfastEntryHtml()}
         ${/* 並び: 「除いて考えています」→ ⚠ の文（当たる料理と「食べられません」）→ ほかの家族の「食べられるお膳です」（⚠ の文は、関係する文のすぐ下に。第17回 R53） */''}${(el => el ? `<p class="small muted eaters-line${allergyOn() ? ' alg' : ''}" role="status">${[esc(eatersOutLine()), (o => o ? `<span class="out-alg">${esc(o)}</span>` : '')(outAlgLine()), esc(eatersLine())].filter(Boolean).join('\n')}</p>` : '')([eatersOutLine(), eatersLine()].filter(Boolean).join('\n'))}
         ${stapleBlockedNote() ? `<p class="small muted" role="status">${esc(stapleBlockedNote())}</p>` : ''}
         ${main ? '' : noMainHelpHtml()}
@@ -14209,7 +14227,7 @@ document.addEventListener('click', e => {
             if (askLater(t('品数'), () => { S.settings.pending = {d: addDays(TODAY, 1), dishCount: n, noSoup: false}; }, today)) break;
             guardDecided(today); break;
         }
-        case 'servings': { const v = Math.min(10, Math.max(1, Number(el.dataset.v) || 2)); S.settings.servings = v; save(); render(); if (modalId) renderModal(); toast(t('{n}人分の分量で表示します', {n:v})); break; }
+        case 'servings': { const v = Math.min(SV_MAX, Math.max(1, Number(el.dataset.v) || 2)); S.settings.servings = v; save(); render(); if (modalId) renderModal(); toast(t('{n}人分の分量で表示します', {n:v})); break; }
         case 'ui-lang': { const v = el.dataset.v, n = ++uiLangSeq; uiLangQ = uiLangQ.then(() => switchLang(v, n)).catch(() => {}); break; }
         case 'toggle-avoid': {
             const v = el.dataset.v, k = keyOf(v); const a = S.settings.avoid;
@@ -14460,6 +14478,8 @@ document.addEventListener('click', e => {
         case 'monitor-send': monitorSend(); break;
         case 'notice-close': S.noticeSeen = REMOTE.notice && REMOTE.notice.id; save(); render(); break;
         case 'sheet-close': closeSheet(); break;
+        case 'bf-open': sheet = {kind: 'bf'}; renderSheet(); break;
+        case 'bf-pick': closeSheet(); openModal(id); break;
         case 'fp-tog': fphotoToggle(el.dataset.v); break;
         case 'fp-go': fphotoCommit(); break;
         case 'term': sheet = {kind:'term', id: el.dataset.id, w: el.dataset.w}; renderSheet(); break;
