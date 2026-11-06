@@ -1,0 +1,7 @@
+# 安全・課金・公開に関わる場所は、オーナーの確認を必須にする（Settings → Branches で「Require review from Code Owners」を入れたとき有効）
+/.github/                       @akb69bka-tech
+/ios-app/                       @akb69bka-tech
+/gohancho/remote.json           @akb69bka-tech
+/gohancho/privacy.html          @akb69bka-tech
+/gohancho/privacy-en.html       @akb69bka-tech
+/docs/escalations.md            @akb69bka-tech
