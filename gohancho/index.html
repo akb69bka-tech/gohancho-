@@ -7558,7 +7558,7 @@ function dietMayBadgeHtml(r){ const nm = dietMayHits(r); return nm.length ? `<sp
 // head: 選ぶとなかま全部を避ける食材のキー（ハムだけ・鮭だけを選んだときは、その食材だけを避ける）。jp: 日本の食材のキー。re: 各国の食材（キー｜英語の名前）
 const AVOID_FAM = {
     pork:{head:/^(豚肉|豚ひき肉)$|\bpork\b/, jp:['豚肉','豚ひき肉','合いびき肉','ハム','ベーコン','ウインナー'],
-        re:/\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bspeck\b|kasseler|chorizo|salami|\blard\b|morcilla|\btrotters?\b(?!.*\bcow\b)|\bspam\b|lingui[cç]a|wiener|bratwurst|bockwurst|frankfurter|mettw|toulouse|morteau|montb[ée]liard|strasbourg|andouille|chinese sausage|italian sausage|hot dog|liver spread|meat dumpling|^(ground meat|minced meat)\|(?!.*\b(beef|lamb|veal|chicken|mutton)\b(?!.*\b(pork|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^sausage\|(?!.*\b(beef|chicken|lamb|turkey|merguez|sogo|fish|vegetarian)\b)/},
+        re:/\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bspeck\b|kasseler|chorizo|salami|\blard\b|morcilla|\btrotters?\b(?!.*\bcow\b)|\bspam\b|lingui[cç]a|wiener|bratwurst|bockwurst|frankfurter|mettw|toulouse|morteau|montb[ée]liard|strasbourg|andouille|chinese sausage|italian sausage|\bsausage ?meat\b|hot dog|liver spread|meat dumpling|^(ground meat|minced meat)\|(?!.*\b(beef|lamb|veal|chicken|mutton)\b(?!.*\b(pork|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^sausage\|(?!.*\b(beef|chicken|lamb|turkey|merguez|sogo|fish|vegetarian)\b)/},
     chicken:{head:/^(鶏肉|鶏ひき肉)$|^(ground )?chicken\b/, jp:['鶏肉','鶏ひき肉'], re:/\bchicken\b|\bturkey\b/},
     beef:{head:/^牛肉$|^(ground )?beef\b|^veal$|^oxtail$|^chuck roast$/, jp:['牛肉','合いびき肉'],
         re:/\bbeef\b|\bveal\b|\bcow\b|oxtail|chuck roast|\bsuet\b|sucuk|\bsogo\b|corned|\btripe\b|bresaola|pastrami|^(ground meat|minced meat)\|(?!.*\b(pork|lamb|chicken|mutton)\b(?!.*\b(beef|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^mince\|/},
@@ -8425,6 +8425,7 @@ function isAvoidedCore(r){
     const c = avoidCtx();
     if (!r.pack && !r.trLang && swapOn() && algIds().length && SEAS_SWAP.some(([f, re, to]) => { re.lastIndex = 0; return c.fams.includes(f) && re.test(String(r.seasBase != null ? r.seasBase : r.seas || '')) && !seasToOk(to); })) return true;   // 調味料を替えたら選んだアレルゲンが入る（オイスターソース→醤油）なら、替えずに、その料理を出さない
     if (seasAvoided(r, c)) return true;   // 調味料に苦手な食材（小麦粉・卵・バターなど）がある料理は出さない
+    if (r.items.some(i => i.opt && itemAvoided(i, c) && nameHasOmitFam(r, i))) return true;   // 料理の名前が、なくても可の材料（Feldsalat mit Speck・Ham and cheese omelette）を名乗る料理は、その材料を外した人に出さない（名前を直さない）
     if (!r.items.some(i => !i.opt && itemAvoided(i, c))) return false;
     return !RECIPES.includes(r) || !recipeSwaps(r);   // ほかの国の料理（国の組み合わせ）とひとひねり案は置き換えない
 }
@@ -8527,8 +8528,48 @@ function recipeSwaps(r){
 // ・文が空になったら文ごと外す。手順が空になったら「この手順は飛ばせます」にする（手順の数・順番は変えない）
 const OMIT_MARK = '\u0003';
 const OMIT_SEP = /(\s*[,;，、；،]\s*|\s+(?:and then|then|and|or|y|e|ou|et|und|oder|ve|oraz|lub|và|hoặc|และ|और|و)\s+|(?<=[\u4e00-\u9fff])(?:和|與|与|及|跟|並|并)(?=[\u4e00-\u9fff]))/iu;
-const OMIT_THEN = /^\s*(?:and then|then|next|luego|después|depois|então|puis|ensuite|dann|danach|poi|quindi|dopo|sonra|ardından|potem|następnie|然后|然後|接著|接着|그다음|그리고|rồi|sau đó|แล้ว|จากนั้น|फिर|ثم|その後|次に|そのあと)(?![\p{L}])\s*/iu;
+const OMIT_THEN = /^\s*(?:再(?=[加放下入倒撒淋炒煮拌])|(?:and then|then|next|luego|después|depois|então|puis|ensuite|dann|danach|poi|quindi|dopo|sonra|ardından|potem|następnie|然后|然後|接著|接着|그다음|그리고|rồi|sau đó|แล้ว|จากนั้น|फिर|ثم|その後|次に|そのあと)(?![\p{L}]))\s*/iu;
+// 外した材料の名前の中の「または」「/」「、」の区切り（「Saure Sahne oder Joghurt」→ 手順の文に出る「saure Sahne」「Joghurt」）
+const OMIT_ALT = /\s*[\/,，、・]\s*|\s+(?:oder|or|and|und|o|y|e|ou|et|ve|lub|oraz|hoặc|và|หรือ|และ|या|और|أو)\s+|[或和]/iu;
+// 外した材料のなかま（肉・魚・貝・卵・乳）の言葉。材料の欄にない言い方（Speck・五花肉・baboy・la nata）で手順の文に出ているときも、その句を外す。
+// 外した材料のなかま（inFam＝材料のキー・元の言葉）だけを見る＝画面の言語に依らない。* は語尾が続いてよい印。ほかは語の切れ目まで
+const OMIT_LEXF = {
+    pork: ['speck*', 'bacon', 'pork', 'jam[oó]n', 'cerdo', 'porco', 'puerco', 'schwein*', 'porc', 'lardons?', 'lard', 'pancetta', 'guanciale', 'prosciutto', 'salsicc*', 'salchicha*', 'chorizo', 'panceta', 'toucinho', 'lingui[cç]a', 'saucisse*', 'wurst*', 'w[üu]rstchen', 'sausages?', 'gammon', 'szynk*', 'boczek', 'kie[łl]bas*', 'babi', 'baboy', 'liempo', 'longganisa', 'sosis', 'wieprzow*', 'ham', '五花肉', '猪肉', '豬肉', '猪', '豬', '培根', '腊肠', '臘腸', '火腿', '香肠', '香腸', '豚', 'ベーコン', 'ハム', 'ソーセージ', '돼지고기', '베이컨', '소시지', 'หมู', 'เบคอน', 'ไส้กรอก', 'thịt heo', 'thịt lợn'],
+    chicken: ['chicken', 'pollo', 'frango', 'poulet', 'h[äa]hnchen*', 'h[üu]hnerfleisch', 'huhn', 'kurczak*', 'ayam(?:nya)?', 'manok', 'tavuk', 'turkey', '鸡肉', '雞肉', '鶏肉', '닭고기', 'ไก่', 'thịt gà', 'دجاج'],
+    beef: ['beef', 'carne asada', 'ternera', 'boeuf', 'bœuf', 'rindfleisch', 'manzo', 'vitello', 'carne bovina', 'carne de res', 'sapi(?:nya)?', 'veal', 'kalb*', 'wo[łl]owin*', 'sığır', '牛肉', '牛腩', '소고기', 'เนื้อวัว', 'thịt bò', 'لحم*'],
+    fish: ['fish', 'pescado', 'poisson', 'fisch*', 'pesce', 'peixe', 'ikan(?:nya)?', 'bal[ıi]k*', 'ryb*', 'tuna', 'at[úu]n', 'atum', 'salmon', 'salm[óo]n', 'anchov*', 'sardin*', 'bacalao', 'bacalhau', 'thon', 'thunfisch', 'tonno', 'mackerel', 'cá', '(?<![魷鱿墨章])[鱼魚](?![香露])', '鮭', '생선', 'ปลา'],
+    crustacean: ['shrimps?', 'prawns?', 'gambas?', 'camar*', 'crevettes?', 'garnel*', 'gambero', 'gamberi', 'udang(?:nya)?', 'karides', 'krewetk*', 'hipon', 'crabs?', 'cangrejo', '虾', '蝦', '蟹', 'えび', '海老', '새우', 'กุ้ง', 'tôm'],
+    mollusc: ['clams?', 'almejas?', 'mussels?', 'mejill*', 'oysters?', 'squid', 'calamar*', 'octopus', 'pulpo', '魷魚', '鱿鱼', '墨魚', '墨鱼', '章魚', '章鱼'],
+    egg: ['eggs?', 'yolks?', 'huevos?', 'ovos?', 'oeufs?', 'œufs?', 'eier', 'uovo', 'uova', 'yumurta', 'jajk*', 'jajo', 'jaja', 'telur(?:nya)?', 'itlog', '蛋', '卵', 'たまご', '玉子', '계란', '달걀', 'ไข่', 'trứng', 'بيض', 'अंडा'],
+    // 肉をすべて外した人（ベジタリアン・ヴィーガン）の「肉」の総称（肉がまったく残らないので、手順の文の「肉」は外してよい）
+    meat: ['meats?', 'carnes?', 'viande', 'fleisch', 'daging', 'mi[ęe]so', '肉(?![桂豆])', '고기', 'เนื้อสัตว์', 'thịt'],
+    // 外す材料がひき肉のとき（豆腐などにも替えられない）の「ひき肉」の言い方
+    mince: ['ground meat', 'minced meat', 'carne molida', 'carne picada', 'carne mo[íi]da', 'viande hach[ée]e', 'carne macinata', 'hackfleisch', 'mi[ęe]so mielone', 'k[ıi]yma', 'daging cincang', 'giniling', '肉末', '肉碎', '碎肉', 'ひき肉', '挽き肉', '挽肉', 'ミンチ', '다진 고기', 'หมูสับ', 'thịt băm'],
+    // お酒（酒・みりん・ワイン・ビール）。酢（ワインビネガーなど）は意図して外さない方針なので OMIT_PROTECT で守る。1文字の「酒」「술」は別の言葉（酒蒸し・큰술）に当たるので見ない
+    alcohol: ['wines?', 'beers?', 'vino', 'vin', 'wein*', 'bier', 'vinho', 'wino', 'piwo', 'cerveza', 'cerveja', 'birra', 'bi[èe]re', 'sake', 'mirin', 'rum', 'brandy', 'whisk(?:e)?y', 'liquor', 'licor', 'sherry', 'jerez', 'marsala', 'cognac', 'shaoxing', 'ワイン', 'ビール', 'みりん', '味醂', '日本酒', '料理酒', '啤酒', '葡萄酒', '料酒', '黄酒', '黃酒', '米酒', '红酒', '紅酒', '绍兴酒', '紹興酒', '와인', '맥주', '소주', '청주', '미림', 'rượu', 'ไวน์', 'เบียร์', 'เหล้า'],
+    dairy: ['milk', 'cream', 'cheese', 'butter', 'yogh?urt', 'queso', 'leche', 'nata', 'mantequilla', 'crema', 'lait', 'cr[èe]me', 'fromage', 'beurre', 'sahne*', 'käse*', 'kaese*', 'milch', 'quark', 'joghurt', 'latte', 'panna', 'formaggio', 'burro', 's[üu]t', 'peynir', 'tereya[ğg]', 'mleko', '[śs]mietan*', 'mas[łl]o', 'smetana', 'leite', 'queijo', 'manteiga', 'requeij*', 'ricotta', 'mozzarella', 'parmesan', 'ghee', 'paneer', 'kefir', 'susu', 'keso', 'mentega', 'gatas', '牛奶', '奶油', '芝士', '起司', '奶酪', '乳酪', '酸奶', '牛乳', 'ミルク', 'チーズ', 'バター', 'クリーム', 'ヨーグルト', '우유', '치즈', '버터', '크림', 'นม', 'เนย', 'ชีส', 'sữa', 'phô mai', 'दूध', 'पनीर', 'घी', 'दही', 'حليب', 'جبن', 'زبدة'],
+};
+OMIT_LEXF.shellfish = OMIT_LEXF.crustacean.concat(OMIT_LEXF.mollusc);
+const OMIT_LEX_C = {};
+// 材料の欄にまったくない言葉（食べ方の一言「目玉焼きを添える」など）では、牛乳・クリームのように「なめらか」「濃さ」の言い方にも使う言葉は見ない（材料の欄にあるものだけ上の omit で見る）
+const OMIT_LEX_TEXTURE = new Set(['sausages?', 'milk', 'cream', 'crema', 'leche', 'nata', 'lait', 'cr[èe]me', 'sahne*', 'milch', 's[üu]t', 'mleko', '[śs]mietan*', 'smetana', 'leite', 'susu', '牛奶', '奶油', '牛乳', 'ミルク', 'クリーム', '우유', '크림', 'นม', 'sữa', 'दूध', 'حليب', 'latte', 'panna', 'ghee', 'butter', 'burro', 'mantequilla', 'manteiga', 'beurre']);
+function omitLexSrc(f, orphan){
+    const k = f + (orphan ? '!' : '');
+    return OMIT_LEX_C[k] = OMIT_LEX_C[k] || OMIT_LEXF[f].filter(z => !orphan || !OMIT_LEX_TEXTURE.has(z)).map(z => { const stem = z.endsWith('*'), core = stem ? z.slice(0, -1) : z, latin = /^[A-Za-zÀ-ÿ\[]/.test(z);
+        return (latin ? '(?<![\\p{L}])' : '') + core + (stem ? '\\p{L}*' : latin ? '(?![\\p{L}])' : ''); }).join('|');
+}
+// 苦手・アレルギーで外している食材のなかま（OMIT_LEXF の鍵）。手順の文の食べ方の一言（卵を添える・焼き魚を添える）など、材料の欄にない言葉を外すために使う
+const ALG_LEXF = {egg: 'egg', milk: 'dairy', fish: 'fish', shrimp: 'crustacean', crab: 'crustacean', crustacean: 'crustacean', mollusc: 'mollusc', pork: 'pork', chicken: 'chicken', beef: 'beef'};
+function orphanFams(){
+    const out = new Set(); if (S.settings.avoid && S.settings.avoid.length || eaterMembers().length) { const c = avoidCtx(); c.fams.forEach(f => { if (OMIT_LEXF[f] && AVOID_FAM[f]) out.add(f); }); if (c.diet.includes('vegi')) out.add('meat'); }
+    if (allergyOn()) algIdsEff().forEach(id => { const f = ALG_LEXF[id]; if (f) out.add(f); });
+    return [...out];
+}
+// 外した材料のなかまの言葉でも外さない言い方（スープの素・ココナッツミルク・魚醤・オイスターソースなど。苦手の判定でも、これらは外さない方針）
+const OMIT_PROTECT = new RegExp('(?:wine|beer|vino|vin|cerveza|rice wine)[ -]vinegar|vinagre de (?:vino|cerveza|arroz)|vinaigre de (?:vin|riz)|aceto di (?:vino|riso)|ocet (?:winny|ry[żz]owy)|\\p{L}*weinessig|vinho vinagre|vinagre de vinho|(?:chicken|beef|pork|fish|meat|bone|vegetable|shrimp|seafood)[ -](?:stock|broth|bouillon|cubes?|powder|granules|fat|sauce|paste)|(?:caldo|brodo|bouillon|fond|bulion|kaldu|stock|broth|sopa)(?: de| di| du| of| z)? (?:pollo|res|carne|pescado|cerdo|pui|frango|poulet|b[œo]uf|ternera|manzo|vitello|pesce|poisson|kurczak\\p{L}*|ayam|sapi)|(?<![\\p{L}])\\p{L}*br[üu]he|(?<![\\p{L}])fish sauce|nam ?pla|patis|nước mắm|น้ำปลา|魚露|鱼露|蚝油|蠔油|oyster sauce|オイスターソース|(?:coconut|soy|almond|oat|rice|cashew) (?:milk|cream)|(?:leche|lait|latte|leite|mleko|susu|santan|nata) (?:de |di |z |kelapa )?(?:coco|cocco|côco|kokos\\p{L}*|kelapa|soja|almendras?|avena)|nata de coco|santan|ココナッツ(?:ミルク|クリーム)|豆乳|椰奶|椰浆|椰漿|peanut butter|almond butter|cocoa butter|butter ?beans?|butternut|cream of tartar|eggplants?|egg ?plants?|เนยถั่ว', 'giu');
+const OMIT_SEP_X = {fil: /(\s*[,;，、；،]\s*|\s+(?:at|saka|o)\s+)/iu, pl: /(\s*[,;，、；،]\s*|\s+(?:i|oraz|lub)\s+)/iu};   // 言語ごとの「と」「または」（全言語に入れると別の言語の前置詞に当たる: スペイン語の en・イタリア語の i）
 const OMIT_SKIP_KEY = 'この手順は、入れない材料のぶんなので飛ばせます';
+const OMIT_CONDCL = /^\s*(?:if (?:using|you (?:like|want|have)(?: (?:any|it|them))?|desired|available)|si (?:lo|los|la|las) (?:usas|tienes|quieres|deseas|gustas)|si gustas|si quieres|se (?:for usar|quiser|tiver)|si vous en mettez|si vous voulez|se vuoi|se ti piace|wenn du magst|falls gewünscht|jeśli chcesz|istersen|nếu thích|ถ้าชอบ|ถ้าใช้|如果用|如果要|要放的话|要放的話|喜欢的话|喜歡的話)\s*$/i;
 function dropOmitted(u, sl, others, keepWords){
     if (!String(u).includes(OMIT_MARK)) return u;
     const lc = x => String(x).toLowerCase(), oth = [...new Set(others.map(lc))];
@@ -8541,18 +8582,22 @@ function dropOmitted(u, sl, others, keepWords){
         let body = m[1];
         for (let k = 0; k < 4; k++) body = body.replace(/\s*[（(][^（()）\u0003]*\u0003[^（()）]*[)）]/g, '');
         if (body.includes(OMIT_MARK)){
-            const parts = (/^(?:th|ko)/.test(sl) ? body.split(/(\s*[,;，、；،]\s*)/) : body.split(OMIT_SEP));
+            const parts = (/^(?:th|ko)/.test(sl) ? body.split(/(\s*[,;，、；،]\s*)/) : body.split(OMIT_SEP_X[sl] || OMIT_SEP));
             const cl = [], sp = [];
             parts.forEach((x, i) => { if (i % 2 === 0) cl.push(x); else sp.push(x); });
             const keep = []; let dep = false;
             cl.forEach((c, i) => {
                 const thenLed = (i > 0 && /^\s*(?:and then|then)\s*$/i.test(sp[i - 1] || '')) || OMIT_THEN.test(c);
-                if (c.includes(OMIT_MARK)){ keep.push(false); dep = !keep.some(Boolean); }   // 文のはじめの句（動詞のある句）を外したときだけ、あとに続く句が宙に浮く
-                else if (dep && !thenLed && !hasItem(c)) keep.push(false);
+                if (c.includes(OMIT_MARK) && cl[i + 1] !== undefined && /^\s*[\d½¼¾]/.test(cl[i + 1])){   // 「agrega la cerveza y 300 ml de agua」: 外した材料の動詞だけ残し、あとの分量の句（300 ml de agua）につなげる
+                    const pre = c.slice(0, c.indexOf(OMIT_MARK)).replace(/\s*(?:the|a|an|some|el|la|los|las|un|una|o|os|as|um|uma|le|les|une|des|der|die|das|den|il|lo|gli)\s*$/i, '').trim();
+                    if (pre && pre.split(/\s+/).length <= 2 && !/[ぁ-んァ-ヶ一-龠]/.test(pre)){ cl[i] = pre; sp[i] = ' '; keep.push(true); dep = false; return; }
+                }
+                if (c.includes(OMIT_MARK)){ keep.push(false); dep = !keep.some(Boolean) ? true : sl === 'ja' && !/\u0003(?:[はをがとも])?[\s)）]*$/.test(c) ? 1 : 'prep'; }   // 文のはじめの句（動詞のある句）を外したら、あとに続く句が宙に浮く（途中の句を外したときは、次の1句だけ。「ひき肉を2分、ポロポロになるまで炒める」）
+                else if (dep && !thenLed && !hasItem(c) && (dep !== 'prep' || /^\s*(?:de|d['’]|du|des|of|con|avec|mit|z|ze|com|di|da|von)(?![\p{L}])/iu.test(c))){ keep.push(false); if (dep === 1 || dep === 'prep' || OMIT_CONDCL.test(c)) dep = false; }   // 「使うなら」だけの句は外すが、そのあとの別の動作（塩をふる・パセリを添える）は残す
                 else { keep.push(true); dep = false; }
             });
             // 外した句の前の「使うなら」「If using」のような短い前置きだけが残らないようにする
-            cl.forEach((c, i) => { if (keep[i] && i === 0 && keep.length > 1 && !keep[1] && c.split(/\s+/).filter(Boolean).length <= 3 && /[,，、]/.test(sp[0] || '')) keep[i] = false; });
+            cl.forEach((c, i) => { if (keep[i] && i === 0 && keep.length > 1 && !keep[1] && c.split(/\s+/).filter(Boolean).length <= 3 && (OMIT_CONDCL.test(c) || /^\s*(?:if|when|si|se|wenn|falls|jeśli|nếu|ถ้า|如果|若)(?![\p{L}])/iu.test(c)) && /[,，、]/.test(sp[0] || '')) keep[i] = false; });
             let res = '', first = true;
             cl.forEach((c, i) => {
                 if (!keep[i]) return;
@@ -8565,7 +8610,8 @@ function dropOmitted(u, sl, others, keepWords){
                 res += sep + cc;
             });
             body = res.replace(/\s+$/, '').replace(/[,;，、；،]\s*$/, '');
-            if (sl === 'ja') body = body.replace(/([ぁ-ん一-龠])し$/, (_, a) => a + 'す');
+            if (sl === 'ko') body = body.replace(/([가-힣])고$/, (_, a) => (a.charCodeAt(0) - 0xAC00) % 28 === 0 ? String.fromCharCode(a.charCodeAt(0) + 4) + '다' : a + '는다');   // 「붓고」→「붓는다」「끓이고」→「끓인다」
+            if (sl === 'ja') body = body.replace(/([ぁ-ん一-龠])し$/, (_, a) => a + 'す').replace(/([えけせてねへめれげぜでべ])$/, (_, a) => a + 'る').replace(/([めえけせれ])て$/, (_, a) => a + 'る');
         }
         body = body.replace(/\s{2,}/g, ' ').replace(/\s+([,.;。、])/g, '$1').trim();
         return body ? body + (term.trim() ? term.trim() : '') + tail : '';
@@ -8576,9 +8622,14 @@ function dropOmitted(u, sl, others, keepWords){
 }
 // 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
 function swappedRecipe(r){
-    if (!r || !r.items || !effAvoid().length || r.swapped) return r;
+    if (!r || !r.items || r.swapped) return r;
+    const ofams = orphanFams(); if (!effAvoid().length && !ofams.length) return r;
     if (!RECIPES.includes(r)) return r;
-    const w = recipeSwaps(r); if (!w || (!w.swaps.length && !w.omit.length)) return r;
+    let w = effAvoid().length ? recipeSwaps(r) : null; const orphanOnly = !w || (!w.swaps.length && !w.omit.length);
+    if (orphanOnly){   // 置き換えも外す材料もない料理でも、手順の文に外した食材のなかまの言葉（食べ方の一言の卵・焼き魚など）が残っていれば、その句を外す
+        if (!ofams.length || !r.steps || !r.steps.some(st => new RegExp(ofams.map(f => omitLexSrc(f, true)).join('|'), 'iu').test(typeof st === 'string' ? st : st.t))) return r;
+        w = {swaps: [], omit: []};
+    }
     const by = new Map(w.swaps.map(x => [x.from, x])), seen = new Set();
     // 分量は代わりの食材のふだんの分量（尾・杯・本のような数え方がそのまま残らないように）。同じ食材への置き換えが2つあれば1行にまとめる
     const items = r.items.filter(i => !w.omit.includes(i)).map(i => { const x = by.get(i); if (!x) return i;
@@ -8610,25 +8661,39 @@ function swappedRecipe(r){
     const wordOk = n => n && (n.length > 1 || /[一-龠]/.test(n));   // 「卵」「鮭」のような1文字の漢字も見る（ひらがな1文字は見ない）
     const omitWords = [...new Set(w.omit.flatMap(i => [i.name, i.label, i.key, i.en]).filter(wordOk))]
         .filter(o => !items.some(i => [i.name, i.label, i.key, i.en].some(n => n && lc(n) === lc(o)))).sort((a, b) => b.length - a.length);
-    const keepWords = [...new Set(items.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => wordOk(n) && omitWords.some(o => lc(n) !== lc(o) && lc(n).includes(lc(o)))))].sort((a, b) => b.length - a.length);
+    // 外した材料の名前が「Saure Sahne oder Joghurt」「Geräucherte Speckwürfel」「五花肉片」のように長い・並んでいるとき、手順の文では短い言い方（saure Sahne・Speck・五花肉）で出る。
+    // 外した材料自身の名前にある「または」の前後と、食材の言葉（OMIT_LEX。肉・魚・卵・乳の主な言葉）を足して、手順の文からも外す（判定は材料のキー・元の言葉のまま。画面の言語に依らない）
+    // 外した材料の名前が「Saure Sahne oder Joghurt」のように並んでいるとき、手順の文には片方（saure Sahne）だけが出る。区切りで分けた名前を足す
+    const omitDerived = [...new Set(w.omit.flatMap(i => [i.name, i.label, i.stepLabel, i.key, i.en].filter(Boolean).map(String)
+        .flatMap(x => x.split(OMIT_ALT).map(z => z.trim()).filter(z => z.length >= 3 || /[一-龠]{2}/.test(z)))).filter(z => wordOk(z) && !/^(?:the|a|an|of|de|la|el|los|las|le|les|der|die|das|und|oder|or|and)$/i.test(z)))]
+        .filter(o => !omitWords.some(q => lc(q) === lc(o)) && !items.some(i => [i.name, i.label, i.key, i.en].some(n => n && lc(n) === lc(o))));
+    // 外した材料のなかまの言葉（Speck・五花肉・baboy・la nata）。材料の欄になくても手順の文に出ていれば外す（外した材料のキー・元の言葉でなかまを決める）
+    const lexFams = Object.keys(OMIT_LEXF).filter(f => f === 'mince' ? w.omit.some(swapMince) : AVOID_FAM[f] && w.omit.some(i => inFam(f, i))), lexSrc = lexFams.map(f => omitLexSrc(f)).concat(ofams.filter(f => !lexFams.includes(f) && !(f === 'meat' && w.swaps.some(x => x.tip === 'tofu'))).map(f => omitLexSrc(f, true))).join('|'), lexRe = lexSrc ? new RegExp(lexSrc, 'iu') : null;
+    const omitAll = omitWords.concat(omitDerived).sort((a, b) => b.length - a.length);
+    const keepWords = [...new Set(items.flatMap(i => [i.name, i.label, i.key, i.en]).filter(n => wordOk(n) && (omitAll.some(o => lc(n) !== lc(o) && lc(n).includes(lc(o))) || (lexRe && lexRe.test(n)))))].sort((a, b) => b.length - a.length);
     const omitTxt = txt => {
-        if (!omitWords.length) return txt;
-        const hold = []; let u = String(txt);
-        keepWords.forEach(k => { u = u.replace(new RegExp(esc_(k), 'gi'), m => { hold.push(m); return '\u0001' + (hold.length - 1) + '\u0002'; }); });
+        if (!omitAll.length && !lexRe) return txt;
         // 添える言葉は、作り方の文の言語で（日本の料理を英語の画面で見ているときなど、画面の言語と違うことがある）
-        const sl = stepLangOf(r) || LANG, jp = sl === 'ja';
+        const sl = stepLangOf(r) || LANG, jp = sl === 'ja', lexOk = !!lexSrc && !/^(?:ar|hi)/.test(sl);   // アラビア語・ヒンディー語は語の切れ目で見分けられない（يبيضّ＝白くなる・चिकना＝なめらか）ので、材料の欄の言葉だけ見る
+        if (!omitAll.length && !lexOk) return txt;
+        const hold = []; let u = String(txt);
+        if (lexRe) u = u.replace(OMIT_PROTECT, m => { if (omitWords.some(o => lc(m).includes(lc(o)))) return m; hold.push(m); return '\u0001' + (hold.length - 1) + '\u0002'; });   // スープの素・ココナッツミルク・魚醤などは外さない
+        keepWords.forEach(k => { u = u.replace(new RegExp(esc_(k), 'gi'), m => { hold.push(m); return '\u0001' + (hold.length - 1) + '\u0002'; }); });
         // 英語などの言葉は、ほかの単語の一部に当たらないように語の切れ目で見る（韓国語・中国語・タイ語などは助詞が続いたり切れ目がなかったりするので見ない）
-        const W = '(?:' + omitWords.map(o => (/^[A-Za-zÀ-ÿ]/.test(o) ? '(?<![\\p{L}])' : '') + esc_(o) + (/[A-Za-zÀ-ÿ]$/.test(o) ? '(?![\\p{L}])' : '')).join('|') + ')';
+        const W = '(?:' + omitAll.map(o => (/^[A-Za-zÀ-ÿ]/.test(o) ? '(?<![\\p{L}])' : '') + esc_(o) + (/[A-Za-zÀ-ÿ]$/.test(o) ? '(?![\\p{L}])' : '')).concat(lexOk ? [lexSrc] : []).join('|') + ')';   // アラビア語・ヒンディー語は語の切れ目で見分けられない（يبيضّ＝白くなる・चिकना＝なめらか）ので、材料の欄の言葉だけ見る
         // 入れない材料だけの下ごしらえの1文（ほかの材料が出てこない）は、まるごと外す
         // （ほかの材料の名前・キーが出てくる文と、外すと手順が空になる文は外さず、下の dropOmitted で文の中の該当部分だけ外す）
-        const others = items.flatMap(i => [i.name, i.label, i.key]).filter(n => n && n.length > 1 && !omitWords.includes(n));
+        const others = items.flatMap(i => [i.name, i.label, i.key]).filter(n => n && n.length > 1 && !omitAll.includes(n));
         if (jp) u = u.replace(new RegExp('(^|。)\\s*' + W + '(?:は|を)[^。]*。', 'giu'), (m0, pre, off, str) =>
             others.some(n => m0.includes(n)) || /\u0001/.test(m0) || !(str.slice(0, off) + str.slice(off + m0.length)).trim() ? m0 : pre);
         const COND = 'if using|if you like|if you want|if desired|if you have (?:any|it)|si lo usas|si gustas|si quieres|se for usar|se quiser|si vous en mettez|si vous voulez|se vuoi|se ti piace|wenn du magst|falls gewünscht|jeśli chcesz|istersen|nếu thích|ถ้าชอบ|ถ้าใช้',
-            TAILP = '(?:\\s*[（(][^（()）]*[)）])?(?:\\s+(?:' + COND + ')(?![\\p{L}]))?', AR = "(?:(?:the|a|an|some|any|el|la|los|las|un|una|o|os|as|le|les|une|des|der|die|das|il|lo|gli)\\s+)?";   // TAILP: 直後の（もし使うなら）などの添え書き
+            TAILP = '(?:\\s*[（(][^（()）]*[)）])?(?:\\s+(?:' + COND + ')(?![\\p{L}]))?', AR = "(?:(?<![\\p{L}])(?:the|a|an|some|any|el|la|los|las|un|una|o|os|as|le|les|une|des|der|die|das|il|lo|gli)\\s+)?";   // TAILP: 直後の（もし使うなら）などの添え書き
         if (jp) u = u.replace(new RegExp('(^|[、。・\\s])' + W + TAILP + '(?:と|や|・|、)', 'giu'), '$1').replace(new RegExp('(?:と|や|・)' + W + TAILP + '(?=[をはのにとや・、。\\s]|$)', 'giu'), '');
-        else u = u.replace(new RegExp(',\\s*' + AR + W + TAILP, 'giu'), '').replace(new RegExp(W + TAILP + ',\\s*', 'giu'), '')
+        else if (sl === 'ko') u = u.replace(new RegExp(W + '(?:와|과|랑|하고)\\s*', 'giu'), '');   // 「고기와 표고버섯은」→「표고버섯은」
+        else if (!/^th/.test(sl)) u = u.replace(new RegExp(',\\s*' + AR + W + TAILP, 'giu'), '').replace(new RegExp(AR + W + TAILP + ',\\s*', 'giu'), '')
             .replace(new RegExp('\\s+(?:and|or)\\s+' + AR + W + TAILP, 'giu'), '').replace(new RegExp(W + TAILP + '\\s+(?:and|or)\\s+', 'giu'), '');
+        // 「con la nata hasta que quede fina」「with the cream until smooth」: 動作の添え物（〜と一緒に）が外す材料だけで、すぐあとが文の切れ目か「hasta」「until」のときは、その句だけ外す（動作そのものは残す）
+        if (!jp && !/^(?:ko|th|zh|ar|hi|vi)/.test(sl)) u = u.replace(new RegExp('\\s+(?:with|con|mit|avec|com|z|ze|met|dengan|ile)\\s+' + AR + W + '(?=\\s*[,.;)]|\\s+(?:hasta|until|bis|jusqu|fino|finch[eé]|a[żz]|sampai|at[eé]|kadar)(?![\\p{L}])|\\s*$)', 'giu'), '');
         // 残った入れない材料は印（\u0003）にして、その部分（句・文）ごと外す。「（入れない）」と添えて肉を焼く文のまま残さない
         u = u.replace(new RegExp(W + TAILP, 'giu'), '\u0003');
         u = dropOmitted(u, sl, others, keepWords);
@@ -8640,6 +8705,7 @@ function swappedRecipe(r){
     const tofu = w.swaps.filter(x => x.tip === 'tofu'), meatLeft = items.some(i => r.pack ? !!meatFamOf(i) : ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key]));
     const tofuFix = txt => (!tofu.length ? txt : r.pack ? packTofuFix(txt, tofu, stepLangOf(r), meatLeft) : tofuStepFix(txt, tofu, {en: enSteps, meatLeft, lab: stepLab}));
     const steps = r.steps.map(st => typeof st === 'string' ? tofuFix(seaFix(shellFix(omitTxt(repl(st))))) : Object.assign({}, st, {t: tofuFix(seaFix(shellFix(omitTxt(repl(st.t)))))}));
+    if (orphanOnly) return steps.every((st, k) => (typeof st === 'string' ? st : st.t) === (typeof r.steps[k] === 'string' ? r.steps[k] : r.steps[k].t)) ? r : Object.assign({}, r, {steps});
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
 }
 // 英語の手順の、肉の短い言い方（「the pork」「ground beef」）。スープの素・脂・骨の言い方は替えない
@@ -8861,6 +8927,16 @@ const NAME_FAM = {
 function nameHasFam(r, i){
     const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
     return Object.keys(NAME_FAM).some(f => inFam(f, i) && NAME_FAM[f].test(names));
+}
+// 料理の名前が名乗る食材（NAME_FAM の肉・魚・貝に、ソーセージ・ハムなどと、卵・チーズ）。なくても可の材料を外す人に出す料理かどうかを見る（材料のキー・原語名と料理名だけ＝画面の言語に依らない）
+const NAME_OMIT_FAM = Object.assign({}, NAME_FAM, {
+    pork: new RegExp(NAME_FAM.pork.source + '|speck|wurst|sausage|salsicc|salchicha|saucisse|kie[łl]bas|jam[oó]n|prosciutto|pancetta|chorizo|lardon|ベーコン|ハム|ソーセージ|培根|火腿|腊肠|臘腸|香肠|香腸|五花肉|베이컨|햄|소시지|longganisa', 'i'),
+    egg: /\beggs?\b|huevo|\bovos?\b|œuf|\boeufs?\b|\beier\b|\buov[oa]\b|卵|たまご|玉子|蛋|달걀|계란|ไข่|trứng|telur|itlog|yumurta|jajk|\bjajo\b/i,
+    dairy: /\bcheese\b|\bqueso\b|\bkäse\b|fromage|formaggio|queijo|チーズ|芝士|起司|치즈|ชีส|phô mai|\bkeso\b|peynir|\bser\b/i,
+});
+function nameHasOmitFam(r, i){
+    const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
+    return Object.keys(NAME_OMIT_FAM).some(f => inFam(f, i) && NAME_OMIT_FAM[f].test(names));
 }
 // お膳に出す短い一言（例: 🔁 鶏肉で作る）
 function swapTagHtml(r){
