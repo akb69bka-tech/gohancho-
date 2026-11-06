@@ -1848,6 +1848,32 @@ body.on-today.greet-sale3 .greet-row:not(.solo) .req-btn{padding:1px 6px}body.on
 @media (min-width:300px){body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq2{display:block}body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq1{flex:none}body.on-today.tray-tight5 header.top .req-btn:has(.rq2){position:relative}body.on-today.tray-tight5 header.top .req-btn:has(.rq2) .rq-l{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}   /* 第26回 R113: 上の端の行へ移した入口（いちばん詰めた形）でも、届いた一言（「ゆい：鶏の唐揚げ」）を名前の代わりに見せる（印・数・一言。名前は読み上げに）。幅195px は今までどおり印と数 */
 body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tray-tight5 #greet .greet-row > :not(.sale-greet){display:none}
 .sale-tag.sale-kin{font-weight:600;color:var(--muted)}
+/* 第2班 第1回（日向）R2-07/08/09/10/12/19 */
+/* R2-07 買い物メモの「買った」: 押せる枠を 44×44px に（見える四角は今までの 26px / 大きい表示は 34px のまま。行の列の幅は変えず、余白の中に広げる） */
+.buy-row .br-chk{display:grid;place-items:center;width:28px;min-height:28px}
+.buy-row .br-chk input{box-sizing:border-box;-webkit-appearance:none;appearance:none;width:44px;height:44px;margin:-8px;border:9px solid transparent;border-radius:16px;background:var(--bg);background-clip:padding-box;box-shadow:inset 0 0 0 2px var(--muted);display:grid;place-content:center;cursor:pointer}
+.buy-row .br-chk input:checked{background-color:var(--leaf);box-shadow:inset 0 0 0 2px var(--leaf)}
+.buy-row .br-chk input:checked::after{content:"";width:34%;height:62%;border:solid var(--leaf-ink);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-8%,-8%)}
+.buy-row .br-chk input:focus-visible{outline:3px solid var(--leaf);outline-offset:-4px}
+.stage-shop.big .buy-row .br-chk{width:36px}
+.stage-shop.big .buy-row .br-chk input{width:44px;height:44px;margin:-4px;border-width:5px;border-radius:12px}
+/* R2-08 特売の店の登録: 入力欄・選ぶ欄は 44px 以上（URL の欄が 32px だった） */
+.sale-form input,.sale-form select{min-height:var(--tap-sm,44px)}
+.sale-form .sale-day-add .btn{min-height:var(--tap-sm,44px)}
+/* R2-09 残り物メモの料理名: 「…」で切らず、折り返して全部見せる（列の行は、いちばん長い名前に高さがそろう） */
+.chips.left-chips{grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5em),1fr))}   /* 狭い幅は1列（2列だと1文字ずつ縦に割れる） */
+.chips.left-chips .chip{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.3;padding:.55rem .6rem;min-height:44px;display:flex;align-items:center;justify-content:center}
+/* R2-10 片手: 決定の帯の中の「条件」（親指の届く下のほう）。帯の高さは変えない */
+.actionbar>.btn.cond-low{flex:0 0 auto;width:var(--tap-sm,44px);min-width:var(--tap-sm,44px);padding:0;display:inline-flex;align-items:center;justify-content:center;align-self:stretch}
+.cond-low svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+/* R2-12 タイマーが終わったら、閉じるまで残るお知らせの帯。画面のいちばん上に（流れの中に・貼りつけて）置くので、お膳の料理の絵・名前・かえるには重ならない */
+#timer-alert{position:sticky;top:env(safe-area-inset-top,0px);z-index:70;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 8px 6px;padding:8px 8px 8px 14px;border-radius:16px;background:var(--yolk);color:#231800;box-shadow:var(--shadow);font-weight:700;font-size:var(--fs14,.875rem)}
+#timer-alert .ta-tx{flex:1 1 9em;min-width:0;overflow-wrap:anywhere;line-height:1.35}
+#timer-alert .btn{flex:0 0 auto;margin-inline-start:auto;min-width:44px;min-height:44px;background:#fff8;border-color:#231800;color:#231800}
+/* R2-19 狭い幅の下のタブ: 1つ 44px 以上。入らないぶんは横にスクロール（選んだタブは見える場所へ） */
+nav.tabs.scrl .in{display:grid;grid-auto-flow:column;grid-template-columns:none!important;grid-auto-columns:44px;gap:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+nav.tabs.scrl .in::-webkit-scrollbar{display:none}
+nav.tabs.scrl button{min-width:44px;width:44px;padding-inline:0}
 </style>
 </head>
 <body>
@@ -4820,11 +4846,16 @@ function awardHtml(){
    ========================================================= */
 let tab = 'today';
 try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
+function tabRevealSel(){   // R2-19: 横にスクロールする狭い幅の下のタブで、選んだタブを見える場所へ（ページは動かさない）
+    try{ const nv = document.querySelector('nav.tabs.scrl'); if (!nv) return; const sc = nv.querySelector('.in'), b = nv.querySelector('button[aria-selected="true"]'); if (!sc || !b) return;
+        const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect(); if (r.left < a.left) sc.scrollLeft += r.left - a.left; else if (r.right > a.right) sc.scrollLeft += r.right - a.right; }catch(e){}
+}
 function setTab(tb){
     if (tb === 'settings' && tab !== 'settings') prevTab = tab;
     tab = tb;
     const nt = NAV_OF[tb] || tb;   // 作り方は「今日」、材料から・ひとひねり・世界のレシピは「さがす」のタブを選んだ表示にする
     document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nt ? 'true' : 'false'));
+    tabRevealSel();
     window.scrollTo(0, 0);   // 描き直しの前に戻す（あとだと、描いた直後の強制レイアウトが走る）。(0, 0) で呼ぶと、古い画面のレイアウトを計算せずに戻せる（{top:0} だと横の位置を知るために計算が走る。横には動かない画面なので同じ）
     { const v0 = document.getElementById('view'); if (v0) v0.style.removeProperty('--toast-room'); }   // お知らせのために足した下の余白は、画面を切りかえたら消す
     { const tb = $('#toast-root .toast'); if (tb && toast.hide && (tb.classList.contains('anchored') || (toast.undo && tb.dataset.placed))){ clearTimeout(toast.t); toast.hide(); } }   // ページに留めたお知らせ（決めた直後・最初の「準備ができました…」）と、置いたあとの「元に戻す」付きのお知らせ（買い物そろいました など）は、画面を切りかえたら消す（新しい画面の中身の上に残さない。第19回 R60・第20回 R65）
@@ -6704,11 +6735,11 @@ function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     const h = d.querySelector('h2, h3');
     if (h && !d.hasAttribute('aria-label')){ h.id = h.id || rootId + '-title'; d.setAttribute('aria-labelledby', h.id); }
     const a = document.activeElement;
-    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a)}; dlgLast[rootId] = ''; }
+    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a), force: rootId === 'sheet-root' && !!sheet && sheet.kind === 'cond'}; dlgLast[rootId] = ''; }   // force: 条件のシートは、タップ（読み上げの二度押しも）で開いても焦点を中へ移す（R2-11）
     else if (a && a !== document.body && document.contains(a)) return;   // 描き直してもフォーカスが残っている
-    if (!kbNav()) return;   // タップで開いたときは、フォーカスを動かさない（動かすと強制レイアウトが走る）
+    if (!kbNav() && !dlgRet[rootId].force) return;   // タップで開いたときは、フォーカスを動かさない（動かすと強制レイアウトが走る）
     const back = findByKey(root, dlgLast[rootId]);
-    if (back){ back.focus({preventScroll:true}); return; }
+    if (back){ if (!back.matches(FOCUSABLE)) back.setAttribute('tabindex', '-1'); back.focus({preventScroll:true}); return; }   // 見出しに戻すときも、焦点を受けられるようにする（描き直した見出しは tabindex がなく、焦点が外れたままだった）
     const first = h || d.querySelector('[data-act="close"], [data-act="sheet-close"]') || d;
     if (!first.matches(FOCUSABLE)) first.setAttribute('tabindex', '-1');
     first.focus({preventScroll:true});
@@ -6717,7 +6748,7 @@ function dlgClosed(rootId){
     if (!(rootId in dlgRet)) return;
     const r = dlgRet[rootId]; delete dlgRet[rootId]; delete dlgLast[rootId];
     if (topDialog() && topDialog().contains(document.activeElement)) return;
-    if (!kbNav()) return;
+    if (!kbNav() && !r.force) return;
     const el = r.el && document.contains(r.el) ? r.el : findByKey(document, r.key);
     if (el) el.focus({preventScroll:true});
 }
@@ -8755,6 +8786,10 @@ function viewSettings(){
         ${grp('store', saleSettingsSum(), saleSettingsHtml())}
         ${grp('notify', remindSum, `<div class="set-group">
             ${reminderHtml()}
+        </div>
+        <div class="set-group">
+            <label class="check"><input type="checkbox" data-act="timer-alert-set" ${timerAlertOn() ? 'checked' : ''}><span>${esc(t('タイマーが終わったら、音で知らせる'))}</span></label>
+            <span class="small muted">${esc(t('短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。'))}</span>
         </div>`)}
         ${grp('display', (LANG_NAMES[LANG] || LANG) + GAP() + [t('ふつう'), t('大きい'), t('もっと大きい')][S.settings.textSize || 0], `<div class="set-group">
             <div class="field"><label>🌐 ${esc(t('表示する言語 / Language'))}</label>
@@ -11403,7 +11438,7 @@ function condSheetHtml(){
         : `<div class="field"><span class="eyebrow">${esc(t('人数'))}</span><div class="chips" role="group" aria-label="${esc(t('人数'))}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${(Number(S.settings.servings) || 2) === n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div></div>`;
     const wishN = wishList().length ? wishesActive().length : 0;
     // 今日の献立の小さな入口（もとはお膳の下の文字のリンク）。押すとこのシートを閉じて、それぞれの画面へ
-    const entries = `<div class="row cond-entries" role="group" aria-label="${esc(t('今日の献立'))}"><button type="button" class="btn sm" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button type="button" class="btn sm" data-act="share-menu" data-app="${esc(msgLabel())}" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>${wishN ? `<button type="button" class="btn sm" data-act="wish-list">${esc(t('食べたいもの（{n}）', {n: wishN}))}</button>` : ''}<button type="button" class="btn sm" data-act="skip-open">${esc(t('今日は作らない'))}</button><button type="button" class="btn sm" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button type="button" class="btn sm" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>`;
+    const entries = `<div class="row cond-entries" role="group" aria-label="${esc(t('今日の献立'))}"><button type="button" class="btn sm" data-act="one-open" ${main?'':'disabled'}>${esc(t('あと1品'))}</button><button type="button" class="btn sm" data-act="share-menu" data-app="${esc(msgLabel())}" ${main?'':'disabled'}>${esc(t('家族に送る'))}</button>${wishN ? `<button type="button" class="btn sm" data-act="wish-list">${esc(t('食べたいもの（{n}）', {n: wishN}))}</button>` : ''}<button type="button" class="btn sm" data-act="skip-open">${esc(t('今日は作らない'))}</button><button type="button" class="btn sm" data-act="cond-settings">${esc(t('設定'))}</button><button type="button" class="btn sm" data-act="save-menu" ${main?'':'disabled'}>${esc(t('この献立を保存'))}</button>${(S.savedMenus || []).length ? `<button type="button" class="btn sm" data-act="goto-saved">${esc(t('保存した献立（{n}）', {n:S.savedMenus.length}))}</button>` : ''}</div>`;
     return `<h2>${esc(t('条件を変える'))}</h2>
         <p class="small muted cond-hint">${esc(hint)}</p>
         ${entries}
@@ -11585,6 +11620,10 @@ function adoptDayDecided(){
     S.cook = {d: TODAY, ids: its.map(x => x.id), slots: its.map(x => x.slot), done: {}, adj: its.length !== menuCount(), salt: 0, ahead: true}; save();   // ahead: 先に決めた一膳（品数・形の照らし合わせをせず、そのまま出す）
     return true;
 }
+function condLowBtn(){   // R2-10 片手: 上の端の「条件」に届かない人のため、親指の届く決定の帯の中にも入口を置く（同じシートが開く）
+    const lb = [t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・'));
+    return `<button type="button" class="btn ghost cond-low" data-act="cond-open-low" aria-label="${esc(lb)}" title="${esc(lb)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>`;
+}
 function openCondSheet(){ if (!sheet || sheet.kind !== 'cond'){ sheet = {kind: 'cond'}; renderSheet(); } }   // 条件シートを開く（テストからも使う）
 function rerollOkSheetHtml(){
     return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
@@ -11730,7 +11769,7 @@ function viewToday(){
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
         ${leftoversHtml()}
-        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${decided
+        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${condLowBtn()}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`
             : `<button class="btn primary big-decide" data-act="decide" ${main ? '' : 'disabled'}><span>${esc(S.cook && S.cook.d === TODAY ? t('この献立に決め直す') : t('この献立に決定'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`}</div>
     </section>
@@ -13177,16 +13216,41 @@ function startTimer(sec, name, label, rid, k){
     if (TIMERS.length > 5) cancelTimerNotify(TIMERS.shift());
     saveTimers(); clearInterval(timerTick); timerTick = setInterval(tickTimers, 1000);
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
+    beepUnlock();   // 「タイマーを始める」を押した画面タッチで、音を出せるようにしておく
     scheduleTimerNotify(x);
 }
 function stopTimer(id){
     cancelTimerNotify(TIMERS.find(x => x.id === id));
     TIMERS = TIMERS.filter(x => x.id !== id); saveTimers();
+    if (!TIMERS.some(x => x.end <= Date.now())) timerAlertClose();
     const box = $('#cook-timers'); if (box) box.innerHTML = timersHtml();
     floatTimer();
 }
 // 文字の中身だけ書きかえる（要素を作り直さない・MutationObserver を起こさない）
 function setText(el, s){ const n = el.firstChild; if (n && n.nodeType === 3 && !n.nextSibling){ if (n.data !== s) n.data = s; } else el.textContent = s; }
+/* R2-12 タイマーが終わったときのお知らせ（端末の中だけ・無料）: 短い音のくり返し（WebAudio。最初に画面をさわったあとから。設定でオフにできる・はじめはオン・音量は控えめ・画面をさわると止まる）
+   ・振動のパターン・閉じるまで残る帯（読み上げは role="alert"）。通信・プッシュ・有料の仕組みは使わない */
+let beepCtx = null, beepIv = 0, beepStop = 0, alertNames = [];
+function timerAlertOn(){ return !S.settings.timerAlertOff; }
+function beepUnlock(){ try{ const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; if (!beepCtx) beepCtx = new AC(); if (beepCtx.state === 'suspended') beepCtx.resume(); }catch(e){} }
+['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, beepUnlock, {capture: true, passive: true}));
+function beepBurst(){   // 880Hz の短い音を3回（0.2秒ずつ）
+    const c = beepCtx; if (!c || c.state === 'closed') return;
+    try{ const t0 = c.currentTime; [0, .3, .6].forEach(d => { const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 880;
+        g.gain.setValueAtTime(0, t0 + d); g.gain.linearRampToValueAtTime(.18, t0 + d + .02); g.gain.linearRampToValueAtTime(0, t0 + d + .2);
+        o.connect(g); g.connect(c.destination); o.start(t0 + d); o.stop(t0 + d + .22); }); }catch(e){}
+}
+function beepStart(){ if (!timerAlertOn() || beepIv) return; beepStop = Date.now() + 40000; beepBurst(); beepIv = setInterval(() => { if (Date.now() > beepStop) beepEnd(); else beepBurst(); }, 1800); }
+function beepEnd(){ if (beepIv){ clearInterval(beepIv); beepIv = 0; } }
+['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (beepIv) beepEnd(); }, {capture: true, passive: true}));   // 画面をさわると音は止まる（帯は閉じるまで残る）
+function timerAlertShow(name){
+    if (!alertNames.includes(name)) alertNames.push(name);
+    let el = document.getElementById('timer-alert');
+    if (!el){ el = document.createElement('div'); el.id = 'timer-alert'; el.setAttribute('role', 'alert'); document.body.insertBefore(el, document.body.firstChild); }
+    el.innerHTML = `<span class="ta-tx">⏱ ${alertNames.map(n => esc(t('{name}のタイマーが終わりました', {name: n}))).join('<br>')}</span><button type="button" class="btn sm" data-act="timer-alert-close">${esc(t('閉じる'))}</button>`;
+}
+function timerAlertClose(){ beepEnd(); alertNames = []; const el = document.getElementById('timer-alert'); if (el) el.remove(); }
+function timerAlertFire(x){ timerAlertShow(x.name); beepStart(); }
 function tickTimers(){
     floatTimer();
     if (!TIMERS.length){ clearInterval(timerTick); timerTick = 0; return; }
@@ -13194,7 +13258,7 @@ function tickTimers(){
     TIMERS.forEach(x => {
         const left = (x.end - Date.now()) / 1000;
         if (left > 0) live = true;
-        if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); if (hf.on){ hfListenStop(); voiceSay(t('{name}のタイマーが終わりました', {name:x.name}), hfListen); } try{ if (navigator.vibrate) navigator.vibrate([400, 200, 400, 200, 400]); }catch(e){} }
+        if (left <= 0 && !x.rang){ x.rang = true; saveTimers(); toast(t('{name}のタイマーが終わりました', {name:x.name})); timerAlertFire(x); if (hf.on){ hfListenStop(); voiceSay(t('{name}のタイマーが終わりました', {name:x.name}), hfListen); } try{ if (navigator.vibrate) navigator.vibrate([400, 200, 400, 200, 400]); }catch(e){} }
         const el = document.querySelector(`.timer[data-tid="${x.id}"]`);
         if (el){ el.classList.toggle('ring', left <= 0); setText(el.querySelector('.tm'), left <= 0 ? t('時間です') : fmtLeft(left)); }
     });
@@ -13501,7 +13565,7 @@ document.addEventListener('click', e => {
             if (el.dataset.k === 'mood'){ const r = dayRec(addDays(TODAY, 1)); if (r) delete r.mood; } else delete S.settings.pending;
             save(); render(); break;
         }
-        case 'cond-open': openCondSheet(); break;
+        case 'cond-open': case 'cond-open-low': openCondSheet(); break;
         case 'open-at': S.settings.openAt = el.dataset.v === 'decide' ? 'decide' : 'auto'; save(); render(); break;
         case 'shape': {
             const v = el.dataset.v, n = v === 'auto' ? 'auto' : v === '2s' ? 2 : Number(v), ns = v === '2s';
@@ -13763,6 +13827,9 @@ document.addEventListener('click', e => {
         case 'card-menu': shareCard('menu'); break;
         case 'save-menu': saveMenu(); break;
         case 'one-open': openOne(); break;
+        case 'timer-alert-close': timerAlertClose(); break;
+        case 'timer-alert-set': if (el.checked) delete S.settings.timerAlertOff; else { S.settings.timerAlertOff = true; beepEnd(); } save(); beepUnlock(); break;
+        case 'cond-settings': closeSheet(); setTab('settings'); break;   // R2-10: 条件のシートの中から設定へ（下のほうから届く）
         case 'one-pick': sheet.pick = {id}; oneRun(false); renderSheet(); break;
         case 'one-free': sheet.pick = {text: el.dataset.v}; oneRun(false); renderSheet(); break;
         case 'one-change': sheet.pick = null; sheet.sugg = null; sheet.seen = []; sheet.q = ''; renderSheet(); break;
@@ -14897,6 +14964,8 @@ function fitTabs(){
     const bs = [...nv.querySelectorAll('button[data-tab]:not([hidden])')]; if (!bs.length) return;
     const ts = Number(document.documentElement.getAttribute('data-ts')) || 0, w = nv.clientWidth / bs.length;
     nv.classList.toggle('ico', w < 50);
+    nv.classList.toggle('scrl', w < 44);   // R2-19: 1つが 44px に足りない狭い幅は、44px のまま横にスクロール（絵＋短い名前）
+    nv.querySelector('.in').scrollLeft = nv.querySelector('.in').scrollLeft;
     // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
     nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
     if (w < 50){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }

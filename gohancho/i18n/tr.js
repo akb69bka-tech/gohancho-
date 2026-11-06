@@ -1831,5 +1831,7 @@ GOHAN_I18N('tr', {
     "チラシを撮る": "Broşürün fotoğrafını çek",
     "チラシを読み取っています…": "Broşür okunuyor…",
     "選んだ品を特売に入れる（{n}品）": "Seçilenleri indirime ekle ({n})",
-    "{name}の特売": "{name} indirimde"
+    "{name}の特売": "{name} indirimde",
+    "タイマーが終わったら、音で知らせる": "Zamanlayıcı bitince bip sesi çal",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Kısa bir bip sesini tekrarlar; durdurmak için ekrana dokunun. Yalnızca bu cihazda çalar, ağ ve ücret gerekmez. Uygulama açıldıktan sonra ekrana ilk dokunuştan sonra çalar."
 });

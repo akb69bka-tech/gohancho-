@@ -1831,5 +1831,7 @@ GOHAN_I18N('fil', {
     "チラシを撮る": "Kunan ng litrato ang flyer",
     "チラシを読み取っています…": "Binabasa ang flyer…",
     "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})",
-    "{name}の特売": "{name} naka-sale"
+    "{name}の特売": "{name} naka-sale",
+    "タイマーが終わったら、音で知らせる": "Mag-beep kapag tapos na ang timer",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Paulit-ulit na maikling beep; pindutin ang screen para tumigil. Sa device na ito lang tutunog, walang network at walang bayad. Tutunog ito pagkatapos ng unang pagpindot sa screen kapag nabuksan na ang app."
 });

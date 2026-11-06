@@ -1831,5 +1831,7 @@ GOHAN_I18N('es', {
     "チラシを撮る": "Fotografiar el folleto",
     "チラシを読み取っています…": "Leyendo el folleto…",
     "選んだ品を特売に入れる（{n}品）": "Añadir lo elegido a ofertas ({n})",
-    "{name}の特売": "{name} en oferta"
+    "{name}の特売": "{name} en oferta",
+    "タイマーが終わったら、音で知らせる": "Avisar con un pitido cuando termine un temporizador",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Repite un pitido corto; toca la pantalla para detenerlo. Suena solo en este dispositivo, sin red y sin coste. Suena después del primer toque en la pantalla una vez abierta la app."
 });

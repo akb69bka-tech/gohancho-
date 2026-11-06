@@ -1831,5 +1831,7 @@ GOHAN_I18N('vi', {
     "チラシを撮る": "Chụp tờ rơi",
     "チラシを読み取っています…": "Đang đọc tờ rơi…",
     "選んだ品を特売に入れる（{n}品）": "Thêm món đã chọn vào giảm giá ({n})",
-    "{name}の特売": "{name} đang giảm giá"
+    "{name}の特売": "{name} đang giảm giá",
+    "タイマーが終わったら、音で知らせる": "Phát tiếng bíp khi hẹn giờ kết thúc",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Phát tiếng bíp ngắn lặp lại; chạm vào màn hình để dừng. Chỉ phát trên thiết bị này, không cần mạng và không mất phí. Bắt đầu phát sau lần chạm màn hình đầu tiên khi đã mở ứng dụng."
 });

@@ -1831,5 +1831,7 @@ GOHAN_I18N('pl', {
     "チラシを撮る": "Zrób zdjęcie gazetki",
     "チラシを読み取っています…": "Odczytywanie gazetki…",
     "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
-    "{name}の特売": "{name} w promocji"
+    "{name}の特売": "{name} w promocji",
+    "タイマーが終わったら、音で知らせる": "Sygnał dźwiękowy po zakończeniu minutnika",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Powtarza krótki sygnał; dotknij ekranu, aby go zatrzymać. Dźwięk jest odtwarzany tylko na tym urządzeniu, bez sieci i bez kosztów. Rozlega się po pierwszym dotknięciu ekranu po otwarciu aplikacji."
 });

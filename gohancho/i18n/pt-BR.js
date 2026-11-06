@@ -1831,5 +1831,7 @@ GOHAN_I18N('pt-BR', {
     "チラシを撮る": "Fotografar o folheto",
     "チラシを読み取っています…": "Lendo o folheto…",
     "選んだ品を特売に入れる（{n}品）": "Adicionar selecionados às ofertas ({n})",
-    "{name}の特売": "{name} em oferta"
+    "{name}の特売": "{name} em oferta",
+    "タイマーが終わったら、音で知らせる": "Tocar um bipe quando o timer acabar",
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Toca um bipe curto repetidamente; toque na tela para parar. Toca só neste aparelho, sem rede e sem custo. Começa depois do primeiro toque na tela com o app aberto."
 });
