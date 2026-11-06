@@ -1818,6 +1818,29 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .sale-meta{flex:1 1 8rem;min-width:0;font-size:var(--fs12,.75rem);color:var(--muted);overflow-wrap:anywhere}
 .sale-x{min-width:44px}
 .badge.sale-pr{background:var(--accent-soft);color:var(--accent-text);font-weight:700;margin-inline-start:6px}
+/* やすい食材・余ったら（椎名・小野寺）: 暖色のまま（青は使わない）。料理の絵・名前・↻ には重ねない（設定・買い物メモ・シートの中だけ） */
+.badge.cheap{background:var(--yolk-soft);color:var(--yolk-ink);font-weight:700;margin-inline-start:4px;white-space:normal}
+.cheap-set .cheap-list{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.cheap-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cheap-nm{flex:1 1 4rem;min-width:0;font-weight:600;overflow-wrap:anywhere}
+.cheap-p{flex:1 1 11rem;min-width:0;max-width:100%;min-height:44px;box-sizing:border-box}
+.cheap-x{min-width:44px;min-height:44px}
+.cheap-line{margin:6px 0;padding:6px 10px;border-radius:10px;background:var(--accent-soft);color:var(--ink);overflow-wrap:anywhere}
+.rm-entry{margin-top:6px;align-items:center;gap:8px;flex-wrap:wrap}
+.rm-idea{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
+.rm-idea.on{border-color:var(--accent)}
+.rm-ih{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.rm-steps{margin:6px 0 8px;padding-inline-start:1.4em}
+.rm-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:8px}
+.rm-slot{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+.rm-slot img{width:100%;max-height:28vh;object-fit:cover;border-radius:10px}
+.rm-pair{margin:8px 0;padding:8px 0;border-top:1px solid var(--line)}
+.rm-ph{display:flex;align-items:center;gap:6px}
+.rm-ph figure{margin:0;flex:1 1 0;min-width:0;font-size:var(--fs12,.75rem)}
+.rm-ph img,.rm-empty{width:100%;height:90px;object-fit:cover;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--surface-2)}
+.rm-pc{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;flex-wrap:wrap}
+.rm-rel{flex-wrap:wrap}
+.rm-rb{display:flex;gap:6px;flex-wrap:wrap}
 .sale-tag{display:inline-block;margin-inline-start:6px;font-size:var(--fs12,.75rem);font-weight:700;color:var(--accent-text);white-space:normal}
 .sale-disc{margin:4px 0;color:var(--muted)}
 .sale-store{padding:10px 12px;margin-bottom:8px;overflow-wrap:anywhere}
@@ -2622,6 +2645,7 @@ function normalizeState(d){
           const q = Number(x.q), id = (typeof x.id === 'string' && x.id ? x.id : 's' + i).slice(0, 40);
           return {id, n: x.n.trim().slice(0, 40), q: x.q !== null && x.q !== '' && Number.isInteger(q) && q >= 0 && q <= 999 ? q : null, e: isYmd(x.e) ? x.e : '', d: isYmd(x.d) ? x.d : ''}; })
           .filter(x => !seenS.has(x.id) && seenS.add(x.id)).slice(0, 100); }
+    cheapSanitize(st); rmSanitize(st, isYmd);   // やすい食材・余ったらの記録
     st.stockLog = arr(st.stockLog).filter(x => x && typeof x === 'object' && isYmd(x.d) && typeof x.n === 'string' && x.n.trim()).slice(-400).map(x => ({d: x.d, n: x.n.slice(0, 40)}));
     // 外食・作らない日（{日付: {k}}）と、明日へまわした献立（{d, ids, slots}）
     { const o = {}; Object.entries(obj(st.skips)).forEach(([k, v]) => { if (isYmd(k) && v && ['out', 'deli', 'none'].includes(v.k)) o[k] = {k: v.k}; }); const ks = Object.keys(o).sort().slice(-400); st.skips = Object.fromEntries(ks.map(k => [k, o[k]])); }
@@ -3919,6 +3943,7 @@ function scoreRecipe(r, ctx){
     });
     if (ctx.fridge && ctx.fridge.size){ s += matchRecipe(r, ctx.fridge).ratio * 0.8; }
     if (ctx.weekday && r.min > 45) s -= 0.7 * Math.min(1, (r.min - 45) / 45);   // 平日は時間のかかる主菜を出しにくく（土日はそのまま）
+    s += cheapBias(r);   // やすい食材を使う料理を、ほんの少しだけ先に（候補から外さない・条件は変えない）
     s += kitchenBias(r, ctx);   // 台所の設定（コンロ1つ・はじめて）。点数だけで、候補からは外さない
     return s;
 }
@@ -4849,6 +4874,7 @@ function badges(r){
     const last = lastLabel(r.id);
     if (last) b += `<span class="badge">${esc(last)}</span>`;
     else if (!r.isTwist) b += `<span class="badge new">${esc(t('まだ作っていない'))}</span>`;
+    b += cheapBadge(r);
     return b;
 }
 // 描き直し（料理の入れ替え・絵の読みこみ）で画面が動かないようにする。
@@ -5271,6 +5297,7 @@ function viewShopStage(){
             <button type="button" class="btn sm buy-send" data-act="shop-share3">${esc(t('家族に送る'))}</button></div>
         ${cookWarnHtml()}
         ${outAlgNoteHtml()}
+        ${cheapCostHtml([...rows, ...opt].filter(e => e.buying).map(e => e.ik), cookItems().map(x => x.r))}
         <div class="buy-tools"><div class="chips" role="group" aria-label="${esc(t('並べ方'))}"><button class="chip" data-act="sb-by" data-v="dish" aria-pressed="${by === 'dish'}">${esc(t('料理ごと'))}</button><button class="chip" data-act="sb-by" data-v="sec" aria-pressed="${by === 'sec'}">${esc(t('売り場ごと'))}</button></div>
             <button class="btn sm${big ? ' on' : ''}" data-act="shop-mode" aria-pressed="${big}">${esc(wakeOK() ? t('買い物モード（画面を消さない）') : t('買い物モード（大きく表示）'))}</button></div>
         ${buy.length ? `<div class="card buy-list"><p class="buy-note">${esc(t('買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。'))}</p>
@@ -5326,6 +5353,7 @@ function viewTableStage(){
             ${wsv.some(w => !w.self) ? `<button class="btn text" data-act="wish-made">${esc(t('作ったよと送る'))}</button>` : ''}
             <button class="btn text" data-act="table-photo" data-id="${esc((served[0] || its[0]).r.id)}">${esc(t('写真を残す'))}</button>
             <button class="btn text" data-act="table-panel" data-k="left" aria-expanded="${panel === 'left'}">${esc(t('残り物メモ'))}</button>
+            <button class="btn text" data-act="rmk-open">${esc(t('余ったら'))}</button>
             <button class="btn text" data-act="table-panel" data-k="spend" aria-expanded="${panel === 'spend'}">${esc(t('食費を書く'))}</button>
             ${fin ? `<button class="btn text" data-act="tomorrow-open">${esc(t('明日の献立を見る'))}</button>` : ''}
         </div>
@@ -5495,8 +5523,8 @@ async function loadPhotos(){
 let MINE = {};
 function openDb(){
     return openDb.p || (openDb.p = new Promise((res, rej) => {
-        const q = indexedDB.open('gohancho', 3);
-        q.onupgradeneeded = () => { const db = q.result; ['photos', 'sketches'].forEach(n => { if (!db.objectStoreNames.contains(n)) db.createObjectStore(n); });
+        const q = indexedDB.open('gohancho', 4);
+        q.onupgradeneeded = () => { const db = q.result; ['photos', 'sketches', 'remake'].forEach(n => { if (!db.objectStoreNames.contains(n)) db.createObjectStore(n); });
             if (!db.objectStoreNames.contains('album')) db.createObjectStore('album', {autoIncrement: true}); };
         q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error);
     }));
@@ -6853,6 +6881,7 @@ function renderSheetBody(){
     if (sheet.kind === 'who') body = whoSheetHtml();
     if (sheet.kind === 'wday') body = wdaySheetHtml();
     if (sheet.kind === 'fphoto') body = fphotoSheetHtml();
+    if (sheet.kind === 'remake') body = remakeSheetHtml();
     if (sheet.kind === 'shopdone') body = shopDoneSheetHtml();
     if (sheet.kind === 'wish-send') body = wishSendSheetHtml();
     if (sheet.kind === 'ask-make') body = askMakeSheetHtml();
@@ -8752,7 +8781,7 @@ function viewSettings(){
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
         </div>`)}
-        ${grp('store', saleSettingsSum(), saleSettingsHtml())}
+        ${grp('store', saleSettingsSum(), saleSettingsHtml() + cheapSettingsHtml())}
         ${grp('notify', remindSum, `<div class="set-group">
             ${reminderHtml()}
         </div>`)}
@@ -9125,6 +9154,7 @@ function shoppingHtml0(){
         </div>
         ${session.shopMode && session.shopWakeFail ? `<p class="pantry-hint" role="status">${esc(t('この端末では画面を消さない設定にできませんでした'))}</p>` : ''}
         ${saleShopBannerHtml()}
+        ${cheapCostHtml(list.filter(e => !done.has(e.key) && !e.extra).map(e => String(e.key).split('|')[0]), days.flatMap(x => dayDishes(x)))}
         <form class="inputbar shop-add" data-form="shop-add"><input type="text" id="shop-add-input" maxlength="40" placeholder="${esc(t('品名を追加（例: 牛乳）'))}" aria-label="${esc(t('品名を追加（例: 牛乳）'))}" autocomplete="off" enterkeyhint="done"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
         ${shopAltOn() && list.some(e => e.alt) ? `<p class="pantry-hint">${esc(t('併記する名前は、アプリの中にある別の言語の名前です。お店の表記とは少しちがうことがあります。'))}</p>` : ''}
         ${(ab => ab.length ? `<p class="small warn alg-shop-hit" role="alert">${esc(t('⚠ 1週間プランの「{names}」は、選んでいるアレルゲンや家族のアレルギーを使う料理です。買う前に、プランの「変更」から別の案にできます。', {names: joinNames(ab.map(r => r.name))}))}</p>` : '')(shopAlgDishes())}
@@ -11263,6 +11293,7 @@ function leftoversHtml(){
     const on = r => S.leftovers.some(x => x.d === TODAY && String(x.id) === String(r.id));
     return `<details class="card memo-card left-card" ${(session.leftOpen === undefined ? list.length : session.leftOpen) ? 'open' : ''}><summary class="memo-sum"><span>${esc(t('残り物メモ'))}</span></summary>
         ${list.map(x => `<div class="left-line${leftDay(x) >= 4 ? ' left-old' : ''}"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:leftName(x)}))}">${esc(t('食べきった'))}</button></div>`).join('')}
+        ${items.length || list.length ? `<div class="row rm-entry"><button class="chip rm-open" data-act="rmk-open">${esc(t('余ったら'))}</button><span class="small muted">${esc(t('いつもと違う味や形の「ひとひねり」'))}</span></div>` : ''}
         ${list.some(x => leftDay(x) >= 4) ? `<div class="row" style="margin-top:4px"><button class="btn sm ghost" data-act="left-clean">${esc(t('4日目以降のメモをまとめて消す'))}</button></div>` : ''}
         ${items.length ? `<div class="small muted" style="margin-top:6px">${esc(t('今日の料理の残りを冷蔵庫に入れたら押します'))}</div>
         <div class="chips left-chips" role="group" aria-label="${esc(t('残りを冷蔵庫に入れた'))}">${items.map(it => `<button class="chip" data-act="left-add" data-id="${esc(it.r.id)}" aria-pressed="${on(it.r)}">${esc(nameOf(it.r))}</button>`).join('')}</div>` : ''}
@@ -11276,6 +11307,298 @@ function leftoverToggle(id){
     S.leftovers.push(entry); if (S.leftovers.length > 30) S.leftovers.splice(0, S.leftovers.length - 30);
     save(); render();
     toast(t('「{name}」の残りをメモしました', {name:r.name}), false, () => { S.leftovers = S.leftovers.filter(x => x !== entry); save(); render(); });
+}
+/* ---- やすい食材（椎名）: 本人が「いつも比較的安く買える」と選んだ食材。端末の中だけ（S.cheap[国] = {i:[食材名], p:{食材名: 本人が入れた目安の数}}）
+   使いみちは3つだけ: ① 献立の点数をほんの少し足す（候補から外す・並べ替えで決めた献立を変えることはしない）
+   ② 料理に「お得」の小さな札 ③ 買い物メモの「食費の目安」（本人が入れた目安の合計だけ。入れていなければ「n/m」のみ）。値段は外から取らない・送らない */
+const CHEAP_MAX = 60;
+function cheapRec(){ const c = S.cheap && typeof S.cheap === 'object' && !Array.isArray(S.cheap) ? S.cheap[currentCountry()] : null; return c && Array.isArray(c.i) ? c : {i: [], p: {}}; }
+function cheapWrite(){ if (!S.cheap || typeof S.cheap !== 'object' || Array.isArray(S.cheap)) S.cheap = {}; const cc = currentCountry(); if (!S.cheap[cc] || !Array.isArray(S.cheap[cc].i)) S.cheap[cc] = {i: [], p: {}}; if (!S.cheap[cc].p || typeof S.cheap[cc].p !== 'object') S.cheap[cc].p = {}; return S.cheap[cc]; }
+let CHEAP_MEMO = {sig: '', set: new Set(), pr: new Map()};
+function cheapKeys(){
+    const c = cheapRec(); if (!c.i.length) return CHEAP_MEMO.sig === '' ? CHEAP_MEMO.set : (CHEAP_MEMO = {sig: '', set: new Set(), pr: new Map()}).set;
+    const sig = currentCountry() + '|' + c.i.join('\u0001') + '|' + JSON.stringify(c.p);
+    if (CHEAP_MEMO.sig !== sig){ const set = new Set(), pr = new Map(); c.i.forEach(n => { const k = keyOf(n); set.add(k); const v = Number(c.p[n]); if (Number.isFinite(v) && v > 0) pr.set(k, v); }); CHEAP_MEMO = {sig, set, pr}; }
+    return CHEAP_MEMO.set;
+}
+function cheapHits(r){   // やすい食材リストにある、必須の材料（なくても可・いつもある物は数えない）。表示名の配列
+    const set = cheapKeys(); if (!set.size || !r || !r.items) return [];
+    const out = []; r.items.forEach(i => { if (!i.opt && !PANTRY.has(i.key) && set.has(i.key)){ const l = shortIng(i.label); if (!out.includes(l)) out.push(l); } });
+    return out;
+}
+function cheapBias(r){   // 点数に足す量（最大 0.3）。材料のうちやすい食材の割合。リストが空なら 0
+    const set = cheapKeys(); if (!set.size || !r || !r.items) return 0;
+    const need = r.items.filter(i => !i.opt && !PANTRY.has(i.key)); if (!need.length) return 0;
+    return 0.3 * need.filter(i => set.has(i.key)).length / Math.max(3, need.length);
+}
+function cheapBadge(r){ return cheapHits(r).length ? `<span class="badge cheap" title="${esc(t('やすい食材を使います'))}">${esc(t('お得'))}</span>` : ''; }
+// 食費の目安の1行（買い物メモ用）。keys: 買う食材のキー、dishes: その料理。やすい食材を決めていなければ ''
+function cheapCostHtml(keys, dishes){
+    if (!cheapRec().i.length) return '';
+    cheapKeys();
+    const ds = (dishes || []).filter(Boolean), n = ds.filter(r => cheapHits(r).length).length;
+    const seen = new Set(); let sum = 0, cnt = 0;
+    (keys || []).forEach(k => { if (seen.has(k)) return; seen.add(k); const v = CHEAP_MEMO.pr.get(k); if (v){ sum += v; cnt++; } });
+    return `<p class="cheap-line small" role="status"><b>${esc(t('やすい食材を使う料理: {n}/{m}', {n, m: ds.length}))}</b>${cnt ? `<br>${esc(t('食費の目安（入れた目安の分だけ）: {amt}（{n}品）', {amt: moneyText(sum), n: cnt}))}` : ''}${cnt ? `<br><span class="muted">${esc(t('あなたが入れた目安の合計です。実際の値段とは違うことがあります。'))}</span>` : ''}</p>`;
+}
+function cheapSuggest(){ const seen = new Set(), out = []; [...QUICK, ...STAPLE_QUICK].forEach(q => { const k = keyOf(q); if (!seen.has(k)){ seen.add(k); out.push(q); } }); return out; }
+function cheapSettingsSum(){ const n = cheapRec().i.length; return n ? t('{n}品を登録しています', {n}) : t('まだ登録していません'); }
+function cheapSettingsHtml(){
+    const c = cheapRec(), have = new Set(c.i.map(keyOf)), sug = cheapSuggest().filter(q => !have.has(keyOf(q)));
+    return `<div class="set-group cheap-set" id="cheap-set">
+        <div class="set-title">${esc(t('やすい食材'))} <span class="small muted">${esc(cheapSettingsSum())}</span></div>
+        <span class="small muted">${esc(t('いつも比較的安く買える食材を選ぶと、献立で少しだけ選ばれやすくなります。アレルギー・苦手・その日の条件が先で、決めた献立は変わりません。'))}</span>
+        ${c.i.length ? `<div class="cheap-list">${c.i.map(n => `<div class="cheap-row"><span class="cheap-nm">${esc(labelOf(n))}</span>
+            <input type="number" inputmode="decimal" min="0" step="any" class="cheap-p" data-act="cheap-price" data-v="${esc(n)}" value="${c.p[n] > 0 ? esc(c.p[n]) : ''}" placeholder="${esc(t('目安の値段（任意）'))}" aria-label="${esc(t('{name}の目安の値段', {name: labelOf(n)}))}">
+            <button type="button" class="btn sm ghost cheap-x" data-act="cheap-del" data-v="${esc(n)}" aria-label="${esc(t('{name}を外す', {name: labelOf(n)}))}">×</button></div>`).join('')}</div>` : ''}
+        <div class="chips" role="group" aria-label="${esc(t('やすい食材'))}">${sug.map(q => `<button type="button" class="chip" data-act="cheap-tog" data-v="${esc(q)}" aria-pressed="false">${esc(q)}</button>`).join('')}</div>
+        <form class="inputbar" data-form="cheap-add"><input type="text" id="cheap-input" maxlength="40" placeholder="${esc(t('食材の名前（例: もやし）'))}" autocomplete="off" aria-label="${esc(t('やすい食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
+        <span class="small muted">${esc(t('値段はこの端末の中だけに残ります。お店の値段を調べたり、外に送ったりはしません。'))}</span></div>`;
+}
+function cheapAdd(names){
+    const c = cheapWrite(), have = new Set(c.i.map(keyOf)); let n = 0;
+    names.forEach(x => { const nm = String(x).trim().slice(0, 40); if (!nm || have.has(keyOf(nm)) || c.i.length >= CHEAP_MAX) return; have.add(keyOf(nm)); c.i.push(nm); n++; });
+    return n;
+}
+function cheapAct(act, el){
+    if (act === 'cheap-tog'){ if (cheapAdd([el.dataset.v])){ save(); render(); } return; }
+    if (act === 'cheap-del'){ const c = cheapWrite(), v = el.dataset.v; c.i = c.i.filter(x => x !== v); delete c.p[v]; save(); render(); return; }
+}
+function cheapSubmit(){
+    const inp = $('#cheap-input'); if (!inp) return;
+    const found = extractIngredients(inp.value);
+    if (!found.length){ if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした')); return; }
+    if (cheapAdd(found)) { save(); render(); } else toast(t('もう入っています'));
+}
+function cheapPrice(el){
+    const c = cheapWrite(), v = el.dataset.v; if (!c.i.includes(v)) return;
+    const s = String(el.value).trim().replace(',', '.'), x = Number(s);
+    if (!s) delete c.p[v]; else if (Number.isFinite(x) && x > 0 && x <= 1e7) c.p[v] = Math.round(x * 100) / 100; else { el.value = c.p[v] || ''; toast(t('0より大きい数で入れてください')); return; }
+    save();
+}
+function cheapSanitize(st){   // 読み込みの途中で呼ばれる（あとで定義する const は使えない）
+    const o = {}, src = st.cheap;
+    if (src && typeof src === 'object' && !Array.isArray(src)) Object.keys(src).filter(cc => /^[A-Z]{2}$/.test(cc)).forEach(cc => {
+        const c = src[cc]; if (!c || typeof c !== 'object' || !Array.isArray(c.i)) return;
+        const seen = new Set(), i = c.i.filter(x => typeof x === 'string' && x.trim() && !seen.has(x) && seen.add(x)).map(x => x.trim().slice(0, 40)).slice(0, 60), p = {};
+        if (c.p && typeof c.p === 'object' && !Array.isArray(c.p)) i.forEach(n => { const v = Number(c.p[n]); if (Number.isFinite(v) && v > 0 && v <= 1e7) p[n] = Math.round(v * 100) / 100; });
+        if (i.length) o[cc] = {i, p};
+    });
+    if (Object.keys(o).length) st.cheap = o; else delete st.cheap;
+}
+
+/* ---- 余ったら・ひとひねり（椎名・小野寺）: 余った料理を、いつもと違う味や形の別の料理にする案。
+   案の表（RM_IDEAS）は料理の種類・材料から選ぶ。足す材料は食材のキーで持ち、アレルギー・苦手・家族の判定（isAvoided・allergyConflict）に
+   料理＋足す材料をまとめて通す（当たる案は出さない・入っていることがある加工品は 🔍）。献立は自動では変えない（「明日の献立に入れる」は押したときだけ）。
+   写真は端末の IndexedDB（remake）にだけ残し、外には送らない・読み取りもしない（料理の種類は本人が選ぶ） */
+const RM_TW = () => ({taste: t('味を変える'), shape: t('形を変える'), add: t('具を足す'), vessel: t('器を変える')});
+const RM_IDEAS = [
+    {id:'croquette', tw:'shape', size:'h', add:[['パン粉','bread crumbs'],['小麦粉','flour'],['卵','egg']], nm: () => t('コロッケ'),
+        steps: () => [t('残りをフォークでつぶし、水けをきって小判形にまるめる。'), t('小麦粉・溶き卵・パン粉の順につける。'), t('少なめの油で、両面がきつね色になるまで焼き揚げにする。')]},
+    {id:'curry', tw:'taste', size:'h', add:[['カレールウ','curry roux']], nm: () => t('カレーにする'),
+        steps: () => [t('残りに水を少し足して、鍋で温める。'), t('火を止めてカレールウを溶かし、弱火でとろみがつくまで煮る。'), t('ご飯やパンを添える。')]},
+    {id:'kakitama', tw:'add', size:'s', add:[['卵','egg']], nm: () => t('卵とじ'),
+        steps: () => [t('残りを少しの水かだしで温める。'), t('溶き卵を回し入れ、ふたをする。'), t('半熟で火を止め、ご飯にのせても。')]},
+    {id:'curryudon', tw:'taste', size:'h', add:[['うどん','udon noodles']], nm: () => t('カレーうどん'),
+        steps: () => [t('残りのカレーを水かだしでのばして温める。'), t('ゆでたうどんを入れ、ひと煮立ちさせる。'), t('器に盛り、あれば青ねぎを散らす。')]},
+    {id:'doria', tw:'vessel', size:'h', add:[['ご飯','rice'],['チーズ','cheese']], nm: () => t('ドリア風'),
+        steps: () => [t('耐熱皿にご飯を平らに入れ、残りをかける。'), t('チーズをのせる。'), t('オーブントースターで、焼き色がつくまで焼く。')]},
+    {id:'harumaki', tw:'shape', size:'h', add:[['春巻きの皮','spring roll wrappers']], nm: () => t('春巻き'),
+        steps: () => [t('残りの汁けをよくきって、冷ます。'), t('春巻きの皮で包み、とじ目に水をつける。'), t('少なめの油で、転がしながらこんがり焼く。')]},
+    {id:'mixrice', tw:'add', size:'s', add:[['ご飯','rice'],['ごま','sesame']], nm: () => t('ほぐして混ぜご飯'),
+        steps: () => [t('骨・皮・脂があれば取りのぞき、身をほぐす。'), t('温かいご飯とごまを混ぜる。'), t('おにぎりにしても。')]},
+    {id:'friedrice', tw:'taste', size:'s', add:[['ご飯','rice'],['卵','egg'],['ごま油','sesame oil']], nm: () => t('チャーハン'),
+        steps: () => [t('フライパンにごま油を熱し、溶き卵とご飯を入れてほぐす。'), t('残りを細かく刻んで加え、炒める。'), t('塩・こしょうで味をととのえる。')]},
+    {id:'yakionigiri', tw:'shape', size:'s', add:[['ご飯','rice'],['しょうゆ','soy sauce']], nm: () => t('焼きおにぎり'),
+        steps: () => [t('ご飯をにぎる。'), t('フライパンで両面を焼く。'), t('しょうゆを薄くぬり、香ばしく焼く。')]},
+    {id:'sandwich', tw:'vessel', size:'s', add:[['食パン','bread'],['マヨネーズ','mayonnaise']], nm: () => t('サンドイッチ'),
+        steps: () => [t('残りをほぐすか細かく刻み、マヨネーズであえる。'), t('パンにはさんで半分に切る。'), t('軽く焼くとホットサンドになる。')]},
+    {id:'soup', tw:'vessel', size:'s', add:[['コンソメ','bouillon']], nm: () => t('具だくさんスープ'),
+        steps: () => [t('鍋に水とコンソメを入れ、残りを加えて温める。'), t('味をみて、塩・こしょうでととのえる。'), t('熱いうちに器に盛る。')]},
+    {id:'zosui', tw:'vessel', size:'h', okayu:true, add:[['ご飯','rice'],['卵','egg']], nm: () => t('雑炊'),
+        steps: () => [t('残りの汁か水を鍋で温める。'), t('ご飯を入れて、やわらかくなるまで煮る。'), t('溶き卵を回し入れ、火を止める。')]},
+    {id:'yakisoba', tw:'taste', size:'s', add:[['ウスターソース','worcestershire sauce']], nm: () => t('焼きそば風'),
+        steps: () => [t('フライパンに油を熱し、麺をほぐしながら炒める。'), t('野菜や残りがあれば加える。'), t('ソースで味つけして、強めの火で仕上げる。')]},
+];
+function rmFeat(r){
+    const ks = (r.items || []).filter(i => !i.opt).map(i => i.key), idn = [r.id, r.name, r.nameEn || ''].join(' ');
+    const f = {potato: ks.some(k => /じゃがいも|potato/i.test(k)), simmer: r.method === '煮', stir: r.method === '炒', grill: r.method === '焼', fry: r.method === '揚', mix: r.method === '和え',
+        rice: r.id === 'rice' || r.type === 'ごはん', noodle: r.type === '麺', soup: r.type === '汁物' || r.method === '汁', side: r.type === '副菜',
+        curry: /curry|カレー/i.test(idn) || ks.some(k => /カレー|curry/i.test(k)), stew: /stew|シチュー|chowder|グラタン|gratin|ragu/i.test(idn),
+        fish: r.family === '魚' || r.family === '魚介', egg: r.family === '卵', mince: r.family === 'ひき肉'};
+    f.meat = ['豚', '鶏', '牛', 'ひき肉', '加工肉', '羊'].includes(r.family);
+    return f;
+}
+function rmScore(id, f){
+    const S_ = {
+        croquette: f.potato ? 3 : (f.simmer && !f.curry && !f.soup && !f.rice && !f.noodle && !f.side ? 1.5 : 0),
+        curry: f.simmer && !f.curry && !f.soup && !f.rice && !f.noodle && !f.egg ? 2 : (f.mince && !f.curry && !f.soup && !f.rice && !f.noodle ? 1.8 : (f.stir && f.meat ? 1 : 0)),
+        kakitama: f.egg || f.soup || f.rice || f.noodle || f.curry ? 0 : (f.fry ? 3 : f.simmer ? 2.5 : f.stir ? 2 : f.side ? 1 : 0),
+        curryudon: f.curry ? 3 : (f.stew ? 1 : 0),
+        doria: f.curry || f.stew ? 3 : (f.rice ? 2 : (f.mince ? 1.5 : 0)),
+        harumaki: f.soup || f.rice || f.noodle || f.curry ? 0 : (f.stir ? 2 : (f.simmer && (f.mince || f.meat) ? 1.5 : 0)),
+        mixrice: f.fish && f.grill ? 3 : (f.fish ? 2 : (f.meat && !f.mince && (f.grill || f.fry) ? 2 : 0)),
+        friedrice: f.rice ? 3 : (f.mince || f.stir ? 1.5 : 0),
+        yakionigiri: f.rice ? 2.5 : 0,
+        sandwich: f.egg ? 3 : (f.mix ? 2.5 : (f.potato ? 2 : (f.grill && (f.meat || f.fish) ? 1.5 : (f.side ? 1 : 0.4)))),
+        soup: f.soup || f.rice || f.noodle || f.curry ? 0 : ((f.simmer || f.stir) && (f.side || !f.meat) ? 2 : (f.simmer ? 1 : 0.5)),
+        zosui: f.soup ? 3 : (f.rice ? 2 : (f.stew ? 2 : (f.simmer ? 0.8 : 0))),
+        yakisoba: f.noodle ? 3 : 0,
+    };
+    return S_[id] || 0;
+}
+// 料理＋足す材料をひとまとめにした料理（アレルギー・苦手・家族の判定に通す）
+function rmPseudo(dish, idea){
+    const base = swappedRecipe(dish) || dish;
+    const add = idea.add.map(([ja, en]) => ({name: ja, qty: '', opt: false, key: keyOf(ja), label: ja, en}));
+    return {id: 'rm_' + idea.id, name: idea.nm(), items: (base.items || []).concat(add), seas: base.seas, seasBase: base.seasBase, pack: base.pack, steps: [], type: '主菜', method: base.method};
+}
+function rmOkayuDay(){ return session.mood === 'okayu'; }
+function rmIdeas(dish, amt){
+    const f = rmFeat(dish), set = cheapKeys(), okayu = rmOkayuDay();
+    const all = RM_IDEAS.map(idea => {
+        let sc = rmScore(idea.id, f); if (sc <= 0) return null;
+        if (okayu && !idea.okayu) return {idea, skip: 'okayu'};
+        if (amt === 's' && idea.size === 's') sc += 0.8; if (amt === 'h' && idea.size === 'h') sc += 0.8;
+        const ps = rmPseudo(dish, idea);
+        if (isAvoided(ps) || allergyConflict(ps)) return {idea, skip: 'avoid'};
+        const cheap = idea.add.filter(([ja, en]) => set.has(keyOf(ja)) || set.has(keyOf(en))).length;
+        return {idea, sc: sc + 0.3 * Math.min(2, cheap), ps, cheap};
+    }).filter(Boolean);
+    const ok = all.filter(x => !x.skip).sort((a, b) => b.sc - a.sc || (a.idea.id < b.idea.id ? -1 : 1));
+    const out = [];   // 変え方（味・形・具・器）がちがう案を先に
+    ok.forEach(x => { if (out.length < 3 && !out.some(y => y.idea.tw === x.idea.tw)) out.push(x); });
+    ok.forEach(x => { if (out.length < 3 && !out.includes(x)) out.push(x); });
+    // 当てはまる案がないときの予備（どの料理にも合う案）
+    if (out.length < 2 && !okayu) ['sandwich', 'soup', 'kakitama'].forEach(id => { const idea = RM_IDEAS.find(x => x.id === id); if (out.length >= 2 || out.some(y => y.idea.id === id) || all.some(y => y.idea.id === id && y.skip)) return; if (id === 'kakitama' && (f.egg || f.soup)) return; const ps = rmPseudo(dish, idea); if (isAvoided(ps) || allergyConflict(ps)) return; out.push({idea, sc: 0.1, ps, cheap: 0}); });
+    return {list: out, hidden: all.filter(x => x.skip === 'avoid').length, okayuOnly: okayu && !out.length};
+}
+// 同じ食材の、ほかの料理（いまの献立の候補から。アレルギー・苦手・おかゆの日は同じ決まり）
+function rmRelated(dish){
+    if (!dish || !dish.protein) return [];
+    const okayu = rmOkayuDay();
+    return poolFor('主菜').filter(r => r.main && r.id !== dish.id && r.protein === dish.protein && !isAvoided(r) && !S.hidden.includes(r.id) && !r.isTwist && (!okayu || okayuDayOk(r)))
+        .sort((a, b) => (b.method !== dish.method) - (a.method !== dish.method) || cheapHits(b).length - cheapHits(a).length || (a.id < b.id ? -1 : 1)).slice(0, 2);
+}
+function rmTomorrowOk(r){
+    const x = S.week && Array.isArray(S.week.days) && S.week.days.find(y => y.d === addDays(TODAY, 1)), rec = dayRec(addDays(TODAY, 1));
+    return !!x && !x.skip && !tomorrowDecided() && !!r && r.main && !isAvoided(r) && !S.hidden.includes(r.id) && poolForMood('主菜', 'all').includes(r) && (!rec || rec.mood !== 'okayu' || okayuDayOk(r));
+}
+function rmTomorrow(id){
+    const r = byId(id), td = addDays(TODAY, 1); if (!rmTomorrowOk(r)) return;
+    const x = S.week.days.find(y => y.d === td), was = {id: x.id, extra: x.extra};
+    x.id = r.id; delete x.extra; save(); render(); if (sheet && sheet.kind === 'remake') renderSheet();
+    toast(t('明日の主菜を「{name}」にしました', {name: r.name}), false, () => { x.id = was.id; if (was.extra !== undefined) x.extra = was.extra; save(); render(); if (sheet && sheet.kind === 'remake') renderSheet(); });
+}
+/* 写真（ビフォー・アフター）: IndexedDB の remake（キー '記録の印:b' / ':a'）。記録の目録は S.remake = [{k, d, dish, name, idea, amt, b, a}]（30件まで） */
+const RM_URL = new Map();
+function rmList(){ return Array.isArray(S.remake) ? S.remake : []; }
+function rmCur(make){
+    if (!sheet || sheet.kind !== 'remake') return null;
+    let rec = rmList().find(x => x.k === sheet.rec);
+    if (!rec && make && sheet.dish){
+        const d = byId(sheet.dish); if (!d) return null;
+        rec = {k: 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), d: TODAY, dish: String(d.id), name: d.name, idea: '', amt: sheet.amt || '', b: 0, a: 0};
+        if (!Array.isArray(S.remake)) S.remake = [];
+        S.remake.push(rec); sheet.rec = rec.k;
+        while (S.remake.length > 30){ const old = S.remake.shift(); rmDrop(old); }
+        save();
+    }
+    return rec || null;
+}
+function rmDrop(rec){ ['b', 'a'].forEach(w => { try{ idbDo('readwrite', st => st.delete(rec.k + ':' + w), 'remake').catch(() => {}); }catch(e){} const u = RM_URL.get(rec.k + ':' + w); if (u){ try{ URL.revokeObjectURL(u); }catch(e){} RM_URL.delete(rec.k + ':' + w); } }); }
+async function rmLoad(){
+    for (const rec of rmList()) for (const w of ['b', 'a']){
+        const key = rec.k + ':' + w; if (!rec[w] || RM_URL.has(key)) continue;
+        try{ const v = await idbDo('readonly', st => st.get(key), 'remake'); if (v && v.blob) RM_URL.set(key, URL.createObjectURL(v.blob)); }catch(e){}
+    }
+    if (sheet && sheet.kind === 'remake') renderSheet();
+}
+async function rmPhoto(which, file){
+    const rec = rmCur(true); if (!rec) return;
+    try{
+        const blob = await shrinkImage(file, 900); if (!blob) throw 0;
+        const key = rec.k + ':' + which;
+        await idbDo('readwrite', st => st.put({blob, d: TODAY}, key), 'remake');
+        const old = RM_URL.get(key); if (old){ try{ URL.revokeObjectURL(old); }catch(e){} }
+        RM_URL.set(key, URL.createObjectURL(blob)); rec[which] = 1; save();
+        toast(which === 'b' ? t('余った料理の写真を残しました') : t('ひとひねりした料理の写真を残しました'), true);
+    }catch(e){
+        toast(e && e.message === 'big' ? t('写真が大きすぎます（40MBまで）。別の写真で試してください') : t('写真を保存できませんでした。別の写真で試してください'));
+    }
+    if (sheet && sheet.kind === 'remake') renderSheet();
+}
+function rmOpen(id){
+    const first = (decidedToday() ? cookItems().map(x => x.r) : (session.menu ? session.menu.items.map(x => x.r).filter(Boolean) : []))[0];
+    const d = id ? byId(id) : first;   // 入口から開いたときは、お膳の主菜をはじめに選んでおく（ほかの料理はすぐ選び直せる）
+    sheet = {kind: 'remake', dish: d ? String(d.id) : '', amt: '', rec: '', q: '', hits: [], del: ''};
+    renderSheet(); rmLoad();
+}
+function rmPairHtml(rec){
+    const img = w => RM_URL.get(rec.k + ':' + w) ? `<img src="${esc(RM_URL.get(rec.k + ':' + w))}" alt="${esc(w === 'b' ? t('ビフォー') : t('アフター'))}">` : `<span class="rm-empty" aria-hidden="true">${rec[w] ? '…' : '—'}</span>`;
+    const idea = RM_IDEAS.find(x => x.id === rec.idea);
+    return `<div class="rm-pair"><div class="rm-ph"><figure><figcaption>${esc(t('ビフォー'))}</figcaption>${img('b')}</figure><span class="rm-arrow" aria-hidden="true">→</span><figure><figcaption>${esc(t('アフター'))}</figcaption>${img('a')}</figure></div>
+        <div class="rm-pc"><span class="small"><b>${esc(rec.name)}</b>${idea ? esc(t('・')) + esc(idea.nm()) : ''}<span class="muted"> ${esc(jpDate(rec.d))}</span></span>
+        <button type="button" class="btn sm ghost" data-act="rmk-del" data-k="${esc(rec.k)}">${esc(sheet.del === rec.k ? t('本当に消す') : t('消す'))}</button></div></div>`;
+}
+function remakeSheetHtml(){
+    const dish = sheet.dish ? byId(sheet.dish) : null, today = [];
+    const seenD = new Set(); (decidedToday() ? cookItems().map(x => x.r) : (session.menu ? session.menu.items.map(x => x.r).filter(Boolean) : [])).forEach(r => { if (r && !seenD.has(r.id)){ seenD.add(r.id); today.push(r); } });
+    const chip = r => `<button type="button" class="chip" data-act="rmk-dish" data-id="${esc(r.id)}" aria-pressed="${!!dish && dish.id === r.id}">${esc(trayName(r.name))}</button>`;
+    const found = (sheet.hits || []).map(byId).filter(r => r && !seenD.has(r.id));
+    let ideas = '';
+    if (dish){
+        const res = rmIdeas(dish, sheet.amt), rel = rmRelated(dish), rec = rmCur(false), TW = RM_TW();
+        ideas = `<h3>${esc(t('ひとひねりのアイデア'))}</h3>
+            ${res.list.length ? res.list.map(({idea, ps, cheap}) => { const on = !!rec && rec.idea === idea.id;
+                return `<div class="rm-idea${on ? ' on' : ''}"><div class="rm-ih"><b>${esc(idea.nm())}</b><span class="badge rm-tw">${esc(TW[idea.tw])}</span>${cheap ? `<span class="badge cheap">${esc(t('お得'))}</span>` : ''}</div>
+                    <ol class="rm-steps">${idea.steps().map(s => `<li>${esc(s)}</li>`).join('')}</ol>${algListHtml(ps)}
+                    <button type="button" class="btn sm${on ? ' primary' : ''}" data-act="rmk-pick" data-v="${idea.id}" aria-pressed="${on}">${esc(on ? t('これを作る ✓') : t('これを作る'))}</button></div>`; }).join('')
+              : `<p class="small muted" role="status">${esc(res.okayuOnly ? t('おかゆの日は、おかゆ・雑炊のなかまだけにしています。') : t('いまの設定（アレルギー・苦手・家族）に合う案がありません。'))}</p>`}
+            ${res.hidden ? `<p class="small muted">${esc(t('{n}件の案は、いまの設定に合わないため出していません。', {n: res.hidden}))}</p>` : ''}
+            ${rel.length ? `<h3>${esc(t('同じ食材の別の料理'))}</h3>${rel.map(r => `<div class="item rm-rel"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}${cheapBadge(r) ? `<div class="s">${cheapBadge(r)}</div>` : ''}</div>
+                <div class="rm-rb"><button type="button" class="btn sm" data-act="open" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button>${rmTomorrowOk(r) ? `<button type="button" class="btn sm" data-act="rmk-tom" data-id="${esc(r.id)}">${esc(t('明日の献立に入れる'))}</button>` : ''}</div></div>`).join('')}` : ''}
+            <h3>${esc(t('写真で残す'))}</h3>
+            <div class="rm-photos">${['b', 'a'].map(w => { const u = rec && RM_URL.get(rec.k + ':' + w);
+                return `<div class="rm-slot"><span class="small">${esc(w === 'b' ? t('余った料理') : t('ひとひねりした料理'))}</span>${u ? `<img src="${esc(u)}" alt="${esc(w === 'b' ? t('ビフォー') : t('アフター'))}">` : ''}
+                <label class="btn sm" for="rm-${w}">${esc(u ? t('撮り直す・選び直す') : t('写真を撮る・選ぶ'))}</label><input type="file" id="rm-${w}" accept="image/*" hidden></div>`; }).join('')}</div>
+            <p class="small muted">${esc(t('写真はこの端末の中だけに保存され、外には送られません。'))} ${esc(t('料理の種類は、上で選んだ料理です。'))}</p>`;
+    }
+    const recs = rmList().slice().reverse().slice(0, 6);
+    return `<h2>${esc(t('余ったら'))}</h2>
+        <p class="small muted">${esc(t('余った料理を選ぶと、いつもと違う味や形にする「ひとひねり」を出します。'))}</p>
+        <h3>${esc(t('どの料理が余りましたか'))}</h3>
+        <div class="chips" role="group" aria-label="${esc(t('どの料理が余りましたか'))}">${today.map(chip).join('')}${found.map(chip).join('')}</div>
+        <form class="inputbar" data-form="rm-q"><input type="search" id="rm-q" value="${esc(sheet.q || '')}" placeholder="${esc(t('ほかの料理を名前で探す'))}" autocomplete="off" aria-label="${esc(t('ほかの料理を名前で探す'))}"><button class="btn" type="submit">${esc(t('探す'))}</button></form>
+        ${dish ? `<h3>${esc(t('どのくらい余りましたか'))}</h3><div class="chips" role="group" aria-label="${esc(t('どのくらい余りましたか'))}">${[['s', t('少し')], ['h', t('半分くらい')]].map(([v, l]) => `<button type="button" class="chip" data-act="rmk-amt" data-v="${v}" aria-pressed="${sheet.amt === v}">${esc(l)}</button>`).join('')}</div>` : ''}
+        ${ideas}
+        <p class="small caution rm-safe" role="note">${esc(t('余ったものは、早めに食べきりましょう。しっかり冷やして保存し、においや見た目がおかしいときは食べないでください。'))}</p>
+        ${recs.length ? `<h3>${esc(t('これまでのひとひねり'))}</h3>${recs.map(rmPairHtml).join('')}` : ''}
+        <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+}
+function rmAct(act, el){
+    if (act === 'rmk-open'){ rmOpen(el.dataset.id || ''); return; }
+    if (!sheet || sheet.kind !== 'remake') return;
+    if (act === 'rmk-dish'){ sheet.dish = String(el.dataset.id); sheet.rec = ''; sheet.del = ''; renderSheet(); return; }
+    if (act === 'rmk-amt'){ sheet.amt = sheet.amt === el.dataset.v ? '' : el.dataset.v; renderSheet(); return; }
+    if (act === 'rmk-pick'){ const rec = rmCur(true); if (rec){ rec.idea = rec.idea === el.dataset.v ? '' : el.dataset.v; rec.amt = sheet.amt || ''; save(); } renderSheet(); return; }
+    if (act === 'rmk-tom'){ rmTomorrow(el.dataset.id); return; }
+    if (act === 'rmk-del'){
+        if (sheet.del !== el.dataset.k){ sheet.del = el.dataset.k; renderSheet(); return; }
+        const i = rmList().findIndex(x => x.k === el.dataset.k); if (i >= 0){ const [old] = S.remake.splice(i, 1); rmDrop(old); if (sheet.rec === old.k) sheet.rec = ''; save(); }
+        sheet.del = ''; toast(t('消しました')); renderSheet(); return;
+    }
+}
+function rmSubmit(){
+    const inp = $('#rm-q'); if (!inp || !sheet || sheet.kind !== 'remake') return;
+    sheet.q = inp.value.slice(0, 40); sheet.hits = sheet.q.trim() ? searchRecipes(sheet.q).hits.filter(r => r && !r.isTwist).slice(0, 6).map(r => r.id) : [];
+    renderSheet();
+}
+function rmSanitize(st, isYmd){   // 読み込みの途中で呼ばれる（あとで定義する const は使えない）
+    const seen = new Set(), a = Array.isArray(st.remake) ? st.remake : [];
+    const out = a.filter(x => x && typeof x === 'object' && typeof x.k === 'string' && /^[a-z0-9]{3,40}$/.test(x.k) && !seen.has(x.k) && seen.add(x.k) && isYmd(x.d) && typeof x.name === 'string')
+        .map(x => ({k: x.k, d: x.d, dish: (typeof x.dish === 'string' || typeof x.dish === 'number' ? String(x.dish) : '').slice(0, 80), name: x.name.slice(0, 80), idea: typeof x.idea === 'string' && /^[a-z]{3,20}$/.test(x.idea) ? x.idea : '', amt: x.amt === 's' || x.amt === 'h' ? x.amt : '', b: x.b ? 1 : 0, a: x.a ? 1 : 0})).slice(-30);
+    if (out.length) st.remake = out; else delete st.remake;
 }
 /* ---- 食費メモ ----
    自分で入れた金額の、直近7日（今日を含む）の合計だけ出す。入力は任意。料理ごとの原価などは出さない。通貨は地域設定の国の通貨。端末の中だけ（S.spend） */
@@ -11369,6 +11692,7 @@ function dishWhy(r, slot){   // 押していない料理に左右されない、
         if (names.length) return t('冷蔵庫の{names}が使えます', {names: joinNames(names.slice(0, 2))});
     }
     if (S.favs.includes(r.id)) return t('お気に入りの料理です');
+    const ch = cheapHits(r); if (ch.length) return t('やすい食材の{names}を使います', {names: joinNames(ch.slice(0, 2))});
     return '';
 }
 // 決めた献立のうち、冷蔵庫・常備品に登録のない材料（買い物メモにして送る・コピーする）
@@ -11457,7 +11781,7 @@ function swapSheetHtml(){
     return `<h2>${esc(t('{slot}をかえる', {slot}))}</h2>
         <p class="small muted">${esc(t('変わるのはこの1品だけです'))}</p>
         <div class="chips" role="group" aria-label="${esc(t('条件'))}">${fs.map(k => `<button class="chip" data-act="swap-f" data-v="${k}" aria-pressed="${sheet.f === k}">${esc(SWAP_F[k]())}</button>`).join('')}</div>
-        <div class="list swap-list">${sheet.cands.length ? sheet.cands.map(r => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}</div><button class="btn sm" data-act="swap-pick" data-id="${esc(r.id)}">${esc(t('これにする'))}</button></div>`).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`}</div>
+        <div class="list swap-list">${sheet.cands.length ? sheet.cands.map(r => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}${cheapBadge(r) ? `<div class="s">${cheapBadge(r)}</div>` : ''}</div><button class="btn sm" data-act="swap-pick" data-id="${esc(r.id)}">${esc(t('これにする'))}</button></div>`).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`}</div>
         ${it.slot === '汁物' && it.r ? `<button class="btn" data-act="swap-none">${esc(t('汁ものをなしにする'))}</button>` : ''}
         <div class="row"><button class="btn ghost" data-act="swap-more">${esc(t('ほかの候補'))}</button><button class="btn ghost" data-act="swap-find">${esc(t('ほかをさがす'))}</button><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
@@ -13477,6 +13801,8 @@ document.addEventListener('click', e => {
     if (el.closest('.cond-entries') && sheet && sheet.kind === 'cond') closeSheet();   // 条件シートの中の入口: シートを閉じてから、その画面へ
     // 「設定に合わせて…かえました」は、決める段で見せたあとの次の操作で消す（第4回 R7: 気分を変えたあとも残った）。「ほかの候補」はこの知らせの続きなので除く
     if (act.startsWith('sale-')){ saleAct(el, act); return; }   // よく行くスーパーと特売
+    if (act.startsWith('rmk-')){ rmAct(act, el); return; }   // 余ったら・ひとひねり
+    if (act === 'cheap-tog' || act === 'cheap-del'){ cheapAct(act, el); return; }   // やすい食材
     if (session.avoidNote && session.avoidNote.seen && act !== 'avoid-other'){ session.avoidNote = null; const n = document.querySelector('#view .avoid-note'); if (n) n.remove(); }
     switch(act){
         case 'open': openModal(id); break;
@@ -14521,6 +14847,8 @@ document.addEventListener('change', e => {
         if (el.value.trim() === '') delete kc.riceMin; else if (v >= 10 && v <= 180) kc.riceMin = v; else { el.value = kc.riceMin || ''; toast(t('10〜180分で入れてください')); return; }
         if (Object.keys(kc).length) S.settings.kitchen = kc; else delete S.settings.kitchen; save(); return;
     }
+    if (el.dataset && el.dataset.act === 'cheap-price'){ cheapPrice(el); return; }
+    if ((el.id === 'rm-b' || el.id === 'rm-a') && el.files && el.files[0] && sheet && sheet.kind === 'remake'){ const f = el.files[0], w = el.id === 'rm-b' ? 'b' : 'a'; el.value = ''; rmPhoto(w, f); return; }
     if (el.id === 'avoid-days'){ S.settings.avoidDays = Number(el.value); save(); toast(t('{n}日以内に作った料理は出さないようにしました', {n:el.value})); }
 });
 document.addEventListener('submit', e => {
@@ -14528,6 +14856,8 @@ document.addEventListener('submit', e => {
     const f = e.target.dataset.form;
     if (f && f.startsWith('sale-')){ saleSubmit(f); return; }   // よく行くスーパーと特売
     if (f === 'spend'){ spendAdd(); return; }
+    if (f === 'cheap-add'){ cheapSubmit(); return; }
+    if (f === 'rm-q'){ rmSubmit(); return; }
     if (f === 'stock-add'){ const n = $('#stock-name'), q = $('#stock-q'), e2 = $('#stock-exp'); if (n && stockAdd(n.value, q ? q.value : '', e2 ? e2.value : '')){ const x = $('#stock-name'); if (x) x.focus({preventScroll:true}); } return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
     if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
