@@ -1837,5 +1837,14 @@ GOHAN_I18N('vi', {
     "{name}の日": "Ngày ăn {name}",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day}, món phụ và canh mềm, thanh nhẹ. Món chính mất khoảng {n} phút",
     "{day}なので{n}品にしました": "{day}: {n} món",
-    "この条件では、{day}の主菜がありません": "Với điều kiện này, không có món chính cho {day}"
+    "この条件では、{day}の主菜がありません": "Với điều kiện này, không có món chính cho {day}",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Rượu (sake, mirin, rượu vang, bia; kể cả trong gia vị)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Cừu, vịt, ngỗng, v.v. (các loại thịt khác)",
+    "食の決まり": "Quy tắc ăn uống",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Dùng thứ có thể không hợp với quy tắc ăn uống của bạn ({names}). Hãy kiểm tra nhãn trên bao bì.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Loại thịt heo ra không loại các món có rượu (sake, mirin, rượu vang). Nếu bạn cũng muốn tránh rượu, hãy chọn thêm \"Rượu\".",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Vì đã loại thịt heo, gà, bò, cá và hải sản, nên cũng loại thịt cừu, vịt, nước dùng hoặc viên gia vị từ thịt và cá, nước mắm và dầu hào. Consommé và sốt Worcestershire sẽ có 🔍 \"kiểm tra nhãn trên bao bì\".",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Vì đã loại cả trứng và sữa, nên cũng loại mật ong và mayonnaise.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Với cài đặt hiện tại (món không thích, dị ứng, nguyên liệu khó tìm), không có món chính nào để gợi ý nên không thể bấm nút chốt thực đơn. Hãy xem lại các nguyên liệu đã loại trong Cài đặt.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Không có món chính nào phù hợp với cài đặt này. Hãy xem lại các nguyên liệu đã loại trong Cài đặt"
 });

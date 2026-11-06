@@ -1837,5 +1837,14 @@ GOHAN_I18N('de', {
     "{name}の日": "{name}-Tag",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Am {day} gibt es weiche, milde Beilagen und eine Suppe. Das Hauptgericht braucht etwa {n} Min.",
     "{day}なので{n}品にしました": "{day}, daher {n:# Gericht:# Gerichte}",
-    "この条件では、{day}の主菜がありません": "Unter diesen Bedingungen gibt es kein Hauptgericht für den {day}"
+    "この条件では、{day}の主菜がありません": "Unter diesen Bedingungen gibt es kein Hauptgericht für den {day}",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alkohol (Sake, Mirin, Wein, Bier; auch in Gewürzen und Soßen)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Lamm, Ente, Gans u. a. (andere Fleischsorten)",
+    "食の決まり": "Ernährungsregeln",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Enthält etwas, das möglicherweise nicht zu deinen Ernährungsregeln passt ({names}). Bitte prüfe das Etikett.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Wenn du Schweinefleisch ausschließt, werden Gerichte mit Alkohol (Sake, Mirin, Wein) nicht mit ausgeschlossen. Wenn du auch Alkohol meiden willst, wähle zusätzlich „Alkohol“.",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Da Schwein, Huhn, Rind, Fisch und Meeresfrüchte alle ausgeschlossen sind, werden auch Lamm, Ente, Fleisch- oder Fischbrühe und Brühwürfel, Fischsauce und Austernsauce ausgeschlossen. Consommé und Worcestersauce erhalten ein 🔍 „Etikett prüfen“.",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Da auch Eier und Milchprodukte ausgeschlossen sind, werden auch Honig und Mayonnaise ausgeschlossen.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Mit deinen aktuellen Einstellungen (Abneigungen, Allergien, schwer erhältliche Zutaten) gibt es kein Hauptgericht, daher lässt sich der Knopf zum Festlegen des Menüs nicht drücken. Bitte prüfe in den Einstellungen die ausgeschlossenen Zutaten.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Mit diesen Einstellungen gibt es kein passendes Hauptgericht. Bitte prüfe in den Einstellungen die ausgeschlossenen Zutaten"
 });

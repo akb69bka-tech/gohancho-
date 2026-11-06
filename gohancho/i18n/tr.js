@@ -1837,5 +1837,14 @@ GOHAN_I18N('tr', {
     "{name}の日": "{name} günü",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day} için yumuşak, hafif yan yemekler ve çorba. Ana yemek yaklaşık {n} dk sürer",
     "{day}なので{n}品にしました": "{day}: {n} yemek",
-    "この条件では、{day}の主菜がありません": "Bu koşullarda {day} için ana yemek yok"
+    "この条件では、{day}の主菜がありません": "Bu koşullarda {day} için ana yemek yok",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alkol (sake, mirin, şarap, bira; baharat ve soslarda da)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Kuzu, ördek, kaz vb. (diğer etler)",
+    "食の決まり": "Beslenme kuralları",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Beslenme kurallarınıza uymayabilecek bir şey kullanıyor ({names}). Lütfen ambalaj etiketini kontrol edin.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Domuz etini çıkarmak, alkollü yemekleri (sake, mirin, şarap) çıkarmaz. Alkolden de kaçınmak istiyorsanız \"Alkol\"ü de seçin.",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Domuz, tavuk, dana, balık ve deniz ürünlerinin hepsi çıkarıldığı için kuzu, ördek, et veya balık suyu ve bulyon küpleri, balık sosu ve istiridye sosu da çıkarılır. Konsome ve Worcestershire sosuna 🔍 \"ambalaj etiketini kontrol edin\" işareti konur.",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Yumurta ve süt ürünleri de çıkarıldığı için bal ve mayonez de çıkarılır.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Mevcut ayarlarınızla (sevilmeyenler, alerjiler, zor bulunan malzemeler) sunulabilecek hiç ana yemek yok, bu yüzden menüyü onaylama düğmesine basılamaz. Lütfen Ayarlar'da çıkarılan malzemeleri gözden geçirin.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Bu ayarlara uyan ana yemek yok. Lütfen Ayarlar'da çıkarılan malzemeleri gözden geçirin"
 });

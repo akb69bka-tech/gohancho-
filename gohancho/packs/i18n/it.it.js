@@ -1520,5 +1520,37 @@ GOHAN_PACK_TR('IT', 'it', {
       ],
       tip: { add: 'Grattugiare il pecorino finissimo, quasi in polvere', why: 'Il formaggio fine si scioglie liscio; se è grosso fa grumi', skill: 'Mantecare il formaggio fuori dal fuoco', how: 'Con la temperatura bassa il pecorino non si fila in grumi nella padella.' }
     },
+    it_pasta_ceci: {
+      name: 'Pasta e ceci',
+      ings: [
+        ['Pasta corta (ditalini)', '160 g'],
+        ['Ceci già cotti', '1 barattolo (400 g)'],
+        ['Passata di pomodoro', '150 g'],
+        ['Rosmarino', '1 rametto'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 2 spicchi d’aglio · Peperoncino (facoltativo) · 600 ml di acqua',
+      steps: [
+        'Scaldate 3 cucchiai di olio con l’aglio schiacciato e il rosmarino per 2 minuti. Aggiungete la passata e cuocete 5 minuti.',
+        'Unite i ceci scolati e l’acqua e cuocete 10 minuti. Schiacciate un mestolo di ceci con una forchetta per addensare.',
+        'Aggiungete la pasta e cuocete 8-10 minuti mescolando, finché è morbida e cremosa. Aggiustate di sale e pepe, togliete il rosmarino e servite con un filo di olio a crudo.',
+      ],
+    },
+    it_pasta_fagioli_v: {
+      name: 'Pasta e fagioli',
+      ings: [
+        ['Fagioli borlotti già cotti', '1 barattolo (400 g)'],
+        ['Pasta corta', '150 g'],
+        ['Passata di pomodoro', '150 g'],
+        ['Carota', '1'],
+        ['Sedano', '1 costa'],
+        ['Cipolla', '1/2'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 1 foglia di alloro · 700 ml di acqua',
+      steps: [
+        'Tritate finemente cipolla, carota e sedano e fateli soffriggere in 3 cucchiai di olio per 8 minuti.',
+        'Aggiungete la passata, l’alloro, i fagioli scolati e l’acqua e cuocete 15 minuti. Schiacciate alcuni fagioli con una forchetta per addensare.',
+        'Unite la pasta e cuocete 8-10 minuti finché è morbida, aggiungendo un po’ d’acqua se si asciuga troppo. Aggiustate di sale e pepe e completate con il resto dell’olio.',
+      ],
+    },
   }
 });

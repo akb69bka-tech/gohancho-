@@ -1837,5 +1837,14 @@ GOHAN_I18N('pt-BR', {
     "{name}の日": "Dia de {name}",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "No {day}, acompanhamentos macios e leves e um caldo. O prato principal leva cerca de {n} min",
     "{day}なので{n}品にしました": "{day}: {n:# prato:# pratos}",
-    "この条件では、{day}の主菜がありません": "Com essas condições, não há prato principal para o {day}"
+    "この条件では、{day}の主菜がありません": "Com essas condições, não há prato principal para o {day}",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Álcool (saquê, mirin, vinho, cerveja; também em temperos)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Cordeiro, pato, ganso etc. (outras carnes)",
+    "食の決まり": "Regras alimentares",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Usa algo que pode não combinar com suas regras alimentares ({names}). Confira o rótulo da embalagem.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Excluir carne de porco não exclui pratos com álcool (saquê, mirin, vinho). Se quiser evitar álcool também, escolha também “Álcool”.",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Como porco, frango, carne bovina, peixe e frutos do mar estão todos excluídos, cordeiro, pato, caldos de carne ou de peixe e cubos de caldo, molho de peixe e molho de ostra também são excluídos. Consomê e molho inglês (Worcestershire) recebem um 🔍 “confira o rótulo”.",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Como ovos e laticínios também estão excluídos, mel e maionese também são excluídos.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Com suas configurações atuais (alimentos de que não gosta, alergias, ingredientes difíceis de encontrar), nenhum prato principal pode ser oferecido, então o botão para confirmar o cardápio não pode ser pressionado. Revise os ingredientes excluídos em Ajustes.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Nenhum prato principal combina com essas configurações. Revise os ingredientes excluídos em Ajustes"
 });

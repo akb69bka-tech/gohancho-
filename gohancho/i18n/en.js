@@ -1838,5 +1838,14 @@ GOHAN_I18N('en', {
     "{name}の日": "{name} day",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "On {day}, we suggest soft, mild side dishes and soup. The main dish takes about {n} min",
     "{day}なので{n}品にしました": "{day}, so {n:# dish:# dishes}",
-    "この条件では、{day}の主菜がありません": "With these conditions, there is no main dish for {day}"
+    "この条件では、{day}の主菜がありません": "With these conditions, there is no main dish for {day}",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alcohol (sake, mirin, wine, beer; in seasonings too)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Lamb, duck, goose, etc. (other meats)",
+    "食の決まり": "Diet rules",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Uses something that may not fit your diet rules ({names}). Please check the package label.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Excluding pork does not exclude dishes that contain alcohol (sake, mirin, wine). If you also want to avoid alcohol, select \"Alcohol\" too.",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Because pork, chicken, beef, fish and shellfish are all excluded, lamb, duck, meat or fish stock and stock cubes, fish sauce and oyster sauce are excluded too. Consommé and Worcestershire sauce get a 🔍 \"check the package label\".",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Because eggs and dairy are excluded too, honey and mayonnaise are excluded as well.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "With your current settings (dislikes, allergies, hard-to-find ingredients), no main dish can be offered, so the button to confirm today's menu cannot be pressed. Please review the excluded ingredients in Settings.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "No main dish fits these settings. Please review the excluded ingredients in Settings"
 });

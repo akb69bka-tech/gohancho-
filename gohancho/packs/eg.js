@@ -2055,6 +2055,28 @@ GOHAN_PACK({
         "Serve warm with a little honey.",
       ],
     },
+    {
+      id: 'eg_ful_medames_v',
+      name: 'Ful medames (stewed fava beans)',
+      local: 'فول مدمس',
+      type: 'main',
+      starch: true,
+      method: 'simmer',
+      protein: 'legume',
+      min: 25,
+      ings: [
+        'fava beans|Cooked fava beans|2 cans (800 g)',
+        'tomato|Tomato|1',
+        'parsley|Parsley|1/2 bunch',
+        'bread|Flatbread (baladi)|2',
+      ],
+      seas: 'Salt · 4 tbsp oil · 2 garlic cloves · 1 tsp ground cumin · Juice of 1 lemon · Chili flakes (optional)',
+      steps: [
+        'Warm the fava beans with their liquid in a pot for 8 minutes, then mash about a third of them with a fork.',
+        'Stir in the garlic crushed with the salt, the cumin and the lemon juice.',
+        'Pour into a bowl, top with the diced tomato, the parsley and the oil, and serve with the flatbread.',
+      ],
+    },
   ],
   aliases: {
     "wheat berries": ["wheat berries", "whole wheat grains", "belila", "قمح", "قمح بليلة"],

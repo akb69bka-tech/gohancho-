@@ -1837,5 +1837,14 @@ GOHAN_I18N('fr', {
     "{name}の日": "Jour de {name}",
     "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Pour le {day}, accompagnements et soupe tendres et légers. Le plat principal prend environ {n} min",
     "{day}なので{n}品にしました": "{day} : {n:# plat:# plats}",
-    "この条件では、{day}の主菜がありません": "Avec ces conditions, il n'y a pas de plat principal pour le {day}"
+    "この条件では、{day}の主菜がありません": "Avec ces conditions, il n'y a pas de plat principal pour le {day}",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alcool (saké, mirin, vin, bière ; aussi dans les assaisonnements)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Agneau, canard, oie, etc. (autres viandes)",
+    "食の決まり": "Règles alimentaires",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Utilise un ingrédient qui peut ne pas respecter vos règles alimentaires ({names}). Vérifiez l’étiquette de l’emballage.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Exclure le porc n’exclut pas les plats contenant de l’alcool (saké, mirin, vin). Pour éviter aussi l’alcool, choisissez aussi « Alcool ».",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Comme le porc, le poulet, le bœuf, le poisson et les fruits de mer sont tous exclus, l’agneau, le canard, les bouillons de viande ou de poisson et les cubes de bouillon, la sauce de poisson et la sauce d’huître sont aussi exclus. Le consommé et la sauce Worcestershire reçoivent un 🔍 « vérifier l’étiquette ».",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Comme les œufs et les produits laitiers sont aussi exclus, le miel et la mayonnaise le sont aussi.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Avec vos réglages actuels (aliments non aimés, allergies, ingrédients difficiles à trouver), aucun plat principal ne peut être proposé : le bouton pour valider le menu est donc inactif. Vérifiez dans les Réglages les ingrédients exclus.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Aucun plat principal ne convient à ces réglages. Vérifiez dans les Réglages les ingrédients exclus"
 });
