@@ -55,9 +55,10 @@ const open = async (o, tag) => {
         window.__rows = () => { __still(); const tabTop = __tabTop(); return [...document.querySelectorAll('#view .tray .tg-row')].map(row => { const parts = [...row.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag')]; return {max: Math.round(Math.max(...parts.map(e => e.getBoundingClientRect().bottom))), hid: parts.filter(e => e.getBoundingClientRect().bottom > tabTop + .5 || e.getBoundingClientRect().top < -.5).map(e => (e.className || '').split(' ')[0] + ':' + Math.round(e.getBoundingClientRect().bottom)), tags: row.querySelectorAll('.alg-tag').length}; }); };
         window.__bar = () => { const bt = document.querySelector('#view .actionbar [data-act=decide]'); if (!bt) return null; const q = bt.getBoundingClientRect(); return {bottom: Math.round(q.bottom), tabTop: Math.round(__tabTop()), hidden: q.bottom > __tabTop() + .5}; };
         // お知らせが重なるもの（器の絵は別に数える）
-        window.__toastCover = () => { const box = document.querySelector('#toast-root .toast'); if (!box) return {none: true, cover: [], vessels: 0}; const R = box.getBoundingClientRect(); const ov = q => q.width > 1 && q.height > 1 && q.bottom > R.top + .5 && q.top < R.bottom - .5 && q.right > R.left + .5 && q.left < R.right - .5;
+        window.__toastCover = () => { const box = document.querySelector('#toast-root .toast') || document.querySelector('#view .tg-mid .mb-back'); if (!box)   // 11/06: 「↶ 前の献立」は丸の右隣（.mb-back）。お知らせがなければ、そのボタンを測る
+           return {none: true, cover: [], vessels: 0}; const R = box.getBoundingClientRect(); const ov = q => q.width > 1 && q.height > 1 && q.bottom > R.top + .5 && q.top < R.bottom - .5 && q.right > R.left + .5 && q.left < R.right - .5;
             const list = [], tabTop = __tabTop(); let vessels = 0;
-            document.querySelectorAll('#view .spot .nm, #view .spot .alg-tag, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button, #view .p2-ok, #view .p2-sv, header.top h1, header.top .gear, .req-btn, #view button, #view [data-act]').forEach(e => { if (getComputedStyle(e).visibility === 'hidden' || e.closest('#toast-root')) return; let q = e.getBoundingClientRect(); if (e.matches('.nm')){ const g = document.createRange(); g.selectNodeContents(e); q = g.getBoundingClientRect(); } if (q.top >= tabTop - .5) return; if (!ov(q)) return; if (e.matches('.vessel')){ vessels++; return; } list.push((e.className || e.tagName).toString().split(' ')[0] + ':' + (e.textContent || '').trim().slice(0, 8) + ':' + Math.round(q.top) + '-' + Math.round(q.bottom)); });
+            document.querySelectorAll('#view .spot .vessel, #view .tg-mid .sh-ic, #view .tg-mid .sh-tx, #view .spot .nm, #view .spot .alg-tag, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button, #view .p2-ok, #view .p2-sv, header.top h1, header.top .gear, .req-btn, #view button, #view [data-act]').forEach(e => { if (getComputedStyle(e).visibility === 'hidden' || e.closest('#toast-root, .mb-back') || (box.matches('.mb-back') && e.matches('.shuffle'))) return; let q = e.getBoundingClientRect(); if (e.matches('.nm')){ const g = document.createRange(); g.selectNodeContents(e); q = g.getBoundingClientRect(); } if (q.top >= tabTop - .5) return; if (!ov(q)) return; if (e.matches('.vessel')){ vessels++; return; } list.push((e.className || e.tagName).toString().split(' ')[0] + ':' + (e.textContent || '').trim().slice(0, 8) + ':' + Math.round(q.top) + '-' + Math.round(q.bottom)); });
             return {top: Math.round(R.top), bottom: Math.round(R.bottom), h: Math.round(R.height), cls: box.className, text: box.textContent.trim().slice(0, 40), cover: [...new Set(list)], vessels}; };
         // 押した指の記録つきで押す（toastPlace は最後に押した場所を見る）
         window.__tap = (sel, act) => { const bt = document.querySelector(sel); if (!bt) return false; const q = bt.getBoundingClientRect(); TOAST_TAP.y = q.top + 5; TOAST_TAP.at = performance.now(); TOAST_TAP.box = q; TOAST_TAP.act = act || ''; TOAST_TAP.tapView = TOAST_TAP.view; TOAST_TAP.layer = false; bt.click(); return true; };
@@ -133,14 +134,14 @@ if (want('R18-4')) {
         const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, fam, dc: 3, sv: 3, wants: fam}, `r33-${ts}-${fam}`);
         for (let i = 0; i < (fam ? 4 : 3); i++){
             await p.waitForTimeout(i ? 250 : 0);
-            const r = await p.evaluate(async i => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.undo = !!document.querySelector('#toast-root [data-act=toast-undo]'); c.lines = c.h < 60; return c; }, i);
+            const r = await p.evaluate(async i => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.undo = !!document.querySelector('#view .tg-mid .mb-back'); c.lines = c.h < 60; return c; }, i);
             n++;
             const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];   // アプリの名前（文）は押す場所ではない
             if (r.none || !r.undo || !/前の献立/.test(r.text || '') || ctl.length || r.vessels) bad.push(`文字${ts} 家族${fam} #${i} ` + JSON.stringify(r));
         }
         await ctx.close();
     }
-    ok(n >= 20 && !bad.length, `R18-4 195px まるごと入れ替え ${n} 回: 上の端の帯に「↶ 前の献立」が出て、料理の絵・料理名・↻にかからない（オーナー指示 11/05。アプリの名前の文には重なってよい）: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 20 && !bad.length, `R18-4 195px まるごと入れ替え ${n} 回: 丸の右隣に「↶ 前の献立」が出て、料理の絵・料理名・↻にかからない（オーナー指示 11/06）: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R18-5（R39 → オーナー指示 11/04）430px・文字大/もっと大きい、390px・文字大: まるごと入れ替えを押してもお知らせは出ず、アプリの名前・料理名・↻を隠さない
@@ -153,7 +154,7 @@ for (const [w, h, ts] of [[430, 932, 1], [430, 932, 2], [390, 844, 1]]) {
         const r = await p.evaluate(async () => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.h1 = c.cover.some(x => /^H1/.test(x)); c.core = c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn)/.test(x)); return c; });
         out.push(r);
     }
-    ok(out.every(r => !r.none && !r.core.length && !r.vessels), `R18-5 ${w}px 文字${ts}: まるごと入れ替え4回で、「↶ 前の献立」の帯が出て料理名・↻・絵にかからない（オーナー指示 11/05）: ` + JSON.stringify(out.filter(r => r.none || r.core.length || r.vessels).slice(0, 2)));
+    ok(out.every(r => !r.none && !r.core.length && !r.vessels), `R18-5 ${w}px 文字${ts}: まるごと入れ替え4回で、「↶ 前の献立」が丸の右隣に出て料理名・↻・絵にかからない（オーナー指示 11/05）: ` + JSON.stringify(out.filter(r => r.none || r.core.length || r.vessels).slice(0, 2)));
     await ctx.close();
 }
 
@@ -244,14 +245,14 @@ if (want('R18-11')) {
         const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, fam, dc: 3, sv: 3, wants: fam}, `r33s-${ts}-${fam}`);
         for (const sy of [0, 60, 120, 200, 'mid']) for (let i = 0; i < 2; i++) {
             const r = await p.evaluate(async sy => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); await __tick(); if (sy === 'mid') document.querySelector('#view [data-act=new-menu]').scrollIntoView({block: 'center'}); else window.scrollTo(0, sy); await __tick(); const y0 = Math.round(scrollY);
-                __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.y0 = y0; c.y1 = Math.round(scrollY); c.undo = !!document.querySelector('#toast-root [data-act=toast-undo]'); return c; }, sy);
+                __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.y0 = y0; c.y1 = Math.round(scrollY); c.undo = !!document.querySelector('#view .tg-mid .mb-back'); return c; }, sy);
             n++; const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];
             if (r.none || !r.undo || !/前の献立/.test(r.text || '') || (r.bottom > 0 && ctl.length) || r.vessels) bad.push(`文字${ts} 家族${fam} 送り${sy} #${i} ` + JSON.stringify(r));
             await p.waitForTimeout(200);
         }
         await ctx.close();
     }
-    ok(n >= 60 && !bad.length, `R18-11 195px まるごと入れ替え ${n} 回（スクロールした位置でも）: 「↶ 前の献立」の帯が出て、絵・料理名・↻にかからない（オーナー指示 11/05）: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 60 && !bad.length, `R18-11 195px まるごと入れ替え ${n} 回（スクロールした位置でも）: 「↶ 前の献立」が丸の右隣に出て、絵・料理名・↻にかからない（オーナー指示 11/05）: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R18-12（R39 の残り）195px・画面が切りかわった直後のお知らせ（「準備ができました…」と同じ出し方）: アプリの名前（h1）ではなく器の絵の帯に出る。料理名・↻・ボタンにもかからない。文字3段階 × 家族あり/なし
@@ -412,8 +413,8 @@ for (const [w, h] of [[390, 844], [375, 667]]) for (const ts of [0, 1, 2]) {
     if (!want('R18-20')) break;
     const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: 4, sv: 2}, `r64-${w}-${ts}`);
     const r = await p.evaluate(async () => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 300));
-        const before = !!document.querySelector('#toast-root [data-act=toast-undo]'); openCondSheet(); await __tick(); const mb = document.querySelector('#sheet-root [data-act=mood][data-k=slow]'); if (!mb) return {err: '気分なし'}; mb.click(); await __tick(); await new Promise(r => setTimeout(r, 300));
-        const sheetOpen = !!sheet; if (sheet) closeSheet(); await __tick(); const c = __toastCover(); return {before, sheetOpen, mood: session.mood, after: !!document.querySelector('#toast-root [data-act=toast-undo]'), none: c.none, core: c.none ? [] : c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-sv)/.test(x))}; });
+        const before = !!document.querySelector('#view .tg-mid .mb-back'); openCondSheet(); await __tick(); const mb = document.querySelector('#sheet-root [data-act=mood][data-k=slow]'); if (!mb) return {err: '気分なし'}; mb.click(); await __tick(); await new Promise(r => setTimeout(r, 300));
+        const sheetOpen = !!sheet; if (sheet) closeSheet(); await __tick(); const c = __toastCover(); return {before, sheetOpen, mood: session.mood, after: !!document.querySelector('#view .tg-mid .mb-back'), none: c.none, core: c.none ? [] : c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-sv)/.test(x))}; });
     ok(!r.err && r.before && r.mood === 'slow' && !r.after && !r.core.length, `R18-20 ${w}px 文字${ts}: まるごと入れ替えのあとは「↶ 前の献立」が出て、気分を変える（ほかの方法で献立が変わる）と消え、↻・条件のボタンに乗らない（オーナー指示 11/05）: ` + JSON.stringify(r));
     await ctx.close();
 }

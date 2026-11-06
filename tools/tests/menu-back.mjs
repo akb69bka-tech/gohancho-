@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 「まるごと入れ替え」のあとの「↶ 前の献立」（1つ前に戻る。オーナー指示 11/05）の回帰テスト（Playwright。使い方: node tools/tests/menu-back.mjs [http://localhost:8881/]）
-//  B1 まるごと入れ替えのあと、上の端の帯に「↶ 前の献立」が出る。押すと前の献立（料理・席・品数）がそのまま戻る
+//  B1 まるごと入れ替えのあと、丸の右隣に「↶ 前の献立」が出る。押すと前の献立（料理・席・品数）がそのまま戻る
 //  B2 複数回: 3回入れ替えて、3回戻ると元の献立。5つまで（6回入れ替えても戻れるのは5つ前まで）。戻る先がなくなったら帯は消える
 //  B3 数秒で消えない（8秒たっても残る）。ほかの方法で献立が変わる（↻・品数・気分）・決める・日が変わるまで残り、そのあとは消える
 //  B4 重ならない: 帯が、料理の絵・料理名・⚠札・↻・まるごと入れ替えの丸にかからない（幅 195・360・390・430 × 文字の大きさ 3段階 × 4・6品）
@@ -24,8 +24,8 @@ const open = async (settings = {}, vp = [390, 844]) => {
     return {p, ctx};
 };
 const MENU = p => p.evaluate(() => JSON.stringify({n: session.menu.n, items: session.menu.items.map(x => [x.slot, x.r && x.r.id])}));
-const MARU = '#view .tray .tg-mid .shuffle[data-act=new-menu]', BACK = '#toast-root [data-act=toast-undo]';
-const band = p => p.evaluate(() => { const e = document.querySelector('#toast-root [data-act=toast-undo]'); return e ? e.textContent.trim() : null; });
+const MARU = '#view .tray .tg-mid .shuffle[data-act=new-menu]', BACK = '#view .tg-mid .mb-back[data-act=menu-back]';
+const band = p => p.evaluate(() => { const e = document.querySelector('#view .tg-mid .mb-back'); return e ? (e.getAttribute('aria-label') || '') + '|' + e.textContent.trim() : null; });
 const marugo = async p => { await p.click(MARU); await p.waitForTimeout(450); };
 const back = async p => { await p.click(BACK); await p.waitForTimeout(450); };
 
@@ -60,13 +60,12 @@ const back = async p => { await p.click(BACK); await p.waitForTimeout(450); };
     await p.evaluate(() => { document.querySelector('nav.tabs [data-tab=fridge]').click(); }); await p.waitForTimeout(300);
     await p.evaluate(() => { document.querySelector('nav.tabs [data-tab=today]').click(); }); await p.waitForTimeout(500);
     ok(await band(p) !== null, 'B3 ほかのタブから戻っても帯が出る');
-    // ほかのお知らせが出て消えたあとも戻る
-    await p.evaluate(() => toast('テスト')); await p.waitForTimeout(100);
-    await p.evaluate(() => { toast.hide(); }); await p.waitForTimeout(400);
-    ok(await band(p) !== null, 'B3 ほかのお知らせが消えたあとも帯が出る');
+    // ほかのお知らせ（toast）が出て消えても、ボタンは残る
+    await p.evaluate(() => toast('テスト')); await p.waitForTimeout(300); await p.evaluate(() => { toast.hide(); }); await p.waitForTimeout(300);
+    ok(await band(p) !== null, 'B3 ほかのお知らせが出て消えても「前の献立」は残る');
     // ↻ で1品かえる → 消える
     await p.evaluate(() => { const b = document.querySelector('#view .tray .spot .swap:not(.swap-ph)'); b.click(); }); await p.waitForTimeout(500);
-    ok(!/前の献立/.test(await band(p) || '') && await p.evaluate(() => menuBack.list.length) === 0, 'B3 ↻ で1品かえると「前の献立」は消える（ほかの方法で献立が変わった。↻ 自身の「元に戻す」は出る）');
+    ok(await band(p) === null && await p.evaluate(() => menuBack.list.length) === 0, 'B3 ↻ で1品かえると「前の献立」は消える（ほかの方法で献立が変わった。↻ 自身の「元に戻す」は出る）');
     await marugo(p); ok(await band(p) !== null, 'B3 また入れ替えると出る');
     await p.evaluate(() => { document.querySelector('[data-act=decide]').click(); }); await p.waitForTimeout(600);
     ok(await band(p) === null, 'B3 決めると消える');
@@ -83,26 +82,29 @@ const back = async p => { await p.click(BACK); await p.waitForTimeout(450); };
     await ctx.close();
 }
 // B4 重ならない
-const SEE = '#view .spot .vessel, #view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .tray .tg-mid';
-for (const [w, h] of [[195, 640], [360, 740], [390, 844], [430, 932]]) for (const ts of [0, 1, 2]) for (const n of [4, 6]){
+const SEE = '#view .spot .vessel, #view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .sh-ic, #view .tg-mid .sh-tx, #view .tg-mid .shuffle';
+let b4n = 0, b4ng = 0;
+for (const [w, h] of [[195, 640], [320, 700], [360, 740], [390, 844], [430, 932]]) for (const ts of [0, 1, 2]) for (const n of [4, 6]){
     const {p, ctx} = await open({dishCount: n, textSize: ts || undefined}, [w, h]);
     const tag = `B4 ${w}px 文字${ts} ${n}品`;
     for (let k = 0; k < 2; k++){
-        await marugo(p); await p.waitForTimeout(250);
+        await marugo(p); await p.waitForTimeout(500);
         const r = await p.evaluate(sel => {
-            const bx = document.querySelector('#toast-root .toast'); if (!bx) return {none: true};
-            const q = bx.getBoundingClientRect(), hit = [], vw = document.documentElement.clientWidth;
-            document.querySelectorAll(sel).forEach(e => { const c = e.getBoundingClientRect(); if (c.width < 2 || c.height < 2 || c.bottom < 0 || c.top > innerHeight) return; if (c.left < q.right - .5 && c.right > q.left + .5 && c.top < q.bottom - .5 && c.bottom > q.top + .5) hit.push((e.className || e.tagName).toString().slice(0, 24) + ':' + Math.round(c.left) + ',' + Math.round(c.top)); });
-            const bt = bx.querySelector('[data-act=toast-undo]').getBoundingClientRect();
-            return {hit, box: [q.left, q.top, q.right, q.bottom].map(Math.round), inX: q.left >= -.5 && q.right <= vw + .5, btn: Math.round(bt.height), btnIn: bt.left >= q.left - .5 && bt.right <= q.right + .5, sy: Math.round(scrollY)};
+            const bt = document.querySelector('#view .tg-mid .mb-back'); if (!bt) return {none: true};
+            const q = bt.getBoundingClientRect(), hit = [], vw = document.documentElement.clientWidth, mid = bt.closest('.tg-mid').getBoundingClientRect(), ic = document.querySelector('#view .tg-mid .sh-ic').getBoundingClientRect(), tray = document.querySelector('#view .tray').getBoundingClientRect(), sh0 = document.querySelector('#view .tg-mid .shuffle').getBoundingClientRect();
+            document.querySelectorAll(sel).forEach(e => { if (e.closest('.mb-back')) return; const c = e.getBoundingClientRect(); if (c.width < 2 || c.height < 2) return; if (e.matches('.shuffle')) return; if (c.left < q.right - .5 && c.right > q.left + .5 && c.top < q.bottom - .5 && c.bottom > q.top + .5) hit.push((e.className || e.tagName).toString().slice(0, 24) + ':' + Math.round(c.left) + ',' + Math.round(c.top)); });
+            const sh = sh0;
+            return {hit, w: Math.round(q.width), h: Math.round(q.height), inTray: q.left >= tray.left - .5 && q.right <= tray.right + .5, inMid: q.top >= mid.top - 1 && q.bottom <= mid.bottom + 1, noHscroll: document.documentElement.scrollWidth <= vw, icon: bt.classList.contains('icon'), aria: bt.getAttribute('aria-label'), centered: Math.abs((sh0.left + sh0.right) / 2 - (tray.left + tray.right) / 2) <= 2, shuf: [Math.round(sh.left), Math.round(sh.right)], box: [q.left, q.top, q.right, q.bottom].map(Math.round)};
         }, SEE);
-        ok(!r.none && r.hit.length === 0 && r.inX && r.btn >= 36 && r.btnIn, `${tag} ${k + 1}回目 帯が料理の絵・名前・↻・丸にかからず、画面からはみ出さない: ` + JSON.stringify(r));
+        const clickable = await p.evaluate(() => { const e = document.querySelector('#view .tg-mid .mb-back'); const q = e.getBoundingClientRect(); return [[.5, .5], [.2, .5], [.8, .5], [.5, .2], [.5, .8]].every(([x, y]) => { const t = document.elementFromPoint(q.left + q.width * x, q.top + q.height * y); return !!t && e.contains(t); }); });
+        b4n++;
+        const good = !r.none && r.hit.length === 0 && r.w >= 44 && r.h >= 44 && r.inTray && r.inMid && r.noHscroll && r.centered && !!r.aria && clickable;
+        if (!good) b4ng++;
+        ok(good, `${tag} ${k + 1}回目 丸の右隣のボタンが 絵・名前・⚠札・↻・丸にかからず、44×44px 以上で、トレーの中・横スクロールなし・丸は中央のまま・押せる: ` + JSON.stringify(r) + ' clickable=' + clickable);
     }
-    // 押せる（帯の上の点に当たる）
-    const hit = await p.evaluate(() => { const e = document.querySelector('#toast-root [data-act=toast-undo]'); const q = e.getBoundingClientRect(); const t = document.elementFromPoint(q.left + q.width / 2, q.top + q.height / 2); return !!t && e.contains(t); });
-    ok(hit, `${tag} 帯のボタンが実際に押せる（上に別のものがない）`);
     await ctx.close();
 }
+console.log(`B4 測定 ${b4n} 回（5幅 × 文字3段階 × 4・6品 × 2）うち不合格 ${b4ng}`);
 // B5 守り
 {
     const {p, ctx} = await open({dishCount: 4});
@@ -142,13 +144,14 @@ for (const [w, h] of [[195, 640], [360, 740], [390, 844], [430, 932]]) for (cons
     ok(await p.evaluate(() => menuBack.list.length) === 0, 'B5 決めた献立からは「前の献立」の帯を作らない（確かめのシートと「元に戻す」を使う）');
     await ctx.close();
 }
-// B6 言語
+// B6 言語（字が丸・名前に当たるときは「↶」だけ。読み上げ名は「前の献立」の訳）
 for (const [lang, cc] of [['en', 'US'], ['ar', 'EG'], ['de', 'DE'], ['th', 'TH'], ['hi', 'IN'], ['ko', 'KR']]) for (const w of [195, 360]){
     const {p, ctx} = await open({dishCount: 4, uiLang: lang, country: cc}, [w, w < 300 ? 640 : 740]);
-    await marugo(p); await p.waitForTimeout(250);
-    const r = await p.evaluate(() => { const bx = document.querySelector('#toast-root .toast'); if (!bx) return null; const q = bx.getBoundingClientRect(), bt = bx.querySelector('[data-act=toast-undo]'), c = bt.getBoundingClientRect(), vw = document.documentElement.clientWidth;
-        return {txt: bt.textContent.trim(), inX: q.left >= -.5 && q.right <= vw + .5, btnIn: c.left >= q.left - .5 && c.right <= q.right + .5, clip: bt.scrollWidth > bt.clientWidth + 1, h: Math.round(c.height)}; });
-    ok(r && r.inX && r.btnIn && !r.clip && r.h >= 36, `B6 ${lang} ${w}px 帯とボタンがはみ出さず切れない: ` + JSON.stringify(r));
+    await marugo(p); await p.waitForTimeout(500);
+    const r = await p.evaluate(() => { const bt = document.querySelector('#view .tg-mid .mb-back'); if (!bt) return null; const q = bt.getBoundingClientRect(), mid = bt.closest('.tg-mid').getBoundingClientRect(), ic = document.querySelector('#view .tg-mid .sh-ic').getBoundingClientRect(), tx = document.querySelector('#view .tg-mid .sh-tx').getBoundingClientRect(), vw = document.documentElement.clientWidth, tt = bt.querySelector('.mb-tx');
+        const vis = !bt.classList.contains('icon');
+        return {aria: bt.getAttribute('aria-label'), icon: !vis, inMid: q.left >= mid.left - .5 && q.right <= mid.right + .5, noOverlap: !(q.left < ic.right + 4 && q.right > ic.left - 4) && !(q.left < tx.right && q.right > tx.left && q.top < tx.bottom && q.bottom > tx.top), clip: vis && tt.scrollWidth > tt.clientWidth + 1, h: Math.round(q.height), w: Math.round(q.width), noH: document.documentElement.scrollWidth <= vw}; });
+    ok(r && r.aria && r.inMid && r.noOverlap && !r.clip && r.h >= 44 && r.w >= 44 && r.noH, `B6 ${lang} ${w}px ボタンが丸・名前に重ならず、はみ出さず、字が切れない（入らなければ「↶」だけ）: ` + JSON.stringify(r));
     await ctx.close();
 }
 await b.close();

@@ -559,7 +559,6 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .toast.at-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto !important;inset-inline-end:auto;margin-inline:0}   /* 同じ画面のまま出すお知らせで、下の場所に押す場所が見えているとき（toastPlace） */
 #toast-root:has(.toast.docked)::before{content:'';position:fixed;inset-inline:0;top:var(--toast-shelf-top);height:var(--toast-shelf-h);z-index:59;pointer-events:none;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}   /* お知らせの棚（toastPlace）。主ボタンと同じすりガラス */
 html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: 留めたお知らせが出ているあいだは、ブラウザのスクロールの合わせ直し（scroll anchoring）を止める（字の読みこみ後の測り直しなどで画面だけが 50px ほど上へ動き、お知らせが帯の裏に入っていた） */
-.toast.headdock.sealdock{padding:0 !important;border-width:0;min-height:0;gap:0;width:auto}.toast.headdock.sealdock .tx{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;display:block}.toast.headdock.sealdock [data-act=toast-undo]{min-height:44px;min-width:44px;padding:0 2px !important;font-size:11px;letter-spacing:0;line-height:1.15;white-space:normal;overflow-wrap:anywhere;text-align:center;max-width:100%}/* 195px など、画面じゅうがお膳で空いた高さがないとき: 上の端の左の印（膳。飾り）の場所に「↶ 前の献立」だけを小さく置く（料理の絵・名前・↻・ほかのボタンにかけない） */
 .toast.anchored{position:absolute;bottom:auto !important;z-index:19}.toast.headdock{position:absolute;bottom:auto !important;right:auto;inset-inline-end:auto;margin:0;max-width:none;z-index:19;display:flex;align-items:center;gap:8px;padding:.125rem .25rem .125rem .75rem;min-height:40px;text-align:start}.toast.headdock .tx,.toast.at-top .tx{flex:1 1 auto;min-width:0;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.25;overflow-wrap:anywhere}.toast.headdock [data-act=toast-undo]{flex:none;margin:0}.toast.headdock.slim,.toast.at-top.slim{min-height:0;padding-block:0 !important}.toast.headdock.slim .tx,.toast.at-top.slim .tx{-webkit-line-clamp:1;line-clamp:1}.toast.headdock.slim [data-act=toast-undo],.toast.at-top.slim [data-act=toast-undo]{min-height:36px}.toast.at-top:has(.tx){display:flex;align-items:center;gap:8px;margin:0;max-width:none}@media (max-width:299px){.toast.headdock{gap:4px;padding:.125rem .2rem .125rem .45rem}.toast.headdock [data-act=toast-undo]{padding-inline:.4rem}}   /* 第21回 R72: 「元に戻す」付きのお知らせを見出しの行（今日の献立・条件のボタン）に1行で重ねる（toastHeadDock）。料理の絵・料理名・↻にかけない */#toast-root:has(.toast.anchored)::before{position:absolute;z-index:18}.toast.anchored.off,#toast-root:has(.toast.anchored.off)::before{visibility:hidden}   /* 第19回 R59・R60: 押して画面が切りかわった直後のお知らせは、置いたあとページに留める（中身と一緒にスクロール。toastPlace の anchor）。下のタブ・帯より下、上の端より上に出ているあいだは隠す（toastScroll）。z は下のタブ（20）より下 */
 .timer-float{position:fixed;inset-inline-end:12px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:55;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.5rem .9rem;min-height:44px;font-size:.85rem;font-weight:600;box-shadow:var(--shadow);font-variant-numeric:tabular-nums}
 .timer-float.ring{background:var(--yolk);color:#231800}
@@ -1106,7 +1105,10 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2.swap-ico .spot .swap{width:44px;padding:0;font-size:0;border-radius:50%}.tray.grid2.swap-ico .spot .swap::before{font-size:16px;margin:0}   /* 「かえる」の字が列に入らない言語・幅では、印だけの丸（読み上げは「…をかえる」） */
 .tray.grid2 .spot .swap.swap-ph{display:block;height:44px;visibility:hidden}
 .tray.grid2 .wsh-tag{position:absolute;top:0;inset-inline-start:0;z-index:1;max-width:100%;font-size:.65rem}
-.tg-mid{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 4px}
+.tg-mid{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 4px;position:relative}
+.tg-mid .mb-back{position:absolute;inset-inline-end:0;top:50%;transform:translateY(-50%);z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:44px;min-height:44px;padding:0 10px;border-radius:22px;border:2px solid var(--accent);background:var(--porcelain);color:var(--accent);font:inherit;font-size:var(--fs12,.75rem);font-weight:700;line-height:1.1;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.35)}   /* 11/06: 「↶ 前の献立」は丸の右隣（高さは menuBackFit が丸の真ん中に合わせる）。丸は中央のまま */
+.tray.grid2.tight2 .tg-mid.mb-stack .shuffle,.tray.grid2 .tg-mid.mb-stack .shuffle{flex-direction:column;gap:3px;max-width:min(11rem,48vw)}.tg-mid.mb-stack .shuffle .sh-tx{text-align:center}   /* 幅260px未満（195px など）: 字を丸の下に回して、丸の右隣を空ける */
+.tg-mid .mb-back > span:first-child{font-size:1.25em}.tg-mid .mb-back.icon{padding:0;width:44px}.tg-mid .mb-back.icon .mb-tx{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tg-mid::before,.tg-mid::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18))}
 .tg-mid::after{background:linear-gradient(90deg,rgba(255,255,255,.18),transparent)}
 .tg-mid .shuffle{flex-direction:column;align-items:center;gap:3px;max-width:min(11rem,48vw);min-width:64px;color:var(--tray-ink);font-size:var(--fs12,.75rem)}
@@ -3240,15 +3242,14 @@ function redoSheetHtml(){
 // short: とても狭い画面（幅 300px 未満。195px など）で「元に戻す」付きのお知らせに出す1語（「入れ替えました」など）。第18回 R33: 文を1語にして低く（compact）し、料理名・↻・札・ボタンにかからない高さに置く
 function toast(msg, praise=false, undo=null, short=''){
     const root = $('#toast-root'); toast.undo = undo; toast.avoidMsg = false;
-    const sticky = !!toast.stickyNext && !!undo, btnLabel = toast.labelNext || t('元に戻す'); toast.stickyNext = false; toast.labelNext = ''; toast.isSticky = sticky;   // sticky: 数秒で消えない「前の献立」の帯（まるごと入れ替えのあと。menuBack）
     const pb = root.firstElementChild, pa = pb && pb.classList.contains('anchored') ? pb.getBoundingClientRect() : null, prev = pa ? (pa.height ? {left: pa.left, top: pa.top, right: pa.right, bottom: pa.bottom} : null) : pb && pb.offsetHeight ? {left: pb.offsetLeft, top: pb.offsetTop, right: pb.offsetLeft + pb.offsetWidth, bottom: pb.offsetTop + pb.offsetHeight} : null;   // いま出ているお知らせの場所（ページに留めたお知らせは画面の中の場所で）
     const short0 = short || toast.short || ''; toast.short = '';
     const narrow = innerWidth < 300 && !sheet && !modalId, text = narrow && undo && short0 ? short0 : msg;
     toast.lastMsg = msg; toast.lastShort = short0; toast.lastDish = toast.dish || ''; toast.dish = '';   // 上の端の帯（toastHeadDock）で、入らないときに料理名を短くする
-    root.innerHTML = `<div class="toast pop placing${praise?' praise':''}${narrow ? ' compact' : ''}"${narrow && text !== msg ? ` aria-label="${esc(msg)}"` : ''}>${undo ? `<span class="tx">${esc(text)}</span>` : esc(text)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(btnLabel)}</button>` : ''}</div>`;
+    root.innerHTML = `<div class="toast pop placing${praise?' praise':''}${narrow ? ' compact' : ''}"${narrow && text !== msg ? ` aria-label="${esc(msg)}"` : ''}>${undo ? `<span class="tx">${esc(text)}</span>` : esc(text)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
     // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
-    const hide = toast.hide = () => { root.innerHTML = ''; toast.undo = null; toast.isSticky = false; if (menuBack.list.length) queueMicrotask(menuBackSync); };
-    const arm = () => { clearTimeout(toast.t); if (sticky) return; toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 6000 : 4500); };
+    const hide = toast.hide = () => { root.innerHTML = ''; toast.undo = null; };
+    const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, undo ? 8000 : praise ? 6000 : 4500); };
     arm();
     // 置き場所は描き直し（押した操作の続き）が終わってから決める。描く前のフレームなので、ちらつかない。
     // 前のお知らせが出ていたところ（その裏は見えていなかった）は、次のお知らせで画面を送る理由にしない（続けて押しても画面が何度も動かない）
@@ -3263,12 +3264,12 @@ function toast(msg, praise=false, undo=null, short=''){
 // とても狭い画面で出す1語（toast の short）を先に預けてから toast を呼ぶ: toastShort(t('入れ替えました'))(t('献立をまるごと入れ替えました'), false, menuUndo(…))
 function toastShort(short){ toast.short = short; return toast; }
 // 「1つ前に戻る」（↶ 前の献立。オーナー指示 11/05）: まるごと入れ替えのあと、前の献立に戻れる。最大5つ前まで（押すたびに1つずつ）。
-// 場所は上の端の帯（R94・R99 の「元に戻す」と同じ。料理の絵・料理名・↻にかけない）。数秒で消えず、ほかの方法で献立が変わる・決める・日が変わる・アレルギーなどの設定が変わるまで出しておく。
+// 場所は「まるごと入れ替え」の丸の右隣（段のあいだの帯 .tg-mid の中。オーナー指示 11/06。上の端の帯は、国旗・家族リクエストと重なるのでやめた）。料理の絵・料理名・↻・札にかけない。数秒で消えず、ほかの方法で献立が変わる・決める・日が変わる・アレルギーなどの設定が変わるまで出しておく。
 // 戻すときの守りは menuUndo と同じ（S25: 設定が変わっていたら戻さない・いまの設定でアレルゲン・苦手・今は出さない料理があれば戻さない）。決めた献立は変えない（決めた献立からの入れ替えは decidedUndo にまかせる）
 const menuBack = {list: [], cur: '', sig: '', day: ''};
 function menuFp(){ const m = session.menu; return m ? m.n + '|' + m.items.map(x => x.r ? x.r.id : '-').join() : ''; }
 function menuBackSnap(){ const m = session.menu; return m && m.items ? {menu: Object.assign({}, m, {items: m.items.map(x => Object.assign({}, x))}), twist: session.twist} : null; }
-function menuBackClear(){ menuBack.list = []; if (toast.isSticky && toast.hide) toast.hide(); }
+function menuBackClear(){ menuBack.list = []; }
 function menuBackPush(snap){
     if (!snap || !snap.menu.items.some(x => x.r)) return;
     if (!menuBack.list.length || menuBack.day !== TODAY || menuBack.sig !== judgeSig()){ menuBack.list = []; menuBack.sig = judgeSig(); menuBack.day = TODAY; }
@@ -3278,16 +3279,18 @@ function menuBackPush(snap){
 // 描き直すたびに: ほかの方法で献立が変わった・決めた・日が変わった・設定が変わったら、戻る先を捨てる
 function menuBackCheck(){
     if (!menuBack.list.length) return;
+    requestAnimationFrame(menuBackFit); setTimeout(menuBackFit, 350);
     if (menuBack.day !== TODAY || menuBack.sig !== judgeSig() || menuFp() !== menuBack.cur || menuIsDecided()) menuBackClear();
 }
-function menuBackSync(){
-    if (!menuBack.list.length){ return; }
-    const root = $('#toast-root'); if (!root) return;
-    const show = tab === 'today' && !sheet && !modalId && bootReady;
-    if (!show){ if (toast.isSticky && toast.hide) toast.hide(); return; }
-    if (root.querySelector('.toast')) return;   // ほかのお知らせが出ているあいだは待つ（それが消えたら出す）
-    toast.stickyNext = true; toast.labelNext = '↶ ' + t('前の献立');
-    toastShort(t('入れ替えました'))(t('入れ替えました'), false, menuBackRestore);
+// 「↶ 前の献立」の置き場: 丸の右隣（丸は中央のまま。ボタンは丸の高さの真ん中に）。字が丸・名前に当たるときは「↶」だけ（読み上げは「前の献立」）
+function menuBackFit(){
+    document.querySelectorAll('#view .tg-mid .mb-back').forEach(bt => {
+        const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'); if (!ic) return;
+        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(); if (!m.width) return;
+        bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px';
+        const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + 6 && r.right > q.left - 6 && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5; };
+        bt.classList.remove('icon'); if (hit()) bt.classList.add('icon');
+    });
 }
 function menuBackRestore(){
     const e = menuBack.list.pop(); if (!e){ return; }
@@ -3351,7 +3354,7 @@ function toastScroll(){
 function toastLoop(){ if (!$('#toast-root .toast.anchored, #toast-root .toast.headdock')){ toast.loop = 0; return; } toastAlign(); toast.loop = requestAnimationFrame(toastLoop); }
 addEventListener('scroll', toastScroll, {passive: true}); addEventListener('resize', toastScroll, {passive: true});
 ['wheel', 'keydown'].forEach(k => addEventListener(k, () => { toast.wheelAt = performance.now(); }, {passive: true}));   // 本人がスクロールした印（指は TOAST_TAP.at）
-try{ const ve = document.getElementById('view'); if (ve && window.ResizeObserver) new ResizeObserver(() => toastScroll()).observe(ve); }catch(e){}   // 中身の高さが変わったときも合わせ直す
+try{ const ve = document.getElementById('view'); if (ve && window.ResizeObserver) new ResizeObserver(() => { toastScroll(); menuBackFit(); }).observe(ve); }catch(e){}   // 中身の高さが変わったときも合わせ直す
 // 第21回 R72: 今日の献立の画面で出す「元に戻す」付きのお知らせ（1品の「これにする」・↻・家族リクエストの「入れかえる」・決めた献立の作り直しなど）は、
 // 料理の絵・料理名・↻・札にかけない（オーナー 11/04: 料理の絵が見えなくなるので、まるごと入れ替えの「元に戻す」はなくした。同じ考え）。
 // 第22回 R94: 見出しの行（「今日の献立」と条件のボタン）にも重ねない。画面のいちばん上の帯（印・日付・アプリの名前。右の国旗・設定・家族リクエストのボタンの左まで）に重ねる。
@@ -3362,10 +3365,8 @@ function toastHeadArea(){
     const hd = document.querySelector('header.top'); if (!hd) return null; const q = hd.getBoundingClientRect(); if (!q.height) return null;
     let right = q.right; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.left > q.left + q.width * .35 && r.left - 8 < right) right = r.left - 8; });
     const h2 = document.querySelector('#view .today-head.p2-head'); let lim = h2 ? h2.getBoundingClientRect().top - 4 : Infinity;   // 下は見出しの行の上まで
-    // 上の帯の下の行に家族リクエストの入口（.req-btn。あいさつの行）があるときは、その上まで（押す場所にかけない。「↶ 前の献立」が上の端に残るので）
-    if (toast.isSticky){ const rq = [...document.querySelectorAll('.req-btn')].map(e => e.getBoundingClientRect()).find(r => r.width > 1 && r.height > 1 && r.top > q.top + 1 && r.top < q.bottom + 80 && r.right > q.left && r.left < q.right); if (rq) lim = Math.min(lim, rq.top - 2); }
     // 第23回 R99: とても狭い画面（195px など）は、印と国旗のあいだが狭い。国旗・設定のボタンは隠さず、その下の行（アプリの名前の行）に、上の帯の幅いっぱいで出す
-    if (right - q.left < 200){ let bb = q.top; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.bottom > bb) bb = r.bottom; }); const top = bb + 4; return {left: q.left, right: q.right, top, bottom: Math.max(top, q.bottom), height: Math.max(0, Math.min(q.bottom, lim) - top), lim, blocked: !!toast.isSticky && lim - top < 34}; }   // 入る高さがないとき（上の帯が1行に畳まれて、すぐ下が家族リクエスト）は、画面の中の空いた高さを探す
+    if (right - q.left < 200){ let bb = q.top; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.bottom > bb) bb = r.bottom; }); const top = bb + 4; return {left: q.left, right: q.right, top, bottom: Math.max(top, q.bottom), height: Math.max(0, Math.min(q.bottom, lim) - top), lim}; }
     // 上の帯の左にもボタンがある形（家族リクエストを上の帯に上げた tray-tight5 など）: 上の帯に空いたところがない（blocked。画面の中の空いた高さを探す）
     const blocked = [...hd.querySelectorAll('button, a[href], [data-act]')].some(e => { const r = e.getBoundingClientRect(); return r.width && r.right > q.left + 1 && r.left < right - 1; });
     return {left: q.left, right, top: q.top, bottom: q.bottom, height: q.height, lim, blocked};
@@ -3379,7 +3380,7 @@ function toastHeadDock(box, floor){
     box.classList.add('compact', 'headdock'); box.classList.remove('at-top', 'docked', 'pop'); box.style.removeProperty('max-width');
     if (!A.blocked && A.top >= 0 && A.bottom <= floor){ toastHeadAlign(box); return true; }
     // 上の帯が見えていない: 画面の中で、料理の絵・料理名・↻・札・決定・見出し・条件のボタンにかからない高さ（固定）を探す
-    const dish = [...document.querySelectorAll(toast.isSticky ? '.req-btn, ' + TOAST_DISH : TOAST_DISH)].map(e => e.getBoundingClientRect()).filter(r => r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < floor);
+    const dish = [...document.querySelectorAll(TOAST_DISH)].map(e => e.getBoundingClientRect()).filter(r => r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < floor);
     const vw = document.documentElement.clientWidth, L0 = 16, W0 = vw - 32;
     box.classList.remove('headdock'); box.classList.add('at-top'); box.style.left = L0 + 'px'; box.style.width = W0 + 'px';
     for (const slim of [false, true]){   // 入らなければ1行の細い形（お膳と決定の帯のあいだ 50px ほどに入る）
@@ -3387,18 +3388,8 @@ function toastHeadDock(box, floor){
         for (let y = 8; y + h <= floor - 8; y += 4){ if (!dish.some(r => r.bottom > y - 4 && r.top < y + h + 4 && r.right > L0 && r.left < L0 + W0)){ box.style.top = y + 'px'; return true; } }
     }
     box.classList.remove('slim');
-    if (toast.isSticky && toastSealDock(box)) return true;   // 「↶ 前の献立」は、料理の絵にかけるくらいなら上の端の左の印の場所へ
     if (A.blocked){ box.classList.remove('at-top'); return false; }   // 空いた高さがない: いつもの置き方（toastPlace）にまかせる
     box.classList.remove('at-top'); box.classList.add('headdock'); toastHeadAlign(box); return true;
-}
-// 上の端の左（印の場所。国旗・設定のボタンの左）に、「↶ 前の献立」のボタンだけを置く。置けたら true
-function toastSealDock(box){
-    const hd = document.querySelector('header.top'); if (!hd) return false; const q = hd.getBoundingClientRect(); if (!q.height) return false;   // 上の端が画面の外（スクロールした位置）でも、そこに置く（画面の中の料理の絵にかけない。上へ戻すと見える）
-    let fb = q.right; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.left > q.left + q.width * .25 && r.left < fb) fb = r.left; });
-    const w = Math.floor(fb - q.left - 6); if (w < 56) return false;
-    { const bt = box.querySelector('[data-act=toast-undo]'); if (bt && !bt.dataset.sealed){ bt.dataset.sealed = '1'; bt.innerHTML = '<span><span aria-hidden="true">↶</span><br>' + esc(t('前の献立')) + '</span>'; } }   // 狭いので「↶」と文字を2行に
-    box.classList.remove('at-top', 'slim', 'pop'); box.classList.add('compact', 'headdock', 'sealdock'); box.style.left = Math.round(q.left) + 'px'; box.style.width = w + 'px'; box.style.top = Math.round(q.top + scrollY + 2) + 'px'; box.style.removeProperty('max-width');
-    if (!toast.loop) toast.loop = requestAnimationFrame(toastLoop); return true;
 }
 // 字を帯に入れる: 2行に入らなければ料理名を短く（「えびフラ…」）。それでも入らなければ1語（かえました など。全文は読み上げ用に）
 function toastFitText(box){
@@ -3413,7 +3404,6 @@ function toastFitText(box){
 }
 // 上の帯に重ねる（ページの中の位置。中身と一緒にスクロールする）。上の帯の大きさが変わったら付いていく（toastAlign）
 function toastHeadAlign(box){
-    if (box.classList.contains('sealdock')){ const hd = document.querySelector('header.top'); if (hd){ const q = hd.getBoundingClientRect(); box.style.top = Math.round(q.top + scrollY + 2) + 'px'; } return; }
     const A = toastHeadArea(); if (!A) return;
     const w = Math.round(A.right - A.left);
     if (box.style.width !== w + 'px'){ box.style.left = Math.round(A.left) + 'px'; box.style.width = w + 'px'; toastFitText(box); }
@@ -5500,7 +5490,7 @@ function findNav(){
 }
 function render(){
     renderFail.clear();
-    guard('menuback', menuBackCheck); guard('menubacksync', menuBackSync);   // 1つ前に戻る帯（まるごと入れ替えのあと）
+    guard('menuback', menuBackCheck);   // 1つ前に戻る帯（まるごと入れ替えのあと）
     guard('undo', menuUndoCheck);   // アレルギー・苦手などを変えたあとは、献立の「元に戻す」を消す（S25）
     guard('head', () => {
         $('#today-label').textContent = jpDate(TODAY);
@@ -12222,9 +12212,10 @@ function viewToday(){
       [upper, lower].forEach((row, k) => row.forEach((h, j) => { row[j] = h.replace(re, () => { const ea = f[k].a ? 1 : 0, el = f[k].l ? exLast : 0;   // 札のある段: 札1つぶん（2行）を取る。長い札はその段だけ高くなる（かえるは段の下にそろう）
           return `style="--exn:${ea + el};--exl:${ea + el};--exa:${ea}"`; }); })); }
     const rowsHtml = [upper, lower];
-    const shuffleBtn = `<div class="tg-mid"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+    const backBtn = menuBack.list.length && !decided ? `<button type="button" class="mb-back" data-act="menu-back" aria-label="${esc(t('前の献立'))}" title="${esc(t('前の献立'))}"><span aria-hidden="true">↶</span><span class="mb-tx">${esc(t('前の献立'))}</span></button>` : '';   // 1つ前に戻る（まるごと入れ替えのあと。menuBack）
+    const shuffleBtn = `<div class="tg-mid${backBtn && innerWidth < 260 ? ' mb-stack' : ''}"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
         <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
-        <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button></div>`;
+        <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button>${backBtn}</div>`;
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     if (S.week && weekSidesOn()) ensureWeekExtras();
@@ -14811,6 +14802,7 @@ document.addEventListener('click', e => {
             S.cook.tableAt = Date.now(); save(); haptic(); render();
             toast(added.length ? praiseFor(added.map(x => x.r.id)) : t('記録しました'), true); break;
         }
+        case 'menu-back': menuBackRestore(); break;
         case 'toast-undo': { const f = toast.undo; $('#toast-root').innerHTML = ''; toast.undo = null; if (f) f(); break; }
         case 'rm-custom': {
             // 消したあとに「元に戻す」を出す（同じ id のまま戻すので、記録・お気に入りもつながったまま）

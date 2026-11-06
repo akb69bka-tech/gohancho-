@@ -23,7 +23,7 @@ const open = async (settings, tag, extra = {}) => {
 };
 const BTN = '#view .tray .tg-mid .shuffle[data-act=new-menu]';
 const ids = p => p.evaluate(() => session.menu.items.map(x => x.r && x.r.id));
-const undoShown = p => p.locator('#toast-root [data-act=toast-undo]').count();
+const undoShown = p => p.locator('#toast-root [data-act=toast-undo], #view .mb-back').count();   // 11/06: 「↶ 前の献立」は丸の右隣（.mb-back）
 // アレルゲン a（本人の設定として仮に入れたときに当たる料理）がある献立になるまで、まるごと入れ替えを押す。見つけたら、出ているお知らせは消しておく
 const findHit = async (p, a) => {
     for (let k = 0; k < 40; k++){
@@ -34,7 +34,7 @@ const findHit = async (p, a) => {
     return null;
 };
 // 入れ替えて、「元に戻す」の押す処理を控えておく（あとで直接呼んで、戻らないことを確かめる）
-const swapKeep = async p => { await p.click(BTN); await p.waitForTimeout(300); return p.evaluate(() => { window.__u = toast.undo; return !!toast.undo; }); };
+const swapKeep = async p => { await p.click(BTN); await p.waitForTimeout(300); return p.evaluate(() => { window.__u = menuBackRestore; return !!document.querySelector('#view .mb-back'); }); };
 const openSettings = async p => { await p.click('button[data-act=settings]'); await p.waitForTimeout(300); await p.evaluate(() => document.querySelectorAll('#view details').forEach(d => d.open = true)); };
 const back = async p => { await p.click('[data-act=settings-back]'); await p.waitForTimeout(400); };
 // 戻らないこと: お知らせに「元に戻す」がない・残っていた処理を呼んでも献立はそのまま・お膳に当たる料理（⚠）がない
@@ -54,7 +54,7 @@ const noRestore = async (p, tag, before, prevIds) => {
     ok(!!hit, 'S25 えびの料理がある献立が見つかる: ' + JSON.stringify(hit));
     if (hit){
         const prevIds = await ids(p);
-        ok(await swapKeep(p), 'S25 本人 入れ替えると上の端の帯に「↶ 前の献立」が出る（オーナー指示 11/05。数秒で消える「元に戻す」ではなく、設定を変えるまで残る）');
+        ok(await swapKeep(p), 'S25 本人 入れ替えると丸の右隣に「↶ 前の献立」が出る（オーナー指示 11/05。数秒で消える「元に戻す」ではなく、設定を変えるまで残る）');
         await openSettings(p);
         const bt = p.locator('button[data-act=alg-toggle][data-v="shrimp"]:visible').first(); await bt.scrollIntoViewIfNeeded(); await bt.click(); await p.waitForTimeout(250);
         ok(await undoShown(p) === 0, 'S25 本人 アレルギーを足したその場で「元に戻す」が消える');
@@ -119,7 +119,7 @@ for (const kind of ['avoid', 'mild']){
     const {p, ctx} = await open({allergens: ['milk']}, 's25-keep');
     const a = await ids(p);
     await p.click(BTN); await p.waitForTimeout(300);
-    ok(await undoShown(p) === 1 && /前の献立/.test(await p.locator('#toast-root [data-act=toast-undo]').innerText()) && JSON.stringify(await ids(p)) !== JSON.stringify(a), 'S25 まるごと入れ替えのあとは「↶ 前の献立」（「元に戻す」ではない）が出て、献立は入れ替わっている（オーナー指示 11/05）');
+    ok(await undoShown(p) === 1 && /前の献立/.test(await p.locator('#view .mb-back').getAttribute('aria-label')) && JSON.stringify(await ids(p)) !== JSON.stringify(a), 'S25 まるごと入れ替えのあとは「↶ 前の献立」（「元に戻す」ではない）が出て、献立は入れ替わっている（オーナー指示 11/05）');
     const rr = await p.evaluate(() => {
         if (toast.hide) toast.hide();
         window.__swapDirect = true; let i = 1, prev, u, now, others0, add = [];
