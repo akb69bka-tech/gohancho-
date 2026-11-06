@@ -1949,5 +1949,11 @@ GOHAN_I18N('id', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Masukkan air dan kaldu bubuk ke panci, tambahkan sisa, lalu hangatkan.",
     "雑炊": "Zosui (bubur kuah)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Buang tulang, kulit, dan lemak, lalu suwir dagingnya.",
-    "前の献立": "Menu sebelumnya"
+    "前の献立": "Menu sebelumnya",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Langkah ini boleh dilewati (hanya memakai bahan yang Anda tiadakan).",
+    "ハラール向け（豚・酒類）": "Halal (tanpa babi, alkohol)",
+    "ベジタリアン向け（肉・魚・貝）": "Vegetarian (tanpa daging, ikan, kerang-kerangan)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegan (juga tanpa telur, produk susu)",
+    "まとめて選ぶ（食の決まり）": "Pilih pola makan sekaligus",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan."
 });

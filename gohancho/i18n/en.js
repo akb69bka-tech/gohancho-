@@ -1950,5 +1950,11 @@ GOHAN_I18N('en', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Put water and bouillon in a pot, add the leftovers, and warm through.",
     "雑炊": "Zosui (rice soup)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Remove any bones, skin and fat, then flake the meat.",
-    "前の献立": "Previous menu"
+    "前の献立": "Previous menu",
+    "この手順は、入れない材料のぶんなので飛ばせます": "You can skip this step (it only used an ingredient you left out).",
+    "ハラール向け（豚・酒類）": "Halal (pork, alcohol out)",
+    "ベジタリアン向け（肉・魚・貝）": "Vegetarian (meat, fish, shellfish out)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegan (also eggs, dairy)",
+    "まとめて選ぶ（食の決まり）": "Pick a whole diet at once",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Picking one adds the chips below all at once, and you can still add or remove chips afterward. It only helps leave out dishes that may not fit a diet; it is not a guarantee."
 });

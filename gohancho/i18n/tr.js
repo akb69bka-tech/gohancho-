@@ -1949,5 +1949,11 @@ GOHAN_I18N('tr', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Tencereye su ve bulyon koyup artanları ekleyin, ısıtın.",
     "雑炊": "Zosui (pirinç çorbası)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Varsa kemik, deri ve yağı ayıklayıp eti didikleyin.",
-    "前の献立": "Önceki menü"
+    "前の献立": "Önceki menü",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Bu adımı atlayabilirsiniz (yalnızca çıkardığınız bir malzemeyi kullanıyordu).",
+    "ハラール向け（豚・酒類）": "Helal (domuz, alkol yok)",
+    "ベジタリアン向け（肉・魚・貝）": "Vejetaryen (et, balık, kabuklu deniz ürünü yok)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegan (yumurta, süt ürünü de yok)",
+    "まとめて選ぶ（食の決まり）": "Tüm beslenme düzenini tek seferde seç",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir."
 });

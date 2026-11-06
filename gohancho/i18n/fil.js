@@ -1949,5 +1949,11 @@ GOHAN_I18N('fil', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Ilagay ang tubig at bouillon sa kaldero, idagdag ang natira, at initin.",
     "雑炊": "Zosui (sopas ng kanin)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Alisin ang buto, balat at taba, at himayin ang laman.",
-    "前の献立": "Nakaraang menu"
+    "前の献立": "Nakaraang menu",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Puwede mong laktawan ang hakbang na ito (sangkap lang na inalis mo ang gamit dito).",
+    "ハラール向け（豚・酒類）": "Halal (walang baboy, alak)",
+    "ベジタリアン向け（肉・魚・貝）": "Vegetarian (walang karne, isda, shellfish)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegan (pati itlog at gatas-produkto)",
+    "まとめて選ぶ（食の決まり）": "Pumili ng buong diyeta nang sabay",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya."
 });

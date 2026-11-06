@@ -7977,11 +7977,34 @@ function avoidCoveredBy(q, fams){
     for (const r of RECIPES){ i = (r.items || []).find(x => x.key === k); if (i) break; }
     return fams.find(f => inFam(f, i || {key:k, en:''})) || null;
 }
+// 食の決まりを一度に選ぶ入口（第2班 第2回 R2-14）: 中身は既存のなかまのチップ（豚・鶏・牛・魚・貝・卵・乳製品・お酒）の組み合わせに広げるだけ。
+// 見分けは材料のキー・元の言葉の名前だけ（画面の言語に左右されない）。選んだあとも、個別のチップで足したり外したりできる。宗教・認証の判断は言わない
+const DIET_BUNDLES = {
+    halal: ['pork', 'alcohol'],
+    vegi: ['pork', 'chicken', 'beef', 'fish', 'shellfish'],
+    vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy']
+};
+function dietBundleLabel(k){ return {halal: t('ハラール向け（豚・酒類）'), vegi: t('ベジタリアン向け（肉・魚・貝）'), vegan: t('ヴィーガン向け（卵・乳製品も）')}[k] || k; }
+function dietBundleOn(list, k){ const sel = new Set(list.map(avoidFamOf).filter(Boolean)); return DIET_BUNDLES[k].every(f => sel.has(f)); }
+// 押したあとの苦手の一覧（配列）。押した形なら外す（関係のないほかの束＝ハラールとヴィーガンなどが必要とするなかまは残す）、そうでなければ足す
+function dietBundleToggle(list, k){
+    const comps = DIET_BUNDLES[k]; let a = [...list];
+    if (dietBundleOn(a, k)){
+        const keep = new Set(); Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f))).forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
+        return a.filter(x => { const f = avoidFamOf(x); return !(f && comps.includes(f) && !keep.has(f)); });
+    }
+    comps.forEach(f => { if (!a.some(x => avoidFamOf(x) === f)) a = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f); });
+    return a;
+}
+function dietBundleHtml(list, act){
+    const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
+    return `<div class="avoid-grp diet-bundles"><span class="small muted">${esc(t('まとめて選ぶ（食の決まり）'))}</span><div class="chips">${b}</div><p class="small muted avoid-hint">${esc(t('選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。'))}</p></div>`;
+}
 // 苦手のチップ: 「なかまでまとめて」（いまの国の料理に出てくるなかまだけ）と「1つずつ」の2つに分けて出す。
 // 選んだなかまに入っている食材は、選んだ形（押せない）で出す。最後に、いまの国の料理がどうなるかの一言を添える。more: 設定の画面。選んだものを先に出し、多いときは残りを「ほかの食材を見る」にしまう
 function avoidChipsHtml(list, act, famAct, more){
     const sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
-    const fam = avoidFamChips().concat(DIET_CHIPS).map(f => ({on: sel.includes(f), pin: DIET_CHIPS.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
+    const fam = [...new Set(avoidFamChips().concat(DIET_CHIPS))].map(f => ({on: sel.includes(f), pin: DIET_CHIPS.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
     const one = AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => { const by = avoidCoveredBy(q, sel);
         if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">${esc(q)}</button>`};   // ✓ は押した形の印（CSS）で出る。文字でも書くと「✓ ✓」になる
         const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
@@ -7990,10 +8013,11 @@ function avoidChipsHtml(list, act, famAct, more){
         .concat(list.filter(x => !avoidFamOf(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => ({on: true, h: `<span class="chip have">${esc(x)}<button class="x" data-act="${act}" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`})));
     const grp = (label, xs) => xs.length ? `<div class="avoid-grp"><span class="small muted">${esc(label)}</span><div class="chips">${xs.map(x => x.h).join('')}</div></div>` : '';
     const groups = pick => grp(t('なかまごと（豚肉ならハム・ベーコンも）'), pick(fam)) + grp(t('その食材だけ'), pick(one));
-    if (!more) return groups(xs => xs) + avoidSumHtml(list);
+    const bund = dietBundleHtml(list, famAct.replace(/-fam$/, '-diet'));
+    if (!more) return bund + groups(xs => xs) + avoidSumHtml(list);
     const rest = fam.concat(one).filter(x => !x.on).length;
-    if (!list.length || rest <= 8) return groups(xs => xs.filter(x => x.on).concat(xs.filter(x => !x.on))) + avoidSumHtml(list);
-    return groups(xs => xs.filter(x => x.on || x.pin)) + avoidSumHtml(list) + `<details class="avoid-more" ${session.avoidMore ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${groups(xs => xs.filter(x => !x.on && !x.pin))}</details>`;   // 食の決まりのチップ（お酒・羊鴨）は、選んでいなくても畳まずに出す
+    if (!list.length || rest <= 8) return bund + groups(xs => xs.filter(x => x.on).concat(xs.filter(x => !x.on))) + avoidSumHtml(list);
+    return bund + groups(xs => xs.filter(x => x.on || x.pin)) + avoidSumHtml(list) + `<details class="avoid-more" ${session.avoidMore ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${groups(xs => xs.filter(x => !x.on && !x.pin))}</details>`;   // 食の決まりのチップ（お酒・羊鴨）は、選んでいなくても畳まずに出す
 }
 // 家族のアレルギーのチップ（モニター第3回 S7）: なかま（卵・乳製品・小麦…）と、その国の主なアレルゲン（日本は特定原材料・準ずるもの）を、押しても畳まずに並べる（続けて押せる）。
 // 主なアレルゲンは、全員共通の判定と同じ id に読みかわる言葉で持つ（famAlgIds。保存の形は今までと同じ「食材の名前」）。なかまのチップで足りるもの（卵・乳・小麦・肉・魚・貝・ナッツ類）は出さない
@@ -8497,6 +8521,59 @@ function recipeSwaps(r){
     if (!seaSwapOk(r, swaps)) return null;   // 魚・貝などの置き換えで、手順に元の食材の下ごしらえ（殻が開いたら…）が残るなら置き換えない
     return {swaps, omit};
 }
+// 入れない材料の印（\u0003）が残る作り方の文を、その材料を使わない形にする（第2班 第2回 R2-06）。
+// ・印が（　）の中なら、その（　）ごと外す　・文を「、」「;」「and」などで区切り、印のある句を外す
+// ・外した句のあとの句は、「それから」で始まる句か、ほかの材料の名前が出る句だけ残す（「そのまま〜する」のような、外した材料につながる句は外す）
+// ・文が空になったら文ごと外す。手順が空になったら「この手順は飛ばせます」にする（手順の数・順番は変えない）
+const OMIT_MARK = '\u0003';
+const OMIT_SEP = /(\s*[,;，、；،]\s*|\s+(?:and then|then|and|or|y|e|ou|et|und|oder|ve|oraz|lub|và|hoặc|และ|और|و)\s+|(?<=[\u4e00-\u9fff])(?:和|與|与|及|跟|並|并)(?=[\u4e00-\u9fff]))/iu;
+const OMIT_THEN = /^\s*(?:and then|then|next|luego|después|depois|então|puis|ensuite|dann|danach|poi|quindi|dopo|sonra|ardından|potem|następnie|然后|然後|接著|接着|그다음|그리고|rồi|sau đó|แล้ว|จากนั้น|फिर|ثم|その後|次に|そのあと)(?![\p{L}])\s*/iu;
+const OMIT_SKIP_KEY = 'この手順は、入れない材料のぶんなので飛ばせます';
+function dropOmitted(u, sl, others, keepWords){
+    if (!String(u).includes(OMIT_MARK)) return u;
+    const lc = x => String(x).toLowerCase(), oth = [...new Set(others.map(lc))];
+    const toks = [...new Set(oth.flatMap(n => /[^\x00-\x7f]/.test(n) && !/[À-ÿ]/.test(n) ? [n] : [n, ...n.split(/[^\p{L}]+/u).filter(w => w.length >= 4)]))];
+    const hasItem = c => /\u0001/.test(c) || toks.some(n => lc(c).includes(n));
+    const marked = String(u).replace(/([。！？।]+)\s*|([.!?]+)(\s+|$)/g, m => m + '\u0004').split('\u0004');
+    const out = marked.map(sent => {
+        if (!sent.includes(OMIT_MARK)) return sent;
+        const m = sent.match(/^([\s\S]*?)([.!?。！？।]*\s*)$/), term = m[2], tail = (term.match(/\s*$/) || [''])[0];
+        let body = m[1];
+        for (let k = 0; k < 4; k++) body = body.replace(/\s*[（(][^（()）\u0003]*\u0003[^（()）]*[)）]/g, '');
+        if (body.includes(OMIT_MARK)){
+            const parts = (/^(?:th|ko)/.test(sl) ? body.split(/(\s*[,;，、；،]\s*)/) : body.split(OMIT_SEP));
+            const cl = [], sp = [];
+            parts.forEach((x, i) => { if (i % 2 === 0) cl.push(x); else sp.push(x); });
+            const keep = []; let dep = false;
+            cl.forEach((c, i) => {
+                const thenLed = (i > 0 && /^\s*(?:and then|then)\s*$/i.test(sp[i - 1] || '')) || OMIT_THEN.test(c);
+                if (c.includes(OMIT_MARK)){ keep.push(false); dep = !keep.some(Boolean); }   // 文のはじめの句（動詞のある句）を外したときだけ、あとに続く句が宙に浮く
+                else if (dep && !thenLed && !hasItem(c)) keep.push(false);
+                else { keep.push(true); dep = false; }
+            });
+            // 外した句の前の「使うなら」「If using」のような短い前置きだけが残らないようにする
+            cl.forEach((c, i) => { if (keep[i] && i === 0 && keep.length > 1 && !keep[1] && c.split(/\s+/).filter(Boolean).length <= 3 && /[,，、]/.test(sp[0] || '')) keep[i] = false; });
+            let res = '', first = true;
+            cl.forEach((c, i) => {
+                if (!keep[i]) return;
+                let sep = i > 0 ? sp[i - 1] : '', cc = c;
+                if (first){
+                    if (OMIT_THEN.test(cc)) cc = cc.replace(OMIT_THEN, ''); sep = '';
+                    if (i > 0 && /^\s*(?:and then|then)\s*$/i.test(sp[i - 1] || '')) sep = '';
+                    first = false; cc = cc.replace(/^\s+/, ''); if (/^[a-zà-ÿ]/.test(cc) && /^[A-ZÀ-Þ]/.test(body.trim())) cc = cc[0].toUpperCase() + cc.slice(1);
+                } else if (/^\s*(?:and then|then)\s*$/i.test(sep)) sep = ', then ';
+                res += sep + cc;
+            });
+            body = res.replace(/\s+$/, '').replace(/[,;，、；،]\s*$/, '');
+            if (sl === 'ja') body = body.replace(/([ぁ-ん一-龠])し$/, (_, a) => a + 'す');
+        }
+        body = body.replace(/\s{2,}/g, ' ').replace(/\s+([,.;。、])/g, '$1').trim();
+        return body ? body + (term.trim() ? term.trim() : '') + tail : '';
+    }).join('');
+    let res = out.replace(/\u0003/g, '').trim();
+    if (!/[^\s.。、,;!?！？)）(（]/.test(res)){ const skip = sl === LANG ? t('この手順は、入れない材料のぶんなので飛ばせます') : sl === 'ja' ? OMIT_SKIP_KEY : ((I18N[sl] || {})[OMIT_SKIP_KEY] || 'You can skip this step.'); res = skip; }
+    return res;
+}
 // 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
 function swappedRecipe(r){
     if (!r || !r.items || !effAvoid().length || r.swapped) return r;
@@ -8539,19 +8616,22 @@ function swappedRecipe(r){
         const hold = []; let u = String(txt);
         keepWords.forEach(k => { u = u.replace(new RegExp(esc_(k), 'gi'), m => { hold.push(m); return '\u0001' + (hold.length - 1) + '\u0002'; }); });
         // 添える言葉は、作り方の文の言語で（日本の料理を英語の画面で見ているときなど、画面の言語と違うことがある）
-        const sl = stepLangOf(r) || LANG, jp = sl === 'ja', mark = sl === LANG ? t('入れない') : jp ? '入れない' : ((I18N[sl] || {})['入れない'] || 'leave out');
+        const sl = stepLangOf(r) || LANG, jp = sl === 'ja';
         // 英語などの言葉は、ほかの単語の一部に当たらないように語の切れ目で見る（韓国語・中国語・タイ語などは助詞が続いたり切れ目がなかったりするので見ない）
         const W = '(?:' + omitWords.map(o => (/^[A-Za-zÀ-ÿ]/.test(o) ? '(?<![\\p{L}])' : '') + esc_(o) + (/[A-Za-zÀ-ÿ]$/.test(o) ? '(?![\\p{L}])' : '')).join('|') + ')';
         // 入れない材料だけの下ごしらえの1文（ほかの材料が出てこない）は、まるごと外す
-        // （ほかの材料の名前・キーが出てくる文と、外すと手順が空になる文は外さず、下の「（入れない）」にする）
+        // （ほかの材料の名前・キーが出てくる文と、外すと手順が空になる文は外さず、下の dropOmitted で文の中の該当部分だけ外す）
         const others = items.flatMap(i => [i.name, i.label, i.key]).filter(n => n && n.length > 1 && !omitWords.includes(n));
         if (jp) u = u.replace(new RegExp('(^|。)\\s*' + W + '(?:は|を)[^。]*。', 'giu'), (m0, pre, off, str) =>
             others.some(n => m0.includes(n)) || /\u0001/.test(m0) || !(str.slice(0, off) + str.slice(off + m0.length)).trim() ? m0 : pre);
-        if (jp) u = u.replace(new RegExp('(^|[、。・\\s])' + W + '(?:と|や|・|、)', 'giu'), '$1').replace(new RegExp('(?:と|や|・)' + W + '(?=[をはのにとや・、。\\s]|$)', 'giu'), '')
-            .replace(new RegExp(W, 'giu'), m => m + '（' + mark + '）');
-        else u = u.replace(new RegExp(',\\s*' + W, 'giu'), '').replace(new RegExp(W + ',\\s*', 'giu'), '')
-            .replace(new RegExp('\\s+(?:and|or)\\s+' + W, 'giu'), '').replace(new RegExp(W + '\\s+(?:and|or)\\s+', 'giu'), '')
-            .replace(new RegExp(W, 'giu'), m => m + (/^zh/.test(sl) ? '（' + mark + '）' : ' (' + mark + ')'));
+        const COND = 'if using|if you like|if you want|if desired|if you have (?:any|it)|si lo usas|si gustas|si quieres|se for usar|se quiser|si vous en mettez|si vous voulez|se vuoi|se ti piace|wenn du magst|falls gewünscht|jeśli chcesz|istersen|nếu thích|ถ้าชอบ|ถ้าใช้',
+            TAILP = '(?:\\s*[（(][^（()）]*[)）])?(?:\\s+(?:' + COND + ')(?![\\p{L}]))?', AR = "(?:(?:the|a|an|some|any|el|la|los|las|un|una|o|os|as|le|les|une|des|der|die|das|il|lo|gli)\\s+)?";   // TAILP: 直後の（もし使うなら）などの添え書き
+        if (jp) u = u.replace(new RegExp('(^|[、。・\\s])' + W + TAILP + '(?:と|や|・|、)', 'giu'), '$1').replace(new RegExp('(?:と|や|・)' + W + TAILP + '(?=[をはのにとや・、。\\s]|$)', 'giu'), '');
+        else u = u.replace(new RegExp(',\\s*' + AR + W + TAILP, 'giu'), '').replace(new RegExp(W + TAILP + ',\\s*', 'giu'), '')
+            .replace(new RegExp('\\s+(?:and|or)\\s+' + AR + W + TAILP, 'giu'), '').replace(new RegExp(W + TAILP + '\\s+(?:and|or)\\s+', 'giu'), '');
+        // 残った入れない材料は印（\u0003）にして、その部分（句・文）ごと外す。「（入れない）」と添えて肉を焼く文のまま残さない
+        u = u.replace(new RegExp(W + TAILP, 'giu'), '\u0003');
+        u = dropOmitted(u, sl, others, keepWords);
         return u.replace(/\u0001(\d+)\u0002/g, (_, k) => hold[k]);
     };
     const shell = w.swaps.filter(x => inFam('shellfish', x.from) && !inFam('shellfish', x.to)), shellFix = txt => (shell.length ? shellPrepFix(txt) : txt);   // えびを肉にしたら、殻・背わたの下ごしらえを残さない
@@ -14225,6 +14305,12 @@ document.addEventListener('click', e => {
             const f = document.getElementById('family-profile'); if (f) f.scrollIntoView({block: 'start'}); break;
         }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
+        case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v); save(); reconcileMenu(); refreshWeek(); render(); break; }
+        case 'fam-avoid-diet': {
+            const m = famOf(el); if (!m) break;
+            m.avoid = dietBundleToggle(m.avoid, el.dataset.v); m.allergy = m.allergy.filter(x => m.avoid.includes(x));
+            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+        }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
             const f = el.dataset.v, a = S.settings.avoid;
@@ -14428,6 +14514,7 @@ document.addEventListener('click', e => {
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (v !== 'auto' && dishesFor(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
+        case 'ob-avoid-diet': { sheet.avoid = new Set(dietBundleToggle([...sheet.avoid], el.dataset.v)); renderSheet(); break; }
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;

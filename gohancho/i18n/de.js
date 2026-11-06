@@ -1949,5 +1949,11 @@ GOHAN_I18N('de', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Wasser und Brühwürfel in den Topf geben, Reste dazugeben und erwärmen.",
     "雑炊": "Reissuppe (Zosui)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Gräten, Haut und Fett entfernen, das Fleisch zerzupfen.",
-    "前の献立": "Vorheriges Menü"
+    "前の献立": "Vorheriges Menü",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Diesen Schritt können Sie überspringen (er betraf nur eine weggelassene Zutat).",
+    "ハラール向け（豚・酒類）": "Halal (ohne Schwein, Alkohol)",
+    "ベジタリアン向け（肉・魚・貝）": "Vegetarisch (ohne Fleisch, Fisch, Schalentiere)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegan (auch ohne Eier, Milchprodukte)",
+    "まとめて選ぶ（食の決まり）": "Ganze Ernährungsweise auf einmal wählen",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie."
 });

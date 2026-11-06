@@ -1949,5 +1949,11 @@ GOHAN_I18N('es', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Pon agua y caldo en cubito en una olla, añade las sobras y calienta.",
     "雑炊": "Zosui (sopa de arroz)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Retira huesos, piel y grasa si los hay y desmenuza la carne.",
-    "前の献立": "Menú anterior"
+    "前の献立": "Menú anterior",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Puedes saltarte este paso (solo usaba un ingrediente que quitaste).",
+    "ハラール向け（豚・酒類）": "Halal (sin cerdo ni alcohol)",
+    "ベジタリアン向け（肉・魚・貝）": "Vegetariano (sin carne, pescado ni marisco)",
+    "ヴィーガン向け（卵・乳製品も）": "Vegano (también sin huevo ni lácteos)",
+    "まとめて選ぶ（食の決まり）": "Elegir una dieta completa de una vez",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Al elegir, se añaden de golpe los botones de abajo y después puedes añadir o quitar los que quieras. Solo ayuda a dejar fuera platos que quizá no encajen con una dieta; no es una garantía."
 });

@@ -1949,5 +1949,11 @@ GOHAN_I18N('vi', {
     "鍋に水とコンソメを入れ、残りを加えて温める。": "Cho nước và viên nước dùng vào nồi, thêm phần thừa rồi hâm nóng.",
     "雑炊": "Zosui (cháo loãng)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Bỏ xương, da và mỡ nếu có, rồi xé nhỏ thịt.",
-    "前の献立": "Thực đơn trước"
+    "前の献立": "Thực đơn trước",
+    "この手順は、入れない材料のぶんなので飛ばせます": "Bạn có thể bỏ qua bước này (bước chỉ dùng nguyên liệu bạn đã loại).",
+    "ハラール向け（豚・酒類）": "Halal (không heo, rượu)",
+    "ベジタリアン向け（肉・魚・貝）": "Ăn chay (không thịt, cá, hải sản có vỏ)",
+    "ヴィーガン向け（卵・乳製品も）": "Thuần chay (không cả trứng, sữa)",
+    "まとめて選ぶ（食の決まり）": "Chọn cả chế độ ăn một lần",
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm."
 });
