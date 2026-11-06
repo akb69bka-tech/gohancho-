@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v106';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v107';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -5935,6 +5935,15 @@ function probeImg(src){
     if (!src || IMG_PROBED.has(src)) return; IMG_PROBED.add(src);
     const im = new Image(); im.onerror = () => { IMG_FAIL.add(src); scheduleRender(); }; im.src = src;
 }
+// 今見ている献立の絵のアドレスを覚える（次の起動で、一覧を待たずに先に取りはじめる。ページ先頭の gohancho.pre）
+function savePre(){
+    try{
+        const u = [...document.querySelectorAll('#view .vessel[style*="--img"]')].map(e => { const m = /--img:\s*url\('?(img\/dish\/[^'")]+)'?\)/.exec(e.getAttribute('style') || ''); return m && decodeURI(m[1]); }).filter(Boolean).slice(0, 8);
+        if (u.length) localStorage.setItem('gohancho.pre', JSON.stringify({v: String(window.ASSET_V || ''), u}));
+    }catch(e){}
+}
+window.addEventListener('pagehide', savePre);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') savePre(); });
 function vesselHtml(kind, r, still=false, anim=true, side=null){   // side: 香の物の席に置く物の絵（お漬物・福神漬け・らっきょう漬け）
     const extra = kind === 'chawan' ? 'rice' : kind === 'konomono' ? side || 'konomono' : null;
     let ph = r ? photoOf(r) : extra ? (GEN[extra] || (genPending(extra) ? null : sketchOf(PHOTOS[extra]))) : null;
@@ -5942,7 +5951,9 @@ function vesselHtml(kind, r, still=false, anim=true, side=null){   // side: 香�
     let wait = !ph && (r ? picWait(r) : !!extra && genPending(extra));
     if (ph){ probeImg(ph.src); if (IMG_FAIL.has(ph.src)){ wait = !!ph.photo; ph = null; } }
     const style = `--food:${foodColor(r)}` + (ph ? `;--img:${cssUrl(ph.src)}` : '');
-    const food = ph || wait ? '<span class="food photo"></span>' : extra || (r && r.staple) ? '<span class="food"></span>' : `<span class="food svg">${dishSvg(r)}</span>`;
+    // 写真のない料理も、最初の手描きのイラスト（dishSvg）は出さない（オーナー指示 11/06）。生成りの丸のまま（写真が届けば写真になる）
+    if (!ph && !wait && !extra && !(r && r.staple)) wait = true;
+    const food = ph || wait ? '<span class="food photo"></span>' : '<span class="food"></span>';
     const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${(ph && ph.gen) || wait ? ' gen' : ''}${(ph && ph.photo) || wait ? ' gph' : ''}${wait ? ' pwait' : ''}${anim ? ' rise-in' : ''}`;
     if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
     return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
@@ -5964,8 +5975,7 @@ function thumbHtml(r){
     // <img> にして、絵の展開を裏で行う（decoding="async"）。loading="lazy" は iPhone のアプリ内の表示で読みこまれないことがあるので使わない
     const full = ph && src !== ph.src && !IMG_FAIL.has(ph.src) ? ` data-full="${esc(ph.src)}"` : '';
     return ph ? `<span class="thumb pic${ph.gen ? ' gen' : ''}${ph.photo ? ' gph' : ''}" role="img" aria-label="${esc(t('{name}の写真', {name:r.name}))}"><img src="${esc(src)}" alt="" decoding="async"${full}></span>`
-         : wait ? `<span class="thumb pic gen gph pwait" aria-hidden="true"></span>`   // 写真が届くまでの生成りの丸（手描きの絵は出さない）
-              : `<span class="thumb svg" aria-hidden="true">${dishSvg(r)}</span>`;
+         : `<span class="thumb pic gen gph pwait" aria-hidden="true"></span>`;   // 写真が届くまで・写真のない料理は生成りの丸（最初の手描きのイラストは出さない）
 }
 
 /* ---- 料理カード（材料から・検索・世界のレシピ・ひとひねり・記録で同じ形）: 絵 → 名前 → 時間など → ひとこと ----
