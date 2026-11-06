@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'ar',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Belila", "ar": "يوم البليلة", "ja": "ベリーラ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'eg_staple', name: 'Aish baladi bread', local: 'عيش بلدي' },
   recipes: [
     // ---------- main ----------
@@ -1989,8 +1990,74 @@ GOHAN_PACK({
       ],
       tip: { add: "Toasted pita pieces", why: "Crunch with the soup", skill: "Fry the coriander", how: "Frying the ground coriander with the garlic brings out its aroma." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "eg_belila",
+      name: "Wheat berries in warm milk",
+      local: "بليلة",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "wheat berries|Cooked wheat berries (canned or boiled)|200 g",
+        "milk|Milk|500 ml",
+        "nuts|Chopped nuts and raisins|2 tbsp?",
+      ],
+      seas: "2 tbsp sugar · Pinch of cinnamon · A few drops of vanilla",
+      steps: [
+        "Drain and rinse the cooked wheat berries.",
+        "Heat them in the milk with the sugar and vanilla for 8–10 minutes on low heat, stirring, until the grains are very soft and the milk is creamy.",
+        "Serve warm in bowls with a pinch of cinnamon and the nuts and raisins on top.",
+      ],
+    },
+    {
+      id: "eg_roz_bel_laban",
+      name: "Rice porridge cooked in milk",
+      local: "أرز باللبن",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 40,
+      ings: [
+        "rice|Egyptian short-grain rice|80 g",
+        "milk|Milk|700 ml",
+      ],
+      seas: "3 tbsp sugar · A few drops of vanilla · 250 ml water",
+      steps: [
+        "Rinse the rice and simmer it in the water for 10 minutes until the water is absorbed.",
+        "Add the milk and cook 25 minutes on very low heat, stirring often, until the rice is very soft and creamy.",
+        "Stir in the sugar and vanilla. Serve warm.",
+      ],
+    },
+    {
+      id: "eg_shoofan_laban",
+      name: "Oats cooked in milk",
+      local: "شوفان باللبن",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|400 ml",
+      ],
+      seas: "Pinch of salt · 1 tbsp honey (optional)",
+      steps: [
+        "Bring the milk and salt to a simmer.",
+        "Add the oats and cook 5 minutes on low heat, stirring, until creamy.",
+        "Serve warm with a little honey.",
+      ],
+    },
   ],
   aliases: {
+    "wheat berries": ["wheat berries", "whole wheat grains", "belila", "قمح", "قمح بليلة"],
     "corn": ["corn","sweetcorn","sweet corn","ذرة"],
     'chicken': ['chicken', 'chicken thigh', 'chicken leg', 'chicken breast', 'فراخ', 'فرخة', 'دجاج', 'وراك'],
     'ground beef': ['ground beef', 'minced beef', 'mince', 'minced meat', 'لحمة مفرومة', 'مفروم', 'لحم مفروم'],
@@ -2052,6 +2119,7 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'beef', 'fish', 'egg', 'onion', 'tomato', 'potato', 'zucchini', 'eggplant', 'okra', 'bell pepper', 'cucumber', 'lentils', 'fava beans', 'rice', 'pasta', 'lemon', 'parsley'],
   pantry: ['rice', 'pasta', 'vermicelli', 'lentils', 'fava beans', 'chickpeas', 'onion', 'tomato', 'potato', 'lemon', 'tahini', 'egg', 'milk', 'butter', 'bread', 'cheese'],
   names: {
+    "wheat berries": "Wheat berries",
     "corn": "Sweetcorn",
     'chicken': 'Chicken', 'ground beef': 'Ground beef', 'beef': 'Beef', 'fish': 'Fish', 'egg': 'Eggs',
     'lentils': 'Lentils', 'fava beans': 'Fava beans', 'chickpeas': 'Chickpeas', 'rice': 'Rice', 'pasta': 'Pasta',

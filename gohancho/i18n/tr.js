@@ -1833,5 +1833,9 @@ GOHAN_I18N('tr', {
     "選んだ品を特売に入れる（{n}品）": "Seçilenleri indirime ekle ({n})",
     "{name}の特売": "{name} indirimde",
     "タイマーが終わったら、音で知らせる": "Zamanlayıcı bitince bip sesi çal",
-    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Kısa bir bip sesini tekrarlar; durdurmak için ekrana dokunun. Yalnızca bu cihazda çalar, ağ ve ücret gerekmez. Uygulama açıldıktan sonra ekrana ilk dokunuştan sonra çalar."
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Kısa bir bip sesini tekrarlar; durdurmak için ekrana dokunun. Yalnızca bu cihazda çalar, ağ ve ücret gerekmez. Uygulama açıldıktan sonra ekrana ilk dokunuştan sonra çalar.",
+    "{name}の日": "{name} günü",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day} için yumuşak, hafif yan yemekler ve çorba. Ana yemek yaklaşık {n} dk sürer",
+    "{day}なので{n}品にしました": "{day}: {n} yemek",
+    "この条件では、{day}の主菜がありません": "Bu koşullarda {day} için ana yemek yok"
 });

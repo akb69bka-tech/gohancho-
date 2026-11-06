@@ -1833,5 +1833,9 @@ GOHAN_I18N('id', {
     "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})",
     "{name}の特売": "{name} sedang promo",
     "タイマーが終わったら、音で知らせる": "Bunyi bip saat timer selesai",
-    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Memutar bip pendek berulang; sentuh layar untuk menghentikannya. Hanya berbunyi di perangkat ini, tanpa jaringan dan tanpa biaya. Mulai berbunyi setelah layar pertama kali disentuh setelah aplikasi dibuka."
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Memutar bip pendek berulang; sentuh layar untuk menghentikannya. Hanya berbunyi di perangkat ini, tanpa jaringan dan tanpa biaya. Mulai berbunyi setelah layar pertama kali disentuh setelah aplikasi dibuka.",
+    "{name}の日": "Hari {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Pada {day}, lauk dan sup yang lembut dan ringan. Hidangan utama perlu sekitar {n} menit",
+    "{day}なので{n}品にしました": "{day}: {n} hidangan",
+    "この条件では、{day}の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk {day}"
 });

@@ -1833,5 +1833,9 @@ GOHAN_I18N('fil', {
     "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})",
     "{name}の特売": "{name} naka-sale",
     "タイマーが終わったら、音で知らせる": "Mag-beep kapag tapos na ang timer",
-    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Paulit-ulit na maikling beep; pindutin ang screen para tumigil. Sa device na ito lang tutunog, walang network at walang bayad. Tutunog ito pagkatapos ng unang pagpindot sa screen kapag nabuksan na ang app."
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Paulit-ulit na maikling beep; pindutin ang screen para tumigil. Sa device na ito lang tutunog, walang network at walang bayad. Tutunog ito pagkatapos ng unang pagpindot sa screen kapag nabuksan na ang app.",
+    "{name}の日": "Araw ng {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Sa {day}, malambot at magaan na side dish at sabaw ang mungkahi. Mga {n} min ang pangunahing ulam",
+    "{day}なので{n}品にしました": "{day}: {n} putahe",
+    "この条件では、{day}の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa {day}"
 });

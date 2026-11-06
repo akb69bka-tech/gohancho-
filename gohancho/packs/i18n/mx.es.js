@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
+    "corn masa": "Masa de maíz nixtamalizado (en polvo)",
+    "oats": "Avena en hojuelas",
+    "milk": "Leche",
     "alphabet pasta": "Pasta de letras",
     'chicken': 'Pollo',
     'pork': 'Carne de puerco',
@@ -70,6 +73,36 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    "mx_atole_blanco": {
+      name: "Atole blanco",
+      ings: [["Masa de maíz nixtamalizado (en polvo)", "50 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 2 cdas de piloncillo o azúcar morena",
+      steps: [
+        "Disuelve la masa en polvo en el agua hasta que no queden grumos.",
+        "Calienta la leche con la canela y el piloncillo; cuando suelte el hervor, vierte la masa colada sin dejar de mover.",
+        "Cocina 8-10 minutos a fuego bajo, moviendo siempre, hasta que espese como un atole. Retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_avena": {
+      name: "Avena con canela",
+      ings: [["Avena en hojuelas", "80 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 1-2 cdas de azúcar · Una pizca de sal",
+      steps: [
+        "Hierve el agua con la canela 3 minutos.",
+        "Agrega la avena y cocina 3 minutos; vierte la leche y cocina 5 minutos más a fuego bajo, moviendo, hasta que quede cremosa.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_atole_arroz": {
+      name: "Atole de arroz",
+      ings: [["Arroz blanco", "80 g"], ["Leche", "500 ml"]],
+      seas: "750 ml de agua · 1 raja de canela · 3 cdas de azúcar",
+      steps: [
+        "Enjuaga el arroz y cuécelo en el agua con la canela 25 minutos, hasta que esté muy suave.",
+        "Agrega la leche y cocina 8-10 minutos a fuego bajo, moviendo seguido, hasta que espese.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
     "mx_sopa_letras": {
       name: "Sopa de letras",
       ings: [["Pasta de letras", "60 g"], ["Jitomates", "2"], ["Cebolla", "1/4"]],

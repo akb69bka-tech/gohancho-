@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('PE', 'es', {
   staple: 'Arroz blanco',
   names: {
+    "oats": "Avena en hojuelas",
+    "apple": "Manzana",
+    "semolina": "Sémola",
     'beef': 'Carne de res',
     'chicken': 'Pollo',
     'fish': 'Pescado',
@@ -80,6 +83,36 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    "pe_quinua_leche": {
+      name: "Quinua con leche",
+      ings: [["Quinua bien lavada", "100 g"], ["Leche evaporada", "200 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 3 clavos de olor · 2 cdas de azúcar",
+      steps: [
+        "Lava la quinua varias veces, frotándola, hasta que el agua salga clara.",
+        "Cocínala en el agua con la canela y el clavo 20 minutos, hasta que esté muy suave.",
+        "Agrega la leche evaporada y el azúcar y cocina 5 minutos más, moviendo, hasta que quede cremosa. Retira las especias y sirve caliente.",
+      ],
+    },
+    "pe_avena_manzana": {
+      name: "Avena con manzana",
+      ings: [["Avena en hojuelas", "80 g"], ["Manzana pelada en cubos", "1"], ["Leche evaporada", "100 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve la manzana en el agua con la canela 8 minutos.",
+        "Agrega la avena y cocina 6-8 minutos a fuego bajo, moviendo, hasta que espese.",
+        "Añade la leche evaporada y el azúcar, calienta y sirve.",
+      ],
+    },
+    "pe_semola_leche": {
+      name: "Sémola con leche",
+      ings: [["Sémola", "60 g"], ["Leche evaporada", "200 ml"]],
+      seas: "400 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve el agua con la canela 3 minutos y agrega la leche evaporada.",
+        "Echa la sémola en forma de lluvia, moviendo para que no se formen grumos.",
+        "Cocina 5-6 minutos a fuego bajo, moviendo, hasta que espese. Endulza, retira la canela y sirve caliente.",
+      ],
+    },
     "pe_sopa_fideos_huevo": {
       name: "Sopa de fideos con huevo",
       ings: [["Fideos cabello de ángel", "50 g"], ["Huevos", "2"], ["Zanahoria", "1/2"], ["Cebollita china", "1"]],

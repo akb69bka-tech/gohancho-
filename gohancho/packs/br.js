@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'pt-BR',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Canja e mingau", "pt-BR": "Dia de canja e mingau", "ja": "カンジャ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'br_staple', name: 'White rice', local: 'Arroz branco' },
   recipes: [
     // ---------- main ----------
@@ -2011,8 +2012,78 @@ GOHAN_PACK({
       ],
       tip: { add: "Crispy bacon bits on top", why: "Salty crunch on the sweet soup", skill: "Blend straight away", how: "Blending right away keeps the colour bright." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "br_canja_grossa",
+      name: "Thick chicken and rice canja (porridge-style)",
+      local: "Canja grossa de galinha",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "chicken",
+      min: 45,
+      ings: [
+        "chicken|Chicken thigh or breast|300 g",
+        "rice|White rice|150 g",
+        "carrot|Carrot, diced|1",
+        "potato|Potato, diced|1?",
+        "onion|Onion, chopped|1/2",
+        "parsley|Cheiro-verde (parsley and spring onion), chopped|1 tbsp?",
+      ],
+      seas: "1.2 litres water · 1 garlic clove · 1 tbsp oil · Salt",
+      steps: [
+        "Soften the onion and garlic in the oil for 2 minutes. Add the chicken and stir 3 minutes.",
+        "Add the water, bring to the boil, skim, and simmer 20 minutes until the chicken is cooked through. Lift it out and shred it.",
+        "Add the rice, carrot and potato to the broth and simmer 25 minutes, stirring often, until the rice is very soft and the canja is thick like a porridge. Return the chicken, season with salt and serve with cheiro-verde.",
+      ],
+    },
+    {
+      id: "br_mingau_aveia",
+      name: "Oat porridge with milk",
+      local: "Mingau de aveia",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|60 g",
+        "milk|Milk|400 ml",
+        "banana|Banana, sliced|1?",
+      ],
+      seas: "1 tbsp sugar · Pinch of cinnamon",
+      steps: [
+        "Put the oats, milk and sugar in a small pan.",
+        "Cook 5 minutes on low heat, stirring, until thick and creamy.",
+        "Serve warm with the banana and a pinch of cinnamon.",
+      ],
+    },
+    {
+      id: "br_mingau_fuba",
+      name: "Cornmeal milk porridge",
+      local: "Mingau de fubá",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "cornmeal|Fine cornmeal (fubá)|50 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "2 tbsp sugar · Pinch of salt · Pinch of cinnamon",
+      steps: [
+        "Mix the cornmeal into the cold milk with the sugar and salt until there are no lumps.",
+        "Cook on low heat for 8–10 minutes, stirring all the time, until it thickens.",
+        "Serve warm with a pinch of cinnamon.",
+      ],
+    },
   ],
   aliases: {
+    "oats": ["oats", "rolled oats", "oatmeal", "aveia", "aveia em flocos"],
     'chicken': ['chicken', 'frango', 'galinha', 'peito de frango', 'coxa', 'sobrecoxa', 'filé de frango'],
     'beef': ['beef', 'steak', 'carne', 'carne bovina', 'bife', 'alcatra', 'contrafilé', 'patinho'],
     'ground beef': ['ground beef', 'mince', 'minced beef', 'carne moída', 'carne moida', 'moída'],
@@ -2091,6 +2162,7 @@ GOHAN_PACK({
   quick: ['chicken', 'beef', 'ground beef', 'pork', 'fish', 'egg', 'sausage', 'onion', 'tomato', 'potato', 'carrot', 'bell pepper', 'collard greens', 'chayote', 'lettuce', 'beans', 'cheese', 'ham'],
   pantry: ['rice', 'beans', 'onion', 'tomato', 'egg', 'potato', 'cassava flour', 'butter', 'tomato sauce', 'cream', 'mayonnaise', 'lime', 'parsley', 'carrot', 'corn', 'peas'],
   names: {
+    "oats": "Rolled oats",
     'chicken': 'Chicken', 'beef': 'Beef', 'ground beef': 'Ground beef', 'pork': 'Pork', 'fish': 'Fish', 'egg': 'Eggs',
     'ham': 'Ham', 'bacon': 'Bacon', 'sausage': 'Linguiça sausage', 'onion': 'Onions', 'tomato': 'Tomatoes', 'potato': 'Potatoes',
     'carrot': 'Carrots', 'bell pepper': 'Bell peppers', 'parsley': 'Cheiro-verde (parsley)', 'cilantro': 'Coriander', 'lime': 'Limes',

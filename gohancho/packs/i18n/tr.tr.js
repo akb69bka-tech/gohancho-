@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('TR', 'tr', {
   staple: 'Ekmek',
   names: {
+    "oats": "Yulaf ezmesi",
+    "semolina": "İrmik",
     "mint": "Nane",
     'white beans': 'Kuru fasulye', 'onion': 'Soğan', 'tomato paste': 'Salça', 'green pepper': 'Yeşil biber',
     'eggplant': 'Patlıcan', 'ground beef': 'Dana kıyma', 'tomato': 'Domates', 'parsley': 'Maydanoz', 'chicken': 'Tavuk',
@@ -16,6 +18,36 @@ GOHAN_PACK_TR('TR', 'tr', {
     'bread': 'Ekmek', 'liver': 'Ciğer', 'chickpeas': 'Nohut', 'sucuk': 'Sucuk', 'shrimp': 'Karides', 'pasta': 'Makarna', 'peas': 'Bezelye', 'walnuts': 'Ceviz', 'vine leaves': 'Asma yaprağı', 'leek': 'Pırasa', 'artichoke': 'Enginar', 'borlotti beans': 'Barbunya', 'purslane': 'Semizotu', 'beetroot': 'Pancar', 'cabbage': 'Lahana', 'lettuce': 'Marul', 'red pepper': 'Kapya biber', 'cauliflower': 'Karnabahar'
   },
   recipes: {
+    "tr_pirinc_lapasi": {
+      name: "Pirinç lapası",
+      ings: [["Pirinç (baldo veya osmancık)", "100 g"], ["Sade yoğurt, yanına", "4 yemek kaşığı"]],
+      seas: "1 litre su · 1/2 tatlı kaşığı tuz · 1 tatlı kaşığı tereyağı",
+      steps: [
+        "Pirinci yıkayıp suyla birlikte tencereye koyun.",
+        "Kaynayınca kısık ateşte 25-30 dakika, ara ara karıştırarak, pirinç iyice yumuşayıp lapa kıvamına gelene kadar pişirin. Çok koyulaşırsa biraz sıcak su ekleyin.",
+        "Tuzu ve tereyağını karıştırın; yanında yoğurtla sıcak servis edin.",
+      ],
+    },
+    "tr_yulaf_lapasi": {
+      name: "Yulaf lapası",
+      ings: [["Yulaf ezmesi", "80 g"], ["Süt", "400 ml"]],
+      seas: "Bir tutam tuz · 1 tatlı kaşığı bal (isteğe bağlı) · Bir tutam tarçın",
+      steps: [
+        "Sütü tuzla birlikte kaynatın.",
+        "Yulafı ekleyip kısık ateşte 5 dakika, karıştırarak kremamsı olana kadar pişirin.",
+        "Biraz bal ve tarçınla sıcak servis edin.",
+      ],
+    },
+    "tr_irmik_lapasi": {
+      name: "Sütlü irmik lapası",
+      ings: [["İrmik", "60 g"], ["Süt", "500 ml"]],
+      seas: "1 yemek kaşığı şeker · Bir tutam tuz · 1 tatlı kaşığı tereyağı",
+      steps: [
+        "Sütü şeker ve tuzla kaynatın.",
+        "İrmiği çırparak yavaş yavaş ekleyin ve ateşi kısın.",
+        "3-4 dakika karıştırarak koyulaşana kadar pişirin. Tereyağını ekleyip sıcak servis edin.",
+      ],
+    },
     "tr_bezelyecorbasi": {
       name: "Bezelye çorbası",
       ings: [["Dondurulmuş bezelye", "300 g"], ["Soğan", "1/2"], ["Süt", "100 ml"]],

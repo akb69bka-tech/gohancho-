@@ -1833,5 +1833,9 @@ GOHAN_I18N('it', {
     "選んだ品を特売に入れる（{n}品）": "Aggiungi la selezione alle offerte ({n})",
     "{name}の特売": "{name} in offerta",
     "タイマーが終わったら、音で知らせる": "Suona un bip quando finisce un timer",
-    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Ripete un breve bip; tocca lo schermo per fermarlo. Suona solo su questo dispositivo, senza rete e senza costi. Parte dopo il primo tocco dello schermo, una volta aperta l'app."
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Ripete un breve bip; tocca lo schermo per fermarlo. Suona solo su questo dispositivo, senza rete e senza costi. Parte dopo il primo tocco dello schermo, una volta aperta l'app.",
+    "{name}の日": "Giorno di {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Per il {day}, contorni e zuppa morbidi e delicati. Il piatto principale richiede circa {n} min",
+    "{day}なので{n}品にしました": "{day}: {n:# piatto:# piatti}",
+    "この条件では、{day}の主菜がありません": "Con queste condizioni non c'è un piatto principale per il {day}"
 });

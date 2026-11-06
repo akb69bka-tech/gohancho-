@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    "semolina": "Semolino",
     'pasta': 'Pasta',
     'passata': 'Passata di pomodoro',
     'basil': 'Basilico',
@@ -81,6 +82,36 @@ GOHAN_PACK_TR('IT', 'it', {
     'black pepper': 'Pepe nero',
   },
   recipes: {
+    "it_semolino_brodo": {
+      name: "Semolino in brodo",
+      ings: [["Semolino", "60 g"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "800 ml di brodo di pollo o vegetale · 1 cucchiaino di burro · Sale",
+      steps: [
+        "Porta il brodo a leggero bollore.",
+        "Versa il semolino a pioggia mescolando con la frusta, per non fare grumi.",
+        "Cuoci 6-8 minuti a fuoco basso, mescolando, finché è morbido e denso. Aggiungi il burro, regola di sale e servi con il parmigiano.",
+      ],
+    },
+    "it_semolino_latte": {
+      name: "Semolino al latte",
+      ings: [["Semolino", "60 g"], ["Latte", "500 ml"], ["Burro", "1 cucchiaino"]],
+      seas: "Un pizzico di sale · 1 cucchiaio di zucchero (facoltativo) · Una scorza di limone (facoltativa)",
+      steps: [
+        "Scalda il latte con il sale (e la scorza di limone) fino al bollore; togli la scorza.",
+        "Versa il semolino a pioggia mescolando con la frusta e abbassa la fiamma.",
+        "Cuoci 4-5 minuti mescolando, finché diventa cremoso. Unisci il burro e lo zucchero e servi tiepido.",
+      ],
+    },
+    "it_pappa_pomodoro": {
+      name: "Pappa al pomodoro",
+      ings: [["Pane toscano raffermo, senza crosta", "200 g"], ["Passata di pomodoro", "400 g"], ["Foglie di basilico", "6"]],
+      seas: "1 spicchio d'aglio · 3 cucchiai di olio extravergine · 600 ml di brodo vegetale · Sale",
+      steps: [
+        "Scalda l'olio con lo spicchio d'aglio intero per 2 minuti a fuoco basso, togli l'aglio e aggiungi la passata. Cuoci 10 minuti.",
+        "Unisci il brodo e il pane spezzettato e cuoci 10 minuti a fuoco basso, mescolando e schiacciando, finché il pane si sfalda in una pappa morbida.",
+        "Regola di sale, aggiungi il basilico spezzettato e servi tiepida con un filo d'olio.",
+      ],
+    },
     "it_crema_piselli": {
       name: "Crema di piselli veloce",
       ings: [["Piselli surgelati", "300 g"], ["Cipollotto o cipolla piccola", "1"], ["Parmigiano grattugiato", "2 cucchiai"]],

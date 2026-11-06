@@ -1940,6 +1940,112 @@ GOHAN_PACK({
       ],
       tip: { add: "A little minced pork", why: "Makes it more filling", skill: "Do not overcook the enoki", how: "Two minutes keeps the mushrooms tender and crunchy." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "vn_chao_ga",
+      name: "Chicken congee with ginger",
+      local: "Cháo gà",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "chicken",
+      min: 50,
+      ings: [
+        "rice|Jasmine rice|100 g",
+        "chicken|Chicken thigh, bone-in|300 g",
+        "ginger|Ginger, julienned|1 thumb",
+        "scallion|Spring onions, sliced|2?",
+      ],
+      seas: "1.5 litres water · 1 tsp salt · Pinch of black pepper",
+      steps: [
+        "Put the chicken and half the ginger in a pot with the water, bring to the boil, skim, and simmer 25 minutes until cooked through. Lift out the chicken.",
+        "Rinse the rice, add it to the broth and simmer 20–25 minutes on low heat, stirring often, until it breaks down into a smooth congee.",
+        "Shred the chicken, add it back with the salt, and serve topped with the rest of the ginger, spring onion and a little pepper.",
+      ],
+    },
+    {
+      id: "vn_chao_thit_bam",
+      name: "Rice porridge with minced pork",
+      local: "Cháo thịt bằm",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "pork",
+      min: 40,
+      ings: [
+        "rice|Jasmine rice|100 g",
+        "ground pork|Minced pork|150 g",
+        "scallion|Spring onions, sliced|2?",
+      ],
+      seas: "1.2 litres water · 1 tsp salt · Pinch of black pepper",
+      steps: [
+        "Rinse the rice and simmer it in the water for 25–30 minutes on low heat, stirring often, until very soft and smooth.",
+        "Season the pork with a pinch of salt, add it to the porridge in small pieces and stir 5 minutes until cooked through.",
+        "Season with the salt and serve topped with spring onion and a little pepper.",
+      ],
+    },
+    {
+      id: "vn_chao_bi_do",
+      name: "Pumpkin rice porridge",
+      local: "Cháo bí đỏ",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 40,
+      ings: [
+        "rice|Jasmine rice|80 g",
+        "pumpkin|Pumpkin, peeled and diced|250 g",
+        "scallion|Spring onions, sliced|1?",
+      ],
+      seas: "1.2 litres water · 1/2 tsp salt",
+      steps: [
+        "Rinse the rice and simmer it with the pumpkin in the water for 30 minutes on low heat, stirring often.",
+        "When the rice and pumpkin are very soft, mash the pumpkin into the porridge until smooth and golden.",
+        "Season with the salt and serve topped with spring onion.",
+      ],
+    },
+    {
+      id: "vn_bi_luoc",
+      name: "Steamed pumpkin with sesame salt",
+      local: "Bí đỏ hấp",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "pumpkin|Pumpkin, cut in wedges|300 g",
+      ],
+      seas: "1 tsp toasted sesame seeds · Pinch of salt",
+      steps: [
+        "Cut the pumpkin into wedges about 2 cm thick.",
+        "Steam over boiling water for 10–12 minutes until a knife slides in easily.",
+        "Sprinkle with the sesame seeds and a pinch of salt and serve warm.",
+      ],
+    },
+    {
+      id: "vn_cai_luoc",
+      name: "Boiled bok choy with garlic oil",
+      local: "Cải thìa luộc",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "bok choy|Bok choy, halved|300 g",
+      ],
+      seas: "1 garlic clove, minced · 1 tsp oil · Pinch of salt",
+      steps: [
+        "Bring a pot of lightly salted water to the boil and cook the bok choy for 2 minutes until tender. Drain well.",
+        "Warm the oil with the garlic for 30 seconds without browning.",
+        "Pour over the bok choy and serve warm.",
+      ],
+    },
   ],
   aliases: {
     "enoki": ["enoki","enoki mushrooms","nấm kim châm","kim cham"],

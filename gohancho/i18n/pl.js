@@ -1833,5 +1833,9 @@ GOHAN_I18N('pl', {
     "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
     "{name}の特売": "{name} w promocji",
     "タイマーが終わったら、音で知らせる": "Sygnał dźwiękowy po zakończeniu minutnika",
-    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Powtarza krótki sygnał; dotknij ekranu, aby go zatrzymać. Dźwięk jest odtwarzany tylko na tym urządzeniu, bez sieci i bez kosztów. Rozlega się po pierwszym dotknięciu ekranu po otwarciu aplikacji."
+    "短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。": "Powtarza krótki sygnał; dotknij ekranu, aby go zatrzymać. Dźwięk jest odtwarzany tylko na tym urządzeniu, bez sieci i bez kosztów. Rozlega się po pierwszym dotknięciu ekranu po otwarciu aplikacji.",
+    "{name}の日": "Dzień: {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day}: miękkie, łagodne dodatki i zupa. Danie główne zajmuje około {n} min",
+    "{day}なので{n}品にしました": "{day}: {n:# danie:# dania:# dań:# dania}",
+    "この条件では、{day}の主菜がありません": "Przy tych warunkach nie ma dania głównego na {day}"
 });

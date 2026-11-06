@@ -1987,8 +1987,119 @@ GOHAN_PACK({
       ],
       tip: { add: "A sliced red chilli", why: "A little heat", skill: "Shred thinly", how: "Thin cabbage cooks fast and stays sweet." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "id_bubur_ayam",
+      name: "Chicken rice porridge",
+      local: "Bubur ayam",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "chicken",
+      min: 50,
+      ings: [
+        "rice|Rice|150 g",
+        "chicken|Chicken breast or thigh|250 g",
+        "celery|Chinese celery, sliced|1 stalk?",
+        "spring onion|Spring onion, sliced|1?",
+      ],
+      seas: "1.5 litres water · 1 salam leaf or bay leaf · 1 tsp salt · 1 tbsp sweet soy sauce (kecap manis), to serve (optional)",
+      steps: [
+        "Simmer the chicken in the water with the salam leaf for 25 minutes until cooked through. Lift out the chicken and shred it.",
+        "Rinse the rice, add it to the broth and simmer 25 minutes on low heat, stirring often, until it becomes a smooth porridge. Season with the salt.",
+        "Serve topped with the chicken, celery and spring onion, with a little kecap manis if you like.",
+      ],
+    },
+    {
+      id: "id_tinutuan",
+      name: "Manado vegetable rice porridge",
+      local: "Bubur Manado (tinutuan)",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 50,
+      ings: [
+        "rice|Rice|100 g",
+        "pumpkin|Pumpkin, peeled and diced|200 g",
+        "corn|Sweet corn kernels|1 cob",
+        "spinach|Spinach or water spinach leaves|1 bunch",
+        "basil|Lemon basil (kemangi)|1 handful?",
+      ],
+      seas: "1.5 litres water · 1 lemongrass stalk, bruised · 1 tsp salt",
+      steps: [
+        "Rinse the rice and simmer it with the pumpkin, corn and lemongrass in the water for 35 minutes on low heat, stirring often.",
+        "When the rice is soft and the pumpkin breaks down, add the spinach and basil and cook 3 minutes.",
+        "Season with the salt, remove the lemongrass and serve warm.",
+      ],
+    },
+    {
+      id: "id_bubur_kacang_hijau",
+      name: "Sweet mung bean porridge",
+      local: "Bubur kacang hijau",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "legume",
+      min: 60,
+      ings: [
+        "mung beans|Mung beans|150 g",
+        "coconut milk|Coconut milk|200 ml",
+      ],
+      seas: "1 litre water · 1 pandan leaf, knotted · 3 tbsp palm sugar · Pinch of salt · 1 slice ginger (optional)",
+      steps: [
+        "Rinse the mung beans and simmer them in the water with the pandan (and ginger) for 40 minutes on low heat, until very soft.",
+        "Add the palm sugar and salt and cook 5 minutes until dissolved.",
+        "Pour in the coconut milk and heat 3 minutes, stirring, without boiling hard. Serve warm.",
+      ],
+    },
+    {
+      id: "id_tahu_kukus",
+      name: "Steamed tofu with spring onion",
+      local: "Tahu kukus",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "legume",
+      min: 15,
+      ings: [
+        "tofu|Soft tofu|300 g",
+        "spring onion|Spring onion, sliced|1?",
+      ],
+      seas: "1 tsp sweet soy sauce (kecap manis) · Pinch of salt",
+      steps: [
+        "Cut the tofu into thick slices and put them on a heatproof plate.",
+        "Steam over boiling water for 8–10 minutes until hot through.",
+        "Top with the spring onion, a little kecap manis and a pinch of salt.",
+      ],
+    },
+    {
+      id: "id_sayur_rebus",
+      name: "Boiled potato and cabbage",
+      local: "Kentang dan kol rebus",
+      type: 'side',
+      soft: true,   // おかゆの日に出せる、やわらかい・あっさりした副菜（4B。辛さ0）
+      method: 'simmer',
+      protein: "veg",
+      min: 20,
+      ings: [
+        "potato|Potato, diced|2",
+        "cabbage|Cabbage, shredded|200 g",
+      ],
+      seas: "1/2 tsp salt · 1 tsp fried shallots (optional)",
+      steps: [
+        "Boil the potato in lightly salted water for 10 minutes.",
+        "Add the cabbage and cook 3–4 minutes more until soft. Drain.",
+        "Season with the salt and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "pumpkin": ["pumpkin", "labu", "labu kuning", "waluh"],
+    "mung beans": ["mung beans", "mung bean", "kacang hijau"],
     'chicken': ['chicken', 'ayam', 'daging ayam', 'paha ayam', 'dada ayam', 'sayap ayam'],
     'beef': ['beef', 'daging', 'daging sapi', 'sapi', 'has dalam', 'sandung lamur'],
     'fish': ['fish', 'ikan', 'ikan kembung', 'kembung', 'mackerel', 'nila', 'tilapia', 'ikan nila', 'bandeng', 'ikan mas'],
@@ -2054,6 +2165,8 @@ GOHAN_PACK({
   quick: ['chicken', 'beef', 'fish', 'shrimp', 'egg', 'tofu', 'tempeh', 'potato', 'tomato', 'chili', 'water spinach', 'cabbage', 'carrot', 'spinach', 'long beans', 'bean sprouts', 'corn', 'noodles'],
   pantry: ['rice', 'egg', 'chili', 'tomato', 'tofu', 'tempeh', 'noodles', 'lime', 'tamarind', 'peanuts', 'crackers', 'potato', 'carrot', 'cabbage'],
   names: {
+    "pumpkin": "Pumpkin",
+    "mung beans": "Mung beans",
     'chicken': 'Chicken',
     'beef': 'Beef',
     'fish': 'Fish',

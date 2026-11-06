@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'es',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Atole", "es": "Día de atole", "ja": "アトーレ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'mx_staple', name: 'Corn tortillas', local: 'Tortillas de maíz' },
   recipes: [
     // ---------- main ----------
@@ -2123,8 +2124,75 @@ GOHAN_PACK({
       ],
       tip: { add: "Cubes of queso fresco in the bowl", why: "Mild and creamy with the hot broth", skill: "Dice the zucchini", how: "Small cubes are tender in 5 minutes." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "mx_atole_blanco",
+      name: "Warm corn masa porridge",
+      local: "Atole blanco",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 20,
+      ings: [
+        "corn masa|Corn masa (nixtamalized corn dough flour)|50 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "250 ml water · 1 cinnamon stick · 2 tbsp piloncillo or brown sugar",
+      steps: [
+        "Whisk the corn masa into the water until there are no lumps.",
+        "Heat the milk with the cinnamon and piloncillo until it simmers, then pour in the masa mixture through a sieve, whisking.",
+        "Cook 8–10 minutes on low heat, stirring constantly, until it thickens to a soft porridge. Remove the cinnamon and serve warm.",
+      ],
+    },
+    {
+      id: "mx_avena",
+      name: "Oat porridge with cinnamon",
+      local: "Avena con canela",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "250 ml water · 1 cinnamon stick · 1–2 tbsp sugar · Pinch of salt",
+      steps: [
+        "Simmer the water with the cinnamon for 3 minutes.",
+        "Add the oats and cook 3 minutes, then pour in the milk and cook 5 minutes more on low heat, stirring, until creamy.",
+        "Sweeten with the sugar, remove the cinnamon and serve warm.",
+      ],
+    },
+    {
+      id: "mx_atole_arroz",
+      name: "Rice atole porridge",
+      local: "Atole de arroz",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 40,
+      ings: [
+        "rice|White rice|80 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "750 ml water · 1 cinnamon stick · 3 tbsp sugar",
+      steps: [
+        "Rinse the rice and simmer it in the water with the cinnamon for 25 minutes, until very soft.",
+        "Pour in the milk and cook 8–10 minutes on low heat, stirring often, until thick and creamy.",
+        "Stir in the sugar, remove the cinnamon and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "corn masa": ["corn masa", "masa", "masa harina", "maseca"],
+    "oats": ["oats", "rolled oats", "oatmeal", "avena", "hojuelas de avena"],
+    "milk": ["milk", "leche"],
     "alphabet pasta": ["alphabet pasta","letras","pasta de letras","sopa de letras"],
     'chicken': ['chicken', 'pollo', 'pechuga', 'muslo', 'pierna de pollo', 'chicken breast', 'chicken thigh'],
     'pork': ['pork', 'puerco', 'cerdo', 'carne de puerco', 'espaldilla', 'pork shoulder'],
@@ -2195,6 +2263,9 @@ GOHAN_PACK({
   quick: ['chicken', 'pork', 'beef', 'ground beef', 'fish', 'egg', 'beans', 'cheese', 'tomato', 'tomatillo', 'onion', 'chili', 'potato', 'zucchini', 'nopal', 'avocado', 'corn', 'poblano'],
   pantry: ['tortilla', 'beans', 'rice', 'egg', 'onion', 'tomato', 'chili', 'chipotle', 'lime', 'cheese', 'cream', 'pasta', 'cilantro', 'potato', 'garlic'],
   names: {
+    "corn masa": "Corn masa (nixtamalized corn dough flour)",
+    "oats": "Rolled oats",
+    "milk": "Milk",
     "alphabet pasta": "Alphabet pasta",
     'chicken': 'Chicken',
     'pork': 'Pork',
