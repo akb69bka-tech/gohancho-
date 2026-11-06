@@ -5135,6 +5135,14 @@ function fitTray(){
     if (d > 0){ const gr = document.querySelector('#greet .greet-row'), sg = gr && gr.querySelector('.sale-greet'), lt = gr && gr.querySelector('.req-btn'), below = () => sg.getBoundingClientRect().top >= lt.getBoundingClientRect().bottom - 1;
         if (sg && lt && below()) for (const cs of gr.classList.contains('solo') ? [['greet-sale1']] : [['greet-sale2'], ['greet-sale2', 'greet-sale3']]){
             document.body.classList.add(...cs); if (!below()){ avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; d = over(); break; } document.body.classList.remove(...cs); } }
+    // 特売の日: 見出しを詰める形（tight2）のほうが器が 6px 以上大きくなるなら、そちらを先に使う（R107。時間帯・日付であいさつが長いと、特売のない日だけが下の tight2 の流れに入って器が大きくなり、特売の日が小さく見えた）。入りきらないときは元に戻す
+    if (d > 0 && !tight && document.querySelector('#greet .sale-greet')){
+        const vsA = vs, vsB = Math.max(CMIN, Math.floor(vs - d / rows));
+        tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vs0); let d2 = over();
+        for (let k = 0; k < 2 && d2 > 0; k++){ setVs(Math.max(CMIN, Math.min(vs0, Math.floor(vs - d2 / rows)))); d2 = over(); }
+        if (d2 <= 0 && vs > vsB + 6) d = d2;
+        else { tr.classList.remove('tight2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); avail = floor - (tr.getBoundingClientRect().top + scrollY) - 8; setVs(vsA); fixText(); d = over(); }
+    }
     // 器は 60px まで小さくしてよい（基準書 2-5）。それでも入らないときは名前の字を小さくして詰める（「かえる」は名前の下の行のまま。器には重ねない。点検3）
     if (d > 0){ setVs(Math.max(tight ? 60 : CMIN, Math.floor(vs - d / rows))); d = over(); }
     // 「かえる」を角に置いた形（器 CMIN 以上）で入らないときは、名前の下に戻す前に、見出しを詰める形（tight2）で器を角の形のまま入れられるか試す（絵を大きく）

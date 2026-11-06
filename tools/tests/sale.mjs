@@ -296,11 +296,15 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
 {
     const bad = [], rows = [];
     const fam = [{id: 'f1', name: 'はは', role: 'adult', avoid: ['えび'], allergy: ['えび'], mild: false}, {id: 'f2', name: 'こ', role: 'child', avoid: [], allergy: [], mild: true}];
-    for (const [w, h] of [[360, 800], [390, 844], [430, 932]]) for (const ts of [0, 1, 2]) for (const withFam of [false, true]){
-        const init = Object.assign({}, storeInit, {family: withFam ? fam : [], sale: Object.assign({}, storeInit.sale, {items: [{id: 'g1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '98円', d: DAY[0], u: DAY[0]}, {id: 'g2', s: 'stA', sn: '', k: '豚肉', n: '豚こま切れ肉', p: '', d: DAY[0], u: DAY[0]}, {id: 'g3', s: 'stA', sn: '', k: 'にんじん', n: 'にんじん', p: '', d: DAY[0], u: DAY[0]}]})});
+    // 時間帯を固定して測る（あいさつの文は時間帯で変わり、長い夜おそく・午後などで器が変わっていた。時計が実時間だと、テストが時刻で落ちたり通ったりした）。HOURS=0,12 で絞れる
+    // 日付で選ぶあいさつの文が変わる（夜おそくは2文。長いほうと短いほう）
+    const HRS = (process.env.HOURS ? process.env.HOURS.split(',').map(Number) : [1, 12, 22]), DATES = process.env.BASED ? [process.env.BASED] : ['2026-11-06', '2026-11-07'], WIDTHS = process.env.WIDTHS ? process.env.WIDTHS.split(',').map(Number) : [360, 390, 430];
+    for (const base of DATES) for (const hr of HRS) for (const [w, h] of [[360, 800], [390, 844], [430, 932]].filter(x => WIDTHS.includes(x[0]))) for (const ts of [0, 1, 2]) for (const withFam of [false, true]){
+        const fixed = `${base}T${String(hr).padStart(2, '0')}:30:00+09:00`, dd = new Date(Date.parse(`${base}T12:00:00+09:00`) - (hr < 4 ? 864e5 : 0)), day = [dd.toLocaleDateString('sv-SE', {timeZone: 'Asia/Tokyo'}), new Date(dd.toLocaleString('en-US', {timeZone: 'Asia/Tokyo'})).getDay()];   // 4時までは、アプリの「今日」がまだ前の日
+        const init = Object.assign({}, storeInit, {family: withFam ? fam : [], sale: Object.assign({}, storeInit.sale, {stores: [{id: 'stA', name: 'ハッピーマート', pref: '東京都', city: '練馬区', zip: '', days: [{w: day[1], c: 'veg'}], note: '', url: 'https://flyer.example.test/a'}, {id: 'stB', name: 'まるやす', pref: '', city: '', zip: '', days: [{w: (day[1] + 1) % 7, c: 'meat'}], note: '', url: ''}], items: [{id: 'g1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '98円', d: day[0], u: day[0]}, {id: 'g2', s: 'stA', sn: '', k: '豚肉', n: '豚こま切れ肉', p: '', d: day[0], u: day[0]}, {id: 'g3', s: 'stA', sn: '', k: 'にんじん', n: 'にんじん', p: '', d: day[0], u: day[0]}]})});
         const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
         await ctx.addInitScript(rngScript(seedFor('sale-r107', w + '-' + ts + (withFam ? 'f' : ''))));
-        const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r107: ' + e.message));
+        const p = await ctx.newPage(); p.on('pageerror', e => errs.push('r107: ' + e.message)); await p.clock.setFixedTime(new Date(fixed));
         await p.addInitScript(([init, ts]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded: true, firstUse: new Date().toISOString().slice(0, 10)}, init, {settings: Object.assign({country: 'JP', dishCount: 3, uiLang: 'ja'}, ts ? {textSize: ts} : {})}))); } }, [init, ts]);
         await p.goto(URL_); await ready(p); await p.waitForTimeout(400);
         const meas = () => p.evaluate(() => { const v = [...document.querySelectorAll('.tray .tg-row:first-child .spot .vessel')].map(e => e.getBoundingClientRect().width), g = document.querySelector('.sale-greet'), lt = document.querySelector('#greet .req-btn');
@@ -311,13 +315,13 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
         const a = await meas();
         await p.evaluate(() => { S.sale.items = []; S.sale.stores.forEach(st => { st.days = []; }); TRAY_FIT.state = null; render(); });   // 前の詰め方を引きつがない（開き直したときと同じ） await p.waitForTimeout(400);
         const n = await meas();
-        rows.push(`${w}/ts${ts}${withFam ? '家族' : ''}: ${n.vs}→${a.vs}`);
+        rows.push(`${base.slice(5)} ${hr}時 ${w}/ts${ts}${withFam ? '家族' : ''}: ${n.vs}→${a.vs}`);
         // 器の差は 6px まで（前は家族なし −21〜−34px、家族あり −10〜−22px）。特売の1行は右へはみ出さず品名が見える（R103）。「食べたいもの」「家族リクエスト」の入口は押せる大きさで、名前は読み上げに残る
-        if (!a.sale || n.sale || a.vs < n.vs - 6 || !a.nameVis || !a.inX || a.over || !a.lite || !a.lite.vis || a.lite.name !== (withFam ? '家族リクエスト' : '食べたいもの') || a.lite.h < 36 || a.lite.w < 36) bad.push([w, ts, withFam, {sale: a, normal: n}]);
+        if (!a.sale || n.sale || a.vs < n.vs - 6 || !a.nameVis || !a.inX || a.over || !a.lite || !a.lite.vis || a.lite.name !== (withFam ? '家族リクエスト' : '食べたいもの') || a.lite.h < 36 || a.lite.w < 36) bad.push([base, hr, w, ts, withFam, {sale: a, normal: n}]);
         await ctx.close();
     }
     console.log('R107 器（特売なし→あり）: ' + rows.join(' / '));
-    ok(!bad.length, 'R107 特売の日でも器が小さくならない（差 6px まで）・特売の1行は画面の中で品名が見える（家族なし/あり 18通り） ' + JSON.stringify(bad));
+    ok(!bad.length, 'R107 特売の日でも器が小さくならない（差 6px まで）・特売の1行は画面の中で品名が見える（家族なし/あり × 時間帯 × 日付。1時・12時・22時 × 2日） ' + JSON.stringify(bad));
 }
 // ---- 第26回 R112・R113・R114・R116 特売の日の入口と届いた一言（360/375/390/430 × 文字3段階 × ひとり／ひとり＋自分で1件／家族0件／家族2件） ----
 // R112: 入口が封筒の印だけ（字も数もない）になっていた（8/60画面）→ 名前か数がいつも見える
