@@ -3942,6 +3942,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     let cands = poolFor('主菜').filter(r => r.main && moodOk(r, session.mood) && (!session.swapF || moodOk(r, session.swapF)) && !isAvoided(r));   // swapF: かえるの絞りこみ（気分に重ねる）
     if (menuCount() === 1){ const one = cands.filter(r => isBowlMain(r) || soupyMain(r)); if (one.length) cands = one; }   // 1品の日は、それだけで食事になる丼・麺・鍋
     if (!cands.length && !okayuDay && !session.swapF) cands = poolFor('主菜').filter(r => r.main && !isAvoided(r));      // その気分の料理がない国でも空にしない
+    if (session.mood === 'bento'){ const nb = cands.filter(r => !soupyMain(r)); if (nb.length) cands = nb; }   // お弁当の日にお弁当向きの料理がなくて広げたときも、汁けの多い料理（ポトフなど）はほかに候補があるかぎり避ける（アレルギーで候補が少ない国。4B の点検で見つかった）
     if (!okayuDay && stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆの日は、ご飯もの・麺（きつねうどんなど）を主菜にしない
     if (!composeOf(menuCount()).slots.includes('副菜') && !mixCc('主菜') && !stapleSpot()){ const st = cands.filter(r => r.starch); if (st.length) cands = st; }   // 副菜の枠がない日（一汁一菜・1品）で主食が「なし」の国は、主食になる物が入った主菜を（R4。印のある国だけ）
     if (sameKind && bowl != null && !cands.some(r => !clash(r))) return null;
