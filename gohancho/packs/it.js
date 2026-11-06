@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'it',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Pappa", "it": "Giorno della pappa", "ja": "パッパ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'it_staple', name: 'Bread', local: 'Pane' },
   recipes: [
     // ---------- main ----------
@@ -1987,8 +1988,75 @@ GOHAN_PACK({
       ],
       tip: { add: "Toasted bread on the side", why: "Good for dipping into the thick soup", skill: "Keep a few chickpeas whole", how: "Set a spoonful aside before blending and add on top for texture." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "it_semolino_brodo",
+      name: "Semolina in broth",
+      local: "Semolino in brodo",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "semolina|Fine semolina|60 g",
+        "parmesan|Parmesan, grated|2 tbsp?",
+      ],
+      seas: "800 ml chicken or vegetable broth · 1 tsp butter · Salt",
+      steps: [
+        "Bring the broth to a simmer.",
+        "Rain in the semolina while whisking so no lumps form.",
+        "Cook 6–8 minutes on low heat, stirring, until soft and thick. Stir in the butter, check the salt and serve with the parmesan.",
+      ],
+    },
+    {
+      id: "it_semolino_latte",
+      name: "Semolina milk porridge",
+      local: "Semolino al latte",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "semolina|Fine semolina|60 g",
+        "milk|Milk|500 ml",
+        "butter|Butter|1 tsp?",
+      ],
+      seas: "Pinch of salt · 1 tbsp sugar (optional) · A strip of lemon zest (optional)",
+      steps: [
+        "Heat the milk with the salt (and the lemon zest) until it simmers; remove the zest.",
+        "Rain in the semolina while whisking and lower the heat.",
+        "Cook 4–5 minutes, stirring, until creamy. Stir in the butter and the sugar and serve warm.",
+      ],
+    },
+    {
+      id: "it_pappa_pomodoro",
+      name: "Tuscan bread and tomato porridge",
+      local: "Pappa al pomodoro",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 30,
+      ings: [
+        "bread|Stale country bread, crusts removed|200 g",
+        "passata|Tomato passata|400 g",
+        "basil|Basil leaves|6?",
+      ],
+      seas: "1 garlic clove · 3 tbsp olive oil · 600 ml vegetable broth · Salt",
+      steps: [
+        "Warm the oil with the whole garlic clove for 2 minutes on low heat, then remove the garlic and add the passata. Simmer 10 minutes.",
+        "Add the broth and the bread torn into pieces, and simmer 10 minutes on low heat, stirring and pressing, until the bread breaks down into a soft porridge.",
+        "Season with salt, tear in the basil and serve warm with a thread of oil.",
+      ],
+    },
   ],
   aliases: {
+    "semolina": ["semolina", "semolino", "semola"],
     'pasta': ['pasta', 'spaghetti', 'penne', 'ditalini', 'macaroni', 'noodles'],
     'passata': ['passata', 'tomato passata', 'tomato sauce', 'passata di pomodoro', 'salsa di pomodoro', 'pelati', 'canned tomatoes', 'polpa di pomodoro'],
     'basil': ['basil', 'basilico'],
@@ -2070,6 +2138,7 @@ GOHAN_PACK({
   quick: ['pasta', 'passata', 'egg', 'chicken', 'ground meat', 'sausage', 'fish', 'zucchini', 'tomato', 'potato', 'onion', 'carrot', 'spinach', 'bell pepper', 'parmesan', 'mozzarella', 'lemon', 'green beans'],
   pantry: ['pasta', 'passata', 'egg', 'parmesan', 'onion', 'carrot', 'celery', 'potato', 'lemon', 'bread', 'butter', 'olives', 'capers', 'borlotti', 'cannellini', 'tomato'],
   names: {
+    "semolina": "Fine semolina",
     'pasta': 'Pasta',
     'passata': 'Tomato passata',
     'basil': 'Basil',

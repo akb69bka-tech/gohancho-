@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'fr',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Bouillie", "fr": "Jour de bouillie", "ja": "ブイイ（ミルクがゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'fr_staple', name: 'Baguette', local: 'Baguette' },
   recipes: [
     // ---------------- main ----------------
@@ -1991,8 +1992,75 @@ GOHAN_PACK({
       ],
       tip: { add: "A spoon of grated Comté", why: "Children love it melting in the bowl", skill: "Grate the carrot", how: "Grated carrot cooks in the same few minutes as the pasta." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "fr_semoule_lait",
+      name: "Semolina milk porridge",
+      local: "Semoule au lait",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "semolina|Fine wheat semolina|60 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "2 tbsp sugar · Pinch of salt · A few drops of vanilla extract (optional)",
+      steps: [
+        "Heat the milk with the sugar, salt and vanilla until it just simmers.",
+        "Rain in the semolina while whisking, then lower the heat.",
+        "Cook 4–5 minutes, stirring, until thick and creamy. Serve warm.",
+      ],
+    },
+    {
+      id: "fr_porridge_avoine",
+      name: "Oat porridge with milk",
+      local: "Porridge aux flocons d'avoine",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|400 ml",
+        "apple|Apple or pear, grated|1?",
+      ],
+      seas: "Pinch of salt · 1 tbsp honey (optional)",
+      steps: [
+        "Put the oats, milk and salt in a small saucepan.",
+        "Bring to a gentle simmer and cook 5 minutes, stirring, until creamy.",
+        "Serve with the grated apple or pear and a little honey.",
+      ],
+    },
+    {
+      id: "fr_riz_au_lait",
+      name: "Rice porridge cooked in milk",
+      local: "Riz au lait",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 40,
+      ings: [
+        "rice|Round rice|80 g",
+        "milk|Milk|700 ml",
+      ],
+      seas: "3 tbsp sugar · Pinch of salt · 1/2 vanilla pod or a few drops of extract",
+      steps: [
+        "Rinse the rice, cover with water, bring to a boil for 2 minutes and drain.",
+        "Bring the milk with the vanilla and salt to a simmer, add the rice and cook on very low heat for 30–35 minutes, stirring often.",
+        "When the rice is very soft and creamy, stir in the sugar. Serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "semolina": ["semolina", "semoule", "semoule de blé", "semoule fine"],
+    "oats": ["oats", "rolled oats", "oatmeal", "flocons d'avoine", "avoine"],
     "yogurt": ["yogurt","yoghurt","plain yogurt","yaourt","fromage blanc"],
     "alphabet pasta": ["alphabet pasta","pâtes alphabet","alphabet","small pasta","petites pâtes"],
     'chicken': ['chicken', 'chicken thigh', 'chicken thighs', 'chicken breast', 'poulet', 'cuisse de poulet', 'cuisses de poulet', 'blanc de poulet', 'volaille', 'poule', 'whole chicken', 'poulet entier'],
@@ -2071,6 +2139,8 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'pork', 'salmon', 'egg', 'ham', 'bacon', 'sausage', 'potato', 'carrot', 'onion', 'tomato', 'zucchini', 'green bean', 'leek', 'cheese', 'cream', 'pasta'],
   pantry: ['egg', 'onion', 'shallot', 'potato', 'carrot', 'milk', 'cream', 'cheese', 'pasta', 'rice', 'lentils', 'couscous', 'lemon', 'tomato', 'ham', 'lettuce', 'garlic'],
   names: {
+    "semolina": "Fine wheat semolina",
+    "oats": "Rolled oats",
     "yogurt": "Plain yogurt",
     "alphabet pasta": "Alphabet pasta",
     'chicken': 'Chicken',

@@ -13,6 +13,36 @@ GOHAN_PACK_TR('VN', 'vi', {
     'katuk': 'Rau ngót', 'mustard greens': 'Cải bẹ xanh', 'malabar spinach': 'Rau mồng tơi', 'luffa': 'Mướp', 'winter melon': 'Bí xanh', 'bitter melon': 'Khổ qua', 'wood ear': 'Nấm mèo', 'glass noodles': 'Miến', 'garlic chives': 'Hẹ', 'clams': 'Ngao', 'dill': 'Thì là', 'pork ribs': 'Sườn heo', 'shiitake': 'Nấm hương', 'corn': 'Ngô ngọt', 'crab': 'Thịt cua', 'purple yam': 'Khoai mỡ', 'pickled mustard greens': 'Dưa cải chua', 'crown daisy': 'Cải cúc', 'bamboo shoots': 'Măng', 'pork hock': 'Móng giò heo', 'seaweed': 'Rong biển', 'field crab': 'Cua đồng xay', 'jute leaves': 'Rau đay', 'lemongrass': 'Sả', 'bell pepper': 'Ớt chuông', 'lettuce': 'Xà lách', 'ground beef': 'Thịt bò xay', 'betel leaves': 'Lá lốt', 'squid': 'Mực', 'mushrooms': 'Nấm', 'rice vermicelli': 'Bún', 'cucumber': 'Dưa leo', 'egg noodles': 'Mì trứng', 'bok choy': 'Cải thìa', 'chayote': 'Su su', 'broccoli': 'Bông cải xanh', 'green beans': 'Đậu que', 'dried shrimp': 'Tôm khô', 'lotus stems': 'Ngó sen', 'green papaya': 'Đu đủ xanh', 'rice paper': 'Bánh tráng', 'small eggplants': 'Cà pháo'
   },
   recipes: {
+    "vn_chao_ga": {
+      name: "Cháo gà",
+      ings: [["Gạo tẻ (gạo thơm)", "100 g"], ["Đùi gà có xương", "300 g"], ["Gừng thái sợi", "1 nhánh"], ["Hành lá thái nhỏ", "2 cây"]],
+      seas: "1,5 lít nước · 1 thìa cà phê muối · Chút tiêu",
+      steps: [
+        "Cho gà, một nửa gừng và nước vào nồi, đun sôi, hớt bọt, nấu 25 phút cho gà chín kỹ. Vớt gà ra.",
+        "Vo gạo, cho vào nước dùng, nấu lửa nhỏ 20–25 phút, khuấy đều, đến khi gạo nở nhừ thành cháo mịn.",
+        "Xé gà, cho lại vào nồi cùng muối, múc ra bát, rắc phần gừng còn lại, hành lá và chút tiêu.",
+      ],
+    },
+    "vn_chao_thit_bam": {
+      name: "Cháo thịt bằm",
+      ings: [["Gạo tẻ (gạo thơm)", "100 g"], ["Thịt heo bằm", "150 g"], ["Hành lá thái nhỏ", "2 cây"]],
+      seas: "1,2 lít nước · 1 thìa cà phê muối · Chút tiêu",
+      steps: [
+        "Vo gạo, nấu với nước lửa nhỏ 25–30 phút, khuấy đều, đến khi cháo nhừ và mịn.",
+        "Ướp thịt với chút muối, cho từng ít vào cháo, khuấy 5 phút cho thịt chín kỹ.",
+        "Nêm muối vừa ăn, múc ra bát, rắc hành lá và chút tiêu.",
+      ],
+    },
+    "vn_chao_bi_do": {
+      name: "Cháo bí đỏ",
+      ings: [["Gạo tẻ (gạo thơm)", "80 g"], ["Bí đỏ gọt vỏ, thái hạt lựu", "250 g"], ["Hành lá thái nhỏ", "1 cây"]],
+      seas: "1,2 lít nước · 1/2 thìa cà phê muối",
+      steps: [
+        "Vo gạo, nấu cùng bí đỏ với nước lửa nhỏ 30 phút, khuấy đều.",
+        "Khi gạo và bí đã nhừ, dằm bí vào cháo cho mịn và vàng đều.",
+        "Nêm muối vừa ăn, múc ra bát, rắc hành lá.",
+      ],
+    },
     "vn_canhdauhucachua": {
       name: "Canh đậu phụ cà chua",
       ings: [["Đậu phụ non", "200 g"], ["Cà chua", "2 quả"], ["Hành lá", "2 cây"]],

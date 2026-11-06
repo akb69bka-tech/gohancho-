@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "oats": "Haferflocken",
     "alphabet pasta": "Buchstabennudeln",
     "chives": "Schnittlauch",
     'leberkaese': 'Leberkäse',
@@ -75,6 +76,36 @@ GOHAN_PACK_TR('DE', 'de', {
     'butter': 'Butter',
   },
   recipes: {
+    "de_haferbrei": {
+      name: "Haferbrei",
+      ings: [["Zarte Haferflocken", "80 g"], ["Milch", "400 ml"], ["Apfel, gerieben", "1"]],
+      seas: "1 Prise Salz · 1 TL Honig (nach Wunsch) · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch und Salz in einem kleinen Topf aufkochen.",
+        "Haferflocken einrühren und bei schwacher Hitze 5 Minuten unter Rühren cremig kochen.",
+        "Mit dem geriebenen Apfel, etwas Honig und Zimt servieren.",
+      ],
+    },
+    "de_griessbrei": {
+      name: "Grießbrei",
+      ings: [["Weichweizengrieß", "60 g"], ["Milch", "500 ml"], ["Butter", "1 TL"]],
+      seas: "1–2 EL Zucker · 1 Prise Salz · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch, Zucker und Salz aufkochen.",
+        "Topf vom Herd nehmen, Grieß einrühren und bei schwacher Hitze 3–4 Minuten unter Rühren dick werden lassen.",
+        "Butter unterrühren und warm mit etwas Zimt servieren.",
+      ],
+    },
+    "de_haferschleim": {
+      name: "Haferschleimsuppe",
+      ings: [["Zarte Haferflocken", "50 g"], ["Möhre, fein gewürfelt", "1"], ["Lauch, in feinen Ringen", "1/2"]],
+      seas: "800 ml Gemüsebrühe (oder Wasser mit 1 TL Salz) · 1 TL Butter · 1 Prise Muskat",
+      steps: [
+        "Butter im Topf schmelzen, Möhre (und Lauch) 2 Minuten andünsten, ohne zu bräunen.",
+        "Haferflocken und Brühe zugeben, aufkochen und bei schwacher Hitze 15 Minuten köcheln, ab und zu umrühren.",
+        "Glatt rühren (oder kurz pürieren), mit Muskat und Salz abschmecken und warm servieren.",
+      ],
+    },
     "de_eierflockensuppe": {
       name: "Eierflockensuppe",
       ings: [["Eier", "2"], ["Schnittlauch", "1/2 Bund"], ["Möhre", "1/2"]],

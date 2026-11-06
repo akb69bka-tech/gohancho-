@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('ES', 'es', {
   staple: 'Pan',
   names: {
+    "semolina": "Sémola de trigo",
+    "oats": "Copos de avena",
     'potato': 'Patatas',
     'egg': 'Huevos',
     'onion': 'Cebolla',
@@ -66,6 +68,36 @@ GOHAN_PACK_TR('ES', 'es', {
     'flour': 'Harina',
   },
   recipes: {
+    "es_sopa_semola": {
+      name: "Sopa de sémola",
+      ings: [["Sémola de trigo", "50 g"], ["Huevo duro picado", "1"]],
+      seas: "1 litro de caldo de pollo · Sal",
+      steps: [
+        "Calienta el caldo hasta que hierva suavemente.",
+        "Añade la sémola en forma de lluvia, removiendo para que no se formen grumos.",
+        "Cuece 6-8 minutos a fuego bajo, removiendo, hasta que espese un poco. Rectifica de sal y sirve con el huevo duro picado por encima.",
+      ],
+    },
+    "es_gachas_avena": {
+      name: "Gachas de avena",
+      ings: [["Copos de avena", "80 g"], ["Leche", "400 ml"], ["Plátano en rodajas", "1"]],
+      seas: "Una pizca de sal · 1/2 cdta de canela molida · 1 cda de miel (opcional)",
+      steps: [
+        "Pon la avena, la leche, la sal y la canela en un cazo pequeño.",
+        "Lleva a un hervor suave y cuece 5 minutos, removiendo, hasta que quede cremoso.",
+        "Sirve caliente con el plátano y un poco de miel.",
+      ],
+    },
+    "es_arroz_caldoso": {
+      name: "Arroz caldoso de pollo",
+      ings: [["Arroz redondo", "150 g"], ["Contramuslo de pollo en trozos pequeños", "250 g"], ["Zanahoria en dados", "1"], ["Cebolla picada fina", "1/2"]],
+      seas: "1,2 litros de agua o caldo de pollo · 2 cdas de aceite de oliva · 1 hoja de laurel · Sal",
+      steps: [
+        "Pocha la cebolla y la zanahoria en el aceite 5 minutos sin que se doren. Añade el pollo y rehoga 3 minutos.",
+        "Agrega el agua o el caldo y el laurel, lleva a ebullición, añade el arroz y cuece 20-25 minutos a fuego bajo, removiendo de vez en cuando.",
+        "Cuando el arroz esté muy tierno y el caldo cremoso, sala al gusto. Comprueba que el pollo esté bien hecho y sirve.",
+      ],
+    },
     "es_sopa_picadillo": {
       name: "Sopa de picadillo rápida",
       ings: [["Fideos finos", "40 g"], ["Jamón serrano en taquitos", "40 g"], ["Huevo duro", "1"]],

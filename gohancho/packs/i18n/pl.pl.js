@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    "oats": "Płatki owsiane",
+    "semolina": "Kasza manna",
     'pork': "Wieprzowina", 'ground pork': "Mięso mielone", 'chicken': "Kurczak", 'beef': "Wołowina", 'fish': "Ryba", 'egg': "Jajka",
     'flour': "Mąka", 'breadcrumbs': "Bułka tarta", 'bread': "Chleb", 'potato': "Ziemniaki", 'onion': "Cebula", 'dill': "Koperek",
     'quark': "Twaróg", 'sour cream': "Śmietana", 'milk': "Mleko", 'lemon': "Cytryna", 'bell pepper': "Papryka",
@@ -19,6 +21,36 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    "pl_owsianka": {
+      name: "Owsianka",
+      ings: [["Płatki owsiane", "80 g"], ["Mleko", "400 ml"], ["Jabłko, starte", "1"]],
+      seas: "Szczypta soli · 1 łyżeczka miodu (opcjonalnie)",
+      steps: [
+        "Zagotuj mleko z solą.",
+        "Wsyp płatki i gotuj 5 minut na małym ogniu, mieszając, aż będzie kremowo.",
+        "Podawaj na ciepło z tartym jabłkiem i odrobiną miodu.",
+      ],
+    },
+    "pl_kaszka_manna": {
+      name: "Kaszka manna",
+      ings: [["Kasza manna", "60 g"], ["Mleko", "500 ml"]],
+      seas: "Szczypta soli · 1 łyżka cukru · 1 łyżeczka masła",
+      steps: [
+        "Zagotuj mleko z solą i cukrem.",
+        "Wsypuj kaszę cienkim strumieniem, mieszając trzepaczką, i zmniejsz ogień.",
+        "Gotuj 3–4 minuty, mieszając, aż zgęstnieje. Dodaj masło i podawaj na ciepło.",
+      ],
+    },
+    "pl_kleik_ryzowy": {
+      name: "Kleik ryżowy z marchewką",
+      ings: [["Ryż biały", "80 g"], ["Marchewka, drobno pokrojona", "1"]],
+      seas: "1,2 litra wody · 1/2 łyżeczki soli · 1 łyżeczka masła (opcjonalnie)",
+      steps: [
+        "Opłucz ryż i włóż go do garnka z wodą i marchewką.",
+        "Zagotuj i gotuj 35–40 minut na małym ogniu pod uchyloną pokrywką, od czasu do czasu mieszając, aż ryż będzie bardzo miękki, a płyn gęsty.",
+        "Lekko rozgnieć lub przemieszaj na gładko, posól, dodaj masło i podawaj na ciepło.",
+      ],
+    },
     "pl_groszkowa": {
       name: "Szybka zupa krem z zielonego groszku",
       ings: [["Mrożony zielony groszek", "300 g"], ["Cebula", "1/2"], ["Śmietana 18%", "50 ml"]],

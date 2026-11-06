@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'en',
   share: 'messenger',
   soupDaily: false,
+  okayuDay: {"name": "Oatmeal", "en": "Oatmeal day", "ja": "オートミール（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: null,
   recipes: [
     // ---------- mains ----------
@@ -1983,8 +1984,10 @@ GOHAN_PACK({
       id: 'us_oatmeal',
       name: 'Oatmeal with banana and cinnamon',
       local: 'Oatmeal',
-      type: 'main',
+      type: 'rice',
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
       method: 'simmer',
       protein: 'veg',
       min: 10,
@@ -2294,8 +2297,55 @@ GOHAN_PACK({
       ],
       tip: { add: "A few pickle slices", why: "Tangy against the sweet sauce", skill: "Loosen with water", how: "A splash of water keeps the sauce from catching while the chicken heats." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "us_farina",
+      name: "Farina porridge with butter",
+      local: "Farina",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "farina|Farina (cream of wheat)|1/2 cup (85 g)",
+        "milk|Milk (or half water)|2 cups (480 ml)",
+        "butter|Butter|1 tbsp?",
+      ],
+      seas: "Pinch of salt · 1–2 tsp sugar or honey (optional)",
+      steps: [
+        "Bring the milk and salt to a gentle simmer in a small saucepan.",
+        "Pour in the farina in a thin stream while whisking, so no lumps form.",
+        "Lower the heat and cook 3–5 minutes, stirring, until thick and smooth. Top with the butter and a little sugar or honey.",
+      ],
+    },
+    {
+      id: "us_grits",
+      name: "Creamy grits with butter",
+      local: "Grits",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "grits|Quick grits (not instant)|1/2 cup (80 g)",
+        "milk|Milk|1 cup (240 ml)",
+        "butter|Butter|1 tbsp",
+        "cheese|Mild cheddar, grated|30 g?",
+      ],
+      seas: "1 1/2 cups (360 ml) water · 1/2 tsp salt",
+      steps: [
+        "Bring the water, milk and salt to a simmer in a saucepan.",
+        "Whisk in the grits slowly, lower the heat and cook 8–10 minutes, stirring often, until thick and creamy.",
+        "Stir in the butter (and the cheese, if using) and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "farina": ["farina", "cream of wheat", "wheat farina"],
     "turkey": ["turkey","deli turkey","turkey breast","sliced turkey"],
     "english muffin": ["english muffin","english muffins","muffin"],
     "tortellini": ["tortellini","cheese tortellini","refrigerated tortellini"],
@@ -2394,6 +2444,7 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'beef', 'pork chop', 'salmon', 'egg', 'cheese', 'potato', 'onion', 'tomato', 'broccoli', 'carrot', 'lettuce', 'pasta', 'rice', 'milk', 'butter', 'green beans', 'corn'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'onion', 'potato', 'carrot', 'pasta', 'rice', 'flour', 'canned tomato', 'stock', 'breadcrumbs', 'mayonnaise', 'lemon', 'parmesan'],
   names: {
+    "farina": "Farina (cream of wheat)",
     "turkey": "Sliced deli turkey",
     "english muffin": "English muffins",
     "tortellini": "Cheese tortellini",

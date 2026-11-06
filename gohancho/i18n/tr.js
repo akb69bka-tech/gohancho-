@@ -1831,5 +1831,9 @@ GOHAN_I18N('tr', {
     "チラシを撮る": "Broşürün fotoğrafını çek",
     "チラシを読み取っています…": "Broşür okunuyor…",
     "選んだ品を特売に入れる（{n}品）": "Seçilenleri indirime ekle ({n})",
-    "{name}の特売": "{name} indirimde"
+    "{name}の特売": "{name} indirimde",
+    "{name}の日": "{name} günü",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day} için yumuşak, hafif yan yemekler ve çorba. Ana yemek yaklaşık {n} dk sürer",
+    "{day}なので{n}品にしました": "{day}: {n} yemek",
+    "この条件では、{day}の主菜がありません": "Bu koşullarda {day} için ana yemek yok"
 });

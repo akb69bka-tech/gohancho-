@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('FR', 'fr', {
   staple: 'Baguette',
   names: {
+    "semolina": "Semoule de blé fine",
+    "oats": "Flocons d'avoine",
     "yogurt": "Yaourt nature",
     "alphabet pasta": "Pâtes alphabet",
     'chicken': 'Poulet',
@@ -78,6 +80,36 @@ GOHAN_PACK_TR('FR', 'fr', {
     'red cabbage': 'Chou rouge',
   },
   recipes: {
+    "fr_semoule_lait": {
+      name: "Semoule au lait",
+      ings: [["Semoule de blé fine", "60 g"], ["Lait", "500 ml"]],
+      seas: "2 c. à soupe de sucre · 1 pincée de sel · Quelques gouttes d'extrait de vanille (facultatif)",
+      steps: [
+        "Faites chauffer le lait avec le sucre, le sel et la vanille jusqu'à frémissement.",
+        "Versez la semoule en pluie en fouettant, puis baissez le feu.",
+        "Laissez cuire 4 à 5 minutes en remuant, jusqu'à ce que ce soit épais et crémeux. Servez tiède.",
+      ],
+    },
+    "fr_porridge_avoine": {
+      name: "Porridge aux flocons d'avoine",
+      ings: [["Flocons d'avoine", "80 g"], ["Lait", "400 ml"], ["Pomme ou poire râpée", "1"]],
+      seas: "1 pincée de sel · 1 c. à soupe de miel (facultatif)",
+      steps: [
+        "Mettez les flocons d'avoine, le lait et le sel dans une petite casserole.",
+        "Portez à frémissement et laissez cuire 5 minutes en remuant, jusqu'à ce que ce soit crémeux.",
+        "Servez avec la pomme ou la poire râpée et un peu de miel.",
+      ],
+    },
+    "fr_riz_au_lait": {
+      name: "Riz au lait",
+      ings: [["Riz rond", "80 g"], ["Lait", "700 ml"]],
+      seas: "3 c. à soupe de sucre · 1 pincée de sel · 1/2 gousse de vanille ou quelques gouttes d'extrait",
+      steps: [
+        "Rincez le riz, couvrez-le d'eau, faites bouillir 2 minutes et égouttez.",
+        "Portez le lait à frémissement avec la vanille et le sel, ajoutez le riz et laissez cuire 30 à 35 minutes à feu très doux en remuant souvent.",
+        "Quand le riz est très tendre et crémeux, ajoutez le sucre. Servez tiède.",
+      ],
+    },
     "fr_petitspois_express": {
       name: "Velouté de petits pois express",
       ings: [["Petits pois surgelés", "300 g"], ["Échalote", "1"], ["Crème fraîche", "2 c. à soupe"]],

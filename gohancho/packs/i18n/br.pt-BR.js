@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    "oats": "Aveia em flocos",
     'chicken': "Frango", 'beef': "Carne bovina", 'ground beef': "Carne moída", 'pork': "Carne de porco", 'fish': "Peixe", 'egg': "Ovos",
     'ham': "Presunto", 'bacon': "Bacon", 'sausage': "Linguiça", 'onion': "Cebola", 'tomato': "Tomate", 'potato': "Batata",
     'carrot': "Cenoura", 'bell pepper': "Pimentão", 'parsley': "Cheiro-verde", 'cilantro': "Coentro", 'lime': "Limão",
@@ -13,6 +14,36 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    "br_canja_grossa": {
+      name: "Canja grossa de galinha",
+      ings: [["Coxa ou peito de frango", "300 g"], ["Arroz branco", "150 g"], ["Cenoura em cubos", "1"], ["Batata em cubos", "1"], ["Cebola picada", "1/2"], ["Cheiro-verde picado", "1 colher (sopa)"]],
+      seas: "1,2 litro de água · 1 dente de alho · 1 colher (sopa) de óleo · Sal",
+      steps: [
+        "Refogue a cebola e o alho no óleo por 2 minutos. Junte o frango e mexa por 3 minutos.",
+        "Acrescente a água, deixe ferver, retire a espuma e cozinhe 20 minutos, até o frango ficar bem cozido. Retire e desfie.",
+        "Junte o arroz, a cenoura e a batata ao caldo e cozinhe 25 minutos, mexendo sempre, até o arroz ficar bem macio e a canja engrossar como um mingau. Volte o frango, acerte o sal e sirva com cheiro-verde.",
+      ],
+    },
+    "br_mingau_aveia": {
+      name: "Mingau de aveia",
+      ings: [["Aveia em flocos", "60 g"], ["Leite", "400 ml"], ["Banana em rodelas", "1"]],
+      seas: "1 colher (sopa) de açúcar · 1 pitada de canela",
+      steps: [
+        "Coloque a aveia, o leite e o açúcar numa panela pequena.",
+        "Cozinhe 5 minutos em fogo baixo, mexendo, até engrossar e ficar cremoso.",
+        "Sirva quente com a banana e uma pitada de canela.",
+      ],
+    },
+    "br_mingau_fuba": {
+      name: "Mingau de fubá",
+      ings: [["Fubá mimoso", "50 g"], ["Leite", "500 ml"]],
+      seas: "2 colheres (sopa) de açúcar · 1 pitada de sal · 1 pitada de canela",
+      steps: [
+        "Misture o fubá no leite frio com o açúcar e o sal até não ter grumos.",
+        "Cozinhe em fogo baixo por 8–10 minutos, mexendo sempre, até engrossar.",
+        "Sirva quente com uma pitada de canela.",
+      ],
+    },
     "br_caldo_feijao_rapido": {
       name: "Caldinho de feijão rápido",
       ings: [["Feijão cozido com caldo (sobra ou enlatado)", "2 xícaras (400 g)"], ["Bacon", "2 fatias"], ["Cebola", "1/2"], ["Salsinha ou coentro", "alguns raminhos"]],

@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'es',
   share: 'whatsapp',
   soupDaily: true,
+  okayuDay: {"name": "Avena y quinua", "es": "Día de avena y quinua", "ja": "アベナとキヌア（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'pe_staple', name: 'White rice', local: 'Arroz blanco' },
   recipes: [
     // ---------- main ----------
@@ -2179,8 +2180,76 @@ GOHAN_PACK({
       ],
       tip: { add: "A little huacatay or mint", why: "A fresh Andean herb note", skill: "Use a lid", how: "Steaming with a lid keeps the kernels juicy." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "pe_quinua_leche",
+      name: "Quinoa milk porridge",
+      local: "Quinua con leche",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 30,
+      ings: [
+        "quinoa|Quinoa, well rinsed|100 g",
+        "evaporated milk|Evaporated milk|200 ml",
+      ],
+      seas: "600 ml water · 1 cinnamon stick · 3 cloves · 2 tbsp sugar",
+      steps: [
+        "Rinse the quinoa several times, rubbing it, until the water runs clear.",
+        "Simmer it in the water with the cinnamon and cloves for 20 minutes, until very soft.",
+        "Add the evaporated milk and sugar and cook 5 minutes more, stirring, until creamy. Remove the spices and serve warm.",
+      ],
+    },
+    {
+      id: "pe_avena_manzana",
+      name: "Oat porridge with apple",
+      local: "Avena con manzana",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 20,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "apple|Apple, peeled and diced|1",
+        "evaporated milk|Evaporated milk|100 ml",
+      ],
+      seas: "600 ml water · 1 cinnamon stick · 2 tbsp sugar",
+      steps: [
+        "Simmer the apple in the water with the cinnamon for 8 minutes.",
+        "Add the oats and cook 6–8 minutes on low heat, stirring, until thick.",
+        "Stir in the evaporated milk and sugar, heat through and serve warm.",
+      ],
+    },
+    {
+      id: "pe_semola_leche",
+      name: "Semolina milk porridge",
+      local: "Sémola con leche",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "semolina|Wheat semolina|60 g",
+        "evaporated milk|Evaporated milk|200 ml",
+      ],
+      seas: "400 ml water · 1 cinnamon stick · 2 tbsp sugar",
+      steps: [
+        "Simmer the water with the cinnamon for 3 minutes, then add the evaporated milk.",
+        "Rain in the semolina while stirring so no lumps form.",
+        "Cook 5–6 minutes on low heat, stirring, until thick. Sweeten, remove the cinnamon and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "oats": ["oats", "rolled oats", "oatmeal", "avena", "avena en hojuelas"],
+    "apple": ["apple", "manzana"],
+    "semolina": ["semolina", "sémola", "semola"],
     'beef': ['beef', 'steak', 'carne', 'res', 'carne de res', 'lomo', 'bistec', 'asado', 'osobuco'],
     'chicken': ['chicken', 'pollo', 'gallina', 'pechuga', 'pierna de pollo', 'encuentro'],
     'fish': ['fish', 'pescado', 'bonito', 'corvina', 'tilapia', 'perico', 'jurel'],
@@ -2261,6 +2330,9 @@ GOHAN_PACK({
   quick: ['chicken', 'beef', 'fish', 'egg', 'tuna', 'onion', 'red onion', 'tomato', 'potato', 'carrot', 'aji amarillo', 'cilantro', 'lime', 'peas', 'corn', 'cheese', 'lentils', 'plantain', 'avocado'],
   pantry: ['rice', 'potato', 'onion', 'red onion', 'egg', 'lime', 'aji amarillo', 'evaporated milk', 'lentils', 'pasta', 'tuna', 'mayonnaise', 'crackers', 'peas', 'cilantro', 'tomato'],
   names: {
+    "oats": "Rolled oats",
+    "apple": "Apple",
+    "semolina": "Wheat semolina",
     'beef': 'Beef', 'chicken': 'Chicken', 'fish': 'Fish', 'tuna': 'Canned tuna', 'egg': 'Eggs', 'onion': 'Onions',
     'red onion': 'Red onions', 'tomato': 'Tomatoes', 'potato': 'Potatoes', 'carrot': 'Carrots', 'aji amarillo': 'Ají amarillo',
     'cilantro': 'Coriander', 'lime': 'Limes', 'bell pepper': 'Bell peppers', 'peas': 'Peas', 'corn': 'Corn (choclo)', 'rice': 'Rice',

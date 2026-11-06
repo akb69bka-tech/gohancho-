@@ -1831,5 +1831,9 @@ GOHAN_I18N('fil', {
     "チラシを撮る": "Kunan ng litrato ang flyer",
     "チラシを読み取っています…": "Binabasa ang flyer…",
     "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})",
-    "{name}の特売": "{name} naka-sale"
+    "{name}の特売": "{name} naka-sale",
+    "{name}の日": "Araw ng {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Sa {day}, malambot at magaan na side dish at sabaw ang mungkahi. Mga {n} min ang pangunahing ulam",
+    "{day}なので{n}品にしました": "{day}: {n} putahe",
+    "この条件では、{day}の主菜がありません": "Sa mga kondisyong ito, walang pangunahing ulam para sa {day}"
 });

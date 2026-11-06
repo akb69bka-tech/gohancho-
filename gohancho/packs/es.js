@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'es',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Gachas", "es": "Día de gachas", "ja": "ガチャス（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'es_staple', name: 'Bread', local: 'Pan' },
   recipes: [
     // ---------- main ----------
@@ -2002,8 +2003,77 @@ GOHAN_PACK({
       ],
       tip: { add: "A drizzle of olive oil on top", why: "Adds shine and flavour", skill: "Short cooking", how: "Two minutes is enough for spinach; longer and it loses its colour." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "es_sopa_semola",
+      name: "Semolina porridge-soup with chicken broth",
+      local: "Sopa de sémola",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "semolina|Wheat semolina|50 g",
+        "egg|Hard-boiled egg, chopped|1?",
+      ],
+      seas: "1 litre chicken broth · Salt",
+      steps: [
+        "Bring the broth to a simmer.",
+        "Rain in the semolina while stirring so no lumps form.",
+        "Cook 6–8 minutes on low heat, stirring, until it thickens a little. Check the salt and serve with the chopped egg on top.",
+      ],
+    },
+    {
+      id: "es_gachas_avena",
+      name: "Oat porridge with milk",
+      local: "Gachas de avena",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|400 ml",
+        "banana|Banana, sliced|1?",
+      ],
+      seas: "Pinch of salt · 1/2 tsp ground cinnamon · 1 tbsp honey (optional)",
+      steps: [
+        "Put the oats, milk, salt and cinnamon in a small saucepan.",
+        "Bring to a gentle simmer and cook 5 minutes, stirring, until creamy.",
+        "Serve warm with the banana and a little honey.",
+      ],
+    },
+    {
+      id: "es_arroz_caldoso",
+      name: "Soft soupy rice with chicken",
+      local: "Arroz caldoso de pollo",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "chicken",
+      min: 40,
+      ings: [
+        "rice|Round rice|150 g",
+        "chicken|Chicken thigh, small pieces|250 g",
+        "carrot|Carrot, diced|1",
+        "onion|Onion, finely chopped|1/2",
+      ],
+      seas: "1.2 litres water or chicken broth · 2 tbsp olive oil · 1 bay leaf · Salt",
+      steps: [
+        "Gently cook the onion and carrot in the oil for 5 minutes without browning. Add the chicken and stir 3 minutes.",
+        "Add the water or broth and the bay leaf, bring to a boil, then add the rice and simmer 20–25 minutes on low heat, stirring now and then.",
+        "When the rice is very soft and the broth is creamy, season with salt. Make sure the chicken is cooked through and serve.",
+      ],
+    },
   ],
   aliases: {
+    "semolina": ["semolina", "sémola", "semola", "sémola de trigo"],
+    "oats": ["oats", "rolled oats", "oatmeal", "avena", "copos de avena"],
     'potato': ['potato', 'potatoes', 'patata', 'patatas'],
     'egg': ['egg', 'eggs', 'huevo', 'huevos'],
     'onion': ['onion', 'onions', 'cebolla', 'cebollas'],
@@ -2070,6 +2140,8 @@ GOHAN_PACK({
   quick: ['egg', 'potato', 'chicken', 'ground meat', 'fish', 'chorizo', 'onion', 'tomato', 'bell pepper', 'zucchini', 'carrot', 'lentils', 'chickpeas', 'rice', 'pasta', 'lettuce', 'tuna', 'green beans'],
   pantry: ['egg', 'potato', 'onion', 'tomato sauce', 'rice', 'pasta', 'lentils', 'chickpeas', 'tuna', 'olives', 'bread', 'lemon', 'mayonnaise', 'carrot', 'tomato', 'chorizo'],
   names: {
+    "semolina": "Wheat semolina",
+    "oats": "Rolled oats",
     'potato': 'Potatoes',
     'egg': 'Eggs',
     'onion': 'Onion',

@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'en',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Porridge", "en": "Porridge day", "ja": "ポリッジ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: null,
   recipes: [
     // ---------- mains ----------
@@ -1990,11 +1991,13 @@ GOHAN_PACK({
       id: 'gb_porridge',
       name: 'Creamy porridge with honey and banana',
       local: 'Porridge',
-      type: 'main',
+      type: 'rice',
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       starch: true,   // 主食になる物（パン・じゃがいも・米・パイ生地など）が入っている
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
       method: 'simmer',
       protein: 'veg',
       min: 10,
@@ -2169,6 +2172,50 @@ GOHAN_PACK({
         "Cut in half and serve hot.",
       ],
       tip: { add: "A spoon of pickle inside", why: "The classic British toastie", skill: "Medium-low heat", how: "Gentle heat melts the cheese before the bread burns." },
+    },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "gb_porridge_salt",
+      name: "Scottish porridge with salt",
+      local: "Scots porridge",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Porridge oats|80 g (1 cup)",
+        "milk|Cold milk, to serve|100 ml?",
+      ],
+      seas: "500 ml water · 1/2 tsp salt",
+      steps: [
+        "Put the oats and water in a small saucepan and bring to a gentle simmer, stirring.",
+        "Cook 5 minutes, stirring often, until thick and smooth. Stir in the salt for the last minute.",
+        "Spoon into warm bowls and pour a little cold milk round the edge.",
+      ],
+    },
+    {
+      id: "gb_porridge_apple",
+      name: "Porridge with stewed apple",
+      local: "Porridge with stewed apple",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 15,
+      ings: [
+        "oats|Porridge oats|80 g (1 cup)",
+        "milk|Milk|400 ml",
+        "apple|Eating apple, peeled and diced|1",
+      ],
+      seas: "Pinch of salt · 1 tbsp sugar · Pinch of cinnamon · 3 tbsp water (for the apple)",
+      steps: [
+        "Put the apple, sugar, cinnamon and the 3 tbsp water in a small pan, cover and cook 8 minutes on low until soft.",
+        "Meanwhile simmer the oats, milk and salt for 5 minutes, stirring, until thick and creamy.",
+        "Spoon the porridge into bowls and top with the soft apple and its juice.",
+      ],
     },
   ],
   aliases: {

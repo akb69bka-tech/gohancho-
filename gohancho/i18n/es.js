@@ -1831,5 +1831,9 @@ GOHAN_I18N('es', {
     "チラシを撮る": "Fotografiar el folleto",
     "チラシを読み取っています…": "Leyendo el folleto…",
     "選んだ品を特売に入れる（{n}品）": "Añadir lo elegido a ofertas ({n})",
-    "{name}の特売": "{name} en oferta"
+    "{name}の特売": "{name} en oferta",
+    "{name}の日": "Día de {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "El {day} proponemos acompañamientos y sopa suaves y ligeros. El plato principal tarda unos {n} min",
+    "{day}なので{n}品にしました": "{day}: {n:# plato:# platos}",
+    "この条件では、{day}の主菜がありません": "Con estas condiciones no hay plato principal para el {day}"
 });

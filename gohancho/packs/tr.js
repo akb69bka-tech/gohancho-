@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'tr',
   share: 'whatsapp',
   soupDaily: true,
+  okayuDay: {"name": "Lapa", "tr": "Lapa günü", "ja": "ラパ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'tr_staple', name: 'Bread', local: 'Ekmek' },
   recipes: [
     // ---------- main ----------
@@ -2054,8 +2055,74 @@ GOHAN_PACK({
       ],
       tip: { add: "A few drops of lemon juice", why: "Brightens the sweet peas", skill: "Blend straight away", how: "Blending right away keeps the soup bright green." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "tr_pirinc_lapasi",
+      name: "Soft rice porridge",
+      local: "Pirinç lapası",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 35,
+      ings: [
+        "rice|Rice (baldo or osmancık)|100 g",
+        "yogurt|Plain yogurt, to serve|4 tbsp?",
+      ],
+      seas: "1 litre water · 1/2 tsp salt · 1 tsp butter",
+      steps: [
+        "Rinse the rice and put it in a pot with the water.",
+        "Bring to the boil and simmer 25–30 minutes on low heat, stirring now and then, until the rice is very soft and porridge-like. Add a little hot water if it gets too thick.",
+        "Stir in the salt and butter and serve warm, with yogurt on the side.",
+      ],
+    },
+    {
+      id: "tr_yulaf_lapasi",
+      name: "Oat porridge with milk",
+      local: "Yulaf lapası",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|400 ml",
+      ],
+      seas: "Pinch of salt · 1 tsp honey (optional) · Pinch of cinnamon",
+      steps: [
+        "Bring the milk and salt to a simmer.",
+        "Add the oats and cook 5 minutes on low heat, stirring, until creamy.",
+        "Serve warm with a little honey and cinnamon.",
+      ],
+    },
+    {
+      id: "tr_irmik_lapasi",
+      name: "Semolina milk porridge",
+      local: "Sütlü irmik lapası",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "semolina|Semolina|60 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "1 tbsp sugar · Pinch of salt · 1 tsp butter",
+      steps: [
+        "Bring the milk, sugar and salt to the boil.",
+        "Rain in the semolina while whisking and lower the heat.",
+        "Cook 3–4 minutes, stirring, until thick. Stir in the butter and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "oats": ["oats", "rolled oats", "oatmeal", "yulaf", "yulaf ezmesi"],
+    "semolina": ["semolina", "irmik"],
     "mint": ["mint","nane","dried mint","kuru nane"],
     'white beans': ['white beans', 'haricot beans', 'dried beans', 'kuru fasulye', 'beyaz fasulye', 'fasulye'],
     'onion': ['onion', 'onions', 'red onion', 'soğan', 'sogan', 'kuru soğan', 'mor soğan'],
@@ -2123,6 +2190,8 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'beef', 'fish', 'egg', 'onion', 'tomato', 'green pepper', 'eggplant', 'zucchini', 'potato', 'cucumber', 'yogurt', 'white cheese', 'green beans', 'red lentils', 'white beans', 'parsley', 'lemon', 'rice'],
   pantry: ['onion', 'tomato paste', 'rice', 'red lentils', 'white beans', 'yogurt', 'egg', 'white cheese', 'flour', 'potato', 'lemon', 'tomato', 'green pepper', 'milk', 'orzo', 'parsley', 'cornmeal'],
   names: {
+    "oats": "Rolled oats",
+    "semolina": "Semolina",
     "mint": "Mint",
     'white beans': 'White beans', 'onion': 'Onions', 'tomato paste': 'Tomato paste', 'green pepper': 'Green peppers',
     'eggplant': 'Aubergines', 'ground beef': 'Minced beef', 'tomato': 'Tomatoes', 'parsley': 'Parsley', 'chicken': 'Chicken',

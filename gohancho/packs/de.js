@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'de',
   share: 'whatsapp',
   soupDaily: false,
+  okayuDay: {"name": "Brei", "de": "Brei-Tag", "ja": "ブライ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'de_staple', name: 'Bread', local: 'Brot' },
   recipes: [
     // ---------------- main ----------------
@@ -1991,8 +1992,76 @@ GOHAN_PACK({
       ],
       tip: { add: "A few crispy bread croutons", why: "Crunch on the smooth soup", skill: "Do not overcook the peas", how: "Five minutes is enough; longer and the soup loses its fresh green." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "de_haferbrei",
+      name: "Oat porridge",
+      local: "Haferbrei",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats (fine)|80 g",
+        "milk|Milk|400 ml",
+        "apple|Apple, grated|1?",
+      ],
+      seas: "Pinch of salt · 1 tsp honey (optional) · Pinch of cinnamon (optional)",
+      steps: [
+        "Bring the milk and salt to a simmer in a small pan.",
+        "Stir in the oats and cook 5 minutes on low heat, stirring, until thick and creamy.",
+        "Serve with the grated apple, a little honey and cinnamon.",
+      ],
+    },
+    {
+      id: "de_griessbrei",
+      name: "Semolina porridge",
+      local: "Grießbrei",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "semolina|Wheat semolina (Grieß)|60 g",
+        "milk|Milk|500 ml",
+        "butter|Butter|1 tsp?",
+      ],
+      seas: "1–2 tbsp sugar · Pinch of salt · Pinch of cinnamon (optional)",
+      steps: [
+        "Bring the milk, sugar and salt to the boil.",
+        "Take the pan off the heat and stir in the semolina, then cook 3–4 minutes on low heat, stirring, until thick.",
+        "Stir in the butter and serve warm with a pinch of cinnamon.",
+      ],
+    },
+    {
+      id: "de_haferschleim",
+      name: "Smooth oat porridge soup with carrot",
+      local: "Haferschleimsuppe",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 25,
+      ings: [
+        "oats|Rolled oats (fine)|50 g",
+        "carrot|Carrot, finely diced|1",
+        "leek|Leek, thinly sliced|1/2?",
+      ],
+      seas: "800 ml vegetable stock (or water with 1 tsp salt) · 1 tsp butter · Pinch of nutmeg",
+      steps: [
+        "Melt the butter in a pot and soften the carrot (and leek) for 2 minutes without browning.",
+        "Add the oats and the stock, bring to the boil and simmer 15 minutes on low heat, stirring now and then.",
+        "Stir until smooth (or blend briefly), season with a pinch of nutmeg and salt, and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "oats": ["oats", "rolled oats", "oatmeal", "haferflocken", "hafer", "zarte haferflocken"],
     "alphabet pasta": ["alphabet pasta","buchstabennudeln","suppennudeln","small pasta"],
     "chives": ["chives","schnittlauch"],
     'leberkaese': ['leberkaese', 'leberkäse', 'fleischkäse', 'leberkas'],
@@ -2068,6 +2137,7 @@ GOHAN_PACK({
   quick: ['ground meat', 'pork', 'chicken', 'fish', 'sausage', 'egg', 'potato', 'onion', 'carrot', 'leek', 'cabbage', 'cucumber', 'spinach', 'peas', 'mushroom', 'cheese', 'cream', 'lentils'],
   pantry: ['egg', 'potato', 'onion', 'carrot', 'cream', 'cheese', 'rice', 'noodles', 'spaetzle', 'lentils', 'breadcrumbs', 'apple sauce', 'peas', 'lemon', 'apple', 'sausage'],
   names: {
+    "oats": "Rolled oats",
     "alphabet pasta": "Alphabet pasta",
     "chives": "Chives",
     'leberkaese': 'Leberkäse',

@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'hi',
   share: 'whatsapp',
   soupDaily: true,
+  okayuDay: {"name": "Khichdi", "hi": "खिचड़ी का दिन", "ja": "キチュリ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'in_staple', name: 'Roti and rice', local: 'रोटी-चावल' },
   recipes: [
     // ---------- main ----------
@@ -1125,6 +1126,7 @@ GOHAN_PACK({
       name: 'Moong dal khichdi',
       local: 'खिचड़ी',
       type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
       method: 'rice',
       protein: 'legume',
       min: 35,
@@ -2027,8 +2029,53 @@ GOHAN_PACK({
       ],
       tip: { add: "Pour over hot rice", why: "The South Indian way", skill: "Do not boil hard", how: "A gentle boil keeps rasam clear and fragrant; a hard boil makes it dull." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "in_dalia",
+      name: "Vegetable dalia (broken wheat porridge)",
+      local: "वेज दलिया",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 25,
+      ings: [
+        "broken wheat|Broken wheat (dalia)|1/2 cup (90 g)",
+        "carrot|Carrot, diced|1",
+        "peas|Green peas|1/4 cup",
+      ],
+      seas: "1 tbsp ghee · 1/2 tsp cumin seeds · 1/4 tsp turmeric · Salt · 600 ml water",
+      steps: [
+        "Heat the ghee in a pressure cooker or pot, add the cumin, then the dalia, and roast 3 minutes on low heat.",
+        "Add the carrot, peas, turmeric, salt and water. Pressure-cook 3 whistles, or simmer covered 15–18 minutes, stirring now and then, until soft and porridge-like.",
+        "Loosen with a little hot water if needed and serve warm.",
+      ],
+    },
+    {
+      id: "in_kanji",
+      name: "Rice kanji (rice gruel)",
+      local: "चावल की कांजी",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 35,
+      ings: [
+        "rice|Rice|1/2 cup",
+        "yogurt|Thin buttermilk or yogurt, to serve|1/2 cup?",
+      ],
+      seas: "1 litre water · Salt · 1/2 tsp cumin seeds (optional)",
+      steps: [
+        "Wash the rice and put it in a pot with the water (and the cumin).",
+        "Bring to the boil and simmer 25–30 minutes on low heat, stirring now and then, until the rice is very soft and the kanji is thick.",
+        "Season with salt, mash a little with the back of a spoon and serve warm with buttermilk or yogurt on the side.",
+      ],
+    },
   ],
   aliases: {
+    "broken wheat": ["broken wheat", "dalia", "daliya", "cracked wheat", "दलिया"],
     'chicken': ['chicken', 'chicken curry cut', 'chicken breast', 'chicken leg', 'चिकन', 'मुर्गा', 'मुर्गी'],
     'ground meat': ['ground meat', 'mince', 'minced meat', 'keema', 'qeema', 'mutton mince', 'chicken mince', 'कीमा', 'क़ीमा'],
     'fish': ['fish', 'rohu', 'surmai', 'pomfret', 'machli', 'मछली', 'मच्छी'],
@@ -2091,6 +2138,7 @@ GOHAN_PACK({
   quick: ['chicken', 'egg', 'fish', 'ground meat', 'paneer', 'onion', 'tomato', 'potato', 'cauliflower', 'spinach', 'okra', 'eggplant', 'peas', 'cabbage', 'cucumber', 'lentils', 'kidney beans', 'rice', 'yogurt', 'coriander'],
   pantry: ['rice', 'atta', 'lentils', 'kidney beans', 'chickpeas', 'onion', 'tomato', 'potato', 'chili', 'coriander', 'lemon', 'yogurt', 'milk', 'egg', 'peas', 'coconut'],
   names: {
+    "broken wheat": "Broken wheat (dalia)",
     'chicken': 'Chicken', 'ground meat': 'Keema (mince)', 'fish': 'Fish', 'egg': 'Eggs', 'paneer': 'Paneer',
     'kidney beans': 'Rajma (kidney beans)', 'lentils': 'Dal (lentils)', 'chickpeas': 'Chickpeas', 'rice': 'Rice', 'atta': 'Atta (wheat flour)',
     'onion': 'Onions', 'tomato': 'Tomatoes', 'potato': 'Potatoes', 'cauliflower': 'Cauliflower', 'cabbage': 'Cabbage',

@@ -1832,5 +1832,9 @@ GOHAN_I18N('en', {
     "チラシを撮る": "Take a flyer photo",
     "チラシを読み取っています…": "Reading the flyer…",
     "選んだ品を特売に入れる（{n}品）": "Add selected to sales ({n})",
-    "{name}の特売": "{name} on sale"
+    "{name}の特売": "{name} on sale",
+    "{name}の日": "{name} day",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "On {day}, we suggest soft, mild side dishes and soup. The main dish takes about {n} min",
+    "{day}なので{n}品にしました": "{day}, so {n:# dish:# dishes}",
+    "この条件では、{day}の主菜がありません": "With these conditions, there is no main dish for {day}"
 });

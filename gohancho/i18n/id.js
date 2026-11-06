@@ -1831,5 +1831,9 @@ GOHAN_I18N('id', {
     "チラシを撮る": "Foto brosur",
     "チラシを読み取っています…": "Membaca brosur…",
     "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})",
-    "{name}の特売": "{name} sedang promo"
+    "{name}の特売": "{name} sedang promo",
+    "{name}の日": "Hari {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "Pada {day}, lauk dan sup yang lembut dan ringan. Hidangan utama perlu sekitar {n} menit",
+    "{day}なので{n}品にしました": "{day}: {n} hidangan",
+    "この条件では、{day}の主菜がありません": "Dengan kondisi ini, tidak ada hidangan utama untuk {day}"
 });

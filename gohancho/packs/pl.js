@@ -8,6 +8,7 @@ GOHAN_PACK({
   lang: 'pl',
   share: 'messenger',
   soupDaily: true,
+  okayuDay: {"name": "Kaszka", "pl": "Dzień kaszki", "ja": "カシュカ（かゆ）の日"},   // おかゆの日の名前（米のおかゆがない国。その国のおかゆのなかまの名前。オーナー決定 4B）
   staple: { id: 'pl_staple', name: 'Bread', local: 'Chleb' },
   recipes: [
     // ---------- main ----------
@@ -2015,8 +2016,75 @@ GOHAN_PACK({
       ],
       tip: { add: "A slice of rye bread", why: "Makes it more filling", skill: "Keep boiled eggs ready", how: "With eggs boiled in advance the soup takes minutes." },
     },
+    // ---------- おかゆの日（オーナー決定 4B。戸川）: その国のおかゆのなかま。やわらかい・辛くない・生の魚介なし ----------
+    {
+      id: "pl_owsianka",
+      name: "Oat porridge",
+      local: "Owsianka",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "oats|Rolled oats|80 g",
+        "milk|Milk|400 ml",
+        "apple|Apple, grated|1?",
+      ],
+      seas: "Pinch of salt · 1 tsp honey (optional)",
+      steps: [
+        "Bring the milk and salt to a simmer.",
+        "Add the oats and cook 5 minutes on low heat, stirring, until creamy.",
+        "Serve warm with the grated apple and a little honey.",
+      ],
+    },
+    {
+      id: "pl_kaszka_manna",
+      name: "Semolina milk porridge",
+      local: "Kaszka manna",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 10,
+      ings: [
+        "semolina|Wheat semolina (kasza manna)|60 g",
+        "milk|Milk|500 ml",
+      ],
+      seas: "Pinch of salt · 1 tbsp sugar · 1 tsp butter",
+      steps: [
+        "Bring the milk, salt and sugar to the boil.",
+        "Rain in the semolina while whisking and lower the heat.",
+        "Cook 3–4 minutes, stirring, until thick. Add the butter and serve warm.",
+      ],
+    },
+    {
+      id: "pl_kleik_ryzowy",
+      name: "Rice gruel porridge with carrot",
+      local: "Kleik ryżowy z marchewką",
+      type: 'rice',
+      porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
+      okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
+      method: 'simmer',
+      protein: "veg",
+      min: 45,
+      ings: [
+        "rice|White rice|80 g",
+        "carrot|Carrot, finely diced|1",
+      ],
+      seas: "1.2 litres water · 1/2 tsp salt · 1 tsp butter (optional)",
+      steps: [
+        "Rinse the rice and put it in a pot with the water and carrot.",
+        "Bring to the boil and simmer 35–40 minutes on low heat, half covered, stirring now and then, until the rice is very soft and the liquid is thick.",
+        "Mash lightly or stir until smooth, season with the salt, add the butter and serve warm.",
+      ],
+    },
   ],
   aliases: {
+    "oats": ["oats", "rolled oats", "oatmeal", "płatki owsiane", "platki owsiane", "owies"],
+    "semolina": ["semolina", "kasza manna", "manna", "grysik"],
     'pork': ['pork', 'pork loin', 'pork chop', 'pork neck', 'pork shoulder', 'schab', 'wieprzowina', 'kotlet', 'karkówka', 'karkowka', 'łopatka wieprzowa'],
     'ground pork': ['ground pork', 'minced pork', 'mince', 'minced meat', 'mięso mielone', 'mielone', 'mielona wieprzowina'],
     'chicken': ['chicken', 'chicken legs', 'drumstick', 'kurczak', 'udka', 'udko', 'pierś z kurczaka', 'drób'],
@@ -2089,6 +2157,8 @@ GOHAN_PACK({
   quick: ['chicken', 'pork', 'ground pork', 'beef', 'fish', 'egg', 'potato', 'onion', 'carrot', 'cucumber', 'tomato', 'beetroot', 'sauerkraut', 'apple', 'sour cream', 'quark', 'dill', 'pickled cucumber', 'green beans', 'rice'],
   pantry: ['egg', 'onion', 'potato', 'carrot', 'flour', 'breadcrumbs', 'sour cream', 'milk', 'bread', 'rice', 'noodles', 'buckwheat', 'pickled cucumber', 'sauerkraut', 'tomato passata', 'stock', 'lemon', 'dill'],
   names: {
+    "oats": "Rolled oats",
+    "semolina": "Wheat semolina",
     'pork': 'Pork', 'ground pork': 'Minced pork', 'chicken': 'Chicken', 'beef': 'Beef', 'fish': 'Fish', 'egg': 'Eggs',
     'flour': 'Flour', 'breadcrumbs': 'Breadcrumbs', 'bread': 'Bread', 'potato': 'Potatoes', 'onion': 'Onions', 'dill': 'Dill',
     'quark': 'Quark (twaróg)', 'sour cream': 'Sour cream', 'milk': 'Milk', 'lemon': 'Lemon', 'bell pepper': 'Bell pepper',

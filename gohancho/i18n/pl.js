@@ -1831,5 +1831,9 @@ GOHAN_I18N('pl', {
     "チラシを撮る": "Zrób zdjęcie gazetki",
     "チラシを読み取っています…": "Odczytywanie gazetki…",
     "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
-    "{name}の特売": "{name} w promocji"
+    "{name}の特売": "{name} w promocji",
+    "{name}の日": "Dzień: {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day}: miękkie, łagodne dodatki i zupa. Danie główne zajmuje około {n} min",
+    "{day}なので{n}品にしました": "{day}: {n:# danie:# dania:# dań:# dania}",
+    "この条件では、{day}の主菜がありません": "Przy tych warunkach nie ma dania głównego na {day}"
 });

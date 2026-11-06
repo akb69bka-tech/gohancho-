@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('ID', 'id', {
   staple: 'Nasi putih',
   names: {
+    "pumpkin": "Labu kuning",
+    "mung beans": "Kacang hijau",
     'chicken': 'Ayam', 'beef': 'Daging sapi', 'fish': 'Ikan', 'shrimp': 'Udang', 'egg': 'Telur', 'tofu': 'Tahu', 'tempeh': 'Tempe',
     'rice': 'Nasi', 'noodles': 'Mi telur', 'potato': 'Kentang', 'tomato': 'Tomat', 'chili': 'Cabai', 'lime': 'Jeruk nipis',
     'cucumber': 'Timun', 'cabbage': 'Kol', 'water spinach': 'Kangkung', 'spinach': 'Bayam', 'choy sum': 'Sawi hijau',
@@ -12,6 +14,36 @@ GOHAN_PACK_TR('ID', 'id', {
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
+    "id_bubur_ayam": {
+      name: "Bubur ayam",
+      ings: [["Beras", "150 g"], ["Dada atau paha ayam", "250 g"], ["Seledri, iris", "1 batang"], ["Daun bawang, iris", "1 batang"]],
+      seas: "1,5 liter air · 1 lembar daun salam · 1 sdt garam · 1 sdm kecap manis untuk penyajian (opsional)",
+      steps: [
+        "Rebus ayam dengan air dan daun salam 25 menit sampai matang. Angkat dan suwir ayamnya.",
+        "Cuci beras, masukkan ke kaldu, masak dengan api kecil 25 menit sambil sering diaduk sampai menjadi bubur yang lembut. Bumbui dengan garam.",
+        "Sajikan dengan suwiran ayam, seledri, daun bawang, dan sedikit kecap manis bila suka.",
+      ],
+    },
+    "id_tinutuan": {
+      name: "Bubur Manado (tinutuan)",
+      ings: [["Beras", "100 g"], ["Labu kuning, kupas dan potong dadu", "200 g"], ["Jagung manis, dipipil", "1 tongkol"], ["Daun bayam atau kangkung", "1 ikat"], ["Daun kemangi", "1 genggam"]],
+      seas: "1,5 liter air · 1 batang serai, memarkan · 1 sdt garam",
+      steps: [
+        "Cuci beras, masak bersama labu, jagung, dan serai dalam air dengan api kecil 35 menit sambil sering diaduk.",
+        "Setelah beras lembut dan labu hancur, masukkan bayam dan kemangi, masak 3 menit.",
+        "Bumbui dengan garam, buang serai, dan sajikan hangat.",
+      ],
+    },
+    "id_bubur_kacang_hijau": {
+      name: "Bubur kacang hijau",
+      ings: [["Kacang hijau", "150 g"], ["Santan", "200 ml"]],
+      seas: "1 liter air · 1 lembar daun pandan, simpulkan · 3 sdm gula merah · Sejumput garam · 1 iris jahe (opsional)",
+      steps: [
+        "Cuci kacang hijau, rebus dengan air dan daun pandan (serta jahe) dengan api kecil 40 menit sampai sangat lembut.",
+        "Masukkan gula merah dan garam, masak 5 menit sampai larut.",
+        "Tuang santan dan panaskan 3 menit sambil diaduk, jangan sampai mendidih keras. Sajikan hangat.",
+      ],
+    },
     "id_suptahu": {
       name: "Sup tahu telur",
       ings: [["Tahu sutra", "200 g"], ["Telur", "1 butir"], ["Daun bawang", "1 batang"], ["Wortel", "1/2 buah"]],

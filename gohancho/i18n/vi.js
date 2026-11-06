@@ -1831,5 +1831,9 @@ GOHAN_I18N('vi', {
     "チラシを撮る": "Chụp tờ rơi",
     "チラシを読み取っています…": "Đang đọc tờ rơi…",
     "選んだ品を特売に入れる（{n}品）": "Thêm món đã chọn vào giảm giá ({n})",
-    "{name}の特売": "{name} đang giảm giá"
+    "{name}の特売": "{name} đang giảm giá",
+    "{name}の日": "Ngày ăn {name}",
+    "{day}は、やわらかい・あっさりした副菜・汁ものにします。主菜は{n}分ほどでできます": "{day}, món phụ và canh mềm, thanh nhẹ. Món chính mất khoảng {n} phút",
+    "{day}なので{n}品にしました": "{day}: {n} món",
+    "この条件では、{day}の主菜がありません": "Với điều kiện này, không có món chính cho {day}"
 });
