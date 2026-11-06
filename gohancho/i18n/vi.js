@@ -1831,5 +1831,6 @@ GOHAN_I18N('vi', {
     "チラシを撮る": "Chụp tờ rơi",
     "チラシを読み取っています…": "Đang đọc tờ rơi…",
     "選んだ品を特売に入れる（{n}品）": "Thêm món đã chọn vào giảm giá ({n})",
-    "{name}の特売": "{name} đang giảm giá"
+    "{name}の特売": "{name} đang giảm giá",
+    "前の献立": "Thực đơn trước"
 });

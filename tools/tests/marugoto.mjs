@@ -61,7 +61,7 @@ for (const n of [3, 4, 5]){
     await ctx.close();
 }
 
-// D8 まるごと入れ替えのあとに「入れ替えました／元に戻す」のお知らせを出さない（オーナー指示 11/04: 料理の絵の上に出て絵が見えなかった）。↻ と丸のあいだは 8px 以上
+// D8 まるごと入れ替えのあとに「入れ替えました／元に戻す」の数秒で消えるお知らせを出さない（オーナー指示 11/04: 料理の絵の上に出て絵が見えなかった）。11/05: 代わりに上の端の帯に「↶ 前の献立」（menu-back.mjs）。↻ と丸のあいだは 8px 以上
 for (const [vp, ts, n] of [[[360, 740], 2, 3], [[360, 740], 2, 5], [[390, 844], 1, 4], [[430, 932], 0, 6]]){
     const {p, ctx} = await open({textSize: ts || undefined, dishCount: n}, vp);
     const tag = `D8 ${vp.join('x')} 文字${ts} ${n}品`;
@@ -70,7 +70,8 @@ for (const [vp, ts, n] of [[[360, 740], 2, 3], [[360, 740], 2, 5], [[390, 844], 
     ok(gap >= 7.5, `${tag} ↻ とまるごと入れ替えの箱のあいだが 8px 以上: ` + gap);
     const a = await ids(p); await p.click(BTN); await p.waitForTimeout(300); const c = await ids(p);
     const shown = await p.evaluate(() => { const r = document.querySelector('#toast-root'); return {undo: !!document.querySelector('#toast-root [data-act=toast-undo]'), text: r ? r.innerText.trim() : ''}; });
-    ok(!shown.undo && !/入れ替えました/.test(shown.text) && JSON.stringify(a) !== JSON.stringify(c), `${tag} 入れ替わり、「入れ替えました／元に戻す」のお知らせは出ない: ` + JSON.stringify([shown, a, c]));
+    // 11/05 追加: 戻る先の「↶ 前の献立」は上の端の帯に出す（料理の絵・名前・↻にかけない。重ならないことは menu-back.mjs で確かめる）。「元に戻す」の文字のお知らせは出さない
+    ok(!/元に戻す/.test(shown.text) && /前の献立/.test(shown.text) && JSON.stringify(a) !== JSON.stringify(c), `${tag} 入れ替わり、「元に戻す」のお知らせは出ず、「↶ 前の献立」の帯が出る: ` + JSON.stringify([shown, a, c]));
     await ctx.close();
 }
 

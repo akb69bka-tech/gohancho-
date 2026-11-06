@@ -136,11 +136,11 @@ if (want('R18-4')) {
             const r = await p.evaluate(async i => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.undo = !!document.querySelector('#toast-root [data-act=toast-undo]'); c.lines = c.h < 60; return c; }, i);
             n++;
             const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];   // アプリの名前（文）は押す場所ではない
-            if (!r.none || r.undo) bad.push(`文字${ts} 家族${fam} #${i} ` + JSON.stringify(r));
+            if (r.none || !r.undo || !/前の献立/.test(r.text || '') || ctl.length || r.vessels) bad.push(`文字${ts} 家族${fam} #${i} ` + JSON.stringify(r));
         }
         await ctx.close();
     }
-    ok(n >= 20 && !bad.length, `R18-4 195px まるごと入れ替え ${n} 回: 「入れ替えました／元に戻す」のお知らせは出ない（オーナー指示 11/04）: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 20 && !bad.length, `R18-4 195px まるごと入れ替え ${n} 回: 上の端の帯に「↶ 前の献立」が出て、料理の絵・料理名・↻にかからない（オーナー指示 11/05。アプリの名前の文には重なってよい）: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R18-5（R39 → オーナー指示 11/04）430px・文字大/もっと大きい、390px・文字大: まるごと入れ替えを押してもお知らせは出ず、アプリの名前・料理名・↻を隠さない
@@ -153,7 +153,7 @@ for (const [w, h, ts] of [[430, 932, 1], [430, 932, 2], [390, 844, 1]]) {
         const r = await p.evaluate(async () => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.h1 = c.cover.some(x => /^H1/.test(x)); c.core = c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn)/.test(x)); return c; });
         out.push(r);
     }
-    ok(out.every(r => r.none), `R18-5 ${w}px 文字${ts}: まるごと入れ替え4回でお知らせは出ない（オーナー指示 11/04）: ` + JSON.stringify(out.filter(r => !r.none).slice(0, 2)));
+    ok(out.every(r => !r.none && !r.core.length && !r.vessels), `R18-5 ${w}px 文字${ts}: まるごと入れ替え4回で、「↶ 前の献立」の帯が出て料理名・↻・絵にかからない（オーナー指示 11/05）: ` + JSON.stringify(out.filter(r => r.none || r.core.length || r.vessels).slice(0, 2)));
     await ctx.close();
 }
 
@@ -246,12 +246,12 @@ if (want('R18-11')) {
             const r = await p.evaluate(async sy => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); await __tick(); if (sy === 'mid') document.querySelector('#view [data-act=new-menu]').scrollIntoView({block: 'center'}); else window.scrollTo(0, sy); await __tick(); const y0 = Math.round(scrollY);
                 __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.y0 = y0; c.y1 = Math.round(scrollY); c.undo = !!document.querySelector('#toast-root [data-act=toast-undo]'); return c; }, sy);
             n++; const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];
-            if (!r.none || r.undo) bad.push(`文字${ts} 家族${fam} 送り${sy} #${i} ` + JSON.stringify(r));
+            if (r.none || !r.undo || !/前の献立/.test(r.text || '') || (r.bottom > 0 && ctl.length) || r.vessels) bad.push(`文字${ts} 家族${fam} 送り${sy} #${i} ` + JSON.stringify(r));
             await p.waitForTimeout(200);
         }
         await ctx.close();
     }
-    ok(n >= 60 && !bad.length, `R18-11 195px まるごと入れ替え ${n} 回（スクロールした位置でも）: 「元に戻す」のお知らせは出ない（オーナー指示 11/04）: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 60 && !bad.length, `R18-11 195px まるごと入れ替え ${n} 回（スクロールした位置でも）: 「↶ 前の献立」の帯が出て、絵・料理名・↻にかからない（オーナー指示 11/05）: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R18-12（R39 の残り）195px・画面が切りかわった直後のお知らせ（「準備ができました…」と同じ出し方）: アプリの名前（h1）ではなく器の絵の帯に出る。料理名・↻・ボタンにもかからない。文字3段階 × 家族あり/なし
@@ -414,7 +414,7 @@ for (const [w, h] of [[390, 844], [375, 667]]) for (const ts of [0, 1, 2]) {
     const r = await p.evaluate(async () => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 300));
         const before = !!document.querySelector('#toast-root [data-act=toast-undo]'); openCondSheet(); await __tick(); const mb = document.querySelector('#sheet-root [data-act=mood][data-k=slow]'); if (!mb) return {err: '気分なし'}; mb.click(); await __tick(); await new Promise(r => setTimeout(r, 300));
         const sheetOpen = !!sheet; if (sheet) closeSheet(); await __tick(); const c = __toastCover(); return {before, sheetOpen, mood: session.mood, after: !!document.querySelector('#toast-root [data-act=toast-undo]'), none: c.none, core: c.none ? [] : c.cover.filter(x => /^(nm|alg-tag|swap|shuffle|btn|p2-sv)/.test(x))}; });
-    ok(!r.err && !r.before && r.mood === 'slow' && !r.after && !r.core.length, `R18-20 ${w}px 文字${ts}: まるごと入れ替えのあとは「元に戻す」が出ず、気分を変えたあともお知らせは↻・条件のボタンに乗らない: ` + JSON.stringify(r));
+    ok(!r.err && r.before && r.mood === 'slow' && !r.after && !r.core.length, `R18-20 ${w}px 文字${ts}: まるごと入れ替えのあとは「↶ 前の献立」が出て、気分を変える（ほかの方法で献立が変わる）と消え、↻・条件のボタンに乗らない（オーナー指示 11/05）: ` + JSON.stringify(r));
     await ctx.close();
 }
 

@@ -1832,5 +1832,6 @@ GOHAN_I18N('en', {
     "チラシを撮る": "Take a flyer photo",
     "チラシを読み取っています…": "Reading the flyer…",
     "選んだ品を特売に入れる（{n}品）": "Add selected to sales ({n})",
-    "{name}の特売": "{name} on sale"
+    "{name}の特売": "{name} on sale",
+    "前の献立": "Previous menu"
 });

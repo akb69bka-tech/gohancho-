@@ -1831,5 +1831,6 @@ GOHAN_I18N('pt-BR', {
     "チラシを撮る": "Fotografar o folheto",
     "チラシを読み取っています…": "Lendo o folheto…",
     "選んだ品を特売に入れる（{n}品）": "Adicionar selecionados às ofertas ({n})",
-    "{name}の特売": "{name} em oferta"
+    "{name}の特売": "{name} em oferta",
+    "前の献立": "Cardápio anterior"
 });

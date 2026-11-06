@@ -1831,5 +1831,6 @@ GOHAN_I18N('pl', {
     "チラシを撮る": "Zrób zdjęcie gazetki",
     "チラシを読み取っています…": "Odczytywanie gazetki…",
     "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
-    "{name}の特売": "{name} w promocji"
+    "{name}の特売": "{name} w promocji",
+    "前の献立": "Poprzednie menu"
 });

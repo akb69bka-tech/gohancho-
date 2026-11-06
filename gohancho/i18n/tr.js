@@ -1831,5 +1831,6 @@ GOHAN_I18N('tr', {
     "チラシを撮る": "Broşürün fotoğrafını çek",
     "チラシを読み取っています…": "Broşür okunuyor…",
     "選んだ品を特売に入れる（{n}品）": "Seçilenleri indirime ekle ({n})",
-    "{name}の特売": "{name} indirimde"
+    "{name}の特売": "{name} indirimde",
+    "前の献立": "Önceki menü"
 });

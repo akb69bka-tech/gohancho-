@@ -1831,5 +1831,6 @@ GOHAN_I18N('id', {
     "チラシを撮る": "Foto brosur",
     "チラシを読み取っています…": "Membaca brosur…",
     "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})",
-    "{name}の特売": "{name} sedang promo"
+    "{name}の特売": "{name} sedang promo",
+    "前の献立": "Menu sebelumnya"
 });

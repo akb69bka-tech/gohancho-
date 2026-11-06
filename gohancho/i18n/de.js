@@ -1831,5 +1831,6 @@ GOHAN_I18N('de', {
     "チラシを撮る": "Prospekt fotografieren",
     "チラシを読み取っています…": "Prospekt wird gelesen …",
     "選んだ品を特売に入れる（{n}品）": "Auswahl zu Angeboten ({n})",
-    "{name}の特売": "{name} im Angebot"
+    "{name}の特売": "{name} im Angebot",
+    "前の献立": "Vorheriges Menü"
 });
