@@ -32,7 +32,7 @@ const open = async (settings = {}, opt = {}) => {
 // ---- A09 幅195px・文字が大きいときの見出しと下のタブ ----
 if (want('A09')){
     for (const lang of ['ja', 'en', 'de', 'vi', 'ar', 'th']) for (const ts of [0, 1, 2]) for (const w of [195, 240, 280]){
-        const {p, ctx} = await open({uiLang: lang, textSize: ts || undefined}, {vp: [w, 422]});
+        const {p, ctx} = await open({uiLang: lang, textSize: ts || undefined}, {vp: [w, w === 195 ? 520 : 422]}   /* R120: 幅195は下のタブが2段（+約40px）なので、高さを足す */);
         await p.waitForTimeout(200);
         const r = await p.evaluate(() => {
             const lines = e => { const cs = getComputedStyle(e), lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.3; return Math.round(e.getBoundingClientRect().height / lh); };

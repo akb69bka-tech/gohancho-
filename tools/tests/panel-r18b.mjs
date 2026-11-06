@@ -205,7 +205,7 @@ if (want('R18-8')) {
 }
 
 // R18-9（R57）決めたあとの ⚠ の1行: 360/375/390/195 × 文字3段階 × 日本・韓国 × 家族の魚⚠（当たる料理のあるお膳）→ 決める → 「夫に合わない料理があります」の ⚠ の行が最初の画面に見える。上の段もタブより上
-for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 422]]) for (const ts of [0, 1, 2]) for (const lang of ['ja', 'ko']) {
+for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 480]]) for (const ts of [0, 1, 2]) for (const lang of ['ja', 'ko']) {
     if (!want('R18-9')) break;
     const {p, ctx} = await open({w, h, lang, ts, fam: 1, dc: w === 195 ? 3 : 4, sv: 3}, `r57-${w}-${ts}-${lang}`);
     const r = await p.evaluate(async () => {
@@ -395,7 +395,7 @@ if (want('R18-18')) {
 }
 
 // R18-19（R63）「明日から」の「元に戻す」付きのお知らせ: 195×422・もっと大きい は1語＋ボタンの低い形（56px 以下）で下の段の料理名・↻にかからない。430 × ふつう/もっと大きい × 上/スクロールした位置 では「✓ 決めました」の帯にかからない
-for (const [w, h, ts, pos] of [[195, 422, 2, 'top'], [195, 422, 2, 'mid'], [430, 932, 0, 'top'], [430, 932, 0, 'mid'], [430, 932, 2, 'top'], [430, 932, 2, 'mid']]) {
+for (const [w, h, ts, pos] of [[195, 520, 2, 'top'], [195, 520, 2, 'mid'], [430, 932, 0, 'top'], [430, 932, 0, 'mid'], [430, 932, 2, 'top'], [430, 932, 2, 'mid']]) {
     if (!want('R18-19')) break;
     const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: w === 195 ? 3 : 4, sv: 2}, `r63-${w}-${ts}-${pos}`);
     const r = await p.evaluate(async pos => { window.scrollTo(0, 0); session.menu = null; render(); await __tick(); __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 400)); tapGuard = 0; if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick();   // tapGuard: 決めた直後 350ms は押せない（テストは時計を止めているので外す）

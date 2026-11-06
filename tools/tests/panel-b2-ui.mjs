@@ -7,7 +7,7 @@
 //  R2-10 片手: 「条件」に下のほうからも届く入口（決定の帯の中）がある。料理の絵・名前・かえるに重ならない。押すと条件のシートが開き、そこから設定にも行ける
 //  R2-11 条件のシートをタップで開くと、読み上げの焦点がシートの中へ移る。閉じると開いたボタンに戻る（日・英・アラビア語）
 //  R2-12 タイマーが終わったら: 音（WebAudio・設定でオフにできる・はじめはオン）・振動のパターン・消えないお知らせ帯・読み上げ（role=alert）。画面をさわると音は止まり、帯は閉じるまで残る
-//  R2-19 下のタブは 195px でも 44px 以上の幅（横にスクロール）。選んでいるタブは見える場所に出る
+//  R2-19 下のタブは 195px でも 44px 以上の幅（R120 で、1つが 44px に足りない幅は3つずつ2段。全部が画面に入る）。選んでいるタブは見える場所に出る
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = require('../lib/pw.cjs');
