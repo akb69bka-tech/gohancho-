@@ -97,7 +97,7 @@ for (const [from, to, lg] of PAIRS){
 }
 // C7 国のデータが読めない → 案内 → もう一度読みこむ
 {
-    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' });
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP', serviceWorkers: 'block' });   // サービスワーカーの手持ち（キャッシュ）から国のデータが読めてしまわないように
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent|line\.me/, r => r.abort());
     let block = true;
     await ctx.route(/packs\/kr\.js/, r => block ? r.abort() : r.continue());
