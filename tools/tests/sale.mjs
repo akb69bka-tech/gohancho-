@@ -266,7 +266,7 @@ ok(!foreign.some(u => /flyer\.example|ハッピー|%E3%83%8F%E3%83%83%E3%83%94|1
 {
     const fam = [{id: 'f1', name: 'はは', role: 'adult', avoid: ['えび'], allergy: ['えび'], mild: false}, {id: 'f2', name: 'こ', role: 'child', avoid: [], allergy: [], mild: true}];
     const bad = [];
-    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [430, 932], [195, 422]]) for (const ts of [0, 1, 2]) for (const withFam of [true, false]){
+    for (const [w, h] of [[360, 740], [375, 667], [390, 844], [430, 932], [195, 470]]) for (const ts of [0, 1, 2]) for (const withFam of [true, false]){
         const init = Object.assign({}, storeInit, {family: withFam ? fam : [], sale: Object.assign({}, storeInit.sale, {items: [{id: 'g1', s: 'stA', sn: '', k: 'キャベツ', n: 'キャベツ', p: '98円', d: DAY[0], u: DAY[0]}, {id: 'g2', s: 'stA', sn: '', k: '豚肉', n: '豚こま切れ肉', p: '', d: DAY[0], u: DAY[0]}]})});
         const ctx = await b.newContext({ viewport: {width: w, height: h}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', hasTouch: true }); await ctx.route(KNOWN, r => r.abort());
         await ctx.addInitScript(rngScript(seedFor('sale-r97', w + '-' + ts)));

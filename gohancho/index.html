@@ -1897,9 +1897,32 @@ body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tr
 #timer-alert .ta-tx{flex:1 1 9em;min-width:0;overflow-wrap:anywhere;line-height:1.35}
 #timer-alert .btn{flex:0 0 auto;margin-inline-start:auto;min-width:44px;min-height:44px;background:#fff8;border-color:#231800;color:#231800}
 /* R2-19 狭い幅の下のタブ: 1つ 44px 以上。入らないぶんは横にスクロール（選んだタブは見える場所へ） */
-nav.tabs.scrl .in{display:grid;grid-auto-flow:column;grid-template-columns:none!important;grid-auto-columns:44px;gap:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
-nav.tabs.scrl .in::-webkit-scrollbar{display:none}
-nav.tabs.scrl button{min-width:44px;width:44px;padding-inline:0}
+nav.tabs.two .in{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:2px 0}   /* R120: 1つが 44px に足りない狭い幅（195px など）は、3つずつ2段に並べる。全部が画面に入り、1つは 44px 以上（絵＋短い名前のまま） */
+nav.tabs.two button{min-width:44px;padding-inline:0;padding-block:0;min-height:44px;flex-direction:row;justify-content:center;gap:1px}   /* 2段の高さを最小に（44px×2）。絵の横に短い名前 */
+nav.tabs.two .in{gap:0}
+nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
+nav.tabs.two svg{padding-inline:3px}
+/* 利用者モニター v110（R121〜R125）: 狭い幅の重なり・切れ・押せる大きさ */
+@media (min-width:300px){.top .gear{flex:0 0 44px;min-width:44px}}   /* R125: 幅320pxで 42px に縮んでいた国旗・設定を 44px のまま */
+.tray .spot-label[data-act="rice-info"]{min-height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center}   /* R125: ご飯の説明のボタン（高さ 16〜41px）を 44px 以上に */
+.badge.caution{white-space:normal;max-width:100%;overflow-wrap:anywhere;line-height:1.35;border-radius:12px;padding-block:.1rem}   /* R124: 🔍「袋の表示を確認」は長いので、折り返して画面の中に収める */
+.week .item .t{min-width:0}
+@media (min-width:300px) and (max-width:339px){html header.top h1{font-size:max(18px,6vw)}}   /* R125: 国旗・設定を 44px にしたぶん、320px でも名前が切れないように */
+@media (max-width:259px){
+    .week.wk2 .item{grid-template-columns:40px 52px minmax(0,1fr);gap:var(--s4) var(--s8);padding:var(--s8)}   /* R124: 「変更」を次の行へ。料理名・🔍の字の幅を確保 */
+    .week.wk2 .week-acts,.week.wk2 .plus-mark{grid-column:1/-1;grid-row:2;justify-self:end}
+    .inputbar{grid-template-columns:minmax(0,1fr)}   /* R121: 入力欄とボタンを縦に（入力欄が 38px にならないように） */
+    .today-head.p2-head .p2-sv.one{width:auto;max-width:44%;flex:0 0 auto;padding:0 8px;gap:4px}   /* R121: 見出しを隠さない小さな条件ボタン（印は畳み、人数・品数と ▾ を残す） */
+    .today-head.p2-head .p2-sv.one > svg,.today-head.p2-head .p2-sv.one .sv-s{display:none}   /* 人数は条件の中で見える */
+    .today-head.p2-head{gap:4px;flex-wrap:wrap}.today-head.p2-head h2{min-width:5.3em}   /* 見出しと条件ボタンが並びきらない大きい文字では、ボタンを次の行へ（見出しは切らない） */
+}
+/* R122・R123: 「前の献立」は丸の右隣。絵だけのときも、小さな字（前の献立）を丸の下に添える。入りきらないときだけ絵だけ（nocap） */
+.tg-mid .mb-back.icon{flex-direction:column;gap:0;width:56px;height:48px;min-width:56px;padding:0;border-radius:24px}
+.tg-mid .mb-back.icon .mb-ic svg{width:20px;height:20px}
+.tg-mid .mb-back.icon .mb-tx{position:static;width:48px;height:auto;max-height:2.3em;overflow:hidden;clip-path:none;white-space:normal;text-align:center;font-size:clamp(11px,.6875rem,12px);line-height:1.15;overflow-wrap:anywhere}
+.tg-mid .mb-back.icon.nocap{width:44px;height:44px;min-width:44px}.tg-mid .mb-back.icon.nocap .mb-ic svg{width:26px;height:26px}
+.tg-mid .mb-back.icon.nocap .mb-tx{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tray.grid2 .tg-mid.mb-stack .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack .shuffle{max-width:60px}   /* R122: 幅260px未満は、丸と字を 60px の中に（右の「前の献立」の丸に押せる領域が重ならない） */
 </style>
 </head>
 <body>
@@ -3286,10 +3309,10 @@ function menuBackCheck(){
 function menuBackFit(){
     document.querySelectorAll('#view .tg-mid .mb-back').forEach(bt => {
         const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'); if (!ic) return;
-        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(); if (!m.width) return;
+        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(), gp = mid.classList.contains('mb-stack') ? 3 : 6; if (!m.width) return;
         bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px';
-        const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + 6 && r.right > q.left - 6 && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5; };
-        bt.classList.remove('icon'); if (hit()) bt.classList.add('icon');
+        const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + gp && r.right > q.left - gp && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5 || r.top < m.top - 1.5 || r.bottom > m.bottom + 1.5; };
+        bt.classList.remove('icon', 'nocap'); if (hit()){ bt.classList.add('icon'); const tx2 = bt.querySelector('.mb-tx'); if (hit() || (tx2 && (tx2.scrollHeight > tx2.clientHeight + 1 || tx2.scrollWidth > tx2.clientWidth + 1))) bt.classList.add('nocap'); }   // 字が当たるときは丸の下に小さな字、それも当たるときだけ絵だけ
     });
 }
 function menuBackRestore(){
@@ -15543,12 +15566,13 @@ function fitTabs(){
     const nv = document.querySelector('nav.tabs'); if (!nv) return;
     const bs = [...nv.querySelectorAll('button[data-tab]:not([hidden])')]; if (!bs.length) return;
     const ts = Number(document.documentElement.getAttribute('data-ts')) || 0, w = nv.clientWidth / bs.length;
-    nv.classList.toggle('ico', w < 50);
-    nv.classList.toggle('scrl', w < 44);   // R2-19: 1つが 44px に足りない狭い幅は、44px のまま横にスクロール（絵＋短い名前）
-    nv.querySelector('.in').scrollLeft = nv.querySelector('.in').scrollLeft;
+    nv.classList.remove('two'); /* 測り直し: 1段のときの幅で決める */
+    const two = w < 44;   // R120: 1つが 44px に足りない狭い幅は、3つずつ2段（絵＋短い名前。44px 以上・全部が画面に入る）
+    nv.classList.toggle('two', two);
+    nv.classList.toggle('ico', w < 50 || two);
     // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
     nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
-    if (w < 50){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
+    if (w < 50 || two){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
     let fs = [12, 13.5, 15][ts] || 12;
     // どの語も1つのタブの幅に入る（語の途中で折れない・はみ出さない）か。字の幅は canvas で測る
     const cv = fitTabs.cv || (fitTabs.cv = document.createElement('canvas').getContext('2d'));

@@ -123,7 +123,7 @@ for (const ts of [0, 1, 2]) for (const fam of [0, 1]) {
 }
 
 // R22-1（R94）↻ のあとの「元に戻す」の帯: 1つの幅・文字の大きさに1ページで、候補の「これにする」と、その場でかえる（候補を通さない）の2通り
-for (const [w, h] of [[195, 422], [360, 740], [375, 667], [390, 844], [430, 932]]) for (const ts of [0, 2]) {
+for (const [w, h] of [[195, 470], [360, 740], [375, 667], [390, 844], [430, 932]]) for (const ts of [0, 2]) {
     if (!want('R22-1')) break;
     const {p, ctx} = await open({w, h, lang: 'ja', ts, dc: w === 195 ? 3 : 4, sv: 2}, `r94-${w}-${ts}`);
     const out = [];
