@@ -1033,6 +1033,84 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Yağı kırmızı biber ve pul biberle birkaç saniye ısıtıp üzerine gezdirin. Oda sıcaklığında servis edin.'
       ],
       tip: { add: 'Taze ceviz', why: 'Eski ceviz sosa acılık verir', skill: 'Tavuğu kendi suyunda soğutun', how: 'Böylece nemli kalır ve ince, yumuşak lifler halinde didiklenir.' }
-    }
+    },
+    tr_nohutlu_pilav: {
+      name: 'Nohutlu pilav',
+      ings: [
+        ['Pirinç', '200 g'],
+        ['Haşlanmış nohut', '1 kutu (400 g)'],
+        ['Soğan', '1'],
+        ['Maydanoz', '1/2 demet'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı salça · 400 ml sıcak su',
+      steps: [
+        'Pirinci ılık suda suyu berraklaşana kadar yıkayın, 15 dakika bekletin ve süzün.',
+        'İncecik doğranmış soğanı yağda 5 dakika kavurun, salçayı ekleyin, sonra pirinci ekleyip 3 dakika kavurun.',
+        'Süzülmüş nohudu, tuzu, karabiberi ve sıcak suyu ekleyin. Kapağını kapatıp kısık ateşte 15 dakika pişirin, 10 dakika demlendirin ve çatalla karıştırın. Üzerine maydanoz serpin.',
+      ],
+    },
+    tr_imam_bayildi: {
+      name: 'İmam bayıldı',
+      ings: [
+        ['Patlıcan', '3'],
+        ['Soğan', '2'],
+        ['Domates', '3'],
+        ['Yeşil biber', '2'],
+        ['Maydanoz', '1/2 demet'],
+      ],
+      seas: 'Tuz · 5 yemek kaşığı zeytinyağı · 3 diş sarımsak · 1 çay kaşığı şeker · 1/2 limon suyu · 100 ml su',
+      steps: [
+        'Patlıcanları alaca soyun, boyuna ortadan kesmeden yarın, tuzlayıp 15 dakika bekletin. Yıkayıp kurulayın ve 2 yemek kaşığı yağda yumuşayana kadar kızartın.',
+        'Yarım ay doğranmış soğan, biber ve sarımsağı 2 yemek kaşığı yağda 10 dakika kavurun, doğranmış domates, şeker, maydanoz ve tuzu ekleyip 5 dakika pişirin.',
+        'Karışımı patlıcanların yarığına doldurun, bir tencereye dizin, suyu, kalan yağı ve limon suyunu ekleyin, kapağını kapatıp kısık ateşte 30 dakika pişirin. Ilık ya da soğuk servis edin.',
+      ],
+    },
+    tr_domatesli_bulgur: {
+      name: 'Domatesli bulgur pilavı',
+      ings: [
+        ['İri bulgur', '200 g'],
+        ['Salça', '1 yemek kaşığı'],
+        ['Soğan', '1'],
+        ['Yeşil biber', '2'],
+        ['Domates', '2'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı pul biber · 400 ml sıcak su',
+      steps: [
+        'İnce doğranmış soğan ve biberi yağda 6 dakika kavurun. Salça ve pul biberi ekleyip 1 dakika, rendelenmiş domatesi ekleyip 3 dakika pişirin.',
+        'Bulguru ekleyip 1 dakika kavurun. Sıcak suyu ve tuzu ekleyin.',
+        'Kapağını kapatıp kısık ateşte 12 dakika pişirin, 10 dakika demlendirin ve çatalla karıştırın. Salatayla servis edin.',
+      ],
+    },
+    tr_mercimek_corbasi_v: {
+      name: 'Zeytinyağlı mercimek çorbası',
+      ings: [
+        ['Kırmızı mercimek', '150 g'],
+        ['Soğan', '1'],
+        ['Havuç', '1'],
+        ['Patates', '1'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı kimyon · 1 çay kaşığı toz kırmızı biber · 1 litre su · Limon dilimleri',
+      steps: [
+        'Doğranmış soğan, havuç ve patatesi 2 yemek kaşığı yağda 5 dakika kavurun.',
+        'Yıkanmış mercimeği ve suyu ekleyin, hepsi yumuşayana kadar 20 dakika pişirin.',
+        'Pürüzsüz olana kadar blenderdan geçirin, tuz, karabiber ve kimyonla tatlandırın. Kalan yağı kırmızı biberle ısıtıp çorbanın üzerine gezdirin ve limonla servis edin.',
+      ],
+    },
+    tr_ezogelin_v: {
+      name: 'Ezogelin çorbası',
+      ings: [
+        ['Kırmızı mercimek', '100 g'],
+        ['İnce bulgur', '2 yemek kaşığı'],
+        ['Soğan', '1'],
+        ['Salça', '1 yemek kaşığı'],
+        ['Kuru nane', '1 çay kaşığı'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı pul biber · 1 litre su',
+      steps: [
+        'Doğranmış soğanı 2 yemek kaşığı yağda 5 dakika kavurun. Salçayı ve pul biberin yarısını ekleyip 1 dakika karıştırın.',
+        'Yıkanmış mercimeği, bulguru ve suyu ekleyin, ara sıra karıştırarak 25 dakika, çorba koyulaşana kadar pişirin.',
+        'Tuz ve karabiberle tatlandırın. Kalan yağı nane ve kalan pul biberle ısıtıp çorbanın üzerine gezdirerek servis edin.',
+      ],
+    },
   }
 });

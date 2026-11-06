@@ -1093,5 +1093,85 @@ GOHAN_PACK_TR('ES', 'es', {
       ],
       tip: { add: 'Alioli o un chorrito de limón', why: 'La acidez o la crema de ajo cortan lo graso de la fritura', skill: 'Freír en tandas pequeñas', how: 'Con demasiadas anillas a la vez el aceite se enfría y el rebozado lo absorbe en vez de quedar crujiente.' }
     },
+    es_lentejas_verduras: {
+      name: 'Lentejas con verduras',
+      ings: [
+        ['Lentejas pardinas', '200 g'],
+        ['Patata', '1'],
+        ['Zanahorias', '2'],
+        ['Pimiento verde', '1'],
+        ['Cebolla', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 800 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados con el aceite durante 6 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada las lentejas lavadas, el laurel y el agua y cueza a fuego suave 20 minutos. Incorpore la patata troceada.',
+        'Cueza 15 minutos más, hasta que las lentejas y la patata estén tiernas y el guiso espese. Sale al gusto.',
+      ],
+    },
+    es_garbanzos_espinacas: {
+      name: 'Garbanzos con espinacas',
+      ings: [
+        ['Garbanzos cocidos', '1 bote (400 g)'],
+        ['Espinacas frescas', '300 g'],
+        ['Pan duro', '2 rebanadas'],
+        ['Ajo', '3 dientes'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 1 cucharadita de comino molido · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · 150 ml de agua',
+      steps: [
+        'Fría el pan y el ajo en 3 cucharadas de aceite hasta que estén dorados. Májelos en un mortero con el comino, el pimentón y el vinagre hasta formar una pasta.',
+        'Escalde las espinacas en agua hirviendo 1 minuto, escúrralas y píquelas.',
+        'Caliente el resto del aceite, añada la pasta, las espinacas, los garbanzos escurridos, la sal y el agua y cueza 10 minutos hasta que espese. Sirva caliente.',
+      ],
+    },
+    es_paella_verduras: {
+      name: 'Paella de verduras',
+      ings: [
+        ['Arroz de grano corto', '200 g'],
+        ['Pimiento rojo', '1'],
+        ['Judías verdes planas', '150 g'],
+        ['Corazones de alcachofa', '4'],
+        ['Tomate rallado', '2'],
+        ['Guisantes', '80 g'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón dulce · Una pizca de azafrán · 600 ml de agua caliente · Gajos de limón',
+      steps: [
+        'Caliente el aceite en una paellera y sofría el pimiento en tiras, las judías troceadas y las alcachofas 8 minutos. Añada el ajo y el tomate rallado y cocine 5 minutos hasta que espese. Incorpore el pimentón.',
+        'Añada el arroz y remueva 1 minuto. Vierta el agua caliente con el azafrán y la sal, reparta el arroz de forma uniforme y añada los guisantes.',
+        'Cueza a fuego medio 18 minutos sin remover, hasta que se absorba el agua. Deje reposar 5 minutos tapado y sirva con limón.',
+      ],
+    },
+    es_pisto_pan: {
+      name: 'Pisto con pan tostado',
+      ings: [
+        ['Calabacines', '2'],
+        ['Tomates maduros', '4'],
+        ['Pimientos (rojo y verde)', '2'],
+        ['Cebolla', '1'],
+        ['Pan de pueblo', '4 rebanadas'],
+      ],
+      seas: 'Sal · 5 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de azúcar · Pimienta',
+      steps: [
+        'Pique la cebolla, los pimientos y los calabacines en trozos pequeños. Sofría la cebolla y los pimientos en 3 cucharadas de aceite a fuego bajo 10 minutos.',
+        'Añada el calabacín y el ajo y cocine 8 minutos. Añada los tomates picados, el azúcar y la sal y cueza sin tapar 20 minutos, hasta que el pisto espese y suelte el aceite.',
+        'Tueste el pan y rocíelo con el resto del aceite. Sirva el pisto caliente sobre el pan o al lado.',
+      ],
+    },
+    es_alubias_estofadas: {
+      name: 'Alubias blancas estofadas',
+      ings: [
+        ['Alubias blancas cocidas', '2 botes (800 g)'],
+        ['Zanahorias', '2'],
+        ['Patata', '1'],
+        ['Cebolla', '1'],
+        ['Pimiento verde', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 500 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados en el aceite 8 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada la patata troceada, el laurel y el agua y cueza 15 minutos.',
+        'Añada las alubias escurridas y cueza 10 minutos más. Aplaste unas pocas para espesar el guiso, sale y sirva.',
+      ],
+    },
   }
 });

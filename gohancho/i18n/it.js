@@ -1831,5 +1831,14 @@ GOHAN_I18N('it', {
     "チラシを撮る": "Fotografa il volantino",
     "チラシを読み取っています…": "Lettura del volantino…",
     "選んだ品を特売に入れる（{n}品）": "Aggiungi la selezione alle offerte ({n})",
-    "{name}の特売": "{name} in offerta"
+    "{name}の特売": "{name} in offerta",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alcol (sake, mirin, vino, birra; anche nei condimenti)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Agnello, anatra, oca, ecc. (altre carni)",
+    "食の決まり": "Regole alimentari",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Usa qualcosa che potrebbe non rispettare le tue regole alimentari ({names}). Controlla l’etichetta della confezione.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Escludere il maiale non esclude i piatti con alcol (sake, mirin, vino). Se vuoi evitare anche l’alcol, scegli anche «Alcol».",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Poiché maiale, pollo, manzo, pesce e frutti di mare sono tutti esclusi, vengono esclusi anche agnello, anatra, brodi di carne o di pesce e dadi, salsa di pesce e salsa di ostriche. Il consommé e la salsa Worcestershire hanno un 🔍 «controlla l’etichetta».",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Poiché sono esclusi anche uova e latticini, vengono esclusi anche miele e maionese.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Con le impostazioni attuali (cibi sgraditi, allergie, ingredienti difficili da trovare) non c’è nessun piatto principale da proporre, quindi il pulsante per confermare il menù non si può premere. Controlla gli ingredienti esclusi nelle Impostazioni.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Nessun piatto principale è adatto a queste impostazioni. Controlla gli ingredienti esclusi nelle Impostazioni"
 });

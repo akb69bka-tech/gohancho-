@@ -1831,5 +1831,14 @@ GOHAN_I18N('pl', {
     "チラシを撮る": "Zrób zdjęcie gazetki",
     "チラシを読み取っています…": "Odczytywanie gazetki…",
     "選んだ品を特売に入れる（{n}品）": "Dodaj wybrane do promocji ({n})",
-    "{name}の特売": "{name} w promocji"
+    "{name}の特売": "{name} w promocji",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alkohol (sake, mirin, wino, piwo; także w przyprawach)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Jagnięcina, kaczka, gęś itp. (inne mięsa)",
+    "食の決まり": "Zasady żywieniowe",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Zawiera coś, co może nie pasować do Twoich zasad żywieniowych ({names}). Sprawdź etykietę opakowania.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Wykluczenie wieprzowiny nie wyklucza dań z alkoholem (sake, mirin, wino). Jeśli chcesz unikać także alkoholu, wybierz również „Alkohol”.",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Ponieważ wykluczone są wieprzowina, kurczak, wołowina, ryby i owoce morza, wykluczone są też jagnięcina, kaczka, buliony mięsne i rybne oraz kostki rosołowe, sos rybny i sos ostrygowy. Consommé i sos Worcestershire dostają 🔍 „sprawdź etykietę”.",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Ponieważ wykluczone są też jajka i nabiał, wykluczone są także miód i majonez.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Przy obecnych ustawieniach (produkty, których nie lubisz, alergie, trudno dostępne składniki) nie da się zaproponować żadnego dania głównego, więc przycisku zatwierdzającego jadłospis nie można nacisnąć. Sprawdź wykluczone składniki w Ustawieniach.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Żadne danie główne nie pasuje do tych ustawień. Sprawdź wykluczone składniki w Ustawieniach"
 });

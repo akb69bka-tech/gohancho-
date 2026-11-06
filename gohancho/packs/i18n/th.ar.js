@@ -103,6 +103,14 @@ GOHAN_PACK_TR('TH', 'ar', {
     "th_kaiphadphrikthai": {name: "دجاج مقلي بالفلفل الأسود"},
     "th_kaengjuedkhainam": {name: "شوربة صافية بالبيض"},
     "th_tomjuedphakruam": {name: "شوربة صافية بالخضار المشكلة"},
-    "th_kaengjuedmakhuea": {name: "شوربة صافية بالطماطم ولحم الخنزير المفروم"}
+    "th_kaengjuedmakhuea": {name: "شوربة صافية بالطماطم ولحم الخنزير المفروم"},
+    "th_krapao_tofu": {name: "كراباو التوفو المقلي بالريحان المقدس"},
+    "th_green_curry_tofu": {name: "كاري أخضر بالتوفو والباذنجان"},
+    "th_pad_thai_je": {name: "باد تاي نباتي"},
+    "th_khao_pad_pak": {name: "أرز مقلي بالخضار"},
+    "th_pad_priao_wan_tofu": {name: "توفو وخضار بالصلصة الحلوة الحامضة"},
+    "th_massaman_je": {name: "كاري ماساماني نباتي بالبطاطس والتوفو"},
+    "th_pad_woonsen_je": {name: "شعيرية زجاجية مقلية بالخضار"},
+    "th_pad_makhuea_tofu": {name: "باذنجان مقلي بالتوفو والريحان"}
   }
 });

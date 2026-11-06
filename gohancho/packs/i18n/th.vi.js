@@ -103,6 +103,14 @@ GOHAN_PACK_TR('TH', 'vi', {
     "th_kaiphadphrikthai": {name: "Gà xào tiêu đen"},
     "th_kaengjuedkhainam": {name: "Canh trứng"},
     "th_tomjuedphakruam": {name: "Canh rau củ thập cẩm"},
-    "th_kaengjuedmakhuea": {name: "Canh cà chua thịt bằm"}
+    "th_kaengjuedmakhuea": {name: "Canh cà chua thịt bằm"},
+    "th_krapao_tofu": {name: "Đậu hũ xào lá húng quế thánh"},
+    "th_green_curry_tofu": {name: "Cà ri xanh đậu hũ cà tím"},
+    "th_pad_thai_je": {name: "Pad Thái chay"},
+    "th_khao_pad_pak": {name: "Cơm chiên rau củ"},
+    "th_pad_priao_wan_tofu": {name: "Đậu hũ rau củ xào chua ngọt"},
+    "th_massaman_je": {name: "Cà ri Massaman chay với khoai tây và đậu hũ"},
+    "th_pad_woonsen_je": {name: "Miến xào rau củ chay"},
+    "th_pad_makhuea_tofu": {name: "Cà tím xào đậu hũ húng quế"}
   }
 });

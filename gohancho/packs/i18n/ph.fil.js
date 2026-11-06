@@ -1202,5 +1202,88 @@ GOHAN_PACK_TR('PH', 'fil', {
       ],
       tip: { add: 'Dagdag na kanin', why: 'Ang sarsa ng bawang at mantikilya ang pinakamasarap sa kanin', skill: 'Panatilihing ginintuan ang bawang', how: 'Sa katamtamang apoy, bumabango ang mantikilya sa bawang nang hindi ito nasusunog at pumapait.' }
     },
+    ph_ginisang_munggo_v: {
+      name: 'Ginisang munggo',
+      ings: [
+        ['Munggo', '200 g'],
+        ['Dahon ng malunggay (o spinach)', '1 dakot'],
+        ['Kamatis', '2'],
+        ['Sibuyas', '1'],
+        ['Kanin (kasama)', '300 g'],
+      ],
+      seas: '2 kutsarang mantika · 4 butil ng bawang · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta · 700 ml tubig',
+      steps: [
+        'Pakuluan ang hinugasang munggo sa tubig nang 30 minuto hanggang lumambot at magsimulang magkapira-piraso.',
+        'Igisa ang bawang, sibuyas, at tinadtad na kamatis sa mantika nang 6 na minuto hanggang lumambot.',
+        'Ihalo ang ginisa sa munggo kasama ang toyo, asin, at paminta at pakuluan nang 5 minuto. Ihalo ang dahon ng malunggay hanggang malanta at ihain kasama ng kanin.',
+      ],
+    },
+    ph_ginataang_kalabasa_v: {
+      name: 'Ginataang kalabasa at sitaw',
+      ings: [
+        ['Kalabasa', '300 g'],
+        ['Sitaw', '150 g'],
+        ['Gata', '400 ml'],
+        ['Sibuyas', '1'],
+        ['Kanin (kasama)', '300 g'],
+      ],
+      seas: '1 kutsarang mantika · 4 butil ng bawang · 1 kutsarang hiniwang luya · 1 siling berde · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta',
+      steps: [
+        'Igisa ang bawang, sibuyas, at luya sa mantika nang 3 minuto. Idagdag ang hiniwang kalabasa at kalahati ng gata at pakuluan nang 10 minuto.',
+        'Idagdag ang sitaw na hiniwa nang 5 cm, ang toyo, at ang siling berde at pakuluan nang 5 minuto.',
+        'Ibuhos ang natirang gata, timplahan ng asin at paminta, at lutuin nang dahan-dahan nang 5 minuto nang hindi kumukulo nang malakas. Ihain kasama ng kanin.',
+      ],
+    },
+    ph_lumpiang_gulay_v: {
+      name: 'Lumpiang gulay',
+      ings: [
+        ['Balat ng lumpia', '12'],
+        ['Repolyo', '150 g'],
+        ['Karot', '2'],
+        ['Sitsaro (green beans)', '100 g'],
+        ['Tokwa', '150 g'],
+      ],
+      seas: 'Mantika para sa pagprito · 3 butil ng bawang · 1 sibuyas · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta · Sweet chili sauce na sawsawan',
+      steps: [
+        'Hiwain nang manipis ang repolyo, karot, at green beans, at durugin ang tokwa. Igisa ang bawang at hiniwang sibuyas nang 2 minuto.',
+        'Idagdag ang mga gulay at tokwa kasama ang toyo, asin, at paminta at igisa nang 5 minuto. Palamigin nang lubos at alisin ang likido.',
+        'Maglagay ng 2 kutsara ng palaman sa bawat balat, balutin nang mahigpit, at isara ang gilid gamit ang tubig.',
+        'Iprito ang mga lumpia sa mainit na mantika nang 3-4 na minuto hanggang gintong kayumanggi at malutong. Ihain kasama ng sweet chili sauce.',
+      ],
+    },
+    ph_pancit_gulay: {
+      name: 'Pancit gulay',
+      ings: [
+        ['Pancit canton (tuyo)', '200 g'],
+        ['Repolyo', '150 g'],
+        ['Karot', '1'],
+        ['Sitsaro (green beans)', '80 g'],
+        ['Tokwa', '150 g'],
+        ['Kalamansi (o lemon)', '3'],
+      ],
+      seas: '3 kutsarang mantika · 4 butil ng bawang · 1 sibuyas · 2 kutsarang toyo · 1/2 kutsaritang asin · Paminta · 300 ml tubig',
+      steps: [
+        'Hiwain nang manipis ang repolyo, karot, at green beans at gawing kubo ang tokwa. Iprito ang tokwa sa 1 kutsarang mantika hanggang gintong kayumanggi at itabi.',
+        'Igisa ang bawang at hiniwang sibuyas sa natirang mantika nang 2 minuto, idagdag ang karot at green beans at igisa nang 3 minuto.',
+        'Ilagay ang tubig at toyo at pakuluan. Idagdag ang pancit at repolyo at lutuin nang 5-6 na minuto habang hinahalo hanggang masipsip ang sabaw. Ibalik ang tokwa at ihain kasama ng kalamansi.',
+      ],
+    },
+    ph_sinigang_gulay: {
+      name: 'Sinigang na gulay',
+      ings: [
+        ['Sinigang mix (sampalok)', '1 sachet (40 g)'],
+        ['Labanos', '150 g'],
+        ['Okra', '6'],
+        ['Kangkong', '100 g'],
+        ['Sitaw', '100 g'],
+        ['Talong', '1'],
+      ],
+      seas: '800 ml tubig · 1 sibuyas · 2 kamatis · 2 siling berde · Asin',
+      steps: [
+        'Pakuluan ang tubig kasama ang sibuyas at kamatis na hinati sa apat.',
+        'Idagdag ang hiniwang labanos at talong at pakuluan nang 8 minuto, saka ang sitaw at okra nang 4 na minuto.',
+        'Ihalo ang sinigang mix at sili, idagdag ang kangkong at lutuin nang 2 minuto. Timplahan ng asin at ihain nang mainit.',
+      ],
+    },
   }
 });

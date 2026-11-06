@@ -1489,5 +1489,85 @@ GOHAN_PACK_TR('FR', 'fr', {
       ],
       tip: { add: 'Servir d’abord le bouillon avec un peu de vermicelle', why: 'C’est la façon traditionnelle de manger le pot-au-feu : bouillon, puis viande et légumes', skill: 'Ne pas faire bouillir fort', how: 'Un frémissement doux garde le bouillon clair et la viande tendre ; un gros bouillon le trouble et rend la viande filandreuse.' }
     },
+    fr_ratatouille_riz: {
+      name: 'Ratatouille et riz',
+      ings: [
+        ['Courgettes', '2'],
+        ['Aubergine', '1'],
+        ['Poivrons', '2'],
+        ['Tomates', '4'],
+        ['Oignon', '1'],
+        ['Riz', '150 g'],
+      ],
+      seas: 'Sel · poivre · 4 c. à soupe d’huile d’olive · 2 gousses d’ail · 1 c. à café d’herbes de Provence · 1 feuille de laurier',
+      steps: [
+        'Coupez les courgettes, l’aubergine et les poivrons en morceaux de 2 cm et hachez les tomates. Faites revenir l’oignon émincé dans la moitié de l’huile pendant 5 minutes.',
+        'Ajoutez l’aubergine, les poivrons et l’ail et faites cuire 8 minutes, puis ajoutez les courgettes, les tomates, les herbes et le laurier. Couvrez et laissez mijoter doucement 30 minutes.',
+        'Pendant ce temps, faites cuire le riz. Assaisonnez la ratatouille, terminez avec le reste de l’huile et servez sur le riz.',
+      ],
+    },
+    fr_lentilles_carottes: {
+      name: 'Lentilles aux carottes',
+      ings: [
+        ['Lentilles vertes', '200 g'],
+        ['Carottes', '3'],
+        ['Oignon', '1'],
+        ['Poireau', '1'],
+      ],
+      seas: 'Sel · poivre · 2 c. à soupe d’huile d’olive · 1 feuille de laurier · 1 brin de thym · 1 c. à café de moutarde de Dijon · 1 c. à café de vinaigre de cidre · 600 ml d’eau',
+      steps: [
+        'Faites revenir l’oignon haché, les carottes en dés et le poireau émincé dans l’huile pendant 6 minutes.',
+        'Ajoutez les lentilles rincées, le laurier, le thym et l’eau. Laissez mijoter doucement 25 minutes, jusqu’à ce que les lentilles soient tendres et l’eau presque absorbée.',
+        'Retirez le laurier et le thym. Ajoutez la moutarde et le vinaigre, assaisonnez et servez tiède.',
+      ],
+    },
+    fr_couscous_pois_chiches: {
+      name: 'Couscous aux pois chiches',
+      ings: [
+        ['Semoule de couscous moyenne', '200 g'],
+        ['Pois chiches cuits', '1 boîte (400 g)'],
+        ['Carottes', '2'],
+        ['Courgettes', '2'],
+        ['Potiron', '200 g'],
+        ['Oignon', '1'],
+      ],
+      seas: 'Sel · 3 c. à soupe d’huile d’olive · 1 c. à soupe de concentré de tomate · 1 c. à café de ras el hanout (ou cumin et coriandre) · 700 ml d’eau',
+      steps: [
+        'Faites revenir l’oignon haché dans 1 c. à soupe d’huile pendant 5 minutes. Ajoutez le concentré de tomate, les épices et l’eau et portez à ébullition.',
+        'Ajoutez les carottes et le potiron coupés en morceaux et laissez mijoter 10 minutes, puis les courgettes et les pois chiches égouttés pendant 12 minutes. Salez.',
+        'Mettez la semoule dans un saladier avec une pincée de sel, 1 c. à soupe d’huile et 200 ml de bouillon chaud, couvrez 5 minutes et égrainez à la fourchette. Servez les légumes et le bouillon sur la semoule.',
+      ],
+    },
+    fr_pates_tomates_olives: {
+      name: 'Pâtes aux tomates et aux olives',
+      ings: [
+        ['Pâtes', '200 g'],
+        ['Tomates mûres', '4'],
+        ['Olives noires', '50 g'],
+        ['Ail', '2 gousses'],
+      ],
+      seas: 'Sel · poivre · 3 c. à soupe d’huile d’olive · 1 c. à café d’origan séché · Basilic ou persil frais',
+      steps: [
+        'Faites cuire les pâtes dans une grande casserole d’eau bouillante bien salée selon le paquet, puis égouttez-les.',
+        'Pendant ce temps, faites chauffer l’huile avec l’ail émincé 1 minute. Ajoutez les tomates hachées et l’origan et laissez cuire 8 minutes jusqu’à ce qu’elles fondent.',
+        'Ajoutez les olives dénoyautées et coupées en deux, mélangez avec les pâtes, poivrez et parsemez de basilic.',
+      ],
+    },
+    fr_haricots_blancs_tomate: {
+      name: 'Haricots blancs à la tomate',
+      ings: [
+        ['Haricots blancs (cuits ou en boîte)', '2 boîtes (800 g)'],
+        ['Tomates', '4'],
+        ['Oignon', '1'],
+        ['Carotte', '1'],
+        ['Épinards', '100 g'],
+      ],
+      seas: 'Sel · poivre · 3 c. à soupe d’huile d’olive · 2 gousses d’ail · 1 feuille de laurier · 1 brin de thym · 1 c. à café de paprika',
+      steps: [
+        'Faites revenir l’oignon haché et la carotte en dés dans l’huile pendant 6 minutes. Ajoutez l’ail et le paprika 1 minute.',
+        'Ajoutez les tomates hachées, le laurier et le thym et laissez cuire 8 minutes. Ajoutez les haricots égouttés et 150 ml d’eau.',
+        'Laissez mijoter 15 minutes jusqu’à ce que la sauce épaississe, en ajoutant les épinards pour les 2 dernières minutes. Assaisonnez et servez avec du pain.',
+      ],
+    },
   },
 });

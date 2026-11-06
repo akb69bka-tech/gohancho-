@@ -1831,5 +1831,14 @@ GOHAN_I18N('id', {
     "チラシを撮る": "Foto brosur",
     "チラシを読み取っています…": "Membaca brosur…",
     "選んだ品を特売に入れる（{n}品）": "Masukkan pilihan ke promo ({n})",
-    "{name}の特売": "{name} sedang promo"
+    "{name}の特売": "{name} sedang promo",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alkohol (sake, mirin, anggur, bir; termasuk dalam bumbu)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Domba, bebek, angsa, dll. (daging lain)",
+    "食の決まり": "Aturan makan",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "Menggunakan bahan yang mungkin tidak sesuai dengan aturan makan Anda ({names}). Periksa label kemasan.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Mengecualikan babi tidak mengecualikan hidangan beralkohol (sake, mirin, anggur). Jika ingin menghindari alkohol juga, pilih juga \"Alkohol\".",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Karena babi, ayam, sapi, ikan, dan seafood semuanya dikecualikan, domba, bebek, kaldu daging atau ikan dan kaldu kubus, saus ikan, dan saus tiram juga dikecualikan. Konsomé dan saus Worcestershire diberi 🔍 \"periksa label kemasan\".",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Karena telur dan produk susu juga dikecualikan, madu dan mayones juga dikecualikan.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Dengan pengaturan Anda saat ini (tidak suka, alergi, bahan sulit didapat), tidak ada hidangan utama yang bisa ditampilkan, sehingga tombol untuk memutuskan menu tidak bisa ditekan. Periksa bahan yang dikecualikan di Pengaturan.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Tidak ada hidangan utama yang cocok dengan pengaturan ini. Periksa bahan yang dikecualikan di Pengaturan"
 });

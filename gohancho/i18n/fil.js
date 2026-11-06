@@ -1831,5 +1831,14 @@ GOHAN_I18N('fil', {
     "チラシを撮る": "Kunan ng litrato ang flyer",
     "チラシを読み取っています…": "Binabasa ang flyer…",
     "選んだ品を特売に入れる（{n}品）": "Idagdag ang napili sa sale ({n})",
-    "{name}の特売": "{name} naka-sale"
+    "{name}の特売": "{name} naka-sale",
+    "お酒（酒・みりん・ワイン・ビール。調味料も）": "Alcohol (sake, mirin, wine, beer; pati sa mga pampalasa)",
+    "羊・鴨・がちょうなど（ほかの肉）": "Tupa, itik, gansa at iba pa (ibang karne)",
+    "食の決まり": "Mga alituntunin sa pagkain",
+    "食の決まりに合わない可能性があるものを使います（{names}）。袋の表示を確かめてください。": "May gamit na maaaring hindi bagay sa iyong mga alituntunin sa pagkain ({names}). Pakitingnan ang label ng pakete.",
+    "豚を外しても、お酒（酒・みりん・ワイン）の入る料理は外れません。お酒も避けるときは「お酒」も選んでください。": "Kahit hindi isama ang baboy, hindi pa rin hindi isasama ang mga putaheng may alcohol (sake, mirin, wine). Kung gusto mo ring iwasan ang alcohol, piliin din ang \"Alcohol\".",
+    "豚・鶏・牛・魚・貝を全部外しているので、羊・鴨、肉や魚のだし・スープの素、魚醤・オイスターソースも外します。コンソメ・ウスターソースなどは、袋の表示を確認の 🔍 を付けます。": "Dahil hindi isinasama ang baboy, manok, baka, isda at lamang-dagat, hindi rin isasama ang tupa, itik, sabaw o stock cube ng karne o isda, patis at oyster sauce. Ang consommé at Worcestershire sauce ay may 🔍 \"tingnan ang label ng pakete\".",
+    "卵・乳製品も外しているので、はちみつ・マヨネーズも外します。": "Dahil hindi rin isinasama ang itlog at mga produktong gatas, hindi rin isasama ang pulot-pukyutan at mayonnaise.",
+    "いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。": "Sa kasalukuyan mong mga setting (ayaw, allergy, mahirap hanapin na sangkap), walang pangunahing putahe na maihahain, kaya hindi mapipindot ang button para itakda ang menu. Pakisuri sa Settings ang mga hindi isinasamang sangkap.",
+    "この条件で出せる主菜がありません。設定で、外している食材を見直してください": "Walang pangunahing putaheng bagay sa mga setting na ito. Pakisuri sa Settings ang mga hindi isinasamang sangkap"
 });
