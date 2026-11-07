@@ -1959,5 +1959,11 @@ GOHAN_I18N('tr', {
     "ベジタリアン向け（肉・魚・貝）": "Vejetaryen (et, balık, kabuklu deniz ürünü yok)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (yumurta, süt ürünü de yok)",
     "まとめて選ぶ（食の決まり）": "Tüm beslenme düzenini tek seferde seç",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Ödeme kartınızdan veya başka bir ödeme yönteminden alınır ve her dönem otomatik yenilenir. Yenilemeden önce istediğiniz zaman «Planı yönet veya iptal et» ile iptal edebilirsiniz; dönem sonuna kadar kullanmaya devam edersiniz.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "İade ve benzeri konular için «Belirli Ticari İşlemler Yasası bildirimi»ne bakın.",
+    "別の端末の購入IDで復元": "Başka bir cihazın satın alma kimliğiyle geri yükle",
+    "特定商取引法に基づく表記": "Belirli Ticari İşlemler Yasası bildirimi",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Satın alma kimliği (kopyalayıp başka bir cihazda «Başka bir cihazın satın alma kimliğiyle geri yükle» alanına girerseniz aynı satın almayı kullanabilirsiniz. Başkalarına göstermeyin)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Yönetim sayfası açılamadı. Lütfen biraz sonra tekrar deneyin."
 });

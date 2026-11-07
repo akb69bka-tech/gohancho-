@@ -1959,5 +1959,11 @@ GOHAN_I18N('pt-BR', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetariano (sem carne, peixe e frutos do mar)",
     "ヴィーガン向け（卵・乳製品も）": "Vegano (também sem ovos e laticínios)",
     "まとめて選ぶ（食の決まり）": "Escolher uma dieta inteira de uma vez",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Ao escolher, as fichas abaixo entram de uma vez e depois você pode adicionar ou tirar quantas quiser. Isso só ajuda a deixar de fora pratos que talvez não combinem com a dieta; não é garantia."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Ao escolher, as fichas abaixo entram de uma vez e depois você pode adicionar ou tirar quantas quiser. Isso só ajuda a deixar de fora pratos que talvez não combinem com a dieta; não é garantia.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "O pagamento é cobrado no cartão ou outra forma de pagamento e renova automaticamente a cada período. Você pode cancelar a qualquer momento antes da renovação em «Gerenciar ou cancelar» e continua com acesso até o fim do período.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Para reembolsos e assuntos semelhantes, veja o «Aviso conforme a Lei Japonesa de Transações Comerciais Específicas».",
+    "別の端末の購入IDで復元": "Restaurar com o ID de compra de outro dispositivo",
+    "特定商取引法に基づく表記": "Aviso conforme a Lei Japonesa de Transações Comerciais Específicas",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID de compra (copie e insira em «Restaurar com o ID de compra de outro dispositivo» em outro dispositivo para usar a mesma compra. Não mostre a ninguém)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Não foi possível abrir a página de gerenciamento. Tente novamente em instantes."
 });

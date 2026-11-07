@@ -1959,5 +1959,11 @@ GOHAN_I18N('id', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (tanpa daging, ikan, kerang-kerangan)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (juga tanpa telur, produk susu)",
     "まとめて選ぶ（食の決まり）": "Pilih pola makan sekaligus",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Pembayaran ditagihkan ke kartu atau metode pembayaran lain dan diperpanjang otomatis setiap periode. Anda dapat membatalkan kapan saja sebelum perpanjangan lewat «Kelola atau batalkan», dan tetap bisa memakainya sampai akhir periode.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Untuk pengembalian dana dan hal serupa, lihat «Pemberitahuan berdasarkan Undang-Undang Transaksi Komersial Tertentu».",
+    "別の端末の購入IDで復元": "Pulihkan dengan ID pembelian perangkat lain",
+    "特定商取引法に基づく表記": "Pemberitahuan berdasarkan Undang-Undang Transaksi Komersial Tertentu",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID pembelian (salin dan masukkan di «Pulihkan dengan ID pembelian perangkat lain» pada perangkat lain agar pembelian yang sama bisa dipakai. Jangan tunjukkan ke orang lain)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Halaman pengelolaan tidak bisa dibuka. Coba lagi sebentar lagi."
 });

@@ -1960,5 +1960,11 @@ GOHAN_I18N('en', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (meat, fish, shellfish out)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (also eggs, dairy)",
     "まとめて選ぶ（食の決まり）": "Pick a whole diet at once",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Picking one adds the chips below all at once, and you can still add or remove chips afterward. It only helps leave out dishes that may not fit a diet; it is not a guarantee."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Picking one adds the chips below all at once, and you can still add or remove chips afterward. It only helps leave out dishes that may not fit a diet; it is not a guarantee.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Payment is charged to your card or other payment method and renews automatically each period. You can cancel any time before renewal with “Manage or cancel plan”, and you keep access until the end of the period.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "For refunds and similar matters, see the “Specified Commercial Transactions Act notice”.",
+    "別の端末の購入IDで復元": "Restore with another device’s purchase ID",
+    "特定商取引法に基づく表記": "Specified Commercial Transactions Act notice",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (copy it and enter it under “Restore with another device’s purchase ID” on another device to use the same purchase. Do not show it to others)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Could not open the management page. Please try again in a moment."
 });

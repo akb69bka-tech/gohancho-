@@ -6651,7 +6651,15 @@ const PLAN_WEEK_FREE = 1;   // 無料版で見られる献立プランの日数
 const PLAN = {
     // 課金を有効にする範囲: 'off'＝全員無料 / 'native'＝iPhone アプリ版だけ（RevenueCat のキーを入れたとき）/ 'all'＝Web 版も
     billingMode: 'off',                 // オーナー決定（2026-10-28）: 全員無料。課金を入れるかどうか・時期はオーナーだけが決める
-    get billingEnabled(){ return this.billingMode === 'all' || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
+    // 'all' でも、その場所の決済の設定（キー・表記の URL）が空なら有効にならない＝いままでどおり無料。iPhone: revenueCatApiKey / Web: webBillingReady()
+    get billingEnabled(){ return (this.billingMode === 'all' && (isNative() ? !!this.revenueCatApiKey : this.webBillingReady)) || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
+    // Web 版の課金（RevenueCat Web Billing ＝ Stripe 連携）。3つとも入っていないと Web では課金は有効にならない（オーナーが契約・作成してから記入。手順は docs/escalations.md「Web版300円課金の準備」）
+    revenueCatWebKey: '',               // RevenueCat の Web Billing 公開APIキー（rcb_…。公開してよい種類のキー。秘密キー sk_… は絶対に入れない）
+    legalUrl: '',                       // 「特定商取引法に基づく表記」のページの URL（日本で有料で売るなら必須。事業者名・住所・連絡先・料金・解約・返金を載せる）
+    webTermsUrl: '',                    // Web 版の利用規約の URL（Apple の標準規約は Web 購入には使わない）
+    webSdkUrl: 'https://cdn.jsdelivr.net/npm/@revenuecat/purchases-js@1.0.0/dist/Purchases.umd.js',   // RevenueCat の Web SDK（購入画面のときだけ読みこむ。版は公開前にオーナー側で確かめて固定）
+    webPackages: {gohancho_plus_monthly: '$rc_monthly', gohancho_plus_yearly: '$rc_annual'},   // 製品ID → RevenueCat の Offering の Package 名
+    get webBillingReady(){ return !!(this.revenueCatWebKey && this.legalUrl && this.webTermsUrl); },
     get name(){ return t('ご飯帖プラス'); },
     // オーナー決定（2026-10-31）: 月額300円・年額3,000円（最初から誰でも選べる。月額×12か月＝3,600円より600円お得）。どちらも最初の1か月は無料（App Store のお試しオファー）
     // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する。yen は目安の円の価格（App Store の価格が取れないときのお得の計算に使う）
@@ -6664,7 +6672,7 @@ const PLAN = {
     entitlement: 'plus',                // RevenueCat の Entitlement 名
     revenueCatApiKey: '',               // iPhone アプリ版で RevenueCat を使うときの公開APIキー
     termsUrl: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',   // 利用規約（独自の規約を作ったら差し替え）
-    webCheckoutUrl: '',                 // Web で売るとき（Stripe の Payment Link など）。空なら表示しない
+    // （Stripe の Payment Link だけで売る案は採らない: サーバーがなく、買った人かどうかを安全に確かめられないため。docs/escalations.md「Web版300円課金の準備」）
     earlySupporterBefore: '',           // 'YYYY-MM-DD'。この日より前に使い始めた人はずっとプラス扱い（空なら無効）
     trialDays: 30,                      // trialMode 'app' の無料期間（使いはじめてからの日数）。remote.json の plan.trialDays で変えられる
     // 'store': Apple のしくみに従う。はじめに登録し、App Store Connect の「お試しオファー」で無料期間を出す。長さは RevenueCat から取る（国ごとに違ってよい。取れなければ「1か月」と表示）。期間が終わると、解約しなければ自動で課金
@@ -6739,6 +6747,39 @@ function useTwistQuota(){
 }
 function purchasesPlugin(){ try{ return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Purchases) || null; }catch(e){ return null; } }
 let rcReady = null;
+// ---- Web 版の課金（RevenueCat Web Billing）。iPhone と同じ entitlement 'plus' を見る。サーバーなし: 購入の確認は RevenueCat の公開キー＋購入ID（appUserID）で行う
+function webBillingOn(){ return !isNative() && PLAN.billingEnabled; }
+function webUid(){ if (!S.webUid){ try{ S.webUid = 'web_' + (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)); }catch(e){ S.webUid = 'web_' + Date.now().toString(36) + Math.random().toString(36).slice(2); } save(); } return S.webUid; }
+let webP = null;
+function webInit(){
+    if (!webBillingOn()) return null;
+    if (webP) return webP;
+    const load = () => new Promise((res, rej) => {
+        if (window.Purchases) return res(window.Purchases);
+        const sc = document.createElement('script'); sc.src = PLAN.webSdkUrl; sc.async = true; sc.crossOrigin = 'anonymous';
+        sc.onload = () => window.Purchases ? res(window.Purchases) : rej(new Error('no sdk')); sc.onerror = () => rej(new Error('load'));
+        document.head.appendChild(sc);
+    });
+    return webP = load().then(NS => { const C = NS.Purchases || NS; let inst; try{ inst = C.configure({apiKey: PLAN.revenueCatWebKey, appUserId: webUid()}); }catch(e){ inst = C.configure(PLAN.revenueCatWebKey, webUid()); } return inst; }).catch(e => { webP = null; throw e; });
+}
+// Web SDK の customerInfo を、iPhone 版と同じ形（applyCustomerInfo が読む形）にそろえる
+function webCI(ci){
+    const iso = d => d ? (d instanceof Date ? d.toISOString() : String(d)) : null;
+    const a = {}, src = (ci && ci.entitlements && ci.entitlements.active) || {};
+    Object.keys(src).forEach(k => { const e = src[k]; a[k] = {originalPurchaseDate: iso(e.originalPurchaseDate), expirationDate: iso(e.expirationDate), periodType: e.periodType, productIdentifier: e.productIdentifier, willRenew: e.willRenew}; });
+    return {entitlements: {active: a}, managementURL: ci && (ci.managementURL || ci.managementUrl) || null};
+}
+async function webRefresh(){ const P = await webInit(); return applyCustomerInfo(webCI(await P.getCustomerInfo())); }
+async function webPurchase(productId){
+    try{
+        const P = await webInit(), offs = await P.getOfferings();
+        const pkgs = (offs && offs.current && offs.current.availablePackages) || [], want = PLAN.webPackages[productId];
+        const pkg = pkgs.find(p => p.identifier === want) || pkgs[0];
+        if (!pkg) throw new Error('no package');
+        const res = await P.purchase({rcPackage: pkg});
+        if (applyCustomerInfo(webCI(res && res.customerInfo))){ closeSheet(); toast(t('{plan}を始めました。ありがとうございます', {plan:PLAN.name}), true); }
+    }catch(e){ if (!(e && (e.userCancelled || /cancel/i.test(String(e.errorCode || e.message || ''))))) toast(t('購入を完了できませんでした。通信環境を確認して、もう一度お試しください')); }
+}
 function rcInit(){
     const P = purchasesPlugin();
     if (!P || !PLAN.revenueCatApiKey) return null;
@@ -6751,7 +6792,7 @@ function applyCustomerInfo(ci){
     const since = ent && ent.originalPurchaseDate ? String(ent.originalPurchaseDate).slice(0, 10) : ((S.pro && S.pro.since) || null);
     // App Store のお試し中なら終わる日を覚えておき、3日前に知らせる
     const trialEnd = ent && /TRIAL|INTRO/i.test(String(ent.periodType || '')) && ent.expirationDate ? localYmd(ent.expirationDate) : null;
-    S.pro = {active: !!ent, since, checked: Date.now(), trialEnd, product: ent && ent.productIdentifier ? String(ent.productIdentifier) : null, expires: ent && ent.expirationDate ? localYmd(ent.expirationDate) : null, willRenew: ent ? ent.willRenew !== false : null}; save(); render();
+    S.pro = {active: !!ent, since, checked: Date.now(), trialEnd, product: ent && ent.productIdentifier ? String(ent.productIdentifier) : null, expires: ent && ent.expirationDate ? localYmd(ent.expirationDate) : null, willRenew: ent ? ent.willRenew !== false : null}; if (ci && ci.managementURL) S.pro.manageUrl = String(ci.managementURL); save(); render();
     scheduleTrialReminder();
     return !!ent;
 }
@@ -6833,6 +6874,7 @@ function trialTimelineHtml(){
 function priceLabel(p){
     const live = storePrices[p.id];
     if (live) return p.per === '年' ? t('{price} / 年', {price:live.text}) : t('{price} / 月', {price:live.text});
+    if (webBillingOn()) return p.price;   // Web の料金は円で決まっている（どの言語でも円で出す）
     return !purchasesPlugin() && (LANG === 'ja' || currentCountry() === 'JP') ? p.price : '';   // 目安の円の価格は日本向けだけ。ほかの国は App Store の価格が取れたときだけ出す
 }
 // 年額のお得の文。App Store の実際の価格が取れたらその価格で計算し（月額×12 − 年額）、取れないときは目安の円の価格（3,600円より600円お得）
@@ -6853,6 +6895,7 @@ function priceNote(p){
     return months >= 1 ? t('{n}か月分無料', {n:months}) : '';
 }
 async function purchase(productId){
+    if (webBillingOn()) return webPurchase(productId);
     const ready = rcInit();
     if (!ready){ toast(t('まだ販売していません。今はすべての機能を無料で使えます')); return; }
     try{
@@ -6866,6 +6909,7 @@ async function purchase(productId){
     }catch(e){ if (!(e && e.userCancelled)) toast(t('購入を完了できませんでした。通信環境を確認して、もう一度お試しください')); }
 }
 async function restorePurchases(){
+    if (webBillingOn()){ try{ toast((await webRefresh()) ? t('購入を復元しました') : t('復元できる購入は見つかりませんでした')); }catch(e){ toast(t('購入を復元できませんでした')); } return; }
     const ready = rcInit();
     if (!ready){ toast(t('復元できる購入はありません')); return; }
     try{ const P = await ready; const res = await P.restorePurchases(); const okR = applyCustomerInfo(res && res.customerInfo); if (okR) closeSheet(); toast(okR ? t('購入を復元しました') : t('復元できる購入は見つかりませんでした')); }
@@ -7124,22 +7168,25 @@ function renderSheetBody(){
             ${pwCompareHtml(sheet.reason)}
             ${PLAN.billingEnabled ? `
                 <div class="pw-cta">${buyHtml}
-                    ${!native && PLAN.webCheckoutUrl ? `<a class="btn primary" href="${esc(PLAN.webCheckoutUrl)}" target="_blank" rel="noopener">${esc(t('Web で購入する'))}</a>` : ''}</div>
+</div>
                 <section class="pw-terms" aria-labelledby="pw-terms-h">
                     <h3 id="pw-terms-h">${esc(t('料金と解約'))}</h3>
                     <ul>
                         ${shownPlans().map(p => priceLabel(p) ? `<li>${esc(p.per === '年' ? t('{plan}（{price}・1年ごとに自動更新）', {plan:p.label, price:priceLabel(p)}) : t('{plan}（{price}・1か月ごとに自動更新）', {plan:p.label, price:priceLabel(p)}))}</li>` : '').join('')}
                         ${startOffer ? shownPlans().filter(p => p.per === '年' && introFor(p) && priceLabel(p)).map(p => `<li>${esc(t('年額プランを選んだ場合も、{trial}のあと{price}になります。', {trial:introShort(introFor(p)), price:priceLabel(p)}))}</li>`).join('') : ''}
                         ${startOffer ? `<li>${esc(t('{date}までに解約すれば料金はかかりません。いつでも解約できます。', {date:introCancelBy()}))}</li>` : ''}
-                        <li>${esc(t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</li>
+                        <li>${esc(webBillingOn() ? t('お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。') : t('サブスクリプションは期間の終了日の24時間前までに解約しない限り自動で更新されます。お支払いは Apple ID に請求され、解約は iPhone の「設定」→ Apple ID →「サブスクリプション」から行えます。'))}</li>
+                        ${webBillingOn() ? `<li>${esc(t('返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。'))}</li>` : ''}
                         <li>${esc(t('解約しても、記録や設定はこの端末に残ります。'))}</li>
                     </ul>
                     <div class="pw-links">
                         <button class="btn" data-act="restore">${esc(t('購入を復元'))}</button>
-                        ${isSubscribed() && native ? `<button class="btn" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}
+                        ${isSubscribed() && (native || webBillingOn()) ? `<button class="btn" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}
+                        ${webBillingOn() ? `<button class="btn" data-act="link-id">${esc(t('別の端末の購入IDで復元'))}</button>` : ''}
                         ${isLocked() && S.history.length ? `<button class="btn" data-act="export-share">${esc(t('これまでの記録を書き出す'))}</button>` : ''}
                     </div>
-                    <p class="small"><a href="${esc(PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}</p>
+                    <p class="small"><a href="${esc(webBillingOn() ? PLAN.webTermsUrl : PLAN.termsUrl)}" target="_blank" rel="noopener">${esc(t('利用規約'))}</a>${GAP()}${docLink('privacy', t('プライバシーポリシー'))}${webBillingOn() ? `${GAP()}<a href="${esc(PLAN.legalUrl)}" target="_blank" rel="noopener">${esc(t('特定商取引法に基づく表記'))}</a>` : ''}</p>
+                    ${webBillingOn() ? `<p class="small muted">${esc(t('購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）'))}<br><code>${esc(webUid())}</code></p>` : ''}
                 </section>`
             : `<p class="pw-free">${esc(t('わが家のご飯帖は無料です。すべての機能を、そのままお使いいただけます。'))}</p>`}`;
     }
@@ -9310,11 +9357,11 @@ function viewSettings(){
         ${grp('plan', PLAN.name, `<div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
-                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
+                ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() || webBillingOn() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
                   : trialActive() ? `<div class="note"><span>${esc(t('お試し期間中です（あと{n}日）。すべての機能が使えます。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`
                             : `<button class="btn primary" data-act="paywall">${esc(t('{plan}を見る', {plan:PLAN.name}))}</button>`)
                 : `<div class="note"><span>${esc(t('わが家のご飯帖は無料です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
-            ${PLAN.billingEnabled && purchasesPlugin() ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
+            ${PLAN.billingEnabled && (purchasesPlugin() || webBillingOn()) ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
 `)}
         ${grp('help', 'v' + APP_VERSION, `<div class="set-group">
@@ -15175,7 +15222,14 @@ document.addEventListener('click', e => {
             ev.prompt(); ev.userChoice.then(c => { if (c.outcome === 'accepted') toast(t('ホーム画面に追加しました'), true); installEvent = null; render(); }).catch(() => {});
             break;
         }
+        case 'link-id': {
+            // 別の端末（iPhone アプリなど）の購入IDを入れて、その購入を使う
+            const v = (window.prompt(t('購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）'), '') || '').trim();
+            if (v && /^[\w$:.\-]{6,120}$/.test(v)){ S.webUid = v; webP = null; save(); restorePurchases(); }
+            break;
+        }
         case 'manage-sub': {
+            if (webBillingOn()){ if (S.pro && S.pro.manageUrl) window.open(S.pro.manageUrl, '_blank', 'noopener'); else webRefresh().then(() => { if (S.pro && S.pro.manageUrl) window.open(S.pro.manageUrl, '_blank', 'noopener'); else toast(t('管理ページを開けませんでした。少し待ってからお試しください')); }).catch(() => toast(t('管理ページを開けませんでした。少し待ってからお試しください'))); break; }
             // App Store のサブスクリプション管理画面を開く（RevenueCat に機能があればそれ、なければ App Store の画面）
             const P = purchasesPlugin();
             (P && P.showManageSubscriptions ? rcInit().then(x => x.showManageSubscriptions()) : Promise.reject()).catch(() => { location.href = 'itms-apps://apps.apple.com/account/subscriptions'; });
@@ -15225,7 +15279,7 @@ document.addEventListener('click', e => {
         case 'reset': pendingConfirm = 'reset'; render(); keepDetailsOpen(); break;
         case 'reset-yes':
             // 無料期間の始まりと購入の状態は消さない（消すたびにお試しがやり直せてしまうため）
-            S = Object.assign(structuredClone(DEFAULT_STATE), {firstUse: S.firstUse, pro: S.pro, monitor: S.monitor, trialKept: true}); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
+            S = Object.assign(structuredClone(DEFAULT_STATE), {firstUse: S.firstUse, pro: S.pro, webUid: S.webUid, monitor: S.monitor, trialKept: true}); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
             try{ localStorage.removeItem('gohancho.remote'); }catch(e){}
             setTimeout(() => location.reload(), 600);   // 国の選択からやり直す（読みこみ直すのがいちばん確実）
             break;
@@ -15261,7 +15315,7 @@ function askImport(txt, from){
 }
 // 読みこんだデータをこの端末の状態にする。購入の状態・無料期間の始まり・バックアップの日付は、この端末のものを残す（古いバックアップで購入が消えたり、貼った文字で開いたりしないように）
 function applyImported(d){
-    const keep = {pro: S.pro, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept, lastBackup: S.lastBackup, backupSnooze: S.backupSnooze};
+    const keep = {pro: S.pro, webUid: S.webUid, firstUse: S.firstUse, monitor: S.monitor, trialKept: S.trialKept, lastBackup: S.lastBackup, backupSnooze: S.backupSnooze};
     Object.keys(keep).forEach(k => { if (keep[k] === undefined) delete keep[k]; });
     const st = Object.assign(normalizeState(d), keep);
     for (let i = RECIPES.length-1; i >= 0; i--) if (isCustomId(RECIPES[i].id)) RECIPES.splice(i,1);
@@ -16262,7 +16316,7 @@ window.addEventListener('hashchange', () => { if (bootReady && /^#g=/.test(Strin
     sync();
 })();
 (() => { const A = nativePlugin('App'); if (A && A.addListener) try{ A.addListener('resume', () => { refreshToday(); syncNotifs(); }); }catch(e){} })();
-(() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); })();
+(() => { const r = rcInit(); if (r) r.then(P => P.getCustomerInfo()).then(res => applyCustomerInfo(res && res.customerInfo)).catch(() => {}); else if (webBillingOn() && S.webUid) webRefresh().catch(() => {}); })();   // Web: 購入IDがあるとき（買ったことがあるとき）だけ、起動時に確かめる
 if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの長さ・価格を、はじめの案内より先に読んでおく
 loadGenerated().then(loadPhotos);
 loadMine();

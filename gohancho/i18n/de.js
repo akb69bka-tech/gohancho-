@@ -1959,5 +1959,11 @@ GOHAN_I18N('de', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarisch (ohne Fleisch, Fisch, Schalentiere)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (auch ohne Eier, Milchprodukte)",
     "まとめて選ぶ（食の決まり）": "Ganze Ernährungsweise auf einmal wählen",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Die Zahlung wird per Karte o. Ä. abgebucht und verlängert sich jede Periode automatisch. Vor der Verlängerung können Sie jederzeit über „Abo verwalten/kündigen“ kündigen und nutzen die App bis zum Ende der Laufzeit weiter.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Zu Erstattungen und Ähnlichem siehe die „Angaben nach dem japanischen Gesetz über bestimmte Handelsgeschäfte“.",
+    "別の端末の購入IDで復元": "Mit der Kauf-ID eines anderen Geräts wiederherstellen",
+    "特定商取引法に基づく表記": "Angaben nach dem japanischen Gesetz über bestimmte Handelsgeschäfte",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Kauf-ID (kopieren und auf einem anderen Gerät unter „Mit der Kauf-ID eines anderen Geräts wiederherstellen“ eingeben, um denselben Kauf zu nutzen. Nicht weitergeben)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Die Verwaltungsseite konnte nicht geöffnet werden. Bitte gleich noch einmal versuchen."
 });
