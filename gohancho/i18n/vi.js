@@ -1959,5 +1959,11 @@ GOHAN_I18N('vi', {
     "ベジタリアン向け（肉・魚・貝）": "Ăn chay (không thịt, cá, hải sản có vỏ)",
     "ヴィーガン向け（卵・乳製品も）": "Thuần chay (không cả trứng, sữa)",
     "まとめて選ぶ（食の決まり）": "Chọn cả chế độ ăn một lần",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Khoản thanh toán được trừ vào thẻ hoặc phương thức thanh toán khác và tự động gia hạn theo từng kỳ. Bạn có thể hủy bất cứ lúc nào trước khi gia hạn tại «Quản lý hoặc hủy gói» và vẫn dùng đến hết kỳ.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Về hoàn tiền và các việc tương tự, xem «Thông báo theo Luật Giao dịch thương mại cụ thể của Nhật Bản».",
+    "別の端末の購入IDで復元": "Khôi phục bằng ID mua của thiết bị khác",
+    "特定商取引法に基づく表記": "Thông báo theo Luật Giao dịch thương mại cụ thể của Nhật Bản",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID mua (sao chép và nhập vào «Khôi phục bằng ID mua của thiết bị khác» trên thiết bị khác để dùng cùng lượt mua. Đừng cho người khác xem)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Không mở được trang quản lý. Vui lòng thử lại sau ít phút."
 });

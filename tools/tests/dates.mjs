@@ -226,7 +226,7 @@ for (const tz of ['Asia/Tokyo', 'America/Los_Angeles', 'America/New_York', 'Euro
         S.backupSnooze = addDays(T, 20); out.sFuture = backupDue();   // 日付を戻された: 未来の「あとで」は効かせない
         S.lastBackup = addDays(T, 40); delete S.backupSnooze; out.lFuture = backupDue();   // 未来の書き出し日: 落ちず、お知らせは出ない
         // 無料期間 / お試し
-        PLAN.billingMode = 'all'; PLAN.trialMode = 'app'; PLAN.trialDays = 30; PLAN.campaign.active = false; S.pro = null;
+        PLAN.revenueCatWebKey = 'rcb_test'; PLAN.legalUrl = 'x'; PLAN.webTermsUrl = 'x'; PLAN.billingMode = 'all'; PLAN.trialMode = 'app'; PLAN.trialDays = 30; PLAN.campaign.active = false; S.pro = null;
         S.firstUse = addDays(T, -29); out.t29 = [trialUsed(), trialActive(), trialDaysLeft()];
         S.firstUse = addDays(T, -30); out.t30 = [trialUsed(), trialActive(), trialDaysLeft()];
         S.firstUse = addDays(T, 5); out.tFuture = [trialUsed(), trialActive(), trialDaysLeft()];   // 日付を戻された

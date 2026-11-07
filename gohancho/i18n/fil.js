@@ -1959,5 +1959,11 @@ GOHAN_I18N('fil', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (walang karne, isda, shellfish)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (pati itlog at gatas-produkto)",
     "まとめて選ぶ（食の決まり）": "Pumili ng buong diyeta nang sabay",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Sisingilin ang bayad sa card o iba pang paraan ng pagbabayad at awtomatikong magre-renew bawat panahon. Maaari kang mag-cancel anumang oras bago ang renewal sa «Pamahalaan o i-cancel», at magagamit mo pa rin hanggang sa katapusan ng panahon.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Para sa refund at mga katulad na usapin, tingnan ang «Paunawa ayon sa Batas sa Tiyak na Komersyal na Transaksyon».",
+    "別の端末の購入IDで復元": "I-restore gamit ang purchase ID ng ibang device",
+    "特定商取引法に基づく表記": "Paunawa ayon sa Batas sa Tiyak na Komersyal na Transaksyon",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (kopyahin at ilagay sa «I-restore gamit ang purchase ID ng ibang device» sa ibang device para magamit ang parehong pagbili. Huwag ipakita sa iba)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Hindi mabuksan ang pahina ng pamamahala. Pakisubukan ulit mamaya."
 });

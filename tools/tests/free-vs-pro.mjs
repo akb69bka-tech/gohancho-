@@ -30,7 +30,7 @@ for (const cc of CCS){
         // --- 課金なし（既定）: 何も制限しない
         if (!hasPro() || isLocked()) bad.push('課金なしなのに制限がある');
         // --- 課金あり・無料版を残す
-        PLAN.billingMode = 'all'; PLAN.freeTier = true; S.pro = null; S.firstUse = TODAY;
+        PLAN.revenueCatWebKey = 'rcb_test'; PLAN.legalUrl = 'x'; PLAN.webTermsUrl = 'x'; PLAN.billingMode = 'all'; PLAN.freeTier = true; S.pro = null; S.firstUse = TODAY;
         if (!PLAN.billingEnabled) bad.push('billingEnabled にならない');
         if (isLocked()) bad.push('freeTier なのにロックされる');
         if (hasPro()) bad.push('freeTier で未購入なのに hasPro');
@@ -112,7 +112,8 @@ for (const cc of CCS){
             // 1か月無料は月額・年額の両方（はじめての人）
             if (!pw.bs[0].l.includes(introShort()) || !pw.bs[1].l.includes(introShort())) bad.push('お試しの文が月額・年額の両方にない: ' + pw.bs.map(x => x.l));
             if (!pw.terms.includes(t('年額プランを選んだ場合も、{trial}のあと{price}になります。', {trial:introShort(), price:t('3,000円 / 年')}))) bad.push('年額のお試しのあとの価格の文がない');
-        }else if (pw.bs.some(x => x.p || x.n)) bad.push('日本以外で、App Store の価格がないのに円の価格・お得の文が出る: ' + JSON.stringify(pw.bs));
+        }else if (webBillingOn()){ if (pw.bs[0].p !== t('300円 / 月') || pw.bs[1].p !== t('3,000円 / 年')) bad.push('Web の料金は円で出す: ' + pw.bs.map(x => x.p)); }   // Web 版の課金は円で決まっている（どの国でも円）
+        else if (pw.bs.some(x => x.p || x.n)) bad.push('日本以外で、App Store の価格がないのに円の価格・お得の文が出る: ' + JSON.stringify(pw.bs));
         // App Store の実際の価格が取れたら、その価格とその価格で計算したお得を出す（目安の円は出さない）
         storePrices.gohancho_plus_monthly = {text:'$2.99', value:2.99, currency:'USD'}; storePrices.gohancho_plus_yearly = {text:'$29.99', value:29.99, currency:'USD'};
         pw = showPw();

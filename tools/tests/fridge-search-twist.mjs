@@ -176,7 +176,7 @@ for (const [cc, ui, sets] of [['JP', 'ja', [['豚肉', 'キャベツ', '卵'], [
     const r = await p.evaluate(() => {
         const bad = [], click = (act, o = {}) => { const e = document.createElement('button'); e.dataset.act = act; Object.entries(o).forEach(([k, v]) => e.dataset[k] = v); document.body.appendChild(e); e.click(); e.remove(); };
         const paywalls = []; openPaywall = reason => { paywalls.push(reason); sheet = null; };
-        PLAN.billingMode = 'all'; PLAN.freeTier = true; S.pro = null; S.firstUse = TODAY; S.usage = {};
+        PLAN.revenueCatWebKey = 'rcb_test'; PLAN.legalUrl = 'x'; PLAN.webTermsUrl = 'x'; PLAN.billingMode = 'all'; PLAN.freeTier = true; S.pro = null; S.firstUse = TODAY; S.usage = {};
         setTab('twist'); const txt0 = document.querySelector('#view').innerText;
         if (!txt0.includes('今日はあと3回です')) bad.push('残りの表示 ' + txt0.slice(-80));
         click('tw-run'); click('tw-set', {key: 'level', v: 3}); click('tw-set', {key: 'flavor', v: 'kr'});

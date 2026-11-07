@@ -1959,5 +1959,11 @@ GOHAN_I18N('fr', {
     "ベジタリアン向け（肉・魚・貝）": "Végétarien (sans viande, poisson ni fruits de mer)",
     "ヴィーガン向け（卵・乳製品も）": "Végan (sans œufs ni produits laitiers non plus)",
     "まとめて選ぶ（食の決まり）": "Choisir un régime d’un coup",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie.",
+    "お支払いはクレジットカードなどで請求され、期間ごとに自動で更新されます。更新の前に、「プランの管理・解約」からいつでも解約できます。解約しても、期間の終わりまで使えます。": "Le paiement est prélevé sur votre carte ou autre moyen de paiement et se renouvelle automatiquement à chaque période. Vous pouvez résilier à tout moment avant le renouvellement via « Gérer ou résilier » et vous gardez l’accès jusqu’à la fin de la période.",
+    "返金などの取り扱いは「特定商取引法に基づく表記」をご覧ください。": "Pour les remboursements et questions similaires, consultez la « Mention légale (loi japonaise sur les transactions commerciales spécifiées) ».",
+    "別の端末の購入IDで復元": "Restaurer avec l’ID d’achat d’un autre appareil",
+    "特定商取引法に基づく表記": "Mention légale (loi japonaise sur les transactions commerciales spécifiées)",
+    "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID d’achat (copiez-le et saisissez-le dans « Restaurer avec l’ID d’achat d’un autre appareil » sur un autre appareil pour utiliser le même achat. Ne le montrez à personne)",
+    "管理ページを開けませんでした。少し待ってからお試しください": "Impossible d’ouvrir la page de gestion. Réessayez dans un instant."
 });
