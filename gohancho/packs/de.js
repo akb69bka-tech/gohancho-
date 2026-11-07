@@ -2172,8 +2172,77 @@ GOHAN_PACK({
         'Mash a few beans in the pot to thicken the stew, season with salt, pepper and the vinegar and remove the bay leaf.',
       ],
     },
+    {
+      id: 'de_ruehrei',
+      name: 'Scrambled eggs with chives and bread',
+      local: 'Rührei mit Schnittlauch und Brot',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'egg',
+      min: 10,
+      ings: [
+        'egg|Eggs|4',
+        'chives|Chives|1 small bunch',
+        'bread|Bread|2 slices',
+        'butter|Butter|1 tbsp',
+      ],
+      seas: '2 tbsp milk · salt · pepper',
+      steps: [
+        'Beat the eggs with the milk, salt and pepper. Snip the chives into small rings.',
+        'Melt the butter in a pan over low heat, pour in the eggs and stir gently until just set but still soft, about 3 minutes.',
+        'Stir in most of the chives. Serve on or beside the bread with the rest of the chives on top.',
+      ],
+    },
+    {
+      id: 'de_broetchen_kaese',
+      name: 'Bread rolls with cheese and ham',
+      local: 'Brötchen mit Käse und Schinken',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'pork',
+      min: 5,
+      ings: [
+        'bread roll|Bread rolls|2',
+        'butter|Butter|1 tbsp',
+        'cheese|Sliced cheese (Gouda or Emmental)|4 slices',
+        'ham|Cooked ham|4 slices',
+      ],
+      seas: 'black pepper, to taste',
+      steps: [
+        'Slice the rolls in half and spread the cut sides with butter.',
+        'Fill with the cheese and the ham.',
+        'Serve with cucumber or tomato slices on the side if you like.',
+      ],
+    },
+    {
+      id: 'de_fruehstuecksmuesli',
+      name: 'Fruit muesli with grated apple',
+      local: 'Frühstücksmüsli mit Obst',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'oats|Rolled oats|60 g',
+        'apple|Apple, grated|1',
+        'banana|Banana|1',
+        'raisins|Raisins|2 tbsp',
+      ],
+      seas: '100 ml water · 1/2 tsp cinnamon · juice of 1/2 lemon',
+      steps: [
+        'Stir the oats with the water in a bowl and leave for 5 minutes to soften.',
+        'Grate the apple and mix it with the lemon juice so it does not darken. Slice the banana.',
+        'Combine everything in two bowls and top with the raisins and cinnamon.',
+      ],
+    },
   ],
   aliases: {
+    'banana': ['banana','banane'],
     "oats": ["oats", "rolled oats", "oatmeal", "haferflocken", "hafer", "zarte haferflocken"],
     "alphabet pasta": ["alphabet pasta","buchstabennudeln","suppennudeln","small pasta"],
     "chives": ["chives","schnittlauch"],
@@ -2250,6 +2319,7 @@ GOHAN_PACK({
   quick: ['ground meat', 'pork', 'chicken', 'fish', 'sausage', 'egg', 'potato', 'onion', 'carrot', 'leek', 'cabbage', 'cucumber', 'spinach', 'peas', 'mushroom', 'cheese', 'cream', 'lentils'],
   pantry: ['egg', 'potato', 'onion', 'carrot', 'cream', 'cheese', 'rice', 'noodles', 'spaetzle', 'lentils', 'breadcrumbs', 'apple sauce', 'peas', 'lemon', 'apple', 'sausage'],
   names: {
+    'banana': 'Banana',
     "oats": "Rolled oats",
     "alphabet pasta": "Alphabet pasta",
     "chives": "Chives",

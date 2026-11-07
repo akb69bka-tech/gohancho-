@@ -111,6 +111,7 @@ GOHAN_PACK_TR('TH', 'vi', {
     "th_pad_priao_wan_tofu": {name: "Đậu hũ rau củ xào chua ngọt"},
     "th_massaman_je": {name: "Cà ri Massaman chay với khoai tây và đậu hũ"},
     "th_pad_woonsen_je": {name: "Miến xào rau củ chay"},
-    "th_pad_makhuea_tofu": {name: "Cà tím xào đậu hũ húng quế"}
+    "th_pad_makhuea_tofu": {name: "Cà tím xào đậu hũ húng quế"},
+    "th_khaotom_hed": {name: "Cháo cơm nấu nấm và gừng"}
   }
 });

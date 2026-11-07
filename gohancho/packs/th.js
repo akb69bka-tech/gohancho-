@@ -2594,6 +2594,29 @@ GOHAN_PACK({
         'Return the tofu, add the soy sauce, the mushroom sauce and the sugar and cook for 2 minutes. Toss in the basil and serve with rice.',
       ],
     },
+    {
+      id: 'th_khaotom_hed',
+      name: 'Rice soup with mushrooms and ginger',
+      local: 'ข้าวต้มเห็ด',
+      type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'rice',
+      protein: 'veg',
+      min: 30,
+      ings: [
+        'rice|Cooked rice|1 1/2 cups (250 g)',
+        'mushroom|Mixed mushrooms|150 g',
+        'ginger|Ginger|3 thin slices',
+        'green onion|Spring onion|1',
+        'coriander|Fresh coriander|a few sprigs?',
+      ],
+      seas: '600 ml water · 1 tsp salt · 1/4 tsp white pepper',
+      steps: [
+        'Bring the water to the boil with the ginger. Add the cooked rice and simmer for 10 minutes.',
+        'Slice the mushrooms, add them and cook for 5 minutes until soft. Season with the salt and white pepper.',
+        'Ladle into bowls and top with the chopped spring onion and coriander.',
+      ],
+    },
   ],
   aliases: {
     'ground pork': ['ground pork', 'minced pork', 'pork mince', 'หมูสับ', 'หมูบด'],

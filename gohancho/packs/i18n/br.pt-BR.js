@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    'tapioca': 'Goma de tapioca',
+    'coconut': 'Coco ralado',
+    'tapioca starch': 'Polvilho azedo ou doce',
     "oats": "Aveia em flocos",
     'chicken': "Frango", 'beef': "Carne bovina", 'ground beef': "Carne moída", 'pork': "Carne de porco", 'fish': "Peixe", 'egg': "Ovos",
     'ham': "Presunto", 'bacon': "Bacon", 'sausage': "Linguiça", 'onion': "Cebola", 'tomato': "Tomate", 'potato': "Batata",
@@ -1338,6 +1341,36 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
         'Corte a abóbora em cubos. Refogue a cebola picada e o alho no óleo por 4 minutos, junte o tomate e a páprica e cozinhe por 3 minutos.',
         'Junte a abóbora, o sal e a água, tampe e cozinhe em fogo baixo por 20 minutos, até a abóbora desmanchar.',
         'Amasse levemente com uma colher, formando um purê rústico, e tempere com pimenta. Enquanto isso, cozinhe o arroz. Salpique o coentro e sirva sobre o arroz.',
+      ],
+    },
+    'br_tapioca_coco': {
+      name: 'Tapioca com coco',
+      ings: [['Goma de tapioca (tapioca hidratada)', '1 xícara (200 g)'], ['Coco ralado', '3 colheres de sopa']],
+      seas: 'uma pitada de sal',
+      steps: [
+        'Aqueça uma frigideira antiaderente em fogo médio, sem óleo. Peneire metade da goma de tapioca com uma pitada de sal, formando uma camada uniforme.',
+        'Deixe 1 minuto até a goma se unir como uma panqueca, polvilhe metade do coco, dobre ao meio e passe para um prato.',
+        'Repita com o restante da goma e do coco.',
+      ],
+    },
+    'br_misto_quente': {
+      name: 'Misto-quente',
+      ings: [['Pão de forma', '4 fatias'], ['Presunto', '4 fatias'], ['Queijo mussarela ou prato', '4 fatias'], ['Manteiga', '1 colher de sopa']],
+      seas: 'uma pitada de pimenta-do-reino (opcional)',
+      steps: [
+        'Monte 2 sanduíches com 2 fatias de presunto e 2 de queijo em cada um.',
+        'Passe a manteiga por fora de cada sanduíche.',
+        'Doure em frigideira em fogo médio-baixo por 2 a 3 minutos de cada lado, pressionando de leve, até dourar e o queijo derreter.',
+      ],
+    },
+    'br_pao_de_queijo': {
+      name: 'Pão de queijo',
+      ings: [['Polvilho azedo ou doce', '1 xícara (150 g)'], ['Queijo ralado (minas, parmesão ou mussarela)', '100 g'], ['Ovo', '1'], ['Leite', '60 ml']],
+      seas: '60 ml de óleo · 1/2 colher de chá de sal',
+      steps: [
+        'Preaqueça o forno a 200°C. Leve o leite, o óleo e o sal à fervura.',
+        'Despeje o líquido quente sobre o polvilho em uma tigela e misture até formar uma massa farelenta. Espere 5 minutos, junte o ovo e o queijo e sove até ficar lisa.',
+        'Modele bolinhas do tamanho de uma noz, coloque em uma assadeira e asse por 20 a 25 minutos, até crescer e dourar. Coma morno.',
       ],
     },
   }

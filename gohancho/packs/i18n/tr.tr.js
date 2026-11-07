@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('TR', 'tr', {
   staple: 'Ekmek',
   names: {
+    'olive': 'Siyah ve yeşil zeytin',
     "oats": "Yulaf ezmesi",
     "semolina": "İrmik",
     "mint": "Nane",
@@ -1142,6 +1143,16 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Doğranmış soğanı 2 yemek kaşığı yağda 5 dakika kavurun. Salçayı ve pul biberin yarısını ekleyip 1 dakika karıştırın.',
         'Yıkanmış mercimeği, bulguru ve suyu ekleyin, ara sıra karıştırarak 25 dakika, çorba koyulaşana kadar pişirin.',
         'Tuz ve karabiberle tatlandırın. Kalan yağı nane ve kalan pul biberle ısıtıp çorbanın üzerine gezdirerek servis edin.',
+      ],
+    },
+    'tr_kahvalti_sebze': {
+      name: 'Domates, salatalık ve zeytin tabağı',
+      ings: [['Domates', '2'], ['Salatalık', '1'], ['Siyah ve yeşil zeytin', '10 adet'], ['Taze nane', 'birkaç yaprak?']],
+      seas: '1 yemek kaşığı zeytinyağı · bir tutam tuz',
+      steps: [
+        'Domatesleri ve salatalığı dilimleyin.',
+        'Zeytinlerle birlikte bir tabağa dizin.',
+        'Zeytinyağını gezdirin, tuz serpin ve nane yapraklarını ekleyin.',
       ],
     },
   }

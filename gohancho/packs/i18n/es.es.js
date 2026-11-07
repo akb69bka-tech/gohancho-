@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('ES', 'es', {
   staple: 'Pan',
   names: {
+    'chocolate': 'Chocolate negro',
     "semolina": "Sémola de trigo",
     "oats": "Copos de avena",
     'potato': 'Patatas',
@@ -1203,6 +1204,36 @@ GOHAN_PACK_TR('ES', 'es', {
         'Sofría la cebolla picada, el pimiento y las zanahorias en dados en el aceite 8 minutos. Añada el ajo y el pimentón 1 minuto.',
         'Añada la patata troceada, el laurel y el agua y cueza 15 minutos.',
         'Añada las alubias escurridas y cueza 10 minutos más. Aplaste unas pocas para espesar el guiso, sale y sirva.',
+      ],
+    },
+    'es_fruta': {
+      name: 'Plato de fruta fresca',
+      ings: [['Plátano', '1'], ['Pera', '1'], ['Uvas', '1 puñado']],
+      seas: 'zumo de 1/2 limón',
+      steps: [
+        'Lave la fruta. Corte el plátano y la pera en rodajas.',
+        'Rocíe las rodajas con el zumo de limón para que no se oscurezcan.',
+        'Disponga todo en un plato con las uvas y sirva.',
+      ],
+    },
+    'es_churros': {
+      name: 'Churros con chocolate',
+      ings: [['Harina de trigo', '150 g'], ['Chocolate negro', '100 g'], ['Leche', '300 ml']],
+      seas: '250 ml de agua · una pizca de sal · aceite para freír · 1 cucharada de azúcar',
+      steps: [
+        'Hierva el agua con la sal, retire del fuego y añada la harina con una cuchara de madera hasta obtener una masa lisa. Póngala en una manga pastelera con boquilla de estrella.',
+        'Caliente 3 cm de aceite en una sartén honda a fuego medio-alto. Forme tiras de 10 cm en el aceite y fría 2 o 3 minutos, dándoles la vuelta, hasta que estén doradas. Escurra sobre papel de cocina y espolvoree con el azúcar.',
+        'Caliente la leche, añada el chocolate troceado y remueva a fuego bajo hasta que quede liso y espeso. Sirva para mojar.',
+      ],
+    },
+    'es_tostada_jamon': {
+      name: 'Tostada con tomate y jamón serrano',
+      ings: [['Pan rústico', '4 rebanadas'], ['Tomates maduros', '2'], ['Jamón serrano', '4 lonchas']],
+      seas: '2 cucharadas de aceite de oliva · sal',
+      steps: [
+        'Tueste el pan hasta que quede dorado y crujiente.',
+        'Corte los tomates por la mitad y rállelos en un bol, desechando la piel. Extienda la pulpa sobre las tostadas.',
+        'Rocíe con el aceite de oliva, añada una pizca de sal y ponga el jamón encima.',
       ],
     },
   }

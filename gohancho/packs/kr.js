@@ -2211,8 +2211,29 @@ GOHAN_PACK({
         'Add the cold rice and the soy sauce and stir-fry over high heat for 4 minutes. Finish with the sesame oil, sesame seeds, salt and pepper.',
       ],
     },
+    {
+      id: 'kr_hobakjuk',
+      name: 'Sweet pumpkin porridge',
+      local: '호박죽',
+      type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'rice',
+      protein: 'veg',
+      min: 40,
+      ings: [
+        'pumpkin|Sweet pumpkin (kabocha)|300 g',
+        'glutinous rice|Glutinous rice flour|3 tbsp',
+      ],
+      seas: '400 ml water · 1/2 tsp salt · 1 tbsp sugar',
+      steps: [
+        'Peel the pumpkin, remove the seeds and cut it into chunks. Boil it in the water for 15 minutes until very soft.',
+        'Mash or blend the pumpkin with its cooking water until smooth and return it to the pan. Mix the rice flour with 3 tbsp water.',
+        'Pour in the flour mixture, stirring constantly over low heat for 5 minutes until thick, then season with the salt and sugar.',
+      ],
+    },
   ],
   aliases: {
+    'pumpkin': ['pumpkin','sweet pumpkin (kabocha)','단호박'],
     'tuna': ['tuna', 'canned tuna', 'tuna can', '참치', '참치캔', '참치 통조림'],
     'pork': ['pork', 'pork belly', 'pork shoulder', '돼지고기', '삼겹살', '앞다리살', '목살', '제육용'],
     'beef': ['beef', 'brisket', '소고기', '쇠고기', '불고기감', '양지', '국거리'],
@@ -2280,6 +2301,7 @@ GOHAN_PACK({
   quick: ['pork', 'beef', 'chicken', 'tofu', 'egg', 'kimchi', 'onion', 'green onion', 'potato', 'carrot', 'zucchini', 'cabbage', 'spinach', 'bean sprouts', 'cucumber', 'mackerel', 'squid', 'ham'],
   pantry: ['rice', 'kimchi', 'egg', 'tofu', 'onion', 'green onion', 'potato', 'carrot', 'anchovy', 'seaweed', 'chili', 'ham', 'bean sprouts', 'zucchini'],
   names: {
+    'pumpkin': 'Sweet pumpkin (kabocha)',
     'tuna': 'Canned tuna',
     'pork': 'Pork',
     'beef': 'Beef',

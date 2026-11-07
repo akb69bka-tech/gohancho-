@@ -97,6 +97,7 @@ GOHAN_PACK_TR('KR', 'vi', {
     "kr_sundubuguk": {name: "Canh đậu hũ non và trứng"},
     "kr_beoseotguk": {name: "Canh nấm sò"},
     "kr_chaeso_sundubu": {name: "Canh đậu hũ non nấu rau củ"},
-    "kr_chaeso_bokkeumbap": {name: "Cơm chiên rau củ"}
+    "kr_chaeso_bokkeumbap": {name: "Cơm chiên rau củ"},
+    "kr_hobakjuk": {name: "Cháo bí đỏ ngọt (hobakjuk)"}
   }
 });

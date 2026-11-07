@@ -2185,8 +2185,74 @@ GOHAN_PACK({
         'Add the drained beans and cook for 10 minutes more. Crush a few beans to thicken the stew, season with salt and serve.',
       ],
     },
+    {
+      id: 'es_fruta',
+      name: 'Fresh fruit plate',
+      local: 'Plato de fruta fresca',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'banana|Banana|1',
+        'pear|Pear|1',
+        'grapes|Grapes|1 handful',
+      ],
+      seas: 'juice of 1/2 lemon',
+      steps: [
+        'Wash the fruit. Slice the banana and the pear.',
+        'Sprinkle the lemon juice over the slices so they do not darken.',
+        'Arrange everything on a plate with the grapes and serve.',
+      ],
+    },
+    {
+      id: 'es_churros',
+      name: 'Churros with hot chocolate',
+      local: 'Churros con chocolate',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'veg',
+      min: 30,
+      ings: [
+        'flour|Plain flour|150 g',
+        'chocolate|Dark chocolate|100 g',
+        'milk|Milk|300 ml',
+      ],
+      seas: '250 ml water · pinch of salt · oil for frying · 1 tbsp sugar',
+      steps: [
+        'Boil the water with the salt, take off the heat and stir in the flour with a wooden spoon until you have a smooth dough. Spoon it into a piping bag with a star nozzle.',
+        'Heat 3 cm of oil in a deep pan to medium-high. Pipe 10 cm strips into the oil and fry for 2 to 3 minutes, turning, until golden. Drain on kitchen paper and sprinkle with the sugar.',
+        'Heat the milk, add the broken chocolate and stir over low heat until smooth and thick. Serve for dipping.',
+      ],
+    },
+    {
+      id: 'es_tostada_jamon',
+      name: 'Toasted bread with tomato and serrano ham',
+      local: 'Tostada con tomate y jamón serrano',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'grill',
+      protein: 'pork',
+      min: 10,
+      ings: [
+        'bread|Rustic bread|4 slices',
+        'tomato|Ripe tomatoes|2',
+        'ham|Serrano ham|4 slices',
+      ],
+      seas: '2 tbsp olive oil · salt',
+      steps: [
+        'Toast the bread until golden and crisp.',
+        'Halve the tomatoes and grate them into a bowl, discarding the skins. Spread the pulp on the toast.',
+        'Drizzle with the olive oil, add a pinch of salt and lay the ham on top.',
+      ],
+    },
   ],
   aliases: {
+    'chocolate': ['chocolate','dark chocolate','chocolate negro'],
     "semolina": ["semolina", "sémola", "semola", "sémola de trigo"],
     "oats": ["oats", "rolled oats", "oatmeal", "avena", "copos de avena"],
     'potato': ['potato', 'potatoes', 'patata', 'patatas'],
@@ -2255,6 +2321,7 @@ GOHAN_PACK({
   quick: ['egg', 'potato', 'chicken', 'ground meat', 'fish', 'chorizo', 'onion', 'tomato', 'bell pepper', 'zucchini', 'carrot', 'lentils', 'chickpeas', 'rice', 'pasta', 'lettuce', 'tuna', 'green beans'],
   pantry: ['egg', 'potato', 'onion', 'tomato sauce', 'rice', 'pasta', 'lentils', 'chickpeas', 'tuna', 'olives', 'bread', 'lemon', 'mayonnaise', 'carrot', 'tomato', 'chorizo'],
   names: {
+    'chocolate': 'Dark chocolate',
     "semolina": "Wheat semolina",
     "oats": "Rolled oats",
     'potato': 'Potatoes',

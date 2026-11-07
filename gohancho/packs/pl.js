@@ -2172,8 +2172,77 @@ GOHAN_PACK({
         'Simmer for 20 minutes until thick. Season with salt and pepper and serve with bread.',
       ],
     },
+    {
+      id: 'pl_jaglanka',
+      name: 'Millet porridge with apple and cinnamon',
+      local: 'Kasza jaglana z jabłkiem i cynamonem',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'veg',
+      min: 25,
+      ings: [
+        'millet|Millet groats|1/2 cup (100 g)',
+        'apple|Apple|1',
+      ],
+      seas: '500 ml water · pinch of salt · 1/2 tsp cinnamon · 1 tsp sugar',
+      steps: [
+        'Rinse the millet in a sieve under hot water.',
+        'Boil it in the water with the salt, covered, over low heat for 15 minutes until soft.',
+        'Grate or dice the apple, stir it in with the cinnamon and sugar and cook for 3 minutes. Leave covered for 5 minutes, then serve.',
+      ],
+    },
+    {
+      id: 'pl_jajecznica_maslo',
+      name: 'Scrambled eggs in butter with bread',
+      local: 'Jajecznica na maśle z chlebem',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'egg',
+      min: 10,
+      ings: [
+        'egg|Eggs|4',
+        'butter|Butter|1 tbsp',
+        'bread|Bread|2 slices',
+        'chives|Chives|1 small bunch?',
+      ],
+      seas: 'salt · pepper',
+      steps: [
+        'Melt the butter in a pan over medium-low heat.',
+        'Crack in the eggs, season with salt and pepper and stir gently for 2 to 3 minutes, until just set.',
+        'Sprinkle with chopped chives and serve with the bread.',
+      ],
+    },
+    {
+      id: 'pl_kanapki_szynka',
+      name: 'Open sandwiches with ham and cucumber',
+      local: 'Kanapki z szynką i ogórkiem',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'pork',
+      min: 5,
+      ings: [
+        'bread|Bread|4 slices',
+        'butter|Butter|1 tbsp',
+        'ham|Cooked ham|4 slices',
+        'cucumber|Cucumber|1/2',
+      ],
+      seas: 'black pepper, to taste',
+      steps: [
+        'Spread the bread with the butter.',
+        'Top each slice with a slice of ham.',
+        'Slice the cucumber thinly, lay it on top and finish with a little pepper.',
+      ],
+    },
   ],
   aliases: {
+    'millet': ['millet','millet groats','kasza jaglana'],
+    'butter': ['butter','masło'],
+    'ham': ['ham','cooked ham','szynka gotowana'],
     "oats": ["oats", "rolled oats", "oatmeal", "płatki owsiane", "platki owsiane", "owies"],
     "semolina": ["semolina", "kasza manna", "manna", "grysik"],
     'pork': ['pork', 'pork loin', 'pork chop', 'pork neck', 'pork shoulder', 'schab', 'wieprzowina', 'kotlet', 'karkówka', 'karkowka', 'łopatka wieprzowa'],
@@ -2248,6 +2317,9 @@ GOHAN_PACK({
   quick: ['chicken', 'pork', 'ground pork', 'beef', 'fish', 'egg', 'potato', 'onion', 'carrot', 'cucumber', 'tomato', 'beetroot', 'sauerkraut', 'apple', 'sour cream', 'quark', 'dill', 'pickled cucumber', 'green beans', 'rice'],
   pantry: ['egg', 'onion', 'potato', 'carrot', 'flour', 'breadcrumbs', 'sour cream', 'milk', 'bread', 'rice', 'noodles', 'buckwheat', 'pickled cucumber', 'sauerkraut', 'tomato passata', 'stock', 'lemon', 'dill'],
   names: {
+    'millet': 'Millet groats',
+    'butter': 'Butter',
+    'ham': 'Cooked ham',
     "oats": "Rolled oats",
     "semolina": "Wheat semolina",
     'pork': 'Pork', 'ground pork': 'Minced pork', 'chicken': 'Chicken', 'beef': 'Beef', 'fish': 'Fish', 'egg': 'Eggs',

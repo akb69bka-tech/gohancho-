@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('FR', 'fr', {
   staple: 'Baguette',
   names: {
+    'butter': 'Beurre',
+    'jam': 'Confiture',
     "semolina": "Semoule de blé fine",
     "oats": "Flocons d'avoine",
     "yogurt": "Yaourt nature",
@@ -1599,6 +1601,36 @@ GOHAN_PACK_TR('FR', 'fr', {
         'Faites revenir l’oignon haché et la carotte en dés dans l’huile pendant 6 minutes. Ajoutez l’ail et le paprika 1 minute.',
         'Ajoutez les tomates hachées, le laurier et le thym et laissez cuire 8 minutes. Ajoutez les haricots égouttés et 150 ml d’eau.',
         'Laissez mijoter 15 minutes jusqu’à ce que la sauce épaississe, en ajoutant les épinards pour les 2 dernières minutes. Assaisonnez et servez avec du pain.',
+      ],
+    },
+    'fr_compote': {
+      name: 'Compote de pommes à la cannelle',
+      ings: [['Pommes', '4'], ['Jus de citron', '1 c. à soupe']],
+      seas: '1 bâton de cannelle (ou 1/2 c. à café de cannelle moulue) · 4 c. à soupe d’eau · 1 c. à soupe de sucre',
+      steps: [
+        'Épluchez et épépinez les pommes, puis coupez-les en morceaux.',
+        'Mettez-les dans une casserole avec l’eau, la cannelle, le sucre et le jus de citron. Couvrez et laissez cuire à feu doux 15 minutes en remuant de temps en temps, jusqu’à ce qu’elles soient très tendres.',
+        'Retirez le bâton de cannelle, écrasez grossièrement à la fourchette et servez tiède ou froid dans des bols.',
+      ],
+    },
+    'fr_oeufs_coque': {
+      name: 'Œufs à la coque et mouillettes',
+      ings: [['Œufs', '4'], ['Pain', '4 tranches'], ['Beurre', '2 c. à soupe']],
+      seas: 'une pincée de sel',
+      steps: [
+        'Portez une casserole d’eau à ébullition. Plongez délicatement les œufs avec une cuillère et laissez cuire 6 minutes (pour les jeunes enfants et les femmes enceintes, 10 minutes, jusqu’à ce que le jaune soit ferme).',
+        'Pendant ce temps, faites griller le pain, beurrez-le et coupez-le en bandes (les mouillettes).',
+        'Placez les œufs dans des coquetiers, décalottez-les, ajoutez une pincée de sel et trempez les mouillettes dans le jaune.',
+      ],
+    },
+    'fr_tartines': {
+      name: 'Tartines beurrées et confiture',
+      ings: [['Baguette', '1/2'], ['Beurre mou', '30 g'], ['Confiture (fraise ou abricot)', '3 c. à soupe']],
+      seas: 'café ou thé chaud (pour accompagner)',
+      steps: [
+        'Coupez la baguette en 4 tronçons et ouvrez-les dans la longueur.',
+        'Tartinez de beurre mou, puis de confiture.',
+        'Servez aussitôt avec une boisson chaude.',
       ],
     },
   },

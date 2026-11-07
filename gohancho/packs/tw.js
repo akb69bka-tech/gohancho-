@@ -2090,6 +2090,26 @@ GOHAN_PACK({
         'Add the tofu and heat through for 2 minutes. Season with the soy sauce, the salt and the pepper, then add the sesame oil and the sliced scallion.',
       ],
     },
+    {
+      id: 'tw_douhua',
+      name: 'Warm silken tofu with peanuts and ginger syrup',
+      local: '豆花',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'legume',
+      min: 15,
+      ings: [
+        'tofu|Silken tofu|300 g',
+        'peanut|Cooked peanuts|3 tbsp',
+      ],
+      seas: '3 tbsp brown sugar · 100 ml water · 2 slices ginger',
+      steps: [
+        'Simmer the brown sugar, water and ginger for 5 minutes to make a syrup, then take out the ginger.',
+        'Warm the tofu gently in a steamer for 3 minutes so that it does not break.',
+        'Spoon the tofu into bowls with a flat spoon, add the peanuts and pour the hot syrup over.',
+      ],
+    },
   ],
   aliases: {
     "miso": ["miso","味噌","miso paste"],

@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    'millet': 'Kasza jaglana',
+    'butter': 'Masło',
+    'ham': 'Szynka gotowana',
     "oats": "Płatki owsiane",
     "semolina": "Kasza manna",
     'pork': "Wieprzowina", 'ground pork': "Mięso mielone", 'chicken': "Kurczak", 'beef': "Wołowina", 'fish': "Ryba", 'egg': "Jajka",
@@ -1567,6 +1570,36 @@ GOHAN_PACK_TR('PL', 'pl', {
         'Posiekaną cebulę i startą marchewkę smażyć na oleju 6 minut. Dodać czosnek, paprykę wędzoną i majeranek na 1 minutę.',
         'Dodać przecier, liść laurowy, wodę i odsączoną fasolę.',
         'Gotować 20 minut, aż sos zgęstnieje. Doprawić solą i pieprzem i podawać z chlebem.',
+      ],
+    },
+    'pl_jaglanka': {
+      name: 'Kasza jaglana z jabłkiem i cynamonem',
+      ings: [['Kasza jaglana', '1/2 szklanki (100 g)'], ['Jabłko', '1']],
+      seas: '500 ml wody · szczypta soli · 1/2 łyżeczki cynamonu · 1 łyżeczka cukru',
+      steps: [
+        'Opłucz kaszę na sitku gorącą wodą.',
+        'Ugotuj ją w wodzie z solą pod przykryciem na małym ogniu przez 15 minut, aż będzie miękka.',
+        'Jabłko zetrzyj lub pokrój w kostkę, dodaj z cynamonem i cukrem i gotuj 3 minuty. Odstaw pod przykryciem na 5 minut i podawaj.',
+      ],
+    },
+    'pl_jajecznica_maslo': {
+      name: 'Jajecznica na maśle z chlebem',
+      ings: [['Jajka', '4'], ['Masło', '1 łyżka'], ['Chleb', '2 kromki'], ['Szczypiorek', '1 mały pęczek?']],
+      seas: 'sól · pieprz',
+      steps: [
+        'Rozpuść masło na patelni na średnim lub małym ogniu.',
+        'Wbij jajka, dopraw solą i pieprzem i delikatnie mieszaj 2-3 minuty, aż się zetną.',
+        'Posyp posiekanym szczypiorkiem i podawaj z chlebem.',
+      ],
+    },
+    'pl_kanapki_szynka': {
+      name: 'Kanapki z szynką i ogórkiem',
+      ings: [['Chleb', '4 kromki'], ['Masło', '1 łyżka'], ['Szynka gotowana', '4 plasterki'], ['Ogórek', '1/2']],
+      seas: 'czarny pieprz do smaku',
+      steps: [
+        'Posmaruj chleb masłem.',
+        'Na każdą kromkę połóż plasterek szynki.',
+        'Ogórek pokrój w cienkie plasterki, ułóż na wierzchu i posyp odrobiną pieprzu.',
       ],
     },
   }

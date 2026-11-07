@@ -1386,6 +1386,48 @@ GOHAN_PACK_TR('JP', 'en', {
       seas: 'Oil 2 tsp · Water 1 tbsp · Salt and pepper a little',
       steps: ['Heat the oil in a frying pan and lightly brown the ham, 2 slices at a time without overlapping.', 'Crack 2 eggs onto each pair of ham slices, add the water, cover and steam over low heat for 2–3 minutes until the whites are set (for small children and pregnant women, cook until the yolks are firm too).', 'Serve and season with salt and pepper, with the cherry tomatoes and lettuce on the side.']
     },
+    nattogohan: {
+      name: 'Natto over rice',
+      ings: [['Cooked rice', '2 bowls'], ['Natto', '2 packs (about 90 g)'], ['Leek (naganegi)', '5 cm'], ['Toasted nori', 'a little']],
+      seas: 'Natto sauce 2 packets (from the pack) · Mustard a little',
+      steps: ['Slice the leek into small rounds.', 'Put the natto in a bowl and stir about 20 times until sticky, then stir in the sauce and mustard.', 'Spoon the natto over warm rice and sprinkle with the leek and torn nori.']
+    },
+    onigiri_umekonbu: {
+      name: 'Onigiri (pickled plum and salted kelp)',
+      ings: [['Cooked rice', '3 bowls (about 450 g)'], ['Umeboshi (pickled plum)', '2'], ['Shio konbu (salted kelp)', '2 tbsp'], ['Toasted nori', '1 sheet']],
+      seas: 'Salt a little',
+      steps: ['Remove the pits from the umeboshi and flake the flesh. Cut the nori into 6 pieces. Divide the rice into 6 portions (about 75 g each).', 'Wet your hands and spread a little salt on your palm. Make a dent in the middle of a portion of rice, put in the umeboshi or the shio konbu, and cover with the rice. Make 3 of each.', 'While the rice is still warm, shape each into a triangle with light pressure, turning it in your hands, then wrap with nori (use plastic wrap if the rice is too hot).']
+    },
+    asayakizake: {
+      name: 'Grilled salmon breakfast with rice',
+      ings: [['Lightly salted salmon', '2 fillets'], ['Cooked rice', '2 bowls'], ['Daikon radish', '3 cm'], ['Toasted nori', 'a little']],
+      seas: 'Soy sauce a little',
+      steps: ['Pat the salmon dry with kitchen paper. Grate the daikon and drain lightly.', 'Under a preheated grill, cook over medium heat skin side up for 7 to 8 minutes until cooked through. In a frying pan, brush a thin layer of oil, cook skin side down over medium heat, turn when browned, cover and cook over low heat for 4 to 5 minutes.', 'Serve the salmon with rice in bowls, add the grated daikon and a little soy sauce, and torn nori if you like.']
+    },
+    umechazuke: {
+      name: 'Ume ochazuke (rice with tea and pickled plum)',
+      ings: [['Cooked rice', '2 bowls'], ['Umeboshi (pickled plum)', '2'], ['Toasted nori', 'a little'], ['Wasabi', 'a little']],
+      seas: 'Hot green tea (sencha or hojicha) 300 ml · Salt a little',
+      steps: ['Remove the pits from the umeboshi and flake the flesh lightly. Tear the nori.', 'Put the rice in bowls and top with the umeboshi and nori.', 'Pour over the hot tea and add a little salt to taste. Add wasabi if you like.']
+    },
+    tamagoyaki_miso: {
+      name: 'Tamagoyaki and miso soup breakfast',
+      ings: [['Eggs', '3'], ['Tofu', '1/2 block'], ['Dried wakame', '3 g'], ['Cooked rice', '2 bowls']],
+      seas: 'Dashi stock 400 ml · Miso 2 tbsp · Sugar 2 tsp · Soy sauce 1/2 tsp · Oil a little · Salt a little',
+      steps: ['Beat the eggs and mix in 2 tsp sugar, the soy sauce and a pinch of salt. Cut the tofu into small cubes.', 'Heat a tamagoyaki pan (or a small frying pan) over medium heat with a thin film of oil. Pour in a third of the egg, and when it is half set, roll it toward you. Add the rest in two more batches, rolling each time, and cook until set through. Cut into pieces.', 'Heat the dashi, add the tofu and wakame, and when it comes to a boil lower the heat and dissolve in the miso (do not let it boil).', 'Serve the rice, tamagoyaki and miso soup together.']
+    },
+    toast_yudetamago: {
+      name: 'Toast and boiled eggs',
+      ings: [['Bread (6 slices per loaf)', '2 slices'], ['Eggs', '2'], ['Butter', '10 g'], ['Cherry tomatoes', '4']],
+      seas: 'Salt a little',
+      steps: ['Put the eggs in a pan with enough water to cover and bring to a boil over medium heat. Lower the heat and boil for 6 minutes for soft or 10 minutes for hard (for small children and pregnant women, boil 10 minutes so the yolks are firm).', 'Cool in cold water and peel. Toast the bread and spread with the butter.', 'Serve the toast, eggs and cherry tomatoes on a plate and sprinkle the eggs with salt.']
+    },
+    yogurt_fruit: {
+      name: 'Yogurt with fruit',
+      ings: [['Plain yogurt', '300 g'], ['Banana', '1'], ['Apple', '1/2'], ['Honey', '2 tsp']],
+      seas: 'Lemon juice a little',
+      steps: ['Cut the apple into small cubes with the skin on and sprinkle with a little lemon juice. Slice the banana.', 'Spoon the yogurt into bowls and top with the banana and apple.', 'Drizzle with honey if you like.']
+    },
     yakiniku: {
       name: 'Yakiniku (Japanese-style grilled beef)',
       ings: [['Beef short rib (for yakiniku)', '250 g'], ['Onion', '1/2'], ['Green peppers', '2'], ['Shiitake mushrooms', '4'], ['Sangchu (or lettuce)', '4 leaves']],

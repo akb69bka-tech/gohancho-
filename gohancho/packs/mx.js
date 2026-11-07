@@ -2308,6 +2308,27 @@ GOHAN_PACK({
         'Add the drained hominy, the water, the oregano and the salt and simmer for 25 minutes. Serve with sliced radishes, oregano and lime.',
       ],
     },
+    {
+      id: 'mx_fruta_picada',
+      name: 'Fruit cup with lime and chili powder',
+      local: 'Fruta picada con limón y chile en polvo',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'orange|Oranges|2',
+        'jicama|Jicama|1/2',
+        'cucumber|Cucumber|1/2',
+      ],
+      seas: 'juice of 2 limes · chili-lime powder or ground chili · pinch of salt',
+      steps: [
+        'Peel the oranges and the jicama. Cut the oranges, jicama and cucumber into bite-size pieces.',
+        'Put everything in a bowl and squeeze the lime juice over it.',
+        'Sprinkle with the chili powder and salt, toss and serve cold.',
+      ],
+    },
   ],
   aliases: {
     "corn masa": ["corn masa", "masa", "masa harina", "maseca"],

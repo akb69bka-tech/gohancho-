@@ -2052,8 +2052,29 @@ GOHAN_PACK({
         'Slide in the tofu and simmer for 5 minutes. Stir the cornstarch with 1 tbsp of water, pour it in and cook until thick. Top with the Sichuan pepper and the sliced scallion.',
       ],
     },
+    {
+      id: 'cn_xiaomi_zhou',
+      name: 'Millet congee',
+      local: '小米粥',
+      type: 'rice',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'rice',
+      protein: 'veg',
+      min: 35,
+      ings: [
+        'millet|Millet|1/2 cup (100 g)',
+        'jujube|Red dates (jujube)|4?',
+      ],
+      seas: '800 ml water',
+      steps: [
+        'Rinse the millet. Rinse the red dates and split them open with a knife.',
+        'Bring the water to the boil, add the millet and the red dates, then lower the heat and simmer with the lid slightly ajar for 25 minutes, stirring now and then.',
+        'Cook until the millet has burst and the congee is thick with a layer of oil on top. Serve warm.',
+      ],
+    },
   ],
   aliases: {
+    'millet': ['millet','小米'],
     'egg': ['egg', 'eggs', '鸡蛋', '蛋', '鸡子'],
     'tomato': ['tomato', 'tomatoes', '番茄', '西红柿'],
     'scallion': ['scallion', 'spring onion', 'green onion', '葱', '小葱', '大葱', '葱花'],
@@ -2129,6 +2150,7 @@ GOHAN_PACK({
   quick: ['pork', 'pork belly', 'ground pork', 'chicken', 'fish', 'egg', 'tofu', 'tomato', 'potato', 'eggplant', 'bok choy', 'napa cabbage', 'cucumber', 'bell pepper', 'carrot', 'celery', 'scallion', 'wood ear'],
   pantry: ['rice', 'egg', 'scallion', 'tomato', 'potato', 'noodles', 'tofu', 'wood ear', 'peanut', 'chili', 'seaweed', 'dried shrimp', 'glass noodles', 'carrot', 'napa cabbage', 'onion'],
   names: {
+    'millet': 'Millet',
     'egg': 'Eggs',
     'tomato': 'Tomatoes',
     'scallion': 'Spring onions',

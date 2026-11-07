@@ -2315,8 +2315,76 @@ GOHAN_PACK({
         'Season with salt and pepper and scatter with the cilantro.',
       ],
     },
+    {
+      id: 'pe_pan_palta',
+      name: 'Bread with avocado',
+      local: 'Pan con palta',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 5,
+      ings: [
+        'bread|Bread rolls (pan francés)|2',
+        'avocado|Ripe avocado|1',
+      ],
+      seas: 'juice of 1/2 lime · salt',
+      steps: [
+        'Cut the bread rolls in half and warm them in a dry pan or oven for 2 minutes.',
+        'Mash the avocado with a fork with the lime juice and salt.',
+        'Spread the avocado on the rolls and serve.',
+      ],
+    },
+    {
+      id: 'pe_pan_chicharron',
+      name: 'Pork and sweet potato sandwich',
+      local: 'Pan con chicharrón',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'pork',
+      min: 50,
+      ings: [
+        'bread|Bread rolls (pan francés)|2',
+        'pork|Pork belly or pork loin, in chunks|250 g',
+        'sweet potato|Sweet potato|1',
+        'red onion|Red onion|1',
+      ],
+      seas: '500 ml water · salt · juice of 1 lime · oil for frying',
+      steps: [
+        'Simmer the pork with the water and 1 tsp salt for 25 minutes until the water has evaporated, then fry in its own fat for 8 minutes until golden and crisp.',
+        'Peel the sweet potato, cut it into slices and fry until golden. Slice the red onion thinly and mix with the lime juice and a pinch of salt for the salsa criolla.',
+        'Split the rolls and fill with the pork, sweet potato and onion.',
+      ],
+    },
+    {
+      id: 'pe_ensalada_frutas',
+      name: 'Fruit salad with papaya and banana',
+      local: 'Ensalada de frutas',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'papaya|Papaya|1/2',
+        'banana|Banana|1',
+        'pineapple|Pineapple|2 slices',
+      ],
+      seas: 'juice of 1 orange',
+      steps: [
+        'Peel the papaya, remove the seeds and cut it into cubes. Peel and slice the banana.',
+        'Cut the pineapple slices into small pieces.',
+        'Mix all the fruit in a bowl with the orange juice and serve right away.',
+      ],
+    },
   ],
   aliases: {
+    'papaya': ['papaya'],
+    'banana': ['banana','plátano'],
+    'pineapple': ['pineapple','piña'],
     "oats": ["oats", "rolled oats", "oatmeal", "avena", "avena en hojuelas"],
     "apple": ["apple", "manzana"],
     "semolina": ["semolina", "sémola", "semola"],
@@ -2400,6 +2468,9 @@ GOHAN_PACK({
   quick: ['chicken', 'beef', 'fish', 'egg', 'tuna', 'onion', 'red onion', 'tomato', 'potato', 'carrot', 'aji amarillo', 'cilantro', 'lime', 'peas', 'corn', 'cheese', 'lentils', 'plantain', 'avocado'],
   pantry: ['rice', 'potato', 'onion', 'red onion', 'egg', 'lime', 'aji amarillo', 'evaporated milk', 'lentils', 'pasta', 'tuna', 'mayonnaise', 'crackers', 'peas', 'cilantro', 'tomato'],
   names: {
+    'papaya': 'Papaya',
+    'banana': 'Banana',
+    'pineapple': 'Pineapple',
     "oats": "Rolled oats",
     "apple": "Apple",
     "semolina": "Wheat semolina",

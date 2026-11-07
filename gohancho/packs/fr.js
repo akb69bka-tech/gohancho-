@@ -2170,8 +2170,74 @@ GOHAN_PACK({
         'Simmer for 15 minutes until the sauce is thick, adding the spinach for the last 2 minutes. Season and serve with bread.',
       ],
     },
+    {
+      id: 'fr_compote',
+      name: 'Apple compote with cinnamon',
+      local: 'Compote de pommes à la cannelle',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'veg',
+      min: 20,
+      ings: [
+        'apple|Apples|4',
+        'lemon|Lemon juice|1 tbsp',
+      ],
+      seas: '1 cinnamon stick (or 1/2 tsp ground cinnamon) · 4 tbsp water · 1 tbsp sugar',
+      steps: [
+        'Peel and core the apples and cut them into chunks.',
+        'Put them in a saucepan with the water, cinnamon, sugar and lemon juice. Cover and cook over low heat for 15 minutes, stirring now and then, until very soft.',
+        'Remove the cinnamon stick, crush roughly with a fork and serve warm or cold in bowls.',
+      ],
+    },
+    {
+      id: 'fr_oeufs_coque',
+      name: 'Soft-boiled eggs with toast soldiers',
+      local: 'Œufs à la coque et mouillettes',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'egg',
+      min: 12,
+      ings: [
+        'egg|Eggs|4',
+        'bread|Bread|4 slices',
+        'butter|Butter|2 tbsp',
+      ],
+      seas: 'pinch of salt',
+      steps: [
+        'Bring a pan of water to the boil. Lower the eggs in gently with a spoon and cook for 6 minutes (for small children and pregnant women, cook 10 minutes until the yolks are firm).',
+        'Meanwhile toast the bread, spread with the butter and cut into strips (mouillettes).',
+        'Put the eggs in egg cups, cut off the tops, add a pinch of salt and dip the strips into the yolk.',
+      ],
+    },
+    {
+      id: 'fr_tartines',
+      name: 'Buttered baguette with jam',
+      local: 'Tartines beurrées et confiture',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 5,
+      ings: [
+        'bread|Baguette|1/2',
+        'butter|Butter, softened|30 g',
+        'jam|Jam (strawberry or apricot)|3 tbsp',
+      ],
+      seas: 'hot coffee or tea, to serve',
+      steps: [
+        'Cut the baguette into 4 pieces and split each one lengthwise.',
+        'Spread each piece with the softened butter, then the jam.',
+        'Serve at once with a hot drink.',
+      ],
+    },
   ],
   aliases: {
+    'butter': ['butter','beurre'],
+    'jam': ['jam','jam (strawberry or apricot)','confiture'],
     "semolina": ["semolina", "semoule", "semoule de blé", "semoule fine"],
     "oats": ["oats", "rolled oats", "oatmeal", "flocons d'avoine", "avoine"],
     "yogurt": ["yogurt","yoghurt","plain yogurt","yaourt","fromage blanc"],
@@ -2252,6 +2318,8 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'pork', 'salmon', 'egg', 'ham', 'bacon', 'sausage', 'potato', 'carrot', 'onion', 'tomato', 'zucchini', 'green bean', 'leek', 'cheese', 'cream', 'pasta'],
   pantry: ['egg', 'onion', 'shallot', 'potato', 'carrot', 'milk', 'cream', 'cheese', 'pasta', 'rice', 'lentils', 'couscous', 'lemon', 'tomato', 'ham', 'lettuce', 'garlic'],
   names: {
+    'butter': 'Butter',
+    'jam': 'Jam (strawberry or apricot)',
     "semolina": "Fine wheat semolina",
     "oats": "Rolled oats",
     "yogurt": "Plain yogurt",
