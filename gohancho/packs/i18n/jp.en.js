@@ -1428,6 +1428,54 @@ GOHAN_PACK_TR('JP', 'en', {
       seas: 'Lemon juice a little',
       steps: ['Cut the apple into small cubes with the skin on and sprinkle with a little lemon juice. Slice the banana.', 'Spoon the yogurt into bowls and top with the banana and apple.', 'Drizzle with honey if you like.']
     },
+    sake_zakkoku: {
+      name: 'Salmon and multigrain rice',
+      ings: [['Lightly salted salmon', '2 fillets'], ['Multigrain rice', '2 bowls'], ['Shiso leaves', '2'], ['Toasted nori', 'a little']],
+      seas: 'Oil a little',
+      steps: ['Pat the salmon dry with kitchen paper. Heat a thin layer of oil in a frying pan over medium heat and place the salmon skin side down.', 'When browned, turn it over, cover and cook over low heat for 3 to 4 minutes until cooked through. Remove the skin and bones and flake the fish coarsely. Cut the shiso into thin strips and tear the nori.', 'Mix the flaked salmon into the warm multigrain rice, put it in bowls and top with the shiso and nori.']
+    },
+    shirasu_tkg: {
+      name: 'Shirasu and egg over rice',
+      ings: [['Cooked rice', '2 bowls'], ['Eggs', '2'], ['Shirasu (baby sardines)', '30 g'], ['Scallions', 'a little']],
+      seas: 'Soy sauce 2 tsp',
+      steps: ['Slice the scallions into small rounds.', 'Top warm rice with the shirasu, make a dent in the middle and crack in an egg (for small children, pregnant women and anyone unwell, do not use raw egg: use scrambled egg or an egg cooked until at least soft-set).', 'Drizzle with soy sauce, sprinkle with the scallions and mix as you eat.']
+    },
+    okayu_asa: {
+      name: 'Quick ume rice porridge from cooked rice',
+      ings: [['Cooked rice', '2 bowls'], ['Umeboshi (pickled plum)', '2'], ['Shiso leaves', '2'], ['Toasted nori', 'a little']],
+      seas: 'Water 500 ml · Salt a little',
+      steps: ['Remove the pits from the umeboshi and flake the flesh. Cut the shiso into thin strips.', 'Put the rice and water in a pot over medium heat. When it boils, lower the heat and simmer with the lid ajar for 5 to 6 minutes until creamy.', 'Season with salt, spoon into bowls and top with the umeboshi, shiso and torn nori.']
+    },
+    natto_omelet: {
+      name: 'Natto omelet breakfast',
+      ings: [['Eggs', '3'], ['Natto', '1 pack (about 45 g)'], ['Leek (naganegi)', '5 cm'], ['Cooked rice', '2 bowls']],
+      seas: 'Natto sauce 1 packet (from the pack) · Oil 2 tsp · Salt a little',
+      steps: ['Slice the leek into small rounds. Mix the natto with its sauce and the leek. Beat the eggs with the salt.', 'Heat the oil in a frying pan, pour in the eggs and stir in big strokes. While still soft, put the natto in the middle and fold in half (for small children and pregnant women, cook until set all the way through).', 'Serve with warm rice.']
+    },
+    tofu_wakame_miso: {
+      name: 'Tofu and wakame miso soup set',
+      ings: [['Tofu', '1/2 block'], ['Dried wakame', '3 g'], ['Cooked rice', '2 bowls'], ['Toasted nori', '1 sheet'], ['Leek (naganegi)', '5 cm']],
+      seas: 'Dashi 400 ml · Miso 2 tbsp',
+      steps: ['Cut the tofu into small cubes. Slice the leek into small rounds. Soak the wakame in water and drain.', 'Warm the dashi in a pot, add the tofu and wakame, and when it comes to a simmer, lower the heat and dissolve in the miso (do not let it boil).', 'Serve the rice and miso soup in bowls with the nori and leek.']
+    },
+    yaki_onigiri: {
+      name: 'Grilled onigiri',
+      ings: [['Cooked rice', '3 bowls (about 450 g)'], ['Shiso leaves', '2'], ['Toasted nori', 'a little']],
+      seas: 'Soy sauce 1 tbsp · Mirin 2 tsp · Oil 1 tsp',
+      steps: ['Wet your hands, divide the rice into 4 portions and shape each into a flat triangle (or round). Mix the soy sauce and mirin.', 'Heat the oil in a frying pan, add the onigiri and cook over medium heat for 2 to 3 minutes on each side until lightly browned.', 'Lower the heat, brush the soy sauce and mirin over the surface and cook briefly, turning, until fragrant (it burns easily, so stay by the stove). Serve with shiso or nori.']
+    },
+    satsumaimo_banana: {
+      name: 'Sweet potato and banana breakfast',
+      ings: [['Sweet potato', '1 small (about 200 g)'], ['Banana', '1'], ['Lemon juice', 'a little']],
+      seas: 'Salt a pinch · Cinnamon a little',
+      steps: ['Wash the sweet potato and cut it into 1 cm rounds with the skin on. Rinse quickly in water, arrange on a heatproof plate and cover loosely with plastic wrap.', 'Microwave at 600 W for 4 to 5 minutes until a skewer goes in easily (careful, it is hot). Cut the banana into 1 cm rounds and sprinkle with lemon juice.', 'Arrange the sweet potato and banana in bowls and sprinkle with a little salt and cinnamon.']
+    },
+    hotcake_asa: {
+      name: 'Pancake breakfast',
+      ings: [['Pancake mix', '150 g'], ['Eggs', '1'], ['Milk', '100 ml'], ['Banana', '1'], ['Butter', '10 g']],
+      seas: 'Oil a little · Maple syrup as needed',
+      steps: ['Mix the egg and milk in a bowl, add the pancake mix and stir lightly (a few lumps of flour are fine). Slice the banana.', 'Warm a frying pan over low heat and wipe it with a thin layer of oil. Pour in a quarter of the batter, and when bubbles appear, flip, cover and cook over low heat for about 2 minutes. Cook the rest the same way.', 'Serve topped with the banana and butter, and drizzle with maple syrup.']
+    },
     yakiniku: {
       name: 'Yakiniku (Japanese-style grilled beef)',
       ings: [['Beef short rib (for yakiniku)', '250 g'], ['Onion', '1/2'], ['Green peppers', '2'], ['Shiitake mushrooms', '4'], ['Sangchu (or lettuce)', '4 leaves']],
