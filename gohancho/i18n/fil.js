@@ -1953,7 +1953,7 @@ GOHAN_I18N('fil', {
     "雑炊": "Zosui (sopas ng kanin)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Alisin ang buto, balat at taba, at himayin ang laman.",
     "前の献立": "Nakaraang menu",
-    "前へ": "Bumalik",
+    "前へ": "Balik",
     "この手順は、入れない材料のぶんなので飛ばせます": "Puwede mong laktawan ang hakbang na ito (sangkap lang na inalis mo ang gamit dito).",
     "ハラール向け（豚・酒類）": "Halal (walang baboy, alak)",
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (walang karne, isda, shellfish)",

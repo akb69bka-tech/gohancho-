@@ -1915,6 +1915,7 @@ nav.tabs.two svg{padding-inline:3px}
 .week.wk2 .item .day{grid-column:1;grid-row:1 / span 2}
 .week.wk2 .week-acts,.week.wk2 .plus-mark,html[data-ts="2"] .week.wk2 .week-acts,html[data-ts="2"] .week.wk2 .plus-mark,.week.wk2 .item.skipped .week-acts,html[data-ts="2"] .week.wk2 .item.skipped .week-acts{grid-column:2;grid-row:2;justify-self:end}
 .week.wk2 .item.skipped .t{grid-row:1}}
+@media (min-width:260px) and (max-width:319px){.inputbar{display:flex;flex-wrap:wrap}.inputbar input{flex:1 1 120px;min-width:120px}.inputbar .btn{flex:0 0 auto}.inputbar [data-act=mic]{flex:1 1 100%}}   /* R137: 幅260pxで入力欄が 47〜75px に縮むのを防ぐ（120px に満たなければ「追加」を次の行へ） */
 @media (max-width:259px){
     .inputbar{grid-template-columns:minmax(0,1fr)}   /* R121: 入力欄とボタンを縦に（入力欄が 38px にならないように） */
     .today-head.p2-head .p2-sv.one{width:auto;max-width:44%;flex:0 0 auto;padding:0 8px;gap:4px}   /* R121: 見出しを隠さない小さな条件ボタン（印は畳み、人数・品数と ▾ を残す） */
@@ -1925,6 +1926,7 @@ nav.tabs.two svg{padding-inline:3px}
 .tg-mid .mb-back.icon{flex-direction:column;gap:1px;width:auto;height:auto;min-width:50px;max-width:86px;min-height:44px;padding:1px 4px;border-radius:24px}   /* R130: 字は 12px 以上・2行まで。幅は字に合わせる（前は 56px 固定で、長い語は絵だけになった） */
 .tg-mid .mb-back.icon .mb-ic{height:15px;line-height:0}.tg-mid .mb-back.icon .mb-ic svg{width:15px;height:15px}
 .tg-mid .mb-back.icon .mb-tx{position:static;width:auto;max-width:78px;height:auto;max-height:2.25em;overflow:hidden;clip-path:none;white-space:normal;text-align:center;font-size:12px;line-height:1.1;overflow-wrap:anywhere;text-wrap:balance}
+.tg-mid .mb-back.icon.tightb{border-width:1px;width:44px}   /* R138: 幅195pxの短い語（12px）用。枠を細くして中の幅を 42px に */
 .tg-mid .mb-back.icon.nocap{width:44px;height:44px;min-width:44px;max-width:44px;min-height:44px;padding:0}.tg-mid .mb-back.icon.nocap .mb-ic{height:auto}.tg-mid .mb-back.icon.nocap .mb-ic svg{width:26px;height:26px}
 .tg-mid .mb-back.icon.nocap .mb-tx{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tray.grid2 .tg-mid.mb-stack .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack .shuffle{max-width:60px}   /* R122: 幅260px未満は、丸と字を 60px の中に（右の「前の献立」の丸に押せる領域が重ならない） */
@@ -3325,7 +3327,7 @@ function menuBackCheck(){
 function menuBackFit(){
     document.querySelectorAll('#view .tg-mid .mb-back').forEach(bt => {
         const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'), sh = mid.querySelector('.shuffle'); if (!ic) return;
-        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(), gp = mid.classList.contains('mb-stack') ? 3 : 5; if (!m.width) return;
+        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(); let gp = mid.classList.contains('mb-stack') ? 3 : 5; const gp0 = gp; if (!m.width) return;
         bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px';
         // R131: 丸・字・「まるごと入れ替え」のボタン全体（押せる範囲）のどれにも、gp 以上あけて重ならない
         const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx, sh].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + gp && r.right > q.left - gp && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5 || r.top < m.top - 1.5 || r.bottom > m.bottom + 1.5; };
@@ -3333,18 +3335,20 @@ function menuBackFit(){
         const tx2 = bt.querySelector('.mb-tx'), rtl = getComputedStyle(bt).direction === 'rtl';
         const wordCut = () => { if (!tx2) return false; tx2.style.overflowWrap = 'normal'; const o = tx2.scrollWidth > tx2.clientWidth + 1; tx2.style.overflowWrap = ''; return o; };   // 1語が長くて途中で切れるときは字を出さない
         const full = tx2 ? (tx2.dataset.full || (tx2.dataset.full = tx2.textContent)) : '', short = tx2 ? (tx2.dataset.short || '') : '';
-        const reset = () => { bt.classList.remove('icon', 'nocap'); bt.style.maxWidth = ''; bt.style.minWidth = ''; if (tx2){ tx2.style.maxWidth = ''; tx2.textContent = full; } bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px'; };
+        const reset = () => { gp = gp0; bt.classList.remove('icon', 'nocap', 'tightb'); bt.style.maxWidth = ''; bt.style.minWidth = ''; if (tx2){ tx2.style.maxWidth = ''; tx2.textContent = full; } bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px'; };
         reset();
         if (hit()){
             const sr = sh ? sh.getBoundingClientRect() : c, av = Math.floor(rtl ? sr.left - gp - m.left : m.right - sr.right - gp);   // 丸の隣に残っている幅。そこに入る幅で字を折り返す（2行まで）
             // 字つき（絵の下に 12px 以上の字・2行まで）。長い語は短い語（前へ・Retour など）に替えて、それでも入らないときだけ絵だけ
-            const tryIcon = word => {
-                reset(); bt.classList.add('icon'); if (tx2) tx2.textContent = word;
-                if (av >= 44){ const aw = Math.min(av, 86); bt.style.maxWidth = aw + 'px'; bt.style.minWidth = Math.min(50, aw) + 'px'; if (tx2) tx2.style.maxWidth = (aw - 8) + 'px'; }
+            const tryIcon = (word, g) => {
+                reset(); if (g){ gp = g; bt.classList.add('tightb'); bt.style.minWidth = bt.style.maxWidth = '44px'; if (tx2) tx2.style.maxWidth = '42px'; } bt.classList.add('icon'); if (tx2) tx2.textContent = word;
+                if (av >= 44 && !g){ const aw = Math.min(av, 86); bt.style.maxWidth = aw + 'px'; bt.style.minWidth = Math.min(50, aw) + 'px'; if (tx2) tx2.style.maxWidth = (aw - 8) + 'px'; }
                 { const r = bt.getBoundingClientRect(), dy = r.top < m.top ? m.top - r.top : r.bottom > m.bottom ? m.bottom - r.bottom : 0; if (dy) bt.style.top = (parseFloat(bt.style.top) + dy) + 'px'; }   // 丸の高さの真ん中から、帯の中に入るぶんだけずらす
                 return !(hit() || clip() || wordCut());
             };
-            if (!tryIcon(full) && !(short && short !== full && tryIcon(short))){ reset(); bt.classList.add('icon', 'nocap'); if (tx2) tx2.textContent = full; }
+            // R138: 幅195px など丸の隣が 44px に満たないときは、すきま 1px まで詰めて 44px 幅の中に短い語（前へ・Retour など）を12pxで入れる
+            const tryTight = word => tryIcon(word, 1);
+            if (!tryIcon(full) && !(short && short !== full && tryIcon(short)) && !(short && tryTight(short)) && !tryTight(full)){ reset(); bt.classList.add('icon', 'nocap'); if (tx2) tx2.textContent = full; }
         }
     });
 }
@@ -5140,9 +5144,14 @@ function reqUp(on){
 function bfEntryFit(){
     const en = document.querySelector('#view .bf-entry'); if (!en) return;
     en.style.removeProperty('margin-top');
-    let fl = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
-    const q = en.getBoundingClientRect();
-    if (q.height > 0 && q.top < fl - 1 && q.bottom > fl + 1) en.style.marginTop = Math.ceil(fl - q.top + 2) + 'px';
+    // R139: 決めるの帯だけでなく、下のタブの帯も見る（帯がいくつあっても、入口の上端〜下端の間に帯の上端が来る位置は避ける）
+    const tops = []; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4) tops.push(r.top); });
+    tops.sort((x, y) => x - y);
+    for (let i = 0; i < 4; i++){
+        const q = en.getBoundingClientRect(); if (!(q.height > 0)) break;
+        const fl = tops.find(t => q.top < t - 1 && q.bottom > t + 1); if (fl === undefined) break;
+        en.style.marginTop = (parseFloat(en.style.marginTop) || 0) + Math.ceil(fl - q.top + 2) + 'px';
+    }
 }
 function fitTray(){
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
