@@ -1966,4 +1966,5 @@ GOHAN_I18N('tr', {
     "特定商取引法に基づく表記": "Belirli Ticari İşlemler Yasası bildirimi",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Satın alma kimliği (kopyalayıp başka bir cihazda «Başka bir cihazın satın alma kimliğiyle geri yükle» alanına girerseniz aynı satın almayı kullanabilirsiniz. Başkalarına göstermeyin)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Yönetim sayfası açılamadı. Lütfen biraz sonra tekrar deneyin."
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Gece vardiyası sonrası (kahvaltı girişini her saatte göster)"
 });

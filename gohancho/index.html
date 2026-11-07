@@ -5571,7 +5571,7 @@ function skipDayHtml(x){
 // 昨日「明日へまわす」にした一膳。今日まだ決めていないときだけ、決める段の上に1行（押したときだけ今日の案にする）
 // R2-15: 夜勤明けの朝（4〜10時台）に開いたとき、いま食べる朝食を選ぶ小さな入口（今日の画面のお膳の下）。朝食の料理は既存のもの（パックの印 meal: 'breakfast'・日本はハムエッグ）で、
 // 出す料理の判定（アレルギー・苦手）は献立・さがすと同じ。決めた献立は変えない（朝食は見て作り方を開くだけ）。朝食の料理がない国では入口を出さない
-function breakfastTime(){ const h = new Date().getHours(); return h >= 4 && h < 11; }
+function breakfastTime(){ if (S.settings.nightShift === true) return true; const h = new Date().getHours(); return h >= 4 && h < 11; }   // 夜勤明け（設定）がONなら、朝ごはんの入口を時間にかかわらず出す
 function breakfastDishes(){ return RECIPES.filter(r => breakfastMeal(r) && !isAvoided(r) && !allergyConflict(r)); }
 function breakfastEntryHtml(){
     if (!breakfastTime() || !breakfastDishes().length) return '';
@@ -9279,6 +9279,7 @@ function viewSettings(){
                 <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
             <div class="field"><label>${esc(t('開いたときの画面'))}</label>
                 <div class="chips">${[['auto', t('いまの段（おすすめ）')], ['decide', t('いつも「決める」から')]].map(([v, l]) => `<button class="chip" data-act="open-at" data-v="${v}" aria-pressed="${(S.settings.openAt === 'decide' ? 'decide' : 'auto') === v}">${esc(l)}</button>`).join('')}</div></div>
+            <div class="field"><label class="check"><input type="checkbox" data-act="night-shift" ${S.settings.nightShift === true ? 'checked' : ''}><span>${esc(t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）'))}</span></label></div>
             <div class="field"><label>${esc(t('苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）'))}</label>
                 ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
@@ -14562,6 +14563,7 @@ document.addEventListener('click', e => {
             if (!famMembers().length){ if (!Array.isArray(S.family)) S.family = []; const m = {id: 'f' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), name: '', role: 'adult', avoid: [], allergy: [], mild: false}; S.family.push(m); session.famOpen = m.id; save(); render(); }
             const f = document.getElementById('family-profile'); if (f) f.scrollIntoView({block: 'start'}); break;
         }
+        case 'night-shift': { if (el.checked) S.settings.nightShift = true; else delete S.settings.nightShift; save(); render(); break; }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-avoid-diet': {

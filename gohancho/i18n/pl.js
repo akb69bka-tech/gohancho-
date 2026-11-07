@@ -1966,4 +1966,5 @@ GOHAN_I18N('pl', {
     "特定商取引法に基づく表記": "Informacja zgodnie z japońską ustawą o określonych transakcjach handlowych",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID zakupu (skopiuj i wpisz w «Przywróć za pomocą ID zakupu z innego urządzenia» na innym urządzeniu, aby używać tego samego zakupu. Nie pokazuj go innym)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Nie udało się otworzyć strony zarządzania. Spróbuj ponownie za chwilę."
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Po nocnej zmianie (pokazuj wybór śniadania o każdej porze)"
 });

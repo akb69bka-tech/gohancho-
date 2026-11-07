@@ -1966,4 +1966,5 @@ GOHAN_I18N('fr', {
     "特定商取引法に基づく表記": "Mention légale (loi japonaise sur les transactions commerciales spécifiées)",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID d’achat (copiez-le et saisissez-le dans « Restaurer avec l’ID d’achat d’un autre appareil » sur un autre appareil pour utiliser le même achat. Ne le montrez à personne)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Impossible d’ouvrir la page de gestion. Réessayez dans un instant."
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Après le service de nuit (afficher le petit-déjeuner à toute heure)"
 });

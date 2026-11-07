@@ -1966,4 +1966,5 @@ GOHAN_I18N('id', {
     "特定商取引法に基づく表記": "Pemberitahuan berdasarkan Undang-Undang Transaksi Komersial Tertentu",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID pembelian (salin dan masukkan di «Pulihkan dengan ID pembelian perangkat lain» pada perangkat lain agar pembelian yang sama bisa dipakai. Jangan tunjukkan ke orang lain)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Halaman pengelolaan tidak bisa dibuka. Coba lagi sebentar lagi."
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Setelah shift malam (tampilkan pilihan sarapan kapan saja)"
 });
