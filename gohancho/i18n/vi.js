@@ -1953,6 +1953,7 @@ GOHAN_I18N('vi', {
     "雑炊": "Zosui (cháo loãng)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Bỏ xương, da và mỡ nếu có, rồi xé nhỏ thịt.",
     "前の献立": "Thực đơn trước",
+    "前へ": "Quay lại",
     "この手順は、入れない材料のぶんなので飛ばせます": "Bạn có thể bỏ qua bước này (bước chỉ dùng nguyên liệu bạn đã loại).",
     "ハラール向け（豚・酒類）": "Halal (không heo, rượu)",
     "ベジタリアン向け（肉・魚・貝）": "Ăn chay (không thịt, cá, hải sản có vỏ)",

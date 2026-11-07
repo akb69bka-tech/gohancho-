@@ -1953,6 +1953,7 @@ GOHAN_I18N('de', {
     "雑炊": "Reissuppe (Zosui)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Gräten, Haut und Fett entfernen, das Fleisch zerzupfen.",
     "前の献立": "Vorheriges Menü",
+    "前へ": "Zurück",
     "この手順は、入れない材料のぶんなので飛ばせます": "Diesen Schritt können Sie überspringen (er betraf nur eine weggelassene Zutat).",
     "ハラール向け（豚・酒類）": "Halal (ohne Schwein, Alkohol)",
     "ベジタリアン向け（肉・魚・貝）": "Vegetarisch (ohne Fleisch, Fisch, Schalentiere)",

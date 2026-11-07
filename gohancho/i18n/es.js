@@ -1953,6 +1953,7 @@ GOHAN_I18N('es', {
     "雑炊": "Zosui (sopa de arroz)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Retira huesos, piel y grasa si los hay y desmenuza la carne.",
     "前の献立": "Menú anterior",
+    "前へ": "Atrás",
     "この手順は、入れない材料のぶんなので飛ばせます": "Puedes saltarte este paso (solo usaba un ingrediente que quitaste).",
     "ハラール向け（豚・酒類）": "Halal (sin cerdo ni alcohol)",
     "ベジタリアン向け（肉・魚・貝）": "Vegetariano (sin carne, pescado ni marisco)",

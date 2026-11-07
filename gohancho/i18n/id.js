@@ -1953,6 +1953,7 @@ GOHAN_I18N('id', {
     "雑炊": "Zosui (bubur kuah)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Buang tulang, kulit, dan lemak, lalu suwir dagingnya.",
     "前の献立": "Menu sebelumnya",
+    "前へ": "Kembali",
     "この手順は、入れない材料のぶんなので飛ばせます": "Langkah ini boleh dilewati (hanya memakai bahan yang Anda tiadakan).",
     "ハラール向け（豚・酒類）": "Halal (tanpa babi, alkohol)",
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (tanpa daging, ikan, kerang-kerangan)",

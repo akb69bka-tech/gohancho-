@@ -1953,6 +1953,7 @@ GOHAN_I18N('tr', {
     "雑炊": "Zosui (pirinç çorbası)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Varsa kemik, deri ve yağı ayıklayıp eti didikleyin.",
     "前の献立": "Önceki menü",
+    "前へ": "Geri",
     "この手順は、入れない材料のぶんなので飛ばせます": "Bu adımı atlayabilirsiniz (yalnızca çıkardığınız bir malzemeyi kullanıyordu).",
     "ハラール向け（豚・酒類）": "Helal (domuz, alkol yok)",
     "ベジタリアン向け（肉・魚・貝）": "Vejetaryen (et, balık, kabuklu deniz ürünü yok)",
