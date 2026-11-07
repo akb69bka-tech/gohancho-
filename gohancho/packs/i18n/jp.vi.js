@@ -28,6 +28,8 @@ GOHAN_PACK_TR('JP', 'vi', {
   },
   names: {
     "バナナ": "chuối",
+    "しらす": "cá shirasu (cá cơm non)",
+    "ホットケーキミックス": "bột làm bánh pancake",
     "りんご": "táo",
     // 調味料（アレルゲン欄で使う。モニター第5回 S17）
     "だし": "nước dùng dashi",
@@ -484,6 +486,14 @@ GOHAN_PACK_TR('JP', 'vi', {
     "tamagoyaki_miso": {name: "Bữa sáng trứng cuộn và súp miso"},
     "toast_yudetamago": {name: "Bánh mì nướng và trứng luộc"},
     "yogurt_fruit": {name: "Sữa chua trái cây bữa sáng"},
+    "sake_zakkoku": {name: "Cơm ngũ cốc với cá hồi"},
+    "shirasu_tkg": {name: "Cơm trứng với cá shirasu"},
+    "okayu_asa": {name: "Cháo mơ muối nấu nhanh từ cơm nguội"},
+    "natto_omelet": {name: "Trứng cuộn natto bữa sáng"},
+    "tofu_wakame_miso": {name: "Bộ canh miso đậu phụ rong biển wakame"},
+    "yaki_onigiri": {name: "Yaki onigiri (cơm nắm nướng)"},
+    "satsumaimo_banana": {name: "Khoai lang và chuối bữa sáng"},
+    "hotcake_asa": {name: "Bánh pancake bữa sáng"},
     "yakiniku": {name: "Thịt bò nướng kiểu Nhật (yakiniku)"},
     "oden": {name: "Oden (chả cá, củ cải trắng và trứng hầm)"},
     "yudofu": {name: "Lẩu đậu phụ (yudofu)"},
