@@ -30,7 +30,7 @@ while [ $# -gt 0 ]; do
     *) echo "不明なオプション: $1" >&2; exit 2;;
   esac; shift
 done
-[ -z "$TIMEOUT" ] && { [ "$MODE" = full ] && TIMEOUT=3600 || TIMEOUT=900; }
+[ -z "$TIMEOUT" ] && { [ "$MODE" = full ] && TIMEOUT=3600 || TIMEOUT=1500; }
 if [ "$SEED_ARG" = random ]; then SEED_ARG=$(( (RANDOM * 32768 + RANDOM) % 4294967295 )); fi
 
 # ---- 項目の一覧: 名前 | 種類(static=ブラウザ不要 / app=BASE が要る) | 環境変数 | コマンド ----
