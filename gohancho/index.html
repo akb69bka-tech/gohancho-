@@ -6,7 +6,7 @@
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec">
-<script>window.ASSET_V='v115';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v116';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -8097,21 +8097,23 @@ function dietBundleToggle(list, k, owner){
     const famsIn = l => new Set(l.map(avoidFamOf).filter(Boolean));
     // 記録の手入れ: 今は押した形でない束の記録、いまの一覧にないなかまの記録は捨てる（古い記録で外し過ぎない）
     Object.keys(rec).forEach(j => { if (!dietBundleOn(a, j)) delete rec[j]; else rec[j].added = rec[j].added.filter(f => famsIn(a).has(f)); });
-    const done = out => { if (owner){ try{ Object.keys(rec).forEach(j => { if (!rec[j].added.length && !rec[j].removed.length) delete rec[j]; }); if (Object.keys(rec).length) owner.dietAdd = rec; else delete owner.dietAdd; }catch(e){} } return out; };
+    const done = out => { if (owner){ try{ if (Object.keys(rec).length)   /* 何も足さなかった束（もう全部そろっていた）の記録も残す。残さないと、次に押したとき『記録がない束』として自分の分まで外す */  owner.dietAdd = rec; else delete owner.dietAdd; }catch(e){} } return out; };
     if (dietBundleOn(a, k)){
         // ほかの押された束が必要とするなかまは外さない（その束が自分の一部・自分がその束の一部のときは除く）
-        const keep = new Set(); const mine0 = !!rec[k]; const others = Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && (!mine0 || rec[o]) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f)));
+        const keep = new Set(); const mine0 = !!rec[k]; const others = Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && (!mine0 || (rec[o] && (rec[o].added.length || rec[o].removed.length))) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f)));
         others.forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
         const mine = rec[k];   // 束が新たに足したぶんだけ外す。記録がない（自分で全部そろえた・記録が壊れた）ときだけ、束のぶんを（ほかの束が必要なぶん以外）外す
         const out = a.filter(x => { const f = avoidFamOf(x); return !(f && comps.includes(f) && !keep.has(f) && (!mine || mine.added.includes(f))); });
         if (mine) mine.removed.forEach(x => { if (!out.includes(x) && !avoidCoveredBy(x, out.map(avoidFamOf).filter(Boolean))) out.push(x); });
         if (mine) mine.added.filter(f => keep.has(f)).forEach(f => others.forEach(o => { if (rec[o] && DIET_BUNDLES[o].includes(f) && !rec[o].added.includes(f)) rec[o].added.push(f); }));   // 残したなかまは、それを必要とする束のものにする
+        if (mine && !mine.added.length && !mine.removed.length) return done(out);   // 足したものがない束（ほかの束を押したら『そろってしまった』だけ）は、押しても何も外さない。記録も残す
         delete rec[k];
         return done(out);
     }
     const added = [], removed = [];
     comps.forEach(f => { if (!a.some(x => avoidFamOf(x) === f)){ a = a.filter(x => { const drop = !avoidFamOf(x) && avoidCoveredBy(x, [f]); if (drop) removed.push(x); return !drop; }); a = a.concat('@' + f); added.push(f); } });
     rec[k] = {added, removed};
+    Object.keys(DIET_BUNDLES).forEach(j => { if (j !== k && !rec[j] && dietBundleOn(a, j)) rec[j] = {added: [], removed: []}; });   // 押したせいで『そろってしまった』ほかの束は、足したものなし（押しても自分の分は外さない）として覚える
     return done(a);
 }
 function dietBundleHtml(list, act){
