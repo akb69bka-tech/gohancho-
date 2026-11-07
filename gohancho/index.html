@@ -2675,6 +2675,7 @@ function normalizeState(d){
     st.settings.avoid = arr(st.settings.avoid).filter(x => typeof x === 'string');
     if (!st.settings.avoidX || typeof st.settings.avoidX !== 'object' || Array.isArray(st.settings.avoidX)) delete st.settings.avoidX;
     st.settings.mix = obj(st.settings.mix);
+    { const d = dietAddClean(st.settings.dietAdd); if (Object.keys(d).length) st.settings.dietAdd = d; else delete st.settings.dietAdd; }   // 食の決まりの束が足したぶんの記録
     st.settings.scarce = arr(st.settings.scarce).filter(x => typeof x === 'string' && x.trim());   // 手に入りにくい食材
     // 家族のプロフィール（最大6人）と、今日食べる人（null = 全員）
     const strs = x => arr(x).filter(v => typeof v === 'string' && v.trim());
@@ -2682,6 +2683,7 @@ function normalizeState(d){
     st.family = arr(st.family).filter(m => m && typeof m === 'object' && typeof m.id === 'string' && m.id && !seenF.has(m.id) && seenF.add(m.id)).slice(0, SV_MAX).map(m => {
         const avoid = [...new Set(strs(m.avoid))], o = {id: m.id, name: typeof m.name === 'string' ? m.name.slice(0, 12) : '', role: m.role === 'child' ? 'child' : 'adult',
             avoid, allergy: [...new Set(strs(m.allergy))].filter(x => avoid.includes(x)), mild: m.mild === true, sometimes: m.sometimes === true, me: m.me === true};
+        { const d = dietAddClean(m.dietAdd); if (Object.keys(d).length) o.dietAdd = d; }
         if (m.portion === 0.5 || m.portion === 1.5) o.portion = m.portion;   // 食べる量: 少なめ 0.5・多め 1.5（ふつう 1 は持たない）
         return o; });
     { let meSeen = false; st.family.forEach(m => { if (m.me && meSeen) m.me = false; if (m.me) meSeen = true; }); }   // 「これはわたし」は1人だけ
@@ -6948,6 +6950,7 @@ const AVOID_QUICK = ['豚肉','牛肉','鶏肉','えび','あさり','さば','�
 function obSave(){
     const jpKey = v => currentCountry() === 'JP' && v[0] !== '@' ? (canonOf(v) || v) : v;
     S.settings.servings = sheet.servings; S.settings.dishCount = sheet.count; S.settings.avoid = [...new Set([...sheet.avoid].map(jpKey))];
+    if (sheet.dietAdd && Object.keys(sheet.dietAdd).length) S.settings.dietAdd = dietAddClean(sheet.dietAdd); else delete S.settings.dietAdd;
     S.staples = [...new Set([...S.staples.filter(x => sheet.staples.has(x) || !STAPLE_QUICK.includes(x)), ...sheet.staples].map(jpKey))];
     if (sheet.alg){ const keep = algIds().filter(id => !sheet.algShown.includes(id)); S.settings.allergens = [...new Set([...keep, ...sheet.alg])]; }   // はじめての画面に出していないアレルゲン（設定で選んだもの）は、そのまま残す
     S.onboarded = true; save();
@@ -6979,7 +6982,7 @@ function obAlgGroups(){
 }
 function startOnboard(keep){
     const og = obAlgGroups(), algShown = [...new Set([].concat(...og.top.map(g => g[1])).concat(og.more))];
-    sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
+    sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), dietAdd:dietAddClean(S.settings.dietAdd), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
     if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; }   // 国を選び直したときも、人数と品数はそのまま
     renderSheet();
 }
@@ -8070,22 +8073,35 @@ function dietBundleLabel(k){ return {halal: t('ハラール向け（豚・酒類
 function dietBundleOn(list, k){ const sel = new Set(list.map(avoidFamOf).filter(Boolean)); return DIET_BUNDLES[k].every(f => sel.has(f)); }
 // 押したあとの苦手の一覧（配列）。押した形なら外す（関係のないほかの束＝ハラールとヴィーガンなどが必要とするなかまは残す）、そうでなければ足す
 // 束が足したぶんだけを覚えて（owner＝設定・はじめての設定・家族ごと）、外すときは足したぶんだけを外す。束を押す前に自分で選んでいた苦手は残す（R126）
-const DIET_ADDED = new WeakMap();
+// 記録は owner.dietAdd（設定・家族・はじめての設定の画面のそれぞれ。保存データに入り、開き直しても残る）: {束: {added: [束が新たに足したなかま], removed: [置きかわった個別の食材]}}
+function dietAddClean(x){
+    const out = {}; if (!x || typeof x !== 'object' || Array.isArray(x)) return out;
+    ['halal', 'vegi', 'vegan'].forEach(k => { const r = x[k]; if (!r || typeof r !== 'object' || !Array.isArray(r.added)) return;
+        out[k] = {added: [...new Set(r.added.filter(f => typeof f === 'string' && f.length < 20))].slice(0, 12), removed: Array.isArray(r.removed) ? [...new Set(r.removed.filter(v => typeof v === 'string' && v.length < 60))].slice(0, 40) : []}; });
+    return out;
+}
 function dietBundleToggle(list, k, owner){
     const comps = DIET_BUNDLES[k]; let a = [...list];
-    const rec = owner ? (DIET_ADDED.get(owner) || {}) : {};
+    let rec = {}; try{ rec = owner ? dietAddClean(owner.dietAdd) : {}; }catch(e){ rec = {}; }
+    const famsIn = l => new Set(l.map(avoidFamOf).filter(Boolean));
+    // 記録の手入れ: 今は押した形でない束の記録、いまの一覧にないなかまの記録は捨てる（古い記録で外し過ぎない）
+    Object.keys(rec).forEach(j => { if (!dietBundleOn(a, j)) delete rec[j]; else rec[j].added = rec[j].added.filter(f => famsIn(a).has(f)); });
+    const done = out => { if (owner){ try{ Object.keys(rec).forEach(j => { if (!rec[j].added.length && !rec[j].removed.length) delete rec[j]; }); if (Object.keys(rec).length) owner.dietAdd = rec; else delete owner.dietAdd; }catch(e){} } return out; };
     if (dietBundleOn(a, k)){
-        const keep = new Set(); Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && (!rec[k] || rec[o]) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f))).forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
-        const mine = rec[k];   // 押す前から自分で選んでいた分は残す。束が足したぶんだけ外す（別の束を自分で押した記録があるときは、その束に必要ななかまも残す）。記録がなければ（自分で全部そろえた・再読み込み後）これまで通り束のぶんを全部外す
+        // ほかの押された束が必要とするなかまは外さない（その束が自分の一部・自分がその束の一部のときは除く）
+        const keep = new Set(); const others = Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f)));
+        others.forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
+        const mine = rec[k];   // 束が新たに足したぶんだけ外す。記録がない（自分で全部そろえた・記録が壊れた）ときだけ、束のぶんを（ほかの束が必要なぶん以外）外す
         const out = a.filter(x => { const f = avoidFamOf(x); return !(f && comps.includes(f) && !keep.has(f) && (!mine || mine.added.includes(f))); });
         if (mine) mine.removed.forEach(x => { if (!out.includes(x) && !avoidCoveredBy(x, out.map(avoidFamOf).filter(Boolean))) out.push(x); });
-        if (owner){ delete rec[k]; DIET_ADDED.set(owner, rec); }
-        return out;
+        if (mine) mine.added.filter(f => keep.has(f)).forEach(f => others.forEach(o => { if (rec[o] && DIET_BUNDLES[o].includes(f) && !rec[o].added.includes(f)) rec[o].added.push(f); }));   // 残したなかまは、それを必要とする束のものにする
+        delete rec[k];
+        return done(out);
     }
-    const prev = rec[k], added = prev ? prev.added.filter(f => a.some(x => avoidFamOf(x) === f)) : [], removed = prev ? prev.removed.slice() : [];   // 外して押し直したときは、前に足したぶんも束のもの
+    const added = [], removed = [];
     comps.forEach(f => { if (!a.some(x => avoidFamOf(x) === f)){ a = a.filter(x => { const drop = !avoidFamOf(x) && avoidCoveredBy(x, [f]); if (drop) removed.push(x); return !drop; }); a = a.concat('@' + f); added.push(f); } });
-    if (owner){ rec[k] = {added, removed}; DIET_ADDED.set(owner, rec); }
-    return a;
+    rec[k] = {added, removed};
+    return done(a);
 }
 function dietBundleHtml(list, act){
     const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
@@ -8712,6 +8728,9 @@ function dropOmitted(u, sl, others, keepWords){
     if (!/[^\s.。、,;!?！？)）(（]/.test(res)){ const skip = sl === LANG ? t('この手順は、入れない材料のぶんなので飛ばせます') : sl === 'ja' ? OMIT_SKIP_KEY : ((I18N[sl] || {})[OMIT_SKIP_KEY] || 'You can skip this step.'); res = skip; }
     return res;
 }
+// お酒を避けるとき（ハラール向け・お酒避け）、手順の「酒蒸しのように」「like sake-steaming」はお酒の言葉なので、蒸し煮の言い方にする（材料にお酒はない文でも）
+const SAKE_STEP_RE = /酒蒸し|sake[- ]steam(?:ing|ed)?/i;
+function sakeStepFix(txt){ return String(txt).replace(/酒蒸し/g, '蒸し煮').replace(/like sake[- ]steaming/gi, 'like a steam-simmer').replace(/sake[- ]steam(?:ing|ed)?/gi, 'steam-simmer'); }
 // 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
 function swappedRecipe(r){
     if (!r || !r.items || r.swapped) return r;
@@ -8719,7 +8738,7 @@ function swappedRecipe(r){
     if (!RECIPES.includes(r)) return r;
     let w = effAvoid().length ? recipeSwaps(r) : null; const orphanOnly = !w || (!w.swaps.length && !w.omit.length);
     if (orphanOnly){   // 置き換えも外す材料もない料理でも、手順の文に外した食材のなかまの言葉（食べ方の一言の卵・焼き魚など）が残っていれば、その句を外す
-        if (!ofams.length || !r.steps || !r.steps.some(st => new RegExp(ofams.map(f => omitLexSrc(f, true)).join('|'), 'iu').test(typeof st === 'string' ? st : st.t))) return r;
+        if (!ofams.length || !r.steps || !r.steps.some(st => new RegExp(ofams.map(f => omitLexSrc(f, true)).join('|'), 'iu').test(typeof st === 'string' ? st : st.t) || (ofams.includes('alcohol') && SAKE_STEP_RE.test(typeof st === 'string' ? st : st.t)))) return r;
         w = {swaps: [], omit: []};
     }
     const by = new Map(w.swaps.map(x => [x.from, x])), seen = new Set();
@@ -8796,7 +8815,8 @@ function swappedRecipe(r){
     const sea = w.swaps.filter(x => seaItem(x.from)), seaFix = txt => (sea.length ? (/[ぁ-ん]/.test(txt) ? seaPrepFix(txt) : seaPrepFixEn(sea.reduce((u, x) => seaReplEn(u, x.from, x.to), txt), sea.filter(x => !seaItem(x.to)).map(x => String(shortLabel(x.to)).toLowerCase()))) : txt);
     const tofu = w.swaps.filter(x => x.tip === 'tofu'), meatLeft = items.some(i => r.pack ? !!meatFamOf(i) : ['豚', '鶏', '牛', 'ひき肉'].includes(FAMILY[i.key]));
     const tofuFix = txt => (!tofu.length ? txt : r.pack ? packTofuFix(txt, tofu, stepLangOf(r), meatLeft) : tofuStepFix(txt, tofu, {en: enSteps, meatLeft, lab: stepLab}));
-    const steps = r.steps.map(st => typeof st === 'string' ? tofuFix(seaFix(shellFix(omitTxt(repl(st))))) : Object.assign({}, st, {t: tofuFix(seaFix(shellFix(omitTxt(repl(st.t)))))}));
+    const sakeFix = txt => (ofams.includes('alcohol') ? sakeStepFix(txt) : txt);
+    const steps = r.steps.map(st => typeof st === 'string' ? sakeFix(tofuFix(seaFix(shellFix(omitTxt(repl(st)))))) : Object.assign({}, st, {t: sakeFix(tofuFix(seaFix(shellFix(omitTxt(repl(st.t))))))}));
     if (orphanOnly) return steps.every((st, k) => (typeof st === 'string' ? st : st.t) === (typeof r.steps[k] === 'string' ? r.steps[k] : r.steps[k].t)) ? r : Object.assign({}, r, {steps});
     return Object.assign({}, r, {items, steps, swapped: w, family: fam, protein: pw ? pw.to.key : (fam === r.family ? r.protein : null)});
 }
@@ -14677,7 +14697,7 @@ document.addEventListener('click', e => {
         case 'ob-back': if (sheet.step > 0){ sheet.step--; renderSheet(); } else { sheet = {kind:'country', ob:sheet}; renderSheet(); } break;
         case 'ob-skipstep': {   // この手順は変えずに次へ（入力した分は元にもどす）。最後の手順なら献立へ
             if (sheet.step === 0){ sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount; sheet.step = 1; renderSheet(); break; }
-            const algShown = sheet.algShown; Object.assign(sheet, {avoid:new Set(S.settings.avoid), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id)))});
+            const algShown = sheet.algShown; Object.assign(sheet, {avoid:new Set(S.settings.avoid), dietAdd:dietAddClean(S.settings.dietAdd), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id)))});
             obFinish(); break;
         }
         case 'ob-alg': { const v = el.dataset.v; if (!ALG_DEF[v]) break; sheet.alg.has(v) ? sheet.alg.delete(v) : sheet.alg.add(v); renderSheet(); break; }
@@ -15923,9 +15943,10 @@ async function setCountryRun(cc, opt){
         packFail = null;
         if (old !== cc){
             S.countryData = Object.assign({}, S.countryData);
-            S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, scarce: scarceList()};
+            S.countryData[old] = {fridge: S.fridge, fridgeMeta: S.fridgeMeta, staples: S.staples, avoid: S.settings.avoid, dietAdd: S.settings.dietAdd, scarce: scarceList()};
             const d = S.countryData[cc] || {};
             S.fridge = d.fridge || []; S.fridgeMeta = d.fridgeMeta || {}; S.staples = d.staples || []; S.settings.avoid = d.avoid || []; S.settings.scarce = d.scarce || [];
+            if (d.dietAdd) S.settings.dietAdd = d.dietAdd; else delete S.settings.dietAdd;
             S.week = null;
         }
         S.settings.country = cc;
