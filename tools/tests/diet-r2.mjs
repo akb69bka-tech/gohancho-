@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // 食の決まり（第2班 第1回 R2-01〜R2-05・R2-20）の回帰テスト（Playwright。使い方: node tools/tests/diet-r2.mjs [http://localhost:8765/]）
-//  1) 判定表: 酒・みりん・ワイン／羊・鴨／魚醤・かつお節・肉のだし／はちみつ・マヨネーズ を、材料のキーと元の言葉の名前で見分ける（酢・酒粕・lamb's lettuce は外さない）
+//  1) 判定表: 酒・みりん・ワイン／羊・鴨／魚醤・かつお節・肉のだし／はちみつ・マヨネーズ を、材料のキーと元の言葉の名前で見分ける（酢・lamb's lettuce は外さない。酒粕は R136 からお酒のなかまとして外す）
 //  2) 全21か国の全料理: 「お酒」「ベジタリアン（豚・鶏・牛・魚・貝）」「ヴィーガン（＋卵・乳）」で出る料理に、はっきり避けるものが 0 品。
 //     コンソメ・ブイヨン・ウスターソースなど「かもしれない」ものを使う料理には必ず 🔍（dietMayHits）が付く
-//  3) 打った言葉: 「酒」「料理酒」「みりん」「赤ワイン」「wine」は「お酒」のなかまに読みかわり、酒粕は外さない
+//  3) 打った言葉: 「酒」「料理酒」「みりん」「赤ワイン」「wine」は「お酒」のなかまに読みかわり、酒粕の料理（粕汁）も外れる（R136）
 //  4) 画面の言語18種: 同じ設定なら、どの言語でも出す料理が同じ（置き換えを切って比べる＝材料のキー・元の言葉だけで決まる）
 //  5) 主菜の数: 21か国のどこでも、ヴィーガンの主菜 5品以上・ベジタリアンの主菜 8品以上・ヴィーガンの副菜 5品以上・汁もの 2品以上
 //  6) 主菜が0品になる条件: 「決定」は押せないが、理由と次にすること（設定を開く）が画面に出る（行き止まりにしない）
@@ -42,7 +42,7 @@ const PROF = {
     const T = [
         ['halal', '酒', '', 'x'], ['halal', '料理酒', '', 'x'], ['halal', 'みりん', '', 'x'], ['halal', '赤ワイン', '', 'x'], ['halal', '白ワイン', '', 'x'], ['halal', 'ビール', '', 'x'],
         ['halal', 'shaoxing wine', 'Shaoxing wine', 'x'], ['halal', 'vin rouge', 'Red wine', 'x'], ['halal', 'Weißwein', 'White wine', 'x'], ['halal', 'sake', 'Sake', 'x'], ['halal', 'mirin', 'Mirin', 'x'], ['halal', 'cerveza', 'Beer', 'x'], ['halal', '紹興酒', '', 'x'], ['halal', '미림', '', 'x'], ['halal', '料酒', '', 'x'], ['halal', 'rượu', '', 'x'],
-        ['halal', '酒粕', '', '-'], ['halal', 'ワインビネガー', '', '-'], ['halal', 'red wine vinegar', 'Red wine vinegar', '-'], ['halal', 'vinagre de vino', 'Wine vinegar', '-'], ['halal', 'aceto di vino rosso', 'Red wine vinegar', '-'], ['halal', 'rice vinegar', '', '-'], ['halal', 'しょうゆ', '', '-'], ['halal', 'Gin', '', 'x'], ['halal', 'ginger', 'Ginger', '-'], ['halal', 'Port Salut', '', '-'],
+        ['halal', '酒粕', '', 'x'], ['halal', 'ワインビネガー', '', '-'], ['halal', 'red wine vinegar', 'Red wine vinegar', '-'], ['halal', 'vinagre de vino', 'Wine vinegar', '-'], ['halal', 'aceto di vino rosso', 'Red wine vinegar', '-'], ['halal', 'rice vinegar', '', '-'], ['halal', 'しょうゆ', '', '-'], ['halal', 'Gin', '', 'x'], ['halal', 'ginger', 'Ginger', '-'], ['halal', 'Port Salut', '', '-'],
         ['vegi', '羊肉', '', 'x'], ['vegi', 'ラムチョップ', 'Lamb chops', 'x'], ['vegi', 'duck', 'Duck breast', 'x'], ['vegi', 'agneau', 'Lamb', 'x'], ['vegi', 'canard', 'Duck', 'x'], ['vegi', 'Lammfleisch', '', 'x'], ['vegi', 'goose', 'Goose', 'x'], ['vegi', 'turkey', 'Turkey breast', 'x'], ['vegi', '양고기', '', 'x'], ['vegi', '羊肉', '', 'x'],
         ['vegi', "lamb's lettuce", "Lamb's lettuce", '-'], ['vegi', 'lambs lettuce', 'Lambs lettuce', '-'], ['vegi', 'goat cheese', 'Goat cheese', '-'], ['vegi', 'ごま', '', '-'],
         ['vegi', 'ナンプラー', '', 'x'], ['vegi', 'オイスターソース', '', 'x'], ['vegi', 'fish sauce', 'Fish sauce', 'x'], ['vegi', 'oyster sauce', 'Oyster sauce', 'x'], ['vegi', 'น้ำปลา', 'Fish sauce', 'x'], ['vegi', 'nước mắm', '', 'x'], ['vegi', 'shrimp paste', 'Shrimp paste', 'x'], ['vegi', 'terasi', 'Terasi', 'x'], ['vegi', 'bagoong', 'Bagoong', 'x'], ['vegi', 'かつお節', '', 'x'], ['vegi', '煮干し', '', 'x'], ['vegi', 'ほんだし', '', 'x'], ['vegi', '和風だしの素', '', 'x'], ['vegi', 'chicken stock', 'Chicken stock', 'x'], ['vegi', 'beef bouillon cube', 'Beef bouillon', 'x'], ['vegi', 'caldo de pollo', 'Chicken stock', 'x'], ['vegi', 'ゼラチン', '', 'x'], ['vegi', 'gelatin', 'Gelatin', 'x'],
@@ -141,7 +141,7 @@ const MAY = /コンソメ|ブイヨン|consomm[eé]|\bbouillon\b|stock cube|worc
         ok(v.fam === 'alcohol', `「${w}」が「お酒」のなかまに読みかわらない: ${JSON.stringify(v)}`);
         ok(v.n > 40, `「${w}」で外れる料理が少なすぎる: ${v.n}`);
         ok(v.left.length === 0, `「${w}」を入れたのにお酒入りの料理が残る: ${v.left}`);
-        ok(v.kasu !== false, `「${w}」で酒粕の料理まで外れた`);
+        ok(v.kasu !== true, `「${w}」で酒粕の料理（粕汁）が外れない（R136: 酒粕もお酒のなかま）`);
     }
     const n酒 = r['酒'].n, n料理酒 = r['料理酒'].n; ok(n酒 === n料理酒, `「酒」と「料理酒」で外れる品数が違う: ${n酒} / ${n料理酒}`);
     await ctx.close();

@@ -7582,7 +7582,7 @@ function noMainHelpHtml(){
 }
 /* ---- 食の決まり（豚なし・ベジタリアン・ヴィーガン・お酒なし）の判定（第2班 第1回 R2-01〜05）----
    専用のチップはなく、苦手のチップの組み合わせで決まりを表す。材料の「キー」と元の言葉の名前（algTok。日本は日本語、各国は英語・現地語）だけで見る＝画面の言語（18言語）で結果は変わらない。
-   ・お酒（酒・みりん・ワイン・ビールなど）: チップ「お酒」、または苦手に「酒」「料理酒」などを打つ。調味料の欄も見る。お酢（ワインビネガー）は含めない
+   ・お酒（酒・酒粕・みりん・ワイン・ビールなど）: チップ「お酒」、または苦手に「酒」「料理酒」などを打つ。調味料の欄も見る。お酢（ワインビネガー）は含めない
    ・羊・鴨・がちょう・七面鳥など（othermeat）: チップ「羊・鴨など」。豚・鶏・牛・魚・貝の5つを選んだとき（ベジタリアン）は自動で足す
    ・ベジタリアン（豚・鶏・牛・魚・貝）: 肉・魚のだし・スープの素、魚醤・オイスターソース・かつお節・ゼラチンも外す。コンソメ・ブイヨン・ウスターソースなど「入っているかもしれない」ものは外さず 🔍「袋の表示を確認」
    ・ヴィーガン（ベジタリアン＋卵＋乳製品）: はちみつも外す。卵を外した人は、マヨネーズ・アイオリ・タルタルも外す
@@ -7590,9 +7590,9 @@ function noMainHelpHtml(){
 // 正規表現の元の文字列も、判定する文字列（algNorm）と同じにそろえる（NFKC・カタカナ→ひらがな。タイ語の「ำ」なども分解されるため）
 const dietRe = (src, f) => new RegExp(String(src).normalize('NFKC').replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)), f);
 const DIET_VINEGAR = dietRe('(?:wine|vino|vin|wein|vinho|wina|sherry|sake|mirin|rice|champagne|cider|malt)[ -]*(?:vinegar|vinagre|vinaigre|essig|ocet|aceto)|(?:vinegar|vinagre|vinaigre|aceto|essig|ocet)\\s+(?:de |di |d\'|of |z |do )?(?:red |white |rice )?(?:vino|vin|wine|wein|vinho|wina|arroz)|ocet winny|weinessig|rotweinessig|(?:わいん|酒|みりん|味醂)(?:びねがー|びねがあ|酢)|わいん酢|vinaigre de xérès', 'g');
-const DIET_ALC = dietRe('酒(?!粕|糟|かす)|みりん|味醂|わいん|びーる|ぶらんでー|らむしゅ|しょうちゅう|うぃすきー|ばーぼん|てきーら|りきゅーる|あるこーる|ちゅうはい|しぇりーしゅ|まるさら|' +
-    '\\b(?:wine|beer|sake|mirin|brandy|rum|rhum|liqueur|liquor|vodka|whisk(?:e)?y|bourbon|sherry|marsala|tequila|mezcal|pisco|cacha[cç]a|aguardiente|amaretto|gin|cognac|vermouth|kirsch|calvados|grappa|ouzo|raki|arak|sambuca|soju|shochu|makgeolli|baijiu|huangjiu|shaoxing|lager|stout|champagne|prosecco|madeira|absinthe|alcohol|alcool|alkohol|alkol|vin|vino|vinho|wein|wino|piwo|bier|cerveza|cerveja|birra|bira|rượu|bia|anggur masak|anggur merah|anggur putih|arak masak|alak)\\b|(?<![a-z])(?:şarap|rak[iı])(?![a-z])|' +
-    '와인|맥주|소주|미림|청주|막걸리|술|啤酒|葡萄酒|红酒|紅酒|料酒|黄酒|黃酒|米酒|白酒|绍兴|紹興|ไวน์|เหล้า|เบียร์|สุรา|เหล้าจีน|نبيذ|خمر|بيرة|كحول|शराब|वाइन|ビール|ワイン', 'i');
+const DIET_ALC = dietRe('酒|さけ(?:かす|がす)|みりん|まっこり|ほっぴー|うぉっか|こあんとろー|かるーあ|味醂|わいん|びーる|ぶらんでー|らむしゅ|しょうちゅう|うぃすきー|ばーぼん|てきーら|りきゅーる|あるこーる|ちゅうはい|しぇりーしゅ|まるさら|' +
+    '\\b(?:wine|beer|sake|mirin|brandy|rum|rhum|liqueur|liquor|vodka|whisk(?:e)?y|bourbon|sherry|marsala|tequila|mezcal|pisco|cacha[cç]a|aguardiente|chicha(?! morada)|pulque|tuak|cointreau|kahl[uú]a|baileys|amaretto|gin|cognac|vermouth|kirsch|calvados|grappa|ouzo|raki|arak|sambuca|soju|shochu|makgeolli|baijiu|huangjiu|shaoxing|lager|stout|champagne|prosecco|madeira|absinthe|alcohol|alcool|alkohol|alkol|vin|vino|vinho|wein|wino|piwo|bier|cerveza|cerveja|birra|bira|rượu|bia|anggur masak|anggur merah|anggur putih|arak masak|alak)\\b|(?<![a-z])(?:şarap|rak[iı])(?![a-z])|' +
+    '와인|맥주|소주|미림|청주|막걸리|술|啤酒|葡萄酒|红酒|紅酒|料酒|黄酒|黃酒|米酒|白酒|绍兴|紹興|ไวน์|เหล้า|เบียร์|สุรา|เหล้าจีน|نبيذ|خمر|بيرة|كحول|शराब|(?<!अज)वाइन|ビール|ワイン', 'i');
 function dietAlc(t){ return DIET_ALC.test(String(t).replace(DIET_VINEGAR, ' ')); }
 const DIET_OTHERMEAT = dietRe('羊(?!羹)|らむ(?:にく|ちょっぷ|ひき|ろーす|かた|もも|すて|ぐり|しゃんく|ばら|こま)|まとん|鴨|あひる|がちょう|鵝|ひつじ|しちめんちょう|七面鳥|たーきー|うさぎ|兎|じびえ|鹿肉|いのしし|猪肉|やぎ(?:にく|肉)|山羊|' +
     '\\b(?:lamb|mutton|goat|duck|goose|turkey|rabbit|hare|venison|boar|pheasant|quail|squab|pigeon|guinea fowl|pintade)\\b(?![\'’]?s?\\s*(?:lettuce|cheese|milk|yogh?urt|butter|curd|whey))|' +
@@ -8665,7 +8665,7 @@ const OMIT_LEXF = {
     // 外す材料がひき肉のとき（豆腐などにも替えられない）の「ひき肉」の言い方
     mince: ['ground meat', 'minced meat', 'carne molida', 'carne picada', 'carne mo[íi]da', 'viande hach[ée]e', 'carne macinata', 'hackfleisch', 'mi[ęe]so mielone', 'k[ıi]yma', 'daging cincang', 'giniling', '肉末', '肉碎', '碎肉', 'ひき肉', '挽き肉', '挽肉', 'ミンチ', '다진 고기', 'หมูสับ', 'thịt băm'],
     // お酒（酒・みりん・ワイン・ビール）。酢（ワインビネガーなど）は意図して外さない方針なので OMIT_PROTECT で守る。1文字の「酒」「술」は別の言葉（酒蒸し・큰술）に当たるので見ない
-    alcohol: ['wines?', 'beers?', 'vino', 'vin', 'wein*', 'bier', 'vinho', 'wino', 'piwo', 'cerveza', 'cerveja', 'birra', 'bi[èe]re', 'sake', 'mirin', 'rum', 'brandy', 'whisk(?:e)?y', 'liquor', 'licor', 'sherry', 'jerez', 'marsala', 'cognac', 'shaoxing', 'ワイン', 'ビール', 'みりん', '味醂', '日本酒', '料理酒', '啤酒', '葡萄酒', '料酒', '黄酒', '黃酒', '米酒', '红酒', '紅酒', '绍兴酒', '紹興酒', '와인', '맥주', '소주', '청주', '미림', 'rượu', 'ไวน์', 'เบียร์', 'เหล้า'],
+    alcohol: ['wines?', 'beers?', 'chicha(?! morada)', '酒粕', '酒かす', 'さけかす', 'vino', 'vin', 'wein*', 'bier', 'vinho', 'wino', 'piwo', 'cerveza', 'cerveja', 'birra', 'bi[èe]re', 'sake', 'mirin', 'rum', 'brandy', 'whisk(?:e)?y', 'liquor', 'licor', 'sherry', 'jerez', 'marsala', 'cognac', 'shaoxing', 'ワイン', 'ビール', 'みりん', '味醂', '日本酒', '料理酒', '啤酒', '葡萄酒', '料酒', '黄酒', '黃酒', '米酒', '红酒', '紅酒', '绍兴酒', '紹興酒', '와인', '맥주', '소주', '청주', '미림', 'rượu', 'ไวน์', 'เบียร์', 'เหล้า'],
     dairy: ['milk', 'cream', 'cheese', 'butter', 'yogh?urt', 'queso', 'leche', 'nata', 'mantequilla', 'crema', 'lait', 'cr[èe]me', 'fromage', 'beurre', 'sahne*', 'käse*', 'kaese*', 'milch', 'quark', 'joghurt', 'latte', 'panna', 'formaggio', 'burro', 's[üu]t', 'peynir', 'tereya[ğg]', 'mleko', '[śs]mietan*', 'mas[łl]o', 'smetana', 'leite', 'queijo', 'manteiga', 'requeij*', 'ricotta', 'mozzarella', 'parmesan', 'ghee', 'paneer', 'kefir', 'susu', 'keso', 'mentega', 'gatas', '牛奶', '奶油', '芝士', '起司', '奶酪', '乳酪', '酸奶', '牛乳', 'ミルク', 'チーズ', 'バター', 'クリーム', 'ヨーグルト', '우유', '치즈', '버터', '크림', 'นม', 'เนย', 'ชีส', 'sữa', 'phô mai', 'दूध', 'पनीर', 'घी', 'दही', 'حليب', 'جبن', 'زبدة'],
 };
 OMIT_LEXF.shellfish = OMIT_LEXF.crustacean.concat(OMIT_LEXF.mollusc);
