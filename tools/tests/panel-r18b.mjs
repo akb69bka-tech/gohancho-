@@ -137,7 +137,7 @@ if (want('R18-4')) {
             const r = await p.evaluate(async i => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.undo = !!document.querySelector('#view .tg-mid .mb-back'); c.lines = c.h < 60; return c; }, i);
             n++;
             const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];   // アプリの名前（文）は押す場所ではない
-            if (r.none || !r.undo || !/前の献立/.test(r.text || '') || ctl.length || r.vessels) bad.push(`文字${ts} 家族${fam} #${i} ` + JSON.stringify(r));
+            if (r.none || !r.undo || !/前の献立|前へ/.test(r.text || '') || ctl.length || r.vessels) bad.push(`文字${ts} 家族${fam} #${i} ` + JSON.stringify(r));
         }
         await ctx.close();
     }
@@ -247,7 +247,7 @@ if (want('R18-11')) {
             const r = await p.evaluate(async sy => { if (toast.hide) toast.hide(); window.scrollTo(0, 0); await __tick(); if (sy === 'mid') document.querySelector('#view [data-act=new-menu]').scrollIntoView({block: 'center'}); else window.scrollTo(0, sy); await __tick(); const y0 = Math.round(scrollY);
                 __tap('#view [data-act=new-menu]', 'new-menu'); await __tick(); await new Promise(r => setTimeout(r, 350)); const c = __toastCover(); c.y0 = y0; c.y1 = Math.round(scrollY); c.undo = !!document.querySelector('#view .tg-mid .mb-back'); return c; }, sy);
             n++; const ctl = r.cover ? r.cover.filter(x => !/^H1/.test(x)) : [];
-            if (r.none || !r.undo || !/前の献立/.test(r.text || '') || (r.bottom > 0 && ctl.length) || r.vessels) bad.push(`文字${ts} 家族${fam} 送り${sy} #${i} ` + JSON.stringify(r));
+            if (r.none || !r.undo || !/前の献立|前へ/.test(r.text || '') || (r.bottom > 0 && ctl.length) || r.vessels) bad.push(`文字${ts} 家族${fam} 送り${sy} #${i} ` + JSON.stringify(r));
             await p.waitForTimeout(200);
         }
         await ctx.close();

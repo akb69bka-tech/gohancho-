@@ -57,10 +57,10 @@ const J = a => [...a].sort().join(',');
                 if (rnd() < 0.45){ const fm = FAMS[Math.floor(rnd() * 8)]; log.push('chip ' + fm); if (f(a).has(fm)){ a = a.filter(x => avoidFamOf(x) !== fm); user.delete(fm); } else { const claimed = Object.values(o.dietAdd || {}).some(r => r.added.includes(fm)); a = a.concat('@' + fm); if (!claimed) user.add(fm); } }
                 else {
                     const k = KS[Math.floor(rnd() * 3)], wasOn = dietBundleOn(a, k); log.push('bundle ' + k);
-                    const before = f(a), rec = !!(o.dietAdd && o.dietAdd[k]); a = dietBundleToggle(a, k, o); const after = f(a);
+                    const before = f(a), rec = !!(o.dietAdd && o.dietAdd[k]), recBefore = Object.keys(o.dietAdd || {}); a = dietBundleToggle(a, k, o); const after = f(a);
                     if (wasOn && rec){   // 記録のない（自分で全部そろえた）束を押して外すのは、これまで通り束のぶんを全部外す
                         user.forEach(x => { if (!after.has(x)) bad.push('user fam lost ' + x + ' / ' + log.join(',')); });
-                        KS.filter(j => j !== k && dietBundleOn(a, j) !== undefined).forEach(j => { const sub = DIET_BUNDLES[j].every(x => DIET_BUNDLES[k].includes(x)) || DIET_BUNDLES[k].every(x => DIET_BUNDLES[j].includes(x)); if (!sub && DIET_BUNDLES[j].every(x => before.has(x)) && !DIET_BUNDLES[j].every(x => after.has(x))) bad.push('other bundle broken ' + j + ' / ' + log.join(',')); });
+                        KS.filter(j => j !== k && recBefore.includes(j))   /* 押して記録のある束だけ守る（たまたまそろっただけの束は、押した束を戻すと戻る） */.forEach(j => { const sub = DIET_BUNDLES[j].every(x => DIET_BUNDLES[k].includes(x)) || DIET_BUNDLES[k].every(x => DIET_BUNDLES[j].includes(x)); if (!sub && DIET_BUNDLES[j].every(x => before.has(x)) && !DIET_BUNDLES[j].every(x => after.has(x))) bad.push('other bundle broken ' + j + ' / ' + log.join(',')); });
                     } else if (wasOn){ [...user].forEach(x => { if (!after.has(x)) user.delete(x); }); }
                     else { DIET_BUNDLES[k].forEach(x => { if (!after.has(x)) bad.push('bundle on lacks ' + x); }); [...after].forEach(x => { if (!before.has(x) && !DIET_BUNDLES[k].includes(x)) bad.push('extra ' + x); }); }
                     // 押した形での追加は「ユーザーのもの」ではない
