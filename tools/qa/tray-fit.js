@@ -187,8 +187,8 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
     await ctx.close();
   }
   await b.close();
-  const want = [2, 3, 4, 5, 6, 7].filter(k => !seen.has(k));   // 席 8 は「あと1品」で足せるときだけ（おかず6のときは足せない）
-  if (want.length) { bad++; console.log('NG 試せなかった席の数', want.join(',')); }
+  const want = [2, 3, 4, 5, 6, 7].filter(k => !seen.has(k));   // 時計固定の回（CLOCK）は範囲を絞るので席の網羅は見ない。席 8 は「あと1品」で足せるときだけ（おかず6のときは足せない）
+  if (want.length && !process.env.CLOCK) { bad++; console.log('NG 試せなかった席の数', want.join(',')); }
   if (scrolled.length) console.log('帯をお膳の下に置いた（スクロール）:', scrolled.join(', '));
   console.log(bad ? `NG ${bad} / ${n}` : `OK ${n}（席 ${[...seen].sort((a, b) => a - b).join(',')}）`);
   process.exit(bad ? 1 : 0);
