@@ -2175,8 +2175,77 @@ GOHAN_PACK({
         'Mash lightly with a spoon into a rustic puree and season with pepper. Meanwhile cook the rice. Scatter with the cilantro and serve over the rice.',
       ],
     },
+    {
+      id: 'br_tapioca_coco',
+      name: 'Tapioca crepe with grated coconut',
+      local: 'Tapioca com coco',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'tapioca|Hydrated tapioca starch (goma de tapioca)|1 cup (200 g)',
+        'coconut|Grated coconut|3 tbsp',
+      ],
+      seas: 'pinch of salt',
+      steps: [
+        'Heat a non-stick frying pan over medium heat, without oil. Sift half of the tapioca into the pan in an even layer with a pinch of salt.',
+        'Cook for 1 minute until the starch binds into a crepe, then sprinkle half of the coconut over it, fold in half and slide onto a plate.',
+        'Repeat with the rest of the tapioca and coconut.',
+      ],
+    },
+    {
+      id: 'br_misto_quente',
+      name: 'Hot ham and cheese sandwich',
+      local: 'Misto-quente',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'pork',
+      min: 10,
+      ings: [
+        'bread|Sandwich bread|4 slices',
+        'ham|Ham|4 slices',
+        'cheese|Mozzarella or prato cheese|4 slices',
+        'butter|Butter|1 tbsp',
+      ],
+      seas: 'pinch of black pepper (optional)',
+      steps: [
+        'Make 2 sandwiches with 2 slices of ham and 2 slices of cheese in each.',
+        'Spread the outside of each sandwich with the butter.',
+        'Cook in a frying pan over medium-low heat for 2 to 3 minutes on each side, pressing lightly, until golden and the cheese melts.',
+      ],
+    },
+    {
+      id: 'br_pao_de_queijo',
+      name: 'Brazilian cheese bread',
+      local: 'Pão de queijo',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'grill',
+      protein: 'egg',
+      min: 40,
+      ings: [
+        'tapioca starch|Sour or sweet tapioca starch (polvilho)|1 cup (150 g)',
+        'cheese|Grated Minas, parmesan or mozzarella cheese|100 g',
+        'egg|Egg|1',
+        'milk|Milk|60 ml',
+      ],
+      seas: '60 ml oil · 1/2 tsp salt',
+      steps: [
+        'Preheat the oven to 200°C. Bring the milk, oil and salt to a boil.',
+        'Pour the hot liquid over the tapioca starch in a bowl and stir to a crumbly dough. Cool for 5 minutes, then add the egg and cheese and knead until smooth.',
+        'Shape into balls the size of a walnut, place on a baking tray and bake for 20 to 25 minutes until puffed and golden. Eat warm.',
+      ],
+    },
   ],
   aliases: {
+    'tapioca': ['tapioca','hydrated tapioca starch (goma de tapioca)','goma de tapioca'],
+    'coconut': ['coconut','grated coconut','coco ralado'],
+    'tapioca starch': ['tapioca starch','sour or sweet tapioca starch (polvilho)','polvilho azedo ou doce'],
     "oats": ["oats", "rolled oats", "oatmeal", "aveia", "aveia em flocos"],
     'chicken': ['chicken', 'frango', 'galinha', 'peito de frango', 'coxa', 'sobrecoxa', 'filé de frango'],
     'beef': ['beef', 'steak', 'carne', 'carne bovina', 'bife', 'alcatra', 'contrafilé', 'patinho'],
@@ -2256,6 +2325,9 @@ GOHAN_PACK({
   quick: ['chicken', 'beef', 'ground beef', 'pork', 'fish', 'egg', 'sausage', 'onion', 'tomato', 'potato', 'carrot', 'bell pepper', 'collard greens', 'chayote', 'lettuce', 'beans', 'cheese', 'ham'],
   pantry: ['rice', 'beans', 'onion', 'tomato', 'egg', 'potato', 'cassava flour', 'butter', 'tomato sauce', 'cream', 'mayonnaise', 'lime', 'parsley', 'carrot', 'corn', 'peas'],
   names: {
+    'tapioca': 'Hydrated tapioca starch (goma de tapioca)',
+    'coconut': 'Grated coconut',
+    'tapioca starch': 'Sour or sweet tapioca starch (polvilho)',
     "oats": "Rolled oats",
     'chicken': 'Chicken', 'beef': 'Beef', 'ground beef': 'Ground beef', 'pork': 'Pork', 'fish': 'Fish', 'egg': 'Eggs',
     'ham': 'Ham', 'bacon': 'Bacon', 'sausage': 'Linguiça sausage', 'onion': 'Onions', 'tomato': 'Tomatoes', 'potato': 'Potatoes',

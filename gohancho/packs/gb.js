@@ -2332,8 +2332,30 @@ GOHAN_PACK({
         'Add the cauliflower florets and cook for 10 more minutes, then the peas for 3 minutes. Serve with rice.',
       ],
     },
+    {
+      id: 'gb_toast_marmalade',
+      name: 'Toast with marmalade',
+      local: 'Toast and marmalade',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'grill',
+      protein: 'veg',
+      min: 5,
+      ings: [
+        'bread|Bread|4 slices',
+        'marmalade|Orange marmalade|2 tbsp',
+      ],
+      seas: 'hot tea, to serve',
+      steps: [
+        'Toast the bread until golden.',
+        'Spread each slice with the marmalade while the toast is still warm.',
+        'Cut into triangles and serve.',
+      ],
+    },
   ],
   aliases: {
+    'marmalade': ['marmalade','orange marmalade'],
     "sardines": ["sardines","tinned sardines","canned sardines"],
     "ham": ["ham","sliced ham","cooked ham"],
     "egg noodles": ["egg noodles","thin noodles","noodles","vermicelli"],
@@ -2417,6 +2439,7 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'sausage', 'beef', 'lamb mince', 'fish', 'egg', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'tomato', 'mushroom', 'cabbage', 'leek', 'pasta', 'rice', 'baked beans', 'bacon'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'canned tomato', 'baked beans', 'pasta', 'rice', 'stock', 'self-raising flour', 'mayonnaise', 'breadcrumbs'],
   names: {
+    'marmalade': 'Orange marmalade',
     "sardines": "Tinned sardines",
     "ham": "Sliced ham",
     "egg noodles": "Thin egg noodles",

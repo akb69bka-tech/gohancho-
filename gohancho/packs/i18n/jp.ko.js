@@ -82,6 +82,8 @@ GOHAN_PACK_TR('JP', 'ko', {
     "レモン": ["레몬"]
   },
   names: {
+    "バナナ": "바나나",
+    "りんご": "사과",
     // 調味料（アレルゲン欄で使う）
     "だし": "다시 국물",
     "醤油": "간장",
@@ -532,6 +534,13 @@ GOHAN_PACK_TR('JP', 'ko', {
     "shakeshio": {name: "연어 소금구이"},
     "ajihimono": {name: "전갱이 반건조 구이"},
     "hamuegg": {name: "햄에그"},
+    "nattogohan": {name: "낫토 밥"},
+    "onigiri_umekonbu": {name: "오니기리 (매실·소금 다시마)"},
+    "asayakizake": {name: "생선 구이 아침 밥상 (연어)"},
+    "umechazuke": {name: "우메 차즈케 (매실 녹차 말이밥)"},
+    "tamagoyaki_miso": {name: "계란말이와 된장국 아침 식사"},
+    "toast_yudetamago": {name: "토스트와 삶은 달걀"},
+    "yogurt_fruit": {name: "과일 요거트 아침 식사"},
     "yakiniku": {name: "야키니쿠 (일본식 고기구이)"},
     "oden": {name: "오뎅 (어묵탕)"},
     "yudofu": {name: "유도후 (두부 탕)"},

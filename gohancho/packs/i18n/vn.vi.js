@@ -2,6 +2,11 @@
 GOHAN_PACK_TR('VN', 'vi', {
   staple: 'Cơm trắng',
   names: {
+    'glutinous rice': 'Gạo nếp',
+    'mung beans': 'Đậu xanh tách vỏ',
+    'shallot': 'Hành khô',
+    'bread': 'Bánh mì nhỏ',
+    'rice noodles': 'Bánh phở',
     "enoki": "Nấm kim châm",
     "choy sum": "Cải ngọt",
     'pork': 'Thịt heo', 'ground pork': 'Thịt heo bằm', 'beef': 'Thịt bò', 'chicken': 'Thịt gà', 'fish': 'Cá',
@@ -1233,6 +1238,36 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Đun sôi nước với gừng. Cho nấm vào nấu liu riu 5 phút.',
         'Cho đậu hũ cắt khối vuông và cải thìa cắt khúc vào nấu 3 phút.',
         'Nêm nước tương, muối và đường, rắc hành lá và tiêu rồi dùng.',
+      ],
+    },
+    'vn_xoi_xeo': {
+      name: 'Xôi xéo',
+      ings: [['Gạo nếp (ngâm 4 giờ)', '200 g'], ['Đậu xanh tách vỏ', '100 g'], ['Hành khô', '3 củ']],
+      seas: '3 muỗng canh dầu ăn · 1/2 muỗng cà phê muối',
+      steps: [
+        'Để ráo gạo nếp đã ngâm. Hấp đậu xanh 15 phút cho mềm, rồi tán nhuyễn với một nửa lượng muối.',
+        'Hấp gạo nếp với phần muối còn lại trong 25 phút cho dẻo và bóng.',
+        'Thái mỏng hành khô, phi vàng với dầu ở lửa vừa. Xới xôi ra đĩa, phủ đậu xanh tán và hành phi cùng dầu lên trên.',
+      ],
+    },
+    'vn_banh_mi_op_la': {
+      name: 'Bánh mì ốp la',
+      ings: [['Bánh mì nhỏ', '2 ổ'], ['Trứng', '2 quả'], ['Dưa leo', '1/2 quả'], ['Ngò rí', 'vài cọng?']],
+      seas: '1 muỗng canh dầu ăn · muối · tiêu · tương ớt tùy khẩu vị',
+      steps: [
+        'Làm nóng bánh mì trong lò nóng hoặc chảo khô 3 phút cho giòn. Thái dưa leo.',
+        'Cho dầu vào chảo, chiên trứng 2 đến 3 phút, nêm muối và tiêu (với trẻ nhỏ và phụ nữ mang thai, chiên đến khi lòng đỏ chín hẳn).',
+        'Rạch ổ bánh mì, cho trứng, dưa leo và ngò rí vào, thêm tương ớt tùy thích.',
+      ],
+    },
+    'vn_pho_ga': {
+      name: 'Phở gà',
+      ings: [['Thịt gà (ức hoặc đùi)', '250 g'], ['Bánh phở', '200 g'], ['Hành tây', '1/2 củ'], ['Gừng', '1 củ (30 g)'], ['Hành lá', '2 cây'], ['Giá đỗ', '1 nắm?'], ['Chanh', '1/2 quả?']],
+      seas: '1,2 lít nước · 2 muỗng canh nước mắm · 1 muỗng cà phê muối · 1/2 muỗng cà phê đường · 1 hoa hồi · 1 thanh quế',
+      steps: [
+        'Đun sôi nước cùng hành tây bổ đôi, gừng thái lát, hoa hồi, quế và thịt gà. Hầm nhỏ lửa 20 phút cho gà chín kỹ.',
+        'Vớt gà ra xé nhỏ, nêm nước dùng với nước mắm, muối và đường. Ngâm hoặc chần bánh phở theo hướng dẫn trên bao bì rồi để ráo.',
+        'Chia bánh phở ra tô, cho thịt gà và hành lá thái nhỏ lên, chan nước dùng nóng. Dùng kèm giá đỗ và chanh.',
       ],
     },
   }

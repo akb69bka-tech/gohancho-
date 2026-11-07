@@ -2077,8 +2077,74 @@ GOHAN_PACK({
         'Pour into a bowl, top with the diced tomato, the parsley and the oil, and serve with the flatbread.',
       ],
     },
+    {
+      id: 'eg_ful_tahina',
+      name: 'Ful medames with tahini and tomato-cucumber salad',
+      local: 'فول بالطحينة وسلطة الطماطم والخيار',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'legume',
+      min: 15,
+      ings: [
+        'fava beans|Cooked fava beans (canned, drained)|1 can (400 g)',
+        'tahini|Tahini|2 tbsp',
+        'tomato|Tomato|1',
+        'cucumber|Cucumber|1',
+        'garlic|Garlic|1 clove',
+      ],
+      seas: '2 tbsp olive oil · 1/2 tsp ground cumin · juice of 1/2 lemon · salt',
+      steps: [
+        'Warm the beans in a small pan with 100 ml water for 5 minutes, mashing about a third of them. Crush the garlic with a pinch of salt and stir it in with the cumin.',
+        'Dice the tomato and the cucumber and toss with half of the olive oil, a little lemon juice and salt.',
+        'Spoon the beans into bowls, drizzle with the tahini mixed with the rest of the lemon juice and the remaining olive oil, and serve with the salad.',
+      ],
+    },
+    {
+      id: 'eg_beid_masluq',
+      name: 'Boiled eggs with tomato and cucumber',
+      local: 'بيض مسلوق مع الطماطم والخيار',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'egg',
+      min: 15,
+      ings: [
+        'egg|Eggs|4',
+        'tomato|Tomato|1',
+        'cucumber|Cucumber|1',
+      ],
+      seas: '1/2 tsp ground cumin · salt · 1 tsp olive oil',
+      steps: [
+        'Put the eggs in a pan of boiling water and boil for 10 minutes until the yolks are firm. Cool in cold water and peel.',
+        'Slice the tomato and the cucumber and arrange on a plate with the halved eggs.',
+        'Sprinkle with the cumin and salt and drizzle with the olive oil.',
+      ],
+    },
+    {
+      id: 'eg_zabadi_asal',
+      name: 'Yogurt with honey and banana',
+      local: 'زبادي بالعسل والموز',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 5,
+      ings: [
+        'yogurt|Plain yogurt|250 g',
+        'banana|Banana|1',
+      ],
+      seas: '2 tsp honey',
+      steps: [
+        'Spoon the yogurt into two bowls.',
+        'Slice the banana and arrange it on top.',
+        'Drizzle with the honey and serve.',
+      ],
+    },
   ],
   aliases: {
+    'garlic': ['garlic','ثوم'],
+    'banana': ['banana','موز'],
     "wheat berries": ["wheat berries", "whole wheat grains", "belila", "قمح", "قمح بليلة"],
     "corn": ["corn","sweetcorn","sweet corn","ذرة"],
     'chicken': ['chicken', 'chicken thigh', 'chicken leg', 'chicken breast', 'فراخ', 'فرخة', 'دجاج', 'وراك'],
@@ -2141,6 +2207,8 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'beef', 'fish', 'egg', 'onion', 'tomato', 'potato', 'zucchini', 'eggplant', 'okra', 'bell pepper', 'cucumber', 'lentils', 'fava beans', 'rice', 'pasta', 'lemon', 'parsley'],
   pantry: ['rice', 'pasta', 'vermicelli', 'lentils', 'fava beans', 'chickpeas', 'onion', 'tomato', 'potato', 'lemon', 'tahini', 'egg', 'milk', 'butter', 'bread', 'cheese'],
   names: {
+    'garlic': 'Garlic',
+    'banana': 'Banana',
     "wheat berries": "Wheat berries",
     "corn": "Sweetcorn",
     'chicken': 'Chicken', 'ground beef': 'Ground beef', 'beef': 'Beef', 'fish': 'Fish', 'egg': 'Eggs',

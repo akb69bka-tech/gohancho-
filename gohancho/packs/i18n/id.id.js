@@ -2,6 +2,11 @@
 GOHAN_PACK_TR('ID', 'id', {
   staple: 'Nasi putih',
   names: {
+    'sweet potato': 'Ubi jalar',
+    'bread': 'Roti tawar',
+    'butter': 'Mentega',
+    'chocolate sprinkles': 'Meises cokelat',
+    'lontong': 'Lontong',
     "pumpkin": "Labu kuning",
     "mung beans": "Kacang hijau",
     'chicken': 'Ayam', 'beef': 'Daging sapi', 'fish': 'Ikan', 'shrimp': 'Udang', 'egg': 'Telur', 'tofu': 'Tahu', 'tempeh': 'Tempe',
@@ -1544,6 +1549,36 @@ GOHAN_PACK_TR('ID', 'id', {
         'Rebus sebentar bayam 30 detik, tauge 1 menit, kacang panjang potong-potong dan kubis iris masing-masing 2 menit. Tiriskan dengan baik.',
         'Haluskan kacang dengan bawang putih, cabai, dan garam, lalu campur dengan gula merah, air asam jawa, dan air panas hingga menjadi bumbu kental.',
         'Tata nasi dan sayuran di piring, lalu siram dengan bumbu pecel.',
+      ],
+    },
+    'id_ubi_rebus_kelapa': {
+      name: 'Ubi rebus dengan kelapa parut',
+      ings: [['Ubi jalar', '400 g'], ['Kelapa parut segar', '3 sdm']],
+      seas: 'sejumput garam · 1 sdm gula aren atau gula merah (opsional)',
+      steps: [
+        'Cuci ubi, lalu potong tebal-tebal. Kukus 20 menit sampai empuk.',
+        'Campur kelapa parut dengan garam, lalu kukus 3 menit di kukusan yang sama.',
+        'Sajikan ubi dengan kelapa di atasnya, taburi gula jika suka.',
+      ],
+    },
+    'id_roti_bakar': {
+      name: 'Roti bakar cokelat',
+      ings: [['Roti tawar', '4 lembar'], ['Mentega', '2 sdm'], ['Meises cokelat', '2 sdm']],
+      seas: 'susu kental manis secukupnya',
+      steps: [
+        'Oleskan mentega pada kedua sisi roti.',
+        'Panggang di wajan kering dengan api kecil-sedang, 2 menit tiap sisi sampai kecokelatan.',
+        'Taburi meises di atas roti dan siram sedikit susu kental manis.',
+      ],
+    },
+    'id_lontong_sayur': {
+      name: 'Lontong sayur',
+      ings: [['Lontong', '300 g'], ['Labu siam', '1 buah'], ['Tahu', '100 g'], ['Santan', '200 ml']],
+      seas: '300 ml air · 3 siung bawang putih · 1 sdt kunyit bubuk · 1 lembar daun salam · 1 sdt garam · 2 sdm minyak',
+      steps: [
+        'Kupas labu siam dan potong memanjang. Potong tahu dadu dan iris lontong.',
+        'Tumis bawang putih yang digeprek dan kunyit dengan minyak selama 1 menit, tambahkan air, daun salam, labu siam, dan garam, lalu masak 10 menit.',
+        'Masukkan tahu dan santan, masak dengan api kecil 10 menit tanpa mendidih kencang. Siramkan ke lontong dalam mangkuk.',
       ],
     },
   }

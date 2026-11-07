@@ -27,6 +27,8 @@ GOHAN_PACK_TR('JP', 'vi', {
     "いか": ["mực ống"]
   },
   names: {
+    "バナナ": "chuối",
+    "りんご": "táo",
     // 調味料（アレルゲン欄で使う。モニター第5回 S17）
     "だし": "nước dùng dashi",
     "醤油": "nước tương",
@@ -475,6 +477,13 @@ GOHAN_PACK_TR('JP', 'vi', {
     "shakeshio": {name: "Cá hồi nướng muối"},
     "ajihimono": {name: "Cá sòng Nhật phơi khô nướng (himono)"},
     "hamuegg": {name: "Trứng ốp la giăm bông"},
+    "nattogohan": {name: "Cơm natto"},
+    "onigiri_umekonbu": {name: "Cơm nắm (mơ muối và tảo bẹ muối)"},
+    "asayakizake": {name: "Bữa sáng cá hồi nướng với cơm"},
+    "umechazuke": {name: "Cơm chan trà với mơ muối"},
+    "tamagoyaki_miso": {name: "Bữa sáng trứng cuộn và súp miso"},
+    "toast_yudetamago": {name: "Bánh mì nướng và trứng luộc"},
+    "yogurt_fruit": {name: "Sữa chua trái cây bữa sáng"},
     "yakiniku": {name: "Thịt bò nướng kiểu Nhật (yakiniku)"},
     "oden": {name: "Oden (chả cá, củ cải trắng và trứng hầm)"},
     "yudofu": {name: "Lẩu đậu phụ (yudofu)"},

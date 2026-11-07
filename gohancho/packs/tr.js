@@ -2229,8 +2229,31 @@ GOHAN_PACK({
         'Season with salt and pepper. Heat the rest of the oil with the mint and the remaining pepper flakes, pour over the soup and serve.',
       ],
     },
+    {
+      id: 'tr_kahvalti_sebze',
+      name: 'Tomato, cucumber and olive plate',
+      local: 'Domates, salatalık ve zeytin tabağı',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'tomato|Tomatoes|2',
+        'cucumber|Cucumber|1',
+        'olive|Black and green olives|10',
+        'mint|Fresh mint|a few leaves?',
+      ],
+      seas: '1 tbsp olive oil · pinch of salt',
+      steps: [
+        'Slice the tomatoes and the cucumber.',
+        'Arrange them on a plate with the olives.',
+        'Drizzle with the olive oil, sprinkle with salt and add the mint leaves.',
+      ],
+    },
   ],
   aliases: {
+    'olive': ['olive','black and green olives','siyah ve yeşil zeytin'],
     "oats": ["oats", "rolled oats", "oatmeal", "yulaf", "yulaf ezmesi"],
     "semolina": ["semolina", "irmik"],
     "mint": ["mint","nane","dried mint","kuru nane"],
@@ -2300,6 +2323,7 @@ GOHAN_PACK({
   quick: ['chicken', 'ground beef', 'beef', 'fish', 'egg', 'onion', 'tomato', 'green pepper', 'eggplant', 'zucchini', 'potato', 'cucumber', 'yogurt', 'white cheese', 'green beans', 'red lentils', 'white beans', 'parsley', 'lemon', 'rice'],
   pantry: ['onion', 'tomato paste', 'rice', 'red lentils', 'white beans', 'yogurt', 'egg', 'white cheese', 'flour', 'potato', 'lemon', 'tomato', 'green pepper', 'milk', 'orzo', 'parsley', 'cornmeal'],
   names: {
+    'olive': 'Black and green olives',
     "oats": "Rolled oats",
     "semolina": "Semolina",
     "mint": "Mint",

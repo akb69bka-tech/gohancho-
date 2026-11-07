@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    'apple': 'Mela',
+    'banana': 'Banana',
+    'yogurt': 'Yogurt bianco',
     "semolina": "Semolino",
     'pasta': 'Pasta',
     'passata': 'Passata di pomodoro',
@@ -1550,6 +1553,36 @@ GOHAN_PACK_TR('IT', 'it', {
         'Tritate finemente cipolla, carota e sedano e fateli soffriggere in 3 cucchiai di olio per 8 minuti.',
         'Aggiungete la passata, l’alloro, i fagioli scolati e l’acqua e cuocete 15 minuti. Schiacciate alcuni fagioli con una forchetta per addensare.',
         'Unite la pasta e cuocete 8-10 minuti finché è morbida, aggiungendo un po’ d’acqua se si asciuga troppo. Aggiustate di sale e pepe e completate con il resto dell’olio.',
+      ],
+    },
+    'it_macedonia': {
+      name: 'Macedonia di frutta fresca',
+      ings: [['Mela', '1'], ['Arance', '2'], ['Banana', '1']],
+      seas: 'succo di 1/2 limone · 1 cucchiaino di zucchero',
+      steps: [
+        'Sbucciate le arance, tagliatele a pezzi e conservate il succo. Tagliate la mela e la banana a cubetti.',
+        'Mescolate la frutta in una ciotola con il succo di limone e lo zucchero perché non scurisca.',
+        'Lasciate riposare 5 minuti e servite.',
+      ],
+    },
+    'it_yogurt_frutta': {
+      name: 'Yogurt con frutta e miele',
+      ings: [['Yogurt bianco', '250 g'], ['Banana', '1'], ['Mela', '1']],
+      seas: '2 cucchiaini di miele',
+      steps: [
+        'Versate lo yogurt in due ciotole.',
+        'Affettate la banana e tagliate la mela a cubetti.',
+        'Completate lo yogurt con la frutta e un filo di miele.',
+      ],
+    },
+    'it_uova_pane': {
+      name: 'Uova strapazzate con pane tostato',
+      ings: [['Uova', '4'], ['Pane', '2 fette'], ['Burro', '1 cucchiaio']],
+      seas: 'sale · pepe',
+      steps: [
+        'Sbattete le uova con sale e pepe. Tostate il pane.',
+        'Sciogliete il burro in padella a fuoco basso, aggiungete le uova e mescolate lentamente per 2-3 minuti, finché sono appena rapprese e ancora cremose.',
+        'Servite le uova sul pane tostato.',
       ],
     },
   }

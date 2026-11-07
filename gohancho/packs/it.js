@@ -2100,8 +2100,75 @@ GOHAN_PACK({
         'Add the pasta and cook for 8-10 minutes until tender, adding a little water if it gets too thick. Season and finish with the rest of the oil.',
       ],
     },
+    {
+      id: 'it_macedonia',
+      name: 'Fresh fruit salad',
+      local: 'Macedonia di frutta fresca',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'apple|Apple|1',
+        'orange|Oranges|2',
+        'banana|Banana|1',
+      ],
+      seas: 'juice of 1/2 lemon · 1 tsp sugar',
+      steps: [
+        'Peel the oranges and cut them into pieces, saving the juice. Cut the apple and banana into small cubes.',
+        'Mix all the fruit in a bowl with the lemon juice and sugar so it does not darken.',
+        'Leave for 5 minutes, then serve.',
+      ],
+    },
+    {
+      id: 'it_yogurt_frutta',
+      name: 'Yogurt with fruit and honey',
+      local: 'Yogurt con frutta e miele',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 5,
+      ings: [
+        'yogurt|Plain yogurt|250 g',
+        'banana|Banana|1',
+        'apple|Apple|1',
+      ],
+      seas: '2 tsp honey',
+      steps: [
+        'Spoon the yogurt into two bowls.',
+        'Slice the banana and cut the apple into small cubes.',
+        'Top the yogurt with the fruit and drizzle with the honey.',
+      ],
+    },
+    {
+      id: 'it_uova_pane',
+      name: 'Scrambled eggs with toast',
+      local: 'Uova strapazzate con pane tostato',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'egg',
+      min: 10,
+      ings: [
+        'egg|Eggs|4',
+        'bread|Bread|2 slices',
+        'butter|Butter|1 tbsp',
+      ],
+      seas: 'salt · pepper',
+      steps: [
+        'Beat the eggs with salt and pepper. Toast the bread.',
+        'Melt the butter in a pan over low heat, add the eggs and stir slowly for 2 to 3 minutes until just set and still creamy.',
+        'Serve the eggs on the toast.',
+      ],
+    },
   ],
   aliases: {
+    'apple': ['apple','mela'],
+    'banana': ['banana'],
+    'yogurt': ['yogurt','plain yogurt','yogurt bianco'],
     "semolina": ["semolina", "semolino", "semola"],
     'pasta': ['pasta', 'spaghetti', 'penne', 'ditalini', 'macaroni', 'noodles'],
     'passata': ['passata', 'tomato passata', 'tomato sauce', 'passata di pomodoro', 'salsa di pomodoro', 'pelati', 'canned tomatoes', 'polpa di pomodoro'],
@@ -2184,6 +2251,9 @@ GOHAN_PACK({
   quick: ['pasta', 'passata', 'egg', 'chicken', 'ground meat', 'sausage', 'fish', 'zucchini', 'tomato', 'potato', 'onion', 'carrot', 'spinach', 'bell pepper', 'parmesan', 'mozzarella', 'lemon', 'green beans'],
   pantry: ['pasta', 'passata', 'egg', 'parmesan', 'onion', 'carrot', 'celery', 'potato', 'lemon', 'bread', 'butter', 'olives', 'capers', 'borlotti', 'cannellini', 'tomato'],
   names: {
+    'apple': 'Apple',
+    'banana': 'Banana',
+    'yogurt': 'Plain yogurt',
     "semolina": "Fine semolina",
     'pasta': 'Pasta',
     'passata': 'Tomato passata',

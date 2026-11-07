@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('PE', 'es', {
   staple: 'Arroz blanco',
   names: {
+    'papaya': 'Papaya',
+    'banana': 'Plátano',
+    'pineapple': 'Piña',
     "oats": "Avena en hojuelas",
     "apple": "Manzana",
     "semolina": "Sémola",
@@ -1208,6 +1211,36 @@ GOHAN_PACK_TR('PE', 'es', {
         'Lave la quinua. Sofría la cebolla picada y el ajo en el aceite 4 minutos.',
         'Añada la zanahoria y la papa en cubos, la quinua, el orégano y el agua y cueza 20 minutos hasta que todo esté suave.',
         'Sazone con sal y pimienta y esparza el culantro.',
+      ],
+    },
+    'pe_pan_palta': {
+      name: 'Pan con palta',
+      ings: [['Panes franceses', '2'], ['Palta madura', '1']],
+      seas: 'jugo de 1/2 limón · sal',
+      steps: [
+        'Corte los panes por la mitad y caliéntelos 2 minutos en una sartén seca o en el horno.',
+        'Aplaste la palta con un tenedor con el jugo de limón y la sal.',
+        'Unte la palta en los panes y sirva.',
+      ],
+    },
+    'pe_pan_chicharron': {
+      name: 'Pan con chicharrón',
+      ings: [['Panes franceses', '2'], ['Panceta o lomo de cerdo, en trozos', '250 g'], ['Camote', '1'], ['Cebolla roja', '1']],
+      seas: '500 ml de agua · sal · jugo de 1 limón · aceite para freír',
+      steps: [
+        'Hierva el cerdo con el agua y 1 cucharadita de sal 25 minutos, hasta que se evapore el agua, y luego fríalo en su propia grasa 8 minutos, hasta que esté dorado y crocante.',
+        'Pele el camote, córtelo en rodajas y fríalo hasta dorar. Corte la cebolla roja en tiras finas y mézclela con el jugo de limón y una pizca de sal para hacer la salsa criolla.',
+        'Abra los panes y rellénelos con el cerdo, el camote y la cebolla.',
+      ],
+    },
+    'pe_ensalada_frutas': {
+      name: 'Ensalada de frutas',
+      ings: [['Papaya', '1/2'], ['Plátano', '1'], ['Piña', '2 rodajas']],
+      seas: 'jugo de 1 naranja',
+      steps: [
+        'Pele la papaya, quítele las semillas y córtela en cubos. Pele y corte el plátano en rodajas.',
+        'Corte las rodajas de piña en trozos pequeños.',
+        'Mezcle toda la fruta en un bol con el jugo de naranja y sirva de inmediato.',
       ],
     },
   }

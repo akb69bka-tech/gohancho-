@@ -2460,6 +2460,27 @@ GOHAN_PACK({
         'Stir in the spinach until it wilts, about 2 minutes. Serve over rice.',
       ],
     },
+    {
+      id: 'us_avocadotoast',
+      name: 'Avocado toast',
+      local: 'Avocado toast',
+      type: 'main',
+      starch: true,   // 主食になる物（パン・じゃがいも・米・トルティーヤなど）が入っている
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'grill',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'bread|Bread (whole-grain or sourdough)|2 slices',
+        'avocado|Avocado|1',
+      ],
+      seas: 'juice of 1/2 lemon · salt · black pepper · pinch of chili flakes',
+      steps: [
+        'Toast the bread until golden and crisp.',
+        'Mash the avocado in a bowl with the lemon juice, salt and pepper.',
+        'Spread it thickly over the toast and sprinkle with the chili flakes.',
+      ],
+    },
   ],
   aliases: {
     "farina": ["farina", "cream of wheat", "wheat farina"],

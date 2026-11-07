@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    'banana': 'Banane',
     "oats": "Haferflocken",
     "alphabet pasta": "Buchstabennudeln",
     "chives": "Schnittlauch",
@@ -1184,6 +1185,36 @@ GOHAN_PACK_TR('DE', 'de', {
         'Möhren, Sellerie und Kartoffel würfeln, den Lauch in Ringe schneiden. Im Öl 5 Minuten anbraten.',
         'Die abgetropften Bohnen, das Lorbeerblatt, die Kräuter und das Wasser zugeben und 25 Minuten köcheln, bis das Gemüse weich ist.',
         'Einige Bohnen im Topf zerdrücken, damit der Eintopf bindet, mit Salz, Pfeffer und Essig abschmecken und das Lorbeerblatt entfernen.',
+      ],
+    },
+    'de_ruehrei': {
+      name: 'Rührei mit Schnittlauch und Brot',
+      ings: [['Eier', '4'], ['Schnittlauch', '1 kleines Bund'], ['Brot', '2 Scheiben'], ['Butter', '1 EL']],
+      seas: '2 EL Milch · Salz · Pfeffer',
+      steps: [
+        'Die Eier mit Milch, Salz und Pfeffer verquirlen. Den Schnittlauch in feine Röllchen schneiden.',
+        'Die Butter in einer Pfanne bei schwacher Hitze zerlassen, die Eier hineingeben und etwa 3 Minuten behutsam rühren, bis sie gerade gestockt, aber noch cremig sind.',
+        'Den größten Teil des Schnittlauchs unterrühren. Auf oder neben dem Brot anrichten und mit dem restlichen Schnittlauch bestreuen.',
+      ],
+    },
+    'de_broetchen_kaese': {
+      name: 'Brötchen mit Käse und Schinken',
+      ings: [['Brötchen', '2'], ['Butter', '1 EL'], ['Käsescheiben (Gouda oder Emmentaler)', '4 Scheiben'], ['Kochschinken', '4 Scheiben']],
+      seas: 'schwarzer Pfeffer nach Geschmack',
+      steps: [
+        'Die Brötchen halbieren und die Schnittflächen mit Butter bestreichen.',
+        'Mit Käse und Schinken belegen.',
+        'Nach Belieben mit Gurken- oder Tomatenscheiben servieren.',
+      ],
+    },
+    'de_fruehstuecksmuesli': {
+      name: 'Frühstücksmüsli mit Obst',
+      ings: [['Haferflocken', '60 g'], ['Apfel, gerieben', '1'], ['Banane', '1'], ['Rosinen', '2 EL']],
+      seas: '100 ml Wasser · 1/2 TL Zimt · Saft von 1/2 Zitrone',
+      steps: [
+        'Die Haferflocken in einer Schüssel mit dem Wasser verrühren und 5 Minuten quellen lassen.',
+        'Den Apfel raspeln und mit dem Zitronensaft mischen, damit er nicht braun wird. Die Banane in Scheiben schneiden.',
+        'Alles in zwei Schalen verteilen und mit Rosinen und Zimt bestreuen.',
       ],
     },
   }

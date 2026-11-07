@@ -1216,5 +1216,15 @@ GOHAN_PACK_TR('MX', 'es', {
         'Añada el maíz escurrido, el agua, el orégano y la sal y cueza 25 minutos. Sirva con rábanos en rodajas, orégano y limón.',
       ],
     },
+    'mx_fruta_picada': {
+      name: 'Fruta picada con limón y chile en polvo',
+      ings: [['Naranjas', '2'], ['Jícama', '1/2'], ['Pepino', '1/2']],
+      seas: 'jugo de 2 limones · chile en polvo con limón o chile molido · una pizca de sal',
+      steps: [
+        'Pele las naranjas y la jícama. Corte las naranjas, la jícama y el pepino en trozos pequeños.',
+        'Ponga todo en un bol y exprima el jugo de limón encima.',
+        'Espolvoree con el chile en polvo y la sal, mezcle y sirva frío.',
+      ],
+    },
   }
 });
