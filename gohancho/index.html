@@ -8027,13 +8027,22 @@ const DIET_BUNDLES = {
 function dietBundleLabel(k){ return {halal: t('ハラール向け（豚・酒類）'), vegi: t('ベジタリアン向け（肉・魚・貝）'), vegan: t('ヴィーガン向け（卵・乳製品も）')}[k] || k; }
 function dietBundleOn(list, k){ const sel = new Set(list.map(avoidFamOf).filter(Boolean)); return DIET_BUNDLES[k].every(f => sel.has(f)); }
 // 押したあとの苦手の一覧（配列）。押した形なら外す（関係のないほかの束＝ハラールとヴィーガンなどが必要とするなかまは残す）、そうでなければ足す
-function dietBundleToggle(list, k){
+// 束が足したぶんだけを覚えて（owner＝設定・はじめての設定・家族ごと）、外すときは足したぶんだけを外す。束を押す前に自分で選んでいた苦手は残す（R126）
+const DIET_ADDED = new WeakMap();
+function dietBundleToggle(list, k, owner){
     const comps = DIET_BUNDLES[k]; let a = [...list];
+    const rec = owner ? (DIET_ADDED.get(owner) || {}) : {};
     if (dietBundleOn(a, k)){
-        const keep = new Set(); Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f))).forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
-        return a.filter(x => { const f = avoidFamOf(x); return !(f && comps.includes(f) && !keep.has(f)); });
+        const keep = new Set(); Object.keys(DIET_BUNDLES).filter(o => o !== k && dietBundleOn(a, o) && (!rec[k] || rec[o]) && !comps.every(f => DIET_BUNDLES[o].includes(f)) && !DIET_BUNDLES[o].every(f => comps.includes(f))).forEach(o => DIET_BUNDLES[o].forEach(f => keep.add(f)));
+        const mine = rec[k];   // 押す前から自分で選んでいた分は残す。束が足したぶんだけ外す（別の束を自分で押した記録があるときは、その束に必要ななかまも残す）。記録がなければ（自分で全部そろえた・再読み込み後）これまで通り束のぶんを全部外す
+        const out = a.filter(x => { const f = avoidFamOf(x); return !(f && comps.includes(f) && !keep.has(f) && (!mine || mine.added.includes(f))); });
+        if (mine) mine.removed.forEach(x => { if (!out.includes(x) && !avoidCoveredBy(x, out.map(avoidFamOf).filter(Boolean))) out.push(x); });
+        if (owner){ delete rec[k]; DIET_ADDED.set(owner, rec); }
+        return out;
     }
-    comps.forEach(f => { if (!a.some(x => avoidFamOf(x) === f)) a = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f); });
+    const prev = rec[k], added = prev ? prev.added.filter(f => a.some(x => avoidFamOf(x) === f)) : [], removed = prev ? prev.removed.slice() : [];   // 外して押し直したときは、前に足したぶんも束のもの
+    comps.forEach(f => { if (!a.some(x => avoidFamOf(x) === f)){ a = a.filter(x => { const drop = !avoidFamOf(x) && avoidCoveredBy(x, [f]); if (drop) removed.push(x); return !drop; }); a = a.concat('@' + f); added.push(f); } });
+    if (owner){ rec[k] = {added, removed}; DIET_ADDED.set(owner, rec); }
     return a;
 }
 function dietBundleHtml(list, act){
@@ -8556,6 +8565,7 @@ function recipeSwaps(r){
         if (negiAll() && ALLIUM_RE.test(SWAP_TXT(i) + '|' + i.name) && ALLIUM_RE.test(SWAP_TXT(w.i) + '|' + w.i.name)) return null;   // 「ねぎ」を避ける人に、ねぎのなかまで置き換えない
         if ([i.label, i.name].some(n => n && n.length >= 2 && String(r.name).includes(n))) return null;   // 料理の名前の食材（ピーマンの肉詰めのピーマンなど）は置き換えない
         if (swapMince(i) && !swapMince(w.i) && SWAP_SHAPED.test([r.name, r.nameEn, ...(r.alt || [])].join(' ').toLowerCase())) return null;   // ひき肉をこねて形にする料理（ミートボール・ハンバーグなど）は、切った鶏肉では作れない
+        if (!meatFamOf(w.i) && NAME_MEATY.test([r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | '))) return null;   // 名前が肉の料理（肉じゃが・回鍋肉・冷しゃぶ・かつ丼）を肉でない食材（豆腐）に替えると、名前が肉のまま豆腐の料理になる（R128）ので出さない。ほかの肉への置き換えはそのまま
         if (nameHasFam(r, i)) return null;   // 料理の名前が主役の肉・魚を表す（鶏の唐揚げ・豚汁・Chicken parm など）料理も置き換えない
         swaps.push({from: i, to: w.i, tip: w.tip});
     }
@@ -8964,6 +8974,7 @@ const NAME_FAM = {
     fish: /鮭|さけ|サーモン|石狩|船場汁|さば|鯖|ぶり|鰤|たら|鱈|あじ|鯵|いわし|さんま|かれい|さわら|かじき|白身魚|魚|\bfish\b|salmon|cod\b|tuna|mackerel|생선|고등어|ปลา|\bcá\b|ikan|isda|poisson|pescado|pesce|peixe|ryb|balık|鱼|魚/i,
     shellfish: /えび|エビ|海老|いか|イカ|たこ|タコ|かに|カニ|蟹|あさり|しじみ|貝|shrimp|prawn|crab|squid|calamari|clam|mussel|oyster|새우|오징어|낙지|조개|กุ้ง|ปลาหมึก|\btôm\b|mực|udang|cumi|hipon|crevette|gamba|gamberi|camarão|krewet|karides|虾|蝦/i,
 };
+const NAME_MEATY = /肉|しゃぶ|カツ|かつ(?!お|ぶし)/;   // 料理の名前が肉の料理を名乗る日本語の言葉（原語の名前だけ・画面の言語に依らない）
 function nameHasFam(r, i){
     const names = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).join(' | ');
     return Object.keys(NAME_FAM).some(f => inFam(f, i) && NAME_FAM[f].test(names));
@@ -8986,7 +8997,7 @@ function swapTagHtml(r){
     return `<span class="mt swap-line">🔁 ${esc(t('{to}で作る', {to: joinNames(to)}))}</span>`;
 }
 // 調味料の欄の苦手な食材（日本の料理の日本語の文だけ）: 鶏ガラスープの素・牛脂・オイスターソースを、苦手でないものに替える
-const SEAS_SWAP = [['chicken', /鶏ガラスープの素/g, '顆粒昆布だし'], ['beef', /牛脂（またはサラダ油）|牛脂/g, 'サラダ油'], ['pork', /ラード/g, 'サラダ油'], ['shellfish', /オイスターソース/g, '醤油（オイスターソースの代わり）']];
+const SEAS_SWAP = [['chicken', /鶏ガラスープの素|鶏ガラ(?:スープ|だし)?/g, '顆粒昆布だし'], ['beef', /牛脂（またはサラダ油）|牛脂/g, 'サラダ油'], ['pork', /ラード/g, 'サラダ油'], ['shellfish', /オイスターソース/g, '醤油（オイスターソースの代わり）']];
 // 調味料の置き換え先が、選んだアレルゲンを含むときは替えない（その料理は出さない）
 function seasToOk(to){ const ids = algIdsEff(); return !ids.length || !algItemHit(ids, {name: to, label: to, key: norm(to), en: ''}); }
 function seasSwapText(txt, r){
@@ -14422,10 +14433,10 @@ document.addEventListener('click', e => {
             const f = document.getElementById('family-profile'); if (f) f.scrollIntoView({block: 'start'}); break;
         }
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
-        case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v); save(); reconcileMenu(); refreshWeek(); render(); break; }
+        case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-avoid-diet': {
             const m = famOf(el); if (!m) break;
-            m.avoid = dietBundleToggle(m.avoid, el.dataset.v); m.allergy = m.allergy.filter(x => m.avoid.includes(x));
+            m.avoid = dietBundleToggle(m.avoid, el.dataset.v, m); m.allergy = m.allergy.filter(x => m.avoid.includes(x));
             session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'toggle-avoid-fam': {
@@ -14633,7 +14644,7 @@ document.addEventListener('click', e => {
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (v !== 'auto' && dishesFor(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
-        case 'ob-avoid-diet': { sheet.avoid = new Set(dietBundleToggle([...sheet.avoid], el.dataset.v)); renderSheet(); break; }
+        case 'ob-avoid-diet': { sheet.avoid = new Set(dietBundleToggle([...sheet.avoid], el.dataset.v, sheet)); renderSheet(); break; }
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;

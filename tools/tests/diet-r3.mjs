@@ -68,7 +68,7 @@ const reset = async (p, list = []) => { await p.evaluate(l => { S.settings.avoid
     await p.click('.diet-bundle[data-v="vegan"]'); await p.waitForTimeout(150);
     ok(same(await famsNow(p), FAM.vegan), 'ベジタリアンのあとヴィーガンを押すと卵・乳が足される');
     await openSettings(p); await p.click('.diet-bundle[data-v="vegan"]'); await p.waitForTimeout(150);
-    ok((await famsNow(p)).length === 0, 'ヴィーガンを押して外すと、全部外れる');
+    ok(same(await famsNow(p), FAM.vegi), 'ヴィーガンを押して外すと、ヴィーガンが足した卵・乳だけ外れる（先に押したベジタリアンは残る。第5回 R126）');
     await reset(p);
     await p.click('.diet-bundle[data-v="halal"]'); await p.waitForTimeout(150); await openSettings(p);
     await p.click('.diet-bundle[data-v="vegan"]'); await p.waitForTimeout(150); await openSettings(p);

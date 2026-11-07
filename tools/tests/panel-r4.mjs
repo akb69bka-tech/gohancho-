@@ -208,14 +208,14 @@ if (want('R9')){
         ok(!r.length, 'R9-3 en: 豚肉を替えた料理の手順に「pork」が残らない: ' + r.slice(0, 3).join(' | '));
         await ctx.close();
     }
-    // 画面: 肉と魚を外した人が冷しゃぶサラダの作り方を開く
+    // 画面: 肉と魚を外した人が野菜炒めの作り方を開く（冷しゃぶサラダは名前が肉の料理なので、第5回 R128 から豆腐に替えず出さない）
     {
         const {p, ctx} = await open({avoid: ['肉', '魚']});
-        await p.evaluate(() => openModal('reishabu')); await p.waitForTimeout(400);
+        await p.evaluate(() => openModal('yasaiitame')); await p.waitForTimeout(400);
         const txt = await p.evaluate(() => document.querySelector('#modal-root').innerText);
-        await p.screenshot({path: (process.env.SHOT_DIR || '/tmp') + '/R9_reishabu.png'}).catch(() => {});
-        ok(/木綿豆腐を食べやすく切って入れ、2分ほどゆでて温める/.test(txt) && !/1枚ずつ広げて色が変わるまで/.test(txt), 'R9-4 冷しゃぶサラダ（豆腐）の手順が豆腐に合う文: ' + (txt.match(/[^\n]*木綿豆腐[^\n]*ゆで[^\n]*/) || [''])[0]);
-        ok(/豚しゃぶしゃぶ用肉 の代わりに 木綿豆腐/.test(txt), 'R9-5 置き換えの説明はそのまま出る');
+        await p.screenshot({path: (process.env.SHOT_DIR || '/tmp') + '/R9_yasaiitame.png'}).catch(() => {});
+        ok(/木綿豆腐/.test(txt) && !/豚こま切れ肉を(?:炒|入)/.test(txt), 'R9-4 野菜炒め（豆腐）の手順に豆腐が出る: ' + (txt.match(/[^\n]*木綿豆腐[^\n]*/) || [''])[0]);
+        ok(/豚こま切れ肉 の代わりに 木綿豆腐/.test(txt), 'R9-5 置き換えの説明はそのまま出る');
         await ctx.close();
     }
 }
