@@ -5135,6 +5135,15 @@ function reqUp(on){
     if (inHd){ const gr = document.querySelector('#greet .greet-row'); if (gr && !gr.querySelector('.req-btn')) gr.prepend(inHd); else inHd.remove(); }
     document.body.classList.remove('tray-tight5'); return false;
 }
+// 朝（4:00〜10:59）の「いま食べる朝食を選ぶ」の入口は、お膳の下にある。帯（下のタブ）の上端をまたぐ位置に来たら、またがない位置（帯より下＝スクロールの先）へ送る。
+// お膳は小さくしない（入口は決めた献立の外の小さな入口。押す場所が帯に半分かかるのを避けるだけ）。fitTray の最後に測る
+function bfEntryFit(){
+    const en = document.querySelector('#view .bf-entry'); if (!en) return;
+    en.style.removeProperty('margin-top');
+    let fl = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
+    const q = en.getBoundingClientRect();
+    if (q.height > 0 && q.top < fl - 1 && q.bottom > fl + 1) en.style.marginTop = Math.ceil(fl - q.top + 2) + 'px';
+}
 function fitTray(){
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
@@ -5274,6 +5283,7 @@ function fitTray(){
     TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
     svFit();   // 詰めた形（195px の見出しを畳む形など）でボタンの幅が変わったときの測り直し
     fixSwapWord(tr); fixWishTag(tr);
+    bfEntryFit();
     if (sy0 > 0){ const want = Math.round(sy0 + (tr.getBoundingClientRect().top + scrollY - tt0)), maxY = document.documentElement.scrollHeight - innerHeight; if (Math.abs(scrollY - want) > .5 && want >= 0 && want <= maxY + .5) window.scrollTo(0, want); }   // お膳の画面の中の高さを、測る前と同じに（お膳より上の中身が縮んだ分は動かす）
     toastAlign();   // ページに留めたお知らせ（第19回 R59）を、詰めたあとのお膳に合わせる（同期）
 }

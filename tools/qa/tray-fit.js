@@ -14,6 +14,7 @@ const { chromium, LAUNCH, BASE, ready } = require('../lib/pw.cjs');
 const VPS = (process.env.VPS || '390x844:0,360x740:0,375x667:0:c,390x844:2,360x740:2').split(',').map(x => { const [vp, ts, c] = x.split(':'); const [w, h] = vp.split('x').map(Number); return {w, h, ts: Number(ts) || 0, clipOnly: c === 'c'}; });
 const LANGS = (process.env.LANGS || 'ja,en,ko,de,ar,th').split(',');
 const CC = {ja: 'JP', en: 'US', ko: 'KR', de: 'DE', ar: 'EG', th: 'TH'};
+const CLOCK = process.env.CLOCK || '';   // 例 CLOCK=2026-10-30T07:00:00+09:00 と TZ=Asia/Tokyo。朝（4:00〜10:59）の回帰: 朝食の入口が出る時刻。空なら固定しない（家族の回だけ 12:15）
 let bad = 0, n = 0; const seen = new Set(), scrolled = [];
 (async () => {
   const b = await chromium.launch(LAUNCH);
@@ -22,6 +23,7 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(([cc, lang, ts]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-10-01', settings: {country: cc, uiLang: lang, dishCount: 3, servings: 2, textSize: ts || undefined}})); } }, [CC[lang], lang, vp.ts]);
+    if (CLOCK) await p.clock.setFixedTime(new Date(CLOCK));
     await p.goto(BASE); await ready(p); await p.waitForTimeout(600);
     await p.evaluate(() => { window.hasPro = () => true; });
     for (const v of [1, 2, 3, 4, 5, 6, 7, 'plus']) {
@@ -115,7 +117,7 @@ let bad = 0, n = 0; const seen = new Set(), scrolled = [];
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
     await p.addInitScript(([cc, lang, ts, alg]) => { if (!sessionStorage.getItem('s')) { sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-10-01', family: [{id: 'f1', name: lang === 'ja' ? '夫' : 'A', role: 'adult', avoid: alg.map(x => '@' + x), allergy: alg.map(x => '@' + x), mild: false}], settings: {country: cc, uiLang: lang, dishCount: 4, servings: 2, textSize: ts || undefined}})); } }, [FAM_CC[lang], lang, ts, FAM_ALG[lang]]);
-    await p.clock.setFixedTime(new Date('2026-10-30T12:15:00+09:00'));   // お昼（あいさつが長い「お昼のうちに夜の献立を…」）
+    await p.clock.setFixedTime(new Date(CLOCK || '2026-10-30T12:15:00+09:00'));   // お昼（あいさつが長い「お昼のうちに夜の献立を…」）
     await p.goto(BASE); await ready(p); await p.waitForTimeout(600);
     if (lang !== 'ja') await p.waitForFunction(cc => typeof PACK !== 'undefined' && PACK && PACK.country === cc, FAM_CC[lang], {timeout: 30000}).catch(() => {});
     // お膳を見る（器・名前・かえる・丸・⚠ の札が帯の上・札が隠れない・印のない段に場所を空けない・点検3）。あいさつの行（2行・⚠ の文）も出した形で測る

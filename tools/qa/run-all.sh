@@ -65,6 +65,7 @@ for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon sho
 done
 add "qa-category-audit" app "" "node tools/qa/category-audit.js"   # 仲間はずれの点検（21か国 × 気分・かえる・主食・席・1週間・明日）。1件でもあれば落ちる
 add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"
+add "qa-tray-fit-morning" app "TZ=Asia/Tokyo CLOCK=2026-10-30T07:00:00+09:00 VPS=390x844:0,360x740:0,360x740:2 LANGS=ja,de" "node tools/qa/tray-fit.js"   # 朝（4:00〜10:59）は朝食の入口が出る。入口が帯をまたがない（回帰）
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
 add "packs-check"      static "" "node tools/packs/check.mjs"
 for L in $LANGS; do add "i18n-$L" static "" "node tools/i18n/extract.mjs --check $L"; done
