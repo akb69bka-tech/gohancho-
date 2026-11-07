@@ -2353,6 +2353,46 @@ GOHAN_PACK({
         'Cut into triangles and serve.',
       ],
     },
+    {
+      id: 'gb_bubbleandsqueak',
+      name: 'Bubble and squeak',
+      local: 'Bubble and squeak',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'veg',
+      min: 30,
+      ings: [
+        'potato|Potatoes, peeled|500 g',
+        'cabbage|Cabbage, shredded|200 g',
+        'onion|Onion, sliced|1',
+      ],
+      seas: '3 tbsp oil · salt · black pepper',
+      steps: [
+        'Boil the potatoes in salted water for 15–20 minutes until soft, drain and mash roughly. Steam or boil the cabbage for 4 minutes and drain well.',
+        'Fry the onion in 1 tbsp of the oil for 5 minutes until soft, then mix it with the potatoes, the cabbage, salt and pepper.',
+        'Heat the remaining oil in a frying pan, press the mixture in as a flat cake and fry over medium heat for 6–8 minutes on each side until golden brown and crisp.',
+      ],
+    },
+    {
+      id: 'gb_stewedpears',
+      name: 'Stewed pears with cinnamon',
+      local: 'Stewed pears',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'simmer',
+      protein: 'veg',
+      min: 25,
+      ings: [
+        'pear|Pears, peeled and quartered|3',
+      ],
+      seas: '200 ml water · 1/2 tsp cinnamon · 1 tbsp sugar · 2 slices of lemon',
+      steps: [
+        'Peel the pears, cut them into quarters and remove the cores.',
+        'Simmer the water, sugar, cinnamon and lemon slices in a saucepan for 2 minutes. Add the pears.',
+        'Cover and poach gently for 12–15 minutes until the pears are tender. Serve warm in bowls with a little of the syrup.',
+      ],
+    },
   ],
   aliases: {
     'marmalade': ['marmalade','orange marmalade'],
@@ -2435,6 +2475,7 @@ GOHAN_PACK({
     'walnuts': ['walnuts', 'walnut', 'walnut pieces'],
     'spinach': ['spinach', 'baby spinach'],
     'oats': ['oats', 'porridge oats', 'rolled oats', 'oatmeal'],
+    'pear': ['pear', 'pears'],
   },
   quick: ['chicken', 'ground beef', 'sausage', 'beef', 'lamb mince', 'fish', 'egg', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'tomato', 'mushroom', 'cabbage', 'leek', 'pasta', 'rice', 'baked beans', 'bacon'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'potato', 'onion', 'carrot', 'peas', 'canned tomato', 'baked beans', 'pasta', 'rice', 'stock', 'self-raising flour', 'mayonnaise', 'breadcrumbs'],
@@ -2519,5 +2560,6 @@ GOHAN_PACK({
     'walnuts': 'Walnuts',
     'spinach': 'Spinach',
     'oats': 'Porridge oats',
+    'pear': 'Pears',
   },
 });

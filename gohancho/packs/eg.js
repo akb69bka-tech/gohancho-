@@ -2141,6 +2141,45 @@ GOHAN_PACK({
         'Drizzle with the honey and serve.',
       ],
     },
+    {
+      id: 'eg_batata_mashwiya',
+      name: 'Roasted sweet potatoes',
+      local: 'بطاطا مشوية',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'grill',
+      protein: 'veg',
+      min: 50,
+      ings: [
+        'sweet potato|Sweet potatoes|4 medium (800 g)',
+      ],
+      seas: 'pinch of salt (optional)',
+      steps: [
+        'Heat the oven to 220°C. Scrub the sweet potatoes and prick them several times with a fork.',
+        'Place them directly on the oven rack with a tray below and roast for 40–45 minutes, turning once, until the skins are blistered and the flesh is completely soft.',
+        'Let them cool for 5 minutes, split them open and serve hot, with a pinch of salt if you like.',
+      ],
+    },
+    {
+      id: 'eg_tamr_fakha',
+      name: 'Dates, figs and guava plate',
+      local: 'تمر وتين وجوافة',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'dates|Fresh or dried dates|8',
+        'figs|Fresh figs|4',
+        'guava|Guava|2',
+      ],
+      seas: 'a squeeze of lemon juice',
+      steps: [
+        'Wash the figs and the guavas. Pit the dates if you like and cut the figs in half.',
+        'Cut the guavas into wedges and arrange everything on a plate with a squeeze of lemon juice.',
+      ],
+    },
   ],
   aliases: {
     'garlic': ['garlic','ثوم'],
@@ -2203,6 +2242,10 @@ GOHAN_PACK({
     'beetroot': ['beetroot', 'beet', 'beets', 'بنجر', 'شمندر'],
     'cabbage': ['cabbage', 'red cabbage', 'كرنب', 'ملفوف'],
     'nuts': ['nuts', 'almonds', 'cashews', 'raisins', 'pine nuts', 'مكسرات', 'لوز', 'كاجو', 'زبيب'],
+    'sweet potato': ['sweet potato', 'sweet potatoes', 'بطاطا', 'بطاطا حلوة'],
+    'dates': ['dates', 'date', 'تمر', 'بلح'],
+    'figs': ['figs', 'fig', 'تين'],
+    'guava': ['guava', 'جوافة'],
   },
   quick: ['chicken', 'ground beef', 'beef', 'fish', 'egg', 'onion', 'tomato', 'potato', 'zucchini', 'eggplant', 'okra', 'bell pepper', 'cucumber', 'lentils', 'fava beans', 'rice', 'pasta', 'lemon', 'parsley'],
   pantry: ['rice', 'pasta', 'vermicelli', 'lentils', 'fava beans', 'chickpeas', 'onion', 'tomato', 'potato', 'lemon', 'tahini', 'egg', 'milk', 'butter', 'bread', 'cheese'],
@@ -2223,5 +2266,9 @@ GOHAN_PACK({
     'shrimp': 'Shrimp', 'squid': 'Squid', 'broccoli': 'Broccoli',
     'liver': 'Liver', 'lamb': 'Lamb', 'sausage': 'Sogo sausage', 'black-eyed peas': 'Black-eyed peas', 'cauliflower': 'Cauliflower',
     'rocket': 'Rocket', 'green beans': 'Green beans', 'spinach': 'Spinach', 'beetroot': 'Beetroot', 'cabbage': 'Cabbage', 'nuts': 'Nuts and raisins',
+    'sweet potato': 'Sweet potatoes',
+    'dates': 'Dates',
+    'figs': 'Figs',
+    'guava': 'Guava',
   },
 });

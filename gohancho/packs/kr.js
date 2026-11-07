@@ -1232,10 +1232,10 @@ GOHAN_PACK({
       ings: [
         'rice|Short-grain rice, uncooked|2 cups (360 ml)',
         'bean sprouts|Soybean sprouts|200 g',
-        'minced meat|Minced pork or beef|100 g?',
+        'minced meat|Minced pork or beef (marinated in 1 tsp soy sauce and 1/2 tsp minced garlic)|100 g?',
         'green onion|Green onion, for the sauce|1/2',
       ],
-      seas: '1 tsp soy sauce and 1/2 tsp minced garlic for the meat · about 330 ml water (a little less than usual) · Sauce: 3 tbsp soy sauce · 1 tbsp gochugaru · 1 tsp sugar · 1 tsp minced garlic · 1 tbsp sesame oil · 1 tsp sesame seeds',
+      seas: 'about 330 ml water (a little less than usual) · Sauce: 3 tbsp soy sauce · 1 tbsp gochugaru · 1 tsp sugar · 1 tsp minced garlic · 1 tbsp sesame oil · 1 tsp sesame seeds',
       steps: [
         'Wash the rice, soak for 30 minutes and drain.',
         'Mix the meat with the soy sauce and garlic.',
