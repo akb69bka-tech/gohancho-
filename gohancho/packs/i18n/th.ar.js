@@ -2,7 +2,11 @@
 // Ingredients, quantities, seasonings and steps stay in English (the pack's own text). Dishes not listed here show the Thai name with the English name.
 GOHAN_PACK_TR('TH', 'ar', {
   nameOnly: true,
-  names: {},
+  names: {
+    'green curry paste': 'معجون الكاري الأخضر', 'red curry paste': 'معجون الكاري الأحمر', 'sour curry paste': 'معجون الكاري الحامض',
+    'panang curry paste': 'معجون كاري بانانغ', 'massaman curry paste': 'معجون كاري ماساماني',
+    'roasted chili paste': 'معجون الفلفل المحمّص', 'chili jam': 'مربّى الفلفل الحار',
+  },
   recipes: {
     "th_kaprao": {name: "لحم خنزير مفروم مقلي بالريحان المقدس"},
     "th_kaengkiaowan": {name: "كاري أخضر بالدجاج"},

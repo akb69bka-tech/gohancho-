@@ -2481,6 +2481,47 @@ GOHAN_PACK({
         'Spread it thickly over the toast and sprinkle with the chili flakes.',
       ],
     },
+    {
+      id: 'us_breakfastpotatoes',
+      name: 'Skillet breakfast potatoes',
+      local: 'Breakfast potatoes',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'fry',
+      protein: 'veg',
+      min: 30,
+      ings: [
+        'potato|Potatoes, diced|500 g',
+        'onion|Onion, diced|1',
+        'bell pepper|Bell pepper, diced|1',
+      ],
+      seas: '3 tbsp oil · 1 tsp paprika · salt and pepper',
+      steps: [
+        'Cut the potatoes into 1.5 cm cubes. Dice the onion and the bell pepper.',
+        'Heat the oil in a large skillet over medium-high heat. Add the potatoes in a single layer and cook for 12–15 minutes, turning only now and then, until golden and crisp at the edges.',
+        'Add the onion, bell pepper, paprika, salt and pepper and cook for 5 more minutes until softened. Serve hot.',
+      ],
+    },
+    {
+      id: 'us_berrybowl',
+      name: 'Fresh berry and grape bowl',
+      local: 'Fruit bowl',
+      type: 'main',
+      meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
+      method: 'raw',
+      protein: 'veg',
+      min: 10,
+      ings: [
+        'strawberries|Strawberries|1 cup (150 g)',
+        'blueberries|Blueberries|1 cup (150 g)',
+        'grapes|Grapes|1 cup (150 g)',
+      ],
+      seas: 'a squeeze of lemon juice',
+      steps: [
+        'Rinse all the fruit and pat dry. Hull and halve the strawberries and halve the grapes.',
+        'Toss everything in a bowl with a squeeze of lemon juice and serve right away.',
+      ],
+    },
   ],
   aliases: {
     "farina": ["farina", "cream of wheat", "wheat farina"],
@@ -2578,6 +2619,8 @@ GOHAN_PACK({
     'walnuts': ['walnuts', 'walnut', 'pecans', 'nuts'],
     'oats': ['oats', 'rolled oats', 'old-fashioned oats', 'oatmeal', 'quick oats'],
     'banana': ['banana', 'bananas'],
+    'strawberries': ['strawberries', 'strawberry'],
+    'blueberries': ['blueberries', 'blueberry'],
   },
   quick: ['chicken', 'ground beef', 'beef', 'pork chop', 'salmon', 'egg', 'cheese', 'potato', 'onion', 'tomato', 'broccoli', 'carrot', 'lettuce', 'pasta', 'rice', 'milk', 'butter', 'green beans', 'corn'],
   pantry: ['egg', 'butter', 'milk', 'cheese', 'onion', 'potato', 'carrot', 'pasta', 'rice', 'flour', 'canned tomato', 'stock', 'breadcrumbs', 'mayonnaise', 'lemon', 'parmesan'],
@@ -2677,5 +2720,7 @@ GOHAN_PACK({
     'walnuts': 'Walnuts',
     'oats': 'Rolled oats',
     'banana': 'Banana',
+    'strawberries': 'Strawberries',
+    'blueberries': 'Blueberries',
   },
 });

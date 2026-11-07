@@ -168,7 +168,7 @@ const MAY = /コンソメ|ブイヨン|consomm[eé]|\bbouillon\b|stock cube|worc
     await p.evaluate(() => { S.settings.avoid = ['rice', 'beans', 'lentils', 'potato', 'tomato', 'onion', 'corn', 'pasta', 'bread', 'spinach', 'broccoli', 'zucchini', 'cabbage', '@pork', '@chicken', '@beef', '@fish', '@shellfish', '@egg', '@dairy', '@wheat', '@nuts']; S.settings.allergens = ['soy', 'sesame']; S.cook = null; session.menu = null; save(); });
     await p.evaluate(() => { ensureMenu(); render(); });
     await p.waitForTimeout(400);
-    const r = await p.evaluate(() => ({ mains: RECIPES.filter(r => r.main && !isAvoided(r) && !allergyConflict(r)).length, note: !!document.querySelector('#view .no-main'), btn: (document.querySelector('#view [data-act="settings"]') || {}).textContent || '', dis: !!document.querySelector('#view [data-act="decide"][disabled]'), txt: ((document.querySelector('#view .no-main') || {}).textContent || '') }));
+    const r = await p.evaluate(() => ({ mains: RECIPES.filter(r => r.main && !breakfastMeal(r) && !isAvoided(r) && !allergyConflict(r)).length, note: !!document.querySelector('#view .no-main'), btn: (document.querySelector('#view [data-act="settings"]') || {}).textContent || '', dis: !!document.querySelector('#view [data-act="decide"][disabled]'), txt: ((document.querySelector('#view .no-main') || {}).textContent || '') }));
     ok(r.mains === 0, '主菜0品の条件になっていない: ' + r.mains);
     ok(r.dis, '主菜0品: 「決定」が押せなくなっている（これまでどおり）');
     ok(r.note && /設定|Settings/.test(r.txt + r.btn), `主菜0品: 理由と次にすること（設定）の案内が出ない: ${JSON.stringify(r)}`);

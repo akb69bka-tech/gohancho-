@@ -7637,7 +7637,9 @@ function dietMayHits(r){
     const its = (rs.items || []).concat(seasItems(rs.seasBase != null && sw !== String(rs.seasBase) ? Object.assign({}, rs, {seasBase: sw, _seas: undefined, _seasK: undefined}) : rs));
     its.forEach(i => { if (dietMayItem(c, i)){
         const nm = String(i.disp || i.label || i.name || i.key).replace(/^[\d½¼¾⅓⅔⅛.,\/\s-]+(?:(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|g|kg|ml|l|oz|EL|TL)\.?\s+(?:of\s+)?)?/i, '').replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim();
-        if (nm && !out.includes(nm)) out.push(nm);
+        const loc = nm && typeof PACK_NAMES !== 'undefined' && PACK_NAMES[nm.toLowerCase().replace(/\s*\?$/, '')];   // 調味料の欄の英語の名前（stock cube など）は、その言語の訳があれば訳で出す
+        const nm2 = loc || nm;
+        if (nm2 && !out.includes(nm2)) out.push(nm2);
     } });
     return out;
 }
