@@ -1959,5 +1959,6 @@ GOHAN_I18N('fr', {
     "ベジタリアン向け（肉・魚・貝）": "Végétarien (sans viande, poisson ni fruits de mer)",
     "ヴィーガン向け（卵・乳製品も）": "Végan (sans œufs ni produits laitiers non plus)",
     "まとめて選ぶ（食の決まり）": "Choisir un régime d’un coup",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Après le service de nuit (afficher le petit-déjeuner à toute heure)"
 });

@@ -1959,5 +1959,6 @@ GOHAN_I18N('fil', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (walang karne, isda, shellfish)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (pati itlog at gatas-produkto)",
     "まとめて選ぶ（食の決まり）": "Pumili ng buong diyeta nang sabay",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Pagkatapos ng night shift (ipakita ang almusal anumang oras)"
 });

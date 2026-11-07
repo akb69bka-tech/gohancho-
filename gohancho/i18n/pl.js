@@ -1959,5 +1959,6 @@ GOHAN_I18N('pl', {
     "ベジタリアン向け（肉・魚・貝）": "Wegetariańska (bez mięsa, ryb i owoców morza)",
     "ヴィーガン向け（卵・乳製品も）": "Wegańska (także bez jaj i nabiału)",
     "まとめて選ぶ（食の決まり）": "Wybierz całą dietę naraz",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Po wybraniu znaczniki poniżej dodają się naraz, a potem możesz je dodawać lub usuwać. To tylko pomoc w pomijaniu dań, które mogą nie pasować do diety; to nie gwarancja."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Po wybraniu znaczniki poniżej dodają się naraz, a potem możesz je dodawać lub usuwać. To tylko pomoc w pomijaniu dań, które mogą nie pasować do diety; to nie gwarancja.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Po nocnej zmianie (pokazuj wybór śniadania o każdej porze)"
 });

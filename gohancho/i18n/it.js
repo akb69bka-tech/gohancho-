@@ -1959,5 +1959,6 @@ GOHAN_I18N('it', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetariano (senza carne, pesce, crostacei)",
     "ヴィーガン向け（卵・乳製品も）": "Vegano (anche senza uova e latticini)",
     "まとめて選ぶ（食の決まり）": "Scegli un’intera dieta in una volta",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Scegliendo, i chip qui sotto vengono aggiunti tutti insieme e poi puoi aggiungerne o toglierne. Aiuta solo a escludere piatti che potrebbero non adattarsi a una dieta; non è una garanzia."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Scegliendo, i chip qui sotto vengono aggiunti tutti insieme e poi puoi aggiungerne o toglierne. Aiuta solo a escludere piatti che potrebbero non adattarsi a una dieta; non è una garanzia.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Dopo il turno di notte (mostra la colazione a qualsiasi ora)"
 });

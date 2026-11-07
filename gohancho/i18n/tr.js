@@ -1959,5 +1959,6 @@ GOHAN_I18N('tr', {
     "ベジタリアン向け（肉・魚・貝）": "Vejetaryen (et, balık, kabuklu deniz ürünü yok)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (yumurta, süt ürünü de yok)",
     "まとめて選ぶ（食の決まり）": "Tüm beslenme düzenini tek seferde seç",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Gece vardiyası sonrası (kahvaltı girişini her saatte göster)"
 });

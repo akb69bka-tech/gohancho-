@@ -1959,5 +1959,6 @@ GOHAN_I18N('id', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (tanpa daging, ikan, kerang-kerangan)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (juga tanpa telur, produk susu)",
     "まとめて選ぶ（食の決まり）": "Pilih pola makan sekaligus",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Setelah shift malam (tampilkan pilihan sarapan kapan saja)"
 });

@@ -1959,5 +1959,6 @@ GOHAN_I18N('vi', {
     "ベジタリアン向け（肉・魚・貝）": "Ăn chay (không thịt, cá, hải sản có vỏ)",
     "ヴィーガン向け（卵・乳製品も）": "Thuần chay (không cả trứng, sữa)",
     "まとめて選ぶ（食の決まり）": "Chọn cả chế độ ăn một lần",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Sau ca đêm (hiện mục bữa sáng vào mọi giờ)"
 });

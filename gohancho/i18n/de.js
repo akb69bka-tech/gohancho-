@@ -1959,5 +1959,6 @@ GOHAN_I18N('de', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarisch (ohne Fleisch, Fisch, Schalentiere)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (auch ohne Eier, Milchprodukte)",
     "まとめて選ぶ（食の決まり）": "Ganze Ernährungsweise auf einmal wählen",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie.",
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Nach der Nachtschicht (Frühstückseinstieg zu jeder Uhrzeit zeigen)"
 });
