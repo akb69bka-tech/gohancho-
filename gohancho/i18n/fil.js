@@ -1965,6 +1965,6 @@ GOHAN_I18N('fil', {
     "別の端末の購入IDで復元": "I-restore gamit ang purchase ID ng ibang device",
     "特定商取引法に基づく表記": "Paunawa ayon sa Batas sa Tiyak na Komersyal na Transaksyon",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (kopyahin at ilagay sa «I-restore gamit ang purchase ID ng ibang device» sa ibang device para magamit ang parehong pagbili. Huwag ipakita sa iba)",
-    "管理ページを開けませんでした。少し待ってからお試しください": "Hindi mabuksan ang pahina ng pamamahala. Pakisubukan ulit mamaya."
+    "管理ページを開けませんでした。少し待ってからお試しください": "Hindi mabuksan ang pahina ng pamamahala. Pakisubukan ulit mamaya.",
     "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Pagkatapos ng night shift (ipakita ang almusal anumang oras)"
 });

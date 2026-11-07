@@ -1966,6 +1966,6 @@ GOHAN_I18N('en', {
     "別の端末の購入IDで復元": "Restore with another device’s purchase ID",
     "特定商取引法に基づく表記": "Specified Commercial Transactions Act notice",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (copy it and enter it under “Restore with another device’s purchase ID” on another device to use the same purchase. Do not show it to others)",
-    "管理ページを開けませんでした。少し待ってからお試しください": "Could not open the management page. Please try again in a moment."
+    "管理ページを開けませんでした。少し待ってからお試しください": "Could not open the management page. Please try again in a moment.",
     "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "After night shift (show the breakfast entry at any hour)"
 });

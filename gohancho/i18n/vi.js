@@ -1965,6 +1965,6 @@ GOHAN_I18N('vi', {
     "別の端末の購入IDで復元": "Khôi phục bằng ID mua của thiết bị khác",
     "特定商取引法に基づく表記": "Thông báo theo Luật Giao dịch thương mại cụ thể của Nhật Bản",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID mua (sao chép và nhập vào «Khôi phục bằng ID mua của thiết bị khác» trên thiết bị khác để dùng cùng lượt mua. Đừng cho người khác xem)",
-    "管理ページを開けませんでした。少し待ってからお試しください": "Không mở được trang quản lý. Vui lòng thử lại sau ít phút."
+    "管理ページを開けませんでした。少し待ってからお試しください": "Không mở được trang quản lý. Vui lòng thử lại sau ít phút.",
     "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Sau ca đêm (hiện mục bữa sáng vào mọi giờ)"
 });

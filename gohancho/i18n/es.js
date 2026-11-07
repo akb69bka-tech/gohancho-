@@ -1965,6 +1965,6 @@ GOHAN_I18N('es', {
     "別の端末の購入IDで復元": "Restaurar con el ID de compra de otro dispositivo",
     "特定商取引法に基づく表記": "Aviso conforme a la Ley de Transacciones Comerciales Específicas",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID de compra (cópialo e introdúcelo en «Restaurar con el ID de compra de otro dispositivo» en otro dispositivo para usar la misma compra. No lo muestres a otras personas)",
-    "管理ページを開けませんでした。少し待ってからお試しください": "No se pudo abrir la página de gestión. Inténtalo de nuevo en un momento."
+    "管理ページを開けませんでした。少し待ってからお試しください": "No se pudo abrir la página de gestión. Inténtalo de nuevo en un momento.",
     "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Tras el turno de noche (mostrar el desayuno a cualquier hora)"
 });
