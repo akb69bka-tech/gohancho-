@@ -634,14 +634,6 @@ function xidWoodEar(p, x, y, s, r = 0, { seed = 1 } = {}){
     const R = rng(p.id + 'xidWe' + seed + x + y);
     return `<g ${T(x, y, r)}><path d="${smooth(ring(s / 2, 9, .45, R, 1.2, .8))}" fill="${p.g('#4a3428', .25, .3)}" stroke="#241812" stroke-width=".6"/><path d="M${f(-s * .3)},${f(s * .05)} Q0,${f(-s * .15)} ${f(s * .3)},${f(s * .05)}" stroke="#7a5a48" stroke-width="1" fill="none" opacity=".7"/></g>`;
 }
-// ひらたけ（jamur tiram）を手で裂いたもの: 細長く波打つ切れ端、縦のひだ、しんなりと照る
-function xidOyster(p, x, y, s, r = 0, { c = '#cdb898', seed = 1 } = {}){
-    const R = rng(p.id + 'xidOy' + seed + x + y);
-    const pts = ring(s / 2, 11, .42, R, 1, .55).map(([a, b], i) => [a, b + Math.sin(i * 2.1) * s * .04]);
-    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${xidSm(pts, true)}" fill="${p.g(c, .3, .28)}" stroke="${dk(c, .32)}" stroke-width=".6"/></g>
-        <path d="M${f1(-s * .4)},${f1(-s * .05)} Q0,${f1(-s * .12)} ${f1(s * .42)},${f1(-s * .03)} M${f1(-s * .38)},${f1(s * .05)} Q0,${f1(s * .01)} ${f1(s * .4)},${f1(s * .06)} M${f1(-s * .3)},${f1(s * .12)} Q0,${f1(s * .1)} ${f1(s * .3)},${f1(s * .12)}" stroke="${dk(c, .2)}" stroke-width=".7" fill="none" opacity=".7"/>
-        ${xidShine(`M${f1(-s * .3)},${f1(-s * .1)} Q${f1(-s * .05)},${f1(-s * .17)} ${f1(s * .2)},${f1(-s * .12)}`, 1.2, .65)}</g>`;
-}
 // ゴーヤの薄い輪切り（でこぼこの皮、わたを抜いて中は空洞）
 function xidPare(p, x, y, s, r = 0, { c = '#5aa23a', seed = 1 } = {}){
     const R = rng(p.id + 'xidPr' + seed + x + y);
@@ -1467,11 +1459,6 @@ function xidCucDice(p, x, y, s, r = 0){
         <rect x="${-h}" y="${f(h - s * .26)}" width="${s}" height="${f(s * .26)}" rx="${f(s * .12)}" fill="#3f7d2e"/>
         <circle cx="${f(-s * .12)}" cy="${f(-s * .05)}" r="${f(s * .07)}" fill="#f2f7e2"/><circle cx="${f(s * .14)}" cy="${f(-s * .12)}" r="${f(s * .07)}" fill="#f2f7e2"/></g>`;
 }
-// 丸なす（terong bulat）の輪切り
-function xidTerongBulat(p, x, y, s, r = 0){
-    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><circle r="${s / 2}" fill="#5a9a3a" stroke="#3a6a22" stroke-width=".5"/></g><circle r="${f(s * .44)}" fill="${p.rg('#eef2d6', .3, .1)}"/>
-        ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<circle cx="${f(Math.cos(i * .785) * s * .22)}" cy="${f(Math.sin(i * .785) * s * .22)}" r="${f(s * .04)}" fill="#b8a86a"/>`).join('')}</g>`;
-}
 // エシャロット（bawang merah）の薄い輪切り
 function xidShallotRing(p, x, y, s, r = 0){
     return `<g ${T(x, y, r)}><ellipse rx="${s / 2}" ry="${f(s * .42)}" fill="none" stroke="#b8507a" stroke-width="1.6" opacity=".9"/><ellipse rx="${f(s * .3)}" ry="${f(s * .24)}" fill="none" stroke="#e2a0c0" stroke-width="1.2" opacity=".9"/><ellipse rx="${f(s * .42)}" ry="${f(s * .34)}" fill="#f6e4ee" opacity=".35"/></g>`;
@@ -1509,22 +1496,6 @@ Object.assign(XD, {
         `</g>`,
         `<circle cx="100" cy="100" r="74" fill="#ffffff" opacity=".08"/>`,
         xidSoupShine(100, 100, 74, .5),
-    ].join(''),
-
-    // カレドック: 白い皿に、生のきゅうり・ささげ・もやし・キャベツ・丸なすを刻み、ケンチュル入りの粗い落花生だれで和え、レモンバジル
-    id_karedok: p => [
-        K.plate(p, { rim: '#2f8a5a' }),
-        `<g ${p.sh(.8)}><path d="${xidSm(ring(60, 12, .14, rng('kared'), 1, .95).map(([a, b]) => [a + 100, b + 102]), true)}" fill="${p.rg('#b8783a', .2, .2)}"/></g>`,
-        idCabbageHeap(p, 100, 102, 112),
-        `<g ${p.sh(.5)}>`,
-        ...xidSpots('kar-c', 10, 56, 16).map(([x, y, r]) => xidCucDice(p, x, y, 13, r)),
-        ...xidSpots('kar-b', 12, 58, 14).map(([x, y, r]) => xidLongBean(p, x, y, 13, r, { c: '#5aa23a' })),
-        ...xidSpots('kar-t', 5, 50, 24).map(([x, y, r]) => xidTerongBulat(p, x, y, 16, r)),
-        `</g>`,
-        xidSprouts(p, 100, 100, 100, { n: 18, seed: 3 }),
-        K.pool(p, 92, 92, 60, '#b0702e', { op: .55, seed: 5 }), K.pool(p, 120, 120, 50, '#b0702e', { op: .5, seed: 6 }), K.pool(p, 76, 128, 36, '#b0702e', { op: .5, seed: 7 }), K.pool(p, 128, 80, 34, '#b0702e', { op: .5, seed: 8 }),
-        xidGrains(p, 100, 102, 120, { cols: ['#8a5222', '#c8884a'], n: 50, size: 1.6, seed: 4 }),
-        ...[[84, 84, -20], [118, 96, 40], [96, 122, 80], [130, 128, -40], [70, 112, 10]].map(([x, y, r]) => xidLeaf(p, x, y, 16, r, { c: '#2f7a2a', narrow: .7 })),
     ].join(''),
 
     // サンバル・トゥラシ: 石のすり鉢に、えびの発酵ペーストを焼いて混ぜた赤茶のサンバル、トマト、ライム、すりこぎ
@@ -1772,17 +1743,4 @@ Object.assign(XD, {
         xidPepper(p, 100, 102, 100, 14),
     ].join(''),
 
-    // トゥミス・ジャムール・ティラム: 楕円皿に、手で裂いたひらたけをオイスターソースで炒め、赤唐辛子とねぎ
-    id_tumisjamur: p => [
-        K.ovalDish(p, { rim: '#8a5a2a' }),
-        K.pool(p, 100, 102, 146, '#8a5a2e', { op: .55, seed: 2, sy: .64 }),
-        `<g ${p.sh(.6)}>`,
-        ...xidSpots('jamur', 26, 64, 13).map(([x, y, r], i) => xidOyster(p, x, (y - 100) * .72 + 100, 34 + (i % 3) * 4, r, { c: i % 2 ? '#c2b498' : '#b0a084', seed: i })),
-        ...[[84, 92, -30], [124, 110, 150], [110, 78, 60]].map(([x, y, r]) => `<g ${T(x, y, r, 1.5)}><path d="M0,10 L-3,4 Q-13,2 -12,-5 Q-8,-12 0,-11 Q8,-12 12,-5 Q13,2 3,4Z" fill="${p.g('#c4ae8c', .3, .25)}" stroke="#8a7656" stroke-width=".5"/><path d="M0,6 L-9,-5 M0,6 L-5,-9 M0,6 L0,-10 M0,6 L5,-9 M0,6 L9,-5" stroke="#9a8666" stroke-width=".5" opacity=".7"/></g>`),
-        `</g>`,
-        K.glaze(p, 100, 100, 110, '#7a4a20', { seed: 3, op: .25 }),
-        ...[[92, 86, 30], [118, 108, -20], [72, 106, 60], [134, 92, 10], [104, 120, 80]].map(([x, y, r]) => xidChiliSlice(p, x, y, 7, r)),
-        ...[[100, 96, 30], [126, 120, -40], [70, 92, 70], [140, 84, 10]].map(([x, y, r]) => xidScallion(p, x, y, 22, r)),
-        glossX(p, 100, 100, 110),
-    ].join(''),
 });

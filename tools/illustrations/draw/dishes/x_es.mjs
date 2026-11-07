@@ -697,24 +697,6 @@ export default {
             xesParsley(p, 100, 100, 130, { n: 14 }),
         ].join('');
     },
-    // canelones: white oven dish, a row of cannelloni under bechamel, browned cheese, meat showing at the ends
-    es_canelones: p => {
-        const rolls = [0, 1, 2, 3, 4, 5].map(i => { const x = 36 + i * 25.6;
-            return `<g ${p.sh(.8)}><rect x="${f1(x - 12)}" y="40" width="24" height="120" rx="11" fill="${p.g('#f4dc9a', .3, .25)}" stroke="#c9a65a" stroke-width=".7"/></g>
-                <ellipse cx="${f1(x)}" cy="44" rx="10" ry="4" fill="#e8c880" stroke="#b8904a" stroke-width=".6"/><ellipse cx="${f1(x)}" cy="44.5" rx="7" ry="2.6" fill="#9a5a34"/>
-                <ellipse cx="${f1(x)}" cy="156" rx="10" ry="4" fill="#e8c880" stroke="#b8904a" stroke-width=".6"/><ellipse cx="${f1(x)}" cy="156.5" rx="7" ry="2.6" fill="#9a5a34"/>
-                <path d="M${f1(x - 6)},58 L${f1(x - 6)},140" stroke="#fff6dc" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>`; }).join('');
-        return [
-            xesFuente(p, { w: 186, h: 160, base: '#f4f1ea', inner: '#e9e2d0', rim: '#c9c2b4' }),
-            `<rect x="20" y="30" width="160" height="140" rx="14" fill="${p.rg('#f6e6b8', .2, .2)}"/>`,
-            rolls,
-            `<rect x="22" y="52" width="156" height="96" rx="12" fill="#f8eccb" opacity=".55"/>`,
-            ...[0, 1, 2, 3, 4, 5].map(i => `<path d="M${f1(36 + i * 25.6 - 7)},62 L${f1(36 + i * 25.6 - 7)},138" stroke="#fffbe8" stroke-width="3" stroke-linecap="round" opacity=".7"/>`),
-            `<g ${xesBlur(p, 1.2)}>${xesSpots('cnb', 30, 62, 9, 100, 100, .75).map(([x, y], i) => `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${3 + i % 4}" ry="${2.4 + i % 3}" fill="${i % 3 ? '#c98a34' : '#a8641c'}" opacity=".75"/>`).join('')}</g>`,
-            xesParsley(p, 100, 100, 120, { n: 16 }),
-        ].join('');
-    },
-
     // bacalao con tomate: cazuela, thick tomato sauce, big white cod chunks with skin, onion, green pepper, black olives
     es_bacalao: p => [
         xesCazuela(p, { glaze: '#7a3418' }),
@@ -1220,18 +1202,6 @@ export default {
         xesOil(p, 100, 100, 110, { n: 12, op: .8 }),
         xesPepper(p, 100, 100, 100, 26),
         xesParsley(p, 80, 76, 16, { n: 6 }),
-    ].join(''),
-
-    // pure de verduras: ochre-glazed bowl, smooth olive-green vegetable puree, olive oil, croutons and a herb sprig
-    es_purever: p => [
-        xesBowl(p, '#c58a2c', '#f8f0dc'),
-        K.liquid(p, { R: 76, c: '#c2b05a', op: 1 }),
-        `<circle cx="100" cy="100" r="58" fill="#cec070" opacity=".35"/>`,
-        `<path d="M58,104 Q80,88 102,104 T146,102" stroke="#e6c13a" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".85"/>`,
-        xesCrouton(p, 74, 78, 15, 20), xesCrouton(p, 92, 66, 14, -10), xesCrouton(p, 62, 96, 13, 40), xesCrouton(p, 130, 132, 14, 30), xesCrouton(p, 114, 142, 13, 10),
-        `<g ${T(126, 84, -30)}>${K.mitsuba(p, 0, 0, 34)}</g>`,
-        xesOil(p, 100, 100, 110, { n: 10, op: .75 }),
-        xesPepper(p, 100, 100, 100, 14),
     ].join(''),
 
     // patatas a la riojana: cazuela, brick-red pimenton broth, broken potato chunks, chorizo slices, green pepper, parsley

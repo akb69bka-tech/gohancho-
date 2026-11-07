@@ -77,10 +77,6 @@ function wbDice(p, x, y, s, r = 0, c = '#ef7f30', { op = 1 } = {}){
         <rect x="${-h}" y="${-h}" width="${f(s * .86)}" height="${f(s * .86)}" rx="${f(s * .18)}" fill="${p.g(c, .32, .12)}" stroke="${dk(c, .25)}" stroke-width=".5"/>
         <path d="M${f(-h + s * .18)},${f(-h + s * .2)} L${f(-h + s * .62)},${f(-h + s * .2)}" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".6"/></g>`;
 }
-// 小さな角切り（軽い版: 1つの四角）
-function wbCube(p, x, y, s, r = 0, c = '#e03a2a', { op = 1 } = {}){
-    return `<rect ${T(x, y, r)} x="${f(-s / 2)}" y="${f(-s / 2)}" width="${s}" height="${f(s * .9)}" rx="${f(s * .24)}" fill="${p.g(c, .35, .25)}" stroke="${dk(c, .3)}" stroke-width=".5" opacity="${op}"/>`;
-}
 // 刻んだ香草（cheiro-verde）
 function wbHerbs(p, x, y, s, { n = 16, seed = 1, cols = ['#3f8a2c', '#5aa63c'], sy = 1 } = {}){
     const R = rng(p.id + 'wbHb' + seed + x + y);
@@ -185,14 +181,6 @@ function wbPot(p, { R = 84, c = '#3a302c', inside = '#2a221e', rimC = null } = {
         <circle cx="100" cy="100" r="${R - 2.5}" fill="none" stroke="${rc}" stroke-width="1.6" opacity=".7"/>
         <circle cx="100" cy="100" r="${R * .88}" fill="${p.rg(inside, .12, .25, .62, .64)}"/>
         <path d="M${100 - R * .72},${100 - R * .38} A${R * .84},${R * .84} 0 0 1 ${100 - R * .25},${100 - R * .8}" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".4"/>`;
-}
-// 透明のガラスボウル
-function wbGlass(p, { R = 90 } = {}){
-    return `<g ${p.sh(1.2)}><circle cx="100" cy="100" r="${R}" fill="${p.rg('#e4eeec', .3, .12, .38, .32)}" opacity=".95"/></g>
-        <circle cx="100" cy="100" r="${R - 1}" fill="none" stroke="#b7cac7" stroke-width="1.4"/>
-        <circle cx="100" cy="100" r="${R * .86}" fill="${p.rg('#f2f7f6', .2, .1, .6, .6)}" stroke="#c6d6d3" stroke-width="1.6"/>
-        <path d="M${100 - R * .76},${100 - R * .36} A${R * .86},${R * .86} 0 0 1 ${100 - R * .3},${100 - R * .8}" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".9"/>
-        <path d="M${100 + R * .62},${100 + R * .5} A${R * .82},${R * .82} 0 0 1 ${100 + R * .2},${100 + R * .78}" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/>`;
 }
 // 耐熱ガラスの角皿（refratário）
 function wbPyrex(p, { w = 176, h = 136 } = {}){
@@ -481,21 +469,6 @@ export default {
         wbCouve(p, 100, 100, 136, { n: 300, seed: 1, w: 1.7 }),
         wbGrains(p, 100, 100, 100, { cols: ['#f2d58a'], n: 12, size: 1.6, seed: 3 }),
     ].join(''),
-
-    // ヴィナグレッチ: ガラスのボウルに、角切りのトマト・玉ねぎ・ピーマンとパセリ、酢とオイルのつや
-    br_vinagrete: p => {
-        const sp = wbSpots('vn', 70, 62, 9.4);
-        return [
-            wbGlass(p),
-            `<circle cx="100" cy="100" r="72" fill="#efc9b8" opacity=".6"/>`,
-            `<g ${p.sh(.5)}>`,
-            sp.map(([x, y, r], i) => i % 5 === 0 || i % 5 === 3 ? wbCube(p, x, y, 9, r, '#f4efdc', { op: .9 }) : i % 5 === 4 ? wbCube(p, x, y, 8.5, r, '#4f9a34') : wbCube(p, x, y, 10, r, '#e03a2a')).join(''),
-            sp.filter((_, i) => i % 5 !== 0 && i % 5 !== 3 && i % 5 !== 4).map(([x, y]) => `<rect x="${f(x - 3)}" y="${f(y - 3)}" width="3.4" height="2.4" rx="1" fill="#f7a35a" opacity=".8"/>`).join(''),
-            `</g>`,
-            wbHerbs(p, 100, 100, 124, { n: 40 }),
-            wbShine(100, 100, 70, .5),
-        ].join('');
-    },
 
     // サラダ・ジ・マイオネーズ: 耐熱ガラスの角皿に、マヨネーズであえたじゃがいも・にんじん・グリーンピース、パセリ
     br_maionese: p => {

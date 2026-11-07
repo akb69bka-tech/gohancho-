@@ -1000,20 +1000,6 @@ export default {
         xpeShine(100, 100, 72, .45),
     ].join(''),
 
-    // Puré de papa: small bowl of smooth pale-yellow mashed potato with spoon ridges, a melting pat of butter and parsley
-    pe_pure_papa: p => {
-        const ridges = [0, 1, 2, 3].map(i => { const r = 18 + i * 14; return `<path d="M${100 - r},${100 + i * 2} A${r},${r * .9} 0 1 1 ${100 + r * .7},${100 + r * .6}" stroke="#d8c07a" stroke-width="3" fill="none" stroke-linecap="round" opacity=".45"/><path d="M${100 - r + 1},${98 + i * 2} A${r},${r * .9} 0 0 1 ${100 + r * .2},${100 - r * .9}" stroke="#fffbe8" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/>`; }).join('');
-        return [
-            K.kobachi(p, { glaze: '#d8a441', inside: '#f6f3ea' }),
-            `<g ${p.sh(1)}>`, xpeMound(p, 100, 100, 74, 72, '#f4df9a', { seed: 1, l: .35, d: .22, jit: .05 }), `</g>`,
-            ridges,
-            `<g ${p.sh(.6)}><rect x="92" y="88" width="20" height="16" rx="3" transform="rotate(-12 102 96)" fill="${p.g('#fbe68a', .3, .15)}" stroke="#d8b84a" stroke-width=".6"/></g>`,
-            `<ellipse cx="104" cy="100" rx="18" ry="12" fill="#f8d65a" opacity=".45"/>`,
-            xpeHerbs(p, 100, 100, 70, { n: 10 }),
-            K.sprinkle(p, 100, 100, 100, { c: '#b88a3a', n: 10, r: .6 }),
-        ].join('');
-    },
-
     // Arroz árabe: bowl of rice tossed with toasted angel hair, raisins and almonds, parsley
     pe_arroz_arabe: p => {
         const R = rng(p.id + 'aa');

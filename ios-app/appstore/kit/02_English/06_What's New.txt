@@ -1,1 +1,5 @@
-First release. We hope Gohancho makes dinner a little easier every day.
+- Swap foods you avoid: dishes that work with a substitute are now suggested with it (e.g. pork → chicken)
+- Mix countries: choose a country for each part of the meal (e.g. Chinese main, Japanese side, Korean soup)
+- Language stays put: the app language no longer changes when you switch countries (change it anytime in Settings)
+- Clearer subscription screen: price, free trial and auto-renewal are easier to read
+- Many bug fixes and usability improvements

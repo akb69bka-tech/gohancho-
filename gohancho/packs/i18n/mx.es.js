@@ -2,6 +2,10 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
+    "corn masa": "Masa de maíz nixtamalizado (en polvo)",
+    "oats": "Avena en hojuelas",
+    "milk": "Leche",
+    "alphabet pasta": "Pasta de letras",
     'chicken': 'Pollo',
     'pork': 'Carne de puerco',
     'beef': 'Bistec de res',
@@ -69,6 +73,121 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    "mx_atole_blanco": {
+      name: "Atole blanco",
+      ings: [["Masa de maíz nixtamalizado (en polvo)", "50 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 2 cdas de piloncillo o azúcar morena",
+      steps: [
+        "Disuelve la masa en polvo en el agua hasta que no queden grumos.",
+        "Calienta la leche con la canela y el piloncillo; cuando suelte el hervor, vierte la masa colada sin dejar de mover.",
+        "Cocina 8-10 minutos a fuego bajo, moviendo siempre, hasta que espese como un atole. Retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_avena": {
+      name: "Avena con canela",
+      ings: [["Avena en hojuelas", "80 g"], ["Leche", "500 ml"]],
+      seas: "250 ml de agua · 1 raja de canela · 1-2 cdas de azúcar · Una pizca de sal",
+      steps: [
+        "Hierve el agua con la canela 3 minutos.",
+        "Agrega la avena y cocina 3 minutos; vierte la leche y cocina 5 minutos más a fuego bajo, moviendo, hasta que quede cremosa.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_atole_arroz": {
+      name: "Atole de arroz",
+      ings: [["Arroz blanco", "80 g"], ["Leche", "500 ml"]],
+      seas: "750 ml de agua · 1 raja de canela · 3 cdas de azúcar",
+      steps: [
+        "Enjuaga el arroz y cuécelo en el agua con la canela 25 minutos, hasta que esté muy suave.",
+        "Agrega la leche y cocina 8-10 minutos a fuego bajo, moviendo seguido, hasta que espese.",
+        "Endulza con el azúcar, retira la canela y sirve caliente.",
+      ],
+    },
+    "mx_sopa_letras": {
+      name: "Sopa de letras",
+      ings: [["Pasta de letras", "60 g"], ["Jitomates", "2"], ["Cebolla", "1/4"]],
+      seas: "1 diente de ajo · 1 cucharada de aceite · 800 ml de caldo de pollo · Sal",
+      steps: [
+        "Licúa los jitomates, la cebolla y el ajo. Fríe la pasta en el aceite 1 minuto hasta que dore, agrega el jitomate licuado y fríe 1 minuto.",
+        "Añade el caldo y deja hervir 5 a 6 minutos hasta que la pasta esté suave. Sazona con sal.",
+      ],
+      tip: { add: "Unas gotas de limón y un poco de crema", why: "Así la terminan en muchas casas", skill: "Dora la pasta", how: "Dorar la pasta le da sabor y evita que se pegue." },
+    },
+    "mx_consome_rapido": {
+      name: "Consomé de pollo rápido",
+      ings: [["Pollo cocido deshebrado", "120 g"], ["Garbanzos de lata escurridos", "1/2 lata (120 g)"], ["Cilantro", "unas ramitas"], ["Limón", "1"]],
+      seas: "800 ml de caldo de pollo · 1/4 de cebolla picada fina · 1 chile chipotle en adobo (opcional) · Sal",
+      steps: [
+        "Pon a hervir el caldo con la cebolla y el chipotle. Agrega los garbanzos y el pollo y deja hervir 4 minutos.",
+        "Sazona con sal y sirve con cilantro picado y limón.",
+      ],
+      tip: { add: "Una cucharada de arroz en cada plato", why: "Como en la fonda", skill: "Usa el caldo que sobró", how: "Con el caldo de un pollo cocido antes, esta sopa sale en minutos." },
+    },
+    "mx_caldo_elote_calabacita": {
+      name: "Caldo de elote y calabacita",
+      ings: [["Granos de elote", "150 g"], ["Calabacita", "1"], ["Jitomate", "1"], ["Cilantro", "unas ramitas"]],
+      seas: "800 ml de caldo de pollo o de verduras · 1/4 de cebolla · 1 diente de ajo · 1 cucharada de aceite · Sal",
+      steps: [
+        "Fríe la cebolla, el ajo y el jitomate picados en el aceite 2 minutos. Agrega el caldo, el elote y la calabacita en cubos.",
+        "Deja hervir 5 minutos hasta que la calabacita esté suave. Sazona con sal y agrega el cilantro.",
+      ],
+      tip: { add: "Cubitos de queso fresco en el plato", why: "Suave y cremoso con el caldo caliente", skill: "Corta la calabacita en cubos", how: "En cubos pequeños se cuece en 5 minutos." },
+    },
+    'mx_tacosbistec': {
+      name: 'Tacos de bistec',
+      ings: [['Bistec delgado de res', '300 g'], ['Tortillas de maíz', '8'], ['Cebolla blanca', '1/2'], ['Cilantro', 'un manojito'], ['Limones', '2'], ['Aguacate', '1']],
+      seas: 'Sal · Pimienta · 1 cucharada de aceite · Salsa verde o roja, para servir',
+      steps: [
+        'Pica finamente la cebolla y el cilantro y mézclalos. Salpimienta los bisteces.',
+        'Calienta el aceite en un sartén a fuego alto y cocina los bisteces 1-2 minutos por lado; luego pícalos en trocitos sobre una tabla.',
+        'Calienta las tortillas en el sartén caliente, rellénalas con la carne, cebolla y cilantro, y sirve con limón, salsa y aguacate.',
+      ],
+      tip: { add: 'Una rebanada de queso derretido en el sartén (estilo campechano)', why: 'Tacos más ricos y con queso que se estira', skill: 'Doble tortilla', how: 'Como en los puestos, dos tortillas por taco aguantan el relleno jugoso sin romperse.' },
+    },
+    'mx_camaronesajo': {
+      name: 'Camarones al mojo de ajo',
+      ings: [['Camarones crudos pelados', '300 g'], ['Ajo', '6 dientes'], ['Limones', '2'], ['Cilantro', 'unas ramitas'], ['Tortillas de maíz, para servir', '6']],
+      seas: 'Sal · Pimienta · 3 cucharadas de aceite o mantequilla · 1 chile guajillo o de árbol seco (opcional)',
+      steps: [
+        'Pica finamente el ajo y el cilantro. Salpimienta los camarones.',
+        'Calienta suavemente el aceite con el ajo y el chile en un sartén a fuego medio-bajo 2 minutos, hasta que el ajo esté apenas dorado.',
+        'Sube el fuego, agrega los camarones y cocina 2-3 minutos, volteándolos, hasta que estén rosados y bien cocidos. Exprime un limón, espolvorea cilantro y sirve con tortillas y limones.',
+      ],
+      tip: { add: 'Una cucharada de mantequilla al final', why: 'Un mojo más redondo y sedoso', skill: 'Ajo a fuego lento', how: 'El ajo a fuego suave queda dulce y tostadito; a fuego alto se quema y amarga.' },
+    },
+    'mx_huevoschorizo': {
+      name: 'Huevos con chorizo',
+      ings: [['Huevos', '5'], ['Chorizo mexicano', '150 g'], ['Tortillas de maíz', '6'], ['Frijoles refritos, para servir', '200 g'], ['Aguacate', '1']],
+      seas: 'Sal · Salsa, para servir',
+      steps: [
+        'Quítale la piel al chorizo y fríelo en un sartén a fuego medio 4 minutos, desmoronándolo, hasta que suelte su grasa roja.',
+        'Agrega los huevos batidos con una pizca de sal y mueve 1-2 minutos, hasta que apenas cuajen.',
+        'Calienta las tortillas y sirve los huevos con frijoles, aguacate y salsa.',
+      ],
+      tip: { add: 'Unas papitas en cubos fritas con el chorizo', why: 'Más llenador, un clásico de taquería', skill: 'Sin aceite extra', how: 'El chorizo mexicano suelta mucha grasa, que cocina el huevo y lo pinta de rojo.' },
+    },
+    'mx_tacospescado': {
+      name: 'Tacos de pescado a la plancha',
+      ings: [['Filetes de pescado blanco', '300 g'], ['Tortillas de maíz', '8'], ['Col', '1/4'], ['Crema', '4 cucharadas'], ['Limones', '2'], ['Chipotle en adobo', '1']],
+      seas: 'Sal · 1/2 cucharadita de comino molido · 1/2 cucharadita de chile en polvo · 1 cucharada de aceite',
+      steps: [
+        'Rebana la col muy finita y mézclala con un chorrito de limón y una pizca de sal. Mezcla la crema con un poco de chipotle picado, si lo usas.',
+        'Sazona el pescado con comino, chile en polvo y sal, y cocínalo en el aceite en un sartén a fuego medio-alto 2-3 minutos por lado, hasta que se desmenuce. Pártelo en trozos.',
+        'Calienta las tortillas y rellénalas con pescado, col y crema. Sirve con limón.',
+      ],
+      tip: { add: 'Unas rebanadas de aguacate o cebolla encurtida', why: 'Cremoso o ácido, los dos le van al pescado', skill: 'Col delgadita', how: 'La col cortada como hilo queda crujiente y jugosa, no dura.' },
+    },
+    'mx_tacoshongos': {
+      name: 'Tacos de hongos con epazote',
+      ings: [['Hongos o champiñones', '400 g'], ['Tortillas de maíz', '8'], ['Cebolla', '1/2'], ['Chile serrano', '1'], ['Queso fresco', '80 g'], ['Epazote', 'unas hojas']],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · Salsa, para servir',
+      steps: [
+        'Rebana los hongos, la cebolla, el ajo y el chile.',
+        'Calienta el aceite en un sartén grande a fuego alto y fríe la cebolla, el ajo y el chile 1 minuto. Agrega los hongos y cocina 5 minutos, hasta que se seque el líquido y se doren; añade el epazote y la sal.',
+        'Calienta las tortillas, rellénalas con los hongos y desmorona el queso encima. Sirve con salsa.',
+      ],
+      tip: { add: 'Unas rajas de poblano con los hongos', why: 'Una combinación clásica y un poco picosa', skill: 'Sal al final', how: 'Si salas antes, los hongos sueltan agua y se cuecen; agrégala cuando ya estén dorados.' },
+    },
     'mx_tinga': {
       name: 'Tinga de pollo',
       ings: [['Pechuga de pollo', '400 g'], ['Jitomates', '3'], ['Cebolla', '1'], ['Chipotles en adobo', '2'], ['Tostadas', '6?'], ['Crema mexicana', '4 cucharadas?']],
@@ -456,7 +575,7 @@ GOHAN_PACK_TR('MX', 'es', {
         'Añade los ejotes, el chayote y el elote y cocina 6 minutos.',
         'Agrega la calabacita y el cilantro y cocina 5 minutos más, hasta que todas las verduras estén suaves. Sazona.'
       ],
-      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan proteína y un sabor lechoso', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
+      tip: { add: 'Cubos de queso fresco en cada plato', why: 'Agregan un sabor suave y lechoso, y la hacen más sustanciosa', skill: 'Corta todo del mismo tamaño', how: 'Los trozos parejos se cuecen al mismo ritmo y nada queda duro ni deshecho.' }
     },
     'mx_mole_olla': {
       name: 'Mole de olla',
@@ -561,8 +680,8 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_pollo_mole': {
       name: 'Pollo en mole',
-      ings: [['Piezas de pollo (muslos, piernas)', '1 kg'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
-      seas: 'Sal · 2 dientes de ajo · 1 litro de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
+      ings: [['Piezas de pollo (muslos, piernas)', '600 g'], ['Mole en pasta', '125 g'], ['Cebolla', '1/4'], ['Jitomate', '1']],
+      seas: 'Sal · 2 dientes de ajo · 750 ml de agua · 1 cucharadita de azúcar o un trozo de chocolate de mesa (opcional) · 1 cucharada de ajonjolí tostado',
       steps: [
         'Cuece el pollo en el agua con la cebolla, el ajo y sal durante 30 minutos. Guarda el caldo.',
         'En una cazuela honda disuelve la pasta de mole en 2 tazas de caldo caliente, aplastándola con una cuchara. Si usas el jitomate, lícualo con un poco de caldo y agrégalo.',
@@ -573,12 +692,12 @@ GOHAN_PACK_TR('MX', 'es', {
     },
     'mx_cochinita': {
       name: 'Cochinita pibil',
-      ings: [['Espaldilla de puerco en trozos grandes', '1 kg'], ['Pasta de achiote', '100 g'], ['Jugo de naranja agria, o de naranja dulce', '250 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
+      ings: [['Espaldilla de puerco en trozos grandes', '500 g'], ['Pasta de achiote', '50 g'], ['Jugo de naranja agria, o de naranja dulce', '150 ml'], ['Limones', '2'], ['Cebolla morada para curtir', '1'], ['Hojas de plátano', '2 trozos']],
       seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de comino molido · 1/2 cucharadita de orégano seco · 1/4 de cucharadita de pimienta negra molida',
       steps: [
-        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1 cucharadita de sal.',
+        'Disuelve la pasta de achiote en el jugo de naranja y el jugo de 1 limón. Licúa con el ajo, el comino, el orégano, la pimienta y 1/2 cucharadita de sal.',
         'Unta la carne con el adobo y déjala reposar al menos 2 horas, o toda la noche en el refrigerador.',
-        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 1/2 a 3 horas, hasta que se deshaga.',
+        'Forra un refractario con las hojas de plátano (o papel aluminio), pon la carne con todo el adobo y envuélvela bien. Hornea a 170 °C de 2 a 2 1/2 horas, hasta que se deshaga.',
         'Mientras, rebana la cebolla muy delgada y mézclala con el jugo del otro limón y una pizca de sal.',
         'Deshebra la carne en su jugo y sirve con la cebolla curtida y tortillas.'
       ],
@@ -987,6 +1106,125 @@ GOHAN_PACK_TR('MX', 'es', {
         'Agrega el epazote, sazona y sirve con limón, en tacos o junto a la carne.'
       ],
       tip: { add: 'Queso fresco desmoronado', why: 'Cremoso y saladito', skill: 'No llenes de más la sartén', how: 'Si pones demasiados champiñones, se cuecen al vapor en vez de dorarse.' }
-    }
+    },
+    'mx_quesadillas': {
+      name: 'Quesadillas de queso',
+      ings: [['Tortillas de harina o de maíz', '4'], ['Queso Oaxaca o Chihuahua, rallado', '200 g'], ['Champiñones en rebanadas', '100 g?'], ['Cebolla picada fina', '1/4?']],
+      seas: '1 cda de aceite · una pizca de sal · salsa, para acompañar',
+      steps: [
+        'Si los usas, saltea la cebolla y los champiñones en el aceite 4 minutos, hasta que se evapore el agua, y sazona con sal.',
+        'Calienta un comal o sartén seca a fuego medio. Pon una tortilla y caliéntala 30 segundos.',
+        'Cubre la mitad de la tortilla con una cuarta parte del queso (y el relleno), dobla y presiona suavemente con la espátula.',
+        'Cocina 2 minutos por lado, hasta que la tortilla tenga manchas doradas y el queso se derrita. Repite con las demás y sirve con salsa.'
+      ],
+      tip: { add: 'Salsa verde y aguacate en rebanadas', why: 'El toque fresco y ácido contrasta con el queso derretido', skill: 'No las rellenes de más', how: 'Demasiado relleno se sale y se quema; una capa fina y pareja se derrite por completo.' }
+    },
+    'mx_frijoles_olla': {
+      name: 'Frijoles de la olla',
+      ings: [['Frijoles secos (pintos o negros)', '250 g'], ['Cebolla', '1/2'], ['Ramitas de epazote', '2?']],
+      seas: '1.5 litros de agua · 3 dientes de ajo · 1 cda de manteca o aceite (opcional) · 1 1/2 cdta de sal',
+      steps: [
+        'Limpia los frijoles de piedritas y enjuágalos. No hace falta remojarlos.',
+        'Pon los frijoles en una olla grande con el agua, la media cebolla, el ajo y el epazote, y lleva a ebullición. Retira la espuma.',
+        'Baja el fuego, tapa a medias y cuece 1 1/2 horas, agregando agua caliente si baja el nivel por debajo de los frijoles.',
+        'Cuando estén suaves, agrega la sal y la manteca o el aceite y cocina 15 minutos más. Sirve en tazones con un poco de caldo.'
+      ],
+      tip: { add: 'Cebolla picada, cilantro y un chorrito de limón por encima', why: 'Lo fresco realza el sabor terroso de los frijoles', skill: 'La sal al final', how: 'Si la sal entra tarde, las cáscaras se suavizan de manera pareja; al principio pueden quedar duras.' }
+    },
+    mx_tacos_nopales: {
+      name: 'Tacos de nopales',
+      ings: [
+        ['Nopales limpios', '4'],
+        ['Tortillas de maíz', '8'],
+        ['Cebolla', '1/2'],
+        ['Jitomates', '2'],
+        ['Cilantro', '1/2 manojo'],
+        ['Limón', '1'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 1 diente de ajo · 1 chile serrano · Salsa al gusto',
+      steps: [
+        'Corte los nopales en cubitos y hiérvalos en agua con sal 8 minutos hasta que estén suaves; escúrralos y enjuáguelos bien.',
+        'Sofría la mitad de la cebolla picada, el ajo y el chile en el aceite 3 minutos, añada el jitomate picado y cocine 4 minutos, luego los nopales 3 minutos. Sazone con sal.',
+        'Caliente las tortillas en un comal seco, rellénelas con los nopales y agregue el resto de la cebolla, el cilantro, jugo de limón y salsa.',
+      ],
+    },
+    mx_tinga_hongos: {
+      name: 'Tostadas de tinga de hongos',
+      ings: [
+        ['Hongos', '400 g'],
+        ['Chiles chipotles en adobo', '2'],
+        ['Jitomates', '3'],
+        ['Cebolla', '1'],
+        ['Tostadas', '6'],
+        ['Aguacate', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite · 2 dientes de ajo · 1 hoja de laurel · 1/2 cucharadita de orégano seco · 100 ml de agua',
+      steps: [
+        'Licúe los jitomates con los chipotles y el ajo hasta obtener una salsa lisa. Rebane los hongos y la cebolla.',
+        'Sofría la cebolla en el aceite 4 minutos, añada los hongos y cocine 8 minutos hasta que doren.',
+        'Vierta la salsa, el agua, el laurel y el orégano y cueza 10 minutos hasta que espese. Sazone con sal y sirva sobre las tostadas con aguacate en rebanadas.',
+      ],
+    },
+    mx_frijoles_arroz_rojo: {
+      name: 'Frijoles de la olla con arroz rojo',
+      ings: [
+        ['Frijoles pintos o negros cocidos', '2 botes (800 g)'],
+        ['Arroz', '200 g'],
+        ['Jitomates', '2'],
+        ['Cebolla', '1'],
+        ['Cilantro', '1/2 manojo'],
+        ['Chícharos', '60 g'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite · 2 dientes de ajo · 400 ml de agua · 1 cucharadita de comino',
+      steps: [
+        'Licúe los jitomates con la mitad de la cebolla y un diente de ajo. Fría el arroz enjuagado en 2 cucharadas de aceite hasta que dore ligeramente, unos 4 minutos.',
+        'Vierta el jitomate licuado y el agua, añada la sal y los chícharos, tape y cocine a fuego bajo 18 minutos. Deje reposar 5 minutos.',
+        'Mientras tanto sofría el resto de la cebolla y el ajo en el aceite restante, añada los frijoles con su caldo y el comino y cueza 15 minutos. Sirva con el arroz y el cilantro.',
+      ],
+    },
+    mx_calabacitas_elote: {
+      name: 'Calabacitas con elote',
+      ings: [
+        ['Calabacitas', '3'],
+        ['Granos de elote', '150 g'],
+        ['Jitomates', '2'],
+        ['Chile poblano', '1'],
+        ['Cebolla', '1/2'],
+        ['Tortillas de maíz (para acompañar)', '6'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · 1 ramita de epazote o cilantro · Pimienta',
+      steps: [
+        'Corte las calabacitas en cubos, el chile poblano en rajas y pique los jitomates.',
+        'Sofría la cebolla y el ajo en el aceite 3 minutos, añada el poblano y el elote y cocine 4 minutos.',
+        'Añada las calabacitas y los jitomates, tape y cocine a fuego bajo 10 minutos. Sazone con sal y pimienta, agregue el epazote y sirva con tortillas calientes.',
+      ],
+    },
+    mx_pozole_verde_hongos: {
+      name: 'Pozole verde de hongos',
+      ings: [
+        ['Maíz pozolero cocido', '2 botes (800 g)'],
+        ['Tomates verdes', '300 g'],
+        ['Pepitas', '60 g'],
+        ['Hongos', '300 g'],
+        ['Rábanos', '4'],
+        ['Limón', '1'],
+      ],
+      seas: 'Sal · 2 cucharadas de aceite · 2 dientes de ajo · 1 chile serrano · 1 puñado de cilantro · 1/2 cebolla · 800 ml de agua · 1 cucharadita de orégano seco',
+      steps: [
+        'Hierva los tomates verdes con el chile 5 minutos. Licúelos con las pepitas tostadas, el cilantro, el ajo y un poco de agua hasta obtener una salsa verde.',
+        'Sofría los hongos rebanados y la cebolla en el aceite 8 minutos hasta que doren. Vierta la salsa verde y fría 5 minutos.',
+        'Añada el maíz escurrido, el agua, el orégano y la sal y cueza 25 minutos. Sirva con rábanos en rodajas, orégano y limón.',
+      ],
+    },
+    'mx_fruta_picada': {
+      name: 'Fruta picada con limón y chile en polvo',
+      ings: [['Naranjas', '2'], ['Jícama', '1/2'], ['Pepino', '1/2']],
+      seas: 'jugo de 2 limones · chile en polvo con limón o chile molido · una pizca de sal',
+      steps: [
+        'Pele las naranjas y la jícama. Corte las naranjas, la jícama y el pepino en trozos pequeños.',
+        'Ponga todo en un bol y exprima el jugo de limón encima.',
+        'Espolvoree con el chile en polvo y la sal, mezcle y sirva frío.',
+      ],
+    },
   }
 });

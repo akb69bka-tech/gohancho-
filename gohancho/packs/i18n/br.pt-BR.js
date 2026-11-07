@@ -2,6 +2,10 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    'tapioca': 'Goma de tapioca',
+    'coconut': 'Coco ralado',
+    'tapioca starch': 'Polvilho azedo ou doce',
+    "oats": "Aveia em flocos",
     'chicken': "Frango", 'beef': "Carne bovina", 'ground beef': "Carne moída", 'pork': "Carne de porco", 'fish': "Peixe", 'egg': "Ovos",
     'ham': "Presunto", 'bacon': "Bacon", 'sausage': "Linguiça", 'onion': "Cebola", 'tomato': "Tomate", 'potato': "Batata",
     'carrot': "Cenoura", 'bell pepper': "Pimentão", 'parsley': "Cheiro-verde", 'cilantro': "Coentro", 'lime': "Limão",
@@ -13,6 +17,110 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    "br_canja_grossa": {
+      name: "Canja grossa de galinha",
+      ings: [["Coxa ou peito de frango", "300 g"], ["Arroz branco", "150 g"], ["Cenoura em cubos", "1"], ["Batata em cubos", "1"], ["Cebola picada", "1/2"], ["Cheiro-verde picado", "1 colher (sopa)"]],
+      seas: "1,2 litro de água · 1 dente de alho · 1 colher (sopa) de óleo · Sal",
+      steps: [
+        "Refogue a cebola e o alho no óleo por 2 minutos. Junte o frango e mexa por 3 minutos.",
+        "Acrescente a água, deixe ferver, retire a espuma e cozinhe 20 minutos, até o frango ficar bem cozido. Retire e desfie.",
+        "Junte o arroz, a cenoura e a batata ao caldo e cozinhe 25 minutos, mexendo sempre, até o arroz ficar bem macio e a canja engrossar como um mingau. Volte o frango, acerte o sal e sirva com cheiro-verde.",
+      ],
+    },
+    "br_mingau_aveia": {
+      name: "Mingau de aveia",
+      ings: [["Aveia em flocos", "60 g"], ["Leite", "400 ml"], ["Banana em rodelas", "1"]],
+      seas: "1 colher (sopa) de açúcar · 1 pitada de canela",
+      steps: [
+        "Coloque a aveia, o leite e o açúcar numa panela pequena.",
+        "Cozinhe 5 minutos em fogo baixo, mexendo, até engrossar e ficar cremoso.",
+        "Sirva quente com a banana e uma pitada de canela.",
+      ],
+    },
+    "br_mingau_fuba": {
+      name: "Mingau de fubá",
+      ings: [["Fubá mimoso", "50 g"], ["Leite", "500 ml"]],
+      seas: "2 colheres (sopa) de açúcar · 1 pitada de sal · 1 pitada de canela",
+      steps: [
+        "Misture o fubá no leite frio com o açúcar e o sal até não ter grumos.",
+        "Cozinhe em fogo baixo por 8–10 minutos, mexendo sempre, até engrossar.",
+        "Sirva quente com uma pitada de canela.",
+      ],
+    },
+    "br_caldo_feijao_rapido": {
+      name: "Caldinho de feijão rápido",
+      ings: [["Feijão cozido com caldo (sobra ou enlatado)", "2 xícaras (400 g)"], ["Bacon", "2 fatias"], ["Cebola", "1/2"], ["Salsinha ou coentro", "alguns raminhos"]],
+      seas: "2 dentes de alho · 1 colher (sopa) de óleo · 300 ml de água · Sal · Pimenta-do-reino",
+      steps: [
+        "Frite o bacon, a cebola e o alho picados no óleo por 2 minutos. Junte o feijão e a água e ferva 3 minutos.",
+        "Bata no liquidificador até ficar liso (cuidado, está quente), acerte o sal e a pimenta e salpique a salsinha.",
+      ],
+      tip: { add: "Umas gotas de molho de pimenta", why: "Do jeito do boteco", skill: "Use o caldo do feijão", how: "O caldo do cozimento deixa o caldinho grosso e saboroso." },
+    },
+    "br_sopa_macarrao_ovo": {
+      name: "Sopa de macarrão com ovo",
+      ings: [["Macarrão para sopa (cabelo de anjo ou letrinhas)", "50 g"], ["Ovos", "2"], ["Cenoura", "1/2"], ["Salsinha ou cebolinha", "alguns raminhos"]],
+      seas: "800 ml de caldo de frango · Sal · Pimenta-do-reino",
+      steps: [
+        "Rale a cenoura e leve para ferver com o caldo. Junte o macarrão e cozinhe 4 minutos.",
+        "Despeje os ovos batidos, espere 30 segundos e mexa devagar. Acerte o tempero e salpique as ervas.",
+      ],
+      tip: { add: "Um pouco de queijo ralado por cima", why: "As crianças adoram", skill: "Rale a cenoura", how: "Ralada, a cenoura cozinha junto com o macarrão em poucos minutos." },
+    },
+    "br_creme_ervilha_rapido": {
+      name: "Creme de ervilha rápido",
+      ings: [["Ervilha congelada", "300 g"], ["Cebola", "1/2"], ["Requeijão", "2 colheres (sopa)"]],
+      seas: "500 ml de caldo de legumes · 1 colher (sopa) de manteiga · Sal · Pimenta-do-reino",
+      steps: [
+        "Pique a cebola e refogue na manteiga por 2 minutos. Junte a ervilha e o caldo e cozinhe 5 minutos.",
+        "Junte o requeijão e bata até ficar liso (cuidado, está quente). Acerte o sal e a pimenta.",
+      ],
+      tip: { add: "Bacon crocante por cima", why: "Sal e crocância na sopa adocicada", skill: "Bata logo", how: "Batida logo, a ervilha mantém a cor viva." },
+    },
+    'br_filefrango': {
+      name: 'Filé de frango grelhado com limão e alho',
+      ings: [['Filés finos de peito de frango', '4 (350 g)'], ['Limão', '1'], ['Alface, para servir', '1/2 pé'], ['Tomates, para servir', '2']],
+      seas: 'Sal · Pimenta-do-reino · 2 dentes de alho · 1 colher (sopa) de óleo · 1 colher (sopa) de cheiro-verde picado',
+      steps: [
+        'Tempere os filés com o alho amassado, o suco de limão, sal e pimenta.',
+        'Aqueça o óleo numa frigideira ou chapa em fogo alto e grelhe o frango 2-3 minutos de cada lado, até dourar e ficar bem cozido.',
+        'Salpique cheiro-verde e sirva com alface e tomate (e arroz e feijão, se já tiver pronto).',
+      ],
+      tip: { add: 'Umas rodelas de cebola na frigideira no final', why: 'Vira um acebolado simples', skill: 'Filés finos', how: 'Peça filé fino ou corte o peito ao meio na horizontal, para grelhar rápido e ficar suculento.' },
+    },
+    'br_camaraoalho': {
+      name: 'Camarão alho e óleo',
+      ings: [['Camarão cru descascado', '300 g'], ['Limão', '1'], ['Cheiro-verde', '1 maço pequeno'], ['Pão, para servir', '4 fatias']],
+      seas: 'Sal · Pimenta-do-reino · 4 dentes de alho · 3 colheres (sopa) de azeite',
+      steps: [
+        'Tempere o camarão com sal, pimenta e um pouco de suco de limão. Fatie o alho e pique o cheiro-verde.',
+        'Aqueça o azeite com o alho numa frigideira em fogo médio até começar a dourar.',
+        'Aumente o fogo, junte o camarão e refogue 2-3 minutos, mexendo, até ficar rosado e bem cozido. Salpique cheiro-verde e sirva com pão.',
+      ],
+      tip: { add: 'Uma pitada de pimenta calabresa com o alho', why: 'Um calorzinho de quiosque de praia', skill: 'Camarão por último', how: 'Ele precisa só de uns dois minutos; mais que isso encolhe e fica borrachudo.' },
+    },
+    'br_calabresa': {
+      name: 'Calabresa acebolada',
+      ings: [['Linguiça calabresa defumada', '300 g'], ['Cebolas', '2'], ['Pão francês, para servir', '2']],
+      seas: 'Pimenta-do-reino · Orégano · 1 colher (sopa) de óleo',
+      steps: [
+        'Corte a linguiça em rodelas e as cebolas em anéis.',
+        'Aqueça o óleo numa frigideira em fogo médio-alto e frite a calabresa 3 minutos, até dourar.',
+        'Junte a cebola e refogue 4-5 minutos, mexendo, até murchar e dourar. Tempere com pimenta e orégano e sirva assim ou no pão.',
+      ],
+      tip: { add: 'Um pouquinho de água no final', why: 'Solta o fundo da panela e vira um caldinho', skill: 'Sem sal', how: 'A calabresa já é salgada e defumada; pimenta e orégano bastam.' },
+    },
+    'br_peixegrelhado': {
+      name: 'Peixe grelhado com limão e vinagrete',
+      ings: [['Filés de peixe branco (tilápia ou merluza)', '2 (300 g)'], ['Limão', '1'], ['Tomates', '2'], ['Cebola', '1/2'], ['Cheiro-verde', '1 maço pequeno']],
+      seas: 'Sal · Pimenta-do-reino · 2 dentes de alho · 2 colheres (sopa) de óleo · 1 colher (sopa) de vinagre',
+      steps: [
+        'Tempere o peixe com o alho amassado, o suco de limão, sal e pimenta. Pique o tomate e a cebola em cubinhos e misture com o cheiro-verde, o vinagre, metade do óleo e sal (vinagrete).',
+        'Aqueça o resto do óleo numa frigideira em fogo médio-alto e grelhe o peixe 3 minutos de um lado e 2 do outro, até desfiar.',
+        'Sirva o peixe coberto com o vinagrete.',
+      ],
+      tip: { add: 'Uma colherada de farofa ao lado', why: 'Crocante, do jeito brasileiro', skill: 'Seque o peixe', how: 'Com a superfície seca o peixe doura e solta da frigideira sem grudar.' },
+    },
     'br_strogonoff': {
       name: "Strogonoff de frango",
       ings: [
@@ -799,13 +907,13 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     },
     'br_lombo_assado': {
       name: "Lombo de porco assado",
-      ings: [["Lombo de porco inteiro", "1 kg"], ["Cebolas", "2"], ["Limão", "1"], ["Batatas", "3"]],
-      seas: "Sal · Pimenta-do-reino · 5 dentes de alho · 1 colher (chá) de orégano · 1/2 xícara de vinho branco seco ou suco de laranja · 2 colheres (sopa) de óleo · 2 folhas de louro",
+      ings: [["Lombo de porco inteiro", "500 g"], ["Cebola", "1"], ["Limão", "1"], ["Batatas", "2"]],
+      seas: "Sal · Pimenta-do-reino · 3 dentes de alho · 1 colher (chá) de orégano · 1/3 xícara de vinho branco seco ou suco de laranja · 2 colheres (sopa) de óleo · 2 folhas de louro",
       steps: [
         "Fure o lombo todo e esfregue alho amassado, sal, pimenta, orégano, suco de limão e o vinho; deixe marinar pelo menos 2 horas (melhor de um dia para o outro).",
-        "Coloque numa assadeira com as cebolas fatiadas, as batatas, o louro e a marinada, e regue com o óleo.",
-        "Cubra com papel-alumínio e asse a 200 °C por 50 minutos.",
-        "Descubra, regue com o caldo e asse por mais 20 a 30 minutos, até dourar e o caldo sair claro.",
+        "Coloque numa assadeira com a cebola fatiada, as batatas, o louro e a marinada, e regue com o óleo.",
+        "Cubra com papel-alumínio e asse a 200 °C por 30 minutos.",
+        "Descubra, regue com o caldo e asse por mais 15 a 20 minutos, até dourar e o caldo sair claro.",
         "Descanse 10 minutos, fatie fino e regue com o caldo da assadeira.",
       ],
       tip: { add: "O caldo da assadeira", why: "Mantém as fatias magras suculentas", skill: "Descanse antes de fatiar", how: "Dez minutos de descanso assentam o caldo, que fica na carne e não na tábua." },
@@ -1168,6 +1276,102 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
         "Leve ao forno a 200 °C por 15 a 20 minutos, até gratinar.",
       ],
       tip: { add: "Um pouco de farinha de rosca por cima", why: "Casquinha crocante", skill: "Escorra bem a couve-flor", how: "A água que sobra afina o molho; deixe os floretes soltarem o vapor por um minuto." },
+    },
+    br_moqueca_palmito: {
+      name: 'Moqueca de palmito',
+      ings: [
+        ['Palmito', '2 vidros (500 g)'],
+        ['Leite de coco', '400 ml'],
+        ['Tomates', '3'],
+        ['Pimentão', '1'],
+        ['Cebola', '1'],
+        ['Coentro', '1/2 maço'],
+        ['Arroz (para acompanhar)', '150 g'],
+      ],
+      seas: 'Sal · 2 colheres de sopa de azeite de dendê ou azeite de oliva · 2 dentes de alho · Suco de 1 limão · Pimenta-do-reino',
+      steps: [
+        'Escorra o palmito e corte em rodelas grossas. Tempere com o suco de limão, o alho, sal e pimenta e deixe descansar por 10 minutos.',
+        'Em uma panela, faça camadas de cebola em rodelas, pimentão e tomates, coloque o palmito por cima e adicione o azeite de dendê e o leite de coco.',
+        'Tampe e cozinhe em fogo baixo por 15 minutos. Salpique o coentro e sirva com arroz.',
+      ],
+    },
+    br_arroz_feijao_couve: {
+      name: 'Arroz, feijão e couve refogada',
+      ings: [
+        ['Arroz', '200 g'],
+        ['Feijão-preto cozido', '2 latas (800 g)'],
+        ['Couve', '200 g'],
+        ['Cebola', '1'],
+      ],
+      seas: 'Sal · 4 colheres de sopa de óleo · 5 dentes de alho · 1 folha de louro · Pimenta-do-reino · 400 ml de água',
+      steps: [
+        'Refogue metade da cebola picada e 2 dentes de alho picados em 1 colher de óleo, junte o arroz lavado e frite por 2 minutos. Adicione o sal e 400 ml de água e cozinhe tampado em fogo baixo por 15 minutos.',
+        'Refogue o restante da cebola e 2 dentes de alho em 1 colher de óleo, junte o feijão com o caldo e o louro e cozinhe por 15 minutos, amassando alguns grãos para engrossar.',
+        'Corte a couve em tiras bem finas. Doure o alho restante no restante do óleo por 30 segundos, junte a couve e refogue em fogo alto por 3 minutos. Sirva tudo junto.',
+      ],
+    },
+    br_escondidinho_lentilha: {
+      name: 'Escondidinho de lentilha com mandioca',
+      ings: [
+        ['Mandioca descascada', '600 g'],
+        ['Lentilha', '150 g'],
+        ['Cebola', '1'],
+        ['Tomates', '2'],
+        ['Pimentão', '1'],
+        ['Salsinha', '1/2 maço'],
+      ],
+      seas: 'Sal · pimenta-do-reino · 4 colheres de sopa de azeite · 3 dentes de alho · 1 colher de chá de cominho em pó · 400 ml de água',
+      steps: [
+        'Cozinhe a mandioca em água com sal por 25 minutos, até ficar bem macia. Retire o fio central, depois amasse com 2 colheres de azeite, sal e um pouco da água do cozimento até ficar lisa. Aqueça o forno a 200 °C.',
+        'Refogue a cebola picada, o pimentão e o alho em 1 colher de azeite por 5 minutos. Junte os tomates, a lentilha lavada, o cominho e a água e cozinhe por 25 minutos, até a lentilha ficar macia e o recheio encorpado. Tempere e junte a salsinha.',
+        'Espalhe a lentilha em um refratário, cubra com o purê de mandioca e regue com o azeite restante. Asse por 20 minutos, até dourar.',
+      ],
+    },
+    br_quibebe_abobora: {
+      name: 'Quibebe de abóbora com arroz',
+      ings: [
+        ['Abóbora', '600 g'],
+        ['Cebola', '1'],
+        ['Tomate', '1'],
+        ['Arroz', '150 g'],
+        ['Coentro', '1/2 maço'],
+      ],
+      seas: 'Sal · pimenta-do-reino · 2 colheres de sopa de óleo · 3 dentes de alho · 1 colher de chá de páprica · 200 ml de água',
+      steps: [
+        'Corte a abóbora em cubos. Refogue a cebola picada e o alho no óleo por 4 minutos, junte o tomate e a páprica e cozinhe por 3 minutos.',
+        'Junte a abóbora, o sal e a água, tampe e cozinhe em fogo baixo por 20 minutos, até a abóbora desmanchar.',
+        'Amasse levemente com uma colher, formando um purê rústico, e tempere com pimenta. Enquanto isso, cozinhe o arroz. Salpique o coentro e sirva sobre o arroz.',
+      ],
+    },
+    'br_tapioca_coco': {
+      name: 'Tapioca com coco',
+      ings: [['Goma de tapioca (tapioca hidratada)', '1 xícara (200 g)'], ['Coco ralado', '3 colheres de sopa']],
+      seas: 'uma pitada de sal',
+      steps: [
+        'Aqueça uma frigideira antiaderente em fogo médio, sem óleo. Peneire metade da goma de tapioca com uma pitada de sal, formando uma camada uniforme.',
+        'Deixe 1 minuto até a goma se unir como uma panqueca, polvilhe metade do coco, dobre ao meio e passe para um prato.',
+        'Repita com o restante da goma e do coco.',
+      ],
+    },
+    'br_misto_quente': {
+      name: 'Misto-quente',
+      ings: [['Pão de forma', '4 fatias'], ['Presunto', '4 fatias'], ['Queijo mussarela ou prato', '4 fatias'], ['Manteiga', '1 colher de sopa']],
+      seas: 'uma pitada de pimenta-do-reino (opcional)',
+      steps: [
+        'Monte 2 sanduíches com 2 fatias de presunto e 2 de queijo em cada um.',
+        'Passe a manteiga por fora de cada sanduíche.',
+        'Doure em frigideira em fogo médio-baixo por 2 a 3 minutos de cada lado, pressionando de leve, até dourar e o queijo derreter.',
+      ],
+    },
+    'br_pao_de_queijo': {
+      name: 'Pão de queijo',
+      ings: [['Polvilho azedo ou doce', '1 xícara (150 g)'], ['Queijo ralado (minas, parmesão ou mussarela)', '100 g'], ['Ovo', '1'], ['Leite', '60 ml']],
+      seas: '60 ml de óleo · 1/2 colher de chá de sal',
+      steps: [
+        'Preaqueça o forno a 200°C. Leve o leite, o óleo e o sal à fervura.',
+        'Despeje o líquido quente sobre o polvilho em uma tigela e misture até formar uma massa farelenta. Espere 5 minutos, junte o ovo e o queijo e sove até ficar lisa.',
+        'Modele bolinhas do tamanho de uma noz, coloque em uma assadeira e asse por 20 a 25 minutos, até crescer e dourar. Coma morno.',
+      ],
     },
   }
 });
