@@ -1908,19 +1908,24 @@ nav.tabs.two svg{padding-inline:3px}
 .badge.caution{white-space:normal;max-width:100%;overflow-wrap:anywhere;line-height:1.35;border-radius:12px;padding-block:.1rem}   /* R124: 🔍「袋の表示を確認」は長いので、折り返して画面の中に収める */
 .week .item .t{min-width:0}
 @media (min-width:300px) and (max-width:339px){html header.top h1{font-size:max(18px,6vw)}}   /* R125: 国旗・設定を 44px にしたぶん、320px でも名前が切れないように */
+/* R129: 幅320px未満（195・260px）は、日・名前の2列にして「変更」を名前の下の行（右）へ回す。絵は省く。名前・🔍バッジの列が 1 文字幅につぶれて縦に並ぶのを防ぐ（320px 以上は今のまま） */
+@media (max-width:319px){.week.wk2 .item,html[data-ts="2"] .week.wk2 .item{grid-template-columns:36px minmax(0,1fr);gap:var(--s4) var(--s8);padding:var(--s8)}
+.week.wk2 .wk-pic,.week.wk2 .thumb.wk-none,html[data-ts="2"] .week.wk2 .wk-pic,html[data-ts="2"] .week.wk2 .thumb.wk-none{display:none}
+.week.wk2 .item .t,html[data-ts="2"] .week.wk2 .item .t{grid-column:2;grid-row:1;min-width:0}
+.week.wk2 .item .day{grid-column:1;grid-row:1 / span 2}
+.week.wk2 .week-acts,.week.wk2 .plus-mark,html[data-ts="2"] .week.wk2 .week-acts,html[data-ts="2"] .week.wk2 .plus-mark,.week.wk2 .item.skipped .week-acts,html[data-ts="2"] .week.wk2 .item.skipped .week-acts{grid-column:2;grid-row:2;justify-self:end}
+.week.wk2 .item.skipped .t{grid-row:1}}
 @media (max-width:259px){
-    .week.wk2 .item{grid-template-columns:40px 52px minmax(0,1fr);gap:var(--s4) var(--s8);padding:var(--s8)}   /* R124: 「変更」を次の行へ。料理名・🔍の字の幅を確保 */
-    .week.wk2 .week-acts,.week.wk2 .plus-mark{grid-column:1/-1;grid-row:2;justify-self:end}
     .inputbar{grid-template-columns:minmax(0,1fr)}   /* R121: 入力欄とボタンを縦に（入力欄が 38px にならないように） */
     .today-head.p2-head .p2-sv.one{width:auto;max-width:44%;flex:0 0 auto;padding:0 8px;gap:4px}   /* R121: 見出しを隠さない小さな条件ボタン（印は畳み、人数・品数と ▾ を残す） */
     .today-head.p2-head .p2-sv.one > svg,.today-head.p2-head .p2-sv.one .sv-s{display:none}   /* 人数は条件の中で見える */
     .today-head.p2-head{gap:4px;flex-wrap:wrap}.today-head.p2-head h2{min-width:5.3em}   /* 見出しと条件ボタンが並びきらない大きい文字では、ボタンを次の行へ（見出しは切らない） */
 }
 /* R122・R123: 「前の献立」は丸の右隣。絵だけのときも、小さな字（前の献立）を丸の下に添える。入りきらないときだけ絵だけ（nocap） */
-.tg-mid .mb-back.icon{flex-direction:column;gap:0;width:56px;height:48px;min-width:56px;padding:0;border-radius:24px}
-.tg-mid .mb-back.icon .mb-ic svg{width:20px;height:20px}
-.tg-mid .mb-back.icon .mb-tx{position:static;width:48px;height:auto;max-height:2.3em;overflow:hidden;clip-path:none;white-space:normal;text-align:center;font-size:clamp(11px,.6875rem,12px);line-height:1.15;overflow-wrap:anywhere}
-.tg-mid .mb-back.icon.nocap{width:44px;height:44px;min-width:44px}.tg-mid .mb-back.icon.nocap .mb-ic svg{width:26px;height:26px}
+.tg-mid .mb-back.icon{flex-direction:column;gap:1px;width:auto;height:auto;min-width:50px;max-width:86px;min-height:44px;padding:1px 4px;border-radius:24px}   /* R130: 字は 12px 以上・2行まで。幅は字に合わせる（前は 56px 固定で、長い語は絵だけになった） */
+.tg-mid .mb-back.icon .mb-ic{height:15px;line-height:0}.tg-mid .mb-back.icon .mb-ic svg{width:15px;height:15px}
+.tg-mid .mb-back.icon .mb-tx{position:static;width:auto;max-width:78px;height:auto;max-height:2.25em;overflow:hidden;clip-path:none;white-space:normal;text-align:center;font-size:12px;line-height:1.1;overflow-wrap:anywhere;text-wrap:balance}
+.tg-mid .mb-back.icon.nocap{width:44px;height:44px;min-width:44px;max-width:44px;min-height:44px;padding:0}.tg-mid .mb-back.icon.nocap .mb-ic{height:auto}.tg-mid .mb-back.icon.nocap .mb-ic svg{width:26px;height:26px}
 .tg-mid .mb-back.icon.nocap .mb-tx{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tray.grid2 .tg-mid.mb-stack .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack .shuffle{max-width:60px}   /* R122: 幅260px未満は、丸と字を 60px の中に（右の「前の献立」の丸に押せる領域が重ならない） */
 </style>
@@ -3304,16 +3309,35 @@ function menuBackPush(snap){
 function menuBackCheck(){
     if (!menuBack.list.length) return;
     requestAnimationFrame(menuBackFit); setTimeout(menuBackFit, 350);
+    document.querySelectorAll('#view .tg-mid').forEach(m => { if (!m.__mbro && window.ResizeObserver){ m.__mbro = new ResizeObserver(() => menuBackFit()); m.__mbro.observe(m); const sh = m.querySelector('.shuffle'); if (sh) m.__mbro.observe(sh); } });   // お膳を詰め終えて丸の大きさが変わったときも置き直す
+    setTimeout(menuBackFit, 900);
     if (menuBack.day !== TODAY || menuBack.sig !== judgeSig() || menuFp() !== menuBack.cur || menuIsDecided()) menuBackClear();
 }
 // 「↶ 前の献立」の置き場: 丸の右隣（丸は中央のまま。ボタンは丸の高さの真ん中に）。字が丸・名前に当たるときは「↶」だけ（読み上げは「前の献立」）
 function menuBackFit(){
     document.querySelectorAll('#view .tg-mid .mb-back').forEach(bt => {
-        const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'); if (!ic) return;
-        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(), gp = mid.classList.contains('mb-stack') ? 3 : 6; if (!m.width) return;
+        const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'), sh = mid.querySelector('.shuffle'); if (!ic) return;
+        const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(), gp = mid.classList.contains('mb-stack') ? 3 : 5; if (!m.width) return;
         bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px';
-        const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + gp && r.right > q.left - gp && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5 || r.top < m.top - 1.5 || r.bottom > m.bottom + 1.5; };
-        bt.classList.remove('icon', 'nocap'); if (hit()){ bt.classList.add('icon'); const tx2 = bt.querySelector('.mb-tx'); if (hit() || (tx2 && (tx2.scrollHeight > tx2.clientHeight + 1 || tx2.scrollWidth > tx2.clientWidth + 1))) bt.classList.add('nocap'); }   // 字が当たるときは丸の下に小さな字、それも当たるときだけ絵だけ
+        // R131: 丸・字・「まるごと入れ替え」のボタン全体（押せる範囲）のどれにも、gp 以上あけて重ならない
+        const hit = () => { const r = bt.getBoundingClientRect(); return [ic, tx, sh].some(e => { if (!e) return false; const q = e.getBoundingClientRect(); return q.width > 1 && r.left < q.right + gp && r.right > q.left - gp && r.top < q.bottom && r.bottom > q.top; }) || r.left < m.left - .5 || r.right > m.right + .5 || r.top < m.top - 1.5 || r.bottom > m.bottom + 1.5; };
+        const clip = () => { const t2 = bt.querySelector('.mb-tx'); return !!t2 && (t2.scrollHeight > t2.clientHeight + 1 || t2.scrollWidth > t2.clientWidth + 1); };
+        const tx2 = bt.querySelector('.mb-tx'), rtl = getComputedStyle(bt).direction === 'rtl';
+        const wordCut = () => { if (!tx2) return false; tx2.style.overflowWrap = 'normal'; const o = tx2.scrollWidth > tx2.clientWidth + 1; tx2.style.overflowWrap = ''; return o; };   // 1語が長くて途中で切れるときは字を出さない
+        const full = tx2 ? (tx2.dataset.full || (tx2.dataset.full = tx2.textContent)) : '', short = tx2 ? (tx2.dataset.short || '') : '';
+        const reset = () => { bt.classList.remove('icon', 'nocap'); bt.style.maxWidth = ''; bt.style.minWidth = ''; if (tx2){ tx2.style.maxWidth = ''; tx2.textContent = full; } bt.style.top = Math.round(c.top + c.height / 2 - m.top) + 'px'; };
+        reset();
+        if (hit()){
+            const sr = sh ? sh.getBoundingClientRect() : c, av = Math.floor(rtl ? sr.left - gp - m.left : m.right - sr.right - gp);   // 丸の隣に残っている幅。そこに入る幅で字を折り返す（2行まで）
+            // 字つき（絵の下に 12px 以上の字・2行まで）。長い語は短い語（前へ・Retour など）に替えて、それでも入らないときだけ絵だけ
+            const tryIcon = word => {
+                reset(); bt.classList.add('icon'); if (tx2) tx2.textContent = word;
+                if (av >= 44){ const aw = Math.min(av, 86); bt.style.maxWidth = aw + 'px'; bt.style.minWidth = Math.min(50, aw) + 'px'; if (tx2) tx2.style.maxWidth = (aw - 8) + 'px'; }
+                { const r = bt.getBoundingClientRect(), dy = r.top < m.top ? m.top - r.top : r.bottom > m.bottom ? m.bottom - r.bottom : 0; if (dy) bt.style.top = (parseFloat(bt.style.top) + dy) + 'px'; }   // 丸の高さの真ん中から、帯の中に入るぶんだけずらす
+                return !(hit() || clip() || wordCut());
+            };
+            if (!tryIcon(full) && !(short && short !== full && tryIcon(short))){ reset(); bt.classList.add('icon', 'nocap'); if (tx2) tx2.textContent = full; }
+        }
     });
 }
 function menuBackRestore(){
@@ -12416,8 +12440,8 @@ function viewToday(){
       [upper, lower].forEach((row, k) => row.forEach((h, j) => { row[j] = h.replace(re, () => { const ea = f[k].a ? 1 : 0, el = f[k].l ? exLast : 0;   // 札のある段: 札1つぶん（2行）を取る。長い札はその段だけ高くなる（かえるは段の下にそろう）
           return `style="--exn:${ea + el};--exl:${ea + el};--exa:${ea}"`; }); })); }
     const rowsHtml = [upper, lower];
-    const backBtn = menuBack.list.length && !decided ? `<button type="button" class="mb-back" data-act="menu-back" aria-label="${esc(t('前の献立'))}" title="${esc(t('前の献立'))}"><span class="mb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span><span class="mb-tx">${esc(t('前の献立'))}</span></button>` : '';   // 1つ前に戻る（まるごと入れ替えのあと。menuBack）
-    const shuffleBtn = `<div class="tg-mid${backBtn && innerWidth < 260 ? ' mb-stack' : ''}"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+    const backBtn = menuBack.list.length && !decided ? `<button type="button" class="mb-back" data-act="menu-back" aria-label="${esc(t('前の献立'))}" title="${esc(t('前の献立'))}"><span class="mb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span><span class="mb-tx" data-short="${esc(t('前へ'))}">${esc(t('前の献立'))}</span></button>` : '';   // 1つ前に戻る（まるごと入れ替えのあと。menuBack）
+    const shuffleBtn = `<div class="tg-mid${backBtn && innerWidth < 300 ? ' mb-stack' : ''}"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
         <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 21v-5h-5"/></svg></span>
         <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button>${backBtn}</div>`;
     const tw = session.twist;

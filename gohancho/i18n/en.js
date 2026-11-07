@@ -1954,6 +1954,7 @@ GOHAN_I18N('en', {
     "雑炊": "Zosui (rice soup)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Remove any bones, skin and fat, then flake the meat.",
     "前の献立": "Previous menu",
+    "前へ": "Back",
     "この手順は、入れない材料のぶんなので飛ばせます": "You can skip this step (it only used an ingredient you left out).",
     "ハラール向け（豚・酒類）": "Halal (pork, alcohol out)",
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (meat, fish, shellfish out)",

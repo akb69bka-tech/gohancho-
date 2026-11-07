@@ -1953,6 +1953,7 @@ GOHAN_I18N('fr', {
     "雑炊": "Zosui (soupe de riz)",
     "骨・皮・脂があれば取りのぞき、身をほぐす。": "Retirer les os, la peau et le gras, puis émietter la chair.",
     "前の献立": "Menu précédent",
+    "前へ": "Retour",
     "この手順は、入れない材料のぶんなので飛ばせます": "Vous pouvez sauter cette étape (elle ne concernait qu’un ingrédient écarté).",
     "ハラール向け（豚・酒類）": "Halal (sans porc ni alcool)",
     "ベジタリアン向け（肉・魚・貝）": "Végétarien (sans viande, poisson ni fruits de mer)",
