@@ -182,7 +182,7 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
     ok(pref.ovenNon >= 10, `T4 オーブンの料理は1品だけなので、無理に絞らない（グラタン以外が ${pref.ovenNon}/40）`);
     ok(pref.none <= 20, `T4 道具を選ばないときは偏らない（ホットプレート ${pref.none}/40）`);
     // 決めた献立は動かない
-    await p.evaluate(() => { session.tool = null; session.rejected.clear(); newMenu(); render(); });
+    await p.evaluate(() => { session.tool = null; session.rejected.clear(); newMenu(); const mb = () => { const c = session.menu && session.menu.items[0] && session.menu.items[0].r; return !!c && !!isBowlMain(c); }; for (let i = 0; i < 40 && mb(); i++) newMenu(); render(); });   // 一覧の入れ替えは『形が同じ主菜』だけなので、ふつうの主菜(丼・麺でない)から始める
     await p.evaluate(() => { document.querySelector('[data-act=decide]').click(); }); await p.waitForTimeout(600);
     const dec = await p.evaluate(() => ({cook: JSON.stringify(S.cook.ids), menu: menuIds().join(), decided: menuIsDecided()}));
     ok(dec.decided, 'T4 献立を決めた');
@@ -195,7 +195,8 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
     const tag = await p.evaluate(rows => rows.every(id => hasTool(byId(id), 'teppan') && byId(id).main), rows);
     ok(rows.length >= 4 && tag, `T5 鉄板の主菜の一覧が出る: ${rows}`);
     ok((await p.$eval('#sheet-root .tool-count', e => e.textContent)).includes('鉄板'), 'T5 一覧の見出しに道具の名前');
-    const target = rows[0];
+    const enabledRows = await p.$$eval('#sheet-root [data-act=tool-pick]', els => els.filter(e => !e.disabled).map(e => e.dataset.id));   // 形がちがう主菜は灰色（押せない）。押せるものから選ぶ
+    const target = enabledRows[0] || rows[0];
     await p.click(`#sheet-root [data-act=tool-pick][data-id="${target}"]`); await p.waitForTimeout(200);
     ok(await p.evaluate(dec => JSON.stringify(S.cook.ids) === dec.cook && menuIds().join() === dec.menu, dec), 'T5 決めた献立は、確かめる前は動かない');
     ok(await p.$('#sheet-root [data-act=tool-yes]') !== null, 'T5 決めた献立は「変えますか？」と確かめる');
