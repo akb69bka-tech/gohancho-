@@ -1959,5 +1959,10 @@ GOHAN_I18N('id', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (tanpa daging, ikan, kerang-kerangan)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (juga tanpa telur, produk susu)",
     "まとめて選ぶ（食の決まり）": "Pilih pola makan sekaligus",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Saat dipilih, chip di bawah ditambahkan sekaligus, lalu Anda masih bisa menambah atau menghapusnya. Ini hanya membantu menyingkirkan hidangan yang mungkin tidak sesuai pola makan; bukan jaminan.",
+    "塩分が多めの目安": "Cenderung asin (perkiraan)",
+    "減塩（塩分の目安を表示）": "Kurangi garam (tampilkan perkiraan garam)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Jika aktif, hidangan yang cenderung asin diberi tanda “Cenderung asin (perkiraan)” dan sedikit lebih jarang muncul saat memilih menu (tidak pernah dikecualikan; menu yang sudah ditetapkan tidak berubah). Di daftar bumbu muncul catatan agar kecap asin, miso, garam, dashi, dan kaldu dipakai lebih sedikit.",
+    "材料の名前からの目安です。保証ではありません。": "Perkiraan kasar berdasarkan nama bahan. Bukan jaminan.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Pengaturan kurangi garam: coba pakai kecap asin, miso, garam, dashi, dan kaldu lebih sedikit."
 });

@@ -1959,5 +1959,10 @@ GOHAN_I18N('vi', {
     "ベジタリアン向け（肉・魚・貝）": "Ăn chay (không thịt, cá, hải sản có vỏ)",
     "ヴィーガン向け（卵・乳製品も）": "Thuần chay (không cả trứng, sữa)",
     "まとめて選ぶ（食の決まり）": "Chọn cả chế độ ăn một lần",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Khi chọn, các thẻ bên dưới được thêm cùng lúc, sau đó bạn vẫn thêm hoặc bớt từng thẻ được. Chỉ giúp loại món có thể không hợp chế độ ăn, không phải bảo đảm.",
+    "塩分が多めの目安": "Hơi mặn (ước chừng)",
+    "減塩（塩分の目安を表示）": "Giảm muối (hiện mức mặn ước chừng)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Khi bật, các món thường mặn sẽ có dấu “Hơi mặn (ước chừng)” và được gợi ý ít hơn một chút khi chọn thực đơn (không bao giờ bị loại; thực đơn đã chốt thì giữ nguyên). Ở phần gia vị sẽ có lời nhắc nêm nước tương, miso, muối, dashi và nước dùng ít lại.",
+    "材料の名前からの目安です。保証ではありません。": "Chỉ là ước chừng dựa trên tên nguyên liệu, không phải bảo đảm.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Cài đặt giảm muối: thử nêm nước tương, miso, muối, dashi và nước dùng ít hơn."
 });

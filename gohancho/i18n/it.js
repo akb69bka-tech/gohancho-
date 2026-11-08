@@ -1959,5 +1959,10 @@ GOHAN_I18N('it', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetariano (senza carne, pesce, crostacei)",
     "ヴィーガン向け（卵・乳製品も）": "Vegano (anche senza uova e latticini)",
     "まとめて選ぶ（食の決まり）": "Scegli un’intera dieta in una volta",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Scegliendo, i chip qui sotto vengono aggiunti tutti insieme e poi puoi aggiungerne o toglierne. Aiuta solo a escludere piatti che potrebbero non adattarsi a una dieta; non è una garanzia."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Scegliendo, i chip qui sotto vengono aggiunti tutti insieme e poi puoi aggiungerne o toglierne. Aiuta solo a escludere piatti che potrebbero non adattarsi a una dieta; non è una garanzia.",
+    "塩分が多めの目安": "Piuttosto salato (indicativo)",
+    "減塩（塩分の目安を表示）": "Poco sale (mostra l’indicazione)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Se attivo, i piatti che tendono a essere salati mostrano il segno «Piuttosto salato (indicativo)» e vengono proposti un po’ meno spesso nella scelta del menu (mai esclusi; un menu già deciso non cambia). Nell’elenco dei condimenti compare un promemoria per andare piano con salsa di soia, miso, sale, dashi e brodo.",
+    "材料の名前からの目安です。保証ではありません。": "Indicazione approssimativa basata sui nomi degli ingredienti. Non è una garanzia.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Impostazione poco sale: vai piano con salsa di soia, miso, sale, dashi e brodo."
 });

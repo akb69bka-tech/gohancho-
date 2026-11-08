@@ -1959,5 +1959,10 @@ GOHAN_I18N('tr', {
     "ベジタリアン向け（肉・魚・貝）": "Vejetaryen (et, balık, kabuklu deniz ürünü yok)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (yumurta, süt ürünü de yok)",
     "まとめて選ぶ（食の決まり）": "Tüm beslenme düzenini tek seferde seç",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Seçince aşağıdaki çipler bir arada eklenir; sonrasında tek tek ekleyip çıkarabilirsiniz. Bu yalnızca beslenme düzenine uymayabilecek yemekleri ayıklamaya yardım eder; garanti değildir.",
+    "塩分が多めの目安": "Tuzu fazla olabilir (yaklaşık)",
+    "減塩（塩分の目安を表示）": "Az tuz (tuz ipucunu göster)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Açıkken, genellikle tuzlu olan yemeklerde “Tuzu fazla olabilir (yaklaşık)” işareti görünür ve menü seçerken biraz daha az önerilir (hiçbir zaman dışarıda bırakılmaz; belirlenmiş bir menü değişmez). Baharat listesinde soya sosu, miso, tuz, dashi ve bulyonu az kullanmanızı öneren bir not görünür.",
+    "材料の名前からの目安です。保証ではありません。": "Malzeme adlarına dayalı yaklaşık bir ipucudur. Garanti değildir.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Az tuz ayarı: soya sosu, miso, tuz, dashi ve bulyonu az kullanmayı deneyin."
 });

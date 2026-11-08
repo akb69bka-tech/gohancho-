@@ -1959,5 +1959,10 @@ GOHAN_I18N('pt-BR', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetariano (sem carne, peixe e frutos do mar)",
     "ヴィーガン向け（卵・乳製品も）": "Vegano (também sem ovos e laticínios)",
     "まとめて選ぶ（食の決まり）": "Escolher uma dieta inteira de uma vez",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Ao escolher, as fichas abaixo entram de uma vez e depois você pode adicionar ou tirar quantas quiser. Isso só ajuda a deixar de fora pratos que talvez não combinem com a dieta; não é garantia."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Ao escolher, as fichas abaixo entram de uma vez e depois você pode adicionar ou tirar quantas quiser. Isso só ajuda a deixar de fora pratos que talvez não combinem com a dieta; não é garantia.",
+    "塩分が多めの目安": "Mais salgado (referência)",
+    "減塩（塩分の目安を表示）": "Menos sal (mostrar referência de sal)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Ao ativar, pratos que costumam ser salgados recebem a marca “Mais salgado (referência)” e aparecem um pouco menos na escolha do cardápio (nunca são excluídos; um cardápio já definido não muda). Na lista de temperos, aparece um lembrete para ir com calma no shoyu, missô, sal, dashi e caldo.",
+    "材料の名前からの目安です。保証ではありません。": "Referência aproximada pelos nomes dos ingredientes. Não é uma garantia.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Configuração de menos sal: vá com calma no shoyu, missô, sal, dashi e caldo."
 });

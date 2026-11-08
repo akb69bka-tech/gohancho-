@@ -1959,5 +1959,10 @@ GOHAN_I18N('fil', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (walang karne, isda, shellfish)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (pati itlog at gatas-produkto)",
     "まとめて選ぶ（食の決まり）": "Pumili ng buong diyeta nang sabay",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Kapag pumili, sabay-sabay na papasok ang mga chip sa ibaba, at puwede mo pa ring dagdagan o bawasan pagkatapos. Pantulong lang ito para alisin ang mga putaheng baka hindi bagay sa diyeta; hindi ito garantiya.",
+    "塩分が多めの目安": "Maaalat (tantiya lang)",
+    "減塩（塩分の目安を表示）": "Mababang asin (ipakita ang tantiya sa asin)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Kapag naka-on, ang mga putaheng karaniwang maalat ay may markang “Maaalat (tantiya lang)” at medyo mas bihira na lalabas sa pagpili ng menu (hindi kailanman inaalis; ang menu na napili na ay hindi nagbabago). Sa listahan ng pampalasa, may paalala na bawasan ang toyo, miso, asin, dashi at sabaw (stock).",
+    "材料の名前からの目安です。保証ではありません。": "Magaspang na tantiya batay sa mga pangalan ng sangkap. Hindi ito garantiya.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Setting na mababang asin: subukang bawasan ang toyo, miso, asin, dashi at stock."
 });

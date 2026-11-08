@@ -1959,5 +1959,10 @@ GOHAN_I18N('fr', {
     "ベジタリアン向け（肉・魚・貝）": "Végétarien (sans viande, poisson ni fruits de mer)",
     "ヴィーガン向け（卵・乳製品も）": "Végan (sans œufs ni produits laitiers non plus)",
     "まとめて選ぶ（食の決まり）": "Choisir un régime d’un coup",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "En choisissant, les pastilles ci-dessous sont ajoutées d’un coup ; vous pouvez ensuite en ajouter ou en retirer. Cela aide seulement à écarter des plats qui pourraient ne pas convenir à un régime ; ce n’est pas une garantie.",
+    "塩分が多めの目安": "Plutôt salé (indicatif)",
+    "減塩（塩分の目安を表示）": "Peu de sel (afficher le repère)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Activé, les plats souvent salés reçoivent la mention « Plutôt salé (indicatif) » et sont proposés un peu moins souvent dans le choix du menu (jamais exclus ; un menu déjà fixé ne change pas). Dans la liste des assaisonnements, une note invite à y aller doucement sur la sauce soja, le miso, le sel, le dashi et le bouillon.",
+    "材料の名前からの目安です。保証ではありません。": "Repère indicatif d’après les noms des ingrédients. Aucune garantie.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Réglage peu de sel : allez-y doucement sur la sauce soja, le miso, le sel, le dashi et le bouillon."
 });

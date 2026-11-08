@@ -1959,5 +1959,10 @@ GOHAN_I18N('de', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarisch (ohne Fleisch, Fisch, Schalentiere)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (auch ohne Eier, Milchprodukte)",
     "まとめて選ぶ（食の決まり）": "Ganze Ernährungsweise auf einmal wählen",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Beim Antippen werden die Chips darunter auf einmal gesetzt; danach können Sie einzelne Chips hinzufügen oder entfernen. Das hilft nur, Gerichte wegzulassen, die möglicherweise nicht zur Ernährungsweise passen – es ist keine Garantie.",
+    "塩分が多めの目安": "Eher salzig (grobe Orientierung)",
+    "減塩（塩分の目安を表示）": "Salzarm (Salz-Hinweis anzeigen)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Wenn aktiv, bekommen Gerichte, die oft salzig sind, die Markierung „Eher salzig (grobe Orientierung)“ und werden bei der Menüwahl etwas seltener vorgeschlagen (nie ausgeschlossen; ein bereits festgelegtes Menü bleibt unverändert). Bei den Gewürzen steht ein Hinweis, Sojasauce, Miso, Salz, Dashi und Brühe sparsam zu verwenden.",
+    "材料の名前からの目安です。保証ではありません。": "Grobe Orientierung anhand der Zutatennamen. Keine Garantie.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Einstellung Salzarm: Sojasauce, Miso, Salz, Dashi und Brühe lieber sparsam verwenden."
 });

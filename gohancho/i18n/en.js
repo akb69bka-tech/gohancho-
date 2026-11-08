@@ -1960,5 +1960,10 @@ GOHAN_I18N('en', {
     "ベジタリアン向け（肉・魚・貝）": "Vegetarian (meat, fish, shellfish out)",
     "ヴィーガン向け（卵・乳製品も）": "Vegan (also eggs, dairy)",
     "まとめて選ぶ（食の決まり）": "Pick a whole diet at once",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Picking one adds the chips below all at once, and you can still add or remove chips afterward. It only helps leave out dishes that may not fit a diet; it is not a guarantee."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Picking one adds the chips below all at once, and you can still add or remove chips afterward. It only helps leave out dishes that may not fit a diet; it is not a guarantee.",
+    "塩分が多めの目安": "Higher in salt (rough guide)",
+    "減塩（塩分の目安を表示）": "Low-salt mode (show salt guide)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "When on, dishes that tend to be salty get a \"Higher in salt (rough guide)\" mark and are shown a little less often when picking a menu (never removed; a menu you have already set stays as it is). In the seasoning list, a note suggests going easy on soy sauce, miso, salt, dashi and stock.",
+    "材料の名前からの目安です。保証ではありません。": "A rough guide based on ingredient names. Not a guarantee.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Low-salt setting: try going easy on soy sauce, miso, salt, dashi and stock."
 });

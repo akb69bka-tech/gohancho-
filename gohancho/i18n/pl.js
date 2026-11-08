@@ -1959,5 +1959,10 @@ GOHAN_I18N('pl', {
     "ベジタリアン向け（肉・魚・貝）": "Wegetariańska (bez mięsa, ryb i owoców morza)",
     "ヴィーガン向け（卵・乳製品も）": "Wegańska (także bez jaj i nabiału)",
     "まとめて選ぶ（食の決まり）": "Wybierz całą dietę naraz",
-    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Po wybraniu znaczniki poniżej dodają się naraz, a potem możesz je dodawać lub usuwać. To tylko pomoc w pomijaniu dań, które mogą nie pasować do diety; to nie gwarancja."
+    "選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。": "Po wybraniu znaczniki poniżej dodają się naraz, a potem możesz je dodawać lub usuwać. To tylko pomoc w pomijaniu dań, które mogą nie pasować do diety; to nie gwarancja.",
+    "塩分が多めの目安": "Raczej słone (orientacyjnie)",
+    "減塩（塩分の目安を表示）": "Mniej soli (pokaż wskazówkę)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Po włączeniu potrawy, które bywają słone, dostają oznaczenie „Raczej słone (orientacyjnie)” i są proponowane nieco rzadziej przy wyborze menu (nigdy nie są wykluczane; ustalone już menu się nie zmienia). Na liście przypraw pojawia się podpowiedź, by oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu.",
+    "材料の名前からの目安です。保証ではありません。": "Orientacyjna wskazówka na podstawie nazw składników. To nie jest gwarancja.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ustawienie mniej soli: spróbuj oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu."
 });
