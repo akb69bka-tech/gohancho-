@@ -1971,5 +1971,18 @@ GOHAN_I18N('de', {
     "減塩（塩分の目安を表示）": "Salzarm (Salz-Hinweis anzeigen)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Wenn aktiv, bekommen Gerichte, die oft salzig sind, die Markierung „Eher salzig (grobe Orientierung)“ und werden bei der Menüwahl etwas seltener vorgeschlagen (nie ausgeschlossen; ein bereits festgelegtes Menü bleibt unverändert). Bei den Gewürzen steht ein Hinweis, Sojasauce, Miso, Salz, Dashi und Brühe sparsam zu verwenden.",
     "材料の名前からの目安です。保証ではありません。": "Grobe Orientierung anhand der Zutatennamen. Keine Garantie.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Einstellung Salzarm: Sojasauce, Miso, Salz, Dashi und Brühe lieber sparsam verwenden."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Einstellung Salzarm: Sojasauce, Miso, Salz, Dashi und Brühe lieber sparsam verwenden.",
+    "土鍋": "Tontopf (Donabe)",
+    "圧力鍋": "Schnellkochtopf",
+    "ホットプレート": "Elektrische Grillplatte",
+    "鉄板": "Eisenplatte (Teppan)",
+    "炭火・BBQ": "Holzkohle / BBQ",
+    "蒸し器": "Dampfgarer",
+    "揚げ物鍋": "Frittiertopf",
+    "火を使わない": "Ohne Feuer",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Gerichte für das gewählte Gerät werden zuerst gewählt (reichen sie nicht, wird wie gewohnt gewählt). Das aktuelle Menü ändert sich nicht.",
+    "道具から料理を探す": "Gerichte nach Gerät suchen",
+    "道具から探す": "Nach Gerät suchen",
+    "{tool}で作る主菜（{n}品）": "Hauptgerichte mit {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Wähle ein Gerät, um die Hauptgerichte dafür zu sehen."
 });

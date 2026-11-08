@@ -1157,6 +1157,7 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
 .p2-link[disabled]{opacity:.5;cursor:default}
 .p2-skip{gap:var(--s12)}.p2-skip .actionbar{position:static;margin:0;background:none;padding:0}
+.cond-tools .btn,.tool-list .btn{min-height:44px}.cond-tools .chips,.tool-chips{gap:8px}.tool-count{margin:6px 0 4px}
 .swap-list .item{display:flex;align-items:center;gap:var(--s12)}.swap-list .item .t{flex:1;min-width:0}.swap-th{flex:none;width:44px;height:44px;display:block;overflow:hidden;border-radius:var(--r-sm)}.swap-th>*{width:44px!important;height:44px!important}
 .avoid-note{display:flex;align-items:center;gap:var(--s8);flex-wrap:wrap}
 .greet .stage-line{font-size:var(--fs14);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2217,6 +2218,11 @@ R('tofu_wakame_miso','豆腐とわかめのみそ汁セット','和','主菜','�
 R('yaki_onigiri','焼きおにぎり','和','ごはん','焼',10,'ご飯 茶碗3杯分（約450g）|大葉 2枚?|焼きのり 少々?','醤油 大さじ1・みりん 小さじ2・サラダ油 小さじ1','手を水でぬらして、ご飯を4等分し、平たい三角（または丸）ににぎる。醤油とみりんを混ぜておく。|フライパンに油を熱し、おにぎりを並べて中火で両面を2〜3分ずつ、軽く焼き色がつくまで焼く。|弱火にして表面に醤油とみりんを塗り、返しながらさっと焼いて香ばしくする（焦げやすいので火のそばを離れない）。大葉やのりを添える。');
 R('satsumaimo_banana','さつまいもとバナナの朝ごはん','洋','主菜','和え',10,'さつまいも 小1本（約200g）|バナナ 1本|レモン果汁 少々?','塩 ひとつまみ・シナモン 少々','さつまいもはよく洗って皮つきのまま1cm厚さの輪切りにし、水にさっとくぐらせる。耐熱皿に並べ、ふんわりラップをする。|電子レンジ（600W）で4〜5分、竹串がすっと通るまで加熱する（やけどに注意）。バナナは1cm厚さの輪切りにし、レモン果汁をかける。|器にさつまいもとバナナを盛り、塩とシナモンを少々ふる。');
 R('hotcake_asa','ホットケーキの朝ごはん','洋','主菜','焼',10,'ホットケーキミックス 150g|卵 1個|牛乳 100ml|バナナ 1本?|バター 10g?','サラダ油 少々・メープルシロップ 適量','ボウルに卵と牛乳を混ぜ、ホットケーキミックスを加えてさっくり混ぜる（粉っぽさが少し残る程度でよい）。バナナは輪切りにする。|フライパンを弱火で温め、油を薄くひく。生地の1/4量を丸く流し、ふつふつと泡が出てきたら裏返し、ふたをして弱火で2分ほど焼く。残りも同様に焼く。|器に盛り、バナナとバターをのせて、メープルシロップをかける。');
+R('yakitori','焼き鳥（鶏もも・ねぎま）','和','主菜','焼',25,'鶏もも肉 1枚（300g）|長ねぎ 1本','醤油 大さじ2・みりん 大さじ2・砂糖 大さじ1・酒 大さじ1・塩 少々・サラダ油 少々','鶏肉は余分な脂を除いて2.5cm角に切る。長ねぎは3cmの長さに切る。水に30分つけた竹串に、鶏肉とねぎを交互に刺す（8本ほど）。|小鍋に醤油・みりん・砂糖・酒を入れて中火にかけ、とろりとするまで3〜4分煮詰めて、たれを作る。|炭火か魚焼きグリルの網（フライパンの場合は油を薄くひく）に串を並べ、塩を少々ふって中火で転がしながら8〜10分、焼き色がついて中まで火が通るまで焼く（焦げやすいので火のそばを離れない）。|焼き上がりの直前にたれを塗って、さっと焼く。');
+R('monja','もんじゃ焼き','和','主菜','焼',25,'キャベツ 1/4個|豚こま切れ肉 80g|天かす 大さじ3?','小麦粉 60g・だし 300ml・ウスターソース 大さじ2・塩 少々・サラダ油 大さじ1・青のり/紅しょうが 各適量','キャベツは粗いみじん切り、豚肉は細かく刻む。小麦粉・だし・ウスターソース・塩を混ぜて、汁を作る。|熱したホットプレート（鉄板）に油をひき、豚肉を炒めて、色が変わったらキャベツと天かすを加えて炒める。しんなりしたら真ん中をあけて、土手を作る。|土手の中に汁を少しずつ流し入れ、ふつふつとしてとろみが出たら、土手を崩して全体を混ぜる。|薄く広げて、鉄板にくっついた部分が香ばしく焼けたら、はがしながら食べる。青のりと紅しょうがを添える。');
+R('teppan_gyu','牛肉と野菜の鉄板焼き','和','主菜','焼',15,'牛もも薄切り肉（焼肉用） 250g|玉ねぎ 1/2個|ピーマン 2個|もやし 1/2袋|しいたけ 3枚?','醤油 大さじ2・みりん 大さじ1・酒 大さじ1・おろしにんにく 小さじ1/2・塩 少々・こしょう 少々・サラダ油 大さじ1','玉ねぎは1cm幅のくし切り、ピーマンは細切り、しいたけは軸を除いて薄切りにする。醤油・みりん・酒・にんにくを混ぜて、たれを作る。|ホットプレート（または鉄板）を中高温に熱して油をひき、玉ねぎ・しいたけ・ピーマン・もやしを焼いて塩・こしょうをふり、端に寄せる。|空いたところで牛肉を広げ、1〜2分ずつ両面焼いて、中まで火を通す。|たれを回しかけて、さっとからめる。');
+R('teppan_tori','鶏もも肉とキャベツの鉄板焼き','和','主菜','焼',20,'鶏もも肉 1枚（300g）|キャベツ 1/4個|長ねぎ 1/2本','塩 少々・こしょう 少々・サラダ油 大さじ1・ポン酢 大さじ3','鶏肉は余分な脂を除いて一口大に切り、塩・こしょうをふる。キャベツはざく切り、長ねぎは斜め切りにする。|ホットプレート（または鉄板）を中高温に熱して油をひき、鶏肉を皮目から並べて3〜4分焼く。裏返してふたをし、弱めの火で4〜5分、中まで火を通す。|あいたところでキャベツと長ねぎを焼き、しんなりしたら鶏肉と合わせる。|ポン酢をつけて食べる。');
+R('yaki_tomorokoshi','焼きとうもろこし（醤油）','和','副菜','焼',15,'とうもろこし 2本|バター 10g?','醤油 大さじ1・みりん 小さじ2・サラダ油 少々','とうもろこしは皮とひげを取り、ラップで包んで電子レンジ（600W）で5分加熱する（やけどに注意）。冷めたら3〜4等分の輪切りにする。|醤油とみりんを混ぜておく。炭火か魚焼きグリルの網（フライパンの場合は油を薄くひく）にとうもろこしを並べ、中火で転がしながら焼き色をつける。|表面に醤油とみりんを塗り、さっと焼いて香ばしくする（焦げやすいので火のそばを離れない）。好みでバターをのせる。');
 R('yakiniku','焼肉','和','主菜','焼',20,'牛カルビ肉（焼肉用） 250g|玉ねぎ 1/2個|ピーマン 2個|しいたけ 4枚|サンチュ（またはレタス） 4枚?','（たれ）醤油 大さじ3・砂糖 大さじ1と1/2・酒 大さじ1・おろしにんにく 小さじ1・おろし生姜 小さじ1/2・ごま油 大さじ1・白ごま 小さじ1・サラダ油 少々','たれの材料を混ぜる。玉ねぎは1cm幅のくし切り、ピーマンは4つ割り、しいたけは軸を除いて半分に切る。|ホットプレートかフライパンを熱して油を引き、野菜を先に焼いて取り出す。|牛肉を1枚ずつ広げて、焼き色がつくまで両面を焼き、中まで火を通す。|たれにつけて食べる。サンチュで巻いても食べやすい。');
 R('oden','おでん','和','主菜','煮',70,'大根 1/3本（約400g）|卵 4個|こんにゃく 1枚|厚揚げ 1枚|ちくわ 2本|昆布（結び昆布用） 20cm?|練りからし 少々?','だし 1000ml・醤油 大さじ2・みりん 大さじ2・酒 大さじ2・塩 小さじ1/2・米のとぎ汁 適量（大根の下ゆで用）','大根は3cm厚さの輪切りにして皮をむき、面取りする。米のとぎ汁（ないときは水に米を大さじ1入れる）で15〜20分、竹串が通るまで下ゆでする。|卵は沸騰した湯で10分ゆでて殻をむく。こんにゃくは両面に格子状の切れ目を入れて三角に切り、2〜3分ゆでて水を切る。厚揚げとちくわは熱湯をかけて油抜きし、ちくわは斜め半分に切る。昆布は水でもどして結ぶ。|鍋にだし・醤油・みりん・酒・塩を入れて煮立て、大根・卵・こんにゃく・昆布を入れて、落としぶたをし弱火で30分煮る。|厚揚げとちくわを加えてさらに10分煮る。そのまま少しおくか、できれば一晩おくと味がよくしみる。器に盛り、練りからしを添える。');
 R('yudofu','湯豆腐','和','主菜','煮',15,'木綿豆腐 2丁|昆布 10cm|長ねぎ 1/2本|かつお節 1パック?|おろし生姜 少々?','水 700ml・ポン酢（またはつけだれ用の醤油） 大さじ4','土鍋か厚手の鍋に水と昆布を入れ、時間があれば30分おく。豆腐は8等分に切り、長ねぎは小口切りにする。|中火にかけ、沸騰する直前に昆布を取り出す。|豆腐を静かに入れて弱火にし、温まるまで3〜5分煮る（ぐらぐら沸かすと豆腐が固くなる）。|ポン酢にねぎ・かつお節・生姜の薬味を加え、あたたまった豆腐をつけて食べる。');
@@ -2262,7 +2268,7 @@ const YOMI = Object.fromEntries([
     'okayu:おかゆ,しらがゆ tamagogayu:たまごがゆ umegayu:うめがゆ shakegayu:さけがゆ nanakusagayu:ななくさがゆ chukagayu:ちゅうかがゆ satsumaimogayu:さつまいもがゆ kabochagayu:かぼちゃがゆ azukigayu:あずきがゆ kinokogayu:きのこがゆ',
     'onigiri:おにぎり,おむすび,にぎりめし tendon:てんどん ochazuke:さけちゃづけ,おちゃづけ tkg:たまごかけごはん sekihan:せきはん,おこわ gomokutakikomi:ごもくたきこみごはん,かやくごはん inarizushi:いなりずし,おいなりさん zosui:たまごぞうすい,ぞうすい somen:そうめん zarusoba:ざるそば,そば kitsuneudon:きつねうどん curryudon:かれーうどん ramen:しょうゆらーめん,らーめん',
     'shakeshio:さけのしおやき,やきざけ ajihimono:あじのひらき,ひもの hamuegg:はむえっぐ,めだまやき yakiniku:やきにく oden:おでん yudofu:ゆどうふ shabushabu:ぶたしゃぶなべ,しゃぶしゃぶ yosenabe:よせなべ chawanmushi:ちゃわんむし agedashidofu:あげだしどうふ natto:ねぎなっとう,なっとう yakinasu:やきなす kyuriasazuke:きゅうりのあさづけ greensalad:ぐりーんさらだ,さらだ jagaimomiso:じゃがいもとたまねぎのみそしる nasuagemiso:なすとあぶらあげのみそしる cabbagemiso:きゃべつとあぶらあげのみそしる',
-    'nattogohan:なっとうごはん onigiri_umekonbu:うめおにぎり,しおこんぶおにぎり asayakizake:あさのやきざけ,やきざけていしょく umechazuke:うめちゃづけ tamagoyaki_miso:たまごやき,たまごやきとみそしる toast_yudetamago:とーすと,ゆでたまご yogurt_fruit:ふるーつよーぐると sake_zakkoku:さけとざっこくごはん,さけざっこくごはん shirasu_tkg:しらすたまごかけごはん,しらすたまごごはん okayu_asa:ごはんでうめおかゆ,うめおかゆ natto_omelet:なっとうおむれつ tofu_wakame_miso:とうふとわかめのみそしるせっと,みそしるせっと yaki_onigiri:やきおにぎり satsumaimo_banana:さつまいもとばななのあさごはん hotcake_asa:ほっとけーき,ほっとけーきのあさごはん'
+    'nattogohan:なっとうごはん onigiri_umekonbu:うめおにぎり,しおこんぶおにぎり asayakizake:あさのやきざけ,やきざけていしょく umechazuke:うめちゃづけ tamagoyaki_miso:たまごやき,たまごやきとみそしる toast_yudetamago:とーすと,ゆでたまご yogurt_fruit:ふるーつよーぐると sake_zakkoku:さけとざっこくごはん,さけざっこくごはん shirasu_tkg:しらすたまごかけごはん,しらすたまごごはん okayu_asa:ごはんでうめおかゆ,うめおかゆ natto_omelet:なっとうおむれつ tofu_wakame_miso:とうふとわかめのみそしるせっと,みそしるせっと yaki_onigiri:やきおにぎり satsumaimo_banana:さつまいもとばななのあさごはん hotcake_asa:ほっとけーき,ほっとけーきのあさごはん yakitori:やきとり,やきとりもも,やきとりねぎま monja:もんじゃ,もんじゃやき teppan_gyu:ぎゅうにくとやさいのてっぱんやき,てっぱんやき,ぎゅうてっぱん teppan_tori:とりももにくときゃべつのてっぱんやき,てっぱんやき,とりてっぱん yaki_tomorokoshi:やきとうもろこし,やきこーん'
 ].join(' ').split(' ').map(x => x.split(':')));
 // 日本のレシピの別名（よく言う呼び名・語順のちがい）。検索と声の入力で、料理名と同じように当てる（かな・カタカナ・漢字のどれで入れても norm でそろう）
 const DISH_ALIAS = {
@@ -4047,6 +4053,112 @@ function kitchenBias(r, ctx){
     if (w && n > 3) s -= w * Math.min(4, n - 3);
     return s;
 }
+/* =========================================================
+   道具から料理を選ぶ（逆引き）
+   - 道具は、料理の原文（日本の料理は日本語の手順・調味料・名前、各国の料理は英語の手順・調味料・名前）と method（煮・炒・焼…）だけから推す。
+     画面の言葉・訳には依存しない（言葉を変えても同じ結果）。はっきり言えない料理にはタグを付けない（「フライパン」「鍋」の既定はない）。
+   - ホットプレート・鉄板・炭火などは推定に頼らず、TOOL_TAGS（料理 id → 道具の手書きの表）で人がタグを付ける。
+     書き方: 空白区切り。'+道具' は推定に足す、'-道具' は推定から外す、印のない道具だけを書くと推定をそっくり置きかえる。
+   - アレルギー・苦手・食の決まり・お酒避け（isAvoided / allergyConflict）は、道具の絞りより常に優先する（外れた料理は一覧にも献立にも出ない）。
+   - 「今日使う道具」（session.tool）は、まるごと入れ替え・かえるのときだけ、その道具の料理を先に選ぶ。決めた献立・いまの案は自動では変えない。
+   ========================================================= */
+const TOOLS = [
+    {k: 'hotplate', l: () => t('ホットプレート')}, {k: 'teppan', l: () => t('鉄板')}, {k: 'charcoal', l: () => t('炭火・BBQ')},
+    {k: 'pot', l: () => t('鍋')}, {k: 'donabe', l: () => t('土鍋')}, {k: 'pressure', l: () => t('圧力鍋')}, {k: 'pan', l: () => t('フライパン')},
+    {k: 'fishgrill', l: () => t('魚焼きグリル')}, {k: 'oven', l: () => t('オーブン')}, {k: 'toaster', l: () => t('トースター')},
+    {k: 'microwave', l: () => t('電子レンジ')}, {k: 'ricecooker', l: () => t('炊飯器')}, {k: 'steamer', l: () => t('蒸し器')},
+    {k: 'deepfry', l: () => t('揚げ物鍋')}, {k: 'blender', l: () => t('ミキサー')}, {k: 'cold', l: () => t('火を使わない')}];
+const TOOL_KEYS = TOOLS.map(x => x.k);
+// 手書きのタグ（料理 id → 道具）。ホットプレート・鉄板・炭火・土鍋は、ここで人がタグを付ける
+const TOOL_TAGS = {
+    // 日本: ホットプレート・鉄板（お好み焼き・もんじゃ・焼きそば・餃子・焼肉・鉄板焼き）
+    okonomi: '+hotplate +teppan', yakisoba: '+hotplate +teppan', yakiudon: '+hotplate +teppan', gyoza: '+hotplate', chijimi: '+hotplate +teppan', dakgalbi: '+hotplate',
+    yakiniku: '+charcoal', monja: 'hotplate teppan', teppan_gyu: 'hotplate teppan', teppan_tori: 'hotplate teppan',
+    // 日本: 炭火・BBQ（焼き鳥・焼肉・魚の塩焼き・焼きなす・つくね・ホイル焼き・焼きとうもろこし）
+    sanma: '+charcoal', sabashio: '+charcoal', shakeshio: '+charcoal', ajihimono: '+charcoal', yakinasu: '+charcoal', tsukune: '+charcoal', hoilyaki: '+charcoal',
+    // 日本: 土鍋（鍋料理・煮込み・チゲ）、オーブン
+    yosenabe: '+donabe', shabushabu: '+donabe', oden: '+donabe', sukiyaki: '+donabe', sundubu: '+donabe', kimchichige: '+donabe', gratin: '+oven',
+    // 各国: 炭火・BBQ（サムギョプサル・アサード・串焼き・サテ・ケバブ）、ホットプレート（サムギョプサル・プルコギ・チヂミ）、土鍋（チゲ）
+    kr_samgyeopsal: '+charcoal +hotplate +teppan', kr_tteokgalbi: '+charcoal +hotplate', kr_bulgogi: '+hotplate', kr_haemulpajeon: '+hotplate', kr_kimchijeon: '+hotplate',
+    mx_carne_asada: '+charcoal', eg_shishtawook: '+charcoal', eg_reyash: '+charcoal', eg_kofta: '+charcoal', tr_tavuksis: '+charcoal', th_mooping: '+charcoal', vn_catimnuong: '+charcoal',
+    in_tandoori: '+charcoal', us_bbqchickensandwich: '-charcoal', us_pulledpork: '-charcoal',
+    kr_kimchijjigae: '+donabe', kr_budaejjigae: '+donabe', kr_dongtaejjigae: '+donabe', kr_gochujangjjigae: '+donabe', kr_cheonggukjangjjigae: '+donabe', kr_chaeso_sundubu: '+donabe',
+};
+// 原文から道具を推す。x: {txt: 手順と調味料の原文, method: 煮・炒・焼… か simmer・stirfry…, jp: 日本の料理か}。戻り値: 道具の印の Set
+function inferTools(o){
+    const x = String(o.txt || '').toLowerCase(), m = o.method || '', out = new Set(), jp = !!o.jp;
+    const y = x.replace(/microwave oven|toaster oven|オーブントースター/g, ' ').replace(/(?:bak\w*|roast\w*|sheet|cake|loaf|muffin|tart|pie|springform|casserole|paella|grill|griddle|steam\w*|pressure|baking) ?pans?\b/g, ' ').replace(/圧力鍋|土鍋|中華鍋|鉄鍋|グリルパン/g, ' ');
+    const mth = {煮: 'simmer', 汁: 'soup', 炒: 'stirfry', 焼: 'grill', 揚: 'fry', 和え: 'raw', 炊: 'rice'}[m] || m;
+    // 手順や調味料に道具の名前があるもの
+    const panStrict = /フライパン|卵焼き器|\b(?:frying pan|skillet|wok|saut[eé] pan|non-?stick pan|stick pan)\b/.test(y);
+    const panLoose = /\b(?:large pan|small pan|wide pan|deep pan|heavy pan|shallow pan|dry pan|flat pan|a pan|the pan|same pan|another pan|your pan)\b/.test(y);
+    const looseIsPot = !jp && (mth === 'simmer' || mth === 'soup' || mth === 'rice');   // 煮込み・汁の「pan」は、深い鍋のこと
+    const pan = panStrict || (panLoose && !looseIsPot);
+    const pot = /鍋(?!肌|底|敷|つかみ)|\b(?:saucepan|stockpot|pot|dutch oven)\b/.test(y) || (panLoose && looseIsPot);
+    const deep = /揚げ油|揚げ物|\bdeep[- ]?fr(?:y|ied|ying)|deep fryer|油で揚げ|\bfryer\b/.test(x);
+    const oven = /オーブン|\b(?:oven|bake|baked|broil|broiler|baking (?:dish|tray|sheet|tin))\b/.test(y);
+    const steam = /蒸し器|せいろ|蒸籠|\b(?:steamer|steaming basket|steam rack|bamboo steamer)\b/.test(x) || (jp ? /蒸す|蒸し上|蒸して/.test(x) && !/蒸し焼|蒸し煮|酒蒸/.test(x) : /(?:^|[.;]\s*|\band |\bthen |\bor )steam\b(?!-)|\bsteam(?:ed)? (?:the |for |over |until |it |them |\d)/.test(x));
+    const grill = /魚焼きグリル|魚焼き|グリル/.test(x);
+    if (pan) out.add('pan');
+    if (pot) out.add('pot');
+    if (/土鍋|\b(?:clay ?pot|claypot|donabe|earthenware|ttukbaegi|cazuela)\b/.test(x)) out.add('donabe');
+    if (/圧力鍋|\bpressure cooker\b|\binstant pot\b/.test(x)) out.add('pressure');
+    if (/ホットプレート|\b(?:hot ?plate|electric griddle|tabletop grill|table grill)\b/.test(x)) out.add('hotplate');
+    if (/鉄板|\b(?:teppan|plancha|comal|tawa|flat top)\b|\bgriddle\b(?! pan)/.test(x.replace(/or griddle/g, ''))) out.add('teppan');
+    if (/炭火|七輪|バーベキュー|\b(?:charcoal|barbecue|bbq|embers|over coals|hot coals|open fire|braai|churrasco|parrilla)\b/.test(x)) out.add('charcoal');
+    if (grill) out.add('fishgrill');
+    if (oven) out.add('oven');
+    if (/トースター|\btoaster\b|\btoast (?:the )?(?:bread|slices|buns|muffins|baguette)/.test(x)) out.add('toaster');
+    if (/電子レンジ|レンジ|\bmicrowave/.test(x)) out.add('microwave');
+    if (/炊飯器|\brice cooker\b/.test(x)) out.add('ricecooker');
+    if (steam) out.add('steamer');
+    if (deep) out.add('deepfry');
+    if (/ミキサー|ブレンダー|フードプロセッサー|\b(?:blender|food processor|immersion blender)\b|\bblend (?:until|to a|the|everything|smooth|in|with)/.test(x)) out.add('blender');
+    // 道具の名前がないときは、作り方の言葉と method から、はっきり言えるものだけ
+    if (!out.has('pan') && !deep){
+        const fryVerb = jp ? /炒め|ソテー|焼き色|両面を焼|焼く|焼いて|焼き付|揚げ焼/.test(x) : /\b(?:stir-?fr(?:y|ied)|fry|fried|saut[eé]|sear|pan-?fr(?:y|ied)|scramble|brown)\b/.test(x);
+        if (['stirfry', 'fry', 'grill'].includes(mth) && fryVerb && !oven && !grill && !steam && !out.has('charcoal') && !out.has('teppan') && !out.has('hotplate')) out.add('pan');
+    }
+    if (!out.has('pot') && !out.has('pan') && !out.has('donabe') && !out.has('pressure') && !out.has('steamer') && !out.has('ricecooker') && !deep && !oven){
+        const boil = jp ? /煮立|煮る|煮て|煮込|ゆで|茹|沸騰|煮えるまで/.test(x) : /\b(?:boil|boiled|simmer|simmered|stew|blanch|poach)\b|in salted water|in boiling water|bring to (?:a|the) boil/.test(x);
+        if (boil) out.add('pot');
+    }
+    // 火を使わない（切る・和えるだけ）: method が和え/raw で、火や湯を使う言葉も、ほかの道具もない
+    if (mth === 'raw' && !out.size && !/cook|boil|simmer|heat|fry|bake|roast|grill|toast|steam|broil|blanch|microwave|warm|melt|sear|saut|scald|poach|stew|\bpan\b|oven|stove|flame|burn|char\b|hot |ゆで|茹|焼|炒|揚|蒸|煮|加熱|熱湯|湯|沸|レンジ|温|あたた|トースター|グリル|熱/.test(x)) out.add('cold');
+    return out;
+}
+const TOOL_CACHE = new Map();
+// 料理の道具の印の並び（TOOLS の順）。ひとひねり案・自分の料理（原文がない）は []
+function toolsOf(r){
+    if (!r || !r.id || r.isTwist || String(r.id).startsWith('a~') || isCustomId(r.id)) return [];
+    const ck = (r.pack || 'JP') + ':' + r.id, hit = TOOL_CACHE.get(ck); if (hit) return hit;
+    const jp = !r.pack, join = a => (a || []).map(st => typeof st === 'string' ? st : (st && st.t) || '').join(' ');
+    const name = jp ? (r.nameEn || r.name) : ((r.alt && r.alt[0]) || r.name);   // 日本は日本語の名前（訳したあとは nameEn に残る）、各国は英語の名前
+    const txt = [name, join(r.stepsBase || r.steps), r.seasBase != null ? r.seasBase : r.seas].join(' ');
+    const set = inferTools({txt, method: r.method, jp});
+    const tok = String(TOOL_TAGS[r.id] || '').split(/\s+/).filter(Boolean), plain = tok.filter(w => w[0] !== '+' && w[0] !== '-');
+    if (plain.length){ set.clear(); plain.forEach(w => set.add(w)); }
+    tok.forEach(w => { if (w[0] === '+') set.add(w.slice(1)); else if (w[0] === '-') set.delete(w.slice(1)); });
+    const out = TOOL_KEYS.filter(k => set.has(k));
+    TOOL_CACHE.set(ck, out); return out;
+}
+const hasTool = (r, k) => !!k && toolsOf(r).includes(k);
+function toolLabel(k){ const x = TOOLS.find(v => v.k === k); return x ? x.l() : ''; }
+// 台所の設定（魚焼きグリルなし・オーブンなし・電子レンジだけ）の人には、持っていない道具の欄を出さない
+function toolHave(k){
+    const kc = S.settings.kitchen || {};
+    if (k === 'fishgrill') return kc.grill !== false;
+    if (k === 'oven') return kc.oven !== false;
+    if (kc.burners === 'mw') return !['pan', 'pot', 'donabe', 'pressure', 'deepfry'].includes(k);
+    return true;
+}
+// 道具から選べる主菜（主菜の枠に入る料理で、アレルギー・苦手・食の決まり・品薄・今は出さないに当たらないもの）
+function toolPool(){ return poolFor('主菜').filter(r => r.main && toolsOf(r).length && !slotOut(r) && !allergyConflict(r)); }
+function toolMains(k, pool){ return (pool || toolPool()).filter(r => hasTool(r, k)); }
+function toolShown(){ const pool = toolPool(); return TOOLS.filter(x => toolHave(x.k) && pool.some(r => hasTool(r, x.k))); }
+const TOOL_MIN = 3;   // 今日使う道具で主菜を絞るのは、その道具の主菜が3品以上選べるときだけ（少ないときは点数で先にするだけ）
+// 今日使う道具（session.tool）の点数。主菜は大きく、副菜・汁ものは少しだけ（足りないときは通常の選びになる。候補から外すことはしない）
+function toolBias(r, ctx){ return session.tool && hasTool(r, session.tool) ? (ctx && ctx.main ? 0.6 : ctx && ctx.toolFew ? 0.5 : 1.6) : 0; }   // toolFew: その道具の主菜が少ない（無理に絞らない）
 function scoreRecipe(r, ctx){
     if (S.hidden.includes(r.id) || session.rejected.has(r.id) || isAvoided(r)) return -Infinity;
     const avoid = S.settings.avoidDays;
@@ -4082,6 +4194,7 @@ function scoreRecipe(r, ctx){
     if (ctx.fridge && ctx.fridge.size){ s += matchRecipe(r, ctx.fridge).ratio * 0.8; }
     if (ctx.weekday && r.min > 45) s -= 0.7 * Math.min(1, (r.min - 45) / 45);   // 平日は時間のかかる主菜を出しにくく（土日はそのまま）
     s += cheapBias(r);   // やすい食材を使う料理を、ほんの少しだけ先に（候補から外さない・条件は変えない）
+    s += toolBias(r, ctx);   // 今日使う道具の料理を先に（足りないときは通常の選び）
     s += kitchenBias(r, ctx);   // 台所の設定（コンロ1つ・はじめて）。点数だけで、候補からは外さない
     return s;
 }
@@ -4114,6 +4227,7 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
     const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY && !x.skip).map(x => x.id));
     if (ahead.size){ const ok = cands.filter(r => !ahead.has(r.id)); if (ok.length) cands = ok; }
+    if (session.tool && !okayuDay){ const tk = cands.filter(r => hasTool(r, session.tool)); if (tk.filter(r => scoreRecipe(r, ctx) > -Infinity).length >= TOOL_MIN) cands = tk; else ctx.toolFew = true; }   // 今日使う道具: その道具の料理が3品以上選べるときだけ絞る（アレルギー・苦手などで外れた料理は、ここに来る前に候補から外れている）
     // おかゆの日は、早くできるおかゆ（雑炊など）を先に（R3）。そのあとも短い順の段（20分→45分→60分→それ以上）で選ぶ（入れ替え・かえるで 50〜80分の粥が先に出ていた。第8回 R19）
     // 段の中の料理が OKAYU_NEED 品そろうまでは、次の段もいっしょに見る（20分以内が卵雑炊1品だけで、おかゆの日が毎回卵雑炊だった。第21回 R82）
     const pickT = (list, c) => { if (okayuDay){ const ok = list.filter(okayuDayOk), lim0 = okayuTierLim(ok); for (const lim of [...OKAYU_TIERS, Infinity].filter(l => l >= lim0)){ const q = ok.filter(x => x.min <= lim); if (q.length){ const r = pick(q, c); if (r) return r; } } } return pick(list, c); };
@@ -7121,6 +7235,8 @@ function renderSheetBody(){
     if (sheet.kind === 'later') body = laterSheetHtml();
     if (sheet.kind === 'cond') body = condSheetHtml();
     if (sheet.kind === 'reroll-ok') body = rerollOkSheetHtml();
+    if (sheet.kind === 'tools') body = toolsSheetHtml();
+    if (sheet.kind === 'tool-ok') body = toolOkSheetHtml();
     if (sheet.kind === 'swap') body = swapSheetHtml();
     if (sheet.kind === 'bf') body = breakfastSheetHtml();
     if (sheet.kind === 'rice') body = riceSheetHtml();
@@ -12326,6 +12442,7 @@ function condSheetHtml(){
             <p class="small muted">${esc(t('献立の全部の料理に効きます（副菜・汁ものも）。'))}</p></div>
         <div class="field"><span class="eyebrow">${esc(t('気分'))}</span><div class="chips" role="group" aria-label="${esc(t('気分'))}">${MOODS.filter(x => !TIME.includes(x.k) && (x.k !== 'okayu' || session.mood === 'okayu' || okayuMoodOn())).map(moodChip).join('')}</div>
             ${okayuMoodGone() ? `<p class="small muted cond-okayu-none" role="status">${esc(okayuDayPack() ? t('この条件では、{day}の主菜がありません', {day: okayuDayName()}) : t('この条件では、おかゆの日の主菜がありません'))}</p>` : ''}</div>
+        ${toolFieldHtml()}
         ${stapleOptions().length > 1 ? `<div class="field"><span class="eyebrow">${esc(t('主食'))}</span><div class="chips" role="group" aria-label="${esc(t('主食'))}">${stapleOptions().map(o => `<button class="chip" data-act="staple-set" data-v="${esc(o.k)}" aria-pressed="${currentStapleOpt().k === o.k}" ${o.k !== 'none' && stapleBlocked(o) ? 'disabled' : ''}>${esc(stapleName(o))}</button>`).join('')}</div></div>` : ''}
         ${eaters}
         <div class="field"><span class="eyebrow">${esc(t('冷蔵庫'))}</span><label class="check"><input type="checkbox" id="use-fridge" data-act="use-fridge" ${session.useFridge ? 'checked' : ''}><span>${esc(t('「材料から」に登録した食材（冷蔵庫{f}品・常備{s}品）を使う料理を優先する', {f: S.fridge.length, s: S.staples.length}))}</span></label></div>
@@ -12443,7 +12560,7 @@ function pendingNoteHtml(withMood){
 /* ---- 明日の一膳を見る: 明日の下書きを先に作って見せる（明日、開いたときにこの案から始める） ---- */
 // 明日の案・明日の献立のシートは、明日の「今日食べる人」（選んでいない形。今日だけの選び方は明日に持ちこまない。S27）で考える
 function asTomorrow(fn){ const e0 = S.eaters; if (!Array.isArray(e0)) return fn(); S.eaters = null; try{ return fn(); } finally { S.eaters = e0; } }
-function tomorrowDraft(){ return asTomorrow(tomorrowDraft0); }
+function tomorrowDraft(){ const t0 = session.tool; session.tool = null; try{ return asTomorrow(tomorrowDraft0); } finally { session.tool = t0; } }   // 今日使う道具は、明日の案には効かせない
 function tomorrowDraft0(){
     const td = addDays(TODAY, 1), rec = dayRec(td), ok = x => x && x.id && x.id !== 'none' && byId(x.id);
     const kept = rec && Array.isArray(rec.items) && rec.state !== 'decided' && rec.items.some(ok) ? rec.items.filter(ok) : null;
@@ -12501,6 +12618,28 @@ function condLowBtn(){   // R2-10 片手: 上の端の「条件」に届かな�
     return `<button type="button" class="btn ghost cond-low" data-act="cond-open-low" aria-label="${esc(lb)}" title="${esc(lb)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>`;
 }
 function openCondSheet(){ if (!sheet || sheet.kind !== 'cond'){ sheet = {kind: 'cond'}; renderSheet(); } }   // 条件シートを開く（テストからも使う）
+// 条件シートの「道具」: 今日使う道具のチップ（押しても献立は変わらない。「まるごと入れ替え」「かえる」から効く）と、道具から料理を探す入口
+function toolFieldHtml(){
+    const list = toolShown(); if (!list.length) return '';
+    return `<div class="field cond-tools"><span class="eyebrow">${esc(t('道具'))}</span><div class="chips" role="group" aria-label="${esc(t('道具'))}">${list.map(x => `<button class="chip" data-act="tool-set" data-k="${x.k}" aria-pressed="${session.tool === x.k}">${esc(x.l())}</button>`).join('')}</div>
+        <p class="small muted">${esc(t('選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。'))}</p>
+        <button type="button" class="btn sm" data-act="tool-find">${esc(t('道具から料理を探す'))}</button></div>`;
+}
+// 道具から探す: 道具を選ぶと、その道具の主菜の一覧。押した料理が主菜になる（ほかの料理は動かさない。「元に戻す」付き）
+function toolsSheetHtml(){
+    const list = toolShown(), k = session.tool, now = new Set(menuIds());
+    const rs = k ? toolMains(k).filter(r => !now.has(r.id)) : [];
+    return `<h2>${esc(t('道具から探す'))}</h2>
+        <div class="chips tool-chips" role="group" aria-label="${esc(t('道具'))}">${list.map(x => `<button class="chip" data-act="tool-set" data-k="${x.k}" aria-pressed="${k === x.k}">${esc(x.l())}</button>`).join('')}</div>
+        ${k ? `<p class="small muted tool-count">${esc(t('{tool}で作る主菜（{n}品）', {tool: toolLabel(k), n: rs.length}))}</p>` : `<p class="small muted">${esc(t('道具を選ぶと、その道具で作る主菜が出ます。'))}</p>`}
+        <div class="list swap-list tool-list">${k ? (rs.length ? rs.map(r => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}</div><button class="btn sm" data-act="tool-pick" data-id="${esc(r.id)}">${esc(t('これにする'))}</button></div>`).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`) : ''}</div>
+        <div class="row"><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
+}
+function toolOkSheetHtml(){
+    return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
+        <p>${esc(t('変わるのはこの1品だけです。買い物メモも変わります。'))}</p>
+        <div class="ob-actions"><button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button><button class="btn primary wide" data-act="tool-yes">${esc(t('変える'))}</button></div>`;
+}
 function rerollOkSheetHtml(){
     return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
         <p>${esc(t('変わるのはこの1品だけです。買い物メモも変わります。'))}</p>
@@ -14466,6 +14605,12 @@ document.addEventListener('click', e => {
         case 'swap-more': if (sheet && sheet.kind === 'swap'){ sheet.cands.forEach(r => session.rejected.add(r.id)); sheet.cands = swapCands(sheet.i, sheet.f); renderSheet(); } break;
         case 'swap-find': closeSheet(); setTab('fridge'); break;
         case 'swap-pick': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet, r = byId(el.dataset.id); closeSheet(); if (r) swapApply(s0.i, r, s0.ok); break; }
+        case 'tool-set': { const k = el.dataset.k; session.tool = session.tool === k ? null : k; if (sheet) renderSheet(); else render(); break; }   // 今日使う道具。いまの献立・決めた献立は変えない
+        case 'tool-find': sheet = {kind: 'tools'}; renderSheet(); break;
+        case 'tool-pick': { const r = byId(el.dataset.id); if (!r || !session.menu || !session.menu.items[0] || slotOut(r) || allergyConflict(r)) break;   // アレルギー・苦手に当たる料理は、一覧から押されても入れない
+            if (menuIsDecided()){ sheet = {kind: 'tool-ok', id: r.id}; renderSheet(); break; }
+            closeSheet(); swapApply(0, r, false); break; }
+        case 'tool-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'tool-ok') break; const r = byId(s0.id); closeSheet(); if (r && !slotOut(r) && !allergyConflict(r) && session.menu && session.menu.items[0]) swapApply(0, r, true); break; }
         case 'swap-none': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet; closeSheet(); swapApply(s0.i, null, s0.ok); break; }
         case 'rice-info': sheet = {kind: 'rice'}; renderSheet(); break;
         case 'tomorrow-open': sheet = {kind: 'tomorrow'}; renderSheet(); break;

@@ -1971,5 +1971,18 @@ GOHAN_I18N('tr', {
     "減塩（塩分の目安を表示）": "Az tuz (tuz ipucunu göster)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Açıkken, genellikle tuzlu olan yemeklerde “Tuzu fazla olabilir (yaklaşık)” işareti görünür ve menü seçerken biraz daha az önerilir (hiçbir zaman dışarıda bırakılmaz; belirlenmiş bir menü değişmez). Baharat listesinde soya sosu, miso, tuz, dashi ve bulyonu az kullanmanızı öneren bir not görünür.",
     "材料の名前からの目安です。保証ではありません。": "Malzeme adlarına dayalı yaklaşık bir ipucudur. Garanti değildir.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Az tuz ayarı: soya sosu, miso, tuz, dashi ve bulyonu az kullanmayı deneyin."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Az tuz ayarı: soya sosu, miso, tuz, dashi ve bulyonu az kullanmayı deneyin.",
+    "土鍋": "Toprak güveç (donabe)",
+    "圧力鍋": "Düdüklü tencere",
+    "ホットプレート": "Elektrikli ızgara tabla",
+    "鉄板": "Demir plaka (teppan)",
+    "炭火・BBQ": "Mangal / barbekü",
+    "蒸し器": "Buharlı pişirici",
+    "揚げ物鍋": "Derin kızartma tenceresi",
+    "火を使わない": "Ateşsiz",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Seçilen araca uygun yemekler önce seçilir (yetmezse her zamanki gibi seçilir). Mevcut menü değişmez.",
+    "道具から料理を探す": "Araca göre yemek bul",
+    "道具から探す": "Araca göre ara",
+    "{tool}で作る主菜（{n}品）": "{tool} ile yapılan ana yemekler ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Bir araç seçin; onunla yapılan ana yemekler görünür."
 });

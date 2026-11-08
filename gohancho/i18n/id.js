@@ -1971,5 +1971,18 @@ GOHAN_I18N('id', {
     "減塩（塩分の目安を表示）": "Kurangi garam (tampilkan perkiraan garam)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Jika aktif, hidangan yang cenderung asin diberi tanda “Cenderung asin (perkiraan)” dan sedikit lebih jarang muncul saat memilih menu (tidak pernah dikecualikan; menu yang sudah ditetapkan tidak berubah). Di daftar bumbu muncul catatan agar kecap asin, miso, garam, dashi, dan kaldu dipakai lebih sedikit.",
     "材料の名前からの目安です。保証ではありません。": "Perkiraan kasar berdasarkan nama bahan. Bukan jaminan.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Pengaturan kurangi garam: coba pakai kecap asin, miso, garam, dashi, dan kaldu lebih sedikit."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Pengaturan kurangi garam: coba pakai kecap asin, miso, garam, dashi, dan kaldu lebih sedikit.",
+    "土鍋": "Periuk tanah liat (donabe)",
+    "圧力鍋": "Panci presto",
+    "ホットプレート": "Hot plate listrik",
+    "鉄板": "Plat besi (teppan)",
+    "炭火・BBQ": "Arang / BBQ",
+    "蒸し器": "Kukusan",
+    "揚げ物鍋": "Wajan penggoreng",
+    "火を使わない": "Tanpa api",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Hidangan untuk alat yang dipilih dipilih lebih dulu (kalau kurang, dipilih seperti biasa). Menu saat ini tidak berubah.",
+    "道具から料理を探す": "Cari hidangan berdasarkan alat",
+    "道具から探す": "Cari berdasarkan alat",
+    "{tool}で作る主菜（{n}品）": "Hidangan utama dengan {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pilih alat untuk melihat hidangan utama yang bisa dibuat dengannya."
 });

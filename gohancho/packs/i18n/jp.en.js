@@ -26,7 +26,7 @@ GOHAN_PACK_TR('JP', 'en', {
     '大葉': 'shiso', 'ゆでうどん': 'boiled udon', '芽ひじき（乾燥）': 'dried hijiki', '万能ねぎ': 'scallions', 'コーン缶': 'canned corn', '絹ごし豆腐': 'silken tofu',
     'わかめ（乾燥）': 'dried wakame', '豚ロース厚切り肉': 'thick pork loin', 'すだち': 'sudachi', 'あじ（開いたもの）': 'butterflied horse mackerel', '生だら': 'fresh cod',
     '鶏手羽元': 'chicken drumettes', 'ゆで卵': 'boiled eggs', '豚バラかたまり肉': 'pork belly block', '長ねぎの青い部分': 'green part of leek', '中華麺': 'Chinese noodles',
-    'ツナ缶': 'canned tuna', '昆布': 'kombu', 'ゆでだこ': 'boiled octopus', 'コーン缶（クリーム）': 'canned cream corn'
+    'ツナ缶': 'canned tuna', '昆布': 'kombu', 'ゆでだこ': 'boiled octopus', 'コーン缶（クリーム）': 'canned cream corn', 'とうもろこし': 'corn on the cob', '牛もも薄切り肉（焼肉用）': 'beef, thin slices for grilling'
   },
   recipes: {
     nikujaga: {
@@ -1475,6 +1475,36 @@ GOHAN_PACK_TR('JP', 'en', {
       ings: [['Pancake mix', '150 g'], ['Eggs', '1'], ['Milk', '100 ml'], ['Banana', '1'], ['Butter', '10 g']],
       seas: 'Oil a little · Maple syrup as needed',
       steps: ['Mix the egg and milk in a bowl, add the pancake mix and stir lightly (a few lumps of flour are fine). Slice the banana.', 'Warm a frying pan over low heat and wipe it with a thin layer of oil. Pour in a quarter of the batter, and when bubbles appear, flip, cover and cook over low heat for about 2 minutes. Cook the rest the same way.', 'Serve topped with the banana and butter, and drizzle with maple syrup.']
+    },
+    yakitori: {
+      name: 'Yakitori (chicken and leek skewers)',
+      ings: [['Chicken thigh', '1 (300 g)'], ['Leek', '1']],
+      seas: 'Soy sauce 2 tbsp · Mirin 2 tbsp · Sugar 1 tbsp · Sake 1 tbsp · Salt a little · Oil a little',
+      steps: ['Trim excess fat from the chicken and cut it into 2.5 cm cubes. Cut the leek into 3 cm lengths. Thread the chicken and leek alternately onto bamboo skewers that have soaked in water for 30 minutes (about 8 skewers).', 'Put the soy sauce, mirin, sugar and sake in a small pot over medium heat and simmer for 3 to 4 minutes until slightly thick to make the glaze.', 'Lay the skewers on a charcoal grill or the rack of a fish grill (or in a lightly oiled frying pan), sprinkle with a little salt and cook over medium heat, turning, for 8 to 10 minutes until browned and cooked through (stay by the heat, as they burn easily).', 'Just before they are done, brush with the glaze and cook briefly.']
+    },
+    monja: {
+      name: 'Monja-yaki (Tokyo-style runny pancake)',
+      ings: [['Cabbage', '1/4 head'], ['Pork scraps', '80 g'], ['Tenkasu (tempura scraps)', '3 tbsp']],
+      seas: 'Flour 60 g · Dashi 300 ml · Worcestershire sauce 2 tbsp · Salt a little · Oil 1 tbsp · Aonori and pickled red ginger as needed',
+      steps: ['Chop the cabbage coarsely and mince the pork. Mix the flour, dashi, Worcestershire sauce and salt to make the batter liquid.', 'Oil a heated hot plate (griddle), stir-fry the pork until it changes color, then add the cabbage and tenkasu and cook until the cabbage wilts. Push it into a ring with a hollow in the middle.', 'Pour the liquid into the hollow a little at a time. When it bubbles and thickens, break the ring and mix everything together.', 'Spread it thin and, once the part touching the griddle is crisp and fragrant, scrape it off and eat. Serve with aonori and pickled red ginger.']
+    },
+    teppan_gyu: {
+      name: 'Teppanyaki beef and vegetables',
+      ings: [['Beef, thin slices for grilling', '250 g'], ['Onion', '1/2'], ['Green peppers', '2'], ['Bean sprouts', '1/2 bag'], ['Shiitake', '3']],
+      seas: 'Soy sauce 2 tbsp · Mirin 1 tbsp · Sake 1 tbsp · Grated garlic 1/2 tsp · Salt a little · Pepper a little · Oil 1 tbsp',
+      steps: ['Cut the onion into 1 cm wedges, the peppers into thin strips and the shiitake into thin slices without the stems. Mix the soy sauce, mirin, sake and garlic to make the sauce.', 'Heat a hot plate (or iron griddle) over medium-high heat and oil it. Cook the onion, shiitake, peppers and bean sprouts, season with salt and pepper and push them to the edge.', 'Spread the beef on the free space and cook for 1 to 2 minutes on each side until cooked through.', 'Pour the sauce over and toss quickly.']
+    },
+    teppan_tori: {
+      name: 'Teppanyaki chicken and cabbage',
+      ings: [['Chicken thigh', '1 (300 g)'], ['Cabbage', '1/4 head'], ['Leek', '1/2']],
+      seas: 'Salt a little · Pepper a little · Oil 1 tbsp · Ponzu 3 tbsp',
+      steps: ['Trim excess fat from the chicken, cut it into bite-size pieces and season with salt and pepper. Cut the cabbage into chunks and the leek on the diagonal.', 'Heat a hot plate (or iron griddle) over medium-high heat and oil it. Lay the chicken skin side down and cook for 3 to 4 minutes. Turn it over, cover and cook over lower heat for 4 to 5 minutes until cooked through.', 'On the free space, cook the cabbage and leek until they wilt, then combine with the chicken.', 'Serve with ponzu for dipping.']
+    },
+    yaki_tomorokoshi: {
+      name: 'Soy-glazed grilled corn',
+      ings: [['Corn on the cob', '2'], ['Butter', '10 g']],
+      seas: 'Soy sauce 1 tbsp · Mirin 2 tsp · Oil a little',
+      steps: ['Remove the husks and silk, wrap the corn in plastic wrap and microwave (600 W) for 5 minutes (careful, it will be hot). Once cool, cut into 3 or 4 rounds.', 'Mix the soy sauce and mirin. Lay the corn on a charcoal grill or the rack of a fish grill (or in a lightly oiled frying pan) and cook over medium heat, turning, until browned.', 'Brush with the soy sauce and mirin and cook briefly until fragrant (stay by the heat, as it burns easily). Add butter if you like.']
     },
     yakiniku: {
       name: 'Yakiniku (Japanese-style grilled beef)',

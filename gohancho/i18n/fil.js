@@ -1971,5 +1971,18 @@ GOHAN_I18N('fil', {
     "減塩（塩分の目安を表示）": "Mababang asin (ipakita ang tantiya sa asin)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Kapag naka-on, ang mga putaheng karaniwang maalat ay may markang “Maaalat (tantiya lang)” at medyo mas bihira na lalabas sa pagpili ng menu (hindi kailanman inaalis; ang menu na napili na ay hindi nagbabago). Sa listahan ng pampalasa, may paalala na bawasan ang toyo, miso, asin, dashi at sabaw (stock).",
     "材料の名前からの目安です。保証ではありません。": "Magaspang na tantiya batay sa mga pangalan ng sangkap. Hindi ito garantiya.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Setting na mababang asin: subukang bawasan ang toyo, miso, asin, dashi at stock."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Setting na mababang asin: subukang bawasan ang toyo, miso, asin, dashi at stock.",
+    "土鍋": "Palayok na luwad (donabe)",
+    "圧力鍋": "Pressure cooker",
+    "ホットプレート": "Electric hot plate",
+    "鉄板": "Bakal na plantsa (teppan)",
+    "炭火・BBQ": "Uling / BBQ",
+    "蒸し器": "Steamer",
+    "揚げ物鍋": "Kaldero pangprito",
+    "火を使わない": "Walang apoy",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Uunahin ang mga putahe para sa piniling gamit (kung kulang, karaniwang pagpili ang gagamitin). Hindi magbabago ang kasalukuyang menu.",
+    "道具から料理を探す": "Maghanap ng putahe ayon sa gamit",
+    "道具から探す": "Maghanap ayon sa gamit",
+    "{tool}で作る主菜（{n}品）": "Mga pangunahing putahe gamit ang {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pumili ng gamit para makita ang mga pangunahing putaheng magagawa rito."
 });

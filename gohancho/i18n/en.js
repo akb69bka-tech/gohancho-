@@ -1972,5 +1972,18 @@ GOHAN_I18N('en', {
     "減塩（塩分の目安を表示）": "Low-salt mode (show salt guide)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "When on, dishes that tend to be salty get a \"Higher in salt (rough guide)\" mark and are shown a little less often when picking a menu (never removed; a menu you have already set stays as it is). In the seasoning list, a note suggests going easy on soy sauce, miso, salt, dashi and stock.",
     "材料の名前からの目安です。保証ではありません。": "A rough guide based on ingredient names. Not a guarantee.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Low-salt setting: try going easy on soy sauce, miso, salt, dashi and stock."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Low-salt setting: try going easy on soy sauce, miso, salt, dashi and stock.",
+    "土鍋": "Clay pot (donabe)",
+    "圧力鍋": "Pressure cooker",
+    "ホットプレート": "Hot plate",
+    "鉄板": "Iron griddle (teppan)",
+    "炭火・BBQ": "Charcoal / BBQ",
+    "蒸し器": "Steamer",
+    "揚げ物鍋": "Deep-frying pot",
+    "火を使わない": "No heat",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Dishes for the selected tool are picked first (picked as usual if there aren't enough). Your current menu doesn't change.",
+    "道具から料理を探す": "Find dishes by tool",
+    "道具から探す": "Find by tool",
+    "{tool}で作る主菜（{n}品）": "Mains made with {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pick a tool to see the mains you can make with it."
 });

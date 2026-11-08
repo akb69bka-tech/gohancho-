@@ -1971,5 +1971,18 @@ GOHAN_I18N('pl', {
     "減塩（塩分の目安を表示）": "Mniej soli (pokaż wskazówkę)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Po włączeniu potrawy, które bywają słone, dostają oznaczenie „Raczej słone (orientacyjnie)” i są proponowane nieco rzadziej przy wyborze menu (nigdy nie są wykluczane; ustalone już menu się nie zmienia). Na liście przypraw pojawia się podpowiedź, by oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu.",
     "材料の名前からの目安です。保証ではありません。": "Orientacyjna wskazówka na podstawie nazw składników. To nie jest gwarancja.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ustawienie mniej soli: spróbuj oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ustawienie mniej soli: spróbuj oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu.",
+    "土鍋": "Garnek gliniany (donabe)",
+    "圧力鍋": "Szybkowar",
+    "ホットプレート": "Elektryczna płyta grzewcza",
+    "鉄板": "Żelazna płyta (teppan)",
+    "炭火・BBQ": "Węgiel drzewny / grill",
+    "蒸し器": "Parowar",
+    "揚げ物鍋": "Garnek do głębokiego smażenia",
+    "火を使わない": "Bez ognia",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Najpierw wybierane są dania do wybranego sprzętu (jeśli jest ich mało, wybór jest zwykły). Obecne menu się nie zmienia.",
+    "道具から料理を探す": "Szukaj dań według sprzętu",
+    "道具から探す": "Szukaj według sprzętu",
+    "{tool}で作る主菜（{n}品）": "Dania główne ze sprzętem: {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Wybierz sprzęt, aby zobaczyć dania główne, które się nim przyrządza."
 });

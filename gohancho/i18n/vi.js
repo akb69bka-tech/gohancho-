@@ -1971,5 +1971,18 @@ GOHAN_I18N('vi', {
     "減塩（塩分の目安を表示）": "Giảm muối (hiện mức mặn ước chừng)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Khi bật, các món thường mặn sẽ có dấu “Hơi mặn (ước chừng)” và được gợi ý ít hơn một chút khi chọn thực đơn (không bao giờ bị loại; thực đơn đã chốt thì giữ nguyên). Ở phần gia vị sẽ có lời nhắc nêm nước tương, miso, muối, dashi và nước dùng ít lại.",
     "材料の名前からの目安です。保証ではありません。": "Chỉ là ước chừng dựa trên tên nguyên liệu, không phải bảo đảm.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Cài đặt giảm muối: thử nêm nước tương, miso, muối, dashi và nước dùng ít hơn."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Cài đặt giảm muối: thử nêm nước tương, miso, muối, dashi và nước dùng ít hơn.",
+    "土鍋": "Nồi đất (donabe)",
+    "圧力鍋": "Nồi áp suất",
+    "ホットプレート": "Bếp điện (hot plate)",
+    "鉄板": "Vỉ sắt (teppan)",
+    "炭火・BBQ": "Than hoa / BBQ",
+    "蒸し器": "Nồi hấp",
+    "揚げ物鍋": "Nồi chiên ngập dầu",
+    "火を使わない": "Không dùng lửa",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Món dùng dụng cụ đã chọn sẽ được chọn trước (nếu ít thì chọn như bình thường). Thực đơn hiện tại không đổi.",
+    "道具から料理を探す": "Tìm món theo dụng cụ",
+    "道具から探す": "Tìm theo dụng cụ",
+    "{tool}で作る主菜（{n}品）": "Món chính dùng {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Chọn một dụng cụ để xem các món chính nấu bằng dụng cụ đó."
 });

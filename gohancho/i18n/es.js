@@ -1971,5 +1971,18 @@ GOHAN_I18N('es', {
     "減塩（塩分の目安を表示）": "Poca sal (mostrar guía de sal)",
     "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Al activarlo, los platos que suelen llevar mucha sal muestran la marca «Más salado (orientativo)» y salen un poco menos al elegir el menú (nunca se descartan; un menú ya decidido no cambia). En los condimentos aparece una nota para usar con moderación salsa de soja, miso, sal, dashi y caldo.",
     "材料の名前からの目安です。保証ではありません。": "Es una guía orientativa según los nombres de los ingredientes. No es una garantía.",
-    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ajuste de poca sal: prueba a usar menos salsa de soja, miso, sal, dashi y caldo."
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ajuste de poca sal: prueba a usar menos salsa de soja, miso, sal, dashi y caldo.",
+    "土鍋": "Olla de barro (donabe)",
+    "圧力鍋": "Olla a presión",
+    "ホットプレート": "Plancha eléctrica",
+    "鉄板": "Plancha de hierro (teppan)",
+    "炭火・BBQ": "Brasas / barbacoa",
+    "蒸し器": "Vaporera",
+    "揚げ物鍋": "Olla para freír",
+    "火を使わない": "Sin fuego",
+    "選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。": "Se eligen primero los platos del utensilio elegido (si no hay suficientes, se elige como siempre). El menú actual no cambia.",
+    "道具から料理を探す": "Buscar platos por utensilio",
+    "道具から探す": "Buscar por utensilio",
+    "{tool}で作る主菜（{n}品）": "Platos principales con {tool} ({n})",
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Elige un utensilio para ver los platos principales que se hacen con él."
 });
