@@ -1966,5 +1966,10 @@ GOHAN_I18N('fr', {
     "特定商取引法に基づく表記": "Mention légale (loi japonaise sur les transactions commerciales spécifiées)",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID d’achat (copiez-le et saisissez-le dans « Restaurer avec l’ID d’achat d’un autre appareil » sur un autre appareil pour utiliser le même achat. Ne le montrez à personne)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Impossible d’ouvrir la page de gestion. Réessayez dans un instant.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Après le service de nuit (afficher le petit-déjeuner à toute heure)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Après le service de nuit (afficher le petit-déjeuner à toute heure)",
+    "塩分が多めの目安": "Plutôt salé (indicatif)",
+    "減塩（塩分の目安を表示）": "Peu de sel (afficher le repère)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Activé, les plats souvent salés reçoivent la mention « Plutôt salé (indicatif) » et sont proposés un peu moins souvent dans le choix du menu (jamais exclus ; un menu déjà fixé ne change pas). Dans la liste des assaisonnements, une note invite à y aller doucement sur la sauce soja, le miso, le sel, le dashi et le bouillon.",
+    "材料の名前からの目安です。保証ではありません。": "Repère indicatif d’après les noms des ingrédients. Aucune garantie.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Réglage peu de sel : allez-y doucement sur la sauce soja, le miso, le sel, le dashi et le bouillon."
 });

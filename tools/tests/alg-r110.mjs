@@ -28,7 +28,7 @@ await p.goto(URL_); await ready(p);
         '1小匙高湯粉', '雞粉', '鸡精 1小勺', '烹大師', '鰹魚風味粉', '쇠고기 다시다', '치킨스톡', '코인육수 1알', '1 muỗng hạt nêm', 'bột nêm', 'ซุปก้อน 1 ก้อน', 'ผงปรุงรส',
         '1 kostka rosołowa', 'bulion w proszku', '1 cubito de caldo de pollo', 'caldo de pollo en polvo', 'consomé de pollo', '1 tablete de caldo de galinha', 'caldo de legumes em pó',
         '1 dado da brodo', 'brodo granulare', '1 tavuk suyu tablet', '1 bulyon', 'مكعب مرق', 'ماجي', 'स्टॉक क्यूब', '中華スープの素', 'チキンストック'];
-    const NEG = ['2 tsp chili powder', '1 tsp curry powder', '1 tsp baking powder', 'Chicken breast, in 3 cm cubes', 'Beef stew cubes', 'ice cubes', 'Stockfish', 'stockpot',
+    const NEG = ['2 tsp chili powder', '1 tsp baking powder', 'Chicken breast, in 3 cm cubes', 'Beef stew cubes', 'ice cubes', 'Stockfish', 'stockpot',
         '1 l Gemüsebrühe', 'Hühnerbrühe', 'kaldu ayam', '牛肉粉', '鸡粉丝', '雞蛋', '육수 1L', 'caldo de pollo', 'caldo de galinha', 'cortado en dados', 'brodo di carne', 'et suyu', 'bulion',
         '800 ml chicken broth', 'Chicken broth', 'water or stock', '400 ml vegetable stock'];   // 最後の2つ: パックではない（日本のレシピ・自分のレシピ）の調味料。キー stock を使わないので今までどおり
     const r = await p.evaluate(([POS, NEG]) => {
@@ -40,6 +40,9 @@ await p.goto(URL_); await ready(p);
     const DASHI = /dashi/;
     r.pos.forEach(([s, v]) => { const exp = DASHI.test(s) ? ['m', 'm', '', 'm'] : ['m', 'm', 'm', 'm']; ok(v.join() === exp.join(), `C1 「${s}」 小麦/大豆/乳/グルテン: ${exp.join('/')} のはずが ${v.map(x => x || '-').join('/')}`); });
     r.neg.forEach(([s, v]) => ok(v.every(x => x === ''), `C1 「${s}」 には印を付けない: ${v.map(x => x || '-').join('/')}`));
+    // オーナー決定 Q16=A: カレー粉（市販のミックスに小麦粉が入ることがある）は 小麦・グルテン だけ 🔍（大豆・乳は付けない）。詳しくは tools/tests/curry-r1.mjs
+    const cp = await p.evaluate(() => ['1 tsp curry powder', 'カレー粉 小さじ1'].map(s => { const l = s.toLowerCase(); const i = /[ぁ-んァ-ヶ一-龯]/.test(s) ? parseIng(s) : {name: s, label: s, key: l, en: l, qty: '', opt: false}; return [s, ['wheat', 'soy', 'milk', 'gluten'].map(a => algKind(a, i))]; }));
+    cp.forEach(([s, v]) => ok(v.join() === '4,0,0,4', `C1 「${s}」 は小麦・グルテンだけ 🔍: 4,0,0,4 のはずが ${v.join()}`));
 }
 
 // ---- C2・C3 名指しの料理 × 画面の言葉（'m' = 🔍・'h' = ⚠・'' = なし）----

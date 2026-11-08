@@ -134,6 +134,7 @@ GOHAN_PACK_TR('JP', 'vi', {
     "ひじき": "rong hijiki",
     "コーン": "bắp ngọt",
     "カレールウ": "viên sốt cà ri",
+    "カレー粉": "bột cà ri",
     "シチュールウ": "viên sốt hầm kem",
     "ハヤシルウ": "viên sốt hayashi",
     "梅干し": "mơ muối (umeboshi)",

@@ -1966,5 +1966,10 @@ GOHAN_I18N('fil', {
     "特定商取引法に基づく表記": "Paunawa ayon sa Batas sa Tiyak na Komersyal na Transaksyon",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (kopyahin at ilagay sa «I-restore gamit ang purchase ID ng ibang device» sa ibang device para magamit ang parehong pagbili. Huwag ipakita sa iba)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Hindi mabuksan ang pahina ng pamamahala. Pakisubukan ulit mamaya.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Pagkatapos ng night shift (ipakita ang almusal anumang oras)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Pagkatapos ng night shift (ipakita ang almusal anumang oras)",
+    "塩分が多めの目安": "Maaalat (tantiya lang)",
+    "減塩（塩分の目安を表示）": "Mababang asin (ipakita ang tantiya sa asin)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Kapag naka-on, ang mga putaheng karaniwang maalat ay may markang “Maaalat (tantiya lang)” at medyo mas bihira na lalabas sa pagpili ng menu (hindi kailanman inaalis; ang menu na napili na ay hindi nagbabago). Sa listahan ng pampalasa, may paalala na bawasan ang toyo, miso, asin, dashi at sabaw (stock).",
+    "材料の名前からの目安です。保証ではありません。": "Magaspang na tantiya batay sa mga pangalan ng sangkap. Hindi ito garantiya.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Setting na mababang asin: subukang bawasan ang toyo, miso, asin, dashi at stock."
 });

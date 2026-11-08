@@ -671,7 +671,7 @@ html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: �
 .swap:hover{background:rgba(245,238,227,.1)}
 .swap{position:relative}.swap::after{content:'';position:absolute;inset:-8px -4px}   /* 見た目はそのままで、押せる範囲を44px以上に */
 .spot .swap-line{color:var(--tray-ink)}
-.spice-tag{white-space:nowrap}.alg-tag{color:var(--danger);font-weight:700;white-space:normal}.alg-tag.may,.caution{color:var(--caution)}.alg-tag.may{font-weight:600}.alg-tag.out{color:var(--text);font-weight:600;box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:6px;padding:1px 6px}.out-alg{color:var(--text);box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:8px;padding:4px 8px}.note.out-alg-note{box-shadow:inset 0 0 0 1.5px var(--caution)}.eaters-line .out-alg{display:inline-block;margin-top:4px;text-align:start}.shop-row .alg-tag{display:block;font-size:.85em;font-weight:600}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.eaters-line.alg{line-height:1.5;min-height:4.5em}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
+.spice-tag{white-space:nowrap}.alg-tag{color:var(--danger);font-weight:700;white-space:normal}.alg-tag.may,.caution{color:var(--caution)}.alg-tag.may,.alg-tag.salt{font-weight:600}.alg-tag.salt{color:var(--caution)}.alg-tag.out{color:var(--text);font-weight:600;box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:6px;padding:1px 6px}.out-alg{color:var(--text);box-shadow:inset 0 0 0 1.5px var(--caution);border-radius:8px;padding:4px 8px}.note.out-alg-note{box-shadow:inset 0 0 0 1.5px var(--caution)}.eaters-line .out-alg{display:inline-block;margin-top:4px;text-align:start}.shop-row .alg-tag{display:block;font-size:.85em;font-weight:600}.eaters-line{margin:2px 0 0;text-align:center;white-space:pre-line}.eaters-line.alg{line-height:1.5;min-height:4.5em}.fam-member{padding:0 12px}.fam-member > .field,.fam-member > .check,.fam-member > .row{margin-bottom:12px}.fam-member > summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-weight:600}.fam-member .field{display:flex;flex-direction:column;gap:6px}.fam-name{min-height:44px}.chip.allergy{border-color:var(--danger);color:var(--danger)}
 .tray-add{align-self:center;flex:0 0 auto;opacity:.85}
 .swap-ph{visibility:hidden;pointer-events:none}   /* 汁ものがいらない日（汁の麺など）も、ボタンの高さを取っておく（主菜をかえて「汁ものを足す」が出ても、まわりが動かない） */
 .spot.ghost .vessel{background:transparent;box-shadow:none;border:2px dashed rgba(245,238,227,.28);box-sizing:border-box;opacity:.8}
@@ -1276,7 +1276,7 @@ html[lang="ko"] nav.tabs button{word-break:keep-all;overflow-wrap:normal;-webkit
 .tray.grid2 .spot-label .ex>.alg-tag{display:block;white-space:normal;overflow:visible;text-overflow:clip;-webkit-line-clamp:unset;line-clamp:none;overflow-wrap:anywhere;font-size:.8125rem;line-height:1.3;margin-top:3px;padding:2px 6px;border-radius:6px;background:#fff8ee;color:#3a2a1f;text-align:start}   /* お盆の上の札は淡い地に濃い字（4.5:1 以上）。2行で切らない（第6回 S20） */
 .tray.grid2 .spot-label .ex{min-height:calc((var(--exn,0) - var(--exa,0)) * 1.4em + var(--exa,0) * var(--algk,2) * 1.3 * .8125rem + min(var(--exa,0), 1) * 7px)}   /* ⚠ の行はお膳では 13px・4行（日本語・中国語）／5行（ほかの言語）まで（… で切らない）＋余白（3+4px）。出る・消えるで枠の高さが動かないよう、その高さぶん取っておく */
 html:not([lang="ja"]):not([lang^="zh"]) .tray.grid2{--algk:2.5}   /* 漢字・かなでない言語は ⚠ の文が長い（「Contains: egg, wheat …」）。5行ぶん */
-.tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may{color:#6b3f00;font-weight:600}.tray.grid2 .spot-label .ex>.alg-tag.out{color:#3a2a1f;font-weight:600;background:#fff8ee;box-shadow:inset 0 0 0 1.5px #c8641a}   /* 今日食べる人から外した家族のアレルゲンの札: 赤い ⚠（いま食べる人に当たる）と分ける。柿色の枠・濃い字（R45） */
+.tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may,.tray.grid2 .spot-label .ex>.alg-tag.salt{color:#6b3f00;font-weight:600}.tray.grid2 .spot-label .ex>.alg-tag.out{color:#3a2a1f;font-weight:600;background:#fff8ee;box-shadow:inset 0 0 0 1.5px #c8641a}   /* 今日食べる人から外した家族のアレルゲンの札: 赤い ⚠（いま食べる人に当たる）と分ける。柿色の枠・濃い字（R45） */
 .spot-label .ex>.alg-tag{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow-wrap:anywhere}   /* アレルゲンの印は2行まで（2つ目のアレルゲン・加工品が … に隠れないように。モニター第3回d） */
 .tray.compact .spot-label .ex{min-height:calc(var(--exl,0) * 1.4em)}
 .tray.grid2.algfit .spot-label .ex{min-height:0}   /* いちばん詰めても入らないとき（文字大・⚠ の札が上下の段に出た日）: 札の場所は、出ている札の高さだけにする（札・名前・かえるを帯の上に入れるのを先に。fitTray） */
@@ -1756,7 +1756,7 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .wsh-card[aria-pressed="true"]::after{content:"✓";position:absolute;top:6px;inset-inline-end:6px;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:var(--leaf-ink);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center}
 .wsh-card:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .wsh-none{grid-column:1/-1;margin:0}
-.wsh-card .alg-tag.may{color:var(--caution);font-weight:600}
+.wsh-card .alg-tag.may,.wsh-card .alg-tag.salt{color:var(--caution);font-weight:600}
 .wsh-card .alg-tag{display:block;max-width:100%;font-size:.8125rem;line-height:1.25;font-weight:700;color:var(--danger);overflow-wrap:anywhere;text-align:center}   /* 第22回 R84: お膳の ⚠ の札と同じ（赤い ⚠・太字・アレルゲンの名前） */
 .wsh-card.alg{box-shadow:var(--shadow-1),inset 0 0 0 1.5px color-mix(in srgb,var(--danger) 55%,transparent)}
 .wsh-alg-note{grid-column:1/-1;margin:0}
@@ -2657,6 +2657,7 @@ function normalizeState(d){
       cl('avoidDays', 0, 60); }
     st.settings.allergens = [...new Set(arr(st.settings.allergens).filter(x => typeof x === 'string'))].slice(0, 60);   // アレルギー対策で選んだアレルゲンの id（全員共通。使える id かどうかは algIds() が見る）
     if (typeof st.settings.allergenFerm !== 'boolean') delete st.settings.allergenFerm;
+    if (typeof st.settings.lowSalt !== 'boolean') delete st.settings.lowSalt;
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(st.settings.dinnerAt || '')) delete st.settings.dinnerAt;   // 食べる時刻（作り方の画面）
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
@@ -4090,6 +4091,8 @@ function pick(cands, ctx){
     if (!scored.length) return null;
     scored.forEach(x => x.s += Math.random() * 0.7);
     scored.sort((a,b) => b.s - a.s);
+    // 減塩の設定: いちばん上が塩分が多めの目安の料理なら、6割ほどは次に点の高い塩分の少ない料理を先に出す（候補から外さない。残りの4割は今までどおり。点数の差ではなく割合で効かせる＝候補の数に左右されない）
+    if (saltOn() && saltHigh(scored[0].r) && Math.random() < 0.6){ const alt = scored.find(x => !saltHigh(x.r)); if (alt) return alt.r; }
     return scored[0].r;
 }
 // keep: そのまま残すほかの料理（{…, slot}）。同じ料理・2品目の主菜と同じ肉や魚にならない主菜から選ぶ
@@ -7705,6 +7708,57 @@ function dietMayTagHtml(r){
     return `<span class="alg-tag may" role="note" aria-label="${esc('🔍 ' + s)}" title="${esc('🔍 ' + s)}">🔍 ${esc(s)}</span>`;
 }
 function dietMayBadgeHtml(r){ const nm = dietMayHits(r); return nm.length ? `<span class="badge caution">🔍 ${esc(dietMayText(nm))}</span>` : ''; }
+/* ---- 減塩の目安（設定「減塩」。目安の表示だけ。S.settings.lowSalt） ----
+   塩分が多くなりがちな料理に小さな目印「塩分が多めの目安」を出し、献立のえらびで少しだけ出にくくする（候補から外さない・決めた献立は自動では変えない）。
+   調味の欄には「控えめに」と添える。数値（g・mg）は出さない。体への効き目は言わない。判定は材料のキーと元の言葉の名前、料理の id だけで行う（画面の言葉には左右されない）。
+   1つで目印: 漬物・干物・塩辛・塩蔵の魚や卵・キムチ・ハム/ベーコン/ソーセージ・ラーメン / 2つそろうと目印: オリーブ・ケッパー・アンチョビ・フェタ / 調味が3種類重なると目印: 醤油・味噌類・魚介の調味料・スープの素・ソース類 */
+function saltOn(){ return S.settings.lowSalt === true; }
+const SALT_STRONG = dietRe(String.raw`漬物|つけもの|浅漬|ぬか漬|糠漬|塩漬|粕漬|味噌漬|たくあん|沢庵|福神漬|しば漬|野沢菜|高菜漬|梅干|うめぼし|梅漬|干物|ひもの|(?:あじ|さば|いわし|ほっけ|かれい|さんま)の?開き|塩辛|しおから|塩鮭|塩さけ|塩ざけ|塩さば|塩昆布|しおこんぶ|たらこ|明太子|めんたいこ|すじこ|筋子|ちりめん|じゃこ|きむち|\bkimchi\b|김치|\bpickled\b|\bpickles\b|\bdill pickle|\bbrined\b|\bsauerkraut\b|\bgherkins?\b|\bzhacai\b|\bsuancai\b|榨菜|\bsalted\b|\bsalt (?:cod|pork|fish|beef|herring)\b|\bbacalhau\b|\bcarne seca\b|\bdried beef\b|\bmatjes?\b|\bherring\b|\bdried anchov|\bsmoked (?:haddock|salmon|fish|mackerel|trout|herring|pork|ham|sausage|bacon|pork belly)\b|\bbacon\b|\bham\b|\bprosciutto\b|\bspeck\b|\bpancetta\b|\bsalami\b|\bchorizo\b|\bsausages?\b|\bwieners?\b|\blardons?\b|\bkasseler\b|\bmorcilla\b|\bsucuk\b|\bspam\b|\bcorned\b|\blap cheong\b|\bhot ?dogs?\b|はむ(?![ぁ-ん])|べーこん|ういんなー|そーせーじ|らーめん|\bramen\b|\bramyeon\b|\bramyun\b|\binstant noodles?\b`, 'i');
+const SALT_NO = dietRe(String.raw`\bunsalted\b|\bdesalted\b|\bsalted (?:butter|water|nuts?|peanuts?|cashews?|almonds?|crackers?|caramel|pistachios?)\b|\bpickling\b|\bsausage ?meat\b|\bfresh anchov|\bground beef\b`, 'i');
+const SALT_PRES = [dietRe(String.raw`おりーぶ|\bolives?\b|aceitunas?|zeytin|oliwki|oliven`, 'i'), dietRe(String.raw`けっぱー|\bcapers?\b|alcaparras?|kapern|kapary`, 'i'), dietRe(String.raw`あんちょび|\banchov|\bboquerones\b`, 'i'), dietRe(String.raw`\bfeta\b|\bhalloumi\b|\bhellim\b`, 'i')];
+const SALT_COND = [
+    dietRe(String.raw`しょうゆ|醤油|\bsoy sauce\b|\bganjang\b|\bkecap\b|酱油|醬油|간장|\bshoyu\b|\bsoy paste\b|\bsojasauce\b|\bsalsa de soja\b|\bsauce soja\b|\bsalsa di soia\b|\bmolho de soja\b|\bsos sojowy\b|\bsoya sosu\b|ซีอิ๊ว|nước tương|\btoyo\b|\bsoy\b`, 'i'),
+    dietRe(String.raw`みそ(?!ーす)|味噌|\bmiso\b|doenjang|된장|gochujang|고추장|こちゅじゃん|とうばんじゃん|豆板醤|doubanjiang|豆瓣酱|てんめんじゃん|甜麺醤|\bssamjang\b|쌈장|\bhoisin\b|かいせんじゃん`, 'i'),
+    dietRe(String.raw`なんぷらー|\bfish sauce\b|nam ?pla|nuoc mam|nước mắm|น้ำปลา|\bpatis\b|oyster sauce|おいすたーそーす|蚝油|蠔油|shrimp paste|\bbagoong\b|\bbelacan\b|\bterasi\b|\bkapi\b|\bxo sauce\b|ぽんず|めんつゆ|麺つゆ|焼肉のたれ|やきにくのたれ|てりやき|\bteriyaki\b`, 'i'),
+    dietRe(String.raw`こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\bstock (?:powder|granules)\b|鶏がら|とりがら|ちきんすとっく|だしの素|だしのもと|ほんだし|顆粒だし|中華だし|がらすーぷ|\bhondashi\b|\bdashi (?:powder|granules)\b|\bmaggi\b|\bknorr\b|雞粉|鸡精|다시다|\bmsg\b|\bchicken (?:powder|granules)\b`, 'i'),
+    dietRe(String.raw`うすたー|中濃|とんかつそーす|おこのみ|\bworcestershire\b|\bbbq sauce\b|\bbarbecue sauce\b|ばーべきゅーそーす|\bbrown sauce\b|\bsriracha\b|\bhot sauce\b|たばすこ|\btabasco\b`, 'i')];
+const SALT_ID = /ramen|ramyeon|ramyun|asazuke|himono|shiokara|tsukemono|nukazuke|umeboshi/i;
+// 調味の欄に「控えめに」と添える対象（醤油・味噌・塩・だし・スープの素。元の言葉で見る）
+const SALT_SEAS = dietRe(String.raw`しょうゆ|醤油|みそ(?!ーす)|味噌|塩|しお(?![ぁ-ん])|だし|出汁|すーぷの素|こんそめ|ぶいよん|鶏がら|\bsoy\b|\bmiso\b|\bsalt\b|\bstock\b|\bbroth\b|\bbouillon\b|\bdashi\b|\bfish sauce\b|\boyster sauce\b|\bsalz\b|\bsojasauce\b|\bbr[uü]he\b|\bsel\b|\bsauce soja\b|\bsal\b|\bsalsa de soja\b|\bcaldo\b|\bsale\b|\bsalsa di soia\b|\bbrodo\b|\bdado\b|\bmolho de soja\b|\bs[oó]l\b|\bsos sojowy\b|\bbulion\b|\btuz\b|\bsoya sosu\b|\bet suyu\b|\bgaram\b|\bkecap\b|\bkaldu\b|เกลือ|ซีอิ๊ว|น้ำปลา|muối|nước tương|nước mắm|소금|간장|된장|盐|鹽|酱油|醬油|ملح|नमक|\basin\b|\btoyo\b|\bpatis\b`, 'i');
+const SALT_MEMO = new WeakMap();
+function saltCalc(r){
+    if (SALT_ID.test(String(r.id))) return true;
+    const its = (r.items || []).filter(i => !i.opt), txt = its.map(i => dietTxt(i));
+    if (txt.some(x => SALT_STRONG.test(x) && !SALT_NO.test(x))) return true;
+    const all = txt.join('|') + '|' + algNorm(String(r.seasBase != null ? r.seasBase : (r.seas || '')));
+    if (SALT_PRES.filter(re => re.test(all)).length >= 2) return true;
+    return SALT_COND.filter(re => re.test(all)).length >= 3;
+}
+function saltHigh(r){
+    if (!r || !r.items) return false;
+    let v = SALT_MEMO.get(r); if (v === undefined){ v = saltCalc(r); SALT_MEMO.set(r, v); } return v;
+}
+function saltHighOn(r){ return saltOn() && saltHigh(r); }
+function saltTagText(){ return t('塩分が多めの目安'); }
+function saltTagHtml(r){
+    if (!saltHighOn(r)) return '';
+    const s = saltTagText();
+    return `<span class="alg-tag salt" role="note" aria-label="${esc('🧂 ' + s)}" title="${esc('🧂 ' + s)}">🧂 ${esc(s)}</span>`;
+}
+function saltBadgeHtml(r){ return saltHighOn(r) ? `<span class="badge caution salt">🧂 ${esc(saltTagText())}</span>` : ''; }
+// 調味の欄に添える一言（醤油・味噌・塩・だし・スープの素がある料理だけ）
+function saltSeasHintHtml(r){
+    if (!saltOn() || !r) return '';
+    const src = algNorm(String(r.seasBase != null ? r.seasBase : (r.seas || ''))) + '|' + (r.items || []).map(i => dietTxt(i)).join('|');
+    return SALT_SEAS.test(src) ? `<div class="small muted salt-hint" role="note">🧂 ${esc(t('減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。'))}</div>` : '';
+}
+function saltSettingsHtml(){
+    return `<div class="set-group" id="salt-card">
+        <label class="check"><input type="checkbox" data-act="low-salt" ${saltOn() ? 'checked' : ''}><span>${esc(t('減塩（塩分の目安を表示）'))}</span></label>
+        <span class="small muted">${esc(t('オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。'))}</span>
+        <span class="small warn">${esc(t('材料の名前からの目安です。保証ではありません。'))}</span>
+    </div>`;
+}
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
 // head: 選ぶとなかま全部を避ける食材のキー（ハムだけ・鮭だけを選んだときは、その食材だけを避ける）。jp: 日本の食材のキー。re: 各国の食材（キー｜英語の名前）
 const AVOID_FAM = {
@@ -7774,7 +7828,7 @@ const ALG_DEF = {
     peanut:{may:/\bchil+i crisp\b|\bmassaman curry paste\b|まっさまんかれーぺーすと|\bshacha\b|\bsacha (?:sauce|paste|jiang)\b|沙茶/, re:/ぴーなっつ|ぴーなつ|落花生|らっかせい|南京豆|なんきんまめ|\bpeanuts?\b|\bgroundnuts?\b|monkey nuts?|cacahu[eé]tes?|cacahuates?|\bman[ií]\b|arachides?|amendoins?|erdnuss|땅콩|花生|ถั่วลิสง|đậu phộng|kacang tanah|yerfıstığı|orzeszk\w* ziemn|मूंगफली/, via:/\bsatay\b|\bsaté\b|\bgado.?gado\b|\bpecel\b|kare.?kare|\bmole\b/},
     // 第26回 R110: 粉・顆粒・固形のスープの素（stock powder・broth granules・kaldu bubuk・Brühpulver・高湯粉・雞粉・다시다・hạt nêm・ซุปก้อน・caldo em pó・dado da brodo・bulion w kostce・et suyu tablet など）も
     // bouillon・stock cube と同じく 小麦・大豆・乳 の may（🔍。グルテンは小麦から）。dashi powder・hondashi は日本の「だしの素」と同じく小麦・大豆だけ。液体の caldo・Brühe・육수・broth には付けない
-    wheat:{fam:'wheat', via:/\bschupfnudeln\b|\bkopytka\b|おいすたーそーす|\boyster sauce\b|こちゅじゃん|\bgochujang\b|甜麺醤|てんめんじゃん|甜面酱|\btianmianjiang\b|\bsweet bean sauce\b/, may:/\bmorcilla\b|\bblood sausage\b|\bchorizo\b|\bsalami\b|\bhot ?dogs?\b|\bspam\b|\bluncheon meat\b|\bshaoxing\b|紹興酒|绍兴酒|紹興|绍兴|しょうこうしゅ|黄酒|黃酒|花彫|花雕|料酒|\bhuang ?jiu\b|\bhua ?diao\b|\bliao ?jiu\b|\bchinese (?:rice |cooking )?wine\b|\bmole (?:paste|poblano paste)\b|\bmole en pasta\b|\bkerupuk\b|\bkrupuk\b|\bprawn crackers?\b|\bfermented pineapple\b|醬鳳梨|醤鳳梨|鳳梨醬|\bhuagua\b|醬瓜|醤瓜|花瓜|脆瓜|\bdoenjang\b|된장|てんじゃん|\bdoubanjiang\b|\bdouchi\b|\bfermented black beans?\b|あさふぇてぃだ|(?<![ぁ-ん])ひんぐ|\basaf(?:o|oe|e)tida\b|asaf[ée]tida|\bassafetida\b|\basafetyda\b|ase f[ée]tide|\basant\b|\bhing\b|\bheeng\b|\bhingu\b|हींग|हिंग|阿魏|아위|มหาหิงคุ์|şeytantersi|a ngùy|حلتيت|\bperungayam\b|\bkayam\b|\bhoisin\b|海鮮醤|かいせんじゃん|海鲜酱|海鮮醬|\bbbq sauce\b|\bbarbe(?:cue|que) sauce\b|ばーべきゅーそーす|うすたー|中濃|ちゅうのう|とんかつそーす|おこのみ(?:焼き)?そーす|お好み(?:焼き)?そーす|ういんなー|そーせーじ|\bsausages?\b|\bwieners?\b|\bfrankfurters?\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bsurimi\b|어묵|\bworcestershire\b|\bbrown sauce\b|こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\b(?:stock|broth)[ -]?(?:powder|granules?|cubes?|tablets?|concentrate)\b|\bchicken (?:powder|granules)\b|\bknorr\b|\boxo\b|\bmaggi (?:cubes?|tablets?|bouillon|granules?|powder)\b|\bkaldu (?:ayam |sapi |jamur |udang |ikan |sayur )?(?:bubuk|blok|instan|kotak)\b|\bpenyedap rasa\b|\broyco\b|\bmasako\b|br[üu]h(?:e)?(?:pulver|w[üu]rfel|extrakt)|br[üu]he,? \(?(?:pulver|instant|gek[öo]rnt)|suppenw[üu]rfel|bouillonw[üu]rfel|gek[öo]rnte br[üu]he|instant-? ?br[üu]he|高[湯汤](?:粉|塊|块|精)|[雞鸡](?:粉|精)(?!絲|丝|蛋)|[雞鸡][湯汤](?:塊|块|粉)|濃湯寶|浓汤宝|烹大[師师]|[鰹鲣][魚鱼](?:風味|风味)?粉|柴魚(?:風味)?粉|蔬菜[湯汤]粉|다시다|치킨 ?스톡|비프 ?스톡|육수 ?(?:코인|한알|큐브|분말|가루)|코인 ?육수|분말 ?육수|ซุปก้อน|ผงปรุงรส|รสดี|คนอร์|ผงซุป|hạt nêm|bột nêm|viên nêm|viên súp|kostk[aię] (?:rosołow|bulionow|drobiow|warzywn|wołow)|bulion w (?:kostce|kostkach|proszku|granulkach)|rosół z kostki|\bcubitos? (?:de caldo|de pollo|de res|knorr|maggi)\b|\bcaldo (?:de (?:pollo|res|carne|verduras|pescado|galinha|legumes|peixe|costela) |vegetal )?(?:en (?:polvo|cubos?|cubitos?|pastillas?|tabletas?)|em (?:p[oó]|cubos?|tabletes?)|granulado)|\bpastillas? de caldo\b|\btabletes? de caldo\b|\bcubos? de caldo\b|\bconsom[eé] (?:de (?:pollo|res|camar[oó]n)|en polvo)|\bdad(?:o|i) (?:da|di|per) brodo\b|\bdado (?:vegetale|di carne|di pollo|knorr|star)\b|\bbrodo (?:granulare|in polvere|in dado)\b|\b(?:et|tavuk|sebze) suyu (?:tablet|bulyon|toz)|\bbulyon\b|\btoz (?:et|tavuk) suyu|مكعب(?:ات)? (?:ال)?مرق|مرق(?:ة)? (?:مكعب|بودرة)|ماجي|كنور|स्टॉक (?:क्यूब|पाउडर)|すーぷの素|すーぷのもと|ちきんすとっく|びーふすとっく|しゃんたん|味覇|\bdashi (?:powder|granules?)\b|\bhondashi\b|\binstant dashi\b|粉末だし|\bconsomm[eé]\b|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー|^stock(?:\|[^|]*\bstock\b|$)|だしの素|だしのもと|ほんだし|顆粒だし|豆板醤|とうばんじゃん|\bdoubanjiang\b|豆瓣酱/, re:/\bpancake mix\b|부침가루|\bbuchimgaru\b|ほっとけーきみっくす|\bcro[uû]tons?\b|\bcrostini\b|くるとん|\blebkuchen\b|\bprinten\b|\bgingerbread\b|\bspeculaas\b|\bspekulatius\b|小麦|\bpanko\b|\bcurry roux\b|\broux\b|こむぎ|\bwheat\b|薄力粉|強力粉|中力粉|はくりきこ|きょうりきこ|ぱんこ|食ぱん|うどん|そうめん|ひやむぎ|すぱげってぃ|まかろに|ぱすた|らーめん|中華めん|ちゅうかめん|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|ほっとけーき|やきそば|焼きそば|\bseitan\b|\b(?:bread|noodles?|pasta|flour|couscous|semolina|bulgur|freekeh|farro)\b/, no:/\b(?:rice|corn|cassava|gram|chickpea|potato|tapioca|coconut|almond|buckwheat|glass|mung bean|sweet potato|besan)\s+(?:flour|noodles?)\b|\brice noodles?\b|\bglass noodles?\b|\bcornbread\b|\bgluten.?free\b/,
+    wheat:{fam:'wheat', via:/\bschupfnudeln\b|\bkopytka\b|おいすたーそーす|\boyster sauce\b|こちゅじゃん|\bgochujang\b|甜麺醤|てんめんじゃん|甜面酱|\btianmianjiang\b|\bsweet bean sauce\b/, may:/\bmorcilla\b|\bblood sausage\b|\bchorizo\b|\bsalami\b|\bhot ?dogs?\b|\bspam\b|\bluncheon meat\b|\bshaoxing\b|紹興酒|绍兴酒|紹興|绍兴|しょうこうしゅ|黄酒|黃酒|花彫|花雕|料酒|\bhuang ?jiu\b|\bhua ?diao\b|\bliao ?jiu\b|\bchinese (?:rice |cooking )?wine\b|\bmole (?:paste|poblano paste)\b|\bmole en pasta\b|\bkerupuk\b|\bkrupuk\b|\bprawn crackers?\b|\bfermented pineapple\b|醬鳳梨|醤鳳梨|鳳梨醬|\bhuagua\b|醬瓜|醤瓜|花瓜|脆瓜|\bdoenjang\b|된장|てんじゃん|\bdoubanjiang\b|\bdouchi\b|\bfermented black beans?\b|\bcurry powders?\b|カレー粉|カレーパウダー|\bcurry-?pulver\b|currypulver|\bmilder curry\b|\bpoudre de curry\b|\bcurry en polvo\b|\bpolvere di curry\b|\bcurry em pó(?![a-zà-ÿ])|\bcurry w proszku\b|\bproszek curry\b|köri (?:baharat|tozu)|咖喱粉|咖哩粉|카레 ?가루|가루 ?카레|ผงกะหรี่|bột (?:cà ri|cari)|bubuk kari|करी पाउडर|مسحوق الكاري|\bpulbos ng kari\b|\bkari tozu\b|あさふぇてぃだ|(?<![ぁ-ん])ひんぐ|\basaf(?:o|oe|e)tida\b|asaf[ée]tida|\bassafetida\b|\basafetyda\b|ase f[ée]tide|\basant\b|\bhing\b|\bheeng\b|\bhingu\b|हींग|हिंग|阿魏|아위|มหาหิงคุ์|şeytantersi|a ngùy|حلتيت|\bperungayam\b|\bkayam\b|\bhoisin\b|海鮮醤|かいせんじゃん|海鲜酱|海鮮醬|\bbbq sauce\b|\bbarbe(?:cue|que) sauce\b|ばーべきゅーそーす|うすたー|中濃|ちゅうのう|とんかつそーす|おこのみ(?:焼き)?そーす|お好み(?:焼き)?そーす|ういんなー|そーせーじ|\bsausages?\b|\bwieners?\b|\bfrankfurters?\b|ちくわ|かまぼこ|はんぺん|さつま揚げ|さつまあげ|なると|かに風味|かにかま|\bfish ?cakes?\b|\bkamaboko\b|\bchikuwa\b|\bsurimi\b|어묵|\bworcestershire\b|\bbrown sauce\b|こんそめ|ぶいよん|\bbouillon\b|\bstock cubes?\b|\b(?:stock|broth)[ -]?(?:powder|granules?|cubes?|tablets?|concentrate)\b|\bchicken (?:powder|granules)\b|\bknorr\b|\boxo\b|\bmaggi (?:cubes?|tablets?|bouillon|granules?|powder)\b|\bkaldu (?:ayam |sapi |jamur |udang |ikan |sayur )?(?:bubuk|blok|instan|kotak)\b|\bpenyedap rasa\b|\broyco\b|\bmasako\b|br[üu]h(?:e)?(?:pulver|w[üu]rfel|extrakt)|br[üu]he,? \(?(?:pulver|instant|gek[öo]rnt)|suppenw[üu]rfel|bouillonw[üu]rfel|gek[öo]rnte br[üu]he|instant-? ?br[üu]he|高[湯汤](?:粉|塊|块|精)|[雞鸡](?:粉|精)(?!絲|丝|蛋)|[雞鸡][湯汤](?:塊|块|粉)|濃湯寶|浓汤宝|烹大[師师]|[鰹鲣][魚鱼](?:風味|风味)?粉|柴魚(?:風味)?粉|蔬菜[湯汤]粉|다시다|치킨 ?스톡|비프 ?스톡|육수 ?(?:코인|한알|큐브|분말|가루)|코인 ?육수|분말 ?육수|ซุปก้อน|ผงปรุงรส|รสดี|คนอร์|ผงซุป|hạt nêm|bột nêm|viên nêm|viên súp|kostk[aię] (?:rosołow|bulionow|drobiow|warzywn|wołow)|bulion w (?:kostce|kostkach|proszku|granulkach)|rosół z kostki|\bcubitos? (?:de caldo|de pollo|de res|knorr|maggi)\b|\bcaldo (?:de (?:pollo|res|carne|verduras|pescado|galinha|legumes|peixe|costela) |vegetal )?(?:en (?:polvo|cubos?|cubitos?|pastillas?|tabletas?)|em (?:p[oó]|cubos?|tabletes?)|granulado)|\bpastillas? de caldo\b|\btabletes? de caldo\b|\bcubos? de caldo\b|\bconsom[eé] (?:de (?:pollo|res|camar[oó]n)|en polvo)|\bdad(?:o|i) (?:da|di|per) brodo\b|\bdado (?:vegetale|di carne|di pollo|knorr|star)\b|\bbrodo (?:granulare|in polvere|in dado)\b|\b(?:et|tavuk|sebze) suyu (?:tablet|bulyon|toz)|\bbulyon\b|\btoz (?:et|tavuk) suyu|مكعب(?:ات)? (?:ال)?مرق|مرق(?:ة)? (?:مكعب|بودرة)|ماجي|كنور|स्टॉक (?:क्यूब|पाउडर)|すーぷの素|すーぷのもと|ちきんすとっく|びーふすとっく|しゃんたん|味覇|\bdashi (?:powder|granules?)\b|\bhondashi\b|\binstant dashi\b|粉末だし|\bconsomm[eé]\b|がらすーぷ|中華だし|ちゅうかだし|うぇいぱー|^stock(?:\|[^|]*\bstock\b|$)|だしの素|だしのもと|ほんだし|顆粒だし|豆板醤|とうばんじゃん|\bdoubanjiang\b|豆瓣酱/, re:/\bpancake mix\b|부침가루|\bbuchimgaru\b|ほっとけーきみっくす|\bcro[uû]tons?\b|\bcrostini\b|くるとん|\blebkuchen\b|\bprinten\b|\bgingerbread\b|\bspeculaas\b|\bspekulatius\b|小麦|\bpanko\b|\bcurry roux\b|\broux\b|こむぎ|\bwheat\b|薄力粉|強力粉|中力粉|はくりきこ|きょうりきこ|ぱんこ|食ぱん|うどん|そうめん|ひやむぎ|すぱげってぃ|まかろに|ぱすた|らーめん|中華めん|ちゅうかめん|(?:ぎょうざ|しゅうまい|はるまき|わんたん|餃子|春巻き?|焼売|ワンタン)の皮|天ぷら粉|てんぷらこ|ほっとけーき|やきそば|焼きそば|\bseitan\b|\b(?:bread|noodles?|pasta|flour|couscous|semolina|bulgur|freekeh|farro)\b/, no:/\b(?:rice|corn|cassava|gram|chickpea|potato|tapioca|coconut|almond|buckwheat|glass|mung bean|sweet potato|besan)\s+(?:flour|noodles?)\b|\brice noodles?\b|\bglass noodles?\b|\bcornbread\b|\bgluten.?free\b/,
         ferm:/\bsoy[- ]braised\b|卤蛋|滷蛋|醬油|醬油膏|醤油膏|\bsoy paste\b|\b(?:light|dark|thin|thick|black|seasoned|regular|sweet) soy\b(?! ?(?:milk|beans?|flour))|\bchil(?:e|i|ie)s? in soy\b|剝皮辣椒|剥皮辣椒|\bblack bean sauce\b|納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ|\bnatto sauce\b|塩昆布|しおこんぶ|\bshio ?kombu\b|焼肉のたれ|やきにくのたれ|\byakiniku sauce\b|しょうゆ|醤油|soy sauce|shoyu|めんつゆ|ぽんず|ぽん酢|てりやき|teriyaki|酱油|간장|ganjang|kecap|hoisin/},
     buckwheat:{re:/そば粉|そばこ|蕎麦|荞麦|\bsoba\b|\bbuckwheat\b|sarrasin|buchweizen|grano saraceno|trigo.?sarraceno|trigo mouro|메밀|karabuğday|\bgryka\b|कुट्टू|bakwit|บัควีท|ざるそば|かけそば|ざるそば|そばの実|そばがき|そば茶/, eq:['そば','おそば','とうじそば','にしんそば','とろろそば'], no:/やきそば|焼きそば|焼そば|中華そば|ちゅうかそば|沖縄そば|そばめし|yakisoba|chow ?mein/},
     egg:{fam:'egg', re:/卵|たまご|玉子|\beggs?\b|\byolks?\b|albumen|\bhuevos?\b|(?<![a-zà-ɏ])œufs?|\boeufs?\b|\beier\b|\buova?\b|\bovos?\b|\bjajk?a?\b|\bjajo\b|계란|달걀|鸡蛋|鸭蛋|ไข่|trứng|\btelur\b|yumurta|بيض|अंडा|itlog/, no:/eggplant|egg ?plant|卵巣|卵黄なし|eggless|egg.?free/,
@@ -8038,7 +8092,7 @@ function weekMayBadge(r){
 }
 // 料理の一覧につける印（第23回 R95: 当たる料理は ⚠、入っていることがある加工品・調味料だけの料理は 🔍。お膳の札と同じ決まり）
 function allergyBadge(r){
-    if (!allergyConflict(r)) return weekMayBadge(r);
+    if (!allergyConflict(r)) return weekMayBadge(r) + saltBadgeHtml(r);
     const ids = algSelectedHits(r);
     return `<span class="badge allergy">⚠ ${esc(t('アレルゲンあり'))}${ids.length ? ': ' + esc(joinNames(ids.map(algLabel))) : ''}</span>`;
 }
@@ -8064,7 +8118,7 @@ function algLine(){
 function algTagHtml(r){
     if (!r) return '';
     if (!allergyConflict(r)){
-        const out = outAlgTagHtml(r) + dietMayTagHtml(r);   // 今日食べる人から外した家族のアレルゲンの札（R45）＋ 食の決まり（ベジタリアン）の 🔍
+        const out = outAlgTagHtml(r) + dietMayTagHtml(r) + saltTagHtml(r);   // 今日食べる人から外した家族のアレルゲンの札（R45）＋ 食の決まり（ベジタリアン）の 🔍
         // 「入っていることがある」加工品（ワンタンの皮の卵など）だけで当たる料理: 料理は出すが、カードにも「袋の表示を確認」と出す（モニター第3回b N2）
         const may = algMayHits(r); if (!may.length) return out;
         // 見える文字はアレルゲンの名前を先に（狭い枠で … に切れても何のアレルゲンかわかる）。読み上げには材料の名前（ワンタンの皮など）も入れる
@@ -9308,7 +9362,8 @@ function viewSettings(){
                 <div class="chips">${countChips(S.settings.dishCount !== 'auto' && dishesFor(S.settings.dishCount) > PLAN.freeLimits.dishes && !hasPro() ? dishSeats(PLAN.freeLimits.dishes) : S.settings.dishCount, 'count')}</div>${pendingNoteHtml(false)}</div>
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
-        </div>`)}
+        </div>
+        ${saltSettingsHtml()}`)}
         ${grp('store', saleSettingsSum(), saleSettingsHtml() + cheapSettingsHtml())}
         ${grp('notify', remindSum, `<div class="set-group">
             ${reminderHtml()}
@@ -12480,7 +12535,7 @@ function viewToday(){
     const wishN = wishList().length ? wishesActive().length : 0;   // 届いている「食べたい」の数（入口の「（1）」だけに使う。印は出さない）
     const voteOn = voteList().length > 0;   // ○つけ表の「そろった」
     const exWhy = S.fridge.length || S.favs.length || planUsable(weekToday()) || wishN || voteOn ? 1 : 0;   // 「なぜこの料理か」の1行。出る可能性があれば、どの料理にも同じ高さを取る
-    const exAlg = allergyOn() || dietVegiOn() || eatersOut().some(m => (m.allergy || []).length) ? 2 : 0;   // ⚠ アレルゲンの行（外した家族の札も同じ行。R45）（決めたあとにアレルゲンを足したときなどに出る）。たたんだお膳でも出す。「袋の表示を確認」は2行まで出すので2行ぶん
+    const exAlg = allergyOn() || dietVegiOn() || eatersOut().some(m => (m.allergy || []).length) ? 2 : saltOn() ? 1 : 0;   // ⚠ アレルゲンの行（外した家族の札も同じ行。R45）（決めたあとにアレルゲンを足したときなどに出る）。たたんだお膳でも出す。「袋の表示を確認」は2行まで出すので2行ぶん
     const exSwap = swapOn() && effAvoid().length || algDashiSwap() ? 1 : 0, exSpice = mildOn() ? 1 : 0, exLast = S.history.length ? 1 : 0, exLeft = eaterMembers().length && S.history.some(h => leftOf(h).length) ? 1 : 0;   // 押した料理以外の高さが動かないよう、出る可能性のある行ぶんの高さを前もって確保する
     const spot = (it, idx, w) => {
         const r = it.r;
@@ -13596,7 +13651,7 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
     const termHint = sl && r.steps.some((st, k) => slOf(st) && termFind(texts[k], sl).some(h => termDef(h.id))) ? `<p class="small muted" style="margin:0">${esc(t('点線の言葉をタップすると、意味がわかります'))}</p>` : '';
     const nowK = done ? r.steps.findIndex((st, k) => !done.includes(k)) : -1, left = done ? r.steps.length - r.steps.filter((st, k) => done.includes(k)).length : 0;
     let prevK = -1; if (done) r.steps.forEach((st, k) => { if (done.includes(k) && (nowK < 0 || k < nowK)) prevK = k; });   // 「前の手順」: いまの手順の手前で、終わっている最後の手順
-    const seasHtml = r.seas ? `<div class="seasoning"><span class="label">${esc(svLab(n => t('調味料（{n}人分）', {n}), v => t('調味料：{v}', {v})))}</span><br>${esc(scaleSeas(seasFor(r), fac))}</div>` : '';
+    const seasHtml = r.seas ? `<div class="seasoning"><span class="label">${esc(svLab(n => t('調味料（{n}人分）', {n}), v => t('調味料：{v}', {v})))}</span><br>${esc(scaleSeas(seasFor(r), fac))}</div>${saltSeasHintHtml(r)}` : '';
     const scaleNote = fac !== 1 && (scaled || (amt && !kept)) ? `<p class="small muted" style="margin:0">${esc(scaled ? svLab(n => t('作り方の分量も{n}人分にしています', {n}), v => t('作り方の分量も{v}にしています', {v})) : t('作り方の文中の分量は2人分です。材料の分量を目安に調整してください。'))}</p>` : '';
     const tail = `${r.note ? `<div class="note">${esc(r.note)}</div>` : ''}
                 <div class="more-detail"><div class="small muted">${esc(t('もっとくわしく見たいとき'))}</div><div class="row">
@@ -14564,6 +14619,7 @@ document.addEventListener('click', e => {
             const f = document.getElementById('family-profile'); if (f) f.scrollIntoView({block: 'start'}); break;
         }
         case 'night-shift': { if (el.checked) S.settings.nightShift = true; else delete S.settings.nightShift; save(); render(); break; }
+        case 'low-salt': { S.settings.lowSalt = el.checked; save(); render(); break; }   // 減塩の目安: 表示と点数だけ。決めた献立は動かさない（reconcileMenu しない）
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-avoid-diet': {

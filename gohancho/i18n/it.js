@@ -1966,5 +1966,10 @@ GOHAN_I18N('it', {
     "特定商取引法に基づく表記": "Informativa ai sensi della Legge giapponese sulle transazioni commerciali specifiche",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID acquisto (copialo e inseriscilo in «Ripristina con l’ID acquisto di un altro dispositivo» su un altro dispositivo per usare lo stesso acquisto. Non mostrarlo ad altri)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Impossibile aprire la pagina di gestione. Riprova tra poco.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Dopo il turno di notte (mostra la colazione a qualsiasi ora)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Dopo il turno di notte (mostra la colazione a qualsiasi ora)",
+    "塩分が多めの目安": "Piuttosto salato (indicativo)",
+    "減塩（塩分の目安を表示）": "Poco sale (mostra l’indicazione)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Se attivo, i piatti che tendono a essere salati mostrano il segno «Piuttosto salato (indicativo)» e vengono proposti un po’ meno spesso nella scelta del menu (mai esclusi; un menu già deciso non cambia). Nell’elenco dei condimenti compare un promemoria per andare piano con salsa di soia, miso, sale, dashi e brodo.",
+    "材料の名前からの目安です。保証ではありません。": "Indicazione approssimativa basata sui nomi degli ingredienti. Non è una garanzia.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Impostazione poco sale: vai piano con salsa di soia, miso, sale, dashi e brodo."
 });

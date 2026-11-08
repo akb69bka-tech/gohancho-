@@ -1966,5 +1966,10 @@ GOHAN_I18N('pl', {
     "特定商取引法に基づく表記": "Informacja zgodnie z japońską ustawą o określonych transakcjach handlowych",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID zakupu (skopiuj i wpisz w «Przywróć za pomocą ID zakupu z innego urządzenia» na innym urządzeniu, aby używać tego samego zakupu. Nie pokazuj go innym)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Nie udało się otworzyć strony zarządzania. Spróbuj ponownie za chwilę.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Po nocnej zmianie (pokazuj wybór śniadania o każdej porze)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Po nocnej zmianie (pokazuj wybór śniadania o każdej porze)",
+    "塩分が多めの目安": "Raczej słone (orientacyjnie)",
+    "減塩（塩分の目安を表示）": "Mniej soli (pokaż wskazówkę)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Po włączeniu potrawy, które bywają słone, dostają oznaczenie „Raczej słone (orientacyjnie)” i są proponowane nieco rzadziej przy wyborze menu (nigdy nie są wykluczane; ustalone już menu się nie zmienia). Na liście przypraw pojawia się podpowiedź, by oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu.",
+    "材料の名前からの目安です。保証ではありません。": "Orientacyjna wskazówka na podstawie nazw składników. To nie jest gwarancja.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Ustawienie mniej soli: spróbuj oszczędnie używać sosu sojowego, miso, soli, dashi i bulionu."
 });

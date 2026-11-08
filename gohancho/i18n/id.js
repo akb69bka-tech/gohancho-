@@ -1966,5 +1966,10 @@ GOHAN_I18N('id', {
     "特定商取引法に基づく表記": "Pemberitahuan berdasarkan Undang-Undang Transaksi Komersial Tertentu",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID pembelian (salin dan masukkan di «Pulihkan dengan ID pembelian perangkat lain» pada perangkat lain agar pembelian yang sama bisa dipakai. Jangan tunjukkan ke orang lain)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Halaman pengelolaan tidak bisa dibuka. Coba lagi sebentar lagi.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Setelah shift malam (tampilkan pilihan sarapan kapan saja)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Setelah shift malam (tampilkan pilihan sarapan kapan saja)",
+    "塩分が多めの目安": "Cenderung asin (perkiraan)",
+    "減塩（塩分の目安を表示）": "Kurangi garam (tampilkan perkiraan garam)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Jika aktif, hidangan yang cenderung asin diberi tanda “Cenderung asin (perkiraan)” dan sedikit lebih jarang muncul saat memilih menu (tidak pernah dikecualikan; menu yang sudah ditetapkan tidak berubah). Di daftar bumbu muncul catatan agar kecap asin, miso, garam, dashi, dan kaldu dipakai lebih sedikit.",
+    "材料の名前からの目安です。保証ではありません。": "Perkiraan kasar berdasarkan nama bahan. Bukan jaminan.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Pengaturan kurangi garam: coba pakai kecap asin, miso, garam, dashi, dan kaldu lebih sedikit."
 });

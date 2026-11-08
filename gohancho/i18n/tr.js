@@ -1966,5 +1966,10 @@ GOHAN_I18N('tr', {
     "特定商取引法に基づく表記": "Belirli Ticari İşlemler Yasası bildirimi",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Satın alma kimliği (kopyalayıp başka bir cihazda «Başka bir cihazın satın alma kimliğiyle geri yükle» alanına girerseniz aynı satın almayı kullanabilirsiniz. Başkalarına göstermeyin)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Yönetim sayfası açılamadı. Lütfen biraz sonra tekrar deneyin.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Gece vardiyası sonrası (kahvaltı girişini her saatte göster)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Gece vardiyası sonrası (kahvaltı girişini her saatte göster)",
+    "塩分が多めの目安": "Tuzu fazla olabilir (yaklaşık)",
+    "減塩（塩分の目安を表示）": "Az tuz (tuz ipucunu göster)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Açıkken, genellikle tuzlu olan yemeklerde “Tuzu fazla olabilir (yaklaşık)” işareti görünür ve menü seçerken biraz daha az önerilir (hiçbir zaman dışarıda bırakılmaz; belirlenmiş bir menü değişmez). Baharat listesinde soya sosu, miso, tuz, dashi ve bulyonu az kullanmanızı öneren bir not görünür.",
+    "材料の名前からの目安です。保証ではありません。": "Malzeme adlarına dayalı yaklaşık bir ipucudur. Garanti değildir.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Az tuz ayarı: soya sosu, miso, tuz, dashi ve bulyonu az kullanmayı deneyin."
 });

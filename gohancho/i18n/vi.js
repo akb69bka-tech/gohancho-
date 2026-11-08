@@ -1966,5 +1966,10 @@ GOHAN_I18N('vi', {
     "特定商取引法に基づく表記": "Thông báo theo Luật Giao dịch thương mại cụ thể của Nhật Bản",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID mua (sao chép và nhập vào «Khôi phục bằng ID mua của thiết bị khác» trên thiết bị khác để dùng cùng lượt mua. Đừng cho người khác xem)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Không mở được trang quản lý. Vui lòng thử lại sau ít phút.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Sau ca đêm (hiện mục bữa sáng vào mọi giờ)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Sau ca đêm (hiện mục bữa sáng vào mọi giờ)",
+    "塩分が多めの目安": "Hơi mặn (ước chừng)",
+    "減塩（塩分の目安を表示）": "Giảm muối (hiện mức mặn ước chừng)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Khi bật, các món thường mặn sẽ có dấu “Hơi mặn (ước chừng)” và được gợi ý ít hơn một chút khi chọn thực đơn (không bao giờ bị loại; thực đơn đã chốt thì giữ nguyên). Ở phần gia vị sẽ có lời nhắc nêm nước tương, miso, muối, dashi và nước dùng ít lại.",
+    "材料の名前からの目安です。保証ではありません。": "Chỉ là ước chừng dựa trên tên nguyên liệu, không phải bảo đảm.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Cài đặt giảm muối: thử nêm nước tương, miso, muối, dashi và nước dùng ít hơn."
 });

@@ -1966,5 +1966,10 @@ GOHAN_I18N('pt-BR', {
     "特定商取引法に基づく表記": "Aviso conforme a Lei Japonesa de Transações Comerciais Específicas",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "ID de compra (copie e insira em «Restaurar com o ID de compra de outro dispositivo» em outro dispositivo para usar a mesma compra. Não mostre a ninguém)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Não foi possível abrir a página de gerenciamento. Tente novamente em instantes.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Após o turno da noite (mostrar o café da manhã a qualquer hora)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Após o turno da noite (mostrar o café da manhã a qualquer hora)",
+    "塩分が多めの目安": "Mais salgado (referência)",
+    "減塩（塩分の目安を表示）": "Menos sal (mostrar referência de sal)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Ao ativar, pratos que costumam ser salgados recebem a marca “Mais salgado (referência)” e aparecem um pouco menos na escolha do cardápio (nunca são excluídos; um cardápio já definido não muda). Na lista de temperos, aparece um lembrete para ir com calma no shoyu, missô, sal, dashi e caldo.",
+    "材料の名前からの目安です。保証ではありません。": "Referência aproximada pelos nomes dos ingredientes. Não é uma garantia.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Configuração de menos sal: vá com calma no shoyu, missô, sal, dashi e caldo."
 });

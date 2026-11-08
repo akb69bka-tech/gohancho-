@@ -1967,5 +1967,10 @@ GOHAN_I18N('en', {
     "特定商取引法に基づく表記": "Specified Commercial Transactions Act notice",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Purchase ID (copy it and enter it under “Restore with another device’s purchase ID” on another device to use the same purchase. Do not show it to others)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Could not open the management page. Please try again in a moment.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "After night shift (show the breakfast entry at any hour)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "After night shift (show the breakfast entry at any hour)",
+    "塩分が多めの目安": "Higher in salt (rough guide)",
+    "減塩（塩分の目安を表示）": "Low-salt mode (show salt guide)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "When on, dishes that tend to be salty get a \"Higher in salt (rough guide)\" mark and are shown a little less often when picking a menu (never removed; a menu you have already set stays as it is). In the seasoning list, a note suggests going easy on soy sauce, miso, salt, dashi and stock.",
+    "材料の名前からの目安です。保証ではありません。": "A rough guide based on ingredient names. Not a guarantee.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Low-salt setting: try going easy on soy sauce, miso, salt, dashi and stock."
 });

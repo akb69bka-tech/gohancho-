@@ -1966,5 +1966,10 @@ GOHAN_I18N('de', {
     "特定商取引法に基づく表記": "Angaben nach dem japanischen Gesetz über bestimmte Handelsgeschäfte",
     "購入ID（コピーして、別の端末の「別の端末の購入IDで復元」に入れると、同じ購入を使えます。他の人には見せないでください）": "Kauf-ID (kopieren und auf einem anderen Gerät unter „Mit der Kauf-ID eines anderen Geräts wiederherstellen“ eingeben, um denselben Kauf zu nutzen. Nicht weitergeben)",
     "管理ページを開けませんでした。少し待ってからお試しください": "Die Verwaltungsseite konnte nicht geöffnet werden. Bitte gleich noch einmal versuchen.",
-    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Nach der Nachtschicht (Frühstückseinstieg zu jeder Uhrzeit zeigen)"
+    "夜勤明け（朝ごはんの入口を、時間にかかわらず出す）": "Nach der Nachtschicht (Frühstückseinstieg zu jeder Uhrzeit zeigen)",
+    "塩分が多めの目安": "Eher salzig (grobe Orientierung)",
+    "減塩（塩分の目安を表示）": "Salzarm (Salz-Hinweis anzeigen)",
+    "オンにすると、塩分が多めになりがちな料理に「塩分が多めの目安」の印を出し、献立のえらびで少し出にくくします（外しはしません。決めた献立は変えません）。調味の欄には、醤油・味噌・塩・だし・スープの素を控えめにする一言を添えます。": "Wenn aktiv, bekommen Gerichte, die oft salzig sind, die Markierung „Eher salzig (grobe Orientierung)“ und werden bei der Menüwahl etwas seltener vorgeschlagen (nie ausgeschlossen; ein bereits festgelegtes Menü bleibt unverändert). Bei den Gewürzen steht ein Hinweis, Sojasauce, Miso, Salz, Dashi und Brühe sparsam zu verwenden.",
+    "材料の名前からの目安です。保証ではありません。": "Grobe Orientierung anhand der Zutatennamen. Keine Garantie.",
+    "減塩の設定：醤油・味噌・塩・だし・スープの素は、控えめに入れてみましょう。": "Einstellung Salzarm: Sojasauce, Miso, Salz, Dashi und Brühe lieber sparsam verwenden."
 });
