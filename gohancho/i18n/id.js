@@ -1984,5 +1984,6 @@ GOHAN_I18N('id', {
     "道具から料理を探す": "Cari hidangan berdasarkan alat",
     "道具から探す": "Cari berdasarkan alat",
     "{tool}で作る主菜（{n}品）": "Hidangan utama dengan {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Pilih alat untuk melihat hidangan utama yang bisa dibuat dengannya."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pilih alat untuk melihat hidangan utama yang bisa dibuat dengannya.",
+    "形がちがうので入れ替えられません": "Tidak bisa diganti: jenis hidangannya berbeda"
 });

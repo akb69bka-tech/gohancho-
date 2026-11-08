@@ -1157,7 +1157,7 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .p2-link{background:none;border:0;color:var(--ink);font:inherit;font-size:var(--fs14);text-decoration:underline;text-underline-offset:3px;min-height:var(--tap-sm,44px);padding:0 var(--s8);cursor:pointer}
 .p2-link[disabled]{opacity:.5;cursor:default}
 .p2-skip{gap:var(--s12)}.p2-skip .actionbar{position:static;margin:0;background:none;padding:0}
-.cond-tools .btn,.tool-list .btn{min-height:44px}.cond-tools .chips,.tool-chips{gap:8px}.tool-count{margin:6px 0 4px}
+.cond-tools .btn,.tool-list .btn{min-height:44px}.cond-tools .chips,.tool-chips{gap:8px}.tool-count{margin:6px 0 4px}.tool-off{opacity:.55}.tool-off .btn{pointer-events:none}.tool-off-note{color:var(--muted,inherit)}
 .swap-list .item{display:flex;align-items:center;gap:var(--s12)}.swap-list .item .t{flex:1;min-width:0}.swap-th{flex:none;width:44px;height:44px;display:block;overflow:hidden;border-radius:var(--r-sm)}.swap-th>*{width:44px!important;height:44px!important}
 .avoid-note{display:flex;align-items:center;gap:var(--s8);flex-wrap:wrap}
 .greet .stage-line{font-size:var(--fs14);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -12629,12 +12629,14 @@ function toolFieldHtml(){
 function toolsSheetHtml(){
     const list = toolShown(), k = session.tool, now = new Set(menuIds());
     const rs = k ? toolMains(k).filter(r => !now.has(r.id)) : [];
+    const cur = session.menu && session.menu.items[0] && session.menu.items[0].r, bowl = cur ? isBowlMain(cur) : null;   // 「かえる」と同じ制限: 主菜の形（ご飯もの・麺／ふつうの主菜）が同じ料理だけ入れ替えられる（ご飯・副菜・汁ものの欄が動かないように）
     return `<h2>${esc(t('道具から探す'))}</h2>
         <div class="chips tool-chips" role="group" aria-label="${esc(t('道具'))}">${list.map(x => `<button class="chip" data-act="tool-set" data-k="${x.k}" aria-pressed="${k === x.k}">${esc(x.l())}</button>`).join('')}</div>
         ${k ? `<p class="small muted tool-count">${esc(t('{tool}で作る主菜（{n}品）', {tool: toolLabel(k), n: rs.length}))}</p>` : `<p class="small muted">${esc(t('道具を選ぶと、その道具で作る主菜が出ます。'))}</p>`}
-        <div class="list swap-list tool-list">${k ? (rs.length ? rs.map(r => `<div class="item"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}</div><button class="btn sm" data-act="tool-pick" data-id="${esc(r.id)}">${esc(t('これにする'))}</button></div>`).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`) : ''}</div>
+        <div class="list swap-list tool-list">${k ? (rs.length ? rs.map(r => { const off = cur && isBowlMain(r) !== bowl; return `<div class="item${off ? ' tool-off' : ''}"><span class="swap-th">${thumbHtml(r)}</span><div class="t"><b>${esc(r.name)}</b><div class="s">${dishFacts(r)}</div>${algListHtml(r)}${off ? `<div class="s tool-off-note">${esc(t('形がちがうので入れ替えられません'))}</div>` : ''}</div><button class="btn sm" data-act="tool-pick" data-id="${esc(r.id)}" ${off ? 'disabled aria-disabled="true"' : ''}>${esc(t('これにする'))}</button></div>`; }).join('') : `<div class="empty">${esc(t('合う料理がありません'))}</div>`) : ''}</div>
         <div class="row"><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
+function toolKindOff(r){ const cur = session.menu && session.menu.items[0] && session.menu.items[0].r; return !!cur && isBowlMain(r) !== isBowlMain(cur); }
 function toolOkSheetHtml(){
     return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
         <p>${esc(t('変わるのはこの1品だけです。買い物メモも変わります。'))}</p>
@@ -14607,10 +14609,10 @@ document.addEventListener('click', e => {
         case 'swap-pick': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet, r = byId(el.dataset.id); closeSheet(); if (r) swapApply(s0.i, r, s0.ok); break; }
         case 'tool-set': { const k = el.dataset.k; session.tool = session.tool === k ? null : k; if (sheet) renderSheet(); else render(); break; }   // 今日使う道具。いまの献立・決めた献立は変えない
         case 'tool-find': sheet = {kind: 'tools'}; renderSheet(); break;
-        case 'tool-pick': { const r = byId(el.dataset.id); if (!r || !session.menu || !session.menu.items[0] || slotOut(r) || allergyConflict(r)) break;   // アレルギー・苦手に当たる料理は、一覧から押されても入れない
+        case 'tool-pick': { const r = byId(el.dataset.id); if (!r || !session.menu || !session.menu.items[0] || slotOut(r) || allergyConflict(r) || toolKindOff(r)) break;   // アレルギー・苦手に当たる料理・形のちがう主菜は、一覧から押されても入れない
             if (menuIsDecided()){ sheet = {kind: 'tool-ok', id: r.id}; renderSheet(); break; }
             closeSheet(); swapApply(0, r, false); break; }
-        case 'tool-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'tool-ok') break; const r = byId(s0.id); closeSheet(); if (r && !slotOut(r) && !allergyConflict(r) && session.menu && session.menu.items[0]) swapApply(0, r, true); break; }
+        case 'tool-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'tool-ok') break; const r = byId(s0.id); closeSheet(); if (r && !slotOut(r) && !allergyConflict(r) && !toolKindOff(r) && session.menu && session.menu.items[0]) swapApply(0, r, true); break; }
         case 'swap-none': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet; closeSheet(); swapApply(s0.i, null, s0.ok); break; }
         case 'rice-info': sheet = {kind: 'rice'}; renderSheet(); break;
         case 'tomorrow-open': sheet = {kind: 'tomorrow'}; renderSheet(); break;

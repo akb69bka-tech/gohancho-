@@ -1984,5 +1984,6 @@ GOHAN_I18N('fr', {
     "道具から料理を探す": "Trouver des plats par ustensile",
     "道具から探す": "Chercher par ustensile",
     "{tool}で作る主菜（{n}品）": "Plats principaux avec {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Choisissez un ustensile pour voir les plats principaux qu'on peut faire avec."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Choisissez un ustensile pour voir les plats principaux qu'on peut faire avec.",
+    "形がちがうので入れ替えられません": "Échange impossible : type de plat différent"
 });

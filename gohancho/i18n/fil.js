@@ -1984,5 +1984,6 @@ GOHAN_I18N('fil', {
     "道具から料理を探す": "Maghanap ng putahe ayon sa gamit",
     "道具から探す": "Maghanap ayon sa gamit",
     "{tool}で作る主菜（{n}品）": "Mga pangunahing putahe gamit ang {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Pumili ng gamit para makita ang mga pangunahing putaheng magagawa rito."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pumili ng gamit para makita ang mga pangunahing putaheng magagawa rito.",
+    "形がちがうので入れ替えられません": "Hindi mapapalitan: iba ang uri ng putahe"
 });

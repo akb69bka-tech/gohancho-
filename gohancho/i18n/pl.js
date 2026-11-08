@@ -1984,5 +1984,6 @@ GOHAN_I18N('pl', {
     "道具から料理を探す": "Szukaj dań według sprzętu",
     "道具から探す": "Szukaj według sprzętu",
     "{tool}で作る主菜（{n}品）": "Dania główne ze sprzętem: {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Wybierz sprzęt, aby zobaczyć dania główne, które się nim przyrządza."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Wybierz sprzęt, aby zobaczyć dania główne, które się nim przyrządza.",
+    "形がちがうので入れ替えられません": "Nie można zamienić: inny rodzaj dania"
 });

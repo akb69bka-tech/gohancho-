@@ -1985,5 +1985,6 @@ GOHAN_I18N('en', {
     "道具から料理を探す": "Find dishes by tool",
     "道具から探す": "Find by tool",
     "{tool}で作る主菜（{n}品）": "Mains made with {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Pick a tool to see the mains you can make with it."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Pick a tool to see the mains you can make with it.",
+    "形がちがうので入れ替えられません": "Can't swap: different type of dish"
 });

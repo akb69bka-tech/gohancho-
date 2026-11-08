@@ -1984,5 +1984,6 @@ GOHAN_I18N('vi', {
     "道具から料理を探す": "Tìm món theo dụng cụ",
     "道具から探す": "Tìm theo dụng cụ",
     "{tool}で作る主菜（{n}品）": "Món chính dùng {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Chọn một dụng cụ để xem các món chính nấu bằng dụng cụ đó."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Chọn một dụng cụ để xem các món chính nấu bằng dụng cụ đó.",
+    "形がちがうので入れ替えられません": "Không thể đổi: khác loại món"
 });

@@ -1984,5 +1984,6 @@ GOHAN_I18N('de', {
     "道具から料理を探す": "Gerichte nach Gerät suchen",
     "道具から探す": "Nach Gerät suchen",
     "{tool}で作る主菜（{n}品）": "Hauptgerichte mit {tool} ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Wähle ein Gerät, um die Hauptgerichte dafür zu sehen."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Wähle ein Gerät, um die Hauptgerichte dafür zu sehen.",
+    "形がちがうので入れ替えられません": "Nicht tauschbar: andere Art von Gericht"
 });

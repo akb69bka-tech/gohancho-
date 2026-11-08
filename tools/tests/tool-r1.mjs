@@ -225,9 +225,50 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
     ok(await p.evaluate(() => { sheet = {kind: 'tools'}; session.tool = null; renderSheet(); const r = document.querySelectorAll('#sheet-root [data-act=tool-pick]').length === 0 && !!document.querySelector('#sheet-root .tool-chips'); closeSheet(); return r; }), 'T5 道具を選ぶまでは一覧が空');
     await ctx.close();
 }
+// ---------- T8 入れ替えで、主食・副菜・汁ものの欄が1つも動かない（全道具×全主菜）。形のちがう主菜は灰色で押せない ----------
+{
+    const {ctx, p} = await open('ja');
+    const res = await p.evaluate(() => {
+        const out = {bad: [], n: 0, off: 0, offOk: 0, kinds: {}};
+        const snap = () => JSON.stringify([session.menu.items.slice(1).map(x => [x.slot, x.r && x.r.id]), (() => { try { const rc = riceRow(session.menu.items.filter(x => x.r)); return rc ? [rc.name, rc.go] : null; } catch (e) { return 'err'; } })(), session.menu.items.length]);
+        for (const want of [false, true]){
+            let ok0 = false; for (let i = 0; i < 300 && !ok0; i++){ session.rejected.clear(); newMenu(); const m = session.menu.items[0].r; ok0 = m && !!isBowlMain(m) === want; }
+            if (!ok0) continue;
+            out.kinds[want] = session.menu.items[0].r.id;
+            for (const x of TOOLS){
+                session.tool = x.k; sheet = {kind: 'tools'}; renderSheet();
+                const btns = [...document.querySelectorAll('#sheet-root [data-act=tool-pick]')];
+                const cur = session.menu.items[0].r;
+                btns.forEach(bt => {
+                    const r = byId(bt.dataset.id), differs = isBowlMain(r) !== isBowlMain(cur);
+                    if (differs){ out.off++; if (bt.disabled && bt.closest('.item').querySelector('.tool-off-note')) out.offOk++; }
+                    else if (bt.disabled) out.bad.push('disabled:' + r.id);
+                });
+                closeSheet();
+                for (const r of toolMains(x.k)){
+                    if (session.menu.items[0].r.id === r.id || menuIds().includes(r.id)) continue;
+                    const before = snap(), main0 = session.menu.items[0].r;
+                    // 押せない料理を強制しても入らない
+                    sheet = {kind: 'tools'}; session.tool = x.k; renderSheet();
+                    const bt = document.createElement('button'); bt.dataset.act = 'tool-pick'; bt.dataset.id = r.id; document.querySelector('#sheet-root').appendChild(bt); bt.click();
+                    const forcedIn = session.menu.items[0].r !== main0;
+                    if (isBowlMain(r) !== isBowlMain(main0)){ if (forcedIn) out.bad.push('forced:' + r.id); closeSheet(); continue; }
+                    out.n++;
+                    if (!forcedIn) out.bad.push('notapplied:' + r.id);
+                    if (snap() !== before) out.bad.push(x.k + ':' + main0.id + '->' + r.id);
+                    session.menu.items[0].r = main0; closeSheet();
+                }
+            }
+        }
+        session.tool = null; return out;
+    });
+    ok(res.n > 100 && res.bad.length === 0, `T8 全道具×全主菜で主食・副菜・汁ものが動かない（${res.n}件）: ${res.bad.slice(0, 5)}`);
+    ok(res.off > 0 && res.off === res.offOk, `T8 形がちがう主菜は灰色で押せず注記が出る: ${res.offOk}/${res.off}`);
+    await ctx.close();
+}
 // ---------- T6 17言語 ----------
 {
-    const KEYS = ['土鍋', '圧力鍋', 'ホットプレート', '鉄板', '炭火・BBQ', '蒸し器', '揚げ物鍋', '火を使わない', '選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。', '道具から料理を探す', '道具から探す', '{tool}で作る主菜（{n}品）', '道具を選ぶと、その道具で作る主菜が出ます。'];
+    const KEYS = ['土鍋', '圧力鍋', 'ホットプレート', '鉄板', '炭火・BBQ', '蒸し器', '揚げ物鍋', '火を使わない', '選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。', '道具から料理を探す', '道具から探す', '{tool}で作る主菜（{n}品）', '道具を選ぶと、その道具で作る主菜が出ます。', '形がちがうので入れ替えられません'];
     const REUSED = ['道具', '魚焼きグリル', '鍋', 'フライパン', 'オーブン', 'トースター', '電子レンジ', '炊飯器', 'ミキサー', 'これにする', '合う料理がありません'];
     const LANGS = 'ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant'.split(' ');
     const keysJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/i18n/keys.json'), 'utf8'));

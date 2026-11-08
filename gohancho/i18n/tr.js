@@ -1984,5 +1984,6 @@ GOHAN_I18N('tr', {
     "道具から料理を探す": "Araca göre yemek bul",
     "道具から探す": "Araca göre ara",
     "{tool}で作る主菜（{n}品）": "{tool} ile yapılan ana yemekler ({n})",
-    "道具を選ぶと、その道具で作る主菜が出ます。": "Bir araç seçin; onunla yapılan ana yemekler görünür."
+    "道具を選ぶと、その道具で作る主菜が出ます。": "Bir araç seçin; onunla yapılan ana yemekler görünür.",
+    "形がちがうので入れ替えられません": "Değiştirilemez: yemeğin türü farklı"
 });
