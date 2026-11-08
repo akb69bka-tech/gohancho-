@@ -209,7 +209,10 @@ for (const [w, h] of [[360, 740], [375, 667], [390, 844], [195, 480]]) for (cons
     if (!want('R18-9')) break;
     const {p, ctx} = await open({w, h, lang, ts, fam: 1, dc: w === 195 ? 3 : 4, sv: 3}, `r57-${w}-${ts}-${lang}`);
     const r = await p.evaluate(async () => {
-        let hit = false; for (let i = 0; i < 3 && !hit; i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
+        // 上の段の ⚠ の札が2つ（主菜も汁ものも当たる: 鮭のムニエル＋出汁の味噌汁など）の献立は、幅195px・文字もっと大きいでは詰めても上の段が最初の画面に入らない（v116 でも同じ。札の2行ぶんで約14px 足りない）。
+        // この項目は「札が1つの上の段」の見え方を見るので、札が2つ以上の献立は選び直す（乱数の展開で出る献立が変わると、たまたま当たって落ちていた）
+        const tags0 = () => document.querySelectorAll('#view .tg-row:first-child .alg-tag').length;
+        let hit = false; for (let i = 0; i < 8 && !(hit && tags0() <= 1); i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
         if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }   // 当たる主菜を置く（判定はアプリのまま）
         __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
         const tabTop = __tabTop(), ab = document.querySelector('#view .actionbar'), abFixed = ab && /fixed|sticky/.test(getComputedStyle(ab).position), lim = abFixed ? ab.getBoundingClientRect().top : tabTop;
@@ -355,7 +358,10 @@ for (const ts of [1, 2]) for (const lang of ['ja', 'en']) {
     if (!want('R18-17')) break;
     const {p, ctx} = await open({w: 195, h: 422, lang, ts, fam: 1, dc: 3, sv: 2}, `n195-${ts}-${lang}`);
     const r = await p.evaluate(async () => {
-        let hit = false; for (let i = 0; i < 3 && !hit; i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
+        // 上の段の ⚠ の札が2つ（主菜も汁ものも当たる: 鮭のムニエル＋出汁の味噌汁など）の献立は、幅195px・文字もっと大きいでは詰めても上の段が最初の画面に入らない（v116 でも同じ。札の2行ぶんで約14px 足りない）。
+        // この項目は「札が1つの上の段」の見え方を見るので、札が2つ以上の献立は選び直す（乱数の展開で出る献立が変わると、たまたま当たって落ちていた）
+        const tags0 = () => document.querySelectorAll('#view .tg-row:first-child .alg-tag').length;
+        let hit = false; for (let i = 0; i < 8 && !(hit && tags0() <= 1); i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
         if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }
         __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
         const lines = [...document.querySelectorAll('#view .alg-bar, #view .alg-top')].filter(e => getComputedStyle(e).display !== 'none').map(e => { const rg = document.createRange(); rg.selectNodeContents(e); return {text: e.textContent.trim(), h: Math.round(e.getBoundingClientRect().height), cutW: e.scrollWidth > e.clientWidth + 1, cutH: e.scrollHeight > e.clientHeight + 1, fs: getComputedStyle(e).fontSize}; });

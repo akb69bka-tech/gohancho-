@@ -57,7 +57,8 @@ await reset();
     const r = await p.evaluate(() => {
         S.settings.lowSalt = true; save();
         const o = {};
-        const tray = id => { setTab('today'); session.menu = null; render(); setMenuMain(recipeById(id)); render(); return [...document.querySelectorAll('.tray .alg-tag.salt')].map(x => x.textContent.trim()); };
+        const tray = id => { setTab('today'); session.menu = null; render(); setMenuMain(recipeById(id)); render(); // 見る料理の器だけの印（お膳のほかの席は乱数で決まる献立。たまたま塩分が多めの汁ものなどが並ぶと2つになって落ちていた）
+            return [...document.querySelectorAll('.tray .spot')].filter(sp => sp.querySelector('[data-act="open"][data-id="' + id + '"]')).flatMap(sp => [...sp.querySelectorAll('.alg-tag.salt')].map(x => x.textContent.trim())); };
         o.himono = tray('ajihimono'); o.ramen = tray('ramen'); o.kimchi = tray('kimchichige'); o.plain = tray('nikujaga');
         o.badgeSalt = badges(recipeById('ajihimono')).includes('salt'); o.badgePlain = badges(recipeById('nikujaga')).includes('salt');
         o.list = algListHtml(recipeById('hakusaiasazuke')).includes('salt');

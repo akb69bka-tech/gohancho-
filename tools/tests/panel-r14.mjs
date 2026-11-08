@@ -131,6 +131,9 @@ for (const how of ['self', 'fam']){
             if (how === 'self') S.settings.allergens = [a];
             else { const fk = Object.keys(FAM_ALG).find(f => FAM_ALG[f].includes(a)); S.family = [{id: 'r14', name: '花子', allergy: ['@' + fk], avoid: ['@' + fk]}]; }
             save();   // 選び直し（refreshWeek）は通さない: 当たる料理がプランに残っている
+            // 当たる材料が「あれば」の任意（卵 2個? など）だけの料理は、買い物メモに行が入らない（任意は買う物に数えない）ので、⚠ の行の対象にならない。
+            //  朝食を増やして乱数の展開が変わると、そういう組み合わせが先に見つかるようになった（アプリの不具合ではない）。別の組み合わせを探す
+            { const g0 = allergyCtx(); if (!visiblePlanDays().flatMap(x => dayDishes(x)).some(r => (swappedRecipe(r) || r).items.some(i => !i.opt && itemAvoided(i, g0)))){ S.settings.allergens = []; S.family = []; save(); continue; } }
             const flagged = [...new Set(visiblePlanDays().flatMap(x => dayDishes(x)).filter(r => allergyConflict(r)))].map(r => r.name);
             const list = shoppingList(), g = allergyCtx();
             // ⚠ のある行は、プランの当たる料理の材料で itemAvoided が当たるもの。⚠ のない行は、どの料理の材料でも当たらない
