@@ -618,7 +618,6 @@ GOHAN_I18N('en', {
     "すべて消す": "Erase everything",
     "すべてのデータを消す": "Erase all data",
     "このアプリについて": "About",
-    "あなたの家族・アレルギー・苦手な食材": "Family, allergies & foods to avoid",
     "献立の好み": "Menu preferences",
     "表示と言語": "Display & language",
     "データとバックアップ": "Data & backup",
@@ -2021,5 +2020,13 @@ GOHAN_I18N('en', {
     "カロリーの目安|ふつう": "Regular",
     "カロリーの目安|軽め": "Lighter",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diet mode (suggest dishes with a lower calorie estimate more often)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "When on, menus suggest dishes with a lower calorie estimate more often and fried dishes a little less (nothing is removed, and a menu you've decided stays as it is). The meal total below the tray shows a \"Lighter\" or \"Regular\" mark."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "When on, menus suggest dishes with a lower calorie estimate more often and fried dishes a little less (nothing is removed, and a menu you've decided stays as it is). The meal total below the tray shows a \"Lighter\" or \"Regular\" mark.",
+    "家族・アレルギー": "Family & allergies",
+    "苦手・食の決まり": "Avoid & diet",
+    "献立": "Menus",
+    "モード": "Modes",
+    "スーパー": "Stores",
+    "データ": "Data",
+    "表示": "Display",
+    "プラン・その他": "Plan & more",
 });

@@ -58,7 +58,7 @@ for (const w of [195, 360, 390, 430]) for (const ts of [undefined, 1, 2]) for (c
 {
     const {p, ctx} = await open({hour: 21, tag: 'n3'});
     ok(!(await has(p)), 'N3 初期はOFF（21時は入口なし）');
-    await p.evaluate(() => { setTab('settings'); }); await p.waitForTimeout(300);
+    await p.evaluate(() => { setTab('settings'); setTabShow('mode'); }); await p.waitForTimeout(300);   // 設定はタブ分け（11/09）。夜勤明けは「モード」のタブの中
     const sw = await p.evaluate(() => { const c = document.querySelector('input[data-act=night-shift]'); if (!c) return null; c.scrollIntoView({block: 'center'}); const r = c.closest('label').getBoundingClientRect(); return {checked: c.checked, w: r.width, vw: innerWidth, h: r.height}; });
     ok(sw && !sw.checked && sw.w <= sw.vw && sw.h >= 20, 'N3 設定にスイッチがある: ' + JSON.stringify(sw));
     await p.click('input[data-act=night-shift]'); await p.waitForTimeout(300);

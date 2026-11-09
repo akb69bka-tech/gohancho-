@@ -89,7 +89,8 @@ for (const [ui, ts] of [['ja', 0], ['ja', 1], ['ja', 2], ['en', 2], ['ar', 1], [
     await sheetOpen(() => { askOpen(); sheet.nameEdit = true; renderSheet(); }, '家族に聞く');
     await sheetOpen(() => { wishSendOpen(); sheet.nameEdit = true; renderSheet(); }, '食べたいもの');
     await sheetOpen(() => openShare('menu'), '共有');
-    await p.click('[data-act="settings"]').catch(() => {}); await p.waitForTimeout(400); await openAll(); await measure('設定');
+    await p.click('[data-act="settings"]').catch(() => {}); await p.waitForTimeout(400);
+    for (const k of await p.evaluate(() => SET_TABS.map(x => x[0]))){ await p.evaluate(k => setTabShow(k), k); await openAll(); await measure('設定 ' + k); }   // 設定はタブ分け（11/09）。タブを1つずつ開いて測る（選んでいないタブは hidden）
     ok(inputs >= 6, `R147 ${ui} 文字${ts}: 入力欄を走査した（${inputs} 欄・試しの入れ物 ${probeN}）`);
     ok(found.length === 0, `R147 ${ui} 文字${ts}: 画面の入力欄は 16px 以上: ` + found.slice(0, 8).join(' / '));
     ok(probes.length === 0, `R147 ${ui} 文字${ts}: どの入れ物に置いた欄も 16px 以上: ` + probes.slice(0, 8).join(' / '));

@@ -245,7 +245,6 @@ GOHAN_I18N('vi', {
     "きのうまでのごはん、おつかれさまでした。今日の分をいっしょに考えましょう。": "Bạn đã lo bữa ăn rất tốt. Cùng nghĩ bữa hôm nay nhé.",
     "ここに登録した食材は次に開いたときも残ります": "Nguyên liệu thêm ở đây sẽ được lưu cho lần sau",
     "このアプリについて": "Giới thiệu",
-    "あなたの家族・アレルギー・苦手な食材": "Gia đình, dị ứng & nguyên liệu cần tránh",
     "献立の好み": "Sở thích thực đơn",
     "表示と言語": "Hiển thị & ngôn ngữ",
     "データとバックアップ": "Dữ liệu & sao lưu",
@@ -2020,5 +2019,13 @@ GOHAN_I18N('vi', {
     "カロリーの目安|ふつう": "Bình thường",
     "カロリーの目安|軽め": "Nhẹ hơn",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Chế độ ăn kiêng (gợi ý món có calo ước tính thấp hơn thường xuyên hơn)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”.",
+    "家族・アレルギー": "Gia đình & dị ứng",
+    "苦手・食の決まり": "Kiêng & chế độ ăn",
+    "献立": "Thực đơn",
+    "モード": "Chế độ",
+    "スーパー": "Cửa hàng",
+    "データ": "Dữ liệu",
+    "表示": "Hiển thị",
+    "プラン・その他": "Gói & khác",
 });

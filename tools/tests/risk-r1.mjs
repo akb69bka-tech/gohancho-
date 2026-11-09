@@ -46,11 +46,12 @@ for (const dark of [false, true]){
             .filter(e => e.getClientRects().length && !e.readOnly && !e.disabled).map(e => ({id: e.id || e.className || e.tagName, fs: parseFloat(getComputedStyle(e).fontSize)})).filter(x => x.fs < 16));
         r.forEach(x => small.add(`${where}: ${x.id} ${x.fs}px`));
     };
-    const openAll = async () => { for (let k = 0; k < 3; k++){ const ss = await p.$$('details:not([open]) > summary'); if (!ss.length) break; for (const s of ss) await s.click().catch(() => {}); await p.waitForTimeout(150); } };
+    const openAll = async () => { for (let k = 0; k < 3; k++){ const ss = await p.$$('details:not([open]) > summary >> visible=true'); /* 見えているものだけ（設定の選んでいないタブの中は hidden。押すと待ちきるまで止まる） */ if (!ss.length) break; for (const s of ss) await s.click().catch(() => {}); await p.waitForTimeout(150); } };
     await measure('今日');
     const n = (await p.$$('nav button')).length;
     for (let i = 0; i < n; i++){ const t = (await p.$$('nav button'))[i]; if (!t) break; await t.click().catch(() => {}); await p.waitForTimeout(400); await openAll(); await measure('タブ' + i); }
-    await p.click('[data-act="settings"]').catch(() => {}); await p.waitForTimeout(400); await openAll(); await measure('設定');
+    await p.click('[data-act="settings"]').catch(() => {}); await p.waitForTimeout(400);
+    for (const k of await p.evaluate(() => SET_TABS.map(x => x[0]))){ await p.evaluate(k => setTabShow(k), k); await openAll(); await measure('設定 ' + k); }   // 設定はタブ分け（11/09）。タブを1つずつ開いて測る（選んでいないタブは hidden）
     ok(n >= 4, `R2 下のタブが出ている（${n}）`);
     ok(small.size === 0, 'R2 入力欄の文字が16px以上: ' + [...small].join(' / '));
     await p.ctx.close();

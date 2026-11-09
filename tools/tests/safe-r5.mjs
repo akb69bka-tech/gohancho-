@@ -33,7 +33,8 @@ const sorted = a => JSON.stringify([...a].sort());
 {
     const { ctx, p } = await open('JP');
     // (a) 設定の画面のボタン
-    const openSettings = async () => { await p.evaluate(() => { setTab('settings'); }); await p.waitForTimeout(250);
+    const openSettings = async () => { await p.evaluate(() => { setTab('settings'); setTabShow('food'); }); await p.waitForTimeout(250);   // 設定はタブ分け（11/09）。苦手な食材は「苦手・食の決まり」のタブの中（ほかのタブを開いていると hidden で押せない）
+
         await p.evaluate(() => { document.querySelectorAll('#view details').forEach(d => { if (d.querySelector('.diet-bundle')) { let e = d; while (e){ if (e.tagName === 'DETAILS') e.open = true; e = e.parentElement; } } }); document.querySelectorAll('.avoid-more').forEach(d => { d.open = true; }); const e = document.querySelector('.diet-bundle'); if (e) e.scrollIntoView({block: 'center'}); }); await p.waitForTimeout(150); };
     const avoidNow = () => p.evaluate(() => S.settings.avoid.slice());
     for (const k of ['halal', 'vegi', 'vegan']){

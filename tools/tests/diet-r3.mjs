@@ -30,7 +30,7 @@ async function open(cc = 'JP', settings = {}, vp = { width: 390, height: 844 }){
 const FAM = { halal: ['pork', 'alcohol'], vegi: ['pork', 'chicken', 'beef', 'fish', 'shellfish'], vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy'] };
 const MARKS = ['入れない', 'بدون', 'weglassen', 'leave out', 'omitir', 'huwag isama', 'à omettre', 'न डालें', 'tidak dipakai', 'da omettere', '넣지 않음', 'pomiń', 'ไม่ใส่', 'koymayın', 'bỏ qua', '不放'];
 const openSettings = async p => {
-    await p.evaluate(() => { setTab('settings'); });
+    await p.evaluate(() => { setTab('settings'); setTabShow('food'); });   // 設定はタブ分け（11/09）。苦手な食材は「苦手・食の決まり」のタブの中（ほかのタブを開いていると hidden で押せない）
     await p.waitForTimeout(250);
     await p.evaluate(() => { document.querySelectorAll('#view details').forEach(d => { if (d.querySelector('.diet-bundle')) { let e = d; while (e){ if (e.tagName === 'DETAILS') e.open = true; e = e.parentElement; } } }); document.querySelectorAll('.avoid-more').forEach(d => { d.open = true; }); const e = document.querySelector('.diet-bundle'); if (e) e.scrollIntoView({block: 'center'}); });
     await p.waitForTimeout(150);

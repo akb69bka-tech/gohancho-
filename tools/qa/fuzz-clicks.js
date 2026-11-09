@@ -222,6 +222,7 @@ const ACTIONS = {
   },
   async avoidtoggle(p, A) {
     await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
+    await click(p, '#view .set-tab[data-k="food"]');   // 設定はタブ分け（11/09）。苦手な食材は「苦手・食の決まり」のタブを開いてから押す（ほかのタブの中は hidden）
     const sel = '[data-act="toggle-avoid"], [data-act="toggle-avoid-fam"]', n = await count(p, sel);
     if (!n) { await click(p, '[data-act="settings-back"]'); return null; }
     const k = A.p % n; if (!await click(p, sel, k)) { await click(p, '[data-act="settings-back"]'); return null; }
@@ -230,6 +231,7 @@ const ACTIONS = {
   },
   async alg(p, A) {
     await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
+    await click(p, '#view .set-tab[data-k="family"]');   // 設定はタブ分け（11/09）。アレルギー対策は「家族・アレルギー」のタブを開いてから押す
     const n = await count(p, '[data-act="alg-toggle"]');
     if (!n) { await click(p, '[data-act="settings-back"]'); return null; }
     const ferm = A.q % 5 === 0 && await count(p, 'input[data-act="alg-ferm"]');
@@ -254,6 +256,7 @@ const ACTIONS = {
   },
   async avoidswap(p) {
     await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
+    await click(p, '#view .set-tab[data-k="food"]');   // 設定はタブ分け（11/09）。置き換えのチェックは「苦手・食の決まり」のタブ
     if (!await count(p, 'input[data-act="avoid-swap"]')) { await click(p, '[data-act="settings-back"]'); return null; }
     await click(p, 'input[data-act="avoid-swap"]'); await p.waitForTimeout(250); await click(p, '[data-act="settings-back"]'); await p.waitForTimeout(250); await toToday(p);
     return { desc: '置き換えのチェック', pressed: null, o: {}, special: 'avoidchg' };
@@ -266,6 +269,7 @@ const ACTIONS = {
   },
   async lang(p, A) {
     await toToday(p); if (!await click(p, 'header.top [data-act="settings"]')) return null; await p.waitForTimeout(250);
+    await click(p, '#view .set-tab[data-k="display"]');   // 設定はタブ分け（11/09）。言語は「表示と言語」のタブ
     const v = ['en', 'ja', 'ko', 'es'][A.p % 4]; if (!await count(p, '[data-act="ui-lang"][data-v="' + v + '"]')) { await click(p, '[data-act="settings-back"]'); return null; }
     await click(p, '[data-act="ui-lang"][data-v="' + v + '"]'); await p.waitForTimeout(1800); await click(p, '[data-act="settings-back"]'); await p.waitForTimeout(300); await toToday(p); await ready(p);
     return { desc: '言語=' + v, pressed: null, o: { idsOnly: true }, special: 'idsonly' };

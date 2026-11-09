@@ -618,7 +618,6 @@ GOHAN_I18N('pt-BR', {
     "すべて消す": "Apagar tudo",
     "すべてのデータを消す": "Apagar todos os dados",
     "このアプリについて": "Sobre",
-    "あなたの家族・アレルギー・苦手な食材": "Família, alergias e ingredientes a evitar",
     "献立の好み": "Preferências de cardápio",
     "表示と言語": "Tela e idioma",
     "データとバックアップ": "Dados e backup",
@@ -2020,5 +2019,13 @@ GOHAN_I18N('pt-BR', {
     "カロリーの目安|ふつう": "Normal",
     "カロリーの目安|軽め": "Mais leve",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Modo dieta (sugerir com mais frequência pratos com menos calorias estimadas)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Ligado, o cardápio sugere com mais frequência pratos com menos calorias estimadas e um pouco menos de frituras (nada é excluído e um cardápio já decidido não muda). Abaixo da bandeja, o total mostra “Mais leve” ou “Normal”."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Ligado, o cardápio sugere com mais frequência pratos com menos calorias estimadas e um pouco menos de frituras (nada é excluído e um cardápio já decidido não muda). Abaixo da bandeja, o total mostra “Mais leve” ou “Normal”.",
+    "家族・アレルギー": "Família e alergias",
+    "苦手・食の決まり": "Evitar e dieta",
+    "献立": "Cardápios",
+    "モード": "Modos",
+    "スーパー": "Mercados",
+    "データ": "Dados",
+    "表示": "Tela",
+    "プラン・その他": "Plano e mais",
 });
