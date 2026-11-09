@@ -69,7 +69,7 @@
         }catch(e){
             try{
                 G.note('expbox', tx('ファイルにできなかったので、下の欄に文字を出しました。コピーして保管してください', ja ? 'ファイルにできなかったので、下の欄に文字を出しました。コピーして保管してください' : 'Could not make a file. The text is in the box below; please copy and keep it.'), [{k:'close', label: tx('閉じる', FB.close)}]);
-                var ta = document.createElement('textarea'); ta.readOnly = true; ta.value = text; ta.rows = 6; ta.style.cssText = 'width:100%;font:inherit;box-sizing:border-box';
+                var ta = document.createElement('textarea'); ta.readOnly = true; ta.value = text; ta.rows = 6; ta.style.cssText = 'width:100%;font:inherit;font-size:max(16px,1em);box-sizing:border-box';
                 document.getElementById('gh-note-expbox').insertBefore(ta, document.querySelector('#gh-note-expbox .row')); ta.select();
             }catch(e2){}
         }
@@ -189,7 +189,7 @@ html{overflow-x:clip}body{overflow-x:clip;background:var(--bg);color:var(--ink);
 .wrap{max-width:680px;margin:0 auto;padding-block:var(--s16) 128px;display:flex;flex-direction:column;gap:var(--s24)}
 #view{display:flex;flex-direction:column;gap:var(--s32)}
 h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;text-wrap:balance;line-height:var(--lh-tight);letter-spacing:var(--ls-head);font-feature-settings:"palt"}   /* 名前は明朝・太さ600（かなを詰めて字間をあける） */
-button,input,select,textarea{font:inherit;color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}input,select,textarea{font-size:max(16px,1em)}   /* R147: iPhone の Safari は 16px 未満の入力欄を押すと拡大して戻らない。親の字（文字の大きさの設定）を受け継ぎ、16px 未満のときだけ 16px にする */
 button{cursor:pointer}
 a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:1px}   /* リンクはこげ茶＋下線 */
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}   /* フォーカスの輪は柿色 */
@@ -707,7 +707,7 @@ html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: �
 .tiny{font-size:.75rem;line-height:1.5;margin:0}
 /* 設定 */
 html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
-.left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.chips.left-chips .chip{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:40px;padding-block:0}/* .chips:not(.scroll) .chip（折り返す）より強く。料理名で高さが変わると、まるごと入れ替えのたびに下の欄が動く */   /* 料理名の長さで、列の折り返しと高さが変わらないように（2列・1行は…で切る） */.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
+.left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.chips.left-chips .chip{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:40px;padding-block:0}/* .chips:not(.scroll) .chip（折り返す）より強く。料理名で高さが変わると、まるごと入れ替えのたびに下の欄が動く */   /* 料理名の長さで、列の折り返しと高さが変わらないように（2列・1行は…で切る） */.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;font-size:max(16px,1em);padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
 /* 設定（v3）: 上に目次。7つのまとまりに分け、「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま先頭に。ほかは見出し1行に畳む */
 .settings{gap:var(--s16)}
@@ -894,7 +894,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .sheet .btn.msg{background:var(--msg);border-color:var(--msg);color:#06160c!important}
 .sheet .btn.msg.none{color:var(--accent-ink)!important}
 .sheet .btn.msg::before{display:none}
-.share-text{min-height:150px;font-size:.88rem;line-height:1.6;background:var(--surface)}
+.share-text{min-height:150px;font-size:max(16px,.88rem);line-height:1.6;background:var(--surface)}
 .shop .shop-row{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:10px 14px;min-height:60px;border-top:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .shop .shop-row:active{background:var(--line)}
 .shop .shop-row:first-child{border-top:0}
@@ -994,7 +994,7 @@ html[data-ts="2"] .week.wk2 .item{grid-template-columns:auto minmax(0,1fr) auto}
 @keyframes rise{from{transform:translateY(8px)}to{transform:none}}
 .pop{animation:rise .28s ease-out}
 .tray .vessel.rise-in{animation:rise .35s ease-out backwards}   /* 入れ替わった料理の器だけ（描き直しのたびに全部が弾むと、押していない料理まで動いて見える） */
-.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-sum > .small{white-space:nowrap;flex:none}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media (max-width:400px){.cond-sum{flex-wrap:wrap;row-gap:0}.cond-sum > span:first-child{flex:1 1 0;min-width:0}.cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}}html[data-ts] .cond-sum{flex-wrap:wrap;row-gap:0}html[data-ts] .cond-sum > span:first-child{flex:1 1 0;min-width:0}html[data-ts] .cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}   /* 狭い・文字が大きいときだけ2行まで。いつも2行ぶんの高さを取り、気分を変えても下がずれない */.cond-sum > span:first-child{flex:0 1 auto}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
+.cond .field{gap:4px}details.cond:not([open]){padding-block:2px}details.eat-plan:not([open]){padding-block:2px}.eat-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}.eat-sum > .small{white-space:nowrap;flex:none}.eat-row{align-items:center;gap:10px;margin-block:6px}.eat-row input[type=time]{min-height:44px;font:inherit;font-size:max(16px,1em)}.eat-line{margin:6px 0}.cond-sum{cursor:pointer;display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-height:44px;font-weight:600}.cond-sum > .small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media (max-width:400px){.cond-sum{flex-wrap:wrap;row-gap:0}.cond-sum > span:first-child{flex:1 1 0;min-width:0}.cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}}html[data-ts] .cond-sum{flex-wrap:wrap;row-gap:0}html[data-ts] .cond-sum > span:first-child{flex:1 1 0;min-width:0}html[data-ts] .cond-sum > .small{order:3;flex:0 0 100%;overflow-wrap:anywhere;white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;line-height:1.35;min-height:2.7em}   /* 狭い・文字が大きいときだけ2行まで。いつも2行ぶんの高さを取り、気分を変えても下がずれない */.cond-sum > span:first-child{flex:0 1 auto}.cond-sum::after{content:'▾';margin-inline-start:auto}details.cond[open] .cond-sum::after{content:'▴'}.cond-sum::-webkit-details-marker{display:none}.cond-sum{list-style:none}
 .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}   /* 1fr のままだと、長い言葉（イタリア語・ドイツ語など）で列が広がって、画面全体が横にはみ出す */
 .big-decide{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;min-height:64px;font-size:1.15rem;border-radius:16px;padding:.7rem 1rem;box-shadow:var(--shadow)}
 .big-decide small{font-size:.75rem;font-weight:500;opacity:.9}
@@ -1652,7 +1652,7 @@ nav.tabs.many svg{padding-inline:6px}
 nav.tabs .tl{display:block;max-width:100%}
 nav.tabs.ico .tl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 狭い幅: 絵だけ（字は読み上げ） */
 nav.tabs.ico svg{padding-inline:2px}
-nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
+nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}nav.tabs.ico.tsn2:not(.tsn-off) .tsn{white-space:normal;word-break:keep-all;overflow-wrap:normal;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}   /* R153: 1行に入らない短い名前は語の切れ目で2行に */   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
 body.bar-static .actionbar.decide-bar{position:static}
 .actionbar.decide-bar{flex-wrap:wrap}.alg-bar,.alg-top{flex:0 0 100%;min-width:0;margin:0;font-size:var(--fs12);line-height:1.25;font-weight:700;color:var(--danger);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alg-bar{text-align:center;padding:0 var(--s8) 2px}.alg-top{display:none;text-align:start;padding:0 0 4px}body.bar-static .alg-bar{display:none}body.bar-static .alg-top{display:block}   /* 第18回 R57: 決めたあとの ⚠ の短い1行。固定の帯の中（いつも見える）。帯をお膳の下に置く画面ではお膳のすぐ上 */
 @media (max-width:299px){body.bar-static .alg-top,body:not(.bar-static) .alg-bar{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:11px;line-height:1.2;overflow-wrap:anywhere}}   /* 第19回（195px の残り）: ⚠ の1行が「⚠ 夫に合わない料理…」と切れていたので、幅 300px 未満は 11px の2行まで */
@@ -1763,10 +1763,10 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .wsh-card .alg-tag{display:block;max-width:100%;font-size:.8125rem;line-height:1.25;font-weight:700;color:var(--danger);overflow-wrap:anywhere;text-align:center}   /* 第22回 R84: お膳の ⚠ の札と同じ（赤い ⚠・太字・アレルゲンの名前） */
 .wsh-card.alg{box-shadow:var(--shadow-1),inset 0 0 0 1.5px color-mix(in srgb,var(--danger) 55%,transparent)}
 .wsh-alg-note{grid-column:1/-1;margin:0}
-.wsh-lang{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8);margin:0 0 var(--s8)}.wsh-lang select{min-height:var(--tap-sm);max-width:100%;font:inherit;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);padding:0 var(--s8)}
+.wsh-lang{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8);margin:0 0 var(--s8)}.wsh-lang select{min-height:var(--tap-sm);max-width:100%;font:inherit;font-size:max(16px,1em);border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);padding:0 var(--s8)}
 .wsh-any{font-family:var(--mincho);font-size:var(--fs20)}.wsh-any-list{display:flex;flex-direction:column;gap:var(--s4);margin:var(--s8) 0}
 .wsh-name{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s8)}
-.wsh-name input{min-height:var(--tap-sm);border:1px solid var(--line);border-radius:var(--r-sm);padding:0 var(--s8);font:inherit;background:var(--surface);color:var(--ink);width:10em;max-width:100%}
+.wsh-name input{min-height:var(--tap-sm);border:1px solid var(--line);border-radius:var(--r-sm);padding:0 var(--s8);font:inherit;font-size:max(16px,1em);background:var(--surface);color:var(--ink);width:10em;max-width:100%}
 .wsh-name{margin-bottom:var(--s8)}
 .wsh-actions{position:sticky;bottom:calc(-24px - env(safe-area-inset-bottom,0px));margin-bottom:calc(-24px - env(safe-area-inset-bottom,0px));z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--s8);background:var(--sheet-bg);padding:var(--s12) 0 calc(var(--s8) + 24px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .wsh-actions .btn.primary{width:100%;min-height:var(--tap-lg)}
@@ -1786,7 +1786,7 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .wsh-info{background:var(--surface-2);border-radius:var(--r-md);padding:var(--s12) var(--s16);line-height:var(--lh)}
 .wsh-lock{display:flex;align-items:center;justify-content:center;gap:6px;margin:0;text-align:center}
 .wsh-lock .wsh-ic{width:14px;height:14px}
-.wsh-paste textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s8);font:inherit;background:var(--surface);color:var(--ink);resize:vertical}
+.wsh-paste textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s8);font:inherit;font-size:max(16px,1em);background:var(--surface);color:var(--ink);resize:vertical}
 .wsh-old .inner{display:flex;flex-direction:column;gap:var(--s8)}
 .wsh-set,.wsh-log{gap:var(--s8);flex-wrap:wrap}
 .wsh-set .btn.text,.wsh-log .btn.text{text-decoration:underline;text-underline-offset:4px;padding-inline:var(--s4)}
@@ -1907,10 +1907,10 @@ nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
-.tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400}.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
+.tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
 .tt-sh h3 .tt-n{font-size:var(--fs12);color:var(--muted);font-weight:400;margin-inline-start:.5em}
 .tt-list .item{align-items:center}.tt-open{flex:1 1 10em;min-width:0;display:flex;align-items:center;gap:var(--s12);border:0;background:transparent;color:inherit;font:inherit;text-align:start;padding:0;min-height:44px;cursor:pointer}
-.tt-open .t{display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere}.tt-open .s{font-size:var(--fs12)}.tt-list .tt-add{flex:0 0 auto;min-height:44px;margin-inline-start:auto}.tt-list .dc-tags,.tt-list .tool-off-note{flex:1 0 100%;margin:0}
+.tt-open .t{display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere}.tt-open .s{font-size:var(--fs12)}.tt-list .tt-add{flex:0 0 auto;min-height:44px;margin-inline-start:auto}.tt-list .tt-row .tt-add{max-width:100%;white-space:normal;overflow-wrap:normal;text-align:center}   /* R150: 狭い幅・大きい字では下の行へ回り、行に入らないときは語の切れ目で2行に（はみ出して字が切れない） */.tt-list .dc-tags,.tt-list .tool-off-note{flex:1 0 100%;margin:0}
 .tt-list .tool-off .tt-open{pointer-events:auto}.tool-off.tt-row{opacity:.55}
 /* 利用者モニター v110（R121〜R125）: 狭い幅の重なり・切れ・押せる大きさ */
 @media (min-width:300px){.top .gear{flex:0 0 44px;min-width:44px}}   /* R125: 幅320pxで 42px に縮んでいた国旗・設定を 44px のまま */
@@ -1955,6 +1955,18 @@ nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;heig
 .tg-mid .mb-back.icon .mb-tx{color:var(--tray-ink)}
 .tg-mid .mb-back.icon.tightb{width:44px;min-width:44px;border:0}
 .tg-mid .mb-back.icon.nocap{width:44px;height:44px;min-width:44px;max-width:44px;min-height:44px;padding:0}.tg-mid .mb-back.icon.nocap .mb-ic{width:44px;height:44px;border-width:2px}.tg-mid .mb-back.icon.nocap .mb-ic svg{width:22px;height:22px}
+/* R148・R149・R153（第32回・11/09 オーナー指示「同じデザイン・同じ大きさで、右にも左にも寄りすぎずバランスよく」）:
+   「前の献立」は、どの幅でも「まるごと入れ替え」と同じ大きさの丸＋丸の下に同じ大きさの字。2つを同じ幅の列に並べて、まとめて真ん中に（右から左の言語は左右が入れ替わる）。
+   字は語の途中で折らない（<wbr> と keep-all。1語が列に入らないときだけ折る）・2行まで。列の幅は 7.5rem か、帯の半分の小さいほう（menuBackStackFit が字を合わせる）。
+   上の .tray.grid2.tight2 … などより強くするため、クラスを重ねている */
+.tray .tg-mid.mb-stack.mb-stack{align-items:flex-start;justify-content:center;gap:14px}
+.tray .tg-mid.mb-stack.mb-stack::before,.tray .tg-mid.mb-stack.mb-stack::after{margin-top:calc(var(--shd,56px) / 2)}
+.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .shuffle,.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .mb-back{position:static;transform:none;flex:0 0 auto;width:min(7.5rem,calc(50% - 7px));max-width:min(7.5rem,calc(50% - 7px));min-width:44px;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:0;border:0;border-radius:0;background:none;box-shadow:none;color:var(--tray-ink);font-size:var(--mbfs,var(--fs12,.75rem));font-weight:700;line-height:1.2;white-space:normal}
+.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .mb-back .mb-ic{transform:none;width:var(--shd,56px);height:var(--shd,56px);border-radius:50%;border:2px solid var(--accent);background:var(--porcelain);color:var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;box-sizing:border-box;flex:0 0 auto;line-height:0}
+.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .mb-back .mb-ic svg{width:28px;height:28px}
+.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .shuffle .sh-tx,.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .mb-back .mb-tx{position:static;width:auto;height:auto;max-width:100%;max-height:none;clip-path:none;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:0;font-size:inherit;line-height:1.2;text-align:center;color:var(--tray-ink);white-space:normal;word-break:keep-all;overflow-wrap:anywhere;-webkit-hyphens:manual;hyphens:manual;text-wrap:balance}
+.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .mb-back{flex-direction:row;align-items:center;gap:8px;width:auto;max-width:min(14rem,calc(50% - 7px))}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .sh-tx,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .mb-tx{text-align:start}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide{align-items:center}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::before,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::after{margin-top:0}   /* 幅500px以上で、まるごと入れ替えが「丸の横に字」（お膳を詰めたとき）なら、前の献立も同じ形にそろえて並べる（帯の高さが変わらず、下の段の料理が動かない） */
+.tg-mid .shuffle .sh-tx{word-break:keep-all}   /* R153: 丸だけのとき（前の献立がないとき）も、語の切れ目（<wbr>）で折る */
 </style>
 </head>
 <body>
@@ -3369,6 +3381,7 @@ function menuBackCheck(){
 function menuBackFit(){
     document.querySelectorAll('#view .tg-mid .mb-back').forEach(bt => {
         const mid = bt.closest('.tg-mid'), ic = mid.querySelector('.sh-ic'), tx = mid.querySelector('.sh-tx'), sh = mid.querySelector('.shuffle'); if (!ic) return;
+        if (mid.classList.contains('mb-stack')){ menuBackStackFit(mid, bt, ic, tx); return; }
         const m = mid.getBoundingClientRect(), c = ic.getBoundingClientRect(); let gp = mid.classList.contains('mb-stack') ? 3 : 5; const gp0 = gp; if (!m.width) return;
         bt.style.top = Math.round(c.top + (mid.classList.contains('mb-stack') ? 0 : c.height / 2) - m.top) + 'px';
         // R131: 丸・字・「まるごと入れ替え」のボタン全体（押せる範囲）のどれにも、gp 以上あけて重ならない
@@ -3394,6 +3407,22 @@ function menuBackFit(){
             if (!tryIcon(full) && !(short && short !== full && tryIcon(short)) && !(short && tryTight(short)) && !tryTight(full)){ reset(); bt.classList.add('icon', 'nocap'); if (tx2) tx2.textContent = full; }
         }
     });
+}
+// R148・R149（11/09 オーナー指示）: 丸ふたつ（まるごと入れ替え・前の献立）を、どの幅でも同じ大きさの丸・同じ大きさの字で並べて、まとめて真ん中に（CSS の .tg-mid.mb-stack）。
+// 字は語の途中で折らず2行まで（R153）。前の献立の語が入らないときは短い語（前へ など）に。それでも入らないときは、2つの字をいっしょに小さく（12px まで）。丸は「まるごと入れ替え」の丸の大きさに合わせる
+function menuBackStackFit(mid, bt, ic, tx){
+    const tx2 = bt.querySelector('.mb-tx'); if (!tx2 || !mid.clientWidth) return;
+    const key = mid.clientWidth + '|' + Math.round(ic.getBoundingClientRect().width) + '|' + document.documentElement.getAttribute('data-ts') + '|' + (tx ? tx.textContent : '') + '|' + (tx2.dataset.full || tx2.innerHTML);
+    if (mid.dataset.mbk === key) return;   // 同じ幅・同じ字なら測り直さない（字の大きさを変えると帯の高さが変わり、ResizeObserver から何度も呼ばれるため）
+    const full = tx2.dataset.full || (tx2.dataset.full = tx2.innerHTML), short = tx2.dataset.short || '';
+    bt.classList.remove('icon', 'nocap', 'tightb'); bt.style.top = ''; bt.style.maxWidth = ''; bt.style.minWidth = ''; tx2.style.maxWidth = '';
+    mid.style.removeProperty('--mbfs'); tx2.innerHTML = full;
+    bt.style.setProperty('--shd', Math.round(ic.getBoundingClientRect().width) + 'px');
+    const cut = e => { if (!e) return false; const o = e.style.overflowWrap; e.style.overflowWrap = 'normal'; const r = e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 1; e.style.overflowWrap = o; return r; };
+    if (cut(tx2) && short) tx2.innerHTML = wbrHtml(short);
+    let fs = parseFloat(getComputedStyle(tx2).fontSize);
+    while (fs > 12 && (cut(tx2) || cut(tx))){ fs = Math.max(12, fs - 1); mid.style.setProperty('--mbfs', fs + 'px'); }
+    mid.dataset.mbk = key;
 }
 function menuBackRestore(){
     const e = menuBack.list.pop(); if (!e){ return; }
@@ -12763,7 +12792,7 @@ function viewToolsTab(){
     const cat = c && TT_CATS.find(x => x.k === c);
     const tools = cat ? cat.tools.filter(toolHave).map(tk => ({tk, n: all.filter(r => ttIn(r, c, tk)).length})).filter(o => o.n) : [];
     const tl = tk => tk === 'cold' ? t('切る・混ぜるだけ') : toolLabel(tk);
-    const chip = (act, v, on, label, n) => `<button type="button" class="chip" data-act="${act}" data-v="${esc(v)}" aria-pressed="${on}">${esc(label)}<span class="tt-n">${esc(t('{n}品', {n}))}</span></button>`;
+    const chip = (act, v, on, label, n) => `<button type="button" class="chip" data-act="${act}" data-v="${esc(v)}" aria-pressed="${on}"><span class="tt-l">${esc(label)}</span><span class="tt-n">${esc(t('{n}品', {n}))}</span></button>`;
     const row = r => { const off = ttOff(r), kind = off === t('形がちがうので入れ替えられません');
         return `<div class="item tt-row${kind ? ' tool-off' : ''}"><button type="button" class="tt-open" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方', {name: r.name}))}"><span class="swap-th">${thumbHtml(r)}</span><span class="t"><b>${esc(r.name)}</b>${Number(r.min) > 0 ? `<span class="s"><b class="tm">${esc(t('約{n}分', {n: r.min}))}</b></span>` : ''}</span></button>
             <button type="button" class="btn sm tt-add" data-act="tt-add" data-id="${esc(r.id)}" ${off ? 'disabled aria-disabled="true"' : ''}>${esc(t('献立に入れる'))}</button>
@@ -12906,10 +12935,10 @@ function viewToday(){
       [upper, lower].forEach((row, k) => row.forEach((h, j) => { row[j] = h.replace(re, () => { const ea = f[k].a ? 1 : 0, el = f[k].l ? exLast : 0;   // 札のある段: 札1つぶん（2行）を取る。長い札はその段だけ高くなる（かえるは段の下にそろう）
           return `style="--exn:${ea + el};--exl:${ea + el};--exa:${ea}"`; }); })); }
     const rowsHtml = [upper, lower];
-    const backBtn = menuBack.list.length && !decided ? `<button type="button" class="mb-back" data-act="menu-back" aria-label="${esc(t('前の献立'))}" title="${esc(t('前の献立'))}"><span class="mb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></span><span class="mb-tx" data-short="${esc(t('前へ'))}">${esc(t('前の献立'))}</span></button>` : '';   // 1つ前に戻る（まるごと入れ替えのあと。menuBack）
-    const shuffleBtn = `<div class="tg-mid${backBtn && innerWidth < 500 ? ' mb-stack' : ''}"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
+    const backBtn = menuBack.list.length && !decided ? `<button type="button" class="mb-back" data-act="menu-back" aria-label="${esc(t('前の献立'))}" title="${esc(t('前の献立'))}"><span class="mb-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></span><span class="mb-tx" data-short="${esc(t('前へ'))}">${wbrHtml(t('前の献立'))}</span></button>` : '';   // 1つ前に戻る（まるごと入れ替えのあと。menuBack）
+    const shuffleBtn = `<div class="tg-mid${backBtn ? ' mb-stack' + (innerWidth >= 500 ? ' mb-wide' : '') : ''}"><button class="shuffle" type="button" data-act="new-menu" aria-label="${esc(t('まるごと入れ替え'))}" title="${esc(t('まるごと入れ替え'))}">
         <span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></span>
-        <span class="sh-tx">${esc(t('まるごと入れ替え'))}</span></button>${backBtn}</div>`;
+        <span class="sh-tx">${wbrHtml(t('まるごと入れ替え'))}</span></button>${backBtn}</div>`;   // R149（11/09 オーナー指示）: 「前の献立」は幅にかかわらず、丸ふたつを並べてまとめて真ん中に（前は幅500px以上で帯の右はし）
     const tw = session.twist;
     const upcoming = S.week ? S.week.days.filter(x => x.d >= TODAY) : [];
     if (S.week && weekSidesOn()) ensureWeekExtras();
@@ -16169,6 +16198,12 @@ function twistAvailable(){ return !PACK && LANG === 'ja'; }
 /* 下のタブの字: 文字の大きさの設定に合わせて大きく（標準 12・大 13.5・もっと大きい 15px）。1語が入らなければ 12px まで下げる。
    1つのタブの幅が 50px より狭い（幅195px など）ときは、絵だけにして字は読み上げに残す（縦に折れないように。第6回 S21） */
 // タブの字の「語」: 日本語・中国語・タイ語などは空白で区切らないので、語の切れ目（Intl.Segmenter）で分ける（「今日の献立」→ 今日・の・献立）
+// R153: 語の切れ目（Intl.Segmenter）に <wbr> を入れた HTML。CSS の word-break:keep-all と組みにして、「まるごと入／れ替え」のように語の途中で折れないようにする
+function wbrHtml(s){
+    s = String(s == null ? '' : s);
+    try { if (typeof Intl !== 'undefined' && Intl.Segmenter) return [...new Intl.Segmenter(document.documentElement.lang || undefined, {granularity: 'word'}).segment(s)].map(x => esc(x.segment)).join('<wbr>'); } catch (e) {}
+    return esc(s);
+}
 function tabWords(s){
     try { if (typeof Intl !== 'undefined' && Intl.Segmenter) return [...new Intl.Segmenter(document.documentElement.lang || undefined, {granularity: 'word'}).segment(s)].filter(x => x.isWordLike !== false && x.segment.trim()).map(x => x.segment); } catch (e) {}
     return s.split(/\s+/).filter(Boolean);
@@ -16196,8 +16231,9 @@ function fitTabs(){
     // 12px でも入らない長い名前の言語（7つ並ぶとき・6つで長い語のとき）は、語の途中で切らずに、絵＋短い名前にする（読み上げは長い名前）
     if (!ico && !fits()){ ico = true; nv.classList.add('ico', 'lfit'); }
     // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
-    nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
-    if (ico){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
+    nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off', 'tsn2');
+    // R153: 11px でも1行に入らない短い名前（ベトナム語「Hôm nay」・「Thế giới」など、幅280px）は、語の切れ目で2行に。それでも入らないときだけ絵だけ
+    if (ico){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && (e.scrollWidth > e.clientWidth + .5 || e.scrollHeight > e.clientHeight + 1); }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()){ nv.classList.add('tsn2'); nv.style.removeProperty('--tsnfs'); f = 12; while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } } if (over()){ nv.classList.remove('tsn2'); nv.classList.add('tsn-off'); } }
 }
 window.addEventListener('resize', () => guard('tabs', fitTabs));
 function updateTabs(){
