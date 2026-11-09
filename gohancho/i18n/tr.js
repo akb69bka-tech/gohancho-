@@ -2004,5 +2004,15 @@ GOHAN_I18N('tr', {
     "tt|茹でる": "Haşlama",
     "tt|煮る": "Tencere yemeği",
     "tt|蒸す": "Buharda",
-    "tt|炊く": "Pilav pişirme"
+    "tt|炊く": "Pilav pişirme",
+    "約 {n} kcal（1人分・目安）": "Yaklaşık {n} kcal (kişi başı, tahmini)",
+    "30 kcal 未満（1人分・目安）": "30 kcal'nin altında (kişi başı, tahmini)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalori tahmin edilemiyor (miktarı belli olmayan çok malzeme var)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Malzeme miktarlarından yapılan bir tahmindir. Gerçek miktarlar ve pişirme şekli değiştirir.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Öğün toplamı: yaklaşık {n} kcal (kişi başı, tahmini)",
+    "お膳の合計の目安は出せません": "Öğün toplamı tahmin edilemiyor",
+    "カロリーの目安|ふつう": "Normal",
+    "カロリーの目安|軽め": "Daha hafif",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diyet modu (tahmini kalorisi daha düşük yemekleri daha sık öner)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Açıkken menü, tahmini kalorisi daha düşük yemekleri daha sık, kızartmaları biraz daha seyrek önerir (hiçbir şey çıkarılmaz, karar verilen menü değişmez). Tepsinin altındaki toplamda “Daha hafif” ya da “Normal” işareti görünür."
 });

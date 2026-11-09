@@ -2004,5 +2004,15 @@ GOHAN_I18N('vi', {
     "tt|茹でる": "Luộc",
     "tt|煮る": "Kho / hầm",
     "tt|蒸す": "Hấp",
-    "tt|炊く": "Nấu cơm"
+    "tt|炊く": "Nấu cơm",
+    "約 {n} kcal（1人分・目安）": "Khoảng {n} kcal (mỗi người, ước tính)",
+    "30 kcal 未満（1人分・目安）": "Dưới 30 kcal (mỗi người, ước tính)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Không ước tính được calo (quá nhiều nguyên liệu không ghi lượng)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Ước tính từ lượng nguyên liệu. Lượng thực tế và cách nấu sẽ làm thay đổi.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Tổng bữa: khoảng {n} kcal (mỗi người, ước tính)",
+    "お膳の合計の目安は出せません": "Không ước tính được tổng bữa",
+    "カロリーの目安|ふつう": "Bình thường",
+    "カロリーの目安|軽め": "Nhẹ hơn",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Chế độ ăn kiêng (gợi ý món có calo ước tính thấp hơn thường xuyên hơn)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”."
 });

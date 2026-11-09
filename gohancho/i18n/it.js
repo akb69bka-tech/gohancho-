@@ -2004,5 +2004,15 @@ GOHAN_I18N('it', {
     "tt|茹でる": "Bollire",
     "tt|煮る": "Stufare",
     "tt|蒸す": "Al vapore",
-    "tt|炊く": "Cuocere il riso"
+    "tt|炊く": "Cuocere il riso",
+    "約 {n} kcal（1人分・目安）": "Circa {n} kcal (a persona, stima)",
+    "30 kcal 未満（1人分・目安）": "Meno di 30 kcal (a persona, stima)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Impossibile stimare le calorie (troppi ingredienti senza quantità)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Stima basata sulle quantità degli ingredienti. Quantità reali e cottura la cambiano.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Totale del pasto: circa {n} kcal (a persona, stima)",
+    "お膳の合計の目安は出せません": "Impossibile stimare il totale del pasto",
+    "カロリーの目安|ふつう": "Normale",
+    "カロリーの目安|軽め": "Più leggero",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Modalità dieta (proporre più spesso piatti con meno calorie stimate)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Se attiva, il menù propone più spesso piatti con meno calorie stimate e un po' meno fritti (nulla viene escluso e un menù già deciso resta com'è). Sotto il vassoio il totale mostra «Più leggero» o «Normale»."
 });

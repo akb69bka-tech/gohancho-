@@ -2004,5 +2004,15 @@ GOHAN_I18N('id', {
     "tt|茹でる": "Rebus",
     "tt|煮る": "Masak berkuah",
     "tt|蒸す": "Kukus",
-    "tt|炊く": "Tanak nasi"
+    "tt|炊く": "Tanak nasi",
+    "約 {n} kcal（1人分・目安）": "Sekitar {n} kkal (per orang, perkiraan)",
+    "30 kcal 未満（1人分・目安）": "Kurang dari 30 kkal (per orang, perkiraan)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalori tidak bisa diperkirakan (terlalu banyak bahan tanpa takaran)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Perkiraan dari takaran bahan. Takaran sebenarnya dan cara memasak mengubahnya.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Total hidangan: sekitar {n} kkal (per orang, perkiraan)",
+    "お膳の合計の目安は出せません": "Total hidangan tidak bisa diperkirakan",
+    "カロリーの目安|ふつう": "Biasa",
+    "カロリーの目安|軽め": "Lebih ringan",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Mode diet (lebih sering menyarankan masakan dengan perkiraan kalori lebih rendah)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Jika aktif, menu lebih sering menyarankan masakan dengan perkiraan kalori lebih rendah dan sedikit mengurangi gorengan (tidak ada yang dihapus, menu yang sudah diputuskan tidak berubah). Di bawah nampan, total diberi tanda “Lebih ringan” atau “Biasa”."
 });

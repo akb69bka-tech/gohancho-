@@ -2004,5 +2004,15 @@ GOHAN_I18N('pl', {
     "tt|茹でる": "Gotowanie w wodzie",
     "tt|煮る": "Duszenie",
     "tt|蒸す": "Na parze",
-    "tt|炊く": "Gotowanie ryżu"
+    "tt|炊く": "Gotowanie ryżu",
+    "約 {n} kcal（1人分・目安）": "Około {n} kcal (na osobę, szacunkowo)",
+    "30 kcal 未満（1人分・目安）": "Poniżej 30 kcal (na osobę, szacunkowo)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Nie da się oszacować kalorii (za dużo składników bez ilości)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Szacunek na podstawie ilości składników. Rzeczywiste ilości i sposób przygotowania go zmieniają.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Suma posiłku: około {n} kcal (na osobę, szacunkowo)",
+    "お膳の合計の目安は出せません": "Nie da się oszacować sumy posiłku",
+    "カロリーの目安|ふつう": "Zwykły",
+    "カロリーの目安|軽め": "Lżejszy",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Tryb diety (częściej proponuj dania o niższej szacowanej kaloryczności)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Gdy jest włączony, menu częściej proponuje dania o niższej szacowanej kaloryczności i nieco rzadziej smażone (nic nie jest wykluczane, a ustalone menu się nie zmienia). Pod tacą suma ma oznaczenie „Lżejszy” lub „Zwykły”."
 });

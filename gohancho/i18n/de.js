@@ -2004,5 +2004,15 @@ GOHAN_I18N('de', {
     "tt|茹でる": "Kochen in Wasser",
     "tt|煮る": "Schmoren",
     "tt|蒸す": "Dämpfen",
-    "tt|炊く": "Reis kochen"
+    "tt|炊く": "Reis kochen",
+    "約 {n} kcal（1人分・目安）": "Etwa {n} kcal (pro Person, Schätzung)",
+    "30 kcal 未満（1人分・目安）": "Unter 30 kcal (pro Person, Schätzung)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalorien nicht schätzbar (zu viele Zutaten ohne Mengenangabe)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Schätzung aus den Zutatenmengen. Tatsächliche Mengen und Zubereitung ändern den Wert.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Summe der Mahlzeit: etwa {n} kcal (pro Person, Schätzung)",
+    "お膳の合計の目安は出せません": "Summe der Mahlzeit nicht schätzbar",
+    "カロリーの目安|ふつう": "Normal",
+    "カロリーの目安|軽め": "Leichter",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diätmodus (Gerichte mit niedrigerer Kalorienschätzung öfter vorschlagen)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Wenn aktiv, schlägt das Menü Gerichte mit niedrigerer Kalorienschätzung öfter vor und Frittiertes etwas seltener (nichts wird ausgeschlossen, ein festgelegtes Menü bleibt unverändert). Unter dem Tablett zeigt die Summe „Leichter“ oder „Normal“."
 });

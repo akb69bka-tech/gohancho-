@@ -2004,5 +2004,15 @@ GOHAN_I18N('fil', {
     "tt|茹でる": "Pakuluan",
     "tt|煮る": "Nilaga",
     "tt|蒸す": "Pasingaw",
-    "tt|炊く": "Magsaing"
+    "tt|炊く": "Magsaing",
+    "約 {n} kcal（1人分・目安）": "Mga {n} kcal (bawat tao, tantiya)",
+    "30 kcal 未満（1人分・目安）": "Mas mababa sa 30 kcal (bawat tao, tantiya)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Hindi matantiya ang calories (maraming sangkap na walang sukat)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Tantiya mula sa sukat ng mga sangkap. Nag-iiba ito ayon sa totoong sukat at paraan ng pagluluto.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Kabuuan ng kain: mga {n} kcal (bawat tao, tantiya)",
+    "お膳の合計の目安は出せません": "Hindi matantiya ang kabuuan ng kain",
+    "カロリーの目安|ふつう": "Karaniwan",
+    "カロリーの目安|軽め": "Mas magaan",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diet mode (mas madalas magmungkahi ng ulam na mas mababa ang tantiyang calories)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Kapag naka-on, mas madalas magmungkahi ang menu ng ulam na mas mababa ang tantiyang calories at bahagyang mas kaunting prito (walang inaalis, at hindi nagbabago ang napagpasyahang menu). Sa ilalim ng bandeha, may markang “Mas magaan” o “Karaniwan” ang kabuuan."
 });
