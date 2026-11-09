@@ -2020,5 +2020,8 @@ GOHAN_I18N('fr', {
     "カロリーの目安|ふつう": "Normal",
     "カロリーの目安|軽め": "Plus léger",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Mode régime (proposer plus souvent des plats à l'estimation calorique plus basse)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Activé, le menu propose plus souvent des plats à l'estimation calorique plus basse et un peu moins de fritures (rien n'est exclu, un menu choisi reste tel quel). Sous le plateau, le total indique « Plus léger » ou « Normal »."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Activé, le menu propose plus souvent des plats à l'estimation calorique plus basse et un peu moins de fritures (rien n'est exclu, un menu choisi reste tel quel). Sous le plateau, le total indique « Plus léger » ou « Normal ».",
+    // 上の端の「モード」ボタン（11/09）
+    "モード": "Modes",
+    "オンになっているモードがあります": "Certains modes sont activés"
 });

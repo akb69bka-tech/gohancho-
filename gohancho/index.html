@@ -1926,6 +1926,35 @@ nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;heig
 .badge.caution{white-space:normal;max-width:100%;overflow-wrap:anywhere;line-height:1.35;border-radius:12px;padding-block:.1rem}   /* R124: 🔍「袋の表示を確認」は長いので、折り返して画面の中に収める */
 .week .item .t{min-width:0}
 @media (min-width:300px) and (max-width:339px){html header.top h1{font-size:max(18px,6vw)}}   /* R125: 国旗・設定を 44px にしたぶん、320px でも名前が切れないように */
+/* 上の端の「モード」ボタン（オーナー指示 11/09）: 国旗・設定と同じ 44×44px の角丸。絵は切り替えスイッチ2つ（条件のボタンのスライダーの絵と分ける）。どれかオンなら右上に柿色の小さな点（青は使わない）。
+   ボタンが3つになったぶん、題名（アプリの名前）が切れない・2行にならないように:
+   ・幅520px以下は、ボタンの間を 4px・印と題名とボタンの間を 8px に詰める
+   ・幅380〜420px は印（膳）を 32px に、日本語の題名の字を 5.9vw（390px で 23px）に、日付の字の間を詰める。幅380px未満は印を出さない（飾り。読み上げにはもともと出ない）。題名の字の大きさは今のまま
+   ・幅290〜299px（文字ふつう）は日本語の題名を 16.5px に（今は 1行に入らず切れていた）。幅289px以下などの2段の形（題名は下の段）では、上の段がボタン3つだけになる（段の高さは今と同じ）
+   ・いちばん詰めた形（tray-tight5：家族リクエストの入口を上の端に上げる）の幅299px以下は、入口・モード・設定の3つにする（国旗は設定の画面からも変えられる。44px が4つは入らない） */
+.top .gear{flex:0 0 44px;min-width:44px}
+.top .modebtn{position:relative}
+.top .modebtn.on{border-color:var(--accent)}
+.top .modebtn .mode-dot{position:absolute;top:5px;inset-inline-end:5px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--surface)}
+.top .modebtn .mode-dot[hidden]{display:none}
+.top .gear.flagbtn+.gear.modebtn{margin-inline-start:8px}
+.top .gear.modebtn+.gear{margin-inline-start:8px}
+@media (max-width:520px){.top{column-gap:8px}.top .gear.flagbtn+.gear.modebtn,.top .gear.modebtn+.gear{margin-inline-start:-4px}}
+@media (max-width:420px){.top .seal{width:32px;height:32px;font-size:1rem}}@media (min-width:340px) and (max-width:420px){html[lang="ja"] header.top h1{font-size:max(22px,min(var(--fs24),5.9vw))}}
+@media (max-width:379px){.top .seal{display:none}}
+@media (max-width:420px){.top .date{letter-spacing:.04em}}   /* 日付（西・葡の長い曜日と月）が、ボタンが3つになったぶん2行にならない */
+@media (min-width:421px) and (max-width:520px){html[lang="ja"] header.top h1{white-space:nowrap;letter-spacing:0;font-size:max(22px,min(var(--fs24),6.5vw))}}   /* 文字大・もっと大きい の 430px でも、題名が2行にならない（ボタンが3つになったぶん） */
+@media (min-width:290px) and (max-width:299px){html[lang="ja"]:not([data-ts="1"]):not([data-ts="2"]) header.top h1{font-size:16.5px}}
+body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
+@media (max-width:299px){body.on-today.tray-tight5 header.top:has(> .req-btn:not(.lite)) .flagbtn,body.on-today.tray-tight5:not(.greet-0) header.top:has(> .req-btn) .flagbtn{display:none}body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 112px)}}
+.mode-list{display:flex;flex-direction:column;margin-top:var(--s8)}
+.mode-list .mode-row{align-items:flex-start;padding-block:10px;border-bottom:1px solid var(--line-soft,var(--line));color:var(--ink);font-size:1rem}
+.mode-list .mode-row:last-child{border-bottom:0}
+.mode-list .mode-row input{margin-top:.2rem}
+.mode-t{display:flex;flex-direction:column;gap:2px;min-width:0;overflow-wrap:anywhere}
+.mode-t b{font-weight:700}
+.mode-t .mode-d{font-size:.8125rem;color:var(--muted);line-height:1.45}
+.mode-foot{margin-top:var(--s12)}
 /* R129: 幅320px未満（195・260px）は、日・名前の2列にして「変更」を名前の下の行（右）へ回す。絵は省く。名前・🔍バッジの列が 1 文字幅につぶれて縦に並ぶのを防ぐ（320px 以上は今のまま） */
 @media (max-width:319px){.week.wk2 .item,html[data-ts="2"] .week.wk2 .item{grid-template-columns:36px minmax(0,1fr);gap:var(--s4) var(--s8);padding:var(--s8)}
 .week.wk2 .wk-pic,.week.wk2 .thumb.wk-none,html[data-ts="2"] .week.wk2 .wk-pic,html[data-ts="2"] .week.wk2 .thumb.wk-none{display:none}
@@ -1986,6 +2015,7 @@ nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;heig
             <h1>わが家のご飯帖</h1>
         </div>
         <button class="gear flagbtn" data-act="country" aria-label="国・地域を変える" id="flag-btn">🇯🇵</button>
+        <button class="gear modebtn" data-act="mode-open" aria-label="モード" id="mode-btn" aria-haspopup="dialog" aria-describedby="mode-on-tx"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3.5" width="18" height="7.5" rx="3.75"/><circle cx="16.6" cy="7.25" r="1.9"/><rect x="3" y="13" width="18" height="7.5" rx="3.75"/><circle cx="7.4" cy="16.75" r="1.9"/></svg><span class="mode-dot" aria-hidden="true" hidden></span><span class="vh" id="mode-on-tx"></span></button>
         <button class="gear" data-act="settings" aria-label="設定"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </header>
     <div class="greet" id="greet"></div>
@@ -3235,6 +3265,7 @@ function applyStaticText(){
     set('header.top .seal', t('膳'));
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
+    aria('#mode-btn', t('モード'));
     aria('nav.tabs', t('画面の切りかえ'));
     const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), tools:tc('tab', '調理道具'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
     const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), tools:tc('tabs', '道具'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
@@ -5818,6 +5849,7 @@ function render(){
     guard('head', () => {
         $('#today-label').textContent = jpDate(TODAY);
         $('#flag-btn').textContent = S.settings.country ? countryOf(currentCountry()).flag : '🌐';   // 国を選ぶ前は、日本の旗を出さない
+        modeBtnSync();
         const sl = (tab === 'today' || tab === 'cook') && bootReady ? stageLine() : '';   // 段の上の一言（1行）。あいさつの代わり
         if (tab === 'today' || tab === 'cook') guard('daysync', daySync);
         // 今日の献立の上: 時間帯のあいさつ（1〜2行・小さめ）と、家族リクエストの入口（オーナーの指示）。ほかの画面では出さない
@@ -7345,6 +7377,7 @@ function renderSheetBody(){
     if (sheet.kind === 'redo') body = redoSheetHtml();
     if (sheet.kind === 'later') body = laterSheetHtml();
     if (sheet.kind === 'cond') body = condSheetHtml();
+    if (sheet.kind === 'mode') body = modeSheetHtml();
     if (sheet.kind === 'reroll-ok') body = rerollOkSheetHtml();
     if (sheet.kind === 'tools') body = toolsSheetHtml();
     if (sheet.kind === 'tool-ok') body = toolOkSheetHtml();
@@ -8615,6 +8648,36 @@ function dietSettingsHtml(){
         <span class="small warn">${esc(KCAL_NOTE())}</span>
     </div>`;
 }
+/* ---- 上の端の「モード」ボタンとシート（オーナー指示 11/09） ----
+   二日酔いの日（今日だけ）・ダイエット・減塩・夜勤明けの切り替えを一か所に。値は設定画面・条件のシートのスイッチと同じもの（S.settings.hangover／diet／lowSalt／nightShift）を
+   同じ data-act で読み書きする（どちらで変えても同じ）。切り替えで決めた献立・いまのお膳は変えない（それぞれの既存の決まりのまま）。
+   二日酔いの日は、お酒を避ける人（ハラール向けも）には出さない（hangShown。すでにオンなら切れるように出す）。どれか1つでもオンなら、ボタンに小さな点 */
+function modesOn(){ return [hangOn(), dietOn(), saltOn(), S.settings.nightShift === true].filter(Boolean).length; }
+function modeBtnSync(){
+    const b = document.getElementById('mode-btn'); if (!b) return;
+    const n = modesOn(), dot = b.querySelector('.mode-dot'), tx = document.getElementById('mode-on-tx');
+    if (dot) dot.hidden = !n;
+    b.classList.toggle('on', !!n);
+    if (tx) tx.textContent = n ? t('オンになっているモードがあります') : '';
+}
+// 「名前（説明）」の形の文言を、名前と説明に分ける（訳の括弧は全角・半角のどちらでも。分けられなければ全部を名前に）
+function modeSplit(s){ const m = String(s).match(/^(.+?)\s*[（(](.+)[）)]\s*$/); return m ? [m[1], m[2]] : [String(s), '']; }
+function modeRowHtml(act, on, label, more){
+    const [nm, ds] = modeSplit(label);
+    return `<label class="check mode-row" data-mode="${act}"><input type="checkbox" data-act="${act}" ${on ? 'checked' : ''}><span class="mode-t"><b>${esc(nm)}</b>${ds ? `<span class="mode-d">${esc(ds)}</span>` : ''}${more ? `<span class="mode-d">${esc(more)}</span>` : ''}</span></label>`;
+}
+function modeSheetHtml(){
+    const rows = [
+        hangShown() ? modeRowHtml('hangover', hangOn(), t('二日酔いの日（今日だけ）'), t('あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。')) : '',
+        modeRowHtml('diet-mode', dietOn(), t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）')),
+        modeRowHtml('low-salt', saltOn(), t('減塩（塩分の目安を表示）')),
+        modeRowHtml('night-shift', S.settings.nightShift === true, t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）')),
+    ].join('');
+    return `<h2>${esc(t('モード'))}</h2>
+        <div class="mode-list">${rows}</div>
+        <p class="small muted mode-foot">${esc(t('いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。'))}</p>`;
+}
+function openModeSheet(){ sheet = {kind:'mode'}; renderSheet(); }
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
 // head: 選ぶとなかま全部を避ける食材のキー（ハムだけ・鮭だけを選んだときは、その食材だけを避ける）。jp: 日本の食材のキー。re: 各国の食材（キー｜英語の名前）
 const AVOID_FAM = {
@@ -15795,6 +15858,7 @@ document.addEventListener('click', e => {
         case 'vid-chk': { const u = vidDay(), a = u.vidChk[id] = u.vidChk[id] || [], k = Number(el.dataset.k), j = a.indexOf(k); if (el.checked && j < 0) a.push(k); else if (!el.checked && j >= 0) a.splice(j, 1); save(); break; }
         case 'sheet-bg': if (e.target === el && sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); break;
         case 'country': openCountrySheet(); break;
+        case 'mode-open': openModeSheet(); break;
         case 'world-cc': worldCC = el.dataset.cc; browseErr.delete(worldCC); render(); break;
         case 'world-retry': browseErr.delete(worldCC); render(); break;
         case 'country-ok': {   // 確認のあとで国を変える

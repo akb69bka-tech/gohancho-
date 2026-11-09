@@ -2020,5 +2020,8 @@ GOHAN_I18N('vi', {
     "カロリーの目安|ふつう": "Bình thường",
     "カロリーの目安|軽め": "Nhẹ hơn",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Chế độ ăn kiêng (gợi ý món có calo ước tính thấp hơn thường xuyên hơn)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”.",
+    // 上の端の「モード」ボタン（11/09）
+    "モード": "Chế độ",
+    "オンになっているモードがあります": "Có chế độ đang bật"
 });

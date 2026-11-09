@@ -2020,5 +2020,8 @@ GOHAN_I18N('tr', {
     "カロリーの目安|ふつう": "Normal",
     "カロリーの目安|軽め": "Daha hafif",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diyet modu (tahmini kalorisi daha düşük yemekleri daha sık öner)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Açıkken menü, tahmini kalorisi daha düşük yemekleri daha sık, kızartmaları biraz daha seyrek önerir (hiçbir şey çıkarılmaz, karar verilen menü değişmez). Tepsinin altındaki toplamda “Daha hafif” ya da “Normal” işareti görünür."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Açıkken menü, tahmini kalorisi daha düşük yemekleri daha sık, kızartmaları biraz daha seyrek önerir (hiçbir şey çıkarılmaz, karar verilen menü değişmez). Tepsinin altındaki toplamda “Daha hafif” ya da “Normal” işareti görünür.",
+    // 上の端の「モード」ボタン（11/09）
+    "モード": "Modlar",
+    "オンになっているモードがあります": "Açık olan modlar var"
 });

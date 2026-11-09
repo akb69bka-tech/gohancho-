@@ -2020,5 +2020,8 @@ GOHAN_I18N('fil', {
     "カロリーの目安|ふつう": "Karaniwan",
     "カロリーの目安|軽め": "Mas magaan",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diet mode (mas madalas magmungkahi ng ulam na mas mababa ang tantiyang calories)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Kapag naka-on, mas madalas magmungkahi ang menu ng ulam na mas mababa ang tantiyang calories at bahagyang mas kaunting prito (walang inaalis, at hindi nagbabago ang napagpasyahang menu). Sa ilalim ng bandeha, may markang “Mas magaan” o “Karaniwan” ang kabuuan."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Kapag naka-on, mas madalas magmungkahi ang menu ng ulam na mas mababa ang tantiyang calories at bahagyang mas kaunting prito (walang inaalis, at hindi nagbabago ang napagpasyahang menu). Sa ilalim ng bandeha, may markang “Mas magaan” o “Karaniwan” ang kabuuan.",
+    // 上の端の「モード」ボタン（11/09）
+    "モード": "Mga mode",
+    "オンになっているモードがあります": "May naka-on na mode"
 });

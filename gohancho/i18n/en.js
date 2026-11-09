@@ -2021,5 +2021,8 @@ GOHAN_I18N('en', {
     "カロリーの目安|ふつう": "Regular",
     "カロリーの目安|軽め": "Lighter",
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diet mode (suggest dishes with a lower calorie estimate more often)",
-    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "When on, menus suggest dishes with a lower calorie estimate more often and fried dishes a little less (nothing is removed, and a menu you've decided stays as it is). The meal total below the tray shows a \"Lighter\" or \"Regular\" mark."
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "When on, menus suggest dishes with a lower calorie estimate more often and fried dishes a little less (nothing is removed, and a menu you've decided stays as it is). The meal total below the tray shows a \"Lighter\" or \"Regular\" mark.",
+    // 上の端の「モード」ボタン（11/09）
+    "モード": "Modes",
+    "オンになっているモードがあります": "Some modes are on"
 });
