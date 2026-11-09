@@ -46,7 +46,7 @@ const TABS = {
     family: {secs: ['family'], items: ['#allergy-card', '[data-act="alg-toggle"]', '[data-act="alg-family"]', '#family-profile', '[data-act="fam-add"]', '[data-act="wish-open"]', '[data-act="ask-open"]', '[data-act="servings"]']},
     food: {secs: ['food'], items: ['[data-act="toggle-avoid"]', '[data-act="toggle-avoid-fam"][data-v="alcohol"]', '[data-act="toggle-avoid-diet"][data-v="halal"]', '[data-act="toggle-avoid-diet"][data-v="vegi"]', '#avoid-input', '[data-act="avoid-swap"]', '#scarce-field', '#scarce-input']},
     menu: {secs: ['menu'], items: ['[data-act="country"]', '[data-act="staple-set"]', '[data-act="count"]', '#avoid-days', '#kitchen-card', '#kitchen-rice', '#seas-card']},
-    mode: {secs: ['mode'], items: ['#salt-card', '[data-act="low-salt"]', '[data-act="night-shift"]', '#diet-card', '[data-act="diet-mode"]']},
+    mode: {secs: ['mode'], items: ['#hang-card', '#hang-card [data-act="hangover"]', '#salt-card', '[data-act="low-salt"]', '[data-act="night-shift"]', '#diet-card', '[data-act="diet-mode"]']},
     store: {secs: ['store'], items: ['[data-act="sale-new"]', '#cheap-set', '[data-act="cheap-tog"]']},
     display: {secs: ['display'], items: ['[data-act="ui-lang"]', '[data-act="text-size"]', '[data-act="open-at"]']},
     data: {secs: ['data'], items: ['#backup-card', '#backup-move', '#backup-text', '[data-act="export"]', '[data-act="import"]', '[data-act="import-file"]', '#backup-file', '[data-act="reset"]']},

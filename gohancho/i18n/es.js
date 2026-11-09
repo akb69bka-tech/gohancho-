@@ -2006,7 +2006,7 @@ GOHAN_I18N('es', {
     "tt|炊く": "Cocer arroz",
     "飲んだ次の日": "El día después de beber",
     "二日酔いの日（今日だけ）": "Día de resaca (solo hoy)",
-    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Menús más ligeros, con más sopas. Los fritos, los platos pesados y los muy picantes salen menos (no se quitan). Mañana vuelve a ser como siempre.",
+    "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Los platos ligeros (guisos suaves, al vapor, caldosos…) salen más a menudo. Los fritos, los platos pesados y los muy picantes salen menos (no se quitan). Mañana vuelve a ser como siempre.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "El menú de hoy no cambia. Toca «Menú nuevo», o un plato y «Cambiar», para elegir de nuevo.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Si no te encuentras bien, tómatelo con calma y bebe agua.",
     "二日酔い": "Día de resaca",
