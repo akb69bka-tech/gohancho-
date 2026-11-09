@@ -9618,6 +9618,16 @@ async function loadRemote(){
         applyRemote(j); scheduleRender(0);
     }catch(e){}
 }
+// 記録を消されにくくする（ブラウザ版）: 端末の空きが少ないとき、ブラウザが保存データを勝手に消さないように頼む。
+// Chrome・Safari は確認を出さずに決める（だめでも何も起きない）。Firefox は確認の画面を出すので頼まない。iPhone アプリ版はアプリの中の保存なので頼まない
+function askPersist(){
+    try{
+        if (isNative() || !navigator.storage || typeof navigator.storage.persist !== 'function' || /Firefox\//.test(navigator.userAgent || '')) return;
+        if (!(S.history.length || S.favs.length || S.custom.length || S.family.length)) return;   // 何か残したあとだけ
+        const ps = navigator.storage.persisted ? navigator.storage.persisted() : Promise.resolve(false);
+        Promise.resolve(ps).then(done => done ? true : navigator.storage.persist()).then(v => { GH.persisted = !!v; }, () => {});
+    }catch(e){}
+}
 function cmpVer(a, b){ const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++){ if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); } return 0; }
 function remoteNoticeHtml(){
     const old = REMOTE.minVersion && cmpVer(APP_VERSION, REMOTE.minVersion) < 0;
@@ -16486,6 +16496,7 @@ async function retryPack(){
         guard('trial', scheduleTrialReminder);
         guard('notifs', () => syncNotifs(true));
         guard('remote', loadRemote);
+        guard('persist', askPersist);
         setTab(tab);
         if (guard('wish', wishBoot)){}   // 家族から届いたリンク（#g=…）。はじめての案内は、閉じたあとに出す
         else if (!S.settings.country) openCountrySheet();
