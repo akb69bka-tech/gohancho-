@@ -2013,6 +2013,7 @@ GOHAN_I18N('vi', {
     "約 {n} kcal（1人分・目安）": "Khoảng {n} kcal (mỗi người, ước tính)",
     "30 kcal 未満（1人分・目安）": "Dưới 30 kcal (mỗi người, ước tính)",
     "カロリーの目安を出せません（量のわからない材料が多いため）": "Không ước tính được calo (quá nhiều nguyên liệu không ghi lượng)",
+    "カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）": "Không ước tính được calo (nấu nhiều, không rõ bao nhiêu phần)",
     "材料の量からの目安です。実際の量・作り方で変わります。": "Ước tính từ lượng nguyên liệu. Lượng thực tế và cách nấu sẽ làm thay đổi.",
     "お膳の合計：約 {n} kcal（1人分・目安）": "Tổng bữa: khoảng {n} kcal (mỗi người, ước tính)",
     "お膳の合計の目安は出せません": "Không ước tính được tổng bữa",

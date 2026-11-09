@@ -2013,6 +2013,7 @@ GOHAN_I18N('fil', {
     "約 {n} kcal（1人分・目安）": "Mga {n} kcal (bawat tao, tantiya)",
     "30 kcal 未満（1人分・目安）": "Mas mababa sa 30 kcal (bawat tao, tantiya)",
     "カロリーの目安を出せません（量のわからない材料が多いため）": "Hindi matantiya ang calories (maraming sangkap na walang sukat)",
+    "カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）": "Hindi matantiya ang calories (marami ang luto, hindi alam kung ilang serving)",
     "材料の量からの目安です。実際の量・作り方で変わります。": "Tantiya mula sa sukat ng mga sangkap. Nag-iiba ito ayon sa totoong sukat at paraan ng pagluluto.",
     "お膳の合計：約 {n} kcal（1人分・目安）": "Kabuuan ng kain: mga {n} kcal (bawat tao, tantiya)",
     "お膳の合計の目安は出せません": "Hindi matantiya ang kabuuan ng kain",

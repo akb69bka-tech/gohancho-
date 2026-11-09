@@ -2013,6 +2013,7 @@ GOHAN_I18N('id', {
     "約 {n} kcal（1人分・目安）": "Sekitar {n} kkal (per orang, perkiraan)",
     "30 kcal 未満（1人分・目安）": "Kurang dari 30 kkal (per orang, perkiraan)",
     "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalori tidak bisa diperkirakan (terlalu banyak bahan tanpa takaran)",
+    "カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）": "Kalori tidak bisa diperkirakan (jumlah banyak, tidak jelas untuk berapa porsi)",
     "材料の量からの目安です。実際の量・作り方で変わります。": "Perkiraan dari takaran bahan. Takaran sebenarnya dan cara memasak mengubahnya.",
     "お膳の合計：約 {n} kcal（1人分・目安）": "Total hidangan: sekitar {n} kkal (per orang, perkiraan)",
     "お膳の合計の目安は出せません": "Total hidangan tidak bisa diperkirakan",

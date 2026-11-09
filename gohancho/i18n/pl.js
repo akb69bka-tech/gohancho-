@@ -2013,6 +2013,7 @@ GOHAN_I18N('pl', {
     "約 {n} kcal（1人分・目安）": "Około {n} kcal (na osobę, szacunkowo)",
     "30 kcal 未満（1人分・目安）": "Poniżej 30 kcal (na osobę, szacunkowo)",
     "カロリーの目安を出せません（量のわからない材料が多いため）": "Nie da się oszacować kalorii (za dużo składników bez ilości)",
+    "カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）": "Nie da się oszacować kalorii (duża ilość, nie wiadomo, na ile porcji)",
     "材料の量からの目安です。実際の量・作り方で変わります。": "Szacunek na podstawie ilości składników. Rzeczywiste ilości i sposób przygotowania go zmieniają.",
     "お膳の合計：約 {n} kcal（1人分・目安）": "Suma posiłku: około {n} kcal (na osobę, szacunkowo)",
     "お膳の合計の目安は出せません": "Nie da się oszacować sumy posiłku",

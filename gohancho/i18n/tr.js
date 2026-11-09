@@ -2013,6 +2013,7 @@ GOHAN_I18N('tr', {
     "約 {n} kcal（1人分・目安）": "Yaklaşık {n} kcal (kişi başı, tahmini)",
     "30 kcal 未満（1人分・目安）": "30 kcal'nin altında (kişi başı, tahmini)",
     "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalori tahmin edilemiyor (miktarı belli olmayan çok malzeme var)",
+    "カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）": "Kalori tahmin edilemiyor (büyük miktar, kaç porsiyon olduğu belli değil)",
     "材料の量からの目安です。実際の量・作り方で変わります。": "Malzeme miktarlarından yapılan bir tahmindir. Gerçek miktarlar ve pişirme şekli değiştirir.",
     "お膳の合計：約 {n} kcal（1人分・目安）": "Öğün toplamı: yaklaşık {n} kcal (kişi başı, tahmini)",
     "お膳の合計の目安は出せません": "Öğün toplamı tahmin edilemiyor",

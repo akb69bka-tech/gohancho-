@@ -8166,12 +8166,14 @@ const KC_FOODS = [
     [/salted (?:duck )?eggs?|century eggs?|pidan/i, 190, {p: 60, s: 'U'}],
     [/ゆで卵|卵|たまご|\beggs?\b|egg yolks?|egg whites?|\bhuevos?\b/i, 142, {p: 50, u: {yolk: 17, white: 33}, s: 'M'}],
     // ---- 乳製品 ----
+    // スイスチャード（葉物）は「swiss」でチーズに当たらないよう、チーズより前に置く（R154）
+    [/スイスチャード|チャード|swiss chard|rainbow chard|\bchard|acelgas?|blitva|mangold|beet leaves/i, 22, {p: 40, u: {束: 250, 株: 40, bunch: 250, bunches: 500, handful: 30, handfuls: 30, cup: 35, cups: 35, leaf: 40, leaves: 40}, s: 'M'}],
     [/ピザ用チーズ|シュレッド/i, 340, {d: 0.45, s: 'M'}],
     [/粉チーズ|parmesan|parmigiano|grana padano|pecorino|ricotta salata/i, 445, {d: 0.4, s: 'M'}],
     [/クリームチーズ|cream cheese|requeij[aã]o|catupiry|fresh cheese|spreadable/i, 313, {d: 1.0, s: 'M'}],
     [/ricotta|cottage cheese|\bquark\b|tvorog|twar[oó]g|white cheese|beyaz peynir|queso fresco|labneh/i, 150, {d: 1.0, s: 'U'}],
     [/mozzarella|burrata|bocconcini|feta|halloumi|paneer|queso blanco|panela cheese/i, 280, {d: 0.45, s: 'M'}],
-    [/チーズ|cheese|cheddar|gruy[eè]re|emmental|comt[eé]|monterey|colby|swiss|reblochon|raclette|stilton|gouda|edam|manchego|oaxaca|kashar|ka[sş]ar|provolone|fontina|asiago|queso/i, 390, {d: 0.45, u: {slice: 20, 枚: 18}, s: 'M'}],
+    [/チーズ|cheese|cheddar|gruy[eè]re|emmental|comt[eé]|monterey|colby|swiss(?! chard)|reblochon|raclette|stilton|gouda|edam|manchego|oaxaca|kashar|ka[sş]ar|provolone|fontina|asiago|queso/i, 390, {d: 0.45, u: {slice: 20, 枚: 18}, s: 'M'}],
     [/生クリーム|heavy cream|double cream|whipping cream|crème fraîche|creme fraiche|cr[eè]me fra[iî]che|nata/i, 404, {d: 1.0, s: 'M'}],
     [/sour cream|smetana|śmietana|single cream|light cream|half and half|crema|\bcream\b(?! (?:of|cheese|crackers))/i, 200, {d: 1.0, s: 'U'}],
     [/evaporated milk|condensed milk/i, 134, {d: 1.05, s: 'U'}],
@@ -8191,8 +8193,8 @@ const KC_FOODS = [
     [/納豆|natto/i, 190, {p: 45, u: {パック: 45}, s: 'M'}],
     [/おから/i, 88, {s: 'M'}],
     [/tempeh|tempe\b/i, 192, {s: 'U'}],
-    [/大豆（水煮）|大豆の水煮|cooked soybeans|edamame|枝豆/i, 124, {d: 0.65, s: 'M'}],
-    [/大豆|soybeans?|soya chunks/i, 372, {x: 2.3, d: 0.65, s: 'M'}],
+    [/大豆（水煮）|大豆の水煮|cooked soybeans|edamame|枝豆/i, 124, {d: 0.65, cn: 'soy', s: 'M'}],
+    [/大豆|soybeans?|soya chunks/i, 372, {x: 2.3, d: 0.65, leg: 'soy', s: 'M'}],
     // ---- 肉（加工品を先に） ----
     [/ベーコン|bacon|lardons?|pancetta|guanciale|speck/i, 400, {p: 17, u: {枚: 17, slice: 17, slices: 17, rasher: 20, rashers: 20, strip: 17, strips: 17}, s: 'M'}],
     [/ハム|\bham\b|gammon|prosciutto|jam[oó]n|presunto|kasseler|smoked pork loin|deli turkey|sliced deli/i, 200, {p: 15, u: {枚: 12, slice: 20, slices: 20, hock: 500}, s: 'M'}],
@@ -8286,10 +8288,12 @@ const KC_FOODS = [
     [/oats|oatmeal|porridge oats|オートミール|avena/i, 380, {x: 3, d: 0.4, s: 'M'}],
     [/bulgur|bulghur|burghul|couscous|freekeh|cracked wheat|broken wheat|dalia\b|wheat berries|trigo|\bwheat\b(?! (?:flour|noodles|vermicelli))|farro|spelt|pearl barley|barley|graupen|cevadinha|buckwheat|kasha|kasza|millet|quinoa|amaranth seeds|sorghum|poha|flattened rice|hominy grits|canjiquinha|broth mix/i, 350, {x: 2.5, d: 0.8, s: 'U'}],
     [/cooked hominy|hominy|maíz pozolero|pozole corn|\bmote\b|cancha|corn nuts/i, 120, {s: 'U'}],
-    [/(?:canned|tinned|cooked|boiled) (?:chickpeas|garbanzos)|chickpeas \(canned|chickpeas, (?:drained|canned|cooked)/i, 139, {u: {can: 240, tin: 240, cans: 480}, s: 'U'}],
-    [/(?:canned|tinned|cooked|boiled|refried|baked) (?:[\w-]+ ){0,2}(?:beans|lentils|peas|fava|ful)|beans (?:in|with) (?:tomato|their)|ful medames|refried|baked beans|\(canned|canned\)|jar or can|cannellini|borlotti beans \(canned|flageolet/i, 110, {u: {can: 240, tin: 240, cans: 480, tins: 480}, s: 'U'}],
-    [/ひよこ豆|chickpeas?|garbanzos?|nohut|grão/i, 378, {x: 2.5, d: 0.8, s: 'U'}],
-    [/小豆|ささげ|lentils?|lentejas|mercimek|soczewica|\bdal\b|dhal|chana|urad|moong|toor|masoor|split peas|mung beans?|kidney beans?|rajma|black beans|pinto|white beans|navy beans|great northern|haricot|cannellini|borlotti|fava beans|fava\b|broad beans|ful\b|black-eyed|lima beans|pallares|butter beans|feijão|feijao|frijoles|habichuelas|alubias|fasola|fasulye|black urad|chana dal|marrowfat|(?<!green |french |runner |string |long |wing |winged |yellow |snake |broad |flat |\bgreen or yellow )\bbeans\b|\bpeas\b(?=.*dried)|sprouted fava/i, 340, {x: 2.5, d: 0.8, s: 'M'}],
+    [/(?:canned|tinned|cooked|boiled) (?:chickpeas|garbanzos)|chickpeas \(canned|chickpeas, (?:drained|canned|cooked)/i, 139, {u: {can: 240, tin: 240, cans: 480}, cn: 'chick', s: 'U'}],
+    [/(?:canned|tinned|cooked|boiled|refried|baked) (?:[\w-]+ ){0,2}(?:beans|lentils|peas|fava|ful)|beans (?:in|with) (?:tomato|their)|ful medames|refried|baked beans|\(canned|canned\)|jar or can|cannellini|borlotti beans \(canned|flageolet/i, 110, {u: {can: 240, tin: 240, cans: 480, tins: 480}, cn: 'bean', s: 'U'}],
+    // 生・冷凍のそら豆など（未熟の豆。乾いた豆の値にしない。R154）
+    [/(?:fresh|frozen) (?:[\w-]+ ){0,3}(?:fava|broad|lima|butter|black-eyed) beans|生のそら豆|そら豆|fava beans?, (?:fresh|frozen)|habas frescas/i, 102, {fr: 1, s: 'M'}],
+    [/ひよこ豆|chickpeas?|garbanzos?|nohut|grão/i, 378, {x: 2.5, d: 0.8, leg: 'chick', s: 'U'}],
+    [/小豆|ささげ|lentils?|lentejas|mercimek|soczewica|\bdal\b|dhal|chana|urad|moong|toor|masoor|split peas|mung beans?|kidney beans?|rajma|black beans|pinto|white beans|navy beans|great northern|haricot|cannellini|borlotti|fava beans|fava\b|broad beans|ful\b|black-eyed|lima beans|pallares|butter beans|feijão|feijao|frijoles|habichuelas|alubias|fasola|fasulye|black urad|chana dal|marrowfat|(?<!green |french |runner |string |long |wing |winged |yellow |snake |broad |flat |\bgreen or yellow )\bbeans\b|\bpeas\b(?=.*dried)|sprouted fava/i, 340, {x: 2.5, d: 0.8, leg: 'bean', s: 'M'}],
     // ---- ナッツ・種 ----
     [/ごま|胡麻|sesame seeds?|sesame\b(?! oil)|perilla seeds?/i, 605, {d: 0.6, s: 'M'}],
     [/ピーナッツ|peanuts?|groundnuts?|kacang tanah|đậu phộng|mani\b/i, 585, {d: 0.6, s: 'M'}],
@@ -8309,6 +8313,10 @@ const KC_FOODS = [
     [/plantains?|plátano|platano|saba bananas?|raw banana|green banana|cooking banana/i, 122, {p: 180, s: 'U'}],
     [/かぼちゃ|pumpkin(?! seeds)|butternut|(?<!mexican |summer |yellow |and )squash(?! blossoms?)|kalabasa|calabaza|ab[oó]bora|zapallo|labu kuning|bí đỏ|kabocha|hokkaido/i, 60, {p: 1200, s: 'M'}],
     // ---- 野菜（重さのあるもの） ----
+    // 長ねぎ・青ねぎ（green onion・spring onion など）は玉ねぎ（onions）より前に置く。1本 10〜15g（R154。玉ねぎ1個 200g に数えていた）
+    [/長ねぎの青い部分/i, 30, {p: 30, u: {本: 30}, tiny: 1, s: 'M'}],
+    [/長ねぎ|白ねぎ|leeks?|puerros?|alho-poró|alho poró|lauch|pory|pırasa|daun bawang besar|green onion \(daepa\)|daepa|scallion whites/i, 35, {p: 120, u: {本: 100, cm: 3}, s: 'M'}],
+    [/万能ねぎ|小ねぎ|青ねぎ|わけぎ|分葱|あさつき|浅葱|(?<!玉|たま)ねぎ|(?<!玉)葱|scallions?|green onions?|spring onions?|jjokpa|cebolin|cebolleta|cebollín|cebollino|cheiro-verde|frühlingszwiebel|szczypiorek|dymka|taze soğan|daun bawang|hành lá|dahon ng sibuyas|sibuyas dahon|shallot leaves|garlic leaves/i, 30, {p: 15, u: {本: 10, bunch: 100, bunches: 200}, tiny: 1, s: 'M'}],
     [/玉ねぎ|たまねぎ|onions?(?! powder)|cebollas?|cebola|zwiebeln?|cebula|soğan|bawang (?:bombay|merah besar)|pyaz|hành tây|sibuyas|red onion|pearl onions|baby onions|borettane/i, 33, {p: 200, s: 'M'}],
     [/にんにく|ニンニク|garlic(?! (?:chives|powder|oil|leaves|shoots|mayo))|ajo\b|alho|knoblauch|czosnek|sarımsak|bawang putih|tỏi|bawang\b(?! (?:merah|bombay|daun|goreng))/i, 129, {p: 5, u: {片: 5, clove: 5, cloves: 5, head: 50, bulb: 50, 'head of garlic': 50, かけ: 5}, tiny: 1, s: 'M'}],
     [/生姜|しょうが|ginger(?! (?:-garlic|garlic))|jengibre|gengibre|ingwer|imbir|zencefil|jahe|gừng|luya|galangal|lengkuas|laos|fingerroot|krachai|temu kunci|kencur|turmeric root|fresh turmeric|kunyit|nghệ/i, 30, {p: 15, u: {かけ: 15, thumb: 15, piece: 15, knob: 15, slice: 2, slices: 2, cm: 5}, tiny: 1, s: 'M'}],
@@ -8355,9 +8363,6 @@ const KC_FOODS = [
     [/chil(?:e|i|li)(?:es|s)? (?:de árbol|arbol)|dried (?:red )?chil|guajillo|ancho\b|pasilla|chipotles?|árbol|arbol|cascabel|morita|mulato|dried chiles?/i, 320, {p: 5, s: 'U'}],
     [/唐辛子|ají\b|aji\b|aji amarillo|ají amarillo|ají limo|rocoto|chil(?:e|i|li)(?:es|s)?\b|jalape[nñ]os?|serrano|bird'?s eye|cabai|cabe\b|ớt\b|sili\b|labuyo|prik\b|green chil|red chil|scotch bonnet|habanero|thai chil|hari mirch|mirch/i, 40, {p: 8, u: {本: 1}, tiny: 1, s: 'M'}],
     [/セロリ|celery|apio|aipo|sellerie|seler\b|kereviz|cần tây|kintsay|chinese celery|seledri/i, 12, {p: 40, u: {本: 100, stalk: 40, stalks: 40, stick: 40, sticks: 40, head: 400, heart: 150, hearts: 150}, s: 'M'}],
-    [/長ねぎの青い部分/i, 30, {p: 30, u: {本: 30}, tiny: 1, s: 'M'}],
-    [/長ねぎ|白ねぎ|leeks?|puerros?|alho-poró|alho poró|lauch|pory|pırasa|daun bawang besar|green onion \(daepa\)|daepa|scallion whites/i, 35, {p: 120, u: {本: 100, cm: 3}, s: 'M'}],
-    [/万能ねぎ|小ねぎ|青ねぎ|ねぎ|葱|scallions?|green onions?|spring onions?|jjokpa|cebolin|cebolleta|cebollín|cebollino|cheiro-verde|frühlingszwiebel|szczypiorek|dymka|taze soğan|daun bawang|hành lá|dahon ng sibuyas|sibuyas dahon|shallot leaves|garlic leaves/i, 30, {p: 15, u: {本: 10, bunch: 100, bunches: 200}, tiny: 1, s: 'M'}],
     [/アスパラ|asparagus|esp[aá]rragos?|aspargos?|spargel|szparagi|kuşkonmaz|măng tây/i, 21, {p: 20, u: {本: 20, bunch: 250}, s: 'M'}],
     [/オクラ|okra|bhindi|quiabo|bamya|đậu bắp|ladyfinger/i, 26, {p: 10, u: {袋: 100, 本: 10}, s: 'M'}],
     [/さやいんげん|いんげん|green beans?|french beans|runner beans|string beans|haricots verts|ejotes|vagem|fasolka|taze fasulye|buncis|long beans?|sitaw|yardlong|kacang panjang|đậu đũa|snake beans?|wing beans?|winged beans?|đậu rồng|sigarilyas|snow peas|sugar snap|mangetout|絹さや|さやえんどう/i, 25, {p: 8, u: {本: 7, handful: 50}, s: 'M'}],
@@ -8516,8 +8521,8 @@ function kcalCalc(r){
     });
     let kcal = 0, known = 0, unknown = 0, solid = 0, portion = 0, frySolid = 0, fry = false;
     rows.forEach(row => {
-        const f = kcMatch(row.txt); row.f = f ? f[0].source.slice(0, 24) : null;
-        let gq = kcGrams(row.q, f, row.txt);
+        const lg = kcLegume(kcMatch(row.txt), row.txt, row.q), f = lg.f; row.f = f ? f[0].source.slice(0, 24) : null;
+        let gq = kcGrams(row.q, f, row.txt); if (gq && gq.g && lg.drain !== 1) gq = {g: gq.g * lg.drain};
         if (f && f[2] && f[2].oil === 'fry'){ fry = true; row.k = 0; row.fry = true; return; }
         if (f && (f[2] || {}).liq && !(gq && gq.g)){ row.k = 0; row.skip = 'liq'; return; }
         if (gq && gq.serve){ row.k = 0; row.skip = 'serve'; return; }
@@ -8543,13 +8548,33 @@ function kcalCalc(r){
 // 名前 → 食材。ほかの国は「ラベル | キー」: ラベルのかっこ・コンマのあと・「for 〜」「with 〜」を外して見て、当たらないか水・香辛料に当たったら、キー（短い代表名）で見る
 function kcClean(t){ return String(t).replace(/[（(][^）)]*[）)]/g, ' ').replace(/,.*$/, '').replace(/\s(?:for|with|in|studded|to serve|to garnish|from)\b.*$/, '').replace(/\s+/g, ' ').trim(); }
 const KC_FRY = KC_FOODS.find(f => (f[2] || {}).oil === 'fry');
+const KC_DAEPA = KC_FOODS.find(f => f[0].test('長ねぎ'));
 function kcMatch(txt){
     if (KC_FRY[0].test(txt)) return KC_FRY;
+    if (/daepa|대파/i.test(txt)) return KC_DAEPA;   // 「Green onions (daepa)」は太いねぎ（長ねぎの行）。かっこを外す前に見る
     const parts = String(txt).split('|'), lab = kcClean(parts[0]), key = parts[1] ? parts[1].trim() : '';
     const a = lab ? kcFood(lab) : null; if (!key) return a || kcFood(String(txt));
     const b = kcFood(key);
     if (a && b && a !== b && ((a[2] || {}).liq || (a[2] || {}).tiny) && !((b[2] || {}).liq || (b[2] || {}).tiny)) return b;
+    if (a && b && a !== b && (a[2] || {}).leg && !(b[2] || {}).leg && !(b[2] || {}).liq && !(b[2] || {}).tiny) return b;   // 「baguio beans | green beans」「mung bean sprouts | bean sprouts」は野菜のほう（R154）
     return a || b;
+}
+// 豆: 乾いた豆の行に当たっても、缶詰・水煮・ゆでた豆（canned・tinned・cooked・drained・缶・水煮）なら、ゆでた豆の値（110・ひよこ豆 139）にする。
+// 生・冷凍の豆はその行に、もやし（sprouts）はもやしの行に。缶の重さ（「400 g tin」「2 cans (800 g)」）は、汁を切った重さ（6割）にする（R154。出典未確認）
+const KC_CAN = {chick: KC_FOODS.find(f => (f[2] || {}).cn === 'chick'), bean: KC_FOODS.find(f => (f[2] || {}).cn === 'bean'), soy: KC_FOODS.find(f => (f[2] || {}).cn === 'soy')}, KC_FRESH_LEG = KC_FOODS.find(f => (f[2] || {}).fr);
+const KC_CANNED_RE = /\b(?:canned|tinned|tins?|cans?|cooked|boiled|drained|precooked|pre-cooked|ready-cooked|jarred)\b|缶|水煮|ゆで(?!汁)|蒸し大豆|蒸し豆/i;
+function kcLegume(f, txt, q){
+    const o = (f && f[2]) || {}, all = String(txt) + ' ' + String(q || '');
+    if (o.leg){
+        if (/\bdried\b|乾燥|\bsoaked\b|浸水|ひと晩/i.test(all)) return {f, drain: 1};
+        if (/sprouts?|もやし/i.test(all)) return {f: kcFood('bean sprouts') || f, drain: 1};
+        if (/ゆで(?:あずき|小豆)/.test(all)) return {f, drain: 1};   // 甘いゆであずきは別物（ここでは変えない）
+        if (/\b(?:fresh|frozen)\b|冷凍|生の/i.test(String(txt))) return {f: KC_FRESH_LEG, drain: 1};
+        if (KC_CANNED_RE.test(all)) f = KC_CAN[o.leg] || f; else return {f, drain: 1};
+    }
+    if (!((f && f[2]) || {}).cn) return {f, drain: 1};
+    // 缶のグラム（中身全体）は汁を切った重さに。drained と書いてあれば、そのまま
+    return {f, drain: /\d\s*(?:g|kg|oz|lb)\b/i.test(String(q || '')) && /\b(?:tins?|cans?|jars?)\b|缶/i.test(String(q || '')) && !/drained|汁を切/i.test(all) ? 0.6 : 1};
 }
 function isCustomIdKc(id){ return /^u\d+$/.test(String(id)); }
 function kcSplit(src, jp){
@@ -8573,9 +8598,14 @@ function kcalRaw(r){
     try { v = kcalCalc(r); } catch (e) { v = {kcal: NaN, cov: 0}; }
     KCAL_MEMO.set(key, v); return v;
 }
+// 1人分の上限の目安（R154）。レシピの材料は2人分が基準だが、パイ・キッシュ（型1台分）など「1回に作る量」で書かれた料理は、何人分かがデータにないので、
+// 2で割ると 1人分が大きすぎる数になる。この上限を超えたら、うその数字を出さずに「何人分かわからないため出せない」にする（主菜 1100・ご飯もの/麺 1200・副菜 600・汁もの 800。汁ものは具の多い、食事になるスープもあるので少し上）
+const KC_CEIL = {'主菜': 1100, 'ごはん': 1200, '麺': 1200, '副菜': 600, '汁物': 800};
+function kcCeil(r){ return KC_CEIL[r && r.type] || 1100; }
 function kcalOf(r){
     const x = kcalRaw(r); if (!x) return {st: 'na'};
     if (!(x.cov >= KC_MIN_COV) || !Number.isFinite(x.kcal) || x.kcal <= 0) return {st: 'na'};
+    if (x.kcal > kcCeil(r)) return {st: 'na', big: true, raw: x.kcal};   // 量が多すぎて何人分かわからない（数字は出さない。ダイエットモードでは重めとみる）
     if (x.kcal < 30) return {st: 'low', raw: x.kcal};
     return {st: 'ok', v: Math.max(30, Math.round(x.kcal / 10) * 10), raw: x.kcal};
 }
@@ -8597,7 +8627,7 @@ function menuKcal(m){
     if (st){ const s = kcalStaple(st); if (s == null) return {st: 'na'}; sum += s; }
     return {st: 'ok', v: Math.round(sum / 10) * 10, dish: rs.reduce((a, r) => a + kcalOf(r).raw, 0), rs};
 }
-function kcalText(k){ return k.st === 'ok' ? t('約 {n} kcal（1人分・目安）', {n: k.v}) : k.st === 'low' ? t('30 kcal 未満（1人分・目安）') : t('カロリーの目安を出せません（量のわからない材料が多いため）'); }
+function kcalText(k){ return k.st === 'ok' ? t('約 {n} kcal（1人分・目安）', {n: k.v}) : k.st === 'low' ? t('30 kcal 未満（1人分・目安）') : k.big ? t('カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）') : t('カロリーの目安を出せません（量のわからない材料が多いため）'); }
 const KCAL_NOTE = () => t('材料の量からの目安です。実際の量・作り方で変わります。');
 // 作り方の画面: 調味料の欄の下に1行と注意書き
 function kcalNoteHtml(r){
@@ -8614,7 +8644,7 @@ function kcalFried(r){ return !!r && r.method === '揚'; }
 function dietHeavyFn(cands){
     const vs = cands.map(x => kcalOf(x.r || x)).filter(k => k.st !== 'na').map(k => k.raw || 0).sort((a, b) => a - b);
     const med = vs.length ? vs[Math.floor(vs.length / 2)] : Infinity;
-    return r => { if (kcalFried(r)) return true; const k = kcalOf(r); return k.st !== 'na' && (k.raw || 0) > med * 1.15; };
+    return r => { if (kcalFried(r)) return true; const k = kcalOf(r); return !!k.big || (k.st !== 'na' && (k.raw || 0) > med * 1.15); };   // 出せない（量が多すぎる）料理も重めとみる
 }
 const KCAL_MED = {key: '', v: {}};
 function kcalSlotMedian(slot){
