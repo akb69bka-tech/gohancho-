@@ -49,6 +49,8 @@ for (const cc of CCS){
             if (x.pic) ok(!x.pload ? true : x.bg === 'none' || x.bg.indexOf('url') < 0, `${at}: 絵の届く前の器は絵を出さず生成りの丸で待つ ${x.id}`);
             else if (x.id){ ok(x.pwait && x.w > 0, `${at}: 絵のない料理は同じ大きさの生成りの丸 ${x.id}`); }
         }
+        // 位置の基準は、1回目の「前の献立」の丸の置き直し（menuBackFit は 350・900ms あとにも走る）が済んでから取る。CI の遅い機械で、置き直しで下の段が動いたのを絵のせいと数えていた（v127）
+        await p.waitForTimeout(1000); const a2 = await snap();
         // 絵が届くまで待つ（最大8秒）
         await p.waitForFunction(() => !document.querySelector('#view .tray .vessel.pload'), null, {timeout: 8000}).catch(() => {});
         const z = await snap();
@@ -59,7 +61,7 @@ for (const cc of CCS){
                 ok(x.bg.indexOf('url') >= 0 && x.src === x.expect, `${at}: 絵が器に出ている・別の料理の絵でない ${x.id} src=${x.src} expect=${x.expect}`);
                 ok(x.loaded && !x.fail, `${at}: 絵が読みこみ済み・壊れていない ${x.id}`);
             }
-            const y = a[k]; if (y && y.id === x.id) ok(Math.abs(y.w - x.w) <= 1 && Math.abs(y.x - x.x) <= 1 && Math.abs(y.y - x.y) <= 1, `${at}: 絵が届いても器の大きさ・位置が動かない ${x.id}`);
+            const y = a2[k]; if (y && y.id === x.id) ok(Math.abs(y.w - x.w) <= 1 && Math.abs(y.x - x.x) <= 1 && Math.abs(y.y - x.y) <= 1, `${at}: 絵が届いても器の大きさ・位置が動かない ${x.id}`);
         });
     }
     ok(errs.length === 0, `${cc}: ページのエラーなし ${errs[0] || ''}`);
