@@ -721,14 +721,27 @@ html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;o
 .settings{gap:var(--s16)}
 .set-tabs-bar{position:sticky;top:0;z-index:5;background:var(--bg);padding-block:var(--s4);box-shadow:0 6px 6px -6px color-mix(in srgb,var(--ink) 18%,transparent)}
 .set-tabs{display:flex;gap:var(--s8);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:2px 2px var(--s4)}
-.set-tab{flex:none;display:inline-flex;align-items:center;gap:var(--s4);min-height:var(--tap-sm);min-width:var(--tap-sm);max-width:100%;padding:var(--s4) var(--s12);border:1px solid var(--accent-line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.2;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
+/* 第33回 R156: 列の外にまだタブがあることを見せる。その側の端をページの地の色へぼかし（.set-tabs-cue）、小さな ‹ › を置く（押すと横に送る）。
+   タブは列の幅より 40px 狭くして、先頭や末尾にいても隣のタブが少しのぞく。アラビア語（右から）は向きを入れかえる */
+.set-tabs-wrap{position:relative}
+.set-tabs-cue{position:absolute;top:0;bottom:var(--s4);inset-inline-end:0;z-index:1;width:24px;display:flex;align-items:center;justify-content:flex-end;padding:0;margin:0;border:0;color:var(--ink);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;background:linear-gradient(to right,color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 62%)}
+.set-tabs-cue[data-dir="prev"]{inset-inline-end:auto;inset-inline-start:0;justify-content:flex-start;background:linear-gradient(to left,color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 62%)}
+html[dir="rtl"] .set-tabs-cue{background:linear-gradient(to left,color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 62%)}
+html[dir="rtl"] .set-tabs-cue[data-dir="prev"]{background:linear-gradient(to right,color-mix(in srgb,var(--bg) 0%,transparent),var(--bg) 62%)}
+.set-tabs-cue[hidden]{display:none}
+.set-tabs-cue>i{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-line);box-shadow:var(--shadow-1)}
+.set-tabs-cue svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+html[dir="rtl"] .set-tabs-cue svg{transform:scaleX(-1)}
+.set-tabs-cue:hover>i{border-color:var(--ink)}
+.set-tab{flex:none;display:inline-flex;align-items:center;gap:var(--s4);min-height:var(--tap-sm);min-width:var(--tap-sm);max-width:calc(100% - 40px);padding:var(--s4) var(--s12);border:1px solid var(--accent-line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.2;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .set-tab>span{min-width:0;white-space:normal;overflow-wrap:normal;word-break:keep-all}   /* ふつうは1行（列ごと横に送る）。幅195px・大きい文字などで1つの名前が列の幅より長いときだけ、語の切れ目（空白・「・」）で2行に。語の途中では折らない */
 .set-tab .set-ic{width:20px;height:20px}
-@media (max-width:299px){html[data-ts="2"] .set-tab .set-ic,html[data-ts="2"] .set-sec-h .set-ic{display:none}}   /* 幅195px・文字もっと大きい: 絵を外して、名前（Visualizzazione・Przypomnienia など長い1語）を語の途中で折らずに入れる */
+@media (max-width:299px){html[data-ts="2"] .set-sec-h .set-ic,.set-tab .set-ic{display:none}.set-tab{padding-inline:var(--s8)}}   /* 幅300px未満: タブの絵を外して、名前（Visualizzazione・Przypomnienia など長い1語）を語の途中で折らずに、隣のタブがのぞく幅に入れる（R156）。見出しの絵は文字もっと大きいのときだけ外す */
 .set-tab:hover{border-color:var(--ink)}
 .set-tab[aria-selected="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink);font-weight:700}   /* 選んでいるタブは若草（ほかの選んだチップと同じ） */
 .set-tab[aria-selected="true"] .set-ic{stroke-width:2.1}
 .set-panel{display:flex;flex-direction:column;gap:var(--s16)}.set-panel[hidden]{display:none}
+.set-panel :is(b,strong,.check>span,.btn,.set-title,label){min-width:0;max-width:100%;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}   /* 第33回 R158: 狭い幅・大きい文字のドイツ語（Datensicherung・夜勤明けの説明など）は、文字を小さくせず言語に合わせて折り返す */
 .set-ic{width:22px;height:22px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .set-sec{display:flex;flex-direction:column;gap:var(--s12);scroll-margin-top:calc(var(--tap-sm) + var(--s24))}   /* 外から欄へ飛んだとき、上に残るタブの列に隠れない */
 #view .settings .set-group[id],#view .settings .field[id]{scroll-margin-top:calc(var(--tap-sm) + var(--s24))}
@@ -10223,7 +10236,7 @@ function allergySettingsHtml(){
     </div>`;
 }
 // 設定の「表示と言語」には、どの言葉のときも "Language" と 🌐 を付ける（第21回 R70: 読めない言葉になった人が言語の場所をさがせるように）
-function langTitle(s){ return /\blanguage\b/i.test(s) ? s + ' 🌐' : s + ' · 🌐 Language'; }
+function langTitle(s){ return /\blanguage\b/i.test(s) ? s + ' 🌐' : s + ' · 🌐\u00a0Language'; }
 function viewSettings(){
     const sv = Number(S.settings.servings) || 2;
     const cur = countryOf(currentCountry());
@@ -10396,21 +10409,77 @@ function setTabCur(){
     return setTabOf(session.setTab) === session.setTab ? session.setTab : 'family';
 }
 function setTabKeep(k){ session.setTab = k; try{ localStorage.setItem(SET_TAB_KEY, k); }catch(e){} }
+// タブの列: role=tablist／tab、選んだタブだけ Tab キーで入れる（roving tabindex。中では ← → Home End で移る: setTabKey）
+// 列の両端の ‹ › （.set-tabs-cue）は、その側にまだタブがあるときだけ出す（setTabCue）。指・マウス用の飾りなので、読み上げと Tab キーからは外す
+const SET_CHEV = '<svg viewBox="0 0 12 12" aria-hidden="true"><polyline points="4.5 2 8.5 6 4.5 10"/></svg>';
 function setTabsHtml(cur){
-    return `<div class="set-tabs-bar"><div class="set-toc set-tabs" role="tablist" aria-label="${esc(t('設定の目次'))}">${SET_TABS.map(([k, l]) => `<button type="button" role="tab" class="set-tab" id="sett-${k}" data-act="set-jump" data-k="${k}" aria-controls="setp-${k}" aria-selected="${k === cur}">${SET_ICONS[k]}<span>${esc(l())}</span></button>`).join('')}</div></div>`;
+    const cue = d => `<button type="button" class="set-tabs-cue" data-act="set-tabs-step" data-dir="${d}" tabindex="-1" aria-hidden="true" hidden><i>${d === 'prev' ? SET_CHEV.replace('4.5 2 8.5 6 4.5 10', '7.5 2 3.5 6 7.5 10') : SET_CHEV}</i></button>`;
+    return `<div class="set-tabs-bar"><div class="set-tabs-wrap"><div class="set-toc set-tabs" role="tablist" aria-label="${esc(t('設定の目次'))}">${SET_TABS.map(([k, l]) => `<button type="button" role="tab" class="set-tab" id="sett-${k}" data-act="set-jump" data-k="${k}" aria-controls="setp-${k}" aria-selected="${k === cur}" tabindex="${k === cur ? 0 : -1}">${SET_ICONS[k]}<span>${esc(l())}</span></button>`).join('')}</div>${cue('prev')}${cue('next')}</div></div>`;
 }
-// 選んだタブを、横にスクロールする列の見える場所へ（ページは動かさない）
+// 列の前（先頭の側）・後ろにまだ見えていないタブがあるか。右から並ぶ言語では scrollLeft が 0 から負へ動くので、向きは絶対値で見る
+function setTabCue(){
+    const sc = document.querySelector('#view .set-tabs'); if (!sc) return;
+    const s = Math.abs(sc.scrollLeft), more = sc.scrollWidth - sc.clientWidth;
+    const w = sc.parentNode, pv = w.querySelector('.set-tabs-cue[data-dir="prev"]'), nx = w.querySelector('.set-tabs-cue[data-dir="next"]');
+    if (pv) pv.hidden = !(more > 1 && s > 1);
+    if (nx) nx.hidden = !(more > 1 && s < more - 1);
+}
+// 選んだタブを、横にスクロールする列の真ん中へ（両隣のタブがのぞく。ページは動かさない）
 function setTabReveal(){
     try{ const sc = document.querySelector('#view .set-tabs'), b = sc && sc.querySelector('[aria-selected="true"]'); if (!b) return;
-        const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect(), pad = Math.max(0, Math.min(16, (a.width - r.width) / 2 - 1));   // 前後のタブが少し見える余白（タブが列の幅に近いときは詰める）
-        if (r.left < a.left + pad) sc.scrollLeft += r.left - a.left - pad; else if (r.right > a.right - pad) sc.scrollLeft += r.right - a.right + pad; }catch(e){}
+        const all = [...sc.querySelectorAll('.set-tab')]; all.forEach(x => { x.style.marginLeft = x.style.marginRight = ''; });
+        const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect();
+        const d = (r.left + r.right) / 2 - (a.left + a.right) / 2; if (Math.abs(d) > 1) sc.scrollLeft += d;
+        // 端でタブの切れ目がちょうど列の端に来ると、隣がのぞかない。その端をまたぐタブができるまで 20px ほど寄せる（選んだタブは列の中に残す）
+        // 隠れたタブを引き入れる（A）か、端のタブを少し押し出す（B）。列の端まで寄っていて動かせないときは、端のタブに余白を足して寄せる
+        const PEEK = 20;
+        const fix = side => {
+            const A = sc.getBoundingClientRect(), R = all.map(x => x.getBoundingClientRect()), act = b.getBoundingClientRect(), edge = side < 0 ? A.left : A.right;
+            if (sc.scrollWidth <= sc.clientWidth + 1 || R.some(q => q.left < edge - 6 && q.right > edge + 6)) return null;   // はみ出していない・もうのぞいている（端をまたいで両側に 6px 以上）
+            const hid = R.filter(q => side < 0 ? q.right <= edge + 6 : q.left >= edge - 6); if (!hid.length) return null;
+            const near = side < 0 ? Math.max(...hid.map(q => q.right)) : Math.min(...hid.map(q => q.left));
+            const vis = R.filter((q, i) => all[i] !== b && (side < 0 ? q.left >= edge - 6 : q.right <= edge + 6));
+            const out = vis.length ? (side < 0 ? Math.min(...vis.map(q => q.left)) : Math.max(...vis.map(q => q.right))) : null;
+            const ns = [side < 0 ? near - edge - PEEK : near - edge + PEEK];   // n: 中身を左へ動かす量
+            if (out != null) ns.push(side < 0 ? out - edge + PEEK : out - edge - PEEK);
+            const m = Math.max(0, Math.min(20, (A.width - act.width) / 2 - 0.5));   // 選んだタブに端の ‹ › の丸がかからない（かかってもぼかしの薄いところだけ）
+            return ns.filter(n => act.left - n >= A.left + m - 0.5 && act.right - n <= A.right - m + 0.5).sort((x, y) => Math.abs(x) - Math.abs(y))[0] ?? null;
+        };
+        for (const side of [-1, 1]){
+            let n = fix(side); if (n == null) continue;
+            const x0 = b.getBoundingClientRect().left; sc.scrollLeft += n;
+            const left = n - (x0 - b.getBoundingClientRect().left);   // 動かしきれなかった分
+            if (Math.abs(left) > 1){
+                const ord = all.slice().sort((p, q) => p.getBoundingClientRect().left - q.getBoundingClientRect().left);
+                if (left < 0) ord[0].style.marginLeft = (-left) + 'px'; else ord[ord.length - 1].style.marginRight = left + 'px';
+                const got = x0 - b.getBoundingClientRect().left; if (Math.abs(n - got) > 1) sc.scrollLeft += n - got;   // 余白で広がった分だけもう一度
+            }
+        } }catch(e){}
+    setTabCue();
 }
+// ‹ › : 列を見えている幅の 3/4 だけ送る
+function setTabStep(dir){
+    const sc = document.querySelector('#view .set-tabs'); if (!sc) return;
+    const rtl = getComputedStyle(sc).direction === 'rtl', n = Math.max(60, sc.clientWidth * 0.75) * (dir === 'prev' ? -1 : 1) * (rtl ? -1 : 1);
+    sc.scrollBy({left: n, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
+// キーボード: ← → で隣のタブ（右から並ぶ言語では逆）、Home・End で端のタブ。移った先をすぐ開く
+function setTabKey(e){
+    const b = e.target.closest && e.target.closest('#view .set-tabs [role="tab"]'); if (!b || e.altKey || e.ctrlKey || e.metaKey) return;
+    const bs = [...b.parentNode.querySelectorAll('[role="tab"]')], i = bs.indexOf(b), rtl = getComputedStyle(b.parentNode).direction === 'rtl';
+    const j = {ArrowRight: rtl ? i - 1 : i + 1, ArrowLeft: rtl ? i + 1 : i - 1, Home: 0, End: bs.length - 1}[e.key]; if (j == null) return;
+    e.preventDefault();
+    const to = bs[(j + bs.length) % bs.length]; setGo(to.dataset.k); to.focus({preventScroll: true});
+}
+document.addEventListener('keydown', setTabKey);
+document.addEventListener('scroll', e => { if (e.target && e.target.classList && e.target.classList.contains('set-tabs')) setTabCue(); }, true);
+window.addEventListener('resize', () => { if (typeof tab !== 'undefined' && tab === 'settings') setTabCue(); });
 // タブを切りかえる（描き直さず、hidden と選んだ印だけを変える）
 function setTabShow(k){
     if (setTabOf(k) !== k) return;
     setTabKeep(k);
     document.querySelectorAll('#view .set-panel').forEach(p => { p.hidden = p.dataset.t !== k; });
-    document.querySelectorAll('#view .set-tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === k)));
+    document.querySelectorAll('#view .set-tab').forEach(b => { b.setAttribute('aria-selected', String(b.dataset.k === k)); b.tabIndex = b.dataset.k === k ? 0 : -1; });
     setTabReveal();
 }
 // 設定の場所へ飛ぶ（外からの入口・目次）。k: タブのキー／まとまりのキー（notify など）／欄の id（allergy-card・family-profile など）
@@ -15764,6 +15833,7 @@ document.addEventListener('click', e => {
         }
         case 'settings': if (el.dataset.to) setGo(el.dataset.to); else setTab('settings'); break;   // data-to: 設定のその場所へ（タブを開いて移る）
         case 'settings-back': setTab(prevTab || 'today'); break;
+        case 'set-tabs-step': setTabStep(el.dataset.dir); break;   // 設定のタブの列の ‹ ›
         case 'set-jump': setGo(el.dataset.k); break;   // 設定のタブ: そのタブだけを出す（まとまりのキーなら、そのタブを開いてそこへ移る）
         case 'paywall': openPaywall('info'); break;
         case 'share-menu': { if (!share3Items('menu').length){ openShare('menu'); break; } sheet = {kind:'share', card:'today3', src: 'menu', lv: 2, text: todayShare3Text(2, 'menu'), title: t('今日の献立')}; renderSheet(); break; }   // 決める前も、決めたあとと同じ3段（料理名だけ／買う物も／作り方も）で送る（第4回 R8）
@@ -15843,7 +15913,7 @@ document.addEventListener('click', e => {
         case 'one-open': openOne(); break;
         case 'timer-alert-close': timerAlertClose(); break;
         case 'timer-alert-set': if (el.checked) delete S.settings.timerAlertOff; else { S.settings.timerAlertOff = true; beepEnd(); } save(); beepUnlock(); break;
-        case 'cond-settings': closeSheet(); setTab('settings'); break;   // R2-10: 条件のシートの中から設定へ（下のほうから届く）
+        case 'cond-settings': closeSheet(); setGo('food'); break;   // R2-10: 条件のシートの中から設定へ（下のほうから届く）。第33回 R157: 条件（苦手・アレルギー）を見直す入口なので、最後に開いたタブでなく「苦手・食の決まり」のタブへ
         case 'one-pick': sheet.pick = {id}; oneRun(false); renderSheet(); break;
         case 'one-free': sheet.pick = {text: el.dataset.v}; oneRun(false); renderSheet(); break;
         case 'one-change': sheet.pick = null; sheet.sugg = null; sheet.seen = []; sheet.q = ''; renderSheet(); break;

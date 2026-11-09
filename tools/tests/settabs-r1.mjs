@@ -174,11 +174,11 @@ const TABS = {
     await p.evaluate(() => { setTab('today'); saleSetup(); }); await settle(p);
     ok(await cur(p) === 'store', 'T3e 特売の入口 → スーパーのタブ: ' + await cur(p));
     ok(await inView(p, '#set-store') === true, 'T3e スーパーの欄が見える: ' + await inView(p, '#set-store'));
-    // 条件のシートの「設定」→ 設定（最後に開いたタブ）
+    // 条件のシートの「設定」→ 苦手・食の決まりのタブ（第33回 R157。最後に開いたタブではない）
     await p.evaluate(() => { setTab('today'); openCondSheet(); });
     await p.waitForSelector('[data-act="cond-settings"]');
     await p.click('[data-act="cond-settings"]');
-    ok(await p.evaluate(() => tab === 'settings' && !sheet) && await cur(p) === 'store', 'T3f 条件のシートの「設定」→ 設定（最後のタブ）: ' + await cur(p));
+    ok(await p.evaluate(() => tab === 'settings' && !sheet) && await cur(p) === 'food', 'T3f 条件のシートの「設定」→ 苦手・食の決まりのタブ: ' + await cur(p));
     // 前の目次のキー: まとまりのキー（notify・help）なら、そのまとまりのあるタブを開いてそこへ
     for (const [k, want] of [['notify', 'plan'], ['help', 'plan'], ['data', 'data'], ['display', 'display'], ['store', 'store']]){
         await p.evaluate(() => setTabShow('family'));
@@ -224,10 +224,10 @@ const TABS = {
                         bs.forEach((x, i) => {
                             const r = x.getBoundingClientRect(), sp = x.querySelector('span'), sr = sp.getBoundingClientRect();
                             if (r.height < 44 || r.width < 44) bad.push(`${x.dataset.k} 小さい ${Math.round(r.width)}x${Math.round(r.height)}`);
-                            // 名前は1行。列の幅より長いときだけ2行まで。折れるのは語の切れ目（空白・「・」・&・/ のあと）だけ（タイ語は語の区切りを辞書で決めるので行の数だけ見る）
+                            // 名前は1行。列の幅（から隣がのぞく 40px を引いた幅。第33回 R156）より長いときだけ2行まで。折れるのは語の切れ目（空白・「・」・&・/ のあと）だけ（タイ語は語の区切りを辞書で決めるので行の数だけ見る）
                             const lines = sr.height / lh;
                             if (lines > 2.3) bad.push(`${x.dataset.k} 3行以上 ${Math.round(sr.height)}`);
-                            if (lines > 1.4 && r.width < sc.clientWidth - 8) bad.push(`${x.dataset.k} 列に余裕があるのに2行`);
+                            if (lines > 1.4 && r.width < sc.clientWidth - 40 - 8) bad.push(`${x.dataset.k} 列に余裕があるのに2行`);
                             if (lines > 1.4 && !/^th/.test(document.documentElement.lang)){
                                 const tn = sp.firstChild, txt = tn.textContent, rg = document.createRange(); let prevTop = null;
                                 for (let j = 0; j < txt.length; j++){ rg.setStart(tn, j); rg.setEnd(tn, j + 1); const rc = rg.getClientRects()[0]; if (!rc || !rc.width) continue;
