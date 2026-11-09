@@ -39,21 +39,21 @@ set_key CFBundleDevelopmentRegion string "en"
 set_key NSCameraUsageDescription string "Used only when you choose to take a photo of a dish you cooked, your fridge, or a store flyer. A dish photo is kept on this device; a fridge or flyer photo is read on this device and not saved."
 set_key NSPhotoLibraryUsageDescription string "Used only when you choose to pick a photo of a dish you cooked, your fridge, or a store flyer. A dish photo is kept on this device; a fridge or flyer photo is read on this device and not saved."
 # 「声で入力」（材料・料理の検索）に必要。これが無いと iPhone アプリでマイクが使えず、審査でも指摘される
-set_key NSMicrophoneUsageDescription string "Used only while you tap the voice-input button, to hear an ingredient or dish name. The app does not save recordings."
-set_key NSSpeechRecognitionUsageDescription string "Used to turn your spoken words into text for ingredient and dish names. Speech is processed by Apple's speech recognition."
+set_key NSMicrophoneUsageDescription string "Used only when you tap the voice-input button (to hear an ingredient or dish name) and while Hands-free is on during cooking (to hear “next”). The app does not save recordings."
+set_key NSSpeechRecognitionUsageDescription string "Used to turn your spoken words into text (ingredient and dish names, and “next” in Hands-free). Speech is processed by Apple's speech recognition."
 # 日本語（InfoPlist.strings）。App Store の「Localizations」で言語を足したときも、日本語以外は上の英語になる
 mkdir -p ios/App/App/en.lproj ios/App/App/ja.lproj
 cat > ios/App/App/en.lproj/InfoPlist.strings <<'STR'
 "NSCameraUsageDescription" = "Used only when you choose to take a photo of a dish you cooked, your fridge, or a store flyer. A dish photo is kept on this device; a fridge or flyer photo is read on this device and not saved.";
 "NSPhotoLibraryUsageDescription" = "Used only when you choose to pick a photo of a dish you cooked, your fridge, or a store flyer. A dish photo is kept on this device; a fridge or flyer photo is read on this device and not saved.";
-"NSMicrophoneUsageDescription" = "Used only while you tap the voice-input button, to hear an ingredient or dish name. The app does not save recordings.";
-"NSSpeechRecognitionUsageDescription" = "Used to turn your spoken words into text for ingredient and dish names. Speech is processed by Apple's speech recognition.";
+"NSMicrophoneUsageDescription" = "Used only when you tap the voice-input button (to hear an ingredient or dish name) and while Hands-free is on during cooking (to hear “next”). The app does not save recordings.";
+"NSSpeechRecognitionUsageDescription" = "Used to turn your spoken words into text (ingredient and dish names, and “next” in Hands-free). Speech is processed by Apple's speech recognition.";
 STR
 cat > ios/App/App/ja.lproj/InfoPlist.strings <<'STR'
 "NSCameraUsageDescription" = "作った料理・冷蔵庫・スーパーのチラシの写真を撮るときだけ使います。料理の写真はこの端末の中に保存されます。冷蔵庫とチラシの写真はこの端末の中で読み取るだけで、保存しません。";
 "NSPhotoLibraryUsageDescription" = "作った料理・冷蔵庫・スーパーのチラシの写真を選ぶときだけ使います。料理の写真はこの端末の中に保存されます。冷蔵庫とチラシの写真はこの端末の中で読み取るだけで、保存しません。";
-"NSMicrophoneUsageDescription" = "「声で入力」を押している間だけ、食材や料理の名前を聞き取るために使います。アプリは録音を保存しません。";
-"NSSpeechRecognitionUsageDescription" = "話した言葉を食材や料理の名前の文字にするために使います。音声は Apple の音声認識で処理されます。";
+"NSMicrophoneUsageDescription" = "「声で入力」を押したとき（食材や料理の名前を聞き取る）と、料理中に「ハンズフリー」をオンにしている間（「次」を聞き取る）だけ使います。アプリは録音を保存しません。";
+"NSSpeechRecognitionUsageDescription" = "話した言葉を、食材や料理の名前・ハンズフリーの「次」の文字にするために使います。音声は Apple の音声認識で処理されます。";
 STR
 plutil -lint ios/App/App/en.lproj/InfoPlist.strings ios/App/App/ja.lproj/InfoPlist.strings >/dev/null
 # InfoPlist.strings を App ターゲットに足す（何度実行しても二重には入らない。失敗しても先へ進む＝英語の基本文言で動く）

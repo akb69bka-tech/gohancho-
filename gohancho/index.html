@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>わが家のご飯帖</title>
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
-<meta name="theme-color" content="#fbf5ec">
+<meta name="theme-color" content="#fbf5ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1d1814" media="(prefers-color-scheme: dark)">
 <script>window.ASSET_V='v123';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
@@ -1852,8 +1853,9 @@ html[data-ts="1"] .buy-row .bt-grp,html[data-ts="2"] .buy-row .bt-grp{flex-basis
 .sale-store .row{margin-top:6px}
 .sale-form{padding:10px 12px;margin-bottom:8px}.sale-form input,.sale-form select{max-width:100%}
 .sale-day-add{flex-wrap:wrap;gap:6px}.sale-day-add select{flex:1 1 7rem;min-width:0;width:auto}
-.sale-feed textarea{width:100%;max-width:100%;box-sizing:border-box;font-family:ui-monospace,monospace;font-size:.75rem}
+.sale-feed textarea{width:100%;max-width:100%;box-sizing:border-box;font-family:ui-monospace,monospace;font-size:16px}   /* iPhone の Safari は 16px 未満の入力欄を押すと画面を拡大して戻らない */
 .sale-feed summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.stock-add input{font-size:max(16px,1rem)}   /* 備蓄の入力欄は .small の中にあるが、文字は 16px 未満にしない（iPhone の Safari が拡大する） */
 /* 第23回 R97: 特売の1行（あいさつの行）。1行で、詰めた形でも残す */
 .sale-greet{display:flex;align-items:center;gap:6px;width:100%;min-height:44px;margin:0;padding:2px 10px;border:0;border-radius:10px;background:var(--accent-soft);color:var(--ink);font:inherit;font-size:.8125rem;font-weight:600;line-height:1.3;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .sale-greet-tx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -9635,6 +9637,16 @@ async function loadRemote(){
         applyRemote(j); scheduleRender(0);
     }catch(e){}
 }
+// 記録を消されにくくする（ブラウザ版）: 端末の空きが少ないとき、ブラウザが保存データを勝手に消さないように頼む。
+// Chrome・Safari は確認を出さずに決める（だめでも何も起きない）。Firefox は確認の画面を出すので頼まない。iPhone アプリ版はアプリの中の保存なので頼まない
+function askPersist(){
+    try{
+        if (isNative() || !navigator.storage || typeof navigator.storage.persist !== 'function' || /Firefox\//.test(navigator.userAgent || '')) return;
+        if (!(S.history.length || S.favs.length || S.custom.length || S.family.length)) return;   // 何か残したあとだけ
+        const ps = navigator.storage.persisted ? navigator.storage.persisted() : Promise.resolve(false);
+        Promise.resolve(ps).then(done => done ? true : navigator.storage.persist()).then(v => { GH.persisted = !!v; }, () => {});
+    }catch(e){}
+}
 function cmpVer(a, b){ const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++){ if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) - (y[i] || 0); } return 0; }
 function remoteNoticeHtml(){
     const old = REMOTE.minVersion && cmpVer(APP_VERSION, REMOTE.minVersion) < 0;
@@ -16611,6 +16623,7 @@ async function retryPack(){
         guard('trial', scheduleTrialReminder);
         guard('notifs', () => syncNotifs(true));
         guard('remote', loadRemote);
+        guard('persist', askPersist);
         setTab(tab);
         if (guard('wish', wishBoot)){}   // 家族から届いたリンク（#g=…）。はじめての案内は、閉じたあとに出す
         else if (!S.settings.country) openCountrySheet();
