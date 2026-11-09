@@ -2006,7 +2006,7 @@ GOHAN_I18N('fr', {
     "tt|炊く": "Cuire le riz",
     "飲んだ次の日": "Le lendemain d’une soirée arrosée",
     "二日酔いの日（今日だけ）": "Jour de gueule de bois (aujourd’hui seulement)",
-    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Des menus plus légers, avec plus de soupes. Les fritures, plats riches et très épicés sortent moins souvent (sans être retirés). Retour à la normale demain.",
+    "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Les plats légers (mijotés, à la vapeur, en bouillon…) sortent plus souvent. Les fritures, plats riches et très épicés sortent moins souvent (sans être retirés). Retour à la normale demain.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Le menu du jour ne change pas. Touchez « Nouveau menu », ou un plat puis « Changer », pour choisir à nouveau.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Si vous ne vous sentez pas bien, ménagez-vous et buvez de l’eau.",
     "二日酔い": "Gueule de bois",

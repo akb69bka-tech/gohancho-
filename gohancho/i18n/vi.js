@@ -2006,7 +2006,7 @@ GOHAN_I18N('vi', {
     "tt|炊く": "Nấu cơm",
     "飲んだ次の日": "Hôm sau khi uống rượu",
     "二日酔いの日（今日だけ）": "Ngày mệt sau cuộc nhậu (chỉ hôm nay)",
-    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Thực đơn thanh nhẹ hơn, nhiều món canh, món nước hơn. Món chiên, món béo và món quá cay sẽ ít ra hơn (không bị bỏ đi). Ngày mai trở lại như cũ.",
+    "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Món thanh nhẹ (món hầm, món hấp, món nước…) sẽ ra nhiều hơn. Món chiên, món béo và món quá cay sẽ ít ra hơn (không bị bỏ đi). Ngày mai trở lại như cũ.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Thực đơn hiện tại không đổi. Nhấn “Thực đơn mới”, hoặc nhấn vào món rồi “Đổi”, để chọn lại.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Nếu thấy trong người không khỏe, đừng gắng sức và hãy uống nước.",
     "二日酔い": "Sau cuộc nhậu",

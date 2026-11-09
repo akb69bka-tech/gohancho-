@@ -2006,7 +2006,7 @@ GOHAN_I18N('id', {
     "tt|炊く": "Tanak nasi",
     "飲んだ次の日": "Sehari setelah minum",
     "二日酔いの日（今日だけ）": "Hari pengar (hari ini saja)",
-    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Menu lebih ringan, lebih banyak sup. Gorengan, masakan berat, dan yang sangat pedas lebih jarang muncul (tidak dihapus). Besok kembali seperti biasa.",
+    "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Masakan ringan (rebusan, kukusan, berkuah, dan sejenisnya) lebih sering muncul. Gorengan, masakan berat, dan yang sangat pedas lebih jarang muncul (tidak dihapus). Besok kembali seperti biasa.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Menu hari ini tetap. Ketuk “Menu baru”, atau ketuk masakan lalu “Ganti”, untuk memilih lagi.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Kalau badan terasa tidak enak, jangan memaksakan diri dan minumlah air.",
     "二日酔い": "Hari pengar",

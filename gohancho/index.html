@@ -8022,6 +8022,9 @@ function saltSettingsHtml(){
 /* ---- 飲んだ次の日（二日酔いの日。オーナー指示 11/09。S.settings.hangover = その日の日付。今日だけ・翌日には自然に戻る） ----
    気分（ひとつだけ選ぶ）ではなく、気分に重ねる切り替え（おかゆの日・ラクの日・魚の日などと一緒に使える）。条件のシートの「気分」の下に出す。
    オンのとき: あっさりした料理（汁もの・麺のつゆもの・おかゆ／雑炊のなかま・煮る／蒸す料理・やわらかい副菜）を出しやすく、揚げ物・こってり（チーズ・クリーム・ベーコン・豚バラなど）・辛い料理を出にくくする。
+   R155（第33回モニター）: 煮るだけ・蒸し焼きだけではあっさりに数えない。衣をつけて揚げた料理・ルウ／デミグラス／クリームのソース・カレー・照り焼きなど甘辛いたれ・焼き餃子・
+   牛肉／ひき肉／脂の多い部位が主役の主菜（汁けの多い料理を除く）は「こってり」（hangKoku）。あっさりの主菜が少ない国では、こってりでも辛くもない料理まで広げ、ゆらぎを大きくして選ぶ（同じ1品ばかりにしない）。
+   説明は「汁もの多め」と言い切らない（汁ものの席はもともと毎回ある。汁けの多い主菜は、汁けの多い料理が数品以上あるときだけ少し先に）。
    点数と並びの偏りだけで、候補からは外さない（アレルギー・苦手・今は出さないの除外はそのまま）。決めた献立・いまの案はスイッチで変えない（押した料理の「かえる」・まるごと入れ替え・新しい案から効く）。
    体への効き目は言わない（「効く」「回復」などの言い切りなし）。判定は作り方の分類（method）・枠・揚げ物の判定・材料のキーと元の言葉・料理の id だけ（画面の言葉に左右されない）。
    明日の案（明日の一膳を見る）・1週間プランには効かせない（今日だけ） */
@@ -8036,38 +8039,79 @@ const HANG_MEALS = ['zosui', 'ochazuke'];
 const HANG_FRY_RE = /deep.?fr(?:y|ied)|shallow.?fr(?:y|ied)|frying oil|oil for .{0,12}fry|揚げ油|揚げ焼き|揚げる|揚げて/i;
 const HANG_RICH = dietRe(String.raw`\bcream\b|\bheavy cream\b|\bdouble cream\b|cr[eè]me fra[iî]che|\bsour cream\b|\bmascarpone\b|生くりーむ|くりーむ|\bcheese\b|\bcheddar\b|\bparmesan\b|\bparmigiano\b|\bmozzarella\b|\bemmental\b|\bgruy[eè]re\b|\bpecorino\b|\braclette\b|\bpaneer\b|ちーず|\bbacon\b|べーこん|\bpork belly\b|豚ばら|\blard\b|らーど|\bsuet\b|\bghee\b|\bcoconut cream\b|\bcoconut milk\b|ここなっつみるく|ここなっつくりーむ|\bcondensed milk\b|\bmayonnaise\b|まよねーず|\bchorizo\b|\bsausages?\b|そーせーじ|\bsalami\b|\bpancetta\b`, 'i');
 const HANG_RICH_NAME = /gratin|グラタン|carbonara|カルボナーラ|lasagn|ラザニア|fondue|tartiflette|raclette|豚骨|tonkotsu|mac(?:aroni)? (?:and|&|n) cheese|alfredo|quattro formaggi|feijoada|cassoulet|choucroute/i;
-const HANG_STEAM_RE = /\bsteam(?:ed)?\b(?! (?:escape|off|out))|蒸し|蒸す|蒸して/i;
-const HANG_CURRY_RE = /curry|カレー|\bmole\b|masala|massaman|panang|kaeng|แกง|korma|vindaloo|rendang|gulai/i;
+// 蒸す料理: 名前か、作り方の「蒸す」（蒸し焼き＝焼いてふたをするだけ・pan-steam は数えない。R155: 照り焼き・焼き餃子・つくねがあっさりに入っていた）
+const HANG_STEAM_RE = /\bsteam(?:ed|ing)?\b(?! (?:escape|off|out))|蒸し(?!焼)|蒸す|蒸して/i;
+const HANG_STEAM_NOT = /pan.?steam|steam.?fr(?:y|ied)|蒸し焼|cover and (?:let )?(?:it )?steam/i;
+const HANG_CURRY_RE = /curry|カレー|かれー|\bmole\b|masala|massaman|panang|kaeng|แกง|korma|vindaloo|rendang|gulai|\bkari\b/i;
+// こってり（R155。煮る料理でも、あっさりには数えない）: 衣をつけて揚げた料理・パン粉の衣、ルウ・デミグラス・ホワイトソース・クリーム煮、甘辛いたれでからめる照り焼きの類、焼き餃子の類
+const HANG_BREAD_NAME = /カツ|かつ丼|かつどん|フライ|天ぷら|天丼|唐揚|から揚|cutlet|schnitzel|katsu|tempura|breaded|milanesa|kotlet|\bschnitzel/i;
+const HANG_BREAD_ING = /ぱん粉|パン粉|\bpanko\b|breadcrumbs?\b/i;
+const HANG_ROUX = /るう|ルウ|\broux\b|でみぐらす|デミグラス|\bdemi.?glace|white sauce|b[ée]chamel|evaporated milk|condensed milk|かれー粉|カレー粉|curry (?:powder|paste|roux)/i;
+const HANG_CREAM_NAME = /クリーム|シチュー|ハヤシ|ホワイトソース|\bcream(?:y)?\b(?! of)|\bfricass[ée]e|stroganoff|ストロガノフ|demi.?glace|デミグラス/i;
+const HANG_GLAZE_NAME = /照り焼|てりやき|teriyaki|甘辛|蒲焼|かば焼|\bglazed?\b|sweet (?:and|&) sour|糖醋|咕咾|sticky|\bbbq\b|barbecue|\bcola\b|可乐|可樂|kecap|\bsemur\b|bulgogi|불고기|galbi|갈비/i;
+const HANG_GLAZE_ING = /bbq sauce|barbecue sauce|\bkecap manis\b|sweet soy sauce|\bhoisin\b|\bcola\b/i;
+const HANG_DUMPLING_NAME = /焼き?餃子|ぎょうざ|ギョーザ|\bgyoza\b|potstickers?|锅贴|鍋貼|煎饺|煎餃|\bmandu\b.*(?:fried|pan)|yaki.?mandu/i;
+// ひき肉が主役のトマト・ミートソースの類（名前で拾う分。豆・野菜だけの料理は除く）
+const HANG_MINCE_NAME = /ボロネーゼ|ミートソース|bolognese|\brag[uù]\b|picadillo|sloppy joe|chili con carne|keema|qeema|kheema|giniling|carne mo[ií]da|ハンバーグ|hamburg|meatloaf|すき焼|すきやき|sukiyaki|すき煮/i;
+// 脂の多い部位（主菜の主役の肉）
+const HANG_FATCUT = /pork belly|豚ばら|ばら肉|spare ?ribs?|short ribs?|\bribs?\b|oxtail|pork (?:neck|butt|shoulder)|karkówka|30% fat|牛ばら|かるび|カルビ/i;
+// ひき肉（鶏・七面鳥のひき肉はのぞく）
+const HANG_MINCE_ING = /合いびき|豚ひき|牛ひき|ground (?:beef|pork|meat|lamb|mutton)|minced? (?:beef|pork|meat|lamb|mutton)|beef mince|pork mince|lamb mince|\bmince\b|minced meat|ground meat/i;
 const HANG_MEMO = new WeakMap();
+// こってりの理由（なければ ''）。材料のキー・元の言葉・作り方の分類と、名前の型だけで見る（画面の言葉には左右されない）
+function hangKoku(r, nm, ings){
+    if (HANG_BREAD_NAME.test(nm) || ings.some(t => HANG_BREAD_ING.test(t)) && r.family !== 'ひき肉' && !/ハンバーグ|hamburg|meatball|albondig|alm[oô]ndega|köfte|kofta|frikadel|klops/i.test(nm)) return 'breaded';
+    if (HANG_DUMPLING_NAME.test(nm)) return 'dumpling';
+    if (HANG_CURRY_RE.test(nm) || ings.some(t => HANG_ROUX.test(t)) || HANG_CREAM_NAME.test(nm)) return 'sauce';
+    if (HANG_GLAZE_NAME.test(nm) || ings.some(t => HANG_GLAZE_ING.test(t))) return 'glaze';
+    const veg = r.family === '大豆' || r.family === '野菜';
+    if (!veg && HANG_MINCE_NAME.test(nm) && !/lentil|veg|soja|soy|tofu|豆腐|beans?\b|mushroom/i.test(nm)) return 'mince';
+    if (!r.main) return '';
+    // 主菜の主役が、牛肉・ひき肉（豚・牛・合いびき）・脂の多い部位のとき（汁けの多い主菜＝麺のつゆもの・鍋・スープは除く）
+    const pro = (r.items || []).find(i => !i.opt && i.key === r.protein) || null, pt = pro ? dietTxt(pro) : '';
+    if (soupyMain(r) || HANG_LIGHT_ID.has(r.id)) return '';
+    if (r.family === '牛' || r.family === 'ひき肉') return 'meat';
+    if ((r.family === '豚' || r.family === '加工肉') && (HANG_FATCUT.test(pt) || HANG_MINCE_ING.test(pt))) return 'meat';
+    if (r.protein === '豚ひき肉' || (!veg && HANG_MINCE_ING.test(pt))) return 'meat';
+    return '';
+}
 function hangCalc(r){
     const steps = [...(r.stepsBase || r.steps || [])].map(x => typeof x === 'string' ? x : (x && x.t) || '').join(' ');
     const nm = [r.name, r.nameEn || '', ...(r.alt || [])].join(' ');
+    const ings = (r.items || []).filter(i => !i.opt).map(i => dietTxt(i));
     const fried = r.method === '揚' || HANG_FRY_RE.test(steps);
-    const rich = HANG_RICH_NAME.test(nm) || (r.items || []).filter(i => !i.opt).some(i => HANG_RICH.test(dietTxt(i)));
+    const rich = HANG_RICH_NAME.test(nm) || ings.some(t => HANG_RICH.test(t));
     const hot = spiceLevel(r) >= 2;
+    const koku = hangKoku(r, nm, ings);   // R155: こってり（揚げた衣・ルウやクリームのソース・甘辛いたれ・焼き餃子・牛肉／ひき肉／脂の多い部位が主役の主菜）
     const soupy = slotOf(r) === '汁物' || soupyMain(r) || okayuDayOk(r);
+    const st = steps.slice(0, 400), steam = r.method !== '焼' && r.method !== '炒' && r.method !== '揚' && (HANG_STEAM_RE.test(nm) || (HANG_STEAM_RE.test(st) && !HANG_STEAM_NOT.test(st)));
     // 汁もの・つゆの麺・鍋・おかゆ／雑炊のなかま・やわらかい料理の印（soft）・日本の表の料理は、少しの辛み（中辛未満）まで。煮る・蒸す料理は辛みなし（副菜は少しの辛みまで）で、カレー・モーレの類でないものだけ
-    const simmer = (r.method === '煮' || HANG_STEAM_RE.test(nm + ' ' + steps.slice(0, 400))) && spiceLevel(r) <= (slotOf(r) === '副菜' ? 1 : 0) && !HANG_CURRY_RE.test(nm);   // 副菜は少しの辛みまで（インドの副菜はほぼ全部に少し辛みがある）
-    const light = !fried && !rich && !hot && (HANG_LIGHT_ID.has(r.id) || soupy || (!!r.pack && r.soft === true) || simmer);
-    return {fried, rich, hot, light, mild: spiceLevel(r) === 1};
+    const simmer = (r.method === '煮' || steam) && spiceLevel(r) <= (slotOf(r) === '副菜' ? 1 : 0) && !HANG_CURRY_RE.test(nm);   // 副菜は少しの辛みまで（インドの副菜はほぼ全部に少し辛みがある）
+    const light = !fried && !rich && !hot && !koku && (HANG_LIGHT_ID.has(r.id) || soupy || (!!r.pack && r.soft === true) || simmer);
+    return {fried, rich, hot, koku, light, soupy: soupy && !koku, mild: spiceLevel(r) === 1};
 }
 function hangInfo(r){ if (!r) return {}; let v = HANG_MEMO.get(r); if (!v){ v = hangCalc(r); HANG_MEMO.set(r, v); } return v; }
-function hangHeavy(r){ const h = hangInfo(r); return !!(h.fried || h.rich || h.hot); }
+function hangHeavy(r){ const h = hangInfo(r); return !!(h.fried || h.rich || h.hot || h.koku); }
 function hangLight(r){ return !!hangInfo(r).light; }
 // 選びの偏り（pick。ctx.hang のときだけ）。点数に足すと、候補が多い国ではいちばん上がほぼ必ずあっさりした料理になる（外すのと同じ）ので、減塩と同じく割合で効かせる:
-//  ・HANG_LIGHT_P の割合で、あっさりした料理のうち点のいちばん高いものを先に出す
+//  ・HANG_LIGHT_P の割合で、あっさりした料理を先に出す。どれを先にするかは点に大きめのゆらぎを足して決める（R155: 少ない国で同じ1品ばかりになった）。
+//    汁けの多い料理（汁もの・つゆの麺・鍋・おかゆ）は少し先に（汁もの多め）
+//  ・あっさりした料理が HANG_WIDE 品に満たないとき（その国の主菜にもともと少ない・アレルギーなどで減った）は、こってりでも辛くもない煮る・炊く・和える・蒸す・焼く料理（hangMid）も同じ扱いにする。
+//    それでも HANG_WIDE 品に満たなければ、先に出す割合を品数に合わせて下げる（同じ1品が毎回出ないように。HANG_MIN 品に満たなければ先に出さない）
 //  ・それ以外のときに、いちばん上が揚げ物・こってり・辛い料理なら、HANG_HEAVY_P（揚げ物は HANG_FRY_P）の割合で、そうでない料理のうち点のいちばん高いものを先に出す
-//  ・あっさりした料理が HANG_MIN 品に満たないとき（その国の主菜にもともと少ない・アレルギーなどで減った）は、辛みのない煮る・炊く・和える料理も同じ扱いにする。
-//    それでも HANG_MIN 品に満たなければ、先に出すことはしない（同じ1品が毎回出ないように）
-const HANG_LIGHT_P = 0.55, HANG_HEAVY_P = 0.75, HANG_FRY_P = 0.9, HANG_MIN = 3;   // 揚げ物は、こってり・辛い料理より強めに後へ
+const HANG_LIGHT_P = 0.6, HANG_HEAVY_P = 0.75, HANG_FRY_P = 0.9, HANG_MIN = 2, HANG_WIDE = 8, HANG_JITTER = 3, HANG_SOUP_B = 0.8, HANG_SOUP_MIN = 4;   // 揚げ物は、こってり・辛い料理より強めに後へ
 function hangPlain(r){ return !hangHeavy(r) && spiceLevel(r) === 0 && ['煮', '炊', '汁', '和え'].includes(r.method); }
+function hangMid(r){ return !hangHeavy(r) && spiceLevel(r) === 0 && r.method !== '炒'; }
 function hangOrder(scored){
-    if (Math.random() < HANG_LIGHT_P){
-        let lt = scored.filter(x => hangLight(x.r));
-        if (lt.length < HANG_MIN) lt = scored.filter(x => hangLight(x.r) || hangPlain(x.r));
-        if (lt.length >= HANG_MIN) return lt;
+    let lt = scored.filter(x => hangLight(x.r));
+    if (lt.length < HANG_WIDE) lt = scored.filter(x => hangLight(x.r) || hangPlain(x.r));
+    if (lt.length < HANG_WIDE) lt = scored.filter(x => hangLight(x.r) || hangMid(x.r));
+    const shake = (list, soup) => list.map(x => ({x, k: x.s + Math.random() * HANG_JITTER + (soup && hangInfo(x.r).soupy ? HANG_SOUP_B : 0)})).sort((a, b) => b.k - a.k).map(y => y.x);
+    if (lt.length >= HANG_MIN && Math.random() < HANG_LIGHT_P * Math.min(1, lt.length / HANG_WIDE)) return shake(lt, lt.filter(x => hangInfo(x.r).soupy).length >= HANG_SOUP_MIN);   // 汁けの多い料理が数品しかないときは先にしない（その1品ばかりにならないように）
+    if (hangHeavy(scored[0].r)){
+        const ok = scored.filter(x => !hangHeavy(x.r));   // こってりでない料理が少ない国（インドなど）では、後へ回す割合も品数に合わせて下げる（その数品ばかりにならないように）
+        if (ok.length && Math.random() < (hangInfo(scored[0].r).fried ? HANG_FRY_P : HANG_HEAVY_P) * Math.min(1, ok.length / (HANG_WIDE * 1.5))) return shake(ok, false);
     }
-    if (hangHeavy(scored[0].r) && Math.random() < (hangInfo(scored[0].r).fried ? HANG_FRY_P : HANG_HEAVY_P)){ const ok = scored.filter(x => !hangHeavy(x.r)); if (ok.length) return ok; }
     return scored;
 }
 // 条件のシートの切り替え（気分の下）
@@ -8076,9 +8120,17 @@ function hangFieldHtml(){
     const on = hangOn();
     return `<div class="field" id="hang-field"><span class="eyebrow">${esc(t('飲んだ次の日'))}</span>
             <label class="check"><input type="checkbox" data-act="hangover" ${on ? 'checked' : ''}><span>${esc(t('二日酔いの日（今日だけ）'))}</span></label>
-            <p class="small muted">${esc(t('あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。'))}</p>
+            <p class="small muted">${esc(t('あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。'))}</p>
             ${on ? `<p class="small hang-now" role="status">${esc(t('いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。'))}</p>
             <p class="small muted">${esc(t('体調がすぐれないときは無理をせず、水分をとってください。'))}</p>` : ''}</div>`;
+}
+// 設定のモードのタブ（R157。上の端のモードのシート・条件のシートと同じ S.settings.hangover・同じ data-act。お酒を避ける人には出さない）
+function hangSettingsHtml(){
+    if (!hangShown()) return '';
+    return `<div class="set-group" id="hang-card">
+        <label class="check"><input type="checkbox" data-act="hangover" ${hangOn() ? 'checked' : ''}><span>${esc(t('二日酔いの日（今日だけ）'))}</span></label>
+        <span class="small muted">${esc(t('あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。'))}</span>
+    </div>`;
 }
 /* ---- カロリーの目安（1人分。設定「ダイエットモード」と、作り方の画面・お膳の下の合計） ----
    材料の欄（r.ings）と調味料の欄（r.seasBase）の元の言葉（日本は日本語、ほかの国は英語）から、量をグラムに直し、食材ごとの 100g あたりの kcal を掛けて足す。
@@ -8698,7 +8750,7 @@ function modeRowHtml(act, on, label, more){
 }
 function modeSheetHtml(){
     const rows = [
-        hangShown() ? modeRowHtml('hangover', hangOn(), t('二日酔いの日（今日だけ）'), t('あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。')) : '',
+        hangShown() ? modeRowHtml('hangover', hangOn(), t('二日酔いの日（今日だけ）'), t('あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。')) : '',
         modeRowHtml('diet-mode', dietOn(), t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）')),
         modeRowHtml('low-salt', saltOn(), t('減塩（塩分の目安を表示）')),
         modeRowHtml('night-shift', S.settings.nightShift === true, t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）')),
@@ -10305,7 +10357,7 @@ function viewSettings(){
         </div>
         ${kitchenSettingsHtml()}
         ${seasHaveHtml()}`))}
-        ${pan('mode', sec('mode', `${saltSettingsHtml()}
+        ${pan('mode', sec('mode', `${hangSettingsHtml()}${saltSettingsHtml()}
         <div class="set-group" id="night-card">
             <div class="field"><label class="check"><input type="checkbox" data-act="night-shift" ${S.settings.nightShift === true ? 'checked' : ''}><span>${esc(t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）'))}</span></label></div>
         </div>

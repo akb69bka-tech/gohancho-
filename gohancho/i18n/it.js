@@ -2006,7 +2006,7 @@ GOHAN_I18N('it', {
     "tt|炊く": "Cuocere il riso",
     "飲んだ次の日": "Il giorno dopo aver bevuto",
     "二日酔いの日（今日だけ）": "Giorno dopo la sbornia (solo oggi)",
-    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Menù più leggeri, con più zuppe e brodi. Fritti, piatti pesanti e molto piccanti escono meno spesso (non vengono tolti). Da domani torna tutto come prima.",
+    "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "I piatti leggeri (in umido, al vapore, in brodo…) escono più spesso. Fritti, piatti pesanti e molto piccanti escono meno spesso (non vengono tolti). Da domani torna tutto come prima.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Il menù di oggi resta com’è. Tocca “Nuovo menu”, oppure un piatto e “Cambia”, per scegliere di nuovo.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Se non ti senti bene, vai piano e bevi acqua.",
     "二日酔い": "Dopo-sbornia",
