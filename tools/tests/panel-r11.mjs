@@ -85,7 +85,7 @@ function CURRY(id){ return ['curry', 'hayashi', 'drycurry'].includes(id); }
     for (const [st, id] of [[{}, 'fukujinzuke'], [{allergens: ['soy']}, 'rakkyo']]){
         const {p, ctx} = await open(st, 'r29' + id);
         await curryDay(p);
-        await p.waitForFunction(id => { const e = document.querySelector('.spot.tsuke .food'); return e && e.classList.contains('photo'); }, id, {timeout: 15000}).catch(() => {});
+        await p.waitForFunction(id => { const e = document.querySelector('.spot.tsuke .food'); return e && e.classList.contains('photo') && !e.closest('.vessel.pload'); }, id, {timeout: 15000}).catch(() => {});
         const r = await p.evaluate(() => { const e = document.querySelector('.spot.tsuke .food'); const cs = getComputedStyle(e); return {cls: e.className, img: cs.backgroundImage}; });
         ok(r.cls.includes('photo') && r.img.includes('img/dish/' + id + '.svg') && !/gradient/.test(r.img), 'R29 ' + id + ' の絵がそのまま見える（しま模様で隠れない）: ' + JSON.stringify(r));
         await ctx.close();
