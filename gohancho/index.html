@@ -7,7 +7,7 @@
 <meta name="description" content="毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ">
 <meta name="theme-color" content="#fbf5ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1d1814" media="(prefers-color-scheme: dark)">
-<script>window.ASSET_V='v125';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
+<script>window.ASSET_V='v126';/* 料理の絵の一覧（manifest.json）は、本体のスクリプトを読み・動かしているあいだに取りはじめる（届くのを待たずに献立を描く。絵が早く出る） */try{window.__genP=fetch('img/dish/manifest.json?v='+encodeURIComponent(ASSET_V)).catch(function(){return null})}catch(e){}/* 前に見た献立の絵を、一覧（manifest）を待たずに先に取りはじめる（絵が出るのが早くなる）。pagehide で覚えた最大8枚 */try{var pr=JSON.parse(localStorage.getItem('gohancho.pre')||'null');if(pr&&pr.v===ASSET_V&&Array.isArray(pr.u))pr.u.slice(0,8).forEach(function(h){if(typeof h==='string'&&/^img\/dish\/[\w.\/-]+\.webp\?v=[\w.-]+$/.test(h)){var l=document.createElement('link');l.rel='preload';l.as='image';l.href=h;document.head.appendChild(l)}})}catch(e){}/* sw.js の VERSION（gohancho-v19）と同じ値にする */try{var gs=(JSON.parse(localStorage.getItem('gohancho.v1')||'null')||{}).settings||{},gu=gs.uiLang||'auto';if(gs.textSize===1||gs.textSize===2)document.documentElement.setAttribute('data-ts',gs.textSize);if((gu!=='auto'&&gu!=='ja')||(gu==='auto'&&gs.country!=='JP')){document.documentElement.classList.add('i18n-wait');var pre=function(h){var l=document.createElement('link');l.rel='preload';l.as='script';l.href=h;document.head.appendChild(l)};var q='?v='+ASSET_V;pre('i18n/en.js'+q);if(gu!=='auto'&&gu!=='ja'&&gu!=='en'&&/^[\w-]+$/.test(gu))pre('i18n/'+gu+'.js'+q);if(gs.country&&gs.country!=='JP'&&/^[A-Za-z]{2}$/.test(gs.country))pre('packs/'+gs.country.toLowerCase()+'.js'+q);setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},4000)}}catch(e){}</script>
 <script>
 /* 落ちても真っ白にしない受け皿（本体のスクリプトより先に読む）。本体が途中で止まっても、控えめな案内と「再読み込み」「データを書き出す」を出す。
    文言は本体の t() が使えるようになれば翻訳、それまでは日本語か英語（端末の言語で選ぶ） */
@@ -717,26 +717,24 @@ html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: �
 html[data-ts] .chips .chip{white-space:normal;max-width:100%;text-align:center;overflow-wrap:anywhere}
 .left-line.left-old > span{opacity:.6}.left-line .btn{flex-shrink:0;white-space:nowrap}.left-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0}.left-line > span{min-width:0;overflow-wrap:anywhere}.left-chips{margin-top:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.chips.left-chips .chip{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:40px;padding-block:0}/* .chips:not(.scroll) .chip（折り返す）より強く。料理名で高さが変わると、まるごと入れ替えのたびに下の欄が動く */   /* 料理名の長さで、列の折り返しと高さが変わらないように（2列・1行は…で切る） */.spend-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.spend-row input{flex:1 1 8em;min-width:0;min-height:44px;font:inherit;font-size:max(16px,1em);padding:.3rem .6rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}.spend-sum{font-size:1.15rem;font-weight:700;margin:6px 0}details.memo-card:not([open]){padding-block:2px}.memo-sum{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:600}
 .settings-head{display:flex;align-items:center;gap:8px}
-/* 設定（v3）: 上に目次。7つのまとまりに分け、「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま先頭に。ほかは見出し1行に畳む */
+/* 設定（v4。オーナー指示 11/09）: 上にタブ（横にスクロールするチップの列。下までスクロールしても上に残す）。選んだタブの中身（まとまりの見出しと欄）だけを出す */
 .settings{gap:var(--s16)}
-.set-toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,9.5rem),1fr));gap:var(--s8)}
-.set-toc-btn{display:flex;align-items:center;gap:var(--s8);min-height:var(--tap);padding:var(--s8) var(--s12);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-md);box-shadow:var(--shadow-1);font-size:var(--fs14);font-weight:600;line-height:var(--lh-tight);text-align:start;color:var(--ink);min-width:0;overflow-wrap:anywhere;transition:transform var(--dur-1) var(--ease),border-color var(--dur-1)}
-.set-toc-btn:hover{border-color:var(--line)}
-.set-toc-btn:active{transform:translateY(1px)}
-.set-toc-btn.first{grid-column:1/-1;background:var(--surface-2);border-color:transparent}
+.set-tabs-bar{position:sticky;top:0;z-index:5;background:var(--bg);padding-block:var(--s4);box-shadow:0 6px 6px -6px color-mix(in srgb,var(--ink) 18%,transparent)}
+.set-tabs{display:flex;gap:var(--s8);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding:2px 2px var(--s4)}
+.set-tab{flex:none;display:inline-flex;align-items:center;gap:var(--s4);min-height:var(--tap-sm);min-width:var(--tap-sm);max-width:100%;padding:var(--s4) var(--s12);border:1px solid var(--accent-line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink);font:inherit;font-size:var(--fs14);font-weight:600;line-height:1.2;text-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.set-tab>span{min-width:0;white-space:normal;overflow-wrap:normal;word-break:keep-all}   /* ふつうは1行（列ごと横に送る）。幅195px・大きい文字などで1つの名前が列の幅より長いときだけ、語の切れ目（空白・「・」）で2行に。語の途中では折らない */
+.set-tab .set-ic{width:20px;height:20px}
+@media (max-width:299px){html[data-ts="2"] .set-tab .set-ic,html[data-ts="2"] .set-sec-h .set-ic{display:none}}   /* 幅195px・文字もっと大きい: 絵を外して、名前（Visualizzazione・Przypomnienia など長い1語）を語の途中で折らずに入れる */
+.set-tab:hover{border-color:var(--ink)}
+.set-tab[aria-selected="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink);font-weight:700}   /* 選んでいるタブは若草（ほかの選んだチップと同じ） */
+.set-tab[aria-selected="true"] .set-ic{stroke-width:2.1}
+.set-panel{display:flex;flex-direction:column;gap:var(--s16)}.set-panel[hidden]{display:none}
 .set-ic{width:22px;height:22px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.set-sec{display:flex;flex-direction:column;gap:var(--s12);scroll-margin-top:var(--s16)}
+.set-sec{display:flex;flex-direction:column;gap:var(--s12);scroll-margin-top:calc(var(--tap-sm) + var(--s24))}   /* 外から欄へ飛んだとき、上に残るタブの列に隠れない */
+#view .settings .set-group[id],#view .settings .field[id]{scroll-margin-top:calc(var(--tap-sm) + var(--s24))}
 .set-sec-h{display:flex;align-items:center;gap:var(--s8);font-family:var(--mincho);font-weight:600;font-size:var(--fs-head);letter-spacing:var(--ls-head);line-height:var(--lh-tight);margin:0}   /* 欄の見出し: 明朝17px */
 .set-sec.open-always>.set-sec-h{padding-inline-start:var(--s4)}
 .set-body{display:flex;flex-direction:column;gap:var(--s12)}
-details.set-sec>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:var(--s12);min-height:var(--tap-lg);padding:var(--s12) var(--s16);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1);cursor:pointer}
-details.set-sec>summary::-webkit-details-marker{display:none}
-details.set-sec>summary:hover{border-color:var(--line)}
-details.set-sec[open]>summary{background:var(--surface-2);border-color:transparent;box-shadow:none}
-.set-sum-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
-.set-sum-v{font-size:var(--fs12);color:var(--muted);overflow-wrap:anywhere;padding-inline-start:30px}
-details.set-sec>summary .fold-chev{flex-shrink:0}
-details.set-sec[open]>summary .fold-chev{transform:rotate(225deg) translate(-2px,-2px)}
 .set-group{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);box-shadow:var(--shadow-1);padding:var(--s16);display:flex;flex-direction:column;gap:var(--s16)}
 .set-group details.box{box-shadow:none;border:1px solid var(--line)}
 .set-title{font-family:var(--mincho);font-weight:600;font-size:var(--fs-head);letter-spacing:var(--ls-head)}
@@ -5870,6 +5868,7 @@ function render(){
         catch(e){ failed = true; html = failedView(tab, e); }
     }
     if (html !== null) v.innerHTML = html;
+    if (tab === 'settings') guard('settabs', setTabReveal);   // 設定のタブの列: 選んでいるタブを見える場所へ
     guard('ph', () => fitPlaceholders(v));
     if (failed) GH.shown.view = 1; else if (GH.shown.view || GH.shown.fatal){ delete GH.shown.view; GH.clear('fatal'); }
     if (fk && !sheet && !modalId) guard('focus', () => { const back = findByKey(v, fk); if (back) back.focus({preventScroll:true}); });
@@ -7896,7 +7895,7 @@ const STEP_PORTION_X = /(\d+)\s*(?:개|등분)(?:으)?로\s*(?=[^.。]*?(?:빚|�
 /* ---- 苦手な食材 ---- */
 // R2-20: 苦手・アレルギーなどで、今日出せる主菜が1品もないとき。行き止まりにせず、「決定」が押せない理由と次にすること（設定の見直し）を出す
 function noMainHelpHtml(){
-    return `<div class="note no-main" role="status"><span>${esc(t('いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。'))}</span><button class="btn sm" data-act="settings">${esc(t('設定'))}</button></div>`;
+    return `<div class="note no-main" role="status"><span>${esc(t('いまの条件（苦手・アレルギー・手に入りにくい食材）では、出せる主菜が1品もありません。そのため「決定」は押せません。設定で、外している食材を見直してください。'))}</span><button class="btn sm" data-act="settings" data-to="food">${esc(t('設定'))}</button></div>`;
 }
 /* ---- 食の決まり（豚なし・ベジタリアン・ヴィーガン・お酒なし）の判定（第2班 第1回 R2-01〜05）----
    専用のチップはなく、苦手のチップの組み合わせで決まりを表す。材料の「キー」と元の言葉の名前（algTok。日本は日本語、各国は英語・現地語）だけで見る＝画面の言語（18言語）で結果は変わらない。
@@ -10230,29 +10229,24 @@ function viewSettings(){
     const uiLang = S.settings.uiLang || 'auto';
     const langChips = [['ja', LANG_NAMES.ja], ...I18N_FILES.map(l => [l, LANG_NAMES[l] || l])]
         .map(([v, l]) => `<button class="chip" data-act="ui-lang" data-v="${esc(v)}" aria-pressed="${uiLang === v}" lang="${v === 'auto' ? LANG : v}">${esc(l)}</button>`).join('');
-    // 設定は7つのまとまりに分け、上の目次から開く。「あなたの家族・アレルギー・苦手な食材」はいつも開いたまま、いちばん上に出す
-    // （ほかのまとまりの開き閉じは、この起動のあいだだけ覚える。読み込み・全消去の確認中は「データとバックアップ」を開いておく）
-    const so = session.setOpen || {}, isOpen = k => !!so[k] || (k === 'data' && (pendingConfirm === 'import' || pendingConfirm === 'reset'));
-    const groups = [['family', t('あなたの家族・アレルギー・苦手な食材')], ['menu', t('献立の好み')], ['store', t('よく行くスーパー')], ['notify', t('お知らせ')], ['display', langTitle(t('表示と言語'))], ['data', t('データとバックアップ')], ['plan', t('プランと購入')], ['help', t('ヘルプ')]];
-    const title = k => groups.find(g => g[0] === k)[1];
-    const grp = (k, sum, body) => `<details class="set-sec" id="set-${k}" data-sk="${k}" ${isOpen(k) ? 'open' : ''}><summary class="set-sum"><span class="set-sum-tx"><span class="set-sec-h">${SET_ICONS[k]}${esc(title(k))}</span>${sum ? `<span class="set-sum-v">${esc(sum)}</span>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary><div class="set-body">${body}</div></details>`;
-    const remindSum = isNative() ? t('毎日のお知らせ') + GAP() + (typeof S.settings.remind === 'number' ? hourLabel(S.settings.remind) : t('なし')) : t('お知らせは iPhone アプリ版で使えます');
+    // 設定はタブで分ける（オーナー指示 11/09）。上のタブ（横にスクロールするチップの列）で1つのまとまりだけを出す。最後に開いたタブは覚える（setTabCur）
+    // まとまりの中身（見出しと各欄）は前のままで、置き場所だけを分けた。どの欄がどのタブかは SET_TABS。外から欄へ飛ぶときは setGo（その欄のタブを開いてそこへ移る）
+    const curT = setTabCur();
+    const sec = (k, body) => `<section class="set-sec open-always" id="set-${k}" data-sk="${k}" aria-labelledby="set-${k}-h"><h3 class="set-sec-h" id="set-${k}-h">${SET_ICONS[k]}${esc(setSecTitle(k))}</h3><div class="set-body">${body}</div></section>`;
+    const pan = (k, html) => `<div class="set-panel" role="tabpanel" id="setp-${k}" data-t="${k}" aria-labelledby="sett-${k}"${k === curT ? '' : ' hidden'}>${html}</div>`;
     return `
     <section class="sec settings">
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
-        <nav class="set-toc" aria-label="${esc(t('設定の目次'))}">${groups.map(([k, l]) => `<button type="button" class="set-toc-btn${k === 'family' ? ' first' : ''}" data-act="set-jump" data-k="${k}">${SET_ICONS[k]}<span>${esc(l)}</span></button>`).join('')}</nav>
-        <section class="set-sec open-always" id="set-family" aria-labelledby="set-family-h">
-            <h3 class="set-sec-h" id="set-family-h">${SET_ICONS.family}${esc(title('family'))}</h3>
-            <div class="set-body">
+        ${setTabsHtml(curT)}
+        ${pan('family', sec('family', `
         ${allergySettingsHtml()}
         ${familySettingsHtml()}
         <div class="set-group">
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${SV_LIST.map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
                 <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
-            <div class="field"><label>${esc(t('開いたときの画面'))}</label>
-                <div class="chips">${[['auto', t('いまの段（おすすめ）')], ['decide', t('いつも「決める」から')]].map(([v, l]) => `<button class="chip" data-act="open-at" data-v="${v}" aria-pressed="${(S.settings.openAt === 'decide' ? 'decide' : 'auto') === v}">${esc(l)}</button>`).join('')}</div></div>
-            <div class="field"><label class="check"><input type="checkbox" data-act="night-shift" ${S.settings.nightShift === true ? 'checked' : ''}><span>${esc(t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）'))}</span></label></div>
+        </div>`))}
+        ${pan('food', sec('food', `<div class="set-group">
             <div class="field"><label>${esc(t('苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）'))}</label>
                 ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
                 <form class="inputbar" data-form="add-avoid"><input type="text" id="avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
@@ -10263,12 +10257,8 @@ function viewSettings(){
                 ${scarceList().length ? `<div class="chips">${scarceList().map(x => `<span class="chip have">${esc(x)}<button class="x" data-act="scarce-del" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`).join('')}</div>` : ''}
                 <form class="inputbar" data-form="add-scarce"><input type="text" id="scarce-input" placeholder="${esc(t('食材の名前（例: しらたき）'))}" autocomplete="off" aria-label="${esc(t('手に入りにくい食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>
                 <span class="small muted">${esc(t('登録した食材は、「なくても可」ではない材料にあるときだけ見ます。調味料の欄は見ません。ほかの食材への置き換えはしません。'))}</span></div>
-        </div>
-        ${kitchenSettingsHtml()}
-        ${seasHaveHtml()}
-            </div>
-        </section>
-        ${grp('menu', cur.flag + ' ' + countryLabel(cur) + GAP() + stapleName(currentStapleOpt()), `<div class="set-group">
+        </div>`))}
+        ${pan('menu', sec('menu', `<div class="set-group">
             <div class="set-title">${esc(t('国・地域'))}</div>
             <button class="btn" data-act="country">${esc(t('{country}　を変える', {country: cur.flag + ' ' + countryLabel(cur)}))}</button>
             <span class="small muted">${esc(t('選んだ国の家庭料理で献立を提案します。冷蔵庫の材料などは国ごとに保存されます。'))}</span>
@@ -10282,17 +10272,15 @@ function viewSettings(){
             <div class="field"><label for="avoid-days">${esc(t('同じ料理を出さない日数'))}</label>
                 <select id="avoid-days" data-act="avoid-days">${[5,7,10,14,21,30].map(n => `<option value="${n}" ${S.settings.avoidDays===n?'selected':''}>${esc(t('{n}日', {n}))}</option>`).join('')}</select></div>
         </div>
-        ${saltSettingsHtml()}
-        ${dietSettingsHtml()}`)}
-        ${grp('store', saleSettingsSum(), saleSettingsHtml() + cheapSettingsHtml())}
-        ${grp('notify', remindSum, `<div class="set-group">
-            ${reminderHtml()}
+        ${kitchenSettingsHtml()}
+        ${seasHaveHtml()}`))}
+        ${pan('mode', sec('mode', `${saltSettingsHtml()}
+        <div class="set-group" id="night-card">
+            <div class="field"><label class="check"><input type="checkbox" data-act="night-shift" ${S.settings.nightShift === true ? 'checked' : ''}><span>${esc(t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）'))}</span></label></div>
         </div>
-        <div class="set-group">
-            <label class="check"><input type="checkbox" data-act="timer-alert-set" ${timerAlertOn() ? 'checked' : ''}><span>${esc(t('タイマーが終わったら、音で知らせる'))}</span></label>
-            <span class="small muted">${esc(t('短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。'))}</span>
-        </div>`)}
-        ${grp('display', (LANG_NAMES[LANG] || LANG) + GAP() + [t('ふつう'), t('大きい'), t('もっと大きい')][S.settings.textSize || 0], `<div class="set-group">
+        ${dietSettingsHtml()}`))}
+        ${pan('store', sec('store', saleSettingsHtml() + cheapSettingsHtml()))}
+        ${pan('display', sec('display', `<div class="set-group">
             <div class="field"><label>🌐 ${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
                 <span class="small muted">${esc(t('国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
@@ -10301,8 +10289,12 @@ function viewSettings(){
             <div class="set-title">${esc(t('文字の大きさ'))}</div>
             <div class="chips" role="group" aria-label="${esc(t('文字の大きさ'))}">${[[0, t('ふつう')], [1, t('大きい')], [2, t('もっと大きい')]].map(([v, l]) => `<button class="chip" data-act="text-size" data-v="${v}" aria-pressed="${(S.settings.textSize || 0) === v}">${esc(l)}</button>`).join('')}</div>
             <span class="small muted">${esc(t('アプリの中の文字の大きさを変えます。端末の文字サイズの設定とも合わせて大きくなります。'))}</span>
-        </div>`)}
-        ${grp('data', S.lastBackup ? t('最後に書き出した日: {d}', {d: S.lastBackup}) : t('まだ書き出していません'), `<div class="set-group">
+        </div>
+        <div class="set-group">
+            <div class="field"><label>${esc(t('開いたときの画面'))}</label>
+                <div class="chips">${[['auto', t('いまの段（おすすめ）')], ['decide', t('いつも「決める」から')]].map(([v, l]) => `<button class="chip" data-act="open-at" data-v="${v}" aria-pressed="${(S.settings.openAt === 'decide' ? 'decide' : 'auto') === v}">${esc(l)}</button>`).join('')}</div></div>
+        </div>`))}
+        ${pan('data', sec('data', `<div class="set-group">
             <div class="box backup-card" id="backup-card" style="padding:12px 14px;margin-bottom:8px">
                 <b>${esc(t('データのバックアップ'))}</b>
                 <p class="small muted" style="margin:6px 0">${esc(t('記録・お気に入り・保存した献立・家族・冷蔵庫などは、この端末の中だけに保存されています。機種変更・アプリの削除・ブラウザのデータ削除で消えることがあります。ときどきファイルに書き出しておくと安心です。'))}</p>
@@ -10329,8 +10321,8 @@ function viewSettings(){
                     ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
                 </div>
             </details>
-        </div>`)}
-        ${grp('plan', PLAN.name, `<div class="set-group">
+        </div>`))}
+        ${pan('plan', sec('plan', `<div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
                 ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() || webBillingOn() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
@@ -10339,8 +10331,15 @@ function viewSettings(){
                 : `<div class="note"><span>${esc(t('わが家のご飯帖は無料です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
             ${PLAN.billingEnabled && (purchasesPlugin() || webBillingOn()) ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
-`)}
-        ${grp('help', 'v' + APP_VERSION, `<div class="set-group">
+`)
+            + sec('notify', `<div class="set-group">
+            ${reminderHtml()}
+        </div>
+        <div class="set-group">
+            <label class="check"><input type="checkbox" data-act="timer-alert-set" ${timerAlertOn() ? 'checked' : ''}><span>${esc(t('タイマーが終わったら、音で知らせる'))}</span></label>
+            <span class="small muted">${esc(t('短い音をくり返し、画面をさわると止まります。この端末の中だけで鳴らし、通信も料金もかかりません。アプリを開いてから最初に画面をさわったあとに鳴ります。'))}</span>
+        </div>`)
+            + sec('help', `<div class="set-group">
             <div class="set-title">${esc(t('アプリ'))}</div>
             ${isNative() ? '' : installHtml()}
             <button class="btn sm" data-act="ob-again">${esc(t('はじめての設定をもう一度'))}</button>
@@ -10349,7 +10348,7 @@ function viewSettings(){
             <div class="set-title">${esc(t('このアプリについて'))}</div>
             <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
             <div class="row">${docLink('privacy', t('プライバシーポリシー'), 'btn sm')}${docLink('support', t('サポート・よくある質問'), 'btn sm')}${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
-        </div>`)}
+        </div>`))}
     </section>`;
 }
 // 設定の目次・見出しの小さな絵（線だけ。色は文字色に合わせる）
@@ -10364,8 +10363,70 @@ const SET_ICONS = (() => {
         store: svg('<path d="M4 9.5 5.5 4.5h13L20 9.5"/><path d="M4 9.5c0 1.5 1.2 2.5 2.7 2.5S9.3 11 9.3 9.5c0 1.5 1.2 2.5 2.7 2.5s2.7-1 2.7-2.5c0 1.5 1.2 2.5 2.6 2.5S20 11 20 9.5"/><path d="M5.5 12v7.5h13V12M10 19.5v-4.5h4v4.5"/>'),
         plan: svg('<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>'),
         help: svg('<circle cx="12" cy="12" r="9"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/>'),
+        food: svg('<path d="M5.5 18.5C5 11 9 6 19 5c-.4 9-5 13.5-13.5 13.5z"/><path d="M5.5 18.5 13 11"/>'),   // 苦手・食の決まり（葉）
+        mode: svg('<rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="16" cy="12" r="2.6"/>'),   // モード（切り替えのスイッチ）
     };
 })();
+/* ---- 設定のタブ（オーナー指示 11/09「設定の中の画面を、すべて各項目でタブ分けして表示する」） ----
+   [タブのキー, 名前, 中に出すまとまり（set-<まとまり> の section）]。どのまとまりも、どこか1つのタブにだけ入る。
+   タブのキーは前の目次（set-jump の data-k）と同じものを残す（family・menu・store・display・data・plan）。
+   中身は全部描いておき、選んでいないタブは hidden にする（欄の id・入力はそのまま。外から欄へ飛ぶときは setGo） */
+const SET_TABS = [
+    ['family', () => t('家族・アレルギー'), ['family']],   // アレルギー対策・家族・何人分
+    ['food', () => t('苦手・食の決まり'), ['food']],       // 苦手な食材（ベジ・ハラール・お酒などのまとめ選びも）・手に入りにくい食材
+    ['menu', () => t('献立'), ['menu']],                   // 国・主食・品数・同じ料理を出さない日数・台所・家にある調味料
+    ['mode', () => t('モード'), ['mode']],                 // 減塩・夜勤明け・ダイエット
+    ['store', () => t('スーパー'), ['store']],             // よく行くスーパー・やすい食材
+    ['display', () => langTitle(t('表示')), ['display']],   // 言語・文字の大きさ・開いたときの画面（「🌐 Language」は、読めない言葉のままでも言語の場所が分かるように。前の目次と同じ）
+    ['data', () => t('データ'), ['data']],                 // バックアップ・書き出し・読み込み・全消去
+    ['plan', () => t('プラン・その他'), ['plan', 'notify', 'help']],   // プランと購入・お知らせ・ヘルプ（アプリ・プライバシー・お問い合わせ）
+];
+const SET_TAB_KEY = 'gohancho.setTab';   // 最後に開いたタブ（この端末の表示の覚えだけ。保存データ S には入れない）
+function setSecTitle(k){
+    return ({family: t('家族・アレルギー'), food: t('苦手・食の決まり'), menu: t('献立の好み'), mode: t('モード'), store: t('よく行くスーパー'), notify: t('お知らせ'),
+        display: langTitle(t('表示と言語')), data: t('データとバックアップ'), plan: t('プランと購入'), help: t('ヘルプ')})[k] || '';
+}
+function setTabOf(k){ const x = SET_TABS.find(([tk, , secs]) => tk === k || secs.includes(k)); return x ? x[0] : null; }
+// いまのタブ: session.setOpen（前の「まとまりを開く」の頼み。特売の入口 saleSetup などが立てる）があればそのタブ → 覚えたタブ → 先頭
+function setTabCur(){
+    const so = session.setOpen;
+    if (so){ const k = Object.keys(so).find(x => so[x]); session.setOpen = null; const tk = k && setTabOf(k); if (tk) setTabKeep(tk); }
+    if (!session.setTab){ let v = null; try{ v = localStorage.getItem(SET_TAB_KEY); }catch(e){} session.setTab = setTabOf(v) === v && v ? v : 'family'; }
+    return setTabOf(session.setTab) === session.setTab ? session.setTab : 'family';
+}
+function setTabKeep(k){ session.setTab = k; try{ localStorage.setItem(SET_TAB_KEY, k); }catch(e){} }
+function setTabsHtml(cur){
+    return `<div class="set-tabs-bar"><div class="set-toc set-tabs" role="tablist" aria-label="${esc(t('設定の目次'))}">${SET_TABS.map(([k, l]) => `<button type="button" role="tab" class="set-tab" id="sett-${k}" data-act="set-jump" data-k="${k}" aria-controls="setp-${k}" aria-selected="${k === cur}">${SET_ICONS[k]}<span>${esc(l())}</span></button>`).join('')}</div></div>`;
+}
+// 選んだタブを、横にスクロールする列の見える場所へ（ページは動かさない）
+function setTabReveal(){
+    try{ const sc = document.querySelector('#view .set-tabs'), b = sc && sc.querySelector('[aria-selected="true"]'); if (!b) return;
+        const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect(), pad = Math.max(0, Math.min(16, (a.width - r.width) / 2 - 1));   // 前後のタブが少し見える余白（タブが列の幅に近いときは詰める）
+        if (r.left < a.left + pad) sc.scrollLeft += r.left - a.left - pad; else if (r.right > a.right - pad) sc.scrollLeft += r.right - a.right + pad; }catch(e){}
+}
+// タブを切りかえる（描き直さず、hidden と選んだ印だけを変える）
+function setTabShow(k){
+    if (setTabOf(k) !== k) return;
+    setTabKeep(k);
+    document.querySelectorAll('#view .set-panel').forEach(p => { p.hidden = p.dataset.t !== k; });
+    document.querySelectorAll('#view .set-tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.k === k)));
+    setTabReveal();
+}
+// 設定の場所へ飛ぶ（外からの入口・目次）。k: タブのキー／まとまりのキー（notify など）／欄の id（allergy-card・family-profile など）
+// その欄があるタブを開いて、そこまでスクロールする。タブのキーなら、タブの列を上に残したまま中身の先頭へ
+function setGo(k){
+    if (tab !== 'settings') setTab('settings');
+    const motion = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    if (SET_TABS.some(x => x[0] === k)){
+        setTabShow(k);
+        const bar = document.querySelector('#view .set-tabs-bar'), head = document.querySelector('#view .settings-head');
+        if (bar && head){ const y = head.getBoundingClientRect().bottom + window.scrollY; if (window.scrollY > y) window.scrollTo({top: y, behavior: 'auto'}); }   // 下まで読んでいたら、新しいタブの先頭が見えるところへ
+        return;
+    }
+    const el = document.getElementById('set-' + k) || document.getElementById(k); if (!el) return;
+    const p = el.closest('.set-panel'); if (p) setTabShow(p.dataset.t);
+    el.scrollIntoView({block: 'start', behavior: motion});
+}
 const APP_VERSION = '1.1.0';   // ios-app/package.json の version と合わせる（申請の自動化がここも書きかえる）
 // 外から直せる設定（審査なしで変えられる）: GitHub 上の gohancho/remote.json を起動時に読む。読めなくても、古くても、そのまま動く
 //   notice: {id, ja, en, fr…, until:'YYYY-MM-DD', url?, linkLabel?:{ja, en, fr…}}  今日の画面に出すお知らせ（×で閉じられる）
@@ -12114,7 +12175,7 @@ function saleSetup(){
     if (!session.setOpen) session.setOpen = {}; session.setOpen.store = true;
     if (!saleStores().length && !session.saleEdit){ session.saleEdit = true; session.saleDraft = {id: '', name: '', pref: '', city: '', zip: '', note: '', url: '', days: []}; }
     if (tab !== 'settings') setTab('settings'); else render();
-    const g = document.getElementById('set-store'); if (g) g.scrollIntoView({block: 'start'});
+    const g = document.getElementById('set-store'); if (g) g.scrollIntoView({block: 'start'});   // setOpen.store で「スーパー」のタブが開いている
 }
 async function setSaleRemind(h){
     const P = nativePlugin('LocalNotifications');
@@ -15681,7 +15742,7 @@ document.addEventListener('click', e => {
         case 'alg-ferm': { S.settings.allergenFerm = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'alg-family': {
             if (!famMembers().length){ if (!Array.isArray(S.family)) S.family = []; const m = {id: 'f' + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36), name: '', role: 'adult', avoid: [], allergy: [], mild: false}; S.family.push(m); session.famOpen = m.id; save(); render(); }
-            const f = document.getElementById('family-profile'); if (f) f.scrollIntoView({block: 'start'}); break;
+            setGo('family-profile'); break;
         }
         case 'night-shift': { if (el.checked) S.settings.nightShift = true; else delete S.settings.nightShift; save(); render(); break; }
         case 'diet-mode': { if (el.checked) S.settings.diet = true; else delete S.settings.diet; save(); render(); break; }   // ダイエットモード: 献立のえらびと印だけ。決めた献立・いまのお膳は動かさない（reconcileMenu しない）
@@ -15700,13 +15761,9 @@ document.addEventListener('click', e => {
             else S.settings.avoid = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f);   // なかまに入る食材（えびなど）は、なかまにまとめる
             save(); reconcileMenu(); refreshWeek(); render(); break;
         }
-        case 'settings': setTab('settings'); break;
+        case 'settings': if (el.dataset.to) setGo(el.dataset.to); else setTab('settings'); break;   // data-to: 設定のその場所へ（タブを開いて移る）
         case 'settings-back': setTab(prevTab || 'today'); break;
-        case 'set-jump': {   // 設定の目次: そのまとまりを開いて、そこへ移る
-            const k = el.dataset.k, g = document.getElementById('set-' + k); if (!g) break;
-            if (g.tagName === 'DETAILS' && !g.open){ g.open = true; if (!session.setOpen) session.setOpen = {}; session.setOpen[k] = true; }
-            g.scrollIntoView({block:'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); break;
-        }
+        case 'set-jump': setGo(el.dataset.k); break;   // 設定のタブ: そのタブだけを出す（まとまりのキーなら、そのタブを開いてそこへ移る）
         case 'paywall': openPaywall('info'); break;
         case 'share-menu': { if (!share3Items('menu').length){ openShare('menu'); break; } sheet = {kind:'share', card:'today3', src: 'menu', lv: 2, text: todayShare3Text(2, 'menu'), title: t('今日の献立')}; renderSheet(); break; }   // 決める前も、決めたあとと同じ3段（料理名だけ／買う物も／作り方も）で送る（第4回 R8）
         // ---- 家族の「食べたい」（案A） ----
@@ -15904,8 +15961,7 @@ document.addEventListener('click', e => {
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
         case 'ob-allergy': {   // アレルギーがある人: 設定を保存して、そのまま設定の「アレルギー対策」へ
-            obSave(); closeSheet(); reconcileMenu(); keepDraft(); refreshWeek(); session.freshArmed = false; session.trayPrev = null; session.trayCur = null; setTab('settings');   // 献立の画面を通らないので、選び直した献立をここで下書きに残す（開き直したときに前の献立に戻らないように）
-            const c = document.getElementById('allergy-card'); if (c) c.scrollIntoView({block: 'start'}); break;
+            obSave(); closeSheet(); reconcileMenu(); keepDraft(); refreshWeek(); session.freshArmed = false; session.trayPrev = null; session.trayCur = null; setGo('allergy-card'); break;   // 献立の画面を通らないので、選び直した献立をここで下書きに残す（開き直したときに前の献立に戻らないように）。アレルギー対策のあるタブを開いてそこへ
         }
         case 'ob-done': obFinish(); break;
         case 'decide': {
@@ -16401,7 +16457,7 @@ document.addEventListener('click', e => {
             pendingConfirm = null; session.menu = null; render(); break;
         }
         case 'backup-snooze': S.backupSnooze = TODAY; save(); render(); break;
-        case 'reset': pendingConfirm = 'reset'; render(); keepDetailsOpen(); break;
+        case 'reset': pendingConfirm = 'reset'; setTabKeep('data'); render(); keepDetailsOpen(); break;
         case 'reset-yes':
             // 無料期間の始まりと購入の状態は消さない（消すたびにお試しがやり直せてしまうため）
             S = Object.assign(structuredClone(DEFAULT_STATE), {firstUse: S.firstUse, pro: S.pro, webUid: S.webUid, monitor: S.monitor, trialKept: true}); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
@@ -16436,7 +16492,7 @@ function importErrMsg(from){
 // 読みこむ前に中身を確かめて、置き換えの確認を出す（貼りつけ・ファイル共通）。読めないときは false（理由は importErr）
 function askImport(txt, from){
     const r = parseBackup(txt); importErr = r.ok ? '' : r.reason; if (!r.ok) return false;
-    pendingConfirm = 'import'; importBuffer = txt; importFrom = from; render(); keepDetailsOpen(); return true;
+    pendingConfirm = 'import'; importBuffer = txt; importFrom = from; setTabKeep('data'); render(); keepDetailsOpen(); return true;   // 確かめは「データ」のタブに出す
 }
 // 読みこんだデータをこの端末の状態にする。購入の状態・無料期間の始まり・バックアップの日付は、この端末のものを残す（古いバックアップで購入が消えたり、貼った文字で開いたりしないように）
 function applyImported(d){
@@ -16511,7 +16567,6 @@ document.addEventListener('toggle', e => {
     if (e.target.matches('details.eat-plan')) session.eatOpen = e.target.open;
     if (e.target.matches('details.cook-ings')){ const c = cookItems()[session.cookIdx || 0]; if (c) (session.ingsOpen = session.ingsOpen || {})[c.r.id] = e.target.open; }
     if (e.target.matches('details.spend-card')) session.spendOpen = e.target.open;
-    if (e.target.matches('details.set-sec')) { if (!session.setOpen) session.setOpen = {}; session.setOpen[e.target.dataset.sk] = e.target.open; }   // 設定のまとまりの開き閉じ（描き直しても同じ）
     if (e.target.matches('details.ob-alg-more')){ if (sheet) sheet.algMoreOpen = e.target.open; }   // はじめての設定の「ほかのアレルゲン」（描き直しても開いたまま）
     else if (e.target.matches('details.fam-alg-more')) (session.famAlgMore = session.famAlgMore || {})[e.target.dataset.fmMore] = e.target.open;
     else if (e.target.matches('details.alg-more')) session.algMore = e.target.open;

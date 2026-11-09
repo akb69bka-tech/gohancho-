@@ -159,7 +159,7 @@ const nd = await p.evaluate(async () => {
     document.querySelector('[data-act="backup-snooze"]').click(); o.hidden = !document.querySelector('[data-act="backup-snooze"]') && S.backupSnooze === TODAY;
     markBackedUp(); o.marked = S.lastBackup === TODAY && !S.backupSnooze && !backupDue();
     S.lastBackup = 'garbage'; S.backupSnooze = 5; const n = normalizeState(JSON.parse(JSON.stringify(S))); o.normalized = !('lastBackup' in n) && !('backupSnooze' in n);
-    setTab('settings'); o.card = document.body.innerText.includes('バックアップ') && !!document.querySelector('#backup-card');
+    setTab('settings'); setTabShow('data'); /* 設定はタブ分け（11/09）。バックアップのカードは「データ」のタブの中（ほかのタブを開いていると hidden で innerText に出ない） */ o.card = document.body.innerText.includes('バックアップ') && !!document.querySelector('#backup-card');
     return o;
 });
 ok(!nd.new10 && nd.never40 && nd.noteHtml && !nd.recent && nd.old31 && nd.msg31 && nd.edge30 && !nd.edge29 && !nd.snoozed && nd.snoozeEnd && !nd.noData, 'お知らせの条件（30日・あとで14日・データなしは出ない）: ' + JSON.stringify(nd));

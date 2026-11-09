@@ -191,7 +191,7 @@ for (const w of [195, 260, 320, 360, 390, 430]){
             chk('.kcal-sum', 'today'); chk('.kcal-sum .kc-tag', 'today');
             const sum = !!document.querySelector('.kcal-sum'), tag = !!document.querySelector('.kcal-sum .kc-tag');
             const page1 = document.documentElement.scrollWidth <= vw + 1;
-            setTab('settings'); render(); const dc = document.querySelector('#diet-card'); if (dc) dc.closest('details') && (dc.closest('details').open = true);
+            setTab('settings'); setTabShow('mode'); /* 設定はタブ分け（11/09）。ダイエットモードは「モード」のタブ。開かないと hidden で幅を測れない */ const dc = document.querySelector('#diet-card'); if (dc) dc.closest('details') && (dc.closest('details').open = true);
             await new Promise(res => requestAnimationFrame(res));
             chk('#diet-card', 'settings'); chk('#diet-card .check', 'settings');
             const page2 = document.documentElement.scrollWidth <= vw + 1;

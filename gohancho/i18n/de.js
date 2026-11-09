@@ -618,7 +618,6 @@ GOHAN_I18N('de', {
     "すべて消す": "Alles löschen",
     "すべてのデータを消す": "Alle Daten löschen",
     "このアプリについて": "Über die App",
-    "あなたの家族・アレルギー・苦手な食材": "Familie, Allergien & Zutaten zum Meiden",
     "献立の好み": "Menü-Vorlieben",
     "表示と言語": "Anzeige & Sprache",
     "データとバックアップ": "Daten & Sicherung",
@@ -2022,6 +2021,13 @@ GOHAN_I18N('de', {
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diätmodus (Gerichte mit niedrigerer Kalorienschätzung öfter vorschlagen)",
     "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Wenn aktiv, schlägt das Menü Gerichte mit niedrigerer Kalorienschätzung öfter vor und Frittiertes etwas seltener (nichts wird ausgeschlossen, ein festgelegtes Menü bleibt unverändert). Unter dem Tablett zeigt die Summe „Leichter“ oder „Normal“.",
     // 上の端の「モード」ボタン（11/09）
+    "オンになっているモードがあります": "Einige Modi sind aktiv",
+    "家族・アレルギー": "Familie & Allergien",
+    "苦手・食の決まり": "Meiden & Ernährung",
+    "献立": "Menüs",
     "モード": "Modi",
-    "オンになっているモードがあります": "Einige Modi sind aktiv"
+    "スーパー": "Geschäfte",
+    "データ": "Daten",
+    "表示": "Anzeige",
+    "プラン・その他": "Tarif & mehr",
 });

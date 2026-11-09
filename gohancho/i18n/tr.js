@@ -617,7 +617,6 @@ GOHAN_I18N('tr', {
     "すべて消す": "Hepsini sil",
     "すべてのデータを消す": "Tüm verileri sil",
     "このアプリについて": "Hakkında",
-    "あなたの家族・アレルギー・苦手な食材": "Aile, alerjiler ve kaçınılacak malzemeler",
     "献立の好み": "Menü tercihleri",
     "表示と言語": "Görünüm ve dil",
     "データとバックアップ": "Veri ve yedekleme",
@@ -2022,6 +2021,13 @@ GOHAN_I18N('tr', {
     "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diyet modu (tahmini kalorisi daha düşük yemekleri daha sık öner)",
     "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Açıkken menü, tahmini kalorisi daha düşük yemekleri daha sık, kızartmaları biraz daha seyrek önerir (hiçbir şey çıkarılmaz, karar verilen menü değişmez). Tepsinin altındaki toplamda “Daha hafif” ya da “Normal” işareti görünür.",
     // 上の端の「モード」ボタン（11/09）
+    "オンになっているモードがあります": "Açık olan modlar var",
+    "家族・アレルギー": "Aile ve alerjiler",
+    "苦手・食の決まり": "Kaçınılanlar ve beslenme",
+    "献立": "Menüler",
     "モード": "Modlar",
-    "オンになっているモードがあります": "Açık olan modlar var"
+    "スーパー": "Marketler",
+    "データ": "Veriler",
+    "表示": "Görünüm",
+    "プラン・その他": "Plan ve diğer",
 });

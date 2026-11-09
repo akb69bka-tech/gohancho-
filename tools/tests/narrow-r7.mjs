@@ -35,8 +35,8 @@ const LANGS = (process.env.LANGS || 'ja,de,pt-BR,it,id,fil,en').split(',');
             for (const ts of [0, 1, 2]){
                 await setTs(p, ts);
                 await p.evaluate(() => { setTab('settings'); }); await p.waitForTimeout(250);
-                const r = await p.evaluate(() => [...document.querySelectorAll('#view .inputbar input[type=text]')].map(e => { e.scrollIntoView(); const q = e.getBoundingClientRect(); return [e.className || e.id, q.width, q.right]; }).concat([['sw', document.documentElement.scrollWidth, innerWidth]]));
-                const inp = r.filter(x => x[0] !== 'sw'); const sw = r.find(x => x[0] === 'sw');
+                const r = await p.evaluate(() => SET_TABS.flatMap(([k]) => { setTabShow(k); return [...document.querySelectorAll('#view .set-panel:not([hidden]) .inputbar input[type=text]')].map(e => { e.scrollIntoView(); const q = e.getBoundingClientRect(); return [e.className || e.id, q.width, q.right]; }).concat([['sw', document.documentElement.scrollWidth, innerWidth]]); }));   // 設定はタブ分け（11/09）。タブを1つずつ開いて、その中の入力欄を測る
+                const inp = r.filter(x => x[0] !== 'sw'); const sw = r.filter(x => x[0] === 'sw').reduce((a, x) => x[1] - x[2] > a[1] - a[2] ? x : a);
                 if (!inp.length) bad.push(`${lang} ${w}/文字${ts} 入力欄が出ない`);
                 inp.forEach(x => { if (x[1] < min) bad.push(`${lang} ${w}/文字${ts} ${x[0]} ${Math.round(x[1])}px`); if (x[2] > w + .5) bad.push(`${lang} ${w}/文字${ts} 画面の外`); });
                 if (sw[1] > sw[2] + 1) bad.push(`${lang} ${w}/文字${ts} 横スクロール`);

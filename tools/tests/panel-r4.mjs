@@ -70,6 +70,7 @@ if (want('R2')){
         const {p, ctx} = await open({dishCount: 3});
         const ids0 = await p.evaluate(() => menuIds().join());
         await p.click('button[data-act=settings]'); await p.waitForTimeout(400);
+        await p.click('#view .set-tab[data-k="menu"]');   // 設定はタブ分け（11/09）。台所は「献立」のタブの中（ほかのタブを開いていると hidden）
         await p.locator('#kitchen-card').scrollIntoViewIfNeeded();
         const note = await p.locator('#kitchen-card').innerText();
         ok(!/まだ変わりません/.test(note) && /できるだけ選びます/.test(note), 'R2-5 台所の説明が「選び方に効く」になっている: ' + note.replace(/\n/g, '/').slice(-90));
@@ -84,6 +85,7 @@ if (want('R2')){
         await p.click('button[data-act=decide]'); await p.waitForTimeout(500);
         const ids0 = await p.evaluate(() => cookItems().map(x => x.r.id).join());
         await p.click('button[data-act=settings]'); await p.waitForTimeout(400);
+        await p.click('#view .set-tab[data-k="menu"]');   // 設定はタブ分け（11/09）。台所は「献立」のタブの中
         await p.click('#kitchen-card [data-act=kitchen][data-k=burners][data-v="1"]'); await p.waitForTimeout(300);
         await p.click('#kitchen-card [data-act=kitchen][data-k=skill][data-v=new]'); await p.waitForTimeout(300);
         await p.reload(); await ready(p);

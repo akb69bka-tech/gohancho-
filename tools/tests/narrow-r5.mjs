@@ -90,7 +90,7 @@ const inter = (a, c) => Math.min(a.right, c.right) - Math.max(a.left, c.left) > 
     ok(!bad.length, 'N3 R121 見出し「今日の献立」が条件ボタンに隠れない: ' + bad.slice(0, 5).join(' / '));
     // 設定の入力欄
     await p.setViewportSize({width: 195, height: 422}); await setTs(p, 0);
-    await p.evaluate(() => setTab('settings')); await p.waitForTimeout(300);
+    await p.evaluate(() => { setTab('settings'); setTabShow('food'); }); await p.waitForTimeout(300);   // 設定はタブ分け（11/09）。苦手な食材の入力欄は「苦手・食の決まり」のタブ
     const iw = await p.evaluate(() => { const e = document.querySelector('#avoid-input'); if (!e) return -1; e.scrollIntoView(); const q = e.getBoundingClientRect(); const f = e.closest('form').getBoundingClientRect(); return {w: q.width, fw: f.width, r: q.right, vw: innerWidth}; });
     ok(iw !== -1 && iw.w >= 90 && iw.r <= iw.vw, 'N3 R121 幅195の設定「苦手な食材を追加」の入力欄が 90px 以上: ' + JSON.stringify(iw));
     await ctx.close();

@@ -165,7 +165,7 @@ for (const k of [0, 1, 2]){
         // もう一度明日からにすると、画面の品数・気分は今日のまま、条件シート（品数は設定にも）に明日の分が1行で出る。［取り消す］で明日からをやめる
         await press(); await p.click('[data-act="later-tomorrow"]'); await until(p, () => !sheet);
         await openMood(p); await until(p, () => !!document.querySelector('.sheet .pending-note'));
-        const note = await p.evaluate(kind => { const c = document.querySelector(`.sheet .pending-note[data-pending="${kind}"]`), cond = c ? c.textContent : ''; closeSheet(); setTab('settings');
+        const note = await p.evaluate(kind => { const c = document.querySelector(`.sheet .pending-note[data-pending="${kind}"]`), cond = c ? c.textContent : ''; closeSheet(); setTab('settings'); setTabShow('menu');   // 設定はタブ分け（11/09）。品数は「献立」のタブの中（ほかのタブを開いていると hidden で押せない）
             const n = document.querySelector('#view .pending-note[data-pending="count"]'); for (let d = n; d; d = d.parentElement) if (d.tagName === 'DETAILS') d.open = true;
             const on = [...document.querySelectorAll('#view [data-act="count"][aria-pressed="true"]')].map(x => x.dataset.v); return { cond, set: n ? n.textContent : '', on }; }, kind);
         // 画面の品数は、ご飯の席も1品と数える（基準書 7章 4A）。値 4（おかず4）は、ご飯のある日本では「5品」と出る
