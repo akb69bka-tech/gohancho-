@@ -7,6 +7,7 @@
 //  U4 「献立に入れる」: 押した料理の欄だけが変わる（主菜・副菜・汁もの。ご飯の欄も動かない）。形のちがう主菜は灰色で押せない。元に戻せる
 //  U5 決めた献立は「変えますか？」と確かめる（やめると動かない・変えると押した欄だけ）
 //  U6 全主菜（21か国）に道具の印があり、どれかの「調理法×道具」から引ける。R145 の個別（炒めご飯・食い違い・日本の火を使わない料理）
+//     R151/R152（第32回）: 全料理に印・加熱の手順がある料理は「火を使わない」に出ない・火を使わない料理に加熱の道具がない・ミキサーで加熱する料理は「煮る › 鍋」
 //  U7 料理を押すと作り方が開く。色に青を使わない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -274,7 +275,19 @@ const tabCheckTs = (p, ts) => p.evaluate(async ts => { if (ts) S.settings.textSi
         const jpCold = RECIPES.filter(r => ttIn(r, 'cold', 'cold')).map(r => r.id), jpColdMain = RECIPES.filter(r => r.main && ttIn(r, 'cold')).map(r => r.id);
         // 調理法×道具の料理数（日本・全体。主菜・副菜・汁もの。除外なし）
         const table = {}; for (const c of TT_CATS) for (const k of c.tools){ const jp = RECIPES.filter(r => ttIn(r, c.k, k)).length, tot = all.filter(r => ttIn(r, c.k, k)).length; if (tot) table[c.k + '/' + k] = [jp, tot]; }
-        return {n: mains.length, none, unreach, tags: Object.fromEntries(ids.map(id => [id, pan(id)])), jpCold, jpColdMain, table};
+        // 第32回 R151・R152: 全料理（主菜・副菜・汁もの）に印・加熱の手順がある料理は「火を使わない」に出ない・火を使わない料理に加熱の道具が付かない
+        const FIRE = ['pot', 'donabe', 'pressure', 'pan', 'hotplate', 'teppan', 'charcoal', 'fishgrill', 'oven', 'toaster', 'ricecooker', 'steamer', 'deepfry'];
+        const join2 = a => (a || []).map(st => typeof st === 'string' ? st : (st && st.t) || '').join(' / ');
+        const JPH = /ゆで|茹で|焼く|焼いて|焼き色|炒め|揚げ|蒸す|蒸し|煮る|煮て|煮立|煮込|加熱|熱湯|沸騰|沸か|熱し|温め/, JPN = /焼きのり|焼き海苔|焼き魚|揚げ玉|ゆで卵|ゆでだこ|ゆでたこ|[^。]*加熱したもの[^。]*|[^。]*火を通した[^。]*/g;
+        const ENH = /(?:^|[.;/]\s*|\b(?:then|and|or|while|meanwhile)\s+)(?:cook|boil|simmer|fry|bake|roast|grill|toast|steam|broil|blanch|sear|saut[eé]|poach|stew|heat|warm|melt|bring)\b|pour (?:the )?(?:[\d.]+ ?ml (?:of )?)?(?:hot|boiling)|make the tempering|over (?:a |the )?(?:gas )?flame/i;
+        const heatStep = r => { const t = join2(r.stepsBase || r.steps); return r.pack ? ENH.test(t) : JPH.test(t.replace(JPN, ' ')); };
+        const noMark = all.filter(r => !toolsOf(r).length).map(r => r.id);
+        const heatCold = all.filter(r => heatStep(r) && !toolsOf(r).includes('microwave') && ttCatsOf(r).includes('cold')).map(r => r.id);   // 電子レンジの加熱は「火を使わない」のまま
+        const coldFire = all.filter(r => (toolsOf(r).includes('cold') || ttCatsOf(r).includes('cold')) && toolsOf(r).some(k => FIRE.includes(k))).map(r => r.id);
+        const blendCold = all.filter(r => toolsOf(r).includes('blender') && heatStep(r) && ttIn(r, 'cold', 'blender')).map(r => r.id);
+        const pick = ['mx_pico', 'in_raita', 'gb_beetroot', 'it_grigliate', 'eg_babaghanoug', 'eg_ful', 'de_erbsencreme_schnell', 'es_crema_guisantes', 'pl_groszkowa', 'tr_bezelyecorbasi', 'pe_crema_arvejas', 'pe_pepian_choclo', 'napolitan', 'carbonara', 'it_carbonara', 'es_gazpacho'];
+        const r32 = Object.fromEntries(pick.map(id => { const r = all.find(x => x.id === id); return [id, r ? {tools: toolsOf(r), cats: ttCatsOf(r)} : null]; }));
+        return {n: mains.length, none, unreach, tags: Object.fromEntries(ids.map(id => [id, pan(id)])), jpCold, jpColdMain, table, all: all.length, noMark, heatCold, coldFire, blendCold, r32};
     });
     ok(r.n >= 1000 && r.none.length === 0, `U6 全主菜（${r.n}品）に道具の印がある: ` + r.none.slice(0, 8));
     ok(r.unreach.length === 0, 'U6 印のある料理はどれも、どこかの「調理法×道具」から引ける: ' + r.unreach.slice(0, 8));
@@ -282,6 +295,14 @@ const tabCheckTs = (p, ts) => p.evaluate(async ts => { if (ts) S.settings.textSi
     for (const id of ['soborodon', 'gb_lambchops']) ok(/(^|,)pan(,|\|)/.test(r.tags[id]), `U6 R145 食い違い ${id} にフライパン: ${r.tags[id]}`);
     ok(/boil/.test(r.tags.tarakopasta), 'U6 R145 たらこスパゲッティは「茹でる・鍋」: ' + r.tags.tarakopasta);
     ok(['tkg', 'nattogohan', 'onigiri_umekonbu'].every(id => r.jpColdMain.includes(id)) && ['hiyayakko'].every(id => r.jpCold.includes(id)) && r.jpCold.length >= 10, `U6 R145 日本の「火を使わない」に卵かけご飯・納豆ごはん・おにぎり・冷奴・サラダ（${r.jpCold.length}品・主菜 ${r.jpColdMain.length}品）: ` + r.jpCold.join());
+    ok(r.all >= 2000 && !r.noMark.length, `U6 R151 全料理（主菜・副菜・汁もの ${r.all}品）に道具の印がある: ` + r.noMark.slice(0, 8));
+    ok(!r.heatCold.length, 'U6 R151 加熱の手順がある料理は「火を使わない」に出ない（電子レンジだけの加熱を除く）: ' + r.heatCold.slice(0, 8));
+    ok(!r.coldFire.length, 'U6 R151 火を使わない料理に加熱の道具が付かない: ' + r.coldFire.slice(0, 8));
+    ok(!r.blendCold.length, 'U6 R152 ミキサーを使っても加熱する料理は「火を使わない › ミキサー」に出ない: ' + r.blendCold.slice(0, 8));
+    const q = r.r32, has = (id, k) => q[id] && q[id].tools.includes(k), cat = (id, c) => q[id] && q[id].cats.includes(c);
+    ok(['mx_pico', 'in_raita'].every(id => has(id, 'cold') && cat(id, 'cold')) && has('gb_beetroot', 'pot') && has('it_grigliate', 'pan') && cat('eg_babaghanoug', 'grill') && has('eg_ful', 'pot'), 'U6 R151 生の和えもの・酢漬けは「火を使わない」、グリル野菜・ババガヌーグ・フールは火を使う道具: ' + JSON.stringify(q).slice(0, 300));
+    ok(['de_erbsencreme_schnell', 'es_crema_guisantes', 'pl_groszkowa', 'tr_bezelyecorbasi', 'pe_crema_arvejas', 'pe_pepian_choclo'].every(id => has(id, 'pot') && cat(id, 'simmer') && !cat(id, 'cold')) && cat('es_gazpacho', 'cold'), 'U6 R152 豆のポタージュ5品・ペピアンは「煮る › 鍋」（火を使わないではない）・ガスパチョは火を使わない');
+    ok(['napolitan', 'carbonara', 'it_carbonara'].every(id => has(id, 'pot') && has(id, 'pan') && cat(id, 'boil')), 'U6 R152 抜き取り: ナポリタン・カルボナーラに茹でる鍋');
     console.log('調理法/道具: [日本, 21か国]', JSON.stringify(r.table));
     await ctx.close();
 }

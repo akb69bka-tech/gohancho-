@@ -4119,6 +4119,18 @@ const TOOL_TAGS = {
     us_primavera: 'pot pan', fr_pates_tomates_olives: 'pot pan', tw_majiangmian: 'pot', fr_semoule_lait: 'pot', it_semolino_latte: 'pot', eg_belila: 'pot', mx_atole_blanco: 'pot', br_mingau_fuba: 'pot',
     tr_nohutlu_pilav: 'pot', tr_domatesli_bulgur: 'pot', br_baiao_de_dois: 'pot', pe_arroz_mariscos: 'pot', pe_olluquito: 'pot', es_arrozpollo: 'pan', es_fideua: 'pan',
     fr_tartines: 'cold',
+    // 第32回モニター R151（料理担当）: 道具の印が1つも付かなかった副菜42品と、加熱の手順があるのに火の道具がなかった副菜（作り方の文に合わせて）
+    // 火を使わない（切る・和える・漬ける・ぬるま湯で溶かすだけ。ゆでてあるビーツ・豆・卵を使う）
+    de_moehrenrohkost: 'cold', pl_cwikla: 'cold', tr_piyaz: 'cold', in_raita: 'cold', in_kachumber: 'cold', in_boondiraita: 'cold', vn_dochua: 'cold', id_acar: 'cold', id_karedok: 'cold',
+    ph_ensaladang_mangga: 'cold', mx_pico: 'cold', mx_ensalada_betabel: 'cold',
+    // 鍋（酢を温める・熱湯を注ぐ・ゆでる・ふたをして煮る・ご飯を炊く）
+    us_fridgepickles: 'pot', gb_beetroot: 'pot', us_macsalad: 'pot', fr_taboule: 'pot', tr_kisir: 'pot', mx_cebolla_morada: 'pot', fr_poireauxvin: 'pot', de_erbsenmoehren: 'pot', it_piselli: 'pot',
+    eg_ful: 'pot', eg_rozbelkhalta: 'pot', in_laukisabzi: 'pot', in_khattakaddu: 'pot', br_arroz_brocolis: 'pot', br_quibebe: 'pot', pe_ensalada_quinua: 'pot', pe_choclo_mantequilla: 'pot',
+    in_tomatochutney: 'pot blender', in_avial: 'pot blender', in_beetpachadi: 'pot blender',
+    // フライパン（グリルパン・油を熱してかける・テンパリング・たれを煮立てる・焼きつける）
+    it_grigliate: 'pan', kr_jinmichae: 'pan', th_yamkhaidao: 'pan', mx_chiles_toreados: 'pan', id_sambalmatah: 'pan', in_gajarachar: 'pan', in_coconutchutney: 'pan blender', in_kosambari: 'pan',
+    // 直火か上火のグリルで焼く（焼きなす・焼きピーマン）
+    tr_patlicansalatasi: 'fishgrill oven', eg_babaghanoug: 'fishgrill oven', eg_felfel: 'fishgrill oven',
 };
 // 原文から道具を推す。x: {txt: 手順と調味料の原文, method: 煮・炒・焼… か simmer・stirfry…, jp: 日本の料理か}。戻り値: 道具の印の Set
 function inferTools(o){
@@ -4159,6 +4171,10 @@ function inferTools(o){
         const boil = jp ? /煮立|煮る|煮て|煮込|ゆで|茹|沸騰|煮えるまで/.test(x) : /\b(?:boil|boiled|simmer|simmered|stew|blanch|poach)\b|in salted water|in boiling water|bring to (?:a|the) boil/.test(x);
         if (boil) out.add('pot');
     }
+    // 麺・パスタを茹でる手順がある料理は、ソースをフライパンで作っても鍋も使う（R152 抜き取り: ナポリタンに鍋が付かなかった）
+    if (jp ? /(?:スパゲッティ|パスタ|マカロニ|ペンネ|麺|うどん|そうめん|春雨|ビーフン|ニョッキ)[^。/]{0,15}(?:ゆで|茹で)/.test(x) : /\b(?:cook|boil)(?:ing)? (?:the )?(?:\w+ )?(?:pasta|noodles|spaghetti|macaroni|fettuccine|linguine|penne|shells|sp[äa]e?tzle|gnocchi|pierogi|vermicelli|lasagne|lasagna|tagliatelle|rigatoni)\b/.test(x)) out.add('pot');
+    // ミキサーを使う料理でも、煮る・炒める・温める手順があれば鍋で加熱する（R152: 豆のポタージュが「火を使わない」にだけ出ていた）
+    if (out.has('blender') && !['pot', 'donabe', 'pressure', 'pan', 'hotplate', 'teppan', 'charcoal', 'fishgrill', 'oven', 'toaster', 'ricecooker', 'steamer', 'deepfry', 'microwave'].some(k => out.has(k)) && (jp ? /煮|炒め|温め|加熱|沸騰/ : /\b(?:cook|cooked|simmer|simmered|boil|boiled|soften|fry|fried|warm|heat|saut[eé])\b/).test(x)) out.add('pot');
     // 火を使わない（切る・和えるだけ）: method が和え/raw で、火や湯を使う言葉も、ほかの道具もない
     // 炒めご飯（炒飯・ナシゴレン・コムチエン…）は、method が「炊」でもフライパン（R145: 鍋だけが付いていた）
     if (!deep && /炒飯|チャーハン|焼きめし|\bfried rice\b|\bnasi goreng\b|\bc[ơo]m (?:chi[êe]n|rang)\b|bokkeumbap|\bchaufa\b/.test(x)){ out.add('pan'); if (!/鍋(?!肌|底|敷|つかみ)|\b(?:saucepan|stockpot|pot|dutch oven)\b/.test(y)) out.delete('pot'); }
@@ -12730,7 +12746,7 @@ function ttCatsOf(r){
     if (m === 'simmer' || has('donabe') || has('pressure')) out.add('simmer');
     if (has('steamer') || m === 'steam') out.add('steam');
     if ((m === 'rice' && !fried) || has('ricecooker')) out.add('rice');
-    if (has('pot') && (jp ? /ゆで|茹/ : /\b(?:boil|boiled|boiling|blanch)\b|in salted water|cook the (?:pasta|noodles|spaghetti)/).test(txt)) out.add('boil');
+    if (has('pot') && (jp ? /ゆで|茹/ : /\b(?:boil|boiled|boiling|blanch)\b|in (?:well-)?salted water|cook the (?:pasta|noodles|spaghetti|macaroni|fettuccine|shells|vermicelli)/).test(txt)) out.add('boil');
     const reach = () => [...out].some(c => TT_CATS.find(x => x.k === c).tools.some(has));
     if (!reach()){ const fire = ts.some(k => TT_FIRE.has(k)); ts.forEach(k => { if (fire ? TT_FIRE.has(k) : true) out.add(TT_DEF[k]); }); }   // どの大枠にも道具が合わない料理は、道具から大枠を決める（全部の料理が、どこかから引ける）
     const res = TT_CATS.map(c => c.k).filter(k => out.has(k));
