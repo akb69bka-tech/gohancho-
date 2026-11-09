@@ -64,7 +64,9 @@ let tagsJa;
     for (const [k, ids] of Object.entries(REP_JP)) for (const id of ids) ok(has(id, k), `T1 ${id} に ${k} が付く: [${tagsJa[id]}]`);
     for (const [k, ids] of Object.entries(NOT_JP)) for (const id of ids) ok(tagsJa[id] !== undefined && !has(id, k), `T1 ${id} に ${k} が付かない: [${tagsJa[id]}]`);
     const n = Object.keys(tagsJa).length, empty = Object.values(tagsJa).filter(v => !v).length, onlyPan = Object.values(tagsJa).filter(v => v === 'pan').length, onlyPot = Object.values(tagsJa).filter(v => v === 'pot').length;
-    ok(empty >= 1 && empty < n * 0.5, `T1 推定できない料理は無印のまま（既定の道具を付けない）: 無印 ${empty}/${n}`);
+    // R145 で全主菜に手書きの印を付けたので、日本の料理の無印は0でもよい。既定の道具を付けないことは、原文のない料理で確かめる（和えは「火を使わない」と推すので除く）
+    const noDef = await p.evaluate(() => ['煮', '炒', '焼', '揚', '炊', '汁'].map(m => inferTools({txt: '材料を器に盛る。', method: m, jp: true}).size + inferTools({txt: 'Serve.', method: m, jp: false}).size).reduce((a, x) => a + x, 0));
+    ok(noDef === 0 && empty < n * 0.5, `T1 推定できない料理は無印のまま（既定の道具を付けない）: 既定 ${noDef}・無印 ${empty}/${n}`);
     ok(onlyPan + onlyPot < n, `T1 「フライパン/鍋」だけを既定にしていない: ${onlyPan}+${onlyPot}/${n}`);
     // ひとひねり案・自分の料理は道具なし
     const tw = await p.evaluate(() => [toolsOf({id: 'a~x~y~z~w', name: 'x', steps: ['フライパンで焼く'], items: []}).length, toolsOf(null).length]);
