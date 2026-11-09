@@ -2010,5 +2010,15 @@ GOHAN_I18N('pl', {
     "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Lżejszy jadłospis, więcej zup. Dania smażone, ciężkie i bardzo ostre pojawiają się rzadziej (nie są usuwane). Od jutra jak zwykle.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Dzisiejszy jadłospis się nie zmienia. Stuknij „Nowy jadłospis” albo danie i „Zamień”, aby wybrać od nowa.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Jeśli źle się czujesz, nie forsuj się i pij wodę.",
-    "二日酔い": "Kac"
+    "二日酔い": "Kac",
+    "約 {n} kcal（1人分・目安）": "Około {n} kcal (na osobę, szacunkowo)",
+    "30 kcal 未満（1人分・目安）": "Poniżej 30 kcal (na osobę, szacunkowo)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Nie da się oszacować kalorii (za dużo składników bez ilości)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Szacunek na podstawie ilości składników. Rzeczywiste ilości i sposób przygotowania go zmieniają.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Suma posiłku: około {n} kcal (na osobę, szacunkowo)",
+    "お膳の合計の目安は出せません": "Nie da się oszacować sumy posiłku",
+    "カロリーの目安|ふつう": "Zwykły",
+    "カロリーの目安|軽め": "Lżejszy",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Tryb diety (częściej proponuj dania o niższej szacowanej kaloryczności)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Gdy jest włączony, menu częściej proponuje dania o niższej szacowanej kaloryczności i nieco rzadziej smażone (nic nie jest wykluczane, a ustalone menu się nie zmienia). Pod tacą suma ma oznaczenie „Lżejszy” lub „Zwykły”."
 });

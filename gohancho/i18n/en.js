@@ -2011,5 +2011,15 @@ GOHAN_I18N('en', {
     "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Lighter menus with more soups. Fried, rich and very spicy dishes come up less often (they are not removed). Back to normal tomorrow.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Today’s menu stays as it is. Tap “New menu”, or tap a dish and “Swap”, to choose again.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "If you feel unwell, take it easy and drink some water.",
-    "二日酔い": "Hangover day"
+    "二日酔い": "Hangover day",
+    "約 {n} kcal（1人分・目安）": "About {n} kcal (per person, estimate)",
+    "30 kcal 未満（1人分・目安）": "Under 30 kcal (per person, estimate)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Can't estimate calories (too many ingredients without amounts)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "An estimate from the ingredient amounts. Actual amounts and cooking change it.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Meal total: about {n} kcal (per person, estimate)",
+    "お膳の合計の目安は出せません": "Can't estimate the meal total",
+    "カロリーの目安|ふつう": "Regular",
+    "カロリーの目安|軽め": "Lighter",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diet mode (suggest dishes with a lower calorie estimate more often)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "When on, menus suggest dishes with a lower calorie estimate more often and fried dishes a little less (nothing is removed, and a menu you've decided stays as it is). The meal total below the tray shows a \"Lighter\" or \"Regular\" mark."
 });

@@ -2010,5 +2010,15 @@ GOHAN_I18N('vi', {
     "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Thực đơn thanh nhẹ hơn, nhiều món canh, món nước hơn. Món chiên, món béo và món quá cay sẽ ít ra hơn (không bị bỏ đi). Ngày mai trở lại như cũ.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Thực đơn hiện tại không đổi. Nhấn “Thực đơn mới”, hoặc nhấn vào món rồi “Đổi”, để chọn lại.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Nếu thấy trong người không khỏe, đừng gắng sức và hãy uống nước.",
-    "二日酔い": "Sau cuộc nhậu"
+    "二日酔い": "Sau cuộc nhậu",
+    "約 {n} kcal（1人分・目安）": "Khoảng {n} kcal (mỗi người, ước tính)",
+    "30 kcal 未満（1人分・目安）": "Dưới 30 kcal (mỗi người, ước tính)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Không ước tính được calo (quá nhiều nguyên liệu không ghi lượng)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Ước tính từ lượng nguyên liệu. Lượng thực tế và cách nấu sẽ làm thay đổi.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Tổng bữa: khoảng {n} kcal (mỗi người, ước tính)",
+    "お膳の合計の目安は出せません": "Không ước tính được tổng bữa",
+    "カロリーの目安|ふつう": "Bình thường",
+    "カロリーの目安|軽め": "Nhẹ hơn",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Chế độ ăn kiêng (gợi ý món có calo ước tính thấp hơn thường xuyên hơn)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Khi bật, thực đơn sẽ gợi ý món có calo ước tính thấp hơn thường xuyên hơn và món chiên ít hơn một chút (không loại món nào, thực đơn đã chọn giữ nguyên). Dưới mâm, tổng sẽ có nhãn “Nhẹ hơn” hoặc “Bình thường”."
 });

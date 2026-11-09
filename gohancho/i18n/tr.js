@@ -2010,5 +2010,15 @@ GOHAN_I18N('tr', {
     "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Daha hafif, daha çok çorbalı menüler. Kızartmalar, ağır ve çok acı yemekler daha seyrek çıkar (çıkarılmaz). Yarın her şey eskisi gibi.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Bugünün menüsü değişmez. Yeniden seçmek için “Yeni menü”ye ya da bir yemeğe ve “Değiştir”e dokunun.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Kendinizi iyi hissetmiyorsanız zorlamayın ve su için.",
-    "二日酔い": "Akşamdan kalma"
+    "二日酔い": "Akşamdan kalma",
+    "約 {n} kcal（1人分・目安）": "Yaklaşık {n} kcal (kişi başı, tahmini)",
+    "30 kcal 未満（1人分・目安）": "30 kcal'nin altında (kişi başı, tahmini)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "Kalori tahmin edilemiyor (miktarı belli olmayan çok malzeme var)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Malzeme miktarlarından yapılan bir tahmindir. Gerçek miktarlar ve pişirme şekli değiştirir.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Öğün toplamı: yaklaşık {n} kcal (kişi başı, tahmini)",
+    "お膳の合計の目安は出せません": "Öğün toplamı tahmin edilemiyor",
+    "カロリーの目安|ふつう": "Normal",
+    "カロリーの目安|軽め": "Daha hafif",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Diyet modu (tahmini kalorisi daha düşük yemekleri daha sık öner)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Açıkken menü, tahmini kalorisi daha düşük yemekleri daha sık, kızartmaları biraz daha seyrek önerir (hiçbir şey çıkarılmaz, karar verilen menü değişmez). Tepsinin altındaki toplamda “Daha hafif” ya da “Normal” işareti görünür."
 });

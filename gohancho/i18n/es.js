@@ -2010,5 +2010,15 @@ GOHAN_I18N('es', {
     "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Menús más ligeros, con más sopas. Los fritos, los platos pesados y los muy picantes salen menos (no se quitan). Mañana vuelve a ser como siempre.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "El menú de hoy no cambia. Toca «Menú nuevo», o un plato y «Cambiar», para elegir de nuevo.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Si no te encuentras bien, tómatelo con calma y bebe agua.",
-    "二日酔い": "Día de resaca"
+    "二日酔い": "Día de resaca",
+    "約 {n} kcal（1人分・目安）": "Unas {n} kcal (por persona, aproximado)",
+    "30 kcal 未満（1人分・目安）": "Menos de 30 kcal (por persona, aproximado)",
+    "カロリーの目安を出せません（量のわからない材料が多いため）": "No se pueden estimar las calorías (demasiados ingredientes sin cantidad)",
+    "材料の量からの目安です。実際の量・作り方で変わります。": "Estimación según las cantidades de los ingredientes. Las cantidades reales y la forma de cocinar la cambian.",
+    "お膳の合計：約 {n} kcal（1人分・目安）": "Total de la comida: unas {n} kcal (por persona, aproximado)",
+    "お膳の合計の目安は出せません": "No se puede estimar el total de la comida",
+    "カロリーの目安|ふつう": "Normal",
+    "カロリーの目安|軽め": "Más ligero",
+    "ダイエットモード（カロリーの目安が低めの料理を出しやすくする）": "Modo dieta (sugerir más a menudo platos con menos calorías estimadas)",
+    "オンにすると、献立を選ぶときに、カロリーの目安が低めの料理を出しやすくし、揚げ物を少し控えめにします（外しはしません。決めた献立は変えません）。お膳の下の合計に「軽め」「ふつう」の印を出します。": "Al activarlo, el menú sugiere más a menudo platos con menos calorías estimadas y algo menos de fritos (no se excluye nada y un menú ya decidido no cambia). Bajo la bandeja, el total muestra «Más ligero» o «Normal»."
 });
