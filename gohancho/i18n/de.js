@@ -2004,5 +2004,11 @@ GOHAN_I18N('de', {
     "tt|茹でる": "Kochen in Wasser",
     "tt|煮る": "Schmoren",
     "tt|蒸す": "Dämpfen",
-    "tt|炊く": "Reis kochen"
+    "tt|炊く": "Reis kochen",
+    "飲んだ次の日": "Am Tag nach dem Trinken",
+    "二日酔いの日（今日だけ）": "Kater-Tag (nur heute)",
+    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Leichteres Menü mit mehr Suppen. Frittiertes, Deftiges und sehr Scharfes kommt seltener (wird nicht weggelassen). Ab morgen wieder wie gewohnt.",
+    "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Das heutige Menü bleibt, wie es ist. Mit „Neues Menü“ oder über ein Gericht und „Tauschen“ neu wählen.",
+    "体調がすぐれないときは無理をせず、水分をとってください。": "Wenn es dir nicht gut geht, mach langsam und trink Wasser.",
+    "二日酔い": "Kater-Tag"
 });

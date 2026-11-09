@@ -2004,5 +2004,11 @@ GOHAN_I18N('fil', {
     "tt|茹でる": "Pakuluan",
     "tt|煮る": "Nilaga",
     "tt|蒸す": "Pasingaw",
-    "tt|炊く": "Magsaing"
+    "tt|炊く": "Magsaing",
+    "飲んだ次の日": "Kinabukasan ng inuman",
+    "二日酔いの日（今日だけ）": "Araw ng hangover (ngayon lang)",
+    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Mas magaang na menu, mas maraming sabaw. Mas bihirang lumabas ang pinirito, mabigat at sobrang anghang (hindi tinatanggal). Bukas, babalik sa dati.",
+    "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Hindi magbabago ang menu ngayon. Pindutin ang “Bagong menu”, o ang isang ulam at “Palitan”, para pumili ulit.",
+    "体調がすぐれないときは無理をせず、水分をとってください。": "Kung masama ang pakiramdam, huwag pilitin ang sarili at uminom ng tubig.",
+    "二日酔い": "Hangover"
 });

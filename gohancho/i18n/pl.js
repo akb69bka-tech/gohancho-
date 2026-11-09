@@ -2004,5 +2004,11 @@ GOHAN_I18N('pl', {
     "tt|茹でる": "Gotowanie w wodzie",
     "tt|煮る": "Duszenie",
     "tt|蒸す": "Na parze",
-    "tt|炊く": "Gotowanie ryżu"
+    "tt|炊く": "Gotowanie ryżu",
+    "飲んだ次の日": "Dzień po piciu",
+    "二日酔いの日（今日だけ）": "Dzień po imprezie – kac (tylko dziś)",
+    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Lżejszy jadłospis, więcej zup. Dania smażone, ciężkie i bardzo ostre pojawiają się rzadziej (nie są usuwane). Od jutra jak zwykle.",
+    "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Dzisiejszy jadłospis się nie zmienia. Stuknij „Nowy jadłospis” albo danie i „Zamień”, aby wybrać od nowa.",
+    "体調がすぐれないときは無理をせず、水分をとってください。": "Jeśli źle się czujesz, nie forsuj się i pij wodę.",
+    "二日酔い": "Kac"
 });

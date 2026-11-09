@@ -2004,5 +2004,11 @@ GOHAN_I18N('pt-BR', {
     "tt|茹でる": "Ferver",
     "tt|煮る": "Cozinhar",
     "tt|蒸す": "No vapor",
-    "tt|炊く": "Cozinhar arroz"
+    "tt|炊く": "Cozinhar arroz",
+    "飲んだ次の日": "O dia depois de beber",
+    "二日酔いの日（今日だけ）": "Dia de ressaca (só hoje)",
+    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Cardápios mais leves, com mais sopas. Frituras, pratos pesados e muito apimentados aparecem menos (não são retirados). Amanhã volta ao normal.",
+    "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "O cardápio de hoje não muda. Toque em “Novo cardápio”, ou em um prato e “Trocar”, para escolher de novo.",
+    "体調がすぐれないときは無理をせず、水分をとってください。": "Se não estiver se sentindo bem, vá com calma e beba água.",
+    "二日酔い": "Dia de ressaca"
 });

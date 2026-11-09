@@ -2004,5 +2004,11 @@ GOHAN_I18N('tr', {
     "tt|茹でる": "Haşlama",
     "tt|煮る": "Tencere yemeği",
     "tt|蒸す": "Buharda",
-    "tt|炊く": "Pilav pişirme"
+    "tt|炊く": "Pilav pişirme",
+    "飲んだ次の日": "İçtikten sonraki gün",
+    "二日酔いの日（今日だけ）": "Akşamdan kalma günü (sadece bugün)",
+    "あっさり・汁もの多めの献立にします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Daha hafif, daha çok çorbalı menüler. Kızartmalar, ağır ve çok acı yemekler daha seyrek çıkar (çıkarılmaz). Yarın her şey eskisi gibi.",
+    "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Bugünün menüsü değişmez. Yeniden seçmek için “Yeni menü”ye ya da bir yemeğe ve “Değiştir”e dokunun.",
+    "体調がすぐれないときは無理をせず、水分をとってください。": "Kendinizi iyi hissetmiyorsanız zorlamayın ve su için.",
+    "二日酔い": "Akşamdan kalma"
 });
