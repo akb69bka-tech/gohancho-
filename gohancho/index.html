@@ -287,7 +287,8 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .vessel{position:relative;aspect-ratio:1;border-radius:50%;border:0;padding:0;background:var(--porcelain);transition:transform .2s ease;max-width:100%}
 @media (hover:hover){.vessel:hover{transform:translateY(-2px) scale(1.02)}}   /* 指で触れたあと拡大のまま残ると絵がぼやけるので、マウスのときだけ */
 .vessel .food{position:absolute;border-radius:47% 53% 50% 50%/55% 45% 55% 45%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.4),transparent 42%),var(--food,#a8652b);background-size:cover;background-position:center}
-.vessel .food.photo{border-radius:50%;background-image:var(--img);background-size:cover;background-position:center;background-repeat:no-repeat}
+.vessel .food.photo{border-radius:50%;background-image:var(--img);background-size:cover;background-position:center;background-repeat:no-repeat;transition:opacity .3s ease var(--pd,0s)}
+.vessel.pload .food.photo{background-image:none;opacity:.55}   /* 絵が届くまでは生成りの丸（大きさはそのまま）。届くと順にふわっと出る */
 /* ChatGPT で作った絵: 器ごと描いてあるので、アプリの器は消して絵だけを出す */
 .vessel.gen,.vessel.gen:hover{background:none;box-shadow:none}
 .vessel.gen::before{display:none}
@@ -6155,10 +6156,22 @@ function vesselKind(r){
     return 'plate';
 }
 // 絵を読みこめなかったとき（電波がなく、まだ保存していない絵など）は、器ごと消えないよう線のイラストに切りかえる
-const IMG_FAIL = new Set(), IMG_PROBED = new Set();
+const IMG_FAIL = new Set(), IMG_PROBED = new Set(), IMG_OK = new Set();
+// 絵を先に取りよせ、デコードまで済んでから器に出す（IMG_OK）。入れ替えの直後、まだ届いていない絵は生成りの丸（器と同じ大きさ）のまま待ち、
+// 届いた順に ふわっと出る（前の絵は残らず、途中で大きさも変わらない）。届いたら .pload を外す
+function imgReady(src){
+    IMG_OK.add(src);
+    let i = 0;
+    document.querySelectorAll('.vessel.pload').forEach(v => {
+        if (v.dataset.src !== src) return;
+        v.style.setProperty('--pd', (i++ * 0.05) + 's'); v.classList.remove('pload');
+    });
+}
 function probeImg(src){
     if (!src || IMG_PROBED.has(src)) return; IMG_PROBED.add(src);
-    const im = new Image(); im.onerror = () => { IMG_FAIL.add(src); scheduleRender(); }; im.src = src;
+    const im = new Image(); im.onerror = () => { IMG_FAIL.add(src); scheduleRender(); };
+    im.onload = () => { const d = im.decode ? im.decode() : Promise.resolve(); d.then(() => imgReady(src), () => imgReady(src)); };
+    im.src = src;
 }
 // 今見ている献立の絵のアドレスを覚える（次の起動で、一覧を待たずに先に取りはじめる。ページ先頭の gohancho.pre）
 function savePre(){
@@ -6179,9 +6192,10 @@ function vesselHtml(kind, r, still=false, anim=true, side=null){   // side: 香�
     // 写真のない料理も、最初の手描きのイラスト（dishSvg）は出さない（オーナー指示 11/06）。生成りの丸のまま（写真が届けば写真になる）
     if (!ph && !wait && !extra && !(r && r.staple)) wait = true;
     const food = ph || wait ? '<span class="food photo"></span>' : '<span class="food"></span>';
-    const cls = `vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${(ph && ph.gen) || wait ? ' gen' : ''}${(ph && ph.photo) || wait ? ' gph' : ''}${wait ? ' pwait' : ''}${anim ? ' rise-in' : ''}`;
-    if (!r || still) return `<div class="${cls}" style="${esc(style)}" aria-hidden="true">${food}</div>`;
-    return `<button class="${cls}" style="${esc(style)}" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
+    const load = !!ph && /^img\//.test(ph.src) && !IMG_OK.has(ph.src);   // まだ届いていない絵: 届くまで絵は出さず、生成りの丸のまま待つ（pload）
+    const cls = `${load ? 'pload ' : ''}vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${(ph && ph.gen) || wait ? ' gen' : ''}${(ph && ph.photo) || wait ? ' gph' : ''}${wait ? ' pwait' : ''}${anim ? ' rise-in' : ''}`, ds = load ? ` data-src="${esc(ph.src)}"` : '';
+    if (!r || still) return `<div class="${cls}" style="${esc(style)}"${ds} aria-hidden="true">${food}</div>`;
+    return `<button class="${cls}" style="${esc(style)}"${ds} data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
 // 一覧の絵（32〜96px）は小さい絵（t/。256px）で足りる画面（DPR 2 まで）では小さい絵、それより細かい画面（DPR 3 のスマホ）は 512px の絵を使う。
 // 小さい絵を出したあとも、読みこめたときに「表示の大きさ × DPR」が絵の画素より大きければ 512px に替える（data-full。小さい絵を引きのばしてぼやけさせない）
