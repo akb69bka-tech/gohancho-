@@ -1899,11 +1899,17 @@ body.on-today.tray-tight5 #greet:has(.sale-greet){display:block}body.on-today.tr
 #timer-alert .ta-tx{flex:1 1 9em;min-width:0;overflow-wrap:anywhere;line-height:1.35}
 #timer-alert .btn{flex:0 0 auto;margin-inline-start:auto;min-width:44px;min-height:44px;background:#fff8;border-color:#231800;color:#231800}
 /* R2-19 狭い幅の下のタブ: 1つ 44px 以上。入らないぶんは横にスクロール（選んだタブは見える場所へ） */
-nav.tabs.two .in{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:2px 0}   /* R120: 1つが 44px に足りない狭い幅（195px など）は、3つずつ2段に並べる。全部が画面に入り、1つは 44px 以上（絵＋短い名前のまま） */
+nav.tabs.two .in{grid-template-columns:repeat(var(--tcols,3),minmax(0,1fr))!important;gap:2px 0}   /* R120: 1つが 44px に足りない狭い幅（195px など）は、3つずつ2段に並べる。全部が画面に入り、1つは 44px 以上（絵＋短い名前のまま） */
 nav.tabs.two button{min-width:44px;padding-inline:0;padding-block:0;min-height:44px;flex-direction:row;justify-content:center;gap:1px}   /* 2段の高さを最小に（44px×2）。絵の横に短い名前 */
 nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
+nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
+.tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400}.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
+.tt-sh h3 .tt-n{font-size:var(--fs12);color:var(--muted);font-weight:400;margin-inline-start:.5em}
+.tt-list .item{align-items:center}.tt-open{flex:1 1 10em;min-width:0;display:flex;align-items:center;gap:var(--s12);border:0;background:transparent;color:inherit;font:inherit;text-align:start;padding:0;min-height:44px;cursor:pointer}
+.tt-open .t{display:flex;flex-direction:column;min-width:0;overflow-wrap:anywhere}.tt-open .s{font-size:var(--fs12)}.tt-list .tt-add{flex:0 0 auto;min-height:44px;margin-inline-start:auto}.tt-list .dc-tags,.tt-list .tool-off-note{flex:1 0 100%;margin:0}
+.tt-list .tool-off .tt-open{pointer-events:auto}.tool-off.tt-row{opacity:.55}
 /* 利用者モニター v110（R121〜R125）: 狭い幅の重なり・切れ・押せる大きさ */
 @media (min-width:300px){.top .gear{flex:0 0 44px;min-width:44px}}   /* R125: 幅320pxで 42px に縮んでいた国旗・設定を 44px のまま */
 .tray .spot-label[data-act="rice-info"]{min-height:44px;display:flex;flex-direction:column;justify-content:center;align-items:center}   /* R125: ご飯の説明のボタン（高さ 16〜41px）を 44px 以上に */
@@ -1969,6 +1975,7 @@ nav.tabs.two svg{padding-inline:3px}
         <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日の献立</button>
         <button role="tab" data-tab="cook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z"/><path d="M2 10h2M20 10h2M9 6.5c-.8 1 .8 1.8 0 3M13 5.5c-.8 1 .8 1.8 0 3"/></svg>作り方</button>
         <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/></svg>材料から</button>
+        <button role="tab" data-tab="tools"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="9.5" cy="14" rx="7" ry="5.5"/><path d="M16.2 12.2l5.8-2.2"/><path d="M6.5 6.5c-.7.9.7 1.6 0 2.6M10 5c-.7.9.7 1.6 0 2.6M13.5 6.5c-.7.9.7 1.6 0 2.6"/></svg>調理道具</button>
         <button role="tab" data-tab="twist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>ひとひねり</button>
         <button role="tab" data-tab="world"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-5.8-3.9-9S9.4 5.8 12 3z"/></svg>世界のレシピ</button>
         <button role="tab" data-tab="log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h11a1.5 1.5 0 0 1 1.5 1.5v15A1.5 1.5 0 0 1 17 21H6z"/><path d="M6 3v18M9.5 8h5.5M9.5 12h5.5M9.5 16h3"/></svg>記録</button>
@@ -3205,8 +3212,8 @@ function applyStaticText(){
     aria('#flag-btn', t('国・地域を変える'));
     aria('header.top [data-act="settings"]', t('設定'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
-    const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
+    const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), tools:tc('tab', '調理道具'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
+    const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), tools:tc('tabs', '道具'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         let sp = b.querySelector('.tl');
         if (!sp){ const n = [...b.childNodes].reverse().find(x => x.nodeType === 3); sp = document.createElement('span'); sp.className = 'tl'; if (n) n.replaceWith(sp); else b.appendChild(sp); }   // タブの字は span に（狭い幅では絵だけにして、字は読み上げに残す）
@@ -4100,6 +4107,16 @@ const TOOL_TAGS = {
     mx_carne_asada: '+charcoal', eg_shishtawook: '+charcoal', eg_reyash: '+charcoal', eg_kofta: '+charcoal', tr_tavuksis: '+charcoal', th_mooping: '+charcoal', vn_catimnuong: '+charcoal',
     in_tandoori: '+charcoal', us_bbqchickensandwich: '-charcoal', us_pulledpork: '-charcoal',
     kr_kimchijjigae: '+donabe', kr_budaejjigae: '+donabe', kr_dongtaejjigae: '+donabe', kr_gochujangjjigae: '+donabe', kr_cheonggukjangjjigae: '+donabe', kr_chaeso_sundubu: '+donabe',
+    // 第31回モニター R145（料理担当）: 道具の印が1つも付かなかった主菜28品と、食い違い4品
+    // 日本: 火を使わない（炊いてあるご飯にのせる・にぎる・お茶を注ぐだけ）／フライパンの蒸し焼き
+    tkg: 'cold', shirasu_tkg: 'cold', nattogohan: 'cold', onigiri_umekonbu: 'cold', umechazuke: 'cold', negishio: 'pan', banbanji: 'pan',
+    soborodon: '+pan', kr_kimchibokkeumbap: 'pan', gb_lambchops: 'pan oven',   // 食い違い: そぼろは鍋かフライパンで炒る・キムチ炒飯はフライパン・ラムチョップはグリル（上火）か焼き網のフライパン。たらこスパゲッティは鍋で茹でて和えるだけなので「茹でる・鍋」のまま
+    // 各国: 炒めご飯はフライパン（ナシゴレン・コムチエン・コムラン）
+    id_nasigoreng: 'pan', vn_comchien: 'pan', vn_comrangduabo: 'pan', vn_bolalot: 'pan +charcoal', vn_ca_tim_kho_dau_hu: 'pan',
+    // 各国: パスタ・和え麺は鍋で茹でる（ソースをフライパンで作るものは両方）、ミルクがゆ・ピラウ・炊き込みは鍋、パエリア鍋はフライパン
+    us_primavera: 'pot pan', fr_pates_tomates_olives: 'pot pan', tw_majiangmian: 'pot', fr_semoule_lait: 'pot', it_semolino_latte: 'pot', eg_belila: 'pot', mx_atole_blanco: 'pot', br_mingau_fuba: 'pot',
+    tr_nohutlu_pilav: 'pot', tr_domatesli_bulgur: 'pot', br_baiao_de_dois: 'pot', pe_arroz_mariscos: 'pot', pe_olluquito: 'pot', es_arrozpollo: 'pan', es_fideua: 'pan',
+    fr_tartines: 'cold',
 };
 // 原文から道具を推す。x: {txt: 手順と調味料の原文, method: 煮・炒・焼… か simmer・stirfry…, jp: 日本の料理か}。戻り値: 道具の印の Set
 function inferTools(o){
@@ -4141,6 +4158,8 @@ function inferTools(o){
         if (boil) out.add('pot');
     }
     // 火を使わない（切る・和えるだけ）: method が和え/raw で、火や湯を使う言葉も、ほかの道具もない
+    // 炒めご飯（炒飯・ナシゴレン・コムチエン…）は、method が「炊」でもフライパン（R145: 鍋だけが付いていた）
+    if (!deep && /炒飯|チャーハン|焼きめし|\bfried rice\b|\bnasi goreng\b|\bc[ơo]m (?:chi[êe]n|rang)\b|bokkeumbap|\bchaufa\b/.test(x)){ out.add('pan'); if (!/鍋(?!肌|底|敷|つかみ)|\b(?:saucepan|stockpot|pot|dutch oven)\b/.test(y)) out.delete('pot'); }
     if (mth === 'raw' && !out.size && !/cook|boil|simmer|heat|fry|bake|roast|grill|toast|steam|broil|blanch|microwave|warm|melt|sear|saut|scald|poach|stew|\bpan\b|oven|stove|flame|burn|char\b|hot |ゆで|茹|焼|炒|揚|蒸|煮|加熱|熱湯|湯|沸|レンジ|温|あたた|トースター|グリル|熱/.test(x)) out.add('cold');
     return out;
 }
@@ -5127,7 +5146,7 @@ function awardHtml(){
    画面
    ========================================================= */
 let tab = 'today';
-try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
+try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','tools','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
 function tabRevealSel(){   // R2-19: 横にスクロールする狭い幅の下のタブで、選んだタブを見える場所へ（ページは動かさない）
     try{ const nv = document.querySelector('nav.tabs.scrl'); if (!nv) return; const sc = nv.querySelector('.in'), b = nv.querySelector('button[aria-selected="true"]'); if (!sc || !b) return;
         const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect(); if (r.left < a.left) sc.scrollLeft += r.left - a.left; else if (r.right > a.right) sc.scrollLeft += r.right - a.right; }catch(e){}
@@ -5448,7 +5467,7 @@ function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[rend
 const renderFail = new Set();
 const NAV_OF = {};
 // 最初の版の6つのタブ（オーナーの指示・基準書 4章）。案2の四段は、今日の献立（決める）と作り方（買う → 作る → 食卓）に入れる
-const VIEWS = {today: () => viewTodayTab(), cook: () => viewCookTab(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), log: () => viewLog(), settings: () => viewSettings()};
+const VIEWS = {today: () => viewTodayTab(), cook: () => viewCookTab(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), tools: () => viewToolsTab(), log: () => viewLog(), settings: () => viewSettings()};
 /* ===== 案2「今日の一膳」の共通部品（三宅）: 今日タブの四段の印・段ごとの画面の入れ物・さがすの中の切りかえ =====
    段: decide（一 決める）→ shop（二 買う）→ cook（三 作る）→ table（四 食卓）。
    いま見ている段は session.stage（本人が印を押して選ぶ。押しても献立や状態は変わらない）。作る段は tab 'cook'（作り方の画面）。
@@ -12667,6 +12686,97 @@ function toolsSheetHtml(){
         <div class="row"><button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button></div>`;
 }
 function toolKindOff(r){ const cur = session.menu && session.menu.items[0] && session.menu.items[0].r; return !!cur && isBowlMain(r) !== isBowlMain(cur); }
+/* ---- 下のタブ「調理道具」（オーナーの指示 11/09）: 調理法の大枠 → 道具 → 料理 の3段の逆引き ----
+   - 調理法の大枠は、料理の method（煮・炒・焼…）と道具の印（toolsOf）から決める（画面の言葉には依存しない）。1品が複数の大枠に入ることがある（焼く・揚げる など）。
+   - 料理が出るのは「その大枠に入り、その道具の印がある」とき。大枠だけ選んだら、その大枠の全部の道具の料理。
+   - 一覧は今の国（国の組み合わせを選んだ枠はその国）の主菜・副菜・汁もの。アレルギー・苦手・食の決まり・お酒避け・品薄・今は出さない（slotOut / allergyConflict）は一覧に出さない。
+   - このタブを開いても、選んでも、いまの献立・決めた献立・今日使う道具（session.tool）は変わらない。「献立に入れる」で、押した料理の欄だけが変わる（決めた献立は確かめてから。tool-ok） */
+const TT_CATS = [
+    {k: 'cold', l: () => t('火を使わない'), tools: ['cold', 'microwave', 'blender']},
+    {k: 'grill', l: () => tc('tt', '焼く'), tools: ['pan', 'hotplate', 'teppan', 'charcoal', 'fishgrill', 'oven', 'toaster']},
+    {k: 'stirfry', l: () => tc('tt', '炒める'), tools: ['pan', 'hotplate', 'teppan']},
+    {k: 'fry', l: () => tc('tt', '揚げる（油を使う）'), tools: ['deepfry', 'pan']},
+    {k: 'boil', l: () => tc('tt', '茹でる'), tools: ['pot', 'microwave']},
+    {k: 'simmer', l: () => tc('tt', '煮る'), tools: ['pot', 'donabe', 'pressure', 'microwave']},
+    {k: 'steam', l: () => tc('tt', '蒸す'), tools: ['steamer', 'microwave', 'pan']},
+    {k: 'rice', l: () => tc('tt', '炊く'), tools: ['ricecooker', 'donabe', 'pot']}];
+const TT_FIRE = new Set(['pot', 'donabe', 'pressure', 'pan', 'hotplate', 'teppan', 'charcoal', 'fishgrill', 'oven', 'toaster', 'ricecooker', 'steamer', 'deepfry']);
+const TT_DEF = {pot: 'simmer', donabe: 'simmer', pressure: 'simmer', pan: 'stirfry', hotplate: 'grill', teppan: 'grill', charcoal: 'grill', fishgrill: 'grill', oven: 'grill', toaster: 'grill', ricecooker: 'rice', steamer: 'steam', deepfry: 'fry', cold: 'cold', microwave: 'cold', blender: 'cold'};   // どの大枠にも入らなかった料理の、道具ごとの大枠
+const TT_CACHE = new Map();
+function ttCatsOf(r){
+    const ts = toolsOf(r); if (!ts.length) return [];
+    const ck = (r.pack || 'JP') + ':' + r.id, hit = TT_CACHE.get(ck); if (hit) return hit;
+    const has = k => ts.includes(k), jp = !r.pack, m = {煮: 'simmer', 汁: 'simmer', soup: 'simmer', 炒: 'stirfry', 焼: 'grill', 揚: 'fry', 和え: 'raw', raw: 'raw', 炊: 'rice', 蒸: 'steam'}[r.method] || r.method || '';
+    const join = a => (a || []).map(st => typeof st === 'string' ? st : (st && st.t) || '').join(' ');
+    const txt = [jp ? (r.nameEn || r.name) : ((r.alt && r.alt[0]) || r.name), join(r.stepsBase || r.steps)].join(' ').toLowerCase();
+    const fried = /炒飯|チャーハン|焼きめし|\bfried rice\b|\bnasi goreng\b|bokkeumbap|\bchaufa\b/.test(txt);
+    const out = new Set();
+    if (!ts.some(k => TT_FIRE.has(k))) out.add('cold');
+    if (has('deepfry') || m === 'fry') out.add('fry');
+    if (m === 'grill' || ['charcoal', 'fishgrill', 'oven', 'toaster'].some(has)) out.add('grill');
+    if (m === 'stirfry' || fried) out.add('stirfry');
+    if (m === 'simmer' || has('donabe') || has('pressure')) out.add('simmer');
+    if (has('steamer') || m === 'steam') out.add('steam');
+    if ((m === 'rice' && !fried) || has('ricecooker')) out.add('rice');
+    if (has('pot') && (jp ? /ゆで|茹/ : /\b(?:boil|boiled|boiling|blanch)\b|in salted water|cook the (?:pasta|noodles|spaghetti)/).test(txt)) out.add('boil');
+    const reach = () => [...out].some(c => TT_CATS.find(x => x.k === c).tools.some(has));
+    if (!reach()){ const fire = ts.some(k => TT_FIRE.has(k)); ts.forEach(k => { if (fire ? TT_FIRE.has(k) : true) out.add(TT_DEF[k]); }); }   // どの大枠にも道具が合わない料理は、道具から大枠を決める（全部の料理が、どこかから引ける）
+    const res = TT_CATS.map(c => c.k).filter(k => out.has(k));
+    TT_CACHE.set(ck, res); return res;
+}
+// その大枠・道具で出る料理か（k を省くと、その大枠のどれかの道具）
+function ttIn(r, c, k){ const cat = TT_CATS.find(x => x.k === c); if (!cat || !ttCatsOf(r).includes(c)) return false; const ts = toolsOf(r); return k ? cat.tools.includes(k) && ts.includes(k) : cat.tools.some(x => ts.includes(x) && toolHave(x)); }
+const TT_SLOTS = ['主菜', '副菜', '汁物'];
+// 枠ごとの料理（今の国・国の組み合わせ）。外れる料理（アレルギー・苦手・食の決まり・品薄・今は出さない）は入れない
+function ttPool(slot){
+    const cc = mixCc(slot), all = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES;
+    return all.filter(r => r && !r.isTwist && !isCustomId(r.id) && slotOf(r) === slot && toolsOf(r).length && !slotOut(r) && !allergyConflict(r));
+}
+// 献立のどの欄に入るか（主菜は 0、副菜・汁ものはその枠の最初の欄）。-1 は入る欄がない
+function ttSlotIndex(r){ const m = session.menu; if (!m || !m.items || !m.items[0]) return -1; const s = slotOf(r); return s === '主菜' ? 0 : m.items.findIndex(x => x.slot === s); }
+// 献立に入れられない理由（入れられるなら ''）
+function ttOff(r){
+    if (!r || slotOut(r) || allergyConflict(r)) return t('合う料理がありません');
+    if (menuIds().includes(r.id)) return t('今日の献立に入っています');
+    const i = ttSlotIndex(r); if (i < 0) return t('今日の献立にこの欄がありません');
+    if (i === 0 && toolKindOff(r)) return t('形がちがうので入れ替えられません');
+    return '';
+}
+const TT_FIRST = 30;
+function viewToolsTab(){
+    loadMix();
+    const c = session.ttCat || null, k = session.ttTool || null;
+    const pools = TT_SLOTS.map(s => ({s, rs: ttPool(s)})), all = pools.flatMap(x => x.rs);
+    const cats = TT_CATS.map(x => ({x, n: all.filter(r => ttIn(r, x.k)).length})).filter(o => o.n);
+    const cat = c && TT_CATS.find(x => x.k === c);
+    const tools = cat ? cat.tools.filter(toolHave).map(tk => ({tk, n: all.filter(r => ttIn(r, c, tk)).length})).filter(o => o.n) : [];
+    const tl = tk => tk === 'cold' ? t('切る・混ぜるだけ') : toolLabel(tk);
+    const chip = (act, v, on, label, n) => `<button type="button" class="chip" data-act="${act}" data-v="${esc(v)}" aria-pressed="${on}">${esc(label)}<span class="tt-n">${esc(t('{n}品', {n}))}</span></button>`;
+    const row = r => { const off = ttOff(r), kind = off === t('形がちがうので入れ替えられません');
+        return `<div class="item tt-row${kind ? ' tool-off' : ''}"><button type="button" class="tt-open" data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方', {name: r.name}))}"><span class="swap-th">${thumbHtml(r)}</span><span class="t"><b>${esc(r.name)}</b>${Number(r.min) > 0 ? `<span class="s"><b class="tm">${esc(t('約{n}分', {n: r.min}))}</b></span>` : ''}</span></button>
+            <button type="button" class="btn sm tt-add" data-act="tt-add" data-id="${esc(r.id)}" ${off ? 'disabled aria-disabled="true"' : ''}>${esc(t('献立に入れる'))}</button>
+            ${algListHtml(r)}${off ? `<div class="s tool-off-note">${esc(off)}</div>` : ''}</div>`; };
+    let body = '';
+    if (cat){
+        const sec = ({s, rs}) => {
+            const hit = rs.filter(r => ttIn(r, c, k)).sort((a, b) => (Number(a.min) || 99) - (Number(b.min) || 99) || String(a.name).localeCompare(String(b.name)));
+            if (!hit.length) return '';
+            const key = s + ':' + c + ':' + (k || ''), open = (session.ttAll || new Set()).has(key), now = open ? hit : hit.slice(0, TT_FIRST), mc = mixCc(s);
+            return `<div class="sec-head tt-sh"><h3>${mc ? `<span aria-hidden="true">${countryOf(mc).flag}</span> ` : ''}${esc(slotLabel(s))}<span class="tt-n">${esc(t('{n}品', {n: hit.length}))}</span></h3></div>
+                <div class="list swap-list tool-list tt-list" data-slot="${esc(s)}">${now.map(row).join('')}</div>
+                ${hit.length > now.length ? `<div class="row"><button type="button" class="btn sm" data-act="tt-all" data-v="${esc(key)}">${esc(t('すべて見る（{n}品）', {n: hit.length}))}</button></div>` : ''}`;
+        };
+        body = pools.map(sec).join('') || `<div class="list"><div class="empty">${esc(t('合う料理がありません'))}</div></div>`;
+    }
+    const algN = TT_SLOTS.reduce((a, s) => { const cc = mixCc(s), src = cc && BROWSE[cc] && BROWSE[cc].length ? BROWSE[cc] : RECIPES; return a + src.filter(r => r && slotOf(r) === s && toolsOf(r).length && allergyConflict(r)).length; }, 0);
+    return `<section class="sec tt-sec">
+        <div class="sec-head"><h2>${esc(t('調理道具から探す'))}</h2><span class="hint">${esc(t('調理法、道具の順に選ぶと、その道具で作る料理が出ます。いまの献立は変わりません。'))}</span></div>
+        <div class="field tt-step"><span class="eyebrow">${esc(t('調理法'))}</span><div class="chips tt-cats" role="group" aria-label="${esc(t('調理法'))}">${cats.map(o => chip('tt-cat', o.x.k, c === o.x.k, o.x.l(), o.n)).join('')}</div></div>
+        ${cat ? `<div class="field tt-step"><span class="eyebrow">${esc(t('道具'))}</span><div class="chips tt-tools" role="group" aria-label="${esc(t('道具'))}">${tools.map(o => chip('tt-tool', o.tk, k === o.tk, tl(o.tk), o.n)).join('')}</div></div>` : `<p class="small muted tt-hint">${esc(t('まず調理法を選んでください。'))}</p>`}
+        ${algN ? `<div class="small muted alg-hidden" role="status">⚠ ${esc(t('{n}品は、アレルギー（選んだアレルゲン・家族）に当たるため、表示していません', {n: algN}))}</div>` : ''}
+        ${body}
+    </section>`;
+}
 function toolOkSheetHtml(){
     return `<h2>${esc(t('決めた献立を変えますか？'))}</h2>
         <p>${esc(t('変わるのはこの1品だけです。買い物メモも変わります。'))}</p>
@@ -14642,7 +14752,17 @@ document.addEventListener('click', e => {
         case 'tool-pick': { const r = byId(el.dataset.id); if (!r || !session.menu || !session.menu.items[0] || slotOut(r) || allergyConflict(r) || toolKindOff(r)) break;   // アレルギー・苦手に当たる料理・形のちがう主菜は、一覧から押されても入れない
             if (menuIsDecided()){ sheet = {kind: 'tool-ok', id: r.id}; renderSheet(); break; }
             closeSheet(); swapApply(0, r, false); break; }
-        case 'tool-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'tool-ok') break; const r = byId(s0.id); closeSheet(); if (r && !slotOut(r) && !allergyConflict(r) && !toolKindOff(r) && session.menu && session.menu.items[0]) swapApply(0, r, true); break; }
+        case 'tool-yes': { const s0 = sheet; if (!s0 || s0.kind !== 'tool-ok') break; const r = byId(s0.id); closeSheet(); if (!r || !session.menu || !session.menu.items[0]) break;
+            if (s0.tt){ if (!ttOff(r) && ttSlotIndex(r) === s0.i) swapApply(s0.i, r, true); break; }   // 調理道具のタブから: 押した料理の欄だけ
+            if (!slotOut(r) && !allergyConflict(r) && !toolKindOff(r)) swapApply(0, r, true); break; }
+        // 下のタブ「調理道具」: 調理法 → 道具 → 料理。選んでも献立は変わらない
+        case 'tt-cat': { const v = el.dataset.v; session.ttCat = session.ttCat === v ? null : v; session.ttTool = null; render(); break; }
+        case 'tt-tool': { const v = el.dataset.v; session.ttTool = session.ttTool === v ? null : v; render(); break; }
+        case 'tt-all': { (session.ttAll || (session.ttAll = new Set())).add(el.dataset.v); render(); break; }
+        case 'tt-add': { const r = byId(el.dataset.id); if (!r || ttOff(r)) break;   // アレルギー・苦手に当たる料理・入る欄がない料理・形のちがう主菜は、押されても入れない
+            const i = ttSlotIndex(r);
+            if (menuIsDecided()){ sheet = {kind: 'tool-ok', id: r.id, i, tt: true}; renderSheet(); break; }
+            swapApply(i, r, false); break; }
         case 'swap-none': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet; closeSheet(); swapApply(s0.i, null, s0.ok); break; }
         case 'rice-info': sheet = {kind: 'rice'}; renderSheet(); break;
         case 'tomorrow-open': sheet = {kind: 'tomorrow'}; renderSheet(); break;
@@ -16047,18 +16167,25 @@ function fitTabs(){
     const ts = Number(document.documentElement.getAttribute('data-ts')) || 0, w = nv.clientWidth / bs.length;
     nv.classList.remove('two'); /* 測り直し: 1段のときの幅で決める */
     const two = w < 44;   // R120: 1つが 44px に足りない狭い幅は、3つずつ2段（絵＋短い名前。44px 以上・全部が画面に入る）
+    const cols = Math.ceil(bs.length / 2);   // 2段のときの列（6つなら3列・7つなら4列）
+    nv.style.setProperty('--tcols', cols);
     nv.classList.toggle('two', two);
-    nv.classList.toggle('ico', w < 50 || two);
-    // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
-    nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
-    if (w < 50 || two){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
+    nv.classList.toggle('c4', two && cols >= 4);   // 4列の2段（幅195で7つ）: 1つが狭いので、絵の下に短い名前
+    nv.classList.remove('lfit');
+    let ico = w < 50 || two;
+    nv.classList.toggle('ico', ico);
     let fs = [12, 13.5, 15][ts] || 12;
     // どの語も1つのタブの幅に入る（語の途中で折れない・はみ出さない）か。字の幅は canvas で測る
     const cv = fitTabs.cv || (fitTabs.cv = document.createElement('canvas').getContext('2d'));
     const fits = () => bs.every(b => { const sp = b.querySelector('.tl'); if (!sp) return true; const cs = getComputedStyle(sp); cv.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-        const ls = parseFloat(cs.letterSpacing) || 0; return tabWords(sp.textContent).every(w => cv.measureText(w).width + ls * w.length <= b.clientWidth - 2); });
+        const ls = parseFloat(cs.letterSpacing) || 0; return tabWords(sp.textContent).every(w => cv.measureText(w).width + ls * w.length <= b.clientWidth - 4); });   // 4px のゆとり（canvas と実際の字の幅の差で、ちょうどの幅の語が折れていた。独語「Tagebuch」幅360）
     nv.style.setProperty('--tabfs', fs + 'px');
     while (fs > 12 && !fits()){ fs = Math.max(12, fs - .5); nv.style.setProperty('--tabfs', fs + 'px'); }
+    // 12px でも入らない長い名前の言語（7つ並ぶとき・6つで長い語のとき）は、語の途中で切らずに、絵＋短い名前にする（読み上げは長い名前）
+    if (!ico && !fits()){ ico = true; nv.classList.add('ico', 'lfit'); }
+    // 絵だけのタブの短い名前: 12px から、入らなければ 11px まで（字は 11px より小さくしない）。それでも入らない言語は名前を出さず絵だけ（読み上げの長い名前は残す）
+    nv.style.removeProperty('--tsnfs'); nv.classList.remove('tsn-off');
+    if (ico){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && e.scrollWidth > e.clientWidth + .5; }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()) nv.classList.add('tsn-off'); }
 }
 window.addEventListener('resize', () => guard('tabs', fitTabs));
 function updateTabs(){
