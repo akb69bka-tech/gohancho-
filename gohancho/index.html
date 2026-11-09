@@ -1944,7 +1944,7 @@ nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;heig
 @media (min-width:421px) and (max-width:520px){html[lang="ja"] header.top h1{white-space:nowrap;letter-spacing:0;font-size:max(22px,min(var(--fs24),6.5vw))}}   /* 文字大・もっと大きい の 430px でも、題名が2行にならない（ボタンが3つになったぶん） */
 @media (min-width:290px) and (max-width:299px){html[lang="ja"]:not([data-ts="1"]):not([data-ts="2"]) header.top h1{font-size:16.5px}}
 body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
-@media (max-width:299px){body.on-today.tray-tight5 header.top:has(> .req-btn:not(.lite)) .flagbtn,body.on-today.tray-tight5:not(.greet-0) header.top:has(> .req-btn) .flagbtn{display:none}body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 112px)}}
+@media (max-width:419px){body.on-today.tray-tight5 header.top:has(> .req-btn:not(.lite)) .flagbtn,body.on-today.tray-tight5:not(.greet-0) header.top:has(> .req-btn) .flagbtn{display:none}body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 112px)}}   /* v126: モードのボタンが増え、家族リクエストを上の帯に上げた形では 419px まで国旗を隠す（国は設定から。届いた一言を切らない） */
 .mode-list{display:flex;flex-direction:column;margin-top:var(--s8)}
 .mode-list .mode-row{align-items:flex-start;padding-block:10px;border-bottom:1px solid var(--line-soft,var(--line));color:var(--ink);font-size:1rem}
 .mode-list .mode-row:last-child{border-bottom:0}
@@ -3537,7 +3537,8 @@ function toastHeadArea(){
     let right = q.right; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.left > q.left + q.width * .35 && r.left - 8 < right) right = r.left - 8; });
     const h2 = document.querySelector('#view .today-head.p2-head'); let lim = h2 ? h2.getBoundingClientRect().top - 4 : Infinity;   // 下は見出しの行の上まで
     // 第23回 R99: とても狭い画面（195px など）は、印と国旗のあいだが狭い。国旗・設定のボタンは隠さず、その下の行（アプリの名前の行）に、上の帯の幅いっぱいで出す
-    if (right - q.left < 200){ let bb = q.top; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.bottom > bb) bb = r.bottom; }); const top = bb + 4; return {left: q.left, right: q.right, top, bottom: Math.max(top, q.bottom), height: Math.max(0, Math.min(q.bottom, lim) - top), lim}; }
+    if (right - q.left < 170){   // v126: 右上のボタンが3つ（モード）になり、375px でも左に約180px 残る。 170 未満だけ下の行へ
+        let bb = q.top; hd.querySelectorAll('button, a[href], [data-act]').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && r.bottom > bb) bb = r.bottom; }); const top = bb + 4; return {left: q.left, right: q.right, top, bottom: Math.max(top, q.bottom), height: Math.max(0, Math.min(q.bottom, lim) - top), lim}; }
     // 上の帯の左にもボタンがある形（家族リクエストを上の帯に上げた tray-tight5 など）: 上の帯に空いたところがない（blocked。画面の中の空いた高さを探す）
     const blocked = [...hd.querySelectorAll('button, a[href], [data-act]')].some(e => { const r = e.getBoundingClientRect(); return r.width && r.right > q.left + 1 && r.left < right - 1; });
     return {left: q.left, right, top: q.top, bottom: q.bottom, height: q.height, lim, blocked};
