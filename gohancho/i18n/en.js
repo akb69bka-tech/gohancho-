@@ -2040,4 +2040,6 @@ GOHAN_I18N('en', {
     "読み直す": "Reload",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "A save from another tab removed some allergies, family members, or decided menus.",
     "消えた分を戻す": "Restore removed items",
+    "続きを見る": "Show more",
+    "短く表示": "Show less",
 });

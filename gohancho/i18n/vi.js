@@ -2039,4 +2039,6 @@ GOHAN_I18N('vi', {
     "読み直す": "Tải lại",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Việc lưu ở thẻ khác đã làm mất một số dị ứng, thành viên gia đình hoặc thực đơn đã chọn.",
     "消えた分を戻す": "Khôi phục mục đã mất",
+    "続きを見る": "Xem thêm",
+    "短く表示": "Thu gọn",
 });

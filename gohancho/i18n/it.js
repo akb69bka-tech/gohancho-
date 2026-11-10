@@ -2039,4 +2039,6 @@ GOHAN_I18N('it', {
     "読み直す": "Ricarica",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Un salvataggio da un'altra scheda ha eliminato alcune allergie, membri della famiglia o menu scelti.",
     "消えた分を戻す": "Recupera gli elementi eliminati",
+    "続きを見る": "Mostra tutto",
+    "短く表示": "Mostra meno",
 });

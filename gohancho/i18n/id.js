@@ -2039,4 +2039,6 @@ GOHAN_I18N('id', {
     "読み直す": "Muat ulang",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Penyimpanan dari tab lain menghapus sebagian alergi, anggota keluarga, atau menu yang sudah dipilih.",
     "消えた分を戻す": "Pulihkan yang terhapus",
+    "続きを見る": "Lihat selengkapnya",
+    "短く表示": "Lihat lebih sedikit",
 });

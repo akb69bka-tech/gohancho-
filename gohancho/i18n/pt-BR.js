@@ -2039,4 +2039,6 @@ GOHAN_I18N('pt-BR', {
     "読み直す": "Recarregar",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Um salvamento em outra aba apagou algumas alergias, membros da família ou cardápios escolhidos.",
     "消えた分を戻す": "Recuperar o que foi removido",
+    "続きを見る": "Ver mais",
+    "短く表示": "Ver menos",
 });

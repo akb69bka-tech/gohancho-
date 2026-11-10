@@ -2039,4 +2039,6 @@ GOHAN_I18N('fil', {
     "読み直す": "I-reload",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Dahil sa pag-save sa ibang tab, nawala ang ilang allergy, miyembro ng pamilya, o napiling menu.",
     "消えた分を戻す": "Ibalik ang nawala",
+    "続きを見る": "Tingnan pa",
+    "短く表示": "Paikliin",
 });
