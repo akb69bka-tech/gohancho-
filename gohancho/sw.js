@@ -5,8 +5,11 @@ const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png',
 const IMG = 'gohancho-img-v1';
 const NET_WAIT = 3000;   // アプリの画面: ネットがこの時間（ms）で返らなければ、保存してある画面で開く（ネットの返事は裏で待って保存する）
 
+// 本体はブラウザの一時保存（HTTP キャッシュ。GitHub Pages は10分）を通さずネットから取る。
+// 通すと、前の版を入れてから10分以内に新しい版が来たとき、新しい版の保存に前の版の画面・言葉が入り、電波のない所で開くと前の版に戻る
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  const fresh = u => { try{ return new Request(u, {cache:'reload'}); }catch(err){ return u; } };
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(fresh))).then(() => self.skipWaiting()));
 });
 // 版を上げたとき、前の版で保存した国のレシピ・辞書・料理の絵を新しい版へ移してから古い版を消す
 // （移さないと、更新した直後に電波がない場所で開いたとき、使っている国のデータがなくなる）

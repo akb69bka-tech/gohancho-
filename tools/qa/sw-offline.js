@@ -10,7 +10,7 @@ const ok = (name, cond, info) => { if (cond) console.log('ok:', name); else { fa
 
 // ---- サーバー ----
 const ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'gohancho-sw-'));
-for (const f of ['index.html', 'sw.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'privacy.html', 'support.html', 'privacy-en.html', 'support-en.html', 'remote.json']) fs.copyFileSync(path.join(SRC, f), path.join(ROOT, f));
+for (const f of ['index.html', 'sw.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'privacy.html', 'support.html', 'privacy-en.html', 'support-en.html', 'ask.html', 'remote.json']) fs.copyFileSync(path.join(SRC, f), path.join(ROOT, f));
 for (const d of ['packs', 'i18n']) fs.symlinkSync(path.join(SRC, d), path.join(ROOT, d));
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const write = f => c => { fs.writeFileSync(path.join(ROOT, f), c); const t = new Date(Date.now() + Math.random() * 1e3); fs.utimesSync(path.join(ROOT, f), t, t); };
