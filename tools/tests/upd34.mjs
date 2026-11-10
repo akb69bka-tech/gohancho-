@@ -147,7 +147,7 @@ for (const f of ['v100_ja', 'v120_ja', 'v120_en', 'v126_ja']){
     await B.evaluate(() => { S.settings.allergens = ['egg']; S.family = [{id: 'f1', name: '娘', role: 'child', avoid: ['@milk'], allergy: ['@milk'], mild: false, sometimes: false, me: false}]; saveNow(); });
     await A.waitForTimeout(300);
     await A.evaluate(() => { S.usedDays = [...S.usedDays, '2026-11-11']; save(); saveNow(); });   // 見ていないタブの保存（裏に回るとき・日付が変わったときなど）
-    const s1 = await B.evaluate(() => JSON.parse(localStorage.getItem('gohancho.v1')));
+    const s1 = await A.evaluate(() => JSON.parse(localStorage.getItem('gohancho.v1')));   // v132 から A はまぜて書くので、見ている B は読み直しうる。読むのは裏の A から
     eq([s1.settings.allergens, s1.family.length], [['egg'], 1], 'C 別のタブで足したアレルギー・家族を、見ていないタブが古いデータで上書きしない');
     eq(await loads(), t0, 'C 見ていないあいだは読み直さない');
     // A に戻る → 読み直して新しいデータで続ける
