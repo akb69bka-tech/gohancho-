@@ -2009,6 +2009,7 @@ GOHAN_I18N('id', {
     "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Masakan ringan (rebusan, kukusan, berkuah, dan sejenisnya) lebih sering muncul. Gorengan, masakan berat, dan yang sangat pedas lebih jarang muncul (tidak dihapus). Besok kembali seperti biasa.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Menu hari ini tetap. Ketuk “Menu baru”, atau ketuk masakan lalu “Ganti”, untuk memilih lagi.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Kalau badan terasa tidak enak, jangan memaksakan diri dan minumlah air.",
+    "この国の料理には、あっさりした主菜が少ないため、主菜はなるべく重すぎない料理を選んでいます。": "Masakan negara ini punya sedikit lauk utama yang ringan, jadi sebisa mungkin kami memilih lauk utama yang tidak terlalu berat.",
     "二日酔い": "Hari pengar",
     "約 {n} kcal（1人分・目安）": "Sekitar {n} kkal (per orang, perkiraan)",
     "30 kcal 未満（1人分・目安）": "Kurang dari 30 kkal (per orang, perkiraan)",

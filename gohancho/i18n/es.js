@@ -2009,6 +2009,7 @@ GOHAN_I18N('es', {
     "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Los platos ligeros (guisos suaves, al vapor, caldosos…) salen más a menudo. Los fritos, los platos pesados y los muy picantes salen menos (no se quitan). Mañana vuelve a ser como siempre.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "El menú de hoy no cambia. Toca «Menú nuevo», o un plato y «Cambiar», para elegir de nuevo.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Si no te encuentras bien, tómatelo con calma y bebe agua.",
+    "この国の料理には、あっさりした主菜が少ないため、主菜はなるべく重すぎない料理を選んでいます。": "La cocina de este país tiene pocos platos principales ligeros, así que elegimos en lo posible principales que no sean muy pesados.",
     "二日酔い": "Día de resaca",
     "約 {n} kcal（1人分・目安）": "Unas {n} kcal (por persona, aproximado)",
     "30 kcal 未満（1人分・目安）": "Menos de 30 kcal (por persona, aproximado)",

@@ -2009,6 +2009,7 @@ GOHAN_I18N('vi', {
     "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Món thanh nhẹ (món hầm, món hấp, món nước…) sẽ ra nhiều hơn. Món chiên, món béo và món quá cay sẽ ít ra hơn (không bị bỏ đi). Ngày mai trở lại như cũ.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Thực đơn hiện tại không đổi. Nhấn “Thực đơn mới”, hoặc nhấn vào món rồi “Đổi”, để chọn lại.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Nếu thấy trong người không khỏe, đừng gắng sức và hãy uống nước.",
+    "この国の料理には、あっさりした主菜が少ないため、主菜はなるべく重すぎない料理を選んでいます。": "Ẩm thực nước này ít món chính thanh nhẹ, nên chúng tôi cố gắng chọn món chính không quá nặng.",
     "二日酔い": "Sau cuộc nhậu",
     "約 {n} kcal（1人分・目安）": "Khoảng {n} kcal (mỗi người, ước tính)",
     "30 kcal 未満（1人分・目安）": "Dưới 30 kcal (mỗi người, ước tính)",
