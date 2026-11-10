@@ -2038,4 +2038,5 @@ GOHAN_I18N('it', {
     "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "I dati sono cambiati in un'altra scheda o finestra. Questa scheda ha smesso di salvare.",
     "読み直す": "Ricarica",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Un salvataggio da un'altra scheda ha eliminato alcune allergie, membri della famiglia o menu scelti.",
+    "消えた分を戻す": "Recupera gli elementi eliminati",
 });

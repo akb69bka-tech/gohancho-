@@ -2038,4 +2038,5 @@ GOHAN_I18N('id', {
     "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Data diubah di tab atau jendela lain. Tab ini berhenti menyimpan.",
     "読み直す": "Muat ulang",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Penyimpanan dari tab lain menghapus sebagian alergi, anggota keluarga, atau menu yang sudah dipilih.",
+    "消えた分を戻す": "Pulihkan yang terhapus",
 });

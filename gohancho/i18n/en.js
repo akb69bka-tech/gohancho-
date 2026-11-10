@@ -2039,4 +2039,5 @@ GOHAN_I18N('en', {
     "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "The data was changed in another tab or window. This tab has stopped saving.",
     "読み直す": "Reload",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "A save from another tab removed some allergies, family members, or decided menus.",
+    "消えた分を戻す": "Restore removed items",
 });
