@@ -2031,4 +2031,7 @@ GOHAN_I18N('es', {
     "データ": "Datos",
     "表示": "Pantalla",
     "プラン・その他": "Plan y más",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Los datos cambiaron en otra pestaña o ventana. Esta pestaña ha dejado de guardar.",
+    "読み直す": "Volver a cargar",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Al guardar en otra pestaña, se borraron algunas alergias, miembros de la familia o menús decididos.",
 });

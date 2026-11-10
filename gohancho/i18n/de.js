@@ -2031,4 +2031,7 @@ GOHAN_I18N('de', {
     "データ": "Daten",
     "表示": "Anzeige",
     "プラン・その他": "Tarif & mehr",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Die Daten wurden in einem anderen Tab oder Fenster geändert. Dieser Tab speichert vorerst nicht.",
+    "読み直す": "Neu laden",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Durch das Speichern in einem anderen Tab sind einige Allergien, Familienmitglieder oder festgelegte Menüs verschwunden.",
 });

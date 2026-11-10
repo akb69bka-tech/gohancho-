@@ -2031,4 +2031,7 @@ GOHAN_I18N('fil', {
     "データ": "Data",
     "表示": "Display",
     "プラン・その他": "Plano at iba pa",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Nabago ang laman sa ibang tab o window. Huminto muna sa pag-save ang tab na ito.",
+    "読み直す": "I-reload",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Dahil sa pag-save sa ibang tab, nawala ang ilang allergy, miyembro ng pamilya, o napiling menu.",
 });

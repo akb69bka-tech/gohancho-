@@ -2031,4 +2031,7 @@ GOHAN_I18N('pl', {
     "データ": "Dane",
     "表示": "Wygląd",
     "プラン・その他": "Plan i inne",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Dane zmieniły się w innej karcie lub oknie. Ta karta przestała zapisywać.",
+    "読み直す": "Wczytaj ponownie",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Zapis z innej karty usunął część alergii, członków rodziny lub wybranych jadłospisów.",
 });

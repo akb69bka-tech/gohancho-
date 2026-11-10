@@ -2031,4 +2031,7 @@ GOHAN_I18N('pt-BR', {
     "データ": "Dados",
     "表示": "Tela",
     "プラン・その他": "Plano e mais",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Os dados mudaram em outra aba ou janela. Esta aba parou de salvar.",
+    "読み直す": "Recarregar",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Um salvamento em outra aba apagou algumas alergias, membros da família ou cardápios escolhidos.",
 });

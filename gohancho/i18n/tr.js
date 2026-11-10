@@ -2031,4 +2031,7 @@ GOHAN_I18N('tr', {
     "データ": "Veriler",
     "表示": "Görünüm",
     "プラン・その他": "Plan ve diğer",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Veriler başka bir sekmede veya pencerede değişti. Bu sekme kaydetmeyi durdurdu.",
+    "読み直す": "Yeniden yükle",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Başka bir sekmedeki kayıt, bazı alerjileri, aile üyelerini veya seçilen menüleri sildi.",
 });

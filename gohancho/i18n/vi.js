@@ -2031,4 +2031,7 @@ GOHAN_I18N('vi', {
     "データ": "Dữ liệu",
     "表示": "Hiển thị",
     "プラン・その他": "Gói & khác",
+    "別のタブ・窓で内容が変わりました。このタブは保存を止めています": "Dữ liệu đã thay đổi ở thẻ hoặc cửa sổ khác. Thẻ này đã ngừng lưu.",
+    "読み直す": "Tải lại",
+    "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Việc lưu ở thẻ khác đã làm mất một số dị ứng, thành viên gia đình hoặc thực đơn đã chọn.",
 });

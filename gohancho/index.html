@@ -2887,6 +2887,7 @@ function load(){
     let raw = null;
     try{ raw = localStorage.getItem(STORE_KEY); }catch(e){ storeInfo.fail = 'unavailable'; }   // 保存場所そのものが使えない（SecurityError など）
     if (raw) GH.raw = raw;
+    storeInfo.readRaw = raw;   // 開いたときに読んだ文字そのまま（空・'null' も）。別のタブが書いたかを見るときに使う
     if (raw && raw !== 'null'){
         try{
             const d = JSON.parse(raw);
@@ -2904,6 +2905,7 @@ let packFail = null;
 function stateToKeep(){ return packFail && S.settings.country === 'JP' ? Object.assign({}, S, {settings: Object.assign({}, S.settings, {country: packFail})}) : S; }
 // 保存はまとめて書く（記録が増えると JSON にするだけで数十 ms かかる）。少し待って1回だけ書き、裏に回る・閉じるときは必ず書き切る
 let saveT = 0;
+let lastTry = null;   // このタブが最後に書こうとした中身（書けたか確かめられなかったときも、自分の書いたものとみる）
 function syncFridgeMeta(){   // 冷蔵庫にある食材だけ印・登録日を持つ（外した食材のぶんは消す。新しく入った食材は今日の日付）
     const fm = S.fridgeMeta && typeof S.fridgeMeta === 'object' && !Array.isArray(S.fridgeMeta) ? S.fridgeMeta : {}, out = {};
     S.fridge.forEach(f => { if (typeof f === 'string' && !out[f]) out[f] = fm[f] || {d: ymd()}; });
@@ -2917,12 +2919,16 @@ function saveNow(){
         json = JSON.stringify(stateToKeep());
     }catch(e){ storeWarn('unavailable'); return; }
     if (storeInfo.hold) return;   // 壊れたデータを退避できていないあいだは上書きしない（知らせは起動時に出している）
-    if (storeInfo.other) return;   // 別のタブ・窓で新しく保存された。このタブの古いデータで上書きしない（戻ってきたときに読み直す）
+    if (storeInfo.other){ otherTabReload(false, true); return; }   // 別のタブ・窓で新しく保存された。このタブの古いデータで上書きしない（手が空いたとき・戻ってきたときに読み直す）
+    // 二重の守り: 書く直前に、いまの保存がこのタブの最後に読んだ／書いた中身のままかを見る。知らせ（storage）が届く前に別のタブ（前の版も）が書いていたら、書かない
+    if (otherWrote()){ storeInfo.other = true; otherTabReload(false, true); return; }
+    lastTry = json;
     const why = lsWriteFreeing(STORE_KEY, json);   // 前のデータは書き込みに失敗してもそのまま残る。足りないときは控えを空けて試す
     if (why){ storeWarn(why); return; }
     if (storeInfo.fail){ storeInfo.fail = ''; storeInfo.warned = false; if (typeof GH !== 'undefined') GH.clear('store'); }   // 保存できるようになった
     GH.raw = json;
     try{ notifSoon(); }catch(e){}
+    return true;
 }
 // 保存できないことを、開いているあいだに1回だけ知らせる（起動の途中なら、画面が整ってから）
 function storeWarn(why){
@@ -2957,37 +2963,123 @@ GH.on.retry = () => retryPack();
 GH.json = () => backupJson();
 document.addEventListener('visibilitychange', () => { if (document.hidden && saveT) saveNow(); });
 // 同じ端末の別のタブ・窓（前の版のまま開いていたものも）で保存されたら、このタブが持っている古いデータで上書きしない。
-// 上書きすると、あちらで足したアレルギー・家族・決めた献立が黙って消える。このタブを見ていないあいだは保存を止めて、見たときに読み直す。
-// 見ているとき（並べた窓・切りかえた直後）は、すぐ読み直す。ただし入力中・シートや確認を開いているとき・手を使わない作り方のとき・このタブの保存がまだのときは触らない（いままでどおり）
+// 上書きすると、あちらで足したアレルギー・家族・決めた献立が黙って消える。どんな状況でも（入力中・シート・作り方のときも）保存を止め（storeInfo.other）、
+// 見えていて手が空いたとき（入力欄から出た・シートや確認を閉じた・作り方を閉じた）に読み直す。見ていないあいだは、見たときに読み直す。
+// 読み直しが続く（1分に3回）ときも上書きには戻さず、保存を止めたまま知らせと「読み直す」を出す（第35回 R159・R160）
 // 2つの保存の中身が同じか（読みこみの形にそろえ、キーの並びを無視してくらべる）。違いが並び順や空の欄だけのときに、ほかのタブを読み直させあわない
 function sameStore(a, b){
     const canon = v => Array.isArray(v) ? '[' + v.map(canon).join(',') + ']' : v && typeof v === 'object' ? '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join(',') + '}' : JSON.stringify(v);
     const norm = raw => canon(normalizeState(JSON.parse(raw)));
     return norm(a) === norm(b);
 }
-function otherTabReload(){
-    if (!storeInfo.other || document.hidden) return;
-    try{
-        const now = Date.now(), log = JSON.parse(sessionStorage.getItem('gohanOther') || '[]').filter(x => now - x < 60000);
-        if (log.length >= 3){ storeInfo.other = false; return; }   // 読み直しが続くときはやめる（いままでどおり、このタブの内容で保存する）
-        sessionStorage.setItem('gohanOther', JSON.stringify([...log, now]));
-        history.replaceState(null, '', '#' + tab);
-    }catch(e){}
+// いまの保存が、このタブの最後に読んだ／書いた中身（GH.raw）から変わっているか。知らせ（storage）が届く前に別のタブ・前の版が書いていたら true
+function otherWrote(){
+    let cur;
+    try{ cur = localStorage.getItem(STORE_KEY); }catch(e){ return false; }   // 読めない環境は、いままでどおり
+    if (cur == null || cur === GH.raw || cur === lastTry) return false;
+    if (GH.raw == null) return cur !== storeInfo.readRaw;   // このタブが開いたときは空だった。そのあと別のタブが書いていれば true
+    try{ if (sameStore(cur, GH.raw)){ GH.raw = cur; return false; } }catch(e){}
+    return true;
+}
+// 手がふさがっているか（読み直すと、打っている文字・開いている画面が消える）
+function dialogOpen(){ return !!document.querySelector('#sheet-root [role="dialog"], #modal-root [role="dialog"], [role="alertdialog"]'); }   // シート（#sheet-root）・料理の詳細（#modal-root）・確認（R162: .sheet.open という印は実際にはない）
+function textField(a){ return !!a && (a.isContentEditable || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || (a.tagName === 'INPUT' && !/^(checkbox|radio|button|submit|reset|range|color|file|image)$/i.test(a.type || ''))); }
+function tabBusy(){
+    if (textField(document.activeElement) || dialogOpen()) return true;
+    try{ if (hf.on) return true; }catch(e){}   // 手を使わない作り方
+    try{ if (tab === 'cook' && viewingStage() === 'cook') return true; }catch(e){}   // 作り方（作る段。買い物メモ・食卓の段は、ふだんの画面と同じ）
+    return false;
+}
+let otherPoll = 0, otherStuck = false, otherNoted = false, lastField = null, lostKeep = null;
+document.addEventListener('input', e => { if (textField(e.target)) lastField = e.target; }, true);
+// 別のタブで変わったことの知らせ（このタブは保存を止めている）。同じ知らせは1回だけ。保存できなかったとき（again）は閉じていても出し直す
+function otherNote(again){
+    if (document.getElementById('gh-note-other') || (otherNoted && !again)) return;
+    otherNoted = true;
+    GH.note('other', t('別のタブ・窓で内容が変わりました。このタブは保存を止めています'), [{k:'otherreload', label: t('読み直す')}, {k:'close', label: t('閉じる')}]);
+}
+GH.on.otherreload = () => otherReloadNow();
+// force: 本人が「読み直す」を押した（回数に数えない）。blocked: このタブの変更を保存できなかった
+function otherTabReload(force, blocked){
+    if (!storeInfo.other) return;
+    if (force !== true){
+        if (document.hidden) return;
+        if (otherStuck){ otherNote(blocked === true); return; }
+        if (tabBusy()){ otherNote(blocked === true); otherWait(); return; }
+        try{
+            const now = Date.now(), log = JSON.parse(sessionStorage.getItem('gohanOther') || '[]').filter(x => now - x < 60000);
+            if (log.length >= 3){ otherStuck = true; otherNote(true); return; }   // 読み直しが続く。上書きには戻さず、本人に読み直してもらう
+            sessionStorage.setItem('gohanOther', JSON.stringify([...log, now]));
+        }catch(e){}
+    }
+    otherReloadNow();
+}
+function otherWait(){   // 手が空くのを待つ（入力欄から出る・シートを閉じる・作り方を閉じる）
+    if (otherPoll) return;
+    otherPoll = setInterval(() => { if (!storeInfo.other || otherStuck){ clearInterval(otherPoll); otherPoll = 0; return; } if (!tabBusy()) otherTabReload(); }, 700);
+}
+function otherReloadNow(){
+    if (otherPoll){ clearInterval(otherPoll); otherPoll = 0; }
+    try{ keepBeforeReload(); }catch(e){}
+    try{ history.replaceState(null, '', '#' + tab); }catch(e){}
     location.reload();
 }
+// 新しい中身（theirs）で、このタブの中身（mine）から減ったアレルギー・家族（人・その人のアレルギー）・決めた献立。なければ null
+function lostParts(mine, theirs){
+    const arr = x => Array.isArray(x) ? x : [], ms = mine.settings || {}, ts = theirs.settings || {};
+    const out = {allergens: arr(ms.allergens).filter(x => !arr(ts.allergens).includes(x)), family: [], famAlg: {}, cook: null, week: null};
+    const tf = new Map(arr(theirs.family).filter(m => m && m.id).map(m => [m.id, m]));
+    arr(mine.family).forEach(m => { if (!m || !m.id) return; const o = tf.get(m.id); if (!o) out.family.push(m); else { const miss = arr(m.allergy).filter(x => !arr(o.allergy).includes(x)); if (miss.length) out.famAlg[m.id] = miss; } });
+    let today = ''; try{ today = TODAY; }catch(e){}
+    const mc = mine.cook, tc = theirs.cook;
+    if (mc && Array.isArray(mc.ids) && mc.ids.length && mc.d >= today && !(tc && Array.isArray(tc.ids) && tc.ids.length && tc.d >= mc.d)) out.cook = mc;
+    const mw = mine.week, tw = theirs.week;
+    if (mw && Array.isArray(mw.days) && mw.days.length && !(tw && Array.isArray(tw.days) && tw.days.length && tw.start >= mw.start)) out.week = mw;
+    return out.allergens.length || out.family.length || Object.keys(out.famAlg).length || out.cook || out.week ? out : null;
+}
+// 読み直す前に、打ちかけの文字と（新しい中身で減っていれば）このタブのアレルギー・家族・決めた献立を、このタブの sessionStorage に控える
+function keepBeforeReload(){
+    const f = lastField && document.contains(lastField) ? lastField : null, k = f && focusKey(f);
+    if (k && f.value) sessionStorage.setItem('gohanOtherIn', JSON.stringify({k, v: String(f.value).slice(0, 2000)}));
+    const cur = localStorage.getItem(STORE_KEY); if (!cur) return;
+    const mine = stateToKeep();
+    if (lostParts(mine, normalizeState(JSON.parse(cur)))) sessionStorage.setItem('gohanLost', JSON.stringify({settings: {allergens: mine.settings.allergens}, family: mine.family, cook: mine.cook, week: mine.week}));
+}
+// 読み直したあと（起動の終わり）: 打ちかけの文字を戻す。減ったものがあれば知らせる（自動では戻さない）
+function otherAfterReload(){
+    let x = null, m = null;
+    try{ x = JSON.parse(sessionStorage.getItem('gohanOtherIn') || 'null'); sessionStorage.removeItem('gohanOtherIn'); }catch(e){}
+    if (x && x.k){ const put = () => { const el = findByKey(document, x.k); if (el && 'value' in el && !el.value){ el.value = x.v; return true; } return !!el; }; if (!put()) setTimeout(put, 400); }
+    try{ m = JSON.parse(sessionStorage.getItem('gohanLost') || 'null'); sessionStorage.removeItem('gohanLost'); }catch(e){}
+    if (m && typeof m === 'object' && lostParts(m, S)){
+        lostKeep = m;
+        GH.note('lost', t('別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました'), [{k:'lostundo', label: t('元に戻す')}, {k:'close', label: t('閉じる')}]);
+    }
+}
+// 「元に戻す」: 控えから、いまの中身に足りないものだけを足して保存し、読み直す（ほかの変更はそのまま）
+GH.on.lostundo = () => {
+    const L = lostKeep && lostParts(lostKeep, S); lostKeep = null; GH.clear('lost');
+    if (!L) return;
+    S.settings.allergens = [...new Set([...(S.settings.allergens || []), ...L.allergens])];
+    if (!Array.isArray(S.family)) S.family = [];
+    const hasMe = S.family.some(m => m.me);
+    L.family.forEach(m => { if (S.family.length < SV_MAX) S.family.push(hasMe && m.me ? Object.assign({}, m, {me: false}) : m); });
+    Object.entries(L.famAlg).forEach(([id, xs]) => { const f = S.family.find(m => m.id === id); if (f){ f.avoid = [...new Set([...(f.avoid || []), ...xs])]; f.allergy = [...new Set([...(f.allergy || []), ...xs])]; } });
+    if (L.cook) S.cook = L.cook;
+    if (L.week) S.week = L.week;
+    if (saveNow()){ try{ history.replaceState(null, '', '#' + tab); }catch(e){} location.reload(); }
+};
 window.addEventListener('storage', e => {
     if (e.key !== STORE_KEY || e.newValue == null || e.newValue === GH.raw) return;
-    try{ if (e.newValue === JSON.stringify(stateToKeep()) || sameStore(e.newValue, JSON.stringify(stateToKeep()))){ GH.raw = e.newValue; return; } }catch(err){}   // 中身がこのタブと同じ（開いたときの書き直しなど。並び順や、読みこみで足される空の欄の違いは同じとみる）
-    if (!document.hidden){
-        const a = document.activeElement;
-        if (saveT || (a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable)) || document.querySelector('#modal-root [role="dialog"], .sheet.open') || (typeof hf !== 'undefined' && hf.on)) return;
-    }
-    storeInfo.other = true;
+    try{ const mine = JSON.stringify(stateToKeep()); if (e.newValue === mine || sameStore(e.newValue, mine)){ GH.raw = e.newValue; return; } }catch(err){}   // 中身がこのタブと同じ（開いたときの書き直しなど。並び順や、読みこみで足される空の欄の違いは同じとみる）
+    try{ if (GH.raw && sameStore(e.newValue, GH.raw)){ GH.raw = e.newValue; return; } }catch(err){}   // このタブが最後に読んだ／書いた中身と同じ（あちらが開いたときの書き直しだけ）。このタブのまだ書いていない変更はそのまま書いてよい
+    storeInfo.other = true;   // 入力中・シート・作り方・保存待ちのときも立てる（立てずにいると、手が空いたあとの保存で、あちらの中身を消していた: R159）
     if (saveT){ clearTimeout(saveT); saveT = 0; }
     otherTabReload();
 });
 document.addEventListener('visibilitychange', otherTabReload);
 window.addEventListener('focus', otherTabReload);
+document.addEventListener('focusout', () => { if (storeInfo.other) setTimeout(otherTabReload, 60); });   // 入力欄から出たら、すぐ読み直す
 ['pagehide', 'beforeunload', 'freeze'].forEach(ev => window.addEventListener(ev, () => { if (saveT) saveNow(); }));
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
 function addCustomRecipes(){ S.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepCustom(r)); }catch(e){} }); }
@@ -17644,6 +17736,7 @@ async function retryPack(){
         GH.booted = true;
         try{ if (LANG !== wantLang()){ toast(t('この言語を読みこめませんでした。電波のあるところでもう一度お試しください')); } }catch(_){}
         try{ flushNotes(); }catch(_){}
+        try{ otherAfterReload(); }catch(_){}
     }
 })();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
@@ -17710,7 +17803,7 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
         if (document.hidden || !swNew) return;
         try{
             const n = Number(sessionStorage.getItem('gohanReload') || 0); if (n >= 3) return;   // 読み直しが続かないように
-            if (document.querySelector('#modal-root [role="dialog"], .sheet.open') || (typeof hf !== 'undefined' && hf.on)) return;
+            if (dialogOpen() || (typeof hf !== 'undefined' && hf.on)) return;   // シート・詳細・確認を開いているとき、手を使わない作り方のときは触らない
             sessionStorage.setItem('gohanReload', String(n + 1)); history.replaceState(null, '', '#' + tab); location.reload();
         }catch(e){}
     });
