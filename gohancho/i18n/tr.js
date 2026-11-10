@@ -2039,4 +2039,6 @@ GOHAN_I18N('tr', {
     "読み直す": "Yeniden yükle",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Başka bir sekmedeki kayıt, bazı alerjileri, aile üyelerini veya seçilen menüleri sildi.",
     "消えた分を戻す": "Silinenleri geri getir",
+    "続きを見る": "Devamını gör",
+    "短く表示": "Daha az göster",
 });

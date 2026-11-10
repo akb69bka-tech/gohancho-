@@ -275,7 +275,7 @@ const lostNote = p => p.evaluate(() => { const n = document.getElementById('gh-n
                     GH.clear('other'); GH.clear('lost'); otherNoted = false;
                     if (id === 'other') otherNote(true); else lostNote();
                     const box = document.getElementById('gh-note-' + id), host = document.getElementById('gh-notes'), hr = host.getBoundingClientRect(), br = box.getBoundingClientRect();
-                    const btns = [...box.querySelectorAll('button')].map(x => { const q = x.getBoundingClientRect(); return {t: x.textContent, top: q.top, bottom: q.bottom, left: q.left, right: q.right, h: q.height, w: q.width}; });
+                    const btns = [...box.querySelectorAll('button')].filter(x => getComputedStyle(x).display !== 'none').map(x => { const q = x.getBoundingClientRect(); return {t: x.textContent, gh: x.hasAttribute('data-gh'), top: q.top, bottom: q.bottom, left: q.left, right: q.right, h: q.height, w: q.width}; });   // 「続きを見る」（R170）も、出ているときは同じく確かめる
                     const col = getComputedStyle(box).borderTopColor.match(/\d+/g).map(Number);
                     const out = {h: br.height, vh: innerHeight, scroll: host.scrollHeight - host.clientHeight, btns, blue: col[2] > col[0] + 40 && col[2] > col[1] + 40, ts: document.documentElement.getAttribute('data-ts')};
                     GH.clear(id);
@@ -286,7 +286,7 @@ const lostNote = p => p.evaluate(() => { const n = document.getElementById('gh-n
                 if (r.scroll > 1) why.push('枠を送らないと見えない');
                 if (r.blue) why.push('青');
                 r.btns.forEach(x => { if (x.top < 0 || x.bottom > r.vh || x.left < 0 || x.right > w + 0.5 || x.h < 43.5 || x.w < 44) why.push(`ボタン「${x.t}」${Math.round(x.top)}-${Math.round(x.bottom)} ${Math.round(x.w)}x${Math.round(x.h)}`); });
-                if (r.btns.length !== 2) why.push('ボタンが2つでない');
+                if (r.btns.filter(x => x.gh).length !== 2) why.push('ボタンが2つでない');
                 if (why.length) bad.push(`${w}x${h} ts${ts} ${L} ${id}: ${why.join(' / ')}`);
             }
         }

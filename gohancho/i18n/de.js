@@ -2039,4 +2039,6 @@ GOHAN_I18N('de', {
     "読み直す": "Neu laden",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Durch das Speichern in einem anderen Tab sind einige Allergien, Familienmitglieder oder festgelegte Menüs verschwunden.",
     "消えた分を戻す": "Entferntes wiederherstellen",
+    "続きを見る": "Mehr anzeigen",
+    "短く表示": "Weniger anzeigen",
 });
