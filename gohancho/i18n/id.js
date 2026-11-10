@@ -2039,4 +2039,6 @@ GOHAN_I18N('id', {
     "読み直す": "Muat ulang",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Penyimpanan dari tab lain menghapus sebagian alergi, anggota keluarga, atau menu yang sudah dipilih.",
     "消えた分を戻す": "Pulihkan yang terhapus",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” dihapus dari keluarga di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Seorang anggota keluarga dihapus di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
 });

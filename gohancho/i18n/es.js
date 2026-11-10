@@ -2039,4 +2039,6 @@ GOHAN_I18N('es', {
     "読み直す": "Volver a cargar",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Al guardar en otra pestaña, se borraron algunas alergias, miembros de la familia o menús decididos.",
     "消えた分を戻す": "Recuperar lo eliminado",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "«{name}» se quitó de la familia en otra pestaña, así que las alergias que añadiste no se guardaron.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Se quitó a un miembro de la familia en otra pestaña, así que las alergias que añadiste no se guardaron.",
 });

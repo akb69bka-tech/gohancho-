@@ -2039,4 +2039,6 @@ GOHAN_I18N('it', {
     "読み直す": "Ricarica",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Un salvataggio da un'altra scheda ha eliminato alcune allergie, membri della famiglia o menu scelti.",
     "消えた分を戻す": "Recupera gli elementi eliminati",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” è stato rimosso dalla famiglia in un’altra scheda, quindi le allergie che hai aggiunto non sono state salvate.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Un membro della famiglia è stato rimosso in un’altra scheda, quindi le allergie che hai aggiunto non sono state salvate.",
 });

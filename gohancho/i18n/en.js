@@ -2040,4 +2040,6 @@ GOHAN_I18N('en', {
     "読み直す": "Reload",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "A save from another tab removed some allergies, family members, or decided menus.",
     "消えた分を戻す": "Restore removed items",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” was removed from the family in another tab, so the allergies you added were not kept.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "A family member was removed in another tab, so the allergies you added were not kept.",
 });

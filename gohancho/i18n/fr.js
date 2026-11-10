@@ -2039,4 +2039,6 @@ GOHAN_I18N('fr', {
     "読み直す": "Recharger",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Un enregistrement dans un autre onglet a supprimé des allergies, des membres de la famille ou des menus choisis.",
     "消えた分を戻す": "Récupérer les éléments supprimés",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "« {name} » a été retiré de la famille dans un autre onglet : les allergies que vous avez ajoutées n’ont pas été conservées.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Un membre de la famille a été retiré dans un autre onglet : les allergies que vous avez ajoutées n’ont pas été conservées.",
 });

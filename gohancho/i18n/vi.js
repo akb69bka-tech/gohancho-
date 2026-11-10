@@ -2039,4 +2039,6 @@ GOHAN_I18N('vi', {
     "読み直す": "Tải lại",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Việc lưu ở thẻ khác đã làm mất một số dị ứng, thành viên gia đình hoặc thực đơn đã chọn.",
     "消えた分を戻す": "Khôi phục mục đã mất",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” đã bị xóa khỏi gia đình ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Một thành viên gia đình đã bị xóa ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
 });

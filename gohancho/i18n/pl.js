@@ -2039,4 +2039,6 @@ GOHAN_I18N('pl', {
     "読み直す": "Wczytaj ponownie",
     "別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました": "Zapis z innej karty usunął część alergii, członków rodziny lub wybranych jadłospisów.",
     "消えた分を戻す": "Przywróć usunięte",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "„{name}” usunięto z rodziny w innej karcie, więc dodane alergie nie zostały zachowane.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "W innej karcie usunięto członka rodziny, więc dodane alergie nie zostały zachowane.",
 });
