@@ -362,14 +362,18 @@ for (const ts of [1, 2]) for (const lang of ['ja', 'en']) {
         // この項目は「札が1つの上の段」の見え方を見るので、札が2つ以上の献立は選び直す（乱数の展開で出る献立が変わると、たまたま当たって落ちていた）
         const tags0 = () => document.querySelectorAll('#view .tg-row:first-child .alg-tag').length;
         let hit = false; for (let i = 0; i < 8 && !(hit && tags0() <= 1); i++){   /* 当たる料理が出なければ、すぐ下で当たる主菜を置く（前は60回作り直していて、1画面で十数秒かかった） */ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); }
-        if (!hit){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x)); if (bad){ session.menu.items[0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); } }
+        // 11/10: 当たる主菜を置いた献立でも、汁もの（出汁の味噌汁など）にも札が付くと上の段の札が2つになる（上の v116 の形）。前はそのまま決めていて、
+        // 最後に作った献立の汁ものしだいで落ちていた（v133 で保存のしるしが献立の乱数を使い、保存の時機で献立がずれて表に出た。アプリは別の乱数に直した）。
+        // 当たる主菜を置いても札が2つ以上なら、献立を作り直して置き直す（札が1つの上の段で決める。見るものは同じ）
+        if (!(hit && tags0() <= 1)){ const bad = RECIPES.find(x => slotOf(x) === '主菜' && isAvoidedCore(x));
+            for (let i = 0; bad && i < 12; i++){ if (i){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); } const k = session.menu.items.findIndex(x => x.slot === '主菜'); session.menu.items[k >= 0 ? k : 0].r = bad; TRAY_FIT.key = ''; TRAY_FIT.state = null; render(); await __tick(); hit = safeSayDishes().some(r => isAvoidedCore(r)); if (hit && tags0() <= 1) break; } }
         __tap('#view [data-act=decide]', 'decide'); await __tick(); await new Promise(r => setTimeout(r, 350)); if (toast.hide) toast.hide(); window.scrollTo(0, 0); setTab('today'); render(); await __tick(); window.scrollTo(0, 0); await __tick();
         const lines = [...document.querySelectorAll('#view .alg-bar, #view .alg-top')].filter(e => getComputedStyle(e).display !== 'none').map(e => { const rg = document.createRange(); rg.selectNodeContents(e); return {text: e.textContent.trim(), h: Math.round(e.getBoundingClientRect().height), cutW: e.scrollWidth > e.clientWidth + 1, cutH: e.scrollHeight > e.clientHeight + 1, fs: getComputedStyle(e).fontSize}; });
         const okB = document.querySelector('#view .p2-ok'), ch = document.querySelector('#view [data-act=cond-open]'), h2 = document.querySelector('#view .today-head h2'); if (!okB || !ch || !h2) return {err: 'なし', lines};
         const q = okB.getBoundingClientRect(), cb = ch.getBoundingClientRect(), hb = h2.getBoundingClientRect();
         const ov = q.right > cb.left + .5 && q.left < cb.right - .5 && q.bottom > cb.top + .5 && q.top < cb.bottom - .5, out = q.right > hb.right + .5 || q.left < hb.left - .5 || q.bottom > hb.bottom + .5 || q.top < hb.top - .5;
         const top = document.elementsFromPoint(q.right - 2, (q.top + q.bottom) / 2)[0];
-        return {hit, lines, ok: {w: Math.round(q.width), h: Math.round(q.height), ov, out, topIsOk: !!top && (top === okB || okB.contains(top))}, row0: __rows()[0], cls: document.body.className.replace('on-today', '').trim()}; });
+        return {hit, tags0: tags0(), lines, ok: {w: Math.round(q.width), h: Math.round(q.height), ov, out, topIsOk: !!top && (top === okB || okB.contains(top))}, row0: __rows()[0], cls: document.body.className.replace('on-today', '').trim()}; });
     ok(!r.err && r.hit && r.lines.length && r.lines.every(x => !x.cutW && !x.cutH && x.h <= 32) && !r.ok.ov && !r.ok.out && r.ok.topIsOk && r.ok.h <= 24 && r.row0 && !r.row0.hid.length, `R18-17 195px ${lang} 文字${ts}: 決めたあとの ⚠ の行が切れない（32px 以下）・「✓ 決めた」が条件のボタンに重ならず見出しの箱の中（24px 以下）・上の段はタブより上: ` + JSON.stringify(r));
     await ctx.close();
 }

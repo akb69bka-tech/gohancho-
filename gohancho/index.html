@@ -2947,12 +2947,13 @@ function syncFridgeMeta(){   // 冷蔵庫にある食材だけ印・登録日を
     S.fridgeMeta = out;
 }
 function save(){ try{ syncFridgeMeta(); }catch(e){} mineAt = Date.now(); try{ mtStamp(mineAt); }catch(e){} if (!saveT) saveT = setTimeout(saveNow, 300); }
+function markRand(){ try{ return crypto.getRandomValues(new Uint32Array(1))[0] % 46656; }catch(e){ return Math.floor(Math.random() * 46656); } }   // 書いたしるしの乱数（献立の乱数と別）
 // quiet: 書いたあとに読み直しを始めない（読み直す直前・閉じるとき・storage の知らせの中から呼ぶとき）
 function saveNow(quiet){
     if (saveT){ clearTimeout(saveT); saveT = 0; }
     try{ noteDels(); }catch(e){}   // わざと消したものに印をつける（別のタブで「消えました」と言わない: R166）
     try{ mtStamp(mineAt || Date.now()); }catch(e){}   // save() を通らずに変えたまとまりにも、変えた時刻をつける（R171）
-    const mark = Date.now().toString(36) + Math.floor(Math.random() * 46656).toString(36);
+    const mark = Date.now().toString(36) + markRand().toString(36);   // 献立の乱数（Math.random）は使わない: 保存は300ms後のタイマーで走るので、使うと保存の回数・時機しだいで献立の選び方がずれる（SEED で再現できなくなる）
     const wh0 = S.wh, unmark = () => { if (wh0) S.wh = wh0; else delete S.wh; };   // 書かなかったときは、しるしを戻す
     S.wh = [...(Array.isArray(S.wh) ? S.wh : []), mark].slice(-8);   // 書いたしるし（読んだ中身のしるしに、この書きこみのしるしを足す）
     let json;
