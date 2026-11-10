@@ -219,9 +219,11 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
     await p.evaluate(() => { session.tool = 'charcoal'; sheet = {kind: 'tools'}; renderSheet(); });
     const rows2 = await p.$$eval('#sheet-root [data-act=tool-pick]', els => els.map(e => e.dataset.id));
     ok(rows2.length >= 4 && !rows2.includes(m0[0]), `T5 炭火の主菜の一覧（いまの主菜は除く）: ${rows2}`);
-    await p.click(`#sheet-root [data-act=tool-pick][data-id="${rows2[0]}"]`); await p.waitForTimeout(300);
+    const en2 = await p.$$eval('#sheet-root [data-act=tool-pick]', els => els.filter(e => !e.disabled).map(e => e.dataset.id));   // 形がちがう主菜は灰色（押せない）。押せるものから選ぶ（CI で1つ目が灰色になり、30秒待って落ちた）
+    const pick2 = en2[0] || rows2[0];
+    await p.click(`#sheet-root [data-act=tool-pick][data-id="${pick2}"]`); await p.waitForTimeout(300);
     const m1 = await p.evaluate(() => menuIds());
-    ok(m1[0] === rows2[0] && m1.slice(1).join() === m0.slice(1).join(), `T5 決めていない案は、押すとすぐ主菜だけ入れ替わる: ${m0} → ${m1}`);
+    ok(m1[0] === pick2 && m1.slice(1).join() === m0.slice(1).join(), `T5 決めていない案は、押すとすぐ主菜だけ入れ替わる: ${m0} → ${m1}`);
     ok(await p.evaluate(() => !sheet), 'T5 入れ替えたらシートが閉じる');
     const u2 = await p.$('[data-act="toast-undo"]'); ok(!!u2, 'T5 元に戻すが出る');
     if (u2){ await u2.click(); await p.waitForTimeout(300); ok(await p.evaluate(m0 => menuIds().join() === m0.join(), m0), 'T5 元に戻すと主菜も元どおり'); }
