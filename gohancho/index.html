@@ -1518,7 +1518,7 @@ html[data-ts] .cook-now .st-txt{font-size:calc(var(--fs24) * 1.25)}   /* 文字�
 .gh-note.open p{padding-bottom:1.3em}
 .gh-note.open p{display:block!important;-webkit-line-clamp:unset!important;line-clamp:none!important;overflow-y:auto!important;overscroll-behavior:contain}
 /* 2つのタブの知らせ（第36回 R168）: 幅が狭い・文字がいちばん大きい・高さが低いときは、2行までの文にして、画面の半分をふさがない。ボタンは枠を送らなくても押せる。2行に入らない文は、2行目の終わりの「続きを見る」で全文を読める（第37回 R170） */
-@media (max-width:360px),(max-height:520px){#gh-note-other:not(.fits) .gh-more,#gh-note-lost:not(.fits) .gh-more{display:flex}#gh-note-other,#gh-note-lost{padding:.4rem .55rem;gap:4px;font-size:.78rem}#gh-note-other p,#gh-note-lost p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;line-height:1.3}#gh-note-other .row,#gh-note-lost .row{flex-wrap:nowrap;gap:6px}#gh-note-other .btn,#gh-note-lost .btn{flex:1 1 0;min-width:0;padding:4px 6px;font-size:.78rem;line-height:1.2;white-space:normal;overflow-wrap:anywhere;hyphens:auto}}html[data-ts="2"] #gh-note-other:not(.fits) .gh-more,html[data-ts="2"] #gh-note-lost:not(.fits) .gh-more{display:flex}html[data-ts="2"] #gh-note-other,html[data-ts="2"] #gh-note-lost{padding:.4rem .55rem;gap:4px;font-size:.78rem}html[data-ts="2"] #gh-note-other p,html[data-ts="2"] #gh-note-lost p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;line-height:1.3}html[data-ts="2"] #gh-note-other .row,html[data-ts="2"] #gh-note-lost .row{flex-wrap:nowrap;gap:6px}html[data-ts="2"] #gh-note-other .btn,html[data-ts="2"] #gh-note-lost .btn{flex:1 1 0;min-width:0;padding:4px 6px;font-size:.78rem;line-height:1.2;white-space:normal;overflow-wrap:anywhere;hyphens:auto}
+@media (max-width:360px),(max-height:520px){#gh-note-other:not(.fits) .gh-more,#gh-note-lost:not(.fits) .gh-more,#gh-note-famgone:not(.fits) .gh-more{display:flex}#gh-note-other,#gh-note-lost,#gh-note-famgone{padding:.4rem .55rem;gap:4px;font-size:.78rem}#gh-note-other p,#gh-note-lost p,#gh-note-famgone p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;line-height:1.3}#gh-note-other .row,#gh-note-lost .row,#gh-note-famgone .row{flex-wrap:nowrap;gap:6px}#gh-note-other .btn,#gh-note-lost .btn,#gh-note-famgone .btn{flex:1 1 0;min-width:0;padding:4px 6px;font-size:.78rem;line-height:1.2;white-space:normal;overflow-wrap:anywhere;hyphens:auto}}html[data-ts="2"] #gh-note-other:not(.fits) .gh-more,html[data-ts="2"] #gh-note-lost:not(.fits) .gh-more,html[data-ts="2"] #gh-note-famgone:not(.fits) .gh-more{display:flex}html[data-ts="2"] #gh-note-other,html[data-ts="2"] #gh-note-lost,html[data-ts="2"] #gh-note-famgone{padding:.4rem .55rem;gap:4px;font-size:.78rem}html[data-ts="2"] #gh-note-other p,html[data-ts="2"] #gh-note-lost p,html[data-ts="2"] #gh-note-famgone p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;line-height:1.3}html[data-ts="2"] #gh-note-other .row,html[data-ts="2"] #gh-note-lost .row,html[data-ts="2"] #gh-note-famgone .row{flex-wrap:nowrap;gap:6px}html[data-ts="2"] #gh-note-other .btn,html[data-ts="2"] #gh-note-lost .btn,html[data-ts="2"] #gh-note-famgone .btn{flex:1 1 0;min-width:0;padding:4px 6px;font-size:.78rem;line-height:1.2;white-space:normal;overflow-wrap:anywhere;hyphens:auto}
 /* 極端な画面（幅280px・高さ400px・横向き・分割表示）でも、はみ出さず、操作できる */
 .top > div{min-width:0}
 .chips.scroll .chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
@@ -2876,6 +2876,7 @@ function normalizeState(d){
     if (!COUNTRY_CODES.includes(st.settings.country)) delete st.settings.country;
     { const mo = obj(st.mt), out = {}; Object.keys(mo).filter(k => /^(menu|week|keepFor|settings\.pending|day\.\d{4}-\d{2}-\d{2}|f\..{1,60})$/.test(k) && Number.isFinite(mo[k]) && mo[k] > 0).slice(0, 80).forEach(k => { out[k] = mo[k]; }); if (Object.keys(out).length) st.mt = out; else delete st.mt; }
     { const w = arr(st.wh).filter(x => typeof x === 'string' && /^[0-9a-z]{4,16}$/.test(x)).slice(-8); if (w.length) st.wh = w; else delete st.wh; }   // 書いたしるし（最近の8回）。届いた保存が、このタブの書いたものを見て書かれたかを見る（R171）   // まとまりごとの変えた時刻（2つのタブで使うとき: R171）
+    if (typeof st.mk !== 'string' || !/^[0-9a-z]{1,13}$/.test(st.mk)) delete st.mk;   // 決めた献立と下書きを書いたときのしるし（R174。前の版がそのまま残して献立だけ変えたかを見る）
     { const dd = delsTidy(st.dels, st); if (dd.length) st.dels = dd; else delete st.dels; }   // わざと消したものの印（7日・40件まで。2つのタブで使うとき）
     return st;
 }
@@ -2928,6 +2929,7 @@ function load(){
             const d = JSON.parse(raw);
             if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('shape');
             const st = normalizeState(d);
+            if (typeof d.mk === 'string' && d.mk !== menuHash(d) && menuAlign(st, [])) storeInfo.menuFix = true;   // 前の版が献立を書きかえていて、決めた献立と下書きが食い違う: 下書きを決めた献立にそろえる（R174）
             if (lostRecords(d, st)){ quarantine(raw); storeInfo.pending.push('lost'); }   // 形の合わない記録は読み込みで外れる。元のデータは残す
             return st;
         }catch(e){ quarantine(raw, true); storeInfo.pending.push('broken'); }
@@ -2955,6 +2957,7 @@ function saveNow(quiet){
     const mark = Date.now().toString(36) + Math.floor(Math.random() * 46656).toString(36);
     const wh0 = S.wh, unmark = () => { if (wh0) S.wh = wh0; else delete S.wh; };   // 書かなかったときは、しるしを戻す
     S.wh = [...(Array.isArray(S.wh) ? S.wh : []), mark].slice(-8);   // 書いたしるし（読んだ中身のしるしに、この書きこみのしるしを足す）
+    try{ S.mk = menuHash(S); }catch(e){}   // この版が書いた決めた献立・下書きのしるし（R174）
     let json;
     try{
         json = JSON.stringify(stateToKeep());
@@ -2971,7 +2974,7 @@ function saveNow(quiet){
     const why = lsWriteFreeing(STORE_KEY, json);   // 前のデータは書き込みに失敗してもそのまま残る。足りないときは控えを空けて試す
     if (why){ unmark(); storeWarn(why); return; }
     if (storeInfo.fail){ storeInfo.fail = ''; storeInfo.warned = false; if (typeof GH !== 'undefined') GH.clear('store'); }   // 保存できるようになった
-    GH.raw = json; mineAt = 0; myMark = mark;
+    GH.raw = json; mineAt = 0; myMark = mark; seenWh.add(mark);
     try{ notifSoon(); }catch(e){}
     return true;
 }
@@ -3017,7 +3020,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && sav
 // 2つの保存の中身が同じか（読みこみの形にそろえ、キーの並びを無視してくらべる）。違いが並び順や空の欄だけのときに、ほかのタブを読み直させあわない
 function canonJ(v){ return Array.isArray(v) ? '[' + v.map(canonJ).join(',') + ']' : v && typeof v === 'object' ? '{' + Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ':' + canonJ(v[k])).join(',') + '}' : JSON.stringify(v); }
 function sameStore(a, b){
-    const norm = raw => { const st = normalizeState(JSON.parse(raw)); delete st.mt; delete st.wh; return canonJ(st); };   // 変えた時刻（mt）・書いたしるし（wh）だけの違いは同じとみる
+    const norm = raw => { const st = normalizeState(JSON.parse(raw)); delete st.mt; delete st.wh; delete st.mk; return canonJ(st); };   // 変えた時刻（mt）・書いたしるし（wh・mk）だけの違いは同じとみる
     return norm(a) === norm(b);
 }
 // いまの保存が、このタブの最後に読んだ／書いた中身（GH.raw）から変わっているか。知らせ（storage）が届く前に別のタブ・前の版が書いていたら true
@@ -3041,6 +3044,11 @@ function mineChanged(json){
 let delBase = (() => { try{ return delSnap(S); }catch(e){ return null; } })();   // 前に書いた（読んだ）ときのアレルギー・家族・決めた献立
 // このタブで、少し前に（3分以内）アレルギーを足した家族の人（id → {n: 名前, t}）。別のタブでその人が消されたら知らせる（R172）。読み直しても覚えておく（このタブの sessionStorage）
 const famAdds = new Map((() => { try{ const a = JSON.parse(sessionStorage.getItem('gohanFamAdds') || '[]'); return Array.isArray(a) ? a.filter(x => Array.isArray(x) && typeof x[0] === 'string' && x[1] && Date.now() - x[1].t < 180000) : []; }catch(e){ return []; } })());
+// 見たことのある書いたしるし（開いたときの中身・このタブが書いた・届いた保存）。届いた保存の最後のしるしが見たことのあるものなら、新しいしるしを足さない前の版が書いた（R176）
+const seenWh = new Set(Array.isArray(S.wh) ? S.wh : []);
+function whSeen(raw){ try{ const d = JSON.parse(raw); (d && Array.isArray(d.wh) ? d.wh : []).forEach(x => { if (typeof x === 'string') seenWh.add(x); }); }catch(e){} }
+function oldWrite(raw){ try{ const d = JSON.parse(raw), w = d && Array.isArray(d.wh) ? d.wh : []; return !w.length || seenWh.has(w[w.length - 1]); }catch(e){ return false; } }
+let evOld = null;   // 届いた保存（storage の知らせ）が前の版の書いたものか: {raw, old}
 function famAddsKeep(){ try{ if (famAdds.size) sessionStorage.setItem('gohanFamAdds', JSON.stringify([...famAdds])); else sessionStorage.removeItem('gohanFamAdds'); }catch(e){} }
 function delSnap(s){
     const st = s && s.settings || {}, a = x => Array.isArray(x) ? x : [], f = {};
@@ -3062,7 +3070,7 @@ function delsTidy(list, s){
 function noteDels(){
     const cur = delSnap(S), b = delBase || cur, add = [], now = Date.now();
     b.a.forEach(x => { if (!cur.a.includes(x)) add.push({k: 'a', v: x, t: now}); });
-    Object.keys(b.f).forEach(id => { if (!cur.f[id]) add.push({k: 'f', v: id, t: now}); else b.f[id].forEach(x => { if (!cur.f[id].includes(x)) add.push({k: 'fa', v: x, m: id, t: now}); }); });
+    Object.keys(b.f).forEach(id => { if (!cur.f[id]){ add.push({k: 'f', v: id, t: now}); if (famAdds.delete(id)) famAddsKeep(); } else b.f[id].forEach(x => { if (!cur.f[id].includes(x)) add.push({k: 'fa', v: x, m: id, t: now}); }); });
     if (b.c && !cur.c) add.push({k: 'c', v: b.c, t: now});
     if (b.w && !cur.w) add.push({k: 'w', v: b.w, t: now});
     Object.keys(cur.f).forEach(id => { const was = b.f[id] || []; if (cur.f[id].some(x => !was.includes(x))){ const m = (Array.isArray(S.family) ? S.family : []).find(x => x && x.id === id); famAdds.set(id, {n: m && typeof m.name === 'string' ? m.name.trim() : '', t: now}); famAddsKeep(); } });   // このタブで家族の人に足したアレルギー（R172）
@@ -3084,6 +3092,20 @@ function mtSig(s){
     if (isPlainObj(s.day)) Object.keys(s.day).forEach(d => { o['day.' + d] = canonJ(s.day[d]); });
     (Array.isArray(s.family) ? s.family : []).forEach(m => { if (isPlainObj(m) && m.id) o['f.' + m.id] = canonJ(Object.assign({}, m, {allergy: undefined, avoid: undefined})); });
     return o;
+}
+// 決めた献立と下書きのしるし（S.mk: 第38回 R174）。この版は書くたびに付ける。前の版は S.mk をそのまま残して献立だけを書きかえるので、しるしが合わなければ前の版が献立を変えた
+function menuHash(s){
+    const str = canonJ(JSON.parse(JSON.stringify([(s && s.cook) || null, (s && s.draft) || null])));
+    let h = 5381; for (let i = 0; i < str.length; i++) h = (Math.imul(h, 33) ^ str.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+}
+// 決めた献立（S.cook）と同じ日の下書き（S.draft）が食い違うときは、下書きを決めた献立にそろえる（決めた献立は変えない）。srcs: 決めた献立と同じで、下書きもそろっている中身があれば、その下書きを使う。そろえたら true
+function menuAlign(st, srcs){
+    const c = st && st.cook, d = st && st.draft, ids = x => (x && Array.isArray(x.ids) ? x.ids.filter(Boolean) : []).join();
+    if (!c || !Array.isArray(c.ids) || !c.ids.length || !d || typeof d !== 'object' || d.d !== c.d || ids(d) === ids(c)) return false;
+    const src = (srcs || []).find(s => s && canonJ(s.cook) === canonJ(c) && s.draft && s.draft.d === c.d && ids(s.draft) === ids(c));
+    if (src) st.draft = src.draft; else delete st.draft;   // 下書きがなければ、決めた献立をそのまま出す
+    return true;
 }
 let mtBase = (() => { try{ return mtSig(S); }catch(e){ return null; } })();   // 前に書いた（読んだ・まぜた）ときの、まとまりごとの中身
 // 前に見たときから変わったまとまりに、変えた時刻をつける（ほかのタブの時刻より前にはしない）
@@ -3167,6 +3189,8 @@ function mergeAt(p, b, t, m, ctx){
 function mergeStates(baseRaw, curRaw, mineJson){
     const P = (s, strict) => { const d = JSON.parse(s); if (!isPlainObj(d)) throw new Error('shape'); const st = normalizeState(d); if (strict && lostRecords(d, st)) throw new Error('lost'); return st; };
     const base = baseRaw && baseRaw !== 'null' ? P(baseRaw) : normalizeState({}), theirs = P(curRaw, true), mine = P(mineJson);
+    // あちらの決めた献立・下書きを、この版が書いたか（しるしが合う）。合わなければ前の版（R174）: 決めた献立と下書きの組を、そのまま正しい組とはみない
+    let theirsOk = false; try{ const tr = JSON.parse(curRaw); theirsOk = typeof tr.mk === 'string' && tr.mk === menuHash(tr); }catch(e){}
     const ctx = {mineNewer: (mineAt || Date.now()) >= theirAt, delT: delHas(theirs), delM: delHas(mine)};
     // 変えた時刻（R171）。両方に時刻があって食い違うときは、それで新しい方を決める。ないときは、いままでどおり届いた時刻
     const sB = mtSig(base), sT = mtSig(theirs), sM = mtSig(mine), mtT = isPlainObj(theirs.mt) ? theirs.mt : {}, mtM = isPlainObj(mine.mt) ? mine.mt : {}, fin = x => Number.isFinite(x) && x > 0;
@@ -3188,11 +3212,13 @@ function mergeStates(baseRaw, curRaw, mineJson){
     };
     const out = normalizeState(merge3(base, theirs, mine, ctx));
     // 決めた献立と下書きは、同じ側のものにそろえる（作り方は片方、今日はもう片方の献立、にしない: R171）
-    { const oc = out.cook, od = out.draft, cj = canonJ;
-      if (oc && od && Array.isArray(oc.ids) && oc.ids.length && oc.d === od.d && ![mine, theirs].some(s => cj(s.cook) === cj(oc) && cj(s.draft) === cj(od))){
-          const src = [mine, theirs].find(s => cj(s.cook) === cj(oc) && s.draft);
+    // 前の版が書いた組（R174: 前の版がほぼ同時に決めると、決めた献立はこちら・下書きはあちら、のまま残ることがある）は、食い違っていればそろえる
+    { const oc = out.cook, od = out.draft, cj = canonJ, ids = x => (x && Array.isArray(x.ids) ? x.ids.filter(Boolean) : []).join(), pair = s => cj(s.cook) === cj(oc) && cj(s.draft) === cj(od);
+      if (oc && od && Array.isArray(oc.ids) && oc.ids.length && oc.d === od.d && !pair(mine) && !(pair(theirs) && (theirsOk || ids(od) === ids(oc)))){
+          const src = [mine, theirs].find(s => cj(s.cook) === cj(oc) && s.draft && (s === mine || theirsOk || (s.draft.d === oc.d && ids(s.draft) === ids(oc))));
           if (src) out.draft = src.draft; else delete out.draft;   // 下書きがなければ、決めた献立をそのまま出す
       } }
+    try{ out.mk = menuHash(out); }catch(e){}
     const dd = delsTidy(out.dels, out); if (dd.length) out.dels = dd; else delete out.dels;
     return {out, theirs, base};
 }
@@ -3228,11 +3254,16 @@ function mergeSave(json){
         wrote = out;
         const wh = Array.isArray(r.out.wh) ? r.out.wh : []; if (wh.length) myMark = wh[wh.length - 1];
     }
+    // 前の版が書いたもの（R176）とまぜて、このタブの決めた献立・アレルギーなどが減ったときは、黙らずに「一部が消えました［消えた分を戻す］」
+    let lostM = null;
+    try{ if (evOld && evOld.raw === cur ? evOld.old : oldWrite(cur)){ const mine = stateToKeep(); if (lostParts(mine, r.out)) lostM = JSON.parse(JSON.stringify({settings: {allergens: mine.settings.allergens}, family: mine.family, cook: mine.cook, week: mine.week})); } }catch(e){}
+    whSeen(wrote);
     const keepJP = packFail && r.out.settings && r.out.settings.country === packFail, gone = famGone(r.out);
     deepAssign(S, r.out);
     if (keepJP) S.settings.country = 'JP';   // いまだけ日本で開いているときは、そのまま
     delBase = delSnap(S); mtBase = mtSig(S);   // まぜて入ってきた変更は、このタブの変更として時刻をつけない
     if (gone.length) famGoneNote(gone);
+    if (lostM){ lostKeep = lostM; try{ sessionStorage.setItem('gohanLost', JSON.stringify(lostM)); }catch(e){} lostNote(); }   // 読み直したあとも出す
     GH.raw = wrote; mineAt = 0;
     storeInfo.other = false; otherStuck = false; otherNoted = false; mergeFail = false;
     if (typeof GH !== 'undefined') GH.clear('other');
@@ -3344,14 +3375,17 @@ function famGone(st){
     const now = Date.now(), del = delHas(st), fam = Array.isArray(st && st.family) ? st.family : [], out = [];
     famAdds.forEach((a, id) => {
         if (now - a.t > 180000){ famAdds.delete(id); return; }
-        if (!fam.some(m => m && m.id === id) && del('f', id)){ out.push(a.n); famAdds.delete(id); }
+        if (fam.some(m => m && m.id === id)) return;
+        // このタブでも、もういない（このタブで消した: R173）ときは知らせない。まだいる人が、あちらの消した印つきで消されたときだけ知らせる
+        if (del('f', id) && (Array.isArray(S.family) ? S.family : []).some(m => m && m.id === id)) out.push(a.n);
+        famAdds.delete(id);
     });
     famAddsKeep();
     return out;
 }
 function famGoneShow(names){
     const tx = names.map(n => n ? t('別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした', {name: n}) : t('別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした')).join(' ');
-    GH.note('famgone', tx, [{k:'close', label: t('閉じる')}]);
+    GH.note('famgone', tx, [{k:'close', label: t('閉じる')}], false, noteMore());   // 狭い画面・大きい文字では2行にちぢめて「続きを見る」（R175）
 }
 // 知らせを出し、読み直しても出るように控える（1分まで）
 function famGoneKeep(names){
@@ -3378,6 +3412,7 @@ GH.on.lostundo = () => {
 };
 window.addEventListener('storage', e => {
     if (e.key !== STORE_KEY || e.newValue == null || e.newValue === GH.raw) return;
+    evOld = {raw: e.newValue, old: oldWrite(e.newValue)}; whSeen(e.newValue);   // 前の版の書いたものか（R176）を、しるしを覚える前に見る
     try{ const mine = JSON.stringify(stateToKeep()); if (e.newValue === mine || sameStore(e.newValue, mine)){ GH.raw = e.newValue; return; } }catch(err){}   // 中身がこのタブと同じ（開いたときの書き直しなど。並び順や、読みこみで足される空の欄の違いは同じとみる）
     try{ if (GH.raw && sameStore(e.newValue, GH.raw)){ GH.raw = e.newValue; return; } }catch(err){}   // このタブが最後に読んだ／書いた中身と同じ（あちらが開いたときの書き直しだけ）。このタブのまだ書いていない変更はそのまま書いてよい
     try{ const g = famGone(normalizeState(JSON.parse(e.newValue))); if (g.length) famGoneNote(g); }catch(err){}   // このタブでアレルギーを足した人が、あちらで消された（R172）
@@ -3391,8 +3426,10 @@ window.addEventListener('storage', e => {
 function mineMissing(raw){
     if (GH.raw == null || raw == null || !myMark) return false;
     try{
+        // 前の版（新しいしるしを足さない）が書いたものは、まぜて黙って書き直さない。いままでどおり読み直して、減っていれば「一部が消えました［消えた分を戻す］」（R176）
+        if (evOld && evOld.raw === raw ? evOld.old : oldWrite(raw)) return false;
         const th = JSON.parse(raw); if (th && Array.isArray(th.wh) && th.wh.includes(myMark)) return false;
-        const r = mergeStates(GH.raw, raw, JSON.stringify(stateToKeep())), x = o => canonJ(Object.assign({}, o, {mt: undefined, wh: undefined}));
+        const r = mergeStates(GH.raw, raw, JSON.stringify(stateToKeep())), x = o => canonJ(Object.assign({}, o, {mt: undefined, wh: undefined, mk: undefined}));
         return x(r.out) !== x(r.theirs);
     }catch(e){ return false; }
 }
@@ -11708,7 +11745,7 @@ async function shareFileOrDownload(blob, name, type, dlMsg){
 }
 // 記録（JSON）をファイルにして渡す（設定の「ファイルで書き出す」と購入画面の「書き出す」で共通）
 // 書き出すデータ（版・日時の目印つき。古いアプリは目印を無視して読める）
-function backupJson(){ return JSON.stringify(Object.assign({}, stateToKeep(), {mt: undefined, wh: undefined, _gohancho: {v: BACKUP_VER, at: new Date().toISOString()}})); }   // 2つのタブのための印（変えた時刻・書いたしるし）は、この端末の中だけ
+function backupJson(){ return JSON.stringify(Object.assign({}, stateToKeep(), {mt: undefined, wh: undefined, mk: undefined, _gohancho: {v: BACKUP_VER, at: new Date().toISOString()}})); }   // 2つのタブのための印（変えた時刻・書いたしるし）は、この端末の中だけ
 function markBackedUp(){ S.lastBackup = TODAY; delete S.backupSnooze; save(); }
 async function exportDataFile(){
     const name = 'gohancho-' + TODAY.replace(/-/g, '') + '.json', json = backupJson();
@@ -12960,7 +12997,8 @@ function restoreDecided(){
     const n1 = menuCount(), extra = items.length === n1 + 1 && riceExtraOn(n1) && extraSlots(n1).join() === items.map(x => x.slot).join();   // ご飯ものの日に副菜を1品足した献立も、品数どおりの献立
     const fits = extra || (n === menuCount() && composeOf(n) && composeOf(n).slots.join() === items.map(x => x.slot).join());
     // この版で決めた献立（seat の印あり）で品数を変えたときは、今までどおり新しい案を作る（「今日の一膳を作り直す」）。前の版で決めた献立は、そのまま出す
-    if (!fits && c.seat){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
+    // 今日の下書きがない（2つのタブで食い違った下書きを外した: R171・R174）ときは、決めた献立をそのまま出す（汁けの多い主菜で汁ものの席を空けた形も）
+    if (!fits && c.seat && S.draft && S.draft.d === TODAY){ session.mood = prevMood; session.countSalt = prevSalt; return false; }
     if (!fits && !composeOf(n)){ session.mood = prevMood; session.countSalt = prevSalt; }
     session.menu = extra ? {n: n1, items, adj: false} : {n, items, adj: !fits || (!!c.adj && n !== menuCount())}; return true;
 }
@@ -18075,6 +18113,7 @@ async function retryPack(){
     }
 })();
 if (!(S.usedDays || []).includes(TODAY)){ S.usedDays = [...(S.usedDays || []), TODAY].slice(-400); save(); }
+if (storeInfo.menuFix) save();   // 開いたときに下書きを決めた献立にそろえた（R174）: 保存にもそろえる（前の版のタブも、読み直すとそろう）
 // アプリを開いたまま日付をまたいだとき（画面に戻ってきたとき）に、今日の日付と献立を新しくする
 function refreshToday(){
     const d = dayNow(); if (d === TODAY) return;
