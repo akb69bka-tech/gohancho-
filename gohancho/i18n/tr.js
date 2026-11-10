@@ -2041,4 +2041,6 @@ GOHAN_I18N('tr', {
     "消えた分を戻す": "Silinenleri geri getir",
     "続きを見る": "Devamını gör",
     "短く表示": "Daha az göster",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” başka bir sekmede aileden çıkarıldı, bu yüzden eklediğiniz alerjiler saklanmadı.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Başka bir sekmede bir aile üyesi çıkarıldı, bu yüzden eklediğiniz alerjiler saklanmadı.",
 });

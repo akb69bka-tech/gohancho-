@@ -2041,4 +2041,6 @@ GOHAN_I18N('vi', {
     "消えた分を戻す": "Khôi phục mục đã mất",
     "続きを見る": "Xem thêm",
     "短く表示": "Thu gọn",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” đã bị xóa khỏi gia đình ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Một thành viên gia đình đã bị xóa ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
 });

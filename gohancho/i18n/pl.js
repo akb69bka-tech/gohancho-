@@ -2041,4 +2041,6 @@ GOHAN_I18N('pl', {
     "消えた分を戻す": "Przywróć usunięte",
     "続きを見る": "Pokaż więcej",
     "短く表示": "Pokaż mniej",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "„{name}” usunięto z rodziny w innej karcie, więc dodane alergie nie zostały zachowane.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "W innej karcie usunięto członka rodziny, więc dodane alergie nie zostały zachowane.",
 });

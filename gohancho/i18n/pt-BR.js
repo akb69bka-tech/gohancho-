@@ -2041,4 +2041,6 @@ GOHAN_I18N('pt-BR', {
     "消えた分を戻す": "Recuperar o que foi removido",
     "続きを見る": "Ver mais",
     "短く表示": "Ver menos",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” foi removido da família em outra aba, então as alergias que você adicionou não foram mantidas.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Um membro da família foi removido em outra aba, então as alergias que você adicionou não foram mantidas.",
 });

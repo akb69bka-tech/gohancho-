@@ -2041,4 +2041,6 @@ GOHAN_I18N('fil', {
     "消えた分を戻す": "Ibalik ang nawala",
     "続きを見る": "Tingnan pa",
     "短く表示": "Paikliin",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "Inalis si “{name}” sa pamilya sa ibang tab, kaya hindi naitabi ang mga allergy na idinagdag mo.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "May miyembro ng pamilya na inalis sa ibang tab, kaya hindi naitabi ang mga allergy na idinagdag mo.",
 });

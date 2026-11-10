@@ -2041,4 +2041,6 @@ GOHAN_I18N('id', {
     "消えた分を戻す": "Pulihkan yang terhapus",
     "続きを見る": "Lihat selengkapnya",
     "短く表示": "Lihat lebih sedikit",
+    "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” dihapus dari keluarga di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
+    "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Seorang anggota keluarga dihapus di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
 });
