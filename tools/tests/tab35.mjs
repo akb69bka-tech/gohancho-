@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // 2つのタブ・窓で使ったときに、保存から消えないことの回帰テスト（第35回 利用者モニター R159〜R162。使い方: node tools/tests/tab35.mjs [http://localhost:8795/]）
 //  R159 窓Bの入力欄に打っているあいだ（作り方・手を使わない作り方のときも）に窓Aでアレルギー・家族を足しても、窓Bの保存で消えない。手が空いたら読み直す。打ちかけの文字は戻る
-//  R160 読み直しが続いて上限（1分に3回）に届いたあとも、このタブの中身で上書きしない。知らせと「読み直す」が出る
+//  R160 読み直しが続いて上限（1分に3回）に届いたあとも、このタブの中身で上書きしない。
+//       （第36回 R165 で変更: 上限に届いたら、読み直さずにその場でまぜてそろえる。知らせは出さず、このタブの変更はまぜて保存する）
 //  R161 前の版のタブ（このしくみを持たない）が直接上書きして、アレルギー・家族・決めた献立が減ったら、知らせて「元に戻す」で足し戻せる（自動では戻さない）。
 //       知らせ（storage）が届かないうちの保存も、書く直前に見て止める
 //  R162 条件のシート（class に open がない）を開いているあいだは読み直さない。閉じたら読み直す
@@ -65,7 +66,9 @@ async function reloaded(p, t0, ms = 6000){
     ok(fr[0], 'R159 Enter で冷蔵庫に入った（画面の上では） ' + JSON.stringify(fr));
     let s = await saved(B);
     eq([s.settings.allergens, (s.family || []).length], [['egg'], 1], 'R159 入力のあとの保存で、別の窓で足したアレルギー・家族を消さない');
-    ok(await B.evaluate(() => !!document.getElementById('gh-note-other')), 'R159 保存を止めていることを知らせる');
+    // 第36回 R167: 入力中に入れた冷蔵庫の食材も、まぜて保存する（止めて知らせない）
+    ok(s.fridge.some(x => /にんじん|人参/.test(x)), 'R159/R167 入力中に入れた冷蔵庫の食材も保存する');
+    ok(await B.evaluate(() => !document.getElementById('gh-note-other')), 'R159/R167 まぜて保存できたので「保存を止めています」は出さない');
     eq(await origin(B), t0, 'R159 入力欄にいるあいだは読み直さない');
     await B.keyboard.type('たまね');
     await B.evaluate(() => document.activeElement.blur());
@@ -150,23 +153,23 @@ async function reloaded(p, t0, ms = 6000){
     await A.evaluate(fam => { S.settings.allergens = ['sesame']; S.family = fam; saveNow(); }, FAM);
     await B.waitForTimeout(800);
     eq(await origin(B), t0, 'R160 上限に届いたあとは、勝手には読み直さない');
-    const note = await B.evaluate(() => { const n = document.getElementById('gh-note-other'); return n ? [n.innerText, [...n.querySelectorAll('[data-gh]')].map(x => x.dataset.gh)] : null; });
-    ok(note && /別のタブ・窓で内容が変わりました/.test(note[0]) && note[1].includes('otherreload'), 'R160 知らせと「読み直す」が出る ' + JSON.stringify(note));
-    eq(await B.evaluate(() => storeInfo.other), true, 'R160 保存は止めたまま');
+    // 第36回 R165: 上限に届いたら、その場でまぜてそろえる（知らせ・「読み直す」は出さない）
+    eq(await B.evaluate(() => [!!document.getElementById('gh-note-other'), storeInfo.other, S.settings.allergens, S.family.length]), [false, false, ['sesame'], 1], 'R160/R165 上限に届いたら、読み直さずにその場で新しい中身にそろえる');
     for (let i = 0; i < 3; i++){
         await B.evaluate(i => { S.usedDays = [...S.usedDays, '2026-12-0' + (i + 1)]; S.settings.lowSalt = !!(i % 2); save(); saveNow(); }, i);
         await B.waitForTimeout(200);
     }
     const s = await saved(A);
     eq([s.settings.allergens, s.family.length], [['sesame'], 1], 'R160 上限に届いたあとの保存でも、別のタブのアレルギー・家族を消さない');
+    ok(s.usedDays.includes('2026-12-03'), 'R160/R165 上限に届いたあとのこのタブの変更も保存する');
     eq(await origin(B), t0, 'R160 保存しようとしても勝手には読み直さない');
-    // 知らせを閉じても、保存できなかったときはまた出す
-    await B.evaluate(() => GH.clear('other'));
-    await B.evaluate(() => { S.settings.lowSalt = true; saveNow(); });
-    ok(await B.evaluate(() => !!document.getElementById('gh-note-other')), 'R160 閉じたあとに保存できなかったら、また知らせる');
-    await Promise.all([B.waitForEvent('load', { timeout: 15000 }).catch(() => {}), B.click('#gh-note-other [data-gh="otherreload"]')]);
-    await ready(B);
-    eq(await B.evaluate(() => [S.settings.allergens, S.family.length]), [['sesame'], 1], 'R160 「読み直す」で新しいデータになる');
+    // もう一度あちらで変わっても、上限のあいだはその場でまぜる。このタブの変更（減塩）とあちらの変更（えび）が両方残る
+    await A.evaluate(() => { S.settings.allergens = [...S.settings.allergens, 'shrimp']; saveNow(); });
+    await B.waitForTimeout(500);
+    await B.evaluate(() => { S.settings.lowSalt = true; save(); saveNow(); });
+    const s2 = await saved(B);
+    eq([s2.settings.allergens, s2.settings.lowSalt, await B.evaluate(() => !!document.getElementById('gh-note-other'))], [['sesame', 'shrimp'], true, false], 'R160/R165 上限のあいだも、両方の変更をまぜて保存し、止めて知らせない');
+    eq(await origin(B), t0, 'R160 上限のあいだは読み直さない');
     eq([...A.errs, ...B.errs], [], 'R160 例外なし');
     await ctx.close();
 }
@@ -201,13 +204,14 @@ async function reloaded(p, t0, ms = 6000){
         storeInfo.other = false;
         const cur = JSON.parse(localStorage.getItem('gohancho.v1')); cur.settings.allergens = ['egg', 'wheat'];
         localStorage.setItem('gohancho.v1', JSON.stringify(cur));   // 自分のページで書いたものには storage の知らせが来ない（別のタブの知らせがまだ届いていないのと同じ）
-        const before = localStorage.getItem('gohancho.v1');
-        S.settings.allergens = []; S.settings.diet = true; saveNow();
-        return [localStorage.getItem('gohancho.v1') === before, storeInfo.other];
+        S.settings.allergens = []; S.settings.diet = true; saveNow(true);
+        const now = JSON.parse(localStorage.getItem('gohancho.v1'));
+        return [now.settings.allergens, now.settings.diet === true];
     });
-    eq(g, [true, true], 'R161 知らせが届く前でも、書く直前に見て上書きしない');
+    // 第36回 R165: 書く直前に気づいたら、上書きせずにまぜる（あちらで足した小麦は残す。このタブで外した卵は、消した印があるので外す）
+    eq(g, [['wheat'], true], 'R161 知らせが届く前でも、書く直前に見て上書きせず、まぜて保存する');
     await A.waitForTimeout(1500);
-    eq((await saved(B)).settings.allergens, ['egg', 'wheat'], 'R161 そのあとも消えない');
+    eq((await saved(B)).settings.allergens, ['wheat'], 'R161 そのあとも消えない');
     eq([...A.errs, ...B.errs], [], 'R161 例外なし');
     await ctx.close();
 }
