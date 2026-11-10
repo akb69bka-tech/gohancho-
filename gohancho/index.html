@@ -2917,6 +2917,7 @@ function saveNow(){
         json = JSON.stringify(stateToKeep());
     }catch(e){ storeWarn('unavailable'); return; }
     if (storeInfo.hold) return;   // 壊れたデータを退避できていないあいだは上書きしない（知らせは起動時に出している）
+    if (storeInfo.other) return;   // 別のタブ・窓で新しく保存された。このタブの古いデータで上書きしない（戻ってきたときに読み直す）
     const why = lsWriteFreeing(STORE_KEY, json);   // 前のデータは書き込みに失敗してもそのまま残る。足りないときは控えを空けて試す
     if (why){ storeWarn(why); return; }
     if (storeInfo.fail){ storeInfo.fail = ''; storeInfo.warned = false; if (typeof GH !== 'undefined') GH.clear('store'); }   // 保存できるようになった
@@ -2955,6 +2956,32 @@ GH.on.brk = () => GH.exportNow('broken');
 GH.on.retry = () => retryPack();
 GH.json = () => backupJson();
 document.addEventListener('visibilitychange', () => { if (document.hidden && saveT) saveNow(); });
+// 同じ端末の別のタブ・窓（前の版のまま開いていたものも）で保存されたら、このタブが持っている古いデータで上書きしない。
+// 上書きすると、あちらで足したアレルギー・家族・決めた献立が黙って消える。このタブを見ていないあいだは保存を止めて、見たときに読み直す。
+// 見ているとき（並べた窓・切りかえた直後）は、すぐ読み直す。ただし入力中・シートや確認を開いているとき・手を使わない作り方のとき・このタブの保存がまだのときは触らない（いままでどおり）
+function otherTabReload(){
+    if (!storeInfo.other || document.hidden) return;
+    try{
+        const now = Date.now(), log = JSON.parse(sessionStorage.getItem('gohanOther') || '[]').filter(x => now - x < 60000);
+        if (log.length >= 3){ storeInfo.other = false; return; }   // 読み直しが続くときはやめる（いままでどおり、このタブの内容で保存する）
+        sessionStorage.setItem('gohanOther', JSON.stringify([...log, now]));
+        history.replaceState(null, '', '#' + tab);
+    }catch(e){}
+    location.reload();
+}
+window.addEventListener('storage', e => {
+    if (e.key !== STORE_KEY || e.newValue == null || e.newValue === GH.raw) return;
+    try{ if (e.newValue === JSON.stringify(stateToKeep())){ GH.raw = e.newValue; return; } }catch(err){}   // 中身がこのタブと同じ（開いたときの書き直しなど）
+    if (!document.hidden){
+        const a = document.activeElement;
+        if (saveT || (a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable)) || document.querySelector('#modal-root [role="dialog"], .sheet.open') || (typeof hf !== 'undefined' && hf.on)) return;
+    }
+    storeInfo.other = true;
+    if (saveT){ clearTimeout(saveT); saveT = 0; }
+    otherTabReload();
+});
+document.addEventListener('visibilitychange', otherTabReload);
+window.addEventListener('focus', otherTabReload);
 ['pagehide', 'beforeunload', 'freeze'].forEach(ev => window.addEventListener(ev, () => { if (saveT) saveNow(); }));
 function isCustomId(id){ return /^u\d+$/.test(String(id)); }   // 自作レシピの id（u＋数字）。国のレシピ（us_…）と区別する
 function addCustomRecipes(){ S.custom.forEach(r => { try{ if (!RECIPES.find(x => x.id === r.id)) RECIPES.push(prepCustom(r)); }catch(e){} }); }
