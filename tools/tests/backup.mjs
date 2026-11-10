@@ -45,7 +45,7 @@ const rt = await p.evaluate(async () => {
     document.querySelector('[data-act="import-yes"]').click();
     await new Promise(r => setTimeout(r, 600));
     const after = JSON.stringify(normalizeState(JSON.parse(JSON.stringify(S))));
-    const strip = x => { const o = JSON.parse(x); delete o.pro; delete o.firstUse; delete o.lastBackup; delete o.backupSnooze; delete o.mt; delete o.wh; return JSON.stringify(o); };   // mt・wh は2つのタブのための印（保存するたびに変わる。書き出しには入れない）
+    const strip = x => { const o = JSON.parse(x); delete o.pro; delete o.firstUse; delete o.lastBackup; delete o.backupSnooze; delete o.mt; delete o.wh; delete o.mk; return JSON.stringify(o); };   // mt・wh・mk は2つのタブのための印（保存するたびに変わる。書き出しには入れない）
     out.same = strip(before) === strip(after);
     out.kept = JSON.stringify([S.pro, S.firstUse, S.lastBackup]) === snapKeep;
     out.counts = [S.history.length, S.fridge.length, Object.keys(S.fridgeMeta).length, S.leftovers.length, S.spend.length, S.family.length, S.savedMenus.length, S.custom.length, S.week.days.length, S.week.days.filter(x => x.skip).length, S.week.days.filter(x => x.who).length, S.eaters.length];

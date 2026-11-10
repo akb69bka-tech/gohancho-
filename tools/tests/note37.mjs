@@ -5,6 +5,7 @@
 //       ・「続きを見る」は button で aria-expanded・aria-controls を持つ。読み上げ用に文は いつも全文が入っている
 //       ・押して広げると: 知らせは画面の半分未満のまま・ボタンは見えて 44px 以上・文は切れずに読める（入りきるか、欄の中を送って最後まで届く）
 //       ・もう一度押すとたたむ
+//  R175（第38回）「別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした」（ボタン1つ）も同じ。名前は長い 'Alexandra-Marie'
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_ } = require('../lib/pw.cjs');
@@ -15,7 +16,8 @@ const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
 const isReady = () => typeof S !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && document.readyState === 'complete' && !!document.querySelector('#view > *') && GH.booted;
 const LANGS = ['ja', 'en', 'de', 'es', 'fr', 'it', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'vi', 'ko', 'zh-Hans', 'zh-Hant'];
-const TEXT = {other: '別のタブ・窓で内容が変わりました。このタブは保存を止めています', lost: '別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました'};
+const TEXT = {other: '別のタブ・窓で内容が変わりました。このタブは保存を止めています', lost: '別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました', famgone: '別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした'};
+const NAME = 'Alexandra-Marie', NBTN = {other: 2, lost: 2, famgone: 1};
 const SIZES = [[195, 422], [260, 640], [320, 568], [390, 844], [740, 360]];
 
 // 知らせの様子を測る
@@ -46,17 +48,17 @@ for (const [w, h] of SIZES){
             await p.goto(URL_ + 'about-blank-404').catch(() => {});
             await p.evaluate(([L, ts]) => { localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-01-01', settings: Object.assign({country: 'JP', uiLang: L, dishCount: 3}, ts ? {textSize: ts} : {})})); }, [L, ts]).catch(() => {});
             await p.goto(URL_); await p.waitForFunction(isReady, null, { timeout: 30000 }); await p.waitForTimeout(150);
-            for (const id of ['other', 'lost']){
+            for (const id of ['other', 'lost', 'famgone']){
                 combos++;
                 const tag = `${w}x${h} ts${ts} ${L} ${id}`;
-                const full = await p.evaluate(([id, k]) => { GH.clear('other'); GH.clear('lost'); otherNoted = false; if (id === 'other') otherNote(true); else lostNote(); return t(k); }, [id, TEXT[id]]);
+                const full = await p.evaluate(([id, k, name]) => { GH.clear('other'); GH.clear('lost'); GH.clear('famgone'); otherNoted = false; if (id === 'other') otherNote(true); else if (id === 'lost') lostNote(); else { famGoneShow([name]); return t(k, {name}); } return t(k); }, [id, TEXT[id], NAME]);
                 const why = [];
                 const chk = (r, st) => {
                     if (r.h >= r.vh / 2) why.push(`${st} 高さ ${Math.round(r.h)}/${r.vh}`);
                     if (r.scroll > 1) why.push(`${st} 枠を送らないと見えない`);
                     if (r.blue) why.push(`${st} 青`);
                     r.btns.forEach(x => { if (x.top < 0 || x.bottom > r.vh || x.left < 0 || x.right > r.vw + 0.5 || x.h < 43.5 || x.w < 44) why.push(`${st} ボタン「${x.t}」${Math.round(x.top)}-${Math.round(x.bottom)} ${Math.round(x.w)}x${Math.round(x.h)}`); });
-                    if (r.btns.filter(x => x.t !== (r.more && r.more.label)).length !== 2) why.push(`${st} ボタンが2つでない`);
+                    if (r.btns.filter(x => x.t !== (r.more && r.more.label)).length !== NBTN[id]) why.push(`${st} ボタンが${NBTN[id]}つでない`);
                     if (r.text !== full) why.push(`${st} 文が全文でない（読み上げ）`);
                     if (r.pTop < 0 || r.pBottom > r.vh + 0.5) why.push(`${st} 文が画面の外`);
                 };
@@ -90,7 +92,7 @@ for (const [w, h] of SIZES){
         await ctx.close();
     }
 }
-ok(!bad.length, `R170 2つのタブの知らせ: たたんでも広げても画面の半分未満・ボタンが見えて 44px 以上・広げると全文が読める（${combos}通り） ` + bad.slice(0, 8).join(' | ') + (bad.length > 8 ? ` …ほか${bad.length - 8}` : ''));
+ok(!bad.length, `R170・R175 2つのタブの知らせ（家族から消されたときの知らせも）: たたんでも広げても画面の半分未満・ボタンが見えて 44px 以上・広げると全文が読める（${combos}通り） ` + bad.slice(0, 8).join(' | ') + (bad.length > 8 ? ` …ほか${bad.length - 8}` : ''));
 console.log(`  2行で切れていた組み合わせ（「続きを見る」で全文を読めるようにした）: ${cutBefore}/${combos}`);
 
 await b.close();
