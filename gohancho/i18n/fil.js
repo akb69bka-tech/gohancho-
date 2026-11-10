@@ -2009,6 +2009,7 @@ GOHAN_I18N('fil', {
     "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Mas madalas lumabas ang magagaang ulam (nilaga, pinasingawan, may sabaw, at iba pa). Mas bihirang lumabas ang pinirito, mabigat at sobrang anghang (hindi tinatanggal). Bukas, babalik sa dati.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Hindi magbabago ang menu ngayon. Pindutin ang “Bagong menu”, o ang isang ulam at “Palitan”, para pumili ulit.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "Kung masama ang pakiramdam, huwag pilitin ang sarili at uminom ng tubig.",
+    "この国の料理には、あっさりした主菜が少ないため、主菜はなるべく重すぎない料理を選んでいます。": "Kaunti ang magagaang ulam sa lutuin ng bansang ito, kaya hangga't maaari, pumipili kami ng ulam na hindi masyadong mabigat.",
     "二日酔い": "Hangover",
     "約 {n} kcal（1人分・目安）": "Mga {n} kcal (bawat tao, tantiya)",
     "30 kcal 未満（1人分・目安）": "Mas mababa sa 30 kcal (bawat tao, tantiya)",

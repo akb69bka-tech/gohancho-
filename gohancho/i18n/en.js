@@ -2010,6 +2010,7 @@ GOHAN_I18N('en', {
     "あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。": "Light dishes (simmered, steamed, brothy and the like) come up more often. Fried, rich and very spicy dishes come up less often (they are not removed). Back to normal tomorrow.",
     "いまの献立は変えません。「まるごと入れ替え」か、料理を押して「かえる」で選び直せます。": "Today’s menu stays as it is. Tap “New menu”, or tap a dish and “Swap”, to choose again.",
     "体調がすぐれないときは無理をせず、水分をとってください。": "If you feel unwell, take it easy and drink some water.",
+    "この国の料理には、あっさりした主菜が少ないため、主菜はなるべく重すぎない料理を選んでいます。": "This country's cuisine has few light main dishes, so we pick mains that aren't too heavy where we can.",
     "二日酔い": "Hangover day",
     "約 {n} kcal（1人分・目安）": "About {n} kcal (per person, estimate)",
     "30 kcal 未満（1人分・目安）": "Under 30 kcal (per person, estimate)",
