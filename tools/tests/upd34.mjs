@@ -155,6 +155,9 @@ for (const f of ['v100_ja', 'v120_ja', 'v120_en', 'v126_ja']){
     await ready(A);
     ok(await loads() !== t0, 'C 戻ってきたら読み直す');
     eq(await A.evaluate(() => [S.settings.allergens, S.family.length, location.hash]), [['egg'], 1, '#today'], 'C 読み直したあとは新しいデータ・同じタブ');
+    // A が読み直したときの書き直し（今日の下書きなど）で B も読み直すことがある。落ち着くまで待ってから次へ（CI の遅い機械で、その読み直しを数えていた）
+    for (let i = 0, last = ''; i < 20; i++){ await A.waitForTimeout(500); const k = JSON.stringify(await Promise.all([A, B].map(p => p.evaluate(() => performance.timeOrigin).catch(() => 0)))); if (k === last) break; last = k; }
+    await ready(B);
     const tb = await B.evaluate(() => performance.timeOrigin);
     await Promise.all([B.waitForEvent('load', { timeout: 15000 }).catch(() => {}), A.evaluate(() => { S.settings.lowSalt = true; saveNow(); })]);
     await ready(B);
@@ -209,6 +212,18 @@ for (const [tz, cc, t0, steps] of [
     }
     eq(p.errs, [], `E ${tz} ${t0}: 例外なし`);
     await p.ctx.close();
+}
+
+// D) 2つのタブを開いただけで、読みこみの書き直し（並び順・空の欄）を理由にたがいを読み直させない
+{
+    const ctx = await b.newContext({ serviceWorkers: 'block' });
+    const A = await ctx.newPage(); await A.goto(URL_); await A.waitForFunction(isReady, null, { timeout: 30000 }); await A.waitForTimeout(800);
+    const ta = await A.evaluate(() => performance.timeOrigin);
+    const B = await ctx.newPage(); await B.goto(URL_); await B.waitForFunction(isReady, null, { timeout: 30000 }); await B.waitForTimeout(2000);
+    eq(await A.evaluate(() => performance.timeOrigin), ta, 'D 2つめのタブを開いても、1つめは読み直さない');
+    ok(await A.evaluate(() => sameStore(JSON.stringify({ settings: { a: 1, b: [] }, x: {} }), JSON.stringify({ x: {}, settings: { b: [], a: 1 } }))), 'D 並び順だけの違いは同じとみる');
+    ok(!(await A.evaluate(() => { const s = JSON.parse(JSON.stringify(stateToKeep())); s.settings.allergens = ['egg']; return sameStore(JSON.stringify(s), JSON.stringify(stateToKeep())); })), 'D アレルギーの違いは違うとみる');
+    await ctx.close();
 }
 
 await b.close();
