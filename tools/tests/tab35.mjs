@@ -16,9 +16,11 @@ const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
 const isReady = () => typeof S !== 'undefined' && typeof session !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && document.readyState === 'complete' && !!document.querySelector('#view > *') && GH.booted;
 const ready = p => p.waitForFunction(isReady, null, { timeout: 30000 });
-const watch = p => { p.errs = []; p.on('pageerror', e => p.errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.errs.push(m.text()); }); return p; };
+// 読み直しの最中に読みに行ったとき（CI の遅い機械で、別のタブの保存を受けて2回読み直すことがある）は、読みこみが終わってから読みなおす。読み直したかどうかの確かめは performance.timeOrigin でしているので、ここでは中身だけを読みなおす
+const watch = p => { p.errs = []; p.on('pageerror', e => p.errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.errs.push(m.text()); }); const ev0 = p.evaluate.bind(p); p.evaluate = async (...a) => { for (let i = 0; ; i++){ try{ return await ev0(...a); }catch(e){ if (i >= 4 || !/context was destroyed|navigation/i.test(e.message)) throw e; await p.waitForLoadState('load').catch(() => {}); await p.waitForFunction(() => typeof S !== 'undefined' && document.querySelector('#app, body'), null, { timeout: 30000 }).catch(() => {}); await p.waitForTimeout(300); } } }; return p; };
 const origin = p => p.evaluate(() => performance.timeOrigin).catch(() => 0);
-const saved = p => p.evaluate(() => JSON.parse(localStorage.getItem('gohancho.v1')));
+// 保存の中身を読む。読んでいる最中にそのタブが読み直したら（別のタブの保存を受けたとき。CI の遅い機械で起きる）、落ち着いてから読みなおす
+const saved = async p => { for (let i = 0; ; i++){ try{ return await p.evaluate(() => JSON.parse(localStorage.getItem('gohancho.v1'))); }catch(e){ if (i >= 4 || !/context was destroyed|navigation/i.test(e.message)) throw e; await p.waitForLoadState('load').catch(() => {}); await p.waitForTimeout(300); } } };
 const FAM = [{id: 'f1', name: '娘', role: 'child', avoid: ['@milk'], allergy: ['@milk'], mild: false, sometimes: false, me: false}];
 
 async function pair(){
