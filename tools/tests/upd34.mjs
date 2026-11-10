@@ -158,6 +158,7 @@ for (const f of ['v100_ja', 'v120_ja', 'v120_en', 'v126_ja']){
     // A が読み直したときの書き直し（今日の下書きなど）で B も読み直すことがある。落ち着くまで待ってから次へ（CI の遅い機械で、その読み直しを数えていた）
     for (let i = 0, last = ''; i < 20; i++){ await A.waitForTimeout(500); const k = JSON.stringify(await Promise.all([A, B].map(p => p.evaluate(() => performance.timeOrigin).catch(() => 0)))); if (k === last) break; last = k; }
     await ready(B);
+    await B.evaluate(() => sessionStorage.removeItem('gohanOther'));   // ここまでの読み直しの回数（1分に3回まで）は数えなおす。遅い機械では、ここまでで上限に届いて読み直さないことがあった
     const tb = await B.evaluate(() => performance.timeOrigin);
     await Promise.all([B.waitForEvent('load', { timeout: 15000 }).catch(() => {}), A.evaluate(() => { S.settings.lowSalt = true; saveNow(); })]);
     await ready(B);
