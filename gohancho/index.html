@@ -8408,6 +8408,7 @@ const KC_FOODS = [
     [/鶏もも|chicken thigh|boneless chicken/i, 190, {p: 250, u: {枚: 250}, s: 'M'}],
     [/鶏ひき|ground chicken|minced chicken|chicken mince|ground turkey|turkey mince/i, 171, {s: 'M'}],
     [/鶏肉|鶏|chicken|turkey|\bpollo\b|frango|ayam|\bgà\b/i, 190, {p: 250, s: 'M'}],
+    [/pork shoulder|pork butt|boston butt|pork collar|pork neck/i, 237, {p: 150, s: 'M'}],   // 肩・肩ロース（R164: 「Pork shoulder or belly」が後ろの belly＝豚バラに当たっていた。値は下の「豚」と同じ）
     [/豚バラ|pork belly|samgyeopsal|panceta|liempo|\bbelly\b/i, 366, {u: {枚: 20}, s: 'M'}],
     [/豚ひき|合いびき|ground pork|minced pork|pork mince|sausage ?meat|sausagemeat|ground meat|minced meat|\bmince\b|mixed mince|meatloaf mix/i, 230, {s: 'M'}],
     [/pork ribs?|spare ?ribs|baby back|pork rib/i, 290, {e: 0.7, s: 'U'}],
@@ -8515,6 +8516,8 @@ const KC_FOODS = [
     // 長ねぎ・青ねぎ（green onion・spring onion など）は玉ねぎ（onions）より前に置く。1本 10〜15g（R154。玉ねぎ1個 200g に数えていた）
     [/長ねぎの青い部分/i, 30, {p: 30, u: {本: 30}, tiny: 1, s: 'M'}],
     [/長ねぎ|白ねぎ|leeks?|puerros?|alho-poró|alho poró|lauch|pory|pırasa|daun bawang besar|green onion \(daepa\)|daepa|scallion whites/i, 35, {p: 120, u: {本: 100, cm: 3}, s: 'M'}],
+    // 小玉ねぎ（pearl onion・petits oignons・ペコロスなど）は1個 約18g（R164。玉ねぎ1個 200g に数えていた: Petits pois à la française の小玉ねぎ8個が 1600g）
+    [/小玉ねぎ|ペコロス|pearl onions?|baby onions?|small (?:white |red |yellow |brown )?onions\b|petits oignons|oignons grelots|grelots|borettane|cipolline|cipollini|silverskin onions?|pickling onions?|cebollitas?|cebolinhas? pérola/i, 33, {p: 18, s: 'M'}],
     [/万能ねぎ|小ねぎ|青ねぎ|わけぎ|分葱|あさつき|浅葱|(?<!玉|たま)ねぎ|(?<!玉)葱|scallions?|green onions?|spring onions?|jjokpa|cebolin|cebolleta|cebollín|cebollino|cheiro-verde|frühlingszwiebel|szczypiorek|dymka|taze soğan|daun bawang|hành lá|dahon ng sibuyas|sibuyas dahon|shallot leaves|garlic leaves/i, 30, {p: 15, u: {本: 10, bunch: 100, bunches: 200}, tiny: 1, s: 'M'}],
     [/玉ねぎ|たまねぎ|onions?(?! powder)|cebollas?|cebola|zwiebeln?|cebula|soğan|bawang (?:bombay|merah besar)|pyaz|hành tây|sibuyas|red onion|pearl onions|baby onions|borettane/i, 33, {p: 200, s: 'M'}],
     [/にんにく|ニンニク|garlic(?! (?:chives|powder|oil|leaves|shoots|mayo))|ajo\b|alho|knoblauch|czosnek|sarımsak|bawang putih|tỏi|bawang\b(?! (?:merah|bombay|daun|goreng))/i, 129, {p: 5, u: {片: 5, clove: 5, cloves: 5, head: 50, bulb: 50, 'head of garlic': 50, かけ: 5}, tiny: 1, s: 'M'}],
@@ -8801,10 +8804,14 @@ function kcalRaw(r){
 // 2で割ると 1人分が大きすぎる数になる。この上限を超えたら、うその数字を出さずに「何人分かわからないため出せない」にする（主菜 1100・ご飯もの/麺 1200・副菜 600・汁もの 800。汁ものは具の多い、食事になるスープもあるので少し上）
 const KC_CEIL = {'主菜': 1100, 'ごはん': 1200, '麺': 1200, '副菜': 600, '汁物': 800};
 function kcCeil(r){ return KC_CEIL[r && r.type] || 1100; }
+// R164: 上限を超えたときの理由を分ける。batch＝1回に作る量で書かれた料理（材料が2人分には多すぎて、もっと多い人数で割った・パイやキッシュなど型1台分の料理）→「何人分かわからない」。
+// それ以外（2人分の量なのに1人分が上限を超える。材料の量の読みとりの誤りか、本当に高いかを確かめられない）→「1人分としては多すぎる」
+const KC_WHOLE_RE = /\bpies?\b|quiche|\btarts?\b|toad in the hole|lasagn|casserole|\bbake\b|frittata|empanadas?|börek|moussaka|pastitsio|pastel de|tortilla de patatas/i;
+function kcBatch(r, x){ return x.sv > 2.001 || KC_WHOLE_RE.test([r.name, r.nameEn || '', ...(r.alt || [])].join(' ')); }
 function kcalOf(r){
     const x = kcalRaw(r); if (!x) return {st: 'na'};
     if (!(x.cov >= KC_MIN_COV) || !Number.isFinite(x.kcal) || x.kcal <= 0) return {st: 'na'};
-    if (x.kcal > kcCeil(r)) return {st: 'na', big: true, raw: x.kcal};   // 量が多すぎて何人分かわからない（数字は出さない。ダイエットモードでは重めとみる）
+    if (x.kcal > kcCeil(r)) return {st: 'na', big: true, batch: kcBatch(r, x), raw: x.kcal};   // 1人分が上限を超える（数字は出さない。ダイエットモードでは重めとみる）。batch: 何人分かわからない（R164）
     if (x.kcal < 30) return {st: 'low', raw: x.kcal};
     return {st: 'ok', v: Math.max(30, Math.round(x.kcal / 10) * 10), raw: x.kcal};
 }
@@ -8821,12 +8828,12 @@ function kcalStaple(st){ return st && KCAL_STAPLE[st.id] != null ? KCAL_STAPLE[s
 function menuKcal(m){
     const rs = ((m && m.items) || []).map(x => x.r).filter(Boolean); if (!rs.length) return {st: 'na'};
     let sum = 0;
-    for (const r of rs){ const k = kcalOf(r); if (k.st === 'na') return {st: 'na'}; sum += k.raw; }
+    for (const r of rs){ const k = kcalOf(r); if (k.st === 'na') return {st: 'na', why: r}; sum += k.raw; }   // why: 出せない料理（お膳の下に名前を添える。R164）
     const main = rs[0], oneBowl = main && (main.type === 'ごはん' || main.type === '麺'), st = oneBowl ? null : stapleSpot();
-    if (st){ const s = kcalStaple(st); if (s == null) return {st: 'na'}; sum += s; }
+    if (st){ const s = kcalStaple(st); if (s == null) return {st: 'na', staple: true}; sum += s; }
     return {st: 'ok', v: Math.round(sum / 10) * 10, dish: rs.reduce((a, r) => a + kcalOf(r).raw, 0), rs};
 }
-function kcalText(k){ return k.st === 'ok' ? t('約 {n} kcal（1人分・目安）', {n: k.v}) : k.st === 'low' ? t('30 kcal 未満（1人分・目安）') : k.big ? t('カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）') : t('カロリーの目安を出せません（量のわからない材料が多いため）'); }
+function kcalText(k){ return k.st === 'ok' ? t('約 {n} kcal（1人分・目安）', {n: k.v}) : k.st === 'low' ? t('30 kcal 未満（1人分・目安）') : k.big ? (k.batch ? t('カロリーの目安を出せません（1回に作る量が多く、何人分かわからないため）') : t('カロリーの目安を出せません（材料の量から出した数が、1人分としては多すぎるため）')) : t('カロリーの目安を出せません（量のわからない材料が多いため）'); }
 const KCAL_NOTE = () => t('材料の量からの目安です。実際の量・作り方で変わります。');
 // 作り方の画面: 調味料の欄の下に1行と注意書き
 function kcalNoteHtml(r){
@@ -8867,7 +8874,7 @@ function kcalTrayHtml(m){
     if (!m || !m.items || !m.items.some(x => x.r)) return '';
     const k = menuKcal(m), lt = dietOn() ? menuLight(m) : null;
     const tag = lt == null ? '' : `<span class="kc-tag${lt ? ' light' : ''}">${esc(lt ? tc('カロリーの目安', '軽め') : tc('カロリーの目安', 'ふつう'))}</span>`;
-    const txt = k.st === 'ok' ? t('お膳の合計：約 {n} kcal（1人分・目安）', {n: k.v}) : t('お膳の合計の目安は出せません');
+    const txt = k.st === 'ok' ? t('お膳の合計：約 {n} kcal（1人分・目安）', {n: k.v}) : k.why ? t('お膳の合計の目安は出せません（「{name}」の目安を出せないため）', {name: k.why.name}) : k.staple ? t('お膳の合計の目安は出せません（主食の目安がないため）') : t('お膳の合計の目安は出せません');
     return `<p class="kcal-sum" role="note"><span class="kc-v">${esc(txt)}</span>${tag}<span class="kc-c">${esc(KCAL_NOTE())}</span></p>`;
 }
 function dietSettingsHtml(){
