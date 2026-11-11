@@ -2946,7 +2946,8 @@ function load(){
             const d = JSON.parse(raw);
             if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('shape');
             const st = normalizeState(d);
-            if (typeof d.mk === 'string' && d.mk !== menuHash(d) && menuAlign(st, [])) storeInfo.menuFix = true;   // 前の版が献立を書きかえていて、決めた献立と下書きが食い違う: 下書きを決めた献立にそろえる（R174）
+            let mk0 = null; try{ mk0 = JSON.parse(sessionStorage.getItem('gohanMenuKeep') || 'null'); sessionStorage.removeItem('gohanMenuKeep'); }catch(e){}   // 読み直す前に控えた、このタブの下書き（決めた献立と同じ料理。消すと前の版のタブが汁ものの席を空けた献立を出せず、新しい案を出していた: R174d）
+            if (typeof d.mk === 'string' && d.mk !== menuHash(d) && menuAlign(st, mk0 && Date.now() - mk0.t < 60000 ? [mk0] : [])) storeInfo.menuFix = true;   // 前の版が献立を書きかえていて、決めた献立と下書きが食い違う: 下書きを決めた献立にそろえる（R174）
             if (lostRecords(d, st)){ quarantine(raw); storeInfo.pending.push('lost'); }   // 形の合わない記録は読み込みで外れる。元のデータは残す
             return st;
         }catch(e){ quarantine(raw, true); storeInfo.pending.push('broken'); }
@@ -3121,7 +3122,7 @@ function menuHash(s){
 function menuAlign(st, srcs){
     const c = st && st.cook, d = st && st.draft, ids = x => (x && Array.isArray(x.ids) ? x.ids.filter(Boolean) : []).join();
     if (!c || !Array.isArray(c.ids) || !c.ids.length || !d || typeof d !== 'object' || d.d !== c.d || ids(d) === ids(c)) return false;
-    const src = (srcs || []).find(s => s && canonJ(s.cook) === canonJ(c) && s.draft && s.draft.d === c.d && ids(s.draft) === ids(c));
+    const src = (srcs || []).find(s => s && s.draft && typeof s.draft === 'object' && s.draft.d === c.d && ids(s.draft) === ids(c));   // 決めた献立と同じ料理の下書き（買い物メモなど、決めた献立の中身の細かい違いは見ない）
     if (src) st.draft = src.draft; else delete st.draft;   // 下書きがなければ、決めた献立をそのまま出す
     return true;
 }
@@ -3233,7 +3234,8 @@ function mergeStates(baseRaw, curRaw, mineJson){
     // 前の版が書いた組（R174: 前の版がほぼ同時に決めると、決めた献立はこちら・下書きはあちら、のまま残ることがある）は、食い違っていればそろえる
     { const oc = out.cook, od = out.draft, cj = canonJ, ids = x => (x && Array.isArray(x.ids) ? x.ids.filter(Boolean) : []).join(), pair = s => cj(s.cook) === cj(oc) && cj(s.draft) === cj(od);
       if (oc && od && Array.isArray(oc.ids) && oc.ids.length && oc.d === od.d && !pair(mine) && !(pair(theirs) && (theirsOk || ids(od) === ids(oc)))){
-          const src = [mine, theirs].find(s => cj(s.cook) === cj(oc) && s.draft && (s === mine || theirsOk || (s.draft.d === oc.d && ids(s.draft) === ids(oc))));
+          const src = [mine, theirs].find(s => cj(s.cook) === cj(oc) && s.draft && (s === mine || theirsOk || (s.draft.d === oc.d && ids(s.draft) === ids(oc))))
+              || [mine, theirs].find(s => s.draft && s.draft.d === oc.d && ids(s.draft) === ids(oc));   // 決めた献立と同じ料理の下書き（決めた献立の中身の細かい違いは見ない。外すと前の版のタブが新しい案を出す: R174d）
           if (src) out.draft = src.draft; else delete out.draft;   // 下書きがなければ、決めた献立をそのまま出す
       } }
     try{ out.mk = menuHash(out); }catch(e){}
@@ -3368,7 +3370,9 @@ function keepBeforeReload(){
     const f = lastField && document.contains(lastField) ? lastField : null, k = f && focusKey(f);
     if (k && f.value) sessionStorage.setItem('gohanOtherIn', JSON.stringify({k, v: String(f.value).slice(0, 2000), t: Date.now()}));
     const cur = localStorage.getItem(STORE_KEY); if (!cur) return;
-    const mine = stateToKeep(), cs = normalizeState(JSON.parse(cur));
+    const mine = stateToKeep(), cs = normalizeState(JSON.parse(cur)), mc = mine.cook, md = mine.draft, ids = x => (x && Array.isArray(x.ids) ? x.ids.filter(Boolean) : []).join();
+    // このタブの下書きが決めた献立と同じ料理なら控える（読み直したときに、前の版が書いた食い違いをそろえるのに使う。下書きを消すと、前の版のタブは汁ものの席を空けた決めた献立を出せない: R174d）
+    if (mc && md && Array.isArray(mc.ids) && mc.ids.length && md.d === mc.d && ids(md) === ids(mc)){ try{ sessionStorage.setItem('gohanMenuKeep', JSON.stringify({draft: md, t: Date.now()})); }catch(e){} }
     try{ famGoneKeep(famGone(cs)); }catch(e){}
     if (lostParts(mine, cs)) sessionStorage.setItem('gohanLost', JSON.stringify({settings: {allergens: mine.settings.allergens}, family: mine.family, cook: mine.cook, week: mine.week}));
 }

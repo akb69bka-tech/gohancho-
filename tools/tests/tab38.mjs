@@ -3,6 +3,7 @@
 //  R173 同じタブで家族の人にアレルギーを足し、そのあと同じタブでその人を消した。別のタブが3分以内に保存しても「別のタブで…消されたため」は出ない（このタブで消した）
 //  R174 前の版のタブ（変えた時刻・しるしを書かない）がほぼ同時に別の献立を決め、決めた献立はこちら・下書きはあちら、のまま保存された。
 //       どちらのタブでも・開き直しても、作り方（決めた献立）と今日（下書き）は同じ献立になる。決めた献立は変えない（下書きを決めた献立にそろえる）
+//       汁けの多い主菜で汁ものの席を空けた献立は、前の版は下書きがないと出せない。そろえるときは、このタブの同じ料理の下書きを使う（読み直しても）
 //  R176 とても古い版のタブ（消した印・しるしなし。上書きする）が料理を入れかえて保存し、決めた献立が消えた。黙って消さず「一部が消えました［消えた分を戻す］」を出し、戻せる
 //  （R175 の知らせの大きさは note37.mjs で見る）
 //  前の版のタブ: 保存の中身を、前の版が書くとおりに（しるしを足さずに）直接書いて試す。git の履歴がある所では、前の版（v127・v132）の本体を同じ場所（同じ origin）で開いても試す
@@ -166,6 +167,8 @@ if (!ONLY || ONLY === 'r174'){
             await ev(A, () => setTab('today')); await ev(B, () => setTab('today'));
             await settle(A, B);
             const decB = () => { setTab('today'); const a = menuIds().join(); for (let i = 0; i < 30 && menuIds().join() === a; i++) newMenu(); keepDraft(); render(); document.querySelector('[data-act=decide]').click(); return menuIds().join(); };
+            // round 0・2 は、汁けの多い主菜（うどん・鍋など）で汁ものの席を空けた献立を決める（前の版は、この形の決めた献立を下書きなしでは出せず、新しい案を出していた）
+            if (round !== 1){ await ev(A, () => { for (let i = 0; i < 300; i++){ newMenu(); if (session.menu.items.some(x => !x.r)) break; } keepDraft(); render(); saveNow(); }); await A.waitForTimeout(800); await settle(A, B); }
             const [ia, ib] = await Promise.all([ev(A, decide), B.waitForTimeout(round * 25).then(() => ev(B, decB))]);
             await A.waitForTimeout(1500);
             await settle(A, B);
