@@ -1621,5 +1621,55 @@ GOHAN_PACK_TR('ID', 'id', {
         'Masukkan tahu dan santan, masak dengan api kecil 10 menit tanpa mendidih kencang. Siramkan ke lontong dalam mangkuk.',
       ],
     },
+    "id_osengtempe": {
+      name: "Oseng tempe kacang panjang",
+      ings: [["Tempe", "200 g"], ["Kacang panjang", "200 g"], ["Cabai merah", "3 buah"]],
+      seas: "3 sdm minyak · 3 siung bawang merah · 2 siung bawang putih · 2 sdm kecap asin · 1 sdt gula merah · 2 lembar daun salam · 1 iris lengkuas · 50 ml air · Garam",
+      steps: [
+        "Potong tempe bentuk korek api, kacang panjang 3 cm, iris cabai, bawang merah, dan bawang putih.",
+        "Goreng tempe dengan 2 sdm minyak di wajan sampai kecokelatan, angkat.",
+        "Tumis bawang merah, bawang putih, cabai, daun salam, dan lengkuas dengan sisa minyak sampai harum, masukkan kacang panjang dan air, masak 3 menit, lalu tempe, kecap, gula, dan garam.",
+      ],
+    },
+    "id_tumistahutauge": {
+      name: "Tumis tahu tauge",
+      ings: [["Tahu putih", "300 g"], ["Tauge", "200 g"], ["Daun bawang", "2 batang"], ["Cabai merah", "1 buah"]],
+      seas: "3 sdm minyak · 3 siung bawang merah · 2 siung bawang putih · 1 sdm kecap asin · 1/2 sdt garam · 1/4 sdt merica bubuk",
+      steps: [
+        "Potong tahu dadu, goreng dengan 2 sdm minyak di wajan sampai kuning keemasan, angkat.",
+        "Tumis irisan bawang merah, bawang putih, dan cabai dengan sisa minyak sampai harum.",
+        "Masukkan tauge, tahu, dan daun bawang, bumbui dengan kecap, garam, dan merica, tumis di api besar 1–2 menit.",
+      ],
+    },
+    "id_gulaitahu": {
+      name: "Gulai tahu kacang panjang",
+      ings: [["Tahu putih", "300 g"], ["Kacang panjang", "150 g"], ["Santan", "250 ml"], ["Cabai merah", "3 buah"]],
+      seas: "2 sdm minyak · 4 siung bawang merah · 3 siung bawang putih · 1 sdt kunyit bubuk · 1 sdt ketumbar bubuk · 1 batang serai · 2 lembar daun jeruk · 1 iris lengkuas · 1 sdt garam · 100 ml air",
+      steps: [
+        "Potong tahu dadu dan kacang panjang 4 cm. Haluskan bawang merah, bawang putih, dan cabai.",
+        "Tumis bumbu halus bersama kunyit, ketumbar, serai, daun jeruk, dan lengkuas dengan minyak di panci selama 4 menit sampai harum.",
+        "Masukkan santan, air, dan garam, didihkan perlahan sambil diaduk. Masukkan tahu dan kacang panjang, masak 10 menit.",
+      ],
+    },
+    "id_tahubalado": {
+      name: "Tahu balado",
+      ings: [["Tahu putih", "400 g"], ["Cabai merah keriting", "6 buah"], ["Tomat", "1 buah"], ["Bawang merah", "5 siung"]],
+      seas: "5 sdm minyak · 2 siung bawang putih · 1 sdt gula · 1/2 sdt garam · 1 sdt air jeruk nipis",
+      steps: [
+        "Potong tahu dadu, goreng dengan 4 sdm minyak di wajan sampai kuning keemasan, angkat.",
+        "Haluskan kasar cabai, bawang merah, bawang putih, dan tomat, tumis dengan sisa minyak 6–8 menit sampai matang dan harum.",
+        "Bumbui dengan gula, garam, dan air jeruk nipis, masukkan tahu dan aduk rata.",
+      ],
+    },
+    "id_teluradarsayur": {
+      name: "Telur dadar sayur",
+      ings: [["Telur", "4 butir"], ["Kol", "80 g"], ["Wortel", "1/3 buah"], ["Daun bawang", "2 batang"]],
+      seas: "3 sdm minyak · 2 siung bawang merah · 1/2 sdt garam · 1/4 sdt merica bubuk",
+      steps: [
+        "Iris halus kol dan wortel, iris daun bawang dan bawang merah.",
+        "Kocok telur bersama sayuran, garam, dan merica.",
+        "Panaskan minyak di wajan datar, tuang adonan telur, masak 3 menit, balik dan masak 2 menit lagi sampai kecokelatan.",
+      ],
+    },
   }
 });

@@ -177,11 +177,11 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
     await p.evaluate(() => closeSheet());
     // まるごと入れ替えでその道具の料理が先に出る
     const pref = await p.evaluate(() => { session.tool = 'hotplate'; const m = []; for (let i = 0; i < 40; i++){ session.rejected.clear(); newMenu(); m.push(hasTool(session.menu.items[0].r, 'hotplate')); } session.tool = 'charcoal'; const c = []; for (let i = 0; i < 40; i++){ session.rejected.clear(); newMenu(); c.push(hasTool(session.menu.items[0].r, 'charcoal')); }
-        session.tool = 'oven'; const o = []; for (let i = 0; i < 40; i++){ session.rejected.clear(); newMenu(); o.push(session.menu.items[0].r.id); } session.tool = null; const n = []; for (let i = 0; i < 40; i++){ session.rejected.clear(); newMenu(); n.push(hasTool(session.menu.items[0].r, 'hotplate')); }
+        session.tool = 'oven'; const o = []; for (let i = 0; i < 120; i++){ session.rejected.clear(); newMenu(); o.push(session.menu.items[0].r.id); } session.tool = null; const n = []; for (let i = 0; i < 40; i++){ session.rejected.clear(); newMenu(); n.push(hasTool(session.menu.items[0].r, 'hotplate')); }
         return {hot: m.filter(Boolean).length, cha: c.filter(Boolean).length, ovenNon: o.filter(x => x !== 'gratin').length, none: n.filter(Boolean).length}; });
     ok(pref.hot >= 38, `T4 ホットプレートの日は、主菜がホットプレートの料理（40回中 ${pref.hot}）`);
     ok(pref.cha >= 38, `T4 炭火の日は、主菜が炭火の料理（40回中 ${pref.cha}）`);
-    ok(pref.ovenNon >= 10, `T4 オーブンの料理は1品だけなので、無理に絞らない（グラタン以外が ${pref.ovenNon}/40）`);
+    ok(pref.ovenNon >= 20, `T4 オーブンの料理は1品だけなので、無理に絞らない（グラタン以外が ${pref.ovenNon}/120。40回では乱数しだいで落ちたので 120回に・dm42）`);
     ok(pref.none <= 20, `T4 道具を選ばないときは偏らない（ホットプレート ${pref.none}/40）`);
     // 決めた献立は動かない
     await p.evaluate(() => { session.tool = null; session.rejected.clear(); newMenu(); const mb = () => { const c = session.menu && session.menu.items[0] && session.menu.items[0].r; return !!c && !!isBowlMain(c); }; for (let i = 0; i < 40 && mb(); i++) newMenu(); render(); });   // 一覧の入れ替えは『形が同じ主菜』だけなので、ふつうの主菜(丼・麺でない)から始める

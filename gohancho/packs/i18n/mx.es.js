@@ -1256,5 +1256,75 @@ GOHAN_PACK_TR('MX', 'es', {
         'Espolvoree con el chile en polvo y la sal, mezcle y sirva frío.',
       ],
     },
+    "mx_calabacitasqueso": {
+      name: "Calabacitas a la mexicana con queso",
+      ings: [["Calabacitas", "4 (600 g)"], ["Jitomates", "2"], ["Cebolla", "1/4"], ["Chile serrano", "1"], ["Queso fresco o panela", "150 g"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · Sal · Cilantro",
+      steps: [
+        "Pica en cubitos las calabacitas, los jitomates y la cebolla, y pica finamente el chile y el ajo.",
+        "Sofríe la cebolla, el ajo y el chile en el aceite en una sartén 3 minutos, agrega el jitomate y cocina 3 minutos.",
+        "Añade las calabacitas y sal, tapa y cocina 8–10 minutos hasta que estén suaves. Incorpora el queso en cubos, calienta 2 minutos y espolvorea cilantro.",
+      ],
+    },
+    "mx_huevosahogados": {
+      name: "Huevos ahogados",
+      ings: [["Huevos", "4"], ["Jitomates", "3"], ["Chiles guajillo", "2"], ["Cebolla", "1/4"], ["Calabacita", "1"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 400 ml de agua · 1 rama de epazote o cilantro · Sal",
+      steps: [
+        "Desvena los chiles guajillo y remójalos en agua caliente 10 minutos. Lícualos con los jitomates, la cebolla y el ajo.",
+        "Fríe la salsa en el aceite en una cacerola amplia 5 minutos, añade el agua, la calabacita en cubos, el epazote y sal, y cocina 8 minutos.",
+        "Rompe los huevos uno a uno sobre el caldo hirviendo, tapa y cocina 5–6 minutos hasta que las claras cuajen.",
+      ],
+    },
+    "mx_rajasconcrema": {
+      name: "Rajas con crema y queso",
+      ings: [["Chiles poblanos", "4"], ["Cebolla", "1/2"], ["Crema", "150 ml"], ["Queso panela u Oaxaca", "100 g"], ["Granos de elote", "50 g"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Asa los chiles poblanos directamente al fuego o en el comal hasta que se tatemen, déjalos sudar en una bolsa 10 minutos, pélalos, desvénalos y córtalos en rajas.",
+        "Sofríe la cebolla fileteada y el ajo en el aceite en una sartén 4 minutos, agrega las rajas y el elote y cocina 2 minutos.",
+        "Incorpora la crema y el queso en cubos, calienta a fuego bajo 3 minutos y sazona.",
+      ],
+    },
+    "mx_chilesrellenosqueso": {
+      name: "Chiles rellenos de queso sin capear",
+      ings: [["Chiles poblanos", "4"], ["Queso Oaxaca o Chihuahua", "200 g"], ["Jitomates", "3"], ["Cebolla", "1/4"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 100 ml de agua · Sal · Orégano",
+      steps: [
+        "Asa los chiles en el fuego o en el comal, déjalos sudar en una bolsa 10 minutos, pélalos y ábrelos para quitar las semillas. Rellénalos con el queso.",
+        "Licúa los jitomates con la cebolla, el ajo y el agua, y cocina la salsa en el aceite en una olla 8 minutos con sal y orégano.",
+        "Acomoda los chiles en un refractario, baña con la salsa y hornea a 200 °C de 12 a 15 minutos, hasta que el queso se derrita.",
+      ],
+    },
+    "mx_nopalesconhuevo": {
+      name: "Nopales con huevo",
+      ings: [["Nopales limpios", "300 g"], ["Huevos", "4"], ["Jitomate", "1"], ["Cebolla", "1/4"], ["Chile serrano", "1"]],
+      seas: "2 cucharadas de aceite · Sal",
+      steps: [
+        "Corta los nopales en tiras y hiérvelos en una olla con agua y sal 10 minutos. Enjuágalos y escúrrelos.",
+        "Sofríe la cebolla, el chile y el jitomate picados en el aceite en una sartén 3 minutos, agrega los nopales y cocina 3 minutos.",
+        "Vierte los huevos batidos con una pizca de sal y revuelve hasta que cuajen.",
+      ],
+    },
+    "mx_hongosguajillo": {
+      name: "Champiñones al ajillo con guajillo",
+      ings: [["Champiñones", "500 g"], ["Chiles guajillo", "2"], ["Cebolla", "1/4"], ["Cilantro", "1 puño"]],
+      seas: "4 cucharadas de aceite · 6 dientes de ajo · 1/2 limón · Sal",
+      steps: [
+        "Rebana los champiñones, el ajo y la cebolla. Desvena los guajillos y córtalos en aros delgados con tijeras.",
+        "Fríe el ajo y el guajillo en el aceite en una sartén grande 1 minuto sin que se quemen, agrega la cebolla y los champiñones y cocina a fuego alto 8 minutos.",
+        "Sazona con sal y jugo de limón y espolvorea cilantro.",
+      ],
+    },
+    "mx_ejotesconhuevo": {
+      name: "Ejotes con huevo",
+      ings: [["Ejotes", "300 g"], ["Huevos", "4"], ["Jitomate", "1"], ["Cebolla", "1/4"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Despunta los ejotes, córtalos en trozos de 3 cm y hiérvelos en una olla con agua y sal 5 minutos. Escúrrelos.",
+        "Sofríe la cebolla, el ajo y el jitomate picados en el aceite en una sartén 3 minutos, añade los ejotes y cocina 2 minutos.",
+        "Vierte los huevos batidos, salpimienta y revuelve hasta que cuajen.",
+      ],
+    },
   }
 });

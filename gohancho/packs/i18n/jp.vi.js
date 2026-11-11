@@ -518,5 +518,8 @@ GOHAN_PACK_TR('JP', 'vi', {
     "shakebutter": {name: "Cá hồi áp chảo bơ xì dầu"},
     "gyusukini": {name: "Bò om hành tây kiểu sukiyaki"},
     "butacabbage": {name: "Ba chỉ heo xào bắp cải vị muối"},
+    "nasuatsuagemiso": {name: "Đậu hũ chiên xào cà tím sốt miso"},
+    "iridofu": {name: "Đậu hũ xào rau củ và trứng (iri-dofu)"},
+    "tofukinokoankake": {name: "Đậu hũ sốt nấm sệt"},
   }
 });

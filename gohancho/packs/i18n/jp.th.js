@@ -572,5 +572,8 @@ GOHAN_PACK_TR('JP', 'th', {
     "shakebutter": {name: "ปลาแซลมอนย่างเนยซอสโชยุ"},
     "gyusukini": {name: "เนื้อวัวต้มหอมใหญ่สไตล์สุกียากี้"},
     "butacabbage": {name: "หมูสามชั้นผัดกะหล่ำปลีรสเกลือ"},
+    "nasuatsuagemiso": {name: "เต้าหู้ทอดผัดมะเขือยาวมิโซะ"},
+    "iridofu": {name: "เต้าหู้ผัดผักกับไข่ (อิริโดฟุ)"},
+    "tofukinokoankake": {name: "เต้าหู้ราดซอสเห็ด"},
   }
 });

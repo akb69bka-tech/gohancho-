@@ -14,6 +14,7 @@ GOHAN_I18N('it', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Carboidrati del pasto: circa {n} g (a persona, stima)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Nessuna stima dei carboidrati per il pasto (nessuna stima per «{name}»)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Nessuna stima dei carboidrati per il pasto (nessuna stima per la base)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Ci sono pochi piatti principali adatti sia alle tue regole alimentari o agli alimenti che eviti sia a «Meno carboidrati», quindi compariranno anche piatti principali con riso, pasta o patate",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "«{name}»: l'app non riconosce questa parola. Scegli tra i pulsanti qui sotto.",
     "ある（設定する）": "Sì (impostale)",
     "ない（このまま作る）": "No (inizia a cucinare)",

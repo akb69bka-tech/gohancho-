@@ -14,6 +14,7 @@ GOHAN_I18N('vi', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Carbohydrate của bữa: khoảng {n} g (mỗi người, ước tính)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Không có ước tính carbohydrate cho bữa (không có ước tính cho “{name}”)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Không có ước tính carbohydrate cho bữa (không có ước tính cho món chính)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Có ít món chính hợp cả với chế độ ăn hay món không ăn của bạn lẫn “Ít tinh bột”, nên các món chính có cơm, mì hoặc khoai cũng sẽ xuất hiện",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: ứng dụng không nhận diện được từ này. Vui lòng chọn từ các nút bên dưới.",
     "ある（設定する）": "Có (thiết lập)",
     "ない（このまま作る）": "Không (bắt đầu nấu)",

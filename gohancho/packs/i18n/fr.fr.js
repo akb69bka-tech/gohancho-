@@ -1723,5 +1723,65 @@ GOHAN_PACK_TR('FR', 'fr', {
         'Servez aussitôt avec une boisson chaude.',
       ],
     },
+    "fr_ratatouilleoeufs": {
+      name: "Ratatouille aux œufs",
+      ings: [["Aubergine", "1 (250 g)"], ["Courgette", "1 (200 g)"], ["Poivron rouge", "1"], ["Tomates", "3"], ["Œufs", "4"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à café d'herbes de Provence · Sel · Poivre",
+      steps: [
+        "Coupez l'aubergine, la courgette, le poivron et les tomates en dés.",
+        "Faites chauffer l'huile dans une grande poêle ou une sauteuse et faites revenir l'aubergine et le poivron 5 minutes. Ajoutez la courgette, les tomates, l'ail et les herbes, couvrez et laissez mijoter 20 minutes. Salez et poivrez.",
+        "Creusez 4 puits, cassez un œuf dans chacun, couvrez et laissez cuire à feu doux 6 à 8 minutes, jusqu’à ce que les blancs soient pris.",
+      ],
+    },
+    "fr_poeleechampignons": {
+      name: "Poêlée de champignons, haricots verts et pois chiches",
+      ings: [["Champignons de Paris", "300 g"], ["Haricots verts", "250 g"], ["Pois chiches en conserve, égouttés", "100 g"], ["Échalote", "1"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à soupe de persil haché · Sel · Poivre",
+      steps: [
+        "Faites cuire les haricots verts 6 minutes dans une casserole d'eau bouillante salée et égouttez-les. Émincez les champignons et l'échalote.",
+        "Faites chauffer l'huile dans une grande poêle et faites dorer les champignons à feu vif 6 minutes. Ajoutez l'échalote et les pois chiches et poursuivez 2 minutes.",
+        "Ajoutez les haricots verts et l'ail, mélangez 2 minutes, salez, poivrez et parsemez de persil.",
+      ],
+    },
+    "fr_tianchevre": {
+      name: "Tian de légumes au chèvre",
+      ings: [["Courgettes", "2 (400 g)"], ["Aubergine", "1 (250 g)"], ["Tomates", "3"], ["Oignon", "1/2"], ["Fromage de chèvre frais", "100 g"]],
+      seas: "3 c. à soupe d'huile d'olive · 1 gousse d'ail · 1 c. à café de thym séché · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 190 °C. Coupez les légumes en fines rondelles et l'oignon en lamelles. Frottez un plat à gratin avec l'ail et répartissez l'oignon au fond.",
+        "Disposez les rondelles en rangées serrées en alternant les légumes, arrosez d'huile et parsemez de thym, de sel et de poivre.",
+        "Enfournez 30 minutes, émiettez le chèvre sur le dessus et prolongez la cuisson 10 minutes, jusqu’à ce que ce soit doré.",
+      ],
+    },
+    "fr_oeufscocotte": {
+      name: "Œufs cocotte aux épinards",
+      ings: [["Œufs", "4"], ["Épinards", "250 g"], ["Crème fraîche", "4 c. à soupe"], ["Comté ou gruyère râpé", "30 g"]],
+      seas: "1 c. à soupe de beurre · 1 gousse d'ail · Muscade · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 180 °C. Faites tomber les épinards 3 minutes à la poêle avec le beurre et l'ail, pressez-les et assaisonnez de muscade, de sel et de poivre.",
+        "Répartissez les épinards dans 4 ramequins, ajoutez 1 c. à soupe de crème fraîche dans chacun et cassez un œuf par-dessus. Parsemez de fromage.",
+        "Placez les ramequins dans un plat rempli d’eau chaude à mi-hauteur et enfournez 10 à 12 minutes, jusqu’à ce que les blancs soient pris.",
+      ],
+    },
+    "fr_gratinchoufleur": {
+      name: "Gratin de chou-fleur",
+      ings: [["Chou-fleur", "1 petit (600 g)"], ["Lait", "300 ml"], ["Emmental râpé", "60 g"]],
+      seas: "20 g de beurre · 1 c. à soupe de farine · Muscade · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Détaillez le chou-fleur en bouquets et faites-les cuire 6 minutes dans une casserole d'eau bouillante salée. Égouttez bien.",
+        "Faites fondre le beurre dans une casserole, ajoutez la farine, puis versez le lait en fouettant et laissez épaissir 3 minutes. Assaisonnez de muscade, de sel et de poivre et ajoutez la moitié du fromage.",
+        "Mettez le chou-fleur dans un plat à gratin, nappez de sauce, parsemez du reste de fromage et enfournez 20 minutes, jusqu’à ce que ce soit doré.",
+      ],
+    },
+    "fr_courgettesfarcies": {
+      name: "Courgettes farcies aux champignons et au fromage frais",
+      ings: [["Courgettes rondes ou longues", "2 (500 g)"], ["Champignons de Paris", "150 g"], ["Tomate", "1"], ["Fromage frais (type Saint-Moret ou ricotta)", "100 g"], ["Emmental râpé", "30 g"]],
+      seas: "2 c. à soupe d'huile d'olive · 1 échalote · 1 c. à soupe de persil haché · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 190 °C. Coupez les courgettes en deux, évidez-les à la cuillère et hachez la chair avec les champignons et la tomate.",
+        "Faites revenir l'échalote hachée et les légumes dans l'huile, à la poêle, 6 minutes jusqu'à ce qu'ils soient secs. Hors du feu, ajoutez le fromage frais et le persil, salez et poivrez.",
+        "Garnissez les courgettes, parsemez d'emmental et faites cuire au four dans un plat 25 minutes, jusqu'à ce qu'elles soient tendres et dorées.",
+      ],
+    },
   },
 });

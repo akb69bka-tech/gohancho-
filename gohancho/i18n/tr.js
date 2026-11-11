@@ -14,6 +14,7 @@ GOHAN_I18N('tr', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Öğünün karbonhidratı: yaklaşık {n} g (kişi başı, tahmin)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Öğün için karbonhidrat tahmini yok (“{name}” için tahmin yok)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Öğün için karbonhidrat tahmini yok (ana eşlikçi için tahmin yok)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu için pilav, makarna veya patatesli ana yemekler de çıkacak",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: Uygulama bu kelimeyi tanıyamıyor. Lütfen aşağıdaki düğmelerden birini seçin.",
     "ある（設定する）": "Evet (ayarla)",
     "ない（このまま作る）": "Hayır (pişirmeye başla)",

@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    "cheese": "Ser żółty",
     "kohlrabi": "Kalarepa",
     'millet': 'Kasza jaglana',
     'butter': 'Masło',
@@ -1681,6 +1682,56 @@ GOHAN_PACK_TR('PL', 'pl', {
         'Posmaruj chleb masłem.',
         'Na każdą kromkę połóż plasterek szynki.',
         'Ogórek pokrój w cienkie plasterki, ułóż na wierzchu i posyp odrobiną pieprzu.',
+      ],
+    },
+    "pl_gulaszpieczarki": {
+      name: "Gulasz z pieczarek",
+      ings: [["Pieczarki", "500 g"], ["Cebula", "1"], ["Czerwona papryka", "1"], ["Śmietana 18%", "100 g"]],
+      seas: "2 łyżki oleju · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki ostrej papryki · 1 łyżeczka mąki · 150 ml wody · Sól · Pieprz · Koperek",
+      steps: [
+        "Pieczarki pokrój w plasterki, cebulę w kostkę, a paprykę w paski.",
+        "Cebulę podsmaż na oleju w dużym garnku przez 4 minuty, dodaj pieczarki i smaż 8 minut, aż odparuje woda. Dodaj paprykę, przyprawy i wodę i duś 10 minut.",
+        "Śmietanę wymieszaj z mąką i odrobiną sosu, wlej do garnka i podgrzewaj 2 minuty, nie gotując. Dopraw i posyp koperkiem.",
+      ],
+    },
+    "pl_kalafiorzapiekany": {
+      name: "Kalafior zapiekany z jajkiem i serem",
+      ings: [["Kalafior", "1 (700 g)"], ["Jajka", "2"], ["Śmietana 18%", "100 g"], ["Starty ser żółty", "80 g"]],
+      seas: "1 łyżka masła · Gałka muszkatołowa · Sól · Pieprz · Natka pietruszki",
+      steps: [
+        "Piekarnik nagrzej do 200°C. Kalafior podziel na różyczki i gotuj w garnku w osolonej wodzie 6 minut. Odcedź i przełóż do natłuszczonego naczynia do zapiekania.",
+        "Jajka roztrzep ze śmietaną, połową sera, gałką muszkatołową, solą i pieprzem i polej kalafior.",
+        "Posyp resztą sera i zapiekaj 20 minut na złoto. Posyp natką.",
+      ],
+    },
+    "pl_plackicukinia": {
+      name: "Placki z cukinii z sosem czosnkowym",
+      ings: [["Cukinie", "2 (500 g)"], ["Jajka", "2"], ["Mąka pszenna", "3 łyżki"], ["Posiekany koperek", "1 łyżka"], ["Gęsty jogurt lub śmietana", "150 g"]],
+      seas: "4 łyżki oleju · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Cukinie zetrzyj na tarce o grubych oczkach, posól, odstaw na 10 minut i odciśnij. Wymieszaj z jajkami, mąką, koperkiem i pieprzem.",
+        "Rozgrzej olej na patelni i smaż placki nakładane łyżką po 3 minuty z każdej strony na złoto.",
+        "Jogurt wymieszaj z przeciśniętym czosnkiem i szczyptą soli i podawaj z plackami.",
+      ],
+    },
+    "pl_kapustagrzyby": {
+      name: "Kapusta duszona z grzybami",
+      ings: [["Biała kapusta", "600 g"], ["Pieczarki", "300 g"], ["Cebula", "1/2"], ["Przecier pomidorowy", "100 g"]],
+      seas: "3 łyżki oleju · 1 liść laurowy · 3 ziela angielskiego · 1 łyżeczka kminku · 150 ml wody · Sól · Pieprz",
+      steps: [
+        "Kapustę poszatkuj, pieczarki pokrój w plasterki, a cebulę w kostkę.",
+        "Cebulę i pieczarki podsmaż na oleju w dużym garnku 8 minut. Dodaj kapustę, wodę, liść laurowy, ziele angielskie i kminek, przykryj i duś 25 minut.",
+        "Dodaj przecier, gotuj bez przykrycia 5 minut i dopraw solą i pieprzem.",
+      ],
+    },
+    "pl_pieczarkifaszerowane": {
+      name: "Pieczarki faszerowane szpinakiem i serem",
+      ings: [["Duże pieczarki", "12 (500 g)"], ["Szpinak", "200 g"], ["Cebula", "1/4"], ["Starty ser żółty", "100 g"]],
+      seas: "2 łyżki oleju · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Piekarnik nagrzej do 200°C. Odłam nóżki pieczarek i posiekaj je razem z cebulą.",
+        "Cebulę, nóżki i czosnek podsmaż na oleju na patelni 4 minuty, dodaj szpinak, aż zwiędnie, wymieszaj z połową sera i dopraw.",
+        "Napełnij kapelusze farszem, posyp resztą sera i piecz na blasze 15–20 minut.",
       ],
     },
   }

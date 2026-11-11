@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    "ricotta": "Ricotta",
     'apple': 'Mela',
     'banana': 'Banana',
     'yogurt': 'Yogurt bianco',
@@ -1623,6 +1624,46 @@ GOHAN_PACK_TR('IT', 'it', {
         'Sbattete le uova con sale e pepe. Tostate il pane.',
         'Sciogliete il burro in padella a fuoco basso, aggiungete le uova e mescolate lentamente per 2-3 minuti, finché sono appena rapprese e ancora cremose.',
         'Servite le uova sul pane tostato.',
+      ],
+    },
+    "it_zucchineripiene": {
+      name: "Zucchine ripiene di ricotta",
+      ings: [["Zucchine", "3 (600 g)"], ["Ricotta", "200 g"], ["Parmigiano grattugiato", "40 g"], ["Uovo", "1"]],
+      seas: "2 cucchiai d'olio d'oliva · Qualche foglia di basilico · Noce moscata · Sale · Pepe",
+      steps: [
+        "Scaldate il forno a 200 °C. Tagliate le zucchine a metà nel senso della lunghezza, svuotatele, tritate la polpa e fatela saltare in padella con 1 cucchiaio d'olio per 4 minuti.",
+        "Mescolate la ricotta con la polpa cotta, l'uovo, metà del parmigiano, il basilico spezzettato, la noce moscata, sale e pepe.",
+        "Farcite le zucchine, cospargete con il parmigiano rimasto, irrorate d'olio e cuocete in una pirofila in forno per 25 minuti, finché sono dorate.",
+      ],
+    },
+    "it_involtinimelanzane": {
+      name: "Involtini di melanzane alla ricotta",
+      ings: [["Melanzane grandi", "2 (500 g)"], ["Ricotta", "200 g"], ["Passata di pomodoro", "300 g"], ["Parmigiano grattugiato", "30 g"]],
+      seas: "3 cucchiai d'olio d'oliva · 1 spicchio d'aglio · Qualche foglia di basilico · Sale · Pepe",
+      steps: [
+        "Scaldate il forno a 190 °C. Tagliate le melanzane per il lungo a fette di 5 mm e grigliatele in padella con poco olio finché sono morbide.",
+        "Fate cuocere la passata in un pentolino con l'aglio, il basilico, il sale e 1 cucchiaio d'olio per 10 minuti. Condite la ricotta con sale, pepe e metà del parmigiano.",
+        "Spalmate un cucchiaio di ricotta su ogni fetta e arrotolate. Disponete gli involtini in una pirofila su metà del sugo, copriteli con il resto, cospargete di parmigiano e infornate per 20 minuti.",
+      ],
+    },
+    "it_ceciespinaci": {
+      name: "Ceci e spinaci in umido",
+      ings: [["Ceci lessati o in scatola, scolati", "150 g"], ["Spinaci", "400 g"], ["Passata di pomodoro", "200 g"], ["Cipolla", "1/4"]],
+      seas: "3 cucchiai d'olio d'oliva · 2 spicchi d'aglio · 1 pizzico di peperoncino · 1 rametto di rosmarino · Sale",
+      steps: [
+        "Tritate la cipolla e fatela soffriggere con l'aglio, il peperoncino e il rosmarino nell'olio in un tegame largo per 4 minuti.",
+        "Aggiungete la passata e i ceci e cuocete per 10 minuti.",
+        "Unite gli spinaci un po’ alla volta, lasciateli appassire, togliete il rosmarino e regolate di sale.",
+      ],
+    },
+    "it_asparagibismarck": {
+      name: "Asparagi alla Bismarck",
+      ings: [["Asparagi verdi", "500 g"], ["Uova", "4"], ["Parmigiano grattugiato", "40 g"]],
+      seas: "30 g di burro · Sale · Pepe nero",
+      steps: [
+        "Pulite gli asparagi e lessateli in una pentola larga di acqua salata bollente per 5–6 minuti. Scolateli e disponeteli nei piatti.",
+        "Cospargete gli asparagi di parmigiano.",
+        "Cuocete le uova al tegamino nel burro in padella, adagiatele sugli asparagi, versate sopra il burro nocciola e condite con sale e pepe.",
       ],
     },
   }
