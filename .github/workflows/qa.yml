@@ -24,9 +24,17 @@ jobs:
         with:
           node-version: 22
       - name: Playwright (chromium) を入れる
+        # GitHub の機械で apt の名前解決が落ちることがある（11/11 v137: azure.archive.ubuntu.com が引けず2回とも止まった）。
+        # 1回目が落ちたら apt の取り先を archive.ubuntu.com に替えてやり直し、それでも落ちたらブラウザ本体だけ入れる（足りない依存はテストで落ちて分かる）
         run: |
           npm install -g playwright@1.56.1
-          playwright install --with-deps chromium
+          if playwright install --with-deps chromium; then exit 0; fi
+          echo "::warning::apt の取得に失敗。取り先を archive.ubuntu.com に替えてやり直す"
+          sudo sed -i 's#azure\.archive\.ubuntu\.com#archive.ubuntu.com#g' /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null || true
+          sudo apt-get update -o Acquire::Retries=3 || true
+          if playwright install --with-deps chromium; then exit 0; fi
+          echo "::warning::依存の取得をあきらめ、ブラウザ本体だけ入れる"
+          playwright install chromium
       - name: 静的チェック（JS 構文・packs・17言語）
         run: |
           node tools/qa/check-syntax.mjs
