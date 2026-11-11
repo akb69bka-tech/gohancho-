@@ -2052,4 +2052,5 @@ GOHAN_I18N('fil', {
     "煮込みなど、時間をかけて作る料理も出します": "Pati mga ulam na matagal lutuin, gaya ng nilaga",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Ang bilang ng tao (2), bilang ng ulam, iniiwasang pagkain at allergy ay mababago mamaya sa Settings.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "May allergy o iniiwasang pagkain? Maitatakda mo rito.",
+    "アレルギー・苦手を設定": "Allergy at iniiwasan",
 });

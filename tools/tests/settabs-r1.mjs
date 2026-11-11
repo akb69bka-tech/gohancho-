@@ -146,7 +146,7 @@ const TABS = {
     const has = !!(await p.$('[data-act="alg-hint-open"]'));
     ok(has, 'T3a はじめての設定のあと、献立の下にアレルギー・苦手の設定への案内がある');
     if (has){
-        await p.click('[data-act="alg-hint-open"]'); await until(p, () => tab === 'settings' && !sheet); await settle(p);
+        await p.click('[data-act="alg-hint-open"] >> visible=true'); await until(p, () => tab === 'settings' && !sheet); await settle(p);
         ok(await cur(p) === 'family', 'T3a 案内 → 家族・アレルギーのタブ: ' + await cur(p));
         ok(await inView(p, '#allergy-card') === true, 'T3a アレルギー対策の欄が見える: ' + await inView(p, '#allergy-card'));
     }

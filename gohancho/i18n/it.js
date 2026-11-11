@@ -2052,4 +2052,5 @@ GOHAN_I18N('it', {
     "煮込みなど、時間をかけて作る料理も出します": "Anche piatti che richiedono tempo, come gli stufati",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Persone (2), numero di piatti, alimenti da evitare e allergie si possono cambiare poi nelle Impostazioni.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Allergie o alimenti da evitare? Puoi impostarli qui.",
+    "アレルギー・苦手を設定": "Allergie e cibi da evitare",
 });

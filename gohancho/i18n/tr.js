@@ -2052,4 +2052,5 @@ GOHAN_I18N('tr', {
     "煮込みなど、時間をかけて作る料理も出します": "Güveç gibi zaman alan yemekler de",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Kişi sayısı (2), yemek sayısı, kaçındığınız yiyecekler ve alerjiler daha sonra Ayarlar’dan değiştirilebilir.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Alerjiniz ya da kaçındığınız yiyecekler mi var? Buradan ayarlayabilirsiniz.",
+    "アレルギー・苦手を設定": "Alerji ve kaçınılanlar",
 });

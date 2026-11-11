@@ -174,7 +174,8 @@ if (want('D4')){
         await onboard(p, cc, [], () => hookToast(p));
         await p.waitForTimeout(300);
         const r = await toastCover(p);
-        ok(!r.none, `D4-1 ${cc} ${vp.join('x')} はじめての設定のあとにお知らせが出る`);
+        const hint = await p.evaluate(() => [...document.querySelectorAll('#view .alg-hint')].some(e => e.getClientRects().length));
+        ok(!r.none || hint, `D4-1 ${cc} ${vp.join('x')} はじめての設定のあとにお知らせ（アレルギー・苦手の案内を出すときは、案内がお知らせの代わり。第40回 R178）が出る`);
         ok(r.none || (!r.hit.filter(x => !/^open:/.test(x)).length && r.n > 3), `D4-2 ${cc} ${vp.join('x')} 「準備ができました」が、見えていた料理の行・かえる・見出しに重ならない（器の絵の上は可。第18回以降の決まり）: ` + JSON.stringify(r));
         if (SHOT && vp[0] === 390) await p.screenshot({path: `${SHOT}/D4_${cc}.png`}).catch(() => {});
         await ctx.close();
