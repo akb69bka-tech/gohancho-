@@ -1,6 +1,18 @@
 // ご飯帖 — English UI dictionary. Keys are the Japanese source strings passed to t() in index.html.
 // Regenerate the key list with: node tools/i18n/extract.mjs --check en
 GOHAN_I18N('en', {
+    "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: the app can't recognize this word. Please choose from the buttons below.",
+    "ある（設定する）": "Yes (set them up)",
+    "ない（このまま作る）": "No (start cooking)",
+    "ない（このまま決める）": "No (decide this menu)",
+    "ほかのアレルギー（例: グルテン）": "Other allergy (e.g. gluten)",
+    "アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。": "If someone has allergies or dietary rules (no pork or alcohol, no meat or fish, etc.), please set them before deciding. Once set, dishes that don't fit are marked with ⚠.",
+    "アレルギーを入力して追加": "Add an allergy by typing",
+    "アレルゲンを含む調味料：{list}": "Seasonings with allergens: {list}",
+    "判定なし": "not checked",
+    "家族にアレルギーや食の決まりはありますか？": "Does anyone in your family have allergies or dietary rules?",
+    "家族のアレルギーへ": "Family allergies",
+    "食の決まり（豚肉・お酒・肉や魚など）へ": "Dietary rules (pork, alcohol, meat or fish)",
     "わが家のご飯帖": "Gohancho",
     "毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ": "Daily menus, cooking from what's in your fridge, and fresh twists on family favorites. The meal planner that cheers you on.",
     "膳": "G",

@@ -1,5 +1,17 @@
 // ご飯帖 — Indonesian UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('id', {
+    "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: aplikasi tidak bisa mengenali kata ini. Silakan pilih dari tombol di bawah.",
+    "ある（設定する）": "Ada (atur)",
+    "ない（このまま作る）": "Tidak ada (langsung masak)",
+    "ない（このまま決める）": "Tidak ada (tetapkan menu ini)",
+    "ほかのアレルギー（例: グルテン）": "Alergi lain (mis. gluten)",
+    "アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。": "Jika ada alergi atau aturan makan (tanpa babi atau alkohol, tanpa daging atau ikan, dll.), atur dulu sebelum menetapkan. Setelah diatur, hidangan yang tidak cocok diberi tanda ⚠.",
+    "アレルギーを入力して追加": "Tambahkan alergi dengan mengetik",
+    "アレルゲンを含む調味料：{list}": "Bumbu yang mengandung alergen: {list}",
+    "判定なし": "tidak bisa dicek",
+    "家族にアレルギーや食の決まりはありますか？": "Apakah ada anggota keluarga yang punya alergi atau aturan makan?",
+    "家族のアレルギーへ": "Alergi keluarga",
+    "食の決まり（豚肉・お酒・肉や魚など）へ": "Aturan makan (babi, alkohol, daging atau ikan)",
     "わが家のご飯帖": "Gohancho",
     "毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ": "Menu harian, masak dari isi kulkas, dan sentuhan baru untuk masakan favorit keluarga. Perencana makan yang menyemangati Anda.",
     "膳": "G",
