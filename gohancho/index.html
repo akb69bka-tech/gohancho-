@@ -4946,11 +4946,12 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     if (keep.length || bowl != null){ const ok = cands.filter(r => !clash(r)); if (ok.length) cands = ok; }
     // 1週間プランで、これから先の日の主菜にした料理は、今日は避ける（ほかに候補があるとき）
     const ahead = new Set(((S.week && S.week.days) || []).filter(x => x.d > TODAY && !x.skip).map(x => x.id));
+    const okayuLim = okayuDay ? okayuTierLim(cands) : Infinity;   // おかゆの日の段は、先の日の主菜を避ける前の候補で決める（プランの先の日にある粥を避けたせいで、遅い段の粥が出ていた。台湾: 地瓜粥が先の日にあり、50分の鹹粥が出た）
     if (ahead.size){ const ok = cands.filter(r => !ahead.has(r.id)); if (ok.length) cands = ok; }
     if (session.tool && !okayuDay){ const tk = cands.filter(r => hasTool(r, session.tool)); if (tk.filter(r => scoreRecipe(r, ctx) > -Infinity).length >= TOOL_MIN) cands = tk; else ctx.toolFew = true; }   // 今日使う道具: その道具の料理が3品以上選べるときだけ絞る（アレルギー・苦手などで外れた料理は、ここに来る前に候補から外れている）
     // おかゆの日は、早くできるおかゆ（雑炊など）を先に（R3）。そのあとも短い順の段（20分→45分→60分→それ以上）で選ぶ（入れ替え・かえるで 50〜80分の粥が先に出ていた。第8回 R19）
     // 段の中の料理が OKAYU_NEED 品そろうまでは、次の段もいっしょに見る（20分以内が卵雑炊1品だけで、おかゆの日が毎回卵雑炊だった。第21回 R82）
-    const pickT = (list, c) => { if (okayuDay){ const ok = list.filter(okayuDayOk), lim0 = okayuTierLim(ok); for (const lim of [...OKAYU_TIERS, Infinity].filter(l => l >= lim0)){ const q = ok.filter(x => x.min <= lim); if (q.length){ const r = pick(q, c); if (r) return r; } } } return pick(list, c); };
+    const pickT = (list, c) => { if (okayuDay){ const ok = list.filter(okayuDayOk), lim0 = Math.min(okayuTierLim(ok), okayuLim); for (const lim of [...OKAYU_TIERS, Infinity].filter(l => l >= lim0)){ const q = ok.filter(x => x.min <= lim); if (q.length){ const r = pick(q, c); if (r) return r; } } } return pick(list, c); };
     const r = pickT(cands, ctx); if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
