@@ -47,7 +47,8 @@ const clickDecide = async p => { await p.evaluate(() => { if (tab !== 'today') s
 const setMain = (p, hitSrc, re) => p.evaluate(([hitSrc, re]) => {
     const hit = new Function('r', 'return ' + hitSrc);
     const it = session.menu.items, m0 = it[0].r, rx = re ? new RegExp(re, 'i') : null;
-    const cand = RECIPES.filter(r => r.type === m0.type && hit(r) && slotOf(r) === slotOf(m0) && r.id !== m0.id && !S.hidden.includes(r.id));
+    // 同じ枠に当たる料理がないとき（献立の並びが変わったとき）は、同じ種類の料理から選ぶ
+    const c1 = RECIPES.filter(r => hit(r) && r.id !== m0.id && !S.hidden.includes(r.id)), cT = c1.filter(r => r.type === m0.type), c0 = cT.length ? cT : c1.filter(r => r.type === '主菜'), cs = c0.filter(r => slotOf(r) === slotOf(m0)), cand = cs.length ? cs : c0;
     const e = (rx && cand.find(r => rx.test(r.name))) || cand[0]; if (!e) return null;
     for (let i = 1; i < it.length; i++) if (it[i].r && hit(it[i].r)){ const alt = RECIPES.find(r => slotOf(r) === slotOf(it[i].r) && r.type === it[i].r.type && !hit(r) && !it.some(x => x.r && x.r.id === r.id)); if (alt) it[i].r = alt; }
     it[0].r = e; keepDraft(); render();
@@ -119,7 +120,7 @@ if (want('A3')){
             const pre = await p.evaluate(([hitSrc, re, avoid, allergens]) => {
                 const a0 = S.settings.avoid, g0 = S.settings.allergens; S.settings.avoid = []; S.settings.allergens = [];
                 const hit = new Function('r', 'return ' + hitSrc), rx = re ? new RegExp(re, 'i') : null, m0 = session.menu.items[0].r;
-                const cand = RECIPES.filter(r => r.type === m0.type && slotOf(r) === slotOf(m0) && hit(r));
+                const c1 = RECIPES.filter(r => hit(r)), cT = c1.filter(r => r.type === m0.type), c0 = cT.length ? cT : c1.filter(r => r.type === '主菜'), cs = c0.filter(r => slotOf(r) === slotOf(m0)), cand = cs.length ? cs : c0;
                 S.settings.avoid = a0; S.settings.allergens = g0;
                 const e = (rx && cand.find(r => rx.test(r.name))) || cand[0]; if (!e) return null;
                 session.menu.items[0].r = e; keepDraft(); render(); return { id: e.id, name: e.name };
