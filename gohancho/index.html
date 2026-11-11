@@ -845,6 +845,12 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 @media (max-width:360px){html[data-ts] .sheet-onboard h2{font-size:var(--fs20)}html[data-ts] .sheet-onboard .ob-lead{display:none}html[data-ts] .sheet-onboard .ob-steps span{display:none}html[data-ts] .sheet-onboard .ob-head{gap:var(--s4)}html[data-ts] .sheet-onboard>.sheet-body{gap:var(--s8)}}
 @media (max-width:360px){html[data-ts] .sheet-onboard .ob-mode .om-t .om-d{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 @media (max-width:299px){.sheet-onboard .ob-mode .om-t .om-d{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+/* 第41回 R195: 使い方が6つになり、幅 360・320（文字ふつう）で6つめ（糖質ひかえめ）が下の帯に隠れた。幅 360px 以下では上の説明の文を見た目から外して（読み上げには残す。
+   同じことは一覧の下の文にもある）6つを1画面に近づけ、それでも帯の裏に隠れる行があるあいだは、帯のすぐ上に「▼ 続きを見る」を出す（押すと最後の行まで送る。下まで見たら消える） */
+@media (max-width:360px){.sheet-onboard .ob-lead{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+.ob-more{position:absolute;bottom:100%;inset-inline-start:50%;transform:translate(-50%,-4px);display:inline-flex;align-items:center;gap:var(--s4);min-height:var(--tap-sm);padding:0 var(--s12);font:inherit;font-size:var(--fs14);font-weight:600;color:var(--ink);background:var(--surface);border:1.5px solid var(--leaf);border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap}
+[dir="rtl"] .ob-more{transform:translate(50%,-4px)}
+.ob-more[hidden]{display:none}
 /* 第40回 R183: はじめの画面の右上の文字の大きさ（A / A+ / A++。押せる 40px 角）。押してある段は若草の線と地（色だけに頼らず太字） */
 .ob-ts{display:flex;gap:var(--s4);margin-inline-start:auto;flex:0 0 auto}
 .ob-ts-b{min-width:40px;min-height:40px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
@@ -2459,6 +2465,9 @@ R('greensalad','グリーンサラダ（和風ドレッシング）','和','副�
 R('jagaimomiso','じゃがいもと玉ねぎの味噌汁','和','汁物','汁',15,'じゃがいも 1個|玉ねぎ 1/2個|長ねぎ 少々?','だし 400ml・味噌 大さじ2','じゃがいもは5mm厚さのいちょう切りにして水にさらし、玉ねぎは薄切りにする。|だしにじゃがいもと玉ねぎを入れて火にかけ、煮立ったら弱めの中火で6〜7分、じゃがいもがやわらかくなるまで煮る。|火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
 R('nasuagemiso','なすと油揚げの味噌汁','和','汁物','汁',15,'なす 1本|油揚げ 1/2枚|長ねぎ 少々?','だし 400ml・味噌 大さじ2','なすはヘタを取って縦半分にし、斜めに薄く切って水に5分さらす。油揚げは熱湯をかけて油抜きし、短冊切りにする。|だしを温め、水気を切ったなすを入れて中火で4分煮る。|油揚げを加えて1分煮て、火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
 R('cabbagemiso','キャベツと油揚げの味噌汁','和','汁物','汁',10,'キャベツ 2枚（約100g）|油揚げ 1/2枚|長ねぎ 少々?','だし 400ml・味噌 大さじ2','キャベツは1cm幅の短冊切り、油揚げは熱湯をかけて油抜きし、短冊切りにする。|だしを温め、キャベツと油揚げを入れて、煮立ったら弱めの中火で3分煮る。|火を弱めて味噌を溶き入れる。|煮立たせないように温め、器に盛って小口切りのねぎを散らす。');
+R('nasuatsuagemiso','厚揚げとなすのみそ炒め','和','主菜','炒',15,'厚揚げ 1枚（200g）|なす 2本|ピーマン 2個','サラダ油 大さじ1.5・みそ 大さじ1.5・砂糖 小さじ2・酒 大さじ1・しょうゆ 小さじ1・おろし生姜 小さじ1/2','厚揚げは熱湯をかけて油抜きし、ひと口大に切る。なすは乱切り、ピーマンはひと口大に切る。みそ・砂糖・酒・しょうゆ・生姜を混ぜておく。|フライパンに油を熱し、なすを3分炒めてしんなりさせ、厚揚げとピーマンを加えて2分炒める。|合わせたみそを加え、全体にからめて1分炒める。');
+R('iridofu','炒り豆腐','和','主菜','炒',20,'木綿豆腐 1丁|卵 2個|にんじん 1/3本|しいたけ 3枚|長ねぎ 1/2本|さやいんげん 4本?','ごま油 大さじ1・しょうゆ 大さじ1.5・みりん 大さじ1・塩 少々','豆腐はキッチンペーパーで包んで10分おき、水気をきる。にんじんは細切り、しいたけは薄切り、ねぎは小口切り、いんげんは斜め切りにする。|フライパンにごま油を熱してにんじん・しいたけ・いんげんを2分炒め、豆腐を手でくずし入れて、水分がとぶまで5分炒める。|しょうゆ・みりん・塩で味をつけ、溶き卵とねぎを加えて、卵に火が通るまで混ぜながら炒める。');
+R('tofukinokoankake','豆腐のきのこあんかけ','和','主菜','煮',20,'木綿豆腐 1丁|しめじ 1パック|えのき 1/2袋|にんじん 1/4本|長ねぎ 1/2本','水 250ml・しょうゆ 大さじ2・みりん 大さじ1・おろし生姜 小さじ1・片栗粉 大さじ1（水大さじ2で溶く）・サラダ油 小さじ2','豆腐は水気をきって8等分に切る。しめじとえのきはほぐし、にんじんは細切り、ねぎは斜め薄切りにする。|フライパンに油を熱して豆腐の両面を焼き、器に盛る。|鍋に水・しょうゆ・みりん・生姜を入れて煮立て、きのこ・にんじん・ねぎを入れて3分煮る。水溶き片栗粉でとろみをつけ、豆腐にかける。');
 
 // 日本のレシピのよみ（ひらがな）。かなで検索したとき（にくじゃが・マーボー・しょうが焼き など）に料理名と同じように当てる。読みが二つあるものは , で区切る
 const YOMI = Object.fromEntries([
@@ -2481,6 +2490,7 @@ const YOMI = Object.fromEntries([
     'kanitama:かにたま tofusteak:とうふすてーき ankakeyakisoba:あんかけやきそば beefstew:びーふしちゅー tempura:てんぷら asparamaki:ぶたにくのあすぱらまき tsukune:とりつくね rebanira:ればにらいため nirabuta:にらぶたいため,にらぶた yasaiitame:やさいいため katsudon:かつどん',
     'chirashi:ちらしずし tandoori:たんどりーちきん meatsauce:みーとそーすすぱげってぃ kabuamazu:かぶのあまずづけ gomokumame:ごもくまめ shiraae:しらあえ shiokombu:きゃべつのしおこんぶあえ nasudengaku:なすでんがく furofuki:ふろふきだいこん koyadofu:こうやどうふのふくめに',
     'germanpotato:じゃーまんぽてと shirishiri:にんじんしりしり niratama:にらたま daikonsalad:だいこんさらだ tomatomarine:とまとのまりね jakopiman:ぴーまんとじゃこのいため kofukiimo:こふきいも glace:にんじんのぐらっせ tosani:たけのこのとさに isobeage:ちくわのいそべあげ',
+    'nasuatsuagemiso:あつあげとなすのみそいため iridofu:いりどうふ tofukinokoankake:とうふのきのこあんかけ',
     'chijimi:にらちぢみ karashiae:なのはなのからしあえ konnyakuitame:こんにゃくのぴりからいため',
     'okayu:おかゆ,しらがゆ tamagogayu:たまごがゆ umegayu:うめがゆ shakegayu:さけがゆ nanakusagayu:ななくさがゆ chukagayu:ちゅうかがゆ satsumaimogayu:さつまいもがゆ kabochagayu:かぼちゃがゆ azukigayu:あずきがゆ kinokogayu:きのこがゆ',
     'onigiri:おにぎり,おむすび,にぎりめし tendon:てんどん ochazuke:さけちゃづけ,おちゃづけ tkg:たまごかけごはん sekihan:せきはん,おこわ gomokutakikomi:ごもくたきこみごはん,かやくごはん inarizushi:いなりずし,おいなりさん zosui:たまごぞうすい,ぞうすい somen:そうめん zarusoba:ざるそば,そば kitsuneudon:きつねうどん curryudon:かれーうどん ramen:しょうゆらーめん,らーめん',
@@ -5623,6 +5633,13 @@ function weekFresh(r, i){ return daysSince(r.id) + i >= (Number(S.settings.avoid
 const WEEK_BOWL_MAX = 3;
 const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){ return weekAlg(makeWeek0); }
+// R202: 糖質ひかえめのとき、1週間プランの主菜は、その日に出せる糖質の多くない主菜を先に。候補（cands）は「○日以内に作った料理は出さない」を、
+// その日（i日あと）で見て絞ってある（weekFresh）ので、今日から数えた日数で外す pick の決まりは使わない（relax）。それでも選べなければ null（今までどおり選ぶ）
+function carbWeekPick(cands, ctx){
+    if (!carbOn()) return null;
+    const ok = cands.filter(r => !carbHeavy(r)); if (!ok.length) return null;
+    return pick(ok, ctx) || pick(ok, Object.assign({}, ctx, {relax: true})) || pick(ok, Object.assign({}, ctx, {recent: [], relax: true}));
+}
 function makeWeek0(){
     // 1週間プランは今日の気分に左右されない（おかゆの日に作ると、おかゆ・雑炊・ハムエッグがプランの主菜に入っていた）。候補は poolForMood('主菜', 'all')
     const days = [], used = new Set();
@@ -5640,7 +5657,8 @@ function makeWeek0(){
         if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
         if (stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆなら、ご飯もの・麺の日を作らない（選んだおかゆが出なくなる）
         const wdi = parseYmd(d).getDay();
-        let r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
+        let r = carbWeekPick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
+        if (!r) r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
         if (!r){                                                                       // 主菜の数が7に足りない国: いちばん前に使った料理をもう一度（アレルゲン・苦手・品薄の主菜には戻らない）
@@ -5681,7 +5699,7 @@ function refreshWeek0(){
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
         const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
-        let r = pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
+        let r = carbWeekPick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
         // アレルギーをいくつも足して、まだ使っていない主菜がなくなったときは、ほかの日の料理をもう一度使う（当たる料理をプランに残さない）
         if (!r){ const again = poolForMood('主菜', 'all').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
         if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
@@ -8080,7 +8098,7 @@ function renderSheetBody(){
             <p class="muted small ob-lead">${esc(t('あとから「条件を変える」や設定で、いつでも変えられます。'))}</p>
             ${obModeHtml()}
             <p class="muted small">${esc(t('人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。'))}</p>
-            <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
+            <div class="ob-actions"><button type="button" class="ob-more" data-act="ob-more" hidden><span aria-hidden="true">▼</span>${esc(t('続きを見る'))}</button><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
     }
     if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'one') body = oneSheetHtml();
@@ -8178,7 +8196,16 @@ function renderSheetBody(){
     { const sh = root.querySelector('.sheet'), bar = sh && sh.querySelector('.ob-actions'); if (bar && getComputedStyle(bar).position === 'sticky') sh.style.scrollPaddingBottom = Math.ceil(bar.getBoundingClientRect().height + (parseFloat(getComputedStyle(sh).paddingBottom) || 0) + 8) + 'px'; }   // 帯はシートの下の余白（padding）の上に貼りつく
     document.body.style.overflow = 'hidden';
     dlgOpened('sheet-root');
+    if (sheet.kind === 'onboard'){ const sh = root.querySelector('.sheet'); if (sh){ sh.addEventListener('scroll', obMoreSync, {passive: true}); obMoreSync(); setTimeout(obMoreSync, 450); } }
 }
+// R195: はじめての設定の使い方で、帯の裏に隠れている行があるあいだだけ「▼ 続きを見る」を出す（シートの開く動きの途中でも、行と帯の差で見る）
+function obMoreSync(){
+    const root = $('#sheet-root'), btn = root && root.querySelector('.ob-more'), bar = btn && btn.closest('.ob-actions'), ms = root ? root.querySelectorAll('[data-act="ob-mode"]') : [];
+    if (!btn || !ms.length) return;
+    const hid = ms[ms.length - 1].getBoundingClientRect().bottom > bar.getBoundingClientRect().top + 2;
+    if (btn.hidden === hid) btn.hidden = !hid;
+}
+addEventListener('resize', () => { try{ obMoreSync(); }catch(e){} }, {passive: true});
 
 /* =========================================================
    品数（おまかせ: 曜日で変える／固定: 2〜6品）
@@ -8900,7 +8927,7 @@ const KC_FOODS = [
     [/はちみつ|蜂蜜|\bhoney\b/i, 329, {c: 82, d: 1.4, s: 'M'}],
     [/メープル|maple syrup|golden syrup|molasses|rice syrup|corn syrup|\bsyrup\b|caramel sauce/i, 266, {c: 66, d: 1.3, s: 'M'}],
     [/みりん|mirin/i, 241, {c: 43, d: 1.2, s: 'M'}],
-    [/砂糖|\bsugar\b|palm sugar|jaggery|panela|piloncillo|rock sugar|gula|\bkecap manis\b|sweet soy/i, 390, {c: 99, d: 0.6, s: 'M'}],
+    [/砂糖|\bsugar\b|palm sugar|jaggery|(?<!(?:queso|or) )\bpanela(?! cheese| or (?:oaxaca|queso|fresh)|, in cubes)|piloncillo|rock sugar|gula|\bkecap manis\b|sweet soy/i, 390, {c: 99, d: 0.6, s: 'M'}],
     [/ジャム|\bjam\b|marmalade/i, 250, {c: 63, d: 1.3, s: 'M'}],
     [/チョコ|chocolate/i, 550, {c: 52, s: 'M'}],
     // ---- しょうゆ・みそ・ソース類 ----
@@ -8983,7 +9010,7 @@ const KC_FOODS = [
     [/レバー|\bliver\b|livers\b|chicken livers?/i, 120, {c: 2, s: 'M'}],
     [/tripe|mondongo|trotters?|pork hock|ham hock|pork trotter|cow trotters|oxtail|beef shank|short ribs|beef ribs|neck bones?/i, 230, {c: 0, e: 0.6, s: 'U'}],
     [/meatballs?|bakso|gongwan|pork balls?|beef balls?|fish balls?|fishballs?/i, 180, {c: 10, p: 15, u: {ball: 15, balls: 15}, s: 'U'}],
-    [/dumplings?|mandu|gyoza|wontons?(?! wrapper)|maultaschen|tortellini|capeletti|ravioli|manti|mantı|pierogi|pelmeni/i, 230, {c: 25, p: 25, s: 'U'}],
+    [/dumplings?|mandu|gyoza|wontons?(?! wrapper)|maultaschen|tortellini|capeletti|ravioli|manti|mantı|pierogi|pelmeni/i, 230, {c: 25, p: 25, hd: 1, s: 'U'}],
     [/鶏手羽|手羽元|手羽先|chicken wings?|drumsticks?(?! \(moringa)|bone-in chicken|chicken legs?|whole chicken|chicken pieces/i, 200, {c: 0, p: 60, e: 0.65, u: {本: 60}, s: 'M'}],
     [/鶏むね|ささみ|chicken breast|breast fillet/i, 133, {c: 0.1, p: 250, u: {枚: 250}, s: 'M'}],
     [/鶏もも|chicken thigh|boneless chicken/i, 190, {c: 0, p: 250, u: {枚: 250}, s: 'M'}],
@@ -9041,7 +9068,7 @@ const KC_FOODS = [
     [/春雨|glass noodles|cellophane|dangmyeon|fensi|fentiao|sohun|miến|sotanghon|mung bean (?:noodles|vermicelli)|sweet potato noodles/i, 344, {c: 83, st: 1, x: 4, s: 'M'}],
     [/ゆでうどん|うどん/i, 95, {c: 20, st: 1, p: 200, u: {玉: 200}, s: 'M'}],
     [/焼きそば麺|蒸し中華/i, 162, {c: 35, st: 1, p: 150, u: {玉: 150}, s: 'M'}],
-    [/中華麺/i, 249, {c: 50, st: 1, p: 120, u: {玉: 120}, s: 'M'}],
+    [/中華麺|fresh (?:egg |wheat |yellow |egg or wheat )?noodles/i, 249, {c: 50, st: 1, p: 120, u: {玉: 120}, s: 'M'}],
     [/そうめん|素麺|蕎麦|そば|somyeon|misua|mianxian|wheat (?:noodles|vermicelli)|udon|soba/i, 340, {c: 68, st: 1, x: 2.8, p: 50, u: {束: 50, bundle: 50}, s: 'M'}],
     [/instant (?:ramen|noodles)|ramen|ramyeon|indomie|mama noodles/i, 440, {c: 61, st: 1, x: 2.5, p: 100, u: {pack: 100}, s: 'U'}],
     [/taco shells?/i, 468, {c: 60, p: 13, s: 'U'}],
@@ -9050,13 +9077,13 @@ const KC_FOODS = [
     [/tortillas?|wraps?\b|flatbread|lavash|roti|chapati|paratha|\bnaan\b|pita|pide|bazlama|lepinja|piadina/i, 300, {c: 47, st: 1, p: 45, s: 'U'}],
     [/egg noodles|canton|pancit|mee\b|\bmie\b|lo mein|chow mein|wonton noodles|noodles|łazanki|nudeln|fideos?|vermicelli|şehriye|sehriye|orzo|pastina|lesan asfour|tarhana/i, 370, {c: 70, st: 1, x: 2.5, u: {nest: 50}, s: 'U'}],
     [/スパゲッティ|マカロニ|パスタ|pasta|spaghetti|macaroni|penne|fusilli|rigatoni|fettuccine|linguine|tagliatelle|lasagne|lasagna|ditalini|conchiglie|shells|elbows?|orecchiette|bucatini|paccheri|farfalle|stelline|anellini|alphabet|acini|cannelloni|manicotti/i, 370, {c: 68, st: 1, x: 2.4, p: 10, u: {sheet: 20, sheets: 20}, s: 'M'}],
-    [/fresh pasta|pasta fresca/i, 290, {c: 53, s: 'U'}],
-    [/餃子の皮|ワンタンの皮|wonton wrappers?|dumpling wrappers?|gyoza wrappers?|lumpia wrappers?|spring roll wrappers?|molo wrappers?|masa want[aá]n|mandu wrappers?/i, 275, {c: 55, p: 6, u: {枚: 6}, s: 'M'}],
-    [/puff pastry|pie crust|shortcrust|pastry|phyllo|filo|yufka|hojaldre/i, 500, {c: 38, u: {sheet: 300}, s: 'U'}],
+    [/fresh pasta|pasta fresca/i, 290, {c: 53, hd: 1, s: 'U'}],
+    [/餃子の皮|ワンタンの皮|wonton wrappers?|dumpling wrappers?|gyoza wrappers?|lumpia wrappers?|spring roll wrappers?|molo wrappers?|masa want[aá]n|mandu wrappers?|egg roll wrappers?/i, 275, {c: 55, p: 6, u: {枚: 6}, hd: 1, s: 'M'}],
+    [/puff pastry|pie crust|shortcrust|pastry|phyllo|filo|yufka|hojaldre/i, 500, {c: 38, u: {sheet: 300}, hd: 1, s: 'U'}],
     [/食パン/i, 248, {c: 42, st: 1, p: 60, u: {枚: 60}, s: 'M'}],
     [/baguette|french bread|crusty bread|フランスパン/i, 289, {c: 55, st: 1, p: 250, u: {slice: 20, slices: 20, loaf: 250}, s: 'M'}],
     [/buns?\b|rolls?\b|bolillo|pav\b|brötchen|english muffins?|bread roll|hoagie|kaiser|pandesal|telera/i, 280, {c: 47, st: 1, p: 60, s: 'U'}],
-    [/\bbread\b|パン|\bpan\b|pão|brot|pain\b|chleb|ekmek|roti tawar|toast/i, 265, {c: 45, p: 30, u: {slice: 30, slices: 30, loaf: 400}, s: 'U'}],
+    [/\bbread\b|パン|\bpan\b|pão|brot|pain\b|chleb|ekmek|roti tawar|toast/i, 265, {c: 45, p: 30, u: {slice: 30, slices: 30, loaf: 400}, hd: 1, s: 'U'}],
     [/crackers?|krupuk|kerupuk|emping|prawn crackers|oyster crackers|biscuits?|rusks?|croutons?/i, 450, {c: 65, p: 8, u: {handful: 15}, s: 'U'}],
     [/croissant/i, 406, {c: 42, p: 50, s: 'U'}],
     // ---- 穀物・豆（乾物） ----
@@ -9080,7 +9107,7 @@ const KC_FOODS = [
     [/ピーナッツ|peanuts?|groundnuts?|kacang tanah|đậu phộng|mani\b/i, 585, {c: 11, d: 0.6, s: 'M'}],
     [/くるみ|walnuts?|cashews?|almonds?|pistachios?|hazelnuts?|pecans?|pine nuts|macadamia|candlenuts?|kemiri|nuts\b|nueces|castañas de caju|pepitas|pumpkin seeds|sunflower seeds|melon seeds|egusi|lotus seeds?|foxnut/i, 600, {c: 10, d: 0.55, u: {'': 4}, s: 'U'}],
     [/raisins?|sultanas|currants|prunes?|dried (?:apricots?|figs?|cranberries|dates|fruit)|dates\b|jujubes?|red dates|goji|dried red dates|figs/i, 290, {c: 70, p: 8, d: 0.6, s: 'U'}],
-    [/栗|chestnuts?|ch[aâ]taignes?|marrons?|casta[nñ]as?(?! de caju)|kasztan/i, 167, {c: 33, p: 10, s: 'M'}],
+    [/栗|chestnuts?(?! mushrooms?)|ch[aâ]taignes?|marrons?|casta[nñ]as?(?! de caju)|kasztan/i, 167, {c: 33, p: 10, s: 'M'}],
     [/coconut(?! (?:milk|cream|water|oil|sugar|vinegar|aminos))|kerisik|kelapa parut|niyog|buko|dừa nạo|young coconut/i, 354, {c: 10, d: 0.35, s: 'U'}],
     // ---- いも・かぼちゃ ----
     [/じゃがいも|新じゃが/i, 59, {c: 15, p: 150, s: 'M'}],
@@ -9215,7 +9242,17 @@ function kcB(re){
     return new RegExp(out.map(a => /^[a-zà-ÿ]/i.test(a) ? '\\b' + a : a).join('|'), re.flags);
 }
 KC_FOODS.forEach(f => { f[0] = kcB(f[0]); });
-function kcFood(txt){ for (const f of KC_FOODS) if (f[0].test(txt)) return f; return null; }
+// R196: 「egg noodles」「cheese tortellini」「pork dumplings」のように、めん・パスタ・ギョーザの皮・パンなど「主」の語（主食の行 st・hd）が
+// 前の語（卵・チーズ・肉）より後ろにあるときは、主の語の行にする（英語も日本語も、主の語は後ろ）。「pasta sauce」「bread flour」のように主の語が前なら、今までどおり
+const kcHead = f => !!(f && f[2] && (f[2].st || f[2].hd));
+function kcEnd(re, txt){ const m = re.exec(txt); return m ? m.index + m[0].length : -1; }
+function kcFood(txt){
+    let f = null; for (const x of KC_FOODS) if (x[0].test(txt)){ f = x; break; }
+    if (!f || kcHead(f) || (f[2] || {}).liq) return f;
+    const e0 = kcEnd(f[0], txt); let best = null, be = e0;
+    for (const x of KC_FOODS){ if (!kcHead(x)) continue; const e = kcEnd(x[0], txt); if (e > be && /^\s*(?:$|[,;/(]|or\b|and\b)/i.test(txt.slice(e))){ best = x; be = e; } }   // 主の語のあとに別の語が続く（「rice paste」「spaghetti sauce」）なら主の語ではない
+    return best || f;
+}
 const KC_UNITS = [   // [言葉, 数え方のなまえ, 決まった重さ g（食材の u・p がなければ）]
     [/大さじ/, 'tbsp'], [/小さじ/, 'tsp'], [/カップ/, 'jcup'], [/合/, '合'], [/\btbsps?\b|tablespoons?|\bel\b|\bc\.\s*sopa|cucharadas?|colheres? de sopa|łyżk|yemek kaşığı|sdm\b/i, 'tbsp'], [/\btsps?\b|teaspoons?|\btl\b|cucharaditas?|colheres? de chá|łyżeczk|tatlı kaşığı|sdt\b/i, 'tsp'], [/\bcups?\b|xícaras?|tazas?|szklank/i, 'cup'],
     [/茶碗/, '茶碗'], [/丼/, '丼'], [/杯分|杯/, '杯'], [/cm分|cm/, 'cm'],
@@ -9472,7 +9509,9 @@ function dietSettingsHtml(){
    オンのとき（ダイエットモードと同じく、選び方と表示だけ。決めた献立・いまのお膳は自動では変えない）:
     - 献立のえらび（pick・副菜と汁ものの候補 carbPrefer）: 糖質の多い料理（carbHeavy: ご飯もの・麺の主菜、パン粉・天ぷらの衣の揚げ物、
       糖質の目安が席ごとの上限（主菜 20g・副菜 12g・汁もの 12g）より多い料理）より、そうでない料理をいつも先に出す。候補が多い料理だけのときはそれを出す（外さない）。
-      いも・春雨・めんの多い汁もの、甘い煮もの（砂糖・みりんが多い）は、材料の量から出した糖質の目安で上限を超えるので、後になる。
+      甘い煮もの（砂糖・みりんが多い）は、材料の量から出した糖質の目安で上限を超えるので、後になる。いも・春雨・めん・ワンタンなどの皮の入った汁ものは、説明のとおり量によらず後にする（R201）。
+      1週間プラン（makeWeek）も、その日に出せる（「○日以内に作った料理は出さない」に当たらない）糖質の多くない主菜を先に選ぶ（R202）。
+      条件（食の決まり・苦手・アレルギー）と両方に合う主菜が7品より少ないときは、お膳の下に「ごはん・めん・いもの主菜も出ます」と知らせる（R198）。
       主食が「なし」の国（アメリカ・イギリス）で、じゃがいも・パンの副菜を先に出すきまり（starchWanted）は、オンのときは使わない。
     - 主食は種類を変えずに「小盛り」（ふだんの量の 2/3）と表示し、糖質の目安もその量で数える。雑穀ご飯・玄米ご飯などは、いつもの主食の選択肢から選べる。
     - お膳の下に合計、作り方の画面に1品の、1人分の糖質の目安（g）を出す。
@@ -9495,6 +9534,7 @@ const CARB_TX = {
     trayNoStaple: n => t('お膳の糖質：約 {n} g（1人分・目安）', {n}),
     trayNa: name => t('お膳の糖質の目安はありません（「{name}」の目安がないため）', {name}),
     trayNaStaple: () => t('お膳の糖質の目安はありません（主食の目安がないため）'),
+    few: () => t('食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます'),   // R198
 };
 function carbOn(){ return S.settings.carb === true; }
 // 候補のうち糖質の多くない料理だけ（オンで、1つ以上あるとき。なければそのまま＝席を空にしない）
@@ -9523,11 +9563,16 @@ const CARB_LIMIT = {'主菜': 20, '副菜': 12, '汁物': 12};
 const CARB_STARCH = /じゃがいも|新じゃが|さつまいも|里芋|長いも|山芋|春雨|うどん|そうめん|そば|中華麺|焼きそば|ラーメン|マカロニ|スパゲッティ|パスタ|ご飯|ごはん|^米$|もち|餅|ニョッキ|potato(?!.*starch)|sweet potato|\btaro\b|\byams?\b|cassava|yuca|plantain|noodle|vermicelli|ramen|udon|soba|pasta|macaroni|spaghetti|gnocchi|\brice\b(?! (?:vinegar|wine|paper|flour))|tteok|rice cakes?|dumplings?|tortilla|bread|couscous|bulgur|semolina|\bcorn\b(?! ?starch| ?flour)|hominy|lentils?|chickpeas?|beans?\b(?!.*sprout)/i;
 const CARB_BEAN_OK = /green beans?|french beans|string beans?|runner beans?|soy ?beans?|edamame|bean ?sprouts?|black beans? sauce|bean paste|broad beans?/i;
 function carbItemStarch(i){ const txt = [i.key, i.en, i.name].filter(Boolean).join(' | '); return !i.opt && CARB_STARCH.test(txt) && !CARB_BEAN_OK.test(txt); }
+// R201: 説明の「いも・春雨・めんの入った汁ものは後に」に合わせて、汁ものは量によらず、いも・春雨・めん（パスタ・ワンタンやギョーザなどの皮・ニョッキも）が入っていれば後にする
+// （第41回: 目安が上限 12g 以下の春雨スープ・ヌードルスープ・ワンタンスープが先に出て、説明とちがった。量で決めると、どの汁ものが後になるかが利用者にわからない）
+const CARB_SOUP_STARCH = /じゃがいも|新じゃが|さつまいも|里芋|長いも|山芋|春雨|うどん|そうめん|そば|中華麺|ラーメン|ビーフン|マカロニ|スパゲッティ|パスタ|ワンタン|餃子|ぎょうざ|ギョーザ|ニョッキ|すいとん|potato(?!.*(?:starch|flour))|sweet potato(?!.*(?:leaves|tops))|\btaro\b|\byams?\b|cassava|yuca|olluco|noodles?|vermicelli|ramen|udon|soba\b|pasta|macaroni|spaghetti|orzo|fideos?|şehriye|tortellini|ravioli|gnocchi|dumplings?|wontons?|gyoza|mandu|kluski|łazanki|nudeln|glass noodles|miến|bún\b|bihon|sotanghon|misua|mi ?fen/i;
+function carbSoupStarch(r){ return slotOf(r) === '汁物' && (r.items || []).some(i => !i.opt && CARB_SOUP_STARCH.test([i.key, i.en, i.name].filter(Boolean).join(' | ')) && !/potato starch|片栗粉|sweet potato leaves|leaves/i.test([i.key, i.en, i.name].filter(Boolean).join(' | '))); }
 function carbHeavy(r){
     if (!r) return false;
     if (r.main && (r.type === 'ごはん' || r.type === '麺')) return true;   // ご飯もの・麺の主菜
     const its = (r.items || []).filter(i => !i.opt);
     if (r.method === '揚' && KC_BATTER.test([...its.map(i => [i.key, i.en, i.name].join(' ')), String(r.seasBase != null ? r.seasBase : (r.seas || ''))].join(' '))) return true;   // パン粉・天ぷらの衣
+    if (carbSoupStarch(r)) return true;   // いも・春雨・めんの入った汁もの（R201）
     const c = carbOf(r), lim = CARB_LIMIT[slotOf(r)] || 20;
     if (c.st === 'ok') return c.raw > lim;   // いも・春雨・めんの多い汁もの・甘い煮ものも、材料の量から出した目安で上限を超える
     if (c.st === 'low') return false;
@@ -9546,8 +9591,12 @@ function carbTrayHtml(m){
     if (!carbOn() || !m || !m.items || !m.items.some(x => x.r)) return '';
     const c = menuCarb(m);
     const txt = c.st === 'ok' ? (c.staple ? CARB_TX.tray(c.v) : CARB_TX.trayNoStaple(c.v)) : c.why ? CARB_TX.trayNa(c.why.name) : c.staple ? CARB_TX.trayNaStaple() : CARB_TX.trayNa('');
-    return `<p class="kcal-sum carb-sum" role="note"><span class="kc-v">${esc(txt)}</span></p>`;
+    return `<p class="kcal-sum carb-sum" role="note"><span class="kc-v">${esc(txt)}</span></p>${carbFewHtml()}`;
 }
+// R198: 条件（食の決まり・苦手・アレルギー・今は出さない）と糖質ひかえめの両方に合う主菜が1週間ぶん（7品）ないとき、ごはん・めん・いもの主菜も出ることを知らせる
+const CARB_FEW = 7;
+function carbFewMains(){ return poolForMood('主菜', 'all').filter(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !carbHeavy(r)).length; }
+function carbFewHtml(){ return carbOn() && carbFewMains() < CARB_FEW ? `<p class="kcal-sum carb-sum carb-few" role="note"><span class="kc-v">${esc(CARB_TX.few())}</span></p>` : ''; }
 // 作り方の画面: カロリーの目安の箱に1行
 function carbNoteLine(r){ return carbOn() ? `<span class="kc-v cb-v">${esc(carbText(carbOf(r)))}</span>` : ''; }
 // 選んだとき1回だけの注意（お膳の下。「わかりました」で閉じる）
@@ -17081,6 +17130,7 @@ document.addEventListener('click', e => {
         case 'ob-again': startOnboard(); break;
         case 'ob-next': if (sheet && sheet.kind === 'onboard') obFinish(); break;   // 前の流れの「次へ」（いまは手順が1つなので、そのまま献立へ）
         case 'ob-mode': obPickMode(el.dataset.v); break;
+        case 'ob-more': { const ms = document.querySelectorAll('#sheet-root [data-act="ob-mode"]'); if (ms.length) ms[ms.length - 1].scrollIntoView({block: 'nearest'}); break; }
         case 'ob-ts': obTextSize(Number(el.dataset.v)); break;
         case 'alg-hint-open': setGo('allergy-card'); break;   // 第39回: アレルギー対策（家族・アレルギーのタブ）へ。苦手はとなりのタブ。第40回 R186: 見に行っただけでは案内を消さない
         case 'alg-hint-close': delete S.algHint; save(); render(); break;

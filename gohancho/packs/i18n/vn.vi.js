@@ -1270,5 +1270,25 @@ GOHAN_PACK_TR('VN', 'vi', {
         'Chia bánh phở ra tô, cho thịt gà và hành lá thái nhỏ lên, chan nước dùng nóng. Dùng kèm giá đỗ và chanh.',
       ],
     },
+    "vn_namkhotieu": {
+      name: "Nấm kho tiêu",
+      ings: [["Nấm rơm, nấm bào ngư hoặc nấm đùi gà", "400 g"], ["Đậu hũ", "200 g"], ["Hành lá", "2 cây"]],
+      seas: "2 muỗng canh dầu ăn · 3 muỗng canh nước tương · 1 muỗng cà phê đường · 1 muỗng cà phê tiêu xay vừa · 1 củ hành tím · 100 ml nước dừa hoặc nước lọc",
+      steps: [
+        "Nấm cắt miếng lớn, đậu hũ cắt khối, hành lá cắt khúc, hành tím thái lát.",
+        "Chiên đậu hũ trong nồi với dầu cho vàng, đẩy sang một bên rồi phi hành tím. Cho nấm vào đảo 2 phút.",
+        "Thêm nước tương, đường và nước dừa, kho lửa nhỏ 10–12 phút cho nước sánh lại. Rắc tiêu và hành lá.",
+      ],
+    },
+    "vn_trungchienhanhla": {
+      name: "Trứng chiên hành lá cà chua",
+      ings: [["Trứng gà", "4 quả"], ["Hành lá", "3 cây"], ["Cà chua", "2 quả"]],
+      seas: "2 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1/4 muỗng cà phê tiêu",
+      steps: [
+        "Hành lá thái nhỏ, cà chua bổ múi cau. Đánh trứng với nước tương, tiêu và hành lá.",
+        "Đun nóng dầu trong chảo, đổ trứng vào chiên lửa vừa 2–3 phút, lật mặt chiên thêm 1 phút.",
+        "Áp chảo cà chua 1 phút trong cùng chảo rồi bày cạnh trứng.",
+      ],
+    },
   }
 });

@@ -1306,5 +1306,75 @@ GOHAN_PACK_TR('ES', 'es', {
         'Rocíe con el aceite de oliva, añada una pizca de sal y ponga el jamón encima.',
       ],
     },
+    "es_pistohuevo": {
+      name: "Pisto manchego con huevo",
+      ings: [["Calabacín", "1 (250 g)"], ["Pimientos verde y rojo", "2"], ["Cebolla", "1/2"], ["Tomates maduros", "3"], ["Huevos", "4"]],
+      seas: "4 cucharadas de aceite de oliva · 1 diente de ajo · Sal · 1 pizca de azúcar (opcional)",
+      steps: [
+        "Corta en dados la cebolla, los pimientos y el calabacín. Ralla los tomates.",
+        "Pocha la cebolla, el ajo y los pimientos en 3 cucharadas de aceite en una sartén a fuego lento 10 minutos. Añade el calabacín 5 minutos, luego el tomate, y cocina 15 minutos. Sala.",
+        "Fríe los huevos en el aceite restante y sírvelos sobre el pisto.",
+      ],
+    },
+    "es_revueltosetas": {
+      name: "Revuelto de setas y espárragos trigueros",
+      ings: [["Huevos", "5"], ["Setas o champiñones", "250 g"], ["Espárragos trigueros", "200 g"]],
+      seas: "3 cucharadas de aceite de oliva · 2 dientes de ajo · Sal · Perejil",
+      steps: [
+        "Trocea los espárragos y lamina las setas y el ajo. Bate los huevos con una pizca de sal.",
+        "Sofríe el ajo y los espárragos en el aceite en una sartén 4 minutos, añade las setas y cocina 5 minutos más.",
+        "Baja el fuego, añade los huevos y remueve suavemente hasta que cuajen jugosos. Espolvorea perejil.",
+      ],
+    },
+    "es_espinacasgarbanzos": {
+      name: "Espinacas con garbanzos",
+      ings: [["Espinacas", "400 g"], ["Garbanzos cocidos, escurridos", "150 g"], ["Tomate", "1"]],
+      seas: "4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón de la Vera dulce · 1 cucharadita de comino molido · 1 cucharada de vinagre de Jerez · Sal",
+      steps: [
+        "Saltea las espinacas en una olla grande con un chorrito de agua 3 minutos, escúrrelas y pícalas en trozos. Ralla el tomate.",
+        "Dora el ajo laminado en el aceite en la misma olla, añade el pimentón y el comino, luego el tomate y el vinagre y cocina 3 minutos.",
+        "Incorpora los garbanzos, las espinacas y 100 ml de agua, cocina 8 minutos y sala.",
+      ],
+    },
+    "es_tortillacalabacin": {
+      name: "Tortilla de calabacín",
+      ings: [["Huevos", "5"], ["Calabacines", "2 (450 g)"], ["Cebolla", "1/2"]],
+      seas: "4 cucharadas de aceite de oliva · Sal",
+      steps: [
+        "Corta los calabacines en medias lunas finas y la cebolla en tiras. Pócha todo en una sartén antiadherente con 3 cucharadas de aceite y una pizca de sal 15 minutos, hasta que esté tierno.",
+        "Bate los huevos con sal y mezcla con las verduras escurridas.",
+        "Calienta el aceite restante en la sartén, vierte la mezcla y cuaja a fuego lento 4 minutos. Dale la vuelta con un plato y cuaja el otro lado 2–3 minutos.",
+      ],
+    },
+    "es_berenjenasrellenas": {
+      name: "Berenjenas rellenas de verduras y queso",
+      ings: [["Berenjenas", "2 (500 g)"], ["Champiñones", "150 g"], ["Tomates", "2"], ["Cebolla", "1/2"], ["Queso rallado para gratinar", "80 g"]],
+      seas: "3 cucharadas de aceite de oliva · 1 diente de ajo · 1/2 cucharadita de orégano seco · Sal · Pimienta",
+      steps: [
+        "Precalienta el horno a 200 °C. Parte las berenjenas por la mitad, haz cortes en la pulpa, píntalas con aceite y hornéalas 20 minutos. Vacíalas y pica la pulpa.",
+        "Sofríe la cebolla, el ajo, los champiñones y los tomates en el resto del aceite en una sartén 8 minutos, añade la pulpa de berenjena y el orégano y salpimienta.",
+        "Rellena las berenjenas, cubre con el queso y gratina 10 minutos en el horno.",
+      ],
+    },
+    "es_coliflorajoarriero": {
+      name: "Coliflor al ajoarriero",
+      ings: [["Coliflor", "1 pequeña (600 g)"], ["Huevos", "2"]],
+      seas: "4 cucharadas de aceite de oliva · 4 dientes de ajo · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · Sal · Perejil",
+      steps: [
+        "Separa la coliflor en ramilletes y cuécela en una olla con agua y sal 6 minutos. Escúrrela. Cuece los huevos 10 minutos y pícalos.",
+        "Dora el ajo laminado en el aceite en una sartén, retira del fuego y añade el pimentón y el vinagre.",
+        "Añade la coliflor, saltea 3 minutos, sala y sirve con el huevo picado y perejil.",
+      ],
+    },
+    "es_menestraverde": {
+      name: "Menestra de verduras",
+      ings: [["Corazones de alcachofa (frescos o congelados)", "250 g"], ["Judías verdes planas", "250 g"], ["Espárragos trigueros", "150 g"], ["Acelgas", "200 g"], ["Cebolla", "1/4"]],
+      seas: "4 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de harina · 200 ml de agua · Sal",
+      steps: [
+        "Trocea las judías y los espárragos y corta las acelgas en tiras. Cuece en una olla con agua hirviendo y sal las judías, las alcachofas y las acelgas 8 minutos, añade los espárragos 3 minutos y escurre.",
+        "Rehoga la cebolla y el ajo picados en el aceite en una cazuela 5 minutos, añade la harina, luego el agua y cuece 2 minutos.",
+        "Incorpora las verduras, cuece a fuego suave 5 minutos y sala.",
+      ],
+    },
   }
 });

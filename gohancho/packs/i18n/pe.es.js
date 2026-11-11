@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('PE', 'es', {
   staple: 'Arroz blanco',
   names: {
+    "tofu": "Tofu firme",
+    "zucchini": "Zapallo italiano",
     'papaya': 'Papaya',
     'banana': 'Plátano',
     'pineapple': 'Piña',
@@ -1371,6 +1373,86 @@ GOHAN_PACK_TR('PE', 'es', {
         'Pele la papaya, quítele las semillas y córtela en cubos. Pele y corte el plátano en rodajas.',
         'Corte las rodajas de piña en trozos pequeños.',
         'Mezcle toda la fruta en un bol con el jugo de naranja y sirva de inmediato.',
+      ],
+    },
+    "pe_tofu_saltado": {
+      name: "Tofu saltado con verduras (chifa)",
+      ings: [["Tofu firme", "400 g"], ["Pak choy", "200 g"], ["Pimiento rojo", "1"], ["Cebollita china", "2 tallos"]],
+      seas: "3 cucharadas de aceite · 3 cucharadas de sillao · 1 cucharada de kión rallado · 2 dientes de ajo · 1 cucharadita de maicena · 1 cucharadita de aceite de ajonjolí",
+      steps: [
+        "Corta el tofu en cubos, el pak choy en trozos y el pimiento en tiras. Corta la cebollita china en trozos. Mezcla el sillao con la maicena y 3 cucharadas de agua.",
+        "Dora el tofu por todos lados en un wok con 2 cucharadas de aceite y retíralo.",
+        "Saltea a fuego alto el ajo, el kión, el pimiento y el pak choy en el resto del aceite 2 minutos, agrega el tofu y la salsa, mezcla hasta que brille y termina con la cebollita china y el aceite de ajonjolí.",
+      ],
+    },
+    "pe_tortilla_espinaca": {
+      name: "Tortilla de espinaca",
+      ings: [["Huevos", "5"], ["Espinaca", "250 g"], ["Cebolla roja", "1/4"], ["Tomate", "1"]],
+      seas: "3 cucharadas de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Blanquea la espinaca en una olla con agua hirviendo 1 minuto, escúrrela, exprímela y pícala. Pica la cebolla, el ajo y el tomate.",
+        "Bate los huevos con sal y pimienta y mezcla con la espinaca, la cebolla, el ajo y el tomate.",
+        "Calienta el aceite en una sartén, vierte la mezcla y cocina a fuego medio-bajo 4 minutos, voltea y cocina 3 minutos más.",
+      ],
+    },
+    "pe_saltado_champinones": {
+      name: "Saltado de champiñones",
+      ings: [["Champiñones", "500 g"], ["Cebolla roja", "1/2"], ["Tomates", "2"], ["Ají amarillo", "1"], ["Culantro", "5 g"]],
+      seas: "3 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre tinto · Sal · Pimienta · Comino",
+      steps: [
+        "Corta los champiñones en cuartos, la cebolla y los tomates en gajos y el ají en tiras.",
+        "Saltea los champiñones en aceite muy caliente en un wok o sartén grande 5 minutos hasta dorar. Añade el ajo, la cebolla y el ají y saltea 1 minuto.",
+        "Agrega los tomates, el sillao, el vinagre, sal, pimienta y comino, saltea 1 minuto y termina con culantro.",
+      ],
+    },
+    "pe_vainitas_huevo": {
+      name: "Vainitas saltadas con huevo",
+      ings: [["Vainitas", "300 g"], ["Huevos", "3"], ["Cebolla roja", "1/4"], ["Tomate", "1"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · 1 cucharada de sillao · Sal · Pimienta",
+      steps: [
+        "Corta las vainitas en trozos de 3 cm y hiérvelas en una olla con agua y sal 5 minutos. Escúrrelas.",
+        "Saltea la cebolla, el ajo y el tomate en el aceite en una sartén 3 minutos, agrega las vainitas y el sillao y cocina 2 minutos.",
+        "Vierte los huevos batidos, salpimienta y revuelve hasta que cuajen.",
+      ],
+    },
+    "pe_zapallito_relleno": {
+      name: "Zapallo italiano relleno con queso",
+      ings: [["Zapallo italiano", "3 (600 g)"], ["Queso fresco", "150 g"], ["Huevo", "1"], ["Cebolla roja", "1/4"], ["Ají amarillo", "1"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · Huacatay u orégano · Sal · Pimienta",
+      steps: [
+        "Precalienta el horno a 200 °C. Corta los zapallos por la mitad a lo largo, retira la pulpa y pícala con la cebolla y el ají.",
+        "Saltea las verduras picadas con el ajo en el aceite en una sartén 5 minutos. Fuera del fuego, mezcla con el queso desmenuzado, el huevo, las hierbas, sal y pimienta.",
+        "Rellena los zapallos y hornéalos en una fuente 25 minutos hasta que doren.",
+      ],
+    },
+    "pe_coliflor_brocoli_chifa": {
+      name: "Coliflor y brócoli saltados con kión",
+      ings: [["Coliflor", "300 g"], ["Brócoli", "300 g"], ["Pimiento rojo", "1/2"], ["Cebollita china", "2 tallos"]],
+      seas: "2 cucharadas de aceite · 2 cucharadas de sillao · 1 cucharada de kión rallado · 2 dientes de ajo · 1 cucharadita de maicena · 1 cucharadita de aceite de ajonjolí",
+      steps: [
+        "Separa la coliflor y el brócoli en ramitos pequeños y blanquéalos en una olla con agua hirviendo 2 minutos. Escúrrelos. Corta el pimiento en tiras.",
+        "Saltea el ajo y el kión en el aceite en un wok, agrega las verduras y el pimiento y saltea a fuego alto 3 minutos.",
+        "Añade el sillao mezclado con la maicena y 3 cucharadas de agua, saltea hasta que brille y termina con la cebollita china y el aceite de ajonjolí.",
+      ],
+    },
+    "pe_crema_zapallito": {
+      name: "Crema de zapallo italiano",
+      ings: [["Zapallo italiano", "2 (400 g)"], ["Cebolla", "1/4"], ["Leche evaporada", "50 ml"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 500 ml de agua · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y corta el zapallo italiano en trozos.",
+        "Sofríe la cebolla y el ajo en el aceite en una olla 3 minutos, añade el zapallo y el agua y cocina 12 minutos.",
+        "Licúa hasta que quede suave, incorpora la leche evaporada y salpimienta.",
+      ],
+    },
+    "pe_sopa_champinones": {
+      name: "Sopa de champiñones y espinaca",
+      ings: [["Champiñones", "200 g"], ["Espinaca", "100 g"], ["Cebolla roja", "1/4"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 600 ml de agua · 1 cucharadita de sillao · Sal · Pimienta · Orégano",
+      steps: [
+        "Lamina los champiñones y pica la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite en una olla 3 minutos, agrega los champiñones y cocina 4 minutos.",
+        "Añade el agua, el sillao y el orégano, cocina 8 minutos, agrega la espinaca 1 minuto y salpimienta.",
       ],
     },
   }

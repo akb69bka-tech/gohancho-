@@ -1618,5 +1618,23 @@ GOHAN_PACK_TR('JP', 'en', {
       steps: ['Cut the pork into 4 cm pieces and the cabbage into large pieces.', 'Heat the sesame oil in a frying pan and stir-fry the pork over medium heat until the fat renders and no pink remains, cooking it through.', 'Add the cabbage and garlic, stir-fry over high heat for 2 minutes and season with the chicken stock powder, salt and pepper.'],
       tip: { add: 'Lemon juice', why: 'A little at the end cuts the richness of the pork belly.', skill: 'Cabbage on high heat, briefly', how: 'Turn off the heat after 2 minutes to keep the cabbage sweet and crunchy.' }
     },
+    nasuatsuagemiso: {
+      name: 'Stir-fried thick fried tofu and eggplant with miso',
+      ings: [['Atsuage (thick fried tofu)', '1 piece (200 g)'], ['Japanese eggplants', '2'], ['Green peppers (piman)', '2']],
+      seas: 'Vegetable oil 1.5 tbsp · Miso 1.5 tbsp · Sugar 2 tsp · Sake 1 tbsp · Soy sauce 1 tsp · Grated ginger 1/2 tsp',
+      steps: ['Pour boiling water over the atsuage to remove excess oil and cut it into bite-size pieces. Cut the eggplants into chunks and the peppers into bite-size pieces. Mix the miso, sugar, sake, soy sauce and ginger.', 'Heat the oil in a frying pan and stir-fry the eggplant for 3 minutes until soft, then add the atsuage and peppers and stir-fry for 2 minutes.', 'Add the miso mixture, toss to coat everything and stir-fry for 1 minute.']
+    },
+    iridofu: {
+      name: 'Iri-dofu (scrambled tofu with vegetables and egg)',
+      ings: [['Firm (momen) tofu', '1 block'], ['Eggs', '2'], ['Carrot', '1/3'], ['Shiitake mushrooms', '3'], ['Leek (naganegi)', '1/2'], ['Green beans', '4']],
+      seas: 'Sesame oil 1 tbsp · Soy sauce 1.5 tbsp · Mirin 1 tbsp · Salt a little',
+      steps: ['Wrap the tofu in kitchen paper and leave for 10 minutes to drain. Cut the carrot into thin strips, slice the shiitake and leek and cut the green beans diagonally.', 'Heat the sesame oil in a frying pan and stir-fry the carrot, shiitake and green beans for 2 minutes. Crumble in the tofu by hand and stir-fry for 5 minutes until the moisture is gone.', 'Season with the soy sauce, mirin and salt, add the beaten eggs and leek and stir-fry, stirring, until the egg is cooked through.']
+    },
+    tofukinokoankake: {
+      name: 'Tofu with thick mushroom sauce',
+      ings: [['Firm (momen) tofu', '1 block'], ['Shimeji mushrooms', '1 pack'], ['Enoki mushrooms', '1/2 bag'], ['Carrot', '1/4'], ['Leek (naganegi)', '1/2']],
+      seas: 'Water 250 ml · Soy sauce 2 tbsp · Mirin 1 tbsp · Grated ginger 1 tsp · Potato starch 1 tbsp (mixed with 2 tbsp water) · Vegetable oil 2 tsp',
+      steps: ['Drain the tofu and cut it into 8 pieces. Separate the shimeji and enoki, cut the carrot into thin strips and slice the leek thinly on the diagonal.', 'Heat the oil in a frying pan, brown the tofu on both sides and put it on plates.', 'Bring the water, soy sauce, mirin and ginger to the boil in a pot, add the mushrooms, carrot and leek and simmer for 3 minutes. Thicken with the starch mixture and pour over the tofu.']
+    },
   }
 });

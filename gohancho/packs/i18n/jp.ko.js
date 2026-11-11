@@ -572,5 +572,8 @@ GOHAN_PACK_TR('JP', 'ko', {
     "shakebutter": {name: "연어 버터간장구이"},
     "gyusukini": {name: "소고기 양파 스키야키풍 조림"},
     "butacabbage": {name: "삼겹살 양배추 소금볶음"},
+    "nasuatsuagemiso": {name: "두부튀김(아쓰아게)과 가지 된장볶음"},
+    "iridofu": {name: "두부 채소 달걀 볶음 (이리도후)"},
+    "tofukinokoankake": {name: "두부 버섯 앙카케"},
   }
 });

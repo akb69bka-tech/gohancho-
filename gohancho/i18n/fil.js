@@ -14,6 +14,7 @@ GOHAN_I18N('fil', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Carbohydrates ng buong pagkain: mga {n} g (bawat tao, tantiya)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Walang tantiya ng carbohydrates ng buong pagkain (walang tantiya para sa “{name}”)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Walang tantiya ng carbohydrates ng buong pagkain (walang tantiya para sa kanin o tinapay)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang mga ulam na may kanin, noodles o patatas",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: hindi makilala ng app ang salitang ito. Pumili sa mga button sa ibaba.",
     "ある（設定する）": "Mayroon (i-set up)",
     "ない（このまま作る）": "Wala (magsimulang magluto)",

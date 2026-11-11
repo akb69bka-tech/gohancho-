@@ -14,6 +14,7 @@ GOHAN_I18N('id', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Karbohidrat satu hidangan: sekitar {n} g (per orang, perkiraan)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Tidak ada perkiraan karbohidrat untuk hidangan (tidak ada perkiraan untuk “{name}”)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Tidak ada perkiraan karbohidrat untuk hidangan (tidak ada perkiraan untuk makanan pokok)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hidangan utama dengan nasi, mi, atau kentang juga akan muncul",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: aplikasi tidak bisa mengenali kata ini. Silakan pilih dari tombol di bawah.",
     "ある（設定する）": "Ada (atur)",
     "ない（このまま作る）": "Tidak ada (langsung masak)",

@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('TR', 'tr', {
   staple: 'Ekmek',
   names: {
+    "chard": "Pazı",
     'olive': 'Siyah ve yeşil zeytin',
     "oats": "Yulaf ezmesi",
     "semolina": "İrmik",
@@ -1213,6 +1214,46 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Domatesleri ve salatalığı dilimleyin.',
         'Zeytinlerle birlikte bir tabağa dizin.',
         'Zeytinyağını gezdirin, tuz serpin ve nane yapraklarını ekleyin.',
+      ],
+    },
+    "tr_kabaksinkonta": {
+      name: "Kabak sinkonta",
+      ings: [["Kabak", "3 (600 g)"], ["Soğan", "1/2"], ["Domates", "2"], ["Sivri biber", "2"], ["Doğranmış dereotu", "1 yemek kaşığı"]],
+      seas: "4 yemek kaşığı zeytinyağı · 1 tatlı kaşığı tuz · 1/2 tatlı kaşığı şeker · 100 ml su",
+      steps: [
+        "Kabakları iri doğrayın, soğanı yarım ay, biberleri halka doğrayın, domatesleri rendeleyin.",
+        "Geniş bir tencerede soğan ve biberleri zeytinyağında 5 dakika kavurun. Kabak, domates, tuz, şeker ve suyu ekleyin.",
+        "Kapağını kapatıp kısık ateşte kabaklar yumuşayana kadar 20 dakika pişirin. Dereotu serpip ılık ya da oda sıcaklığında servis edin.",
+      ],
+    },
+    "tr_etsizmusakka": {
+      name: "Etsiz patlıcan musakka",
+      ings: [["Patlıcan", "3 (700 g)"], ["Sivri biber", "3"], ["Domates", "3"], ["Soğan", "1/2"], ["Domates salçası", "1 yemek kaşığı"]],
+      seas: "5 yemek kaşığı zeytinyağı · 2 diş sarımsak · 200 ml sıcak su · Tuz · Karabiber",
+      steps: [
+        "Fırını 200°C’ye ısıtın. Patlıcanları kalın halkalar halinde kesin, 3 yemek kaşığı yağ sürüp fırın tepsisinde 20 dakika pişirin.",
+        "Soğan, sarımsak ve biberleri kalan yağda tavada 5 dakika kavurun, doğranmış domates, salça ve sıcak suyu ekleyip 5 dakika pişirin. Tuz ve biberle tatlandırın.",
+        "Patlıcanları ve sosu bir fırın kabına sıra sıra dizip 20 dakika fırında pişirin.",
+      ],
+    },
+    "tr_peynirlikarnabahar": {
+      name: "Fırında yumurtalı peynirli karnabahar",
+      ings: [["Karnabahar", "1 (700 g)"], ["Yumurta", "2"], ["Yoğurt", "150 g"], ["Rendelenmiş kaşar", "80 g"]],
+      seas: "2 yemek kaşığı zeytinyağı · 1 tatlı kaşığı toz kırmızı biber · Tuz · Karabiber",
+      steps: [
+        "Fırını 200°C’ye ısıtın. Karnabaharı çiçeklerine ayırıp bir tencerede tuzlu suda 6 dakika haşlayın. Süzüp yağlanmış fırın kabına koyun.",
+        "Yumurtaları yoğurt, peynirin yarısı, tuz ve karabiberle çırpıp üzerine dökün.",
+        "Kalan peyniri ve toz biberi serpip üzeri kızarana kadar 20 dakika pişirin.",
+      ],
+    },
+    "tr_yumurtalipazi": {
+      name: "Yumurtalı pazı kavurması",
+      ings: [["Pazı", "500 g"], ["Soğan", "1/2"], ["Yumurta", "4"]],
+      seas: "3 yemek kaşığı zeytinyağı ya da tereyağı · 1/2 tatlı kaşığı pul biber · Tuz",
+      steps: [
+        "Pazıları yıkayıp doğrayın, soğanı ince doğrayın.",
+        "Soğanı tavada yağda 4 dakika kavurun, pazı ve pul biberi ekleyip yumuşayıp suyunu çekene kadar 6–8 dakika pişirin. Tuzlayın.",
+        "Dört çukur açıp yumurtaları kırın, kapağını kapatıp 4–5 dakika pişirin.",
       ],
     },
   }

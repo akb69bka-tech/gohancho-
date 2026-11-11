@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "tofu": "Tofu (fest)",
     "zucchini": "Zucchini",
     'banana': 'Banane',
     "oats": "Haferflocken",
@@ -1306,6 +1307,76 @@ GOHAN_PACK_TR('DE', 'de', {
         'Die Haferflocken in einer Schüssel mit dem Wasser verrühren und 5 Minuten quellen lassen.',
         'Den Apfel raspeln und mit dem Zitronensaft mischen, damit er nicht braun wird. Die Banane in Scheiben schneiden.',
         'Alles in zwei Schalen verteilen und mit Rosinen und Zimt bestreuen.',
+      ],
+    },
+    "de_pilzzucchinipfanne": {
+      name: "Pilz-Zucchini-Pfanne mit Kräutern",
+      ings: [["Braune Champignons", "400 g"], ["Zucchini", "1 (250 g)"], ["Zwiebel", "1"], ["Kirschtomaten", "150 g"]],
+      seas: "3 EL Öl · 2 Knoblauchzehen · 2 EL gehackte Petersilie · 1 TL getrockneter Thymian · Salz · Pfeffer",
+      steps: [
+        "Die Pilze vierteln, die Zucchini in Halbmonde und die Zwiebel in Streifen schneiden.",
+        "Das Öl in einer großen Pfanne erhitzen und die Pilze bei starker Hitze 6 Minuten braun anbraten. Zwiebel, Zucchini und Knoblauch zugeben und 5 Minuten mitbraten.",
+        "Tomaten und Thymian 2 Minuten mitbraten, mit Salz und Pfeffer abschmecken und mit Petersilie bestreuen.",
+      ],
+    },
+    "de_rahmspinatei": {
+      name: "Rahmspinat mit Spiegelei",
+      ings: [["Blattspinat", "400 g"], ["Sahne", "100 ml"], ["Zwiebel", "1/2"], ["Eier", "4"]],
+      seas: "1 EL Butter · 1 EL Öl · 1 Knoblauchzehe · Muskat · Salz · Pfeffer",
+      steps: [
+        "Zwiebel und Knoblauch fein hacken und in einem Topf in der Butter 3 Minuten andünsten. Den Spinat zugeben und 3 Minuten zusammenfallen lassen.",
+        "Den Spinat im Topf grob hacken, die Sahne zugießen und 3 Minuten köcheln lassen. Mit Muskat, Salz und Pfeffer würzen.",
+        "Die Eier in einer Pfanne im Öl zu Spiegeleiern braten und auf dem Spinat anrichten.",
+      ],
+    },
+    "de_gemuesetofu": {
+      name: "Gemüsepfanne mit Tofu",
+      ings: [["Tofu (fest)", "300 g"], ["Brokkoli", "250 g"], ["Rote Paprika", "1"], ["Möhre", "1 kleine"]],
+      seas: "3 EL Öl · 2 EL Sojasoße · 1 TL geriebener Ingwer · 1 Knoblauchzehe · Salz · Pfeffer",
+      steps: [
+        "Den Tofu trocken tupfen und würfeln. Brokkoli in Röschen, Paprika in Streifen und die Möhre in dünne Scheiben schneiden.",
+        "Den Tofu in einer großen Pfanne in 2 EL Öl 6–8 Minuten knusprig goldbraun braten und herausnehmen.",
+        "Das Gemüse im restlichen Öl mit Ingwer und Knoblauch 5 Minuten braten, Tofu und Sojasoße zugeben und abschmecken.",
+      ],
+    },
+    "de_blumenkohlgratin": {
+      name: "Blumenkohl-Brokkoli-Gratin",
+      ings: [["Blumenkohl", "400 g"], ["Brokkoli", "300 g"], ["Sahne", "150 ml"], ["Ei", "1"], ["Geriebener Gouda", "80 g"]],
+      seas: "Muskat · Salz · Pfeffer · 1 TL Butter für die Form",
+      steps: [
+        "Den Backofen auf 200 °C vorheizen. Blumenkohl und Brokkoli in Röschen teilen, in einem Topf in Salzwasser 5 Minuten garen und abgießen.",
+        "Das Gemüse in eine gefettete Auflaufform geben. Sahne mit Ei, Muskat, Salz und Pfeffer verquirlen und darübergießen.",
+        "Mit dem Käse bestreuen und 20 Minuten goldbraun überbacken.",
+      ],
+    },
+    "de_gefuelltezucchini": {
+      name: "Gefüllte Zucchini mit Feta und Tomaten",
+      ings: [["Zucchini", "2 (500 g)"], ["Tomaten", "2"], ["Feta", "150 g"], ["Zwiebel", "1/2"]],
+      seas: "2 EL Olivenöl · 1 Knoblauchzehe · 1 TL getrockneter Oregano · Salz · Pfeffer",
+      steps: [
+        "Den Backofen auf 200 °C vorheizen. Zucchini längs halbieren, aushöhlen und das Fruchtfleisch mit Tomaten und Zwiebel hacken.",
+        "Das gehackte Gemüse mit Knoblauch in einer Pfanne im Öl 5 Minuten braten. Die Hälfte des Fetas hineinbröseln und mit Oregano, Salz und Pfeffer würzen.",
+        "Die Zucchini füllen, den restlichen Feta darüberbröseln und in einer Auflaufform 25 Minuten backen.",
+      ],
+    },
+    "de_ruehreipilze": {
+      name: "Rührei mit Pilzen und Schnittlauch",
+      ings: [["Eier", "5"], ["Champignons", "250 g"], ["Tomaten", "2"], ["Schnittlauch", "1 Bund"]],
+      seas: "1 EL Butter · 1 EL Öl · 3 EL Milch · Salz · Pfeffer",
+      steps: [
+        "Die Pilze in Scheiben, die Tomaten in Spalten schneiden und den Schnittlauch in Röllchen schneiden. Die Eier mit Milch, Salz und Pfeffer verquirlen.",
+        "Die Pilze in einer Pfanne im Öl 5 Minuten goldbraun braten.",
+        "Butter und Eier zugeben und bei schwacher Hitze unter sanftem Rühren stocken lassen. Mit Schnittlauch bestreuen und mit den Tomaten servieren.",
+      ],
+    },
+    "de_spitzkohltofu": {
+      name: "Spitzkohlpfanne mit Räuchertofu",
+      ings: [["Spitzkohl", "500 g"], ["Räuchertofu", "200 g"], ["Zwiebel", "1/2"]],
+      seas: "3 EL Öl · 1 TL Kümmel · 1 TL Paprikapulver edelsüß · 1 EL Sojasoße · Salz · Pfeffer",
+      steps: [
+        "Den Spitzkohl in feine Streifen, den Tofu in kleine Würfel und die Zwiebel in Streifen schneiden.",
+        "Den Tofu in einer großen Pfanne im Öl 5 Minuten knusprig braten. Zwiebel und Kümmel zugeben und 2 Minuten mitbraten.",
+        "Den Kohl zugeben und 6–8 Minuten bissfest braten. Mit Paprika, Sojasoße, Salz und Pfeffer abschmecken.",
       ],
     },
   }

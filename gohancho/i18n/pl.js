@@ -14,6 +14,7 @@ GOHAN_I18N('pl', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Węglowodany posiłku: ok. {n} g (na osobę, szacunkowo)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Brak szacunku węglowodanów dla posiłku (brak szacunku dla „{name}”)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Brak szacunku węglowodanów dla posiłku (brak szacunku dla dodatku)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanów”, dlatego pojawią się też dania główne z ryżem, makaronem lub ziemniakami",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "„{name}”: aplikacja nie rozpoznaje tego słowa. Wybierz jeden z przycisków poniżej.",
     "ある（設定する）": "Tak (ustaw je)",
     "ない（このまま作る）": "Nie (zacznij gotować)",

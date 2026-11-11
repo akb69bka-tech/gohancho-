@@ -15,6 +15,7 @@ GOHAN_I18N('en', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Meal carbohydrates: about {n} g (per person, estimate)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "No carbohydrate estimate for the meal (no estimate for “{name}”)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "No carbohydrate estimate for the meal (no estimate for the staple)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes will also appear",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: the app can't recognize this word. Please choose from the buttons below.",
     "ある（設定する）": "Yes (set them up)",
     "ない（このまま作る）": "No (start cooking)",

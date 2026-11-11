@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    "spinach": "Espinafre",
     'tapioca': 'Goma de tapioca',
     'coconut': 'Coco ralado',
     'tapioca starch': 'Polvilho azedo ou doce',
@@ -1471,6 +1472,76 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
         'Preaqueça o forno a 200°C. Leve o leite, o óleo e o sal à fervura.',
         'Despeje o líquido quente sobre o polvilho em uma tigela e misture até formar uma massa farelenta. Espere 5 minutos, junte o ovo e o queijo e sove até ficar lisa.',
         'Modele bolinhas do tamanho de uma noz, coloque em uma assadeira e asse por 20 a 25 minutos, até crescer e dourar. Coma morno.',
+      ],
+    },
+    "br_moqueca_ovos": {
+      name: "Moqueca de ovos",
+      ings: [["Ovos", "4"], ["Pimentões vermelho e amarelo", "2"], ["Tomates", "2"], ["Cebola", "1/2"], ["Leite de coco", "200 ml"], ["Coentro", "1 punhado"]],
+      seas: "1 colher (sopa) de azeite de dendê ou azeite · 2 dentes de alho · 1/2 limão · Sal",
+      steps: [
+        "Corte a cebola, os pimentões e os tomates em rodelas. Amasse o alho com sal e o suco do limão.",
+        "Em uma panela larga, faça camadas de cebola, pimentões e tomates, junte o alho, o leite de coco e o azeite, tampe e cozinhe por 10 minutos.",
+        "Quebre os ovos sobre o molho, tampe e cozinhe por 6 a 8 minutos, até as claras firmarem. Salpique coentro.",
+      ],
+    },
+    "br_abobrinha_recheada": {
+      name: "Abobrinha recheada com queijo",
+      ings: [["Abobrinhas", "2 (500 g)"], ["Tomates", "2"], ["Cebola", "1/4"], ["Muçarela", "120 g"], ["Parmesão ralado", "20 g"]],
+      seas: "2 colheres (sopa) de azeite · 1 dente de alho · Orégano · Sal · Pimenta",
+      steps: [
+        "Preaqueça o forno a 200 °C. Corte as abobrinhas ao meio no sentido do comprimento, retire o miolo e pique com os tomates e a cebola.",
+        "Refogue os legumes picados com o alho no azeite em uma frigideira por 5 minutos e tempere com orégano, sal e pimenta.",
+        "Recheie as abobrinhas, cubra com a muçarela e o parmesão e asse em uma travessa por 20 a 25 minutos, até dourar.",
+      ],
+    },
+    "br_berinjela_recheada": {
+      name: "Berinjela recheada com legumes e queijo",
+      ings: [["Berinjelas", "2 (500 g)"], ["Tomates", "2"], ["Pimentão verde", "1/2"], ["Cebola", "1/4"], ["Muçarela", "120 g"]],
+      seas: "3 colheres (sopa) de azeite · 2 dentes de alho · Salsinha · Sal · Pimenta",
+      steps: [
+        "Preaqueça o forno a 200 °C. Corte as berinjelas ao meio, retire o miolo deixando 1 cm de casca e pique o miolo com os tomates, o pimentão e a cebola.",
+        "Refogue os legumes picados com o alho no azeite em uma frigideira por 8 minutos, tempere e junte a salsinha.",
+        "Recheie as berinjelas, cubra com a muçarela e asse em uma travessa por 25 minutos, até ficarem macias e douradas.",
+      ],
+    },
+    "br_chuchu_ovos": {
+      name: "Chuchu refogado com ovos",
+      ings: [["Chuchus", "2 (500 g)"], ["Tomates", "2"], ["Cebola", "1/4"], ["Ovos", "4"]],
+      seas: "2 colheres (sopa) de óleo · 2 dentes de alho · Cheiro-verde · Sal · Pimenta",
+      steps: [
+        "Descasque os chuchus, retire a semente e corte em tiras finas. Pique a cebola, o alho e os tomates.",
+        "Refogue a cebola e o alho no óleo em uma frigideira por 3 minutos, junte o chuchu e os tomates, tampe e cozinhe por 8 minutos, até ficar macio.",
+        "Despeje os ovos batidos com sal e pimenta e mexa delicadamente até firmar. Salpique cheiro-verde.",
+      ],
+    },
+    "br_fritada_espinafre": {
+      name: "Fritada de espinafre",
+      ings: [["Ovos", "6"], ["Espinafre", "200 g"], ["Tomate", "1"], ["Cebola", "1/4"], ["Parmesão ralado", "30 g"]],
+      seas: "2 colheres (sopa) de azeite · 1 dente de alho · Sal · Pimenta",
+      steps: [
+        "Preaqueça o forno a 200 °C. Pique a cebola, o alho e o tomate e corte o espinafre grosseiramente.",
+        "Refogue a cebola e o alho no azeite em uma frigideira que possa ir ao forno por 3 minutos, junte o espinafre e o tomate e cozinhe até murchar.",
+        "Despeje os ovos batidos com o parmesão, sal e pimenta, cozinhe por 2 minutos e termine no forno por 10 a 12 minutos, até firmar.",
+      ],
+    },
+    "br_strogonoff_cogumelos": {
+      name: "Strogonoff de cogumelos",
+      ings: [["Cogumelos (champignon e shimeji)", "500 g"], ["Cebola", "1/2"], ["Molho de tomate", "100 g"], ["Creme de leite", "200 ml"]],
+      seas: "1 colher (sopa) de manteiga · 1 colher (sopa) de óleo · 2 dentes de alho · 1 colher (chá) de mostarda · Sal · Pimenta",
+      steps: [
+        "Fatie os cogumelos e pique a cebola e o alho.",
+        "Derreta a manteiga com o óleo em uma frigideira, refogue a cebola e o alho por 3 minutos, junte os cogumelos e cozinhe em fogo alto por 6 minutos.",
+        "Junte o molho de tomate e a mostarda, cozinhe por 2 minutos, acrescente o creme de leite e aqueça sem ferver. Tempere com sal e pimenta.",
+      ],
+    },
+    "br_omelete_legumes": {
+      name: "Omelete de legumes com queijo",
+      ings: [["Ovos", "5"], ["Tomate", "1"], ["Pimentão verde", "1/2"], ["Cebola", "1/4"], ["Queijo minas ou muçarela", "60 g"]],
+      seas: "1 colher (sopa) de óleo · Cheiro-verde · Sal · Pimenta",
+      steps: [
+        "Corte o tomate, o pimentão e a cebola em cubinhos e o queijo em cubos. Bata os ovos com sal, pimenta e cheiro-verde picado.",
+        "Refogue os legumes no óleo em uma frigideira por 3 minutos.",
+        "Despeje os ovos, espalhe o queijo e cozinhe em fogo baixo, tampado, por 5 minutos. Dobre ao meio e sirva.",
       ],
     },
   }

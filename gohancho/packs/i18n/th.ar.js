@@ -116,6 +116,10 @@ GOHAN_PACK_TR('TH', 'ar', {
     "th_massaman_je": {name: "كاري ماساماني نباتي بالبطاطس والتوفو"},
     "th_pad_woonsen_je": {name: "شعيرية زجاجية مقلية بالخضار"},
     "th_pad_makhuea_tofu": {name: "باذنجان مقلي بالتوفو والريحان"},
-    "th_khaotom_hed": {name: "حساء أرز بالفطر والزنجبيل"}
+    "th_khaotom_hed": {name: "حساء أرز بالفطر والزنجبيل"},
+    "th_pad_het_tofu": {name: "فطر مشكل مقلي مع التوفو"},
+    "th_pad_thua_tofu": {name: "لوبيا طويلة مقلية مع التوفو ومعجون الكاري الأحمر (نباتي)"},
+    "th_khaijiao_phak": {name: "عجة تايلاندية بالخضار والريحان"},
+    "th_taohu_songkhrueang": {name: "توفو مقلي مع صلصة الخضار"},
   }
 });

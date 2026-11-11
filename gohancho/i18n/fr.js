@@ -14,6 +14,7 @@ GOHAN_I18N('fr', {
     "お膳の糖質：約 {n} g（1人分・目安）": "Glucides du repas : environ {n} g (par personne, estimation)",
     "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Pas d'estimation des glucides pour le repas (pas d'estimation pour « {name} »)",
     "お膳の糖質の目安はありません（主食の目安がないため）": "Pas d'estimation des glucides pour le repas (pas d'estimation pour l'accompagnement)",
+    "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます": "Peu de plats principaux conviennent à la fois à vos règles alimentaires ou aliments évités et à « Moins de glucides » : des plats principaux avec riz, nouilles ou pommes de terre apparaîtront aussi",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "« {name} » : l'application ne reconnaît pas ce mot. Choisissez parmi les boutons ci-dessous.",
     "ある（設定する）": "Oui (les configurer)",
     "ない（このまま作る）": "Non (commencer à cuisiner)",

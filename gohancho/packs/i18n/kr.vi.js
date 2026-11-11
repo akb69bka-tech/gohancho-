@@ -98,6 +98,10 @@ GOHAN_PACK_TR('KR', 'vi', {
     "kr_beoseotguk": {name: "Canh nấm sò"},
     "kr_chaeso_sundubu": {name: "Canh đậu hũ non nấu rau củ"},
     "kr_chaeso_bokkeumbap": {name: "Cơm chiên rau củ"},
-    "kr_hobakjuk": {name: "Cháo bí đỏ ngọt (hobakjuk)"}
+    "kr_hobakjuk": {name: "Cháo bí đỏ ngọt (hobakjuk)"},
+    "kr_dubuduruchigi": {name: "Đậu phụ xào cay kiểu Hàn (dubu duruchigi)"},
+    "kr_beoseotjeongol": {name: "Lẩu nấm Hàn Quốc (beoseot jeongol)"},
+    "kr_chaeso_doenjangjjigae": {name: "Canh tương đậu rau củ (doenjang jjigae chay)"},
+    "kr_gajidububokkeum": {name: "Cà tím xào đậu phụ sốt tỏi"},
   }
 });

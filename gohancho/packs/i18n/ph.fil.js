@@ -1285,5 +1285,55 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ihalo ang sinigang mix at sili, idagdag ang kangkong at lutuin nang 2 minuto. Timplahan ng asin at ihain nang mainit.',
       ],
     },
+    "ph_adobongtokwa": {
+      name: "Adobong tokwa",
+      ings: [["Tokwa", "400 g"], ["Sibuyas", "1/2"], ["Dahon ng sibuyas", "2 tangkay"]],
+      seas: "3 kutsara mantika · 6 butil bawang · 3 kutsara toyo · 3 kutsara suka · 1 kutsarita asukal · 2 dahon ng laurel · 1 kutsarita buong paminta · 100 ml tubig",
+      steps: [
+        "Hiwain nang pa-cube ang tokwa at iprito sa kawali hanggang maging golden. Hanguin.",
+        "Igisa ang dinikdik na bawang at hiniwang sibuyas sa parehong kawali, idagdag ang toyo, suka, tubig, laurel at paminta at pakuluan nang hindi hinahalo.",
+        "Ibalik ang tokwa, ilagay ang asukal at pakuluan nang 8 minuto hanggang lumapot ang sarsa. Budburan ng dahon ng sibuyas.",
+      ],
+    },
+    "ph_ginisangampalaya": {
+      name: "Ginisang ampalaya sa itlog",
+      ings: [["Ampalaya", "2 (400 g)"], ["Itlog", "3"], ["Kamatis", "2"], ["Sibuyas", "1/2"]],
+      seas: "2 kutsara mantika · 3 butil bawang · 1 kutsarita asin · 1/4 kutsarita paminta",
+      steps: [
+        "Hatiin ang ampalaya, alisin ang buto at hiwain nang manipis. Kuskusin ng 1/2 kutsaritang asin, hayaan nang 10 minuto at pigain.",
+        "Igisa ang bawang, sibuyas at kamatis sa kawali nang 3 minuto, idagdag ang ampalaya at lutuin nang 4 na minuto.",
+        "Ibuhos ang binating itlog, hayaang mamuo nang kaunti saka haluin nang dahan-dahan. Timplahan ng natitirang asin at paminta.",
+      ],
+    },
+    "ph_adobongsitaw": {
+      name: "Adobong sitaw at tokwa",
+      ings: [["Sitaw", "300 g"], ["Tokwa", "200 g"], ["Sibuyas", "1/2"]],
+      seas: "2 kutsara mantika · 5 butil bawang · 2 kutsara toyo · 2 kutsara suka · 1 dahon ng laurel · 1/2 kutsarita paminta · 100 ml tubig",
+      steps: [
+        "Hiwain ang sitaw nang 5 cm at ang tokwa nang pa-cube. Iprito ang tokwa sa mantika hanggang maging golden.",
+        "Idagdag ang bawang at sibuyas at igisa nang 2 minuto. Ilagay ang toyo, suka, tubig, laurel at paminta at pakuluan nang 2 minuto nang hindi hinahalo.",
+        "Ilagay ang sitaw, takpan at pakuluan nang 6–8 minuto hanggang lumambot.",
+      ],
+    },
+    "ph_ginataangsitawtalong": {
+      name: "Ginataang sitaw, talong at tokwa",
+      ings: [["Talong", "250 g"], ["Sitaw", "200 g"], ["Gata", "300 ml"], ["Tokwa", "150 g"], ["Sibuyas", "1/2"]],
+      seas: "1 kutsara mantika · 3 butil bawang · 1 piraso luya · 1 kutsarita asin · 1/4 kutsarita paminta · 1 siling haba (kung gusto)",
+      steps: [
+        "Hiwain nang makapal ang talong, ang sitaw nang 5 cm at ang tokwa nang pa-cube. Hiwain ang sibuyas, bawang at luya.",
+        "Igisa ang bawang, sibuyas at luya sa kaldero, ibuhos ang gata at pakuluan nang mahina. Ilagay ang talong at tokwa at lutuin nang 6 na minuto.",
+        "Idagdag ang sitaw at sili at lutuin nang 5 minuto pa. Timplahan ng asin at paminta.",
+      ],
+    },
+    "ph_ginisangtoguetokwa": {
+      name: "Ginisang togue at tokwa",
+      ings: [["Togue", "300 g"], ["Tokwa", "200 g"], ["Karot", "1/2"], ["Pulang bell pepper", "1/2"]],
+      seas: "3 kutsara mantika · 4 butil bawang · 1/2 sibuyas · 1 kutsara toyo · 1/2 kutsarita asin · 1/4 kutsarita paminta",
+      steps: [
+        "Hiwain nang pahaba ang tokwa at iprito sa 2 kutsarang mantika hanggang maging golden. Hanguin. Hiwain nang manipis ang karot at bell pepper.",
+        "Igisa ang bawang at sibuyas sa natitirang mantika, idagdag ang karot at bell pepper at lutuin nang 2 minuto.",
+        "Ilagay ang togue at tokwa, timplahan ng toyo, asin at paminta at igisa nang 1–2 minuto lamang.",
+      ],
+    },
   }
 });
