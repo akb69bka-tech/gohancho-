@@ -2043,4 +2043,13 @@ GOHAN_I18N('fil', {
     "短く表示": "Paikliin",
     "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "Inalis si “{name}” sa pamilya sa ibang tab, kaya hindi naitabi ang mga allergy na idinagdag mo.",
     "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "May miyembro ng pamilya na inalis sa ibang tab, kaya hindi naitabi ang mga allergy na idinagdag mo.",
+    "使い方": "Paraan ng paggamit",
+    "どんな使い方にしますか": "Paano mo gustong gamitin ang app?",
+    "あとから「条件を変える」や設定で、いつでも変えられます。": "Mababago mo ito anumang oras sa “Baguhin ang option” o sa Settings.",
+    "いろいろな料理から、毎日の献立を出します": "Araw-araw na menu mula sa iba't ibang ulam",
+    "手早く作れる料理を中心に出します": "Karamihan ay ulam na mabilis lutuin",
+    "手順と材料の少ない料理を中心に出します": "Karamihan ay ulam na kaunti ang hakbang at sangkap",
+    "煮込みなど、時間をかけて作る料理も出します": "Pati mga ulam na matagal lutuin, gaya ng nilaga",
+    "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Ang bilang ng tao (2), bilang ng ulam, iniiwasang pagkain at allergy ay mababago mamaya sa Settings.",
+    "アレルギーや苦手な食材がある方は、ここから設定できます": "May allergy o iniiwasang pagkain? Maitatakda mo rito.",
 });

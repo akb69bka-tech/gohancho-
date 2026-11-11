@@ -98,8 +98,9 @@ for (const w of [195, 360, 430]){
 }
 {
     const {p, ctx} = await open({w: 195, hour: 19, tag: 'b1ob', state: {onboarded: false}});
-    const n = await p.evaluate(() => { sheet = {kind: 'onboard', step: 0, cc: S.settings.country, servings: 3, count: 4, avoid: new Set(), staples: new Set(), alg: new Set()}; renderSheet(); return document.querySelectorAll('#sheet-root [data-act=ob-sv]').length; });
-    ok(n === 15, 'B1 はじめての人数も15個: ' + n);
+    // 第39回: はじめての設定では人数を聞かない（2人のまま。人数の15個は、上の条件のシートと設定で確かめる）
+    const n = await p.evaluate(() => { startOnboard(); return {sv: document.querySelectorAll('#sheet-root [data-act=ob-sv]').length, mode: document.querySelectorAll('#sheet-root [data-act=ob-mode]').length, servings: S.settings.servings}; });
+    ok(n.sv === 0 && n.mode >= 4, 'B1 はじめての設定は人数を聞かず、使い方を選ぶ: ' + JSON.stringify(n));
     await ctx.close();
 }
 

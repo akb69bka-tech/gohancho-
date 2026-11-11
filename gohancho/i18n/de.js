@@ -2043,4 +2043,13 @@ GOHAN_I18N('de', {
     "短く表示": "Weniger anzeigen",
     "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "„{name}“ wurde in einem anderen Tab aus der Familie entfernt, daher wurden die hinzugefügten Allergien nicht gespeichert.",
     "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Ein Familienmitglied wurde in einem anderen Tab entfernt, daher wurden die hinzugefügten Allergien nicht gespeichert.",
+    "使い方": "Nutzung",
+    "どんな使い方にしますか": "Wie möchtest du die App nutzen?",
+    "あとから「条件を変える」や設定で、いつでも変えられます。": "Du kannst das jederzeit unter „Optionen“ oder in den Einstellungen ändern.",
+    "いろいろな料理から、毎日の献立を出します": "Tägliche Menüs aus vielen verschiedenen Gerichten",
+    "手早く作れる料理を中心に出します": "Vor allem Gerichte, die schnell gehen",
+    "手順と材料の少ない料理を中心に出します": "Vor allem Gerichte mit wenigen Schritten und Zutaten",
+    "煮込みなど、時間をかけて作る料理も出します": "Auch Gerichte, die Zeit brauchen, z. B. Eintöpfe",
+    "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Personen (2), Anzahl der Gerichte, Zutaten, die du meidest, und Allergien kannst du später in den Einstellungen ändern.",
+    "アレルギーや苦手な食材がある方は、ここから設定できます": "Allergien oder Zutaten, die du meidest? Hier kannst du sie einstellen.",
 });

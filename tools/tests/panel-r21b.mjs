@@ -157,20 +157,20 @@ for (const ts of [0, 1, 2]) {
     if (!want('R22-2')) break;
     const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, dc: 3, sv: 2}, `r93-${ts}`);
     const r = await p.evaluate(async () => { const lines = () => { const h2 = document.querySelector('#sheet-root .sheet h2'); const rg = document.createRange(); rg.selectNodeContents(h2); return {text: h2.textContent, n: new Set([...rg.getClientRects()].map(q => Math.round(q.top))).size, over: h2.scrollWidth > h2.clientWidth + 1}; };
-        startOnboard(); await __tick(); const a = lines(); sheet.step = 1; renderSheet(); await __tick(); const c = lines(); closeSheet(); return {a, c}; });
-    ok(r.a.n === 1 && !r.a.over && r.c.n <= 2 && !r.c.over, `R22-2 R93 195px 文字${ts}: はじめての設定の見出し「${r.a.text}」が1行・「${r.c.text}」が2行まで: ` + JSON.stringify(r));
+        startOnboard(); await __tick(); const a = lines(); closeSheet(); return {a}; });   // 第39回: はじめての設定の2つめは「どんな使い方にしますか」だけ
+    ok(r.a.n <= 2 && !r.a.over, `R22-2 R93 195px 文字${ts}: はじめての設定の見出し「${r.a.text}」が2行まで・はみ出さない: ` + JSON.stringify(r));
     await ctx.close();
 }
 
-// R23-1（R100）幅195px のはじめての設定の2つめ: 人数のボタンの1段目が、下の「もどる／次へ」の帯より上に見える。見出し・説明の文も見える（文字3段階）
+// R23-1（R100）幅195px のはじめての設定の2つめ: 1つめの選ぶ行（第39回: 使い方の「ふつう」。前は人数のボタン）が、下の「もどる／献立を見る」の帯より上に見える。見出し・説明の文も見える（文字3段階）
 for (const ts of [0, 1, 2]) {
     if (!want('R23-1')) break;
     const {p, ctx} = await open({w: 195, h: 422, lang: 'ja', ts, dc: 3, sv: 2}, `r100-${ts}`);
     const r = await p.evaluate(async () => { startOnboard(); await __tick(); await new Promise(r => setTimeout(r, 300));
-        const sh = document.querySelector('#sheet-root .sheet'), foot = sh.querySelector('.ob-actions'), chip = sh.querySelector('[data-act=ob-sv]'), h2 = sh.querySelector('h2'), para = sh.querySelector('h2 + p');
+        const sh = document.querySelector('#sheet-root .sheet'), foot = sh.querySelector('.ob-actions'), chip = sh.querySelector('[data-act=ob-mode]'), h2 = sh.querySelector('h2'), para = sh.querySelector('h2 + p');
         const f = foot.getBoundingClientRect(), c = chip.getBoundingClientRect(), hq = h2.getBoundingClientRect(), pq = para ? para.getBoundingClientRect() : null;
         const res = {footTop: Math.round(f.top), chip: [Math.round(c.top), Math.round(c.bottom)], h2: [Math.round(hq.top), Math.round(hq.bottom)], p: pq && [Math.round(pq.top), Math.round(pq.bottom)], back: !!foot.querySelector('[data-act]')}; closeSheet(); return res; });
-    ok(r.chip[1] <= r.footTop && r.h2[0] >= 0 && (!r.p || r.p[1] <= r.footTop) && r.back, `R23-1 R100 195px 文字${ts}: はじめての設定の人数のボタンの1段目・見出し・説明が「もどる／次へ」の帯より上に見える: ` + JSON.stringify(r));
+    ok(r.chip[1] <= r.footTop && r.h2[0] >= 0 && (!r.p || r.p[1] <= r.footTop) && r.back, `R23-1 R100 195px 文字${ts}: はじめての設定の使い方の1行目・見出し・説明が「もどる／献立を見る」の帯より上に見える: ` + JSON.stringify(r));
     await ctx.close();
 }
 

@@ -267,7 +267,7 @@ for (const [lang, w, ts, n] of [['ja', 195, 2, 3], ['ja', 195, 0, 5], ['en', 195
 }
 
 // R14（第7回）: はじめての設定を終えた直後は「新」を付けない（設定に合わせて献立を作り直しても、まだ何も入れ替えていない）
-for (const [label, steps] of [['そのまま', []], ['人数・アレルギーを選ぶ', ['ob-sv:4', 'ob-alg:egg']]]){
+for (const [label, steps] of [['そのまま', []], ['使い方を選ぶ', ['ob-mode:simple']], ['ダイエットを選ぶ', ['ob-mode:diet']]]){   // 第39回: はじめての設定は国と言語・使い方の2つ
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP', timezoneId: 'Asia/Tokyo' });
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     await ctx.addInitScript(seedScript(seedFor('marugoto-ob', label)));
@@ -276,9 +276,7 @@ for (const [label, steps] of [['そのまま', []], ['人数・アレルギー�
     const clickAct = async (act, v) => { const sel = `#sheet-root [data-act="${act}"]` + (v ? `[data-v="${v}"]` : ''); await p.evaluate(sel => { const e = document.querySelector(sel); if (e) e.click(); }, sel); await p.waitForTimeout(300); };
     // 国は自分で一覧から選ぶ（はじめから選ばれている国はない）
     await p.evaluate(() => { for (const s of ['[data-act=cc-tab][data-ccs~="JP"]', '.country-list [data-act=cc-choose][data-cc="JP"]', '.ob-actions [data-act=pick-country][data-cc="JP"]']){ const e = document.querySelector('#sheet-root ' + s); if (e) e.click(); } }); await p.waitForTimeout(500);
-    for (const st of steps.filter(x => x.startsWith('ob-sv'))) await clickAct('ob-sv', st.split(':')[1]);
-    await clickAct('ob-next');
-    for (const st of steps.filter(x => x.startsWith('ob-alg'))) { await p.evaluate(() => document.querySelectorAll('details.ob-alg-more').forEach(d => d.open = true)); await clickAct('ob-alg', st.split(':')[1]); }
+    for (const st of steps.filter(x => x.startsWith('ob-mode'))) await clickAct('ob-mode', st.split(':')[1]);
     await clickAct('ob-done'); await p.waitForTimeout(800);
     const r = await p.evaluate(() => ({onb: !!S.onboarded, spots: document.querySelectorAll('#view .tray .spot').length, fresh: document.querySelectorAll('#view .tray .spot.fresh, #view .tray .fresh-tag').length}));
     ok(r.onb && r.spots > 0 && r.fresh === 0, `R14 はじめての設定（${label}）を終えた直後は「新」を付けない: ` + JSON.stringify(r));

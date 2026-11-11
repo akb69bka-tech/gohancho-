@@ -2043,4 +2043,13 @@ GOHAN_I18N('vi', {
     "短く表示": "Thu gọn",
     "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” đã bị xóa khỏi gia đình ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
     "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Một thành viên gia đình đã bị xóa ở một thẻ khác, nên các dị ứng bạn thêm không được giữ lại.",
+    "使い方": "Cách dùng",
+    "どんな使い方にしますか": "Bạn muốn dùng ứng dụng theo cách nào?",
+    "あとから「条件を変える」や設定で、いつでも変えられます。": "Bạn có thể đổi bất cứ lúc nào ở “Tùy chọn” hoặc trong Cài đặt.",
+    "いろいろな料理から、毎日の献立を出します": "Thực đơn hằng ngày từ nhiều món khác nhau",
+    "手早く作れる料理を中心に出します": "Chủ yếu là món nấu nhanh",
+    "手順と材料の少ない料理を中心に出します": "Chủ yếu là món ít bước và ít nguyên liệu",
+    "煮込みなど、時間をかけて作る料理も出します": "Cả những món cần thời gian, như món hầm",
+    "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Số người (2), số món, thực phẩm bạn tránh và dị ứng có thể đổi sau trong Cài đặt.",
+    "アレルギーや苦手な食材がある方は、ここから設定できます": "Bạn bị dị ứng hoặc có thực phẩm muốn tránh? Hãy cài đặt tại đây.",
 });

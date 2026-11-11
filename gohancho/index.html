@@ -810,7 +810,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-head{display:flex;flex-direction:column;gap:var(--s8)}
 .ob-count{display:flex;align-items:center;justify-content:space-between;gap:var(--s8);min-height:var(--tap);font-size:var(--fs14);color:var(--muted);font-weight:600}
 .ob-count .ob-skip{min-height:var(--tap);padding-inline:var(--s12);font-weight:600;text-decoration:underline;text-underline-offset:3px}
-.ob-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s8)}
+.ob-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:var(--s8)}
 .ob-steps li{display:flex;flex-direction:column;gap:var(--s4);min-width:0;font-size:var(--fs12);color:var(--muted);line-height:1.4;overflow-wrap:anywhere}
 .ob-steps i{display:block;height:6px;border-radius:var(--r-pill);background:var(--line)}
 .ob-steps li.done i,.ob-steps li.on i{background:var(--leaf)}
@@ -820,6 +820,23 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-lang select{min-height:var(--tap);font:inherit;font-size:var(--fs16);padding:0 var(--s12);border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);color:var(--ink);max-width:100%}
 .sheet-country .country-list{max-height:min(46vh,46dvh)}
 .ob-sv .chip{min-width:56px;min-height:var(--tap);font-size:var(--fs16)}
+/* 第39回（オーナー指示）: はじめての流れの2つめ「どんな使い方にしますか」。1つだけ選ぶ。選んだ行は若草の線と ✓（色だけに頼らない） */
+.ob-modes{display:flex;flex-direction:column;gap:var(--s8)}
+.ob-mode{display:flex;align-items:flex-start;gap:var(--s12);width:100%;min-height:var(--tap);text-align:start;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-md);padding:var(--s12);cursor:pointer;overflow-wrap:anywhere}
+.ob-mode .om-ic{flex:0 0 auto;width:22px;height:22px;margin-top:1px;border-radius:50%;border:2px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;line-height:1}
+.ob-mode .om-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ob-mode .om-t b{font-size:var(--fs16);line-height:1.35}
+.ob-mode .om-t span{font-size:var(--fs14);color:var(--muted);line-height:1.45}
+.ob-mode[aria-checked="true"]{border-color:var(--leaf);background:var(--leaf-soft)}
+.ob-mode[aria-checked="true"] .om-ic{border-color:var(--leaf);background:var(--leaf);color:var(--surface)}
+.ob-mode[aria-checked="true"] .om-ic::before{content:"✓"}
+/* 第39回: はじめての設定のあと、お膳の下に出す小さな案内（アレルギー・苦手はあとから設定）。お膳と丸いボタンには重ねない。閉じられる */
+@media (max-width:299px){html[data-ts] .sheet-onboard .ob-lead,html[data-ts] .sheet-onboard .ob-mode .om-t span{display:none}html[data-ts] .sheet-onboard .ob-mode{align-items:center}.sheet-onboard .ob-mode{padding:var(--s8);gap:var(--s8)}.sheet-onboard .ob-mode .om-t b{font-size:var(--fs14)}.sheet-onboard .ob-mode .om-t span{font-size:12px}}   /* 幅195px・文字を大きくしたとき: 1つめの選ぶ行が下の帯より上に見えるように、上の説明と各行の説明は外し（名前と下の一言で足りる）、行を詰める */
+.alg-hint{margin-top:var(--s8);gap:var(--s8);padding:var(--s8) var(--s8) var(--s8) var(--s12);flex-wrap:nowrap;align-items:center}
+.alg-hint .ah-tx{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;line-height:1.45}
+.alg-hint .btn{flex:0 0 auto}
+.alg-hint .ah-x{flex:0 0 auto;min-width:var(--tap);min-height:var(--tap);border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;border-radius:var(--r-pill)}
+@media (max-width:340px){.alg-hint{flex-wrap:wrap}.alg-hint .ah-tx{flex-basis:calc(100% - var(--tap) - var(--s8))}.alg-hint .btn{order:3}}
 .ob-staples summary{min-height:var(--tap);display:flex;align-items:center}
 .ob-actions{display:flex;gap:var(--s8);margin-top:var(--s8)}
 .ob-actions .btn{min-height:var(--tap-lg);font-size:var(--fs16)}
@@ -7774,13 +7791,52 @@ function obSave(){
 // はじめての設定を終えて、今日の献立を見せる（日本を日本語以外で使うときも、食材の名前（豚肉）で保存する: obSave）
 function obFinish(){
     const first = !S.onboarded;   // はじめての設定（まだ献立を見ていない）
-    obSave(); closeSheet(); reconcileMenu(); refreshWeek();
+    const md = sheet && sheet.kind === 'onboard' ? {to: sheet.mode, from: sheet.mode0} : null;
+    obSave(); closeSheet(); reconcileMenu(); obApplyMode(md, first); refreshWeek();
+    if (first && !algIds().length && !(S.settings.avoid || []).length){ S.algHint = true; save(); }
+    if (S.algHint && !isLocked()) session.algHintWait = true;   // 最初の描画（setTab）から、お知らせが消えるまで案内を待たせる   // 第39回: アレルギー・苦手はあとから。最初の献立の下に、設定への小さな入口を出す（閉じるか開くまで）
     session.freshArmed = false; session.trayPrev = null; session.trayCur = null;   // 設定を終えた直後の献立は「はじめて見る献立」。設定に合わせて作り直しても「新」は付けない（第7回 R14）
     if (first){ session.avoidNote = null; toast.avoidMsg = false; }   // はじめて見せる献立は、もう設定に合っている。「設定に合わせて…かえました」は出さない（第4回 R7・G02）
     setTab('today');
     try{ window.scrollTo(0, 0); }catch(e){}
     obReveal();
     if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
+    if (S.algHint && !isLocked()){ session.algHintWait = true; setTimeout(algHintLater, 600); }   // 「準備ができました」が出ているあいだは案内を出さない（お知らせの置き場所が案内のボタンを避けて、合計の行などに重なるため）。消えたら出す
+}
+function algHintLater(){
+    if ($('#toast-root .toast')){ setTimeout(algHintLater, 400); return; }
+    session.algHintWait = false; if (tab === 'today' && S.algHint) render();
+}
+/* 第39回（オーナー指示「はじめての登録は、言語・国・どの使い方かだけ。細かい設定は慣れてから」）:
+   はじめての流れの2つめ「どんな使い方にしますか」。今ある気分（10分以内・いちばん簡単・じっくり）とダイエットモードから1つ。ふつうを選んだまま「献立を見る」で終えられる。
+   人数（2人）・品数（おまかせ）・苦手・アレルギー・いつも家にある食材は決めず、あとから設定で。 */
+const OB_MODES = () => [
+    ['all', t('ふつう'), t('いろいろな料理から、毎日の献立を出します')],
+    ['ten', t('10分以内'), t('手早く作れる料理を中心に出します')],
+    ['simple', t('いちばん簡単'), t('手順と材料の少ない料理を中心に出します')],
+    ['slow', t('じっくり'), t('煮込みなど、時間をかけて作る料理も出します')],
+    ['diet', ...modeSplit(t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）'))],   // モードのシート・設定と同じ文言
+];
+const OB_MOODS = ['ten', 'simple', 'slow'];
+function obModeNow(){ return dietOn() ? 'diet' : OB_MOODS.includes(session.mood) ? session.mood : 'all'; }
+// 選んだ使い方を当てる。選び直さなかったとき（はじめの選びのまま）は何も変えない（やり直しの人の気分・献立を勝手に変えない）
+function obApplyMode(md, first){
+    if (!md || !md.to || md.to === md.from) return;
+    if (md.to === 'diet') S.settings.diet = true; else if (md.from === 'diet') delete S.settings.diet;
+    const mood = OB_MOODS.includes(md.to) ? md.to : md.to === 'all' && OB_MOODS.includes(session.mood) ? 'all' : null;
+    const decided = decidedToday() || menuIsDecided();
+    if (mood && decided){ dayObj(addDays(TODAY, 1)).mood = mood; save(); return; }   // 決めた献立は変えない。明日から
+    if (mood){ session.mood = mood; session.moodDay = TODAY; }
+    if (decided || !(mood || first)) { save(); return; }   // やり直しでダイエットだけ変えたときは、いまのお膳は変えない（設定のスイッチと同じ）
+    session.rejected.clear(); newMenu(); keepDraft(); save();   // はじめての人はまだ献立を見ていないので、選んだ使い方で作る
+}
+function obModeHtml(){
+    return `<div class="ob-modes" role="radiogroup" aria-label="${esc(t('どんな使い方にしますか'))}">${OB_MODES().map(([k, nm, ds]) => `<button type="button" class="ob-mode" role="radio" data-act="ob-mode" data-v="${k}" aria-checked="${sheet.mode === k}"><span class="om-ic" aria-hidden="true"></span><span class="om-t"><b>${esc(nm)}</b><span>${esc(ds)}</span></span></button>`).join('')}</div>`;
+}
+// 第39回: はじめての設定のあとの、アレルギー・苦手の設定への小さな入口（お膳の下。閉じるか、開くか、設定すると出なくなる）
+function algHintHtml(){
+    if (!S.algHint || session.algHintWait || !S.onboarded || algIds().length || (S.settings.avoid || []).length) return '';
+    return `<div class="note alg-hint" role="note"><span class="ah-tx small">${esc(t('アレルギーや苦手な食材がある方は、ここから設定できます'))}</span><button type="button" class="btn sm" data-act="alg-hint-open">${esc(t('設定'))}</button><button type="button" class="ah-x" data-act="alg-hint-close" aria-label="${esc(t('閉じる'))}" title="${esc(t('閉じる'))}">×</button></div>`;
 }
 // はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
 // （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）
@@ -7799,16 +7855,17 @@ function obAlgGroups(){
 function startOnboard(keep){
     const og = obAlgGroups(), algShown = [...new Set([].concat(...og.top.map(g => g[1])).concat(og.more))];
     sheet = {kind:'onboard', step:0, cc:S.settings.country, servings:S.settings.servings, count:S.settings.dishCount, avoid:new Set(S.settings.avoid), dietAdd:dietAddClean(S.settings.dietAdd), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id))), algShown};
-    if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; }   // 国を選び直したときも、人数と品数はそのまま
+    sheet.mode0 = obModeNow(); sheet.mode = sheet.mode0;
+    if (keep){ sheet.servings = keep.servings; sheet.count = keep.count; if (keep.mode) sheet.mode = keep.mode; }   // 国を選び直したときも、人数と品数・選んだ使い方はそのまま
     renderSheet();
 }
 // はじめての流れの手順（何番目か・全部でいくつか・名前）。国のシートと同じ見た目で出す
-const OB_STEPS = () => [t('国と言語'), t('人数と品数'), t('苦手・アレルギー')];
+const OB_STEPS = () => [t('国と言語'), t('使い方')];   // 第39回: 2つだけ（人数・品数・苦手・アレルギーは、あとから設定で）
 function obProgHtml(n, skip){
     const names = OB_STEPS();
     return `<div class="ob-head">
         <div class="ob-count"><span>${esc(t('ステップ {n} / {total}', {n, total:names.length}))}</span>${skip ? `<button class="btn ghost ob-skip" data-act="ob-skipstep">${esc(t('スキップ'))}</button>` : ''}</div>
-        <ol class="ob-steps" aria-label="${esc(t('ステップ {n} / {total}', {n, total:names.length}))}">${names.map((x, i) => `<li class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}" ${i + 1 === n ? 'aria-current="step"' : ''}><i></i><span>${esc(x)}</span></li>`).join('')}</ol>
+        <ol class="ob-steps" style="--n:${names.length}" aria-label="${esc(t('ステップ {n} / {total}', {n, total:names.length}))}">${names.map((x, i) => `<li class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}" ${i + 1 === n ? 'aria-current="step"' : ''}><i></i><span>${esc(x)}</span></li>`).join('')}</ol>
     </div>`;
 }
 // 献立が決まった瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では、CSS で止める）
@@ -7834,37 +7891,14 @@ function renderSheetBody(){
     if (!sheet){ root.innerHTML = ''; dlgClosed('sheet-root'); return; }
     let body = '';
     if (sheet.kind === 'onboard'){
-        // はじめての流れは3つの手順: 1 国と言語（国のシート）→ 2 人数と品数 → 3 苦手・アレルギー → 献立
-        const st = sheet.step;
-        if (st === 0) body = `
+        // はじめての流れは2つの手順（第39回）: 1 国と言語（国のシート）→ 2 使い方 → 献立
+        body = `
             ${obProgHtml(2, true)}
-            <h2>${esc(t('何人分つくりますか'))}</h2>
-            <p class="muted small">${esc(t('材料の分量をこの人数に合わせて表示します。あとから設定で変えられます。'))}</p>
-            <div class="chips ob-sv">${SV_LIST.map(n => `<button class="chip" data-act="ob-sv" data-v="${n}" aria-pressed="${sheet.servings===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
-            <h3>${esc(t('ふだんの品数'))}</h3>
-            <p class="muted small">${esc(t('「おまかせ」は、平日は3〜4品、週末は4〜6品のように日によって変えます。'))}</p>
-            <div class="chips">${countChips(sheet.count, 'ob-count')}</div>
-            ${(free => free ? `<p class="pw-free">${esc(free)}</p>` : '')(!PLAN.billingEnabled ? '' : monitorOn() || PLAN.campaign.active ? t('登録なしで{n}か月無料体験。毎週ひとこと感想を送るだけで続きます。', {n:Math.round(PLAN.campaign.days / 30)}) : PLAN.trialMode === 'store' ? (introEligible && (!purchasesPlugin() || (introOffer && storeState === 'ok')) ? t('{trial}（App Store で登録します。期間中に解約すれば料金はかかりません）', {trial:introLabel().replace(/[。.]\s*$/, '')}) : '') : t('最初の{n}日間は、すべての機能を無料で使えます。', {n:PLAN.trialDays}))}
-            <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-next">${esc(t('次へ'))}</button></div>`;
-        if (st === 1){
-            const og = obAlgGroups(), obChip = id => `<button class="chip ${sheet.alg.has(id) ? 'allergy' : ''}" data-act="ob-alg" data-v="${id}" aria-pressed="${sheet.alg.has(id)}">${sheet.alg.has(id) ? '⚠ ' : ''}${esc(algLabel(id))}</button>`;
-            body = `
-            ${obProgHtml(3, true)}
-            <h2>${esc(t('苦手な食材はありますか'))}</h2>
-            <p class="muted small">${esc(t('選んだ食材は、ほかの食材に置き換えて作れる料理なら置き換えて出します（例: 豚肉を鶏肉に）。置き換えられない料理は出しません。'))}</p>
-            ${avoidChipsHtml([...sheet.avoid], 'ob-avoid', 'ob-avoid-fam')}
-            <h3>⚠ ${esc(t('アレルギー対策'))}</h3>
-            ${og.top.map(([title, ids]) => `<p class="muted small">${esc(title)}</p><div class="chips">${ids.map(obChip).join('')}</div>`).join('')}
-            ${og.more.length ? `<details class="avoid-more ob-alg-more" ${sheet.algMoreOpen || og.more.some(id => sheet.alg.has(id)) ? 'open' : ''}><summary>${esc(t('ほかのアレルゲン'))}</summary>
-                <div class="chips">${og.more.map(obChip).join('')}</div></details>` : ''}
-            <p class="small warn">${esc(t('アレルギーがある場合は、調味料や加工品の原材料も、必ずご自身で確かめてください。'))}</p>
-            <button class="btn sm" data-act="ob-allergy">${esc(t('アレルギーがある方は「アレルギー対策」へ'))}</button>
-            <details class="box ob-staples" ${sheet.stOpen ? 'open' : ''}><summary>${esc(t('いつも家にある食材'))}</summary><div class="inner">
-                <p class="muted small">${esc(t('選んだ食材は、あるものとして数え、買い物メモに出しません。'))}</p>
-                <div class="chips">${(PACK ? STAPLE_QUICK : STAPLE_QUICK.slice(0,12)).map(q => `<button class="chip" data-act="ob-staple" data-v="${esc(q)}" aria-pressed="${sheet.staples.has(q)}">${esc(q)}</button>`).join('')}</div>
-            </div></details>
+            <h2>${esc(t('どんな使い方にしますか'))}</h2>
+            <p class="muted small ob-lead">${esc(t('あとから「条件を変える」や設定で、いつでも変えられます。'))}</p>
+            ${obModeHtml()}
+            <p class="muted small">${esc(t('人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。'))}</p>
             <div class="ob-actions"><button class="btn ghost" data-act="ob-back">${esc(t('もどる'))}</button><button class="btn primary wide" data-act="ob-done">${esc(t('献立を見る'))}</button></div>`;
-        }
     }
     if (sheet.kind === 'country') body = countrySheetHtml();
     if (sheet.kind === 'one') body = oneSheetHtml();
@@ -14390,6 +14424,7 @@ function viewToday(){
             ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}
         </div>
         ${kcalTrayHtml(m)}
+        ${algHintHtml()}
         ${/* お膳より上には何も足さない（基準書 4-2）。決めたあとは、すぐ下に買い物メモへの1行（約束4）。お知らせ・案内はお膳の下 */''}${decided ? `<p class="shop-line"><button type="button" class="p2-link" data-act="stage" data-k="shop">${esc(t('買い物メモを見る'))}</button></p>` : ''}
         ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
         ${remoteNoticeHtml()}
@@ -16595,10 +16630,13 @@ document.addEventListener('click', e => {
             break;
         }
         case 'ob-again': startOnboard(); break;
-        case 'ob-next': sheet.step++; renderSheet(); break;
+        case 'ob-next': if (sheet && sheet.kind === 'onboard') obFinish(); break;   // 前の流れの「次へ」（いまは手順が1つなので、そのまま献立へ）
+        case 'ob-mode': { if (!sheet || sheet.kind !== 'onboard') break; const v = el.dataset.v; if (OB_MODES().some(x => x[0] === v)){ sheet.mode = v; renderSheet(); } break; }
+        case 'alg-hint-open': delete S.algHint; save(); setGo('allergy-card'); break;   // 第39回: アレルギー対策（家族・アレルギーのタブ）へ。苦手はとなりのタブ
+        case 'alg-hint-close': delete S.algHint; save(); render(); break;
         case 'ob-back': if (sheet.step > 0){ sheet.step--; renderSheet(); } else { sheet = {kind:'country', ob:sheet}; renderSheet(); } break;
-        case 'ob-skipstep': {   // この手順は変えずに次へ（入力した分は元にもどす）。最後の手順なら献立へ
-            if (sheet.step === 0){ sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount; sheet.step = 1; renderSheet(); break; }
+        case 'ob-skipstep': {   // この手順は変えずに献立へ（選んだ使い方は元にもどす）
+            sheet.mode = sheet.mode0; sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount;
             const algShown = sheet.algShown; Object.assign(sheet, {avoid:new Set(S.settings.avoid), dietAdd:dietAddClean(S.settings.dietAdd), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id)))});
             obFinish(); break;
         }
@@ -17877,7 +17915,7 @@ async function setCountryRun(cc, opt){
         await setLang(wantLang());
         applyCountry(cc);
         // はじめて選ぶ国では、その国の家庭にふつうある食材（卵・玉ねぎ・米など）を「いつも家にある」に入れておく（はじめての設定ですべて表示して外せる）
-        if (PACK && fresh && !S.staples.length) S.staples = STAPLE_QUICK.slice();
+        if (PACK && fresh && !S.staples.length && S.onboarded) S.staples = STAPLE_QUICK.slice();   // 第39回: はじめての人は、いつも家にある食材を決めずに始める（あとから設定で）
         if (first && !S.onboarded){ if (!S.trialKept) S.firstUse = TODAY; delete S.trialKept; }   // 国のないデータで使っていた人が選び直したときは、無料期間の始まりを変えない   // 無料期間は国を選んで使いはじめた日から（データを消してやり直したときは、はじめの日のまま）
         save();
         return true;

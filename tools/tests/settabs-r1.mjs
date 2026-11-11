@@ -138,16 +138,16 @@ const TABS = {
 
 // ---- T3 外からの導線 ----
 {
-    // はじめての設定 →「アレルギー対策へ」（覚えたタブが「データ」でも、アレルギー対策の欄へ）
+    // 第39回: はじめての設定（国と言語 → 使い方）のあと、献立の下の案内「設定」→ アレルギー対策（覚えたタブが「データ」でも、アレルギー対策の欄へ）
     const {p, ctx} = await open({onboard: true, setTab: 'data'});
     await pickCountry(p, 'JP');
-    await p.waitForSelector('[data-act="ob-next"]');
-    for (let s = 0; s < 6 && !(await p.$('[data-act="ob-allergy"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; await p.click('[data-act="ob-next"]'); await p.waitForTimeout(150); }
-    const has = !!(await p.$('[data-act="ob-allergy"]'));
-    ok(has, 'T3a はじめての設定に「アレルギー対策へ」がある');
+    await p.waitForSelector('#sheet-root [data-act="ob-done"]'); await p.click('#sheet-root [data-act="ob-done"]'); await until(p, () => !sheet && S.onboarded);
+    await p.waitForSelector('[data-act="alg-hint-open"]', { timeout: 10000 }).catch(() => {});
+    const has = !!(await p.$('[data-act="alg-hint-open"]'));
+    ok(has, 'T3a はじめての設定のあと、献立の下にアレルギー・苦手の設定への案内がある');
     if (has){
-        await p.click('[data-act="ob-allergy"]'); await until(p, () => tab === 'settings' && !sheet); await settle(p);
-        ok(await cur(p) === 'family', 'T3a アレルギー対策へ → 家族・アレルギーのタブ: ' + await cur(p));
+        await p.click('[data-act="alg-hint-open"]'); await until(p, () => tab === 'settings' && !sheet); await settle(p);
+        ok(await cur(p) === 'family', 'T3a 案内 → 家族・アレルギーのタブ: ' + await cur(p));
         ok(await inView(p, '#allergy-card') === true, 'T3a アレルギー対策の欄が見える: ' + await inView(p, '#allergy-card'));
     }
     await ctx.close();

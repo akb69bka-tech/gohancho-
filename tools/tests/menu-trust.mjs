@@ -42,15 +42,14 @@ const hitSlots = (p, al) => p.evaluate(al => { const a0 = S.settings.allergens; 
 
 // ---------- 1) 設定を変える → 開き直す ----------
 for (const k of [0, 1, 2]){
-    // はじめての設定で えび → 「アレルギー対策へ」（設定のタブへ移る）→ 開き直す
+    // 第39回: はじめての設定（国と言語 → 使い方）を終える → 献立の下の案内から設定へ → 苦手で えび・かになど → 開き直す
     const { ctx, p } = await open(null, true);
     await pickCountry(p, 'JP');
-    // 苦手な食材の画面が出るまで「次へ」（はじめての流れの段の数が変わっても動くように）
-    await p.waitForSelector('[data-act="ob-next"]');
-    for (let s = 0; s < 4 && !(await p.$('[data-act="ob-avoid"][data-v="えび"]')); s++){ const nx = await p.$('[data-act="ob-next"]'); if (!nx) break; const st = await p.evaluate(() => sheet && sheet.step); await p.click('[data-act="ob-next"]'); /* 手に持った要素は描き直しで外れることがあるので、押すときに探し直す */ await until(p, st => !sheet || sheet.step !== st, st); }
-    await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); });   // 設定の後ろの案（と下書き）がえびフライ
-    await p.click('[data-act="ob-avoid"][data-v="えび"]');
-    await p.click('[data-act="ob-allergy"]'); await until(p, () => tab === 'settings' && !sheet);
+    await p.waitForSelector('#sheet-root [data-act="ob-done"]'); await p.click('#sheet-root [data-act="ob-done"]'); await until(p, () => !sheet && S.onboarded);
+    await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); render(); });   // 設定の後ろの案（と下書き）がえびフライ
+    await p.waitForSelector('[data-act="alg-hint-open"]'); await p.click('[data-act="alg-hint-open"]'); await until(p, () => tab === 'settings' && !sheet);
+    await p.evaluate(() => setTabShow('food')); await p.waitForSelector('#view [data-act="toggle-avoid-fam"][data-v="shellfish"]', { timeout: 5000 });   // 苦手・食の決まりのタブで、えび・かになどのなかま
+    await p.click('#view [data-act="toggle-avoid-fam"][data-v="shellfish"]'); await until(p, () => (S.settings.avoid || []).includes('@shellfish'));
     const others = await p.evaluate(() => session.menu.items.slice(1).map(x => x.r && x.r.id));
     await p.reload(); await booted(p);
     const r = await p.evaluate(() => ({ ids: session.menu.items.map(x => x.r && x.r.id), hit: session.menu.items.filter(x => x.r && isAvoided(x.r)).map(x => x.r.id), draft: S.draft && S.draft.ids }));

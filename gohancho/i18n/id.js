@@ -2043,4 +2043,13 @@ GOHAN_I18N('id', {
     "短く表示": "Lihat lebih sedikit",
     "別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした": "“{name}” dihapus dari keluarga di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
     "別のタブで家族の1人が消されたため、足したアレルギーは残りませんでした": "Seorang anggota keluarga dihapus di tab lain, jadi alergi yang Anda tambahkan tidak disimpan.",
+    "使い方": "Cara pakai",
+    "どんな使い方にしますか": "Bagaimana Anda ingin memakai aplikasi ini?",
+    "あとから「条件を変える」や設定で、いつでも変えられます。": "Bisa diubah kapan saja di “Pilihan” atau di Pengaturan.",
+    "いろいろな料理から、毎日の献立を出します": "Menu harian dari beragam masakan",
+    "手早く作れる料理を中心に出します": "Kebanyakan masakan yang cepat dibuat",
+    "手順と材料の少ない料理を中心に出します": "Kebanyakan masakan dengan sedikit langkah dan bahan",
+    "煮込みなど、時間をかけて作る料理も出します": "Juga masakan yang butuh waktu, seperti semur",
+    "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Jumlah orang (2), jumlah hidangan, bahan yang dihindari, dan alergi bisa diubah nanti di Pengaturan.",
+    "アレルギーや苦手な食材がある方は、ここから設定できます": "Punya alergi atau bahan yang dihindari? Atur di sini.",
 });

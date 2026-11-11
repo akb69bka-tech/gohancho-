@@ -916,25 +916,29 @@ for (const [st, want, nm] of [[{ avoid: ['@fish'] }, true, '苦手で魚'], [{ a
         await o.ctx.close();
     }
 }
-// モニター第4回 S13・S14: はじめての設定でも、設定の画面と同じく「主なアレルゲン」と「ほかのアレルゲン」を選べる（国選択→設定の順で操作する）
-for (const [cc, pick, inMore] of [['TH', 'egg', false], ['TH', 'milk', false], ['VN', 'fish', false], ['KR', 'fish', false], ['KR', 'sesame', false], ['KR', 'treenut', false], ['KR', 'celery', true], ['JP', 'sesame', true], ['MX', 'sesame', false]]){   // 韓国の魚（全般）・ごまは、たたまずに出す（モニター第5回 S18）
+// モニター第4回 S13・S14 → 第39回: はじめての設定は「国と言語」「使い方」の2つだけ。アレルギーは、そのあと献立の下の案内（設定）から
+//  設定の「アレルギー対策」で、主なアレルゲンとほかのアレルゲンを全部選べる（国選択→使い方→献立→案内の順で、人と同じ操作）
+for (const [cc, pick] of [['TH', 'egg'], ['TH', 'milk'], ['VN', 'fish'], ['KR', 'fish'], ['KR', 'sesame'], ['KR', 'treenut'], ['KR', 'celery'], ['JP', 'sesame'], ['MX', 'sesame']]){
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, locale: 'ja-JP' }); await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ' onboard: ' + e.message));
     await p.goto(URL_); await p.waitForTimeout(1200);
     await pickCountry(p, cc); await p.waitForTimeout(600);   // 国のタブ → 国 → 決定ボタン
-    for (let k = 0; k < 4 && !(await p.locator('[data-act="ob-alg"]').count()); k++){ const nx = p.locator('[data-act="ob-next"], [data-act="country-ok"], [data-act="ob-start"]').first(); if (!(await nx.count())) break; await nx.click(); await p.waitForTimeout(500); }
-    const g = await p.evaluate(() => { const c = [...document.querySelectorAll('[data-act="ob-alg"]')]; return { all: c.map(e => e.dataset.v), more: c.filter(e => e.closest('details')).map(e => e.dataset.v), main: algSections().main.map(x => x[1]) }; });
+    await p.waitForSelector('#sheet-root [data-act="ob-done"]', { timeout: 30000 });
+    ok(!(await p.locator('#sheet-root [data-act="ob-alg"]').count()), `第39回 ${cc}: はじめての設定にはアレルギーの欄を出さない（2つめは使い方）`);
+    await p.locator('#sheet-root [data-act="ob-done"]').click(); await p.waitForTimeout(800);
+    await p.waitForSelector('[data-act="alg-hint-open"]', { timeout: 15000 });
+    await p.locator('[data-act="alg-hint-open"]').click(); await p.waitForTimeout(600);
+    const g = await p.evaluate(() => { const c = [...document.querySelectorAll('#allergy-card [data-act="alg-toggle"]')]; const r = document.querySelector('#allergy-card').getBoundingClientRect(); return { all: c.map(e => e.dataset.v), more: c.filter(e => e.closest('details')).map(e => e.dataset.v), main: algSections().main.map(x => x[1]), tab, vis: r.height > 0 }; });
     const main0 = g.main[0] || [], top = g.all.filter(v => !g.more.includes(v));
-    ok(main0.every(v => top.includes(v)), `S13 ${cc}: はじめての設定に、1つ目の区分（${main0.length}品目）がたたまずに出る`);
-    ok(g.all.length === [...new Set(g.all)].length && g.all.length >= 40, `S13・S14 ${cc}: はじめての設定から、全部のアレルゲンが選べる（重ならない）: ${g.all.length}`);
-    ok(g.more.includes(pick) === inMore && g.all.includes(pick), `S13・S14 ${cc}: ${pick} が${inMore ? '「ほかのアレルゲン」の中に' : 'たたまずに'}出る: ` + JSON.stringify(g.more.slice(0, 8)));
-    if (inMore) await p.locator('details.ob-alg-more summary').click();
-    await p.locator(`[data-act="ob-alg"][data-v="${pick}"]`).click(); await p.waitForTimeout(200);
-    const open2 = await p.evaluate(() => { const d = document.querySelector('details.ob-alg-more'); return !d || d.open; });
-    if (inMore) ok(open2, `S14 ${cc}: 選んだあとも「ほかのアレルゲン」は開いたまま`);
-    await p.locator('[data-act="ob-done"]').click(); await p.waitForTimeout(800);
-    const saved = await p.evaluate(() => S.settings.allergens);
-    ok(Array.isArray(saved) && saved.includes(pick), `S13・S14 ${cc}: はじめての設定で選んだ ${pick} が設定に残る: ` + JSON.stringify(saved));
+    ok(g.tab === 'settings' && g.vis, `S13 ${cc}: 献立の下の案内から、設定の「アレルギー対策」が開く`);
+    ok(main0.every(v => top.includes(v)), `S13 ${cc}: 1つ目の区分（${main0.length}品目）がたたまずに出る`);
+    ok(g.all.length === [...new Set(g.all)].length && g.all.length >= 40, `S13・S14 ${cc}: 全部のアレルゲンが選べる（重ならない）: ${g.all.length}`);
+    ok(g.all.includes(pick), `S13・S14 ${cc}: ${pick} を選べる`);
+    if (g.more.includes(pick)) await p.locator('#allergy-card details.alg-more summary').click();
+    await p.locator(`#allergy-card [data-act="alg-toggle"][data-v="${pick}"]`).click(); await p.waitForTimeout(400);
+    const saved = await p.evaluate(() => ({ alg: S.settings.allergens, bad: (session.menu ? session.menu.items : []).filter(x => x.r && allergyConflict(x.r)).map(x => x.r.id) }));
+    ok(Array.isArray(saved.alg) && saved.alg.includes(pick), `S13・S14 ${cc}: 選んだ ${pick} が設定に残る: ` + JSON.stringify(saved.alg));
+    ok(!saved.bad.length, `S13・S14 ${cc}: 献立に ${pick} を使う料理が残らない: ` + saved.bad.join(','));
     await ctx.close();
 }
 // モニター第3回d: 苦手で魚を外した人（菜食など）にも、だしは昆布だしにして出す（魚のアレルギーと同じ置き換え）

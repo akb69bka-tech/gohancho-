@@ -95,18 +95,18 @@ if (want('R79')) {
     let n = 0; const bad = [];
     for (const lang of LANGS) {
         const {p, ctx} = await open({lang, w: 195, h: 422}, `r79-${lang}`);
-        for (const ts of [0, 1, 2]) for (const step of [0, 1]) {
+        for (const ts of [0, 1, 2]) for (const step of [0]) {   // 第39回: はじめての設定の手順は2つ（2つめの使い方だけがこのシート）
             const r = await p.evaluate(async ([ts, step]) => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); startOnboard(); sheet.step = step; renderSheet(); await __tick(); await new Promise(r => setTimeout(r, 300));
                 const vw = document.documentElement.clientWidth, out = [];
                 const lines = e => { const rg = document.createRange(); rg.selectNodeContents(e); return new Set([...rg.getClientRects()].filter(x => x.width > 0).map(x => Math.round(x.top))).size; };
                 const els = [...document.querySelectorAll('#sheet-root .ob-actions .btn, #sheet-root .ob-count > span, #sheet-root .ob-count .ob-skip')];
                 for (const e of els){ const rr = e.getBoundingClientRect(), txt = e.textContent.trim(), words = txt.split(/\s+/).length, ln = lines(e); if (rr.right > vw + .5 || rr.left < -.5) out.push('外:' + txt); if (ln > Math.max(1, words)) out.push(ln + '行:' + txt); }
                 const bar = document.querySelector('#sheet-root .ob-actions'); return {els: els.length, out, barH: bar ? Math.round(bar.getBoundingClientRect().height) : 0}; }, [ts, step]);
-            n++; if (r.els < 4 || r.out.length || r.barH > 180) bad.push(`${lang} 文字${ts} 手順${step + 2}: ` + JSON.stringify(r));
+            n++; if (r.els < 4 || r.out.length || r.barH > 180) bad.push(`${lang} 文字${ts} 手順2: ` + JSON.stringify(r));
         }
         await ctx.close();
     }
-    ok(n >= 102 && !bad.length, `R79 はじめての設定 195px ${n} 画面（17言語 × 文字3段階 × 2つの手順）: ステップ・スキップ・もどる・次へが画面の中で、1語が縦に割れない: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= 51 && !bad.length, `R79 はじめての設定 195px ${n} 画面（17言語 × 文字3段階 × 使い方の手順）: ステップ・スキップ・もどる・献立を見るが画面の中で、1語が縦に割れない: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R78 アイコン
