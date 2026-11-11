@@ -17,6 +17,106 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
     'flour': "Farinha de trigo", 'breadcrumbs': "Farinha de rosca", 'parmesan': "Parmesão", 'requeijao': "Requeijão", 'black beans': "Feijão preto", 'black-eyed peas': "Feijão de corda", 'salt cod': "Bacalhau", 'olives': "Azeitonas", 'eggplant': "Berinjela", 'hot dog sausage': "Salsicha", 'flocao': "Flocão de milho", 'okra': "Quiabo", 'cabbage': "Repolho", 'beetroot': "Beterraba", 'cucumber': "Pepino", 'hearts of palm': "Palmito", 'green beans': "Vagem", 'cauliflower': "Couve-flor", 'banana': "Banana", 'apple': "Maçã",
   },
   recipes: {
+    "br_caldo_frango_legumes": {
+      name: "Caldo de frango com legumes",
+      ings: [["Sobrecoxa de frango sem osso", "200 g"], ["Chuchu", "100 g"], ["Cenoura", "40 g"], ["Abobrinha", "100 g"], ["Salsinha", "5 g"]],
+      seas: "900 ml de água · 1 colher (sopa) de óleo · 1/2 cebola · 2 dentes de alho · 1 folha de louro · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte o frango em pedaços e os legumes em cubos. Pique a cebola e o alho.",
+        "Refogue a cebola e o alho no óleo, junte o frango, a água e o louro e cozinhe 15 minutos.",
+        "Junte o chuchu e a cenoura por 8 minutos e depois a abobrinha por 4 minutos. Tempere e finalize com salsinha.",
+      ],
+    },
+    "br_sopa_couve_flor": {
+      name: "Sopa de couve-flor",
+      ings: [["Couve-flor", "300 g"], ["Cebola", "40 g"], ["Leite", "100 ml"]],
+      seas: "500 ml de caldo de legumes ou de frango · 1 colher (sopa) de manteiga · 1 dente de alho · Noz-moscada · Sal · Pimenta-do-reino",
+      steps: [
+        "Separe a couve-flor em floretes e pique a cebola e o alho.",
+        "Refogue a cebola e o alho na manteiga, junte a couve-flor e o caldo e cozinhe tampado por 15 minutos.",
+        "Bata com o leite e tempere com noz-moscada, sal e pimenta.",
+      ],
+    },
+    "br_creme_abobrinha": {
+      name: "Creme de abobrinha",
+      ings: [["Abobrinha", "350 g"], ["Cebola", "40 g"], ["Queijo ralado", "20 g"]],
+      seas: "500 ml de caldo de legumes · 1 colher (sopa) de azeite · 1 dente de alho · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte a abobrinha em rodelas e pique a cebola e o alho.",
+        "Refogue a cebola e o alho no azeite, junte a abobrinha e o caldo e cozinhe por 10 minutos.",
+        "Bata, acerte o tempero e sirva com queijo ralado, se quiser.",
+      ],
+    },
+    "br_sopa_cogumelos": {
+      name: "Sopa de cogumelos",
+      ings: [["Cogumelos-de-paris", "200 g"], ["Cebola", "40 g"], ["Creme de leite", "40 ml"], ["Salsinha", "5 g"]],
+      seas: "700 ml de caldo de frango ou de legumes · 1 colher (sopa) de manteiga · 1 dente de alho · Sal · Pimenta-do-reino",
+      steps: [
+        "Fatie os cogumelos e pique a cebola e o alho.",
+        "Refogue tudo na manteiga por 5 minutos, junte o caldo e cozinhe 8 minutos.",
+        "Junte o creme de leite, se quiser, acerte o tempero e finalize com salsinha.",
+      ],
+    },
+    "br_sopa_repolho_carne": {
+      name: "Sopa de repolho com carne moída",
+      ings: [["Repolho", "250 g"], ["Carne moída", "150 g"], ["Tomate", "100 g"], ["Cebola", "40 g"]],
+      seas: "800 ml de água · 1 colher (sopa) de óleo · 2 dentes de alho · 1 colher (chá) de páprica · Sal · Pimenta-do-reino",
+      steps: [
+        "Fatie fino o repolho e pique o tomate, a cebola e o alho.",
+        "Doure a carne no óleo com a cebola e o alho, junte a páprica e o tomate e cozinhe 3 minutos.",
+        "Junte a água e o repolho e cozinhe 15 minutos. Acerte o tempero.",
+      ],
+    },
+    "br_caldo_ovos": {
+      name: "Caldo de ovos",
+      ings: [["Ovos", "3"], ["Tomate", "80 g"], ["Cebola", "40 g"], ["Coentro", "5 g"]],
+      seas: "700 ml de água ou caldo de frango · 1 colher (sopa) de óleo · 2 dentes de alho · 1 colher (chá) de colorau · Sal",
+      steps: [
+        "Pique o tomate, a cebola, o alho e o coentro.",
+        "Refogue a cebola e o alho no óleo, junte o colorau e o tomate e cozinhe 3 minutos. Junte a água e ferva 5 minutos.",
+        "Quebre os ovos no caldo, cozinhe em fogo baixo 4 minutos, acerte o sal e finalize com coentro.",
+      ],
+    },
+    "br_sopa_quiabo": {
+      name: "Sopa de quiabo com carne",
+      ings: [["Quiabo", "200 g"], ["Acém em cubos", "150 g"], ["Tomate", "80 g"], ["Cebola", "40 g"]],
+      seas: "800 ml de água · 1 colher (sopa) de óleo · 2 dentes de alho · Suco de 1/2 limão · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte o quiabo em rodelas e misture com o suco de limão. Pique o tomate, a cebola e o alho.",
+        "Doure a carne no óleo, junte a cebola, o alho e o tomate e depois a água, e cozinhe 20 minutos.",
+        "Junte o quiabo e cozinhe 8 minutos. Acerte o tempero.",
+      ],
+    },
+    "br_berinjela_refogada": {
+      name: "Berinjela refogada",
+      ings: [["Berinjela", "300 g"], ["Tomate", "80 g"], ["Cebola", "30 g"], ["Salsinha", "5 g"]],
+      seas: "2 colheres (sopa) de azeite · 2 dentes de alho · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte a berinjela, o tomate e a cebola em cubos e pique o alho.",
+        "Refogue a cebola e o alho no azeite, junte a berinjela e cozinhe 8 minutos, mexendo.",
+        "Junte o tomate, cozinhe mais 3 minutos, acerte o tempero e finalize com salsinha.",
+      ],
+    },
+    "br_brocolis_alho": {
+      name: "Brócolis alho e óleo",
+      ings: [["Brócolis", "300 g"]],
+      seas: "2 colheres (sopa) de azeite · 3 dentes de alho · Sal",
+      steps: [
+        "Separe o brócolis em floretes e escalde por 3 minutos; escorra.",
+        "Doure levemente o alho fatiado no azeite.",
+        "Junte o brócolis, salteie por 2 minutos e tempere com sal.",
+      ],
+    },
+    "br_cogumelos_manteiga": {
+      name: "Cogumelos na manteiga",
+      ings: [["Cogumelos", "300 g"], ["Salsinha", "5 g"]],
+      seas: "1 colher (sopa) de manteiga · 1 dente de alho · 1 colher (chá) de shoyu · Sal · Pimenta-do-reino",
+      steps: [
+        "Fatie os cogumelos e pique o alho e a salsinha.",
+        "Doure os cogumelos na manteiga em fogo alto por cerca de 6 minutos.",
+        "Junte o alho e o shoyu, salteie 1 minuto, acerte o tempero e finalize com salsinha.",
+      ],
+    },
     "br_canja_grossa": {
       name: "Canja grossa de galinha",
       ings: [["Coxa ou peito de frango", "300 g"], ["Arroz branco", "150 g"], ["Cenoura em cubos", "1"], ["Batata em cubos", "1"], ["Cebola picada", "1/2"], ["Cheiro-verde picado", "1 colher (sopa)"]],

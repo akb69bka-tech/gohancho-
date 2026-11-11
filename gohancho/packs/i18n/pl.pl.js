@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    "kohlrabi": "Kalarepa",
     'millet': 'Kasza jaglana',
     'butter': 'Masło',
     'ham': 'Szynka gotowana',
@@ -24,6 +25,86 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    "pl_rosolwarzywa": {
+      name: "Rosół z warzywami",
+      ings: [["Udka z kurczaka bez kości", "200 g"], ["Marchew", "50 g"], ["Pietruszka (korzeń)", "40 g"], ["Por", "60 g"], ["Seler", "40 g"], ["Natka pietruszki", "5 g"]],
+      seas: "1 litr wody · 2 ziela angielskie · 1 liść laurowy · Sól · Pieprz",
+      steps: [
+        "Kurczaka zalej zimną wodą, dodaj ziele angielskie i liść laurowy, doprowadź do lekkiego wrzenia i zbierz szumowiny.",
+        "Dodaj warzywa pokrojone w kawałki i gotuj na bardzo małym ogniu 30 minut.",
+        "Dopraw, pokrój warzywa i mięso do talerzy i posyp natką.",
+      ],
+    },
+    "pl_kremcukinia": {
+      name: "Krem z cukinii",
+      ings: [["Cukinia", "350 g"], ["Cebula", "40 g"], ["Śmietanka", "40 ml"], ["Koperek", "5 g"]],
+      seas: "500 ml bulionu warzywnego · 1 łyżka masła · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Pokrój cukinię, cebulę i czosnek.",
+        "Zeszklij cebulę i czosnek na maśle, dodaj cukinię i bulion i gotuj 12 minut.",
+        "Zmiksuj ze śmietanką, dopraw i posyp koperkiem.",
+      ],
+    },
+    "pl_zupafasolka": {
+      name: "Zupa z fasolki szparagowej",
+      ings: [["Fasolka szparagowa", "250 g"], ["Marchew", "40 g"], ["Kwaśna śmietana", "50 g"], ["Koperek", "5 g"]],
+      seas: "800 ml bulionu warzywnego lub drobiowego · 1 łyżka masła · Sól · Pieprz",
+      steps: [
+        "Pokrój fasolkę na krótkie kawałki, marchew zetrzyj.",
+        "Gotuj fasolkę i marchew w bulionie 15 minut.",
+        "Śmietanę zahartuj chochlą gorącej zupy, wlej do garnka, dodaj masło i koperek i dopraw.",
+      ],
+    },
+    "pl_kremseler": {
+      name: "Krem z selera",
+      ings: [["Seler korzeniowy", "250 g"], ["Cebula", "40 g"], ["Śmietanka", "40 ml"]],
+      seas: "600 ml bulionu warzywnego · 1 łyżka masła · Gałka muszkatołowa · Sól · Pieprz",
+      steps: [
+        "Obierz i pokrój seler w kostkę, posiekaj cebulę.",
+        "Zeszklij cebulę na maśle, dodaj seler i bulion i gotuj 20 minut.",
+        "Zmiksuj ze śmietanką, dopraw gałką muszkatołową, solą i pieprzem.",
+      ],
+    },
+    "pl_zupakalarepa": {
+      name: "Zupa z kalarepy",
+      ings: [["Kalarepa", "300 g"], ["Marchew", "40 g"], ["Koperek", "5 g"], ["Kwaśna śmietana", "40 g"]],
+      seas: "800 ml bulionu drobiowego lub warzywnego · 1 łyżka masła · Sól · Pieprz",
+      steps: [
+        "Obierz i pokrój w kostkę kalarepę i marchew.",
+        "Gotuj je w bulionie 15 minut, aż zmiękną.",
+        "Dodaj masło, koperek i, jeśli lubisz, śmietanę, i dopraw.",
+      ],
+    },
+    "pl_rosolwolowy": {
+      name: "Rosół wołowy z warzywami",
+      ings: [["Wołowina (pręga lub mostek)", "200 g"], ["Marchew", "50 g"], ["Por", "60 g"], ["Seler", "40 g"], ["Natka pietruszki", "5 g"]],
+      seas: "1,2 litra wody · 2 ziela angielskie · 1 liść laurowy · Sól · Pieprz",
+      steps: [
+        "Wołowinę zalej zimną wodą, powoli doprowadź do wrzenia i zbierz szumowiny.",
+        "Dodaj ziele angielskie, liść laurowy i warzywa pokrojone w kawałki i gotuj na małym ogniu 45 minut.",
+        "Dopraw, pokrój mięso i warzywa do talerzy i dodaj natkę.",
+      ],
+    },
+    "pl_salatkarzodkiewka": {
+      name: "Sałatka z rzodkiewki i ogórka",
+      ings: [["Rzodkiewki", "120 g"], ["Ogórek", "200 g"], ["Koperek", "5 g"], ["Kwaśna śmietana", "60 g"]],
+      seas: "Sól · Pieprz · 1 łyżeczka soku z cytryny",
+      steps: [
+        "Pokrój cienko rzodkiewki i ogórek, posiekaj koperek.",
+        "Wymieszaj śmietanę z sokiem z cytryny, solą i pieprzem.",
+        "Połącz wszystko tuż przed podaniem.",
+      ],
+    },
+    "pl_kurczakcukinia": {
+      name: "Kurczak z cukinią i papryką",
+      ings: [["Pierś z kurczaka", "350 g"], ["Cukinia", "200 g"], ["Czerwona papryka", "1"], ["Cebula", "50 g"]],
+      seas: "1,5 łyżki oleju · 1 łyżeczka słodkiej papryki · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Pokrój kurczaka w paski i dopraw papryką, solą i pieprzem. Warzywa pokrój w paski.",
+        "Smaż kurczaka na oleju 5–6 minut, aż się zetnie, i odłóż.",
+        "Smaż cebulę, paprykę, cukinię i czosnek 5 minut, dodaj kurczaka, wymieszaj i dopraw.",
+      ],
+    },
     "pl_owsianka": {
       name: "Owsianka",
       ings: [["Płatki owsiane", "80 g"], ["Mleko", "400 ml"], ["Jabłko, starte", "1"]],

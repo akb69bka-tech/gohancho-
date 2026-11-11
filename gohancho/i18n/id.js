@@ -1,5 +1,19 @@
 // ご飯帖 — Indonesian UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('id', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Rendah karbohidrat",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Menu dengan lebih sedikit nasi, mi, dan kentang, serta lebih banyak lauk sayur dan protein. Menampilkan perkiraan karbohidrat (g) per orang",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Saat aktif, masakan dengan karbohidrat lebih sedikit disarankan lebih dulu; masakan nasi, mi, dan masakan yang banyak kentang, masakan rebus manis, gorengan bertepung tebal, serta sup berisi kentang, soun, atau mi muncul belakangan (tidak ada yang dihapus, dan menu yang sudah ditetapkan tidak berubah). Makanan pokok ditampilkan dalam porsi kecil.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Jika Anda mengikuti anjuran makan karena diabetes atau alasan lain, utamakan anjuran dokter atau ahli gizi Anda. Angka yang ditampilkan adalah perkiraan.",
+    "わかりました": "Mengerti",
+    "{name}（小盛り）": "{name} (porsi kecil)",
+    "糖質 約 {n} g（1人分・目安）": "Karbohidrat: sekitar {n} g (per orang, perkiraan)",
+    "糖質 1 g 未満（1人分・目安）": "Karbohidrat: kurang dari 1 g (per orang, perkiraan)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Tidak ada perkiraan karbohidrat (terlalu banyak bahan yang jumlah atau nilainya tidak diketahui)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Karbohidrat satu hidangan: sekitar {n} g (per orang, perkiraan; makanan pokok porsi kecil)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Karbohidrat satu hidangan: sekitar {n} g (per orang, perkiraan)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Tidak ada perkiraan karbohidrat untuk hidangan (tidak ada perkiraan untuk “{name}”)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Tidak ada perkiraan karbohidrat untuk hidangan (tidak ada perkiraan untuk makanan pokok)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: aplikasi tidak bisa mengenali kata ini. Silakan pilih dari tombol di bawah.",
     "ある（設定する）": "Ada (atur)",
     "ない（このまま作る）": "Tidak ada (langsung masak)",

@@ -85,6 +85,46 @@ GOHAN_PACK_TR('IT', 'it', {
     'black pepper': 'Pepe nero',
   },
   recipes: {
+    "it_zuppaverza": {
+      name: "Zuppa di verza",
+      ings: [["Verza", "300 g"], ["Cipolla", "40 g"], ["Parmigiano grattugiato", "20 g"]],
+      seas: "700 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Tagliate la verza a listarelle, tritate cipolla e aglio.",
+        "Fate appassire cipolla e aglio nell'olio, aggiungete la verza e mescolate per 3 minuti.",
+        "Unite il brodo, cuocete 15 minuti, regolate di sale e pepe e servite con il Parmigiano.",
+      ],
+    },
+    "it_vellutatafinocchi": {
+      name: "Vellutata di finocchi",
+      ings: [["Finocchio", "300 g"], ["Cipolla", "40 g"], ["Parmigiano grattugiato", "15 g"]],
+      seas: "500 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · Sale · Pepe",
+      steps: [
+        "Affettate il finocchio e la cipolla.",
+        "Fateli appassire nell'olio per 5 minuti, aggiungete il brodo e cuocete 15 minuti.",
+        "Frullate fino a ottenere una crema liscia, regolate di sale e pepe e, se vi piace, completate con un po' di Parmigiano.",
+      ],
+    },
+    "it_vellutatacavolfiore": {
+      name: "Vellutata di cavolfiore",
+      ings: [["Cavolfiore", "300 g"], ["Cipolla", "40 g"], ["Latte", "100 ml"]],
+      seas: "400 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · Noce moscata · Sale · Pepe",
+      steps: [
+        "Dividete il cavolfiore in cimette e tritate la cipolla.",
+        "Fate appassire la cipolla nell'olio, unite cavolfiore e brodo e cuocete coperto per 15 minuti.",
+        "Frullate con il latte e insaporite con noce moscata, sale e pepe.",
+      ],
+    },
+    "it_brodopollocicoria": {
+      name: "Brodo di pollo con cicoria",
+      ings: [["Sovracosce di pollo disossate", "150 g"], ["Cicoria o scarola", "200 g"], ["Parmigiano grattugiato", "15 g"]],
+      seas: "800 ml di brodo di pollo · 1 cucchiaio di olio d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Tagliate il pollo a pezzetti. Lavate e tagliate grossolanamente la cicoria.",
+        "Cuocete il pollo nel brodo per 15 minuti.",
+        "Scaldate l'aglio nell'olio, saltate la cicoria per 2 minuti, versatela nel brodo, cuocete 3 minuti, regolate di sale e pepe e aggiungete il Parmigiano.",
+      ],
+    },
     "it_semolino_brodo": {
       name: "Semolino in brodo",
       ings: [["Semolino", "60 g"], ["Parmigiano grattugiato", "2 cucchiai"]],

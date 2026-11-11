@@ -87,7 +87,7 @@ const withLang = lang => Object.assign({}, BASE_ST, {settings: Object.assign({},
             foot: (sh.querySelector('.mode-foot') || {}).textContent || '', h: q.height, ih: innerHeight, aria: document.querySelector('#mode-btn').getAttribute('aria-label')};
     });
     ok(s && s.kind === 'mode' && s.dlg === 'dialog' && s.h2 === 'モード' && s.aria === 'モード', 'M2b モードを押すとシート（見出し・読み上げ名「モード」）: ' + JSON.stringify(s && {kind: s.kind, h2: s.h2, aria: s.aria}));
-    ok(s && s.rows.map(r => r.m).join(',') === 'hangover,diet-mode,low-salt,night-shift' && s.rows.every(r => r.nm && r.d && !r.on && r.h >= 44), 'M2c 二日酔いの日・ダイエット・減塩・夜勤明けの4行（名前と一言の説明・初期はオフ・44px 以上）: ' + JSON.stringify(s && s.rows));
+    ok(s && s.rows.map(r => r.m).join(',') === 'hangover,diet-mode,carb-mode,low-salt,night-shift' && s.rows.every(r => r.nm && r.d && !r.on && r.h >= 44), 'M2c 二日酔いの日・ダイエット・糖質ひかえめ（dm41）・減塩・夜勤明けの5行（名前と一言の説明・初期はオフ・44px 以上）: ' + JSON.stringify(s && s.rows));
     ok(s && /いまの献立は変えません/.test(s.foot) && s.h < s.ih * .9, 'M2d 献立は変えない旨の一言・小さなシート: ' + JSON.stringify(s && {foot: s.foot, h: s.h}));
     // シートで入れる → 設定画面のスイッチも入る
     for (const act of ['diet-mode', 'low-salt', 'night-shift', 'hangover']) await p.click(`#sheet-root .mode-row[data-mode="${act}"] input`);
@@ -131,7 +131,7 @@ for (const [nm, avoid, hangover, want] of [['家の設定でお酒', ['@alcohol'
     if (hangover) await p.evaluate(() => { S.settings.hangover = TODAY; save(); render(); });
     await p.click('#mode-btn'); await p.waitForTimeout(150);
     const r = await p.evaluate(() => ({hang: !!document.querySelector('#sheet-root .mode-row[data-mode="hangover"]'), rows: document.querySelectorAll('#sheet-root .mode-row').length}));
-    ok(r.hang === want && r.rows === (want ? 4 : 3), `M4 ${nm}: 二日酔いの行を${want ? '出す' : '出さない'}: ` + JSON.stringify(r));
+    ok(r.hang === want && r.rows === (want ? 5 : 4), `M4 ${nm}: 二日酔いの行を${want ? '出す' : '出さない'}: ` + JSON.stringify(r));
     await ctx.close();
 }
 
@@ -150,7 +150,7 @@ for (const [nm, avoid, hangover, want] of [['家の設定でお酒', ['@alcohol'
             if (r.h2 !== r.want) bad.push(`${lang} 見出し ${r.h2}`);
             if (r.kana) bad.push(`${lang} シートに日本語が残る`);
         }
-        if (r.rows.length !== 4 || r.rows.some(x => !x.nm || !x.d || /[（(]/.test(x.nm))) bad.push(`${lang} 行の名前と説明 ${JSON.stringify(r.rows.map(x => [x.nm, x.d]))}`);
+        if (r.rows.length !== 5 || r.rows.some(x => !x.nm || !x.d || /[（(]/.test(x.nm))) bad.push(`${lang} 行の名前と説明 ${JSON.stringify(r.rows.map(x => [x.nm, x.d]))}`);
         if (r.sw) bad.push(`${lang} シートが横にはみ出す`);
         if (lang === 'ar' && (r.dir !== 'rtl' || r.rows.some(x => !(x.il > x.br - 1)))) bad.push(`ar 右から左でない ${JSON.stringify(r)}`);
         if (lang !== 'ar' && r.rows.some(x => !(x.ir < x.bl + 1))) bad.push(`${lang} チェックが文の左でない`);

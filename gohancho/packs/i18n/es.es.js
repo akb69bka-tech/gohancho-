@@ -69,6 +69,76 @@ GOHAN_PACK_TR('ES', 'es', {
     'flour': 'Harina',
   },
   recipes: {
+    "es_caldopollo": {
+      name: "Caldo de pollo con verduras",
+      ings: [["Contramuslos de pollo deshuesados", "200 g"], ["Puerro", "80 g"], ["Zanahoria", "50 g"], ["Perejil", "5 g"]],
+      seas: "900 ml de agua · 1 pastilla de caldo · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta el pollo en trozos, el puerro en rodajas y la zanahoria en dados.",
+        "Dora ligeramente el pollo en el aceite, añade las verduras, el agua y la pastilla de caldo y cuece 25 minutos.",
+        "Ajusta de sal y pimienta y añade el perejil picado.",
+      ],
+    },
+    "es_cremacoliflor": {
+      name: "Crema de coliflor",
+      ings: [["Coliflor", "300 g"], ["Cebolla", "40 g"], ["Leche", "100 ml"]],
+      seas: "400 ml de caldo de verduras · 1 cucharada de aceite de oliva · Nuez moscada · Sal · Pimienta",
+      steps: [
+        "Separa la coliflor en ramilletes y pica la cebolla.",
+        "Pocha la cebolla en el aceite, añade la coliflor y el caldo y cuece tapado 15 minutos.",
+        "Tritura con la leche y sazona con nuez moscada, sal y pimienta.",
+      ],
+    },
+    "es_almejascaldo": {
+      name: "Almejas en caldo con ajo y perejil",
+      ings: [["Almejas", "400 g"], ["Perejil", "10 g"], ["Cebolla", "30 g"]],
+      seas: "500 ml de caldo de pescado o agua · 60 ml de vino blanco seco · 2 cucharadas de aceite de oliva · 3 dientes de ajo · Sal",
+      steps: [
+        "Pon las almejas en agua con sal 20 minutos y acláralas. Pica el ajo, la cebolla y el perejil.",
+        "Sofríe suavemente el ajo y la cebolla en el aceite, añade el vino y las almejas, tapa y cuece hasta que se abran.",
+        "Añade el caldo, lleva a ebullición suave, incorpora el perejil y rectifica de sal.",
+      ],
+    },
+    "es_cremaesparragos": {
+      name: "Crema de espárragos trigueros",
+      ings: [["Espárragos trigueros", "300 g"], ["Puerro", "60 g"], ["Nata", "40 ml"]],
+      seas: "500 ml de caldo de verduras · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Quita la parte dura de los espárragos y córtalos en trozos. Corta el puerro en rodajas.",
+        "Pocha el puerro en el aceite, añade los espárragos y el caldo y cuece 12 minutos.",
+        "Tritura, añade la nata si quieres y salpimienta.",
+      ],
+    },
+    "es_sopaacelgas": {
+      name: "Sopa de acelgas con huevo",
+      ings: [["Acelgas", "250 g"], ["Huevos", "2"], ["Cebolla", "40 g"]],
+      seas: "700 ml de caldo de pollo o de verduras · 1 cucharada de aceite de oliva · 2 dientes de ajo · 1/2 cucharadita de pimentón dulce · Sal",
+      steps: [
+        "Pica las acelgas, la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite, añade el pimentón, luego las acelgas y el caldo y cuece 10 minutos.",
+        "Bate los huevos y viértelos en la sopa removiendo. Rectifica de sal.",
+      ],
+    },
+    "es_sopachampijamon": {
+      name: "Sopa de champiñones con jamón",
+      ings: [["Champiñones", "200 g"], ["Jamón serrano", "40 g"], ["Cebolla", "40 g"]],
+      seas: "700 ml de caldo de pollo · 1 cucharada de aceite de oliva · 1 diente de ajo · Perejil · Sal · Pimienta",
+      steps: [
+        "Lamina los champiñones, pica la cebolla y el ajo y corta el jamón en tiras.",
+        "Sofríe la cebolla, el ajo y el jamón en el aceite 2 minutos, añade los champiñones y cocina 4 minutos.",
+        "Añade el caldo, cuece 8 minutos, salpimienta y añade perejil.",
+      ],
+    },
+    "es_calabacinplancha": {
+      name: "Calabacín a la plancha",
+      ings: [["Calabacines", "300 g"], ["Perejil", "5 g"]],
+      seas: "1 cucharada de aceite de oliva · 1 diente de ajo · Sal en escamas · Pimienta",
+      steps: [
+        "Corta los calabacines a lo largo en láminas de 1 cm y píntalos con aceite.",
+        "Hazlos en la plancha muy caliente 2–3 minutos por cada lado hasta que se marquen.",
+        "Termina con ajo y perejil muy picados, sal en escamas y pimienta.",
+      ],
+    },
     "es_sopa_semola": {
       name: "Sopa de sémola",
       ings: [["Sémola de trigo", "50 g"], ["Huevo duro picado", "1"]],

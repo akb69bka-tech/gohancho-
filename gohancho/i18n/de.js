@@ -1,5 +1,19 @@
 // ご飯帖 — Deutsches UI-Wörterbuch. Keys are the Japanese source strings.
 GOHAN_I18N('de', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Weniger Kohlenhydrate",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Mahlzeiten mit weniger Reis, Nudeln und Kartoffeln und mehr Gemüse- und Eiweißgerichten. Zeigt eine Schätzung der Kohlenhydrate (g) pro Person",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Wenn eingeschaltet, werden Gerichte mit weniger Kohlenhydraten zuerst vorgeschlagen; Reisgerichte, Nudeln und kartoffelreiche Gerichte, süß geschmorte Gerichte, dick panierte Frittiergerichte und Suppen mit Kartoffeln, Glasnudeln oder Nudeln kommen später (nichts wird entfernt, festgelegte Mahlzeiten bleiben unverändert). Die Beilage wird als kleine Portion angezeigt.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Wenn Sie wegen Diabetes oder aus einem anderen Grund Ernährungsvorgaben haben, folgen Sie zuerst den Anweisungen Ihrer Ärztin, Ihres Arztes oder Ihrer Ernährungsfachkraft. Die angezeigten Zahlen sind Schätzungen.",
+    "わかりました": "Verstanden",
+    "{name}（小盛り）": "{name} (kleine Portion)",
+    "糖質 約 {n} g（1人分・目安）": "Kohlenhydrate: etwa {n} g (pro Person, Schätzung)",
+    "糖質 1 g 未満（1人分・目安）": "Kohlenhydrate: unter 1 g (pro Person, Schätzung)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Keine Kohlenhydrat-Schätzung (zu viele Zutaten mit unbekannter Menge oder unbekanntem Wert)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Kohlenhydrate der Mahlzeit: etwa {n} g (pro Person, Schätzung; kleine Portion Beilage)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Kohlenhydrate der Mahlzeit: etwa {n} g (pro Person, Schätzung)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Keine Kohlenhydrat-Schätzung für die Mahlzeit (keine Schätzung für „{name}“)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Keine Kohlenhydrat-Schätzung für die Mahlzeit (keine Schätzung für die Beilage)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "„{name}“: Dieses Wort kann die App nicht erkennen. Bitte wählen Sie unten einen Button.",
     "ある（設定する）": "Ja (einstellen)",
     "ない（このまま作る）": "Nein (jetzt kochen)",

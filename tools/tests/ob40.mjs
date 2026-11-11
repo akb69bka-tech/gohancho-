@@ -261,15 +261,16 @@ if (want('H6')){
 if (want('H7')){
     const { p, ctx } = await ctxOf({}, 'h7');
     await toMode(p);
-    const g = await p.evaluate(() => { const rs = [...document.querySelectorAll('#sheet-root [data-act=ob-mode]')]; return { grp: !!rs[0].closest('[role=radiogroup]'), roles: rs.every(e => e.getAttribute('role') === 'radio'), tabs: rs.map(e => e.tabIndex) }; });
-    ok(g.grp && g.roles && JSON.stringify(g.tabs) === '[0,-1,-1,-1,-1]', 'H7 使い方は radio のまとまりで、選んだ1つだけが Tab で止まる: ' + JSON.stringify(g));
+    const g = await p.evaluate(() => { const rs = [...document.querySelectorAll('#sheet-root [data-act=ob-mode]')]; return { grp: !!rs[0].closest('[role=radiogroup]'), roles: rs.every(e => e.getAttribute('role') === 'radio'), tabs: rs.map(e => e.tabIndex), last: rs[rs.length - 1].dataset.v }; });
+    const NM = g.tabs.length, tabsAt = k => JSON.stringify(Array.from({length: NM}, (_, j) => j === k ? 0 : -1));   // dm41: 糖質ひかえめが増えて6つ（数は画面から）
+    ok(g.grp && g.roles && JSON.stringify(g.tabs) === tabsAt(0) && NM >= 5, 'H7 使い方は radio のまとまりで、選んだ1つだけが Tab で止まる: ' + JSON.stringify(g));
     await p.focus('#sheet-root [data-act=ob-mode][data-v=all]');
     await p.keyboard.press('ArrowDown'); await p.waitForTimeout(150);
     const a1 = await p.evaluate(() => ({ f: document.activeElement && document.activeElement.dataset.v, on: [...document.querySelectorAll('#sheet-root [data-act=ob-mode][aria-checked=true]')].map(e => e.dataset.v), tabs: [...document.querySelectorAll('#sheet-root [data-act=ob-mode]')].map(e => e.tabIndex) }));
-    ok(a1.f === 'ten' && JSON.stringify(a1.on) === '["ten"]' && JSON.stringify(a1.tabs) === '[-1,0,-1,-1,-1]', 'H7 ↓ で次の選択肢へ動き、選ばれる: ' + JSON.stringify(a1));
+    ok(a1.f === 'ten' && JSON.stringify(a1.on) === '["ten"]' && JSON.stringify(a1.tabs) === tabsAt(1), 'H7 ↓ で次の選択肢へ動き、選ばれる: ' + JSON.stringify(a1));
     await p.keyboard.press('ArrowUp'); await p.keyboard.press('ArrowUp'); await p.waitForTimeout(150);
     const a2 = await p.evaluate(() => ({ f: document.activeElement && document.activeElement.dataset.v, on: [...document.querySelectorAll('#sheet-root [data-act=ob-mode][aria-checked=true]')].map(e => e.dataset.v) }));
-    ok(a2.f === 'diet' && JSON.stringify(a2.on) === '["diet"]', 'H7 ↑ で前へ（先頭からは最後へ回る）: ' + JSON.stringify(a2));
+    ok(a2.f === g.last && JSON.stringify(a2.on) === JSON.stringify([g.last]), 'H7 ↑ で前へ（先頭からは最後へ回る）: ' + JSON.stringify(a2));
     await p.keyboard.press('ArrowRight'); await p.waitForTimeout(150);
     const a3 = await p.evaluate(() => document.activeElement && document.activeElement.dataset.v);
     ok(a3 === 'all', 'H7 → でも次へ（最後からは先頭へ）: ' + a3);

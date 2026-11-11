@@ -2,6 +2,7 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "zucchini": "Zucchini",
     'banana': 'Banane',
     "oats": "Haferflocken",
     "alphabet pasta": "Buchstabennudeln",
@@ -77,6 +78,96 @@ GOHAN_PACK_TR('DE', 'de', {
     'butter': 'Butter',
   },
   recipes: {
+    "de_huehnerbruehe": {
+      name: "Hühnerbrühe mit Gemüse",
+      ings: [["Hähnchenschenkel ohne Knochen", "200 g"], ["Karotte", "50 g"], ["Lauch", "60 g"], ["Knollensellerie", "50 g"], ["Schnittlauch", "5 g"]],
+      seas: "900 ml Wasser · 1 TL Gemüsebrühepulver · 1 Lorbeerblatt · Salz · Pfeffer",
+      steps: [
+        "Das Hähnchen klein schneiden, das Gemüse in feine Streifen schneiden.",
+        "Wasser mit Brühepulver und Lorbeer aufkochen, das Hähnchen dazugeben und 15 Minuten köcheln lassen.",
+        "Gemüse dazugeben, 8 Minuten weiterkochen, abschmecken und mit Schnittlauch bestreuen.",
+      ],
+    },
+    "de_blumenkohlsuppe": {
+      name: "Blumenkohlsuppe",
+      ings: [["Blumenkohl", "300 g"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Muskat · Salz · Pfeffer",
+      steps: [
+        "Den Blumenkohl in Röschen teilen, die Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Blumenkohl und Brühe dazugeben und zugedeckt 15 Minuten köcheln lassen.",
+        "Mit der Sahne fein pürieren und mit Muskat, Salz und Pfeffer abschmecken.",
+      ],
+    },
+    "de_kohlrabisuppe": {
+      name: "Kohlrabisuppe",
+      ings: [["Kohlrabi", "300 g"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"], ["Schnittlauch", "5 g"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Salz · Pfeffer",
+      steps: [
+        "Kohlrabi schälen und würfeln, Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Kohlrabi und Brühe dazugeben und 15 Minuten köcheln lassen.",
+        "Mit der Sahne pürieren, abschmecken und mit Schnittlauch bestreuen.",
+      ],
+    },
+    "de_zucchinisuppe": {
+      name: "Zucchinisuppe",
+      ings: [["Zucchini", "350 g"], ["Zwiebel", "40 g"], ["Saure Sahne", "50 g"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Öl · 1 Knoblauchzehe · Salz · Pfeffer",
+      steps: [
+        "Zucchini in Scheiben schneiden, Zwiebel und Knoblauch würfeln.",
+        "Zwiebel und Knoblauch in Öl andünsten, Zucchini und Brühe dazugeben und 10 Minuten köcheln lassen.",
+        "Pürieren, die saure Sahne einrühren und abschmecken.",
+      ],
+    },
+    "de_spinatsuppe": {
+      name: "Spinatsuppe mit Ei",
+      ings: [["Spinat", "250 g"], ["Eier", "2"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Muskat · Salz · Pfeffer",
+      steps: [
+        "Die Eier 8 Minuten kochen, abschrecken und halbieren. Die Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Spinat und Brühe dazugeben und 5 Minuten kochen.",
+        "Mit der Sahne pürieren, mit Muskat, Salz und Pfeffer abschmecken und mit den Eihälften servieren.",
+      ],
+    },
+    "de_sauerkrautsuppe": {
+      name: "Sauerkrautsuppe mit Wurst",
+      ings: [["Sauerkraut", "200 g"], ["Räucherwurst", "150 g"], ["Zwiebel", "50 g"]],
+      seas: "700 ml Rinder- oder Gemüsebrühe · 1 EL Öl · 1 TL edelsüßes Paprikapulver · 1 Lorbeerblatt · Salz · Pfeffer",
+      steps: [
+        "Die Zwiebel würfeln, die Wurst in Scheiben schneiden. Das Sauerkraut abtropfen lassen und etwas kleiner schneiden.",
+        "Zwiebel und Wurst 3 Minuten in Öl anbraten, das Paprikapulver einrühren.",
+        "Sauerkraut, Brühe und Lorbeer dazugeben, 15 Minuten köcheln lassen und abschmecken.",
+      ],
+    },
+    "de_gurkenradieschen": {
+      name: "Gurken-Radieschen-Salat",
+      ings: [["Salatgurke", "200 g"], ["Radieschen", "100 g"], ["Schnittlauch", "5 g"]],
+      seas: "1 EL Weißweinessig · 1 EL Öl · Salz · Pfeffer",
+      steps: [
+        "Gurke und Radieschen in feine Scheiben schneiden, den Schnittlauch hacken.",
+        "Essig, Öl, Salz und Pfeffer verrühren.",
+        "Alles vermengen und 5 Minuten ziehen lassen.",
+      ],
+    },
+    "de_haehnchenbrokkoli": {
+      name: "Hähnchenbrust mit Brokkoli",
+      ings: [["Hähnchenbrustfilets", "2 (350 g)"], ["Brokkoli", "250 g"], ["Sahne", "50 ml"]],
+      seas: "1 EL Öl · 1 EL Butter · 1 TL Senf · Salz · Pfeffer",
+      steps: [
+        "Das Hähnchen salzen und pfeffern. Brokkoli in Röschen teilen und 4 Minuten kochen.",
+        "Das Hähnchen in Öl pro Seite 5–6 Minuten braten, bis es durchgegart ist, dann herausnehmen.",
+        "Butter in der Pfanne schmelzen, Sahne und Senf einrühren, Brokkoli darin erwärmen und mit dem aufgeschnittenen Hähnchen servieren.",
+      ],
+    },
+    "de_fischspinat": {
+      name: "Fischfilet auf Spinat",
+      ings: [["Weißfischfilet (Kabeljau oder Seelachs)", "350 g"], ["Spinat", "300 g"], ["Zwiebel", "40 g"], ["Zitrone", "1/2"]],
+      seas: "1 EL Butter · 1 Knoblauchzehe · Muskat · Salz · Pfeffer",
+      steps: [
+        "Den Fisch mit Salz, Pfeffer und Zitronensaft würzen. Zwiebel und Knoblauch würfeln.",
+        "Zwiebel und Knoblauch in Butter andünsten, den Spinat dazugeben und zusammenfallen lassen. Mit Muskat und Salz würzen.",
+        "Den Fisch auf den Spinat legen, zudecken und bei kleiner Hitze 8–10 Minuten garen, bis er zerfällt.",
+      ],
+    },
     "de_haferbrei": {
       name: "Haferbrei",
       ings: [["Zarte Haferflocken", "80 g"], ["Milch", "400 ml"], ["Apfel, gerieben", "1"]],
