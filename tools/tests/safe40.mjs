@@ -4,7 +4,7 @@
 //  A1 いまの流れで始めた人: 最初の「この献立に決定」で「家族にアレルギーや食の決まりはありますか？」が出る（まだ決めない）。
 //     ［ない］→ そのまま決まり、答えを覚える（取り消してもう一度決めても、開き直しても出ない）
 //  A2 ［ある］→ 設定のアレルギー対策（家族のアレルギー・食の決まりへの入口が上に）。決めていない。卵を選んで戻ると、
-//     卵の料理は替わらずに ⚠（押していない料理は動かない）。もう一度「決定」で、聞かずに決まる
+//     卵の料理は合う料理に替わる（第41回 R190: 安全を優先。ほかの料理は動かない）。もう一度「決定」で、聞かずに決まる
 //  A3 ［ある］で何も設定せずに戻る → 次の「決定」でまた聞く
 //  A4 前から使っている人（設定を終えた人・記録がある人・アレルギーがある人・食の決まりがある人）には出ない。第39回の流れで始めた人（案内が出ている人）には出る
 //  A5 料理の詳細の「今日これを作る」（作りはじめる）でも1回だけ聞く。［ない］→ 作り方へ
@@ -96,7 +96,7 @@ if (want('A2')){
     await p.click('#allergy-card [data-act=alg-toggle][data-v=egg]'); await p.waitForTimeout(400);
     await p.click('#view [data-act=settings-back]'); await p.waitForTimeout(500);
     const a = await p.evaluate(() => ({ tab, decided: decidedToday(), ids: session.menu.items.map(x => x.r && x.r.id), tag: [...document.querySelectorAll('#view .tray .spot')].some(e => /⚠/.test((e.querySelector('.alg-tag:not(.may):not(.salt)') || {}).textContent || '')) }));
-    ok(a.tab === 'today' && !a.decided && pre && JSON.stringify(a.ids) === JSON.stringify(pre.ids) && a.tag, 'A2 戻ると、まだ決めていない献立のまま。卵の料理は替えずに ⚠（押していない料理も動かない）: ' + JSON.stringify([a, pre && pre.ids]));
+    ok(a.tab === 'today' && !a.decided && pre && a.ids[0] !== pre.ids[0] && JSON.stringify(a.ids.slice(1)) === JSON.stringify(pre.ids.slice(1)) && !a.tag, 'A2 戻ると、まだ決めていない献立のまま。卵の料理は合う料理に替わり（第41回 R190）、ほかの料理は動かない: ' + JSON.stringify([a, pre && pre.ids]));
     await clickDecide(p);
     const s2 = await st(p);
     ok(!s2.sheet && s2.decided, 'A2 設定したあとの「決定」は、聞かずに決まる: ' + JSON.stringify(s2));
@@ -125,7 +125,8 @@ if (want('A4')){
         ['いまの流れ・アレルギーあり', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: [], allergens: ['egg'] } }, false],
         ['いまの流れ・家族のアレルギーあり', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', family: [{ id: 'f1', name: 'A', role: 'adult', avoid: ['@egg'], allergy: ['@egg'] }], settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: [] } }, false],
         ['いまの流れ・ハラール', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: ['@pork', '@alcohol'] } }, false],
-        ['いまの流れ・苦手（豚肉）だけ', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: ['@pork'] } }, true],
+        ['いまの流れ・豚肉を食べない（第41回 R191: 決まりとみなす）', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: ['@pork'] } }, false],
+        ['いまの流れ・苦手（なす）だけ', { onboarded: true, algAsk: 1, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: ['なす'] } }, true],
         ['いまの流れ・もう答えた人', { onboarded: true, algAsk: 0, firstUse: '2026-11-11', settings: { country: 'JP', uiLang: 'ja', dishCount: 'auto', servings: 2, avoid: [] } }, false],
     ]){
         const { p, ctx } = await ctxOf({ state }, 'a4' + label);

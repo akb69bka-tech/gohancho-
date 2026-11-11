@@ -879,6 +879,11 @@ body.ah-row .decide-bar:has(>.alg-hint.ah-in) .cond-low{display:none}body.ah-row
 @media (max-width:300px){.ob-actions:not(.cc-foot){flex-wrap:wrap;column-gap:var(--s4)}.ob-actions:not(.cc-foot) .btn{--btn-px:var(--s8);font-size:var(--fs14)}.ob-count{font-size:var(--fs12);column-gap:var(--s4);flex-wrap:wrap}.ob-count > span{white-space:nowrap}.ob-count .ob-skip{padding-inline:var(--s8);white-space:nowrap;margin-inline-start:auto}}   /* 第21回 R79: 幅195px のはじめての設定で「ステップ 2 / 3」「もどる」「次へ」が1文字ずつ縦に割れ、高くなった下の帯が人数のボタンを覆っていた。狭い画面ではボタンの左右の余白を詰めて1行に（入らない言語は2段に折り返す） */
 .sheet-onboard .ob-actions,.sheet-country .ob-actions{position:sticky;bottom:0;background:var(--sheet-bg);padding:var(--s12) 0 calc(var(--s16) + env(safe-area-inset-bottom,0px));margin-top:0;z-index:1;box-shadow:0 -8px 8px -4px var(--sheet-bg)}
 .country[aria-busy="true"],.ob-actions [aria-busy="true"]{opacity:.6;cursor:progress}
+/* 第41回 R193: 「アレルギーや食の決まりはありますか」と決める前の確かめのボタンは、シートの下に貼りつけて、幅195px・文字もっと大きいでも見える（見出しや説明はその上でスクロール） */
+.ask-acts{display:flex;flex-direction:column;gap:var(--s8);position:sticky;bottom:0;z-index:1;background:var(--sheet-bg);padding:var(--s8) 0 var(--s4);box-shadow:0 -8px 8px -4px var(--sheet-bg)}
+.ask-acts .btn{white-space:normal;overflow-wrap:anywhere}
+.sheet-alg-ask,.sheet-alg-confirm{padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet-alg-ask>.sheet-body,.sheet-alg-confirm>.sheet-body{padding-bottom:var(--s16)}
 /* 下から出る画面の上の「閉じる」（スクロールしても上に見えている。44px 以上） */
 .sheet-bar{position:sticky;top:0;z-index:4;display:flex;justify-content:flex-end;align-items:center;padding:var(--s8) var(--s12) 0;background:var(--sheet-bg);box-shadow:0 8px 8px -4px var(--sheet-bg)}
 .sheet.has-bar>.sheet-pad{padding-top:var(--s4)}
@@ -5190,7 +5195,8 @@ function slotStillOk(it, keepAlg){
 // 設定（苦手・アレルギー・食べる人・国の組み合わせなど）が変わったときに、今日の献立を確かめる入口。どのタブから変えても、開き直しても、ここを通す
 //  - まだ決めていない案: 合わなくなった枠だけ選び直し、何を替えたかを知らせる。下書きもその場で書き直す（開き直したときに古い案が戻らないように）
 //  - 決めた献立: 黙って替えない。合わない料理は cookWarnHtml で知らせ、本人に［かえる］［このまま］を選んでもらう
-function reconcileMenu(){
+function reconcileMenu(o){
+    const safe = !!(session.algAskSet || (o && o.safe));   // 第41回 R189・R190: 「アレルギーはありますか」→［ある］から設定したとき（と、決める前の確かめの［替える］）は、どの設定に合わない料理を替えたかをはっきり出す
     if (session.twist && twistAvoided(session.twist)) session.twist = twistAvailable() ? suggestTwist() : null;   // 前に作ったひとひねり案がアレルゲン・苦手に当たるようになったら作り直す（「主菜にする」で献立に入らないように）
     const m = session.menu; if (!m) return false;
     if (menuIsDecided()) return false;
@@ -5198,24 +5204,32 @@ function reconcileMenu(){
     let changed = false; const swaps = [];
     m.items.forEach((it, i) => {
         if (!it.r && i > 0) return;   // 空の枠（汁ものの麺が主菜のとき・候補がなかったとき）は、設定を変えたついでには埋めない。汁ものは「汁ものを足す」で選ぶ
-        if (slotStillOk(it, session.algAskHold)) return;   // 第40回 R177: 「アレルギーはありますか」→［ある］から設定したときは、当たる料理を替えずに ⚠ で見せる（どれを替えるかは本人が選ぶ）
+        if (slotStillOk(it)) return;   // 第41回 R189・R190: ［ある］から設定したときも、合わない料理（アレルギー・食の決まり）は案内から入れたときと同じく合う料理に替える（第40回の「替えずに ⚠」はやめた。食の決まりには印がなく、そのまま決められていた）
+        const why = safe && it.r ? safeWhy(it.r) : '';   // 替える前に、なぜ合わないか（アレルギー・食の決まり）を見ておく
         const others = m.items.filter((_, k) => k !== i);
         let nr = null;
         if (it.slot === '主菜' && i === 0){
             const keep = others.filter(x => x.r).map(x => Object.assign({}, x.r, {slot: x.slot}));
             nr = suggestMain(keep, it.r ? isBowlMain(it.r) : null);
         } else nr = suggestOrAny(it.slot, others, m.items[0].r);
-        if (nr && nr !== it.r){ if (it.r) swaps.push([it.r, nr]); it.r = nr; changed = true; }
+        if (nr && nr !== it.r){ if (it.r) swaps.push([it.r, nr, it.slot, why]); it.r = nr; changed = true; }
         // 替わりがない（先に選び直した主菜が汁けの多い料理になり、汁ものの枠を空けるとき・この条件で出せる主菜が1つもないときなど）:
         // アレルゲン・苦手・品薄・出さない料理は残さず、枠を空ける。主菜も同じ（空けた主菜の枠には「この条件で出せる主菜がありません」と出す）
-        else if (!nr && it.r && (slotOut(it.r) || (it.slot === '汁物' && soupyMain(m.items[0].r)))){ swaps.push([it.r, null]); it.r = null; changed = true; }   // 汁けの多い主菜の日に、汁ものの国を替えた（いまの汁ものが合わなくなった）ときも、家の国の汁ものを残さず空ける
+        else if (!nr && it.r && (slotOut(it.r) || (it.slot === '汁物' && soupyMain(m.items[0].r)))){ swaps.push([it.r, null, it.slot, why]); it.r = null; changed = true; }   // 汁けの多い主菜の日に、汁ものの国を替えた（いまの汁ものが合わなくなった）ときも、家の国の汁ものを残さず空ける
     });
     if (changed){
         keepDraft();
         const swapList = () => joinNames(swaps.map(([a, b]) => b ? a.name + ' → ' + b.name : t('{name}（外しました）', {name: a.name})));   // 替わりがなく枠を空けた料理は「（外しました）」
         // 設定の画面でも分かるように。決める段を見ているときは、段の上の知らせ（avoidNote）だけにする（同じ文を2回出さない・お知らせを料理名に重ねない。モニター第3回c）
-        if (swaps.length && !(tab === 'today' && viewingStage() === 'decide')){ toast(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: swapList()})); toast.avoidMsg = true; }
-        if (swaps.length){ const last = swaps[swaps.length - 1][1]; session.avoidNote = {list: swapList(), i: last ? m.items.findIndex(x => x.r === last) : -1}; }   // 決める段の上に1行で知らせる（元に戻すは出さない: 戻すと苦手・アレルギーに当たる）。外した枠には「ほかの候補」を出さない
+        // 第41回 R189・R190: ［ある］から設定したあとは「◯◯に合わない料理を替えました（主菜：A→B）」。続けていくつか設定しても、決めるまでの分をまとめて出す
+        const ss = swaps.filter(x => x[3]); let safeMsg = '';
+        if (safe && ss.length){
+            const acc = session.algSwaps = (session.algSwaps || []).filter(x => !ss.some(y => y[2] === x[2])).concat(ss);
+            const list = joinNames(acc.map(([a, b, sl]) => t('{slot}：{dish}', {slot: slotLabel(sl), dish: b ? a.name + ' → ' + b.name : t('{name}（外しました）', {name: a.name})})));
+            safeMsg = t('{what}に合わない料理を替えました（{list}）', {what: joinNames([...new Set(acc.map(x => x[3]))]), list});
+        }
+        if (swaps.length && !(tab === 'today' && viewingStage() === 'decide')){ toast(safeMsg || t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: swapList()})); toast.avoidMsg = true; }
+        if (swaps.length){ const last = swaps[swaps.length - 1][1]; session.avoidNote = {list: swapList(), safe: safeMsg, i: last ? m.items.findIndex(x => x.r === last) : -1}; }   // 決める段の上に1行で知らせる（元に戻すは出さない: 戻すと苦手・アレルギーに当たる）。外した枠には「ほかの候補」を出さない
     }
     return changed;
 }
@@ -5298,7 +5312,7 @@ function menuIsDecided(){
     return !!(m && c && c.d === TODAY && Array.isArray(c.ids) && c.ids.length && c.ids.join() === menuIds().join());
 }
 function newMenu(){
-    session.algAskHold = false;   // 作り直した献立は、設定に合わせて選ぶ（R177 の「替えずに ⚠」は、そのときの献立だけ）
+    session.algAskSet = false; session.algSwaps = null;   // 作り直した献立には「◯◯に合わない料理を替えました」を続けない
     if (toast.undo && toast.hide){ clearTimeout(toast.t); toast.hide(); }   // 第20回 R64: 献立を作り直す（気分・品数を変えたなど）と、前の「元に戻す」（まるごと入れ替えなど）は戻す先が変わるので消す。新しいお知らせはこのあとに出す
     const n = menuCount();
     let items = [], slots = composeOf(n).slots;
@@ -7865,7 +7879,7 @@ function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     const h = d.querySelector('h2, h3');
     if (h && !d.hasAttribute('aria-label')){ h.id = h.id || rootId + '-title'; d.setAttribute('aria-labelledby', h.id); }
     const a = document.activeElement;
-    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a), force: rootId === 'sheet-root' && !!sheet && sheet.kind === 'cond'}; dlgLast[rootId] = ''; }   // force: 条件のシートは、タップ（読み上げの二度押しも）で開いても焦点を中へ移す（R2-11）
+    if (!(rootId in dlgRet)){ dlgRet[rootId] = {el: a && a !== document.body ? a : null, key: focusKey(a), force: rootId === 'sheet-root' && !!sheet && /^(cond|alg-ask|alg-confirm)$/.test(sheet.kind)}; dlgLast[rootId] = ''; }   // force: 条件のシートは、タップ（読み上げの二度押しも）で開いても焦点を中へ移す（R2-11）
     else if (a && a !== document.body && document.contains(a)) return;   // 描き直してもフォーカスが残っている
     if (!kbNav() && !dlgRet[rootId].force) return;   // タップで開いたときは、フォーカスを動かさない（動かすと強制レイアウトが走る）
     const back = findByKey(root, dlgLast[rootId]);
@@ -8084,6 +8098,7 @@ function renderSheetBody(){
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'start-alg') body = startAlgSheetHtml();
     if (sheet.kind === 'alg-ask') body = algAskSheetHtml();
+    if (sheet.kind === 'alg-confirm') body = algConfirmSheetHtml();
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
     if (sheet.kind === 'wday') body = wdaySheetHtml();
@@ -9817,6 +9832,9 @@ const FAM_ALG_WORDS = [
     [['milk'], '乳/牛乳/乳製品/乳成分/ミルク/生乳/乳糖/milk/dairy/dairy products/milk products/cow\'s milk/cows milk/lactose/lait/produits laitiers/milch/milchprodukte/laktose/kuhmilch/latte/latticini/lattosio/leche/lácteos/lacteos/lactosa/leite/laticínios/laticinios/mleko/nabiał/laktoza/süt/süt ürünleri/laktoz/حليب/الحليب/لبن/اللبن/ألبان/الألبان/لاكتوز/दूध/डेयरी/दुग्ध उत्पाद/लैक्टोज/牛奶/奶/奶制品/乳制品/乳製品/奶類/奶类/우유/유제품/유당/นม/นมวัว/ผลิตภัณฑ์นม/แลคโตส/sữa/sữa bò/susu/susu sapi/produk susu/laktosa/gatas/gatas ng baka'],
     [['egg'], '卵/たまご/玉子/鶏卵/卵白/卵黄/egg/eggs/egg white/egg yolk/œuf/oeuf/œufs/oeufs/ei/eier/uovo/uova/huevo/huevos/ovo/ovos/jajko/jajka/jaja/yumurta/بيض/البيض/अंडा/अंडे/鸡蛋/雞蛋/蛋/蛋类/蛋類/계란/달걀/ไข่/ไข่ไก่/trứng/trứng gà/telur/itlog'],
     [['crustacean'], '甲殻類/crustacean/crustaceans/crustacean shellfish/crustacés/crustaces/krebstiere/krustentiere/crostacei/crustáceos/crustaceos/skorupiaki/kabuklular/قشريات/القشريات/क्रस्टेशियन/甲壳类/甲殼類/갑각류/สัตว์น้ำที่มีเปลือกแข็ง/ครัสเตเชียน/giáp xác/động vật giáp xác/krustasea/udang-udangan'],
+    // 第41回 R194: えび・かにの基本の言葉（タイ語の「ปู」が判定できなかった）。18言語で1語ずつ
+    [['shrimp'], 'えび/海老/蝦/shrimp/shrimps/prawn/prawns/crevette/crevettes/garnele/garnelen/gambero/gamberi/gamberetti/gamberetto/camarón/camarones/gamba/gambas/langostino/langostinos/camarão/camarões/krewetka/krewetki/karides/روبيان/الروبيان/جمبري/الجمبري/ربيان/قريدس/झींगा/झींगे/虾/虾仁/蝦仁/새우/กุ้ง/tôm/tép/udang/hipon/sugpo'],
+    [['crab'], 'かに/蟹/crab/crabs/crab meat/crabe/crabes/krabbe/krabben/granchio/granchi/cangrejo/cangrejos/jaiba/jaibas/caranguejo/caranguejos/siri/krab/kraby/yengeç/سلطعون/السلطعون/كابوريا/سرطان البحر/केकड़ा/केकड़े/螃蟹/게/꽃게/ปู/ปูม้า/cua/ghẹ/kepiting/rajungan/alimango/alimasag/talangka'],
     [['crustacean', 'mollusc', 'shellfish'], 'えび・かに・貝/shellfish/mariscos/coquillages/schalentiere/meeresfrüchte/frutti di mare/frutos do mar/frutos de mar/owoce morza/kabuklu deniz ürünleri/محار/المحار/शेलफ़िश/शेलफिश/贝类/貝類/甲壳类和贝类/조개류/หอย/động vật có vỏ/kerang-kerangan/kerang/kabibe'],
     [['fish', 'crustacean', 'mollusc', 'shellfish'], '魚介/魚介類/海産物/海鮮/seafood/sea food/fruits de mer/deniz ürünleri/مأكولات بحرية/المأكولات البحرية/समुद्री भोजन/海鲜/海鮮/해산물/อาหารทะเล/hải sản/makanan laut/pagkaing-dagat/lamang-dagat'],
     [['mollusc'], '軟体動物/mollusc/molluscs/mollusk/mollusks/mollusques/weichtiere/molluschi/moluscos/mięczaki/yumuşakçalar/رخويات/الرخويات/मोलस्क/软体动物/軟體動物/연체동물/หอยและปลาหมึก/động vật thân mềm/moluska'],
@@ -9982,9 +10000,24 @@ function algLine(){
     return may ? t('アレルゲン（{list}）を使う料理は入れていません。{n}品は、袋の表示を確かめてください（{items}）', {list: joinNames(ids.map(algLabel)), n: may, items: joinNames(algMayNames(mayRs, ids))})
         : t('アレルゲン（{list}）を使う料理は入れていません', {list: joinNames(ids.map(algLabel))});
 }
+// 第41回 R189: 食の決まり（ハラール・ベジタリアン・お酒をとらない・豚肉を食べない など）・苦手な食材に合わない料理の理由: {what, names}（合わなければ null）。
+// アレルギーに当たる料理は allergyConflict で見る（ここでは見ない）。辛さだけで合わない料理も、ここでは見ない
+function ruleHit(r){
+    if (!r || !r.items || allergyConflict(r) || !effAvoid().length || !isAvoidedCore(r)) return null;
+    const c = avoidCtx(), names = [...new Set(r.items.concat(seasItems(r)).filter(i => itemAvoided(i, c)).map(i => shortIng(i.label || i.name)).filter(Boolean))];
+    if (!names.length && !seasAvoided(r, c) && !(r.tsuke && tsukeNameAvoided(r))) return null;
+    return {what: dietRuleOn(effAvoid()) ? t('食の決まり') : t('苦手・食の決まり'), names};
+}
+// 合わない理由の短い名前（替えたことを知らせる文・決める前の確かめに使う）。アレルギー／食の決まり（苦手）。合っていれば ''
+function safeWhy(r){ if (!r) return ''; if (allergyConflict(r) && isAvoidedCore(r)) return t('アレルギー'); const h = ruleHit(r); return h ? h.what : ''; }
+// 決める前の確かめ（第41回 R190）: まだ決めていない献立に残っている、合わない料理（アレルギー・食の決まり）
+function menuSafeBad(){ const m = session.menu; return m && !menuIsDecided() ? m.items.filter(x => x.r && safeWhy(x.r)) : []; }
 // お膳の料理につける ⚠（選んだアレルゲン・今日食べる家族のアレルギーに当たる料理。決めた献立は黙って替えないので、残っている料理に印をつける）
+// 第41回 R189: 食の決まり・苦手に合わない料理が残っているときも ⚠ と理由（「⚠ 食の決まり（えび）」）
 function algTagHtml(r){
     if (!r) return '';
+    const rh = !allergyConflict(r) && ruleHit(r);
+    if (rh){ const s = rh.names.length ? t('{what}（{names}）', {what: rh.what, names: joinNames(rh.names)}) : rh.what; return outAlgTagHtml(r) + `<span class="alg-tag rule" role="note" aria-label="${esc('⚠ ' + s)}">⚠ ${esc(s)}</span>`; }
     if (!allergyConflict(r)){
         const out = outAlgTagHtml(r) + dietMayTagHtml(r) + saltTagHtml(r);   // 今日食べる人から外した家族のアレルゲンの札（R45）＋ 食の決まり（ベジタリアン）の 🔍
         // 「入っていることがある」加工品（ワンタンの皮の卵など）だけで当たる料理: 料理は出すが、カードにも「袋の表示を確認」と出す（モニター第3回b N2）
@@ -10036,6 +10069,7 @@ function avoidFamOf(x){
 function inFam(f, i){ const d = AVOID_FAM[f]; if (d.fn) return d.fn(algTok(i).t); return d.jp.includes(i.key) || d.re.test((i.key + '|' + (i.en || '')).toLowerCase()); }
 // いまの国の料理に出てくるなかまだけをチップにする
 const DIET_CHIPS = ['alcohol', 'othermeat'];   // 食の決まりのチップ（材料の一覧によらず、いつも出す。家族のアレルギーのチップには出さない）
+const DIET_RULE_FAMS = ['pork', 'beef'];   // 第41回 R191: 食の決まりとみなすなかま（豚肉を食べない・牛肉を食べない・コーシャ）。その国の料理に出てこなくてもチップを出す
 function avoidFamChips(){ return Object.keys(AVOID_FAM).filter(f => RECIPES.some(r => r.items && r.items.some(i => inFam(f, i)))); }
 function avoidFamLabel(f){
     return {pork:t('豚肉（ひき肉・ハム・ベーコンも）'), chicken:t('鶏肉（ひき肉も）'), beef:t('牛肉（ひき肉も）'), fish:t('魚（ツナ缶なども）'), shellfish:t('えび・かに・いか・たこ・貝'),
@@ -10101,7 +10135,8 @@ function dietBundleHtml(list, act){
 // 選んだなかまに入っている食材は、選んだ形（押せない）で出す。最後に、いまの国の料理がどうなるかの一言を添える。more: 設定の画面。選んだものを先に出し、多いときは残りを「ほかの食材を見る」にしまう
 function avoidChipsHtml(list, act, famAct, more){
     const sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
-    const fam = [...new Set(avoidFamChips().concat(DIET_CHIPS))].map(f => ({on: sel.includes(f), pin: DIET_CHIPS.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
+    const fc = avoidFamChips();   // 第41回 R191: 豚肉・牛肉は、その国の料理に出てこなくても出す（インドで「牛肉を食べない」を入れられなかった）
+    const fam = [...new Set(fc.concat(DIET_CHIPS, DIET_RULE_FAMS))].map(f => ({on: sel.includes(f), pin: DIET_CHIPS.includes(f) || !fc.includes(f), h: `<button class="chip" data-act="${famAct}" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`}));
     const one = AVOID_QUICK.filter(q => !avoidFamOf(q)).map(q => { const by = avoidCoveredBy(q, sel);
         if (by) return {on: true, h: `<button class="chip inc" disabled aria-pressed="true" title="${esc(t('「{name}」に入っています', {name: avoidFamLabel(by)}))}">${esc(q)}</button>`};   // ✓ は押した形の印（CSS）で出る。文字でも書くと「✓ ✓」になる
         const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
@@ -14782,7 +14817,7 @@ function viewToday(){
         </div>
         ${kcalTrayHtml(m)}${carbTrayHtml(m)}${carbNoteHtml()}
         ${/* お膳より上には何も足さない（基準書 4-2）。決めたあとは、すぐ下に買い物メモへの1行（約束4）。お知らせ・案内はお膳の下 */''}${decided ? `<p class="shop-line"><button type="button" class="p2-link" data-act="stage" data-k="shop">${esc(t('買い物メモを見る'))}</button></p>` : ''}
-        ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
+        ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note${session.avoidNote.safe ? ' safe-note' : ''}" role="status"><span>${esc(session.avoidNote.safe || t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
         ${remoteNoticeHtml()}
         ${backupNoteHtml()}
         ${monitorOpen() ? `<div class="note trial-note"><span><b>${esc(t('無料体験キャンペーン中: あと{n}日', {n:monitorDaysLeft()}))}</b> ${esc(t('毎週ひとこと、感想や改善点を送ると、次の1週間も無料で使えます（最大{n}か月）。', {n:Math.round(PLAN.campaign.days / 30)}))}</span>${monitorCanSend() ? `<button class="btn sm" data-act="monitor-send">${esc(t('感想・改善点を送る'))}</button>` : `<span class="small">${esc(t('今週の分は受け取りました。ありがとうございます。'))}</span>`}</div>` : trialActive() && !isSubscribed() && trialDaysLeft() <= 3 ? `<div class="note trial-note"><span>${esc(t('無料期間はあと{n}日です。', {n:trialDaysLeft()}))}</span><button class="btn sm" data-act="paywall">${esc(t('プランを見る'))}</button></div>` : ''}
@@ -15908,8 +15943,9 @@ function startAlgSheetHtml(){
 // 第40回 R177: はじめての設定でアレルギーを聞かなくなったので、最初に「この献立に決定」（または作りはじめる）を押したとき1回だけ、
 // 「家族にアレルギーや食の決まりはありますか？」と聞く。［ない］は覚えてもう聞かない。［ある］は設定へ（献立は決めない）。
 // 聞くのは、いまの流れで始めた人（S.algAsk。前の版の第39回で始めた人は、設定の入口の案内がまだ出ている人 S.algHint）で、だれにもアレルギー・食の決まりがないときだけ。前から使っている人には聞かない
-// 食の決まり: まとめ選び（ハラール向け・ベジタリアン向け・ヴィーガン向け）か、食の決まりのチップ（お酒・ほかの肉）。豚肉だけ・苦手だけは決まりとみなさない（安全側: 聞く）
-function dietRuleOn(list){ return (list || []).some(x => DIET_CHIPS.includes(avoidFamOf(x))) || Object.keys(DIET_BUNDLES).some(k => dietBundleOn(list || [], k)); }
+// 食の決まり: まとめ選び（ハラール向け・ベジタリアン向け・ヴィーガン向け）か、食の決まりのチップ（お酒・ほかの肉）、豚肉・牛肉のなかま（第41回）。苦手だけは決まりとみなさない（安全側: 聞く）
+// 第41回 R191: 豚肉を食べない・牛肉を食べない（コーシャは豚肉と、えび・かに・貝）も、決まりとみなす（入れたのに決めるたびにまた聞かれた）。豚肉・牛肉のなかまで選んだときだけ（1つの食材「豚肉」だけは苦手とみなして聞く）
+function dietRuleOn(list){ return (list || []).some(x => DIET_CHIPS.includes(avoidFamOf(x)) || (String(x)[0] === '@' && DIET_RULE_FAMS.includes(avoidFamOf(x)))) || Object.keys(DIET_BUNDLES).some(k => dietBundleOn(list || [], k)); }
 function algAskDue(){
     if (S.algAsk === 0 || !(S.algAsk === 1 || 'algHint' in S)) return false;
     if (algIds().length || famMembers().some(m => (m.allergy || []).length)) return false;
@@ -15918,19 +15954,27 @@ function algAskDue(){
 function algAskSheetHtml(){
     const start = sheet.then === 'start';
     return `<h2>${esc(t('家族にアレルギーや食の決まりはありますか？'))}</h2>
-        <p class="muted small">${esc(t('アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。'))}</p>
-        <button class="btn primary" data-act="alg-ask-no">${esc(start ? t('ない（このまま作る）') : t('ない（このまま決める）'))}</button>
-        <button class="btn" data-act="alg-ask-yes">${esc(t('ある（設定する）'))}</button>`;
+        <p class="muted small">${esc(t('アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、まだ決めていない献立の合わない料理を、合う料理に替えます。'))}</p>
+        <div class="ask-acts"><button class="btn primary" data-act="alg-ask-no">${esc(start ? t('ない（このまま作る）') : t('ない（このまま決める）'))}</button>
+        <button class="btn" data-act="alg-ask-yes">${esc(t('ある（設定する）'))}</button></div>`;
+}
+// 第41回 R190: 合う料理がなく、合わない料理（アレルギー・食の決まり）が残ったまま「この献立に決定」を押したとき、1回だけ確かめる
+function algConfirmSheetHtml(){
+    const bad = menuSafeBad();
+    return `<h2 class="warn">⚠ ${esc(t('合わない料理があります：{names}', {names: joinNames(bad.map(x => t('{what}（{names}）', {what: x.r.name, names: safeWhy(x.r)})))}))}</h2>
+        <div class="ask-acts"><button class="btn primary" data-act="alg-confirm-swap">${esc(t('替える'))}</button>
+        <button class="btn" data-act="alg-confirm-keep">${esc(t('このまま決める'))}</button></div>`;
 }
 // 「この献立に決定」の中身（第40回: 1回だけの「アレルギーや食の決まりはありますか」の［ない］からも呼ぶ）
-function decideNow(){
-    session.algAskHold = false;
+function decideNow(keep){
+    session.algAskSet = false; session.algSwaps = null;   // 決めたあとの献立には、いままでどおり自動で触れない
     const m = session.menu;
     const ids = menuIds();
     // 「決めた」だけでは記録しない（作った記録は、作り方で料理の手順を全部終えたとき・「今日作った」を押したときに付ける）。
     // 決めただけで「今日作った」「レパートリーが増えました」と出ると、作らなかった日も作ったことになるため（モニター 佐々木 3-7・田村 3-12）
     const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
     S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0, seat: 1};   // seat: 品数を席の数で読む版で決めた save(); haptic();
+    if (Array.isArray(keep) && keep.length) S.cook.keep = keep.filter(id => ids.includes(id));   // 第41回 R190: 確かめたうえで「このまま決める」を選んだ料理は、作り方の画面で同じことをもう一度聞かない（印と料理の詳細のアレルゲンの欄はそのまま）   // seat: 品数を席の数で読む版で決めた save(); haptic();
     session.cookIdx = 0;
     if (S.day && S.day[TODAY] && S.day[TODAY].state === 'skipped') delete S.day[TODAY].skip;
     session.stage = 'shop'; daySync();
@@ -17051,15 +17095,23 @@ document.addEventListener('click', e => {
         case 'ob-done': obFinish(); break;
         case 'decide': {
             if (algAskDue()){ sheet = {kind: 'alg-ask', then: 'decide'}; renderSheet(); break; }   // 第40回 R177: 最初に決めるとき1回だけ、アレルギー・食の決まりを確かめる
+            if (menuSafeBad().length){ sheet = {kind: 'alg-confirm'}; renderSheet(); break; }   // 第41回 R190: 合わない料理が残っていたら、決める前に1回確かめる
             decideNow(); break;
+        }
+        case 'alg-confirm-swap': {   // ［替える］: 合わない料理を、合う料理に替える（替わりがなければ外す）。まだ決めない
+            closeSheet(); reconcileMenu({safe: true}); keepDraft(); render(); break;
+        }
+        case 'alg-confirm-keep': {   // ［このまま決める］: 確かめたうえで決める
+            const bad = menuSafeBad().map(x => x.r.id); closeSheet(); decideNow(bad); break;
         }
         case 'alg-ask-no': {   // ［ない（このまま決める）］: 答えを覚えて（もう聞かない）、そのまま決める／作りはじめる
             const sh = sheet; S.algAsk = 0; save(); closeSheet();
-            if (sh && sh.then === 'start' && byId(sh.id)) startCooking(sh.id); else if (session.menu && !decidedToday()) decideNow(); else render();
+            if (sh && sh.then === 'start' && byId(sh.id)) startCooking(sh.id); else if (session.menu && !decidedToday()){ if (menuSafeBad().length){ sheet = {kind: 'alg-confirm'}; renderSheet(); } else decideNow(); } else render();
             break;
         }
-        case 'alg-ask-yes': {   // ［ある（設定する）］: アレルギー対策へ（家族のアレルギー・食の決まりへの入口もそこに）。献立は決めない。もどったら、当たる料理に ⚠（替えるかどうかは本人が選ぶ）
-            closeSheet(); session.algAskHold = true; setGo('allergy-card'); break;
+        case 'alg-ask-yes': {   // ［ある（設定する）］: アレルギー対策へ（家族のアレルギー・食の決まりへの入口もそこに）。献立は決めない。
+            // 第41回 R189・R190: 設定したら、まだ決めていない献立の合わない料理（アレルギー・食の決まり）は合う料理に替え、「◯◯に合わない料理を替えました（主菜：A→B）」と出す
+            closeSheet(); session.algAskSet = true; session.algSwaps = null; setGo('allergy-card'); break;
         }
         case 'alg-jump': { const k = el.dataset.v; if (k === 'family-profile' || k === 'food') setGo(k); break; }   // アレルギー対策の上の入口: 家族のアレルギー・食の決まり
         case 'cook-swap': {   // 決めた献立のうち、合わなくなった1品だけを、本人が押したときに替える（ほかの料理は動かさない）
