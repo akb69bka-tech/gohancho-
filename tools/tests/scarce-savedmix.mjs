@@ -101,6 +101,19 @@ for (const cc of CCS){
             await p.evaluate(([slot, mc]) => { if (typeof openCondSheet === 'function') openCondSheet(); const sel = document.querySelector('select[data-act="mix"][data-slot="' + slot + '"]'); sel.value = mc; sel.dispatchEvent(new Event('change', {bubbles: true})); }, [slot, mc]);
             await p.waitForTimeout(2000);
         }
+        // 汁けの多い主菜（チゲ・スンドゥブなど）の日は、汁ものの枠は空になる（設定を変えたついでには埋めない決まり。reconcileMenu）。
+        // このテストは国ミックスの保存・復元を見るので、人と同じ操作で枠をそろえる: 主菜が汁けの多い料理なら主菜を「かえる」、汁ものの枠が空なら「汁ものを足す」
+        for (let k = 0; k < 8; k++){
+            const st = await p.evaluate(() => { const its = session.menu.items, i = its.findIndex(x => x.slot === '汁物' && !x.r); if (i < 0) return 'full';
+                const add = document.querySelector(`.tray [data-act="soup-add"][data-i="${i}"]`); if (add){ add.click(); return 'add'; }
+                if (soupyMain(its[0].r)){ const rr = document.querySelector('.tray [data-act="reroll"][data-i="0"]'); if (rr){ rr.click(); return 'main'; } }
+                return 'stuck'; });
+            if (st === 'full' || st === 'stuck') break;
+            await p.waitForTimeout(300);
+        }
+        const holes = await p.evaluate(() => session.menu.items.filter(x => !x.r).map(x => x.slot));
+        ok(!holes.length, cc + ' 国ミックスの献立に空の枠が残った ' + holes.join());
+        if (holes.length){ await ctx.close(); continue; }
         const s = await p.evaluate(() => {
             const ids = session.menu.items.map(x => x.slot + ':' + x.r.id); const share = menuShareText();
             saveMenu(); const sm = S.savedMenus[0];
