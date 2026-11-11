@@ -8654,9 +8654,15 @@ function dietStrict(c, i){
     if (c.diet.includes('vegan') && DIET_HONEY.test(t)) return true;
     return false;
 }
+// 第42回 R197: アレルゲンの表で、肉・魚・貝（ヴィーガンは乳・卵も）が「よく含まれる加工品」（2）・「入っていることがある加工品」（4）に当たるもの
+// （カレールウ・シチュールウ・デミグラス・沙茶醬・納豆のたれ・ぽん酢・だし入りみそ・えびせんべい・ランチドレッシングなど）にも 🔍 を付ける。外す判定は変えない
+const DIET_MAY_ALG = ['beef', 'pork', 'chicken', 'fish', 'salmon', 'mackerel', 'ikura', 'shrimp', 'crab', 'crustacean', 'squid', 'abalone', 'mollusc', 'shellfish', 'gelatin'], DIET_MAY_ALG_VEGAN = ['milk', 'egg'];
 function dietMayItem(c, i){
     if (!c.diet.includes('vegi')) return false;
-    const t = dietTxt(i); return DIET_VEGI_MAY.test(t) && !DIET_VEGI_MAY_NO.test(t) && !DIET_VEGI.test(t);
+    const t = dietTxt(i); if (DIET_VEGI.test(t)) return false;
+    const may = id => ALG_DEF[id] && [2, 4].includes(algKind(id, i));
+    if (!DIET_VEGI_MAY_NO.test(t) && (DIET_VEGI_MAY.test(t) || DIET_MAY_ALG.some(may))) return true;   // 「chicken or vegetable stock」のように野菜のものを選べるときは、これまでどおり付けない
+    return c.diet.includes('vegan') && DIET_MAY_ALG_VEGAN.some(may);   // 野菜のスープの素の乳など（ヴィーガン）
 }
 // ベジタリアン（豚・鶏・牛・魚・貝を外した人）か。「袋の表示を確認」の 🔍 を出す条件
 function dietVegiOn(){ return avoidCtx().diet.includes('vegi'); }
@@ -10203,7 +10209,9 @@ function avoidSumHtml(list){
     if (!list.length || avoidSumHtml.off) return '';
     const keep = S.settings.avoid; let a = 0, b = 0;
     S.settings.avoid = list;
-    try { RECIPES.forEach(r => { if (isAvoided(r)) b++; else if (((swappedRecipe(r) || {}).swapped || {swaps: []}).swaps.length) a++; }); }
+    // 第42回 R199: 置き換える品数だけ数える（swappedRecipe は作り方の文まで書きかえるので、日本のベジタリアン・ヴィーガンで1品ずつ重く、押してから3〜4秒止まっていた）。数は swappedRecipe の swaps と同じ
+    const swapN = r => (r && r.items && !r.swapped && effAvoid().length ? ((recipeSwaps(r) || {}).swaps || []).length : 0);
+    try { RECIPES.forEach(r => { if (isAvoided(r)) b++; else if (swapN(r)) a++; }); }
     finally { S.settings.avoid = keep; }
     // 食の決まりの一言（宗教や専門機関の判断を言うものではない）: 豚だけ外してもお酒は外れない／豚・鶏・牛・魚・貝を全部外したときに一緒に外すもの
     const fs = new Set(list.map(avoidFamOf).filter(Boolean)), vegi = ['pork', 'chicken', 'beef', 'fish', 'shellfish'].every(f => fs.has(f));
@@ -17102,7 +17110,15 @@ document.addEventListener('click', e => {
             decideNow(); break;
         }
         case 'alg-confirm-swap': {   // ［替える］: 合わない料理を、合う料理に替える（替わりがなければ外す）。まだ決めない
-            closeSheet(); reconcileMenu({safe: true}); keepDraft(); render(); break;
+            const ids0 = session.menu ? session.menu.items.map(x => x.r && x.r.id) : [];
+            closeSheet(); reconcileMenu({safe: true}); keepDraft(); render();
+            // 第42回 R200: 焦点はページの最初（BODY）に落とさず、替わった料理へ（外れた席はその席の［かえる］、どれも替わらなければ「この献立に決定」）
+            try{
+                const its = session.menu ? session.menu.items : [], k = its.findIndex((x, j) => (x.r && x.r.id) !== ids0[j]), v = $('#view');
+                const to = (k >= 0 && its[k].r && v.querySelector(`[data-act="open"][data-id="${CSS.escape(its[k].r.id)}"]`)) || (k >= 0 && v.querySelector(`[data-act="reroll"][data-i="${k}"], [data-act="soup-add"][data-i="${k}"]`)) || v.querySelector('[data-act="decide"]');
+                if (to) to.focus({preventScroll: true});
+            }catch(e){}
+            break;
         }
         case 'alg-confirm-keep': {   // ［このまま決める］: 確かめたうえで決める
             const bad = menuSafeBad().map(x => x.r.id); closeSheet(); decideNow(bad); break;
