@@ -19,6 +19,46 @@ GOHAN_PACK_TR('ID', 'id', {
     'shallots': 'Bawang merah', 'spring onion': 'Daun bawang', 'flour': 'Tepung', 'squid': 'Cumi-cumi', 'rice vermicelli': 'Bihun', 'banana leaves': 'Daun pisang', 'anchovies': 'Ikan teri', 'green chili': 'Cabai hijau', 'bitter melon': 'Pare', 'oyster mushroom': 'Jamur tiram', 'cassava leaves': 'Daun singkong'
   },
   recipes: {
+    "id_supikanbening": {
+      name: "Sup ikan kuah bening",
+      ings: [["Fillet ikan putih", "250 g"], ["Tomat", "1"], ["Bawang merah", "30 g"], ["Kemangi", "5 g"], ["Jeruk nipis", "1/2"]],
+      seas: "800 ml air · 3 siung bawang putih · 2 cm jahe · 1 batang serai · 2 cabai rawit · 1 sdm minyak · Garam",
+      steps: [
+        "Iris bawang merah, bawang putih, dan jahe; memarkan serai. Potong ikan dan tomat.",
+        "Tumis bawang merah, bawang putih, dan jahe sampai harum, tambahkan air dan serai lalu didihkan 5 menit.",
+        "Masukkan ikan, tomat, dan cabai, masak 6 menit. Bumbui dengan garam dan air jeruk nipis, lalu tambahkan kemangi.",
+      ],
+    },
+    "id_supkembangkol": {
+      name: "Sup kembang kol ayam",
+      ings: [["Kembang kol", "200 g"], ["Dada ayam", "100 g"], ["Wortel", "30 g"], ["Daun bawang", "1"]],
+      seas: "800 ml air · 3 siung bawang putih · 1/2 sdt merica putih · 1 sdm minyak · Garam · Bawang goreng (opsional)",
+      steps: [
+        "Potong kembang kol per kuntum, ayam kecil-kecil, dan wortel iris. Cincang bawang putih.",
+        "Tumis bawang putih, tambahkan air dan ayam lalu rebus 8 menit.",
+        "Masukkan wortel dan kembang kol, masak 6 menit. Bumbui merica dan garam, lalu tambahkan daun bawang.",
+      ],
+    },
+    "id_sayurbeninglabu": {
+      name: "Sayur bening labu siam",
+      ings: [["Labu siam", "200 g"], ["Bayam", "100 g"], ["Bawang merah", "20 g"]],
+      seas: "800 ml air · 2 siung bawang putih · 1 ruas temu kunci, iris · Garam · Sejumput gula",
+      steps: [
+        "Kupas labu siam dan potong korek api. Iris bawang merah, bawang putih, dan temu kunci.",
+        "Rebus air dengan bawang merah, bawang putih, dan temu kunci selama 3 menit.",
+        "Masukkan labu siam, masak 4 menit, lalu bayam 1 menit. Bumbui garam dan sejumput gula.",
+      ],
+    },
+    "id_supjamurtelur": {
+      name: "Sup jamur telur",
+      ings: [["Jamur tiram", "150 g"], ["Telur", "2"], ["Daun bawang", "1"], ["Seledri", "5 g"]],
+      seas: "700 ml kaldu ayam atau air · 2 siung bawang putih · 1 sdm minyak · 1/2 sdt merica putih · Garam",
+      steps: [
+        "Suwir jamur, cincang bawang putih, daun bawang, dan seledri. Kocok telur.",
+        "Tumis bawang putih, tambahkan kaldu dan jamur lalu rebus 5 menit.",
+        "Tuang telur sambil diaduk, bumbui merica dan garam, lalu tambahkan daun bawang dan seledri.",
+      ],
+    },
     "id_tahu_kukus": {
       name: "Tahu kukus",
       ings: [["Tahu sutra", "300 g"], ["Daun bawang, iris", "1 batang"]],

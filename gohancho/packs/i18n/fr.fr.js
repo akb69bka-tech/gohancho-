@@ -82,6 +82,96 @@ GOHAN_PACK_TR('FR', 'fr', {
     'red cabbage': 'Chou rouge',
   },
   recipes: {
+    "fr_bouillonpoulet": {
+      name: "Bouillon de poulet aux légumes",
+      ings: [["Hauts de cuisse de poulet désossés", "200 g"], ["Poireau", "100 g"], ["Carotte", "50 g"], ["Céleri branche", "50 g"]],
+      seas: "800 ml d'eau · 1 cube de bouillon · 1 feuille de laurier · 1 brin de thym · Sel · Poivre",
+      steps: [
+        "Coupez le poulet en morceaux, émincez le poireau et le céleri, coupez la carotte en dés.",
+        "Mettez le tout dans une casserole avec l'eau, le cube, le laurier et le thym, et laissez frémir 25 minutes.",
+        "Retirez les herbes, salez et poivrez.",
+      ],
+    },
+    "fr_veloutefenouil": {
+      name: "Velouté de fenouil",
+      ings: [["Bulbe de fenouil", "300 g"], ["Oignon", "40 g"], ["Crème liquide", "50 ml"]],
+      seas: "500 ml de bouillon de légumes · 1 c. à soupe d'huile d'olive · Sel · Poivre",
+      steps: [
+        "Émincez le fenouil et l'oignon.",
+        "Faites-les fondre 5 minutes dans l'huile, ajoutez le bouillon et laissez cuire 15 minutes.",
+        "Mixez avec la crème jusqu'à obtenir un velouté lisse, salez et poivrez.",
+      ],
+    },
+    "fr_soupemoules": {
+      name: "Soupe de moules au vin blanc",
+      ings: [["Moules", "500 g"], ["Échalote", "30 g"], ["Crème liquide", "50 ml"]],
+      seas: "100 ml de vin blanc sec · 400 ml d'eau · 1 c. à soupe de beurre · 1 gousse d'ail · Persil · Poivre",
+      steps: [
+        "Grattez les moules et jetez celles qui restent ouvertes. Hachez l'échalote et l'ail.",
+        "Faites fondre l'échalote et l'ail dans le beurre, ajoutez le vin et les moules, couvrez et cuisez 4 minutes jusqu'à ouverture. Décortiquez la moitié des moules.",
+        "Ajoutez l'eau et la crème, réchauffez, poivrez et parsemez de persil.",
+      ],
+    },
+    "fr_veloutepinards": {
+      name: "Velouté d'épinards",
+      ings: [["Épinards", "250 g"], ["Échalote", "30 g"], ["Crème liquide", "50 ml"]],
+      seas: "500 ml de bouillon de légumes · 1 c. à soupe de beurre · Muscade · Sel · Poivre",
+      steps: [
+        "Lavez les épinards et hachez l'échalote.",
+        "Faites fondre l'échalote dans le beurre, ajoutez les épinards et le bouillon et cuisez 5 minutes.",
+        "Mixez avec la crème, assaisonnez de muscade, sel et poivre.",
+      ],
+    },
+    "fr_soupenavets": {
+      name: "Soupe de navets et poireaux",
+      ings: [["Navets", "200 g"], ["Poireau", "100 g"], ["Crème liquide", "30 ml"]],
+      seas: "600 ml de bouillon de volaille ou de légumes · 1 c. à soupe de beurre · Sel · Poivre",
+      steps: [
+        "Épluchez et coupez les navets en dés, émincez le poireau.",
+        "Faites fondre le poireau dans le beurre, ajoutez les navets et le bouillon et laissez frémir 20 minutes.",
+        "Mixez ou laissez en morceaux, ajoutez un peu de crème si vous voulez, salez et poivrez.",
+      ],
+    },
+    "fr_consommeboeuf": {
+      name: "Bouillon de bœuf aux légumes",
+      ings: [["Bœuf (jarret ou paleron)", "150 g"], ["Carotte", "40 g"], ["Poireau", "60 g"], ["Céleri branche", "40 g"]],
+      seas: "900 ml d'eau · 1 cube de bouillon · 1 feuille de laurier · 2 clous de girofle · Sel · Poivre",
+      steps: [
+        "Coupez le bœuf en petits dés et les légumes en fines tranches.",
+        "Mettez le bœuf dans l'eau avec le cube, le laurier et les clous de girofle, portez à frémissement et écumez. Cuisez 20 minutes.",
+        "Ajoutez les légumes, laissez frémir encore 10 minutes, retirez le laurier et les clous de girofle, salez et poivrez.",
+      ],
+    },
+    "fr_endivesbraisees": {
+      name: "Endives braisées",
+      ings: [["Endives", "300 g"], ["Jus de citron", "1 c. à soupe"]],
+      seas: "1 c. à soupe de beurre · 3 c. à soupe d'eau · Sel · Poivre",
+      steps: [
+        "Coupez les endives en deux dans la longueur et retirez le cœur amer.",
+        "Faites-les dorer côté coupé 3 minutes dans le beurre, ajoutez l'eau et le jus de citron, couvrez et laissez cuire doucement 15 minutes.",
+        "Découvrez, laissez évaporer le liquide, salez et poivrez.",
+      ],
+    },
+    "fr_saladefenouil": {
+      name: "Salade de fenouil au citron",
+      ings: [["Bulbe de fenouil", "250 g"], ["Citron", "1/2"]],
+      seas: "1 c. à soupe et demie d'huile d'olive · Sel · Poivre · Pluches de fenouil ou persil",
+      steps: [
+        "Émincez le fenouil le plus finement possible.",
+        "Fouettez le jus de citron avec l'huile, le sel et le poivre.",
+        "Mélangez le fenouil à la vinaigrette et parsemez de pluches.",
+      ],
+    },
+    "fr_brocolisail": {
+      name: "Brocolis sautés à l'ail",
+      ings: [["Brocolis", "300 g"], ["Ail", "2 gousses"]],
+      seas: "1 c. à soupe d'huile d'olive · Sel · Poivre",
+      steps: [
+        "Détaillez le brocoli en fleurettes et faites-les cuire 3 minutes à l'eau bouillante, puis égouttez.",
+        "Émincez l'ail et faites-le chauffer dans l'huile sans le colorer.",
+        "Ajoutez les brocolis, faites sauter 2 minutes, salez et poivrez.",
+      ],
+    },
     "fr_semoule_lait": {
       name: "Semoule au lait",
       ings: [["Semoule de blé fine", "60 g"], ["Lait", "500 ml"]],

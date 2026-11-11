@@ -1,5 +1,19 @@
 // ご飯帖 — Spanish (neutral) UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('es', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Menos carbohidratos",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Comidas con menos arroz, fideos y papas, y más platos de verduras y proteínas. Muestra una estimación de carbohidratos (g) por persona",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Al activarlo, se proponen primero los platos con menos carbohidratos; los platos de arroz, fideos o con mucha papa, los guisos dulces, los fritos con rebozado grueso y las sopas con papa, fideos de soja o fideos quedan para después (no se quita nada y las comidas ya decididas no cambian). El acompañamiento se muestra en porción pequeña.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Si sigue indicaciones de alimentación por diabetes u otro motivo, siga primero las de su médico o nutricionista. Los números que se muestran son estimaciones.",
+    "わかりました": "Entendido",
+    "{name}（小盛り）": "{name} (porción pequeña)",
+    "糖質 約 {n} g（1人分・目安）": "Carbohidratos: unos {n} g (por persona, estimación)",
+    "糖質 1 g 未満（1人分・目安）": "Carbohidratos: menos de 1 g (por persona, estimación)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Sin estimación de carbohidratos (demasiados ingredientes con cantidad o valor desconocido)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Carbohidratos de la comida: unos {n} g (por persona, estimación; porción pequeña de acompañamiento)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Carbohidratos de la comida: unos {n} g (por persona, estimación)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Sin estimación de carbohidratos para la comida (no hay estimación para «{name}»)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Sin estimación de carbohidratos para la comida (no hay estimación para el acompañamiento)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "«{name}»: la app no reconoce esta palabra. Elige uno de los botones de abajo.",
     "ある（設定する）": "Sí (configurarlas)",
     "ない（このまま作る）": "No (empezar a cocinar)",

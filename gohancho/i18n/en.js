@@ -1,6 +1,20 @@
 // ご飯帖 — English UI dictionary. Keys are the Japanese source strings passed to t() in index.html.
 // Regenerate the key list with: node tools/i18n/extract.mjs --check en
 GOHAN_I18N('en', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Lower carb",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Meals with less rice, noodles and potatoes, and more vegetable and protein dishes. Shows an estimate of carbohydrates (g) per person",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "When on, dishes with fewer carbohydrates are suggested first; rice dishes, noodles and potato-heavy dishes, sweet simmered dishes, thickly coated fried dishes and soups with potatoes, glass noodles or noodles come later (nothing is removed, and meals you have decided are not changed). The staple is shown as a small portion.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "If you follow dietary instructions for diabetes or another condition, follow your doctor's or dietitian's instructions first. The numbers shown are estimates.",
+    "わかりました": "Got it",
+    "{name}（小盛り）": "{name} (small portion)",
+    "糖質 約 {n} g（1人分・目安）": "Carbohydrates: about {n} g (per person, estimate)",
+    "糖質 1 g 未満（1人分・目安）": "Carbohydrates: under 1 g (per person, estimate)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "No carbohydrate estimate (too many ingredients with unknown amounts or values)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Meal carbohydrates: about {n} g (per person, estimate; small staple portion)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Meal carbohydrates: about {n} g (per person, estimate)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "No carbohydrate estimate for the meal (no estimate for “{name}”)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "No carbohydrate estimate for the meal (no estimate for the staple)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: the app can't recognize this word. Please choose from the buttons below.",
     "ある（設定する）": "Yes (set them up)",
     "ない（このまま作る）": "No (start cooking)",

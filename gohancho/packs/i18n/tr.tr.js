@@ -19,6 +19,66 @@ GOHAN_PACK_TR('TR', 'tr', {
     'bread': 'Ekmek', 'liver': 'Ciğer', 'chickpeas': 'Nohut', 'sucuk': 'Sucuk', 'shrimp': 'Karides', 'pasta': 'Makarna', 'peas': 'Bezelye', 'walnuts': 'Ceviz', 'vine leaves': 'Asma yaprağı', 'leek': 'Pırasa', 'artichoke': 'Enginar', 'borlotti beans': 'Barbunya', 'purslane': 'Semizotu', 'beetroot': 'Pancar', 'cabbage': 'Lahana', 'lettuce': 'Marul', 'red pepper': 'Kapya biber', 'cauliflower': 'Karnabahar'
   },
   recipes: {
+    "tr_karnabaharcorba": {
+      name: "Karnabahar çorbası",
+      ings: [["Karnabahar", "300 g"], ["Soğan", "40 g"], ["Süt", "100 ml"]],
+      seas: "500 ml su veya sebze suyu · 1 yemek kaşığı tereyağı · Tuz · Karabiber",
+      steps: [
+        "Karnabaharı çiçeklerine ayırın, soğanı doğrayın.",
+        "Soğanı tereyağında kavurun, karnabaharı ve suyu ekleyip 15 dakika pişirin.",
+        "Sütle birlikte blenderdan geçirin, tuz ve karabiberle tatlandırın.",
+      ],
+    },
+    "tr_sebzelitavuksuyu": {
+      name: "Sebzeli tavuk suyu çorbası",
+      ings: [["Tavuk göğsü veya but", "200 g"], ["Havuç", "40 g"], ["Kabak", "100 g"], ["Maydanoz", "5 g"]],
+      seas: "900 ml su · 1 yemek kaşığı tereyağı · 1/2 limonun suyu · Tuz · Karabiber",
+      steps: [
+        "Tavuğu suda 15 dakika haşlayın, çıkarıp didikleyin.",
+        "Küp doğranmış havuç ve kabağı suya ekleyip 10 dakika pişirin.",
+        "Tavuğu geri koyun, tereyağı ve limon suyunu ekleyin, tatlandırıp maydanoz serpin.",
+      ],
+    },
+    "tr_lahanacorbasi": {
+      name: "Lahana çorbası",
+      ings: [["Beyaz lahana", "250 g"], ["Soğan", "40 g"], ["Domates salçası", "1 yemek kaşığı"]],
+      seas: "800 ml su veya et suyu · 1 yemek kaşığı tereyağı · 1 çay kaşığı pul biber · Tuz",
+      steps: [
+        "Lahanayı ince doğrayın, soğanı küçük doğrayın.",
+        "Soğanı tereyağında kavurun, salça ve pul biberi ekleyip karıştırın, ardından lahanayı ekleyin.",
+        "Suyu ekleyip lahana yumuşayana kadar 15 dakika pişirin. Tuzla tatlandırın.",
+      ],
+    },
+    "tr_pirasacorbasi": {
+      name: "Pırasa çorbası",
+      ings: [["Pırasa", "200 g"], ["Havuç", "30 g"], ["Yoğurt", "60 g"]],
+      seas: "700 ml sebze suyu · 1 yemek kaşığı zeytinyağı · Tuz · Karabiber",
+      steps: [
+        "Pırasayı ince doğrayın, havucu küp küp kesin.",
+        "Zeytinyağında 5 dakika kavurun, suyu ekleyip 15 dakika pişirin.",
+        "Hafifçe blenderdan geçirin ya da parçalı bırakın, tatlandırın ve isterseniz bir kaşık yoğurtla servis edin.",
+      ],
+    },
+    "tr_ispanakkavurma": {
+      name: "Ispanak kavurma",
+      ings: [["Ispanak", "350 g"], ["Soğan", "50 g"], ["Sarımsaklı yoğurt", "80 g"]],
+      seas: "1 yemek kaşığı zeytinyağı · 1/2 çay kaşığı pul biber · Tuz",
+      steps: [
+        "Ispanağı yıkayıp iri doğrayın. Soğanı piyazlık doğrayın.",
+        "Soğanı zeytinyağında yumuşayana kadar kavurun, pul biberi ve ıspanağı ekleyip sönene kadar karıştırın.",
+        "Tuzla tatlandırın, isterseniz sarımsaklı yoğurtla servis edin.",
+      ],
+    },
+    "tr_mantarsote": {
+      name: "Mantar sote",
+      ings: [["Mantar", "300 g"], ["Sivri biber", "1"], ["Domates", "1"]],
+      seas: "1 yemek kaşığı tereyağı · 1 diş sarımsak · 1/2 çay kaşığı kekik · Tuz · Karabiber",
+      steps: [
+        "Mantarları dilimleyin; biberi, domatesi ve sarımsağı doğrayın.",
+        "Mantarları tereyağında yüksek ateşte suyunu çekene kadar soteleyin.",
+        "Biber, sarımsak ve domatesi ekleyip 3 dakika pişirin, kekik, tuz ve karabiberle tatlandırın.",
+      ],
+    },
     "tr_pirinc_lapasi": {
       name: "Pirinç lapası",
       ings: [["Pirinç (baldo veya osmancık)", "100 g"], ["Sade yoğurt, yanına", "4 yemek kaşığı"]],

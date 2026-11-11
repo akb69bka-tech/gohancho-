@@ -291,6 +291,8 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .kcal-sum .kc-v{color:var(--ink);font-weight:600}
 .kcal-sum .kc-c{display:block}
 .kcal-sum .kc-tag{display:inline-block;margin-inline-start:6px;padding:0 .5rem;border-radius:var(--r-pill);background:var(--surface-2);color:var(--ink);font-weight:600;white-space:nowrap}
+.kcal-sum.carb-sum{margin-top:2px}
+.kcal-note .cb-v{font-weight:600;font-size:var(--fs14)}
 .kcal-sum .kc-tag.light{background:var(--accent-soft);color:var(--accent-text)}
 .badge{display:inline-block;font-size:var(--fs12);padding:.0625rem .5rem;border-radius:var(--r-pill);background:var(--surface-2);color:var(--muted);margin-inline-end:4px;vertical-align:1px;white-space:nowrap}
 .badge.fav{background:var(--yolk-soft);color:var(--yolk-ink)}
@@ -2876,6 +2878,8 @@ function normalizeState(d){
     if (typeof st.settings.lowSalt !== 'boolean') delete st.settings.lowSalt;
     if (typeof st.settings.hangover !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(st.settings.hangover)) delete st.settings.hangover;   // 飲んだ次の日（その日の日付だけを持つ。ほかの日は効かない）
     if (st.settings.diet !== true) delete st.settings.diet;   // ダイエットモード（オンのときだけ true を持つ）
+    if (st.settings.carb !== true) delete st.settings.carb;   // 糖質ひかえめモード（オンのときだけ true）
+    if (st.settings.carbNoted !== true) delete st.settings.carbNoted;   // 糖質ひかえめの注意を1回出した
     if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(st.settings.dinnerAt || '')) delete st.settings.dinnerAt;   // 食べる時刻（作り方の画面）
     st.history = arr(st.history).filter(h => h && (typeof h.id === 'string' || typeof h.id === 'number') && isYmd(h.d)).sort((a, b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     st.custom = arr(st.custom).filter(r => r && r.id && typeof r.name === 'string' && r.name.trim()).map(r => Object.assign({}, r, {
@@ -4924,6 +4928,8 @@ function pick(cands, ctx){
     if (ctx.hang) scored = hangOrder(scored);
     if (saltOn() && saltHigh(scored[0].r) && Math.random() < 0.6){ const alt = scored.find(x => !saltHigh(x.r)); if (alt) return alt.r; }
     // ダイエットモード: いちばん上が重め（揚げ物・候補の真ん中よりカロリーの目安が多い）なら、6割ほどは次に点の高い重めでない料理を先に（減塩と同じ。外さない）。オフのときは乱数を使わない（今までの献立と同じ）
+    // 糖質ひかえめ: 糖質の多い料理（carbHeavy）より、そうでない料理をいつも先に（候補が多い料理だけなら、それを出す。外さない）。乱数は使わない（オフのときの献立は今までどおり）
+    if (carbOn() && carbHeavy(scored[0].r)){ const alt = scored.find(x => !carbHeavy(x.r)); if (alt) return alt.r; }
     if (dietOn() && scored.length > 1){ const hv = dietHeavyFn(scored); if (hv(scored[0].r) && Math.random() < 0.6){ const alt = scored.find(x => !hv(x.r)); if (alt) return alt.r; } }
     return scored[0].r;
 }
@@ -7932,13 +7938,15 @@ const OB_MODES = () => [
     ['simple', t('いちばん簡単'), t('手順と材料の少ない料理を中心に出します')],
     ['slow', t('じっくり'), t('煮込みなど、時間をかけて作る料理も出します')],
     ['diet', ...modeSplit(t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）'))],   // モードのシート・設定と同じ文言
+    ['carb', CARB_TX.name(), CARB_TX.desc()],   // 糖質ひかえめ（オーナー指示 11/11）。モードのシート・設定と同じ文言
 ];
 const OB_MOODS = ['ten', 'simple', 'slow'];
-function obModeNow(){ return dietOn() ? 'diet' : OB_MOODS.includes(session.mood) ? session.mood : 'all'; }
+function obModeNow(){ return carbOn() ? 'carb' : dietOn() ? 'diet' : OB_MOODS.includes(session.mood) ? session.mood : 'all'; }
 // 選んだ使い方を当てる。選び直さなかったとき（はじめの選びのまま）は何も変えない（やり直しの人の気分・献立を勝手に変えない）
 function obApplyMode(md, first){
     if (!md || !md.to || md.to === md.from) return;
     if (md.to === 'diet') S.settings.diet = true; else if (md.from === 'diet') delete S.settings.diet;
+    if (md.to === 'carb') carbTurnOn(); else if (md.from === 'carb') delete S.settings.carb;
     const mood = OB_MOODS.includes(md.to) ? md.to : md.to === 'all' && OB_MOODS.includes(session.mood) ? 'all' : null;
     const decided = decidedToday() || menuIsDecided();
     if (mood && decided){ dayObj(addDays(TODAY, 1)).mood = mood; save(); return; }   // 決めた献立は変えない。明日から
@@ -8274,16 +8282,16 @@ function suggestFor(slot, items, main){
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物' || soupyMain(main) || (primoMain(main) && !mixCc('汁物'))) return null;   // イタリアの Primo（パスタ・リゾット）にズッパ（これも Primo）を重ねない
         // ラクの日・お弁当の日の絞りこみ（easyPool）を、「似ていない料理」の絞りこみより先にかける（似ていない料理を選ぶために、ラクの日に合わない料理が入っていた）
-        const base = moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物'), pre = easyPool('汁物', base);
+        const base = carbPrefer(moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物')), pre = easyPool('汁物', base);   // 糖質ひかえめ: 糖質の多くない汁ものを先に（「似ていない料理」の絞りこみより前に。なければ今までどおり）
         if (tenHard()) return pick(unlike(pre), ctx);   // 10分以内の日は、上限の中の汁ものだけ（なければ席をなしに。第21回 R74）
         return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' || modeOf() ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
-        const base = moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜'), pre = easyPool('副菜', base);
+        const base = carbPrefer(moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜')), pre = easyPool('副菜', base);   // 糖質ひかえめ: 糖質の多くない副菜を先に
         const ps0 = unlike(pre.length || tenHard() ? pre : base);   // 10分以内の日は、上限の中の副菜だけ（第21回 R74）   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
         // おなかにたまる副菜（いも・かぼちゃ・マカロニ）は1献立に1つまで。パスタの日はマカロニ・パスタの副菜を付けない（ほかに候補があるときだけ絞る。R31）
         const ps = sideBalance(ps0, others, main);
-        if (starchWanted(items, main)){   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
+        if (starchWanted(items, main) && !carbOn()){   // 糖質ひかえめのときは、じゃがいも・パンの副菜を先に出さない   // 主食を「なし」にしている国（アメリカなど）で、主菜にも副菜にも主食になる物がない日は、じゃがいも・パンなどの副菜を先に（R4）
             const st = ps.filter(r => r.starch && (session.mood !== 'bento' || bentoFits(r))), r = st.length ? pick(easyPool('副菜', st), Object.assign({}, ctx, {strict: true})) : null; if (r) return r;
         }
         return pick(ps, ctx) || (session.mood === 'easy' || session.mood === 'bento' || (modeOf() && !tenHard()) ? pick(sideBalance(unlike(base), others, main), ctx) : null);
@@ -8849,310 +8857,310 @@ const KC_SRC_NOTE = 'M=日本食品標準成分表（八訂）2020 / U=USDA Food
 // 上から順に見て最初に当たったもの。細かいものを先に置く。日本の材料は日本語の名前、ほかの国はの英語の名前（ラベル | キー）に当てる
 const KC_FOODS = [
     // ---- 水・だし・スープ（エネルギーはほぼなし。重さの割合にも数えない） ----
-    [/(?:^|[^ぁ-んァ-ン])(?:水|冷水|湯|お湯|熱湯|氷)(?:$|[^ぁ-んァ-ン煮])|米のとぎ汁|とぎ汁|もどし汁|\b(?:water|ice|ice cubes?|sparkling water|soda water)\b|^(?:hot|cold|warm|boiling|ice-?cold) water/i, 0, {liq: 1, s: '-'}],
-    [/だし(?!の素|巻|しょうゆ)|出汁|\b(?:stock|broth|bouillon|dashi|caldo|consomm[eé])\b(?! (?:cubes?|powder|granules|pot))|anchovy stock|clam juice|\bjus\b/i, 5, {liq: 1, s: 'M'}],
-    [/お茶|緑茶|煎茶|ほうじ茶|\btea\b|tea bags?|instant coffee|\bcoffee\b|\bliquid\b|brine\b|soaking water/i, 1, {liq: 1, s: 'M'}],
+    [/(?:^|[^ぁ-んァ-ン])(?:水|冷水|湯|お湯|熱湯|氷)(?:$|[^ぁ-んァ-ン煮])|米のとぎ汁|とぎ汁|もどし汁|\b(?:water|ice|ice cubes?|sparkling water|soda water)\b|^(?:hot|cold|warm|boiling|ice-?cold) water/i, 0, {c: 0, liq: 1, s: '-'}],
+    [/だし(?!の素|巻|しょうゆ)|出汁|\b(?:stock|broth|bouillon|dashi|caldo|consomm[eé])\b(?! (?:cubes?|powder|granules|pot))|anchovy stock|clam juice|\bjus\b/i, 5, {c: 0.3, liq: 1, s: 'M'}],
+    [/お茶|緑茶|煎茶|ほうじ茶|\btea\b|tea bags?|instant coffee|\bcoffee\b|\bliquid\b|brine\b|soaking water/i, 1, {c: 0.1, liq: 1, s: 'M'}],
     // ---- 調味料の素・スープの素 ----
-    [/鶏ガラスープの素|中華だし|顆粒|だしの素|ほんだし|コンソメ|ブイヨン|stock cubes?|bouillon (?:powder|cubes?)|stock powder|chicken powder|chicken bouillon|broth mix|\bcube\b|knorr|maggi|hondashi|dashida/i, 230, {p: 5, u: {cube: 5, 個: 5}, d: 0.6, s: 'M'}],
-    [/トムヤムペースト|curry paste|curry base|カレーペースト|tikka masala paste|mole paste|\bmole\b|achiote/i, 200, {d: 1.0, s: 'U'}],
-    [/(?:カレー|シチュー|ハヤシ)ルウ|roux/i, 474, {u: {箱: 180}, s: 'M'}],
-    [/デミグラス/i, 82, {u: {缶: 290}, s: 'M'}],
-    [/cream of mushroom|condensed .*soup/i, 70, {u: {can: 300}, s: 'U'}],
+    [/鶏ガラスープの素|中華だし|顆粒|だしの素|ほんだし|コンソメ|ブイヨン|stock cubes?|bouillon (?:powder|cubes?)|stock powder|chicken powder|chicken bouillon|broth mix|\bcube\b|knorr|maggi|hondashi|dashida/i, 230, {c: 35, p: 5, u: {cube: 5, 個: 5}, d: 0.6, s: 'M'}],
+    [/トムヤムペースト|curry paste|curry base|カレーペースト|tikka masala paste|mole paste|\bmole\b|achiote/i, 200, {c: 20, d: 1.0, s: 'U'}],
+    [/(?:カレー|シチュー|ハヤシ)ルウ|roux/i, 474, {c: 38, u: {箱: 180}, s: 'M'}],
+    [/デミグラス/i, 82, {c: 10, u: {缶: 290}, s: 'M'}],
+    [/cream of mushroom|condensed .*soup/i, 70, {c: 8, u: {can: 300}, s: 'U'}],
     // ---- 油・脂 ----
-    [/揚げ油|for (?:deep[- ]?|shallow[- ]?|pan[- ]?)?(?:frying|poaching)|kept for reuse|frying oil|for deep-fry|oil for shallow|deep-?fry/i, 886, {oil: 'fry', d: 0.92, s: 'M'}],
-    [/ラー油|chili oil|chilli oil/i, 887, {d: 0.92, tiny: 1, s: 'M'}],
-    [/^(?!油揚)(?:ごま油|オリーブ(?:オイル|油)|サラダ油|油|植物油|米油|牛脂またはサラダ油|黒ごま油)|\b(?:olive|vegetable|sunflower|canola|rapeseed|peanut|sesame|coconut|palm|mustard|corn|cooking|neutral|soybean|avocado|rice bran|perilla|groundnut)\s*oil\b|\boil\b|dend[eê]/i, 886, {oil: 1, d: 0.92, s: 'M'}],
-    [/^(?:バター|牛脂)|ghee|\bbutter\b(?! ?beans?| ?milk)|\blard\b|dripping|duck fat|goose fat|\bsuet\b|margarine|manteca/i, 700, {d: 0.85, u: {stick: 113, knob: 15, 個: 10}, s: 'M'}],
-    [/マヨネーズ|タルタル|mayo(?:nnaise)?|aioli|allioli|rouille|ranch/i, 668, {d: 0.85, s: 'M'}],
+    [/揚げ油|for (?:deep[- ]?|shallow[- ]?|pan[- ]?)?(?:frying|poaching)|kept for reuse|frying oil|for deep-fry|oil for shallow|deep-?fry/i, 886, {c: 0, oil: 'fry', d: 0.92, s: 'M'}],
+    [/ラー油|chili oil|chilli oil/i, 887, {c: 0, d: 0.92, tiny: 1, s: 'M'}],
+    [/^(?!油揚)(?:ごま油|オリーブ(?:オイル|油)|サラダ油|油|植物油|米油|牛脂またはサラダ油|黒ごま油)|\b(?:olive|vegetable|sunflower|canola|rapeseed|peanut|sesame|coconut|palm|mustard|corn|cooking|neutral|soybean|avocado|rice bran|perilla|groundnut)\s*oil\b|\boil\b|dend[eê]/i, 886, {c: 0, oil: 1, d: 0.92, s: 'M'}],
+    [/^(?:バター|牛脂)|ghee|\bbutter\b(?! ?beans?| ?milk)|\blard\b|dripping|duck fat|goose fat|\bsuet\b|margarine|manteca/i, 700, {c: 0.2, d: 0.85, u: {stick: 113, knob: 15, 個: 10}, s: 'M'}],
+    [/マヨネーズ|タルタル|mayo(?:nnaise)?|aioli|allioli|rouille|ranch/i, 668, {c: 2, d: 0.85, s: 'M'}],
     // ---- 糖・甘味 ----
-    [/はちみつ|蜂蜜|\bhoney\b/i, 329, {d: 1.4, s: 'M'}],
-    [/メープル|maple syrup|golden syrup|molasses|rice syrup|corn syrup|\bsyrup\b|caramel sauce/i, 266, {d: 1.3, s: 'M'}],
-    [/みりん|mirin/i, 241, {d: 1.2, s: 'M'}],
-    [/砂糖|\bsugar\b|palm sugar|jaggery|panela|piloncillo|rock sugar|gula|\bkecap manis\b|sweet soy/i, 390, {d: 0.6, s: 'M'}],
-    [/ジャム|\bjam\b|marmalade/i, 250, {d: 1.3, s: 'M'}],
-    [/チョコ|chocolate/i, 550, {s: 'M'}],
+    [/はちみつ|蜂蜜|\bhoney\b/i, 329, {c: 82, d: 1.4, s: 'M'}],
+    [/メープル|maple syrup|golden syrup|molasses|rice syrup|corn syrup|\bsyrup\b|caramel sauce/i, 266, {c: 66, d: 1.3, s: 'M'}],
+    [/みりん|mirin/i, 241, {c: 43, d: 1.2, s: 'M'}],
+    [/砂糖|\bsugar\b|palm sugar|jaggery|panela|piloncillo|rock sugar|gula|\bkecap manis\b|sweet soy/i, 390, {c: 99, d: 0.6, s: 'M'}],
+    [/ジャム|\bjam\b|marmalade/i, 250, {c: 63, d: 1.3, s: 'M'}],
+    [/チョコ|chocolate/i, 550, {c: 52, s: 'M'}],
     // ---- しょうゆ・みそ・ソース類 ----
-    [/薄口醤油|うすくち/i, 60, {d: 1.2, s: 'M'}],
-    [/醤油|しょうゆ|\bsoy\b|soya|shoyu|ganjang|\btoyo\b|tamari\b/i, 77, {d: 1.2, s: 'M'}],
-    [/白味噌/i, 217, {d: 1.15, s: 'M'}],
-    [/味噌|みそ|\bmiso\b|cheonggukjang|doenjang|soybean paste|soy paste|\bdoubanjiang\b|豆板醤|tauco/i, 182, {d: 1.15, s: 'M'}],
-    [/コチュジャン|gochujang/i, 247, {d: 1.15, s: 'M'}],
-    [/甜麺醤|hoisin|sweet bean sauce|sacha|shacha|satay/i, 249, {d: 1.15, s: 'M'}],
-    [/オイスターソース|oyster sauce|mushroom stir-?fry sauce|vegetarian oyster/i, 105, {d: 1.2, s: 'M'}],
-    [/ナンプラー|fish sauce|nam pla|patis|nước mắm|bagoong|shrimp paste|terasi|belacan|kapi\b|cheonggukjang(?!x)/i, 47, {d: 1.2, s: 'M'}],
-    [/ケチャップ|ketchup/i, 104, {d: 1.1, s: 'M'}],
-    [/ポン酢|ぽん酢/i, 59, {d: 1.1, s: 'M'}],
-    [/めんつゆ/i, 98, {d: 1.1, s: 'M'}],
-    [/中濃ソース|とんかつソース|お好みソース|ウスター|worcestershire|brown sauce|bbq sauce|barbecue sauce/i, 129, {d: 1.2, s: 'M'}],
-    [/sweet chili sauce|スイートチリ|chili jam|nam prik pao/i, 230, {d: 1.2, s: 'U'}],
-    [/(?:hot|chili|chilli|sriracha|tabasco|red chili) sauce|sambal|harissa|\bsalsa\b(?! de soja)|pico de gallo/i, 40, {d: 1.0, tiny: 1, s: 'U'}],
-    [/tomato sauce|tomate frito|pasta sauce|marinara|pizza sauce|molho de tomate|salsa de tomate|sugo|enchilada sauce|spaghetti sauce|tomato soup/i, 60, {d: 1.05, s: 'U'}],
-    [/練りごま|ごまだれ|tahini|sesame paste/i, 646, {d: 1.0, s: 'M'}],
-    [/peanut butter|peanut sauce|satay sauce/i, 588, {d: 1.0, s: 'U'}],
-    [/からし|マスタード|mustard(?! (?:seeds?|greens|oil|powder))/i, 175, {d: 1.0, tiny: 1, s: 'M'}],
-    [/pomegranate molasses|tamarind (?:paste|pulp|concentrate)|\btamarind\b(?! (?:leaves|water|mix))/i, 240, {d: 1.1, s: 'U'}],
-    [/tamarind water|tamarind mix|sinigang/i, 330, {u: {sachet: 22}, tiny: 1, s: 'U'}],
-    [/トマトペースト|tomato paste|tomato pur[eé]e|pepper paste|sal[cç]a|ají (?:amarillo|panca) paste|aji (?:amarillo|panca) paste|choricero/i, 82, {d: 1.1, s: 'U'}],
-    [/酢|vinegar|vinagre/i, 25, {d: 1.0, s: 'M'}],
-    [/料理酒|酒(?!粕)|赤ワイン|白ワイン|ワイン|\bwine\b|\bsherry\b|\bport\b|shaoxing|rice wine|\bsake\b|\bbeer\b|\bale\b|chicha|\bsoju\b|\bcider\b(?! vinegar)/i, 100, {d: 1.0, s: 'M'}],
-    [/酒粕/i, 215, {s: 'M'}],
-    [/レモン汁|レモン果汁|ライム汁|lemon juice|lime juice|juice of|squeeze of|orange juice|calamansi juice/i, 26, {d: 1.0, u: {'': 15}, tiny: 1, s: 'M'}],
+    [/薄口醤油|うすくち/i, 60, {c: 7.8, d: 1.2, s: 'M'}],
+    [/醤油|しょうゆ|\bsoy\b|soya|shoyu|ganjang|\btoyo\b|tamari\b/i, 77, {c: 7.9, d: 1.2, s: 'M'}],
+    [/白味噌/i, 217, {c: 34, d: 1.15, s: 'M'}],
+    [/味噌|みそ|\bmiso\b|cheonggukjang|doenjang|soybean paste|soy paste|\bdoubanjiang\b|豆板醤|tauco/i, 182, {c: 17, d: 1.15, s: 'M'}],
+    [/コチュジャン|gochujang/i, 247, {c: 45, d: 1.15, s: 'M'}],
+    [/甜麺醤|hoisin|sweet bean sauce|sacha|shacha|satay/i, 249, {c: 35, d: 1.15, s: 'M'}],
+    [/オイスターソース|oyster sauce|mushroom stir-?fry sauce|vegetarian oyster/i, 105, {c: 18, d: 1.2, s: 'M'}],
+    [/ナンプラー|fish sauce|nam pla|patis|nước mắm|bagoong|shrimp paste|terasi|belacan|kapi\b|cheonggukjang(?!x)/i, 47, {c: 3, d: 1.2, s: 'M'}],
+    [/ケチャップ|ketchup/i, 104, {c: 26, d: 1.1, s: 'M'}],
+    [/ポン酢|ぽん酢/i, 59, {c: 8, d: 1.1, s: 'M'}],
+    [/めんつゆ/i, 98, {c: 9, d: 1.1, s: 'M'}],
+    [/中濃ソース|とんかつソース|お好みソース|ウスター|worcestershire|brown sauce|bbq sauce|barbecue sauce/i, 129, {c: 30, d: 1.2, s: 'M'}],
+    [/sweet chili sauce|スイートチリ|chili jam|nam prik pao/i, 230, {c: 50, d: 1.2, s: 'U'}],
+    [/(?:hot|chili|chilli|sriracha|tabasco|red chili) sauce|sambal|harissa|\bsalsa\b(?! de soja)|pico de gallo/i, 40, {c: 5, d: 1.0, tiny: 1, s: 'U'}],
+    [/tomato sauce|tomate frito|pasta sauce|marinara|pizza sauce|molho de tomate|salsa de tomate|sugo|enchilada sauce|spaghetti sauce|tomato soup/i, 60, {c: 8, d: 1.05, s: 'U'}],
+    [/練りごま|ごまだれ|tahini|sesame paste/i, 646, {c: 7, d: 1.0, s: 'M'}],
+    [/peanut butter|peanut sauce|satay sauce/i, 588, {c: 15, d: 1.0, s: 'U'}],
+    [/からし|マスタード|mustard(?! (?:seeds?|greens|oil|powder))/i, 175, {c: 20, d: 1.0, tiny: 1, s: 'M'}],
+    [/pomegranate molasses|tamarind (?:paste|pulp|concentrate)|\btamarind\b(?! (?:leaves|water|mix))/i, 240, {c: 57, d: 1.1, s: 'U'}],
+    [/tamarind water|tamarind mix|sinigang/i, 330, {c: 70, u: {sachet: 22}, tiny: 1, s: 'U'}],
+    [/トマトペースト|tomato paste|tomato pur[eé]e|pepper paste|sal[cç]a|ají (?:amarillo|panca) paste|aji (?:amarillo|panca) paste|choricero/i, 82, {c: 17, d: 1.1, s: 'U'}],
+    [/酢|vinegar|vinagre/i, 25, {c: 2.4, d: 1.0, s: 'M'}],
+    [/料理酒|酒(?!粕)|赤ワイン|白ワイン|ワイン|\bwine\b|\bsherry\b|\bport\b|shaoxing|rice wine|\bsake\b|\bbeer\b|\bale\b|chicha|\bsoju\b|\bcider\b(?! vinegar)/i, 100, {c: 3, d: 1.0, s: 'M'}],
+    [/酒粕/i, 215, {c: 18, s: 'M'}],
+    [/レモン汁|レモン果汁|ライム汁|lemon juice|lime juice|juice of|squeeze of|orange juice|calamansi juice/i, 26, {c: 8, d: 1.0, u: {'': 15}, tiny: 1, s: 'M'}],
     // ---- 粉・でんぷん・衣 ----
-    [/水溶き片栗粉/i, 113, {d: 1.0, s: 'M'}],   // 片栗粉1：水2 の目安
-    [/片栗粉|でん粉|starch|cornstarch|corn starch|cornflour|tapioca|polvilho|goma de tapioca|arrowroot/i, 338, {d: 0.6, s: 'M'}],
-    [/パン粉|breadcrumbs?|bread crumbs|panko|farinha de rosca/i, 369, {d: 0.25, s: 'M'}],
-    [/天かす|揚げ玉/i, 589, {d: 0.35, s: 'M'}],
-    [/ホットケーキミックス|pancake mix|buchim ?garu|tempura (?:mix|flour)/i, 360, {d: 0.55, s: 'M'}],
-    [/小麦粉|薄力粉|強力粉|\bflour\b(?! (?:or corn )?tortillas?)|\batta\b|besan|maida|semolina|semoule|grie[ßs]|farina|\bmasa\b|masa harina|corn masa|cornmeal|polenta|grits|fub[aá]|flocão|floc[aã]o|harina/i, 350, {d: 0.55, s: 'M'}],
-    [/baking powder|baking soda|bicarbonate|ベーキング|\byeast\b|イースト/i, 150, {d: 0.8, tiny: 1, s: 'U'}],
+    [/水溶き片栗粉/i, 113, {c: 27, d: 1.0, s: 'M'}],   // 片栗粉1：水2 の目安
+    [/片栗粉|でん粉|starch|cornstarch|corn starch|cornflour|tapioca|polvilho|goma de tapioca|arrowroot/i, 338, {c: 82, d: 0.6, s: 'M'}],
+    [/パン粉|breadcrumbs?|bread crumbs|panko|farinha de rosca/i, 369, {c: 59, d: 0.25, s: 'M'}],
+    [/天かす|揚げ玉/i, 589, {c: 55, d: 0.35, s: 'M'}],
+    [/ホットケーキミックス|pancake mix|buchim ?garu|tempura (?:mix|flour)/i, 360, {c: 74, d: 0.55, s: 'M'}],
+    [/小麦粉|薄力粉|強力粉|\bflour\b(?! (?:or corn )?tortillas?)|\batta\b|besan|maida|semolina|semoule|grie[ßs]|farina|\bmasa\b|masa harina|corn masa|cornmeal|polenta|grits|fub[aá]|flocão|floc[aã]o|harina/i, 350, {c: 73, d: 0.55, s: 'M'}],
+    [/baking powder|baking soda|bicarbonate|ベーキング|\byeast\b|イースト/i, 150, {c: 20, d: 0.8, tiny: 1, s: 'U'}],
     // ---- 香辛料・ハーブ（量が書いてあれば足す。少々は 0） ----
-    [/カレー粉|curry powder|garam masala|chaat masala|ras el hanout|baharat|five-spice|spice mix|italian seasoning|cajun|herbes de provence|seasoning|masala|kasuri methi|sumac|amchur|asafoetida|hing\b/i, 330, {d: 0.5, tiny: 1, s: 'M'}],
-    [/こしょう|胡椒|ナツメグ|シナモン|ローリエ|唐辛子|一味|七味|山椒|パプリカパウダー|クミン|ブーケガルニ|\b(?:(?:black|white|ground|cracked|coarse|whole|crushed|coarsely ground|freshly ground) pepper|peppercorns?|(?<!(?:bell|green|red|sweet|yellow|orange|chil[ie]|chilli|long|banana|hot|padr[oó]n|kapya|sivri|and|or|stuffed|roasted|piquillo|cubanelle|anaheim|poblano) )pepper(?= *$| to taste| salt)|paprika|piment[oó]n|piment d'espelette|cumin|turmeric(?! leaf)|coriander (?:powder|seeds?)|ground coriander|chil[il]i? powder|chil[il]i? flakes|red pepper flakes|cayenne|gochugaru|pul biber|nutmeg|cinnamon|(?<!garlic )cloves?(?= *$)|allspice|star anise|cardamom|fenugreek seeds|ajwain|mustard seeds?|fennel seeds?|caraway|juniper|saffron|bay lea(?:f|ves)|oregano|thyme|marjoram|rosemary|sage|savory|dried (?:mint|dill|herbs?|basil|parsley|chervil)|garlic powder|onion powder|mustard powder|dill seeds?|whole spices|sichuan|colorau|annatto|achuete|bouquet garni|food colou?ring|vanilla|[a-z]+ powder|kokum|lemon zest|orange zest|zest)\b/i, 300, {p: 0.5, u: {cm: 1, piece: 2, stick: 3, 枚: 0.5, 本: 0.5}, d: 0.5, tiny: 1, s: 'U'}],
-    [/^(?:塩|粗塩|あら塩)(?!鮭|昆布|辛|さば|漬)|\bsalt\b(?! (?:cod|pork|fish|beef|herring|mackerel|egg))|sea salt|black salt|msg/i, 0, {d: 1.2, tiny: 1, s: 'M'}],
+    [/カレー粉|curry powder|garam masala|chaat masala|ras el hanout|baharat|five-spice|spice mix|italian seasoning|cajun|herbes de provence|seasoning|masala|kasuri methi|sumac|amchur|asafoetida|hing\b/i, 330, {c: 26, d: 0.5, tiny: 1, s: 'M'}],
+    [/こしょう|胡椒|ナツメグ|シナモン|ローリエ|唐辛子|一味|七味|山椒|パプリカパウダー|クミン|ブーケガルニ|\b(?:(?:black|white|ground|cracked|coarse|whole|crushed|coarsely ground|freshly ground) pepper|peppercorns?|(?<!(?:bell|green|red|sweet|yellow|orange|chil[ie]|chilli|long|banana|hot|padr[oó]n|kapya|sivri|and|or|stuffed|roasted|piquillo|cubanelle|anaheim|poblano) )pepper(?= *$| to taste| salt)|paprika|piment[oó]n|piment d'espelette|cumin|turmeric(?! leaf)|coriander (?:powder|seeds?)|ground coriander|chil[il]i? powder|chil[il]i? flakes|red pepper flakes|cayenne|gochugaru|pul biber|nutmeg|cinnamon|(?<!garlic )cloves?(?= *$)|allspice|star anise|cardamom|fenugreek seeds|ajwain|mustard seeds?|fennel seeds?|caraway|juniper|saffron|bay lea(?:f|ves)|oregano|thyme|marjoram|rosemary|sage|savory|dried (?:mint|dill|herbs?|basil|parsley|chervil)|garlic powder|onion powder|mustard powder|dill seeds?|whole spices|sichuan|colorau|annatto|achuete|bouquet garni|food colou?ring|vanilla|[a-z]+ powder|kokum|lemon zest|orange zest|zest)\b/i, 300, {c: 40, p: 0.5, u: {cm: 1, piece: 2, stick: 3, 枚: 0.5, 本: 0.5}, d: 0.5, tiny: 1, s: 'U'}],
+    [/^(?:塩|粗塩|あら塩)(?!鮭|昆布|辛|さば|漬)|\bsalt\b(?! (?:cod|pork|fish|beef|herring|mackerel|egg))|sea salt|black salt|msg/i, 0, {c: 0, d: 1.2, tiny: 1, s: 'M'}],
     // ---- 卵 ----
-    [/うずらの卵|quail eggs?/i, 157, {p: 10, s: 'M'}],
-    [/salted (?:duck )?eggs?|century eggs?|pidan/i, 190, {p: 60, s: 'U'}],
-    [/ゆで卵|卵|たまご|\beggs?\b|egg yolks?|egg whites?|\bhuevos?\b/i, 142, {p: 50, u: {yolk: 17, white: 33}, s: 'M'}],
+    [/うずらの卵|quail eggs?/i, 157, {c: 0.3, p: 10, s: 'M'}],
+    [/salted (?:duck )?eggs?|century eggs?|pidan/i, 190, {c: 3, p: 60, s: 'U'}],
+    [/ゆで卵|卵|たまご|\beggs?\b|egg yolks?|egg whites?|\bhuevos?\b/i, 142, {c: 0.4, p: 50, u: {yolk: 17, white: 33}, s: 'M'}],
     // ---- 乳製品 ----
     // スイスチャード（葉物）は「swiss」でチーズに当たらないよう、チーズより前に置く（R154）
-    [/スイスチャード|チャード|swiss chard|rainbow chard|\bchard|acelgas?|blitva|mangold|beet leaves/i, 22, {p: 40, u: {束: 250, 株: 40, bunch: 250, bunches: 500, handful: 30, handfuls: 30, cup: 35, cups: 35, leaf: 40, leaves: 40}, s: 'M'}],
-    [/ピザ用チーズ|シュレッド/i, 340, {d: 0.45, s: 'M'}],
-    [/粉チーズ|parmesan|parmigiano|grana padano|pecorino|ricotta salata/i, 445, {d: 0.4, s: 'M'}],
-    [/クリームチーズ|cream cheese|requeij[aã]o|catupiry|fresh cheese|spreadable/i, 313, {d: 1.0, s: 'M'}],
-    [/ricotta|cottage cheese|\bquark\b|tvorog|twar[oó]g|white cheese|beyaz peynir|queso fresco|labneh/i, 150, {d: 1.0, s: 'U'}],
-    [/mozzarella|burrata|bocconcini|feta|halloumi|paneer|queso blanco|panela cheese/i, 280, {d: 0.45, s: 'M'}],
-    [/チーズ|cheese|cheddar|gruy[eè]re|emmental|comt[eé]|monterey|colby|swiss(?! chard)|reblochon|raclette|stilton|gouda|edam|manchego|oaxaca|kashar|ka[sş]ar|provolone|fontina|asiago|queso/i, 390, {d: 0.45, u: {slice: 20, 枚: 18}, s: 'M'}],
-    [/生クリーム|heavy cream|double cream|whipping cream|crème fraîche|creme fraiche|cr[eè]me fra[iî]che|nata/i, 404, {d: 1.0, s: 'M'}],
-    [/sour cream|smetana|śmietana|single cream|light cream|half and half|crema|\bcream\b(?! (?:of|cheese|crackers))/i, 200, {d: 1.0, s: 'U'}],
-    [/evaporated milk|condensed milk/i, 134, {d: 1.05, s: 'U'}],
-    [/ヨーグルト|yogh?urt|kefir|ayran|dahi|curd\b|buttermilk/i, 56, {d: 1.05, s: 'M'}],
-    [/coconut cream|kara\b|santan kental/i, 330, {d: 1.0, s: 'U'}],
-    [/ココナッツミルク|coconut milk|santan|gata\b/i, 157, {d: 1.0, s: 'M'}],
-    [/coconut water/i, 19, {d: 1.0, s: 'U'}],
-    [/牛乳|ミルク|\bmilk\b|leite|leche/i, 61, {d: 1.03, s: 'M'}],
+    [/スイスチャード|チャード|swiss chard|rainbow chard|\bchard|acelgas?|blitva|mangold|beet leaves/i, 22, {c: 2, p: 40, u: {束: 250, 株: 40, bunch: 250, bunches: 500, handful: 30, handfuls: 30, cup: 35, cups: 35, leaf: 40, leaves: 40}, s: 'M'}],
+    [/ピザ用チーズ|シュレッド/i, 340, {c: 1, d: 0.45, s: 'M'}],
+    [/粉チーズ|parmesan|parmigiano|grana padano|pecorino|ricotta salata/i, 445, {c: 2, d: 0.4, s: 'M'}],
+    [/クリームチーズ|cream cheese|requeij[aã]o|catupiry|fresh cheese|spreadable/i, 313, {c: 2.3, d: 1.0, s: 'M'}],
+    [/ricotta|cottage cheese|\bquark\b|tvorog|twar[oó]g|white cheese|beyaz peynir|queso fresco|labneh/i, 150, {c: 3, d: 1.0, s: 'U'}],
+    [/mozzarella|burrata|bocconcini|feta|halloumi|paneer|queso blanco|panela cheese/i, 280, {c: 2, d: 0.45, s: 'M'}],
+    [/チーズ|cheese|cheddar|gruy[eè]re|emmental|comt[eé]|monterey|colby|swiss(?! chard)|reblochon|raclette|stilton|gouda|edam|manchego|oaxaca|kashar|ka[sş]ar|provolone|fontina|asiago|queso/i, 390, {c: 1.3, d: 0.45, u: {slice: 20, 枚: 18}, s: 'M'}],
+    [/生クリーム|heavy cream|double cream|whipping cream|crème fraîche|creme fraiche|cr[eè]me fra[iî]che|nata/i, 404, {c: 6, d: 1.0, s: 'M'}],
+    [/sour cream|smetana|śmietana|single cream|light cream|half and half|crema|\bcream\b(?! (?:of|cheese|crackers))/i, 200, {c: 4, d: 1.0, s: 'U'}],
+    [/evaporated milk|condensed milk/i, 134, {c: 11, d: 1.05, s: 'U'}],
+    [/ヨーグルト|yogh?urt|kefir|ayran|dahi|curd\b|buttermilk/i, 56, {c: 5, d: 1.05, s: 'M'}],
+    [/coconut cream|kara\b|santan kental/i, 330, {c: 7, d: 1.0, s: 'U'}],
+    [/ココナッツミルク|coconut milk|santan|gata\b/i, 157, {c: 3, d: 1.0, s: 'M'}],
+    [/coconut water/i, 19, {c: 4, d: 1.0, s: 'U'}],
+    [/牛乳|ミルク|\bmilk\b|leite|leche/i, 61, {c: 4.8, d: 1.03, s: 'M'}],
     // ---- 豆腐・大豆 ----
-    [/絹ごし豆腐|silken tofu|soft tofu|sundubu|egg tofu/i, 56, {p: 300, u: {丁: 300, tube: 350, pack: 350}, s: 'M'}],
-    [/厚揚げ|fried tofu|tofu puffs?|tahu goreng/i, 143, {p: 150, u: {枚: 150}, s: 'M'}],
-    [/油揚げ|aburaage|inari/i, 377, {p: 30, u: {枚: 30}, s: 'M'}],
-    [/高野豆腐/i, 496, {p: 17, u: {枚: 17}, s: 'M'}],
-    [/pressed tofu|dried tofu|dougan|xianggan|tofu skin|yuba|fuzhu|tofu knot|bean curd sheet/i, 200, {p: 40, u: {piece: 40, pieces: 40}, s: 'U'}],
-    [/木綿豆腐|豆腐|\btofu\b|tahu\b|đậu phụ|đậu hũ/i, 73, {p: 300, u: {丁: 300, block: 400}, s: 'M'}],
-    [/納豆.*たれ|付属のたれ|添付のたれ|納豆のたれ/i, 100, {p: 6, u: {袋: 6}, s: 'M'}],
-    [/納豆|natto/i, 190, {p: 45, u: {パック: 45}, s: 'M'}],
-    [/おから/i, 88, {s: 'M'}],
-    [/tempeh|tempe\b/i, 192, {s: 'U'}],
-    [/大豆（水煮）|大豆の水煮|cooked soybeans|edamame|枝豆/i, 124, {d: 0.65, cn: 'soy', s: 'M'}],
-    [/大豆|soybeans?|soya chunks/i, 372, {x: 2.3, d: 0.65, leg: 'soy', s: 'M'}],
+    [/絹ごし豆腐|silken tofu|soft tofu|sundubu|egg tofu/i, 56, {c: 1, p: 300, u: {丁: 300, tube: 350, pack: 350}, s: 'M'}],
+    [/厚揚げ|fried tofu|tofu puffs?|tahu goreng/i, 143, {c: 0.2, p: 150, u: {枚: 150}, s: 'M'}],
+    [/油揚げ|aburaage|inari/i, 377, {c: 0, p: 30, u: {枚: 30}, s: 'M'}],
+    [/高野豆腐/i, 496, {c: 0.2, p: 17, u: {枚: 17}, s: 'M'}],
+    [/pressed tofu|dried tofu|dougan|xianggan|tofu skin|yuba|fuzhu|tofu knot|bean curd sheet/i, 200, {c: 3, p: 40, u: {piece: 40, pieces: 40}, s: 'U'}],
+    [/木綿豆腐|豆腐|\btofu\b|tahu\b|đậu phụ|đậu hũ/i, 73, {c: 0.4, p: 300, u: {丁: 300, block: 400}, s: 'M'}],
+    [/納豆.*たれ|付属のたれ|添付のたれ|納豆のたれ/i, 100, {c: 25, p: 6, u: {袋: 6}, s: 'M'}],
+    [/納豆|natto/i, 190, {c: 5.4, p: 45, u: {パック: 45}, s: 'M'}],
+    [/おから/i, 88, {c: 2.3, s: 'M'}],
+    [/tempeh|tempe\b/i, 192, {c: 6, s: 'U'}],
+    [/大豆（水煮）|大豆の水煮|cooked soybeans|edamame|枝豆/i, 124, {c: 2, d: 0.65, cn: 'soy', s: 'M'}],
+    [/大豆|soybeans?|soya chunks/i, 372, {c: 8, x: 2.3, d: 0.65, leg: 'soy', s: 'M'}],
     // ---- 肉（加工品を先に） ----
-    [/ベーコン|bacon|lardons?|pancetta|guanciale|speck/i, 400, {p: 17, u: {枚: 17, slice: 17, slices: 17, rasher: 20, rashers: 20, strip: 17, strips: 17}, s: 'M'}],
-    [/ハム|\bham\b|gammon|prosciutto|jam[oó]n|presunto|kasseler|smoked pork loin|deli turkey|sliced deli/i, 200, {p: 15, u: {枚: 12, slice: 20, slices: 20, hock: 500}, s: 'M'}],
-    [/ウインナー|ソーセージ|sausages?|wieners?|frankfurt|hot ?dogs?|salsicha|kielbasa|bratwurst|chorizo|longganisa|morcilla|salami|sucuk|leberk[aä]se|chinese sausage|lap cheong|moo yor|pork roll|chả lụa|liver spread|spam|luncheon meat/i, 320, {p: 60, u: {本: 20}, s: 'M'}],
-    [/corned beef|carne seca|dried beef|beef jerky|cecina|tapa\b/i, 250, {s: 'U'}],
-    [/レバー|\bliver\b|livers\b|chicken livers?/i, 120, {s: 'M'}],
-    [/tripe|mondongo|trotters?|pork hock|ham hock|pork trotter|cow trotters|oxtail|beef shank|short ribs|beef ribs|neck bones?/i, 230, {e: 0.6, s: 'U'}],
-    [/meatballs?|bakso|gongwan|pork balls?|beef balls?|fish balls?|fishballs?/i, 180, {p: 15, u: {ball: 15, balls: 15}, s: 'U'}],
-    [/dumplings?|mandu|gyoza|wontons?(?! wrapper)|maultaschen|tortellini|capeletti|ravioli|manti|mantı|pierogi|pelmeni/i, 230, {p: 25, s: 'U'}],
-    [/鶏手羽|手羽元|手羽先|chicken wings?|drumsticks?(?! \(moringa)|bone-in chicken|chicken legs?|whole chicken|chicken pieces/i, 200, {p: 60, e: 0.65, u: {本: 60}, s: 'M'}],
-    [/鶏むね|ささみ|chicken breast|breast fillet/i, 133, {p: 250, u: {枚: 250}, s: 'M'}],
-    [/鶏もも|chicken thigh|boneless chicken/i, 190, {p: 250, u: {枚: 250}, s: 'M'}],
-    [/鶏ひき|ground chicken|minced chicken|chicken mince|ground turkey|turkey mince/i, 171, {s: 'M'}],
-    [/鶏肉|鶏|chicken|turkey|\bpollo\b|frango|ayam|\bgà\b/i, 190, {p: 250, s: 'M'}],
-    [/pork shoulder|pork butt|boston butt|pork collar|pork neck/i, 237, {p: 150, s: 'M'}],   // 肩・肩ロース（R164: 「Pork shoulder or belly」が後ろの belly＝豚バラに当たっていた。値は下の「豚」と同じ）
-    [/豚バラ|pork belly|samgyeopsal|panceta|liempo|\bbelly\b/i, 366, {u: {枚: 20}, s: 'M'}],
-    [/豚ひき|合いびき|ground pork|minced pork|pork mince|sausage ?meat|sausagemeat|ground meat|minced meat|\bmince\b|mixed mince|meatloaf mix/i, 230, {s: 'M'}],
-    [/pork ribs?|spare ?ribs|baby back|pork rib/i, 290, {e: 0.7, s: 'U'}],
-    [/豚ヒレ|pork tenderloin|pork fillet/i, 118, {p: 400, s: 'M'}],
-    [/豚もも|豚ロース|pork loin|pork chops?|pork escalopes?|schnitzel|pork steaks?|pork cutlets?/i, 200, {p: 150, u: {枚: 120}, s: 'M'}],
-    [/豚|pork|\bcerdo\b|porco|babi\b|thịt heo|thịt lợn|baboy/i, 237, {p: 150, s: 'M'}],
-    [/牛ひき|ground beef|minced beef|beef mince|\bkeema\b|carne molida/i, 251, {s: 'M'}],
-    [/牛バラ|牛カルビ|beef brisket|brisket|flanken|kalbi|galbi/i, 338, {s: 'M'}],
-    [/牛もも|beef (?:topside|round|sirloin|rump|tenderloin|fillet)|flank steak|skirt steak|sirloin|round steak|lean beef|bulgogi|veal\b/i, 160, {p: 200, s: 'M'}],
-    [/牛|beef|steak|chuck|\bcarne\b|\bres\b|daging sapi|thịt bò|\bbò\b|baka\b|vaca|ribeye|strip steak/i, 230, {p: 200, s: 'M'}],
-    [/lamb|mutton|goat|cordero|kuzu|agneau|carneiro|ラム|羊/i, 250, {p: 100, s: 'U'}],
-    [/duck|鴨|goose/i, 300, {p: 250, e: 0.7, s: 'U'}],
-    [/rabbit|venison|game\b/i, 140, {s: 'U'}],
+    [/ベーコン|bacon|lardons?|pancetta|guanciale|speck/i, 400, {c: 0.3, p: 17, u: {枚: 17, slice: 17, slices: 17, rasher: 20, rashers: 20, strip: 17, strips: 17}, s: 'M'}],
+    [/ハム|\bham\b|gammon|prosciutto|jam[oó]n|presunto|kasseler|smoked pork loin|deli turkey|sliced deli/i, 200, {c: 2, p: 15, u: {枚: 12, slice: 20, slices: 20, hock: 500}, s: 'M'}],
+    [/ウインナー|ソーセージ|sausages?|wieners?|frankfurt|hot ?dogs?|salsicha|kielbasa|bratwurst|chorizo|longganisa|morcilla|salami|sucuk|leberk[aä]se|chinese sausage|lap cheong|moo yor|pork roll|chả lụa|liver spread|spam|luncheon meat/i, 320, {c: 3, p: 60, u: {本: 20}, s: 'M'}],
+    [/corned beef|carne seca|dried beef|beef jerky|cecina|tapa\b/i, 250, {c: 2, s: 'U'}],
+    [/レバー|\bliver\b|livers\b|chicken livers?/i, 120, {c: 2, s: 'M'}],
+    [/tripe|mondongo|trotters?|pork hock|ham hock|pork trotter|cow trotters|oxtail|beef shank|short ribs|beef ribs|neck bones?/i, 230, {c: 0, e: 0.6, s: 'U'}],
+    [/meatballs?|bakso|gongwan|pork balls?|beef balls?|fish balls?|fishballs?/i, 180, {c: 10, p: 15, u: {ball: 15, balls: 15}, s: 'U'}],
+    [/dumplings?|mandu|gyoza|wontons?(?! wrapper)|maultaschen|tortellini|capeletti|ravioli|manti|mantı|pierogi|pelmeni/i, 230, {c: 25, p: 25, s: 'U'}],
+    [/鶏手羽|手羽元|手羽先|chicken wings?|drumsticks?(?! \(moringa)|bone-in chicken|chicken legs?|whole chicken|chicken pieces/i, 200, {c: 0, p: 60, e: 0.65, u: {本: 60}, s: 'M'}],
+    [/鶏むね|ささみ|chicken breast|breast fillet/i, 133, {c: 0.1, p: 250, u: {枚: 250}, s: 'M'}],
+    [/鶏もも|chicken thigh|boneless chicken/i, 190, {c: 0, p: 250, u: {枚: 250}, s: 'M'}],
+    [/鶏ひき|ground chicken|minced chicken|chicken mince|ground turkey|turkey mince/i, 171, {c: 0, s: 'M'}],
+    [/鶏肉|鶏|chicken|turkey|\bpollo\b|frango|ayam|\bgà\b/i, 190, {c: 0, p: 250, s: 'M'}],
+    [/pork shoulder|pork butt|boston butt|pork collar|pork neck/i, 237, {c: 0, p: 150, s: 'M'}],   // 肩・肩ロース（R164: 「Pork shoulder or belly」が後ろの belly＝豚バラに当たっていた。値は下の「豚」と同じ）
+    [/豚バラ|pork belly|samgyeopsal|panceta|liempo|\bbelly\b/i, 366, {c: 0.1, u: {枚: 20}, s: 'M'}],
+    [/豚ひき|合いびき|ground pork|minced pork|pork mince|sausage ?meat|sausagemeat|ground meat|minced meat|\bmince\b|mixed mince|meatloaf mix/i, 230, {c: 0.1, s: 'M'}],
+    [/pork ribs?|spare ?ribs|baby back|pork rib/i, 290, {c: 0, e: 0.7, s: 'U'}],
+    [/豚ヒレ|pork tenderloin|pork fillet/i, 118, {c: 0.3, p: 400, s: 'M'}],
+    [/豚もも|豚ロース|pork loin|pork chops?|pork escalopes?|schnitzel|pork steaks?|pork cutlets?/i, 200, {c: 0.2, p: 150, u: {枚: 120}, s: 'M'}],
+    [/豚|pork|\bcerdo\b|porco|babi\b|thịt heo|thịt lợn|baboy/i, 237, {c: 0.1, p: 150, s: 'M'}],
+    [/牛ひき|ground beef|minced beef|beef mince|\bkeema\b|carne molida/i, 251, {c: 0.3, s: 'M'}],
+    [/牛バラ|牛カルビ|beef brisket|brisket|flanken|kalbi|galbi/i, 338, {c: 0.2, s: 'M'}],
+    [/牛もも|beef (?:topside|round|sirloin|rump|tenderloin|fillet)|flank steak|skirt steak|sirloin|round steak|lean beef|bulgogi|veal\b/i, 160, {c: 0.4, p: 200, s: 'M'}],
+    [/牛|beef|steak|chuck|\bcarne\b|\bres\b|daging sapi|thịt bò|\bbò\b|baka\b|vaca|ribeye|strip steak/i, 230, {c: 0.3, p: 200, s: 'M'}],
+    [/lamb|mutton|goat|cordero|kuzu|agneau|carneiro|ラム|羊/i, 250, {c: 0.2, p: 100, s: 'U'}],
+    [/duck|鴨|goose/i, 300, {c: 0.1, p: 250, e: 0.7, s: 'U'}],
+    [/rabbit|venison|game\b/i, 140, {c: 0.1, s: 'U'}],
     // ---- 魚介 ----
-    [/ツナ.*水煮|tuna in water|tuna in brine/i, 70, {p: 70, u: {缶: 70, can: 140, tin: 140}, s: 'M'}],
-    [/ツナ|canned tuna|tinned tuna|tuna in (?:olive )?oil|atún en aceite/i, 265, {p: 70, u: {缶: 70, can: 140, tin: 140, tins: 140, cans: 140}, s: 'M'}],
-    [/canned (?:sardines|fish|mackerel)|tinned sardines|sardines in|sardinas en|saba in tomato|mackerel in/i, 180, {p: 155, u: {can: 155, tin: 120}, s: 'U'}],
-    [/かに風味|カニカマ|crab sticks?|imitation crab|surimi/i, 89, {p: 12, u: {本: 12}, s: 'M'}],
-    [/ちくわ/i, 119, {p: 30, u: {本: 30}, s: 'M'}],
-    [/かまぼこ|fish cakes?|eomuk|odeng|fish tofu|kamaboko|chả cá/i, 100, {p: 12, u: {切れ: 12, sheet: 50, sheets: 50}, s: 'M'}],
-    [/たらこ|明太子|辛子明太子|roe|mentaiko/i, 131, {p: 40, s: 'M'}],
-    [/ちりめんじゃこ|しらす|whitebait|dried (?:small )?anchov|teri\b|ikan bilis|dilis|dried shrimp|xiapi|ebi\b|dried squid|dried pollack|bugeo|hwangtae|dried fish|tuyo|daing|salted fish|bacalhau|salt cod|bacalao/i, 200, {d: 0.4, s: 'M'}],
-    [/鮭|サーモン|salmon|trout|truta|salm[oó]n/i, 160, {p: 80, u: {切れ: 80, fillet: 150, fillets: 150}, s: 'M'}],
-    [/さば|鯖|mackerel|\bsaba\b(?! bananas?)|caballa|cavalla|galunggong|pla tu|godeungeo/i, 211, {p: 80, u: {切れ: 80}, s: 'M'}],
-    [/ぶり|鰤|yellowtail|amberjack/i, 222, {p: 80, u: {切れ: 80}, s: 'M'}],
-    [/さんま|pacific saury/i, 287, {p: 100, u: {尾: 100}, s: 'M'}],
-    [/いわし|sardines?|sardinas|sardinha|anchovies|anchovy|boquerones|herring|matjes|śledź|sprat|hamsi/i, 156, {p: 50, u: {尾: 50}, s: 'M'}],
-    [/あじ|horse mackerel|scad/i, 112, {p: 60, u: {尾: 60, 枚: 60, 尾分: 60}, s: 'M'}],
-    [/まぐろ|かつお|\btuna\b|bonito|katsuo/i, 115, {p: 100, s: 'M'}],
-    [/かじき|swordfish/i, 139, {p: 80, u: {切れ: 80}, s: 'M'}],
-    [/さわら|spanish mackerel|tenggiri/i, 161, {p: 80, u: {切れ: 80}, s: 'M'}],
-    [/milkfish|bangus|hairtail|ribbonfish|galchi|pomfret|catfish|patin|lele\b/i, 150, {p: 150, e: 0.7, s: 'U'}],
-    [/たら|だら|鱈|かれい|鰈|white fish|whitefish|fish fillets?|\bcod\b|haddock|pollock|pollack|hake|tilapia|sea bass|seabass|sea bream|dorade|snapper|grouper|flounder|plaice|sole\b|halibut|croaker|jogi|pescado|peixe|\bikan\b|\bcá\b|isda\b|\bfish\b|corvina|merluza|dongtae|smoked haddock|kingfish|perch|carp\b|zander/i, 90, {p: 100, u: {切れ: 80, fillet: 150, fillets: 150}, s: 'M'}],
-    [/むきえび|えび|海老|shrimps?|prawns?|camar[oó]n|camar[aã]o|gambas|udang|\btôm\b|hipon|langostino|scampi/i, 80, {p: 20, u: {尾: 20, 尾分: 20}, s: 'M'}],
-    [/いか|squid|cuttlefish|calamari|calamar|lula|sotong|\bmực\b|pusit|ojingeo/i, 80, {p: 200, u: {杯: 200}, s: 'M'}],
-    [/たこ|だこ|octopus|pulpo|polvo|jukkumi|nakji/i, 91, {s: 'M'}],
-    [/あさり|しじみ|はまぐり|clams?|mussels?|cockles?|choros|almejas|mexilh[oõ]es|vongole|kerang|halaan|tahong|nghêu|ngao|sến|sea snails?/i, 60, {p: 20, e: 0.4, s: 'M'}],
-    [/oysters?(?! sauce)|牡蠣|かき\b|ostras?|scallops?|ほたて|crab ?meat|crab\b|field crab|cangrejo|cua\b|lobster/i, 80, {s: 'M'}],
+    [/ツナ.*水煮|tuna in water|tuna in brine/i, 70, {c: 0.2, p: 70, u: {缶: 70, can: 140, tin: 140}, s: 'M'}],
+    [/ツナ|canned tuna|tinned tuna|tuna in (?:olive )?oil|atún en aceite/i, 265, {c: 0.1, p: 70, u: {缶: 70, can: 140, tin: 140, tins: 140, cans: 140}, s: 'M'}],
+    [/canned (?:sardines|fish|mackerel)|tinned sardines|sardines in|sardinas en|saba in tomato|mackerel in/i, 180, {c: 1, p: 155, u: {can: 155, tin: 120}, s: 'U'}],
+    [/かに風味|カニカマ|crab sticks?|imitation crab|surimi/i, 89, {c: 9.2, p: 12, u: {本: 12}, s: 'M'}],
+    [/ちくわ/i, 119, {c: 13.5, p: 30, u: {本: 30}, s: 'M'}],
+    [/かまぼこ|fish cakes?|eomuk|odeng|fish tofu|kamaboko|chả cá/i, 100, {c: 9.7, p: 12, u: {切れ: 12, sheet: 50, sheets: 50}, s: 'M'}],
+    [/たらこ|明太子|辛子明太子|roe|mentaiko/i, 131, {c: 0.4, p: 40, s: 'M'}],
+    [/ちりめんじゃこ|しらす|whitebait|dried (?:small )?anchov|teri\b|ikan bilis|dilis|dried shrimp|xiapi|ebi\b|dried squid|dried pollack|bugeo|hwangtae|dried fish|tuyo|daing|salted fish|bacalhau|salt cod|bacalao/i, 200, {c: 0.2, d: 0.4, s: 'M'}],
+    [/鮭|サーモン|salmon|trout|truta|salm[oó]n/i, 160, {c: 0.1, p: 80, u: {切れ: 80, fillet: 150, fillets: 150}, s: 'M'}],
+    [/さば|鯖|mackerel|\bsaba\b(?! bananas?)|caballa|cavalla|galunggong|pla tu|godeungeo/i, 211, {c: 0.3, p: 80, u: {切れ: 80}, s: 'M'}],
+    [/ぶり|鰤|yellowtail|amberjack/i, 222, {c: 0.3, p: 80, u: {切れ: 80}, s: 'M'}],
+    [/さんま|pacific saury/i, 287, {c: 0.1, p: 100, u: {尾: 100}, s: 'M'}],
+    [/いわし|sardines?|sardinas|sardinha|anchovies|anchovy|boquerones|herring|matjes|śledź|sprat|hamsi/i, 156, {c: 0.2, p: 50, u: {尾: 50}, s: 'M'}],
+    [/あじ|horse mackerel|scad/i, 112, {c: 0.1, p: 60, u: {尾: 60, 枚: 60, 尾分: 60}, s: 'M'}],
+    [/まぐろ|かつお|\btuna\b|bonito|katsuo/i, 115, {c: 0.1, p: 100, s: 'M'}],
+    [/かじき|swordfish/i, 139, {c: 0.1, p: 80, u: {切れ: 80}, s: 'M'}],
+    [/さわら|spanish mackerel|tenggiri/i, 161, {c: 0.1, p: 80, u: {切れ: 80}, s: 'M'}],
+    [/milkfish|bangus|hairtail|ribbonfish|galchi|pomfret|catfish|patin|lele\b/i, 150, {c: 0, p: 150, e: 0.7, s: 'U'}],
+    [/たら|だら|鱈|かれい|鰈|white fish|whitefish|fish fillets?|\bcod\b|haddock|pollock|pollack|hake|tilapia|sea bass|seabass|sea bream|dorade|snapper|grouper|flounder|plaice|sole\b|halibut|croaker|jogi|pescado|peixe|\bikan\b|\bcá\b|isda\b|\bfish\b|corvina|merluza|dongtae|smoked haddock|kingfish|perch|carp\b|zander/i, 90, {c: 0.1, p: 100, u: {切れ: 80, fillet: 150, fillets: 150}, s: 'M'}],
+    [/むきえび|えび|海老|shrimps?|prawns?|camar[oó]n|camar[aã]o|gambas|udang|\btôm\b|hipon|langostino|scampi/i, 80, {c: 0.3, p: 20, u: {尾: 20, 尾分: 20}, s: 'M'}],
+    [/いか|squid|cuttlefish|calamari|calamar|lula|sotong|\bmực\b|pusit|ojingeo/i, 80, {c: 0.1, p: 200, u: {杯: 200}, s: 'M'}],
+    [/たこ|だこ|octopus|pulpo|polvo|jukkumi|nakji/i, 91, {c: 0.1, s: 'M'}],
+    [/あさり|しじみ|はまぐり|clams?|mussels?|cockles?|choros|almejas|mexilh[oõ]es|vongole|kerang|halaan|tahong|nghêu|ngao|sến|sea snails?/i, 60, {c: 0.4, p: 20, e: 0.4, s: 'M'}],
+    [/oysters?(?! sauce)|牡蠣|かき\b|ostras?|scallops?|ほたて|crab ?meat|crab\b|field crab|cangrejo|cua\b|lobster/i, 80, {c: 4, s: 'M'}],
     // ---- ご飯・麺・パン ----
-    [/雑穀ご飯|ご飯|ごはん|cooked (?:white |jasmine |brown |basmati )?rice|steamed rice|leftover rice|day-old rice|lontong|ketupat|compressed rice|nasi\b/i, 156, {st: 1, u: {杯: 150, 杯分: 150, 茶碗: 150, 丼: 250, bowl: 200, bowls: 200, cup: 160}, d: 0.65, s: 'M'}],
-    [/もち米|glutinous rice|sticky rice|sweet rice|mochi rice|pulut|malagkit/i, 343, {x: 2.2, u: {合: 150}, d: 0.85, s: 'M'}],
-    [/切り餅|餅|rice cakes?|tteok|nian ?gao/i, 223, {st: 1, p: 50, u: {個: 50}, s: 'M'}],
-    [/米|\brice\b(?! (?:paper|noodles?|vermicelli|flour|wine|vinegar|cakes?|syrup|bran|powder|sticks?))|arroz|basmati|jasmine|risotto|arborio|beras|\bgạo\b|\bbigas\b|\bkanin\b/i, 342, {st: 1, x: 2.3, u: {合: 150}, d: 0.85, s: 'M'}],
-    [/toasted rice powder|khao khua|rice flour|glutinous rice flour|mochiko|bột gạo/i, 366, {d: 0.55, s: 'U'}],
-    [/rice (?:paper|wrappers?)|bánh tráng|banh trang/i, 330, {p: 9, u: {sheet: 9, sheets: 9, 枚: 9}, s: 'U'}],
-    [/gnocchi|schupfnudeln|spätzle|spaetzle|kopytka/i, 160, {s: 'U'}],
-    [/fresh (?:wide |thin )?rice noodles|sen yai|kway teow|kuey teow|ho fun|bánh phở tươi|bánh phở|phở noodles|bún tươi|fresh rice/i, 150, {st: 1, s: 'U'}],
-    [/rice (?:noodles?|vermicelli|sticks)|bún\b|bihon|bee hoon|mi ?fen|mifen|sen lek|sen chan|sen mee|kanom jeen|ビーフン|thin rice noodles/i, 360, {st: 1, x: 3, s: 'U'}],
-    [/春雨|glass noodles|cellophane|dangmyeon|fensi|fentiao|sohun|miến|sotanghon|mung bean (?:noodles|vermicelli)|sweet potato noodles/i, 344, {st: 1, x: 4, s: 'M'}],
-    [/ゆでうどん|うどん/i, 95, {st: 1, p: 200, u: {玉: 200}, s: 'M'}],
-    [/焼きそば麺|蒸し中華/i, 162, {st: 1, p: 150, u: {玉: 150}, s: 'M'}],
-    [/中華麺/i, 249, {st: 1, p: 120, u: {玉: 120}, s: 'M'}],
-    [/そうめん|素麺|蕎麦|そば|somyeon|misua|mianxian|wheat (?:noodles|vermicelli)|udon|soba/i, 340, {st: 1, x: 2.8, p: 50, u: {束: 50, bundle: 50}, s: 'M'}],
-    [/instant (?:ramen|noodles)|ramen|ramyeon|indomie|mama noodles/i, 440, {st: 1, x: 2.5, p: 100, u: {pack: 100}, s: 'U'}],
-    [/taco shells?/i, 468, {p: 13, s: 'U'}],
-    [/tostadas?|tortilla chips|totopos|nachos/i, 480, {p: 13, s: 'U'}],
-    [/corn tortillas?/i, 218, {st: 1, p: 28, s: 'U'}],
-    [/tortillas?|wraps?\b|flatbread|lavash|roti|chapati|paratha|\bnaan\b|pita|pide|bazlama|lepinja|piadina/i, 300, {st: 1, p: 45, s: 'U'}],
-    [/egg noodles|canton|pancit|mee\b|\bmie\b|lo mein|chow mein|wonton noodles|noodles|łazanki|nudeln|fideos?|vermicelli|şehriye|sehriye|orzo|pastina|lesan asfour|tarhana/i, 370, {st: 1, x: 2.5, u: {nest: 50}, s: 'U'}],
-    [/スパゲッティ|マカロニ|パスタ|pasta|spaghetti|macaroni|penne|fusilli|rigatoni|fettuccine|linguine|tagliatelle|lasagne|lasagna|ditalini|conchiglie|shells|elbows?|orecchiette|bucatini|paccheri|farfalle|stelline|anellini|alphabet|acini|cannelloni|manicotti/i, 370, {st: 1, x: 2.4, p: 10, u: {sheet: 20, sheets: 20}, s: 'M'}],
-    [/fresh pasta|pasta fresca/i, 290, {s: 'U'}],
-    [/餃子の皮|ワンタンの皮|wonton wrappers?|dumpling wrappers?|gyoza wrappers?|lumpia wrappers?|spring roll wrappers?|molo wrappers?|masa want[aá]n|mandu wrappers?/i, 275, {p: 6, u: {枚: 6}, s: 'M'}],
-    [/puff pastry|pie crust|shortcrust|pastry|phyllo|filo|yufka|hojaldre/i, 500, {u: {sheet: 300}, s: 'U'}],
-    [/食パン/i, 248, {st: 1, p: 60, u: {枚: 60}, s: 'M'}],
-    [/baguette|french bread|crusty bread|フランスパン/i, 289, {st: 1, p: 250, u: {slice: 20, slices: 20, loaf: 250}, s: 'M'}],
-    [/buns?\b|rolls?\b|bolillo|pav\b|brötchen|english muffins?|bread roll|hoagie|kaiser|pandesal|telera/i, 280, {st: 1, p: 60, s: 'U'}],
-    [/\bbread\b|パン|\bpan\b|pão|brot|pain\b|chleb|ekmek|roti tawar|toast/i, 265, {p: 30, u: {slice: 30, slices: 30, loaf: 400}, s: 'U'}],
-    [/crackers?|krupuk|kerupuk|emping|prawn crackers|oyster crackers|biscuits?|rusks?|croutons?/i, 450, {p: 8, u: {handful: 15}, s: 'U'}],
-    [/croissant/i, 406, {p: 50, s: 'U'}],
+    [/雑穀ご飯|ご飯|ごはん|cooked (?:white |jasmine |brown |basmati )?rice|steamed rice|leftover rice|day-old rice|lontong|ketupat|compressed rice|nasi\b/i, 156, {c: 36, st: 1, u: {杯: 150, 杯分: 150, 茶碗: 150, 丼: 250, bowl: 200, bowls: 200, cup: 160}, d: 0.65, s: 'M'}],
+    [/もち米|glutinous rice|sticky rice|sweet rice|mochi rice|pulut|malagkit/i, 343, {c: 77, x: 2.2, u: {合: 150}, d: 0.85, s: 'M'}],
+    [/切り餅|餅|rice cakes?|tteok|nian ?gao/i, 223, {c: 50, st: 1, p: 50, u: {個: 50}, s: 'M'}],
+    [/米|\brice\b(?! (?:paper|noodles?|vermicelli|flour|wine|vinegar|cakes?|syrup|bran|powder|sticks?))|arroz|basmati|jasmine|risotto|arborio|beras|\bgạo\b|\bbigas\b|\bkanin\b/i, 342, {c: 77, st: 1, x: 2.3, u: {合: 150}, d: 0.85, s: 'M'}],
+    [/toasted rice powder|khao khua|rice flour|glutinous rice flour|mochiko|bột gạo/i, 366, {c: 80, d: 0.55, s: 'U'}],
+    [/rice (?:paper|wrappers?)|bánh tráng|banh trang/i, 330, {c: 80, p: 9, u: {sheet: 9, sheets: 9, 枚: 9}, s: 'U'}],
+    [/gnocchi|schupfnudeln|spätzle|spaetzle|kopytka/i, 160, {c: 32, s: 'U'}],
+    [/fresh (?:wide |thin )?rice noodles|sen yai|kway teow|kuey teow|ho fun|bánh phở tươi|bánh phở|phở noodles|bún tươi|fresh rice/i, 150, {c: 32, st: 1, s: 'U'}],
+    [/rice (?:noodles?|vermicelli|sticks)|bún\b|bihon|bee hoon|mi ?fen|mifen|sen lek|sen chan|sen mee|kanom jeen|ビーフン|thin rice noodles/i, 360, {c: 79, st: 1, x: 3, s: 'U'}],
+    [/春雨|glass noodles|cellophane|dangmyeon|fensi|fentiao|sohun|miến|sotanghon|mung bean (?:noodles|vermicelli)|sweet potato noodles/i, 344, {c: 83, st: 1, x: 4, s: 'M'}],
+    [/ゆでうどん|うどん/i, 95, {c: 20, st: 1, p: 200, u: {玉: 200}, s: 'M'}],
+    [/焼きそば麺|蒸し中華/i, 162, {c: 35, st: 1, p: 150, u: {玉: 150}, s: 'M'}],
+    [/中華麺/i, 249, {c: 50, st: 1, p: 120, u: {玉: 120}, s: 'M'}],
+    [/そうめん|素麺|蕎麦|そば|somyeon|misua|mianxian|wheat (?:noodles|vermicelli)|udon|soba/i, 340, {c: 68, st: 1, x: 2.8, p: 50, u: {束: 50, bundle: 50}, s: 'M'}],
+    [/instant (?:ramen|noodles)|ramen|ramyeon|indomie|mama noodles/i, 440, {c: 61, st: 1, x: 2.5, p: 100, u: {pack: 100}, s: 'U'}],
+    [/taco shells?/i, 468, {c: 60, p: 13, s: 'U'}],
+    [/tostadas?|tortilla chips|totopos|nachos/i, 480, {c: 60, p: 13, s: 'U'}],
+    [/corn tortillas?/i, 218, {c: 38, st: 1, p: 28, s: 'U'}],
+    [/tortillas?|wraps?\b|flatbread|lavash|roti|chapati|paratha|\bnaan\b|pita|pide|bazlama|lepinja|piadina/i, 300, {c: 47, st: 1, p: 45, s: 'U'}],
+    [/egg noodles|canton|pancit|mee\b|\bmie\b|lo mein|chow mein|wonton noodles|noodles|łazanki|nudeln|fideos?|vermicelli|şehriye|sehriye|orzo|pastina|lesan asfour|tarhana/i, 370, {c: 70, st: 1, x: 2.5, u: {nest: 50}, s: 'U'}],
+    [/スパゲッティ|マカロニ|パスタ|pasta|spaghetti|macaroni|penne|fusilli|rigatoni|fettuccine|linguine|tagliatelle|lasagne|lasagna|ditalini|conchiglie|shells|elbows?|orecchiette|bucatini|paccheri|farfalle|stelline|anellini|alphabet|acini|cannelloni|manicotti/i, 370, {c: 68, st: 1, x: 2.4, p: 10, u: {sheet: 20, sheets: 20}, s: 'M'}],
+    [/fresh pasta|pasta fresca/i, 290, {c: 53, s: 'U'}],
+    [/餃子の皮|ワンタンの皮|wonton wrappers?|dumpling wrappers?|gyoza wrappers?|lumpia wrappers?|spring roll wrappers?|molo wrappers?|masa want[aá]n|mandu wrappers?/i, 275, {c: 55, p: 6, u: {枚: 6}, s: 'M'}],
+    [/puff pastry|pie crust|shortcrust|pastry|phyllo|filo|yufka|hojaldre/i, 500, {c: 38, u: {sheet: 300}, s: 'U'}],
+    [/食パン/i, 248, {c: 42, st: 1, p: 60, u: {枚: 60}, s: 'M'}],
+    [/baguette|french bread|crusty bread|フランスパン/i, 289, {c: 55, st: 1, p: 250, u: {slice: 20, slices: 20, loaf: 250}, s: 'M'}],
+    [/buns?\b|rolls?\b|bolillo|pav\b|brötchen|english muffins?|bread roll|hoagie|kaiser|pandesal|telera/i, 280, {c: 47, st: 1, p: 60, s: 'U'}],
+    [/\bbread\b|パン|\bpan\b|pão|brot|pain\b|chleb|ekmek|roti tawar|toast/i, 265, {c: 45, p: 30, u: {slice: 30, slices: 30, loaf: 400}, s: 'U'}],
+    [/crackers?|krupuk|kerupuk|emping|prawn crackers|oyster crackers|biscuits?|rusks?|croutons?/i, 450, {c: 65, p: 8, u: {handful: 15}, s: 'U'}],
+    [/croissant/i, 406, {c: 42, p: 50, s: 'U'}],
     // ---- 穀物・豆（乾物） ----
-    [/capers?|alcaparras?|kapern/i, 23, {d: 0.6, tiny: 1, s: 'U'}],
-    [/olives?|aceitunas?|azeitonas?|oliven|zeytin/i, 145, {p: 4, d: 0.6, u: {cup: 135}, s: 'U'}],
-    [/\bcola\b|soda\b|soft drink/i, 42, {d: 1.0, s: 'U'}],
+    [/capers?|alcaparras?|kapern/i, 23, {c: 2, d: 0.6, tiny: 1, s: 'U'}],
+    [/olives?|aceitunas?|azeitonas?|oliven|zeytin/i, 145, {c: 1, p: 4, d: 0.6, u: {cup: 135}, s: 'U'}],
+    [/\bcola\b|soda\b|soft drink/i, 42, {c: 11, d: 1.0, s: 'U'}],
     [/zakwas|sour rye starter|żur/i, 30, {d: 1.0, s: 'X'}],
     [/boondi|sev\b|namkeen|bhujia/i, 530, {d: 0.4, s: 'X'}],
-    [/galettes?|cr[eê]pes?|pancakes?/i, 220, {p: 60, s: 'U'}],
-    [/oats|oatmeal|porridge oats|オートミール|avena/i, 380, {x: 3, d: 0.4, s: 'M'}],
-    [/bulgur|bulghur|burghul|couscous|freekeh|cracked wheat|broken wheat|dalia\b|wheat berries|trigo|\bwheat\b(?! (?:flour|noodles|vermicelli))|farro|spelt|pearl barley|barley|graupen|cevadinha|buckwheat|kasha|kasza|millet|quinoa|amaranth seeds|sorghum|poha|flattened rice|hominy grits|canjiquinha|broth mix/i, 350, {x: 2.5, d: 0.8, s: 'U'}],
-    [/cooked hominy|hominy|maíz pozolero|pozole corn|\bmote\b|cancha|corn nuts/i, 120, {s: 'U'}],
-    [/(?:canned|tinned|cooked|boiled) (?:chickpeas|garbanzos)|chickpeas \(canned|chickpeas, (?:drained|canned|cooked)/i, 139, {u: {can: 240, tin: 240, cans: 480}, cn: 'chick', s: 'U'}],
-    [/(?:canned|tinned|cooked|boiled|refried|baked) (?:[\w-]+ ){0,2}(?:beans|lentils|peas|fava|ful)|beans (?:in|with) (?:tomato|their)|ful medames|refried|baked beans|\(canned|canned\)|jar or can|cannellini|borlotti beans \(canned|flageolet/i, 110, {u: {can: 240, tin: 240, cans: 480, tins: 480}, cn: 'bean', s: 'U'}],
+    [/galettes?|cr[eê]pes?|pancakes?/i, 220, {c: 28, p: 60, s: 'U'}],
+    [/oats|oatmeal|porridge oats|オートミール|avena/i, 380, {c: 60, x: 3, d: 0.4, s: 'M'}],
+    [/bulgur|bulghur|burghul|couscous|freekeh|cracked wheat|broken wheat|dalia\b|wheat berries|trigo|\bwheat\b(?! (?:flour|noodles|vermicelli))|farro|spelt|pearl barley|barley|graupen|cevadinha|buckwheat|kasha|kasza|millet|quinoa|amaranth seeds|sorghum|poha|flattened rice|hominy grits|canjiquinha|broth mix/i, 350, {c: 68, x: 2.5, d: 0.8, s: 'U'}],
+    [/cooked hominy|hominy|maíz pozolero|pozole corn|\bmote\b|cancha|corn nuts/i, 120, {c: 10, s: 'U'}],
+    [/(?:canned|tinned|cooked|boiled) (?:chickpeas|garbanzos)|chickpeas \(canned|chickpeas, (?:drained|canned|cooked)/i, 139, {c: 16, u: {can: 240, tin: 240, cans: 480}, cn: 'chick', s: 'U'}],
+    [/(?:canned|tinned|cooked|boiled|refried|baked) (?:[\w-]+ ){0,2}(?:beans|lentils|peas|fava|ful)|beans (?:in|with) (?:tomato|their)|ful medames|refried|baked beans|\(canned|canned\)|jar or can|cannellini|borlotti beans \(canned|flageolet/i, 110, {c: 11, u: {can: 240, tin: 240, cans: 480, tins: 480}, cn: 'bean', s: 'U'}],
     // 生・冷凍のそら豆など（未熟の豆。乾いた豆の値にしない。R154）
-    [/(?:fresh|frozen) (?:[\w-]+ ){0,3}(?:fava|broad|lima|butter|black-eyed) beans|生のそら豆|そら豆|fava beans?, (?:fresh|frozen)|habas frescas/i, 102, {fr: 1, s: 'M'}],
-    [/ひよこ豆|chickpeas?|garbanzos?|nohut|grão/i, 378, {x: 2.5, d: 0.8, leg: 'chick', s: 'U'}],
-    [/小豆|ささげ|lentils?|lentejas|mercimek|soczewica|\bdal\b|dhal|chana|urad|moong|toor|masoor|split peas|mung beans?|kidney beans?|rajma|black beans|pinto|white beans|navy beans|great northern|haricot|cannellini|borlotti|fava beans|fava\b|broad beans|ful\b|black-eyed|lima beans|pallares|butter beans|feijão|feijao|frijoles|habichuelas|alubias|fasola|fasulye|black urad|chana dal|marrowfat|(?<!green |french |runner |string |long |wing |winged |yellow |snake |broad |flat |\bgreen or yellow )\bbeans\b|\bpeas\b(?=.*dried)|sprouted fava/i, 340, {x: 2.5, d: 0.8, leg: 'bean', s: 'M'}],
+    [/(?:fresh|frozen) (?:[\w-]+ ){0,3}(?:fava|broad|lima|butter|black-eyed) beans|生のそら豆|そら豆|fava beans?, (?:fresh|frozen)|habas frescas/i, 102, {c: 13, fr: 1, s: 'M'}],
+    [/ひよこ豆|chickpeas?|garbanzos?|nohut|grão/i, 378, {c: 44, x: 2.5, d: 0.8, leg: 'chick', s: 'U'}],
+    [/小豆|ささげ|lentils?|lentejas|mercimek|soczewica|\bdal\b|dhal|chana|urad|moong|toor|masoor|split peas|mung beans?|kidney beans?|rajma|black beans|pinto|white beans|navy beans|great northern|haricot|cannellini|borlotti|fava beans|fava\b|broad beans|ful\b|black-eyed|lima beans|pallares|butter beans|feijão|feijao|frijoles|habichuelas|alubias|fasola|fasulye|black urad|chana dal|marrowfat|(?<!green |french |runner |string |long |wing |winged |yellow |snake |broad |flat |\bgreen or yellow )\bbeans\b|\bpeas\b(?=.*dried)|sprouted fava/i, 340, {c: 40, x: 2.5, d: 0.8, leg: 'bean', s: 'M'}],
     // ---- ナッツ・種 ----
-    [/ごま|胡麻|sesame seeds?|sesame\b(?! oil)|perilla seeds?/i, 605, {d: 0.6, s: 'M'}],
-    [/ピーナッツ|peanuts?|groundnuts?|kacang tanah|đậu phộng|mani\b/i, 585, {d: 0.6, s: 'M'}],
-    [/くるみ|walnuts?|cashews?|almonds?|pistachios?|hazelnuts?|pecans?|pine nuts|macadamia|candlenuts?|kemiri|nuts\b|nueces|castañas de caju|pepitas|pumpkin seeds|sunflower seeds|melon seeds|egusi|lotus seeds?|foxnut/i, 600, {d: 0.55, u: {'': 4}, s: 'U'}],
-    [/raisins?|sultanas|currants|prunes?|dried (?:apricots?|figs?|cranberries|dates|fruit)|dates\b|jujubes?|red dates|goji|dried red dates|figs/i, 290, {p: 8, d: 0.6, s: 'U'}],
-    [/栗|chestnuts?|ch[aâ]taignes?|marrons?|casta[nñ]as?(?! de caju)|kasztan/i, 167, {p: 10, s: 'M'}],
-    [/coconut(?! (?:milk|cream|water|oil|sugar|vinegar|aminos))|kerisik|kelapa parut|niyog|buko|dừa nạo|young coconut/i, 354, {d: 0.35, s: 'U'}],
+    [/ごま|胡麻|sesame seeds?|sesame\b(?! oil)|perilla seeds?/i, 605, {c: 6, d: 0.6, s: 'M'}],
+    [/ピーナッツ|peanuts?|groundnuts?|kacang tanah|đậu phộng|mani\b/i, 585, {c: 11, d: 0.6, s: 'M'}],
+    [/くるみ|walnuts?|cashews?|almonds?|pistachios?|hazelnuts?|pecans?|pine nuts|macadamia|candlenuts?|kemiri|nuts\b|nueces|castañas de caju|pepitas|pumpkin seeds|sunflower seeds|melon seeds|egusi|lotus seeds?|foxnut/i, 600, {c: 10, d: 0.55, u: {'': 4}, s: 'U'}],
+    [/raisins?|sultanas|currants|prunes?|dried (?:apricots?|figs?|cranberries|dates|fruit)|dates\b|jujubes?|red dates|goji|dried red dates|figs/i, 290, {c: 70, p: 8, d: 0.6, s: 'U'}],
+    [/栗|chestnuts?|ch[aâ]taignes?|marrons?|casta[nñ]as?(?! de caju)|kasztan/i, 167, {c: 33, p: 10, s: 'M'}],
+    [/coconut(?! (?:milk|cream|water|oil|sugar|vinegar|aminos))|kerisik|kelapa parut|niyog|buko|dừa nạo|young coconut/i, 354, {c: 10, d: 0.35, s: 'U'}],
     // ---- いも・かぼちゃ ----
-    [/じゃがいも|新じゃが/i, 59, {p: 150, s: 'M'}],
-    [/potato(?:es)?(?! (?:starch|flour|sticks|chips|noodles))|papas?\b|patatas?|kartoffeln|ziemniaki|patates|batata(?! doce)(?! palha)|aloo|khoai tây|kentang|ollucos?|olluco|mandioquinha|arracacha/i, 77, {p: 150, s: 'M'}],
-    [/potato sticks|batata palha|potato chips|crisps/i, 540, {d: 0.25, s: 'U'}],
-    [/さつまいも|sweet potato(?:es)?(?! (?:leaves|tops|starch|noodles))|kamote|camote|batata doce|ubi jalar|khoai lang|goguma|yam\b|ube\b|purple yam/i, 126, {p: 250, s: 'M'}],
-    [/里芋|taro(?! leaves)|gabi(?! leaves)|arbi|eddo|khoai môn/i, 53, {p: 50, s: 'M'}],
-    [/長いも|山芋|やまいも|chinese yam/i, 64, {u: {cm: 20}, s: 'M'}],
-    [/cassava(?! (?:leaves|flour))|yuca|mandioca|manioc|aipim|singkong|kamoteng kahoy/i, 160, {p: 400, s: 'U'}],
-    [/cassava flour|farinha de mandioca|farofa|tapioca flour|gari\b/i, 360, {d: 0.6, s: 'U'}],
-    [/plantains?|plátano|platano|saba bananas?|raw banana|green banana|cooking banana/i, 122, {p: 180, s: 'U'}],
-    [/かぼちゃ|pumpkin(?! seeds)|butternut|(?<!mexican |summer |yellow |and )squash(?! blossoms?)|kalabasa|calabaza|ab[oó]bora|zapallo|labu kuning|bí đỏ|kabocha|hokkaido/i, 60, {p: 1200, s: 'M'}],
+    [/じゃがいも|新じゃが/i, 59, {c: 15, p: 150, s: 'M'}],
+    [/potato(?:es)?(?! (?:starch|flour|sticks|chips|noodles))|papas?\b|patatas?|kartoffeln|ziemniaki|patates|batata(?! doce)(?! palha)|aloo|khoai tây|kentang|ollucos?|olluco|mandioquinha|arracacha/i, 77, {c: 15, p: 150, s: 'M'}],
+    [/potato sticks|batata palha|potato chips|crisps/i, 540, {c: 50, d: 0.25, s: 'U'}],
+    [/さつまいも|sweet potato(?:es)?(?! (?:leaves|tops|starch|noodles))|kamote|camote|batata doce|ubi jalar|khoai lang|goguma|yam\b|ube\b|purple yam/i, 126, {c: 30, p: 250, s: 'M'}],
+    [/里芋|taro(?! leaves)|gabi(?! leaves)|arbi|eddo|khoai môn/i, 53, {c: 11, p: 50, s: 'M'}],
+    [/長いも|山芋|やまいも|chinese yam/i, 64, {c: 13, u: {cm: 20}, s: 'M'}],
+    [/cassava(?! (?:leaves|flour))|yuca|mandioca|manioc|aipim|singkong|kamoteng kahoy/i, 160, {c: 37, p: 400, s: 'U'}],
+    [/cassava flour|farinha de mandioca|farofa|tapioca flour|gari\b/i, 360, {c: 85, d: 0.6, s: 'U'}],
+    [/plantains?|plátano|platano|saba bananas?|raw banana|green banana|cooking banana/i, 122, {c: 30, p: 180, s: 'U'}],
+    [/かぼちゃ|pumpkin(?! seeds)|butternut|(?<!mexican |summer |yellow |and )squash(?! blossoms?)|kalabasa|calabaza|ab[oó]bora|zapallo|labu kuning|bí đỏ|kabocha|hokkaido/i, 60, {c: 17, p: 1200, s: 'M'}],
     // ---- 野菜（重さのあるもの） ----
     // 長ねぎ・青ねぎ（green onion・spring onion など）は玉ねぎ（onions）より前に置く。1本 10〜15g（R154。玉ねぎ1個 200g に数えていた）
-    [/長ねぎの青い部分/i, 30, {p: 30, u: {本: 30}, tiny: 1, s: 'M'}],
-    [/長ねぎ|白ねぎ|leeks?|puerros?|alho-poró|alho poró|lauch|pory|pırasa|daun bawang besar|green onion \(daepa\)|daepa|scallion whites/i, 35, {p: 120, u: {本: 100, cm: 3}, s: 'M'}],
+    [/長ねぎの青い部分/i, 30, {c: 3, p: 30, u: {本: 30}, tiny: 1, s: 'M'}],
+    [/長ねぎ|白ねぎ|leeks?|puerros?|alho-poró|alho poró|lauch|pory|pırasa|daun bawang besar|green onion \(daepa\)|daepa|scallion whites/i, 35, {c: 6, p: 120, u: {本: 100, cm: 3}, s: 'M'}],
     // 小玉ねぎ（pearl onion・petits oignons・ペコロスなど）は1個 約18g（R164。玉ねぎ1個 200g に数えていた: Petits pois à la française の小玉ねぎ8個が 1600g）
-    [/小玉ねぎ|ペコロス|pearl onions?|baby onions?|small (?:white |red |yellow |brown )?onions\b|petits oignons|oignons grelots|grelots|borettane|cipolline|cipollini|silverskin onions?|pickling onions?|cebollitas?|cebolinhas? pérola/i, 33, {p: 18, s: 'M'}],
-    [/万能ねぎ|小ねぎ|青ねぎ|わけぎ|分葱|あさつき|浅葱|(?<!玉|たま)ねぎ|(?<!玉)葱|scallions?|green onions?|spring onions?|jjokpa|cebolin|cebolleta|cebollín|cebollino|cheiro-verde|frühlingszwiebel|szczypiorek|dymka|taze soğan|daun bawang|hành lá|dahon ng sibuyas|sibuyas dahon|shallot leaves|garlic leaves/i, 30, {p: 15, u: {本: 10, bunch: 100, bunches: 200}, tiny: 1, s: 'M'}],
-    [/玉ねぎ|たまねぎ|onions?(?! powder)|cebollas?|cebola|zwiebeln?|cebula|soğan|bawang (?:bombay|merah besar)|pyaz|hành tây|sibuyas|red onion|pearl onions|baby onions|borettane/i, 33, {p: 200, s: 'M'}],
-    [/にんにく|ニンニク|garlic(?! (?:chives|powder|oil|leaves|shoots|mayo))|ajo\b|alho|knoblauch|czosnek|sarımsak|bawang putih|tỏi|bawang\b(?! (?:merah|bombay|daun|goreng))/i, 129, {p: 5, u: {片: 5, clove: 5, cloves: 5, head: 50, bulb: 50, 'head of garlic': 50, かけ: 5}, tiny: 1, s: 'M'}],
-    [/生姜|しょうが|ginger(?! (?:-garlic|garlic))|jengibre|gengibre|ingwer|imbir|zencefil|jahe|gừng|luya|galangal|lengkuas|laos|fingerroot|krachai|temu kunci|kencur|turmeric root|fresh turmeric|kunyit|nghệ/i, 30, {p: 15, u: {かけ: 15, thumb: 15, piece: 15, knob: 15, slice: 2, slices: 2, cm: 5}, tiny: 1, s: 'M'}],
-    [/ginger-garlic paste|garlic paste|ginger paste/i, 100, {d: 1.0, tiny: 1, s: 'U'}],
-    [/fried shallots?|fried garlic|bawang goreng|crispy shallots/i, 550, {d: 0.4, s: 'U'}],
-    [/shallots?|eschalot|échalote|bawang merah|hom daeng|hẹ tây|hành tím/i, 72, {p: 25, s: 'U'}],
-    [/にんじん|人参|carrots?|zanahorias?|cenoura|karotten?|möhren?|marchew|havuç|wortel|cà rốt|gajar/i, 35, {p: 150, s: 'M'}],
-    [/大根おろし|大根|daikon|white radish|korean radish|\bmu\b|labanos|mooli|lobak/i, 15, {p: 800, u: {本: 1000, cm: 30, 'cm分': 30}, s: 'M'}],
-    [/かぶの葉/i, 20, {s: 'M'}],
-    [/かぶ|turnips?|navets?|rüben|kohlrabi|rutabaga|swede|jicama|bengkuang|singkamas|yam bean/i, 25, {p: 100, s: 'M'}],
-    [/radish(?:es)?|rábano|rabanete|radieschen|rzodkiew|turp\b/i, 16, {p: 15, u: {bunch: 150, bunches: 150}, s: 'U'}],
-    [/beetroots?|beets?\b|beet greens|botwina|buraki|remolacha|beterraba|rote bete/i, 43, {p: 150, s: 'U'}],
-    [/celeriac|knollensellerie|selera|celery root/i, 42, {p: 500, s: 'U'}],
-    [/parsnips?|pastinaken?|pasternak|panais|parsley root|pietruszka/i, 75, {p: 120, s: 'U'}],
-    [/ごぼう|burdock/i, 58, {p: 150, s: 'M'}],
-    [/れんこん|蓮根|lotus (?:root|stems?)|ngó sen|củ sen/i, 66, {p: 200, s: 'M'}],
-    [/たけのこ|筍|bamboo shoots?|rebung|măng|labong/i, 22, {p: 200, s: 'M'}],
-    [/dried bamboo/i, 270, {x: 4, s: 'U'}],
-    [/キャベツ|cabbage(?! kimchi)|coleslaw|repollo|col\b|repolho|kohl\b|weißkohl|wirsing|kapusta|lahana|kubis|kol\b|bắp cải|repolyo|savoy|karalahana/i, 21, {p: 1200, u: {枚: 50, leaf: 50, leaves: 50, head: 1000}, s: 'M'}],
-    [/白菜|napa|chinese cabbage|baechu|wombok|pechay baguio|cải thảo|baby (?:napa )?cabbage/i, 13, {p: 2000, u: {枚: 80, head: 800, heads: 800}, s: 'M'}],
-    [/キムチ|kimchi|김치/i, 27, {s: 'M'}],
-    [/sauerkraut|kiszona|choucroute|pickled (?:cabbage|mustard|radish|cucumbers?|long beans|vegetables)|suancai|dưa cải|zhacai|榨菜|preserved (?:radish|vegetable|mustard)|caipu|gherkins?|cornichons?|dill pickles?|pickles?|relish|achara|atchara|pickled|ogórki kiszone|turşu/i, 20, {p: 40, s: 'U'}],
-    [/梅干し|umeboshi/i, 33, {p: 10, u: {個: 10}, s: 'M'}],
-    [/紅しょうが|甘酢しょうが|ガリ/i, 20, {tiny: 1, s: 'M'}],
-    [/福神漬|らっきょう|たくあん|漬物/i, 100, {s: 'M'}],
-    [/ブロッコリー|broccoli|br[oó]coli|brokkoli|brokuł|kana\b|gai lan|chinese broccoli|cải làn|broccolini|tenderstem/i, 37, {p: 250, u: {株: 250, head: 300}, s: 'M'}],
-    [/カリフラワー|cauliflower|coliflor|couve-flor|blumenkohl|kalafior|karnabahar|kembang kol|súp lơ|romanesco/i, 28, {p: 600, u: {head: 700}, s: 'M'}],
-    [/brussels sprouts|rosenkohl|coles de bruselas/i, 43, {p: 15, s: 'U'}],
-    [/ほうれん草|spinach|espinacas?|espinafre|spinat|szpinak|ıspanak|bayam|rau dền|amaranth greens|kangkong|water spinach|morning glory|rau muống|malunggay|moringa(?! pods)|drumstick leaves|chard|mangold|acelga|blitva|beet greens|sorrel|szczaw|purslane|semizotu|mallow|molokhia|mulukhiyah|jute leaves|rau đay|malabar spinach|mồng tơi|alugbati|katuk|rau ngót|sweet leaf|cassava leaves|taro leaves|sweet potato (?:leaves|tops)|talbos|chayote shoots|longxucai|amaranth|kale|cavolo nero|collard|couve\b|greens\b|grelos|turnip greens|mustard greens|gai choy|cải bẹ|cải xanh|chicory|catalogna|dandelion|methi|fenugreek leaves|ash gourd leaves|vine leaves|grape leaves|watercress|berros|agrião|rocket|arugula|rucola|roquette|gargir|lamb's lettuce|feldsalat|mâche|bird's nest fern|shansu|fernbrake|gosari|bracken|water snowflake|shuilian|water lily|fiddlehead|pako\b|tamarind leaves|melinjo|young cassava|kale|七草|cha-om|acacia/i, 22, {p: 30, u: {束: 200, bunch: 250, bunches: 250, handful: 30, handfuls: 30, cup: 30, cups: 30, leaf: 5, leaves: 5, 株: 50}, s: 'M'}],
-    [/小松菜|チンゲン菜|bok ?choy|pak ?choi|pak choy|pechay|choy sum|cải ngọt|cải thìa|sawi|caisim|tatsoi|baby bok choy|shanghai|chinese greens|youcai|yu choy/i, 13, {p: 100, u: {束: 250, 株: 100, bunch: 250, bunches: 250, head: 100, heads: 100, handful: 40, handfuls: 40, cup: 50}, s: 'M'}],
-    [/春菊|水菜|三つ葉|菜の花|かいわれ|crown daisy|chrysanthemum greens|ssukgat|minari|garland|tần ô|cải cúc|mizuna|rapini|broccoli rabe|cime di rapa|ニラ|にら|garlic chives|chinese chives|chive flowers?|jiucai|buchu|hẹ\b|kucai/i, 22, {p: 100, u: {束: 150, bunch: 100, handful: 30, 'パック': 50}, s: 'M'}],
-    [/もやし|bean ?sprouts?|soybean sprouts|sukju|kongnamul|tauge|toge|togue|giá đỗ|giá\b/i, 15, {p: 200, u: {袋: 200, handful: 40, cup: 70}, s: 'M'}],
-    [/レタス|サンチュ|lettuce|lechuga|alface|kopfsalat|sałata|marul|selada|xà lách|litsugas|romaine|iceberg|little gem|mixed leaves|salad leaves|endives?|chicorée|frisée|escarole|radicchio/i, 13, {p: 300, u: {枚: 25, leaf: 20, leaves: 20, head: 400, handful: 30}, s: 'M'}],
-    [/きゅうり|胡瓜|cucumbers?|pepinos?|gurken?|ogórki?|salatalık|timun|dưa leo|dưa chuột|pipino/i, 14, {p: 100, s: 'M'}],
-    [/ミニトマト|cherry tomato(?:es)?|grape tomato(?:es)?|tomates cherry|tomate cereja/i, 30, {p: 12, s: 'M'}],
-    [/トマト缶|canned tomato|tinned (?:chopped )?tomato|chopped tomatoes|crushed tomatoes|diced tomatoes|peeled tomatoes|plum tomatoes|passata|tomato passata|tomates triturados|polpa|pelati|pomodori/i, 21, {u: {缶: 400, can: 400, tin: 400, cans: 800, tins: 800}, d: 1.05, s: 'M'}],
-    [/トマト|tomato(?:es)?|tomates?|tomaten?|pomidor|domates|cà chua|kamatis|jitomate|tomatillos?/i, 20, {p: 150, s: 'M'}],
-    [/なす|茄子|eggplants?|aubergines?|berenjenas?|berinjela|bakłażan|patlıcan|terong|cà tím|talong|brinjal|baingan|cà pháo/i, 20, {p: 200, u: {本: 80}, s: 'M'}],
-    [/ズッキーニ|zucchini|courgettes?|calabac[ií]n|abobrinha|cukinia|kabak|koosa|marrow\b|summer squash|yellow squash|chayote|sayote|labu siam|su su|tayota|xuxu|chuchu/i, 18, {p: 200, s: 'M'}],
-    [/ゴーヤ|bitter (?:melon|gourd)|ampalaya|karela|pare\b|khổ qua|mướp đắng/i, 15, {p: 250, s: 'M'}],
-    [/winter melon|ash gourd|white pumpkin|wax gourd|bottle gourd|lauki|opo\b|upo\b|luffa|loofah|sponge gourd|silk squash|angled luffa|patola|mướp|bí đao|bí xanh|tinda|ridge gourd|calabash/i, 15, {p: 400, s: 'U'}],
-    [/ピーマン|ししとう|green peppers?|sivri|çarliston|dolmalık|padr[oó]n|shishito|banana peppers?|anaheim|poblano|pimientos?(?! (?:paste|picante|choricero))|pimentões?|cubanelle|siling haba|long green chili/i, 20, {p: 30, u: {本: 5}, s: 'M'}],
-    [/パプリカ|bell peppers?|capsicums?|paprika (?:red|yellow|green)|red peppers?|yellow peppers?|sweet peppers?|pimiento rojo|paprykę|papryka|biber(?! (?:salçası|paste))|ớt chuông|morrones?|pimentão/i, 28, {p: 150, s: 'M'}],
-    [/chil(?:e|i|li)(?:es|s)? (?:de árbol|arbol)|dried (?:red )?chil|guajillo|ancho\b|pasilla|chipotles?|árbol|arbol|cascabel|morita|mulato|dried chiles?/i, 320, {p: 5, s: 'U'}],
-    [/唐辛子|ají\b|aji\b|aji amarillo|ají amarillo|ají limo|rocoto|chil(?:e|i|li)(?:es|s)?\b|jalape[nñ]os?|serrano|bird'?s eye|cabai|cabe\b|ớt\b|sili\b|labuyo|prik\b|green chil|red chil|scotch bonnet|habanero|thai chil|hari mirch|mirch/i, 40, {p: 8, u: {本: 1}, tiny: 1, s: 'M'}],
-    [/セロリ|celery|apio|aipo|sellerie|seler\b|kereviz|cần tây|kintsay|chinese celery|seledri/i, 12, {p: 40, u: {本: 100, stalk: 40, stalks: 40, stick: 40, sticks: 40, head: 400, heart: 150, hearts: 150}, s: 'M'}],
-    [/アスパラ|asparagus|esp[aá]rragos?|aspargos?|spargel|szparagi|kuşkonmaz|măng tây/i, 21, {p: 20, u: {本: 20, bunch: 250}, s: 'M'}],
-    [/オクラ|okra|bhindi|quiabo|bamya|đậu bắp|ladyfinger/i, 26, {p: 10, u: {袋: 100, 本: 10}, s: 'M'}],
-    [/さやいんげん|いんげん|green beans?|french beans|runner beans|string beans|haricots verts|ejotes|vagem|fasolka|taze fasulye|buncis|long beans?|sitaw|yardlong|kacang panjang|đậu đũa|snake beans?|wing beans?|winged beans?|đậu rồng|sigarilyas|snow peas|sugar snap|mangetout|絹さや|さやえんどう/i, 25, {p: 8, u: {本: 7, handful: 50}, s: 'M'}],
-    [/グリーンピース|green peas|peas\b|garden peas|guisantes|ervilhas?|erbsen|groszek|bezelye|petits pois|matar|frozen vegetables|mixed vegetables|peas and carrots/i, 80, {d: 0.6, s: 'M'}],
-    [/コーン缶（クリーム）|cream(?:ed|-style) corn/i, 84, {u: {缶: 190}, s: 'M'}],
-    [/コーン|とうもろこし|corn(?! (?:starch|flour|meal|tortillas?|syrup|masa|oil|chips|nuts|husks?))|sweetcorn|sweet corn|maíz|milho|mais\b|kukurydza|mısır|jagung|bắp|elote|choclo|mazorca|baby corn/i, 89, {p: 175, u: {本: 175, ear: 175, ears: 175, cob: 175, cobs: 175, tin: 200, can: 300}, d: 0.65, s: 'M'}],
-    [/しいたけ（乾燥）|干ししいたけ|dried shiitake|dried mushrooms|dried porcini|porcini|dried forest|wood ?ear|きくらげ|black fungus|white fungus|yin'er|tremella|lily buds|kim châm khô/i, 200, {x: 6, p: 3, u: {枚: 3, piece: 3, pieces: 3}, s: 'M'}],
-    [/しいたけ|椎茸|shiitake|shitake/i, 25, {p: 15, u: {枚: 15}, s: 'M'}],
-    [/しめじ|えのき|まいたけ|エリンギ|なめこ|マッシュルーム|mushrooms?|champignons?|setas|cogumelos?|pilze|grzyby|pieczarki|mantar|jamur|nấm|kabute|enoki|oyster mushroom|king oyster|cremini|chestnut mushrooms|button|chanterelles?|ceps?\b|portobello|straw mushrooms?|beech/i, 22, {p: 15, u: {パック: 100, 袋: 100, 株: 100, pack: 100, punnet: 250}, s: 'M'}],
-    [/アボカド|avocados?|aguacates?|abacate|alpukat|bơ\b|guacamole/i, 176, {p: 150, s: 'M'}],
-    [/わかめ|ひじき|昆布|海藻|のり|海苔|seaweed|laver|\bgim\b|\bnori\b|zicai|miyeok|kelp|kombu|wakame|hijiki|agar|seaweed stems|julgi|rong biển/i, 150, {p: 3, u: {枚: 3, sheet: 3, sheets: 3, cm: 1}, tiny: 1, s: 'M'}],
-    [/かつお節|削り節|bonito flakes|katsuobushi/i, 332, {p: 2, u: {パック: 2}, tiny: 1, s: 'M'}],
-    [/こんにゃく|しらたき|konjac|konnyaku|shirataki/i, 6, {p: 200, u: {枚: 250, 袋: 200}, s: 'M'}],
-    [/acorn jelly|dotorimuk|mung bean jelly|cheongpomuk/i, 43, {u: {block: 400}, s: 'U'}],
-    [/young jackfruit|jackfruit|nangka|langka|mít non/i, 50, {s: 'U'}],
-    [/hearts of palm|palmito/i, 28, {u: {jar: 300}, s: 'U'}],
-    [/artichokes?|alcachofas?|carciofi|alcachofra|enginar/i, 47, {p: 120, s: 'U'}],
-    [/fennel(?! seeds?)|finocchio|fenchel|hinojo|funcho|rezene/i, 31, {p: 250, s: 'U'}],
-    [/nopal(?:es)?|cactus/i, 16, {p: 60, s: 'U'}],
-    [/green papaya|papaya|lechosa|mamão|đu đủ|pepaya/i, 40, {p: 400, s: 'U'}],
-    [/green mangoe?s?|mangoes?|mangga|xoài|manga\b/i, 60, {p: 250, s: 'U'}],
-    [/squash blossoms?|flor de calabaza/i, 15, {p: 5, u: {bunch: 100}, s: 'U'}],
+    [/小玉ねぎ|ペコロス|pearl onions?|baby onions?|small (?:white |red |yellow |brown )?onions\b|petits oignons|oignons grelots|grelots|borettane|cipolline|cipollini|silverskin onions?|pickling onions?|cebollitas?|cebolinhas? pérola/i, 33, {c: 7, p: 18, s: 'M'}],
+    [/万能ねぎ|小ねぎ|青ねぎ|わけぎ|分葱|あさつき|浅葱|(?<!玉|たま)ねぎ|(?<!玉)葱|scallions?|green onions?|spring onions?|jjokpa|cebolin|cebolleta|cebollín|cebollino|cheiro-verde|frühlingszwiebel|szczypiorek|dymka|taze soğan|daun bawang|hành lá|dahon ng sibuyas|sibuyas dahon|shallot leaves|garlic leaves/i, 30, {c: 3, p: 15, u: {本: 10, bunch: 100, bunches: 200}, tiny: 1, s: 'M'}],
+    [/玉ねぎ|たまねぎ|onions?(?! powder)|cebollas?|cebola|zwiebeln?|cebula|soğan|bawang (?:bombay|merah besar)|pyaz|hành tây|sibuyas|red onion|pearl onions|baby onions|borettane/i, 33, {c: 7, p: 200, s: 'M'}],
+    [/にんにく|ニンニク|garlic(?! (?:chives|powder|oil|leaves|shoots|mayo))|ajo\b|alho|knoblauch|czosnek|sarımsak|bawang putih|tỏi|bawang\b(?! (?:merah|bombay|daun|goreng))/i, 129, {c: 21, p: 5, u: {片: 5, clove: 5, cloves: 5, head: 50, bulb: 50, 'head of garlic': 50, かけ: 5}, tiny: 1, s: 'M'}],
+    [/生姜|しょうが|ginger(?! (?:-garlic|garlic))|jengibre|gengibre|ingwer|imbir|zencefil|jahe|gừng|luya|galangal|lengkuas|laos|fingerroot|krachai|temu kunci|kencur|turmeric root|fresh turmeric|kunyit|nghệ/i, 30, {c: 4.5, p: 15, u: {かけ: 15, thumb: 15, piece: 15, knob: 15, slice: 2, slices: 2, cm: 5}, tiny: 1, s: 'M'}],
+    [/ginger-garlic paste|garlic paste|ginger paste/i, 100, {c: 10, d: 1.0, tiny: 1, s: 'U'}],
+    [/fried shallots?|fried garlic|bawang goreng|crispy shallots/i, 550, {c: 40, d: 0.4, s: 'U'}],
+    [/shallots?|eschalot|échalote|bawang merah|hom daeng|hẹ tây|hành tím/i, 72, {c: 14, p: 25, s: 'U'}],
+    [/にんじん|人参|carrots?|zanahorias?|cenoura|karotten?|möhren?|marchew|havuç|wortel|cà rốt|gajar/i, 35, {c: 6.5, p: 150, s: 'M'}],
+    [/大根おろし|大根|daikon|white radish|korean radish|\bmu\b|labanos|mooli|lobak/i, 15, {c: 2.7, p: 800, u: {本: 1000, cm: 30, 'cm分': 30}, s: 'M'}],
+    [/かぶの葉/i, 20, {c: 1, s: 'M'}],
+    [/かぶ|turnips?|navets?|rüben|kohlrabi|rutabaga|swede|jicama|bengkuang|singkamas|yam bean/i, 25, {c: 3.1, p: 100, s: 'M'}],
+    [/radish(?:es)?|rábano|rabanete|radieschen|rzodkiew|turp\b/i, 16, {c: 1.9, p: 15, u: {bunch: 150, bunches: 150}, s: 'U'}],
+    [/beetroots?|beets?\b|beet greens|botwina|buraki|remolacha|beterraba|rote bete/i, 43, {c: 6.6, p: 150, s: 'U'}],
+    [/celeriac|knollensellerie|selera|celery root/i, 42, {c: 7, p: 500, s: 'U'}],
+    [/parsnips?|pastinaken?|pasternak|panais|parsley root|pietruszka/i, 75, {c: 13, p: 120, s: 'U'}],
+    [/ごぼう|burdock/i, 58, {c: 9.7, p: 150, s: 'M'}],
+    [/れんこん|蓮根|lotus (?:root|stems?)|ngó sen|củ sen/i, 66, {c: 13.5, p: 200, s: 'M'}],
+    [/たけのこ|筍|bamboo shoots?|rebung|măng|labong/i, 22, {c: 1.5, p: 200, s: 'M'}],
+    [/dried bamboo/i, 270, {c: 15, x: 4, s: 'U'}],
+    [/キャベツ|cabbage(?! kimchi)|coleslaw|repollo|col\b|repolho|kohl\b|weißkohl|wirsing|kapusta|lahana|kubis|kol\b|bắp cải|repolyo|savoy|karalahana/i, 21, {c: 3.4, p: 1200, u: {枚: 50, leaf: 50, leaves: 50, head: 1000}, s: 'M'}],
+    [/白菜|napa|chinese cabbage|baechu|wombok|pechay baguio|cải thảo|baby (?:napa )?cabbage/i, 13, {c: 1.9, p: 2000, u: {枚: 80, head: 800, heads: 800}, s: 'M'}],
+    [/キムチ|kimchi|김치/i, 27, {c: 5, s: 'M'}],
+    [/sauerkraut|kiszona|choucroute|pickled (?:cabbage|mustard|radish|cucumbers?|long beans|vegetables)|suancai|dưa cải|zhacai|榨菜|preserved (?:radish|vegetable|mustard)|caipu|gherkins?|cornichons?|dill pickles?|pickles?|relish|achara|atchara|pickled|ogórki kiszone|turşu/i, 20, {c: 2, p: 40, s: 'U'}],
+    [/梅干し|umeboshi/i, 33, {c: 7, p: 10, u: {個: 10}, s: 'M'}],
+    [/紅しょうが|甘酢しょうが|ガリ/i, 20, {c: 5, tiny: 1, s: 'M'}],
+    [/福神漬|らっきょう|たくあん|漬物/i, 100, {c: 20, s: 'M'}],
+    [/ブロッコリー|broccoli|br[oó]coli|brokkoli|brokuł|kana\b|gai lan|chinese broccoli|cải làn|broccolini|tenderstem/i, 37, {c: 1.5, p: 250, u: {株: 250, head: 300}, s: 'M'}],
+    [/カリフラワー|cauliflower|coliflor|couve-flor|blumenkohl|kalafior|karnabahar|kembang kol|súp lơ|romanesco/i, 28, {c: 2.3, p: 600, u: {head: 700}, s: 'M'}],
+    [/brussels sprouts|rosenkohl|coles de bruselas/i, 43, {c: 4.4, p: 15, s: 'U'}],
+    [/ほうれん草|spinach|espinacas?|espinafre|spinat|szpinak|ıspanak|bayam|rau dền|amaranth greens|kangkong|water spinach|morning glory|rau muống|malunggay|moringa(?! pods)|drumstick leaves|chard|mangold|acelga|blitva|beet greens|sorrel|szczaw|purslane|semizotu|mallow|molokhia|mulukhiyah|jute leaves|rau đay|malabar spinach|mồng tơi|alugbati|katuk|rau ngót|sweet leaf|cassava leaves|taro leaves|sweet potato (?:leaves|tops)|talbos|chayote shoots|longxucai|amaranth|kale|cavolo nero|collard|couve\b|greens\b|grelos|turnip greens|mustard greens|gai choy|cải bẹ|cải xanh|chicory|catalogna|dandelion|methi|fenugreek leaves|ash gourd leaves|vine leaves|grape leaves|watercress|berros|agrião|rocket|arugula|rucola|roquette|gargir|lamb's lettuce|feldsalat|mâche|bird's nest fern|shansu|fernbrake|gosari|bracken|water snowflake|shuilian|water lily|fiddlehead|pako\b|tamarind leaves|melinjo|young cassava|kale|七草|cha-om|acacia/i, 22, {c: 0.3, p: 30, u: {束: 200, bunch: 250, bunches: 250, handful: 30, handfuls: 30, cup: 30, cups: 30, leaf: 5, leaves: 5, 株: 50}, s: 'M'}],
+    [/小松菜|チンゲン菜|bok ?choy|pak ?choi|pak choy|pechay|choy sum|cải ngọt|cải thìa|sawi|caisim|tatsoi|baby bok choy|shanghai|chinese greens|youcai|yu choy/i, 13, {c: 0.6, p: 100, u: {束: 250, 株: 100, bunch: 250, bunches: 250, head: 100, heads: 100, handful: 40, handfuls: 40, cup: 50}, s: 'M'}],
+    [/春菊|水菜|三つ葉|菜の花|かいわれ|crown daisy|chrysanthemum greens|ssukgat|minari|garland|tần ô|cải cúc|mizuna|rapini|broccoli rabe|cime di rapa|ニラ|にら|garlic chives|chinese chives|chive flowers?|jiucai|buchu|hẹ\b|kucai/i, 22, {c: 1.5, p: 100, u: {束: 150, bunch: 100, handful: 30, 'パック': 50}, s: 'M'}],
+    [/もやし|bean ?sprouts?|soybean sprouts|sukju|kongnamul|tauge|toge|togue|giá đỗ|giá\b/i, 15, {c: 1.3, p: 200, u: {袋: 200, handful: 40, cup: 70}, s: 'M'}],
+    [/レタス|サンチュ|lettuce|lechuga|alface|kopfsalat|sałata|marul|selada|xà lách|litsugas|romaine|iceberg|little gem|mixed leaves|salad leaves|endives?|chicorée|frisée|escarole|radicchio/i, 13, {c: 1.7, p: 300, u: {枚: 25, leaf: 20, leaves: 20, head: 400, handful: 30}, s: 'M'}],
+    [/きゅうり|胡瓜|cucumbers?|pepinos?|gurken?|ogórki?|salatalık|timun|dưa leo|dưa chuột|pipino/i, 14, {c: 1.9, p: 100, s: 'M'}],
+    [/ミニトマト|cherry tomato(?:es)?|grape tomato(?:es)?|tomates cherry|tomate cereja/i, 30, {c: 5.8, p: 12, s: 'M'}],
+    [/トマト缶|canned tomato|tinned (?:chopped )?tomato|chopped tomatoes|crushed tomatoes|diced tomatoes|peeled tomatoes|plum tomatoes|passata|tomato passata|tomates triturados|polpa|pelati|pomodori/i, 21, {c: 3.1, u: {缶: 400, can: 400, tin: 400, cans: 800, tins: 800}, d: 1.05, s: 'M'}],
+    [/トマト|tomato(?:es)?|tomates?|tomaten?|pomidor|domates|cà chua|kamatis|jitomate|tomatillos?/i, 20, {c: 3.7, p: 150, s: 'M'}],
+    [/なす|茄子|eggplants?|aubergines?|berenjenas?|berinjela|bakłażan|patlıcan|terong|cà tím|talong|brinjal|baingan|cà pháo/i, 20, {c: 2.9, p: 200, u: {本: 80}, s: 'M'}],
+    [/ズッキーニ|zucchini|courgettes?|calabac[ií]n|abobrinha|cukinia|kabak|koosa|marrow\b|summer squash|yellow squash|chayote|sayote|labu siam|su su|tayota|xuxu|chuchu/i, 18, {c: 1.5, p: 200, s: 'M'}],
+    [/ゴーヤ|bitter (?:melon|gourd)|ampalaya|karela|pare\b|khổ qua|mướp đắng/i, 15, {c: 1.3, p: 250, s: 'M'}],
+    [/winter melon|ash gourd|white pumpkin|wax gourd|bottle gourd|lauki|opo\b|upo\b|luffa|loofah|sponge gourd|silk squash|angled luffa|patola|mướp|bí đao|bí xanh|tinda|ridge gourd|calabash/i, 15, {c: 2.5, p: 400, s: 'U'}],
+    [/ピーマン|ししとう|green peppers?|sivri|çarliston|dolmalık|padr[oó]n|shishito|banana peppers?|anaheim|poblano|pimientos?(?! (?:paste|picante|choricero))|pimentões?|cubanelle|siling haba|long green chili/i, 20, {c: 2.8, p: 30, u: {本: 5}, s: 'M'}],
+    [/パプリカ|bell peppers?|capsicums?|paprika (?:red|yellow|green)|red peppers?|yellow peppers?|sweet peppers?|pimiento rojo|paprykę|papryka|biber(?! (?:salçası|paste))|ớt chuông|morrones?|pimentão/i, 28, {c: 5.6, p: 150, s: 'M'}],
+    [/chil(?:e|i|li)(?:es|s)? (?:de árbol|arbol)|dried (?:red )?chil|guajillo|ancho\b|pasilla|chipotles?|árbol|arbol|cascabel|morita|mulato|dried chiles?/i, 320, {c: 12, p: 5, s: 'U'}],
+    [/唐辛子|ají\b|aji\b|aji amarillo|ají amarillo|ají limo|rocoto|chil(?:e|i|li)(?:es|s)?\b|jalape[nñ]os?|serrano|bird'?s eye|cabai|cabe\b|ớt\b|sili\b|labuyo|prik\b|green chil|red chil|scotch bonnet|habanero|thai chil|hari mirch|mirch/i, 40, {c: 7, p: 8, u: {本: 1}, tiny: 1, s: 'M'}],
+    [/セロリ|celery|apio|aipo|sellerie|seler\b|kereviz|cần tây|kintsay|chinese celery|seledri/i, 12, {c: 2, p: 40, u: {本: 100, stalk: 40, stalks: 40, stick: 40, sticks: 40, head: 400, heart: 150, hearts: 150}, s: 'M'}],
+    [/アスパラ|asparagus|esp[aá]rragos?|aspargos?|spargel|szparagi|kuşkonmaz|măng tây/i, 21, {c: 2.1, p: 20, u: {本: 20, bunch: 250}, s: 'M'}],
+    [/オクラ|okra|bhindi|quiabo|bamya|đậu bắp|ladyfinger/i, 26, {c: 1.6, p: 10, u: {袋: 100, 本: 10}, s: 'M'}],
+    [/さやいんげん|いんげん|green beans?|french beans|runner beans|string beans|haricots verts|ejotes|vagem|fasolka|taze fasulye|buncis|long beans?|sitaw|yardlong|kacang panjang|đậu đũa|snake beans?|wing beans?|winged beans?|đậu rồng|sigarilyas|snow peas|sugar snap|mangetout|絹さや|さやえんどう/i, 25, {c: 2.7, p: 8, u: {本: 7, handful: 50}, s: 'M'}],
+    [/グリーンピース|green peas|peas\b|garden peas|guisantes|ervilhas?|erbsen|groszek|bezelye|petits pois|matar|frozen vegetables|mixed vegetables|peas and carrots/i, 80, {c: 7.6, d: 0.6, s: 'M'}],
+    [/コーン缶（クリーム）|cream(?:ed|-style) corn/i, 84, {c: 17, u: {缶: 190}, s: 'M'}],
+    [/コーン|とうもろこし|corn(?! (?:starch|flour|meal|tortillas?|syrup|masa|oil|chips|nuts|husks?))|sweetcorn|sweet corn|maíz|milho|mais\b|kukurydza|mısır|jagung|bắp|elote|choclo|mazorca|baby corn/i, 89, {c: 13.8, p: 175, u: {本: 175, ear: 175, ears: 175, cob: 175, cobs: 175, tin: 200, can: 300}, d: 0.65, s: 'M'}],
+    [/しいたけ（乾燥）|干ししいたけ|dried shiitake|dried mushrooms|dried porcini|porcini|dried forest|wood ?ear|きくらげ|black fungus|white fungus|yin'er|tremella|lily buds|kim châm khô/i, 200, {c: 16, x: 6, p: 3, u: {枚: 3, piece: 3, pieces: 3}, s: 'M'}],
+    [/しいたけ|椎茸|shiitake|shitake/i, 25, {c: 1.5, p: 15, u: {枚: 15}, s: 'M'}],
+    [/しめじ|えのき|まいたけ|エリンギ|なめこ|マッシュルーム|mushrooms?|champignons?|setas|cogumelos?|pilze|grzyby|pieczarki|mantar|jamur|nấm|kabute|enoki|oyster mushroom|king oyster|cremini|chestnut mushrooms|button|chanterelles?|ceps?\b|portobello|straw mushrooms?|beech/i, 22, {c: 1.5, p: 15, u: {パック: 100, 袋: 100, 株: 100, pack: 100, punnet: 250}, s: 'M'}],
+    [/アボカド|avocados?|aguacates?|abacate|alpukat|bơ\b|guacamole/i, 176, {c: 1, p: 150, s: 'M'}],
+    [/わかめ|ひじき|昆布|海藻|のり|海苔|seaweed|laver|\bgim\b|\bnori\b|zicai|miyeok|kelp|kombu|wakame|hijiki|agar|seaweed stems|julgi|rong biển/i, 150, {c: 6, p: 3, u: {枚: 3, sheet: 3, sheets: 3, cm: 1}, tiny: 1, s: 'M'}],
+    [/かつお節|削り節|bonito flakes|katsuobushi/i, 332, {c: 0.4, p: 2, u: {パック: 2}, tiny: 1, s: 'M'}],
+    [/こんにゃく|しらたき|konjac|konnyaku|shirataki/i, 6, {c: 0.1, p: 200, u: {枚: 250, 袋: 200}, s: 'M'}],
+    [/acorn jelly|dotorimuk|mung bean jelly|cheongpomuk/i, 43, {c: 10, u: {block: 400}, s: 'U'}],
+    [/young jackfruit|jackfruit|nangka|langka|mít non/i, 50, {c: 9, s: 'U'}],
+    [/hearts of palm|palmito/i, 28, {c: 2.6, u: {jar: 300}, s: 'U'}],
+    [/artichokes?|alcachofas?|carciofi|alcachofra|enginar/i, 47, {c: 5, p: 120, s: 'U'}],
+    [/fennel(?! seeds?)|finocchio|fenchel|hinojo|funcho|rezene/i, 31, {c: 4, p: 250, s: 'U'}],
+    [/nopal(?:es)?|cactus/i, 16, {c: 1.2, p: 60, s: 'U'}],
+    [/green papaya|papaya|lechosa|mamão|đu đủ|pepaya/i, 40, {c: 8, p: 400, s: 'U'}],
+    [/green mangoe?s?|mangoes?|mangga|xoài|manga\b/i, 60, {c: 14, p: 250, s: 'U'}],
+    [/squash blossoms?|flor de calabaza/i, 15, {c: 2, p: 5, u: {bunch: 100}, s: 'U'}],
     // ---- 果物 ----
-    [/レモン|すだち|ゆず|かぼす|lemons?(?!grass)|limes?(?! leaves)|calamansi|kalamansi|limones?|limão|zitrone|cytryna|limon|jeruk (?:nipis|limau)|chanh|dayap|bilimbi|belimbing/i, 30, {p: 60, u: {wedge: 8, wedges: 8, slice: 5}, tiny: 1, s: 'M'}],
-    [/バナナ|bananas?|plátano maduro|pisang|chuối|saging/i, 93, {p: 100, u: {本: 100}, s: 'M'}],
-    [/りんご|apples?|manzanas?|maçãs?|äpfel|apfel|jabłk|elma|apfelmus|apple ?sauce/i, 53, {p: 250, s: 'M'}],
-    [/pears?|peras?|birnen?|gruszk|armut/i, 55, {p: 200, s: 'U'}],
-    [/oranges?|naranjas?|laranjas?|orangen|pomarańcz|portakal|bitter orange/i, 42, {p: 180, s: 'M'}],
-    [/pineapples?|piñas?|abacaxi|ananas|nanas|dứa|thơm/i, 50, {p: 80, u: {ring: 40, rings: 40, can: 440}, s: 'U'}],
-    [/grapes?|uvas?|winogrona|üzüm/i, 69, {p: 5, d: 0.6, s: 'U'}],
-    [/strawberr|blueberr|raspberr|berries|cranberr|fresas|morangos/i, 45, {p: 12, d: 0.6, s: 'U'}],
-    [/guavas?|guayaba|goiaba|ổi|bayabas/i, 68, {p: 100, s: 'U'}],
-    [/pomegranate(?! molasses)|granada|nar\b/i, 83, {d: 0.6, s: 'U'}],
-    [/star ?fruit|carambola|kamias/i, 31, {p: 50, s: 'U'}],
-    [/figs?\b|higos?|figos?/i, 74, {p: 50, s: 'U'}],
-    [/melon|watermelon|sandía/i, 35, {p: 1000, s: 'U'}],
+    [/レモン|すだち|ゆず|かぼす|lemons?(?!grass)|limes?(?! leaves)|calamansi|kalamansi|limones?|limão|zitrone|cytryna|limon|jeruk (?:nipis|limau)|chanh|dayap|bilimbi|belimbing/i, 30, {c: 6, p: 60, u: {wedge: 8, wedges: 8, slice: 5}, tiny: 1, s: 'M'}],
+    [/バナナ|bananas?|plátano maduro|pisang|chuối|saging/i, 93, {c: 21, p: 100, u: {本: 100}, s: 'M'}],
+    [/りんご|apples?|manzanas?|maçãs?|äpfel|apfel|jabłk|elma|apfelmus|apple ?sauce/i, 53, {c: 14, p: 250, s: 'M'}],
+    [/pears?|peras?|birnen?|gruszk|armut/i, 55, {c: 11, p: 200, s: 'U'}],
+    [/oranges?|naranjas?|laranjas?|orangen|pomarańcz|portakal|bitter orange/i, 42, {c: 9, p: 180, s: 'M'}],
+    [/pineapples?|piñas?|abacaxi|ananas|nanas|dứa|thơm/i, 50, {c: 12, p: 80, u: {ring: 40, rings: 40, can: 440}, s: 'U'}],
+    [/grapes?|uvas?|winogrona|üzüm/i, 69, {c: 15, p: 5, d: 0.6, s: 'U'}],
+    [/strawberr|blueberr|raspberr|berries|cranberr|fresas|morangos/i, 45, {c: 7, p: 12, d: 0.6, s: 'U'}],
+    [/guavas?|guayaba|goiaba|ổi|bayabas/i, 68, {c: 9, p: 100, s: 'U'}],
+    [/pomegranate(?! molasses)|granada|nar\b/i, 83, {c: 15, d: 0.6, s: 'U'}],
+    [/star ?fruit|carambola|kamias/i, 31, {c: 4, p: 50, s: 'U'}],
+    [/figs?\b|higos?|figos?/i, 74, {c: 12, p: 50, s: 'U'}],
+    [/melon|watermelon|sandía/i, 35, {c: 9, p: 1000, s: 'U'}],
     [/keluak|kluwek|pangium/i, 270, {p: 15, s: 'X'}],
     // ---- 香りの葉（重さは少ないので、量がなければ 0） ----
-    [/大葉|しそ|紫蘇|perilla|kkaennip|shiso|みょうが|木の芽|三つ葉|パセリ|パクチー|バジル|parsley|perejil|salsa\b|petersilie|pietruszk|maydanoz|coriander|cilantro|culantro|sawtooth|coentro|koriander|kolendr|kişniş|ketumbar|ngò|wansoy|basil|albahaca|manjericão|basilikum|bazylia|fesleğen|kemangi|húng quế|horapha|kaprao|holy basil|lemon basil|maenglak|dill|eneldo|endro|koper|dereotu|thì là|mint|menta|hortelã|minze|mięta|nane|daun mint|húng lủi|yerba ?buena|chives|cebollino|cebolinha|schnittlauch|szczypior|frenk soğanı|rau răm|vietnamese coriander|ngò om|rice paddy herb|huacatay|epazote|chervil|tarragon|herbs\b|kräuter|ハーブ|curry leaves|kari\b|salam lea(?:f|ves)|daun salam|lime leaves|kaffir|makrut|daun jeruk|lá chanh|pandan|turmeric leaf|betel|lá lốt|wild betel|lemongrass|serai|sả\b|tanglad|takrai|coriander root|ginseng|herbal|sishen|bay\b|banana leaves?/i, 40, {p: 1, u: {bunch: 30, bunches: 60, 'small bunch': 20, 'large bunch': 50, handful: 15, handfuls: 30, sprig: 2, sprigs: 2, leaf: 1, leaves: 1, 枚: 1, stalk: 15, stalks: 15, 本: 15, パック: 10}, tiny: 1, s: 'M'}],
+    [/大葉|しそ|紫蘇|perilla|kkaennip|shiso|みょうが|木の芽|三つ葉|パセリ|パクチー|バジル|parsley|perejil|salsa\b|petersilie|pietruszk|maydanoz|coriander|cilantro|culantro|sawtooth|coentro|koriander|kolendr|kişniş|ketumbar|ngò|wansoy|basil|albahaca|manjericão|basilikum|bazylia|fesleğen|kemangi|húng quế|horapha|kaprao|holy basil|lemon basil|maenglak|dill|eneldo|endro|koper|dereotu|thì là|mint|menta|hortelã|minze|mięta|nane|daun mint|húng lủi|yerba ?buena|chives|cebollino|cebolinha|schnittlauch|szczypior|frenk soğanı|rau răm|vietnamese coriander|ngò om|rice paddy herb|huacatay|epazote|chervil|tarragon|herbs\b|kräuter|ハーブ|curry leaves|kari\b|salam lea(?:f|ves)|daun salam|lime leaves|kaffir|makrut|daun jeruk|lá chanh|pandan|turmeric leaf|betel|lá lốt|wild betel|lemongrass|serai|sả\b|tanglad|takrai|coriander root|ginseng|herbal|sishen|bay\b|banana leaves?/i, 40, {c: 1, p: 1, u: {bunch: 30, bunches: 60, 'small bunch': 20, 'large bunch': 50, handful: 15, handfuls: 30, sprig: 2, sprigs: 2, leaf: 1, leaves: 1, 枚: 1, stalk: 15, stalks: 15, 本: 15, パック: 10}, tiny: 1, s: 'M'}],
 ];
 const KC_FRAC = {'½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3, '⅛': 0.125};
 // 数（「1/2」「1 1/2」「1と1/2」「1.5」「2-3」→ 2.5）。見つからなければ null
@@ -9270,7 +9278,7 @@ function kcalCalc(r){
         if (!r.pack && jp){ x = x.replace(/^([^\s/]+)\/[^\s]+/, '$1'); const i = x.search(/\s/); rows.push({txt: (i < 0 ? x : x.slice(0, i)).toLowerCase(), q: i < 0 ? '' : x.slice(i + 1), seas: true}); }
         else rows.push({txt: x.toLowerCase().replace(/,.*$/, '').replace(/\(.*?\)/g, ' '), q: x, seas: true});
     });
-    let kcal = 0, known = 0, unknown = 0, solid = 0, portion = 0, frySolid = 0, fry = false;
+    let kcal = 0, known = 0, unknown = 0, solid = 0, portion = 0, frySolid = 0, fry = false, carb = 0, cKnown = 0, cUnknown = 0;   // carb: 糖質（g。食材の行の c。糖質ひかえめモード）
     rows.forEach(row => {
         const lg = kcLegume(kcMatch(row.txt), row.txt, row.q), f = lg.f; row.f = f ? f[0].source.slice(0, 24) : null;
         let gq = kcGrams(row.q, f, row.txt); if (gq && gq.g && lg.drain !== 1) gq = {g: gq.g * lg.drain};
@@ -9278,12 +9286,13 @@ function kcalCalc(r){
         if (f && (f[2] || {}).liq && !(gq && gq.g)){ row.k = 0; row.skip = 'liq'; return; }
         if (gq && gq.serve){ row.k = 0; row.skip = 'serve'; return; }
         if (gq && gq.tiny){ row.k = 0; row.skip = 'tiny'; return; }
-        if (!f){ const g = gq ? gq.g : 80; unknown += g; row.k = null; row.g = g; return; }
-        if (!gq){ unknown += 80; row.k = null; row.g = null; return; }
+        if (!f){ const g = gq ? gq.g : 80; unknown += g; cUnknown += g; row.k = null; row.g = g; return; }
+        if (!gq){ unknown += 80; cUnknown += 80; row.k = null; row.g = null; return; }
         const o = f[2] || {}, g = gq.g * (o.e || 1);
         row.g = Math.round(g); row.k = g * f[1] / 100;
         if (o.oil === 1 && (g >= 100 || ((r.method === '揚' || r.method === 'fry') && g >= 60))){ fry = true; row.k = 0; row.fry = true; return; }   // 揚げ物で油がたくさん（揚げ油）
         kcal += row.k;
+        if (o.c != null){ row.c = g * o.c / 100; carb += row.c; if (!o.liq) cKnown += g; } else if (!o.liq) cUnknown += g;   // 糖質の値がない食材は「わからない重さ」に数える（でっち上げない）
         if (!o.liq) known += g;
         if (!o.liq && !o.oil && !row.seas) solid += g;
         if (!o.liq && !o.oil && !o.st && !(row.seas && !KC_BATTER.test(row.txt) && !KC_DUST.test(row.txt))) frySolid += g;
@@ -9294,7 +9303,7 @@ function kcalCalc(r){
     // 1人分の重さの上限の目安（材料が多い料理は、2人分ではなく、もっと多い人数分とみる）。主菜 400g・主食の入った主菜/ご飯もの/麺 650g・副菜 200g・汁もの（具）300g。乾いた米・麺・豆は、炊いた・ゆでた重さ（x 倍）で見る
     const cap = r.type === '副菜' ? 200 : r.type === '汁物' ? 300 : (r.type === 'ごはん' || r.type === '麺' || r.starch) ? 650 : 400;
     const sv = Math.max(2, portion / cap);
-    return {kcal: kcal / sv, cov, tot: kcal, rows, solid, sv};
+    return {kcal: kcal / sv, cov, tot: kcal, rows, solid, sv, carb: carb / sv, ccov: cKnown + cUnknown > 0 ? cKnown / (cKnown + cUnknown) : 0};
 }
 // 名前 → 食材。ほかの国は「ラベル | キー」: ラベルのかっこ・コンマのあと・「for 〜」「with 〜」を外して見て、当たらないか水・香辛料に当たったら、キー（短い代表名）で見る
 function kcClean(t){ return String(t).replace(/[（(][^）)]*[）)]/g, ' ').replace(/,.*$/, '').replace(/\s(?:for|with|in|studded|to serve|to garnish|from)\b.*$/, '').replace(/\s+/g, ' ').trim(); }
@@ -9388,7 +9397,7 @@ const KCAL_NOTE = () => t('材料の量からの目安です。実際の量・�
 function kcalNoteHtml(r){
     if (!r || (!Array.isArray(r.ings) && !Array.isArray(r.items))) return '';
     const k = kcalOf(r);
-    return `<div class="kcal-note" role="note"><span class="kc-v">${esc(kcalText(k))}</span><span class="small muted kc-c">${esc(KCAL_NOTE())}</span></div>`;
+    return `<div class="kcal-note" role="note"><span class="kc-v">${esc(kcalText(k))}</span>${carbNoteLine(r)}<span class="small muted kc-c">${esc(KCAL_NOTE())}</span></div>`;
 }
 /* ---- ダイエットモード（設定。S.settings.diet） ----
    オンのとき、献立のえらび（pick）で、カロリーの目安が低めの料理を出しやすくし、揚げ物を控えめにする（候補から外さない・決めた献立は自動では変えない）。
@@ -9433,11 +9442,112 @@ function dietSettingsHtml(){
         <span class="small warn">${esc(KCAL_NOTE())}</span>
     </div>`;
 }
+/* ---- 糖質ひかえめモード（設定。S.settings.carb。オーナー指示 11/11「糖尿病の人が食べられるレシピの開発と、そのモードの追加」） ----
+   決まり: アプリは健康・効き目をうたわない（tools/tests/health-claims.mjs）。名前と説明は事実だけ。病名を名前に掲げない（入れるかはオーナーに確認中）。
+   文言は CARB_TX のキーで持つ（名前・説明・注意を変えるときは、ここと 17言語の辞書のキーを替えるだけ）。
+   オンのとき（ダイエットモードと同じく、選び方と表示だけ。決めた献立・いまのお膳は自動では変えない）:
+    - 献立のえらび（pick・副菜と汁ものの候補 carbPrefer）: 糖質の多い料理（carbHeavy: ご飯もの・麺の主菜、パン粉・天ぷらの衣の揚げ物、
+      糖質の目安が席ごとの上限（主菜 20g・副菜 12g・汁もの 12g）より多い料理）より、そうでない料理をいつも先に出す。候補が多い料理だけのときはそれを出す（外さない）。
+      いも・春雨・めんの多い汁もの、甘い煮もの（砂糖・みりんが多い）は、材料の量から出した糖質の目安で上限を超えるので、後になる。
+      主食が「なし」の国（アメリカ・イギリス）で、じゃがいも・パンの副菜を先に出すきまり（starchWanted）は、オンのときは使わない。
+    - 主食は種類を変えずに「小盛り」（ふだんの量の 2/3）と表示し、糖質の目安もその量で数える。雑穀ご飯・玄米ご飯などは、いつもの主食の選択肢から選べる。
+    - お膳の下に合計、作り方の画面に1品の、1人分の糖質の目安（g）を出す。
+   糖質の値: KC_FOODS の各行の c（可食部 100g あたりの糖質 g ＝ 炭水化物 − 食物繊維。ご飯・いもなどは利用可能炭水化物に近い値）。
+     出典: 文部科学省「日本食品標準成分表（八訂）2020年版」（s: 'M' の行）、米国農務省 USDA FoodData Central（s: 'U' の行）。
+     カロリーの表と同じく、作業環境から照らし合わせられなかったので「出典未確認」（作り手の知識の値。docs/carb-sources.md の手順で確かめて直す）。
+     値のわからない食材（c がない行・表にない食材）は、でっち上げずに「わからない重さ」に数え、7 割以上の重さがわからなければ「目安なし」にする。
+   選んだとき1回だけ、主治医・管理栄養士の指示を優先する注意を出す（S.settings.carbNoted。消しても、もう一度オンにしても、2回目は出さない）。 */
+const CARB_TX = {
+    name: () => t('糖質ひかえめ'),
+    desc: () => t('ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示'),
+    more: () => t('オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。'),
+    caution: () => t('糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。'),
+    ok: () => t('わかりました'),
+    staple: name => t('{name}（小盛り）', {name}),
+    dish: n => t('糖質 約 {n} g（1人分・目安）', {n}),
+    dishLow: () => t('糖質 1 g 未満（1人分・目安）'),
+    dishNa: () => t('糖質の目安なし（量や値のわからない材料が多いため）'),
+    tray: n => t('お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）', {n}),
+    trayNoStaple: n => t('お膳の糖質：約 {n} g（1人分・目安）', {n}),
+    trayNa: name => t('お膳の糖質の目安はありません（「{name}」の目安がないため）', {name}),
+    trayNaStaple: () => t('お膳の糖質の目安はありません（主食の目安がないため）'),
+};
+function carbOn(){ return S.settings.carb === true; }
+// 候補のうち糖質の多くない料理だけ（オンで、1つ以上あるとき。なければそのまま＝席を空にしない）
+function carbPrefer(list){ if (!carbOn()) return list; const ok = list.filter(r => !carbHeavy(r)); return ok.length ? ok : list; }
+// 料理 → 1人分の糖質の目安 {st:'ok', v: g（整数）, raw} / {st:'low'}（1g 未満）/ {st:'na'}（目安なし）。カロリーと同じ材料の読みとり（kcalRaw）を使う
+function carbOf(r){
+    const x = kcalRaw(r); if (!x) return {st: 'na'};
+    if (!(x.cov >= KC_MIN_COV) || !(x.ccov >= KC_MIN_COV) || !Number.isFinite(x.carb) || !(x.kcal > 0)) return {st: 'na'};
+    if (x.kcal > kcCeil(r)) return {st: 'na', big: true};   // 何人分かわからない・1人分として多すぎる料理は、糖質も出さない
+    if (x.carb < 1) return {st: 'low', raw: x.carb};
+    return {st: 'ok', v: Math.round(x.carb), raw: x.carb};
+}
+function carbText(c){ return c.st === 'ok' ? CARB_TX.dish(c.v) : c.st === 'low' ? CARB_TX.dishLow() : CARB_TX.dishNa(); }
+// 主食の1人分の糖質（ふだんの量。ご飯 150g・パン 60g など KCAL_STAPLE と同じ量 × 100g あたりの糖質。出典は KC_FOODS と同じ。出典未確認）。小盛りは 2/3
+const CARB_STAPLE = {
+    rice: 53, br_staple: 53, cn_staple: 53, id_staple: 53, kr_staple: 53, pe_staple: 53, ph_staple: 53, th_staple: 53, tw_staple: 53, vn_staple: 53,   // ご飯 150g × 35.6
+    st_genmai: 51, st_zakkoku: 53, st_japgok: 52, st_sticky: 65, okayu: 39,   // 玄米ご飯 150g × 34.2・もち米のご飯 150g × 43.5・白がゆ 250g × 15.7
+    st_toast: 25, gb_staple: 27, st_rolls: 28, de_staple: 27, es_staple: 27, it_staple: 27, pl_staple: 27, tr_staple: 27, fr_staple: 33, st_banhmi: 33, eg_staple: 45,   // 食パン 60g × 42・パン 60g × 45・バゲット 60g × 55・平たいパン 90g × 50
+    st_potatoes: 31, st_polenta: 37, st_kasza: 26, st_pilav: 50, st_bulgur: 28, in_staple: 55, st_roti: 32, st_mantou: 36,
+    st_garlicrice: 53, st_pandesal: 30, mx_staple: 32, st_flourtort: 42, st_bolillo: 35, st_ricebeans: 64,
+};
+const CARB_SMALL = 2 / 3;
+function carbStaple(st){ return st && CARB_STAPLE[st.id] != null ? CARB_STAPLE[st.id] * (carbOn() ? CARB_SMALL : 1) : null; }
+// 糖質の多い料理か（選ぶ順だけに使う。候補からは外さない）
+const CARB_LIMIT = {'主菜': 20, '副菜': 12, '汁物': 12};
+const CARB_STARCH = /じゃがいも|新じゃが|さつまいも|里芋|長いも|山芋|春雨|うどん|そうめん|そば|中華麺|焼きそば|ラーメン|マカロニ|スパゲッティ|パスタ|ご飯|ごはん|^米$|もち|餅|ニョッキ|potato(?!.*starch)|sweet potato|\btaro\b|\byams?\b|cassava|yuca|plantain|noodle|vermicelli|ramen|udon|soba|pasta|macaroni|spaghetti|gnocchi|\brice\b(?! (?:vinegar|wine|paper|flour))|tteok|rice cakes?|dumplings?|tortilla|bread|couscous|bulgur|semolina|\bcorn\b(?! ?starch| ?flour)|hominy|lentils?|chickpeas?|beans?\b(?!.*sprout)/i;
+const CARB_BEAN_OK = /green beans?|french beans|string beans?|runner beans?|soy ?beans?|edamame|bean ?sprouts?|black beans? sauce|bean paste|broad beans?/i;
+function carbItemStarch(i){ const txt = [i.key, i.en, i.name].filter(Boolean).join(' | '); return !i.opt && CARB_STARCH.test(txt) && !CARB_BEAN_OK.test(txt); }
+function carbHeavy(r){
+    if (!r) return false;
+    if (r.main && (r.type === 'ごはん' || r.type === '麺')) return true;   // ご飯もの・麺の主菜
+    const its = (r.items || []).filter(i => !i.opt);
+    if (r.method === '揚' && KC_BATTER.test([...its.map(i => [i.key, i.en, i.name].join(' ')), String(r.seasBase != null ? r.seasBase : (r.seas || ''))].join(' '))) return true;   // パン粉・天ぷらの衣
+    const c = carbOf(r), lim = CARB_LIMIT[slotOf(r)] || 20;
+    if (c.st === 'ok') return c.raw > lim;   // いも・春雨・めんの多い汁もの・甘い煮ものも、材料の量から出した目安で上限を超える
+    if (c.st === 'low') return false;
+    return its.some(carbItemStarch);   // 目安なしの料理は、材料にご飯・めん・いも・春雨などがあるかで見る
+}
+// お膳の合計（料理＋小盛りの主食）
+function menuCarb(m){
+    const rs = ((m && m.items) || []).map(x => x.r).filter(Boolean); if (!rs.length) return {st: 'na'};
+    let sum = 0;
+    for (const r of rs){ const c = carbOf(r); if (c.st === 'na') return {st: 'na', why: r}; sum += c.raw; }
+    const main = rs[0], oneBowl = main && (main.type === 'ごはん' || main.type === '麺'), st = oneBowl ? null : stapleSpot();
+    if (st){ const s = carbStaple(st); if (s == null) return {st: 'na', staple: true}; sum += s; }
+    return {st: 'ok', v: Math.round(sum), staple: !!st};
+}
+function carbTrayHtml(m){
+    if (!carbOn() || !m || !m.items || !m.items.some(x => x.r)) return '';
+    const c = menuCarb(m);
+    const txt = c.st === 'ok' ? (c.staple ? CARB_TX.tray(c.v) : CARB_TX.trayNoStaple(c.v)) : c.why ? CARB_TX.trayNa(c.why.name) : c.staple ? CARB_TX.trayNaStaple() : CARB_TX.trayNa('');
+    return `<p class="kcal-sum carb-sum" role="note"><span class="kc-v">${esc(txt)}</span></p>`;
+}
+// 作り方の画面: カロリーの目安の箱に1行
+function carbNoteLine(r){ return carbOn() ? `<span class="kc-v cb-v">${esc(carbText(carbOf(r)))}</span>` : ''; }
+// 選んだとき1回だけの注意（お膳の下。「わかりました」で閉じる）
+function carbTurnOn(){
+    S.settings.carb = true;
+    if (!S.settings.carbNoted){ S.settings.carbNoted = true; session.carbNote = true; }
+}
+function carbNoteHtml(){
+    if (!session.carbNote || !carbOn()) return '';
+    return `<div class="note carb-note" role="note"><span>${esc(CARB_TX.caution())}</span><button type="button" class="btn sm" data-act="carb-note-ok">${esc(CARB_TX.ok())}</button></div>`;
+}
+function carbSettingsHtml(){
+    return `<div class="set-group" id="carb-card">
+        <label class="check"><input type="checkbox" data-act="carb-mode" ${carbOn() ? 'checked' : ''}><span>${esc(CARB_TX.name())}</span></label>
+        <span class="small muted">${esc(CARB_TX.desc())}</span>
+        <span class="small muted">${esc(CARB_TX.more())}</span>
+        <span class="small warn">${esc(KCAL_NOTE())}</span>
+    </div>`;
+}
 /* ---- 上の端の「モード」ボタンとシート（オーナー指示 11/09） ----
    二日酔いの日（今日だけ）・ダイエット・減塩・夜勤明けの切り替えを一か所に。値は設定画面・条件のシートのスイッチと同じもの（S.settings.hangover／diet／lowSalt／nightShift）を
    同じ data-act で読み書きする（どちらで変えても同じ）。切り替えで決めた献立・いまのお膳は変えない（それぞれの既存の決まりのまま）。
    二日酔いの日は、お酒を避ける人（ハラール向けも）には出さない（hangShown。すでにオンなら切れるように出す）。どれか1つでもオンなら、ボタンに小さな点 */
-function modesOn(){ return [hangOn(), dietOn(), saltOn(), S.settings.nightShift === true].filter(Boolean).length; }
+function modesOn(){ return [hangOn(), dietOn(), carbOn(), saltOn(), S.settings.nightShift === true].filter(Boolean).length; }
 function modeBtnSync(){
     const b = document.getElementById('mode-btn'); if (!b) return;
     const n = modesOn(), dot = b.querySelector('.mode-dot'), tx = document.getElementById('mode-on-tx');
@@ -9455,6 +9565,7 @@ function modeSheetHtml(){
     const rows = [
         hangShown() ? modeRowHtml('hangover', hangOn(), t('二日酔いの日（今日だけ）'), t('あっさりした料理（煮もの・蒸し料理・汁けの多い料理など）を出しやすくします。揚げ物・こってり・辛い料理は出にくくします（外しはしません）。明日には元に戻ります。')) : '',
         modeRowHtml('diet-mode', dietOn(), t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）')),
+        modeRowHtml('carb-mode', carbOn(), CARB_TX.name(), CARB_TX.desc()),
         modeRowHtml('low-salt', saltOn(), t('減塩（塩分の目安を表示）')),
         modeRowHtml('night-shift', S.settings.nightShift === true, t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）')),
     ].join('');
@@ -11152,7 +11263,7 @@ function viewSettings(){
         <div class="set-group" id="night-card">
             <div class="field"><label class="check"><input type="checkbox" data-act="night-shift" ${S.settings.nightShift === true ? 'checked' : ''}><span>${esc(t('夜勤明け（朝ごはんの入口を、時間にかかわらず出す）'))}</span></label></div>
         </div>
-        ${dietSettingsHtml()}`))}
+        ${dietSettingsHtml()}${carbSettingsHtml()}`))}
         ${pan('store', sec('store', saleSettingsHtml() + cheapSettingsHtml()))}
         ${pan('display', sec('display', `<div class="set-group">
             <div class="field"><label>🌐 ${esc(t('表示する言語 / Language'))}</label>
@@ -14625,9 +14736,9 @@ function viewToday(){
         : oneBowl || !st ? ''
         : !PACK && st.id === 'rice'
         ? `<div class="spot rice" style="--w:40%">${vesselHtml('chawan', null, false, riceAnim)}
-        <div class="spot-label" data-act="rice-info"><span class="slot">${esc(t('ご飯'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`
+        <div class="spot-label" data-act="rice-info"><span class="slot">${esc(t('ご飯'))}</span><span class="nm">${esc(carbOn() ? CARB_TX.staple(st.name) : st.name)}</span></div>${stapleBtn}</div>`
         : `<div class="spot rice" style="--w:40%">${vesselHtml('staple', {id: st.id, name: st.name, staple: true}, true, riceAnim)}
-        <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(st.name)}</span></div>${stapleBtn}</div>`;
+        <div class="spot-label"><span class="slot">${esc(t('主食'))}</span><span class="nm">${esc(carbOn() ? CARB_TX.staple(st.name) : st.name)}</span></div>${stapleBtn}</div>`;
     // 主食を「なし」にしても、お膳から主食を戻せるようにする（アメリカ・イギリスは、はじめが「なし」）
     // 「なし」のときも主食の席は同じ大きさのまま残す（席が消える・現れるたびに、となりの汁ものが動いたり、お膳の並びが変わったりしないように）
     const stapleAdd = false && !oneBowl && !st && stapleOptions().length > 1   // 主食「なし」の空の席は出さない（数えない）。主食を足すのは「条件を変える」の中（基準書 7章 5A）
@@ -14669,7 +14780,7 @@ function viewToday(){
             ${shuffleBtn}
             ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}
         </div>
-        ${kcalTrayHtml(m)}
+        ${kcalTrayHtml(m)}${carbTrayHtml(m)}${carbNoteHtml()}
         ${/* お膳より上には何も足さない（基準書 4-2）。決めたあとは、すぐ下に買い物メモへの1行（約束4）。お知らせ・案内はお膳の下 */''}${decided ? `<p class="shop-line"><button type="button" class="p2-link" data-act="stage" data-k="shop">${esc(t('買い物メモを見る'))}</button></p>` : ''}
         ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
         ${remoteNoticeHtml()}
@@ -16712,6 +16823,8 @@ document.addEventListener('click', e => {
         }
         case 'night-shift': { if (el.checked) S.settings.nightShift = true; else delete S.settings.nightShift; save(); render(); break; }
         case 'diet-mode': { if (el.checked) S.settings.diet = true; else delete S.settings.diet; save(); render(); break; }   // ダイエットモード: 献立のえらびと印だけ。決めた献立・いまのお膳は動かさない（reconcileMenu しない）
+        case 'carb-mode': { if (el.checked) carbTurnOn(); else delete S.settings.carb; save(); render(); break; }   // 糖質ひかえめ: 選び方と表示だけ。決めた献立・いまのお膳は動かさない（reconcileMenu しない）。はじめてオンにしたときだけ注意をお膳の下に
+        case 'carb-note-ok': { session.carbNote = false; render(); break; }
         case 'low-salt': { S.settings.lowSalt = el.checked; save(); render(); break; }   // 減塩の目安: 表示と点数だけ。決めた献立は動かさない（reconcileMenu しない）
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); break; }

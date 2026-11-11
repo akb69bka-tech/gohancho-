@@ -1,5 +1,19 @@
 // ご飯帖 — Filipino UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('fil', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Mas kaunting carbs",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Mga pagkain na mas kaunti ang kanin, noodles at patatas, at mas marami ang ulam na gulay at protina. Ipinapakita ang tantiyang carbohydrates (g) bawat tao",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Kapag naka-on, unang imumungkahi ang mga ulam na mas kaunti ang carbohydrates; mamaya na ang mga ulam na kanin, noodles at maraming patatas, mga matamis na nilaga, mga pritong makapal ang balot at mga sabaw na may patatas, sotanghon o noodles (walang tinatanggal, at hindi binabago ang napagpasyahang pagkain). Ipinapakita ang pangunahing kanin o tinapay bilang maliit na bahagi.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Kung sumusunod ka sa payo sa pagkain dahil sa diabetes o ibang dahilan, unahin ang payo ng iyong doktor o dietitian. Mga tantiya ang mga numerong ipinapakita.",
+    "わかりました": "Naintindihan ko",
+    "{name}（小盛り）": "{name} (maliit na bahagi)",
+    "糖質 約 {n} g（1人分・目安）": "Carbohydrates: mga {n} g (bawat tao, tantiya)",
+    "糖質 1 g 未満（1人分・目安）": "Carbohydrates: wala pang 1 g (bawat tao, tantiya)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Walang tantiya ng carbohydrates (maraming sangkap na hindi alam ang dami o halaga)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Carbohydrates ng buong pagkain: mga {n} g (bawat tao, tantiya; maliit na bahagi ng kanin o tinapay)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Carbohydrates ng buong pagkain: mga {n} g (bawat tao, tantiya)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Walang tantiya ng carbohydrates ng buong pagkain (walang tantiya para sa “{name}”)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Walang tantiya ng carbohydrates ng buong pagkain (walang tantiya para sa kanin o tinapay)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: hindi makilala ng app ang salitang ito. Pumili sa mga button sa ibaba.",
     "ある（設定する）": "Mayroon (i-set up)",
     "ない（このまま作る）": "Wala (magsimulang magluto)",

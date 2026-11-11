@@ -73,6 +73,36 @@ GOHAN_PACK_TR('MX', 'es', {
     'cucumber': 'Pepinos'
   },
   recipes: {
+    "mx_sopanopales": {
+      name: "Sopa de nopales",
+      ings: [["Nopales limpios", "250 g"], ["Jitomates", "150 g"], ["Cebolla", "40 g"], ["Chile serrano", "1"], ["Cilantro", "5 g"]],
+      seas: "800 ml de caldo de pollo · 1 cucharada de aceite · 1 diente de ajo · Sal",
+      steps: [
+        "Corta los nopales en tiras, hiérvelos 5 minutos, escúrrelos y enjuágalos.",
+        "Licúa los jitomates con la cebolla y el ajo y fríe el puré en el aceite 5 minutos.",
+        "Agrega el caldo, los nopales y el chile, hierve 10 minutos, sazona y añade cilantro.",
+      ],
+    },
+    "mx_sopachayote": {
+      name: "Sopa de chayote y calabacita",
+      ings: [["Chayote", "200 g"], ["Calabacita", "200 g"], ["Jitomate", "100 g"], ["Cebolla", "30 g"]],
+      seas: "800 ml de caldo de pollo o de verduras · 1 cucharada de aceite · 1 diente de ajo · 1 rama de epazote o cilantro · Sal",
+      steps: [
+        "Corta en cubos el chayote y la calabacita. Licúa el jitomate con la cebolla y el ajo.",
+        "Fríe el puré de jitomate en el aceite 4 minutos, agrega el caldo y el chayote y cuece 8 minutos.",
+        "Añade la calabacita y la hierba, cuece 5 minutos más y sazona.",
+      ],
+    },
+    "mx_caldopolloaguacate": {
+      name: "Caldo de pollo con aguacate",
+      ings: [["Muslos de pollo sin hueso", "200 g"], ["Aguacate", "1/2"], ["Jitomate", "50 g"], ["Cebolla", "30 g"], ["Cilantro", "5 g"], ["Limón", "1"]],
+      seas: "900 ml de agua · 1 diente de ajo · 1 hoja de laurel · 1 chile chipotle (opcional) · Sal",
+      steps: [
+        "Cuece el pollo en el agua con la mitad de la cebolla, el ajo y el laurel 20 minutos y deshébralo.",
+        "Pica el jitomate, el resto de la cebolla y el cilantro; corta el aguacate en cubos.",
+        "Regresa el pollo al caldo, sazona y sirve con el jitomate, la cebolla, el cilantro, el aguacate y limón.",
+      ],
+    },
     "mx_atole_blanco": {
       name: "Atole blanco",
       ings: [["Masa de maíz nixtamalizado (en polvo)", "50 g"], ["Leche", "500 ml"]],

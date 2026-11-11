@@ -86,6 +86,136 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    "pe_crema_brocoli": {
+      name: "Crema de brócoli",
+      ings: [["Brócoli", "300 g"], ["Cebolla", "40 g"], ["Queso fresco", "30 g"]],
+      seas: "600 ml de caldo de pollo o de verduras · 1 cucharada de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Separa el brócoli en ramitos y pica la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite, añade el brócoli y el caldo y cocina 10 minutos.",
+        "Licúa, sazona y sirve con queso fresco desmenuzado si quieres.",
+      ],
+    },
+    "pe_caldo_choros": {
+      name: "Caldo de choros",
+      ings: [["Choros", "500 g"], ["Cebolla roja", "40 g"], ["Tomate", "80 g"], ["Culantro", "5 g"], ["Limón", "1"]],
+      seas: "700 ml de agua · 1 cucharada de aceite · 2 dientes de ajo · 1 cucharada de ají amarillo molido · Sal",
+      steps: [
+        "Limpia bien los choros. Pica la cebolla, el tomate, el ajo y el culantro.",
+        "Sofríe la cebolla, el ajo y el ají en el aceite, añade el tomate 2 minutos, luego el agua y deja hervir.",
+        "Agrega los choros, tapa y cocina hasta que se abran. Sazona y añade el jugo de limón y el culantro.",
+      ],
+    },
+    "pe_sopa_coliflor": {
+      name: "Sopa de coliflor",
+      ings: [["Coliflor", "300 g"], ["Cebolla", "40 g"], ["Leche evaporada", "60 ml"]],
+      seas: "500 ml de caldo de pollo o de verduras · 1 cucharada de mantequilla · Sal · Pimienta",
+      steps: [
+        "Separa la coliflor en ramitos y pica la cebolla.",
+        "Ablanda la cebolla en la mantequilla, añade la coliflor y el caldo y cocina tapado 15 minutos.",
+        "Licúa con la leche evaporada y sazona.",
+      ],
+    },
+    "pe_sopa_chifa_pakchoy": {
+      name: "Sopa chifa de pollo con pak choy",
+      ings: [["Pechuga de pollo", "120 g"], ["Pak choy", "150 g"], ["Huevo", "1"], ["Cebolla china", "1"], ["Kion", "10 g"]],
+      seas: "800 ml de caldo de pollo · 1 cucharada de sillao · 1 cucharadita de aceite de ajonjolí · Sal · Pimienta blanca",
+      steps: [
+        "Corta el pollo en láminas finas, el pak choy en trozos y el kion y la cebolla china en rodajas. Bate el huevo.",
+        "Hierve el caldo con el kion y el sillao, añade el pollo y cocina 5 minutos.",
+        "Agrega el pak choy 2 minutos, vierte el huevo removiendo y termina con aceite de ajonjolí, pimienta y cebolla china.",
+      ],
+    },
+    "pe_ensalada_pepino_tomate": {
+      name: "Ensalada de pepino y tomate",
+      ings: [["Pepino", "200 g"], ["Tomates", "150 g"], ["Cebolla roja", "30 g"], ["Culantro", "5 g"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta en rodajas el pepino y los tomates, y la cebolla en pluma muy fina. Pica el culantro.",
+        "Mezcla el jugo de limón, el aceite, la sal y la pimienta.",
+        "Junta todo justo antes de servir.",
+      ],
+    },
+    "pe_brocoli_ajo": {
+      name: "Brócoli al ajo",
+      ings: [["Brócoli", "300 g"]],
+      seas: "1 cucharada de aceite · 3 dientes de ajo · 1 cucharadita de sillao · Sal",
+      steps: [
+        "Separa el brócoli en ramitos y blanquéalo 3 minutos; escúrrelo.",
+        "Fríe el ajo picado en el aceite hasta que suelte su aroma.",
+        "Añade el brócoli y el sillao, saltea 2 minutos y sazona.",
+      ],
+    },
+    "pe_espinaca_salteada": {
+      name: "Espinaca salteada",
+      ings: [["Espinaca", "300 g"], ["Cebolla", "30 g"]],
+      seas: "1 cucharada de aceite de oliva · 2 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lava la espinaca y pica la cebolla y el ajo.",
+        "Ablanda la cebolla y el ajo en el aceite 2 minutos.",
+        "Añade la espinaca y remueve hasta que apenas se marchite. Sazona.",
+      ],
+    },
+    "pe_coliflor_queso": {
+      name: "Coliflor al horno con queso",
+      ings: [["Coliflor", "300 g"], ["Queso rallado", "40 g"]],
+      seas: "1 cucharada de mantequilla · Sal · Pimienta",
+      steps: [
+        "Calienta el horno a 200 °C. Separa la coliflor en ramitos y hiérvela 5 minutos; escúrrela.",
+        "Ponla en una fuente con mantequilla, sazona y cúbrela con el queso.",
+        "Hornea 15 minutos hasta dorar.",
+      ],
+    },
+    "pe_champinones_ajo": {
+      name: "Champiñones al ajo",
+      ings: [["Champiñones", "300 g"], ["Perejil", "5 g"]],
+      seas: "1 cucharada de aceite · 1 cucharada de mantequilla · 3 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lamina los champiñones y pica el ajo y el perejil.",
+        "Saltea los champiñones en el aceite y la mantequilla a fuego alto 6 minutos.",
+        "Añade el ajo 1 minuto, sazona y agrega el perejil.",
+      ],
+    },
+    "pe_ensalada_esparragos": {
+      name: "Ensalada de espárragos",
+      ings: [["Espárragos verdes", "250 g"], ["Tomate", "80 g"], ["Cebolla roja", "20 g"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta la base de los espárragos y hiérvelos 3 minutos; enfríalos en agua fría.",
+        "Corta el tomate en cubitos y la cebolla en pluma fina. Mezcla el jugo de limón, el aceite, la sal y la pimienta.",
+        "Acomoda los espárragos con el tomate y la cebolla y baña con el aliño.",
+      ],
+    },
+    "pe_acelgas_salteadas": {
+      name: "Acelgas salteadas",
+      ings: [["Acelga", "300 g"], ["Cebolla", "30 g"]],
+      seas: "1 cucharada de aceite · 2 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lava la acelga, pica por separado los tallos y las hojas, y pica la cebolla y el ajo.",
+        "Saltea la cebolla, el ajo y los tallos en el aceite 4 minutos.",
+        "Añade las hojas y cocina 2 minutos hasta que se marchiten. Sazona.",
+      ],
+    },
+    "pe_sudado_pescado": {
+      name: "Sudado de pescado",
+      ings: [["Filetes de pescado blanco", "400 g"], ["Cebolla roja", "150 g"], ["Tomates", "150 g"], ["Ají amarillo", "1"], ["Culantro", "10 g"]],
+      seas: "2 cucharadas de aceite · 3 dientes de ajo · 1 cucharada de ají panca molido · 60 ml de chicha de jora o fumet · Sal · Pimienta · Comino",
+      steps: [
+        "Sazona el pescado con sal, pimienta y comino. Corta la cebolla y los tomates en rodajas gruesas y el ají en tiras.",
+        "Fríe el ajo y el ají panca en el aceite, acomoda la mitad de la cebolla y el tomate, pon el pescado encima y cubre con el resto.",
+        "Añade la chicha o el fumet, tapa y cocina a fuego suave 10–12 minutos. Termina con culantro.",
+      ],
+    },
+    "pe_pollo_saltado": {
+      name: "Pollo saltado con verduras",
+      ings: [["Pechuga de pollo", "350 g"], ["Cebolla roja", "100 g"], ["Tomates", "150 g"], ["Pimiento", "1"], ["Ají amarillo", "1"], ["Culantro", "5 g"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre · Sal · Pimienta · Comino",
+      steps: [
+        "Corta el pollo en tiras y sazónalo con sal, pimienta y comino. Corta la cebolla y los tomates en gajos y el pimiento y el ají en tiras.",
+        "Saltea el pollo en aceite muy caliente 4 minutos, añade el ajo, la cebolla y el pimiento y saltea 2 minutos.",
+        "Agrega los tomates, el sillao y el vinagre, saltea 1 minuto y termina con culantro.",
+      ],
+    },
     "pe_quinua_leche": {
       name: "Quinua con leche",
       ings: [["Quinua bien lavada", "100 g"], ["Leche evaporada", "200 ml"]],

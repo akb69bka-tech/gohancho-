@@ -1,5 +1,19 @@
 // ご飯帖 — Polish UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('pl', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Mniej węglowodanów",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Posiłki z mniejszą ilością ryżu, makaronu i ziemniaków, a z większą ilością dań z warzyw i białka. Pokazuje szacunkową ilość węglowodanów (g) na osobę",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Po włączeniu najpierw proponowane są dania z mniejszą ilością węglowodanów; dania z ryżu, makarony i dania z dużą ilością ziemniaków, słodko duszone potrawy, dania smażone w grubej panierce oraz zupy z ziemniakami, makaronem sojowym lub makaronem pojawiają się później (nic nie jest usuwane, a wybrane już posiłki się nie zmieniają). Dodatek skrobiowy jest pokazywany jako mała porcja.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Jeśli stosujesz zalecenia żywieniowe z powodu cukrzycy lub z innego powodu, najpierw stosuj się do zaleceń lekarza lub dietetyka. Pokazywane liczby są szacunkowe.",
+    "わかりました": "Rozumiem",
+    "{name}（小盛り）": "{name} (mała porcja)",
+    "糖質 約 {n} g（1人分・目安）": "Węglowodany: ok. {n} g (na osobę, szacunkowo)",
+    "糖質 1 g 未満（1人分・目安）": "Węglowodany: poniżej 1 g (na osobę, szacunkowo)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Brak szacunku węglowodanów (za dużo składników o nieznanej ilości lub wartości)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Węglowodany posiłku: ok. {n} g (na osobę, szacunkowo; mała porcja dodatku)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Węglowodany posiłku: ok. {n} g (na osobę, szacunkowo)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Brak szacunku węglowodanów dla posiłku (brak szacunku dla „{name}”)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Brak szacunku węglowodanów dla posiłku (brak szacunku dla dodatku)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "„{name}”: aplikacja nie rozpoznaje tego słowa. Wybierz jeden z przycisków poniżej.",
     "ある（設定する）": "Tak (ustaw je)",
     "ない（このまま作る）": "Nie (zacznij gotować)",

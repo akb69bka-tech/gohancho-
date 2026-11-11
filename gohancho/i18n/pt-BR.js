@@ -1,5 +1,19 @@
 // ご飯帖 — Brazilian Portuguese UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('pt-BR', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Menos carboidratos",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Refeições com menos arroz, macarrão e batata, e mais pratos de legumes e proteínas. Mostra uma estimativa de carboidratos (g) por pessoa",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Ligado, sugere primeiro os pratos com menos carboidratos; pratos de arroz, macarrão ou com muita batata, cozidos doces, frituras com empanado grosso e sopas com batata, bifum ou macarrão ficam para depois (nada é retirado e as refeições já decididas não mudam). O acompanhamento aparece em porção pequena.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Se você segue orientações alimentares por diabetes ou outro motivo, siga primeiro as do seu médico ou nutricionista. Os números mostrados são estimativas.",
+    "わかりました": "Entendi",
+    "{name}（小盛り）": "{name} (porção pequena)",
+    "糖質 約 {n} g（1人分・目安）": "Carboidratos: cerca de {n} g (por pessoa, estimativa)",
+    "糖質 1 g 未満（1人分・目安）": "Carboidratos: menos de 1 g (por pessoa, estimativa)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Sem estimativa de carboidratos (muitos ingredientes com quantidade ou valor desconhecido)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Carboidratos da refeição: cerca de {n} g (por pessoa, estimativa; porção pequena do acompanhamento)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Carboidratos da refeição: cerca de {n} g (por pessoa, estimativa)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Sem estimativa de carboidratos para a refeição (sem estimativa para “{name}”)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Sem estimativa de carboidratos para a refeição (sem estimativa para o acompanhamento)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: o app não reconhece esta palavra. Escolha um dos botões abaixo.",
     "ある（設定する）": "Sim (configurar)",
     "ない（このまま作る）": "Não (começar a cozinhar)",

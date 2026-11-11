@@ -1,5 +1,19 @@
 // ご飯帖 — French UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('fr', {
+    // 糖質ひかえめモード（dm41）
+    "糖質ひかえめ": "Moins de glucides",
+    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Des repas avec moins de riz, de pâtes et de pommes de terre, et plus de plats de légumes et de protéines. Affiche une estimation des glucides (g) par personne",
+    "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Activé, ce mode propose d'abord les plats contenant moins de glucides ; les plats de riz, de pâtes ou riches en pommes de terre, les plats mijotés sucrés, les fritures à pâte épaisse et les soupes aux pommes de terre, vermicelles ou pâtes viennent ensuite (rien n'est retiré et les repas déjà choisis ne changent pas). L'accompagnement s'affiche en petite portion.",
+    "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Si vous suivez des consignes alimentaires pour un diabète ou une autre raison, suivez d'abord celles de votre médecin ou de votre diététicien. Les chiffres affichés sont des estimations.",
+    "わかりました": "J'ai compris",
+    "{name}（小盛り）": "{name} (petite portion)",
+    "糖質 約 {n} g（1人分・目安）": "Glucides : environ {n} g (par personne, estimation)",
+    "糖質 1 g 未満（1人分・目安）": "Glucides : moins de 1 g (par personne, estimation)",
+    "糖質の目安なし（量や値のわからない材料が多いため）": "Pas d'estimation des glucides (trop d'ingrédients dont la quantité ou la valeur est inconnue)",
+    "お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）": "Glucides du repas : environ {n} g (par personne, estimation ; petite portion d'accompagnement)",
+    "お膳の糖質：約 {n} g（1人分・目安）": "Glucides du repas : environ {n} g (par personne, estimation)",
+    "お膳の糖質の目安はありません（「{name}」の目安がないため）": "Pas d'estimation des glucides pour le repas (pas d'estimation pour « {name} »)",
+    "お膳の糖質の目安はありません（主食の目安がないため）": "Pas d'estimation des glucides pour le repas (pas d'estimation pour l'accompagnement)",
     "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "« {name} » : l'application ne reconnaît pas ce mot. Choisissez parmi les boutons ci-dessous.",
     "ある（設定する）": "Oui (les configurer)",
     "ない（このまま作る）": "Non (commencer à cuisiner)",
