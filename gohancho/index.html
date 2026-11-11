@@ -8654,7 +8654,7 @@ const DIET_ALC = dietRe('酒|さけ(?:かす|がす)|みりん|まっこり|ほ�
 function dietAlc(t){ return DIET_ALC.test(String(t).replace(DIET_VINEGAR, ' ')); }
 const DIET_OTHERMEAT = dietRe('羊(?!羹)|らむ(?:にく|ちょっぷ|ひき|ろーす|かた|もも|すて|ぐり|しゃんく|ばら|こま)|まとん|鴨|あひる|がちょう|鵝|ひつじ|しちめんちょう|七面鳥|たーきー|うさぎ|兎|じびえ|鹿肉|いのしし|猪肉|やぎ(?:にく|肉)|山羊|' +
     '\\b(?:lamb|mutton|goat|duck|goose|turkey|rabbit|hare|venison|boar|pheasant|quail|squab|pigeon|guinea fowl|pintade)\\b(?![\'’]?s?\\s*(?:lettuce|cheese|milk|yogh?urt|butter|curd|whey))|' +
-    '\\b(?:cordero|agneau|gigot|lamm|lammfleisch|agnello|cordeiro|borrego|j[aą]gni[eę]cin\\w*|baranin\\w*|kuzu (?:eti|incik|pirzola|but|tand[ıi]r|g[uü]ve[cç])|koyun|pato|canard|ente|anatra|kaczk\\w*|pavo|dinde|truthahn|pute|tacchino|indyk|hindi eti|ganso|oie|gans|oca|conejo|lapin|kaninchen|coniglio|coelho|kr[oó]lik|tav[sş]an|venado|cabrito|hirsch|cervo|kambing|domba|bebek|angsa|ayam kampung)\\b|(?<![a-z])(?:[oö]rdek|g[eę][sś])(?![a-z])|' +
+    '\\b(?:merguez|mant[ıi]|cordero|agneau|gigot|lamm|lammfleisch|agnello|cordeiro|borrego|j[aą]gni[eę]cin\\w*|baranin\\w*|kuzu (?:eti|incik|pirzola|but|tand[ıi]r|g[uü]ve[cç])|koyun|pato|canard|ente|anatra|kaczk\\w*|pavo|dinde|truthahn|pute|tacchino|indyk|hindi eti|ganso|oie|gans|oca|conejo|lapin|kaninchen|coniglio|coelho|kr[oó]lik|tav[sş]an|venado|cabrito|hirsch|cervo|kambing|domba|bebek|angsa|ayam kampung)\\b|(?<![a-z])(?:[oö]rdek|g[eę][sś])(?![a-z])|' +
     '羊肉|羊排|鸭|鴨|鹅|火鸡|火雞|兔肉|양고기|오리|거위|칠면조|염소|토끼|แกะ|เป็ด|ห่าน|ไก่งวง|แพะ|cừu|vịt|ngỗng|thịt dê|thỏ|لحم ضأن|ضأن|خروف|لحم حمل|بط|إوز|ديك رومي|أرنب|मटन|बकरा|बत्तख|भेड़', 'i');
 // ベジタリアン（豚・鶏・牛・魚・貝を外した人）が、はっきり避けるもの: 肉・魚・貝のだし／スープの素、魚醤・オイスターソース・えびのペースト、かつお節・煮干し、ゼラチン、肉全般
 const DIET_VEGI = dietRe('ぎょしょう|魚醤|なんぷらー|いしる|しょっつる|おいすたーそーす|おいすたーのそーす|かきそーす|あんちょび|かつお(?:ぶし|節|だし)|鰹|けずりぶし|削り節|にぼし|煮干|ほんだし|だしのもと|だしの素|あごだし|(?<!こんぶ)(?<!昆布)(?<!しいたけ)(?<!椎茸)(?<!やさい)(?<!野菜)(?<!きのこ)(?<!べじ)だし(?!まき|巻|ざい|ずし)|(?<!昆布)出汁|しらす(?!うなぎ)|じゃこ|ほしえび|干しえび|さくらえび|桜えび|ぎょにく|はんぺん|さつまあげ|さつま揚|ぜらちん|' +
@@ -8702,10 +8702,53 @@ function dietMayHits(r){
     its.forEach(i => { if (dietMayItem(c, i)){
         const nm = String(i.disp || i.label || i.name || i.key).replace(/^[\d½¼¾⅓⅔⅛.,\/\s-]+(?:(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|g|kg|ml|l|oz|EL|TL)\.?\s+(?:of\s+)?)?/i, '').replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim();
         const loc = nm && typeof PACK_NAMES !== 'undefined' && PACK_NAMES[nm.toLowerCase().replace(/\s*\?$/, '')];   // 調味料の欄の英語の名前（stock cube など）は、その言語の訳があれば訳で出す
-        const nm2 = loc || nm;
+        const nm2 = mayLocFor(loc || nm, nm + '|' + dietTxt(i)) || loc || nm.replace(/\s*\?$/, '');   // 第43回: 決まった加工品・調味料は、画面の言葉の名前で（17言語＋日本語）
         if (nm2 && !out.includes(nm2)) out.push(nm2);
     } });
     return out;
+}
+// 第43回: 🔍「袋の表示を確認」に出す加工品・調味料の名前の訳（17言語＋日本語）。各国の料理の調味料の欄（英語）や日本の料理の名前（日本語）が、
+// 訳のない言語でそのまま出ていた（アラビア語で「Curry roux」、日本語で「shacha sauce」「vegetable stock」など）。前から順に照らし、最初に当たったもの
+// 並び: ja ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant
+const MAY_LOC_LANGS = ['ja', 'ar', 'de', 'en', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
+const MAY_LOC = [
+    [/curry roux|かれーる[うー]|カレール[ウー]/i, 'カレールウ|خلطة الكاري الجاهزة|Curry-Würfel (Roux)|curry roux|roux de curry|bloke ng curry (roux)|roux de curry|करी रू (क्यूब)|bumbu kari blok|roux per curry|카레 루|kostki curry (roux)|tablete de curry (roux)|ก้อนแกงกะหรี่|köri roux (blok)|viên sốt cà ri|咖喱块|咖哩塊'],
+    [/stew roux|しちゅーる[うー]|シチュール[ウー]/i, 'シチュールウ|خلطة اليخنة الكريمية الجاهزة|Rahmeintopf-Würfel (Roux)|cream stew roux|roux para guiso cremoso|bloke ng cream stew (roux)|roux pour ragoût à la crème|क्रीम स्टू रू (क्यूब)|bumbu sup krim blok|roux per stufato alla crema|스튜 루|kostki do gulaszu śmietanowego (roux)|tablete de ensopado cremoso (roux)|ก้อนสตูว์|krem güveç roux (blok)|viên sốt hầm kem|奶油炖菜块|奶油燉菜塊'],
+    [/hayashi roux|はやしる[うー]|ハヤシル[ウー]/i, 'ハヤシルウ|خلطة صلصة الهاياشي الجاهزة|Hayashi-Würfel (Roux)|hayashi roux|roux de hayashi|bloke ng hayashi (roux)|roux hayashi|हयाशी रू (क्यूब)|bumbu hayashi blok|roux per hayashi|하야시 루|kostki hayashi (roux)|tablete de hayashi (roux)|ก้อนซอสฮายาชิ|hayashi roux (blok)|viên sốt hayashi|日式牛肉烩饭块|日式牛肉燴飯塊'],
+    [/tenkasu|天かす|てんかす/i, '天かす|فتات التمبورا|Tempura-Krümel|tempura bits (tenkasu)|migas de tempura|mumo ng tempura|miettes de tempura|टेम्पुरा के टुकड़े|remah tempura|briciole di tempura|튀김 부스러기|okruchy tempury|farelos de tempurá|เศษแป้งเทมปุระ|tempura kırıntısı|vụn bột chiên tempura|天妇罗碎|天婦羅碎'],
+    [/vegetable (?:stock|broth|bouillon) cubes?|cubes? of vegetable stock/i, '野菜ブイヨン（固形）|مكعب مرقة خضار|Gemüsebrühwürfel|vegetable stock cube|pastilla de caldo de verduras|cube na pampasabaw ng gulay|cube de bouillon de légumes|सब्ज़ी स्टॉक क्यूब|kaldu sayur blok|dado di brodo vegetale|채소 고형 육수|kostka bulionowa warzywna|caldo de legumes em tablete|ซุปก้อนรสผัก|sebze bulyon tablet|viên súp rau củ|蔬菜高汤块|蔬菜高湯塊'],
+    [/vegetable (?:stock|broth|bouillon) (?:powder|granules)/i, '野菜ブイヨン（顆粒）|مرقة خضار بودرة|Gemüsebrühe (Pulver)|vegetable stock powder|caldo de verduras en polvo|pulbos na pampasabaw ng gulay|bouillon de légumes en poudre|सब्ज़ी स्टॉक पाउडर|kaldu sayur bubuk|brodo vegetale granulare|채소 육수 가루|bulion warzywny w proszku|caldo de legumes em pó|ผงซุปผัก|toz sebze bulyon|hạt nêm rau củ|蔬菜高汤粉|蔬菜高湯粉'],
+    [/vegetable (?:stock|broth|bouillon)|bulion warzywny|野菜(?:ぶいよん|スープの素)/i, '野菜ブイヨン|مرقة خضار|Gemüsebrühe|vegetable stock|caldo de verduras|sabaw ng gulay|bouillon de légumes|सब्ज़ी स्टॉक|kaldu sayur|brodo vegetale|채소 육수|bulion warzywny|caldo de legumes|น้ำซุปผัก|sebze suyu|nước dùng rau củ|蔬菜高汤|蔬菜高湯'],
+    [/(?:stock|bouillon) cubes?|固形すーぷの素/i, '固形スープの素|مكعب مرقة|Brühwürfel|stock cube|pastilla de caldo|cube na pampasabaw|cube de bouillon|स्टॉक क्यूब|kaldu blok|dado da brodo|고형 육수|kostka bulionowa|caldo em tablete|ซุปก้อน|bulyon tablet|viên súp|浓汤块|高湯塊'],
+    [/(?:^|\|)(?:顆粒)?(?:こんそめ|コンソメ)(?:の素)?(?:\||$)/, 'コンソメ|مرقة كونسوميه|Brühe (Consommé)|consommé (stock)|consomé|consommé (pampasabaw)|bouillon (consommé)|कॉन्सोमे (स्टॉक)|kaldu konsome|brodo (consommé)|콩소메|bulion (consommé)|caldo (consomê)|ซุปคอนซอมเม่|konsome (bulyon)|hạt nêm consommé|清汤粉|清湯粉'],
+    [/worcestershire|うすたー|ウスター/i, 'ウスターソース|صلصة ورشستر|Worcestersauce|Worcestershire sauce|salsa inglesa (Worcestershire)|sarsang Worcestershire|sauce Worcestershire|वूस्टरशायर सॉस|saus Worcestershire|salsa Worcestershire|우스터소스|sos Worcestershire|molho inglês|ซอสวูสเตอร์ไชร์|Worcestershire sosu|sốt Worcestershire|伍斯特酱|伍斯特醬'],
+    [/\bmaggi\b/i, 'マギー（調味料）|صلصة ماجي|Maggi-Würze|Maggi seasoning|jugo Maggi|Maggi na pampalasa|arôme Maggi|मैगी सीज़निंग|kecap Maggi|condimento Maggi|매기 시즈닝|przyprawa Maggi|tempero Maggi|ซอสแม็กกี้|Maggi sosu|nước tương Maggi|美极鲜味汁|美極鮮味汁'],
+    [/shacha|\bsacha (?:sauce|paste|jiang)\b|沙茶/i, '沙茶醤|صلصة شاتشا|Shacha-Soße|shacha sauce|salsa shacha|sarsang shacha|sauce shacha|शाचा सॉस|saus shacha|salsa shacha|사차장|sos shacha|molho shacha|ซอสซาฉา|shacha sosu|sa tế|沙茶酱|沙茶醬'],
+    [/kimchi juice|きむちの汁/i, 'キムチの汁|عصير الكيمتشي|Kimchi-Saft|kimchi juice|jugo de kimchi|katas ng kimchi|jus de kimchi|किमची का रस|air kimchi|succo di kimchi|김칫국물|sok z kimchi|caldo de kimchi|น้ำกิมจิ|kimçi suyu|nước kim chi|泡菜汁|泡菜汁'],
+    [/kimchi|きむち|キムチ/i, 'キムチ|كيمتشي|Kimchi|kimchi|kimchi|kimchi|kimchi|किमची|kimchi|kimchi|김치|kimchi|kimchi|กิมจิ|kimçi|kim chi|泡菜|泡菜'],
+    [/\bk(?:e)?rupuk\b|くるぷっく/i, 'クルプック（えびせんべいなど）|كروبوك (رقائق الروبيان)|Krupuk (Krabbenchips)|krupuk (prawn crackers)|krupuk (galletas de camarón)|krupuk (kropek)|krupuk (chips de crevettes)|क्रुपुक (झींगा क्रैकर)|kerupuk|krupuk (cracker di gamberi)|크루푹 (새우칩)|krupuk (chipsy krewetkowe)|krupuk (biscoito de camarão)|ข้าวเกรียบ|krupuk (karides cipsi)|bánh phồng tôm (krupuk)|印尼虾片|印尼蝦片'],
+    [/\branch\b|らんちどれっしんぐ/i, 'ランチドレッシング|صلصة رانش|Ranch-Dressing|ranch dressing|aderezo ranch|ranch na dressing|sauce ranch|रैंच ड्रेसिंग|saus ranch|salsa ranch|랜치 드레싱|sos ranch|molho ranch|น้ำสลัดแรนช์|ranch sos|sốt ranch|牧场沙拉酱|牧場沙拉醬'],
+    [/breadcrumbs|pangrattato|(?:^|\|)ぱん粉(?:\||$)/i, 'パン粉|فتات الخبز|Semmelbrösel|breadcrumbs|pan rallado|mumo ng tinapay|chapelure|ब्रेडक्रम्ब्स|tepung roti|pangrattato|빵가루|bułka tarta|farinha de rosca|เกล็ดขนมปัง|galeta unu|vụn bánh mì|面包糠|麵包粉'],
+    [/cr[eè]me fra[iî]che or coconut milk/i, 'クレームフレッシュまたはココナッツミルク|كريمة فريش أو حليب جوز الهند|Crème fraîche oder Kokosmilch|crème fraîche or coconut milk|crème fraîche o leche de coco|crème fraîche o gata|crème fraîche ou lait de coco|क्रेम फ्रेश या नारियल का दूध|crème fraîche atau santan|crème fraîche o latte di cocco|크렘 프레슈 또는 코코넛 밀크|crème fraîche lub mleko kokosowe|crème fraîche ou leite de coco|ครีมเฟรชหรือกะทิ|krem fraiche veya hindistan cevizi sütü|kem chua hoặc nước cốt dừa|法式酸奶油或椰奶|法式酸奶油或椰奶'],
+    [/hakka noodles/i, 'ハッカヌードル|نودلز هاكا|Hakka-Nudeln|hakka noodles|fideos hakka|pansit na hakka|nouilles hakka|हक्का नूडल्स|mi hakka|noodles hakka|하카 누들|makaron hakka|macarrão hakka|เส้นหมี่ฮากกา|hakka eriştesi|mì hakka|客家面|客家麵'],
+    [/lumpia wrappers?/i, 'ルンピアの皮|رقائق اللومبيا|Lumpia-Teigblätter|lumpia wrappers|hojas para lumpia|balat ng lumpia|feuilles à lumpia|लुम्पिया रैपर|kulit lumpia|sfoglie per lumpia|룸피아 피|płaty do lumpii|massa para lumpia|แผ่นลุมเปีย|lumpia yufkası|vỏ lumpia|春卷皮|春捲皮'],
+    [/pancake mix|buchim ?garu/i, 'チヂミ粉または小麦粉|خليط البان كيك الكوري أو الدقيق|Pfannkuchenmischung oder Mehl|pancake mix or plain flour|mezcla para panqueques o harina|halo para sa pancake o harina|préparation pour galettes ou farine|पैनकेक मिक्स या मैदा|tepung pancake atau terigu|preparato per pancake o farina|부침가루나 밀가루|mieszanka do placków lub mąka|mistura para panqueca ou farinha|แป้งแพนเค้กหรือแป้งสาลี|krep karışımı veya un|bột bánh xèo Hàn hoặc bột mì|煎饼粉或面粉|煎餅粉或麵粉'],
+    [/(?:^|\|)(?:白|赤|合わせ|あわせ)?(?:みそ|味噌)(?:\||$)/, '味噌|ميسو|Miso|miso|miso|miso|miso|मिसो|miso|miso|미소 된장|miso|missô|มิโซะ|miso|tương miso|味噌|味噌'],
+    [/(?:^|\|)(?:めんつゆ|麺つゆ)(?:\||$)/, 'めんつゆ|صلصة منتسويو|Mentsuyu (Nudelsoße)|mentsuyu (noodle sauce)|mentsuyu (salsa para fideos)|mentsuyu (sawsawan sa pansit)|mentsuyu (sauce pour nouilles)|मेंत्सुयु (नूडल सॉस)|mentsuyu (saus mi)|mentsuyu (salsa per noodle)|멘쓰유|mentsuyu (sos do makaronu)|mentsuyu (molho para macarrão)|น้ำซุปเมนสึยุ|mentsuyu (erişte sosu)|nước tương mentsuyu|日式面汁|日式麵露'],
+    [/(?:^|\|)(?:ぽん酢|ポン酢|ぽんず)(?:\||$)/, 'ポン酢|صلصة بونزو|Ponzu|ponzu|ponzu|ponzu|ponzu|पोंज़ु|ponzu|ponzu|폰즈|ponzu|ponzu|ซอสพอนสึ|ponzu|sốt ponzu|柚子醋|柚子醋'],
+    [/(?:^|\|)(?:納豆|なっとう)(?:\||$)/, '納豆|ناتو|Natto|natto|natto|natto|natto|नात्तो|natto|natto|낫토|natto|natto|นัตโตะ|natto|natto|纳豆|納豆'],
+];
+// 名前（と元の言葉）から、いまの画面の言葉の名前を返す（当たらない・訳がないときは null）
+function mayLoc(txt){
+    const k = MAY_LOC_LANGS.indexOf(LANG); if (k < 0) return null;
+    const s = String(txt || '').normalize('NFKC'), hit = MAY_LOC.find(([re]) => re.test(s));
+    return hit ? hit[1].split('|')[k] || null : null;
+}
+// 名前が画面の言葉でないとき（日本語の画面で英語・ほかの言語の画面で日本語や英語）だけ訳す。その言葉の名前（「白菜キムチ」「익은 김치」など）はそのまま
+function mayLocFor(n, txt){
+    n = String(n || ''); const kana = /[ぁ-んァ-ヶ]/.test(n), han = /[一-龯]/.test(n), ascii = /^[\x00-\x7F]+$/.test(n);
+    const foreign = LANG === 'ja' ? !(kana || han) : (kana || (LANG !== 'en' && ascii));
+    return foreign ? mayLoc(txt || n) : null;
 }
 function dietMayText(names){ return t('{alg}（{names}の袋の表示を確認）', {alg: t('食の決まり'), names: joinNames(names)}); }
 function dietMayTagHtml(r){
@@ -9649,16 +9692,18 @@ function modeSheetHtml(){
 function openModeSheet(){ sheet = {kind:'mode'}; renderSheet(); }
 // 食材のなかま。豚肉を選んだら、豚ひき肉・ハム・ベーコン・ソーセージを使う料理も出さない（各国のパックは食材のキーと英語の名前で見分ける）
 // head: 選ぶとなかま全部を避ける食材のキー（ハムだけ・鮭だけを選んだときは、その食材だけを避ける）。jp: 日本の食材のキー。re: 各国の食材（キー｜英語の名前）
+// 第43回: 国特有の名前の肉の加工品（Leberkäse・Maultaschen・mantı・肉入りのトルテッリーニ／カペレッティ・Merguez・ウインナー類・肉のマンドゥ）も豚・牛のなかま。
+//  魚醤（ナンプラー・パティス・ジェオ）・かつお節・和風だしの素・しらすは魚、オイスターソース・えびのペースト（テラシ・バゴオン・カピ）は貝のなかま（魚なし・貝なし・コーシャでも外す）
 const AVOID_FAM = {
     pork:{head:/^(豚肉|豚ひき肉)$|\bpork\b/, jp:['豚肉','豚ひき肉','合いびき肉','ハム','ベーコン','ウインナー'],
-        re:/\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bspeck\b|kasseler|chorizo|salami|\blard\b|morcilla|\btrotters?\b(?!.*\bcow\b)|\bspam\b|lingui[cç]a|wiener|bratwurst|bockwurst|frankfurter|mettw|toulouse|morteau|montb[ée]liard|strasbourg|andouille|chinese sausage|italian sausage|\bsausage ?meat\b|hot dog|liver spread|meat dumpling|^(ground meat|minced meat)\|(?!.*\b(beef|lamb|veal|chicken|mutton)\b(?!.*\b(pork|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^sausage\|(?!.*\b(beef|chicken|lamb|turkey|merguez|sogo|fish|vegetarian)\b)/},
+        re:/\bpork\b|\bbacon\b|\bham\b|\bgammon\b|guanciale|pancetta|prosciutto|\bspeck\b|kasseler|chorizo|salami|\blard\b|morcilla|\btrotters?\b(?!.*\bcow\b)|\bspam\b|lingui[cç]a|wiener|bratwurst|bockwurst|frankfurter|mettw|toulouse|morteau|montb[ée]liard|strasbourg|andouille|chinese sausage|italian sausage|\bsausage ?meat\b|hot dog|liver spread|meat dumpling|leberk(?:ä|ae|a)(?:s|se)\b|fleischk(?:ä|ae)se|maultasch|meat[- ]filled|meat (?:tortellini|ravioli|cappelletti|capeletti)|liver sauce|^(ground meat|minced meat)\|(?!.*\b(beef|lamb|veal|chicken|mutton)\b(?!.*\b(pork|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^sausage\|(?!.*\b(beef|chicken|lamb|turkey|merguez|sogo|fish|vegetarian)\b)/},
     chicken:{head:/^(鶏肉|鶏ひき肉)$|^(ground )?chicken\b/, jp:['鶏肉','鶏ひき肉'], re:/\bchicken\b|\bturkey\b/},
     beef:{head:/^牛肉$|^(ground )?beef\b|^veal$|^oxtail$|^chuck roast$/, jp:['牛肉','合いびき肉'],
-        re:/\bbeef\b|\bveal\b|\bcow\b|oxtail|chuck roast|\bsuet\b|sucuk|\bsogo\b|corned|\btripe\b|bresaola|pastrami|^(ground meat|minced meat)\|(?!.*\b(pork|lamb|chicken|mutton)\b(?!.*\b(beef|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^mince\|/},
+        re:/\bbeef\b|\bveal\b|\bcow\b|oxtail|chuck roast|\bsuet\b|sucuk|\bsogo\b|corned|\btripe\b|bresaola|pastrami|leberk(?:ä|ae|a)(?:s|se)\b|fleischk(?:ä|ae)se|maultasch|meat[- ]filled|meat (?:tortellini|ravioli|cappelletti|capeletti|dumpling)|merguez|\bmant[ıi]\b|hot ?dogs?\b|frankfurter|wiener|\bvienna\b|salsicha|^(ground meat|minced meat)\|(?!.*\b(pork|lamb|chicken|mutton)\b(?!.*\b(beef|mixed)\b))|^(ground meat|minced meat)\|.*\b(mixed|gemischt)|^mince\|/},
     fish:{head:/^(魚|fish)$/, jp:['鮭','さば','ぶり','たら','あじ','いわし','さんま','かれい','ツナ','さわら','かじき','ちりめんじゃこ','かまぼこ','ちくわ','かに風味かまぼこ','たらこ','明太子','めんたいこ','辛子明太子','いくら','すじこ','筋子','数の子','かずのこ','とびこ'],   // 魚卵（たらこ・明太子など）も魚のなかま（モニター第5回 S19）
-        re:/\bfish(?! sauce)\b|\b(?:fish|cod|salmon|pollock|herring|flying fish) roe\b|\broe\b|caviar|mentaiko|tarako|\bikura\b|tobiko|masago|bottarga|taramasalata|anchov|\btuna\b|salmon|mackerel|herring|pollack|hairtail|\bcod\b|haddock|sea bream|whitebait|croaker|sardine|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|surimi/},
+        re:/(?<!(?:vegan|vegetarian|mushroom|vegetable|veggie) )\bfish\b|nam pla|n(?:ư|u)ớc mắm|nuoc mam|\bpatis\b|padaek|\bpla ra\b|\bbagoong\b(?! alamang)|kecap ikan|\bjaew\b|hondashi|\bdashi (?:powder|granules|stock powder)\b|\bgarum\b|colatura|魚醤|魚露|鱼露|액젓|น้ำปลา|なんぷらー|ぎょしょう|かつお(?:節|ぶし)|鰹節|けずりぶし|削り節|にぼし|煮干|ほんだし|(?<!昆布|こんぶ|しいたけ|椎茸|野菜|やさい|鶏がら|とりがら|中華)だしの(?:素|もと)|しらす|\b(?:fish|cod|salmon|pollock|herring|flying fish) roe\b|\broe\b|caviar|mentaiko|tarako|\bikura\b|tobiko|masago|bottarga|taramasalata|anchov|\btuna\b|salmon|mackerel|herring|pollack|hairtail|\bcod\b|haddock|sea bream|whitebait|croaker|sardine|tilapia|trout|\bhake\b|milkfish|bangus|catfish|pomfret|snapper|bonito|surimi/},
     shellfish:{head:/^(えび・かに・いか・たこ・貝|shellfish)$/, jp:['えび','いか','たこ','あさり','しじみ'],
-        re:/^(?!.*mushroom)(?=.*(shrimp|prawn|\bcrabs?\b|\bclams?\b|mussels?|\boysters?\b(?! sauce)|squid|cuttlefish|octopus|scallop|lobster|shellfish|cockle))/},
+        re:/^(?!.*mushroom)(?!.*\b(?:vegan|vegetarian)\b)(?=.*(shrimp|prawn|\bcrabs?\b|\bclams?\b|mussels?|\boysters?\b|squid|cuttlefish|octopus|scallop|lobster|shellfish|cockle|terasi|belacan|belachan|\bkapi\b|\bpetis\b|\bbagoong\b|saeujeot|새우젓|mắm tôm|\bxo sauce\b|蠔油|蚝油|虾酱|蝦醬|虾米|蝦米|海米|干贝|乾貝|瑶柱|おいすたー|かきそーす|ほしえび|干しえび|さくらえび|桜えび))/},
     egg:{head:/^(卵|eggs?)$/, jp:['卵','うずらの卵'], re:/\beggs?\b/},
     dairy:{head:/^(乳製品|dairy)$/, jp:['牛乳','チーズ','ばたー','生くりーむ','ぷれーんよーぐると'],
         re:/^(?!.*\b(coconut|soy|almond|oat) milk\b)(?!.*peanut butter)(?!.*butter beans?)(?=.*(\bmilk\b|\bbutter\b|buttermilk|cheese|\bcream\b|yogh?urt|kefir|\bquark\b|paneer|mozzarella|parmesan|pecorino|ricotta|gruy[eè]re|reblochon|stilton|requeij|\bghee\b|monterey jack|pepper ?jack|\bcolby\b|provolone|emmental|fontina|taleggio|gorgonzola|asiago|scamorza|stracchino|raclette|\bcomt[eé](?![a-z])|\bcantal\b|roquefort|\bch[eè]vre\b|manchego|cotija|\bedam\b|burrata|bocconcini|kashkaval|\bka[sş]ar\b|tvorog|twar[oó]g|catupiry|requeij|parmigiano|grana padano|havarti|jarlsberg|muenster|kefalotyri|mizithra|red leicester|double gloucester|wensleydale))/},
@@ -10103,7 +10148,7 @@ function mayNameParts(id, name){
         .replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim() || String(x).trim();
     const parts = String(name).split('/').map(x => x.trim()).filter(Boolean);
     const hit = parts.length > 1 ? parts.filter(x => algKind(id, {name: x, label: x, key: norm(x), en: /[a-z]/i.test(x) ? x.toLowerCase() : ''}) === 4) : [];
-    return (hit.length ? hit : [name]).map(short);
+    return (hit.length ? hit : [name]).map(short).map(x => mayLocFor(x) || x.replace(/\s*\?$/, ''));   // 第43回: stock cube・Worcestershire sauce なども画面の言葉で
 }
 // 料理の並び（rs）で「袋の表示を確認」になる加工品の名前（文に出す）
 // 文が長くなりすぎない（お膳の下の欄の高さ（3行）を超えて、まわりが動かない）よう、名前は1つ（長い名前は … で切る）。残りは「ほか○品」。全部の名前はカードの印と詳しい画面に出る
@@ -10662,7 +10707,7 @@ function isAvoidedCore(r){
 // 卵・乳製品・ナッツ・小麦や、ハム・だしの素のような加工品は置き換えない（その料理は今までどおり出さない）
 const SWAP_TXT = i => (i.key + '|' + (i.en || '') + '|' + i.label).toLowerCase();
 const SWAP_BAD = /レバー|もつ|ホルモン|砂肝|ハツ|ミノ|センマイ|stock|broth|soup|condensed|\beggs?\b|\bhead\b|\bwhole\b|poussin|tripe|mondongo|offal|kidney|tongue|oxtail|\bsalt(ed)? (cod|fish|herring|mackerel|pork|beef)|bacalhau|matj|charqui|carne seca|bouillon|powder|cube|granule|seasoning|sauce|paste|\bfat\b|lard|skin|bones?\b|liver|gizzard|heart|feet|trotter|canned|tinned|\bcan\b|dried|smoked|cured|ガラ|スープの素|だし|ルウ|ソース|缶/;
-const SWAP_PROC = /\bham\b|bacon|sausage|salami|chorizo|pancetta|prosciutto|guanciale|\bspam\b|wiener|hot ?dog|frankfurter|wurst|corned|pastrami|bresaola|sucuk|ハム|ベーコン|ウインナー|ソーセージ|ツナ|かまぼこ|ちくわ|かに風味|ちりめん|surimi|anchov|\btuna\b|bonito|katsuobushi|fish ball|fish ?cakes?|eomuk|\bballs?\b|morcilla|blood|black pudding|haggis|gammon|moo yor|pork roll|meatball|nugget|dumpling|wonton|wrapper|mandu|餃子|しゅうまい|\bpie\b|pastry|patt(y|ies)|burger|leftover|cooked|shredded/;
+const SWAP_PROC = /\bham\b|bacon|leberk|fleischk|maultasch|meat[- ]filled|tortellini|ravioli|capp?el+et+i|merguez|\bmant[ıi]\b|しらす|かつお|鰹|煮干|にぼし|削り節|けずりぶし|だしの素|だしのもと|ほんだし|なんぷらー|おいすたー|sausage|salami|chorizo|pancetta|prosciutto|guanciale|\bspam\b|wiener|hot ?dog|frankfurter|wurst|corned|pastrami|bresaola|sucuk|ハム|ベーコン|ウインナー|ソーセージ|ツナ|かまぼこ|ちくわ|かに風味|ちりめん|surimi|anchov|\btuna\b|bonito|katsuobushi|fish ball|fish ?cakes?|eomuk|\bballs?\b|morcilla|blood|black pudding|haggis|gammon|moo yor|pork roll|meatball|nugget|dumpling|wonton|wrapper|mandu|餃子|しゅうまい|\bpie\b|pastry|patt(y|ies)|burger|leftover|cooked|shredded/;
 const SWAP_SHAPED = /ball|loaf|burger|patt(y|ies)|ko?fte|köfte|kofta|kebab|kabab|frikadel|albóndiga|polpett|boulette|dumpling|gyoza|stuffed|dolma|nugget|sausage|croquet|hamburg|ハンバーグ|つくね|団子|肉だんご|餃子|しゅうまい|肉詰め|コロッケ|丸|köfte|sarma|musakka|moussaka|lasagn|meat ?pie|empanada|samosa|momo|lumpia|siu mai|shumai|bao|bun|roll|meat sauce|bolognese|ragù|ragu|chili|tacos?|picadillo/;
 const swapMince = i => /ひき肉|びき肉|ミンチ|\bground\b|\bmince/.test(SWAP_TXT(i));
 // 代わりにしない部位（骨付き・煮込み向きのかたまりなど。ステーキや炒めものの代わりにならない）
@@ -10672,7 +10717,9 @@ const swapSlice = f => i => swapBody(f)(i) && !swapMince(i);
 const swapCut = f => i => swapSlice(f)(i) && !SWAP_CUT.test(SWAP_TXT(i));
 const swapGround = f => i => swapBody(f)(i) && swapMince(i);
 const swapTofu = i => /厚揚げ|豆腐|tofu/.test(SWAP_TXT(i)) && !/skin|yuba|fermented|stinky|dried|puff|sheet|油揚げ|高野|湯葉|silken|soft|絹/.test(SWAP_TXT(i));
-const swapVeg = re => i => re.test(SWAP_TXT(i)) && !SWAP_BAD.test(SWAP_TXT(i));
+// 第43回: 肉・魚・貝のなかまの加工品（Maultaschen の「肉とほうれん草入りのラビオリ」など）は、名前に野菜があっても野菜として置き換えない
+const SWAP_ANIMAL = ['pork', 'beef', 'chicken', 'fish', 'shellfish', 'othermeat'];
+const swapVeg = re => i => re.test(SWAP_TXT(i)) && !SWAP_BAD.test(SWAP_TXT(i)) && !SWAP_ANIMAL.some(f => inFam(f, i));
 // is: 置き換える材料。to: 代わりの候補を前から順に（[見分け方, 火の通しの注意]）
 const SWAP_RULES = [
     {is: i => swapMince(i) && ['pork', 'beef', 'chicken'].some(f => swapBody(f)(i)), to: [[swapGround('chicken'), 'chicken'], [swapGround('pork'), 'pork'], [swapGround('beef'), ''], [swapCut('chicken'), 'chicken']]},   // ひき肉の代わりがない国は、鶏肉を細かく切って使う
