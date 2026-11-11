@@ -2064,4 +2064,5 @@ GOHAN_I18N('de', {
     "煮込みなど、時間をかけて作る料理も出します": "Auch Gerichte, die Zeit brauchen, z. B. Eintöpfe",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Personen (2), Anzahl der Gerichte, Zutaten, die du meidest, und Allergien kannst du später in den Einstellungen ändern.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Allergien oder Zutaten, die du meidest? Hier kannst du sie einstellen.",
+    "アレルギー・苦手を設定": "Allergien & Meiden",
 });

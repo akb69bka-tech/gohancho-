@@ -926,8 +926,8 @@ for (const [cc, pick] of [['TH', 'egg'], ['TH', 'milk'], ['VN', 'fish'], ['KR', 
     await p.waitForSelector('#sheet-root [data-act="ob-done"]', { timeout: 30000 });
     ok(!(await p.locator('#sheet-root [data-act="ob-alg"]').count()), `第39回 ${cc}: はじめての設定にはアレルギーの欄を出さない（2つめは使い方）`);
     await p.locator('#sheet-root [data-act="ob-done"]').click(); await p.waitForTimeout(800);
-    await p.waitForSelector('[data-act="alg-hint-open"]', { timeout: 15000 });
-    await p.locator('[data-act="alg-hint-open"]').click(); await p.waitForTimeout(600);
+    await p.waitForSelector('[data-act="alg-hint-open"] >> visible=true', { timeout: 15000 });
+    await p.locator('[data-act="alg-hint-open"] >> visible=true').click(); await p.waitForTimeout(600);
     const g = await p.evaluate(() => { const c = [...document.querySelectorAll('#allergy-card [data-act="alg-toggle"]')]; const r = document.querySelector('#allergy-card').getBoundingClientRect(); return { all: c.map(e => e.dataset.v), more: c.filter(e => e.closest('details')).map(e => e.dataset.v), main: algSections().main.map(x => x[1]), tab, vis: r.height > 0 }; });
     const main0 = g.main[0] || [], top = g.all.filter(v => !g.more.includes(v));
     ok(g.tab === 'settings' && g.vis, `S13 ${cc}: 献立の下の案内から、設定の「アレルギー対策」が開く`);

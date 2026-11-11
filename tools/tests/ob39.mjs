@@ -5,7 +5,7 @@
 //     人数2人・品数おまかせ・苦手なし・アレルギーなし・いつも家にある食材なし（日本以外の国も）
 //  O2 選んだ使い方が効く（10分以内・いちばん簡単・じっくり → 今日の気分／ダイエット → ダイエットモード）
 //  O3 スキップ → ふつうのまま献立へ。もどる → 国の画面 → 同じ国 → 選んだ使い方はそのまま
-//  O4 献立の下の小さな案内（アレルギーや苦手な食材…）: お膳の料理・丸い「まるごと入れ替え」に重ならない。「設定」でアレルギー対策が開き、
+//  O4 献立の小さな案内（アレルギーや苦手な食材…。第40回から決定の帯の中・帯をお膳の下に置く画面では下のタブの上）: お膳の料理・丸い「まるごと入れ替え」に重ならない。「設定」でアレルギー対策が開き、
 //     卵を選ぶと、卵を使う料理だけが献立から外れる（ほかの料理は動かない）。設定したあとは案内を出さない。×で閉じると開き直しても出ない
 //  O5 前から使っている人（はじめての設定を終えた人・記録がある人）: シートも案内も出ない。設定はそのまま
 //  O6 幅 195 / 260 / 390 × 文字3段階: 使い方の画面と案内が画面の中・横にはみ出さない・押せる大きさ
@@ -40,7 +40,7 @@ const finish = async (p, o = {}) => {
     await p.click('#sheet-root [data-act=ob-done]');
     await p.waitForFunction(() => S.onboarded === true && !sheet && session.menu && document.querySelector('#view .tray'), null, { timeout: 30000 });
     await p.waitForTimeout(400);
-    if (o.peek) o.peek.during = await p.evaluate(() => ({ toast: !!document.querySelector('#toast-root .toast'), hint: !!document.querySelector('#view .alg-hint'), ids: session.menu.items.map(x => x.r && x.r.id) }));
+    if (o.peek) o.peek.during = await p.evaluate(() => ({ toast: !!document.querySelector('#toast-root .toast'), hint: [...document.querySelectorAll('#view .alg-hint')].some(e => e.getClientRects().length), ids: session.menu.items.map(x => x.r && x.r.id) }));
     await p.waitForFunction(() => !session.algHintWait, null, { timeout: 20000 }).catch(() => {});   // 「準備ができました」が消えてから案内を出す
     await p.waitForTimeout(200);
 };
@@ -51,13 +51,15 @@ const modeScreen = p => p.evaluate(() => ({
     count: document.querySelectorAll('#sheet-root [data-act=ob-count]').length, staple: document.querySelectorAll('#sheet-root [data-act=ob-staple]').length,
     done: !!document.querySelector('#sheet-root [data-act=ob-done]'), next: !!document.querySelector('#sheet-root [data-act=ob-next]'), skip: !!document.querySelector('#sheet-root [data-act=ob-skipstep]') }));
 const stateOf = p => p.evaluate(() => ({ onb: !!S.onboarded, sv: S.settings.servings, dc: S.settings.dishCount, avoid: S.settings.avoid.length, alg: algIds().length, staples: S.staples.length, mood: session.mood, diet: !!S.settings.diet,
-    spots: document.querySelectorAll('#view .tray .spot').length, hint: !!document.querySelector('#view .alg-hint'), sheet: sheet && sheet.kind }));
+    spots: document.querySelectorAll('#view .tray .spot').length, hint: [...document.querySelectorAll('#view .alg-hint')].some(e => e.getClientRects().length), sheet: sheet && sheet.kind }));
 // 案内の位置: 画面の中・料理と丸いボタンに重ならない・押せる大きさ・横にはみ出さない
+// 第40回 R178: 案内は決定の帯の中（.ah-in）か、帯をお膳の下に置く画面では下のタブの上に貼りつく（.ah-st）。見えている方を測る。
+// 貼りつく形（bar-static）では、もともとタブの裏に切れている下の段には重なってよい（上の段の器・名前には重ねない。丸いボタンは高さ 500px 以上・幅 260 以上で重ねない。それより小さい画面は上の段がやっと入る高さ）
 const hintGeo = p => p.evaluate(() => {
-    const h = document.querySelector('#view .alg-hint'); if (!h) return { none: true };
-    const r = h.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+    const h = [...document.querySelectorAll('#view .alg-hint')].find(e => e.getClientRects().length); if (!h) return { none: true };
+    const r = h.getBoundingClientRect(), vw = document.documentElement.clientWidth, bs = document.body.classList.contains('bar-static'), row0 = document.querySelector('#view .tray .tg-row');
     const hit = (a, c) => a.left < c.right - .5 && c.left < a.right - .5 && a.top < c.bottom - .5 && c.top < a.bottom - .5;
-    const cover = [...document.querySelectorAll('#view .tray .spot, #view .tray .shuffle, #view .tray [data-act=reroll]')].filter(e => hit(r, e.getBoundingClientRect())).map(e => e.className);
+    const cover = [...document.querySelectorAll('#view .tray .spot, #view .tray .shuffle, #view .tray [data-act=reroll]')].filter(e => hit(r, e.getBoundingClientRect()) && (!bs || row0.contains(e) && e.matches('.spot') && [...e.querySelectorAll('.vessel, .nm')].some(x => hit(r, x.getBoundingClientRect())) || e.matches('.shuffle') && vw >= 260 && innerHeight >= 500)).map(e => e.className);
     const btns = [...h.querySelectorAll('button')].map(e => { const q = e.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), out: q.left < -.5 || q.right > vw + .5 }; });
     const tx = h.querySelector('.ah-tx'), txOver = tx.scrollWidth > tx.clientWidth + 1;
     return { cover, btns, out: r.left < -.5 || r.right > vw + .5, sw: document.documentElement.scrollWidth > vw + 1, txOver, inTray: !!h.closest('.tray') };
@@ -77,7 +79,7 @@ if (want('O1')) for (const [cc, locale] of [['JP', 'ja-JP'], ['US', 'en-US'], ['
     const peek = {}; await finish(p, { peek });
     const s = await stateOf(p);
     const ids1 = await p.evaluate(() => session.menu.items.map(x => x.r && x.r.id));
-    ok(peek.during && (!peek.during.toast || !peek.during.hint) && JSON.stringify(peek.during.ids) === JSON.stringify(ids1), `O1 ${cc}: 「準備ができました」のあいだは案内を出さず、消えてから出す。そのとき献立は変わらない: ` + JSON.stringify(peek.during));
+    ok(peek.during && peek.during.hint && !peek.during.toast && JSON.stringify(peek.during.ids) === JSON.stringify(ids1), `O1 ${cc}: 案内はすぐに出し、「準備ができました」のお知らせは出さない（案内がその代わり。第40回 R178。前は消えてから出していた）。そのとき献立は変わらない: ` + JSON.stringify(peek.during));
     ok(s.onb && s.sv === 2 && s.dc === 'auto' && !s.avoid && !s.alg && !s.staples && s.mood === 'all' && !s.diet && s.spots > 0 && !s.sheet, `O1 ${cc}: 献立が出る。人数2人・品数おまかせ・苦手/アレルギー/家にある食材なし・ふつう: ` + JSON.stringify(s));
     ok(s.hint, `O1 ${cc}: 献立の下にアレルギー・苦手の案内が出る`);
     // 開き直しても、はじめての画面は出ない（案内は閉じるまで出る）
@@ -116,7 +118,7 @@ if (want('O3')){
         await p.click('#sheet-root [data-act=ob-skipstep]');
         await p.waitForFunction(() => S.onboarded === true && !sheet, null, { timeout: 30000 }); await p.waitForTimeout(300);
         const s = await stateOf(p);
-        ok(s.onb && s.mood === 'all' && s.sv === 2 && s.dc === 'auto' && s.spots > 0, 'O3 スキップ: 選びかけた使い方は使わず、ふつうのまま献立へ: ' + JSON.stringify(s));
+        ok(s.onb && s.mood === 'ten' && s.sv === 2 && s.dc === 'auto' && s.spots > 0, 'O3 スキップ: 選んだ使い方のまま献立へ（第40回 R180。スキップ＝いまの選びのまま終える）: ' + JSON.stringify(s));
         await ctx.close();
     }
     {
@@ -153,23 +155,23 @@ if (want('O4')){
             return { main: e.id, others: it.slice(1).map(x => x.r && x.r.id), eggOthers: it.slice(1).filter(x => x.r && egg(x.r)).length };
         });
         ok(pre && !pre.eggOthers, 'O4 前提: 主菜を卵の料理に・ほかは卵なし: ' + JSON.stringify(pre));
-        await p.click('#view [data-act=alg-hint-open]');
+        await p.click('#view [data-act=alg-hint-open] >> visible=true');
         await p.waitForFunction(() => tab === 'settings', null, { timeout: 10000 }); await p.waitForTimeout(500);
         const st = await p.evaluate(() => { const c = document.querySelector('#allergy-card'), r = c && c.getBoundingClientRect(); return { tab, card: !!c && r.height > 0 && r.top < innerHeight && r.bottom > 0, setTab: session.setTab, algHint: !!S.algHint }; });
-        ok(st.tab === 'settings' && st.card && st.setTab === 'family' && !st.algHint, 'O4 「設定」→ 設定の家族・アレルギーのタブの「アレルギー対策」が見える: ' + JSON.stringify(st));
+        ok(st.tab === 'settings' && st.card && st.setTab === 'family' && st.algHint, 'O4 「設定」→ 設定の家族・アレルギーのタブの「アレルギー対策」が見える（見に行っただけでは案内は消さない。第40回 R186）: ' + JSON.stringify(st));
         await p.click('#allergy-card [data-act=alg-toggle][data-v=egg]'); await p.waitForTimeout(500);
         const after = await p.evaluate(() => ({ alg: algIds(), ids: session.menu.items.map(x => x.r && x.r.id), bad: session.menu.items.filter(x => x.r && allergyConflict(x.r)).map(x => x.r.id) }));
         ok(after.alg.includes('egg') && !after.bad.length && pre && after.ids[0] !== pre.main, 'O4 卵を選ぶと、卵を使う主菜が献立から外れる: ' + JSON.stringify(after));
         ok(pre && JSON.stringify(after.ids.slice(1)) === JSON.stringify(pre.others), 'O4 押していない料理（卵を使わない料理）は動かない: ' + JSON.stringify([pre && pre.others, after.ids.slice(1)]));
         await p.evaluate(() => setTab('today')); await p.waitForTimeout(300);
-        ok(!(await p.evaluate(() => !!document.querySelector('#view .alg-hint'))), 'O4 設定したあとは案内を出さない');
+        ok(!(await p.evaluate(() => !!document.querySelector('#view .alg-hint'))) && !(await p.evaluate(() => 'algHint' in S)), 'O4 アレルギーを設定したあとは案内を出さない');
         await ctx.close();
     }
     {   // ×で閉じる → 開き直しても出ない。献立は変わらない
         const { p, ctx } = await ctxOf({}, 'o4x');
         await toMode(p, 'JP'); await finish(p);
         const ids0 = await p.evaluate(() => session.menu.items.map(x => x.r && x.r.id));
-        await p.click('#view [data-act=alg-hint-close]'); await p.waitForTimeout(300);
+        await p.click('#view [data-act=alg-hint-close] >> visible=true'); await p.waitForTimeout(300);
         const r = await p.evaluate(() => ({ hint: !!document.querySelector('#view .alg-hint'), ids: session.menu.items.map(x => x.r && x.r.id), tab }));
         ok(!r.hint && r.tab === 'today' && JSON.stringify(r.ids) === JSON.stringify(ids0), 'O4 ×で閉じると案内が消え、献立はそのまま: ' + JSON.stringify(r));
         await p.reload(); await p.waitForFunction(() => typeof GH !== 'undefined' && GH.booted && document.querySelector('#view .tray'), null, { timeout: 30000 }); await p.waitForTimeout(300);
@@ -215,13 +217,13 @@ if (want('O6')){
             const vw = document.documentElement.clientWidth, sh = document.querySelector('#sheet-root .sheet'), foot = sh.querySelector('.ob-actions').getBoundingClientRect(), out = [];
             const rows = [...sh.querySelectorAll('[data-act=ob-mode]')];
             rows.forEach(e => { const r = e.getBoundingClientRect(); if (r.left < -.5 || r.right > vw + .5) out.push('外:' + e.dataset.v); if (e.scrollWidth > e.clientWidth + 1) out.push('はみ出し:' + e.dataset.v); if (r.height < 44) out.push('低い:' + e.dataset.v); });
-            sh.querySelectorAll('.ob-actions .btn, .ob-count > span, .ob-skip, h2').forEach(e => { const r = e.getBoundingClientRect(); if (r.left < -.5 || r.right > vw + .5 || e.scrollWidth > e.clientWidth + 1) out.push('外:' + e.textContent.trim().slice(0, 12)); });
+            sh.querySelectorAll('.ob-actions .btn, .ob-count > span, .ob-skip, h2').forEach(e => { const r = e.getBoundingClientRect(); if (r.width > 1 && r.height > 1 && (r.left < -.5 || r.right > vw + .5 || e.scrollWidth > e.clientWidth + 1)) out.push('外:' + e.textContent.trim().slice(0, 12)); });   // 見た目から外して読み上げだけに残した字（1px の箱。第40回 R182）は数えない
             const r0 = rows[0].getBoundingClientRect(), h2 = sh.querySelector('h2').getBoundingClientRect();
             return { out, firstAbove: r0.bottom <= foot.top + .5 && h2.top >= 0, sw: document.documentElement.scrollWidth > vw + 1 || sh.scrollWidth > sh.clientWidth + 1 };
         });
         n++; if (m.out.length || !m.firstAbove || m.sw) bad.push(`${w}px 文字${ts} 使い方: ` + JSON.stringify(m));
         await finish(p);
-        await p.evaluate(() => { const h = document.querySelector('#view .alg-hint'); if (h) h.scrollIntoView({ block: 'center' }); }); await p.waitForTimeout(200);
+        await p.waitForTimeout(200);   // 第40回 R178: 案内は最初の画面に出る（スクロールしない）
         const g = await hintGeo(p);
         n++; if (g.none || g.cover.length || g.inTray || g.out || g.sw || g.txOver || !g.btns.every(x => x.h >= 40 && x.w >= 40 && !x.out)) bad.push(`${w}px 文字${ts} 案内: ` + JSON.stringify(g));
         await ctx.close();
@@ -238,16 +240,16 @@ if (want('O7')){
         const m = await p.evaluate(() => {
             const vw = document.documentElement.clientWidth, sh = document.querySelector('#sheet-root .sheet'); if (!sh) return { none: true };
             const out = [];
-            sh.querySelectorAll('[data-act=ob-mode], [data-act=ob-mode] b, [data-act=ob-mode] .om-t > span, .ob-actions .btn, .ob-count > span, .ob-skip, .ob-steps li, h2, p').forEach(e => { const r = e.getBoundingClientRect(); if (r.width && (r.left < -.5 || r.right > vw + .5 || e.scrollWidth > e.clientWidth + 1)) out.push(e.textContent.trim().slice(0, 16)); });
+            sh.querySelectorAll('[data-act=ob-mode], [data-act=ob-mode] b, [data-act=ob-mode] .om-t > span, .ob-actions .btn, .ob-count > span, .ob-skip, .ob-steps li, h2, p').forEach(e => { const r = e.getBoundingClientRect(); if (r.width > 1 && r.height > 1 && (r.left < -.5 || r.right > vw + .5 || e.scrollWidth > e.clientWidth + 1)) out.push(e.textContent.trim().slice(0, 16)); });
             const jp = /[ぁ-ん]/.test(sh.innerText) && LANG !== 'ja';
             return { out, jp, lang: LANG, n: sh.querySelectorAll('[data-act=ob-mode]').length, sw: document.documentElement.scrollWidth > vw + 1 };
         });
         n++; if (m.none || m.out.length || m.jp || m.n < 5 || m.sw) bad.push(`${lang} ${w}px 使い方: ` + JSON.stringify(m));
         if (!m.none){
             await finish(p).catch(() => {});
-            await p.evaluate(() => { const h = document.querySelector('#view .alg-hint'); if (h) h.scrollIntoView({ block: 'center' }); }); await p.waitForTimeout(200);
+            await p.waitForTimeout(200);   // 第40回 R178: 案内は最初の画面に出る（スクロールしない）
             const g = await hintGeo(p);
-            const jp = await p.evaluate(() => { const h = document.querySelector('#view .alg-hint'); return !!h && LANG !== 'ja' && /[ぁ-ん]/.test(h.innerText); });
+            const jp = await p.evaluate(() => { const h = [...document.querySelectorAll('#view .alg-hint')].find(e => e.getClientRects().length); return !!h && LANG !== 'ja' && /[ぁ-ん]/.test(h.innerText); });
             n++; if (g.none || g.cover.length || g.out || g.sw || g.txOver || jp || !g.btns.every(x => x.h >= 40 && !x.out)) bad.push(`${lang} ${w}px 案内: ` + JSON.stringify({ ...g, jp }));
         }
         await ctx.close();

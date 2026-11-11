@@ -2064,4 +2064,5 @@ GOHAN_I18N('vi', {
     "煮込みなど、時間をかけて作る料理も出します": "Cả những món cần thời gian, như món hầm",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Số người (2), số món, thực phẩm bạn tránh và dị ứng có thể đổi sau trong Cài đặt.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Bạn bị dị ứng hoặc có thực phẩm muốn tránh? Hãy cài đặt tại đây.",
+    "アレルギー・苦手を設定": "Dị ứng & thực phẩm cần tránh",
 });

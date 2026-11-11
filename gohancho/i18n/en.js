@@ -2065,4 +2065,5 @@ GOHAN_I18N('en', {
     "煮込みなど、時間をかけて作る料理も出します": "Also dishes that take time, like stews",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Servings (2), number of dishes, foods you avoid and allergies can be changed in Settings as you go.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Have allergies or foods you avoid? You can set them here.",
+    "アレルギー・苦手を設定": "Allergies & foods to avoid",
 });

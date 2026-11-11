@@ -723,7 +723,7 @@ html:has(#toast-root .toast.anchored){overflow-anchor:none}   /* 第20回 R66: �
 .country .sub{font-size:.75rem;color:var(--muted);line-height:1.2;min-width:0;overflow-wrap:anywhere}
 @media (max-width:360px){.country{padding:10px 8px;column-gap:6px}.country .fl{font-size:1.3rem}.country .nm{font-size:.86rem;hyphens:auto}}
 .country.on{border-color:var(--leaf);box-shadow:0 0 0 2px var(--leaf-soft)}
-.country .cand{display:inline-block;font-size:.7rem;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-inline-end:4px;line-height:1.5;white-space:nowrap}
+.country .cand{display:inline-block;font-size:.75rem;font-weight:600;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-inline-end:4px;line-height:1.5;white-space:nowrap}
 .v-staple{width:62%}
 .world-head{display:flex;align-items:center;gap:10px;font-size:1.05rem}
 .world-head .fl{font-size:1.6rem;line-height:1}
@@ -831,12 +831,46 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-mode[aria-checked="true"] .om-ic{border-color:var(--leaf);background:var(--leaf);color:var(--surface)}
 .ob-mode[aria-checked="true"] .om-ic::before{content:"✓"}
 /* 第39回: はじめての設定のあと、お膳の下に出す小さな案内（アレルギー・苦手はあとから設定）。お膳と丸いボタンには重ねない。閉じられる */
-@media (max-width:299px){html[data-ts] .sheet-onboard .ob-lead,html[data-ts] .sheet-onboard .ob-mode .om-t span{display:none}html[data-ts] .sheet-onboard .ob-mode{align-items:center}.sheet-onboard .ob-mode{padding:var(--s8);gap:var(--s8)}.sheet-onboard .ob-mode .om-t b{font-size:var(--fs14)}.sheet-onboard .ob-mode .om-t span{font-size:12px}}   /* 幅195px・文字を大きくしたとき: 1つめの選ぶ行が下の帯より上に見えるように、上の説明と各行の説明は外し（名前と下の一言で足りる）、行を詰める */
-.alg-hint{margin-top:var(--s8);gap:var(--s8);padding:var(--s8) var(--s8) var(--s8) var(--s12);flex-wrap:nowrap;align-items:center}
-.alg-hint .ah-tx{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;line-height:1.45}
-.alg-hint .btn{flex:0 0 auto}
-.alg-hint .ah-x{flex:0 0 auto;min-width:var(--tap);min-height:var(--tap);border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;border-radius:var(--r-pill)}
-@media (max-width:340px){.alg-hint{flex-wrap:wrap}.alg-hint .ah-tx{flex-basis:calc(100% - var(--tap) - var(--s8))}.alg-hint .btn{order:3}}
+@media (max-width:299px){html[data-ts] .sheet-onboard .ob-lead{display:none}html[data-ts] .sheet-onboard .ob-mode{align-items:center}.sheet-onboard .ob-mode{padding:var(--s8);gap:var(--s8)}.sheet-onboard .ob-mode .om-t b{font-size:var(--fs14)}.sheet-onboard .ob-mode .om-t .om-d{font-size:12px}}   /* 幅195px・文字を大きくしたとき: 1つめの選ぶ行が下の帯より上に見えるように、上の説明と各行の説明は外し（名前と下の一言で足りる）、行を詰める */
+/* 第40回 R182: 5つの使い方と「献立を見る」が1画面に入るように詰める（行の上下の余白・行のあいだを小さく、説明は1段小さい字）。
+   幅 360px 以下で文字を大きくしたとき・幅 300px 未満では、各行の説明と上の説明の文を見た目から外す（各行の説明は読み上げには残す。名前で選べる） */
+.sheet-onboard .ob-modes{gap:6px}
+.sheet-onboard .ob-mode{padding:var(--s8) var(--s12);align-items:center}
+.sheet-onboard .ob-mode .om-ic{margin-top:0}
+.sheet-onboard .ob-mode .om-t{gap:0}
+.sheet-onboard .ob-mode .om-t b{line-height:1.3}
+.sheet-onboard .ob-mode .om-t .om-d{font-size:.8125rem;line-height:1.35}
+@media (max-width:360px){html[data-ts] .sheet-onboard h2{font-size:var(--fs20)}html[data-ts] .sheet-onboard .ob-lead{display:none}html[data-ts] .sheet-onboard .ob-steps span{display:none}html[data-ts] .sheet-onboard .ob-head{gap:var(--s4)}html[data-ts] .sheet-onboard>.sheet-body{gap:var(--s8)}}
+@media (max-width:360px){html[data-ts] .sheet-onboard .ob-mode .om-t .om-d{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+@media (max-width:299px){.sheet-onboard .ob-mode .om-t .om-d{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+/* 第40回 R183: はじめの画面の右上の文字の大きさ（A / A+ / A++。押せる 40px 角）。押してある段は若草の線と地（色だけに頼らず太字） */
+.ob-ts{display:flex;gap:var(--s4);margin-inline-start:auto;flex:0 0 auto}
+.ob-ts-b{min-width:40px;min-height:40px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
+.ob-ts-b[data-v="0"]{font-size:14px}.ob-ts-b[data-v="1"]{font-size:16px}.ob-ts-b[data-v="2"]{font-size:18px}
+.ob-ts-b[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);font-weight:800}
+.sheet-country .ob-count:has(.ob-ts){min-height:40px}
+@media (max-width:299px){.ob-count:has(.ob-ts){flex-wrap:nowrap}.ob-count:has(.ob-ts) .ob-n{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}   /* 幅195px: 「ステップ 1 / 2」は下の線（と読み上げ）に任せ、A の3つを1行に */
+/* 第40回 R178: 案内は「献立を見る」のすぐあとに、最初の画面に出す。置き場所は決定の帯の中（細い1行。.ah-in）。お膳より上・お膳の中には置かない。
+   帯をお膳の下に置く画面（bar-static。幅195 など）では、帯の代わりに案内だけを下のタブのすぐ上に貼りつける（.ah-st。お膳の上の段は fitTray がその上に入れる）。
+   幅 340px 以下では、長い文の代わりに「アレルギー・苦手を設定」のボタン1つと × の1行（細く保つ。全文は読み上げで知らせる） */
+.alg-hint{display:flex;align-items:center;gap:var(--s4);min-width:0;font-size:var(--fs12);line-height:1.35;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:2px 2px 2px var(--s12)}
+.alg-hint .ah-tx{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.alg-hint .ah-go{flex:0 0 auto;min-height:var(--tap-sm);font-size:var(--fs14)}
+.alg-hint .ah-go .ah-s{display:none}
+.alg-hint .ah-x{flex:0 0 auto;min-width:var(--tap-sm);min-height:var(--tap-sm);border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;border-radius:var(--r-pill)}
+.alg-hint.ah-in{flex:0 0 100%}
+.actionbar.decide-bar:has(>.alg-hint.ah-in){border-radius:var(--r-lg,16px)}
+.alg-hint.ah-st{display:none}
+body.bar-static .alg-hint.ah-in{display:none}
+body.bar-static.ah-flow .alg-hint.ah-st{position:static}
+body.bar-static .alg-hint.ah-st{display:flex;position:sticky;bottom:calc(var(--nav-h,72px) + var(--s8));z-index:6;margin-top:var(--s8);box-shadow:0 0 0 var(--s4) color-mix(in srgb,var(--bg) 84%,transparent)}
+body.ah-row .alg-hint.ah-in{flex:1 1 0;order:-1;padding-left:2px}
+body.ah-row .alg-hint.ah-in .ah-tx,body.ah-row .alg-hint.ah-in .ah-go .ah-l{display:none}
+body.ah-row .alg-hint.ah-in .ah-go{flex:1 1 auto;min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:center;font-size:var(--fs12);line-height:1.25;--btn-px:var(--s8)}
+body.ah-row .alg-hint.ah-in .ah-go .ah-s{display:inline}
+body.ah-row .actionbar.decide-bar:has(>.alg-hint.ah-in){border-radius:var(--r-pill)}
+body.ah-row .decide-bar:has(>.alg-hint.ah-in) .cond-low{display:none}body.ah-row .decide-bar:has(>.alg-hint.ah-in) .big-decide{flex:1 1 0}   /* 同じ行に詰めた形では、帯の中の「条件」の入口（上の端の「条件を変える」と同じ）は案内のあいだだけ外し、決定ボタンと案内を半分ずつ */
+@media (max-width:340px){.alg-hint{padding-left:2px}.alg-hint .ah-tx,.alg-hint .ah-go .ah-l{display:none}.alg-hint .ah-go{flex:1 1 auto;min-width:0;white-space:normal;overflow-wrap:anywhere;text-align:center;font-size:var(--fs12);line-height:1.25;--btn-px:var(--s4)}.alg-hint .ah-go .ah-s{display:inline}}
 .ob-staples summary{min-height:var(--tap);display:flex;align-items:center}
 .ob-actions{display:flex;gap:var(--s8);margin-top:var(--s8)}
 .ob-actions .btn{min-height:var(--tap-lg);font-size:var(--fs16)}
@@ -896,6 +930,43 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .sheet-country .cc-note{margin:0}
 .sheet-country .cc-foot{padding:var(--s8) 0 calc(var(--s12) + env(safe-area-inset-bottom,0px));gap:var(--s4)}
 .sheet-country .cc-pick{min-height:40px}
+/* 第40回 R182: 幅300px未満（195 など）のはじめての1つめ（国と言語）: 国の一覧の1行目が下の帯より上に見えるように、もう一段詰める。
+   シートは画面の高さいっぱい、手順の線と A の3つを1行に、手順の名前・「ご飯帖へようこそ」は外し、言語の欄の名前は読み上げだけ、地域のタブは低く（40px）、すき間を小さく */
+@media (max-width:299px){
+  .sheet.sheet-country:has(.ob-head),.sheet.sheet-onboard{height:100vh;height:min(100dvh,var(--vvh,100vh));max-height:100vh;max-height:min(100dvh,var(--vvh,100vh))}
+  .sheet-country .ob-head:has(.ob-ts){flex-direction:row;align-items:center;gap:var(--s8)}
+  .sheet-country .ob-head:has(.ob-ts) .ob-count{order:2;flex:0 0 auto}
+  .sheet-country .ob-head:has(.ob-ts) .ob-steps{flex:1 1 auto;min-width:24px}
+  .sheet-country .ob-steps span,.sheet-country .ob-eyebrow{display:none}
+  .sheet-country .ob-eyebrow+h2{margin-top:0}
+  .sheet-country>.sheet-body:has(.ob-head){gap:6px;padding-top:var(--s8)}
+  .sheet-country:has(.ob-head) h2{font-size:1.125rem}
+  .sheet-country:has(.ob-head) .ob-lang select{min-height:var(--tap-sm)}
+  .sheet-country:has(.ob-head) .country-list{grid-template-columns:minmax(0,1fr)}   /* 2列だと国の名前が折り返して1つが 100px 以上になる。1列で1つずつ低く（1つめが帯の上に入る） */
+  .sheet-country:has(.ob-head) .country{min-height:48px;padding-block:6px}
+  .sheet-country:has(.ob-head) .country.on{padding-block:5px}
+  .sheet-country:has(.ob-head) .cc-foot{padding-top:var(--s4)}
+  .sheet-country:has(.ob-head) .cc-pick{min-height:0}
+  .sheet-country:has(.ob-head) .ob-pick-hint{font-size:var(--fs12);line-height:1.3}
+  .sheet-country .ob-lang>span.small{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .sheet-country:has(.ob-head) .cc-tabs{gap:var(--s4)}
+  .sheet-country:has(.ob-head) .cc-tab{min-height:40px;padding:var(--s4) var(--s8);font-size:var(--fs12)}
+  .sheet-onboard>.sheet-body{padding-top:var(--s12)}
+  .sheet-onboard h2{font-size:var(--fs20)}
+  .sheet-onboard .ob-lead{display:none}
+  /* 2つめ（使い方）: 手順の線と「スキップ」を1行に（「ステップ 2 / 2」は線と読み上げに任せる）。「もどる」は小さくして「献立を見る」と1行に（入らない言語・文字の大きさでは今までどおり2段。語は割らない） */
+  .sheet-onboard .ob-head{flex-direction:row;align-items:center;gap:var(--s8)}
+  .sheet-onboard .ob-head .ob-count{order:2;flex:0 0 auto;min-height:var(--tap-sm)}
+  .sheet-onboard .ob-head .ob-steps{flex:1 1 auto;min-width:24px}
+  .sheet-onboard .ob-count .ob-n{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .sheet-onboard .ob-count .ob-skip{min-height:var(--tap-sm)}
+  .sheet-onboard .ob-actions:not(.cc-foot){column-gap:var(--s4);row-gap:0}
+  .sheet-onboard .ob-actions:not(.cc-foot) .btn.ghost{flex:0 0 auto;min-width:var(--tap-sm);font-size:var(--fs12);--btn-px:var(--s4)}
+  .sheet-onboard .ob-actions:not(.cc-foot) .btn.primary{flex:1 1 auto;white-space:normal;overflow-wrap:normal;--btn-px:var(--s8)}
+}
+/* 第40回 R182: 文字もっと大きい（A++）の使い方の画面: 見出しは1段小さく、上の説明の文（下の一言と同じ内容）は外す（5つの選択肢を1画面に） */
+html[data-ts="2"] .sheet-onboard h2{font-size:var(--fs20)}
+html[data-ts="2"] .sheet-onboard .ob-lead{display:none}
 /* 献立が出た瞬間: お膳の料理が1品ずつふわっと並ぶ（動きを減らす設定では出さない） */
 @media (prefers-reduced-motion:no-preference){
   .tray.ob-reveal .spot{animation:obIn .52s var(--ease) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
@@ -2110,6 +2181,7 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
   </defs>
 </svg>
 <div id="toast-root" role="status" aria-live="polite" aria-atomic="true"></div>
+<div id="sr-live" class="vh" aria-live="polite" aria-atomic="true"></div>
 <div id="timer-float"></div>
 
 <script>
@@ -5929,7 +6001,18 @@ function bfEntryFit(){
         en.style.marginTop = (parseFloat(en.style.marginTop) || 0) + Math.ceil(fl - q.top + 2) + 'px';
     }
 }
+// 第40回 R178: はじめての案内（決定の帯の中の1行）で帯が高くなり、お膳が帯の上に入らなくなる画面（360×640 など）では、
+// 案内を決定ボタンと同じ行に詰めた形（ah-row: 「アレルギー・苦手を設定」と × を決定ボタンの横に）で入るか試す（決定の帯を最初の画面に残す）。
+// それでも入らなければ、今までどおり帯をお膳の下に置き（bar-static）、案内だけを下のタブの上に貼りつける
 function fitTray(){
+    document.body.classList.remove('ah-row');
+    fitTrayRun();
+    if (tab !== 'today' || !document.body.classList.contains('bar-static') || !document.querySelector('#view .alg-hint.ah-in')) return;
+    document.body.classList.add('ah-row'); fitTrayRun();
+    if (document.body.classList.contains('bar-static')){ document.body.classList.remove('ah-row'); fitTrayRun(); }
+}
+function fitTrayRun(){
+    document.body.classList.remove('ah-flow');
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
@@ -6035,9 +6118,18 @@ function fitTray(){
         if (document.querySelector('#greet .greet-tx')) document.body.classList.add('greet-1', 'greet-0');
         fixText();
         // 上の段（器・名前・かえる）が最初の画面に入らないとき（幅195px・文字もっと大きい など）: 見出しを詰め、器を小さくした形で上の段が入るなら、そちらにする（下の段・帯はスクロールの先）
-        let fl0 = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl0) fl0 = r.top; });   // 帯をお膳の下に置いたあとの下端（下のタブの上端）
-        const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) <= fl0 + .5;   // 画面のいちばん上（スクロールしていない形）での下端で見る（第12回 R36: 下の「この献立に決定」までスクロールして決めると、送った分だけ入って見え、詰めない形になっていた）
-        if (row0 && !rowIn()){
+        // 第40回 R178: はじめての案内（下のタブの上に貼りつける .ah-st）があるときは、まず上の段と丸い「まるごと入れ替え」を案内より上に、だめなら上の段だけを案内より上に、
+        // それもだめなら今までどおり上の段をタブより上に入れる（案内が料理・丸いボタンに重なるのを、できるだけ少なく）
+        const flOf = sel => { let f = innerHeight; document.querySelectorAll(sel).forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < f) f = r.top; }); return f; };
+        const flN = flOf('nav.tabs, .actionbar'), hintSt = document.querySelector('#view .alg-hint.ah-st'), flH = hintSt ? flOf('nav.tabs, .actionbar, #view .alg-hint.ah-st') : flN;   // 帯をお膳の下に置いたあとの下端（下のタブの上端。案内があれば案内の上端）
+        let fl0 = flN, withMid = false;
+        const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag'), ...(withMid ? tr.querySelectorAll('.tg-mid .shuffle, .tg-mid .mb-back') : [])].map(e => fitBottom(e) + scrollY)) <= fl0 + .5;   // 画面のいちばん上（スクロールしていない形）での下端で見る（第12回 R36: 下の「この献立に決定」までスクロールして決めると、送った分だけ入って見え、詰めない形になっていた）
+        const loosen = () => { tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); reqUp(false); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); };
+        const goals = hintSt && flH < flN ? [[flH, true], [flH, false], [flN, false]] : [[flN, false]];
+        let fitOk = false, goalK = -1;
+        for (const [k, [f, mid]] of goals.entries()){
+            fl0 = f; withMid = mid; if (k) loosen();
+            if (!row0 || rowIn()){ fitOk = true; goalK = k; break; }
             tr.classList.add('tight2'); viewEl.classList.add('tray-tight'); document.body.classList.add('tray-tight'); setVs(Math.min(vs0, 60));
             if (!rowIn()){ tr.classList.add('tight'); fixText(); }
             if (!rowIn()) document.body.classList.add('tray-tight3');   // 見出しのまわりの余白もいちばん小さく
@@ -6045,8 +6137,11 @@ function fitTray(){
             if (!rowIn()){ tr.classList.add('algfit'); fixText(); }   // 第18回 R20: 札の場所は出ている札の高さだけ（2行ぶん取っておかない）
             if (!rowIn()){ document.body.classList.add('tray-tight4'); fixText(); }   // 第11回 R20（幅195px・文字大・家族リクエストあり）: 上の端の日付とアプリの名前の行も畳む（印・国・設定の行は残す。名前は読み上げには残る）。上の段の料理・札・かえるを最初の画面に、タブの裏に入れない
             if (!rowIn()){ reqUp(true); fixText(); }   // 第18回 R20（幅195px・文字大・家族の🔍・家族リクエストあり）: 家族リクエストの入口を上の端の行へ（印と数だけ。行が1つ減る）
-            if (rowIn()) tight = tr.classList.contains('tight');
-            else { tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); reqUp(false); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); } } }
+            if (rowIn()){ tight = tr.classList.contains('tight'); fitOk = true; goalK = k; break; }
+        }
+        if (!fitOk) loosen();
+        // 上の段の器・名前まで案内の裏に入る（とても狭い画面・長い料理名）ときは、案内を貼りつけず、お膳の下（帯の上）に置く（料理名を隠さない。かえるの下の方にかかるだけなら貼りつける）
+        if (hintSt && flH < flN && (!fitOk || goals[goalK][0] === flN) && (!row0 || Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > flH + .5)) document.body.classList.add('ah-flow'); }
     // 同じ献立で1品かえただけ（かえる・主食）のときは、前の形（詰め方・器の大きさ・名前の行数）がそのまま入るなら前の形を使う（ほかの料理の大きさ・位置を動かさない。layout-shift の約束）。
     // 献立が変わったとき（まるごと入れ替え・気分・作り直し・開き直し）は、一から決めた形のまま（第12回 R34）
     if (last){
@@ -7806,18 +7901,26 @@ function obFinish(){
     const md = sheet && sheet.kind === 'onboard' ? {to: sheet.mode, from: sheet.mode0} : null;
     obSave(); closeSheet(); reconcileMenu(); obApplyMode(md, first); refreshWeek();
     if (first && !algIds().length && !(S.settings.avoid || []).length){ S.algHint = true; save(); }
-    if (S.algHint && !isLocked()) session.algHintWait = true;   // 最初の描画（setTab）から、お知らせが消えるまで案内を待たせる   // 第39回: アレルギー・苦手はあとから。最初の献立の下に、設定への小さな入口を出す（閉じるか開くまで）
+    const hint = algHintOn() && !isLocked();   // 第39回: アレルギー・苦手はあとから。最初の献立に、設定への小さな入口を出す（×か、アレルギー・食の決まりを入れるまで）
     session.freshArmed = false; session.trayPrev = null; session.trayCur = null;   // 設定を終えた直後の献立は「はじめて見る献立」。設定に合わせて作り直しても「新」は付けない（第7回 R14）
     if (first){ session.avoidNote = null; toast.avoidMsg = false; }   // はじめて見せる献立は、もう設定に合っている。「設定に合わせて…かえました」は出さない（第4回 R7・G02）
     setTab('today');
     try{ window.scrollTo(0, 0); }catch(e){}
     obReveal();
-    if (!isLocked()) toast(t('準備ができました。今日の献立はこちらです'), true);
-    if (S.algHint && !isLocked()){ session.algHintWait = true; setTimeout(algHintLater, 600); }   // 「準備ができました」が出ているあいだは案内を出さない（お知らせの置き場所が案内のボタンを避けて、合計の行などに重なるため）。消えたら出す
+    // 第40回 R178: 案内はすぐに出す（お知らせが消えるのを待たない）。案内を出すときは「準備ができました」は出さない（案内がその代わり。重ならない）
+    if (!isLocked() && !hint) toast(t('準備ができました。今日の献立はこちらです'), true);
+    if (hint) algHintSay();
+    obFocusHead();
 }
-function algHintLater(){
-    if ($('#toast-root .toast')){ setTimeout(algHintLater, 400); return; }
-    session.algHintWait = false; if (tab === 'today' && S.algHint) render();
+// 第40回 R188: 「献立を見る」のあと、焦点は「今日の献立」の見出しへ（ページの先頭・閉じたシートの跡に残さない。画面は動かさない）
+function obFocusHead(){
+    const go = () => { const h = document.querySelector('#view .today-head h2'); if (!h || sheet || modalId) return; h.tabIndex = -1; h.focus({preventScroll:true}); };
+    go(); requestAnimationFrame(go);
+}
+// 第40回 R178: 案内を読み上げで1回だけ知らせる（描き直し・開き直しでは言わない）。見た目の案内は role なし（2つ目の置き場所の分も重ねて読まない）
+function algHintSay(){
+    if (session.algHintSaid) return; session.algHintSaid = true;
+    setTimeout(() => { const el = $('#sr-live'); if (!el || !algHintOn()) return; el.textContent = t('アレルギーや苦手な食材がある方は、ここから設定できます'); setTimeout(() => { if (el.textContent) el.textContent = ''; }, 6000); }, 400);
 }
 /* 第39回（オーナー指示「はじめての登録は、言語・国・どの使い方かだけ。細かい設定は慣れてから」）:
    はじめての流れの2つめ「どんな使い方にしますか」。今ある気分（10分以内・いちばん簡単・じっくり）とダイエットモードから1つ。ふつうを選んだまま「献立を見る」で終えられる。
@@ -7842,13 +7945,54 @@ function obApplyMode(md, first){
     if (decided || !(mood || first)) { save(); return; }   // やり直しでダイエットだけ変えたときは、いまのお膳は変えない（設定のスイッチと同じ）
     session.rejected.clear(); newMenu(); keepDraft(); save();   // はじめての人はまだ献立を見ていないので、選んだ使い方で作る
 }
+// 第40回 R188: radio のまとまり。選んだ1つだけが Tab で止まり（ほかは tabindex=-1）、矢印キー・Home・End で動いて選ぶ（WAI-ARIA の radio group）
 function obModeHtml(){
-    return `<div class="ob-modes" role="radiogroup" aria-label="${esc(t('どんな使い方にしますか'))}">${OB_MODES().map(([k, nm, ds]) => `<button type="button" class="ob-mode" role="radio" data-act="ob-mode" data-v="${k}" aria-checked="${sheet.mode === k}"><span class="om-ic" aria-hidden="true"></span><span class="om-t"><b>${esc(nm)}</b><span>${esc(ds)}</span></span></button>`).join('')}</div>`;
+    return `<div class="ob-modes" role="radiogroup" aria-label="${esc(t('どんな使い方にしますか'))}">${OB_MODES().map(([k, nm, ds]) => `<button type="button" class="ob-mode" role="radio" data-act="ob-mode" data-v="${k}" aria-checked="${sheet.mode === k}" tabindex="${sheet.mode === k ? 0 : -1}"><span class="om-ic" aria-hidden="true"></span><span class="om-t"><b>${esc(nm)}</b><span class="om-d">${esc(ds)}</span></span></button>`).join('')}</div>`;
 }
-// 第39回: はじめての設定のあとの、アレルギー・苦手の設定への小さな入口（お膳の下。閉じるか、開くか、設定すると出なくなる）
-function algHintHtml(){
-    if (!S.algHint || session.algHintWait || !S.onboarded || algIds().length || (S.settings.avoid || []).length) return '';
-    return `<div class="note alg-hint" role="note"><span class="ah-tx small">${esc(t('アレルギーや苦手な食材がある方は、ここから設定できます'))}</span><button type="button" class="btn sm" data-act="alg-hint-open">${esc(t('設定'))}</button><button type="button" class="ah-x" data-act="alg-hint-close" aria-label="${esc(t('閉じる'))}" title="${esc(t('閉じる'))}">×</button></div>`;
+// 選んだ使い方の印だけを書きかえる（シートを描き直さない。焦点・スクロールの位置がそのまま）
+function obPickMode(v){
+    if (!sheet || sheet.kind !== 'onboard' || !OB_MODES().some(x => x[0] === v)) return;
+    sheet.mode = v;
+    document.querySelectorAll('#sheet-root [data-act="ob-mode"]').forEach(b => { const on = b.dataset.v === v; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+}
+document.addEventListener('keydown', e => {
+    const el = e.target; if (!el || !el.matches || !el.matches('#sheet-root [data-act="ob-mode"]')) return;
+    const rtl = getComputedStyle(el).direction === 'rtl', k = e.key;
+    const d = k === 'ArrowDown' || k === (rtl ? 'ArrowLeft' : 'ArrowRight') ? 1 : k === 'ArrowUp' || k === (rtl ? 'ArrowRight' : 'ArrowLeft') ? -1 : 0;
+    if (!d && k !== 'Home' && k !== 'End') return;
+    e.preventDefault();
+    const rs = [...el.closest('[role="radiogroup"]').querySelectorAll('[data-act="ob-mode"]')], i0 = rs.indexOf(el);
+    const nx = rs[k === 'Home' ? 0 : k === 'End' ? rs.length - 1 : (i0 + d + rs.length) % rs.length];
+    obPickMode(nx.dataset.v); nx.focus();
+});
+// 第40回 R183: はじめの画面の右上の文字の大きさ（A / A+ / A++）。設定の「文字の大きさ」と同じもの（S.settings.textSize）。目の弱い人が、はじめから大きくして進められる
+const OB_TS = () => [[0, 'A', t('ふつう')], [1, 'A+', t('大きい')], [2, 'A++', t('もっと大きい')]];
+function obTsHtml(){
+    const v = S.settings.textSize || 0;
+    return `<div class="ob-ts" role="group" aria-label="${esc(t('文字の大きさ'))}">${OB_TS().map(([k, l, nm]) => `<button type="button" class="ob-ts-b" data-act="ob-ts" data-v="${k}" aria-pressed="${v === k}" aria-label="${esc(nm)}" title="${esc(nm)}"><span aria-hidden="true">${l}</span></button>`).join('')}</div>`;
+}
+function obTextSize(v){
+    if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize;
+    save(); applyTextSize();
+    document.querySelectorAll('#sheet-root [data-act="ob-ts"]').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.v) === (S.settings.textSize || 0))));   // シートは描き直さない（選んだ国・焦点はそのまま）
+}
+// 第39回: はじめての設定のあとの、アレルギー・苦手の設定への小さな入口。
+// 第40回 R186: 消えるのは ×、またはアレルギー・食の決まり（ハラール・ベジタリアン・ヴィーガン向け）を本当に入れたときだけ（自分・家族とも）。
+// 「設定」で見に行って何もせず戻ったとき・苦手を1つ入れただけでは消さない（アレルギーの入口のまま）
+function algHintSet(){
+    const fm = famMembers(), rule = list => Object.keys(DIET_BUNDLES).some(k => dietBundleOn(list || [], k));
+    return algIds().length > 0 || fm.some(m => (m.allergy || []).length) || rule(S.settings.avoid) || fm.some(m => rule(m.avoid));
+}
+function algHintOn(){
+    if (!S.algHint || !S.onboarded) return false;
+    if (algHintSet()){ delete S.algHint; save(); return false; }   // 一度入れたら、あとで外しても出さない
+    return true;
+}
+// 第40回 R178: 置き場所は決定の帯の中（お膳の下、親指の届く所。最初の画面に入る）の細い1行（in）。
+// 帯をお膳の下に置く画面（bar-static。幅195 など）では、帯の代わりに案内だけを下のタブのすぐ上に貼りつける（st）。CSS で切りかえる（⚠ の1行の .alg-bar と .alg-top と同じ形）
+function algHintHtml(where){
+    if (!algHintOn()) return '';
+    return `<div class="alg-hint ah-${where}"><span class="ah-tx">${esc(t('アレルギーや苦手な食材がある方は、ここから設定できます'))}</span><button type="button" class="btn sm ah-go" data-act="alg-hint-open"><span class="ah-l">${esc(t('設定'))}</span><span class="ah-s">${esc(t('アレルギー・苦手を設定'))}</span></button><button type="button" class="ah-x" data-act="alg-hint-close" aria-label="${esc(t('閉じる'))}" title="${esc(t('閉じる'))}">×</button></div>`;
 }
 // はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
 // （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）
@@ -7876,7 +8020,7 @@ const OB_STEPS = () => [t('国と言語'), t('使い方')];   // 第39回: 2つ�
 function obProgHtml(n, skip){
     const names = OB_STEPS();
     return `<div class="ob-head">
-        <div class="ob-count"><span>${esc(t('ステップ {n} / {total}', {n, total:names.length}))}</span>${skip ? `<button class="btn ghost ob-skip" data-act="ob-skipstep">${esc(t('スキップ'))}</button>` : ''}</div>
+        <div class="ob-count"><span class="ob-n">${esc(t('ステップ {n} / {total}', {n, total:names.length}))}</span>${skip ? `<button class="btn ghost ob-skip" data-act="ob-skipstep">${esc(t('スキップ'))}</button>` : n === 1 ? obTsHtml() : ''}</div>
         <ol class="ob-steps" style="--n:${names.length}" aria-label="${esc(t('ステップ {n} / {total}', {n, total:names.length}))}">${names.map((x, i) => `<li class="${i + 1 < n ? 'done' : i + 1 === n ? 'on' : ''}" ${i + 1 === n ? 'aria-current="step"' : ''}><i></i><span>${esc(x)}</span></li>`).join('')}</ol>
     </div>`;
 }
@@ -10008,7 +10152,8 @@ function eaterIds(){ return [...(meOn() ? [ME_ID] : []), ...eaterMembers().map(m
 function famMembers(){ return Array.isArray(S.family) ? S.family : []; }
 function famNameSet(){ return new Set(famMembers().map(m => (m.name || '').trim()).filter(Boolean)); }
 // 今日食べる人を選んでいないときは「いつものメンバー」= 「ときどき一緒に食べる」にした人（実家の母など）を除いた家族（田村 3-10）
-function eaterMembers(){ const fm = famMembers(); return !fm.length ? [] : Array.isArray(S.eaters) ? fm.filter(m => S.eaters.includes(m.id)) : fm.filter(m => !m.sometimes); }
+let eatersFor = null;   // 判定に使う「今日食べる人」を一時的に差しかえる（famHitMembers。合わない料理に当たる家族を1人ずつ見るとき）
+function eaterMembers(){ if (eatersFor) return eatersFor; const fm = famMembers(); return !fm.length ? [] : Array.isArray(S.eaters) ? fm.filter(m => S.eaters.includes(m.id)) : fm.filter(m => !m.sometimes); }
 function effAvoid(){
     const base = S.settings.avoid || [], ms = eaterMembers(); if (!ms.length) return base;
     // 家族の ⚠ のうち、アレルゲンの名前そのもの（そば・牛乳など）は、アレルギーの判定（全体と同じ）で見るので、苦手の名前の照らし合わせには入れない（「そば」で焼きそばを外さない）
@@ -10077,6 +10222,18 @@ function mildOn(){ return eaterMembers().some(m => m.mild); }
 function judgeSig(){ return [avoidCtx().sig, allergyCtx().sig, scarceList().length ? scarceCtx().sig : '', swapOn(), mildOn(), allMild()].join('\u0001'); }
 function allMild(){ const ms = eaterMembers(); return ms.length > 0 && ms.every(m => m.mild); }
 function famLabel(m, i){ return (m.name || '').trim() || t('{n}人目', {n: i + 1}); }
+// 第40回 R181: 合わない料理（rs）に当たる家族だけ（家族の順）。前は決まりごとのある人がいると、今日食べる全員の名前を並べていた（卵アレルギーは長女だけなのに「長男・次男・長女・祖母・夫に…」）。
+// 1人ずつ「その人だけが食べる」として同じ判定（isAvoidedCore）で見る（自分＝全体の苦手・アレルギーは外して、家族の誰に当たるかだけを見る）。
+// 辛さは、いまの食べる人の決まり（全員が辛いのが苦手なら辛みのある料理も）で見る。誰とも言えないとき（いくつかの決まりの組み合わせで当たる）は、今までどおり食べる人みんな
+function famHitMembers(rs){
+    const ms = eaterMembers(), rule = ms.filter(m => m.avoid.length || m.mild); if (!rule.length || !rs.length) return ms;
+    const lv = allMild() ? 1 : 2, st = S.settings, a0 = st.allergens, v0 = st.avoid;
+    const one = (m, r) => { eatersFor = [Object.assign({}, m, {mild: false})]; st.allergens = []; st.avoid = [];
+        try{ return withAlgMembers(eatersFor, () => isAvoidedCore(r)); } finally { eatersFor = null; st.allergens = a0; st.avoid = v0; } };
+    const hit = rule.filter(m => rs.some(r => (m.mild && spiceLevel(r) >= lv) || (m.avoid.length && one(m, r))));
+    return hit.length ? hit : ms;
+}
+function famHitNames(){ const rs = safeSayDishes().filter(r => isAvoidedCore(r)); return joinNames(famHitMembers(rs).map(m => famLabel(m, famMembers().indexOf(m)))); }
 // 食べる人に決まりごとがあるときの一言（お膳の下・家族に送る文）
 function eatersLine(){
     const ms = eaterMembers(), al = algLine();
@@ -10084,7 +10241,7 @@ function eatersLine(){
     const names = joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))));
     // 合わない料理（アレルギー・苦手・辛さ）が残っているあいだは「食べられるお膳です」と言わない
     const mayRs = shownDishes().concat(shownTsuke()), may = mayRs.filter(r => algMayHits(r).length).length;   // 入っていることがある加工品（ワンタンの皮の卵など）・市販の付け合わせ（福神漬けなど）を使うときも、言い切らない
-    const base = safeSayDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
+    const base = safeSayDishes().some(r => isAvoidedCore(r)) ? t('{names}に合わない料理があります', {names: famHitNames()}) : may ? t('{names}も食べられそうなお膳です。{n}品は袋の表示を確かめてください（{items}）', {names, n: may, items: joinNames(algMayNames(mayRs))}) : t('{names}も食べられるお膳です', {names});
     return al ? base + '\n' + al : base;
 }
 // 第18回 R57: 決めたあとの ⚠ の短い1行（決定の帯の中。お膳が帯の上に入らない画面〔bar-static〕ではお膳のすぐ上）。
@@ -10093,7 +10250,7 @@ function eatersLine(){
 function algWarnLine(){
     if (!decidedToday() || !cookItems().some(x => x.r && allergyConflict(x.r))) return '';
     const ms = eaterMembers();
-    if (ms.some(m => m.avoid.length || m.mild) && safeSayDishes().some(r => isAvoidedCore(r))) return t('{names}に合わない料理があります', {names: joinNames(ms.map(m => famLabel(m, famMembers().indexOf(m))))});
+    if (ms.some(m => m.avoid.length || m.mild) && safeSayDishes().some(r => isAvoidedCore(r))) return t('{names}に合わない料理があります', {names: famHitNames()});
     const ids = algIds(), hit = ids.length ? safeSayDishes().filter(r => algSelectedHits(r, ids).length) : [];
     if (hit.length) return t('アレルゲン（{list}）を使う料理が{n}品あります', {list: joinNames([...new Set([].concat(...hit.map(r => algSelectedHits(r, ids))))].map(algLabel)), n: hit.length});
     return t('⚠の印の料理があります。作る前に、もう一度確かめてください');
@@ -14512,7 +14669,6 @@ function viewToday(){
             ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}
         </div>
         ${kcalTrayHtml(m)}
-        ${algHintHtml()}
         ${/* お膳より上には何も足さない（基準書 4-2）。決めたあとは、すぐ下に買い物メモへの1行（約束4）。お知らせ・案内はお膳の下 */''}${decided ? `<p class="shop-line"><button type="button" class="p2-link" data-act="stage" data-k="shop">${esc(t('買い物メモを見る'))}</button></p>` : ''}
         ${session.avoidNote ? (sheet || modalId ? '' : (session.avoidNote.seen = true, '')) + `<div class="note avoid-note" role="status"><span>${esc(t('設定に合わせて、まだ決めていない今日の献立をかえました: {list}', {list: session.avoidNote.list}))}</span>${session.avoidNote.i >= 0 ? `<button class="btn sm" data-act="avoid-other" data-i="${session.avoidNote.i}">${esc(t('ほかの候補'))}</button>` : ''}</div>` : ''}
         ${remoteNoticeHtml()}
@@ -14531,7 +14687,8 @@ function viewToday(){
         ${/* 料理で長さの変わる一言は、ボタンより下に置き、2行ぶんの場所を前もって取る（入れ替えで「決定」ボタンや次の見出しが動かないように） */''}<div class="why-slot">${(w => w ? `<p class="why">${esc(w)}</p>` : '')(exWhy && m.items.some(x => x.r && dishWhy(x.r, x.slot)) ? '' : whyLine())}</div>
         ${fridgeUseHtml()}
         ${leftoversHtml()}
-        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${condLowBtn()}${decided
+        ${algHintHtml('st')}
+        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${algHintHtml('in')}${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${condLowBtn()}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`
             : `<button class="btn primary big-decide" data-act="decide" ${main ? '' : 'disabled'}><span>${esc(S.cook && S.cook.d === TODAY ? t('この献立に決め直す') : t('この献立に決定'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`}</div>
     </section>
@@ -16754,12 +16911,13 @@ document.addEventListener('click', e => {
         }
         case 'ob-again': startOnboard(); break;
         case 'ob-next': if (sheet && sheet.kind === 'onboard') obFinish(); break;   // 前の流れの「次へ」（いまは手順が1つなので、そのまま献立へ）
-        case 'ob-mode': { if (!sheet || sheet.kind !== 'onboard') break; const v = el.dataset.v; if (OB_MODES().some(x => x[0] === v)){ sheet.mode = v; renderSheet(); } break; }
-        case 'alg-hint-open': delete S.algHint; save(); setGo('allergy-card'); break;   // 第39回: アレルギー対策（家族・アレルギーのタブ）へ。苦手はとなりのタブ
+        case 'ob-mode': obPickMode(el.dataset.v); break;
+        case 'ob-ts': obTextSize(Number(el.dataset.v)); break;
+        case 'alg-hint-open': setGo('allergy-card'); break;   // 第39回: アレルギー対策（家族・アレルギーのタブ）へ。苦手はとなりのタブ。第40回 R186: 見に行っただけでは案内を消さない
         case 'alg-hint-close': delete S.algHint; save(); render(); break;
         case 'ob-back': if (sheet.step > 0){ sheet.step--; renderSheet(); } else { sheet = {kind:'country', ob:sheet}; renderSheet(); } break;
-        case 'ob-skipstep': {   // この手順は変えずに献立へ（選んだ使い方は元にもどす）
-            sheet.mode = sheet.mode0; sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount;
+        case 'ob-skipstep': {   // この手順は変えずに献立へ。第40回 R180: スキップ＝いまの選びのまま終える（選んだ使い方は残す。前は元にもどして、選んだのに使われなかった）
+            sheet.servings = S.settings.servings; sheet.count = S.settings.dishCount;
             const algShown = sheet.algShown; Object.assign(sheet, {avoid:new Set(S.settings.avoid), dietAdd:dietAddClean(S.settings.dietAdd), staples:new Set(S.staples), alg:new Set(algIds().filter(id => algShown.includes(id)))});
             obFinish(); break;
         }

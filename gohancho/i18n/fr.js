@@ -2064,4 +2064,5 @@ GOHAN_I18N('fr', {
     "煮込みなど、時間をかけて作る料理も出します": "Aussi des plats qui prennent du temps, comme les mijotés",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Le nombre de personnes (2), le nombre de plats, les aliments évités et les allergies se règlent ensuite dans les Réglages.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Allergies ou aliments à éviter ? Vous pouvez les régler ici.",
+    "アレルギー・苦手を設定": "Allergies et aliments évités",
 });

@@ -47,7 +47,8 @@ for (const k of [0, 1, 2]){
     await pickCountry(p, 'JP');
     await p.waitForSelector('#sheet-root [data-act="ob-done"]'); await p.click('#sheet-root [data-act="ob-done"]'); await until(p, () => !sheet && S.onboarded);
     await p.evaluate(() => { session.menu.items[0].r = byId('ebifry'); keepDraft(); render(); });   // 設定の後ろの案（と下書き）がえびフライ
-    await p.waitForSelector('[data-act="alg-hint-open"]'); await p.click('[data-act="alg-hint-open"]'); await until(p, () => tab === 'settings' && !sheet);
+    await p.waitForSelector('[data-act="alg-hint-open"] >> visible=true'); await p.waitForTimeout(450);   // 第40回: 案内は「献立を見る」のすぐあとに出る。押し直しの守り（tapGuard 350ms）が過ぎてから押す
+    await p.click('[data-act="alg-hint-open"] >> visible=true'); await until(p, () => tab === 'settings' && !sheet);
     await p.evaluate(() => setTabShow('food')); await p.waitForSelector('#view [data-act="toggle-avoid-fam"][data-v="shellfish"]', { timeout: 5000 });   // 苦手・食の決まりのタブで、えび・かになどのなかま
     await p.click('#view [data-act="toggle-avoid-fam"][data-v="shellfish"]'); await until(p, () => (S.settings.avoid || []).includes('@shellfish'));
     const others = await p.evaluate(() => session.menu.items.slice(1).map(x => x.r && x.r.id));

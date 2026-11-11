@@ -2064,4 +2064,5 @@ GOHAN_I18N('pl', {
     "煮込みなど、時間をかけて作る料理も出します": "Także dania, które wymagają czasu, np. duszone",
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Liczbę osób (2), liczbę dań, unikane produkty i alergie zmienisz później w Ustawieniach.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Masz alergie lub unikasz niektórych produktów? Ustawisz to tutaj.",
+    "アレルギー・苦手を設定": "Alergie i unikane produkty",
 });
