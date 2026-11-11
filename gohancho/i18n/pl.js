@@ -1,5 +1,17 @@
 // ご飯帖 — Polish UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('pl', {
+    "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "„{name}”: aplikacja nie rozpoznaje tego słowa. Wybierz jeden z przycisków poniżej.",
+    "ある（設定する）": "Tak (ustaw je)",
+    "ない（このまま作る）": "Nie (zacznij gotować)",
+    "ない（このまま決める）": "Nie (zatwierdź ten jadłospis)",
+    "ほかのアレルギー（例: グルテン）": "Inna alergia (np. gluten)",
+    "アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。": "Jeśli są alergie lub zasady żywieniowe (bez wieprzowiny i alkoholu, bez mięsa i ryb itp.), ustaw je przed zatwierdzeniem. Potem niepasujące dania będą oznaczone ⚠.",
+    "アレルギーを入力して追加": "Dodaj alergię, wpisując ją",
+    "アレルゲンを含む調味料：{list}": "Przyprawy z alergenami: {list}",
+    "判定なし": "nie sprawdzono",
+    "家族にアレルギーや食の決まりはありますか？": "Czy ktoś w rodzinie ma alergie lub zasady żywieniowe?",
+    "家族のアレルギーへ": "Alergie rodziny",
+    "食の決まり（豚肉・お酒・肉や魚など）へ": "Zasady żywieniowe (wieprzowina, alkohol, mięso lub ryby)",
     "わが家のご飯帖": "Gohancho",
     "毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ": "Codzienne jadłospisy, gotowanie z tego, co masz w lodówce, i nowe pomysły na rodzinne klasyki. Aplikacja kulinarna, która dodaje otuchy.",
     "膳": "G",

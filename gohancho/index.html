@@ -1792,6 +1792,9 @@ html[data-ts="2"] .stages ol{grid-template-columns:repeat(2,minmax(0,1fr))}   /*
 .buy-fold summary > span:first-child{display:flex;flex-direction:column;min-width:0}
 .buy-fold summary small{font-size:var(--fs12);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .buy-fold[open] summary small{white-space:normal}
+.buy-fold summary small.bf-alg{color:var(--danger);font-weight:700;white-space:normal;overflow-wrap:anywhere}   /* 第40回 R177: 畳んだ「調味料 ○つ」の行でも、アレルゲンを含む調味料を ⚠ と名前で（… に切らない） */
+.fam-alg-bad{margin-top:var(--s8)}.fam-alg-bad .warn{margin:0 0 var(--s4)}.chip.alg-nojudge{color:var(--muted)}   /* 第40回 R185: 判定できない言葉の知らせと、近いボタン／「判定なし」の言葉は ⚠ を付けない */
+.alg-jump{flex-wrap:wrap;gap:var(--s4) var(--s12)}
 .share-lv{margin-bottom:var(--s4)}
 .stage-shop.big .buy-row .br-nm b{font-size:var(--fs20)}
 .stage-shop.big .buy-row .br-q{font-size:var(--fs16)}
@@ -3559,6 +3562,7 @@ function customCheckHtml(text){
 function customMadeLabel(id){ const n = S.history.filter(h => h.id === id).length; return n ? t('作った記録{n}回', {n}) : t('まだ作っていません'); }
 addCustomRecipes();
 if (!S.onboarded && (S.history.length || S.favs.length || S.fridge.length)) S.onboarded = true;   // 以前から使っている人には出さない
+if (!S.onboarded && !('algAsk' in S)) S.algAsk = 1;   // 第40回 R177: はじめての設定でアレルギーを聞かなくなった人（いまの流れで始める人）だけ、最初に決めるときに1回だけ「アレルギーや食の決まりはありますか」と聞く
 if (!S.firstUse) S.firstUse = S.history.length ? S.history[S.history.length-1].d : ymd();
 save();
 function applyTextSize(){ const v = S.settings.textSize; if (v === 1 || v === 2) document.documentElement.setAttribute('data-ts', v); else document.documentElement.removeAttribute('data-ts'); fitTabs(); }   // 下のタブの字も、文字の大きさに合わせて決め直す（R13）
@@ -5096,9 +5100,9 @@ function mixHtml(){
    ほかの料理・ご飯の欄は動かさない（品数が変わったときだけ作り直す） */
 // 献立に残してはいけない料理（アレルゲン・家族のアレルギー・苦手・品薄・今は出さない）。替わりがないときも、この料理は枠に残さない
 function slotOut(r){ return !!r && (isAvoided(r) || S.hidden.includes(r.id)); }
-function slotStillOk(it){
+function slotStillOk(it, keepAlg){
     const r = it.r; if (!r) return false;
-    if (S.hidden.includes(r.id) || isAvoided(r)) return false;
+    if (S.hidden.includes(r.id) || (!keepAlg && isAvoided(r))) return false;
     if (r.isTwist || isCustomId(r.id)) return true;
     const want = mixCc(it.slot) || currentCountry(), have = r.pack || 'JP';
     if (want !== currentCountry() && !(BROWSE[want] && BROWSE[want].length)) return true;   // 選んだ国のデータを読みこむまでは、その枠を選び直さない（家の国の別の料理に変わってしまう）。読みこんだあとに選び直す
@@ -5115,7 +5119,7 @@ function reconcileMenu(){
     let changed = false; const swaps = [];
     m.items.forEach((it, i) => {
         if (!it.r && i > 0) return;   // 空の枠（汁ものの麺が主菜のとき・候補がなかったとき）は、設定を変えたついでには埋めない。汁ものは「汁ものを足す」で選ぶ
-        if (slotStillOk(it)) return;
+        if (slotStillOk(it, session.algAskHold)) return;   // 第40回 R177: 「アレルギーはありますか」→［ある］から設定したときは、当たる料理を替えずに ⚠ で見せる（どれを替えるかは本人が選ぶ）
         const others = m.items.filter((_, k) => k !== i);
         let nr = null;
         if (it.slot === '主菜' && i === 0){
@@ -5215,6 +5219,7 @@ function menuIsDecided(){
     return !!(m && c && c.d === TODAY && Array.isArray(c.ids) && c.ids.length && c.ids.join() === menuIds().join());
 }
 function newMenu(){
+    session.algAskHold = false;   // 作り直した献立は、設定に合わせて選ぶ（R177 の「替えずに ⚠」は、そのときの献立だけ）
     if (toast.undo && toast.hide){ clearTimeout(toast.t); toast.hide(); }   // 第20回 R64: 献立を作り直す（気分・品数を変えたなど）と、前の「元に戻す」（まるごと入れ替えなど）は戻す先が変わるので消す。新しいお知らせはこのあとに出す
     const n = menuCount();
     let items = [], slots = composeOf(n).slots;
@@ -6177,6 +6182,8 @@ function todayShopRows(its0, st0){   // its0・st0: 決める前の献立（画�
     const have = fridgeKeys(), fac = servingFactor(), st = st0 || shopState(), map = new Map(), opt = new Map(), seas = new Map(), cc = currentCountry(), mayIds = algIdsEff();
     // 入っていることがある加工品・調味料（コンソメの大豆など）: 行に「🔍 大豆（袋の表示を確認）」（モニター第3回c。第3回d で ⚠ から 🔍 に）
     const mayOf = (e, it) => mayIds.forEach(id => { if (algKind(id, it) === 4 && !(e.may || (e.may = [])).includes(id)) e.may.push(id); });
+    // 第40回 R177: 調味料の欄の、はっきり当たるアレルゲン（しょうゆの小麦・大豆など。発酵調味料は設定のスイッチに従う）。畳んだ「調味料 ○つ」の行にも ⚠ で出す
+    const hitOf = (e, it) => mayIds.forEach(id => { const k = algKind(id, it); if (k && k !== 4 && (k !== 3 || algFerm()) && !(e.hit || (e.hit = [])).includes(id)) e.hit.push(id); });
     its.forEach(x => { const r = swappedRecipe(x.r) || x.r;
         r.items.forEach(i => {
             if (PANTRY.has(i.key)) return;
@@ -6188,7 +6195,8 @@ function todayShopRows(its0, st0){   // its0・st0: 決める前の献立（画�
             into.set(k, e);
         });
         pantryOf(r).forEach(p => { if (/^p\|(水|お湯|湯|ご飯|water|hot water|ice water)$/i.test(p.key)) return; const o = seas.get(p.key) || {key: p.key, label: p.label, dishes: []}; if (!o.dishes.includes(x.r.name)) o.dishes.push(x.r.name);
-            if (p.src) { const c = p.src.replace(/^[(（][^)）]*[)）]\s*/, ''); mayOf(o, r.pack ? {name: c, label: c, key: c.toLowerCase(), en: c.toLowerCase()} : parseIng(c)); }
+            if (p.src) { const c = p.src.replace(/^[(（][^)）]*[)）]\s*/, ''), it = r.pack ? {name: c, label: c, key: c.toLowerCase(), en: c.toLowerCase()} : parseIng(c); mayOf(o, it); hitOf(o, it); }
+            else if (p.it) hitOf(o, p.it);
             seas.set(p.key, o); });
     });
     // カレーの日の付け合わせ（福神漬け・らっきょう漬け）も、1週間プランの買い物メモと同じく1行に（第12回 S24 の残り: 今日の買い物メモになかった）。
@@ -6215,7 +6223,7 @@ function buyRowHtml(e, st, plain){
     const sub = [joinNames(e.dishes), e.use ? t('{qty}使う', {qty: e.use}) : ''].filter(Boolean).join(t('・'));
     return `<div class="buy-row${got ? ' got' : ''}${e.buying ? '' : ' is-have'}">
         ${e.buying && !plain ? `<label class="br-chk"><input type="checkbox" data-act="sb-got" data-k="${esc(e.key)}" ${got ? 'checked' : ''} aria-label="${esc(t('{name}を買った', {name: e.label}))}"></label>` : '<span class="br-chk" aria-hidden="true"></span>'}
-        <span class="br-main"><span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
+        <span class="br-main"><span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.hit && e.hit.length ? `<small class="alg-tag" role="note">⚠ ${esc(joinNames(e.hit.map(algLabel)))}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
         ${e.buyQty ? `<span class="br-q"><bdi>${esc(e.buyQty)}</bdi></span>` : ''}
         ${got ? '' : buyToggleHtml(e)}</span>
         ${got ? `<span class="br-after">${fr ? `<span class="small muted">${esc(e.left ? t('冷蔵庫に入れました（使いかけ {qty}）', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}) : t('冷蔵庫に入れました'))}</span>`
@@ -6229,7 +6237,7 @@ function viewShopStage(){
     const names = cookItems().map(x => x.r.name), by = session.shopBy === 'sec' ? 'sec' : 'dish';
     const SECS = [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]];
     const groups = by === 'sec' ? SECS.map(([k, l]) => [l, buy.filter(e => e.sec === k)]) : names.map(n => [n, buy.filter(e => e.dishes[0] === n)]);
-    const fold = (k, title, hint, body) => `<details class="buy-fold" ${session['bf_' + k] ? 'open' : ''} data-bf="${k}"><summary><span><b>${esc(title)}</b>${hint ? `<small>${esc(hint)}</small>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary>${body}</details>`;
+    const fold = (k, title, hint, body, warn) => `<details class="buy-fold" ${session['bf_' + k] ? 'open' : ''} data-bf="${k}"><summary><span><b>${esc(title)}</b>${warn ? `<small class="alg-tag bf-alg" role="note">${esc(warn)}</small>` : ''}${hint ? `<small>${esc(hint)}</small>` : ''}</span><span class="fold-chev" aria-hidden="true"></span></summary>${body}</details>`;
     return `<section class="sec stage-body stage-shop${big ? ' big' : ''}">
         <div class="sec-head buy-head"><span class="eyebrow">${esc(joinNames(names))}</span><h2>${esc(nb ? t('買う物 {n}つ', {n: nb}) : t('買う物はありません'))}</h2>
             <button type="button" class="btn sm buy-send" data-act="shop-share3">${esc(t('家族に送る'))}</button></div>
@@ -6245,7 +6253,7 @@ function viewShopStage(){
         <div class="buy-folds">
             ${home.length ? fold('home', t('家にある {n}つ', {n: home.length}), joinNames(home.map(e => e.label)), `<div class="buy-list">${home.map(e => buyRowHtml(e, st)).join('')}</div>`) : ''}
             ${opt.filter(e => !e.buying).length ? fold('opt', t('なくても作れる {n}つ', {n: opt.filter(e => !e.buying).length}), joinNames(opt.filter(e => !e.buying).map(e => e.label)), `<div class="buy-list">${opt.filter(e => !e.buying).map(e => buyRowHtml(e, st)).join('')}</div>`) : ''}
-            ${seas.length ? fold('seas', t('調味料 {n}つ', {n: seas.length}), (xs => xs.length ? '🔍 ' + t('袋の表示を確かめるもの（調味料も）：{list}', {list: joinNames(xs.map(e => e.label + (/^(ja|zh)/.test(LANG) ? '（' + joinNames(e.may.map(algLabel)) + '）' : ' (' + joinNames(e.may.map(algLabel)) + ')')))}) : t('家にない物は［買う］にすると、買う物に入ります'))(seas.filter(e => e.may && e.may.length)), `<div class="buy-list">${seas.map(e => buyRowHtml(Object.assign({buyQty: '', use: '', alt: ''}, e), st, true)).join('')}</div>`) : ''}
+            ${seas.length ? fold('seas', t('調味料 {n}つ', {n: seas.length}), (xs => xs.length ? '🔍 ' + t('袋の表示を確かめるもの（調味料も）：{list}', {list: joinNames(xs.map(e => e.label + (/^(ja|zh)/.test(LANG) ? '（' + joinNames(e.may.map(algLabel)) + '）' : ' (' + joinNames(e.may.map(algLabel)) + ')')))}) : t('家にない物は［買う］にすると、買う物に入ります'))(seas.filter(e => e.may && e.may.length)), `<div class="buy-list">${seas.map(e => buyRowHtml(Object.assign({buyQty: '', use: '', alt: ''}, e), st, true)).join('')}</div>`, (hs => hs.length ? '⚠ ' + t('アレルゲンを含む調味料：{list}', {list: joinNames(hs.map(e => e.label + paren(joinNames(e.hit.map(algLabel)))))}) : '')(seas.filter(e => e.hit && e.hit.length))) : ''}
         </div>
         <div class="row stage-links"><button class="btn text" data-act="find-go" data-k="fridge">${esc(t('冷蔵庫を開く'))}</button>${S.week && visiblePlanDays().length ? `<button class="btn text" data-act="shop-week">${esc(t('今週の買い物メモ'))}</button>` : ''}</div>
         <div class="actionbar stack"><button class="btn primary" data-act="shop-ok">${esc(done ? t('作りはじめる') : t('そろった・作りはじめる'))}</button>${done || !nb ? '' : `<button class="btn" data-act="shop-ok" data-v="skip">${esc(t('買わずに作る'))}</button>`}</div>
@@ -7922,6 +7930,7 @@ function renderSheetBody(){
     if (sheet.kind === 'skip') body = skipSheetHtml();
     if (sheet.kind === 'video') body = videoSheetHtml(sheet.id);
     if (sheet.kind === 'start-alg') body = startAlgSheetHtml();
+    if (sheet.kind === 'alg-ask') body = algAskSheetHtml();
     if (sheet.kind === 'term') body = termSheetHtml();
     if (sheet.kind === 'who') body = whoSheetHtml();
     if (sheet.kind === 'wday') body = wdaySheetHtml();
@@ -9527,14 +9536,67 @@ function famAlgIds(){
     list.forEach(v => {
         v = String(v); const f = avoidFamOf(v);
         if (v[0] === '@'){ (FAM_ALG[f] || []).forEach(x => out.add(x)); return; }
-        const i = /[぀-ヿ㐀-鿿]/.test(v) ? parseIng(v) : Object.assign(parseIng(v), {en: v, key: v.toLowerCase()});
-        const hit = ALG_ALL.filter(id => algKind(id, i) === 1);
-        // 「小麦」なら小麦だけ（グルテンを含む穀物のような、まとめた区分は、その中の1つが当たったら入れない）
-        hit.filter(id => !(ALG_DEF[id].parts && ALG_DEF[id].parts.some(q => hit.includes(q)))).forEach(x => out.add(x));
+        const hit = famWordIds(v);
+        hit.forEach(x => out.add(x));
         if (hit.length) mapped.add(v);
         if (!hit.length && f) (FAM_ALG[f] || []).forEach(x => out.add(x));
     });
     famAlgIds.c = {sig, ids: [...out], mapped}; return famAlgIds.c.ids;
+}
+// 第40回 R185: 家族のアレルギーに打ちこんだ言葉を、全体と同じアレルゲンの id に読みかえる（1語ごと）。
+// まず下の言葉の表（18言語のよくある言い方。言葉まるごとで照らす）、なければ食材の言葉の判定（algKind が「その食材そのもの」）。
+// 「小麦」なら小麦だけ（グルテンを含む穀物のような、まとめた区分は、その中の1つが当たったら入れない）。「グルテン」はグルテンを含む穀物（小麦・大麦・ライ麦など）
+function famWordIds(v){
+    v = String(v); if (v[0] === '@') return [];
+    const w = famAlgWordKey(v), tb = FAM_ALG_WORD_MAP().get(w);
+    if (tb) return tb.slice();
+    const i = /[぀-ヿ㐀-鿿]/.test(v) ? parseIng(v) : Object.assign(parseIng(v), {en: v, key: v.toLowerCase()});
+    const hit = ALG_ALL.filter(id => algKind(id, i) === 1);
+    return hit.filter(id => !(ALG_DEF[id].parts && ALG_DEF[id].parts.some(q => hit.includes(q))));
+}
+// 言葉の表: [読みかえる id, 言い方（/区切り。ひらがな・カタカナ・大文字小文字・前後の「アレルギー」は問わない）]。広い言葉は広く読む（安全側: 「魚介」は魚・甲殻類・軟体動物・貝）
+const FAM_ALG_WORDS = [
+    [['gluten'], 'グルテン/グルテンを含む穀物/麦類/gluten/glutens/cereals containing gluten/gluten grains/glutén/céréales contenant du gluten/glutenhaltiges getreide/glutine/cereali contenenti glutine/cereales con gluten/cereales que contengan gluten/glúten/cereais com glúten/gluteny/zboża zawierające gluten/gluten içeren tahıllar/غلوتين/الغلوتين/جلوتين/الجلوتين/ग्लूटेन/麸质/麩質/含麸质的谷物/含麩質之穀物/글루텐/กลูเตน/kluten/glutenin'],
+    [['wheat'], '小麦/こむぎ/小麦粉/wheat/wheat flour/blé/ble/froment/farine de blé/weizen/weizenmehl/frumento/grano/farina di grano/trigo/harina de trigo/farinha de trigo/pszenica/mąka pszenna/buğday/buğday unu/قمح/القمح/دقيق القمح/गेहूं/गेहूँ/गेहूं का आटा/小麥/麦子/面粉/麵粉/밀/밀가루/ข้าวสาลี/แป้งสาลี/แป้งข้าวสาลี/lúa mì/bột mì/gandum/tepung terigu/terigu/tepung gandum'],
+    [['milk'], '乳/牛乳/乳製品/乳成分/ミルク/生乳/乳糖/milk/dairy/dairy products/milk products/cow\'s milk/cows milk/lactose/lait/produits laitiers/milch/milchprodukte/laktose/kuhmilch/latte/latticini/lattosio/leche/lácteos/lacteos/lactosa/leite/laticínios/laticinios/mleko/nabiał/laktoza/süt/süt ürünleri/laktoz/حليب/الحليب/لبن/اللبن/ألبان/الألبان/لاكتوز/दूध/डेयरी/दुग्ध उत्पाद/लैक्टोज/牛奶/奶/奶制品/乳制品/乳製品/奶類/奶类/우유/유제품/유당/นม/นมวัว/ผลิตภัณฑ์นม/แลคโตส/sữa/sữa bò/susu/susu sapi/produk susu/laktosa/gatas/gatas ng baka'],
+    [['egg'], '卵/たまご/玉子/鶏卵/卵白/卵黄/egg/eggs/egg white/egg yolk/œuf/oeuf/œufs/oeufs/ei/eier/uovo/uova/huevo/huevos/ovo/ovos/jajko/jajka/jaja/yumurta/بيض/البيض/अंडा/अंडे/鸡蛋/雞蛋/蛋/蛋类/蛋類/계란/달걀/ไข่/ไข่ไก่/trứng/trứng gà/telur/itlog'],
+    [['crustacean'], '甲殻類/crustacean/crustaceans/crustacean shellfish/crustacés/crustaces/krebstiere/krustentiere/crostacei/crustáceos/crustaceos/skorupiaki/kabuklular/قشريات/القشريات/क्रस्टेशियन/甲壳类/甲殼類/갑각류/สัตว์น้ำที่มีเปลือกแข็ง/ครัสเตเชียน/giáp xác/động vật giáp xác/krustasea/udang-udangan'],
+    [['crustacean', 'mollusc', 'shellfish'], 'えび・かに・貝/shellfish/mariscos/coquillages/schalentiere/meeresfrüchte/frutti di mare/frutos do mar/frutos de mar/owoce morza/kabuklu deniz ürünleri/محار/المحار/शेलफ़िश/शेलफिश/贝类/貝類/甲壳类和贝类/조개류/หอย/động vật có vỏ/kerang-kerangan/kerang/kabibe'],
+    [['fish', 'crustacean', 'mollusc', 'shellfish'], '魚介/魚介類/海産物/海鮮/seafood/sea food/fruits de mer/deniz ürünleri/مأكولات بحرية/المأكولات البحرية/समुद्री भोजन/海鲜/海鮮/해산물/อาหารทะเล/hải sản/makanan laut/pagkaing-dagat/lamang-dagat'],
+    [['mollusc'], '軟体動物/mollusc/molluscs/mollusk/mollusks/mollusques/weichtiere/molluschi/moluscos/mięczaki/yumuşakçalar/رخويات/الرخويات/मोलस्क/软体动物/軟體動物/연체동물/หอยและปลาหมึก/động vật thân mềm/moluska'],
+    [['sesame'], 'ごま/胡麻/白ごま/sesame/sesame seeds/sésame/sesam/sesamo/sésamo/gergelim/sezam/susam/سمسم/السمسم/तिल/芝麻/참깨/깨/งา/vừng/mè/wijen/linga'],
+    [['peanut'], 'ピーナッツ/ピーナツ/落花生/peanut/peanuts/groundnut/groundnuts/cacahuète/cacahuètes/arachide/arachides/erdnuss/erdnüsse/arachidi/cacahuate/cacahuete/cacahuetes/maní/amendoim/orzeszki ziemne/orzeszki arachidowe/yer fıstığı/fıstık/فول سوداني/الفول السوداني/मूंगफली/花生/땅콩/ถั่วลิสง/đậu phộng/lạc/kacang tanah/mani'],
+    [['treenut'], 'tree nut/tree nuts/fruits à coque/schalenfrüchte/frutta a guscio/frutos de cáscara/oleaginosas/sert kabuklu meyveler/坚果类/堅果類/ถั่วเปลือกแข็ง/hạt cây/kacang pohon'],
+    [['treenut', 'peanut'], 'ナッツ/ナッツ類/木の実/nuts/nut/noix/nüsse/nuss/noci/frutos secos/nueces/nozes/castanhas/orzechy/kuruyemiş/مكسرات/المكسرات/मेवे/सूखे मेवे/नट्स/坚果/堅果/견과류/견과/các loại hạt/kacang-kacangan/mga mani'],
+    [['soy'], '大豆/だいず/大豆製品/soy/soya/soybean/soybeans/soy beans/soja/sojabohnen/soia/فول الصويا/الصويا/صويا/सोया/सोयाबीन/黄豆/黃豆/콩/대두/ถั่วเหลือง/đậu nành/đậu tương/kedelai/kacang kedelai'],
+    [['fish'], '魚/さかな/魚類/fish/poisson/poissons/fisch/fische/pesce/pescado/pescados/peixe/peixes/ryba/ryby/balık/سمك/السمك/الأسماك/मछली/鱼/鱼类/생선/물고기/어류/ปลา/cá/ikan/isda'],
+    [['buckwheat'], 'そば/蕎麦/そば粉/buckwheat/sarrasin/blé noir/buchweizen/grano saraceno/trigo sarraceno/alforfón/trigo-sarraceno/gryka/karabuğday/الحنطة السوداء/حنطة سوداء/कुट्टू/荞麦/蕎麥/메밀/บัควีท/ข้าวบัควีท/kiều mạch/soba/bakwit'],
+    [['kiwi'], 'キウイ/キウイフルーツ/kiwi/kiwis/kiwifruit/kiwi fruit/كيوي/الكيوي/कीवी/奇异果/猕猴桃/奇異果/獼猴桃/키위/กีวี/quả kiwi/buah kiwi'],
+];
+// 打った言葉の照らし合わせ用の形: ひらがな・小文字にそろえ、前後の「アレルギー」「(…)」・空白をとる
+function famAlgWordKey(v){
+    let w = algNorm(v).replace(/[（(][^）)]*[）)]/g, ' ').replace(/[\s　]+/g, ' ').trim();
+    w = w.replace(/^(?:แพ้|dị ứng)\s*/, '').replace(/\s*(?:あれるぎー|allerg(?:y|ies|ie|ia)|alerg(?:ia|ie|i|ies)|alerji(?:si)?|حساسية|एलर्जी|过敏|過敏|알레르기|알러지|ส?แพ้|dị ứng)$/, '').trim();
+    return w;
+}
+function FAM_ALG_WORD_MAP(){
+    if (FAM_ALG_WORD_MAP.m) return FAM_ALG_WORD_MAP.m;
+    const m = new Map(); FAM_ALG_WORDS.forEach(([ids, ws]) => ws.split('/').forEach(x => { const k = famAlgWordKey(x); if (k && !m.has(k)) m.set(k, ids); }));
+    return (FAM_ALG_WORD_MAP.m = m);
+}
+// 家族のアレルギーに入れてよい言葉か: アレルゲンに読みかえられる・なかま（卵・乳製品など）・食材の表にある名前・苦手の言葉の表にある（名前で料理を外せる）
+// どれでもない言葉は「アプリで判定できません」と知らせて、入れない（⚠ が付くのに何も外れない、をなくす）
+function famAlgWordOk(v){
+    v = String(v || '').trim(); if (!v) return false;
+    if (v[0] === '@') return !!avoidFamOf(v);
+    if (famWordIds(v).length || avoidFamOf(v) || canonOf(v) || avoidConOf(v) >= 0) return true;
+    return Object.values(ALG_WORD).includes(v);
+}
+// 判定できない言葉に近いアレルゲン（家族のアレルギーのボタンの id）: 言葉の表の言い方と、先頭3文字か、1〜2文字ちがいで似ているもの。なければ主なものを並べる
+function famAlgSuggest(v){
+    const w = famAlgWordKey(v), out = [];
+    if (w.length >= 2) FAM_ALG_WORD_MAP().forEach((ids, k) => { const near = (w.length >= 3 && k.length >= 3 && (k.startsWith(w.slice(0, 3)) || w.startsWith(k.slice(0, 3)))) || (w.length >= 4 && lev(w, k) <= (w.length >= 7 ? 2 : 1)); if (near) ids.forEach(id => { if (!out.includes(id)) out.push(id); }); });
+    return out.length ? out.slice(0, 6) : ['gluten', 'wheat', 'milk', 'egg', 'soy', 'peanut', 'treenut', 'sesame', 'fish', 'crustacean'];
 }
 // 全員共通のアレルゲンと、今日食べる家族のアレルギー（読みかえたもの）
 function algIdsEff(){ return [...new Set([...algIds(), ...famAlgIds()])]; }
@@ -9802,10 +9864,28 @@ function avoidChipsHtml(list, act, famAct, more){
 // 主なアレルゲンは、全員共通の判定と同じ id に読みかわる言葉で持つ（famAlgIds。保存の形は今までと同じ「食材の名前」）。なかまのチップで足りるもの（卵・乳・小麦・肉・魚・貝・ナッツ類）は出さない
 const ALG_WORD = {shrimp:'えび', crab:'かに', walnut:'くるみ', buckwheat:'そば', peanut:'落花生', cashew:'カシューナッツ', abalone:'あわび', squid:'いか', ikura:'いくら', orange:'オレンジ', kiwi:'キウイフルーツ', sesame:'ごま', salmon:'鮭', mackerel:'さば', soy:'大豆', banana:'バナナ', pistachio:'ピスタチオ', macadamia:'マカダミアナッツ', peach:'もも', yamaimo:'やまいも', apple:'りんご', gelatin:'ゼラチン', almond:'アーモンド', celery:'セロリ', mustard:'からし', lupin:'ルピナス', sulphite:'亜硫酸塩', gluten:'ライ麦', tomato:'トマト', mango:'マンゴー', pinenut:'松の実', seeds:'ひまわりの種'};
 const FAM_ALG_COVER = ['egg', 'milk', 'wheat', 'pork', 'chicken', 'beef', 'fish', 'crustacean', 'mollusc', 'treenut', 'shellfish'];
-function famAlgChipsHtml(m){
+// 第40回 R179: 家族のアレルギーのボタンは、どの国でも主なアレルゲンをそろえる（その国の料理に出てこない・その国の表示の品目にないものも）。
+// なかま: 卵・乳製品・小麦・魚・えびかに貝・ナッツ。主なアレルゲン: その国の区分に、グルテンを含む穀物（小麦・大麦・ライ麦。米国・ペルーでも）・そば・落花生・ごま・大豆・キウイを足す
+const FAM_ALG_FAMS = ['egg', 'dairy', 'wheat', 'fish', 'shellfish', 'nuts'], FAM_ALG_CORE = ['gluten', 'buckwheat', 'peanut', 'sesame', 'soy', 'kiwi'];
+function famAlgButtons(){
+    const fams = Object.keys(AVOID_FAM).filter(f => FAM_ALG_FAMS.includes(f) || avoidFamChips().includes(f));
+    const ids = [...new Set([].concat(...algSections().main.map(x => x[1]), FAM_ALG_CORE))].filter(id => ALG_WORD[id] && !FAM_ALG_COVER.includes(id));
+    return {fams, ids};
+}
+// 判定できない言葉の代わりに出すボタン（アレルゲンの id → 家族のアレルギーのボタンと同じ働き）
+const FAM_ALG_SUG_FAM = {egg: 'egg', milk: 'dairy', wheat: 'wheat', fish: 'fish', crustacean: 'shellfish', mollusc: 'shellfish', shellfish: 'shellfish', treenut: 'nuts'};
+function famAlgBadHtml(m){
+    const b = session.famAlgBad; if (!b || b.id !== m.id) return '';
     const list = m.allergy, sel = [...new Set(list.map(avoidFamOf).filter(Boolean))];
-    const fam = avoidFamChips().map(f => `<button class="chip" data-act="fam-alg-fam" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`);
-    const ids = [...new Set([].concat(...algSections().main.map(x => x[1])))].filter(id => ALG_WORD[id] && !FAM_ALG_COVER.includes(id));
+    const btns = [...new Set(famAlgSuggest(b.w).map(id => FAM_ALG_SUG_FAM[id] ? '@' + FAM_ALG_SUG_FAM[id] : ALG_WORD[id] ? id : null).filter(Boolean))].map(x => x[0] === '@'
+        ? `<button class="chip" data-act="fam-alg-fam" data-v="${x.slice(1)}" aria-pressed="${sel.includes(x.slice(1))}">${esc(avoidFamLabel(x.slice(1)))}</button>`
+        : `<button class="chip" data-act="fam-alg-w" data-v="${esc(ALG_WORD[x])}" aria-pressed="${list.includes(ALG_WORD[x])}">${esc(algLabel(x))}</button>`);
+    return `<div class="fam-alg-bad" role="alert"><p class="small warn">${esc(t('「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください', {name: b.w}))}</p><div class="chips">${btns.join('')}</div></div>`;
+}
+function famAlgChipsHtml(m){
+    const list = m.allergy, sel = [...new Set(list.map(avoidFamOf).filter(Boolean))], fb = famAlgButtons();
+    const fam = fb.fams.map(f => `<button class="chip" data-act="fam-alg-fam" data-v="${f}" aria-pressed="${sel.includes(f)}">${esc(avoidFamLabel(f))}</button>`);
+    const ids = fb.ids;
     const words = ids.map(id => ALG_WORD[id]);
     const alg = ids.map(id => { const w = ALG_WORD[id], on = list.includes(w); return `<button class="chip" data-act="fam-alg-w" data-v="${esc(w)}" aria-pressed="${on}">${esc(algLabel(id))}</button>`; });
     // そのほかの食材（チップの一覧にあるもの）と、入力して足した食材
@@ -9814,10 +9894,13 @@ function famAlgChipsHtml(m){
         const on = list.some(x => x[0] !== '@' && keyOf(x) === keyOf(q));
         return {on, h: `<button class="chip" data-act="fam-alg" data-v="${esc(q)}" aria-pressed="${on}">${esc(q)}</button>`}; });
     function avoidCovered(q){ return avoidCoveredBy(q, sel); }
-    const typed = list.filter(x => !avoidFamOf(x) && !words.includes(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => `<span class="chip have">${esc(avoidName(x))}<button class="x" data-act="fam-alg-w" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name: avoidName(x)}))}">×</button></span>`);
+    // 入力して足したアレルギー。アプリで判定できない言葉（前の版で入ったもの）は ⚠ を付けず「判定なし」と出す（⚠ が付くのに何も外れない、をなくす。第40回 R185）
+    const typed = list.filter(x => !avoidFamOf(x) && !words.includes(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => { const ok = famAlgWordOk(x); return `<span class="chip have${ok ? '' : ' alg-nojudge'}">${esc(avoidName(x))}${ok ? '' : esc(paren(t('判定なし')))}<button class="x" data-act="fam-alg-w" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name: avoidName(x)}))}">×</button></span>`; });
     const grp = (label, xs) => xs.length ? `<div class="avoid-grp"><span class="small muted">${esc(label)}</span><div class="chips">${xs.join('')}</div></div>` : '';
     const open = (session.famAlgMore || {})[m.id] || other.some(x => x.on && !/ inc"/.test(x.h));
     return grp(t('なかまごと（豚肉ならハム・ベーコンも）'), fam) + grp(t('主なアレルゲン'), alg) + grp(t('入力して足した食材'), typed)
+        + `<form class="inputbar" data-form="fam-add-alg"><input type="text" class="fam-alg-input" placeholder="${esc(t('ほかのアレルギー（例: グルテン）'))}" autocomplete="off" aria-label="${esc(t('アレルギーを入力して追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form>`
+        + famAlgBadHtml(m)
         + `<details class="avoid-more fam-alg-more" data-fm-more="${esc(m.id)}" ${open ? 'open' : ''}><summary>${esc(t('ほかの食材を見る'))}</summary>${grp(t('その食材だけ'), other.map(x => x.h))}</details>`;
 }
 const vegan0 = fs => fs.has('egg') && fs.has('dairy');
@@ -10775,7 +10858,7 @@ function familySettingsHtml(){
             <div class="field"><label>${esc(t('食べられない食材'))}</label>${chips}
                 <form class="inputbar" data-form="fam-add-avoid"><input type="text" class="fam-avoid-input" placeholder="${esc(t('ほかの食材（例: セロリ）'))}" autocomplete="off" aria-label="${esc(t('苦手な食材を追加'))}"><button class="btn" type="submit">${esc(t('追加'))}</button></form></div>
             ${m.avoid.length ? `<div class="field"><label>${esc(t('アレルギーの食材（⚠ をつけると、置き換えずに、その食材を使う料理を出しません）'))}</label>
-                <div class="chips">${m.avoid.map(x => `<button class="chip ${m.allergy.includes(x) ? 'allergy' : ''}" data-act="fam-allergy" data-v="${esc(x)}" aria-pressed="${m.allergy.includes(x)}" aria-label="${esc(t('{name}をアレルギーにする', {name: avoidName(x)}))}">⚠ ${esc(avoidName(x))}</button>`).join('')}</div></div>` : ''}
+                <div class="chips">${m.avoid.map(x => { const ok = famAlgWordOk(x), on = m.allergy.includes(x) && ok; return `<button class="chip ${on ? 'allergy' : ''}${ok ? '' : ' alg-nojudge'}" data-act="fam-allergy" data-v="${esc(x)}" aria-pressed="${on}" aria-label="${esc(t('{name}をアレルギーにする', {name: avoidName(x)}))}">${ok ? '⚠ ' : ''}${esc(avoidName(x))}${ok ? '' : esc(paren(t('判定なし')))}</button>`; }).join('')}</div></div>` : ''}
             <label class="check"><input type="checkbox" data-act="fam-mild" ${m.mild ? 'checked' : ''}><span>${esc(t('辛いのが苦手'))} 🌶</span></label>
             <label class="check"><input type="checkbox" data-act="fam-me" ${m.me ? 'checked' : ''}><span>${esc(t('これはわたし（今日食べる人の「わたし」として数える）'))}</span></label>
             <label class="check"><input type="checkbox" data-act="fam-sometimes" ${m.sometimes ? 'checked' : ''}><span>${esc(t('ときどき一緒に食べる（ふだんは「今日食べる人」に入れない）'))}</span></label>
@@ -10836,6 +10919,7 @@ function allergySettingsHtml(){
     const rest = sec.rest.filter(id => !sel.has(id)), picked = sec.rest.filter(id => sel.has(id));
     return `<div class="set-group allergy-card" id="allergy-card">
         <div class="set-title">⚠ ${esc(t('アレルギー対策'))}</div>
+        <div class="row alg-jump"><button class="btn text sm" data-act="alg-jump" data-v="family-profile">${esc(t('家族のアレルギーへ'))}</button><button class="btn text sm" data-act="alg-jump" data-v="food">${esc(t('食の決まり（豚肉・お酒・肉や魚など）へ'))}</button></div>
         <span class="small">${esc(t('アレルギーのある食材を選ぶと、全員の献立・1週間プラン・買い物メモ・共有・手動で選ぶ料理から、その食材を使う料理を外します。「苦手な食材」と違い、ほかの食材への置き換えはしません。'))}</span>
         <div class="alg-now" role="status">${sel.size ? esc(t('選んだアレルゲン: {list}', {list: joinNames([...sel].map(algLabel))})) : esc(t('選んでいるアレルゲンはありません'))}</div>
         ${sec.main.map(([title, ids]) => `<div class="avoid-grp"><span class="small muted">${esc(title)}</span><div class="chips">${ids.map(chip).join('')}</div></div>`).join('')}
@@ -13515,7 +13599,7 @@ function pantryOf(r){
         const lab = (sh.length === b.length ? (jp ? labelOf(parseIng(sh[i].replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(sh[i])) : '') || (jp ? labelOf(parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(c));
         out.push({key: 'p|' + key, label: lab, src: c});
     });
-    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label}); });
+    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label, it: i}); });   // it: アレルゲンの判定に使う材料（第40回）
     return out;
 }
 function pantryList(){
@@ -15552,6 +15636,37 @@ function startAlgSheetHtml(){
         <button class="btn danger" data-act="start-alg-ok">${esc(t('⚠ 確かめたうえで作る'))}</button>
         <button class="btn ghost" data-act="sheet-close">${esc(t('やめる'))}</button>`;
 }
+// 第40回 R177: はじめての設定でアレルギーを聞かなくなったので、最初に「この献立に決定」（または作りはじめる）を押したとき1回だけ、
+// 「家族にアレルギーや食の決まりはありますか？」と聞く。［ない］は覚えてもう聞かない。［ある］は設定へ（献立は決めない）。
+// 聞くのは、いまの流れで始めた人（S.algAsk。前の版の第39回で始めた人は、設定の入口の案内がまだ出ている人 S.algHint）で、だれにもアレルギー・食の決まりがないときだけ。前から使っている人には聞かない
+// 食の決まり: まとめ選び（ハラール向け・ベジタリアン向け・ヴィーガン向け）か、食の決まりのチップ（お酒・ほかの肉）。豚肉だけ・苦手だけは決まりとみなさない（安全側: 聞く）
+function dietRuleOn(list){ return (list || []).some(x => DIET_CHIPS.includes(avoidFamOf(x))) || Object.keys(DIET_BUNDLES).some(k => dietBundleOn(list || [], k)); }
+function algAskDue(){
+    if (S.algAsk === 0 || !(S.algAsk === 1 || 'algHint' in S)) return false;
+    if (algIds().length || famMembers().some(m => (m.allergy || []).length)) return false;
+    return !dietRuleOn(S.settings.avoid) && !famMembers().some(m => dietRuleOn(m.avoid));
+}
+function algAskSheetHtml(){
+    const start = sheet.then === 'start';
+    return `<h2>${esc(t('家族にアレルギーや食の決まりはありますか？'))}</h2>
+        <p class="muted small">${esc(t('アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。'))}</p>
+        <button class="btn primary" data-act="alg-ask-no">${esc(start ? t('ない（このまま作る）') : t('ない（このまま決める）'))}</button>
+        <button class="btn" data-act="alg-ask-yes">${esc(t('ある（設定する）'))}</button>`;
+}
+// 「この献立に決定」の中身（第40回: 1回だけの「アレルギーや食の決まりはありますか」の［ない］からも呼ぶ）
+function decideNow(){
+    session.algAskHold = false;
+    const m = session.menu;
+    const ids = menuIds();
+    // 「決めた」だけでは記録しない（作った記録は、作り方で料理の手順を全部終えたとき・「今日作った」を押したときに付ける）。
+    // 決めただけで「今日作った」「レパートリーが増えました」と出ると、作らなかった日も作ったことになるため（モニター 佐々木 3-7・田村 3-12）
+    const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
+    S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0, seat: 1};   // seat: 品数を席の数で読む版で決めた save(); haptic();
+    session.cookIdx = 0;
+    if (S.day && S.day[TODAY] && S.day[TODAY].state === 'skipped') delete S.day[TODAY].skip;
+    session.stage = 'shop'; daySync();
+    toast(endSent(t('献立が決まりました。買う物を確かめましょう')), true); if (tab !== 'today') setTab('today'); else { window.scrollTo({top: 0}); render(); }   // 決めた次の画面は「買う」（約束4）
+}
 // 作りはじめる: 今日の作り方タブに入れて、いまの手順（はじめは1番）を見せる
 function startCooking(id){
     const r = byId(id); if (!r) return;
@@ -16386,7 +16501,10 @@ document.addEventListener('click', e => {
         case 'eaters-usual': { if (!Array.isArray(S.eaters)) break; setEaters(null); save(); reconcileMenu(); refreshWeek(); render(); break; }
         case 'fam-allergy': {
             const m = famOf(el); if (!m) break; const v = el.dataset.v, i = m.allergy.indexOf(v);
-            if (i >= 0) m.allergy.splice(i, 1); else if (m.avoid.includes(v)) m.allergy.push(v);
+            session.famAlgBad = null;
+            if (i >= 0) m.allergy.splice(i, 1);
+            else if (m.avoid.includes(v) && !famAlgWordOk(v)){ session.famAlgBad = {id: m.id, w: avoidName(v)}; session.famOpen = m.id; render(); break; }   // 第40回 R185: 判定できない言葉には ⚠ を付けない（何も外れないため）。近いボタンを出す
+            else if (m.avoid.includes(v)) m.allergy.push(v);
             session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
         }
         case 'fam-avoid': {
@@ -16600,6 +16718,7 @@ document.addEventListener('click', e => {
         case 'vid-go': vidAwayStart(id); break;
         case 'vid-start': {   // 当たる料理（選んだアレルゲン・今日食べる家族のアレルギー）を今日の作り方に入れるときは、アレルゲンの名前を出して確かめる（第15回 R44。守りを通らずに入っていた）。決めた献立にもう入っている料理はそのまま
             const r = byId(id), c = S.cook;
+            if (r && !(c && c.d === TODAY && (c.ids || []).includes(id)) && algAskDue()){ sheet = {kind: 'alg-ask', then: 'start', id}; renderSheet(); break; }   // 第40回 R177: 最初に作りはじめるときも1回だけ確かめる
             if (r && allergyConflict(r) && !(c && c.d === TODAY && (c.ids || []).includes(id))){ sheet = {kind: 'start-alg', id}; renderSheet(); break; }
             startCooking(id); break; }
         case 'start-alg-ok': if (sheet && sheet.kind === 'start-alg' && byId(sheet.id)) startCooking(sheet.id); break;
@@ -16659,17 +16778,18 @@ document.addEventListener('click', e => {
         }
         case 'ob-done': obFinish(); break;
         case 'decide': {
-            const m = session.menu;
-            const ids = menuIds();
-            // 「決めた」だけでは記録しない（作った記録は、作り方で料理の手順を全部終えたとき・「今日作った」を押したときに付ける）。
-            // 決めただけで「今日作った」「レパートリーが増えました」と出ると、作らなかった日も作ったことになるため（モニター 佐々木 3-7・田村 3-12）
-            const keepDone = S.cook && S.cook.d === TODAY && S.cook.done ? Object.fromEntries(Object.entries(S.cook.done).filter(([k]) => ids.includes(k))) : {};
-            S.cook = {d: TODAY, ids, slots: m.items.filter(x => x.r).map(x => x.slot), done: keepDone, adj: !!m.adj, salt: session.countSalt || 0, seat: 1};   // seat: 品数を席の数で読む版で決めた save(); haptic();
-            session.cookIdx = 0;
-            if (S.day && S.day[TODAY] && S.day[TODAY].state === 'skipped') delete S.day[TODAY].skip;
-            session.stage = 'shop'; daySync();
-            toast(endSent(t('献立が決まりました。買う物を確かめましょう')), true); if (tab !== 'today') setTab('today'); else { window.scrollTo({top: 0}); render(); } break;   // 決めた次の画面は「買う」（約束4）
+            if (algAskDue()){ sheet = {kind: 'alg-ask', then: 'decide'}; renderSheet(); break; }   // 第40回 R177: 最初に決めるとき1回だけ、アレルギー・食の決まりを確かめる
+            decideNow(); break;
         }
+        case 'alg-ask-no': {   // ［ない（このまま決める）］: 答えを覚えて（もう聞かない）、そのまま決める／作りはじめる
+            const sh = sheet; S.algAsk = 0; save(); closeSheet();
+            if (sh && sh.then === 'start' && byId(sh.id)) startCooking(sh.id); else if (session.menu && !decidedToday()) decideNow(); else render();
+            break;
+        }
+        case 'alg-ask-yes': {   // ［ある（設定する）］: アレルギー対策へ（家族のアレルギー・食の決まりへの入口もそこに）。献立は決めない。もどったら、当たる料理に ⚠（替えるかどうかは本人が選ぶ）
+            closeSheet(); session.algAskHold = true; setGo('allergy-card'); break;
+        }
+        case 'alg-jump': { const k = el.dataset.v; if (k === 'family-profile' || k === 'food') setGo(k); break; }   // アレルギー対策の上の入口: 家族のアレルギー・食の決まり
         case 'cook-swap': {   // 決めた献立のうち、合わなくなった1品だけを、本人が押したときに替える（ほかの料理は動かさない）
             const c = S.cook, id = el.dataset.id; if (!c || c.d !== TODAY || !Array.isArray(c.ids)) break;
             const j = c.ids.indexOf(id), old = byId(id); if (j < 0 || !old) break;
@@ -17352,7 +17472,7 @@ document.addEventListener('submit', e => {
     }
     if (f === 'fam-add-avoid'){
         const m = famOf(e.target); if (!m) return;
-        const inp = e.target.querySelector('input'); const found = avoidWords(inp.value);
+        const inp = e.target.querySelector('input'); const found = FAM_ALG_WORD_MAP().has(famAlgWordKey(inp.value)) ? [inp.value.trim()] : avoidWords(inp.value);   // 「tree nuts」のようなアレルゲンの言葉は分けない（第40回）
         const fresh = found.filter(x => !m.avoid.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
         fresh.forEach(x => { m.avoid.push(x); rememberAvoidX(x, inp.value); });
         session.famOpen = m.id; save(); reconcileMenu(); refreshWeek();
@@ -17360,6 +17480,21 @@ document.addEventListener('submit', e => {
         else if (found.length) toast(t('もう苦手な食材に入っています'));
         else if (inp.value.trim()) toast(t('食材の名前として読み取れませんでした'));
         render();
+    }
+    if (f === 'fam-add-alg'){   // 第40回 R185: 家族のアレルギーを打って足す。アプリで判定できる言葉だけ入れる（判定できない言葉は入れずに、近いボタンを出す）
+        const m = famOf(e.target); if (!m) return;
+        const inp = e.target.querySelector('input'), raw = inp.value.trim(); if (!raw) return;
+        const whole = famWordIds(raw).length ? [raw] : null;   // 「tree nuts」「produits laitiers」のような言葉は、分けずに1つとして読む
+        const parts = whole || [...new Set(String(raw).split(/[、,，。;；\/\n]+/).map(x => x.trim()).filter(Boolean))];
+        const good = parts.filter(famAlgWordOk), bad = parts.filter(x => !famAlgWordOk(x));
+        const val = x => famWordIds(x).length ? x : (canonOf(x) || x);   // アレルゲンの言葉はそのまま、食材の名前は食材の表の名前で持つ（「家族のアレルギー」の食材のボタンと同じ）
+        const fresh = [...new Set(good.map(val))].filter(x => !m.allergy.some(y => y[0] !== '@' && keyOf(y) === keyOf(x)));
+        fresh.forEach(x => { if (!m.avoid.includes(x)){ m.avoid.push(x); rememberAvoidX(x, x); } m.allergy.push(x); });
+        session.famAlgBad = bad.length ? {id: m.id, w: bad[0]} : null;
+        session.famOpen = m.id; save(); reconcileMenu(); refreshWeek();
+        if (fresh.length) toast(t('{list} を使う料理は出さないようにしました', {list: joinNames(fresh.map(avoidName))}));
+        render();
+        setTimeout(() => { const el = document.querySelector(`[data-fm="${CSS.escape(m.id)}"] ${bad.length ? '.fam-alg-bad' : '.fam-alg-input'}`); if (el && bad.length) el.scrollIntoView({block: 'nearest'}); }, 30);
     }
     if (f === 'add-staple'){
         const inp = $('#staple-input'); const sb = stripBroth(inp.value); const found = extractIngredients(sb.text); let added = 0;

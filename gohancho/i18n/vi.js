@@ -1,5 +1,17 @@
 // ご飯帖 — Vietnamese UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('vi', {
+    "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: ứng dụng không nhận diện được từ này. Vui lòng chọn từ các nút bên dưới.",
+    "ある（設定する）": "Có (thiết lập)",
+    "ない（このまま作る）": "Không (bắt đầu nấu)",
+    "ない（このまま決める）": "Không (chốt thực đơn này)",
+    "ほかのアレルギー（例: グルテン）": "Dị ứng khác (ví dụ: gluten)",
+    "アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。": "Nếu có dị ứng hoặc quy định ăn uống (không ăn thịt heo hay rượu, không ăn thịt hay cá…), hãy thiết lập trước khi chốt. Sau khi thiết lập, món không phù hợp sẽ có dấu ⚠.",
+    "アレルギーを入力して追加": "Nhập để thêm dị ứng",
+    "アレルゲンを含む調味料：{list}": "Gia vị có chất gây dị ứng: {list}",
+    "判定なし": "chưa kiểm tra được",
+    "家族にアレルギーや食の決まりはありますか？": "Trong gia đình có ai bị dị ứng hoặc có quy định ăn uống không?",
+    "家族のアレルギーへ": "Dị ứng của gia đình",
+    "食の決まり（豚肉・お酒・肉や魚など）へ": "Quy định ăn uống (thịt heo, rượu, thịt hay cá)",
     " など": " v.v.",
     "1週間の主菜": "Món chính cả tuần",
     "1週間プランでは、今日の主菜は": "Món chính hôm nay trong kế hoạch tuần:",

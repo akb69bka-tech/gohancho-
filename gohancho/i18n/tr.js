@@ -1,5 +1,17 @@
 // ご飯帖 — Turkish UI dictionary. Keys are the Japanese source strings.
 GOHAN_I18N('tr', {
+    "「{name}」：この言葉はアプリで判定できません。下のボタンから選んでください": "“{name}”: Uygulama bu kelimeyi tanıyamıyor. Lütfen aşağıdaki düğmelerden birini seçin.",
+    "ある（設定する）": "Evet (ayarla)",
+    "ない（このまま作る）": "Hayır (pişirmeye başla)",
+    "ない（このまま決める）": "Hayır (bu menüye karar ver)",
+    "ほかのアレルギー（例: グルテン）": "Başka bir alerji (ör. gluten)",
+    "アレルギーや食の決まり（豚肉やお酒をとらない・肉や魚を食べないなど）があれば、決める前に設定してください。設定すると、合わない料理に ⚠ が付きます。": "Alerji veya beslenme kuralları (domuz eti ya da alkol yok, et ya da balık yok vb.) varsa, karar vermeden önce ayarlayın. Ayarlayınca uymayan yemekler ⚠ ile işaretlenir.",
+    "アレルギーを入力して追加": "Alerjiyi yazarak ekle",
+    "アレルゲンを含む調味料：{list}": "Alerjen içeren baharat ve soslar: {list}",
+    "判定なし": "kontrol edilmedi",
+    "家族にアレルギーや食の決まりはありますか？": "Ailenizde alerjisi veya beslenme kuralı olan biri var mı?",
+    "家族のアレルギーへ": "Ailenin alerjileri",
+    "食の決まり（豚肉・お酒・肉や魚など）へ": "Beslenme kuralları (domuz eti, alkol, et veya balık)",
     "わが家のご飯帖": "Gohancho",
     "毎日の献立・冷蔵庫の材料から・定番のひとひねり。家事を励ます料理アプリ": "Günlük menüler, buzdolabındaki malzemelerle yemek ve aile klasiklerine yeni dokunuşlar. Size moral veren yemek planlama uygulaması.",
     "膳": "G",
