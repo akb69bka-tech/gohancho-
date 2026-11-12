@@ -2086,4 +2086,5 @@ GOHAN_I18N('id', {
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Jumlah orang (2), jumlah hidangan, bahan yang dihindari, dan alergi bisa diubah nanti di Pengaturan.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Punya alergi atau bahan yang dihindari? Atur di sini.",
     "アレルギー・苦手を設定": "Alergi & bahan dihindari",
+    "{name}のアレルギーから「{what}」を外しました": "“{what}” dihapus dari alergi {name}",
 });
