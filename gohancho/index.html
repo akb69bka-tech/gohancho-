@@ -5384,6 +5384,12 @@ function fitExtraSide(m){
     else if (!riceExtraMain(main, m.n) && j === ex.join()) m.items.splice(ex.lastIndexOf('副菜'), 1);
 }
 function menuIds(){ return session.menu ? session.menu.items.map(x => x.r && x.r.id).filter(Boolean) : []; }
+// dm44（第43回 R208）: 今日の案を作った直後にプランの主菜（ご飯もの）へ替えたとき、案に入っていたご飯の副菜（トルコの Pirinç pilavı など）を選び直す（主食を2つにしない）。
+// 作ったばかりで、まだ見せていない案だけに使う（押した「かえる」や決めた献立には使わない）
+function planRiceSideFix(p){
+    const m = session.menu; if (!m || !p || p.type !== 'ごはん' || mixCc('副菜')) return;
+    m.items.forEach((x, j) => { if (!j || x.slot !== '副菜' || !riceSide(x.r)) return; const r2 = suggestOrAny('副菜', m.items.filter((_, k) => k !== j), p); if (r2 && !riceSide(r2)) x.r = r2; });
+}
 function setMenuMain(r){
     const m = session.menu; if (!m || !r) return;
     m.items[0].r = r;
@@ -8428,6 +8434,9 @@ function suggestFor(slot, items, main){
         const pool = easyPool('主菜', unlike(moodPrefer(poolFor('主菜').filter(r => free(r) && ok(r)), '主菜')));
         const r = pool.length ? pick(pool, Object.assign({}, ctx, {strict})) : null; if (r) return r;
     } return null; };
+    // dm44（第43回 R198 の残り）: 糖質ひかえめのときは、2品目も糖質の多くない主菜を先に（段階ごとに選ぶと、早い段階に糖質の多い主菜しかない日に、あとの段階の糖質の多くない主菜より先に出ていた。
+    // ポーランド・ベジタリアン: 1品目と同じ「野菜」のなかまを避ける段階で、レンズ豆の煮込みなどが出た）。なければ今までどおり
+    if (carbOn()){ const rc = tryTiers(tiers.slice(0, 6).map(ok => r => ok(r) && !carbHeavy(r))); if (rc) return rc; }
     const r1 = tryTiers(tiers.slice(0, 6)); if (r1) return r1;
     // 「まるごと入れ替え」で、ご飯もの・麺でない主菜を一巡したときは、それをもう一巡する（ご飯もの・麺を2品目にしない。suggestMain と同じ考え方）
     if (session.rejected.size){ poolFor('主菜').forEach(r => { if (r.main && !carbMain(r) && free(r)) session.rejected.delete(r.id); }); const r2 = tryTiers(tiers.slice(0, 6)); if (r2) return r2; }
@@ -9748,12 +9757,18 @@ function carbTrayHtml(m){
     if (!carbOn() || !m || !m.items || !m.items.some(x => x.r)) return '';
     const c = menuCarb(m);
     const txt = c.st === 'ok' ? (c.staple ? CARB_TX.tray(c.v) : CARB_TX.trayNoStaple(c.v)) : c.why ? CARB_TX.trayNa(c.why.name) : c.staple ? CARB_TX.trayNaStaple() : CARB_TX.trayNa('');
-    return `<p class="kcal-sum carb-sum" role="note"><span class="kc-v">${esc(txt)}</span></p>${carbFewHtml()}`;
+    return `<p class="kcal-sum carb-sum" role="note"><span class="kc-v">${esc(txt)}</span></p>${carbFewHtml(m)}`;
 }
 // R198: 条件（食の決まり・苦手・アレルギー・今は出さない）と糖質ひかえめの両方に合う主菜が1週間ぶん（7品）ないとき、ごはん・めん・いもの主菜も出ることを知らせる
 const CARB_FEW = 7;
 function carbFewMains(){ return poolForMood('主菜', 'all').filter(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !carbHeavy(r)).length; }
-function carbFewHtml(){ return carbOn() && carbFewMains() < CARB_FEW ? `<p class="kcal-sum carb-sum carb-few" role="note"><span class="kc-v">${esc(CARB_TX.few())}</span></p>` : ''; }
+// dm44（第43回 R198 の残り）: 主菜が2品の日に、2品目が糖質の多い主菜で、ほかに条件に合う糖質の多くない主菜が残っていないときも知らせる
+function carbExtraFew(m){
+    const ms = ((m && m.items) || []).filter((x, i) => i > 0 && x.slot === '主菜' && x.r);
+    if (!ms.some(x => carbHeavy(x.r))) return false;
+    return !poolForMood('主菜', 'all').some(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !carbHeavy(r) && !m.items.some(y => y.r && y.r.id === r.id));
+}
+function carbFewHtml(m){ return carbOn() && (carbFewMains() < CARB_FEW || carbExtraFew(m)) ? `<p class="kcal-sum carb-sum carb-few" role="note"><span class="kc-v">${esc(CARB_TX.few())}</span></p>` : ''; }
 // 作り方の画面: カロリーの目安の箱に1行
 function carbNoteLine(r){ return carbOn() ? `<span class="kc-v cb-v">${esc(carbText(carbOf(r)))}</span>` : ''; }
 // 選んだとき1回だけの注意（お膳の下。「わかりました」で閉じる）
@@ -13732,6 +13747,7 @@ function ensureMenu(){
         newMenu();
         const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
             setMenuMain(p);
+            planRiceSideFix(p);   // dm44（第43回 R208）: プランの主菜がご飯ものなら、作ったばかりの案のご飯の副菜は選び直す
             if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });
             fitExtraSide(session.menu);   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
         }   // 届いた「食べたい」を入れた日は、プランの主菜は「献立にする」の案内に。気分（おかゆの日・魚の日など）に合わないプランの主菜は入れない
@@ -14921,6 +14937,7 @@ function viewToday(){
         // 1週間プランを作ってあれば、今日の主菜はプランの料理から始める
         const p = weekToday(); if (planUsable(p) && (session.mood === 'all' || moodOk(p, session.mood)) && session.menu.items[0] && session.menu.items[0].slot === '主菜' && !wishFor((session.menu.items[0].r || {}).id)){
             setMenuMain(p);
+            planRiceSideFix(p);   // dm44（第43回 R208）: プランの主菜がご飯ものなら、作ったばかりの案のご飯の副菜は選び直す
             if ((soupyMain(p) || primoMain(p)) && !mixCc('汁物')) session.menu.items.forEach(x => { if (x.slot === '汁物') x.r = null; });
             fitExtraSide(session.menu);   // 作ったばかりの案に、汁けの多いプランの主菜（鍋など）を入れたら、汁ものの席は空ける（newMenu と同じ。汁ものが2つにならない）
         }
