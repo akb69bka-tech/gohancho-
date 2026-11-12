@@ -4328,7 +4328,10 @@ function toastPlace(box, prev){
     const coreRects = () => [...document.querySelectorAll('#view .spot .nm, #view .spot .alg-tag, #view .spot .swap-line, #view .spot .swap:not(.swap-ph), #view .tg-mid .shuffle, #view .actionbar button')].filter(e => getComputedStyle(e).visibility !== 'hidden').map(e => { let r = e.getBoundingClientRect(); if (e.matches('.nm')){ const g = document.createRange(); g.selectNodeContents(e); r = g.getBoundingClientRect(); } return r; }).filter(r => r.width > 1 && r.height > 1 && r.top < floor - 1);
     let core = coreRects();
     const tapBoxes = [TOAST_TAP.box]; if (tapped && TOAST_TAP.act) document.querySelectorAll('#view [data-act="' + TOAST_TAP.act + '"]').forEach(e => tapBoxes.push(e.getBoundingClientRect()));
-    const finger = R => tapped && ((TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < R.bottom + 40) || tapBoxes.some(q => q && q.height && q.bottom > R.top - 8 && q.top < R.bottom + 8 && q.right > R.left && q.left < R.right)) ? 1 : 0;
+    // 第45回 R203 の残り: 押したボタンと同じ役目のボタン（家族のアレルギーのチップなど）は、押した指から 140px のうち（すぐ上・すぐ下の行。続けて押すところ）を指のまわりとして避ける。
+    // 画面じゅうに同じチップが並ぶとき（320px・文字いちばん大きい）、全部を指のまわりにすると、どこも同じ点になり、すぐ上の「卵」に重ねていた。遠いものは、ほかの押す場所として数える
+    const nearTap = q => !q || TOAST_TAP.y < 0 || q === TOAST_TAP.box || Math.abs((q.top + q.bottom) / 2 - TOAST_TAP.y) < 140;
+    const finger = R => tapped && ((TOAST_TAP.y > R.top - 40 && TOAST_TAP.y < R.bottom + 40) || tapBoxes.some(q => q && q.height && nearTap(q) && q.bottom > R.top - 8 && q.top < R.bottom + 8 && q.right > R.left && q.left < R.right)) ? 1 : 0;
     // 点の順: 押した指のまわり → 料理名・札・かえる・まるごと入れ替え・決定 → ほかのボタン（国・設定など。お知らせの文の上からでも押せる）→ 器の絵（押すと作り方）→ 文
     // 第18回 R39: アプリの名前（上の端の h1）は、ほかの文より先に避ける（器の絵より先。文だけにかかる高さがあればそちら、なければ低い形（compact）で探し直す）。「✓ 決めた」の印は料理名と同じ扱い（R41）
     // 幅 300px 未満（低い形。出るときの動きなし）は、上下のあけ方を 4px に（器の絵の帯 60px に 48px のお知らせが入る。名前は動かない）
@@ -5937,6 +5940,9 @@ function badges(r){
 let lastRenderTab = null;
 function anchorKeyOf(el){ const d = el.dataset; return (d.act || '') + '|' + (d.id || d.k || d.i || d.d || d.v || d.cc || ''); }
 let chipTap = null, tapAnchor = null, lastTapEl = null;   // 第44回 R203（下のクリックの受け口・holdView）
+// 第45回 R206: 最後に指・マウスを当てた時刻と場所（イベントの時刻は、ブラウザが入力を受けた時刻。遅い端末で処理が遅れても変わらない）
+let lastDown = null; const CHIP_DBL_MS = 400, CHIP_SEE_MS = 250;
+document.addEventListener('pointerdown', e => { lastDown = {type: e.pointerType, ts: e.timeStamp, x: e.clientX, y: e.clientY}; }, {capture: true, passive: true});
 // 第44回 R203: 押したチップを同じ高さに保つために画面を送ったとき、出ているお知らせ（画面に固定の形）の下に来た中身が変わる。
 // 置き場所を、いまの画面と押した指の場所で選び直す（続けて押すチップにお知らせが重ならないように）。ページに留めた形・見出しの行・棚つきの形はそのまま
 function toastReplace(){
@@ -8754,6 +8760,18 @@ function dietMayItem(c, i){
 }
 // ベジタリアン（豚・鶏・牛・魚・貝を外した人）か。「袋の表示を確認」の 🔍 を出す条件
 function dietVegiOn(){ return avoidCtx().diet.includes('vegi'); }
+// 第45回 R207: 🔍 の材料名のうしろに残った分量（「カレー粉小さじ2」「Doubanjiang 1/2 tsp」「… 1 1/2 ช้อนโต๊ะ」「to taste」など）を外す。全部消えるときは元のまま
+const MAY_QTY_TAIL = /(?:\s*(?:小さじ|大さじ|カップ|少々|適量|ひとつまみ|お好みで)\s*[\d½¼¾⅓⅔⅛.,\/〜~]*\s*(?:個|本|枚|g|ml)?|\s+[\d½¼¾⅓⅔⅛][\d½¼¾⅓⅔⅛.,\/\s〜~-]*(?:(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|g|kg|ml|l|oz|lbs?|cloves?|pinch(?:es)?|cans?|pieces?|slices?|EL|TL|c\. à (?:soupe|café)|cucharad(?:a|ita)s?|cucchia(?:io|ino|i|ini)|ช้อนโต๊ะ|ช้อนชา|ถ้วย|กรัม|มล\.?|큰술|작은술|컵|g|大勺|小勺|勺|克|毫升|ملعقة(?: كبيرة| صغيرة)?|(?:छोटा |बड़ा )?चम्मच|sdm|sdt|kutsarita|kutsara|łyżecz(?:ka|ki)|łyż(?:ka|ki)|colher(?:es)? de (?:sopa|chá)|yemek kaşığı|tatlı kaşığı|çay kaşığı|muỗng canh|muỗng cà phê)\.?)?|\s+(?:to taste|to serve|for serving|optional))\s*$/i;
+const MAY_QTY_HEAD = /^(?:[\d½¼¾⅓⅔⅛][\d½¼¾⅓⅔⅛.,\/\s-]*)?(?:(?:a )?pinch(?:es)? of|litres?|liters?|cups? of|ملعقة(?: كبيرة| صغيرة)?|ملاعق(?: كبيرة| صغيرة)?|كوب|(?:छोटा |बड़ा )?चम्मच|कप)\s+/i;
+// 日本語・中国語の、名前の中の分量（「ブイヨン1個」「鶏のスープ750ml」「料酒1小勺」「大さじ2と仕上げ用」など）
+const MAY_QTY_CJK = /(?:小さじ|大さじ|カップ)\s*[\d½¼¾⅓⅔⅛]+(?:[.,\/]\d+)?(?:と仕上げ用)?|[\d½¼¾⅓⅔⅛]+(?:[.,\/]\d+)?\s*(?:個|本|枚|片|かけ|kg|g|ml|mL|リットル|cc|小勺|大勺|汤匙|湯匙|茶匙|小匙|大匙|克|公克|毫升|杯|个)|ひとつまみ|少々|適量/g;
+function mayQtyCut(x){
+    let s = String(x || '').trim(), p;
+    if (/[ぁ-んァ-ヶ一-龯]/.test(s)) s = s.replace(MAY_QTY_CJK, '').replace(/^[、，,\s]+|[、，,\s]+$/g, '').replace(/^[^（(]*[）)]$/, z => z.replace(/[）)]$/, '')).trim();
+    s = s.replace(MAY_QTY_HEAD, '').trim();
+    do { p = s; s = s.replace(MAY_QTY_TAIL, '').trim(); } while (s && s !== p);
+    return s || String(x || '').trim();
+}
 // 料理（画面に出す形）で、食の決まりに合わない「かもしれない」ものを使う材料・調味料の名前（なければ []）
 function dietMayHits(r){
     if (!r || !r.items || !dietVegiOn()) return [];
@@ -8761,7 +8779,7 @@ function dietMayHits(r){
     const sw = typeof seasSwapText === 'function' ? seasSwapText(String(rs.seasBase != null ? rs.seasBase : (rs.seas || '')), rs) : '';
     const its = (rs.items || []).concat(seasItems(rs.seasBase != null && sw !== String(rs.seasBase) ? Object.assign({}, rs, {seasBase: sw, _seas: undefined, _seasK: undefined}) : rs));
     its.forEach(i => { if (dietMayItem(c, i)){
-        const nm = String(i.disp || i.label || i.name || i.key).replace(/^[\d½¼¾⅓⅔⅛.,\/\s-]+(?:(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|g|kg|ml|l|oz|EL|TL)\.?\s+(?:of\s+)?)?/i, '').replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim();
+        const nm = mayQtyCut(String(i.disp || i.label || i.name || i.key).replace(/^[\d½¼¾⅓⅔⅛.,\/\s-]+(?:(?:tsp|tbsp|teaspoons?|tablespoons?|cups?|g|kg|ml|l|oz|EL|TL)\.?\s+(?:of\s+)?)?/i, '').replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim());
         const loc = nm && typeof PACK_NAMES !== 'undefined' && PACK_NAMES[nm.toLowerCase().replace(/\s*\?$/, '')];   // 調味料の欄の英語の名前（stock cube など）は、その言語の訳があれば訳で出す
         const nm2 = mayLocFor(loc || nm, nm + '|' + dietTxt(i)) || loc || nm.replace(/\s*\?$/, '');   // 第43回: 決まった加工品・調味料は、画面の言葉の名前で（17言語＋日本語）
         if (nm2 && !out.includes(nm2)) out.push(nm2);
@@ -8815,6 +8833,21 @@ const MAY_LOC = [
     [/(?:^|\|)(?:めんつゆ|麺つゆ)(?:\||$)/, 'めんつゆ|صلصة منتسويو|Mentsuyu (Nudelsoße)|mentsuyu (noodle sauce)|mentsuyu (salsa para fideos)|mentsuyu (sawsawan sa pansit)|mentsuyu (sauce pour nouilles)|मेंत्सुयु (नूडल सॉस)|mentsuyu (saus mi)|mentsuyu (salsa per noodle)|멘쓰유|mentsuyu (sos do makaronu)|mentsuyu (molho para macarrão)|น้ำซุปเมนสึยุ|mentsuyu (erişte sosu)|nước tương mentsuyu|日式面汁|日式麵露'],
     [/(?:^|\|)(?:ぽん酢|ポン酢|ぽんず)(?:\||$)|\bponzu\b/i, 'ポン酢|صلصة بونزو|Ponzu|ponzu|ponzu|ponzu|ponzu|पोंज़ु|ponzu|ponzu|폰즈|ponzu|ponzu|ซอสพอนสึ|ponzu|sốt ponzu|柚子醋|柚子醋'],
     [/(?:^|\|)(?:納豆|なっとう|natto)(?:\||$)/i, '納豆|ناتو|Natto|natto|natto|natto|natto|नात्तो|natto|natto|낫토|natto|natto|นัตโตะ|natto|natto|纳豆|納豆'],
+    // 第45回 R209: 小麦・大豆・乳・卵などの 🔍 に出る、各国の料理の加工品（ベーコン・ハム・ソーセージ・スープの素・カレー粉・紹興酒・豆板醤 など）。ほかの行のあとに照らす
+    [/chicken (?:stock|bouillon|broth) (?:powder|granules)|chicken powder/i, '鶏ガラスープの素（顆粒）|مرقة دجاج بودرة|Hühnerbrühe (Pulver)|chicken stock powder|caldo de pollo en polvo|pulbos na pampasabaw ng manok|bouillon de poulet en poudre|चिकन स्टॉक पाउडर|kaldu ayam bubuk|brodo di pollo granulare|치킨 스톡 가루|bulion drobiowy w proszku|caldo de galinha em pó|ผงซุปไก่|toz tavuk bulyon|hạt nêm gà|鸡精|雞粉'],
+    [/chicken (?:stock|broth|bouillon)/i, '鶏のスープ（チキンブイヨン）|مرقة دجاج|Hühnerbrühe|chicken stock|caldo de pollo|sabaw ng manok|bouillon de poulet|चिकन स्टॉक|kaldu ayam|brodo di pollo|닭 육수|bulion drobiowy|caldo de galinha|น้ำซุปไก่|tavuk suyu|nước dùng gà|鸡汤|雞湯'],
+    [/curry powder/i, 'カレー粉|مسحوق الكاري|Currypulver|curry powder|curry en polvo|pulbos na curry|curry en poudre|करी पाउडर|bubuk kari|curry in polvere|카레 가루|curry w proszku|curry em pó|ผงกะหรี่|köri tozu|bột cà ri|咖喱粉|咖哩粉'],
+    [/asafo?etida|\bhing\b/i, 'ヒング（アサフェティダ）|الحلتيت|Asant (Asafoetida)|asafoetida (hing)|asafétida|asafoetida (hing)|ase fétide (asafoetida)|हींग|asafoetida (hing)|assafetida|아위 (힝)|asafetyda|assa-fétida|มหาหิงคุ์|şeytantersi (asafoetida)|a ngùy (asafoetida)|阿魏粉|阿魏粉'],
+    [/shaoxing/i, '紹興酒|نبيذ شاوشينغ|Shaoxing-Reiswein|Shaoxing wine|vino de Shaoxing|alak na Shaoxing|vin de Shaoxing|शाओशिंग वाइन|arak Shaoxing|vino di Shaoxing|사오싱주|wino Shaoxing|vinho de Shaoxing|เหล้าเส้าซิง|Shaoxing şarabı|rượu Thiệu Hưng|绍兴酒|紹興酒'],
+    [/doubanjiang/i, '豆板醤|معجون الفول الحار (دوبانجيانغ)|Doubanjiang (scharfe Bohnenpaste)|doubanjiang (chili bean paste)|doubanjiang (pasta de habas picante)|doubanjiang (maanghang na bean paste)|doubanjiang (pâte de fèves pimentée)|डोबानजियांग (चिली बीन पेस्ट)|doubanjiang (pasta kacang pedas)|doubanjiang (pasta di fave piccante)|두반장|doubanjiang (ostra pasta z bobu)|doubanjiang (pasta de fava apimentada)|เต้าเจี้ยวเผ็ด (โต้วป้านเจี้ยง)|doubanjiang (acı fasulye ezmesi)|tương đậu cay (doubanjiang)|豆瓣酱|豆瓣醬'],
+    [/fermented pineapple/i, 'パイナップルの発酵漬け|أناناس مخمر|fermentierte Ananas|fermented pineapple|piña fermentada|binurong pinya|ananas fermenté|किण्वित अनानास|nanas fermentasi|ananas fermentato|발효 파인애플|fermentowany ananas|abacaxi fermentado|สับปะรดหมัก|fermente ananas|dứa lên men|酱凤梨|醬鳳梨'],
+    [/moo ?yor|หมูยอ/i, 'ムーヨー（タイの豚肉ソーセージ）|موو يور (نقانق لحم خنزير تايلندية)|Moo Yor (thailändische Schweinewurst)|moo yor (Thai pork sausage)|moo yor (embutido tailandés de cerdo)|moo yor (Thai na sausage ng baboy)|moo yor (saucisse thaïe de porc)|मू योर (थाई पोर्क सॉसेज)|moo yor (sosis babi Thailand)|moo yor (salsiccia thailandese di maiale)|무여 (태국식 돼지고기 소시지)|moo yor (tajska kiełbasa wieprzowa)|moo yor (linguiça tailandesa de porco)|หมูยอ|moo yor (Tay domuz sosisi)|giò lụa Thái (moo yor)|泰式猪肉肠|泰式豬肉腸'],
+    [/corned beef/i, 'コンビーフ|لحم بقري معلب (كورند بيف)|Corned Beef|corned beef|carne en conserva (corned beef)|corned beef|corned-beef|कॉर्न्ड बीफ़|kornet sapi|carne in scatola (corned beef)|콘비프|wołowina konserwowa (corned beef)|carne enlatada (corned beef)|เนื้อกระป๋อง (คอร์นบีฟ)|konserve sığır eti (corned beef)|thịt bò muối đóng hộp|咸牛肉罐头|鹹牛肉罐頭'],
+    [/morcilla|blood sausage/i, 'モルシージャ（ブラッドソーセージ）|مورسيلا (نقانق الدم)|Morcilla (Blutwurst)|morcilla (blood sausage)|morcilla|morcilla (blood sausage)|morcilla (boudin noir)|मोर्सिया (ब्लड सॉसेज)|morcilla (sosis darah)|morcilla (sanguinaccio)|모르시야 (블러드 소시지)|morcilla (kaszanka)|morcela|มอร์ซียา (ไส้กรอกเลือด)|morcilla (kan sucuğu)|dồi huyết morcilla|西班牙血肠|西班牙血腸'],
+    [/chorizo/i, 'チョリソー|تشوريزو|Chorizo|chorizo|chorizo|chorizo|chorizo|कोरिज़ो|chorizo|chorizo|초리소|chorizo|chouriço (chorizo)|ไส้กรอกโชริโซ|chorizo sucuk|xúc xích chorizo|西班牙辣香肠|西班牙辣香腸'],
+    [/\bham\b/i, 'ハム|لحم خنزير مقدد (هام)|Schinken|ham|jamón|hamon|jambon|हैम|ham|prosciutto|햄|szynka|presunto|แฮม|jambon|giăm bông|火腿|火腿'],
+    [/\bbacon\b|\blardons?\b|\bpancett?a\b|\bsalt pork\b/i, 'ベーコン|لحم مقدد (بيكون)|Speck (Bacon)|bacon|tocino (bacon)|bacon|lardons (bacon)|बेकन|bacon|pancetta (bacon)|베이컨|boczek (bekon)|bacon|เบคอน|domuz pastırması (bacon)|thịt xông khói|培根|培根'],
+    [/sausages?|\bwiener\b|bockwurst|lingui[cç]a|kie[łl]basa|andouille|\bsogo\b/i, 'ソーセージ|نقانق|Wurst|sausage|salchicha|sausage|saucisse|सॉसेज|sosis|salsiccia|소시지|kiełbasa|linguiça|ไส้กรอก|sosis|xúc xích|香肠|香腸'],
 ];
 // 名前（と元の言葉）から、いまの画面の言葉の名前を返す（当たらない・訳がないときは null）
 function mayLoc(txt){
@@ -10230,7 +10263,7 @@ function mayNameParts(id, name){
         .replace(/[（(][^）)]*[）)]/g, '').replace(/,.*$/, '').replace(/\s+(?:[\d½¼¾⅓⅔⅛.,\/]|少々|適量|大さじ|小さじ)[^/]*$/, '').trim() || String(x).trim();
     const parts = String(name).split('/').map(x => x.trim()).filter(Boolean);
     const hit = parts.length > 1 ? parts.filter(x => algKind(id, {name: x, label: x, key: norm(x), en: /[a-z]/i.test(x) ? x.toLowerCase() : ''}) === 4) : [];
-    return (hit.length ? hit : [name]).map(short).map(x => mayLocFor(x) || x.replace(/\s*\?$/, ''));   // 第43回: stock cube・Worcestershire sauce なども画面の言葉で
+    return (hit.length ? hit : [name]).map(short).map(mayQtyCut).map(x => mayLocFor(x) || x.replace(/\s*\?$/, ''));   // 第43回: stock cube・Worcestershire sauce なども画面の言葉で
 }
 // 料理の並び（rs）で「袋の表示を確認」になる加工品の名前（文に出す）
 // 文が長くなりすぎない（お膳の下の欄の高さ（3行）を超えて、まわりが動かない）よう、名前は1つ（長い名前は … で切る）。残りは「ほか○品」。全部の名前はカードの印と詳しい画面に出る
@@ -16834,12 +16867,19 @@ document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]'); if (!el) return;
     if (Date.now() < tapGuard && el.dataset.act !== 'toast-undo') return;
     const chip = el.classList.contains('chip') || !!el.closest('.chip');
-    // 無視するのは、ブラウザが同じ場所の続けての2回目と数えた押し（detail が 2 以上: 二度押し）だけ。1回ずつの押し直し（オン→オフ）や、別の場所・別のチップの1回押しは通す
-    if (chip && e.detail > 1 && chipTap && Date.now() < chipTap.until && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24) return;
+    // 第45回 R206: 指で押したときは、指を当てた時刻（pointerdown の時刻。遅い端末で処理が遅れても、人が押した間合いのまま）で見る。
+    // 前のチップの押しから 0.4 秒のうちに同じ場所を押したら（二度押し）、同じチップでも別のチップでも切りかえない（入れた乳製品を外さない・隣の卵を入れない）。
+    // 間をおいた押し直し（オン→オフ）は通す。マウスなどは、ブラウザが同じ場所の2回目と数えた押し（detail が 2 以上）だけを無視する（第44回）
+    if (chip && e.detail > 0){
+        const pd = lastDown, touch = pd && pd.type === 'touch' && Math.abs(pd.x - e.clientX) < 24 && Math.abs(pd.y - e.clientY) < 24;
+        const near = chipTap && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24;
+        if (near && touch && chipTap.ts != null && (pd.ts - chipTap.ts < CHIP_DBL_MS || !(pd.ts >= chipTap.shownAt + CHIP_SEE_MS))){ chipTap.ts = pd.ts; return; }   // 0.4 秒のうち、または1回目の結果が画面に出て 0.25 秒たたないうち（見て決めるには短い）に当てた指
+        if (near && !touch && e.detail > 1 && Date.now() < chipTap.until) return;
+    }
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;
-    if (chip && e.detail > 0){ const c = chipTap = {x: e.clientX, y: e.clientY, until: Infinity}; queueMicrotask(() => { c.until = Date.now() + 350; }); }   // 0.35 秒は、描き終わってから数える（遅い端末で、待つあいだの押し直しを入れない）
+    if (chip && e.detail > 0){ const pd = lastDown, c = chipTap = {x: e.clientX, y: e.clientY, until: Infinity, ts: pd && pd.type === 'touch' ? pd.ts : null}; queueMicrotask(() => { c.until = Date.now() + 350; }); c.shownAt = Infinity; requestAnimationFrame(() => { c.shownAt = performance.now(); }); }   // マウス: 0.35 秒は、描き終わってから数える。shownAt: 押した結果を描いた時刻（その前に当てた指は、結果を見ていない）
     if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
     session.freshArmed = true;   // 「新」の札は、本人が何か押したあとの変化にだけ付ける
