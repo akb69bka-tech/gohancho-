@@ -5937,6 +5937,12 @@ function badges(r){
 let lastRenderTab = null;
 function anchorKeyOf(el){ const d = el.dataset; return (d.act || '') + '|' + (d.id || d.k || d.i || d.d || d.v || d.cc || ''); }
 let chipTap = null, tapAnchor = null, lastTapEl = null;   // 第44回 R203（下のクリックの受け口・holdView）
+// 第44回 R203: 押したチップを同じ高さに保つために画面を送ったとき、出ているお知らせ（画面に固定の形）の下に来た中身が変わる。
+// 置き場所を、いまの画面と押した指の場所で選び直す（続けて押すチップにお知らせが重ならないように）。ページに留めた形・見出しの行・棚つきの形はそのまま
+function toastReplace(){
+    const box = document.querySelector('#toast-root .toast'); if (!box || !box.dataset.placed || /\b(anchored|headdock|docked)\b/.test(box.className)) return;
+    try{ box.style.removeProperty('top'); box.style.removeProperty('max-width'); box.classList.remove('at-top'); toastPlace(box, null); }catch(e){}
+}
 // 第44回 R203: 押したチップの目印（同じ役目・同じ値のボタンのうち、同じ家族の欄の中で何番目か）
 function tapAnchorOf(v, el){
     const fm = el.closest('[data-fm]'), sc = fm && v.contains(fm) ? fm : v, k = anchorKeyOf(el);
@@ -5965,7 +5971,7 @@ function releaseView(v, keep){
     if (keep.tap){   // 押したチップを、押す前と同じ高さに
         const a = keep.tap, sc = a.fm ? [...v.querySelectorAll('[data-fm]')].find(e => e.dataset.fm === a.fm) : v;
         const e = sc && [...sc.querySelectorAll('[data-act]')].filter(x => anchorKeyOf(x) === a.k)[a.n];
-        if (e){ lastTapEl = e; const d = e.getBoundingClientRect().top - a.top; if (Math.abs(d) > 0.5) window.scrollBy(0, d); }
+        if (e){ lastTapEl = e; const d = e.getBoundingClientRect().top - a.top; if (Math.abs(d) > 0.5){ window.scrollBy(0, d); toastReplace(); } }
         return;
     }
     if (keep.anchor && keep.anchor.k === '@tray'){ const tr = v.querySelector('.tray'); if (tr){ const d = tr.getBoundingClientRect().top - keep.anchor.top; if (Math.abs(d) >= 1) window.scrollBy(0, Math.round(d)); } return; }   // 1px 未満のずれ（スクロール位置の端数）では動かさない
@@ -16822,13 +16828,14 @@ function commitSpeech(text, heard, before){
 
 let tapGuard = 0;   // 画面が切りかわった直後のすばやい2回目のタップを、次の画面のボタンに当てない
 // 第44回 R203: チップ（家族のアレルギーなど）を押したら、押したチップを目印に画面の位置を保つ（上に行が増えても、指の下のチップが替わらない）。
-// 押し終わってから 0.35 秒のうちに同じ場所をもう一度押したとき（二度押し・描き直しを待つあいだの押し直し）は、どのチップも切りかえない（隣の「卵」などを入れない）
+// 押し終わってから 0.35 秒のうちの同じ場所の二度押し（ブラウザが2回目と数えた押し）は、どのチップも切りかえない（隣の「卵」などを入れない・入れた乳製品を外さない）
 const CHIP_LATER = new Set(['fam-allergy', 'fam-avoid', 'fam-alg', 'fam-alg-w', 'fam-alg-fam', 'fam-avoid-fam', 'fam-avoid-diet']);   // 押した形を先に描き、献立の確かめ（reconcileMenu・refreshWeek）はあとで
 document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]'); if (!el) return;
     if (Date.now() < tapGuard && el.dataset.act !== 'toast-undo') return;
     const chip = el.classList.contains('chip') || !!el.closest('.chip');
-    if (chip && e.detail > 0 && chipTap && Date.now() < chipTap.until && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24) return;
+    // 無視するのは、ブラウザが同じ場所の続けての2回目と数えた押し（detail が 2 以上: 二度押し）だけ。1回ずつの押し直し（オン→オフ）や、別の場所・別のチップの1回押しは通す
+    if (chip && e.detail > 1 && chipTap && Date.now() < chipTap.until && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24) return;
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;
