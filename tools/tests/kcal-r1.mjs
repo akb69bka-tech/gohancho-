@@ -242,6 +242,8 @@ await reset();
     ok(r2.sum && !r2.tag, 'K7f オフ: 合計は出す・印は出さない: ' + JSON.stringify(r2));
 }
 // 保存した状態の整え（true でなければ捨てる）
+// 先のページを閉じてから開く（開いたままだと、2つのタブの同期で先のページの保存がこのページを読み直させ、evaluate が途中で切れる）
+await p.close();
 {
     const p2 = await ctx.newPage();
     await p2.addInitScript(() => { localStorage.setItem('gohancho.v1', JSON.stringify({onboarded: true, firstUse: '2026-01-01', settings: {country: 'JP', dishCount: 3, servings: 2, diet: 'yes'}, family: [{id: 'f0', name: 'a', role: 'adult', avoid: [], allergy: []}]})); });
