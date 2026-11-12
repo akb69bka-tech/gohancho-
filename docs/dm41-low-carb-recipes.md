@@ -163,11 +163,11 @@
 | イギリス | 主菜 | `gb_auberginebake` | なすとトマト、モッツァレラのオーブン焼き | Aubergine, tomato and mozzarella bake | － | 平皿（主菜）に盛ったなすとトマト、モッツァレラのオーブン焼き。見える具: なす・トマト水煮缶・モッツァレラ |
 | イギリス | 主菜 | `gb_stuffedpeppers` | パプリカのマッシュルームとフェタ詰め焼き | Peppers stuffed with mushrooms and feta | － | 平皿（主菜）に盛ったパプリカのマッシュルームとフェタ詰め焼き。見える具: 赤パプリカ・マッシュルーム・ズッキーニ・フェタチーズ |
 | フランス | 主菜 | `fr_ratatouilleoeufs` | ラタトゥイユの落とし卵 | Ratatouille aux œufs | － | 平皿（主菜）に盛ったラタトゥイユの落とし卵。見える具: なす・ズッキーニ・赤パプリカ・トマト |
-| フランス | 主菜 | `fr_poeleechampignons` | マッシュルームといんげん、ひよこ豆のにんにく炒め | Poêlée de champignons, haricots verts et pois chiches | ○ | 平皿（主菜）に盛ったマッシュルームといんげん、ひよこ豆のにんにく炒め。見える具: マッシュルーム・さやいんげん・ひよこ豆・エシャロット |
+| フランス | 主菜 | `fr_poeleechampignons` | マッシュルームといんげん、ひよこ豆のにんにく炒め | Poêlée de légumes aux pois chiches | ○ | 平皿（主菜）に盛ったマッシュルームといんげん、ひよこ豆のにんにく炒め。見える具: マッシュルーム・さやいんげん・ひよこ豆・エシャロット |
 | フランス | 主菜 | `fr_tianchevre` | 野菜のティアン（重ね焼き） シェーヴルチーズのせ | Tian de légumes au chèvre | － | 平皿（主菜）に盛った野菜のティアン（重ね焼き） シェーヴルチーズのせ。見える具: ズッキーニ・なす・トマト・玉ねぎ |
 | フランス | 主菜 | `fr_oeufscocotte` | ほうれん草のココット焼き卵 | Œufs cocotte aux épinards | － | 平皿（主菜）に盛ったほうれん草のココット焼き卵。見える具: 卵・ほうれん草・生クリーム・コンテかグリュイエールのすりおろし |
 | フランス | 主菜 | `fr_gratinchoufleur` | カリフラワーのグラタン | Gratin de chou-fleur | － | 平皿（主菜）に盛ったカリフラワーのグラタン。見える具: カリフラワー・牛乳・エメンタールのすりおろし |
-| フランス | 主菜 | `fr_courgettesfarcies` | ズッキーニのきのことフレッシュチーズ詰め焼き | Courgettes farcies aux champignons et au fromage frais | － | 平皿（主菜）に盛ったズッキーニのきのことフレッシュチーズ詰め焼き。見える具: ズッキーニ・マッシュルーム・トマト・フレッシュチーズ |
+| フランス | 主菜 | `fr_courgettesfarcies` | ズッキーニのきのことフレッシュチーズ詰め焼き | Courgettes farcies au fromage frais | － | 平皿（主菜）に盛ったズッキーニのきのことフレッシュチーズ詰め焼き。見える具: ズッキーニ・マッシュルーム・トマト・フレッシュチーズ |
 | ドイツ | 主菜 | `de_pilzzucchinipfanne` | きのことズッキーニのハーブ炒め | Pilz-Zucchini-Pfanne mit Kräutern | ○ | 平皿（主菜）に盛ったきのことズッキーニのハーブ炒め。見える具: ブラウンマッシュルーム・ズッキーニ・玉ねぎ・ミニトマト |
 | ドイツ | 主菜 | `de_rahmspinatei` | ほうれん草のクリーム煮 目玉焼きのせ | Rahmspinat mit Spiegelei | － | 平皿（主菜）に盛ったほうれん草のクリーム煮 目玉焼きのせ。見える具: ほうれん草・生クリーム・玉ねぎ・卵 |
 | ドイツ | 主菜 | `de_gemuesetofu` | 豆腐と野菜の炒めもの（ドイツ風） | Gemüsepfanne mit Tofu | ○ | 平皿（主菜）に盛った豆腐と野菜の炒めもの。見える具: 木綿豆腐・ブロッコリー・赤パプリカ・にんじん |

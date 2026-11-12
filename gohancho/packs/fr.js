@@ -2439,7 +2439,7 @@ GOHAN_PACK({
     {
       id: "fr_poeleechampignons",
       name: "Garlic mushrooms with green beans and chickpeas",
-      local: "Poêlée de champignons, haricots verts et pois chiches",
+      local: "Poêlée de légumes aux pois chiches",
       type: "main",
       method: "stirfry",
       protein: "veg",
@@ -2523,7 +2523,7 @@ GOHAN_PACK({
     {
       id: "fr_courgettesfarcies",
       name: "Courgettes stuffed with mushrooms and fresh cheese",
-      local: "Courgettes farcies aux champignons et au fromage frais",
+      local: "Courgettes farcies au fromage frais",
       type: "main",
       method: "grill",
       protein: "veg",

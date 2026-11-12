@@ -1734,7 +1734,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       ],
     },
     "fr_poeleechampignons": {
-      name: "Poêlée de champignons, haricots verts et pois chiches",
+      name: "Poêlée de légumes aux pois chiches",
       ings: [["Champignons de Paris", "300 g"], ["Haricots verts", "250 g"], ["Pois chiches en conserve, égouttés", "100 g"], ["Échalote", "1"]],
       seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à soupe de persil haché · Sel · Poivre",
       steps: [
@@ -1774,7 +1774,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       ],
     },
     "fr_courgettesfarcies": {
-      name: "Courgettes farcies aux champignons et au fromage frais",
+      name: "Courgettes farcies au fromage frais",
       ings: [["Courgettes rondes ou longues", "2 (500 g)"], ["Champignons de Paris", "150 g"], ["Tomate", "1"], ["Fromage frais (type Saint-Moret ou ricotta)", "100 g"], ["Emmental râpé", "30 g"]],
       seas: "2 c. à soupe d'huile d'olive · 1 échalote · 1 c. à soupe de persil haché · Sel · Poivre",
       steps: [
