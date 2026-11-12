@@ -2574,7 +2574,7 @@ GOHAN_PACK({
       name: "Mexican soy mince with vegetables",
       local: "Picadillo de soya",
       type: "main",
-      method: "simmer",
+      method: "stirfry",
       protein: "legume",
       min: 30,
       ings: [

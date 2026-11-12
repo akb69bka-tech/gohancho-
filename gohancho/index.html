@@ -8984,7 +8984,7 @@ function hangOrder(scored){
     if (lt.length >= HANG_MIN && Math.random() < HANG_LIGHT_P * Math.min(1, lt.length / HANG_WIDE)) return shake(lt, lt.filter(x => hangInfo(x.r).soupy).length >= HANG_SOUP_MIN);   // 汁けの多い料理が数品しかないときは先にしない（その1品ばかりにならないように）
     if (hangHeavy(scored[0].r)){
         const ok = scored.filter(x => !hangHeavy(x.r));   // こってりでない料理が少ない国（インドなど）では、後へ回す割合も品数に合わせて下げる（その数品ばかりにならないように）
-        if (ok.length && Math.random() < (hangInfo(scored[0].r).fried ? HANG_FRY_P : HANG_HEAVY_P) * Math.min(1, ok.length / (HANG_WIDE * 1.5))) return shake(ok, false);
+        if (ok.length && Math.random() < (hangInfo(scored[0].r).fried ? HANG_FRY_P * Math.min(1, ok.length / HANG_WIDE) : HANG_HEAVY_P * Math.min(1, ok.length / (HANG_WIDE * 1.5)))) return shake(ok, false);   // dm43: 揚げ物は、こってりでない料理が少ない国でも強めに後へ（インドで揚げ物の主菜が4割ほど残り、乱数しだいで減らなかった）
     }
     return scored;
 }
