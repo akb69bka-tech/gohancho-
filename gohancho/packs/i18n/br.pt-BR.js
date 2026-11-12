@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('BR', 'pt-BR', {
   staple: "Arroz branco",
   names: {
+    "soya chunks": "Soja texturizada",
+    "tofu": "Tofu",
     "spinach": "Espinafre",
     'tapioca': 'Goma de tapioca',
     'coconut': 'Coco ralado',
@@ -1542,6 +1544,76 @@ GOHAN_PACK_TR('BR', 'pt-BR', {
         "Corte o tomate, o pimentão e a cebola em cubinhos e o queijo em cubos. Bata os ovos com sal, pimenta e cheiro-verde picado.",
         "Refogue os legumes no óleo em uma frigideira por 3 minutos.",
         "Despeje os ovos, espalhe o queijo e cozinhe em fogo baixo, tampado, por 5 minutos. Dobre ao meio e sirva.",
+      ],
+    },
+    "br_picadinho_soja": {
+      name: "Picadinho de soja com legumes",
+      ings: [["Soja texturizada (miúda)", "60 g"], ["Tomates", "2"], ["Cenoura", "1"], ["Abobrinha", "1"], ["Pimentão verde", "1"], ["Cebola", "1"]],
+      seas: "2 colheres (sopa) de óleo · 3 dentes de alho · 1 colher (sopa) de shoyu · 150 ml de água · 2 colheres (sopa) de cheiro-verde picado · Sal · Pimenta-do-reino",
+      steps: [
+        "Hidrate a soja texturizada em água quente por 10 minutos e esprema bem. Corte em cubinhos a cenoura, a abobrinha, o pimentão, os tomates e a cebola.",
+        "Aqueça o óleo numa panela, refogue a cebola e o alho por 2 minutos, junte a soja e o shoyu e refogue por 5 minutos.",
+        "Acrescente a cenoura, o pimentão, os tomates e a água, tampe e cozinhe por 10 minutos. Junte a abobrinha, tempere e cozinhe mais 5 minutos. Finalize com cheiro-verde.",
+      ],
+    },
+    "br_pimentao_soja": {
+      name: "Pimentão recheado com soja",
+      ings: [["Pimentões grandes", "2"], ["Soja texturizada (miúda)", "50 g"], ["Tomate", "1"], ["Cebola", "1/2"], ["Azeitonas verdes", "8"], ["Cogumelos", "200 g"]],
+      seas: "3 colheres (sopa) de azeite · 2 dentes de alho · 1 colher (sopa) de extrato de tomate · 2 colheres (sopa) de salsinha picada · Sal · Pimenta-do-reino",
+      steps: [
+        "Preaqueça o forno a 200 °C. Hidrate a soja em água quente por 10 minutos e esprema. Corte a tampa dos pimentões e retire as sementes.",
+        "Aqueça 2 colheres de azeite numa frigideira e refogue a cebola e o alho picados por 2 minutos. Junte a soja, os cogumelos picados, o tomate picado, o extrato e as azeitonas fatiadas e cozinhe por 8 minutos. Tempere e misture a salsinha.",
+        "Recheie os pimentões, arrume numa assadeira, regue com o restante do azeite e asse por 25 minutos, até ficarem macios.",
+      ],
+    },
+    "br_abobrinha_soja": {
+      name: "Abobrinha recheada com soja",
+      ings: [["Abobrinhas grandes", "2 (600 g)"], ["Soja texturizada (miúda)", "50 g"], ["Tomates", "2"], ["Cebola", "1/2"]],
+      seas: "3 colheres (sopa) de azeite · 2 dentes de alho · 2 colheres (sopa) de cheiro-verde picado · 1/2 colher (chá) de orégano · Sal · Pimenta-do-reino",
+      steps: [
+        "Preaqueça o forno a 200 °C. Hidrate a soja em água quente por 10 minutos e esprema. Corte as abobrinhas ao meio no comprimento e retire o miolo; pique o miolo.",
+        "Aqueça 2 colheres de azeite numa frigideira e refogue a cebola e o alho picados por 2 minutos. Junte a soja, o miolo picado, os tomates e o orégano e cozinhe por 8 minutos. Tempere e misture o cheiro-verde.",
+        "Recheie as abobrinhas, arrume numa assadeira, regue com o restante do azeite e asse por 20 minutos.",
+      ],
+    },
+    "br_tofu_acebolado": {
+      name: "Tofu acebolado",
+      ings: [["Tofu firme", "400 g"], ["Cebolas", "2"], ["Tomate", "1"]],
+      seas: "3 colheres (sopa) de óleo · 2 dentes de alho · 2 colheres (sopa) de shoyu · 1 colher (sopa) de suco de limão · 1/2 colher (chá) de páprica doce · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte o tofu em fatias grossas, seque e tempere com o shoyu, o suco de limão, a páprica e o alho amassado. Corte as cebolas em rodelas e o tomate em gomos.",
+        "Aqueça 2 colheres de óleo numa frigideira e doure o tofu por 4 minutos de cada lado. Retire.",
+        "Junte o restante do óleo e frite as cebolas por 5 minutos, até ficarem macias e douradas. Volte o tofu com o tomate, tempere e aqueça.",
+      ],
+    },
+    "br_grao_bico_couve": {
+      name: "Grão-de-bico refogado com couve",
+      ings: [["Grão-de-bico em lata, escorrido", "100 g"], ["Couve-manteiga", "1 maço (250 g)"], ["Tomates", "2"], ["Cebola", "1"], ["Cogumelos", "150 g"]],
+      seas: "3 colheres (sopa) de azeite · 3 dentes de alho · 1/2 colher (chá) de páprica doce · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte a couve em tiras bem finas. Fatie os cogumelos e pique os tomates e a cebola.",
+        "Aqueça o azeite numa frigideira grande e refogue a cebola e o alho por 2 minutos. Junte os cogumelos e cozinhe por 4 minutos, depois os tomates, o grão-de-bico e a páprica por 3 minutos.",
+        "Acrescente a couve e salteie por 2 minutos, até ficar verde viva. Tempere e sirva.",
+      ],
+    },
+    "br_moqueca_cogumelos": {
+      name: "Moqueca de cogumelos",
+      ings: [["Cogumelos variados (shimeji, shiitake, paris)", "500 g"], ["Tomates", "2"], ["Cebola", "1"], ["Pimentões vermelho e amarelo", "2"], ["Leite de coco", "200 ml"], ["Coentro", "1/2 maço"]],
+      seas: "1 colher (sopa) de azeite de dendê · 1 colher (sopa) de azeite · 2 dentes de alho · 1 colher (sopa) de suco de limão · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte os cogumelos, os tomates, a cebola e os pimentões em rodelas ou tiras e tempere os cogumelos com o limão, o alho e o sal.",
+        "Numa panela larga ou de barro, faça camadas de cebola, pimentão, cogumelos e tomate, regue com o azeite, tampe e cozinhe em fogo médio por 10 minutos.",
+        "Despeje o leite de coco e o dendê, cozinhe destampado por 10 minutos, acerte o sal e finalize com coentro picado.",
+      ],
+    },
+    "br_vagem_tofu": {
+      name: "Vagem refogada com tofu",
+      ings: [["Vagem", "300 g"], ["Tofu firme", "300 g"], ["Cebola", "1/2"], ["Cenoura", "1"]],
+      seas: "3 colheres (sopa) de óleo · 3 dentes de alho · 1 colher (sopa) de shoyu · Sal · Pimenta-do-reino",
+      steps: [
+        "Corte a vagem em pedaços curtos e a cenoura em palitos. Cozinhe numa panela com água fervente e sal por 4 minutos e escorra. Corte o tofu em cubos.",
+        "Aqueça 2 colheres de óleo numa frigideira e doure o tofu por 6 minutos. Retire.",
+        "Junte o restante do óleo, refogue a cebola fatiada e o alho por 2 minutos, acrescente a vagem, a cenoura, o tofu e o shoyu e salteie por 2 minutos. Tempere.",
       ],
     },
   }

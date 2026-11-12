@@ -4794,6 +4794,7 @@ const TOOL_TAGS = {
     tkg: 'cold', shirasu_tkg: 'cold', nattogohan: 'cold', onigiri_umekonbu: 'cold', umechazuke: 'cold', negishio: 'pan', banbanji: 'pan',
     soborodon: '+pan', kr_kimchibokkeumbap: 'pan', gb_lambchops: 'pan oven',   // 食い違い: そぼろは鍋かフライパンで炒る・キムチ炒飯はフライパン・ラムチョップはグリル（上火）か焼き網のフライパン。たらこスパゲッティは鍋で茹でて和えるだけなので「茹でる・鍋」のまま
     // 各国: 炒めご飯はフライパン（ナシゴレン・コムチエン・コムラン）
+    fr_brochetteslegumes: '+pan',   // dm43: 野菜の串焼きは、グリルパン（フライパンのなかま）か炭火
     id_nasigoreng: 'pan', vn_comchien: 'pan', vn_comrangduabo: 'pan', vn_bolalot: 'pan +charcoal', vn_ca_tim_kho_dau_hu: 'pan',
     // 各国: パスタ・和え麺は鍋で茹でる（ソースをフライパンで作るものは両方）、ミルクがゆ・ピラウ・炊き込みは鍋、パエリア鍋はフライパン
     us_primavera: 'pot pan', fr_pates_tomates_olives: 'pot pan', tw_majiangmian: 'pot', fr_semoule_lait: 'pot', it_semolino_latte: 'pot', eg_belila: 'pot', mx_atole_blanco: 'pot', br_mingau_fuba: 'pot',
@@ -5635,11 +5636,19 @@ const weekBowl = r => !!r && (r.type === 'ごはん' || r.type === '麺');
 function makeWeek(){ return weekAlg(makeWeek0); }
 // R202: 糖質ひかえめのとき、1週間プランの主菜は、その日に出せる糖質の多くない主菜を先に。候補（cands）は「○日以内に作った料理は出さない」を、
 // その日（i日あと）で見て絞ってある（weekFresh）ので、今日から数えた日数で外す pick の決まりは使わない（relax）。それでも選べなければ null（今までどおり選ぶ）
+// dm43（第42回 R198 の残り）: 今日「かえる」で外した料理（session.rejected）は今日だけのこと。明日からの日（later）では、糖質の多くない主菜が
+// それしか残っていなければ使う（合う主菜がちょうど7品の国で、1つ「かえる」と、プランに糖質の多い主菜が知らせなしで1日入っていた）
 function carbWeekPick(cands, ctx){
     if (!carbOn()) return null;
     const ok = cands.filter(r => !carbHeavy(r)); if (!ok.length) return null;
-    return pick(ok, ctx) || pick(ok, Object.assign({}, ctx, {relax: true})) || pick(ok, Object.assign({}, ctx, {recent: [], relax: true}));
+    const r = pick(ok, ctx) || pick(ok, Object.assign({}, ctx, {relax: true})) || pick(ok, Object.assign({}, ctx, {recent: [], relax: true}));
+    if (r || !ctx.later || !session.rejected.size) return r;
+    const rej = session.rejected; session.rejected = new Set();
+    try { return pick(ok, Object.assign({}, ctx, {recent: [], relax: true})); } finally { session.rejected = rej; }
 }
+// dm43: 1週間プランの明日からの日に糖質の多い主菜があるとき（合う主菜が7品あっても、○日以内に作った料理を出さないために足りない日など）、プランの下に知らせを出す
+function carbWeekFew(){ return carbOn() && !!S.week && (S.week.days || []).some(x => x.d > TODAY && !x.skip && carbHeavy(byId(x.id))); }
+function carbWeekFewHtml(){ return carbWeekFew() ? `<p class="kcal-sum carb-sum carb-few wk-carb-few" role="note"><span class="kc-v">${esc(CARB_TX.few())}</span></p>` : ''; }
 function makeWeek0(){
     // 1週間プランは今日の気分に左右されない（おかゆの日に作ると、おかゆ・雑炊・ハムエッグがプランの主菜に入っていた）。候補は poolForMood('主菜', 'all')
     const days = [], used = new Set();
@@ -5657,7 +5666,7 @@ function makeWeek0(){
         if (days.filter(x => weekBowl(byId(x.id))).length >= WEEK_BOWL_MAX){ const rest = cands.filter(r => !weekBowl(r)); if (rest.length) cands = rest; }
         if (stapleOkayu() && !mixCc('主菜')){ const nb = cands.filter(r => !weekBowl(r)); if (nb.length) cands = nb; }   // 主食がおかゆなら、ご飯もの・麺の日を作らない（選んだおかゆが出なくなる）
         const wdi = parseYmd(d).getDay();
-        let r = carbWeekPick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
+        let r = carbWeekPick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length, later: i > 0});
         if (!r) r = pick(cands, {recent, fridge: i < 2 && session.useFridge ? fridgeKeys() : null, weekday: wdi >= 1 && wdi <= 5, relax: !fresh.length});
         if (!r && cands.length) r = pick(cands, {recent: [], relax: !fresh.length});                       // 肉・魚やジャンルの条件を外して選ぶ
         if (!r && cands.length) r = cands[Math.floor(Math.random() * cands.length)];
@@ -5699,7 +5708,7 @@ function refreshWeek0(){
         const recent = S.week.days.slice(Math.max(0, i - 2), i).map(y => byId(y.id)).filter(Boolean).reverse().map((r, k) => ({ago:k+1, family:r.family, genre:r.genre}));
         const all0 = poolForMood('主菜', 'all').filter(r => r.main && !used.has(r.id) && !out(r)), off = Math.max(0, daysBetween(TODAY, x.d));
         const fresh = all0.filter(r => weekFresh(r, off)), cands = fresh.length ? fresh : all0;
-        let r = carbWeekPick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
+        let r = carbWeekPick(cands, {recent, relax: !fresh.length, later: x.d > TODAY}) || pick(cands, {recent, relax: !fresh.length}) || pick(cands, {recent: [], relax: !fresh.length}) || cands[0];
         // アレルギーをいくつも足して、まだ使っていない主菜がなくなったときは、ほかの日の料理をもう一度使う（当たる料理をプランに残さない）
         if (!r){ const again = poolForMood('主菜', 'all').filter(y => y.main && y.id !== x.id && !out(y)); r = pick(again, {recent, relax: true}) || again[0]; }
         if (r){ used.add(r.id); x.id = r.id; delete x.extra; n++; }
@@ -8979,7 +8988,7 @@ const KC_FOODS = [
     [/チョコ|chocolate/i, 550, {c: 52, s: 'M'}],
     // ---- しょうゆ・みそ・ソース類 ----
     [/薄口醤油|うすくち/i, 60, {c: 7.8, d: 1.2, s: 'M'}],
-    [/醤油|しょうゆ|\bsoy\b|soya|shoyu|ganjang|\btoyo\b|tamari\b/i, 77, {c: 7.9, d: 1.2, s: 'M'}],
+    [/醤油|しょうゆ|\bsoy\b(?! ?(?:protein|mince|granules|chunks))|soya(?! ?(?:chunks|granules|mince|protein|texturizada))|shoyu|ganjang|\btoyo\b|tamari\b/i, 77, {c: 7.9, d: 1.2, s: 'M'}],   // dm43: 大豆ミート（textured soy protein・soya granules）はしょうゆでなく大豆の行で数える
     [/白味噌/i, 217, {c: 34, d: 1.15, s: 'M'}],
     [/味噌|みそ|\bmiso\b|cheonggukjang|doenjang|soybean paste|soy paste|\bdoubanjiang\b|豆板醤|tauco/i, 182, {c: 17, d: 1.15, s: 'M'}],
     [/コチュジャン|gochujang/i, 247, {c: 45, d: 1.15, s: 'M'}],
@@ -9048,7 +9057,7 @@ const KC_FOODS = [
     [/おから/i, 88, {c: 2.3, s: 'M'}],
     [/tempeh|tempe\b/i, 192, {c: 6, s: 'U'}],
     [/大豆（水煮）|大豆の水煮|cooked soybeans|edamame|枝豆/i, 124, {c: 2, d: 0.65, cn: 'soy', s: 'M'}],
-    [/大豆|soybeans?|soya chunks/i, 372, {c: 8, x: 2.3, d: 0.65, leg: 'soy', s: 'M'}],
+    [/大豆|soybeans?|soya (?:chunks|granules|mince)|textured soy|soy protein|soy mince|soya texturizada|proteína de soja/i, 372, {c: 8, x: 2.3, d: 0.65, leg: 'soy', s: 'M'}],
     // ---- 肉（加工品を先に） ----
     [/ベーコン|bacon|lardons?|pancetta|guanciale|speck/i, 400, {c: 0.3, p: 17, u: {枚: 17, slice: 17, slices: 17, rasher: 20, rashers: 20, strip: 17, strips: 17}, s: 'M'}],
     [/ハム|\bham\b|gammon|prosciutto|jam[oó]n|presunto|kasseler|smoked pork loin|deli turkey|sliced deli/i, 200, {c: 2, p: 15, u: {枚: 12, slice: 20, slices: 20, hock: 500}, s: 'M'}],
@@ -14993,6 +15002,7 @@ function viewToday(){
                 <div class="t" data-act="open" data-id="${esc(r.id)}"><span class="wnm">${esc(r.name)}</span><div class="s wmeta">${x.who ? `<span class="who-b">${esc(t('担当：{name}', {name:x.who}))}</span>` : ''}${esc(metaLine(r))}${swapLineHtml(r)}</div>${(b => b ? `<div class="s">${b}</div>` : '')(weekAlg(() => allergyBadge(r)))}${weekExtraHtml(x)}</div>
                 <div class="week-acts"><button class="btn sm wk-edit" data-act="week-day" data-d="${x.d}" aria-label="${esc(t('{date}の変更（別の案・作らない・担当）', {date:jpDate(x.d)}))}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg><span>${esc(t('変更'))}</span></button></div>
             </div>`; }).join('')}</div>
+            ${carbWeekFewHtml()}
             ${tallyHtml(t('1週間プランの主菜（{n}日分）', {n: visiblePlanDays().filter(x => byId(x.id)).length}), visiblePlanDays().map(x => byId(x.id)))}
             ${S.week.days.filter(x => x.d >= TODAY).length <= 2 ? `<div class="note"><span>${esc(t('1週間プランの残りが少なくなりました'))}</span><button class="btn sm primary" data-act="make-week">${esc(t('今日から7日分を考える'))}</button></div>` : ''}
             <div class="row wk-foot"><button class="btn wide" data-act="goto-shop">${esc(t('買い物メモを見る'))}</button><button class="btn ghost" data-act="make-week">${esc(t('作り直す'))}</button></div>

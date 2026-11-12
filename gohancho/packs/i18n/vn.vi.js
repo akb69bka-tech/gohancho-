@@ -2,6 +2,11 @@
 GOHAN_PACK_TR('VN', 'vi', {
   staple: 'Cơm trắng',
   names: {
+    "sweet potato": "Khoai lang",
+    "coconut milk": "Nước cốt dừa",
+    "kohlrabi": "Su hào",
+    "bottle gourd": "Bầu",
+    "potato": "Khoai tây",
     'glutinous rice': 'Gạo nếp',
     'mung beans': 'Đậu xanh tách vỏ',
     'shallot': 'Hành khô',
@@ -1288,6 +1293,226 @@ GOHAN_PACK_TR('VN', 'vi', {
         "Hành lá thái nhỏ, cà chua bổ múi cau. Đánh trứng với nước tương, tiêu và hành lá.",
         "Đun nóng dầu trong chảo, đổ trứng vào chiên lửa vừa 2–3 phút, lật mặt chiên thêm 1 phút.",
         "Áp chảo cà chua 1 phút trong cùng chảo rồi bày cạnh trứng.",
+      ],
+    },
+    "vn_galuoc": {
+      name: "Gà luộc lá chanh",
+      ings: [["Đùi gà có xương", "600 g"], ["Gừng", "20 g"], ["Chanh", "1 quả"], ["Hành lá", "2 cây"]],
+      seas: "1 1/2 muỗng cà phê muối · 1 muỗng cà phê tiêu đen · 6 lá chanh · 1 củ hành tím",
+      steps: [
+        "Cho gà, gừng thái lát, hành tím và hành lá vào nồi, đổ nước lạnh ngập gà, thêm 1 muỗng cà phê muối rồi đun sôi. Hớt bọt, hạ nhỏ lửa luộc 25 phút. Tắt bếp, đậy nắp ngâm thêm 10 phút.",
+        "Vớt gà ra, chặt miếng vừa ăn, rắc lá chanh thái thật nhỏ lên trên.",
+        "Trộn phần muối còn lại với tiêu và nước cốt chanh làm muối tiêu chanh, ăn kèm gà.",
+      ],
+    },
+    "vn_garangmuoi": {
+      name: "Gà rang muối",
+      ings: [["Cánh hoặc đùi gà chặt miếng", "500 g"], ["Sả", "2 cây"], ["Ớt đỏ", "2 quả"]],
+      seas: "3 muỗng canh dầu ăn · 3 tép tỏi · 1 muỗng cà phê muối · 1/2 muỗng cà phê đường · 4 lá chanh · 1/2 muỗng cà phê tiêu đen",
+      steps: [
+        "Ướp gà với một nửa phần muối và đường. Băm thật nhỏ sả, tỏi, ớt và lá chanh.",
+        "Đun nóng dầu trong chảo, chiên gà ở lửa vừa 15 phút, trở đều đến khi vàng và chín. Vớt ra.",
+        "Phi sả, tỏi, ớt trong chảo 2 phút, cho gà vào lại cùng phần muối còn lại, lá chanh và tiêu, đảo đều ở lửa lớn 2 phút đến khi khô và thơm.",
+      ],
+    },
+    "vn_bobittet": {
+      name: "Bò bít tết",
+      ings: [["Thăn bò cắt miếng", "300 g"], ["Trứng gà", "2 quả"], ["Hành tây", "1/2 củ"], ["Cà chua", "1 quả"], ["Xà lách", "4 lá"]],
+      seas: "1 muỗng canh nước tương · 2 tép tỏi · 1/2 muỗng cà phê tiêu đen · 1 muỗng canh dầu ăn · 1 muỗng canh bơ · 1 muỗng canh tương cà",
+      steps: [
+        "Dần nhẹ miếng bò, ướp với nước tương, tỏi đập dập và tiêu 15 phút. Hành tây thái lát, cà chua bổ múi cau.",
+        "Đun nóng dầu và bơ trong chảo (hoặc chảo gang thật nóng), áp chảo bò mỗi mặt 1-2 phút. Cho hành tây vào và ốp la trứng bên cạnh.",
+        "Bày bò ra đĩa cùng trứng, hành tây, cà chua, xà lách và một ít tương cà.",
+      ],
+    },
+    "vn_xaxiu": {
+      name: "Thịt xá xíu",
+      ings: [["Thịt nạc vai heo", "400 g"], ["Dưa leo", "1 quả"]],
+      seas: "2 muỗng canh tương đen (hoisin) · 1 muỗng canh nước tương · 1 muỗng canh mật ong · 2 tép tỏi · 1/2 muỗng cà phê ngũ vị hương · 1 muỗng canh dầu ăn",
+      steps: [
+        "Cắt thịt thành 2 dải dài, ướp với toàn bộ gia vị 30 phút.",
+        "Nướng trong lò ở 200°C trong 30 phút, giữa chừng trở mặt một lần và quét nước ướp.",
+        "Để nghỉ 5 phút, thái lát mỏng, ăn kèm dưa leo thái lát.",
+      ],
+    },
+    "vn_suonxaochuangot": {
+      name: "Sườn xào chua ngọt",
+      ings: [["Sườn non chặt khúc ngắn", "500 g"], ["Hành tây", "1/2 củ"], ["Hành lá", "2 cây"]],
+      seas: "2 muỗng canh dầu ăn · 2 muỗng canh giấm · 2 muỗng canh đường · 2 muỗng canh tương cà · 1 muỗng canh nước tương · 2 tép tỏi · 1/2 muỗng cà phê muối · 100 ml nước",
+      steps: [
+        "Chần sườn trong nồi nước sôi 3 phút, vớt ra để ráo và ướp muối.",
+        "Đun nóng dầu trong chảo, chiên sườn ở lửa vừa 10 phút đến khi vàng. Cho tỏi và hành tây thái lát vào.",
+        "Pha giấm, đường, tương cà, nước tương và nước, đổ vào rim 10-15 phút đến khi sốt sệt bóng. Cho hành lá vào.",
+      ],
+    },
+    "vn_tomrangmuoi": {
+      name: "Tôm rang muối",
+      ings: [["Tôm để vỏ", "400 g"], ["Ớt đỏ", "2 quả"], ["Hành lá", "2 cây"]],
+      seas: "2 muỗng canh dầu ăn · 3 tép tỏi · 1 muỗng cà phê muối · 1/2 muỗng cà phê đường · 1/2 muỗng cà phê tiêu đen",
+      steps: [
+        "Cắt râu và chân tôm, thấm khô, ướp với một nửa phần muối. Băm tỏi, ớt và hành lá.",
+        "Đun nóng dầu trong chảo, chiên tôm ở lửa lớn 3-4 phút đến khi đỏ và vỏ giòn.",
+        "Cho tỏi, ớt, phần muối còn lại, đường và tiêu vào đảo 1 phút, rồi cho hành lá vào.",
+      ],
+    },
+    "vn_dauhunhoithit": {
+      name: "Đậu hũ nhồi thịt sốt cà chua",
+      ings: [["Đậu hũ trắng (loại chắc)", "400 g"], ["Thịt heo xay", "150 g"], ["Cà chua", "3 quả"], ["Hành lá", "2 cây"]],
+      seas: "2 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1 muỗng cà phê đường · 1 củ hành tím · 1/4 muỗng cà phê tiêu đen · 100 ml nước",
+      steps: [
+        "Cắt đậu thành 8 miếng, khứa một đường ở giữa mỗi miếng. Trộn thịt với hành tím băm, một nửa nước tương, tiêu và phần đầu hành lá thái nhỏ, nhồi vào đậu.",
+        "Đun nóng dầu trong chảo, chiên đậu 5 phút đến khi vàng đều các mặt.",
+        "Cho cà chua băm, phần nước tương còn lại, muối, đường và nước vào, đậy nắp đun nhỏ lửa 12 phút đến khi thịt chín. Rắc phần lá hành lên.",
+      ],
+    },
+    "vn_dauhuchiensa": {
+      name: "Đậu hũ chiên sả ớt",
+      ings: [["Đậu hũ trắng (loại chắc)", "400 g"], ["Sả", "3 cây"], ["Ớt đỏ", "2 quả"]],
+      seas: "4 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1 muỗng cà phê đường · 2 tép tỏi",
+      steps: [
+        "Cắt đậu thành miếng vuông, thấm khô. Băm thật nhỏ sả, ớt và tỏi.",
+        "Đun nóng dầu trong chảo, chiên đậu 8 phút đến khi vàng đều. Dồn sang một bên chảo.",
+        "Phi sả trong dầu 3 phút đến khi vàng, cho tỏi, ớt vào, nêm nước tương, muối, đường rồi đảo đều với đậu.",
+      ],
+    },
+    "vn_carichay": {
+      name: "Cà ri chay",
+      ings: [["Đậu hũ chiên", "200 g"], ["Khoai lang", "250 g"], ["Cà rốt", "1 củ"], ["Nấm rơm hoặc nấm bào ngư", "150 g"], ["Sả", "2 cây"], ["Nước cốt dừa", "200 ml"]],
+      seas: "2 muỗng canh dầu ăn · 2 muỗng canh bột cà ri · 1 củ hành tím · 2 tép tỏi · 1 muỗng canh nước tương · 1 muỗng cà phê muối · 1 muỗng cà phê đường · 300 ml nước",
+      steps: [
+        "Cắt khoai lang và cà rốt thành miếng vừa, đậu hũ cắt vuông. Sả đập dập, cắt khúc.",
+        "Trong nồi, phi hành tím, tỏi, sả và bột cà ri với dầu 1 phút, cho khoai lang và cà rốt vào đảo 2 phút.",
+        "Đổ nước vào, đậy nắp nấu 15 phút, rồi cho đậu hũ, nấm, nước cốt dừa, nước tương, muối, đường vào nấu thêm 5 phút.",
+      ],
+    },
+    "vn_boxaobongcai": {
+      name: "Bò xào bông cải",
+      ings: [["Thăn bò thái mỏng", "250 g"], ["Bông cải xanh", "300 g"], ["Cà rốt", "1/2 củ"]],
+      seas: "2 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1 muỗng cà phê bột bắp · 2 tép tỏi · 1/2 muỗng cà phê đường · 1/4 muỗng cà phê muối · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Ướp bò với một nửa nước tương, bột bắp và tiêu. Bông cải cắt từng bông nhỏ, cà rốt thái lát mỏng.",
+        "Chần bông cải và cà rốt trong nồi nước sôi có chút muối 1 phút, vớt ra để ráo.",
+        "Đun nóng dầu trong chảo, xào bò với tỏi ở lửa lớn 1 phút, cho rau vào cùng phần nước tương còn lại, đường, muối, đảo đều 2 phút.",
+      ],
+    },
+    "vn_comchienduongchau": {
+      name: "Cơm chiên Dương Châu",
+      ings: [["Cơm nguội", "400 g"], ["Trứng gà", "2 quả"], ["Lạp xưởng", "1 cây"], ["Tôm nhỏ lột vỏ", "100 g"], ["Cà rốt", "1/2 củ"], ["Hành lá", "2 cây"]],
+      seas: "2 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Lạp xưởng và cà rốt cắt hạt lựu, hành lá thái nhỏ. Đánh tan trứng.",
+        "Đun nóng dầu trong chảo, xào lạp xưởng, tôm và cà rốt 3 phút, dồn sang một bên rồi cho trứng vào đảo tơi.",
+        "Cho cơm vào đảo ở lửa lớn 5 phút. Nêm nước tương, muối, tiêu và trộn hành lá.",
+      ],
+    },
+    "vn_bosotvang": {
+      name: "Bò sốt vang",
+      ings: [["Bắp bò hoặc nạm bò", "500 g"], ["Cà rốt", "2 củ"], ["Cà chua", "2 quả"], ["Hành tây", "1 củ"]],
+      seas: "2 muỗng canh dầu ăn · 150 ml rượu vang đỏ · 1 muỗng canh cà chua cô đặc · 2 hoa hồi · 1 thanh quế · 1 cây sả · 3 tép tỏi · 1 muỗng cà phê muối · 1 muỗng cà phê đường · 500 ml nước",
+      steps: [
+        "Thái bò miếng vuông to, ướp với muối, đường, tỏi đập dập và rượu vang 30 phút. Cà rốt cắt khúc, cà chua bổ múi cau.",
+        "Đun nóng dầu trong nồi, xào săn bò (giữ lại nước ướp), cho hành tây thái lát, cà chua và cà chua cô đặc vào xào 3 phút.",
+        "Đổ nước ướp, nước, hoa hồi, quế và sả vào, đậy nắp hầm nhỏ lửa 1 tiếng 15 phút, cho cà rốt vào 20 phút cuối.",
+      ],
+    },
+    "vn_garoti": {
+      name: "Gà rô ti",
+      ings: [["Đùi gà tỏi", "4 cái (600 g)"], ["Nước dừa", "200 ml"], ["Dưa leo", "1 quả"]],
+      seas: "2 muỗng canh dầu ăn · 2 muỗng canh nước tương · 1 muỗng canh mật ong · 3 tép tỏi · 2 củ hành tím · 1/2 muỗng cà phê ngũ vị hương · 1/2 muỗng cà phê muối",
+      steps: [
+        "Ướp gà với nước tương, mật ong, tỏi đập dập, ngũ vị hương và muối 20 phút.",
+        "Đun nóng dầu trong chảo, chiên gà vàng đều các mặt 8 phút. Cho hành tím thái lát vào.",
+        "Đổ nước dừa vào, đậy nắp om 20 phút, rồi mở nắp rim đến khi nước sốt sánh bóng. Ăn kèm dưa leo thái lát.",
+      ],
+    },
+    "vn_launamchay": {
+      name: "Lẩu nấm chay",
+      ings: [["Nấm các loại (đùi gà, đông cô, rơm)", "400 g"], ["Nấm kim châm", "100 g"], ["Đậu hũ trắng", "200 g"], ["Cải thìa", "300 g"], ["Củ cải trắng", "200 g"], ["Cà rốt", "1 củ"]],
+      seas: "1,2 lít nước · 1 muỗng canh nước tương · 1 muỗng cà phê muối · 1 muỗng cà phê đường · 3 lát gừng · 1 muỗng canh dầu ăn",
+      steps: [
+        "Củ cải và cà rốt cắt khúc, nấu cùng gừng trong nồi nước 20 phút để lấy nước dùng ngọt. Nêm nước tương, muối và đường.",
+        "Đậu hũ cắt miếng, chiên sơ trong chảo dầu đến khi vàng. Nấm cắt gốc, cải thìa chẻ đôi.",
+        "Đặt nồi nước dùng lên bếp lẩu ở bàn ăn, nhúng nấm, đậu hũ và cải thìa từng ít một.",
+      ],
+    },
+    "vn_tomhapnuocdua": {
+      name: "Tôm hấp nước dừa",
+      ings: [["Tôm to để vỏ", "400 g"], ["Nước dừa", "200 ml"], ["Sả", "2 cây"], ["Chanh", "1 quả"]],
+      seas: "2 lát gừng · 1/2 muỗng cà phê muối · 1/2 muỗng cà phê tiêu đen",
+      steps: [
+        "Cắt râu và chân tôm. Sả đập dập, cắt khúc.",
+        "Lót sả và gừng dưới đáy nồi, xếp tôm lên trên, đổ nước dừa vào. Đậy nắp hấp lửa lớn 5-6 phút đến khi tôm đỏ.",
+        "Pha muối tiêu với nước cốt chanh làm nước chấm, ăn kèm tôm.",
+      ],
+    },
+    "vn_canhsuhao": {
+      name: "Canh su hào nấu thịt",
+      ings: [["Su hào", "1 củ (300 g)"], ["Thịt heo xay", "100 g"], ["Cà rốt", "1/2 củ"], ["Hành lá", "1 cây"]],
+      seas: "800 ml nước · 1/2 muỗng cà phê muối · 1/2 muỗng cà phê đường · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Su hào và cà rốt gọt vỏ, thái que.",
+        "Đun sôi nước trong nồi, cho thịt vào dùng thìa đánh tơi, hớt bọt.",
+        "Cho rau củ vào nấu 10 phút đến khi mềm. Nêm muối và đường, cho hành lá thái nhỏ và tiêu.",
+      ],
+    },
+    "vn_canhbau": {
+      name: "Canh bầu nấu thịt",
+      ings: [["Bầu", "400 g"], ["Thịt heo xay", "100 g"], ["Hành lá", "1 cây"]],
+      seas: "700 ml nước · 1 củ hành tím · 1 muỗng cà phê dầu ăn · 1/2 muỗng cà phê muối · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Bầu gọt vỏ, thái lát mỏng hoặc thái que.",
+        "Phi thơm hành tím với dầu trong nồi, cho thịt vào xào săn, đổ nước vào đun sôi.",
+        "Cho bầu vào nấu 5 phút đến khi vừa mềm. Nêm muối, cho hành lá và tiêu.",
+      ],
+    },
+    "vn_canhcaithaodauhu": {
+      name: "Canh cải thảo đậu hũ",
+      ings: [["Cải thảo", "300 g"], ["Đậu hũ non", "200 g"], ["Cà rốt", "1/2 củ"], ["Nấm đông cô khô", "4 cái"], ["Hành lá", "1 cây"]],
+      seas: "700 ml nước · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Ngâm nấm đông cô trong nước ấm 15 phút rồi thái lát. Cải thảo cắt khúc, cà rốt thái lát mỏng.",
+        "Cho nước, nấm và cà rốt vào nồi đun sôi, nấu 3 phút.",
+        "Cho cải thảo và đậu hũ cắt vuông vào nấu 4 phút. Nêm nước tương, muối, cho hành lá và tiêu.",
+      ],
+    },
+    "vn_canhmuopnam": {
+      name: "Canh mướp nấm rơm",
+      ings: [["Mướp hương", "300 g"], ["Nấm rơm", "150 g"], ["Hành lá", "1 cây"]],
+      seas: "600 ml nước · 1 muỗng canh dầu ăn · 1 củ hành tím · 1 muỗng cà phê nước tương · 1/2 muỗng cà phê muối",
+      steps: [
+        "Mướp gọt sơ vỏ, cắt khúc. Nấm rơm bổ đôi.",
+        "Phi hành tím với dầu trong nồi, cho nấm vào đảo 1 phút, đổ nước vào đun sôi.",
+        "Cho mướp vào nấu 3 phút đến khi mềm. Nêm nước tương, muối và cho hành lá.",
+      ],
+    },
+    "vn_canhchuachay": {
+      name: "Canh chua chay",
+      ings: [["Đậu hũ chiên", "150 g"], ["Thơm (dứa)", "100 g"], ["Cà chua", "2 quả"], ["Đậu bắp", "6 trái"], ["Giá", "100 g"], ["Me chua", "20 g"], ["Rau om hoặc ngò", "1 nắm"]],
+      seas: "800 ml nước · 1 muỗng canh dầu ăn · 1 củ hành tím · 1 muỗng canh nước tương · 1 muỗng cà phê muối · 2 muỗng cà phê đường · 1 quả ớt",
+      steps: [
+        "Ngâm me với 100 ml nước nóng, dầm và lọc lấy nước. Cà chua, thơm cắt miếng, đậu bắp cắt xéo, đậu hũ cắt sợi.",
+        "Phi hành tím và cà chua với dầu trong nồi 2 phút, đổ nước và nước me vào đun sôi.",
+        "Cho thơm, đậu bắp, đậu hũ vào nấu 4 phút. Nêm nước tương, muối, đường, cho giá vào rồi thêm rau thơm và ớt.",
+      ],
+    },
+    "vn_canhkhoaitay": {
+      name: "Canh khoai tây cà rốt sườn non",
+      ings: [["Sườn non chặt nhỏ", "300 g"], ["Khoai tây", "2 củ (300 g)"], ["Cà rốt", "1 củ"], ["Hành lá", "1 cây"]],
+      seas: "1 lít nước · 1 củ hành tím · 1 muỗng cà phê muối · 1/2 muỗng cà phê đường · 1/4 muỗng cà phê tiêu đen",
+      steps: [
+        "Chần sườn trong nồi nước sôi 3 phút rồi rửa sạch.",
+        "Cho sườn và hành tím vào nước, đun sôi rồi hầm nhỏ lửa 30 phút, hớt bọt.",
+        "Cho khoai tây và cà rốt cắt khúc vào nấu 15 phút đến khi mềm. Nêm muối, đường, cho hành lá và tiêu.",
+      ],
+    },
+    "vn_canhsusu": {
+      name: "Canh su su cà rốt",
+      ings: [["Su su", "1 quả (300 g)"], ["Cà rốt", "1 củ"], ["Hành lá", "1 cây"]],
+      seas: "700 ml nước · 1 muỗng canh dầu ăn · 1 củ hành tím · 1 muỗng cà phê nước tương · 1/2 muỗng cà phê muối · 1/2 muỗng cà phê đường",
+      steps: [
+        "Su su và cà rốt gọt vỏ, cắt miếng vừa ăn.",
+        "Phi hành tím với dầu trong nồi, cho rau củ vào đảo 2 phút, đổ nước vào đun sôi.",
+        "Nấu 10 phút đến khi mềm. Nêm nước tương, muối, đường và cho hành lá.",
       ],
     },
   }

@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    "swiss chard": "Bietole",
+    "escarole": "Scarola",
     "ricotta": "Ricotta",
     'apple': 'Mela',
     'banana': 'Banana',
@@ -1664,6 +1666,66 @@ GOHAN_PACK_TR('IT', 'it', {
         "Pulite gli asparagi e lessateli in una pentola larga di acqua salata bollente per 5–6 minuti. Scolateli e disponeteli nei piatti.",
         "Cospargete gli asparagi di parmigiano.",
         "Cuocete le uova al tegamino nel burro in padella, adagiatele sugli asparagi, versate sopra il burro nocciola e condite con sale e pepe.",
+      ],
+    },
+    "it_ciambotta": {
+      name: "Ciambotta di verdure",
+      ings: [["Melanzana", "1 (300 g)"], ["Peperoni", "2"], ["Zucchine", "2"], ["Pomodorini", "300 g"], ["Cipolla", "1"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · Qualche foglia di basilico · Sale · Peperoncino",
+      steps: [
+        "Tagliate a tocchi melanzana, peperoni e zucchine, affettate la cipolla e dividete a metà i pomodorini.",
+        "Scaldate l'olio in una pentola capiente e cuocete cipolla e peperoni per 8 minuti. Aggiungete la melanzana e l'aglio e cuocete per 5 minuti.",
+        "Unite zucchine e pomodorini, salate, aggiungete il peperoncino, coprite e cuocete per 20 minuti mescolando ogni tanto. Finite con il basilico.",
+      ],
+    },
+    "it_melanzanefunghetto": {
+      name: "Melanzane a funghetto",
+      ings: [["Melanzane", "2 (500 g)"], ["Pomodorini", "250 g"]],
+      seas: "5 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · 1 cucchiaio di prezzemolo tritato · Qualche foglia di basilico · Sale",
+      steps: [
+        "Tagliate le melanzane a cubetti di 2 cm e i pomodorini a metà.",
+        "Scaldate l'olio con l'aglio in una padella ampia e saltate le melanzane a fuoco vivo per 10 minuti, mescolando, finché sono dorate e morbide.",
+        "Unite i pomodorini, salate e cuocete per 8 minuti finché i pomodorini si disfano. Finite con prezzemolo e basilico.",
+      ],
+    },
+    "it_cavolfioreaffogato": {
+      name: "Cavolfiore affogato",
+      ings: [["Cavolfiore", "1 (700 g)"], ["Cipolla", "1"], ["Olive nere", "12"], ["Pomodorini", "150 g"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 100 ml di vino rosso · 1 cucchiaio di capperi · Sale · Pepe",
+      steps: [
+        "Dividete il cavolfiore in cimette e affettate sottilmente la cipolla.",
+        "In una pentola disponete metà della cipolla, poi il cavolfiore, le olive, i capperi, i pomodorini a metà e il resto della cipolla. Irrorate con l'olio e il vino e condite.",
+        "Coprite e cuocete a fuoco basso per 25-30 minuti senza mescolare, scuotendo ogni tanto la pentola, finché il cavolfiore è tenero.",
+      ],
+    },
+    "it_ziminoceci": {
+      name: "Zimino di ceci",
+      ings: [["Bietole", "500 g"], ["Ceci in scatola, scolati", "100 g"], ["Passata di pomodoro", "100 ml"], ["Cipolla", "1"], ["Carota", "1"], ["Sedano", "1 costa"]],
+      seas: "3 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · 100 ml d'acqua · Sale · Peperoncino",
+      steps: [
+        "Tritate finemente cipolla, carota e sedano. Lavate le bietole e tagliatele a strisce.",
+        "Scaldate l'olio in una pentola e fate soffriggere le verdure tritate con l'aglio per 8 minuti. Unite le bietole e fatele appassire.",
+        "Aggiungete passata, ceci e acqua, salate, unite il peperoncino, coprite e cuocete per 15 minuti.",
+      ],
+    },
+    "it_scarolafagioli": {
+      name: "Scarola e fagioli",
+      ings: [["Scarola", "1 cespo (500 g)"], ["Fagioli cannellini in scatola, scolati", "150 g"], ["Olive nere", "10"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · 1 cucchiaio di capperi · 200 ml d'acqua · Sale · Peperoncino",
+      steps: [
+        "Lavate bene la scarola e tagliatela a strisce larghe.",
+        "Scaldate l'olio in una pentola con l'aglio e il peperoncino, unite la scarola, coprite e fatela appassire per 5 minuti.",
+        "Aggiungete fagioli, olive, capperi e acqua, salate e cuocete per 10 minuti.",
+      ],
+    },
+    "it_carciofipiselli": {
+      name: "Carciofi e piselli",
+      ings: [["Carciofi", "3"], ["Piselli surgelati", "100 g"], ["Cipollotto o cipolla piccola", "1/2"], ["Limone", "1"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · 1 cucchiaio di prezzemolo tritato · Qualche foglia di mentuccia · 150 ml d'acqua · Sale · Pepe",
+      steps: [
+        "Pulite i carciofi fino alle foglie tenere, tagliateli a spicchi, eliminate la barba e teneteli in acqua e succo di limone. Affettate il cipollotto.",
+        "Scaldate l'olio in una pentola e fate appassire cipollotto e aglio per 4 minuti. Unite i carciofi e l'acqua, salate, pepate, coprite e cuocete per 15 minuti.",
+        "Aggiungete i piselli e cuocete altri 8 minuti finché tutto è tenero. Finite con prezzemolo e mentuccia.",
       ],
     },
   }

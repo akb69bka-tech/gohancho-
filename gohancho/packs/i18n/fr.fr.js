@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('FR', 'fr', {
   staple: 'Baguette',
   names: {
+    "artichoke": "Artichauts",
+    "swiss chard": "Blettes",
     'butter': 'Beurre',
     'jam': 'Confiture',
     "semolina": "Semoule de blé fine",
@@ -1781,6 +1783,76 @@ GOHAN_PACK_TR('FR', 'fr', {
         "Préchauffez le four à 190 °C. Coupez les courgettes en deux, évidez-les à la cuillère et hachez la chair avec les champignons et la tomate.",
         "Faites revenir l'échalote hachée et les légumes dans l'huile, à la poêle, 6 minutes jusqu'à ce qu'ils soient secs. Hors du feu, ajoutez le fromage frais et le persil, salez et poivrez.",
         "Garnissez les courgettes, parsemez d'emmental et faites cuire au four dans un plat 25 minutes, jusqu'à ce qu'elles soient tendres et dorées.",
+      ],
+    },
+    "fr_champignonsfarcis": {
+      name: "Champignons farcis en persillade",
+      ings: [["Gros champignons de Paris", "12 (500 g)"], ["Échalotes", "2"], ["Haricots verts", "250 g"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 3 c. à soupe de persil haché · 2 c. à soupe de chapelure · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Ôtez les pieds des champignons et hachez-les finement avec les échalotes, l'ail et le persil.",
+        "Faites revenir ce hachis 5 minutes dans une poêle avec 2 c. à soupe d'huile, salez, poivrez et garnissez-en les têtes de champignons. Parsemez de chapelure et arrosez du reste d'huile.",
+        "Enfournez 20 minutes. Pendant ce temps, faites cuire les haricots verts 6 minutes dans une casserole d'eau bouillante salée et servez-les avec les champignons.",
+      ],
+    },
+    "fr_auberginesprovencale": {
+      name: "Aubergines à la provençale",
+      ings: [["Aubergines", "2 (500 g)"], ["Tomates", "4"], ["Oignon", "1"], ["Olives noires", "12"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 2 c. à soupe de persil haché · 1 c. à café d'herbes de Provence · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Coupez les aubergines en deux dans la longueur, quadrillez la chair, badigeonnez de 2 c. à soupe d'huile et enfournez 20 minutes, face coupée vers le haut.",
+        "Pendant ce temps, faites fondre l'oignon haché 5 minutes dans le reste de l'huile dans une poêle, ajoutez les tomates en dés, l'ail et les herbes et laissez cuire 10 minutes pour obtenir une sauce épaisse. Salez, poivrez.",
+        "Étalez la sauce sur les aubergines, ajoutez les olives et enfournez encore 10 minutes. Parsemez de persil.",
+      ],
+    },
+    "fr_artichautsbarigoule": {
+      name: "Artichauts à la barigoule",
+      ings: [["Petits artichauts", "6"], ["Carotte", "1"], ["Oignon", "1/2"], ["Champignons de Paris", "200 g"], ["Citron", "1"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 150 ml de vin blanc sec · 200 ml d'eau · 2 brins de thym · 1 feuille de laurier · Sel · Poivre",
+      steps: [
+        "Parez les artichauts jusqu'aux feuilles tendres, coupez-les en deux, retirez le foin et gardez-les dans l'eau citronnée. Émincez les carottes, l'oignon et les champignons.",
+        "Faites chauffer l'huile dans une grande cocotte, faites fondre l'oignon et les carottes 5 minutes, ajoutez les artichauts, les champignons et l'ail et poursuivez 3 minutes.",
+        "Mouillez avec le vin et l'eau, ajoutez le thym et le laurier, salez, poivrez, couvrez et laissez mijoter 25 à 30 minutes, jusqu'à ce que les artichauts soient tendres.",
+      ],
+    },
+    "fr_poischichesblettes": {
+      name: "Blettes aux pois chiches",
+      ings: [["Blettes", "500 g"], ["Pois chiches en conserve, égouttés", "100 g"], ["Tomates", "2"], ["Oignon", "1"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1/2 c. à café de cumin en poudre · 100 ml d'eau · Sel · Poivre",
+      steps: [
+        "Séparez les côtes des feuilles de blettes. Émincez les côtes et hachez grossièrement les feuilles, l'oignon et les tomates.",
+        "Faites chauffer l'huile dans une cocotte et faites fondre l'oignon et les côtes 6 minutes. Ajoutez l'ail, le cumin et les tomates et poursuivez 3 minutes.",
+        "Ajoutez les pois chiches, les feuilles de blettes et l'eau, couvrez et laissez mijoter 10 minutes. Salez, poivrez.",
+      ],
+    },
+    "fr_piperade": {
+      name: "Piperade basquaise",
+      ings: [["Poivrons verts et rouges", "3"], ["Tomates bien mûres", "4"], ["Oignon", "1"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 1 c. à café de piment d'Espelette · Sel",
+      steps: [
+        "Émincez les poivrons et l'oignon en lanières. Pelez et concassez les tomates.",
+        "Faites chauffer l'huile dans une grande poêle ou une sauteuse et faites fondre l'oignon et les poivrons 15 minutes à feu moyen.",
+        "Ajoutez l'ail, les tomates et le piment d'Espelette, salez et laissez mijoter 15 minutes à découvert, jusqu'à ce que ce soit bien fondu.",
+      ],
+    },
+    "fr_fenouilbraise": {
+      name: "Fenouil braisé à la provençale",
+      ings: [["Bulbes de fenouil", "2 (600 g)"], ["Tomates", "2"], ["Olives noires", "12"], ["Pois chiches en conserve, égouttés", "50 g"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à café de thym séché · 150 ml d'eau · Sel · Poivre",
+      steps: [
+        "Coupez le fenouil en quartiers et concassez les tomates.",
+        "Faites chauffer l'huile dans une cocotte ou une sauteuse et faites dorer le fenouil 6 minutes sur les deux faces. Ajoutez l'ail et le thym.",
+        "Ajoutez les tomates, les pois chiches, les olives et l'eau, salez, poivrez, couvrez et laissez mijoter 20 à 25 minutes, jusqu'à ce que le fenouil soit tendre.",
+      ],
+    },
+    "fr_brochetteslegumes": {
+      name: "Brochettes de légumes grillés",
+      ings: [["Courgettes", "2 (400 g)"], ["Champignons de Paris", "250 g"], ["Poivron rouge", "1"], ["Oignon rouge", "1/2"], ["Tomates cerises", "200 g"]],
+      seas: "4 c. à soupe d'huile d'olive · 1 gousse d'ail · 1 c. à café d'herbes de Provence · 1 c. à soupe de jus de citron · Sel · Poivre",
+      steps: [
+        "Coupez les courgettes en rondelles épaisses, le poivron et l'oignon en carrés. Mélangez l'huile avec l'ail écrasé, les herbes, le jus de citron, le sel et le poivre.",
+        "Enfilez les légumes et les champignons sur des brochettes et badigeonnez-les de la moitié de l'huile aux herbes.",
+        "Faites-les cuire sur une poêle-gril bien chaude (ou au barbecue) 10 à 12 minutes en les retournant, jusqu'à ce qu'elles soient dorées. Badigeonnez du reste de l'huile pour servir.",
       ],
     },
   },

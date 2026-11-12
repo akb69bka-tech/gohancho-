@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('MX', 'es', {
   staple: 'Tortillas de maíz',
   names: {
+    "soya chunks": "Soya texturizada",
+    "cauliflower": "Coliflor",
     "corn masa": "Masa de maíz nixtamalizado (en polvo)",
     "oats": "Avena en hojuelas",
     "milk": "Leche",
@@ -1324,6 +1326,66 @@ GOHAN_PACK_TR('MX', 'es', {
         "Despunta los ejotes, córtalos en trozos de 3 cm y hiérvelos en una olla con agua y sal 5 minutos. Escúrrelos.",
         "Sofríe la cebolla, el ajo y el jitomate picados en el aceite en una sartén 3 minutos, añade los ejotes y cocina 2 minutos.",
         "Vierte los huevos batidos, salpimienta y revuelve hasta que cuajen.",
+      ],
+    },
+    "mx_nopalesenchile": {
+      name: "Nopales en chile rojo",
+      ings: [["Nopales limpios y picados", "500 g"], ["Chiles guajillo secos", "3"], ["Jitomates", "2"], ["Cebolla", "1/2"], ["Garbanzos de lata, escurridos", "100 g"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 1/4 cucharadita de comino molido · 150 ml de agua · Sal",
+      steps: [
+        "Cuece los nopales picados en una olla con agua con sal 10 minutos, escúrrelos y enjuágalos. Tuesta los chiles, remójalos 10 minutos en agua caliente y quítales las semillas.",
+        "Licúa los chiles con los jitomates, la mitad de la cebolla, el ajo, el orégano, el comino y el agua hasta que quede terso.",
+        "Calienta el aceite en un sartén, fríe el resto de la cebolla 2 minutos, vierte la salsa y cocina 5 minutos. Agrega los nopales y los garbanzos, sazona con sal y deja hervir 5 minutos.",
+      ],
+    },
+    "mx_picadillosoya": {
+      name: "Picadillo de soya",
+      ings: [["Soya texturizada (molida)", "60 g"], ["Jitomates", "3"], ["Zanahoria", "1"], ["Calabacita", "1"], ["Chícharos congelados", "50 g"], ["Cebolla", "1/2"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 1 hoja de laurel · 1/2 cucharadita de comino molido · 200 ml de agua · Sal · Pimienta",
+      steps: [
+        "Remoja la soya en agua caliente 10 minutos y exprímela. Pica la zanahoria y la calabacita en cubitos. Licúa los jitomates con la mitad de la cebolla y el ajo.",
+        "Calienta el aceite en un sartén, fríe el resto de la cebolla picada 2 minutos, agrega la soya y fríela 5 minutos hasta que se dore un poco.",
+        "Añade la salsa de jitomate, la zanahoria, el laurel, el comino y el agua, tapa y cocina 10 minutos. Agrega la calabacita y los chícharos, sazona y cocina 5 minutos más.",
+      ],
+    },
+    "mx_champimexicana": {
+      name: "Champiñones a la mexicana",
+      ings: [["Champiñones", "500 g"], ["Jitomates", "2"], ["Cebolla", "1/2"], ["Chiles serranos", "2"], ["Cilantro", "1/2 manojo"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 1/4 cucharadita de comino molido · Sal · Pimienta",
+      steps: [
+        "Rebana los champiñones y pica finamente los jitomates, la cebolla, los chiles y el ajo.",
+        "Calienta el aceite en un sartén grande y cocina la cebolla, los chiles y el ajo 2 minutos. Agrega los champiñones y cocínalos a fuego alto 6 minutos.",
+        "Añade el jitomate y el comino, sazona y cocina 5 minutos hasta que quede jugoso. Espolvorea con cilantro picado.",
+      ],
+    },
+    "mx_rajashongos": {
+      name: "Rajas poblanas con hongos",
+      ings: [["Chiles poblanos", "4"], ["Champiñones", "300 g"], ["Cebolla", "1"], ["Calabacita", "1"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · 1/2 cucharadita de orégano seco · Sal · Pimienta",
+      steps: [
+        "Asa los poblanos directamente al fuego o en un sartén sin aceite hasta que se ennegrezcan, déjalos sudar en una bolsa 10 minutos, pélalos, desvénalos y córtalos en rajas.",
+        "Calienta el aceite en el sartén y cocina la cebolla fileteada y el ajo 4 minutos. Agrega los champiñones rebanados y la calabacita en tiras y cocina 6 minutos.",
+        "Incorpora las rajas y el orégano, sazona y cocina 3 minutos más.",
+      ],
+    },
+    "mx_calabacitasverde": {
+      name: "Calabacitas en salsa verde",
+      ings: [["Calabacitas", "4 (500 g)"], ["Tomates verdes", "6"], ["Chiles serranos", "2"], ["Cebolla", "1/2"], ["Cilantro", "1/2 manojo"], ["Garbanzos de lata, escurridos", "100 g"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · 100 ml de agua · Sal",
+      steps: [
+        "Hierve los tomates verdes y los chiles en una olla con agua 8 minutos, hasta que cambien a verde olivo. Licúalos con la mitad de la cebolla, el ajo, el cilantro y el agua.",
+        "Calienta el aceite en un sartén, fríe el resto de la cebolla picada 2 minutos y agrega las calabacitas en trozos. Cocina 4 minutos.",
+        "Vierte la salsa verde, añade los garbanzos, sazona con sal, tapa y cocina 8 minutos hasta que las calabacitas estén suaves.",
+      ],
+    },
+    "mx_tingacoliflor": {
+      name: "Tinga de coliflor",
+      ings: [["Coliflor", "1 chica (500 g)"], ["Jitomates", "3"], ["Cebolla", "1"], ["Chiles chipotles adobados", "2"], ["Aguacate", "1/2"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 1 hoja de laurel · Sal",
+      steps: [
+        "Corta la coliflor en floretes pequeños y cuécela en una olla con agua con sal 4 minutos; escúrrela. Licúa los jitomates con los chipotles y el ajo.",
+        "Calienta el aceite en un sartén y cocina la cebolla fileteada 5 minutos hasta que se acitrone. Vierte la salsa, agrega el orégano y el laurel y cocina 5 minutos.",
+        "Añade la coliflor, sazona con sal y deja hervir 5 minutos hasta que se impregne. Sirve con aguacate rebanado.",
       ],
     },
   }
