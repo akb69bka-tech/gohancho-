@@ -4256,13 +4256,23 @@ function toastPlace(box, prev){
         window.scrollBy({top: need, behavior: 'instant'});
     };
     // お知らせ（と棚）の裏に入っている押す場所・料理名・札を数える → [押す場所, 料理名・札・買い物メモ, 文]。お膳の下に置いた（static の）決定の帯のボタンも数える（第11回 D4）
-    const cover = (R, b) => { const c = [0, 0, 0, 0, 0, 0, 0];
+    // 第44回 R203: 見る相手（要素と画面の中の場所）は、スクロール位置が同じあいだは1回だけ集める。お知らせを動かして高さを探すあいだ（pass）は、ほかの中身は動かない。
+    // 設定の画面（チップが数百）で、高さを変えるたびに全部の要素を測り直して、遅い端末で数秒止まっていた（押したあとに描き直しが出ない → 押し直し）
+    let cvK = null, cvL = null;
+    let cvP = new Map();
+    const coverList = () => { const k = scrollY + '|' + innerWidth + '|' + innerHeight; if (cvK === k) return cvL; cvK = k; cvL = []; cvP = new Map();
         for (const e of document.body.querySelectorAll(TOAST_SEE + ', .actionbar button, .p2-ok')){
             if (e.closest('#toast-root, nav.tabs, .cook-ctl, #modal-root, #sheet-root, #timer-float')) continue;
             const ab = e.closest('.actionbar'); if (ab && getComputedStyle(ab).position !== 'static') continue;
-            const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.bottom <= R.top + 1 || r.top >= b - 1 || r.right <= R.left + 1 || r.left >= R.right - 1 || r.top >= floor - 1) continue;
+            const r = e.getBoundingClientRect(); if (r.width < 2 || r.height < 2 || r.top >= floor - 1) continue;
+            cvL.push([e, r]);
+        }
+        return cvL; };
+    const cover = (R, b) => { const c = [0, 0, 0, 0, 0, 0, 0];
+        for (const [e, r] of coverList()){
+            if (r.bottom <= R.top + 1 || r.top >= b - 1 || r.right <= R.left + 1 || r.left >= R.right - 1) continue;
             const x = (Math.max(r.left, R.left) + Math.min(r.right, R.right)) / 2, y = (Math.max(r.top, R.top) + Math.min(r.bottom, b, floor)) / 2;
-            const top = document.elementsFromPoint(x, y).find(z => !root.contains(z));
+            const pk = x + '|' + y; let top = cvP.get(pk); if (top === undefined){ top = document.elementsFromPoint(x, y).find(z => !root.contains(z)) || null; cvP.set(pk, top); }   // 同じ点は1回だけ（お知らせは数えないので、お知らせの高さによらない）
             if (!top || !(top === e || e.contains(top) || top.contains(e))) continue;   // 下の固定の帯・上の端の裏に隠れているもの（見えていない）は数えない
             c[2]++; if (e.matches('button, a[href], input, select, textarea, summary, [data-act], [role=button], .chip')) c[0]++; if (e.matches('.spot .nm, .spot .alg-tag, .spot .swap-line, .p2-link')) c[1]++; if (e.matches('.spot .vessel')) c[3]++; if (e.matches('.spot .swap, .tg-mid .shuffle, .actionbar button')) c[4]++; if (e.matches('.p2-ok')) c[5]++; if (e.matches('header.top h1')) c[6]++;
         }
@@ -4342,7 +4352,8 @@ function toastPlace(box, prev){
     let best = null;
     const cp0 = box.classList.contains('compact');
     const pass = (mw, cp) => { if (mw) box.style.maxWidth = mw + 'px'; else box.style.removeProperty('max-width'); box.classList.toggle('compact', cp0 || !!cp); const h = box.offsetHeight;
-        for (let y = 8; y + h <= floor - 8; y += innerWidth < 300 ? 2 : 4){ box.style.top = y + 'px'; const s = score(rectOf()); if (!best || less(s, best.s)){ best = {y, s, mw, cp: !!cp}; if (!s.some(Boolean)) break; } } };   // 幅 300px 未満は 2px 刻み（器の絵の帯 60px に低いお知らせ 50px＋上下 4px がちょうど入る高さを、4px 刻みでは飛ばすことがあった。第18回 R33 の残り）
+        box.style.top = '8px'; const R0 = rectOf();   // 高さを変えても、お知らせの形（幅・高さ）は同じ。測り直さずに、ずらした場所で数える（第44回 R203: 1段ごとの測り直しで止まっていた）
+        for (let y = 8; y + h <= floor - 8; y += innerWidth < 300 ? 2 : 4){ const s = score({left: R0.left, right: R0.right, top: R0.top + y - 8, bottom: R0.bottom + y - 8}); if (!best || less(s, best.s)){ best = {y, s, mw, cp: !!cp}; if (!s.some(Boolean)) break; } } };   // 幅 300px 未満は 2px 刻み（器の絵の帯 60px に低いお知らせ 50px＋上下 4px がちょうど入る高さを、4px 刻みでは飛ばすことがあった。第18回 R33 の残り）
     pass(0);
     // それでもボタンにかかるとき（文字もっと大きい・家族リクエストのある日）: お知らせの幅を画面の6割にして（文は折り返す）、上の端の文（あいさつ・見出し）の上に出せるか試す。右の国・設定・条件のボタンは避ける
     if ((!best || !free(best.s)) && innerWidth >= 300) pass(Math.round(innerWidth * .6));
@@ -5925,8 +5936,17 @@ function badges(r){
 // 2) 横にスクロールする列（気分・品数のチップなど）の横位置を戻す
 let lastRenderTab = null;
 function anchorKeyOf(el){ const d = el.dataset; return (d.act || '') + '|' + (d.id || d.k || d.i || d.d || d.v || d.cc || ''); }
+let chipTap = null, tapAnchor = null, lastTapEl = null;   // 第44回 R203（下のクリックの受け口・holdView）
+// 第44回 R203: 押したチップの目印（同じ役目・同じ値のボタンのうち、同じ家族の欄の中で何番目か）
+function tapAnchorOf(v, el){
+    const fm = el.closest('[data-fm]'), sc = fm && v.contains(fm) ? fm : v, k = anchorKeyOf(el);
+    const n = [...sc.querySelectorAll('[data-act]')].filter(e => anchorKeyOf(e) === k).indexOf(el);
+    return n < 0 ? null : {k, n, fm: sc === v ? null : fm.dataset.fm, top: el.getBoundingClientRect().top};
+}
 function holdView(v){
     const keep = {sy: window.scrollY, anchor: null, rows: [...v.querySelectorAll('.scroll')].map(e => e.scrollLeft)};
+    const ta = tapAnchor; tapAnchor = null;
+    if (ta && v.contains(ta)){ const r = ta.getBoundingClientRect(); if (r.height && r.bottom > 0 && r.top < window.innerHeight){ keep.tap = tapAnchorOf(v, ta); if (keep.tap) return keep; } }
     if (keep.sy > 40){
         const seen = {}, H = window.innerHeight;
         for (const e of v.querySelectorAll('[data-act]')){
@@ -5942,6 +5962,12 @@ function holdView(v){
 function releaseView(v, keep){
     const rows = v.querySelectorAll('.scroll');
     if (rows.length === keep.rows.length) rows.forEach((e, i) => { if (keep.rows[i]) e.scrollLeft = keep.rows[i]; });
+    if (keep.tap){   // 押したチップを、押す前と同じ高さに
+        const a = keep.tap, sc = a.fm ? [...v.querySelectorAll('[data-fm]')].find(e => e.dataset.fm === a.fm) : v;
+        const e = sc && [...sc.querySelectorAll('[data-act]')].filter(x => anchorKeyOf(x) === a.k)[a.n];
+        if (e){ lastTapEl = e; const d = e.getBoundingClientRect().top - a.top; if (Math.abs(d) > 0.5) window.scrollBy(0, d); }
+        return;
+    }
     if (keep.anchor && keep.anchor.k === '@tray'){ const tr = v.querySelector('.tray'); if (tr){ const d = tr.getBoundingClientRect().top - keep.anchor.top; if (Math.abs(d) >= 1) window.scrollBy(0, Math.round(d)); } return; }   // 1px 未満のずれ（スクロール位置の端数）では動かさない
     if (keep.anchor){
         const seen = {};
@@ -6511,7 +6537,23 @@ function findNav(){
     const its = [['fridge', t('材料から')], ...(twistAvailable() ? [['twist', t('ひとひねり')]] : []), ['world', tc('tab', '世界のレシピ')]];
     return `<nav class="subnav" aria-label="${esc(tc('tab', 'さがす'))}">${its.map(([k, l]) => `<button type="button" class="chip" data-act="find-go" data-k="${k}" aria-pressed="${tab === k}">${esc(l)}</button>`).join('')}</nav>`;
 }
+// 第44回 R203: 家族のチップを押したあとの献立の確かめ（合わない料理を替える・1週間を選び直す）。押した形を描いて見せてから（次の描画のあと）行う。
+// それまでにほかのボタン・ほかの画面へ移るときは、先に済ませる（合わない料理を見せない）
+let recheckDue = false;
+function recheckLater(){
+    if (recheckDue) return; recheckDue = true;
+    const go = () => { if (recheckDue) flushRecheck(true); };
+    requestAnimationFrame(() => setTimeout(go, 0)); setTimeout(go, 250);   // 見えていない（rAF が止まる）ときも
+}
+function flushRecheck(draw){
+    if (!recheckDue) return false; recheckDue = false;
+    reconcileMenu(); refreshWeek();
+    if (draw){ tapAnchor = lastTapEl && lastTapEl.isConnected ? lastTapEl : null; lastTapEl = null; render(); }   // 描き直しても、押したチップの高さは変えない
+    return true;
+}
+addEventListener('pagehide', () => { try{ flushRecheck(false); }catch(e){} });
 function render(){
+    if (recheckDue && tab !== 'settings') flushRecheck(false);
     renderFail.clear();
     guard('menuback', menuBackCheck);   // 1つ前に戻る帯（まるごと入れ替えのあと）
     guard('undo', menuUndoCheck);   // アレルギー・苦手などを変えたあとは、献立の「元に戻す」を消す（S25）
@@ -8725,6 +8767,23 @@ function dietMayHits(r){
 // 並び: ja ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant
 const MAY_LOC_LANGS = ['ja', 'ar', 'de', 'en', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
 const MAY_LOC = [
+    // 第44回 R204: 魚・えびかに・貝の 🔍 に出る加工品（タイのカレーペースト・チリジャム・バーベキューソース・納豆のたれ・しらす など）。前に置く（ほかの行より先に照らす）
+    [/vegetarian red curry pastes?/i, 'ベジタリアン向けレッドカレーペースト|معجون الكاري الأحمر النباتي|vegetarische rote Currypaste|vegetarian red curry paste|pasta de curry rojo vegetariana|vegetarian na pulang pasta ng curry|pâte de curry rouge végétarienne|शाकाहारी रेड करी पेस्ट|pasta kari merah vegetarian|pasta di curry rosso vegetariana|채식용 레드 커리 페이스트|wegetariańska czerwona pasta curry|pasta de curry vermelho vegetariana|พริกแกงเผ็ดเจ|vejetaryen kırmızı köri ezmesi|sốt cà ri đỏ chay|素食红咖喱酱|素食紅咖哩醬'],
+    [/\bred curry pastes?|れっどかれーぺーすと|レッドカレーペースト/i, 'レッドカレーペースト|معجون الكاري الأحمر|rote Currypaste|red curry paste|pasta de curry rojo|pulang pasta ng curry|pâte de curry rouge|रेड करी पेस्ट|pasta kari merah|pasta di curry rosso|레드 커리 페이스트|czerwona pasta curry|pasta de curry vermelho|พริกแกงเผ็ด|kırmızı köri ezmesi|sốt cà ri đỏ|红咖喱酱|紅咖哩醬'],
+    [/\bgreen curry pastes?|ぐりーんかれーぺーすと|グリーンカレーペースト/i, 'グリーンカレーペースト|معجون الكاري الأخضر|grüne Currypaste|green curry paste|pasta de curry verde|berdeng pasta ng curry|pâte de curry vert|ग्रीन करी पेस्ट|pasta kari hijau|pasta di curry verde|그린 커리 페이스트|zielona pasta curry|pasta de curry verde|พริกแกงเขียวหวาน|yeşil köri ezmesi|sốt cà ri xanh|绿咖喱酱|綠咖哩醬'],
+    [/\byellow curry pastes?|いえろーかれーぺーすと|イエローカレーペースト/i, 'イエローカレーペースト|معجون الكاري الأصفر|gelbe Currypaste|yellow curry paste|pasta de curry amarillo|dilaw na pasta ng curry|pâte de curry jaune|येलो करी पेस्ट|pasta kari kuning|pasta di curry giallo|옐로 커리 페이스트|żółta pasta curry|pasta de curry amarelo|พริกแกงกะหรี่|sarı köri ezmesi|sốt cà ri vàng|黄咖喱酱|黃咖哩醬'],
+    [/\bpana(?:e)?ng curry pastes?|ぱなんかれーぺーすと|パナンカレーペースト/i, 'パナンカレーペースト|معجون كاري بانانغ|Panang-Currypaste|panang curry paste|pasta de curry panang|pasta ng panang curry|pâte de curry panang|पनांग करी पेस्ट|pasta kari panang|pasta di curry panang|파낭 커리 페이스트|pasta curry panang|pasta de curry panang|พริกแกงพะแนง|panang köri ezmesi|sốt cà ri panang|帕能咖喱酱|帕能咖哩醬'],
+    [/\bmassaman curry pastes?|まっさまんかれーぺーすと|マッサマンカレーペースト/i, 'マッサマンカレーペースト|معجون كاري ماسامان|Massaman-Currypaste|massaman curry paste|pasta de curry massaman|pasta ng massaman curry|pâte de curry massaman|मसामन करी पेस्ट|pasta kari massaman|pasta di curry massaman|마사만 커리 페이스트|pasta curry massaman|pasta de curry massaman|พริกแกงมัสมั่น|massaman köri ezmesi|sốt cà ri massaman|马沙文咖喱酱|馬沙文咖哩醬'],
+    [/\bsour curry pastes?|prik kaeng som/i, 'ゲーンソムのペースト（酸っぱいカレーペースト）|معجون الكاري الحامض|saure Currypaste (Kaeng Som)|sour curry paste|pasta de curry ácido|maasim na pasta ng curry|pâte de curry aigre|खट्टी करी पेस्ट|pasta kari asam|pasta di curry acido|깽쏨 커리 페이스트|kwaśna pasta curry|pasta de curry azedo|พริกแกงส้ม|ekşi köri ezmesi|sốt cà ri chua|酸咖喱酱|酸咖哩醬'],
+    [/\btom ?yum (?:kung )?paste|とむやむ(?:くん)?ぺーすと|トムヤム(?:クン)?ペースト/i, 'トムヤムペースト|معجون توم يم|Tom-Yum-Paste|tom yum paste|pasta de tom yum|pasta ng tom yum|pâte de tom yum|टॉम यम पेस्ट|bumbu tom yum|pasta di tom yum|똠얌 페이스트|pasta tom yum|pasta de tom yum|น้ำพริกต้มยำ|tom yum ezmesi|sốt tom yum|冬阴功酱|冬蔭功醬'],
+    [/\b(?:thai )?curry pastes?|かれーぺーすと|カレーペースト/i, 'カレーペースト|معجون الكاري|Currypaste|curry paste|pasta de curry|pasta ng curry|pâte de curry|करी पेस्ट|pasta kari|pasta di curry|커리 페이스트|pasta curry|pasta de curry|พริกแกง|köri ezmesi|sốt cà ri|咖喱酱|咖哩醬'],
+    [/roasted chil+i paste|chil+i jam|nam prik pao|น้ำพริกเผา/i, 'ナムプリックパオ（タイのチリジャム）|معجون الفلفل الحار المحمص (نام بريك باو)|Chilimarmelade (Nam Prik Pao)|chili jam (nam prik pao)|mermelada de chile (nam prik pao)|palaman na sili (nam prik pao)|confiture de piment (nam prik pao)|चिली जैम (नाम प्रिक पाओ)|selai cabai (nam prik pao)|marmellata di peperoncino (nam prik pao)|태국식 칠리 잼 (남프릭파오)|dżem chili (nam prik pao)|geleia de pimenta (nam prik pao)|น้ำพริกเผา|acı biber reçeli (nam prik pao)|tương ớt rang Thái (nam prik pao)|泰式辣椒酱|泰式辣椒醬'],
+    [/\bbarbe(?:cue|que) sauce|\bbbq sauce|ばーべきゅーそーす|バーベキューソース/i, 'バーベキューソース|صلصة الباربكيو|Grillsoße (Barbecue)|barbecue sauce|salsa barbacoa|sarsang barbecue|sauce barbecue|बारबेक्यू सॉस|saus barbekyu|salsa barbecue|바비큐 소스|sos barbecue|molho barbecue|ซอสบาร์บีคิว|barbekü sosu|sốt thịt nướng BBQ|烧烤酱|烤肉醬'],
+    [/natto sauce|sauce packets? (?:that come )?with the natto|納豆(?:付属)?の?たれ|なっとう(?:付属)?の?たれ/i, '納豆のたれ|صلصة الناتو|Natto-Soße|natto sauce|salsa para natto|sarsa ng natto|sauce pour natto|नात्तो सॉस|saus natto|salsa per natto|낫토 소스|sos do natto|molho de natto|ซอสนัตโตะ|natto sosu|nước sốt natto|纳豆酱汁|納豆醬汁'],
+    [/chirimen ?jako|ちりめんじゃこ|ちりめん/i, 'ちりめんじゃこ|صغار السمك المجففة (تشيريمين جاكو)|Chirimen Jako (getrocknete Jungfische)|chirimen jako (dried baby fish)|chirimen jako (alevines secos)|chirimen jako (tuyong maliliit na isda)|chirimen jako (petits poissons séchés)|चिरिमेन जाको (सूखी छोटी मछलियाँ)|chirimen jako (ikan teri kering)|chirimen jako (pesciolini essiccati)|지리멘자코 (말린 잔멸치)|chirimen jako (suszony narybek)|chirimen jako (peixinhos secos)|ปลาข้าวสารแห้ง (จิริเมนจาโกะ)|chirimen jako (kurutulmuş yavru balık)|cá cơm non khô (chirimen jako)|小鱼干|小魚乾'],
+    [/shirasu|whitebait|しらす|白子干し|吻仔魚|魩仔魚/i, 'しらす|صغار السمك المسلوقة (شيراسو)|Shirasu (gekochte Jungfische)|shirasu (boiled whitebait)|shirasu (alevines cocidos)|shirasu (pinakuluang maliliit na isda)|shirasu (petits poissons blancs cuits)|शिरासु (उबली छोटी मछलियाँ)|shirasu (ikan teri rebus)|shirasu (bianchetti bolliti)|시라스 (잔멸치)|shirasu (gotowany narybek)|shirasu (peixinhos cozidos)|ปลาข้าวสาร (ชิราสุ)|shirasu (haşlanmış yavru balık)|cá cơm non (shirasu)|吻仔鱼|魩仔魚'],
+    [/\bharissa\b|はりっさ/i, 'ハリッサ|هريسة|Harissa|harissa|harissa|harissa|harissa|हरीसा|harissa|harissa|하리사|harissa|harissa|ฮาริสซา|harissa|tương ớt harissa|哈里萨辣酱|哈里薩辣醬'],
+    [/\bxo sauce|xo醤|xo醬|xo酱/i, 'XO醤|صلصة XO|XO-Soße|XO sauce|salsa XO|sarsang XO|sauce XO|XO सॉस|saus XO|salsa XO|XO 소스|sos XO|molho XO|ซอสเอ็กซ์โอ|XO sosu|sốt XO|XO酱|XO醬'],
     [/curry roux|かれーる[うー]|カレール[ウー]/i, 'カレールウ|خلطة الكاري الجاهزة|Curry-Würfel (Roux)|curry roux|roux de curry|bloke ng curry (roux)|roux de curry|करी रू (क्यूब)|bumbu kari blok|roux per curry|카레 루|kostki curry (roux)|tablete de curry (roux)|ก้อนแกงกะหรี่|köri roux (blok)|viên sốt cà ri|咖喱块|咖哩塊'],
     [/stew roux|しちゅーる[うー]|シチュール[ウー]/i, 'シチュールウ|خلطة اليخنة الكريمية الجاهزة|Rahmeintopf-Würfel (Roux)|cream stew roux|roux para guiso cremoso|bloke ng cream stew (roux)|roux pour ragoût à la crème|क्रीम स्टू रू (क्यूब)|bumbu sup krim blok|roux per stufato alla crema|스튜 루|kostki do gulaszu śmietanowego (roux)|tablete de ensopado cremoso (roux)|ก้อนสตูว์|krem güveç roux (blok)|viên sốt hầm kem|奶油炖菜块|奶油燉菜塊'],
     [/hayashi roux|はやしる[うー]|ハヤシル[ウー]/i, 'ハヤシルウ|خلطة صلصة الهاياشي الجاهزة|Hayashi-Würfel (Roux)|hayashi roux|roux de hayashi|bloke ng hayashi (roux)|roux hayashi|हयाशी रू (क्यूब)|bumbu hayashi blok|roux per hayashi|하야시 루|kostki hayashi (roux)|tablete de hayashi (roux)|ก้อนซอสฮายาชิ|hayashi roux (blok)|viên sốt hayashi|日式牛肉烩饭块|日式牛肉燴飯塊'],
@@ -8746,10 +8805,10 @@ const MAY_LOC = [
     [/hakka noodles/i, 'ハッカヌードル|نودلز هاكا|Hakka-Nudeln|hakka noodles|fideos hakka|pansit na hakka|nouilles hakka|हक्का नूडल्स|mi hakka|noodles hakka|하카 누들|makaron hakka|macarrão hakka|เส้นหมี่ฮากกา|hakka eriştesi|mì hakka|客家面|客家麵'],
     [/lumpia wrappers?/i, 'ルンピアの皮|رقائق اللومبيا|Lumpia-Teigblätter|lumpia wrappers|hojas para lumpia|balat ng lumpia|feuilles à lumpia|लुम्पिया रैपर|kulit lumpia|sfoglie per lumpia|룸피아 피|płaty do lumpii|massa para lumpia|แผ่นลุมเปีย|lumpia yufkası|vỏ lumpia|春卷皮|春捲皮'],
     [/pancake mix|buchim ?garu/i, 'チヂミ粉または小麦粉|خليط البان كيك الكوري أو الدقيق|Pfannkuchenmischung oder Mehl|pancake mix or plain flour|mezcla para panqueques o harina|halo para sa pancake o harina|préparation pour galettes ou farine|पैनकेक मिक्स या मैदा|tepung pancake atau terigu|preparato per pancake o farina|부침가루나 밀가루|mieszanka do placków lub mąka|mistura para panqueca ou farinha|แป้งแพนเค้กหรือแป้งสาลี|krep karışımı veya un|bột bánh xèo Hàn hoặc bột mì|煎饼粉或面粉|煎餅粉或麵粉'],
-    [/(?:^|\|)(?:白|赤|合わせ|あわせ)?(?:みそ|味噌)(?:\||$)/, '味噌|ميسو|Miso|miso|miso|miso|miso|मिसो|miso|miso|미소 된장|miso|missô|มิโซะ|miso|tương miso|味噌|味噌'],
+    [/(?:^|\|)(?:白|赤|合わせ|あわせ)?(?:みそ|味噌)(?:\||$)|(?:^|\|)(?:white |red |shiro |aka |light |dark )?miso(?: paste)?(?:\||$)/i, '味噌|ميسو|Miso|miso|miso|miso|miso|मिसो|miso|miso|미소 된장|miso|missô|มิโซะ|miso|tương miso|味噌|味噌'],
     [/(?:^|\|)(?:めんつゆ|麺つゆ)(?:\||$)/, 'めんつゆ|صلصة منتسويو|Mentsuyu (Nudelsoße)|mentsuyu (noodle sauce)|mentsuyu (salsa para fideos)|mentsuyu (sawsawan sa pansit)|mentsuyu (sauce pour nouilles)|मेंत्सुयु (नूडल सॉस)|mentsuyu (saus mi)|mentsuyu (salsa per noodle)|멘쓰유|mentsuyu (sos do makaronu)|mentsuyu (molho para macarrão)|น้ำซุปเมนสึยุ|mentsuyu (erişte sosu)|nước tương mentsuyu|日式面汁|日式麵露'],
-    [/(?:^|\|)(?:ぽん酢|ポン酢|ぽんず)(?:\||$)/, 'ポン酢|صلصة بونزو|Ponzu|ponzu|ponzu|ponzu|ponzu|पोंज़ु|ponzu|ponzu|폰즈|ponzu|ponzu|ซอสพอนสึ|ponzu|sốt ponzu|柚子醋|柚子醋'],
-    [/(?:^|\|)(?:納豆|なっとう)(?:\||$)/, '納豆|ناتو|Natto|natto|natto|natto|natto|नात्तो|natto|natto|낫토|natto|natto|นัตโตะ|natto|natto|纳豆|納豆'],
+    [/(?:^|\|)(?:ぽん酢|ポン酢|ぽんず)(?:\||$)|\bponzu\b/i, 'ポン酢|صلصة بونزو|Ponzu|ponzu|ponzu|ponzu|ponzu|पोंज़ु|ponzu|ponzu|폰즈|ponzu|ponzu|ซอสพอนสึ|ponzu|sốt ponzu|柚子醋|柚子醋'],
+    [/(?:^|\|)(?:納豆|なっとう|natto)(?:\||$)/i, '納豆|ناتو|Natto|natto|natto|natto|natto|नात्तो|natto|natto|낫토|natto|natto|นัตโตะ|natto|natto|纳豆|納豆'],
 ];
 // 名前（と元の言葉）から、いまの画面の言葉の名前を返す（当たらない・訳がないときは null）
 function mayLoc(txt){
@@ -8760,7 +8819,10 @@ function mayLoc(txt){
 // 名前が画面の言葉でないとき（日本語の画面で英語・ほかの言語の画面で日本語や英語）だけ訳す。その言葉の名前（「白菜キムチ」「익은 김치」など）はそのまま
 function mayLocFor(n, txt){
     n = String(n || ''); const kana = /[ぁ-んァ-ヶ]/.test(n), han = /[一-龯]/.test(n), ascii = /^[\x00-\x7F]+$/.test(n);
-    const foreign = LANG === 'ja' ? !(kana || han) : (kana || (LANG !== 'en' && ascii));
+    // 第44回 R204: 漢字だけの名前（味噌・納豆）も、漢字を使わない言葉（中国語・日本語のほか）では、ほかの言葉の名前として訳す。
+    // ラテン文字だけの名前（Crème fraîche など、ASCII でないものも）も、英語のほかの言葉では訳を探す（訳の表に当たるときだけ替わる）。ハングル・タイ文字も、その言葉のほかでは訳す
+    const latin = /[A-Za-z]/.test(n) && !/[^\x00-\u024F\u1E00-\u1EFF\s\u2018-\u201D]/.test(n);
+    const foreign = LANG === 'ja' ? !(kana || han) : (kana || (han && !/^zh/.test(LANG)) || (LANG !== 'en' && (ascii || latin)) || (LANG !== 'ko' && /[가-힣]/.test(n)) || (LANG !== 'th' && /[\u0E00-\u0E7F]/.test(n)));
     return foreign ? mayLoc(txt || n) : null;
 }
 function dietMayText(names){ return t('{alg}（{names}の袋の表示を確認）', {alg: t('食の決まり'), names: joinNames(names)}); }
@@ -16759,10 +16821,18 @@ function commitSpeech(text, heard, before){
 }
 
 let tapGuard = 0;   // 画面が切りかわった直後のすばやい2回目のタップを、次の画面のボタンに当てない
+// 第44回 R203: チップ（家族のアレルギーなど）を押したら、押したチップを目印に画面の位置を保つ（上に行が増えても、指の下のチップが替わらない）。
+// 押し終わってから 0.35 秒のうちに同じ場所をもう一度押したとき（二度押し・描き直しを待つあいだの押し直し）は、どのチップも切りかえない（隣の「卵」などを入れない）
+const CHIP_LATER = new Set(['fam-allergy', 'fam-avoid', 'fam-alg', 'fam-alg-w', 'fam-alg-fam', 'fam-avoid-fam', 'fam-avoid-diet']);   // 押した形を先に描き、献立の確かめ（reconcileMenu・refreshWeek）はあとで
 document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]'); if (!el) return;
     if (Date.now() < tapGuard && el.dataset.act !== 'toast-undo') return;
+    const chip = el.classList.contains('chip') || !!el.closest('.chip');
+    if (chip && e.detail > 0 && chipTap && Date.now() < chipTap.until && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24) return;
     const act = el.dataset.act, id = el.dataset.id;
+    if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
+    tapAnchor = chip && el.closest('#view') ? el : null;
+    if (chip && e.detail > 0){ const c = chipTap = {x: e.clientX, y: e.clientY, until: Infinity}; queueMicrotask(() => { c.until = Date.now() + 350; }); }   // 0.35 秒は、描き終わってから数える（遅い端末で、待つあいだの押し直しを入れない）
     if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
     session.freshArmed = true;   // 「新」の札は、本人が何か押したあとの変化にだけ付ける
@@ -16940,34 +17010,34 @@ document.addEventListener('click', e => {
             if (i >= 0) m.allergy.splice(i, 1);
             else if (m.avoid.includes(v) && !famAlgWordOk(v)){ session.famAlgBad = {id: m.id, w: avoidName(v)}; session.famOpen = m.id; render(); break; }   // 第40回 R185: 判定できない言葉には ⚠ を付けない（何も外れないため）。近いボタンを出す
             else if (m.avoid.includes(v)) m.allergy.push(v);
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'fam-avoid': {
             const m = famOf(el); if (!m) break;
             const v = el.dataset.v, k = keyOf(v), a = m.avoid, i = a.findIndex(x => x[0] !== '@' && keyOf(x) === k);
             if (i >= 0){ m.allergy = m.allergy.filter(x => x !== a[i]); a.splice(i, 1); } else { a.push(canonOf(v) || v); rememberAvoidX(canonOf(v) || v, v); }
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'fam-alg': {   // 家族のアレルギーを1回で登録する（食べられない食材にも入れる）。もう一度押すと、アレルギーと食べられない食材の両方から外す
             const m = famOf(el); if (!m) break;
             const v = el.dataset.v, k = keyOf(v), on = m.allergy.find(x => x[0] !== '@' && keyOf(x) === k);
             if (on){ m.allergy = m.allergy.filter(x => x !== on); m.avoid = m.avoid.filter(x => x !== on); }
             else { let a = m.avoid.find(x => x[0] !== '@' && keyOf(x) === k); if (!a){ a = canonOf(v) || v; m.avoid.push(a); rememberAvoidX(a, v); } m.allergy.push(a); }
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'fam-alg-w': {   // 主なアレルゲンのチップ（そば・大豆など）・入力して足したアレルギーの ×: その言葉のまま、アレルギーと食べられない食材に入れる・外す（canonOf で別の食材に寄せない）
             const m = famOf(el); if (!m) break;
             const v = el.dataset.v;
             if (m.allergy.includes(v)){ m.allergy = m.allergy.filter(x => x !== v); m.avoid = m.avoid.filter(x => x !== v); }
             else { if (!m.avoid.includes(v)) m.avoid.push(v); m.allergy.push(v); }
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'fam-alg-fam': {
             const m = famOf(el); if (!m) break;
             const f = el.dataset.v;
             if (m.allergy.some(x => avoidFamOf(x) === f)){ m.allergy = m.allergy.filter(x => avoidFamOf(x) !== f); m.avoid = m.avoid.filter(x => avoidFamOf(x) !== f); }
             else { if (!m.avoid.includes('@' + f)) m.avoid = m.avoid.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f); m.allergy = m.allergy.filter(x => m.avoid.includes(x)).concat('@' + f); }
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'fam-avoid-fam': {
             const m = famOf(el); if (!m) break;
@@ -16975,7 +17045,7 @@ document.addEventListener('click', e => {
             if (a.some(x => avoidFamOf(x) === f)) m.avoid = a.filter(x => avoidFamOf(x) !== f);
             else m.avoid = a.filter(x => avoidFamOf(x) || !avoidCoveredBy(x, [f])).concat('@' + f);
             m.allergy = m.allergy.filter(x => m.avoid.includes(x));
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'alg-toggle': {
             const v = el.dataset.v; if (!ALG_DEF[v]) break;
@@ -16997,7 +17067,7 @@ document.addEventListener('click', e => {
         case 'fam-avoid-diet': {
             const m = famOf(el); if (!m) break;
             m.avoid = dietBundleToggle(m.avoid, el.dataset.v, m); m.allergy = m.allergy.filter(x => m.avoid.includes(x));
-            session.famOpen = m.id; save(); reconcileMenu(); refreshWeek(); render(); break;
+            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
