@@ -2087,4 +2087,5 @@ GOHAN_I18N('es', {
     "アレルギーや苦手な食材がある方は、ここから設定できます": "¿Tienes alergias o alimentos que evitas? Puedes configurarlos aquí.",
     "アレルギー・苦手を設定": "Alergias y alimentos a evitar",
     "{name}のアレルギーから「{what}」を外しました": "Se quitó «{what}» de las alergias de {name}",
+    "アレルギー対策から「{what}」を外しました": "Se quitó «{what}» de los alérgenos",
 });

@@ -2087,4 +2087,5 @@ GOHAN_I18N('vi', {
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Bạn bị dị ứng hoặc có thực phẩm muốn tránh? Hãy cài đặt tại đây.",
     "アレルギー・苦手を設定": "Dị ứng & thực phẩm cần tránh",
     "{name}のアレルギーから「{what}」を外しました": "Đã bỏ “{what}” khỏi dị ứng của {name}",
+    "アレルギー対策から「{what}」を外しました": "Đã bỏ “{what}” khỏi chất gây dị ứng",
 });

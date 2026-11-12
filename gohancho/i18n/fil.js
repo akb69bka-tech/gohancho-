@@ -2087,4 +2087,5 @@ GOHAN_I18N('fil', {
     "アレルギーや苦手な食材がある方は、ここから設定できます": "May allergy o iniiwasang pagkain? Maitatakda mo rito.",
     "アレルギー・苦手を設定": "Allergy at iniiwasan",
     "{name}のアレルギーから「{what}」を外しました": "Inalis ang “{what}” sa mga allergy ni {name}",
+    "アレルギー対策から「{what}」を外しました": "Inalis ang “{what}” sa mga allergen",
 });
