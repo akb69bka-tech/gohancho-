@@ -4991,7 +4991,11 @@ function suggestMain(keep = [], bowl = null, sameKind = false){   // sameKind: �
     // おかゆの日は、早くできるおかゆ（雑炊など）を先に（R3）。そのあとも短い順の段（20分→45分→60分→それ以上）で選ぶ（入れ替え・かえるで 50〜80分の粥が先に出ていた。第8回 R19）
     // 段の中の料理が OKAYU_NEED 品そろうまでは、次の段もいっしょに見る（20分以内が卵雑炊1品だけで、おかゆの日が毎回卵雑炊だった。第21回 R82）
     const pickT = (list, c) => { if (okayuDay){ const ok = list.filter(okayuDayOk), lim0 = Math.min(okayuTierLim(ok), okayuLim); for (const lim of [...OKAYU_TIERS, Infinity].filter(l => l >= lim0)){ const q = ok.filter(x => x.min <= lim); if (q.length){ const r = pick(q, c); if (r) return r; } } } return pick(list, c); };
-    const r = pickT(cands, ctx); if (r) return r;
+    let r = pickT(cands, ctx);
+    // dm45（第44回 R198 の残り）: 糖質ひかえめのときは、「○日以内に作った料理は出さない」より糖質ひかえめを先に。糖質の多い主菜しか選べなかったら、最近作った糖質の多くない主菜から選び直す
+    // （菜食で糖質の多くない主菜がちょうど7品の国で、7品ともこの数日に作ると、1品目にポテトパンケーキなどが知らせなしで入っていた）。作ってから日のたった料理ほど先（点数の決まりのまま）
+    if (r && carbOn() && carbHeavy(r)){ const lc = cands.filter(x => !carbHeavy(x)); const r2 = lc.length ? pickT(lc, Object.assign({}, ctx, {relax: true})) : null; if (r2) r = r2; }
+    if (r) return r;
     // 「まるごと入れ替え」で主菜を一巡した（主菜が少ない国で起きる）→ 直前の料理だけ避けて、もう一巡する
     const prev = new Set(menuIds());
     cands.forEach(x => { if (!prev.has(x.id)) session.rejected.delete(x.id); });
@@ -9764,9 +9768,10 @@ const CARB_FEW = 7;
 function carbFewMains(){ return poolForMood('主菜', 'all').filter(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !carbHeavy(r)).length; }
 // dm44（第43回 R198 の残り）: 主菜が2品の日に、2品目が糖質の多い主菜で、ほかに条件に合う糖質の多くない主菜が残っていないときも知らせる
 function carbExtraFew(m){
-    const ms = ((m && m.items) || []).filter((x, i) => i > 0 && x.slot === '主菜' && x.r);
+    // dm45（第44回 R198 の残り）: 1品目も見る。今日「かえる」で外した料理（session.rejected）は、残っている料理に数えない
+    const ms = ((m && m.items) || []).filter(x => x.slot === '主菜' && x.r);
     if (!ms.some(x => carbHeavy(x.r))) return false;
-    return !poolForMood('主菜', 'all').some(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !carbHeavy(r) && !m.items.some(y => y.r && y.r.id === r.id));
+    return !poolForMood('主菜', 'all').some(r => r.main && !isAvoided(r) && !S.hidden.includes(r.id) && !session.rejected.has(r.id) && !carbHeavy(r) && !m.items.some(y => y.r && y.r.id === r.id));
 }
 function carbFewHtml(m){ return carbOn() && (carbFewMains() < CARB_FEW || carbExtraFew(m)) ? `<p class="kcal-sum carb-sum carb-few" role="note"><span class="kc-v">${esc(CARB_TX.few())}</span></p>` : ''; }
 // 作り方の画面: カロリーの目安の箱に1行
