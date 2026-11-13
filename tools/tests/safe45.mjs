@@ -2,6 +2,7 @@
 // 第45回（安全）: 第43回モニター R206・R207・R209・R203（残り）の回帰テスト
 //  使い方: node tools/tests/safe45.mjs [http://localhost:9291/]   （ONLY=A,B,C,D で一部だけ）
 //  A（R206）遅い端末（CPU 1・1/4・1/6）で、家族のアレルギー（乳製品）のボタンを指で二度押し（0.2〜0.35 秒）しても、乳製品が外れない・卵などが入らない。
+//     機械が混んで、実際に届いた間合い（pointerdown の時刻の差）が 0.4 秒以上になった回は、わざとの押し直しと同じ扱い: 外れてよいが、外した知らせと「元に戻す」が見えていること（第46回の決まり）
 //     間をおいた押し直し（1.2・2.5 秒）は、わざとの押し直しとして外れる（卵などは入らない）。マウスで続けて押すと外れる（いままでどおり）
 //  B（R207）🔍 の材料名に分量（小さじ2・1/2 tsp・ช้อนโต๊ะ など）が残らない（21か国 × 18言語）
 //  C（R209）小麦・大豆・乳・卵・ごま・落花生のアレルギーの 🔍 の名前も、画面の言葉で出る（21か国 × 18言語）
@@ -53,15 +54,24 @@ if (want('A')){
                 for (let k = 0; k < reps; k++){
                     const { p, ctx } = await famCtx(W, H, lang, cc, ts, `a${W}${lang}${cpu}${gap}${k}`);
                     const pt = await place(p); const cdp = await ctx.newCDPSession(p);
-                    await p.evaluate(() => { window.__clk = []; document.addEventListener('click', e => { const c = e.target.closest && e.target.closest('[data-act]'); window.__clk.push([c && c.dataset.v, e.detail]); }, true); });
+                    await p.evaluate(() => { window.__clk = []; window.__pd = []; document.addEventListener('pointerdown', e => window.__pd.push(e.timeStamp), true); document.addEventListener('click', e => { const c = e.target.closest && e.target.closest('[data-act]'); window.__clk.push([c && c.dataset.v, e.detail]); }, true); });
                     if (cpu > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: cpu });
                     await taps(cdp, pt, gap); await p.waitForTimeout(cpu > 1 ? 3000 : 1200);
                     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
                     const s = await famState(p), clk = await p.evaluate(() => window.__clk);
-                    if (JSON.stringify(s.alg) !== '["@dairy"]' || s.pressed !== 'true') bad.push({ k, s, clk });
+                    // 実際に届いた2回の押しの間合い（pointerdown の時刻の差）。機械が混むと、gap より長くなることがある
+                    const pdGap = await p.evaluate(() => window.__pd.length >= 2 ? Math.round(window.__pd[1] - window.__pd[0]) : null);
+                    const n = await p.evaluate(() => { const tb = document.querySelector('#toast-root .toast'), u = tb && tb.querySelector('[data-act="toast-undo"]'); if (!tb || !u) return null; const r = tb.getBoundingClientRect(), cs = getComputedStyle(tb);
+                        const want = t('{name}のアレルギーから「{what}」を外しました', {name: S.family[0].name, what: joinNames([avoidFamLabel('dairy')])});
+                        return { said: (tb.textContent || '').includes(want), vis: r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.left >= 0 && r.right <= innerWidth && cs.visibility !== 'hidden' && cs.opacity !== '0' }; });
+                    const kept = JSON.stringify(s.alg) === '["@dairy"]' && s.pressed === 'true';
+                    // 合格: 乳製品が入ったまま。または、実際の間合いが 0.4 秒以上（わざとの押し直しと同じ扱い）で外れ、外した知らせと「元に戻す」が見えている（第46回の決まり）。
+                    // 0.4 秒より短い二度押しで外れた・知らせなしに外れた・ほかのアレルゲンが入った、は落とす
+                    const offOk = !kept && !s.alg.length && s.pressed === 'false' && pdGap != null && pdGap >= 400 && n && n.said && n.vis;
+                    if (!(kept || offOk)) bad.push({ k, s, clk, pdGap, n });
                     await ctx.close();
                 }
-                ok(!bad.length, `A1 ${W}px ${lang} CPU 1/${cpu} 二度押し ${gap}ms: 乳製品が入ったまま・ほかは入らない（${reps}回）: ` + JSON.stringify(bad));
+                ok(!bad.length, `A1 ${W}px ${lang} CPU 1/${cpu} 二度押し ${gap}ms: 乳製品が入ったまま・ほかは入らない（実際の間合いが 0.4 秒以上で外れたときは、知らせと元に戻すが見える。${reps}回）: ` + JSON.stringify(bad));
             }
             for (const gap of [1200, 2500]){
                 const { p, ctx } = await famCtx(W, H, lang, cc, ts, `r${W}${lang}${cpu}${gap}`);
