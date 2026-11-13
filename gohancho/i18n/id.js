@@ -2087,4 +2087,5 @@ GOHAN_I18N('id', {
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Punya alergi atau bahan yang dihindari? Atur di sini.",
     "アレルギー・苦手を設定": "Alergi & bahan dihindari",
     "{name}のアレルギーから「{what}」を外しました": "“{what}” dihapus dari alergi {name}",
+    "アレルギー対策から「{what}」を外しました": "“{what}” dihapus dari alergen",
 });

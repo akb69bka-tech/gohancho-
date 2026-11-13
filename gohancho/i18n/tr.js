@@ -2087,4 +2087,5 @@ GOHAN_I18N('tr', {
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Alerjiniz ya da kaçındığınız yiyecekler mi var? Buradan ayarlayabilirsiniz.",
     "アレルギー・苦手を設定": "Alerji ve kaçınılanlar",
     "{name}のアレルギーから「{what}」を外しました": "“{what}”, {name} için alerjilerden çıkarıldı",
+    "アレルギー対策から「{what}」を外しました": "“{what}” alerjenlerden çıkarıldı",
 });
