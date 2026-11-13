@@ -593,7 +593,11 @@ body:has(#modal-root .dbar) .toast{bottom:calc(96px + env(safe-area-inset-bottom
 .toast{position:fixed;left:16px;right:16px;margin-inline:auto;width:max-content;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--bg);padding:.625rem 1.25rem;border-radius:var(--r-lg);font-size:var(--fs14);line-height:1.5;box-shadow:var(--shadow-2);max-width:calc(100% - 32px);text-align:center}   /* 左右を決めて中央に置く（left:50% だと幅が画面の半分に縮む） */
 .toast .btn{margin-inline-start:8px;min-height:44px;vertical-align:middle}
 .toast .tx{white-space:pre-line}   /* 第47回: 別のお知らせの下に、アレルギーを外した知らせを並べる（改行） */
-.toast.kept .tx{white-space:pre-line !important;-webkit-line-clamp:5 !important;line-clamp:5 !important}   /* 第47回: 2つ並べたお知らせは、上の端に出しても2行で切らない */
+.toast.kept .tx{white-space:pre-line !important;-webkit-line-clamp:5 !important;line-clamp:5 !important}
+/* 第48回 R211: アレルギーを外した知らせ（元に戻す付き）は、文を切らずに全部出す（折り返す）。「元に戻す」は文の下の行の端に置き、画面の中に収める */
+.toast.algoff,.toast.algoff.at-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:4px 8px;max-width:calc(100% - 32px);text-align:start}
+.toast.algoff .tx{flex:1 1 100%;display:block !important;overflow:visible !important;-webkit-line-clamp:none !important;line-clamp:none !important;white-space:pre-line !important;overflow-wrap:anywhere;min-width:0}
+.toast.algoff [data-act="toast-undo"]{flex:none;margin:0}   /* 第47回: 2つ並べたお知らせは、上の端に出しても2行で切らない */
 #view{padding-bottom:var(--toast-room,0px)}   /* お知らせを出すときに、見えている押す場所・文を上に送る分の余白（toastPlace。画面を切りかえると消す） */
 #sheet-root .cc-local{font-size:1.125rem;font-weight:700;margin-block:.25rem}
 .toast.placing{opacity:0}.toast{pointer-events:none}.toast [data-act="toast-undo"]{pointer-events:auto}   /* お知らせの文の上を押しても下に届く。「元に戻す」だけ押せる（第3回b N4） */
@@ -4000,7 +4004,7 @@ function toast(msg, praise=false, undo=null, short=''){
     const short0 = short || toast.short || ''; toast.short = '';
     const narrow = innerWidth < 300 && !sheet && !modalId, text = narrow && undo && short0 ? short0 : msg;
     toast.lastMsg = msg; toast.lastShort = short0; toast.lastDish = toast.dish || ''; toast.dish = '';   // 上の端の帯（toastHeadDock）で、入らないときに料理名を短くする
-    root.innerHTML = `<div class="toast pop placing${praise?' praise':''}${narrow ? ' compact' : ''}${kp ? ' kept' : ''}"${narrow && text !== msg ? ` aria-label="${esc(msg)}"` : ''}>${undo ? `<span class="tx">${esc(text)}</span>` : esc(text)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
+    root.innerHTML = `<div class="toast pop placing${praise?' praise':''}${narrow ? ' compact' : ''}${kp ? ' kept' : ''}${undo && undo.keep ? ' algoff' : ''}"${narrow && text !== msg ? ` aria-label="${esc(msg)}"` : ''}>${undo ? `<span class="tx">${esc(text)}</span>` : esc(text)}${undo ? ` <button class="btn sm" data-act="toast-undo">${esc(t('元に戻す'))}</button>` : ''}</div>`;
     // 「元に戻す」は8秒。指やフォーカスが乗っているあいだは消さない
     const hide = toast.hide = () => { root.innerHTML = ''; toast.undo = null; toast.keep = null; };
     const arm = () => { clearTimeout(toast.t); toast.t = setTimeout(() => { const box = root.firstElementChild; if (undo && box && (box.matches(':hover') || box.contains(document.activeElement))) arm(); else hide(); }, dur || (undo ? 8000 : praise ? 6000 : 4500)); dur = 0; };
@@ -4214,7 +4218,7 @@ function toastPlace(box, prev){
     let floor = innerHeight;
     document.querySelectorAll('nav.tabs, .actionbar, .cook-ctl').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight * .5 && r.top < floor) floor = r.top; });
     if (floor < innerHeight) box.style.bottom = Math.round(innerHeight - floor + 8) + 'px';
-    if (toast.undo && toastHeadDock(box, floor)) return;   // 第21回 R72: 今日の献立の画面の「元に戻す」付きのお知らせは、料理の絵・料理名・↻にかからない見出しの行へ
+    if (toast.undo && !toast.undo.keep && toastHeadDock(box, floor)) return;   // 第48回: アレルギーを外した知らせは見出しの行（1行）に重ねない（文が切れる）   // 第21回 R72: 今日の献立の画面の「元に戻す」付きのお知らせは、料理の絵・料理名・↻にかからない見出しの行へ
     // 出るときの動き（.pop の rise）で位置がずれないよう、動きを除いた場所（offset）で数える。position:fixed なので画面の左上からの位置
     const rectOf = () => ({left: box.offsetLeft, top: box.offsetTop, right: box.offsetLeft + box.offsetWidth, bottom: box.offsetTop + box.offsetHeight});
     let T = rectOf();
