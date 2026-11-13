@@ -104,7 +104,7 @@ if (want('A')){
 
 // ---- B1 🔍 の材料名の訳 ----
 // 画面の言葉の文字でない英語（ASCII の語）・日本語（かな）が、🔍 の材料名に残らない
-const LANGS = ['ja', 'ar', 'de', 'en', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja', 'ar', 'de', 'en', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];   // GitHub の点検（CI）では run-all.sh が言語をしぼる
 // [国, 料理, 元の名前（訳される前）]
 const BC = [['JP', 'curry', /curry roux|カレールウ/i], ['JP', 'yudofu', /ポン酢|ぽん酢|ponzu/i], ['TW', 'tw_shacha_kongxincai', /shacha/i], ['GB', 'gb_lentil_pie', /vegetable stock/i], ['EG', null, /stock cube/i], ['JP', null, /ウスター|worcestershire/i]];
 const EN_SRC = /\b(?:curry roux|shacha sauce|vegetable stock(?: cube| powder)?|stock cube|worcestershire sauce|ranch dressing|kimchi juice|tenkasu|breadcrumbs|lumpia wrappers|hakka noodles|pancake mix)\b/i, JA_SRC = /[ぁ-んァ-ヶ]/;
