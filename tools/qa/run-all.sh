@@ -88,6 +88,12 @@ for it in "${ITEMS[@]}"; do
   match "$name" "$SKIP" && continue
   SEL+=("$it")
 done
+# 走らせる順: 時間のかかる項目を先に始める（GitHub の4並列で、最後に長い項目が1本だけ残って60分を超えないように）。
+# 結果の表は SEL の順のまま。HEAVY は GitHub の v146 の秒数（diet-r3 974秒・safe45 853秒…）の長い順
+HEAVY="t-diet-r3 t-safe45 t-safe46 t-panel-r18b t-ui52 t-tooltab-r1 t-panel-r4b t-safe48 qa-tray-fit t-safe44 t-safe43 t-sale t-diet-r2 t-allergy t-safe-r4 t-note37 t-resilience t-ui32 t-tool-r1 qa-category-audit qa-category-audit-4343 t-marugoto-img t-safe-r5 t-menu-back t-panel-r21ui t-panel-r21b t-panel-all1"
+RUN=()
+for h in $HEAVY; do for it in "${SEL[@]}"; do [ "${it%%|*}" = "$h" ] && RUN+=("$it"); done; done
+for it in "${SEL[@]}"; do case " $HEAVY " in *" ${it%%|*} "*) ;; *) RUN+=("$it");; esac; done
 if [ "$LIST" = 1 ]; then for it in "${SEL[@]}"; do echo "${it%%|*}	$(echo "$it" | cut -d'|' -f4)"; done; exit 0; fi
 [ "${#SEL[@]}" -eq 0 ] && { echo "実行する項目がありません"; exit 2; }
 
@@ -123,7 +129,7 @@ run_one() {
   echo "… $(date +%H:%M:%S) 終わり: $name（rc=$rc・$((e - s))秒）"   # 途中で止まっても（GitHub の60分の上限など）、どの項目に時間がかかったか残す
 }
 PIDS=()
-for it in "${SEL[@]}"; do
+for it in "${RUN[@]}"; do
   while [ "$(jobs -rp | grep -vc "^${SERVER_PID:-x}$")" -ge "$JOBS" ]; do sleep 0.3; done
   run_one "$it" &
   PIDS+=($!)
