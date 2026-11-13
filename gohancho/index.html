@@ -6118,12 +6118,49 @@ function bfEntryFit(){
 // 第40回 R178: はじめての案内（決定の帯の中の1行）で帯が高くなり、お膳が帯の上に入らなくなる画面（360×640 など）では、
 // 案内を決定ボタンと同じ行に詰めた形（ah-row: 「アレルギー・苦手を設定」と × を決定ボタンの横に）で入るか試す（決定の帯を最初の画面に残す）。
 // それでも入らなければ、今までどおり帯をお膳の下に置き（bar-static）、案内だけを下のタブの上に貼りつける
+// 第52回 R213: 幅 320px 以下でも、案内がお膳の料理（器・名前・かえる・札・丸いボタン）を覆わないようにする
+//  ・決定の帯の中の案内（.ah-in）で帯が高くなり、帯がお膳に重なるとき（240・280px の英語など。ボタンの字が1字ずつ折り返して帯が高くなっていた）は、
+//    同じ行に詰めた形（ah-row）でも重なるなら、帯をお膳の下に置く形（bar-static）にする
+//  ・下のタブの上に貼りつけた案内（.ah-st）が、上の段の料理（器・名前・札。幅 260px 以上ではかえるも）にかかるときは、貼りつけずにお膳の下に置く（ah-flow）
+//  ・下の段の料理にかかるときは、下の段を案内の下（最初の画面の外）へ下げる（スクロールで見る。案内は最初の画面に残す）
+let trayForceStatic = false;
+const TRAY_DISH = '.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag';
+function trayDishHit(a, sel, root){ return [...root.querySelectorAll(sel)].some(e => { const q = e.getBoundingClientRect(); return q.height > 0 && q.width > 0 && q.top < a.bottom - .5 && q.bottom > a.top + .5 && q.left < a.right - .5 && q.right > a.left + .5; }); }
+function decideBarHitsTray(){
+    const tr = document.querySelector('#view .tray.grid2'), bar = document.querySelector('#view .actionbar.decide-bar');
+    if (!tr || !bar || document.body.classList.contains('bar-static') || !/sticky|fixed/.test(getComputedStyle(bar).position)) return false;
+    const a = bar.getBoundingClientRect(); return a.height > 0 && trayDishHit(a, TRAY_DISH + ', .tg-mid .shuffle', tr);
+}
+function hintStGuard(){
+    const tr = document.querySelector('#view .tray.grid2'); if (!tr) return;
+    const rows = [...tr.querySelectorAll('.tg-row')];
+    const h = document.querySelector('#view .alg-hint.ah-st'), b = document.body.classList;
+    if (tab !== 'today' || !h || !b.contains('bar-static') || b.contains('ah-flow')) return;
+    const a = h.getBoundingClientRect(); if (!(a.height > 0) || getComputedStyle(h).position !== 'sticky') return;
+    // 上の段の器・名前・札にかかるときは貼りつけない。上の段の「かえる」は、幅 260px 以上ではかからないように。幅 260px 未満（195 など）は上の段がやっと入る高さなので、
+    // かえる（下半分まで）・丸いボタンの下の方にかかるのは前から許している（案内を最初の画面に残すのを先に。ob40）
+    const halfSwap = rows[0] && innerWidth < 260 && [...rows[0].querySelectorAll('.spot .swap:not(.swap-ph)')].some(e => { const q = e.getBoundingClientRect(); return q.height > 0 && q.bottom > a.top + .5 && a.top - q.top < q.height / 2 - .5; });   // かえるの上半分まで隠れる
+    if (rows[0] && (halfSwap || trayDishHit(a, innerWidth >= 260 ? TRAY_DISH : '.spot .vessel, .spot .nm, .spot .alg-tag', rows[0]))){ b.add('ah-flow'); return; }
+    const low = rows.slice(1); if (!low.length || !low.some(r => trayDishHit(a, TRAY_DISH, r))) return;
+    const nav = document.querySelector('nav.tabs'), floor = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
+    const top = Math.min(...low.flatMap(r => [...r.querySelectorAll(TRAY_DISH)].map(e => e.getBoundingClientRect().top)));
+    if (isFinite(top) && floor > top) rows[1].style.marginTop = Math.ceil((parseFloat(rows[1].style.marginTop) || 0) + floor - top + 2) + 'px';
+}
 function fitTray(){
-    document.body.classList.remove('ah-row');
+    document.body.classList.remove('ah-row'); trayForceStatic = false;
+    { const r1 = document.querySelectorAll('#view .tray.grid2 .tg-row')[1]; if (r1) r1.style.removeProperty('margin-top'); }
     fitTrayRun();
-    if (tab !== 'today' || !document.body.classList.contains('bar-static') || !document.querySelector('#view .alg-hint.ah-in')) return;
-    document.body.classList.add('ah-row'); fitTrayRun();
-    if (document.body.classList.contains('bar-static')){ document.body.classList.remove('ah-row'); fitTrayRun(); }
+    const hintIn = tab === 'today' && document.querySelector('#view .alg-hint.ah-in');
+    if (hintIn && document.body.classList.contains('bar-static')){
+        document.body.classList.add('ah-row'); fitTrayRun();
+        if (document.body.classList.contains('bar-static') || decideBarHitsTray()){ document.body.classList.remove('ah-row'); fitTrayRun(); }
+    } else if (hintIn && decideBarHitsTray()){
+        document.body.classList.add('ah-row'); fitTrayRun();
+        if (!document.body.classList.contains('bar-static') && decideBarHitsTray()){ document.body.classList.remove('ah-row'); trayForceStatic = true; TRAY_FIT.key = ''; fitTrayRun(); if (!document.body.classList.contains('bar-static')) document.body.classList.add('bar-static'); }
+    }
+    hintStGuard();
+    // 字・絵の読みこみで高さが少し変わったあとも、もう一度だけ確かめる（下げる量を足すだけ。戻さない）
+    requestAnimationFrame(() => { try{ hintStGuard(); }catch(e){} }); setTimeout(() => { try{ hintStGuard(); }catch(e){} }, 400);
 }
 function fitTrayRun(){
     document.body.classList.remove('ah-flow');
@@ -6225,7 +6262,7 @@ function fitTrayRun(){
     if (vs >= vs0) tr.style.removeProperty('--vs');
     // 詰めても入らない（幅195px・文字もっと大きい など）: 帯をお盆に重ねず（お膳の下に置く）、お膳は詰めない形（器・名前・その下の「かえる」）に戻す。スクロールで全部見られる
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
-    const noFit = Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
+    const noFit = trayForceStatic || Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
     if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0; toTight(vs0);
         // お膳が入りきらない画面でも、あいさつは出さない（献立を上に。家族リクエストの入口は残す。第8回 R20）
