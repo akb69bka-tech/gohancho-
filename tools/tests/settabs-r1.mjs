@@ -42,6 +42,8 @@ const inView = (p, sel) => p.evaluate(sel => {
 const settle = p => p.waitForTimeout(700);
 
 // 決めた分け方: タブ → まとまり（section）／代表の欄
+// R146（ui49）: 全員無料（billingMode 'off'）のあいだは「プランと購入」のまとまり（set-plan）と入口（paywall）を出さない。'native'・'all' では今までどおり plan のタブに出る
+const BILL_OFF = /billingMode:\s*'off'/.test((await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8'));
 const TABS = {
     family: {secs: ['family'], items: ['#allergy-card', '[data-act="alg-toggle"]', '[data-act="alg-family"]', '#family-profile', '[data-act="fam-add"]', '[data-act="wish-open"]', '[data-act="ask-open"]', '[data-act="servings"]']},
     food: {secs: ['food'], items: ['[data-act="toggle-avoid"]', '[data-act="toggle-avoid-fam"][data-v="alcohol"]', '[data-act="toggle-avoid-diet"][data-v="halal"]', '[data-act="toggle-avoid-diet"][data-v="vegi"]', '#avoid-input', '[data-act="avoid-swap"]', '#scarce-field', '#scarce-input']},
@@ -50,7 +52,7 @@ const TABS = {
     store: {secs: ['store'], items: ['[data-act="sale-new"]', '#cheap-set', '[data-act="cheap-tog"]']},
     display: {secs: ['display'], items: ['[data-act="ui-lang"]', '[data-act="text-size"]', '[data-act="open-at"]']},
     data: {secs: ['data'], items: ['#backup-card', '#backup-move', '#backup-text', '[data-act="export"]', '[data-act="import"]', '[data-act="import-file"]', '#backup-file', '[data-act="reset"]']},
-    plan: {secs: ['plan', 'notify', 'help'], items: ['[data-act="paywall"]', '[data-act="timer-alert-set"]', '[data-act="ob-again"]', '#set-help a.btn, #set-help button.btn[data-doc], #set-help [data-act="doc"]']},
+    plan: {secs: [...(BILL_OFF ? [] : ['plan']), 'notify', 'help'], items: [...(BILL_OFF ? [] : ['[data-act="paywall"]']), '[data-act="timer-alert-set"]', '[data-act="ob-again"]', '#set-help a.btn, #set-help button.btn[data-doc], #set-help [data-act="doc"]']},
 };
 
 // ---- T1 漏れ・重複 ----
@@ -71,6 +73,7 @@ const TABS = {
         const ids = {}; v.querySelectorAll('[id]').forEach(e => { ids[e.id] = (ids[e.id] || 0) + 1; }); out.dupIds = Object.entries(ids).filter(([, n]) => n > 1).map(([k]) => k);
         v.querySelectorAll('section.set-sec').forEach(s => { out.secs[s.id] = panels.filter(x => x.contains(s)).map(x => x.dataset.t); });
         for (const [tk, d] of Object.entries(TABS)) for (const sel of d.items){ const es = [...v.querySelectorAll(sel)]; out.items[sel] = {want: tk, got: [...new Set(es.map(e => (e.closest('.set-panel') || {}).dataset?.t || '-'))]}; }
+        out.paywall = v.querySelectorAll('[data-act="paywall"]').length;
         panels.forEach(x => { if (!x.querySelector('section.set-sec')) out.empty.push(x.dataset.t); });
         return out;
     }, TABS);
@@ -82,6 +85,7 @@ const TABS = {
     ok(r.empty.length === 0, 'T1f 中身のないタブ: ' + r.empty.join(','));
     for (const [tk, d] of Object.entries(TABS)) for (const s of d.secs) ok(JSON.stringify(r.secs['set-' + s]) === JSON.stringify([tk]), `T1g まとまり set-${s} は ${tk} のタブだけ: ${JSON.stringify(r.secs['set-' + s])}`);
     ok(Object.keys(r.secs).length === Object.values(TABS).reduce((n, d) => n + d.secs.length, 0), 'T1h まとまりの数: ' + Object.keys(r.secs).join(','));
+    if (BILL_OFF) ok(!r.secs['set-plan'] && !r.paywall, 'T1j 全員無料のあいだは「プランと購入」のまとまりと入口（paywall）が設定にない: ' + JSON.stringify({plan: r.secs['set-plan'], paywall: r.paywall}));
     for (const [sel, x] of Object.entries(r.items)) ok(x.got.length === 1 && x.got[0] === x.want, `T1i ${sel} は「${x.want}」のタブ: ${x.got.join(',') || 'なし'}`);
     await ctx.close();
 }
