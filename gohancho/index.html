@@ -7695,6 +7695,9 @@ const PLAN = {
     // プラスの内容。いまのしくみ（課金ありなら購入・お試しなしではすべてロック、なしなら全員無料）には「無料版」がないので、無料版との差ではなく使えることを並べる。ひとひねりは日本＋日本語のときだけ
     get benefits(){ if (this.freeTier) return [t('5品・6品の献立（おもてなし・作り置きの日に）'), t('献立の予定と買い物メモ'), t('買い足すと作れる料理が増える食材をすべて表示'), ...(twistAvailable() ? [t('定番をひとひねり')] : []), t('ひと手間の「やってみた」で腕前を記録')]; return [t('毎日の献立を、お膳ごと提案'), t('同じ料理が続かない'), t('5品・6品の献立（おもてなし・作り置きの日に）'), t('献立の予定と買い物メモ'), t('冷蔵庫の材料から探せる'), t('買い足すと作れる料理が増える食材をすべて表示'), ...(twistAvailable() ? [t('定番をひとひねり')] : []), t('ひと手間の「やってみた」で腕前を記録'), t('世界のレシピ'), t('家族に送る')]; },
 };
+// ui49（R146）: 「プランと購入」の入口（設定のまとまり・タブの名前と絵）を見せるか。billingMode が 'off'（全員無料）のあいだは見せない。
+// 見せないだけで、課金のしくみ（billingMode・価格・購入の処理）は変えない。オーナーが 'native' か 'all' にすれば、今までどおり出る
+function planShown(){ return PLAN.billingMode !== 'off'; }
 function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
     return !!(S.pro && S.pro.active);
@@ -11634,7 +11637,7 @@ function viewSettings(){
                 </div>
             </details>
         </div>`))}
-        ${pan('plan', sec('plan', `<div class="set-group">
+        ${pan('plan', (planShown() ? sec('plan', `<div class="set-group">
             <div class="set-title">${esc(PLAN.name)}</div>
             ${PLAN.billingEnabled
                 ? (isSubscribed() ? `<div class="note"><span>${esc(t('{plan}をご利用中です。ありがとうございます。', {plan:PLAN.name}))}${S.pro && S.pro.willRenew === false && S.pro.expires ? '<br>' + esc(t('{date}まで使えます（更新しません）', {date:jpDate(S.pro.expires)})) : S.pro && S.pro.trialEnd ? '<br>' + esc(t('無料期間中：{date}から{price}', {date:jpDate(S.pro.trialEnd), price:planPriceFor(S.pro.product) || monthlyPrice() || t('月額料金')})) : S.pro && S.pro.expires ? '<br>' + esc(t('次の更新：{date}', {date:jpDate(S.pro.expires)})) : ''}</span>${isNative() || webBillingOn() ? `<button class="btn sm" data-act="manage-sub">${esc(t('プランの管理・解約'))}</button>` : ''}</div>`
@@ -11643,7 +11646,7 @@ function viewSettings(){
                 : `<div class="note"><span>${esc(t('わが家のご飯帖は無料です。すべての機能をお使いいただけます。'))}</span><button class="btn sm" data-act="paywall">${esc(t('プラスの内容'))}</button></div>`}
             ${PLAN.billingEnabled && (purchasesPlugin() || webBillingOn()) ? `<button class="btn sm ghost" data-act="restore">${esc(t('購入を復元'))}</button>` : ''}
         </div>
-`)
+`) : '')   // ui49（R146）: 全員無料のあいだは「プランと購入」を出さない
             + sec('notify', `<div class="set-group">
             ${reminderHtml()}
         </div>
@@ -11691,7 +11694,7 @@ const SET_TABS = [
     ['store', () => t('スーパー'), ['store']],             // よく行くスーパー・やすい食材
     ['display', () => langTitle(t('表示')), ['display']],   // 言語・文字の大きさ・開いたときの画面（「🌐 Language」は、読めない言葉のままでも言語の場所が分かるように。前の目次と同じ）
     ['data', () => t('データ'), ['data']],                 // バックアップ・書き出し・読み込み・全消去
-    ['plan', () => t('プラン・その他'), ['plan', 'notify', 'help']],   // プランと購入・お知らせ・ヘルプ（アプリ・プライバシー・お問い合わせ）
+    ['plan', () => planShown() ? t('プラン・その他') : t('その他'), ['plan', 'notify', 'help']],   // ui49: 全員無料のあいだは「その他」（お知らせ・ヘルプ）   // プランと購入・お知らせ・ヘルプ（アプリ・プライバシー・お問い合わせ）
 ];
 const SET_TAB_KEY = 'gohancho.setTab';   // 最後に開いたタブ（この端末の表示の覚えだけ。保存データ S には入れない）
 function setSecTitle(k){
@@ -11712,7 +11715,7 @@ function setTabKeep(k){ session.setTab = k; try{ localStorage.setItem(SET_TAB_KE
 const SET_CHEV = '<svg viewBox="0 0 12 12" aria-hidden="true"><polyline points="4.5 2 8.5 6 4.5 10"/></svg>';
 function setTabsHtml(cur){
     const cue = d => `<button type="button" class="set-tabs-cue" data-act="set-tabs-step" data-dir="${d}" tabindex="-1" aria-hidden="true" hidden><i>${d === 'prev' ? SET_CHEV.replace('4.5 2 8.5 6 4.5 10', '7.5 2 3.5 6 7.5 10') : SET_CHEV}</i></button>`;
-    return `<div class="set-tabs-bar"><div class="set-tabs-wrap"><div class="set-toc set-tabs" role="tablist" aria-label="${esc(t('設定の目次'))}">${SET_TABS.map(([k, l]) => `<button type="button" role="tab" class="set-tab" id="sett-${k}" data-act="set-jump" data-k="${k}" aria-controls="setp-${k}" aria-selected="${k === cur}" tabindex="${k === cur ? 0 : -1}">${SET_ICONS[k]}<span>${esc(l())}</span></button>`).join('')}</div>${cue('prev')}${cue('next')}</div></div>`;
+    return `<div class="set-tabs-bar"><div class="set-tabs-wrap"><div class="set-toc set-tabs" role="tablist" aria-label="${esc(t('設定の目次'))}">${SET_TABS.map(([k, l]) => `<button type="button" role="tab" class="set-tab" id="sett-${k}" data-act="set-jump" data-k="${k}" aria-controls="setp-${k}" aria-selected="${k === cur}" tabindex="${k === cur ? 0 : -1}">${k === 'plan' && !planShown() ? SET_ICONS.help : SET_ICONS[k]}<span>${esc(l())}</span></button>`).join('')}</div>${cue('prev')}${cue('next')}</div></div>`;
 }
 // 列の前（先頭の側）・後ろにまだ見えていないタブがあるか。右から並ぶ言語では scrollLeft が 0 から負へ動くので、向きは絶対値で見る
 function setTabCue(){

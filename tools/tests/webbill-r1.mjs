@@ -44,7 +44,8 @@ const CONF = "PLAN.revenueCatWebKey='rcb_test'; PLAN.legalUrl='https://example.i
     });
     r.forEach(m => ok(false, 'W1 ' + m)); ok(true, 'W1');
     const txt = await p.evaluate(() => { setTab('settings'); document.querySelectorAll('details').forEach(d => d.open = true); return SET_TABS.map(([k]) => { setTabShow(k); return document.body.innerText; }).join('\n'); });   // 設定はタブ分け（11/09）。全部のタブを開いて読む（選んでいないタブは hidden で innerText に出ない）
-    ok(/すべてのデータを消す|プライバシー/.test(txt) && txt.includes('わが家のご飯帖は無料です'), 'W1 設定の画面が開けていない/無料の案内がない');
+    ok(/すべてのデータを消す|プライバシー/.test(txt), 'W1 設定の画面が開けていない');
+    ok(!/プランと購入|プラスの内容|ご飯帖プラス/.test(txt), 'W1 off なのに設定に「プランと購入」の入口が出ている（R146: 全員無料のあいだは見せない）');
     ok(!/購入を復元|購入ID|特定商取引|プランの管理・解約/.test(txt), 'W1 設定に課金の表示が出ている');
     ok(sdkReq.length === 0, 'W1 off なのに決済 SDK へ通信した: ' + sdkReq);
     await ctx.close();
