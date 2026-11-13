@@ -120,6 +120,7 @@ run_one() {
   env $envs timeout "$TIMEOUT" bash -c "$cmd" >"$OUT/$name.log" 2>&1; rc=$?
   e=$(date +%s)
   echo "$rc $((e - s))" >"$OUT/$name.rc"
+  echo "… $(date +%H:%M:%S) 終わり: $name（rc=$rc・$((e - s))秒）"   # 途中で止まっても（GitHub の60分の上限など）、どの項目に時間がかかったか残す
 }
 PIDS=()
 for it in "${SEL[@]}"; do
