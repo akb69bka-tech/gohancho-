@@ -11744,7 +11744,11 @@ function setTabReveal(){
             const ns = [side < 0 ? near - edge - PEEK : near - edge + PEEK];   // n: 中身を左へ動かす量
             if (out != null) ns.push(side < 0 ? out - edge + PEEK : out - edge - PEEK);
             const m = Math.max(0, Math.min(20, (A.width - act.width) / 2 - 0.5));   // 選んだタブに端の ‹ › の丸がかからない（かかってもぼかしの薄いところだけ）
-            return ns.filter(n => act.left - n >= A.left + m - 0.5 && act.right - n <= A.right - m + 0.5).sort((x, y) => Math.abs(x) - Math.abs(y))[0] ?? null;
+            // ui50: ‹ › の丸が出るのは、寄せたあとにその側へまだタブがはみ出しているときだけ。列の始め・終わりまで寄せたとき（その側に丸が出ない）は、選んだタブが列の中に入っていればよい
+            // （前は両側に丸の幅を空けていたので、短いタブ名「その他」で列の終わりに来たとき、寄せる案がどれも外れて、のぞきが0になった。第46回 GitHub の settabs-r2 C10 ko）
+            const lo = Math.min(...R.map(q => q.left)), hi = Math.max(...R.map(q => q.right));
+            const room = n => ({l: lo - n < A.left - 1 ? m : 0, r: hi - n > A.right + 1 ? m : 0});
+            return ns.filter(n => { const g = room(n); return act.left - n >= A.left + g.l - 0.5 && act.right - n <= A.right - g.r + 0.5; }).sort((x, y) => Math.abs(x) - Math.abs(y))[0] ?? null;
         };
         for (const side of [-1, 1]){
             let n = fix(side); if (n == null) continue;

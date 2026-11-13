@@ -109,6 +109,37 @@ const rowState = p => p.evaluate(() => {
             await p.setViewportSize({width: 195, height: 760});
         }
     }
+    // C11（ui50）: 字形が違う機械（GitHub など）でタブの幅が少し変わっても、のぞきが0にならない。タブの字の間を -0.6〜+0.9px 揺らして、
+    // 列の端がタブとタブのすき間に来る場合も作る。18言語 × 390・360px × 文字0〜2 × 字の間7通り × タブ8（第46回: ko 390px 文字0 plan でのぞき0）
+    {
+        let n = 0; const bad = [];
+        for (const L of LANGS){
+            await lang(p, L);
+            for (const w of [390, 360]) for (const ts of [0, 1, 2]){
+                await textSize(p, ts); await p.setViewportSize({width: w, height: 760});
+                const r = await p.evaluate(TABS => {
+                    const st = document.head.appendChild(document.createElement('style')), out = [];
+                    for (const ls of [-0.6, -0.35, -0.1, 0.15, 0.4, 0.65, 0.9]){
+                        st.textContent = `#view .set-tab{letter-spacing:${ls}px}`;
+                        for (const k of TABS){
+                            setGo(k);
+                            const sc = document.querySelector('#view .set-tabs'), a = sc.getBoundingClientRect(), bs = [...sc.querySelectorAll('.set-tab')];
+                            const over = sc.scrollWidth > sc.clientWidth + 1, s = Math.abs(sc.scrollLeft), more = sc.scrollWidth - sc.clientWidth;
+                            const cue = d => { const c = document.querySelector(`#view .set-tabs-cue[data-dir="${d}"]`); return !!c && !c.hidden && c.getBoundingClientRect().width > 0; };
+                            const partial = bs.map(x => { const q = x.getBoundingClientRect(); return Math.max(0, Math.min(q.right, a.right) - Math.max(q.left, a.left)) / q.width; }).filter(v => v > 0.02 && v < 0.98).length;
+                            const ar = sc.querySelector('[aria-selected="true"]').getBoundingClientRect();
+                            const good = !over || (cue('prev') === (s > 1) && cue('next') === (s < more - 1) && partial >= 1);
+                            out.push({ls, k, good: good && ar.left >= a.left - 1 && ar.right <= a.right + 1, partial});
+                        }
+                    }
+                    st.remove(); render(); return out;
+                }, TABS);
+                r.forEach(x => { n++; if (!x.good) bad.push(`${L} ${w}px 文字${ts} 字の間${x.ls} ${x.k} のぞき${x.partial}`); });
+            }
+        }
+        ok(!bad.length && n === LANGS.length * 2 * 3 * 7 * TABS.length, `C11 タブの幅が少し変わっても ‹ ›・のぞき・選んだタブが見える（${n}通り）: ` + bad.slice(0, 6).join(' / '));
+        await p.setViewportSize({width: 195, height: 760});
+    }
     await ctx.close();
 }
 
