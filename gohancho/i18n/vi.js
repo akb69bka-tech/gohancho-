@@ -2086,6 +2086,7 @@ GOHAN_I18N('vi', {
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Số người (2), số món, thực phẩm bạn tránh và dị ứng có thể đổi sau trong Cài đặt.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Bạn bị dị ứng hoặc có thực phẩm muốn tránh? Hãy cài đặt tại đây.",
     "アレルギー・苦手を設定": "Dị ứng & thực phẩm cần tránh",
+    "アレルギー・苦手": "Dị ứng & kiêng",
     "{name}のアレルギーから「{what}」を外しました": "Đã bỏ “{what}” khỏi dị ứng của {name}",
     "アレルギー対策から「{what}」を外しました": "Đã bỏ “{what}” khỏi chất gây dị ứng",
 });
