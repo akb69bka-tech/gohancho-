@@ -877,6 +877,14 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .alg-hint.ah-st{display:none}
 body.bar-static .alg-hint.ah-in{display:none}
 body.bar-static.ah-flow .alg-hint.ah-st{position:static}
+/* ui53（第48回 R215・R213 の残り）: 幅 260px 未満で、下のタブの上に貼りつけた案内が丸い「まるごと入れ替え」（8px より多く）や上の段の料理にかかるときは、
+   案内を上の段のすぐ下（丸いボタンの上。お膳の中）に置く（ah-mid）。前はお膳の下（画面2つ分ほど下）に回って、最初の画面で見えなかった。丸いボタンと下の段はその下（スクロールの先） */
+.alg-hint.ah-md,.alg-hint.ah-tp{display:none}
+body.bar-static.ah-mid .alg-hint.ah-md{display:flex;margin:var(--s8) 0}
+body.bar-static.ah-top .alg-hint.ah-tp{display:flex;margin:0 0 var(--s8)}   /* 上の段が高くて（長い料理名・文字もっと大きい）、すぐ下では最初の画面に入らないときは、お膳の中のいちばん上（上の段の上） */
+body.bar-static.ah-mid .alg-hint.ah-st,body.bar-static.ah-top .alg-hint.ah-st{display:none}
+/* 幅 260px 未満の案内は細い1行のまま（ボタンの字は2行まで。高さをそろえる。全文は読み上げとボタンの名前に残る） */
+@media (max-width:259px){body .alg-hint .ah-go .ah-s{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}}
 body.bar-static .alg-hint.ah-st{display:flex;position:sticky;bottom:calc(var(--nav-h,72px) + var(--s8));z-index:6;margin-top:var(--s8);box-shadow:0 0 0 var(--s4) color-mix(in srgb,var(--bg) 84%,transparent)}
 body.ah-row .alg-hint.ah-in{flex:1 1 0;order:-1;padding-left:2px}
 body.ah-row .alg-hint.ah-in .ah-tx,body.ah-row .alg-hint.ah-in .ah-go .ah-l{display:none}
@@ -6131,11 +6139,31 @@ function decideBarHitsTray(){
     if (!tr || !bar || document.body.classList.contains('bar-static') || !/sticky|fixed/.test(getComputedStyle(bar).position)) return false;
     const a = bar.getBoundingClientRect(); return a.height > 0 && trayDishHit(a, TRAY_DISH + ', .tg-mid .shuffle', tr);
 }
+// ui53（第48回 R215・R213 の残り）: 幅 260px 未満で帯をお膳の下に置く画面。下のタブの上に貼りつけた案内（.ah-st）か、お膳の下に回した案内（ah-flow）が、
+// 上の段の料理（器・名前・かえる・札）にかかる・丸いボタンに 8px より多くかかる・最初の画面に入らないときは、上の段のすぐ下に置く（ah-mid）。
+// そこでも最初の画面に入らない・料理にかかるときだけ、今までどおり（ah-flow）
+const HINT_SH_OK = 8;
+function hintMidPick(){
+    const b = document.body.classList; b.remove('ah-mid', 'ah-top');
+    const tr = document.querySelector('#view .tray.grid2'), st = document.querySelector('#view .alg-hint.ah-st'), md = tr && tr.querySelector('.alg-hint.ah-md');
+    if (tab !== 'today' || !tr || !st || !md || !b.contains('bar-static') || innerWidth >= 260) return;
+    const row0 = tr.querySelector('.tg-row'); if (!row0) return;
+    const nav = document.querySelector('nav.tabs'), floor = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
+    const over = (a, e) => { const q = e.getBoundingClientRect(); return q.height > 0 && q.width > 0 && q.left < a.right - .5 && q.right > a.left + .5 ? Math.max(0, Math.min(a.bottom, q.bottom) - Math.max(a.top, q.top)) : 0; };
+    const sy = scrollY, clean = h => { const a = h.getBoundingClientRect(); if (!(a.height > 0) || a.top + sy < -.5 || a.bottom + sy > floor + .5) return false;
+        if ([...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag')].some(e => over(a, e) > .5)) return false;
+        return [...tr.querySelectorAll('.tg-mid .shuffle')].every(e => over(a, e) <= HINT_SH_OK); };
+    if (!b.contains('ah-flow') && clean(st)) return;
+    const flow = b.contains('ah-flow'), tp = tr.querySelector('.alg-hint.ah-tp'); b.remove('ah-flow'); b.add('ah-mid');
+    if (clean(md)) return;
+    b.remove('ah-mid'); if (tp){ b.add('ah-top'); if (clean(tp)) return; b.remove('ah-top'); }
+    if (flow) b.add('ah-flow');
+}
 function hintStGuard(){
     const tr = document.querySelector('#view .tray.grid2'); if (!tr) return;
     const rows = [...tr.querySelectorAll('.tg-row')];
     const h = document.querySelector('#view .alg-hint.ah-st'), b = document.body.classList;
-    if (tab !== 'today' || !h || !b.contains('bar-static') || b.contains('ah-flow')) return;
+    if (tab !== 'today' || !h || !b.contains('bar-static') || b.contains('ah-flow') || b.contains('ah-mid') || b.contains('ah-top')) return;
     const a = h.getBoundingClientRect(); if (!(a.height > 0) || getComputedStyle(h).position !== 'sticky') return;
     // 上の段の器・名前・札にかかるときは貼りつけない。上の段の「かえる」は、幅 260px 以上ではかからないように。幅 260px 未満（195 など）は上の段がやっと入る高さなので、
     // かえる（下半分まで）・丸いボタンの下の方にかかるのは前から許している（案内を最初の画面に残すのを先に。ob40）
@@ -6158,12 +6186,13 @@ function fitTray(){
         document.body.classList.add('ah-row'); fitTrayRun();
         if (!document.body.classList.contains('bar-static') && decideBarHitsTray()){ document.body.classList.remove('ah-row'); trayForceStatic = true; TRAY_FIT.key = ''; fitTrayRun(); if (!document.body.classList.contains('bar-static')) document.body.classList.add('bar-static'); }
     }
+    hintMidPick();
     hintStGuard();
     // 字・絵の読みこみで高さが少し変わったあとも、もう一度だけ確かめる（下げる量を足すだけ。戻さない）
     requestAnimationFrame(() => { try{ hintStGuard(); }catch(e){} }); setTimeout(() => { try{ hintStGuard(); }catch(e){} }, 400);
 }
 function fitTrayRun(){
-    document.body.classList.remove('ah-flow');
+    document.body.classList.remove('ah-flow', 'ah-mid', 'ah-top');
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
@@ -6276,7 +6305,9 @@ function fitTrayRun(){
         let fl0 = flN, withMid = false;
         const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag'), ...(withMid ? tr.querySelectorAll('.tg-mid .shuffle, .tg-mid .mb-back') : [])].map(e => fitBottom(e) + scrollY)) <= fl0 + .5;   // 画面のいちばん上（スクロールしていない形）での下端で見る（第12回 R36: 下の「この献立に決定」までスクロールして決めると、送った分だけ入って見え、詰めない形になっていた）
         const loosen = () => { tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); reqUp(false); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); };
-        const goals = hintSt && flH < flN ? [[flH, true], [flH, false], [flN, false]] : [[flN, false]];
+        // ui53: 幅 260px 未満では、案内を上の段のすぐ下に置く形（ah-mid。hintMidPick）のための高さも目標にする（貼りつけた案内が丸いボタンにかかる形より先に）
+        const flM = hintSt && innerWidth < 260 ? flN - hintSt.getBoundingClientRect().height - 12 : null;
+        const goals = hintSt && flH < flN ? (flM != null ? [[flH, true], [flM, false], [flH, false], [flN, false]] : [[flH, true], [flH, false], [flN, false]]) : [[flN, false]];
         let fitOk = false, goalK = -1;
         for (const [k, [f, mid]] of goals.entries()){
             fl0 = f; withMid = mid; if (k) loosen();
@@ -11770,22 +11801,25 @@ function setTabReveal(){
         const d = (r.left + r.right) / 2 - (a.left + a.right) / 2; if (Math.abs(d) > 1) sc.scrollLeft += d;
         // 端でタブの切れ目がちょうど列の端に来ると、隣がのぞかない。その端をまたぐタブができるまで 20px ほど寄せる（選んだタブは列の中に残す）
         // 隠れたタブを引き入れる（A）か、端のタブを少し押し出す（B）。列の端まで寄っていて動かせないときは、端のタブに余白を足して寄せる
-        const PEEK = 20;
+        // ui53（第48回 R216）: 端の ‹ › の丸とぼかし（24px）の下にのぞきが隠れないよう、端をまたぐタブは列の中に NEED px 以上（丸の幅＋8px）見せる。隠れたタブを引き入れるときは PEEK_IN px
+        const PEEK = 20, NEED = 32, PEEK_IN = 40;
         const fix = side => {
             const A = sc.getBoundingClientRect(), R = all.map(x => x.getBoundingClientRect()), act = b.getBoundingClientRect(), edge = side < 0 ? A.left : A.right;
-            if (sc.scrollWidth <= sc.clientWidth + 1 || R.some(q => q.left < edge - 6 && q.right > edge + 6)) return null;   // はみ出していない・もうのぞいている（端をまたいで両側に 6px 以上）
-            const hid = R.filter(q => side < 0 ? q.right <= edge + 6 : q.left >= edge - 6); if (!hid.length) return null;
+            if (sc.scrollWidth <= sc.clientWidth + 1 || R.some(q => side < 0 ? q.left < edge - 6 && q.right > edge + NEED : q.right > edge + 6 && q.left < edge - NEED)) return null;   // はみ出していない・もうのぞいている（端をまたいで、外に 6px 以上・中に丸の幅＋8px 以上）
+            const hid = R.filter(q => side < 0 ? q.right < edge + NEED : q.left > edge - NEED); if (!hid.length) return null;   // 見えていない・丸の下にしか見えていないタブ
             const near = side < 0 ? Math.max(...hid.map(q => q.right)) : Math.min(...hid.map(q => q.left));
             const vis = R.filter((q, i) => all[i] !== b && (side < 0 ? q.left >= edge - 6 : q.right <= edge + 6));
             const out = vis.length ? (side < 0 ? Math.min(...vis.map(q => q.left)) : Math.max(...vis.map(q => q.right))) : null;
-            const ns = [side < 0 ? near - edge - PEEK : near - edge + PEEK];   // n: 中身を左へ動かす量
+            const ns = [side < 0 ? near - edge - PEEK_IN : near - edge + PEEK_IN];   // n: 中身を左へ動かす量
             if (out != null) ns.push(side < 0 ? out - edge + PEEK : out - edge - PEEK);
             const m = Math.max(0, Math.min(20, (A.width - act.width) / 2 - 0.5));   // 選んだタブに端の ‹ › の丸がかからない（かかってもぼかしの薄いところだけ）
             // ui50: ‹ › の丸が出るのは、寄せたあとにその側へまだタブがはみ出しているときだけ。列の始め・終わりまで寄せたとき（その側に丸が出ない）は、選んだタブが列の中に入っていればよい
             // （前は両側に丸の幅を空けていたので、短いタブ名「その他」で列の終わりに来たとき、寄せる案がどれも外れて、のぞきが0になった。第46回 GitHub の settabs-r2 C10 ko）
             const lo = Math.min(...R.map(q => q.left)), hi = Math.max(...R.map(q => q.right));
             const room = n => ({l: lo - n < A.left - 1 ? m : 0, r: hi - n > A.right + 1 ? m : 0});
-            return ns.filter(n => { const g = room(n); return act.left - n >= A.left + g.l - 0.5 && act.right - n <= A.right - g.r + 0.5; }).sort((x, y) => Math.abs(x) - Math.abs(y))[0] ?? null;
+            const okN = n => { const g = room(n); return act.left - n >= A.left + g.l - 0.5 && act.right - n <= A.right - g.r + 0.5; };
+            // 選んだタブが広くて PEEK_IN px まで引き入れられないときは、丸の外に 8px 見える最小（NEED＋1px）で引き入れる（ui53）
+            return ns.filter(okN).sort((x, y) => Math.abs(x) - Math.abs(y))[0] ?? [side < 0 ? near - edge - NEED - 1 : near - edge + NEED + 1].find(okN) ?? null;
         };
         for (const side of [-1, 1]){
             let n = fix(side); if (n == null) continue;
@@ -15149,8 +15183,8 @@ function viewToday(){
             <button type="button" class="p2-sv one" data-act="cond-open" aria-label="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}" title="${esc([t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・')))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="sv1w">${svChipText(m)}${easyRelaxText() ? `<span class="sv-relax" role="status">${esc(t('条件をゆるめています'))}</span>` : ''}</span><span class="sv-chev" aria-hidden="true">▾</span></button></div>
         ${(aw => aw ? `<p class="alg-top" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${/* 第18回 R57: 決定の帯をお膳の下に置く画面（bar-static）では、⚠ の1行はお膳のすぐ上（最初の画面に入る）。ほかの画面では帯の中の .alg-bar（CSS で切りかえ） */''}
         <div class="tray grid2" style="--c:${Math.max(1, topN)}" aria-label="${esc(t('今日のお膳（{n}品）', {n: menuSeats(m)}))}">
-            <div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
-            ${shuffleBtn}
+            ${algHintHtml('tp')}<div class="tg-row" style="--n:${rowsHtml[0].length}">${rowsHtml[0].join('')}</div>
+            ${algHintHtml('md')}${shuffleBtn}
             ${rowsHtml[1].length ? `<div class="tg-row" style="--n:${rowsHtml[1].length}">${rowsHtml[1].join('')}</div>` : ''}
         </div>
         ${kcalTrayHtml(m)}${carbTrayHtml(m)}${carbNoteHtml()}
