@@ -60,12 +60,6 @@ function wfSwirl(p, x, y, R, { turns = 1.6, c = '#fffaf0', w = 4, op = .9, start
     return `<path d="${d}" stroke="${dk(c, .12)}" stroke-width="${w + 1.2}" fill="none" stroke-linecap="round" opacity="${f(op * .4)}" transform="translate(.6 .9)"/><path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity="${op}"/>`;
 }
 
-// クルトン
-function wfCrouton(p, x, y, s, r = 0){
-    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><g ${p.crumb(.9)}><rect x="${-s / 2}" y="${-s / 2}" width="${s}" height="${s}" rx="${f(s * .18)}" fill="${p.g('#dca04a', .35, .3)}" stroke="#a46a24" stroke-width=".5"/></g></g>
-        <rect x="${f(-s / 2 + s * .18)}" y="${f(-s / 2 + s * .18)}" width="${f(s * .5)}" height="${f(s * .5)}" rx="1" fill="#f2cf86" opacity=".7"/></g>`;
-}
-
 // 刻みハーブ（パセリ・シブレット）
 function wfHerbs(p, x, y, s, { n = 16, seed = 1, cols = ['#3f8a2c', '#5aa63c'] } = {}){
     const R = rng(p.id + 'wfh' + seed + x + y);
@@ -79,13 +73,6 @@ function wfChives(p, x, y, s, { n = 14, seed = 1 } = {}){
     let d1 = '', d2 = '';
     for (let i = 0; i < n; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * s / 2, cx = x + Math.cos(a) * d, cy = y + Math.sin(a) * d; const seg = `M${f(cx - 1.6)},${f(cy)}a1.6,1.4 0 1 0 3.2,0a1.6,1.4 0 1 0 -3.2,0Z`; if (R() < .6) d1 += seg; else d2 += seg; }
     return `<path d="${d1}" fill="none" stroke="#4f9a34" stroke-width="1.1"/><path d="${d2}" fill="none" stroke="#7ab850" stroke-width="1.1"/>`;
-}
-
-// ディル（細い羽のような葉）
-function wfDill(p, x, y, L, r = 0){
-    let d = `M${-L / 2},0 Q0,${f(-L * .06)} ${L / 2},0`;
-    for (let i = 0; i < 7; i++){ const t = -L / 2 + (i + .7) * L / 8; d += `M${f(t)},${f(-L * .02)} l${f(L * .1)},${f(-L * .16)} M${f(t)},${f(-L * .02)} l${f(L * .1)},${f(L * .14)}`; }
-    return `<g ${T(x, y, r)}><path d="${d}" stroke="#3f7f2a" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>`;
 }
 
 // いんげん（細長く、両端がすぼまる）
@@ -326,20 +313,6 @@ export default {
         ].join('');
     },
 
-    // 鮭のポワレ: 白い皿に、焼き色のついた鮭の切り身、レモンバター、いんげん、レモン、ディル
-    fr_saumon: p => [
-        K.plate(p, { rim: '#9aa6ae' }),
-        K.pool(p, 94, 106, 104, '#efcf74', { op: .7, seed: 1, sy: .7 }),
-        `<g ${p.sh(.8)}>`,
-        ...[[130, 64, -24], [138, 70, -30], [126, 72, -18], [144, 60, -36], [134, 78, -26], [120, 64, -14], [148, 76, -40], [128, 58, -22]].map(([x, y, r], i) => wfBean(p, x, y, 46 - (i % 3) * 4, r)),
-        `</g>`,
-        `<g ${p.sh(1.2)}>`, K.salmon(p, 86, 112, 104, -8), `</g>`,
-        K.glaze(p, 86, 112, 70, '#f5d77e', { seed: 3, op: .35 }),
-        wfDill(p, 82, 104, 30, -20), wfDill(p, 96, 118, 24, 30),
-        K.lemon(p, 150, 120, 34, -70),
-        K.sprinkle(p, 86, 112, 60, { c: '#2a2420', n: 14, r: .55 }),
-    ].join(''),
-
     // ソーセージとレンズ豆の煮込み: 茶の土鍋に、緑のレンズ豆、にんじんの輪切り、燻製ソーセージ、パセリ
     fr_lentilles: p => [
         K.bowl(p, { glaze: '#7b4b2e', inside: '#e9dcc4' }),
@@ -483,19 +456,6 @@ export default {
         `<g ${p.sh(.5)}>`, ...[[84, 82, -30], [120, 96, 40], [96, 124, 100], [130, 128, -60], [70, 112, 20]].map(([x, y, r]) => wfLeaf(p, x, y, 18, r, { c: '#3c9a40', w: .6 })), `</g>`,
         wfHerbs(p, 100, 100, 120, { n: 22 }),
         K.lemon(p, 140, 66, 30, 30),
-    ].join(''),
-
-    // ポロねぎとじゃがいものスープ: 白いスープ皿に、淡い緑がかったクリーム色のスープ、クレームフレッシュ、ポロねぎの輪切り、クルトン
-    fr_poireaux: p => [
-        K.bowl(p, { glaze: '#f3efe4', inside: '#fbf8f1' }),
-        `<circle cx="100" cy="100" r="80" fill="none" stroke="#7a9a5a" stroke-width="1.8" opacity=".8"/>`,
-        K.liquid(p, { R: 73, c: '#ddd59c', op: 1 }),
-        `<circle cx="96" cy="94" r="48" fill="#ece6bc" opacity=".5"/>`,
-        wfSwirl(p, 100, 100, 32, { turns: 1.3, w: 3.6 }),
-        `<g ${p.sh(.5)}>`, ...[[70, 80, 15], [128, 74, 13], [136, 120, 15], [76, 128, 13], [112, 140, 12], [60, 104, 11]].map(([x, y, s]) => `<g ${T(x, y)}><ellipse rx="${s / 2}" ry="${s * .44}" fill="${p.g('#e8efc8', .2, .2)}" stroke="#9ab86a" stroke-width="1"/><ellipse rx="${s * .32}" ry="${s * .27}" fill="none" stroke="#b8cf8a" stroke-width=".9"/><ellipse rx="${s * .14}" ry="${s * .11}" fill="none" stroke="#c9da9a" stroke-width=".8"/></g>`), `</g>`,
-        wfCrouton(p, 118, 98, 12, 10), wfCrouton(p, 92, 114, 11, -20), wfCrouton(p, 104, 76, 11, 30),
-        wfChives(p, 100, 100, 90, { n: 16 }),
-        wfShine(100, 100, 73, .45),
     ].join(''),
 
     // かぼちゃのポタージュ: 茶の鉢に、なめらかなオレンジのスープ、クレームフレッシュのうず、かぼちゃの種、黒こしょう

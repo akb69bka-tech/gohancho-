@@ -2,6 +2,8 @@
 GOHAN_PACK_TR('PH', 'fil', {
   staple: 'Kanin',
   names: {
+    'corned beef': 'Corned beef (de-lata)',
+    'sardines': 'Sardinas (de-lata)',
     'chicken': 'Manok',
     'pork': 'Baboy',
     'beef': 'Baka',
@@ -84,6 +86,36 @@ GOHAN_PACK_TR('PH', 'fil', {
     'mayonnaise': 'Mayonnaise'
   },
   recipes: {
+    "ph_sardinas_misua": {
+      name: "Misua at sardinas",
+      ings: [["Sardinas na de-lata (tomato sauce)", "1 lata (155 g)"], ["Misua", "1 bungkos (50 g)"], ["Sibuyas", "1/2"], ["Dahon ng sibuyas", "1"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 600 ml na tubig · 1 kutsaritang patis · Paminta",
+      steps: [
+        "Igisa ang bawang at hiniwang sibuyas sa mantika nang 1 minuto, ilagay ang sardinas kasama ang sarsa at ang tubig, pakuluan nang 3 minuto.",
+        "Ilagay ang misua at lutuin nang 1–2 minuto hanggang lumambot. Timplahan ng patis at paminta at budburan ng dahon ng sibuyas.",
+      ],
+      tip: { add: "Batihing itlog na ihahalo", why: "Mas malinamnam", skill: "Huling ilagay ang misua", how: "Isang minuto lang luto na ang misua; kung maaga, lalata ito." },
+    },
+    "ph_sinabawang_pechay": {
+      name: "Sinabawang pechay at giniling",
+      ings: [["Giniling na baboy", "100 g"], ["Pechay", "1 tali (200 g)"], ["Kamatis", "1"], ["Sibuyas", "1/2"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 700 ml na tubig · 1 kutsarang patis · Paminta",
+      steps: [
+        "Igisa ang bawang, sibuyas at kamatis nang 1 minuto, ilagay ang giniling at lutuin nang 2 minuto hanggang mawala ang pula. Ilagay ang tubig at pakuluan nang 2 minuto.",
+        "Ilagay muna ang tangkay ng pechay, saka ang dahon, at lutuin nang 2 minuto. Timplahan ng patis at paminta.",
+      ],
+      tip: { add: "Ilang hiwa ng luya", why: "Mas mabango at sariwa ang sabaw", skill: "Tangkay muna bago dahon", how: "Mas matagal maluto ang tangkay; isang minuto lang ang dahon." },
+    },
+    "ph_cornedbeef_sabaw": {
+      name: "Sinabawang corned beef",
+      ings: [["Corned beef na de-lata", "1 maliit na lata (150 g)"], ["Repolyo", "1/8 ulo (150 g)"], ["Sibuyas", "1/2"], ["Kamatis", "1"]],
+      seas: "2 butil ng bawang · 1 kutsarang mantika · 700 ml na tubig · Paminta · Patis ayon sa panlasa",
+      steps: [
+        "Igisa ang bawang, sibuyas at kamatis nang 1 minuto, ilagay ang corned beef at durugin nang 1 minuto. Ilagay ang tubig at pakuluan nang 3 minuto.",
+        "Ilagay ang ginayat na repolyo at lutuin nang 2 minuto. Timplahan ng paminta at patis kung kailangan.",
+      ],
+      tip: { add: "Patatas na hiniwa, unang niluto", why: "Mas nakakabusog na sabaw", skill: "Tikman bago timplahan", how: "Maalat na ang corned beef kaya sa huli na lang ang patis." },
+    },
     'ph_adobo': {
       name: 'Adobong manok',
       ings: [['Hita at drumstick ng manok', '600 g'], ['Nilagang itlog', '2?']],
@@ -269,7 +301,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang sayote at lutuin ng 5 hanggang 7 minuto hanggang malambot lang at luto ang manok.',
         'Ilagay ang dahon, timplahan ng patis at paminta, at patayin ang apoy. Ihain na may kanin.'
       ],
-      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng init nito at nag-aalis ng amoy ng manok.' }
+      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Igisang mabuti ang luya', how: 'Ang pag-gisa ng luya muna ay naglalabas ng bango nito at nag-aalis ng amoy ng manok.' }
     },
     'ph_misua': {
       name: 'Misua at patola',
@@ -579,10 +611,10 @@ GOHAN_PACK_TR('PH', 'fil', {
     },
     'ph_kare_kare': {
       name: 'Kare-kare',
-      ings: [['Buntot o bulalo ng baka, hiniwa', '1 kg'], ['Peanut butter (walang tamis kung mayroon)', '1/2 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
-      seas: '4 butil ng bawang · 2 kutsara atsuete powder o atsuete oil · 3 kutsara giniling na sinangag na bigas · 1 kutsarita asin · 2 kutsara mantika · 2 litro tubig · Ginisang bagoong para sa sawsawan',
+      ings: [['Buntot o bulalo ng baka, hiniwa', '600 g'], ['Peanut butter (walang tamis kung mayroon)', '1/3 tasa'], ['Talong, makakapal na hiwa', '1'], ['Sitaw, hiniwa sa 5 cm', '100 g'], ['Pechay', '1 tali'], ['Sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 1/2 kutsara atsuete powder o atsuete oil · 2 kutsara giniling na sinangag na bigas · 1/2 kutsarita asin · 2 kutsara mantika · 1.5 litro tubig · Ginisang bagoong para sa sawsawan',
       steps: [
-        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 1 litrong sabaw.',
+        'Pakuluan nang mahina ang buntot ng baka sa tubig ng 2 oras (o 45 minuto sa pressure cooker) hanggang lumambot. Magtabi ng 600 ml na sabaw.',
         'Igisa ang bawang at sibuyas sa mantika kasama ang atsuete. Ilagay ang karne at sabaw, ihalo ang peanut butter at pakuluan ng 10 minuto.',
         'Tunawin ang giniling na bigas sa kaunting tubig at ihalo para lumapot. Timplahan nang bahagya ng asin.',
         'Hiwalay na ilaga ang mga gulay sa kumukulong tubig ng 2 hanggang 3 minuto at iayos sa ibabaw. Ihain na may bagoong at kanin.'
@@ -803,7 +835,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang tubig at patis, takpan at lutuin ng 4 hanggang 5 minuto hanggang lumambot ang sayote pero may kaunting lutong pa.',
         'Timplahan ng paminta at ihain.'
       ],
-      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sustansya', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
+      tip: { add: 'Ilang dahon ng malunggay sa dulo', why: 'Dagdag na kulay at sariwang lasa ng dahon', skill: 'Balatan ang sayote sa umaagos na tubig o may mantika sa kamay', how: 'Pinatutuyo ng dagta ang balat; pinipigilan ito ng tubig o mantika.' }
     },
     'ph_ginisang_upo': {
       name: 'Ginisang upo',
@@ -827,7 +859,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang togue (at tokwa) at haluin sa malakas na apoy ng 1 hanggang 2 minuto hanggang lumanta lang.',
         'Timplahan ng patis at paminta at ihain agad.'
       ],
-      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at kaunting protina', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
+      tip: { add: 'Ilang maliliit na hipon', why: 'May tamis at dagdag na linamnam', skill: 'Malakas na apoy, maikling oras', how: 'Nagiging matubig at malata ang togue kapag lumampas ng 2 minuto.' }
     },
     'ph_ginisang_repolyo': {
       name: 'Ginisang repolyo',
@@ -894,7 +926,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Gumamit lang ng napakasariwang isda na puwedeng kainin nang hilaw. Hugasan ang mga cube sa kaunting suka at itapon ang sukang iyon.',
         'Ilagay ang isda sa mangkok na salamin kasama ang natirang suka at luya. Ilagay sa ref ng 10 hanggang 15 minuto hanggang pumuti ang labas.',
         'Itapon ang karamihan ng suka. Ihalo ang sibuyas, pipino, sili, katas ng kalamansi, asin at paminta.',
-        'Ihain agad nang malamig.'
+        'Ihain agad nang malamig. Hilaw na isda ito: bilhin sa mapagkakatiwalaang tindahan, at huwag ipakain sa maliliit na bata o sa buntis.'
       ],
       tip: { add: 'Kaunting gata', why: 'Malinamnam na estilong Bisaya na nagpapalambot ng asim', skill: 'Huwag ibabad nang matagal', how: 'Lampas 30 minuto, nanunuyo at nagiging pulbusin ang isda; kainin habang malambot pa ang gitna.' }
     },
@@ -944,7 +976,7 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Maglagay ng 2 kutsarang palaman sa bawat balat, itupi ang gilid at irolyo nang mahigpit, idikit ng kaunting tubig.',
         'Iprito sa 2 cm na katamtamang-init na mantika ng 3 hanggang 4 na minuto, baligtarin, hanggang pumula. Patuluin at ihain na may sawsawang suka.'
       ],
-      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at kaunting protina', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
+      tip: { add: 'Ilang maliliit na hipon sa palaman', why: 'May tamis at dagdag na linamnam', skill: 'Palamigin ang palaman bago irolyo', how: 'Binabasa ng mainit at basang palaman ang balat kaya napupunit o tumatalsik sa mantika.' }
     },
     'ph_okoy': {
       name: 'Okoy',
@@ -1002,6 +1034,306 @@ GOHAN_PACK_TR('PH', 'fil', {
         'Ilagay ang gulay at haluin ng 2 minuto hanggang kumintab. Timplahan ng asin, asukal at paminta at ihain kasama ng pritong manok o pork chop.'
       ],
       tip: { add: 'Isang kutsarang kinayod na keso sa dulo', why: 'Maalat at creamy, gaya ng gusto ng mga bata', skill: 'Patuluing mabuti ang gulay', how: 'Nababalot ng mantikilya ang tuyong gulay sa halip na maging matubig.' }
-    }
+    },
+    'ph_lugaw': {
+      name: 'Lugaw',
+      ings: [['Bigas na hilaw (haluan ng malagkit kung mayroon)', '1 tasa'], ['Dahon ng sibuyas, hiniwa', '2'], ['Kalamansi', '2?']],
+      seas: '1 malaking hinlalaki na luya, hiniwa nang pino · 5 butil ng bawang, tinadtad (kalahati ay iprito hanggang malutong para sa ibabaw) · 1 kutsarita asin · 1 kutsara mantika · 1.5 litro tubig · Paminta',
+      steps: [
+        'Iprito ang kalahati ng bawang sa mantika hanggang ginintuan at hanguin para sa ibabaw. Sa parehong kaldero, igisa ang natitirang bawang at luya ng 1 minuto.',
+        'Ilagay ang hinugasang bigas at haluin ng 1 minuto, saka ibuhos ang tubig. Pakuluin at hayaang kumulo nang mahina ng 25 hanggang 30 minuto, habang hinahalo nang madalas, hanggang lumambot nang husto ang bigas at lumapot ang lugaw.',
+        'Dagdagan ng tubig kung masyadong malapot at timplahan ng asin at paminta.',
+        'Ihain na may dahon ng sibuyas at pritong bawang sa ibabaw, at kalamansi na pipigain.'
+      ],
+      tip: { add: 'Nilagang itlog o tokwa\'t baboy sa tabi', why: 'Ang lugaw ang base; ang sahog ang bumubuo ng pagkain', skill: 'Haluin nang madalas sa huli', how: 'Madaling dumikit at masunog sa ilalim ang malapot na lugaw.' }
+    },
+    'ph_tinola_asin': {
+      name: 'Tinolang manok sa asin',
+      ings: [['Hita ng manok, hiniwa nang pang-isang subo', '300 g'], ['Sayote, hiniwa nang wedges', '1'], ['Dahon ng malunggay (o pechay)', '1 tasa'], ['Sibuyas', '1/2']],
+      seas: '1 hinlalaki luya, hiniwa · 3 butil ng bawang · 1 kutsarita asin · Paminta · 1 kutsara mantika · 1 litro tubig',
+      steps: [
+        'Igisa ang bawang, sibuyas at luya sa mantika hanggang bumango. Ilagay ang manok at haluin ng 3 minuto hanggang hindi na kulay rosas.',
+        'Ibuhos ang tubig, pakuluan, alisin ang bula at hayaang kumulo nang nakatakip ng 15 minuto.',
+        'Ilagay ang sayote at lutuin ng 8 minuto hanggang lumambot. Timplahan ng asin at paminta.',
+        'Ilagay ang malunggay, lutuin ng 1 minuto at ihain.'
+      ],
+      tip: { add: 'Gamitin ang hugas-bigas', why: 'Nagbibigay ng malambot at parang gatas na sabaw', skill: 'Asin sa halip na patis', how: 'Timplahan sa huli at tikman habang nagluluto; kaunting asin at maraming luya ang nagpapanatiling malinis at banayad ang sabaw.' }
+    },
+    'ph_nilagang_manok': {
+      name: 'Nilagang manok',
+      ings: [['Hita ng manok, hiniwa nang pang-isang subo', '300 g'], ['Patatas, hiniwa nang malaki', '1'], ['Repolyo, hiniwa nang wedges', '1/4 ulo'], ['Sibuyas', '1/2'], ['Pechay', '1 bigkis?']],
+      seas: '1/2 kutsarita buong paminta · 1 kutsarita asin · 1.2 litro tubig',
+      steps: [
+        'Ilagay ang manok, sibuyas, buong paminta at tubig sa kaldero, pakuluan at alisin ang bula. Hayaang kumulo nang nakatakip ng 12 minuto.',
+        'Ilagay ang patatas at lutuin ng 10 minuto hanggang halos malambot.',
+        'Ilagay ang repolyo (at pechay), timplahan ng asin at hayaang kumulo ng 3 minuto hanggang lumambot ang dahon. Ihaing mainit.'
+      ],
+      tip: { add: 'Isang piraso ng mais sa kaldero', why: 'Pinatatamis ang sabaw sa paraang Tagalog', skill: 'Panatilihing mahina ang kulo', how: 'Malinaw ang nilaga sa mahinang kulo; sa malakas na kulo lumalabo ang sabaw at tumitigas ang manok.' }
+    },
+    'ph_sopas_manok': {
+      name: 'Sopas na manok',
+      ings: [['Dibdib ng manok, hiniwa nang maliit', '150 g'], ['Elbow macaroni', '100 g'], ['Karot, hiniwa nang maliit', '1/2'], ['Repolyo, hiniwa nang manipis', '100 g'], ['Sibuyas', '1/2'], ['Evaporated milk', '120 ml']],
+      seas: '3 butil ng bawang · 1 kutsara mantikilya o mantika · 1 kutsarita asin · Paminta · 1 litro tubig',
+      steps: [
+        'Tunawin ang mantikilya at igisa ang bawang at sibuyas hanggang lumambot. Ilagay ang manok at haluin ng 2 minuto.',
+        'Ibuhos ang tubig, pakuluan at ilagay ang macaroni at karot. Lutuin ng 8 hanggang 10 minuto, haluin paminsan-minsan, hanggang lumambot ang pasta.',
+        'Ilagay ang repolyo at lutuin ng 2 minuto. Ibuhos ang gatas, timplahan ng asin at paminta at painitin nang hindi pinapakulo nang malakas.'
+      ],
+      tip: { add: 'Kaunting kinudkod na keso sa ibabaw', why: 'Mas malinamnam, gusto ng mga bata', skill: 'Gatas sa pinakahuli', how: 'Maaaring magkabuo-buo ang gatas kapag pinakulo nang malakas; painitin lang nang dahan-dahan sa huli.' }
+    },
+    'ph_misua_manok': {
+      name: 'Misua na may manok',
+      ings: [['Dibdib ng manok, hiniwa nang manipis', '120 g'], ['Misua', '60 g'], ['Pechay, hiniwa', '1 bigkis'], ['Sibuyas', '1/2'], ['Dahon ng sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 kutsara toyo · 1/2 kutsarita asin · Paminta · 1 kutsara mantika · 800 ml tubig',
+      steps: [
+        'Igisa ang bawang at sibuyas sa mantika hanggang lumambot. Ilagay ang manok at haluin ng 2 minuto.',
+        'Ibuhos ang tubig at toyo, pakuluan at hayaang kumulo ng 5 minuto.',
+        'Ilagay ang tangkay ng pechay, saka ang misua, at lutuin ng 2 minuto hanggang lumambot ang misua. Ilagay ang dahon, timplahan ng asin at paminta at ihain na may dahon ng sibuyas.'
+      ],
+      tip: { add: 'Ilang hiwa ng luya kasama ng bawang', why: 'Mabangong init sa magaan na sabaw', skill: 'Sandali lang maluto ang misua', how: 'Ilagay ang misua sa pinakahuli at ihain agad; patuloy itong lumalaki at nalalata kapag naiwan sa kaldero.' }
+    },
+    'ph_sinabawang_sayote': {
+      name: 'Sinabawang sayote',
+      ings: [['Sayote, hiniwa nang wedges', '2'], ['Sibuyas', '1/2'], ['Kamatis', '1'], ['Dahon ng malunggay', '1/2 tasa?']],
+      seas: '3 butil ng bawang · 1 hinlalaki luya, hiniwa · 1 kutsarita asin · Paminta · 1 kutsara mantika · 800 ml tubig',
+      steps: [
+        'Igisa ang bawang, sibuyas, luya at kamatis sa mantika hanggang lumambot ang kamatis.',
+        'Ilagay ang tubig at pakuluan. Ilagay ang sayote at hayaang kumulo ng 8 hanggang 10 minuto hanggang lumambot.',
+        'Timplahan ng asin at paminta, ilagay ang malunggay, lutuin ng 1 minuto at ihain.'
+      ],
+      tip: { add: 'Kaunting giniling na baboy na iginisa sa simula', why: 'Mas may laman ang simpleng sabaw', skill: 'Huwag lutuin nang sobra ang sayote', how: 'Dapat malambot pero buo pa ang hugis; subukan ng tinidor mula sa 8 minuto.' }
+    },
+    'ph_pesang_manok': {
+      name: 'Pesang manok',
+      ings: [['Hita ng manok, hiniwa nang pang-isang subo', '300 g'], ['Patatas, hiniwa nang malaki', '1'], ['Pechay', '1 bigkis'], ['Repolyo, hiniwa nang wedges', '1/4 ulo?'], ['Sibuyas', '1/2']],
+      seas: '1 hinlalaki luya, hiniwa · 1 kutsarita buong paminta · 1 kutsarita asin · 1 litro hugas-bigas o tubig',
+      steps: [
+        'Ilagay ang manok, sibuyas, luya, buong paminta at tubig sa kaldero, pakuluan at alisin ang bula. Hayaang kumulo nang nakatakip ng 12 minuto.',
+        'Ilagay ang patatas at lutuin ng 10 minuto hanggang lumambot.',
+        'Ilagay ang repolyo at pechay, timplahan ng asin at hayaang kumulo ng 3 minuto. Ihain na malinaw at maputla ang sabaw.'
+      ],
+      tip: { add: 'Toyo na may kalamansi sa tabi', why: 'Bawat isa ang nagtitimpla ng sariling mangkok', skill: 'Panatilihing maputla at banayad', how: 'Hindi maasim o maitim ang pesa; sa mahinang kulo nananatiling malinis ang sabaw.' }
+    },
+    'ph_nilagang_kalabasa': {
+      name: 'Nilagang kalabasa',
+      ings: [['Kalabasa, hiniwa nang wedges na may balat', '300 g']],
+      seas: '1/2 kutsarita asin · 1 kutsarita mantikilya o mantika (kung gusto)',
+      steps: [
+        'Alisin ang buto at hiwain ang kalabasa nang mga 2 cm ang kapal, huwag alisin ang balat.',
+        'Ilagay sa kaldero na may tubig na lumalampas sa kalabasa at asin, pakuluan at hayaang kumulo ng 10 minuto hanggang madaling tumusok ang tinidor. Salain.',
+        'Ihaing mainit, lagyan ng kaunting mantikilya sa ibabaw kung gusto.'
+      ],
+      tip: { add: 'Durugin ang ilang piraso sa lugaw', why: 'Matamis at makinis, mabuti para sa maliliit na bata', skill: 'Huwag pakuluan nang sobra', how: 'Tingnan mula sa 8 minuto; kapag malambot na, salain agad para buo pa ang mga piraso.' }
+    },
+    'ph_ginisang_repolyo_toyo': {
+      name: 'Ginisang repolyo sa toyo',
+      ings: [['Repolyo, hiniwa nang manipis', '300 g'], ['Karot, hiniwa nang pahaba', '1/2'], ['Sibuyas', '1/2'], ['Kamatis', '1?']],
+      seas: '3 butil ng bawang · 1 kutsara toyo · Paminta · 1 kutsara mantika · 60 ml tubig',
+      steps: [
+        'Igisa ang bawang, sibuyas at kamatis sa mantika hanggang lumambot.',
+        'Ilagay ang karot at repolyo kasama ng tubig, takpan at lutuin ng 4 hanggang 5 minuto hanggang lumambot ang repolyo.',
+        'Timplahan ng toyo at paminta at haluin pang muli.'
+      ],
+      tip: { add: 'Kaunting giniling na baboy na iginisa', why: 'Nagiging maliit na ulam para sa lugaw', skill: 'Takpan ang kawali', how: 'Nakukulong ng takip ang singaw kaya mabilis lumambot ang repolyo nang hindi nasusunog.' }
+    },
+    'ph_nilagang_gulay_toyo': {
+      name: 'Nilagang gulay na may toyomansi',
+      ings: [['Talong', '1'], ['Okra', '8'], ['Kalabasa, hiniwa', '150 g'], ['Kalamansi', '3']],
+      seas: '1 kutsarita asin para sa tubig · 2 kutsara toyo para sa sawsawan',
+      steps: [
+        'Pakuluan ang tubig na may asin. Ilagay ang kalabasa at lutuin ng 5 minuto, saka ang talong na hiniwa nang makapal at ang okra, at lutuin pa ng 3 minuto hanggang lumambot.',
+        'Salain at iayos sa plato.',
+        'Haluin ang toyo at katas ng kalamansi bilang sawsawan at ihain.'
+      ],
+      tip: { add: 'Nilagang kamote sa plato', why: 'Nakabubusog at banayad na ulam', skill: 'Saglit lang ang okra sa tubig', how: 'Sa 3 minuto malambot ang okra nang hindi nagiging malansa o madulas.' }
+    },
+    'ph_ginisang_patola': {
+      name: 'Ginisang patola',
+      ings: [['Patola, hiniwa', '2'], ['Sibuyas', '1/2'], ['Kamatis', '1'], ['Giniling na baboy', '80 g?']],
+      seas: '3 butil ng bawang · 1 kutsara toyo · Paminta · 1 kutsara mantika · 60 ml tubig',
+      steps: [
+        'Igisa ang bawang, sibuyas at kamatis sa mantika hanggang lumambot (ilagay ang giniling at lutuin hanggang hindi na kulay rosas, kung gagamit).',
+        'Ilagay ang patola at tubig, takpan at lutuin ng 4 minuto hanggang lumambot at maging malinaw.',
+        'Timplahan ng toyo at paminta at ihain.'
+      ],
+      tip: { add: 'Isang dakot ng misua sa huling minuto', why: 'Mas masabaw at nakabubusog', skill: 'Balatan lang ang matitigas na gilid', how: 'Alisin ang matitigas na gilid gamit ang peeler at iwan ang berdeng balat sa pagitan; nananatiling buo ang mga piraso.' }
+    },
+    'ph_ginisang_sardinas': {
+      name: 'Ginisang sardinas',
+      ings: [['Sardinas sa tomato sauce', '2 lata (155 g bawat isa)'], ['Sibuyas', '1'], ['Kamatis', '1'], ['Itlog, binati', '1'], ['Dahon ng sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 60 ml tubig · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang maliliit ang kamatis.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang, sibuyas, at kamatis nang 2–3 minuto hanggang lumambot.',
+        'Ilagay ang sardinas kasama ang sarsa at ang tubig, durugin nang kaunti, at pakuluan nang 3 minuto hanggang mainit. Ihalo ang binating itlog (kung gagamit) hanggang maluto, saka timplahan ng paminta at budburan ng dahon ng sibuyas.',
+      ],
+      tip: { add: 'Isang dakot na misua', why: 'Nagiging masabaw na ulam ito para sa mas maraming tao', skill: 'Igisa nang mabuti', how: 'Kapag nalutong malambot ang bawang, sibuyas at kamatis, nawawala ang lasang de-lata.' }
+    },
+    'ph_ginisang_corned_beef': {
+      name: 'Ginisang corned beef',
+      ings: [['Corned beef (de-lata)', '1 lata (260 g)'], ['Sibuyas', '1'], ['Repolyo, hiniwa nang manipis', '1/4 maliit na ulo'], ['Kamatis', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 60 ml tubig · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang manipis ang repolyo.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang at sibuyas (at kamatis) nang 2 minuto hanggang lumambot. Ilagay ang corned beef at durugin.',
+        'Ilagay ang repolyo at tubig, takpan, at lutuin nang 3–4 minuto, haluin nang isang beses, hanggang lumambot ang repolyo at mainit na ang lahat. Timplahan ng paminta.',
+      ],
+      tip: { add: 'Pritong itlog sa gilid', why: 'Buong ulam na kasama ang kanin', skill: 'Hayaang tumusta nang kaunti', how: 'Huwag munang haluin ang corned beef nang isang minuto para may bahaging tumusta; nagdadagdag ito ng lasa.' }
+    },
+    'ph_ginisang_kamatis_itlog': {
+      name: 'Ginisang kamatis at itlog',
+      ings: [['Kamatis', '3'], ['Itlog', '4'], ['Sibuyas', '1'], ['Dahon ng sibuyas', '1']],
+      seas: '3 butil ng bawang · 1 kutsara mantika · 1 kutsarita patis · Paminta',
+      steps: [
+        'Tadtarin ang bawang, hiwain ang sibuyas, at hiwain nang maliliit ang kamatis. Batihin ang itlog kasama ang patis at paminta.',
+        'Painitin ang mantika sa katamtamang apoy at igisa ang bawang, sibuyas, at kamatis nang 3 minuto hanggang lumambot at magkatas ang kamatis.',
+        'Ibuhos ang itlog at haluin nang dahan-dahan nang 1–2 minuto hanggang maluto. Budburan ng dahon ng sibuyas.',
+      ],
+      tip: { add: 'Kaunting giniling na baboy na iginisa muna', why: 'Mas nakabubusog na ulam', skill: 'Palambutin muna ang kamatis', how: 'Lutuin ang kamatis hanggang madurog para bumalot ang katas nito sa itlog.' }
+    },
+    'ph_garlic_butter_shrimp': {
+      name: 'Garlic butter shrimp',
+      ings: [['Hipon (may balat o binalatan)', '400 g'], ['Kalamansi', '3'], ['Dahon ng sibuyas', '1']],
+      seas: '3 kutsara mantikilya · 1 buong ulo ng bawang, tinadtad · 1/2 kutsarita asin · Paminta · 60 ml lemon-lime soda o tubig',
+      steps: [
+        'Gupitin ang balbas ng hipon at alisin ang itim na ugat. Tadtarin ang bawang.',
+        'Tunawin ang mantikilya sa katamtamang apoy at igisa ang bawang nang 1 minuto hanggang bumango, nang hindi masyadong pinapapula.',
+        'Ilagay ang hipon at ang soda (o tubig) at lutuin nang 3–4 minuto habang hinahalo, hanggang kumulay-kahel ang hipon, luto hanggang loob, at medyo lumapot ang sarsa. Timplahan ng asin at paminta at pigaan ng kalamansi.',
+      ],
+      tip: { add: 'Dagdag na kanin', why: 'Ang sarsa ng bawang at mantikilya ang pinakamasarap sa kanin', skill: 'Panatilihing ginintuan ang bawang', how: 'Sa katamtamang apoy, bumabango ang mantikilya sa bawang nang hindi ito nasusunog at pumapait.' }
+    },
+    ph_ginisang_munggo_v: {
+      name: 'Ginisang munggo',
+      ings: [
+        ['Munggo', '200 g'],
+        ['Dahon ng malunggay (o spinach)', '1 dakot'],
+        ['Kamatis', '2'],
+        ['Sibuyas', '1'],
+        ['Kanin (kasama)', '300 g'],
+      ],
+      seas: '2 kutsarang mantika · 4 butil ng bawang · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta · 700 ml tubig',
+      steps: [
+        'Pakuluan ang hinugasang munggo sa tubig nang 30 minuto hanggang lumambot at magsimulang magkapira-piraso.',
+        'Igisa ang bawang, sibuyas, at tinadtad na kamatis sa mantika nang 6 na minuto hanggang lumambot.',
+        'Ihalo ang ginisa sa munggo kasama ang toyo, asin, at paminta at pakuluan nang 5 minuto. Ihalo ang dahon ng malunggay hanggang malanta at ihain kasama ng kanin.',
+      ],
+    },
+    ph_ginataang_kalabasa_v: {
+      name: 'Ginataang kalabasa at sitaw',
+      ings: [
+        ['Kalabasa', '300 g'],
+        ['Sitaw', '150 g'],
+        ['Gata', '400 ml'],
+        ['Sibuyas', '1'],
+        ['Kanin (kasama)', '300 g'],
+      ],
+      seas: '1 kutsarang mantika · 4 butil ng bawang · 1 kutsarang hiniwang luya · 1 siling berde · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta',
+      steps: [
+        'Igisa ang bawang, sibuyas, at luya sa mantika nang 3 minuto. Idagdag ang hiniwang kalabasa at kalahati ng gata at pakuluan nang 10 minuto.',
+        'Idagdag ang sitaw na hiniwa nang 5 cm, ang toyo, at ang siling berde at pakuluan nang 5 minuto.',
+        'Ibuhos ang natirang gata, timplahan ng asin at paminta, at lutuin nang dahan-dahan nang 5 minuto nang hindi kumukulo nang malakas. Ihain kasama ng kanin.',
+      ],
+    },
+    ph_lumpiang_gulay_v: {
+      name: 'Lumpiang gulay',
+      ings: [
+        ['Balat ng lumpia', '12'],
+        ['Repolyo', '150 g'],
+        ['Karot', '2'],
+        ['Sitsaro (green beans)', '100 g'],
+        ['Tokwa', '150 g'],
+      ],
+      seas: 'Mantika para sa pagprito · 3 butil ng bawang · 1 sibuyas · 1 kutsarang toyo · 1/2 kutsaritang asin · Paminta · Sweet chili sauce na sawsawan',
+      steps: [
+        'Hiwain nang manipis ang repolyo, karot, at green beans, at durugin ang tokwa. Igisa ang bawang at hiniwang sibuyas nang 2 minuto.',
+        'Idagdag ang mga gulay at tokwa kasama ang toyo, asin, at paminta at igisa nang 5 minuto. Palamigin nang lubos at alisin ang likido.',
+        'Maglagay ng 2 kutsara ng palaman sa bawat balat, balutin nang mahigpit, at isara ang gilid gamit ang tubig.',
+        'Iprito ang mga lumpia sa mainit na mantika nang 3-4 na minuto hanggang gintong kayumanggi at malutong. Ihain kasama ng sweet chili sauce.',
+      ],
+    },
+    ph_pancit_gulay: {
+      name: 'Pancit gulay',
+      ings: [
+        ['Pancit canton (tuyo)', '200 g'],
+        ['Repolyo', '150 g'],
+        ['Karot', '1'],
+        ['Sitsaro (green beans)', '80 g'],
+        ['Tokwa', '150 g'],
+        ['Kalamansi (o lemon)', '3'],
+      ],
+      seas: '3 kutsarang mantika · 4 butil ng bawang · 1 sibuyas · 2 kutsarang toyo · 1/2 kutsaritang asin · Paminta · 300 ml tubig',
+      steps: [
+        'Hiwain nang manipis ang repolyo, karot, at green beans at gawing kubo ang tokwa. Iprito ang tokwa sa 1 kutsarang mantika hanggang gintong kayumanggi at itabi.',
+        'Igisa ang bawang at hiniwang sibuyas sa natirang mantika nang 2 minuto, idagdag ang karot at green beans at igisa nang 3 minuto.',
+        'Ilagay ang tubig at toyo at pakuluan. Idagdag ang pancit at repolyo at lutuin nang 5-6 na minuto habang hinahalo hanggang masipsip ang sabaw. Ibalik ang tokwa at ihain kasama ng kalamansi.',
+      ],
+    },
+    ph_sinigang_gulay: {
+      name: 'Sinigang na gulay',
+      ings: [
+        ['Sinigang mix (sampalok)', '1 sachet (40 g)'],
+        ['Labanos', '150 g'],
+        ['Okra', '6'],
+        ['Kangkong', '100 g'],
+        ['Sitaw', '100 g'],
+        ['Talong', '1'],
+      ],
+      seas: '800 ml tubig · 1 sibuyas · 2 kamatis · 2 siling berde · Asin',
+      steps: [
+        'Pakuluan ang tubig kasama ang sibuyas at kamatis na hinati sa apat.',
+        'Idagdag ang hiniwang labanos at talong at pakuluan nang 8 minuto, saka ang sitaw at okra nang 4 na minuto.',
+        'Ihalo ang sinigang mix at sili, idagdag ang kangkong at lutuin nang 2 minuto. Timplahan ng asin at ihain nang mainit.',
+      ],
+    },
+    "ph_adobongtokwa": {
+      name: "Adobong tokwa",
+      ings: [["Tokwa", "400 g"], ["Sibuyas", "1/2"], ["Dahon ng sibuyas", "2 tangkay"]],
+      seas: "3 kutsara mantika · 6 butil bawang · 3 kutsara toyo · 3 kutsara suka · 1 kutsarita asukal · 2 dahon ng laurel · 1 kutsarita buong paminta · 100 ml tubig",
+      steps: [
+        "Hiwain nang pa-cube ang tokwa at iprito sa kawali hanggang maging golden. Hanguin.",
+        "Igisa ang dinikdik na bawang at hiniwang sibuyas sa parehong kawali, idagdag ang toyo, suka, tubig, laurel at paminta at pakuluan nang hindi hinahalo.",
+        "Ibalik ang tokwa, ilagay ang asukal at pakuluan nang 8 minuto hanggang lumapot ang sarsa. Budburan ng dahon ng sibuyas.",
+      ],
+    },
+    "ph_ginisangampalaya": {
+      name: "Ginisang ampalaya sa itlog",
+      ings: [["Ampalaya", "2 (400 g)"], ["Itlog", "3"], ["Kamatis", "2"], ["Sibuyas", "1/2"]],
+      seas: "2 kutsara mantika · 3 butil bawang · 1 kutsarita asin · 1/4 kutsarita paminta",
+      steps: [
+        "Hatiin ang ampalaya, alisin ang buto at hiwain nang manipis. Kuskusin ng 1/2 kutsaritang asin, hayaan nang 10 minuto at pigain.",
+        "Igisa ang bawang, sibuyas at kamatis sa kawali nang 3 minuto, idagdag ang ampalaya at lutuin nang 4 na minuto.",
+        "Ibuhos ang binating itlog, hayaang mamuo nang kaunti saka haluin nang dahan-dahan. Timplahan ng natitirang asin at paminta.",
+      ],
+    },
+    "ph_adobongsitaw": {
+      name: "Adobong sitaw at tokwa",
+      ings: [["Sitaw", "300 g"], ["Tokwa", "200 g"], ["Sibuyas", "1/2"]],
+      seas: "2 kutsara mantika · 5 butil bawang · 2 kutsara toyo · 2 kutsara suka · 1 dahon ng laurel · 1/2 kutsarita paminta · 100 ml tubig",
+      steps: [
+        "Hiwain ang sitaw nang 5 cm at ang tokwa nang pa-cube. Iprito ang tokwa sa mantika hanggang maging golden.",
+        "Idagdag ang bawang at sibuyas at igisa nang 2 minuto. Ilagay ang toyo, suka, tubig, laurel at paminta at pakuluan nang 2 minuto nang hindi hinahalo.",
+        "Ilagay ang sitaw, takpan at pakuluan nang 6–8 minuto hanggang lumambot.",
+      ],
+    },
+    "ph_ginataangsitawtalong": {
+      name: "Ginataang sitaw, talong at tokwa",
+      ings: [["Talong", "250 g"], ["Sitaw", "200 g"], ["Gata", "300 ml"], ["Tokwa", "150 g"], ["Sibuyas", "1/2"]],
+      seas: "1 kutsara mantika · 3 butil bawang · 1 piraso luya · 1 kutsarita asin · 1/4 kutsarita paminta · 1 siling haba (kung gusto)",
+      steps: [
+        "Hiwain nang makapal ang talong, ang sitaw nang 5 cm at ang tokwa nang pa-cube. Hiwain ang sibuyas, bawang at luya.",
+        "Igisa ang bawang, sibuyas at luya sa kaldero, ibuhos ang gata at pakuluan nang mahina. Ilagay ang talong at tokwa at lutuin nang 6 na minuto.",
+        "Idagdag ang sitaw at sili at lutuin nang 5 minuto pa. Timplahan ng asin at paminta.",
+      ],
+    },
+    "ph_ginisangtoguetokwa": {
+      name: "Ginisang togue at tokwa",
+      ings: [["Togue", "300 g"], ["Tokwa", "200 g"], ["Karot", "1/2"], ["Pulang bell pepper", "1/2"]],
+      seas: "3 kutsara mantika · 4 butil bawang · 1/2 sibuyas · 1 kutsara toyo · 1/2 kutsarita asin · 1/4 kutsarita paminta",
+      steps: [
+        "Hiwain nang pahaba ang tokwa at iprito sa 2 kutsarang mantika hanggang maging golden. Hanguin. Hiwain nang manipis ang karot at bell pepper.",
+        "Igisa ang bawang at sibuyas sa natitirang mantika, idagdag ang karot at bell pepper at lutuin nang 2 minuto.",
+        "Ilagay ang togue at tokwa, timplahan ng toyo, asin at paminta at igisa nang 1–2 minuto lamang.",
+      ],
+    },
   }
 });

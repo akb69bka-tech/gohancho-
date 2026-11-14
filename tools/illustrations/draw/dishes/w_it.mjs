@@ -433,16 +433,6 @@ export default {
         wiParsley(p, 100, 100, 110, { n: 40 }),
     ].join(''),
 
-    // spinaci saltati: white bowl with a blue line, glossy dark wilted spinach, golden garlic
-    it_spinaci: p => [
-        wiBowl(p, '#f2eee4'), `<circle cx="100" cy="100" r="86" fill="none" stroke="#2f6f8f" stroke-width="2"/>`,
-        `<g ${p.sh(.8)}><path ${T(100, 100)} d="${wiSm(ring(58, 12, .2, rng(p.id + 'sp')), true)}" fill="${p.rg('#24521c', .2, .3)}"/></g>`,
-        ...[[76, 80], [122, 78], [70, 118], [126, 122], [100, 100], [98, 64], [100, 136], [62, 98], [140, 100]].map(([x, y], i) => K.greens(p, x, y, 46, { c: i % 2 ? '#2c6420' : '#356f28', stems: '#6f9e42', n: 8, seed: i, sy: .9 })),
-        `<path d="M66,84 Q82,66 104,66" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".45"/>`,
-        wiGarlic(p, 92, 96, 9, 20, { fried: .5 }), wiGarlic(p, 118, 112, 9, -40, { fried: .5 }), wiGarlic(p, 80, 120, 8, 60, { fried: .5 }),
-        K.sprinkle(p, 100, 100, 70, { c: '#c8321e', n: 10, r: .9 }),
-    ].join(''),
-
     // peperonata: blue bowl of soft red and yellow pepper strips with onion in a little tomato
     it_peperonata: p => {
         const strips = wiSpots('pp', 26, 52, 13).map(([x, y, r], i) => wiBand(p, x, y, 38, 7.5, r, { c: i % 3 === 1 ? '#f2bd2a' : i % 3 === 2 ? '#d8402a' : '#c9301f', bend: .14, cap: 'butt' }));

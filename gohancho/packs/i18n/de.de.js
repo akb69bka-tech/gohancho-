@@ -2,6 +2,13 @@
 GOHAN_PACK_TR('DE', 'de', {
   staple: 'Brot',
   names: {
+    "tofu": "Tofu (fest)",
+    "zucchini": "Zucchini",
+    'banana': 'Banane',
+    "oats": "Haferflocken",
+    "alphabet pasta": "Buchstabennudeln",
+    "chives": "Schnittlauch",
+    'leberkaese': 'Leberkäse',
     'ground meat': 'Hackfleisch',
     'bread roll': 'Brötchen',
     'egg': 'Eier',
@@ -67,9 +74,216 @@ GOHAN_PACK_TR('DE', 'de', {
     'walnuts': 'Walnüsse',
     'mayonnaise': 'Mayonnaise',
     'potato starch': 'Kartoffelstärke',
-    'raisins': 'Rosinen'
+    'raisins': 'Rosinen',
+    'bread': 'Brot',
+    'butter': 'Butter',
   },
   recipes: {
+    "de_huehnerbruehe": {
+      name: "Hühnerbrühe mit Gemüse",
+      ings: [["Hähnchenschenkel ohne Knochen", "200 g"], ["Karotte", "50 g"], ["Lauch", "60 g"], ["Knollensellerie", "50 g"], ["Schnittlauch", "5 g"]],
+      seas: "900 ml Wasser · 1 TL Gemüsebrühepulver · 1 Lorbeerblatt · Salz · Pfeffer",
+      steps: [
+        "Das Hähnchen klein schneiden, das Gemüse in feine Streifen schneiden.",
+        "Wasser mit Brühepulver und Lorbeer aufkochen, das Hähnchen dazugeben und 15 Minuten köcheln lassen.",
+        "Gemüse dazugeben, 8 Minuten weiterkochen, abschmecken und mit Schnittlauch bestreuen.",
+      ],
+    },
+    "de_blumenkohlsuppe": {
+      name: "Blumenkohlsuppe",
+      ings: [["Blumenkohl", "300 g"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Muskat · Salz · Pfeffer",
+      steps: [
+        "Den Blumenkohl in Röschen teilen, die Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Blumenkohl und Brühe dazugeben und zugedeckt 15 Minuten köcheln lassen.",
+        "Mit der Sahne fein pürieren und mit Muskat, Salz und Pfeffer abschmecken.",
+      ],
+    },
+    "de_kohlrabisuppe": {
+      name: "Kohlrabisuppe",
+      ings: [["Kohlrabi", "300 g"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"], ["Schnittlauch", "5 g"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Salz · Pfeffer",
+      steps: [
+        "Kohlrabi schälen und würfeln, Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Kohlrabi und Brühe dazugeben und 15 Minuten köcheln lassen.",
+        "Mit der Sahne pürieren, abschmecken und mit Schnittlauch bestreuen.",
+      ],
+    },
+    "de_zucchinisuppe": {
+      name: "Zucchinisuppe",
+      ings: [["Zucchini", "350 g"], ["Zwiebel", "40 g"], ["Saure Sahne", "50 g"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Öl · 1 Knoblauchzehe · Salz · Pfeffer",
+      steps: [
+        "Zucchini in Scheiben schneiden, Zwiebel und Knoblauch würfeln.",
+        "Zwiebel und Knoblauch in Öl andünsten, Zucchini und Brühe dazugeben und 10 Minuten köcheln lassen.",
+        "Pürieren, die saure Sahne einrühren und abschmecken.",
+      ],
+    },
+    "de_spinatsuppe": {
+      name: "Spinatsuppe mit Ei",
+      ings: [["Spinat", "250 g"], ["Eier", "2"], ["Zwiebel", "40 g"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Muskat · Salz · Pfeffer",
+      steps: [
+        "Die Eier 8 Minuten kochen, abschrecken und halbieren. Die Zwiebel würfeln.",
+        "Die Zwiebel in Butter andünsten, Spinat und Brühe dazugeben und 5 Minuten kochen.",
+        "Mit der Sahne pürieren, mit Muskat, Salz und Pfeffer abschmecken und mit den Eihälften servieren.",
+      ],
+    },
+    "de_sauerkrautsuppe": {
+      name: "Sauerkrautsuppe mit Wurst",
+      ings: [["Sauerkraut", "200 g"], ["Räucherwurst", "150 g"], ["Zwiebel", "50 g"]],
+      seas: "700 ml Rinder- oder Gemüsebrühe · 1 EL Öl · 1 TL edelsüßes Paprikapulver · 1 Lorbeerblatt · Salz · Pfeffer",
+      steps: [
+        "Die Zwiebel würfeln, die Wurst in Scheiben schneiden. Das Sauerkraut abtropfen lassen und etwas kleiner schneiden.",
+        "Zwiebel und Wurst 3 Minuten in Öl anbraten, das Paprikapulver einrühren.",
+        "Sauerkraut, Brühe und Lorbeer dazugeben, 15 Minuten köcheln lassen und abschmecken.",
+      ],
+    },
+    "de_gurkenradieschen": {
+      name: "Gurken-Radieschen-Salat",
+      ings: [["Salatgurke", "200 g"], ["Radieschen", "100 g"], ["Schnittlauch", "5 g"]],
+      seas: "1 EL Weißweinessig · 1 EL Öl · Salz · Pfeffer",
+      steps: [
+        "Gurke und Radieschen in feine Scheiben schneiden, den Schnittlauch hacken.",
+        "Essig, Öl, Salz und Pfeffer verrühren.",
+        "Alles vermengen und 5 Minuten ziehen lassen.",
+      ],
+    },
+    "de_haehnchenbrokkoli": {
+      name: "Hähnchenbrust mit Brokkoli",
+      ings: [["Hähnchenbrustfilets", "2 (350 g)"], ["Brokkoli", "250 g"], ["Sahne", "50 ml"]],
+      seas: "1 EL Öl · 1 EL Butter · 1 TL Senf · Salz · Pfeffer",
+      steps: [
+        "Das Hähnchen salzen und pfeffern. Brokkoli in Röschen teilen und 4 Minuten kochen.",
+        "Das Hähnchen in Öl pro Seite 5–6 Minuten braten, bis es durchgegart ist, dann herausnehmen.",
+        "Butter in der Pfanne schmelzen, Sahne und Senf einrühren, Brokkoli darin erwärmen und mit dem aufgeschnittenen Hähnchen servieren.",
+      ],
+    },
+    "de_fischspinat": {
+      name: "Fischfilet auf Spinat",
+      ings: [["Weißfischfilet (Kabeljau oder Seelachs)", "350 g"], ["Spinat", "300 g"], ["Zwiebel", "40 g"], ["Zitrone", "1/2"]],
+      seas: "1 EL Butter · 1 Knoblauchzehe · Muskat · Salz · Pfeffer",
+      steps: [
+        "Den Fisch mit Salz, Pfeffer und Zitronensaft würzen. Zwiebel und Knoblauch würfeln.",
+        "Zwiebel und Knoblauch in Butter andünsten, den Spinat dazugeben und zusammenfallen lassen. Mit Muskat und Salz würzen.",
+        "Den Fisch auf den Spinat legen, zudecken und bei kleiner Hitze 8–10 Minuten garen, bis er zerfällt.",
+      ],
+    },
+    "de_haferbrei": {
+      name: "Haferbrei",
+      ings: [["Zarte Haferflocken", "80 g"], ["Milch", "400 ml"], ["Apfel, gerieben", "1"]],
+      seas: "1 Prise Salz · 1 TL Honig (nach Wunsch) · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch und Salz in einem kleinen Topf aufkochen.",
+        "Haferflocken einrühren und bei schwacher Hitze 5 Minuten unter Rühren cremig kochen.",
+        "Mit dem geriebenen Apfel, etwas Honig und Zimt servieren.",
+      ],
+    },
+    "de_griessbrei": {
+      name: "Grießbrei",
+      ings: [["Weichweizengrieß", "60 g"], ["Milch", "500 ml"], ["Butter", "1 TL"]],
+      seas: "1–2 EL Zucker · 1 Prise Salz · 1 Prise Zimt (nach Wunsch)",
+      steps: [
+        "Milch, Zucker und Salz aufkochen.",
+        "Topf vom Herd nehmen, Grieß einrühren und bei schwacher Hitze 3–4 Minuten unter Rühren dick werden lassen.",
+        "Butter unterrühren und warm mit etwas Zimt servieren.",
+      ],
+    },
+    "de_haferschleim": {
+      name: "Haferschleimsuppe",
+      ings: [["Zarte Haferflocken", "50 g"], ["Möhre, fein gewürfelt", "1"], ["Lauch, in feinen Ringen", "1/2"]],
+      seas: "800 ml Gemüsebrühe (oder Wasser mit 1 TL Salz) · 1 TL Butter · 1 Prise Muskat",
+      steps: [
+        "Butter im Topf schmelzen, Möhre (und Lauch) 2 Minuten andünsten, ohne zu bräunen.",
+        "Haferflocken und Brühe zugeben, aufkochen und bei schwacher Hitze 15 Minuten köcheln, ab und zu umrühren.",
+        "Glatt rühren (oder kurz pürieren), mit Muskat und Salz abschmecken und warm servieren.",
+      ],
+    },
+    "de_eierflockensuppe": {
+      name: "Eierflockensuppe",
+      ings: [["Eier", "2"], ["Schnittlauch", "1/2 Bund"], ["Möhre", "1/2"]],
+      seas: "800 ml Rinder- oder Gemüsebrühe · Etwas geriebene Muskatnuss · Salz · Pfeffer",
+      steps: [
+        "Die Möhre raspeln und 3 Minuten in der Brühe köcheln. Die Eier mit Muskat, einer Prise Salz und Pfeffer verquirlen.",
+        "Das Ei in dünnem Strahl in die leicht köchelnde Brühe gießen, dabei langsam rühren, und 1 Minute stocken lassen. Abschmecken und mit Schnittlauchröllchen bestreuen.",
+      ],
+      tip: { add: "Eine Scheibe Roggenbrot mit Butter", why: "Macht die leichte Suppe sättigender", skill: "Köcheln, nicht sprudeln", how: "In leicht köchelnder Brühe stockt das Ei zu zarten Flocken, sprudelnd zerfällt es." },
+    },
+    "de_buchstabensuppe": {
+      name: "Buchstabensuppe",
+      ings: [["Buchstabennudeln", "50 g"], ["Möhre", "1"], ["TK-Erbsen", "50 g"]],
+      seas: "800 ml Gemüsebrühe · Salz · Pfeffer · Gehackte Petersilie",
+      steps: [
+        "Die Möhre klein würfeln und in der Brühe aufkochen. Nudeln und Erbsen zugeben.",
+        "5–6 Minuten köcheln, bis die Nudeln weich sind. Abschmecken und mit Petersilie bestreuen.",
+      ],
+      tip: { add: "Die Kinder ihre Namen suchen lassen", why: "So macht Suppe Spaß", skill: "Möhre klein schneiden", how: "Kleine Würfel garen in derselben Zeit wie die kleinen Nudeln." },
+    },
+    "de_erbsencreme_schnell": {
+      name: "Schnelle Erbsencremesuppe",
+      ings: [["TK-Erbsen", "300 g"], ["Zwiebel", "1/2"], ["Sahne", "50 ml"]],
+      seas: "500 ml Gemüsebrühe · 1 EL Butter · Salz · Pfeffer · Eine Prise Zucker",
+      steps: [
+        "Die Zwiebel würfeln und 2 Minuten in der Butter andünsten. Erbsen und Brühe zugeben und 5 Minuten kochen.",
+        "Fein pürieren (Vorsicht, heiß), die Sahne einrühren und mit Salz, Pfeffer und Zucker abschmecken.",
+      ],
+      tip: { add: "Ein paar knusprige Brotcroûtons", why: "Knusper auf der cremigen Suppe", skill: "Erbsen nicht zu lange kochen", how: "Fünf Minuten genügen, sonst verliert die Suppe ihr frisches Grün." },
+    },
+    'de_strammermax': {
+      name: 'Strammer Max',
+      ings: [['Eier', '4'], ['Bauernbrot', '4 Scheiben'], ['Gekochter oder geräucherter Schinken', '4 Scheiben'], ['Gewürzgurken', '4'], ['Tomaten', '2']],
+      seas: '20 g Butter · 1 EL Schnittlauch, gehackt · Salz · Pfeffer',
+      steps: [
+        'Das Brot mit der Hälfte der Butter bestreichen und mit je einer Scheibe Schinken belegen.',
+        'Die übrige Butter in einer Pfanne bei mittlerer Hitze schmelzen, die Eier hineinschlagen und 3-4 Minuten braten, bis das Eiweiß gestockt ist.',
+        'Je ein Spiegelei auf ein Brot setzen, würzen, mit Schnittlauch bestreuen und mit Gewürzgurken und Tomatenscheiben servieren.',
+      ],
+      tip: { add: 'Das Brot vorher in der Pfanne rösten', why: 'Knuspriger und weicht unter dem Ei nicht durch', skill: 'Deckel drauf', how: 'In der letzten Minute mit Deckel stockt das Eiweiß oben, während das Eigelb flüssig bleibt.' },
+    },
+    'de_leberkaese': {
+      name: 'Leberkäse mit Spiegelei',
+      ings: [['Leberkäse, dicke Scheiben', '2 (300 g)'], ['Eier', '2'], ['Brötchen, zum Servieren', '2'], ['Gewürzgurken, zum Servieren', '2']],
+      seas: '1 EL Öl · Süßer oder mittelscharfer Senf · Pfeffer',
+      steps: [
+        'Das Öl in einer Pfanne bei mittlerer Hitze erhitzen und den Leberkäse von jeder Seite 2-3 Minuten braten, bis er gebräunt und durch und durch heiß ist.',
+        'An den Rand schieben, die Eier in die Pfanne schlagen und 3 Minuten braten, bis das Eiweiß gestockt ist.',
+        'Je ein Ei auf eine Scheibe legen, pfeffern und mit Senf, Brötchen und Gewürzgurken servieren.',
+      ],
+      tip: { add: 'Ein Löffel Kartoffelsalat dazu', why: 'Der klassische Begleiter', skill: 'Rand einschneiden', how: 'Ein paar kleine Schnitte am Rand verhindern, dass sich die Scheibe beim Braten wölbt.' },
+    },
+    'de_hackpfanne': {
+      name: 'Hackfleisch-Paprika-Pfanne',
+      ings: [['Rinderhack oder gemischtes Hack', '300 g'], ['Paprikaschoten', '2'], ['Zwiebel', '1'], ['Tomaten', '2'], ['Brot, zum Servieren', '4 Scheiben']],
+      seas: '1 EL Öl · 1 TL Paprika edelsüß · 1 EL Tomatenmark · Salz · Pfeffer',
+      steps: [
+        'Zwiebel, Paprika und Tomaten würfeln.',
+        'Das Öl in einer großen Pfanne stark erhitzen und das Hack mit der Zwiebel 4 Minuten krümelig braun anbraten.',
+        'Paprika, Paprikapulver und Tomatenmark zugeben und 3 Minuten braten, dann die Tomaten 1 Minute mitbraten. Abschmecken und mit Brot servieren.',
+      ],
+      tip: { add: 'Ein Klecks saure Sahne obendrauf', why: 'Mild und cremig zum Paprika', skill: 'Pfanne nicht überfüllen', how: 'In einer großen Pfanne verteilt wird das Hack braun statt grau und wässrig.' },
+    },
+    'de_haehnchenpfanne': {
+      name: 'Hähnchen-Champignon-Pfanne mit Sahne',
+      ings: [['Hähnchenbrust', '300 g'], ['Champignons', '200 g'], ['Sahne', '100 ml'], ['Zwiebel', '1/2']],
+      seas: '1 EL Öl · 1 TL Paprika edelsüß · 1 EL Petersilie, gehackt · Salz · Pfeffer',
+      steps: [
+        'Das Hähnchen in dünne Streifen schneiden, die Champignons in Scheiben und die Zwiebel fein würfeln.',
+        'Das Öl in einer großen Pfanne stark erhitzen und das Hähnchen 3-4 Minuten goldbraun und durchgebraten anbraten. Zwiebel und Champignons 2 Minuten mitbraten.',
+        'Die Sahne angießen, Paprika zugeben und 1 Minute leicht einkochen lassen. Abschmecken und mit Petersilie bestreuen.',
+      ],
+      tip: { add: 'Ein Schuss Weißwein vor der Sahne', why: 'Eine frischere, leichtere Soße', skill: 'Dünne Streifen schneiden', how: 'Etwa 1 cm dicke Streifen sind in Minuten gar und bleiben saftig.' },
+    },
+    'de_fischfilet': {
+      name: 'Fischfilet in Zitronenbutter',
+      ings: [['Weißfischfilets (Seelachs oder Kabeljau)', '2 (300 g)'], ['Zitrone', '1'], ['Butter', '30 g'], ['Gurkensalat, zum Servieren', '1']],
+      seas: '1 EL Mehl · 1 EL Öl · 1 EL Dill oder Petersilie, gehackt · Salz · Pfeffer',
+      steps: [
+        'Den Fisch trocken tupfen, mit etwas Zitronensaft beträufeln, würzen und mit Mehl bestäuben.',
+        'Das Öl in einer Pfanne bei mittlerer bis starker Hitze erhitzen und den Fisch 3 Minuten auf der einen und 2 Minuten auf der anderen Seite braten, bis er zerfällt; auf Teller geben.',
+        'Die Butter in der Pfanne schmelzen, den übrigen Zitronensaft und die Kräuter zugeben und über den Fisch löffeln.',
+      ],
+      tip: { add: 'Übrig gebliebene Salzkartoffeln dazu', why: 'Sie saugen die Zitronenbutter auf', skill: 'Zitrone vor dem Mehl', how: 'Etwas Zitronensaft würzt den Fisch und lässt das Mehl dünn und gleichmäßig haften.' },
+    },
     'de_frikadellen': {
       name: 'Frikadellen',
       ings: [['Gemischtes Hackfleisch (Rind und Schwein)', '400 g'], ['Altbackenes Brötchen', '1'], ['Ei', '1'], ['Zwiebel', '1']],
@@ -511,24 +725,24 @@ GOHAN_PACK_TR('DE', 'de', {
     },
     'de_sauerbraten': {
       name: 'Sauerbraten',
-      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '1 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g'], ['Rosinen', '2 EL']],
-      seas: 'Salz · Pfeffer · Beize: 400 ml Rotweinessig oder Weinessig · 400 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 2 zerbröselte Printen oder Lebkuchen oder 1 EL Zucker · 1 EL Speisestärke',
+      ings: [['Rindfleisch zum Schmoren (Oberschale oder Schulter)', '500 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g'], ['Rosinen', '1 EL']],
+      seas: 'Salz · Pfeffer · Beize: 250 ml Rotweinessig oder Weinessig · 250 ml Wasser (oder zur Hälfte Rotwein) · 2 Lorbeerblätter · 6 Wacholderbeeren · 4 Nelken · 10 Pfefferkörner · 2 EL Öl · 1 EL Tomatenmark · 1 zerbröselte Printe oder 1 Lebkuchen oder 2 TL Zucker · 2 TL Speisestärke',
       steps: [
-        'Zwei bis drei Tage vorher: Zwiebeln, Möhren und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
+        'Zwei bis drei Tage vorher: Zwiebel, Möhre und Sellerie grob schneiden. Essig, Wasser und Gewürze aufkochen, abkühlen lassen und in einer Schüssel (nicht aus Metall) über Fleisch und Gemüse gießen, sodass alles bedeckt ist. Im Kühlschrank ziehen lassen und das Fleisch täglich wenden.',
         'Am Kochtag das Fleisch herausnehmen und trocken tupfen; die Beize abseihen und mit dem Gemüse aufheben. Das Fleisch salzen und im Öl rundherum kräftig anbraten, dann Gemüse und Tomatenmark zugeben und 5 Minuten mitrösten.',
-        '500 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 1/2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
+        '300 ml Beize angießen, zudecken und bei schwacher Hitze etwa 2 Stunden schmoren, bis eine Gabel leicht hineingleitet. Bei Bedarf Wasser nachgießen.',
         'Das Fleisch herausnehmen, die Soße passieren, Printen (und Rosinen) einrühren, 5 Minuten köcheln und mit der in Wasser angerührten Stärke binden. Mit Salz, Pfeffer und Zucker süßsauer abschmecken. Das Fleisch aufschneiden und mit Rotkohl und Kartoffelklößen servieren.'
       ],
       tip: { add: 'Eine Handvoll Rosinen in der Soße', why: 'Die rheinische Art: süß gegen sauer', skill: 'Zeit in der Beize', how: 'Zwei bis drei Tage in der kalten Essigbeize machen das Fleisch zart und geben den typischen Geschmack; das lässt sich nicht abkürzen.' }
     },
     'de_schweinebraten': {
       name: 'Schweinebraten mit Kruste',
-      ings: [['Schweineschulter mit Schwarte', '1,2 kg'], ['Zwiebeln', '2'], ['Möhren', '2'], ['Knollensellerie', '100 g']],
-      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 500 ml Wasser oder Rinderbrühe · 250 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
+      ings: [['Schweineschulter mit Schwarte', '600 g'], ['Zwiebel', '1'], ['Möhre', '1'], ['Knollensellerie', '50 g']],
+      seas: 'Salz · Pfeffer · 1 TL Kümmel · 1 TL edelsüßes Paprikapulver · 2 Knoblauchzehen · 400 ml Wasser oder Rinderbrühe · 150 ml dunkles Bier (oder mehr Brühe) · 1 EL Speisestärke',
       steps: [
         'Den Backofen auf 180 °C vorheizen. Die Schwarte mit einem sehr scharfen Messer im 1-cm-Rautenmuster einschneiden, nur durch Schwarte und Fett, nicht ins Fleisch. Das Fleisch (nicht die Schwarte) mit Salz, Pfeffer, Kümmel, Paprika und zerdrücktem Knoblauch einreiben, die Schwarte mit Salz.',
-        'Das grob geschnittene Gemüse in einen Bräter geben, 250 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
-        'Etwa 2 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
+        'Das grob geschnittene Gemüse in einen Bräter geben, 200 ml Wasser angießen und das Fleisch mit der Schwarte nach oben daraufsetzen.',
+        'Etwa 1 1/4 Stunden braten, das Fleisch mit Bier begießen und bei Bedarf Wasser nachgießen, bis der austretende Saft klar ist und der Kern 75 °C erreicht. Dann den Ofen auf 220 °C (oder Grill) stellen und 15–20 Minuten weiterbraten, bis die Kruste aufpoppt und knusprig ist; dabei gut aufpassen.',
         'Den Braten 10 Minuten ruhen lassen. Den Bratensaft mit dem restlichen Wasser durch ein Sieb in einen Topf geben, mit der in kaltem Wasser angerührten Stärke binden und abschmecken. Den Braten aufschneiden und mit Soße, Semmelknödeln und Krautsalat servieren.'
       ],
       tip: { add: 'Bayerischer Krautsalat mit Speck', why: 'Der klassische Sonntagsteller in Bayern', skill: 'Trockene Schwarte', how: 'Die Schwarte sehr gut trocken tupfen und nicht begießen; nur trockene Haut wird zur knusprigen Kruste.' }
@@ -589,7 +803,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Die Zwiebel fein reiben oder hacken und in der Hälfte des Öls 3 Minuten andünsten. Currypulver und Paprika 30 Sekunden mitrösten, bis es duftet.',
         'Passierte Tomaten, Ketchup, Zucker, Essig und Wasser zugeben, 10 Minuten köcheln und mit Salz (und Cayenne) abschmecken. Nach Wunsch glatt pürieren.',
         'Inzwischen die Würste im restlichen Öl bei mittlerer Hitze 8–10 Minuten rundherum braun und heiß braten.',
-        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren.'
+        'Die Würste in Scheiben schneiden, mit der heißen Soße übergießen, mit Currypulver bestäuben und mit Brötchen oder Pommes servieren. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine Prise geräuchertes Paprikapulver in der Soße', why: 'Bringt den Geschmack vom Grill und von der Imbissbude', skill: 'Curry anrösten', how: 'Ein paar Sekunden in heißem Fett wecken die Gewürze; direkt in die Flüssigkeit gegeben schmecken sie staubig.' }
     },
@@ -745,7 +959,7 @@ GOHAN_PACK_TR('DE', 'de', {
         'Den Feldsalat zwei- bis dreimal in reichlich Wasser waschen (er ist oft sandig), die Wurzelenden abknipsen, die Röschen aber ganz lassen, und trocken schleudern.',
         'Essig, Senf, Honig, fein gehackte Schalotte, Salz, Pfeffer, Wasser und Öl zu einem Dressing verschlagen.',
         'Das Brot würfeln. Den Speck in einer Pfanne ohne Fett knusprig braten, dann die Brotwürfel im Fett goldbraun rösten.',
-        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen.'
+        'Den Salat erst kurz vor dem Servieren mit dem Dressing mischen und den warmen Speck und die Croûtons darüberstreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
       tip: { add: 'Eine gekochte Kartoffel ins Dressing gedrückt', why: 'Die schwäbische und pfälzische Art: cremig und haftet an den Blättern', skill: 'Erst bei Tisch anmachen', how: 'Die zarten Blätter fallen wenige Minuten nach dem Anmachen zusammen; erst direkt vor dem Essen mischen.' }
     },
@@ -767,9 +981,9 @@ GOHAN_PACK_TR('DE', 'de', {
       steps: [
         'Die Möhren schälen und grob raspeln. Den Apfel mit Schale (ohne Kerngehäuse) raspeln und sofort mit dem Zitronensaft mischen, damit er nicht braun wird.',
         'Möhren, Apfel, Honig, Salz und Öl vermischen.',
-        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen.'
+        '5 Minuten ziehen lassen und mit den gehackten Nüssen bestreuen. Honig darf Babys unter einem Jahr nicht gegeben werden, auch nicht erhitzt.'
       ],
-      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett hilft dem Körper, das Vitamin A aus Möhren aufzunehmen, und macht den Salat runder.' }
+      tip: { add: 'Eine Handvoll Rosinen', why: 'Süße Stückchen, die Kinder mögen', skill: 'Etwas Öl', how: 'Fett trägt den Geschmack der Möhren und macht den Salat runder.' }
     },
     'de_nudelsalat': {
       name: 'Nudelsalat',
@@ -961,6 +1175,209 @@ GOHAN_PACK_TR('DE', 'de', {
         '50–60 Minuten backen, bis die Oberfläche goldbraun ist und ein Messer leicht durch die Kartoffeln gleitet. Vor dem Servieren 10 Minuten ruhen lassen.'
       ],
       tip: { add: 'Ein paar Thymianblättchen zwischen den Schichten', why: 'Eine leichte Kräuternote zur reichhaltigen Sahne', skill: 'Gleichmäßig dünne Scheiben', how: 'Gleich dicke Scheiben garen gleichzeitig, so bleiben in der Mitte keine harten Stellen.' }
-    }
+    },
+    'de_abendbrot': {
+      name: 'Abendbrot',
+      ings: [['Roggen- oder Vollkornbrot', '4 Scheiben'], ['Butter', '30 g'], ['Schinken oder Wurstaufschnitt', '100 g'], ['Käsescheiben (Gouda oder Emmentaler)', '100 g'], ['Tomaten', '2'], ['Salatgurke', '1/2'], ['Gewürzgurken', '2?'], ['Radieschen', '4?']],
+      seas: 'Salz · Pfeffer · Schnittlauch · Senf',
+      steps: [
+        'Die Butter 10 Minuten vorher aus dem Kühlschrank nehmen, damit sie sich gut streichen lässt.',
+        'Tomaten und Gurke in Scheiben schneiden, die Radieschen halbieren und alles mit Schinken, Käse und Gewürzgurken auf einem Brett oder großen Teller anrichten.',
+        'Das Brot mit Butter bestreichen. Jede Scheibe nach Belieben mit Schinken oder Käse und dem Gemüse belegen.',
+        'Die Tomaten mit Salz und Pfeffer würzen, Schnittlauch über den Käse streuen und mit Senf servieren.'
+      ],
+      tip: { add: 'Ein gekochtes Ei oder ein Klecks Quark mit Schnittlauch', why: 'Das macht das kalte Abendessen sättigender', skill: 'Die Butter bis zum Rand streichen', how: 'Eine geschlossene Butterschicht verhindert, dass das Brot unter dem Gemüse durchweicht.' }
+    },
+    'de_pfannkuchen': {
+      name: 'Eierpfannkuchen mit Apfelmus',
+      ings: [['Weizenmehl', '150 g'], ['Milch', '300 ml'], ['Eier', '3'], ['Apfelmus', '150 g']],
+      seas: 'Prise Salz · 1 EL Zucker · 2 EL Butter oder Öl für die Pfanne · Zimtzucker zum Servieren',
+      steps: [
+        'Mehl, Salz und Zucker mit der Milch glatt rühren, dann die Eier unterschlagen. Den Teig 10 Minuten ruhen lassen.',
+        'Etwas Butter in einer beschichteten Pfanne bei mittlerer Hitze erhitzen. Eine Kelle Teig hineingießen und die Pfanne schwenken, bis der Boden dünn bedeckt ist.',
+        '1–2 Minuten backen, bis die Oberfläche gestockt und die Unterseite goldbraun ist, dann wenden und noch eine Minute backen. Auf einen Teller geben und warm halten. Mit dem restlichen Teig wiederholen und bei Bedarf Butter nachgeben. Es ergibt 4–5 Pfannkuchen.',
+        'Jeden mit Apfelmus bestreichen, aufrollen oder zusammenklappen und mit Zimtzucker bestreuen.'
+      ],
+      tip: { add: 'Speckwürfel oder Schinken im Teig für eine herzhafte Variante', why: 'In Deutschland isst man sie auch als deftiges Hauptgericht mit Salat', skill: 'Den Teig ruhen lassen', how: 'Beim Ruhen nimmt das Mehl die Milch auf, sodass die Pfannkuchen zart bleiben und beim Wenden nicht reißen.' }
+    },
+    de_linseneintopf_veg: {
+      name: 'Linseneintopf mit Gemüse',
+      ings: [
+        ['Braune Linsen', '200 g'],
+        ['Möhren', '2'],
+        ['Kartoffeln', '300 g'],
+        ['Sellerie', '150 g'],
+        ['Lauch', '1 Stange'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 Lorbeerblatt · 1 TL Majoran · 2 EL Essig · 900 ml Wasser',
+      steps: [
+        'Möhren, Kartoffeln und Sellerie schälen und würfeln, den Lauch in Ringe schneiden. Alles im Öl 5 Minuten anbraten.',
+        'Die gewaschenen Linsen, das Lorbeerblatt, den Majoran und das Wasser zugeben. 30 Minuten köcheln, bis Linsen und Kartoffeln weich sind.',
+        'Mit Salz, Pfeffer und Essig abschmecken, das Lorbeerblatt entfernen und mit Brot servieren.',
+      ],
+    },
+    de_bratkartoffeln_pilze: {
+      name: 'Bratkartoffeln mit Pilzen',
+      ings: [
+        ['Gekochte Kartoffeln (festkochend)', '600 g'],
+        ['Champignons', '250 g'],
+        ['Zwiebel', '1'],
+        ['Schnittlauch', '1 Bund'],
+      ],
+      seas: 'Salz · Pfeffer · 4 EL Öl · 1 TL Paprikapulver · etwas Petersilie',
+      steps: [
+        'Die gekochten, abgekühlten Kartoffeln in Scheiben schneiden. In 2 EL Öl bei mittlerer Hitze 12 Minuten braten, nur gelegentlich wenden, bis sie goldbraun sind.',
+        'Die Zwiebelscheiben zugeben und 4 Minuten mitbraten. Die Kartoffeln an den Rand schieben, das restliche Öl zugeben und die Champignonscheiben 6 Minuten braten.',
+        'Alles vermengen, mit Salz, Pfeffer und Paprika würzen und mit Schnittlauch und Petersilie bestreuen.',
+      ],
+    },
+    de_kartoffelgulasch: {
+      name: 'Kartoffelgulasch',
+      ings: [
+        ['Kartoffeln', '600 g'],
+        ['Paprika', '2'],
+        ['Zwiebeln', '2'],
+        ['Tomaten', '2'],
+        ['Möhre', '1'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 EL Tomatenmark · 2 TL Paprikapulver edelsüß · 1 TL Majoran · 1 Lorbeerblatt · 500 ml Wasser',
+      steps: [
+        'Zwiebeln, Paprika und Möhre in Stücke schneiden und im Öl 6 Minuten anbraten. Tomatenmark und Paprikapulver 1 Minute einrühren.',
+        'Die in Würfel geschnittenen Kartoffeln, die gehackten Tomaten, den Majoran, das Lorbeerblatt und das Wasser zugeben.',
+        '25 Minuten köcheln, bis die Kartoffeln weich und die Soße dick ist. Mit Salz und Pfeffer abschmecken und mit Brot servieren.',
+      ],
+    },
+    de_kuerbis_linsen_curry: {
+      name: 'Kürbis-Linsen-Curry',
+      ings: [
+        ['Kürbis', '400 g'],
+        ['Rote Linsen', '150 g'],
+        ['Ingwer', '1 Stück (20 g)'],
+        ['Zwiebel', '1'],
+        ['Reis', '150 g'],
+      ],
+      seas: 'Salz · 2 EL Öl · 2 Knoblauchzehen · 2 TL Currypulver · 600 ml Wasser · Saft von 1/2 Zitrone',
+      steps: [
+        'Die gehackte Zwiebel, den geriebenen Ingwer und den Knoblauch im Öl 5 Minuten anbraten. Das Currypulver 1 Minute einrühren.',
+        'Den in 2-cm-Würfel geschnittenen Kürbis, die gewaschenen Linsen, das Wasser und etwas Salz zugeben. 20 Minuten köcheln, bis Kürbis und Linsen weich sind und das Curry dick ist.',
+        'Inzwischen den Reis kochen. Das Curry mit Zitronensaft und Salz abschmecken und auf dem Reis servieren.',
+      ],
+    },
+    de_weisse_bohnen_eintopf: {
+      name: 'Weiße-Bohnen-Eintopf',
+      ings: [
+        ['Weiße Bohnen (gekocht oder aus der Dose)', '2 Dosen (800 g)'],
+        ['Möhren', '2'],
+        ['Sellerie', '150 g'],
+        ['Lauch', '1 Stange'],
+        ['Kartoffel', '1'],
+      ],
+      seas: 'Salz · Pfeffer · 2 EL Öl · 1 Lorbeerblatt · 1 TL Bohnenkraut oder Thymian · 1 EL Essig · 700 ml Wasser',
+      steps: [
+        'Möhren, Sellerie und Kartoffel würfeln, den Lauch in Ringe schneiden. Im Öl 5 Minuten anbraten.',
+        'Die abgetropften Bohnen, das Lorbeerblatt, die Kräuter und das Wasser zugeben und 25 Minuten köcheln, bis das Gemüse weich ist.',
+        'Einige Bohnen im Topf zerdrücken, damit der Eintopf bindet, mit Salz, Pfeffer und Essig abschmecken und das Lorbeerblatt entfernen.',
+      ],
+    },
+    'de_ruehrei': {
+      name: 'Rührei mit Schnittlauch und Brot',
+      ings: [['Eier', '4'], ['Schnittlauch', '1 kleines Bund'], ['Brot', '2 Scheiben'], ['Butter', '1 EL']],
+      seas: '2 EL Milch · Salz · Pfeffer',
+      steps: [
+        'Die Eier mit Milch, Salz und Pfeffer verquirlen. Den Schnittlauch in feine Röllchen schneiden.',
+        'Die Butter in einer Pfanne bei schwacher Hitze zerlassen, die Eier hineingeben und etwa 3 Minuten behutsam rühren, bis sie gerade gestockt, aber noch cremig sind.',
+        'Den größten Teil des Schnittlauchs unterrühren. Auf oder neben dem Brot anrichten und mit dem restlichen Schnittlauch bestreuen.',
+      ],
+    },
+    'de_broetchen_kaese': {
+      name: 'Brötchen mit Käse und Schinken',
+      ings: [['Brötchen', '2'], ['Butter', '1 EL'], ['Käsescheiben (Gouda oder Emmentaler)', '4 Scheiben'], ['Kochschinken', '4 Scheiben']],
+      seas: 'schwarzer Pfeffer nach Geschmack',
+      steps: [
+        'Die Brötchen halbieren und die Schnittflächen mit Butter bestreichen.',
+        'Mit Käse und Schinken belegen.',
+        'Nach Belieben mit Gurken- oder Tomatenscheiben servieren.',
+      ],
+    },
+    'de_fruehstuecksmuesli': {
+      name: 'Frühstücksmüsli mit Obst',
+      ings: [['Haferflocken', '60 g'], ['Apfel, gerieben', '1'], ['Banane', '1'], ['Rosinen', '2 EL']],
+      seas: '100 ml Wasser · 1/2 TL Zimt · Saft von 1/2 Zitrone',
+      steps: [
+        'Die Haferflocken in einer Schüssel mit dem Wasser verrühren und 5 Minuten quellen lassen.',
+        'Den Apfel raspeln und mit dem Zitronensaft mischen, damit er nicht braun wird. Die Banane in Scheiben schneiden.',
+        'Alles in zwei Schalen verteilen und mit Rosinen und Zimt bestreuen.',
+      ],
+    },
+    "de_pilzzucchinipfanne": {
+      name: "Pilz-Zucchini-Pfanne mit Kräutern",
+      ings: [["Braune Champignons", "400 g"], ["Zucchini", "1 (250 g)"], ["Zwiebel", "1"], ["Kirschtomaten", "150 g"]],
+      seas: "3 EL Öl · 2 Knoblauchzehen · 2 EL gehackte Petersilie · 1 TL getrockneter Thymian · Salz · Pfeffer",
+      steps: [
+        "Die Pilze vierteln, die Zucchini in Halbmonde und die Zwiebel in Streifen schneiden.",
+        "Das Öl in einer großen Pfanne erhitzen und die Pilze bei starker Hitze 6 Minuten braun anbraten. Zwiebel, Zucchini und Knoblauch zugeben und 5 Minuten mitbraten.",
+        "Tomaten und Thymian 2 Minuten mitbraten, mit Salz und Pfeffer abschmecken und mit Petersilie bestreuen.",
+      ],
+    },
+    "de_rahmspinatei": {
+      name: "Rahmspinat mit Spiegelei",
+      ings: [["Blattspinat", "400 g"], ["Sahne", "100 ml"], ["Zwiebel", "1/2"], ["Eier", "4"]],
+      seas: "1 EL Butter · 1 EL Öl · 1 Knoblauchzehe · Muskat · Salz · Pfeffer",
+      steps: [
+        "Zwiebel und Knoblauch fein hacken und in einem Topf in der Butter 3 Minuten andünsten. Den Spinat zugeben und 3 Minuten zusammenfallen lassen.",
+        "Den Spinat im Topf grob hacken, die Sahne zugießen und 3 Minuten köcheln lassen. Mit Muskat, Salz und Pfeffer würzen.",
+        "Die Eier in einer Pfanne im Öl zu Spiegeleiern braten und auf dem Spinat anrichten.",
+      ],
+    },
+    "de_gemuesetofu": {
+      name: "Gemüsepfanne mit Tofu",
+      ings: [["Tofu (fest)", "300 g"], ["Brokkoli", "250 g"], ["Rote Paprika", "1"], ["Möhre", "1 kleine"]],
+      seas: "3 EL Öl · 2 EL Sojasoße · 1 TL geriebener Ingwer · 1 Knoblauchzehe · Salz · Pfeffer",
+      steps: [
+        "Den Tofu trocken tupfen und würfeln. Brokkoli in Röschen, Paprika in Streifen und die Möhre in dünne Scheiben schneiden.",
+        "Den Tofu in einer großen Pfanne in 2 EL Öl 6–8 Minuten knusprig goldbraun braten und herausnehmen.",
+        "Das Gemüse im restlichen Öl mit Ingwer und Knoblauch 5 Minuten braten, Tofu und Sojasoße zugeben und abschmecken.",
+      ],
+    },
+    "de_blumenkohlgratin": {
+      name: "Blumenkohl-Brokkoli-Gratin",
+      ings: [["Blumenkohl", "400 g"], ["Brokkoli", "300 g"], ["Sahne", "150 ml"], ["Ei", "1"], ["Geriebener Gouda", "80 g"]],
+      seas: "Muskat · Salz · Pfeffer · 1 TL Butter für die Form",
+      steps: [
+        "Den Backofen auf 200 °C vorheizen. Blumenkohl und Brokkoli in Röschen teilen, in einem Topf in Salzwasser 5 Minuten garen und abgießen.",
+        "Das Gemüse in eine gefettete Auflaufform geben. Sahne mit Ei, Muskat, Salz und Pfeffer verquirlen und darübergießen.",
+        "Mit dem Käse bestreuen und 20 Minuten goldbraun überbacken.",
+      ],
+    },
+    "de_gefuelltezucchini": {
+      name: "Gefüllte Zucchini mit Feta und Tomaten",
+      ings: [["Zucchini", "2 (500 g)"], ["Tomaten", "2"], ["Feta", "150 g"], ["Zwiebel", "1/2"]],
+      seas: "2 EL Olivenöl · 1 Knoblauchzehe · 1 TL getrockneter Oregano · Salz · Pfeffer",
+      steps: [
+        "Den Backofen auf 200 °C vorheizen. Zucchini längs halbieren, aushöhlen und das Fruchtfleisch mit Tomaten und Zwiebel hacken.",
+        "Das gehackte Gemüse mit Knoblauch in einer Pfanne im Öl 5 Minuten braten. Die Hälfte des Fetas hineinbröseln und mit Oregano, Salz und Pfeffer würzen.",
+        "Die Zucchini füllen, den restlichen Feta darüberbröseln und in einer Auflaufform 25 Minuten backen.",
+      ],
+    },
+    "de_ruehreipilze": {
+      name: "Rührei mit Pilzen und Schnittlauch",
+      ings: [["Eier", "5"], ["Champignons", "250 g"], ["Tomaten", "2"], ["Schnittlauch", "1 Bund"]],
+      seas: "1 EL Butter · 1 EL Öl · 3 EL Milch · Salz · Pfeffer",
+      steps: [
+        "Die Pilze in Scheiben, die Tomaten in Spalten schneiden und den Schnittlauch in Röllchen schneiden. Die Eier mit Milch, Salz und Pfeffer verquirlen.",
+        "Die Pilze in einer Pfanne im Öl 5 Minuten goldbraun braten.",
+        "Butter und Eier zugeben und bei schwacher Hitze unter sanftem Rühren stocken lassen. Mit Schnittlauch bestreuen und mit den Tomaten servieren.",
+      ],
+    },
+    "de_spitzkohltofu": {
+      name: "Spitzkohlpfanne mit Räuchertofu",
+      ings: [["Spitzkohl", "500 g"], ["Räuchertofu", "200 g"], ["Zwiebel", "1/2"]],
+      seas: "3 EL Öl · 1 TL Kümmel · 1 TL Paprikapulver edelsüß · 1 EL Sojasoße · Salz · Pfeffer",
+      steps: [
+        "Den Spitzkohl in feine Streifen, den Tofu in kleine Würfel und die Zwiebel in Streifen schneiden.",
+        "Den Tofu in einer großen Pfanne im Öl 5 Minuten knusprig braten. Zwiebel und Kümmel zugeben und 2 Minuten mitbraten.",
+        "Den Kohl zugeben und 6–8 Minuten bissfest braten. Mit Paprika, Sojasoße, Salz und Pfeffer abschmecken.",
+      ],
+    },
   }
 });

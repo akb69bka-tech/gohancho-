@@ -2,6 +2,9 @@
 GOHAN_PACK_TR('ES', 'es', {
   staple: 'Pan',
   names: {
+    'chocolate': 'Chocolate negro',
+    "semolina": "Sémola de trigo",
+    "oats": "Copos de avena",
     'potato': 'Patatas',
     'egg': 'Huevos',
     'onion': 'Cebolla',
@@ -61,9 +64,196 @@ GOHAN_PACK_TR('ES', 'es', {
     'asparagus': 'Espárragos trigueros',
     'chard': 'Acelgas',
     'banana': 'Plátanos',
-    'breadcrumbs': 'Pan rallado'
+    'breadcrumbs': 'Pan rallado',
+    'garlic': 'Ajo',
+    'flour': 'Harina',
   },
   recipes: {
+    "es_caldopollo": {
+      name: "Caldo de pollo con verduras",
+      ings: [["Contramuslos de pollo deshuesados", "200 g"], ["Puerro", "80 g"], ["Zanahoria", "50 g"], ["Perejil", "5 g"]],
+      seas: "900 ml de agua · 1 pastilla de caldo · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta el pollo en trozos, el puerro en rodajas y la zanahoria en dados.",
+        "Dora ligeramente el pollo en el aceite, añade las verduras, el agua y la pastilla de caldo y cuece 25 minutos.",
+        "Ajusta de sal y pimienta y añade el perejil picado.",
+      ],
+    },
+    "es_cremacoliflor": {
+      name: "Crema de coliflor",
+      ings: [["Coliflor", "300 g"], ["Cebolla", "40 g"], ["Leche", "100 ml"]],
+      seas: "400 ml de caldo de verduras · 1 cucharada de aceite de oliva · Nuez moscada · Sal · Pimienta",
+      steps: [
+        "Separa la coliflor en ramilletes y pica la cebolla.",
+        "Pocha la cebolla en el aceite, añade la coliflor y el caldo y cuece tapado 15 minutos.",
+        "Tritura con la leche y sazona con nuez moscada, sal y pimienta.",
+      ],
+    },
+    "es_almejascaldo": {
+      name: "Almejas en caldo con ajo y perejil",
+      ings: [["Almejas", "400 g"], ["Perejil", "10 g"], ["Cebolla", "30 g"]],
+      seas: "500 ml de caldo de pescado o agua · 60 ml de vino blanco seco · 2 cucharadas de aceite de oliva · 3 dientes de ajo · Sal",
+      steps: [
+        "Pon las almejas en agua con sal 20 minutos y acláralas. Pica el ajo, la cebolla y el perejil.",
+        "Sofríe suavemente el ajo y la cebolla en el aceite, añade el vino y las almejas, tapa y cuece hasta que se abran.",
+        "Añade el caldo, lleva a ebullición suave, incorpora el perejil y rectifica de sal.",
+      ],
+    },
+    "es_cremaesparragos": {
+      name: "Crema de espárragos trigueros",
+      ings: [["Espárragos trigueros", "300 g"], ["Puerro", "60 g"], ["Nata", "40 ml"]],
+      seas: "500 ml de caldo de verduras · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Quita la parte dura de los espárragos y córtalos en trozos. Corta el puerro en rodajas.",
+        "Pocha el puerro en el aceite, añade los espárragos y el caldo y cuece 12 minutos.",
+        "Tritura, añade la nata si quieres y salpimienta.",
+      ],
+    },
+    "es_sopaacelgas": {
+      name: "Sopa de acelgas con huevo",
+      ings: [["Acelgas", "250 g"], ["Huevos", "2"], ["Cebolla", "40 g"]],
+      seas: "700 ml de caldo de pollo o de verduras · 1 cucharada de aceite de oliva · 2 dientes de ajo · 1/2 cucharadita de pimentón dulce · Sal",
+      steps: [
+        "Pica las acelgas, la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite, añade el pimentón, luego las acelgas y el caldo y cuece 10 minutos.",
+        "Bate los huevos y viértelos en la sopa removiendo. Rectifica de sal.",
+      ],
+    },
+    "es_sopachampijamon": {
+      name: "Sopa de champiñones con jamón",
+      ings: [["Champiñones", "200 g"], ["Jamón serrano", "40 g"], ["Cebolla", "40 g"]],
+      seas: "700 ml de caldo de pollo · 1 cucharada de aceite de oliva · 1 diente de ajo · Perejil · Sal · Pimienta",
+      steps: [
+        "Lamina los champiñones, pica la cebolla y el ajo y corta el jamón en tiras.",
+        "Sofríe la cebolla, el ajo y el jamón en el aceite 2 minutos, añade los champiñones y cocina 4 minutos.",
+        "Añade el caldo, cuece 8 minutos, salpimienta y añade perejil.",
+      ],
+    },
+    "es_calabacinplancha": {
+      name: "Calabacín a la plancha",
+      ings: [["Calabacines", "300 g"], ["Perejil", "5 g"]],
+      seas: "1 cucharada de aceite de oliva · 1 diente de ajo · Sal en escamas · Pimienta",
+      steps: [
+        "Corta los calabacines a lo largo en láminas de 1 cm y píntalos con aceite.",
+        "Hazlos en la plancha muy caliente 2–3 minutos por cada lado hasta que se marquen.",
+        "Termina con ajo y perejil muy picados, sal en escamas y pimienta.",
+      ],
+    },
+    "es_sopa_semola": {
+      name: "Sopa de sémola",
+      ings: [["Sémola de trigo", "50 g"], ["Huevo duro picado", "1"]],
+      seas: "1 litro de caldo de pollo · Sal",
+      steps: [
+        "Calienta el caldo hasta que hierva suavemente.",
+        "Añade la sémola en forma de lluvia, removiendo para que no se formen grumos.",
+        "Cuece 6-8 minutos a fuego bajo, removiendo, hasta que espese un poco. Rectifica de sal y sirve con el huevo duro picado por encima.",
+      ],
+    },
+    "es_gachas_avena": {
+      name: "Gachas de avena",
+      ings: [["Copos de avena", "80 g"], ["Leche", "400 ml"], ["Plátano en rodajas", "1"]],
+      seas: "Una pizca de sal · 1/2 cdta de canela molida · 1 cda de miel (opcional)",
+      steps: [
+        "Pon la avena, la leche, la sal y la canela en un cazo pequeño.",
+        "Lleva a un hervor suave y cuece 5 minutos, removiendo, hasta que quede cremoso.",
+        "Sirve caliente con el plátano y un poco de miel.",
+      ],
+    },
+    "es_arroz_caldoso": {
+      name: "Arroz caldoso de pollo",
+      ings: [["Arroz redondo", "150 g"], ["Contramuslo de pollo en trozos pequeños", "250 g"], ["Zanahoria en dados", "1"], ["Cebolla picada fina", "1/2"]],
+      seas: "1,2 litros de agua o caldo de pollo · 2 cdas de aceite de oliva · 1 hoja de laurel · Sal",
+      steps: [
+        "Pocha la cebolla y la zanahoria en el aceite 5 minutos sin que se doren. Añade el pollo y rehoga 3 minutos.",
+        "Agrega el agua o el caldo y el laurel, lleva a ebullición, añade el arroz y cuece 20-25 minutos a fuego bajo, removiendo de vez en cuando.",
+        "Cuando el arroz esté muy tierno y el caldo cremoso, sala al gusto. Comprueba que el pollo esté bien hecho y sirve.",
+      ],
+    },
+    "es_sopa_picadillo": {
+      name: "Sopa de picadillo rápida",
+      ings: [["Fideos finos", "40 g"], ["Jamón serrano en taquitos", "40 g"], ["Huevo duro", "1"]],
+      seas: "800 ml de caldo de pollo · Hierbabuena o perejil picado (opcional) · Sal",
+      steps: [
+        "Lleva el caldo a ebullición, añade los fideos y el jamón y cuece 4-5 minutos hasta que los fideos estén tiernos.",
+        "Pica el huevo duro y añádelo a la sopa. Rectifica de sal y termina con la hierbabuena.",
+      ],
+      tip: { add: "Unas gotas de limón", why: "El toque andaluz de siempre", skill: "Ten huevos duros en la nevera", how: "Con un huevo duro listo, esta sopa se hace en minutos." },
+    },
+    "es_crema_guisantes": {
+      name: "Crema de guisantes rápida",
+      ings: [["Guisantes congelados", "300 g"], ["Cebolla", "1/2"], ["Quesitos", "2 (30 g)"]],
+      seas: "500 ml de caldo de verduras · 1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y póchala en el aceite 2 minutos. Añade los guisantes y el caldo y cuece 5 minutos.",
+        "Añade los quesitos y tritura hasta que quede fino (cuidado, está caliente). Salpimienta.",
+      ],
+      tip: { add: "Unos picatostes", why: "Crujiente sobre la crema", skill: "Tritura enseguida", how: "Triturados en cuanto están tiernos, los guisantes conservan su verde." },
+    },
+    "es_crema_espinacas": {
+      name: "Crema de espinacas rápida",
+      ings: [["Espinacas frescas", "200 g"], ["Puerro", "1/2"], ["Leche", "100 ml"]],
+      seas: "400 ml de caldo de verduras · 1 cucharada de aceite de oliva · Una pizca de nuez moscada · Sal · Pimienta",
+      steps: [
+        "Corta el puerro y póchalo en el aceite 3 minutos. Añade el caldo, lleva a ebullición, echa las espinacas y cuece 2 minutos.",
+        "Añade la leche y la nuez moscada y tritura (cuidado, está caliente). Salpimienta.",
+      ],
+      tip: { add: "Un hilo de aceite de oliva por encima", why: "Da brillo y sabor", skill: "Cocción corta", how: "Con 2 minutos basta; más tiempo y las espinacas pierden el color." },
+    },
+    'es_revuelto': {
+      name: 'Revuelto de setas y jamón',
+      ings: [['Huevos', '5'], ['Setas o champiñones', '200 g'], ['Jamón serrano', '60 g'], ['Pan, para acompañar', '4 rebanadas']],
+      seas: 'Sal · 2 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharada de perejil picado',
+      steps: [
+        'Lamina las setas y el ajo y corta el jamón en tiras.',
+        'Calienta el aceite en una sartén a fuego medio-alto y saltea las setas con el ajo 4 minutos, hasta que se doren. Añade el jamón el último minuto.',
+        'Baja el fuego, vierte los huevos batidos con una pizca de sal y remueve con suavidad 1-2 minutos, hasta que cuajen y queden jugosos. Espolvorea perejil y sirve con pan.',
+      ],
+      tip: { add: 'Unos espárragos trigueros con las setas', why: 'El otro revuelto clásico', skill: 'Fuego bajo para el huevo', how: 'Retíralo del fuego cuando aún parezca algo húmedo; termina de cuajar en el plato y queda jugoso.' },
+    },
+    'es_lomoplancha': {
+      name: 'Lomo a la plancha con pimientos de Padrón',
+      ings: [['Filetes finos de lomo de cerdo', '4 (350 g)'], ['Pimientos de Padrón', '150 g'], ['Pan, para acompañar', '4 rebanadas']],
+      seas: 'Sal gorda · 2 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de perejil picado',
+      steps: [
+        'Calienta una plancha o sartén a fuego fuerte con la mitad del aceite y haz los pimientos 3-4 minutos, dándoles la vuelta, hasta que se ampollen. Échales sal gorda y resérvalos.',
+        'Añade el resto del aceite y haz el lomo 1-2 minutos por cada lado, hasta que esté dorado y hecho por dentro.',
+        'Esparce por encima el ajo y el perejil muy picados y una pizca de sal, y sirve con los pimientos y pan.',
+      ],
+      tip: { add: 'Unas patatas cocidas en gajos, si tienes', why: 'Un plato de bar en casa', skill: 'Filetes finos', how: 'Con menos de 1 cm de grosor se hacen en un minuto o dos y quedan tiernos.' },
+    },
+    'es_calamaresplancha': {
+      name: 'Calamares a la plancha',
+      ings: [['Calamares limpios', '400 g'], ['Limón', '1'], ['Perejil', 'un manojo pequeño'], ['Ensalada verde, para acompañar', '1']],
+      seas: 'Sal gorda · 3 cucharadas de aceite de oliva · 2 dientes de ajo',
+      steps: [
+        'Corta los calamares en anillas o tiras anchas y sécalos muy bien. Mezcla el aceite con el ajo y el perejil muy picados.',
+        'Calienta la plancha o sartén a fuego fuerte hasta que humee y haz los calamares 1-2 minutos, dándoles la vuelta, hasta que estén blancos y hechos.',
+        'Riégalos con el aceite de ajo, echa sal gorda y sírvelos enseguida con limón y ensalada.',
+      ],
+      tip: { add: 'Una pizca de pimentón dulce', why: 'Color y un sabor ahumado', skill: 'Fuego fuerte y rápido', how: 'El calamar queda tierno en uno o dos minutos y luego se endurece; con la plancha muy caliente se hace antes de soltar agua.' },
+    },
+    'es_tortillaatun': {
+      name: 'Tortilla francesa de atún con tomate',
+      ings: [['Huevos', '5'], ['Atún en lata, escurrido', '2 latas (160 g)'], ['Tomate frito, para acompañar', '4 cucharadas'], ['Lechuga, para acompañar', '1/2']],
+      seas: 'Sal · 1 cucharada de aceite de oliva',
+      steps: [
+        'Bate los huevos con una pizca de sal y mezcla el atún desmigado.',
+        'Calienta la mitad del aceite en una sartén pequeña a fuego medio, vierte la mitad de la mezcla y cuaja 2 minutos; enróllala o dóblala. Haz la segunda igual.',
+        'Calienta el tomate frito y sírvelo por encima o al lado, con lechuga.',
+      ],
+      tip: { add: 'Unas aceitunas con el atún', why: 'Un toque salado y mediterráneo', skill: 'Jugosa por dentro', how: 'Dóblala cuando la superficie aún esté algo blanda; termina de cuajar dentro.' },
+    },
+    'es_pollo_plancha': {
+      name: 'Filetes de pollo a la plancha con ensalada',
+      ings: [['Filetes finos de pechuga de pollo', '4 (350 g)'], ['Lechuga', '1'], ['Tomates', '2'], ['Cebolla', '1/2'], ['Limón', '1/2']],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 1 cucharada de vinagre · 1 diente de ajo · 1 cucharadita de perejil picado',
+      steps: [
+        'Prepara la ensalada: trocea la lechuga, corta los tomates en gajos y la cebolla en aros finos, y aliña con 2 cucharadas de aceite, el vinagre y sal.',
+        'Calienta el resto del aceite en una plancha o sartén a fuego fuerte y haz el pollo 2-3 minutos por cada lado, hasta que esté dorado y hecho por dentro.',
+        'Echa sal, el ajo y el perejil muy picados y un chorrito de limón, y sirve con la ensalada.',
+      ],
+      tip: { add: 'Un poco de atún y aceitunas en la ensalada', why: 'Un plato más completo', skill: 'Pide filetes', how: 'Los filetes finos de pechuga se hacen rápido y por igual, sin quedar secos.' },
+    },
     'es_tortilla': {
       name: 'Tortilla de patatas',
       ings: [['Patatas', '500 g'], ['Huevos', '5'], ['Cebolla', '1?']],
@@ -504,8 +694,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_pollohorno': {
       name: 'Pollo asado al horno con patatas',
-      ings: [['Pollo troceado (muslos y contramuslos)', '1 kg'], ['Patatas', '600 g'], ['Cebolla', '1'], ['Limón', '1/2']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 4 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado (muslos y contramuslos)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1'], ['Limón', '1/2']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 200 °C. Pela las patatas y córtalas en rodajas gruesas; corta la cebolla en aros gruesos y ponlo todo en una bandeja de horno. Sala y riega con la mitad del aceite.',
         'Salpimienta el pollo, espolvorea el tomillo y colócalo con la piel hacia arriba sobre las patatas, con los ajos chafados y los trozos de limón.',
@@ -528,8 +718,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_chilindron': {
       name: 'Pollo al chilindrón',
-      ings: [['Pollo troceado', '1 kg'], ['Pimientos rojos y verdes', '3'], ['Cebolla', '1'], ['Tomates maduros', '3'], ['Taquitos de jamón serrano', '50 g']],
-      seas: 'Sal · pimienta · 3 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Pollo troceado', '600 g'], ['Pimientos rojos y verdes', '2'], ['Cebolla', '1'], ['Tomates maduros', '2'], ['Taquitos de jamón serrano', '50 g']],
+      seas: 'Sal · pimienta · 2 dientes de ajo · 1 cucharadita de pimentón dulce · 100 ml de vino blanco · 3 cucharadas de aceite de oliva',
       steps: [
         'Salpimienta el pollo y dóralo en el aceite en una cazuela ancha durante 10 minutos. Reserva.',
         'En el mismo aceite sofríe la cebolla y el ajo picados y los pimientos en tiras durante 10 minutos. Añade el jamón y rehoga 2 minutos.',
@@ -564,8 +754,8 @@ GOHAN_PACK_TR('ES', 'es', {
     },
     'es_costillas': {
       name: 'Costillas de cerdo al horno',
-      ings: [['Costillas de cerdo (en tira o troceadas)', '1 kg'], ['Patatas', '500 g'], ['Cebolla', '1']],
-      seas: 'Sal · pimienta · 4 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 150 ml de vino blanco · 3 cucharadas de aceite de oliva',
+      ings: [['Costillas de cerdo (en tira o troceadas)', '600 g'], ['Patatas', '400 g'], ['Cebolla', '1']],
+      seas: 'Sal · pimienta · 3 dientes de ajo · 2 cucharaditas de pimentón dulce · 1 cucharadita de tomillo o romero seco · 100 ml de vino blanco · 2 cucharadas de aceite de oliva',
       steps: [
         'Precalienta el horno a 180 °C. Unta las costillas con sal, pimienta, ajo machacado, pimentón, tomillo y el aceite.',
         'Corta las patatas y la cebolla en rodajas, ponlas en una bandeja, sálalas y coloca encima las costillas. Vierte el vino.',
@@ -712,7 +902,7 @@ GOHAN_PACK_TR('ES', 'es', {
       seas: 'Sal · 1 diente de ajo (opcional) · aceite de oliva para freír',
       steps: [
         'Pela las patatas y córtalas en bastones finos o rodajas. Fríelas en abundante aceite de oliva, primero a fuego medio hasta que estén blandas y luego a fuego fuerte hasta que se doren. Escurre y sala.',
-        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida.',
+        'Fríe los huevos de uno en uno en aceite caliente, echando aceite por encima de la clara y dejando la yema líquida (para niños pequeños y embarazadas, cuaja bien la yema).',
         'Pon las patatas en una fuente, coloca encima el jamón y los huevos fritos.',
         'En la mesa, rompe los huevos con un tenedor y mézclalos con las patatas.'
       ],
@@ -725,7 +915,7 @@ GOHAN_PACK_TR('ES', 'es', {
       steps: [
         'Dora los ajos enteros en 1 cucharada de aceite, añade el arroz y rehoga 1 minuto. Agrega el agua, la sal y el laurel y cuece tapado a fuego suave 15-18 minutos hasta que esté tierno. Deja reposar 5 minutos.',
         'Calienta el tomate frito en un cazo.',
-        'Fríe los huevos en aceite caliente, con la yema jugosa. Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
+        'Fríe los huevos en aceite caliente, con la yema jugosa (para niños pequeños y embarazadas, cuaja bien la yema). Si usas plátanos, pártelos a lo largo y fríelos 1 minuto por lado.',
         'Aprieta el arroz en una taza y desmóldalo en cada plato. Sirve con el tomate, un huevo frito y el plátano.'
       ],
       tip: { add: 'Plátano frito', why: 'El toque dulce tradicional que da nombre al plato', skill: 'Moldea el arroz', how: 'Apretar el arroz en una taza untada de aceite y volcarla da la cúpula perfecta que esperan los niños.' }
@@ -834,7 +1024,7 @@ GOHAN_PACK_TR('ES', 'es', {
         'Corta las berenjenas en bastones finos o rodajas de 5 mm y déjalas en remojo en la leche con una pizca de sal 30 minutos.',
         'Escúrrelas y pásalas por harina, sacudiendo el exceso.',
         'Fríelas en aceite muy caliente en tandas pequeñas 2-3 minutos hasta que estén doradas y crujientes. Escurre sobre papel y sala un poco.',
-        'Riega con la miel de caña y sirve enseguida.'
+        'Riega con la miel de caña y sirve enseguida. No des miel a bebés menores de 1 año, ni siquiera cocinada.'
       ],
       tip: { add: 'Sal en escamas con la miel', why: 'El contraste dulce y salado es lo que engancha', skill: 'Remójalas en leche', how: 'La leche suaviza el amargor y hace que la berenjena absorba menos aceite.' }
     },
@@ -981,6 +1171,210 @@ GOHAN_PACK_TR('ES', 'es', {
         'Escurre sobre papel de cocina y sirve caliente, con un poco de sal.'
       ],
       tip: { add: 'Unas gotas de limón o un poco de allioli', why: 'Frescor frente al rebozado', skill: 'Sala y seca antes', how: 'La sal saca el agua; las rodajas secas mantienen el rebozado crujiente en vez de blando.' }
-    }
+    },
+    'es_gambas': {
+      name: 'Gambas al ajillo',
+      ings: [['Gambas peladas crudas', '300 g'], ['Ajo', '5 dientes'], ['Pan crujiente, para acompañar', '4 rebanadas'], ['Perejil', '1 cda?']],
+      seas: '100 ml de aceite de oliva · 1 guindilla seca (o 1/2 cdta de chile en copos) · 1 cda de jerez seco (opcional) · sal',
+      steps: [
+        'Seca las gambas con papel de cocina y sazónalas con sal. Corta el ajo en láminas finas y desmenuza la guindilla.',
+        'Calienta el aceite con el ajo y la guindilla en una sartén pequeña o cazuela de barro a fuego medio-bajo durante 2-3 minutos, hasta que el ajo empiece a dorarse.',
+        'Sube el fuego, añade las gambas y cocínalas 1-2 minutos por lado, hasta que estén rosadas y enroscadas. Si usas jerez, añádelo y deja que burbujee 10 segundos.',
+        'Espolvorea con perejil y sirve enseguida, chisporroteando, con el pan para mojar en el aceite.'
+      ],
+      tip: { add: 'Mucho pan crujiente para mojar', why: 'El aceite de ajo y guindilla es lo mejor del plato', skill: 'Secar bien las gambas', how: 'Las gambas mojadas salpican y se cuecen en lugar de dorarse; secarlas mantiene el aceite tranquilo y la carne firme.' }
+    },
+    'es_calamaresromana': {
+      name: 'Calamares a la romana',
+      ings: [['Calamares limpios, cortados en anillas', '400 g'], ['Harina de trigo', '100 g'], ['Huevos', '2'], ['Limón', '1']],
+      seas: 'sal · aceite de girasol o de oliva para freír (unos 300 ml) · perejil picado (opcional)',
+      steps: [
+        'Seca muy bien las anillas de calamar con papel de cocina y sazónalas con sal.',
+        'Bate los huevos en un bol y pon la harina en un plato. Pasa las anillas por el huevo y luego por la harina, sacudiendo el exceso.',
+        'Calienta el aceite en una sartén honda a fuego medio-alto hasta que una pizca de harina chisporrotee al instante (unos 180 °C). Fríe las anillas en 3 tandas durante 1-2 minutos cada una, hasta que estén doradas claras. No las pases de punto o quedarán duras.',
+        'Escúrrelas sobre papel de cocina, espolvorea con un poco más de sal y sirve enseguida con gajos de limón.'
+      ],
+      tip: { add: 'Alioli o un chorrito de limón', why: 'La acidez o la crema de ajo cortan lo graso de la fritura', skill: 'Freír en tandas pequeñas', how: 'Con demasiadas anillas a la vez el aceite se enfría y el rebozado lo absorbe en vez de quedar crujiente.' }
+    },
+    es_lentejas_verduras: {
+      name: 'Lentejas con verduras',
+      ings: [
+        ['Lentejas pardinas', '200 g'],
+        ['Patata', '1'],
+        ['Zanahorias', '2'],
+        ['Pimiento verde', '1'],
+        ['Cebolla', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 800 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados con el aceite durante 6 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada las lentejas lavadas, el laurel y el agua y cueza a fuego suave 20 minutos. Incorpore la patata troceada.',
+        'Cueza 15 minutos más, hasta que las lentejas y la patata estén tiernas y el guiso espese. Sale al gusto.',
+      ],
+    },
+    es_garbanzos_espinacas: {
+      name: 'Garbanzos con espinacas',
+      ings: [
+        ['Garbanzos cocidos', '1 bote (400 g)'],
+        ['Espinacas frescas', '300 g'],
+        ['Pan duro', '2 rebanadas'],
+        ['Ajo', '3 dientes'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 1 cucharadita de comino molido · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · 150 ml de agua',
+      steps: [
+        'Fría el pan y el ajo en 3 cucharadas de aceite hasta que estén dorados. Májelos en un mortero con el comino, el pimentón y el vinagre hasta formar una pasta.',
+        'Escalde las espinacas en agua hirviendo 1 minuto, escúrralas y píquelas.',
+        'Caliente el resto del aceite, añada la pasta, las espinacas, los garbanzos escurridos, la sal y el agua y cueza 10 minutos hasta que espese. Sirva caliente.',
+      ],
+    },
+    es_paella_verduras: {
+      name: 'Paella de verduras',
+      ings: [
+        ['Arroz de grano corto', '200 g'],
+        ['Pimiento rojo', '1'],
+        ['Judías verdes planas', '150 g'],
+        ['Corazones de alcachofa', '4'],
+        ['Tomate rallado', '2'],
+        ['Guisantes', '80 g'],
+      ],
+      seas: 'Sal · 4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón dulce · Una pizca de azafrán · 600 ml de agua caliente · Gajos de limón',
+      steps: [
+        'Caliente el aceite en una paellera y sofría el pimiento en tiras, las judías troceadas y las alcachofas 8 minutos. Añada el ajo y el tomate rallado y cocine 5 minutos hasta que espese. Incorpore el pimentón.',
+        'Añada el arroz y remueva 1 minuto. Vierta el agua caliente con el azafrán y la sal, reparta el arroz de forma uniforme y añada los guisantes.',
+        'Cueza a fuego medio 18 minutos sin remover, hasta que se absorba el agua. Deje reposar 5 minutos tapado y sirva con limón.',
+      ],
+    },
+    es_pisto_pan: {
+      name: 'Pisto con pan tostado',
+      ings: [
+        ['Calabacines', '2'],
+        ['Tomates maduros', '4'],
+        ['Pimientos (rojo y verde)', '2'],
+        ['Cebolla', '1'],
+        ['Pan de pueblo', '4 rebanadas'],
+      ],
+      seas: 'Sal · 5 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de azúcar · Pimienta',
+      steps: [
+        'Pique la cebolla, los pimientos y los calabacines en trozos pequeños. Sofría la cebolla y los pimientos en 3 cucharadas de aceite a fuego bajo 10 minutos.',
+        'Añada el calabacín y el ajo y cocine 8 minutos. Añada los tomates picados, el azúcar y la sal y cueza sin tapar 20 minutos, hasta que el pisto espese y suelte el aceite.',
+        'Tueste el pan y rocíelo con el resto del aceite. Sirva el pisto caliente sobre el pan o al lado.',
+      ],
+    },
+    es_alubias_estofadas: {
+      name: 'Alubias blancas estofadas',
+      ings: [
+        ['Alubias blancas cocidas', '2 botes (800 g)'],
+        ['Zanahorias', '2'],
+        ['Patata', '1'],
+        ['Cebolla', '1'],
+        ['Pimiento verde', '1'],
+      ],
+      seas: 'Sal · 3 cucharadas de aceite de oliva · 2 dientes de ajo · 1 hoja de laurel · 1 cucharadita de pimentón dulce · 500 ml de agua',
+      steps: [
+        'Sofría la cebolla picada, el pimiento y las zanahorias en dados en el aceite 8 minutos. Añada el ajo y el pimentón 1 minuto.',
+        'Añada la patata troceada, el laurel y el agua y cueza 15 minutos.',
+        'Añada las alubias escurridas y cueza 10 minutos más. Aplaste unas pocas para espesar el guiso, sale y sirva.',
+      ],
+    },
+    'es_fruta': {
+      name: 'Plato de fruta fresca',
+      ings: [['Plátano', '1'], ['Pera', '1'], ['Uvas', '1 puñado']],
+      seas: 'zumo de 1/2 limón',
+      steps: [
+        'Lave la fruta. Corte el plátano y la pera en rodajas.',
+        'Rocíe las rodajas con el zumo de limón para que no se oscurezcan.',
+        'Disponga todo en un plato con las uvas y sirva.',
+      ],
+    },
+    'es_churros': {
+      name: 'Churros con chocolate',
+      ings: [['Harina de trigo', '150 g'], ['Chocolate negro', '100 g'], ['Leche', '300 ml']],
+      seas: '250 ml de agua · una pizca de sal · aceite para freír · 1 cucharada de azúcar',
+      steps: [
+        'Hierva el agua con la sal, retire del fuego y añada la harina con una cuchara de madera hasta obtener una masa lisa. Póngala en una manga pastelera con boquilla de estrella.',
+        'Caliente 3 cm de aceite en una sartén honda a fuego medio-alto. Forme tiras de 10 cm en el aceite y fría 2 o 3 minutos, dándoles la vuelta, hasta que estén doradas. Escurra sobre papel de cocina y espolvoree con el azúcar.',
+        'Caliente la leche, añada el chocolate troceado y remueva a fuego bajo hasta que quede liso y espeso. Sirva para mojar.',
+      ],
+    },
+    'es_tostada_jamon': {
+      name: 'Tostada con tomate y jamón serrano',
+      ings: [['Pan rústico', '4 rebanadas'], ['Tomates maduros', '2'], ['Jamón serrano', '4 lonchas']],
+      seas: '2 cucharadas de aceite de oliva · sal',
+      steps: [
+        'Tueste el pan hasta que quede dorado y crujiente.',
+        'Corte los tomates por la mitad y rállelos en un bol, desechando la piel. Extienda la pulpa sobre las tostadas.',
+        'Rocíe con el aceite de oliva, añada una pizca de sal y ponga el jamón encima.',
+      ],
+    },
+    "es_pistohuevo": {
+      name: "Pisto manchego con huevo",
+      ings: [["Calabacín", "1 (250 g)"], ["Pimientos verde y rojo", "2"], ["Cebolla", "1/2"], ["Tomates maduros", "3"], ["Huevos", "4"]],
+      seas: "4 cucharadas de aceite de oliva · 1 diente de ajo · Sal · 1 pizca de azúcar (opcional)",
+      steps: [
+        "Corta en dados la cebolla, los pimientos y el calabacín. Ralla los tomates.",
+        "Pocha la cebolla, el ajo y los pimientos en 3 cucharadas de aceite en una sartén a fuego lento 10 minutos. Añade el calabacín 5 minutos, luego el tomate, y cocina 15 minutos. Sala.",
+        "Fríe los huevos en el aceite restante y sírvelos sobre el pisto.",
+      ],
+    },
+    "es_revueltosetas": {
+      name: "Revuelto de setas y espárragos trigueros",
+      ings: [["Huevos", "5"], ["Setas o champiñones", "250 g"], ["Espárragos trigueros", "200 g"]],
+      seas: "3 cucharadas de aceite de oliva · 2 dientes de ajo · Sal · Perejil",
+      steps: [
+        "Trocea los espárragos y lamina las setas y el ajo. Bate los huevos con una pizca de sal.",
+        "Sofríe el ajo y los espárragos en el aceite en una sartén 4 minutos, añade las setas y cocina 5 minutos más.",
+        "Baja el fuego, añade los huevos y remueve suavemente hasta que cuajen jugosos. Espolvorea perejil.",
+      ],
+    },
+    "es_espinacasgarbanzos": {
+      name: "Espinacas con garbanzos",
+      ings: [["Espinacas", "400 g"], ["Garbanzos cocidos, escurridos", "150 g"], ["Tomate", "1"]],
+      seas: "4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón de la Vera dulce · 1 cucharadita de comino molido · 1 cucharada de vinagre de Jerez · Sal",
+      steps: [
+        "Saltea las espinacas en una olla grande con un chorrito de agua 3 minutos, escúrrelas y pícalas en trozos. Ralla el tomate.",
+        "Dora el ajo laminado en el aceite en la misma olla, añade el pimentón y el comino, luego el tomate y el vinagre y cocina 3 minutos.",
+        "Incorpora los garbanzos, las espinacas y 100 ml de agua, cocina 8 minutos y sala.",
+      ],
+    },
+    "es_tortillacalabacin": {
+      name: "Tortilla de calabacín",
+      ings: [["Huevos", "5"], ["Calabacines", "2 (450 g)"], ["Cebolla", "1/2"]],
+      seas: "4 cucharadas de aceite de oliva · Sal",
+      steps: [
+        "Corta los calabacines en medias lunas finas y la cebolla en tiras. Pócha todo en una sartén antiadherente con 3 cucharadas de aceite y una pizca de sal 15 minutos, hasta que esté tierno.",
+        "Bate los huevos con sal y mezcla con las verduras escurridas.",
+        "Calienta el aceite restante en la sartén, vierte la mezcla y cuaja a fuego lento 4 minutos. Dale la vuelta con un plato y cuaja el otro lado 2–3 minutos.",
+      ],
+    },
+    "es_berenjenasrellenas": {
+      name: "Berenjenas rellenas de verduras y queso",
+      ings: [["Berenjenas", "2 (500 g)"], ["Champiñones", "150 g"], ["Tomates", "2"], ["Cebolla", "1/2"], ["Queso rallado para gratinar", "80 g"]],
+      seas: "3 cucharadas de aceite de oliva · 1 diente de ajo · 1/2 cucharadita de orégano seco · Sal · Pimienta",
+      steps: [
+        "Precalienta el horno a 200 °C. Parte las berenjenas por la mitad, haz cortes en la pulpa, píntalas con aceite y hornéalas 20 minutos. Vacíalas y pica la pulpa.",
+        "Sofríe la cebolla, el ajo, los champiñones y los tomates en el resto del aceite en una sartén 8 minutos, añade la pulpa de berenjena y el orégano y salpimienta.",
+        "Rellena las berenjenas, cubre con el queso y gratina 10 minutos en el horno.",
+      ],
+    },
+    "es_coliflorajoarriero": {
+      name: "Coliflor al ajoarriero",
+      ings: [["Coliflor", "1 pequeña (600 g)"], ["Huevos", "2"]],
+      seas: "4 cucharadas de aceite de oliva · 4 dientes de ajo · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · Sal · Perejil",
+      steps: [
+        "Separa la coliflor en ramilletes y cuécela en una olla con agua y sal 6 minutos. Escúrrela. Cuece los huevos 10 minutos y pícalos.",
+        "Dora el ajo laminado en el aceite en una sartén, retira del fuego y añade el pimentón y el vinagre.",
+        "Añade la coliflor, saltea 3 minutos, sala y sirve con el huevo picado y perejil.",
+      ],
+    },
+    "es_menestraverde": {
+      name: "Menestra de verduras",
+      ings: [["Corazones de alcachofa (frescos o congelados)", "250 g"], ["Judías verdes planas", "250 g"], ["Espárragos trigueros", "150 g"], ["Acelgas", "200 g"], ["Cebolla", "1/4"]],
+      seas: "4 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de harina · 200 ml de agua · Sal",
+      steps: [
+        "Trocea las judías y los espárragos y corta las acelgas en tiras. Cuece en una olla con agua hirviendo y sal las judías, las alcachofas y las acelgas 8 minutos, añade los espárragos 3 minutos y escurre.",
+        "Rehoga la cebolla y el ajo picados en el aceite en una cazuela 5 minutos, añade la harina, luego el agua y cuece 2 minutos.",
+        "Incorpora las verduras, cuece a fuego suave 5 minutos y sala.",
+      ],
+    },
   }
 });

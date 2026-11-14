@@ -8,8 +8,9 @@
 #   ASC_KEY_ID           … App Store Connect API キーの Key ID
 #   ASC_ISSUER_ID        … 同 Issuer ID
 #   ASC_API_KEY_P8       … 同 .p8 ファイルの中身（-----BEGIN PRIVATE KEY----- から全部）
-#   REVENUECAT_API_KEY   … RevenueCat の Apple 用 公開APIキー（appl_…）。入れると課金が有効
-#   SUPPORT_EMAIL        … 「ご意見・不具合を送る」の宛先メール（任意）
+#   REVENUECAT_API_KEY   … RevenueCat の Apple 用 公開APIキー（appl_…）。課金に必須（無いと審査で却下されるため、ジョブを止める）
+#   SUPPORT_EMAIL        … 「ご意見・不具合を送る」の宛先メール。必須（同上）
+#   ※ TestFlight で試すだけなら、手動実行の「allow_free_build」に印を付けると、上の2つが無くても組み立てる（課金なし。審査には出さないこと）
 #   IOS_DIST_P12_BASE64 / IOS_DIST_P12_PASSWORD … （任意）配布用証明書。API キーのクラウド署名で失敗するときだけ
 # アップロードが終わったら、App Store Connect で新しいビルドを選んで「審査へ提出」を押す（人の確認が必要な最後の一歩）。
 name: iOS release
@@ -25,6 +26,11 @@ on:
         description: 'メモ（何を直したか。ログに残すだけ）'
         required: false
         default: ''
+      allow_free_build:
+        description: 'TestFlight の試し用: RevenueCat キー・連絡先メールが無くても組み立てる（課金なし。審査には出さない）'
+        type: boolean
+        required: false
+        default: false
   push:
     tags: ['gohancho-v*']
 
@@ -64,13 +70,49 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+        # Capacitor 8 の CLI は Node.js 22 以上が必要（20 だと npx cap が動かない）
+        with: { node-version: '22' }
       - name: Secrets がそろっているか
+        env:
+          RC_KEY: ${{ secrets.REVENUECAT_API_KEY }}
+          SUPPORT: ${{ secrets.SUPPORT_EMAIL }}
+          # タグで動いたとき（inputs が無い）は false 扱い＝必ず確認する
+          ALLOW_FREE: ${{ github.event.inputs.allow_free_build == 'true' }}
         run: |
           for v in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID; do
             [ -n "${!v}" ] || { echo "::error::Secret $v が未登録です（ios-app/アップデートの手順.md を見てください）"; exit 1; }
           done
           [ -n "${{ secrets.ASC_API_KEY_P8 }}" ] || { echo "::error::Secret ASC_API_KEY_P8 が未登録です"; exit 1; }
+          missing=""
+          [ -n "$RC_KEY" ] || missing="$missing REVENUECAT_API_KEY"
+          [ -n "$SUPPORT" ] || missing="$missing SUPPORT_EMAIL"
+          if [ -n "$missing" ]; then
+            if [ "$ALLOW_FREE" = "true" ]; then
+              echo "::warning::Secret が未登録:$missing。allow_free_build が付いているので、課金なしで組み立てます。TestFlight の試し用で、このビルドは審査に出さないでください。"
+            else
+              echo "::error::Secret が未登録です:$missing。課金（RevenueCat）や連絡先の無いビルドは App Store の審査で却下されます。Settings → Secrets and variables → Actions に登録してください（ios-app/アップデートの手順.md）。TestFlight で試すだけなら、手動実行で allow_free_build に印を付けてください。"
+              exit 1
+            fi
+          fi
+
+      # App Store にアップロードするアプリは、Apple が決めた最新の SDK（Xcode）で作る必要がある
+      # （2026年4月から iOS 26 SDK＝Xcode 26 以上。古い Xcode だとアップロードで拒否される）。
+      # ランナーの既定の Xcode は古いことがあるので、入っている Xcode の中から一番新しいものを明示的に選ぶ。
+      # Capacitor 8 も Xcode 26 以上が必要。
+      - name: Xcode を選ぶ（一番新しいもの）
+        run: |
+          echo "このランナーにある Xcode:"; ls -d /Applications/Xcode*.app || true
+          # 入っている Xcode_*.app の中からバージョン順で一番新しいものを選ぶ（beta・RC は除く）。無ければ既定の Xcode.app
+          X=$(ls -d /Applications/Xcode_*.app /Applications/Xcode-*.app 2>/dev/null | grep -v -i -E 'beta|release_candidate|_rc' | sort -V | tail -n 1)
+          [ -n "$X" ] || X=/Applications/Xcode.app
+          [ -d "$X" ] || { echo "::error::Xcode が見つかりません"; exit 1; }
+          echo "選んだ Xcode: $X"
+          sudo xcode-select -s "$X/Contents/Developer"
+          xcodebuild -version
+          MAJOR=$(xcodebuild -version | awk '/^Xcode/{split($2,a,"."); print a[1]}')
+          if [ "${MAJOR:-0}" -lt 26 ]; then
+            echo "::error::選べた Xcode が $MAJOR です。App Store へのアップロードには Xcode 26 以上が必要です。runs-on を新しい macOS（例 macos-26）に変えてください。"; exit 1
+          fi
 
       - name: バージョンを決める
         id: ver
@@ -84,27 +126,33 @@ jobs:
 
       - name: アプリの中の設定を書きこむ（バージョン・RevenueCat・連絡先）
         env:
+          # バージョンは前の step の出力をここで直接渡す（以前は後ろの step で env にしていたため 'undefined' になっていた）
+          VERSION: ${{ steps.ver.outputs.version }}
           RC_KEY: ${{ secrets.REVENUECAT_API_KEY }}
           SUPPORT: ${{ secrets.SUPPORT_EMAIL }}
         run: |
           node - <<'EOF'
           const fs = require('fs'); const p = 'gohancho/index.html'; let s = fs.readFileSync(p, 'utf8');
-          const v = process.env.VERSION, rc = process.env.RC_KEY || '', mail = process.env.SUPPORT || '';
+          const v = process.env.VERSION;
+          if (!v || v === 'undefined') { console.error('::error::バージョンが決まっていません'); process.exit(1); }
+          const rc = process.env.RC_KEY || '', mail = process.env.SUPPORT || '';
           s = s.replace(/const APP_VERSION = '[^']*';/, `const APP_VERSION = '${v}';`);
           if (rc) s = s.replace(/revenueCatApiKey: '[^']*'/, `revenueCatApiKey: '${rc}'`);
           if (mail) s = s.replace(/const SUPPORT_EMAIL = '[^']*';/, `const SUPPORT_EMAIL = '${mail}';`);
           fs.writeFileSync(p, s);
           console.log('APP_VERSION', v, '| RevenueCat', rc ? 'あり' : 'なし（課金は無効のまま）', '| SUPPORT_EMAIL', mail ? 'あり' : 'なし');
           EOF
-        # VERSION は上の step の出力
-        shell: bash
-        # （env に出力を渡す）
-      - name: VERSION を env に
-        run: echo "VERSION=${{ steps.ver.outputs.version }}" >> "$GITHUB_ENV"
 
       - name: iOS プロジェクトを用意する（Capacitor）
         working-directory: ios-app
         run: bash scripts/setup-ios.sh --ci
+
+      - name: プライバシー マニフェスト（PrivacyInfo.xcprivacy）が入っているか
+        working-directory: ios-app/ios/App
+        run: |
+          [ -f App/PrivacyInfo.xcprivacy ] || { echo "::error::ios/App/App/PrivacyInfo.xcprivacy がありません（scripts/setup-ios.sh を確認）"; exit 1; }
+          plutil -lint App/PrivacyInfo.xcprivacy
+          grep -q "PrivacyInfo.xcprivacy in Resources" App.xcodeproj/project.pbxproj || { echo "::error::PrivacyInfo.xcprivacy が App ターゲットに入っていません（申請の完全ガイド.md の手動手順を参照）"; exit 1; }
 
       - name: バージョン番号を Xcode プロジェクトに書く
         working-directory: ios-app/ios/App
@@ -133,13 +181,18 @@ jobs:
       - name: アーカイブ（Release ビルド）
         working-directory: ios-app/ios/App
         run: |
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -destination 'generic/platform=iOS' \
+          # Capacitor 8 の iOS プロジェクトは Swift Package Manager 版（App.xcworkspace が無い）。CocoaPods 版ならワークスペースを使う
+          if [ -d App.xcworkspace ]; then SRC=(-workspace App.xcworkspace); else SRC=(-project App.xcodeproj); fi
+          xcodebuild "${SRC[@]}" -scheme App -configuration Release -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
             -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
             -authenticationKeyPath ~/private_keys/AuthKey_${ASC_KEY_ID}.p8 -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic \
             | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|warning: .*(sign|provision)|ARCHIVE (SUCCEEDED|FAILED)" || true
           grep -q "ARCHIVE SUCCEEDED" "$RUNNER_TEMP/archive.log"
+          # 出来上がったアプリにプライバシー マニフェストが入っているか（無いと App Store Connect で警告・却下の原因）
+          ls "$RUNNER_TEMP"/App.xcarchive/Products/Applications/*.app/PrivacyInfo.xcprivacy \
+            || { echo "::error::アーカイブしたアプリに PrivacyInfo.xcprivacy が入っていません"; exit 1; }
 
       - name: App Store Connect にアップロード
         working-directory: ios-app/ios/App

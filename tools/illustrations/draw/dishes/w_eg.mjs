@@ -427,25 +427,6 @@ export default {
         wegTaameya(p, 90, 146, 44, 160, { seed: 6, broken: true }),
     ].join(''),
 
-    // ful medames: mashed fava beans in a small metal bowl, oil, cumin, tomato, parsley
-    eg_ful: p => {
-        const out = [K.bowl(p, { glaze: '#b5bac0', inside: '#9aa0a6', lip: .9 }),
-            `<circle cx="100" cy="100" r="76" fill="${p.rg('#8f6236', .2, .3)}"/>`];
-        const R = rng('fulmash');
-        let mash = '';
-        for (let i = 0; i < 22; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 64; mash += `<path ${T(100 + Math.cos(a) * d, 100 + Math.sin(a) * d)} d="${smooth(ring(4 + R() * 5, 7, .5, R))}" fill="${R() < .5 ? '#a0703e' : '#7a4f2a'}" opacity=".7"/>`; }
-        out.push(mash);
-        wegSpots('ful-b', 28, 66, 14).forEach(([x, y, r]) => out.push(wegFul(p, x, y, 14, r)));
-        out.push(K.pool(p, 98, 98, 70, '#e8b828', { op: .42, seed: 4, sy: .85 }));
-        out.push(wegOil(p, 98, 98, 60, { n: 8, c: '#f2c838', op: .7, rmax: 2.6, seed: 3 }));
-        out.push(K.sprinkle(p, 100, 100, 50, { c: '#8a3a12', n: 16, r: .9 }));
-        out.push(`<g ${p.sh(.4)}>`);
-        [[86, 88], [110, 92], [98, 110], [114, 108], [90, 104]].forEach(([x, y], i) => out.push(wegDice(p, x, y, 8, i * 25, 'tom')));
-        out.push('</g>');
-        out.push(wegHerb(p, 100, 100, 46, { n: 12, seed: 6 }));
-        return out.join('');
-    },
-
     // vermicelli rice
     eg_rozshaariya: p => [
         K.bowl(p, { glaze: '#c9b48a', inside: '#f6f1e6' }),
@@ -466,17 +447,6 @@ export default {
         out.push(K.lemon(p, 64, 136, 30, 30));
         out.push(wegShine(100, 100, 76, .35));
         return out.join('');
-    },
-
-    // molokhia: dark green, glossy, with golden garlic flecks
-    eg_molokhia: p => {
-        const R = rng('molo');
-        let tex = '';
-        for (let i = 0; i < 18; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 64, x = 100 + Math.cos(a) * d, y = 100 + Math.sin(a) * d; tex += `<path ${T(x, y)} d="${smooth(ring(4 + R() * 8, 8, .5, R, 1.4, .7))}" fill="${R() < .5 ? '#6a8a28' : '#2f4512'}" opacity=".35"/>`; }
-        let garlic = '';
-        for (let i = 0; i < 26; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 52; garlic += `<circle cx="${f(100 + Math.cos(a) * d)}" cy="${f(100 + Math.sin(a) * d)}" r="${f(.8 + R() * 1.2)}" fill="${R() < .5 ? '#e0b04a' : '#c98a2a'}"/>`; }
-        return [wegSoupBowl(p, '#3f7a3a'), K.liquid(p, { R: 76, c: '#46641c', op: 1, shine: false }), tex, garlic,
-            wegOil(p, 100, 100, 100, { n: 9, c: '#d9b23a', op: .55, rmax: 2.6 }), wegShine(100, 100, 76, .5)].join('');
     },
 
     // orzo chicken soup: golden broth, orzo, shredded chicken, parsley

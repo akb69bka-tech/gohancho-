@@ -72,6 +72,11 @@ export class Pic {
         const id = this.def(`ro${k}${freq}`, id => `<filter id="${id}" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency="${freq}" numOctaves="2" seed="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="${k}" xChannelSelector="R" yChannelSelector="G"/></filter>`);
         return `filter="url(#${id})"`;
     }
+    // 小さく表示しても形が潰れないよう、主役の具のまわりに細い暗色の縁をつける（グループの外形をなぞる）
+    edge(c = '#3a1d0c', w = .9, op = .55){
+        const id = this.def(`ed${c}${w}${op}`, id => `<filter id="${id}" x="-8%" y="-8%" width="116%" height="116%"><feMorphology in="SourceAlpha" operator="dilate" radius="${w}" result="d"/><feFlood flood-color="${c}" flood-opacity="${op}"/><feComposite in2="d" operator="in" result="o"/><feMerge><feMergeNode in="o"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`);
+        return `filter="url(#${id})"`;
+    }
     svg(body){
         return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400"><defs>${[...this.defs.values()].map(d => d.body).join('')}</defs>${body}</svg>\n`;
     }
@@ -779,3 +784,428 @@ export function eggRibbons(p, x, y, s, { n = 9, seed = 1 } = {}){
 }
 
 export { T, f };
+
+// =========================================================
+// 食材の描き分け部品（何が入っているか一目で分かるように、形・色・断面を具ごとに変える）
+// =========================================================
+// 不定形のかたまり（w×h、角度 r）。左上が明るく右下が暗い塗り＋輪郭＋ハイライト
+export function yzBlob(p, x, y, w, h, r, c, { seed = 1, n = 9, jit = .26, l = .3, d = .28, sh = .5, k = .8, stroke = true, hi = .55 } = {}){
+    const R = rng(p.id + 'yzb' + seed + x + y);
+    const pts = ring(1, n, jit, R, w / 2, h / 2);
+    const m = Math.min(w, h);
+    return `<g ${T(x, y, r)}><g ${p.sh(sh)}><path d="${smooth(pts, true, k)}" fill="${p.g(c, l, d)}" ${stroke ? `stroke="${dk(c, .32)}" stroke-width=".7"` : ''}/></g></g>
+        ${hi ? `<ellipse cx="${f(x - m * .2)}" cy="${f(y - m * .22)}" rx="${f(m * .17)}" ry="${f(m * .08)}" transform="rotate(-25 ${f(x - m * .2)} ${f(y - m * .22)})" fill="#fff" opacity="${hi}"/>` : ''}`;
+}
+// 衣をつけて揚げた豚肉（きつね色のでこぼこ）。sauce を渡すと甘酢のあんをからめた照りが乗る
+export function yzFriedPork(p, x, y, s, r = 0, { seed = 1, c = '#d99436', sauce = null, sop = .45 } = {}){
+    const R = rng(p.id + 'yzfp' + seed + x + y);
+    const pts = ring(1, 10, .3, R, s / 2, s * .42);
+    const d = smooth(pts, true, .7);
+    let bits = '';
+    for (let i = 0; i < 7; i++){ const a = R() * 6.28, dd = Math.sqrt(R()) * s * .32; bits += `<circle cx="${f(Math.cos(a) * dd)}" cy="${f(Math.sin(a) * dd * .8)}" r="${f(1 + R() * 1.6)}" fill="${R() < .5 ? lt(c, .35) : dk(c, .25)}" opacity=".75"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(.8)}><path d="${d}" fill="${p.g(c, .32, .3)}" stroke="${dk(c, .38)}" stroke-width=".8" ${p.crumb(.5)}/></g>${bits}
+        ${sauce ? `<path d="${smooth(pts.map(([a, b]) => [a * .94, b * .92]), true, .7)}" fill="${sauce}" opacity="${sop}"/>` : ''}
+        <path d="M${f(-s * .3)},${f(-s * .12)} Q${f(-s * .12)},${f(-s * .3)} ${f(s * .14)},${f(-s * .26)}" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// 玉ねぎの角切り（2〜3cm 四方）: 層が見える断面
+export function yzOnionSquare(p, x, y, s, r = 0, { c = '#dbb775', seed = 1 } = {}){
+    const R = rng(p.id + 'yzos' + seed + x + y);
+    const q = (k, jj) => { const h = s / 2 * k; return smooth([[-h, -h + (R() - .5) * jj], [0, -h - 1 + (R() - .5) * jj], [h, -h + (R() - .5) * jj], [h + 1, 0], [h, h], [0, h + 1], [-h, h], [-h - 1, 0]], true, .7); };
+    return `<g ${T(x, y, r)}><g ${p.sh(.7)}><path d="${q(1, 2)}" fill="${p.g(c, .3, .3)}" stroke="${dk(c, .4)}" stroke-width=".8"/></g>
+        <path d="${q(.74, 1.6)}" fill="none" stroke="${dk(c, .3)}" stroke-width=".9" opacity=".8"/>
+        <path d="${q(.5, 1.2)}" fill="${lt(c, .25)}" stroke="${dk(c, .25)}" stroke-width=".8" opacity=".95"/>
+        <path d="${q(.24, .8)}" fill="${lt(c, .4)}" opacity=".9"/>
+        <path d="M${f(-s * .38)},${f(-s * .3)} Q${f(-s * .2)},${f(-s * .42)} ${f(s * .1)},${f(-s * .4)}" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".65"/></g>`;
+}
+// 唐辛子の輪切り（種つき）
+export function yzChiliRing(p, x, y, s, { c = '#3f9a2f', seed = 1, r = 0 } = {}){
+    const R = rng(p.id + 'yzcr' + seed + x + y);
+    const inner = c.toLowerCase() === '#3f9a2f' || c[1] < 'a' ? '#eef0c0' : '#fbe3c8';
+    let seeds = '';
+    for (let i = 0; i < 6; i++){ const a = i / 6 * 6.28 + R(), dd = s * (.12 + R() * .1); seeds += `<ellipse cx="${f(Math.cos(a) * dd)}" cy="${f(Math.sin(a) * dd)}" rx="${f(s * .08)}" ry="${f(s * .05)}" transform="rotate(${f(a * 57)} ${f(Math.cos(a) * dd)} ${f(Math.sin(a) * dd)})" fill="#f6ecb0" stroke="#c9b45a" stroke-width=".3"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><ellipse rx="${s / 2}" ry="${f(s * .46)}" fill="${p.g(c, .25, .25)}" stroke="${dk(c, .35)}" stroke-width=".6"/></g>
+        <ellipse rx="${f(s * .36)}" ry="${f(s * .33)}" fill="${inner}"/>${seeds}
+        <path d="M0,${f(-s * .3)} L0,${f(s * .3)} M${f(-s * .3)},0 L${f(s * .3)},0" stroke="${lt(c, .5)}" stroke-width=".5" opacity=".7"/></g>`;
+}
+// ブロッコリーの房（太い軸つき・つぶつぶの花蕾）。方向は r
+export function yzFloret(p, x, y, s, r = 0, { c = '#2f8f3a', seed = 1 } = {}){
+    const R = rng(p.id + 'yzfl' + seed + x + y), k = s / 20;
+    let b = '', dots = '';
+    const cs = [[0, -3, 5.2], [-5.6, -2.4, 4.4], [5.4, -2.2, 4.4], [-3, -7.4, 4.2], [3.4, -7, 4.2], [-7, 2, 3.6], [7, 2.4, 3.6], [0, 2, 4.2], [-3.2, 4, 3.4], [3.4, 4, 3.4]];
+    cs.forEach(([a, bb, rr], i) => { const col = i % 3 === 0 ? lt(c, .12) : i % 3 === 1 ? c : dk(c, .1); b += `<circle cx="${f(a)}" cy="${f(bb)}" r="${rr}" fill="${p.rg(col, .3, .25, .35, .3)}" stroke="${dk(c, .32)}" stroke-width=".5"/>`; });
+    for (let i = 0; i < 26; i++){ const a = R() * 6.28, d = Math.sqrt(R()) * 9; dots += `<circle cx="${f(Math.cos(a) * d)}" cy="${f(Math.sin(a) * d - 2)}" r=".75" fill="${lt(c, .5)}" opacity=".8"/>`; }
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.7)}><path d="M-3,5 L-3.6,13 Q0,14.6 3.6,13 L3,5Z" fill="#b6d68a" stroke="#6e9a46" stroke-width=".5"/><path d="M-2.6,6 Q-6,9 -7,12" stroke="#9cc46a" stroke-width="2.4" fill="none" stroke-linecap="round"/>${b}</g>${dots}</g>`;
+}
+// 炒めた牛肉の細切り（照りと繊維）
+export function yzBeefStrip(p, x, y, L, r = 0, { c = '#7d4624', seed = 1, w = null } = {}){
+    const R = rng(p.id + 'yzbs' + seed + x + y), h = w || L * .34;
+    const top = Array.from({ length: 6 }, (_, i) => [-L / 2 + i * L / 5, -h / 2 + (R() - .5) * h * .3]);
+    const bot = Array.from({ length: 6 }, (_, i) => [L / 2 - i * L / 5, h / 2 + (R() - .5) * h * .3]);
+    const d = smooth([...top, ...bot], true, .8);
+    let fib = '';
+    for (let i = 0; i < 3; i++){ const yy = -h * .25 + i * h * .25; fib += `<path d="M${f(-L * .4)},${f(yy)} Q0,${f(yy + (R() - .5) * 3)} ${f(L * .4)},${f(yy)}" stroke="${dk(c, .3)}" stroke-width=".6" fill="none" opacity=".55"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(.7)}><path d="${d}" fill="${p.g(c, .38, .3)}" stroke="${dk(c, .4)}" stroke-width=".8"/></g>${fib}
+        <path d="M${f(-L * .36)},${f(-h * .26)} Q0,${f(-h * .42)} ${f(L * .32)},${f(-h * .24)}" stroke="#ffd9a8" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/></g>`;
+}
+// トマトソース煮のいわしの缶詰（切り口にピンクの身と背骨、銀青の皮）
+export function yzSardine(p, x, y, L, r = 0, { seed = 1, sauce = '#cf3f22' } = {}){
+    const h = L * .36;
+    return `<g ${T(x, y, r)}><g ${p.sh(.7)}><path d="M${-L / 2},0 C${-L * .42},${-h * .62} ${L * .3},${-h * .62} ${L / 2 - 1},${-h * .3} L${L / 2 - 1},${h * .3} C${L * .3},${h * .62} ${-L * .42},${h * .62} ${-L / 2},0Z" fill="${p.g('#cfd7dc', .3, .25)}" stroke="#5d7080" stroke-width=".8"/></g>
+        <path d="M${-L / 2 + 1},-.5 C${-L * .42},${-h * .62} ${L * .3},${-h * .62} ${L / 2 - 2},${-h * .3} L${L / 2 - 2},${-h * .02} C${L * .2},${-h * .1} ${-L * .3},${-h * .1} ${-L / 2 + 1},-.5Z" fill="${p.g('#5f7a8c', .3, .3)}"/>
+        <path d="M${-L * .36},${-h * .2} Q${-L * .1},${-h * .45} ${L * .2},${-h * .3}" stroke="#a9bccb" stroke-width="1" fill="none" opacity=".8"/>
+        <path d="M${-L * .1},${h * .12} Q${L * .1},${h * .3} ${L * .3},${h * .2}" stroke="#ffffff" stroke-width=".9" fill="none" opacity=".6"/>
+        <ellipse cx="${f(L / 2 - 1)}" cy="0" rx="${f(h * .2)}" ry="${f(h * .3)}" fill="#f3b9a3" stroke="#b66a58" stroke-width=".6"/><circle cx="${f(L / 2 - 1.2)}" cy="0" r="${f(h * .09)}" fill="#fff4ea" stroke="#b66a58" stroke-width=".4"/>
+        <path d="M${f(-L * .45)},${f(h * .2)} Q${f(-L * .2)},${f(h * .5)} ${f(L * .1)},${f(h * .3)} Q${f(L * .3)},${f(h * .1)} ${f(L * .46)},${f(h * .26)} L${f(L * .46)},${f(h * .5)} Q0,${f(h * .8)} ${f(-L * .45)},${f(h * .4)}Z" fill="${sauce}" opacity=".7"/>
+        <circle cx="${f(-L * .34)}" cy="${f(-h * .12)}" r="${f(h * .09)}" fill="#fff" stroke="#2a3540" stroke-width=".7"/><circle cx="${f(-L * .34)}" cy="${f(-h * .12)}" r="${f(h * .045)}" fill="#1c2630"/></g>`;
+}
+// 薄切りエシャロット（紫の縁と白い輪）
+export function yzShallotSlice(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.35)}><ellipse rx="${s / 2}" ry="${f(s * .38)}" fill="${p.g('#f4eaf0', .2, .15)}" stroke="#b25a92" stroke-width="1"/></g><ellipse rx="${f(s * .33)}" ry="${f(s * .25)}" fill="none" stroke="#d9a3c6" stroke-width=".8"/><ellipse rx="${f(s * .16)}" ry="${f(s * .12)}" fill="none" stroke="#e4bfd6" stroke-width=".7"/></g>`;
+}
+// レモングラスの輪切り（淡い黄緑の層と紫がかった芯）
+export function yzLemongrassRing(p, x, y, s){
+    return `<g ${T(x, y)}><g ${p.sh(.3)}><circle r="${s / 2}" fill="${p.g('#eeeaa6', .25, .12)}" stroke="#b8b060" stroke-width=".7"/></g><circle r="${f(s * .32)}" fill="none" stroke="#d6d27c" stroke-width=".7"/><circle r="${f(s * .16)}" fill="#cfa7b8" stroke="#a97f94" stroke-width=".5"/></g>`;
+}
+// ミントの葉（ぎざぎざの縁と葉脈）
+export function yzMint(p, x, y, s, r = 0, { c = '#3f9a3a' } = {}){
+    const k = s / 20;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.4)}><path d="M-10,0 C-9,-4 -6,-6 -4,-5.4 C-2,-7.6 2,-7.4 3.4,-5.4 C6,-6 9,-3 10,0 C9,3 6,6 3.4,5.4 C2,7.4 -2,7.6 -4,5.4 C-6,6 -9,4 -10,0Z" fill="${p.g(c, .3, .22)}" stroke="${dk(c, .35)}" stroke-width=".6"/></g>
+        <path d="M-9,0 L9,0 M-4,0 L-6,-3.6 M-4,0 L-6,3.6 M1,0 L-1,-4.4 M1,0 L-1,4.4 M5,0 L4,-3 M5,0 L4,3" stroke="${lt(c, .45)}" stroke-width=".7" fill="none" opacity=".85"/></g>`;
+}
+// 白身魚の筒切り（皮のふち・身の筋・中骨）。stain は煮汁の色が染みた感じ
+export function yzFishSteak(p, x, y, s, r = 0, { flesh = '#f2e6cf', skin = '#8794a0', stain = null, seed = 1 } = {}){
+    const R = rng(p.id + 'yzst' + seed + x + y);
+    const outer = ring(1, 10, .12, R, s / 2, s * .42), inn = outer.map(([a, b]) => [a * .86, b * .84]);
+    return `<g ${T(x, y, r)}><g ${p.sh(.8)}><path d="${smooth(outer, true, .8)}" fill="${p.g(skin, .35, .3)}" stroke="${dk(skin, .4)}" stroke-width=".8"/></g>
+        <path d="${smooth(inn, true, .8)}" fill="${p.rg(flesh, .22, .2, .4, .36)}"/>
+        ${[35, 75, 105, 145, 215, 255, 285, 325].map(a => `<path d="M${f(Math.cos(a / 57.3) * s * .2)},${f(Math.sin(a / 57.3) * s * .17)} L${f(Math.cos(a / 57.3) * s * .36)},${f(Math.sin(a / 57.3) * s * .3)}" stroke="${dk(flesh, .22)}" stroke-width=".9" opacity=".7"/>`).join('')}
+        ${stain ? `<path d="${smooth(inn, true, .8)}" fill="${stain}" opacity=".32"/>` : ''}
+        <ellipse cx="0" cy="${f(s * .02)}" rx="${f(s * .085)}" ry="${f(s * .07)}" fill="#fffaf0" stroke="${dk(flesh, .35)}" stroke-width=".7"/><circle cx="0" cy="${f(-s * .02)}" r="${f(s * .028)}" fill="${dk(flesh, .3)}"/>
+        <path d="M${f(-s * .34)},${f(-s * .26)} Q${f(-s * .1)},${f(-s * .38)} ${f(s * .16)},${f(-s * .34)}" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".6"/></g>`;
+}
+// カレーリーフ（細い葉が茎に並ぶ）
+export function yzCurryLeaf(p, x, y, s, r = 0){
+    const k = s / 20, lv = [-8, -3, 2, 7].map(a => `<path d="M${a},0 Q${a + 1},-6 ${a + 3},-8 Q${a + 5},-4 ${a + 3},0Z" fill="#3e7a2a" stroke="#244c18" stroke-width=".4"/><path d="M${a},0 Q${a + 1},6 ${a + 3},8 Q${a + 5},4 ${a + 3},0Z" fill="#4f9a34" stroke="#244c18" stroke-width=".4"/>`).join('');
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.4)}><path d="M-10,0 L11,0" stroke="#3b5e22" stroke-width="1"/>${lv}</g></g>`;
+}
+// ココナッツミルクの白い渦
+export function yzCreamSwirl(p, x, y, s, { c = '#fff6e4', turns = 1.5, w = 3.4, r0 = 0 } = {}){
+    const pts = Array.from({ length: 20 }, (_, i) => { const t = i / 19, a = r0 + t * turns * 6.283, rr = s / 2 * (.1 + t * .9); return [x + Math.cos(a) * rr, y + Math.sin(a) * rr * .92]; });
+    const d = smooth(pts, false);
+    return `<path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity=".92"/><path d="${d}" stroke="#fff" stroke-width="${f(w * .3)}" fill="none" stroke-linecap="round" opacity=".7" transform="translate(-.6 -.6)"/>`;
+}
+// 赤ワインで煮込んだ牛肉（照りのある大きな角切り）
+export function yzBraisedBeef(p, x, y, s, r = 0, { c = '#9a5a3a', seed = 1 } = {}){
+    const R = rng(p.id + 'yzbb' + seed + x + y);
+    const pts = ring(1, 9, .2, R, s / 2, s * .46), d = smooth(pts, true, .65);
+    return `<g ${T(x, y, r)}><g ${p.sh(1)}><path d="${d}" fill="${p.g(c, .4, .38)}" stroke="${dk(c, .5)}" stroke-width="1"/></g>
+        <path d="${smooth(pts.map(([a, b]) => [a * .72 - 1, b * .7 - 1]), true, .65)}" fill="${lt(c, .16)}" opacity=".8"/>
+        <path d="M${f(-s * .3)},${f(-s * .05)} Q${f(-s * .05)},${f(-s * .14)} ${f(s * .26)},${f(-s * .04)} M${f(-s * .26)},${f(s * .12)} Q0,${f(s * .04)} ${f(s * .22)},${f(s * .14)}" stroke="${dk(c, .3)}" stroke-width=".8" fill="none" opacity=".6"/>
+        <path d="M${f(-s * .34)},${f(-s * .2)} Q${f(-s * .14)},${f(-s * .38)} ${f(s * .14)},${f(-s * .32)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".65"/></g>`;
+}
+// ボタンマッシュルーム（丸ごと／半分に切ったもの）
+export function yzMushroom(p, x, y, s, r = 0, { half = false } = {}){
+    if (half) return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="M${-s / 2},${f(s * .1)} A${s / 2},${f(s * .5)} 0 0 1 ${s / 2},${f(s * .1)} L${f(s * .2)},${f(s * .1)} L${f(s * .2)},${f(s * .5)} L${f(-s * .2)},${f(s * .5)} L${f(-s * .2)},${f(s * .1)}Z" fill="${p.g('#f4e8d2', .2, .15)}" stroke="#b08a5a" stroke-width=".8"/></g><path d="M${-s / 2},${f(s * .1)} A${s / 2},${f(s * .5)} 0 0 1 ${s / 2},${f(s * .1)}" fill="none" stroke="#b58a58" stroke-width="2"/><path d="M${f(-s * .3)},${f(s * .1)} L${f(s * .3)},${f(s * .1)}" stroke="#d8c09a" stroke-width="1"/></g>`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><circle r="${s / 2}" fill="${p.rg('#d3b284', .3, .3, .35, .32)}" stroke="#8a6638" stroke-width=".8"/></g><circle r="${f(s * .3)}" fill="#e4c89c" opacity=".7"/><ellipse cx="${f(-s * .18)}" cy="${f(-s * .2)}" rx="${f(s * .14)}" ry="${f(s * .08)}" fill="#fff" opacity=".55"/><path d="M${f(s * .12)},${f(s * .1)} q${f(s * .1)},${f(s * .08)} ${f(s * .2)},${f(s * .02)}" stroke="#a37c4c" stroke-width=".7" fill="none"/></g>`;
+}
+// ベーコンの拍子木（赤身と白い脂の縞）
+export function yzLardon(p, x, y, L, r = 0){
+    const h = L * .42;
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><rect x="${-L / 2}" y="${-h / 2}" width="${L}" height="${h}" rx="1.4" fill="${p.g('#c25a50', .3, .25)}" stroke="#7e2e28" stroke-width=".6"/></g><path d="M${-L / 2 + 1},${f(-h * .1)} L${L / 2 - 1},${f(-h * .1)}" stroke="#f6dcc4" stroke-width="${f(h * .24)}"/><path d="M${-L / 2 + 1},${f(h * .28)} L${L / 2 - 1},${f(h * .28)}" stroke="#f1d0b8" stroke-width="${f(h * .14)}"/></g>`;
+}
+// ほうれん草の葉（加熱でくたっとして艶がある。主脈と側脈、軸）
+export function yzSpinachLeaf(p, x, y, s, r = 0, { c = '#3a8a2c', seed = 1 } = {}){
+    const R = rng(p.id + 'yzsp' + seed + x + y), k = s / 20;
+    const w = .72 + (R() - .5) * .25;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.5)}><path d="M0,-11 C${f(7 * w)},-10 ${f(11 * w)},-3 ${f(8 * w)},3 C${f(6 * w)},8 2,10 .6,11.6 L-.6,11.6 C-2,10 ${f(-6 * w)},8 ${f(-8 * w)},3 C${f(-11 * w)},-3 ${f(-7 * w)},-10 0,-11Z" fill="${p.g(c, .3, .3)}" stroke="${dk(c, .35)}" stroke-width=".6"/></g>
+        <path d="M0,-9 L0,11 M0,-3 L-5,-6 M0,-3 L5,-6 M0,3 L-5,0 M0,3 L5,0" stroke="${lt(c, .42)}" stroke-width=".9" fill="none" stroke-linecap="round" opacity=".85"/>
+        <path d="M-6,-6 Q-3,-9 1,-9" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".5"/><path d="M-.9,11.2 L-1.1,16 L1.1,16 L.9,11.2Z" fill="#a8cf72" stroke="#6e9a46" stroke-width=".4"/></g>`;
+}
+// にんにくの薄切り
+export function yzGarlicSlice(p, x, y, s, r = 0, { fried = .4 } = {}){
+    const c = mix('#f8efc8', '#c98a2e', fried);
+    return `<g ${T(x, y, r)}><g ${p.sh(.3)}><path d="M${-s / 2},0 Q${-s * .3},${f(-s * .45)} ${f(s * .15)},${f(-s * .42)} Q${s / 2},${f(-s * .2)} ${s / 2},${f(s * .1)} Q${f(s * .3)},${f(s * .45)} ${f(-s * .1)},${f(s * .4)} Q${-s / 2},${f(s * .3)} ${-s / 2},0Z" fill="${p.g(c, .3, .2)}" stroke="${dk(c, .35)}" stroke-width=".5"/></g></g>`;
+}
+// さいの目（ナタ—ル・トマト・玉ねぎ）: kind = 'nopal' | 'tomato' | 'onion'
+export function yzDice(p, x, y, s, r = 0, kind = 'tomato'){
+    const col = { nopal: '#6f9f3a', tomato: '#e2432f', onion: '#f3ecd2' }[kind];
+    const h = s / 2;
+    let deco = '';
+    if (kind === 'tomato') deco = `<ellipse cx="${f(-s * .1)}" cy="${f(s * .06)}" rx="${f(s * .12)}" ry="${f(s * .07)}" fill="#f7c85a"/><ellipse cx="${f(s * .16)}" cy="${f(-s * .12)}" rx="${f(s * .08)}" ry="${f(s * .05)}" fill="#f7c85a"/>`;
+    if (kind === 'nopal') deco = `<path d="M${f(-s * .3)},${f(-s * .3)} L${f(s * .3)},${f(s * .3)}" stroke="${lt(col, .35)}" stroke-width=".7" opacity=".7"/><circle cx="${f(s * .2)}" cy="${f(-s * .1)}" r=".7" fill="#2a4a18"/><circle cx="${f(-s * .15)}" cy="${f(s * .2)}" r=".7" fill="#2a4a18"/>`;
+    if (kind === 'onion') deco = `<path d="M${f(-s * .3)},${f(s * .1)} Q0,${f(-s * .2)} ${f(s * .3)},${f(s * .1)}" stroke="#d8cba0" stroke-width=".7" fill="none"/>`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-h}" y="${-h}" width="${s}" height="${s}" rx="${f(s * .2)}" fill="${p.g(col, .35, .28)}" stroke="${dk(col, .35)}" stroke-width=".7"/></g><rect x="${f(-h + 1.4)}" y="${f(-h + 1.4)}" width="${f(s - 2.8)}" height="${f(s - 2.8)}" rx="${f(s * .15)}" fill="${lt(col, .15)}" opacity=".6"/>${deco}<path d="M${f(-s * .3)},${f(-s * .34)} L${f(s * .1)},${f(-s * .34)}" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".75"/></g>`;
+}
+// 乾燥パシージャ唐辛子を揚げたもの（黒に近い焦げ茶、波打つ細片）
+export function yzPasilla(p, x, y, L, r = 0){
+    const pts = [[-L / 2, 0], [-L / 4, -3.2], [0, 2.4], [L / 4, -2.6], [L / 2, 1]];
+    const d = smooth(pts, false);
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><path d="${d}" stroke="#2c120c" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g><path d="${d}" stroke="#5a2418" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/><path d="${d}" stroke="#a04a30" stroke-width=".9" fill="none" stroke-linecap="round" opacity=".7" transform="translate(-.5 -1)"/></g>`;
+}
+// パクチー（三つに分かれた葉）
+export function yzCilantro(p, x, y, s, r = 0){
+    const k = s / 20;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.4)}><path d="M0,8 L0,1" stroke="#5a9a34" stroke-width="1.2"/><path d="M0,1 C-8,2 -11,-4 -6,-7 C-4,-9 -2,-7 0,-6 C2,-7 4,-9 6,-7 C11,-4 8,2 0,1Z" fill="${p.g('#4fa03a', .3, .2)}" stroke="#2c6a22" stroke-width=".6"/></g><path d="M0,0 L0,-5 M-1,0 L-5,-4 M1,0 L5,-4" stroke="#a7d880" stroke-width=".7" fill="none"/></g>`;
+}
+// 空豆（ful）: 茶色のふっくらした豆。縦のすじと黒い目
+export function yzFul(p, x, y, s, r = 0, { c = '#a06f3c' } = {}){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><ellipse rx="${s / 2}" ry="${f(s * .36)}" fill="${p.g(c, .35, .32)}" stroke="${dk(c, .45)}" stroke-width=".7"/></g>
+        <path d="M${f(-s * .38)},${f(-s * .04)} Q0,${f(s * .12)} ${f(s * .34)},${f(-s * .06)}" stroke="${dk(c, .4)}" stroke-width=".8" fill="none"/><ellipse cx="${f(s * .4)}" cy="${f(-s * .02)}" rx="${f(s * .08)}" ry="${f(s * .12)}" fill="#2e1a0c"/>
+        <ellipse cx="${f(-s * .16)}" cy="${f(-s * .16)}" rx="${f(s * .2)}" ry="${f(s * .07)}" fill="#fff" opacity=".4"/></g>`;
+}
+// 割れた空豆の半分（黄色い断面）
+export function yzFavaHalf(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><ellipse rx="${s / 2}" ry="${f(s * .38)}" fill="${p.g('#efd27a', .3, .22)}" stroke="#b08a2a" stroke-width=".7"/></g><ellipse rx="${f(s * .3)}" ry="${f(s * .2)}" fill="#f8e6a0" opacity=".9"/><path d="M${f(-s * .3)},${f(-s * .18)} Q0,${f(-s * .3)} ${f(s * .2)},${f(-s * .2)}" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// 豚スペアリブの小さな骨つきぶつ切り（白い骨の端と脂の縞）
+export function yzRib(p, x, y, L, r = 0, { c = '#c88c6c', seed = 1 } = {}){
+    const R = rng(p.id + 'yzrb' + seed + x + y), h = L * .5;
+    const top = Array.from({ length: 5 }, (_, i) => [-L * .4 + i * L * .8 / 4, -h / 2 + (R() - .5) * 3]);
+    const bot = Array.from({ length: 5 }, (_, i) => [L * .4 - i * L * .8 / 4, h / 2 + (R() - .5) * 3]);
+    return `<g ${T(x, y, r)}><g ${p.sh(.9)}><rect x="${f(-L / 2 - 4)}" y="${f(-h * .26)}" width="${f(L + 8)}" height="${f(h * .52)}" rx="${f(h * .26)}" fill="#f5eee0" stroke="#bfae8e" stroke-width=".8"/><path d="${smooth([...top, ...bot], true, .7)}" fill="${p.g(c, .35, .3)}" stroke="${dk(c, .4)}" stroke-width=".8"/></g>
+        <path d="M${f(-L * .36)},${f(-h * .22)} L${f(L * .34)},${f(-h * .22)}" stroke="#f1dcc8" stroke-width="${f(h * .16)}" stroke-linecap="round" opacity=".9"/>
+        <path d="M${f(-L * .3)},${f(h * .12)} Q0,${f(h * .02)} ${f(L * .3)},${f(h * .14)}" stroke="${dk(c, .3)}" stroke-width=".7" fill="none" opacity=".6"/>
+        <circle cx="${f(L / 2 + 2)}" cy="0" r="${f(h * .27)}" fill="#fffaf0" stroke="#bfae8e" stroke-width=".7"/>
+        <path d="M${f(-L * .3)},${f(-h * .4)} Q0,${f(-h * .5)} ${f(L * .25)},${f(-h * .4)}" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".6"/></g>`;
+}
+// 白身魚のほぐれた切り身（身のかたまり）
+export function yzFishChunk(p, x, y, s, r = 0, { seed = 1, c = '#f8f1e4' } = {}){
+    const R = rng(p.id + 'yzfc' + seed + x + y);
+    const pts = ring(1, 8, .25, R, s / 2, s * .4);
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${smooth(pts, true, .7)}" fill="${p.g(c, .3, .18)}" stroke="#cdbb98" stroke-width=".8"/></g>
+        <path d="M${f(-s * .34)},${f(-s * .12)} Q${f(-s * .1)},${f(-s * .22)} ${f(s * .1)},${f(-s * .1)} M${f(-s * .3)},${f(s * .08)} Q${f(-s * .05)},${f(-s * .02)} ${f(s * .3)},${f(s * .1)} M${f(-s * .2)},${f(s * .24)} Q0,${f(s * .16)} ${f(s * .22)},${f(s * .26)}" stroke="#d8c8a6" stroke-width=".8" fill="none"/>
+        <path d="M${f(-s * .3)},${f(-s * .26)} Q${f(-s * .1)},${f(-s * .36)} ${f(s * .12)},${f(-s * .3)}" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".8"/></g>`;
+}
+// じゃがいもの角切り（面取りした四角）
+export function yzPotatoCube(p, x, y, s, r = 0, { c = '#ead08a' } = {}){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-s / 2}" y="${-s / 2}" width="${s}" height="${s}" rx="${f(s * .26)}" fill="${p.g(c, .35, .22)}" stroke="${dk(c, .35)}" stroke-width=".7"/></g><rect x="${f(-s * .34)}" y="${f(-s * .34)}" width="${f(s * .68)}" height="${f(s * .68)}" rx="${f(s * .2)}" fill="${lt(c, .3)}" opacity=".7"/><path d="M${f(-s * .3)},${f(-s * .34)} L${f(s * .1)},${f(-s * .34)}" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".8"/></g>`;
+}
+// レモンの輪切り（皮・白いわた・房）
+export function yzLemonSlice(p, x, y, s, r = 0){
+    const seg = Array.from({ length: 8 }, (_, i) => { const a0 = i / 8 * 6.283 + .06, a1 = (i + 1) / 8 * 6.283 - .06, R0 = s * .08, R1 = s * .38; return `<path d="M${f(Math.cos(a0) * R0)},${f(Math.sin(a0) * R0)} L${f(Math.cos(a0) * R1)},${f(Math.sin(a0) * R1)} A${f(R1)},${f(R1)} 0 0 1 ${f(Math.cos(a1) * R1)},${f(Math.sin(a1) * R1)} L${f(Math.cos(a1) * R0)},${f(Math.sin(a1) * R0)}Z" fill="${i % 2 ? '#f9e47c' : '#f6dc62'}" stroke="#fff3b0" stroke-width=".5"/>`; }).join('');
+    return `<g ${T(x, y, r)}><g ${p.sh(.8)}><circle r="${s / 2}" fill="${p.g('#e6b820', .2, .2)}" stroke="#b88a10" stroke-width=".7"/></g><circle r="${f(s * .43)}" fill="#fcf5cc"/>${seg}<circle r="${f(s * .06)}" fill="#fff8d6"/><path d="M${f(-s * .36)},${f(-s * .2)} Q${f(-s * .2)},${f(-s * .42)} ${f(s * .06)},${f(-s * .44)}" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// とろみ・汁にういた細い卵のかき玉（ふんわり薄い帯）
+export function yzEggWisp(p, x, y, L, r = 0, { c = '#f6d664', seed = 1, w = 5 } = {}){
+    const R = rng(p.id + 'yzew' + seed + x + y);
+    const pts = Array.from({ length: 5 }, (_, i) => [-L / 2 + i * L / 4, (R() - .5) * 6]);
+    const d = smooth(pts, false);
+    return `<g ${T(x, y, r)}><path d="${d}" stroke="${lt(c, .5)}" stroke-width="${f(w + 2.4)}" fill="none" stroke-linecap="round" opacity=".55"/><path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity=".95"/><path d="${d}" stroke="#fffbe0" stroke-width="${f(w * .3)}" fill="none" stroke-linecap="round" opacity=".7" transform="translate(-.5 -1)"/></g>`;
+}
+// 豆腐の細切り（白い角柱）
+export function yzTofuStrip(p, x, y, L, w, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .3)}" fill="${p.g('#fbf7ec', .3, .12)}" stroke="#d6cdb4" stroke-width=".6"/></g><path d="M${f(-L * .4)},${f(-w * .2)} L${f(L * .3)},${f(-w * .2)}" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".9"/></g>`;
+}
+// たけのこの細切り（クリーム色に段の筋）
+export function yzBambooStrip(p, x, y, L, w, r = 0){
+    const ridges = [-.3, -.05, .2].map(t => `<path d="M${f(L * t)},${f(-w / 2)} L${f(L * t)},${f(w / 2)}" stroke="#c9a85c" stroke-width=".7"/>`).join('');
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .3)}" fill="${p.g('#f0dc9a', .3, .2)}" stroke="#b9983f" stroke-width=".6"/></g>${ridges}</g>`;
+}
+// しいたけの細切り（かさの黒褐色と白い裏）
+export function yzShiitakeStrip(p, x, y, L, w, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .42)}" fill="${p.g('#5a3220', .3, .3)}" stroke="#2c170c" stroke-width=".6"/></g><rect x="${f(-L / 2 + 1.5)}" y="${f(-w / 2 + 1)}" width="${L - 3}" height="${f(w * .32)}" rx="${f(w * .16)}" fill="#8a5a3a" opacity=".8"/><path d="M${f(-L / 2 + 2)},${f(w * .22)} L${f(L / 2 - 2)},${f(w * .22)}" stroke="#e6d4b0" stroke-width=".9" opacity=".85"/></g>`;
+}
+
+// ---- 第1回の反省から（明度で分ける・細部を減らす・形の特徴を誇張する） ----
+// 揚げ豚（甘酢がらめ）: 衣のノイズはやめ、明るい黄金色の面＋あんの赤い縁＋小さく鋭い照り。ソースより明るく見えるように
+export function yzPorkNugget(p, x, y, s, r = 0, { seed = 1, c = '#d8963e', sauce = '#c8321a' } = {}){
+    const R = rng(p.id + 'yzpn' + seed + x + y);
+    const pts = ring(1, 9, .22, R, s / 2, s * .44), d = smooth(pts, true, .7);
+    const inner = smooth(pts.map(([a, b]) => [a * .84 - s * .03, b * .8 - s * .04]), true, .7);
+    return `<g ${T(x, y, r)}><g ${p.sh(1)}><path d="${d}" fill="${sauce}" stroke="${dk(sauce, .45)}" stroke-width="1"/></g>
+        <path d="${inner}" fill="${p.g(c, .35, .2)}"/>
+        ${Array.from({ length: 5 }, () => `<path ${T((R() - .5) * s * .5, (R() - .5) * s * .4)} d="${smooth(ring(1.6 + R() * 2.4, 6, .5, R))}" fill="${dk(c, .28)}" opacity=".45"/>`).join('')}
+        <path d="${smooth(pts.map(([a, b]) => [a * .84 - s * .03, b * .8 - s * .04]), true, .7)}" fill="${sauce}" opacity=".18"/>
+        <ellipse cx="${f(-s * .18)}" cy="${f(-s * .2)}" rx="${f(s * .1)}" ry="${f(s * .045)}" transform="rotate(-25 ${f(-s * .18)} ${f(-s * .2)})" fill="#fff" opacity=".95"/></g>`;
+}
+// ほうれん草（三角の葉先・波打つ縁・細い葉脈。くたっと折れた葉は fold で幅を詰める）
+export function yzSpinach2(p, x, y, s, r = 0, { c = '#2f8a2c', seed = 1, fold = 1 } = {}){
+    const R = rng(p.id + 'yzs2' + seed + x + y), k = s / 24, w = fold;
+    const e = () => (R() - .5) * 1.4;
+    const d = `M0,-12 C${f(3 * w + e())},-9 ${f(9 * w)},${f(-4 + e())} ${f(8 * w + e())},1 C${f(9 * w)},4 ${f(5 * w + e())},7 ${f(3 * w)},8 C2,10 1,11 .7,12 L-.7,12 C-1,11 -2,10 ${f(-3 * w)},8 C${f(-5 * w + e())},7 ${f(-9 * w)},4 ${f(-8 * w + e())},1 C${f(-9 * w)},${f(-4 + e())} ${f(-3 * w + e())},-9 0,-12Z`;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.6)}><path d="${d}" fill="${p.g(c, .28, .32)}" stroke="${dk(c, .4)}" stroke-width=".6"/></g>
+        <path d="M0,-10 L0,12 M0,-4 L${f(-4 * w)},-7 M0,-4 L${f(4 * w)},-7 M0,2 L${f(-5 * w)},-1 M0,2 L${f(5 * w)},-1" stroke="${lt(c, .35)}" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".7"/>
+        <path d="M${f(-5 * w)},-4 Q${f(-3 * w)},-8 -.5,-9" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".55"/>
+        <path d="M-.8,11.6 L-1,19 L1,19 L.8,11.6Z" fill="#c9e09a" stroke="#7aa24e" stroke-width=".4"/></g>`;
+}
+// マッシュルームの縦半割り（かさの弧と軸がつながった、きのこと一目で分かる断面）
+export function yzMushroomHalf(p, x, y, s, r = 0){
+    const h = s / 2;
+    const d = `M${-h},${f(s * .05)} C${-h},${f(-s * .5)} ${h},${f(-s * .5)} ${h},${f(s * .05)} L${f(s * .2)},${f(s * .08)} L${f(s * .22)},${f(s * .48)} Q0,${f(s * .54)} ${f(-s * .22)},${f(s * .48)} L${f(-s * .2)},${f(s * .08)}Z`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.7)}><path d="${d}" fill="#f6ecd8" stroke="#8a6638" stroke-width="1"/></g>
+        <path d="M${-h + 1},${f(s * .05)} C${-h + 1},${f(-s * .46)} ${h - 1},${f(-s * .46)} ${h - 1},${f(s * .05)}" fill="none" stroke="#b08458" stroke-width="${f(s * .1)}"/>
+        <path d="M${f(-s * .34)},${f(s * .06)} L${f(s * .34)},${f(s * .06)}" stroke="#a88a64" stroke-width="1.1"/></g>`;
+}
+
+// =========================================================
+// 第2回（花森）: 葉物・せん切り・切り身を「決め手の形」で描き分ける部品
+// =========================================================
+// ひらたけ（扇形のかさと放射状のひだ。根元が細い）。glaze で甘醤油のしみた色
+export function yzOysterMush(p, x, y, s, r = 0, { c = '#d8ccb4', glaze = null, seed = 1 } = {}){
+    const R = rng(p.id + 'yzom' + seed + x + y), k = s / 40;
+    const edge = Array.from({ length: 11 }, (_, i) => { const t = -Math.PI * .95 + i * (Math.PI * .9 / 10), rr = 18 + Math.sin(i * 2.3 + R() * 3) * 2.6 + (R() - .5) * 2.4; return [Math.cos(t) * rr * 1.05, Math.sin(t) * rr * .82 + 7]; });
+    const pts = [[-2.5, 12], ...edge, [2.5, 12]];
+    const d = smooth(pts, true, .6);
+    let gills = '';
+    for (let i = 0; i < 14; i++){ const t = -Math.PI * .9 + (i + .5) * (Math.PI * .82 / 14); gills += `<path d="M${f(Math.cos(t) * 5)},${f(Math.sin(t) * 4 + 9)} L${f(Math.cos(t) * 15)},${f(Math.sin(t) * 12 + 7)}" stroke="${dk(c, .18)}" stroke-width=".45" opacity=".55"/>`; }
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.7)}><path d="${d}" fill="${p.rg(c, .25, .3, .5, .7)}" stroke="${dk(c, .45)}" stroke-width=".9"/></g>${gills}
+        <path d="${smooth(edge.map(([a, b]) => [a * .92, (b - 7) * .92 + 7]), false)}" fill="none" stroke="${lt(c, .35)}" stroke-width="1.4" opacity=".7"/>
+        ${glaze ? `<path d="${d}" fill="${glaze}" opacity=".16"/>` : ''}
+        <path d="M-2.5,12 L-2,17 L2,17 L2.5,12Z" fill="${lt(c, .2)}" stroke="${dk(c, .35)}" stroke-width=".6"/>
+        <path d="M-12,-2 Q-6,-8 1,-8.6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// 唐辛子の斜め切り（赤い楕円の輪と種）
+export function yzChiliSlant(p, x, y, s, r = 0, { c = '#d42a1c' } = {}){
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><ellipse rx="${s / 2}" ry="${f(s * .3)}" fill="${p.g(c, .3, .25)}" stroke="${dk(c, .35)}" stroke-width=".6"/></g><ellipse rx="${f(s * .34)}" ry="${f(s * .16)}" fill="#f4c6a0"/><circle cx="${f(-s * .1)}" r="${f(s * .05)}" fill="#f6e6a8"/><circle cx="${f(s * .1)}" r="${f(s * .05)}" fill="#f6e6a8"/></g>`;
+}
+// ねぎの斜め切り（緑の筒の断面）
+export function yzScallionSlant(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.35)}><ellipse rx="${s / 2}" ry="${f(s * .26)}" fill="${p.g('#4f9e34', .3, .25)}" stroke="#2c6a1e" stroke-width=".6"/></g><ellipse rx="${f(s * .34)}" ry="${f(s * .13)}" fill="#cfe6a6"/></g>`;
+}
+// もやし（白い茎に黄色い頭）
+export function yzSprout(p, x, y, L, r = 0){
+    const d = `M${-L / 2},0 Q0,${f(L * .12)} ${L / 2},${f(-L * .05)}`;
+    return `<g ${T(x, y, r)}><path d="${d}" stroke="#cfc8b0" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="${d}" stroke="#fbf8ec" stroke-width="2.2" fill="none" stroke-linecap="round"/><ellipse cx="${f(-L / 2 - 1)}" cy="0" rx="2.6" ry="2" fill="#e8d36a" stroke="#b9a23e" stroke-width=".5"/></g>`;
+}
+// 丸なす（タイなす）の輪切り: 緑白の皮、クリーム色の身、種の輪
+export function yzThaiEggplant(p, x, y, s){
+    const seeds = Array.from({ length: 10 }, (_, i) => { const a = i / 10 * 6.283; return `<ellipse cx="${f(Math.cos(a) * s * .2)}" cy="${f(Math.sin(a) * s * .2)}" rx="${f(s * .04)}" ry="${f(s * .025)}" transform="rotate(${f(a * 57.3)} ${f(Math.cos(a) * s * .2)} ${f(Math.sin(a) * s * .2)})" fill="#8a7a3a"/>`; }).join('');
+    return `<g ${T(x, y)}><g ${p.sh(.5)}><circle r="${s / 2}" fill="${p.g('#7fae4a', .3, .25)}" stroke="#4a7a28" stroke-width=".7"/></g><circle r="${f(s * .43)}" fill="${p.rg('#f2ecd0', .2, .12)}"/>${seeds}</g>`;
+}
+// ピーナッツ（揚げ。薄皮の赤茶と割れ目）
+export function yzPeanut(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.35)}><ellipse rx="${s / 2}" ry="${f(s * .36)}" fill="${p.g('#c88a4a', .3, .3)}" stroke="#7a4a20" stroke-width=".6"/></g><path d="M0,${f(-s * .34)} L0,${f(s * .34)}" stroke="#8a5a2a" stroke-width=".6" opacity=".7"/><ellipse cx="${f(-s * .14)}" cy="${f(-s * .12)}" rx="${f(s * .1)}" ry="${f(s * .05)}" fill="#fff" opacity=".55"/></g>`;
+}
+// 小さな楕円の葉（バジル類・ケマンギ）
+export function yzSmallLeaf(p, x, y, s, r = 0, { c = '#3f9a34' } = {}){
+    const k = s / 20;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.35)}><path d="M-10,0 Q-4,-7 4,-5.6 Q9,-3 10,0 Q9,3 4,5.6 Q-4,7 -10,0Z" fill="${p.g(c, .3, .25)}" stroke="${dk(c, .35)}" stroke-width=".6"/></g><path d="M-9,0 L8,0 M-2,0 L-5,-3.6 M3,0 L0,-4 M-2,0 L-5,3.6 M3,0 L0,4" stroke="${lt(c, .4)}" stroke-width=".6" fill="none"/></g>`;
+}
+// 鮭の切り身（決め手: 白い脂の筋が「く」の字に並ぶ・焼き色の縁・銀の皮）
+export function yzSalmonFillet(p, x, y, w, h, r = 0, { c = '#f2905e' } = {}){
+    const d = `M${-w / 2},${f(-h * .34)} Q${-w / 2},${-h / 2} ${f(-w * .36)},${-h / 2} L${f(w * .3)},${f(-h * .46)} Q${w / 2},${f(-h * .36)} ${w / 2},0 Q${w / 2},${f(h * .36)} ${f(w * .3)},${f(h * .46)} L${f(-w * .36)},${h / 2} Q${-w / 2},${h / 2} ${-w / 2},${f(h * .34)}Z`;
+    let fat = '';
+    for (let i = 0; i < 6; i++){ const xx = -w * .38 + i * w * .15; fat += `<path d="M${f(xx)},${f(-h * .4)} Q${f(xx + w * .07)},0 ${f(xx)},${f(h * .4)}" stroke="#fff1e4" stroke-width="${f(h * .045)}" fill="none" stroke-linecap="round" opacity=".95"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(1.1)}><path d="${d}" fill="${p.g(c, .28, .3)}" stroke="#a8502a" stroke-width="1"/></g>
+        <path d="${d}" fill="none" stroke="#c46a2a" stroke-width="${f(h * .1)}" opacity=".55"/>
+        ${fat}
+        <path d="M${f(-w * .36)},${f(h * .5)} L${f(w * .3)},${f(h * .46)} Q${w / 2},${f(h * .36)} ${w / 2},${f(h * .1)}" stroke="#7f8c96" stroke-width="${f(h * .09)}" fill="none" stroke-linecap="round"/>
+        <path d="M${f(-w * .34)},${f(-h * .3)} Q${f(-w * .1)},${f(-h * .44)} ${f(w * .2)},${f(-h * .36)}" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// ディル（細い羽のような葉）
+export function yzDill(p, x, y, s, r = 0){
+    const k = s / 20;
+    let fr = '';
+    for (let i = 0; i < 6; i++){ const t = -8 + i * 3.2; fr += `<path d="M${t},0 l-2.5,-4 M${t},0 l-2.5,4 M${t + 1.4},0 l-1.6,-2.6 M${t + 1.4},0 l-1.6,2.6" stroke="#3f8a2c" stroke-width=".7" stroke-linecap="round"/>`; }
+    return `<g ${T(x, y, r, k)}><path d="M-10,0 L10,0" stroke="#4f8a34" stroke-width=".9"/>${fr}</g>`;
+}
+// ズッキーニの衣揚げ（輪切り: 濃い緑の皮の輪、淡い身、中心の種の輪。衣は薄いきつね色で中が透ける）
+export function yzZucchiniFried(p, x, y, s, r = 0, { seed = 1 } = {}){
+    const R = rng(p.id + 'yzzf' + seed + x + y);
+    let spots = '', seeds = '';
+    for (let i = 0; i < 6; i++){ const a = R() * 6.28, dd = Math.sqrt(R()) * s * .32; spots += `<ellipse cx="${f(Math.cos(a) * dd)}" cy="${f(Math.sin(a) * dd)}" rx="${f(2 + R() * 3)}" ry="${f(1.4 + R() * 2)}" fill="#c47e2a" opacity=".55"/>`; }
+    for (let i = 0; i < 8; i++){ const a = i / 8 * 6.283; seeds += `<ellipse cx="${f(Math.cos(a) * s * .14)}" cy="${f(Math.sin(a) * s * .14)}" rx="${f(s * .035)}" ry="${f(s * .022)}" transform="rotate(${f(a * 57.3)} ${f(Math.cos(a) * s * .14)} ${f(Math.sin(a) * s * .14)})" fill="#f6f0d0" stroke="#b8b080" stroke-width=".3"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(.8)}><circle r="${s / 2}" fill="${p.g('#2f6a22', .25, .25)}" stroke="#1f4a16" stroke-width=".8"/></g>
+        <circle r="${f(s * .44)}" fill="${p.rg('#e6dc9a', .25, .2)}"/><circle r="${f(s * .25)}" fill="#efe8b8" opacity=".9"/>${seeds}${spots}
+        <path d="M${f(-s * .3)},${f(-s * .14)} Q${f(-s * .14)},${f(-s * .32)} ${f(s * .12)},${f(-s * .3)}" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".65"/></g>`;
+}
+// せん切り・拍子木（太めに、曲がりつき。c の色、gloss でマヨのつや）
+export function yzStick(p, x, y, L, w, r = 0, { c = '#f1ead2', bend = .1, gloss = false } = {}){
+    const d = `M${-L / 2},0 Q0,${f(L * bend)} ${L / 2},0`;
+    return `<g ${T(x, y, r)}><path d="${d}" stroke="${dk(c, .28)}" stroke-width="${f(w + 1.2)}" fill="none" stroke-linecap="round"/><path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round"/><path d="${d}" stroke="#fff" stroke-width="${f(w * .3)}" fill="none" stroke-linecap="round" opacity="${gloss ? .85 : .5}" transform="translate(-.4 -${f(w * .22)})"/></g>`;
+}
+// りんごのいちょう切り（決め手: 弧に沿った赤い皮）
+export function yzAppleBit(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><path d="M${-s / 2},0 A${s / 2},${f(s * .42)} 0 0 1 ${s / 2},0 Z" fill="${p.g('#fbf3d4', .2, .12)}" stroke="#c8282e" stroke-width="${f(s * .1)}"/></g><path d="M${-s / 2},0 L${s / 2},0" stroke="#e6dcb0" stroke-width=".8"/></g>`;
+}
+export function yzAppleStick(p, x, y, L, w, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.35)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .35)}" fill="${p.g('#fbf3d4', .2, .12)}" stroke="#cdbb86" stroke-width=".5"/></g><rect x="${-L / 2}" y="${-w / 2}" width="${f(w * .9)}" height="${w}" rx="${f(w * .35)}" fill="#c8282e"/><rect x="${f(-L / 2 + w * .9)}" y="${f(-w / 2)}" width="${f(L * .2)}" height="${f(w * .25)}" fill="#fff" opacity=".6"/></g>`;
+}
+// レーズン（しわのある黒褐色の粒）
+export function yzRaisin(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.35)}><ellipse rx="${s / 2}" ry="${f(s * .36)}" fill="${p.g('#5a2a2a', .25, .3)}" stroke="#2a1010" stroke-width=".5"/></g><path d="M${f(-s * .3)},0 Q0,${f(-s * .15)} ${f(s * .3)},${f(s * .05)}" stroke="#2e1414" stroke-width=".6" fill="none"/><ellipse cx="${f(-s * .14)}" cy="${f(-s * .12)}" rx="${f(s * .1)}" ry="${f(s * .05)}" fill="#fff" opacity=".45"/></g>`;
+}
+// 平葉パセリ（3つに切れこんだぎざぎざの葉）
+export function yzFlatParsley(p, x, y, s, r = 0){
+    const k = s / 20;
+    return `<g ${T(x, y, r, k)}><g ${p.sh(.35)}><path d="M0,9 L0,2" stroke="#5a9a34" stroke-width="1.2"/><path d="M0,2 L-3,1 L-7,3 L-9,-1 L-7,-3 L-9,-6 L-5,-7 L-3,-5 L-2,-9 L2,-9 L3,-5 L5,-7 L9,-6 L7,-3 L9,-1 L7,3 L3,1Z" fill="${p.g('#2f8a2c', .3, .2)}" stroke="#1d5a1a" stroke-width=".6" stroke-linejoin="round"/></g><path d="M0,1 L0,-7 M0,0 L-6,-4 M0,0 L6,-4" stroke="#8fcf6a" stroke-width=".6" fill="none"/></g>`;
+}
+// チコリ（カタローニャ）: 細長い葉の縁がのこぎり状、太く白い中肋
+export function yzChicoryLeaf(p, x, y, L, r = 0, { c = '#2e6e2e', seed = 1 } = {}){
+    const R = rng(p.id + 'yzch' + seed + x + y), w = L * .19;
+    const up = [], lo = [];
+    for (let i = 0; i <= 10; i++){ const t = i / 10, xx = -L / 2 + t * L, ww = w * Math.sin(Math.PI * Math.min(1, t * 1.1 + .05)) * (i % 2 ? 1 : .82) + (R() - .5) * .6; up.push([xx, -ww]); lo.unshift([xx, ww]); }
+    const d = 'M' + [...up, ...lo].map(([a, b]) => `${f(a)},${f(b)}`).join(' L') + 'Z';
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${d}" fill="${p.g(c, .28, .3)}" stroke="${dk(c, .4)}" stroke-width=".6" stroke-linejoin="round"/></g>
+        <path d="M${f(-L / 2 - 2)},0 L${f(L * .3)},0" stroke="#dde9c0" stroke-width="${f(w * .3)}" stroke-linecap="round"/></g>`;
+}
+// 乾燥唐辛子（まるごと、細長い赤いさや）
+export function yzDriedChili(p, x, y, L, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><path d="M${-L / 2},0 Q${f(-L * .2)},${f(-L * .16)} ${L / 2},${f(-L * .02)} Q${f(-L * .2)},${f(L * .12)} ${-L / 2},0Z" fill="${p.g('#b8201a', .3, .3)}" stroke="#6a120c" stroke-width=".6"/></g><path d="M${-L / 2},0 l-3,-1.6" stroke="#4f7a2a" stroke-width="1.6" stroke-linecap="round"/><path d="M${f(-L * .3)},${f(-L * .05)} Q0,${f(-L * .1)} ${f(L * .3)},${f(-L * .03)}" stroke="#fff" stroke-width=".8" fill="none" opacity=".6"/></g>`;
+}
+// 米粒（スープに沈んだふっくらした粒）
+export function yzRiceGrain(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><ellipse rx="${s / 2}" ry="${f(s * .3)}" fill="#fffdf4" stroke="#d8d0b8" stroke-width=".5"/></g>`;
+}
+// 黒キャベツ（カーボロネロ）のリボン: 濃い青緑に、ちりめんのぶつぶつ
+export function yzKaleRibbon(p, x, y, L, w, r = 0, { c = '#24452e', seed = 1 } = {}){
+    const R = rng(p.id + 'yzkr' + seed + x + y);
+    const up = Array.from({ length: 7 }, (_, i) => [-L / 2 + i * L / 6, -w / 2 + Math.sin(i * 1.9) * 1.6 + (R() - .5)]);
+    const lo = Array.from({ length: 7 }, (_, i) => [L / 2 - i * L / 6, w / 2 + Math.sin(i * 2.3) * 1.6 + (R() - .5)]);
+    let bl = '';
+    for (let i = 0; i < Math.round(L / 3); i++) bl += `<circle cx="${f((R() - .5) * L * .85)}" cy="${f((R() - .5) * w * .6)}" r="${f(.8 + R() * .9)}" fill="${lt(c, .3)}" opacity=".75"/>`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${smooth([...up, ...lo], true, .7)}" fill="${p.g(c, .25, .3)}" stroke="${dk(c, .4)}" stroke-width=".6"/></g>${bl}<path d="M${f(-L * .4)},${f(w * .05)} L${f(L * .4)},${f(-w * .05)}" stroke="${lt(c, .45)}" stroke-width=".8" opacity=".6"/></g>`;
+}
+// 白いんげん豆（腎臓形・クリーム色）
+export function yzWhiteBean(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><path d="M${-s / 2},0 C${-s / 2},${f(-s * .4)} ${s / 2},${f(-s * .44)} ${s / 2},0 C${s / 2},${f(s * .34)} ${f(s * .1)},${f(s * .28)} 0,${f(s * .16)} C${f(-s * .1)},${f(s * .3)} ${-s / 2},${f(s * .34)} ${-s / 2},0Z" fill="${p.g('#f6efdc', .25, .2)}" stroke="#b8a888" stroke-width=".7"/></g><ellipse cx="0" cy="${f(s * .12)}" rx="${f(s * .06)}" ry="${f(s * .03)}" fill="#d8c8a0"/><ellipse cx="${f(-s * .16)}" cy="${f(-s * .14)}" rx="${f(s * .16)}" ry="${f(s * .06)}" fill="#fff" opacity=".7"/></g>`;
+}
+// コラードの葉のざく切り（幅広の帯。くすんだ緑に、横に走る葉脈と淡い軸）
+export function yzCollardStrip(p, x, y, L, w, r = 0, { c = '#4a6e2a', seed = 1 } = {}){
+    const R = rng(p.id + 'yzcs' + seed + x + y);
+    const up = Array.from({ length: 6 }, (_, i) => [-L / 2 + i * L / 5, -w / 2 + (R() - .5) * 2.4]);
+    const lo = Array.from({ length: 6 }, (_, i) => [L / 2 - i * L / 5, w / 2 + (R() - .5) * 2.4]);
+    let v = '';
+    for (let i = 1; i < 5; i++){ const xx = -L / 2 + i * L / 5; v += `<path d="M${f(xx - 2)},${f(-w * .42)} Q${f(xx)},0 ${f(xx - 2)},${f(w * .42)}" stroke="${lt(c, .4)}" stroke-width=".8" fill="none" opacity=".7"/>`; }
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><path d="${smooth([...up, ...lo], true, .6)}" fill="${p.g(c, .28, .28)}" stroke="${dk(c, .4)}" stroke-width=".6"/></g>${v}<path d="M${f(-L * .42)},${f(-w * .3)} L${f(L * .4)},${f(-w * .3)}" stroke="#c9d8a0" stroke-width="${f(w * .14)}" stroke-linecap="round" opacity=".85"/></g>`;
+}
+// ハムの角切り（ピンクの身に焼き色の縁と白い脂の線）
+export function yzHamCube(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><rect x="${-s / 2}" y="${-s / 2}" width="${s}" height="${s}" rx="${f(s * .18)}" fill="${p.g('#d97a78', .3, .25)}" stroke="#8a3a2a" stroke-width=".7"/></g><rect x="${f(-s * .34)}" y="${f(-s * .34)}" width="${f(s * .68)}" height="${f(s * .68)}" rx="${f(s * .14)}" fill="#ef9e9a"/><path d="M${f(-s * .34)},${f(s * .2)} L${f(s * .34)},${f(s * .14)}" stroke="#fbe6dc" stroke-width="${f(s * .1)}"/><path d="M${f(-s * .3)},${f(-s * .3)} L${f(s * .1)},${f(-s * .3)}" stroke="#fff" stroke-width="1.1" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// さばの切り身（皮目を上に。決め手: 青緑の背に黒い波模様、銀の腹、焼き色の縁）
+export function yzMackerelFillet(p, x, y, w, h, r = 0, { seed = 1 } = {}){
+    const R = rng(p.id + 'yzmk' + seed + x + y);
+    const d = `M${-w / 2},${f(-h * .2)} Q${f(-w * .44)},${-h / 2} ${f(-w * .2)},${-h / 2} L${f(w * .3)},${f(-h * .42)} Q${w / 2},${f(-h * .3)} ${w / 2},${f(h * .05)} Q${f(w * .46)},${f(h * .42)} ${f(w * .3)},${f(h * .46)} L${f(-w * .3)},${h / 2} Q${-w / 2},${f(h * .44)} ${-w / 2},${f(h * .2)}Z`;
+    let bars = '';
+    for (let i = 0; i < 7; i++){ const xx = -w * .38 + i * w * .12; bars += `<path d="M${f(xx)},${f(-h * .42)} q${f(w * .04)},${f(h * .12)} 0,${f(h * .24)} q${f(-w * .04)},${f(h * .1)} ${f(w * .01)},${f(h * .16)}" stroke="#1f2a30" stroke-width="${f(h * .06)}" fill="none" stroke-linecap="round" opacity=".85"/>`; }
+    let ch = '';
+    for (let i = 0; i < 6; i++) ch += `<ellipse cx="${f((R() - .5) * w * .8)}" cy="${f((R() - .5) * h * .6)}" rx="${f(2 + R() * 3)}" ry="${f(1.2 + R() * 1.4)}" fill="#3a2410" opacity="${f(.25 + R() * .25)}"/>`;
+    return `<g ${T(x, y, r)}><g ${p.sh(1.1)}><path d="${d}" fill="${p.g('#d8dde0', .25, .25)}" stroke="#6a5030" stroke-width="1"/></g>
+        <path d="M${-w / 2 + 1},${f(-h * .2)} Q${f(-w * .44)},${-h / 2 + 1} ${f(-w * .2)},${-h / 2 + 1} L${f(w * .3)},${f(-h * .42 + 1)} Q${w / 2 - 1},${f(-h * .3)} ${w / 2 - 1},${f(h * .05)} L${-w / 2 + 1},${f(h * .08)}Z" fill="${p.g('#3f6f7a', .3, .3)}"/>
+        ${bars}${ch}
+        <path d="${d}" fill="none" stroke="#b8742a" stroke-width="${f(h * .08)}" opacity=".55"/>
+        <path d="M${f(-w * .34)},${f(-h * .34)} Q${f(-w * .05)},${f(-h * .46)} ${f(w * .24)},${f(-h * .36)}" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+}
+// カネロニ（筒。断面に肉の詰め物、上にベシャメルと焼き色）
+export function yzCannelloni(p, x, y, L, w, r = 0, { seed = 1 } = {}){
+    const R = rng(p.id + 'yzcn' + seed + x + y);
+    let br = '';
+    for (let i = 0; i < 5; i++) br += `<ellipse cx="${f((R() - .5) * L * .7)}" cy="${f((R() - .5) * w * .4)}" rx="${f(3 + R() * 4)}" ry="${f(2 + R() * 2)}" fill="${R() < .5 ? '#d6923a' : '#b8702a'}" opacity="${f(.6 + R() * .3)}"/>`;
+    return `<g ${T(x, y, r)}><g ${p.sh(.9)}><rect x="${-L / 2}" y="${-w / 2}" width="${L}" height="${w}" rx="${f(w * .4)}" fill="${p.g('#f6e6b8', .25, .22)}" stroke="#b89a5a" stroke-width=".8"/></g>
+        <path d="M${f(-L * .44)},${f(-w * .1)} Q0,${f(-w * .3)} ${f(L * .44)},${f(-w * .1)} M${f(-L * .44)},${f(w * .16)} Q0,${f(-w * .02)} ${f(L * .44)},${f(w * .16)}" stroke="#fffaf0" stroke-width="2" fill="none" opacity=".7"/>${br}
+        <ellipse cx="${f(L / 2 - w * .2)}" cy="0" rx="${f(w * .2)}" ry="${f(w * .42)}" fill="#e8d4a0" stroke="#b89a5a" stroke-width=".6"/><ellipse cx="${f(L / 2 - w * .2)}" cy="0" rx="${f(w * .13)}" ry="${f(w * .32)}" fill="${p.g('#8a4a2a', .25, .2)}"/></g>`;
+}
+// 白ぶどうの半割り（切り口: 透けた黄緑と種の跡、緑の皮の縁）
+export function yzGrapeHalf(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.6)}><ellipse rx="${s / 2}" ry="${f(s * .44)}" fill="${p.rg('#d6e27a', .35, .3, .38, .34)}" stroke="#94a83a" stroke-width=".8"/></g><ellipse cx="${f(s * .05)}" cy="${f(s * .04)}" rx="${f(s * .3)}" ry="${f(s * .25)}" fill="#eef2b8" opacity=".55"/><ellipse cx="${f(-s * .17)}" cy="${f(-s * .16)}" rx="${f(s * .13)}" ry="${f(s * .07)}" transform="rotate(-30 ${f(-s * .17)} ${f(-s * .16)})" fill="#fff" opacity=".95"/></g>`;
+}
+// 湯むきアーモンド（象牙色のしずく形）
+export function yzAlmond(p, x, y, s, r = 0){
+    return `<g ${T(x, y, r)}><g ${p.sh(.4)}><path d="M${-s / 2},0 Q${f(-s * .2)},${f(-s * .34)} ${s / 2},0 Q${f(-s * .2)},${f(s * .34)} ${-s / 2},0Z" fill="${p.g('#f1e4c4', .25, .25)}" stroke="#b49a68" stroke-width=".6"/></g><path d="M${f(-s * .3)},0 Q0,${f(-s * .05)} ${f(s * .34)},0" stroke="#d6c39a" stroke-width=".6" fill="none"/></g>`;
+}
+// 揚げにんにく（タクリーヤ）の小片
+export function yzFriedGarlic(p, x, y, s, { n = 14, seed = 1 } = {}){
+    const R = rng(p.id + 'yzfg' + seed + x + y);
+    return Array.from({ length: n }, () => { const a = R() * 6.28, dd = Math.sqrt(R()) * s / 2; return `<path ${T(x + Math.cos(a) * dd, y + Math.sin(a) * dd, R() * 360)} d="${smooth(ring(1.4 + R() * 1.4, 5, .5, R))}" fill="${R() < .5 ? '#e0a83a' : '#c8862a'}" stroke="#8a5a1a" stroke-width=".4"/>`; }).join('');
+}

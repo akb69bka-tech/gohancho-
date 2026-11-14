@@ -2,6 +2,14 @@
 GOHAN_PACK_TR('FR', 'fr', {
   staple: 'Baguette',
   names: {
+    "artichoke": "Artichauts",
+    "swiss chard": "Blettes",
+    'butter': 'Beurre',
+    'jam': 'Confiture',
+    "semolina": "Semoule de blé fine",
+    "oats": "Flocons d'avoine",
+    "yogurt": "Yaourt nature",
+    "alphabet pasta": "Pâtes alphabet",
     'chicken': 'Poulet',
     'bell pepper': 'Poivron',
     'tomato': 'Tomates',
@@ -76,6 +84,211 @@ GOHAN_PACK_TR('FR', 'fr', {
     'red cabbage': 'Chou rouge',
   },
   recipes: {
+    "fr_bouillonpoulet": {
+      name: "Bouillon de poulet aux légumes",
+      ings: [["Hauts de cuisse de poulet désossés", "200 g"], ["Poireau", "100 g"], ["Carotte", "50 g"], ["Céleri branche", "50 g"]],
+      seas: "800 ml d'eau · 1 cube de bouillon · 1 feuille de laurier · 1 brin de thym · Sel · Poivre",
+      steps: [
+        "Coupez le poulet en morceaux, émincez le poireau et le céleri, coupez la carotte en dés.",
+        "Mettez le tout dans une casserole avec l'eau, le cube, le laurier et le thym, et laissez frémir 25 minutes.",
+        "Retirez les herbes, salez et poivrez.",
+      ],
+    },
+    "fr_veloutefenouil": {
+      name: "Velouté de fenouil",
+      ings: [["Bulbe de fenouil", "300 g"], ["Oignon", "40 g"], ["Crème liquide", "50 ml"]],
+      seas: "500 ml de bouillon de légumes · 1 c. à soupe d'huile d'olive · Sel · Poivre",
+      steps: [
+        "Émincez le fenouil et l'oignon.",
+        "Faites-les fondre 5 minutes dans l'huile, ajoutez le bouillon et laissez cuire 15 minutes.",
+        "Mixez avec la crème jusqu'à obtenir un velouté lisse, salez et poivrez.",
+      ],
+    },
+    "fr_soupemoules": {
+      name: "Soupe de moules au vin blanc",
+      ings: [["Moules", "500 g"], ["Échalote", "30 g"], ["Crème liquide", "50 ml"]],
+      seas: "100 ml de vin blanc sec · 400 ml d'eau · 1 c. à soupe de beurre · 1 gousse d'ail · Persil · Poivre",
+      steps: [
+        "Grattez les moules et jetez celles qui restent ouvertes. Hachez l'échalote et l'ail.",
+        "Faites fondre l'échalote et l'ail dans le beurre, ajoutez le vin et les moules, couvrez et cuisez 4 minutes jusqu'à ouverture. Décortiquez la moitié des moules.",
+        "Ajoutez l'eau et la crème, réchauffez, poivrez et parsemez de persil.",
+      ],
+    },
+    "fr_veloutepinards": {
+      name: "Velouté d'épinards",
+      ings: [["Épinards", "250 g"], ["Échalote", "30 g"], ["Crème liquide", "50 ml"]],
+      seas: "500 ml de bouillon de légumes · 1 c. à soupe de beurre · Muscade · Sel · Poivre",
+      steps: [
+        "Lavez les épinards et hachez l'échalote.",
+        "Faites fondre l'échalote dans le beurre, ajoutez les épinards et le bouillon et cuisez 5 minutes.",
+        "Mixez avec la crème, assaisonnez de muscade, sel et poivre.",
+      ],
+    },
+    "fr_soupenavets": {
+      name: "Soupe de navets et poireaux",
+      ings: [["Navets", "200 g"], ["Poireau", "100 g"], ["Crème liquide", "30 ml"]],
+      seas: "600 ml de bouillon de volaille ou de légumes · 1 c. à soupe de beurre · Sel · Poivre",
+      steps: [
+        "Épluchez et coupez les navets en dés, émincez le poireau.",
+        "Faites fondre le poireau dans le beurre, ajoutez les navets et le bouillon et laissez frémir 20 minutes.",
+        "Mixez ou laissez en morceaux, ajoutez un peu de crème si vous voulez, salez et poivrez.",
+      ],
+    },
+    "fr_consommeboeuf": {
+      name: "Bouillon de bœuf aux légumes",
+      ings: [["Bœuf (jarret ou paleron)", "150 g"], ["Carotte", "40 g"], ["Poireau", "60 g"], ["Céleri branche", "40 g"]],
+      seas: "900 ml d'eau · 1 cube de bouillon · 1 feuille de laurier · 2 clous de girofle · Sel · Poivre",
+      steps: [
+        "Coupez le bœuf en petits dés et les légumes en fines tranches.",
+        "Mettez le bœuf dans l'eau avec le cube, le laurier et les clous de girofle, portez à frémissement et écumez. Cuisez 20 minutes.",
+        "Ajoutez les légumes, laissez frémir encore 10 minutes, retirez le laurier et les clous de girofle, salez et poivrez.",
+      ],
+    },
+    "fr_endivesbraisees": {
+      name: "Endives braisées",
+      ings: [["Endives", "300 g"], ["Jus de citron", "1 c. à soupe"]],
+      seas: "1 c. à soupe de beurre · 3 c. à soupe d'eau · Sel · Poivre",
+      steps: [
+        "Coupez les endives en deux dans la longueur et retirez le cœur amer.",
+        "Faites-les dorer côté coupé 3 minutes dans le beurre, ajoutez l'eau et le jus de citron, couvrez et laissez cuire doucement 15 minutes.",
+        "Découvrez, laissez évaporer le liquide, salez et poivrez.",
+      ],
+    },
+    "fr_saladefenouil": {
+      name: "Salade de fenouil au citron",
+      ings: [["Bulbe de fenouil", "250 g"], ["Citron", "1/2"]],
+      seas: "1 c. à soupe et demie d'huile d'olive · Sel · Poivre · Pluches de fenouil ou persil",
+      steps: [
+        "Émincez le fenouil le plus finement possible.",
+        "Fouettez le jus de citron avec l'huile, le sel et le poivre.",
+        "Mélangez le fenouil à la vinaigrette et parsemez de pluches.",
+      ],
+    },
+    "fr_brocolisail": {
+      name: "Brocolis sautés à l'ail",
+      ings: [["Brocolis", "300 g"], ["Ail", "2 gousses"]],
+      seas: "1 c. à soupe d'huile d'olive · Sel · Poivre",
+      steps: [
+        "Détaillez le brocoli en fleurettes et faites-les cuire 3 minutes à l'eau bouillante, puis égouttez.",
+        "Émincez l'ail et faites-le chauffer dans l'huile sans le colorer.",
+        "Ajoutez les brocolis, faites sauter 2 minutes, salez et poivrez.",
+      ],
+    },
+    "fr_semoule_lait": {
+      name: "Semoule au lait",
+      ings: [["Semoule de blé fine", "60 g"], ["Lait", "500 ml"]],
+      seas: "2 c. à soupe de sucre · 1 pincée de sel · Quelques gouttes d'extrait de vanille (facultatif)",
+      steps: [
+        "Faites chauffer le lait avec le sucre, le sel et la vanille jusqu'à frémissement.",
+        "Versez la semoule en pluie en fouettant, puis baissez le feu.",
+        "Laissez cuire 4 à 5 minutes en remuant, jusqu'à ce que ce soit épais et crémeux. Servez tiède.",
+      ],
+    },
+    "fr_porridge_avoine": {
+      name: "Porridge aux flocons d'avoine",
+      ings: [["Flocons d'avoine", "80 g"], ["Lait", "400 ml"], ["Pomme ou poire râpée", "1"]],
+      seas: "1 pincée de sel · 1 c. à soupe de miel (facultatif)",
+      steps: [
+        "Mettez les flocons d'avoine, le lait et le sel dans une petite casserole.",
+        "Portez à frémissement et laissez cuire 5 minutes en remuant, jusqu'à ce que ce soit crémeux.",
+        "Servez avec la pomme ou la poire râpée et un peu de miel.",
+      ],
+    },
+    "fr_riz_au_lait": {
+      name: "Riz au lait",
+      ings: [["Riz rond", "80 g"], ["Lait", "700 ml"]],
+      seas: "3 c. à soupe de sucre · 1 pincée de sel · 1/2 gousse de vanille ou quelques gouttes d'extrait",
+      steps: [
+        "Rincez le riz, couvrez-le d'eau, faites bouillir 2 minutes et égouttez.",
+        "Portez le lait à frémissement avec la vanille et le sel, ajoutez le riz et laissez cuire 30 à 35 minutes à feu très doux en remuant souvent.",
+        "Quand le riz est très tendre et crémeux, ajoutez le sucre. Servez tiède.",
+      ],
+    },
+    "fr_petitspois_express": {
+      name: "Velouté de petits pois express",
+      ings: [["Petits pois surgelés", "300 g"], ["Échalote", "1"], ["Crème fraîche", "2 c. à soupe"]],
+      seas: "500 ml de bouillon de légumes (1 cube) · 1 c. à soupe de beurre · Quelques feuilles de menthe (facultatif) · Sel · Poivre",
+      steps: [
+        "Émincer l'échalote et la faire suer 2 minutes dans le beurre. Ajouter les petits pois et le bouillon et faire bouillir 5 minutes.",
+        "Ajouter la menthe et mixer finement (attention, c'est chaud). Incorporer la crème fraîche, saler et poivrer.",
+      ],
+      tip: { add: "Quelques croûtons", why: "Du croquant contre le velouté", skill: "Mixer tout de suite", how: "Mixés dès qu'ils sont tendres, les petits pois gardent un vert éclatant." },
+    },
+    "fr_concombre_froide": {
+      name: "Soupe froide de concombre au yaourt",
+      ings: [["Concombre", "1 gros (400 g)"], ["Yaourt nature", "250 g"], ["Menthe fraîche", "5 feuilles"]],
+      seas: "1 petite gousse d'ail · 1 c. à soupe d'huile d'olive · 100 ml d'eau froide · Sel · Poivre",
+      steps: [
+        "Peler le concombre, le couper en morceaux et le mixer avec le yaourt, la menthe, l'ail, l'eau froide et une pincée de sel jusqu'à ce que ce soit lisse.",
+        "Rectifier l'assaisonnement, verser dans les bols et arroser d'un filet d'huile d'olive. Servir froid.",
+      ],
+      tip: { add: "Des glaçons dans les bols", why: "Bien froid tout de suite par temps chaud", skill: "Un concombre bien frais", how: "Concombre et yaourt sortis du réfrigérateur : pas besoin de temps de repos au froid." },
+    },
+    "fr_bouillon_alphabet": {
+      name: "Bouillon de légumes aux pâtes alphabet",
+      ings: [["Pâtes alphabet", "50 g"], ["Carotte", "1"], ["Poireau, le blanc", "1/2"]],
+      seas: "800 ml de bouillon de légumes (1 cube) · 1 c. à café de beurre · Sel · Poivre · Persil haché (facultatif)",
+      steps: [
+        "Râper la carotte et émincer le poireau. Porter le bouillon à ébullition avec les légumes et cuire 3 minutes.",
+        "Ajouter les pâtes et cuire 4 à 5 minutes. Incorporer le beurre, rectifier l'assaisonnement et parsemer de persil.",
+      ],
+      tip: { add: "Une cuillerée de comté râpé", why: "Les enfants adorent le voir fondre dans le bol", skill: "Râper la carotte", how: "Râpée, la carotte cuit en même temps que les pâtes." },
+    },
+    'fr_bavette': {
+      name: 'Bavette à l\'échalote',
+      ings: [['Bavettes de bœuf', '2 (300 g)'], ['Échalotes', '3'], ['Salade verte, pour servir', '1'], ['Baguette, pour servir', '1/2']],
+      seas: '20 g de beurre · 1 c. à soupe d\'huile · 2 c. à soupe de vinaigre de vin rouge · Sel · Poivre',
+      steps: [
+        'Hachez finement les échalotes. Faites bien chauffer l\'huile dans une poêle à feu vif.',
+        'Salez et poivrez la viande et saisissez-la 2 minutes de chaque côté pour saignant, 3 minutes pour à point. Réservez sur des assiettes chaudes.',
+        'Baissez à feu moyen, ajoutez le beurre et les échalotes et faites cuire 2 minutes en grattant les sucs. Versez le vinaigre, laissez bouillonner quelques secondes et nappez la viande. Servez avec la salade et le pain.',
+      ],
+      tip: { add: 'Une cuillerée de moutarde de Dijon dans l\'échalote', why: 'Une sauce plus relevée qui va bien à la bavette', skill: 'Couper dans le sens contraire des fibres', how: 'La bavette a de longues fibres ; la trancher en travers à table la garde tendre.' },
+    },
+    'fr_escalopecreme': {
+      name: 'Escalopes de poulet à la crème et aux champignons',
+      ings: [['Escalopes fines de poulet ou de dinde', '2 (300 g)'], ['Champignons de Paris', '150 g'], ['Crème fraîche', '100 ml'], ['Haricots verts, pour servir', '150 g']],
+      seas: '15 g de beurre · 1 c. à soupe d\'huile · 1 c. à café de moutarde de Dijon · Sel · Poivre',
+      steps: [
+        'Émincez les champignons. Salez et poivrez les escalopes et faites-les dorer dans l\'huile à feu moyen-vif 2 à 3 minutes de chaque côté, jusqu\'à ce qu\'elles soient cuites à cœur ; réservez.',
+        'Mettez le beurre et les champignons dans la poêle et faites-les dorer 3 minutes.',
+        'Ajoutez la crème et la moutarde, laissez bouillonner 1 minute, puis remettez les escalopes pour les réchauffer. Rectifiez l’assaisonnement et servez.',
+      ],
+      tip: { add: 'Un trait de vin blanc avant la crème', why: 'Il décolle les sucs et allège la sauce', skill: 'Aplatir la viande', how: 'Des escalopes d’épaisseur égale cuisent en quelques minutes sans sécher sur les bords.' },
+    },
+    'fr_meuniere': {
+      name: 'Filets de poisson meunière',
+      ings: [['Filets de poisson blanc (cabillaud, merlu ou sole)', '2 (300 g)'], ['Citron', '1'], ['Pommes de terre vapeur, pour servir', '300 g']],
+      seas: '30 g de beurre · 2 c. à soupe de farine · 1 c. à soupe d\'huile · 1 c. à soupe de persil haché · Sel · Poivre',
+      steps: [
+        'Séchez le poisson, salez, poivrez et farinez-le en tapotant pour retirer l\'excédent.',
+        'Chauffez l\'huile et la moitié du beurre dans une poêle à feu moyen-vif et faites cuire le poisson 2 à 3 minutes de chaque côté, jusqu\'à ce qu\'il soit doré et se défasse ; réservez sur des assiettes chaudes.',
+        'Mettez le reste du beurre dans la poêle et laissez-le devenir noisette, puis ajoutez le jus d\'un demi-citron et le persil. Nappez le poisson et servez avec des quartiers de citron.',
+      ],
+      tip: { add: 'Quelques câpres dans le beurre noisette', why: 'Une touche salée classique', skill: 'Surveiller le beurre', how: 'Retirez-le du feu dès qu\'il prend une couleur noisette ; quelques secondes de plus et il brûle.' },
+    },
+    'fr_omelettechampignons': {
+      name: 'Omelette aux champignons et au fromage',
+      ings: [['Œufs', '5'], ['Champignons de Paris', '150 g'], ['Comté ou emmental râpé', '50 g'], ['Salade verte, pour servir', '1']],
+      seas: '20 g de beurre · 1 c. à soupe de ciboulette ciselée · Sel · Poivre',
+      steps: [
+        'Émincez les champignons et faites-les dorer dans la moitié du beurre à feu moyen-vif 3 minutes ; réservez.',
+        'Battez les œufs avec sel et poivre. Faites fondre le reste du beurre, versez les œufs et remuez doucement à la fourchette 1 à 2 minutes, jusqu\'à ce qu\'ils soient juste pris mais encore moelleux.',
+        'Parsemez de champignons, de fromage et de ciboulette, repliez l\'omelette en deux et servez avec la salade.',
+      ],
+      tip: { add: 'Quelques lardons poêlés avec les champignons', why: 'Fumé et salé avec les œufs moelleux', skill: 'Baveuse', how: 'L\'intérieur reste un peu crémeux ; retirez la poêle du feu avant que le dessus soit complètement pris.' },
+    },
+    'fr_cotelettes': {
+      name: 'Côtelettes d\'agneau poêlées aux haricots verts',
+      ings: [['Côtelettes d\'agneau', '6 (450 g)'], ['Haricots verts', '200 g'], ['Ail', '2 gousses']],
+      seas: '1 c. à soupe d\'huile d\'olive · 15 g de beurre · 1/2 c. à café de thym ou d\'herbes de Provence · Sel · Poivre',
+      steps: [
+        'Faites cuire les haricots verts 5 minutes dans de l\'eau bouillante salée, puis égouttez.',
+        'Pendant ce temps, assaisonnez les côtelettes de sel, poivre et thym. Chauffez l\'huile dans une poêle à feu vif et faites-les cuire 2 à 3 minutes de chaque côté.',
+        'Poussez les côtelettes sur le côté, ajoutez le beurre, l\'ail écrasé et les haricots et faites sauter 1 minute pour qu\'ils prennent les sucs. Servez aussitôt.',
+      ],
+      tip: { add: 'Les sucs de cuisson sur un morceau de pain', why: 'Rien ne se perd et c’est délicieux', skill: 'Commencer par le gras', how: 'Tenez-les d\'abord 1 minute côté gras pour le rendre croustillant et graisser la poêle.' },
+    },
     'fr_basquaise': {
       name: 'Poulet basquaise',
       ings: [
@@ -516,7 +729,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       seas: 'Poivre · un peu de sel · 1 gousse d\'ail · 1 feuille de laurier · 1 brin de thym · 1,2 litre d\'eau',
       steps: [
         'Coupez le chou en lanières en retirant le trognon dur ; épluchez et coupez en cubes les pommes de terre et les carottes ; émincez l\'oignon.',
-        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux et plus digeste.',
+        'Blanchissez le chou 5 minutes dans l\'eau bouillante et égouttez ; il devient plus doux.',
         'Dans une grande marmite, faites dorer les lardons 4 minutes, ajoutez l\'oignon et l\'ail et poursuivez 3 minutes.',
         'Ajoutez l\'eau, le chou, les carottes, le thym et le laurier et laissez mijoter 20 minutes, puis ajoutez les pommes de terre (et la saucisse en rondelles) et poursuivez 20 minutes, jusqu\'à ce que tout soit tendre et la saucisse bien chaude à cœur.',
         'Goûtez avant de saler, poivrez bien et servez avec des tranches de pain de campagne.',
@@ -710,17 +923,17 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_bourguignon': {
       name: 'Bœuf bourguignon',
       ings: [
-        ['Bœuf à braiser (paleron, macreuse) en gros cubes', '1 kg'],
-        ['Vin rouge corsé (bourgogne ou autre)', '75 cl'],
-        ['Carottes', '3'],
-        ['Oignons', '2'],
-        ['Lardons fumés', '150 g'],
-        ['Champignons de Paris', '250 g'],
+        ['Bœuf à braiser (paleron, macreuse) en gros cubes', '500 g'],
+        ['Vin rouge corsé (bourgogne ou autre)', '40 cl'],
+        ['Carottes', '2'],
+        ['Oignon', '1'],
+        ['Lardons fumés', '80 g'],
+        ['Champignons de Paris', '150 g'],
       ],
-      seas: 'Sel · poivre · 2 c. à soupe de farine · 2 c. à soupe d\'huile · 20 g de beurre · 2 gousses d\'ail · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de concentré de tomate · un peu d\'eau',
+      seas: 'Sel · poivre · 1 c. à soupe de farine · 2 c. à soupe d\'huile · 10 g de beurre · 2 gousses d\'ail · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de concentré de tomate · un peu d\'eau',
       steps: [
         'Séchez la viande et faites-la dorer en plusieurs fois dans l\'huile, dans une cocotte en fonte, 3 à 4 minutes par face. Réservez.',
-        'Dans la même cocotte, faites revenir les lardons, les oignons émincés et les carottes en rondelles 5 minutes. Remettez la viande, saupoudrez de farine et remuez 2 minutes.',
+        'Dans la même cocotte, faites revenir les lardons, l\'oignon émincé et les carottes en rondelles 5 minutes. Remettez la viande, saupoudrez de farine et remuez 2 minutes.',
         'Ajoutez le vin, le concentré de tomate, l\'ail écrasé et le bouquet garni, avec un peu d\'eau si besoin pour couvrir juste la viande. Portez à ébullition, couvrez et laissez mijoter très doucement 2 h 30 à 3 h, jusqu\'à ce que la viande se coupe à la cuillère.',
         'Faites dorer les champignons dans le beurre 5 minutes et ajoutez-les 15 minutes avant la fin. Retirez le bouquet garni, rectifiez l\'assaisonnement et servez avec des pommes de terre vapeur, des pâtes fraîches ou une purée.',
       ],
@@ -729,19 +942,19 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_blanquette': {
       name: 'Blanquette de veau',
       ings: [
-        ['Veau à blanquette (épaule ou tendron) en morceaux', '1 kg'],
-        ['Carottes', '3'],
+        ['Veau à blanquette (épaule ou tendron) en morceaux', '500 g'],
+        ['Carottes', '2'],
         ['Oignon', '1'],
-        ['Champignons de Paris', '250 g'],
-        ['Crème fraîche', '20 cl'],
+        ['Champignons de Paris', '150 g'],
+        ['Crème fraîche', '10 cl'],
         ['Jaune d\'œuf', '1'],
-        ['Riz, pour servir', '300 g'],
+        ['Riz, pour servir', '150 g'],
       ],
-      seas: 'Sel · poivre · 40 g de beurre · 40 g de farine · 2 clous de girofle · 1 bouquet garni · 1 cube de bouillon de volaille · le jus d\'½ citron · eau à hauteur',
+      seas: 'Sel · poivre · 25 g de beurre · 25 g de farine · 2 clous de girofle · 1 bouquet garni · 1 cube de bouillon de volaille · le jus d\'½ citron · eau à hauteur',
       steps: [
         'Mettez la viande dans une cocotte, couvrez d\'eau froide, portez à ébullition et écumez. Ajoutez les carottes en tronçons, l\'oignon piqué des clous de girofle, le bouquet garni et le cube, couvrez et laissez frémir 1 h 30.',
         'Faites cuire les champignons coupés en quatre dans une louche de bouillon 10 minutes. Sortez la viande et les carottes et filtrez le bouillon.',
-        'Faites fondre le beurre, ajoutez la farine en remuant 1 minute, puis versez 75 cl de bouillon en fouettant et laissez épaissir 10 minutes en remuant.',
+        'Faites fondre le beurre, ajoutez la farine en remuant 1 minute, puis versez 40 cl de bouillon en fouettant et laissez épaissir 10 minutes en remuant.',
         'Hors du feu, incorporez la crème, le jaune d\'œuf et le jus de citron ; ne faites plus bouillir. Remettez la viande, les carottes et les champignons, réchauffez doucement et servez avec du riz.',
       ],
       tip: { add: 'Une pincée de muscade dans la sauce', why: 'Une note chaude qui va bien avec la crème', skill: 'Bien écumer au début', how: 'Retirer l\'écume grise garde la sauce bien blanche et le goût net.' },
@@ -785,19 +998,19 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_rotiporc': {
       name: 'Rôti de porc au four',
       ings: [
-        ['Rôti de porc dans l\'échine ou le filet, ficelé', '1 kg'],
+        ['Rôti de porc dans l\'échine ou le filet, ficelé', '500 g'],
         ['Petites pommes de terre', '600 g'],
-        ['Oignons', '2'],
+        ['Oignon', '1'],
         ['Carottes', '2'],
       ],
-      seas: 'Sel · poivre · 2 c. à soupe d\'huile · 20 g de beurre · 3 gousses d\'ail · 2 brins de thym ou de romarin · 1 c. à soupe de moutarde de Dijon · 15 cl d\'eau',
+      seas: 'Sel · poivre · 2 c. à soupe d\'huile · 20 g de beurre · 2 gousses d\'ail · 2 brins de thym ou de romarin · 1 c. à soupe de moutarde de Dijon · 10 cl d\'eau',
       steps: [
         'Préchauffez le four à 200 °C. Faites de petites entailles dans le rôti et glissez-y des éclats d\'ail ; badigeonnez de moutarde, salez et poivrez.',
         'Faites dorer le rôti sur toutes ses faces dans l\'huile et le beurre, dans un plat allant au four, environ 8 minutes.',
-        'Entourez-le des pommes de terre coupées en deux, des oignons en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 1 heure, en retournant et en arrosant à mi-cuisson, jusqu\'à 65 °C à cœur (le jus doit être clair).',
+        'Entourez-le des pommes de terre coupées en deux, de l\'oignon en quartiers, des carottes en tronçons et des herbes, versez l\'eau et enfournez environ 35 à 40 minutes, en retournant et en arrosant à mi-cuisson, jusqu\'à 75 °C à cœur (le jus doit être clair).',
         'Laissez reposer 10 minutes sous une feuille d\'aluminium, tranchez et servez avec les légumes et le jus en grattant le fond du plat.',
       ],
-      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 65 °C à cœur, il finit de cuire en reposant.' },
+      tip: { add: 'Une poignée de pruneaux 20 minutes avant la fin', why: 'Leur douceur est un grand classique avec le porc', skill: 'Ne pas trop cuire', how: 'Le rôti de porc sèche vite : arrêtez à 75 °C à cœur, il finit de cuire en reposant.' },
     },
     'fr_tartiflette': {
       name: 'Tartiflette',
@@ -982,17 +1195,17 @@ GOHAN_PACK_TR('FR', 'fr', {
     'fr_gigot': {
       name: 'Gigot d\'agneau rôti',
       ings: [
-        ['Gigot d\'agneau avec os', '1 (environ 2 kg)'],
-        ['Ail', '6 gousses'],
-        ['Pommes de terre', '1 kg'],
-        ['Oignons', '2'],
+        ['Gigot d\'agneau désossé, roulé et ficelé', '500 g'],
+        ['Ail', '3 gousses'],
+        ['Pommes de terre', '500 g'],
+        ['Oignon', '1'],
       ],
-      seas: 'Sel · poivre · 3 c. à soupe d\'huile d\'olive · 30 g de beurre · quelques brins de romarin et de thym · 20 cl d\'eau',
+      seas: 'Sel · poivre · 2 c. à soupe d\'huile d\'olive · 20 g de beurre · quelques brins de romarin et de thym · 10 cl d\'eau',
       steps: [
         'Sortez le gigot du réfrigérateur 1 heure avant et préchauffez le four à 220 °C. Faites de petites entailles dans la viande et piquez-la d\'éclats d\'ail ; frottez-la d\'huile, de sel, de poivre et d\'herbes.',
-        'Mettez les pommes de terre en rondelles épaisses et les oignons émincés dans un plat, salez, poivrez et posez le gigot dessus avec des noisettes de beurre.',
-        'Enfournez 15 minutes à 220 °C, puis baissez à 180 °C et comptez environ 15 minutes par 500 g (environ 1 heure pour une viande rosée), en arrosant deux fois et en ajoutant l\'eau si le plat sèche.',
-        'Laissez reposer 15 minutes sous une feuille d\'aluminium, découpez en tranches et servez avec les pommes de terre et le jus.',
+        'Mettez les pommes de terre en rondelles épaisses et l\'oignon émincé dans un plat, salez, poivrez, parsemez de la moitié du beurre et enfournez 20 minutes.',
+        'Posez le gigot sur les pommes de terre avec le reste du beurre. Enfournez 15 minutes à 220 °C, puis baissez à 180 °C et comptez encore 20 à 25 minutes pour une viande rosée, en arrosant une fois et en ajoutant l\'eau si le plat sèche.',
+        'Laissez reposer 10 minutes sous une feuille d\'aluminium, découpez en tranches et servez avec les pommes de terre et le jus.',
       ],
       tip: { add: 'Des flageolets en accompagnement', why: 'Ce sont les compagnons traditionnels du gigot', skill: 'Laisser reposer la viande', how: 'Le repos laisse le jus se répartir : les tranches restent rosées et juteuses.' },
     },
@@ -1377,6 +1590,270 @@ GOHAN_PACK_TR('FR', 'fr', {
         'Laissez reposer 5 minutes à couvert hors du feu, puis égrenez à la fourchette et rectifiez l\'assaisonnement.',
       ],
       tip: { add: 'Une poignée d\'amandes effilées ou de petits pois à la fin', why: 'De la couleur et du croquant sans effort', skill: 'Nacrer le riz dans le beurre', how: 'Enrobé de matière grasse, chaque grain reste séparé et le riz ne colle pas.' },
+    },
+    'fr_steakhache': {
+      name: 'Steak haché maison à l’échalote',
+      ings: [['Bœuf haché (5 à 15 % de matière grasse)', '300 g'], ['Échalote', '1'], ['Jaune d’œuf', '1?'], ['Salade verte, pour servir', '1/2 salade?']],
+      seas: '1 c. à soupe de beurre · 1 c. à café d’huile · sel · poivre · 1 c. à café de moutarde de Dijon (facultatif)',
+      steps: [
+        'Hachez finement l’échalote. Mélangez-la délicatement à la viande avec une bonne pincée de sel, du poivre, la moutarde et le jaune d’œuf si vous en utilisez, sans trop travailler la viande. Formez 2 steaks de 2 cm d’épaisseur et creusez légèrement le centre.',
+        'Faites chauffer l’huile et la moitié du beurre dans une poêle à feu moyen-vif, jusqu’à ce qu’il mousse.',
+        'Faites cuire les steaks 3 à 4 minutes sur la première face sans les bouger, jusqu’à ce qu’ils soient bien dorés, puis retournez-les et comptez 3 minutes (un peu plus pour une cuisson bien cuite).',
+        'Ajoutez le reste du beurre, arrosez-en les steaks et laissez-les reposer 2 minutes. Servez avec des frites ou de la purée et une salade verte.'
+      ],
+      tip: { add: 'Une cuillerée de moutarde de Dijon à côté', why: 'Son piquant tranche avec la viande grasse, comme au bistrot', skill: 'Ne pas pétrir la viande', how: 'Un mélange léger garde la texture tendre ; pétrir donne un steak dense et caoutchouteux.' }
+    },
+    'fr_potaufeu': {
+      name: 'Pot-au-feu',
+      ings: [['Bœuf à pot-au-feu (jarret, macreuse ou plat de côtes)', '600 g'], ['Carottes', '3'], ['Poireaux', '2'], ['Navets', '2'], ['Pommes de terre', '3'], ['Oignon piqué de 2 clous de girofle', '1']],
+      seas: '2 litres d’eau · 1 bouquet garni (thym, laurier, persil) · 1 c. à soupe de gros sel · 10 grains de poivre · moutarde de Dijon et cornichons, pour servir',
+      steps: [
+        'Mettez la viande dans une grande marmite, couvrez d’eau froide et portez lentement à ébullition. Écumez la mousse grise pendant quelques minutes.',
+        'Ajoutez l’oignon, le bouquet garni, le sel et le poivre. Couvrez et laissez frémir très doucement 1 h 30.',
+        'Coupez les carottes, les navets et les poireaux en gros morceaux (ficelez les poireaux en botte) et les pommes de terre en deux. Ajoutez-les dans la marmite et laissez mijoter encore 40 minutes, jusqu’à ce que la viande et les légumes soient tendres.',
+        'Retirez le bouquet garni. Tranchez la viande et servez dans des assiettes creuses avec les légumes et une louche de bouillon, avec moutarde, cornichons et gros sel.'
+      ],
+      tip: { add: 'Servir d’abord le bouillon avec un peu de vermicelle', why: 'C’est la façon traditionnelle de manger le pot-au-feu : bouillon, puis viande et légumes', skill: 'Ne pas faire bouillir fort', how: 'Un frémissement doux garde le bouillon clair et la viande tendre ; un gros bouillon le trouble et rend la viande filandreuse.' }
+    },
+    fr_ratatouille_riz: {
+      name: 'Ratatouille et riz',
+      ings: [
+        ['Courgettes', '2'],
+        ['Aubergine', '1'],
+        ['Poivrons', '2'],
+        ['Tomates', '4'],
+        ['Oignon', '1'],
+        ['Riz', '150 g'],
+      ],
+      seas: 'Sel · poivre · 4 c. à soupe d’huile d’olive · 2 gousses d’ail · 1 c. à café d’herbes de Provence · 1 feuille de laurier',
+      steps: [
+        'Coupez les courgettes, l’aubergine et les poivrons en morceaux de 2 cm et hachez les tomates. Faites revenir l’oignon émincé dans la moitié de l’huile pendant 5 minutes.',
+        'Ajoutez l’aubergine, les poivrons et l’ail et faites cuire 8 minutes, puis ajoutez les courgettes, les tomates, les herbes et le laurier. Couvrez et laissez mijoter doucement 30 minutes.',
+        'Pendant ce temps, faites cuire le riz. Assaisonnez la ratatouille, terminez avec le reste de l’huile et servez sur le riz.',
+      ],
+    },
+    fr_lentilles_carottes: {
+      name: 'Lentilles aux carottes',
+      ings: [
+        ['Lentilles vertes', '200 g'],
+        ['Carottes', '3'],
+        ['Oignon', '1'],
+        ['Poireau', '1'],
+      ],
+      seas: 'Sel · poivre · 2 c. à soupe d’huile d’olive · 1 feuille de laurier · 1 brin de thym · 1 c. à café de moutarde de Dijon · 1 c. à café de vinaigre de cidre · 600 ml d’eau',
+      steps: [
+        'Faites revenir l’oignon haché, les carottes en dés et le poireau émincé dans l’huile pendant 6 minutes.',
+        'Ajoutez les lentilles rincées, le laurier, le thym et l’eau. Laissez mijoter doucement 25 minutes, jusqu’à ce que les lentilles soient tendres et l’eau presque absorbée.',
+        'Retirez le laurier et le thym. Ajoutez la moutarde et le vinaigre, assaisonnez et servez tiède.',
+      ],
+    },
+    fr_couscous_pois_chiches: {
+      name: 'Couscous aux pois chiches',
+      ings: [
+        ['Semoule de couscous moyenne', '200 g'],
+        ['Pois chiches cuits', '1 boîte (400 g)'],
+        ['Carottes', '2'],
+        ['Courgettes', '2'],
+        ['Potiron', '200 g'],
+        ['Oignon', '1'],
+      ],
+      seas: 'Sel · 3 c. à soupe d’huile d’olive · 1 c. à soupe de concentré de tomate · 1 c. à café de ras el hanout (ou cumin et coriandre) · 700 ml d’eau',
+      steps: [
+        'Faites revenir l’oignon haché dans 1 c. à soupe d’huile pendant 5 minutes. Ajoutez le concentré de tomate, les épices et l’eau et portez à ébullition.',
+        'Ajoutez les carottes et le potiron coupés en morceaux et laissez mijoter 10 minutes, puis les courgettes et les pois chiches égouttés pendant 12 minutes. Salez.',
+        'Mettez la semoule dans un saladier avec une pincée de sel, 1 c. à soupe d’huile et 200 ml de bouillon chaud, couvrez 5 minutes et égrainez à la fourchette. Servez les légumes et le bouillon sur la semoule.',
+      ],
+    },
+    fr_pates_tomates_olives: {
+      name: 'Pâtes aux tomates et aux olives',
+      ings: [
+        ['Pâtes', '200 g'],
+        ['Tomates mûres', '4'],
+        ['Olives noires', '50 g'],
+        ['Ail', '2 gousses'],
+      ],
+      seas: 'Sel · poivre · 3 c. à soupe d’huile d’olive · 1 c. à café d’origan séché · Basilic ou persil frais',
+      steps: [
+        'Faites cuire les pâtes dans une grande casserole d’eau bouillante bien salée selon le paquet, puis égouttez-les.',
+        'Pendant ce temps, faites chauffer l’huile avec l’ail émincé 1 minute. Ajoutez les tomates hachées et l’origan et laissez cuire 8 minutes jusqu’à ce qu’elles fondent.',
+        'Ajoutez les olives dénoyautées et coupées en deux, mélangez avec les pâtes, poivrez et parsemez de basilic.',
+      ],
+    },
+    fr_haricots_blancs_tomate: {
+      name: 'Haricots blancs à la tomate',
+      ings: [
+        ['Haricots blancs (cuits ou en boîte)', '2 boîtes (800 g)'],
+        ['Tomates', '4'],
+        ['Oignon', '1'],
+        ['Carotte', '1'],
+        ['Épinards', '100 g'],
+      ],
+      seas: 'Sel · poivre · 3 c. à soupe d’huile d’olive · 2 gousses d’ail · 1 feuille de laurier · 1 brin de thym · 1 c. à café de paprika',
+      steps: [
+        'Faites revenir l’oignon haché et la carotte en dés dans l’huile pendant 6 minutes. Ajoutez l’ail et le paprika 1 minute.',
+        'Ajoutez les tomates hachées, le laurier et le thym et laissez cuire 8 minutes. Ajoutez les haricots égouttés et 150 ml d’eau.',
+        'Laissez mijoter 15 minutes jusqu’à ce que la sauce épaississe, en ajoutant les épinards pour les 2 dernières minutes. Assaisonnez et servez avec du pain.',
+      ],
+    },
+    'fr_compote': {
+      name: 'Compote de pommes à la cannelle',
+      ings: [['Pommes', '4'], ['Jus de citron', '1 c. à soupe']],
+      seas: '1 bâton de cannelle (ou 1/2 c. à café de cannelle moulue) · 4 c. à soupe d’eau · 1 c. à soupe de sucre',
+      steps: [
+        'Épluchez et épépinez les pommes, puis coupez-les en morceaux.',
+        'Mettez-les dans une casserole avec l’eau, la cannelle, le sucre et le jus de citron. Couvrez et laissez cuire à feu doux 15 minutes en remuant de temps en temps, jusqu’à ce qu’elles soient très tendres.',
+        'Retirez le bâton de cannelle, écrasez grossièrement à la fourchette et servez tiède ou froid dans des bols.',
+      ],
+    },
+    'fr_oeufs_coque': {
+      name: 'Œufs à la coque et mouillettes',
+      ings: [['Œufs', '4'], ['Pain', '4 tranches'], ['Beurre', '2 c. à soupe']],
+      seas: 'une pincée de sel',
+      steps: [
+        'Portez une casserole d’eau à ébullition. Plongez délicatement les œufs avec une cuillère et laissez cuire 6 minutes (pour les jeunes enfants et les femmes enceintes, 10 minutes, jusqu’à ce que le jaune soit ferme).',
+        'Pendant ce temps, faites griller le pain, beurrez-le et coupez-le en bandes (les mouillettes).',
+        'Placez les œufs dans des coquetiers, décalottez-les, ajoutez une pincée de sel et trempez les mouillettes dans le jaune.',
+      ],
+    },
+    'fr_tartines': {
+      name: 'Tartines beurrées et confiture',
+      ings: [['Baguette', '1/2'], ['Beurre mou', '30 g'], ['Confiture (fraise ou abricot)', '3 c. à soupe']],
+      seas: 'café ou thé chaud (pour accompagner)',
+      steps: [
+        'Coupez la baguette en 4 tronçons et ouvrez-les dans la longueur.',
+        'Tartinez de beurre mou, puis de confiture.',
+        'Servez aussitôt avec une boisson chaude.',
+      ],
+    },
+    "fr_ratatouilleoeufs": {
+      name: "Ratatouille aux œufs",
+      ings: [["Aubergine", "1 (250 g)"], ["Courgette", "1 (200 g)"], ["Poivron rouge", "1"], ["Tomates", "3"], ["Œufs", "4"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à café d'herbes de Provence · Sel · Poivre",
+      steps: [
+        "Coupez l'aubergine, la courgette, le poivron et les tomates en dés.",
+        "Faites chauffer l'huile dans une grande poêle ou une sauteuse et faites revenir l'aubergine et le poivron 5 minutes. Ajoutez la courgette, les tomates, l'ail et les herbes, couvrez et laissez mijoter 20 minutes. Salez et poivrez.",
+        "Creusez 4 puits, cassez un œuf dans chacun, couvrez et laissez cuire à feu doux 6 à 8 minutes, jusqu’à ce que les blancs soient pris.",
+      ],
+    },
+    "fr_poeleechampignons": {
+      name: "Poêlée de légumes aux pois chiches",
+      ings: [["Champignons de Paris", "300 g"], ["Haricots verts", "250 g"], ["Pois chiches en conserve, égouttés", "100 g"], ["Échalote", "1"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à soupe de persil haché · Sel · Poivre",
+      steps: [
+        "Faites cuire les haricots verts 6 minutes dans une casserole d'eau bouillante salée et égouttez-les. Émincez les champignons et l'échalote.",
+        "Faites chauffer l'huile dans une grande poêle et faites dorer les champignons à feu vif 6 minutes. Ajoutez l'échalote et les pois chiches et poursuivez 2 minutes.",
+        "Ajoutez les haricots verts et l'ail, mélangez 2 minutes, salez, poivrez et parsemez de persil.",
+      ],
+    },
+    "fr_tianchevre": {
+      name: "Tian de légumes au chèvre",
+      ings: [["Courgettes", "2 (400 g)"], ["Aubergine", "1 (250 g)"], ["Tomates", "3"], ["Oignon", "1/2"], ["Fromage de chèvre frais", "100 g"]],
+      seas: "3 c. à soupe d'huile d'olive · 1 gousse d'ail · 1 c. à café de thym séché · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 190 °C. Coupez les légumes en fines rondelles et l'oignon en lamelles. Frottez un plat à gratin avec l'ail et répartissez l'oignon au fond.",
+        "Disposez les rondelles en rangées serrées en alternant les légumes, arrosez d'huile et parsemez de thym, de sel et de poivre.",
+        "Enfournez 30 minutes, émiettez le chèvre sur le dessus et prolongez la cuisson 10 minutes, jusqu’à ce que ce soit doré.",
+      ],
+    },
+    "fr_oeufscocotte": {
+      name: "Œufs cocotte aux épinards",
+      ings: [["Œufs", "4"], ["Épinards", "250 g"], ["Crème fraîche", "4 c. à soupe"], ["Comté ou gruyère râpé", "30 g"]],
+      seas: "1 c. à soupe de beurre · 1 gousse d'ail · Muscade · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 180 °C. Faites tomber les épinards 3 minutes à la poêle avec le beurre et l'ail, pressez-les et assaisonnez de muscade, de sel et de poivre.",
+        "Répartissez les épinards dans 4 ramequins, ajoutez 1 c. à soupe de crème fraîche dans chacun et cassez un œuf par-dessus. Parsemez de fromage.",
+        "Placez les ramequins dans un plat rempli d’eau chaude à mi-hauteur et enfournez 10 à 12 minutes, jusqu’à ce que les blancs soient pris.",
+      ],
+    },
+    "fr_gratinchoufleur": {
+      name: "Gratin de chou-fleur",
+      ings: [["Chou-fleur", "1 petit (600 g)"], ["Lait", "300 ml"], ["Emmental râpé", "60 g"]],
+      seas: "20 g de beurre · 1 c. à soupe de farine · Muscade · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Détaillez le chou-fleur en bouquets et faites-les cuire 6 minutes dans une casserole d'eau bouillante salée. Égouttez bien.",
+        "Faites fondre le beurre dans une casserole, ajoutez la farine, puis versez le lait en fouettant et laissez épaissir 3 minutes. Assaisonnez de muscade, de sel et de poivre et ajoutez la moitié du fromage.",
+        "Mettez le chou-fleur dans un plat à gratin, nappez de sauce, parsemez du reste de fromage et enfournez 20 minutes, jusqu’à ce que ce soit doré.",
+      ],
+    },
+    "fr_courgettesfarcies": {
+      name: "Courgettes farcies au fromage frais",
+      ings: [["Courgettes rondes ou longues", "2 (500 g)"], ["Champignons de Paris", "150 g"], ["Tomate", "1"], ["Fromage frais (type Saint-Moret ou ricotta)", "100 g"], ["Emmental râpé", "30 g"]],
+      seas: "2 c. à soupe d'huile d'olive · 1 échalote · 1 c. à soupe de persil haché · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 190 °C. Coupez les courgettes en deux, évidez-les à la cuillère et hachez la chair avec les champignons et la tomate.",
+        "Faites revenir l'échalote hachée et les légumes dans l'huile, à la poêle, 6 minutes jusqu'à ce qu'ils soient secs. Hors du feu, ajoutez le fromage frais et le persil, salez et poivrez.",
+        "Garnissez les courgettes, parsemez d'emmental et faites cuire au four dans un plat 25 minutes, jusqu'à ce qu'elles soient tendres et dorées.",
+      ],
+    },
+    "fr_champignonsfarcis": {
+      name: "Champignons farcis en persillade",
+      ings: [["Gros champignons de Paris", "12 (500 g)"], ["Échalotes", "2"], ["Haricots verts", "250 g"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 3 c. à soupe de persil haché · 2 c. à soupe de chapelure · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Ôtez les pieds des champignons et hachez-les finement avec les échalotes, l'ail et le persil.",
+        "Faites revenir ce hachis 5 minutes dans une poêle avec 2 c. à soupe d'huile, salez, poivrez et garnissez-en les têtes de champignons. Parsemez de chapelure et arrosez du reste d'huile.",
+        "Enfournez 20 minutes. Pendant ce temps, faites cuire les haricots verts 6 minutes dans une casserole d'eau bouillante salée et servez-les avec les champignons.",
+      ],
+    },
+    "fr_auberginesprovencale": {
+      name: "Aubergines à la provençale",
+      ings: [["Aubergines", "2 (500 g)"], ["Tomates", "4"], ["Oignon", "1"], ["Olives noires", "12"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 2 c. à soupe de persil haché · 1 c. à café d'herbes de Provence · Sel · Poivre",
+      steps: [
+        "Préchauffez le four à 200 °C. Coupez les aubergines en deux dans la longueur, quadrillez la chair, badigeonnez de 2 c. à soupe d'huile et enfournez 20 minutes, face coupée vers le haut.",
+        "Pendant ce temps, faites fondre l'oignon haché 5 minutes dans le reste de l'huile dans une poêle, ajoutez les tomates en dés, l'ail et les herbes et laissez cuire 10 minutes pour obtenir une sauce épaisse. Salez, poivrez.",
+        "Étalez la sauce sur les aubergines, ajoutez les olives et enfournez encore 10 minutes. Parsemez de persil.",
+      ],
+    },
+    "fr_artichautsbarigoule": {
+      name: "Artichauts à la barigoule",
+      ings: [["Petits artichauts", "6"], ["Carotte", "1"], ["Oignon", "1/2"], ["Champignons de Paris", "200 g"], ["Citron", "1"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 150 ml de vin blanc sec · 200 ml d'eau · 2 brins de thym · 1 feuille de laurier · Sel · Poivre",
+      steps: [
+        "Parez les artichauts jusqu'aux feuilles tendres, coupez-les en deux, retirez le foin et gardez-les dans l'eau citronnée. Émincez les carottes, l'oignon et les champignons.",
+        "Faites chauffer l'huile dans une grande cocotte, faites fondre l'oignon et les carottes 5 minutes, ajoutez les artichauts, les champignons et l'ail et poursuivez 3 minutes.",
+        "Mouillez avec le vin et l'eau, ajoutez le thym et le laurier, salez, poivrez, couvrez et laissez mijoter 25 à 30 minutes, jusqu'à ce que les artichauts soient tendres.",
+      ],
+    },
+    "fr_poischichesblettes": {
+      name: "Blettes aux pois chiches",
+      ings: [["Blettes", "500 g"], ["Pois chiches en conserve, égouttés", "100 g"], ["Tomates", "2"], ["Oignon", "1"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1/2 c. à café de cumin en poudre · 100 ml d'eau · Sel · Poivre",
+      steps: [
+        "Séparez les côtes des feuilles de blettes. Émincez les côtes et hachez grossièrement les feuilles, l'oignon et les tomates.",
+        "Faites chauffer l'huile dans une cocotte et faites fondre l'oignon et les côtes 6 minutes. Ajoutez l'ail, le cumin et les tomates et poursuivez 3 minutes.",
+        "Ajoutez les pois chiches, les feuilles de blettes et l'eau, couvrez et laissez mijoter 10 minutes. Salez, poivrez.",
+      ],
+    },
+    "fr_piperade": {
+      name: "Piperade basquaise",
+      ings: [["Poivrons verts et rouges", "3"], ["Tomates bien mûres", "4"], ["Oignon", "1"]],
+      seas: "4 c. à soupe d'huile d'olive · 3 gousses d'ail · 1 c. à café de piment d'Espelette · Sel",
+      steps: [
+        "Émincez les poivrons et l'oignon en lanières. Pelez et concassez les tomates.",
+        "Faites chauffer l'huile dans une grande poêle ou une sauteuse et faites fondre l'oignon et les poivrons 15 minutes à feu moyen.",
+        "Ajoutez l'ail, les tomates et le piment d'Espelette, salez et laissez mijoter 15 minutes à découvert, jusqu'à ce que ce soit bien fondu.",
+      ],
+    },
+    "fr_fenouilbraise": {
+      name: "Fenouil braisé à la provençale",
+      ings: [["Bulbes de fenouil", "2 (600 g)"], ["Tomates", "2"], ["Olives noires", "12"], ["Pois chiches en conserve, égouttés", "50 g"]],
+      seas: "3 c. à soupe d'huile d'olive · 2 gousses d'ail · 1 c. à café de thym séché · 150 ml d'eau · Sel · Poivre",
+      steps: [
+        "Coupez le fenouil en quartiers et concassez les tomates.",
+        "Faites chauffer l'huile dans une cocotte ou une sauteuse et faites dorer le fenouil 6 minutes sur les deux faces. Ajoutez l'ail et le thym.",
+        "Ajoutez les tomates, les pois chiches, les olives et l'eau, salez, poivrez, couvrez et laissez mijoter 20 à 25 minutes, jusqu'à ce que le fenouil soit tendre.",
+      ],
+    },
+    "fr_brochetteslegumes": {
+      name: "Brochettes de légumes grillés",
+      ings: [["Courgettes", "2 (400 g)"], ["Champignons de Paris", "250 g"], ["Poivron rouge", "1"], ["Oignon rouge", "1/2"], ["Tomates cerises", "200 g"]],
+      seas: "4 c. à soupe d'huile d'olive · 1 gousse d'ail · 1 c. à café d'herbes de Provence · 1 c. à soupe de jus de citron · Sel · Poivre",
+      steps: [
+        "Coupez les courgettes en rondelles épaisses, le poivron et l'oignon en carrés. Mélangez l'huile avec l'ail écrasé, les herbes, le jus de citron, le sel et le poivre.",
+        "Enfilez les légumes et les champignons sur des brochettes et badigeonnez-les de la moitié de l'huile aux herbes.",
+        "Faites-les cuire sur une poêle-gril bien chaude (ou au barbecue) 10 à 12 minutes en les retournant, jusqu'à ce qu'elles soient dorées. Badigeonnez du reste de l'huile pour servir.",
+      ],
     },
   },
 });

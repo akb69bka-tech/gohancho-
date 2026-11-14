@@ -1212,16 +1212,6 @@ const xplMains = {
         `<path d="M58,82 Q72,60 96,54" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".45"/>`,
     ].join(''),
 
-    // セロリアックのサラダ: 青磁の鉢に、すりおろしたセロリアックとりんごのクリームあえ、レーズン、くるみ
-    pl_seler: p => [
-        K.kobachi(p, { glaze: '#8fb0a0', inside: '#f1f3ea' }),
-        xplShredHeap(p, 100, 100, 146, '#f0e8cc', { seed: 1, n: 180, w: 2, base: '#e2d6b0', len: .14 }),
-        K.glaze(p, 100, 100, 110, '#fffaf0', { seed: 1, op: .4 }),
-        ...xplSpots('sel', 14, 56, 16).map(([x, y, r]) => `<g ${T(x, y, r)}><ellipse rx="3.6" ry="2.6" fill="${p.g('#5a2e1e', .25, .3)}" stroke="#2e140a" stroke-width=".5"/><path d="M-2,-.5 Q0,-1.6 2,-.4" stroke="#8a5a40" stroke-width=".7" fill="none"/></g>`),
-        ...[[86, 74], [128, 118], [72, 122]].map(([x, y], i) => `<g ${T(x, y, i * 60)}><g ${p.sh(.4)}><path d="${smooth(ring(6, 8, .4, rng('xwal' + i), 1.2, .9))}" fill="${p.g('#c8945a', .3, .3)}" stroke="#8a5a2a" stroke-width=".5"/></g><path d="M-4,0 Q0,-2 4,0 M-3,2 Q0,3 3,2" stroke="#8a5a2a" stroke-width=".6" fill="none"/></g>`),
-        K.parsley(p, 112, 80, 9),
-    ].join(''),
-
     // ポロねぎのサラダ: 黄色い鉢に、輪切りのポロねぎ、コーン、刻んだゆで卵のマヨネーズあえ
     pl_porowa: p => [
         K.bowl(p, { glaze: '#d0a43a', inside: '#f6f2e6', lip: .86 }),

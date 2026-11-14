@@ -2,6 +2,11 @@
 GOHAN_PACK_TR('TR', 'tr', {
   staple: 'Ekmek',
   names: {
+    "chard": "Pazı",
+    'olive': 'Siyah ve yeşil zeytin',
+    "oats": "Yulaf ezmesi",
+    "semolina": "İrmik",
+    "mint": "Nane",
     'white beans': 'Kuru fasulye', 'onion': 'Soğan', 'tomato paste': 'Salça', 'green pepper': 'Yeşil biber',
     'eggplant': 'Patlıcan', 'ground beef': 'Dana kıyma', 'tomato': 'Domates', 'parsley': 'Maydanoz', 'chicken': 'Tavuk',
     'mushroom': 'Mantar', 'fish': 'Balık', 'cornmeal': 'Mısır unu', 'lemon': 'Limon', 'arugula': 'Roka', 'egg': 'Yumurta',
@@ -15,6 +20,201 @@ GOHAN_PACK_TR('TR', 'tr', {
     'bread': 'Ekmek', 'liver': 'Ciğer', 'chickpeas': 'Nohut', 'sucuk': 'Sucuk', 'shrimp': 'Karides', 'pasta': 'Makarna', 'peas': 'Bezelye', 'walnuts': 'Ceviz', 'vine leaves': 'Asma yaprağı', 'leek': 'Pırasa', 'artichoke': 'Enginar', 'borlotti beans': 'Barbunya', 'purslane': 'Semizotu', 'beetroot': 'Pancar', 'cabbage': 'Lahana', 'lettuce': 'Marul', 'red pepper': 'Kapya biber', 'cauliflower': 'Karnabahar'
   },
   recipes: {
+    "tr_karnabaharcorba": {
+      name: "Karnabahar çorbası",
+      ings: [["Karnabahar", "300 g"], ["Soğan", "40 g"], ["Süt", "100 ml"]],
+      seas: "500 ml su veya sebze suyu · 1 yemek kaşığı tereyağı · Tuz · Karabiber",
+      steps: [
+        "Karnabaharı çiçeklerine ayırın, soğanı doğrayın.",
+        "Soğanı tereyağında kavurun, karnabaharı ve suyu ekleyip 15 dakika pişirin.",
+        "Sütle birlikte blenderdan geçirin, tuz ve karabiberle tatlandırın.",
+      ],
+    },
+    "tr_sebzelitavuksuyu": {
+      name: "Sebzeli tavuk suyu çorbası",
+      ings: [["Tavuk göğsü veya but", "200 g"], ["Havuç", "40 g"], ["Kabak", "100 g"], ["Maydanoz", "5 g"]],
+      seas: "900 ml su · 1 yemek kaşığı tereyağı · 1/2 limonun suyu · Tuz · Karabiber",
+      steps: [
+        "Tavuğu suda 15 dakika haşlayın, çıkarıp didikleyin.",
+        "Küp doğranmış havuç ve kabağı suya ekleyip 10 dakika pişirin.",
+        "Tavuğu geri koyun, tereyağı ve limon suyunu ekleyin, tatlandırıp maydanoz serpin.",
+      ],
+    },
+    "tr_lahanacorbasi": {
+      name: "Lahana çorbası",
+      ings: [["Beyaz lahana", "250 g"], ["Soğan", "40 g"], ["Domates salçası", "1 yemek kaşığı"]],
+      seas: "800 ml su veya et suyu · 1 yemek kaşığı tereyağı · 1 çay kaşığı pul biber · Tuz",
+      steps: [
+        "Lahanayı ince doğrayın, soğanı küçük doğrayın.",
+        "Soğanı tereyağında kavurun, salça ve pul biberi ekleyip karıştırın, ardından lahanayı ekleyin.",
+        "Suyu ekleyip lahana yumuşayana kadar 15 dakika pişirin. Tuzla tatlandırın.",
+      ],
+    },
+    "tr_pirasacorbasi": {
+      name: "Pırasa çorbası",
+      ings: [["Pırasa", "200 g"], ["Havuç", "30 g"], ["Yoğurt", "60 g"]],
+      seas: "700 ml sebze suyu · 1 yemek kaşığı zeytinyağı · Tuz · Karabiber",
+      steps: [
+        "Pırasayı ince doğrayın, havucu küp küp kesin.",
+        "Zeytinyağında 5 dakika kavurun, suyu ekleyip 15 dakika pişirin.",
+        "Hafifçe blenderdan geçirin ya da parçalı bırakın, tatlandırın ve isterseniz bir kaşık yoğurtla servis edin.",
+      ],
+    },
+    "tr_ispanakkavurma": {
+      name: "Ispanak kavurma",
+      ings: [["Ispanak", "350 g"], ["Soğan", "50 g"], ["Sarımsaklı yoğurt", "80 g"]],
+      seas: "1 yemek kaşığı zeytinyağı · 1/2 çay kaşığı pul biber · Tuz",
+      steps: [
+        "Ispanağı yıkayıp iri doğrayın. Soğanı piyazlık doğrayın.",
+        "Soğanı zeytinyağında yumuşayana kadar kavurun, pul biberi ve ıspanağı ekleyip sönene kadar karıştırın.",
+        "Tuzla tatlandırın, isterseniz sarımsaklı yoğurtla servis edin.",
+      ],
+    },
+    "tr_mantarsote": {
+      name: "Mantar sote",
+      ings: [["Mantar", "300 g"], ["Sivri biber", "1"], ["Domates", "1"]],
+      seas: "1 yemek kaşığı tereyağı · 1 diş sarımsak · 1/2 çay kaşığı kekik · Tuz · Karabiber",
+      steps: [
+        "Mantarları dilimleyin; biberi, domatesi ve sarımsağı doğrayın.",
+        "Mantarları tereyağında yüksek ateşte suyunu çekene kadar soteleyin.",
+        "Biber, sarımsak ve domatesi ekleyip 3 dakika pişirin, kekik, tuz ve karabiberle tatlandırın.",
+      ],
+    },
+    "tr_pirinc_lapasi": {
+      name: "Pirinç lapası",
+      ings: [["Pirinç (baldo veya osmancık)", "100 g"], ["Sade yoğurt, yanına", "4 yemek kaşığı"]],
+      seas: "1 litre su · 1/2 tatlı kaşığı tuz · 1 tatlı kaşığı tereyağı",
+      steps: [
+        "Pirinci yıkayıp suyla birlikte tencereye koyun.",
+        "Kaynayınca kısık ateşte 25-30 dakika, ara ara karıştırarak, pirinç iyice yumuşayıp lapa kıvamına gelene kadar pişirin. Çok koyulaşırsa biraz sıcak su ekleyin.",
+        "Tuzu ve tereyağını karıştırın; yanında yoğurtla sıcak servis edin.",
+      ],
+    },
+    "tr_yulaf_lapasi": {
+      name: "Yulaf lapası",
+      ings: [["Yulaf ezmesi", "80 g"], ["Süt", "400 ml"]],
+      seas: "Bir tutam tuz · 1 tatlı kaşığı bal (isteğe bağlı) · Bir tutam tarçın",
+      steps: [
+        "Sütü tuzla birlikte kaynatın.",
+        "Yulafı ekleyip kısık ateşte 5 dakika, karıştırarak kremamsı olana kadar pişirin.",
+        "Biraz bal ve tarçınla sıcak servis edin.",
+      ],
+    },
+    "tr_irmik_lapasi": {
+      name: "Sütlü irmik lapası",
+      ings: [["İrmik", "60 g"], ["Süt", "500 ml"]],
+      seas: "1 yemek kaşığı şeker · Bir tutam tuz · 1 tatlı kaşığı tereyağı",
+      steps: [
+        "Sütü şeker ve tuzla kaynatın.",
+        "İrmiği çırparak yavaş yavaş ekleyin ve ateşi kısın.",
+        "3-4 dakika karıştırarak koyulaşana kadar pişirin. Tereyağını ekleyip sıcak servis edin.",
+      ],
+    },
+    "tr_bezelyecorbasi": {
+      name: "Bezelye çorbası",
+      ings: [["Dondurulmuş bezelye", "300 g"], ["Soğan", "1/2"], ["Süt", "100 ml"]],
+      seas: "500 ml sebze ya da tavuk suyu · 1 yemek kaşığı tereyağı · Tuz · Karabiber",
+      steps: [
+        "Soğanı doğrayıp tereyağında 2 dakika kavurun. Bezelyeyi ve suyu ekleyip 5 dakika pişirin.",
+        "Sütü ekleyip pürüzsüz olana kadar blenderdan geçirin (sıcak, dikkat). Tuz ve karabiberle tatlandırın.",
+      ],
+      tip: { add: "Birkaç damla limon suyu", why: "Tatlı bezelyeye canlılık katar", skill: "Hemen blenderdan geçirin", how: "Hemen çekilen çorba yeşil rengini korur." },
+    },
+    "tr_ayranasi": {
+      name: "Soğuk ayran aşı",
+      ings: [["Yoğurt", "300 g"], ["Haşlanmış nohut (konserve, süzülmüş)", "1/2 kutu (120 g)"], ["Salatalık", "1"], ["Kuru nane", "1 tatlı kaşığı"]],
+      seas: "300 ml soğuk su · Tuz · Kıyılmış dereotu ya da maydanoz",
+      steps: [
+        "Yoğurdu soğuk su ve bir tutam tuzla pürüzsüz olana kadar çırpın.",
+        "Nohudu, küp doğranmış salatalığı, kuru naneyi ve dereotunu ekleyip karıştırın. Soğuk servis edin.",
+      ],
+      tip: { add: "Birkaç buz küpü", why: "Sıcak günlerde daha da ferahlatır", skill: "İyice çırpın", how: "Pürüzsüz yoğurt suyla eşit karışır, topak olmaz." },
+    },
+    "tr_rendedomates": {
+      name: "Rendelenmiş domates çorbası",
+      ings: [["Olgun domates, rendelenmiş", "3"], ["Rendelenmiş kaşar", "2 yemek kaşığı"]],
+      seas: "1 yemek kaşığı tereyağı · 1 yemek kaşığı un · 1 tatlı kaşığı domates salçası · 500 ml su ya da et suyu · Tuz · Karabiber",
+      steps: [
+        "Tereyağını eritip unu 1 dakika kavurun, salçayı ekleyin. Rendelenmiş domatesleri katıp 2 dakika çevirin.",
+        "Suyu çırparak ekleyin ve karıştırarak 5 dakika kaynatın. Tatlandırıp üzerine kaşar rendeleyerek servis edin.",
+      ],
+      tip: { add: "Kızarmış ekmek küpleri", why: "Klasik servis şekli", skill: "Suyu çırparak ekleyin", how: "Yavaş yavaş çırparak eklemek unun topaklanmasını önler." },
+    },
+    "tr_yesilsalata": {
+      name: "Yeşil salata",
+      ings: [["Marul", "1/2"], ["Roka", "1 avuç"], ["Taze soğan", "2"], ["Limon", "1/2"]],
+      seas: "2 yemek kaşığı zeytinyağı · Tuz · Bir tutam sumak (isteğe bağlı)",
+      steps: [
+        "Marulu yıkayıp ince doğrayın, rokayı koparın, taze soğanı doğrayın.",
+        "Servisten hemen önce limon suyu, zeytinyağı, tuz ve sumakla karıştırın.",
+      ],
+      tip: { add: "Birkaç nar tanesi", why: "Ekşi-tatlı bir çıtırlık", skill: "Yaprakları iyi kurulayın", how: "Kuru yapraklar sosu tutar, ıslaklar sulandırır." },
+    },
+    "tr_haydari": {
+      name: "Haydari",
+      ings: [["Süzme yoğurt", "250 g"], ["Ezilmiş beyaz peynir", "50 g"], ["Kuru nane", "1 tatlı kaşığı"], ["Dereotu", "birkaç dal"]],
+      seas: "1 diş sarımsak · 1 yemek kaşığı zeytinyağı · Tuz",
+      steps: [
+        "Yoğurdu ezilmiş sarımsak, ufalanmış peynir, kıyılmış dereotu, naneyi yarısı ve bir tutam tuzla karıştırın.",
+        "Bir tabağa yayın, zeytinyağı gezdirin ve kalan naneyi serpin.",
+      ],
+      tip: { add: "Sıcak ekmek ya da kraker", why: "Banmak için", skill: "Süzme yoğurt kullanın", how: "Süzme yoğurtla haydari kremamsı kalır, sulanmaz." },
+    },
+    'tr_kiymaliyumurta': {
+      name: 'Kıymalı yumurta',
+      ings: [['Dana kıyma', '200 g'], ['Yumurta', '4'], ['Soğan', '1'], ['Sivri biber', '2'], ['Domates', '1'], ['Ekmek, yanına', '4 dilim']],
+      seas: '1 yemek kaşığı sıvı yağ · 1 çay kaşığı pul biber · 1/2 çay kaşığı kimyon · Tuz · Karabiber',
+      steps: [
+        'Soğanı, biberleri ve domatesi ince ince doğrayın.',
+        'Yağı tavada yüksek ateşte kızdırın, kıymayı soğanla 4 dakika kavurun. Biberi, domatesi, kimyonu ve pul biberi ekleyip 2 dakika pişirin.',
+        'Dört çukur açıp her birine bir yumurta kırın, tuzlayın, kapağını kapatıp kısık ateşte 3 dakika, beyazları pişene kadar pişirin. Tavada, ekmekle servis edin.',
+      ],
+      tip: { add: 'Üstüne bir kaşık sarımsaklı yoğurt', why: 'Baharata serin ve ekşimsi bir denge', skill: 'Kapak kapalı, kısık ateş', how: 'Kapağın buharı beyazları pişirir, sarılar yumuşak kalır.' },
+    },
+    'tr_karidessote': {
+      name: 'Tereyağlı karides sote',
+      ings: [['Ayıklanmış çiğ karides', '300 g'], ['Sivri biber', '2'], ['Domates', '1'], ['Limon', '1/2'], ['Ekmek, yanına', '4 dilim']],
+      seas: '20 g tereyağı · 1 yemek kaşığı zeytinyağı · 3 diş sarımsak · 1 çay kaşığı pul biber · Tuz',
+      steps: [
+        'Biberleri ve sarımsağı dilimleyin, domatesi küp doğrayın.',
+        'Tereyağı ve zeytinyağını tavada yüksek ateşte ısıtın, biberleri 2 dakika soteleyin. Karidesi ve sarımsağı ekleyip 2-3 dakika, karidesler pembeleşip iyice pişene kadar soteleyin.',
+        'Domatesi ve pul biberi ekleyip 1 dakika daha pişirin. Tuzlayın, limon sıkın ve ekmekle servis edin.',
+      ],
+      tip: { add: 'Sonunda üstüne biraz rendelenmiş kaşar', why: 'Balıkçılardaki güveç gibi olur', skill: 'Karides en son', how: 'Önce biberleri pişirin; karidese birkaç dakika yeter, fazlası sertleştirir.' },
+    },
+    'tr_mantarliomlet': {
+      name: 'Kaşarlı mantarlı omlet',
+      ings: [['Yumurta', '5'], ['Mantar', '150 g'], ['Rendelenmiş kaşar', '60 g'], ['Maydanoz', 'birkaç dal'], ['Domates, yanına', '2']],
+      seas: '15 g tereyağı · Tuz · Karabiber · Pul biber',
+      steps: [
+        'Mantarları dilimleyin ve tavada tereyağında orta-yüksek ateşte 3 dakika, kızarana kadar soteleyin.',
+        'Bir tutam tuzla çırptığınız yumurtaları mantarların üzerine dökün ve orta ateşte 2 dakika, neredeyse pişene kadar pişirin.',
+        'Üzerine kaşarı ve maydanozu serpin, ikiye katlayın ve peynir eriyene kadar 1 dakika daha pişirin. Domatesle servis edin.',
+      ],
+      tip: { add: 'Mantarla birlikte birkaç dilim sucuk', why: 'Daha baharatlı, doyurucu bir omlet', skill: 'Orta ateş', how: 'Ateş çok yüksek olursa üstü pişmeden altı yanar; orta ateşte yumuşak kalır.' },
+    },
+    'tr_baliktava': {
+      name: 'Tavada balık fileto, roka ve soğanla',
+      ings: [['Balık fileto (levrek veya çipura)', '2 (300 g)'], ['Roka', '1 demet'], ['Kırmızı soğan', '1/2'], ['Limon', '1']],
+      seas: '2 yemek kaşığı un · 2 yemek kaşığı zeytinyağı · 1 çay kaşığı sumak · Tuz',
+      steps: [
+        'Soğanı ince dilimleyip sumak ve bir tutam tuzla karıştırın. Rokayı yıkayın.',
+        'Balığı kurulayın, tuzlayıp una bulayın. Tavada zeytinyağında orta-yüksek ateşte önce derisi altta 3 dakika, sonra diğer tarafı 2 dakika, lif lif ayrılana kadar pişirin.',
+        'Rokanın üzerinde, soğan ve bol limonla servis edin.',
+      ],
+      tip: { add: 'Sosunu sıyırmak için bir dilim ekmek', why: 'Deniz kenarında böyle yenir', skill: 'Önce deri tarafı', how: 'Pişirmenin çoğu deri tarafında olursa deri çıtır, eti sulu kalır.' },
+    },
+    'tr_pirzola': {
+      name: 'Tavada kuzu pirzola, domates ve biberle',
+      ings: [['Kuzu pirzola', '6 (450 g)'], ['Domates', '2'], ['Sivri biber', '3'], ['Soğan', '1/2'], ['Ekmek, yanına', '4 dilim']],
+      seas: '1 yemek kaşığı sıvı yağ · 1/2 çay kaşığı kekik · 1 çay kaşığı pul biber · Tuz · Karabiber',
+      steps: [
+        'Pirzolaları tuz, karabiber ve kekikle tatlandırın. Domatesleri ikiye kesin, soğanı dilimleyin.',
+        'Geniş bir tavada yağı yüksek ateşte kızdırın ve pirzolaları her yüzünü 2-3 dakika pişirip tabağa alın.',
+        'Aynı tavada biberleri ve domatesleri 3 dakika, kabukları kabarana kadar pişirin; pirzola, soğan ve pul biberle servis edin.',
+      ],
+      tip: { add: 'Soğanın üzerine bir tutam sumak', why: 'Kuzuya ekşi ve ferah bir tat', skill: 'Tava iyice kızsın', how: 'Çok sıcak tava pirzolayı hızla kızartır, içi pembe ve sulu kalır.' },
+    },
     'tr_kurufasulye': {
       name: 'Kuru fasulye',
       ings: [['Kuru fasulye', '250 g'], ['Soğan', '1 adet'], ['Salça', '2 yemek kaşığı'], ['Sivri biber', '2 adet']],
@@ -73,7 +273,7 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Biberleri (ve soğanı) doğrayın ve tercihen küçük bir bakır veya demir tavada tereyağında 4-5 dakika yumuşatın.',
         'Domatesleri rendeleyin veya ince doğrayın, ekleyin ve suyu çekilip koyu bir sos kıvamına gelene kadar 6-8 dakika pişirin.',
         'Tuz ve baharatı ekleyin, yumurtaları kırın ve yumuşak parçalar halinde pişmeleri için birkaç kez hafifçe karıştırın (isterseniz sarıları bütün bırakın).',
-        'Hâlâ hafif akışkanken ocaktan alın, beyaz peyniri ve pul biberi üstüne ufalayın. Doğrudan tavadan ekmekle yiyin.'
+        'Hâlâ hafif akışkanken ocaktan alın, beyaz peyniri ve pul biberi üstüne ufalayın. Doğrudan tavadan ekmekle yiyin. Küçük çocuklar ve hamileler için yumurtalar tamamen pişene kadar pişirin.'
       ],
       tip: { add: 'Ufalanmış beyaz peynir', why: 'Tatlı domatese karşı tuzlu ve kremsi', skill: 'Önce domatesleri kısıp suyunu çekin', how: 'Sulu domates menemeni çorbaya çevirir; yumurtaları koymadan önce domatesleri iyice pişirin.' }
     },
@@ -527,8 +727,8 @@ GOHAN_PACK_TR('TR', 'tr', {
     },
     'tr_firintavuk': {
       name: 'Fırında patatesli tavuk',
-      ings: [['Kemikli tavuk but veya baget', '1 kg'], ['Patates', '4 adet'], ['Soğan', '1 adet'], ['Salça', '1 yemek kaşığı'], ['Yeşil biber', '2 adet'], ['Havuç', '1 adet']],
-      seas: 'Tuz · Karabiber · 1 çay kaşığı pul biber · 1 çay kaşığı toz kırmızı biber · 1 çay kaşığı kekik · 4 yemek kaşığı zeytinyağı · 200 ml sıcak su',
+      ings: [['Kemikli tavuk but veya baget', '600 g'], ['Patates', '3 adet'], ['Soğan', '1 adet'], ['Salça', '1 yemek kaşığı'], ['Yeşil biber', '2 adet'], ['Havuç', '1 adet']],
+      seas: 'Tuz · Karabiber · 1 çay kaşığı pul biber · 1 çay kaşığı toz kırmızı biber · 1 çay kaşığı kekik · 3 yemek kaşığı zeytinyağı · 150 ml sıcak su',
       steps: [
         'Salçayı, yağı, baharatları, tuzu ve karabiberi karıştırıp sos yapın; yarısını tavuğa iyice sürün.',
         'Patatesleri (ve havucu) elma dilimi, soğanı (ve biberleri) iri parça doğrayın. Kalan sosla fırın tepsisinde harmanlayın.',
@@ -614,7 +814,7 @@ GOHAN_PACK_TR('TR', 'tr', {
       ings: [['Yumurta', '4 adet'], ['Süzme yoğurt', '300 g'], ['Dereotu', 'birkaç dal']],
       seas: 'Tuz · 1 diş sarımsak · 2 yemek kaşığı tereyağı · 1 çay kaşığı pul biber · Haşlama suyu için 1 yemek kaşığı sirke',
       steps: [
-        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp iki tabağa yayın. Oda sıcaklığında olmalı.',
+        'Yoğurdu ezilmiş sarımsak ve biraz tuzla karıştırıp servis tabaklarına yayın. Oda sıcaklığında olmalı.',
         'Geniş bir tencerede sirkeli suyu hafifçe kaynatın. Yumurtaları tek tek bir fincana kırıp suya kaydırın; beyazı pişene kadar 3-4 dakika (sarısı katı olsun isterseniz 5 dakika) haşlayın.',
         'Yumurtaları kevgirle alın, suyunu süzdürüp yoğurdun üstüne koyun.',
         'Pul biberi tereyağında birkaç saniye cızdırıp üzerine gezdirin. Dereotu serpip ekmekle servis edin.'
@@ -927,6 +1127,134 @@ GOHAN_PACK_TR('TR', 'tr', {
         'Yağı kırmızı biber ve pul biberle birkaç saniye ısıtıp üzerine gezdirin. Oda sıcaklığında servis edin.'
       ],
       tip: { add: 'Taze ceviz', why: 'Eski ceviz sosa acılık verir', skill: 'Tavuğu kendi suyunda soğutun', how: 'Böylece nemli kalır ve ince, yumuşak lifler halinde didiklenir.' }
-    }
+    },
+    tr_nohutlu_pilav: {
+      name: 'Nohutlu pilav',
+      ings: [
+        ['Pirinç', '200 g'],
+        ['Haşlanmış nohut', '1 kutu (400 g)'],
+        ['Soğan', '1'],
+        ['Maydanoz', '1/2 demet'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı salça · 400 ml sıcak su',
+      steps: [
+        'Pirinci ılık suda suyu berraklaşana kadar yıkayın, 15 dakika bekletin ve süzün.',
+        'İncecik doğranmış soğanı yağda 5 dakika kavurun, salçayı ekleyin, sonra pirinci ekleyip 3 dakika kavurun.',
+        'Süzülmüş nohudu, tuzu, karabiberi ve sıcak suyu ekleyin. Kapağını kapatıp kısık ateşte 15 dakika pişirin, 10 dakika demlendirin ve çatalla karıştırın. Üzerine maydanoz serpin.',
+      ],
+    },
+    tr_imam_bayildi: {
+      name: 'İmam bayıldı',
+      ings: [
+        ['Patlıcan', '3'],
+        ['Soğan', '2'],
+        ['Domates', '3'],
+        ['Yeşil biber', '2'],
+        ['Maydanoz', '1/2 demet'],
+      ],
+      seas: 'Tuz · 5 yemek kaşığı zeytinyağı · 3 diş sarımsak · 1 çay kaşığı şeker · 1/2 limon suyu · 100 ml su',
+      steps: [
+        'Patlıcanları alaca soyun, boyuna ortadan kesmeden yarın, tuzlayıp 15 dakika bekletin. Yıkayıp kurulayın ve 2 yemek kaşığı yağda yumuşayana kadar kızartın.',
+        'Yarım ay doğranmış soğan, biber ve sarımsağı 2 yemek kaşığı yağda 10 dakika kavurun, doğranmış domates, şeker, maydanoz ve tuzu ekleyip 5 dakika pişirin.',
+        'Karışımı patlıcanların yarığına doldurun, bir tencereye dizin, suyu, kalan yağı ve limon suyunu ekleyin, kapağını kapatıp kısık ateşte 30 dakika pişirin. Ilık ya da soğuk servis edin.',
+      ],
+    },
+    tr_domatesli_bulgur: {
+      name: 'Domatesli bulgur pilavı',
+      ings: [
+        ['İri bulgur', '200 g'],
+        ['Salça', '1 yemek kaşığı'],
+        ['Soğan', '1'],
+        ['Yeşil biber', '2'],
+        ['Domates', '2'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı pul biber · 400 ml sıcak su',
+      steps: [
+        'İnce doğranmış soğan ve biberi yağda 6 dakika kavurun. Salça ve pul biberi ekleyip 1 dakika, rendelenmiş domatesi ekleyip 3 dakika pişirin.',
+        'Bulguru ekleyip 1 dakika kavurun. Sıcak suyu ve tuzu ekleyin.',
+        'Kapağını kapatıp kısık ateşte 12 dakika pişirin, 10 dakika demlendirin ve çatalla karıştırın. Salatayla servis edin.',
+      ],
+    },
+    tr_mercimek_corbasi_v: {
+      name: 'Zeytinyağlı mercimek çorbası',
+      ings: [
+        ['Kırmızı mercimek', '150 g'],
+        ['Soğan', '1'],
+        ['Havuç', '1'],
+        ['Patates', '1'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı kimyon · 1 çay kaşığı toz kırmızı biber · 1 litre su · Limon dilimleri',
+      steps: [
+        'Doğranmış soğan, havuç ve patatesi 2 yemek kaşığı yağda 5 dakika kavurun.',
+        'Yıkanmış mercimeği ve suyu ekleyin, hepsi yumuşayana kadar 20 dakika pişirin.',
+        'Pürüzsüz olana kadar blenderdan geçirin, tuz, karabiber ve kimyonla tatlandırın. Kalan yağı kırmızı biberle ısıtıp çorbanın üzerine gezdirin ve limonla servis edin.',
+      ],
+    },
+    tr_ezogelin_v: {
+      name: 'Ezogelin çorbası',
+      ings: [
+        ['Kırmızı mercimek', '100 g'],
+        ['İnce bulgur', '2 yemek kaşığı'],
+        ['Soğan', '1'],
+        ['Salça', '1 yemek kaşığı'],
+        ['Kuru nane', '1 çay kaşığı'],
+      ],
+      seas: 'Tuz · karabiber · 3 yemek kaşığı zeytinyağı · 1 çay kaşığı pul biber · 1 litre su',
+      steps: [
+        'Doğranmış soğanı 2 yemek kaşığı yağda 5 dakika kavurun. Salçayı ve pul biberin yarısını ekleyip 1 dakika karıştırın.',
+        'Yıkanmış mercimeği, bulguru ve suyu ekleyin, ara sıra karıştırarak 25 dakika, çorba koyulaşana kadar pişirin.',
+        'Tuz ve karabiberle tatlandırın. Kalan yağı nane ve kalan pul biberle ısıtıp çorbanın üzerine gezdirerek servis edin.',
+      ],
+    },
+    'tr_kahvalti_sebze': {
+      name: 'Domates, salatalık ve zeytin tabağı',
+      ings: [['Domates', '2'], ['Salatalık', '1'], ['Siyah ve yeşil zeytin', '10 adet'], ['Taze nane', 'birkaç yaprak?']],
+      seas: '1 yemek kaşığı zeytinyağı · bir tutam tuz',
+      steps: [
+        'Domatesleri ve salatalığı dilimleyin.',
+        'Zeytinlerle birlikte bir tabağa dizin.',
+        'Zeytinyağını gezdirin, tuz serpin ve nane yapraklarını ekleyin.',
+      ],
+    },
+    "tr_kabaksinkonta": {
+      name: "Kabak sinkonta",
+      ings: [["Kabak", "3 (600 g)"], ["Soğan", "1/2"], ["Domates", "2"], ["Sivri biber", "2"], ["Doğranmış dereotu", "1 yemek kaşığı"]],
+      seas: "4 yemek kaşığı zeytinyağı · 1 tatlı kaşığı tuz · 1/2 tatlı kaşığı şeker · 100 ml su",
+      steps: [
+        "Kabakları iri doğrayın, soğanı yarım ay, biberleri halka doğrayın, domatesleri rendeleyin.",
+        "Geniş bir tencerede soğan ve biberleri zeytinyağında 5 dakika kavurun. Kabak, domates, tuz, şeker ve suyu ekleyin.",
+        "Kapağını kapatıp kısık ateşte kabaklar yumuşayana kadar 20 dakika pişirin. Dereotu serpip ılık ya da oda sıcaklığında servis edin.",
+      ],
+    },
+    "tr_etsizmusakka": {
+      name: "Etsiz patlıcan musakka",
+      ings: [["Patlıcan", "3 (700 g)"], ["Sivri biber", "3"], ["Domates", "3"], ["Soğan", "1/2"], ["Domates salçası", "1 yemek kaşığı"]],
+      seas: "5 yemek kaşığı zeytinyağı · 2 diş sarımsak · 200 ml sıcak su · Tuz · Karabiber",
+      steps: [
+        "Fırını 200°C’ye ısıtın. Patlıcanları kalın halkalar halinde kesin, 3 yemek kaşığı yağ sürüp fırın tepsisinde 20 dakika pişirin.",
+        "Soğan, sarımsak ve biberleri kalan yağda tavada 5 dakika kavurun, doğranmış domates, salça ve sıcak suyu ekleyip 5 dakika pişirin. Tuz ve biberle tatlandırın.",
+        "Patlıcanları ve sosu bir fırın kabına sıra sıra dizip 20 dakika fırında pişirin.",
+      ],
+    },
+    "tr_peynirlikarnabahar": {
+      name: "Fırında yumurtalı peynirli karnabahar",
+      ings: [["Karnabahar", "1 (700 g)"], ["Yumurta", "2"], ["Yoğurt", "150 g"], ["Rendelenmiş kaşar", "80 g"]],
+      seas: "2 yemek kaşığı zeytinyağı · 1 tatlı kaşığı toz kırmızı biber · Tuz · Karabiber",
+      steps: [
+        "Fırını 200°C’ye ısıtın. Karnabaharı çiçeklerine ayırıp bir tencerede tuzlu suda 6 dakika haşlayın. Süzüp yağlanmış fırın kabına koyun.",
+        "Yumurtaları yoğurt, peynirin yarısı, tuz ve karabiberle çırpıp üzerine dökün.",
+        "Kalan peyniri ve toz biberi serpip üzeri kızarana kadar 20 dakika pişirin.",
+      ],
+    },
+    "tr_yumurtalipazi": {
+      name: "Yumurtalı pazı kavurması",
+      ings: [["Pazı", "500 g"], ["Soğan", "1/2"], ["Yumurta", "4"]],
+      seas: "3 yemek kaşığı zeytinyağı ya da tereyağı · 1/2 tatlı kaşığı pul biber · Tuz",
+      steps: [
+        "Pazıları yıkayıp doğrayın, soğanı ince doğrayın.",
+        "Soğanı tavada yağda 4 dakika kavurun, pazı ve pul biberi ekleyip yumuşayıp suyunu çekene kadar 6–8 dakika pişirin. Tuzlayın.",
+        "Dört çukur açıp yumurtaları kırın, kapağını kapatıp 4–5 dakika pişirin.",
+      ],
+    },
   }
 });

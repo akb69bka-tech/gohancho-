@@ -71,16 +71,16 @@ Web 版（`gohancho/index.html`）を直したら、`npm run sync` でアプリ�
 
 | 項目 | 今の値 | 販売時 |
 | --- | --- | --- |
-| `billingMode` | `'native'`（Web 版は全機能無料。iPhone アプリ版は API キーを入れると課金が有効） | そのまま |
-| `prices` / `loyalty` | 月額 380円。年額 3,500円は1年つづいた会員にだけ表示（iPhone アプリ版では App Store の実際の価格を自動で表示） | App Store Connect の価格に合わせる |
-| `trialMode` | `'store'`（App Store のお試しオファー「1か月無料」に合わせる。2か月目から月額） | そのまま |
-| `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲 |
+| `billingMode` | `'off'`（全員無料。オーナー決定: 課金は App Store に出してオーナーが App Store Connect で価格を設定するまで始めない） | 課金を始めるときに `'native'`（iPhone アプリ版だけ。API キーを入れると有効。Web 版は無料のまま） |
+| `prices` | 月額 300円・年額 3,000円（オーナー決定 2026-10-31。年額は最初から誰でも選べる。「月額の12か月分（3,600円）より600円お得」と表示）。iPhone アプリ版では App Store の実際の価格と、その価格で計算したお得を自動で表示 | App Store Connect の価格に合わせる |
+| `trialMode` | `'store'`（App Store のお試しオファー「1か月無料」に合わせる。月額・年額の両方に付ける。お試しはグループで1人1回） | そのまま |
+| `freeLimits` | 献立プランは今日の1日分（`PLAN_WEEK_FREE`）・買い足し提案1件・品数4まで・ひとひねり1日3回・写真12枚 | 無料版の範囲（`freeTier: true` のときだけ有効。既定の false では、お試し後の未購入はすべてロックで無料版なし） |
 | （コード内） | ひと手間の「やってみた」記録はプラスのみ | |
 | `earlySupporterBefore` | 空 | 例: `'2027-04-01'` にすると、その日より前から使っている人はずっと無料（初期ユーザーへのお礼） |
 | `revenueCatApiKey` | 空 | RevenueCat の公開 API キー |
 
 手順:
-1. App Store Connect →「サブスクリプション」で、`gohancho_plus_yearly` と `gohancho_plus_monthly` を作る（ID は `PLAN.prices` と同じにする）
+1. App Store Connect →「サブスクリプション」で、`gohancho_plus_monthly`（300円）と `gohancho_plus_yearly`（3,000円）を作り、両方に1か月無料のお試しオファーを付ける（ID は `PLAN.prices` と同じにする。手順は `申請の完全ガイド.md` の 4-3）
 2. **RevenueCat**（https://www.revenuecat.com/）に登録し、アプリと商品をつなぐ。Entitlement 名を `plus` にする
    - RevenueCat は購入の確認（レシートの検証）を代わりにやってくれるサービスです。一定の売上までは無料で使えます（条件は公式で確認）
 3. `npm install @revenuecat/purchases-capacitor` → `npx cap sync ios`

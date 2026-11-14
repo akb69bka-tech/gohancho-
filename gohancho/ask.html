@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<title>何が食べたい？</title>
+<style>
+/* ご飯帖「何が食べたい？」— 家族がアプリなしで答える1枚のページ。どこにも通信しない（返事は本人が選んだアプリで送る） */
+:root{
+  --bg:#fbf5ec; --card:#fffaf2; --ink:#3a2c22; --sub:#7a6556; --line:#e7d8c4;
+  --acc:#b8532f; --acc-ink:#fff8f0; --acc-soft:#f6e1d3; --gold:#d99a2b; --gold-soft:#f8ebcc;
+  --err:#9d3a2a; --shadow:0 1px 2px rgba(80,50,20,.10), 0 2px 8px rgba(80,50,20,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1d1712; --card:#2a211a; --ink:#f3e7d8; --sub:#c2ab95; --line:#47392c;
+    --acc:#e2825c; --acc-ink:#24170f; --acc-soft:#4a2e20; --gold:#e8b75a; --gold-soft:#3f321c;
+    --err:#f0a08d; --shadow:none; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP","Noto Sans",sans-serif;overflow-wrap:anywhere}
+main{max-width:520px;margin:0 auto;padding:20px 16px calc(32px + env(safe-area-inset-bottom))}
+h1{font-size:24px;line-height:1.3;margin:4px 0 4px}
+.from{display:flex;align-items:center;gap:10px;color:var(--sub);font-size:15px}
+.av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold-soft);color:var(--ink);display:grid;place-items:center;font-weight:700}
+.hint{color:var(--sub);font-size:15px;margin:6px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:259px){ .grid{grid-template-columns:minmax(0,1fr)} main{padding-left:10px;padding-right:10px} h1{font-size:21px} }
+.dish{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:96px;width:100%;padding:10px 8px;border:3px solid transparent;border-radius:16px;background:var(--card);color:var(--ink);box-shadow:var(--shadow);font:inherit;font-weight:600;font-size:15px;line-height:1.3;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dish img,.dish .ph{width:64px;height:64px;border-radius:50%;object-fit:cover;background:var(--gold-soft)}
+.dish .ph{display:grid;place-items:center;font-size:24px;color:var(--sub)}
+.dish .nm{display:block;max-width:100%;overflow-wrap:anywhere}
+.dish .alg{display:block;max-width:100%;font-size:13px;font-weight:700;color:var(--err);overflow-wrap:anywhere}
+.dish .alg.chk{color:var(--sub);font-weight:600}
+.dish.alg{box-shadow:var(--shadow),inset 0 0 0 1.5px var(--err)}
+.dish[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft)}
+.dish[aria-pressed="true"]::after{content:"✓";position:absolute;top:6px;inset-inline-end:8px;width:24px;height:24px;border-radius:50%;background:var(--acc);color:var(--acc-ink);font-size:15px;line-height:24px}
+.any{margin-top:10px;min-height:56px;flex-direction:row}
+.sub{font-size:15px;font-weight:700;margin:18px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:48px;padding:8px 16px;border:2px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);font-weight:700}
+label.nm-l{display:block;font-size:15px;font-weight:700;margin:18px 0 6px}
+input[type=text]{width:100%;min-height:48px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit}
+.reply{margin-top:22px;padding:14px;border-radius:16px;background:var(--card);border:2px solid var(--acc);box-shadow:var(--shadow)}
+.reply[hidden]{display:none}
+.reply h2{font-size:18px;margin:0 0 8px}
+.txt{width:100%;min-height:96px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;resize:vertical;user-select:all;-webkit-user-select:all}
+.acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+@media (max-width:259px){ .acts{grid-template-columns:minmax(0,1fr)} }
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:8px 10px;border:2px solid var(--acc);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;font-size:15px;text-decoration:none;text-align:center;cursor:pointer}
+.btn.main{grid-column:1/-1;background:var(--acc);color:var(--acc-ink)}
+.btn.line{border-color:#3f8a3a}
+.st{min-height:1.5em;margin:8px 0 0;font-size:14px;color:var(--sub)}
+.note{margin-top:22px;font-size:13px;color:var(--sub)}
+.bad{margin-top:24px;padding:16px;border-radius:16px;background:var(--card);border:2px solid var(--err);color:var(--ink)}
+.bad b{color:var(--err)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<noscript><p style="padding:16px">JavaScript</p></noscript>
+<script>
+(() => {
+'use strict';
+// アプリ（index.html）と同じ決まり: リンクの中身は #g= のうしろ。返事はアプリの「食べたい」のリンク（k:'w'）
+const DOC_BASE = 'https://akb69bka-tech.github.io/gohancho-/';
+const TEXT_MAX = 4000, CODE_MAX = 3000, DISH_MAX = 8, NAME_MAX = 40, PICK_MAX = 3;
+const ID_RE = /^[A-Za-z0-9_-]{1,40}$/, IMG_RE = /^img\/[a-z0-9_\/-]+\.(webp|jpg|png|svg)$/;
+const CTRL_RE = /[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u2069\ufeff<>]/g;
+const clean = (s, max) => [...String(s == null ? '' : s).replace(CTRL_RE, '').trim()].slice(0, max).join('');
+// 画面の言葉（少なく・短く）。{name} {list} は置き換え
+const L = {
+  'ja': {chk:'袋の表示を確認', alg:'アレルギーに注意', ask:'何が食べたい？', from:'{name}さんから', hint:'食べたいものを押してね（3つまで）', any:'なんでもいい', word:'ひとこと（なくても可）', w:['いつでも','週末でいい','急がない'], me:'あなたの名前（なくても可）', send:'この返事を送ってね', share:'送る', mail:'メール', copy:'コピー', copied:'コピーしました', rWish:'食べたい: {list}', rAny:'なんでもいいよ', open:'ご飯帖で開く', bad:'このリンクは読めませんでした。送った人に、もう一度送ってもらってください。', priv:'この画面からは何も送られません。返事は、あなたが選んだアプリで送ります。', subj:'食べたいもの', sep:'・'},
+  'en': {chk:'Check the label', alg:'Allergy warning', ask:'What do you want to eat?', from:'From {name}', hint:'Tap what you want (up to 3)', any:'Anything is fine', word:'A note (optional)', w:['Anytime','Weekend is fine','No rush'], me:'Your name (optional)', send:'Send this reply', share:'Send', mail:'Email', copy:'Copy', copied:'Copied', rWish:'I want: {list}', rAny:'Anything is fine', open:'Open in Gohancho', bad:'This link could not be read. Please ask the sender to send it again.', priv:'This page sends nothing. You send the reply with the app you choose.', subj:'What I want to eat', sep:', '},
+  'ko': {chk:'포장 표시 확인', alg:'알레르기 주의', ask:'뭐 먹고 싶어?', from:'{name}님이', hint:'먹고 싶은 것을 눌러 줘 (3개까지)', any:'아무거나 좋아', word:'한마디 (선택)', w:['언제든지','주말도 괜찮아','급하지 않아'], me:'내 이름 (선택)', send:'이 답장을 보내 줘', share:'보내기', mail:'메일', copy:'복사', copied:'복사했어요', rWish:'먹고 싶어: {list}', rAny:'아무거나 좋아', open:'Gohancho에서 열기', bad:'이 링크를 읽을 수 없어요. 보낸 사람에게 다시 보내 달라고 해 주세요.', priv:'이 화면은 아무것도 보내지 않아요. 답장은 직접 고른 앱으로 보내요.', subj:'먹고 싶은 것', sep:', '},
+  'zh-Hans': {chk:'请查看包装标示', alg:'注意过敏', ask:'想吃什么？', from:'来自{name}', hint:'点一下想吃的（最多3个）', any:'都可以', word:'一句话（可不填）', w:['随时','周末也行','不急'], me:'你的名字（可不填）', send:'把这条回复发出去', share:'发送', mail:'邮件', copy:'复制', copied:'已复制', rWish:'想吃：{list}', rAny:'都可以', open:'在 Gohancho 中打开', bad:'无法读取此链接。请让对方重新发送。', priv:'此页面不会发送任何内容。回复由你选择的应用发送。', subj:'想吃的', sep:'、'},
+  'zh-Hant': {chk:'請查看包裝標示', alg:'注意過敏', ask:'想吃什麼？', from:'來自{name}', hint:'點一下想吃的（最多3個）', any:'都可以', word:'一句話（可不填）', w:['隨時','週末也行','不急'], me:'你的名字（可不填）', send:'把這則回覆傳出去', share:'傳送', mail:'郵件', copy:'複製', copied:'已複製', rWish:'想吃：{list}', rAny:'都可以', open:'在 Gohancho 中開啟', bad:'無法讀取此連結。請對方重新傳送。', priv:'此頁面不會傳送任何內容。回覆由你選擇的應用程式傳送。', subj:'想吃的', sep:'、'},
+  'th': {chk:'ดูฉลากบนบรรจุภัณฑ์', alg:'ระวังภูมิแพ้', ask:'อยากกินอะไร?', from:'จาก {name}', hint:'แตะเมนูที่อยากกิน (สูงสุด 3)', any:'อะไรก็ได้', word:'ข้อความสั้น (ไม่ใส่ก็ได้)', w:['เมื่อไหร่ก็ได้','สุดสัปดาห์ก็ได้','ไม่รีบ'], me:'ชื่อของคุณ (ไม่ใส่ก็ได้)', send:'ส่งคำตอบนี้', share:'ส่ง', mail:'อีเมล', copy:'คัดลอก', copied:'คัดลอกแล้ว', rWish:'อยากกิน: {list}', rAny:'อะไรก็ได้', open:'เปิดใน Gohancho', bad:'อ่านลิงก์นี้ไม่ได้ โปรดขอให้ผู้ส่งส่งมาใหม่', priv:'หน้านี้ไม่ส่งข้อมูลใดๆ คุณส่งคำตอบด้วยแอปที่เลือกเอง', subj:'อยากกิน', sep:', '},
+  'vi': {chk:'Xem nhãn trên bao bì', alg:'Chú ý dị ứng', ask:'Muốn ăn gì?', from:'Từ {name}', hint:'Chạm món muốn ăn (tối đa 3)', any:'Gì cũng được', word:'Lời nhắn (không bắt buộc)', w:['Lúc nào cũng được','Cuối tuần cũng được','Không vội'], me:'Tên bạn (không bắt buộc)', send:'Gửi trả lời này', share:'Gửi', mail:'Email', copy:'Sao chép', copied:'Đã sao chép', rWish:'Muốn ăn: {list}', rAny:'Gì cũng được', open:'Mở bằng Gohancho', bad:'Không đọc được liên kết này. Hãy nhờ người gửi gửi lại.', priv:'Trang này không gửi gì cả. Bạn tự gửi trả lời bằng ứng dụng mình chọn.', subj:'Món muốn ăn', sep:', '},
+  'id': {chk:'Cek label kemasan', alg:'Awas alergi', ask:'Mau makan apa?', from:'Dari {name}', hint:'Ketuk yang ingin dimakan (maks. 3)', any:'Apa saja boleh', word:'Pesan singkat (opsional)', w:['Kapan saja','Akhir pekan juga boleh','Tidak buru-buru'], me:'Namamu (opsional)', send:'Kirim balasan ini', share:'Kirim', mail:'Email', copy:'Salin', copied:'Tersalin', rWish:'Mau: {list}', rAny:'Apa saja boleh', open:'Buka di Gohancho', bad:'Tautan ini tidak bisa dibaca. Minta pengirim mengirim ulang.', priv:'Halaman ini tidak mengirim apa pun. Kamu mengirim balasan dengan aplikasi pilihanmu.', subj:'Yang ingin dimakan', sep:', '},
+  'fil': {chk:'Tingnan ang label', alg:'Mag-ingat sa allergy', ask:'Ano ang gusto mong kainin?', from:'Mula kay {name}', hint:'I-tap ang gusto mo (hanggang 3)', any:'Kahit ano', word:'Maikling mensahe (opsyonal)', w:['Kahit kailan','Sa weekend na lang','Walang madalian'], me:'Pangalan mo (opsyonal)', send:'Ipadala ang sagot na ito', share:'Ipadala', mail:'Email', copy:'Kopyahin', copied:'Nakopya na', rWish:'Gusto ko: {list}', rAny:'Kahit ano', open:'Buksan sa Gohancho', bad:'Hindi mabasa ang link na ito. Pakisabi sa nagpadala na ipadala ulit.', priv:'Walang ipinapadala ang page na ito. Ikaw ang magpapadala ng sagot gamit ang app na pipiliin mo.', subj:'Gustong kainin', sep:', '},
+  'es': {chk:'Revisa la etiqueta', alg:'Atención: alergia', ask:'¿Qué te apetece comer?', from:'De {name}', hint:'Toca lo que quieras (hasta 3)', any:'Cualquier cosa', word:'Una nota (opcional)', w:['Cuando sea','El finde está bien','Sin prisa'], me:'Tu nombre (opcional)', send:'Envía esta respuesta', share:'Enviar', mail:'Correo', copy:'Copiar', copied:'Copiado', rWish:'Me apetece: {list}', rAny:'Cualquier cosa', open:'Abrir en Gohancho', bad:'No se pudo leer este enlace. Pide que te lo envíen otra vez.', priv:'Esta página no envía nada. Tú envías la respuesta con la app que elijas.', subj:'Lo que me apetece', sep:', '},
+  'fr': {chk:'Vérifiez l’étiquette', alg:'Attention allergie', ask:'Qu’as-tu envie de manger ?', from:'De la part de {name}', hint:'Touche ce qui te fait envie (3 max.)', any:'N’importe quoi', word:'Un mot (facultatif)', w:['Quand tu veux','Le week-end, ça va','Pas pressé'], me:'Ton prénom (facultatif)', send:'Envoie cette réponse', share:'Envoyer', mail:'E-mail', copy:'Copier', copied:'Copié', rWish:'J’ai envie de : {list}', rAny:'N’importe quoi', open:'Ouvrir dans Gohancho', bad:'Ce lien est illisible. Demande à l’expéditeur de le renvoyer.', priv:'Cette page n’envoie rien. Tu envoies la réponse avec l’appli de ton choix.', subj:'Ce que j’ai envie de manger', sep:', '},
+  'de': {chk:'Etikett prüfen', alg:'Achtung Allergie', ask:'Worauf hast du Lust?', from:'Von {name}', hint:'Tippe an, was du möchtest (bis zu 3)', any:'Egal', word:'Kurze Notiz (optional)', w:['Jederzeit','Am Wochenende ist okay','Keine Eile'], me:'Dein Name (optional)', send:'Diese Antwort senden', share:'Senden', mail:'E-Mail', copy:'Kopieren', copied:'Kopiert', rWish:'Ich möchte: {list}', rAny:'Egal, alles gut', open:'In Gohancho öffnen', bad:'Dieser Link ist nicht lesbar. Bitte lass ihn dir noch einmal schicken.', priv:'Diese Seite sendet nichts. Du schickst die Antwort mit der App deiner Wahl.', subj:'Worauf ich Lust habe', sep:', '},
+  'it': {chk:'Controlla l’etichetta', alg:'Attenzione allergia', ask:'Cosa ti va di mangiare?', from:'Da {name}', hint:'Tocca quello che vuoi (fino a 3)', any:'Va bene tutto', word:'Un messaggio (facoltativo)', w:['Quando vuoi','Va bene nel weekend','Senza fretta'], me:'Il tuo nome (facoltativo)', send:'Invia questa risposta', share:'Invia', mail:'Email', copy:'Copia', copied:'Copiato', rWish:'Mi va: {list}', rAny:'Va bene tutto', open:'Apri in Gohancho', bad:'Impossibile leggere questo link. Chiedi di inviarlo di nuovo.', priv:'Questa pagina non invia nulla. La risposta la invii tu con l’app che preferisci.', subj:'Cosa mi va di mangiare', sep:', '},
+  'pt-BR': {chk:'Confira o rótulo', alg:'Atenção: alergia', ask:'O que você quer comer?', from:'De {name}', hint:'Toque no que você quer (até 3)', any:'Qualquer coisa', word:'Um recado (opcional)', w:['Quando der','Pode ser no fim de semana','Sem pressa'], me:'Seu nome (opcional)', send:'Envie esta resposta', share:'Enviar', mail:'E-mail', copy:'Copiar', copied:'Copiado', rWish:'Quero: {list}', rAny:'Qualquer coisa', open:'Abrir no Gohancho', bad:'Não foi possível ler este link. Peça para enviarem de novo.', priv:'Esta página não envia nada. Você envia a resposta pelo app que escolher.', subj:'O que quero comer', sep:', '},
+  'hi': {chk:'पैकेट का लेबल देखें', alg:'एलर्जी से सावधान', ask:'क्या खाना है?', from:'{name} की ओर से', hint:'जो खाना है उस पर टैप करें (3 तक)', any:'कुछ भी चलेगा', word:'एक छोटी बात (वैकल्पिक)', w:['कभी भी','वीकेंड पर भी ठीक','कोई जल्दी नहीं'], me:'आपका नाम (वैकल्पिक)', send:'यह जवाब भेजें', share:'भेजें', mail:'ईमेल', copy:'कॉपी', copied:'कॉपी हो गया', rWish:'खाना है: {list}', rAny:'कुछ भी चलेगा', open:'Gohancho में खोलें', bad:'यह लिंक पढ़ा नहीं जा सका। भेजने वाले से फिर से भेजने को कहें।', priv:'यह पेज कुछ नहीं भेजता। जवाब आप अपनी चुनी हुई ऐप से भेजते हैं।', subj:'क्या खाना है', sep:', '},
+  'ar': {chk:'راجع الملصق', alg:'تنبيه: حساسية', ask:'ماذا تريد أن تأكل؟', from:'من {name}', hint:'اضغط على ما تريده (حتى 3)', any:'أي شيء', word:'كلمة (اختياري)', w:['في أي وقت','عطلة الأسبوع مناسبة','لا عجلة'], me:'اسمك (اختياري)', send:'أرسل هذا الرد', share:'إرسال', mail:'بريد', copy:'نسخ', copied:'تم النسخ', rWish:'أريد: {list}', rAny:'أي شيء', open:'افتح في Gohancho', bad:'تعذّرت قراءة هذا الرابط. اطلب من المرسل إرساله مرة أخرى.', priv:'هذه الصفحة لا ترسل شيئًا. أنت ترسل الرد بالتطبيق الذي تختاره.', subj:'ما أريد أن آكله', sep:'، '},
+  'tr': {chk:'Etiketi kontrol et', alg:'Alerji uyarısı', ask:'Ne yemek istersin?', from:'{name} gönderdi', hint:'İstediğine dokun (en fazla 3)', any:'Fark etmez', word:'Kısa not (isteğe bağlı)', w:['Ne zaman olursa','Hafta sonu da olur','Acelesi yok'], me:'Adın (isteğe bağlı)', send:'Bu yanıtı gönder', share:'Gönder', mail:'E-posta', copy:'Kopyala', copied:'Kopyalandı', rWish:'İstediğim: {list}', rAny:'Fark etmez', open:'Gohancho’da aç', bad:'Bu bağlantı okunamadı. Gönderenden tekrar göndermesini iste.', priv:'Bu sayfa hiçbir şey göndermez. Yanıtı seçtiğin uygulamayla sen gönderirsin.', subj:'Yemek istediğim', sep:', '},
+  'pl': {chk:'Sprawdź etykietę', alg:'Uwaga: alergia', ask:'Na co masz ochotę?', from:'Od: {name}', hint:'Dotknij, na co masz ochotę (do 3)', any:'Wszystko jedno', word:'Krótka notka (opcjonalnie)', w:['Kiedykolwiek','Może być w weekend','Bez pośpiechu'], me:'Twoje imię (opcjonalnie)', send:'Wyślij tę odpowiedź', share:'Wyślij', mail:'E-mail', copy:'Kopiuj', copied:'Skopiowano', rWish:'Mam ochotę na: {list}', rAny:'Wszystko jedno', open:'Otwórz w Gohancho', bad:'Nie udało się odczytać linku. Poproś nadawcę o ponowne wysłanie.', priv:'Ta strona niczego nie wysyła. Odpowiedź wysyłasz sam wybraną aplikacją.', subj:'Na co mam ochotę', sep:', '}
+};
+const LANGS = Object.keys(L);
+const pickLang = l => {
+  if (typeof l === 'string' && LANGS.includes(l)) return l;
+  const n = String((navigator.languages && navigator.languages[0]) || navigator.language || '').toLowerCase();
+  if (/^zh-(tw|hk|mo|hant)/.test(n)) return 'zh-Hant';
+  if (/^zh/.test(n)) return 'zh-Hans';
+  if (/^pt/.test(n)) return 'pt-BR';
+  if (/^(fil|tl)/.test(n)) return 'fil';
+  const b = n.split('-')[0]; return LANGS.includes(b) ? b : 'ja';
+};
+const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => (k in o ? o[k] : m));
+
+function b64uDec(s){ s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const bin = atob(s), b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); return new TextDecoder('utf-8', {fatal: true}).decode(b); }
+function b64uEnc(str){ const b = new TextEncoder().encode(str); let s = ''; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function realYmd(c){ const s = String(c == null ? '' : c); if (!/^\d{8}$/.test(s)) return ''; const y = +s.slice(0, 4), m = +s.slice(4, 6), d = +s.slice(6, 8), dt = new Date(y, m - 1, d); return y >= 2020 && y <= 2100 && dt.getMonth() === m - 1 && dt.getDate() === d ? s : ''; }
+
+// #g=… を読む。こわれた・長すぎる・形のちがうものは null（ボタンは出さない）
+function parse(hash){
+  const s = String(hash || '');
+  if (s.length > TEXT_MAX) return null;
+  const mm = s.match(/^#g=([A-Za-z0-9_-]+)$/); if (!mm || mm[1].length > CODE_MAX) return null;
+  let o; try{ o = JSON.parse(b64uDec(mm[1])); }catch(e){ return null; }
+  if (!o || typeof o !== 'object' || Array.isArray(o) || o.v !== 1 || o.k !== 'k' || !Array.isArray(o.d) || !o.d.length || o.d.length > DISH_MAX) return null;
+  const seen = new Set(), d = [];
+  for (const a of o.d){
+    if (!Array.isArray(a) || a.length < 2 || a.length > 3) continue;
+    const id = a[0], name = typeof a[1] === 'string' ? clean(a[1], NAME_MAX) : '';
+    if (typeof id !== 'string' || !ID_RE.test(id) || !name || seen.has(id)) continue;
+    seen.add(id);
+    d.push({id, name, img: typeof a[2] === 'string' && IMG_RE.test(a[2]) ? a[2] : ''});
+  }
+  if (!d.length) return null;
+  // 家族みんなのアレルゲンに当たる料理の番号（作る人のアプリが付ける。第22回 R84）: ⚠「アレルギーに注意」を出し、当たらない料理のうしろに並べる
+  const al = new Set(Array.isArray(o.a) ? o.a.filter(x => typeof x === 'string' && ID_RE.test(x)) : []);
+  const ck = new Set(Array.isArray(o.c) ? o.c.filter(x => typeof x === 'string' && ID_RE.test(x)) : []);   // 「袋の表示を確認」の料理（アサフェティダの小麦など）
+  d.forEach(x => { x.alg = al.has(x.id); x.chk = !x.alg && ck.has(x.id); });
+  d.sort((a, b) => (a.alg ? 1 : 0) - (b.alg ? 1 : 0));
+  return {n: typeof o.n === 'string' ? clean(o.n, 10) : '', d, l: typeof o.l === 'string' ? o.l : '', t: realYmd(o.t)};
+}
+
+const el = (tag, attrs, kids) => {
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs){ if (k === 'text') e.textContent = attrs[k]; else if (k === 'cls') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  (kids || []).forEach(c => c && e.appendChild(c));
+  return e;
+};
+const todayPack = () => { const d = new Date(); return String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); };
+
+function boot(){
+  const app = document.getElementById('app');
+  const p = parse(location.hash);
+  const lang = pickLang(p ? p.l : '');
+  const T = L[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = T.ask;
+  app.textContent = '';
+  if (!p){
+    app.appendChild(el('h1', {text: T.ask}));
+    app.appendChild(el('div', {cls: 'bad', role: 'alert', id: 'bad'}, [el('b', {text: T.bad})]));
+    return;
+  }
+  const st = {sel: [], any: false, m: null, me: ''};
+  // 送った人
+  const from = el('div', {cls: 'from'});
+  if (p.n){ from.appendChild(el('span', {cls: 'av', 'aria-hidden': 'true', text: [...p.n][0]})); }
+  const fromTx = el('div');
+  if (p.n) fromTx.appendChild(el('div', {text: fill(T.from, {name: p.n})}));
+  if (p.t){ try{ fromTx.appendChild(el('div', {text: new Intl.DateTimeFormat(lang, {month: 'long', day: 'numeric'}).format(new Date(+p.t.slice(0, 4), +p.t.slice(4, 6) - 1, +p.t.slice(6, 8)))})); }catch(e){} }
+  from.appendChild(fromTx);
+  if (p.n || p.t) app.appendChild(from);
+  app.appendChild(el('h1', {text: T.ask}));
+  const hint = el('p', {cls: 'hint', id: 'hint', text: T.hint});
+  app.appendChild(hint);
+  // 料理のボタン
+  const grid = el('div', {cls: 'grid', role: 'group', 'aria-label': T.ask, id: 'grid'});
+  const btns = p.d.map(x => {
+    const b = el('button', {type: 'button', cls: 'dish', 'data-id': x.id, 'aria-pressed': 'false'});
+    if (x.img){ const im = el('img', {src: x.img, alt: '', width: '64', height: '64', decoding: 'async'}); im.addEventListener('error', () => { im.replaceWith(el('span', {cls: 'ph', 'aria-hidden': 'true', text: '🍚'})); }); b.appendChild(im); }
+    else b.appendChild(el('span', {cls: 'ph', 'aria-hidden': 'true', text: '🍚'}));
+    b.appendChild(el('span', {cls: 'nm', text: x.name}));
+    if (x.alg){ b.classList.add('alg'); b.appendChild(el('span', {cls: 'alg', role: 'note', text: '⚠ ' + T.alg})); }
+    else if (x.chk) b.appendChild(el('span', {cls: 'alg chk', role: 'note', text: '🔍 ' + T.chk}));
+    b.addEventListener('click', () => {
+      const i = st.sel.indexOf(x.id);
+      if (i >= 0) st.sel.splice(i, 1);
+      else if (st.sel.length < PICK_MAX) st.sel.push(x.id);
+      else { hint.animate && hint.animate([{opacity: .3}, {opacity: 1}], {duration: 400}); return; }
+      st.any = false; update();
+    });
+    grid.appendChild(b); return b;
+  });
+  app.appendChild(grid);
+  const anyB = el('button', {type: 'button', cls: 'dish any', id: 'any', 'aria-pressed': 'false', text: T.any});
+  anyB.addEventListener('click', () => { st.any = !st.any; if (st.any) st.sel = []; update(); });
+  app.appendChild(anyB);
+  // ひとこと
+  app.appendChild(el('h2', {cls: 'sub', text: T.word}));
+  const chips = el('div', {cls: 'chips', role: 'group', 'aria-label': T.word});
+  const chipB = T.w.map((w, v) => { const c = el('button', {type: 'button', cls: 'chip', 'data-v': String(v), 'aria-pressed': 'false', text: w}); c.addEventListener('click', () => { st.m = st.m === v ? null : v; update(); }); chips.appendChild(c); return c; });
+  app.appendChild(chips);
+  // 名前
+  const nmId = 'me';
+  app.appendChild(el('label', {cls: 'nm-l', for: nmId, text: T.me}));
+  const nm = el('input', {type: 'text', id: nmId, maxlength: '10', autocomplete: 'nickname', enterkeyhint: 'done'});
+  nm.addEventListener('input', () => { st.me = clean(nm.value, 10); update(); });
+  app.appendChild(nm);
+  // 返事
+  const reply = el('section', {cls: 'reply', id: 'reply', hidden: ''});
+  reply.appendChild(el('h2', {text: T.send}));
+  const txt = el('textarea', {cls: 'txt', id: 'reply-text', readonly: '', rows: '4', 'aria-label': T.send});
+  reply.appendChild(txt);
+  const acts = el('div', {cls: 'acts'});
+  const canShare = typeof navigator.share === 'function';
+  const shareB = canShare ? el('button', {type: 'button', cls: 'btn main', id: 'act-share', text: T.share}) : null;
+  const lineA = el('a', {cls: 'btn line', id: 'act-line', target: '_blank', rel: 'noopener noreferrer', text: 'LINE'});
+  const mailA = el('a', {cls: 'btn', id: 'act-mail', text: T.mail});
+  const smsA = el('a', {cls: 'btn', id: 'act-sms', text: 'SMS'});
+  const copyB = el('button', {type: 'button', cls: 'btn' + (canShare ? '' : ' main'), id: 'act-copy', text: T.copy});
+  [shareB, lineA, mailA, smsA, copyB].forEach(x => x && acts.appendChild(x));
+  reply.appendChild(acts);
+  const stat = el('p', {cls: 'st', id: 'st', role: 'status'});
+  reply.appendChild(stat);
+  app.appendChild(reply);
+  app.appendChild(el('p', {cls: 'note', text: T.priv}));
+
+  let text = '';
+  if (shareB) shareB.addEventListener('click', async () => { try{ await navigator.share({title: T.subj, text}); }catch(e){} });
+  copyB.addEventListener('click', async () => {
+    let ok = false;
+    try{ await navigator.clipboard.writeText(text); ok = true; }catch(e){}
+    if (!ok){ try{ txt.focus(); txt.select(); ok = document.execCommand('copy'); }catch(e){} }
+    stat.textContent = ok ? T.copied : '';
+    if (!ok){ txt.focus(); txt.select(); }
+  });
+  txt.addEventListener('focus', () => txt.select());
+
+  function replyLink(){
+    const o = st.any ? {v: 1, k: 'w', x: 1, t: todayPack()} : {v: 1, k: 'w', d: st.sel.slice(0, PICK_MAX), t: todayPack()};   // なんでもいい（x:1）もアプリで受けとれるリンクにする（第22回 R87）
+    if (st.me) o.n = st.me;
+    if (st.m != null) o.m = st.m;
+    return DOC_BASE + '#g=' + b64uEnc(JSON.stringify(o));
+  }
+  function update(){
+    btns.forEach(b => b.setAttribute('aria-pressed', String(st.sel.includes(b.dataset.id))));
+    anyB.setAttribute('aria-pressed', String(st.any));
+    chipB.forEach((c, v) => c.setAttribute('aria-pressed', String(st.m === v)));
+    stat.textContent = '';
+    if (!st.sel.length && !st.any){ reply.hidden = true; text = ''; return; }
+    const who = st.me ? st.me + ': ' : '';
+    const word = st.m != null ? ' (' + T.w[st.m] + ')' : '';
+    if (st.any) text = [who + T.rAny + word, T.open + (lang === 'ar' ? ' ← ' : ' → ') + replyLink()].join('\n');
+    else {
+      const names = st.sel.map(id => (p.d.find(x => x.id === id) || {}).name).filter(Boolean);
+      text = [who + fill(T.rWish, {list: names.join(T.sep)}) + word, T.open + (lang === 'ar' ? ' ← ' : ' → ') + replyLink()].join('\n');
+    }
+    txt.value = text;
+    lineA.href = 'https://line.me/R/share?text=' + encodeURIComponent(text);
+    mailA.href = 'mailto:?subject=' + encodeURIComponent(T.subj) + '&body=' + encodeURIComponent(text);
+    smsA.href = 'sms:?&body=' + encodeURIComponent(text);
+    reply.hidden = false;
+  }
+}
+boot();
+window.addEventListener('hashchange', boot);
+})();
+</script>
+</body>
+</html>

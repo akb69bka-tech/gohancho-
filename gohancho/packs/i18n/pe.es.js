@@ -2,6 +2,14 @@
 GOHAN_PACK_TR('PE', 'es', {
   staple: 'Arroz blanco',
   names: {
+    "tofu": "Tofu firme",
+    "zucchini": "Zapallo italiano",
+    'papaya': 'Papaya',
+    'banana': 'Plátano',
+    'pineapple': 'Piña',
+    "oats": "Avena en hojuelas",
+    "apple": "Manzana",
+    "semolina": "Sémola",
     'beef': 'Carne de res',
     'chicken': 'Pollo',
     'fish': 'Pescado',
@@ -80,6 +88,271 @@ GOHAN_PACK_TR('PE', 'es', {
     'cauliflower': 'Coliflor'
   },
   recipes: {
+    "pe_crema_brocoli": {
+      name: "Crema de brócoli",
+      ings: [["Brócoli", "300 g"], ["Cebolla", "40 g"], ["Queso fresco", "30 g"]],
+      seas: "600 ml de caldo de pollo o de verduras · 1 cucharada de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Separa el brócoli en ramitos y pica la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite, añade el brócoli y el caldo y cocina 10 minutos.",
+        "Licúa, sazona y sirve con queso fresco desmenuzado si quieres.",
+      ],
+    },
+    "pe_caldo_choros": {
+      name: "Caldo de choros",
+      ings: [["Choros", "500 g"], ["Cebolla roja", "40 g"], ["Tomate", "80 g"], ["Culantro", "5 g"], ["Limón", "1"]],
+      seas: "700 ml de agua · 1 cucharada de aceite · 2 dientes de ajo · 1 cucharada de ají amarillo molido · Sal",
+      steps: [
+        "Limpia bien los choros. Pica la cebolla, el tomate, el ajo y el culantro.",
+        "Sofríe la cebolla, el ajo y el ají en el aceite, añade el tomate 2 minutos, luego el agua y deja hervir.",
+        "Agrega los choros, tapa y cocina hasta que se abran. Sazona y añade el jugo de limón y el culantro.",
+      ],
+    },
+    "pe_sopa_coliflor": {
+      name: "Sopa de coliflor",
+      ings: [["Coliflor", "300 g"], ["Cebolla", "40 g"], ["Leche evaporada", "60 ml"]],
+      seas: "500 ml de caldo de pollo o de verduras · 1 cucharada de mantequilla · Sal · Pimienta",
+      steps: [
+        "Separa la coliflor en ramitos y pica la cebolla.",
+        "Ablanda la cebolla en la mantequilla, añade la coliflor y el caldo y cocina tapado 15 minutos.",
+        "Licúa con la leche evaporada y sazona.",
+      ],
+    },
+    "pe_sopa_chifa_pakchoy": {
+      name: "Sopa chifa de pollo con pak choy",
+      ings: [["Pechuga de pollo", "120 g"], ["Pak choy", "150 g"], ["Huevo", "1"], ["Cebolla china", "1"], ["Kion", "10 g"]],
+      seas: "800 ml de caldo de pollo · 1 cucharada de sillao · 1 cucharadita de aceite de ajonjolí · Sal · Pimienta blanca",
+      steps: [
+        "Corta el pollo en láminas finas, el pak choy en trozos y el kion y la cebolla china en rodajas. Bate el huevo.",
+        "Hierve el caldo con el kion y el sillao, añade el pollo y cocina 5 minutos.",
+        "Agrega el pak choy 2 minutos, vierte el huevo removiendo y termina con aceite de ajonjolí, pimienta y cebolla china.",
+      ],
+    },
+    "pe_ensalada_pepino_tomate": {
+      name: "Ensalada de pepino y tomate",
+      ings: [["Pepino", "200 g"], ["Tomates", "150 g"], ["Cebolla roja", "30 g"], ["Culantro", "5 g"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta en rodajas el pepino y los tomates, y la cebolla en pluma muy fina. Pica el culantro.",
+        "Mezcla el jugo de limón, el aceite, la sal y la pimienta.",
+        "Junta todo justo antes de servir.",
+      ],
+    },
+    "pe_brocoli_ajo": {
+      name: "Brócoli al ajo",
+      ings: [["Brócoli", "300 g"]],
+      seas: "1 cucharada de aceite · 3 dientes de ajo · 1 cucharadita de sillao · Sal",
+      steps: [
+        "Separa el brócoli en ramitos y blanquéalo 3 minutos; escúrrelo.",
+        "Fríe el ajo picado en el aceite hasta que suelte su aroma.",
+        "Añade el brócoli y el sillao, saltea 2 minutos y sazona.",
+      ],
+    },
+    "pe_espinaca_salteada": {
+      name: "Espinaca salteada",
+      ings: [["Espinaca", "300 g"], ["Cebolla", "30 g"]],
+      seas: "1 cucharada de aceite de oliva · 2 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lava la espinaca y pica la cebolla y el ajo.",
+        "Ablanda la cebolla y el ajo en el aceite 2 minutos.",
+        "Añade la espinaca y remueve hasta que apenas se marchite. Sazona.",
+      ],
+    },
+    "pe_coliflor_queso": {
+      name: "Coliflor al horno con queso",
+      ings: [["Coliflor", "300 g"], ["Queso rallado", "40 g"]],
+      seas: "1 cucharada de mantequilla · Sal · Pimienta",
+      steps: [
+        "Calienta el horno a 200 °C. Separa la coliflor en ramitos y hiérvela 5 minutos; escúrrela.",
+        "Ponla en una fuente con mantequilla, sazona y cúbrela con el queso.",
+        "Hornea 15 minutos hasta dorar.",
+      ],
+    },
+    "pe_champinones_ajo": {
+      name: "Champiñones al ajo",
+      ings: [["Champiñones", "300 g"], ["Perejil", "5 g"]],
+      seas: "1 cucharada de aceite · 1 cucharada de mantequilla · 3 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lamina los champiñones y pica el ajo y el perejil.",
+        "Saltea los champiñones en el aceite y la mantequilla a fuego alto 6 minutos.",
+        "Añade el ajo 1 minuto, sazona y agrega el perejil.",
+      ],
+    },
+    "pe_ensalada_esparragos": {
+      name: "Ensalada de espárragos",
+      ings: [["Espárragos verdes", "250 g"], ["Tomate", "80 g"], ["Cebolla roja", "20 g"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta",
+      steps: [
+        "Corta la base de los espárragos y hiérvelos 3 minutos; enfríalos en agua fría.",
+        "Corta el tomate en cubitos y la cebolla en pluma fina. Mezcla el jugo de limón, el aceite, la sal y la pimienta.",
+        "Acomoda los espárragos con el tomate y la cebolla y baña con el aliño.",
+      ],
+    },
+    "pe_acelgas_salteadas": {
+      name: "Acelgas salteadas",
+      ings: [["Acelga", "300 g"], ["Cebolla", "30 g"]],
+      seas: "1 cucharada de aceite · 2 dientes de ajo · Sal · Pimienta",
+      steps: [
+        "Lava la acelga, pica por separado los tallos y las hojas, y pica la cebolla y el ajo.",
+        "Saltea la cebolla, el ajo y los tallos en el aceite 4 minutos.",
+        "Añade las hojas y cocina 2 minutos hasta que se marchiten. Sazona.",
+      ],
+    },
+    "pe_sudado_pescado": {
+      name: "Sudado de pescado",
+      ings: [["Filetes de pescado blanco", "400 g"], ["Cebolla roja", "150 g"], ["Tomates", "150 g"], ["Ají amarillo", "1"], ["Culantro", "10 g"]],
+      seas: "2 cucharadas de aceite · 3 dientes de ajo · 1 cucharada de ají panca molido · 60 ml de chicha de jora o fumet · Sal · Pimienta · Comino",
+      steps: [
+        "Sazona el pescado con sal, pimienta y comino. Corta la cebolla y los tomates en rodajas gruesas y el ají en tiras.",
+        "Fríe el ajo y el ají panca en el aceite, acomoda la mitad de la cebolla y el tomate, pon el pescado encima y cubre con el resto.",
+        "Añade la chicha o el fumet, tapa y cocina a fuego suave 10–12 minutos. Termina con culantro.",
+      ],
+    },
+    "pe_pollo_saltado": {
+      name: "Pollo saltado con verduras",
+      ings: [["Pechuga de pollo", "350 g"], ["Cebolla roja", "100 g"], ["Tomates", "150 g"], ["Pimiento", "1"], ["Ají amarillo", "1"], ["Culantro", "5 g"]],
+      seas: "2 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre · Sal · Pimienta · Comino",
+      steps: [
+        "Corta el pollo en tiras y sazónalo con sal, pimienta y comino. Corta la cebolla y los tomates en gajos y el pimiento y el ají en tiras.",
+        "Saltea el pollo en aceite muy caliente 4 minutos, añade el ajo, la cebolla y el pimiento y saltea 2 minutos.",
+        "Agrega los tomates, el sillao y el vinagre, saltea 1 minuto y termina con culantro.",
+      ],
+    },
+    "pe_quinua_leche": {
+      name: "Quinua con leche",
+      ings: [["Quinua bien lavada", "100 g"], ["Leche evaporada", "200 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 3 clavos de olor · 2 cdas de azúcar",
+      steps: [
+        "Lava la quinua varias veces, frotándola, hasta que el agua salga clara.",
+        "Cocínala en el agua con la canela y el clavo 20 minutos, hasta que esté muy suave.",
+        "Agrega la leche evaporada y el azúcar y cocina 5 minutos más, moviendo, hasta que quede cremosa. Retira las especias y sirve caliente.",
+      ],
+    },
+    "pe_avena_manzana": {
+      name: "Avena con manzana",
+      ings: [["Avena en hojuelas", "80 g"], ["Manzana pelada en cubos", "1"], ["Leche evaporada", "100 ml"]],
+      seas: "600 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve la manzana en el agua con la canela 8 minutos.",
+        "Agrega la avena y cocina 6-8 minutos a fuego bajo, moviendo, hasta que espese.",
+        "Añade la leche evaporada y el azúcar, calienta y sirve.",
+      ],
+    },
+    "pe_semola_leche": {
+      name: "Sémola con leche",
+      ings: [["Sémola", "60 g"], ["Leche evaporada", "200 ml"]],
+      seas: "400 ml de agua · 1 rama de canela · 2 cdas de azúcar",
+      steps: [
+        "Hierve el agua con la canela 3 minutos y agrega la leche evaporada.",
+        "Echa la sémola en forma de lluvia, moviendo para que no se formen grumos.",
+        "Cocina 5-6 minutos a fuego bajo, moviendo, hasta que espese. Endulza, retira la canela y sirve caliente.",
+      ],
+    },
+    "pe_sopa_fideos_huevo": {
+      name: "Sopa de fideos con huevo",
+      ings: [["Fideos cabello de ángel", "50 g"], ["Huevos", "2"], ["Zanahoria", "1/2"], ["Cebollita china", "1"]],
+      seas: "800 ml de caldo de pollo · 1 cucharada de aceite · 1 diente de ajo · 1/2 cucharadita de comino molido · Sal · Pimienta",
+      steps: [
+        "Fríe el ajo y el comino en el aceite 30 segundos, agrega el caldo y la zanahoria rallada y lleva a hervor. Añade los fideos y cocina 4 minutos.",
+        "Vierte los huevos batidos, espera 30 segundos y mueve suavemente. Sazona y agrega la cebollita china.",
+      ],
+      tip: { add: "Una gotita de pasta de ají amarillo", why: "Un calorcito bien peruano", skill: "Parte los fideos", how: "En trozos cortos se comen mejor con cuchara." },
+    },
+    "pe_crema_arvejas": {
+      name: "Crema de arvejas rápida",
+      ings: [["Arvejas congeladas", "300 g"], ["Cebolla", "1/2"], ["Leche evaporada", "80 ml"]],
+      seas: "500 ml de caldo de verduras o de pollo · 1 cucharada de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y fríelos en el aceite 2 minutos. Agrega las arvejas y el caldo y cocina 5 minutos.",
+        "Añade la leche evaporada y licúa hasta que quede liso (cuidado, está caliente). Sazona con sal y pimienta.",
+      ],
+      tip: { add: "Unos crutones", why: "Crocante sobre la crema", skill: "Licúa enseguida", how: "Licuadas al toque, las arvejas conservan su verde." },
+    },
+    "pe_crema_espinaca": {
+      name: "Crema de espinaca rápida",
+      ings: [["Espinaca", "200 g"], ["Cebolla", "1/2"], ["Leche evaporada", "80 ml"]],
+      seas: "500 ml de caldo de verduras o de pollo · 1 cucharada de aceite · 1 diente de ajo · Una pizca de nuez moscada · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y fríelos en el aceite 2 minutos. Agrega el caldo, lleva a hervor, añade la espinaca y cocina 2 minutos.",
+        "Añade la leche evaporada y la nuez moscada y licúa (cuidado, está caliente). Sazona con sal y pimienta.",
+      ],
+      tip: { add: "Queso fresco desmenuzado encima", why: "Saladito y cremoso", skill: "Cocción corta", how: "Con 2 minutos la espinaca queda verde brillante." },
+    },
+    "pe_ensalada_palta": {
+      name: "Ensalada de palta y tomate",
+      ings: [["Palta", "1"], ["Tomates", "2"], ["Cebolla roja", "1/4"], ["Limón", "1"]],
+      seas: "1 cucharada de aceite de oliva · Sal · Pimienta · Culantro picado (opcional)",
+      steps: [
+        "Corta la palta y los tomates en trozos y la cebolla roja en pluma bien fina.",
+        "Aliña con el jugo de limón, el aceite, sal y pimienta y sirve al toque.",
+      ],
+      tip: { add: "Unos granos de choclo", why: "Bien peruano", skill: "Corta la palta al final", how: "Córtala justo antes de servir para que no se oscurezca." },
+    },
+    "pe_choclo_mantequilla": {
+      name: "Choclo desgranado con mantequilla",
+      ings: [["Choclo desgranado (congelado)", "300 g"], ["Mantequilla", "15 g"], ["Queso fresco", "50 g"]],
+      seas: "Sal · Una pizca de pimienta · 2 cucharadas de agua",
+      steps: [
+        "Cocina el choclo con el agua, tapado, a fuego medio 5 a 6 minutos hasta que esté tierno.",
+        "Agrega la mantequilla, sal y pimienta y sirve con queso fresco desmenuzado.",
+      ],
+      tip: { add: "Un poquito de huacatay o hierbabuena", why: "Un toque fresco andino", skill: "Usa tapa", how: "Con tapa, el choclo queda jugoso." },
+    },
+    'pe_pollosaltado': {
+      name: 'Pollo saltado',
+      ings: [['Pechuga de pollo', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo fresco, en tiras', '1/2'], ['Culantro', 'unas ramitas'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1/2 cucharadita de comino · 2 cucharadas de sillao · 1 cucharada de vinagre tinto · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta el pollo en tiras y sazónalo con sal, pimienta y comino. Corta la cebolla y los tomates en gajos gruesos y el ají en tiras.',
+        'Calienta el aceite en un wok o sartén grande a fuego muy alto y saltea el pollo 3-4 minutos, hasta que esté dorado y bien cocido.',
+        'Agrega el ajo, la cebolla y el ají y saltea 1 minuto; luego los tomates, el sillao y el vinagre, 1 minuto más. Espolvorea culantro y sirve con arroz.',
+      ],
+      tip: { add: 'Un puñado de papas fritas recién hechas encima', why: 'Al estilo completo del saltado, como el lomo', skill: 'Wok bien caliente', how: 'La cebolla y el tomate deben quedar crocantes y apenas calientes; el fuego fuerte y el salteo rápido dan el sabor ahumado.' },
+    },
+    'pe_pescadoplancha': {
+      name: 'Pescado a la plancha con salsa criolla',
+      ings: [['Filetes de pescado blanco', '2 (300 g)'], ['Cebolla roja', '1'], ['Limones', '2'], ['Ají amarillo', '1/2'], ['Culantro', 'unas ramitas']],
+      seas: 'Sal · Pimienta · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta la cebolla en pluma muy fina, lávala y mézclala con el jugo de limón, el ají en tiras finas, el culantro picado y sal (salsa criolla).',
+        'Sazona el pescado con el ajo molido, sal y pimienta. Calienta el aceite en una sartén a fuego medio-alto y cocina el pescado 3 minutos de un lado y 2 del otro, hasta que se desmenuce.',
+        'Sirve el pescado con la salsa criolla encima.',
+      ],
+      tip: { add: 'Unas rodajas de camote o choclo sancochado', why: 'Los acompañantes clásicos del plato peruano', skill: 'Lava la cebolla', how: 'Lavar la cebolla cortada le quita lo fuerte y la mantiene crocante.' },
+    },
+    'pe_camaronessaltados': {
+      name: 'Saltado de camarones',
+      ings: [['Camarones crudos pelados', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo', '1/2'], ['Cebolla china', '2'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 2 cucharadas de sillao · 1 cucharada de vinagre · 2 dientes de ajo · 2 cucharadas de aceite',
+      steps: [
+        'Corta la cebolla y los tomates en gajos y el ají en tiras. Sazona los camarones con sal y pimienta.',
+        'Calienta el aceite en un wok o sartén a fuego muy alto y saltea los camarones con el ajo 2 minutos, hasta que estén rosados y bien cocidos.',
+        'Agrega la cebolla y el ají y saltea 1 minuto; luego los tomates, el sillao y el vinagre, 1 minuto más. Espolvorea cebolla china y sirve con arroz.',
+      ],
+      tip: { add: 'Un chorrito de pisco o vino blanco con el sillao', why: 'Una salsa más aromática', skill: 'Todo listo antes', how: 'Se cocina en 4 minutos, así que corta todo antes de prender la cocina.' },
+    },
+    'pe_tortillaatun': {
+      name: 'Tortilla de atún',
+      ings: [['Huevos', '4'], ['Atún en lata, escurrido', '1 lata (170 g)'], ['Cebolla roja', '1/2'], ['Tomate', '1'], ['Culantro', 'unas ramitas'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1 cucharada de aceite',
+      steps: [
+        'Pica finamente la cebolla, el tomate y el culantro. Bate los huevos con sal y pimienta y mezcla el atún y las verduras.',
+        'Calienta el aceite en una sartén a fuego medio, vierte la mezcla y cocina 3 minutos, hasta que la base esté dorada.',
+        'Voltéala con ayuda de un plato y cocina 2 minutos más. Córtala en triángulos y sirve con arroz.',
+      ],
+      tip: { add: 'Unas gotas de ají o salsa picante', why: 'Realza el atún', skill: 'Voltear con un plato', how: 'Deslízala a un plato, cúbrela con la sartén y voltea; queda entera.' },
+    },
+    'pe_bistecencebollado': {
+      name: 'Bistec encebollado',
+      ings: [['Bisteces delgados de res', '2 (300 g)'], ['Cebollas rojas', '2'], ['Tomates', '2'], ['Ají amarillo', '1/2'], ['Arroz graneado, para acompañar', '2 platos']],
+      seas: 'Sal · Pimienta · 1/2 cucharadita de comino · 2 dientes de ajo · 1 cucharada de sillao · 1 cucharada de vinagre · 2 cucharadas de aceite',
+      steps: [
+        'Sazona los bisteces con el ajo molido, comino, sal y pimienta. Corta las cebollas en aros gruesos y los tomates en gajos.',
+        'Calienta el aceite en una sartén a fuego alto y cocina los bisteces 1-2 minutos por lado; resérvalos en un plato.',
+        'En la misma sartén saltea la cebolla y el ají 2 minutos, agrega los tomates, el sillao y el vinagre y saltea 1 minuto. Sírvelo sobre los bisteces con arroz.',
+      ],
+      tip: { add: 'Un huevo frito encima', why: 'Queda como un plato a lo pobre', skill: 'Cebolla crocante', how: 'La cebolla debe quedar apenas suave en los bordes, como en un saltado, no deshecha.' },
+    },
     'pe_lomo_saltado': {
       name: 'Lomo saltado',
       ings: [['Lomo fino o cuadril de res', '300 g'], ['Cebolla roja', '1'], ['Tomates', '2'], ['Ají amarillo fresco', '1?'], ['Papas (para freír)', '2'], ['Culantro', '1 puñado']],
@@ -154,7 +427,7 @@ GOHAN_PACK_TR('PE', 'es', {
       steps: [
         'Lava las lentejas y cocínalas en 750 ml de agua por 20 minutos, hasta que estén casi blandas.',
         'Mientras tanto, sofríe la cebolla, el ajo, el ají panca, el comino y el orégano en el aceite por 5 minutos; luego agrega el tomate rallado y la zanahoria en cubitos por 3 minutos.',
-        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas.',
+        'Incorpora este aderezo a las lentejas y cocina 10 minutos más, hasta que espesen y queden cremosas. Al final, incorpora el cilantro picado.',
         'Sazona con sal y sirve con arroz blanco, salsa criolla y un huevo frito o pescado frito.'
       ],
       tip: { add: 'Un huevo frito encima', why: 'Lo convierte en un almuerzo de lunes completo', skill: 'Sala al final', how: 'Si sazonas muy pronto, las lentejas quedan duras; agrega la sal cuando ya estén blandas.' }
@@ -512,7 +785,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega el arroz y la zanahoria en rodajas y cocina 10 minutos; luego añade las papas en trozos y la col picada y cocina 20 minutos, hasta que estén suaves.',
         'Sazona con sal y orégano y agrega hierbabuena y la parte verde de la cebolla china picadas justo antes de servir, con rocoto al lado.'
       ],
-      tip: { add: 'Rocoto picado con un poco de limón', why: 'Calienta el cuerpo en el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
+      tip: { add: 'Rocoto picado con un poco de limón', why: 'Un toque picante y fresco que va bien con el frío de la sierra', skill: 'Retira la grasa', how: 'El cordero suelta mucha grasa; quitarla mientras se cocina deja el caldo ligero.' }
     },
     'pe_dieta_pollo': {
       name: 'Dieta de pollo',
@@ -524,7 +797,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Agrega la papa, la zanahoria y el zapallo en cubitos y cocina 15 minutos hasta que estén suaves; añade los fideos en los últimos 5 minutos.',
         'Devuelve el pollo, sazona con poca sal y termina con perejil.'
       ],
-      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo cuando uno está mal', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel la hace suave para el estómago.' }
+      tip: { add: 'Un chorrito de limón en el plato', why: 'Alegra el caldo sencillo con un toque ácido y fresco', skill: 'Sin aceite ni fritura', how: 'Saltarse el aderezo y quitar la piel deja el caldo ligero y claro.' }
     },
     'pe_lawa_choclo': {
       name: 'Lawa de choclo',
@@ -553,7 +826,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_chaufa': {
       name: 'Arroz chaufa de pollo',
-      ings: [['Arroz blanco cocido (del día anterior)', '3 tazas'], ['Pechuga de pollo', '200 g'], ['Huevos', '2'], ['Cebolla china', '4 tallos'], ['Kion', '2 cm'], ['Pimiento rojo', '1/2']],
+      ings: [['Arroz blanco cocido (del día anterior)', '3 tazas (unos 500 g)'], ['Pechuga de pollo', '200 g'], ['Huevos', '2'], ['Cebolla china', '4 tallos'], ['Kion', '2 cm'], ['Pimiento rojo', '1/2']],
       seas: 'Sal · 3 cucharadas de sillao · 1 cucharadita de aceite de ajonjolí · 1 diente de ajo · 3 cucharadas de aceite',
       steps: [
         'Corta el pollo en cubos pequeños y sazónalo con un poco de sillao. Pica fino el kion y el ajo, corta la cebolla china (separando la parte blanca de la verde) y el pimiento en cubitos.',
@@ -617,7 +890,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_tapado': {
       name: 'Arroz tapado',
-      ings: [['Arroz blanco cocido', '3 tazas'], ['Carne molida de res', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Huevo', '1'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
+      ings: [['Arroz blanco cocido', '3 tazas (unos 500 g)'], ['Carne molida de res', '250 g'], ['Cebolla', '1'], ['Tomate', '1'], ['Huevo', '1'], ['Aceitunas de botija', '4'], ['Pasas', '2 cucharadas']],
       seas: 'Sal · Pimienta negra · 2 dientes de ajo · 1 cucharada de pasta de ají panca · 1/2 cucharadita de comino · 1 cucharada de aceite',
       steps: [
         'Sancocha el huevo 10 minutos, enfríalo y pícalo.',
@@ -675,7 +948,7 @@ GOHAN_PACK_TR('PE', 'es', {
         'Corta la cebolla en pluma fina y enjuágala en agua fría. Quita las semillas al ají y pícalo fino; pica el culantro.',
         'Corta el pescado en cubos de 2 cm, ponlo en un bol de vidrio frío y sazónalo con sal, el ajo machacado y el ají.',
         'Exprime los limones suavemente (sin apretar la cáscara amarga) directo sobre el pescado, agrega el hielo y mezcla de 2 a 3 minutos, hasta que el pescado se ponga blanco por fuera.',
-        'Retira el hielo, añade la cebolla y el culantro, prueba la sal y sirve de inmediato con el camote y el choclo.'
+        'Retira el hielo, añade la cebolla y el culantro, prueba la sal y sirve de inmediato con el camote y el choclo. El ceviche es pescado crudo: compra pescado apto para comer crudo en un lugar de confianza y no lo des a niños pequeños ni durante el embarazo.'
       ],
       tip: { add: 'Un puñado de cancha al lado', why: 'Lo crocante contrasta con el pescado suave', skill: 'Pescado fresquísimo y al momento', how: 'Usa pescado apto para comer crudo y mantenlo frío; el limón lo sazona, pero no lo cocina como el fuego.' }
     },
@@ -732,7 +1005,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_arroz_cubana': {
       name: 'Arroz a la cubana',
-      ings: [['Arroz blanco cocido', '2 tazas'], ['Huevos', '2'], ['Plátano de freír maduro', '1'], ['Tomate', '1']],
+      ings: [['Arroz blanco cocido', '2 tazas (unos 330 g)'], ['Huevos', '2'], ['Plátano de freír maduro', '1'], ['Tomate', '1']],
       seas: 'Sal · 1 diente de ajo · Aceite para freír',
       steps: [
         'Calienta el arroz en una olla con un poco de aceite y el ajo molido por 2 minutos.',
@@ -744,7 +1017,7 @@ GOHAN_PACK_TR('PE', 'es', {
     },
     'pe_tacu_tacu': {
       name: 'Tacu tacu',
-      ings: [['Frejol canario cocido', '2 tazas'], ['Arroz blanco cocido', '2 tazas'], ['Cebolla', '1/2'], ['Pasta de ají amarillo', '1 cucharada'], ['Huevos, para acompañar', '2']],
+      ings: [['Frejol canario cocido', '2 tazas'], ['Arroz blanco cocido', '2 tazas (unos 330 g)'], ['Cebolla', '1/2'], ['Pasta de ají amarillo', '1 cucharada'], ['Huevos, para acompañar', '2']],
       seas: 'Sal · 2 dientes de ajo · 1/2 cucharadita de orégano seco · 3 cucharadas de aceite',
       steps: [
         'Aplasta más o menos la mitad de los frejoles con un tenedor y deja el resto enteros.',
@@ -1021,6 +1294,166 @@ GOHAN_PACK_TR('PE', 'es', {
         'Cubre con papel aluminio y hornea 30 minutos; luego destapa y hornea de 15 a 20 minutos más, hasta que esté dorado y un cuchillo atraviese fácilmente las papas.'
       ],
       tip: { add: 'Sírvelo con adobo o carne al horno', why: 'En Arequipa es el acompañante del domingo', skill: 'Corta muy fino', how: 'Las rodajas delgadas se cocinan parejo y absorben la mezcla de huevo.' }
-    }
+    },
+    pe_estofado_quinua: {
+      name: 'Estofado de quinua con verduras',
+      ings: [
+        ['Quinua', '150 g'],
+        ['Papas', '2'],
+        ['Zanahoria', '1'],
+        ['Arvejas', '80 g'],
+        ['Cebolla', '1'],
+        ['Pasta de ají amarillo', '1 cucharada'],
+      ],
+      seas: 'Sal · pimienta · 3 cucharadas de aceite · 2 dientes de ajo · 1 cucharadita de comino molido · 500 ml de agua · Un puñado de culantro',
+      steps: [
+        'Lave bien la quinua. Sofría la cebolla picada, el ajo y el ají amarillo en el aceite 5 minutos y luego el comino 30 segundos.',
+        'Añada la zanahoria y las papas en cubos, la quinua y el agua y cueza 15 minutos.',
+        'Añada las arvejas y cocine 5 minutos más hasta que la quinua esté tierna y el estofado espese. Sazone y esparza el culantro.',
+      ],
+    },
+    pe_saltado_verduras: {
+      name: 'Saltado de verduras con papas',
+      ings: [
+        ['Tomates', '2'],
+        ['Cebolla roja', '1'],
+        ['Pimiento', '1'],
+        ['Papas', '2'],
+        ['Ají amarillo', '1'],
+        ['Arroz blanco (para acompañar)', '300 g'],
+      ],
+      seas: 'Sal · pimienta · 4 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre · 1 cucharadita de comino · Culantro',
+      steps: [
+        'Corte las papas en bastones y fríalas hasta que doren y estén crocantes. Escúrralas. Corte la cebolla, el pimiento y los tomates en gajos gruesos y el ají en tiras.',
+        'Caliente muy bien un wok, añada 2 cucharadas de aceite, la cebolla y el pimiento y saltee 2 minutos. Añada el ajo, el ají y el comino, luego los tomates.',
+        'Vierta el sillao y el vinagre por el borde del wok, agregue las papas y el culantro, saltee 30 segundos y sirva con arroz.',
+      ],
+    },
+    pe_sopa_quinua_v: {
+      name: 'Sopa de quinua',
+      ings: [
+        ['Quinua', '80 g'],
+        ['Papa', '1'],
+        ['Zanahoria', '1'],
+        ['Cebolla', '1/2'],
+        ['Culantro', '1 puñado'],
+      ],
+      seas: 'Sal · pimienta · 1 cucharada de aceite · 1 diente de ajo · 1 cucharadita de orégano seco · 800 ml de agua',
+      steps: [
+        'Lave la quinua. Sofría la cebolla picada y el ajo en el aceite 4 minutos.',
+        'Añada la zanahoria y la papa en cubos, la quinua, el orégano y el agua y cueza 20 minutos hasta que todo esté suave.',
+        'Sazone con sal y pimienta y esparza el culantro.',
+      ],
+    },
+    'pe_pan_palta': {
+      name: 'Pan con palta',
+      ings: [['Panes franceses', '2'], ['Palta madura', '1']],
+      seas: 'jugo de 1/2 limón · sal',
+      steps: [
+        'Corte los panes por la mitad y caliéntelos 2 minutos en una sartén seca o en el horno.',
+        'Aplaste la palta con un tenedor con el jugo de limón y la sal.',
+        'Unte la palta en los panes y sirva.',
+      ],
+    },
+    'pe_pan_chicharron': {
+      name: 'Pan con chicharrón',
+      ings: [['Panes franceses', '2'], ['Panceta o lomo de cerdo, en trozos', '250 g'], ['Camote', '1'], ['Cebolla roja', '1']],
+      seas: '500 ml de agua · sal · jugo de 1 limón · aceite para freír',
+      steps: [
+        'Hierva el cerdo con el agua y 1 cucharadita de sal 25 minutos, hasta que se evapore el agua, y luego fríalo en su propia grasa 8 minutos, hasta que esté dorado y crocante.',
+        'Pele el camote, córtelo en rodajas y fríalo hasta dorar. Corte la cebolla roja en tiras finas y mézclela con el jugo de limón y una pizca de sal para hacer la salsa criolla.',
+        'Abra los panes y rellénelos con el cerdo, el camote y la cebolla.',
+      ],
+    },
+    'pe_ensalada_frutas': {
+      name: 'Ensalada de frutas',
+      ings: [['Papaya', '1/2'], ['Plátano', '1'], ['Piña', '2 rodajas']],
+      seas: 'jugo de 1 naranja',
+      steps: [
+        'Pele la papaya, quítele las semillas y córtela en cubos. Pele y corte el plátano en rodajas.',
+        'Corte las rodajas de piña en trozos pequeños.',
+        'Mezcle toda la fruta en un bol con el jugo de naranja y sirva de inmediato.',
+      ],
+    },
+    "pe_tofu_saltado": {
+      name: "Tofu saltado con verduras (chifa)",
+      ings: [["Tofu firme", "400 g"], ["Pak choy", "200 g"], ["Pimiento rojo", "1"], ["Cebollita china", "2 tallos"]],
+      seas: "3 cucharadas de aceite · 3 cucharadas de sillao · 1 cucharada de kión rallado · 2 dientes de ajo · 1 cucharadita de maicena · 1 cucharadita de aceite de ajonjolí",
+      steps: [
+        "Corta el tofu en cubos, el pak choy en trozos y el pimiento en tiras. Corta la cebollita china en trozos. Mezcla el sillao con la maicena y 3 cucharadas de agua.",
+        "Dora el tofu por todos lados en un wok con 2 cucharadas de aceite y retíralo.",
+        "Saltea a fuego alto el ajo, el kión, el pimiento y el pak choy en el resto del aceite 2 minutos, agrega el tofu y la salsa, mezcla hasta que brille y termina con la cebollita china y el aceite de ajonjolí.",
+      ],
+    },
+    "pe_tortilla_espinaca": {
+      name: "Tortilla de espinaca",
+      ings: [["Huevos", "5"], ["Espinaca", "250 g"], ["Cebolla roja", "1/4"], ["Tomate", "1"]],
+      seas: "3 cucharadas de aceite · 1 diente de ajo · Sal · Pimienta",
+      steps: [
+        "Blanquea la espinaca en una olla con agua hirviendo 1 minuto, escúrrela, exprímela y pícala. Pica la cebolla, el ajo y el tomate.",
+        "Bate los huevos con sal y pimienta y mezcla con la espinaca, la cebolla, el ajo y el tomate.",
+        "Calienta el aceite en una sartén, vierte la mezcla y cocina a fuego medio-bajo 4 minutos, voltea y cocina 3 minutos más.",
+      ],
+    },
+    "pe_saltado_champinones": {
+      name: "Saltado de champiñones",
+      ings: [["Champiñones", "500 g"], ["Cebolla roja", "1/2"], ["Tomates", "2"], ["Ají amarillo", "1"], ["Culantro", "5 g"]],
+      seas: "3 cucharadas de aceite · 2 dientes de ajo · 2 cucharadas de sillao · 1 cucharada de vinagre tinto · Sal · Pimienta · Comino",
+      steps: [
+        "Corta los champiñones en cuartos, la cebolla y los tomates en gajos y el ají en tiras.",
+        "Saltea los champiñones en aceite muy caliente en un wok o sartén grande 5 minutos hasta dorar. Añade el ajo, la cebolla y el ají y saltea 1 minuto.",
+        "Agrega los tomates, el sillao, el vinagre, sal, pimienta y comino, saltea 1 minuto y termina con culantro.",
+      ],
+    },
+    "pe_vainitas_huevo": {
+      name: "Vainitas saltadas con huevo",
+      ings: [["Vainitas", "300 g"], ["Huevos", "3"], ["Cebolla roja", "1/4"], ["Tomate", "1"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · 1 cucharada de sillao · Sal · Pimienta",
+      steps: [
+        "Corta las vainitas en trozos de 3 cm y hiérvelas en una olla con agua y sal 5 minutos. Escúrrelas.",
+        "Saltea la cebolla, el ajo y el tomate en el aceite en una sartén 3 minutos, agrega las vainitas y el sillao y cocina 2 minutos.",
+        "Vierte los huevos batidos, salpimienta y revuelve hasta que cuajen.",
+      ],
+    },
+    "pe_zapallito_relleno": {
+      name: "Zapallo italiano relleno con queso",
+      ings: [["Zapallo italiano", "3 (600 g)"], ["Queso fresco", "150 g"], ["Huevo", "1"], ["Cebolla roja", "1/4"], ["Ají amarillo", "1"]],
+      seas: "2 cucharadas de aceite · 1 diente de ajo · Huacatay u orégano · Sal · Pimienta",
+      steps: [
+        "Precalienta el horno a 200 °C. Corta los zapallos por la mitad a lo largo, retira la pulpa y pícala con la cebolla y el ají.",
+        "Saltea las verduras picadas con el ajo en el aceite en una sartén 5 minutos. Fuera del fuego, mezcla con el queso desmenuzado, el huevo, las hierbas, sal y pimienta.",
+        "Rellena los zapallos y hornéalos en una fuente 25 minutos hasta que doren.",
+      ],
+    },
+    "pe_coliflor_brocoli_chifa": {
+      name: "Coliflor y brócoli saltados con kión",
+      ings: [["Coliflor", "300 g"], ["Brócoli", "300 g"], ["Pimiento rojo", "1/2"], ["Cebollita china", "2 tallos"]],
+      seas: "2 cucharadas de aceite · 2 cucharadas de sillao · 1 cucharada de kión rallado · 2 dientes de ajo · 1 cucharadita de maicena · 1 cucharadita de aceite de ajonjolí",
+      steps: [
+        "Separa la coliflor y el brócoli en ramitos pequeños y blanquéalos en una olla con agua hirviendo 2 minutos. Escúrrelos. Corta el pimiento en tiras.",
+        "Saltea el ajo y el kión en el aceite en un wok, agrega las verduras y el pimiento y saltea a fuego alto 3 minutos.",
+        "Añade el sillao mezclado con la maicena y 3 cucharadas de agua, saltea hasta que brille y termina con la cebollita china y el aceite de ajonjolí.",
+      ],
+    },
+    "pe_crema_zapallito": {
+      name: "Crema de zapallo italiano",
+      ings: [["Zapallo italiano", "2 (400 g)"], ["Cebolla", "1/4"], ["Leche evaporada", "50 ml"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 500 ml de agua · Sal · Pimienta",
+      steps: [
+        "Pica la cebolla y el ajo y corta el zapallo italiano en trozos.",
+        "Sofríe la cebolla y el ajo en el aceite en una olla 3 minutos, añade el zapallo y el agua y cocina 12 minutos.",
+        "Licúa hasta que quede suave, incorpora la leche evaporada y salpimienta.",
+      ],
+    },
+    "pe_sopa_champinones": {
+      name: "Sopa de champiñones y espinaca",
+      ings: [["Champiñones", "200 g"], ["Espinaca", "100 g"], ["Cebolla roja", "1/4"]],
+      seas: "1 cucharada de aceite · 1 diente de ajo · 600 ml de agua · 1 cucharadita de sillao · Sal · Pimienta · Orégano",
+      steps: [
+        "Lamina los champiñones y pica la cebolla y el ajo.",
+        "Sofríe la cebolla y el ajo en el aceite en una olla 3 minutos, agrega los champiñones y cocina 4 minutos.",
+        "Añade el agua, el sillao y el orégano, cocina 8 minutos, agrega la espinaca 1 minuto y salpimienta.",
+      ],
+    },
   }
 });

@@ -2,6 +2,13 @@
 GOHAN_PACK_TR('IT', 'it', {
   staple: 'Pane',
   names: {
+    "swiss chard": "Bietole",
+    "escarole": "Scarola",
+    "ricotta": "Ricotta",
+    'apple': 'Mela',
+    'banana': 'Banana',
+    'yogurt': 'Yogurt bianco',
+    "semolina": "Semolino",
     'pasta': 'Pasta',
     'passata': 'Passata di pomodoro',
     'basil': 'Basilico',
@@ -76,9 +83,166 @@ GOHAN_PACK_TR('IT', 'it', {
     'artichoke': 'Carciofi',
     'ham': 'Prosciutto',
     'cauliflower': 'Cavolfiore',
-    'asparagus': 'Asparagi'
+    'asparagus': 'Asparagi',
+    'garlic': 'Aglio',
+    'black pepper': 'Pepe nero',
   },
   recipes: {
+    "it_zuppaverza": {
+      name: "Zuppa di verza",
+      ings: [["Verza", "300 g"], ["Cipolla", "40 g"], ["Parmigiano grattugiato", "20 g"]],
+      seas: "700 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Tagliate la verza a listarelle, tritate cipolla e aglio.",
+        "Fate appassire cipolla e aglio nell'olio, aggiungete la verza e mescolate per 3 minuti.",
+        "Unite il brodo, cuocete 15 minuti, regolate di sale e pepe e servite con il Parmigiano.",
+      ],
+    },
+    "it_vellutatafinocchi": {
+      name: "Vellutata di finocchi",
+      ings: [["Finocchio", "300 g"], ["Cipolla", "40 g"], ["Parmigiano grattugiato", "15 g"]],
+      seas: "500 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · Sale · Pepe",
+      steps: [
+        "Affettate il finocchio e la cipolla.",
+        "Fateli appassire nell'olio per 5 minuti, aggiungete il brodo e cuocete 15 minuti.",
+        "Frullate fino a ottenere una crema liscia, regolate di sale e pepe e, se vi piace, completate con un po' di Parmigiano.",
+      ],
+    },
+    "it_vellutatacavolfiore": {
+      name: "Vellutata di cavolfiore",
+      ings: [["Cavolfiore", "300 g"], ["Cipolla", "40 g"], ["Latte", "100 ml"]],
+      seas: "400 ml di brodo vegetale · 1 cucchiaio di olio d'oliva · Noce moscata · Sale · Pepe",
+      steps: [
+        "Dividete il cavolfiore in cimette e tritate la cipolla.",
+        "Fate appassire la cipolla nell'olio, unite cavolfiore e brodo e cuocete coperto per 15 minuti.",
+        "Frullate con il latte e insaporite con noce moscata, sale e pepe.",
+      ],
+    },
+    "it_brodopollocicoria": {
+      name: "Brodo di pollo con cicoria",
+      ings: [["Sovracosce di pollo disossate", "150 g"], ["Cicoria o scarola", "200 g"], ["Parmigiano grattugiato", "15 g"]],
+      seas: "800 ml di brodo di pollo · 1 cucchiaio di olio d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Tagliate il pollo a pezzetti. Lavate e tagliate grossolanamente la cicoria.",
+        "Cuocete il pollo nel brodo per 15 minuti.",
+        "Scaldate l'aglio nell'olio, saltate la cicoria per 2 minuti, versatela nel brodo, cuocete 3 minuti, regolate di sale e pepe e aggiungete il Parmigiano.",
+      ],
+    },
+    "it_semolino_brodo": {
+      name: "Semolino in brodo",
+      ings: [["Semolino", "60 g"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "800 ml di brodo di pollo o vegetale · 1 cucchiaino di burro · Sale",
+      steps: [
+        "Porta il brodo a leggero bollore.",
+        "Versa il semolino a pioggia mescolando con la frusta, per non fare grumi.",
+        "Cuoci 6-8 minuti a fuoco basso, mescolando, finché è morbido e denso. Aggiungi il burro, regola di sale e servi con il parmigiano.",
+      ],
+    },
+    "it_semolino_latte": {
+      name: "Semolino al latte",
+      ings: [["Semolino", "60 g"], ["Latte", "500 ml"], ["Burro", "1 cucchiaino"]],
+      seas: "Un pizzico di sale · 1 cucchiaio di zucchero (facoltativo) · Una scorza di limone (facoltativa)",
+      steps: [
+        "Scalda il latte con il sale (e la scorza di limone) fino al bollore; togli la scorza.",
+        "Versa il semolino a pioggia mescolando con la frusta e abbassa la fiamma.",
+        "Cuoci 4-5 minuti mescolando, finché diventa cremoso. Unisci il burro e lo zucchero e servi tiepido.",
+      ],
+    },
+    "it_pappa_pomodoro": {
+      name: "Pappa al pomodoro",
+      ings: [["Pane toscano raffermo, senza crosta", "200 g"], ["Passata di pomodoro", "400 g"], ["Foglie di basilico", "6"]],
+      seas: "1 spicchio d'aglio · 3 cucchiai di olio extravergine · 600 ml di brodo vegetale · Sale",
+      steps: [
+        "Scalda l'olio con lo spicchio d'aglio intero per 2 minuti a fuoco basso, togli l'aglio e aggiungi la passata. Cuoci 10 minuti.",
+        "Unisci il brodo e il pane spezzettato e cuoci 10 minuti a fuoco basso, mescolando e schiacciando, finché il pane si sfalda in una pappa morbida.",
+        "Regola di sale, aggiungi il basilico spezzettato e servi tiepida con un filo d'olio.",
+      ],
+    },
+    "it_crema_piselli": {
+      name: "Crema di piselli veloce",
+      ings: [["Piselli surgelati", "300 g"], ["Cipollotto o cipolla piccola", "1"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "500 ml di brodo vegetale · 1 cucchiaio di olio extravergine d'oliva · Sale · Pepe",
+      steps: [
+        "Affettare la cipolla e farla appassire nell'olio per 2 minuti. Aggiungere i piselli e il brodo e cuocere 5 minuti.",
+        "Frullare fino a ottenere una crema liscia (attenzione, è caldo), regolare di sale e pepe e servire con il Parmigiano e un filo d'olio.",
+      ],
+      tip: { add: "Qualche crostino di pane tostato", why: "Croccante sulla crema vellutata", skill: "Frullare subito", how: "Frullando subito il colore resta vivo e la consistenza vellutata." },
+    },
+    "it_crema_zucchine": {
+      name: "Crema di zucchine veloce",
+      ings: [["Zucchine", "2 (300 g)"], ["Basilico", "4 foglie"], ["Parmigiano grattugiato", "2 cucchiai"]],
+      seas: "400 ml di brodo vegetale · 1 cucchiaio di olio extravergine d'oliva · 1 spicchio d'aglio piccolo · Sale · Pepe",
+      steps: [
+        "Affettare sottili le zucchine e cuocerle coperte con l'aglio, l'olio e il brodo per 6 minuti, finché sono morbide.",
+        "Aggiungere il basilico e frullare (attenzione, è caldo). Regolare di sale e pepe e servire con il Parmigiano.",
+      ],
+      tip: { add: "Un cucchiaio di ricotta sopra", why: "Cremosa e delicata", skill: "Affettare sottile", how: "Le fette sottili si ammorbidiscono in 6 minuti: la crema è pronta in un attimo." },
+    },
+    "it_crema_ceci": {
+      name: "Crema di ceci veloce",
+      ings: [["Ceci in scatola, scolati", "1 scatola (240 g)"], ["Rosmarino", "1 rametto"]],
+      seas: "400 ml di brodo vegetale · 2 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · Sale · Pepe",
+      steps: [
+        "Scaldare aglio e rosmarino in 1 cucchiaio d'olio per 1 minuto, aggiungere i ceci e il brodo e cuocere 5 minuti.",
+        "Togliere il rosmarino e frullare (attenzione, è caldo). Regolare di sale e completare con l'olio rimasto e pepe nero.",
+      ],
+      tip: { add: "Pane tostato a parte", why: "Perfetto da intingere nella crema", skill: "Tenere da parte qualche cece", how: "Metterne un cucchiaio da parte prima di frullare e aggiungerlo sopra." },
+    },
+    'it_tagliata': {
+      name: 'Tagliata rucola e grana',
+      ings: [['Controfiletto o scamone di manzo', '1 (350 g)'], ['Rucola', '60 g'], ['Scaglie di Parmigiano', '30 g'], ['Pomodorini', '150 g']],
+      seas: '2 cucchiai d\'olio extravergine · 1 cucchiaino di aceto balsamico · 1 rametto di rosmarino · Sale grosso · Pepe',
+      steps: [
+        'Scalda bene una padella pesante o una piastra a fuoco vivo. Ungi la carne con poco olio e cuocila 2-3 minuti per lato con il rosmarino.',
+        'Lasciala su un tagliere 2 minuti, poi tagliala a fettine sottili.',
+        'Disponi la rucola e i pomodorini a metà su un piatto, adagia sopra la carne, condisci con sale grosso e pepe e completa con il Parmigiano, il resto dell\'olio e il balsamico.',
+      ],
+      tip: { add: 'Qualche goccia di limone sulla rucola', why: 'Rinfresca le foglie piccanti', skill: 'Padella rovente', how: 'La padella deve fumare: fuori si rosola subito e dentro resta rosata.' },
+    },
+    'it_saltimbocca': {
+      name: 'Saltimbocca alla romana',
+      ings: [['Fettine sottili di vitello', '4 (300 g)'], ['Prosciutto crudo', '4 fette'], ['Foglie di salvia fresca', '8'], ['Burro', '30 g']],
+      seas: 'Sale · Pepe · 1 cucchiaio di farina · 4 cucchiai di vino bianco secco',
+      steps: [
+        'Su ogni fettina metti una fetta di prosciutto e due foglie di salvia e fissa con uno stecchino. Infarina leggermente l’altro lato.',
+        'Sciogli metà del burro in padella a fuoco medio-alto e cuoci le fettine 2 minuti dal lato del prosciutto, poi 1 minuto dall’altro. Tienile in caldo su un piatto.',
+        'Versa il vino e il resto del burro in padella e lascia sobbollire 1 minuto raschiando il fondo. Pepa leggermente e versa il sughetto sulla carne.',
+      ],
+      tip: { add: 'Un contorno di spinaci ripassati', why: 'Come si serve a Roma', skill: 'Poco sale', how: 'Il prosciutto è già sapido: basta il pepe.' },
+    },
+    'it_gamberi': {
+      name: 'Gamberi aglio, olio e prezzemolo',
+      ings: [['Gamberi crudi sgusciati', '300 g'], ['Prezzemolo', 'un mazzetto'], ['Limone', '1/2'], ['Pane, per servire', '4 fette']],
+      seas: '3 cucchiai d\'olio extravergine · 2 spicchi d\'aglio · 1 peperoncino secco piccolo (facoltativo) · 3 cucchiai di vino bianco secco · Sale',
+      steps: [
+        'Affetta l\'aglio e trita il prezzemolo. Scalda l\'olio in una padella larga a fuoco medio con l\'aglio e il peperoncino per 1 minuto.',
+        'Alza la fiamma, aggiungi i gamberi e cuocili 1-2 minuti per lato, finché sono rosa e cotti.',
+        'Sfuma con il vino, lascia sobbollire 1 minuto, poi sala e salta con il prezzemolo e una spruzzata di limone. Servi con il pane per la scarpetta.',
+      ],
+      tip: { add: 'Qualche pomodorino a metà insieme al vino', why: 'Un sughetto dolce per la scarpetta', skill: 'Non cuocerli troppo', how: 'I gamberi diventano gommosi in fretta: toglili dal fuoco appena si arricciano e sono rosa.' },
+    },
+    'it_tonnofagioli': {
+      name: 'Tonno e fagioli con cipolla rossa',
+      ings: [['Tonno sott\'olio, sgocciolato', '2 scatolette (160 g)'], ['Fagioli cannellini in scatola, sgocciolati', '1 scatola (400 g)'], ['Cipolla rossa (di Tropea se possibile)', '1/2'], ['Prezzemolo', 'un mazzetto'], ['Pane, per servire', '4 fette']],
+      seas: '3 cucchiai d\'olio extravergine · 1 cucchiaio di aceto di vino rosso · Sale · Pepe',
+      steps: [
+        'Sciacqua e scola i fagioli. Affetta la cipolla molto sottile e trita il prezzemolo.',
+        'Condisci i fagioli con la cipolla, l\'olio, l\'aceto, sale e pepe.',
+        'Sbriciola sopra il tonno a pezzi grossi, cospargi di prezzemolo e servi con il pane.',
+      ],
+      tip: { add: 'Una manciata di rucola o di pomodorini', why: 'Più colore e freschezza nel piatto', skill: 'Addolcire la cipolla', how: 'Se la cipolla cruda ti sembra troppo forte, tienila in acqua fredda mentre apri le scatolette.' },
+    },
+    'it_gnocchiburro': {
+      name: 'Gnocchi burro e salvia',
+      ings: [['Gnocchi di patate freschi (pronti)', '500 g'], ['Burro', '50 g'], ['Foglie di salvia fresca', '10'], ['Parmigiano grattugiato', '40 g']],
+      seas: 'Sale per l\'acqua · Pepe',
+      steps: [
+        'Porta a bollore una pentola grande d\'acqua salata (con il bollitore fai prima).',
+        'Intanto sciogli il burro con la salvia in una padella larga a fuoco basso per 2-3 minuti, finché le foglie sono croccanti.',
+        'Cuoci gli gnocchi 2-3 minuti, finché vengono a galla, trasferiscili nel burro con una schiumarola, aggiungi un goccio di acqua di cottura e salta con il Parmigiano e il pepe.',
+      ],
+      tip: { add: 'Qualche gheriglio di noce tostato nel burro', why: 'Croccante e profumato con gli gnocchi morbidi', skill: 'Usa l\'acqua di cottura', how: 'Un cucchiaio d\'acqua ricca d\'amido lega burro e formaggio in una salsa lucida che avvolge.' },
+    },
     'it_pomodoro': {
       name: 'Spaghetti al pomodoro',
       ings: [
@@ -260,7 +424,7 @@ GOHAN_PACK_TR('IT', 'it', {
         'Scalda l\'olio con lo spicchio d\'aglio (e il peperoncino) in una padella grande, aggiungi gli spinaci e mescola finché appassiscono, 3-4 minuti.',
         'Sala, cuoci ancora 1 minuto per far evaporare l\'acqua e servi.'
       ],
-      tip: { add: 'Una spremuta di limone sul piatto', why: 'Esalta il sapore e aiuta ad assorbire il ferro', skill: 'Padella grande', how: 'Aggiungi gli spinaci a manciate; si riducono a una piccola parte del volume.' }
+      tip: { add: 'Una spremuta di limone sul piatto', why: 'Esalta il sapore e rinfresca il gusto terroso degli spinaci', skill: 'Padella grande', how: 'Aggiungi gli spinaci a manciate; si riducono a una piccola parte del volume.' }
     },
     'it_peperonata': {
       name: 'Peperonata',
@@ -391,7 +555,7 @@ GOHAN_PACK_TR('IT', 'it', {
         'Togli le verdure (mangiale a parte con olio e sale, oppure schiacciale e rimettile) e riporta il brodo a bollore.',
         'Aggiungi la pastina e cuoci, mescolando, per il tempo indicato sulla confezione (4-6 minuti). Unisci l\'olio o il burro e servi con il Parmigiano.'
       ],
-      tip: { add: 'Una noce di burro e Parmigiano alla fine', why: 'È la cena di conforto che le famiglie italiane preparano per i bambini e per chi non sta bene', skill: 'Cuocere la pastina all\'ultimo', how: 'La pastina continua ad assorbire brodo; cuocila poco prima di mangiare così la minestra resta brodosa.' }
+      tip: { add: 'Una noce di burro e Parmigiano alla fine', why: 'È la cena semplice e di conforto che le famiglie italiane preparano, soprattutto per i bambini', skill: 'Cuocere la pastina all\'ultimo', how: 'La pastina continua ad assorbire brodo; cuocila poco prima di mangiare così la minestra resta brodosa.' }
     },
     'it_brodopollo': {
       name: 'Brodo di pollo',
@@ -1026,7 +1190,7 @@ GOHAN_PACK_TR('IT', 'it', {
       steps: [
         'In una padella larga scalda l\'olio con l\'aglio (e il peperoncino), aggiungi il pomodoro e un pizzico di sale e cuoci per 10-12 minuti finché si addensa.',
         'Con un cucchiaio fai 4 incavi nel sugo e rompi un uovo in ognuno. Sala leggermente le uova.',
-        'Copri e cuoci a fuoco basso per 5-7 minuti, finché l\'albume è rappreso e il tuorlo ancora morbido.',
+        'Copri e cuoci a fuoco basso per 5-7 minuti, finché l\'albume è rappreso e il tuorlo ancora morbido (per bambini piccoli e in gravidanza, 2-3 minuti in più, finché anche il tuorlo è sodo).',
         'Completa con basilico e Parmigiano grattugiato e servi direttamente in padella con pane per la scarpetta.'
       ],
       tip: { add: 'Un cucchiaio di ragù avanzato o piselli nel sugo', why: 'Trasforma una cena veloce in una più ricca', skill: 'Coprire la padella', how: 'Il vapore rapprende l\'albume in superficie mentre il tuorlo resta morbido.' }
@@ -1377,6 +1541,192 @@ GOHAN_PACK_TR('IT', 'it', {
         'Gratina per 5-8 minuti, finché il formaggio fonde e diventa dorato. Servili così, o con le uova all\'occhio di bue sopra, alla milanese.'
       ],
       tip: { add: 'Un uovo all\'occhio di bue sopra', why: 'Intingere gli asparagi nel tuorlo è l\'uso milanese', skill: 'Pelare i gambi', how: 'Pelare la parte bassa fa cuocere l\'asparago in modo uniforme e tenero.' }
-    }
+    },
+    'it_aglioolio': {
+      name: 'Spaghetti aglio, olio e peperoncino',
+      ings: [['Spaghetti', '200 g'], ['Aglio', '3 spicchi'], ['Prezzemolo', 'un piccolo ciuffo']],
+      seas: '4 cucchiai di olio extravergine di oliva · 1 peperoncino secco (o 1/2 cucchiaino di peperoncino in fiocchi) · sale per l’acqua della pasta',
+      steps: [
+        'Portate a ebollizione una pentola grande d’acqua e salatela bene (circa 10 g per litro). Cuocete gli spaghetti 1 minuto meno di quanto indicato sulla confezione.',
+        'Nel frattempo affettate sottilmente l’aglio, sbriciolate il peperoncino e tritate il prezzemolo. Scaldate l’olio con l’aglio e il peperoncino in una padella ampia a fuoco basso per 3-4 minuti, finché l’aglio è dorato chiaro e profumato; non deve scurirsi.',
+        'Tenete da parte una tazza di acqua di cottura. Trasferite gli spaghetti in padella con le pinze, aggiungete 4 cucchiai di acqua di cottura e saltate a fuoco medio per 1 minuto, finché il condimento diventa cremoso e avvolge la pasta.',
+        'Aggiungete il prezzemolo, mescolate e servite subito con un filo d’olio a crudo.'
+      ],
+      tip: { add: 'Un mestolino di acqua di cottura, e altro se serve', why: 'L’amido dell’acqua lega l’olio in una crema vellutata', skill: 'Partire con l’aglio nell’olio freddo', how: 'Il calore dolce insaporisce l’olio; l’aglio nell’olio già caldo brucia subito e diventa amaro.' }
+    },
+    'it_cacioepepe': {
+      name: 'Spaghetti cacio e pepe',
+      ings: [['Spaghetti o tonnarelli', '200 g'], ['Pecorino romano grattugiato finemente', '80 g'], ['Pepe nero in grani', '2 cucchiaini']],
+      seas: 'sale per l’acqua della pasta (meno del solito, il formaggio è sapido)',
+      steps: [
+        'Portate a ebollizione una pentola d’acqua e salatela poco (circa 5 g per litro). Cuocete la pasta al dente, 1 minuto meno di quanto indicato sulla confezione.',
+        'Mentre cuoce, tostate il pepe schiacciato grossolanamente in una padella ampia asciutta a fuoco medio per 1 minuto, finché profuma. Aggiungete un mestolo di acqua di cottura e spegnete il fuoco.',
+        'In una ciotola mescolate il pecorino con 4 cucchiai di acqua di cottura tiepida (non bollente) fino a ottenere una crema densa e liscia.',
+        'Aggiungete la pasta scolata alla padella del pepe con un altro po’ di acqua di cottura e saltate a fuoco basso per 30 secondi. Togliete dal fuoco, unite la crema di pecorino e mescolate rapidamente finché la salsa è lucida e avvolge la pasta. Servite subito con altro pepe.'
+      ],
+      tip: { add: 'Grattugiare il pecorino finissimo, quasi in polvere', why: 'Il formaggio fine si scioglie liscio; se è grosso fa grumi', skill: 'Mantecare il formaggio fuori dal fuoco', how: 'Con la temperatura bassa il pecorino non si fila in grumi nella padella.' }
+    },
+    it_pasta_ceci: {
+      name: 'Pasta e ceci',
+      ings: [
+        ['Pasta corta (ditalini)', '160 g'],
+        ['Ceci già cotti', '1 barattolo (400 g)'],
+        ['Passata di pomodoro', '150 g'],
+        ['Rosmarino', '1 rametto'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 2 spicchi d’aglio · Peperoncino (facoltativo) · 600 ml di acqua',
+      steps: [
+        'Scaldate 3 cucchiai di olio con l’aglio schiacciato e il rosmarino per 2 minuti. Aggiungete la passata e cuocete 5 minuti.',
+        'Unite i ceci scolati e l’acqua e cuocete 10 minuti. Schiacciate un mestolo di ceci con una forchetta per addensare.',
+        'Aggiungete la pasta e cuocete 8-10 minuti mescolando, finché è morbida e cremosa. Aggiustate di sale e pepe, togliete il rosmarino e servite con un filo di olio a crudo.',
+      ],
+    },
+    it_pasta_fagioli_v: {
+      name: 'Pasta e fagioli',
+      ings: [
+        ['Fagioli borlotti già cotti', '1 barattolo (400 g)'],
+        ['Pasta corta', '150 g'],
+        ['Passata di pomodoro', '150 g'],
+        ['Carota', '1'],
+        ['Sedano', '1 costa'],
+        ['Cipolla', '1/2'],
+      ],
+      seas: 'Sale · pepe · 4 cucchiai di olio extravergine d’oliva · 1 foglia di alloro · 700 ml di acqua',
+      steps: [
+        'Tritate finemente cipolla, carota e sedano e fateli soffriggere in 3 cucchiai di olio per 8 minuti.',
+        'Aggiungete la passata, l’alloro, i fagioli scolati e l’acqua e cuocete 15 minuti. Schiacciate alcuni fagioli con una forchetta per addensare.',
+        'Unite la pasta e cuocete 8-10 minuti finché è morbida, aggiungendo un po’ d’acqua se si asciuga troppo. Aggiustate di sale e pepe e completate con il resto dell’olio.',
+      ],
+    },
+    'it_macedonia': {
+      name: 'Macedonia di frutta fresca',
+      ings: [['Mela', '1'], ['Arance', '2'], ['Banana', '1']],
+      seas: 'succo di 1/2 limone · 1 cucchiaino di zucchero',
+      steps: [
+        'Sbucciate le arance, tagliatele a pezzi e conservate il succo. Tagliate la mela e la banana a cubetti.',
+        'Mescolate la frutta in una ciotola con il succo di limone e lo zucchero perché non scurisca.',
+        'Lasciate riposare 5 minuti e servite.',
+      ],
+    },
+    'it_yogurt_frutta': {
+      name: 'Yogurt con frutta e miele',
+      ings: [['Yogurt bianco', '250 g'], ['Banana', '1'], ['Mela', '1']],
+      seas: '2 cucchiaini di miele',
+      steps: [
+        'Versate lo yogurt in due ciotole.',
+        'Affettate la banana e tagliate la mela a cubetti.',
+        'Completate lo yogurt con la frutta e un filo di miele.',
+      ],
+    },
+    'it_uova_pane': {
+      name: 'Uova strapazzate con pane tostato',
+      ings: [['Uova', '4'], ['Pane', '2 fette'], ['Burro', '1 cucchiaio']],
+      seas: 'sale · pepe',
+      steps: [
+        'Sbattete le uova con sale e pepe. Tostate il pane.',
+        'Sciogliete il burro in padella a fuoco basso, aggiungete le uova e mescolate lentamente per 2-3 minuti, finché sono appena rapprese e ancora cremose.',
+        'Servite le uova sul pane tostato.',
+      ],
+    },
+    "it_zucchineripiene": {
+      name: "Zucchine ripiene di ricotta",
+      ings: [["Zucchine", "3 (600 g)"], ["Ricotta", "200 g"], ["Parmigiano grattugiato", "40 g"], ["Uovo", "1"]],
+      seas: "2 cucchiai d'olio d'oliva · Qualche foglia di basilico · Noce moscata · Sale · Pepe",
+      steps: [
+        "Scaldate il forno a 200 °C. Tagliate le zucchine a metà nel senso della lunghezza, svuotatele, tritate la polpa e fatela saltare in padella con 1 cucchiaio d'olio per 4 minuti.",
+        "Mescolate la ricotta con la polpa cotta, l'uovo, metà del parmigiano, il basilico spezzettato, la noce moscata, sale e pepe.",
+        "Farcite le zucchine, cospargete con il parmigiano rimasto, irrorate d'olio e cuocete in una pirofila in forno per 25 minuti, finché sono dorate.",
+      ],
+    },
+    "it_involtinimelanzane": {
+      name: "Involtini di melanzane alla ricotta",
+      ings: [["Melanzane grandi", "2 (500 g)"], ["Ricotta", "200 g"], ["Passata di pomodoro", "300 g"], ["Parmigiano grattugiato", "30 g"]],
+      seas: "3 cucchiai d'olio d'oliva · 1 spicchio d'aglio · Qualche foglia di basilico · Sale · Pepe",
+      steps: [
+        "Scaldate il forno a 190 °C. Tagliate le melanzane per il lungo a fette di 5 mm e grigliatele in padella con poco olio finché sono morbide.",
+        "Fate cuocere la passata in un pentolino con l'aglio, il basilico, il sale e 1 cucchiaio d'olio per 10 minuti. Condite la ricotta con sale, pepe e metà del parmigiano.",
+        "Spalmate un cucchiaio di ricotta su ogni fetta e arrotolate. Disponete gli involtini in una pirofila su metà del sugo, copriteli con il resto, cospargete di parmigiano e infornate per 20 minuti.",
+      ],
+    },
+    "it_ceciespinaci": {
+      name: "Ceci e spinaci in umido",
+      ings: [["Ceci lessati o in scatola, scolati", "150 g"], ["Spinaci", "400 g"], ["Passata di pomodoro", "200 g"], ["Cipolla", "1/4"]],
+      seas: "3 cucchiai d'olio d'oliva · 2 spicchi d'aglio · 1 pizzico di peperoncino · 1 rametto di rosmarino · Sale",
+      steps: [
+        "Tritate la cipolla e fatela soffriggere con l'aglio, il peperoncino e il rosmarino nell'olio in un tegame largo per 4 minuti.",
+        "Aggiungete la passata e i ceci e cuocete per 10 minuti.",
+        "Unite gli spinaci un po’ alla volta, lasciateli appassire, togliete il rosmarino e regolate di sale.",
+      ],
+    },
+    "it_asparagibismarck": {
+      name: "Asparagi alla Bismarck",
+      ings: [["Asparagi verdi", "500 g"], ["Uova", "4"], ["Parmigiano grattugiato", "40 g"]],
+      seas: "30 g di burro · Sale · Pepe nero",
+      steps: [
+        "Pulite gli asparagi e lessateli in una pentola larga di acqua salata bollente per 5–6 minuti. Scolateli e disponeteli nei piatti.",
+        "Cospargete gli asparagi di parmigiano.",
+        "Cuocete le uova al tegamino nel burro in padella, adagiatele sugli asparagi, versate sopra il burro nocciola e condite con sale e pepe.",
+      ],
+    },
+    "it_ciambotta": {
+      name: "Ciambotta di verdure",
+      ings: [["Melanzana", "1 (300 g)"], ["Peperoni", "2"], ["Zucchine", "2"], ["Pomodorini", "300 g"], ["Cipolla", "1"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · Qualche foglia di basilico · Sale · Peperoncino",
+      steps: [
+        "Tagliate a tocchi melanzana, peperoni e zucchine, affettate la cipolla e dividete a metà i pomodorini.",
+        "Scaldate l'olio in una pentola capiente e cuocete cipolla e peperoni per 8 minuti. Aggiungete la melanzana e l'aglio e cuocete per 5 minuti.",
+        "Unite zucchine e pomodorini, salate, aggiungete il peperoncino, coprite e cuocete per 20 minuti mescolando ogni tanto. Finite con il basilico.",
+      ],
+    },
+    "it_melanzanefunghetto": {
+      name: "Melanzane a funghetto",
+      ings: [["Melanzane", "2 (500 g)"], ["Pomodorini", "250 g"]],
+      seas: "5 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · 1 cucchiaio di prezzemolo tritato · Qualche foglia di basilico · Sale",
+      steps: [
+        "Tagliate le melanzane a cubetti di 2 cm e i pomodorini a metà.",
+        "Scaldate l'olio con l'aglio in una padella ampia e saltate le melanzane a fuoco vivo per 10 minuti, mescolando, finché sono dorate e morbide.",
+        "Unite i pomodorini, salate e cuocete per 8 minuti finché i pomodorini si disfano. Finite con prezzemolo e basilico.",
+      ],
+    },
+    "it_cavolfioreaffogato": {
+      name: "Cavolfiore affogato",
+      ings: [["Cavolfiore", "1 (700 g)"], ["Cipolla", "1"], ["Olive nere", "12"], ["Pomodorini", "150 g"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 100 ml di vino rosso · 1 cucchiaio di capperi · Sale · Pepe",
+      steps: [
+        "Dividete il cavolfiore in cimette e affettate sottilmente la cipolla.",
+        "In una pentola disponete metà della cipolla, poi il cavolfiore, le olive, i capperi, i pomodorini a metà e il resto della cipolla. Irrorate con l'olio e il vino e condite.",
+        "Coprite e cuocete a fuoco basso per 25-30 minuti senza mescolare, scuotendo ogni tanto la pentola, finché il cavolfiore è tenero.",
+      ],
+    },
+    "it_ziminoceci": {
+      name: "Zimino di ceci",
+      ings: [["Bietole", "500 g"], ["Ceci in scatola, scolati", "100 g"], ["Passata di pomodoro", "100 ml"], ["Cipolla", "1"], ["Carota", "1"], ["Sedano", "1 costa"]],
+      seas: "3 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · 100 ml d'acqua · Sale · Peperoncino",
+      steps: [
+        "Tritate finemente cipolla, carota e sedano. Lavate le bietole e tagliatele a strisce.",
+        "Scaldate l'olio in una pentola e fate soffriggere le verdure tritate con l'aglio per 8 minuti. Unite le bietole e fatele appassire.",
+        "Aggiungete passata, ceci e acqua, salate, unite il peperoncino, coprite e cuocete per 15 minuti.",
+      ],
+    },
+    "it_scarolafagioli": {
+      name: "Scarola e fagioli",
+      ings: [["Scarola", "1 cespo (500 g)"], ["Fagioli cannellini in scatola, scolati", "150 g"], ["Olive nere", "10"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 2 spicchi d'aglio · 1 cucchiaio di capperi · 200 ml d'acqua · Sale · Peperoncino",
+      steps: [
+        "Lavate bene la scarola e tagliatela a strisce larghe.",
+        "Scaldate l'olio in una pentola con l'aglio e il peperoncino, unite la scarola, coprite e fatela appassire per 5 minuti.",
+        "Aggiungete fagioli, olive, capperi e acqua, salate e cuocete per 10 minuti.",
+      ],
+    },
+    "it_carciofipiselli": {
+      name: "Carciofi e piselli",
+      ings: [["Carciofi", "3"], ["Piselli surgelati", "100 g"], ["Cipollotto o cipolla piccola", "1/2"], ["Limone", "1"]],
+      seas: "4 cucchiai di olio extravergine d'oliva · 1 spicchio d'aglio · 1 cucchiaio di prezzemolo tritato · Qualche foglia di mentuccia · 150 ml d'acqua · Sale · Pepe",
+      steps: [
+        "Pulite i carciofi fino alle foglie tenere, tagliateli a spicchi, eliminate la barba e teneteli in acqua e succo di limone. Affettate il cipollotto.",
+        "Scaldate l'olio in una pentola e fate appassire cipollotto e aglio per 4 minuti. Unite i carciofi e l'acqua, salate, pepate, coprite e cuocete per 15 minuti.",
+        "Aggiungete i piselli e cuocete altri 8 minuti finché tutto è tenero. Finite con prezzemolo e mentuccia.",
+      ],
+    },
   }
 });

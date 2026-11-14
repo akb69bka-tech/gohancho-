@@ -2,6 +2,13 @@
 GOHAN_PACK_TR('PL', 'pl', {
   staple: "Chleb",
   names: {
+    "cheese": "Ser żółty",
+    "kohlrabi": "Kalarepa",
+    'millet': 'Kasza jaglana',
+    'butter': 'Masło',
+    'ham': 'Szynka gotowana',
+    "oats": "Płatki owsiane",
+    "semolina": "Kasza manna",
     'pork': "Wieprzowina", 'ground pork': "Mięso mielone", 'chicken': "Kurczak", 'beef': "Wołowina", 'fish': "Ryba", 'egg': "Jajka",
     'flour': "Mąka", 'breadcrumbs': "Bułka tarta", 'bread': "Chleb", 'potato': "Ziemniaki", 'onion': "Cebula", 'dill': "Koperek",
     'quark': "Twaróg", 'sour cream': "Śmietana", 'milk': "Mleko", 'lemon': "Cytryna", 'bell pepper': "Papryka",
@@ -19,6 +26,201 @@ GOHAN_PACK_TR('PL', 'pl', {
     'lettuce': "Sałata", 'horseradish': "Chrzan", 'herring': "Śledzie", 'raisins': "Rodzynki", 'corn': "Kukurydza",
   },
   recipes: {
+    "pl_rosolwarzywa": {
+      name: "Rosół z warzywami",
+      ings: [["Udka z kurczaka bez kości", "200 g"], ["Marchew", "50 g"], ["Pietruszka (korzeń)", "40 g"], ["Por", "60 g"], ["Seler", "40 g"], ["Natka pietruszki", "5 g"]],
+      seas: "1 litr wody · 2 ziela angielskie · 1 liść laurowy · Sól · Pieprz",
+      steps: [
+        "Kurczaka zalej zimną wodą, dodaj ziele angielskie i liść laurowy, doprowadź do lekkiego wrzenia i zbierz szumowiny.",
+        "Dodaj warzywa pokrojone w kawałki i gotuj na bardzo małym ogniu 30 minut.",
+        "Dopraw, pokrój warzywa i mięso do talerzy i posyp natką.",
+      ],
+    },
+    "pl_kremcukinia": {
+      name: "Krem z cukinii",
+      ings: [["Cukinia", "350 g"], ["Cebula", "40 g"], ["Śmietanka", "40 ml"], ["Koperek", "5 g"]],
+      seas: "500 ml bulionu warzywnego · 1 łyżka masła · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Pokrój cukinię, cebulę i czosnek.",
+        "Zeszklij cebulę i czosnek na maśle, dodaj cukinię i bulion i gotuj 12 minut.",
+        "Zmiksuj ze śmietanką, dopraw i posyp koperkiem.",
+      ],
+    },
+    "pl_zupafasolka": {
+      name: "Zupa z fasolki szparagowej",
+      ings: [["Fasolka szparagowa", "250 g"], ["Marchew", "40 g"], ["Kwaśna śmietana", "50 g"], ["Koperek", "5 g"]],
+      seas: "800 ml bulionu warzywnego lub drobiowego · 1 łyżka masła · Sól · Pieprz",
+      steps: [
+        "Pokrój fasolkę na krótkie kawałki, marchew zetrzyj.",
+        "Gotuj fasolkę i marchew w bulionie 15 minut.",
+        "Śmietanę zahartuj chochlą gorącej zupy, wlej do garnka, dodaj masło i koperek i dopraw.",
+      ],
+    },
+    "pl_kremseler": {
+      name: "Krem z selera",
+      ings: [["Seler korzeniowy", "250 g"], ["Cebula", "40 g"], ["Śmietanka", "40 ml"]],
+      seas: "600 ml bulionu warzywnego · 1 łyżka masła · Gałka muszkatołowa · Sól · Pieprz",
+      steps: [
+        "Obierz i pokrój seler w kostkę, posiekaj cebulę.",
+        "Zeszklij cebulę na maśle, dodaj seler i bulion i gotuj 20 minut.",
+        "Zmiksuj ze śmietanką, dopraw gałką muszkatołową, solą i pieprzem.",
+      ],
+    },
+    "pl_zupakalarepa": {
+      name: "Zupa z kalarepy",
+      ings: [["Kalarepa", "300 g"], ["Marchew", "40 g"], ["Koperek", "5 g"], ["Kwaśna śmietana", "40 g"]],
+      seas: "800 ml bulionu drobiowego lub warzywnego · 1 łyżka masła · Sól · Pieprz",
+      steps: [
+        "Obierz i pokrój w kostkę kalarepę i marchew.",
+        "Gotuj je w bulionie 15 minut, aż zmiękną.",
+        "Dodaj masło, koperek i, jeśli lubisz, śmietanę, i dopraw.",
+      ],
+    },
+    "pl_rosolwolowy": {
+      name: "Rosół wołowy z warzywami",
+      ings: [["Wołowina (pręga lub mostek)", "200 g"], ["Marchew", "50 g"], ["Por", "60 g"], ["Seler", "40 g"], ["Natka pietruszki", "5 g"]],
+      seas: "1,2 litra wody · 2 ziela angielskie · 1 liść laurowy · Sól · Pieprz",
+      steps: [
+        "Wołowinę zalej zimną wodą, powoli doprowadź do wrzenia i zbierz szumowiny.",
+        "Dodaj ziele angielskie, liść laurowy i warzywa pokrojone w kawałki i gotuj na małym ogniu 45 minut.",
+        "Dopraw, pokrój mięso i warzywa do talerzy i dodaj natkę.",
+      ],
+    },
+    "pl_salatkarzodkiewka": {
+      name: "Sałatka z rzodkiewki i ogórka",
+      ings: [["Rzodkiewki", "120 g"], ["Ogórek", "200 g"], ["Koperek", "5 g"], ["Kwaśna śmietana", "60 g"]],
+      seas: "Sól · Pieprz · 1 łyżeczka soku z cytryny",
+      steps: [
+        "Pokrój cienko rzodkiewki i ogórek, posiekaj koperek.",
+        "Wymieszaj śmietanę z sokiem z cytryny, solą i pieprzem.",
+        "Połącz wszystko tuż przed podaniem.",
+      ],
+    },
+    "pl_kurczakcukinia": {
+      name: "Kurczak z cukinią i papryką",
+      ings: [["Pierś z kurczaka", "350 g"], ["Cukinia", "200 g"], ["Czerwona papryka", "1"], ["Cebula", "50 g"]],
+      seas: "1,5 łyżki oleju · 1 łyżeczka słodkiej papryki · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Pokrój kurczaka w paski i dopraw papryką, solą i pieprzem. Warzywa pokrój w paski.",
+        "Smaż kurczaka na oleju 5–6 minut, aż się zetnie, i odłóż.",
+        "Smaż cebulę, paprykę, cukinię i czosnek 5 minut, dodaj kurczaka, wymieszaj i dopraw.",
+      ],
+    },
+    "pl_owsianka": {
+      name: "Owsianka",
+      ings: [["Płatki owsiane", "80 g"], ["Mleko", "400 ml"], ["Jabłko, starte", "1"]],
+      seas: "Szczypta soli · 1 łyżeczka miodu (opcjonalnie)",
+      steps: [
+        "Zagotuj mleko z solą.",
+        "Wsyp płatki i gotuj 5 minut na małym ogniu, mieszając, aż będzie kremowo.",
+        "Podawaj na ciepło z tartym jabłkiem i odrobiną miodu.",
+      ],
+    },
+    "pl_kaszka_manna": {
+      name: "Kaszka manna",
+      ings: [["Kasza manna", "60 g"], ["Mleko", "500 ml"]],
+      seas: "Szczypta soli · 1 łyżka cukru · 1 łyżeczka masła",
+      steps: [
+        "Zagotuj mleko z solą i cukrem.",
+        "Wsypuj kaszę cienkim strumieniem, mieszając trzepaczką, i zmniejsz ogień.",
+        "Gotuj 3–4 minuty, mieszając, aż zgęstnieje. Dodaj masło i podawaj na ciepło.",
+      ],
+    },
+    "pl_kleik_ryzowy": {
+      name: "Kleik ryżowy z marchewką",
+      ings: [["Ryż biały", "80 g"], ["Marchewka, drobno pokrojona", "1"]],
+      seas: "1,2 litra wody · 1/2 łyżeczki soli · 1 łyżeczka masła (opcjonalnie)",
+      steps: [
+        "Opłucz ryż i włóż go do garnka z wodą i marchewką.",
+        "Zagotuj i gotuj 35–40 minut na małym ogniu pod uchyloną pokrywką, od czasu do czasu mieszając, aż ryż będzie bardzo miękki, a płyn gęsty.",
+        "Lekko rozgnieć lub przemieszaj na gładko, posól, dodaj masło i podawaj na ciepło.",
+      ],
+    },
+    "pl_groszkowa": {
+      name: "Szybka zupa krem z zielonego groszku",
+      ings: [["Mrożony zielony groszek", "300 g"], ["Cebula", "1/2"], ["Śmietana 18%", "50 ml"]],
+      seas: "500 ml bulionu warzywnego · 1 łyżka masła · Sól · Pieprz · Posiekany koperek",
+      steps: [
+        "Cebulę pokrój w kostkę i zeszklij na maśle przez 2 minuty. Dodaj groszek i bulion i gotuj 5 minut.",
+        "Zmiksuj na gładko (uwaga, gorące), wmieszaj śmietanę, dopraw i posyp koperkiem.",
+      ],
+      tip: { add: "Garść grzanek", why: "Chrupiące na gładkim kremie", skill: "Miksuj od razu", how: "Zmiksowany od razu groszek zachowuje intensywny kolor." },
+    },
+    "pl_chlodnik_ogorkowy": {
+      name: "Chłodnik ogórkowy",
+      ings: [["Ogórki gruntowe", "2"], ["Kefir", "500 ml"], ["Rzodkiewki", "4"], ["Koperek", "1 mały pęczek"]],
+      seas: "1 mały ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Ogórki zetrzyj na grubych oczkach, rzodkiewki pokrój w cienkie plasterki, posiekaj koperek i zmiażdż czosnek.",
+        "Wszystko wymieszaj z zimnym kefirem, dopraw solą i pieprzem i od razu podawaj.",
+      ],
+      tip: { add: "Ziemniaki z koperkiem obok", why: "Klasyczne letnie połączenie", skill: "Kefir prosto z lodówki", how: "Zimny kefir sprawia, że zupy nie trzeba schładzać." },
+    },
+    "pl_szpinakowa": {
+      name: "Szybka zupa szpinakowa",
+      ings: [["Mrożony szpinak rozdrobniony", "200 g"], ["Jajka ugotowane na twardo", "2"], ["Śmietana 18%", "50 ml"]],
+      seas: "700 ml bulionu warzywnego · 1 ząbek czosnku · Sól · Pieprz · Szczypta gałki muszkatołowej",
+      steps: [
+        "Zagotuj bulion z mrożonym szpinakiem i zmiażdżonym czosnkiem i gotuj 5 minut, mieszając.",
+        "Wmieszaj śmietanę i gałkę, dopraw i podawaj z przekrojonymi jajkami.",
+      ],
+      tip: { add: "Kromka chleba żytniego", why: "Zupa staje się sycąca", skill: "Miej ugotowane jajka", how: "Z gotowymi jajkami zupa zajmuje kilka minut." },
+    },
+    'pl_jajecznica': {
+      name: 'Jajecznica z kiełbasą',
+      ings: [['Jajka', '5'], ['Kiełbasa', '150 g'], ['Cebula', '1/2'], ['Szczypiorek', 'mały pęczek'], ['Chleb żytni, do podania', '4 kromki']],
+      seas: '10 g masła · Sól · Pieprz',
+      steps: [
+        'Kiełbasę pokrój w kostkę, a cebulę drobno posiekaj.',
+        'Roztop masło na patelni na średnim ogniu i smaż kiełbasę z cebulą 4 minuty, aż się zrumienią.',
+        'Wlej jajka roztrzepane ze szczyptą soli i mieszaj delikatnie 1-2 minuty, aż się zetną. Dopraw pieprzem, posyp szczypiorkiem i podawaj z chlebem.',
+      ],
+      tip: { add: 'Pokrojony pomidor obok', why: 'Świeży i soczysty przy wędzonej kiełbasie', skill: 'Nie za sucha', how: 'Zdejmij jajka z ognia, póki są jeszcze miękkie; dojdą na gorącej patelni.' },
+    },
+    'pl_kielbasacebula': {
+      name: 'Kiełbasa smażona z cebulą',
+      ings: [['Kiełbasa', '300 g'], ['Cebula', '2'], ['Chleb, do podania', '4 kromki'], ['Ogórki kiszone, do podania', '2']],
+      seas: '1 łyżka oleju · 1 łyżeczka musztardy · 1/2 łyżeczki słodkiej papryki · Sól · Pieprz',
+      steps: [
+        'Kiełbasę pokrój w grube ukośne plastry, a cebulę w półplasterki.',
+        'Rozgrzej olej na patelni na średnio-wysokim ogniu i smaż kiełbasę 3 minuty, aż się zrumieni.',
+        'Dodaj cebulę i paprykę i smaż, mieszając, 4-5 minut, aż cebula zmięknie i się zezłoci. Dopraw i podawaj z musztardą, chlebem i ogórkami.',
+      ],
+      tip: { add: 'Odrobina piwa na koniec', why: 'Powstaje sosik, a smak jest głębszy', skill: 'Kroić ukośnie', how: 'Długie ukośne plastry mają więcej powierzchni do zrumienienia, więc są bardziej aromatyczne.' },
+    },
+    'pl_rybadokoperek': {
+      name: 'Filet rybny z patelni z koperkiem',
+      ings: [['Filety z białej ryby (dorsz lub mintaj)', '2 (300 g)'], ['Cytryna', '1/2'], ['Koperek', 'mały pęczek'], ['Ogórki, do podania', '1']],
+      seas: '2 łyżki mąki · 1 łyżka oleju · 15 g masła · Sól · Pieprz',
+      steps: [
+        'Osusz rybę, dopraw solą i pieprzem i obtocz w mące.',
+        'Rozgrzej olej z masłem na patelni na średnio-wysokim ogniu i smaż rybę 3 minuty z jednej strony i 2 minuty z drugiej, aż się zrumieni i zacznie się rozpadać.',
+        'Skrop cytryną, posyp obficie posiekanym koperkiem i podawaj z plasterkami ogórka.',
+      ],
+      tip: { add: 'Łyżka śmietany wymieszana z koperkiem', why: 'Szybki, kremowy sos', skill: 'Strzepnąć mąkę', how: 'Cienka warstwa rumieni się równo; za dużo mąki robi się klejące.' },
+    },
+    'pl_kurczakkoperek': {
+      name: 'Kurczak w sosie koperkowym',
+      ings: [['Pierś z kurczaka', '300 g'], ['Śmietana 18%', '150 g'], ['Koperek', 'mały pęczek'], ['Cebula', '1/2'], ['Chleb, do podania', '4 kromki']],
+      seas: '1 łyżka oleju · 1 łyżeczka mąki · Sól · Pieprz',
+      steps: [
+        'Kurczaka pokrój w cienkie paski, a cebulę i koperek drobno posiekaj.',
+        'Rozgrzej olej na patelni na dużym ogniu i smaż kurczaka z cebulą 4-5 minut, aż się zrumieni i będzie upieczony w środku.',
+        'Wymieszaj śmietanę z mąką, wmieszaj na patelnię poza ogniem, a potem podgrzewaj delikatnie 1 minutę, nie zagotowując. Dopraw i wmieszaj koperek.',
+      ],
+      tip: { add: 'Kilka plasterków pieczarek z kurczakiem', why: 'Głębszy smak sosu', skill: 'Mąka chroni śmietanę', how: 'Śmietana wymieszana z odrobiną mąki i niezagotowana nie zważy się.' },
+    },
+    'pl_omletpieczarki': {
+      name: 'Omlet z pieczarkami i szczypiorkiem',
+      ings: [['Jajka', '5'], ['Pieczarki', '200 g'], ['Szczypiorek', 'mały pęczek'], ['Pomidory, do podania', '2']],
+      seas: '15 g masła · 1 łyżka mleka · Sól · Pieprz',
+      steps: [
+        'Pieczarki pokrój w plasterki i smaż na połowie masła na średnio-wysokim ogniu 4 minuty, aż się zrumienią; odłóż.',
+        'Roztrzep jajka z mlekiem, solą i pieprzem. Roztop resztę masła, wlej jajka i smaż 2 minuty na średnim ogniu, unosząc brzegi, żeby płynne jajko spływało pod spód.',
+        'Rozłóż pieczarki na połowie, posyp szczypiorkiem, złóż na pół i podawaj z plasterkami pomidora.',
+      ],
+      tip: { add: 'Trochę startego twardego sera w środku', why: 'Rozpływa się w pieczarkach', skill: 'Unosić brzegi', how: 'Przesuwanie ściętych brzegów do środka pozwala płynnemu jajku dotknąć gorącej patelni, więc omlet smaży się szybko i równo.' },
+    },
     'pl_schabowy': {
       name: "Kotlet schabowy",
       ings: [
@@ -184,7 +386,7 @@ GOHAN_PACK_TR('PL', 'pl', {
         "Od razu wymieszaj z sokiem z cytryny, żeby jabłko nie ściemniało, a potem dodaj cukier, sól i olej.",
         "Odstaw na 5 minut przed podaniem.",
       ],
-      tip: { add: "Garść rodzynek", why: "Dzieci uwielbiają słodycz", skill: "Olej pomaga", how: "Olej pomaga organizmowi przyswoić witaminy z marchewki, więc nie pomijaj go." }
+      tip: { add: "Garść rodzynek", why: "Dzieci uwielbiają słodycz", skill: "Olej pomaga", how: "Olej podkreśla smak marchewki i łagodzi jej surowy posmak, więc nie pomijaj go." }
     },
     'pl_buraczki': {
       name: "Buraczki zasmażane",
@@ -875,16 +1077,16 @@ GOHAN_PACK_TR('PL', 'pl', {
     'pl_zeberka': {
       name: "Żeberka pieczone w miodzie",
       ings: [
-        ["Żeberka wieprzowe", "1 kg"],
+        ["Żeberka wieprzowe", "600 g"],
         ["Cebula", "1"],
-        ["Ziemniaki", "600 g"],
+        ["Ziemniaki", "400 g"],
       ],
-      seas: "Sól · Pieprz · 2 łyżki miodu · 1 łyżka musztardy · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki suszonego majeranku · 3 ząbki czosnku · 2 łyżki oleju",
+      seas: "Sól · Pieprz · 2 łyżki miodu · 1 łyżka musztardy · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki suszonego majeranku · 2 ząbki czosnku · 2 łyżki oleju",
       steps: [
         "Pokrój żeberka na porcje po 2–3 kości. Wymieszaj miód, musztardę, paprykę, majeranek, przeciśnięty czosnek, olej, sól i pieprz i natrzyj żeberka. Odstaw na co najmniej godzinę (lub na noc do lodówki).",
-        "Rozgrzej piekarnik do 170°C. Ułóż żeberka w naczyniu na pokrojonej cebuli, dodaj 100 ml wody, przykryj folią i piecz 1 1/2 godziny.",
+        "Rozgrzej piekarnik do 170°C. Ułóż żeberka w naczyniu na pokrojonej cebuli, dodaj 100 ml wody, przykryj folią i piecz 1 1/4 godziny.",
         "Zdejmij folię, ewentualnie rozłóż wokół ćwiartki ziemniaków, zwiększ temperaturę do 200°C i piecz jeszcze 25–30 minut, polewając sosem, aż będą lepkie i zrumienione.",
-        "Podawaj z ziemniakami i surówką z kiszonej kapusty.",
+        "Podawaj z ziemniakami i surówką z kiszonej kapusty. Nie podawaj miodu niemowlętom poniżej 1. roku życia, nawet po podgrzaniu.",
       ],
       tip: { add: "Surówka z kiszonej kapusty obok", why: "Jej kwaśność równoważy słodkie, tłuste żeberka", skill: "Najpierw nisko, potem wysoko", how: "Powolne pieczenie pod przykryciem zmiękcza mięso, a gorący finisz bez folii karmelizuje glazurę." }
     },
@@ -919,7 +1121,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       steps: [
         "Nastaw ziemniaki. Oczyść wątróbki z błon i zielonych plamek, opłucz i osusz.",
         "Zeszklij i zrumień pokrojoną cebulę (i cząstki jabłka) na maśle, a potem zdejmij z patelni.",
-        "Obtocz wątróbki w mące i smaż na oleju na dużym ogniu po 2–3 minuty z każdej strony, aż się zrumienią, ale w środku będą lekko różowe.",
+        "Obtocz wątróbki w mące i smaż na oleju na średnio dużym ogniu po 3–4 minuty z każdej strony, aż się zrumienią i będą dobrze wysmażone w środku, bez różowego koloru (przekrój jedną, aby sprawdzić).",
         "Dodaj z powrotem cebulę i majeranek i dopiero teraz dopraw solą i pieprzem. Podawaj z ziemniakami i ogórkiem kiszonym.",
       ],
       tip: { add: "Wcześniej namocz wątróbki w mleku na 30 minut", why: "Usuwa gorycz i łagodzi smak", skill: "Sól na końcu", how: "Solona przed smażeniem wątróbka twardnieje; dopraw ją na samym końcu." }
@@ -936,7 +1138,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       steps: [
         "Ugotuj ziemniaki w osolonej wodzie, odcedź i wymieszaj z odrobiną masła i posiekanym koperkiem.",
         "Rozpuść łyżkę masła na patelni, dodaj przeciśnięty czosnek i szpinak i duś, aż zwiędnie. Dopraw i ewentualnie wmieszaj śmietankę.",
-        "Usmaż jajka na pozostałym maśle na średnio-małym ogniu, aż białka się zetną, a żółtka pozostaną płynne.",
+        "Usmaż jajka na pozostałym maśle na średnio-małym ogniu, aż białka się zetną, a żółtka pozostaną płynne (dla małych dzieci i kobiet w ciąży smaż, aż żółtka się zetną).",
         "Podawaj jajka z ziemniakami i szpinakiem.",
       ],
       tip: { add: "Szklanka kefiru lub maślanki", why: "Klasyczny dodatek do tego piątkowego obiadu w polskich domach", skill: "Smaż jajka delikatnie", how: "Mały ogień i chwila pod pokrywką ścinają białko bez twardych, przypalonych brzegów." }
@@ -1195,7 +1397,7 @@ GOHAN_PACK_TR('PL', 'pl', {
       ],
       seas: "150 ml oleju rzepakowego lub słonecznikowego · Pieprz · 3 ziela angielskie · 1 liść laurowy · Szczypta cukru",
       steps: [
-        "Jeśli śledzie są bardzo słone, mocz je w zimnej wodzie lub mleku 1–2 godziny, potem odsącz i osusz.",
+        "Zacznij dzień wcześniej: śledzie muszą postać w lodówce co najmniej 12 godzin. Jeśli śledzie są bardzo słone, mocz je w zimnej wodzie lub mleku 1–2 godziny, potem odsącz i osusz.",
         "Pokrój filety na kawałki 2–3 cm, a cebulę w cienkie krążki.",
         "Układaj warstwami śledzie i cebulę w słoiku z zielem angielskim i liściem laurowym, posyp cukrem i pieprzem i zalej olejem.",
         "Wstaw do lodówki na co najmniej 12 godzin i podawaj z ziemniakami lub chlebem.",
@@ -1387,6 +1589,150 @@ GOHAN_PACK_TR('PL', 'pl', {
         "Dopraw solą i pieprzem i podawaj z ugotowanymi ziemniakami lub chlebem żytnim.",
       ],
       tip: { add: "Odrobina posiekanej cebuli", why: "Tak robi się wielkopolski gzik", skill: "Dopraw śmiało", how: "Twaróg jest mdły; nie żałuj soli i pieprzu i spróbuj." }
+    },
+    pl_golabki_wege: {
+      name: 'Gołąbki z kaszą i grzybami',
+      ings: [
+        ['Duże liście kapusty', '8'],
+        ['Kasza gryczana prażona', '100 g'],
+        ['Pieczarki', '200 g'],
+        ['Cebula', '1'],
+        ['Przecier pomidorowy', '300 g'],
+      ],
+      seas: 'Sól · pieprz · 3 łyżki oleju · 1 liść laurowy · 1 łyżeczka majeranku · 200 ml wody',
+      steps: [
+        'Liście kapusty sparzyć we wrzątku 3 minuty i wyciąć grubą nerwację. Kaszę gotować w 250 ml osolonej wody 12 minut.',
+        'Posiekaną cebulę i pieczarki smażyć na 2 łyżkach oleju 8 minut, wymieszać z kaszą, majerankiem, solą i pieprzem.',
+        'Na każdy liść nałożyć łyżkę farszu i zawinąć, zaginając boki. Ułożyć gołąbki szwem w dół w garnku z liściem laurowym, zalać przecierem rozrobionym z wodą i resztą oleju.',
+        'Przykryć i dusić na małym ogniu 40 minut, aż kapusta będzie miękka. Podawać z sosem.',
+      ],
+    },
+    pl_pierogi_kapusta: {
+      name: 'Pierogi z kapustą i grzybami',
+      ings: [
+        ['Mąka', '300 g'],
+        ['Kapusta kiszona', '300 g'],
+        ['Suszone grzyby', '20 g'],
+        ['Cebula', '1'],
+      ],
+      seas: 'Sól · pieprz · 4 łyżki oleju · 180 ml gorącej wody',
+      steps: [
+        'Suszone grzyby namoczyć w ciepłej wodzie 20 minut, ugotować 15 minut i posiekać. Mąkę wymieszać z solą, 1 łyżką oleju i gorącą wodą na gładkie ciasto i odstawić pod miską na 20 minut.',
+        'Posiekaną cebulę zeszklić na 2 łyżkach oleju, dodać opłukaną, posiekaną kapustę i grzyby i dusić 15 minut. Doprawić solą i pieprzem i ostudzić.',
+        'Ciasto cienko rozwałkować, wykrawać kółka, nałożyć łyżkę farszu i dokładnie zlepić brzegi.',
+        'Pierogi gotować w osolonej wodzie 4 minuty od wypłynięcia. Podawać od razu lub krótko podsmażyć na reszcie oleju.',
+      ],
+    },
+    pl_gulasz_soczewica: {
+      name: 'Gulasz z soczewicy',
+      ings: [
+        ['Brązowa soczewica', '200 g'],
+        ['Ziemniaki', '300 g'],
+        ['Marchewki', '2'],
+        ['Cebula', '1'],
+        ['Przecier pomidorowy', '200 g'],
+      ],
+      seas: 'Sól · pieprz · 2 łyżki oleju · 2 łyżeczki papryki słodkiej · 1 łyżeczka majeranku · 1 liść laurowy · 500 ml wody',
+      steps: [
+        'Posiekaną cebulę smażyć na oleju 5 minut. Dodać paprykę i majeranek i mieszać 30 sekund.',
+        'Dodać opłukaną soczewicę, marchewki w kostkę, ziemniaki w kostkę, przecier, liść laurowy i wodę.',
+        'Gotować 30 minut, aż soczewica i warzywa będą miękkie, a gulasz gęsty. Doprawić solą i pieprzem i podawać z chlebem.',
+      ],
+    },
+    pl_fasolka_wege: {
+      name: 'Fasolka po bretońsku bez mięsa',
+      ings: [
+        ['Biała fasola (gotowana lub z puszki)', '2 puszki (800 g)'],
+        ['Przecier pomidorowy', '300 g'],
+        ['Cebula', '1'],
+        ['Marchewka', '1'],
+      ],
+      seas: 'Sól · pieprz · 2 łyżki oleju · 3 ząbki czosnku · 1 łyżeczka papryki wędzonej · 1 łyżeczka majeranku · 1 liść laurowy · 100 ml wody',
+      steps: [
+        'Posiekaną cebulę i startą marchewkę smażyć na oleju 6 minut. Dodać czosnek, paprykę wędzoną i majeranek na 1 minutę.',
+        'Dodać przecier, liść laurowy, wodę i odsączoną fasolę.',
+        'Gotować 20 minut, aż sos zgęstnieje. Doprawić solą i pieprzem i podawać z chlebem.',
+      ],
+    },
+    'pl_jaglanka': {
+      name: 'Kasza jaglana z jabłkiem i cynamonem',
+      ings: [['Kasza jaglana', '1/2 szklanki (100 g)'], ['Jabłko', '1']],
+      seas: '500 ml wody · szczypta soli · 1/2 łyżeczki cynamonu · 1 łyżeczka cukru',
+      steps: [
+        'Opłucz kaszę na sitku gorącą wodą.',
+        'Ugotuj ją w wodzie z solą pod przykryciem na małym ogniu przez 15 minut, aż będzie miękka.',
+        'Jabłko zetrzyj lub pokrój w kostkę, dodaj z cynamonem i cukrem i gotuj 3 minuty. Odstaw pod przykryciem na 5 minut i podawaj.',
+      ],
+    },
+    'pl_jajecznica_maslo': {
+      name: 'Jajecznica na maśle z chlebem',
+      ings: [['Jajka', '4'], ['Masło', '1 łyżka'], ['Chleb', '2 kromki'], ['Szczypiorek', '1 mały pęczek?']],
+      seas: 'sól · pieprz',
+      steps: [
+        'Rozpuść masło na patelni na średnim lub małym ogniu.',
+        'Wbij jajka, dopraw solą i pieprzem i delikatnie mieszaj 2-3 minuty, aż się zetną.',
+        'Posyp posiekanym szczypiorkiem i podawaj z chlebem.',
+      ],
+    },
+    'pl_kanapki_szynka': {
+      name: 'Kanapki z szynką i ogórkiem',
+      ings: [['Chleb', '4 kromki'], ['Masło', '1 łyżka'], ['Szynka gotowana', '4 plasterki'], ['Ogórek', '1/2']],
+      seas: 'czarny pieprz do smaku',
+      steps: [
+        'Posmaruj chleb masłem.',
+        'Na każdą kromkę połóż plasterek szynki.',
+        'Ogórek pokrój w cienkie plasterki, ułóż na wierzchu i posyp odrobiną pieprzu.',
+      ],
+    },
+    "pl_gulaszpieczarki": {
+      name: "Gulasz z pieczarek",
+      ings: [["Pieczarki", "500 g"], ["Cebula", "1"], ["Czerwona papryka", "1"], ["Śmietana 18%", "100 g"]],
+      seas: "2 łyżki oleju · 1 łyżeczka słodkiej papryki · 1/2 łyżeczki ostrej papryki · 1 łyżeczka mąki · 150 ml wody · Sól · Pieprz · Koperek",
+      steps: [
+        "Pieczarki pokrój w plasterki, cebulę w kostkę, a paprykę w paski.",
+        "Cebulę podsmaż na oleju w dużym garnku przez 4 minuty, dodaj pieczarki i smaż 8 minut, aż odparuje woda. Dodaj paprykę, przyprawy i wodę i duś 10 minut.",
+        "Śmietanę wymieszaj z mąką i odrobiną sosu, wlej do garnka i podgrzewaj 2 minuty, nie gotując. Dopraw i posyp koperkiem.",
+      ],
+    },
+    "pl_kalafiorzapiekany": {
+      name: "Kalafior zapiekany z jajkiem i serem",
+      ings: [["Kalafior", "1 (700 g)"], ["Jajka", "2"], ["Śmietana 18%", "100 g"], ["Starty ser żółty", "80 g"]],
+      seas: "1 łyżka masła · Gałka muszkatołowa · Sól · Pieprz · Natka pietruszki",
+      steps: [
+        "Piekarnik nagrzej do 200°C. Kalafior podziel na różyczki i gotuj w garnku w osolonej wodzie 6 minut. Odcedź i przełóż do natłuszczonego naczynia do zapiekania.",
+        "Jajka roztrzep ze śmietaną, połową sera, gałką muszkatołową, solą i pieprzem i polej kalafior.",
+        "Posyp resztą sera i zapiekaj 20 minut na złoto. Posyp natką.",
+      ],
+    },
+    "pl_plackicukinia": {
+      name: "Placki z cukinii z sosem czosnkowym",
+      ings: [["Cukinie", "2 (500 g)"], ["Jajka", "2"], ["Mąka pszenna", "3 łyżki"], ["Posiekany koperek", "1 łyżka"], ["Gęsty jogurt lub śmietana", "150 g"]],
+      seas: "4 łyżki oleju · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Cukinie zetrzyj na tarce o grubych oczkach, posól, odstaw na 10 minut i odciśnij. Wymieszaj z jajkami, mąką, koperkiem i pieprzem.",
+        "Rozgrzej olej na patelni i smaż placki nakładane łyżką po 3 minuty z każdej strony na złoto.",
+        "Jogurt wymieszaj z przeciśniętym czosnkiem i szczyptą soli i podawaj z plackami.",
+      ],
+    },
+    "pl_kapustagrzyby": {
+      name: "Kapusta duszona z grzybami",
+      ings: [["Biała kapusta", "600 g"], ["Pieczarki", "300 g"], ["Cebula", "1/2"], ["Przecier pomidorowy", "100 g"]],
+      seas: "3 łyżki oleju · 1 liść laurowy · 3 ziela angielskiego · 1 łyżeczka kminku · 150 ml wody · Sól · Pieprz",
+      steps: [
+        "Kapustę poszatkuj, pieczarki pokrój w plasterki, a cebulę w kostkę.",
+        "Cebulę i pieczarki podsmaż na oleju w dużym garnku 8 minut. Dodaj kapustę, wodę, liść laurowy, ziele angielskie i kminek, przykryj i duś 25 minut.",
+        "Dodaj przecier, gotuj bez przykrycia 5 minut i dopraw solą i pieprzem.",
+      ],
+    },
+    "pl_pieczarkifaszerowane": {
+      name: "Pieczarki faszerowane szpinakiem i serem",
+      ings: [["Duże pieczarki", "12 (500 g)"], ["Szpinak", "200 g"], ["Cebula", "1/4"], ["Starty ser żółty", "100 g"]],
+      seas: "2 łyżki oleju · 1 ząbek czosnku · Sól · Pieprz",
+      steps: [
+        "Piekarnik nagrzej do 200°C. Odłam nóżki pieczarek i posiekaj je razem z cebulą.",
+        "Cebulę, nóżki i czosnek podsmaż na oleju na patelni 4 minuty, dodaj szpinak, aż zwiędnie, wymieszaj z połową sera i dopraw.",
+        "Napełnij kapelusze farszem, posyp resztą sera i piecz na blasze 15–20 minut.",
+      ],
     },
   }
 });
