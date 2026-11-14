@@ -884,7 +884,9 @@ body.bar-static.ah-mid .alg-hint.ah-md{display:flex;margin:var(--s8) 0}
 body.bar-static.ah-top .alg-hint.ah-tp{display:flex;margin:0 0 var(--s8)}   /* 上の段が高くて（長い料理名・文字もっと大きい）、すぐ下では最初の画面に入らないときは、お膳の中のいちばん上（上の段の上） */
 body.bar-static.ah-mid .alg-hint.ah-st,body.bar-static.ah-top .alg-hint.ah-st{display:none}
 /* 幅 260px 未満の案内は細い1行のまま（ボタンの字は2行まで。高さをそろえる。全文は読み上げとボタンの名前に残る） */
-@media (max-width:259px){body .alg-hint .ah-go .ah-s{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}}
+.alg-hint .ah-go .ah-n{display:none}
+/* 第49回 R217: 幅 260px 未満では、2行で「…」と切っていたのをやめ、短い言い方（「アレルギー・苦手」）を全部出す（3行まで。ui54）。押した先は同じアレルギー・苦手の設定 */
+@media (max-width:259px){body .alg-hint .ah-go .ah-s{display:none}body .alg-hint .ah-go .ah-n{display:block;white-space:normal;overflow-wrap:break-word}}
 body.bar-static .alg-hint.ah-st{display:flex;position:sticky;bottom:calc(var(--nav-h,72px) + var(--s8));z-index:6;margin-top:var(--s8);box-shadow:0 0 0 var(--s4) color-mix(in srgb,var(--bg) 84%,transparent)}
 body.ah-row .alg-hint.ah-in{flex:1 1 0;order:-1;padding-left:2px}
 body.ah-row .alg-hint.ah-in .ah-tx,body.ah-row .alg-hint.ah-in .ah-go .ah-l{display:none}
@@ -4147,7 +4149,7 @@ function toastAlign(){
         let top = (parseFloat(box.style.top) || 0) - scrollY, bottom = top + box.offsetHeight;
         // 置いたあとに中身が縮んでページがいちばん下まで来てしまい（スクロールが足りず）、お知らせが下の帯の裏に下りたとき（第20回 R66: 375px・家族の魚⚠）: 下に余白（--toast-room）を足して、置いたときの高さまで送る。人が上へ戻したとき（いちばん下でない）は触らない
         // 置いてから 2.5 秒のあいだ、本人が触っていない（指・ホイール・キーなし）のに画面だけが動いて（字の読みこみ後の測り直し・ページが縮んだときのスクロールの詰めなど）お知らせが下の帯の裏に下りたときは、置いたときの高さまで送り返す（ページが足りなければ下に余白 --toast-room を足す）
-        if (bottom > floor - 2 && top > 2 && box.classList.contains('docked') && toast.anchorVY != null && performance.now() - (toast.anchorAt || 0) < 2500 && !(TOAST_TAP.at > toast.anchorAt || (toast.wheelAt || 0) > toast.anchorAt)){
+        if (bottom > floor - 2 && top > 2 && box.classList.contains('docked') && toast.anchorVY != null && performance.now() - (toast.anchorAt || 0) < 2500 && !(TOAST_TAP.at > toast.anchorAt || (toast.wheelAt || 0) > toast.anchorAt) && toast.anchorVP === innerWidth + 'x' + innerHeight){   // 画面の大きさが変わった（向きを変えた・窓を変えた）あとは送り返さない（置いたときの高さは、もう意味がない。第49回: 195px に変えた直後に 270px 送っていた）
             const d = Math.round(top - toast.anchorVY), v = $('#view'); if (d > 0 && v){ const maxY = document.documentElement.scrollHeight - innerHeight; if (scrollY + d > maxY){ const cur = parseFloat(v.style.getPropertyValue('--toast-room')) || 0; v.style.setProperty('--toast-room', Math.ceil(cur + scrollY + d - maxY) + 'px'); } window.scrollBy({top: d, behavior: 'instant'}); top -= d; bottom -= d; } }
         box.classList.toggle('off', bottom > floor - 2 || top < 2);
 }
@@ -4306,7 +4308,7 @@ function toastPlace(box, prev){
     // ページに留めれば、置いたときにかからなかったものには、どこへスクロールしてもかからない。下のタブ・帯より下、上の端より上へ出たあいだは隠す（toastScroll）。画面を切りかえたら消す（setTab）
     // 留める相手はお膳（なければ画面の中身）: 置いたあとにお膳を詰める処理などで上の中身の高さが変わっても、お膳からの距離を保つ（toastScroll で合わせ直す）
     const anchor = () => { if (!box.offsetHeight || box.classList.contains('anchored')) return; const R = rectOf(), sy = scrollY, A = document.querySelector('#view .tray') || v; box.classList.add('anchored'); box.style.bottom = ''; box.style.top = Math.round(R.top + sy) + 'px';
-        const ar = A.getBoundingClientRect(); toast.anchorEdge = R.top >= ar.bottom - 1 ? 'bottom' : 'top'; toast.anchorEl = A; toast.anchorOff = R.top - (toast.anchorEdge === 'bottom' ? ar.bottom : ar.top); toast.anchorAt = performance.now(); toast.anchorVY = R.top;   // お膳より下に置いたときは、お膳の下端からの距離（お膳を詰めて縮んでも、その下の中身と一緒に動く）。お膳の中（195px の器の帯）なら上端から
+        const ar = A.getBoundingClientRect(); toast.anchorEdge = R.top >= ar.bottom - 1 ? 'bottom' : 'top'; toast.anchorEl = A; toast.anchorOff = R.top - (toast.anchorEdge === 'bottom' ? ar.bottom : ar.top); toast.anchorAt = performance.now(); toast.anchorVY = R.top; toast.anchorVP = innerWidth + 'x' + innerHeight;   // お膳より下に置いたときは、お膳の下端からの距離（お膳を詰めて縮んでも、その下の中身と一緒に動く）。お膳の中（195px の器の帯）なら上端から
         if (box.classList.contains('docked')) root.style.setProperty('--toast-shelf-top', Math.round(R.top - 8 + sy) + 'px'); toastAlign(); if (!toast.loop) toast.loop = requestAnimationFrame(toastLoop); };
     const freshPlace = () => {   // 押して切りかわった新しい画面（作る段の「最初にすること」など）
         const y0 = scrollY; lift();
@@ -8195,7 +8197,7 @@ function algHintOn(){
 // 帯をお膳の下に置く画面（bar-static。幅195 など）では、帯の代わりに案内だけを下のタブのすぐ上に貼りつける（st）。CSS で切りかえる（⚠ の1行の .alg-bar と .alg-top と同じ形）
 function algHintHtml(where){
     if (!algHintOn()) return '';
-    return `<div class="alg-hint ah-${where}"><span class="ah-tx">${esc(t('アレルギーや苦手な食材がある方は、ここから設定できます'))}</span><button type="button" class="btn sm ah-go" data-act="alg-hint-open"><span class="ah-l">${esc(t('設定'))}</span><span class="ah-s">${esc(t('アレルギー・苦手を設定'))}</span></button><button type="button" class="ah-x" data-act="alg-hint-close" aria-label="${esc(t('閉じる'))}" title="${esc(t('閉じる'))}">×</button></div>`;
+    return `<div class="alg-hint ah-${where}"><span class="ah-tx">${esc(t('アレルギーや苦手な食材がある方は、ここから設定できます'))}</span><button type="button" class="btn sm ah-go" data-act="alg-hint-open"><span class="ah-l">${esc(t('設定'))}</span><span class="ah-s">${esc(t('アレルギー・苦手を設定'))}</span><span class="ah-n">${esc(t('アレルギー・苦手'))}</span></button><button type="button" class="ah-x" data-act="alg-hint-close" aria-label="${esc(t('閉じる'))}" title="${esc(t('閉じる'))}">×</button></div>`;
 }
 // はじめての設定の「アレルギー対策」: 1つ目の区分と、確かめきれていない国の「主なアレルゲン」を出し、残り（ほかの区分・ほかのアレルゲン）はたたんで出す
 // （一覧の短い国（タイなど）で卵・乳・魚が選べない、韓国で魚（全般）・ごま・ナッツ類の入口がない、を防ぐ。モニター第4回 S13・S14）

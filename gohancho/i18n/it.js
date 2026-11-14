@@ -2086,6 +2086,7 @@ GOHAN_I18N('it', {
     "人数（2人）・品数・苦手な食材・アレルギーは、使いながら設定で変えられます。": "Persone (2), numero di piatti, alimenti da evitare e allergie si possono cambiare poi nelle Impostazioni.",
     "アレルギーや苦手な食材がある方は、ここから設定できます": "Allergie o alimenti da evitare? Puoi impostarli qui.",
     "アレルギー・苦手を設定": "Allergie e cibi da evitare",
+    "アレルギー・苦手": "Allergie e avversioni",
     "{name}のアレルギーから「{what}」を外しました": "«{what}» rimosso dalle allergie di {name}",
     "アレルギー対策から「{what}」を外しました": "«{what}» rimosso dagli allergeni",
 });
