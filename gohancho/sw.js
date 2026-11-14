@@ -1,7 +1,9 @@
 // わが家のご飯帖: オフラインで開けるようにアプリ本体をキャッシュする
 // 版を上げるとき: VERSION と、index.html の ASSET_V を同じ値にする（tools/qa/sw-offline.js が一致を確かめる）
 const VERSION = 'gohancho-v148';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './ask.html', './i18n/en.js'];
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './privacy.html', './support.html', './privacy-en.html', './support-en.html', './ask.html'];
+// 第50回 R184: 英語の訳（i18n/en.js 約200KB）は、はじめに取らない（日本語で使う人の最初の読みこみを軽く）。英語・ほかの言葉で使う人は開いたときに、
+// 日本語で使う人は、はじめての流れが済んで落ち着いたあとに画面が裏で1回取る（下の swr で保存。電波のない所でも英語に切りかえられる）
 const IMG = 'gohancho-img-v1';
 const NET_WAIT = 3000;   // アプリの画面: ネットがこの時間（ms）で返らなければ、保存してある画面で開く（ネットの返事は裏で待って保存する）
 

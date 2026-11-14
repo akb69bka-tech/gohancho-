@@ -19094,6 +19094,22 @@ if (PLAN.billingEnabled && !isSubscribed()) loadStorePrices();   // お試しの
 if (S.settings.country) loadGenerated().then(loadPhotos);
 else { const gw = setInterval(() => { if (!GH.booted) return; clearInterval(gw); loadGenerated().then(loadPhotos); }, 100); }
 loadMine();
+// 第50回 R184: 日本語で使う人は、英語の訳（i18n/en.js 約200KB）を最初に読まない（sw.js の事前取りこみからも外した）。
+// 電波のない所でも英語に切りかえられるように、はじめての流れが済んで落ち着いたあと（15秒・電波があって sw.js が働いているとき）に、裏で1回だけ取って sw.js に保存させる（画面には使わない）。
+// いまの国の料理の英語の訳も一緒に取る（前は en.js だけを事前に取っていたので、電波のない所では料理の訳がなくて英語に切りかえられなかった）
+(() => {
+    let done = false;
+    const tick = () => {
+        if (done) return;
+        if (LANG !== 'ja' || I18N.en){ done = true; return; }   // 英語・ほかの言葉で使っている（英語の訳はもう読んである）
+        if (!S.onboarded || !S.settings.country || sheet || !navigator.onLine || !('serviceWorker' in navigator) || !navigator.serviceWorker.controller) return;
+        done = true;
+        // 英語に切りかえるには、画面の言葉（en.js）と、いまの国の料理の英語の訳（packs/i18n/<国>.en.js。要る国だけ）の両方が要る
+        const k = trKey(currentCountry(), 'en'), urls = [assetUrl('i18n/en.js')].concat(k ? [assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`)] : []);
+        Promise.all(urls.map(u => fetch(u).then(r => { if (!r.ok) throw 0; }))).catch(() => { done = false; });
+    };
+    setTimeout(() => { tick(); const iv = setInterval(() => { if (done) clearInterval(iv); else tick(); }, 15000); }, 15000);
+})();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){
     navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(() => {});
     // 新しい版が入った（前の版で開いたまま／保存した画面で開いた）ときは、アプリに戻ってきたときに読み直す（開いている途中の画面は触らない）
