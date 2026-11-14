@@ -7,7 +7,7 @@
  *   --thumb / --thumb-quality: 一覧用の小さい絵の大きさ（px）と品質。くっきりさせるなら --thumb 256 --thumb-quality 0.92
  *
  * 入力: フォルダの中（下のフォルダも見る）の <料理のID>.png / .jpg / .jpeg / .webp
- *       （ID は gohancho/img/dish/manifest.json の items のキー。オーナーの一覧の C 列「画像ID」、D 列「<ID>.png」）
+ *       （ID は gohancho/img/dish/manifest.json の items のキーか、絵がまだない料理のレシピの ID。オーナーの一覧の C 列「画像ID」、D 列「<ID>.png」）
  * 出力: gohancho/img/dish/<ID>.webp   … 真ん中を正方形に切って 512×512 の WebP（品質 0.8。40KB を超えたら品質を少し下げる）
  *                                       大きさの変更は Lanczos（a=3）。元が小さい（150px ほど）ときは、拡大のあとに軽いアンシャープマスクをかける（ぼやけないように）
  *       元が小さい絵は --quality 0.88 で取りこむとよい（くっきりした分、品質 0.8 ではざらつきやすい）
@@ -46,6 +46,14 @@ if (!(QUALITY > 0 && QUALITY <= 1) || !(MAX_KB > 0) || !(THUMB >= 64 && THUMB <=
 
 const m = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
 const items = m.items || {};
+// R218: 絵がまだない料理（manifest にない ID）も受け取る。レシピの ID（日本の料理の R('<ID>', …) と、国のパックの recipes の id）を読む
+const RECIPE_IDS = (() => {
+    const ids = new Set(), app = path.resolve(HERE, '../..', 'gohancho');
+    try { for (const x of fs.readFileSync(path.join(app, 'index.html'), 'utf8').matchAll(/\bR\('([\w-]+)',/g)) ids.add(x[1]); } catch (e) {}
+    try { for (const f of fs.readdirSync(path.join(app, 'packs')).filter(f => f.endsWith('.js'))) for (const x of fs.readFileSync(path.join(app, 'packs', f), 'utf8').matchAll(/\bid:\s*['"]([\w-]+)['"]/g)) ids.add(x[1]); } catch (e) {}
+    return ids;
+})();
+const known = id => Object.prototype.hasOwnProperty.call(items, id) || RECIPE_IDS.has(id);
 
 // フォルダの中の画像を集める（zip を開いたときの下のフォルダも見る。隠しファイル・__MACOSX は見ない）
 const found = new Map(), unknown = [], dup = [];
@@ -57,7 +65,7 @@ const found = new Map(), unknown = [], dup = [];
         const mm = /^([\w-]+)\.(png|jpe?g|webp)$/i.exec(e.name);
         if (!mm) continue;
         const id = mm[1];
-        if (!Object.prototype.hasOwnProperty.call(items, id)){ unknown.push(e.name); continue; }
+        if (!known(id)){ unknown.push(e.name); continue; }
         if (found.has(id)){ dup.push(e.name); continue; }
         found.set(id, p);
     }
