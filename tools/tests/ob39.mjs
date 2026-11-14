@@ -8,7 +8,8 @@
 //  O4 献立の小さな案内（アレルギーや苦手な食材…。第40回から決定の帯の中・帯をお膳の下に置く画面では下のタブの上）: お膳の料理・丸い「まるごと入れ替え」に重ならない。「設定」でアレルギー対策が開き、
 //     卵を選ぶと、卵を使う料理だけが献立から外れる（ほかの料理は動かない）。設定したあとは案内を出さない。×で閉じると開き直しても出ない
 //  O5 前から使っている人（はじめての設定を終えた人・記録がある人）: シートも案内も出ない。設定はそのまま
-//  O6 幅 195 / 260 / 390 × 文字3段階: 使い方の画面と案内が画面の中・横にはみ出さない・押せる大きさ
+//  O6 幅 195 / 260 / 390 × 文字3段階: 使い方の画面と案内が画面の中・横にはみ出さない・押せる大きさ。案内はお膳の外（幅 260px 未満だけ、お膳の中でも
+//     上の段の料理に重ならず・丸いボタンへの重なり 8px 以下・最初の画面に入るなら認める。第48回 R215・統括の判断）
 //  O7 18言語: 使い方の画面と案内の字が、どの言語でも画面の外・箱の外にはみ出さない
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -62,7 +63,14 @@ const hintGeo = p => p.evaluate(() => {
     const cover = [...document.querySelectorAll('#view .tray .spot, #view .tray .shuffle, #view .tray [data-act=reroll]')].filter(e => hit(r, e.getBoundingClientRect()) && (!bs || row0.contains(e) && e.matches('.spot') && [...e.querySelectorAll('.vessel, .nm')].some(x => hit(r, x.getBoundingClientRect())) || e.matches('.shuffle') && vw >= 260 && innerHeight >= 500)).map(e => e.className);
     const btns = [...h.querySelectorAll('button')].map(e => { const q = e.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), out: q.left < -.5 || q.right > vw + .5 }; });
     const tx = h.querySelector('.ah-tx'), txOver = tx.scrollWidth > tx.clientWidth + 1;
-    return { cover, btns, out: r.left < -.5 || r.right > vw + .5, sw: document.documentElement.scrollWidth > vw + 1, txOver, inTray: !!h.closest('.tray') };
+    // ui53（第48回 R215・統括の判断）: 幅 260px 未満だけ、案内をお膳の中（上の段の下・いちばん上）に置くのを認める。そのときも、上の段の料理（器・名前・かえる・札）に重ならない・
+    // 丸い「まるごと入れ替え」への重なりが 8px 以下・最初の画面（下のタブより上）に入る、を確かめる（trayOk）。260px 以上はお膳の中なら今までどおり不合格
+    const inTray = !!h.closest('.tray'), ov = q => q.left < r.right - .5 && q.right > r.left + .5 ? Math.max(0, Math.min(r.bottom, q.bottom) - Math.max(r.top, q.top)) : 0;
+    const nav = document.querySelector('nav.tabs'), floor = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
+    const row0Hit = row0 ? [...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag')].filter(e => { const q = e.getBoundingClientRect(); return q.width > 0 && q.height > 0 && ov(q) > .5; }).length : 0;
+    const shOv = Math.max(0, ...[...document.querySelectorAll('#view .tray .tg-mid .shuffle')].filter(e => e.getClientRects().length).map(e => ov(e.getBoundingClientRect())));
+    const trayOk = inTray && vw < 260 && !row0Hit && shOv <= 8 && r.top >= -.5 && r.bottom <= floor + .5;
+    return { cover, btns, out: r.left < -.5 || r.right > vw + .5, sw: document.documentElement.scrollWidth > vw + 1, txOver, inTray, trayOk, row0Hit, shOv: Math.round(shOv) };
 });
 
 // ---- O1 はじめての人: 2つの画面で献立へ ----
@@ -225,7 +233,7 @@ if (want('O6')){
         await finish(p);
         await p.waitForTimeout(200);   // 第40回 R178: 案内は最初の画面に出る（スクロールしない）
         const g = await hintGeo(p);
-        n++; if (g.none || g.cover.length || g.inTray || g.out || g.sw || g.txOver || !g.btns.every(x => x.h >= 40 && x.w >= 40 && !x.out)) bad.push(`${w}px 文字${ts} 案内: ` + JSON.stringify(g));
+        n++; if (g.none || g.cover.length || (g.inTray && !(w < 260 && g.trayOk)) || g.out || g.sw || g.txOver || !g.btns.every(x => x.h >= 40 && x.w >= 40 && !x.out)) bad.push(`${w}px 文字${ts} 案内: ` + JSON.stringify(g));
         await ctx.close();
     }
     ok(n === 18 && !bad.length, `O6 幅195/260/390 × 文字3段階（${n}画面）: 使い方の行と下の帯が画面の中・1つめの行が帯より上・案内はお膳に重ならず押せる: ` + bad.slice(0, 3).join(' / '));
