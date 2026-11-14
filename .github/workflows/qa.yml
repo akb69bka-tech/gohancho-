@@ -4,6 +4,8 @@ name: QA
 
 on:
   push:
+    # claude/int は公開のたびに claude/avoid-swap と同じコミットになるので、同じ点検を2回走らせない（11/14 v148: claude/int の回だけ遅い機械で60分の上限に当たった。使用時間も約3分の1減る・無料）
+    branches-ignore: [claude/int]
   pull_request:
   workflow_dispatch:
 
