@@ -2448,7 +2448,7 @@ GOHAN_PACK({
       local: "Adobong sitaw at tokwa",
       type: "main",
       method: "simmer",
-      protein: "veg",
+      protein: "legume",
       min: 20,
       ings: [
         "long beans|Long beans (sitaw)|300 g",
@@ -2468,7 +2468,7 @@ GOHAN_PACK({
       local: "Ginataang sitaw, talong at tokwa",
       type: "main",
       method: "simmer",
-      protein: "veg",
+      protein: "legume",
       min: 30,
       ings: [
         "eggplant|Eggplant (talong)|250 g",

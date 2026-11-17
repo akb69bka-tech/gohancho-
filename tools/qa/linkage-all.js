@@ -1,3 +1,4 @@
+// claude/fullfix: 絵の読みこみ中の印（data-src・pload）は比べない。1週間プランの今日が今日の主菜にそろう（R76）のは違反にしない
 // 「ある料理を変えると、ほかの料理（とくに汁もの）まで連動して変わる」不具合を、あらゆる経路で確かめる
 //   操作の前後で「押した枠以外」の全料理ID・ご飯/主食の欄・汁もの・画像（お膳の各枠のHTML）・
 //   1週間プラン・買い物リスト・記録（履歴）・お気に入り・決定済みの献立・保存した献立・設定が完全に一致することを検証する。
@@ -33,7 +34,7 @@ window.__snap = (opts) => {
     const sa = sp.querySelector('[data-act="soup-add"]') || sp.querySelector('.swap-ph');   // 汁ものがいらない日の空の枠（ボタンの高さだけ取ってある）も、汁ものを足せる空の枠と同じ「空」
     const b = sp.querySelector('[data-act="reroll"]') || sa; const c = sp.cloneNode(true); c.querySelectorAll('.swap,.fresh-tag').forEach(x => x.remove()); c.classList.remove('fresh');   // 「新」の印は最後に変わった料理に付けかわる（料理の入れ替わりではない）
     // 空の汁もの枠の説明文は、主菜が変わると言い方が変わる（「汁ものの麺なので、なし」「汁ものは入れていません」）。料理ではないので「空」とだけ比べる
-    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか）は料理の入れ替わりではない
+    return {key: b ? 'i' + b.dataset.i : sp.classList.contains('rice') ? 'rice' : 'x' + k, html: sa ? 'EMPTY-SOUP' : c.outerHTML.replace(/ style="[^"]*"/g, '').replace(/ rise-in/g, '').replace(/ data-src="[^"]*"/g, '').replace(/(class="[^"]*?)\\bpload ?/g, '$1').replace(/ gen"/g, '"').replace(/<span class="food[^>]*>(<svg[\\s\\S]*?<\\/svg>)?<\\/span>/g, '')   // 絵の読みこみ具合（写真・生成絵・線画のどれが出ているか・あとで読む絵の data-src と読みこみ中の pload）は料理の入れ替わりではない
    };   // 幅(--w)は品数・主食の有無で変わる配置なので比べない
   });
   const ings = m ? m.items.map(x => x.r ? x.r.items.map(i => i.key + ':' + i.label + ':' + i.qty).join(',') : '-') : [];
@@ -44,7 +45,7 @@ window.__snap = (opts) => {
     ids: m ? m.items.map(x => x.slot + ':' + (x.r ? x.r.id : '-')) : [],
     ings, spots, rice: (s => s ? (c => (c.querySelectorAll('.fresh-tag').forEach(x => x.remove()), c.textContent))(s.cloneNode(true)) : '')(document.querySelector('.tray .spot.rice')),
     staple: JSON.stringify((S.settings || {}).stapleBy || {}),
-    week: JSON.stringify(S.week), hist: JSON.stringify(S.history), favs: JSON.stringify(S.favs), hidden: JSON.stringify(S.hidden),
+    week: JSON.stringify(S.week), today: TODAY, wtm: (() => { try { const r = weekTodayMain(); return r ? r.id : null; } catch (e) { return null; } })(), hist: JSON.stringify(S.history), favs: JSON.stringify(S.favs), hidden: JSON.stringify(S.hidden),
     cook: JSON.stringify(S.cook), saved: JSON.stringify(S.savedMenus), shop, settings: JSON.stringify(st), draftIds: JSON.stringify(S.draft && S.draft.ids),
     bad: m ? m.items.filter(x => x.r && isAvoided(x.r)).map(x => x.r.id) : [],
     dup: m ? m.items.map(x => x.r && x.r.id).filter(Boolean).length - new Set(m.items.map(x => x.r && x.r.id).filter(Boolean)).size : 0,
@@ -71,7 +72,14 @@ function diff(a, c, pressed, o = {}) {
   });
   if (pressed !== 'staple' && c.spots.length !== a.spots.length) d.push('枠の数 ' + a.spots.length + '->' + c.spots.length);
   if (pressed !== 'staple') { if (a.rice.replace(/かえる|Change|\s/g, '') !== c.rice.replace(/かえる|Change|\s/g, '')) d.push('ご飯/主食欄'); if (a.staple !== c.staple) d.push('主食の設定'); }
-  const keys = ['week', 'hist', 'favs', 'hidden', 'cook', 'saved', 'shop', 'settings'].filter(k => !(o.skip || []).includes(k));
+  // 第21回 R76: 1週間プランの今日は、今日の献立の主菜にそろう（weekFollowToday）。変わったのが「今日の日」だけで、新しい料理がいまの今日の主菜（weekTodayMain）なら、
+  // 決まりどおり（そのぶん買い物リストも変わる）。ほかの日・作らない日・担当が変わったら、今までどおり違反
+  const follow = (() => { if (a.week === c.week) return false; try { const A = JSON.parse(a.week), C = JSON.parse(c.week); if (!A || !C || !A.days || !C.days || A.days.length !== C.days.length) return false;
+    const strip = w => JSON.stringify(Object.assign({}, w, {days: null})); if (strip(A) !== strip(C)) return false;
+    const dd = A.days.map((x, i) => JSON.stringify(x) !== JSON.stringify(C.days[i]) ? i : -1).filter(i => i >= 0); if (dd.length !== 1) return false;
+    const x = A.days[dd[0]], y = C.days[dd[0]]; if (x.d !== c.today || y.d !== c.today || y.skip || x.skip || y.id !== c.wtm) return false;   // 副菜汁ものを出す設定では、そろえた今日の日に、新しい主菜に合う副菜・汁ものを選び直す（ensureWeekExtras）
+    const rest = z => JSON.stringify(Object.assign({}, z, {id: null, extra: null})); return rest(x) === rest(y); } catch (e) { return false; } })();
+  const keys = ['week', 'hist', 'favs', 'hidden', 'cook', 'saved', 'shop', 'settings'].filter(k => !(o.skip || []).includes(k)).filter(k => !(follow && (k === 'week' || k === 'shop')));
   keys.forEach(k => { if (a[k] !== c[k]) d.push(k === 'week' ? '1週間プラン' : k === 'hist' ? '履歴' : k === 'favs' ? 'お気に入り' : k === 'shop' ? '買い物リスト' : k === 'cook' ? '決定済み(S.cook)' : k === 'saved' ? '保存した献立' : k); });
   if (a.mood !== c.mood) d.push('気分 ' + a.mood + '->' + c.mood);
   if (a.adj !== c.adj || a.n !== c.n) d.push('品数/あと1品 ' + a.n + (a.adj ? '+' : '') + '->' + c.n + (c.adj ? '+' : ''));

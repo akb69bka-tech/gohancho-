@@ -16061,14 +16061,18 @@ function nsResultsHtml(q){
         nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
         return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
     }
-    const same = nsKeep('same', hits, r => r.id, 12), world = nsKeep('world', similar, x => x.r.id, 8);
+    const same = nsKeep('same', hits, r => r.id, 12);
     const simCard = x => nsCard(x.r, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : '');
-    return `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
-        <div class="list dlist">${same.base.map(r => nsCard(r, '')).join('')}</div>${more(same.extra)}${same.extra.length ? `<div class="list dlist ns-extra">${same.extra.map(r => nsCard(r, '')).join('')}</div>` : ''}${nsHiddenHtml(hidden)}</div>
+    const tier1 = `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
+        <div class="list dlist">${same.base.map(r => nsCard(r, '')).join('')}</div>${more(same.extra)}${same.extra.length ? `<div class="list dlist ns-extra">${same.extra.map(r => nsCard(r, '')).join('')}</div>` : ''}</div>`;
+    // ほかの国を読みこんでいるあいだは、1段目（いまの国の料理）だけを出す。2段目・3段目は読み終えてから出す（読み終えて1段目に足したとき、もう出ている2段目・3段目のカードが下へずれないように。押しまちがいを防ぐ）
+    if (nsLoading) return tier1 + nsHiddenHtml(hidden) + loading;
+    const world = nsKeep('world', similar, x => x.r.id, 8);
+    return `${tier1}
     <div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>
-        ${world.base.length ? `<div class="list dlist">${world.base.map(simCard).join('')}</div>` : ''}${world.base.length ? more(world.extra) : ''}${world.extra.length ? `<div class="list dlist ns-extra">${world.extra.map(simCard).join('')}</div>` : ''}${!world.base.length && !world.extra.length ? `<div class="small muted">${esc(nsLoading ? t('読みこみ中…') : t('似た料理は見つかりませんでした'))}</div>` : ''}</div>
+        ${world.base.length ? `<div class="list dlist">${world.base.map(simCard).join('')}</div>` : ''}${world.base.length ? more(world.extra) : ''}${world.extra.length ? `<div class="list dlist ns-extra">${world.extra.map(simCard).join('')}</div>` : ''}${!world.base.length && !world.extra.length ? `<div class="small muted">${esc(t('似た料理は見つかりませんでした'))}</div>` : ''}</div>
     ${twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
-        <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : ''}${loading}`;
+        <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : ''}${nsHiddenHtml(hidden)}`;
 }
 // ほかの国（20か国・日本語で約5MB）は、タブを開いたときではなく、最初に何か入れてさがしたときに読みはじめる
 function nsPaint(){ const box = $('#ns-results'); if (box) box.innerHTML = nsResultsHtml(session.nsQ || ''); }

@@ -12,6 +12,7 @@
 //  N5 読みこみ: タブを開いただけでは20か国を読まない。最初にさがしたときに読む。読み終えて足すとき、もう出ているカードの並びは動かさず、
 //     足す分は下の「ほかの国からも見つかりました」に入る
 //  N6 入力の整え: NFKC（か＋濁点の2文字）・幅のない空白・制御文字を取りのぞく。入力欄は40字まで。「見つかりませんでした」の語も40字まで
+//  N7 4Mbps で読みこみの途中にさがしても、出ていたカード（3段とも）の位置は読み終えたあとも変わらない（2段目・3段目は読み終えてから出す）
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -186,6 +187,23 @@ const ask = async (p, q) => {
         extra: [...document.querySelectorAll('#ns-results .ns-tier[data-tier="same"] .ns-extra .head[data-act="open"]')].map(e => e.dataset.id), more: [...document.querySelectorAll('#ns-results .ns-more')].map(e => e.textContent.trim())}));
     ok(JSON.stringify(after.base) === JSON.stringify(before[1]), 'N5 読み終えても、もう出ているカードの並びは動かない: ' + JSON.stringify([before[1], after.base]));
     ok(after.extra.length > 0 && after.more.includes('ほかの国からも見つかりました') && after.extra.every(id => /^[a-z]{2}_/.test(id)), 'N5 足す分は下の「ほかの国からも見つかりました」に入る（ほかの国の料理）: ' + after.extra.slice(0, 6).join(','));
+    await ctx.close();
+}
+// ---- N7 読みこみの途中でさがしても、出ているカード（3段とも）の位置が読み終えたあとに変わらない（北条 keep.cjs・4Mbps） ----
+for (const q of ['カレー', 'スープ', 'curry']){
+    const {p, ctx} = await open();
+    const cdp = await ctx.newCDPSession(p); await cdp.send('Network.enable');
+    await cdp.send('Network.emulateNetworkConditions', {offline: false, latency: 150, downloadThroughput: 4 * 1024 * 1024 / 8, uploadThroughput: 1024 * 1024 / 8});
+    await openTab(p);
+    await p.fill('#ns-input', q); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(400);
+    const pos = () => p.evaluate(() => Object.fromEntries([...document.querySelectorAll('#ns-results .dcard .head[data-act="open"]')].map(e => [e.closest('.ns-tier').dataset.tier + ':' + e.dataset.id, Math.round(e.getBoundingClientRect().top + scrollY)])));
+    const a = await pos(), wasLoading = await p.evaluate(() => !!nsLoading);
+    await loaded(p); await p.waitForTimeout(300);
+    const z = await pos();
+    const moved = Object.keys(a).filter(k => z[k] !== a[k]).map(k => k + ' ' + a[k] + '→' + z[k]);
+    const tiersA = [...new Set(Object.keys(a).map(k => k.split(':')[0]))], tiersZ = [...new Set(Object.keys(z).map(k => k.split(':')[0]))];
+    ok(wasLoading && Object.keys(a).length > 0 && moved.length === 0, `N7 「${q}」: 読みこみの途中で出ていたカード（${Object.keys(a).length}枚・${tiersA.join('/')}）は、読み終えても位置が変わらない: ` + moved.slice(0, 4).join(' / '));
+    ok(tiersZ.includes('world') || q === 'スープ', `N7 「${q}」: 読み終えたら2段目・3段目も出る: ` + tiersZ.join('/'));
     await ctx.close();
 }
 

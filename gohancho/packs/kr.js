@@ -2258,7 +2258,7 @@ GOHAN_PACK({
       local: "버섯전골",
       type: "main",
       method: "simmer",
-      protein: "veg",
+      protein: "legume",
       min: 30,
       ings: [
         "mushroom|Mixed mushrooms (shiitake, oyster, enoki)|400 g",

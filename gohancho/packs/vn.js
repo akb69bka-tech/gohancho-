@@ -2329,7 +2329,7 @@ GOHAN_PACK({
       local: "Nấm kho tiêu",
       type: "main",
       method: "simmer",
-      protein: "veg",
+      protein: "legume",
       min: 25,
       ings: [
         "mushrooms|Straw, oyster or king oyster mushrooms|400 g",
