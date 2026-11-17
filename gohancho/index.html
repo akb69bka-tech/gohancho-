@@ -19099,16 +19099,25 @@ loadMine();
 // 第50回 R184: 日本語で使う人は、英語の訳（i18n/en.js 約200KB）を最初に読まない（sw.js の事前取りこみからも外した）。
 // 電波のない所でも英語に切りかえられるように、はじめての流れが済んで落ち着いたあと（15秒・電波があって sw.js が働いているとき）に、裏で1回だけ取って sw.js に保存させる（画面には使わない）。
 // いまの国の料理の英語の訳も一緒に取る（前は en.js だけを事前に取っていたので、電波のない所では料理の訳がなくて英語に切りかえられなかった）
+// 第51回（offen）: はじめて開いたときは sw.js がまだ働く前に画面の言葉・国のレシピ・料理の訳を読むので、それらが保存されず、
+// 英語などで使う人が電波のない所で開き直すと日本語の画面になっていた（v149）。いま使っている辞書・国のレシピ・訳のうち、まだ保存していないものも同じときに取り直して保存させる
+// （保存ずみのものは取らない。日本語で使う人が最初に読むものは変えない）
 (() => {
     let done = false;
     const tick = () => {
         if (done) return;
-        if (LANG !== 'ja' || I18N.en){ done = true; return; }   // 英語・ほかの言葉で使っている（英語の訳はもう読んである）
         if (!S.onboarded || !S.settings.country || sheet || !navigator.onLine || !('serviceWorker' in navigator) || !navigator.serviceWorker.controller) return;
         done = true;
-        // 英語に切りかえるには、画面の言葉（en.js）と、いまの国の料理の英語の訳（packs/i18n/<国>.en.js。要る国だけ）の両方が要る
-        const k = trKey(currentCountry(), 'en'), urls = [assetUrl('i18n/en.js')].concat(k ? [assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`)] : []);
-        Promise.all(urls.map(u => fetch(u).then(r => { if (!r.ok) throw 0; }))).catch(() => { done = false; });
+        const urls = new Set();
+        Object.keys(I18N).forEach(l => { if (l !== 'ja' && /^[\w-]+$/.test(l)) urls.add(assetUrl(`i18n/${l}.js`)); });   // いま読んである画面の言葉（英語・ほかの言葉）
+        Object.keys(PACKS).forEach(cc => { if (/^[A-Z]{2}$/.test(cc) && validPack(PACKS[cc])) urls.add(assetUrl(`packs/${cc.toLowerCase()}.js`)); });   // 国のレシピ
+        Object.keys(PACK_TR).forEach(k => { const m = /^([A-Z]{2})\.([\w-]+)$/.exec(k); if (m && PACK_TR[k]) urls.add(assetUrl(`packs/i18n/${m[1].toLowerCase()}.${m[2]}.js`)); });   // 料理の訳
+        if (LANG === 'ja' && !I18N.en){
+            // 英語に切りかえるには、画面の言葉（en.js）と、いまの国の料理の英語の訳（packs/i18n/<国>.en.js。要る国だけ）の両方が要る
+            const k = trKey(currentCountry(), 'en'); urls.add(assetUrl('i18n/en.js')); if (k) urls.add(assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`));
+        }
+        const has = u => ('caches' in window) ? caches.match(u).then(r => !!r, () => false) : Promise.resolve(false);
+        Promise.all([...urls].map(u => has(u).then(hit => hit || fetch(u).then(r => { if (!r.ok) throw 0; })))).catch(() => { done = false; });
     };
     setTimeout(() => { tick(); const iv = setInterval(() => { if (done) clearInterval(iv); else tick(); }, 15000); }, 15000);
 })();
