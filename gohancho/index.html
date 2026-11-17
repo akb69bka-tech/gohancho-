@@ -11159,11 +11159,22 @@ function dropOmitted(u, sl, others, keepWords){
 // お酒を避けるとき（ハラール向け・お酒避け）、手順の「酒蒸しのように」「like sake-steaming」はお酒の言葉なので、蒸し煮の言い方にする（材料にお酒はない文でも）
 const SAKE_STEP_RE = /酒蒸し|sake[- ]steam(?:ing|ed)?/i;
 function sakeStepFix(txt){ return String(txt).replace(/酒蒸し/g, '蒸し煮').replace(/like sake[- ]steaming/gi, 'like a steam-simmer').replace(/sake[- ]steam(?:ing|ed)?/gi, 'steam-simmer'); }
-// 画面に出すレシピ（苦手な食材を置き換えたもの）。いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）
+// 画面に出すレシピ（苦手な食材を置き換えたもの）。置き換えは、いまの国の料理だけ（ほかの国の料理は、その国の材料がわからないので置き換えない）。
+// 第51回（offen）: ほかの国の料理（世界のレシピ・料理名から）でも、苦手・食の決まり（ハラール・ベジ・ヴィーガン）に当たる「なくても可」の材料は外して、
+// 「〜は入れません（なくても作れます）」と出す（出す・出さないの判定 isAvoidedCore は「なくても作れる」として出していたのに、材料の欄には豚肉などがそのまま並んでいた）。
+// 外すだけで置き換えはしない。手順の文は変えず、「手順の文に出てきても入れないでください」と添える（いまの国の料理の、手順から外すしくみを各国の料理に使うと、
+// 「If using dice it and cook…」「マフィンに卵、チーズ。」のように文が崩れたり、外した材料を焼く文が残ったりした）。アレルギーの判定は変えない（アレルギーに当たる料理は、なくても可の材料でも出さない）
+function otherDish(r){ return !RECIPES.includes(r) && !r.isTwist && !String(r.id || '').startsWith('a~') && COUNTRIES.some(c => BROWSE[c.cc] && BROWSE[c.cc].includes(r)); }
+function otherOmitted(r){
+    const c = avoidCtx(), omit = r.items.filter(i => i.opt && itemAvoided(i, c)); if (!omit.length) return r;
+    const items = r.items.filter(i => !omit.includes(i));
+    let fam = r.family; if (omit.some(i => i.key === r.protein || FAMILY[i.key] === r.family)){ const k = items.find(i => FAMILY[i.key] && FAMILY[i.key] !== '野菜'); fam = k ? FAMILY[k.key] : '野菜'; }
+    return Object.assign({}, r, {items, swapped: {swaps: [], omit, other: true}, family: fam, protein: fam === r.family ? r.protein : null});
+}
 function swappedRecipe(r){
     if (!r || !r.items || r.swapped) return r;
     const ofams = orphanFams(); if (!effAvoid().length && !ofams.length) return r;
-    if (!RECIPES.includes(r)) return r;
+    if (!RECIPES.includes(r)) return effAvoid().length && otherDish(r) ? otherOmitted(r) : r;
     let w = effAvoid().length ? recipeSwaps(r) : null; const orphanOnly = !w || (!w.swaps.length && !w.omit.length);
     if (orphanOnly){   // 置き換えも外す材料もない料理でも、手順の文に外した食材のなかまの言葉（食べ方の一言の卵・焼き魚など）が残っていれば、その句を外す
         if (!ofams.length || !r.steps || !r.steps.some(st => new RegExp(ofams.map(f => omitLexSrc(f, true)).join('|'), 'iu').test(typeof st === 'string' ? st : st.t) || (ofams.includes('alcohol') && SAKE_STEP_RE.test(typeof st === 'string' ? st : st.t)))) return r;
@@ -11506,7 +11517,7 @@ function swapNoteHtml(r){
     const tips = [...new Set(w.swaps.map(x => tipText[x.tip]).filter(Boolean))];
     return `<div class="note swap-note"><b>${esc(t('苦手な食材を置き換えています'))}</b><ul>
         ${w.swaps.map(x => `<li>${esc(t('{from} の代わりに {to}', {from: x.from.name, to: x.to.name}))}</li>`).join('')}
-        ${w.omit.map(i => `<li>${esc(t('{name} は入れません（なくても作れます）', {name: i.name}))}</li>`).join('')}</ul>
+        ${w.omit.map(i => `<li>${esc(t('{name} は入れません（なくても作れます）', {name: i.name}))}</li>`).join('')}${w.other && w.omit.length ? `<li>${esc(t('手順の文に出てきても入れないでください。'))}</li>` : ''}</ul>
         ${w.swaps.length ? `<span class="small">${esc(t('作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。'))}${tips.length ? ' ' + esc(tips.join(' ')) : ''}</span>` : ''}</div>`;
 }
 
@@ -19271,16 +19282,25 @@ loadMine();
 // 第50回 R184: 日本語で使う人は、英語の訳（i18n/en.js 約200KB）を最初に読まない（sw.js の事前取りこみからも外した）。
 // 電波のない所でも英語に切りかえられるように、はじめての流れが済んで落ち着いたあと（15秒・電波があって sw.js が働いているとき）に、裏で1回だけ取って sw.js に保存させる（画面には使わない）。
 // いまの国の料理の英語の訳も一緒に取る（前は en.js だけを事前に取っていたので、電波のない所では料理の訳がなくて英語に切りかえられなかった）
+// 第51回（offen）: はじめて開いたときは sw.js がまだ働く前に画面の言葉・国のレシピ・料理の訳を読むので、それらが保存されず、
+// 英語などで使う人が電波のない所で開き直すと日本語の画面になっていた（v149）。いま使っている辞書・国のレシピ・訳のうち、まだ保存していないものも同じときに取り直して保存させる
+// （保存ずみのものは取らない。日本語で使う人が最初に読むものは変えない）
 (() => {
     let done = false;
     const tick = () => {
         if (done) return;
-        if (LANG !== 'ja' || I18N.en){ done = true; return; }   // 英語・ほかの言葉で使っている（英語の訳はもう読んである）
         if (!S.onboarded || !S.settings.country || sheet || !navigator.onLine || !('serviceWorker' in navigator) || !navigator.serviceWorker.controller) return;
         done = true;
-        // 英語に切りかえるには、画面の言葉（en.js）と、いまの国の料理の英語の訳（packs/i18n/<国>.en.js。要る国だけ）の両方が要る
-        const k = trKey(currentCountry(), 'en'), urls = [assetUrl('i18n/en.js')].concat(k ? [assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`)] : []);
-        Promise.all(urls.map(u => fetch(u).then(r => { if (!r.ok) throw 0; }))).catch(() => { done = false; });
+        const urls = new Set();
+        Object.keys(I18N).forEach(l => { if (l !== 'ja' && /^[\w-]+$/.test(l)) urls.add(assetUrl(`i18n/${l}.js`)); });   // いま読んである画面の言葉（英語・ほかの言葉）
+        Object.keys(PACKS).forEach(cc => { if (/^[A-Z]{2}$/.test(cc) && validPack(PACKS[cc])) urls.add(assetUrl(`packs/${cc.toLowerCase()}.js`)); });   // 国のレシピ
+        Object.keys(PACK_TR).forEach(k => { const m = /^([A-Z]{2})\.([\w-]+)$/.exec(k); if (m && PACK_TR[k]) urls.add(assetUrl(`packs/i18n/${m[1].toLowerCase()}.${m[2]}.js`)); });   // 料理の訳
+        if (LANG === 'ja' && !I18N.en){
+            // 英語に切りかえるには、画面の言葉（en.js）と、いまの国の料理の英語の訳（packs/i18n/<国>.en.js。要る国だけ）の両方が要る
+            const k = trKey(currentCountry(), 'en'); urls.add(assetUrl('i18n/en.js')); if (k) urls.add(assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`));
+        }
+        const has = u => ('caches' in window) ? caches.match(u).then(r => !!r, () => false) : Promise.resolve(false);
+        Promise.all([...urls].map(u => has(u).then(hit => hit || fetch(u).then(r => { if (!r.ok) throw 0; })))).catch(() => { done = false; });
     };
     setTimeout(() => { tick(); const iv = setInterval(() => { if (done) clearInterval(iv); else tick(); }, 15000); }, 15000);
 })();

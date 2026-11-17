@@ -1361,6 +1361,7 @@ GOHAN_I18N('pl', {
     "雑穀ご飯": "Ryż wieloziarnisty",
     "{from} の代わりに {to}": "{from} → {to}",
     "{name} は入れません（なくても作れます）": "Pomijamy: {name} (danie wyjdzie i bez tego)",
+    "手順の文に出てきても入れないでください。": "Nawet jeśli pojawia się w krokach, nie dodawaj tego.",
     "{to}で作る": "Zamiennik: {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Proponuj dania, w których można coś zamienić (np. kurczak zamiast wieprzowiny)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Jeśli w krokach nadal jest pierwotny składnik, użyj zamiennika.",
