@@ -2077,6 +2077,8 @@ nav.tabs.two button{min-width:44px;padding-inline:0;padding-block:0;min-height:4
 nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
+#ns-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から: 入力欄の × を青くしない */
+.ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
 .tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
 .tt-sh h3 .tt-n{font-size:var(--fs12);color:var(--muted);font-weight:400;margin-inline-start:.5em}
@@ -2190,6 +2192,7 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
         <button role="tab" data-tab="today"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18a9 8 0 0 1-18 0z"/><path d="M9 20h6"/><path d="M8.5 4.5c-1 1.2 1 2.3 0 3.8M12 3.5c-1 1.2 1 2.3 0 3.8M15.5 4.5c-1 1.2 1 2.3 0 3.8"/></svg>今日の献立</button>
         <button role="tab" data-tab="cook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z"/><path d="M2 10h2M20 10h2M9 6.5c-.8 1 .8 1.8 0 3M13 5.5c-.8 1 .8 1.8 0 3"/></svg>作り方</button>
         <button role="tab" data-tab="fridge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/></svg>材料から</button>
+        <button role="tab" data-tab="name"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4L21 21"/><path d="M7.5 9h6M7.5 12h4"/></svg>料理名から</button>
         <button role="tab" data-tab="tools"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="9.5" cy="14" rx="7" ry="5.5"/><path d="M16.2 12.2l5.8-2.2"/><path d="M6.5 6.5c-.7.9.7 1.6 0 2.6M10 5c-.7.9.7 1.6 0 2.6M13.5 6.5c-.7.9.7 1.6 0 2.6"/></svg>調理道具</button>
         <button role="tab" data-tab="twist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>ひとひねり</button>
         <button role="tab" data-tab="world"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.8 3.9 5.8 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-5.8-3.9-9S9.4 5.8 12 3z"/></svg>世界のレシピ</button>
@@ -3892,8 +3895,8 @@ function applyStaticText(){
     aria('header.top [data-act="settings"]', t('設定'));
     aria('#mode-btn', t('モード'));
     aria('nav.tabs', t('画面の切りかえ'));
-    const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), tools:tc('tab', '調理道具'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
-    const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), tools:tc('tabs', '道具'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
+    const labels = {today:LANG === 'ja' ? t('今日の献立') : tc('tab', '今日'), cook:tc('tab', '作り方'), fridge:tc('tab', '材料から'), name:tc('tab', '料理名から'), tools:tc('tab', '調理道具'), twist:t('ひとひねり'), world:tc('tab', '世界のレシピ'), log:tc('tab', '記録')};   // タブ用の短い言い方（6つ並べても 12px で折れない）   // 下のタブは最初の版の6つ（オーナーの指示・基準書 4-9）   // 案2: 下のタブは3つ（今日・さがす・記録）。作り方は今日の「三 作る」、材料から・ひとひねり・世界のレシピは「さがす」の中
+    const shorts = {today:tc('tabs', '今日'), cook:tc('tabs', '作る'), fridge:tc('tabs', '材料'), name:tc('tabs', '料理名'), tools:tc('tabs', '道具'), twist:tc('tabs', '工夫'), world:tc('tabs', '世界'), log:tc('tabs', '記録')};   // 絵だけのタブ（幅195pxなど）に出す短い名前
     document.querySelectorAll('nav.tabs button[data-tab]').forEach(b => {
         let sp = b.querySelector('.tl');
         if (!sp){ const n = [...b.childNodes].reverse().find(x => x.nodeType === 3); sp = document.createElement('span'); sp.className = 'tl'; if (n) n.replaceWith(sp); else b.appendChild(sp); }   // タブの字は span に（狭い幅では絵だけにして、字は読み上げに残す）
@@ -5931,7 +5934,7 @@ function awardHtml(){
    画面
    ========================================================= */
 let tab = 'today';
-try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','tools','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
+try{ const h = location.hash.replace('#',''); if (['today','cook','fridge','name','tools','twist','world','log','settings'].includes(h)) tab = h; }catch(e){}
 function tabRevealSel(){   // R2-19: 横にスクロールする狭い幅の下のタブで、選んだタブを見える場所へ（ページは動かさない）
     try{ const nv = document.querySelector('nav.tabs.scrl'); if (!nv) return; const sc = nv.querySelector('.in'), b = nv.querySelector('button[aria-selected="true"]'); if (!sc || !b) return;
         const a = sc.getBoundingClientRect(), r = b.getBoundingClientRect(); if (r.left < a.left) sc.scrollLeft += r.left - a.left; else if (r.right > a.right) sc.scrollLeft += r.right - a.right; }catch(e){}
@@ -6359,7 +6362,7 @@ function guard(name, fn){ try{ return fn(); }catch(e){ try{ console.error('[rend
 const renderFail = new Set();
 const NAV_OF = {};
 // 最初の版の6つのタブ（オーナーの指示・基準書 4章）。案2の四段は、今日の献立（決める）と作り方（買う → 作る → 食卓）に入れる
-const VIEWS = {today: () => viewTodayTab(), cook: () => viewCookTab(), fridge: () => viewFridge(), twist: () => viewTwist(), world: () => viewWorld(), tools: () => viewToolsTab(), log: () => viewLog(), settings: () => viewSettings()};
+const VIEWS = {today: () => viewTodayTab(), cook: () => viewCookTab(), fridge: () => viewFridge(), name: () => viewNameSearch(), twist: () => viewTwist(), world: () => viewWorld(), tools: () => viewToolsTab(), log: () => viewLog(), settings: () => viewSettings()};
 /* ===== 案2「今日の一膳」の共通部品（三宅）: 今日タブの四段の印・段ごとの画面の入れ物・さがすの中の切りかえ =====
    段: decide（一 決める）→ shop（二 買う）→ cook（三 作る）→ table（四 食卓）。
    いま見ている段は session.stage（本人が印を押して選ぶ。押しても献立や状態は変わらない）。作る段は tab 'cook'（作り方の画面）。
@@ -15908,6 +15911,145 @@ function matchRow(m, showSt){
     </div>`;
 }
 
+/* ---- 料理名から（料理の名前で、21の国・地域から同じ料理・世界の似た料理・ひとひねりをさがす） ----
+   1段目「その料理」: 名前が合う料理（いまの国の料理を先に）。2段目「世界の似た料理」: ほかの国の料理から、種類・調理法・主な材料（肉や魚のなかま）と、
+   小さな「なかま」の表（カレー・ひき肉をまとめた料理・豆みその汁もの・炒めたごはん・汁そば）で似ているものを選ぶ。3段目「ひとひねり」: その料理の、いまあるひとひねり案。
+   アレルギー・苦手・食の決まり（ハラール・ベジタリアン・ヴィーガン・お酒）・辛さは献立と同じ判定（isAvoided）で出さず、出さなかった数を言う。決めた献立は変えない */
+// 言い方がちがう同じ料理名（かな・カナ・漢字・英語・その国の言葉）。どれで入れても同じ料理に当てる（小さな表。料理名の中に含まれていれば当たる）
+const NS_SYN = [
+    ['カレー', 'curry', '咖喱', '咖哩', 'カリー', '카레', '커리', 'karê', 'càri', 'करी', 'กะหรี่'],
+    ['ハンバーグ', 'hamburg', 'hambagu', 'hamburgersteak', '汉堡排', '漢堡排', '함박스테이크'],
+    ['味噌汁', 'みそ汁', 'みそしる', 'misosoup', 'misoshiru', '味噌湯', '味噌汤'],
+    ['ラーメン', 'ramen', '拉麺', '拉面', '라멘'],
+    ['餃子', 'ぎょうざ', 'gyoza', 'jiaozi', '饺子', '水餃', '水饺'],
+    ['チャーハン', '炒飯', '焼き飯', 'friedrice', '炒饭', '볶음밥'],
+    ['寿司', 'すし', '鮨', 'sushi'],
+    ['天ぷら', 'てんぷら', '天麩羅', 'tempura'],
+    ['唐揚げ', 'からあげ', 'から揚げ', 'karaage'],
+    ['オムレツ', 'omelette', 'omelet', 'omelete', 'tortilladepatatas'],
+    ['焼きそば', 'やきそば', 'yakisoba', '炒麺', '炒面', 'chowmein'],
+    ['肉じゃが', 'にくじゃが', 'nikujaga'],
+].map(g => g.map(norm));
+// 似た料理の「なかま」（料理の名前・英語の名前・その国の言葉の名前・調味料・材料の言葉で見分ける）。soup/noodle は汁もの・麺どうしだけ
+const NS_KIN = [
+    {k: 'curry', re: /curry|カレー|咖喱|咖哩|カリー|masala|マサラ|rendang|gulai|kerrie|karê|cà ri|커리|카레|करी|กะหรี่/i, spice: /turmeric|ターメリック|ウコン|garam|ガラムマサラ|cumin|クミン|coriander powder|ground coriander|コリアンダーパウダー|chili powder|cardamom|カルダモン|fenugreek/gi},   // 名前・調味料に「カレー」などがあるか、香辛料が3つ以上（ターメリックだけでは数えない）
+    {k: 'patty', re: /hamburg|ハンバーグ|patty|patties|meatball|ミートボール|köfte|kofta|kotlet|frikadel|bitki|albóndiga|polpett|肉餅|肉饼|獅子頭|狮子头|떡갈비|함박|burger/i},
+    {k: 'miso', re: /miso|味噌|みそ|doenjang|된장|soybean paste|bean paste|tương|大醬|大酱/i, type: '汁物'},
+    {k: 'frice', re: /fried rice|チャーハン|炒飯|炒饭|焼き飯|nasi goreng|cơm chiên|khao pad|khao phat|arroz frito|볶음밥|sinangag/i},
+    {k: 'nsoup', re: /ramen|ラーメン|phở|pho\b|拉麺|拉面|牛肉麵|牛肉面|laksa|(?<!焼き?)うどん|(?<!焼き?)そば|(?<!yaki)udon|(?<!yaki)soba|noodle soup|국수|guksu|mì nước|bún bò/i, type: '麺'},
+];
+function nsKinLabel(k){ return {curry: t('カレーのなかま'), patty: t('ひき肉をまとめて焼く料理'), miso: t('豆みその汁もの'), frice: t('炒めたごはん'), nsoup: t('汁そば')}[k] || ''; }
+const NS_KIN_MEMO = new WeakMap();
+function nsKins(r){
+    let e = NS_KIN_MEMO.get(r); if (e && e.name === r.name) return e.ks;
+    const txt = [r.name, r.nameEn, ...(r.alt || []), r.seasBase != null ? r.seasBase : r.seas, ...(r.items || []).map(i => i.key + ' ' + (i.en || '') + ' ' + i.label)].filter(Boolean).join(' | ');
+    const ks = NS_KIN.filter(x => (!x.type || r.type === x.type) && (x.re.test(txt) || (x.spice && new Set((txt.match(x.spice) || []).map(w => w.toLowerCase())).size >= 3))).map(x => x.k);
+    NS_KIN_MEMO.set(r, {name: r.name, ks}); return ks;
+}
+// 1つの言葉の言いかえ（料理名の表 NS_SYN・日本語の検索の言いかえ・漢字→かなの読み）
+function nsAlts(tm){
+    const out = new Set([tm]), ja = searchJa() || LANG === 'ja';
+    NS_SYN.forEach(g => { if (g.includes(tm)) g.forEach(x => out.add(x)); else g.forEach(v => { if (v.length >= 2 && tm.includes(v) && tm !== v) g.forEach(x => out.add(tm.split(v).join(x))); }); });
+    if (ja){ if (SEARCH_SYN[tm]) out.add(SEARCH_SYN[tm]); (SEARCH_ALT[tm] || []).forEach(x => out.add(x)); searchKanaAlts(tm).forEach(x => out.add(x)); }
+    return [...out].filter(Boolean);
+}
+// 料理の並び: いまの国の料理（献立の料理）→ ほかの国（読みこんだ国）。同じ料理は1回だけ
+function nsPool(){
+    const home = currentCountry(), seen = new Set(), out = [];
+    const add = r => { if (r && r.id && !seen.has(r.id)){ seen.add(r.id); out.push(r); } };
+    RECIPES.forEach(add);
+    COUNTRIES.forEach(c => { if (c.cc !== home && BROWSE[c.cc]) BROWSE[c.cc].forEach(add); });
+    return out;
+}
+const nsCC = r => r.pack || 'JP';
+let nsLoading = null;
+// ほかの国の料理を読みこむ（このタブを開いたときに1回。読めなかった国は、もう一度開いたときに読みに行く）
+function nsLoadAll(){
+    const home = currentCountry(), ccs = COUNTRIES.map(c => c.cc).filter(cc => cc !== home && !BROWSE[cc]);
+    if (!ccs.length || nsLoading) return;
+    nsLoading = Promise.all(ccs.map(cc => loadBrowse(cc))).then(() => { nsLoading = null; if (tab === 'name') nsRefresh(); });
+}
+function nsSearch(q){
+    const terms = searchTerms(q).map(norm).filter(Boolean);
+    if (!terms.length) return null;
+    const home = currentCountry(), alts = terms.map(nsAlts);
+    const nm = r => norm(r.name);
+    const score = r => {
+        let sc = 0;
+        alts.forEach(as => { let best = 0; as.forEach(a => { if (nm(r) === a) best = Math.max(best, 4); else if (nm(r).startsWith(a)) best = Math.max(best, 3); else if (nameHit(r, a)) best = Math.max(best, 2); }); sc += best ? best : -100; });   // どの言葉にも当たる料理だけ
+        return sc;
+    };
+    const all = nsPool().map(r => ({r, sc: score(r)})).filter(x => x.sc > 0);
+    const hidden = all.filter(x => isAvoided(x.r)).map(x => x.r);
+    const hits = all.filter(x => !isAvoided(x.r)).sort((a, b) => ((nsCC(b.r) === home) - (nsCC(a.r) === home)) || (b.sc - a.sc) || (a.r.name.length - b.r.name.length)).map(x => x.r);
+    // 世界の似た料理: 当たった料理（上の6品）と、ほかの国の料理をくらべる。なかまが同じか、種類が同じで調理法・肉や魚のなかまも近いもの
+    const bases = hits.slice(0, 6), hitIds = new Set(all.map(x => x.r.id));
+    const sim = (b, c) => {
+        const kb = nsKins(b), kc = nsKins(c), kin = kb.find(k => kc.includes(k));
+        let s = 0; const why = [];
+        if (kin){ s += 5; why.push(nsKinLabel(kin)); }
+        if (b.type === c.type){ s += 2; why.push(typeLabel(c.type)); }
+        if (b.method === c.method) s += 1;
+        if (b.family && b.family !== '野菜' && b.family === c.family) s += 1;   // 肉や魚のなかまはカードの2行目に出ているので、似ているところには書かない
+        if (b.pack && c.pack){ const kb2 = new Set(b.items.filter(i => !i.opt).map(i => i.key)); s += Math.min(2, c.items.filter(i => !i.opt && kb2.has(i.key)).length); }
+        return {s: kin || (b.type === c.type && s >= 4) ? s : 0, why};
+    };
+    const per = {}, similar = [];
+    if (bases.length) nsPool().filter(c => nsCC(c) !== home && !hitIds.has(c.id) && !isAvoided(c)).map(c => {
+        let best = {s: 0, why: []}; bases.forEach(b => { if (nsCC(b) === nsCC(c)) return; const x = sim(b, c); if (x.s > best.s) best = x; });
+        return {r: c, ...best};
+    }).filter(x => x.s > 0).sort((a, b) => b.s - a.s || a.r.name.length - b.r.name.length).forEach(x => {
+        const cc = nsCC(x.r); if (similar.length >= 8 || (per[cc] || 0) >= 2) return; per[cc] = (per[cc] || 0) + 1; similar.push(x);
+    });
+    // ひとひねり: 当たったいまの国の料理（日本の料理・日本語のときだけ）から、いまある案を1つずつ変えたもの（味・かたち・主役の食材）。苦手・アレルギーに当たる案は出さない
+    const twists = [];
+    if (twistAvailable()) hits.filter(r => RECIPES.includes(r) && !String(r.id).startsWith('a~')).slice(0, 3).forEach(b => {
+        if (twists.length >= 4) return;
+        const o = twistOptions(b), ids = [...o.flavors.map(f => twistId(b.id, f, '', '')), ...o.forms.map(f => twistId(b.id, '', f, '')), ...o.swaps.map(s => twistId(b.id, '', '', s))];
+        let n = 0;
+        for (const id of ids){ if (twists.length >= 4 || n >= 2) break; const tw = buildTwist(id); if (tw && !twistAvoided(tw)){ twists.push(tw); n++; } }
+    });
+    return {terms: searchTerms(q), hits, hidden, similar, twists};
+}
+function nsHiddenHtml(hidden){
+    if (!hidden.length) return '';
+    const hAlg = hidden.filter(allergyConflict).length, hOther = hidden.length - hAlg;
+    const why = [hAlg ? t('{n}品は、アレルギー（選んだアレルゲン・家族）に当たる材料を使うので出していません。', {n: hAlg}) : '', hOther ? t('{n}品は、苦手な食材・辛さ・手に入りにくい食材の設定で出していません。', {n: hOther}) : ''].filter(Boolean);
+    return `<div class="small ns-hid" role="status">${esc(why.join(sentGap()))}</div>`;
+}
+function nsCard(r, note){
+    const b = allergyBadge(r);
+    return dishCardHtml(r, {note, extra: b ? `<div class="dc-tags">${b}</div>` : ''});
+}
+function nsResultsHtml(q){
+    const loading = nsLoading ? `<div class="small muted ns-load" role="status">${esc(t('読みこみ中…'))}</div>` : '';
+    const res = nsSearch(q || '');
+    if (!res) return loading;
+    const {hits, hidden, similar, twists} = res;
+    if (!hits.length) return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ')}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
+    const shown = hits.slice(0, 12);
+    return `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
+        <div class="list dlist">${shown.map(r => nsCard(r, '')).join('')}</div>${nsHiddenHtml(hidden)}</div>
+    <div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>
+        ${similar.length ? `<div class="list dlist">${similar.map(x => nsCard(x.r, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : '')).join('')}</div>` : `<div class="small muted">${esc(t('似た料理は見つかりませんでした'))}</div>`}</div>
+    ${twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
+        <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : ''}${loading}`;
+}
+function nsRefresh(){ const box = $('#ns-results'); if (box) box.innerHTML = nsResultsHtml(session.nsQ || ''); }
+function viewNameSearch(){
+    nsLoadAll();
+    return `<section class="sec ns-sec">
+        <div class="sec-head"><h2>${esc(t('料理名からさがす'))}</h2><span class="hint">${esc(t('料理の名前を入れると、{n}の国・地域から同じ料理と似た料理をさがします', {n: COUNTRIES.length}))}</span></div>
+        <div class="card">
+        <form class="inputbar search" data-form="ns" role="search">
+            <input type="search" id="ns-input" value="${esc(session.nsQ || '')}" placeholder="${esc(t('料理名を入れる（例: コロッケ）'))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理名でさがす'))}">
+            <button class="btn" type="submit">${esc(t('さがす'))}</button>
+        </form>
+        <div id="ns-results" aria-live="polite">${nsResultsHtml(session.nsQ || '')}</div>
+        </div>
+    </section>`;
+}
+
 /* ---- ひとひねり ---- */
 let twistState = {baseId:'', level:2, flavor:'any', form:'any', swap:'any', results:null, fromIds:null};
 function viewTwist(){
@@ -18113,6 +18255,7 @@ document.addEventListener('input', e => {
     if (e.target.id === 'c-ings'){ clearTimeout(customChkDeb); const v = e.target.value; customChkDeb = setTimeout(() => { const c = $('#c-check'); if (c) c.innerHTML = customCheckHtml(v); }, 350); }
     if (e.target.id === 'one-input' && sheet && sheet.kind === 'one'){ sheet.q = e.target.value; oneRefresh(); return; }
     if (e.target.id === 'wish-q' && sheet && (sheet.kind === 'wish-send' || sheet.kind === 'ask-make')){ sheet.q = e.target.value.slice(0, 40); clearTimeout(searchDeb); searchDeb = setTimeout(() => { const g = $('#wish-grid'), h = $('#wish-sub'); if (g) g.innerHTML = wishGridHtml(); if (h) h.textContent = sheet && sheet.q.trim() ? t('さがした料理') : t('家でよく出る料理'); }, 200); return; }
+    if (e.target.id === 'ns-input'){ clearTimeout(searchDeb); const q = e.target.value; searchDeb = setTimeout(() => { session.nsQ = q; nsRefresh(); }, q.trim() ? 220 : 0); return; }   // 料理名から
     if (e.target.id !== 'search-input') return;
     clearTimeout(searchDeb); const q = e.target.value;
     searchDeb = setTimeout(() => runSearch(q), q.trim() ? 220 : 0);
@@ -18185,6 +18328,7 @@ document.addEventListener('submit', e => {
     if (f === 'rm-q'){ rmSubmit(); return; }
     if (f === 'stock-add'){ const n = $('#stock-name'), q = $('#stock-q'), e2 = $('#stock-exp'); if (n && stockAdd(n.value, q ? q.value : '', e2 ? e2.value : '')){ const x = $('#stock-name'); if (x) x.focus({preventScroll:true}); } return; }
     if (f === 'search'){ const inp = $('#search-input'); runSearch(inp.value); inp.blur(); }
+    if (f === 'ns'){ const inp = $('#ns-input'); clearTimeout(searchDeb); session.nsQ = inp.value; nsRefresh(); inp.blur(); return; }
     if (f === 'shop-add'){ const inp = $('#shop-add-input'); if (inp && shopAddExtra(inp.value)){ const n = $('#shop-add-input'); if (n) n.focus({preventScroll:true}); } return; }
     if (f === 'wish-q'){ const x = $('#wish-q'); if (x) x.blur(); return; }
     if (f === 'wish-paste'){ const x = $('#wish-paste'); if (x) wishOpenParsed(wishParse(x.value.slice(0, WISH_TEXT_MAX + 1))); return; }
@@ -18573,7 +18717,9 @@ function fitTabs(){
     const bs = [...nv.querySelectorAll('button[data-tab]:not([hidden])')]; if (!bs.length) return;
     const ts = Number(document.documentElement.getAttribute('data-ts')) || 0, w = nv.clientWidth / bs.length;
     nv.classList.remove('two'); /* 測り直し: 1段のときの幅で決める */
-    const two = w < 44;   // R120: 1つが 44px に足りない狭い幅は、3つずつ2段（絵＋短い名前。44px 以上・全部が画面に入る）
+    // 1段のときの、1つのボタンの本当の幅（下のタブの左右の余白・すき間を引く）。8つ並ぶと（料理名から）幅360〜380pxで 41〜43px になっていた
+    const inn = nv.querySelector('.in'), wIn = inn ? (inn.clientWidth - (parseFloat(getComputedStyle(inn).columnGap) || 0) * (bs.length - 1)) / bs.length : w;
+    const two = Math.min(w, wIn) < 44;   // R120: 1つが 44px に足りない狭い幅は、3つずつ2段（絵＋短い名前。44px 以上・全部が画面に入る）
     const cols = Math.ceil(bs.length / 2);   // 2段のときの列（6つなら3列・7つなら4列）
     nv.style.setProperty('--tcols', cols);
     nv.classList.toggle('two', two);
