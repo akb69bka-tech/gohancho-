@@ -2287,7 +2287,7 @@ GOHAN_PACK({
     {
       id: 'ph_ginisang_munggo_v',
       name: 'Mung bean stew with moringa',
-      local: 'Ginisang munggo',
+      local: 'Ginisang munggo na walang karne',
       type: 'main',
       starch: true,
       method: 'simmer',
@@ -2309,8 +2309,8 @@ GOHAN_PACK({
     },
     {
       id: 'ph_ginataang_kalabasa_v',
-      name: 'Squash and long beans in coconut milk',
-      local: 'Ginataang kalabasa at sitaw',
+      name: 'Squash and long beans in coconut milk, main dish',
+      local: 'Ginataang kalabasa at sitaw na ulam',
       type: 'main',
       starch: true,
       method: 'simmer',
@@ -2333,7 +2333,7 @@ GOHAN_PACK({
     {
       id: 'ph_lumpiang_gulay_v',
       name: 'Vegetable lumpia with tofu',
-      local: 'Lumpiang gulay',
+      local: 'Lumpiang gulay na may tokwa',
       type: 'main',
       starch: true,
       method: 'fry',

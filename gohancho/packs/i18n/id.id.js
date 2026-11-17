@@ -1523,7 +1523,7 @@ GOHAN_PACK_TR('ID', 'id', {
       tip: { add: 'Segenggam irisan kacang panjang', why: 'Menambah renyah dan warna', skill: 'Iris tipis dan rata', how: 'Ayam yang diiris tipis dan rata cepat matang tanpa menjadi kering.' }
     },
     id_gado_gado_vegan: {
-      name: 'Gado-gado',
+      name: 'Gado-gado tanpa telur',
       ings: [
         ['Kubis', '150 g'],
         ['Kacang panjang', '100 g'],
@@ -1542,7 +1542,7 @@ GOHAN_PACK_TR('ID', 'id', {
       ],
     },
     id_sayur_lodeh_v: {
-      name: 'Sayur lodeh',
+      name: 'Sayur lodeh tahu tempe',
       ings: [
         ['Santan', '400 ml'],
         ['Labu siam', '1'],
@@ -1560,7 +1560,7 @@ GOHAN_PACK_TR('ID', 'id', {
       ],
     },
     id_tempe_orek: {
-      name: 'Tempe orek',
+      name: 'Tempe orek cabai hijau',
       ings: [
         ['Tempe', '250 g'],
         ['Cabai hijau', '3'],

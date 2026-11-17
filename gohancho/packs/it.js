@@ -2035,7 +2035,7 @@ GOHAN_PACK({
     {
       id: "it_pappa_pomodoro",
       name: "Tuscan bread and tomato porridge",
-      local: "Pappa al pomodoro",
+      local: "Pappa al pomodoro densa",
       type: 'rice',
       porridge: true,   // おかゆの日に出せる、その国のおかゆのなかま（4B）
       okayuOnly: true,   // ふだんの夕食の主菜にはしない（おかゆの日だけ）
@@ -2057,7 +2057,7 @@ GOHAN_PACK({
     {
       id: 'it_pasta_ceci',
       name: 'Pasta and chickpeas',
-      local: 'Pasta e ceci',
+      local: 'Pasta e ceci con pomodoro',
       type: 'noodle',
       starch: true,
       method: 'simmer',
@@ -2079,7 +2079,7 @@ GOHAN_PACK({
     {
       id: 'it_pasta_fagioli_v',
       name: 'Pasta and beans',
-      local: 'Pasta e fagioli',
+      local: 'Pasta e fagioli con pomodoro',
       type: 'noodle',
       starch: true,
       method: 'simmer',

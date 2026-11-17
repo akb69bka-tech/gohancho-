@@ -2509,7 +2509,7 @@ GOHAN_PACK({
     {
       id: "vn_dauhuchiensa",
       name: "Lemongrass and chilli tofu",
-      local: "Đậu hũ chiên sả ớt",
+      local: "Đậu hũ áp chảo sả ớt",
       type: "main",
       method: "stirfry",
       protein: "legume",

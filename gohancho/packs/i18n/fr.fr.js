@@ -1766,7 +1766,7 @@ GOHAN_PACK_TR('FR', 'fr', {
       ],
     },
     "fr_gratinchoufleur": {
-      name: "Gratin de chou-fleur",
+      name: "Gratin de chou-fleur au fromage",
       ings: [["Chou-fleur", "1 petit (600 g)"], ["Lait", "300 ml"], ["Emmental râpé", "60 g"]],
       seas: "20 g de beurre · 1 c. à soupe de farine · Muscade · Sel · Poivre",
       steps: [

@@ -149,7 +149,7 @@ GOHAN_PACK_TR('IT', 'it', {
       ],
     },
     "it_pappa_pomodoro": {
-      name: "Pappa al pomodoro",
+      name: "Pappa al pomodoro densa",
       ings: [["Pane toscano raffermo, senza crosta", "200 g"], ["Passata di pomodoro", "400 g"], ["Foglie di basilico", "6"]],
       seas: "1 spicchio d'aglio · 3 cucchiai di olio extravergine · 600 ml di brodo vegetale · Sale",
       steps: [
@@ -1567,7 +1567,7 @@ GOHAN_PACK_TR('IT', 'it', {
       tip: { add: 'Grattugiare il pecorino finissimo, quasi in polvere', why: 'Il formaggio fine si scioglie liscio; se è grosso fa grumi', skill: 'Mantecare il formaggio fuori dal fuoco', how: 'Con la temperatura bassa il pecorino non si fila in grumi nella padella.' }
     },
     it_pasta_ceci: {
-      name: 'Pasta e ceci',
+      name: 'Pasta e ceci con pomodoro',
       ings: [
         ['Pasta corta (ditalini)', '160 g'],
         ['Ceci già cotti', '1 barattolo (400 g)'],
@@ -1582,7 +1582,7 @@ GOHAN_PACK_TR('IT', 'it', {
       ],
     },
     it_pasta_fagioli_v: {
-      name: 'Pasta e fagioli',
+      name: 'Pasta e fagioli con pomodoro',
       ings: [
         ['Fagioli borlotti già cotti', '1 barattolo (400 g)'],
         ['Pasta corta', '150 g'],

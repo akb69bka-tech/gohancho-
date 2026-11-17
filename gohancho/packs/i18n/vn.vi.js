@@ -1366,7 +1366,7 @@ GOHAN_PACK_TR('VN', 'vi', {
       ],
     },
     "vn_dauhuchiensa": {
-      name: "Đậu hũ chiên sả ớt",
+      name: "Đậu hũ áp chảo sả ớt",
       ings: [["Đậu hũ trắng (loại chắc)", "400 g"], ["Sả", "3 cây"], ["Ớt đỏ", "2 quả"]],
       seas: "4 muỗng canh dầu ăn · 1 muỗng canh nước tương · 1/2 muỗng cà phê muối · 1 muỗng cà phê đường · 2 tép tỏi",
       steps: [

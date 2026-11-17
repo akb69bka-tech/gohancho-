@@ -2296,7 +2296,7 @@ GOHAN_PACK({
     {
       id: 'pe_sopa_quinua_v',
       name: 'Quinoa soup',
-      local: 'Sopa de quinua',
+      local: 'Sopa de quinua sin arvejas',
       type: 'soup',
       method: 'soup',
       protein: 'legume',
@@ -2605,7 +2605,7 @@ GOHAN_PACK({
     {
       id: "pe_sudado_pescado",
       name: "Steamed fish in onion and tomato broth",
-      local: "Sudado de pescado",
+      local: "Sudado de pescado con caldo",
       type: "main",
       method: "simmer",
       protein: "fish",

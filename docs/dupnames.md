@@ -87,3 +87,36 @@
 - 名前を変えると、すでに記録・お気に入り・保存した献立にある料理も新しい名前で出ます。ID は変えないので、開けなくなることはありません。
 - パックのデータを変えると、すでに入れている人の端末に新しい名前がいつ届くかは、版の上げ方しだいです。どうなるかはわかりません。
 - 確かめ方: `node` で全パックと訳を読み、言語ごとに同じ名前を数えました。表の22組がすべてで、日本の料理（JP）にはありませんでした。
+
+## 決まったこと（統括の判断 11/17）と、変えた名前
+
+- 22組すべて、あとから足した料理の名前を変えました。片方を候補から外すことはしません（食の決まりの日に出せる品が減らないように）。
+- 短く、やさしい言葉を足す形にしました。かっこは使っていません（検索では、かっこの中を外して比べるため）。手順・材料・ID は変えていません。
+- テスト tools/tests/dupnames.mjs（run-all に入っています）: 18言語 × 21か国で、ちがう料理が同じ名前で出ないことを確かめます。
+
+| # | 変える側 | 新しい名前（その国の言葉） | 英語の名前 | 日本語の名前 |
+|---|---|---|---|---|
+| 1 | cn_di_san_xian | 炸地三鲜 | （そのまま） | （そのまま） |
+| 2 | de_weisse_bohnen_eintopf | Weiße-Bohnen-Eintopf mit Gemüse | （そのまま） | （そのまま） |
+| 3 | eg_ful_medames_v | فول مدمس بالطماطم | （そのまま） | （そのまま） |
+| 4 | es_espinacasgarbanzos | Espinacas con garbanzos y tomate | Spinach with chickpeas and tomato | （そのまま） |
+| 5 | es_menestraverde | Menestra de verduras sin jamón | （そのまま） | （そのまま） |
+| 6 | es_coliflorajoarriero | Coliflor al ajoarriero con huevo | （そのまま） | （そのまま） |
+| 7 | fr_gratinchoufleur | Gratin de chou-fleur au fromage | （そのまま・Cauliflower cheese gratin） | カリフラワーのチーズグラタン |
+| 8 | gb_bubbleandsqueak | Bubble and squeak without butter | Bubble and squeak without butter | （そのまま） |
+| 9 | id_tempe_orek | Tempe orek cabai hijau | （そのまま） | （そのまま） |
+| 10 | id_sayur_lodeh_v | Sayur lodeh tahu tempe | （そのまま） | （そのまま） |
+| 11 | id_gado_gado_vegan | Gado-gado tanpa telur | （そのまま） | （そのまま） |
+| 12 | it_pasta_fagioli_v | Pasta e fagioli con pomodoro | （そのまま） | （そのまま） |
+| 13 | it_pappa_pomodoro | Pappa al pomodoro densa | （そのまま） | （そのまま） |
+| 14 | it_pasta_ceci | Pasta e ceci con pomodoro | （そのまま） | （そのまま） |
+| 15 | pe_sudado_pescado | Sudado de pescado con caldo | （そのまま） | （そのまま） |
+| 16 | pe_sopa_quinua_v | Sopa de quinua sin arvejas | （そのまま） | （そのまま） |
+| 17 | ph_ginisang_munggo_v | Ginisang munggo na walang karne | （そのまま） | （そのまま） |
+| 18 | ph_ginataang_kalabasa_v | Ginataang kalabasa at sitaw na ulam | Squash and long beans in coconut milk, main dish | （そのまま） |
+| 19 | ph_lumpiang_gulay_v | Lumpiang gulay na may tokwa | （そのまま） | （そのまま） |
+| 20 | tr_ezogelin_v | Pirinçsiz ezogelin çorbası | （そのまま） | （そのまま） |
+| 21 | tr_imam_bayildi | Ana yemek imam bayıldı | （そのまま） | （そのまま） |
+| 22 | vn_dauhuchiensa | Đậu hũ áp chảo sả ớt | （そのまま） | （そのまま） |
+
+アラビア語（#3）・フィリピン語（#17〜19）・トルコ語（#20・21）・ベトナム語（#22）が自然な言い方かどうかは、わかりません。

@@ -199,7 +199,7 @@ GOHAN_PACK_TR('PE', 'es', {
       ],
     },
     "pe_sudado_pescado": {
-      name: "Sudado de pescado",
+      name: "Sudado de pescado con caldo",
       ings: [["Filetes de pescado blanco", "400 g"], ["Cebolla roja", "150 g"], ["Tomates", "150 g"], ["Ají amarillo", "1"], ["Culantro", "10 g"]],
       seas: "2 cucharadas de aceite · 3 dientes de ajo · 1 cucharada de ají panca molido · 60 ml de chicha de jora o fumet · Sal · Pimienta · Comino",
       steps: [
@@ -1330,7 +1330,7 @@ GOHAN_PACK_TR('PE', 'es', {
       ],
     },
     pe_sopa_quinua_v: {
-      name: 'Sopa de quinua',
+      name: 'Sopa de quinua sin arvejas',
       ings: [
         ['Quinua', '80 g'],
         ['Papa', '1'],
