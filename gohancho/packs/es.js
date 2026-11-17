@@ -2517,7 +2517,7 @@ GOHAN_PACK({
     {
       id: "es_menestraverde",
       name: "Menestra (Spanish spring vegetable stew)",
-      local: "Menestra de verduras sin jamón",
+      local: "Menestra de verduras con espárragos",
       type: "main",
       method: "simmer",
       protein: "veg",

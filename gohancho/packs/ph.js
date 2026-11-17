@@ -2287,7 +2287,7 @@ GOHAN_PACK({
     {
       id: 'ph_ginisang_munggo_v',
       name: 'Mung bean stew with moringa',
-      local: 'Ginisang munggo na walang karne',
+      local: 'Ginisang munggo vegan',
       type: 'main',
       starch: true,
       method: 'simmer',

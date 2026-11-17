@@ -1367,7 +1367,7 @@ GOHAN_PACK_TR('ES', 'es', {
       ],
     },
     "es_menestraverde": {
-      name: "Menestra de verduras sin jamón",
+      name: "Menestra de verduras con espárragos",
       ings: [["Corazones de alcachofa (frescos o congelados)", "250 g"], ["Judías verdes planas", "250 g"], ["Espárragos trigueros", "150 g"], ["Acelgas", "200 g"], ["Cebolla", "1/4"]],
       seas: "4 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de harina · 200 ml de agua · Sal",
       steps: [

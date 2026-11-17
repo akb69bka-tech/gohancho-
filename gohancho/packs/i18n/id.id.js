@@ -1523,7 +1523,7 @@ GOHAN_PACK_TR('ID', 'id', {
       tip: { add: 'Segenggam irisan kacang panjang', why: 'Menambah renyah dan warna', skill: 'Iris tipis dan rata', how: 'Ayam yang diiris tipis dan rata cepat matang tanpa menjadi kering.' }
     },
     id_gado_gado_vegan: {
-      name: 'Gado-gado tanpa telur',
+      name: 'Gado-gado vegan',
       ings: [
         ['Kubis', '150 g'],
         ['Kacang panjang', '100 g'],

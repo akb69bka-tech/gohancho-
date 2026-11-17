@@ -2099,7 +2099,7 @@ GOHAN_PACK({
     {
       id: 'id_gado_gado_vegan',
       name: 'Gado-gado with peanut sauce (no egg)',
-      local: 'Gado-gado tanpa telur',
+      local: 'Gado-gado vegan',
       type: 'main',
       starch: true,
       method: 'raw',

@@ -1203,7 +1203,7 @@ GOHAN_PACK_TR('PH', 'fil', {
       tip: { add: 'Dagdag na kanin', why: 'Ang sarsa ng bawang at mantikilya ang pinakamasarap sa kanin', skill: 'Panatilihing ginintuan ang bawang', how: 'Sa katamtamang apoy, bumabango ang mantikilya sa bawang nang hindi ito nasusunog at pumapait.' }
     },
     ph_ginisang_munggo_v: {
-      name: 'Ginisang munggo na walang karne',
+      name: 'Ginisang munggo vegan',
       ings: [
         ['Munggo', '200 g'],
         ['Dahon ng malunggay (o spinach)', '1 dakot'],

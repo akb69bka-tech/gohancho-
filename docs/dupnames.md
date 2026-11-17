@@ -100,23 +100,25 @@
 | 2 | de_weisse_bohnen_eintopf | Weiße-Bohnen-Eintopf mit Gemüse | （そのまま） | （そのまま） |
 | 3 | eg_ful_medames_v | فول مدمس بالطماطم | （そのまま） | （そのまま） |
 | 4 | es_espinacasgarbanzos | Espinacas con garbanzos y tomate | Spinach with chickpeas and tomato | （そのまま） |
-| 5 | es_menestraverde | Menestra de verduras sin jamón | （そのまま） | （そのまま） |
+| 5 | es_menestraverde | Menestra de verduras con espárragos | （そのまま） | （そのまま） |
 | 6 | es_coliflorajoarriero | Coliflor al ajoarriero con huevo | （そのまま） | （そのまま） |
 | 7 | fr_gratinchoufleur | Gratin de chou-fleur au fromage | （そのまま・Cauliflower cheese gratin） | カリフラワーのチーズグラタン |
-| 8 | gb_bubbleandsqueak | Bubble and squeak without butter | Bubble and squeak without butter | （そのまま） |
+| 8 | gb_bubbleandsqueak | Vegan bubble and squeak | Vegan bubble and squeak | （そのまま） |
 | 9 | id_tempe_orek | Tempe orek cabai hijau | （そのまま） | （そのまま） |
 | 10 | id_sayur_lodeh_v | Sayur lodeh tahu tempe | （そのまま） | （そのまま） |
-| 11 | id_gado_gado_vegan | Gado-gado tanpa telur | （そのまま） | （そのまま） |
+| 11 | id_gado_gado_vegan | Gado-gado vegan | （そのまま） | （そのまま） |
 | 12 | it_pasta_fagioli_v | Pasta e fagioli con pomodoro | （そのまま） | （そのまま） |
 | 13 | it_pappa_pomodoro | Pappa al pomodoro densa | （そのまま） | （そのまま） |
 | 14 | it_pasta_ceci | Pasta e ceci con pomodoro | （そのまま） | （そのまま） |
 | 15 | pe_sudado_pescado | Sudado de pescado con caldo | （そのまま） | （そのまま） |
 | 16 | pe_sopa_quinua_v | Sopa de quinua sin arvejas | （そのまま） | （そのまま） |
-| 17 | ph_ginisang_munggo_v | Ginisang munggo na walang karne | （そのまま） | （そのまま） |
+| 17 | ph_ginisang_munggo_v | Ginisang munggo vegan | （そのまま） | （そのまま） |
 | 18 | ph_ginataang_kalabasa_v | Ginataang kalabasa at sitaw na ulam | Squash and long beans in coconut milk, main dish | （そのまま） |
 | 19 | ph_lumpiang_gulay_v | Lumpiang gulay na may tokwa | （そのまま） | （そのまま） |
 | 20 | tr_ezogelin_v | Pirinçsiz ezogelin çorbası | （そのまま） | （そのまま） |
 | 21 | tr_imam_bayildi | Ana yemek imam bayıldı | （そのまま） | （そのまま） |
 | 22 | vn_dauhuchiensa | Đậu hũ áp chảo sả ớt | （そのまま） | （そのまま） |
+
+「〜なし」の言い方（without butter・sin jamón・tanpa telur・walang karne）は、料理名の言葉でアレルゲン・食の決まりを見分けるしくみに当たってしまう（bfast-r29 で「バター」と読まれた）ので、中身の言葉か vegan に変えました（#5・8・11・17）。
 
 アラビア語（#3）・フィリピン語（#17〜19）・トルコ語（#20・21）・ベトナム語（#22）が自然な言い方かどうかは、わかりません。
