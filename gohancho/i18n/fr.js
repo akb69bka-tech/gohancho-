@@ -2106,4 +2106,5 @@ GOHAN_I18N('fr', {
     "炒めたごはん": "Riz sauté",
     "汁そば": "Soupes de nouilles",
     "ほかの国からも見つかりました": "Également trouvé dans d’autres pays",
+    "下に出しています": "Affichés plus bas",
 });

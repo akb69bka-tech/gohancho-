@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// claude/fullfix: 買い物メモの確かめを、料理の名前ではなく料理そのもので見るように直した（ちがう料理が同じ名前のことがあるため）
 // 1週間プランの「この日は作らない」の回帰テスト（Playwright。使い方: node tools/tests/week-skip.mjs [http://localhost:8794/]）
 //  ・作らない／戻す／別の案 のどれを押しても、押した日以外の日（日付・料理・副菜汁もの・skip）が1つも変わらない
 //  ・作らない日の料理は買い物メモ・送る文面（「作らない日」と出る）・今日の主菜から外れ、戻すと同じ料理に戻る
@@ -37,7 +38,11 @@ for (const cc of CCS){
                 const txt = weekShareText(); if (!txt.includes(t('作らない日'))) bad.push('送る文面に作らない日が出ない');
                 // 作らない日だけの料理の材料は買い物メモから減る（他の日の分は残る）
                 const others = new Set(visiblePlanDays().flatMap(x => dayDishes(x).map(r => r.id)));
-                shoppingList().forEach(e => { if (e.dishes.some(n => { const r = S.week.days[i]; const rr = byId(r.id); return rr && n === rr.name && !others.has(rr.id); })) bad.push('買い物メモに作らない日の料理: ' + e.label); });
+                // 名前ではなく、その料理そのもので見る（フランスの主菜 fr_gratinchoufleur と副菜 fr_choufleurgratin のように、ちがう料理が同じ名前のことがある）。
+                // 作らない日の料理の名前に一時的に印を付けて、買い物メモに印が出ないことを確かめる（同じ料理がほかの日にもあるときは除く）
+                { const rr = byId(S.week.days[i].id);
+                  if (rr && !others.has(rr.id)){ const nm0 = rr.name, mk = nm0 + '\u2063作らない日'; rr.name = mk;
+                      try{ shoppingList().forEach(e => { if (e.dishes.includes(mk)) bad.push('買い物メモに作らない日の料理: ' + e.label + '（' + nm0 + '）'); }); } finally { rr.name = nm0; } } }
                 // 作らない日に別の案を押しても何も動かない
                 const mid = S.week.days.map(snapDay); click('week-reroll', ds[i]);
                 if (S.week.days.map(snapDay).join() !== mid.join()) bad.push('作らない日の別の案で何かが動いた');

@@ -1089,7 +1089,7 @@ GOHAN_PACK_TR('CN', 'zh-Hans', {
       tip: { add: '几片红辣椒', why: '添色又带点辣', skill: '黄瓜快炒', how: '黄瓜炒一两分钟就好，炒久了不脆还会出水。' }
     },
     cn_di_san_xian: {
-      name: '地三鲜',
+      name: '炸地三鲜',
       ings: [
         ['土豆', '2个'],
         ['茄子', '1根（长茄）'],

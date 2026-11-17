@@ -2099,7 +2099,7 @@ GOHAN_PACK({
     {
       id: 'id_gado_gado_vegan',
       name: 'Gado-gado with peanut sauce (no egg)',
-      local: 'Gado-gado',
+      local: 'Gado-gado vegan',
       type: 'main',
       starch: true,
       method: 'raw',
@@ -2125,7 +2125,7 @@ GOHAN_PACK({
     {
       id: 'id_sayur_lodeh_v',
       name: 'Vegetables in coconut milk with tofu and tempeh',
-      local: 'Sayur lodeh',
+      local: 'Sayur lodeh tahu tempe',
       type: 'main',
       starch: true,
       method: 'simmer',
@@ -2150,7 +2150,7 @@ GOHAN_PACK({
     {
       id: 'id_tempe_orek',
       name: 'Sweet and spicy tempeh stir-fry',
-      local: 'Tempe orek',
+      local: 'Tempe orek cabai hijau',
       type: 'main',
       starch: true,
       method: 'stirfry',

@@ -131,12 +131,17 @@ const CLAIM = /健康|やせ|痩せ|減量|体重|効果|効く|health|weight|sl
                     const mn = m.items[0] && m.items[0].r; if (mn) mains.add(mn.id); }
                 return {avg: sum / Math.max(1, n), n, fried, mains: mains.size}; };
             const off = run(false), on = run(true);
+            // 揚げ物の数は120回では乱数のゆれが大きい（料理のデータを1品直しただけで 4→5 が 4→9 になった。claude/fullfix）。3つの乱数（seed・seed+1・seed+2）の合計でくらべる
+            const runS = (on, sd) => { const keep = seed; seed = sd; const x = run(on); seed = keep; return x; };
+            const fr3 = on => [0, 1, 2].reduce((a, k) => a + (k === 0 ? (on ? on3[0] : off3[0]) : runS(on, seed + k).fried), 0);
+            const off3 = [off.fried], on3 = [on.fried];
+            const friedOff3 = fr3(false), friedOn3 = fr3(true);
             delete S.settings.diet; session.menu = null;
-            return {off, on};
+            return {off, on, friedOff3, friedOn3};
         }, {cc, N, seed: SEED});
         console.log(`K4 ${cc} ${N}回: 平均 ${Math.round(r.off.avg)} → ${Math.round(r.on.avg)} kcal（料理の合計・1人分） / 揚げ物 ${r.off.fried} → ${r.on.fried} / 主菜の種類 ${r.off.mains} → ${r.on.mains}`);
         ok(r.on.avg < r.off.avg, `K4a ${cc} オンで平均が下がらない: ${JSON.stringify(r)}`);
-        ok(r.on.fried <= r.off.fried + 1, `K4b ${cc} オンで揚げ物が増えた: ${JSON.stringify(r)}`);
+        ok(r.friedOn3 <= r.friedOff3 + 1, `K4b ${cc} オンで揚げ物が増えた（3つの乱数の合計 ${r.friedOff3} → ${r.friedOn3}）: ${JSON.stringify(r)}`);
         ok(r.on.mains >= r.off.mains * 0.6, `K4c ${cc} オンで同じ料理ばかり: ${JSON.stringify(r)}`);
     }
     // 外しはしない: 揚げ物も重めの料理も、オンでもときどき出る

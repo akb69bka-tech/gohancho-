@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// claude/fullfix: 3) のはみ出しの確かめで、横に送る列（設定のタブ・第33回 R156）の中は、列の箱が画面に入っていればはみ出しとしない（箱が画面から出たら落ちる）
 // 作り置き・残り物メモ / 食費メモ / 文字の大きさ の回帰テスト（Playwright。使い方: node tools/tests/memo-size.mjs [http://localhost:8795/]）
 //  1) 残り物メモ: 1タップで記録 → 「今日の…（1日目）」「昨日の…（2日目）」。献立・冷蔵庫の食材は1つも変わらない。もう一度押すと消える／「食べきった」で消える／再読み込みしても残る
 //  2) 食費メモ: 入力した金額の直近7日の合計だけ。8日前の記録は含めない。不正な入力は受けつけない。通貨は国の通貨。外へ通信しない
@@ -162,7 +163,9 @@ for (const [cc, lang] of [['JP'], ['US'], ['DE', 'de'], ['EG', 'ar'], ['TH', 'th
             for (const tb of ['today', 'cook', 'fridge', 'world', 'log', 'settings']){
                 setTab(tb); await new Promise(r => setTimeout(r, 120));
                 if (document.documentElement.scrollWidth > innerWidth + 1) out.over.push(tb + ':' + document.documentElement.scrollWidth);
-                for (const el of document.querySelectorAll('#view *, nav.tabs *')){ const rc = el.getBoundingClientRect(); if (rc.width && rc.right > innerWidth + 1 && !el.closest('.scroll, .chips.scroll') && getComputedStyle(el).position !== 'fixed'){ out.over.push(tb + ' ' + el.tagName + '.' + el.className + ' ' + Math.round(rc.right)); break; } }
+                // 横に送る列（設定のタブ .set-tabs のように overflow-x で中に収める箱）の中は、箱そのものが画面に入っていれば、はみ出しではない（箱の外へは描かれない）
+                const inBox = el => { for (let a = el.parentElement; a && a !== document.body; a = a.parentElement){ if (!(a instanceof HTMLElement)) continue; const ox = getComputedStyle(a).overflowX; if (ox === 'auto' || ox === 'scroll' || ox === 'hidden' || ox === 'clip') return a.getBoundingClientRect().right <= innerWidth + 1; } return false; };
+                for (const el of document.querySelectorAll('#view *, nav.tabs *')){ const rc = el.getBoundingClientRect(); if (rc.width && rc.right > innerWidth + 1 && !el.closest('.scroll, .chips.scroll') && !inBox(el) && getComputedStyle(el).position !== 'fixed'){ out.over.push(tb + ' ' + el.tagName + '.' + el.className + ' ' + Math.round(rc.right)); break; } }
             }
             return out;
         }, sz);

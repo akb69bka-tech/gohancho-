@@ -1144,7 +1144,7 @@ GOHAN_PACK_TR('TR', 'tr', {
       ],
     },
     tr_imam_bayildi: {
-      name: 'İmam bayıldı',
+      name: 'Ana yemek imam bayıldı',
       ings: [
         ['Patlıcan', '3'],
         ['Soğan', '2'],
@@ -1191,7 +1191,7 @@ GOHAN_PACK_TR('TR', 'tr', {
       ],
     },
     tr_ezogelin_v: {
-      name: 'Ezogelin çorbası',
+      name: 'Pirinçsiz ezogelin çorbası',
       ings: [
         ['Kırmızı mercimek', '100 g'],
         ['İnce bulgur', '2 yemek kaşığı'],

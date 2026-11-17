@@ -2107,4 +2107,5 @@ GOHAN_I18N('en', {
     "炒めたごはん": "Fried rice",
     "汁そば": "Noodle soups",
     "ほかの国からも見つかりました": "Also found in other countries",
+    "下に出しています": "Shown below",
 });

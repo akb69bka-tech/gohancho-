@@ -2329,7 +2329,7 @@ GOHAN_PACK({
       local: "Nấm kho tiêu",
       type: "main",
       method: "simmer",
-      protein: "veg",
+      protein: "legume",
       min: 25,
       ings: [
         "mushrooms|Straw, oyster or king oyster mushrooms|400 g",
@@ -2509,7 +2509,7 @@ GOHAN_PACK({
     {
       id: "vn_dauhuchiensa",
       name: "Lemongrass and chilli tofu",
-      local: "Đậu hũ chiên sả ớt",
+      local: "Đậu hũ áp chảo sả ớt",
       type: "main",
       method: "stirfry",
       protein: "legume",

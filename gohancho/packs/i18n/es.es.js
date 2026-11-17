@@ -1327,7 +1327,7 @@ GOHAN_PACK_TR('ES', 'es', {
       ],
     },
     "es_espinacasgarbanzos": {
-      name: "Espinacas con garbanzos",
+      name: "Espinacas con garbanzos y tomate",
       ings: [["Espinacas", "400 g"], ["Garbanzos cocidos, escurridos", "150 g"], ["Tomate", "1"]],
       seas: "4 cucharadas de aceite de oliva · 3 dientes de ajo · 1 cucharadita de pimentón de la Vera dulce · 1 cucharadita de comino molido · 1 cucharada de vinagre de Jerez · Sal",
       steps: [
@@ -1357,7 +1357,7 @@ GOHAN_PACK_TR('ES', 'es', {
       ],
     },
     "es_coliflorajoarriero": {
-      name: "Coliflor al ajoarriero",
+      name: "Coliflor al ajoarriero con huevo",
       ings: [["Coliflor", "1 pequeña (600 g)"], ["Huevos", "2"]],
       seas: "4 cucharadas de aceite de oliva · 4 dientes de ajo · 1 cucharadita de pimentón dulce · 1 cucharada de vinagre · Sal · Perejil",
       steps: [
@@ -1367,7 +1367,7 @@ GOHAN_PACK_TR('ES', 'es', {
       ],
     },
     "es_menestraverde": {
-      name: "Menestra de verduras",
+      name: "Menestra de verduras con espárragos",
       ings: [["Corazones de alcachofa (frescos o congelados)", "250 g"], ["Judías verdes planas", "250 g"], ["Espárragos trigueros", "150 g"], ["Acelgas", "200 g"], ["Cebolla", "1/4"]],
       seas: "4 cucharadas de aceite de oliva · 2 dientes de ajo · 1 cucharadita de harina · 200 ml de agua · Sal",
       steps: [

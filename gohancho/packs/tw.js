@@ -2052,7 +2052,7 @@ GOHAN_PACK({
       type: 'rice',
       starch: true,
       method: 'rice',
-      protein: 'veg',
+      protein: 'legume',
       min: 35,
       ings: [
         'rice|Cooked rice|300 g',

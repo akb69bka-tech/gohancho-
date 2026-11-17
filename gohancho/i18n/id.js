@@ -2106,4 +2106,5 @@ GOHAN_I18N('id', {
     "炒めたごはん": "Nasi goreng",
     "汁そば": "Sup mi",
     "ほかの国からも見つかりました": "Juga ditemukan di negara lain",
+    "下に出しています": "Ditampilkan di bawah",
 });

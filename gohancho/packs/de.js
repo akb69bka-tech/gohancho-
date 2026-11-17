@@ -2153,7 +2153,7 @@ GOHAN_PACK({
     {
       id: 'de_weisse_bohnen_eintopf',
       name: 'White bean stew with vegetables',
-      local: 'Weiße-Bohnen-Eintopf',
+      local: 'Weiße-Bohnen-Eintopf mit Gemüse',
       type: 'main',
       method: 'simmer',
       protein: 'legume',

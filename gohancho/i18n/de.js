@@ -1660,7 +1660,7 @@ GOHAN_I18N('de', {
     "tabs|材料": "Zutat",
     "tabs|工夫": "Twist",
     "tabs|世界": "Welt",
-    "tabs|記録": "Log",
+    "tabs|記録": "Verlauf",
     "おはようございます。今日は{dish}の日です": "Guten Morgen. Heute gibt es {dish}",
     "夕方です。あとは作るだけ。今日は{dish}ですね": "Es ist Abend. Nur noch kochen – heute {dish}",
     "今日もおつかれさまでした。明日はどんな献立にしましょう": "Danke für diesen Tag. Was essen wir morgen?",
@@ -2092,7 +2092,7 @@ GOHAN_I18N('de', {
     "アレルギー対策から「{what}」を外しました": "„{what}“ aus den Allergenen entfernt",
     // 料理名から（下のタブ・料理名でさがす）
     "tab|料理名から": "Gericht",
-    "tabs|料理名": "Name",
+    "tabs|料理名": "Gericht",
     "料理名からさがす": "Nach Gericht suchen",
     "料理の名前を入れると、{n}の国・地域から同じ料理と似た料理をさがします": "Gib einen Gerichtnamen ein, um dasselbe Gericht und ähnliche Gerichte aus {n} Ländern und Regionen zu finden",
     "その料理": "Dieses Gericht",
@@ -2106,4 +2106,5 @@ GOHAN_I18N('de', {
     "炒めたごはん": "Gebratener Reis",
     "汁そば": "Nudelsuppen",
     "ほかの国からも見つかりました": "Auch in anderen Ländern gefunden",
+    "下に出しています": "Unten angezeigt",
 });

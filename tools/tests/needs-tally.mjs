@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// claude/fullfix: 2c の古い前提を直した（R133 の朝食の主菜は肉・魚・卵・豆腐がなければ野菜でよい・乳製品の材料の goat cheese は肉ではない）
 // 「食べられないものの共有カード」と「今週の主菜の内訳」の回帰テスト（Playwright。使い方: node tools/tests/needs-tally.mjs [http://localhost:8794/]）
 //  1) 共有の文章: 登録した内容だけ・注意の一文つき・名前は既定で入れない（入れる指定のときだけ入る）・何も登録がなければ作らない
 //  2) 画像（canvas）: 17言語すべてで 1080×1350 が描ける・長い一覧でも例外が出ない
@@ -93,7 +94,8 @@ for (const lang of LANGS){
     const r = await p.evaluate(() => {
         const fam = id => (RECIPES.find(x => x.id === id) || {}).family;
         return { saikyo: fam('saikyoyaki'), kajiki: fam('kajikisaute'), kani: fam('kanitama'), tarako: RECIPES.filter(x => x.ings.some(g => /たらこ/.test(g))).map(x => x.family),
-            veg: RECIPES.filter(x => x.type === '主菜' && x.family === '野菜').map(x => x.id),
+            // 朝食の料理（R133: フルーツヨーグルト・さつまいもとバナナなど）は肉・魚・卵・豆腐を使わない主菜なので野菜でよい。ただし、そうした材料が入っていたら野菜にしない
+            veg: RECIPES.filter(x => x.type === '主菜' && x.family === '野菜' && (!breakfastMeal(x) || x.items.some(i => !i.opt && /肉|鶏|豚|牛|ひき|ベーコン|ハム|ソーセージ|魚|鮭|さけ|さば|たら|ぶり|あじ|いわし|さんま|まぐろ|ツナ|しらす|じゃこ|えび|いか|たこ|かに|あさり|しじみ|ほたて|たらこ|明太|卵|たまご|豆腐|厚揚げ|油揚げ|納豆|大豆/.test(i.key + i.name)))).map(x => x.id),
             unknown: [...new Set(RECIPES.flatMap(x => x.items.filter(i => !i.opt && /^(さわら|かじき|たらこ|しじみ|ちくわ|ちりめんじゃこ|かに風味かまぼこ|おから|油揚げ)$/.test(i.key) && !FAMILY[i.key]).map(i => i.key)))] };
     });
     ok(r.saikyo === '魚' && r.kajiki === '魚' && r.kani === '魚', 'saikyo-yaki / swordfish / kani-tama count as fish: ' + JSON.stringify(r));
@@ -109,7 +111,8 @@ for (const lang of LANGS){
     for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.js'))){
         let pk; vm.runInNewContext(fs.readFileSync(dir + f, 'utf8'), { GOHAN_PACK: x => { pk = x; } });
         for (const x of pk.recipes) if (['main', 'rice', 'noodle'].includes(x.type) && x.protein === 'veg'){
-            const hit = x.ings.filter(s => !s.endsWith('?')).map(s => s.split('|').slice(0, 2).join(' ')).filter(s => W.test(s) && !/dried|paste|sauce|stock|broth|cube/i.test(s));
+            // 乳製品の材料（cheese|Soft goat cheese）は、名前に goat などがあっても肉ではない（材料のキーが乳製品のものは見ない）
+            const hit = x.ings.filter(s => !s.endsWith('?')).map(s => s.split('|').slice(0, 2).join(' ')).filter(s => W.test(s) && !/dried|paste|sauce|stock|broth|cube/i.test(s) && !/^(cheese|milk|yogurt|cream|butter)\b/i.test(s));
             if (hit.length) bad.push(pk.country + ':' + x.id + ' ' + hit.join(';'));
         }
     }

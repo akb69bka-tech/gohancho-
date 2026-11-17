@@ -2012,7 +2012,7 @@ GOHAN_PACK({
     {
       id: 'cn_di_san_xian',
       name: 'Fried potato, eggplant and green pepper',
-      local: '地三鲜',
+      local: '炸地三鲜',
       type: 'main',
       starch: true,
       method: 'stirfry',

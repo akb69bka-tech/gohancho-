@@ -2106,4 +2106,5 @@ GOHAN_I18N('it', {
     "炒めたごはん": "Riso saltato",
     "汁そば": "Zuppe di noodle",
     "ほかの国からも見つかりました": "Trovati anche in altri paesi",
+    "下に出しています": "Mostrati più sotto",
 });

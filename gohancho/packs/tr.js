@@ -2144,7 +2144,7 @@ GOHAN_PACK({
     {
       id: 'tr_imam_bayildi',
       name: 'Eggplant braised in olive oil with onions and tomatoes',
-      local: 'İmam bayıldı',
+      local: 'Ana yemek imam bayıldı',
       type: 'main',
       method: 'simmer',
       protein: 'veg',
@@ -2210,7 +2210,7 @@ GOHAN_PACK({
     {
       id: 'tr_ezogelin_v',
       name: 'Ezogelin soup (red lentil, bulgur and tomato)',
-      local: 'Ezogelin çorbası',
+      local: 'Pirinçsiz ezogelin çorbası',
       type: 'soup',
       method: 'soup',
       protein: 'legume',

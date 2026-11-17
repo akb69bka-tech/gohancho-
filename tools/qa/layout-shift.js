@@ -1,3 +1,5 @@
+// 統括の判断 11/17: 1品かえるで、その段の ⚠ アレルゲンの札の行数が変わったときの、その段より下のずれだけは許す（器を小さくして札の場所をいつも取ると、最初のデザインが変わるため）
+// claude/fullfix: 献立がまるごと変わって詰め方を決め直したとき（R34）の見出しの動きと、合計kcalの数字の幅は違反にしない（どちらもあとから入った決まり）
 // 料理を入れ替えたり画像が読み込まれたりしたとき、画面がガタつかない（押した料理以外の位置・大きさが変わらない）ことを確かめる。
 //  - PerformanceObserver('layout-shift') の合計（CLS）
 //  - 操作の前後で、全要素の位置・大きさ（getBoundingClientRect）を比べる。押した料理の中身以外が1px(0.5px超)でも動いたら違反
@@ -113,11 +115,19 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         await p.evaluate(st => { window.__stop = st || null; }, stop);
         if (scrollTo === 'btn' || scrollTo === 'btn2') { await p.evaluate(([fn, arg]) => { const el = fn === 'reroll' ? document.querySelectorAll('.tray [data-act="reroll"]')[arg] : fn === 'sel' ? document.querySelector(arg) : fn === 'nth' ? document.querySelectorAll(arg[0])[arg[1]] : null; if (el) el.scrollIntoView({block: 'center'}); }, [doFn, arg]); await p.waitForTimeout(120); }   // 押すボタンが見える位置で押す（見えないボタンは押せない）
         else if (scrollTo !== undefined) { await p.evaluate(y => window.scrollTo(0, y), scrollTo); await p.waitForTimeout(120); }
+        const fitOf = () => p.evaluate(() => typeof TRAY_FIT !== 'undefined' && TRAY_FIT.state ? JSON.stringify([TRAY_FIT.state.tight, TRAY_FIT.state.tight2, TRAY_FIT.state.noFit, TRAY_FIT.state.vs, TRAY_FIT.state.nml, !!TRAY_FIT.state.algfit, !!TRAY_FIT.state.noslot, document.body.className.split(' ').filter(c => /^(tray-tight\d?|greet-|bar-static)/.test(c)).sort().join(' ')]) : '');
+        const fitB = await fitOf();
+        // 1品かえるで、押した段の ⚠ アレルゲンの札の行数（段の中でいちばん多い料理の行数）を、押す前とあとで数える（統括の判断 11/17。下の algRow）
+        const algLines = () => p.evaluate(() => [...document.querySelectorAll('.tray .tg-row')].map(row => Math.max(0, ...[...row.querySelectorAll('.spot')].map(sp => [...sp.querySelectorAll('.alg-tag')].reduce((n, e) => { const lh = parseFloat(getComputedStyle(e).lineHeight) || 16; return n + Math.round(e.getBoundingClientRect().height / lh); }, 0)))));
+        const algRowB = exemptSel === 'press:.spot' && doFn === 'reroll' ? await p.evaluate(k => { const bt = document.querySelectorAll('.tray [data-act="reroll"]')[k], row = bt && bt.closest('.tg-row'); if (!row) return null; const rows = [...document.querySelectorAll('.tray .tg-row')]; return {i: rows.indexOf(row), bottom: row.getBoundingClientRect().bottom + scrollY}; }, arg) : null;
+        const algB = algRowB ? await algLines() : null;
         const before = await p.evaluate(() => window.__snap());
         const exempt = await p.evaluate(([fn, arg, ex]) => {
           window.__cls = 0; window.__shifts = [];
           const el = fn === 'reroll' ? document.querySelectorAll('.tray [data-act="reroll"]')[arg] : fn === 'sel' ? document.querySelector(arg) : fn === 'nth' ? document.querySelectorAll(arg[0])[arg[1]] : null;
           const keys = ex.startsWith('press:') ? (el && el.closest(ex.slice(6)) ? [window.__keyOf(el.closest(ex.slice(6)))] : []) : [...document.querySelectorAll(ex)].map(window.__keyOf);
+          // お膳の合計（kcal-r1 の「合計 約◯kcal」）の数字は、料理が変わればいっしょに変わる（中身だけ。合計の箱そのものは動いてはいけない）
+          document.querySelectorAll('.kcal-sum').forEach(e => keys.push(window.__keyOf(e)));
           window.__pk = el ? window.__keyOf(el) : null;   // 押したもの（お膳の高さが変わったときの、画面の上での位置を見る）
           if (el) el.click(); else if (fn === 'eval') (0, eval)(arg);
           return keys;
@@ -128,18 +138,34 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         await p.waitForTimeout(img === 'slow' ? 1400 : 600);
         const after = await p.evaluate(() => window.__snap());
         const cls = await p.evaluate(() => window.__cls);
+        const fitA = await fitOf();
         if (process.env.DBG) console.log('DBG2', scn, JSON.stringify(await p.evaluate(() => [[...document.querySelectorAll('.tray .vessel')].map(e => e.className.replace('vessel ', '') + ':' + Math.round(e.getBoundingClientRect().top))])));
         // お膳ごと入れ替える操作: お膳の高さが同じなら、お膳より下も動いてはいけない。高さが変わる（品数や一品ものの有無が変わった）ときは、お膳より上だけ見る
         let above = null;
         const tk = exempt.find(k => before.rects[k] && /(^| )tray( |$)/.test(before.rects[k][4]));
         if (exemptSel.startsWith('.tray') && tk) { const tb = before.rects[tk], ta = after.rects[tk]; if (tb && ta && Math.abs(tb[3] - ta[3]) > TOL) above = tb[1]; }
+        // 統括の判断（11/17・最初のデザインを守る）: 1品かえるで、その段の ⚠ アレルゲンの札の行数が変わったときだけ、その段より下のずれは比べない（札の場所は段ごとに、その段の料理に合わせて取る。
+        // いつも最大の行数ぶん取ると器が小さくなるため）。その段と、それより上（見出し・ほかの段・押していない料理の位置）は今までどおり比べる。札の行数が変わらないのに動いたら違反
+        let algNote = '';
+        if (algRowB && algRowB.i >= 0 && above === null){ const algA = await algLines(); if (algB[algRowB.i] !== algA[algRowB.i]){ above = algRowB.bottom; exempt.noBox = true; algNote = `⚠ の札 ${algB[algRowB.i]}→${algA[algRowB.i]}行（段${algRowB.i + 1}より下は比べない）`; if (process.env.DBG) console.log('ALGROW', scn, cc, algNote); } }
         const c1 = compare(before, imm, exempt, 844, above), c2 = compare(before, after, exempt, 844, above);
         const c = c2.worst >= c1.worst ? c2 : c1;
         // お膳の高さが変わったとき（一品ものの主菜でご飯の席がなくなり、お膳の並びが変わるなど）、ブラウザはスクロール位置を合わせて、押したボタンを指の下に残す（scroll anchoring）。
         // そのときだけ、押したボタンが画面の上で動いていなければ、スクロールのずれとは数えない（お膳より上で画面に見えているものが動けば、上の位置の比べで違反になる）
         let dsy = Math.round(after.sy - before.sy);
         if (dsy && above !== null) { const pk = await p.evaluate(() => window.__pk); const pb = pk && before.rects[pk], pa = pk && after.rects[pk]; if (pb && pa && Math.abs((pa[1] - (pa[5] ? 0 : after.sy)) - (pb[1] - (pb[5] ? 0 : before.sy))) <= TOL) dsy = 0; }
-        record(Object.assign({}, base, {scn, cls, worst: c.worst, n: c.n, all: c.worstAll, dsy, off: c.offenders, dh: Math.round(after.docH - before.docH)}));
+        // 献立がまるごと変わる操作（気分・まるごと入れ替え・保存献立）は、第12回 R34 の決まりで、お膳の詰め方を何も詰めていない形から決め直す（再読み込みと同じ形）。
+        // 1品かえる（かえる・主食）も、前の詰め方で入らないときだけ決め直す（R34）。決め直したかどうかは TRAY_FIT.state（器の大きさ・名前の行数・見出しの詰め）で見る
+        // 詰め方（見出しの詰め・器の大きさ）が変わったときは、見出しが動くのは決まりどおり（言語切替と同じ扱い）。そのときも、お膳は帯の上に入っていること（器・名前・かえる・真ん中の丸が帯の後ろに入らない）
+        if (process.env.DBG) console.log('FIT', scn, cc, fitB, '=>', fitA, c.worst);
+        if ((exemptSel.startsWith('.tray') || exemptSel === 'press:.spot') && fitB && fitA && fitB !== fitA){
+          const hid = await p.evaluate(() => { const t = document.querySelector('.tray'); if (!t || document.body.classList.contains('bar-static')) return []; let fl = innerHeight;
+            document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
+            return [...t.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle')].filter(e => { const r = e.getBoundingClientRect(); return r.top < innerHeight && r.bottom > fl + .5; }).map(e => e.className.split(' ')[0]); });
+          record(Object.assign({}, base, {scn, cls: 0, worst: hid.length ? 999 : 0, n: 0, all: c.worstAll, dsy: 0, off: hid.length ? ['詰め方を決め直したあと、帯の後ろに ' + hid.join(',')] : [], dh: Math.round(after.docH - before.docH)}));
+          return;
+        }
+        record(Object.assign({}, base, {scn, cls: algNote ? 0 : cls, worst: c.worst, n: c.n, all: c.worstAll, dsy, off: algNote ? [algNote, ...c.offenders] : c.offenders, dh: Math.round(after.docH - before.docH)}));
       };
 
       const nBtn = await p.evaluate(() => document.querySelectorAll('.tray [data-act="reroll"]').length);

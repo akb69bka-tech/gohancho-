@@ -2435,8 +2435,8 @@ GOHAN_PACK({
     },
     {
       id: "es_espinacasgarbanzos",
-      name: "Spinach with chickpeas",
-      local: "Espinacas con garbanzos",
+      name: "Spinach with chickpeas and tomato",
+      local: "Espinacas con garbanzos y tomate",
       type: "main",
       method: "simmer",
       protein: "legume",
@@ -2498,7 +2498,7 @@ GOHAN_PACK({
     {
       id: "es_coliflorajoarriero",
       name: "Cauliflower with garlic, paprika and egg",
-      local: "Coliflor al ajoarriero",
+      local: "Coliflor al ajoarriero con huevo",
       type: "main",
       method: "stirfry",
       protein: "veg",
@@ -2517,7 +2517,7 @@ GOHAN_PACK({
     {
       id: "es_menestraverde",
       name: "Menestra (Spanish spring vegetable stew)",
-      local: "Menestra de verduras",
+      local: "Menestra de verduras con espárragos",
       type: "main",
       method: "simmer",
       protein: "veg",

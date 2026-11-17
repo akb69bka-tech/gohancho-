@@ -2355,8 +2355,8 @@ GOHAN_PACK({
     },
     {
       id: 'gb_bubbleandsqueak',
-      name: 'Bubble and squeak',
-      local: 'Bubble and squeak',
+      name: 'Vegan bubble and squeak',
+      local: 'Vegan bubble and squeak',
       type: 'main',
       meal: 'breakfast',   // 朝食の料理。おまかせの夕食の主菜には出さない（さがす・自分で選ぶでは出す）
       method: 'fry',

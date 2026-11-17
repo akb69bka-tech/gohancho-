@@ -2503,7 +2503,7 @@ GOHAN_PACK({
     {
       id: "fr_gratinchoufleur",
       name: "Cauliflower cheese gratin",
-      local: "Gratin de chou-fleur",
+      local: "Gratin de chou-fleur au fromage",
       type: "main",
       method: "grill",
       protein: "veg",

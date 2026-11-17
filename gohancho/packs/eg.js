@@ -2058,7 +2058,7 @@ GOHAN_PACK({
     {
       id: 'eg_ful_medames_v',
       name: 'Ful medames (stewed fava beans)',
-      local: 'فول مدمس',
+      local: 'فول مدمس بالطماطم',
       type: 'main',
       starch: true,
       method: 'simmer',

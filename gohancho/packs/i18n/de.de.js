@@ -1264,7 +1264,7 @@ GOHAN_PACK_TR('DE', 'de', {
       ],
     },
     de_weisse_bohnen_eintopf: {
-      name: 'Weiße-Bohnen-Eintopf',
+      name: 'Weiße-Bohnen-Eintopf mit Gemüse',
       ings: [
         ['Weiße Bohnen (gekocht oder aus der Dose)', '2 Dosen (800 g)'],
         ['Möhren', '2'],
