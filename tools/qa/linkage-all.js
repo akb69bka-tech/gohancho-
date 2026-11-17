@@ -1,4 +1,4 @@
-// claude/fullfix: 絵の読みこみ中の印（data-src・pload）は比べない。1週間プランの今日が今日の主菜にそろう（R76）のは違反にしない
+// claude/fullfix: R30 の空いた汁ものの席の出し入れ・絵の読みこみ中の印（data-src・pload）は比べない。1週間プランの今日が今日の主菜にそろう（R76）のは違反にしない
 // 「ある料理を変えると、ほかの料理（とくに汁もの）まで連動して変わる」不具合を、あらゆる経路で確かめる
 //   操作の前後で「押した枠以外」の全料理ID・ご飯/主食の欄・汁もの・画像（お膳の各枠のHTML）・
 //   1週間プラン・買い物リスト・記録（履歴）・お気に入り・決定済みの献立・保存した献立・設定が完全に一致することを検証する。
@@ -45,7 +45,7 @@ window.__snap = (opts) => {
     ids: m ? m.items.map(x => x.slot + ':' + (x.r ? x.r.id : '-')) : [],
     ings, spots, rice: (s => s ? (c => (c.querySelectorAll('.fresh-tag').forEach(x => x.remove()), c.textContent))(s.cloneNode(true)) : '')(document.querySelector('.tray .spot.rice')),
     staple: JSON.stringify((S.settings || {}).stapleBy || {}),
-    week: JSON.stringify(S.week), today: TODAY, wtm: (() => { try { const r = weekTodayMain(); return r ? r.id : null; } catch (e) { return null; } })(), hist: JSON.stringify(S.history), favs: JSON.stringify(S.favs), hidden: JSON.stringify(S.hidden),
+    week: JSON.stringify(S.week), today: TODAY, soupHide: (() => { try { return !!soupSeatHidden(m); } catch (e) { return false; } })(), wtm: (() => { try { const r = weekTodayMain(); return r ? r.id : null; } catch (e) { return null; } })(), hist: JSON.stringify(S.history), favs: JSON.stringify(S.favs), hidden: JSON.stringify(S.hidden),
     cook: JSON.stringify(S.cook), saved: JSON.stringify(S.savedMenus), shop, settings: JSON.stringify(st), draftIds: JSON.stringify(S.draft && S.draft.ids),
     bad: m ? m.items.filter(x => x.r && isAvoided(x.r)).map(x => x.r.id) : [],
     dup: m ? m.items.map(x => x.r && x.r.id).filter(Boolean).length - new Set(m.items.map(x => x.r && x.r.id).filter(Boolean)).size : 0,
@@ -68,9 +68,11 @@ function diff(a, c, pressed, o = {}) {
   a.spots.forEach(sp => {
     if (sp.key === pk) return; if (pressed === 'staple' && sp.key === 'rice') return;
     const q = c.spots.find(y => y.key === sp.key);
+    if (!q && sp.html === 'EMPTY-SOUP' && a.soupHide !== c.soupHide) return;   // R30: 鍋の主菜で副菜を足した日は空いた汁ものの席を出さない。主菜をかえて鍋でなくなると席が戻る（その逆も）
     if (!q) d.push('枠が消えた ' + sp.key); else if (q.html !== sp.html) d.push('枠の表示(画像・名前) ' + sp.key);
   });
-  if (pressed !== 'staple' && c.spots.length !== a.spots.length) d.push('枠の数 ' + a.spots.length + '->' + c.spots.length);
+  const nSp = x => x.spots.filter(y => !(y.html === 'EMPTY-SOUP' && a.soupHide !== c.soupHide)).length;
+  if (pressed !== 'staple' && nSp(c) !== nSp(a)) d.push('枠の数 ' + a.spots.length + '->' + c.spots.length);
   if (pressed !== 'staple') { if (a.rice.replace(/かえる|Change|\s/g, '') !== c.rice.replace(/かえる|Change|\s/g, '')) d.push('ご飯/主食欄'); if (a.staple !== c.staple) d.push('主食の設定'); }
   // 第21回 R76: 1週間プランの今日は、今日の献立の主菜にそろう（weekFollowToday）。変わったのが「今日の日」だけで、新しい料理がいまの今日の主菜（weekTodayMain）なら、
   // 決まりどおり（そのぶん買い物リストも変わる）。ほかの日・作らない日・担当が変わったら、今までどおり違反
