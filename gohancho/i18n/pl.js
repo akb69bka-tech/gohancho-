@@ -2106,4 +2106,5 @@ GOHAN_I18N('pl', {
     "炒めたごはん": "Smażony ryż",
     "汁そば": "Zupy z makaronem",
     "ほかの国からも見つかりました": "Znaleziono też w innych krajach",
+    "下に出しています": "Pokazane poniżej",
 });

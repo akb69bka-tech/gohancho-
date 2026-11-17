@@ -2106,4 +2106,5 @@ GOHAN_I18N('fil', {
     "炒めたごはん": "Sinangag",
     "汁そば": "Sabaw na pansit",
     "ほかの国からも見つかりました": "Nakita rin sa ibang bansa",
+    "下に出しています": "Nasa ibaba",
 });

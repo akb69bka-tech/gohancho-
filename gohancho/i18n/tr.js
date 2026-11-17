@@ -2106,4 +2106,5 @@ GOHAN_I18N('tr', {
     "炒めたごはん": "Kızarmış pilav",
     "汁そば": "Erişte çorbaları",
     "ほかの国からも見つかりました": "Başka ülkelerde de bulundu",
+    "下に出しています": "Aşağıda gösteriliyor",
 });

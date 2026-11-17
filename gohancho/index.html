@@ -2078,7 +2078,8 @@ nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
 #ns-input::-webkit-search-cancel-button,#search-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から・材料からの検索欄: 入力欄の × を青くしない */
-.ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}
+#ns-results .match{content-visibility:visible}   /* 料理名から: 描き直しても、画面の外のカードを仮の高さにしない（下のカードが動かないように） */
+.ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}.ns-wstat{min-height:4.2em}
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
 .tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
 .tt-sh h3 .tt-n{font-size:var(--fs12);color:var(--muted);font-weight:400;margin-inline-start:.5em}
@@ -15974,12 +15975,17 @@ function nsPool(){
     return out;
 }
 const nsCC = r => r.pack || 'JP';
-let nsLoading = null;
-// ほかの国の料理を読みこむ（このタブを開いたときに1回。読めなかった国は、もう一度開いたときに読みに行く）
+let nsLoading = null, nsWorldGo = true, nsPaintT = 0;
+const NS_WAIT = 3000;   // 2段目（世界の似た料理）は、ほかの国を読みはじめてから最長3秒で、読めた国の分だけで出す（返事が来ない国を待たない。北条の点検 11/17）
+function nsPaintSoon(){ clearTimeout(nsPaintT); nsPaintT = setTimeout(() => { if (tab === 'name') nsPaint(); }, 60); }
+// ほかの国の料理を読みこむ（最初に何か入れてさがしたときに1回。読めなかった国は、次にさがしたときに読みに行く）。1か国読めるたびに、足す分を描く
 function nsLoadAll(){
     const home = currentCountry(), ccs = COUNTRIES.map(c => c.cc).filter(cc => cc !== home && !BROWSE[cc]);
     if (!ccs.length || nsLoading) return;
-    nsLoading = Promise.all(ccs.map(cc => loadBrowse(cc))).then(() => { nsLoading = null; if (tab === 'name') nsPaint(); });   // 読み終えたら描きなおすだけ（読めなかった国は、次にさがしたときに読みに行く）
+    nsWorldGo = false;
+    const go = () => { if (!nsWorldGo){ nsWorldGo = true; nsPaintSoon(); } };
+    setTimeout(go, NS_WAIT);
+    nsLoading = Promise.all(ccs.map(cc => loadBrowse(cc).then(() => nsPaintSoon()))).then(() => { nsLoading = null; go(); nsPaintSoon(); });
 }
 // 入力の整え: NFKC（「か」＋濁点のように分かれた形もまとめる）・幅のない空白と制御文字を取りのぞく・40字まで
 const NS_MAX = 40;
@@ -16010,11 +16016,12 @@ function nsSearch(q){
         if (b.pack && c.pack){ const kb2 = new Set(b.items.filter(i => !i.opt).map(i => i.key)); s += Math.min(2, c.items.filter(i => !i.opt && kb2.has(i.key)).length); }
         return {s: kin || (b.type === c.type && s >= 4) ? s : 0, why};
     };
-    const per = {}, similar = [];
+    const per = {}, similar = [], similarAll = [];
     if (bases.length) nsPool().filter(c => nsCC(c) !== home && !hitIds.has(c.id) && !isAvoided(c)).map(c => {
         let best = {s: 0, why: []}; bases.forEach(b => { if (nsCC(b) === nsCC(c)) return; const x = sim(b, c); if (x.s > best.s) best = x; });
         return {r: c, ...best};
     }).filter(x => x.s > 0).sort((a, b) => b.s - a.s || a.r.name.length - b.r.name.length).forEach(x => {
+        similarAll.push(x);   // 似ている料理すべて（もう出したカードを、あとで国がふえて上位8品から外れても出しつづけるため）
         const cc = nsCC(x.r); if (similar.length >= 8 || (per[cc] || 0) >= 2) return; per[cc] = (per[cc] || 0) + 1; similar.push(x);
     });
     // ひとひねり: 当たったいまの国の料理（日本の料理・日本語のときだけ）から、いまある案を1つずつ変えたもの（味・かたち・主役の食材）。苦手・アレルギーに当たる案は出さない
@@ -16025,7 +16032,7 @@ function nsSearch(q){
         let n = 0;
         for (const id of ids){ if (twists.length >= 4 || n >= 2) break; const tw = buildTwist(id); if (tw && !twistAvoided(tw)){ twists.push(tw); n++; } }
     });
-    return {terms: searchTerms(q), hits, hidden, similar, twists, q};
+    return {terms: searchTerms(q), hits, hidden, similar, similarAll, twists, q};
 }
 function nsHiddenHtml(hidden){
     if (!hidden.length) return '';
@@ -16039,46 +16046,83 @@ function nsCard(r, note){
 }
 // 出したカードの並びを覚えておく（同じ言葉・同じ判定のあいだ）。ほかの国を読み終えて結果を足すときも、もう出ているカードは動かさず、足す分は下の「ほかの国からも見つかりました」に入れる（押しまちがいを防ぐ）
 let nsSnap = null;
-function nsKeep(key, list, idOf, max){
-    const now = new Map(list.map(x => [idOf(x), x]));
-    const snap = nsSnap[key] || (nsSnap[key] = {base: list.slice(0, max).map(idOf), seen: new Set(list.map(idOf)), extra: []});   // 最初に出した並び（と、そのとき出さなかった料理）
-    const base = snap.base.filter(id => now.has(id));
-    const extra = snap.extra.filter(id => now.has(id) && !base.includes(id));
-    list.forEach(x => { const id = idOf(x); if (!snap.seen.has(id) && !extra.includes(id) && extra.length < max) extra.push(id); });   // あとから読みこんだ国で、新しく当たった料理だけ
-    snap.extra = extra;
-    return {base: base.map(id => now.get(id)), extra: extra.map(id => now.get(id))};
-}
+// 出したカードの並びを覚えておく（同じ言葉・同じ判定のあいだ）。もう出ているカードは1pxも動かさない（押しまちがいを防ぐ）:
+//  1段目は、最初に描いたときの料理（いまの国の料理）。3段目（ひとひねり）は、いまの国の料理だけで作るので、すぐ出す。
+//  2段目は、最長3秒で読めた国の分だけで出す。最初に描いたときに2段目がまだなら、2段目の場所には高さの決まった1行だけを置き、料理は3段目より下に出す。
+//  そのあとに届いた国で新しく当たった料理（1段目・2段目とも）は、いちばん下の「ほかの国からも見つかりました」に、届いた順に足す
 function nsResultsHtml(q){
     q = nsClean(q);
     const loading = nsLoading ? `<div class="small muted ns-load" role="status">${esc(t('読みこみ中…'))}</div>` : '';
     const res = nsSearch(q);
     if (!res) return '';
     const sig = [res.q, judgeSig(), LANG, currentCountry()].join('\u0001');
-    if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig};
-    const {hits, hidden, similar, twists} = res;
-    const more = list => list.length ? `<div class="sec-head ns-more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>` : '';
+    const {hits, hidden, similar, similarAll, twists} = res;
     if (!hits.length){
         nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
         return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
     }
-    const same = nsKeep('same', hits, r => r.id, 12);
-    const simCard = x => nsCard(x.r, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : '');
-    const tier1 = `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
-        <div class="list dlist">${same.base.map(r => nsCard(r, '')).join('')}</div>${more(same.extra)}${same.extra.length ? `<div class="list dlist ns-extra">${same.extra.map(r => nsCard(r, '')).join('')}</div>` : ''}</div>`;
-    // ほかの国を読みこんでいるあいだは、1段目（いまの国の料理）だけを出す。2段目・3段目は読み終えてから出す（読み終えて1段目に足したとき、もう出ている2段目・3段目のカードが下へずれないように。押しまちがいを防ぐ）
-    if (nsLoading) return tier1 + nsHiddenHtml(hidden) + loading;
-    const world = nsKeep('world', similar, x => x.r.id, 8);
-    return `${tier1}
-    <div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>
-        ${world.base.length ? `<div class="list dlist">${world.base.map(simCard).join('')}</div>` : ''}${world.base.length ? more(world.extra) : ''}${world.extra.length ? `<div class="list dlist ns-extra">${world.extra.map(simCard).join('')}</div>` : ''}${!world.base.length && !world.extra.length ? `<div class="small muted">${esc(t('似た料理は見つかりませんでした'))}</div>` : ''}</div>
-    ${twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
-        <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : ''}${nsHiddenHtml(hidden)}`;
+    if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig, same: hits.slice(0, 12).map(r => r.id), seen: new Set(hits.map(r => r.id)), world: null, wInline: nsWorldGo, more: []};
+    const S0 = nsSnap, byHit = new Map(hits.map(r => [r.id, r])), bySim = new Map(similarAll.map(x => [x.r.id, x]));
+    // いちばん下の並び（S0.more）は、足すだけで並べかえない。見出し（h）も同じ並びに入れる（あとから見出しが上に割りこんで、カードが動かないように）
+    const moreHas = new Set(S0.more.map(x => x.k + ':' + x.id)), lastH = () => { for (let k = S0.more.length - 1; k >= 0; k--) if (S0.more[k].k === 'h') return S0.more[k].id; return ''; };
+    const push = (k, id) => { if (moreHas.has(k + ':' + id)) return; if (lastH() !== 'more'){ S0.more.push({k: 'h', id: 'more'}); } S0.more.push({k, id}); moreHas.add(k + ':' + id); };
+    hits.forEach(r => { if (!S0.seen.has(r.id) && S0.more.filter(x => x.k === 's').length < 12) push('s', r.id); });
+    if (!S0.world && nsWorldGo){
+        S0.world = similar.slice(0, 8).map(x => x.r.id); similar.forEach(x => S0.seen.add('w:' + x.r.id));
+        if (!S0.wInline && S0.world.length){ S0.more.push({k: 'h', id: 'world'}); S0.world.forEach(id => { S0.more.push({k: 'w0', id}); moreHas.add('w0:' + id); }); }   // 3秒たって出す2段目（最初に描いたときにまだだったとき）は、3段目より下へ
+    }
+    if (S0.world) similar.forEach(x => { if (!S0.seen.has('w:' + x.r.id) && !S0.world.includes(x.r.id) && S0.more.filter(y => y.k === 'w').length < 8) push('w', x.r.id); });
+    // 似ているところの一言は、最初に出したときのまま（国がふえて比べる元の料理が変わっても、文の長さでカードの高さが変わらないように）
+    if (!S0.notes) S0.notes = new Map();
+    const simCard = x => { if (!S0.notes.has(x.r.id)) S0.notes.set(x.r.id, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : ''); return nsCard(x.r, S0.notes.get(x.r.id)); };
+    const sameCards = S0.same.filter(id => byHit.has(id)).map(id => nsCard(byHit.get(id), '')).join('');
+    const worldCards = (S0.world || []).filter(id => bySim.has(id)).map(id => simCard(bySim.get(id))).join('');
+    const wStat = S0.world ? (worldCards ? '' : t('似た料理は見つかりませんでした')) : t('読みこみ中…');
+    const tier2 = S0.wInline
+        ? `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>${worldCards ? `<div class="list dlist">${worldCards}</div>` : `<div class="small muted ns-wstat">${esc(wStat)}</div>`}</div>`
+        : `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div><div class="small muted ns-wstat" role="status">${esc(S0.world ? (worldCards ? t('下に出しています') : t('似た料理は見つかりませんでした')) : t('読みこみ中…'))}</div></div>`;
+    const tier3 = twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
+        <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : '';
+    const head = id => id === 'world' ? `<div class="sec-head ns-wlate"><h3>${esc(t('世界の似た料理'))}</h3></div>` : `<div class="sec-head ns-more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>`;
+    const moreHtml = S0.more.map(x => x.k === 'h' ? head(x.id) : x.k === 's' ? (byHit.has(x.id) ? `<div class="list dlist ns-extra" data-of="same-more">${nsCard(byHit.get(x.id), '')}</div>` : '') : (bySim.has(x.id) ? `<div class="list dlist ns-extra" data-of="${x.k === 'w0' ? 'world' : 'world-more'}">${simCard(bySim.get(x.id))}</div>` : '')).join('');
+    const more = moreHtml ? `<div class="ns-tier ns-moreall" data-tier="more">${moreHtml}</div>` : '';
+    return `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
+        <div class="list dlist">${sameCards}</div></div>
+    ${tier2}${tier3}${more}${nsHiddenHtml(hidden)}${loading}`;
 }
-// ほかの国（20か国・日本語で約5MB）は、タブを開いたときではなく、最初に何か入れてさがしたときに読みはじめる
-function nsPaint(){ const box = $('#ns-results'); if (box) box.innerHTML = nsResultsHtml(session.nsQ || ''); }
+// 描き直しは、同じ検索のあいだは変わったところだけ（もう出ているカードを作り直さない。作り直すと絵の読みこみで一瞬カードの高さが変わり、下のカードが動いていた）
+function nsPaint(){
+    const box = $('#ns-results'); if (!box) return;
+    const html = nsResultsHtml(session.nsQ || ''), sig = nsSnap ? nsSnap.sig : '';
+    if (!sig || box.dataset.sig !== sig){ box.innerHTML = html; box.dataset.sig = sig; return; }
+    const tp = document.createElement('div'); tp.innerHTML = html;
+    const olds = [...box.children], news = [...tp.children];
+    const sameTop = (a, b) => a && b && a.tagName === b.tagName && a.className === b.className && (a.dataset.tier || '') === (b.dataset.tier || '');
+    const patch = (o, n) => {   // 見出しの品数・2段目の1行など、字だけ変わったところを差しかえる
+        if (o.isEqualNode(n)) return true;
+        if (o.children.length !== n.children.length || o.tagName !== n.tagName || o.className !== n.className){ return false; }
+        if (!o.children.length){ o.textContent = n.textContent; return true; }
+        return [...o.children].every((c, i) => patch(c, n.children[i]));
+    };
+    let k = 0;
+    for (; k < news.length; k++){
+        const o = olds[k], n = news[k];
+        if (!sameTop(o, n)){ break; }
+        if (n.dataset.tier === 'more'){   // いちばん下の並び: 前と同じところまではそのまま、ふえた分だけ足す
+            const oc = [...o.children], nc = [...n.children];
+            if (oc.length <= nc.length && oc.every((c, i) => c.isEqualNode(nc[i]))){ nc.slice(oc.length).forEach(c => o.appendChild(c)); continue; }
+            o.replaceWith(n); continue;
+        }
+        if (!patch(o, n)) o.replaceWith(n);
+    }
+    // ここから先（足された段・出さなかった数・読みこみ中の1行）は入れかえる
+    olds.slice(k).forEach(e => e.remove());
+    news.slice(k).forEach(e => box.appendChild(e));
+}
 function nsRefresh(){ if (nsClean(session.nsQ || '').trim()) nsLoadAll(); nsPaint(); }
 function viewNameSearch(){
     if (nsClean(session.nsQ || '').trim()) nsLoadAll();
+    const rh = nsResultsHtml(session.nsQ || '');
     return `<section class="sec ns-sec">
         <div class="sec-head"><h2>${esc(t('料理名からさがす'))}</h2><span class="hint">${esc(t('料理の名前を入れると、{n}の国・地域から同じ料理と似た料理をさがします', {n: COUNTRIES.length}))}</span></div>
         <div class="card">
@@ -16086,7 +16130,7 @@ function viewNameSearch(){
             <input type="search" id="ns-input" value="${esc(session.nsQ || '')}" maxlength="${NS_MAX}" placeholder="${esc(t('料理名を入れる（例: コロッケ）'))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理名でさがす'))}">
             <button class="btn" type="submit">${esc(t('さがす'))}</button>
         </form>
-        <div id="ns-results" aria-live="polite">${nsResultsHtml(session.nsQ || '')}</div>
+        <div id="ns-results" aria-live="polite" data-sig="${esc(nsSnap ? nsSnap.sig : '')}">${rh}</div>
         </div>
     </section>`;
 }
@@ -18575,6 +18619,8 @@ const PACK_FAMILY = {pork:'豚', chicken:'鶏', beef:'牛', mince:'ひき肉', l
 const PROTEIN_WORDS = {pork:/pork|bacon|ham|sausage|chorizo/, chicken:/chicken|turkey/, beef:/beef|veal/, mince:/ground|mince/, lamb:/lamb|mutton|goat/,
     fish:/fish|salmon|cod|tuna|mackerel|sardine|tilapia|trout|hake|anchov|herring|milkfish|catfish|pomfret/, seafood:/shrimp|prawn|squid|clam|mussel|crab|octopus|scallop/,
     legume:/tofu|bean|lentil|chickpea|dal|pea/, egg:/egg/, processed:/ham|sausage|bacon|hot dog|spam|salami|chorizo|corned/};
+const PROTEIN_FIRST = {legume: /tofu|tokwa|tempe|tahu|soya|soy chunk|textured soy/};
+const NOT_LEGUME = /long bean|green bean|string bean|runner bean|french bean|snap pea|snow pea|sugar snap|bean sprout|sprout|pepper|peach|pear|bean paste|bean sauce|soy sauce/;   // 「豆」「pea」の字が入る、豆の料理の主役ではない材料（野菜・調味料）
 /* ---- レシピの翻訳 ----
    packs/i18n/<cc>.<lang>.js（GOHAN_PACK_TR('<CC>', '<lang>', {staple, names, recipes:{id:{name, ings:[[名前, 分量]], seas, steps, tip}}})）。
    国のパックは英語で書いてあるので、英語以外の言語ではその言語の訳を重ねる。日本のレシピは日本語以外で英語などの訳を重ねる。訳がなければ元のまま */
@@ -18660,7 +18706,9 @@ function packRecipe(pk, x, tr){
     });
     const family = PACK_FAMILY[x.protein] || '野菜';
     const re = PROTEIN_WORDS[x.protein];
-    const p = family === '野菜' ? null : (items.find(i => re && re.test(i.key)) || items[0]);
+    // 主役の食材: 豆腐・テンペ・大豆ミートを先に見る。ささげ・いんげん・もやしなど「豆」の字が付く野菜は、豆の料理の主役にしない（ph_adobongsitaw の主役が Long beans になっていた。北条の点検 11/17）
+    const first = PROTEIN_FIRST[x.protein], notP = x.protein === 'legume' ? NOT_LEGUME : null;
+    const p = family === '野菜' ? null : ((first && items.find(i => first.test(i.key))) || items.find(i => re && re.test(i.key) && !(notP && notP.test(i.key))) || items.find(i => re && re.test(i.key)) || items[0]);
     // 訳がないとき、その国の文字（中国語・ハングル・アラビア文字など）は、その言語の画面でないと読めないので、英語の名前を主に出し、元の名前は2行目に回す
     // 訳がないときの順: 画面の言葉の訳 → その国の名前（画面の言葉の人に読める文字のとき。中国語の画面で台湾の料理名など。R91）→ 英語
     const loc = x.local || x.name, readable = !x.local || LANG.slice(0, 2) === String(pk.lang).slice(0, 2) || nameReadable(x.local);

@@ -2106,4 +2106,5 @@ GOHAN_I18N('es', {
     "炒めたごはん": "Arroz frito",
     "汁そば": "Sopas de fideos",
     "ほかの国からも見つかりました": "También en otros países",
+    "下に出しています": "Se muestran abajo",
 });
