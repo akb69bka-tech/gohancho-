@@ -1361,6 +1361,7 @@ GOHAN_I18N('vi', {
     "雑穀ご飯": "Cơm ngũ cốc",
     "{from} の代わりに {to}": "{to} thay cho {from}",
     "{name} は入れません（なくても作れます）": "Bỏ {name} (không có vẫn nấu được)",
+    "手順の文に出てきても入れないでください。": "Dù có trong các bước, đừng cho vào.",
     "{to}で作る": "Nấu với {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Gợi ý món có thể thay nguyên liệu (vd: gà thay cho heo)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Nếu các bước vẫn ghi nguyên liệu cũ, hãy dùng nguyên liệu thay thế.",

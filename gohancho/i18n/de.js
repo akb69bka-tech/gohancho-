@@ -1361,6 +1361,7 @@ GOHAN_I18N('de', {
     "雑穀ご飯": "Mehrkornreis",
     "{from} の代わりに {to}": "{to} statt {from}",
     "{name} は入れません（なくても作れます）": "{name} weglassen (geht auch ohne)",
+    "手順の文に出てきても入れないでください。": "Auch wenn es in den Schritten vorkommt: bitte weglassen.",
     "{to}で作る": "Mit {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Gerichte mit Ersatzzutat vorschlagen (z. B. Hähnchen statt Schwein)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Steht in den Schritten noch die ursprüngliche Zutat, nimm stattdessen den Ersatz.",

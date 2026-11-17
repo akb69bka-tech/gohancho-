@@ -1362,6 +1362,7 @@ GOHAN_I18N('en', {
     "雑穀ご飯": "Multigrain rice",
     "{from} の代わりに {to}": "{to} instead of {from}",
     "{name} は入れません（なくても作れます）": "Leave out {name} (the dish works without it)",
+    "手順の文に出てきても入れないでください。": "Even if the steps mention it, leave it out.",
     "{to}で作る": "Made with {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Suggest dishes that work with a swap (e.g. chicken instead of pork)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "If the steps still name the original ingredient, use the swap in its place.",

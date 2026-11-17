@@ -1361,6 +1361,7 @@ GOHAN_I18N('fr', {
     "雑穀ご飯": "Riz aux céréales",
     "{from} の代わりに {to}": "{to} à la place de {from}",
     "{name} は入れません（なくても作れます）": "Sans {name} (le plat s'en passe)",
+    "手順の文に出てきても入れないでください。": "Même s'il apparaît dans les étapes, ne le mettez pas.",
     "{to}で作る": "Avec {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Proposer les plats possibles avec un remplacement (ex. poulet au lieu du porc)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Si les étapes citent encore l'ingrédient d'origine, utilisez le remplaçant.",

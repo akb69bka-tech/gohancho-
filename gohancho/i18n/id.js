@@ -1361,6 +1361,7 @@ GOHAN_I18N('id', {
     "雑穀ご飯": "Nasi multigrain",
     "{from} の代わりに {to}": "{to} sebagai pengganti {from}",
     "{name} は入れません（なくても作れます）": "Tanpa {name} (tetap bisa dibuat)",
+    "手順の文に出てきても入れないでください。": "Meski disebut di langkah-langkahnya, jangan dimasukkan.",
     "{to}で作る": "Pakai {to}",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Sarankan masakan yang bisa diganti bahannya (mis. ayam sebagai pengganti babi)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Jika langkahnya masih menyebut bahan asli, pakai bahan penggantinya.",

@@ -1361,6 +1361,7 @@ GOHAN_I18N('tr', {
     "雑穀ご飯": "Karışık tahıllı pirinç",
     "{from} の代わりに {to}": "{from} yerine {to}",
     "{name} は入れません（なくても作れます）": "{name} koymayın (onsuz da olur)",
+    "手順の文に出てきても入れないでください。": "Adımlarda geçse bile koymayın.",
     "{to}で作る": "{to} ile",
     "ほかの食材に置き換えて作れる料理は出す（例: 豚肉を鶏肉に）": "Değişiklikle yapılabilen yemekleri öner (ör. domuz yerine tavuk)",
     "作り方の文に元の食材の名前が残っていたら、代わりの食材と読みかえてください。": "Adımlarda hâlâ asıl malzeme geçiyorsa, yerine yenisini kullanın.",
