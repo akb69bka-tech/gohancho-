@@ -1284,6 +1284,7 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 /* 入れ替えで変わった料理: 器のまわりが一度光り、「新」の札（次に変わるまで） */
 .spot .fresh-tag{position:absolute;top:0;inset-inline-end:2px;z-index:2;font-size:.68rem;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;background:var(--accent);color:#fff;pointer-events:none}
 .spot.fresh .vessel{animation:freshGlow 1.4s ease-out 1}.spot.fresh .vessel.rise-in{animation:rise .35s ease-out backwards,freshGlow 1.4s ease-out .3s 1}
+.chip.tap-held{animation:tapHeld .6s ease-out}@keyframes tapHeld{0%{box-shadow:0 0 0 0 rgba(240,200,116,.95)}45%{box-shadow:0 0 0 5px rgba(240,200,116,.6)}100%{box-shadow:0 0 0 0 rgba(240,200,116,0)}}@media (prefers-reduced-motion:reduce){.chip.tap-held{animation:none;outline:2px solid rgba(240,200,116,.95);outline-offset:1px}}   /* 第51回 R224: 二度押しとして止めたボタン */
 @keyframes freshGlow{0%{box-shadow:0 0 0 0 rgba(240,200,116,.95)}60%{box-shadow:0 0 0 8px rgba(240,200,116,.35)}100%{box-shadow:0 0 0 0 rgba(240,200,116,0)}}
 @media (prefers-reduced-motion: reduce){.spot.fresh .vessel{animation:none}}
 /* 詰め（器が 60px を切りそうな画面）: 「かえる」は名前の下の行（器には重ねない。料理の絵を隠さない。点検3） */
@@ -5981,6 +5982,14 @@ function anchorKeyOf(el){ const d = el.dataset; return (d.act || '') + '|' + (d.
 let chipTap = null, tapAnchor = null, lastTapEl = null;   // 第44回 R203（下のクリックの受け口・holdView）
 // 第45回 R206: 最後に指・マウスを当てた時刻と場所（イベントの時刻は、ブラウザが入力を受けた時刻。遅い端末で処理が遅れても変わらない）
 let lastDown = null; const CHIP_DBL_MS = 400, CHIP_SEE_MS = 250;
+// 第51回 R224: 二度押しを見分けるボタンの印（役目・値と、家族の人の欄）。描き直しでボタンが作り直されても同じ印になる
+function chipKeyOf(el){ const b = el.closest('[data-act]') || el, fm = b.closest('[data-fm]'); return anchorKeyOf(b) + '|' + (fm ? fm.dataset.fm : ''); }
+// 二度押しとして止めたボタンを短く光らせる（押しを受けていないことを見せる。いまの形は変えない）。描き直しで作り直されていたら、同じ印のボタンを光らせる
+function chipHeld(el){
+    const k = chipKeyOf(el), go = () => { const b = (el.isConnected ? el : [...document.querySelectorAll('[data-act]')].find(x => chipKeyOf(x) === k));
+        const c = b && (b.classList.contains('chip') ? b : b.closest('.chip')); if (!c) return; c.classList.remove('tap-held'); void c.offsetWidth; c.classList.add('tap-held'); setTimeout(() => c.classList.remove('tap-held'), 700); };
+    requestAnimationFrame(go);
+}
 document.addEventListener('pointerdown', e => { lastDown = {type: e.pointerType, ts: e.timeStamp, x: e.clientX, y: e.clientY}; }, {capture: true, passive: true});
 // 第44回 R203: 押したチップを同じ高さに保つために画面を送ったとき、出ているお知らせ（画面に固定の形）の下に来た中身が変わる。
 // 置き場所を、いまの画面と押した指の場所で選び直す（続けて押すチップにお知らせが重ならないように）。ページに留めた形・見出しの行・棚つきの形はそのまま
@@ -17216,19 +17225,21 @@ document.addEventListener('click', e => {
     if (Date.now() < tapGuard && el.dataset.act !== 'toast-undo') return;
     const chip = el.classList.contains('chip') || !!el.closest('.chip');
     // 第45回 R206: 指で押したときは、指を当てた時刻（pointerdown の時刻。遅い端末で処理が遅れても、人が押した間合いのまま）で見る。
-    // 前のチップの押しから 0.4 秒のうちに同じ場所を押したら（二度押し）、同じチップでも別のチップでも切りかえない（入れた乳製品を外さない・隣の卵を入れない）。
+    // 前のチップの押しから 0.4 秒のうちに同じ場所の同じチップを押したら（二度押し）、切りかえない（入れた乳製品を外さない）。別のチップは通す（第51回 R224）。
     // 間をおいた押し直し（オン→オフ）は通す。マウスなどは、ブラウザが同じ場所の2回目と数えた押し（detail が 2 以上）だけを無視する（第44回）
+    // 第51回 R224: 二度押しとみなすのは、同じボタン（同じ役目・同じ値・同じ家族の人）を続けて押したときだけ。同じ所でも別のボタン（「子ども」のすぐあとの「ライ麦（グルテン）」など）は通す
+    // （別のボタンまで止めていたので、アレルギーが入らないまま献立が決まった）。止めたときは、そのボタンを短く光らせて「押しは受けていない」とわかるようにする
     if (chip && e.detail > 0){
         const pd = lastDown, touch = pd && pd.type === 'touch' && Math.abs(pd.x - e.clientX) < 24 && Math.abs(pd.y - e.clientY) < 24;
-        const near = chipTap && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24;
-        if (near && touch && chipTap.ts != null && (pd.ts - chipTap.ts < CHIP_DBL_MS || !(pd.ts >= chipTap.shownAt + CHIP_SEE_MS))){ chipTap.ts = pd.ts; return; }   // 0.4 秒のうち、または1回目の結果が画面に出て 0.25 秒たたないうち（見て決めるには短い）に当てた指
-        if (near && !touch && e.detail > 1 && Date.now() < chipTap.until) return;
+        const near = chipTap && Math.abs(e.clientX - chipTap.x) < 24 && Math.abs(e.clientY - chipTap.y) < 24 && chipTap.key === chipKeyOf(el);
+        if (near && touch && chipTap.ts != null && (pd.ts - chipTap.ts < CHIP_DBL_MS || !(pd.ts >= chipTap.shownAt + CHIP_SEE_MS))){ chipTap.ts = pd.ts; chipHeld(el); return; }   // 0.4 秒のうち、または1回目の結果が画面に出て 0.25 秒たたないうち（見て決めるには短い）に当てた指
+        if (near && !touch && e.detail > 1 && Date.now() < chipTap.until){ chipHeld(el); return; }
     }
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;
     if (CHIP_LATER.has(act)) famAlgOffWatch(el);   // 第46回 R206: 家族のアレルギーが外れたら、知らせと「元に戻す」を出す（押した間合いによらない守り）
-    if (chip && e.detail > 0){ const pd = lastDown, c = chipTap = {x: e.clientX, y: e.clientY, until: Infinity, ts: pd && pd.type === 'touch' ? pd.ts : null}; queueMicrotask(() => { c.until = Date.now() + 350; }); c.shownAt = Infinity; requestAnimationFrame(() => { c.shownAt = performance.now(); }); }   // マウス: 0.35 秒は、描き終わってから数える。shownAt: 押した結果を描いた時刻（その前に当てた指は、結果を見ていない）
+    if (chip && e.detail > 0){ const pd = lastDown, c = chipTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), until: Infinity, ts: pd && pd.type === 'touch' ? pd.ts : null}; queueMicrotask(() => { c.until = Date.now() + 350; }); c.shownAt = Infinity; requestAnimationFrame(() => { c.shownAt = performance.now(); }); }   // マウス: 0.35 秒は、描き終わってから数える。shownAt: 押した結果を描いた時刻（その前に当てた指は、結果を見ていない）
     if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
     session.freshArmed = true;   // 「新」の札は、本人が何か押したあとの変化にだけ付ける
@@ -19286,7 +19297,7 @@ loadMine();
 // 英語などで使う人が電波のない所で開き直すと日本語の画面になっていた（v149）。いま使っている辞書・国のレシピ・訳のうち、まだ保存していないものも同じときに取り直して保存させる
 // （保存ずみのものは取らない。日本語で使う人が最初に読むものは変えない）
 (() => {
-    let done = false;
+    let done = false, failAt = 0;
     const tick = () => {
         if (done) return;
         if (!S.onboarded || !S.settings.country || sheet || !navigator.onLine || !('serviceWorker' in navigator) || !navigator.serviceWorker.controller) return;
@@ -19300,9 +19311,12 @@ loadMine();
             const k = trKey(currentCountry(), 'en'); urls.add(assetUrl('i18n/en.js')); if (k) urls.add(assetUrl(`packs/i18n/${k.slice(0, k.indexOf('.')).toLowerCase()}.en.js`));
         }
         const has = u => ('caches' in window) ? caches.match(u).then(r => !!r, () => false) : Promise.resolve(false);
-        Promise.all([...urls].map(u => has(u).then(hit => hit || fetch(u).then(r => { if (!r.ok) throw 0; })))).catch(() => { done = false; });
+        Promise.all([...urls].map(u => has(u).then(hit => hit || fetch(u).then(r => { if (!r.ok) throw 0; })))).catch(() => { done = false; failAt = Date.now(); });
     };
     setTimeout(() => { tick(); const iv = setInterval(() => { if (done) clearInterval(iv); else tick(); }, 15000); }, 15000);
+    // 第51回 R223: 日本語以外で使う人は、はじめての流れが済んだら（国を選び、案内を閉じた・sw.js が働いている）すぐ取る（15秒を待つあいだに電波のない所で開き直すと、日本語になっていた）。
+    // 1秒ごとに条件だけ見る（取るのは1回）。日本語で使う人は、いままでどおり落ち着いてから（perf50 の軽さ）
+    const iv1 = setInterval(() => { if (done){ clearInterval(iv1); return; } if (LANG !== 'ja' && Date.now() - failAt > 15000) tick(); }, 1000);
 })();
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') && document.querySelector('link[rel="manifest"]')){
     navigator.serviceWorker.register('sw.js', {updateViaCache:'none'}).catch(() => {});
