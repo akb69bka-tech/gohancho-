@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+// 11/17 のオーナー指示で下のタブに「料理名から」を足し、日本＋日本語は8つになった（N1: 8つは 195〜380px が2段・390px 以上は1段）
 // 利用者モニター v110（R120〜R125）: 狭い幅の重なり・はみ出し・押せる大きさの回帰テスト（Playwright。使い方: node tools/tests/narrow-r5.mjs [http://localhost:8881/]）
-//  N1 R120 下のタブ: 幅 195 でも全タブが画面に入り、1つ 44×44px 以上（320px 以上は1段のまま）
+//  N1 R120 下のタブ: 幅 195 でも全タブが画面に入り、1つ 44×44px 以上（8つ: 360px までは2段・390px 以上は1段）
 //  N2 R125 国旗・設定・ご飯の説明（rice-info）が 44×44px 以上（幅 320・360・390・430）
 //  N3 R121 幅 195: 見出し「今日の献立」が条件ボタンに隠れない・設定の入力欄の幅
 //  N4 R122 「前の献立」と「まるごと入れ替え」: 押せる領域（ヒット領域）が重ならず、中心を押すと自分に当たる
@@ -38,7 +39,7 @@ const inter = (a, c) => Math.min(a.right, c.right) - Math.max(a.left, c.left) > 
         for (const ts of [0, 1, 2]){
             await setTs(p, ts); await p.waitForTimeout(80);
             const r = await p.evaluate(() => { const o = []; document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').forEach(e => { const q = e.getBoundingClientRect(); o.push([q.left, q.top, q.right, q.bottom]); }); return {o, vw: innerWidth, sw: document.documentElement.scrollWidth, tops: new Set(o.map(x => Math.round(x[1]))).size}; });
-            rows[w] = r.tops;
+            rows[w + '/' + ts] = r.tops; if (r.o.length !== 8) bad.push(`${w}/文字${ts} タブが ${r.o.length}（8つのはず）`);
             r.o.forEach((q, i) => { if (q[0] < -0.5 || q[2] > r.vw + 0.5) bad.push(`${w}/文字${ts} タブ${i}が画面の外 ${rnd(q[0])}〜${rnd(q[2])}`); if (q[2] - q[0] < 43.5 || q[3] - q[1] < 43.5) bad.push(`${w}/文字${ts} タブ${i}が小さい ${rnd(q[2] - q[0])}×${rnd(q[3] - q[1])}`); });
             if (r.sw > r.vw + 1) bad.push(`${w} 横スクロール`);
             // 全部のタブが、押すとそのタブへ行ける（真ん中を押して当たるのが自分）
@@ -46,13 +47,16 @@ const inter = (a, c) => Math.min(a.right, c.right) - Math.max(a.left, c.left) > 
             if (hit) bad.push(`${w}/文字${ts} 真ん中を押しても当たらないタブ ${hit}`);
         }
     }
-    ok(!bad.length && rows[195] === 2 && rows[320] === 1 && rows[360] === 1, `N1 R120 下のタブ（195=${rows[195]}段・320以上=1段）全部が画面に入り 44px 以上: ` + bad.slice(0, 5).join(' / '));
+    const rowsOk = [0, 1, 2].every(ts => rows['195/' + ts] === 2 && rows['320/' + ts] === 2 && rows['360/' + ts] === 2 && rows['390/' + ts] === 1 && rows['430/' + ts] === 1);
+    ok(!bad.length && rowsOk, `N1 R120 下のタブ8つ（195〜360=2段・390以上=1段）全部が画面に入り 44px 以上: ` + JSON.stringify(rows) + ' ' + bad.slice(0, 5).join(' / '));
     // 195 でも「記録」まで押して行ける
     await p.setViewportSize({width: 195, height: 422}); await setTs(p, 0);
     await p.click('nav.tabs [data-tab=log]'); await p.waitForTimeout(200);
     ok(await p.evaluate(() => tab) === 'log', 'N1 R120 幅195で「記録」を押して開ける');
     await p.click('nav.tabs [data-tab=world]'); await p.waitForTimeout(200);
     ok(await p.evaluate(() => tab) === 'world', 'N1 R120 幅195で「世界のレシピ」を押して開ける');
+    await p.click('nav.tabs [data-tab=name]'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => tab) === 'name', 'N1 R120 幅195で「料理名から」を押して開ける');
     await ctx.close();
 }
 // N2 押せる大きさ

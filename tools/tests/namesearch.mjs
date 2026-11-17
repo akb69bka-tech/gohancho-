@@ -8,6 +8,11 @@
 //  N2 アレルギー（小麦・えび）・食の決まり（ハラール・ヴィーガン）: 当たる料理は3段のどこにも出ない。出さなかった数を言う。ひとひねり案も当たらない
 //  N3 狭い幅（195〜390px）: 8つ（ひとひねりあり）・7つ（ひとひねりが隠れる: 英語・アメリカ）のどちらでも、どのタブも画面に入り、押せる（真ん中を押すとそのタブ）。
 //     字が枠からはみ出さない。横にスクロールしない
+//  N2b 辛いのが苦手（家族全員）: 3段とひとひねりのタブに、辛い材料（唐辛子・コチュジャンなど。テスト側の言葉で見る）を使う料理・案が出ない
+//  N5 読みこみ: タブを開いただけでは20か国を読まない。最初にさがしたときに読む。読み終えて足すとき、もう出ているカードの並びは動かさず、
+//     足す分は下の「ほかの国からも見つかりました」に入る
+//  N6 入力の整え: NFKC（か＋濁点の2文字）・幅のない空白・制御文字を取りのぞく。入力欄は40字まで。「見つかりませんでした」の語も40字まで
+//  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -35,15 +40,17 @@ const open = async (o = {}) => {
     return {p, ctx};
 };
 // 料理名からのタブを開き、ほかの国を読みこみ終えるまで待つ
+// （ほかの国は、タブを開いたときではなく最初にさがしたときに読む。ask が読み終えるまで待つ）
 const openTab = async p => {
     await p.click('nav.tabs button[data-tab="name"]');
-    await p.waitForFunction(() => tab === 'name' && document.querySelector('#ns-input') && !nsLoading && COUNTRIES.every(c => c.cc === currentCountry() || BROWSE[c.cc] || browseErr.has(c.cc)), null, {timeout: 60000});
+    await p.waitForFunction(() => tab === 'name' && document.querySelector('#ns-input'), null, {timeout: 30000});
 };
+const loaded = p => p.waitForFunction(() => !nsLoading && COUNTRIES.every(c => c.cc === currentCountry() || BROWSE[c.cc] || browseErr.has(c.cc)), null, {timeout: 90000});
 // 入力欄に入れて、結果の3段を読む（カードの料理の id・国）
 const ask = async (p, q) => {
     await p.fill('#ns-input', q);
-    await p.waitForFunction(q => session.nsQ === q && document.querySelector('#ns-results'), q, {timeout: 10000});
-    await p.waitForTimeout(80);
+    await p.waitForFunction(q => session.nsQ === q.slice(0, 40) && document.querySelector('#ns-results'), q, {timeout: 10000});
+    await loaded(p); await p.waitForTimeout(80);
     return p.evaluate(() => {
         const tier = k => [...document.querySelectorAll(`#ns-results .ns-tier[data-tier="${k}"] .dcard .head[data-act="open"]`)].map(e => { const r = byId(e.dataset.id); return {id: e.dataset.id, cc: r ? (r.pack || 'JP') : '?', name: e.textContent.trim(), alg: r ? allergyConflict(r) : null, av: r ? isAvoided(r) : null, twAv: r && String(r.id).startsWith('a~') ? twistAvoided(r) : null}; });
         const none = document.querySelector('#ns-results .ns-none');
@@ -98,6 +105,11 @@ const ask = async (p, q) => {
         await p.keyboard.press('Escape'); await p.waitForTimeout(300);
         await p.evaluate(() => { if (typeof closeModal === 'function') closeModal(); });
     }
+    // 検索欄の × は青くしない（料理名から・材料から とも灰色）
+    const gray = [];
+    for (const [tb, id] of [['name', 'ns-input'], ['fridge', 'search-input']]){ await p.evaluate(tb => setTab(tb), tb); await p.waitForTimeout(200); gray.push(await p.evaluate(id => { const e = document.getElementById(id); if (!e) return 'なし'; const rs = []; for (const sh of document.styleSheets){ try{ for (const r of sh.cssRules) if (r.selectorText && r.selectorText.split(',').some(x => x.trim() === '#' + id + '::-webkit-search-cancel-button')) rs.push(r.style.filter); }catch(_){} } return id + ':' + (rs.join('|') || 'なし'); }, id)); }
+    ok(gray.every(f => /grayscale\(1\)/.test(f)), 'N1k 検索欄（料理名から・材料から）の × は灰色: ' + gray.join(' / '));
+    await p.evaluate(() => setTab('name'));
     const menu1 = await p.evaluate(() => JSON.stringify([S.cook && S.cook.ids, session.menu && session.menu.items.map(x => x.r && x.r.id)])).catch(() => null);
     ok(menu0 === menu1, 'N1j さがしても、決めた献立・今日の献立は変わらない');
     await ctx.close();
@@ -132,6 +144,66 @@ const ask = async (p, q) => {
     await openTab(p);
     const r = await ask(p, 'カレー');
     ok(!r.same.some(x => x.id === 'curry') && /アレルギー/.test(r.hid), 'N2 小麦アレルギー: カレーライスは出さず、アレルギーで出していないと言う: ' + r.hid);
+    await ctx.close();
+}
+
+// ---- N2b 辛いのが苦手（アプリの判定とは別に、材料・調味料・名前の言葉で見る） ----
+{
+    const SPICY = /辛|唐辛子|一味|七味|豆板醤|コチュジャン|ラー油|チリ|タバスコ|ハリッサ|chili|chilli|cayenne|sriracha|gochujang|gochugaru|harissa|jalape|habanero|sambal|tabasco|ピリ辛|激辛/i;
+    const txtOf = 'r => [...(r.items || []).filter(i => !i.opt).map(i => [i.name, i.key, i.en, i.label].join(" ")), String(r.seasBase != null ? r.seasBase : r.seas || ""), r.name, r.nameEn || ""].join(" | ")';
+    const {p, ctx} = await open({family: [Object.assign({}, FAM0, {mild: true})]});
+    await openTab(p);
+    const bad = []; let shown = 0, tw = 0;
+    for (const q of ['カレー', 'ハンバーグ', '味噌汁', '麻婆', 'チゲ', 'キムチ', 'ラーメン', '焼きそば', 'curry']){
+        await ask(p, q);
+        const r = await p.evaluate(([src, txtOf]) => { const re = new RegExp(src, 'i'), tx = eval(txtOf); return [...document.querySelectorAll('#ns-results .dcard .head[data-act="open"]')].map(e => { const r = byId(e.dataset.id); return {id: e.dataset.id, name: r && r.name, hit: r ? (tx(r).match(re) || [''])[0] : 'なし'}; }); }, [SPICY.source, txtOf]);
+        shown += r.length; tw += r.filter(x => x.id.startsWith('a~')).length;
+        r.filter(x => x.hit).forEach(x => bad.push(`${q}: ${x.name}（${x.hit}）`));
+    }
+    ok(bad.length === 0 && shown > 0, `N2b 辛いのが苦手: 3段に辛い材料の料理・案が出ない（${shown}品・ひとひねり${tw}）: ` + bad.slice(0, 6).join(' / '));
+    // ひとひねりのタブでも出ない（おまかせ・味の方向をいろいろ変えて 30回）
+    const bad2 = await p.evaluate(([src, txtOf]) => { const re = new RegExp(src, 'i'), tx = eval(txtOf), out = [];
+        for (let i = 0; i < 30; i++){ const fl = ['any', ...Object.keys(FLAVORS)][i % (Object.keys(FLAVORS).length + 1)]; generateTwists({level: 1 + i % 3, flavor: fl, count: 3}).forEach(t => { const m = tx(t).match(re); if (m) out.push(t.name + '（' + m[0] + '）'); }); }
+        return out; }, [SPICY.source, txtOf]);
+    ok(bad2.length === 0, 'N2b 辛いのが苦手: ひとひねりのタブの案にも辛い材料が出ない: ' + [...new Set(bad2)].slice(0, 6).join(' / '));
+    await ctx.close();
+}
+
+// ---- N5 読みこみ（タブを開いただけでは読まない・足す分は下に） ----
+{
+    const {p, ctx} = await open();
+    await ctx.route(/\/packs\/.*\.js/, async r => { await new Promise(res => setTimeout(res, 2500)); await r.continue(); });
+    const k0 = await p.evaluate(() => Object.keys(BROWSE).sort().join());
+    await p.click('nav.tabs button[data-tab="name"]'); await p.waitForTimeout(1500);
+    const k1 = await p.evaluate(() => [Object.keys(BROWSE).sort().join(), !!nsLoading]);
+    ok(k1[0] === k0 && !k1[1], 'N5 タブを開いただけでは、ほかの国を読まない: ' + JSON.stringify([k0, k1]));
+    await p.fill('#ns-input', 'カレー');
+    await p.waitForFunction(() => session.nsQ === 'カレー' && document.querySelector('#ns-results .ns-tier'), null, {timeout: 10000});
+    const before = await p.evaluate(() => [!!nsLoading, [...document.querySelectorAll('#ns-results .ns-tier[data-tier="same"] > .dlist:not(.ns-extra) .head[data-act="open"]')].map(e => e.dataset.id)]);
+    ok(before[0] && before[1].length > 0, 'N5 さがすと読みはじめる（読んでいるあいだも、いまの国の料理はすぐ出る）: ' + before[1].join(','));
+    await loaded(p); await p.waitForTimeout(200);
+    const after = await p.evaluate(() => ({base: [...document.querySelectorAll('#ns-results .ns-tier[data-tier="same"] > .dlist:not(.ns-extra) .head[data-act="open"]')].map(e => e.dataset.id),
+        extra: [...document.querySelectorAll('#ns-results .ns-tier[data-tier="same"] .ns-extra .head[data-act="open"]')].map(e => e.dataset.id), more: [...document.querySelectorAll('#ns-results .ns-more')].map(e => e.textContent.trim())}));
+    ok(JSON.stringify(after.base) === JSON.stringify(before[1]), 'N5 読み終えても、もう出ているカードの並びは動かない: ' + JSON.stringify([before[1], after.base]));
+    ok(after.extra.length > 0 && after.more.includes('ほかの国からも見つかりました') && after.extra.every(id => /^[a-z]{2}_/.test(id)), 'N5 足す分は下の「ほかの国からも見つかりました」に入る（ほかの国の料理）: ' + after.extra.slice(0, 6).join(','));
+    await ctx.close();
+}
+
+// ---- N6 入力の整え ----
+{
+    const {p, ctx} = await open();
+    await openTab(p);
+    ok(await p.evaluate(() => document.querySelector('#ns-input').maxLength) === 40, 'N6 入力欄は40字まで（maxlength）');
+    for (const [q, id, nm] of [['ハンハ\u3099ーク\u3099', 'hamburg', 'バ・グを濁点の2文字に分けた形'], ['カ\u200Bレ\uFEFFー', 'curry', '幅のない空白'], ['カレ\u0007ー', 'curry', '制御文字'], ['ｶﾚｰ', 'curry', '半角カナ']]){
+        const r = await p.evaluate(q => { const x = nsSearch(q); return x ? x.hits.map(r => r.id) : []; }, q);
+        ok(r.includes(id), `N6 ${nm}でも当たる（整えてからさがす）: ` + r.slice(0, 3).join(','));
+    }
+    ok(await p.evaluate(() => nsClean('ガ\u0000ー\u200D') === 'ガー' && nsClean('か\u3099') === 'が' && nsClean('x'.repeat(100)).length === 40), 'N6 nsClean: 制御文字・幅のない空白を取り、か＋濁点は「が」、100字は40字に');
+    const long = 'ぺ'.repeat(80);
+    await p.evaluate(q => { session.nsQ = q; nsRefresh(); }, long); await loaded(p); await p.waitForTimeout(100);
+    const msg = await p.evaluate(() => (document.querySelector('#ns-results .ns-none') || {}).textContent || '');
+    const m = msg.match(/「(ぺ*)」/);
+    ok(m && m[1].length <= 40, 'N6 「見つかりませんでした」の語は40字まで: ' + (m ? m[1].length : msg.slice(0, 40)));
     await ctx.close();
 }
 

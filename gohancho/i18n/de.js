@@ -2104,4 +2104,5 @@ GOHAN_I18N('de', {
     "豆みその汁もの": "Suppen mit Bohnenpaste",
     "炒めたごはん": "Gebratener Reis",
     "汁そば": "Nudelsuppen",
+    "ほかの国からも見つかりました": "Auch in anderen Ländern gefunden",
 });

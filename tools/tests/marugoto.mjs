@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// 11/17 のオーナー指示で下のタブに「料理名から」を足し、日本＋日本語は8つになった（M1e: 8つは 414px より狭いと絵＋短い名前、430px で字ありを確かめる）
 // 「まるごと入れ替え」をお膳の表に出す（オーナーの指示）の回帰テスト（Playwright。使い方: node tools/tests/marugoto.mjs [http://localhost:8881/]）
 //  1. 今日の献立のお膳（条件シートを開かずに）の段のあいだに丸い「まるごと入れ替え」があり、「この献立に決定」より上にある。丸は56px 以上
 //  1b. スクロールしなくても最初の画面で見えて押せる（360×740・390×844・大きい文字）。下の「この一膳にする」の帯やお知らせの後ろに隠れない（オーナーの指示）
@@ -164,7 +165,7 @@ for (const [cc, n, lang] of [['JP', 2, 'ja'], ['JP', 3, 'ja'], ['JP', 4, 'ja'], 
     ok(!r.rice || r.rice !== rice0 || !r.riceFresh, 'M1e 品数を変えても、変わっていない白ご飯には「新」を付けない: ' + JSON.stringify([rice0, r]));
     await ctx.close();
 }
-for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1]]){
+for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1], [430, 932, 2]]){
     const {p, ctx} = await open({dishCount: 4, textSize: ts}, [w, h]);
     await p.waitForTimeout(300);
     const r = await p.evaluate(() => {
@@ -172,14 +173,17 @@ for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1]]){
         const bs = [...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')];
         const tl = bs.map(b => b.querySelector('.tl')).filter(Boolean), vis = tl.filter(e => e.getBoundingClientRect().width > 2);
         const lines = vis.map(e => Math.round(e.getBoundingClientRect().height / (parseFloat(getComputedStyle(e).lineHeight) || 14)));
-        return {overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true'} : null; })};
+        return {n: bs.length, overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true'} : null; })};
     });
     const tag = `M1e ${w}x${h} 文字${ts}`;
     ok(!r.overlap, `${tag} 決定の帯をお盆に重ねない: ` + JSON.stringify(r));
-    if (w < 300) ok(r.ico && r.shown === 0 && r.label, `${tag} 狭い幅ではタブは絵だけ（字は読み上げに残す）: ` + JSON.stringify(r));
-    if (w < 300) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 11 && !x.cut && x.hid), `${tag} 絵だけのタブに短い名前（2〜3文字・11px以上・切れない・読み上げは長い名前）: ` + JSON.stringify(r.shorts));
-    if (w >= 300) ok(r.shorts.every(x => !x), `${tag} 字のあるタブには短い名前を出さない: ` + JSON.stringify(r.shorts));
-    if (w >= 300) ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
+    const narrow = w < 300 || (r.n === 8 && w < 414);   // 8タブ（11/17）は 414px より狭いと字の入る幅がない
+    ok(r.n === 8, `${tag} 下のタブは8つ（日本＋日本語・料理名からを足した）: ` + r.n);
+    if (narrow) ok(r.ico && r.shown === 0 && r.label, `${tag} 狭い幅ではタブは絵だけ（字は読み上げに残す）: ` + JSON.stringify(r));
+    if (narrow) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 11 && !x.cut && x.hid), `${tag} 絵だけのタブに短い名前（2〜3文字・11px以上・切れない・読み上げは長い名前）: ` + JSON.stringify(r.shorts));
+    if (!narrow) ok(r.shorts.every(x => !x), `${tag} 字のあるタブには短い名前を出さない: ` + JSON.stringify(r.shorts));
+    if (!narrow) ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
+    if (narrow && w >= 300) ok(r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 8タブの絵＋短い名前でも、字の大きさの設定はボタンに残る: ` + r.fs);
     await ctx.close();
 }
 

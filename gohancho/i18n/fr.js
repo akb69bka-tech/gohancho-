@@ -2104,4 +2104,5 @@ GOHAN_I18N('fr', {
     "豆みその汁もの": "Soupes à la pâte de soja",
     "炒めたごはん": "Riz sauté",
     "汁そば": "Soupes de nouilles",
+    "ほかの国からも見つかりました": "Également trouvé dans d’autres pays",
 });

@@ -2105,4 +2105,5 @@ GOHAN_I18N('en', {
     "豆みその汁もの": "Bean-paste soups",
     "炒めたごはん": "Fried rice",
     "汁そば": "Noodle soups",
+    "ほかの国からも見つかりました": "Also found in other countries",
 });

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
+// 11/17 のオーナー指示で下のタブに「料理名から」を足し、日本＋日本語は8つ・ほかの言語は7つになった（8つは 195〜380px が2段・390px 以上は1段）
 // 下のタブ「調理道具」（オーナーの指示 11/09）の回帰テスト（Playwright。使い方: node tools/tests/tooltab-r1.mjs [http://localhost:8814/]）
-//  U1 下のタブ: 7つ（日本＋日本語）・6つ（ほかの言語）が、幅 195/260/320/360/390/430 × 文字3段階 × 主要言語で、全部画面に入り 44×44px 以上・横スクロールなし・名前が切れない
+//  U1 下のタブ: 8つ（日本＋日本語）・7つ（ほかの言語）が、幅 195/260/320/360/390/430 × 文字3段階 × 主要言語で、全部画面に入り 44×44px 以上・横スクロールなし・名前が切れない
 //     （17言語は幅 195/360/390 で名前が切れない・短い名前が消えない）
 //  U2 3段の絞り込み: 調理法 → 道具 → 料理。調理法だけなら、その調理法の全部の道具の料理。チップは 44px 以上。タブを開いても・選んでも、献立・今日使う道具は変わらない
 //  U3 21か国 × 各調理法で、除外（アレルゲン全種・ハラール・ベジ・ヴィーガン・お酒避け）に当たる料理が一覧に出ない
@@ -56,7 +57,7 @@ const tabCheckTs = (p, ts) => p.evaluate(async ts => { if (ts) S.settings.textSi
             for (const ts of [0, 1, 2]){
                 await tabCheckTs(p, ts);
                 const r = await tabCheck(p);
-                const want = lang === 'ja' ? 7 : 6;
+                const want = lang === 'ja' ? 8 : 7;   // 11/17: 料理名から を足した
                 if (r.n !== want || !r.tools) bad.push(`${lang} ${w}: タブ ${r.n}（調理道具=${r.tools}）`);
                 r.bad.forEach(x => bad.push(`${lang} ${w}/文字${ts} ${x}`));
                 if (lang === 'ja') rows[w + '/' + ts] = r.rows;
@@ -64,8 +65,9 @@ const tabCheckTs = (p, ts) => p.evaluate(async ts => { if (ts) S.settings.textSi
         }
         await ctx.close();
     }
-    ok(!bad.length, 'U1 7タブ（日本語）・6タブ（ほかの言語）が 195〜430 × 文字3段階で画面に入り 44px 以上・名前が切れない: ' + bad.slice(0, 6).join(' / '));
-    ok(rows['195/0'] === 2 && rows['320/0'] === 1 && rows['360/0'] === 1 && rows['430/2'] === 1, 'U1 幅195は2段・320以上は1段: ' + JSON.stringify(rows));
+    ok(!bad.length, 'U1 8タブ（日本語）・7タブ（ほかの言語）が 195〜430 × 文字3段階で画面に入り 44px 以上・名前が切れない: ' + bad.slice(0, 6).join(' / '));
+    // 8タブ（11/17）: 195〜380px は2段（1つ 44px 以上にするため）、390px 以上は1段
+    ok(['195', '260', '320', '360'].every(w => [0, 1, 2].every(ts => rows[w + '/' + ts] === 2)) && ['390', '430'].every(w => [0, 1, 2].every(ts => rows[w + '/' + ts] === 1)), 'U1 8タブ: 幅195〜360は2段・390以上は1段: ' + JSON.stringify(rows));
     // 17言語: 幅 195/360/390 × 文字ふつう・最大
     const bad2 = [];
     for (const lang of 'ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant'.split(' ')){

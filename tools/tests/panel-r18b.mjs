@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// 11/17 のオーナー指示で下のタブに「料理名から」を足し、日本＋日本語は8つになった（R18-6: 8つの 360・390px は絵＋短い名前の1段か2段。414px 以上は字あり）
 // 利用者モニター 第18回の直し（画面・三宅）。Playwright。使い方: node tools/tests/panel-r18.mjs [http://localhost:8999/]
 //  S22: 360×740・家族の🔍 が上下の段に出る日（文字3段階・日本/韓国・明暗）でも、下の段（器・名前・かえる・札）と「この献立に決定」が下のタブより上（いちばん詰めても入らないときは、家族リクエストの入口を上の端の行へ: tray-tight5）
 //  R20: 195×422・文字大/もっと大きい・家族（🔍）・家族リクエストあり: 上の段の器・名前・↻・札が、決める前も決めたあともタブより上。入口は残る
@@ -162,9 +163,11 @@ for (const [w, h, ts] of [[430, 932, 1], [430, 932, 2], [390, 844, 1]]) {
 for (const [w, h] of [[360, 740], [390, 844], [430, 932]]) for (const lang of ['ja', 'ko', 'en']) for (const ts of [1, 2]) {
     if (!want('R18-6')) break;
     const {p, ctx} = await open({w, h, lang, ts, fam: 1, dc: 4, wants: 1}, `r13-${w}-${lang}-${ts}`);
-    const r = await p.evaluate(async () => { const nv = document.querySelector('nav.tabs'); const fs = () => parseFloat(getComputedStyle(nv.querySelector('button[data-tab=today]')).fontSize); session.menu = null; render(); await __tick(); const a = fs(); setTab('cook'); render(); await __tick(); const c = fs(); setTab('today'); render(); await __tick(); return {today: a, cook: c, back: fs(), ico: nv.classList.contains('ico')}; });
+    const r = await p.evaluate(async () => { const nv = document.querySelector('nav.tabs'); const fs = () => parseFloat(getComputedStyle(nv.querySelector('button[data-tab=today]')).fontSize); session.menu = null; render(); await __tick(); const a = fs(); setTab('cook'); render(); await __tick(); const c = fs(); setTab('today'); render(); await __tick(); return {today: a, cook: c, back: fs(), ico: nv.classList.contains('ico'), n: nv.querySelectorAll('button[data-tab]:not([hidden])').length, off: nv.classList.contains('tsn-off'), cut: [...nv.querySelectorAll('button[data-tab]:not([hidden])')].filter(b => { const e = b.querySelector(nv.classList.contains('ico') ? '.tsn' : '.tl'); return !e || !e.textContent.trim() || e.scrollWidth > e.clientWidth + 0.5 || e.scrollHeight > e.clientHeight + 1 || b.getBoundingClientRect().width < 44 - 0.5; }).map(b => b.dataset.tab)}; });
     const std = ts === 2 ? 15 : 13.5, min = ts === 2 ? 14 : 13;
-    ok(!r.ico && [r.today, r.cook, r.back].every(v => v >= min && v <= std), `R18-6 R13 ${w}px ${lang} 文字${ts}: 下のタブの字が ${min}px 以上（標準 ${std}px）。お膳を詰めたあと・作り方のタブでも: ` + JSON.stringify(r));
+    // 8タブ（日本語・11/17）の 360・390px は、字の入る幅がないので絵＋短い名前（短い名前が消えず切れない・1つ 44px 以上）。字の大きさの設定はボタンに残る
+    const ico8 = r.n === 8 && w < 414;
+    ok((ico8 ? r.ico && !r.off : !r.ico) && !r.cut.length && [r.today, r.cook, r.back].every(v => v >= min && v <= std), `R18-6 R13 ${w}px ${lang} 文字${ts}: 下のタブの字が ${min}px 以上（標準 ${std}px）。お膳を詰めたあと・作り方のタブでも${ico8 ? '（8タブ: 絵＋短い名前）' : ''}: ` + JSON.stringify(r));
     await ctx.close();
 }
 

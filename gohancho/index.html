@@ -2077,7 +2077,7 @@ nav.tabs.two button{min-width:44px;padding-inline:0;padding-block:0;min-height:4
 nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
-#ns-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から: 入力欄の × を青くしない */
+#ns-input::-webkit-search-cancel-button,#search-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から・材料からの検索欄: 入力欄の × を青くしない */
 .ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
 .tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
@@ -5661,6 +5661,7 @@ function twistBaseOk(b){
 // できあがったひとひねり案に、苦手な食材が残っていないか（足す食材も含めて）
 function twistAvoided(tw){
     if (!tw) return true;
+    if (mildOn() && spiceLevel(tw) >= (allMild() ? 1 : 2)) return true;   // 辛いのが苦手な人がいるときは、献立と同じ決まりで辛い案を出さない（韓国風のコチュジャンなど。料理名から・ひとひねりのタブとも）
     if (allergyOn()){ const g = allergyCtx(); if (tw.items.some(i => itemAvoided(i, g)) || seasItems(tw).some(i => itemAvoided(i, g))) return true; }   // アレルギー: ひとひねりで足す食材・もとの料理の調味料まで
     return tw.items.some(i => !i.opt && itemAvoided(i));
 }
@@ -15967,9 +15968,13 @@ let nsLoading = null;
 function nsLoadAll(){
     const home = currentCountry(), ccs = COUNTRIES.map(c => c.cc).filter(cc => cc !== home && !BROWSE[cc]);
     if (!ccs.length || nsLoading) return;
-    nsLoading = Promise.all(ccs.map(cc => loadBrowse(cc))).then(() => { nsLoading = null; if (tab === 'name') nsRefresh(); });
+    nsLoading = Promise.all(ccs.map(cc => loadBrowse(cc))).then(() => { nsLoading = null; if (tab === 'name') nsPaint(); });   // 読み終えたら描きなおすだけ（読めなかった国は、次にさがしたときに読みに行く）
 }
+// 入力の整え: NFKC（「か」＋濁点のように分かれた形もまとめる）・幅のない空白と制御文字を取りのぞく・40字まで
+const NS_MAX = 40;
+function nsClean(q){ return String(q == null ? '' : q).normalize('NFKC').replace(/[\u200B-\u200F\u2028-\u202E\u2060-\u206F\uFEFF\u00AD]/g, '').replace(/[\t\n\r]/g, ' ').replace(/[\u0000-\u001F\u007F-\u009F]/g, '').slice(0, NS_MAX); }
 function nsSearch(q){
+    q = nsClean(q);
     const terms = searchTerms(q).map(norm).filter(Boolean);
     if (!terms.length) return null;
     const home = currentCountry(), alts = terms.map(nsAlts);
@@ -16009,7 +16014,7 @@ function nsSearch(q){
         let n = 0;
         for (const id of ids){ if (twists.length >= 4 || n >= 2) break; const tw = buildTwist(id); if (tw && !twistAvoided(tw)){ twists.push(tw); n++; } }
     });
-    return {terms: searchTerms(q), hits, hidden, similar, twists};
+    return {terms: searchTerms(q), hits, hidden, similar, twists, q};
 }
 function nsHiddenHtml(hidden){
     if (!hidden.length) return '';
@@ -16021,28 +16026,49 @@ function nsCard(r, note){
     const b = allergyBadge(r);
     return dishCardHtml(r, {note, extra: b ? `<div class="dc-tags">${b}</div>` : ''});
 }
+// 出したカードの並びを覚えておく（同じ言葉・同じ判定のあいだ）。ほかの国を読み終えて結果を足すときも、もう出ているカードは動かさず、足す分は下の「ほかの国からも見つかりました」に入れる（押しまちがいを防ぐ）
+let nsSnap = null;
+function nsKeep(key, list, idOf, max){
+    const now = new Map(list.map(x => [idOf(x), x]));
+    const snap = nsSnap[key] || (nsSnap[key] = {base: list.slice(0, max).map(idOf), seen: new Set(list.map(idOf)), extra: []});   // 最初に出した並び（と、そのとき出さなかった料理）
+    const base = snap.base.filter(id => now.has(id));
+    const extra = snap.extra.filter(id => now.has(id) && !base.includes(id));
+    list.forEach(x => { const id = idOf(x); if (!snap.seen.has(id) && !extra.includes(id) && extra.length < max) extra.push(id); });   // あとから読みこんだ国で、新しく当たった料理だけ
+    snap.extra = extra;
+    return {base: base.map(id => now.get(id)), extra: extra.map(id => now.get(id))};
+}
 function nsResultsHtml(q){
+    q = nsClean(q);
     const loading = nsLoading ? `<div class="small muted ns-load" role="status">${esc(t('読みこみ中…'))}</div>` : '';
-    const res = nsSearch(q || '');
-    if (!res) return loading;
+    const res = nsSearch(q);
+    if (!res) return '';
+    const sig = [res.q, judgeSig(), LANG, currentCountry()].join('\u0001');
+    if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig};
     const {hits, hidden, similar, twists} = res;
-    if (!hits.length) return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ')}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
-    const shown = hits.slice(0, 12);
+    const more = list => list.length ? `<div class="sec-head ns-more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>` : '';
+    if (!hits.length){
+        nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
+        return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
+    }
+    const same = nsKeep('same', hits, r => r.id, 12), world = nsKeep('world', similar, x => x.r.id, 8);
+    const simCard = x => nsCard(x.r, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : '');
     return `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
-        <div class="list dlist">${shown.map(r => nsCard(r, '')).join('')}</div>${nsHiddenHtml(hidden)}</div>
+        <div class="list dlist">${same.base.map(r => nsCard(r, '')).join('')}</div>${more(same.extra)}${same.extra.length ? `<div class="list dlist ns-extra">${same.extra.map(r => nsCard(r, '')).join('')}</div>` : ''}${nsHiddenHtml(hidden)}</div>
     <div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>
-        ${similar.length ? `<div class="list dlist">${similar.map(x => nsCard(x.r, x.why.length ? esc(t('似ているところ: {list}', {list: x.why.join(t('・'))})) : '')).join('')}</div>` : `<div class="small muted">${esc(t('似た料理は見つかりませんでした'))}</div>`}</div>
+        ${world.base.length ? `<div class="list dlist">${world.base.map(simCard).join('')}</div>` : ''}${world.base.length ? more(world.extra) : ''}${world.extra.length ? `<div class="list dlist ns-extra">${world.extra.map(simCard).join('')}</div>` : ''}${!world.base.length && !world.extra.length ? `<div class="small muted">${esc(nsLoading ? t('読みこみ中…') : t('似た料理は見つかりませんでした'))}</div>` : ''}</div>
     ${twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
         <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : ''}${loading}`;
 }
-function nsRefresh(){ const box = $('#ns-results'); if (box) box.innerHTML = nsResultsHtml(session.nsQ || ''); }
+// ほかの国（20か国・日本語で約5MB）は、タブを開いたときではなく、最初に何か入れてさがしたときに読みはじめる
+function nsPaint(){ const box = $('#ns-results'); if (box) box.innerHTML = nsResultsHtml(session.nsQ || ''); }
+function nsRefresh(){ if (nsClean(session.nsQ || '').trim()) nsLoadAll(); nsPaint(); }
 function viewNameSearch(){
-    nsLoadAll();
+    if (nsClean(session.nsQ || '').trim()) nsLoadAll();
     return `<section class="sec ns-sec">
         <div class="sec-head"><h2>${esc(t('料理名からさがす'))}</h2><span class="hint">${esc(t('料理の名前を入れると、{n}の国・地域から同じ料理と似た料理をさがします', {n: COUNTRIES.length}))}</span></div>
         <div class="card">
         <form class="inputbar search" data-form="ns" role="search">
-            <input type="search" id="ns-input" value="${esc(session.nsQ || '')}" placeholder="${esc(t('料理名を入れる（例: コロッケ）'))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理名でさがす'))}">
+            <input type="search" id="ns-input" value="${esc(session.nsQ || '')}" maxlength="${NS_MAX}" placeholder="${esc(t('料理名を入れる（例: コロッケ）'))}" autocomplete="off" enterkeyhint="search" aria-label="${esc(t('料理名でさがす'))}">
             <button class="btn" type="submit">${esc(t('さがす'))}</button>
         </form>
         <div id="ns-results" aria-live="polite">${nsResultsHtml(session.nsQ || '')}</div>

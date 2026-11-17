@@ -2104,4 +2104,5 @@ GOHAN_I18N('tr', {
     "豆みその汁もの": "Fasulye ezmeli çorbalar",
     "炒めたごはん": "Kızarmış pilav",
     "汁そば": "Erişte çorbaları",
+    "ほかの国からも見つかりました": "Başka ülkelerde de bulundu",
 });

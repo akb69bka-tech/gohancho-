@@ -2104,4 +2104,5 @@ GOHAN_I18N('pt-BR', {
     "豆みその汁もの": "Sopas de pasta de soja",
     "炒めたごはん": "Arroz frito",
     "汁そば": "Sopas de macarrão",
+    "ほかの国からも見つかりました": "Também encontrado em outros países",
 });

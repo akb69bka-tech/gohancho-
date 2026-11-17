@@ -2104,4 +2104,5 @@ GOHAN_I18N('fil', {
     "豆みその汁もの": "Sabaw na may bean paste",
     "炒めたごはん": "Sinangag",
     "汁そば": "Sabaw na pansit",
+    "ほかの国からも見つかりました": "Nakita rin sa ibang bansa",
 });
