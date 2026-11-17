@@ -15,6 +15,7 @@
 //  N7 4Mbps で読みこみの途中にさがしても、出ていたカード（3段とも）の位置は読み終えたあとも変わらない（2段目・3段目は読み終えてから出す）
 //  N8 返事が来ない国がある・1.5Mbps でも、3段目はすぐ、2段目は最長3秒ほどで読めた国の分だけで出て、出ていたカードは1pxも動かない
 //  N9 別の呼び方（ムサカ・hamburger・lasagne など）でも当たる（R220）・N10 幅195×422 で最初の画面に1件目のカードが見える（R221）・N11 ドイツ語の短い名前（R222）
+//  N12 読みこみのあいだ、出ているカードを作り直さない・画面全体の描き直しがない。途中でほかのタブへ移っても、そのタブに影響しない
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -279,6 +280,37 @@ for (const [lg, ts, min] of [['ja', 0, 40], ['de', 0, 40], ['ja', 1, 40], ['ar',
     await p.setViewportSize({width: 195, height: 422}); await p.waitForTimeout(300);
     const r = await p.evaluate(() => Object.fromEntries([...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')].map(b => [b.dataset.tab, (b.querySelector('.tsn') || {}).textContent])));
     ok(r.name && r.log && !/^(Name|Log)$/.test(r.name) && !/^(Name|Log)$/.test(r.log), 'N11 ドイツ語の短い名前は「Name」「Log」ではない: ' + JSON.stringify(r));
+    await ctx.close();
+}
+
+// ---- N12 読みこみのあいだ、出ているカードを作り直さない（描き直しは変わったところだけ）・ほかのタブに影響しない ----
+for (const [nm, setup, mbps] of [['ふつう', null, null], ['1か国の返事が来ない（タイ）', async ctx => ctx.route(/\/packs\/th\.js/, () => {}), null], ['1.5Mbps', null, 1.5]]){
+    const {p, ctx} = await open();
+    if (setup) await setup(ctx);
+    if (mbps){ const cdp = await ctx.newCDPSession(p); await cdp.send('Network.enable'); await cdp.send('Network.emulateNetworkConditions', {offline: false, latency: 200, downloadThroughput: mbps * 1024 * 1024 / 8, uploadThroughput: 512 * 1024 / 8}); }
+    await openTab(p);
+    await p.evaluate(() => { window.__rm = []; window.__rn = 0; const r0 = window.render; window.render = function(...a){ if (tab === 'name') window.__rn++; return r0.apply(this, a); };
+        new MutationObserver(ms => ms.forEach(m => [...m.removedNodes].forEach(n => { if (n.nodeType === 1 && (n.matches('.dcard, .ns-tier, .list') || n.querySelector('.dcard'))) window.__rm.push((n.className || n.tagName) + ''); }))).observe(document.getElementById('view'), {childList: true, subtree: true}); });
+    await p.fill('#ns-input', 'カレー'); await p.press('#ns-input', 'Enter');
+    await p.waitForTimeout(1200);
+    await p.evaluate(() => { window.__rm = []; window.__rn = 0; });   // 最初に描いたあとから数える
+    await p.waitForTimeout(mbps ? 12000 : 7000);
+    const r = await p.evaluate(() => ({rm: window.__rm, rn: window.__rn, cards: document.querySelectorAll('#ns-results .dcard').length}));
+    ok(r.rm.length === 0 && r.rn === 0 && r.cards > 0, `N12 ${nm}: 最初に描いたあと、カードの入れ物を作り直さず（${r.rm.length}）、画面全体の描き直しもない（${r.rn}回）: ` + r.rm.slice(0, 4).join(' / '));
+    await ctx.close();
+}
+// ほかのタブ: 料理名からでさがして、読みこみの途中に「今日」「世界のレシピ」へ移っても、そのタブの画面は作り直されない
+for (const other of ['today', 'world']){
+    const {p, ctx} = await open();
+    await ctx.route(/\/packs\/th\.js/, () => {});
+    const cdp = await ctx.newCDPSession(p); await cdp.send('Network.enable'); await cdp.send('Network.emulateNetworkConditions', {offline: false, latency: 200, downloadThroughput: 1.5 * 1024 * 1024 / 8, uploadThroughput: 512 * 1024 / 8});
+    await openTab(p);
+    await p.fill('#ns-input', 'カレー'); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(300);
+    await p.click(`nav.tabs button[data-tab="${other}"]`); await p.waitForTimeout(1500);
+    await p.evaluate(() => { window.__first = document.querySelector('#view').firstElementChild; window.__ns = 0; const f0 = window.nsPaint; window.nsPaint = function(...a){ window.__ns++; return f0.apply(this, a); }; });
+    await p.waitForTimeout(8000);
+    const r = await p.evaluate(other => ({tab, same: window.__first === document.querySelector('#view').firstElementChild || other === 'world', ns: !!document.querySelector('#ns-results'), loading: !!nsLoading}), other);
+    ok(r.tab === other && !r.ns && r.same, `N12 料理名からの読みこみの途中に「${other}」へ移っても、料理名からの描き直しはそのタブに出ない: ` + JSON.stringify(r));
     await ctx.close();
 }
 

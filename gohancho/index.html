@@ -16105,8 +16105,8 @@ function nsResultsHtml(q){
         : `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div><div class="small muted ns-wstat" role="status">${esc(S0.world ? (worldCards ? t('下に出しています') : t('似た料理は見つかりませんでした')) : t('読みこみ中…'))}</div></div>`;
     const tier3 = twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
         <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : '';
-    const head = id => id === 'world' ? `<div class="sec-head ns-wlate"><h3>${esc(t('世界の似た料理'))}</h3></div>` : `<div class="sec-head ns-more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>`;
-    const moreHtml = S0.more.map(x => x.k === 'h' ? head(x.id) : x.k === 's' ? (byHit.has(x.id) ? `<div class="list dlist ns-extra" data-of="same-more">${nsCard(byHit.get(x.id), '')}</div>` : '') : (bySim.has(x.id) ? `<div class="list dlist ns-extra" data-of="${x.k === 'w0' ? 'world' : 'world-more'}">${simCard(bySim.get(x.id))}</div>` : '')).join('');
+    const head = id => id === 'world' ? `<div class="sec-head ns-wlate" data-k="h:world"><h3>${esc(t('世界の似た料理'))}</h3></div>` : `<div class="sec-head ns-more" data-k="h:more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>`;
+    const moreHtml = S0.more.map(x => x.k === 'h' ? head(x.id) : x.k === 's' ? (byHit.has(x.id) ? `<div class="list dlist ns-extra" data-of="same-more" data-k="s:${esc(x.id)}">${nsCard(byHit.get(x.id), '')}</div>` : '') : (bySim.has(x.id) ? `<div class="list dlist ns-extra" data-of="${x.k === 'w0' ? 'world' : 'world-more'}" data-k="${x.k}:${esc(x.id)}">${simCard(bySim.get(x.id))}</div>` : '')).join('');
     const more = moreHtml ? `<div class="ns-tier ns-moreall" data-tier="more">${moreHtml}</div>` : '';
     return `<div class="ns-tier" data-tier="same"><div class="sec-head"><h3>${esc(t('その料理'))}</h3><span class="hint">${esc(t('{n}品', {n: hits.length}))}</span></div>
         <div class="list dlist">${sameCards}</div></div>
@@ -16120,22 +16120,23 @@ function nsPaint(){
     const tp = document.createElement('div'); tp.innerHTML = html;
     const olds = [...box.children], news = [...tp.children];
     const sameTop = (a, b) => a && b && a.tagName === b.tagName && a.className === b.className && (a.dataset.tier || '') === (b.dataset.tier || '');
-    const patch = (o, n) => {   // 見出しの品数・2段目の1行など、字だけ変わったところを差しかえる
-        if (o.isEqualNode(n)) return true;
-        if (o.children.length !== n.children.length || o.tagName !== n.tagName || o.className !== n.className){ return false; }
-        if (!o.children.length){ o.textContent = n.textContent; return true; }
-        return [...o.children].every((c, i) => patch(c, n.children[i]));
-    };
+    // カードは、出したあとに読み上げの印（role・aria-hidden）や絵が足されるので、中身ではなく料理の ID の並びでくらべる
+    const ids = el => [...el.querySelectorAll('.dcard .head[data-act="open"]')].map(e => e.dataset.id).join();
+    const keys = el => [...el.children].map(c => c.dataset.k || '');
     let k = 0;
     for (; k < news.length; k++){
         const o = olds[k], n = news[k];
-        if (!sameTop(o, n)){ break; }
+        if (!sameTop(o, n)) break;
         if (n.dataset.tier === 'more'){   // いちばん下の並び: 前と同じところまではそのまま、ふえた分だけ足す
-            const oc = [...o.children], nc = [...n.children];
-            if (oc.length <= nc.length && oc.every((c, i) => c.isEqualNode(nc[i]))){ nc.slice(oc.length).forEach(c => o.appendChild(c)); continue; }
+            const ok = keys(o), nk = keys(n);
+            if (ok.length <= nk.length && ok.every((x, i) => x && x === nk[i])){ [...n.children].slice(ok.length).forEach(c => o.appendChild(c)); continue; }
             o.replaceWith(n); continue;
         }
-        if (!patch(o, n)) o.replaceWith(n);
+        if (n.dataset.tier && ids(o) === ids(n)){   // 同じ料理の並び: 見出しの品数・2段目の1行の字だけ差しかえる
+            ['.sec-head .hint', '.ns-wstat'].forEach(sel => { const a = o.querySelector(sel), z = n.querySelector(sel); if (a && z && a.textContent !== z.textContent) a.textContent = z.textContent; else if (!!a !== !!z) o.replaceWith(n); });
+            continue;
+        }
+        if (!o.isEqualNode(n)) o.replaceWith(n);
     }
     // ここから先（足された段・出さなかった数・読みこみ中の1行）は入れかえる
     olds.slice(k).forEach(e => e.remove());
