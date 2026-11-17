@@ -2078,7 +2078,8 @@ nav.tabs.two .in{gap:0}
 nav.tabs.two{padding-top:1px;padding-bottom:calc(1px + env(safe-area-inset-bottom,0px))}
 nav.tabs.two svg{padding-inline:3px}
 #ns-input::-webkit-search-cancel-button,#search-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から・材料からの検索欄: 入力欄の × を青くしない */
-#ns-results .match{content-visibility:visible}   /* 料理名から: 描き直しても、画面の外のカードを仮の高さにしない（下のカードが動かないように） */
+#ns-results .match{content-visibility:visible}
+@media (max-width:299px){.ns-sec>.sec-head{display:none}.ns-sec form[data-form="ns"]>button[type="submit"]{display:none}.ns-sec .ph-ex{display:none}.ns-tier>.sec-head{flex-direction:row;align-items:baseline;flex-wrap:wrap;column-gap:var(--s8)}}   /* 第51回 R221: 幅195px などでは、見出し（下のタブの「料理名」と同じ）と説明をたたみ、「さがす」のボタンも出さない（入れるとすぐさがす。改行キーでもさがす）。最初の画面に1件目のカードが見えるように */   /* 料理名から: 描き直しても、画面の外のカードを仮の高さにしない（下のカードが動かないように） */
 .ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}.ns-wstat{min-height:4.2em}
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
 .tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
@@ -15942,6 +15943,27 @@ const NS_SYN = [
     ['オムレツ', 'omelette', 'omelet', 'omelete', 'tortilladepatatas'],
     ['焼きそば', 'やきそば', 'yakisoba', '炒麺', '炒面', 'chowmein'],
     ['肉じゃが', 'にくじゃが', 'nikujaga'],
+    // 第51回 R220: 各国のよくある別の呼び方・英米のつづりのちがい・カタカナの表記のゆれ（「ムサカ」「hamburger」「lasagne」で0品だった）
+    ['ムサカ', 'ムサカー', 'moussaka', 'musakka', 'musaka', 'mousaka', 'μουσακάς'],
+    ['ハンバーガー', 'hamburger', 'burger', 'hamburguesa', 'hambúrguer', 'バーガー'],
+    ['hamburger', 'hamburg', 'hamburgersteak', 'ハンバーグ'],
+    ['ラザニア', 'ラザーニャ', 'lasagna', 'lasagne', 'lasaña', 'lasanha', 'lazanya'],
+    ['スパゲッティ', 'スパゲティ', 'スパゲッテイ', 'spaghetti', 'espagueti', 'espaguete'],
+    ['ピザ', 'ピッツァ', 'pizza'],
+    ['ケバブ', 'ケバップ', 'kebab', 'kebap', 'kabob', 'kebabı'],
+    ['パエリア', 'パエリャ', 'パエージャ', 'paella'],
+    ['ボルシチ', 'ボルシ', 'borscht', 'borsch', 'borshch', 'barszcz'],
+    ['ピエロギ', 'ピロギ', 'pierogi', 'pierogies', 'perogies'],
+    ['ストロガノフ', 'stroganoff', 'stroganov'],
+    ['チリコンカン', 'チリコンカルネ', 'chiliconcarne', 'chilliconcarne', 'chileconcarne'],
+    ['なす', 'ナス', '茄子', 'eggplant', 'aubergine', 'berenjena', 'melanzane', 'patlıcan'],
+    ['ズッキーニ', 'zucchini', 'courgette', 'courgettes', 'calabacín'],
+    ['ヨーグルト', 'yogurt', 'yoghurt', 'yogourt'],
+    ['ミートボール', 'meatball', 'meatballs', 'albóndigas', 'polpette'],
+    ['コロッケ', 'croquette', 'croqueta', 'croquetas', 'korokke'],
+    ['フォー', 'pho', 'phở'],
+    ['パッタイ', 'padthai', 'phatthai', 'ผัดไทย'],
+    ['ビビンバ', 'ビビンバップ', 'bibimbap', '비빔밥'],
 ].map(g => g.map(norm));
 // 似た料理の「なかま」（料理の名前・英語の名前・その国の言葉の名前・調味料・材料の言葉で見分ける）。soup/noodle は汁もの・麺どうしだけ
 const NS_KIN = [

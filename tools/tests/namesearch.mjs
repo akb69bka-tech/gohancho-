@@ -14,6 +14,7 @@
 //  N6 入力の整え: NFKC（か＋濁点の2文字）・幅のない空白・制御文字を取りのぞく。入力欄は40字まで。「見つかりませんでした」の語も40字まで
 //  N7 4Mbps で読みこみの途中にさがしても、出ていたカード（3段とも）の位置は読み終えたあとも変わらない（2段目・3段目は読み終えてから出す）
 //  N8 返事が来ない国がある・1.5Mbps でも、3段目はすぐ、2段目は最長3秒ほどで読めた国の分だけで出て、出ていたカードは1pxも動かない
+//  N9 別の呼び方（ムサカ・hamburger・lasagne など）でも当たる（R220）・N10 幅195×422 で最初の画面に1件目のカードが見える（R221）・N11 ドイツ語の短い名前（R222）
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -243,6 +244,42 @@ for (const q of ['カレー', 'スープ', 'curry']){
         ok(!moved.length, `N8 ${nm}: 出ていたカードは1pxも動かない: ` + [...new Set(moved)].slice(0, 4).join(' / '));
         await ctx.close();
     }
+}
+
+// ---- N9 呼び名の言いかえ（第51回 R220） ----
+{
+    const {p, ctx} = await open();
+    await openTab(p);
+    const bad = [];
+    for (const q of ['ムサカ', 'hamburger', 'lasagne', 'Lasagne', 'スパゲティ', 'ピッツァ', 'aubergine', 'yoghurt', 'パエリャ', 'chilli con carne', 'borscht', 'ケバップ', 'courgette']){
+        const r = await ask(p, q);
+        if (!r.same.length) bad.push(q + ': 0品');
+    }
+    ok(bad.length === 0, 'N9 別の呼び方・英米のつづり・カタカナのゆれでも当たる: ' + bad.join(' / '));
+    const hb = await ask(p, 'hamburger');
+    ok(hb.same.some(x => /burger/i.test(x.id + x.name) && x.cc !== 'JP') && hb.same.some(x => x.id === 'hamburg'), 'N9 hamburger で、ハンバーガー（海外）とハンバーグ（日本）の両方に当たる: ' + hb.same.slice(0, 6).map(x => x.cc + ':' + x.name).join(' / '));
+    const ms = await ask(p, 'ムサカ');
+    ok(ms.same.some(x => /musakka|moussaka|ムサカ/i.test(x.id + x.name)), 'N9 ムサカで、トルコのムサカに当たる: ' + ms.same.map(x => x.cc + ':' + x.name).join(' / '));
+    await ctx.close();
+}
+// ---- N10 幅195px でも、最初の画面に1件目のカードが見える（第51回 R221） ----
+for (const [lg, ts, min] of [['ja', 0, 40], ['de', 0, 40], ['ja', 1, 40], ['ar', 0, 40], ['ja', 2, 1]]){
+    const {p, ctx} = await open({lg, w: 195, settings: {textSize: ts || undefined}});
+    await p.setViewportSize({width: 195, height: 422});
+    await p.click('nav.tabs button[data-tab="name"]');
+    await p.fill('#ns-input', 'カレー'); await p.press('#ns-input', 'Enter'); await loaded(p); await p.waitForTimeout(300);
+    await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(200);
+    const r = await p.evaluate(() => { const c = document.querySelector('#ns-results .dcard'), nav = document.querySelector('nav.tabs').getBoundingClientRect(), q = c && c.getBoundingClientRect(); return {vis: q ? Math.round(Math.min(q.bottom, nav.top) - q.top) : -1, input: !!document.querySelector('#ns-input').getBoundingClientRect().width}; });
+    ok(r.vis >= min && r.input, `N10 195×422 ${lg} 文字${ts}: 最初の画面に1件目のカードが ${min}px 以上見える: ` + JSON.stringify(r));
+    await ctx.close();
+}
+// ---- N11 ドイツ語の下のタブの短い名前が、何のタブかわかる語（第51回 R222） ----
+{
+    const {p, ctx} = await open({lg: 'de', w: 195});
+    await p.setViewportSize({width: 195, height: 422}); await p.waitForTimeout(300);
+    const r = await p.evaluate(() => Object.fromEntries([...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')].map(b => [b.dataset.tab, (b.querySelector('.tsn') || {}).textContent])));
+    ok(r.name && r.log && !/^(Name|Log)$/.test(r.name) && !/^(Name|Log)$/.test(r.log), 'N11 ドイツ語の短い名前は「Name」「Log」ではない: ' + JSON.stringify(r));
+    await ctx.close();
 }
 
 // ---- N6 入力の整え ----
