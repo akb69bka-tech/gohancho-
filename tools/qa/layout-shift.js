@@ -1,3 +1,4 @@
+// 統括の判断 11/17: 1品かえるで、その段の ⚠ アレルゲンの札の行数が変わったときの、その段より下のずれだけは許す（器を小さくして札の場所をいつも取ると、最初のデザインが変わるため）
 // claude/fullfix: 献立がまるごと変わって詰め方を決め直したとき（R34）の見出しの動きと、合計kcalの数字の幅は違反にしない（どちらもあとから入った決まり）
 // 料理を入れ替えたり画像が読み込まれたりしたとき、画面がガタつかない（押した料理以外の位置・大きさが変わらない）ことを確かめる。
 //  - PerformanceObserver('layout-shift') の合計（CLS）
@@ -116,6 +117,10 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         else if (scrollTo !== undefined) { await p.evaluate(y => window.scrollTo(0, y), scrollTo); await p.waitForTimeout(120); }
         const fitOf = () => p.evaluate(() => typeof TRAY_FIT !== 'undefined' && TRAY_FIT.state ? JSON.stringify([TRAY_FIT.state.tight, TRAY_FIT.state.tight2, TRAY_FIT.state.noFit, TRAY_FIT.state.vs, TRAY_FIT.state.nml, !!TRAY_FIT.state.algfit, !!TRAY_FIT.state.noslot, document.body.className.split(' ').filter(c => /^(tray-tight\d?|greet-|bar-static)/.test(c)).sort().join(' ')]) : '');
         const fitB = await fitOf();
+        // 1品かえるで、押した段の ⚠ アレルゲンの札の行数（段の中でいちばん多い料理の行数）を、押す前とあとで数える（統括の判断 11/17。下の algRow）
+        const algLines = () => p.evaluate(() => [...document.querySelectorAll('.tray .tg-row')].map(row => Math.max(0, ...[...row.querySelectorAll('.spot')].map(sp => [...sp.querySelectorAll('.alg-tag')].reduce((n, e) => { const lh = parseFloat(getComputedStyle(e).lineHeight) || 16; return n + Math.round(e.getBoundingClientRect().height / lh); }, 0)))));
+        const algRowB = exemptSel === 'press:.spot' && doFn === 'reroll' ? await p.evaluate(k => { const bt = document.querySelectorAll('.tray [data-act="reroll"]')[k], row = bt && bt.closest('.tg-row'); if (!row) return null; const rows = [...document.querySelectorAll('.tray .tg-row')]; return {i: rows.indexOf(row), bottom: row.getBoundingClientRect().bottom + scrollY}; }, arg) : null;
+        const algB = algRowB ? await algLines() : null;
         const before = await p.evaluate(() => window.__snap());
         const exempt = await p.evaluate(([fn, arg, ex]) => {
           window.__cls = 0; window.__shifts = [];
@@ -139,6 +144,10 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
         let above = null;
         const tk = exempt.find(k => before.rects[k] && /(^| )tray( |$)/.test(before.rects[k][4]));
         if (exemptSel.startsWith('.tray') && tk) { const tb = before.rects[tk], ta = after.rects[tk]; if (tb && ta && Math.abs(tb[3] - ta[3]) > TOL) above = tb[1]; }
+        // 統括の判断（11/17・最初のデザインを守る）: 1品かえるで、その段の ⚠ アレルゲンの札の行数が変わったときだけ、その段より下のずれは比べない（札の場所は段ごとに、その段の料理に合わせて取る。
+        // いつも最大の行数ぶん取ると器が小さくなるため）。その段と、それより上（見出し・ほかの段・押していない料理の位置）は今までどおり比べる。札の行数が変わらないのに動いたら違反
+        let algNote = '';
+        if (algRowB && algRowB.i >= 0 && above === null){ const algA = await algLines(); if (algB[algRowB.i] !== algA[algRowB.i]){ above = algRowB.bottom; exempt.noBox = true; algNote = `⚠ の札 ${algB[algRowB.i]}→${algA[algRowB.i]}行（段${algRowB.i + 1}より下は比べない）`; if (process.env.DBG) console.log('ALGROW', scn, cc, algNote); } }
         const c1 = compare(before, imm, exempt, 844, above), c2 = compare(before, after, exempt, 844, above);
         const c = c2.worst >= c1.worst ? c2 : c1;
         // お膳の高さが変わったとき（一品ものの主菜でご飯の席がなくなり、お膳の並びが変わるなど）、ブラウザはスクロール位置を合わせて、押したボタンを指の下に残す（scroll anchoring）。
@@ -156,7 +165,7 @@ const record = r => { if (process.env.ONLY && !r.scn.includes(process.env.ONLY))
           record(Object.assign({}, base, {scn, cls: 0, worst: hid.length ? 999 : 0, n: 0, all: c.worstAll, dsy: 0, off: hid.length ? ['詰め方を決め直したあと、帯の後ろに ' + hid.join(',')] : [], dh: Math.round(after.docH - before.docH)}));
           return;
         }
-        record(Object.assign({}, base, {scn, cls, worst: c.worst, n: c.n, all: c.worstAll, dsy, off: c.offenders, dh: Math.round(after.docH - before.docH)}));
+        record(Object.assign({}, base, {scn, cls: algNote ? 0 : cls, worst: c.worst, n: c.n, all: c.worstAll, dsy, off: algNote ? [algNote, ...c.offenders] : c.offenders, dh: Math.round(after.docH - before.docH)}));
       };
 
       const nBtn = await p.evaluate(() => document.querySelectorAll('.tray [data-act="reroll"]').length);
