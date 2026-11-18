@@ -2107,4 +2107,8 @@ GOHAN_I18N('tr', {
     "汁そば": "Erişte çorbaları",
     "ほかの国からも見つかりました": "Başka ülkelerde de bulundu",
     "下に出しています": "Aşağıda gösteriliyor",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "“Vejetaryen” yumurta ve süt ürünlerini çıkarmaz. Bunları da yemiyorsanız aşağıdaki düğmelerle ekleyin",
+    "卵も外す": "Yumurta da olmasın",
+    "乳製品も外す": "Süt ürünü de olmasın",
 });

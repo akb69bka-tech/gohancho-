@@ -16,6 +16,7 @@
 //  N8 返事が来ない国がある・1.5Mbps でも、3段目はすぐ、2段目は最長3秒ほどで読めた国の分だけで出て、出ていたカードは1pxも動かない
 //  N9 別の呼び方（ムサカ・hamburger・lasagne など）でも当たる（R220）・N10 幅195×422 で最初の画面に1件目のカードが見える（R221）・N11 ドイツ語の短い名前（R222）
 //  N12 読みこみのあいだ、出ているカードを作り直さない・画面全体の描き直しがない。途中でほかのタブへ移っても、そのタブに影響しない
+//  N13 ほかの国がすべて止まり、当たる料理がないとき、読みこみ中（3秒まで）は「見つかりませんでした」と言わない（R225）・N14 かっこつきの長い名前をそのまま／外だけ／中だけで入れても出る（R220 の続き）
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -311,6 +312,36 @@ for (const other of ['today', 'world']){
     await p.waitForTimeout(8000);
     const r = await p.evaluate(other => ({tab, same: window.__first === document.querySelector('#view').firstElementChild || other === 'world', ns: !!document.querySelector('#ns-results'), loading: !!nsLoading}), other);
     ok(r.tab === other && !r.ns && r.same, `N12 料理名からの読みこみの途中に「${other}」へ移っても、料理名からの描き直しはそのタブに出ない: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// ---- N13 ほかの国がすべて止まり、いまの国にも当たる料理がないとき、読みこみ中は「見つかりませんでした」と言わない（第52回 R225） ----
+{
+    const {p, ctx} = await open();
+    await ctx.route(/\/packs\/(?!i18n)[a-z]{2}\.js/, () => {});
+    await openTab(p);
+    await p.fill('#ns-input', 'ラージマ'); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(800);
+    const a = await p.evaluate(() => ({wait: !!document.querySelector('#ns-results .ns-wait'), none: !!document.querySelector('#ns-results .ns-none'), loading: !!nsLoading}));
+    await p.waitForTimeout(3200);
+    const z = await p.evaluate(() => ({wait: !!document.querySelector('#ns-results .ns-wait'), none: !!document.querySelector('#ns-results .ns-none'), load: !!document.querySelector('#ns-results .ns-load')}));
+    ok(a.loading && a.wait && !a.none, 'N13 読みこみ中（0.8秒）は「読みこみ中」とだけ出し、「見つかりませんでした」は出さない: ' + JSON.stringify(a));
+    ok(!z.wait && z.none && z.load, 'N13 3秒の区切りのあとは「見つかりませんでした」（まだ読みこみ中の1行も）: ' + JSON.stringify(z));
+    await ctx.close();
+}
+// ---- N14 画面に出ている長い料理名（かっこつき）を、そのまま・かっこの外だけ・かっこの中だけのどれで入れても、その料理が出る（第52回 R220 の続き） ----
+for (const lg of ['ja', 'en']){
+    const {p, ctx} = await open({lg});
+    await openTab(p);
+    const r = await p.evaluate(async () => {
+        await Promise.all(COUNTRIES.filter(c => c.cc !== currentCountry()).map(c => loadBrowse(c.cc)));
+        const all = COUNTRIES.flatMap(c => c.cc === currentCountry() ? RECIPES : (BROWSE[c.cc] || [])).filter(r => /[（(][^）)]+[）)]/.test(r.name) && !isAvoided(r));
+        const miss = {full: [], out: [], in: []};
+        const hit = (q, r) => { const x = nsSearch(q); return !!(x && x.hits.some(h => h.id === r.id)); };
+        all.forEach(r => { const m = r.name.match(/[（(]([^）)]*)[）)]/), out = r.name.replace(/[（(][^）)]*[）)]/g, '').trim();
+            if (!hit(r.name, r)) miss.full.push(r.name); if (out && !hit(out, r)) miss.out.push(r.name); if (m && m[1].trim() && !hit(m[1], r)) miss.in.push(r.name); });
+        return {n: all.length, full: miss.full.slice(0, 4), out: miss.out.slice(0, 4), in: miss.in.slice(0, 4), nf: miss.full.length, no: miss.out.length, ni: miss.in.length};
+    });
+    ok(r.n > 50 && r.nf === 0 && r.no === 0 && r.ni === 0, `N14 ${lg}: かっこつきの名前 ${r.n}品を、そのまま・外だけ・中だけで入れても出る: ` + JSON.stringify(r));
     await ctx.close();
 }
 

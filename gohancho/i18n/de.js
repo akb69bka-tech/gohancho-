@@ -2107,4 +2107,8 @@ GOHAN_I18N('de', {
     "汁そば": "Nudelsuppen",
     "ほかの国からも見つかりました": "Auch in anderen Ländern gefunden",
     "下に出しています": "Unten angezeigt",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+    "卵も外す": "Auch ohne Eier",
+    "乳製品も外す": "Auch ohne Milchprodukte",
 });

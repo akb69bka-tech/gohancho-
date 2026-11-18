@@ -284,6 +284,7 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
+.diet-vegi-note{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 10px;border-radius:10px;background:#fff8ee;color:#3a2a1f}.diet-vegi-note p{margin:0;overflow-wrap:anywhere}   /* 第52回 R226: ベジタリアン向けを選んだときの一言（⚠ の札と同じ生成りの地。青は使わない） */
 .kcal-note{display:flex;flex-direction:column;gap:2px;margin:8px 0 0;padding:8px 10px;border-radius:var(--r-sm, 10px);background:var(--surface-2);overflow-wrap:anywhere}
 .kcal-note .kc-v{font-weight:600;font-size:var(--fs14)}
 #diet-card .check span{min-width:0;overflow-wrap:anywhere;hyphens:auto}
@@ -10503,9 +10504,12 @@ function dietBundleToggle(list, k, owner){
     Object.keys(DIET_BUNDLES).forEach(j => { if (j !== k && !rec[j] && dietBundleOn(a, j)) rec[j] = {added: [], removed: []}; });   // 押したせいで『そろってしまった』ほかの束は、足したものなし（押しても自分の分は外さない）として覚える
     return done(a);
 }
-function dietBundleHtml(list, act){
+function dietBundleHtml(list, act, famAct){
     const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
-    return `<div class="avoid-grp diet-bundles"><span class="small muted">${esc(t('まとめて選ぶ（食の決まり）'))}</span><div class="chips">${b}</div><p class="small muted avoid-hint">${esc(t('選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。'))}</p></div>`;
+    // 第52回 R226（安全）: ベジタリアン向けを選んでも、卵・乳製品は外さない（勝手に外さない）。選んだときに、そのことを一言で知らせ、卵・乳製品も外すボタンを添える（押すと、下のなかまのチップと同じに足す）
+    const fams = new Set(list.map(avoidFamOf).filter(Boolean)), lack = ['egg', 'dairy'].filter(f => !fams.has(f));
+    const vegiNote = dietBundleOn(list, 'vegi') && lack.length ? `<div class="diet-vegi-note" role="note"><p class="small">${esc(t('ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください'))}</p>${famAct ? `<div class="chips">${lack.map(f => `<button type="button" class="chip diet-add" data-act="${famAct}" data-v="${f}">${esc(f === 'egg' ? t('卵も外す') : t('乳製品も外す'))}</button>`).join('')}</div>` : ''}</div>` : '';
+    return `<div class="avoid-grp diet-bundles"><span class="small muted">${esc(t('まとめて選ぶ（食の決まり）'))}</span><div class="chips">${b}</div>${vegiNote}<p class="small muted avoid-hint">${esc(t('選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。'))}</p></div>`;
 }
 // 苦手のチップ: 「なかまでまとめて」（いまの国の料理に出てくるなかまだけ）と「1つずつ」の2つに分けて出す。
 // 選んだなかまに入っている食材は、選んだ形（押せない）で出す。最後に、いまの国の料理がどうなるかの一言を添える。more: 設定の画面。選んだものを先に出し、多いときは残りを「ほかの食材を見る」にしまう
@@ -10521,7 +10525,7 @@ function avoidChipsHtml(list, act, famAct, more){
         .concat(list.filter(x => !avoidFamOf(x) && !AVOID_QUICK.some(q => keyOf(q) === keyOf(x))).map(x => ({on: true, h: `<span class="chip have">${esc(x)}<button class="x" data-act="${act}" data-v="${esc(x)}" aria-label="${esc(t('{name}を外す', {name:x}))}">×</button></span>`})));
     const grp = (label, xs) => xs.length ? `<div class="avoid-grp"><span class="small muted">${esc(label)}</span><div class="chips">${xs.map(x => x.h).join('')}</div></div>` : '';
     const groups = pick => grp(t('なかまごと（豚肉ならハム・ベーコンも）'), pick(fam)) + grp(t('その食材だけ'), pick(one));
-    const bund = dietBundleHtml(list, famAct.replace(/-fam$/, '-diet'));
+    const bund = dietBundleHtml(list, famAct.replace(/-fam$/, '-diet'), famAct);
     if (!more) return bund + groups(xs => xs) + avoidSumHtml(list);
     const rest = fam.concat(one).filter(x => !x.on).length;
     if (!list.length || rest <= 8) return bund + groups(xs => xs.filter(x => x.on).concat(xs.filter(x => !x.on))) + avoidSumHtml(list);
@@ -16021,15 +16025,24 @@ function nsLoadAll(){
 // 入力の整え: NFKC（「か」＋濁点のように分かれた形もまとめる）・幅のない空白と制御文字を取りのぞく・40字まで
 const NS_MAX = 40;
 function nsClean(q){ return String(q == null ? '' : q).normalize('NFKC').replace(/[\u200B-\u200F\u2028-\u202E\u2060-\u206F\uFEFF\u00AD]/g, '').replace(/[\t\n\r]/g, ' ').replace(/[\u0000-\u001F\u007F-\u009F]/g, '').slice(0, NS_MAX); }
+// 料理名のかっこの中（「テンペの甘辛炒め（テンペ・オレッ）」のテンペ・オレッ）も当てるための言葉（norm はかっこの中を外すので、別に持つ）
+const NS_PAREN = new WeakMap();
+function nsParenHay(r){
+    let e = NS_PAREN.get(r); if (e && e.name === r.name) return e.hay;
+    const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).flatMap(x => (String(x).match(/[（(][^）)]*[）)]/g) || []).map(y => norm(y.slice(1, -1)))).join('|');
+    NS_PAREN.set(r, {name: r.name, hay}); return hay;
+}
 function nsSearch(q){
     q = nsClean(q);
-    const terms = searchTerms(q).map(norm).filter(Boolean);
+    // 第52回 R220 の続き: 画面に出ている長い名前（かっこつき）をそのまま入れても当たるように、かっこの中の「・」で言葉を分けない。かっこの外の言葉でさがし、外がなければ中の言葉でさがす
+    const outside = q.replace(/[（(][^）)]*[）)]?/g, ' ').trim(), inside = (q.match(/[（(]([^）)]*)/g) || []).map(x => x.slice(1)).join(' ').trim();
+    const terms = searchTerms(outside || inside).map(norm).filter(Boolean);
     if (!terms.length) return null;
     const home = currentCountry(), alts = terms.map(nsAlts);
     const nm = r => norm(r.name);
     const score = r => {
         let sc = 0;
-        alts.forEach(as => { let best = 0; as.forEach(a => { if (nm(r) === a) best = Math.max(best, 4); else if (nm(r).startsWith(a)) best = Math.max(best, 3); else if (nameHit(r, a)) best = Math.max(best, 2); }); sc += best ? best : -100; });   // どの言葉にも当たる料理だけ
+        alts.forEach(as => { let best = 0; as.forEach(a => { if (nm(r) === a) best = Math.max(best, 4); else if (nm(r).startsWith(a)) best = Math.max(best, 3); else if (nameHit(r, a) || nsParenHay(r).includes(a)) best = Math.max(best, 2); }); sc += best ? best : -100; });   // どの言葉にも当たる料理だけ
         return sc;
     };
     const all = nsPool().map(r => ({r, sc: score(r)})).filter(x => x.sc > 0);
@@ -16090,6 +16103,8 @@ function nsResultsHtml(q){
     const {hits, hidden, similar, similarAll, twists} = res;
     if (!hits.length){
         nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
+        // 第52回 R225: ほかの国を読みこんでいるあいだ（3秒の区切りまで）は「見つかりませんでした」と言わない。読みこみ中とだけ出す
+        if (nsLoading && !nsWorldGo) return `<div class="list"><div class="empty ns-wait" role="status">${esc(t('読みこみ中…'))}</div></div>`;
         return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
     }
     if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig, same: hits.slice(0, 12).map(r => r.id), seen: new Set(hits.map(r => r.id)), world: null, wInline: nsWorldGo, more: []};

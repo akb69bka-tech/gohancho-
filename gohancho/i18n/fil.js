@@ -2107,4 +2107,8 @@ GOHAN_I18N('fil', {
     "汁そば": "Sabaw na pansit",
     "ほかの国からも見つかりました": "Nakita rin sa ibang bansa",
     "下に出しています": "Nasa ibaba",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "Hindi inaalis ng “Vegetarian” ang itlog at gatas. Kung hindi mo rin kinakain ang mga ito, idagdag gamit ang mga button sa ibaba",
+    "卵も外す": "Walang itlog din",
+    "乳製品も外す": "Walang gatas din",
 });

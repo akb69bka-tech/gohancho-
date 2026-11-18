@@ -2107,4 +2107,8 @@ GOHAN_I18N('pt-BR', {
     "汁そば": "Sopas de macarrão",
     "ほかの国からも見つかりました": "Também encontrado em outros países",
     "下に出しています": "Mostrados abaixo",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+    "卵も外す": "Sem ovos também",
+    "乳製品も外す": "Sem laticínios também",
 });

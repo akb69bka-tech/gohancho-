@@ -2107,4 +2107,8 @@ GOHAN_I18N('pl', {
     "汁そば": "Zupy z makaronem",
     "ほかの国からも見つかりました": "Znaleziono też w innych krajach",
     "下に出しています": "Pokazane poniżej",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "„Wegetariańskie” nie usuwa jajek ani nabiału. Jeśli ich też nie jesz, dodaj je przyciskami poniżej",
+    "卵も外す": "Też bez jajek",
+    "乳製品も外す": "Też bez nabiału",
 });
