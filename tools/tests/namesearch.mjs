@@ -17,6 +17,7 @@
 //  N9 別の呼び方（ムサカ・hamburger・lasagne など）でも当たる（R220）・N10 幅195×422 で最初の画面に1件目のカードが見える（R221）・N11 ドイツ語の短い名前（R222）
 //  N12 読みこみのあいだ、出ているカードを作り直さない・画面全体の描き直しがない。途中でほかのタブへ移っても、そのタブに影響しない
 //  N13 ほかの国がすべて止まり、当たる料理がないとき、読みこみ中（3秒まで）は「見つかりませんでした」と言わない（R225）・N14 かっこつきの長い名前をそのまま／外だけ／中だけで入れても出る（R220 の続き）
+//  N15 止まっていた国があとから届いたら、「見つかりませんでした」をやめて一覧を出し直す（R225 の続き）
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -323,10 +324,26 @@ for (const other of ['today', 'world']){
     await p.fill('#ns-input', 'ラージマ'); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(800);
     const a = await p.evaluate(() => ({wait: !!document.querySelector('#ns-results .ns-wait'), none: !!document.querySelector('#ns-results .ns-none'), loading: !!nsLoading}));
     await p.waitForTimeout(3200);
-    const z = await p.evaluate(() => ({wait: !!document.querySelector('#ns-results .ns-wait'), none: !!document.querySelector('#ns-results .ns-none'), load: !!document.querySelector('#ns-results .ns-load')}));
+    const z = await p.evaluate(() => ({wait: !!document.querySelector('#ns-results .ns-wait'), none: !!document.querySelector('#ns-results .ns-none'), load: !!document.querySelector('#ns-results .ns-none .ns-still')}));
     ok(a.loading && a.wait && !a.none, 'N13 読みこみ中（0.8秒）は「読みこみ中」とだけ出し、「見つかりませんでした」は出さない: ' + JSON.stringify(a));
-    ok(!z.wait && z.none && z.load, 'N13 3秒の区切りのあとは「見つかりませんでした」（まだ読みこみ中の1行も）: ' + JSON.stringify(z));
+    ok(!z.wait && z.none && z.load, 'N13 3秒の区切りのあとは「見つかりませんでした」に「まだ読みこみ中の国があります」を添える: ' + JSON.stringify(z));
     await ctx.close();
+}
+// ---- N15 止まっていた国があとから届いたら、「見つかりませんでした」をやめて一覧を出し直す（第53回 R225 の続き）。18言語で添える一言が訳されている ----
+{
+    const {p, ctx} = await open();
+    await ctx.route(/\/packs\/(?!i18n)[a-z]{2}\.js/, async r => { await new Promise(res => setTimeout(res, 5000)); await r.continue(); });
+    await openTab(p);
+    await p.fill('#ns-input', 'ラージマ'); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(3800);
+    const a = await p.evaluate(() => ({none: !!document.querySelector('#ns-results .ns-none'), still: (document.querySelector('#ns-results .ns-still') || {}).textContent || ''}));
+    await loaded(p); await p.waitForTimeout(400);
+    const z = await p.evaluate(() => ({none: !!document.querySelector('#ns-results .ns-none'), still: !!document.querySelector('#ns-results .ns-still'), cards: [...document.querySelectorAll('#ns-results .dcard .head[data-act="open"]')].map(e => e.dataset.id)}));
+    ok(a.none && /まだ読みこみ中の国があります/.test(a.still), 'N15 届く前（3.8秒）: 「見つかりませんでした」と「まだ読みこみ中の国があります」: ' + JSON.stringify(a));
+    ok(!z.none && !z.still && z.cards.some(id => id.startsWith('in_')), 'N15 届いたら、一覧を出し直す（インドのラージマが出る）: ' + JSON.stringify(z).slice(0, 200));
+    await ctx.close();
+    const fs2 = await import('node:fs'), vm2 = await import('node:vm'); const miss = [];
+    for (const lg of ALL_LANGS.filter(l => l !== 'ja')){ let d = null; vm2.runInNewContext(fs2.readFileSync(`${ROOT}/i18n/${lg}.js`, 'utf8'), {GOHAN_I18N: (l, o) => { d = o; }, window: {}}); if (!d || !d['まだ読みこみ中の国があります。届いたら、ここに出します']) miss.push(lg); }
+    ok(miss.length === 0, 'N15 添える一言は17言語に訳がある: ' + miss.join(','));
 }
 // ---- N14 画面に出ている長い料理名（かっこつき）を、そのまま・かっこの外だけ・かっこの中だけのどれで入れても、その料理が出る（第52回 R220 の続き） ----
 for (const lg of ['ja', 'en']){

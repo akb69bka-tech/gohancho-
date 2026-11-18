@@ -2108,7 +2108,8 @@ GOHAN_I18N('vi', {
     "ほかの国からも見つかりました": "Cũng tìm thấy ở nước khác",
     "下に出しています": "Hiển thị ở bên dưới",
     // 第52回 R226: ベジタリアン向けの一言
-    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+    "卵・乳製品は入ります。食べないときは、下のボタンで外せます": "Có trứng và sữa. Nếu không ăn, hãy bỏ bằng các nút bên dưới",
+    "まだ読みこみ中の国があります。届いたら、ここに出します": "Một số nước vẫn đang tải. Kết quả sẽ hiện ở đây khi tải xong",   // 第53回 R225 の続き
     "卵も外す": "Không trứng nữa",
     "乳製品も外す": "Không sữa nữa",
 });

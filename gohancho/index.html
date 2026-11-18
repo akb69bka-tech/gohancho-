@@ -10536,7 +10536,7 @@ function dietBundleHtml(list, act, famAct){
     const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
     // 第52回 R226（安全）: ベジタリアン向けを選んでも、卵・乳製品は外さない（勝手に外さない）。選んだときに、そのことを一言で知らせ、卵・乳製品も外すボタンを添える（押すと、下のなかまのチップと同じに足す）
     const fams = new Set(list.map(avoidFamOf).filter(Boolean)), lack = ['egg', 'dairy'].filter(f => !fams.has(f));
-    const vegiNote = dietBundleOn(list, 'vegi') && lack.length ? `<div class="diet-vegi-note" role="note"><p class="small">${esc(t('ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください'))}</p>${famAct ? `<div class="chips">${lack.map(f => `<button type="button" class="chip diet-add" data-act="${famAct}" data-v="${f}">${esc(f === 'egg' ? t('卵も外す') : t('乳製品も外す'))}</button>`).join('')}</div>` : ''}</div>` : '';
+    const vegiNote = dietBundleOn(list, 'vegi') && lack.length ? `<div class="diet-vegi-note" role="note"><p class="small">${esc(t('卵・乳製品は入ります。食べないときは、下のボタンで外せます'))}</p>${famAct ? `<div class="chips">${lack.map(f => `<button type="button" class="chip diet-add" data-act="${famAct}" data-v="${f}">${esc(f === 'egg' ? t('卵も外す') : t('乳製品も外す'))}</button>`).join('')}</div>` : ''}</div>` : '';
     return `<div class="avoid-grp diet-bundles"><span class="small muted">${esc(t('まとめて選ぶ（食の決まり）'))}</span><div class="chips">${b}</div>${vegiNote}<p class="small muted avoid-hint">${esc(t('選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。'))}</p></div>`;
 }
 // 苦手のチップ: 「なかまでまとめて」（いまの国の料理に出てくるなかまだけ）と「1つずつ」の2つに分けて出す。
@@ -16133,7 +16133,9 @@ function nsResultsHtml(q){
         nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
         // 第52回 R225: ほかの国を読みこんでいるあいだ（3秒の区切りまで）は「見つかりませんでした」と言わない。読みこみ中とだけ出す
         if (nsLoading && !nsWorldGo) return `<div class="list"><div class="empty ns-wait" role="status">${esc(t('読みこみ中…'))}</div></div>`;
-        return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
+        // 第53回 R225 の続き: 3秒の区切りのあとも読みこみ中の国が残っているときは、そのことを添える（届いて当たれば、一覧を出し直す。nsPaintSoon）
+        const still = nsLoading ? `<div class="small ns-still" role="status">${esc(t('まだ読みこみ中の国があります。届いたら、ここに出します'))}</div>` : '';
+        return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${still}${nsHiddenHtml(hidden)}</div></div>`;
     }
     if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig, same: hits.slice(0, 12).map(r => r.id), seen: new Set(hits.map(r => r.id)), world: null, wInline: nsWorldGo, more: []};
     const S0 = nsSnap, byHit = new Map(hits.map(r => [r.id, r])), bySim = new Map(similarAll.map(x => [x.r.id, x]));
