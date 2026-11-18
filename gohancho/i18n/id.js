@@ -2108,7 +2108,8 @@ GOHAN_I18N('id', {
     "ほかの国からも見つかりました": "Juga ditemukan di negara lain",
     "下に出しています": "Ditampilkan di bawah",
     // 第52回 R226: ベジタリアン向けの一言
-    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "“Vegetarian” tidak menghapus telur dan produk susu. Jika Anda juga tidak memakannya, tambahkan dengan tombol di bawah",
+    "卵・乳製品は入ります。食べないときは、下のボタンで外せます": "Telur dan produk susu termasuk. Jika tidak memakannya, hapus dengan tombol di bawah",
+    "まだ読みこみ中の国があります。届いたら、ここに出します": "Beberapa negara masih dimuat. Hasilnya akan muncul di sini setelah tiba",   // 第53回 R225 の続き
     "卵も外す": "Juga tanpa telur",
     "乳製品も外す": "Juga tanpa susu",
 });
