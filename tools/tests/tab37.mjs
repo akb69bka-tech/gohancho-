@@ -171,20 +171,35 @@ const algOf = (s, id) => ((s && s.family || []).find(m => m.id === id) || {}).al
         await ctx.close();
     }
     // (b) ほぼ同時: 片方で消す・もう片方でその人にアレルギーを足す
+    //   第51回: 重い機械では、A の「消した」が B に先に届き、B ではもう「父」がいない（足す相手がいない）ことがある（v150 の点検で1回。B の S.family に f2 がなく例外）。
+    //   それも正しい結果の1つ: そのときは B は何も足さず、消したのはそのまま・保存が壊れない・f1 のアレルギーが残る・B に「消されたため」の知らせを出さない、を確かめる。
+    //   ほぼ同時（B で足せた）の形を、5回までのうち少なくとも1回は確かめる（毎回 A が先に届く形だけになったら FAIL。ほぼ同時の確かめを黙って飛ばさない）
     {
-        const { ctx, A, B } = await pair({ family: FAM2 });
-        await Promise.all([
-            ev(A, () => { S.family = S.family.filter(m => m.id !== 'f2'); save(); saveNow(); }),
-            ev(B, () => { const m = S.family.find(x => x.id === 'f2'); m.avoid.push('くるみ'); m.allergy.push('くるみ'); save(); saveNow(); }),
-        ]);
-        await B.waitForTimeout(1500);
-        await settle(A, B);
-        const s = await saved(A);
-        eq([s.family.map(m => m.id), await A.evaluate(() => S.family.map(m => m.id)), await B.evaluate(() => S.family.map(m => m.id))], [['f1'], ['f1'], ['f1']], 'R172 ほぼ同時: 消したのはそのまま（あとから届いた足した側の保存で、生き返らない）');
-        const n = await B.evaluate(() => { const x = document.getElementById('gh-note-famgone'); return x ? x.innerText : null; });
-        ok(n && /父/.test(n), 'R172 ほぼ同時: 足した側に知らせが出る（読み直したあとも） ' + JSON.stringify(n));
-        eq([...A.errs, ...B.errs], [], 'R172 ほぼ同時 例外なし');
-        await ctx.close();
+        let raced = 0;
+        const AFIRST = process.env.T37_AFIRST === '1';
+        for (let k = 0; k < (AFIRST ? 1 : 5) && !raced; k++){
+            const { ctx, A, B } = await pair({ family: FAM2 });
+            const delA = () => ev(A, () => { S.family = S.family.filter(m => m.id !== 'f2'); save(); saveNow(); });
+            const addB = () => ev(B, () => { const m = S.family.find(x => x.id === 'f2'); if (!m) return 'gone'; m.avoid.push('くるみ'); m.allergy.push('くるみ'); save(); saveNow(); return 'added'; });
+            // T37_AFIRST=1: A が先に届く形をわざと作る（重い機械で起きた形の再現・確かめ用）
+            const got = AFIRST ? (await delA(), await B.waitForTimeout(1500), await addB()) : (await Promise.all([delA(), addB()]))[1];
+            const added = got === 'added';   // null は、B がちょうど A の保存を受けて読み直していた（足す前）。'gone' と同じ、A が先に届いた形
+            if (added) raced++;
+            await B.waitForTimeout(1500);
+            await settle(A, B);
+            const s = await saved(A);
+            const tag = added ? 'ほぼ同時' : `A が先に届いた（${k + 1}回目）`;
+            eq([s.family.map(m => m.id), await A.evaluate(() => S.family.map(m => m.id)), await B.evaluate(() => S.family.map(m => m.id))], [['f1'], ['f1'], ['f1']], `R172 ${tag}: 消したのはそのまま（あとから届いた足した側の保存で、生き返らない）`);
+            eq([algOf(s, 'f1'), await A.evaluate(() => S.family.find(m => m.id === 'f1').allergy), await B.evaluate(() => S.family.find(m => m.id === 'f1').allergy)], [['@milk'], ['@milk'], ['@milk']], `R172 ${tag}: 残った人（娘）のアレルギーは、保存・両方の窓で残る`);
+            ok(await A.evaluate(() => { try{ const raw = localStorage.getItem('gohancho.v1'); normalizeState(JSON.parse(raw)); return sameStore(raw, JSON.stringify(stateToKeep())); }catch(e){ return false; } }), `R172 ${tag}: 保存は読めて、窓の中身とそろう`);
+            const n = await B.evaluate(() => { const x = document.getElementById('gh-note-famgone'); return x ? x.innerText : null; });
+            if (added) ok(n && /父/.test(n), 'R172 ほぼ同時: 足した側に知らせが出る（読み直したあとも） ' + JSON.stringify(n));
+            else eq(n, null, `R172 ${tag}: B は何も足していないので、「消されたため」の知らせは出さない`);
+            eq([...A.errs, ...B.errs], [], `R172 ${tag} 例外なし`);
+            await ctx.close();
+        }
+        if (AFIRST) ok(raced === 0, 'R172 T37_AFIRST: A が先に届く形だけを確かめた');
+        else ok(raced > 0, 'R172 ほぼ同時（B で足せた形）を、5回までのうちに少なくとも1回確かめた');
     }
 }
 
