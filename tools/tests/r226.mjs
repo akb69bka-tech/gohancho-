@@ -42,7 +42,7 @@ const note = (p, scope) => p.evaluate(scope => { const root = scope ? document.q
     ok(!(await note(p)), 'V1 選ぶ前は一言を出さない');
     await p.click('[data-act="toggle-avoid-diet"][data-v="vegi"]'); await p.waitForTimeout(800);   // R227: 出たばかりのボタンは 0.6 秒受けない
     const n1 = await note(p), av1 = await p.evaluate(() => S.settings.avoid.slice());
-    ok(n1 && /卵・乳製品は入ります/.test(n1.text) && n1.btn.join() === 'egg,dairy', 'V1 ベジタリアン向けを押すと、一言とボタン2つ（卵・乳製品）: ' + JSON.stringify(n1));
+    ok(n1 && /卵・乳製品を使う料理は出ます/.test(n1.text) && n1.btn.join() === 'egg,dairy', 'V1 ベジタリアン向けを押すと、一言とボタン2つ（卵・乳製品）: ' + JSON.stringify(n1));
     ok(!av1.includes('@egg') && !av1.includes('@dairy') && av1.includes('@pork'), 'V1 卵・乳製品は勝手に外れない: ' + av1.join(','));
     await p.click('.diet-vegi-note .diet-add[data-v="egg"]'); await p.waitForTimeout(800);
     const n2 = await note(p), av2 = await p.evaluate(() => S.settings.avoid.slice());

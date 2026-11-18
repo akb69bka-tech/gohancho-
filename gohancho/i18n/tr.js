@@ -2108,7 +2108,8 @@ GOHAN_I18N('tr', {
     "ほかの国からも見つかりました": "Başka ülkelerde de bulundu",
     "下に出しています": "Aşağıda gösteriliyor",
     // 第52回 R226: ベジタリアン向けの一言
-    "卵・乳製品は入ります。食べないときは、下のボタンで外せます": "Yumurta ve süt ürünleri dahildir. Yemiyorsanız aşağıdaki düğmelerle çıkarabilirsiniz",
+    "卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます": "Yumurta ve süt ürünü içeren yemekler çıkmaya devam eder. Yemiyorsanız aşağıdaki düğmelerle çıkarabilirsiniz",
+    "もう一度押してください": "Lütfen tekrar dokunun",   // 第54回 R229
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Bazı ülkeler hâlâ yükleniyor. Sonuçlar gelince burada görünecek",   // 第53回 R225 の続き
     "卵も外す": "Yumurta da olmasın",
     "乳製品も外す": "Süt ürünü de olmasın",

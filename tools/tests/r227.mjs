@@ -69,7 +69,7 @@ for (const lg of LANGS){
                 if (vegiOn && st.none) bad.push(`${tag}: ベジタリアン向けなのに一言が出ない`);
                 if (!vegiOn && !twice) bad.push(`${tag}: 1回押しでベジタリアン向けにならない`);
                 if (!st.none){
-                    const tall = st.bottom - st.top > st.floor - st.ceil - 16;   // 一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人）は、ボタンのある下の端が下のタブより上にあればよい
+                    const tall = st.bottom - st.top > st.floor - st.ceil - 8;   // R230: 上下4pxのゆとりで入りきるなら、一言の頭も見えていること   // 一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人）は、ボタンのある下の端が下のタブより上にあればよい
                     if ((!tall && st.top < st.ceil - 0.5) || st.bottom > st.floor + 0.5) bad.push(`${tag}: 一言が帯・下のタブにかかる top=${Math.round(st.top)} bottom=${Math.round(st.bottom)} ceil=${Math.round(st.ceil)} floor=${Math.round(st.floor)}`);
                     st.btns.forEach(x => { if (!x.hits || x.bottom > st.floor + 0.5 || x.top < st.ceil - 0.5) bad.push(`${tag}: 「${x.v}」のボタンが隠れる・押せない`); });
                     // 「卵も外す」を指で押す: そのボタンに当たり、卵が入る。画面（タブ）は変わらない

@@ -18,6 +18,7 @@
 //  N12 読みこみのあいだ、出ているカードを作り直さない・画面全体の描き直しがない。途中でほかのタブへ移っても、そのタブに影響しない
 //  N13 ほかの国がすべて止まり、当たる料理がないとき、読みこみ中（3秒まで）は「見つかりませんでした」と言わない（R225）・N14 かっこつきの長い名前をそのまま／外だけ／中だけで入れても出る（R220 の続き）
 //  N15 止まっていた国があとから届いたら、「見つかりませんでした」をやめて一覧を出し直す（R225 の続き）
+//  N16 2段目だけ空のときも読みこみ中の国が残っていれば添え、届いたら下に足す（R231）
 //  N1k 検索欄（料理名から・材料から）の × は灰色（青を使わない）
 //  N4 18言語: 「料理名から」の名前が訳されていて、幅 195・260・320・390 で、タブの字（長い名前か短い名前）が切れない。画面の見出しもはみ出さない
 import { createRequire } from 'node:module';
@@ -359,6 +360,25 @@ for (const lg of ['ja', 'en']){
         return {n: all.length, full: miss.full.slice(0, 4), out: miss.out.slice(0, 4), in: miss.in.slice(0, 4), nf: miss.full.length, no: miss.out.length, ni: miss.in.length};
     });
     ok(r.n > 50 && r.nf === 0 && r.no === 0 && r.ni === 0, `N14 ${lg}: かっこつきの名前 ${r.n}品を、そのまま・外だけ・中だけで入れても出る: ` + JSON.stringify(r));
+    await ctx.close();
+}
+
+// ---- N16 「世界の似た料理」だけ空のときも、読みこみ中の国が残っていれば添える。届いたら下に足し、2段目の1行は「下に出しています」に。3段目は動かない（第54回 R231） ----
+{
+    const {p, ctx} = await open({lg: 'en'});
+    await p.evaluate(() => { S.settings.avoid = ['@pork', '@chicken', '@beef', '@fish', '@shellfish', '@egg', '@dairy']; save(); });
+    await ctx.route(/\/packs\/(?!i18n)[a-z]{2}\.js/, async r => { await new Promise(res => setTimeout(res, 5000)); await r.continue(); });
+    await openTab(p);
+    await p.fill('#ns-input', 'curry'); await p.press('#ns-input', 'Enter'); await p.waitForTimeout(3800);
+    const pos = () => p.evaluate(() => Object.fromEntries([...document.querySelectorAll('#ns-results [data-tier="twist"] .dcard .head[data-act="open"], #ns-results [data-tier="same"] .dcard .head[data-act="open"]')].map(e => [e.dataset.id, Math.round(e.getBoundingClientRect().top + scrollY)])));
+    const a = await p.evaluate(() => ({w: (document.querySelector('#ns-results [data-tier="world"] .ns-wstat') || {}).textContent || '', wc: document.querySelectorAll('#ns-results [data-tier="world"] .dcard').length}));
+    const pa = await pos();
+    await loaded(p); await p.waitForTimeout(500);
+    const z = await p.evaluate(() => ({w: (document.querySelector('#ns-results [data-tier="world"] .ns-wstat') || {}).textContent || '', late: document.querySelectorAll('#ns-results [data-of="world-more"] .dcard, #ns-results [data-of="world"] .dcard').length}));
+    const pz = await pos(), moved = Object.keys(pa).filter(k => pz[k] !== pa[k]);
+    ok(a.wc === 0 && /still loading/i.test(a.w), 'N16 英語・ヴィーガン: 2段目だけ空のときも「まだ読みこみ中の国があります」を添える: ' + JSON.stringify(a));
+    ok(z.late > 0 && /below/i.test(z.w) && !/still loading/i.test(z.w), 'N16 届いたら似た料理を下に足し、2段目の1行は「下に出しています」: ' + JSON.stringify(z));
+    ok(moved.length === 0, 'N16 1段目・3段目のカードは動かない: ' + moved.slice(0, 4).join(','));
     await ctx.close();
 }
 
