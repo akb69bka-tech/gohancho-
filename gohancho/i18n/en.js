@@ -2109,7 +2109,8 @@ GOHAN_I18N('en', {
     "ほかの国からも見つかりました": "Also found in other countries",
     "下に出しています": "Shown below",
     // 第52回 R226: ベジタリアン向けの一言
-    "卵・乳製品は入ります。食べないときは、下のボタンで外せます": "Eggs and dairy are included. If you don't eat them, remove them with the buttons below",
+    "卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます": "Dishes with eggs and dairy will still appear. If you don't eat them, remove them with the buttons below",
+    "もう一度押してください": "Please tap again",   // 第54回 R229
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Some countries are still loading. Results will appear here when they arrive",   // 第53回 R225 の続き
     "卵も外す": "Also no eggs",
     "乳製品も外す": "Also no dairy",

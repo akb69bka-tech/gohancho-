@@ -2108,7 +2108,8 @@ GOHAN_I18N('pl', {
     "ほかの国からも見つかりました": "Znaleziono też w innych krajach",
     "下に出しています": "Pokazane poniżej",
     // 第52回 R226: ベジタリアン向けの一言
-    "卵・乳製品は入ります。食べないときは、下のボタンで外せます": "Jajka i nabiał są uwzględnione. Jeśli ich nie jesz, usuń je przyciskami poniżej",
+    "卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます": "Dania z jajkami i nabiałem nadal będą się pojawiać. Jeśli ich nie jesz, usuń je przyciskami poniżej",
+    "もう一度押してください": "Naciśnij jeszcze raz",   // 第54回 R229
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Niektóre kraje wciąż się wczytują. Wyniki pojawią się tutaj, gdy dotrą",   // 第53回 R225 の続き
     "卵も外す": "Też bez jajek",
     "乳製品も外す": "Też bez nabiału",
