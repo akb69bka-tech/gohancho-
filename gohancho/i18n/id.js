@@ -2107,4 +2107,8 @@ GOHAN_I18N('id', {
     "汁そば": "Sup mi",
     "ほかの国からも見つかりました": "Juga ditemukan di negara lain",
     "下に出しています": "Ditampilkan di bawah",
+    // 第52回 R226: ベジタリアン向けの一言
+    "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください": "“Vegetarian” tidak menghapus telur dan produk susu. Jika Anda juga tidak memakannya, tambahkan dengan tombol di bawah",
+    "卵も外す": "Juga tanpa telur",
+    "乳製品も外す": "Juga tanpa susu",
 });
