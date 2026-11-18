@@ -16025,15 +16025,24 @@ function nsLoadAll(){
 // 入力の整え: NFKC（「か」＋濁点のように分かれた形もまとめる）・幅のない空白と制御文字を取りのぞく・40字まで
 const NS_MAX = 40;
 function nsClean(q){ return String(q == null ? '' : q).normalize('NFKC').replace(/[\u200B-\u200F\u2028-\u202E\u2060-\u206F\uFEFF\u00AD]/g, '').replace(/[\t\n\r]/g, ' ').replace(/[\u0000-\u001F\u007F-\u009F]/g, '').slice(0, NS_MAX); }
+// 料理名のかっこの中（「テンペの甘辛炒め（テンペ・オレッ）」のテンペ・オレッ）も当てるための言葉（norm はかっこの中を外すので、別に持つ）
+const NS_PAREN = new WeakMap();
+function nsParenHay(r){
+    let e = NS_PAREN.get(r); if (e && e.name === r.name) return e.hay;
+    const hay = [r.name, r.nameEn, ...(r.alt || [])].filter(Boolean).flatMap(x => (String(x).match(/[（(][^）)]*[）)]/g) || []).map(y => norm(y.slice(1, -1)))).join('|');
+    NS_PAREN.set(r, {name: r.name, hay}); return hay;
+}
 function nsSearch(q){
     q = nsClean(q);
-    const terms = searchTerms(q).map(norm).filter(Boolean);
+    // 第52回 R220 の続き: 画面に出ている長い名前（かっこつき）をそのまま入れても当たるように、かっこの中の「・」で言葉を分けない。かっこの外の言葉でさがし、外がなければ中の言葉でさがす
+    const outside = q.replace(/[（(][^）)]*[）)]?/g, ' ').trim(), inside = (q.match(/[（(]([^）)]*)/g) || []).map(x => x.slice(1)).join(' ').trim();
+    const terms = searchTerms(outside || inside).map(norm).filter(Boolean);
     if (!terms.length) return null;
     const home = currentCountry(), alts = terms.map(nsAlts);
     const nm = r => norm(r.name);
     const score = r => {
         let sc = 0;
-        alts.forEach(as => { let best = 0; as.forEach(a => { if (nm(r) === a) best = Math.max(best, 4); else if (nm(r).startsWith(a)) best = Math.max(best, 3); else if (nameHit(r, a)) best = Math.max(best, 2); }); sc += best ? best : -100; });   // どの言葉にも当たる料理だけ
+        alts.forEach(as => { let best = 0; as.forEach(a => { if (nm(r) === a) best = Math.max(best, 4); else if (nm(r).startsWith(a)) best = Math.max(best, 3); else if (nameHit(r, a) || nsParenHay(r).includes(a)) best = Math.max(best, 2); }); sc += best ? best : -100; });   // どの言葉にも当たる料理だけ
         return sc;
     };
     const all = nsPool().map(r => ({r, sc: score(r)})).filter(x => x.sc > 0);
@@ -16094,6 +16103,8 @@ function nsResultsHtml(q){
     const {hits, hidden, similar, similarAll, twists} = res;
     if (!hits.length){
         nsSnap = null;   // 当たらないときは覚えない（読み終えて当たったら、そのときの並びで出す）
+        // 第52回 R225: ほかの国を読みこんでいるあいだ（3秒の区切りまで）は「見つかりませんでした」と言わない。読みこみ中とだけ出す
+        if (nsLoading && !nsWorldGo) return `<div class="list"><div class="empty ns-wait" role="status">${esc(t('読みこみ中…'))}</div></div>`;
         return `<div class="list"><div class="empty ns-none">${esc(t('「{q}」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ', {q: res.terms.join(LANG === 'ja' ? '、' : ', ').slice(0, NS_MAX)}))}${nsHiddenHtml(hidden)}</div></div>${loading}`;
     }
     if (!nsSnap || nsSnap.sig !== sig) nsSnap = {sig, same: hits.slice(0, 12).map(r => r.id), seen: new Set(hits.map(r => r.id)), world: null, wInline: nsWorldGo, more: []};
