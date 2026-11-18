@@ -1,0 +1,2202 @@
+[
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 38,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 2,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 1,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "alg",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 2,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "alg",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 1,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "vegan",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 30,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 2,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang1",
+  "cond": "vegan",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 32,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 1,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 38,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 6,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 3,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "alg",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 42,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 6,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "alg",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 3,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "vegan",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 30,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 50,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 6,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hang3",
+  "cond": "vegan",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 32,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 3,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "alg",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "alg",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "vegan",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 30,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "fail3",
+  "cond": "vegan",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 32,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 16,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 16,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 16,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 38,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 68,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 19,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "alg",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 0,
+    "bad": [],
+    "more": false,
+    "none": true,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 0,
+    "bad": [],
+    "more": false,
+    "none": true,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 0,
+    "bad": [],
+    "more": false,
+    "none": true,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 0,
+    "bad": [],
+    "more": false,
+    "none": true,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 38,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "alg",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   }
+  ],
+  "held": 19,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "vegan",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 8,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "読みこみ中…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 10,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 10,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 10,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 38,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "hangAll",
+  "cond": "vegan",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 28,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 28,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 28,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 28,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "No similar dishes found"
+   }
+  ],
+  "held": 19,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "alg",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 40,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "alg",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 36,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Loading…"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 52,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "vegan",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 46,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "下に出しています"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v151",
+  "c": "ok",
+  "cond": "vegan",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 48,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": "Shown below"
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hang1",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 2,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hang1",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 1,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hang3",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 6,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hang3",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 3,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "fail3",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "fail3",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hangAll",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 14,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 38,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "hangAll",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": true,
+    "cards": 24,
+    "bad": [],
+    "more": false,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 19,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "ok",
+  "cond": "none",
+  "ui": "ja",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 54,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 0,
+  "errs": []
+ },
+ {
+  "ver": "v150",
+  "c": "ok",
+  "cond": "none",
+  "ui": "en",
+  "series": [
+   {
+    "at": 1500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 3500,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 5000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": 9000,
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   },
+   {
+    "at": "after-release",
+    "loading": false,
+    "cards": 64,
+    "bad": [],
+    "more": true,
+    "none": false,
+    "stat": ""
+   }
+  ],
+  "held": 0,
+  "errs": []
+ }
+]
