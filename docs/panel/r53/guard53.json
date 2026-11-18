@@ -1,0 +1,994 @@
+[
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 0,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 1,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 2,
+  "realGap": 101,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 199,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 2,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 0,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 1,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 2,
+  "realGap": 350,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 150,
+  "rep": 0,
+  "realGap": 151,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 150,
+  "rep": 1,
+  "realGap": 151,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 300,
+  "rep": 0,
+  "realGap": 301,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 300,
+  "rep": 1,
+  "realGap": 301,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 203,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 1,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 199,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 0,
+  "realGap": 99,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 1,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 2,
+  "realGap": 99,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 2,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 0,
+  "realGap": 350,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 1,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 2,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 150,
+  "rep": 0,
+  "err": "Cannot read properties of null (reading 'x')"
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 150,
+  "rep": 1,
+  "realGap": 336,
+  "allergy": [],
+  "role": "adult",
+  "held": 0,
+  "pressed": "false",
+  "dx": 0,
+  "dy": 0,
+  "ok": false
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 300,
+  "rep": 0,
+  "realGap": 301,
+  "allergy": [],
+  "role": "adult",
+  "held": 0,
+  "pressed": "false",
+  "dx": 0,
+  "dy": 0,
+  "ok": false
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 300,
+  "rep": 1,
+  "realGap": 300,
+  "allergy": [],
+  "role": "adult",
+  "held": 0,
+  "pressed": "false",
+  "dx": 0,
+  "dy": 0,
+  "ok": false
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v152",
+  "cpu": 4,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 0,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 1,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 2,
+  "realGap": 101,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 2,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 0,
+  "realGap": 352,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 1,
+  "realGap": 350,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 2,
+  "realGap": 350,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 150,
+  "rep": 0,
+  "realGap": 150,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 150,
+  "rep": 1,
+  "realGap": 151,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 300,
+  "rep": 0,
+  "realGap": 301,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "same",
+  "gap": 300,
+  "rep": 1,
+  "realGap": 300,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 1,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 0,
+  "realGap": 101,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 1,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 100,
+  "rep": 2,
+  "realGap": 100,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 200,
+  "rep": 2,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 0,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 1,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diff",
+  "gap": 350,
+  "rep": 2,
+  "realGap": 351,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 150,
+  "rep": 0,
+  "realGap": 155,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "adult",
+  "held": 2,
+  "pressed": "true",
+  "dx": 0,
+  "dy": 0,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 150,
+  "rep": 1,
+  "realGap": 341,
+  "allergy": [],
+  "role": "adult",
+  "held": 0,
+  "pressed": "false",
+  "dx": 0,
+  "dy": 0,
+  "ok": false
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 300,
+  "rep": 0,
+  "realGap": 371,
+  "allergy": [],
+  "role": "adult",
+  "held": 0,
+  "pressed": "false",
+  "dx": 0,
+  "dy": 0,
+  "ok": false
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "same",
+  "gap": 300,
+  "rep": 1,
+  "err": "Cannot read properties of null (reading 'x')"
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 0,
+  "realGap": 201,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ },
+ {
+  "ver": "v151",
+  "cpu": 4,
+  "kind": "diffspot",
+  "gap": 200,
+  "rep": 1,
+  "realGap": 200,
+  "allergy": [
+   "ライ麦"
+  ],
+  "role": "child",
+  "held": 0,
+  "pressed": "true",
+  "dx": -21,
+  "dy": 120,
+  "ok": true
+ }
+]
