@@ -10504,6 +10504,34 @@ function dietBundleToggle(list, k, owner){
     Object.keys(DIET_BUNDLES).forEach(j => { if (j !== k && !rec[j] && dietBundleOn(a, j)) rec[j] = {added: [], removed: []}; });   // 押したせいで『そろってしまった』ほかの束は、足したものなし（押しても自分の分は外さない）として覚える
     return done(a);
 }
+// 第53回 R227（安全）: ベジタリアン向けを押した直後、一言と「卵も外す」のボタンが下のタブ（や画面の下の帯）の裏に隠れないように、見えるところまで画面を送る。
+// 送るのは、いちばん近いスクロールする入れ物（設定・家族の人はページ、はじめての設定はシートの中）。上の固定の帯（設定のタブの列など）にもかからないようにする
+function revealAboveBars(el){
+    if (!el || !el.getBoundingClientRect) return;
+    const sc = (() => { for (let a = el.parentElement; a && a !== document.body; a = a.parentElement){ const cs = getComputedStyle(a); if (/(auto|scroll)/.test(cs.overflowY) && a.scrollHeight > a.clientHeight + 1) return a; } return null; })();
+    const box = sc ? sc.getBoundingClientRect() : {top: 0, bottom: innerHeight};
+    let floor = Math.min(innerHeight, box.bottom), ceil = Math.max(0, box.top);
+    const r = el.getBoundingClientRect();
+    document.querySelectorAll('nav.tabs, .actionbar, .set-tabs-bar, .sheet-foot, .sheet-actions').forEach(b => {
+        if (b.contains(el) || el.contains(b)) return;
+        const q = b.getBoundingClientRect(), pos = getComputedStyle(b).position;
+        if (!q.height || !/fixed|sticky/.test(pos) || q.right <= r.left || q.left >= r.right) return;
+        if (q.top > innerHeight * .4){ if (q.top < floor) floor = q.top; }
+        else if (q.bottom > ceil && q.top <= ceil + 1) ceil = q.bottom;
+    });
+    const room = floor - ceil - 16;
+    let d = 0;
+    if (r.bottom > floor - 8) d = r.bottom - (floor - 8);
+    if (r.top - d < ceil + 8 && r.height <= room) d = r.top - (ceil + 8);   // 上の帯にかかるときは下げる。一言が入りきらないほど高い（幅195px の家族の人など）ときは、押すボタンのある下の端を下のタブの上にそろえる
+    if (room <= 0 || Math.abs(d) < 1) return;
+    if (sc) sc.scrollTop += d; else window.scrollBy(0, d);
+}
+let vegiNoteAt = 0;   // R227: 一言とボタンを出した・送った時刻（すぐあとの押しは、ボタンが指の下に来ただけとみなして受けない）
+function revealVegiNote(scope, act){
+    // 押した束のボタン（act）と同じまとまりにある一言を選ぶ（設定の画面に、家族の人のまとまりも並ぶことがあるため）
+    const run = () => { const root = document.querySelector(scope); const n = root && [...root.querySelectorAll('.diet-vegi-note')].find(x => { const g = x.closest('.diet-bundles'); return !act || (g && g.querySelector(`[data-act="${act}"]`)); }); if (n){ revealAboveBars(n); vegiNoteAt = Date.now(); } };
+    run(); requestAnimationFrame(() => { run(); setTimeout(run, 120); });   // 描き直し・字の読みこみで高さが変わっても、もう一度たしかめる
+}
 function dietBundleHtml(list, act, famAct){
     const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
     // 第52回 R226（安全）: ベジタリアン向けを選んでも、卵・乳製品は外さない（勝手に外さない）。選んだときに、そのことを一言で知らせ、卵・乳製品も外すボタンを添える（押すと、下のなかまのチップと同じに足す）
@@ -17321,6 +17349,8 @@ document.addEventListener('click', e => {
         if (near && touch && chipTap.ts != null && (pd.ts - chipTap.ts < CHIP_DBL_MS || !(pd.ts >= chipTap.shownAt + CHIP_SEE_MS))){ chipTap.ts = pd.ts; chipHeld(el); return; }   // 0.4 秒のうち、または1回目の結果が画面に出て 0.25 秒たたないうち（見て決めるには短い）に当てた指
         if (near && !touch && e.detail > 1 && Date.now() < chipTap.until){ chipHeld(el); return; }
     }
+    // 第53回 R227（安全）: ベジタリアン向けを押した直後（0.6秒のうち）は、出たばかり・送ったばかりの「卵も外す」「乳製品も外す」を受けない（すばやい2回押しの2回目が、指の下に来たボタンに当たって、卵・乳製品が勝手に入った）
+    if (el.classList.contains('diet-add') && Date.now() - vegiNoteAt < 600){ chipHeld(el); return; }
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;
@@ -17561,11 +17591,11 @@ document.addEventListener('click', e => {
         case 'carb-note-ok': { session.carbNote = false; render(); break; }
         case 'low-salt': { S.settings.lowSalt = el.checked; save(); render(); break; }   // 減塩の目安: 表示と点数だけ。決めた献立は動かさない（reconcileMenu しない）
         case 'avoid-swap': { S.settings.avoidSwap = el.checked; save(); reconcileMenu(); refreshWeek(); render(); break; }
-        case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); break; }
+        case 'toggle-avoid-diet': { S.settings.avoid = dietBundleToggle(S.settings.avoid, el.dataset.v, S.settings); save(); reconcileMenu(); refreshWeek(); render(); revealVegiNote('#view', 'toggle-avoid-diet'); break; }   // R227: 一言とボタンを下のタブより上へ
         case 'fam-avoid-diet': {
             const m = famOf(el); if (!m) break;
             m.avoid = dietBundleToggle(m.avoid, el.dataset.v, m); m.allergy = m.allergy.filter(x => m.avoid.includes(x));
-            session.famOpen = m.id; save(); render(); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
+            session.famOpen = m.id; save(); render(); revealVegiNote(`[data-fm="${CSS.escape(m.id)}"]`, 'fam-avoid-diet'); recheckLater(); break;   // 第44回 R203: 押した形を先に描き、献立の確かめはそのあと
         }
         case 'toggle-avoid-fam': {
             // なかまのチップ: 入っていれば、そのなかまを避けている項目（以前に選んだ「豚肉」なども）をまとめて外す
@@ -17776,7 +17806,7 @@ document.addEventListener('click', e => {
         case 'ob-sv': sheet.servings = Number(el.dataset.v); renderSheet(); break;
         case 'ob-count': { const v = el.dataset.v; if (v !== 'auto' && dishesFor(v) > PLAN.freeLimits.dishes && !hasPro() && !isLocked()){ openPaywall('dishes'); break; } sheet.count = v === 'auto' ? 'auto' : Number(v); renderSheet(); break; }
         case 'ob-avoid': { const v = el.dataset.v, on = [...sheet.avoid].filter(x => x[0] !== '@' && keyOf(x) === keyOf(v)); on.length ? on.forEach(x => sheet.avoid.delete(x)) : sheet.avoid.add(v); renderSheet(); break; }
-        case 'ob-avoid-diet': { sheet.avoid = new Set(dietBundleToggle([...sheet.avoid], el.dataset.v, sheet)); renderSheet(); break; }
+        case 'ob-avoid-diet': { sheet.avoid = new Set(dietBundleToggle([...sheet.avoid], el.dataset.v, sheet)); renderSheet(); revealVegiNote('#sheet-root', 'ob-avoid-diet'); break; }
         case 'ob-avoid-fam': { const f = el.dataset.v, on = [...sheet.avoid].filter(x => avoidFamOf(x) === f); on.length ? on.forEach(x => sheet.avoid.delete(x)) : ([...sheet.avoid].forEach(x => { if (!avoidFamOf(x) && avoidCoveredBy(x, [f])) sheet.avoid.delete(x); }), sheet.avoid.add('@' + f)); renderSheet(); break; }
         case 'ob-staple': { const v = el.dataset.v; sheet.staples.has(v) ? sheet.staples.delete(v) : sheet.staples.add(v); sheet.stOpen = true; renderSheet(); break; }
         case 'ob-skip': S.onboarded = true; save(); closeSheet(); render(); break;
