@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // 第55回 R235〜R238（小さな件）
-//  使い方: node tools/tests/r235.mjs [http://localhost:9331/]   （LANGS=ja,en でしぼれる）
+//  使い方: node tools/tests/r235.mjs [http://localhost:9331/]   （LANGS=ja,en でしぼれる。ONLY=C3 で一部だけ）
 //  C1 R235 設定のタブの列を、あと1回の「次へ」で端に着く所（と列の頭）に置き、「次へ」（›）を 0.25 秒あけて2回押す: 2回目が、列が送られて指の下に来た別のタブ（「家族へ」など）なら受けない（画面は移らない）。「もう一度押してください」が出る
 //  C2 R235 止めすぎない: 「次へ」のあと 0.8 秒あけて同じ所のタブを押せば、そのタブに移る。「次へ」の2回目が「次へ」の上なら、列はもう一度送られる
-//  C3 R236 ベジタリアン向けを押してから 0.8 秒で「卵も外す」を押すと受ける（重い機械でなくても、一言のたしかめ直しで守りが延びない）。出てすぐ（0.25 秒）の押しは受けない
+//  C3 R236 一言が出て（「卵も外す」が見えて）から 0.8 秒で「卵も外す」を押すと受ける（一言のたしかめ直しで守りが延びない）。出てすぐ（0.25 秒）の押しは受けない。
+//     判定はアプリの時計（押しが届いた時刻 − 一言を出した時刻）。遅い機械で押しが遅れて届き、確かめたい形にならなかったときはやり直す
 //  C4 R237 一言が上の帯と下のタブのあいだに入りきらないとき（幅195px のドイツ語・英語・フランス語の家族の人など）: ボタンが一言の上にあり、一言の頭は上の帯の下に見える。
 //     文は「上のボタンで外せます」。描き直しても同じ形。入りきるときは、これまでどおり（一言が上・ボタンが下・「下のボタン」）
 //  C5 R237 18言語とも「上のボタンで外せます」の訳がある（日本語の文のままにならない・「下」の訳と別の文）
@@ -18,6 +19,7 @@ const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../gohancho');
 let fails = 0, checks = 0; const errs = [];
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } else console.log('ok  ', m.split(': ')[0]); };
+const want = k => !process.env.ONLY || process.env.ONLY.split(',').includes(k);   // ONLY=C3 で一部だけ（C1 は C2 もふくむ）
 const ALL = ['ja', ...fs.readdirSync(ROOT + '/i18n').filter(f => f.endsWith('.js')).map(f => f.replace(/\.js$/, ''))];
 const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja', 'en', 'de', 'ar'];
 const WIDTHS = [[195, 422], [320, 568], [390, 844]];
@@ -44,7 +46,7 @@ const cueOf = async (p, k, end = true) => {
 };
 
 // ---- C1・C2 R235 ----
-{
+if (want('C1')){
     const bad = [], seen = []; let hit = 0, okLate = 0, lateN = 0, again = 0, againN = 0;
     for (const lg of LANGS) for (const [w, h] of WIDTHS) for (const k of ['food', 'menu', 'family']){
         for (const end of [true, false]){   // C1: 0.25 秒あけた2回押し（端の手前から・列の頭から）
@@ -89,37 +91,63 @@ const cueOf = async (p, k, end = true) => {
 }
 
 // ---- C3 R236 ----
-{
-    const bad = []; let n = 0;
+if (want('C3')){
+    // 測り方（r235ci）: 遅い機械（GitHub の点検）では、テストの時計で 250ms に押しても、アプリの押しの時刻（timeStamp）が 0.6 秒を過ぎていて受けられた（落ちた）。
+    //   調べると、家族の人の画面ではベジタリアン向けのあと献立の確かめ（recheckLater）で画面の動きがふさがり、Playwright の mouse.click は「指を動かす」の返事を待ってから
+    //   「押す」を送るので、押しの時刻がふさがりの分（0.4〜0.9 秒）遅れてついていた。本物の指は、ふさがっていても触れた時刻がつく。
+    //   そこで「卵も外す」は、押した時刻をつけて送る（CDP の timestamp。送った時刻そのもの）。間合いは、アプリが一言を出した時刻（vegiNoteAt）から数える。
+    //   判定はアプリの時計: age = 押しの時刻（click の timeStamp）− そのときの vegiNoteAt。age < 600 は必ず止める（もう一度押してください・卵は入らない）、age ≥ 600 は必ず受ける。
+    //   それでも機械が遅く、すぐの押し（250ms）が age ≥ 600 になったとき・0.8 秒の押しが一言の送り直しで age < 600 になったときは、確かめたい形にならなかったので やり直す（3回まで。3回ともならなければ落とす）
+    const bad = []; let n = 0, redo = 0;
     for (const lg of LANGS) for (const [w, h] of WIDTHS) for (const where of ['settings', 'family']) for (const gap of [800, 250]){
-        const {p, ctx} = await open(lg, w, h);
-        const sel = where === 'settings' ? '#view [data-act="toggle-avoid-diet"][data-v="vegi"]' : '[data-fm="f1"] [data-act="fam-avoid-diet"][data-v="vegi"]';
-        const scope = where === 'settings' ? '#view' : '[data-fm="f1"]';
-        await p.evaluate(async where => { setTab('settings'); setTabShow(where === 'settings' ? 'food' : 'family'); if (where === 'family'){ session.famOpen = 'f1'; render(); } await new Promise(r => setTimeout(r, 200)); }, where);
-        const c = await p.evaluate(sel => { const e = document.querySelector(sel); e.scrollIntoView({block: 'center'}); const q = e.getBoundingClientRect(); return {x: (q.left + q.right) / 2, y: (q.top + q.bottom) / 2}; }, sel);
-        await p.waitForTimeout(150);
-        const t0 = Date.now();
-        await p.mouse.click(c.x, c.y);
-        // 一言の「卵も外す」の場所を、押す少し前に読む（人が見て押す形）
-        await p.waitForTimeout(Math.max(0, gap - 120 - (Date.now() - t0)));
-        const egg = await p.evaluate(scope => { const e = document.querySelector(scope + ' .diet-vegi-note .diet-add[data-v="egg"]'); if (!e) return null; const q = e.getBoundingClientRect(); return {x: (q.left + q.right) / 2, y: (q.top + q.bottom) / 2}; }, scope);
         const tag = `${lg} ${w} ${where} ${gap}ms`;
-        if (!egg){ bad.push(`${tag}: 「卵も外す」が出ない`); await ctx.close(); continue; }
-        await p.waitForTimeout(Math.max(0, gap - (Date.now() - t0)));
-        const at = Date.now() - t0;
-        await p.mouse.click(egg.x, egg.y); await p.waitForTimeout(120);
-        const z = await p.evaluate(where => ({av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice(), tip: !!document.querySelector('.tap-again'), tab}), where);
-        n++;
-        if (z.tab !== 'settings') bad.push(`${tag}: 画面が移った`);
-        else if (gap === 800 && !z.av.includes('@egg')) bad.push(`${tag}: ${at}ms で押した「卵も外す」が受けられない（tip=${z.tip}）`);
-        else if (gap === 250 && (z.av.includes('@egg') || !z.tip)) bad.push(`${tag}: 出てすぐ（${at}ms）の「卵も外す」を受けた・「もう一度」が出ない`);
-        await ctx.close();
+        let done = false, last = '';
+        for (let tr = 0; tr < 3 && !done; tr++){
+            if (tr) redo++;
+            const {p, ctx} = await open(lg, w, h);
+            const sel = where === 'settings' ? '#view [data-act="toggle-avoid-diet"][data-v="vegi"]' : '[data-fm="f1"] [data-act="fam-avoid-diet"][data-v="vegi"]';
+            const scope = where === 'settings' ? '#view' : '[data-fm="f1"]';
+            await p.evaluate(async where => { setTab('settings'); setTabShow(where === 'settings' ? 'food' : 'family'); if (where === 'family'){ session.famOpen = 'f1'; render(); } await new Promise(r => setTimeout(r, 200)); }, where);
+            const c = await p.evaluate(sel => { const e = document.querySelector(sel); e.scrollIntoView({block: 'center'}); const q = e.getBoundingClientRect(); return {x: (q.left + q.right) / 2, y: (q.top + q.bottom) / 2}; }, sel);
+            // 押しの記録（アプリの時計で）: 指を置いた・離した（click）時刻、そのときの vegiNoteAt、当たったボタン
+            await p.evaluate(() => { window.__tl = []; ['pointerdown', 'click'].forEach(k => document.addEventListener(k, e => { const t = e.target.closest && e.target.closest('[data-act]'); window.__tl.push({k, ts: Math.round(e.timeStamp), vna: Math.round(vegiNoteAt), act: t ? t.dataset.act + ':' + (t.dataset.v || '') : ''}); }, true)); });
+            const cdp = await ctx.newCDPSession(p);
+            await p.waitForTimeout(150);
+            await p.mouse.click(c.x, c.y);
+            // 「卵も外す」が出るまで待ち、アプリが一言を出した時刻（vegiNoteAt）をこちらの時計に直す（t1）。そこから gap ミリ秒で押す。場所は押す少し前に読む（人が見て押す形）
+            let t1 = 0, egg = null;
+            for (let k = 0; k < 60 && !t1; k++){ const v = await p.evaluate(scope => document.querySelector(scope + ' .diet-vegi-note .diet-add[data-v="egg"]') ? performance.timeOrigin + vegiNoteAt : 0, scope); if (v) t1 = v; else await p.waitForTimeout(20); }
+            if (!t1){ last = `${tag}: 「卵も外す」が出ない`; await ctx.close(); continue; }
+            await p.waitForTimeout(Math.max(0, gap - 120 - (Date.now() - t1)));
+            egg = await p.evaluate(scope => { const e = document.querySelector(scope + ' .diet-vegi-note .diet-add[data-v="egg"]'); if (!e) return null; const q = e.getBoundingClientRect(); return {x: (q.left + q.right) / 2, y: (q.top + q.bottom) / 2}; }, scope);
+            if (!egg){ last = `${tag}: 「卵も外す」が消えた`; await ctx.close(); continue; }
+            await p.waitForTimeout(Math.max(0, gap - (Date.now() - t1)));
+            const at = Math.round(Date.now() - t1);
+            // 押して離す（どちらも送った時刻をつける。指が触れた時刻がつく本物の押しと同じ）。返事は待たずに続けて送る
+            const ts = Date.now() / 1000;
+            await Promise.all(['mousePressed', 'mouseReleased'].map((type, i) => cdp.send('Input.dispatchMouseEvent', {type, x: egg.x, y: egg.y, button: 'left', clickCount: 1, timestamp: ts + i * 0.03})));
+            await p.waitForTimeout(120);
+            const z = await p.evaluate(where => ({av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice(), tip: !!document.querySelector('.tap-again'), tab, tl: window.__tl}), where);
+            await ctx.close();
+            const ck = z.tl.filter(x => x.k === 'click'), hit = ck[1];
+            const egIn = z.av.includes('@egg'), info = `テスト${at}ms egg=${egIn} tip=${z.tip} ${JSON.stringify(z.tl)}`;
+            if (z.tab !== 'settings'){ last = `${tag}: 画面が移った ${info}`; done = true; bad.push(last); break; }
+            if (!hit || !/:egg$/.test(hit.act)){ last = `${tag}: 2回目の押しが「卵も外す」に当たらない ${info}`; continue; }
+            const age = hit.ts - hit.vna;
+            // 安全: 一言が出て 0.6 秒たたない押しは、どの回でも止まっていること
+            if (age < 600 && (egIn || !z.tip)){ bad.push(`${tag}: 一言が出て ${age}ms の「卵も外す」を受けた・「もう一度」が出ない ${info}`); done = true; break; }
+            if (age >= 600 && !egIn){ bad.push(`${tag}: 一言が出て ${age}ms の「卵も外す」が受けられない ${info}`); done = true; break; }
+            if ((gap === 250 && age < 600) || (gap === 800 && age >= 600)){ n++; done = true; break; }
+            last = `${tag}: 確かめたい形にならなかった（押しが届いたのは一言が出て ${age}ms） ${info}`;
+        }
+        if (!done) bad.push(last + '（3回やり直しても）');
     }
-    ok(n > 0 && bad.length === 0, `C3 R236 ${LANGS.length}言語 × 幅195・320・390 × 設定・家族の人: 0.8 秒の「卵も外す」は受け、0.25 秒の押しは受けない（${n}回）: ` + bad.slice(0, 8).join(' | '));
+    console.log('C3 やり直し', redo);
+    ok(n > 0 && bad.length === 0, `C3 R236 ${LANGS.length}言語 × 幅195・320・390 × 設定・家族の人: 一言が出て 0.8 秒の「卵も外す」は受け、0.25 秒の押し（アプリに届いた時刻で 0.6 秒より前）は受けない（${n}回・やり直し ${redo}）: ` + bad.slice(0, 8).join(' | '));
 }
 
 // ---- C4 R237 ----
-{
+if (want('C4')){
     const bad = []; let tallN = 0, fitN = 0;
     const UP = {de: /oben/, en: /above/, fr: /ci-dessus/, ja: /上のボタン/, ar: /أعلاه/};
     for (const lg of ['de', 'en', 'fr', 'ja', 'ar']) for (const [w, h] of WIDTHS) for (const where of ['settings', 'family']){
@@ -164,7 +192,7 @@ const cueOf = async (p, k, end = true) => {
 }
 
 // ---- C5 R237 の訳 ----
-{
+if (want('C5')){
     const {p, ctx} = await open('ja', 390, 844);
     const bad = await p.evaluate(async all => {
         const out = [], K = '卵・乳製品を使う料理は出ます。食べないときは、上のボタンで外せます', K0 = K.replace('上のボタン', '下のボタン');
@@ -180,7 +208,7 @@ const cueOf = async (p, k, end = true) => {
 }
 
 // ---- C6 R238 ----
-{
+if (want('C6')){
     const bad = [], got = [];
     for (const [lg, q] of [['en', 'curry'], ['ja', 'カレー'], ['de', 'Curry']]){
         const {p, ctx} = await open(lg, 390, 844);
