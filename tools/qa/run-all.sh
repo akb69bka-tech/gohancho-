@@ -61,8 +61,8 @@ else
   add "t-needs-tally"    app "" "node tools/tests/needs-tally.mjs"
 fi
 for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon shop-store allergy allergen-regions stock menu-trust promises dish-alias panel-r3 panel-r3b panel-r4 panel-r4b panel-r4-ui marugoto marugoto-img menu-back upgrade-v36 upgrade-seats wish first-country greet panel-r8 panel-r11 panel-r12 panel-r13 panel-r14 panel-r15 panel-r16 panel-mode panel-all1 panel-r18 panel-b456 panel-r18b country-lang ask-page wish-alg list-alg alg-words alg-lang alg-r105 alg-r110 panel-r21ui plural panel-r21 panel-r21b panel-r22 sale hing panel-r23-menu vote-country panel-b2-ui okayu-all diet-r2 diet-r3 diet-r4 safe-r4 safe-r5 save-remake morning-big narrow-r5 narrow-r6 bfast-r1 narrow-r7 bfast-r29 diet-r5 bfast-r30 webbill-r1 night-r1 salt-r1 curry-r1 tool-r1 tooltab-r1 risk-r1 ui32 hang-r1 kcal-r1 kcal-r2 modebtn-r1 settabs-r1 hang-r2 settabs-r2 upd34 tab35 hang-r3 kcal-r3 tab36 note37 tab37 tab38 ob39 safe40 ob40 dm41 safe41 safe42 dm42 safe43 dm43 safe44 safe45 dm44 safe46 dm45 safe47 safe48 ui49 perf48 ui51 ui52 ui53 perf49 perf50 ui54 offline-lang diet-r6 tab51 ime51 safe51 namesearch dupnames pack-protein r226 r227 r228; do
-  if [ -n "${CI:-}" ] && case " safe43 safe48 ui52 " in *" $T "*) true;; *) false;; esac; then
-    # GitHub の点検（CI）では、時間のかかる安全の確かめ（各10〜17分）の言語を6つにしぼる（60分の上限を超えて止まった）。手元の点検では18言語すべてを見る
+  if [ -n "${CI:-}" ] && case " safe43 safe48 ui52 ui53 ui54 namesearch r227 r228 " in *" $T "*) true;; *) false;; esac; then
+    # GitHub の点検（CI）では、時間のかかる安全の確かめ（各10〜17分）の言語を6つにしぼる（60分の上限を超えて止まった）。手元の点検では18言語すべてを見る。11/19: ui53・ui54・namesearch・r227・r228 も（v150〜v153 の PR の点検が4回続けて60分で止まった）
     add "t-$T" app "LANGS=ja,ar,de,en,hi,th" "node tools/tests/$T.mjs"
   else
     add "t-$T" app "" "node tools/tests/$T.mjs"
@@ -90,7 +90,7 @@ for it in "${ITEMS[@]}"; do
 done
 # 走らせる順: 時間のかかる項目を先に始める（GitHub の4並列で、最後に長い項目が1本だけ残って60分を超えないように）。
 # 結果の表は SEL の順のまま。HEAVY は GitHub の v146 の秒数（diet-r3 974秒・safe45 853秒…）の長い順
-HEAVY="t-diet-r3 t-safe45 t-safe46 t-panel-r18b t-ui52 t-tooltab-r1 t-panel-r4b t-safe48 qa-tray-fit t-safe44 t-safe43 t-sale t-diet-r2 t-allergy t-safe-r4 t-note37 t-resilience t-ui32 t-tool-r1 qa-category-audit qa-category-audit-4343 t-marugoto-img t-safe-r5 t-menu-back t-panel-r21ui t-panel-r21b t-panel-all1"
+HEAVY="t-r227 t-namesearch t-r228 t-diet-r3 t-safe45 t-safe46 t-panel-r18b t-ui52 t-tooltab-r1 t-panel-r4b t-safe48 qa-tray-fit t-safe44 t-safe43 t-sale t-diet-r2 t-allergy t-safe-r4 t-note37 t-resilience t-ui32 t-tool-r1 qa-category-audit qa-category-audit-4343 t-marugoto-img t-safe-r5 t-menu-back t-panel-r21ui t-panel-r21b t-panel-all1"
 RUN=()
 for h in $HEAVY; do for it in "${SEL[@]}"; do [ "${it%%|*}" = "$h" ] && RUN+=("$it"); done; done
 for it in "${SEL[@]}"; do case " $HEAVY " in *" ${it%%|*} "*) ;; *) RUN+=("$it");; esac; done
