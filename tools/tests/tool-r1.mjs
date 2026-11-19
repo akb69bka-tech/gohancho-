@@ -275,7 +275,7 @@ for (const [lang, cc] of [['ko', 'KR'], ['en', 'KR'], ['de', 'KR']]){
 {
     const KEYS = ['土鍋', '圧力鍋', 'ホットプレート', '鉄板', '炭火・BBQ', '蒸し器', '揚げ物鍋', '火を使わない', '選んだ道具の料理を先に選びます（足りないときは、ふつうに選びます）。いまの献立は変わりません。', '道具から料理を探す', '道具から探す', '{tool}で作る主菜（{n}品）', '道具を選ぶと、その道具で作る主菜が出ます。', '形がちがうので入れ替えられません'];
     const REUSED = ['道具', '魚焼きグリル', '鍋', 'フライパン', 'オーブン', 'トースター', '電子レンジ', '炊飯器', 'ミキサー', 'これにする', '合う料理がありません'];
-    const LANGS = 'ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant'.split(' ');
+    const LANGS = process.env.LANGS ? process.env.LANGS.split(',').filter(l => l !== 'ja') : 'ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant'.split(' ');   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
     const keysJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/i18n/keys.json'), 'utf8'));
     const kl = Array.isArray(keysJson) ? keysJson : (keysJson.keys || Object.keys(keysJson));
     ok(KEYS.every(k => kl.includes(k)), 'T6 keys.json に新しい文言がある（extract.mjs の再生成）');

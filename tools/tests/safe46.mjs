@@ -98,7 +98,7 @@ if (want('A')){
 }
 
 // ---- C・E（R209 の残り・R210）: 21か国 × 18言語、条件ごとに 🔍 に出る名前を集める ----
-const LANGS = ['en', 'ja', 'ar', 'de', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['en', 'ja', 'ar', 'de', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
 const CCS = (process.env.CCS || 'JP BR CN DE EG ES FR GB ID IN IT KR MX PE PH PL TH TR TW US VN').split(' ');
 const VEGI = ['@pork', '@chicken', '@beef', '@fish', '@shellfish'], VEGAN = VEGI.concat(['@egg', '@dairy']);
 const ALGS = ['milk', 'egg', 'wheat', 'gluten', 'soy', 'sesame', 'peanut', 'treenut', 'buckwheat', 'celery', 'mustard', 'sulphite', 'fish', 'crustacean', 'mollusc', 'beef', 'pork', 'chicken', 'gelatin'];

@@ -20,6 +20,7 @@ const want = k => !process.env.ONLY || process.env.ONLY.split(',').includes(k);
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } else console.log('ok  ', m.split(': ')[0]); };
 const CC = {ja: 'JP', en: 'US', fr: 'FR', de: 'DE', it: 'IT', es: 'ES', 'pt-BR': 'BR', pl: 'PL', tr: 'TR', ar: 'EG', hi: 'IN', 'zh-Hans': 'CN', 'zh-Hant': 'TW', ko: 'KR', th: 'TH', vi: 'VN', id: 'ID', fil: 'PH'};
 const LANGS = (process.env.LANGS || Object.keys(CC).join(',')).split(',');
+const KL = LANGS.length / Object.keys(CC).length;   // 言語をしぼったとき（GitHub の点検は6言語）は、見た画面の数の下限も同じ割合にする（全言語なら 1）
 const open = async (o, tag) => {
     const ctx = await b.newContext({viewport: {width: o.w || 390, height: o.h || 844}, timezoneId: 'Asia/Tokyo', serviceWorkers: 'block', hasTouch: true});
     await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent/, r => r.abort());
@@ -60,7 +61,7 @@ if (want('R75')) {
         }
         await ctx.close();
     }
-    ok(n >= 255 && rows > 1000 && !bad.length, `R75 買い物メモ ${n} 画面・${rows} 行（17言語 × 5幅 × 文字3段階）: 品名が縦に割れない・ボタンと量が画面の中・量が箱に乗らない: ` + bad.slice(0, 4).join(' / '));
+    ok(n >= Math.floor(255 * KL) && rows > 1000 * KL && !bad.length, `R75 買い物メモ ${n} 画面・${rows} 行（${LANGS.length}言語 × 5幅 × 文字3段階）: 品名が縦に割れない・ボタンと量が画面の中・量が箱に乗らない: ` + bad.slice(0, 4).join(' / '));
 }
 
 // R77 条件のボタンの字
@@ -87,7 +88,7 @@ if (want('R77')) {
         }
         await ctx.close();
     }
-    ok(n >= 340 && !bad.length, `R77 条件のボタンの字 ${n} 画面（17言語 × 4通り × 5つの条件。人数を外したのは ${drop}）: 字が全部見える・48px 以下・気分と品数は出る・語の途中で折れない: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= Math.floor(340 * KL) && !bad.length, `R77 条件のボタンの字 ${n} 画面（${LANGS.length}言語 × 4通り × 5つの条件。人数を外したのは ${drop}）: 字が全部見える・48px 以下・気分と品数は出る・語の途中で折れない: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R79 はじめての設定 195px
@@ -106,7 +107,7 @@ if (want('R79')) {
         }
         await ctx.close();
     }
-    ok(n >= 51 && !bad.length, `R79 はじめての設定 195px ${n} 画面（17言語 × 文字3段階 × 使い方の手順）: ステップ・スキップ・もどる・献立を見るが画面の中で、1語が縦に割れない: ` + bad.slice(0, 3).join(' / '));
+    ok(n >= Math.floor(51 * KL) && !bad.length, `R79 はじめての設定 195px ${n} 画面（${LANGS.length}言語 × 文字3段階 × 使い方の手順）: ステップ・スキップ・もどる・献立を見るが画面の中で、1語が縦に割れない: ` + bad.slice(0, 3).join(' / '));
 }
 
 // R78 アイコン

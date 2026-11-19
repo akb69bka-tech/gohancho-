@@ -9,7 +9,7 @@ const { chromium, LAUNCH, BASE: BASE_, SEED, seedScript, seedFor, ready } = requ
 const URL_ = process.argv[2] || process.env.BASE || BASE_;
 const RUNS = +(process.env.RUNS || 20);
 const ALL = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN', 'CN', 'TW', 'KR', 'TH', 'VN', 'ID', 'PH', 'MX', 'BR', 'PE'];
-const LANGS = ['ja', 'en', 'fr', 'de', 'it', 'es', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'zh-Hans', 'zh-Hant', 'ko', 'vi'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja', 'en', 'fr', 'de', 'it', 'es', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'zh-Hans', 'zh-Hant', 'ko', 'vi'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
 const b = await chromium.launch(LAUNCH);
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } else console.log('ok  ', m.split(': ')[0]); };
@@ -74,9 +74,9 @@ for (const cc of ALL){
     const per = sigs[cc] || {}, langs = Object.keys(per); if (!langs.length) continue;
     const ids = Object.keys(per[langs[0]]).filter(k => k !== '__label');
     const diffs = ids.filter(id => new Set(langs.map(l => per[l][id])).size > 1);
-    ok(!diffs.length, `O3 ${cc} 18の言葉でアレルゲンの判定が同じ（${ids.length}品）: ${diffs.join(',')}`);
+    ok(!diffs.length, `O3 ${cc} ${LANGS.length}の言葉でアレルゲンの判定が同じ（${ids.length}品）: ${diffs.join(',')}`);
     const empties = langs.filter(l => ids.length && !per[l].__label);
-    ok(!empties.length, `O3 ${cc} 18の言葉で「おかゆの日」の名前が出る: ${empties.join(',')}`);
+    ok(!empties.length, `O3 ${cc} ${LANGS.length}の言葉で「おかゆの日」の名前が出る: ${empties.join(',')}`);
 }
 // 名指し: 牛乳を使うおかゆのなかまは牛乳に当たる（全部の言葉）。オートミールはグルテンの🔍
 {

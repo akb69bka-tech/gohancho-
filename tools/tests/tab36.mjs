@@ -261,7 +261,7 @@ const lostNote = p => p.evaluate(() => { const n = document.getElementById('gh-n
 
 // ================= R168: 幅195・文字もっと大きい =================
 {
-    const LANGS = ['ja', 'en', 'de', 'es', 'fr', 'it', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'vi', 'ko', 'zh-Hans', 'zh-Hant'];
+    const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja', 'en', 'de', 'es', 'fr', 'it', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'vi', 'ko', 'zh-Hans', 'zh-Hant'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
     const bad = [];
     for (const [w, h, ts] of [[195, 422, 2], [195, 422, 0], [260, 640, 2]]){
         const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Tokyo', locale: 'ja-JP', serviceWorkers: 'block' });
@@ -293,7 +293,7 @@ const lostNote = p => p.evaluate(() => { const n = document.getElementById('gh-n
         eq(p.errs, [], `R168 ${w}x${h} ts${ts} 例外なし`);
         await ctx.close();
     }
-    ok(!bad.length, 'R168 2つのタブの知らせ: ボタンが見えて押せる・画面の半分未満・青を使わない（18言語） ' + bad.slice(0, 8).join(' | ') + (bad.length > 8 ? ` …ほか${bad.length - 8}` : ''));
+    ok(!bad.length, 'R168 2つのタブの知らせ: ボタンが見えて押せる・画面の半分未満・青を使わない（' + LANGS.length + '言語） ' + bad.slice(0, 8).join(' | ') + (bad.length > 8 ? ` …ほか${bad.length - 8}` : ''));
 }
 
 await b.close();
