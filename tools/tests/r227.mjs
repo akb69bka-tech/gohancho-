@@ -5,6 +5,7 @@
 //     押したあと、一言とボタンが下のタブ・上の帯にかからず画面の中にある。「卵も外す」の真ん中を指で押すと、そのボタンに当たり（下のタブではない）、卵が入る・画面は変わらない
 //  W2 すばやい2回押し（60ms）: 2回目は同じボタンの二度押しとして受けない（R224）か、受けても一言が出ているときは隠れない。卵・乳製品は勝手に外れない
 //     一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人の画面）は、ボタンのある下の端が下のタブより上にあること（ボタンは必ず見えて押せる）
+//     （r233: 負荷が高いときに「卵も外す」が受けられずに落ちていたのは、アプリが一言のたしかめ直しのたびに 0.6 秒の守りを始め直していたため。アプリを直した。テストは一言の場所が落ち着いてから押す）
 //  W3 卵は勝手に外さない（押す前と、ベジタリアン向けを押しただけでは @egg・@dairy が入らない）
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -59,6 +60,8 @@ for (const lg of LANGS){
                 await p.mouse.click(c.x, c.y);
                 if (twice){ await p.waitForTimeout(60); await p.mouse.click(c.x, c.y); }
                 await p.waitForTimeout(900);   // 出たばかりのボタンは 0.6 秒のあいだ受けない（R227）。読んでから押す間合い
+                // 一言の場所が落ち着くまで待つ（負荷が高いと、たしかめ直しの送りが遅れて来る。動いている途中の場所を押さない）。最長 2 秒
+                for (let k = 0, last = ''; k < 14; k++){ const pos = await p.evaluate(scope => { const n = document.querySelector(scope + ' .diet-vegi-note'); return n ? Math.round(n.getBoundingClientRect().top) + ':' + Math.round(scrollY) : 'none'; }, scope); if (pos === last) break; last = pos; await p.waitForTimeout(150); }
                 const tabNow = await p.evaluate(() => tab);
                 if (tabNow !== 'settings'){ bad.push(`${tag}: 押したら下のタブ（${tabNow}）に当たった`); await ctx.close(); continue; }
                 const av = await p.evaluate(() => [S.settings.avoid.slice(), S.family[0].avoid.slice()]);
@@ -75,7 +78,8 @@ for (const lg of LANGS){
                     // 「卵も外す」を指で押す: そのボタンに当たり、卵が入る。画面（タブ）は変わらない
                     const egg = st.btns.find(x => x.v === 'egg');
                     if (egg){ await p.mouse.click(egg.x, egg.y); await p.waitForTimeout(400);
-                        const z = await p.evaluate(where => ({tab, av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice()}), where);
+                        const z = await p.evaluate(([where, x, y]) => { const e = document.elementFromPoint(x, y), t = e && e.closest('[data-act]');
+                            return {tab, av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice(), held: !!document.querySelector('.tap-again'), age: Date.now() - vegiNoteAt, under: t ? t.dataset.act + '|' + (t.dataset.v || '') : ''}; }, [where, egg.x, egg.y]);
                         if (z.tab !== 'settings' || !z.av.includes('@egg')) bad.push(`${tag}: 「卵も外す」を押しても卵が入らない／ちがう所に当たった ${JSON.stringify(z)}`); }
                 }
                 await ctx.close();

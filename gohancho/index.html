@@ -10546,15 +10546,19 @@ function revealAboveBars(el){
     let d = 0;
     if (r.bottom > floor - 4) d = r.bottom - (floor - 4);
     if (r.top - d < ceil + 4 && r.height <= room) d = r.top - (ceil + 4);   // 上の帯にかかるときは下げる。一言が入りきらないほど高い（幅195px の家族の人など）ときは、押すボタンのある下の端を下のタブの上にそろえる
-    if (room <= 0 || Math.abs(d) < 1) return;
+    if (room <= 0 || Math.abs(d) < 1) return 0;
     // アプリが送った分は、すばやい2回押しの見分け（spotTap）に足しておく（人が動かしたのではない）
-    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; if (spotTap && spotTap.sc === sc) spotTap.appSc += sc.scrollTop - b0; }
-    else { const b0 = scrollY; window.scrollBy(0, d); if (spotTap) spotTap.appWin += scrollY - b0; }
+    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; const m = sc.scrollTop - b0; if (spotTap && spotTap.sc === sc) spotTap.appSc += m; return m; }
+    const b0 = scrollY; window.scrollBy(0, d); const m = scrollY - b0; if (spotTap) spotTap.appWin += m; return m;   // 動かした分（0 なら動かしていない）
 }
 let vegiNoteAt = 0;   // R227: 一言とボタンを出した・送った時刻（すぐあとの押しは、ボタンが指の下に来ただけとみなして受けない）
 function revealVegiNote(scope, act){
     // 押した束のボタン（act）と同じまとまりにある一言を選ぶ（設定の画面に、家族の人のまとまりも並ぶことがあるため）
-    const run = () => { const root = document.querySelector(scope); const n = root && [...root.querySelectorAll('.diet-vegi-note')].find(x => { const g = x.closest('.diet-bundles'); return !act || (g && g.querySelector(`[data-act="${act}"]`)); }); if (n){ revealAboveBars(n); vegiNoteAt = Date.now(); } };
+    // 第55回 r233: 0.6秒の守り（vegiNoteAt）を始めるのは、一言を出したとき（1回目）と、画面を実際に送ったときだけ。たしかめ直しで動かさなかったとき・描き直しで同じ所に出し直しただけのときは始め直さない
+    //（遅い端末・描き直しのあとに たしかめ直しが遅れて、読んでから押した「卵も外す」まで受けていなかった）
+    let first = true;
+    const run = () => { const root = document.querySelector(scope); const n = root && [...root.querySelectorAll('.diet-vegi-note')].find(x => { const g = x.closest('.diet-bundles'); return !act || (g && g.querySelector(`[data-act="${act}"]`)); });
+        if (!n) return; const moved = revealAboveBars(n); if (first || Math.abs(moved) >= 1) vegiNoteAt = performance.now(); first = false; };   // performance.now: 押しの時刻（イベントの timeStamp）とくらべる
     run(); requestAnimationFrame(() => { run(); setTimeout(run, 120); });   // 描き直し・字の読みこみで高さが変わっても、もう一度たしかめる
 }
 function dietBundleHtml(list, act, famAct){
@@ -17380,14 +17384,16 @@ document.addEventListener('click', e => {
         if (near && !touch && e.detail > 1 && Date.now() < chipTap.until){ chipHeld(el); return; }
     }
     // 第53回 R227（安全）: ベジタリアン向けを押した直後（0.6秒のうち）は、出たばかり・送ったばかりの「卵も外す」「乳製品も外す」を受けない（すばやい2回押しの2回目が、指の下に来たボタンに当たって、卵・乳製品が勝手に入った）
-    if (el.classList.contains('diet-add') && Date.now() - vegiNoteAt < 600){ tapAgain(el); return; }
+    // r233: 時刻は、押しを処理した時刻ではなく、指を当てた時刻（e.timeStamp）でくらべる。重い端末では1回目の描き直しのあいだ2回目の押しが待たされ、処理するころには 0.6 秒を過ぎて、守りが効かなかった
+    const tapAt = e.timeStamp || performance.now();
+    if (el.classList.contains('diet-add') && tapAt < vegiNoteAt + 600){ tapAgain(el); return; }   // 一言が出る前に当てた指も受けない
     // 第54回 R228: 同じ場所（24px のうち）への 0.6 秒のうちの押しで、1回目とちがうボタンに当たったら受けない（すばやい2回押しの2回目が、送った画面・変わった並び・切りかわった段の、指の下に来たボタンを押していた）。同じボタンの押し直し（数の＋−など）は通す
     // 止めるのは、押すと設定や献立が切りかわるボタン（チップ・押した形を持つボタン・人数・買い物の「済み」・作り方の段）だけ。開く・決める・元に戻すなどの流れのボタンは止めない
     const spotGuard = el.classList.contains('chip') || !!el.closest('.chip') || el.hasAttribute('aria-pressed') || /^(servings|shop-ok|stage|set-tabs-step)$/.test(el.dataset.act || '');
     // 指の下に来たのが、アプリが動かした（画面を送った・並びが変わった）ためのときだけ止める。人が画面を動かした（スクロールした）ときは止めない（ページと、いちばん近いスクロールの入れ物の位置で見る）
     const stillPage = spotTap && Math.abs(scrollY - (spotTap.sy + spotTap.appWin)) < 2 && (!spotTap.sc || (spotTap.sc.isConnected && Math.abs(spotTap.sc.scrollTop - (spotTap.st + spotTap.appSc)) < 2))   /* 入れ物が作り直された（シートの描き直し）ときは、人が動かしたかわからないので止めない */;
-    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && Date.now() - spotTap.t < SPOT_MS && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
-    if (e.detail > 0){ const sc = scrollerOf(el); spotTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), t: Date.now(), sy: scrollY, appWin: 0, sc, st: sc ? sc.scrollTop : 0, appSc: 0}; }
+    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && tapAt - spotTap.t < SPOT_MS && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
+    if (e.detail > 0){ const sc = scrollerOf(el); spotTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), t: tapAt, sy: scrollY, appWin: 0, sc, st: sc ? sc.scrollTop : 0, appSc: 0}; }
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;
