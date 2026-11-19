@@ -14,7 +14,7 @@ const { chromium } = require(execSync('npm root -g').toString().trim() + '/playw
 const { SEED, rngScript, seedFor } = require('../lib/pw.cjs');
 const URL_ = process.argv[2] || process.env.BASE || 'http://localhost:8765/';
 const CCS = ['JP','TW','CN','KR','US','TH','VN','FR','DE','IN','MX','BR','GB','IT','ES','TR','EG','PE','PL','PH','ID'];
-const LANGS = ['ja','en','ar','de','es','fil','fr','hi','id','it','ko','pl','pt-BR','th','tr','vi','zh-Hans','zh-Hant'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja','en','ar','de','es','fil','fr','hi','id','it','ko','pl','pt-BR','th','tr','vi','zh-Hans','zh-Hant'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
 const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let fails = 0, opened = 0; const errs = [];
 const ok = (c, m) => { if (!c){ fails++; console.log('FAIL', m, ' [再現: SEED=' + SEED + ']'); } };

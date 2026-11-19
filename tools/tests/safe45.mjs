@@ -99,7 +99,7 @@ if (want('A')){
 // ---- B（R207）・C（R209）: 21か国 × 18言語で、🔍 に出る材料名を集める ----
 // 条件（第43回モニターの調べと同じ）: ベジタリアン・ヴィーガン・魚えびかに貝のアレルギー・肉ゼラチンのアレルギー・小麦大豆乳卵ごま落花生のアレルギー。
 // 出す料理（isAvoided・allergyConflict に当たらない料理）の 🔍（dietMayHits・algMayHits）の名前。B はさらに全料理・全アレルゲンの「入っていることがある」名前も見る（分量）
-const LANGS = ['en', 'ja', 'ar', 'de', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['en', 'ja', 'ar', 'de', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
 const CCS = (process.env.CCS || 'JP BR CN DE EG ES FR GB ID IN IT KR MX PE PH PL TH TR TW US VN').split(' ');
 const VEGI = ['@pork', '@chicken', '@beef', '@fish', '@shellfish'], VEGAN = VEGI.concat(['@egg', '@dairy']);
 const CONDS = [{ n: 'vegi', avoid: VEGI, alg: [] }, { n: 'vegan', avoid: VEGAN, alg: [] }, { n: 'algSea', avoid: [], alg: ['fish', 'crustacean', 'mollusc'] },

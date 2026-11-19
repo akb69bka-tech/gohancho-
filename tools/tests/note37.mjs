@@ -15,7 +15,7 @@ let fails = 0, checks = 0;
 const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } };
 const eq = (a, e, m) => ok(JSON.stringify(a) === JSON.stringify(e), `${m}: got ${JSON.stringify(a)} expected ${JSON.stringify(e)}`);
 const isReady = () => typeof S !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && document.readyState === 'complete' && !!document.querySelector('#view > *') && GH.booted;
-const LANGS = ['ja', 'en', 'de', 'es', 'fr', 'it', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'vi', 'ko', 'zh-Hans', 'zh-Hant'];
+const LANGS = process.env.LANGS ? process.env.LANGS.split(',') : ['ja', 'en', 'de', 'es', 'fr', 'it', 'pt-BR', 'pl', 'tr', 'ar', 'hi', 'id', 'fil', 'th', 'vi', 'ko', 'zh-Hans', 'zh-Hant'];   // GitHub の点検（CI）では run-all.sh が LANGS で6言語にしぼる。手元では18言語すべて
 const TEXT = {other: '別のタブ・窓で内容が変わりました。このタブは保存を止めています', lost: '別のタブの保存で、アレルギー・家族・決めた献立の一部が消えました', famgone: '別のタブで『{name}』さんが家族から消されたため、足したアレルギーは残りませんでした'};
 const NAME = 'Alexandra-Marie', NBTN = {other: 2, lost: 2, famgone: 1};
 const SIZES = [[195, 422], [260, 640], [320, 568], [390, 844], [740, 360]];
