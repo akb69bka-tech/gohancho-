@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// claude/r233: M4 が時々落ちていたのは、前の「決める」から 0.35 秒のうちに次の「決める」を押し、アプリの押しまちがい防止（tapGuard）で受けられていなかったため（テストの作りの問題）。切れるのを待ってから押し、決まったことも確かめる
 // モード（オーナーの案）: 「10分以内」「いちばん簡単」「じっくり」。Playwright。使い方: node tools/tests/panel-mode.mjs [http://localhost:8999/]
 //  1. 気分の「時間」の並びに3つのモードがあり、国（JP・US・KR）ごとに、どの席もモードの条件（ゆるめた段階を含む）に合う料理だけ。空の席は作らない
 //  2. その国に合う料理が少ないときは、ゆるめた段階を画面に書く（ゆるめていないときは書かない）
@@ -134,7 +135,10 @@ for (const cc of CCS){
     const {p, ctx} = await open('JP', 'view');
     const viewOf = async (mode) => p.evaluate(async (mode) => {
         session.mood = mode; session.rejected.clear(); newMenu(); render();
+        // アプリは「決める」のあと 0.35 秒、次の押しを受けない（tapGuard: 画面が切りかわった直後の押しまちがい防止）。前の「決める」から間がないと、この「決める」が受けられず、作り方にモードの見え方が出ない（時々落ちていた原因）。切れるのを待ってから押す
+        { const w = tapGuard - Date.now(); if (w > 0) await new Promise(r => setTimeout(r, w + 30)); }
         document.querySelector('.decide-bar [data-act=decide]').click(); await new Promise(r => setTimeout(r, 50));
+        if (!menuIsDecided()) return {mode, decided: false, views: [], modal: {views: []}, keep: {}, err: '決めるが受けられていない'};
         setTab('cook'); session.cookView = 'step'; session.cookIdx = 0; render(); await new Promise(r => setTimeout(r, 50));
         const v = document.querySelector('#view');
         const out = {mode, decided: menuIsDecided(), views: [...v.querySelectorAll('.mode-view')].map(e => e.className), minutes: v.querySelectorAll('.mode-view .mtl-m').length, mins: [...v.querySelectorAll('.mode-view .mtl-m')].filter(e => e.textContent.trim()).length,
@@ -183,6 +187,7 @@ for (const cc of CCS){
     ok(ten.modal.views.some(c => /mode-ten/.test(c)), `JP M4 10分以内: 料理の詳細にも同じ帯: ` + JSON.stringify(ten.modal));
     ok(ten.keep.same && ten.keep.mood === 'ten', `JP M7 決めた献立は、モードを変えても勝手に変わらない（確かめの前）: ` + JSON.stringify(ten.keep));
     const simple = await viewOf('simple');
+    ok(simple.decided, 'JP M4 いちばん簡単: 「決める」が受けられ、献立が決まっている');
     ok(simple.views.some(c => /mode-simple/.test(c)) && simple.big === 3 && simple.modal.big === 3, `JP M4 いちばん簡単: 作り方と詳細に「これだけ」の3行（材料の数・手順の数・道具）: ` + JSON.stringify({views: simple.views, big: simple.big, modal: simple.modal}));
     // じっくり: 「ここで待つ」のある料理（煮込みなど。待ち3分以上の手順）を主菜にして確かめる
     const slow = await p.evaluate(async () => {
@@ -190,10 +195,12 @@ for (const cc of CCS){
         const pick = poolFor('主菜').find(r => r.main && modeStrict(r, 'slow') && r.steps.some(st => stepWaitSec(String(typeof st === 'string' ? st : st.t))));
         if (!pick) return {none: true};
         session.rejected.clear(); newMenu(); session.menu.items[0].r = pick; render();
+        { const w = tapGuard - Date.now(); if (w > 0) await new Promise(r => setTimeout(r, w + 30)); }   // 前の「決める」の押しまちがい防止（0.35秒）が切れてから押す（上の viewOf と同じ）
         document.querySelector('.decide-bar [data-act=decide]').click(); await new Promise(r => setTimeout(r, 50));
+        const decided = menuIsDecided();
         setTab('cook'); session.cookView = 'step'; session.cookIdx = 0; render(); await new Promise(r => setTimeout(r, 50));
         const v = document.querySelector('#view');
-        const out = {name: pick.name, views: [...v.querySelectorAll('.mode-view')].map(e => e.className), waits: v.querySelectorAll('.mode-waits .timer-chip').length, labels: [...v.querySelectorAll('.mode-waits li span')].map(e => e.textContent)};
+        const out = {decided, name: pick.name, views: [...v.querySelectorAll('.mode-view')].map(e => e.className), waits: v.querySelectorAll('.mode-waits .timer-chip').length, labels: [...v.querySelectorAll('.mode-waits li span')].map(e => e.textContent)};
         openModal(pick.id); await new Promise(r => setTimeout(r, 50));
         const md = document.querySelector('#modal-root');
         out.modal = {waitLi: md.querySelectorAll('.steps li.wait').length, chips: md.querySelectorAll('.steps li.wait .wait-tag .timer-chip').length, tag: (md.querySelector('.wait-tag') || {}).textContent || ''};
@@ -207,6 +214,7 @@ for (const cc of CCS){
         openModal(pick.id); await new Promise(r => setTimeout(r, 30)); out.plainModal = document.querySelectorAll('#modal-root .mode-view, #modal-root .steps li.wait').length; closeModal();
         S.cook = null; save(); return out;
     });
+    ok(!slow.none && slow.decided, 'JP M4 じっくり: 「決める」が受けられ、献立が決まっている: ' + JSON.stringify({decided: slow.decided, name: slow.name}));
     ok(!slow.none && slow.views.some(c => /mode-slow/.test(c)) && slow.waits > 0 && slow.labels.every(x => /\d+分待つ/.test(x)), `JP M4 じっくり: 作り方に「ここで待つ」（手順の番号・分・タイマー）: ` + JSON.stringify(slow));
     ok(!slow.none && slow.modal.waitLi > 0 && slow.modal.chips === slow.modal.waitLi && /ここで待つ/.test(slow.modal.tag) && slow.timer === 1, `JP M4 じっくり: 料理の詳細の手順に「ここで待つ」の印とタイマー（押すといつものタイマーが動く）: ` + JSON.stringify(slow.modal) + ' timers=' + slow.timer);
     ok(slow.plain === 0 && slow.plainModal === 0, `JP M4 おまかせに戻すと、モードの見え方は出ない: ` + JSON.stringify({plain: slow.plain, modal: slow.plainModal}));

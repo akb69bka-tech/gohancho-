@@ -4,7 +4,8 @@
 //  W1 18言語 × 幅195・320・390 × 設定（苦手・食の決まり）・家族の人: ベジタリアン向けのボタンを、下のタブのすぐ上まで送ってから指で押す（いちばん隠れやすい形）。
 //     押したあと、一言とボタンが下のタブ・上の帯にかからず画面の中にある。「卵も外す」の真ん中を指で押すと、そのボタンに当たり（下のタブではない）、卵が入る・画面は変わらない
 //  W2 すばやい2回押し（60ms）: 2回目は同じボタンの二度押しとして受けない（R224）か、受けても一言が出ているときは隠れない。卵・乳製品は勝手に外れない
-//     一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人の画面）は、ボタンのある下の端が下のタブより上にあること（ボタンは必ず見えて押せる）
+//     一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人の画面）は、ボタンを一言の上に出し、一言の頭が上の帯より下にあること（ボタンは必ず見えて押せる。第55回 R237）
+//     （r233: 負荷が高いときに「卵も外す」が受けられずに落ちていたのは、アプリが一言のたしかめ直しのたびに 0.6 秒の守りを始め直していたため。アプリを直した。テストは一言の場所が落ち着いてから押す）
 //  W3 卵は勝手に外さない（押す前と、ベジタリアン向けを押しただけでは @egg・@dairy が入らない）
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -39,7 +40,7 @@ const state = (p, scope) => p.evaluate(scope => {
     document.querySelectorAll('.set-tabs-bar').forEach(e => { const q = e.getBoundingClientRect(); if (q.height && /fixed|sticky/.test(getComputedStyle(e).position) && q.top <= 1 && q.bottom > ceil) ceil = q.bottom; });
     if (!n) return {none: true, floor, ceil};
     const r = n.getBoundingClientRect(), btns = [...n.querySelectorAll('.diet-add')].map(e => { const q = e.getBoundingClientRect(), x = (q.left + q.right) / 2, y = (q.top + q.bottom) / 2, hit = document.elementFromPoint(x, y); return {v: e.dataset.v, top: q.top, bottom: q.bottom, x, y, hits: !!hit && (hit === e || e.contains(hit))}; });
-    return {top: r.top, bottom: r.bottom, floor, ceil, btns};
+    return {top: r.top, bottom: r.bottom, floor, ceil, btns, tallCls: n.classList.contains('tall')};
 }, scope);
 const bad = [];
 for (const lg of LANGS){
@@ -59,6 +60,8 @@ for (const lg of LANGS){
                 await p.mouse.click(c.x, c.y);
                 if (twice){ await p.waitForTimeout(60); await p.mouse.click(c.x, c.y); }
                 await p.waitForTimeout(900);   // 出たばかりのボタンは 0.6 秒のあいだ受けない（R227）。読んでから押す間合い
+                // 一言の場所が落ち着くまで待つ（負荷が高いと、たしかめ直しの送りが遅れて来る。動いている途中の場所を押さない）。最長 2 秒
+                for (let k = 0, last = ''; k < 14; k++){ const pos = await p.evaluate(scope => { const n = document.querySelector(scope + ' .diet-vegi-note'); return n ? Math.round(n.getBoundingClientRect().top) + ':' + Math.round(scrollY) : 'none'; }, scope); if (pos === last) break; last = pos; await p.waitForTimeout(150); }
                 const tabNow = await p.evaluate(() => tab);
                 if (tabNow !== 'settings'){ bad.push(`${tag}: 押したら下のタブ（${tabNow}）に当たった`); await ctx.close(); continue; }
                 const av = await p.evaluate(() => [S.settings.avoid.slice(), S.family[0].avoid.slice()]);
@@ -69,13 +72,16 @@ for (const lg of LANGS){
                 if (vegiOn && st.none) bad.push(`${tag}: ベジタリアン向けなのに一言が出ない`);
                 if (!vegiOn && !twice) bad.push(`${tag}: 1回押しでベジタリアン向けにならない`);
                 if (!st.none){
-                    const tall = st.bottom - st.top > st.floor - st.ceil - 8;   // R230: 上下4pxのゆとりで入りきるなら、一言の頭も見えていること   // 一言が上の帯と下のタブのあいだより高いとき（幅195px の家族の人）は、ボタンのある下の端が下のタブより上にあればよい
-                    if ((!tall && st.top < st.ceil - 0.5) || st.bottom > st.floor + 0.5) bad.push(`${tag}: 一言が帯・下のタブにかかる top=${Math.round(st.top)} bottom=${Math.round(st.bottom)} ceil=${Math.round(st.ceil)} floor=${Math.round(st.floor)}`);
+                    const tall = st.bottom - st.top > st.floor - st.ceil - 8;   // R230: 上下4pxのゆとりで入りきるなら、一言の頭も見えていること
+                    // 第55回 R237: 入りきらないときは、ボタンを一言の上に出し（.tall）、一言の頭を上の帯の下にそろえる（ボタンも書き出しも見える。下の端は下のタブの裏に続いてよい）
+                    if (tall && (!st.tallCls || st.top < st.ceil - 0.5)) bad.push(`${tag}: 入りきらない一言の頭が上の帯に隠れる・ボタンが上に来ない tall=${st.tallCls} top=${Math.round(st.top)} ceil=${Math.round(st.ceil)}`);
+                    if (!tall && (st.top < st.ceil - 0.5 || st.bottom > st.floor + 0.5)) bad.push(`${tag}: 一言が帯・下のタブにかかる top=${Math.round(st.top)} bottom=${Math.round(st.bottom)} ceil=${Math.round(st.ceil)} floor=${Math.round(st.floor)}`);
                     st.btns.forEach(x => { if (!x.hits || x.bottom > st.floor + 0.5 || x.top < st.ceil - 0.5) bad.push(`${tag}: 「${x.v}」のボタンが隠れる・押せない`); });
                     // 「卵も外す」を指で押す: そのボタンに当たり、卵が入る。画面（タブ）は変わらない
                     const egg = st.btns.find(x => x.v === 'egg');
                     if (egg){ await p.mouse.click(egg.x, egg.y); await p.waitForTimeout(400);
-                        const z = await p.evaluate(where => ({tab, av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice()}), where);
+                        const z = await p.evaluate(([where, x, y]) => { const e = document.elementFromPoint(x, y), t = e && e.closest('[data-act]');
+                            return {tab, av: (where === 'settings' ? S.settings.avoid : S.family[0].avoid).slice(), held: !!document.querySelector('.tap-again'), age: Date.now() - vegiNoteAt, under: t ? t.dataset.act + '|' + (t.dataset.v || '') : ''}; }, [where, egg.x, egg.y]);
                         if (z.tab !== 'settings' || !z.av.includes('@egg')) bad.push(`${tag}: 「卵も外す」を押しても卵が入らない／ちがう所に当たった ${JSON.stringify(z)}`); }
                 }
                 await ctx.close();

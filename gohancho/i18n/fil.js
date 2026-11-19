@@ -2109,6 +2109,7 @@ GOHAN_I18N('fil', {
     "下に出しています": "Nasa ibaba",
     // 第52回 R226: ベジタリアン向けの一言
     "卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます": "Lalabas pa rin ang mga ulam na may itlog at gatas. Kung hindi mo kinakain, alisin gamit ang mga button sa ibaba",
+    "卵・乳製品を使う料理は出ます。食べないときは、上のボタンで外せます": "Lalabas pa rin ang mga ulam na may itlog at gatas. Kung hindi mo kinakain, alisin gamit ang mga button sa itaas",
     "もう一度押してください": "Pakipindot ulit",   // 第54回 R229
     "まだ読みこみ中の国があります。届いたら、ここに出します": "May mga bansang naglo-load pa. Lalabas dito ang resulta pagdating",   // 第53回 R225 の続き
     "卵も外す": "Walang itlog din",

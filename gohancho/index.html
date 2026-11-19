@@ -284,7 +284,7 @@ a{color:var(--ink);text-decoration:underline;text-underline-offset:.2em;text-dec
 .chip .lab[aria-pressed="true"]::before{content:none}
 .chip.inc{background:var(--accent-soft);border-color:transparent;color:inherit;opacity:.85;cursor:default}   /* 選んだなかまに入っている食材（えび・かに…を選んだときのえびなど） */
 .avoid-grp{display:flex;flex-direction:column;gap:4px;margin-top:4px}.avoid-more>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--accent);list-style:none}.avoid-more>summary::-webkit-details-marker{display:none}.avoid-more>summary::after{content:'▾'}.avoid-more[open]>summary::after{content:'▴'}.avoid-sum{margin:6px 0 0;padding:6px 10px;border-radius:8px;background:var(--accent-soft)}
-.diet-vegi-note{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 10px;border-radius:10px;background:#fff8ee;color:#3a2a1f}.diet-vegi-note p{margin:0;overflow-wrap:anywhere}   /* 第52回 R226: ベジタリアン向けを選んだときの一言（⚠ の札と同じ生成りの地。青は使わない） */
+.diet-vegi-note{display:flex;flex-direction:column;gap:4px;margin:2px 0;padding:6px 10px;border-radius:10px;background:#fff8ee;color:#3a2a1f}.diet-vegi-note p{margin:0;overflow-wrap:anywhere}.diet-vegi-note.tall{flex-direction:column-reverse}   /* 第52回 R226: ベジタリアン向けを選んだときの一言（⚠ の札と同じ生成りの地。青は使わない） */
 .kcal-note{display:flex;flex-direction:column;gap:2px;margin:8px 0 0;padding:8px 10px;border-radius:var(--r-sm, 10px);background:var(--surface-2);overflow-wrap:anywhere}
 .kcal-note .kc-v{font-weight:600;font-size:var(--fs14)}
 #diet-card .check span{min-width:0;overflow-wrap:anywhere;hyphens:auto}
@@ -2083,7 +2083,7 @@ nav.tabs.two svg{padding-inline:3px}
 #ns-input::-webkit-search-cancel-button,#search-input::-webkit-search-cancel-button{filter:grayscale(1)}   /* 料理名から・材料からの検索欄: 入力欄の × を青くしない */
 #ns-results .match{content-visibility:visible}
 @media (max-width:299px){.ns-sec>.sec-head{display:none}.ns-sec form[data-form="ns"]>button[type="submit"]{display:none}.ns-sec .ph-ex{display:none}.ns-tier>.sec-head{flex-direction:row;align-items:baseline;flex-wrap:wrap;column-gap:var(--s8)}}   /* 第51回 R221: 幅195px などでは、見出し（下のタブの「料理名」と同じ）と説明をたたみ、「さがす」のボタンも出さない（入れるとすぐさがす。改行キーでもさがす）。最初の画面に1件目のカードが見えるように */   /* 料理名から: 描き直しても、画面の外のカードを仮の高さにしない（下のカードが動かないように） */
-.ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}.ns-wstat{min-height:4.2em}
+.ns-tier+.ns-tier{margin-top:16px}.ns-hid{margin-top:6px}.ns-wstat{min-height:4.8em}.ns-still{display:block}   /* 第55回 R238: 2つの文を別の行に。幅390px では多くの言語で3行になるので、はじめから3行分（1.6行の高さ×3）をとる（読みこみ中…から2つの文に変わっても、下の3段目が動かない） */
 nav.tabs.two button{flex-direction:column;gap:0}nav.tabs.two svg{width:20px;height:20px;padding:1px 2px}   /* 調理道具のタブを足して6〜7つ: 幅195は3〜4列×2段。1つ 44px 以上のまま、絵の下に短い名前（横に並べると短い名前が入らない言語があった） */
 .tt-sec .tt-step{margin:var(--s8) 0}.tt-sec .chips{gap:8px}.tt-sec .chip .tt-n{font-size:var(--fs12);color:var(--muted);margin-inline-start:.35em;font-weight:400;white-space:nowrap}.tt-sec .chip{flex-wrap:wrap;row-gap:0;overflow-wrap:normal}.tt-sec .chip .tt-l{overflow-wrap:break-word}   /* R150: 品数（3 món）は折り返さず、入らないときは名前の下の行へ。名前は語の切れ目で折る（語の途中で折れない） */.tt-sec .chip[aria-pressed="true"] .tt-n{color:inherit}
 .tt-sh h3 .tt-n{font-size:var(--fs12);color:var(--muted);font-weight:400;margin-inline-start:.5em}
@@ -5993,6 +5993,14 @@ function chipKeyOf(el){ const b = el.closest('[data-act]') || el, fm = b.closest
 // 受けなかったときは、ボタンを光らせて、横に「もう一度押してください」を1.5秒出す（黄色い輪だけでは気づかずに先へ進んでいた）
 let spotTap = null;
 const SPOT_MS = 600;
+// 第55回 R233（安全）: アプリが自分で画面を送った分（押した所を保つ holdView・一言を見せる送り・タブの切りかえなど）は、すべて「アプリが動かした」に数える
+// （holdView の送りを人のスクロールと見なして、2回目が指の下に来た別のチップ（小麦・かに・ヴィーガン向け）を押していた）。
+// アプリの送りは window.scrollBy / scrollTo / scrollIntoView を通るので、そこで動いた分を足す。人のスクロール（指・ホイール・キー・テストの道具の送り）はここを通らない
+(function(){
+    const wrap = f => function(...a){ const b = window.scrollY; const r = f.apply(this, a); const m = window.scrollY - b; if (m && spotTap) spotTap.appWin += m; return r; };
+    window.scrollBy = wrap(window.scrollBy); window.scrollTo = wrap(window.scrollTo); window.scroll = wrap(window.scroll);
+    const siv = Element.prototype.scrollIntoView; Element.prototype.scrollIntoView = wrap(siv);
+})();
 function tapAgain(el){
     chipHeld(el);
     try{
@@ -10529,12 +10537,12 @@ function dietBundleToggle(list, k, owner){
 // 送るのは、いちばん近いスクロールする入れ物（設定・家族の人はページ、はじめての設定はシートの中）。上の固定の帯（設定のタブの列など）にもかからないようにする
 // いちばん近い、縦にスクロールする入れ物（なければ null = ページ）
 function scrollerOf(el){ for (let a = el && el.parentElement; a && a !== document.body; a = a.parentElement){ const cs = getComputedStyle(a); if (/(auto|scroll)/.test(cs.overflowY) && a.scrollHeight > a.clientHeight + 1) return a; } return null; }
-function revealAboveBars(el){
+function revealAboveBars(el, fit){
     if (!el || !el.getBoundingClientRect) return;
     const sc = scrollerOf(el);
     const box = sc ? sc.getBoundingClientRect() : {top: 0, bottom: innerHeight};
     let floor = Math.min(innerHeight, box.bottom), ceil = Math.max(0, box.top);
-    const r = el.getBoundingClientRect();
+    let r = el.getBoundingClientRect();
     document.querySelectorAll('nav.tabs, .actionbar, .set-tabs-bar, .sheet-foot, .sheet-actions').forEach(b => {
         if (b.contains(el) || el.contains(b)) return;
         const q = b.getBoundingClientRect(), pos = getComputedStyle(b).position;
@@ -10543,25 +10551,45 @@ function revealAboveBars(el){
         else if (q.bottom > ceil && q.top <= ceil + 1) ceil = q.bottom;
     });
     const room = floor - ceil - 8;   // 第54回 R230: 上下 4px のゆとりで入りきれば、一言の頭を上の帯の下にそろえる
+    // fit(高さ, 入る高さ): 入りきらないときに並びを変える（第55回 R237: 一言の上にボタンを出す）。true なら、変えたあとの頭を上の帯の下にそろえる
+    const topFirst = !!(fit && room > 0 && fit(r.height, room)); if (fit) r = el.getBoundingClientRect();
     let d = 0;
-    if (r.bottom > floor - 4) d = r.bottom - (floor - 4);
-    if (r.top - d < ceil + 4 && r.height <= room) d = r.top - (ceil + 4);   // 上の帯にかかるときは下げる。一言が入りきらないほど高い（幅195px の家族の人など）ときは、押すボタンのある下の端を下のタブの上にそろえる
-    if (room <= 0 || Math.abs(d) < 1) return;
+    if (topFirst) d = r.top - (ceil + 4);
+    else {
+        if (r.bottom > floor - 4) d = r.bottom - (floor - 4);
+        if (r.top - d < ceil + 4 && r.height <= room) d = r.top - (ceil + 4);
+    }   // 上の帯にかかるときは下げる。入りきらないほど高く、並びを変えない（fit がない）ときは、押すボタンのある下の端を下のタブの上にそろえる
+    if (room <= 0 || Math.abs(d) < 1) return 0;
     // アプリが送った分は、すばやい2回押しの見分け（spotTap）に足しておく（人が動かしたのではない）
-    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; if (spotTap && spotTap.sc === sc) spotTap.appSc += sc.scrollTop - b0; }
-    else { const b0 = scrollY; window.scrollBy(0, d); if (spotTap) spotTap.appWin += scrollY - b0; }
+    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; const m = sc.scrollTop - b0; if (spotTap && spotTap.sc === sc) spotTap.appSc += m; return m; }
+    const b0 = scrollY; window.scrollBy(0, d); return scrollY - b0;   // 動かした分（0 なら動かしていない）。spotTap には window.scrollBy の包みが足す
 }
 let vegiNoteAt = 0;   // R227: 一言とボタンを出した・送った時刻（すぐあとの押しは、ボタンが指の下に来ただけとみなして受けない）
+// 第55回 R237: 一言が上の帯と下のタブのあいだに入りきらないとき（幅195px のドイツ語の家族の人など）は、ボタンを一言の上に出し（.tall）、文も「上のボタン」にする。
+// 一言の頭を上の帯の下にそろえるので、ボタンも一言の書き出しも見える。描き直しても同じ形で出すよう、押した束・幅・言語ごとに覚えておく
+const vegiTall = new Set();
+const vegiTallKey = act => act + '|' + innerWidth + '|' + LANG;
+const VEGI_NOTE = tall => tall ? t('卵・乳製品を使う料理は出ます。食べないときは、上のボタンで外せます') : t('卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます');
 function revealVegiNote(scope, act){
     // 押した束のボタン（act）と同じまとまりにある一言を選ぶ（設定の画面に、家族の人のまとまりも並ぶことがあるため）
-    const run = () => { const root = document.querySelector(scope); const n = root && [...root.querySelectorAll('.diet-vegi-note')].find(x => { const g = x.closest('.diet-bundles'); return !act || (g && g.querySelector(`[data-act="${act}"]`)); }); if (n){ revealAboveBars(n); vegiNoteAt = Date.now(); } };
+    // 第55回 r233: 0.6秒の守り（vegiNoteAt）を始めるのは、一言を出したとき（1回目）と、画面を実際に送ったときだけ。たしかめ直しで動かさなかったとき・描き直しで同じ所に出し直しただけのときは始め直さない
+    //（遅い端末・描き直しのあとに たしかめ直しが遅れて、読んでから押した「卵も外す」まで受けていなかった）
+    let first = true;
+    const run = () => { const root = document.querySelector(scope); const n = root && [...root.querySelectorAll('.diet-vegi-note')].find(x => { const g = x.closest('.diet-bundles'); return !act || (g && g.querySelector(`[data-act="${act}"]`)); });
+        if (!n) return;
+        let flip = false;   // R237: 並びを変えたら、ボタンが動いたので 0.6 秒の守りを始め直す
+        const fit = (h, room) => { if (!n.querySelector('.diet-add')) return false; const was = n.classList.contains('tall'), tall = was ? h > room - 24 : h > room;   // 文が少し短くなって入りそうでも、行き来しないよう 24px のゆとり
+            if (tall !== was){ flip = true; n.classList.toggle('tall', tall); const p = n.querySelector('p'); if (p) p.textContent = VEGI_NOTE(tall); if (act){ const k = vegiTallKey(act); if (tall) vegiTall.add(k); else vegiTall.delete(k); } }
+            return tall; };
+        const moved = revealAboveBars(n, fit); if (first || flip || Math.abs(moved) >= 1) vegiNoteAt = performance.now(); first = false; };   // performance.now: 押しの時刻（イベントの timeStamp）とくらべる
     run(); requestAnimationFrame(() => { run(); setTimeout(run, 120); });   // 描き直し・字の読みこみで高さが変わっても、もう一度たしかめる
 }
 function dietBundleHtml(list, act, famAct){
     const b = Object.keys(DIET_BUNDLES).map(k => { const on = dietBundleOn(list, k); return `<button class="chip diet-bundle" data-act="${act}" data-v="${k}" aria-pressed="${on}">${esc(dietBundleLabel(k))}</button>`; }).join('');
     // 第52回 R226（安全）: ベジタリアン向けを選んでも、卵・乳製品は外さない（勝手に外さない）。選んだときに、そのことを一言で知らせ、卵・乳製品も外すボタンを添える（押すと、下のなかまのチップと同じに足す）
     const fams = new Set(list.map(avoidFamOf).filter(Boolean)), lack = ['egg', 'dairy'].filter(f => !fams.has(f));
-    const vegiNote = dietBundleOn(list, 'vegi') && lack.length ? `<div class="diet-vegi-note" role="note"><p class="small">${esc(t('卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます'))}</p>${famAct ? `<div class="chips">${lack.map(f => `<button type="button" class="chip diet-add" data-act="${famAct}" data-v="${f}">${esc(f === 'egg' ? t('卵も外す') : t('乳製品も外す'))}</button>`).join('')}</div>` : ''}</div>` : '';
+    const tall = !!famAct && vegiTall.has(vegiTallKey(act));   // R237: 入りきらなかった形を覚えていれば、その形で描く
+    const vegiNote = dietBundleOn(list, 'vegi') && lack.length ? `<div class="diet-vegi-note${tall ? ' tall' : ''}" role="note"><p class="small">${esc(VEGI_NOTE(tall))}</p>${famAct ? `<div class="chips">${lack.map(f => `<button type="button" class="chip diet-add" data-act="${famAct}" data-v="${f}">${esc(f === 'egg' ? t('卵も外す') : t('乳製品も外す'))}</button>`).join('')}</div>` : ''}</div>` : '';
     return `<div class="avoid-grp diet-bundles"><span class="small muted">${esc(t('まとめて選ぶ（食の決まり）'))}</span><div class="chips">${b}</div>${vegiNote}<p class="small muted avoid-hint">${esc(t('選ぶと、下のチップがまとめて入ります。そのあとも足したり外したりできます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。'))}</p></div>`;
 }
 // 苦手のチップ: 「なかまでまとめて」（いまの国の料理に出てくるなかまだけ）と「1つずつ」の2つに分けて出す。
@@ -16179,12 +16207,13 @@ function nsResultsHtml(q){
     const sameCards = S0.same.filter(id => byHit.has(id)).map(id => nsCard(byHit.get(id), '')).join('');
     const worldCards = (S0.world || []).filter(id => bySim.has(id)).map(id => simCard(bySim.get(id))).join('');
     // 第54回 R231: 2段目だけが空のときも、読みこみ中の国が残っていればそのことを添える（届いて似た料理があれば、いちばん下に足す）
-    const stillW = nsLoading ? ' ' + t('まだ読みこみ中の国があります。届いたら、ここに出します') : '';
+    // 第55回 R238: 2つの文は行を分ける（英語で “No similar dishes found Some countries…” が1つの文に読めた）。行を分けるのは .ns-still（display:block）。17言語とも同じ形
+    const stillW = nsLoading ? `<span class="ns-still">${esc(t('まだ読みこみ中の国があります。届いたら、ここに出します'))}</span>` : '';
     const wLate = S0.more.some(x => x.k === 'w' || x.k === 'w0');   // あとから届いた似た料理は、いちばん下に出している
-    const wStat = S0.world ? (worldCards ? '' : wLate ? t('下に出しています') : t('似た料理は見つかりませんでした') + stillW) : t('読みこみ中…');
+    const wStat = S0.world ? (worldCards ? '' : wLate ? esc(t('下に出しています')) : esc(t('似た料理は見つかりませんでした')) + stillW) : esc(t('読みこみ中…'));   // 中身は HTML（esc 済み）
     const tier2 = S0.wInline
-        ? `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>${worldCards ? `<div class="list dlist">${worldCards}</div>` : `<div class="small muted ns-wstat">${esc(wStat)}</div>`}</div>`
-        : `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div><div class="small muted ns-wstat" role="status">${esc(S0.world ? (worldCards || wLate ? t('下に出しています') : t('似た料理は見つかりませんでした') + stillW) : t('読みこみ中…'))}</div></div>`;
+        ? `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div>${worldCards ? `<div class="list dlist">${worldCards}</div>` : `<div class="small muted ns-wstat">${wStat}</div>`}</div>`
+        : `<div class="ns-tier" data-tier="world"><div class="sec-head"><h3>${esc(t('世界の似た料理'))}</h3></div><div class="small muted ns-wstat" role="status">${S0.world ? (worldCards || wLate ? esc(t('下に出しています')) : esc(t('似た料理は見つかりませんでした')) + stillW) : esc(t('読みこみ中…'))}</div></div>`;
     const tier3 = twists.length ? `<div class="ns-tier" data-tier="twist"><div class="sec-head"><h3>${esc(t('ひとひねり'))}</h3></div>
         <div class="list dlist">${twists.map(tw => nsCard(tw, `<span class="ings">${tw.changes.map(c => esc(c)).join(t('・'))}</span>`)).join('')}</div></div>` : '';
     const head = id => id === 'world' ? `<div class="sec-head ns-wlate" data-k="h:world"><h3>${esc(t('世界の似た料理'))}</h3></div>` : `<div class="sec-head ns-more" data-k="h:more"><h4>${esc(t('ほかの国からも見つかりました'))}</h4></div>`;
@@ -16215,7 +16244,7 @@ function nsPaint(){
             o.replaceWith(n); continue;
         }
         if (n.dataset.tier && ids(o) === ids(n)){   // 同じ料理の並び: 見出しの品数・2段目の1行の字だけ差しかえる
-            ['.sec-head .hint', '.ns-wstat'].forEach(sel => { const a = o.querySelector(sel), z = n.querySelector(sel); if (a && z && a.textContent !== z.textContent){ if (sel === '.ns-wstat') a.style.minHeight = a.offsetHeight + 'px'; a.textContent = z.textContent; } else if (!!a !== !!z) o.replaceWith(n); });   // 2段目の1行は、字が短くなっても高さを変えない（下の3段目が動かないように）
+            ['.sec-head .hint', '.ns-wstat'].forEach(sel => { const a = o.querySelector(sel), z = n.querySelector(sel); if (a && z && a.innerHTML !== z.innerHTML){ if (sel === '.ns-wstat') a.style.minHeight = a.offsetHeight + 'px'; a.innerHTML = z.innerHTML; } else if (!!a !== !!z) o.replaceWith(n); });   // R238: .ns-wstat は2行（.ns-still）のことがあるので、形ごと写す   // 2段目の1行は、字が短くなっても高さを変えない（下の3段目が動かないように）
             continue;
         }
         if (!o.isEqualNode(n)) o.replaceWith(n);
@@ -17380,14 +17409,19 @@ document.addEventListener('click', e => {
         if (near && !touch && e.detail > 1 && Date.now() < chipTap.until){ chipHeld(el); return; }
     }
     // 第53回 R227（安全）: ベジタリアン向けを押した直後（0.6秒のうち）は、出たばかり・送ったばかりの「卵も外す」「乳製品も外す」を受けない（すばやい2回押しの2回目が、指の下に来たボタンに当たって、卵・乳製品が勝手に入った）
-    if (el.classList.contains('diet-add') && Date.now() - vegiNoteAt < 600){ tapAgain(el); return; }
+    // r233: 時刻は、押しを処理した時刻ではなく、指を当てた時刻（e.timeStamp）でくらべる。重い端末では1回目の描き直しのあいだ2回目の押しが待たされ、処理するころには 0.6 秒を過ぎて、守りが効かなかった
+    const tapAt = e.timeStamp || performance.now();
+    if (el.classList.contains('diet-add') && tapAt < vegiNoteAt + 600){ tapAgain(el); return; }   // 一言が出る前に当てた指も受けない
     // 第54回 R228: 同じ場所（24px のうち）への 0.6 秒のうちの押しで、1回目とちがうボタンに当たったら受けない（すばやい2回押しの2回目が、送った画面・変わった並び・切りかわった段の、指の下に来たボタンを押していた）。同じボタンの押し直し（数の＋−など）は通す
     // 止めるのは、押すと設定や献立が切りかわるボタン（チップ・押した形を持つボタン・人数・買い物の「済み」・作り方の段）だけ。開く・決める・元に戻すなどの流れのボタンは止めない
-    const spotGuard = el.classList.contains('chip') || !!el.closest('.chip') || el.hasAttribute('aria-pressed') || /^(servings|shop-ok|stage|set-tabs-step)$/.test(el.dataset.act || '');
+    const spotGuard = el.classList.contains('chip') || !!el.closest('.chip') || el.hasAttribute('aria-pressed') || /^(servings|shop-ok|stage|set-tabs-step)$/.test(el.dataset.act || '')
+        || (el.dataset.act === 'set-jump' && !!spotTap && spotTap.act === 'set-tabs-step');   // 第55回 R235: 「次へ」（set-tabs-step）の2回目が、列が送られて指の下に来たタブ（「家族へ」など）に当たり画面が移っていた。止めるのは「次へ」のすぐあとのタブだけ（タブを続けて押す・選んだタブに合わせて列が動いたあとの次のタブは止めない）
     // 指の下に来たのが、アプリが動かした（画面を送った・並びが変わった）ためのときだけ止める。人が画面を動かした（スクロールした）ときは止めない（ページと、いちばん近いスクロールの入れ物の位置で見る）
     const stillPage = spotTap && Math.abs(scrollY - (spotTap.sy + spotTap.appWin)) < 2 && (!spotTap.sc || (spotTap.sc.isConnected && Math.abs(spotTap.sc.scrollTop - (spotTap.st + spotTap.appSc)) < 2))   /* 入れ物が作り直された（シートの描き直し）ときは、人が動かしたかわからないので止めない */;
-    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && Date.now() - spotTap.t < SPOT_MS && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
-    if (e.detail > 0){ const sc = scrollerOf(el); spotTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), t: Date.now(), sy: scrollY, appWin: 0, sc, st: sc ? sc.scrollTop : 0, appSc: 0}; }
+    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && tapAt - spotTap.t < SPOT_MS && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
+    if (e.detail > 0){ const sc = scrollerOf(el), rec = spotTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), act: el.dataset.act || '', t: tapAt, sy: scrollY, appWin: 0, sc, st: sc ? sc.scrollTop : 0, appSc: 0};
+        // R233: この押しの処理（描き直し・押した所を保つ送り・ブラウザの位置合わせ）で動いた分も、アプリが動かした分。処理が終わった直後の位置を、もとの位置とみなす
+        queueMicrotask(() => { if (spotTap !== rec) return; rec.sy = scrollY - rec.appWin; if (rec.sc && rec.sc.isConnected) rec.st = rec.sc.scrollTop - rec.appSc; }); }
     const act = el.dataset.act, id = el.dataset.id;
     if (recheckDue && !CHIP_LATER.has(act)) flushRecheck(false);   // ほかのボタン（決める・献立へ など）は、確かめを済ませてから
     tapAnchor = chip && el.closest('#view') ? el : null;

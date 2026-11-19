@@ -2109,6 +2109,7 @@ GOHAN_I18N('it', {
     "下に出しています": "Mostrati più sotto",
     // 第52回 R226: ベジタリアン向けの一言
     "卵・乳製品を使う料理は出ます。食べないときは、下のボタンで外せます": "I piatti con uova e latticini continueranno a comparire. Se non li mangi, toglili con i pulsanti qui sotto",
+    "卵・乳製品を使う料理は出ます。食べないときは、上のボタンで外せます": "I piatti con uova e latticini continueranno a comparire. Se non li mangi, toglili con i pulsanti qui sopra",
     "もう一度押してください": "Tocca di nuovo",   // 第54回 R229
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Alcuni paesi sono ancora in caricamento. I risultati appariranno qui all’arrivo",   // 第53回 R225 の続き
     "卵も外す": "Anche senza uova",
