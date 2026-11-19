@@ -14592,6 +14592,5270 @@
       "date": "2026-11-01",
       "thumb": "t/rakkyo.webp",
       "v": "2ff170a9"
+    },
+    "asayakizake": {
+      "file": "asayakizake.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/asayakizake.webp",
+      "v": "da5307b5"
+    },
+    "br_abobrinha_recheada": {
+      "file": "br_abobrinha_recheada.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_abobrinha_recheada.webp",
+      "v": "bb12470e"
+    },
+    "br_abobrinha_soja": {
+      "file": "br_abobrinha_soja.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_abobrinha_soja.webp",
+      "v": "c83db25f"
+    },
+    "br_arroz_feijao_couve": {
+      "file": "br_arroz_feijao_couve.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_arroz_feijao_couve.webp",
+      "v": "6d637247"
+    },
+    "br_berinjela_recheada": {
+      "file": "br_berinjela_recheada.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_berinjela_recheada.webp",
+      "v": "dd2f4faf"
+    },
+    "br_berinjela_refogada": {
+      "file": "br_berinjela_refogada.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_berinjela_refogada.webp",
+      "v": "e2289a9d"
+    },
+    "br_brocolis_alho": {
+      "file": "br_brocolis_alho.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_brocolis_alho.webp",
+      "v": "473e47cd"
+    },
+    "br_calabresa": {
+      "file": "br_calabresa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_calabresa.webp",
+      "v": "f240da60"
+    },
+    "br_caldo_feijao_rapido": {
+      "file": "br_caldo_feijao_rapido.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_caldo_feijao_rapido.webp",
+      "v": "1ea04adc"
+    },
+    "br_caldo_frango_legumes": {
+      "file": "br_caldo_frango_legumes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_caldo_frango_legumes.webp",
+      "v": "d032eba6"
+    },
+    "br_caldo_ovos": {
+      "file": "br_caldo_ovos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_caldo_ovos.webp",
+      "v": "91162751"
+    },
+    "br_camaraoalho": {
+      "file": "br_camaraoalho.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_camaraoalho.webp",
+      "v": "f1134f66"
+    },
+    "br_canja_grossa": {
+      "file": "br_canja_grossa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_canja_grossa.webp",
+      "v": "12205c5a"
+    },
+    "br_chuchu_ovos": {
+      "file": "br_chuchu_ovos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_chuchu_ovos.webp",
+      "v": "b5db9b27"
+    },
+    "br_cogumelos_manteiga": {
+      "file": "br_cogumelos_manteiga.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_cogumelos_manteiga.webp",
+      "v": "c2682228"
+    },
+    "br_creme_abobrinha": {
+      "file": "br_creme_abobrinha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_creme_abobrinha.webp",
+      "v": "4dd0134f"
+    },
+    "br_creme_ervilha_rapido": {
+      "file": "br_creme_ervilha_rapido.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_creme_ervilha_rapido.webp",
+      "v": "201c51c2"
+    },
+    "br_escondidinho_lentilha": {
+      "file": "br_escondidinho_lentilha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_escondidinho_lentilha.webp",
+      "v": "882a3f4d"
+    },
+    "br_filefrango": {
+      "file": "br_filefrango.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_filefrango.webp",
+      "v": "8ae61755"
+    },
+    "br_fritada_espinafre": {
+      "file": "br_fritada_espinafre.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_fritada_espinafre.webp",
+      "v": "ba06b71c"
+    },
+    "br_grao_bico_couve": {
+      "file": "br_grao_bico_couve.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_grao_bico_couve.webp",
+      "v": "5095f151"
+    },
+    "br_mingau_aveia": {
+      "file": "br_mingau_aveia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_mingau_aveia.webp",
+      "v": "b2d4ff79"
+    },
+    "br_mingau_fuba": {
+      "file": "br_mingau_fuba.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_mingau_fuba.webp",
+      "v": "c64fd12f"
+    },
+    "br_misto_quente": {
+      "file": "br_misto_quente.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_misto_quente.webp",
+      "v": "8ed9ebc9"
+    },
+    "br_moqueca_cogumelos": {
+      "file": "br_moqueca_cogumelos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_moqueca_cogumelos.webp",
+      "v": "139a4a08"
+    },
+    "br_moqueca_ovos": {
+      "file": "br_moqueca_ovos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_moqueca_ovos.webp",
+      "v": "da3d0b24"
+    },
+    "br_moqueca_palmito": {
+      "file": "br_moqueca_palmito.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_moqueca_palmito.webp",
+      "v": "60d6571f"
+    },
+    "br_omelete_legumes": {
+      "file": "br_omelete_legumes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_omelete_legumes.webp",
+      "v": "c67b76fe"
+    },
+    "br_pao_de_queijo": {
+      "file": "br_pao_de_queijo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_pao_de_queijo.webp",
+      "v": "10fa3f95"
+    },
+    "br_peixegrelhado": {
+      "file": "br_peixegrelhado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_peixegrelhado.webp",
+      "v": "6915c9cc"
+    },
+    "br_picadinho_soja": {
+      "file": "br_picadinho_soja.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_picadinho_soja.webp",
+      "v": "1cc26916"
+    },
+    "br_pimentao_soja": {
+      "file": "br_pimentao_soja.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_pimentao_soja.webp",
+      "v": "9fa2d999"
+    },
+    "br_quibebe_abobora": {
+      "file": "br_quibebe_abobora.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_quibebe_abobora.webp",
+      "v": "64807ff7"
+    },
+    "br_sopa_cogumelos": {
+      "file": "br_sopa_cogumelos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_sopa_cogumelos.webp",
+      "v": "7052f164"
+    },
+    "br_sopa_couve_flor": {
+      "file": "br_sopa_couve_flor.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_sopa_couve_flor.webp",
+      "v": "2477a1f3"
+    },
+    "br_sopa_macarrao_ovo": {
+      "file": "br_sopa_macarrao_ovo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_sopa_macarrao_ovo.webp",
+      "v": "3f852e5d"
+    },
+    "br_sopa_quiabo": {
+      "file": "br_sopa_quiabo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_sopa_quiabo.webp",
+      "v": "e621ccb5"
+    },
+    "br_sopa_repolho_carne": {
+      "file": "br_sopa_repolho_carne.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_sopa_repolho_carne.webp",
+      "v": "a48638b0"
+    },
+    "br_strogonoff_cogumelos": {
+      "file": "br_strogonoff_cogumelos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_strogonoff_cogumelos.webp",
+      "v": "13c28c77"
+    },
+    "br_tapioca_coco": {
+      "file": "br_tapioca_coco.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_tapioca_coco.webp",
+      "v": "c3533d82"
+    },
+    "br_tofu_acebolado": {
+      "file": "br_tofu_acebolado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_tofu_acebolado.webp",
+      "v": "066634bf"
+    },
+    "br_vagem_tofu": {
+      "file": "br_vagem_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/br_vagem_tofu.webp",
+      "v": "7c982431"
+    },
+    "butacabbage": {
+      "file": "butacabbage.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/butacabbage.webp",
+      "v": "0d8a5c68"
+    },
+    "butamoyashi": {
+      "file": "butamoyashi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/butamoyashi.webp",
+      "v": "c41247d1"
+    },
+    "cn_baicai_dun_doufu": {
+      "file": "cn_baicai_dun_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_baicai_dun_doufu.webp",
+      "v": "8d3bc1ce"
+    },
+    "cn_di_san_xian": {
+      "file": "cn_di_san_xian.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_di_san_xian.webp",
+      "v": "e1b0e272"
+    },
+    "cn_douya_rousi": {
+      "file": "cn_douya_rousi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_douya_rousi.webp",
+      "v": "ee105329"
+    },
+    "cn_huanggua_roupian": {
+      "file": "cn_huanggua_roupian.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_huanggua_roupian.webp",
+      "v": "569b643f"
+    },
+    "cn_muer_chaodan": {
+      "file": "cn_muer_chaodan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_muer_chaodan.webp",
+      "v": "61169edf"
+    },
+    "cn_qincai_rousi": {
+      "file": "cn_qincai_rousi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_qincai_rousi.webp",
+      "v": "cc8083ea"
+    },
+    "cn_qingcai_doufu_tang": {
+      "file": "cn_qingcai_doufu_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_qingcai_doufu_tang.webp",
+      "v": "3197e68a"
+    },
+    "cn_sigua_dan_tang": {
+      "file": "cn_sigua_dan_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_sigua_dan_tang.webp",
+      "v": "73c37a07"
+    },
+    "cn_su_mapo_doufu": {
+      "file": "cn_su_mapo_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_su_mapo_doufu.webp",
+      "v": "bd02e61d"
+    },
+    "cn_xianggu_shaodoufu": {
+      "file": "cn_xianggu_shaodoufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_xianggu_shaodoufu.webp",
+      "v": "66295263"
+    },
+    "cn_xiaomi_zhou": {
+      "file": "cn_xiaomi_zhou.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_xiaomi_zhou.webp",
+      "v": "f0b43616"
+    },
+    "cn_xiapi_zicai_tang": {
+      "file": "cn_xiapi_zicai_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_xiapi_zicai_tang.webp",
+      "v": "b872169f"
+    },
+    "cn_xiaren_chaodan": {
+      "file": "cn_xiaren_chaodan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_xiaren_chaodan.webp",
+      "v": "a8a123ac"
+    },
+    "cn_xihongshi_doufu": {
+      "file": "cn_xihongshi_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_xihongshi_doufu.webp",
+      "v": "bd9b41cc"
+    },
+    "cn_yangcong_niurou": {
+      "file": "cn_yangcong_niurou.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_yangcong_niurou.webp",
+      "v": "aaa61dc1"
+    },
+    "cn_zhengdangeng": {
+      "file": "cn_zhengdangeng.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/cn_zhengdangeng.webp",
+      "v": "5c84eb24"
+    },
+    "de_blumenkohlgratin": {
+      "file": "de_blumenkohlgratin.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_blumenkohlgratin.webp",
+      "v": "bfab17d3"
+    },
+    "de_blumenkohlsuppe": {
+      "file": "de_blumenkohlsuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_blumenkohlsuppe.webp",
+      "v": "1b46be9a"
+    },
+    "de_bratkartoffeln_pilze": {
+      "file": "de_bratkartoffeln_pilze.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_bratkartoffeln_pilze.webp",
+      "v": "89900eb1"
+    },
+    "de_broetchen_kaese": {
+      "file": "de_broetchen_kaese.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_broetchen_kaese.webp",
+      "v": "683a374b"
+    },
+    "de_buchstabensuppe": {
+      "file": "de_buchstabensuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_buchstabensuppe.webp",
+      "v": "01e04ff2"
+    },
+    "de_eierflockensuppe": {
+      "file": "de_eierflockensuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_eierflockensuppe.webp",
+      "v": "7ba65a36"
+    },
+    "de_erbsencreme_schnell": {
+      "file": "de_erbsencreme_schnell.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_erbsencreme_schnell.webp",
+      "v": "c58b5da6"
+    },
+    "de_fischfilet": {
+      "file": "de_fischfilet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_fischfilet.webp",
+      "v": "161024ed"
+    },
+    "de_fischspinat": {
+      "file": "de_fischspinat.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_fischspinat.webp",
+      "v": "8ee8f2d4"
+    },
+    "de_fruehstuecksmuesli": {
+      "file": "de_fruehstuecksmuesli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_fruehstuecksmuesli.webp",
+      "v": "cd2e6a0c"
+    },
+    "de_gefuelltezucchini": {
+      "file": "de_gefuelltezucchini.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_gefuelltezucchini.webp",
+      "v": "97f4f8d9"
+    },
+    "de_gemuesetofu": {
+      "file": "de_gemuesetofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_gemuesetofu.webp",
+      "v": "724a5ec7"
+    },
+    "de_griessbrei": {
+      "file": "de_griessbrei.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_griessbrei.webp",
+      "v": "be565f5f"
+    },
+    "de_gurkenradieschen": {
+      "file": "de_gurkenradieschen.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_gurkenradieschen.webp",
+      "v": "b41a158e"
+    },
+    "de_hackpfanne": {
+      "file": "de_hackpfanne.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_hackpfanne.webp",
+      "v": "e3afcce2"
+    },
+    "de_haehnchenbrokkoli": {
+      "file": "de_haehnchenbrokkoli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_haehnchenbrokkoli.webp",
+      "v": "45ac41a3"
+    },
+    "de_haehnchenpfanne": {
+      "file": "de_haehnchenpfanne.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_haehnchenpfanne.webp",
+      "v": "c8c717df"
+    },
+    "de_haferbrei": {
+      "file": "de_haferbrei.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_haferbrei.webp",
+      "v": "b505894b"
+    },
+    "de_haferschleim": {
+      "file": "de_haferschleim.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_haferschleim.webp",
+      "v": "9d2a16b6"
+    },
+    "de_huehnerbruehe": {
+      "file": "de_huehnerbruehe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_huehnerbruehe.webp",
+      "v": "62dde3a7"
+    },
+    "de_kartoffelgulasch": {
+      "file": "de_kartoffelgulasch.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_kartoffelgulasch.webp",
+      "v": "5bceaca0"
+    },
+    "de_kohlrabisuppe": {
+      "file": "de_kohlrabisuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_kohlrabisuppe.webp",
+      "v": "67d85cbe"
+    },
+    "de_kuerbis_linsen_curry": {
+      "file": "de_kuerbis_linsen_curry.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_kuerbis_linsen_curry.webp",
+      "v": "de1a489d"
+    },
+    "de_leberkaese": {
+      "file": "de_leberkaese.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_leberkaese.webp",
+      "v": "960371d1"
+    },
+    "de_linseneintopf_veg": {
+      "file": "de_linseneintopf_veg.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_linseneintopf_veg.webp",
+      "v": "0988cc17"
+    },
+    "de_pilzzucchinipfanne": {
+      "file": "de_pilzzucchinipfanne.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_pilzzucchinipfanne.webp",
+      "v": "4c449ce6"
+    },
+    "de_rahmspinatei": {
+      "file": "de_rahmspinatei.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_rahmspinatei.webp",
+      "v": "9a7dd2c4"
+    },
+    "de_ruehrei": {
+      "file": "de_ruehrei.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_ruehrei.webp",
+      "v": "ff6f9a1b"
+    },
+    "de_ruehreipilze": {
+      "file": "de_ruehreipilze.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_ruehreipilze.webp",
+      "v": "233da42d"
+    },
+    "de_sauerkrautsuppe": {
+      "file": "de_sauerkrautsuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_sauerkrautsuppe.webp",
+      "v": "a4a5f77e"
+    },
+    "de_spinatsuppe": {
+      "file": "de_spinatsuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_spinatsuppe.webp",
+      "v": "509ec2ae"
+    },
+    "de_spitzkohltofu": {
+      "file": "de_spitzkohltofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_spitzkohltofu.webp",
+      "v": "f2ad167e"
+    },
+    "de_strammermax": {
+      "file": "de_strammermax.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_strammermax.webp",
+      "v": "8b96d10b"
+    },
+    "de_weisse_bohnen_eintopf": {
+      "file": "de_weisse_bohnen_eintopf.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_weisse_bohnen_eintopf.webp",
+      "v": "4a063772"
+    },
+    "de_zucchinisuppe": {
+      "file": "de_zucchinisuppe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/de_zucchinisuppe.webp",
+      "v": "f7e0b915"
+    },
+    "eg_arnabeetsalsa": {
+      "file": "eg_arnabeetsalsa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_arnabeetsalsa.webp",
+      "v": "27979220"
+    },
+    "eg_bamyaseyami": {
+      "file": "eg_bamyaseyami.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_bamyaseyami.webp",
+      "v": "8de13d5d"
+    },
+    "eg_batata_mashwiya": {
+      "file": "eg_batata_mashwiya.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_batata_mashwiya.webp",
+      "v": "e976b723"
+    },
+    "eg_beid_masluq": {
+      "file": "eg_beid_masluq.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_beid_masluq.webp",
+      "v": "93c79ffd"
+    },
+    "eg_beidlahma": {
+      "file": "eg_beidlahma.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_beidlahma.webp",
+      "v": "a8c7a766"
+    },
+    "eg_belila": {
+      "file": "eg_belila.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_belila.webp",
+      "v": "893faef2"
+    },
+    "eg_dora": {
+      "file": "eg_dora.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_dora.webp",
+      "v": "4bab37d4"
+    },
+    "eg_ful_medames_v": {
+      "file": "eg_ful_medames_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_ful_medames_v.webp",
+      "v": "f0cbfab5"
+    },
+    "eg_ful_tahina": {
+      "file": "eg_ful_tahina.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_ful_tahina.webp",
+      "v": "480bf53c"
+    },
+    "eg_gambarizebda": {
+      "file": "eg_gambarizebda.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_gambarizebda.webp",
+      "v": "91432932"
+    },
+    "eg_kosabelbeid": {
+      "file": "eg_kosabelbeid.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_kosabelbeid.webp",
+      "v": "5bf36fa6"
+    },
+    "eg_lahmabasal": {
+      "file": "eg_lahmabasal.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_lahmabasal.webp",
+      "v": "9b51bbf6"
+    },
+    "eg_roz_bel_laban": {
+      "file": "eg_roz_bel_laban.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_roz_bel_laban.webp",
+      "v": "e255997e"
+    },
+    "eg_samakcumin": {
+      "file": "eg_samakcumin.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_samakcumin.webp",
+      "v": "9315d8cb"
+    },
+    "eg_shaariyatamatem": {
+      "file": "eg_shaariyatamatem.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shaariyatamatem.webp",
+      "v": "f525a1f6"
+    },
+    "eg_shawarmafirakh": {
+      "file": "eg_shawarmafirakh.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shawarmafirakh.webp",
+      "v": "7f54d824"
+    },
+    "eg_shoofan_laban": {
+      "file": "eg_shoofan_laban.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shoofan_laban.webp",
+      "v": "2b1c3101"
+    },
+    "eg_shorbatarnabeet": {
+      "file": "eg_shorbatarnabeet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbatarnabeet.webp",
+      "v": "8a30dc38"
+    },
+    "eg_shorbatfirakhkhodar": {
+      "file": "eg_shorbatfirakhkhodar.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbatfirakhkhodar.webp",
+      "v": "15f3be6b"
+    },
+    "eg_shorbatgambari": {
+      "file": "eg_shorbatgambari.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbatgambari.webp",
+      "v": "e03f8647"
+    },
+    "eg_shorbatkoronb": {
+      "file": "eg_shorbatkoronb.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbatkoronb.webp",
+      "v": "65812766"
+    },
+    "eg_shorbatsamak": {
+      "file": "eg_shorbatsamak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbatsamak.webp",
+      "v": "a436e6be"
+    },
+    "eg_shorbetsabanekh": {
+      "file": "eg_shorbetsabanekh.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_shorbetsabanekh.webp",
+      "v": "5214385f"
+    },
+    "eg_tagenkhodar": {
+      "file": "eg_tagenkhodar.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_tagenkhodar.webp",
+      "v": "0f65bad2"
+    },
+    "eg_tamr_fakha": {
+      "file": "eg_tamr_fakha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_tamr_fakha.webp",
+      "v": "2daa27d8"
+    },
+    "eg_zabadi_asal": {
+      "file": "eg_zabadi_asal.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/eg_zabadi_asal.webp",
+      "v": "da749852"
+    },
+    "es_almejascaldo": {
+      "file": "es_almejascaldo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_almejascaldo.webp",
+      "v": "6aa2bcc4"
+    },
+    "es_alubias_estofadas": {
+      "file": "es_alubias_estofadas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_alubias_estofadas.webp",
+      "v": "208d43a3"
+    },
+    "es_arroz_caldoso": {
+      "file": "es_arroz_caldoso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_arroz_caldoso.webp",
+      "v": "b834439d"
+    },
+    "es_berenjenasrellenas": {
+      "file": "es_berenjenasrellenas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_berenjenasrellenas.webp",
+      "v": "ae9dfa50"
+    },
+    "es_calabacinplancha": {
+      "file": "es_calabacinplancha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_calabacinplancha.webp",
+      "v": "e6c00077"
+    },
+    "es_calamaresplancha": {
+      "file": "es_calamaresplancha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_calamaresplancha.webp",
+      "v": "9c9922bf"
+    },
+    "es_caldopollo": {
+      "file": "es_caldopollo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_caldopollo.webp",
+      "v": "c306553e"
+    },
+    "es_churros": {
+      "file": "es_churros.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_churros.webp",
+      "v": "9709e98a"
+    },
+    "es_coliflorajoarriero": {
+      "file": "es_coliflorajoarriero.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_coliflorajoarriero.webp",
+      "v": "2fc32bb4"
+    },
+    "es_crema_espinacas": {
+      "file": "es_crema_espinacas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_crema_espinacas.webp",
+      "v": "574eaedd"
+    },
+    "es_crema_guisantes": {
+      "file": "es_crema_guisantes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_crema_guisantes.webp",
+      "v": "211c7a5a"
+    },
+    "es_cremacoliflor": {
+      "file": "es_cremacoliflor.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_cremacoliflor.webp",
+      "v": "fcc78eb7"
+    },
+    "es_cremaesparragos": {
+      "file": "es_cremaesparragos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_cremaesparragos.webp",
+      "v": "8e04f6dd"
+    },
+    "es_espinacasgarbanzos": {
+      "file": "es_espinacasgarbanzos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_espinacasgarbanzos.webp",
+      "v": "a3285eee"
+    },
+    "es_fruta": {
+      "file": "es_fruta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_fruta.webp",
+      "v": "5b302045"
+    },
+    "es_gachas_avena": {
+      "file": "es_gachas_avena.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_gachas_avena.webp",
+      "v": "231de088"
+    },
+    "es_garbanzos_espinacas": {
+      "file": "es_garbanzos_espinacas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_garbanzos_espinacas.webp",
+      "v": "dfea49e4"
+    },
+    "es_lentejas_verduras": {
+      "file": "es_lentejas_verduras.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_lentejas_verduras.webp",
+      "v": "12e337dc"
+    },
+    "es_lomoplancha": {
+      "file": "es_lomoplancha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_lomoplancha.webp",
+      "v": "0abcde47"
+    },
+    "es_menestraverde": {
+      "file": "es_menestraverde.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_menestraverde.webp",
+      "v": "b9ddbee7"
+    },
+    "es_paella_verduras": {
+      "file": "es_paella_verduras.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_paella_verduras.webp",
+      "v": "8b250549"
+    },
+    "es_pisto_pan": {
+      "file": "es_pisto_pan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_pisto_pan.webp",
+      "v": "3e4b36c4"
+    },
+    "es_pistohuevo": {
+      "file": "es_pistohuevo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_pistohuevo.webp",
+      "v": "0338c3f2"
+    },
+    "es_pollo_plancha": {
+      "file": "es_pollo_plancha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_pollo_plancha.webp",
+      "v": "114f5bb8"
+    },
+    "es_revuelto": {
+      "file": "es_revuelto.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_revuelto.webp",
+      "v": "3ed2fa97"
+    },
+    "es_revueltosetas": {
+      "file": "es_revueltosetas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_revueltosetas.webp",
+      "v": "8d18e039"
+    },
+    "es_sopa_picadillo": {
+      "file": "es_sopa_picadillo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_sopa_picadillo.webp",
+      "v": "4ac69b45"
+    },
+    "es_sopa_semola": {
+      "file": "es_sopa_semola.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_sopa_semola.webp",
+      "v": "8b02bab6"
+    },
+    "es_sopaacelgas": {
+      "file": "es_sopaacelgas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_sopaacelgas.webp",
+      "v": "d5199e50"
+    },
+    "es_sopachampijamon": {
+      "file": "es_sopachampijamon.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_sopachampijamon.webp",
+      "v": "c204980e"
+    },
+    "es_tortillaatun": {
+      "file": "es_tortillaatun.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_tortillaatun.webp",
+      "v": "1e5ee049"
+    },
+    "es_tortillacalabacin": {
+      "file": "es_tortillacalabacin.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_tortillacalabacin.webp",
+      "v": "dcf6029e"
+    },
+    "es_tostada_jamon": {
+      "file": "es_tostada_jamon.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/es_tostada_jamon.webp",
+      "v": "22c0e70c"
+    },
+    "fr_artichautsbarigoule": {
+      "file": "fr_artichautsbarigoule.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_artichautsbarigoule.webp",
+      "v": "4dbeec2a"
+    },
+    "fr_auberginesprovencale": {
+      "file": "fr_auberginesprovencale.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_auberginesprovencale.webp",
+      "v": "4537fa80"
+    },
+    "fr_bavette": {
+      "file": "fr_bavette.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_bavette.webp",
+      "v": "7f849ad1"
+    },
+    "fr_bouillon_alphabet": {
+      "file": "fr_bouillon_alphabet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_bouillon_alphabet.webp",
+      "v": "df71f330"
+    },
+    "fr_bouillonpoulet": {
+      "file": "fr_bouillonpoulet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_bouillonpoulet.webp",
+      "v": "f5102b5c"
+    },
+    "fr_brochetteslegumes": {
+      "file": "fr_brochetteslegumes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_brochetteslegumes.webp",
+      "v": "3afb3f4e"
+    },
+    "fr_brocolisail": {
+      "file": "fr_brocolisail.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_brocolisail.webp",
+      "v": "0d40ac72"
+    },
+    "fr_champignonsfarcis": {
+      "file": "fr_champignonsfarcis.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_champignonsfarcis.webp",
+      "v": "9952856b"
+    },
+    "fr_compote": {
+      "file": "fr_compote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_compote.webp",
+      "v": "49d9b7cf"
+    },
+    "fr_concombre_froide": {
+      "file": "fr_concombre_froide.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_concombre_froide.webp",
+      "v": "58d506da"
+    },
+    "fr_consommeboeuf": {
+      "file": "fr_consommeboeuf.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_consommeboeuf.webp",
+      "v": "9f8c09a6"
+    },
+    "fr_cotelettes": {
+      "file": "fr_cotelettes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_cotelettes.webp",
+      "v": "042213ef"
+    },
+    "fr_courgettesfarcies": {
+      "file": "fr_courgettesfarcies.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_courgettesfarcies.webp",
+      "v": "192026d3"
+    },
+    "fr_couscous_pois_chiches": {
+      "file": "fr_couscous_pois_chiches.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_couscous_pois_chiches.webp",
+      "v": "9626b384"
+    },
+    "fr_endivesbraisees": {
+      "file": "fr_endivesbraisees.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_endivesbraisees.webp",
+      "v": "c55e9ced"
+    },
+    "fr_escalopecreme": {
+      "file": "fr_escalopecreme.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_escalopecreme.webp",
+      "v": "37bb720e"
+    },
+    "fr_fenouilbraise": {
+      "file": "fr_fenouilbraise.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_fenouilbraise.webp",
+      "v": "338dcf0c"
+    },
+    "fr_gratinchoufleur": {
+      "file": "fr_gratinchoufleur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_gratinchoufleur.webp",
+      "v": "e6eb1fca"
+    },
+    "fr_haricots_blancs_tomate": {
+      "file": "fr_haricots_blancs_tomate.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_haricots_blancs_tomate.webp",
+      "v": "95881154"
+    },
+    "fr_lentilles_carottes": {
+      "file": "fr_lentilles_carottes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_lentilles_carottes.webp",
+      "v": "584bd996"
+    },
+    "fr_meuniere": {
+      "file": "fr_meuniere.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_meuniere.webp",
+      "v": "48a834ea"
+    },
+    "fr_oeufs_coque": {
+      "file": "fr_oeufs_coque.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_oeufs_coque.webp",
+      "v": "72733e1c"
+    },
+    "fr_oeufscocotte": {
+      "file": "fr_oeufscocotte.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_oeufscocotte.webp",
+      "v": "ac256236"
+    },
+    "fr_omelettechampignons": {
+      "file": "fr_omelettechampignons.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_omelettechampignons.webp",
+      "v": "3ac564c4"
+    },
+    "fr_pates_tomates_olives": {
+      "file": "fr_pates_tomates_olives.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_pates_tomates_olives.webp",
+      "v": "0f22b78b"
+    },
+    "fr_petitspois_express": {
+      "file": "fr_petitspois_express.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_petitspois_express.webp",
+      "v": "39ca7263"
+    },
+    "fr_piperade": {
+      "file": "fr_piperade.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_piperade.webp",
+      "v": "229bf114"
+    },
+    "fr_poeleechampignons": {
+      "file": "fr_poeleechampignons.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_poeleechampignons.webp",
+      "v": "4132ed94"
+    },
+    "fr_poischichesblettes": {
+      "file": "fr_poischichesblettes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_poischichesblettes.webp",
+      "v": "f81319f6"
+    },
+    "fr_porridge_avoine": {
+      "file": "fr_porridge_avoine.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_porridge_avoine.webp",
+      "v": "23af8b4b"
+    },
+    "fr_ratatouille_riz": {
+      "file": "fr_ratatouille_riz.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_ratatouille_riz.webp",
+      "v": "9814023c"
+    },
+    "fr_ratatouilleoeufs": {
+      "file": "fr_ratatouilleoeufs.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_ratatouilleoeufs.webp",
+      "v": "849de55d"
+    },
+    "fr_riz_au_lait": {
+      "file": "fr_riz_au_lait.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_riz_au_lait.webp",
+      "v": "05040251"
+    },
+    "fr_saladefenouil": {
+      "file": "fr_saladefenouil.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_saladefenouil.webp",
+      "v": "b9560eca"
+    },
+    "fr_semoule_lait": {
+      "file": "fr_semoule_lait.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_semoule_lait.webp",
+      "v": "e5214734"
+    },
+    "fr_soupemoules": {
+      "file": "fr_soupemoules.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_soupemoules.webp",
+      "v": "5659604f"
+    },
+    "fr_soupenavets": {
+      "file": "fr_soupenavets.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_soupenavets.webp",
+      "v": "5557209c"
+    },
+    "fr_tartines": {
+      "file": "fr_tartines.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_tartines.webp",
+      "v": "9f6db2a8"
+    },
+    "fr_tianchevre": {
+      "file": "fr_tianchevre.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_tianchevre.webp",
+      "v": "bce3ba2e"
+    },
+    "fr_veloutefenouil": {
+      "file": "fr_veloutefenouil.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_veloutefenouil.webp",
+      "v": "c8673496"
+    },
+    "fr_veloutepinards": {
+      "file": "fr_veloutepinards.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/fr_veloutepinards.webp",
+      "v": "20131e72"
+    },
+    "gb_auberginebake": {
+      "file": "gb_auberginebake.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_auberginebake.webp",
+      "v": "4ea9bb18"
+    },
+    "gb_barley_stew": {
+      "file": "gb_barley_stew.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_barley_stew.webp",
+      "v": "bf47ed6c"
+    },
+    "gb_beansbacon": {
+      "file": "gb_beansbacon.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_beansbacon.webp",
+      "v": "402c888f"
+    },
+    "gb_bubbleandsqueak": {
+      "file": "gb_bubbleandsqueak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_bubbleandsqueak.webp",
+      "v": "2a6d98d4"
+    },
+    "gb_cabbagebacon": {
+      "file": "gb_cabbagebacon.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_cabbagebacon.webp",
+      "v": "f5f590a9"
+    },
+    "gb_cauli_potato_curry": {
+      "file": "gb_cauli_potato_curry.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_cauli_potato_curry.webp",
+      "v": "0fdde994"
+    },
+    "gb_cheeseomelette": {
+      "file": "gb_cheeseomelette.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_cheeseomelette.webp",
+      "v": "bbe2ce63"
+    },
+    "gb_chickenleekbroth": {
+      "file": "gb_chickenleekbroth.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_chickenleekbroth.webp",
+      "v": "ca9aa20f"
+    },
+    "gb_chickpeacurry": {
+      "file": "gb_chickpeacurry.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_chickpeacurry.webp",
+      "v": "350a1b1d"
+    },
+    "gb_courgettebutter": {
+      "file": "gb_courgettebutter.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_courgettebutter.webp",
+      "v": "b9c3bad2"
+    },
+    "gb_courgettemint": {
+      "file": "gb_courgettemint.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_courgettemint.webp",
+      "v": "f3d718a1"
+    },
+    "gb_cucumberyoghurt": {
+      "file": "gb_cucumberyoghurt.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_cucumberyoghurt.webp",
+      "v": "be324a2c"
+    },
+    "gb_haddockleek": {
+      "file": "gb_haddockleek.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_haddockleek.webp",
+      "v": "ab2781c1"
+    },
+    "gb_halloumitraybake": {
+      "file": "gb_halloumitraybake.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_halloumitraybake.webp",
+      "v": "2adb8db7"
+    },
+    "gb_hamcheesetoastie": {
+      "file": "gb_hamcheesetoastie.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_hamcheesetoastie.webp",
+      "v": "ed4fa5d5"
+    },
+    "gb_jacket_beans_corn": {
+      "file": "gb_jacket_beans_corn.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_jacket_beans_corn.webp",
+      "v": "c386803b"
+    },
+    "gb_lambsteaks": {
+      "file": "gb_lambsteaks.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_lambsteaks.webp",
+      "v": "0dc5fc65"
+    },
+    "gb_lemonfish": {
+      "file": "gb_lemonfish.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_lemonfish.webp",
+      "v": "23eb8f03"
+    },
+    "gb_lentil_pie": {
+      "file": "gb_lentil_pie.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_lentil_pie.webp",
+      "v": "91156385"
+    },
+    "gb_mushroomstoast": {
+      "file": "gb_mushroomstoast.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_mushroomstoast.webp",
+      "v": "a8110312"
+    },
+    "gb_mushroomstroganoff": {
+      "file": "gb_mushroomstroganoff.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_mushroomstroganoff.webp",
+      "v": "fe3b98fd"
+    },
+    "gb_mushroomthyme": {
+      "file": "gb_mushroomthyme.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_mushroomthyme.webp",
+      "v": "3b4b50e6"
+    },
+    "gb_porridge_apple": {
+      "file": "gb_porridge_apple.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_porridge_apple.webp",
+      "v": "92e320db"
+    },
+    "gb_porridge_salt": {
+      "file": "gb_porridge_salt.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_porridge_salt.webp",
+      "v": "6be509f6"
+    },
+    "gb_quickchickennoodle": {
+      "file": "gb_quickchickennoodle.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_quickchickennoodle.webp",
+      "v": "d00aefb1"
+    },
+    "gb_quickspinach": {
+      "file": "gb_quickspinach.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_quickspinach.webp",
+      "v": "74fd03aa"
+    },
+    "gb_quicksweetcorn": {
+      "file": "gb_quicksweetcorn.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_quicksweetcorn.webp",
+      "v": "ac198144"
+    },
+    "gb_red_dal": {
+      "file": "gb_red_dal.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_red_dal.webp",
+      "v": "3985ef5c"
+    },
+    "gb_roastcauli": {
+      "file": "gb_roastcauli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_roastcauli.webp",
+      "v": "5cd8b3a0"
+    },
+    "gb_sardinestoast": {
+      "file": "gb_sardinestoast.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_sardinestoast.webp",
+      "v": "6b906dfb"
+    },
+    "gb_steaksandwich": {
+      "file": "gb_steaksandwich.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_steaksandwich.webp",
+      "v": "032354ba"
+    },
+    "gb_stewedpears": {
+      "file": "gb_stewedpears.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_stewedpears.webp",
+      "v": "4bd6e959"
+    },
+    "gb_stuffedpeppers": {
+      "file": "gb_stuffedpeppers.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_stuffedpeppers.webp",
+      "v": "cb7265ac"
+    },
+    "gb_toast_marmalade": {
+      "file": "gb_toast_marmalade.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_toast_marmalade.webp",
+      "v": "250dd4a4"
+    },
+    "gb_tofustirfry": {
+      "file": "gb_tofustirfry.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_tofustirfry.webp",
+      "v": "79e5fc33"
+    },
+    "gb_tunamelt": {
+      "file": "gb_tunamelt.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gb_tunamelt.webp",
+      "v": "3fcac70c"
+    },
+    "gyusukini": {
+      "file": "gyusukini.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/gyusukini.webp",
+      "v": "7b88d341"
+    },
+    "hotcake_asa": {
+      "file": "hotcake_asa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/hotcake_asa.webp",
+      "v": "6a40afc2"
+    },
+    "id_beningsawi": {
+      "file": "id_beningsawi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_beningsawi.webp",
+      "v": "f84242a2"
+    },
+    "id_bubur_ayam": {
+      "file": "id_bubur_ayam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_bubur_ayam.webp",
+      "v": "1520204f"
+    },
+    "id_bubur_kacang_hijau": {
+      "file": "id_bubur_kacang_hijau.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_bubur_kacang_hijau.webp",
+      "v": "e231e92d"
+    },
+    "id_gado_gado_vegan": {
+      "file": "id_gado_gado_vegan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_gado_gado_vegan.webp",
+      "v": "8cd45de0"
+    },
+    "id_gulaitahu": {
+      "file": "id_gulaitahu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_gulaitahu.webp",
+      "v": "507a45bb"
+    },
+    "id_lontong_sayur": {
+      "file": "id_lontong_sayur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_lontong_sayur.webp",
+      "v": "15fe770a"
+    },
+    "id_osengtempe": {
+      "file": "id_osengtempe.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_osengtempe.webp",
+      "v": "f9eac3f0"
+    },
+    "id_pecel_sayur": {
+      "file": "id_pecel_sayur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_pecel_sayur.webp",
+      "v": "bda011ff"
+    },
+    "id_roti_bakar": {
+      "file": "id_roti_bakar.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_roti_bakar.webp",
+      "v": "931da982"
+    },
+    "id_sayur_lodeh_v": {
+      "file": "id_sayur_lodeh_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_sayur_lodeh_v.webp",
+      "v": "781c0b12"
+    },
+    "id_sayur_rebus": {
+      "file": "id_sayur_rebus.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_sayur_rebus.webp",
+      "v": "94557c34"
+    },
+    "id_sayurbeninglabu": {
+      "file": "id_sayurbeninglabu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_sayurbeninglabu.webp",
+      "v": "2d220437"
+    },
+    "id_sosisasammanis": {
+      "file": "id_sosisasammanis.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_sosisasammanis.webp",
+      "v": "5d9ba3bd"
+    },
+    "id_supayamcepat": {
+      "file": "id_supayamcepat.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_supayamcepat.webp",
+      "v": "10fc0d28"
+    },
+    "id_supikanbening": {
+      "file": "id_supikanbening.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_supikanbening.webp",
+      "v": "f71774f9"
+    },
+    "id_supjamurtelur": {
+      "file": "id_supjamurtelur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_supjamurtelur.webp",
+      "v": "de589c2d"
+    },
+    "id_supkembangkol": {
+      "file": "id_supkembangkol.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_supkembangkol.webp",
+      "v": "143cfc49"
+    },
+    "id_suptahu": {
+      "file": "id_suptahu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_suptahu.webp",
+      "v": "2a33de7e"
+    },
+    "id_tahu_kukus": {
+      "file": "id_tahu_kukus.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tahu_kukus.webp",
+      "v": "2abc2ec7"
+    },
+    "id_tahubalado": {
+      "file": "id_tahubalado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tahubalado.webp",
+      "v": "bd7045a0"
+    },
+    "id_teluradarsayur": {
+      "file": "id_teluradarsayur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_teluradarsayur.webp",
+      "v": "d6a6ced6"
+    },
+    "id_telurceplokkecap": {
+      "file": "id_telurceplokkecap.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_telurceplokkecap.webp",
+      "v": "3380e592"
+    },
+    "id_tempe_orek": {
+      "file": "id_tempe_orek.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tempe_orek.webp",
+      "v": "46b4e6f0"
+    },
+    "id_tinutuan": {
+      "file": "id_tinutuan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tinutuan.webp",
+      "v": "a5ee2267"
+    },
+    "id_tumisayamjamur": {
+      "file": "id_tumisayamjamur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tumisayamjamur.webp",
+      "v": "c34aa1e9"
+    },
+    "id_tumiskol": {
+      "file": "id_tumiskol.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tumiskol.webp",
+      "v": "c67baeed"
+    },
+    "id_tumissawi": {
+      "file": "id_tumissawi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tumissawi.webp",
+      "v": "d38ac4f2"
+    },
+    "id_tumistahutauge": {
+      "file": "id_tumistahutauge.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_tumistahutauge.webp",
+      "v": "c57583c3"
+    },
+    "id_ubi_rebus_kelapa": {
+      "file": "id_ubi_rebus_kelapa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_ubi_rebus_kelapa.webp",
+      "v": "7cda0121"
+    },
+    "id_udangsaustiram": {
+      "file": "id_udangsaustiram.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/id_udangsaustiram.webp",
+      "v": "a0db82d6"
+    },
+    "in_beansporiyal": {
+      "file": "in_beansporiyal.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_beansporiyal.webp",
+      "v": "c80929bb"
+    },
+    "in_bharwanbaingan": {
+      "file": "in_bharwanbaingan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_bharwanbaingan.webp",
+      "v": "ec6af50b"
+    },
+    "in_chickenjalfrezi": {
+      "file": "in_chickenjalfrezi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_chickenjalfrezi.webp",
+      "v": "39bc1741"
+    },
+    "in_chillipaneer": {
+      "file": "in_chillipaneer.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_chillipaneer.webp",
+      "v": "1a155ed2"
+    },
+    "in_clearvegsoup": {
+      "file": "in_clearvegsoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_clearvegsoup.webp",
+      "v": "0d1c8693"
+    },
+    "in_dalia": {
+      "file": "in_dalia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_dalia.webp",
+      "v": "036099b1"
+    },
+    "in_fruit_chaat": {
+      "file": "in_fruit_chaat.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_fruit_chaat.webp",
+      "v": "74715416"
+    },
+    "in_idli": {
+      "file": "in_idli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_idli.webp",
+      "v": "eea80908"
+    },
+    "in_kanji": {
+      "file": "in_kanji.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_kanji.webp",
+      "v": "6b4e9808"
+    },
+    "in_laukishorba": {
+      "file": "in_laukishorba.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_laukishorba.webp",
+      "v": "21613379"
+    },
+    "in_lemoncoriander": {
+      "file": "in_lemoncoriander.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_lemoncoriander.webp",
+      "v": "a4634371"
+    },
+    "in_moong_chilla": {
+      "file": "in_moong_chilla.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_moong_chilla.webp",
+      "v": "7453b2ff"
+    },
+    "in_mushroomshorba": {
+      "file": "in_mushroomshorba.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_mushroomshorba.webp",
+      "v": "221001f6"
+    },
+    "in_paneerbhurji": {
+      "file": "in_paneerbhurji.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_paneerbhurji.webp",
+      "v": "4718c842"
+    },
+    "in_paneertikka": {
+      "file": "in_paneertikka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_paneertikka.webp",
+      "v": "bc092104"
+    },
+    "in_prawnpepperfry": {
+      "file": "in_prawnpepperfry.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_prawnpepperfry.webp",
+      "v": "bb0e7129"
+    },
+    "in_quickrasam": {
+      "file": "in_quickrasam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_quickrasam.webp",
+      "v": "b5b76160"
+    },
+    "in_soyakeema": {
+      "file": "in_soyakeema.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/in_soyakeema.webp",
+      "v": "76e5fdb9"
+    },
+    "iridofu": {
+      "file": "iridofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/iridofu.webp",
+      "v": "028b0584"
+    },
+    "it_asparagibismarck": {
+      "file": "it_asparagibismarck.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_asparagibismarck.webp",
+      "v": "ccfb4fd1"
+    },
+    "it_brodopollocicoria": {
+      "file": "it_brodopollocicoria.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_brodopollocicoria.webp",
+      "v": "0cfc6e82"
+    },
+    "it_carciofipiselli": {
+      "file": "it_carciofipiselli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_carciofipiselli.webp",
+      "v": "f6f4c93d"
+    },
+    "it_cavolfioreaffogato": {
+      "file": "it_cavolfioreaffogato.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_cavolfioreaffogato.webp",
+      "v": "e531bcfe"
+    },
+    "it_ceciespinaci": {
+      "file": "it_ceciespinaci.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_ceciespinaci.webp",
+      "v": "fd3a5252"
+    },
+    "it_ciambotta": {
+      "file": "it_ciambotta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_ciambotta.webp",
+      "v": "b517a94b"
+    },
+    "it_crema_ceci": {
+      "file": "it_crema_ceci.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_crema_ceci.webp",
+      "v": "b3fe16af"
+    },
+    "it_crema_piselli": {
+      "file": "it_crema_piselli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_crema_piselli.webp",
+      "v": "15a931a5"
+    },
+    "it_crema_zucchine": {
+      "file": "it_crema_zucchine.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_crema_zucchine.webp",
+      "v": "2ef92154"
+    },
+    "it_gamberi": {
+      "file": "it_gamberi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_gamberi.webp",
+      "v": "48ae84e2"
+    },
+    "it_gnocchiburro": {
+      "file": "it_gnocchiburro.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_gnocchiburro.webp",
+      "v": "cbc1447e"
+    },
+    "it_involtinimelanzane": {
+      "file": "it_involtinimelanzane.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_involtinimelanzane.webp",
+      "v": "b20eb401"
+    },
+    "it_macedonia": {
+      "file": "it_macedonia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_macedonia.webp",
+      "v": "de92c44f"
+    },
+    "it_melanzanefunghetto": {
+      "file": "it_melanzanefunghetto.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_melanzanefunghetto.webp",
+      "v": "b6ad7508"
+    },
+    "it_pappa_pomodoro": {
+      "file": "it_pappa_pomodoro.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_pappa_pomodoro.webp",
+      "v": "bcac25a0"
+    },
+    "it_pasta_ceci": {
+      "file": "it_pasta_ceci.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_pasta_ceci.webp",
+      "v": "e3944159"
+    },
+    "it_pasta_fagioli_v": {
+      "file": "it_pasta_fagioli_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_pasta_fagioli_v.webp",
+      "v": "e6aa9110"
+    },
+    "it_saltimbocca": {
+      "file": "it_saltimbocca.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_saltimbocca.webp",
+      "v": "1fd16fef"
+    },
+    "it_scarolafagioli": {
+      "file": "it_scarolafagioli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_scarolafagioli.webp",
+      "v": "7b93c3a7"
+    },
+    "it_semolino_brodo": {
+      "file": "it_semolino_brodo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_semolino_brodo.webp",
+      "v": "f872695f"
+    },
+    "it_semolino_latte": {
+      "file": "it_semolino_latte.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_semolino_latte.webp",
+      "v": "7739d707"
+    },
+    "it_tagliata": {
+      "file": "it_tagliata.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_tagliata.webp",
+      "v": "a6676dcd"
+    },
+    "it_tonnofagioli": {
+      "file": "it_tonnofagioli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_tonnofagioli.webp",
+      "v": "dc61ac80"
+    },
+    "it_uova_pane": {
+      "file": "it_uova_pane.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_uova_pane.webp",
+      "v": "021f561e"
+    },
+    "it_vellutatacavolfiore": {
+      "file": "it_vellutatacavolfiore.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_vellutatacavolfiore.webp",
+      "v": "f9e740ed"
+    },
+    "it_vellutatafinocchi": {
+      "file": "it_vellutatafinocchi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_vellutatafinocchi.webp",
+      "v": "b2695d96"
+    },
+    "it_yogurt_frutta": {
+      "file": "it_yogurt_frutta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_yogurt_frutta.webp",
+      "v": "b975849e"
+    },
+    "it_ziminoceci": {
+      "file": "it_ziminoceci.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_ziminoceci.webp",
+      "v": "ed113607"
+    },
+    "it_zucchineripiene": {
+      "file": "it_zucchineripiene.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_zucchineripiene.webp",
+      "v": "69c210bc"
+    },
+    "it_zuppaverza": {
+      "file": "it_zuppaverza.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/it_zuppaverza.webp",
+      "v": "20436c25"
+    },
+    "kr_aehobakguk": {
+      "file": "kr_aehobakguk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_aehobakguk.webp",
+      "v": "b9df31a1"
+    },
+    "kr_beoseotguk": {
+      "file": "kr_beoseotguk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_beoseotguk.webp",
+      "v": "9a7b90e3"
+    },
+    "kr_beoseotjeongol": {
+      "file": "kr_beoseotjeongol.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_beoseotjeongol.webp",
+      "v": "cc7ebb5a"
+    },
+    "kr_chaeso_bokkeumbap": {
+      "file": "kr_chaeso_bokkeumbap.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_chaeso_bokkeumbap.webp",
+      "v": "adbd833a"
+    },
+    "kr_chaeso_doenjangjjigae": {
+      "file": "kr_chaeso_doenjangjjigae.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_chaeso_doenjangjjigae.webp",
+      "v": "2b945144"
+    },
+    "kr_chaeso_sundubu": {
+      "file": "kr_chaeso_sundubu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_chaeso_sundubu.webp",
+      "v": "d171ac52"
+    },
+    "kr_chamchikimchi": {
+      "file": "kr_chamchikimchi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_chamchikimchi.webp",
+      "v": "6845bc23"
+    },
+    "kr_dubuduruchigi": {
+      "file": "kr_dubuduruchigi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_dubuduruchigi.webp",
+      "v": "01d1e029"
+    },
+    "kr_dubuguk": {
+      "file": "kr_dubuguk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_dubuguk.webp",
+      "v": "74e2b7a2"
+    },
+    "kr_gajibokkeum": {
+      "file": "kr_gajibokkeum.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_gajibokkeum.webp",
+      "v": "f2b42e74"
+    },
+    "kr_gajidububokkeum": {
+      "file": "kr_gajidububokkeum.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_gajidububokkeum.webp",
+      "v": "2fa1bca8"
+    },
+    "kr_ganjangdubujorim": {
+      "file": "kr_ganjangdubujorim.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_ganjangdubujorim.webp",
+      "v": "97b89750"
+    },
+    "kr_gimguk": {
+      "file": "kr_gimguk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_gimguk.webp",
+      "v": "8ac1102b"
+    },
+    "kr_hobakjuk": {
+      "file": "kr_hobakjuk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_hobakjuk.webp",
+      "v": "2de36fb3"
+    },
+    "kr_munamul": {
+      "file": "kr_munamul.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_munamul.webp",
+      "v": "ca89e1eb"
+    },
+    "kr_soegogibeoseot": {
+      "file": "kr_soegogibeoseot.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_soegogibeoseot.webp",
+      "v": "fa614449"
+    },
+    "kr_sosijiyachae": {
+      "file": "kr_sosijiyachae.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_sosijiyachae.webp",
+      "v": "987e93bf"
+    },
+    "kr_sundubuguk": {
+      "file": "kr_sundubuguk.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/kr_sundubuguk.webp",
+      "v": "4085b5ea"
+    },
+    "monja": {
+      "file": "monja.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/monja.webp",
+      "v": "6fb5bc99"
+    },
+    "mx_atole_arroz": {
+      "file": "mx_atole_arroz.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_atole_arroz.webp",
+      "v": "fa75c45d"
+    },
+    "mx_atole_blanco": {
+      "file": "mx_atole_blanco.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_atole_blanco.webp",
+      "v": "008af657"
+    },
+    "mx_avena": {
+      "file": "mx_avena.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_avena.webp",
+      "v": "3a3d3b31"
+    },
+    "mx_calabacitas_elote": {
+      "file": "mx_calabacitas_elote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_calabacitas_elote.webp",
+      "v": "85841f09"
+    },
+    "mx_calabacitasqueso": {
+      "file": "mx_calabacitasqueso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_calabacitasqueso.webp",
+      "v": "6675cd19"
+    },
+    "mx_calabacitasverde": {
+      "file": "mx_calabacitasverde.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_calabacitasverde.webp",
+      "v": "84b865a5"
+    },
+    "mx_caldo_elote_calabacita": {
+      "file": "mx_caldo_elote_calabacita.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_caldo_elote_calabacita.webp",
+      "v": "cf2378a6"
+    },
+    "mx_caldopolloaguacate": {
+      "file": "mx_caldopolloaguacate.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_caldopolloaguacate.webp",
+      "v": "06907fa1"
+    },
+    "mx_camaronesajo": {
+      "file": "mx_camaronesajo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_camaronesajo.webp",
+      "v": "f07ab541"
+    },
+    "mx_champimexicana": {
+      "file": "mx_champimexicana.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_champimexicana.webp",
+      "v": "c8d0f3ef"
+    },
+    "mx_chilesrellenosqueso": {
+      "file": "mx_chilesrellenosqueso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_chilesrellenosqueso.webp",
+      "v": "23c325dc"
+    },
+    "mx_consome_rapido": {
+      "file": "mx_consome_rapido.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_consome_rapido.webp",
+      "v": "0ab56eb3"
+    },
+    "mx_ejotesconhuevo": {
+      "file": "mx_ejotesconhuevo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_ejotesconhuevo.webp",
+      "v": "a7f83935"
+    },
+    "mx_frijoles_arroz_rojo": {
+      "file": "mx_frijoles_arroz_rojo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_frijoles_arroz_rojo.webp",
+      "v": "c62b4e9f"
+    },
+    "mx_fruta_picada": {
+      "file": "mx_fruta_picada.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_fruta_picada.webp",
+      "v": "23f9ad76"
+    },
+    "mx_hongosguajillo": {
+      "file": "mx_hongosguajillo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_hongosguajillo.webp",
+      "v": "63cf43a4"
+    },
+    "mx_huevosahogados": {
+      "file": "mx_huevosahogados.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_huevosahogados.webp",
+      "v": "c70196c0"
+    },
+    "mx_huevoschorizo": {
+      "file": "mx_huevoschorizo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_huevoschorizo.webp",
+      "v": "cbf4ec5d"
+    },
+    "mx_nopalesconhuevo": {
+      "file": "mx_nopalesconhuevo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_nopalesconhuevo.webp",
+      "v": "8b473692"
+    },
+    "mx_nopalesenchile": {
+      "file": "mx_nopalesenchile.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_nopalesenchile.webp",
+      "v": "12ccbd9c"
+    },
+    "mx_picadillosoya": {
+      "file": "mx_picadillosoya.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_picadillosoya.webp",
+      "v": "9203dec0"
+    },
+    "mx_pozole_verde_hongos": {
+      "file": "mx_pozole_verde_hongos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_pozole_verde_hongos.webp",
+      "v": "ebaa471c"
+    },
+    "mx_rajasconcrema": {
+      "file": "mx_rajasconcrema.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_rajasconcrema.webp",
+      "v": "a47e53b7"
+    },
+    "mx_rajashongos": {
+      "file": "mx_rajashongos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_rajashongos.webp",
+      "v": "fc6e2621"
+    },
+    "mx_sopa_letras": {
+      "file": "mx_sopa_letras.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_sopa_letras.webp",
+      "v": "91e37124"
+    },
+    "mx_sopachayote": {
+      "file": "mx_sopachayote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_sopachayote.webp",
+      "v": "74c73f53"
+    },
+    "mx_sopanopales": {
+      "file": "mx_sopanopales.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_sopanopales.webp",
+      "v": "9f5fb27c"
+    },
+    "mx_tacos_nopales": {
+      "file": "mx_tacos_nopales.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tacos_nopales.webp",
+      "v": "39206498"
+    },
+    "mx_tacosbistec": {
+      "file": "mx_tacosbistec.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tacosbistec.webp",
+      "v": "19ab2459"
+    },
+    "mx_tacoshongos": {
+      "file": "mx_tacoshongos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tacoshongos.webp",
+      "v": "322513d6"
+    },
+    "mx_tacospescado": {
+      "file": "mx_tacospescado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tacospescado.webp",
+      "v": "fb1ec421"
+    },
+    "mx_tinga_hongos": {
+      "file": "mx_tinga_hongos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tinga_hongos.webp",
+      "v": "9c18364e"
+    },
+    "mx_tingacoliflor": {
+      "file": "mx_tingacoliflor.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/mx_tingacoliflor.webp",
+      "v": "e44b75cc"
+    },
+    "nasuatsuagemiso": {
+      "file": "nasuatsuagemiso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/nasuatsuagemiso.webp",
+      "v": "465789db"
+    },
+    "natto_omelet": {
+      "file": "natto_omelet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/natto_omelet.webp",
+      "v": "505fb7ed"
+    },
+    "nattogohan": {
+      "file": "nattogohan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/nattogohan.webp",
+      "v": "31080628"
+    },
+    "okayu_asa": {
+      "file": "okayu_asa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/okayu_asa.webp",
+      "v": "a034a152"
+    },
+    "onigiri_umekonbu": {
+      "file": "onigiri_umekonbu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/onigiri_umekonbu.webp",
+      "v": "aeba822a"
+    },
+    "pe_acelgas_salteadas": {
+      "file": "pe_acelgas_salteadas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_acelgas_salteadas.webp",
+      "v": "4cf64c55"
+    },
+    "pe_avena_manzana": {
+      "file": "pe_avena_manzana.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_avena_manzana.webp",
+      "v": "6603f5c4"
+    },
+    "pe_bistecencebollado": {
+      "file": "pe_bistecencebollado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_bistecencebollado.webp",
+      "v": "5ee5676b"
+    },
+    "pe_brocoli_ajo": {
+      "file": "pe_brocoli_ajo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_brocoli_ajo.webp",
+      "v": "63c94484"
+    },
+    "pe_caldo_choros": {
+      "file": "pe_caldo_choros.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_caldo_choros.webp",
+      "v": "da8ba27a"
+    },
+    "pe_camaronessaltados": {
+      "file": "pe_camaronessaltados.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_camaronessaltados.webp",
+      "v": "9df050fb"
+    },
+    "pe_champinones_ajo": {
+      "file": "pe_champinones_ajo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_champinones_ajo.webp",
+      "v": "8ccc5cf4"
+    },
+    "pe_choclo_mantequilla": {
+      "file": "pe_choclo_mantequilla.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_choclo_mantequilla.webp",
+      "v": "256687e9"
+    },
+    "pe_coliflor_brocoli_chifa": {
+      "file": "pe_coliflor_brocoli_chifa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_coliflor_brocoli_chifa.webp",
+      "v": "00b2e200"
+    },
+    "pe_coliflor_queso": {
+      "file": "pe_coliflor_queso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_coliflor_queso.webp",
+      "v": "92718108"
+    },
+    "pe_crema_arvejas": {
+      "file": "pe_crema_arvejas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_crema_arvejas.webp",
+      "v": "e7af3924"
+    },
+    "pe_crema_brocoli": {
+      "file": "pe_crema_brocoli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_crema_brocoli.webp",
+      "v": "1f9d24e0"
+    },
+    "pe_crema_espinaca": {
+      "file": "pe_crema_espinaca.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_crema_espinaca.webp",
+      "v": "8cdb65ef"
+    },
+    "pe_crema_zapallito": {
+      "file": "pe_crema_zapallito.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_crema_zapallito.webp",
+      "v": "3446a187"
+    },
+    "pe_ensalada_esparragos": {
+      "file": "pe_ensalada_esparragos.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_ensalada_esparragos.webp",
+      "v": "edbc2323"
+    },
+    "pe_ensalada_frutas": {
+      "file": "pe_ensalada_frutas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_ensalada_frutas.webp",
+      "v": "8b9c528e"
+    },
+    "pe_ensalada_palta": {
+      "file": "pe_ensalada_palta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_ensalada_palta.webp",
+      "v": "3edead71"
+    },
+    "pe_ensalada_pepino_tomate": {
+      "file": "pe_ensalada_pepino_tomate.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_ensalada_pepino_tomate.webp",
+      "v": "83365ccc"
+    },
+    "pe_espinaca_salteada": {
+      "file": "pe_espinaca_salteada.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_espinaca_salteada.webp",
+      "v": "37b81928"
+    },
+    "pe_estofado_quinua": {
+      "file": "pe_estofado_quinua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_estofado_quinua.webp",
+      "v": "bb1f9e78"
+    },
+    "pe_pan_chicharron": {
+      "file": "pe_pan_chicharron.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_pan_chicharron.webp",
+      "v": "7e0a5438"
+    },
+    "pe_pan_palta": {
+      "file": "pe_pan_palta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_pan_palta.webp",
+      "v": "22f56cfd"
+    },
+    "pe_pescadoplancha": {
+      "file": "pe_pescadoplancha.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_pescadoplancha.webp",
+      "v": "b23fd6dc"
+    },
+    "pe_pollo_saltado": {
+      "file": "pe_pollo_saltado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_pollo_saltado.webp",
+      "v": "21ec3057"
+    },
+    "pe_pollosaltado": {
+      "file": "pe_pollosaltado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_pollosaltado.webp",
+      "v": "84157007"
+    },
+    "pe_quinua_leche": {
+      "file": "pe_quinua_leche.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_quinua_leche.webp",
+      "v": "4cab030b"
+    },
+    "pe_saltado_champinones": {
+      "file": "pe_saltado_champinones.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_saltado_champinones.webp",
+      "v": "6ffdcf3a"
+    },
+    "pe_saltado_verduras": {
+      "file": "pe_saltado_verduras.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_saltado_verduras.webp",
+      "v": "6031cca4"
+    },
+    "pe_semola_leche": {
+      "file": "pe_semola_leche.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_semola_leche.webp",
+      "v": "bbcf24b1"
+    },
+    "pe_sopa_champinones": {
+      "file": "pe_sopa_champinones.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sopa_champinones.webp",
+      "v": "71a08419"
+    },
+    "pe_sopa_chifa_pakchoy": {
+      "file": "pe_sopa_chifa_pakchoy.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sopa_chifa_pakchoy.webp",
+      "v": "d99ce89d"
+    },
+    "pe_sopa_coliflor": {
+      "file": "pe_sopa_coliflor.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sopa_coliflor.webp",
+      "v": "2deac674"
+    },
+    "pe_sopa_fideos_huevo": {
+      "file": "pe_sopa_fideos_huevo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sopa_fideos_huevo.webp",
+      "v": "203535b9"
+    },
+    "pe_sopa_quinua_v": {
+      "file": "pe_sopa_quinua_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sopa_quinua_v.webp",
+      "v": "a9301aed"
+    },
+    "pe_sudado_pescado": {
+      "file": "pe_sudado_pescado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_sudado_pescado.webp",
+      "v": "8b629aaf"
+    },
+    "pe_tofu_saltado": {
+      "file": "pe_tofu_saltado.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_tofu_saltado.webp",
+      "v": "cf0b1c75"
+    },
+    "pe_tortilla_espinaca": {
+      "file": "pe_tortilla_espinaca.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_tortilla_espinaca.webp",
+      "v": "fcd1e287"
+    },
+    "pe_tortillaatun": {
+      "file": "pe_tortillaatun.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_tortillaatun.webp",
+      "v": "9bf3b12d"
+    },
+    "pe_vainitas_huevo": {
+      "file": "pe_vainitas_huevo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_vainitas_huevo.webp",
+      "v": "83bc8eb2"
+    },
+    "pe_zapallito_relleno": {
+      "file": "pe_zapallito_relleno.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pe_zapallito_relleno.webp",
+      "v": "cf952837"
+    },
+    "ph_adobongsitaw": {
+      "file": "ph_adobongsitaw.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_adobongsitaw.webp",
+      "v": "f2a3da4c"
+    },
+    "ph_adobongtokwa": {
+      "file": "ph_adobongtokwa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_adobongtokwa.webp",
+      "v": "2b674e74"
+    },
+    "ph_cornedbeef_sabaw": {
+      "file": "ph_cornedbeef_sabaw.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_cornedbeef_sabaw.webp",
+      "v": "dd0cc55a"
+    },
+    "ph_garlic_butter_shrimp": {
+      "file": "ph_garlic_butter_shrimp.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_garlic_butter_shrimp.webp",
+      "v": "e4109ae6"
+    },
+    "ph_ginataang_kalabasa_v": {
+      "file": "ph_ginataang_kalabasa_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginataang_kalabasa_v.webp",
+      "v": "48d17898"
+    },
+    "ph_ginataangsitawtalong": {
+      "file": "ph_ginataangsitawtalong.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginataangsitawtalong.webp",
+      "v": "244978d0"
+    },
+    "ph_ginisang_corned_beef": {
+      "file": "ph_ginisang_corned_beef.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_corned_beef.webp",
+      "v": "aa6654a2"
+    },
+    "ph_ginisang_kamatis_itlog": {
+      "file": "ph_ginisang_kamatis_itlog.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_kamatis_itlog.webp",
+      "v": "288dd3e4"
+    },
+    "ph_ginisang_munggo_v": {
+      "file": "ph_ginisang_munggo_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_munggo_v.webp",
+      "v": "87978149"
+    },
+    "ph_ginisang_patola": {
+      "file": "ph_ginisang_patola.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_patola.webp",
+      "v": "157930aa"
+    },
+    "ph_ginisang_repolyo_toyo": {
+      "file": "ph_ginisang_repolyo_toyo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_repolyo_toyo.webp",
+      "v": "f6520dd9"
+    },
+    "ph_ginisang_sardinas": {
+      "file": "ph_ginisang_sardinas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisang_sardinas.webp",
+      "v": "4d85bffe"
+    },
+    "ph_ginisangampalaya": {
+      "file": "ph_ginisangampalaya.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisangampalaya.webp",
+      "v": "1ed4a802"
+    },
+    "ph_ginisangtoguetokwa": {
+      "file": "ph_ginisangtoguetokwa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_ginisangtoguetokwa.webp",
+      "v": "0591548f"
+    },
+    "ph_lugaw": {
+      "file": "ph_lugaw.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_lugaw.webp",
+      "v": "e6686e6b"
+    },
+    "ph_lumpiang_gulay_v": {
+      "file": "ph_lumpiang_gulay_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_lumpiang_gulay_v.webp",
+      "v": "5b788ceb"
+    },
+    "ph_misua_manok": {
+      "file": "ph_misua_manok.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_misua_manok.webp",
+      "v": "51e2f6b9"
+    },
+    "ph_nilagang_gulay_toyo": {
+      "file": "ph_nilagang_gulay_toyo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_nilagang_gulay_toyo.webp",
+      "v": "d8729ecc"
+    },
+    "ph_nilagang_kalabasa": {
+      "file": "ph_nilagang_kalabasa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_nilagang_kalabasa.webp",
+      "v": "6ee03891"
+    },
+    "ph_nilagang_manok": {
+      "file": "ph_nilagang_manok.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_nilagang_manok.webp",
+      "v": "3338d92a"
+    },
+    "ph_pancit_gulay": {
+      "file": "ph_pancit_gulay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_pancit_gulay.webp",
+      "v": "be9b8d70"
+    },
+    "ph_pesang_manok": {
+      "file": "ph_pesang_manok.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_pesang_manok.webp",
+      "v": "eb375933"
+    },
+    "ph_sardinas_misua": {
+      "file": "ph_sardinas_misua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_sardinas_misua.webp",
+      "v": "0a99df21"
+    },
+    "ph_sinabawang_pechay": {
+      "file": "ph_sinabawang_pechay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_sinabawang_pechay.webp",
+      "v": "7b7400bc"
+    },
+    "ph_sinabawang_sayote": {
+      "file": "ph_sinabawang_sayote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_sinabawang_sayote.webp",
+      "v": "fc6a63d8"
+    },
+    "ph_sinigang_gulay": {
+      "file": "ph_sinigang_gulay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_sinigang_gulay.webp",
+      "v": "2b040580"
+    },
+    "ph_sopas_manok": {
+      "file": "ph_sopas_manok.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_sopas_manok.webp",
+      "v": "c3937f59"
+    },
+    "ph_tinola_asin": {
+      "file": "ph_tinola_asin.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/ph_tinola_asin.webp",
+      "v": "423f1c28"
+    },
+    "pl_chlodnik_ogorkowy": {
+      "file": "pl_chlodnik_ogorkowy.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_chlodnik_ogorkowy.webp",
+      "v": "70a64d25"
+    },
+    "pl_fasolka_wege": {
+      "file": "pl_fasolka_wege.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_fasolka_wege.webp",
+      "v": "81046c61"
+    },
+    "pl_golabki_wege": {
+      "file": "pl_golabki_wege.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_golabki_wege.webp",
+      "v": "29a19b9d"
+    },
+    "pl_groszkowa": {
+      "file": "pl_groszkowa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_groszkowa.webp",
+      "v": "3cdcc856"
+    },
+    "pl_gulasz_soczewica": {
+      "file": "pl_gulasz_soczewica.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_gulasz_soczewica.webp",
+      "v": "22d8bcad"
+    },
+    "pl_gulaszpieczarki": {
+      "file": "pl_gulaszpieczarki.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_gulaszpieczarki.webp",
+      "v": "67f9e481"
+    },
+    "pl_jaglanka": {
+      "file": "pl_jaglanka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_jaglanka.webp",
+      "v": "ccf97441"
+    },
+    "pl_jajecznica": {
+      "file": "pl_jajecznica.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_jajecznica.webp",
+      "v": "60d57712"
+    },
+    "pl_jajecznica_maslo": {
+      "file": "pl_jajecznica_maslo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_jajecznica_maslo.webp",
+      "v": "3034935a"
+    },
+    "pl_kalafiorzapiekany": {
+      "file": "pl_kalafiorzapiekany.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kalafiorzapiekany.webp",
+      "v": "36efe93e"
+    },
+    "pl_kanapki_szynka": {
+      "file": "pl_kanapki_szynka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kanapki_szynka.webp",
+      "v": "5135a8fa"
+    },
+    "pl_kapustagrzyby": {
+      "file": "pl_kapustagrzyby.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kapustagrzyby.webp",
+      "v": "1ffaec9e"
+    },
+    "pl_kaszka_manna": {
+      "file": "pl_kaszka_manna.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kaszka_manna.webp",
+      "v": "3ea5eb26"
+    },
+    "pl_kielbasacebula": {
+      "file": "pl_kielbasacebula.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kielbasacebula.webp",
+      "v": "c1a12c93"
+    },
+    "pl_kleik_ryzowy": {
+      "file": "pl_kleik_ryzowy.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kleik_ryzowy.webp",
+      "v": "684acdc1"
+    },
+    "pl_kremcukinia": {
+      "file": "pl_kremcukinia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kremcukinia.webp",
+      "v": "13b8d637"
+    },
+    "pl_kremseler": {
+      "file": "pl_kremseler.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kremseler.webp",
+      "v": "7e9e41cd"
+    },
+    "pl_kurczakcukinia": {
+      "file": "pl_kurczakcukinia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kurczakcukinia.webp",
+      "v": "8a313342"
+    },
+    "pl_kurczakkoperek": {
+      "file": "pl_kurczakkoperek.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_kurczakkoperek.webp",
+      "v": "ee132dcf"
+    },
+    "pl_omletpieczarki": {
+      "file": "pl_omletpieczarki.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_omletpieczarki.webp",
+      "v": "10809fc3"
+    },
+    "pl_owsianka": {
+      "file": "pl_owsianka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_owsianka.webp",
+      "v": "0d0dabcf"
+    },
+    "pl_pieczarkifaszerowane": {
+      "file": "pl_pieczarkifaszerowane.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_pieczarkifaszerowane.webp",
+      "v": "25441a9c"
+    },
+    "pl_pierogi_kapusta": {
+      "file": "pl_pierogi_kapusta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_pierogi_kapusta.webp",
+      "v": "8e4dc7b2"
+    },
+    "pl_plackicukinia": {
+      "file": "pl_plackicukinia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_plackicukinia.webp",
+      "v": "5aeda4bf"
+    },
+    "pl_rosolwarzywa": {
+      "file": "pl_rosolwarzywa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_rosolwarzywa.webp",
+      "v": "03f5bfa1"
+    },
+    "pl_rosolwolowy": {
+      "file": "pl_rosolwolowy.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_rosolwolowy.webp",
+      "v": "72ac547f"
+    },
+    "pl_rybadokoperek": {
+      "file": "pl_rybadokoperek.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_rybadokoperek.webp",
+      "v": "392fcf49"
+    },
+    "pl_salatkarzodkiewka": {
+      "file": "pl_salatkarzodkiewka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_salatkarzodkiewka.webp",
+      "v": "12153bbd"
+    },
+    "pl_szpinakowa": {
+      "file": "pl_szpinakowa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_szpinakowa.webp",
+      "v": "928b8129"
+    },
+    "pl_zupafasolka": {
+      "file": "pl_zupafasolka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_zupafasolka.webp",
+      "v": "74e17124"
+    },
+    "pl_zupakalarepa": {
+      "file": "pl_zupakalarepa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/pl_zupakalarepa.webp",
+      "v": "5f993b87"
+    },
+    "sake_zakkoku": {
+      "file": "sake_zakkoku.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/sake_zakkoku.webp",
+      "v": "6f81ae37"
+    },
+    "satsumaimo_banana": {
+      "file": "satsumaimo_banana.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/satsumaimo_banana.webp",
+      "v": "ce99b4aa"
+    },
+    "shakebutter": {
+      "file": "shakebutter.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/shakebutter.webp",
+      "v": "830bb0bf"
+    },
+    "shirasu_tkg": {
+      "file": "shirasu_tkg.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/shirasu_tkg.webp",
+      "v": "88ad5449"
+    },
+    "tamagoyaki_miso": {
+      "file": "tamagoyaki_miso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tamagoyaki_miso.webp",
+      "v": "2923fc34"
+    },
+    "teppan_gyu": {
+      "file": "teppan_gyu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/teppan_gyu.webp",
+      "v": "57eb6a3a"
+    },
+    "teppan_tori": {
+      "file": "teppan_tori.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/teppan_tori.webp",
+      "v": "cc7c359b"
+    },
+    "th_fakthongnueng": {
+      "file": "th_fakthongnueng.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_fakthongnueng.webp",
+      "v": "03608e41"
+    },
+    "th_green_curry_tofu": {
+      "file": "th_green_curry_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_green_curry_tofu.webp",
+      "v": "f80b175c"
+    },
+    "th_jokgai": {
+      "file": "th_jokgai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_jokgai.webp",
+      "v": "f2fdcca1"
+    },
+    "th_kaengjuedhet": {
+      "file": "th_kaengjuedhet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaengjuedhet.webp",
+      "v": "f7b6e1e0"
+    },
+    "th_kaengjuedkhainam": {
+      "file": "th_kaengjuedkhainam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaengjuedkhainam.webp",
+      "v": "ce378faf"
+    },
+    "th_kaengjuedmakhuea": {
+      "file": "th_kaengjuedmakhuea.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaengjuedmakhuea.webp",
+      "v": "a3b45d03"
+    },
+    "th_kaengjuedphakkat": {
+      "file": "th_kaengjuedphakkat.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaengjuedphakkat.webp",
+      "v": "dcd9172d"
+    },
+    "th_kaengjuedwunsen": {
+      "file": "th_kaengjuedwunsen.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaengjuedwunsen.webp",
+      "v": "aec981b4"
+    },
+    "th_kainuengkhing": {
+      "file": "th_kainuengkhing.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kainuengkhing.webp",
+      "v": "a90a96d7"
+    },
+    "th_kaiphadphrikthai": {
+      "file": "th_kaiphadphrikthai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kaiphadphrikthai.webp",
+      "v": "b0bc18dc"
+    },
+    "th_khaijiao_phak": {
+      "file": "th_khaijiao_phak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_khaijiao_phak.webp",
+      "v": "6b43e663"
+    },
+    "th_khailuak": {
+      "file": "th_khailuak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_khailuak.webp",
+      "v": "9b117409"
+    },
+    "th_khaiphadmakhuea": {
+      "file": "th_khaiphadmakhuea.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_khaiphadmakhuea.webp",
+      "v": "3d48c234"
+    },
+    "th_khao_pad_pak": {
+      "file": "th_khao_pad_pak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_khao_pad_pak.webp",
+      "v": "493a5f8e"
+    },
+    "th_khaotom_hed": {
+      "file": "th_khaotom_hed.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_khaotom_hed.webp",
+      "v": "0c36032c"
+    },
+    "th_krapao_tofu": {
+      "file": "th_krapao_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_krapao_tofu.webp",
+      "v": "726ee4f2"
+    },
+    "th_kungphadkratiam": {
+      "file": "th_kungphadkratiam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_kungphadkratiam.webp",
+      "v": "39df37a4"
+    },
+    "th_massaman_je": {
+      "file": "th_massaman_je.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_massaman_je.webp",
+      "v": "3ab756ed"
+    },
+    "th_moophadhomyai": {
+      "file": "th_moophadhomyai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_moophadhomyai.webp",
+      "v": "b484bb61"
+    },
+    "th_moosapnueng": {
+      "file": "th_moosapnueng.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_moosapnueng.webp",
+      "v": "160ab5c6"
+    },
+    "th_pad_het_tofu": {
+      "file": "th_pad_het_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_het_tofu.webp",
+      "v": "a6ebb055"
+    },
+    "th_pad_makhuea_tofu": {
+      "file": "th_pad_makhuea_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_makhuea_tofu.webp",
+      "v": "94e5a03d"
+    },
+    "th_pad_priao_wan_tofu": {
+      "file": "th_pad_priao_wan_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_priao_wan_tofu.webp",
+      "v": "6e65737e"
+    },
+    "th_pad_thai_je": {
+      "file": "th_pad_thai_je.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_thai_je.webp",
+      "v": "0435797f"
+    },
+    "th_pad_thua_tofu": {
+      "file": "th_pad_thua_tofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_thua_tofu.webp",
+      "v": "72bd2c96"
+    },
+    "th_pad_woonsen_je": {
+      "file": "th_pad_woonsen_je.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_pad_woonsen_je.webp",
+      "v": "097c28e1"
+    },
+    "th_phakkattomsiiu": {
+      "file": "th_phakkattomsiiu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_phakkattomsiiu.webp",
+      "v": "12e7fe63"
+    },
+    "th_phakluak": {
+      "file": "th_phakluak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_phakluak.webp",
+      "v": "44474349"
+    },
+    "th_supkaisai": {
+      "file": "th_supkaisai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_supkaisai.webp",
+      "v": "204fff41"
+    },
+    "th_taohu_songkhrueang": {
+      "file": "th_taohu_songkhrueang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_taohu_songkhrueang.webp",
+      "v": "355a7611"
+    },
+    "th_taohunueng": {
+      "file": "th_taohunueng.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_taohunueng.webp",
+      "v": "a77b56b6"
+    },
+    "th_taohutomsiiu": {
+      "file": "th_taohutomsiiu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_taohutomsiiu.webp",
+      "v": "89233465"
+    },
+    "th_tomfakkai": {
+      "file": "th_tomfakkai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_tomfakkai.webp",
+      "v": "3b6b05d3"
+    },
+    "th_tomjuedphakruam": {
+      "file": "th_tomjuedphakruam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/th_tomjuedphakruam.webp",
+      "v": "c67fa9d3"
+    },
+    "toast_yudetamago": {
+      "file": "toast_yudetamago.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/toast_yudetamago.webp",
+      "v": "1dff78d3"
+    },
+    "tofu_wakame_miso": {
+      "file": "tofu_wakame_miso.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tofu_wakame_miso.webp",
+      "v": "615ca768"
+    },
+    "tofukinokoankake": {
+      "file": "tofukinokoankake.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tofukinokoankake.webp",
+      "v": "2b650a54"
+    },
+    "tr_ayranasi": {
+      "file": "tr_ayranasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_ayranasi.webp",
+      "v": "408b5d63"
+    },
+    "tr_baliktava": {
+      "file": "tr_baliktava.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_baliktava.webp",
+      "v": "ec605459"
+    },
+    "tr_bezelyecorbasi": {
+      "file": "tr_bezelyecorbasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_bezelyecorbasi.webp",
+      "v": "4af64b17"
+    },
+    "tr_domatesli_bulgur": {
+      "file": "tr_domatesli_bulgur.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_domatesli_bulgur.webp",
+      "v": "81be4053"
+    },
+    "tr_etsizmusakka": {
+      "file": "tr_etsizmusakka.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_etsizmusakka.webp",
+      "v": "a51f3cdf"
+    },
+    "tr_ezogelin_v": {
+      "file": "tr_ezogelin_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_ezogelin_v.webp",
+      "v": "69315cca"
+    },
+    "tr_haydari": {
+      "file": "tr_haydari.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_haydari.webp",
+      "v": "928de932"
+    },
+    "tr_imam_bayildi": {
+      "file": "tr_imam_bayildi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_imam_bayildi.webp",
+      "v": "5db3e7b5"
+    },
+    "tr_irmik_lapasi": {
+      "file": "tr_irmik_lapasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_irmik_lapasi.webp",
+      "v": "b39ce90b"
+    },
+    "tr_ispanakkavurma": {
+      "file": "tr_ispanakkavurma.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_ispanakkavurma.webp",
+      "v": "759ec98d"
+    },
+    "tr_kabaksinkonta": {
+      "file": "tr_kabaksinkonta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_kabaksinkonta.webp",
+      "v": "cbcdba4b"
+    },
+    "tr_kahvalti_sebze": {
+      "file": "tr_kahvalti_sebze.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_kahvalti_sebze.webp",
+      "v": "111e35a6"
+    },
+    "tr_karidessote": {
+      "file": "tr_karidessote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_karidessote.webp",
+      "v": "e19ddd13"
+    },
+    "tr_karnabaharcorba": {
+      "file": "tr_karnabaharcorba.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_karnabaharcorba.webp",
+      "v": "11466d20"
+    },
+    "tr_kiymaliyumurta": {
+      "file": "tr_kiymaliyumurta.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_kiymaliyumurta.webp",
+      "v": "68be34e8"
+    },
+    "tr_lahanacorbasi": {
+      "file": "tr_lahanacorbasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_lahanacorbasi.webp",
+      "v": "b566f0f3"
+    },
+    "tr_mantarliomlet": {
+      "file": "tr_mantarliomlet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_mantarliomlet.webp",
+      "v": "ccbc323c"
+    },
+    "tr_mantarsote": {
+      "file": "tr_mantarsote.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_mantarsote.webp",
+      "v": "2cead1c9"
+    },
+    "tr_mercimek_corbasi_v": {
+      "file": "tr_mercimek_corbasi_v.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_mercimek_corbasi_v.webp",
+      "v": "802f1117"
+    },
+    "tr_nohutlu_pilav": {
+      "file": "tr_nohutlu_pilav.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_nohutlu_pilav.webp",
+      "v": "7ea67823"
+    },
+    "tr_peynirlikarnabahar": {
+      "file": "tr_peynirlikarnabahar.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_peynirlikarnabahar.webp",
+      "v": "583dbcc8"
+    },
+    "tr_pirasacorbasi": {
+      "file": "tr_pirasacorbasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_pirasacorbasi.webp",
+      "v": "7bdac1b2"
+    },
+    "tr_pirinc_lapasi": {
+      "file": "tr_pirinc_lapasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_pirinc_lapasi.webp",
+      "v": "f5084281"
+    },
+    "tr_pirzola": {
+      "file": "tr_pirzola.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_pirzola.webp",
+      "v": "e81115c2"
+    },
+    "tr_rendedomates": {
+      "file": "tr_rendedomates.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_rendedomates.webp",
+      "v": "07ca59de"
+    },
+    "tr_sebzelitavuksuyu": {
+      "file": "tr_sebzelitavuksuyu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_sebzelitavuksuyu.webp",
+      "v": "519e16e9"
+    },
+    "tr_yesilsalata": {
+      "file": "tr_yesilsalata.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_yesilsalata.webp",
+      "v": "82e84c85"
+    },
+    "tr_yulaf_lapasi": {
+      "file": "tr_yulaf_lapasi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_yulaf_lapasi.webp",
+      "v": "b02ef2ae"
+    },
+    "tr_yumurtalipazi": {
+      "file": "tr_yumurtalipazi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tr_yumurtalipazi.webp",
+      "v": "af9f8d30"
+    },
+    "tw_baicai_doufu_tang": {
+      "file": "tw_baicai_doufu_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_baicai_doufu_tang.webp",
+      "v": "7ba56328"
+    },
+    "tw_digua_xifan": {
+      "file": "tw_digua_xifan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_digua_xifan.webp",
+      "v": "e1abf442"
+    },
+    "tw_dougan_rousi": {
+      "file": "tw_dougan_rousi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_dougan_rousi.webp",
+      "v": "177d42d9"
+    },
+    "tw_douhua": {
+      "file": "tw_douhua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_douhua.webp",
+      "v": "b4958c27"
+    },
+    "tw_fanqie_chaodan": {
+      "file": "tw_fanqie_chaodan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_fanqie_chaodan.webp",
+      "v": "84df3fea"
+    },
+    "tw_fanqie_danhua_tang": {
+      "file": "tw_fanqie_danhua_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_fanqie_danhua_tang.webp",
+      "v": "f1d8a497"
+    },
+    "tw_huadan_xiaren": {
+      "file": "tw_huadan_xiaren.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_huadan_xiaren.webp",
+      "v": "c140c78c"
+    },
+    "tw_mantou": {
+      "file": "tw_mantou.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_mantou.webp",
+      "v": "bdf324a7"
+    },
+    "tw_nangua_xiaomi_zhou": {
+      "file": "tw_nangua_xiaomi_zhou.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_nangua_xiaomi_zhou.webp",
+      "v": "62e56982"
+    },
+    "tw_pidan_doufu": {
+      "file": "tw_pidan_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_pidan_doufu.webp",
+      "v": "9d16ca7c"
+    },
+    "tw_qingjiao_dougan": {
+      "file": "tw_qingjiao_dougan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_qingjiao_dougan.webp",
+      "v": "019a102f"
+    },
+    "tw_sanbei_doufu": {
+      "file": "tw_sanbei_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_sanbei_doufu.webp",
+      "v": "1bac3af1"
+    },
+    "tw_sanbei_xingbao": {
+      "file": "tw_sanbei_xingbao.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_sanbei_xingbao.webp",
+      "v": "ae21390c"
+    },
+    "tw_shacha_niurou": {
+      "file": "tw_shacha_niurou.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_shacha_niurou.webp",
+      "v": "f0d0a3d9"
+    },
+    "tw_shuiguo_pan": {
+      "file": "tw_shuiguo_pan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_shuiguo_pan.webp",
+      "v": "e2931a99"
+    },
+    "tw_su_lurou_fan": {
+      "file": "tw_su_lurou_fan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_su_lurou_fan.webp",
+      "v": "a01ebcac"
+    },
+    "tw_tang_qingcai": {
+      "file": "tw_tang_qingcai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_tang_qingcai.webp",
+      "v": "5dab1c39"
+    },
+    "tw_weicheng_tang": {
+      "file": "tw_weicheng_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_weicheng_tang.webp",
+      "v": "05278f24"
+    },
+    "tw_xingbaogu_doufu": {
+      "file": "tw_xingbaogu_doufu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_xingbaogu_doufu.webp",
+      "v": "e6a61bb3"
+    },
+    "tw_zheng_digua": {
+      "file": "tw_zheng_digua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_zheng_digua.webp",
+      "v": "64156665"
+    },
+    "tw_zhengdan": {
+      "file": "tw_zhengdan.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_zhengdan.webp",
+      "v": "0b3501ff"
+    },
+    "tw_zicai_danhua_tang": {
+      "file": "tw_zicai_danhua_tang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/tw_zicai_danhua_tang.webp",
+      "v": "e35c4d63"
+    },
+    "umechazuke": {
+      "file": "umechazuke.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/umechazuke.webp",
+      "v": "2540a716"
+    },
+    "us_avocadotoast": {
+      "file": "us_avocadotoast.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_avocadotoast.webp",
+      "v": "02601d8e"
+    },
+    "us_bbqchickensandwich": {
+      "file": "us_bbqchickensandwich.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_bbqchickensandwich.webp",
+      "v": "f56b079e"
+    },
+    "us_beanquesadillas": {
+      "file": "us_beanquesadillas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_beanquesadillas.webp",
+      "v": "b34c9851"
+    },
+    "us_berrybowl": {
+      "file": "us_berrybowl.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_berrybowl.webp",
+      "v": "41858df7"
+    },
+    "us_blt": {
+      "file": "us_blt.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_blt.webp",
+      "v": "f4bd431e"
+    },
+    "us_breakfastpotatoes": {
+      "file": "us_breakfastpotatoes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_breakfastpotatoes.webp",
+      "v": "e8adced1"
+    },
+    "us_burrito_bowl": {
+      "file": "us_burrito_bowl.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_burrito_bowl.webp",
+      "v": "0aba11d4"
+    },
+    "us_butteredpeas": {
+      "file": "us_butteredpeas.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_butteredpeas.webp",
+      "v": "ef435068"
+    },
+    "us_cabbagesoup": {
+      "file": "us_cabbagesoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_cabbagesoup.webp",
+      "v": "77c072b7"
+    },
+    "us_cabbagetofu": {
+      "file": "us_cabbagetofu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_cabbagetofu.webp",
+      "v": "5f2e9672"
+    },
+    "us_cauliflowersoup": {
+      "file": "us_cauliflowersoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_cauliflowersoup.webp",
+      "v": "73c01d8c"
+    },
+    "us_cauliflowersteak": {
+      "file": "us_cauliflowersteak.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_cauliflowersteak.webp",
+      "v": "99362bd9"
+    },
+    "us_chickenvegsoup": {
+      "file": "us_chickenvegsoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_chickenvegsoup.webp",
+      "v": "4ffe9507"
+    },
+    "us_cuketomato": {
+      "file": "us_cuketomato.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_cuketomato.webp",
+      "v": "5b5937a4"
+    },
+    "us_eggdrop": {
+      "file": "us_eggdrop.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_eggdrop.webp",
+      "v": "ccebf619"
+    },
+    "us_eggmuffin": {
+      "file": "us_eggmuffin.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_eggmuffin.webp",
+      "v": "a6427dc7"
+    },
+    "us_farina": {
+      "file": "us_farina.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_farina.webp",
+      "v": "986a6f1e"
+    },
+    "us_garlicshrimp": {
+      "file": "us_garlicshrimp.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_garlicshrimp.webp",
+      "v": "55c619e1"
+    },
+    "us_grits": {
+      "file": "us_grits.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_grits.webp",
+      "v": "bb7a6603"
+    },
+    "us_lemonchicken": {
+      "file": "us_lemonchicken.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_lemonchicken.webp",
+      "v": "f18a2e2a"
+    },
+    "us_lemonpepperfish": {
+      "file": "us_lemonpepperfish.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_lemonpepperfish.webp",
+      "v": "ed704599"
+    },
+    "us_lentil_joes": {
+      "file": "us_lentil_joes.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_lentil_joes.webp",
+      "v": "ac4964cd"
+    },
+    "us_mushroomspinach": {
+      "file": "us_mushroomspinach.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_mushroomspinach.webp",
+      "v": "24d1838f"
+    },
+    "us_portobello": {
+      "file": "us_portobello.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_portobello.webp",
+      "v": "d3c4e684"
+    },
+    "us_primavera": {
+      "file": "us_primavera.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_primavera.webp",
+      "v": "1243214c"
+    },
+    "us_roastcauliflower": {
+      "file": "us_roastcauliflower.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_roastcauliflower.webp",
+      "v": "72be60af"
+    },
+    "us_rotisseriesoup": {
+      "file": "us_rotisseriesoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_rotisseriesoup.webp",
+      "v": "72b8eda0"
+    },
+    "us_sausagepeppers": {
+      "file": "us_sausagepeppers.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_sausagepeppers.webp",
+      "v": "c150c456"
+    },
+    "us_sausageveg": {
+      "file": "us_sausageveg.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_sausageveg.webp",
+      "v": "a5274685"
+    },
+    "us_spinachfrittata": {
+      "file": "us_spinachfrittata.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_spinachfrittata.webp",
+      "v": "b6589b9e"
+    },
+    "us_sweetpotato_stew": {
+      "file": "us_sweetpotato_stew.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_sweetpotato_stew.webp",
+      "v": "5d026e30"
+    },
+    "us_tofubroccoli": {
+      "file": "us_tofubroccoli.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_tofubroccoli.webp",
+      "v": "5054c25f"
+    },
+    "us_tofuscramble": {
+      "file": "us_tofuscramble.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_tofuscramble.webp",
+      "v": "1fce285e"
+    },
+    "us_tomatobasilsoup": {
+      "file": "us_tomatobasilsoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_tomatobasilsoup.webp",
+      "v": "8a86a097"
+    },
+    "us_tortellinisoup": {
+      "file": "us_tortellinisoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_tortellinisoup.webp",
+      "v": "b305d9d2"
+    },
+    "us_tunamelt": {
+      "file": "us_tunamelt.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_tunamelt.webp",
+      "v": "a06b6377"
+    },
+    "us_turkeywrap": {
+      "file": "us_turkeywrap.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_turkeywrap.webp",
+      "v": "95a9a5e2"
+    },
+    "us_veg_chili": {
+      "file": "us_veg_chili.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_veg_chili.webp",
+      "v": "abb08fae"
+    },
+    "us_vegnoodlesoup": {
+      "file": "us_vegnoodlesoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_vegnoodlesoup.webp",
+      "v": "494cd2b5"
+    },
+    "us_zucchiniboats": {
+      "file": "us_zucchiniboats.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_zucchiniboats.webp",
+      "v": "d907be02"
+    },
+    "us_zucchinisaute": {
+      "file": "us_zucchinisaute.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_zucchinisaute.webp",
+      "v": "0acdfa8f"
+    },
+    "us_zucchinisoup": {
+      "file": "us_zucchinisoup.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/us_zucchinisoup.webp",
+      "v": "1b97ec53"
+    },
+    "vn_banh_mi_op_la": {
+      "file": "vn_banh_mi_op_la.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_banh_mi_op_la.webp",
+      "v": "d1d6226a"
+    },
+    "vn_bi_luoc": {
+      "file": "vn_bi_luoc.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_bi_luoc.webp",
+      "v": "5683f684"
+    },
+    "vn_bobittet": {
+      "file": "vn_bobittet.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_bobittet.webp",
+      "v": "e1180a0e"
+    },
+    "vn_bosotvang": {
+      "file": "vn_bosotvang.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_bosotvang.webp",
+      "v": "d395b330"
+    },
+    "vn_boxaobongcai": {
+      "file": "vn_boxaobongcai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_boxaobongcai.webp",
+      "v": "400316fe"
+    },
+    "vn_boxaogia": {
+      "file": "vn_boxaogia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_boxaogia.webp",
+      "v": "372ddb55"
+    },
+    "vn_bun_chay": {
+      "file": "vn_bun_chay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_bun_chay.webp",
+      "v": "0617e6e5"
+    },
+    "vn_ca_tim_kho_dau_hu": {
+      "file": "vn_ca_tim_kho_dau_hu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_ca_tim_kho_dau_hu.webp",
+      "v": "74d89424"
+    },
+    "vn_cai_luoc": {
+      "file": "vn_cai_luoc.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_cai_luoc.webp",
+      "v": "1d2e46f8"
+    },
+    "vn_canh_bi_do_chay": {
+      "file": "vn_canh_bi_do_chay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canh_bi_do_chay.webp",
+      "v": "a98ae9f8"
+    },
+    "vn_canh_nam_dau_hu": {
+      "file": "vn_canh_nam_dau_hu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canh_nam_dau_hu.webp",
+      "v": "2f3164f2"
+    },
+    "vn_canhbau": {
+      "file": "vn_canhbau.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhbau.webp",
+      "v": "2e73de13"
+    },
+    "vn_canhcaingot": {
+      "file": "vn_canhcaingot.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhcaingot.webp",
+      "v": "ffeb1515"
+    },
+    "vn_canhcaithaodauhu": {
+      "file": "vn_canhcaithaodauhu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhcaithaodauhu.webp",
+      "v": "91f1cbce"
+    },
+    "vn_canhchuachay": {
+      "file": "vn_canhchuachay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhchuachay.webp",
+      "v": "95b68718"
+    },
+    "vn_canhdauhucachua": {
+      "file": "vn_canhdauhucachua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhdauhucachua.webp",
+      "v": "d1919669"
+    },
+    "vn_canhkhoaitay": {
+      "file": "vn_canhkhoaitay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhkhoaitay.webp",
+      "v": "3371a583"
+    },
+    "vn_canhmuopnam": {
+      "file": "vn_canhmuopnam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhmuopnam.webp",
+      "v": "ad71d318"
+    },
+    "vn_canhnamkimcham": {
+      "file": "vn_canhnamkimcham.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhnamkimcham.webp",
+      "v": "fa551649"
+    },
+    "vn_canhsuhao": {
+      "file": "vn_canhsuhao.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhsuhao.webp",
+      "v": "ab83312b"
+    },
+    "vn_canhsusu": {
+      "file": "vn_canhsusu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_canhsusu.webp",
+      "v": "49a2af59"
+    },
+    "vn_carichay": {
+      "file": "vn_carichay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_carichay.webp",
+      "v": "5b5df12f"
+    },
+    "vn_chao_bi_do": {
+      "file": "vn_chao_bi_do.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_chao_bi_do.webp",
+      "v": "bd65cb44"
+    },
+    "vn_chao_ga": {
+      "file": "vn_chao_ga.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_chao_ga.webp",
+      "v": "a8ebddc7"
+    },
+    "vn_chao_thit_bam": {
+      "file": "vn_chao_thit_bam.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_chao_thit_bam.webp",
+      "v": "831010b1"
+    },
+    "vn_com_chien_chay": {
+      "file": "vn_com_chien_chay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_com_chien_chay.webp",
+      "v": "df9437ba"
+    },
+    "vn_comchienduongchau": {
+      "file": "vn_comchienduongchau.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_comchienduongchau.webp",
+      "v": "8b6d0c72"
+    },
+    "vn_dau_hu_sot_ca": {
+      "file": "vn_dau_hu_sot_ca.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_dau_hu_sot_ca.webp",
+      "v": "ad81a803"
+    },
+    "vn_dauhuchiensa": {
+      "file": "vn_dauhuchiensa.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_dauhuchiensa.webp",
+      "v": "ff153cc9"
+    },
+    "vn_dauhunhoithit": {
+      "file": "vn_dauhunhoithit.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_dauhunhoithit.webp",
+      "v": "56137db5"
+    },
+    "vn_galuoc": {
+      "file": "vn_galuoc.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_galuoc.webp",
+      "v": "76677b40"
+    },
+    "vn_garangmuoi": {
+      "file": "vn_garangmuoi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_garangmuoi.webp",
+      "v": "38ee1d19"
+    },
+    "vn_garoti": {
+      "file": "vn_garoti.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_garoti.webp",
+      "v": "ee9ed024"
+    },
+    "vn_launamchay": {
+      "file": "vn_launamchay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_launamchay.webp",
+      "v": "9cb60da4"
+    },
+    "vn_nam_xao_sa_ot": {
+      "file": "vn_nam_xao_sa_ot.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_nam_xao_sa_ot.webp",
+      "v": "bd1e3068"
+    },
+    "vn_namkhotieu": {
+      "file": "vn_namkhotieu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_namkhotieu.webp",
+      "v": "069420fc"
+    },
+    "vn_pho_chay": {
+      "file": "vn_pho_chay.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_pho_chay.webp",
+      "v": "f32990cb"
+    },
+    "vn_pho_ga": {
+      "file": "vn_pho_ga.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_pho_ga.webp",
+      "v": "bc24094f"
+    },
+    "vn_rau_cu_xao_dau_hu": {
+      "file": "vn_rau_cu_xao_dau_hu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_rau_cu_xao_dau_hu.webp",
+      "v": "7cc5dbe1"
+    },
+    "vn_suonxaochuangot": {
+      "file": "vn_suonxaochuangot.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_suonxaochuangot.webp",
+      "v": "2a6918db"
+    },
+    "vn_thitxaocaithia": {
+      "file": "vn_thitxaocaithia.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_thitxaocaithia.webp",
+      "v": "819862e7"
+    },
+    "vn_tomhapnuocdua": {
+      "file": "vn_tomhapnuocdua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_tomhapnuocdua.webp",
+      "v": "b7755fdb"
+    },
+    "vn_tomrangmuoi": {
+      "file": "vn_tomrangmuoi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_tomrangmuoi.webp",
+      "v": "0359de1c"
+    },
+    "vn_tomxaobongcai": {
+      "file": "vn_tomxaobongcai.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_tomxaobongcai.webp",
+      "v": "13dce485"
+    },
+    "vn_trungchienhanhla": {
+      "file": "vn_trungchienhanhla.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_trungchienhanhla.webp",
+      "v": "643faf32"
+    },
+    "vn_trungxaocachua": {
+      "file": "vn_trungxaocachua.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_trungxaocachua.webp",
+      "v": "97559358"
+    },
+    "vn_xaxiu": {
+      "file": "vn_xaxiu.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_xaxiu.webp",
+      "v": "7a320eb6"
+    },
+    "vn_xoi_xeo": {
+      "file": "vn_xoi_xeo.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/vn_xoi_xeo.webp",
+      "v": "e631af49"
+    },
+    "yaki_onigiri": {
+      "file": "yaki_onigiri.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/yaki_onigiri.webp",
+      "v": "40852856"
+    },
+    "yaki_tomorokoshi": {
+      "file": "yaki_tomorokoshi.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/yaki_tomorokoshi.webp",
+      "v": "ee86e9f4"
+    },
+    "yakitori": {
+      "file": "yakitori.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/yakitori.webp",
+      "v": "a72f0fb5"
+    },
+    "yogurt_fruit": {
+      "file": "yogurt_fruit.webp",
+      "via": "photo",
+      "model": "gemini",
+      "date": "2026-11-19",
+      "thumb": "t/yogurt_fruit.webp",
+      "v": "bb9a700a"
     }
   }
 }
