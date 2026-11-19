@@ -1,0 +1,1582 @@
+[
+ {
+  "ui": "ja",
+  "cc": "JP",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "ポテトサラダ",
+   "why": "アレルギー"
+  },
+  "spotWarn": [
+   "副菜 ポテトサラダ ⚠ 卵 かえる"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "閉じる ⚠ 合わない料理があります：ポテトサラダ（アレルギー） 替える このまま決める",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "替える",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "このまま決める",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 29
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "アレルギーに合わない料理を替えました（副菜：ポテトサラダ → ほうれん草とベーコンのソテー）\nほかの候補",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "鮭のムニエル",
+   "ポテトサラダ⚠",
+   "トマトのマリネ",
+   "コーンスープ"
+  ],
+  "cook": {
+   "warn": 1,
+   "text": "鮭のムニエル・ポテトサラダ・トマトのマリネ・コーンスープ 買う物 7つ 家族に送る 料理ごと 売り場ごと 買い物モード（画面を消さない） 買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。 鮭のムニエル 生鮭 鮭のムニエル 2切れ 買う 家にある ポテトサラダ じゃがいも ポテトサラダ 3個 買う 家にある きゅうり ポテトサラダ・1/2本使う 1本 買う 家にある トマトのマリネ トマト トマトのマリネ 2個 買う 家にある 玉ねぎ トマトのマリネ・1/4個使う 1個 買う 家にある コーンスープ コーン缶（クリーム） コーンスープ 1缶 買う 家にある 牛乳 コーンスー"
+  }
+ },
+ {
+  "ui": "ja",
+  "cc": "JP",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "ほうれん草のおひたし",
+   "why": "食の決まり"
+  },
+  "spotWarn": [
+   "副菜 ほうれん草のおひたし ⚠ 食の決まり（かつお節） かえる"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "閉じる ⚠ 合わない料理があります：ほうれん草のおひたし（食の決まり） 替える このまま決める",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "替える",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "このまま決める",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 30
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "食の決まりに合わない料理を替えました（副菜：ほうれん草のおひたし → きのこのバター醤油炒め）\nほかの候補",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "厚揚げとなすのみそ炒め",
+   "ほうれん草のおひたし⚠",
+   "長いもの梅和え",
+   "中華風卵スープ"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "厚揚げとなすのみそ炒め・ほうれん草のおひたし・長いもの梅和え・中華風卵スープ 買う物 8つ 家族に送る 料理ごと 売り場ごと 買い物モード（画面を消さない） 買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。 厚揚げとなすのみそ炒め 厚揚げ 厚揚げとなすのみそ炒め 1枚 (200 g) 買う 家にある なす 厚揚げとなすのみそ炒め 2本 買う 家にある ピーマン 厚揚げとなすのみそ炒め 2個 買う 家にある ほうれん草のおひたし ほうれん草 ほうれん草のおひたし 1束 買う 家にある 長いもの梅和え 長いも 長いもの梅和え 10cm 買う 家にある 梅干し 長いもの梅和え "
+  }
+ },
+ {
+  "ui": "ja",
+  "cc": "JP",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "ポテトサラダ",
+   "why": "アレルギー"
+  },
+  "spotWarn": [
+   "ポテトサラダ ⚠ 卵 かえる"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "閉じる ⚠ 合わない料理があります：ポテトサラダ（アレルギー） 替える このまま決める",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "替える",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "このまま決める",
+     "inView": true,
+     "h": 72,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 29
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "アレルギーに合わない料理を替えました（副菜：ポテトサラダ → ほうれん草とベーコンのソテー）\nほかの候補",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "鮭のムニエル",
+   "ポテトサラダ⚠",
+   "トマトのマリネ",
+   "コーンスープ"
+  ],
+  "cook": {
+   "warn": 1,
+   "text": "鮭のムニエル・ポテトサラダ・トマトのマリネ・コーンスープ 買う物 7つ 家族に送る 料理ごと 売り場ごと 買い物モード（画面を消さない） 買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。 鮭のムニエル 生鮭 鮭のムニエル 2切れ 買う 家にある ポテトサラダ じゃがいも ポテトサラダ 3個 買う 家にある きゅうり ポテトサラダ・1/2本使う 1本 買う 家にある トマトのマリネ トマト トマトのマリネ 2個 買う 家にある 玉ねぎ トマトのマリネ・1/4個使う 1個 買う 家にある コーンスープ コーン缶（クリーム） コーンスープ 1缶 買う 家にある 牛乳 コーンスー"
+  }
+ },
+ {
+  "ui": "ja",
+  "cc": "JP",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "ポテトサラダ",
+   "why": "アレルギー"
+  },
+  "spotWarn": [
+   "副菜 ポテトサラダ ⚠ 卵 かえる"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "閉じる ⚠ 合わない料理があります：ポテトサラダ（アレルギー） 替える このまま決める",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "替える",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "このまま決める",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 29
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "アレルギーに合わない料理を替えました（副菜：ポテトサラダ → ほうれん草とベーコンのソテー）\nほかの候補",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "鮭のムニエル",
+   "ポテトサラダ⚠",
+   "トマトのマリネ",
+   "コーンスープ"
+  ],
+  "cook": {
+   "warn": 1,
+   "text": "鮭のムニエル・ポテトサラダ・トマトのマリネ・コーンスープ 買う物 7つ 家族に送る 料理ごと 売り場ごと 買い物モード（画面を消さない） 買う単位で出しています。残りは「使いかけ」として冷蔵庫に入れられます。 鮭のムニエル 生鮭 鮭のムニエル 2切れ 買う 家にある ポテトサラダ じゃがいも ポテトサラダ 3個 買う 家にある きゅうり ポテトサラダ・1/2本使う 1本 買う 家にある トマトのマリネ トマト トマトのマリネ 2個 買う 家にある 玉ねぎ トマトのマリネ・1/4個使う 1個 買う 家にある コーンスープ コーン缶（クリーム） コーンスープ 1缶 買う 家にある 牛乳 コーンスー"
+  }
+ },
+ {
+  "ui": "en",
+  "cc": "US",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "Coleslaw",
+   "why": "Allergy"
+  },
+  "spotWarn": [
+   "Side Coleslaw ⚠ Eggs Swap"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Close ⚠ Some dishes don't fit: Coleslaw (Allergy) Replace Decide as is",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Replace",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decide as is",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergy: replaced dishes that don't fit (Side: Coleslaw → Rice pilaf)\nOther options",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Portobello mushroom steaks with garlic green beans",
+   "Coleslaw⚠",
+   "Quick pickles",
+   "Lentil soup"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Portobello mushroom steaks with garlic green beans, Coleslaw, Quick pickles, Lentil soup 11 things to buy Send to family By dish By aisle Shopping mode (keeps screen on) Shown in the amounts you buy. Leftovers can go in the fridge as “partly used”. Portobello mushroom steaks with garlic green beans "
+  }
+ },
+ {
+  "ui": "en",
+  "cc": "US",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "Baked beans",
+   "why": "Diet rules"
+  },
+  "spotWarn": [
+   "Side Baked beans ⚠ Diet rules (Bacon) Swap"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Close ⚠ Some dishes don't fit: Baked beans (Diet rules) Replace Decide as is",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Replace",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decide as is",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Diet rules: replaced dishes that don't fit (Side: Baked beans → Coleslaw)\nOther options",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Black bean and rice burrito bowl",
+   "Baked beans⚠",
+   "Garlic bread",
+   "Zucchini basil soup"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Black bean and rice burrito bowl, Baked beans, Garlic bread, Zucchini basil soup 12 things to buy Send to family By dish By aisle Shopping mode (keeps screen on) Shown in the amounts you buy. Leftovers can go in the fridge as “partly used”. Black bean and rice burrito bowl Cooked rice Black bean and"
+  }
+ },
+ {
+  "ui": "en",
+  "cc": "US",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "Coleslaw",
+   "why": "Allergy"
+  },
+  "spotWarn": [
+   "Side Coleslaw ⚠ Eggs Swap"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Close ⚠ Some dishes don't fit: Coleslaw (Allergy) Replace Decide as is",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Replace",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decide as is",
+     "inView": true,
+     "h": 48,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergy: replaced dishes that don't fit (Side: Coleslaw → Rice pilaf)\nOther options",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Portobello mushroom steaks with garlic green beans",
+   "Coleslaw⚠",
+   "Quick pickles",
+   "Lentil soup"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Portobello mushroom steaks with garlic green beans, Coleslaw, Quick pickles, Lentil soup 11 things to buy Send to family By dish By aisle Shopping mode (keeps screen on) Shown in the amounts you buy. Leftovers can go in the fridge as “partly used”. Portobello mushroom steaks with garlic green beans "
+  }
+ },
+ {
+  "ui": "en",
+  "cc": "US",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "Coleslaw",
+   "why": "Allergy"
+  },
+  "spotWarn": [
+   "Coleslaw ⚠ Eggs Swap"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Close ⚠ Some dishes don't fit: Coleslaw (Allergy) Replace Decide as is",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Replace",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decide as is",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergy: replaced dishes that don't fit (Side: Coleslaw → Rice pilaf)\nOther options",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Portobello mushroom steaks with garlic green beans",
+   "Coleslaw⚠",
+   "Quick pickles",
+   "Lentil soup"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Portobello mushroom steaks with garlic green beans, Coleslaw, Quick pickles, Lentil soup 11 things to buy Send to family By dish By aisle Shopping mode (keeps screen on) Shown in the amounts you buy. Leftovers can go in the fridge as “partly used”. Portobello mushroom steaks with garlic green beans "
+  }
+ },
+ {
+  "ui": "th",
+  "cc": "TH",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "ไข่ตุ๋น",
+   "why": "แพ้อาหาร"
+  },
+  "spotWarn": [
+   "จานเคียง ไข่ตุ๋น ⚠ ไข่ เปลี่ยน"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "ปิด ⚠ มีเมนูที่ไม่เหมาะ: ไข่ตุ๋น (แพ้อาหาร) เปลี่ยน ตัดสินใจแบบนี้",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "เปลี่ยน",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "ตัดสินใจแบบนี้",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "แพ้อาหาร: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ไข่ตุ๋น → ส้มตำไทย)\nตัวเลือกอื่น",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "ลาบหมู",
+   "ไข่ตุ๋น⚠",
+   "ถั่วงอกผัดเต้าหู้",
+   "ต้มฟักไก่"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "ลาบหมู, ไข่ตุ๋น, ถั่วงอกผัดเต้าหู้, ต้มฟักไก่ ของที่ต้องซื้อ 11 อย่าง ส่งให้ครอบครัว ตามเมนู ตามแผนก โหมดซื้อของ (หน้าจอไม่ดับ) แสดงตามหน่วยที่ซื้อ ของที่เหลือใส่ตู้เย็นเป็น “ใช้ไปแล้วบางส่วน” ได้ ลาบหมู หมูสับ ลาบหมู 300 กรัม ซื้อ มีแล้ว หอมแดง ลาบหมู 3 หัว ซื้อ มีแล้ว ข้าวคั่ว ลาบหมู 2 ช้อนโต๊ะ ซื"
+  }
+ },
+ {
+  "ui": "th",
+  "cc": "TH",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "ผัดผักบุ้งไฟแดง",
+   "why": "กฎการกิน"
+  },
+  "spotWarn": [
+   "จานเคียง ผัดผักบุ้งไฟแดง ⚠ กฎการกิน (1 tbsp oyster sauce) เปลี่ยน"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "ปิด ⚠ มีเมนูที่ไม่เหมาะ: ผัดผักบุ้งไฟแดง (กฎการกิน) เปลี่ยน ตัดสินใจแบบนี้",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "เปลี่ยน",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "ตัดสินใจแบบนี้",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "กฎการกิน: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ผัดผักบุ้งไฟแดง → ฟักทองนึ่ง)\nตัวเลือกอื่น",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "เต้าหู้ทรงเครื่อง",
+   "ผัดผักบุ้งไฟแดง⚠",
+   "อาจาด",
+   "ต้มจืดผักรวม"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "เต้าหู้ทรงเครื่อง, ผัดผักบุ้งไฟแดง, อาจาด, ต้มจืดผักรวม ของที่ต้องซื้อ 11 อย่าง ส่งให้ครอบครัว ตามเมนู ตามแผนก โหมดซื้อของ (หน้าจอไม่ดับ) แสดงตามหน่วยที่ซื้อ ของที่เหลือใส่ตู้เย็นเป็น “ใช้ไปแล้วบางส่วน” ได้ เต้าหู้ทรงเครื่อง เต้าหู้แข็ง เต้าหู้ทรงเครื่อง 400 กรัม ซื้อ มีแล้ว เห็ดหอม เต้าหู้ทรงเครื่อ"
+  }
+ },
+ {
+  "ui": "th",
+  "cc": "TH",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "ไข่ตุ๋น",
+   "why": "แพ้อาหาร"
+  },
+  "spotWarn": [
+   "ไข่ตุ๋น ⚠ ไข่ เปลี่ยน"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "ปิด ⚠ มีเมนูที่ไม่เหมาะ: ไข่ตุ๋น (แพ้อาหาร) เปลี่ยน ตัดสินใจแบบนี้",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "เปลี่ยน",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "ตัดสินใจแบบนี้",
+     "inView": true,
+     "h": 72,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "แพ้อาหาร: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ไข่ตุ๋น → ส้มตำไทย)\nตัวเลือกอื่น",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "ลาบหมู",
+   "ไข่ตุ๋น⚠",
+   "ถั่วงอกผัดเต้าหู้",
+   "ต้มฟักไก่"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "ลาบหมู, ไข่ตุ๋น, ถั่วงอกผัดเต้าหู้, ต้มฟักไก่ ของที่ต้องซื้อ 11 อย่าง ส่งให้ครอบครัว ตามเมนู ตามแผนก โหมดซื้อของ (หน้าจอไม่ดับ) แสดงตามหน่วยที่ซื้อ ของที่เหลือใส่ตู้เย็นเป็น “ใช้ไปแล้วบางส่วน” ได้ ลาบหมู หมูสับ ลาบหมู 300 กรัม ซื้อ มีแล้ว หอมแดง ลาบหมู 3 หัว ซื้อ มีแล้ว ข้าวคั่ว ลาบหมู 2 ช้อนโต๊ะ ซื"
+  }
+ },
+ {
+  "ui": "th",
+  "cc": "TH",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "ไข่ตุ๋น",
+   "why": "แพ้อาหาร"
+  },
+  "spotWarn": [
+   "ไข่ตุ๋น ⚠ ไข่ เปลี่ยน"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "ปิด ⚠ มีเมนูที่ไม่เหมาะ: ไข่ตุ๋น (แพ้อาหาร) เปลี่ยน ตัดสินใจแบบนี้",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "เปลี่ยน",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "ตัดสินใจแบบนี้",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "แพ้อาหาร: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ไข่ตุ๋น → ส้มตำไทย)\nตัวเลือกอื่น",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "ลาบหมู",
+   "ไข่ตุ๋น⚠",
+   "ถั่วงอกผัดเต้าหู้",
+   "ต้มฟักไก่"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "ลาบหมู, ไข่ตุ๋น, ถั่วงอกผัดเต้าหู้, ต้มฟักไก่ ของที่ต้องซื้อ 11 อย่าง ส่งให้ครอบครัว ตามเมนู ตามแผนก โหมดซื้อของ (หน้าจอไม่ดับ) แสดงตามหน่วยที่ซื้อ ของที่เหลือใส่ตู้เย็นเป็น “ใช้ไปแล้วบางส่วน” ได้ ลาบหมู หมูสับ ลาบหมู 300 กรัม ซื้อ มีแล้ว หอมแดง ลาบหมู 3 หัว ซื้อ มีแล้ว ข้าวคั่ว ลาบหมู 2 ช้อนโต๊ะ ซื"
+  }
+ },
+ {
+  "ui": "ar",
+  "cc": "EG",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "قرنبيط مقلي",
+   "why": "حساسية"
+  },
+  "spotWarn": [
+   "طبق جانبي قرنبيط مقلي ⚠ بيض غيّر"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "إغلاق ⚠ بعض الأطباق غير مناسبة: قرنبيط مقلي (حساسية) استبدال التحديد كما هي",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "استبدال",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "التحديد كما هي",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "حساسية: تم استبدال الأطباق غير المناسبة (طبق جانبي: قرنبيط مقلي → سلطة زبادي بالخيار)\nخيارات أخرى",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "كبدة إسكندراني",
+   "قرنبيط مقلي⚠",
+   "رز بالشعرية",
+   "شوربة قرنبيط"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "كبدة إسكندراني، قرنبيط مقلي، رز بالشعرية، شوربة قرنبيط أشياء للشراء: 11 إرسال للعائلة حسب الطبق حسب القسم وضع التسوق (تبقى الشاشة مضاءة) الكميات بوحدات الشراء. يمكن وضع المتبقي في الثلاجة على أنه «مستخدم جزئيًا». كبدة إسكندراني كبدة بقري كبدة إسكندراني 400 جم شراء موجود فلفل أخضر كبدة إسكندراني 2 حب"
+  }
+ },
+ {
+  "ui": "ar",
+  "cc": "EG",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "رز بالخلطة",
+   "why": "قواعد الطعام"
+  },
+  "spotWarn": [
+   "طبق جانبي رز بالخلطة ⚠ قواعد الطعام (كبدة فراخ، لحمة مفرومة، 450 ml chicken brot"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "إغلاق ⚠ بعض الأطباق غير مناسبة: رز بالخلطة (قواعد الطعام) استبدال التحديد كما هي",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "استبدال",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "التحديد كما هي",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "قواعد الطعام: تم استبدال الأطباق غير المناسبة (طبق جانبي: رز بالخلطة → سلطة مكرونة)\nخيارات أخرى",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "قرنبيط بالصلصة",
+   "رز بالخلطة⚠",
+   "سبانخ",
+   "شوربة مشروم بالكريمة"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "قرنبيط بالصلصة، رز بالخلطة، سبانخ، شوربة مشروم بالكريمة أشياء للشراء: 12 إرسال للعائلة حسب الطبق حسب القسم وضع التسوق (تبقى الشاشة مضاءة) الكميات بوحدات الشراء. يمكن وضع المتبقي في الثلاجة على أنه «مستخدم جزئيًا». قرنبيط بالصلصة قرنبيط قرنبيط بالصلصة 1 (700 جم) شراء موجود طماطم قرنبيط بالصلصة 3 شراء"
+  }
+ },
+ {
+  "ui": "ar",
+  "cc": "EG",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "قرنبيط مقلي",
+   "why": "حساسية"
+  },
+  "spotWarn": [
+   "قرنبيط مقلي ⚠ بيض استبدال"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "إغلاق ⚠ بعض الأطباق غير مناسبة: قرنبيط مقلي (حساسية) استبدال التحديد كما هي",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "استبدال",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "التحديد كما هي",
+     "inView": true,
+     "h": 72,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "حساسية: تم استبدال الأطباق غير المناسبة (طبق جانبي: قرنبيط مقلي → سلطة زبادي بالخيار)\nخيارات أخرى",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "كبدة إسكندراني",
+   "قرنبيط مقلي⚠",
+   "رز بالشعرية",
+   "شوربة قرنبيط"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "كبدة إسكندراني، قرنبيط مقلي، رز بالشعرية، شوربة قرنبيط أشياء للشراء: 11 إرسال للعائلة حسب الطبق حسب القسم وضع التسوق (تبقى الشاشة مضاءة) الكميات بوحدات الشراء. يمكن وضع المتبقي في الثلاجة على أنه «مستخدم جزئيًا». كبدة إسكندراني كبدة بقري كبدة إسكندراني 400 جم شراء موجود فلفل أخضر كبدة إسكندراني 2 حب"
+  }
+ },
+ {
+  "ui": "ar",
+  "cc": "EG",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "قرنبيط مقلي",
+   "why": "حساسية"
+  },
+  "spotWarn": [
+   "قرنبيط مقلي ⚠ بيض استبدال"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "إغلاق ⚠ بعض الأطباق غير مناسبة: قرنبيط مقلي (حساسية) استبدال التحديد كما هي",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "استبدال",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "التحديد كما هي",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "حساسية: تم استبدال الأطباق غير المناسبة (طبق جانبي: قرنبيط مقلي → سلطة زبادي بالخيار)\nخيارات أخرى",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "كبدة إسكندراني",
+   "قرنبيط مقلي⚠",
+   "رز بالشعرية",
+   "شوربة قرنبيط"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "كبدة إسكندراني، قرنبيط مقلي، رز بالشعرية، شوربة قرنبيط أشياء للشراء: 11 إرسال للعائلة حسب الطبق حسب القسم وضع التسوق (تبقى الشاشة مضاءة) الكميات بوحدات الشراء. يمكن وضع المتبقي في الثلاجة على أنه «مستخدم جزئيًا». كبدة إسكندراني كبدة بقري كبدة إسكندراني 400 جم شراء موجود فلفل أخضر كبدة إسكندراني 2 حب"
+  }
+ },
+ {
+  "ui": "de",
+  "cc": "DE",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "Nudelsalat",
+   "why": "Allergie"
+  },
+  "spotWarn": [
+   "Beilage Nudelsalat ⚠ Eier Tausch"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Schließen ⚠ Einige Gerichte passen nicht: Nudelsalat (Allergie) Ersetzen So festlegen",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Ersetzen",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "So festlegen",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergie: unpassende Gerichte ersetzt (Beilage: Nudelsalat → Gurken-Radieschen-Salat)\nWeitere Vorschläge",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Linseneintopf mit Würstchen",
+   "Nudelsalat⚠",
+   "Kartoffelgratin",
+   "Champignoncremesuppe"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Linseneintopf mit Würstchen, Nudelsalat, Kartoffelgratin, Champignoncremesuppe 17 Sachen zu kaufen An die Familie senden Nach Gericht Nach Abteilung Einkaufsmodus (Bildschirm bleibt an) In Kaufmengen angezeigt. Reste können als „angebrochen“ in den Kühlschrank. Linseneintopf mit Würstchen Tellerlins"
+  }
+ },
+ {
+  "ui": "de",
+  "cc": "DE",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "Schwäbischer Kartoffelsalat",
+   "why": "Ernährungsregeln"
+  },
+  "spotWarn": [
+   "Beilage Schwäbischer Kartoffelsalat ⚠ Ernährungsregeln (150 ml hot beef or veget"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Schließen ⚠ Einige Gerichte passen nicht: Schwäbischer Kartoffelsalat (Ernährungsregeln) Ersetzen So festlegen",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Ersetzen",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "So festlegen",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Ernährungsregeln: unpassende Gerichte ersetzt (Beilage: Schwäbischer Kartoffelsalat → Rote-Bete-Salat)\nWeitere Vorschläge",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Bratkartoffeln mit Pilzen",
+   "Schwäbischer Kartoffelsalat⚠",
+   "Blumenkohl mit Butterbröseln",
+   "Spargelcremesuppe"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Bratkartoffeln mit Pilzen, Schwäbischer Kartoffelsalat, Blumenkohl mit Butterbröseln, Spargelcremesuppe 9 Sachen zu kaufen An die Familie senden Nach Gericht Nach Abteilung Einkaufsmodus (Bildschirm bleibt an) In Kaufmengen angezeigt. Reste können als „angebrochen“ in den Kühlschrank. Bratkartoffeln"
+  }
+ },
+ {
+  "ui": "de",
+  "cc": "DE",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "Nudelsalat",
+   "why": "Allergie"
+  },
+  "spotWarn": [
+   "Beilage Nudelsalat ⚠ Eier Tauschen"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Schließen ⚠ Einige Gerichte passen nicht: Nudelsalat (Allergie) Ersetzen So festlegen",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Ersetzen",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "So festlegen",
+     "inView": true,
+     "h": 48,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergie: unpassende Gerichte ersetzt (Beilage: Nudelsalat → Gurken-Radieschen-Salat)\nWeitere Vorschläge",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Linseneintopf mit Würstchen",
+   "Nudelsalat⚠",
+   "Kartoffelgratin",
+   "Champignoncremesuppe"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Linseneintopf mit Würstchen, Nudelsalat, Kartoffelgratin, Champignoncremesuppe 17 Sachen zu kaufen An die Familie senden Nach Gericht Nach Abteilung Einkaufsmodus (Bildschirm bleibt an) In Kaufmengen angezeigt. Reste können als „angebrochen“ in den Kühlschrank. Linseneintopf mit Würstchen Tellerlins"
+  }
+ },
+ {
+  "ui": "de",
+  "cc": "DE",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "Nudelsalat",
+   "why": "Allergie"
+  },
+  "spotWarn": [
+   "Beilage Nudelsalat ⚠ Eier Tausch"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Schließen ⚠ Einige Gerichte passen nicht: Nudelsalat (Allergie) Ersetzen So festlegen",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Ersetzen",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "So festlegen",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Allergie: unpassende Gerichte ersetzt (Beilage: Nudelsalat → Gurken-Radieschen-Salat)\nWeitere Vorschläge",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Linseneintopf mit Würstchen",
+   "Nudelsalat⚠",
+   "Kartoffelgratin",
+   "Champignoncremesuppe"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Linseneintopf mit Würstchen, Nudelsalat, Kartoffelgratin, Champignoncremesuppe 17 Sachen zu kaufen An die Familie senden Nach Gericht Nach Abteilung Einkaufsmodus (Bildschirm bleibt an) In Kaufmengen angezeigt. Reste können als „angebrochen“ in den Kühlschrank. Linseneintopf mit Würstchen Tellerlins"
+  }
+ },
+ {
+  "ui": "pt-BR",
+  "cc": "BR",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "Farofa",
+   "why": "Alergia"
+  },
+  "spotWarn": [
+   "Acompanhamento Farofa ⚠ Ovos Outro"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Fechar ⚠ Há pratos que não combinam: Farofa (Alergia) Trocar Decidir assim",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Trocar",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decidir assim",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Alergia: trocamos os pratos que não combinam (Acompanhamento: Farofa → Couve-flor gratinada)\nOutras opções",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Moqueca de peixe",
+   "Farofa⚠",
+   "Mandioca frita",
+   "Caldo de frango com legumes"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Moqueca de peixe, Farofa, Mandioca frita, Caldo de frango com legumes 14 itens para comprar Enviar para a família Por prato Por seção Modo compras (tela sempre ligada) Mostrado na quantidade que se compra. A sobra pode ir para a geladeira como “aberto”. Moqueca de peixe Postas de peixe branco firme "
+  }
+ },
+ {
+  "ui": "pt-BR",
+  "cc": "BR",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "Pirão de peixe",
+   "why": "Regras alimentares"
+  },
+  "spotWarn": [
+   "Acompanhamento Pirão de peixe ⚠ Regras alimentares (Cabeça e espinhas de peixe) "
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Fechar ⚠ Há pratos que não combinam: Pirão de peixe (Regras alimentares) Trocar Decidir assim",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Trocar",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decidir assim",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Regras alimentares: trocamos os pratos que não combinam (Acompanhamento: Pirão de peixe → Quiabo refogado)\nOutras opções",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Cuscuz nordestino com ovo",
+   "Pirão de peixe⚠",
+   "Salada de cenoura ralada",
+   "Creme de ervilha rápido"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Cuscuz nordestino com ovo, Pirão de peixe, Salada de cenoura ralada, Creme de ervilha rápido 12 itens para comprar Enviar para a família Por prato Por seção Modo compras (tela sempre ligada) Mostrado na quantidade que se compra. A sobra pode ir para a geladeira como “aberto”. Cuscuz nordestino com o"
+  }
+ },
+ {
+  "ui": "pt-BR",
+  "cc": "BR",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "Farofa",
+   "why": "Alergia"
+  },
+  "spotWarn": [
+   "Farofa ⚠ Ovos Trocar"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Fechar ⚠ Há pratos que não combinam: Farofa (Alergia) Trocar Decidir assim",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Trocar",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decidir assim",
+     "inView": true,
+     "h": 72,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Alergia: trocamos os pratos que não combinam (Acompanhamento: Farofa → Couve-flor gratinada)\nOutras opções",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Moqueca de peixe",
+   "Farofa⚠",
+   "Mandioca frita",
+   "Caldo de frango com legumes"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Moqueca de peixe, Farofa, Mandioca frita, Caldo de frango com legumes 14 itens para comprar Enviar para a família Por prato Por seção Modo compras (tela sempre ligada) Mostrado na quantidade que se compra. A sobra pode ir para a geladeira como “aberto”. Moqueca de peixe Postas de peixe branco firme "
+  }
+ },
+ {
+  "ui": "pt-BR",
+  "cc": "BR",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "Farofa",
+   "why": "Alergia"
+  },
+  "spotWarn": [
+   "Acompanhamento Farofa ⚠ Ovos Outro"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Fechar ⚠ Há pratos que não combinam: Farofa (Alergia) Trocar Decidir assim",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Trocar",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Decidir assim",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Alergia: trocamos os pratos que não combinam (Acompanhamento: Farofa → Couve-flor gratinada)\nOutras opções",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Moqueca de peixe",
+   "Farofa⚠",
+   "Mandioca frita",
+   "Caldo de frango com legumes"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Moqueca de peixe, Farofa, Mandioca frita, Caldo de frango com legumes 14 itens para comprar Enviar para a família Por prato Por seção Modo compras (tela sempre ligada) Mostrado na quantidade que se compra. A sobra pode ir para a geladeira como “aberto”. Moqueca de peixe Postas de peixe branco firme "
+  }
+ },
+ {
+  "ui": "hi",
+  "cc": "IN",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": null,
+  "spotWarn": [],
+  "s": null
+ },
+ {
+  "ui": "hi",
+  "cc": "IN",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": null,
+  "spotWarn": [],
+  "s": null
+ },
+ {
+  "ui": "hi",
+  "cc": "IN",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": null,
+  "spotWarn": [],
+  "s": null
+ },
+ {
+  "ui": "hi",
+  "cc": "IN",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": null,
+  "spotWarn": [],
+  "s": null
+ },
+ {
+  "ui": "vi",
+  "cc": "VN",
+  "w": 390,
+  "ts": 0,
+  "kind": "alg",
+  "inj": {
+   "name": "Bắp cải luộc chấm nước mắm trứng",
+   "why": "Dị ứng"
+  },
+  "spotWarn": [
+   "Món phụ Bắp cải luộc chấm nước mắm trứng ⚠ Trứng Đổi"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Đóng ⚠ Có món không phù hợp: Bắp cải luộc chấm nước mắm trứng (Dị ứng) Đổi Quyết định như vậy",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Đổi",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Quyết định như vậy",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Dị ứng: đã đổi các món không phù hợp (Món phụ: Bắp cải luộc chấm nước mắm trứng → Đậu que xào tỏi)\nLựa chọn khác",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Cánh gà chiên nước mắm",
+   "Bắp cải luộc chấm nước mắm trứng⚠",
+   "Cà tím nướng mỡ hành",
+   "Canh cua rau đay"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Cánh gà chiên nước mắm, Bắp cải luộc chấm nước mắm trứng, Cà tím nướng mỡ hành, Canh cua rau đay Cần mua 7 món Gửi cho gia đình Theo món Theo quầy Chế độ đi chợ (không tắt màn hình) Hiển thị theo đơn vị mua. Phần thừa có thể cho vào tủ lạnh như “đã dùng dở”. Cánh gà chiên nước mắm Cánh gà Cánh gà ch"
+  }
+ },
+ {
+  "ui": "vi",
+  "cc": "VN",
+  "w": 390,
+  "ts": 0,
+  "kind": "diet",
+  "inj": {
+   "name": "Rau muống xào tỏi",
+   "why": "Quy tắc ăn uống"
+  },
+  "spotWarn": [
+   "Món phụ Rau muống xào tỏi ⚠ Quy tắc ăn uống (1 tsp fish sauce) Đổi"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Đóng ⚠ Có món không phù hợp: Rau muống xào tỏi (Quy tắc ăn uống) Đổi Quyết định như vậy",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Đổi",
+     "inView": true,
+     "h": 56,
+     "w": 358
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Quyết định như vậy",
+     "inView": true,
+     "h": 48,
+     "w": 358
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Quy tắc ăn uống: đã đổi các món không phù hợp (Món phụ: Rau muống xào tỏi → Dưa giá)\nLựa chọn khác",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Trứng chiên hành lá cà chua",
+   "Rau muống xào tỏi⚠",
+   "Lạc rang muối",
+   "Canh mướp nấm rơm"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Trứng chiên hành lá cà chua, Rau muống xào tỏi, Lạc rang muối, Canh mướp nấm rơm Cần mua 7 món Gửi cho gia đình Theo món Theo quầy Chế độ đi chợ (không tắt màn hình) Hiển thị theo đơn vị mua. Phần thừa có thể cho vào tủ lạnh như “đã dùng dở”. Trứng chiên hành lá cà chua Trứng gà Trứng chiên hành lá "
+  }
+ },
+ {
+  "ui": "vi",
+  "cc": "VN",
+  "w": 195,
+  "ts": 2,
+  "kind": "alg",
+  "inj": {
+   "name": "Bắp cải luộc chấm nước mắm trứng",
+   "why": "Dị ứng"
+  },
+  "spotWarn": [
+   "Món phụ Bắp cải luộc chấm nước mắm trứng ⚠ Trứng Đổi"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Đóng ⚠ Có món không phù hợp: Bắp cải luộc chấm nước mắm trứng (Dị ứng) Đổi Quyết định như vậy",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Đổi",
+     "inView": true,
+     "h": 56,
+     "w": 163
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Quyết định như vậy",
+     "inView": true,
+     "h": 72,
+     "w": 163
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Dị ứng: đã đổi các món không phù hợp (Món phụ: Bắp cải luộc chấm nước mắm trứng → Đậu que xào tỏi)\nLựa chọn khác",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Cánh gà chiên nước mắm",
+   "Bắp cải luộc chấm nước mắm trứng⚠",
+   "Cà tím nướng mỡ hành",
+   "Canh cua rau đay"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Cánh gà chiên nước mắm, Bắp cải luộc chấm nước mắm trứng, Cà tím nướng mỡ hành, Canh cua rau đay Cần mua 7 món Gửi cho gia đình Theo món Theo quầy Chế độ đi chợ (không tắt màn hình) Hiển thị theo đơn vị mua. Phần thừa có thể cho vào tủ lạnh như “đã dùng dở”. Cánh gà chiên nước mắm Cánh gà Cánh gà ch"
+  }
+ },
+ {
+  "ui": "vi",
+  "cc": "VN",
+  "w": 320,
+  "ts": 1,
+  "kind": "alg",
+  "inj": {
+   "name": "Bắp cải luộc chấm nước mắm trứng",
+   "why": "Dị ứng"
+  },
+  "spotWarn": [
+   "Món phụ Bắp cải luộc chấm nước mắm trứng ⚠ Trứng Đổi"
+  ],
+  "s": "alg-confirm",
+  "conf": {
+   "text": "Đóng ⚠ Có món không phù hợp: Bắp cải luộc chấm nước mắm trứng (Dị ứng) Đổi Quyết định như vậy",
+   "focusIn": true,
+   "focus": "H2",
+   "bs": [
+    {
+     "a": "alg-confirm-swap",
+     "t": "Đổi",
+     "inView": true,
+     "h": 56,
+     "w": 288
+    },
+    {
+     "a": "alg-confirm-keep",
+     "t": "Quyết định như vậy",
+     "inView": true,
+     "h": 48,
+     "w": 288
+    }
+   ],
+   "hs": false,
+   "kana": 0
+  },
+  "afterSwap": {
+   "sheet": null,
+   "bad": [],
+   "note": "Dị ứng: đã đổi các món không phù hợp (Món phụ: Bắp cải luộc chấm nước mắm trứng → Đậu que xào tỏi)\nLựa chọn khác",
+   "focus": "open"
+  },
+  "s2": "alg-confirm",
+  "decided": [
+   "Cánh gà chiên nước mắm",
+   "Bắp cải luộc chấm nước mắm trứng⚠",
+   "Cà tím nướng mỡ hành",
+   "Canh cua rau đay"
+  ],
+  "cook": {
+   "warn": 0,
+   "text": "Cánh gà chiên nước mắm, Bắp cải luộc chấm nước mắm trứng, Cà tím nướng mỡ hành, Canh cua rau đay Cần mua 7 món Gửi cho gia đình Theo món Theo quầy Chế độ đi chợ (không tắt màn hình) Hiển thị theo đơn vị mua. Phần thừa có thể cho vào tủ lạnh như “đã dùng dở”. Cánh gà chiên nước mắm Cánh gà Cánh gà ch"
+  }
+ }
+]
