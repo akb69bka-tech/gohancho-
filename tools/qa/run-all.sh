@@ -81,8 +81,7 @@ for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon sho
 done
 add "qa-category-audit" app "" "node tools/qa/category-audit.js"   # 仲間はずれの点検（21か国 × 気分・かえる・主食・席・1週間・明日）。1件でもあれば落ちる
 add "qa-category-audit-4343" app "SEED=4343" "node tools/qa/category-audit.js"   # 第43回 R208: 乱数 4343 で、トルコのご飯ものの主菜にピラウの副菜が付いた（プランのある日に開く）
-if [ -n "${CI:-}" ]; then add "qa-tray-fit" app "LANGS=ja,de,ar,th" "node tools/qa/tray-fit.js"   # CI では4言語（日本語・長い語・右から・タイ文字）。手元では6言語
-else add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"; fi
+add "qa-tray-fit"      app "" "node tools/qa/tray-fit.js"   # CI でも6言語のまま（4言語にしぼると席 1〜7 のうち試せない席が出て落ちる・run 473）
 add "qa-tray-fit-morning" app "TZ=Asia/Tokyo CLOCK=2026-10-30T07:00:00+09:00 VPS=390x844:0,360x740:0,360x740:2 LANGS=ja,de" "node tools/qa/tray-fit.js"   # 朝（4:00〜10:59）は朝食の入口が出る。入口が帯をまたがない（回帰）
 add "syntax-js"        static "" "node tools/qa/check-syntax.mjs"
 add "packs-check"      static "" "node tools/packs/check.mjs"
