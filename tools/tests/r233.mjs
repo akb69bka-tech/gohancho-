@@ -9,6 +9,7 @@
 //  A6 自分の食の決まり（なし）で「ベジタリアン向け」を2回押し → 同じ
 //  どれも 4言語（ja・en・de・ar）× 幅195・320・390、0.15 秒あけた2回押し（外すつもり・入れるつもりの両方）。2回目が別のチップの上なら「もう一度押してください」が出る
 //  B1 止めすぎない: 同じチップの 0.7 秒あけた押し直しは2回とも受ける。人がスクロールしてから押した別のチップは受ける
+//  C1 第56回: アプリが送ってから 0.6 秒のうちの2回目は、1回目から 0.6 秒を過ぎていても止める。送ってから 0.6 秒を過ぎた押しは受ける
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_ } = require('../lib/pw.cjs');
@@ -93,6 +94,57 @@ for (const cs of CASES){
     const accepted = target && target.act === 'alg-toggle' ? (b0.includes(target.v) !== b1.includes(target.v)) : true;
     ok(accepted, 'B1 人がスクロールしてから押した別のチップは受ける: ' + JSON.stringify({target, b0, b1}));
     await ctx.close();
+}
+// ---- C1 第56回: アプリが送ったあと 0.6 秒のうちの2回目（1回目からは 0.6 秒を過ぎている）も止める。送ってから 0.6 秒を過ぎた押しは受ける ----
+//  自分のアレルギー（なし／卵・小麦）で「小麦」を押すと、押した所を保つ送り（holdView）で別のチップ（卵・かに）が指の下に来る（幅320）。
+//  early: 2回目を「1回目から 0.61 秒（送ってから 0.6 秒より前）」に押す → 止める。late: 「送ってから 0.75 秒」に押す → 受ける（止めすぎない）。
+//  押しは送った時刻をつけて送る（CDP の timestamp。遅い機械でも、押しの時刻がテストの道具の待ちでずれない）。時刻はアプリの時計で見る。
+//  送った時刻は、アプリの記録（spotTap.movedAt）があればそれ、なければ画面が動いた（scroll）時刻。ねらった間合いにならなかった回は 4回までやり直す
+{
+    const bad = []; let n = 0, late = 0;
+    const once = async (lg, w, h, init, wait) => {
+        const {p, ctx} = await open(lg, w, h, {settings: {allergens: init}});
+        try {
+            const cdp = await ctx.newCDPSession(p);
+            const sel = '#allergy-card [data-act="alg-toggle"][data-v="wheat"]';
+            const c = await p.evaluate(sel => { const e = document.querySelector(sel); if (!e) return null; const q0 = e.getBoundingClientRect(); window.scrollBy(0, q0.top - innerHeight * 0.5); const q = e.getBoundingClientRect(); return {x: (q.left + q.right) / 2, y: (q.top + q.bottom) / 2}; }, sel);
+            if (!c) return {skip: 'no-chip'};
+            await p.waitForTimeout(200);
+            await p.evaluate(() => { window.__mv = null; addEventListener('scroll', () => { if (window.__mv == null) window.__mv = performance.now(); }, {capture: true}); });
+            const press = async (x, y) => { const ts = Date.now() / 1000; await Promise.all(['mousePressed', 'mouseReleased'].map((type, i) => cdp.send('Input.dispatchMouseEvent', {type, x, y, button: 'left', clickCount: 1, timestamp: ts + i * 0.03}))); };
+            await press(c.x, c.y);
+            let st = null;
+            for (let k = 0; k < 40; k++){ st = await p.evaluate(() => spotTap && window.__mv != null ? {t: spotTap.t, m: spotTap.movedAt != null ? spotTap.movedAt : window.__mv, origin: performance.timeOrigin} : null); if (st) break; await p.waitForTimeout(25); }
+            if (!st) return {skip: 'no-move'};
+            if (wait === 'early' && st.m + 600 <= st.t + 640) return {skip: 'move-too-early'};   // 送りが早すぎて、この形にならない
+            const goal = wait === 'early' ? st.origin + st.t + 610 : st.origin + st.m + 750;
+            await p.waitForTimeout(Math.max(0, goal - Date.now()));
+            const under = await p.evaluate(([x, y]) => { const e = document.elementFromPoint(x, y), t = e && e.closest('[data-act]'); return t ? t.dataset.act + ':' + (t.dataset.v || '') : ''; }, [c.x, c.y]);
+            const b0 = await own(p);
+            await p.evaluate(() => { window.__ck = null; document.addEventListener('click', e => { window.__ck = {ts: e.timeStamp, t: spotTap && spotTap.t, m: spotTap && spotTap.movedAt != null ? spotTap.movedAt : window.__mv}; }, {capture: true, once: true}); });
+            await press(c.x, c.y); await p.waitForTimeout(150);
+            const tip = await p.evaluate(() => !!document.querySelector('.tap-again')), ck = await p.evaluate(() => window.__ck);
+            await p.waitForTimeout(300);
+            const b1 = await own(p);
+            if (!under || under === 'alg-toggle:wheat' || !ck) return {skip: 'same-under'};   // 指の下に別のチップが来ていない
+            return {under, b0, b1, tip, sinceFirst: Math.round(ck.ts - ck.t), sinceMove: Math.round(ck.ts - ck.m)};
+        } finally { await ctx.close(); }
+    };
+    for (const lg of LANGS) for (const [w, h] of WIDTHS) for (const init of [[], ['egg', 'wheat']]) for (const wait of ['early', 'late']){
+        const tag = `${lg} ${w} ${JSON.stringify(init)} ${wait}`;
+        for (let tr = 0; tr < 4; tr++){
+            const r = await once(lg, w, h, init, wait);
+            if (process.env.DBG) console.log(tag, JSON.stringify(r));
+            if (r.skip === 'no-chip' || r.skip === 'no-move' || r.skip === 'same-under') break;   // この幅・言語では、この形にならない
+            if (r.skip) continue;
+            const info = `1回目から${r.sinceFirst}ms・送ってから${r.sinceMove}ms 下=${r.under} ${JSON.stringify(r.b0)}→${JSON.stringify(r.b1)} tip=${r.tip}`, chg = JSON.stringify(r.b0) !== JSON.stringify(r.b1);
+            if (r.sinceFirst < 600 || r.sinceMove < 600){ if (chg || !r.tip) bad.push(`${tag}: 0.6 秒のうちの2回目が、指の下に来た別のチップを押した ${info}`); }   // 止まるべき押しは、どの回でも止まっていること
+            else if (r.sinceMove >= 640 && (!chg || r.tip)) bad.push(`${tag}: 送ってから 0.6 秒を過ぎた押しが受けられない（止めすぎ） ${info}`);
+            if (wait === 'early' && r.sinceFirst >= 600 && r.sinceMove < 600){ n++; break; }
+            if (wait === 'late' && r.sinceMove >= 640){ late++; break; }
+        }
+    }
+    ok(n > 0 && late > 0 && bad.length === 0, `C1 アプリが送ってから 0.6 秒のうちの2回目は止める（${n}回）・過ぎた押しは受ける（${late}回）（${LANGS.length}言語 × 195・320・390）: ` + bad.slice(0, 6).join(' | '));
 }
 ok(errs.length === 0, '例外なし: ' + errs.slice(0, 3).join(' / '));
 await b.close();

@@ -5993,11 +5993,18 @@ function chipKeyOf(el){ const b = el.closest('[data-act]') || el, fm = b.closest
 // 受けなかったときは、ボタンを光らせて、横に「もう一度押してください」を1.5秒出す（黄色い輪だけでは気づかずに先へ進んでいた）
 let spotTap = null;
 const SPOT_MS = 600;
+// 第56回 r235ci（安全）: アプリが画面を送った時刻（movedAt）も覚え、2回目の押しは「1回目から 0.6 秒」に加えて「送ってから 0.6 秒」のうちも止める。
+// （0.4 秒あけた2回押しで、1回目の 0.16 秒後に送った holdView のせいで指の下に来た「卵」が、1回目から 0.6 秒を少し過ぎた2回目で入っていた。43回に1回）
+// 送ったのが1回目から 0.6 秒より後なら数えない（守りがいつまでも延びないよう、長くても1回目から 1.2 秒まで）
+// 数えるのは、押したあとの描き直しで「指の近くを保つ・見せる」ための送り（releaseView・revealAboveBars）だけ。タブの切りかえで先頭へ戻すなどの送りは数えない
+// （それは押しそのものが起こす画面の切りかえで、そのあとの別の所の押しまで延ばして止めると止めすぎになる。テストの道具が setTab を呼んだあとの押しが止まっていた）
+let spotHold = 0;
+function spotMoved(m){ if (!m || !spotTap) return; const now = performance.now(); if (now - spotTap.t < SPOT_MS) spotTap.movedAt = now; }
 // 第55回 R233（安全）: アプリが自分で画面を送った分（押した所を保つ holdView・一言を見せる送り・タブの切りかえなど）は、すべて「アプリが動かした」に数える
 // （holdView の送りを人のスクロールと見なして、2回目が指の下に来た別のチップ（小麦・かに・ヴィーガン向け）を押していた）。
 // アプリの送りは window.scrollBy / scrollTo / scrollIntoView を通るので、そこで動いた分を足す。人のスクロール（指・ホイール・キー・テストの道具の送り）はここを通らない
 (function(){
-    const wrap = f => function(...a){ const b = window.scrollY; const r = f.apply(this, a); const m = window.scrollY - b; if (m && spotTap) spotTap.appWin += m; return r; };
+    const wrap = f => function(...a){ const b = window.scrollY; const r = f.apply(this, a); const m = window.scrollY - b; if (m && spotTap){ spotTap.appWin += m; if (spotHold) spotMoved(m); } return r; };
     window.scrollBy = wrap(window.scrollBy); window.scrollTo = wrap(window.scrollTo); window.scroll = wrap(window.scroll);
     const siv = Element.prototype.scrollIntoView; Element.prototype.scrollIntoView = wrap(siv);
 })();
@@ -6051,7 +6058,8 @@ function holdView(v){
     }
     return keep;
 }
-function releaseView(v, keep){
+function releaseView(v, keep){ spotHold++; try { return releaseView0(v, keep); } finally { spotHold--; } }   // 第56回: この中の送りは spotMoved に数える
+function releaseView0(v, keep){
     const rows = v.querySelectorAll('.scroll');
     if (rows.length === keep.rows.length) rows.forEach((e, i) => { if (keep.rows[i]) e.scrollLeft = keep.rows[i]; });
     if (keep.tap){   // 押したチップを、押す前と同じ高さに
@@ -10561,8 +10569,8 @@ function revealAboveBars(el, fit){
     }   // 上の帯にかかるときは下げる。入りきらないほど高く、並びを変えない（fit がない）ときは、押すボタンのある下の端を下のタブの上にそろえる
     if (room <= 0 || Math.abs(d) < 1) return 0;
     // アプリが送った分は、すばやい2回押しの見分け（spotTap）に足しておく（人が動かしたのではない）
-    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; const m = sc.scrollTop - b0; if (spotTap && spotTap.sc === sc) spotTap.appSc += m; return m; }
-    const b0 = scrollY; window.scrollBy(0, d); return scrollY - b0;   // 動かした分（0 なら動かしていない）。spotTap には window.scrollBy の包みが足す
+    if (sc){ const b0 = sc.scrollTop; sc.scrollTop += d; const m = sc.scrollTop - b0; if (spotTap && spotTap.sc === sc){ spotTap.appSc += m; spotMoved(m); } return m; }
+    const b0 = scrollY; spotHold++; try { window.scrollBy(0, d); } finally { spotHold--; } return scrollY - b0;   // 動かした分（0 なら動かしていない）。spotTap には window.scrollBy の包みが足す
 }
 let vegiNoteAt = 0;   // R227: 一言とボタンを出した・送った時刻（すぐあとの押しは、ボタンが指の下に来ただけとみなして受けない）
 // 第55回 R237: 一言が上の帯と下のタブのあいだに入りきらないとき（幅195px のドイツ語の家族の人など）は、ボタンを一言の上に出し（.tall）、文も「上のボタン」にする。
@@ -17418,7 +17426,7 @@ document.addEventListener('click', e => {
         || (el.dataset.act === 'set-jump' && !!spotTap && spotTap.act === 'set-tabs-step');   // 第55回 R235: 「次へ」（set-tabs-step）の2回目が、列が送られて指の下に来たタブ（「家族へ」など）に当たり画面が移っていた。止めるのは「次へ」のすぐあとのタブだけ（タブを続けて押す・選んだタブに合わせて列が動いたあとの次のタブは止めない）
     // 指の下に来たのが、アプリが動かした（画面を送った・並びが変わった）ためのときだけ止める。人が画面を動かした（スクロールした）ときは止めない（ページと、いちばん近いスクロールの入れ物の位置で見る）
     const stillPage = spotTap && Math.abs(scrollY - (spotTap.sy + spotTap.appWin)) < 2 && (!spotTap.sc || (spotTap.sc.isConnected && Math.abs(spotTap.sc.scrollTop - (spotTap.st + spotTap.appSc)) < 2))   /* 入れ物が作り直された（シートの描き直し）ときは、人が動かしたかわからないので止めない */;
-    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && tapAt - spotTap.t < SPOT_MS && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
+    if (e.detail > 0 && spotTap && spotGuard && stillPage && el.dataset.act !== 'toast-undo' && (tapAt - spotTap.t < SPOT_MS || (spotTap.movedAt != null && tapAt - spotTap.movedAt < SPOT_MS)) && Math.abs(e.clientX - spotTap.x) < 24 && Math.abs(e.clientY - spotTap.y) < 24 && chipKeyOf(el) !== spotTap.key){ tapAgain(el); return; }
     if (e.detail > 0){ const sc = scrollerOf(el), rec = spotTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), act: el.dataset.act || '', t: tapAt, sy: scrollY, appWin: 0, sc, st: sc ? sc.scrollTop : 0, appSc: 0};
         // R233: この押しの処理（描き直し・押した所を保つ送り・ブラウザの位置合わせ）で動いた分も、アプリが動かした分。処理が終わった直後の位置を、もとの位置とみなす
         queueMicrotask(() => { if (spotTap !== rec) return; rec.sy = scrollY - rec.appWin; if (rec.sc && rec.sc.isConnected) rec.st = rec.sc.scrollTop - rec.appSc; }); }
