@@ -34,9 +34,9 @@ async function twoButtons(p, cdp, selA, candB, gap){
     await p.evaluate(() => { window.__clk = []; document.addEventListener('click', e => { const c = e.target.closest && e.target.closest('[data-act]'); window.__clk.push(c ? c.dataset.act + ':' + (c.dataset.v || '') : '-'); }, true); });
     const t0 = Date.now(); await touchAt(cdp, a.x, a.y);
     await sleep(40);
-    // 送る量: B の中心を、A を押した高さへ
+    // 送る量: B の中心を、A を押した高さへ（人が画面を送った形。第55回 r233 からアプリは自分の window.scrollBy・scrollIntoView を「アプリが動かした」に数えるので、ここはそれを通らない scrollTop で送る）
     const target = await p.evaluate(([cand, ax, ay]) => { const els = [...document.querySelectorAll(cand)].filter(e => e.offsetParent && Math.abs(e.getBoundingClientRect().left + 12 - ax) < 6 && e.getAttribute('aria-pressed') !== 'true');
-        const e = els[0]; if (!e) return null; const r = e.getBoundingClientRect(); window.scrollBy(0, (r.top + r.height / 2) - ay); const r2 = e.getBoundingClientRect();
+        const e = els[0]; if (!e) return null; const r = e.getBoundingClientRect(); document.scrollingElement.scrollTop += (r.top + r.height / 2) - ay; const r2 = e.getBoundingClientRect();
         return { act: e.dataset.act, v: e.dataset.v, fm: (e.closest('[data-fm]') || {}).dataset ? e.closest('[data-fm]') && e.closest('[data-fm]').dataset.fm : null, dy: Math.round(r2.top + r2.height / 2 - ay), dx: Math.round(r2.left + 12 - ax) }; }, [candB, a.x, a.y]);
     await sleep(Math.max(0, gap - (Date.now() - t0)));
     await touchAt(cdp, a.x, a.y); await sleep(400);
