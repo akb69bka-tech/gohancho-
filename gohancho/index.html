@@ -6229,7 +6229,9 @@ function hintStGuard(){
     const top = Math.min(...low.flatMap(r => [...r.querySelectorAll(TRAY_DISH)].map(e => e.getBoundingClientRect().top)));
     if (isFinite(top) && floor > top) rows[1].style.marginTop = Math.ceil((parseFloat(rows[1].style.marginTop) || 0) + floor - top + 2) + 'px';
 }
-function fitTray(){
+let fitMemo = null;   // r235ci: fitTray の中で fitTrayRun を何度か呼ぶあいだ、名前・かえる・種類の字を測った結果を使い回す（中身は同じ描き直しの同じお膳）
+function fitTray(){ fitMemo = new Map(); try { fitTray0(); } finally { fitMemo = null; } }
+function fitTray0(){
     document.body.classList.remove('ah-row'); trayForceStatic = false;
     { const r1 = document.querySelectorAll('#view .tray.grid2 .tg-row')[1]; if (r1) r1.style.removeProperty('margin-top'); }
     fitTrayRun();
@@ -6272,18 +6274,42 @@ function fitTrayRun(){
     const last = TRAY_FIT.loose === loose && TRAY_FIT.state && !TRAY_FIT.state.noFit && (ids => TRAY_FIT.ids && TRAY_FIT.ids.length === ids.length && ids.filter((x, i) => x !== TRAY_FIT.ids[i]).length <= 1)(trayIds()) ? TRAY_FIT.state : null;   // 同じ献立（「かえる」・主食で1品かえただけ。ちがう料理が1品まで）で前に決めた形。帯をお膳の下に置いた形（入らなかった形）は引きつがない
     tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
-    const fixNames = (root = tr) => { let over = false;
-        root.querySelectorAll('.spot-label .nm').forEach(e => { e.classList.remove('nm-s'); if (e.scrollHeight > e.clientHeight + 1){ e.classList.add('nm-s'); if (e.scrollHeight > e.clientHeight + 1) over = true; } });
-        return over; };
+    // r235ci（ob40 の H1 が遅い機械で落ちた）: 名前ごとに「外す→測る→足す→測る」をくり返すと、そのたびに画面の組み立て直し（レイアウト）が起きて、
+    // 幅195px・文字大きいの1回の描き直しが 0.6〜0.8 秒かかっていた。外す・測る・足す・測るをまとめて行う（名前の箱の高さは --nml と自分の字の大きさだけで決まるので、結果は同じ）
+    const fixNames = (root = tr) => { const es = [...root.querySelectorAll('.spot-label .nm')];
+        es.forEach(e => e.classList.remove('nm-s'));
+        const big = es.filter(e => e.scrollHeight > e.clientHeight + 1);
+        big.forEach(e => e.classList.add('nm-s'));
+        return big.some(e => e.scrollHeight > e.clientHeight + 1); };
     // 「かえる」の字が列に入らない言語・幅では、印だけの丸
     const textW = e => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().width; };
     const fixSwap = () => { tr.classList.remove('swap-ico'); if ([...tr.querySelectorAll('.spot .swap:not(.swap-ph)')].some(e => { const cs = getComputedStyle(e); return textW(e) + parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) + 22 > e.closest('.spot').clientWidth; })) tr.classList.add('swap-ico'); };   // 22: ↻ の印と縁
     // 種類の字（主菜・Sättigungsbeilage など）が列に入らないときは、その字だけ小さくする（1行のまま、8px まで）
-    const fixSlot = () => tr.querySelectorAll('.spot-label .slot').forEach(e => { e.style.removeProperty('font-size'); const w = textW(e), cw = e.clientWidth; if (w > cw + .5){ const fs = parseFloat(getComputedStyle(e).fontSize); e.style.fontSize = Math.max(8, Math.floor(fs * cw / w * 10) / 10) + 'px'; } });
+    const fixSlot = () => { const es = [...tr.querySelectorAll('.spot-label .slot')]; es.forEach(e => e.style.removeProperty('font-size'));   // まとめて外してから測る（同上）
+        es.map(e => { const w = textW(e), cw = e.clientWidth; return w > cw + .5 ? [e, Math.max(8, Math.floor(parseFloat(getComputedStyle(e).fontSize) * cw / w * 10) / 10)] : null; }).forEach(x => { if (x) x[0].style.fontSize = x[1] + 'px'; }); };
     // 12px でも入らない名前があるときは、お膳の名前の欄を1行ずつ増やす（6行まで。どの料理も同じ高さ）
     // 名前の欄の行数は段ごと（同じ段の料理は同じ高さ。長い名前のない段まで高くしない）
     let nml1 = false;   // いちばん詰めても入らないとき: 名前が1行に入る段は、名前の欄を1行にする（第8回 S22: アレルギーの札のある日）
-    const fixText = () => { tr.querySelectorAll('.tg-row').forEach((row, k) => { row.style.removeProperty('--nml'); let nl = parseInt(getComputedStyle(row).getPropertyValue('--nml')) || 2; if (nml1){ nl = 1; row.style.setProperty('--nml', 1); } while (fixNames(row) && nl < 6){ nl++; row.style.setProperty('--nml', nl); } }); fixSwap(); fixSlot(); };
+    const fixText0 = () => { tr.querySelectorAll('.tg-row').forEach((row, k) => { row.style.removeProperty('--nml'); let nl = parseInt(getComputedStyle(row).getPropertyValue('--nml')) || 2; if (nml1){ nl = 1; row.style.setProperty('--nml', 1); } while (fixNames(row) && nl < 6){ nl++; row.style.setProperty('--nml', nl); } }); fixSwap(); fixSlot(); };
+    // r235ci: 器の大きさ（--vs）だけを変えて詰め直すたびに、名前・かえる・種類の字を測り直していた（1回の描き直しで何十回もの組み立て直し）。
+    // 名前・かえる・種類の字の結果は、お膳と画面の形（クラス・列の数・名前の行を1行にするか）と、各段の料理の幅だけで決まるので、同じなら前に測った結果をそのまま使う
+    const fixMemo = fitMemo || new Map();
+    const fixText = () => {
+        const rowsNow = [...tr.querySelectorAll('.tg-row')];
+        // 鍵: お膳のクラス（並べ替えて）・列の数・名前の行数のもとの値（CSS の .tray.grid2[style*="--c:4"] は style の書き方で当たったり外れたりする）・1行にするか・文字の大きさ・各段の料理（.spot）の幅。body のクラス（あいさつ・帯の置き方・tray-tight3〜5）は、名前・かえる・種類の字の幅と大きさを変えない（変えるのは余白と上の端の行だけ。幅の違いは .spot の幅に出る）
+        // 幅は、料理の箱（.spot）と、名前・種類の字の箱そのものの幅（器の大きさで名前の横幅が変わる並びがある）
+        const nms = [...tr.querySelectorAll('.spot-label .nm')], sls = [...tr.querySelectorAll('.spot-label .slot')];
+        const key = [tr.className.split(/\s+/).filter(c => c && c !== 'swap-ico').sort().join(' '), tr.style.getPropertyValue('--c'), (tr.getAttribute('style') || '').includes('--c:4'), nml1, document.documentElement.getAttribute('data-ts') || '', rowsNow.map(r => [...r.querySelectorAll('.spot')].map(sp => sp.clientWidth).join(',')).join('/'), nms.map(e => e.clientWidth).join(','), sls.map(e => e.clientWidth).join(',')].join('|');
+        const got = fixMemo.get(key);
+        if (got){
+            rowsNow.forEach((r, i) => { if (got.nml[i]) r.style.setProperty('--nml', got.nml[i]); else r.style.removeProperty('--nml'); });
+            nms.forEach((e, i) => e.classList.toggle('nm-s', !!got.nms[i])); tr.classList.toggle('swap-ico', got.swap);
+            sls.forEach((e, i) => { if (got.sl[i]) e.style.fontSize = got.sl[i]; else e.style.removeProperty('font-size'); });
+            return;
+        }
+        fixText0();
+        fixMemo.set(key, {nml: rowsNow.map(r => r.style.getPropertyValue('--nml')), nms: nms.map(e => e.classList.contains('nm-s')), swap: tr.classList.contains('swap-ico'), sl: sls.map(e => e.style.fontSize)});
+    };
     fixText();
     let floor = innerHeight;
     document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < floor) floor = r.top; });

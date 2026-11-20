@@ -122,7 +122,7 @@ if (want('A')){
 
 // ---- B（R204）----
 const LANGS = ['en', 'ja', 'ar', 'de', 'es', 'fil', 'fr', 'hi', 'id', 'it', 'ko', 'pl', 'pt-BR', 'th', 'tr', 'vi', 'zh-Hans', 'zh-Hant'];
-const CCS = (process.env.CCS || 'JP BR CN DE EG ES FR GB ID IN IT KR MX PE PH PL TH TR TW US VN').split(' ');
+const CCS = (process.env.CCS || 'JP BR CN DE EG ES FR GB ID IN IT KR MX PE PH PL TH TR TW US VN').split(/[ ,]+/).filter(Boolean);   // CCS は空白でもカンマでも区切れる
 const KANA = /[ぁ-んァ-ヶ]/, HAN = /[一-龯]/, HANGUL = /[가-힣]/, THAI = /[฀-๿]/, ARAB = /[؀-ۿ]/, DEVA = /[ऀ-ॿ]/, LATINW = /[A-Za-z]{3,}/;
 const NONLAT = /[ぁ-んァ-ヶ一-龯가-힣฀-๿؀-ۿऀ-ॿ]/;
 // その言葉の文字か
