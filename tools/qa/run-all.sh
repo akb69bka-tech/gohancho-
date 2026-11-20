@@ -160,11 +160,14 @@ for it in "${SEL[@]}"; do
 done
 echo
 if [ "$FAILED" -gt 0 ]; then
-  echo "=== 失敗した項目のログ（末尾40行）。SEED=$SEED で再現できる ==="
+  echo "=== 失敗した項目のログ（落ちた行と、末尾40行）。SEED=$SEED で再現できる ==="
   for it in "${SEL[@]}"; do
     name="${it%%|*}"; read -r rc sec <"$OUT/$name.rc" 2>/dev/null || rc=99
     [ "$rc" = 0 ] && continue
-    echo "--- $name (exit $rc) : $(echo "$it" | cut -d'|' -f3) $(echo "$it" | cut -d'|' -f4)"; tail -n 40 "$OUT/$name.log"
+    echo "--- $name (exit $rc) : $(echo "$it" | cut -d'|' -f3) $(echo "$it" | cut -d'|' -f4)"
+    # 落ちた確かめ（FAIL・NG・Error の行）を先に出す（末尾40行に入らないことがあった・run 474 の ob40）。そのあと末尾40行
+    grep -nE '^(FAIL|NG)|FAIL |Error|Exception' "$OUT/$name.log" | head -n 30 | sed 's/^/[落ちた行] /' | cut -c1-600
+    tail -n 40 "$OUT/$name.log"
   done
   echo "合計: 成功 $PASSED / 失敗 $FAILED   ログ: $OUT"
   exit 1
