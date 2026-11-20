@@ -1448,7 +1448,7 @@ html:not([lang="ja"]):not([lang^="zh"]) .tray.grid2{--algk:2.5}   /* 漢字・�
 .tray.grid2 .spot-label .ex>.alg-tag{color:#a3241a;font-weight:700}.tray.grid2 .spot-label .ex>.alg-tag.may,.tray.grid2 .spot-label .ex>.alg-tag.salt{color:#6b3f00;font-weight:600}.tray.grid2 .spot-label .ex>.alg-tag.out{color:#3a2a1f;font-weight:600;background:#fff8ee;box-shadow:inset 0 0 0 1.5px #c8641a}   /* 今日食べる人から外した家族のアレルゲンの札: 赤い ⚠（いま食べる人に当たる）と分ける。柿色の枠・濃い字（R45） */
 .spot-label .ex>.alg-tag{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow-wrap:anywhere}   /* アレルゲンの印は2行まで（2つ目のアレルゲン・加工品が … に隠れないように。モニター第3回d） */
 .tray.compact .spot-label .ex{min-height:calc(var(--exl,0) * 1.4em)}
-.tray.grid2.algfit .spot-label .ex{min-height:0}   /* いちばん詰めても入らないとき（文字大・⚠ の札が上下の段に出た日）: 札の場所は、出ている札の高さだけにする（札・名前・かえるを帯の上に入れるのを先に。fitTray） */
+.tray.grid2.algfit .spot-label .ex{min-height:0}body.on-today .tray.grid2.algfit2 .spot-label .ex>.alg-tag{margin-top:0;padding-top:1px;padding-bottom:1px}   /* いちばん詰めても入らないとき（文字大・⚠ の札が上下の段に出た日）: 札の場所は、出ている札の高さだけにする（札・名前・かえるを帯の上に入れるのを先に。fitTray） */
 .spot .swap{box-sizing:border-box;height:30px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
 .tray.compact .spot .swap{height:28px;padding-inline:.3rem;min-width:0}
 /* 320px ほどの狭い画面: お膳の余白と字を少し詰め、タブの名前は2行に分けてとなりとくっつかないようにする */
@@ -6272,7 +6272,7 @@ function fitTrayRun(){
     const key = base + '|' + (document.querySelector('nav.tabs') || {}).offsetHeight + '|' + Math.round(tr.getBoundingClientRect().top + scrollY);
     const loose = [innerWidth, innerHeight, document.documentElement.getAttribute('data-ts') || '', rowsEl.map(r => r.children.length).join('/'), (document.querySelector('nav.tabs') || {}).offsetHeight].join('|');   // 画面の大きさ・文字の大きさ・席の並び（⚠ の札の段が変わっても同じ）
     const last = TRAY_FIT.loose === loose && TRAY_FIT.state && !TRAY_FIT.state.noFit && (ids => TRAY_FIT.ids && TRAY_FIT.ids.length === ids.length && ids.filter((x, i) => x !== TRAY_FIT.ids[i]).length <= 1)(trayIds()) ? TRAY_FIT.state : null;   // 同じ献立（「かえる」・主食で1品かえただけ。ちがう料理が1品まで）で前に決めた形。帯をお膳の下に置いた形（入らなかった形）は引きつがない
-    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'algfit2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     // r235ci（ob40 の H1 が遅い機械で落ちた）: 名前ごとに「外す→測る→足す→測る」をくり返すと、そのたびに画面の組み立て直し（レイアウト）が起きて、
     // 幅195px・文字大きいの1回の描き直しが 0.6〜0.8 秒かかっていた。外す・測る・足す・測るをまとめて行う（名前の箱の高さは --nml と自分の字の大きさだけで決まるので、結果は同じ）
@@ -6374,7 +6374,7 @@ function fitTrayRun(){
     if (vs >= vs0){ tr.style.removeProperty('--vs'); vs = vs0; }   // 器の大きさの初め（vs0）が 60px より小さい幅では、それより大きくしない
     const noFit = trayForceStatic || Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > floor + .5 || tr.getBoundingClientRect().bottom + scrollY > floor + 1;   // お盆のふちも帯にかからない   // 器・名前・かえる・丸のどれかが帯の後ろに入る
     document.body.classList.toggle('bar-static', noFit);
-    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0; toTight(vs0);
+    if (noFit){ tight = false; tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'algfit2'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight'); tr.style.removeProperty('--vs'); vs = vs0; toTight(vs0);
         // お膳が入りきらない画面でも、あいさつは出さない（献立を上に。家族リクエストの入口は残す。第8回 R20）
         if (document.querySelector('#greet .greet-tx')) document.body.classList.add('greet-1', 'greet-0');
         fixText();
@@ -6385,7 +6385,7 @@ function fitTrayRun(){
         const flN = flOf('nav.tabs, .actionbar'), hintSt = document.querySelector('#view .alg-hint.ah-st'), flH = hintSt ? flOf('nav.tabs, .actionbar, #view .alg-hint.ah-st') : flN;   // 帯をお膳の下に置いたあとの下端（下のタブの上端。案内があれば案内の上端）
         let fl0 = flN, withMid = false;
         const row0 = rowsEl[0], rowIn = () => row0 && Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .spot .alg-tag'), ...(withMid ? tr.querySelectorAll('.tg-mid .shuffle, .tg-mid .mb-back') : [])].map(e => fitBottom(e) + scrollY)) <= fl0 + .5;   // 画面のいちばん上（スクロールしていない形）での下端で見る（第12回 R36: 下の「この献立に決定」までスクロールして決めると、送った分だけ入って見え、詰めない形になっていた）
-        const loosen = () => { tr.classList.remove('tight', 'tight2', 'noslot', 'algfit'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); reqUp(false); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); };
+        const loosen = () => { tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'algfit2'); viewEl.classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4'); reqUp(false); tr.style.removeProperty('--vs'); vs = vs0; tight = false; toTight(vs0); fixText(); };
         // ui53: 幅 260px 未満では、案内を上の段のすぐ下に置く形（ah-mid。hintMidPick）のための高さも目標にする（貼りつけた案内が丸いボタンにかかる形より先に）
         const flM = hintSt && innerWidth < 260 ? flN - hintSt.getBoundingClientRect().height - 12 : null;
         const goals = hintSt && flH < flN ? (flM != null ? [[flH, true], [flM, false], [flH, false], [flN, false]] : [[flH, true], [flH, false], [flN, false]]) : [[flN, false]];
@@ -6400,6 +6400,9 @@ function fitTrayRun(){
             if (!rowIn()){ tr.classList.add('algfit'); fixText(); }   // 第18回 R20: 札の場所は出ている札の高さだけ（2行ぶん取っておかない）
             if (!rowIn()){ document.body.classList.add('tray-tight4'); fixText(); }   // 第11回 R20（幅195px・文字大・家族リクエストあり）: 上の端の日付とアプリの名前の行も畳む（印・国・設定の行は残す。名前は読み上げには残る）。上の段の料理・札・かえるを最初の画面に、タブの裏に入れない
             if (!rowIn()){ reqUp(true); fixText(); }   // 第18回 R20（幅195px・文字大・家族の🔍・家族リクエストあり）: 家族リクエストの入口を上の端の行へ（印と数だけ。行が1つ減る）
+            // r18b（幅195px・文字もっと大きい・家族の🔍・長い名前: SEED=1178155020）: ここまで詰めても上の段が 1〜4px だけ下のタブにかかると、下の loosen で
+            // いちばんゆるい形に戻り、上の段がまるごとタブの裏（最初の画面に料理が1つも見えない）になっていた。最後に札（⚠）の上の余白と内側の余白を詰める（札の字はそのまま）
+            if (!rowIn()){ tr.classList.add('algfit2'); fixText(); }
             if (rowIn()){ tight = tr.classList.contains('tight'); fitOk = true; goalK = k; break; }
         }
         if (!fitOk) loosen();
@@ -6411,7 +6414,7 @@ function fitTrayRun(){
         const snap = () => ({tc: tr.className, vc: viewEl.className, bc: document.body.className, vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))});
         const put = q => { tr.className = q.tc; viewEl.className = q.vc; document.body.className = q.bc; reqUp(/\btray-tight5\b/.test(q.bc)); if (q.vs) tr.style.setProperty('--vs', q.vs); else tr.style.removeProperty('--vs'); rowsEl.forEach((r, k) => { if (q.nml[k]) r.style.setProperty('--nml', q.nml[k]); else r.style.removeProperty('--nml'); }); };
         const F = snap();
-        tr.classList.toggle('tight', !!last.tight); tr.classList.toggle('tight2', !!last.tight2); tr.classList.toggle('noslot', !!last.noslot); tr.classList.toggle('algfit', !!last.algfit);
+        tr.classList.toggle('tight', !!last.tight); tr.classList.toggle('tight2', !!last.tight2); tr.classList.toggle('noslot', !!last.noslot); tr.classList.toggle('algfit', !!last.algfit); tr.classList.toggle('algfit2', !!last.algfit2);
         viewEl.classList.toggle('tray-tight', !!last.tight2); document.body.classList.toggle('tray-tight', !!last.tight2); document.body.classList.remove('bar-static');
         document.body.classList.toggle('greet-1', !!last.greet1); document.body.classList.toggle('greet-0', !!last.greet0); document.body.classList.toggle('tray-tight3', !!last.tight3); document.body.classList.toggle('tray-tight4', !!last.tight4); reqUp(!!last.tight5);
         if (last.vs) tr.style.setProperty('--vs', last.vs); else tr.style.removeProperty('--vs');
@@ -6423,7 +6426,7 @@ function fitTrayRun(){
         else { put(F); fixNames(); fixSwap(); fixSlot(); }
     }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;
-    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
+    TRAY_FIT.base = base; TRAY_FIT.key = key; TRAY_FIT.ids = trayIds(); TRAY_FIT.loose = loose; TRAY_FIT.state = {tight: tr.classList.contains('tight'), tight2: tr.classList.contains('tight2'), noFit: document.body.classList.contains('bar-static'), greet1: document.body.classList.contains('greet-1'), greet0: document.body.classList.contains('greet-0'), tight3: document.body.classList.contains('tray-tight3'), tight4: document.body.classList.contains('tray-tight4'), tight5: document.body.classList.contains('tray-tight5'), row0: document.body.classList.contains('bar-static') && tr.classList.contains('tight2'), noslot: tr.classList.contains('noslot'), algfit: tr.classList.contains('algfit'), algfit2: tr.classList.contains('algfit2'), vs: tr.style.getPropertyValue('--vs'), nml: rowsEl.map(r => r.style.getPropertyValue('--nml'))};
     svFit();   // 詰めた形（195px の見出しを畳む形など）でボタンの幅が変わったときの測り直し
     fixSwapWord(tr); fixWishTag(tr);
     bfEntryFit();
