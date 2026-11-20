@@ -3412,7 +3412,13 @@ function mergeSave(json){
 // 読み直さずに、その場で表示をそろえる（読み直しが続いて上限に届いたとき）
 function refreshInPlace(){
     viewStale = false;
-    try{ if (S.cook && S.cook.d === TODAY) restoreDecided(); }catch(e){}
+    // tab51 T5（GitHub run 475）: 読み直しが続いたときのその場のそろえ方で、献立は決めた献立（restoreDecided）しか見ていなかった。
+    // 決めた献立が品数の型に合わない形（ラーメン＋サラダの2品で、席の印 seat があり下書きもある）では restoreDecided が「下書きから出す」として false を返し、
+    // 開き直したときに使う下書き（restoreDraft）はもう試したあとなので、このタブだけ前の自分の案のまま（決めた印なし）になっていた。
+    // 開き直したときと同じ順（下書き → 決めた献立 → その日の下書き）で、まぜたあとの保存から献立を出し直す。どれも出せなければ今の案のまま
+    try{ const prev = session.menu, dt = draftTried; session.menu = null; draftTried = false;
+        if (!restoreDraft() && !restoreDecided() && !restoreDayDraft()) session.menu = prev;
+        draftTried = dt || draftTried; }catch(e){}
     try{ reconcileMenu(); }catch(e){}
     try{ refreshWeek(); }catch(e){}
     try{ applyTextSize(); }catch(e){}
