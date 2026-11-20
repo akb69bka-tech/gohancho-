@@ -5,6 +5,7 @@
 //  T3 A で献立を決め、古いままの B で苦手（セロリ）を足す。決めた献立・アレルギー・苦手が、保存にも両方のタブにも残り、両方で同じ
 //  T4 A で卵のアレルギーを外し、古いままの B で人数を変える。卵は外れたまま（よみがえらない）、人数の変更も残る
 //  T5 両方のタブで、ほぼ同時にちがう献立に決める。保存は読めて、両方のタブの献立・決めた印・設定がそろう
+//  T6 読み直しが続いた（1分に3回）あとの、その場でのそろえ方でも、別のタブで決めた献立（席が1つ空いた形）と決めた印がそろう
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium, LAUNCH, BASE: BASE_, SEED } = require('../lib/pw.cjs');
@@ -21,7 +22,9 @@ const A = await open(), B = await open();
 const stored = () => A.evaluate(() => JSON.parse(localStorage.getItem('gohancho.v1')));
 const st = p => p.evaluate(() => ({ alg: algIds().join(), avoid: (S.settings.avoid || []).join(), dec: menuIsDecided(), menu: menuIds().join(), sv: S.settings.servings }));
 // 見えて手が空いた（前に出た・入力欄から出た）ときに、ほかのタブの保存を読み直す
-const settle = async p => { await p.bringToFront(); await p.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); }); await p.waitForTimeout(900); };
+// （読み直し（location.reload）と重なると evaluate が「中身が消えた」で落ちるので、そのときは開き直しを待つ。確かめの中身は同じ）
+const settle = async p => { await p.bringToFront(); await p.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); }).catch(() => {}); await p.waitForTimeout(900);
+    await p.waitForFunction(() => typeof GH !== 'undefined' && GH.booted && document.querySelector('#view > *'), null, { timeout: 30000 }); };
 // 料理名からに出ているカードの料理（ひとひねりは作り直す）
 const shownOf = p => p.evaluate(() => [...document.querySelectorAll('#ns-results .dcard .head[data-act="open"]')].map(e => String(e.dataset.id).startsWith('a~') ? buildTwist(e.dataset.id) : byId(e.dataset.id)).filter(Boolean).map(r => ({ id: r.id, hit: allergyConflict(r) || (String(r.id).startsWith('a~') && twistAvoided(r)) })));
 
@@ -68,6 +71,17 @@ await A.waitForTimeout(1000); await settle(A); await settle(B);
 let s5 = null; try{ s5 = await stored(); }catch(e){}
 const A5 = await st(A), B5 = await st(B);
 ok(!!s5 && A5.menu && A5.menu === B5.menu && A5.dec && B5.dec && A5.alg === B5.alg && A5.avoid === B5.avoid, 'T5 両方のタブでほぼ同時に決めても、保存は読めて、両方のタブの献立・決めた印・設定がそろう: ' + JSON.stringify({ A5, B5 }));
+
+// T6 読み直しが続いたあと（1分に3回）の、その場でのそろえ方でも、別のタブで決めた献立が出る。
+//    決めた献立が品数の型に合わない形（席が1つ空いた2品の献立など）でも、決めた献立・決めた印がそろう（GitHub run 475 の T5: 前は前の自分の案のまま）
+await settle(A); await settle(B);
+await B.bringToFront();
+const b6 = await B.evaluate(() => { setTab('today'); let k = 0; for (; k < 400; k++){ newMenu(); if (session.menu.items.some(x => !x.r) && session.menu.items[0] && session.menu.items[0].slot === '主菜') break; } render(); return {k, ids: session.menu.items.map(x => x.r ? x.r.id : null)}; });
+await B.evaluate(() => { const d = document.querySelector('[data-act="decide"]'); if (d) d.click(); if (typeof saveNow === 'function') saveNow(); }); await B.waitForTimeout(800);
+await A.evaluate(() => { const now = Date.now(); sessionStorage.setItem('gohanOther', JSON.stringify([now - 3000, now - 2000, now - 1000])); });   // 読み直しが続いた形にする（その場でそろえる流れ）
+await settle(A); await settle(B);
+const A6 = await st(A), B6 = await st(B);
+ok(b6.ids.includes(null) && B6.dec && A6.dec && A6.menu === B6.menu, 'T6 読み直しが続いたあとも、別のタブで決めた（席が1つ空いた）献立と決めた印がそろう: ' + JSON.stringify({ b6, A6, B6 }));
 
 await b.close();
 if (errs.length){ console.log('ページのエラー:', errs.slice(0, 5)); fails++; }
