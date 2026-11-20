@@ -6296,9 +6296,10 @@ function fitTrayRun(){
     const fixMemo = fitMemo || new Map();
     const fixText = () => {
         const rowsNow = [...tr.querySelectorAll('.tg-row')];
-        // 鍵: お膳のクラス（並べ替えて）・列の数・1行にするか・文字の大きさ・各段の料理（.spot）の幅。body のクラス（あいさつ・帯の置き方・tray-tight3〜5）は、名前・かえる・種類の字の幅と大きさを変えない（変えるのは余白と上の端の行だけ。幅の違いは .spot の幅に出る）
-        const key = [tr.className.split(/\s+/).filter(c => c && c !== 'swap-ico').sort().join(' '), tr.style.getPropertyValue('--c'), nml1, document.documentElement.getAttribute('data-ts') || '', rowsNow.map(r => [...r.querySelectorAll('.spot')].map(sp => sp.clientWidth).join(',')).join('/')].join('|');
+        // 鍵: お膳のクラス（並べ替えて）・列の数・名前の行数のもとの値（CSS の .tray.grid2[style*="--c:4"] は style の書き方で当たったり外れたりする）・1行にするか・文字の大きさ・各段の料理（.spot）の幅。body のクラス（あいさつ・帯の置き方・tray-tight3〜5）は、名前・かえる・種類の字の幅と大きさを変えない（変えるのは余白と上の端の行だけ。幅の違いは .spot の幅に出る）
+        // 幅は、料理の箱（.spot）と、名前・種類の字の箱そのものの幅（器の大きさで名前の横幅が変わる並びがある）
         const nms = [...tr.querySelectorAll('.spot-label .nm')], sls = [...tr.querySelectorAll('.spot-label .slot')];
+        const key = [tr.className.split(/\s+/).filter(c => c && c !== 'swap-ico').sort().join(' '), tr.style.getPropertyValue('--c'), (tr.getAttribute('style') || '').includes('--c:4'), nml1, document.documentElement.getAttribute('data-ts') || '', rowsNow.map(r => [...r.querySelectorAll('.spot')].map(sp => sp.clientWidth).join(',')).join('/'), nms.map(e => e.clientWidth).join(','), sls.map(e => e.clientWidth).join(',')].join('|');
         const got = fixMemo.get(key);
         if (got){
             rowsNow.forEach((r, i) => { if (got.nml[i]) r.style.setProperty('--nml', got.nml[i]); else r.style.removeProperty('--nml'); });
