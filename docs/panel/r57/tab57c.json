@@ -1,0 +1,8032 @@
+[
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "drycurry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "drycurry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "drycurry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [
+    "gratin",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [
+    "gratin",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [
+    "gratin",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "minestrone"
+   ],
+   "draft": [
+    "gratin",
+    "minestrone"
+   ],
+   "shown": [
+    "gratin",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "minestrone"
+    ],
+    "draft": [
+     "gratin",
+     "minestrone"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "draft": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "shown": [
+    "champuru",
+    "satsumajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "champuru",
+     "satsumajiru"
+    ],
+    "draft": [
+     "champuru",
+     "satsumajiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "draft": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "shown": [
+    "gyoza",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyoza",
+     "tamagosoup"
+    ],
+    "draft": [
+     "gyoza",
+     "tamagosoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "shabushabu",
+    "karashiae",
+    "none"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "shabushabu",
+     "karashiae",
+     "none"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "shabushabu",
+    "karashiae",
+    "none"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "shabushabu",
+     "karashiae",
+     "none"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "shabushabu",
+     "karashiae"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "shabushabu",
+     "karashiae"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "shabushabu",
+     "karashiae"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "draft": [
+    "shabushabu",
+    "karashiae",
+    null
+   ],
+   "shown": [
+    "shabushabu",
+    "karashiae"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "shabushabu",
+     "karashiae"
+    ],
+    "draft": [
+     "shabushabu",
+     "karashiae",
+     null
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "draft": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "shown": [
+    "ebifry",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ebifry",
+     "kabochapotage"
+    ],
+    "draft": [
+     "ebifry",
+     "kabochapotage"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "draft": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "shown": [
+    "inarizushi",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "inarizushi",
+     "asarimiso"
+    ],
+    "draft": [
+     "inarizushi",
+     "asarimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "reishabu",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "reishabu",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "reishabu",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "draft": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "shown": [
+    "buriteri",
+    "namekomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buriteri",
+     "namekomiso"
+    ],
+    "draft": [
+     "buriteri",
+     "namekomiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "shown": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "nasuatsuagemiso",
+     "noppeijiru"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "noppeijiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "shown": [
+    "nasuatsuagemiso",
+    "noppeijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "nasuatsuagemiso",
+     "noppeijiru"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "noppeijiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "shown": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "draft": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "shown": [
+    "nasuatsuagemiso",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ],
+    "draft": [
+     "nasuatsuagemiso",
+     "shijimimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "draft": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "shown": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "sanma",
+     "sawaniwan"
+    ],
+    "draft": [
+     "sanma",
+     "sawaniwan"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "draft": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "shown": [
+    "sanma",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "sanma",
+     "sawaniwan"
+    ],
+    "draft": [
+     "sanma",
+     "sawaniwan"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "draft": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "sanma",
+     "shijimimiso"
+    ],
+    "draft": [
+     "sanma",
+     "shijimimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "draft": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "sanma",
+     "shijimimiso"
+    ],
+    "draft": [
+     "sanma",
+     "shijimimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "draft": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "shown": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "sanma",
+     "shijimimiso"
+    ],
+    "draft": [
+     "sanma",
+     "shijimimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "draft": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "shown": [
+    "sanma",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "sanma",
+     "shijimimiso"
+    ],
+    "draft": [
+     "sanma",
+     "shijimimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "draft": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "shown": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "oyakodon",
+     "misoshiru"
+    ],
+    "draft": [
+     "oyakodon",
+     "misoshiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "draft": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "shown": [
+    "oyakodon",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "oyakodon",
+     "misoshiru"
+    ],
+    "draft": [
+     "oyakodon",
+     "misoshiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "draft": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "oyakodon",
+     "shijimimiso"
+    ],
+    "draft": [
+     "oyakodon",
+     "shijimimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "draft": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "oyakodon",
+     "shijimimiso"
+    ],
+    "draft": [
+     "oyakodon",
+     "shijimimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "draft": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "shown": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "oyakodon",
+     "shijimimiso"
+    ],
+    "draft": [
+     "oyakodon",
+     "shijimimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "draft": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "shown": [
+    "oyakodon",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "oyakodon",
+     "shijimimiso"
+    ],
+    "draft": [
+     "oyakodon",
+     "shijimimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "draft": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "shown": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "happosai",
+     "tamagosoup"
+    ],
+    "draft": [
+     "happosai",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "draft": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "shown": [
+    "happosai",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "happosai",
+     "tamagosoup"
+    ],
+    "draft": [
+     "happosai",
+     "tamagosoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "happosai",
+    "sanratan"
+   ],
+   "draft": [
+    "happosai",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "happosai",
+     "sanratan"
+    ],
+    "draft": [
+     "happosai",
+     "sanratan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "happosai",
+    "sanratan"
+   ],
+   "draft": [
+    "happosai",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "happosai",
+     "sanratan"
+    ],
+    "draft": [
+     "happosai",
+     "sanratan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "happosai",
+    "sanratan"
+   ],
+   "draft": [
+    "happosai",
+    "sanratan"
+   ],
+   "shown": [
+    "happosai",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "happosai",
+     "sanratan"
+    ],
+    "draft": [
+     "happosai",
+     "sanratan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "happosai",
+    "sanratan"
+   ],
+   "draft": [
+    "happosai",
+    "sanratan"
+   ],
+   "shown": [
+    "happosai",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "happosai",
+     "sanratan"
+    ],
+    "draft": [
+     "happosai",
+     "sanratan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "draft": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "shown": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "tendon",
+     "daikonmiso"
+    ],
+    "draft": [
+     "tendon",
+     "daikonmiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "draft": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "shown": [
+    "tendon",
+    "daikonmiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "tendon",
+     "daikonmiso"
+    ],
+    "draft": [
+     "tendon",
+     "daikonmiso"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "consomme"
+   ],
+   "draft": [
+    "tendon",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "consomme"
+    ],
+    "draft": [
+     "tendon",
+     "consomme"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "consomme"
+   ],
+   "draft": [
+    "tendon",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "consomme"
+    ],
+    "draft": [
+     "tendon",
+     "consomme"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "consomme"
+   ],
+   "draft": [
+    "tendon",
+    "consomme"
+   ],
+   "shown": [
+    "tendon",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "consomme"
+    ],
+    "draft": [
+     "tendon",
+     "consomme"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "consomme"
+   ],
+   "draft": [
+    "tendon",
+    "consomme"
+   ],
+   "shown": [
+    "tendon",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "consomme"
+    ],
+    "draft": [
+     "tendon",
+     "consomme"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "curryudon",
+    "hijiki",
+    "none"
+   ],
+   "draft": [
+    "curryudon",
+    "hijiki",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "hijiki"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "curryudon",
+     "hijiki",
+     "none"
+    ],
+    "draft": [
+     "curryudon",
+     "hijiki",
+     null
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "curryudon",
+    "hijiki",
+    "none"
+   ],
+   "draft": [
+    "curryudon",
+    "hijiki",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "hijiki"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "curryudon",
+     "hijiki",
+     "none"
+    ],
+    "draft": [
+     "curryudon",
+     "hijiki",
+     null
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "draft": [
+    "curryudon",
+    "hakusaiasazuke",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "hakusaiasazuke"
+    ],
+    "draft": [
+     "curryudon",
+     "hakusaiasazuke",
+     null
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "draft": [
+    "curryudon",
+    "hakusaiasazuke",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "hakusaiasazuke"
+    ],
+    "draft": [
+     "curryudon",
+     "hakusaiasazuke",
+     null
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "draft": [
+    "curryudon",
+    "hakusaiasazuke",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "hakusaiasazuke"
+    ],
+    "draft": [
+     "curryudon",
+     "hakusaiasazuke",
+     null
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "draft": [
+    "curryudon",
+    "hakusaiasazuke",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "hakusaiasazuke"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "hakusaiasazuke"
+    ],
+    "draft": [
+     "curryudon",
+     "hakusaiasazuke",
+     null
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "hamburg",
+    "consomme"
+   ],
+   "draft": [
+    "hamburg",
+    "consomme"
+   ],
+   "shown": [
+    "hamburg",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "hamburg",
+     "consomme"
+    ],
+    "draft": [
+     "hamburg",
+     "consomme"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "hamburg",
+    "consomme"
+   ],
+   "draft": [
+    "hamburg",
+    "consomme"
+   ],
+   "shown": [
+    "hamburg",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "hamburg",
+     "consomme"
+    ],
+    "draft": [
+     "hamburg",
+     "consomme"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "err": "page.reload: net::ERR_ABORTED; maybe frame was detached?\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n"
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "draft": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "shown": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gyudon",
+     "nasuagemiso"
+    ],
+    "draft": [
+     "gyudon",
+     "nasuagemiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "draft": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "shown": [
+    "gyudon",
+    "nasuagemiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gyudon",
+     "nasuagemiso"
+    ],
+    "draft": [
+     "gyudon",
+     "nasuagemiso"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "draft": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyudon",
+     "noppeijiru"
+    ],
+    "draft": [
+     "gyudon",
+     "noppeijiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "draft": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyudon",
+     "noppeijiru"
+    ],
+    "draft": [
+     "gyudon",
+     "noppeijiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "draft": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "shown": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyudon",
+     "noppeijiru"
+    ],
+    "draft": [
+     "gyudon",
+     "noppeijiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "draft": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "shown": [
+    "gyudon",
+    "noppeijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gyudon",
+     "noppeijiru"
+    ],
+    "draft": [
+     "gyudon",
+     "noppeijiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "shown": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "meatsauce",
+     "kofukiimo",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "kofukiimo",
+     "cornsoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "shown": [
+    "meatsauce",
+    "kofukiimo",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "meatsauce",
+     "kofukiimo",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "kofukiimo",
+     "cornsoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "shown": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "draft": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "shown": [
+    "meatsauce",
+    "spinachbacon",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ],
+    "draft": [
+     "meatsauce",
+     "spinachbacon",
+     "cornsoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "monja",
+    "sumashijiru"
+   ],
+   "draft": [
+    "monja",
+    "sumashijiru"
+   ],
+   "shown": [
+    "monja",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "monja",
+     "sumashijiru"
+    ],
+    "draft": [
+     "monja",
+     "sumashijiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "monja",
+    "sumashijiru"
+   ],
+   "draft": [
+    "monja",
+    "sumashijiru"
+   ],
+   "shown": [
+    "monja",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "monja",
+     "sumashijiru"
+    ],
+    "draft": [
+     "monja",
+     "sumashijiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "monja",
+    "asarimiso"
+   ],
+   "draft": [
+    "monja",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "monja",
+     "asarimiso"
+    ],
+    "draft": [
+     "monja",
+     "asarimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "monja",
+    "asarimiso"
+   ],
+   "draft": [
+    "monja",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "monja",
+     "asarimiso"
+    ],
+    "draft": [
+     "monja",
+     "asarimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "monja",
+    "asarimiso"
+   ],
+   "draft": [
+    "monja",
+    "asarimiso"
+   ],
+   "shown": [
+    "monja",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "monja",
+     "asarimiso"
+    ],
+    "draft": [
+     "monja",
+     "asarimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "monja",
+    "asarimiso"
+   ],
+   "draft": [
+    "monja",
+    "asarimiso"
+   ],
+   "shown": [
+    "monja",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "monja",
+     "asarimiso"
+    ],
+    "draft": [
+     "monja",
+     "asarimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "kitsuneudon",
+    "yaki_tomorokoshi",
+    "none"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "yaki_tomorokoshi",
+    null
+   ],
+   "shown": [
+    "kitsuneudon",
+    "yaki_tomorokoshi"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kitsuneudon",
+     "yaki_tomorokoshi",
+     "none"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "yaki_tomorokoshi",
+     null
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "kitsuneudon",
+    "yaki_tomorokoshi",
+    "none"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "yaki_tomorokoshi",
+    null
+   ],
+   "shown": [
+    "kitsuneudon",
+    "yaki_tomorokoshi"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kitsuneudon",
+     "yaki_tomorokoshi",
+     "none"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "yaki_tomorokoshi",
+     null
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "nasubitashi",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kitsuneudon",
+     "nasubitashi"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "nasubitashi",
+     null
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "nasubitashi",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kitsuneudon",
+     "nasubitashi"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "nasubitashi",
+     null
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "nasubitashi",
+    null
+   ],
+   "shown": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kitsuneudon",
+     "nasubitashi"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "nasubitashi",
+     null
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "draft": [
+    "kitsuneudon",
+    "nasubitashi",
+    null
+   ],
+   "shown": [
+    "kitsuneudon",
+    "nasubitashi"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kitsuneudon",
+     "nasubitashi"
+    ],
+    "draft": [
+     "kitsuneudon",
+     "nasubitashi",
+     null
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v159",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "shown": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "torinotomatoni",
+     "clamchowder"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "clamchowder"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "shown": [
+    "torinotomatoni",
+    "clamchowder"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "torinotomatoni",
+     "clamchowder"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "clamchowder"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "torinotomatoni",
+     "cornsoup"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "cornsoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "torinotomatoni",
+     "cornsoup"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "cornsoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "shown": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "torinotomatoni",
+     "cornsoup"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "cornsoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "draft": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "shown": [
+    "torinotomatoni",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "torinotomatoni",
+     "cornsoup"
+    ],
+    "draft": [
+     "torinotomatoni",
+     "cornsoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "draft": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "shown": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "subuta",
+     "tamagosoup"
+    ],
+    "draft": [
+     "subuta",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "draft": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "shown": [
+    "subuta",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "subuta",
+     "tamagosoup"
+    ],
+    "draft": [
+     "subuta",
+     "tamagosoup"
+    ]
+   }
+  },
+  "r2": "ok",
+  "err": "page.reload: Protocol error (Page.reload): Not attached to an active page\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n"
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "draft": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "shown": [
+    "ajihimono",
+    "sawaniwan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "ajihimono",
+     "sawaniwan"
+    ],
+    "draft": [
+     "ajihimono",
+     "sawaniwan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 0,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [
+    "gratin",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [
+    "gratin",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [
+    "gratin",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "gratin",
+    "consomme"
+   ],
+   "draft": [
+    "gratin",
+    "consomme"
+   ],
+   "shown": [
+    "gratin",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "gratin",
+     "consomme"
+    ],
+    "draft": [
+     "gratin",
+     "consomme"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "soborodon",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "soborodon",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "draft": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "shown": [
+    "pimannikuzume",
+    "consomme"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "pimannikuzume",
+     "consomme"
+    ],
+    "draft": [
+     "pimannikuzume",
+     "consomme"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 50,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "draft": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "shown": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buriteri",
+     "asarimiso"
+    ],
+    "draft": [
+     "buriteri",
+     "asarimiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "draft": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "shown": [
+    "buriteri",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buriteri",
+     "asarimiso"
+    ],
+    "draft": [
+     "buriteri",
+     "asarimiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "err": "page.reload: Protocol error (Page.reload): Not attached to an active page\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n"
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "draft": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "shown": [
+    "butadaikon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "butadaikon",
+     "asarimiso"
+    ],
+    "draft": [
+     "butadaikon",
+     "asarimiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "draft": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "shown": [
+    "yakisoba",
+    "gomaae",
+    "jagaimomiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ],
+    "draft": [
+     "yakisoba",
+     "gomaae",
+     "jagaimomiso"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 150,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "chahan",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chahan",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "chahan",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "draft": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "shown": [
+    "napolitan",
+    "broccoligoma",
+    "kabochapotage"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ],
+    "draft": [
+     "napolitan",
+     "broccoligoma",
+     "kabochapotage"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "draft": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "shown": [
+    "kajikisaute",
+    "minestrone"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kajikisaute",
+     "minestrone"
+    ],
+    "draft": [
+     "kajikisaute",
+     "minestrone"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-decide",
+  "gap": 400,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "draft": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "shown": [
+    "buridaikon",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "buridaikon",
+     "sumashijiru"
+    ],
+    "draft": [
+     "buridaikon",
+     "sumashijiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "tendon",
+    "senbajiru"
+   ],
+   "draft": [
+    "tendon",
+    "senbajiru"
+   ],
+   "shown": [
+    "tendon",
+    "senbajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "tendon",
+     "senbajiru"
+    ],
+    "draft": [
+     "tendon",
+     "senbajiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "tendon",
+    "senbajiru"
+   ],
+   "draft": [
+    "tendon",
+    "senbajiru"
+   ],
+   "shown": [
+    "tendon",
+    "senbajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "tendon",
+     "senbajiru"
+    ],
+    "draft": [
+     "tendon",
+     "senbajiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "misoshiru"
+   ],
+   "draft": [
+    "tendon",
+    "misoshiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "misoshiru"
+    ],
+    "draft": [
+     "tendon",
+     "misoshiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "misoshiru"
+   ],
+   "draft": [
+    "tendon",
+    "misoshiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "misoshiru"
+    ],
+    "draft": [
+     "tendon",
+     "misoshiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "misoshiru"
+   ],
+   "draft": [
+    "tendon",
+    "misoshiru"
+   ],
+   "shown": [
+    "tendon",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "misoshiru"
+    ],
+    "draft": [
+     "tendon",
+     "misoshiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "tendon",
+    "misoshiru"
+   ],
+   "draft": [
+    "tendon",
+    "misoshiru"
+   ],
+   "shown": [
+    "tendon",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "tendon",
+     "misoshiru"
+    ],
+    "draft": [
+     "tendon",
+     "misoshiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "shown": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakisoba",
+     "hakusaiasazuke",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "hakusaiasazuke",
+     "misoshiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "shown": [
+    "yakisoba",
+    "hakusaiasazuke",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakisoba",
+     "hakusaiasazuke",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "hakusaiasazuke",
+     "misoshiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "shown": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "draft": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "shown": [
+    "yakisoba",
+    "yakinasu",
+    "misoshiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ],
+    "draft": [
+     "yakisoba",
+     "yakinasu",
+     "misoshiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 0,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "draft": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "shown": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakiudon",
+     "gomaae",
+     "imoni"
+    ],
+    "draft": [
+     "yakiudon",
+     "gomaae",
+     "imoni"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "draft": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "shown": [
+    "yakiudon",
+    "gomaae",
+    "imoni"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yakiudon",
+     "gomaae",
+     "imoni"
+    ],
+    "draft": [
+     "yakiudon",
+     "gomaae",
+     "imoni"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "err": "page.reload: Protocol error (Page.reload): Not attached to an active page\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n"
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "piccata",
+    "cornsoup"
+   ],
+   "draft": [
+    "piccata",
+    "cornsoup"
+   ],
+   "shown": [
+    "piccata",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "piccata",
+     "cornsoup"
+    ],
+    "draft": [
+     "piccata",
+     "cornsoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "piccata",
+    "cornsoup"
+   ],
+   "draft": [
+    "piccata",
+    "cornsoup"
+   ],
+   "shown": [
+    "piccata",
+    "cornsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "piccata",
+     "cornsoup"
+    ],
+    "draft": [
+     "piccata",
+     "cornsoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "piccata",
+    "potofu"
+   ],
+   "draft": [
+    "piccata",
+    "potofu"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "piccata",
+     "potofu"
+    ],
+    "draft": [
+     "piccata",
+     "potofu"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "piccata",
+    "potofu"
+   ],
+   "draft": [
+    "piccata",
+    "potofu"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "piccata",
+     "potofu"
+    ],
+    "draft": [
+     "piccata",
+     "potofu"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "piccata",
+    "potofu"
+   ],
+   "draft": [
+    "piccata",
+    "potofu"
+   ],
+   "shown": [
+    "piccata",
+    "potofu"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "piccata",
+     "potofu"
+    ],
+    "draft": [
+     "piccata",
+     "potofu"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "piccata",
+    "potofu"
+   ],
+   "draft": [
+    "piccata",
+    "potofu"
+   ],
+   "shown": [
+    "piccata",
+    "potofu"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "piccata",
+     "potofu"
+    ],
+    "draft": [
+     "piccata",
+     "potofu"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "shown": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "teppan_tori",
+     "sumashijiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "sumashijiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "shown": [
+    "teppan_tori",
+    "sumashijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "teppan_tori",
+     "sumashijiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "sumashijiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "teppan_tori",
+     "tonjiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "tonjiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "teppan_tori",
+     "tonjiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "tonjiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "shown": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "teppan_tori",
+     "tonjiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "tonjiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "draft": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "shown": [
+    "teppan_tori",
+    "tonjiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "teppan_tori",
+     "tonjiru"
+    ],
+    "draft": [
+     "teppan_tori",
+     "tonjiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 50,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "draft": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "shown": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "rebanira",
+     "tamagosoup"
+    ],
+    "draft": [
+     "rebanira",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "draft": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "shown": [
+    "rebanira",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "rebanira",
+     "tamagosoup"
+    ],
+    "draft": [
+     "rebanira",
+     "tamagosoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "rebanira",
+    "sanratan"
+   ],
+   "draft": [
+    "rebanira",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "rebanira",
+     "sanratan"
+    ],
+    "draft": [
+     "rebanira",
+     "sanratan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "rebanira",
+    "sanratan"
+   ],
+   "draft": [
+    "rebanira",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "rebanira",
+     "sanratan"
+    ],
+    "draft": [
+     "rebanira",
+     "sanratan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "rebanira",
+    "sanratan"
+   ],
+   "draft": [
+    "rebanira",
+    "sanratan"
+   ],
+   "shown": [
+    "rebanira",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "rebanira",
+     "sanratan"
+    ],
+    "draft": [
+     "rebanira",
+     "sanratan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "rebanira",
+    "sanratan"
+   ],
+   "draft": [
+    "rebanira",
+    "sanratan"
+   ],
+   "shown": [
+    "rebanira",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "rebanira",
+     "sanratan"
+    ],
+    "draft": [
+     "rebanira",
+     "sanratan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "draft": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "shown": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "soborodon",
+     "asarimiso"
+    ],
+    "draft": [
+     "soborodon",
+     "asarimiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "draft": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "shown": [
+    "soborodon",
+    "asarimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "soborodon",
+     "asarimiso"
+    ],
+    "draft": [
+     "soborodon",
+     "asarimiso"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "draft": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "kasujiru"
+    ],
+    "draft": [
+     "soborodon",
+     "kasujiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "draft": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "kasujiru"
+    ],
+    "draft": [
+     "soborodon",
+     "kasujiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "draft": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "shown": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "kasujiru"
+    ],
+    "draft": [
+     "soborodon",
+     "kasujiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "draft": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "shown": [
+    "soborodon",
+    "kasujiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "soborodon",
+     "kasujiru"
+    ],
+    "draft": [
+     "soborodon",
+     "kasujiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "draft": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "shown": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yudofu",
+     "ishikarijiru"
+    ],
+    "draft": [
+     "yudofu",
+     "ishikarijiru"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "draft": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "shown": [
+    "yudofu",
+    "ishikarijiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "yudofu",
+     "ishikarijiru"
+    ],
+    "draft": [
+     "yudofu",
+     "ishikarijiru"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yudofu",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "yudofu",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yudofu",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "yudofu",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yudofu",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "yudofu",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "draft": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "shown": [
+    "yudofu",
+    "tomatoeggsoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "yudofu",
+     "tomatoeggsoup"
+    ],
+    "draft": [
+     "yudofu",
+     "tomatoeggsoup"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 150,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "curryudon",
+    "kabuamazu",
+    "none"
+   ],
+   "draft": [
+    "curryudon",
+    "kabuamazu",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "kabuamazu"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "curryudon",
+     "kabuamazu",
+     "none"
+    ],
+    "draft": [
+     "curryudon",
+     "kabuamazu",
+     null
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "curryudon",
+    "kabuamazu",
+    "none"
+   ],
+   "draft": [
+    "curryudon",
+    "kabuamazu",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "kabuamazu"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "curryudon",
+     "kabuamazu",
+     "none"
+    ],
+    "draft": [
+     "curryudon",
+     "kabuamazu",
+     null
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "draft": [
+    "curryudon",
+    "kinokobutter",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "kinokobutter"
+    ],
+    "draft": [
+     "curryudon",
+     "kinokobutter",
+     null
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "draft": [
+    "curryudon",
+    "kinokobutter",
+    null
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "kinokobutter"
+    ],
+    "draft": [
+     "curryudon",
+     "kinokobutter",
+     null
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "draft": [
+    "curryudon",
+    "kinokobutter",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "kinokobutter"
+    ],
+    "draft": [
+     "curryudon",
+     "kinokobutter",
+     null
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "draft": [
+    "curryudon",
+    "kinokobutter",
+    null
+   ],
+   "shown": [
+    "curryudon",
+    "kinokobutter"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "curryudon",
+     "kinokobutter"
+    ],
+    "draft": [
+     "curryudon",
+     "kinokobutter",
+     null
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 0,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "draft": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "shown": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chanchan",
+     "shijimimiso"
+    ],
+    "draft": [
+     "chanchan",
+     "shijimimiso"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "draft": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "shown": [
+    "chanchan",
+    "shijimimiso"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "chanchan",
+     "shijimimiso"
+    ],
+    "draft": [
+     "chanchan",
+     "shijimimiso"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "draft": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chanchan",
+     "kakitamajiru"
+    ],
+    "draft": [
+     "chanchan",
+     "kakitamajiru"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "draft": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chanchan",
+     "kakitamajiru"
+    ],
+    "draft": [
+     "chanchan",
+     "kakitamajiru"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "draft": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "shown": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chanchan",
+     "kakitamajiru"
+    ],
+    "draft": [
+     "chanchan",
+     "kakitamajiru"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "draft": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "shown": [
+    "chanchan",
+    "kakitamajiru"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "chanchan",
+     "kakitamajiru"
+    ],
+    "draft": [
+     "chanchan",
+     "kakitamajiru"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 1,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "draft": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "shown": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "nirabuta",
+     "tamagosoup"
+    ],
+    "draft": [
+     "nirabuta",
+     "tamagosoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "draft": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "shown": [
+    "nirabuta",
+    "tamagosoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "nirabuta",
+     "tamagosoup"
+    ],
+    "draft": [
+     "nirabuta",
+     "tamagosoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "draft": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nirabuta",
+     "sanratan"
+    ],
+    "draft": [
+     "nirabuta",
+     "sanratan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "draft": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nirabuta",
+     "sanratan"
+    ],
+    "draft": [
+     "nirabuta",
+     "sanratan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "draft": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "shown": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nirabuta",
+     "sanratan"
+    ],
+    "draft": [
+     "nirabuta",
+     "sanratan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "draft": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "shown": [
+    "nirabuta",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "nirabuta",
+     "sanratan"
+    ],
+    "draft": [
+     "nirabuta",
+     "sanratan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ },
+ {
+  "ver": "v156",
+  "sc": "reload-swap-decide",
+  "gap": 400,
+  "rep": 2,
+  "A0": {
+   "st": "draft",
+   "items": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "draft": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "shown": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kanitama",
+     "wantansoup"
+    ],
+    "draft": [
+     "kanitama",
+     "wantansoup"
+    ]
+   }
+  },
+  "B0": {
+   "st": "draft",
+   "items": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "draft": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "shown": [
+    "kanitama",
+    "wantansoup"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "draft",
+    "items": [
+     "kanitama",
+     "wantansoup"
+    ],
+    "draft": [
+     "kanitama",
+     "wantansoup"
+    ]
+   }
+  },
+  "r": [
+   "ok"
+  ],
+  "r2": "ok",
+  "Ajust": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "Bjust": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [],
+   "tab": "cook",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "tabA": "cook",
+  "tabB": "cook",
+  "A": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "B": {
+   "st": "decided",
+   "items": [
+    "kanitama",
+    "sanratan"
+   ],
+   "draft": [
+    "kanitama",
+    "sanratan"
+   ],
+   "shown": [
+    "kanitama",
+    "sanratan"
+   ],
+   "tab": "today",
+   "ls": {
+    "st": "decided",
+    "items": [
+     "kanitama",
+     "sanratan"
+    ],
+    "draft": [
+     "kanitama",
+     "sanratan"
+    ]
+   }
+  },
+  "sameDay": true,
+  "sameDraft": true,
+  "shownA": true,
+  "shownB": true,
+  "stray": [],
+  "ok": true
+ }
+]
