@@ -1,0 +1,5154 @@
+[
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 578,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 578,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 125,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 195,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 117,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 321,
+   "noteBottom": 557,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 117,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 195,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 88,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 117,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 321,
+   "noteBottom": 557,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 117,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 195,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 83,
+     "h": 79,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 365,
+   "noteBottom": 704,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 83,
+     "h": 79,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "hi",
+  "W": 195,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "अंडा भी नहीं",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 83,
+     "h": 79,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 365,
+   "noteBottom": 704,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“शाकाहारी” चुनने से अंडा और दूध से बनी चीज़ें नहीं हटतीं। अगर आप ये भी नहीं खाते, तो नीचे के बटन से जोड़ें",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "दूध की चीज़ें भी नहीं",
+     "w": 83,
+     "h": 79,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 457,
+   "noteBottom": 584,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 457,
+   "noteBottom": 584,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 320,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 511,
+   "noteBottom": 638,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 320,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 511,
+   "noteBottom": 638,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 320,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 406,
+   "noteBottom": 608,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "IN",
+  "ui": "en",
+  "W": 320,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 406,
+   "noteBottom": 608,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": true
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 629,
+   "nav": 649
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 629,
+   "nav": 649
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 577,
+   "nav": 649
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 577,
+   "nav": 649
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 195,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 332,
+   "noteBottom": 578,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 195,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 332,
+   "noteBottom": 578,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 110,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 195,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 377,
+   "noteBottom": 680,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "JP",
+  "ui": "ja",
+  "W": 195,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "卵も外す",
+     "w": 82,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 377,
+   "noteBottom": 680,
+   "nav": 331
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "ベジタリアン向けでは、卵・乳製品は外しません。卵・乳製品も食べないときは、下のボタンで足してください",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "乳製品も外す",
+     "w": 83,
+     "h": 56,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "US",
+  "ui": "en",
+  "W": 390,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 505,
+   "noteBottom": 632,
+   "nav": 774
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "US",
+  "ui": "en",
+  "W": 390,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 505,
+   "noteBottom": 632,
+   "nav": 774
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "US",
+  "ui": "en",
+  "W": 390,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 503,
+   "noteBottom": 630,
+   "nav": 774
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "US",
+  "ui": "en",
+  "W": 390,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Also no eggs",
+     "w": 112,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 503,
+   "noteBottom": 630,
+   "nav": 774
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetarian” does not remove eggs or dairy. If you don't eat them either, add them with the buttons below",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Also no dairy",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "DE",
+  "ui": "de",
+  "W": 320,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Auch ohne Eier",
+     "w": 130,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 545,
+   "noteBottom": 747,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "DE",
+  "ui": "de",
+  "W": 320,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Auch ohne Eier",
+     "w": 130,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 545,
+   "noteBottom": 747,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "DE",
+  "ui": "de",
+  "W": 320,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Auch ohne Eier",
+     "w": 130,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 418,
+   "noteBottom": 619,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "DE",
+  "ui": "de",
+  "W": 320,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Auch ohne Eier",
+     "w": 130,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 418,
+   "noteBottom": 619,
+   "nav": 571
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "„Vegetarisch“ schließt Eier und Milchprodukte nicht aus. Wenn du sie auch nicht isst, füge sie mit den Knöpfen unten hinzu",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Auch ohne Milchprodukte",
+     "w": 200,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TH",
+  "ui": "th",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "ไม่เอาไข่ด้วย",
+     "w": 109,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 607,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TH",
+  "ui": "th",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "ไม่เอาไข่ด้วย",
+     "w": 109,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 607,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TH",
+  "ui": "th",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "ไม่เอาไข่ด้วย",
+     "w": 109,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 451,
+   "noteBottom": 556,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TH",
+  "ui": "th",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "ไม่เอาไข่ด้วย",
+     "w": 109,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 451,
+   "noteBottom": 556,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“มังสวิรัติ” ไม่ได้ตัดไข่และนมออก ถ้าไม่กินด้วย ให้เพิ่มด้วยปุ่มด้านล่าง",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "ไม่เอานมด้วย",
+     "w": 111,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "EG",
+  "ui": "ar",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "بدون بيض أيضًا",
+     "w": 115,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 607,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "EG",
+  "ui": "ar",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "بدون بيض أيضًا",
+     "w": 115,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 607,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "EG",
+  "ui": "ar",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "بدون بيض أيضًا",
+     "w": 115,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 629,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "EG",
+  "ui": "ar",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "بدون بيض أيضًا",
+     "w": 115,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 629,
+   "nav": 670
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "خيار «نباتي» لا يستبعد البيض ومنتجات الألبان. إذا كنت لا تأكلها أيضًا، فأضفها بالأزرار أدناه",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "بدون ألبان أيضًا",
+     "w": 117,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "BR",
+  "ui": "pt-BR",
+  "W": 390,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Sem ovos também",
+     "w": 150,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 517,
+   "noteBottom": 696,
+   "nav": 775
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "BR",
+  "ui": "pt-BR",
+  "W": 390,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Sem ovos também",
+     "w": 150,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 517,
+   "noteBottom": 696,
+   "nav": 775
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "BR",
+  "ui": "pt-BR",
+  "W": 390,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Sem ovos também",
+     "w": 150,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 520,
+   "noteBottom": 699,
+   "nav": 775
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "BR",
+  "ui": "pt-BR",
+  "W": 390,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Sem ovos também",
+     "w": 150,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 520,
+   "noteBottom": 699,
+   "nav": 775
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Vegetariano” não tira ovos nem laticínios. Se você também não come, adicione pelos botões abaixo",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Sem laticínios também",
+     "w": 178,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TW",
+  "ui": "zh-Hant",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "也不要蛋",
+     "w": 86,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 480,
+   "noteBottom": 585,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TW",
+  "ui": "zh-Hant",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "也不要蛋",
+     "w": 86,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 480,
+   "noteBottom": 585,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TW",
+  "ui": "zh-Hant",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "也不要蛋",
+     "w": 86,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 554,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "TW",
+  "ui": "zh-Hant",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "也不要蛋",
+     "w": 86,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 450,
+   "noteBottom": 554,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "「素食」不會去掉蛋和奶製品。如果也不吃，請用下面的按鈕加上",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "也不要奶製品",
+     "w": 114,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "VN",
+  "ui": "vi",
+  "W": 320,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Không trứng nữa",
+     "w": 140,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 523,
+   "noteBottom": 702,
+   "nav": 557
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "VN",
+  "ui": "vi",
+  "W": 320,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Không trứng nữa",
+     "w": 140,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 523,
+   "noteBottom": 702,
+   "nav": 557
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "VN",
+  "ui": "vi",
+  "W": 320,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Không trứng nữa",
+     "w": 140,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 418,
+   "noteBottom": 620,
+   "nav": 557
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "VN",
+  "ui": "vi",
+  "W": 320,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "Không trứng nữa",
+     "w": 140,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 418,
+   "noteBottom": 620,
+   "nav": 557
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "“Ăn chay” không bỏ trứng và sữa. Nếu bạn cũng không ăn những món này, hãy thêm bằng các nút bên dưới",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "Không sữa nữa",
+     "w": 127,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "KR",
+  "ui": "ko",
+  "W": 360,
+  "where": "set",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "달걀도 빼기",
+     "w": 104,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "KR",
+  "ui": "ko",
+  "W": 360,
+  "where": "set",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "달걀도 빼기",
+     "w": 104,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 502,
+   "noteBottom": 630,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "KR",
+  "ui": "ko",
+  "W": 360,
+  "where": "fam",
+  "dbl": 0,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "달걀도 빼기",
+     "w": 104,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 451,
+   "noteBottom": 578,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ },
+ {
+  "ver": "v152",
+  "cc": "KR",
+  "ui": "ko",
+  "W": 360,
+  "where": "fam",
+  "dbl": 1,
+  "after": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish"
+   ],
+   "egg": false,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "egg",
+     "t": "달걀도 빼기",
+     "w": 104,
+     "h": 44,
+     "cut": false
+    },
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "noteBelowNav": {
+   "noteTop": 451,
+   "noteBottom": 578,
+   "nav": 656
+  },
+  "eggCovered": false,
+  "afterEgg": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg"
+   ],
+   "egg": true,
+   "dairy": false,
+   "note": "‘채식’을 골라도 달걀과 유제품은 빠지지 않아요. 이것도 먹지 않으면 아래 버튼으로 더해 주세요",
+   "noteVis": true,
+   "btns": [
+    {
+     "v": "dairy",
+     "t": "유제품도 빼기",
+     "w": 118,
+     "h": 44,
+     "cut": false
+    }
+   ],
+   "hscroll": false,
+   "kana": 0
+  },
+  "menuEgg": {
+   "eggcurry": null
+  },
+  "vegan": {
+   "fams": [
+    "pork",
+    "chicken",
+    "beef",
+    "fish",
+    "shellfish",
+    "egg",
+    "dairy"
+   ],
+   "egg": true,
+   "dairy": true,
+   "note": null,
+   "noteVis": false,
+   "btns": [],
+   "hscroll": false,
+   "kana": 0
+  },
+  "errs": []
+ }
+]

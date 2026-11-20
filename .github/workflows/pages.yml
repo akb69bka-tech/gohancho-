@@ -6,7 +6,7 @@ name: Pages
 on:
   push:
     branches: [main]
-    paths: ['gohancho/**', '.github/workflows/pages.yml']
+    paths: ['gohancho/**', 'tools/build/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -27,8 +27,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # 第49回 R184: 公開する前に、コメント・字下げ・空白を取って軽くする（本体 2.37MB → 1.71MB。動きは同じ: 構文木で読み比べて、違えば止まる）
+      # 遅い回線ではじめて開いたとき、国を選ぶ画面までの時間が短くなる。無料（npm の typescript だけを使う）
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g typescript@6.0.2
+      - run: node tools/build/slim.mjs _site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: gohancho
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

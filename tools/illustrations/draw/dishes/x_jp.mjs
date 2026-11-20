@@ -309,11 +309,6 @@ function xjp_zsTomato(p, x, y, s, r = 0, { seed = 1 } = {}){
         <path d="M-4,1.2 Q-2.5,-1 -1,1.2 M1.2,1.4 Q2.8,-.8 4.2,1.4" stroke="#f6c463" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".9"/>
         <path d="M-7,-4 Q-1,-7.5 5,-5.4" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
 }
-// クルトン（焼き色のついた小さな角切りパン）
-function xjp_zsCrouton(p, x, y, s, r = 0){
-    return `<g ${T(x, y, r)}><g ${p.sh(.5)}><g ${p.crumb(.9)}><rect x="${-s / 2}" y="${-s / 2}" width="${s}" height="${s}" rx="${f(s * .18)}" fill="${p.g('#dca04a', .35, .3)}" stroke="#a46a24" stroke-width=".5"/></g></g>
-        <rect x="${f(-s / 2 + s * .18)}" y="${f(-s / 2 + s * .18)}" width="${f(s * .5)}" height="${f(s * .5)}" rx="1" fill="#f2cf86" opacity=".7"/></g>`;
-}
 // 刻みパセリ（細かい緑の粒）
 function xjp_zsParsley(p, x, y, s, { n = 16, seed = 1 } = {}){
     const R = rng(p.id + 'zpa' + seed + x + y);
@@ -1842,18 +1837,6 @@ const XJP = {
         K.mitsuba(p, 104, 84, 24, 20),
         `<path d="M112,96 l9,-2" stroke="#f2c21e" stroke-width="2.6" stroke-linecap="round"/>`,
         xjp_zsShine(100, 100, 76, .45),
-    ].join(''),
-
-    // かぼちゃのポタージュ: 白いスープ皿に、なめらかな山吹色のポタージュ、生クリームの渦、クルトンとパセリ
-    kabochapotage: p => [
-        K.bowl(p, { glaze: '#f5efe2', inside: '#fbf8f1' }),
-        `<circle cx="100" cy="100" r="80" fill="none" stroke="#c9a24a" stroke-width="1.6" opacity=".8"/>`,
-        K.liquid(p, { R: 73, c: '#eaa83a', op: 1 }),
-        `<circle cx="96" cy="94" r="50" fill="#f6c86a" opacity=".45"/>`,
-        `<path d="M64,104 C70,74 110,68 128,88 C142,104 128,128 104,126 C88,124 84,108 98,100 C108,94 116,104 110,110" stroke="#fdf6e8" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".9"/>`,
-        xjp_zsCrouton(p, 120, 74, 14, 15), xjp_zsCrouton(p, 136, 100, 13, -20), xjp_zsCrouton(p, 74, 128, 13, 35), xjp_zsCrouton(p, 132, 124, 12, 5), xjp_zsCrouton(p, 76, 80, 12, 40),
-        xjp_zsParsley(p, 102, 102, 40, { n: 16 }),
-        xjp_zsShine(100, 100, 73, .5),
     ].join(''),
 
     // ポトフ: 白い深皿に、澄んだコンソメ、まるごとのウインナー・大きなじゃがいも・にんじん・キャベツのくし形・玉ねぎ・ブロッコリー、粒マスタード

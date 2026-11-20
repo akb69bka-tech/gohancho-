@@ -1,1 +1,1 @@
-meal planner,dinner ideas,weekly meal plan,shopping list,home cooking,recipes,what to cook,family dinner
+recipe,weekly,plan,shopping,fridge,ingredient,leftover,what,to,eat,cook,home,budget,menu,supper

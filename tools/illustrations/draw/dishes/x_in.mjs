@@ -1125,22 +1125,6 @@ const D5 = {
         return o.join('');
     },
 
-    // Gujarati dal: thin sweet-sour yellow dal with peanuts, tomato, kokum, curry leaves; steel katori
-    in_gujaratidal: p => {
-        const o = [xinSteel(p), xinSoup(p, { R: 77, c: '#e2aa3a', op: .94, tex: ['#f0c050', '#c8882a'], n: 10, seed: 'gd' })];
-        o.push(`<g ${p.sh(.5)}>`);
-        xinSpots('gd-p', 14, 60, 15).forEach(([x, y, r]) => o.push(xinPeanut(p, x, y, 10, r, { c: '#c88a5a' })));
-        xinSpots('gd-t', 6, 56, 22).forEach(([x, y, r]) => o.push(K.tomatoWedge(p, x, y, 16, r)));
-        o.push('</g>');
-        o.push(xinKokum(p, 86, 120, 14, 30), xinKokum(p, 124, 80, 14, -30));
-        o.push(xinSeeds(p, 100, 100, 100, { n: 26 }));
-        [[94, 92, 20], [112, 108, -60], [72, 92, 120]].forEach(([x, y, r]) => o.push(xinCurryLeaf(p, x, y, 16, r)));
-        o.push(xinRedChili(p, 108, 96, 22, 40));
-        o.push(xinCoriander(p, 100, 104, 60, { n: 6 }));
-        o.push(xinShine(100, 100, 77, .5));
-        return o.join('');
-    },
-
     // dal dhokli: diamond wheat dumplings simmered in sweet-sour dal, peanuts, coriander; terracotta-glazed bowl
     in_daldhokli: p => {
         const o = [K.bowl(p, { glaze: '#a8582a', inside: '#f4ede0' }), xinSoup(p, { R: 78, c: '#d49a35', tex: ['#e6b04a', '#b07a22'], n: 14, seed: 'dd' })];

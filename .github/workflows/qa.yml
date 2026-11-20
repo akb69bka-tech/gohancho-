@@ -1,0 +1,51 @@
+# push / PR でテストを実行する（外部サービス・秘密情報は使わない。無料枠で収まるよう 15 分で打ち切る）
+#   JS 構文チェック・国ごとのレシピ(packs)の検査・17言語の翻訳が 0 missing・ブラウザでの短縮テスト（tools/qa/run-all.sh --quick。失敗した項目のログは表のあとに出る）
+name: QA
+
+on:
+  push:
+    # claude/int は公開のたびに claude/avoid-swap と同じコミットになるので、同じ点検を2回走らせない（11/14 v148: claude/int の回だけ遅い機械で60分の上限に当たった。使用時間も約3分の1減る・無料）
+    # claude/avoid-swap は PR #3 の元なので、同じコミットを pull_request の回が点検する（11/14 b2cb0e95: push の回だけ遅い機械で60分に当たった）
+    branches-ignore: [claude/int, claude/avoid-swap]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Playwright (chromium) を入れる
+        # GitHub の機械で apt の名前解決が落ちることがある（11/11 v137: azure.archive.ubuntu.com が引けず、待ちだけで10〜26分かかってジョブが60分で切れた）。
+        # ブラウザ本体を先に入れ、apt で入れる依存（主にフォント）は待ちを短くして最大8分で打ち切る。足りない依存があればテストで落ちて分かる
+        run: |
+          npm install -g playwright@1.56.1
+          # perf49（公開用に軽くした版の検査）が TypeScript の構文解析を使う。pages.yml と同じ版（無料の npm）
+          npm install -g typescript@6.0.2
+          playwright install chromium
+          printf 'Acquire::Retries "1";\nAcquire::http::Timeout "10";\nAcquire::https::Timeout "10";\n' | sudo tee /etc/apt/apt.conf.d/99gohancho-timeout >/dev/null
+          if ! timeout -k 10 480 playwright install-deps chromium; then
+            echo "::warning::apt の依存を入れられなかった（GitHub の機械の名前解決の不調など）。入っている分でテストを続ける"
+          fi
+      - name: 静的チェック（JS 構文・packs・17言語）
+        run: |
+          node tools/qa/check-syntax.mjs
+          node tools/packs/check.mjs
+          for l in ar de en es fil fr hi id it ko pl pt-BR th tr vi zh-Hans zh-Hant; do
+            echo "== $l"; node tools/i18n/extract.mjs --check "$l"
+          done
+      - name: ブラウザテスト（短縮モード）
+        run: |
+          export NODE_PATH="$(npm root -g)"
+          tools/qa/run-all.sh --quick --jobs 4 --skip syntax,packs,i18n,steps,terms

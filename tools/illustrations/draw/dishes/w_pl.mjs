@@ -473,18 +473,6 @@ export default {
         plShine(100, 100, 76, .45),
     ].join(''),
 
-    // トマトスープ（ご飯入り）: 深いスープ皿に、サワークリームでまろやかなオレンジ色のスープ、ご飯の粒、パセリ
-    pl_pomidorowa: p => [
-        plSoupPlate(p),
-        K.liquid(p, { R: 76, c: '#e25e2e', op: 1 }),
-        `<circle cx="96" cy="94" r="54" fill="#f08a52" opacity=".35"/>`,
-        `<path d="M70,108 C84,96 104,116 124,102 C134,96 142,104 138,112" stroke="#f6c2a0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>`,
-        plGrains(p, 104, 106, 104, { cols: ['#fbf3e4', '#f4e0c8', '#fde9d8'], n: 70, size: 2.4, seed: 1, sy: .9 }),
-        K.parsley(p, 92, 92, 10), K.parsley(p, 120, 110, 9), K.parsley(p, 80, 120, 8),
-        plDill(p, 104, 100, 50, { n: 6, c: '#2f7a22' }),
-        plShine(100, 100, 76, .4),
-    ].join(''),
-
     // オグルコヴァ: ボレスワヴィエツ焼きの鉢に、淡い緑がかったクリーム色のスープ、角切りじゃがいも、すりおろしたピクルスとにんじん、ディル
     pl_ogorkowa: p => [
         plBoleslawiec(p, { inside: '#f3efe4' }),
