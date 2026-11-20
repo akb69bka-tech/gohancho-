@@ -65,13 +65,22 @@ for T in resilience fridge-use backup custom-recipe free-vs-pro ics use-soon sho
   #   11/19: safe43 safe48 ui52 ui53 ui54 namesearch r227 r228（v150〜v153 の PR の点検が4回続けて60分で止まった）
   #   11/20（v157 で約59分）: diet-r3 diet-r2 safe-r4 note37 tab36 okayu-all tool-r1 panel-r21ui settabs-r2 safe45 safe46 も。
   #     safe45・safe46 は、遅い端末の二度押し（A）のくり返しを2回から1回に（REPS=1。間合い4つ × CPU 3段 × 2画面の組み合わせはそのまま）
+  #   11/20（run 474 で約59分。GitHub の機械が遅い日）: いちばん長い6言語の確かめ（safe48 r227 safe43 ui52）は、CI では3言語（ja・ar・de。もとの言葉・右から並ぶ・長い語）。namesearch は3言語にしても速くならなかった（353秒）ので6言語のまま
   CI6=" safe43 safe48 ui52 ui53 ui54 namesearch r227 r228 diet-r3 diet-r2 safe-r4 note37 tab36 okayu-all tool-r1 panel-r21ui settabs-r2 safe45 safe46 "
+  CI3=" safe48 r227 safe43 ui52 "
   if [ -n "${CI:-}" ] && case "$CI6" in *" $T "*) true;; *) false;; esac; then
-    case " safe45 safe46 " in *" $T "*) E="LANGS=ja,ar,de,en,hi,th REPS=1";; *) E="LANGS=ja,ar,de,en,hi,th";; esac
+    L6="LANGS=ja,ar,de,en,hi,th"; case "$CI3" in *" $T "*) L6="LANGS=ja,ar,de";; esac
+    case " safe45 safe46 " in *" $T "*) E="$L6 REPS=1";; *) E="$L6";; esac
     add "t-$T" app "$E" "node tools/tests/$T.mjs"
   elif [ -n "${CI:-}" ] && case " r233 r235 " in *" $T "*) true;; *) false;; esac; then
     # 4言語（ja・en・de・ar）で見ている第55回の安全の確かめは、CI では日本語とアラビア語（右から並ぶ）の2つ。手元では4言語
     add "t-$T" app "LANGS=ja,ar" "node tools/tests/$T.mjs"
+  elif [ -n "${CI:-}" ] && case " safe44 marugoto-img allergen-regions list-alg wish-alg hang-r1 " in *" $T "*) true;; *) false;; esac; then
+    # 11/20（run 474 で約59分）: 21か国を1つずつ見る確かめは、CI では8か国（日本・米・独・印・タイ・エジプト・韓国・中国。字の種類と地域が分かれるように）。手元では21か国
+    add "t-$T" app "CCS=JP,US,DE,IN,TH,EG,KR,CN" "node tools/tests/$T.mjs"
+  elif [ -n "${CI:-}" ] && [ "$T" = sale ]; then
+    # 特売の日の入口の画面（日付2つ × 時刻3つ × 幅3つ × 文字3段階 × 家族）は、CI では時刻を2つ（4時より前の「前の日」と昼）。手元では3つ
+    add "t-$T" app "HOURS=1,12" "node tools/tests/$T.mjs"
   elif [ -n "${CI:-}" ] && [ "$T" = panel-r4b ]; then
     # 置き換えた手順の確かめ（R9X）は、CI ではテストの QUICK（置き換えの多い9か国）。手元では20か国
     add "t-$T" app "QUICK=1" "node tools/tests/$T.mjs"
@@ -100,8 +109,8 @@ for it in "${ITEMS[@]}"; do
   SEL+=("$it")
 done
 # 走らせる順: 時間のかかる項目を先に始める（GitHub の4並列で、最後に長い項目が1本だけ残って60分を超えないように）。
-# 結果の表は SEL の順のまま。HEAVY は、CI の言語のしぼり込みをしたあとの手元の CI=1 の秒数（11/20。panel-r18b 471秒・safe45 447秒…）の長い順
-HEAVY="t-panel-r18b t-safe45 t-safe48 t-namesearch t-safe46 t-sale qa-tray-fit t-diet-r3 t-allergy t-r235 t-tooltab-r1 t-safe44 t-perf49 t-safe43 t-ui32 t-r227 t-resilience t-panel-r4b t-ui52 t-marugoto-img t-r233 t-menu-back t-ob39 t-marugoto t-panel-r21b t-diet-r2 t-panel-all1 t-allergen-regions t-safe51 t-safe-r4 t-tab38 t-narrow-r6 t-perf48 t-panel-r4-ui t-safe-r5 qa-category-audit t-safe40 t-modebtn-r1 t-ob40 t-ui54 qa-category-audit-4343 t-menu-trust t-wish-alg t-list-alg t-ui53 t-note37 t-narrow-r7 t-r228 t-tool-r1 t-first-country t-stock t-panel-r22 t-tab36 t-hang-r1 qa-tray-fit-morning t-greet t-panel-r21ui"
+# 結果の表は SEL の順のまま。HEAVY は、手元の CI=1 の秒数（11/20 ci158。しぼり込みのあと）の長い順
+HEAVY="t-safe45 t-panel-r18b qa-tray-fit t-safe46 t-diet-r3 t-r235 t-allergy t-safe48 t-tooltab-r1 t-sale t-namesearch t-perf49 t-panel-r4b t-ui32 t-resilience t-safe44 t-menu-back t-r233 t-ob39 t-panel-all1 t-safe51 t-marugoto t-tab38 t-panel-r21b t-safe-r4 t-perf48 t-r227 t-diet-r2 t-narrow-r6 t-safe43 t-safe-r5 t-safe40 t-modebtn-r1 t-ui52 t-menu-trust t-r228 t-panel-r4-ui t-ob40 qa-tray-fit-morning qa-category-audit-4343 t-narrow-r7 t-ui54 t-ui53 t-tab36 qa-category-audit t-note37 t-first-country t-tool-r1 t-panel-r22 t-stock t-greet t-marugoto-img t-hang-r1 qa-reroll"
 RUN=()
 for h in $HEAVY; do for it in "${SEL[@]}"; do [ "${it%%|*}" = "$h" ] && RUN+=("$it"); done; done
 for it in "${SEL[@]}"; do case " $HEAVY " in *" ${it%%|*} "*) ;; *) RUN+=("$it");; esac; done
