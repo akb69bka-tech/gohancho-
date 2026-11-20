@@ -6272,7 +6272,7 @@ function fitTrayRun(){
     const key = base + '|' + (document.querySelector('nav.tabs') || {}).offsetHeight + '|' + Math.round(tr.getBoundingClientRect().top + scrollY);
     const loose = [innerWidth, innerHeight, document.documentElement.getAttribute('data-ts') || '', rowsEl.map(r => r.children.length).join('/'), (document.querySelector('nav.tabs') || {}).offsetHeight].join('|');   // 画面の大きさ・文字の大きさ・席の並び（⚠ の札の段が変わっても同じ）
     const last = TRAY_FIT.loose === loose && TRAY_FIT.state && !TRAY_FIT.state.noFit && (ids => TRAY_FIT.ids && TRAY_FIT.ids.length === ids.length && ids.filter((x, i) => x !== TRAY_FIT.ids[i]).length <= 1)(trayIds()) ? TRAY_FIT.state : null;   // 同じ献立（「かえる」・主食で1品かえただけ。ちがう料理が1品まで）で前に決めた形。帯をお膳の下に置いた形（入らなかった形）は引きつがない
-    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'algfit2', 'swap-ico'); document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
+    tr.classList.remove('tight', 'tight2', 'noslot', 'algfit', 'algfit2', 'swap-ico'); delete tr.dataset.row0; document.getElementById('view').classList.remove('tray-tight'); document.body.classList.remove('tray-tight', 'tray-tight3', 'tray-tight4', 'bar-static', 'greet-1', 'greet-0'); tr.style.removeProperty('--vs'); tr.style.removeProperty('--nml');
     // 料理名: 入りきらない名前は 12px に。それでも入らなければ、お膳の名前の欄を3行にする（どの料理も同じ高さ。… で切らない）
     // r235ci（ob40 の H1 が遅い機械で落ちた）: 名前ごとに「外す→測る→足す→測る」をくり返すと、そのたびに画面の組み立て直し（レイアウト）が起きて、
     // 幅195px・文字大きいの1回の描き直しが 0.6〜0.8 秒かかっていた。外す・測る・足す・測るをまとめて行う（名前の箱の高さは --nml と自分の字の大きさだけで決まるので、結果は同じ）
@@ -6405,7 +6405,10 @@ function fitTrayRun(){
             if (!rowIn()){ tr.classList.add('algfit2'); fixText(); }
             if (rowIn()){ tight = tr.classList.contains('tight'); fitOk = true; goalK = k; break; }
         }
-        if (!fitOk) loosen();
+        // r18b（統括の判断 11/20）: いちばん詰めても上の段が入らないとき（幅195px・文字もっと大きい・家族の⚠ が2つ・とても長い料理名 など）は、ゆるい形に戻さず、いちばん詰めた形のままにする。
+        // ゆるい形ではお膳の上端が下のタブより下になり、最初の画面に料理が1つも見えなかった。詰めた形なら上の段の器・名前・札が見え、かえるは画面を送れば押せる。
+        // 入らなかったことは data-row0="over" に残す（点検が「入らない献立」を見分けるため）
+        if (!fitOk){ tight = tr.classList.contains('tight'); tr.dataset.row0 = 'over'; } else delete tr.dataset.row0;
         // 上の段の器・名前まで案内の裏に入る（とても狭い画面・長い料理名）ときは、案内を貼りつけず、お膳の下（帯の上）に置く（料理名を隠さない。かえるの下の方にかかるだけなら貼りつける）
         if (hintSt && flH < flN && (!fitOk || goals[goalK][0] === flN) && (!row0 || Math.max(...[...row0.querySelectorAll('.spot .vessel, .spot .nm, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > flH + .5)) document.body.classList.add('ah-flow'); }
     // 同じ献立で1品かえただけ（かえる・主食）のときは、前の形（詰め方・器の大きさ・名前の行数）がそのまま入るなら前の形を使う（ほかの料理の大きさ・位置を動かさない。layout-shift の約束）。
@@ -6422,7 +6425,7 @@ function fitTrayRun(){
         let ok = !fixNames(); fixSwap(); fixSlot();
         let fl = innerHeight; document.querySelectorAll('nav.tabs, .actionbar').forEach(e => { const r = e.getBoundingClientRect(); if (r.height && /fixed|sticky/.test(getComputedStyle(e).position) && r.top > innerHeight * .4 && r.top < fl) fl = r.top; });
         if (ok && (Math.max(...[...tr.querySelectorAll('.spot .vessel, .spot .nm, .spot .swap:not(.swap-ph), .tg-mid .shuffle, .spot .alg-tag')].map(e => fitBottom(e) + scrollY)) > fl + .5 || tr.getBoundingClientRect().bottom + scrollY > fl + 1)) ok = false;
-        if (ok){ vs = parseFloat(last.vs) || vs0; tight = !!last.tight; }
+        if (ok){ vs = parseFloat(last.vs) || vs0; tight = !!last.tight; delete tr.dataset.row0; }
         else { put(F); fixNames(); fixSwap(); fixSlot(); }
     }
     TRAY_FIT.vs = vs < vs0 ? vs : 0; TRAY_FIT.tight = tight;

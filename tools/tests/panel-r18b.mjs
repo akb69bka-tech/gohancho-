@@ -100,6 +100,7 @@ for (const lang of ['ja', 'ko']) for (const ts of [0, 1, 2]) for (const dark of 
     await ctx.close();
 }
 
+let r18overN = 0, r18N = 0;   // R18-2 で、いちばん詰めても上の段が入らなかった献立の数
 // R18-2（R20）195×422・文字大/もっと大きい × 家族の🔍 × 家族リクエスト: 上の段が決める前・決めたあともタブより上。入口は残る（上の端の行でも可）
 for (const ts of [1, 2]) for (const fam of [0, 1]) for (const wants of [0, 1]) {
     if (!want('R18-2')) break;
@@ -107,16 +108,34 @@ for (const ts of [1, 2]) for (const fam of [0, 1]) for (const wants of [0, 1]) {
     const r = await p.evaluate(async fam => {
         // 家族の🔍 が上の段に出る献立まで回す（家族ありのとき）
         for (let i = 0; i < 40; i++){ window.scrollTo(0, 0); session.menu = null; render(); await __tick(); const row = document.querySelector('#view .tray .tg-row'); if (!fam || (row && row.querySelector('.alg-tag'))) break; }
-        const before = __rows()[0], tag = before.tags;
+        // r18b: いちばん詰めても上の段が入らない献立（data-row0="over"）は、いちばん詰めた形のまま・器と名前の頭がタブより上・画面を送れば上の段が全部押せる、を見る
+        const over = () => { const tr = document.querySelector('#view .tray'), row = tr && tr.querySelector('.tg-row'); if (!tr || tr.dataset.row0 !== 'over') return null;
+            const tabTop = __tabTop(), out = [];
+            if (!['tight', 'tight2', 'noslot', 'algfit', 'algfit2'].every(c => tr.classList.contains(c)) || !document.body.classList.contains('tray-tight4')) out.push('いちばん詰めた形でない: ' + tr.className + ' / ' + document.body.className);
+            row.querySelectorAll('.spot .vessel').forEach(e => { const q = e.getBoundingClientRect(); if (q.top < -.5 || q.bottom > tabTop + .5) out.push('器が見えない:' + Math.round(q.bottom)); });
+            row.querySelectorAll('.spot .nm').forEach(e => { const q = e.getBoundingClientRect(); if (q.top < -.5 || q.top + 12 > tabTop) out.push('名前の頭が見えない:' + Math.round(q.top)); });
+            // 画面を送れば押せる: タブにかかる部品（かえる・札・名前）を画面の中に送り、その真ん中に指を置くとその部品に当たる
+            for (const e of row.querySelectorAll('.spot .swap:not(.swap-ph), .spot .nm, .spot .alg-tag')){
+                const q0 = e.getBoundingClientRect(); if (q0.bottom <= tabTop + .5) continue;
+                window.scrollBy(0, q0.bottom - (tabTop - 8)); const q = e.getBoundingClientRect(), hit = document.elementFromPoint((q.left + q.right) / 2, (q.top + q.bottom) / 2);
+                if (!(q.bottom <= __tabTop() + .5 && hit && (hit === e || e.contains(hit)))) out.push('送っても押せない:' + (e.className || '').split(' ')[0]);
+                window.scrollTo(0, 0); }
+            return out; };
+        const before = __rows()[0], tag = before.tags, overB = over();
         __tap('#view [data-act=decide]', 'decide'); await __tick(); window.scrollTo(0, 0); setTab('today'); render(); await __tick();
-        const after = __rows()[0];
-        return {tag, before, after, cls: document.body.className};
+        const after = __rows()[0], overA = over();
+        return {tag, before, after, overB, overA, cls: document.body.className};
     }, fam);
     const req = await reqEntry(p);
-    ok(!r.before.hid.length && !r.after.hid.length && (!fam || r.tag), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 上の段の器・名前・↻・札が決める前も決めたあともタブより上: ` + JSON.stringify(r));
+    // 入る献立は、上の段が全部タブより上（今までどおり）。いちばん詰めても入らない献立（統括の判断 11/20）だけは、over() の3つを見る
+    const fitB = r.overB ? !r.overB.length : !r.before.hid.length, fitA = r.overA ? !r.overA.length : !r.after.hid.length;
+    r18overN += (r.overB ? 1 : 0); r18N++;
+    ok(fitB && fitA && (!fam || r.tag), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 上の段の器・名前・↻・札が決める前も決めたあともタブより上（入らない献立は、いちばん詰めた形・器と名前の頭が見える・送れば押せる）: ` + JSON.stringify(r));
     if (fam || wants) ok(req && req.inView && req.h >= 44 && (fam ? /家族リクエスト/ : /^食べたいもの/).test(req.aria), `R18-2 R20 195px 文字${ts} 家族${fam} リクエスト${wants}: 家族リクエストの入口が最初の画面に残る（44px 以上・読み上げの名前あり）: ` + JSON.stringify(req));
     await ctx.close();
 }
+
+if (r18N) console.log(`R18-2: いちばん詰めても上の段が入らない献立 ${r18overN}/${r18N}`);
 
 // R18-3（R41）195px・家族あり・決めた直後のお知らせ: 「✓ 決めた」の印・条件のボタン・料理名・↻・まるごと入れ替え・家族リクエスト・国・設定にかからない（器の絵の上は可）
 for (const ts of [0, 1, 2]) for (const fam of [0, 1]) {
