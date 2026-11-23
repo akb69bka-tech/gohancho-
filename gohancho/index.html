@@ -877,7 +877,7 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .actionbar.decide-bar:has(>.alg-hint.ah-in){border-radius:var(--r-lg,16px)}
 .alg-hint.ah-st{display:none}
 body.bar-static .alg-hint.ah-in{display:none}
-body.bar-static.ah-flow .alg-hint.ah-st{position:static}
+body.bar-static.ah-flow .alg-hint.ah-st{position:static}body.bar-static.ah-low .alg-hint.ah-st{bottom:calc(var(--nav-h,72px) + 2px)}
 /* ui53（第48回 R215・R213 の残り）: 幅 260px 未満で、下のタブの上に貼りつけた案内が丸い「まるごと入れ替え」（8px より多く）や上の段の料理にかかるときは、
    案内を上の段のすぐ下（丸いボタンの上。お膳の中）に置く（ah-mid）。前はお膳の下（画面2つ分ほど下）に回って、最初の画面で見えなかった。丸いボタンと下の段はその下（スクロールの先） */
 .alg-hint.ah-md,.alg-hint.ah-tp{display:none}
@@ -1823,7 +1823,7 @@ nav.tabs.many svg{padding-inline:6px}
 nav.tabs .tl{display:block;max-width:100%}
 nav.tabs.ico .tl{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 狭い幅: 絵だけ（字は読み上げ） */
 nav.tabs.ico svg{padding-inline:2px}
-nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}nav.tabs.ico.tsn2:not(.tsn-off) .tsn{white-space:normal;word-break:keep-all;overflow-wrap:normal;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}   /* R153: 1行に入らない短い名前は語の切れ目で2行に */   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
+nav.tabs .tsn{display:none}nav.tabs.ico.tsn-off .tsn{display:none}nav.tabs.ico:not(.tsn-off) .tl{display:none}nav.tabs.ico .tsn{display:block;max-width:100%;font-size:var(--tsnfs,12px);line-height:1.1;white-space:nowrap;overflow:hidden;font-weight:600}nav.tabs.ico.tsn2:not(.tsn-off) .tsn{white-space:normal;word-break:keep-all;overflow-wrap:normal;text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}   /* R153: 1行に入らない短い名前は語の切れ目で2行に */   /* 絵だけのタブ（狭い幅）: 絵の下に短い名前（2〜3文字。第7回 A09）。読み上げは長い名前（.tl） */
 body.bar-static .actionbar.decide-bar{position:static}
 .actionbar.decide-bar{flex-wrap:wrap}.alg-bar,.alg-top{flex:0 0 100%;min-width:0;margin:0;font-size:var(--fs12);line-height:1.25;font-weight:700;color:var(--danger);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.alg-bar{text-align:center;padding:0 var(--s8) 2px}.alg-top{display:none;text-align:start;padding:0 0 4px}body.bar-static .alg-bar{display:none}body.bar-static .alg-top{display:block}   /* 第18回 R57: 決めたあとの ⚠ の短い1行。固定の帯の中（いつも見える）。帯をお膳の下に置く画面ではお膳のすぐ上 */
 @media (max-width:299px){body.bar-static .alg-top,body:not(.bar-static) .alg-bar{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:11px;line-height:1.2;overflow-wrap:anywhere}}   /* 第19回（195px の残り）: ⚠ の1行が「⚠ 夫に合わない料理…」と切れていたので、幅 300px 未満は 11px の2行まで */
@@ -2174,6 +2174,15 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
 .tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .shuffle .sh-tx,.tray .tg-mid.mb-stack.mb-stack.mb-stack.mb-stack > .mb-back .mb-tx{position:static;width:auto;height:auto;max-width:100%;max-height:none;clip-path:none;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:0;font-size:inherit;line-height:1.2;text-align:center;color:var(--tray-ink);white-space:normal;word-break:keep-all;overflow-wrap:anywhere;-webkit-hyphens:manual;hyphens:manual;text-wrap:balance}
 .tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .mb-back{flex-direction:row;align-items:center;gap:8px;width:auto;max-width:min(14rem,calc(50% - 7px))}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .sh-tx,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .mb-tx{text-align:start}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide{align-items:center}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::before,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::after{margin-top:0}   /* 幅500px以上で、まるごと入れ替えが「丸の横に字」（お膳を詰めたとき）なら、前の献立も同じ形にそろえて並べる（帯の高さが変わらず、下の段の料理が動かない） */
 .tg-mid .shuffle .sh-tx{word-break:keep-all}   /* R153: 丸だけのとき（前の献立がないとき）も、語の切れ目（<wbr>）で折る */
+
+/* 申請前（11/23）: iPhone アプリ版は contentInset "never"・viewport-fit=cover なので、画面の上の端（ノッチ・Dynamic Island）まで中身が入る。
+   上の端の分（--safe-top。Web 版・ふつうのブラウザでは 0）だけ、ページの上・上に貼りつく帯・下から出る画面を下げる。点検では --safe-top を指定して確かめる */
+:root{--safe-top:env(safe-area-inset-top,0px)}
+body{padding-top:var(--safe-top)}
+.set-tabs-bar{top:var(--safe-top)}
+.modal{padding-top:var(--safe-top)}
+.sheet{max-height:min(94dvh,calc(var(--vvh,100vh) * .94),calc(100dvh - var(--safe-top) - 8px))}
+@media (max-height:500px) and (orientation:landscape){ .sheet{max-height:min(98dvh,calc(var(--vvh,100vh) * .98),calc(100dvh - var(--safe-top) - 8px))} }
 </style>
 </head>
 <body>
@@ -3912,7 +3921,7 @@ function applyStaticText(){
         let sp = b.querySelector('.tl');
         if (!sp){ const n = [...b.childNodes].reverse().find(x => x.nodeType === 3); sp = document.createElement('span'); sp.className = 'tl'; if (n) n.replaceWith(sp); else b.appendChild(sp); }   // タブの字は span に（狭い幅では絵だけにして、字は読み上げに残す）
         if (labels[b.dataset.tab]) sp.textContent = labels[b.dataset.tab];
-        let sn = b.querySelector('.tsn'); if (!sn){ sn = document.createElement('span'); sn.className = 'tsn'; sn.setAttribute('aria-hidden', 'true'); b.appendChild(sn); }
+        let sn = b.querySelector('.tsn'); if (!sn){ sn = document.createElement('span'); sn.className = 'tsn'; b.appendChild(sn); }   // 申請前（11/23）: 短い名前が見えているときは、読み上げ・声の操作の名前も短い名前（.tl は display:none）。WCAG 2.5.3
         if (shorts[b.dataset.tab]) sn.textContent = shorts[b.dataset.tab];
     });
     fitTabs();
@@ -6230,6 +6239,10 @@ function hintStGuard(){
     // かえる（下半分まで）・丸いボタンの下の方にかかるのは前から許している（案内を最初の画面に残すのを先に。ob40）
     const halfSwap = rows[0] && innerWidth < 260 && [...rows[0].querySelectorAll('.spot .swap:not(.swap-ph)')].some(e => { const q = e.getBoundingClientRect(); return q.height > 0 && q.bottom > a.top + .5 && a.top - q.top < q.height / 2 - .5; });   // かえるの上半分まで隠れる
     if (rows[0] && (halfSwap || trayDishHit(a, innerWidth >= 260 ? TRAY_DISH : '.spot .vessel, .spot .nm, .spot .alg-tag', rows[0]))){ b.add('ah-flow'); return; }
+    // 申請前（11/23・審査部 2-11）: 幅 260px 以上で、貼りつけた案内のふち（まわりに 4px の地の色の影）が、丸い「まるごと入れ替え」の字にかかるときは、
+    // 案内を下のタブのすぐ上まで下げる（ah-low。帯とのすき間 8px を 2px に詰める。丸いボタンの形・位置は変えない）。それでもかかるときは、お膳の下に置く（ah-flow）
+    if (innerWidth >= 260){ const halo = q => ({top: q.top - 4, bottom: q.bottom + 4, left: q.left - 4, right: q.right + 4}), shHit = () => trayDishHit(halo(h.getBoundingClientRect()), '.tg-mid .shuffle', tr);
+        if (shHit()){ b.add('ah-low'); if (shHit()){ b.remove('ah-low'); b.add('ah-flow'); return; } } }
     const low = rows.slice(1); if (!low.length || !low.some(r => trayDishHit(a, TRAY_DISH, r))) return;
     const nav = document.querySelector('nav.tabs'), floor = nav && nav.offsetHeight ? nav.getBoundingClientRect().top : innerHeight;
     const top = Math.min(...low.flatMap(r => [...r.querySelectorAll(TRAY_DISH)].map(e => e.getBoundingClientRect().top)));
@@ -6255,7 +6268,7 @@ function fitTray0(){
     requestAnimationFrame(() => { try{ hintStGuard(); }catch(e){} }); setTimeout(() => { try{ hintStGuard(); }catch(e){} }, 400);
 }
 function fitTrayRun(){
-    document.body.classList.remove('ah-flow', 'ah-mid', 'ah-top');
+    document.body.classList.remove('ah-flow', 'ah-mid', 'ah-top', 'ah-low');
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
@@ -6669,7 +6682,7 @@ function viewTableStage(){
             ${wsv.some(w => !w.self) ? `<button class="btn text" data-act="wish-made">${esc(t('作ったよと送る'))}</button>` : ''}
             <button class="btn text" data-act="table-photo" data-id="${esc((served[0] || its[0]).r.id)}">${esc(t('写真を残す'))}</button>
             <button class="btn text" data-act="table-panel" data-k="left" aria-expanded="${panel === 'left'}">${esc(t('残り物メモ'))}</button>
-            <button class="btn text" data-act="rmk-open">${esc(t('余ったら'))}</button>
+            <button class="btn text" data-act="rmk-open" aria-label="${esc(t('余ったら') + t('・') + t('ひとひねりのアイデア'))}">${esc(t('余ったら'))}</button>
             <button class="btn text" data-act="table-panel" data-k="spend" aria-expanded="${panel === 'spend'}">${esc(t('食費を書く'))}</button>
             ${fin ? `<button class="btn text" data-act="tomorrow-open">${esc(t('明日の献立を見る'))}</button>` : ''}
         </div>
@@ -8147,7 +8160,15 @@ document.addEventListener('keydown', e => { if (e.key !== 'Shift' && e.key !== '
 function kbNav(){ return keyAt > ptrAt || performance.now() - ptrAt > 600; }
 function kbFocused(el){ try{ return el.matches(':focus-visible'); }catch(e){ return true; } }
 function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
+// 申請前（11/23）: 下から出る画面・料理の詳しい画面を開いているあいだは、後ろ（上の端・今日の画面・下のタブ）に inert を付ける（読み上げ・操作の対象から外す。閉じたら外す）。
+// 閉じたときは、焦点を戻す前に外す（inert のままだと、戻した焦点が受けられない）。知らせ（元に戻す）は後ろの外にあるので、そのまま押せる
+function syncInert(){
+    const open = !!document.querySelector('#sheet-root [role="dialog"], #modal-root [role="dialog"]');
+    document.querySelectorAll('body > .wrap, body > nav.tabs').forEach(e => { if (open) e.setAttribute('inert', ''); else e.removeAttribute('inert'); });
+}
+try{ new MutationObserver(syncInert).observe(document.getElementById('sheet-root'), {childList: true}); new MutationObserver(syncInert).observe(document.getElementById('modal-root'), {childList: true}); }catch(e){}   // ほかの道で開け閉めしても外し忘れない
 function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
+    syncInert();
     const root = document.getElementById(rootId), d = root.querySelector('[role="dialog"]'); if (!d) return;
     const h = d.querySelector('h2, h3');
     if (h && !d.hasAttribute('aria-label')){ h.id = h.id || rootId + '-title'; d.setAttribute('aria-labelledby', h.id); }
@@ -8162,6 +8183,7 @@ function dlgOpened(rootId){   // renderModal / renderSheet のあとに呼ぶ
     first.focus({preventScroll:true});
 }
 function dlgClosed(rootId){
+    syncInert();
     if (!(rootId in dlgRet)) return;
     const r = dlgRet[rootId]; delete dlgRet[rootId]; delete dlgLast[rootId];
     if (topDialog() && topDialog().contains(document.activeElement)) return;
@@ -11888,7 +11910,7 @@ function viewSettings(){
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('このアプリについて'))}</div>
-            <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵はアプリに入っているイラストです。', {v:APP_VERSION}))}</p>
+            <p class="small muted" style="margin:0">${esc(t('わが家のご飯帖 {v}。記録・写真・設定はこの端末の中だけに保存され、外部に送信しません。料理の絵は AI で作成したイメージです。', {v:APP_VERSION}))}</p>
             <div class="row">${docLink('privacy', t('プライバシーポリシー'), 'btn sm')}${docLink('support', t('サポート・よくある質問'), 'btn sm')}${SUPPORT_EMAIL ? `<a class="btn sm" href="${esc(feedbackMailto())}">${esc(t('ご意見・不具合を送る'))}</a>` : ''}</div>
         </div>`))}
     </section>`;
@@ -13473,7 +13495,7 @@ function reminderHtml(){
         <div class="field"><label>${esc(t('食材の期限のお知らせ'))}</label>
         <div class="chips">${[['off',t('なし')],[7,hourLabel(7)],[8,hourLabel(8)],[9,hourLabel(9)]].map(([v,l]) => `<button class="chip" data-act="loss-remind" data-v="${v}" aria-pressed="${on(v, typeof S.settings.lossRemind === 'number' ? S.settings.lossRemind : null)}">${esc(l)}</button>`).join('')}</div>
         <span class="small muted">${esc(t('冷蔵庫の食材に自分で入れた期限の日の朝に、「今日使い切りたい食材があります」とお知らせします。'))}</span></div>
-        <button class="btn sm" data-act="notif-test">${esc(t('テスト通知を送る'))}</button>`;
+        <button class="btn sm" data-act="notif-test">${esc(t('お知らせを試す'))}</button>`;
 }
 
 /* =========================================================
@@ -13682,14 +13704,16 @@ function saleSettingsHtml(){
         ${isNative() ? `<div class="chips">${[['off', t('なし')], [7, hourLabel(7)], [8, hourLabel(8)], [9, hourLabel(9)]].map(([v, l]) => `<button type="button" class="chip" data-act="sale-remind" data-v="${v}" aria-pressed="${v === 'off' ? typeof rm !== 'number' : rm === v}">${esc(l)}</button>`).join('')}</div>
         <span class="small muted">${esc(t('登録した特売日の朝に、端末の通知でお知らせします。はじめはオフです。'))}</span>` : `<span class="small muted">${esc(t('お知らせは iPhone アプリ版で使えます'))}</span>`}</div>
     </div>
-    <div class="set-group">
+    ${devUi() ? `<div class="set-group">
         <details class="sale-feed"${session.saleFeedOpen ? ' open' : ''}><summary>${esc(t('提携先のチラシデータを読みこむ（試験用）'))}</summary>
             <p class="small muted">${esc(t('提携先から届く形式（JSON）のデータを貼りつけて読みこみます。いまは提携先はなく、アプリが通信することもありません。'))}</p>
             <textarea id="sale-feed-text" rows="4" maxlength="${SALE_FEED_MAX}" aria-label="${esc(t('提携先のチラシデータを読みこむ（試験用）'))}" spellcheck="false">${esc(session.saleFeedText || '')}</textarea>
             <div class="row"><button type="button" class="btn sm" data-act="sale-feed-go">${esc(t('データを読みこむ'))}</button></div>
         </details>
-    </div>`;
+    </div>` : ''}`;
 }
+// 申請前（11/23）: 開発・試験用の画面（提携先のチラシデータの読みこみ）は、利用者には出さない。URL に ?dev=1 を付けて開いたとき（そのタブのあいだ）だけ出す。中身のしくみは消さない
+function devUi(){ try{ if (/(?:^|[?&])dev=1(?:&|$)/.test(location.search)) sessionStorage.setItem('gohanDev', '1'); return sessionStorage.getItem('gohanDev') === '1'; }catch(e){ return false; } }
 /* ---- 提携先のチラシデータ（docs/partner_flyer_feed.md）。いまは通信しない。貼りつけて試すときだけ使う ----
    importFlyerFeed(json, today): 形を確かめて {ok:true, feed} か {ok:false, err} を返す（S は変えない）
    mergeFlyerFeed(sale, feed, newId): 同じ「今日の特売」の形に入れた新しい S.sale を返す（引数は変えない） */
@@ -14478,7 +14502,7 @@ function leftoversHtml(){
     const on = r => S.leftovers.some(x => x.d === TODAY && String(x.id) === String(r.id));
     return `<details class="card memo-card left-card" ${(session.leftOpen === undefined ? list.length : session.leftOpen) ? 'open' : ''}><summary class="memo-sum"><span>${esc(t('残り物メモ'))}</span></summary>
         ${list.map(x => `<div class="left-line${leftDay(x) >= 4 ? ' left-old' : ''}"><span>${esc(leftoverLine(x))}</span><button class="btn sm ghost" data-act="left-done" data-i="${esc(x.id)}|${esc(x.d)}" aria-label="${esc(t('「{name}」を食べきった（メモから消す）', {name:leftName(x)}))}">${esc(t('食べきった'))}</button></div>`).join('')}
-        ${items.length || list.length ? `<div class="row rm-entry"><button class="chip rm-open" data-act="rmk-open">${esc(t('余ったら'))}</button><span class="small muted">${esc(t('いつもと違う味や形の「ひとひねり」'))}</span></div>` : ''}
+        ${items.length || list.length ? `<div class="row rm-entry"><button class="chip rm-open" data-act="rmk-open" aria-label="${esc(t('余ったら') + t('・') + t('ひとひねりのアイデア'))}">${esc(t('余ったら'))}</button><span class="small muted">${esc(t('いつもと違う味や形の「ひとひねり」'))}</span></div>` : ''}
         ${list.some(x => leftDay(x) >= 4) ? `<div class="row" style="margin-top:4px"><button class="btn sm ghost" data-act="left-clean">${esc(t('4日目以降のメモをまとめて消す'))}</button></div>` : ''}
         ${items.length ? `<div class="small muted" style="margin-top:6px">${esc(t('今日の料理の残りを冷蔵庫に入れたら押します'))}</div>
         <div class="chips left-chips" role="group" aria-label="${esc(t('残りを冷蔵庫に入れた'))}">${items.map(it => `<button class="chip" data-act="left-add" data-id="${esc(it.r.id)}" aria-pressed="${on(it.r)}">${esc(nameOf(it.r))}</button>`).join('')}</div>` : ''}
