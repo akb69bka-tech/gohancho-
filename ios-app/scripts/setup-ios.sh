@@ -75,10 +75,8 @@ sed -i '' -e 's/TARGETED_DEVICE_FAMILY = "1,2";/TARGETED_DEVICE_FAMILY = 1;/g' "
 
 echo "6/7 プライバシー マニフェスト（PrivacyInfo.xcprivacy）を書きこんでいます…"
 # App Store の審査で必要。中身は「Appのプライバシー」の回答（appstore/kit/03_共通/04_Appのプライバシー（回答）.txt）とそろえる:
-#   トラッキングなし / 集める情報 = なし（全員無料・billingMode 'off' のため RevenueCat は起動しない。記録・写真・設定は端末の中だけ）
+#   トラッキングなし / 集める情報 = 購入履歴・ユーザーID（RevenueCat。本人とは結びつけない・アプリの機能のため）
 #   使っている API = UserDefaults（理由 CA92.1: アプリ自身の設定を保存）
-#   課金を始めるときは、NSPrivacyCollectedDataTypes に 購入履歴（PurchaseHistory）・ユーザーID（UserID）を
-#   「本人と結びつけない・トラッキングなし・目的 AppFunctionality」で戻し、Appのプライバシーの回答も同じにする
 cat > ios/App/App/PrivacyInfo.xcprivacy <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -89,7 +87,32 @@ cat > ios/App/App/PrivacyInfo.xcprivacy <<'PLIST'
 	<key>NSPrivacyTrackingDomains</key>
 	<array/>
 	<key>NSPrivacyCollectedDataTypes</key>
-	<array/>
+	<array>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypePurchaseHistory</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeUserID</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array>
 		<dict>
@@ -146,4 +169,4 @@ echo "7/7 同期して Xcode を開きます…"
 npx cap sync ios
 check_fridge_plugin
 npx cap open ios
-echo "完了: Xcode で Signing & Capabilities の Team を選んでください（今回は全員無料で出すので In-App Purchase の追加は不要。申請の完全ガイド.md の 3-3）。"
+echo "完了: Xcode で Signing & Capabilities の Team を選び、In-App Purchase を追加してください（申請チェックリスト.md の手順4）。"
