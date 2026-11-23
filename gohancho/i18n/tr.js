@@ -2,7 +2,8 @@
 GOHAN_I18N('tr', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Daha az karbonhidrat",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Daha az pirinç, makarna ve patatesle, daha çok sebze ve protein yemekleriyle öğünler. Kişi başı karbonhidrat tahminini (g) gösterir",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Diyabet gibi nedenlerle yemeklerine dikkat edenler için. Daha az pirinç, makarna ve patatesle, daha çok sebze ve protein yemekleriyle öğünler. Kişi başı karbonhidrat tahminini (g) gösterir. Yemekler konusunda doktorunuzun talimatlarına uyun.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Diyabet gibi nedenlerle yemeklerine dikkat edenler için. Daha az pirinç, makarna ve patates. Doktorunuzun talimatlarına uyun.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Açıkken önce karbonhidratı az yemekler önerilir; pirinç ve makarna yemekleri, patatesi bol yemekler, tatlı haşlamalar, kalın kaplamalı kızartmalar ve patates, cam şehriye ya da erişte içeren çorbalar sonraya kalır (hiçbir şey çıkarılmaz, kararlaştırılan öğünler değişmez). Ana eşlikçi küçük porsiyon olarak gösterilir.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Diyabet ya da başka bir nedenle beslenme talimatı alıyorsanız, önce doktorunuzun veya diyetisyeninizin talimatlarına uyun. Gösterilen sayılar tahminidir.",
     "わかりました": "Anladım",

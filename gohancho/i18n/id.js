@@ -2,7 +2,8 @@
 GOHAN_I18N('id', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Rendah karbohidrat",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Menu dengan lebih sedikit nasi, mi, dan kentang, serta lebih banyak lauk sayur dan protein. Menampilkan perkiraan karbohidrat (g) per orang",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Untuk yang menjaga makanan karena diabetes atau kondisi serupa. Menu dengan lebih sedikit nasi, mi, dan kentang, serta lebih banyak lauk sayur dan protein. Menampilkan perkiraan karbohidrat (g) per orang. Ikuti petunjuk dokter Anda soal makanan.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Untuk yang menjaga makanan karena diabetes atau kondisi serupa. Lebih sedikit nasi, mi, dan kentang. Ikuti petunjuk dokter Anda.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Saat aktif, masakan dengan karbohidrat lebih sedikit disarankan lebih dulu; masakan nasi, mi, dan masakan yang banyak kentang, masakan rebus manis, gorengan bertepung tebal, serta sup berisi kentang, soun, atau mi muncul belakangan (tidak ada yang dihapus, dan menu yang sudah ditetapkan tidak berubah). Makanan pokok ditampilkan dalam porsi kecil.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Jika Anda mengikuti anjuran makan karena diabetes atau alasan lain, utamakan anjuran dokter atau ahli gizi Anda. Angka yang ditampilkan adalah perkiraan.",
     "わかりました": "Mengerti",

@@ -27,20 +27,22 @@ h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p
   ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
   billingMode を 'off' に戻すとき: paid に hidden を付け、free を <template> から出して hidden を外す（support-en.html も同じ）。
   tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
+  11/24（オーナー回答82B・86B）: iPhone 版も Web 版も課金モデル（最初の1か月無料・その後 月額300円）。<span data-presale> は販売前のいまの動きの説明。
+  App Store に申請するとき（RevenueCat のキーを入れるとき）に、この span を消す（Web 版は Web の課金を始めるときに書きかえる）。
 -->
 <h2>よくある質問</h2>
 <p class="muted">わからないことは、下の「お問い合わせ」からどうぞ。ボタンや欄の名前は、アプリの画面の名前に合わせています。</p>
-<h3>料金・解約（iPhone 版）</h3>
+<h3>料金・解約</h3>
 <template data-billing-off><details data-billing="free" hidden><summary>料金はかかりますか？</summary><p>ご飯帖はいま全員無料です。料金はかかりません。すべての機能をそのままお使いいただけます。</p></details></template>
-<details data-billing="paid"><summary>料金はかかりますか？</summary><p>iPhone 版は、有料プラン「ご飯帖プラス」を販売する予定です。販売を始めたあとは、はじめて登録した最初の1か月は無料で、次の月から月額300円（自動更新）です。<b>販売を始めるまでは、iPhone 版もすべての機能を無料でお使いいただけます。</b>ブラウザで開く Web 版は無料です。</p></details>
-<details data-billing="paid"><summary>いつから料金がかかりますか？</summary><p>販売を始めたあと、無料の1か月が終わったときからです。期間が終わる24時間前までに解約しなければ自動で更新され、お支払いは Apple アカウントに請求されます。</p></details>
+<details data-billing="paid"><summary>料金はかかりますか？</summary><p>ご飯帖は、有料プラン「ご飯帖プラス」でお使いいただくアプリです（iPhone 版・Web 版とも）。はじめて登録した最初の1か月は無料で、次の月から月額300円（税込・自動更新）です。iPhone 版のお支払いは Apple、Web 版のお支払いは決済会社が扱います。<span data-presale>いまは販売の準備中のため、iPhone 版・Web 版ともすべての機能を無料でお使いいただけます（販売を始めたら、ここでお知らせします）。</span></p></details>
+<details data-billing="paid"><summary>いつから料金がかかりますか？</summary><p>無料の1か月が終わったときからです。期間が終わる24時間前までに解約しなければ自動で更新され、お支払いは Apple アカウントに請求されます。</p></details>
 <details data-billing="paid"><summary>ご飯帖プラスを解約したい</summary><p>iPhone の「設定」→ 一番上の自分の名前 →「サブスクリプション」→「ご飯帖」から解約できます。購読中は、アプリの「ご飯帖プラス」の画面の「プランの管理・解約」からも開けます。解約しても、期間の終わりまでは使えます。</p></details>
 <details data-billing="paid"><summary>無料の1か月だけ使って、やめられますか？</summary><p>はい。無料期間が終わる24時間前までに解約すれば、料金はかかりません。</p></details>
 <details data-billing="paid"><summary>解約したら、記録は消えますか？</summary><p>消えません。記録や設定は、この端末の中に残ります。</p></details>
-<details data-billing="paid"><summary>無料期間のあと、払わないとどうなりますか？</summary><p>販売を始めたあと、無料期間が終わって続けない場合、iPhone 版では献立などの画面が使えなくなります。そのときも、記録があれば「これまでの記録を書き出す」でファイルにできます。</p></details>
+<details data-billing="paid"><summary>無料期間のあと、払わないとどうなりますか？</summary><p>無料期間が終わって続けない場合、献立などの画面が使えなくなります。そのときも、記録があれば「これまでの記録を書き出す」でファイルにできます。</p></details>
 <details data-billing="paid"><summary>返金してほしいです</summary><p>お支払いと返金は Apple が扱います。Apple の「問題を報告する」の手続きをご覧ください。</p></details>
 <details data-billing="paid"><summary>機種変更したら購入はどうなりますか？</summary><p>同じ Apple アカウントでサインインし、新しい iPhone でアプリの「購入を復元」を押すと、続けて使えます。献立の記録は、下の「機種変更したら、記録はどうなりますか？」の手順で移せます。</p></details>
-<details><summary>Web 版と iPhone 版のちがいは？ Android でも使えますか？</summary><p>Web 版はブラウザで開いて使え、無料です。Android やパソコンでは Web 版を使います（設定 › プラン・その他 の「ホーム画面に追加する」などで、アプリのように開けます）。毎日のお知らせ（通知）や、冷蔵庫・チラシの写真の自動の読み取りは iPhone 版で使えます。Android のアプリはありません。</p></details>
+<details><summary>Web 版と iPhone 版のちがいは？ Android でも使えますか？</summary><p>Web 版はブラウザで開いて使えます。料金は iPhone 版と同じです（最初の1か月無料・その後 月額300円。Web 版の支払い・解約のしかたは、販売を始めるときにここに書きます）。iPhone 版と Web 版の購入は別々です。Android やパソコンでは Web 版を使います（設定 › プラン・その他 の「ホーム画面に追加する」などで、アプリのように開けます）。毎日のお知らせ（通知）や、冷蔵庫・チラシの写真の自動の読み取りは iPhone 版で使えます。Android のアプリはありません。</p></details>
 <h3>データ・機種変更</h3>
 <details><summary>記録やデータはどこに保存されますか？</summary><p>お使いの端末の中だけです。アカウントの登録はなく、記録を外へ送ることもありません。料理の写真も、この端末の中だけに保存されます。くわしくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</p></details>
 <details><summary>機種変更したら、記録はどうなりますか？</summary><p>記録・お気に入り・設定などは、この端末の中だけに保存されています。前のスマホで、設定 › データ の「ファイルで書き出す」を押してファイルを作り、新しいスマホで、同じ 設定 › データ の「データの引っ越し・バックアップ」を押してひらき、中の「ファイルから読み込む」を押して、そのファイルを選んでください。その欄の文字をコピーして、新しいスマホの同じ欄に貼りつける方法もあります。写真（わが家の一枚・アルバム）は移りません。</p></details>
@@ -73,7 +75,8 @@ h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p
 <details><summary>料理の絵について</summary><p>料理の絵は、AI で作成したイメージです。実際の料理・盛りつけとは異なります。絵はアプリに入っているので、通信しなくても表示されます。「作った料理を撮って登録」で、ご自身の写真にもできます（端末の中だけに保存されます）。</p></details>
 
 <h2>お問い合わせ</h2>
-<p>【連絡先メールアドレス】まで、端末の機種と iOS のバージョン、困っている内容をお送りください。</p>
+<p>運営: わが家のご飯帖 運営</p>
+<p>お問い合わせは、GitHub の <a href="https://github.com/akb69bka-tech/gohancho-/issues/1" target="_blank" rel="noopener">ご飯帖 サポート窓口（Issue #1）</a> にお書きください。端末の機種と iOS（または使っているブラウザ）のバージョン、困っている内容を添えてください。書きこむには GitHub のアカウント（無料）が要ります。書いた内容は誰でも見られるので、名前・住所・メールアドレスなどの個人の情報は書かないでください。</p>
 <p><a href="privacy.html">プライバシーポリシー</a> ・ <a href="support-en.html">English</a></p>
 </main>
 </body>

@@ -2,7 +2,8 @@
 GOHAN_I18N('de', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Weniger Kohlenhydrate",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Mahlzeiten mit weniger Reis, Nudeln und Kartoffeln und mehr Gemüse- und Eiweißgerichten. Zeigt eine Schätzung der Kohlenhydrate (g) pro Person",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Für Menschen, die wegen Diabetes oder Ähnlichem auf ihre Ernährung achten. Mahlzeiten mit weniger Reis, Nudeln und Kartoffeln und mehr Gemüse- und Eiweißgerichten. Zeigt eine Schätzung der Kohlenhydrate (g) pro Person. Folgen Sie den Anweisungen Ihres Arztes zur Ernährung.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Für Menschen, die wegen Diabetes oder Ähnlichem auf ihre Ernährung achten. Weniger Reis, Nudeln und Kartoffeln. Folgen Sie Ihrem Arzt.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Wenn eingeschaltet, werden Gerichte mit weniger Kohlenhydraten zuerst vorgeschlagen; Reisgerichte, Nudeln und kartoffelreiche Gerichte, süß geschmorte Gerichte, dick panierte Frittiergerichte und Suppen mit Kartoffeln, Glasnudeln oder Nudeln kommen später (nichts wird entfernt, festgelegte Mahlzeiten bleiben unverändert). Die Beilage wird als kleine Portion angezeigt.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Wenn Sie wegen Diabetes oder aus einem anderen Grund Ernährungsvorgaben haben, folgen Sie zuerst den Anweisungen Ihrer Ärztin, Ihres Arztes oder Ihrer Ernährungsfachkraft. Die angezeigten Zahlen sind Schätzungen.",
     "わかりました": "Verstanden",

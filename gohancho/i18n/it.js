@@ -2,7 +2,8 @@
 GOHAN_I18N('it', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Meno carboidrati",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Pasti con meno riso, pasta e patate e più piatti di verdure e proteine. Mostra una stima dei carboidrati (g) a persona",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Per chi fa attenzione ai pasti per il diabete o motivi simili. Pasti con meno riso, pasta e patate e più piatti di verdure e proteine. Mostra una stima dei carboidrati (g) a persona. Segui le indicazioni del tuo medico sui pasti.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Per chi fa attenzione ai pasti per il diabete o motivi simili. Meno riso, pasta e patate. Segui il tuo medico.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Se attivo, vengono proposti prima i piatti con meno carboidrati; i piatti di riso, la pasta e i piatti ricchi di patate, gli stufati dolci, i fritti con panatura spessa e le zuppe con patate, spaghetti di soia o pasta vengono dopo (non si toglie nulla e i pasti già decisi non cambiano). Il contorno di base è mostrato in porzione piccola.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Se segui indicazioni alimentari per il diabete o per altri motivi, segui prima quelle del tuo medico o dietista. I numeri mostrati sono stime.",
     "わかりました": "Ho capito",

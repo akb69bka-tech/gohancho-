@@ -27,20 +27,22 @@ h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p
   ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
   billingMode を 'off' に戻すとき: paid に hidden を付け、free を <template> から出して hidden を外す（support-en.html も同じ）。
   tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
+  11/24（オーナー回答82B・86B）: iPhone 版も Web 版も課金モデル（最初の1か月無料・その後 月額300円）。<span data-presale> は販売前のいまの動きの説明。
+  App Store に申請するとき（RevenueCat のキーを入れるとき）に、この span を消す（Web 版は Web の課金を始めるときに書きかえる）。
 -->
 <h2>Frequently asked questions</h2>
 <p class="muted">If your question is not here, contact us below. Button and field names match the App's English screens.</p>
-<h3>Price and cancelling (iPhone app)</h3>
+<h3>Price and cancelling</h3>
 <template data-billing-off><details data-billing="free" hidden><summary>Does it cost anything?</summary><p>Gohancho is currently free for everyone. There are no fees, and you can use every feature.</p></details></template>
-<details data-billing="paid"><summary>Does it cost anything?</summary><p>The iPhone app will offer a paid plan, Gohancho Plus. Once it goes on sale, your first month is free after you subscribe, and then the monthly price shown in the App Store for your country applies (JPY 300 a month in Japan), renewing automatically. <b>Until it goes on sale, every feature of the iPhone app is free.</b> The web version in a browser is free.</p></details>
-<details data-billing="paid"><summary>When does billing start?</summary><p>After the plan goes on sale, billing starts when your free month ends. It renews automatically unless you cancel at least 24 hours before the end of the period, and payment is charged to your Apple Account.</p></details>
+<details data-billing="paid"><summary>Does it cost anything?</summary><p>Gohancho is used with a paid plan, Gohancho Plus (both the iPhone app and the web version). Your first month after you subscribe is free; after that, the monthly price applies (JPY 300 a month in Japan; in the App Store, the price shown for your country), renewing automatically. Apple handles payment in the iPhone app, and a payment company handles payment in the web version. <span data-presale>While sales are being prepared, every feature of the iPhone app and the web version is free (we will post here when sales start).</span></p></details>
+<details data-billing="paid"><summary>When does billing start?</summary><p>Billing starts when your free month ends. It renews automatically unless you cancel at least 24 hours before the end of the period, and payment is charged to your Apple Account.</p></details>
 <details data-billing="paid"><summary>How do I cancel Gohancho Plus?</summary><p>On your iPhone, open Settings → your name → Subscriptions → Gohancho, and tap Cancel Subscription. While subscribed, you can also open it from "Manage or cancel plan" on the Gohancho Plus screen in the App. After cancelling, you can use it until the end of the period.</p></details>
 <details data-billing="paid"><summary>Can I use only the free month and stop?</summary><p>Yes. Cancel at least 24 hours before the free month ends and you will not be charged.</p></details>
 <details data-billing="paid"><summary>Will my records be deleted if I cancel?</summary><p>No. Your records and settings stay on this device.</p></details>
-<details data-billing="paid"><summary>What happens if I don't continue after the free month?</summary><p>After the plan goes on sale, if you do not continue after the free month, the menu screens of the iPhone app can no longer be used. You can still save your records to a file with "Export your log".</p></details>
+<details data-billing="paid"><summary>What happens if I don't continue after the free month?</summary><p>If you do not continue after the free month, the menu screens can no longer be used. You can still save your records to a file with "Export your log".</p></details>
 <details data-billing="paid"><summary>I want a refund</summary><p>Payments and refunds are handled by Apple. Please use Apple's "Report a Problem".</p></details>
 <details data-billing="paid"><summary>I got a new phone. What about my purchase?</summary><p>Sign in with the same Apple Account and tap "Restore purchases" in the App on your new iPhone. To move your meal history, see "I got a new phone. How do I move my data?" below.</p></details>
-<details><summary>What is the difference between the web version and the iPhone app? Does it work on Android?</summary><p>The web version runs in a browser and is free. On Android or a computer, use the web version (you can add it to your home screen with "Add to Home Screen" in Settings › Plan &amp; more). Daily reminders (notifications) and automatic reading of fridge and flyer photos work in the iPhone app. There is no Android app.</p></details>
+<details><summary>What is the difference between the web version and the iPhone app? Does it work on Android?</summary><p>The web version runs in a browser. The price is the same as the iPhone app (first month free, then monthly; how to pay and cancel on the web will be added here when sales start). Purchases in the iPhone app and the web version are separate. On Android or a computer, use the web version (you can add it to your home screen with "Add to Home Screen" in Settings › Plan &amp; more). Daily reminders (notifications) and automatic reading of fridge and flyer photos work in the iPhone app. There is no Android app.</p></details>
 <h3>Data and new phones</h3>
 <details><summary>Where is my data stored?</summary><p>Only on your device. There is no account, and your records are not sent anywhere. Dish photos are also stored only on your device. See the <a href="privacy-en.html">Privacy Policy</a> for details.</p></details>
 <details><summary>I got a new phone. How do I move my data?</summary><p>Your history, favourites and settings are stored only on this device. On your old phone, open Settings › Data and tap "Save as file". On the new phone, open the same Settings › Data, tap "Move or back up your data" to open it, then tap "Load from file" inside it and choose that file. You can also copy the text in that box and paste it into the same box on the new phone. Photos (your own dish photos and album) are not moved. If the App is set to another language, the buttons show in that language: "Save as file" is the first button under Data, and "Load from file" is inside the box below it.</p></details>
@@ -73,7 +75,8 @@ h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p
 <details><summary>About the dish illustrations</summary><p>The dish pictures are AI-generated images; the actual dish and plating will look different. They are built into the App, so they show even offline. You can also replace it with your own photo (stored only on your device).</p></details>
 
 <h2>Contact</h2>
-<p>Email [contact email address] with your device model, iOS version and a description of the problem.</p>
+<p>Operator: Wagaya no Gohancho (わが家のご飯帖 運営)</p>
+<p>Please write to the <a href="https://github.com/akb69bka-tech/gohancho-/issues/1" target="_blank" rel="noopener">Gohancho support desk on GitHub (Issue #1)</a>, with your device model, iOS (or browser) version and a description of the problem. You need a free GitHub account to post. Everything you write there is public, so do not include personal information such as your name, address or email.</p>
 <p><a href="privacy-en.html">Privacy Policy</a> · <a href="support.html">日本語</a></p>
 </main>
 </body>

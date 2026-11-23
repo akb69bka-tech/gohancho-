@@ -7,7 +7,7 @@
 //  S3 課金の質問は消さずに data-billing="paid" で hidden のまま残っている（課金を始めるときに戻せる）。billingMode が 'off' でなければ、逆（paid が見え、free が隠れる）でないといけない
 //  S4 アプリのリンク（docPage）が指すページがある（ja・ほかの言語）
 //  S5 課金ありのとき（オーナー決定 2026-11-23: 'native'＝iPhone アプリ版だけ。登録した最初の1か月は無料・次の月から月額300円）: 課金の質問（料金・お試し・解約・購入の復元）が見え、
-//     年額・「年の縛り」の語が見える所に0件（年額は確認まとめ85で確認中）。「Web 版は無料」と月額・最初の1か月無料が書いてある。機種変更のときの記録の移し方（ボタンの名前どおり）はどちらでも見える
+//     年額・「年の縛り」の語が見える所に0件（年額は確認まとめ85で確認中）。Web 版のこと（11/24 オーナー回答86B で Web 版も課金モデル）と月額・最初の1か月無料が書いてある。機種変更のときの記録の移し方（ボタンの名前どおり）はどちらでも見える
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -58,7 +58,7 @@ for (const f of PAGES){
         const yr = YEAR[lg] || YEAR.en, hits = r.txt.match(new RegExp(yr.source, 'g' + (yr.flags.includes('i') ? 'i' : ''))) || [];
         if (hits.length) bad.push(`${f} 年額・年の縛りの語 ${[...new Set(hits)].join('・')}`);
         const paid = r.paid.map(x => x.txt).join(' ');
-        const need = lg === 'ja' ? [/月額300円/, /最初の1か月は無料|1か月の無料/, /Web 版は無料/, /購入を復元/, /解約/] : [/monthly/i, /first month is free/i, /web version[^.]*is free/i, /Restore purchases/, /Cancel/];
+        const need = lg === 'ja' ? [/月額300円/, /最初の1か月は無料|1か月の無料/, /Web 版/, /購入を復元/, /解約/] : [/monthly/i, /first month[^.]*is free/i, /web version/i, /Restore purchases/, /Cancel/]   // 11/24 オーナー回答86B: Web 版も課金モデル（「Web 版は無料」とは書かない。料金の答えに Web 版のことがある）;
         need.forEach(x => { if (!x.test(paid)) miss.push(`${f} 課金の質問に ${x} がない`); });
         (LABELS[lg] || LABELS.en).forEach(l => { if (!r.txt.includes(l)) miss.push(`${f} 機種変更の手順に「${l}」がない`); });
     }
@@ -67,7 +67,7 @@ await b.close();
 ok(!bad.length, OFF ? `S1 ${PAGES.length}ページ: 全員無料のあいだは、課金の言葉（解約・お試し・購入を復元・月額 など）が見える所に0件: ` + bad.join(' / ')
     : `S5a ${PAGES.length}ページ: 課金ありのとき、年額・「年の縛り」の語が見える所に0件（月額だけの方針）: ` + bad.join(' / '));
 ok(!miss.length, OFF ? 'S2 「全員無料」の1問と、無料のあいだの機種変更の手順（アプリのボタンの名前どおり）が見える: ' + miss.join(' / ')
-    : 'S5b 課金の質問に月額300円・最初の1か月無料・Web 版は無料・購入を復元・解約があり、機種変更の手順（アプリのボタンの名前どおり）も見える: ' + miss.join(' / '));
+    : 'S5b 課金の質問に月額300円・最初の1か月無料・Web 版のこと・購入を復元・解約があり、機種変更の手順（アプリのボタンの名前どおり）も見える: ' + miss.join(' / '));
 ok(!kept.length, OFF ? `S3 課金の質問は消さずに data-billing="paid" で隠して残す（billingMode 'off' と出し分けが合う）: ` + kept.join(' / ')
     : `S3 課金ありのとき: 課金の質問（data-billing="paid"）が見え、全員無料の質問（free）は消さずに hidden で残す（billingMode と出し分けが合う）: ` + kept.join(' / '));
 console.log(`ui51: ${checks - fails}/${checks} ok` + (fails ? `  NG ${fails}` : ''));

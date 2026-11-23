@@ -38,7 +38,8 @@ table{border-collapse:collapse;width:100%;font-size:.9rem} td,th{border-top:1px 
 <p>The App connects to outside services only in these cases.</p>
 <div class="wrap"><table>
 <tr><th>Service</th><th>When and why</th><th>Information sent</th></tr>
-<tr><td>Apple (App Store) and RevenueCat, Inc.</td><td>In the iPhone app, when you buy or restore Gohancho Plus and when the App checks your subscription status (not used in the web version, which is free)</td><td>What is needed to check the purchase (an anonymous user ID created by RevenueCat, purchase history, etc.). Apple handles payment; the developer never receives card numbers or other payment details</td></tr>
+<tr><td>Apple (App Store) and RevenueCat, Inc.</td><td>In the iPhone app, when you buy or restore Gohancho Plus and when the App checks your subscription status</td><td>What is needed to check the purchase (an anonymous user ID created by RevenueCat, purchase history, etc.). Apple handles payment; the developer never receives card numbers or other payment details</td></tr>
+<tr><td>Stripe, Inc. and RevenueCat, Inc. (payments in the web version)<br><b>Active only after sales start in the web version</b> (not used now)</td><td>In the web version, when you buy, cancel or restore Gohancho Plus and when the App checks your subscription status. The payment system is loaded only when you open the purchase screen</td><td>What is needed for the purchase (an anonymous purchase ID created on your device, purchase history, and the email address and card details you enter on the payment screen). Card details are handled by the payment company; the developer never receives card numbers</td></tr>
 <tr><td>GitHub (the developer's settings file)</td><td>When the App opens, it loads a small file with notices. The App works the same if it cannot be loaded</td><td>Your IP address, as part of the connection (nothing that identifies you)</td></tr>
 <tr><td>Wikipedia / Wikimedia Commons</td><td>Only if a built-in dish illustration cannot be loaded: a reference photo of the dish (turned into an illustration on your device) and its author and license</td><td>The dish name (article title) and your IP address, as part of the connection</td></tr>
 <tr><td>YouTube / Google Search</td><td>Only when you tap "Find a video" or "Search for photos" (opens in the browser)</td><td>The dish name (search words) and your IP address, as part of the connection</td></tr>
@@ -66,14 +67,15 @@ table{border-collapse:collapse;width:100%;font-size:.9rem} td,th{border-top:1px 
 <li>History, favorites, ingredients, pantry items, your recipes, settings and dish photos (your photos and the Family album): open Settings › Data › "Move or back up your data" and tap "Erase all data" to erase them all at once. You can also remove photos one by one with "Remove this photo from the album".</li>
 <li><b>The date your free trial started and your purchase status are kept</b> (purchases are managed by the App Store). Even after "Erase all data", these two are kept on this device so that the free trial cannot be started again and again on the same device.</li>
 <li>Everything: deleting the iPhone app deletes all of its data on the device. In a web browser, clear this site's data in the browser settings.</li>
-<li>Purchase information: Apple and RevenueCat keep it under their own rules. Manage or cancel your subscription in iPhone Settings → your name → Subscriptions.</li>
+<li>Purchase information: Apple and RevenueCat (iPhone app), and Stripe and RevenueCat (web version, after sales start), keep it under their own rules. In the iPhone app, manage or cancel your subscription in iPhone Settings → your name → Subscriptions.</li>
 </ul>
 
 <h2>7. Your rights (EU/UK GDPR and similar laws)</h2>
-<p>Because the developer does not collect or store your personal data, there is no personal data held by the developer to access, correct or delete. For purchase data, please contact Apple. For any questions, contact us below.</p>
+<p>Because the developer does not collect or store your personal data, there is no personal data held by the developer to access, correct or delete. For purchase data, please contact Apple (iPhone app) or the payment company shown on the payment screen (web version). For any questions, contact us below.</p>
 
 <h2>8. Contact</h2>
-<p>[Developer name] · [Contact email address]</p>
+<p>Operator: Wagaya no Gohancho (わが家のご飯帖 運営)</p>
+<p>Contact: the <a href="https://github.com/akb69bka-tech/gohancho-/issues/1" target="_blank" rel="noopener">Gohancho support desk on GitHub (Issue #1)</a> (a GitHub account is needed to post; posts are public, so do not include personal information)</p>
 
 <h2>9. Changes</h2>
 <p>If this policy changes, we will post the update on this page and change the "Last updated" date above.</p>

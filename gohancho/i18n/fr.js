@@ -2,7 +2,8 @@
 GOHAN_I18N('fr', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Moins de glucides",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Des repas avec moins de riz, de pâtes et de pommes de terre, et plus de plats de légumes et de protéines. Affiche une estimation des glucides (g) par personne",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Pour les personnes qui font attention à leurs repas à cause du diabète ou d'une raison semblable. Des repas avec moins de riz, de pâtes et de pommes de terre, et plus de plats de légumes et de protéines. Affiche une estimation des glucides (g) par personne. Suivez les indications de votre médecin pour vos repas.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Pour les personnes qui surveillent leurs repas à cause du diabète ou d'une raison semblable. Moins de riz, de pâtes et de pommes de terre. Suivez votre médecin.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Activé, ce mode propose d'abord les plats contenant moins de glucides ; les plats de riz, de pâtes ou riches en pommes de terre, les plats mijotés sucrés, les fritures à pâte épaisse et les soupes aux pommes de terre, vermicelles ou pâtes viennent ensuite (rien n'est retiré et les repas déjà choisis ne changent pas). L'accompagnement s'affiche en petite portion.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Si vous suivez des consignes alimentaires pour un diabète ou une autre raison, suivez d'abord celles de votre médecin ou de votre diététicien. Les chiffres affichés sont des estimations.",
     "わかりました": "J'ai compris",

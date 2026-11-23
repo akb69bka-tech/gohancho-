@@ -2,7 +2,8 @@
 GOHAN_I18N('vi', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Ít tinh bột",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Bữa ăn ít cơm, mì và khoai, nhiều món rau và món đạm hơn. Hiển thị ước tính carbohydrate (g) mỗi người",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Dành cho người chú ý ăn uống vì tiểu đường hoặc lý do tương tự. Bữa ăn ít cơm, mì và khoai, nhiều món rau và món đạm hơn. Hiển thị ước tính carbohydrate (g) mỗi người. Hãy làm theo chỉ dẫn của bác sĩ về ăn uống.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Dành cho người chú ý ăn uống vì tiểu đường hoặc lý do tương tự. Ít cơm, mì và khoai. Hãy làm theo chỉ dẫn của bác sĩ.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Khi bật, các món ít carbohydrate được gợi ý trước; món cơm, mì và món nhiều khoai, món kho ngọt, món chiên áo bột dày và canh có khoai, miến hoặc mì sẽ ra sau (không bỏ món nào, bữa đã chọn không bị đổi). Món chính hiển thị phần nhỏ.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Nếu bạn đang theo chỉ dẫn ăn uống vì đái tháo đường hoặc lý do khác, hãy ưu tiên chỉ dẫn của bác sĩ hoặc chuyên gia dinh dưỡng. Các con số hiển thị là ước tính.",
     "わかりました": "Đã hiểu",

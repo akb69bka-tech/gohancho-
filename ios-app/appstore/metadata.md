@@ -15,8 +15,8 @@
 | バンドル ID | io.github.akb69bka.gohancho（`capacitor.config.json` の appId と同じ） |
 | SKU | gohancho-ios-001 |
 | 価格 | 無料（App 内課金あり） |
-| 年齢制限 | App Store Connect の今の質問を読み、実態どおりに回答（材料に酒・みりん・ワインあり。「糖質ひかえめ」「ダイエットモード」あり。4+ になるかは わかりません） |
-| 著作権 | 2026 【運営者名】 |
+| 年齢制限 | 「アルコール・タバコ・薬物の使用または言及」は「まれ／軽度」（レシピの材料として酒・みりん・ワインが出てくる。オーナー回答84B）。ほかの質問は「なし」。結果の区分は Apple が決める（何歳以上になるかは わかりません） |
+| 著作権 | 2026 わが家のご飯帖 運営 |
 | サポート URL | https://akb69bka-tech.github.io/gohancho-/support.html |
 | マーケティング URL | https://akb69bka-tech.github.io/gohancho-/ |
 | プライバシーポリシー URL | https://akb69bka-tech.github.io/gohancho-/privacy.html |

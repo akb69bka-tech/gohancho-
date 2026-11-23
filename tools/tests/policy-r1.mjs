@@ -8,6 +8,7 @@
 //  P5 サポートのページ: 見えている質問・読み上げの質問に同じものが2つない（「料金はかかりますか？」の重なり）。HTML の中身（コメント・template を除く）でも重ならない
 //  P6 プライバシーポリシーに、審査で求められる項目（集める／集めない情報・保存場所・第三者・広告と解析・子ども・保存期間と消し方・問い合わせ先・改定日）が日本語・英語ともにある
 //  P7 アプリの中の画面に青を使わない
+//  P9 （11/24 オーナー回答87B）お試しのあと購入しないと全部ロック（購入画面が閉じられない）。そのあいだもアレルギーの設定（自分・家族）は消えずに残り、ロックが解けると同じ設定で献立が出る
 //  P8 （11/23 統括の決め）「すべてのデータを消す」で料理の写真（photos・album・remake）も消える。お試しの開始日と購入の状態は残る。確かめの文に「写真も消えます」「お試し…残ります」
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -178,6 +179,31 @@ const frameText = async (p, want) => {
     const after = await p.evaluate(async () => ({n: await Promise.all(['photos', 'album', 'remake'].map(n => idbDo('readonly', st => st.count(), n))), firstUse: S.firstUse, pro: !!(S.pro && S.pro.active), hist: (S.history || []).length, mine: Object.keys(MINE).length}));
     ok(before.every(n => n === 1) && after.n.every(n => n === 0) && after.mine === 0 && after.hist === 0 && after.firstUse === '2026-11-20' && after.pro,
         'P8b 写真を入れてから「すべてのデータを消す」→ 写真・アルバム・作り置きの写真は0枚、記録も0、お試しの開始日と購入の状態は残る: ' + JSON.stringify({before, after}));
+    await ctx.close();
+}
+
+// P9 ロック中もアレルギーの設定は残る
+{
+    const st = {onboarded: true, firstUse: '2026-01-01', settings: {country: 'JP', uiLang: 'ja', dishCount: 3, servings: 2, allergens: ['egg', 'milk']}, family: [{id: 'f0', name: 'ゆうき', role: 'adult', avoid: ['shrimp'], allergy: ['shrimp']}]};
+    const ctx = await b.newContext({viewport: {width: 390, height: 844}, locale: 'ja-JP', timezoneId: 'Asia/Tokyo', serviceWorkers: 'block'});
+    await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent|line\.me|jsdelivr/, r => r.abort());
+    await ctx.addInitScript(seedScript(SEED));
+    await ctx.addInitScript(s => { if (!sessionStorage.getItem('p9')){ sessionStorage.setItem('p9', '1'); localStorage.setItem('gohancho.v1', JSON.stringify(s)); } }, st);
+    const p = await ctx.newPage(); p.on('pageerror', e => errs.push(e.message));
+    await p.goto(URL_); await ready(p);
+    const before = await p.evaluate(() => JSON.stringify({a: S.settings.allergens, f: S.family.map(m => m.allergy)}));
+    // お試し（アプリ側の30日）が終わって未購入の状態にする（課金ありの設定。購入の経路は使わない）
+    const lock = await p.evaluate(async () => {
+        PLAN.revenueCatWebKey = 'rcb_test'; PLAN.legalUrl = 'x'; PLAN.webTermsUrl = 'x'; PLAN.billingMode = 'all'; PLAN.trialMode = 'app'; PLAN.trialDays = 30; PLAN.freeTier = false; S.pro = null; save();
+        render(); if (isLocked()) openPaywall('locked'); await new Promise(r => setTimeout(r, 300));
+        closeSheet(); await new Promise(r => setTimeout(r, 100));
+        return {locked: isLocked(), sheet: sheet && sheet.kind, a: S.settings.allergens, f: S.family.map(m => m.allergy), stored: JSON.parse(localStorage.getItem('gohancho.v1')).settings.allergens};
+    });
+    await p.reload(); await ready(p);   // 読みこみ直すと設定の値（課金なし＝販売前）に戻る。ロックが解けたときと同じ
+    const after = await p.evaluate(() => ({a: S.settings.allergens, f: S.family.map(m => m.allergy), egg: (session.menu ? session.menu.items : []).filter(x => x.r && typeof isAvoidedCore === 'function' && isAvoidedCore(x.r)).length}));
+    ok(lock.locked && lock.sheet === 'paywall' && JSON.stringify({a: lock.a, f: lock.f}) === before && JSON.stringify(lock.stored) === JSON.stringify(['egg', 'milk'])
+        && JSON.stringify({a: after.a, f: after.f}) === before && after.egg === 0,
+        'P9 お試しのあと未購入で全部ロック（購入画面は閉じない）。そのあいだもアレルギーの設定（自分・家族）は残り、解けたあとも同じ設定で献立が出る: ' + JSON.stringify({before, lock, after}));
     await ctx.close();
 }
 

@@ -27,20 +27,21 @@ const ALL_CC = ['JP', 'US', 'GB', 'FR', 'DE', 'IT', 'ES', 'PL', 'TR', 'EG', 'IN'
 // ---- D0 文言 ----
 const K = {
     name: '糖質ひかえめ',
-    desc: 'ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示',
+    desc: '糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。',
     more: 'オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。',
+    obDesc: '糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。',
     caution: '糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。',
     ok: 'わかりました', staple: '{name}（小盛り）', dish: '糖質 約 {n} g（1人分・目安）', dishLow: '糖質 1 g 未満（1人分・目安）', dishNa: '糖質の目安なし（量や値のわからない材料が多いため）',
     tray: 'お膳の糖質：約 {n} g（1人分・目安。主食は小盛り）', trayNoStaple: 'お膳の糖質：約 {n} g（1人分・目安）',
     trayNa: 'お膳の糖質の目安はありません（「{name}」の目安がないため）', trayNaStaple: 'お膳の糖質の目安はありません（主食の目安がないため）',
 };
-// 病名（名前・説明・切り替えの説明・表示に出さない。注意の文だけは「糖尿病など」と事実として書く）
+// 病名（名前・切り替えの説明・表示に出さない。注意の文と、11/24 オーナー回答66B の説明（desc の「糖尿病などで食事に気をつけている方へ」）だけは事実として書く）
 const DISEASE = /糖尿|血糖|インスリン|diabet|blood sugar|glucose|insulin|glyc[ae]mi|zucker(?:krank|spiegel)|glyc[ée]mie|glucemia|glicemia|glicemi|cukrzyc|cukier we krwi|şeker hastal|kan şeker|السكري|سكر الدم|मधुमेह|डायबिटीज़|ब्लड शुगर|糖尿病|血糖|당뇨|혈당|เบาหวาน|น้ำตาลในเลือด|đái tháo đường|tiểu đường|đường huyết|gula darah|asukal sa dugo/i;
 // 効き目・健康の言い方（全部の文言）
 const CLAIM = /健康|改善|予防|治療|治る|下げ|効果|効く|やせ|痩せ|ダイエット|healthy|health|improv|prevent|cure|treat|lower(?:s|ing)? (?:your|blood)|weight loss|lose weight|gesund|verbesser|vorbeug|heil|santé|amélior|prévien|guéri|salud|mejora|previen|cura|saúde|melhora|previne|salute|miglior|prevenzion|zdrow|popraw|zapobieg|lecz|sağlık|iyileş|önle|tedavi|صحة|صحي|تحسين|وقاية|علاج|सेहत|स्वास्थ्य|सुधार|रोकथाम|इलाज|健康|改善|预防|預防|治疗|治療|건강|개선|예방|치료|สุขภาพ|ปรับปรุง|ป้องกัน|รักษา|sức khỏe|cải thiện|phòng ngừa|chữa|kesehatan|memperbaiki|mencegah|mengobati|kalusugan|pagbuti|maiwasan|gamot/i;
 if (want('D0')){
-    for (const [k, v] of Object.entries(K)){ ok(!CLAIM.test(v), `D0a ja ${k}: 効き目の言い方がない: ${v}`); if (k !== 'caution') ok(!DISEASE.test(v), `D0b ja ${k}: 病名がない: ${v}`); }
-    ok(/主治医・管理栄養士の指示を優先/.test(K.caution) && /目安/.test(K.caution), 'D0c 注意の文（主治医・管理栄養士の指示を優先・数値は目安）');
+    for (const [k, v] of Object.entries(K)){ ok(!CLAIM.test(v), `D0a ja ${k}: 効き目の言い方がない: ${v}`); if (k !== 'caution' && k !== 'desc' && k !== 'obDesc') ok(!DISEASE.test(v), `D0b ja ${k}: 病名がない: ${v}`); }
+    ok(/主治医・管理栄養士の指示を優先/.test(K.caution) && /目安/.test(K.caution) && /医師の指示に従ってください/.test(K.desc), 'D0c 注意の文（主治医・管理栄養士の指示を優先・数値は目安）と、説明の「医師の指示に従ってください」');
     const html = fs.readFileSync(ROOT + '/index.html', 'utf8');
     ok(Object.values(K).every(v => html.includes("t('" + v + "'")), 'D0d 文言はキー（CARB_TX）で t() に通している');
     const langs = fs.readdirSync(ROOT + '/i18n').filter(f => f.endsWith('.js')).map(f => f.replace(/\.js$/, ''));
@@ -54,7 +55,7 @@ if (want('D0')){
             if (/[ぁ-んァ-ヶ]/.test(v)) bad.push(`${lg} ${k} 日本語が残る`);
             for (const ph of src.match(/\{\w+\}/g) || []) if (!v.includes(ph)) bad.push(`${lg} ${k} ${ph} がない`);
             if (CLAIM.test(v)) bad.push(`${lg} ${k} 効き目の言い方「${v.match(CLAIM)[0]}」`);
-            if (k !== 'caution' && DISEASE.test(v)) bad.push(`${lg} ${k} 病名「${v.match(DISEASE)[0]}」`);
+            if (k !== 'caution' && k !== 'desc' && k !== 'obDesc' && DISEASE.test(v)) bad.push(`${lg} ${k} 病名「${v.match(DISEASE)[0]}」`);
         }
     }
     ok(!bad.length, 'D0f 17言語の訳がそろい、病名（注意の文のほか）・効き目の言い方がない: ' + bad.slice(0, 6).join(' / '));
@@ -87,7 +88,7 @@ if (want('D1')){
     await p.waitForSelector('#sheet-root [data-act=ob-mode]', {timeout: 30000}); await p.waitForTimeout(150);
     const m = await p.evaluate(() => [...document.querySelectorAll('#sheet-root [data-act=ob-mode]')].map(e => ({v: e.dataset.v, nm: (e.querySelector('b') || {}).textContent, d: (e.querySelector('.om-d') || {}).textContent})));
     const carb = m.find(x => x.v === 'carb');
-    ok(!!carb && carb.nm === K.name && carb.d === K.desc && ['all', 'ten', 'simple', 'slow', 'diet'].every(k => m.some(x => x.v === k)), 'D1a 使い方に「糖質ひかえめ」（名前と事実だけの説明）。ほかの使い方もそのまま: ' + JSON.stringify(m.map(x => x.v)));
+    ok(!!carb && carb.nm === K.name && carb.d === K.obDesc && ['all', 'ten', 'simple', 'slow', 'diet'].every(k => m.some(x => x.v === k)), 'D1a 使い方に「糖質ひかえめ」（名前と、はじめての設定用の短い説明）。ほかの使い方もそのまま: ' + JSON.stringify(m.map(x => x.v)));
     if (carb){
         await p.click('#sheet-root [data-act=ob-mode][data-v=carb]');
         await p.click('#sheet-root [data-act=ob-done]');
