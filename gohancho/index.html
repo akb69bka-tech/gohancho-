@@ -6586,7 +6586,7 @@ function todayShopRows(its0, st0){   // its0・st0: 決める前の献立（画�
             const nm = shopName(i, r), lab = /[฀-๿]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm), into = i.opt ? opt : map;
             const e = into.get(k) || {key: k, ik: i.key, label: lab, qty: [], dishes: [], sec: shopSec(i), alt: '', home: have.has(i.key)};
             if (i.qty) e.qty.push(scaleText(i.qty, fac)); if (!e.dishes.includes(x.r.name)) e.dishes.push(x.r.name);
-            if (!e.alt && ((r.pack || 'JP') !== cc || jpNoTr(r))) e.alt = itemAltName(i, r);   // ほかの国の料理は、もうひとつの名前（売り場で探す名前）も。日本の料理の訳がない言葉では日本語の名前（100人の確かめ 11/23）
+            if (!e.alt && ((r.pack || 'JP') !== cc || jpNameOn(r))) e.alt = itemAltName(i, r);   // ほかの国の料理は、もうひとつの名前（売り場で探す名前）も。日本の料理の訳がない言葉では日本語の名前（100人の確かめ 11/23）
             if (qtyBorrowed(r)) e.jq = true; { const ja = jpDishJa(x.r); if (ja) (e.dja || (e.dja = {}))[x.r.name] = ja; }
             mayOf(e, i);
             into.set(k, e);
@@ -12270,6 +12270,9 @@ function qtyLoc(s){
 }
 // 100人の確かめ（11/23・3位）: 日本の料理を、日本の料理の訳がない言葉（スペイン語・ポルトガル語・フィリピン語・インドネシア語・中国語など。英語の訳を借りる）で見ているとき。
 // 買い物メモの材料名・料理名に、日本語の名前を小さく添える（日本の店の札と見くらべられるように）。表示だけで、献立・材料は変えない
+// 第58回（11/23・統括の決め）: 日本に住む人は、訳のある言葉（英語・韓国語・ベトナム語・タイ語）でも、店の日本語の札と見くらべたい。
+// 日本の料理（国のパックではない）を日本語以外の画面で見るときは、買い物メモの材料名・調味料に日本語の名前を添える（料理名の日本語は、訳のない言葉だけ。jpDishJa）
+function jpNameOn(r){ return !!r && !r.pack && LANG !== 'ja'; }
 function jpNoTr(r){ return !!r && !r.pack && LANG !== 'ja' && LANG !== 'en' && trKey('JP', LANG) === 'JP.en'; }
 function jpDishJa(r){ return jpNoTr(r) && r.nameEn && r.nameEn !== r.name ? r.nameEn : ''; }
 function jaLangAttr(s){ return LANG !== 'ja' && /[ぁ-んァ-ヶ]|^[一-龠々]+$/.test(String(s || '')) ? ' lang="ja"' : ''; }   // 日本語の名前は日本語の字形・読み上げで
@@ -12304,7 +12307,7 @@ function shoppingList0(){
             if (lab.length < e.label.length){ e.label = lab; e.alt = itemAltName(i, r); }                  // まとめた行は、いちばん短い名前で出す（もうひとつの名前もその材料のもの）
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
-            if (qtyBorrowed(r)) e.jq = true; if (jpNoTr(r)){ e.jpAlt = true; const ja = jpDishJa(r); if (ja) (e.dja || (e.dja = {}))[r.name] = ja; }   // 100人の確かめ（11/23）: 単位はその言葉に・日本語の名前を添える
+            if (qtyBorrowed(r)) e.jq = true; if (jpNameOn(r)){ e.jpAlt = true; const ja = jpDishJa(r); if (ja) (e.dja || (e.dja = {}))[r.name] = ja; }   // 100人の確かめ（11/23）: 単位はその言葉に・日本語の名前を添える
             mayIds.forEach(id => { if (algKind(id, i) === 4 && !(e.may || (e.may = [])).includes(id)) e.may.push(id); });   // 入っていることがある加工品（ハム・ちくわなど）: 行に「袋の表示を確認」
             // プランにアレルゲンに当たる料理が残っているとき（決めた日のあとに足した・作る日に戻したなど。S26）: 当たる材料の行に ⚠（プランの行の「⚠ アレルゲンあり」と同じ判定 itemAvoided）
             if (algG && itemAvoided(i, algG)){ const hs = e.alg || (e.alg = []); mayIds.forEach(id => { const k = algKind(id, i); if (k && k !== 4 && (k !== 3 || algFerm()) && !hs.includes(id)) hs.push(id); }); }
@@ -14537,9 +14540,9 @@ function pantryOf(r){
         const jp = !r.pack, key = jp ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).key : pantryKeyEn(c);
         if (!key || (jp && FAMILY[key]) || (!jp && (!PANTRY_EN.test(key) || PANTRY_NOT.test(key)))) return;
         const lab = (sh.length === b.length ? (jp ? labelOf(parseIng(sh[i].replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(sh[i])) : '') || (jp ? labelOf(parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(c));
-        out.push({key: 'p|' + key, label: lab, src: c, ja: jp && jpNoTr(r) ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name : ''});   // ja: 日本の料理の訳がない言葉で、調味料の日本語の名前（100人の確かめ 11/23）
+        out.push({key: 'p|' + key, label: lab, src: c, ja: jp && jpNameOn(r) ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name : ''});   // ja: 日本の料理の訳がない言葉で、調味料の日本語の名前（100人の確かめ 11/23）
     });
-    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label, it: i, ja: jpNoTr(r) && i.jp && i.jp !== i.label ? i.jp : ''}); });   // it: アレルゲンの判定に使う材料（第40回）
+    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label, it: i, ja: jpNameOn(r) && i.jp && i.jp !== i.label ? i.jp : ''}); });   // it: アレルゲンの判定に使う材料（第40回）
     return out;
 }
 function pantryList(){

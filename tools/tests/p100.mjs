@@ -2,7 +2,9 @@
 // 100人の最終チェック（11/23・scratchpad/final/panel100.md）の、デザインを変えない小さな直しの確かめ
 //  使い方: node tools/tests/p100.mjs [http://localhost:9331/]   （ONLY=S,U,K,N,B でしぼる）
 //  S（3位）日本の献立を、日本の料理の訳がない言葉（pt-BR・es・fil・id・zh-Hans・ar）で見ると、今日の買い物メモの材料名・調味料の名前に日本語の名前（lang="ja"）が小さく添えてあり、
-//     料理名のあとに（日本語の名前）。1週間の買い物メモも同じ（もうひとつの名前の設定を切っていても）。訳のある言葉（ko・th・vi）と日本語の画面には添えない。献立・材料は変わらない
+//     料理名のあとに（日本語の名前）。1週間の買い物メモ・家にあるかもも同じ（もうひとつの名前の設定を切っていても）。日本語の画面には添えない。献立・材料は変わらない
+//     第58回（11/23・統括の決め）: 訳のある言葉（en・ko・th・vi）でも材料名・調味料に日本語の名前を添える（店の日本語の札と見くらべる）。料理名の日本語は訳のない言葉だけ
+//  S2（第58回）英語の画面・日本の献立で「Cabbage キャベツ」。日本以外の国の献立（US・英語、KR・韓国語）には日本語の名前を出さない
 //  U（4位）同じ画面で、分量の単位（block・head・bunch など）が英語のまま出ない: 訳のある言葉は単位をその言葉に（1/2 bloque・1/2 모）、ar・hi・pl・tr は英語のあとに日本語の単位（1/2 block（丁））。
 //     料理の詳しい画面の材料の分量も同じ。英語・日本語の画面は今までどおり
 //  K（6位）お膳の角の丸の「かえる」の字: 文字の大きさ「大きい」「もっと大きい」で字が大きくなる（ja: 10 → 11.5 → 13px）。丸は 44×44 のまま、字は丸のふちの内側
@@ -42,12 +44,15 @@ const shopOf = p => p.evaluate(async () => {
         const alt = x.querySelector('.br-alt bdi'), sub = [...x.querySelectorAll('.br-nm small:not(.br-alt):not(.alg-tag)')].map(e => e.textContent).join(' '), q = x.querySelector('.br-q');
         return {nm: x.querySelector('.br-nm b').textContent.trim(), alt: alt ? alt.textContent : '', altLang: alt ? alt.getAttribute('lang') : null, sub, q: q ? q.textContent.trim() : ''}; });
     // 1週間の買い物メモ（同じ料理を1日目に）
-    const wl = (() => { const old = S.week; S.week = {start: TODAY, days: [{d: TODAY, id: 'misoshiru'}]}; let h = ''; try{ h = shopRowsHtml(shoppingList(), new Set()); }catch(e){ h = 'ERR ' + e.message; } S.week = old; return h; })();
+    let ph = '';
+    const wl = (() => { const old = S.week; S.week = {start: TODAY, days: [{d: TODAY, id: 'misoshiru'}]}; let h = ''; try{ h = shopRowsHtml(shoppingList(), new Set()); ph = pantryHtml(); }catch(e){ h = 'ERR ' + e.message; } S.week = old; return h; })();
+    const pdiv = document.createElement('div'); pdiv.innerHTML = ph;
+    const pantry = [...pdiv.querySelectorAll('.shop-row')].map(x => ({nm: (x.querySelector('.nm') || {}).textContent || '', alt: (x.querySelector('.alt') || {}).textContent || '', altLang: x.querySelector('.alt') ? x.querySelector('.alt').getAttribute('lang') : null}));
     const div = document.createElement('div'); div.innerHTML = wl;
     const week = [...div.querySelectorAll('.shop-row')].map(x => ({nm: (x.querySelector('.nm') || {}).textContent || '', alt: (x.querySelector('.alt') || {}).textContent || '', altLang: x.querySelector('.alt') ? x.querySelector('.alt').getAttribute('lang') : null, q: (x.querySelector('.q') || {}).textContent || '', f: (x.querySelector('.for') || {}).textContent || ''}));
     S.cook = null; save(); setTab('today'); await tick(100);
     openModal('misoshiru'); await tick(); const rq = [...document.querySelectorAll('#modal-root .recipe-ings .q')].map(e => e.textContent.trim()); closeModal(); await tick(100);
-    return {rows, week, rq, same: menu0 === JSON.stringify(ids.map(id => byId(id).items.map(i => i.key))), nikujaga: byId('nikujaga').nameEn || byId('nikujaga').name};
+    return {rows, week, pantry, rq, same: menu0 === JSON.stringify(ids.map(id => byId(id).items.map(i => i.key))), nikujaga: byId('nikujaga').nameEn || byId('nikujaga').name};
 });
 const EN_UNIT = /\b(block|blocks|head|heads|bunch|bunches|slices?|packs?|bowls?|knob|fillets?|tbsp|tsp|go)\b/i;
 
@@ -59,11 +64,14 @@ if (want('S') || want('U')){
         const noTr = ['pt-BR', 'es', 'fil', 'id', 'zh-Hans', 'ar'].includes(lang), jpRe = /[ぁ-んァ-ヶ一-龠]/;
         const tofu = r.rows.find(x => /tofu|豆腐|두부|เต้าหู้|đậu|tahu|توفو/i.test(x.nm + x.alt)) || {};
         if (!r.rows.length || !r.same) badS.push(`${lang} 行がない・材料が変わった ${JSON.stringify(r).slice(0, 200)}`);
-        if (noTr){
+        // 第58回（11/23・統括の決め）: 日本語以外の画面なら、訳のある言葉（en・ko・th・vi）でも材料名・調味料に日本語の名前を添える。料理名の日本語は訳のない言葉だけ
+        if (lang !== 'ja'){
             if (!r.rows.every(x => x.alt && jpRe.test(x.alt) && x.altLang === 'ja')) badS.push(`${lang} 今日: 日本語の名前がない行 ${JSON.stringify(r.rows.filter(x => !x.alt || !jpRe.test(x.alt)).slice(0, 2))}`);
-            if (!r.rows.some(x => x.sub.includes('（肉じゃが）'))) badS.push(`${lang} 今日: 料理名のあとに（肉じゃが）がない ${JSON.stringify(r.rows.map(x => x.sub).slice(0, 2))}`);
-            if (!r.week.length || !r.week.every(x => x.alt && jpRe.test(x.alt) && x.altLang === 'ja') || !r.week.some(x => x.f.includes('（豆腐とわかめの味噌汁）'))) badS.push(`${lang} 1週間: 日本語の名前がない ${JSON.stringify(r.week.slice(0, 2))}`);
-        } else if (lang !== 'zh-Hans' && r.rows.some(x => x.alt && jpRe.test(x.alt))) badS.push(`${lang} 訳のある言葉・日本語なのに日本語の名前を添えた ${JSON.stringify(r.rows.slice(0, 2))}`);
+            if (!r.week.length || !r.week.every(x => x.alt && jpRe.test(x.alt) && x.altLang === 'ja')) badS.push(`${lang} 1週間: 日本語の名前がない ${JSON.stringify(r.week.slice(0, 2))}`);
+            if (!r.pantry.length || !r.pantry.every(x => x.alt && jpRe.test(x.alt) && x.altLang === 'ja')) badS.push(`${lang} 家にあるかも: 日本語の名前がない ${JSON.stringify(r.pantry.slice(0, 3))}`);
+            if (noTr !== r.rows.some(x => x.sub.includes('（肉じゃが）'))) badS.push(`${lang} 今日: 料理名のあとの（肉じゃが）が${noTr ? 'ない' : '訳のある言葉なのに出る'} ${JSON.stringify(r.rows.map(x => x.sub).slice(0, 2))}`);
+            if (noTr && !r.week.some(x => x.f.includes('（豆腐とわかめの味噌汁）'))) badS.push(`${lang} 1週間: 料理名のあとに（豆腐とわかめの味噌汁）がない`);
+        } else if (r.rows.some(x => x.alt) || r.week.some(x => x.alt) || r.pantry.some(x => x.alt)) badS.push(`ja 日本語の画面なのに名前を添えた ${JSON.stringify([r.rows[0], r.week[0], r.pantry[0]])}`);
         // 単位
         const qs = [...r.rows.map(x => x.q), ...r.week.map(x => x.q), ...r.rq];
         if (lang === 'en'){ if (!/\bblock\b/.test(tofu.q)) badU.push(`en 英語の単位が変わった ${tofu.q}`); }
@@ -72,8 +80,32 @@ if (want('S') || want('U')){
         else { const left = qs.filter(q => EN_UNIT.test(q.replace(/（[^）]*）/g, ''))); if (left.length || !tofu.q || /block/.test(tofu.q)) badU.push(`${lang} 英語の単位が残る ${JSON.stringify(left)} 豆腐 ${tofu.q}`); }
         await ctx.close();
     }
-    if (want('S')) ok(!badS.length, 'S 日本の料理の訳がない言葉の買い物メモ（今日・1週間）に日本語の名前を添える。訳のある言葉・日本語には添えない。材料は変わらない: ' + badS.join(' || '));
+    if (want('S')) ok(!badS.length, 'S 日本の献立の買い物メモ（今日・1週間・家にあるかも）に、日本語以外の画面なら日本語の名前を添える（料理名の日本語は訳のない言葉だけ）。日本語の画面には添えない。材料は変わらない: ' + badS.join(' || '));
     if (want('U')) ok(!badU.length, 'U 分量の単位が英語のまま出ない（訳のある単位はその言葉・ar は日本語の単位を添える。英語・日本語は今までどおり）: ' + badU.join(' || '));
+}
+
+// S2（第58回）英語の画面・日本の献立: 「Cabbage キャベツ」のように日本語の名前が出る。日本以外の国の献立（アメリカ・英語、韓国・韓国語）では日本語の名前を出さない
+if (want('S')){
+    const bad = [];
+    for (const [cc, lang, ids] of [['JP', 'en', ['tonkatsu']], ['US', 'en', null], ['KR', 'ko', null]]){
+        const ctx = await b.newContext({viewport: {width: 390, height: 844}, serviceWorkers: 'block'});
+        await ctx.route(/google|gstatic|wikipedia|wikimedia|githubusercontent|line\.me|revenuecat|jsdelivr/, r => r.abort());
+        await ctx.addInitScript(st => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(st)); } }, {onboarded: true, firstUse: '2026-11-01', settings: {country: cc, uiLang: lang, dishCount: 3, servings: 2}});
+        const p = await ctx.newPage(); p.on('pageerror', e => errs.push(cc + ': ' + e.message)); await p.goto(URL_);
+        await p.waitForFunction(() => typeof GH !== 'undefined' && GH.booted && document.querySelector('#view .tray'), null, {timeout: 30000});
+        const r = await p.evaluate(async ids => {
+            const tick = (n = 300) => new Promise(r => setTimeout(r, n)); ids = ids || menuIds();
+            S.cook = {d: TODAY, ids, slots: ids.map(id => byId(id).type || '主菜'), done: {}, adj: true, salt: 0}; save(); gotoStage('shop'); await tick();
+            const rows = [...document.querySelectorAll('.stage-shop .buy-row')].filter(x => x.querySelector('.br-nm')).map(x => ({nm: x.querySelector('.br-nm b').textContent.trim(), alt: (x.querySelector('.br-alt') || {}).textContent || ''}));
+            const old = S.week; S.week = {start: TODAY, days: [{d: TODAY, id: ids[0]}]}; const d = document.createElement('div'); d.innerHTML = shopRowsHtml(shoppingList(), new Set()) + pantryHtml(); S.week = old;
+            return {ids, pack: ids.map(id => byId(id).pack || ''), rows, other: [...d.querySelectorAll('.alt')].map(e => e.textContent)};
+        }, ids);
+        const jpRe = /[ぁ-んァ-ヶ一-龠]/;
+        if (cc === 'JP'){ const cab = r.rows.find(x => /^Cabbage/i.test(x.nm)); if (!cab || cab.alt !== 'キャベツ') bad.push(`JP en 「Cabbage キャベツ」にならない ${JSON.stringify(r.rows)}`); }
+        else if (!r.rows.length || r.pack.some(x => !x) || r.rows.some(x => jpRe.test(x.alt)) || r.other.some(x => jpRe.test(x))) bad.push(`${cc} ${lang} 日本以外の国の献立に日本語の名前 ${JSON.stringify(r).slice(0, 300)}`);
+        await ctx.close();
+    }
+    ok(!bad.length, 'S2 英語の画面・日本の献立は「Cabbage キャベツ」。日本以外の国の献立（US・KR）には日本語の名前を出さない: ' + bad.join(' || '));
 }
 
 if (want('K')){
