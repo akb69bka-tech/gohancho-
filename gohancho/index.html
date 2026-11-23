@@ -860,10 +860,10 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-more[hidden]{display:none}
 /* 第40回 R183: はじめの画面の右上の文字の大きさ（A / A+ / A++。押せる 40px 角）。押してある段は若草の線と地（色だけに頼らず太字） */
 .ob-ts{display:flex;gap:var(--s4);margin-inline-start:auto;flex:0 0 auto}
-.ob-ts-b{min-width:44px;min-height:44px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
+.ob-ts-b{min-width:44px;min-height:44px;margin-block:-2px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
 .ob-ts-b[data-v="0"]{font-size:14px}.ob-ts-b[data-v="1"]{font-size:16px}.ob-ts-b[data-v="2"]{font-size:18px}
 .ob-ts-b[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);font-weight:800}
-.sheet-country .ob-count:has(.ob-ts){min-height:44px}   /* 100人の確かめ（11/23・14位）: 文字の大きさのボタンは 44×44（40 から） */
+.sheet-country .ob-count:has(.ob-ts){min-height:40px}   /* 100人の確かめ（11/23・14位）: 文字の大きさのボタンは 44×44（40 から）。上下 -2px で、行の高さは 40px のまま（195px・もっと大きいの国の画面で、1つめの国のボタンの上が見えるように。ob40 H5） */
 @media (max-width:299px){.ob-count:has(.ob-ts){flex-wrap:nowrap}.ob-count:has(.ob-ts) .ob-n{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}   /* 幅195px: 「ステップ 1 / 2」は下の線（と読み上げ）に任せ、A の3つを1行に */
 /* 第40回 R178: 案内は「献立を見る」のすぐあとに、最初の画面に出す。置き場所は決定の帯の中（細い1行。.ah-in）。お膳より上・お膳の中には置かない。
    帯をお膳の下に置く画面（bar-static。幅195 など）では、帯の代わりに案内だけを下のタブのすぐ上に貼りつける（.ah-st。お膳の上の段は fitTray がその上に入れる）。
