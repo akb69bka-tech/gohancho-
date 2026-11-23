@@ -191,14 +191,18 @@ for (const [w, h] of [[360, 740], [390, 844], [430, 932]]) for (const lang of ['
 }
 
 // R18-7（D8）独・仏・伊・亜・西・比・土・波: ↻ の丸に短い1語（幅 32px 以内・見える）。文字3段階 × 360/390/430。読み上げは「…を別の料理にかえる」のまま
+const fs0 = {};   // 文字「標準」のときの「かえる」の字の大きさ（言語・幅ごと。ts 0 → 1 → 2 の順に測る）
 for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) {
     if (!want('R18-7')) break;
     const {p, ctx} = await open({w: 390, h: 844, lang, dc: 3, sv: 2}, `d8-${lang}`);   // 1言語に1ページ。画面の幅・文字の大きさはその中で切りかえる（R18-8 と同じ。ページを開き直す時間を減らす）
     for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
     await p.setViewportSize({width: w, height: h});
     const r = await p.evaluate(async ts => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); session.menu = null; render(); await __tick(); const tr = document.querySelector('#view .tray');
-        return {tight: tr.classList.contains('tight'), sw: [...tr.querySelectorAll('.spot .swap[data-act=reroll]')].map(e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), fs: parseFloat(getComputedStyle(e).fontSize), aria: e.getAttribute('aria-label') || ''}; })}; }, ts);
-    ok(r.sw.length && (r.tight || r.sw.every(x => x.word && x.shown && x.text && x.w > 0 && x.w <= 32 && x.aria.length > 3)), `R18-7 D8 ${lang} ${w}px 文字${ts}: ↻ の丸に短い字（${r.sw[0] && r.sw[0].text}）が見えて 32px 以内: ` + JSON.stringify(r));
+        return {tight: tr.classList.contains('tight'), sw: [...tr.querySelectorAll('.spot .swap[data-act=reroll]')].map(e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const bq = e.getBoundingClientRect(), cx = (bq.left + bq.right) / 2, cy = (bq.top + bq.bottom) / 2, cdist = Math.max(...[[q.left, q.top], [q.right, q.top], [q.left, q.bottom], [q.right, q.bottom]].map(([x, y]) => Math.hypot(x - cx, y - cy))), ico = getComputedStyle(e, '::before').display !== 'none'; const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), fs: parseFloat(getComputedStyle(e).fontSize), cd: +cdist.toFixed(1), ico, aria: e.getAttribute('aria-label') || ''}; })}; }, ts);
+    // 100人の確かめ（11/23・6位）: 文字「大きい」「もっと大きい」では、丸（44px）の中は字だけで、字は文字の大きさに合わせて大きくなる（標準のときより小さくならない）。字の四すみは丸のふちの内側（半径 19.5px）
+    if (!ts) fs0[lang + w] = Math.max(0, ...r.sw.filter(x => x.word).map(x => x.fs));   // 料理の数は文字の大きさで変わることがあるので、標準のときのいちばん大きい字と比べる
+    ok(r.sw.length && (r.tight || r.sw.every(x => x.word && x.shown && x.text && x.w > 0 && x.aria.length > 3 && (ts ? !x.ico && x.cd <= 19.5 && x.fs >= (fs0[lang + w] || 99) && x.fs >= 9 : x.w <= 32))),
+        `R18-7 D8 ${lang} ${w}px 文字${ts}: ↻ の丸に短い字（${r.sw[0] && r.sw[0].text}）が見えて ${ts ? '丸のふちの内側・字だけで標準より小さくない' : '32px 以内'}: ` + JSON.stringify(r));
     }
     await ctx.close();
 }
@@ -254,11 +258,11 @@ for (const lang of ['de', 'fr', 'it', 'ar', 'es', 'fil', 'tr', 'pl']) {
     for (const [w, h] of [[390, 844], [360, 740], [430, 932]]) for (const ts of [0, 1, 2]) {
     await p.setViewportSize({width: w, height: h});
     const r = await p.evaluate(async ts => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); TRAY_FIT.key = ''; TRAY_FIT.base = ''; TRAY_FIT.state = null; window.scrollTo(0, 0); let st = null; for (let i = 0; i < 30 && !st; i++){ session.menu = null; render(); await __tick(); st = document.querySelector('#view .tray .spot .swap[data-act=staple-next]:not(.tray-add)'); }
-        const tr = document.querySelector('#view .tray'), info = e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), aria: e.getAttribute('aria-label') || ''}; };
+        const tr = document.querySelector('#view .tray'), info = e => { const rg = document.createRange(); rg.selectNodeContents(e); const q = rg.getBoundingClientRect(); const bq = e.getBoundingClientRect(), cx = (bq.left + bq.right) / 2, cy = (bq.top + bq.bottom) / 2, cdist = Math.max(...[[q.left, q.top], [q.right, q.top], [q.left, q.bottom], [q.right, q.bottom]].map(([x, y]) => Math.hypot(x - cx, y - cy))), ico = getComputedStyle(e, '::before').display !== 'none'; const s = e.querySelector('.sw-s'); return {word: e.classList.contains('sw-word'), text: s ? s.textContent : '', shown: !!s && getComputedStyle(s).display !== 'none' && parseFloat(getComputedStyle(e).fontSize) > 0, w: Math.round(q.width), fs: parseFloat(getComputedStyle(e).fontSize), cd: +cdist.toFixed(1), ico, aria: e.getAttribute('aria-label') || ''}; };
         const re = tr.querySelector('.spot .swap[data-act=reroll]');
         return {tight: tr.classList.contains('tight'), staple: st ? info(st) : null, reroll: re ? info(re) : null, whole: t('献立を変える')}; }, ts);
     const s = r.staple, q = r.reroll;
-    ok(s && q && (r.tight || (s.word && s.shown && s.text && s.text === q.text && s.w > 0 && s.w <= 32 && s.aria.length > 3 && s.text !== r.whole && (lang !== 'de' || s.text === 'Tausch'))), `R18-10 R58 ${lang} ${w}px 文字${ts}: 主食の ↻ の丸に主菜と同じ短い字（${s && s.text}）が見えて 32px 以内: ` + JSON.stringify(r));
+    ok(s && q && (r.tight || (s.word && s.shown && s.text && s.text === q.text && s.w > 0 && (ts ? !s.ico && s.cd <= 19.5 && s.fs === q.fs : s.w <= 32) && s.aria.length > 3 && s.text !== r.whole && (lang !== 'de' || s.text === 'Tausch'))), `R18-10 R58 ${lang} ${w}px 文字${ts}: 主食の ↻ の丸に主菜と同じ短い字（${s && s.text}）が見えて ${ts ? '丸のふちの内側（字だけ・主菜と同じ大きさ）' : '32px 以内'}: ` + JSON.stringify(r));
     }
     await ctx.close();
 }

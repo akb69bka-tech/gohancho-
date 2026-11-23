@@ -251,7 +251,7 @@ if (want('H6')){
             const sh = document.querySelector('#sheet-root .sheet'), bs = [...sh.querySelectorAll('[data-act=ob-ts]')], sr = sh.getBoundingClientRect(), vw = document.documentElement.clientWidth;
             const grp = bs[0] && bs[0].closest('[role=group]'), gr = grp && grp.getBoundingClientRect();
             return { n: bs.length, labels: bs.map(e => e.textContent.trim()), pressed: bs.map(e => e.getAttribute('aria-pressed')), names: bs.map(e => e.getAttribute('aria-label')), grp: grp && grp.getAttribute('aria-label'),
-                topRight: !!gr && gr.top < sr.top + 90 && gr.right >= sr.right - 24 && gr.left > sr.left + sr.width * .2 && bs.every(e => { const r = e.getBoundingClientRect(); return r.right <= vw + .5 && r.left >= 0; }), small: bs.some(e => { const r = e.getBoundingClientRect(); return r.width < 40 || r.height < 40; }) };
+                topRight: !!gr && gr.top < sr.top + 90 && gr.right >= sr.right - 24 && gr.left > sr.left + sr.width * .2 && bs.every(e => { const r = e.getBoundingClientRect(); return r.right <= vw + .5 && r.left >= 0; }), small: bs.some(e => { const r = e.getBoundingClientRect(); return r.width < 44 || r.height < 44; }) };   // 100人の確かめ（11/23・14位）: 40 → 44px
         });
         ok(c.n === 3 && JSON.stringify(c.labels) === '["A","A+","A++"]' && JSON.stringify(c.pressed) === '["true","false","false"]' && c.grp && c.names.every(Boolean) && c.topRight && !c.small, `H6 ${w}px: 1つめの画面の右上に A / A+ / A++（読み上げの名前つき・押せる大きさ）: ` + JSON.stringify(c));
         await p.click('#sheet-root [data-act=ob-ts][data-v="2"]', { timeout: 5000 }).catch(() => {}); await p.waitForTimeout(200);

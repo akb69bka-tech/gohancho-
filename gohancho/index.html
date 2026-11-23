@@ -860,10 +860,10 @@ html[data-ts="1"] .hanko,html[data-ts="2"] .hanko{display:none}
 .ob-more[hidden]{display:none}
 /* 第40回 R183: はじめの画面の右上の文字の大きさ（A / A+ / A++。押せる 40px 角）。押してある段は若草の線と地（色だけに頼らず太字） */
 .ob-ts{display:flex;gap:var(--s4);margin-inline-start:auto;flex:0 0 auto}
-.ob-ts-b{min-width:40px;min-height:40px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
+.ob-ts-b{min-width:44px;min-height:44px;padding:0 var(--s4);border:1.5px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;line-height:1;cursor:pointer;font-family:var(--sans,inherit)}
 .ob-ts-b[data-v="0"]{font-size:14px}.ob-ts-b[data-v="1"]{font-size:16px}.ob-ts-b[data-v="2"]{font-size:18px}
 .ob-ts-b[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft);font-weight:800}
-.sheet-country .ob-count:has(.ob-ts){min-height:40px}
+.sheet-country .ob-count:has(.ob-ts){min-height:44px}   /* 100人の確かめ（11/23・14位）: 文字の大きさのボタンは 44×44（40 から） */
 @media (max-width:299px){.ob-count:has(.ob-ts){flex-wrap:nowrap}.ob-count:has(.ob-ts) .ob-n{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}   /* 幅195px: 「ステップ 1 / 2」は下の線（と読み上げ）に任せ、A の3つを1行に */
 /* 第40回 R178: 案内は「献立を見る」のすぐあとに、最初の画面に出す。置き場所は決定の帯の中（細い1行。.ah-in）。お膳より上・お膳の中には置かない。
    帯をお膳の下に置く画面（bar-static。幅195 など）では、帯の代わりに案内だけを下のタブのすぐ上に貼りつける（.ah-st。お膳の上の段は fitTray がその上に入れる）。
@@ -1314,6 +1314,12 @@ body.on-today.tray-tight .wrap{gap:var(--s8);padding-top:var(--s4)}body.on-today
 .tray.grid2:not(.tight) .spot .swap.sw-word{flex-direction:column;gap:0;font-size:10px;font-weight:700;line-height:1;letter-spacing:0;padding:1px 0 0;text-overflow:clip;background:radial-gradient(circle closest-side,var(--porcelain) calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
 .tray.grid2:not(.tight) .spot .swap.sw-word:hover{background:radial-gradient(circle closest-side,#fff calc(100% - 2.6px),#9a6a48 calc(100% - 2px),#9a6a48 calc(100% - .6px),transparent 100%)}
 .tray.grid2:not(.tight) .spot .swap.sw-word::before{font-size:17px;line-height:17px;height:17px;margin:0 0 1px}
+/* 100人の確かめ（11/23・6位）: 文字の大きさ「大きい」「もっと大きい」では、丸（44×44・位置はそのまま）の中を字だけにして、字を文字の大きさに合わせて大きくする（10px × 1.15・1.3）。
+   ↻ と字を縦に重ねると、字の下の端が丸のふちにかかって大きくできないため。入らない語は 11.5px → 10px → 9px（字だけ）、それでも入らなければ ↻ だけ（fixSwapWord） */
+html[data-ts] .tray.grid2:not(.tight) .spot .swap.sw-word{font-size:calc(10px * var(--ts,1));padding:0}
+html[data-ts] .tray.grid2:not(.tight) .spot .swap.sw-word::before{display:none}
+html[data-ts] .tray.grid2:not(.tight) .spot .swap.sw-word.sw-word-m{font-size:11.5px}html[data-ts] .tray.grid2:not(.tight) .spot .swap.sw-word.sw-word-s{font-size:10px}
+html[data-ts] .tray.grid2:not(.tight) .spot .swap.sw-word.sw-word-xs{font-size:9px}
 .spot .swap .sw-s{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-f{display:none}.tray.grid2:not(.tight) .spot .swap.sw-word .sw-s{display:inline}.tray.grid2:not(.tight) .spot .swap.sw-word.sw-word-s{font-size:9px}   /* 第18回 R58: 6字の語（独 Tausch など）は 9px にして丸に入れる */   /* D8: 器の丸（↻）には短い1語（tc('器の丸','かえる')。独 Neu・仏 Autre など）。名前の下の行（tight）の「かえる」は長い訳のまま */
 /* まるごと入れ替えの丸と、下の段の角の ↻ のあいだに余白（指のずれで ↻ を押さない。D8） */
 .tray.grid2:not(.tight) .tg-mid{margin-bottom:8px}
@@ -1372,7 +1378,7 @@ body.on-today .greet{display:block;-webkit-line-clamp:unset;line-clamp:none;over
 .req-btn .wsh-ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
 .req-btn .rq-n{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:.75rem;line-height:20px;text-align:center}
 .greet-row.solo{flex-direction:row;align-items:center;gap:8px}.greet-row.solo .greet-tx{flex:1 1 auto}
-.req-btn.lite{flex:none;min-height:36px;padding:2px 10px;gap:5px;font-size:.8125rem;font-weight:700;white-space:nowrap}   /* 家族のいない人の小さな入口: あいさつと同じ行（お膳を下げない） */
+.req-btn.lite{flex:none;min-height:44px;margin-block:-4px;padding:2px 10px;gap:5px;font-size:.8125rem;font-weight:700;white-space:nowrap}   /* 100人の確かめ（11/23・13位）: 「食べたいもの」は押せる高さ 44px（36 から）。上下 -4px で、行の高さ・お膳の位置は今までどおり */   /* 家族のいない人の小さな入口: あいさつと同じ行（お膳を下げない） */
 .req-btn .rq1{flex:none}.req-btn .rq2{flex:0 1 auto;min-width:0;font-size:.8125rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 body.on-today.tray-tight4 header.top > div:not(.seal){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}   /* 第11回 R20: とても狭い画面の最後の詰め。日付・アプリの名前の行を畳む（読み上げには残す） */
 /* 第18回 S22・R20: いちばん詰めても入らないときの最後の一手（fitTray の reqUp）。家族リクエストの入口を上の端の行（国・設定の左）へ移し、印（膳）とあいさつの行を出さない。入口は残る（幅195px では印と数だけ。読み上げは同じ） */
@@ -3744,6 +3750,8 @@ function t(ja, vars){
         if (LANG === 'en' && isGB()) s = brit(s);
     }
     if (!vars) return LANG === 'ko' ? koParticles(s) : s;
+    // 100人の確かめ（11/23・11位）: 日本語の「{n}つ」は 1〜9 まで。10 以上は「個」（「11つ」「13つ」→「11個」「13個」。「11個目」も同じ）
+    if (LANG === 'ja') s = String(s).replace(/\{(\w+)\}つ/g, (m, k) => Object.prototype.hasOwnProperty.call(vars, k) && Number(vars[k]) >= 10 ? '{' + k + '}個' : m);
     // {n} は値に置きかえる。訳の中の {n:# day:# days} は数で単数・複数を選ぶ（# が数になる）。{n|one=…|two=…|few=…|other=…} は形の名前で選ぶ
     const out = String(s).replace(/\{(\w+)\|([^{}]*)\}/g, (m, k, body) => {
         if (!Object.prototype.hasOwnProperty.call(vars, k)) return m;
@@ -6145,8 +6153,13 @@ function fixSwapWord(tr){
     const corner = tr.classList.contains('grid2') && !tr.classList.contains('tight');
     tr.querySelectorAll('.spot .swap[data-act="reroll"], .spot .swap[data-act="staple-next"]:not(.tray-add)').forEach(e => {
         e.classList.remove('sw-word'); if (!corner) return;
-        e.classList.add('sw-word'); e.classList.remove('sw-word-s');
+        e.classList.add('sw-word'); e.classList.remove('sw-word-m', 'sw-word-s', 'sw-word-xs');
         const r = document.createRange(); r.selectNodeContents(e); const w = () => r.getBoundingClientRect().width;
+        if (document.documentElement.hasAttribute('data-ts')){   // 100人の確かめ（11/23）: 文字が大きいときは字だけ（丸の真ん中）。丸の中の幅 36px まで。入らなければ 11.5px → 10px → 9px → ↻ だけ
+            for (const c of ['sw-word-m', 'sw-word-s', 'sw-word-xs']){ if (w() <= 36) return; e.classList.remove('sw-word-m', 'sw-word-s', 'sw-word-xs'); e.classList.add(c); }
+            if (w() > 36) e.classList.remove('sw-word', 'sw-word-m', 'sw-word-s', 'sw-word-xs');
+            return;
+        }
         if (w() > 32){ e.classList.add('sw-word-s'); if (w() > 32) e.classList.remove('sw-word', 'sw-word-s'); }   // 第18回 R58: 32px に入らない語は 9px で試し、それでも入らなければ ↻ だけ
     });
 }
@@ -6573,11 +6586,13 @@ function todayShopRows(its0, st0){   // its0・st0: 決める前の献立（画�
             const nm = shopName(i, r), lab = /[฀-๿]/.test(nm) ? nm.split(/\s+/)[0] : nm, k = i.key + '|' + shopBase(nm), into = i.opt ? opt : map;
             const e = into.get(k) || {key: k, ik: i.key, label: lab, qty: [], dishes: [], sec: shopSec(i), alt: '', home: have.has(i.key)};
             if (i.qty) e.qty.push(scaleText(i.qty, fac)); if (!e.dishes.includes(x.r.name)) e.dishes.push(x.r.name);
-            if (!e.alt && (r.pack || 'JP') !== cc) e.alt = itemAltName(i, r);   // ほかの国の料理は、もうひとつの名前（売り場で探す名前）も
+            if (!e.alt && ((r.pack || 'JP') !== cc || jpNoTr(r))) e.alt = itemAltName(i, r);   // ほかの国の料理は、もうひとつの名前（売り場で探す名前）も。日本の料理の訳がない言葉では日本語の名前（100人の確かめ 11/23）
+            if (qtyBorrowed(r)) e.jq = true; { const ja = jpDishJa(x.r); if (ja) (e.dja || (e.dja = {}))[x.r.name] = ja; }
             mayOf(e, i);
             into.set(k, e);
         });
         pantryOf(r).forEach(p => { if (/^p\|(水|お湯|湯|ご飯|water|hot water|ice water)$/i.test(p.key)) return; const o = seas.get(p.key) || {key: p.key, label: p.label, dishes: []}; if (!o.dishes.includes(x.r.name)) o.dishes.push(x.r.name);
+            if (p.ja && !o.alt && p.ja !== p.label) o.alt = p.ja; { const ja = jpDishJa(x.r); if (ja) (o.dja || (o.dja = {}))[x.r.name] = ja; }
             if (p.src) { const c = p.src.replace(/^[(（][^)）]*[)）]\s*/, ''), it = r.pack ? {name: c, label: c, key: c.toLowerCase(), en: c.toLowerCase()} : parseIng(c); mayOf(o, it); hitOf(o, it); }
             else if (p.it) hitOf(o, p.it);
             seas.set(p.key, o); });
@@ -6603,14 +6618,15 @@ function buyToggleHtml(e){   // ［買う］［家にある］の切りかえ（
 }
 function buyRowHtml(e, st, plain){
     const got = st.got.has(e.key), fr = st.fr.has(e.key);
-    const sub = [joinNames(e.dishes), e.use ? t('{qty}使う', {qty: e.use}) : ''].filter(Boolean).join(t('・'));
+    const q = s => e.jq ? qtyLoc(s) : s;   // 100人の確かめ（11/23・4位）: 英語の訳を借りた分量の単位は、表示だけその言葉に
+    const sub = [dishesWithJa(e), e.use ? t('{qty}使う', {qty: q(e.use)}) : ''].filter(Boolean).join(t('・'));
     return `<div class="buy-row${got ? ' got' : ''}${e.buying ? '' : ' is-have'}">
         ${e.buying && !plain ? `<label class="br-chk"><input type="checkbox" data-act="sb-got" data-k="${esc(e.key)}" ${got ? 'checked' : ''} aria-label="${esc(t('{name}を買った', {name: e.label}))}"></label>` : '<span class="br-chk" aria-hidden="true"></span>'}
-        <span class="br-main"><span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.hit && e.hit.length ? `<small class="alg-tag" role="note">⚠ ${esc(joinNames(e.hit.map(algLabel)))}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
-        ${e.buyQty ? `<span class="br-q"><bdi>${esc(e.buyQty)}</bdi></span>` : ''}
+        <span class="br-main"><span class="br-nm"><b>${got ? '<span class="br-ok" aria-hidden="true">✓</span>' : ''}${esc(e.label)}</b>${e.alt ? `<small class="br-alt"><bdi${jaLangAttr(e.alt)}>${esc(e.alt)}</bdi></small>` : ''}${sub ? `<small>${esc(sub)}</small>` : ''}${e.hit && e.hit.length ? `<small class="alg-tag" role="note">⚠ ${esc(joinNames(e.hit.map(algLabel)))}</small>` : ''}${e.may && e.may.length ? `<small class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(e.may.map(algLabel))}))}</small>` : ''}</span>
+        ${e.buyQty ? `<span class="br-q"><bdi>${esc(q(e.buyQty))}</bdi></span>` : ''}
         ${got ? '' : buyToggleHtml(e)}</span>
-        ${got ? `<span class="br-after">${fr ? `<span class="small muted">${esc(e.left ? t('冷蔵庫に入れました（使いかけ {qty}）', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}) : t('冷蔵庫に入れました'))}</span>`
-            : `<button type="button" class="btn sm" data-act="sb-fridge" data-k="${esc(e.key)}">${esc(t('冷蔵庫に入れる'))}</button>${e.left ? `<span class="small muted">${esc(t('残り {qty} は「使いかけ」として入れます', {qty: fmtAmount(e.left.qty, e.left.unit) + e.left.unit}))}</span>` : ''}`}</span>` : ''}
+        ${got ? `<span class="br-after">${fr ? `<span class="small muted">${esc(e.left ? t('冷蔵庫に入れました（使いかけ {qty}）', {qty: q(fmtAmount(e.left.qty, e.left.unit) + e.left.unit)}) : t('冷蔵庫に入れました'))}</span>`
+            : `<button type="button" class="btn sm" data-act="sb-fridge" data-k="${esc(e.key)}">${esc(t('冷蔵庫に入れる'))}</button>${e.left ? `<span class="small muted">${esc(t('残り {qty} は「使いかけ」として入れます', {qty: q(fmtAmount(e.left.qty, e.left.unit) + e.left.unit)}))}</span>` : ''}`}</span>` : ''}
     </div>`;
 }
 function viewShopStage(){
@@ -12199,6 +12215,65 @@ function jpEnName(name){
     }
     return JP_EN_MAP.get(name) || '';
 }
+// 100人の確かめ（11/23・3位・4位）: 日本の料理の分量は、訳のない言葉（と韓国語・タイ語・ベトナム語）では英語の訳を借りている（1/2 block・1 bunch）。
+// 表示するときだけ、単位をその言葉にする（計算・合計・買う数は英語のまま。表示の直前で置きかえる）。訳のない言葉（ar・hi・pl・tr）は、英語のあとに日本語の単位を添える（1/2 block（丁））
+// [英語の単位, 日本語, {言葉: [1つのとき, 2つ以上のとき]}, 単位でない語か]。言葉の欄がないものは日本語を添える（単位でない語（about・freshly cooked・small）は英語のまま）
+const JP_UNIT_TR = [
+    ['rice[- ]cooker cups?', '合', {}],
+    ['freshly cooked', '炊きたて', {es: ['recién cocido'], 'pt-BR': ['recém-cozido'], fr: ['fraîchement cuit'], de: ['frisch gekocht'], it: ['appena cotto'], id: ['baru matang'], fil: ['bagong luto'], ko: ['갓 지은 것'], th: ['หุงใหม่'], vi: ['mới nấu'], 'zh-Hans': ['刚煮好'], 'zh-Hant': ['剛煮好']}, 1],
+    ['a little', '少々', {es: ['un poco'], 'pt-BR': ['um pouco'], fr: ['un peu'], de: ['etwas'], it: ["un po'"], id: ['sedikit'], fil: ['kaunti'], ko: ['약간'], th: ['เล็กน้อย'], vi: ['một chút'], 'zh-Hans': ['少许'], 'zh-Hant': ['少許']}],
+    ['as needed', '適量', {es: ['al gusto'], 'pt-BR': ['a gosto'], fr: ['selon le besoin'], de: ['nach Bedarf'], it: ['q.b.'], id: ['secukupnya'], fil: ['ayon sa kailangan'], ko: ['적당량'], th: ['ตามต้องการ'], vi: ['vừa đủ'], 'zh-Hans': ['适量'], 'zh-Hant': ['適量']}],
+    ['to taste', '少々', {es: ['al gusto'], 'pt-BR': ['a gosto'], fr: ['selon le goût'], de: ['nach Geschmack'], it: ['q.b.'], id: ['secukupnya'], fil: ['ayon sa panlasa'], ko: ['입맛에 맞게'], th: ['ตามชอบ'], vi: ['tùy khẩu vị'], 'zh-Hans': ['适量'], 'zh-Hant': ['適量']}],
+    ['about', '約', {es: ['aprox.'], 'pt-BR': ['cerca de'], fr: ['environ'], de: ['etwa'], it: ['circa'], id: ['sekitar'], fil: ['mga'], ko: ['약'], th: ['ประมาณ'], vi: ['khoảng'], 'zh-Hans': ['约'], 'zh-Hant': ['約']}, 1],
+    ['blocks?', '丁', {es: ['bloque', 'bloques'], 'pt-BR': ['bloco', 'blocos'], fr: ['bloc', 'blocs'], de: ['Block', 'Blöcke'], it: ['panetto', 'panetti'], id: ['blok'], fil: ['bloke'], ko: ['모'], th: ['ก้อน'], vi: ['miếng'], 'zh-Hans': ['块'], 'zh-Hant': ['塊']}],
+    ['heads?', '個', {es: ['pieza', 'piezas'], 'pt-BR': ['unidade', 'unidades'], fr: ['tête', 'têtes'], de: ['Kopf', 'Köpfe'], it: ['cespo', 'cespi'], id: ['buah'], fil: ['ulo'], ko: ['통'], th: ['หัว'], vi: ['bắp'], 'zh-Hans': ['颗'], 'zh-Hant': ['顆']}],
+    ['packs?', 'パック', {es: ['paquete', 'paquetes'], 'pt-BR': ['pacote', 'pacotes'], fr: ['paquet', 'paquets'], de: ['Packung', 'Packungen'], it: ['confezione', 'confezioni'], id: ['pak'], fil: ['pakete'], ko: ['팩'], th: ['แพ็ค'], vi: ['gói'], 'zh-Hans': ['包'], 'zh-Hant': ['包']}],
+    ['bunch(?:es)?', '束', {es: ['manojo', 'manojos'], 'pt-BR': ['maço', 'maços'], fr: ['botte', 'bottes'], de: ['Bund', 'Bund'], it: ['mazzetto', 'mazzetti'], id: ['ikat'], fil: ['tali'], ko: ['단'], th: ['กำ'], vi: ['bó'], 'zh-Hans': ['把'], 'zh-Hant': ['把']}],
+    ['bundles?', '束', {es: ['manojo', 'manojos'], 'pt-BR': ['maço', 'maços'], fr: ['botte', 'bottes'], de: ['Bund', 'Bund'], it: ['mazzetto', 'mazzetti'], id: ['ikat'], fil: ['tali'], ko: ['단'], th: ['กำ'], vi: ['bó'], 'zh-Hans': ['把'], 'zh-Hant': ['把']}],
+    ['slices?', '枚', {es: ['rebanada', 'rebanadas'], 'pt-BR': ['fatia', 'fatias'], fr: ['tranche', 'tranches'], de: ['Scheibe', 'Scheiben'], it: ['fetta', 'fette'], id: ['iris'], fil: ['hiwa'], ko: ['장'], th: ['แผ่น'], vi: ['lát'], 'zh-Hans': ['片'], 'zh-Hant': ['片']}],
+    ['bowls?', '杯', {es: ['tazón', 'tazones'], 'pt-BR': ['tigela', 'tigelas'], fr: ['bol', 'bols'], de: ['Schüssel', 'Schüsseln'], it: ['ciotola', 'ciotole'], id: ['mangkuk'], fil: ['mangkok'], ko: ['공기'], th: ['ถ้วย'], vi: ['bát'], 'zh-Hans': ['碗'], 'zh-Hant': ['碗']}],
+    ['bags?', '袋', {es: ['bolsa', 'bolsas'], 'pt-BR': ['saco', 'sacos'], fr: ['sachet', 'sachets'], de: ['Beutel', 'Beutel'], it: ['busta', 'buste'], id: ['kantong'], fil: ['supot'], ko: ['봉지'], th: ['ถุง'], vi: ['túi'], 'zh-Hans': ['袋'], 'zh-Hant': ['袋']}],
+    ['go', '合', {}],
+    ['servings?', '人分', {es: ['ración', 'raciones'], 'pt-BR': ['porção', 'porções'], fr: ['portion', 'portions'], de: ['Portion', 'Portionen'], it: ['porzione', 'porzioni'], id: ['porsi'], fil: ['serving'], ko: ['인분'], th: ['ที่'], vi: ['phần'], 'zh-Hans': ['份'], 'zh-Hant': ['份']}],
+    ['portions?', '玉', {es: ['porción', 'porciones'], 'pt-BR': ['porção', 'porções'], fr: ['portion', 'portions'], de: ['Portion', 'Portionen'], it: ['porzione', 'porzioni'], id: ['porsi'], fil: ['serving'], ko: ['인분'], th: ['ที่'], vi: ['phần'], 'zh-Hans': ['份'], 'zh-Hant': ['份']}],
+    ['tbsp', '大さじ', {es: ['cda.'], 'pt-BR': ['colher de sopa', 'colheres de sopa'], fr: ['c. à soupe'], de: ['EL'], it: ['cucchiaio', 'cucchiai'], id: ['sdm'], fil: ['kutsara'], ko: ['큰술'], th: ['ช้อนโต๊ะ'], vi: ['muỗng canh'], 'zh-Hans': ['大勺'], 'zh-Hant': ['大匙']}],
+    ['tsp', '小さじ', {es: ['cdta.'], 'pt-BR': ['colher de chá', 'colheres de chá'], fr: ['c. à café'], de: ['TL'], it: ['cucchiaino', 'cucchiaini'], id: ['sdt'], fil: ['kutsarita'], ko: ['작은술'], th: ['ช้อนชา'], vi: ['muỗng cà phê'], 'zh-Hans': ['小勺'], 'zh-Hant': ['小匙']}],
+    ['pieces?', '個', {es: ['pieza', 'piezas'], 'pt-BR': ['pedaço', 'pedaços'], fr: ['morceau', 'morceaux'], de: ['Stück', 'Stück'], it: ['pezzo', 'pezzi'], id: ['potong'], fil: ['piraso'], ko: ['개'], th: ['ชิ้น'], vi: ['miếng'], 'zh-Hans': ['块'], 'zh-Hant': ['塊']}],
+    ['knobs?', 'かけ', {es: ['trozo', 'trozos'], 'pt-BR': ['pedaço', 'pedaços'], fr: ['morceau', 'morceaux'], de: ['Stück', 'Stück'], it: ['pezzetto', 'pezzetti'], id: ['ruas'], fil: ['piraso'], ko: ['톨'], th: ['แง่ง'], vi: ['củ'], 'zh-Hans': ['块'], 'zh-Hant': ['塊']}],
+    ['fillets?', '切れ', {es: ['filete', 'filetes'], 'pt-BR': ['filé', 'filés'], fr: ['filet', 'filets'], de: ['Filet', 'Filets'], it: ['filetto', 'filetti'], id: ['potong'], fil: ['hiwa'], ko: ['토막'], th: ['ชิ้น'], vi: ['khúc'], 'zh-Hans': ['块'], 'zh-Hant': ['塊']}],
+    ['fish', '尾', {es: ['pescado', 'pescados'], 'pt-BR': ['peixe', 'peixes'], fr: ['poisson', 'poissons'], de: ['Fisch', 'Fische'], it: ['pesce', 'pesci'], id: ['ekor'], fil: ['piraso'], ko: ['마리'], th: ['ตัว'], vi: ['con'], 'zh-Hans': ['条'], 'zh-Hant': ['條']}],
+    ['leaf|leaves', '枚', {es: ['hoja', 'hojas'], 'pt-BR': ['folha', 'folhas'], fr: ['feuille', 'feuilles'], de: ['Blatt', 'Blätter'], it: ['foglia', 'foglie'], id: ['lembar'], fil: ['dahon'], ko: ['장'], th: ['ใบ'], vi: ['lá'], 'zh-Hans': ['片'], 'zh-Hant': ['片']}],
+    ['cans?', '缶', {es: ['lata', 'latas'], 'pt-BR': ['lata', 'latas'], fr: ['boîte', 'boîtes'], de: ['Dose', 'Dosen'], it: ['lattina', 'lattine'], id: ['kaleng'], fil: ['lata'], ko: ['캔'], th: ['กระป๋อง'], vi: ['lon'], 'zh-Hans': ['罐'], 'zh-Hant': ['罐']}],
+    ['sheets?', '枚', {es: ['hoja', 'hojas'], 'pt-BR': ['folha', 'folhas'], fr: ['feuille', 'feuilles'], de: ['Blatt', 'Blätter'], it: ['foglio', 'fogli'], id: ['lembar'], fil: ['piraso'], ko: ['장'], th: ['แผ่น'], vi: ['tờ'], 'zh-Hans': ['张'], 'zh-Hant': ['張']}],
+    ['box(?:es)?', '箱', {es: ['caja', 'cajas'], 'pt-BR': ['caixa', 'caixas'], fr: ['boîte', 'boîtes'], de: ['Schachtel', 'Schachteln'], it: ['scatola', 'scatole'], id: ['kotak'], fil: ['kahon'], ko: ['상자'], th: ['กล่อง'], vi: ['hộp'], 'zh-Hans': ['盒'], 'zh-Hant': ['盒']}],
+    ['cups?', 'カップ', {es: ['taza', 'tazas'], 'pt-BR': ['xícara', 'xícaras'], fr: ['tasse', 'tasses'], de: ['Tasse', 'Tassen'], it: ['tazza', 'tazze'], id: ['cangkir'], fil: ['tasa'], ko: ['컵'], th: ['ถ้วย'], vi: ['cốc'], 'zh-Hans': ['杯'], 'zh-Hant': ['杯']}],
+    ['stalks?', '本', {es: ['tallo', 'tallos'], 'pt-BR': ['talo', 'talos'], fr: ['tige', 'tiges'], de: ['Stange', 'Stangen'], it: ['gambo', 'gambi'], id: ['batang'], fil: ['tangkay'], ko: ['대'], th: ['ต้น'], vi: ['cọng'], 'zh-Hans': ['根'], 'zh-Hant': ['根']}],
+    ['spears?', '本', {es: ['tallo', 'tallos'], 'pt-BR': ['talo', 'talos'], fr: ['tige', 'tiges'], de: ['Stange', 'Stangen'], it: ['gambo', 'gambi'], id: ['batang'], fil: ['tangkay'], ko: ['대'], th: ['ต้น'], vi: ['cọng'], 'zh-Hans': ['根'], 'zh-Hant': ['根']}],
+    ['pairs?', '腹', {es: ['par', 'pares'], 'pt-BR': ['par', 'pares'], fr: ['paire', 'paires'], de: ['Paar', 'Paar'], it: ['paio', 'paia'], id: ['pasang'], fil: ['pares'], ko: ['쌍'], th: ['คู่'], vi: ['đôi'], 'zh-Hans': ['对'], 'zh-Hant': ['對']}],
+    ['small', '小', {es: ['pequeño'], 'pt-BR': ['pequeno'], fr: ['petit'], de: ['klein'], it: ['piccolo'], id: ['kecil'], fil: ['maliit'], ko: ['작은 것'], th: ['ลูกเล็ก'], vi: ['nhỏ'], 'zh-Hans': ['小的'], 'zh-Hant': ['小的']}, 1],
+    ['worth', '', {}]
+];
+const JP_UNIT_RE = new RegExp('(\\d+(?:\\.\\d+)?(?:\\s+\\d+\\/\\d+|\\/\\d+)?\\s*)?\\b(' + JP_UNIT_TR.map(x => x[0]).join('|') + ')\\b', 'gi');
+function jpUnitHit(w){ return JP_UNIT_TR.find(x => new RegExp('^(?:' + x[0] + ')$', 'i').test(w)); }
+// 日本の料理（国のパックではない）で、分量が英語の訳を借りているか
+function qtyBorrowed(r){ return !!r && !r.pack && r.slang === 'en' && LANG !== 'ja' && LANG !== 'en'; }
+function qtyLoc(s){
+    if (!s || LANG === 'ja' || LANG === 'en') return s;
+    return String(s).replace(JP_UNIT_RE, (m, num, w) => {
+        const x = jpUnitHit(w); if (!x) return m;
+        const tr = x[2][LANG], n = num ? (s => { const p = s.trim().split(/\s+/); return p.reduce((a, q) => a + (q.includes('/') ? q.split('/')[0] / q.split('/')[1] : Number(q)), 0); })(num) : 1;
+        if (!x[1] && !tr) return num ? num.replace(/\s+$/, '') : '';   // worth（「4 cm worth」）は落とす
+        if (!tr) return (num || '') + (x[1] === '合' ? '合' : x[3] ? w : w + '（' + x[1] + '）');   // 訳のない言葉は英語のあとに日本語の単位（1/2 block（丁））。go（ご飯の量）はどの言葉でも「合」
+        const word = n > 1 && tr[1] ? tr[1] : tr[0];
+        return (num || '') + word;
+    }).replace(/\s+$/, '').replace(/\s+([),，、])/g, '$1');   // 「4 cm worth」→「4 cm」（落としたあとの空白）
+}
+// 100人の確かめ（11/23・3位）: 日本の料理を、日本の料理の訳がない言葉（スペイン語・ポルトガル語・フィリピン語・インドネシア語・中国語など。英語の訳を借りる）で見ているとき。
+// 買い物メモの材料名・料理名に、日本語の名前を小さく添える（日本の店の札と見くらべられるように）。表示だけで、献立・材料は変えない
+function jpNoTr(r){ return !!r && !r.pack && LANG !== 'ja' && LANG !== 'en' && trKey('JP', LANG) === 'JP.en'; }
+function jpDishJa(r){ return jpNoTr(r) && r.nameEn && r.nameEn !== r.name ? r.nameEn : ''; }
+function jaLangAttr(s){ return LANG !== 'ja' && /[ぁ-んァ-ヶ]|^[一-龠々]+$/.test(String(s || '')) ? ' lang="ja"' : ''; }   // 日本語の名前は日本語の字形・読み上げで
+function dishesWithJa(e){ return joinNames(e.dishes.map(n => e.dja && e.dja[n] ? n + '（' + e.dja[n] + '）' : n)); }   // 全角のかっこ（スペイン語の joinNames は半角のかっこの説明を落とす）
 function itemAltName(i, r){
     if (!r || !i) return '';
     if (r.pack){ const e = String(i.en || '').trim(); return e && e.toLowerCase() !== String(i.label || '').trim().toLowerCase() ? e : ''; }
@@ -12229,6 +12304,7 @@ function shoppingList0(){
             if (lab.length < e.label.length){ e.label = lab; e.alt = itemAltName(i, r); }                  // まとめた行は、いちばん短い名前で出す（もうひとつの名前もその材料のもの）
             if (i.qty) e.qty.push(scaleText(i.qty, fac));
             if (!e.dishes.includes(r.name)) e.dishes.push(r.name);
+            if (qtyBorrowed(r)) e.jq = true; if (jpNoTr(r)){ e.jpAlt = true; const ja = jpDishJa(r); if (ja) (e.dja || (e.dja = {}))[r.name] = ja; }   // 100人の確かめ（11/23）: 単位はその言葉に・日本語の名前を添える
             mayIds.forEach(id => { if (algKind(id, i) === 4 && !(e.may || (e.may = [])).includes(id)) e.may.push(id); });   // 入っていることがある加工品（ハム・ちくわなど）: 行に「袋の表示を確認」
             // プランにアレルゲンに当たる料理が残っているとき（決めた日のあとに足した・作る日に戻したなど。S26）: 当たる材料の行に ⚠（プランの行の「⚠ アレルゲンあり」と同じ判定 itemAvoided）
             if (algG && itemAvoided(i, algG)){ const hs = e.alg || (e.alg = []); mayIds.forEach(id => { const k = algKind(id, i); if (k && k !== 4 && (k !== 3 || algFerm()) && !hs.includes(id)) hs.push(id); }); }
@@ -12297,7 +12373,7 @@ function shopExtras(){ shopDoneSet(); return (S.shopDone.extra || []).filter(x =
 // 売り場ごとにまとめ、買ったもの（チェックしたもの）はいちばん下に回す
 function shopRowsHtml(list, done){
     const sf = saleShopFirst();   // 特売日の売り場を先頭に（よく行くスーパー）
-    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${shopAltOn() && e.alt ? `<span class="alt">${esc(e.alt)}</span>` : ''}${saleShopTag(e)}${e.alg ? `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + (e.alg.length ? t('アレルゲン: {list}', {list: joinNames(e.alg.map(algLabel))}) : t('アレルゲンあり')))}">⚠ ${esc(e.alg.length ? joinNames(e.alg.map(algLabel)) : t('アレルゲンあり'))}</span>` : ''}${(m => m.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(m.map(algLabel))}))}</span>` : '')((e.may || []).filter(id => !(e.alg || []).includes(id)))}</span><span class="q">${esc(sumQty(e.qty).join(t('＋')))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(joinNames(e.dishes))}</span></label>`;
+    const row = e => `<label class="shop-row${done.has(e.key)?' done':''}${e.extra?' extra':''}"><input type="checkbox" data-act="shop-check" data-k="${esc(e.key)}" ${done.has(e.key)?'checked':''}><span class="nm">${esc(e.label)}${(shopAltOn() || e.jpAlt) && e.alt ? `<span class="alt"${jaLangAttr(e.alt)}>${esc(e.alt)}</span>` : ''}${saleShopTag(e)}${e.alg ? `<span class="alg-tag" role="note" aria-label="${esc('⚠ ' + (e.alg.length ? t('アレルゲン: {list}', {list: joinNames(e.alg.map(algLabel))}) : t('アレルゲンあり')))}">⚠ ${esc(e.alg.length ? joinNames(e.alg.map(algLabel)) : t('アレルゲンあり'))}</span>` : ''}${(m => m.length ? `<span class="alg-tag may" role="note">🔍 ${esc(t('{list}（袋の表示を確認）', {list: joinNames(m.map(algLabel))}))}</span>` : '')((e.may || []).filter(id => !(e.alg || []).includes(id)))}</span><span class="q">${esc((q => e.jq ? qtyLoc(q) : q)(sumQty(e.qty).join(t('＋'))))}</span><span class="for">${e.extra ? `${esc(t('自分で追加'))}<button type="button" class="btn sm ghost" data-act="shop-extra-rm" data-k="${esc(e.key)}">${esc(t('消す'))}</button>` : esc(dishesWithJa(e))}</span></label>`;
     const todo = list.filter(e => !done.has(e.key)), got = list.filter(e => done.has(e.key));
     return [['veg', t('野菜')], ['meat', t('肉・魚')], ['dairy', t('乳製品・卵')], ['other', t('その他')]].sort((a, b) => (sf.includes(a[0]) ? sf.indexOf(a[0]) : 9) - (sf.includes(b[0]) ? sf.indexOf(b[0]) : 9)).map(([k, l]) => {
         const xs = todo.filter(e => e.sec === k); return xs.length ? `<div class="shop-sec sec-${k}${sf.includes(k) ? ' sale-first' : ''}"><span>${esc(l)}${sf.includes(k) ? ` <span class="sale-tag">🏷 ${esc(t('特売日'))}</span>` : ''}</span><span class="n" aria-hidden="true">${xs.length}</span></div>${xs.map(row).join('')}` : '';
@@ -14461,9 +14537,9 @@ function pantryOf(r){
         const jp = !r.pack, key = jp ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).key : pantryKeyEn(c);
         if (!key || (jp && FAMILY[key]) || (!jp && (!PANTRY_EN.test(key) || PANTRY_NOT.test(key)))) return;
         const lab = (sh.length === b.length ? (jp ? labelOf(parseIng(sh[i].replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(sh[i])) : '') || (jp ? labelOf(parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name) : pantryName(c));
-        out.push({key: 'p|' + key, label: lab, src: c});
+        out.push({key: 'p|' + key, label: lab, src: c, ja: jp && jpNoTr(r) ? parseIng(c.replace(/^[(（][^)）]*[)）]\s*/, '')).name : ''});   // ja: 日本の料理の訳がない言葉で、調味料の日本語の名前（100人の確かめ 11/23）
     });
-    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label, it: i}); });   // it: アレルゲンの判定に使う材料（第40回）
+    r.items.forEach(i => { if (!i.opt && PANTRY.has(i.key)) out.push({key: 'p|' + i.key, label: i.label, it: i, ja: jpNoTr(r) && i.jp && i.jp !== i.label ? i.jp : ''}); });   // it: アレルゲンの判定に使う材料（第40回）
     return out;
 }
 function pantryList(){
@@ -14478,6 +14554,7 @@ function pantryList(){
             const o = map.get(e.key) || {key: e.key, label: e.label, dishes: []};
             if (e.label.length && e.label.length < o.label.length) o.label = e.label;
             if (!o.dishes.includes(r.name)) o.dishes.push(r.name);
+            if (e.ja && !o.alt && e.ja !== e.label) o.alt = e.ja; { const ja = jpDishJa(r); if (ja) (o.dja || (o.dja = {}))[r.name] = ja; }   // 100人の確かめ（11/23）: 日本語の名前を添える
             map.set(e.key, o);
         });
     }));
@@ -14489,7 +14566,7 @@ function pantryHtml(){
     const buy = pantryBuySet();
     return `<details class="box pantry-box" ${session.pantryOpen ? 'open' : ''}><summary>${esc(t('家にあるかも（確認してね）'))}</summary>
         <div class="pantry-hint">${esc(t('塩・油・しょうゆなど、いつも家にあるつもりのものです。足りないものにチェックすると「買う」ものとして送る買い物メモに入ります。'))}</div>
-        <div class="list shop">${list.map(e => `<label class="shop-row"><input type="checkbox" data-act="shop-buy" data-k="${esc(e.key)}" ${buy.has(e.key) ? 'checked' : ''}><span class="nm">${esc(e.label)}</span><span class="q">${buy.has(e.key) ? esc(t('買う')) : ''}</span><span class="for">${esc(joinNames(e.dishes))}</span></label>`).join('')}</div>
+        <div class="list shop">${list.map(e => `<label class="shop-row"><input type="checkbox" data-act="shop-buy" data-k="${esc(e.key)}" ${buy.has(e.key) ? 'checked' : ''}><span class="nm">${esc(e.label)}${e.alt ? `<span class="alt"${jaLangAttr(e.alt)}>${esc(e.alt)}</span>` : ''}</span><span class="q">${buy.has(e.key) ? esc(t('買う')) : ''}</span><span class="for">${esc(dishesWithJa(e))}</span></label>`).join('')}</div>
     </details>`;
 }
 /* ---- 作り置き・残り物メモ ----
@@ -16661,7 +16738,7 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
         const got = ((session.cookGot || {})[r0.id]) || [], nIng = r.items.length, nGot = r.items.filter((x, k) => got.includes(k)).length;
         return `${swapNoteHtml(r)}<div class="ci-sum" id="cook-ings"><span class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</span><span class="ci-n">${nGot}/${nIng}</span></div>
                 ${allergenDetailHtml(r)}
-                <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
+                <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc((q => qtyBorrowed(r) ? qtyLoc(q) : q)(scaleText(i.qty, fac)))}</span></label></li>`).join('')}</ul>
                 ${seasHtml}${pointsHtml(r)}`;
     }
     if (done){   // 作り方タブ: 材料はそろえた印をつけられる一覧（たたむと手順が近くなる）、手順は「いまの手順」を大きく
@@ -16671,7 +16748,7 @@ function recipeCoreHtml(r, done, after = '', opts = {}){   // after: 作り方�
                 <details class="cook-ings" id="cook-ings"${open ? ' open' : ''}><summary class="ci-sum"><span class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</span><span class="ci-n">${nGot}/${nIng}</span></summary>
                 ${allergenDetailHtml(r)}
                 ${have.size ? `<p class="small muted" style="margin:0">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
-                <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
+                <ul class="recipe-ings ci-list">${r.items.map((i, k) => `<li class="${i.added||i.changed?'add':''}"><label class="ci-row"><input type="checkbox" data-act="cook-ing" data-k="${k}"${got.includes(k) ? ' checked' : ''}><span class="ci-nm">${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc((q => qtyBorrowed(r) ? qtyLoc(q) : q)(scaleText(i.qty, fac)))}</span></label></li>`).join('')}</ul>
                 ${seasHtml}
                 <button type="button" class="btn sm ghost ci-back" data-act="cook-goto-now">${esc(t('手順に戻る'))}</button></details>
                 <div class="label">${esc(t('作り方'))}</div>
@@ -16687,7 +16764,7 @@ ${after}${tail}`;
         return `${swapNoteHtml(r)}<div class="dsec"><div class="dsec-t">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</div>
                 <div class="dsv" role="group" aria-label="${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}"><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv - 1}"${sv <= 1 ? ' disabled' : ''} aria-label="${esc(t('人数を減らす'))}">−</button><button type="button" class="btn dicon sm" data-act="servings" data-v="${sv + 1}"${sv >= 6 ? ' disabled' : ''} aria-label="${esc(t('人数を増やす'))}">＋</button></div></div>
                 ${have.size ? `<p class="small muted dleg">${esc(t('　✓ は登録済みの食材').trim())}</p>` : ''}
-                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
+                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc((q => qtyBorrowed(r) ? qtyLoc(q) : q)(scaleText(i.qty, fac)))}</span></li>`).join('')}</ul>
                 ${seasHtml}
                 ${miss && miss.length ? `<div class="row"><button type="button" class="btn dshop" data-act="shop-add-recipe" data-id="${esc(r0.id)}">${esc(t('足りない材料を買い物メモに足す（{n}品）', {n: miss.length}))}</button></div>` : ''}
                 ${pointsHtml(r)}
@@ -16697,7 +16774,7 @@ ${after}${tail}`;
                 ${tail}`;
     }
     return `${swapNoteHtml(r)}${pointsHtml(r)}${allergenDetailHtml(r)}<div class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}${have.size ? esc(t('　✓ は登録済みの食材')) : ''}</div>
-                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></li>`).join('')}</ul>
+                <ul class="recipe-ings">${r.items.map(i => `<li class="${i.added||i.changed?'add':''}"><span>${have.has(i.key)?'<span class="ok">✓</span>':''}${esc(i.name)}${i.opt?` <span class="small muted">${esc(t('（なくても可）'))}</span>`:''}</span><span class="q">${esc((q => qtyBorrowed(r) ? qtyLoc(q) : q)(scaleText(i.qty, fac)))}</span></li>`).join('')}</ul>
                 ${seasHtml}
                 <div class="label">${esc(t('作り方'))}</div>
                 ${scaleNote}
@@ -16730,7 +16807,7 @@ function videoSheetHtml(id){
     return `<h3>${esc(t('動画の前に、30秒で流れを確認'))}</h3>
         <div class="facts"><span class="fact">${esc(t('{n}分', {n:r.min}))}</span><span class="fact">${esc(svText())}</span><span class="fact">${esc(r0.name)}</span></div>
         <div class="label">${esc(svLab(n => t('材料（{n}人分）', {n}), v => t('材料：{v}', {v})))}</div>
-        <ul class="vid-ings">${r.items.map((i, k) => `<li><label class="vid-ing"><input type="checkbox" data-act="vid-chk" data-id="${esc(id)}" data-k="${k}"${chk.includes(k) ? ' checked' : ''}><span class="nm">${esc(i.name)}${i.opt ? ` <span class="small muted">${esc(t('（なくても可）'))}</span>` : ''}</span><span class="q">${esc(scaleText(i.qty, fac))}</span></label></li>`).join('')}</ul>
+        <ul class="vid-ings">${r.items.map((i, k) => `<li><label class="vid-ing"><input type="checkbox" data-act="vid-chk" data-id="${esc(id)}" data-k="${k}"${chk.includes(k) ? ' checked' : ''}><span class="nm">${esc(i.name)}${i.opt ? ` <span class="small muted">${esc(t('（なくても可）'))}</span>` : ''}</span><span class="q">${esc((q => qtyBorrowed(r) ? qtyLoc(q) : q)(scaleText(i.qty, fac)))}</span></label></li>`).join('')}</ul>
         <div class="label">${esc(t('作り方'))}</div>
         <ol class="vid-steps">${texts.map(x => { const m = timerFind(x)[0]; return `<li><span class="vs-t">${esc(x)}</span>${m ? `<b class="vs-time">${esc(m.m)}</b>` : ''}</li>`; }).join('')}</ol>
         <div class="vid-btns">
