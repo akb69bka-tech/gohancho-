@@ -5,7 +5,7 @@
 //     料理名のあとに（日本語の名前）。1週間の買い物メモ・家にあるかもも同じ（もうひとつの名前の設定を切っていても）。日本語の画面には添えない。献立・材料は変わらない
 //     第58回（11/23・統括の決め）: 訳のある言葉（en・ko・th・vi）でも材料名・調味料に日本語の名前を添える（店の日本語の札と見くらべる）。料理名の日本語は訳のない言葉だけ
 //  S2（第58回）英語の画面・日本の献立で「Cabbage キャベツ」。日本以外の国の献立（US・英語、KR・韓国語）には日本語の名前を出さない
-//  U（4位）同じ画面で、分量の単位（block・head・bunch など）が英語のまま出ない: 訳のある言葉は単位をその言葉に（1/2 bloque・1/2 모）、ar・hi・pl・tr は英語のあとに日本語の単位（1/2 block（丁））。
+//  U（4位）同じ画面で、分量の単位（block・head・bunch など）が英語のまま出ない: 訳のある言葉は単位をその言葉に（1/2 bloque・1/2 모）。ar・hi・pl・tr も（第58回の提案 11/23。1/2 قالب・1/2 ब्लॉक・1/2 kostki・1/2 kalıp。前は英語のあとに日本語の単位）。
 //     料理の詳しい画面の材料の分量も同じ。英語・日本語の画面は今までどおり
 //  K（6位）お膳の角の丸の「かえる」の字: 文字の大きさ「大きい」「もっと大きい」で字が大きくなる（ja: 10 → 11.5 → 13px）。丸は 44×44 のまま、字は丸のふちの内側
 //  N（11位）日本語の「{n}つ」: 10 以上は「個」（買う物 11個・調味料 13個）。1〜9 は「つ」のまま。17言語で「つ」が出ず、数が入る（other の形に {n}。アラビア語の「1つ」などは数を字で書く）。ヒンディー語の「買う物」は1つのときの形がある
@@ -54,14 +54,15 @@ const shopOf = p => p.evaluate(async () => {
     openModal('misoshiru'); await tick(); const rq = [...document.querySelectorAll('#modal-root .recipe-ings .q')].map(e => e.textContent.trim()); closeModal(); await tick(100);
     return {rows, week, pantry, rq, same: menu0 === JSON.stringify(ids.map(id => byId(id).items.map(i => i.key))), nikujaga: byId('nikujaga').nameEn || byId('nikujaga').name};
 });
+const U4 = {ar: '1/2 قالب', hi: '1/2 ब्लॉक', pl: '1/2 kostki', tr: '1/2 kalıp'};   // 第58回の提案: 4言語の豆腐 1/2丁
 const EN_UNIT = /\b(block|blocks|head|heads|bunch|bunches|slices?|packs?|bowls?|knob|fillets?|tbsp|tsp|go)\b/i;
 
 if (want('S') || want('U')){
     const badS = [], badU = [];
-    for (const lang of ['pt-BR', 'es', 'fil', 'id', 'zh-Hans', 'ar', 'ko', 'th', 'vi', 'ja', 'en']){
+    for (const lang of ['pt-BR', 'es', 'fil', 'id', 'zh-Hans', 'ar', 'hi', 'pl', 'tr', 'ko', 'th', 'vi', 'ja', 'en']){
         const {p, ctx} = await open({lang});
         const r = await shopOf(p);
-        const noTr = ['pt-BR', 'es', 'fil', 'id', 'zh-Hans', 'ar'].includes(lang), jpRe = /[ぁ-んァ-ヶ一-龠]/;
+        const noTr = ['pt-BR', 'es', 'fil', 'id', 'zh-Hans', 'ar', 'hi', 'pl', 'tr'].includes(lang), jpRe = /[ぁ-んァ-ヶ一-龠]/;
         const tofu = r.rows.find(x => /tofu|豆腐|두부|เต้าหู้|đậu|tahu|توفو/i.test(x.nm + x.alt)) || {};
         if (!r.rows.length || !r.same) badS.push(`${lang} 行がない・材料が変わった ${JSON.stringify(r).slice(0, 200)}`);
         // 第58回（11/23・統括の決め）: 日本語以外の画面なら、訳のある言葉（en・ko・th・vi）でも材料名・調味料に日本語の名前を添える。料理名の日本語は訳のない言葉だけ
@@ -76,12 +77,14 @@ if (want('S') || want('U')){
         const qs = [...r.rows.map(x => x.q), ...r.week.map(x => x.q), ...r.rq];
         if (lang === 'en'){ if (!/\bblock\b/.test(tofu.q)) badU.push(`en 英語の単位が変わった ${tofu.q}`); }
         else if (lang === 'ja'){ if (!/丁/.test(tofu.q)) badU.push(`ja 日本語の単位が変わった ${tofu.q}`); }
-        else if (lang === 'ar'){ if (!/block（丁）/.test(tofu.q) || !r.rq.some(q => /（丁）/.test(q))) badU.push(`ar 英語のあとに日本語の単位がない ${tofu.q} ${JSON.stringify(r.rq)}`); }
+        else if (U4[lang]){   // 第58回の提案（11/23）: ar・hi・pl・tr も単位をその言葉に（英語のあとに日本語の単位を添える形はやめた）。豆腐 1/2丁 → その言葉の形
+            const left = qs.filter(q => EN_UNIT.test(q) || /（[^）]*）/.test(q));
+            if (left.length || tofu.q !== U4[lang] || !r.rq.includes(U4[lang])) badU.push(`${lang} 英語の単位・日本語の単位が残る、または豆腐の形がちがう ${JSON.stringify(left)} 豆腐 ${tofu.q}（${U4[lang]}） 詳しい画面 ${JSON.stringify(r.rq)}`); }
         else { const left = qs.filter(q => EN_UNIT.test(q.replace(/（[^）]*）/g, ''))); if (left.length || !tofu.q || /block/.test(tofu.q)) badU.push(`${lang} 英語の単位が残る ${JSON.stringify(left)} 豆腐 ${tofu.q}`); }
         await ctx.close();
     }
     if (want('S')) ok(!badS.length, 'S 日本の献立の買い物メモ（今日・1週間・家にあるかも）に、日本語以外の画面なら日本語の名前を添える（料理名の日本語は訳のない言葉だけ）。日本語の画面には添えない。材料は変わらない: ' + badS.join(' || '));
-    if (want('U')) ok(!badU.length, 'U 分量の単位が英語のまま出ない（訳のある単位はその言葉・ar は日本語の単位を添える。英語・日本語は今までどおり）: ' + badU.join(' || '));
+    if (want('U')) ok(!badU.length, 'U 分量の単位が英語のまま出ない（その言葉の単位。ar・hi・pl・tr も第58回の提案でその言葉に。英語・日本語は今までどおり）: ' + badU.join(' || '));
 }
 
 // S2（第58回）英語の画面・日本の献立: 「Cabbage キャベツ」のように日本語の名前が出る。日本以外の国の献立（アメリカ・英語、韓国・韓国語）では日本語の名前を出さない

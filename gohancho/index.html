@@ -12253,6 +12253,43 @@ const JP_UNIT_TR = [
     ['small', '小', {es: ['pequeño'], 'pt-BR': ['pequeno'], fr: ['petit'], de: ['klein'], it: ['piccolo'], id: ['kecil'], fil: ['maliit'], ko: ['작은 것'], th: ['ลูกเล็ก'], vi: ['nhỏ'], 'zh-Hans': ['小的'], 'zh-Hant': ['小的']}, 1],
     ['worth', '', {}]
 ];
+// 第58回の提案（11/23）: ヒンディー語・ポーランド語・トルコ語・アラビア語にも単位の訳を足す（それまでは「head（個）」のように英語のあとに日本語の単位）。
+// ポーランド語は {one, few, many, other}（1 / 2〜4 / 5以上 / 分数・小数。1/2 kostki）、アラビア語は {one, two, few, many, other}（3〜10 は複数形、それ以外は単数形）を Intl.PluralRules で選ぶ。
+// ヒンディー語は [1つ, 2つ以上]、トルコ語は数のあとは単数のまま。自信の低い訳（hi の head「नग」・spear「डंठल」、pl の freshly cooked・spear・sheet など）はネイティブの確認待ち（第58回の報告に一覧）
+const PL4 = (a, b, c, d) => ({one: a, few: b, many: c, other: d}), AR5 = (a, b, c, d) => ({one: a, two: a, few: c, many: d, other: d});   // 数字のあとの2は単数（2 ملعقة كبيرة。双数（b）は数字なしで使う形なので、数字と並べない）
+const JP_UNIT_MORE = {
+    'freshly cooked': {hi: ['ताज़ा पका'], pl: ['świeżo ugotowanego'], tr: ['yeni pişmiş'], ar: ['مطبوخ حديثًا']},
+    'a little': {hi: ['थोड़ा सा'], pl: ['odrobina'], tr: ['biraz'], ar: ['قليل']},
+    'as needed': {hi: ['आवश्यकतानुसार'], pl: ['według potrzeby'], tr: ['gerektiği kadar'], ar: ['حسب الحاجة']},
+    'to taste': {hi: ['स्वादानुसार'], pl: ['do smaku'], tr: ['damak zevkine göre'], ar: ['حسب الذوق']},
+    'about': {hi: ['लगभग'], pl: ['około'], tr: ['yaklaşık'], ar: ['حوالي']},
+    'blocks?': {hi: ['ब्लॉक'], pl: [PL4('kostka', 'kostki', 'kostek', 'kostki')], tr: ['kalıp'], ar: [AR5('قالب', 'قالبان', 'قوالب', 'قالب')]},
+    'heads?': {hi: ['नग'], pl: [PL4('główka', 'główki', 'główek', 'główki')], tr: ['baş'], ar: [AR5('رأس', 'رأسان', 'رؤوس', 'رأس')]},
+    'packs?': {hi: ['पैकेट'], pl: [PL4('opakowanie', 'opakowania', 'opakowań', 'opakowania')], tr: ['paket'], ar: [AR5('عبوة', 'عبوتان', 'عبوات', 'عبوة')]},
+    'bunch(?:es)?': {hi: ['गुच्छा', 'गुच्छे'], pl: [PL4('pęczek', 'pęczki', 'pęczków', 'pęczka')], tr: ['demet'], ar: [AR5('حزمة', 'حزمتان', 'حزم', 'حزمة')]},
+    'bundles?': {hi: ['गुच्छा', 'गुच्छे'], pl: [PL4('pęczek', 'pęczki', 'pęczków', 'pęczka')], tr: ['demet'], ar: [AR5('حزمة', 'حزمتان', 'حزم', 'حزمة')]},
+    'slices?': {hi: ['स्लाइस'], pl: [PL4('plaster', 'plastry', 'plastrów', 'plastra')], tr: ['dilim'], ar: [AR5('شريحة', 'شريحتان', 'شرائح', 'شريحة')]},
+    'bowls?': {hi: ['कटोरी', 'कटोरियाँ'], pl: [PL4('miska', 'miski', 'misek', 'miski')], tr: ['kase'], ar: [AR5('وعاء', 'وعاءان', 'أوعية', 'وعاء')]},
+    'bags?': {hi: ['थैली', 'थैलियाँ'], pl: [PL4('torebka', 'torebki', 'torebek', 'torebki')], tr: ['poşet'], ar: [AR5('كيس', 'كيسان', 'أكياس', 'كيس')]},
+    'servings?': {hi: ['सर्विंग'], pl: [PL4('porcja', 'porcje', 'porcji', 'porcji')], tr: ['porsiyon'], ar: [AR5('حصة', 'حصتان', 'حصص', 'حصة')]},
+    'portions?': {hi: ['सर्विंग'], pl: [PL4('porcja', 'porcje', 'porcji', 'porcji')], tr: ['porsiyon'], ar: [AR5('حصة', 'حصتان', 'حصص', 'حصة')]},
+    'tbsp': {hi: ['बड़ा चम्मच', 'बड़े चम्मच'], pl: [PL4('łyżka', 'łyżki', 'łyżek', 'łyżki')], tr: ['yemek kaşığı'], ar: [AR5('ملعقة كبيرة', 'ملعقتان كبيرتان', 'ملاعق كبيرة', 'ملعقة كبيرة')]},
+    'tsp': {hi: ['छोटा चम्मच', 'छोटे चम्मच'], pl: [PL4('łyżeczka', 'łyżeczki', 'łyżeczek', 'łyżeczki')], tr: ['çay kaşığı'], ar: [AR5('ملعقة صغيرة', 'ملعقتان صغيرتان', 'ملاعق صغيرة', 'ملعقة صغيرة')]},
+    'pieces?': {hi: ['टुकड़ा', 'टुकड़े'], pl: [PL4('sztuka', 'sztuki', 'sztuk', 'sztuki')], tr: ['adet'], ar: [AR5('قطعة', 'قطعتان', 'قطع', 'قطعة')]},
+    'knobs?': {hi: ['टुकड़ा', 'टुकड़े'], pl: [PL4('kawałek', 'kawałki', 'kawałków', 'kawałka')], tr: ['parça'], ar: [AR5('قطعة', 'قطعتان', 'قطع', 'قطعة')]},
+    'fillets?': {hi: ['टुकड़ा', 'टुकड़े'], pl: [PL4('filet', 'filety', 'filetów', 'fileta')], tr: ['dilim'], ar: [AR5('قطعة', 'قطعتان', 'قطع', 'قطعة')]},
+    'fish': {hi: ['मछली', 'मछलियाँ'], pl: [PL4('ryba', 'ryby', 'ryb', 'ryby')], tr: ['balık'], ar: [AR5('سمكة', 'سمكتان', 'سمكات', 'سمكة')]},
+    'leaf|leaves': {hi: ['पत्ता', 'पत्ते'], pl: [PL4('liść', 'liście', 'liści', 'liścia')], tr: ['yaprak'], ar: [AR5('ورقة', 'ورقتان', 'أوراق', 'ورقة')]},
+    'cans?': {hi: ['डिब्बा', 'डिब्बे'], pl: [PL4('puszka', 'puszki', 'puszek', 'puszki')], tr: ['kutu'], ar: [AR5('علبة', 'علبتان', 'علب', 'علبة')]},
+    'sheets?': {hi: ['शीट'], pl: [PL4('arkusz', 'arkusze', 'arkuszy', 'arkusza')], tr: ['yaprak'], ar: [AR5('ورقة', 'ورقتان', 'أوراق', 'ورقة')]},
+    'box(?:es)?': {hi: ['डिब्बा', 'डिब्बे'], pl: [PL4('pudełko', 'pudełka', 'pudełek', 'pudełka')], tr: ['kutu'], ar: [AR5('علبة', 'علبتان', 'علب', 'علبة')]},
+    'cups?': {hi: ['कप'], pl: [PL4('szklanka', 'szklanki', 'szklanek', 'szklanki')], tr: ['su bardağı'], ar: [AR5('كوب', 'كوبان', 'أكواب', 'كوب')]},
+    'stalks?': {hi: ['डंठल'], pl: [PL4('łodyga', 'łodygi', 'łodyg', 'łodygi')], tr: ['sap'], ar: [AR5('ساق', 'ساقان', 'سيقان', 'ساق')]},
+    'spears?': {hi: ['डंठल'], pl: [PL4('pęd', 'pędy', 'pędów', 'pędu')], tr: ['sap'], ar: [AR5('عود', 'عودان', 'أعواد', 'عود')]},
+    'pairs?': {hi: ['जोड़ा', 'जोड़े'], pl: [PL4('para', 'pary', 'par', 'pary')], tr: ['çift'], ar: [AR5('زوج', 'زوجان', 'أزواج', 'زوج')]},
+    'small': {hi: ['छोटा'], pl: ['mały'], tr: ['küçük'], ar: ['صغير']}
+};
+JP_UNIT_TR.forEach(x => Object.assign(x[2], JP_UNIT_MORE[x[0]] || {}));
 const JP_UNIT_RE = new RegExp('(\\d+(?:\\.\\d+)?(?:\\s+\\d+\\/\\d+|\\/\\d+)?\\s*)?\\b(' + JP_UNIT_TR.map(x => x[0]).join('|') + ')\\b', 'gi');
 function jpUnitHit(w){ return JP_UNIT_TR.find(x => new RegExp('^(?:' + x[0] + ')$', 'i').test(w)); }
 // 日本の料理（国のパックではない）で、分量が英語の訳を借りているか
@@ -12264,7 +12301,8 @@ function qtyLoc(s){
         const tr = x[2][LANG], n = num ? (s => { const p = s.trim().split(/\s+/); return p.reduce((a, q) => a + (q.includes('/') ? q.split('/')[0] / q.split('/')[1] : Number(q)), 0); })(num) : 1;
         if (!x[1] && !tr) return num ? num.replace(/\s+$/, '') : '';   // worth（「4 cm worth」）は落とす
         if (!tr) return (num || '') + (x[1] === '合' ? '合' : x[3] ? w : w + '（' + x[1] + '）');   // 訳のない言葉は英語のあとに日本語の単位（1/2 block（丁））。go（ご飯の量）はどの言葉でも「合」
-        const word = n > 1 && tr[1] ? tr[1] : tr[0];
+        let word = n > 1 && tr[1] ? tr[1] : tr[0];
+        if (word && typeof word === 'object'){ let c = 'other'; try{ c = new Intl.PluralRules(LANG).select(n); }catch(e){} word = word[c] != null ? word[c] : word.other; }   // ポーランド語・アラビア語の数の形
         return (num || '') + word;
     }).replace(/\s+$/, '').replace(/\s+([),，、])/g, '$1');   // 「4 cm worth」→「4 cm」（落としたあとの空白）
 }
