@@ -1,8 +1,8 @@
-[ ] gohancho/privacy.html の【公開日を記入】【運営者名】【連絡先メールアドレス】（最後の「下書きです」の行は削除）
-[ ] gohancho/support.html の【連絡先メールアドレス】（最後の「下書きです」の行は削除）
+[ ] gohancho/privacy.html の【公開日を記入】【運営者名】【連絡先メールアドレス】
+[ ] gohancho/support.html の【連絡先メールアドレス】
 [ ] gohancho/privacy-en.html の [enter publication date] [Developer name] [Contact email address]
 [ ] gohancho/support-en.html の [contact email address]
 [ ] gohancho/index.html の const SUPPORT_EMAIL = '' にメールアドレス
-[ ] gohancho/index.html の revenueCatApiKey: '' に RevenueCat の appl_ の鍵（ステップ5のあと）
+（revenueCatApiKey は今回は空のまま。全員無料で出すため）
 [ ] App Store Connect の「著作権」に名前
 [ ] GitHub の gohancho リポジトリが最新か確認（Claude が main に入れます）

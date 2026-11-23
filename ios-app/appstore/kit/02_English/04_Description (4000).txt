@@ -16,27 +16,21 @@ Type what's in your fridge and see what you can cook right now, what works with 
 Tell Gohancho what you don't eat. Dishes that work with a substitute are suggested with it (e.g. pork → chicken); dishes that don't are left out. Quantities scale to your household.
 
 ■ Share it, then tap "Delicious!"
-Send today's meal or the week's plan and grocery list in one tap with WhatsApp, LINE, Messenger and more. At the table, everyone who loved a dish taps "Delicious!", and the top dish becomes your family's dish of the month.
+Send today's meal or the week's plan and grocery list in one tap with the messaging app your family uses. At the table, everyone who loved a dish taps "Delicious!", and the top dish becomes your family's dish of the month.
 
 ■ Timers inside the recipe
 Tap a time in the steps, like "simmer 8 minutes", and the timer starts right there.
 
 ■ Home cooking from 21 countries, mixed your way
-1,700+ everyday home-cooked recipes from Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil and Peru, each with an original illustration. Choose your country for meals you know, or use "Mix countries" to pick a country for each dish: say, a Chinese main, a Japanese side and a Korean soup. Recipes are shown in your language when a translation is available, otherwise in English.
+1,700+ everyday home-cooked recipes from Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil and Peru, each with a picture of the dish. Choose your country for meals you know, or use "Mix countries" to pick a country for each dish: say, a Chinese main, a Japanese side and a Korean soup. Recipes are shown in your language when a translation is available, otherwise in English.
 
 ■ Works offline, stays private
 Everything runs on your phone. No account needed. Your history, photos and settings never leave your device.
 
-■ Gohancho Plus subscription required
-The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable subscription. Choose monthly or yearly; the yearly plan costs less than 12 months of the monthly plan.
-- New subscribers can try either plan free for the first month (Apple free trial, for eligible users; one free trial per person)
-- After the trial, it renews at the price of the plan you chose, as shown in the App Store for your country
-- Cancel at least 24 hours before the trial ends and you won't be charged
-- Cancel anytime; your plan stops at the next renewal
+■ Free, with no in-app purchases
+Every feature is free: meal plans, the 7-day plan, grocery lists, fridge search and world recipes. No in-app purchases, no subscriptions and no ads.
 
-Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
-
-Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://akb69bka-tech.github.io/gohancho-/privacy-en.html
 
 If you have allergies, always check the ingredients of seasonings and processed foods yourself.
+Dish pictures are AI-generated images; actual dishes and plating will look different.

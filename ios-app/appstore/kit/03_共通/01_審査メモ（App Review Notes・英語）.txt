@@ -1,19 +1,23 @@
-Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks one of 21 countries/regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday home dishes. The UI is available in 18 languages including Japanese (the first screen is in English; the language follows the chosen country and can be changed in Settings).
+Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks one of 21 countries/regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday home dishes. The UI is available in 18 languages including Japanese. The first screen follows the device language (English if the device language is not one of the 18); the app language stays as chosen, even when the country is changed, and can be changed in Settings.
 
-Content and offline use: all app files (HTML/JS/CSS, 1,700+ original recipes, translations and 1,743 original dish illustrations) are bundled in the app binary. The app does not load a remote website and works fully offline. No account or login is required; meal history, photos and settings are stored on the device only.
+Price: the app is completely free. There are no in-app purchases, no subscriptions, no ads and no locked features. Every feature is available right after the short first-run setup (choose a country, then a cooking style).
+
+Content and offline use: all app files (HTML/JS/CSS, 1,700+ recipes, translations and the dish pictures) are bundled in the app binary. The dish pictures are AI-generated images, and the app says so on each recipe ("photo-like pictures are AI-generated images"). The app does not load a remote website and works fully offline. At launch it reads one small JSON file from GitHub (an optional announcement text; no code); if it cannot be read, the app works the same. No account or login is required; meal history, photos and settings are stored on the device only.
 
 Main features:
 - Daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoid repeating recently cooked dishes, meats and cuisines.
 - Shopping list grouped by store section, excluding ingredients the user already has.
 - Ingredient search ("what can I cook with what's in my fridge"), servings scaling, and disliked ingredients: when possible the disliked ingredient is swapped for another one (e.g. pork -> chicken); otherwise the dish is not suggested.
 
-Native iOS features used:
-- Local notifications: optional daily reminder (Settings). No push notifications, no server.
-- Share sheet: send the menu or shopping list to family.
-- Camera / photo library: optionally photograph a cooked dish or pick a photo (saved on device only).
-- Microphone / speech recognition: optional voice input for ingredient and dish search.
-- StoreKit in-app purchase, handled through the RevenueCat SDK.
+Native iOS features used (all optional; none is needed to use the app, and each permission is requested only at the moment the user taps the related button):
+- Local notifications: daily reminder (in Settings) and cooking timers (tap a time such as "8 min" in a recipe's steps). The notification permission is requested only when the user turns on a reminder or starts a timer, never at launch. No push notifications, no server.
+- Share sheet: send the menu or shopping list to family. Nothing is uploaded to our servers.
+- Camera / photo library: optionally add a photo of a cooked dish, or read a fridge photo or store flyer on the device (Apple Vision). Photos stay on the device.
+- Microphone / speech recognition: (1) the "Speak" button on the ingredient and dish search screens, to say an ingredient or dish name; (2) "Hands-free" in a recipe's Cook tab (off by default), which listens for "next". Both are requested only when the user taps them. The app does not save recordings; on iPhone the speech is processed by Apple's speech recognition. If permission is declined, typing works the same.
 
-In-app purchase: "Gohancho Plus", two auto-renewable subscriptions in one subscription group: monthly (product ID gohancho_plus_monthly, JPY 300/month in Japan) and yearly (product ID gohancho_plus_yearly, JPY 3,000/year in Japan). Both are shown to every user, and both have a 1-month free introductory offer for eligible new subscribers (one introductory offer per subscription group). After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
-
-How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly or the yearly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes, 1 year = 1 hour).
+Other notes for review:
+- No account, no sign-in, no tracking and no ads (App Tracking Transparency is not used). Because there is no account, there is no account to delete; "Erase all data" in Settings (Data, inside "Move or back up your data") removes all data on the device.
+- No user-generated content is shared with other users. Recipes or photos a user adds are stored only on that user's device.
+- The app gives cooking suggestions only. It makes no medical or health claims. Calorie and carbohydrate numbers are labeled as estimates, and allergy notices say to check ingredient labels yourself.
+- Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any payment page.
+- No App Preview video is provided for this version.

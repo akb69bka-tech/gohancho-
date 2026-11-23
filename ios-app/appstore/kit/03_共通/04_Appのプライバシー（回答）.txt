@@ -1,5 +1,5 @@
-データを収集しますか: はい
-収集するデータ: 「購入 → 購入履歴」「ID → ユーザ ID」の2つだけ
-それぞれの使い方: App の機能のみ／ユーザの身元にひも付けない／トラッキングに使わない
-ほか（位置情報・連絡先・写真・使用状況など）: 収集しない
-根拠: 購入の確認に RevenueCat を使うため（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）
+データを収集しますか: いいえ（「データを収集していません」を選ぶ）
+理由: アプリは全員無料（billingMode 'off'）で、アプリ内課金がない。RevenueCat は起動しない（鍵も空）。記録・写真・設定は端末の中だけに保存し、開発者に送らない。広告・解析・トラッキングもない
+プライバシー マニフェスト（PrivacyInfo.xcprivacy）: 集めるデータは「なし」（scripts/setup-ios.sh が書き出す。この回答とそろえてある）
+要確認（わかりません）: 起動時に GitHub の remote.json（お知らせの文だけ）を読むときの IP アドレスと、「声で入力」で使う Apple の音声認識を、Apple の定義で「収集」として申告する必要があるか。申告する前に Apple の今の説明（App Store Connect のヘルプ「App のプライバシーの詳細」）で確かめる
+課金を始めるとき: この回答を「購入 → 購入履歴」「ID → ユーザ ID」（App の機能のみ・ひも付けない・トラッキングなし）に戻し、マニフェストも同じにする（根拠: https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）

@@ -14,8 +14,8 @@
 | カテゴリ | フード/ドリンク（セカンダリ: ライフスタイル） |
 | バンドル ID | io.github.akb69bka.gohancho（`capacitor.config.json` の appId と同じ） |
 | SKU | gohancho-ios-001 |
-| 価格 | 無料（App 内課金あり） |
-| 年齢制限 | 4+（質問にはすべて「なし」と回答） |
+| 価格 | 無料（App 内課金なし。サブスクリプションの製品は今回は作らない・提出しない） |
+| 年齢制限 | App Store Connect の今の質問を読み、実態どおりに回答（材料に酒・みりん・ワインあり。「糖質ひかえめ」「ダイエットモード」あり。4+ になるかは わかりません） |
 | 著作権 | 2026 【運営者名】 |
 | サポート URL | https://akb69bka-tech.github.io/gohancho-/support.html |
 | マーケティング URL | https://akb69bka-tech.github.io/gohancho-/ |
@@ -28,7 +28,7 @@
 ## プロモーション用テキスト（170文字まで）
 
 ```
-今夜の献立、もう迷いません。主菜・副菜・汁ものをお膳ごと提案し、作った記録から同じ料理が続かないように選びます。苦手な食材は置き換え、冷蔵庫の残りものからも探せて、1週間の献立と売り場ごとの買い物リストも自動で。最初の1か月は無料、その後は月額300円（自動更新・いつでも解約可）。
+今夜の献立、もう迷いません。主菜・副菜・汁ものをお膳ごと提案し、作った記録から同じ料理が続かないように選びます。苦手な食材は置き換え、冷蔵庫の残りものからも探せて、1週間の献立と売り場ごとの買い物リストも自動で。すべての機能が無料で、広告もありません。
 ```
 
 ## 説明（4000文字まで）
@@ -52,7 +52,7 @@
 苦手な食材を登録すると、ほかの食材で作れる料理は置き換えて提案します（例: 豚肉→鶏肉）。置き換えられない料理は献立に出しません。材料と調味料の分量は、人数に合わせて自動で計算します。
 
 ■ 家族に送って、「おいしかった！」を集める
-今日の献立も、1週間の予定と買い物リストも、ボタンひとつで LINE などに送れます。食卓で、おいしかった人が「おいしかった！」を押すと、いちばん多かった料理が「今月のわが家の料理自慢」になります。
+今日の献立も、1週間の予定と買い物リストも、ボタンひとつで家族に送れます（送り先のアプリは iPhone の共有の画面で選べます）。食卓で、おいしかった人が「おいしかった！」を押すと、いちばん多かった料理が「今月のわが家の料理自慢」になります。
 
 ■ 作りながら使えるタイマー
 作り方の「8分煮る」のような時間をタップすると、そのままタイマーが始まります。
@@ -69,21 +69,12 @@
 ■ 電波がなくても使える・登録不要
 献立・レシピ・記録はすべて端末の中で動くので、電波の弱い場所でも使えます。アカウント登録は不要。記録や写真は端末の中だけに保存され、外部には送信しません。
 
-■ ご利用には「ご飯帖プラス」が必要です
-献立の提案をはじめとするアプリの機能は、自動更新のサブスクリプション「ご飯帖プラス」でお使いいただけます。
-・プランは月額300円（税込）と年額3,000円（税込）の2つから選べます（年額は月額の12か月分 3,600円より600円お得）
-・はじめての方は、どちらのプランでも最初の1か月を無料でお試しいただけます（Apple の無料お試し。対象となる方のみ。お試しはおひとり1回）
-・無料期間のあとは、選んだプランの料金で自動更新されます
-・無料期間が終わる24時間前までに解約すれば、料金はかかりません
-・いつでも解約できます（解約すると、次の更新から止まります）
+■ すべての機能を無料で
+アプリ内課金・広告はありません。献立・1週間の予定・買い物リスト・冷蔵庫からの検索・世界のレシピまで、すべての機能を無料でお使いいただけます。
 
-【お支払いについて】
-お支払いは購入の確定時に Apple アカウントに請求されます。サブスクリプションは、期間終了日の24時間前までに自動更新をオフにしない限り自動で更新されます。更新料金は期間終了前の24時間以内に請求されます。購入後は App Store のアカウント設定からサブスクリプションの管理と解約ができます。無料期間の未使用分は、サブスクリプションを購入した時点で失効します。
-
-利用規約: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 プライバシーポリシー: https://akb69bka-tech.github.io/gohancho-/privacy.html
 
-料理の絵は、1品ずつ描いたオリジナルのイラストです。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
+料理の絵は、AI で作成したイメージです。実際の料理・盛りつけとは異なります。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。
 ```
 
 ## キーワード（100文字まで、カンマ区切り・空白なし）
@@ -104,13 +95,14 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 ・苦手な食材の置き換え：置き換えられる料理は、別の食材に替えて提案します（例: 豚肉→鶏肉）
 ・国を組み合わせる：主菜・副菜・汁ものごとに国を選べます（例: 主菜は中華、副菜は和食、汁ものは韓国）
 ・言語を固定：表示する言語は最初に選んだままになり、国を変えても変わりません（設定から変更できます）
-・購入画面をわかりやすく：料金・無料期間・自動更新の説明を見やすくしました
 ・そのほか、多数の不具合を修正し、使いやすくしました
 ```
 
 ---
 
-## サブスクリプション（App 内課金）
+## サブスクリプション（App 内課金）— 今回は作らない・提出しない
+
+> **1.1.0 は全員無料で出す**（オーナー決定。`gohancho/index.html` の `billingMode: 'off'`）。下の表は、あとで課金を始めるときのための控えです。今回は App Store Connect に製品を作らず、バージョンと一緒に審査にも出しません。
 
 **サブスクリプショングループ名**: ご飯帖プラス
 
@@ -138,19 +130,23 @@ App Store Connect がキーワードを「100バイト」で数えて入りき�
 
 ## App のプライバシー
 
-- 開発者（あなた）は、記録・写真・設定を収集しません（端末の中だけに保存）
-- **RevenueCat を使う場合**、購入の確認のために「購入履歴」と「ユーザ ID（匿名）」が RevenueCat に送られます。回答は RevenueCat の案内（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）に従ってください（**要確認**）
-- 起動時に GitHub 上の小さな設定ファイル（お知らせ・設定の切りかえ）を読みます。利用者を特定する情報は送りません
+- 回答は **「データを収集していません」**（`kit/03_共通/04_Appのプライバシー（回答）.txt`）。プライバシー マニフェスト（`scripts/setup-ios.sh` が書き出す `PrivacyInfo.xcprivacy`）も「集めるデータなし」にそろえてある
+- 開発者（あなた）は、記録・写真・設定を収集しません（端末の中だけに保存）。アプリ内課金がないので RevenueCat は起動しません
+- 起動時に GitHub 上の小さな設定ファイル（お知らせの文）を読みます。利用者を特定する情報は送りません
 - 料理の絵はアプリに同梱しているため、通常は外部に通信しません（同梱の絵が読み込めないときだけ Wikipedia に料理名を問い合わせます。利用者を特定する情報は送りません）
+- 要確認（わかりません）: 上の通信の IP アドレスと、「声で入力」で使う Apple の音声認識を、Apple の定義で申告する必要があるか
+- 課金を始めるときは、「購入履歴」「ユーザ ID」（RevenueCat）を申告に戻す
 
 ---
 
 ## 審査メモ（App Review Information → Notes。審査担当者向けなので英語）
 
 ```
-Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks one of 21 countries/regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday home dishes. The UI is available in 18 languages including Japanese (the first screen is in English; the language follows the chosen country and can be changed in Settings).
+Gohancho is a meal-planning app for everyday home cooking. On first launch the user picks one of 21 countries/regions (Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil, Peru) and the app plans meals from that country's everyday home dishes. The UI is available in 18 languages including Japanese. The first screen follows the device language (English if the device language is not one of the 18); the app language stays as chosen, even when the country is changed, and can be changed in Settings.
 
-Content and offline use: all app files (HTML/JS/CSS, 1,700+ original recipes, translations and 1,743 original dish illustrations) are bundled in the app binary. The app does not load a remote website and works fully offline. No account or login is required; meal history, photos and settings are stored on the device only.
+Price: the app is completely free. There are no in-app purchases, no subscriptions, no ads and no locked features. Every feature is available right after the short first-run setup (choose a country, then a cooking style).
+
+Content and offline use: all app files (HTML/JS/CSS, 1,700+ recipes, translations and the dish pictures) are bundled in the app binary. The dish pictures are AI-generated images, and the app says so on each recipe ("photo-like pictures are AI-generated images"). The app does not load a remote website and works fully offline. At launch it reads one small JSON file from GitHub (an optional announcement text; no code); if it cannot be read, the app works the same. No account or login is required; meal history, photos and settings are stored on the device only.
 
 Main features:
 - Daily menu (main dish, side dishes, soup; 2-6 dishes) and a 7-day plan that avoid repeating recently cooked dishes, meats and cuisines.
@@ -158,32 +154,37 @@ Main features:
 - Ingredient search ("what can I cook with what's in my fridge"), servings scaling, and disliked ingredients: when possible the disliked ingredient is swapped for another one (e.g. pork -> chicken); otherwise the dish is not suggested.
 
 Native iOS features used (all optional; none is needed to use the app, and each permission is requested only at the moment the user taps the related button):
-- Local notifications: daily reminder (Settings > Daily reminder) and cooking timers (tap a time such as "8 min" in a recipe's steps). The notification permission is requested only when the user turns on a reminder or starts a timer, never at launch. No push notifications, no server.
-- Share sheet / messenger links: send the menu or shopping list to family. Nothing is uploaded to our servers.
-- Camera / photo library: optionally add a photo of a cooked dish. Photos stay on the device.
-- Microphone / speech recognition: (1) the "Speak" button on the ingredient and dish search screens, to say an ingredient or dish name; (2) "Hands-free" in a recipe's Cook tab (off by default), which reads the step aloud and listens for "next". Both are requested only when the user taps them. The app does not save recordings; on iPhone the speech is processed by Apple's speech recognition. If permission is declined, typing works the same.
-- Read aloud: the device's built-in speech synthesis (AVSpeechSynthesizer via the web view). No network, no permission.
-- StoreKit in-app purchase, handled through the RevenueCat SDK.
+- Local notifications: daily reminder (in Settings) and cooking timers (tap a time such as "8 min" in a recipe's steps). The notification permission is requested only when the user turns on a reminder or starts a timer, never at launch. No push notifications, no server.
+- Share sheet: send the menu or shopping list to family. Nothing is uploaded to our servers.
+- Camera / photo library: optionally add a photo of a cooked dish, or read a fridge photo or store flyer on the device (Apple Vision). Photos stay on the device.
+- Microphone / speech recognition: (1) the "Speak" button on the ingredient and dish search screens, to say an ingredient or dish name; (2) "Hands-free" in a recipe's Cook tab (off by default), which listens for "next". Both are requested only when the user taps them. The app does not save recordings; on iPhone the speech is processed by Apple's speech recognition. If permission is declined, typing works the same.
 
 Other notes for review:
-- No account, no sign-in, no tracking and no ads (App Tracking Transparency is not used). Because there is no account, there is no account to delete; "Settings > Erase all data" removes all data on the device.
+- No account, no sign-in, no tracking and no ads (App Tracking Transparency is not used). Because there is no account, there is no account to delete; "Erase all data" in Settings (Data, inside "Move or back up your data") removes all data on the device.
 - No user-generated content is shared with other users. Recipes or photos a user adds are stored only on that user's device.
-- The app gives cooking suggestions only. It makes no medical, nutrition or health claims. Allergy notices say to check ingredient labels yourself.
-- Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any outside payment page.
-
-In-app purchase: "Gohancho Plus", two auto-renewable subscriptions in one subscription group: monthly (product ID gohancho_plus_monthly, JPY 300/month in Japan) and yearly (product ID gohancho_plus_yearly, JPY 3,000/year in Japan). Both are shown to every user, and both have a 1-month free introductory offer for eligible new subscribers (one introductory offer per subscription group). After choosing a country and the short setup, the app shows the subscription screen with the App Store price, the free-trial note (only for users eligible for the introductory offer), the auto-renewal terms, links to the Terms of Use (Apple standard EULA) and the Privacy Policy, and "Restore purchases". The app's features are available once the trial or subscription is active.
-
-How to review the subscription: run the app on a device signed in with a Sandbox Apple Account (Settings > App Store > Sandbox Account). Choose any country (e.g. Japan or US), finish the short setup, then tap the monthly or the yearly plan on the subscription screen and confirm the Sandbox purchase. The meal plan opens right away. "Restore purchases" is on the same screen and in Settings. Sandbox renewals are accelerated (1 month = 5 minutes, 1 year = 1 hour).
+- The app gives cooking suggestions only. It makes no medical or health claims. Calorie and carbohydrate numbers are labeled as estimates, and allergy notices say to check ingredient labels yourself.
+- Tapping "Find a video" or "Search for photos" in a recipe opens a web search (YouTube / Google) in the browser for the dish name. There is no link to any payment page.
+- No App Preview video is provided for this version.
 ```
 
 ---
 
 ## スクリーンショット
 
-`appstore/screenshots/` に用意してあります。
+`appstore/screenshots/` に用意してあります（v159 の画面で撮り直し。2026-11-23）。
 
 | ファイル | サイズ | 使う欄 |
 | --- | --- | --- |
+| `6.9inch-01.png`〜`06.png` | 1320 × 2868 | iPhone 6.9 インチ ディスプレイ |
+| `6.5inch-01.png`〜`06.png` | 1284 × 2778 | iPhone 6.5 インチ ディスプレイ（求められた場合） |
+
+画面はアプリの実際の表示です（購入画面は入っていません）。背景はアプリと同じ生成りと柿色です。文字の書体は撮影環境（Linux の Chromium）の都合で端末と少し異なります。撮り直すときは `appstore/shots.js` を使います。
+
+## App プレビュー動画
+
+**今回は上げません。** `promo/cm-*-portrait.mp4` は古い画面で撮ったもので、最後の場面に「最初の1か月 無料・月額300円」が入っているためです。上げるときは、今の画面で撮り直し、価格の場面を外してください。
+
+--- | --- | --- |
 | `6.9inch-01.png`〜`06.png` | 1320 × 2868 | iPhone 6.9 インチ ディスプレイ |
 | `6.5inch-01.png`〜`06.png` | 1284 × 2778 | iPhone 6.5 インチ ディスプレイ（求められた場合） |
 
@@ -206,7 +207,7 @@ How to review the subscription: run the app on a device signed in with a Sandbox
 ### Promotional text (170)
 
 ```
-Dinner, decided. Gohancho plans a full meal (main, sides, soup) from home cooking, avoids repeats, swaps foods you skip and builds your grocery list. First month free.
+Dinner, decided. Gohancho plans a full meal (main, sides, soup) from home cooking, avoids repeats, swaps foods you skip and builds your grocery list. Free, with no ads.
 ```
 
 ### Description (4000)
@@ -230,30 +231,24 @@ Type what's in your fridge and see what you can cook right now, what works with 
 Tell Gohancho what you don't eat. Dishes that work with a substitute are suggested with it (e.g. pork → chicken); dishes that don't are left out. Quantities scale to your household.
 
 ■ Share it, then tap "Delicious!"
-Send today's meal or the week's plan and grocery list in one tap with WhatsApp, LINE, Messenger and more. At the table, everyone who loved a dish taps "Delicious!", and the top dish becomes your family's dish of the month.
+Send today's meal or the week's plan and grocery list in one tap with the messaging app your family uses. At the table, everyone who loved a dish taps "Delicious!", and the top dish becomes your family's dish of the month.
 
 ■ Timers inside the recipe
 Tap a time in the steps, like "simmer 8 minutes", and the timer starts right there.
 
 ■ Home cooking from 21 countries, mixed your way
-1,700+ everyday home-cooked recipes from Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil and Peru, each with an original illustration. Choose your country for meals you know, or use "Mix countries" to pick a country for each dish: say, a Chinese main, a Japanese side and a Korean soup. Recipes are shown in your language when a translation is available, otherwise in English.
+1,700+ everyday home-cooked recipes from Japan, US, UK, France, Germany, Italy, Spain, Poland, Turkey, Egypt, India, China, Taiwan, Korea, Thailand, Vietnam, Indonesia, Philippines, Mexico, Brazil and Peru, each with a picture of the dish. Choose your country for meals you know, or use "Mix countries" to pick a country for each dish: say, a Chinese main, a Japanese side and a Korean soup. Recipes are shown in your language when a translation is available, otherwise in English.
 
 ■ Works offline, stays private
 Everything runs on your phone. No account needed. Your history, photos and settings never leave your device.
 
-■ Gohancho Plus subscription required
-The app's features, including meal planning, are part of Gohancho Plus, an auto-renewable subscription. Choose monthly or yearly; the yearly plan costs less than 12 months of the monthly plan.
-- New subscribers can try either plan free for the first month (Apple free trial, for eligible users; one free trial per person)
-- After the trial, it renews at the price of the plan you chose, as shown in the App Store for your country
-- Cancel at least 24 hours before the trial ends and you won't be charged
-- Cancel anytime; your plan stops at the next renewal
+■ Free, with no in-app purchases
+Every feature is free: meal plans, the 7-day plan, grocery lists, fridge search and world recipes. No in-app purchases, no subscriptions and no ads.
 
-Payment is charged to your Apple Account when you confirm the purchase. Any unused portion of a free trial is forfeited when you purchase a subscription. Subscriptions renew automatically unless auto-renew is turned off at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the end of the period. You can manage or cancel your subscription in your App Store account settings after purchase.
-
-Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://akb69bka-tech.github.io/gohancho-/privacy-en.html
 
 If you have allergies, always check the ingredients of seasonings and processed foods yourself.
+Dish pictures are AI-generated images; actual dishes and plating will look different.
 ```
 
 ### What's New
@@ -262,13 +257,12 @@ If you have allergies, always check the ingredients of seasonings and processed 
 - Swap foods you avoid: dishes that work with a substitute are now suggested with it (e.g. pork → chicken)
 - Mix countries: choose a country for each part of the meal (e.g. Chinese main, Japanese side, Korean soup)
 - Language stays put: the app language no longer changes when you switch countries (change it anytime in Settings)
-- Clearer subscription screen: price, free trial and auto-renewal are easier to read
 - Many bug fixes and usability improvements
 ```
 
 ### Screenshots
 
-`appstore/screenshots-en/` に英語の画面（6.9インチ・6.5インチ）があります。
+`appstore/screenshots-en/` に英語の画面（6.9インチ・6.5インチ。v159 で撮り直し）があります。App プレビュー動画は今回は上げません。
 
 ---
 
@@ -276,4 +270,4 @@ If you have allergies, always check the ingredients of seasonings and processed 
 
 - **配信する国**: App Store Connect →「価格および配信状況」で、**中国本土を外して**ほかはすべて選ぶ（中国本土での配信には ICP 備案が必要。オーナー決定 2026-10-31: 対応21か国・地域のうち中国本土を除く20か国に出す。手順は `申請の完全ガイド.md` の 4-4）
 - **アプリの対応言語（Xcode の Localizations に追加）**: 英語・日本語・フランス語・ドイツ語・イタリア語・スペイン語・ポルトガル語（ブラジル）・ポーランド語・トルコ語・アラビア語・ヒンディー語・インドネシア語・フィリピン語・タイ語・中国語（簡体）・中国語（繁体）・韓国語・ベトナム語
-- **国ごとの価格**: 基準の国を日本（月額300円・年額3,000円）にして Apple の自動の価格を使う。出た金額は `世界配信の計画と収支試算.md` の表（今は「要確認」）に書き写す
+- **価格**: 今回は全員無料（アプリ本体の価格は「無料」）。国ごとの価格の設定はない。課金を始めるときは、基準の国を日本（月額300円・年額3,000円）にして Apple の自動の価格を使う（`世界配信の計画と収支試算.md`）
