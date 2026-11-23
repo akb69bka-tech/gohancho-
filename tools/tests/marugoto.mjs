@@ -173,14 +173,15 @@ for (const [w, h, ts] of [[195, 700, 2], [390, 844, 2], [360, 740, 1], [430, 932
         const bs = [...document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])')];
         const tl = bs.map(b => b.querySelector('.tl')).filter(Boolean), vis = tl.filter(e => e.getBoundingClientRect().width > 2);
         const lines = vis.map(e => Math.round(e.getBoundingClientRect().height / (parseFloat(getComputedStyle(e).lineHeight) || 14)));
-        return {n: bs.length, overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true'} : null; })};
+        return {n: bs.length, overlap: Math.min(tr.bottom, br.bottom) - Math.max(tr.top, br.top) > 1 && getComputedStyle(bar).position !== 'static', ico: document.querySelector('nav.tabs').classList.contains('ico'), shown: vis.length, maxLines: Math.max(0, ...lines), fs: parseFloat(getComputedStyle(bs[0]).fontSize), label: bs.every(b => b.textContent.trim().length > 0), shorts: bs.map(b => { const e = b.querySelector('.tsn'), q = e && e.getBoundingClientRect(), bq = b.getBoundingClientRect(); return e && q.width > 2 ? {t: e.textContent, fs: parseFloat(getComputedStyle(e).fontSize), cut: e.scrollWidth > e.clientWidth + 1 || q.left < bq.left - .5 || q.right > bq.right + .5, hid: e.getAttribute('aria-hidden') === 'true', nm: (b.getAttribute('aria-label') || b.innerText).replace(/\s+/g, ' ').trim()} : null; })};
     });
     const tag = `M1e ${w}x${h} 文字${ts}`;
     ok(!r.overlap, `${tag} 決定の帯をお盆に重ねない: ` + JSON.stringify(r));
     const narrow = w < 300 || (r.n === 8 && w < 414);   // 8タブ（11/17）は 414px より狭いと字の入る幅がない
     ok(r.n === 8, `${tag} 下のタブは8つ（日本＋日本語・料理名からを足した）: ` + r.n);
     if (narrow) ok(r.ico && r.shown === 0 && r.label, `${tag} 狭い幅ではタブは絵だけ（字は読み上げに残す）: ` + JSON.stringify(r));
-    if (narrow) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 11 && !x.cut && x.hid), `${tag} 絵だけのタブに短い名前（2〜3文字・11px以上・切れない・読み上げは長い名前）: ` + JSON.stringify(r.shorts));
+    // 申請前（11/23・審査部 4。WCAG 2.5.3）: 見えている短い名前と読み上げの名前をそろえる（短い名前を aria-hidden にしない。読み上げの名前は短い名前で始まる）
+    if (narrow) ok(r.shorts.every(x => x && x.t.length >= 1 && x.t.length <= 3 && x.fs >= 11 && !x.cut && !x.hid && x.nm.startsWith(x.t.trim())), `${tag} 絵だけのタブに短い名前（2〜3文字・11px以上・切れない・読み上げの名前は見えている短い名前で始まる）: ` + JSON.stringify(r.shorts));
     if (!narrow) ok(r.shorts.every(x => !x), `${tag} 字のあるタブには短い名前を出さない: ` + JSON.stringify(r.shorts));
     if (!narrow) ok(!r.ico && r.maxLines <= 2 && r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 大きい文字ではタブの字も大きく、2行まで: ` + JSON.stringify(r));
     if (narrow && w >= 300) ok(r.fs >= (ts === 2 ? 13.5 : 12.5), `${tag} 8タブの絵＋短い名前でも、字の大きさの設定はボタンに残る: ` + r.fs);
