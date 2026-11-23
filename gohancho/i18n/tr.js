@@ -2089,4 +2089,7 @@ GOHAN_I18N('tr', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Bazı ülkeler hâlâ yükleniyor. Sonuçlar gelince burada görünecek",   // 第53回 R225 の続き
     "卵も外す": "Yumurta da olmasın",
     "乳製品も外す": "Süt ürünü de olmasın",
+    "{name}の写真を大きく見る": "{name} fotoğrafını büyük gör",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Daha da büyütmek için iki parmağınızı açın veya iki kez dokunun",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "{app} ile göndermek için “Başka bir uygulamayla gönder” veya “Kopyala”yı kullanıp yapıştırın.",
 });

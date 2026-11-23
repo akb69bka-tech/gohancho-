@@ -2089,4 +2089,7 @@ GOHAN_I18N('id', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Beberapa negara masih dimuat. Hasilnya akan muncul di sini setelah tiba",   // 第53回 R225 の続き
     "卵も外す": "Juga tanpa telur",
     "乳製品も外す": "Juga tanpa susu",
+    "{name}の写真を大きく見る": "Lihat foto {name} lebih besar",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Rentangkan dua jari atau ketuk dua kali untuk memperbesar lagi",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Untuk mengirim lewat {app}, pakai “Kirim lewat aplikasi lain” atau “Salin” lalu tempel di sana.",
 });

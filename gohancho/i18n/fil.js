@@ -2089,4 +2089,7 @@ GOHAN_I18N('fil', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "May mga bansang naglo-load pa. Lalabas dito ang resulta pagdating",   // 第53回 R225 の続き
     "卵も外す": "Walang itlog din",
     "乳製品も外す": "Walang gatas din",
+    "{name}の写真を大きく見る": "Tingnan nang malaki ang litrato ng {name}",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Ibuka ang dalawang daliri o i-double tap para lumaki pa",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Para ipadala sa {app}, gamitin ang “Ipadala gamit ang ibang app” o “Kopyahin” at i-paste doon.",
 });

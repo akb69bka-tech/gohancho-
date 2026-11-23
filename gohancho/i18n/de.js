@@ -2089,4 +2089,7 @@ GOHAN_I18N('de', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Einige Länder werden noch geladen. Ergebnisse erscheinen hier, sobald sie da sind",   // 第53回 R225 の続き
     "卵も外す": "Auch ohne Eier",
     "乳製品も外す": "Auch ohne Milchprodukte",
+    "{name}の写真を大きく見る": "Foto von {name} groß ansehen",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Mit zwei Fingern aufziehen oder zweimal tippen, um weiter zu vergrößern",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Zum Senden mit {app} „Mit anderer App senden“ oder „Kopieren“ nutzen und dort einfügen.",
 });

@@ -45,7 +45,7 @@ const open = async (w, h, st = {}) => {
         const sh = await p.evaluate(() => { const d = document.querySelector('#sheet-root [role="dialog"]'), c = document.querySelector('#sheet-root [data-act="sheet-close"]'); return {top: d ? Math.round(d.getBoundingClientRect().top) : -1, close: c ? Math.round(c.getBoundingClientRect().top) : -1}; });
         if (sh.top < 59 || sh.close < 59) bad.push(`${w}: 条件の画面が上の 59px にかかる ${JSON.stringify(sh)}`);
         await p.evaluate(() => closeSheet()); await p.waitForTimeout(200);
-        await p.evaluate(() => document.querySelector('#view [data-act="open"]').click()); await p.waitForTimeout(500);
+        await p.evaluate(() => openModal(document.querySelector('#view .spot .vessel[data-id]').dataset.id)); await p.waitForTimeout(500);
         const md = await p.evaluate(() => { const d = document.querySelector('#modal-root [role="dialog"]'), c = document.querySelector('#modal-root [data-act="close"]'); return {top: d ? Math.round(d.getBoundingClientRect().top) : -1, close: c ? Math.round(c.getBoundingClientRect().top) : -1}; });
         if (md.top < 59 || md.close < 59) bad.push(`${w}: 料理の詳しい画面が上の 59px にかかる ${JSON.stringify(md)}`);
         await p.evaluate(() => closeModal()); await p.waitForTimeout(200);
@@ -72,7 +72,7 @@ const open = async (w, h, st = {}) => {
     const s1 = await st();
     await p.keyboard.press('Escape'); await p.waitForTimeout(400);
     const s2 = await st(), f2 = await p.evaluate(() => document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.act : '');
-    await p.evaluate(() => document.querySelector('#view [data-act="open"]').click()); await p.waitForTimeout(400);
+    await p.evaluate(() => openModal(document.querySelector('#view .spot .vessel[data-id]').dataset.id)); await p.waitForTimeout(400);
     const s3 = await st();
     await p.evaluate(() => closeModal()); await p.waitForTimeout(200);
     const s4 = await st();

@@ -2181,6 +2181,20 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
 .tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .mb-back{flex-direction:row;align-items:center;gap:8px;width:auto;max-width:min(14rem,calc(50% - 7px))}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .sh-tx,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .mb-tx{text-align:start}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide{align-items:center}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::before,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::after{margin-top:0}   /* 幅500px以上で、まるごと入れ替えが「丸の横に字」（お膳を詰めたとき）なら、前の献立も同じ形にそろえて並べる（帯の高さが変わらず、下の段の料理が動かない） */
 .tg-mid .shuffle .sh-tx{word-break:keep-all}   /* R153: 丸だけのとき（前の献立がないとき）も、語の切れ目（<wbr>）で折る */
 
+/* オーナーの依頼（11/23）: 料理の絵を前面に大きく見る。暗い地（生成りの茶）・青は使わない。絵の枠は画面の幅（16px のすき間）か、高さに入る大きさ。
+   写真風の絵（512px）は、絵の1画素が画面の1点より大きくならない 512px で止める（--zcap）。2本の指・2回たたくでの拡大は JS（ZOOM.max）で止める */
+.zoom{position:fixed;inset:0;z-index:62;background:rgba(29,20,14,.9);display:flex;align-items:center;justify-content:center;padding:calc(var(--safe-top,0px) + 8px) 16px calc(env(safe-area-inset-bottom,0px) + 12px)}
+.zoom-box{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:min(100%,560px);color:#fbf5ec}
+.zoom-top{display:flex;align-items:center;gap:8px;width:100%}
+.zoom-nm{flex:1 1 auto;min-width:0;margin:0;font-size:var(--fs20);line-height:1.3;color:#fbf5ec;overflow-wrap:anywhere}
+.zoom-x{flex:none;min-width:44px;min-height:44px;border-radius:var(--r-pill);border:1.5px solid rgba(251,245,236,.7);background:rgba(251,245,236,.12);color:#fbf5ec;font:inherit;font-weight:700;padding:0 14px;cursor:pointer}
+.zoom-stage{position:relative;width:min(100%,calc(100dvh - 220px),var(--zcap,512px));aspect-ratio:1;overflow:hidden;border-radius:var(--r-lg,16px);background:#fbf5ec;touch-action:none;user-select:none;-webkit-user-select:none}
+.zoom-stage[data-svg="1"]{--zcap:900px}
+.zoom-img{display:block;width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;will-change:transform;-webkit-user-drag:none}
+.zoom-hint{margin:0;font-size:var(--fs14);color:rgba(251,245,236,.85);text-align:center}
+.zoom-act{display:flex;justify-content:center;width:100%}.zoom-act .btn{min-height:48px;min-width:min(100%,240px)}
+@media (prefers-reduced-motion: no-preference){.zoom{animation:zoom-in .18s ease-out}@keyframes zoom-in{from{opacity:0}to{opacity:1}}}
+.hero[data-act="zoom"]{cursor:zoom-in}
 /* 申請前（11/23）: iPhone アプリ版は contentInset "never"・viewport-fit=cover なので、画面の上の端（ノッチ・Dynamic Island）まで中身が入る。
    上の端の分（--safe-top。Web 版・ふつうのブラウザでは 0）だけ、ページの上・上に貼りつく帯・下から出る画面を下げる。点検では --safe-top を指定して確かめる */
 :root{--safe-top:env(safe-area-inset-top,0px)}
@@ -2221,6 +2235,7 @@ body{padding-top:var(--safe-top)}
 </nav>
 <div id="modal-root"></div>
 <div id="sheet-root"></div>
+<div id="zoom-root"></div>
 <!-- ポップなイラストのための共通フィルター -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -7032,7 +7047,8 @@ function addGenerated(items){
         GEN[id] = {src: it.data && /^data:image\//.test(it.data) ? it.data : 'img/dish/' + it.file + v, gen: true, ai: it.via === 'api' || it.via === 'chatgpt',
             photo: it.via === 'photo',   // 写真風の絵（Gemini で作った WebP。生成りの背景の正方形）: 丸く切って出す（gph）
             // 一覧用の小さい絵（192px）。一覧に何百品も並んでも、SVG の影を毎回計算しないので速い
-            thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null};
+            thumb: it.thumbData && /^data:image\//.test(it.thumbData) ? it.thumbData : it.thumb && /^t\/[\w.-]+$/.test(it.thumb) ? 'img/dish/' + it.thumb + v : null,
+            zoom: it.zoom && /^z\/[\w.-]+$/.test(it.zoom) ? 'img/dish/' + it.zoom + v : null};   // 大きく見る画面だけで使う大きい絵（11/23。import-photos.mjs --zoom）
     });
 }
 // 起動のときは、ページの先頭で取りはじめた一覧（window.__genP）を使う。献立の画面が出ていれば、届いたらすぐ描き直す（ほかの読みこみとまとめる 250ms を待たない）
@@ -7253,6 +7269,8 @@ function vesselHtml(kind, r, still=false, anim=true, side=null){   // side: 香�
     const load = !!ph && /^img\//.test(ph.src) && !IMG_OK.has(ph.src);   // まだ届いていない絵: 届くまで絵は出さず、生成りの丸のまま待つ（pload）
     const cls = `${load ? 'pload ' : ''}vessel v-${kind}${kind === 'donburi' && r && r.type === '麺' ? ' noodle' : ''}${(ph && ph.gen) || wait ? ' gen' : ''}${(ph && ph.photo) || wait ? ' gph' : ''}${wait ? ' pwait' : ''}${anim ? ' rise-in' : ''}`, ds = load ? ` data-src="${esc(ph.src)}"` : '';
     if (!r || still) return `<div class="${cls}" style="${esc(style)}"${ds} aria-hidden="true">${food}</div>`;
+    // オーナーの依頼（11/23）: 絵のある料理は、押すと絵を前面に大きく出す（zoom。そこから「作り方を見る」）。絵のない料理は今までどおり作り方
+    if (ph && !wait) return `<button class="${cls}" style="${esc(style)}"${ds} data-act="zoom" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の写真を大きく見る', {name:r.name}))}">${food}</button>`;
     return `<button class="${cls}" style="${esc(style)}"${ds} data-act="open" data-id="${esc(r.id)}" aria-label="${esc(t('{name}の作り方を見る', {name:r.name}))}">${food}</button>`;
 }
 // 一覧の絵（32〜96px）は小さい絵（t/。256px）で足りる画面（DPR 2 まで）では小さい絵、それより細かい画面（DPR 3 のスマホ）は 512px の絵を使う。
@@ -8181,11 +8199,13 @@ let ptrAt = -1e9, keyAt = -1e9;
 document.addEventListener('keydown', e => { if (e.key !== 'Shift' && e.key !== 'Control' && e.key !== 'Alt' && e.key !== 'Meta') keyAt = performance.now(); }, true);
 function kbNav(){ return keyAt > ptrAt || performance.now() - ptrAt > 600; }
 function kbFocused(el){ try{ return el.matches(':focus-visible'); }catch(e){ return true; } }
-function topDialog(){ return $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
+function topDialog(){ return $('#zoom-root [role="dialog"]') || $('#sheet-root [role="dialog"]') || $('#modal-root [role="dialog"]'); }
 // 申請前（11/23）: 下から出る画面・料理の詳しい画面を開いているあいだは、後ろ（上の端・今日の画面・下のタブ）に inert を付ける（読み上げ・操作の対象から外す。閉じたら外す）。
 // 閉じたときは、焦点を戻す前に外す（inert のままだと、戻した焦点が受けられない）。知らせ（元に戻す）は後ろの外にあるので、そのまま押せる
 function syncInert(){
-    const open = !!document.querySelector('#sheet-root [role="dialog"], #modal-root [role="dialog"]');
+    const open = !!document.querySelector('#sheet-root [role="dialog"], #modal-root [role="dialog"], #zoom-root [role="dialog"]');
+    const zo = !!document.querySelector('#zoom-root [role="dialog"]');   // 絵を大きく見ているあいだは、下の詳しい画面・シートも読み上げ・操作の外
+    ['modal-root', 'sheet-root'].forEach(id => { const e = document.getElementById(id); if (e){ if (zo) e.setAttribute('inert', ''); else e.removeAttribute('inert'); } });
     document.querySelectorAll('body > .wrap, body > nav.tabs').forEach(e => { if (open) e.setAttribute('inert', ''); else e.removeAttribute('inert'); });
 }
 try{ new MutationObserver(syncInert).observe(document.getElementById('sheet-root'), {childList: true}); new MutationObserver(syncInert).observe(document.getElementById('modal-root'), {childList: true}); }catch(e){}   // ほかの道で開け閉めしても外し忘れない
@@ -8213,7 +8233,7 @@ function dlgClosed(rootId){
     const el = r.el && document.contains(r.el) ? r.el : findByKey(document, r.key);
     if (el) el.focus({preventScroll:true});
 }
-document.addEventListener('focusin', e => { for (const id of ['modal-root', 'sheet-root']){ const root = document.getElementById(id); if (root && root.contains(e.target)) dlgLast[id] = focusKey(e.target); } });
+document.addEventListener('focusin', e => { for (const id of ['modal-root', 'sheet-root', 'zoom-root']){ const root = document.getElementById(id); if (root && root.contains(e.target)) dlgLast[id] = focusKey(e.target); } });
 function trapTab(e){
     const d = topDialog(); if (!d) return;
     const els = [...d.querySelectorAll(FOCUSABLE)].filter(x => x.getClientRects().length && !x.closest('[hidden]'));
@@ -12939,6 +12959,12 @@ function messengerFor(){
     if (app === 'telegram') return {label:'Telegram', cls:'tg', url: t => 'https://t.me/share/url?url=&text=' + encodeURIComponent(t)};
     return null;
 }
+// 決まった共有のリンクがない、国でよく使うアプリ（11/23・オーナーの依頼）: ボタンは作らず、「ほかのアプリで送る」（端末の共有）か「コピーする」で貼る、と名前を出して知らせる。
+// Kakao の SDK などの登録・キーが要るものは使わない
+function shareAppHint(){
+    const app = PACK ? PACK.share : 'line';
+    return app === 'wechat' ? (/^zh/.test(LANG) ? '微信' : 'WeChat') : app === 'kakao' ? (LANG === 'ko' ? '카카오톡' : 'KakaoTalk') : app === 'zalo' ? 'Zalo' : app === 'messenger' ? 'Messenger' : '';
+}
 function openShare(kind){
     const text = kind === 'week' ? weekShareText() : kind === 'cook' ? (S.cook ? menuShareText({items: cookItems()}, S.cook.d) : '') : menuShareText();
     if (!text){ toast(t('送る献立がありません')); return; }
@@ -12972,7 +12998,7 @@ function shareSheetHtml(){
         ${sheet.card === 'recipe' || sheet.card === 'shop' || sheet.card === 'wish' || sheet.card === 'vote' ? '' : `<div class="row"><button class="btn wide" data-act="share-card" data-k="${esc(sheet.card === 'today3' ? (sheet.src === 'cook' ? 'cook' : 'menu') : sheet.card || 'menu')}" ${sheet.card === 'needs' ? `data-m="${esc(sheet.mid)}" data-n="${sheet.withName ? 1 : 0}"` : ''}>${esc(t('画像でつくる'))}</button></div>`}
         ${sheet.card === 'week' ? `<div class="row"><button class="btn wide" data-act="share-ics">${esc(t('カレンダーに取りこむ（.ics）'))}</button></div><p class="tiny muted">${esc(t('作る日ごとに終日の予定になります。「作らない日」は入れません。'))}</p>` : ''}
         ${sheet.card === 'week' && weekCutByFree() ? `<p class="tiny muted">${esc(t('無料版の画像は、見られる範囲の分だけです。ご飯帖プラスなら1週間分の予定を1枚にできます。'))} <button class="btn sm ghost" data-act="paywall-week">${esc(t('ご飯帖プラスを見る'))}</button></p>` : ''}
-        ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : ''}
+        ${messengerFor() ? `<p class="tiny muted">${esc(t('{app} を押すと、送り先（家族やグループ）を選ぶ画面が開きます。', {app:messengerFor().label}))}</p>` : shareAppHint() ? `<p class="tiny muted share-app-hint">${esc(t('{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。', {app: shareAppHint()}))}</p>` : ''}
         <button class="btn ghost" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
 }
 
@@ -16697,6 +16723,98 @@ function myRecordHtml(){
 /* ---- 詳細（モーダル） ---- */
 let modalId = null, modalConfirmHide = false, modalReactD = null;
 function openModal(id){ modalId = id; modalConfirmHide = false; modalReactD = null; renderModal(); }
+/* ---- 料理の絵を大きく見る（オーナーの依頼 11/23） ----
+   お膳・詳しい画面の絵を押すと、絵を前面に大きく出す。2本の指で広げる・2回たたくと、さらに大きく。閉じるは ×・まわりを押す・戻る（Esc）。
+   ぼけないように: 同梱の写真風の絵（512px の WebP）は、絵の1画素が画面の1点（CSS px）より大きくならない所で止める（それ以上は引きのばしになる）。
+   手描きの SVG は線の絵なので 4倍まで。大きい絵（manifest の zoom: img/dish/z/<ID>.webp）があれば、このときだけ読みこむ（ふだんの表示・電波のない時の保存は増やさない）。
+   献立・料理は変えない（開くのは絵だけ。「作り方を見る」で今までの詳しい画面へ） */
+let zoomId = null, zoomHist = false, zoomBack = false;   // zoomBack: 閉じたときの history.back() の popstate がまだ来ていない
+const ZOOM = {s: 1, x: 0, y: 0, max: 1, base: 0, pts: new Map(), pinch: null, pan: null, tap: 0, moved: false};
+function zoomSrcOf(ph){ return ph && (ph.zoom || ph.src); }
+function openZoom(id){
+    const r = byId(id), ph = r && photoOf(r);
+    if (!ph || IMG_FAIL.has(ph.src)){ openModal(id); return; }   // 絵が出せない料理は、今までどおり作り方
+    zoomId = id; renderZoom();
+    if (!zoomBack) zoomPush();   // 閉じた直後（戻るがまだ済んでいない）なら、済んでから積む（すぐ開き直しても、前の戻るで閉じない）
+}
+function zoomPush(){ try{ history.pushState(Object.assign({}, history.state, {gohanZoom: 1}), ''); zoomHist = true; }catch(e){ zoomHist = false; } }
+function closeZoom(fromPop){
+    if (!zoomId) return;
+    zoomId = null; $('#zoom-root').innerHTML = ''; ZOOM.pts.clear(); dlgClosed('zoom-root');
+    if (zoomHist && !fromPop){ zoomHist = false; try{ zoomBack = true; history.back(); }catch(e){ zoomBack = false; } }
+    zoomHist = false;
+}
+window.addEventListener('popstate', () => {
+    if (zoomBack){ zoomBack = false; if (zoomId && !zoomHist) zoomPush(); return; }   // 自分で閉じたときの戻る: 閉じるのは済んでいる
+    if (zoomId) closeZoom(true);
+});
+function renderZoom(){
+    const r = byId(zoomId), ph = r && photoOf(r); if (!ph) return;
+    const src = zoomSrcOf(ph), svg = /\.svg(\?|$)/i.test(ph.src);
+    $('#zoom-root').innerHTML = `<div class="zoom" data-act="zoom-bg">
+        <div class="zoom-box" role="dialog" aria-modal="true" aria-label="${esc(t('{name}の写真', {name: r.name}))}">
+            <div class="zoom-top"><h2 class="zoom-nm">${esc(r.name)}</h2><button type="button" class="close zoom-x" data-act="zoom-close">${esc(t('閉じる'))}</button></div>
+            <div class="zoom-stage${ph.photo ? ' gph' : ''}" data-svg="${svg ? 1 : ''}"><img class="zoom-img" src="${esc(src)}" alt="${esc(t('{name}の写真', {name: r.name}))}" draggable="false" decoding="async"></div>
+            <p class="zoom-hint" hidden>${esc(t('2本の指で広げる・2回たたくと、さらに大きく見られます'))}</p>
+            <div class="zoom-act"><button type="button" class="btn primary" data-act="zoom-recipe" data-id="${esc(r.id)}">${esc(t('作り方を見る'))}</button></div>
+        </div></div>`;
+    const st = $('#zoom-root .zoom-stage'), im = $('#zoom-root .zoom-img');
+    Object.assign(ZOOM, {s: 1, x: 0, y: 0, max: 1, pinch: null, pan: null, tap: 0}); ZOOM.pts.clear();
+    const fit = () => {
+        ZOOM.base = st.getBoundingClientRect().width || 1;
+        const nat = im.naturalWidth || 0;
+        // 写真・写真風の絵: 絵の1画素 = 画面の1点まで（それより大きくすると引きのばしでぼける）。手描きの SVG（線の絵）: 4倍まで
+        ZOOM.max = svg ? 4 : Math.max(1, Math.min(4, nat / ZOOM.base));
+        const h = $('#zoom-root .zoom-hint'); if (h) h.hidden = !(ZOOM.max > 1.05);
+        zoomApply();
+    };
+    // 大きい絵が読めなかったら、ふだんの絵に戻す
+    im.addEventListener('error', () => { if (im.getAttribute('src') !== ph.src){ im.src = ph.src; } }, {once: false});
+    if (im.complete && im.naturalWidth) fit(); else im.addEventListener('load', fit, {once: true});
+    st.addEventListener('pointerdown', zoomDown); st.addEventListener('pointermove', zoomMove); st.addEventListener('pointerup', zoomUp); st.addEventListener('pointercancel', zoomUp);
+    dlgOpened('zoom-root');
+}
+function zoomClamp(){
+    ZOOM.s = Math.min(ZOOM.max, Math.max(1, ZOOM.s));
+    const lim = (ZOOM.s - 1) * ZOOM.base / 2;   // 絵の端が枠の内側に入らない所まで
+    ZOOM.x = Math.min(lim, Math.max(-lim, ZOOM.x)); ZOOM.y = Math.min(lim, Math.max(-lim, ZOOM.y));
+}
+function zoomApply(){ zoomClamp(); const im = $('#zoom-root .zoom-img'); if (im) im.style.transform = ZOOM.s === 1 ? '' : `translate(${ZOOM.x}px, ${ZOOM.y}px) scale(${ZOOM.s})`; const st = $('#zoom-root .zoom-stage'); if (st) st.dataset.scale = ZOOM.s.toFixed(2); }
+function zoomDown(e){
+    try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(err){}
+    ZOOM.pts.set(e.pointerId, {x: e.clientX, y: e.clientY}); ZOOM.moved = false;
+    if (ZOOM.pts.size === 2){ const [a, b] = [...ZOOM.pts.values()]; ZOOM.pinch = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, s: ZOOM.s}; ZOOM.pan = null; }
+    else if (ZOOM.pts.size === 1) ZOOM.pan = {x: e.clientX, y: e.clientY, zx: ZOOM.x, zy: ZOOM.y};
+}
+function zoomMove(e){
+    if (!ZOOM.pts.has(e.pointerId)) return;
+    const p0 = ZOOM.pts.get(e.pointerId); if (Math.hypot(e.clientX - p0.x, e.clientY - p0.y) > 6) ZOOM.moved = true;
+    ZOOM.pts.set(e.pointerId, {x: e.clientX, y: e.clientY});
+    if (ZOOM.pts.size === 2 && ZOOM.pinch){ const [a, b] = [...ZOOM.pts.values()]; ZOOM.s = ZOOM.pinch.s * (Math.hypot(a.x - b.x, a.y - b.y) || 1) / ZOOM.pinch.d; zoomApply(); }
+    else if (ZOOM.pts.size === 1 && ZOOM.pan && ZOOM.s > 1){ ZOOM.x = ZOOM.pan.zx + e.clientX - ZOOM.pan.x; ZOOM.y = ZOOM.pan.zy + e.clientY - ZOOM.pan.y; zoomApply(); }
+}
+function zoomUp(e){
+    const was = ZOOM.pts.size; ZOOM.pts.delete(e.pointerId);
+    if (ZOOM.pts.size < 2) ZOOM.pinch = null;
+    if (ZOOM.pts.size === 1){ const p = [...ZOOM.pts.values()][0]; ZOOM.pan = {x: p.x, y: p.y, zx: ZOOM.x, zy: ZOOM.y}; }
+    if (was === 1 && !ZOOM.moved && e.type === 'pointerup'){   // 2回たたく: 大きく ⇄ もとの大きさ
+        const now = e.timeStamp || performance.now();
+        if (now - ZOOM.tap < 320){ ZOOM.tap = 0; zoomToggle(e.clientX, e.clientY); } else ZOOM.tap = now;
+    }
+}
+function zoomToggle(cx, cy){
+    if (ZOOM.max <= 1.05) return;
+    if (ZOOM.s > 1.01){ ZOOM.s = 1; ZOOM.x = 0; ZOOM.y = 0; }
+    else { const st = $('#zoom-root .zoom-stage').getBoundingClientRect(), s = ZOOM.max; ZOOM.s = s; ZOOM.x = (st.left + st.width / 2 - cx) * (s - 1); ZOOM.y = (st.top + st.height / 2 - cy) * (s - 1); }   // たたいた所を中心に
+    zoomApply();
+}
+function zoomAct(act, el, e){
+    if (act === 'zoom'){ openZoom(el.dataset.id); return; }
+    if (act === 'zoom-close'){ closeZoom(); return; }
+    if (act === 'zoom-bg'){ if (e.target === el) closeZoom(); return; }   // 絵・ボタンのまわり（暗い所）を押したときだけ
+    if (act === 'zoom-recipe'){ const id = el.dataset.id; closeZoom(); if (modalId !== id) openModal(id); return; }
+}
+
 // 記録の料理を開く。国を変えたあとのほかの国の料理は、世界のレシピのデータを読みこんで開く
 function histCountry(id){ const m = /^([a-z]{2})_/.exec(id); return m && COUNTRIES.some(c => c.cc === m[1].toUpperCase()) ? m[1].toUpperCase() : 'JP'; }
 async function openHist(id){
@@ -17402,7 +17520,7 @@ function renderModalBody(){
     <div class="modal" data-act="modal-bg">
         <div class="sheet dsheet${modalPop}" data-id="${esc(r.id)}" role="dialog" aria-modal="true" aria-label="${esc(r.name)}">
             <div class="sheet-float"><button class="close" data-act="close">${esc(t('閉じる'))}</button></div>
-            <div class="${heroCls}">${hero}</div>
+            <div class="${heroCls}"${ph ? ` data-act="zoom" data-id="${esc(r.id)}" role="button" tabindex="0" aria-label="${esc(t('{name}の写真を大きく見る', {name:r.name}))}"` : ''}>${hero}</div>
             <div class="sheet-body">
                 <div class="dhead">
                     ${kind ? `<div class="dkind">${esc(kind)}</div>` : ''}
@@ -17627,6 +17745,7 @@ document.addEventListener('click', e => {
     if (chip && e.detail > 0){ const pd = lastDown, c = chipTap = {x: e.clientX, y: e.clientY, key: chipKeyOf(el), until: Infinity, ts: pd && pd.type === 'touch' ? pd.ts : null}; queueMicrotask(() => { c.until = Date.now() + 350; }); c.shownAt = Infinity; requestAnimationFrame(() => { c.shownAt = performance.now(); }); }   // マウス: 0.35 秒は、描き終わってから数える。shownAt: 押した結果を描いた時刻（その前に当てた指は、結果を見ていない）
     if (act === 'decide' || act === 'ob-done' || act === 'rm-hist' || act === 'rm-custom') tapGuard = Date.now() + 350;
     if (act === 'modal-bg' && e.target !== el) return;
+    if (act === 'zoom' || act.startsWith('zoom-')){ if (el.closest('.cap a')) return; zoomAct(act, el, e); return; }   // 絵を大きく見る（11/23）
     session.freshArmed = true;   // 「新」の札は、本人が何か押したあとの変化にだけ付ける
     if (el.closest('.cond-entries') && sheet && sheet.kind === 'cond') closeSheet();   // 条件シートの中の入口: シートを閉じてから、その画面へ
     // 「設定に合わせて…かえました」は、決める段で見せたあとの次の操作で消す（第4回 R7: 気分を変えたあとも残った）。「ほかの候補」はこの知らせの続きなので除く
@@ -19565,7 +19684,7 @@ function a11yActs(root=document){ root.querySelectorAll(A11Y_SEL).forEach(a11yFi
 a11yActs();
 // 足された要素の中だけ見る（描き直しのたびに全部を数え直して属性を書きかえない）
 new MutationObserver(ms => { for (const m of ms) m.addedNodes.forEach(n => { if (n.nodeType !== 1 || !n.isConnected) return; if (n.matches(A11Y_SEL)) a11yFix(n); if (n.firstElementChild) a11yActs(n); }); }).observe(document.body, {childList:true, subtree:true});
-document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); else if (modalId) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Tab'){ trapTab(e); return; } if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]:not(button):not(a)')){ e.preventDefault(); e.target.click(); return; } if (e.key !== 'Escape') return; if (zoomId){ closeZoom(); return; } if (sheet && sheet.kind !== 'onboard' && !(sheet.kind === 'country' && (!S.settings.country || !S.onboarded))) closeSheet(); else if (modalId) closeModal(); });
 document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 // 国のない保存データ（国を選ぶ前の版・壊れて読めなかった）は、日本に決めつけず、起動したときに国を選ぶ画面を出す
 // 「自動（国に合わせる）」だった人は、いま表示している言語に決める。これからは国を変えても言語は変わらない

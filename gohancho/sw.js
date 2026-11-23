@@ -136,6 +136,8 @@ self.addEventListener('fetch', e => {
   if (same && /\/img\/dish\/manifest\.json$/.test(url.pathname)){ e.respondWith(swr(e, req, 'json')); return; }
   // 国のレシピ（packs/、packs/i18n/）と画面の言葉の辞書（i18n/）
   if (same && /\/(packs|i18n)\/.+\.js$/.test(url.pathname)){ e.respondWith(swr(e, req, 'js')); return; }
+  // 絵を大きく見る画面だけの大きい絵（img/dish/z/。11/23）: 保存しない（電波のない時の容量を増やさない。読めないときは画面がふだんの絵に戻す）
+  if (same && /\/img\/dish\/z\//.test(url.pathname)){ e.respondWith(fetch(req).catch(() => Response.error())); return; }
   // 同じサイトのファイル（アイコン・料理の絵など）。一度見たものは保存して電波がなくても出す
   if (same && /\/img\//.test(url.pathname)){
     e.respondWith(caches.open(VERSION).then(c => c.match(req).then(hit => hit || fetch(req).then(res => { if (res.ok) c.put(req, res.clone()); return res; }))));

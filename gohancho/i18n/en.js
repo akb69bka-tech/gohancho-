@@ -2090,4 +2090,7 @@ GOHAN_I18N('en', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Some countries are still loading. Results will appear here when they arrive",   // 第53回 R225 の続き
     "卵も外す": "Also no eggs",
     "乳製品も外す": "Also no dairy",
+    "{name}の写真を大きく見る": "View the photo of {name} larger",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Spread two fingers or double-tap to zoom in further",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "To send with {app}, use “Send with another app” or “Copy” and paste it there.",
 });

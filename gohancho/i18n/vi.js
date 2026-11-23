@@ -2089,4 +2089,7 @@ GOHAN_I18N('vi', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Một số nước vẫn đang tải. Kết quả sẽ hiện ở đây khi tải xong",   // 第53回 R225 の続き
     "卵も外す": "Không trứng nữa",
     "乳製品も外す": "Không sữa nữa",
+    "{name}の写真を大きく見る": "Xem ảnh {name} cỡ lớn",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Mở rộng hai ngón tay hoặc chạm hai lần để phóng to thêm",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Để gửi qua {app}, hãy dùng “Gửi bằng ứng dụng khác” hoặc “Sao chép” rồi dán vào.",
 });
