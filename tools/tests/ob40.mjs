@@ -4,6 +4,7 @@
 //  H1（R178）はじめての献立の「アレルギーや苦手な食材がある方は…［設定］［×］」: 「献立を見る」のすぐあと（1秒以内）に、最初の画面の中に出る。
 //     幅 195/260/320/360/390/430 × 文字3段階。料理（器・名前・かえる）と丸い「まるごと入れ替え」に重ならず、お膳より上に出さない。
 //     「準備ができました」のお知らせと重ならない。読み上げ（aria-live="polite"）で1回だけ知らせる（描き直しても2回目は言わない）
+//  H1b（申請前 11/23）日曜の夜の幅 320/360/375 で、貼りつけた案内のふち（4px）が丸い「まるごと入れ替え」の字にかからない
 //  H2（R186）案内の「設定」で設定を見て、何もせずに戻ると案内は残る。苦手を1つ入れても残る。アレルギーか食の決まりを入れたら消える。×で消える
 //  H3（R180）使い方を選んでから「スキップ」→ 選んだ使い方のまま献立へ
 //  H4（R181）家族5人のうち1人だけ卵アレルギー: 「…に合わない料理があります」には、当たる人の名前だけ（全員を並べない）
@@ -29,6 +30,7 @@ const ctxOf = async (o, tag) => {
         const look = () => document.querySelectorAll('[aria-live]:not([aria-live=off]), [role=status], [role=alert]').forEach(e => { const tx = (e.textContent || '').trim(); if (tx && seen.get(e) !== tx){ seen.set(e, tx); window.__live.push(tx); } else if (!tx) seen.set(e, ''); });
         document.addEventListener('DOMContentLoaded', () => new MutationObserver(look).observe(document.body, { childList: true, subtree: true, characterData: true })); });
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push(tag + ': ' + e.message));
+    if (o.clock) await p.clock.install({ time: new Date(o.clock) });
     await p.goto(URL_);
     await p.waitForFunction(() => typeof S !== 'undefined' && typeof RECIPES !== 'undefined' && RECIPES.length > 0 && typeof GH !== 'undefined' && GH.booted, null, { timeout: 30000 }).catch(() => {});
     return { p, ctx };
@@ -94,6 +96,25 @@ if (want('H1')){
         ok(r2.shown && r2.said === 0, 'H1 開き直したときは案内は見えるが、もう読み上げない: ' + JSON.stringify(r2));
         await ctx.close();
     }
+}
+
+// ---- H1b 申請前（11/23・審査部 2-11）: 日曜の夜（おまかせの品数が多い日）の幅 260px 以上で、下のタブの上に貼りつけた案内のふち（4px の影）が、
+//      丸い「まるごと入れ替え」（字をふくむ）にかからない。案内は最初の画面に出る ----
+if (want('H1')){
+    const bad = []; let n = 0;
+    for (const [w, h] of [[320, 568], [360, 640], [375, 667]]) for (const ts of [0, 1, 2]){
+        const { p, ctx } = await ctxOf({ w, h, touch: true, clock: '2026-11-22T19:00:00+09:00' }, `h1b-${w}-${ts}`);
+        await p.waitForSelector('#sheet-root [data-act=cc-choose]', { timeout: 30000 });
+        await p.evaluate(ts => { if (ts) S.settings.textSize = ts; else delete S.settings.textSize; applyTextSize(); }, ts);
+        await toMode(p); await done(p); await p.waitForTimeout(700);
+        const r = await p.evaluate(() => { const h = [...document.querySelectorAll('.alg-hint')].find(e => e.getClientRects().length && getComputedStyle(e).display !== 'none'); const sh = document.querySelector('#view .tray .tg-mid .shuffle');
+            if (!h || !sh) return { none: !h, noShuffle: !sh }; const a = h.getBoundingClientRect(), q = sh.getBoundingClientRect(), nav = document.querySelector('nav.tabs').getBoundingClientRect().top;
+            return { hit: q.top < a.bottom + 4 - .5 && q.bottom > a.top - 4 + .5 && q.left < a.right + 4 - .5 && q.right > a.left - 4 + .5, inView: a.top >= -.5 && a.bottom <= nav + .5, sticky: getComputedStyle(h).position === 'sticky', hint: [Math.round(a.top), Math.round(a.bottom)], sh: [Math.round(q.top), Math.round(q.bottom)], bc: document.body.className }; });
+        n++;
+        if (r.none || (!r.noShuffle && (r.hit || !r.inView))) bad.push(`${w}x${h} 文字${ts}: ` + JSON.stringify(r));
+        await ctx.close();
+    }
+    ok(n === 9 && !bad.length, `H1b 日曜の夜・幅320/360/375 × 文字3段階（${n}画面）: 案内のふちが丸い「まるごと入れ替え」の字にかからず、案内は最初の画面に出る: ` + bad.slice(0, 3).join(' / '));
 }
 
 // ---- H2 消える条件 ----
