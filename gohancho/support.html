@@ -20,10 +20,11 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <p class="muted">毎日の献立を、お膳ごと提案する料理アプリです。</p>
 
 <!--
-  R212（ui51）: アプリは全員無料（index.html の PLAN.billingMode が 'off'）。無料のあいだは、課金の質問（解約・お試し・購入を復元）を見せない。
-  ・data-billing="paid" … 課金を始めたときの質問。消さずに hidden で残している（価格・説明はそのまま）
-  ・data-billing="free" … 全員無料のあいだの質問
-  課金を始めるとき（billingMode を 'native' か 'all' にするとき）: paid の hidden を外し、free に hidden を付ける（support-en.html も同じ）。
+  R212（ui51）・オーナー決定（2026-11-23）: index.html の PLAN.billingMode は 'native'。課金は iPhone アプリ版だけ（登録した最初の1か月は無料、次の月から月額300円）。Web 版は無料のまま。
+  ・data-billing="paid" … 課金ありのときの質問（billingMode が 'native' か 'all' のときに見せる）。月額だけの方針に合わせ、年額・「年の縛り」の文は書かない（年額は確認まとめ85で確認中）
+  ・data-billing="free" … 全員無料（billingMode 'off'）のときの質問。消さずに hidden で残している
+  ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
+  billingMode を 'off' に戻すとき: paid に hidden を付け、free の hidden を外す（support-en.html も同じ）。
   tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
 -->
 <h2>よくある質問</h2>
@@ -31,12 +32,13 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <details><summary>品数を変えたい</summary><p>今日の献立の「品数」で、おまかせ（曜日で3〜6品）か2〜6品を選べます。</p></details>
 <details><summary>家族に献立を送りたい</summary><p>「今日の献立を LINE で家族に送る」、または1週間の主菜の「予定と買い物メモを LINE で送る」を押してください。送り先を選ぶ画面が開きます。</p></details>
 <details><summary>苦手な食材やアレルギーがある</summary><p>設定の「苦手な食材」で選んだ食材は、ほかの食材に置き換えられる料理なら置き換えて提案します（例: 豚肉→鶏肉）。置き換えられない料理は献立に出しません。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。</p></details>
-<details data-billing="free"><summary>料金はかかりますか？</summary><p>ご飯帖はいま全員無料です。料金はかかりません。すべての機能をそのままお使いいただけます。</p></details>
-<details data-billing="paid" hidden><summary>ご飯帖プラスを解約したい</summary><p>iPhone の「設定」→ 一番上の自分の名前 →「サブスクリプション」→「ご飯帖」から解約できます。月額300円で、年の縛りはありません。</p></details>
-<details data-billing="paid" hidden><summary>無料お試しのしくみ</summary><p>はじめに月額プラン（300円）を選ぶと、1か月の無料お試しが始まります。2か月目から、解約していなければ月額の料金が Apple ID に請求され、毎月自動で更新されます。年の縛りはなく、いつでも解約できます（無料期間が終わる24時間前までに解約すれば料金はかかりません）。無料体験が使えるのは、はじめて登録する方のみです。</p></details>
+<details data-billing="free" hidden><summary>料金はかかりますか？</summary><p>ご飯帖はいま全員無料です。料金はかかりません。すべての機能をそのままお使いいただけます。</p></details>
+<details data-billing="paid"><summary>料金はかかりますか？</summary><p>iPhone アプリ版は「ご飯帖プラス」（月額300円）です。はじめて登録した最初の1か月は無料で、次の月から月額300円になります。ブラウザで開く Web 版は無料です。</p></details>
+<details data-billing="paid"><summary>ご飯帖プラスを解約したい</summary><p>iPhone の「設定」→ 一番上の自分の名前 →「サブスクリプション」→「ご飯帖」から解約できます。月額300円で、いつでも解約できます。</p></details>
+<details data-billing="paid"><summary>無料お試しのしくみ</summary><p>はじめに月額プラン（300円）を選ぶと、1か月の無料お試しが始まります。2か月目から、解約していなければ月額の料金が Apple ID に請求され、毎月自動で更新されます。いつでも解約できます（無料期間が終わる24時間前までに解約すれば料金はかかりません）。無料体験が使えるのは、はじめて登録する方のみです。</p></details>
 <details><summary>ほかの国の料理を見たい</summary><p>下の「世界のレシピ」から国を選ぶと、その国の家庭料理を見られます。毎日の献立は、設定で選んだ国のままです。</p></details>
-<details data-billing="free"><summary>機種変更したら、記録はどうなりますか？</summary><p>記録・お気に入り・設定などは、この端末の中だけに保存されています。前のスマホで、設定 › データ の「ファイルで書き出す」を押してファイルを作り、新しいスマホで、同じ 設定 › データ の「データの引っ越し・バックアップ」を押してひらき、中の「ファイルから読み込む」を押して、そのファイルを選んでください。その欄の文字をコピーして、新しいスマホの同じ欄に貼りつける方法もあります。写真（わが家の一枚・アルバム）は移りません。</p></details>
-<details data-billing="paid" hidden><summary>機種変更したら購入はどうなりますか？</summary><p>同じ Apple ID でサインインし、設定の「購入を復元」を押してください。献立の記録は、設定の「データの引っ越し・バックアップ」で移せます。</p></details>
+<details><summary>機種変更したら、記録はどうなりますか？</summary><p>記録・お気に入り・設定などは、この端末の中だけに保存されています。前のスマホで、設定 › データ の「ファイルで書き出す」を押してファイルを作り、新しいスマホで、同じ 設定 › データ の「データの引っ越し・バックアップ」を押してひらき、中の「ファイルから読み込む」を押して、そのファイルを選んでください。その欄の文字をコピーして、新しいスマホの同じ欄に貼りつける方法もあります。写真（わが家の一枚・アルバム）は移りません。</p></details>
+<details data-billing="paid"><summary>機種変更したら購入はどうなりますか？</summary><p>同じ Apple ID でサインインし、設定の「購入を復元」を押してください。献立の記録は、設定の「データの引っ越し・バックアップ」で移せます。</p></details>
 <details><summary>料理の絵について</summary><p>料理の絵は、AI で作成したイメージです。実際の料理・盛りつけとは異なります。絵はアプリに入っているので、通信しなくても表示されます。「作った料理を撮って登録」で、ご自身の写真にもできます（端末の中だけに保存されます）。</p></details>
 
 <h2>お問い合わせ</h2>

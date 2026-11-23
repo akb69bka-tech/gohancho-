@@ -6,6 +6,8 @@
 //  S2 「全員無料」の1問と、機種変更の質問（書き出す・読み込むの手順）が見える。手順の言葉は、アプリの設定のボタンの名前と同じ（訳も）
 //  S3 課金の質問は消さずに data-billing="paid" で hidden のまま残っている（課金を始めるときに戻せる）。billingMode が 'off' でなければ、逆（paid が見え、free が隠れる）でないといけない
 //  S4 アプリのリンク（docPage）が指すページがある（ja・ほかの言語）
+//  S5 課金ありのとき（オーナー決定 2026-11-23: 'native'＝iPhone アプリ版だけ。登録した最初の1か月は無料・次の月から月額300円）: 課金の質問（料金・お試し・解約・購入の復元）が見え、
+//     年額・「年の縛り」の語が見える所に0件（年額は確認まとめ85で確認中）。「Web 版は無料」と月額・最初の1か月無料が書いてある。機種変更のときの記録の移し方（ボタンの名前どおり）はどちらでも見える
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -20,6 +22,7 @@ const ok = (c, m) => { checks++; if (!c){ fails++; console.log('FAIL', m); } els
 const src = fs.readFileSync(ROOT + '/index.html', 'utf8');
 const OFF = /billingMode:\s*'off'/.test(src);
 const PAGES = fs.readdirSync(ROOT).filter(f => /^support(-[\w-]+)?\.html$/.test(f)).sort();
+const YEAR = {ja: /年額|年の縛り|1年|毎年|3,000円|3000円/, en: /year|annual|3,000|commitment/i};
 const BAD = {ja: /解約|お試し|購入を復元|月額|請求|サブスクリプション|300円/, en: /cancel|trial|restore purchases|monthly|subscription|charged|Apple Account/i};
 const enTr = (() => { let d = null; vm.runInNewContext(fs.readFileSync(ROOT + '/i18n/en.js', 'utf8'), {GOHAN_I18N: (l, o) => { d = o; }, window: {}}); return d; })();
 const LABELS = {ja: ['ファイルで書き出す', 'ファイルから読み込む', 'データの引っ越し・バックアップ'], en: ['ファイルで書き出す', 'ファイルから読み込む', 'データの引っ越し・バックアップ'].map(k => enTr[k])};
@@ -50,11 +53,22 @@ for (const f of PAGES){
         (LABELS[lg] || LABELS.en).forEach(l => { if (!all.includes(l)) miss.push(`${f} 手順に「${l}」がない`); });
         if (!/無料|free/i.test(all)) miss.push(`${f} 「全員無料」の1問がない`);
         if (r.paid.length < 3 || r.paid.some(x => x.vis) || !r.paid.some(x => re.test(x.txt))) kept.push(`${f} 課金の質問 ${r.paid.length}（見えている ${r.paid.filter(x => x.vis).length}）`);
-    } else if (r.paid.some(x => !x.vis) || r.free.some(x => x.vis)) kept.push(`${f} 課金を始めたのに、出し分けが無料のまま`);
+    } else {
+        if (r.paid.length < 4 || r.paid.some(x => !x.vis) || r.free.some(x => x.vis)) kept.push(`${f} 課金を始めたのに、出し分けが無料のまま（課金の質問 ${r.paid.filter(x => x.vis).length}/${r.paid.length}・無料の質問の見えている ${r.free.filter(x => x.vis).length}）`);
+        const yr = YEAR[lg] || YEAR.en, hits = r.txt.match(new RegExp(yr.source, 'g' + (yr.flags.includes('i') ? 'i' : ''))) || [];
+        if (hits.length) bad.push(`${f} 年額・年の縛りの語 ${[...new Set(hits)].join('・')}`);
+        const paid = r.paid.map(x => x.txt).join(' ');
+        const need = lg === 'ja' ? [/月額300円/, /最初の1か月は無料|1か月の無料/, /Web 版は無料/, /購入を復元/, /解約/] : [/monthly/i, /first month is free/i, /web version[^.]*is free/i, /Restore purchases/, /Cancel/];
+        need.forEach(x => { if (!x.test(paid)) miss.push(`${f} 課金の質問に ${x} がない`); });
+        (LABELS[lg] || LABELS.en).forEach(l => { if (!r.txt.includes(l)) miss.push(`${f} 機種変更の手順に「${l}」がない`); });
+    }
 }
 await b.close();
-ok(!bad.length, `S1 ${PAGES.length}ページ: 全員無料のあいだは、課金の言葉（解約・お試し・購入を復元・月額 など）が見える所に0件: ` + bad.join(' / '));
-ok(!miss.length, 'S2 「全員無料」の1問と、無料のあいだの機種変更の手順（アプリのボタンの名前どおり）が見える: ' + miss.join(' / '));
-ok(!kept.length, `S3 課金の質問は消さずに data-billing="paid" で隠して残す（billingMode ${OFF ? "'off'" : 'on'} と出し分けが合う）: ` + kept.join(' / '));
+ok(!bad.length, OFF ? `S1 ${PAGES.length}ページ: 全員無料のあいだは、課金の言葉（解約・お試し・購入を復元・月額 など）が見える所に0件: ` + bad.join(' / ')
+    : `S5a ${PAGES.length}ページ: 課金ありのとき、年額・「年の縛り」の語が見える所に0件（月額だけの方針）: ` + bad.join(' / '));
+ok(!miss.length, OFF ? 'S2 「全員無料」の1問と、無料のあいだの機種変更の手順（アプリのボタンの名前どおり）が見える: ' + miss.join(' / ')
+    : 'S5b 課金の質問に月額300円・最初の1か月無料・Web 版は無料・購入を復元・解約があり、機種変更の手順（アプリのボタンの名前どおり）も見える: ' + miss.join(' / '));
+ok(!kept.length, OFF ? `S3 課金の質問は消さずに data-billing="paid" で隠して残す（billingMode 'off' と出し分けが合う）: ` + kept.join(' / ')
+    : `S3 課金ありのとき: 課金の質問（data-billing="paid"）が見え、全員無料の質問（free）は消さずに hidden で残す（billingMode と出し分けが合う）: ` + kept.join(' / '));
 console.log(`ui51: ${checks - fails}/${checks} ok` + (fails ? `  NG ${fails}` : ''));
 process.exit(fails ? 1 : 0);

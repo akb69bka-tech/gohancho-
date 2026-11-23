@@ -7,7 +7,7 @@
 //  B（R216）設定を開いた直後（家族・アレルギーのタブ）: 18言語 × 320・360・390px × 文字0〜2 で、‹ › が出ている側では、
 //     丸とぼかし（24px）の外に、隣のタブの頭が 8px 以上見える（直す前: 360px の ja・en・es・ar・hi・pt、390px の it・vi・zh などで丸の下に隠れた）
 //  C（R214）サポートのページの機種変更の手順: 「ファイルから読み込む」は「データの引っ越し・バックアップ」をひらくと出てくる、と書いてある（日本語・英語）。
-//     英語のページ（日本語と英語以外の言語でも開く）には、ボタンの名前がアプリの言語で出ることと、ボタンの場所を書いてある。課金の質問3つは hidden のまま
+//     英語のページ（日本語と英語以外の言語でも開く）には、ボタンの名前がアプリの言語で出ることと、ボタンの場所を書いてある。課金の質問は billingMode にあわせて出し分ける（'off' なら3つとも hidden）
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -88,7 +88,11 @@ if (want('C')){
     ok(step(ja, '「データの引っ越し・バックアップ」を押してひらき', '「ファイルから読み込む」') && step(en, '"Move or back up your data" to open it', '"Load from file" inside it'),
         'C1 「ファイルから読み込む」は「データの引っ越し・バックアップ」をひらくと出てくる、と書いてある（日本語・英語）');
     ok(/another language, the buttons show in that language/.test(en) && /"Save as file" is the first button under Data/.test(en), 'C2 英語のページ（ほかの16言語でも開く）に、ボタンの名前はアプリの言語で出ることと、ボタンの場所がある');
-    ok([ja, en].every(s => (s.match(/data-billing="paid" hidden/g) || []).length === 3), 'C3 課金の質問3つは hidden のまま残っている');
+    // 11/23（オーナー決定）: index.html の billingMode にあわせる。'off' なら課金の質問3つは hidden のまま。'native'・'all' なら課金の質問（4つ）を見せ、全員無料の質問は hidden で残す（ui51 と同じ出し分け）
+    const OFF = /billingMode:\s*'off'/.test(fs.readFileSync(ROOT + '/index.html', 'utf8'));
+    ok([ja, en].map(s => s.replace(/<!--[\s\S]*?-->/g, '')).every(s => OFF ? (s.match(/data-billing="paid" hidden/g) || []).length === 3
+        : !/data-billing="paid" hidden/.test(s) && (s.match(/data-billing="paid"/g) || []).length === 4 && (s.match(/data-billing="free" hidden/g) || []).length === (s.match(/data-billing="free"/g) || []).length && /data-billing="free" hidden/.test(s)),
+        OFF ? 'C3 課金の質問3つは hidden のまま残っている' : 'C3 課金ありのとき: 課金の質問4つが見え、全員無料の質問は hidden で残っている');
 }
 
 await b.close();

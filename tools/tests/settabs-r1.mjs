@@ -43,7 +43,8 @@ const settle = p => p.waitForTimeout(700);
 
 // 決めた分け方: タブ → まとまり（section）／代表の欄
 // R146（ui49）: 全員無料（billingMode 'off'）のあいだは「プランと購入」のまとまり（set-plan）と入口（paywall）を出さない。'native'・'all' では今までどおり plan のタブに出る
-const BILL_OFF = /billingMode:\s*'off'/.test((await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8'));
+// 11/23（オーナー決定）: 既定は 'native'。この確かめは Web 版で開くので、'native' でも Web では買えず「プランと購入」は出ない（'off' と同じ）
+const BILL_OFF = /billingMode:\s*'(off|native)'/.test((await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8'));
 const TABS = {
     family: {secs: ['family'], items: ['#allergy-card', '[data-act="alg-toggle"]', '[data-act="alg-family"]', '#family-profile', '[data-act="fam-add"]', '[data-act="wish-open"]', '[data-act="ask-open"]', '[data-act="servings"]']},
     food: {secs: ['food'], items: ['[data-act="toggle-avoid"]', '[data-act="toggle-avoid-fam"][data-v="alcohol"]', '[data-act="toggle-avoid-diet"][data-v="halal"]', '[data-act="toggle-avoid-diet"][data-v="vegi"]', '#avoid-input', '[data-act="avoid-swap"]', '#scarce-field', '#scarce-input']},
@@ -85,7 +86,7 @@ const TABS = {
     ok(r.empty.length === 0, 'T1f 中身のないタブ: ' + r.empty.join(','));
     for (const [tk, d] of Object.entries(TABS)) for (const s of d.secs) ok(JSON.stringify(r.secs['set-' + s]) === JSON.stringify([tk]), `T1g まとまり set-${s} は ${tk} のタブだけ: ${JSON.stringify(r.secs['set-' + s])}`);
     ok(Object.keys(r.secs).length === Object.values(TABS).reduce((n, d) => n + d.secs.length, 0), 'T1h まとまりの数: ' + Object.keys(r.secs).join(','));
-    if (BILL_OFF) ok(!r.secs['set-plan'] && !r.paywall, 'T1j 全員無料のあいだは「プランと購入」のまとまりと入口（paywall）が設定にない: ' + JSON.stringify({plan: r.secs['set-plan'], paywall: r.paywall}));
+    if (BILL_OFF) ok(!r.secs['set-plan'] && !r.paywall, 'T1j 全員無料・Web 版（native）のあいだは「プランと購入」のまとまりと入口（paywall）が設定にない: ' + JSON.stringify({plan: r.secs['set-plan'], paywall: r.paywall}));
     for (const [sel, x] of Object.entries(r.items)) ok(x.got.length === 1 && x.got[0] === x.want, `T1i ${sel} は「${x.want}」のタブ: ${x.got.join(',') || 'なし'}`);
     await ctx.close();
 }

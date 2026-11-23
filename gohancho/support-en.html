@@ -20,10 +20,11 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <p class="muted">A meal planner that suggests a complete home-cooked dinner from your country's everyday dishes.</p>
 
 <!--
-  R212（ui51）: アプリは全員無料（index.html の PLAN.billingMode が 'off'）。無料のあいだは、課金の質問（解約・お試し・購入を復元）を見せない。
-  ・data-billing="paid" … 課金を始めたときの質問。消さずに hidden で残している（価格・説明はそのまま）
-  ・data-billing="free" … 全員無料のあいだの質問
-  課金を始めるとき（billingMode を 'native' か 'all' にするとき）: paid の hidden を外し、free に hidden を付ける（support-en.html も同じ）。
+  R212（ui51）・オーナー決定（2026-11-23）: index.html の PLAN.billingMode は 'native'。課金は iPhone アプリ版だけ（登録した最初の1か月は無料、次の月から月額300円）。Web 版は無料のまま。
+  ・data-billing="paid" … 課金ありのときの質問（billingMode が 'native' か 'all' のときに見せる）。月額だけの方針に合わせ、年額・「年の縛り」の文は書かない（年額は確認まとめ85で確認中）
+  ・data-billing="free" … 全員無料（billingMode 'off'）のときの質問。消さずに hidden で残している
+  ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
+  billingMode を 'off' に戻すとき: paid に hidden を付け、free の hidden を外す（support-en.html も同じ）。
   tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
 -->
 <h2>Frequently asked questions</h2>
@@ -32,11 +33,12 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <details><summary>Can I see recipes from other countries?</summary><p>Yes. Tap "World recipes" at the bottom and pick a country. Your daily meal plans stay based on your own country.</p></details>
 <details><summary>How do I send the plan to my family?</summary><p>Tap the send button under today's meal or the weekly plan. The App opens the messaging app most used in your country (or the share sheet) so you can pick who to send it to.</p></details>
 <details><summary>I have disliked foods or allergies</summary><p>When you choose ingredients under "Ingredients to avoid" in Settings, the App swaps them for another ingredient when the dish allows it (for example, pork → chicken). Dishes where they can't be swapped are not suggested. If you have allergies, always check the ingredients of seasonings and processed foods yourself.</p></details>
-<details data-billing="free"><summary>Does it cost anything?</summary><p>Gohancho is currently free for everyone. There are no fees, and you can use every feature.</p></details>
-<details data-billing="paid" hidden><summary>How does the free trial work?</summary><p>Start the monthly plan and your first month is free. When the free month ends, your Apple Account is charged the monthly price and it renews each month automatically, unless you cancel at least 24 hours before the trial ends. There is no yearly commitment; cancel anytime. The free trial is available to new subscribers only.</p></details>
-<details data-billing="paid" hidden><summary>How do I cancel Gohancho Plus?</summary><p>On your iPhone, open Settings → your name → Subscriptions → Gohancho, and tap Cancel Subscription. The monthly plan has no yearly commitment.</p></details>
-<details data-billing="free"><summary>I got a new phone. How do I move my data?</summary><p>Your history, favourites and settings are stored only on this device. On your old phone, open Settings › Data and tap "Save as file". On the new phone, open the same Settings › Data, tap "Move or back up your data" to open it, then tap "Load from file" inside it and choose that file. You can also copy the text in that box and paste it into the same box on the new phone. Photos (your own dish photos and album) are not moved. If the App is set to another language, the buttons show in that language: "Save as file" is the first button under Data, and "Load from file" is inside the box below it.</p></details>
-<details data-billing="paid" hidden><summary>I got a new phone. What about my purchase?</summary><p>Sign in with the same Apple Account and tap "Restore purchases" in Settings. You can move your meal history with "Move or back up your data" in Settings.</p></details>
+<details data-billing="free" hidden><summary>Does it cost anything?</summary><p>Gohancho is currently free for everyone. There are no fees, and you can use every feature.</p></details>
+<details data-billing="paid"><summary>Does it cost anything?</summary><p>The iPhone app offers Gohancho Plus as a monthly subscription. Your first month after you subscribe is free; after that, the monthly price shown in the App Store applies. The web version in your browser is free.</p></details>
+<details data-billing="paid"><summary>How does the free trial work?</summary><p>Start the monthly plan and your first month is free. When the free month ends, your Apple Account is charged the monthly price and it renews each month automatically, unless you cancel at least 24 hours before the trial ends. You can cancel anytime. The free trial is available to new subscribers only.</p></details>
+<details data-billing="paid"><summary>How do I cancel Gohancho Plus?</summary><p>On your iPhone, open Settings → your name → Subscriptions → Gohancho, and tap Cancel Subscription. You can cancel anytime.</p></details>
+<details><summary>I got a new phone. How do I move my data?</summary><p>Your history, favourites and settings are stored only on this device. On your old phone, open Settings › Data and tap "Save as file". On the new phone, open the same Settings › Data, tap "Move or back up your data" to open it, then tap "Load from file" inside it and choose that file. You can also copy the text in that box and paste it into the same box on the new phone. Photos (your own dish photos and album) are not moved. If the App is set to another language, the buttons show in that language: "Save as file" is the first button under Data, and "Load from file" is inside the box below it.</p></details>
+<details data-billing="paid"><summary>I got a new phone. What about my purchase?</summary><p>Sign in with the same Apple Account and tap "Restore purchases" in Settings. You can move your meal history with "Move or back up your data" in Settings.</p></details>
 <details><summary>About the dish illustrations</summary><p>The dish pictures are AI-generated images; the actual dish and plating will look different. They are built into the App, so they show even offline. You can also replace it with your own photo (stored only on your device).</p></details>
 
 <h2>Contact</h2>

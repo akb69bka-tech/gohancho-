@@ -7,7 +7,8 @@
 //  ・ひとひねりは1日3回、買い足し提案は1件、やってみた/おいしかったは購入画面（データは変わらない）
 //  ・hasPro() が true なら 5/6品・全7日・制限なし。課金なし（既定）では何も制限しない
 //  ・購入画面の「プラスの内容」は、無料版にも入っている機能（世界のレシピ・冷蔵庫・家族に送る）を並べない
-//  ・料金: 月額300円・年額3,000円（誰でも選べる。月額×12＝3,600円より600円お得）。1か月無料は両方。App Store の価格が取れたらそちらとそのお得を出す。billingMode は 'off' のまま
+//  ・料金（オーナー決定 2026-11-23）: 月額300円・登録した最初の1か月は無料。年額は確認中（確認まとめ85）で yearlyOn: false のあいだは購入画面に年額のボタン・価格・「年」の文を出さない（目安・App Store の価格のどちらでも）。
+//    yearlyOn を true にしたとき（あとで足すとき）は、今までどおり年額3,000円（月額×12＝3,600円より600円お得）・1か月無料は両方・App Store の価格とそのお得。billingMode は 'native'（iPhone アプリ版だけ課金）
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
@@ -101,6 +102,17 @@ for (const cc of CCS){
         if ('loyalty' in PLAN || 'loyaltyEnabled' in PLAN || typeof loyalEligible === 'function') bad.push('「1年つづいた人だけ」の年額のしくみが残っている');
         const showPw = () => { op('info'); const bs = [...document.querySelectorAll('#sheet-root .pw-price')].map(e => ({id:e.dataset.id, l:(e.querySelector('.l') || {}).textContent || '', p:(e.querySelector('.p') || {}).textContent || '', n:(e.querySelector('.n') || {}).textContent || ''})); const terms = (document.querySelector('#sheet-root .pw-terms') || {}).textContent || ''; closeSheet(); return {bs, terms}; };
         const ja = cc === 'JP' || LANG === 'ja';
+        // 年額は出さない（yearlyOn: false が既定）。目安の価格でも、App Store の価格が取れても
+        if (PLAN.yearlyOn !== false) bad.push('yearlyOn が false でない（年額は確認まとめ85で確認中）');
+        const noYr = (pw, why) => { const all = pw.bs.map(x => x.l + ' ' + x.p + ' ' + x.n).join(' ') + ' ' + pw.terms;
+            if (pw.bs.map(x => x.id).join() !== 'gohancho_plus_monthly') bad.push(why + ': 年額を出さないのに、ボタンが月額1つでない: ' + pw.bs.map(x => x.id));
+            for (const k of ['年額プラン', '3,000円 / 年']) if (all.includes(t(k))) bad.push(why + ': 年額の文字が出る: ' + t(k));
+            if (/年額|\/\s*年|1年ごと|3,000|29\.99|annual/i.test(all)) bad.push(why + ': 年額の語・価格が出る: ' + all.slice(0, 160)); };
+        noYr(showPw(), '目安の価格');
+        storePrices.gohancho_plus_monthly = {text:'$2.99', value:2.99, currency:'USD'}; storePrices.gohancho_plus_yearly = {text:'$29.99', value:29.99, currency:'USD'};
+        noYr(showPw(), 'App Store の価格'); delete storePrices.gohancho_plus_monthly; delete storePrices.gohancho_plus_yearly;
+        // ここから、年額を足したとき（yearlyOn: true）の表示（2026-10-31 の案のまま。あとで足せる形を確かめる）
+        PLAN.yearlyOn = true;
         let pw = showPw();
         if (pw.bs.map(x => x.id).join() !== 'gohancho_plus_monthly,gohancho_plus_yearly') bad.push('購入画面に月額と年額の両方が出ない（誰でも選べるはず）: ' + pw.bs.map(x => x.id));
         else if (ja){
@@ -126,7 +138,7 @@ for (const cc of CCS){
         delete storePrices.gohancho_plus_monthly; delete storePrices.gohancho_plus_yearly;
         // --- freeTier を切ると、お試し後はロック（いまの本番の動き）
         PLAN.freeTier = false; if (!isLocked()) bad.push('freeTier=false なのにロックされない');
-        PLAN.billingMode = 'native'; PLAN.freeTier = false;
+        PLAN.billingMode = 'native'; PLAN.freeTier = false; PLAN.yearlyOn = false;
         return bad;
     }, cc);
     r.forEach(m => ok(false, cc + ': ' + m)); ok(true, cc);
@@ -135,7 +147,7 @@ for (const cc of CCS){
 // 静的: 門の理由はこの一覧だけ（足したら線引き表も更新する）
 const src = (await import('node:fs')).readFileSync(new URL('../../gohancho/index.html', import.meta.url), 'utf8');
 // 静的: 課金は App Store に出してオーナーが価格を設定するまで始めない（Web 版は無料）
-ok(/billingMode: 'off',/.test(src), "PLAN.billingMode が 'off' でない（課金の開始はオーナーが App Store Connect で価格を設定してから）");
+ok(/billingMode: 'native',/.test(src) && /yearlyOn: false,/.test(src) && /revenueCatApiKey: '',/.test(src), "PLAN.billingMode が 'native'（オーナー決定 2026-11-23: iPhone アプリ版だけ課金。キーを入れるまで無料）でない・年額が出る（yearlyOn）");
 ok(/trialMode: 'store',/.test(src), "PLAN.trialMode が 'store'（App Store のお試しオファー）でない");
 const reasons = new Set([...src.matchAll(/openPaywall\('([a-zA-Z]+)'\)/g)].map(m => m[1]));
 const known = ['twist', 'dishes', 'info', 'week', 'skill', 'hints', 'award', 'photos', 'monitor', 'start', 'locked'];

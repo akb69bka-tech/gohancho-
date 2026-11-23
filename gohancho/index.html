@@ -7827,13 +7827,13 @@ function installHtml(){
 
 /* =========================================================
    ご飯帖プラス（課金のしくみ）
-   billingMode:'off' のため、Web 版も iPhone アプリ版も全機能無料（オーナー決定）。課金を有効にするのはオーナーの判断だけ。
+   billingMode:'native' のため、課金は iPhone アプリ版だけ（RevenueCat のキーを入れたとき）。Web 版は全機能無料のまま（オーナー決定 2026-11-23）。課金の範囲を変えるのはオーナーの判断だけ。
    価格・商品ID・お試しの内容は App Store Connect の設定と合わせる。
    ========================================================= */
 const PLAN_WEEK_FREE = 1;   // 無料版で見られる献立プランの日数
 const PLAN = {
     // 課金を有効にする範囲: 'off'＝全員無料 / 'native'＝iPhone アプリ版だけ（RevenueCat のキーを入れたとき）/ 'all'＝Web 版も
-    billingMode: 'off',                 // オーナー決定（2026-10-28）: 全員無料。課金を入れるかどうか・時期はオーナーだけが決める
+    billingMode: 'native',              // オーナー決定（2026-11-23）: 登録した最初の1か月は無料、次の月から月額300円（iPhone アプリ版だけ。Web 版は無料のまま）。課金の範囲・時期はオーナーだけが決める
     // 'all' でも、その場所の決済の設定（キー・表記の URL）が空なら有効にならない＝いままでどおり無料。iPhone: revenueCatApiKey / Web: webBillingReady()
     get billingEnabled(){ return (this.billingMode === 'all' && (isNative() ? !!this.revenueCatApiKey : this.webBillingReady)) || (this.billingMode === 'native' && isNative() && !!this.revenueCatApiKey); },
     // Web 版の課金（RevenueCat Web Billing ＝ Stripe 連携）。3つとも入っていないと Web では課金は有効にならない（オーナーが契約・作成してから記入。手順は docs/escalations.md「Web版300円課金の準備」）
@@ -7844,7 +7844,10 @@ const PLAN = {
     webPackages: {gohancho_plus_monthly: '$rc_monthly', gohancho_plus_yearly: '$rc_annual'},   // 製品ID → RevenueCat の Offering の Package 名
     get webBillingReady(){ return !!(this.revenueCatWebKey && this.legalUrl && this.webTermsUrl); },
     get name(){ return t('ご飯帖プラス'); },
-    // オーナー決定（2026-10-31）: 月額300円・年額3,000円（最初から誰でも選べる。月額×12か月＝3,600円より600円お得）。どちらも最初の1か月は無料（App Store のお試しオファー）
+    // オーナー決定（2026-11-23）: 月額300円。登録した最初の1か月は無料（App Store のお試しオファー）。
+    // 年額（3,000円・2026-10-31 の案）は確認中（確認まとめ85）。yearlyOn が false のあいだは、購入画面・設定に年額の価格も「年額」の語も出さない（App Store から価格が取れても出さない）。
+    // 決まったら yearlyOn を true にするだけで、下の年額の行（価格・お得の文・自動更新の説明）がそのまま出る
+    yearlyOn: false,
     // 表示の目安。iPhone アプリ版では App Store の実際の価格（storePrices）を表示する。yen は目安の円の価格（App Store の価格が取れないときのお得の計算に使う）
     prices: [
         {id:'gohancho_plus_monthly', get label(){ return t('月額プラン'); }, get price(){ return t('300円 / 月'); }, per:'月', yen:300, note:''},
@@ -7871,7 +7874,8 @@ const PLAN = {
 };
 // ui49（R146）: 「プランと購入」の入口（設定のまとまり・タブの名前と絵）を見せるか。billingMode が 'off'（全員無料）のあいだは見せない。
 // 見せないだけで、課金のしくみ（billingMode・価格・購入の処理）は変えない。オーナーが 'native' か 'all' にすれば、今までどおり出る
-function planShown(){ return PLAN.billingMode !== 'off'; }
+// 'native'（オーナー決定 2026-11-23）: Web 版では買えないので出さない。iPhone アプリ版でも、RevenueCat のキーが空のあいだ（billingEnabled が false＝全員無料）は今までどおり出さない
+function planShown(){ return PLAN.billingMode === 'all' || (PLAN.billingMode === 'native' && PLAN.billingEnabled); }
 function isSubscribed(){
     if (PLAN.earlySupporterBefore && S.firstUse && S.firstUse < PLAN.earlySupporterBefore) return true;
     return !!(S.pro && S.pro.active);
@@ -8020,7 +8024,7 @@ async function loadStorePrices(){
         storeState = storePrices['gohancho_plus_monthly'] ? 'ok' : 'fail';
         introLoading = false; rerender();
         if (P.checkTrialOrIntroductoryPriceEligibility){
-            const ids = PLAN.prices.map(p => p.id);
+            const ids = offeredPlans().map(p => p.id);   // 出している製品だけで、お試しが使えるかを見る
             const r = await P.checkTrialOrIntroductoryPriceEligibility({productIdentifiers: ids});
             const st = ids.map(id => r && r[id] && r[id].status);   // 2 = 使える, 1 = 使えない, 3 = オファーなし, 0 = 不明
             // 「使える」と確かめられたときだけお試しを出す（不明のまま「無料」と出して、すぐ課金されることがないように）
@@ -8048,7 +8052,9 @@ function monthlyPrice(){ return priceLabel(PLAN.prices[0]) || ''; }
 // 製品IDの価格の文（設定の「無料期間中：…から」に、選んだプランの価格を出す）
 function planPriceFor(id){ const p = PLAN.prices.find(x => x.id === id); return p ? priceLabel(p) : ''; }
 // 購入画面に出すプラン。iPhone アプリ版では App Store の価格が取れた製品だけ（価格のないボタンを出さない）
-function shownPlans(){ return PLAN.prices.filter(p => !purchasesPlugin() || storePrices[p.id]); }
+// 年額は yearlyOn が true のときだけ（確認まとめ85。ストアから価格が取れたときも、目安の表示のときも出さない）
+function offeredPlans(){ return PLAN.prices.filter(p => p.per !== '年' || PLAN.yearlyOn); }
+function shownPlans(){ return offeredPlans().filter(p => !purchasesPlugin() || storePrices[p.id]); }
 // その製品のお試し（iPhone アプリ版は App Store に登録したものだけ。Web の目安は1か月）
 function introFor(p){ return purchasesPlugin() ? introOffers[p.id] || null : {unit:'month', n:1}; }
 // お試しの流れ（今日 → 終わる3日前にお知らせ → 終わる日から月額）
