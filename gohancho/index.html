@@ -13682,14 +13682,16 @@ function saleSettingsHtml(){
         ${isNative() ? `<div class="chips">${[['off', t('なし')], [7, hourLabel(7)], [8, hourLabel(8)], [9, hourLabel(9)]].map(([v, l]) => `<button type="button" class="chip" data-act="sale-remind" data-v="${v}" aria-pressed="${v === 'off' ? typeof rm !== 'number' : rm === v}">${esc(l)}</button>`).join('')}</div>
         <span class="small muted">${esc(t('登録した特売日の朝に、端末の通知でお知らせします。はじめはオフです。'))}</span>` : `<span class="small muted">${esc(t('お知らせは iPhone アプリ版で使えます'))}</span>`}</div>
     </div>
-    <div class="set-group">
+    ${devUi() ? `<div class="set-group">
         <details class="sale-feed"${session.saleFeedOpen ? ' open' : ''}><summary>${esc(t('提携先のチラシデータを読みこむ（試験用）'))}</summary>
             <p class="small muted">${esc(t('提携先から届く形式（JSON）のデータを貼りつけて読みこみます。いまは提携先はなく、アプリが通信することもありません。'))}</p>
             <textarea id="sale-feed-text" rows="4" maxlength="${SALE_FEED_MAX}" aria-label="${esc(t('提携先のチラシデータを読みこむ（試験用）'))}" spellcheck="false">${esc(session.saleFeedText || '')}</textarea>
             <div class="row"><button type="button" class="btn sm" data-act="sale-feed-go">${esc(t('データを読みこむ'))}</button></div>
         </details>
-    </div>`;
+    </div>` : ''}`;
 }
+// 申請前（11/23）: 開発・試験用の画面（提携先のチラシデータの読みこみ）は、利用者には出さない。URL に ?dev=1 を付けて開いたとき（そのタブのあいだ）だけ出す。中身のしくみは消さない
+function devUi(){ try{ if (/(?:^|[?&])dev=1(?:&|$)/.test(location.search)) sessionStorage.setItem('gohanDev', '1'); return sessionStorage.getItem('gohanDev') === '1'; }catch(e){ return false; } }
 /* ---- 提携先のチラシデータ（docs/partner_flyer_feed.md）。いまは通信しない。貼りつけて試すときだけ使う ----
    importFlyerFeed(json, today): 形を確かめて {ok:true, feed} か {ok:false, err} を返す（S は変えない）
    mergeFlyerFeed(sale, feed, newId): 同じ「今日の特売」の形に入れた新しい S.sale を返す（引数は変えない） */

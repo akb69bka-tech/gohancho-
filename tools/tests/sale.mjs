@@ -30,7 +30,7 @@ async function open(opts = {}){
     const p = await ctx.newPage(); p.on('pageerror', e => errs.push((opts.lang || 'ja') + ': ' + e.message));
     p.on('request', r => { const u = r.url(); if (!u.startsWith(ORIGIN) && !u.startsWith('data:') && !u.startsWith('blob:')) foreign.push(u + ' ' + (r.postData() || '')); });
     await p.addInitScript(([lang, init]) => { if (!sessionStorage.getItem('s')){ sessionStorage.setItem('s', 1); localStorage.setItem('gohancho.v1', JSON.stringify(Object.assign({onboarded: true, firstUse: new Date().toISOString().slice(0, 10), settings: {country: 'JP', dishCount: 3, uiLang: lang}}, init || {}))); } }, [opts.lang || 'ja', opts.init || null]);
-    await p.goto(URL_); await ready(p); await p.evaluate(() => { hasPro = () => true; });
+    await p.goto(URL_ + (opts.dev ? '?dev=1' : '')); await ready(p); await p.evaluate(() => { hasPro = () => true; });
     return { ctx, p };
 }
 const shot = async (p, name) => { if (SHOTS){ fs.mkdirSync(SHOTS, {recursive: true}); await p.screenshot({path: SHOTS + '/' + name + '.png', fullPage: true}); } };
@@ -133,8 +133,15 @@ const storeInit = {sale: {stores: [{id: 'stA', name: 'ハッピーマート', pr
     await ctx.close();
 }
 // ---- S5 提携データ ----
+// 申請前（11/23）: 提携先のチラシデータの読みこみ（試験用）は、利用者には出さない。ふだんの開き方では設定に出ないこと、?dev=1 で開いたときだけ出て、読みこみの確かめは今までどおり
 {
-    const { ctx, p } = await open({init: storeInit});
+    const { ctx: c0, p: p0 } = await open({init: storeInit});
+    const hid = await p0.evaluate(() => { setTab('settings'); session.setOpen = {store: true}; render(); const st = document.querySelector('#set-store'); return {feed: !!document.querySelector('.sale-feed, #sale-feed-text, [data-act="sale-feed-go"]'), test: /試験用|提携先/.test(st ? st.textContent : ''), store: !!st}; });
+    ok(hid.store && !hid.feed && !hid.test, 'S5 ふだんは設定に「提携先のチラシデータ（試験用）」が出ない ' + JSON.stringify(hid));
+    await c0.close();
+}
+{
+    const { ctx, p } = await open({init: storeInit, dev: true});
     const feed = await p.evaluate(() => JSON.stringify({format: 'gohancho-flyer-feed', version: 1, store: {id: 'partner-001', name: 'ハッピーマート', area: {pref: '東京都', city: '練馬区'}}, valid: {from: TODAY, to: addDays(TODAY, 1)}, currency: 'JPY',
         sponsored: false, disclosure: 'ハッピーマートから提供された特売情報です', items: [{key: 'キャベツ', name: 'キャベツ', price: 98, unit: '1玉', category: 'veg'}, {name: '豚こま切れ肉', price: 128, unit: '100g', category: 'meat', sponsored: true}, {foo: 1}]}));
     await p.evaluate(() => { setTab('settings'); session.setOpen = {store: true}; render(); document.querySelector('.sale-feed').open = true; });
@@ -196,7 +203,7 @@ for (const [lang, w] of [['ja', 195], ['en', 390], ['ar', 390], ['en', 195], ['a
     await shot(p, `today-${w}-${lang}`);
     await p.evaluate(() => { setTab('settings'); session.setOpen = {store: true}; render(); });
     await p.click('[data-act="sale-edit"]'); await p.waitForTimeout(150);
-    await p.evaluate(() => { document.querySelector('.sale-feed').open = true; });
+    await p.evaluate(() => { const f = document.querySelector('.sale-feed'); if (f) f.open = true; });   // 試験用の欄は ?dev=1 のときだけ（ふだんは出ない）
     ok(await noOverflow(p), `S7 ${lang} ${w}px 設定で横にはみ出さない`);
     const st = await p.evaluate(() => (document.querySelector('#set-store') || {}).textContent || '');
     if (lang !== 'ja') ok(!/[ぁ-ん]/.test(st.replace(/ハッピーマート|まるやす|東京都|練馬区/g, '')), `S7 ${lang} 設定に日本語が残らない: ` + (st.match(/[^\s]*[ぁ-ん][^\s]*/g) || []).slice(0, 4).join(' '));
