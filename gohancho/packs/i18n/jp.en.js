@@ -812,7 +812,7 @@ GOHAN_PACK_TR('JP', 'en', {
     },
     kasujiru: {
       name: 'Salmon and sake lees soup (kasu-jiru)',
-      ings: [['Fresh salmon', '2 fillets'], ['Sake lees (sake kasu)', '50 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Konnyaku', '1/4 block'], ['Leek', '1/3']],
+      ings: [['Fresh salmon', '2 fillets'], ['Sake lees (sake kasu)', '50 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 piece'], ['Konnyaku', '1/4 block'], ['Leek', '1/3']],
       seas: 'Dashi 600 ml · Miso 1 tbsp · Salt a little',
       steps: ['Cut the salmon into bite-size pieces, salt lightly, leave 10 minutes and pat dry. Tear the sake lees into small pieces and soak in 100 ml of the warm dashi to soften.', 'Cut the daikon and carrot into quarter rounds and the fried tofu into strips; tear the konnyaku and parboil for 2 minutes.', 'Simmer the vegetables and konnyaku in the rest of the dashi over medium heat for 8 minutes until tender.', 'Add the salmon and fried tofu and simmer over medium-low heat for 5 minutes, skimming, until the salmon is cooked through.', 'Mash the sake lees into its dashi, stir it in with the miso, warm over low heat for 2 minutes, add the sliced leek and turn off the heat.'],
       tip: { add: 'A little grated ginger', why: 'Ginger cuts the richness of the lees and adds a clean, sharp finish.', skill: 'Dissolving sake lees smoothly', how: 'Soak the lees in warm dashi first, then mash with a spoon or whisk until no lumps remain before adding to the pot.' }
@@ -861,7 +861,7 @@ GOHAN_PACK_TR('JP', 'en', {
     },
     gojiru: {
       name: 'Soybean purée miso soup (go-jiru)',
-      ings: [['Boiled soybeans', '100 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Leek', '1/3'], ['Taro', '2']],
+      ings: [['Boiled soybeans', '100 g'], ['Daikon', '3 cm'], ['Carrot', '1/3'], ['Fried tofu (aburaage)', '1/2 piece'], ['Leek', '1/3'], ['Taro', '2']],
       seas: 'Dashi 600 ml · Miso 2.5 tbsp',
       steps: ['Blend the soybeans with 200 ml of the dashi until smooth (this purée is the "go").', 'Cut the daikon and carrot into quarter rounds, the taro into rounds and the fried tofu into strips.', 'Simmer the vegetables and fried tofu in the rest of the dashi over medium heat for 10 minutes until tender.', 'Add the soybean purée and bring to a full simmer over medium-low heat for 3 minutes, stirring so it does not boil over, to cook it through.', 'Lower the heat, dissolve in the miso and scatter with sliced leek.'],
       tip: { add: 'A few drops of sesame oil', why: 'It brings out the nutty flavor of the soybeans.', skill: 'Watching for boil-over', how: 'Soy purée foams like milk; keep the heat at medium-low and stir along the bottom while it simmers.' }
@@ -889,7 +889,7 @@ GOHAN_PACK_TR('JP', 'en', {
     },
     daikonmiso: {
       name: 'Daikon and fried tofu miso soup',
-      ings: [['Daikon', '4 cm'], ['Fried tofu (aburaage)', '1/2 sheet'], ['Leek', 'a little']],
+      ings: [['Daikon', '4 cm'], ['Fried tofu (aburaage)', '1/2 piece'], ['Leek', 'a little']],
       seas: 'Dashi 400 ml · Miso 2 tbsp',
       steps: ['Cut the daikon into 5 mm sticks. Pour boiling water over the fried tofu to remove excess oil and cut into strips.', 'Put the daikon in the dashi over medium heat; when it boils, simmer over medium-low heat for 6 minutes until translucent.', 'Add the fried tofu and simmer for 1 minute.', 'Lower the heat, dissolve in the miso and scatter with sliced leek.'],
       tip: { add: 'Daikon leaves', why: 'Chopped leaves add color and a pleasant bitterness, and use the whole vegetable.', skill: 'Starting daikon in cold dashi', how: 'Put daikon into dashi before heating so it cooks through evenly and soaks up flavor.' }
@@ -1328,7 +1328,7 @@ GOHAN_PACK_TR('JP', 'en', {
     },
     inarizushi: {
       name: 'Inarizushi (sushi rice in sweet fried tofu pouches)',
-      ings: [['Aburaage (fried tofu)', '4 sheets'], ['Cooked rice', '1 go (about 330 g, freshly cooked)'], ['White sesame seeds', '1 tbsp'], ['Pickled red ginger', 'a little']],
+      ings: [['Aburaage (fried tofu)', '4 pieces'], ['Cooked rice', '1 go (about 330 g, freshly cooked)'], ['White sesame seeds', '1 tbsp'], ['Pickled red ginger', 'a little']],
       seas: '(Simmering liquid) Dashi 200 ml · Sugar 3 tbsp · Soy sauce 2 tbsp · Mirin 1 tbsp · (Sushi vinegar) Vinegar 2 tbsp · Sugar 1 tbsp · Salt 1/2 tsp',
       steps: ['Halve the aburaage, open each half into a pouch and pour boiling water over to remove the oil.', 'Put the simmering liquid and aburaage in a pot, cover with a drop lid and simmer over low heat for 15 minutes until little liquid is left. Let it cool in the liquid to absorb the flavor, then drain lightly.', 'Mix the sushi vinegar ingredients and pour over the hot rice, folding with cutting motions, then add the sesame seeds. When cool enough to handle, divide into 8 and roll lightly into balls.', 'Stuff the rice into the pouches, fold the openings over and shape. Serve with pickled red ginger if you like.']
     },

@@ -12290,6 +12290,7 @@ const JP_UNIT_MORE = {
     'small': {hi: ['छोटा'], pl: ['mały'], tr: ['küçük'], ar: ['صغير']}
 };
 JP_UNIT_TR.forEach(x => Object.assign(x[2], JP_UNIT_MORE[x[0]] || {}));
+const JP_UNIT_DROP = /^(?:heads?|spears?|stalks?|fish|small|pairs?)$/i;
 const JP_UNIT_RE = new RegExp('(\\d+(?:\\.\\d+)?(?:\\s+\\d+\\/\\d+|\\/\\d+)?\\s*)?\\b(' + JP_UNIT_TR.map(x => x[0]).join('|') + ')\\b', 'gi');
 function jpUnitHit(w){ return JP_UNIT_TR.find(x => new RegExp('^(?:' + x[0] + ')$', 'i').test(w)); }
 // 日本の料理（国のパックではない）で、分量が英語の訳を借りているか
@@ -12298,6 +12299,9 @@ function qtyLoc(s){
     if (!s || LANG === 'ja' || LANG === 'en') return s;
     return String(s).replace(JP_UNIT_RE, (m, num, w) => {
         const x = jpUnitHit(w); if (!x) return m;
+        // 第58回のあと（11/23・統括の決め 案A）: 食材そのものを数える単位（キャベツの head・アスパラの spear・小松菜の stalk・あじの fish・たらこの pair・さつまいもの small）は、
+        // 単位だけ置きかえると不自然（1/4 नग・1/4 pieza・1 송이 でなく 1 통）。日本語・英語以外の画面では単位を出さず、数だけ（名前の欄の横に「1/4」）
+        if (JP_UNIT_DROP.test(w)) return num ? num.replace(/\s+$/, '') : '';
         const tr = x[2][LANG], n = num ? (s => { const p = s.trim().split(/\s+/); return p.reduce((a, q) => a + (q.includes('/') ? q.split('/')[0] / q.split('/')[1] : Number(q)), 0); })(num) : 1;
         if (!x[1] && !tr) return num ? num.replace(/\s+$/, '') : '';   // worth（「4 cm worth」）は落とす
         if (!tr) return (num || '') + (x[1] === '合' ? '合' : x[3] ? w : w + '（' + x[1] + '）');   // 訳のない言葉は英語のあとに日本語の単位（1/2 block（丁））。go（ご飯の量）はどの言葉でも「合」

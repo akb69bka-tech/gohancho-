@@ -87,6 +87,50 @@ if (want('S') || want('U')){
     if (want('U')) ok(!badU.length, 'U 分量の単位が英語のまま出ない（その言葉の単位。ar・hi・pl・tr も第58回の提案でその言葉に。英語・日本語は今までどおり）: ' + badU.join(' || '));
 }
 
+// U2（11/23・統括の決め 案A）: 食材そのものを数える単位（キャベツの head など）は、日本語・英語以外の画面では単位を出さず数だけ（キャベツ 1/4）。
+//    油揚げは英語の元の訳を sheet → piece に（案C）。英語は「1/4 head」・日本語は「1/4個」のまま
+// U3 同じ行の並び: アラビア語（右から左）とヒンディー語で、名前と「1/4」が重ならず、行の中に見えて、数は切れない（今日の買い物メモ・1週間の買い物メモ。幅 390・320）
+if (want('U')){
+    const bad = [], bad3 = [];
+    for (const lang of ['pt-BR', 'es', 'ar', 'hi', 'pl', 'tr', 'ko', 'vi', 'zh-Hans', 'en', 'ja']) for (const w of (['ar', 'hi'].includes(lang) ? [390, 320] : [390])){
+        const {p, ctx} = await open({lang, w, h: w === 320 ? 640 : 844});
+        const r = await p.evaluate(async () => {
+            const tick = (n = 300) => new Promise(r => setTimeout(r, n)), ids = ['butacabbage', 'daikonmiso'];
+            S.cook = {d: TODAY, ids, slots: ids.map(id => byId(id).type || '主菜'), done: {}, adj: true, salt: 0}; save(); gotoStage('shop'); await tick();
+            const box = e => { const q = e.getBoundingClientRect(); return {l: q.left, r: q.right, t: q.top, b: q.bottom}; };
+            const rowOf = x => { const nm = x.querySelector('.br-nm b'), q = x.querySelector('.br-q bdi') || x.querySelector('.br-q'); return {key: x.querySelector('[data-k]') ? x.querySelector('[data-k]').dataset.k : '', nm: nm ? nm.textContent.trim() : '', q: q ? q.textContent.trim() : '', nb: nm && box(nm), qb: q && box(q), row: box(x), qcut: q ? q.scrollWidth > q.clientWidth + 1 : false}; };
+            const rows = [...document.querySelectorAll('.stage-shop .buy-row')].filter(x => x.querySelector('.br-nm')).map(rowOf);
+            const old = S.week; S.week = {start: TODAY, days: [{d: TODAY, id: 'butacabbage'}]}; const holder = document.createElement('div'); holder.className = 'list shop'; holder.innerHTML = shopRowsHtml(shoppingList(), new Set()); S.week = old;
+            document.querySelector('#view').appendChild(holder); await tick(100);
+            const week = [...holder.querySelectorAll('.shop-row')].map(x => { const nm = x.querySelector('.nm'), q = x.querySelector('.q'); return {nm: nm.textContent.trim(), q: q.textContent.trim(), nb: box(nm.firstChild && nm.firstChild.nodeType === 3 ? (() => { const g = document.createRange(); g.selectNodeContents(nm.firstChild); return g; })() : nm), qb: box(q), row: box(x)}; });
+            holder.remove();
+            return {rows, week, dir: document.documentElement.dir || getComputedStyle(document.body).direction};
+        });
+        const cab = r.rows.find(x => /^キャベツ$|cabbage|repollo|repolho|kapust|lahana|ملفوف|كرنب|पत्ता\s*गोभी|गोभी|양배추|bắp cải|卷心菜|圆白菜|包菜|甘蓝/i.test(x.nm)) || r.rows.find(x => /キャベツ/.test(x.key)), abu = r.rows.find(x => /油揚げ/.test(x.key));
+        const want1 = lang === 'en' ? '1/4 head' : lang === 'ja' ? '1個' : '1/4';   // 日本語は今までどおり買う数（1個。下に「1/4個使う」）
+        if (w === 390){
+            if (!cab || cab.q !== want1) bad.push(`${lang} キャベツ ${cab ? cab.q : 'なし'}（${want1}） ${JSON.stringify(r.rows.map(x => x.key + ':' + x.q))}`);
+            if (lang === 'en' && (!abu || abu.q !== '1/2 piece')) bad.push(`en 油揚げ ${abu && abu.q}（1/2 piece）`);
+            if (lang === 'ja' && (!abu || !/枚/.test(abu.q))) bad.push(`ja 油揚げ ${abu && abu.q}（枚のまま）`);
+            if (!['en', 'ja'].includes(lang) && (!abu || /sheet|hoja|folha|feuille|Blatt|foglio|arkusz|yaprak|ورقة|शीट|장|tờ|张/i.test(abu.q))) bad.push(`${lang} 油揚げが紙の1枚の言い方 ${abu && abu.q}`);
+        }
+        if (['ar', 'hi'].includes(lang)){
+            const rtl = lang === 'ar';
+            const chk = (x, where) => { if (!x || !x.qb || !x.nb || !x.q) return;
+                const over = Math.min(x.nb.r, x.qb.r) - Math.max(x.nb.l, x.qb.l) > 1 && Math.min(x.nb.b, x.qb.b) - Math.max(x.nb.t, x.qb.t) > 1;
+                const inRow = x.qb.l >= x.row.l - .5 && x.qb.r <= x.row.r + .5 && x.nb.l >= x.row.l - .5 && x.nb.r <= x.row.r + .5;
+                const side = rtl ? x.qb.r <= x.nb.l + 1 || x.qb.t >= x.nb.b - 1 : x.qb.l >= x.nb.r - 1 || x.qb.t >= x.nb.b - 1;   // 右から左では数が名前の左（または下の行）
+                if (over || !inRow || !side || x.qcut) bad3.push(`${lang} ${w} ${where} ${x.nm} 「${x.q}」 重なり${over} 行の外${!inRow} 向き${!side} 切れ${x.qcut}`); };
+            [cab].forEach(x => chk(x, '今日'));
+            const wc = r.week.find(x => x.q === '1/4'); if (!wc) bad3.push(`${lang} ${w} 1週間: 「1/4」の行がない ${JSON.stringify(r.week.map(x => x.q))}`); else chk(wc, '1週間');
+            if (lang === 'ar' && r.dir !== 'rtl') bad3.push('ar 右から左になっていない ' + r.dir);
+        }
+        await ctx.close();
+    }
+    ok(!bad.length, 'U2 キャベツなど食材そのものを数える単位は、日本語・英語以外では数だけ（1/4）。油揚げは英語で piece・ほかの言葉で紙の1枚の言い方にしない。英語・日本語は今までどおり: ' + bad.join(' || '));
+    ok(!bad3.length, 'U3 アラビア語（右から左）・ヒンディー語で、名前と数だけ（1/4）の並びが崩れない（重ならない・行の中・数は名前の先の側・切れない。今日・1週間 × 390・320）: ' + bad3.join(' || '));
+}
+
 // S2（第58回）英語の画面・日本の献立: 「Cabbage キャベツ」のように日本語の名前が出る。日本以外の国の献立（アメリカ・英語、韓国・韓国語）では日本語の名前を出さない
 if (want('S')){
     const bad = [];
