@@ -1,0 +1,3654 @@
+[
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: クリームシチュー → タンドリーチキン"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: コロッケ → さわらの西京焼き・コーンスープ → なすと油揚げ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 中華風卵スープ → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 醤油ラーメン → きのこの和風パスタ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: あんかけ焼きそば → ソース焼きそば・中華風卵スープ → しじ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": -26,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": -26,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -26,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -26,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -51,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -51,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Teppa"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Gapao"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Happo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chuka"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": -78,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": -78,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭のムニエル → さわらの西京焼き・クラムチャウダー → 豆腐"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: チキン南蛮 → 鮭のちゃんちゃん焼き・芋煮 → 大根と油揚げの"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 酸辣湯 → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Teriy"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Tsuku"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Omuri"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Egg d"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 牛肉と玉ねぎのすき煮 → 豚バラとキャベツの塩炒め"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 酸辣湯 → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: あんかけ焼きそば → カレーうどん・ニラ玉 → ピーマンとじゃ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鶏そぼろ丼 → きのこの炊き込みご飯"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": null,
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": null,
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Japch"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Omuri"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": 0,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": 0,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ブロッコリーのごまマヨ和え → ほうれん草とベーコンのソテー・"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭のムニエル → さわらの西京焼き・コーンスープ → 豆腐とわ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: コロッケ → 豆腐ハンバーグ"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: コロッケ → 肉豆腐"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: えびフライ → なすと豚肉の味噌炒め"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 天丼 → 牛丼"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Corn "
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Nikuj"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Egg d"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chawa"
+  ]
+ },
+ {
+  "ver": "v160",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 照り焼きチキン → なすと豚肉の味噌炒め"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 棒棒鶏 → 鮭のちゃんちゃん焼き・春雨スープ → なすと油揚げ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 酸辣湯 → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 酸辣湯 → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: あじフライ → 鮭の塩焼き"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": -26,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": -26,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -26,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -26,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -51,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -51,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Dry c"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Monja"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chick"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 195,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": -78,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": -78,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 青椒肉絲 → なすと豚肉の味噌炒め・酸辣湯 → 豆腐とわかめの"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 寄せ鍋 → 豚バラとキャベツの塩炒め・たこときゅうりの酢の物 "
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: あじフライ → 焼き鳥（鶏もも・ねぎま）"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 炒り豆腐 → 鮭のちゃんちゃん焼き"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: トマトと卵のスープ → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Karei"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Salmo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Kanit"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chine"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Happo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 豚しゃぶ鍋 → さわらの西京焼き・ちくわの磯辺揚げ → かぶの"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 野菜炒め → 豚バラとキャベツの塩炒め"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 肉団子の甘酢あん → 豆腐ハンバーグ・酸辣湯 → だんご汁"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: かき玉汁 → のっぺい汁"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 1,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": null,
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Yurin"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": null,
+  "dy": 52,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 1,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Saba "
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Tsuku"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 360,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chaha"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": 0,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": 0,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 湯豆腐 → なすと豚肉の味噌炒め・芋煮 → 石狩汁"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 青椒肉絲 → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ピーマンの肉詰め → 白身魚の甘酢あんかけ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 醤油ラーメン → きのこの和風パスタ"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: かぼちゃサラダ → 粉ふきいも"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Eggs” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Wheat” from your allergens Undo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "off-milk",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": -26,
+  "want": [
+   "egg",
+   "wheat"
+  ],
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Removed “Milk (milk and dairy products)” from your allergens"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Napol"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-wheat",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "want": [
+   "wheat"
+  ],
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chick"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "on-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chine"
+  ]
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v159",
+  "test": "same-egg",
+  "W": 390,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "want": [
+   "egg"
+  ],
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ }
+]

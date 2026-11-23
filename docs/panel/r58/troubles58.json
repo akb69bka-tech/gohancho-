@@ -1,0 +1,145 @@
+[
+ {
+  "relation": "第43回 safe43 の確かめ",
+  "id": "S43",
+  "key": "safe43",
+  "dept": "安全",
+  "sev": "大",
+  "title": "（確かめ）肉・魚・貝の加工品のなかま → 0件のまま。21か国×14通りで 出せる料理 26422件・出た献立 54934品の取りこぼし 0（v159 0）。69の国×言語の組み合わせ（101920件）も 0",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "21か国×14通り＋69組み合わせ",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "safe43",
+    "group": "A・B",
+    "status": "0件のまま（v140）"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R184 から残る",
+  "id": "R184",
+  "key": "slowfirst",
+  "dept": "速さ",
+  "sev": "中",
+  "title": "遅い回線で、はじめての国の画面まで約50秒（8人。前回 約49秒）。試験のサーバーは圧縮なしのまま（本番はわからない）",
+  "repro": "360×740・回線を遅くする → 開く",
+  "note": "",
+  "measured": "",
+  "countA": 5,
+  "countB": 3,
+  "ids": [
+   "N018",
+   "N034",
+   "N054",
+   "N095",
+   "N100",
+   "W084",
+   "W086",
+   "W095"
+  ],
+  "scan": "遅い回線の人",
+  "inScore": true,
+  "prevRounds": [
+   {
+    "id": "R184",
+    "group": "A・B",
+    "status": "残り"
+   }
+  ],
+  "isNew": false,
+  "pt": {
+   "N018": "遅い回線で、はじめての画面まで 50秒",
+   "N034": "遅い回線で、はじめての画面まで 50秒",
+   "N054": "遅い回線で、はじめての画面まで 50秒",
+   "N095": "遅い回線で、はじめての画面まで 58秒",
+   "N100": "遅い回線で、はじめての画面まで 58秒",
+   "W084": "遅い回線で、はじめての画面まで 50秒",
+   "W086": "遅い回線で、はじめての画面まで 50秒",
+   "W095": "遅い回線で、はじめての画面まで 60秒"
+  }
+ },
+ {
+  "relation": "前回 R196 の確かめ",
+  "id": "R196",
+  "key": "carbmisread",
+  "dept": "機能",
+  "sev": "中",
+  "title": "（確かめ）egg noodles などの読み違い → 直ったまま（21か国で 0品）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "21か国",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R196",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "回帰の確かめ",
+  "id": "REG",
+  "key": "reg44",
+  "dept": "機能",
+  "sev": "中",
+  "title": "（確かめ）第44回の回帰 → 直ったまま（主食の副菜を 288回替えて なくなった 0回）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "単体",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "REG44",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R197 の確かめ",
+  "id": "R197",
+  "key": "roux",
+  "dept": "安全",
+  "sev": "小",
+  "title": "（確かめ）菜食でルウ・コンソメに 🔍 → 直ったまま（roux の点検で、印なしは置き換え済みの料理だけ）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "11か国×2",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R197",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ }
+]
