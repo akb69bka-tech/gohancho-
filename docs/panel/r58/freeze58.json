@@ -1,0 +1,738 @@
+[
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 0,
+  "sync": 82,
+  "firstFrame": 106,
+  "maxGap": 106,
+  "busyEnd": 82,
+  "longtasks": [
+   [
+    -1,
+    83
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 74,
+  "firstFrame": 83,
+  "maxGap": 83,
+  "busyEnd": 74,
+  "longtasks": [
+   [
+    -1,
+    75
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 87,
+  "firstFrame": 113,
+  "maxGap": 113,
+  "busyEnd": 87,
+  "longtasks": [
+   [
+    -1,
+    88
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 0,
+  "sync": 28,
+  "firstFrame": 29,
+  "maxGap": 65,
+  "busyEnd": 152,
+  "longtasks": [
+   [
+    34,
+    54
+   ],
+   [
+    89,
+    63
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 0,
+  "sync": 123,
+  "firstFrame": 138,
+  "maxGap": 138,
+  "busyEnd": 123,
+  "longtasks": [
+   [
+    -1,
+    123
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 0,
+  "sync": 268,
+  "firstFrame": 372,
+  "maxGap": 372,
+  "busyEnd": 380,
+  "longtasks": [
+   [
+    -3,
+    271
+   ],
+   [
+    268,
+    112
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 321,
+  "firstFrame": 352,
+  "maxGap": 352,
+  "busyEnd": 321,
+  "longtasks": []
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 266,
+  "firstFrame": 402,
+  "maxGap": 402,
+  "busyEnd": 411,
+  "longtasks": [
+   [
+    -3,
+    269
+   ],
+   [
+    267,
+    144
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 0,
+  "sync": 141,
+  "firstFrame": 148,
+  "maxGap": 336,
+  "busyEnd": 663,
+  "longtasks": [
+   [
+    -1,
+    142
+   ],
+   [
+    167,
+    310
+   ],
+   [
+    478,
+    185
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 0,
+  "sync": 509,
+  "firstFrame": 601,
+  "maxGap": 601,
+  "busyEnd": 607,
+  "longtasks": [
+   [
+    -2,
+    512
+   ],
+   [
+    510,
+    97
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 0,
+  "sync": 67,
+  "firstFrame": 88,
+  "maxGap": 88,
+  "busyEnd": 67,
+  "longtasks": [
+   [
+    -1,
+    67
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 49,
+  "firstFrame": 56,
+  "maxGap": 56,
+  "busyEnd": 49,
+  "longtasks": []
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 55,
+  "firstFrame": 82,
+  "maxGap": 82,
+  "busyEnd": 55,
+  "longtasks": [
+   [
+    -1,
+    55
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 0,
+  "sync": 23,
+  "firstFrame": 25,
+  "maxGap": 55,
+  "busyEnd": 78,
+  "longtasks": [
+   [
+    28,
+    50
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 0,
+  "sync": 101,
+  "firstFrame": 123,
+  "maxGap": 123,
+  "busyEnd": 102,
+  "longtasks": [
+   [
+    0,
+    102
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 0,
+  "sync": 204,
+  "firstFrame": 310,
+  "maxGap": 310,
+  "busyEnd": 318,
+  "longtasks": [
+   [
+    -2,
+    206
+   ],
+   [
+    204,
+    114
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 291,
+  "firstFrame": 336,
+  "maxGap": 336,
+  "busyEnd": 353,
+  "longtasks": [
+   [
+    -2,
+    294
+   ],
+   [
+    292,
+    61
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 0,
+  "sync": 333,
+  "firstFrame": 552,
+  "maxGap": 552,
+  "busyEnd": 560,
+  "longtasks": [
+   [
+    -3,
+    338
+   ],
+   [
+    335,
+    225
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 0,
+  "sync": 133,
+  "firstFrame": 143,
+  "maxGap": 257,
+  "busyEnd": 618,
+  "longtasks": [
+   [
+    -3,
+    137
+   ],
+   [
+    169,
+    194
+   ],
+   [
+    363,
+    255
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 0,
+  "sync": 421,
+  "firstFrame": 551,
+  "maxGap": 551,
+  "busyEnd": 563,
+  "longtasks": [
+   [
+    -3,
+    424
+   ],
+   [
+    422,
+    141
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 1,
+  "sync": 51,
+  "firstFrame": 68,
+  "maxGap": 68,
+  "busyEnd": 51,
+  "longtasks": [
+   [
+    -1,
+    51
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 71,
+  "firstFrame": 79,
+  "maxGap": 79,
+  "busyEnd": 71,
+  "longtasks": [
+   [
+    -1,
+    71
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 57,
+  "firstFrame": 87,
+  "maxGap": 87,
+  "busyEnd": 57,
+  "longtasks": [
+   [
+    -1,
+    57
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 1,
+  "sync": 38,
+  "firstFrame": 39,
+  "maxGap": 48,
+  "busyEnd": 38,
+  "longtasks": []
+ },
+ {
+  "ver": "v160",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 1,
+  "sync": 124,
+  "firstFrame": 125,
+  "maxGap": 125,
+  "busyEnd": 124,
+  "longtasks": [
+   [
+    -1,
+    125
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 1,
+  "sync": 257,
+  "firstFrame": 329,
+  "maxGap": 329,
+  "busyEnd": 335,
+  "longtasks": [
+   [
+    -2,
+    260
+   ],
+   [
+    258,
+    77
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 289,
+  "firstFrame": 335,
+  "maxGap": 335,
+  "busyEnd": 344,
+  "longtasks": [
+   [
+    -2,
+    291
+   ],
+   [
+    289,
+    55
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 293,
+  "firstFrame": 463,
+  "maxGap": 463,
+  "busyEnd": 470,
+  "longtasks": [
+   [
+    -4,
+    300
+   ],
+   [
+    296,
+    174
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 1,
+  "sync": 101,
+  "firstFrame": 110,
+  "maxGap": 189,
+  "busyEnd": 294,
+  "longtasks": [
+   [
+    -2,
+    104
+   ],
+   [
+    126,
+    168
+   ]
+  ]
+ },
+ {
+  "ver": "v160",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 1,
+  "sync": 606,
+  "firstFrame": 612,
+  "maxGap": 612,
+  "busyEnd": 606,
+  "longtasks": [
+   [
+    -3,
+    609
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 1,
+  "sync": 76,
+  "firstFrame": 106,
+  "maxGap": 106,
+  "busyEnd": 76,
+  "longtasks": [
+   [
+    -1,
+    76
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 60,
+  "firstFrame": 66,
+  "maxGap": 66,
+  "busyEnd": 60,
+  "longtasks": [
+   [
+    -1,
+    60
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 53,
+  "firstFrame": 80,
+  "maxGap": 80,
+  "busyEnd": 53,
+  "longtasks": [
+   [
+    -1,
+    53
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 1,
+  "sync": 23,
+  "firstFrame": 24,
+  "maxGap": 40,
+  "busyEnd": 23,
+  "longtasks": []
+ },
+ {
+  "ver": "v159",
+  "cpu": 1,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 1,
+  "sync": 101,
+  "firstFrame": 101,
+  "maxGap": 101,
+  "busyEnd": 101,
+  "longtasks": [
+   [
+    -1,
+    101
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegan",
+  "rep": 1,
+  "sync": 288,
+  "firstFrame": 382,
+  "maxGap": 382,
+  "busyEnd": 391,
+  "longtasks": [
+   [
+    -2,
+    290
+   ],
+   [
+    288,
+    103
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 282,
+  "firstFrame": 320,
+  "maxGap": 320,
+  "busyEnd": 282,
+  "longtasks": [
+   [
+    -3,
+    284
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "en",
+  "k": "vegi",
+  "rep": 1,
+  "sync": 333,
+  "firstFrame": 485,
+  "maxGap": 485,
+  "busyEnd": 491,
+  "longtasks": [
+   [
+    -2,
+    335
+   ],
+   [
+    334,
+    157
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "famDairy",
+  "rep": 1,
+  "sync": 88,
+  "firstFrame": 95,
+  "maxGap": 295,
+  "busyEnd": 380,
+  "longtasks": [
+   [
+    -2,
+    91
+   ],
+   [
+    119,
+    261
+   ]
+  ]
+ },
+ {
+  "ver": "v159",
+  "cpu": 4,
+  "ui": "ja",
+  "k": "selfMilk",
+  "rep": 1,
+  "sync": 463,
+  "firstFrame": 468,
+  "maxGap": 468,
+  "busyEnd": 463,
+  "longtasks": [
+   [
+    -1,
+    463
+   ]
+  ]
+ }
+]

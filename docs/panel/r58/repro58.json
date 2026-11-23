@@ -1,0 +1,3312 @@
+[
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 270,
+  "clicks": [
+   [
+    139,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    125,
+    111
+   ],
+   [
+    270,
+    244
+   ],
+   [
+    514,
+    332
+   ]
+  ],
+  "frames": {
+   "n": 219,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 673,
+  "clicks": [
+   [
+    83,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    76,
+    108
+   ],
+   [
+    216,
+    267
+   ],
+   [
+    484,
+    187
+   ]
+  ],
+  "frames": {
+   "n": 251,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 678,
+  "tapMs": 2236,
+  "clicks": [
+   [
+    1606,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2235,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1590,
+    126
+   ],
+   [
+    1746,
+    236
+   ],
+   [
+    1984,
+    202
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2281,
+  "tapMs": 3834,
+  "clicks": [
+   [
+    1610,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3597,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1584,
+    221
+   ],
+   [
+    1838,
+    256
+   ],
+   [
+    2095,
+    294
+   ],
+   [
+    3586,
+    247
+   ],
+   [
+    3834,
+    188
+   ],
+   [
+    4031,
+    66
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 422,
+  "clicks": [
+   [
+    202,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    180,
+    193
+   ],
+   [
+    423,
+    521
+   ],
+   [
+    945,
+    333
+   ]
+  ],
+  "frames": {
+   "n": 205,
+   "gaps": [
+    [
+     423,
+     957
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 1157,
+  "clicks": [
+   [
+    144,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    105,
+    291
+   ],
+   [
+    423,
+    421
+   ],
+   [
+    844,
+    309
+   ]
+  ],
+  "frames": {
+   "n": 251,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 1088,
+  "tapMs": 2655,
+  "clicks": [
+   [
+    1629,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2653,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1599,
+    200
+   ],
+   [
+    1826,
+    515
+   ],
+   [
+    2342,
+    258
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": [
+    [
+     1817,
+     2343
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2391,
+  "tapMs": 3948,
+  "clicks": [
+   [
+    1641,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3633,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1625,
+    244
+   ],
+   [
+    1926,
+    465
+   ],
+   [
+    2391,
+    305
+   ],
+   [
+    3623,
+    325
+   ],
+   [
+    3949,
+    190
+   ],
+   [
+    4159,
+    117
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 288,
+  "clicks": [
+   [
+    163,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    138,
+    127
+   ],
+   [
+    287,
+    401
+   ],
+   [
+    689,
+    215
+   ]
+  ],
+  "frames": {
+   "n": 219,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 705,
+  "clicks": [
+   [
+    78,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    61,
+    117
+   ],
+   [
+    211,
+    262
+   ],
+   [
+    474,
+    229
+   ]
+  ],
+  "frames": {
+   "n": 251,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 718,
+  "tapMs": 2264,
+  "clicks": [
+   [
+    1602,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2263,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1581,
+    145
+   ],
+   [
+    1756,
+    250
+   ],
+   [
+    2006,
+    218
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2248,
+  "tapMs": 3809,
+  "clicks": [
+   [
+    1615,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3605,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1595,
+    118
+   ],
+   [
+    1735,
+    268
+   ],
+   [
+    2004,
+    244
+   ],
+   [
+    3594,
+    214
+   ],
+   [
+    3809,
+    137
+   ],
+   [
+    3957,
+    65
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 406,
+  "clicks": [
+   [
+    200,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    177,
+    179
+   ],
+   [
+    400,
+    514
+   ],
+   [
+    916,
+    384
+   ]
+  ],
+  "frames": {
+   "n": 202,
+   "gaps": [
+    [
+     392,
+     930
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 356,
+  "clicks": [
+   [
+    129,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    89,
+    221
+   ],
+   [
+    357,
+    460
+   ],
+   [
+    817,
+    561
+   ]
+  ],
+  "frames": {
+   "n": 189,
+   "gaps": [
+    [
+     827,
+     1437
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 331,
+  "tapMs": 1896,
+  "clicks": [
+   [
+    1630,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    1893,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1601,
+    211
+   ],
+   [
+    1908,
+    389
+   ],
+   [
+    2297,
+    390
+   ]
+  ],
+  "frames": {
+   "n": 298,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 0,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2518,
+  "tapMs": 4075,
+  "clicks": [
+   [
+    1650,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3636,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1611,
+    186
+   ],
+   [
+    1842,
+    409
+   ],
+   [
+    2252,
+    556
+   ],
+   [
+    3613,
+    461
+   ],
+   [
+    4074,
+    210
+   ],
+   [
+    4304,
+    188
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": [
+    [
+     2266,
+     2887
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 253,
+  "clicks": [
+   [
+    143,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    128,
+    99
+   ],
+   [
+    252,
+    170
+   ]
+  ],
+  "frames": {
+   "n": 245,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 593,
+  "clicks": [
+   [
+    93,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    76,
+    180
+   ],
+   [
+    305,
+    263
+   ]
+  ],
+  "frames": {
+   "n": 253,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 431,
+  "tapMs": 1995,
+  "clicks": [
+   [
+    1618,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    1995,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1595,
+    176
+   ],
+   [
+    1805,
+    140
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2181,
+  "tapMs": 3730,
+  "clicks": [
+   [
+    1609,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3592,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1600,
+    119
+   ],
+   [
+    1756,
+    261
+   ],
+   [
+    3583,
+    148
+   ],
+   [
+    3732,
+    248
+   ],
+   [
+    3991,
+    86
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 761,
+  "clicks": [
+   [
+    214,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    176,
+    232
+   ],
+   [
+    446,
+    292
+   ]
+  ],
+  "frames": {
+   "n": 256,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 429,
+  "clicks": [
+   [
+    131,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    91,
+    268
+   ],
+   [
+    429,
+    316
+   ]
+  ],
+  "frames": {
+   "n": 230,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 499,
+  "tapMs": 2063,
+  "clicks": [
+   [
+    1648,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2062,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1599,
+    338
+   ],
+   [
+    2158,
+    473
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": [
+    [
+     2144,
+     2649
+    ]
+   ]
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2327,
+  "tapMs": 3894,
+  "clicks": [
+   [
+    1667,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3673,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1624,
+    288
+   ],
+   [
+    1987,
+    366
+   ],
+   [
+    3639,
+    481
+   ],
+   [
+    4128,
+    110
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 265,
+  "clicks": [
+   [
+    144,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    121,
+    124
+   ],
+   [
+    263,
+    178
+   ]
+  ],
+  "frames": {
+   "n": 242,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 252,
+  "clicks": [
+   [
+    102,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    81,
+    140
+   ],
+   [
+    252,
+    154
+   ]
+  ],
+  "frames": {
+   "n": 242,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 421,
+  "tapMs": 1968,
+  "clicks": [
+   [
+    1607,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    1968,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1585,
+    111
+   ],
+   [
+    1728,
+    185
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2150,
+  "tapMs": 3697,
+  "clicks": [
+   [
+    1611,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3611,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1583,
+    156
+   ],
+   [
+    1793,
+    231
+   ],
+   [
+    3601,
+    96
+   ],
+   [
+    3698,
+    189
+   ],
+   [
+    3922,
+    134
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 514,
+  "clicks": [
+   [
+    209,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    171,
+    275
+   ],
+   [
+    515,
+    417
+   ]
+  ],
+  "frames": {
+   "n": 231,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 340,
+  "clicks": [
+   [
+    126,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    98,
+    172
+   ],
+   [
+    341,
+    307
+   ]
+  ],
+  "frames": {
+   "n": 234,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 656,
+  "tapMs": 2217,
+  "clicks": [
+   [
+    1621,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2216,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1596,
+    190
+   ],
+   [
+    1830,
+    297
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 1,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2179,
+  "tapMs": 3745,
+  "clicks": [
+   [
+    1632,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3615,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1600,
+    233
+   ],
+   [
+    1895,
+    265
+   ],
+   [
+    3600,
+    145
+   ],
+   [
+    3745,
+    257
+   ],
+   [
+    4021,
+    61
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 347,
+  "clicks": [
+   [
+    164,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    150,
+    142
+   ],
+   [
+    344,
+    246
+   ]
+  ],
+  "frames": {
+   "n": 240,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 248,
+  "clicks": [
+   [
+    110,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    86,
+    137
+   ],
+   [
+    247,
+    132
+   ]
+  ],
+  "frames": {
+   "n": 244,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 696,
+  "tapMs": 2283,
+  "clicks": [
+   [
+    1691,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2284,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1577,
+    64
+   ],
+   [
+    1670,
+    162
+   ],
+   [
+    1889,
+    305
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2130,
+  "tapMs": 3677,
+  "clicks": [
+   [
+    1593,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3588,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1579,
+    106
+   ],
+   [
+    1699,
+    159
+   ],
+   [
+    3579,
+    98
+   ],
+   [
+    3677,
+    206
+   ],
+   [
+    3887,
+    87
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 327,
+  "clicks": [
+   [
+    152,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    132,
+    159
+   ],
+   [
+    327,
+    232
+   ]
+  ],
+  "frames": {
+   "n": 241,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 346,
+  "clicks": [
+   [
+    120,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    80,
+    213
+   ],
+   [
+    346,
+    291
+   ]
+  ],
+  "frames": {
+   "n": 233,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 575,
+  "tapMs": 2140,
+  "clicks": [
+   [
+    1624,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2138,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1600,
+    170
+   ],
+   [
+    1812,
+    255
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v160",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2228,
+  "tapMs": 3778,
+  "clicks": [
+   [
+    1631,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3639,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1604,
+    212
+   ],
+   [
+    1873,
+    327
+   ],
+   [
+    3620,
+    155
+   ],
+   [
+    3776,
+    321
+   ],
+   [
+    4120,
+    141
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 415,
+  "clicks": [
+   [
+    125,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    107,
+    109
+   ],
+   [
+    246,
+    155
+   ]
+  ],
+  "frames": {
+   "n": 254,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 206,
+  "clicks": [
+   [
+    85,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    66,
+    112
+   ],
+   [
+    207,
+    162
+   ]
+  ],
+  "frames": {
+   "n": 241,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 454,
+  "tapMs": 2015,
+  "clicks": [
+   [
+    1616,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    2015,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1598,
+    134
+   ],
+   [
+    1774,
+    184
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 4,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2161,
+  "tapMs": 3709,
+  "clicks": [
+   [
+    1582,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3597,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1566,
+    99
+   ],
+   [
+    1689,
+    138
+   ],
+   [
+    3584,
+    126
+   ],
+   [
+    3710,
+    154
+   ],
+   [
+    3868,
+    100
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "tool",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "scrolled",
+  "tapMs": 364,
+  "clicks": [
+   [
+    197,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    174,
+    152
+   ],
+   [
+    366,
+    207
+   ]
+  ],
+  "frames": {
+   "n": 244,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "single",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "ok",
+  "tapMs": 300,
+  "clicks": [
+   [
+    130,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    103,
+    157
+   ],
+   [
+    303,
+    329
+   ]
+  ],
+  "frames": {
+   "n": 231,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "double",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "double",
+  "tapMs2": 421,
+  "tapMs": 1980,
+  "clicks": [
+   [
+    1649,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    1977,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1599,
+    317
+   ],
+   [
+    2003,
+    249
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ],
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    [
+     "@dairy"
+    ]
+   ]
+  ],
+  "kept": true
+ },
+ {
+  "k": 2,
+  "base": "v159",
+  "cpu": 6,
+  "mode": "retap2s",
+  "s1": "alg-ask",
+  "chip": 1,
+  "tap": "retap2s",
+  "tapMs2": 2186,
+  "tapMs": 3758,
+  "clicks": [
+   [
+    1644,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ],
+   [
+    3620,
+    "fam-alg-fam",
+    "dairy",
+    true
+   ]
+  ],
+  "longtasks": [
+   [
+    1611,
+    206
+   ],
+   [
+    1880,
+    337
+   ],
+   [
+    3605,
+    153
+   ],
+   [
+    3759,
+    253
+   ],
+   [
+    4030,
+    115
+   ]
+  ],
+  "frames": {
+   "n": 300,
+   "gaps": []
+  },
+  "famAfter": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "famToday": [
+   [
+    "夫",
+    [],
+    []
+   ]
+  ],
+  "ls": [
+   [
+    "夫",
+    []
+   ]
+  ],
+  "kept": false
+ }
+]
