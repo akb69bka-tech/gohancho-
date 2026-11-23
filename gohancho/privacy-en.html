@@ -9,7 +9,7 @@
 @media (prefers-color-scheme: dark){:root{--bg:#1d1814;--fg:#f6ece0;--muted:#c2ae9b;--accent:#f08a5c;--line:#43372d;color-scheme:dark}}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.8;padding-inline:16px}
 main{max-width:680px;margin:0 auto;padding-block:28px 60px}
-h1{font-size:1.4rem;margin:0 0 4px} h2{font-size:1.05rem;margin:28px 0 6px;color:var(--accent)}
+h1{font-size:1.4rem;margin:0 0 4px} ul{padding-inline-start:1.3em;margin:6px 0} h2{font-size:1.05rem;margin:28px 0 6px;color:var(--accent)}
 p,li{font-size:.95rem} .muted{color:var(--muted);font-size:.85rem}
 table{border-collapse:collapse;width:100%;font-size:.9rem} td,th{border-top:1px solid var(--line);padding:.5rem .4rem;text-align:left;vertical-align:top}
 .wrap{overflow-x:auto}
@@ -18,42 +18,66 @@ table{border-collapse:collapse;width:100%;font-size:.9rem} td,th{border-top:1px 
 <body>
 <main>
 <h1>Privacy Policy</h1>
-<p class="muted">Gohancho (the "App") · Effective date: [enter publication date]</p>
+<p class="muted">Gohancho (the "App") · Effective date: [enter publication date] · Last updated: November 23, 2026</p>
+<p>The App is a cooking app that runs its meal plans, recipes and history on your own device. The developer does not collect your personal data. This page lists everything the App handles and every connection it makes.</p>
 
-<h2>1. Information that never leaves your device</h2>
-<p>Your meal history, favorites, fridge ingredients, pantry items, disliked ingredients, settings such as household size and country, recipes you add, and photos you take of your dishes are stored only on your device. They are never sent to the developer's servers, and the developer cannot see them.</p>
-<p>The stores you save under "My stores" (name, area, postal code, sale days) and the sale items you enter are also stored only on your device and are never sent anywhere. A flyer page URL is only shown as a link for you to open; the App never loads it. In the iPhone app, a flyer photo you take is read on your device only; it is never uploaded and not saved.</p>
+<h2>1. Information the developer does not collect (kept only on your device)</h2>
+<p>The following is stored only on your device (in the iPhone app's storage, or in your web browser's storage). It is never sent to the developer, and the developer cannot see it. The developer runs no user servers or accounts.</p>
+<ul>
+<li>Meal history, favorites, saved meals, the weekly plan and shopping lists</li>
+<li>Fridge ingredients, pantry items, leftover notes and food-spending notes</li>
+<li>Disliked ingredients, allergies, dietary rules (pork, alcohol, meat or fish, etc.), and settings such as household size, country, language and text size</li>
+<li>Family profiles (a nickname and that person's disliked foods, allergies, etc.) and the "what I'd like to eat" replies you receive from family</li>
+<li>Recipes you add and photos you take of your dishes (your photos and the Family album)</li>
+<li>The stores you save under "My stores" (name, area, postal code, sale days) and the sale items you enter. A store page URL is only shown as a link for you to open; the App never loads it</li>
+<li>Scheduled reminders (notifications) and timers</li>
+</ul>
+<p>Allergy and dietary information is used only on your device to choose meals and is never sent anywhere.</p>
 
-<h2>2. Communication with outside services</h2>
+<h2>2. Connections to outside services, and information shared with third parties</h2>
+<p>The App connects to outside services only in these cases.</p>
 <div class="wrap"><table>
-<tr><th>Service</th><th>Purpose</th><th>Information sent</th></tr>
-<tr><td>Wikipedia / Wikimedia Commons</td><td>Only if a built-in dish illustration cannot be loaded: a reference photo of the dish (turned into an illustration on your device) and its author and license</td><td>The dish name (article title) and your IP address, as part of the connection</td></tr>
-<tr><td>YouTube / Google Search</td><td>Only when you tap "Find a video" or "Search for photos"</td><td>The dish name (search words) and your IP address, as part of the connection</td></tr>
+<tr><th>Service</th><th>When and why</th><th>Information sent</th></tr>
+<tr><td>Apple (App Store) and RevenueCat, Inc.</td><td>In the iPhone app, when you buy or restore Gohancho Plus and when the App checks your subscription status (not used in the web version, which is free)</td><td>What is needed to check the purchase (an anonymous user ID created by RevenueCat, purchase history, etc.). Apple handles payment; the developer never receives card numbers or other payment details</td></tr>
 <tr><td>GitHub (the developer's settings file)</td><td>When the App opens, it loads a small file with notices. The App works the same if it cannot be loaded</td><td>Your IP address, as part of the connection (nothing that identifies you)</td></tr>
-<tr><td>Apple (App Store) and RevenueCat</td><td>Purchasing Gohancho Plus and checking your subscription status</td><td>What is needed for the purchase (an anonymous user ID and purchase history)</td></tr>
+<tr><td>Wikipedia / Wikimedia Commons</td><td>Only if a built-in dish illustration cannot be loaded: a reference photo of the dish (turned into an illustration on your device) and its author and license</td><td>The dish name (article title) and your IP address, as part of the connection</td></tr>
+<tr><td>YouTube / Google Search</td><td>Only when you tap "Find a video" or "Search for photos" (opens in the browser)</td><td>The dish name (search words) and your IP address, as part of the connection</td></tr>
+<tr><td>The app you choose to send with (LINE, WhatsApp, email, or an app you pick in the iPhone share sheet)</td><td>Only when you tap a button to send a meal, shopping list, recipe or "What would you like to eat?" to family</td><td>The text you chose to send (meals, dish names, shopping list, etc.), handled under that app's rules</td></tr>
+<tr><td>GitHub Pages (the pages behind the links you send to family, such as "What would you like to eat?")</td><td>When a family member opens the link you sent</td><td>Their IP address, as part of the connection. The dish choices and similar details are in the part of the link after "#", which is not sent to the server</td></tr>
+<tr><td>Your own email app</td><td>Only when you tap "Send feedback or report a problem" (when that button is shown)</td><td>What you write, plus the App version, country, language and device type (placed in the email, where you can see and remove them before sending)</td></tr>
 </table></div>
-<p>Each service handles information under its own privacy policy.</p>
+<p>Each service handles information under its own privacy policy. Apart from the table above, the developer does not sell or give your information to anyone.</p>
 
-<h2>3. Advertising and analytics</h2>
-<p>The App shows no ads and uses no analytics or tracking tools.</p>
+<h2>3. Advertising, analytics and tracking</h2>
+<p>The App shows no ads. It uses no analytics tools and does not track you across other apps or websites.</p>
 
-<h2>4. Camera and photos</h2>
+<h2>4. Camera, photos and microphone</h2>
 <p>The App uses the camera or photo library only when you tap "Add a photo of yours". The photo you choose is resized and stored on your device only. It is never uploaded.</p>
-<p>A photo you take or choose with "Pick from a fridge photo" is used only to suggest ingredients. In the iPhone app, the photo is read on your device by Apple's built-in image classification (Vision); it is never sent anywhere and is not saved (it is discarded when you close the screen). Where that is not available, you pick ingredients yourself while looking at the photo. Suggestions are not added to your fridge until you review them and tap the button to put them in.</p>
+<p>A photo you take or choose with "Pick from a fridge photo" is used only to suggest ingredients. In the iPhone app, the photo is read on your device by Apple's built-in image classification (Vision); it is never sent anywhere and is not saved (it is discarded when you close the screen). Where that is not available, you pick ingredients yourself while looking at the photo. Suggestions are not added to your fridge until you review them and tap "Put in fridge". In the iPhone app, a flyer photo you take is also read on your device only; it is never uploaded and not saved.</p>
 <p><b>Microphone and speech recognition</b>: The App uses the microphone only when you tap "Speak" and while you have "Hands-free" turned on while cooking (to hear "next" and move to the next step). Hands-free stops when you turn it off or leave the screen. Your speech is passed to your device's speech recognition (on iPhone, Apple's speech recognition, which may process audio on Apple's servers; in a web browser such as Chrome on Android, the browser's speech recognition, which may process audio on the browser provider's servers, such as Google's) to be turned into text, and is handled under the privacy policy of Apple or the browser provider. The App never stores recordings; it only uses the resulting text (ingredient or dish names) on your device.</p>
+<p>The App asks for permission for the camera, photos, microphone and notifications only when you use them. You can still use every other feature if you decline, and you can change permissions anytime in iPhone Settings → Gohancho.</p>
 
-<h2>5. Deleting your data</h2>
-<p>Use "Erase all data" in Settings to delete your history and settings from the device. Deleting the App also deletes all of its data on the device.</p>
+<h2>5. Children</h2>
+<p>The App is not made for children. Because the developer does not collect personal data from anyone, it does not collect children's personal data either. Purchases are made with an Apple Account and handled under Apple's rules.</p>
 
-<h2>6. Your rights (EU/UK GDPR and similar laws)</h2>
+<h2>6. How long data is kept, and how to delete it</h2>
+<p>Data on your device stays on that device until you delete it. The developer holds none of it, so there is no retention period on the developer's side.</p>
+<ul>
+<li>History, favorites, ingredients, pantry items, your recipes and settings: open Settings › Data › "Move or back up your data" and tap "Erase all data". The date your free trial started and your purchase status are kept, so that the free trial cannot be restarted.</li>
+<li>Dish photos (your photos and the Family album): "Erase all data" does not remove them. Remove them one by one with "Remove this photo from the album".</li>
+<li>Everything: deleting the iPhone app deletes all of its data on the device. In a web browser, clear this site's data in the browser settings.</li>
+<li>Purchase information: Apple and RevenueCat keep it under their own rules. Manage or cancel your subscription in iPhone Settings → your name → Subscriptions.</li>
+</ul>
+
+<h2>7. Your rights (EU/UK GDPR and similar laws)</h2>
 <p>Because the developer does not collect or store your personal data, there is no personal data held by the developer to access, correct or delete. For purchase data, please contact Apple. For any questions, contact us below.</p>
 
-<h2>7. Contact</h2>
+<h2>8. Contact</h2>
 <p>[Developer name] · [Contact email address]</p>
 
-<h2>8. Changes</h2>
-<p>If this policy changes, we will post the update on this page.</p>
-<p><a href="privacy.html">日本語</a></p>
+<h2>9. Changes</h2>
+<p>If this policy changes, we will post the update on this page and change the "Last updated" date above.</p>
+<p><a href="support-en.html">Support &amp; FAQ</a> · <a href="privacy.html">日本語</a></p>
 </main>
 </body>
 </html>

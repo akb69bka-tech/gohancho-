@@ -2184,6 +2184,13 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
 /* 申請前（11/23）: iPhone アプリ版は contentInset "never"・viewport-fit=cover なので、画面の上の端（ノッチ・Dynamic Island）まで中身が入る。
    上の端の分（--safe-top。Web 版・ふつうのブラウザでは 0）だけ、ページの上・上に貼りつく帯・下から出る画面を下げる。点検では --safe-top を指定して確かめる */
 :root{--safe-top:env(safe-area-inset-top,0px)}
+/* プライバシーポリシー・サポートをアプリの中で開く（同梱のページ。圏外でも開ける。オーナー指示 11/23） */
+#doc-view{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;background:var(--bg)}
+#doc-view .dv-bar{display:flex;align-items:center;gap:var(--s8);padding:calc(var(--safe-top) + 6px) max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line-soft);background:var(--surface)}
+#doc-view .dv-t{flex:1;min-width:0;font-weight:700;font-size:var(--fs16);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#doc-view .dv-x{min-height:44px;min-width:44px}
+#doc-view iframe{flex:1;width:100%;border:0;background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px)}
+.set-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s8);margin-top:var(--s16)}
 body{padding-top:var(--safe-top)}
 .set-tabs-bar{top:var(--safe-top)}
 .modal{padding-top:var(--safe-top)}
@@ -11819,7 +11826,9 @@ function viewSettings(){
     // まとまりの中身（見出しと各欄）は前のままで、置き場所だけを分けた。どの欄がどのタブかは SET_TABS。外から欄へ飛ぶときは setGo（その欄のタブを開いてそこへ移る）
     const curT = setTabCur();
     const sec = (k, body) => `<section class="set-sec open-always" id="set-${k}" data-sk="${k}" aria-labelledby="set-${k}-h"><h3 class="set-sec-h" id="set-${k}-h">${SET_ICONS[k]}${esc(setSecTitle(k))}</h3><div class="set-body">${body}</div></section>`;
-    const pan = (k, html) => `<div class="set-panel" role="tabpanel" id="setp-${k}" data-t="${k}" aria-labelledby="sett-${k}"${k === curT ? '' : ' hidden'}>${html}</div>`;
+    // 11/23（オーナー指示）: どのタブの下にも「プライバシーポリシー」「サポート・よくある質問」の入口（「その他」のタブは、ヘルプの中に同じ入口があるので出さない）
+    const setFoot = `<div class="set-foot">${docLink('privacy', t('プライバシーポリシー'), 'btn sm ghost')}${docLink('support', t('サポート・よくある質問'), 'btn sm ghost')}</div>`;
+    const pan = (k, html) => `<div class="set-panel" role="tabpanel" id="setp-${k}" data-t="${k}" aria-labelledby="sett-${k}"${k === curT ? '' : ' hidden'}>${html}${k === 'plan' ? '' : setFoot}</div>`;
     return `
     <section class="sec settings">
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
@@ -12127,8 +12136,40 @@ function docPage(name){ return name + (LANG === 'ja' ? '' : '-en') + '.html'; }
 // アプリ内の WebView に閉じこめられないよう、公開ページは絶対URLでシステムのブラウザへ。圏外のときだけ同梱のページ（クリック時に切りかえ）
 const DOC_BASE = 'https://akb69bka-tech.github.io/gohancho-/';
 function docUrl(name){ return DOC_BASE + docPage(name); }
-function docLink(name, label, cls){ return `<a${cls ? ` class="${cls}"` : ''} href="${docUrl(name)}" data-doc="${name}" target="_blank" rel="noopener">${esc(label)}</a>`; }
-document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[data-doc]'); if (a) a.href = navigator.onLine === false ? docPage(a.dataset.doc) : docUrl(a.dataset.doc); }, true);
+// 11/23（オーナー指示「アプリの中で見られない」）: 公開ページ（GitHub Pages）はまだ開けないことがあるので、アプリに同梱したページを
+// アプリの中の画面（#doc-view）で開く。電波がなくても開ける（Web 版は sw.js が保存している）。言葉はアプリの言葉（日本語以外は英語版）。ページの中の「English」「日本語」で切りかえられる
+function docLink(name, label, cls){ return `<a${cls ? ` class="${cls}"` : ''} href="${docPage(name)}" data-doc="${name}">${esc(label)}</a>`; }
+function docTitle(name){ return name === 'privacy' ? t('プライバシーポリシー') : t('サポート・よくある質問'); }
+let docRet = null;
+function openDoc(name){
+    closeDoc(true);
+    docRet = document.activeElement && document.activeElement !== document.body ? document.activeElement : null;
+    const v = document.createElement('div');
+    v.id = 'doc-view'; v.setAttribute('role', 'dialog'); v.setAttribute('aria-modal', 'true'); v.setAttribute('aria-label', docTitle(name)); v.dataset.doc = name;
+    v.innerHTML = `<div class="dv-bar"><button type="button" class="btn sm dv-x" data-dv="close">${esc(t('閉じる'))}</button><span class="dv-t">${esc(docTitle(name))}</span></div><iframe src="${docPage(name)}" title="${esc(docTitle(name))}"></iframe>`;
+    document.body.appendChild(v);
+    document.querySelectorAll('body > .wrap, body > nav.tabs, #modal-root, #sheet-root').forEach(e => e.setAttribute('inert', ''));
+    v.querySelector('[data-dv="close"]').focus({preventScroll:true});
+}
+function closeDoc(quiet){
+    const v = document.getElementById('doc-view'); if (!v) return false;
+    v.remove();
+    document.querySelectorAll('#modal-root, #sheet-root').forEach(e => e.removeAttribute('inert'));
+    syncInert();
+    const back = docRet; docRet = null;
+    if (!quiet && back && document.contains(back)) try{ back.focus({preventScroll:true}); }catch(e){}
+    return true;
+}
+document.addEventListener('click', e => {
+    const x = e.target.closest && e.target.closest('#doc-view [data-dv="close"]'); if (x){ e.preventDefault(); closeDoc(); return; }
+    const a = e.target.closest && e.target.closest('a[data-doc]'); if (!a) return;
+    e.preventDefault(); e.stopPropagation(); openDoc(a.dataset.doc);
+}, true);
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('doc-view')) return;
+    if (e.key === 'Escape'){ e.preventDefault(); e.stopImmediatePropagation(); closeDoc(); }
+    else if (e.key === 'Tab'){ const v = document.getElementById('doc-view'), els = [...v.querySelectorAll('button, iframe')]; const i = els.indexOf(document.activeElement); if (i < 0 || (e.shiftKey ? i === 0 : i === els.length - 1)){ e.preventDefault(); e.stopImmediatePropagation(); els[e.shiftKey ? els.length - 1 : 0].focus(); } }
+}, true);
 const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
 function feedbackMailto(){
     const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
