@@ -638,6 +638,7 @@ GOHAN_I18N('fil', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Nagsimula na ang pag-download ng {name}. Tingnan ang listahan ng downloads sa browser.",
     "やめる": "Kanselahin",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Buburahin nito ang talaan, paborito, sangkap, pantry, dagdag-diskarte, sarili mong recipe at settings. Hindi na ito maibabalik.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Mabubura rin ang mga larawan ng iyong mga ulam (iyong mga larawan at album). Mananatili ang petsa ng simula ng libreng trial at ang status ng pagbili (ang App Store ang namamahala sa mga pagbili).",
     "すべて消す": "Burahin lahat",
     "すべてのデータを消す": "Burahin ang lahat ng data",
     "このアプリについて": "Tungkol dito",

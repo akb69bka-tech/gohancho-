@@ -8,6 +8,7 @@
 //  P5 サポートのページ: 見えている質問・読み上げの質問に同じものが2つない（「料金はかかりますか？」の重なり）。HTML の中身（コメント・template を除く）でも重ならない
 //  P6 プライバシーポリシーに、審査で求められる項目（集める／集めない情報・保存場所・第三者・広告と解析・子ども・保存期間と消し方・問い合わせ先・改定日）が日本語・英語ともにある
 //  P7 アプリの中の画面に青を使わない
+//  P8 （11/23 統括の決め）「すべてのデータを消す」で料理の写真（photos・album・remake）も消える。お試しの開始日と購入の状態は残る。確かめの文に「写真も消えます」「お試し…残ります」
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -150,6 +151,34 @@ const frameText = async (p, want) => {
     const miss = [];
     for (const [f, res] of Object.entries(need)){ const s = fs.readFileSync(path.join(ROOT, f), 'utf8'); res.forEach(re => { if (!re.test(s)) miss.push(`${f} ${re}`); }); }
     ok(!miss.length, 'P6 プライバシーポリシーに審査で求められる項目がそろう（日本語・英語）: ' + miss.join(' / '));
+}
+
+// P8 すべてのデータを消すと、写真も消える（お試しの開始日と購入の状態は残る）
+{
+    const {p, ctx} = await open();
+    await p.evaluate(async () => {
+        const blob = new Blob([new Uint8Array([137, 80, 78, 71])], {type: 'image/png'});
+        await idbDo('readwrite', st => st.put({blob, d: '2026-11-20'}, 'nikujaga'), 'photos');
+        await idbDo('readwrite', st => st.add({id: 'nikujaga', name: '肉じゃが', blob, d: '2026-11-20'}), 'album');
+        await idbDo('readwrite', st => st.put({blob, d: '2026-11-20'}, 'x:b'), 'remake');
+        S.pro = {active: true, trialEnd: '2026-12-20', willRenew: true}; S.history = [{d: '2026-11-21', ids: ['nikujaga']}]; save();
+    });
+    const before = await p.evaluate(async () => Promise.all(['photos', 'album', 'remake'].map(n => idbDo('readonly', st => st.count(), n))));
+    await goSettings(p);
+    await p.click('#view .set-tab[data-k="data"]');
+    // 「データの引っ越し・バックアップ」は前に開いた形を覚えていることがあるので、閉じているときだけ開く（押すと閉じてしまうため）
+    await p.evaluate(() => { const d = document.getElementById('backup-move'); if (d && !d.open) d.querySelector('summary').click(); });
+    await p.waitForSelector('#view [data-act="reset"]', {state: 'attached', timeout: 10000}).catch(() => {});
+    await p.evaluate(() => document.querySelector('#view [data-act="reset"]').click());
+    await p.waitForSelector('#view .confirm [data-act="reset-yes"]', {state: 'attached', timeout: 10000}).catch(() => {});
+    const msg = await p.evaluate(() => { const c = document.querySelector('#view .confirm'); return c ? c.textContent : ''; });
+    ok(/写真[^。]*も消えます/.test(msg) && /お試しを始めた日と購入の状態は残ります/.test(msg) && /App Store/.test(msg), 'P8a 消す前の確かめの文に「写真も消えます」と「お試しの開始日と購入の状態は残る（App Store が管理）」: ' + msg);
+    await Promise.all([p.waitForEvent('load', {timeout: 15000}).catch(() => {}), p.evaluate(() => document.querySelector('#view [data-act="reset-yes"]').click())]);   // 確かめの文は描き直しで一瞬ゆれるので、ボタンを直接押す
+    await ready(p);
+    const after = await p.evaluate(async () => ({n: await Promise.all(['photos', 'album', 'remake'].map(n => idbDo('readonly', st => st.count(), n))), firstUse: S.firstUse, pro: !!(S.pro && S.pro.active), hist: (S.history || []).length, mine: Object.keys(MINE).length}));
+    ok(before.every(n => n === 1) && after.n.every(n => n === 0) && after.mine === 0 && after.hist === 0 && after.firstUse === '2026-11-20' && after.pro,
+        'P8b 写真を入れてから「すべてのデータを消す」→ 写真・アルバム・作り置きの写真は0枚、記録も0、お試しの開始日と購入の状態は残る: ' + JSON.stringify({before, after}));
+    await ctx.close();
 }
 
 await b.close();

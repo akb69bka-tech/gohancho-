@@ -639,6 +639,7 @@ GOHAN_I18N('fr', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Le téléchargement de {name} a commencé. Consultez la liste des téléchargements du navigateur.",
     "やめる": "Annuler",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Cela efface votre journal, vos favoris, ingrédients, produits de base, astuces du chef, vos recettes et réglages. Impossible d'annuler.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Les photos de vos plats (vos photos et l'album) sont aussi effacées. La date de début de l'essai gratuit et l'état de l'achat sont conservés (les achats sont gérés par l'App Store).",
     "すべて消す": "Tout effacer",
     "すべてのデータを消す": "Effacer toutes les données",
     "このアプリについて": "À propos",

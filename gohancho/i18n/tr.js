@@ -638,6 +638,7 @@ GOHAN_I18N('tr', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "{name} indirmesi başladı. Tarayıcının indirilenler listesine bakın.",
     "やめる": "Vazgeç",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Bu işlem kayıtlarınızı, favorilerinizi, malzemelerinizi, kiler malzemelerinizi, püf noktalarını, kendi tariflerinizi ve ayarlarınızı siler. Geri alınamaz.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Yemek fotoğraflarınız (fotoğraflarınız ve albüm) da silinir. Ücretsiz deneme başlangıç tarihi ve satın alma durumu korunur (satın almaları App Store yönetir).",
     "すべて消す": "Hepsini sil",
     "すべてのデータを消す": "Tüm verileri sil",
     "このアプリについて": "Hakkında",

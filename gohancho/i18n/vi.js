@@ -925,6 +925,7 @@ GOHAN_I18N('vi', {
     "記録はこの端末の中だけに保存されています。別のスマホに移すときは、下の文字をコピーして、移し先の同じ欄に貼りつけて「読み込む」を押してください。": "Dữ liệu của bạn chỉ nằm trên thiết bị này. Để chuyển sang điện thoại khác, hãy sao chép đoạn văn bản bên dưới, dán vào đúng ô đó ở máy mới rồi bấm “Tải”.",
     "記録を消す": "Xóa mục",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Thao tác này xóa nhật ký, món yêu thích, nguyên liệu, đồ sẵn có, mẹo nấu ăn, công thức của bạn và cài đặt. Không thể hoàn tác.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Ảnh món ăn của bạn (ảnh của bạn và album) cũng bị xóa. Ngày bắt đầu dùng thử miễn phí và trạng thái mua hàng vẫn được giữ lại (việc mua do App Store quản lý).",
     "設定": "Cài đặt",
     "読み込みました": "Đã tải dữ liệu",
     "読み込めませんでした": "Không tải được dữ liệu",

@@ -638,6 +638,7 @@ GOHAN_I18N('id', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Unduhan {name} sudah dimulai. Cek daftar unduhan di browser.",
     "やめる": "Batal",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Ini menghapus catatan, favorit, bahan, stok, tips koki, resep Anda, dan pengaturan. Tidak bisa dibatalkan.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Foto masakan Anda (foto Anda dan album) juga terhapus. Tanggal mulai uji coba gratis dan status pembelian tetap disimpan (pembelian dikelola App Store).",
     "すべて消す": "Hapus semuanya",
     "すべてのデータを消す": "Hapus semua data",
     "このアプリについて": "Tentang",
