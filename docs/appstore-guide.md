@@ -482,7 +482,9 @@ TestFlight は、公開前に自分の iPhone で試す仕組みです。**こ�
 
 - 2回目からは Mac も Xcode も不要と資料にあります。
 - バージョン番号: 直しだけ 1.1.0 → 1.1.1、新機能 1.2.0、大きな作り直し 2.0.0。タグ名は `gohancho-v<版>`（タグでも「iOS release」が動く）。
-- 審査なしで変えられるもの: 価格、無料期間、配信国、説明文、スクリーンショット（App Store Connect で変更）、アプリ内のお知らせ（`gohancho/remote.json` の `notice` と `minVersion` を main で直す）。レシピ・翻訳・画面・不具合の直しは審査が必要です。
+- 審査なしで変えられるもの（確か）: アプリ内のお知らせ（`gohancho/remote.json` の `notice` と `minVersion` を main で直す）、ストアの宣伝文（Apple 公式: platform-version-information）。
+- 次の版といっしょに変えるもの（推測。Apple のページに明記なし・初回公開後に画面で確かめる）: 説明文、スクリーンショット、キーワード。
+- 価格・無料期間・配信国は App Store Connect で変える（審査の要否は未確認。値上げは始まると戻せない。初回の特典は作り直し）。レシピ・翻訳・画面・不具合の直しは審査が必要です。手順書: https://claude.ai/artifact/JPzqe9jv1ma3Co8MheyKDM（2026-11-24）
 - 急ぎのとき: まず `remote.json` の `notice` でお知らせ → 修正版を優先審査で出す。
 
 ### 7-2. サポート窓口
