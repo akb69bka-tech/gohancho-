@@ -3,7 +3,8 @@
 GOHAN_I18N('en', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Lower carb",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Meals with less rice, noodles and potatoes, and more vegetable and protein dishes. Shows an estimate of carbohydrates (g) per person",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "For people who watch their meals because of diabetes or similar conditions. Meals with less rice, noodles and potatoes, and more vegetable and protein dishes. Shows an estimate of carbohydrates (g) per person. Follow your doctor's advice about meals.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "For people watching their meals because of diabetes or similar conditions. Less rice, noodles and potatoes. Follow your doctor's advice.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "When on, dishes with fewer carbohydrates are suggested first; rice dishes, noodles and potato-heavy dishes, sweet simmered dishes, thickly coated fried dishes and soups with potatoes, glass noodles or noodles come later (nothing is removed, and meals you have decided are not changed). The staple is shown as a small portion.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "If you follow dietary instructions for diabetes or another condition, follow your doctor's or dietitian's instructions first. The numbers shown are estimates.",
     "わかりました": "Got it",
@@ -639,6 +640,7 @@ GOHAN_I18N('en', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Download of {name} has started. Check your browser's downloads list.",
     "やめる": "Cancel",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "This erases your log, favorites, ingredients, pantry staples, chef's tips, your recipes and settings. It can't be undone.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Your dish photos (your photos and album) are erased too. The date your free trial started and your purchase status are kept (purchases are managed by the App Store).",
     "すべて消す": "Erase everything",
     "すべてのデータを消す": "Erase all data",
     "このアプリについて": "About",

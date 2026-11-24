@@ -11,7 +11,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:'Hiragino Kaku Go
 main{max-width:680px;margin:0 auto;padding-block:28px 60px}
 h1{font-size:1.4rem;margin:0 0 4px} h2{font-size:1.05rem;margin:28px 0 8px;color:var(--accent)}
 details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
-summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(--muted);font-size:.85rem}
+h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
@@ -22,27 +22,61 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <!--
   R212（ui51）・オーナー決定（2026-11-23）: index.html の PLAN.billingMode は 'native'。課金は iPhone アプリ版だけ（登録した最初の1か月は無料、次の月から月額300円）。Web 版は無料のまま。
   ・data-billing="paid" … 課金ありのときの質問（billingMode が 'native' か 'all' のときに見せる）。月額だけの方針に合わせ、年額・「年の縛り」の文は書かない（年額は確認まとめ85で確認中）
-  ・data-billing="free" … 全員無料（billingMode 'off'）のときの質問。消さずに hidden で残している
+  ・data-billing="free" … 全員無料（billingMode 'off'）のときの質問。消さずに hidden で残している。
+    同じ「料金はかかりますか？」が2つ並んで見えないよう（読み上げ・リーダー表示・CSS なしの表示でも）、<template> に入れてページの中身から外している（2026-11-23 オーナー指摘）
   ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
-  billingMode を 'off' に戻すとき: paid に hidden を付け、free の hidden を外す（support-en.html も同じ）。
+  billingMode を 'off' に戻すとき: paid に hidden を付け、free を <template> から出して hidden を外す（support-en.html も同じ）。
   tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
+  11/24（オーナー回答82B・86B）: iPhone 版も Web 版も課金モデル（最初の1か月無料・その後 月額300円）。<span data-presale> は販売前のいまの動きの説明。
+  App Store に申請するとき（RevenueCat のキーを入れるとき）に、この span を消す（Web 版は Web の課金を始めるときに書きかえる）。
 -->
 <h2>よくある質問</h2>
-<details><summary>同じ料理ばかり出ませんか？</summary><p>「この献立に決定」や「今日作った」で記録すると、設定した日数（初期値10日）以内に作った料理は出さず、前日と同じ肉・魚やジャンルも続かないように選びます。日数は右上の歯車（設定）で変えられます。</p></details>
-<details><summary>品数を変えたい</summary><p>今日の献立の「品数」で、おまかせ（曜日で3〜6品）か2〜6品を選べます。</p></details>
-<details><summary>家族に献立を送りたい</summary><p>「今日の献立を LINE で家族に送る」、または1週間の主菜の「予定と買い物メモを LINE で送る」を押してください。送り先を選ぶ画面が開きます。</p></details>
-<details><summary>苦手な食材やアレルギーがある</summary><p>設定の「苦手な食材」で選んだ食材は、ほかの食材に置き換えられる料理なら置き換えて提案します（例: 豚肉→鶏肉）。置き換えられない料理は献立に出しません。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。</p></details>
-<details data-billing="free" hidden><summary>料金はかかりますか？</summary><p>ご飯帖はいま全員無料です。料金はかかりません。すべての機能をそのままお使いいただけます。</p></details>
-<details data-billing="paid"><summary>料金はかかりますか？</summary><p>iPhone アプリ版は「ご飯帖プラス」（月額300円）です。はじめて登録した最初の1か月は無料で、次の月から月額300円になります。ブラウザで開く Web 版は無料です。</p></details>
-<details data-billing="paid"><summary>ご飯帖プラスを解約したい</summary><p>iPhone の「設定」→ 一番上の自分の名前 →「サブスクリプション」→「ご飯帖」から解約できます。月額300円で、いつでも解約できます。</p></details>
-<details data-billing="paid"><summary>無料お試しのしくみ</summary><p>はじめに月額プラン（300円）を選ぶと、1か月の無料お試しが始まります。2か月目から、解約していなければ月額の料金が Apple ID に請求され、毎月自動で更新されます。いつでも解約できます（無料期間が終わる24時間前までに解約すれば料金はかかりません）。無料体験が使えるのは、はじめて登録する方のみです。</p></details>
-<details><summary>ほかの国の料理を見たい</summary><p>下の「世界のレシピ」から国を選ぶと、その国の家庭料理を見られます。毎日の献立は、設定で選んだ国のままです。</p></details>
+<p class="muted">わからないことは、下の「お問い合わせ」からどうぞ。ボタンや欄の名前は、アプリの画面の名前に合わせています。</p>
+<h3>料金・解約</h3>
+<template data-billing-off><details data-billing="free" hidden><summary>料金はかかりますか？</summary><p>ご飯帖はいま全員無料です。料金はかかりません。すべての機能をそのままお使いいただけます。</p></details></template>
+<details data-billing="paid"><summary>料金はかかりますか？</summary><p>ご飯帖は、有料プラン「ご飯帖プラス」でお使いいただくアプリです（iPhone 版・Web 版とも）。はじめて登録した最初の1か月は無料で、次の月から月額300円（税込・自動更新）です。iPhone 版のお支払いは Apple、Web 版のお支払いは決済会社が扱います。<span data-presale>いまは販売の準備中のため、iPhone 版・Web 版ともすべての機能を無料でお使いいただけます（販売を始めたら、ここでお知らせします）。</span></p></details>
+<details data-billing="paid"><summary>いつから料金がかかりますか？</summary><p>無料の1か月が終わったときからです。期間が終わる24時間前までに解約しなければ自動で更新され、お支払いは Apple アカウントに請求されます。</p></details>
+<details data-billing="paid"><summary>ご飯帖プラスを解約したい</summary><p>iPhone の「設定」→ 一番上の自分の名前 →「サブスクリプション」→「ご飯帖」から解約できます。購読中は、アプリの「ご飯帖プラス」の画面の「プランの管理・解約」からも開けます。解約しても、期間の終わりまでは使えます。</p></details>
+<details data-billing="paid"><summary>無料の1か月だけ使って、やめられますか？</summary><p>はい。無料期間が終わる24時間前までに解約すれば、料金はかかりません。</p></details>
+<details data-billing="paid"><summary>解約したら、記録は消えますか？</summary><p>消えません。記録や設定は、この端末の中に残ります。</p></details>
+<details data-billing="paid"><summary>無料期間のあと、払わないとどうなりますか？</summary><p>無料期間が終わって続けない場合、献立などの画面が使えなくなります。そのときも、記録があれば「これまでの記録を書き出す」でファイルにできます。</p></details>
+<details data-billing="paid"><summary>返金してほしいです</summary><p>お支払いと返金は Apple が扱います。Apple の「問題を報告する」の手続きをご覧ください。</p></details>
+<details data-billing="paid"><summary>機種変更したら購入はどうなりますか？</summary><p>同じ Apple アカウントでサインインし、新しい iPhone でアプリの「購入を復元」を押すと、続けて使えます。献立の記録は、下の「機種変更したら、記録はどうなりますか？」の手順で移せます。</p></details>
+<details><summary>Web 版と iPhone 版のちがいは？ Android でも使えますか？</summary><p>Web 版はブラウザで開いて使えます。料金は iPhone 版と同じです（最初の1か月無料・その後 月額300円。Web 版の支払い・解約のしかたは、販売を始めるときにここに書きます）。iPhone 版と Web 版の購入は別々です。Android やパソコンでは Web 版を使います（設定 › プラン・その他 の「ホーム画面に追加する」などで、アプリのように開けます）。毎日のお知らせ（通知）や、冷蔵庫・チラシの写真の自動の読み取りは iPhone 版で使えます。Android のアプリはありません。</p></details>
+<h3>データ・機種変更</h3>
+<details><summary>記録やデータはどこに保存されますか？</summary><p>お使いの端末の中だけです。アカウントの登録はなく、記録を外へ送ることもありません。料理の写真も、この端末の中だけに保存されます。くわしくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</p></details>
 <details><summary>機種変更したら、記録はどうなりますか？</summary><p>記録・お気に入り・設定などは、この端末の中だけに保存されています。前のスマホで、設定 › データ の「ファイルで書き出す」を押してファイルを作り、新しいスマホで、同じ 設定 › データ の「データの引っ越し・バックアップ」を押してひらき、中の「ファイルから読み込む」を押して、そのファイルを選んでください。その欄の文字をコピーして、新しいスマホの同じ欄に貼りつける方法もあります。写真（わが家の一枚・アルバム）は移りません。</p></details>
-<details data-billing="paid"><summary>機種変更したら購入はどうなりますか？</summary><p>同じ Apple ID でサインインし、設定の「購入を復元」を押してください。献立の記録は、設定の「データの引っ越し・バックアップ」で移せます。</p></details>
+<details><summary>家族のスマホでも、同じ献立を見られますか？</summary><p>端末どうしを自動で同じにする機能（同期）はありません。決めた献立や買い物メモは、「家族に送る」で送れます。</p></details>
+<details><summary>アカウントや個人情報の登録は要りますか？</summary><p>要りません。名前やメールアドレスを入れずに使えます。</p></details>
+<details><summary>データを全部消したいです</summary><p>設定 › データ の「データの引っ越し・バックアップ」をひらき、「すべてのデータを消す」→「すべて消す」で、記録・お気に入り・材料・設定・料理の写真（わが家の一枚・アルバム）などを消せます。元には戻せません。お試しの開始日と購入の状態は残ります（購入は App Store が管理しています）。同じ端末でお試しを何度も始め直せないようにするためです。</p></details>
+<h3>アレルギー・食の決まり</h3>
+<details><summary>アレルギーの食材は、確実に外れますか？</summary><p>設定で選んだアレルゲンを材料の名前で調べ、合わない料理を出さないようにしています。ただし、材料の名前からの目安で、保証ではありません。加工品（だし・ルウ・調味料など）は、🔍 の印の所で、袋の表示を確かめてください。重いアレルギーの方は、必ず原材料表示・医師の指示に従ってください。</p></details>
+<details><summary>家族ひとりずつ、アレルギーを入れられますか？</summary><p>はい。設定 › 家族・アレルギー の「家族を追加」で家族の人を足し、その人のアレルギーを選べます。合わない料理があるときは「（名前）に合わない料理があります」と出ます。</p></details>
+<details><summary>どのアレルゲンを選べますか？</summary><p>日本の表示が義務の9品目（特定原材料）と、表示をすすめる20品目のほか、ほかの国でよく使われる分けかたも合わせて、43のなかまから選べます。</p></details>
+<details><summary>ハラール・ベジタリアン・ヴィーガンに合わせられますか？</summary><p>はい。設定 › 苦手・食の決まり の「まとめて選ぶ（食の決まり）」で選べます。食の決まりに合わない可能性のある料理を外す目安で、保証ではありません。ベジタリアン向けでは卵・乳製品は外しません。食べない場合は、出てくる「卵も外す」「乳製品も外す」を押してください。</p></details>
+<details><summary>苦手な食材やアレルギーがある</summary><p>設定の「苦手な食材」で選んだ食材は、ほかの食材に置き換えられる料理なら置き換えて提案します（例: 豚肉→鶏肉）。置き換えられない料理は献立に出しません。アレルギーがある場合は、調味料や加工品の原材料も必ずご自身でお確かめください。</p></details>
+<h3>家族への共有</h3>
+<details><summary>献立や買い物メモを家族に送れますか？</summary><p>はい。今日の献立や1週間の主菜の「送る」のボタンから送れます。国によって、日本・タイ・台湾では LINE、イギリス・フランス・ドイツ・ブラジル・インドなどでは WhatsApp のボタンが出ます。「ほかのアプリで送る」「コピーする」も使えます。</p></details>
+<details><summary>LINE や WhatsApp のボタンが出ません</summary><p>中国・韓国・アメリカ・フィリピン・ポーランド・ベトナムなどでは、そのアプリのボタンは出ません。「ほかのアプリで送る」で送り先のアプリを選ぶか、「コピーする」で文を写して、使っているアプリに貼りつけて送ってください。</p></details>
+<h3>使い方</h3>
+<details><summary>同じ料理ばかり出ませんか？</summary><p>「この献立に決定」や「今日作った」で記録すると、設定した日数（初期値10日）以内に作った料理は出さず、前日と同じ肉・魚やジャンルも続かないように選びます。日数は 設定 › 献立 で変えられます。</p></details>
+<details><summary>1品だけ替えたいです</summary><p>料理の「かえる」を押すと、候補から選べます。決めたあとの献立は、「決めた献立を変えますか？」と確かめてから、押した1品だけを替えます。ほかの料理は変わりません。</p></details>
+<details><summary>人数や品数を変えたいです</summary><p>人数は、設定 › 家族・アレルギー の「何人分つくるか」で変えられます（1〜15人）。品数は、設定 › 献立 の「ふだんの品数」か、今日の献立の「条件を変える」で変えられます。</p></details>
+<details><summary>1週間分の献立はどこで作りますか？</summary><p>今日の献立の画面を下へ送ると「1週間の主菜」があります。ひらいて「1週間分を考える」を押してください。</p></details>
+<details><summary>買い物メモの使い方を教えてください</summary><p>献立を決めると、買う物の一覧が出ます。家にある物は「家にある」を押すと、買う物から外れます。「料理ごと」「売り場ごと」で並べかえることもできます。</p></details>
+<details><summary>近くの店で手に入らない食材が出ます</summary><p>設定 › 苦手・食の決まり の「手に入りにくい食材」に足すと、その食材を使う料理は出なくなります。</p></details>
+<details><summary>文字を大きくしたいです</summary><p>設定 › 表示 の「文字の大きさ」で、「ふつう」「大きい」「もっと大きい」から選べます。はじめて開いたときの画面でも選べます。</p></details>
+<details><summary>電波の弱い所や圏外でも使えますか？</summary><p>一度、電波のある所で開いておくと、アプリと使っている国のレシピが端末に保存され、電波がなくても開けます。ほかの国の料理をさがすときや、言葉を変えたときなどは、電波が要ることがあります。</p></details>
+<details><summary>日本語以外の言葉で使えますか？</summary><p>18の言葉で使えます。設定 › 表示 の「表示する言語」から変えられます。</p></details>
+<details><summary>作り方を読み上げてくれますか？</summary><p>はい。作り方の画面の「声で読み上げ」を使うと、手順を読み上げます。「次の手順」を押すと、次を読みます。</p></details>
+<details><summary>毎日のお知らせは出せますか？</summary><p>iPhone 版で使えます。設定 › プラン・その他 の「毎日のお知らせ」で時間を選んでください。1週間の献立があると、その日の主菜と主な材料をお知らせします。iPhone の「設定」→「ご飯帖」→「通知」で、通知を許可してください。</p></details>
+<details><summary>糖質や塩分をひかえたいです</summary><p>設定 › モード で「糖質ひかえめ」や「減塩（塩分の目安を表示）」を選べます。変わるのは料理の選び方と目安の表示です。</p></details>
+<details><summary>ほかの国の料理を見たい</summary><p>下の「世界のレシピ」から国を選ぶと、その国の家庭料理を見られます。毎日の献立は、設定で選んだ国のままです。</p></details>
 <details><summary>料理の絵について</summary><p>料理の絵は、AI で作成したイメージです。実際の料理・盛りつけとは異なります。絵はアプリに入っているので、通信しなくても表示されます。「作った料理を撮って登録」で、ご自身の写真にもできます（端末の中だけに保存されます）。</p></details>
 
 <h2>お問い合わせ</h2>
-<p>【連絡先メールアドレス】まで、端末の機種と iOS のバージョン、困っている内容をお送りください。</p>
+<p>運営: わが家のご飯帖 運営</p>
+<p>お問い合わせは、GitHub の <a href="https://github.com/akb69bka-tech/gohancho-/issues/1" target="_blank" rel="noopener">ご飯帖 サポート窓口（Issue #1）</a> にお書きください。端末の機種と iOS（または使っているブラウザ）のバージョン、困っている内容を添えてください。書きこむには GitHub のアカウント（無料）が要ります。書いた内容は誰でも見られるので、名前・住所・メールアドレスなどの個人の情報は書かないでください。</p>
 <p><a href="privacy.html">プライバシーポリシー</a> ・ <a href="support-en.html">English</a></p>
 </main>
 </body>

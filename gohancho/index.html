@@ -2202,6 +2202,13 @@ body.ah-row .decide-bar:has(>.alg-hint.ah-in) .wk-quick{display:none}
 /* 申請前（11/23）: iPhone アプリ版は contentInset "never"・viewport-fit=cover なので、画面の上の端（ノッチ・Dynamic Island）まで中身が入る。
    上の端の分（--safe-top。Web 版・ふつうのブラウザでは 0）だけ、ページの上・上に貼りつく帯・下から出る画面を下げる。点検では --safe-top を指定して確かめる */
 :root{--safe-top:env(safe-area-inset-top,0px)}
+/* プライバシーポリシー・サポートをアプリの中で開く（同梱のページ。圏外でも開ける。オーナー指示 11/23） */
+#doc-view{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;background:var(--bg)}
+#doc-view .dv-bar{display:flex;align-items:center;gap:var(--s8);padding:calc(var(--safe-top) + 6px) max(12px,env(safe-area-inset-right,0px)) 6px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line-soft);background:var(--surface)}
+#doc-view .dv-t{flex:1;min-width:0;font-weight:700;font-size:var(--fs16);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#doc-view .dv-x{min-height:44px;min-width:44px}
+#doc-view iframe{flex:1;width:100%;border:0;background:var(--bg);padding-bottom:env(safe-area-inset-bottom,0px)}
+.set-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s8);margin-top:var(--s16)}
 body{padding-top:var(--safe-top)}
 .set-tabs-bar{top:var(--safe-top)}
 .modal{padding-top:var(--safe-top)}
@@ -6947,6 +6954,12 @@ async function loadPhotos(){
 }
 /* ---- わが家の写真（作った料理を撮って登録。このブラウザの IndexedDB に保存） ---- */
 let MINE = {};
+// 「すべてのデータを消す」: 利用者が撮った・選んだ写真（photos・album・remake）を全部消す。sketches は Wikipedia の写真から作った絵の一時保存なので残す
+async function clearMyPhotos(){
+    for (const st of ['photos', 'album', 'remake']){ try{ await idbDo('readwrite', s => s.clear(), st); }catch(e){} }
+    Object.values(MINE).forEach(x => { try{ URL.revokeObjectURL(x.src); }catch(e){} });
+    MINE = {}; ALBUM = null;
+}
 function openDb(){
     return openDb.p || (openDb.p = new Promise((res, rej) => {
         const q = indexedDB.open('gohancho', 4);
@@ -8339,7 +8352,7 @@ const OB_MODES = () => [
     ['simple', t('いちばん簡単'), t('手順と材料の少ない料理を中心に出します')],
     ['slow', t('じっくり'), t('煮込みなど、時間をかけて作る料理も出します')],
     ['diet', ...modeSplit(t('ダイエットモード（カロリーの目安が低めの料理を出しやすくする）'))],   // モードのシート・設定と同じ文言
-    ['carb', CARB_TX.name(), CARB_TX.desc()],   // 糖質ひかえめ（オーナー指示 11/11）。モードのシート・設定と同じ文言
+    ['carb', CARB_TX.name(), CARB_TX.obDesc()],   // 糖質ひかえめ（オーナー指示 11/11）。11/24 オーナー回答66B: 説明が長くなったので、はじめての設定では短い説明（同じく「糖尿病などで…方へ」「医師の指示に従って」）
 ];
 const OB_MOODS = ['ten', 'simple', 'slow'];
 function obModeNow(){ return carbOn() ? 'carb' : dietOn() ? 'diet' : OB_MOODS.includes(session.mood) ? session.mood : 'all'; }
@@ -10021,7 +10034,8 @@ function dietSettingsHtml(){
    選んだとき1回だけ、主治医・管理栄養士の指示を優先する注意を出す（S.settings.carbNoted。消しても、もう一度オンにしても、2回目は出さない）。 */
 const CARB_TX = {
     name: () => t('糖質ひかえめ'),
-    desc: () => t('ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示'),
+    desc: () => t('糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。'),   // 11/24 オーナー回答66B: 「糖尿病などで食事に気をつけている方へ」と「医師の指示に従ってください」。効き目は言わない
+    obDesc: () => t('糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。'),   // はじめての設定の使い方の一覧（幅360で6つが帯の上に入るよう、説明を短く。dm42 E5a）
     more: () => t('オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。'),
     caution: () => t('糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。'),
     ok: () => t('わかりました'),
@@ -11915,7 +11929,9 @@ function viewSettings(){
     // まとまりの中身（見出しと各欄）は前のままで、置き場所だけを分けた。どの欄がどのタブかは SET_TABS。外から欄へ飛ぶときは setGo（その欄のタブを開いてそこへ移る）
     const curT = setTabCur();
     const sec = (k, body) => `<section class="set-sec open-always" id="set-${k}" data-sk="${k}" aria-labelledby="set-${k}-h"><h3 class="set-sec-h" id="set-${k}-h">${SET_ICONS[k]}${esc(setSecTitle(k))}</h3><div class="set-body">${body}</div></section>`;
-    const pan = (k, html) => `<div class="set-panel" role="tabpanel" id="setp-${k}" data-t="${k}" aria-labelledby="sett-${k}"${k === curT ? '' : ' hidden'}>${html}</div>`;
+    // 11/23（オーナー指示）: どのタブの下にも「プライバシーポリシー」「サポート・よくある質問」の入口（「その他」のタブは、ヘルプの中に同じ入口があるので出さない）
+    const setFoot = `<div class="set-foot">${docLink('privacy', t('プライバシーポリシー'), 'btn sm ghost')}${docLink('support', t('サポート・よくある質問'), 'btn sm ghost')}</div>`;
+    const pan = (k, html) => `<div class="set-panel" role="tabpanel" id="setp-${k}" data-t="${k}" aria-labelledby="sett-${k}"${k === curT ? '' : ' hidden'}>${html}${k === 'plan' ? '' : setFoot}</div>`;
     return `
     <section class="sec settings">
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
@@ -12005,7 +12021,7 @@ function viewSettings(){
                     </div>
                     ${pendingConfirm === 'import' ? `<div class="confirm"><div class="small"><b>${esc(t('いまのデータは、すべてこの内容に置き換わります。'))}</b> ${esc(importFrom === 'file' ? t('このファイルの内容') : t('貼りつけた内容'))}</div><div class="small muted">${esc(importSummary())}</div>${importNewer() ? `<div class="small muted">${esc(t('新しい版のご飯帖で書き出されたファイルです。このアプリで使える項目だけ読み込まれます。'))}</div>` : ''}<div class="small muted">${esc(t('いまのデータ'))}: ${esc(stateSummary(S))}</div><div class="small muted">${esc(t('読み込む前の状態は1回分だけ控えるので、あとで元に戻せます。'))}</div><div class="row"><button class="btn primary sm" data-act="import-yes">${esc(t('置き換えて読み込む'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : ''}
                     ${(u => u && pendingConfirm !== 'import' ? `<div class="row"><button class="btn sm" data-act="import-undo">${esc(t('読み込む前の状態に戻す'))}</button><span class="small muted">${esc(t('{d}の分を控えています', {d: u.d || ''}))}</span></div>` : '')(loadUndo())}
-                    ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
+                    ${pendingConfirm === 'reset' ? `<div class="confirm"><div class="small">${esc(t('記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。'))} ${esc(t('料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。'))}</div><div class="row"><button class="btn primary sm" data-act="reset-yes">${esc(t('すべて消す'))}</button><button class="btn sm" data-act="cancel-confirm">${esc(t('やめる'))}</button></div></div>` : `<div class="row"><button class="btn sm ghost danger" data-act="reset">${esc(t('すべてのデータを消す'))}</button></div>`}
                 </div>
             </details>
         </div>`))}
@@ -12228,8 +12244,40 @@ function docPage(name){ return name + (LANG === 'ja' ? '' : '-en') + '.html'; }
 // アプリ内の WebView に閉じこめられないよう、公開ページは絶対URLでシステムのブラウザへ。圏外のときだけ同梱のページ（クリック時に切りかえ）
 const DOC_BASE = 'https://akb69bka-tech.github.io/gohancho-/';
 function docUrl(name){ return DOC_BASE + docPage(name); }
-function docLink(name, label, cls){ return `<a${cls ? ` class="${cls}"` : ''} href="${docUrl(name)}" data-doc="${name}" target="_blank" rel="noopener">${esc(label)}</a>`; }
-document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[data-doc]'); if (a) a.href = navigator.onLine === false ? docPage(a.dataset.doc) : docUrl(a.dataset.doc); }, true);
+// 11/23（オーナー指示「アプリの中で見られない」）: 公開ページ（GitHub Pages）はまだ開けないことがあるので、アプリに同梱したページを
+// アプリの中の画面（#doc-view）で開く。電波がなくても開ける（Web 版は sw.js が保存している）。言葉はアプリの言葉（日本語以外は英語版）。ページの中の「English」「日本語」で切りかえられる
+function docLink(name, label, cls){ return `<a${cls ? ` class="${cls}"` : ''} href="${docPage(name)}" data-doc="${name}">${esc(label)}</a>`; }
+function docTitle(name){ return name === 'privacy' ? t('プライバシーポリシー') : t('サポート・よくある質問'); }
+let docRet = null;
+function openDoc(name){
+    closeDoc(true);
+    docRet = document.activeElement && document.activeElement !== document.body ? document.activeElement : null;
+    const v = document.createElement('div');
+    v.id = 'doc-view'; v.setAttribute('role', 'dialog'); v.setAttribute('aria-modal', 'true'); v.setAttribute('aria-label', docTitle(name)); v.dataset.doc = name;
+    v.innerHTML = `<div class="dv-bar"><button type="button" class="btn sm dv-x" data-dv="close">${esc(t('閉じる'))}</button><span class="dv-t">${esc(docTitle(name))}</span></div><iframe src="${docPage(name)}" title="${esc(docTitle(name))}"></iframe>`;
+    document.body.appendChild(v);
+    document.querySelectorAll('body > .wrap, body > nav.tabs, #modal-root, #sheet-root').forEach(e => e.setAttribute('inert', ''));
+    v.querySelector('[data-dv="close"]').focus({preventScroll:true});
+}
+function closeDoc(quiet){
+    const v = document.getElementById('doc-view'); if (!v) return false;
+    v.remove();
+    document.querySelectorAll('#modal-root, #sheet-root').forEach(e => e.removeAttribute('inert'));
+    syncInert();
+    const back = docRet; docRet = null;
+    if (!quiet && back && document.contains(back)) try{ back.focus({preventScroll:true}); }catch(e){}
+    return true;
+}
+document.addEventListener('click', e => {
+    const x = e.target.closest && e.target.closest('#doc-view [data-dv="close"]'); if (x){ e.preventDefault(); closeDoc(); return; }
+    const a = e.target.closest && e.target.closest('a[data-doc]'); if (!a) return;
+    e.preventDefault(); e.stopPropagation(); openDoc(a.dataset.doc);
+}, true);
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('doc-view')) return;
+    if (e.key === 'Escape'){ e.preventDefault(); e.stopImmediatePropagation(); closeDoc(); }
+    else if (e.key === 'Tab'){ const v = document.getElementById('doc-view'), els = [...v.querySelectorAll('button, iframe')]; const i = els.indexOf(document.activeElement); if (i < 0 || (e.shiftKey ? i === 0 : i === els.length - 1)){ e.preventDefault(); e.stopImmediatePropagation(); els[e.shiftKey ? els.length - 1 : 0].focus(); } }
+}, true);
 const SUPPORT_EMAIL = '';      // 【自分】公開前に記入。入れると設定に「ご意見・不具合を送る」が出る（宛先はこのアドレス）
 function feedbackMailto(){
     const body = ['', '', '---', `Gohancho ${APP_VERSION} / ${S.settings.country || '-'} / ${LANG}`, (navigator.userAgent || '').slice(0, 160)].join('\n');
@@ -18817,7 +18865,8 @@ document.addEventListener('click', e => {
             // 無料期間の始まりと購入の状態は消さない（消すたびにお試しがやり直せてしまうため）
             S = Object.assign(structuredClone(DEFAULT_STATE), {firstUse: S.firstUse, pro: S.pro, webUid: S.webUid, monitor: S.monitor, trialKept: true}); save(); pendingConfirm = null; session.menu = null; toast(t('すべて消しました'));
             try{ localStorage.removeItem('gohancho.remote'); }catch(e){}
-            setTimeout(() => location.reload(), 600);   // 国の選択からやり直す（読みこみ直すのがいちばん確実）
+            // 11/23（統括の決め）: 料理の写真（わが家の一枚・アルバム・作り置きの写真）も消す。消し終わるのを待ってから読みこみ直す
+            Promise.race([clearMyPhotos(), new Promise(r => setTimeout(r, 3000))]).then(() => setTimeout(() => location.reload(), 600));   // 国の選択からやり直す（読みこみ直すのがいちばん確実）
             break;
         case 'cancel-confirm': pendingConfirm = null; render(); keepDetailsOpen(); break;
     }

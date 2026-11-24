@@ -2,7 +2,8 @@
 GOHAN_I18N('pt-BR', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Menos carboidratos",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Refeições com menos arroz, macarrão e batata, e mais pratos de legumes e proteínas. Mostra uma estimativa de carboidratos (g) por pessoa",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Para quem cuida das refeições por causa de diabetes ou condições parecidas. Refeições com menos arroz, macarrão e batata, e mais pratos de legumes e proteínas. Mostra uma estimativa de carboidratos (g) por pessoa. Siga as orientações do seu médico sobre as refeições.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Para quem cuida das refeições por diabetes ou motivos parecidos. Menos arroz, macarrão e batata. Siga seu médico.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Ligado, sugere primeiro os pratos com menos carboidratos; pratos de arroz, macarrão ou com muita batata, cozidos doces, frituras com empanado grosso e sopas com batata, bifum ou macarrão ficam para depois (nada é retirado e as refeições já decididas não mudam). O acompanhamento aparece em porção pequena.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Se você segue orientações alimentares por diabetes ou outro motivo, siga primeiro as do seu médico ou nutricionista. Os números mostrados são estimativas.",
     "わかりました": "Entendi",
@@ -639,6 +640,7 @@ GOHAN_I18N('pt-BR', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "O download de {name} começou. Veja a lista de downloads do navegador.",
     "やめる": "Cancelar",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Isto apaga seu diário, favoritos, ingredientes, despensa, toques do chef, suas receitas e ajustes. Não dá para desfazer.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "As fotos dos seus pratos (suas fotos e o álbum) também são apagadas. A data de início do teste grátis e o status da compra são mantidos (as compras são gerenciadas pela App Store).",
     "すべて消す": "Apagar tudo",
     "すべてのデータを消す": "Apagar todos os dados",
     "このアプリについて": "Sobre",

@@ -3,3 +3,4 @@
 それぞれの使い方: App の機能のみ／ユーザの身元にひも付けない／トラッキングに使わない
 ほか（位置情報・連絡先・写真・使用状況など）: 収集しない
 根拠: 購入の確認に RevenueCat を使うため（https://www.revenuecat.com/docs/platform-resources/apple-platform-resources/apple-app-privacy ）
+補足（11/24）: Web 版の課金（オーナー回答86B・Stripe と RevenueCat）は iPhone アプリの外なので、この「App のプライバシー」の回答は変わらない。プライバシーポリシー（privacy.html）には Web 版の決済会社の行を「販売を始めたあとに有効」として書いてある

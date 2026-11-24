@@ -2,7 +2,8 @@
 GOHAN_I18N('es', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Menos carbohidratos",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Comidas con menos arroz, fideos y papas, y más platos de verduras y proteínas. Muestra una estimación de carbohidratos (g) por persona",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Para quienes cuidan sus comidas por diabetes u otras razones parecidas. Comidas con menos arroz, fideos y papas, y más platos de verduras y proteínas. Muestra una estimación de carbohidratos (g) por persona. Siga las indicaciones de su médico sobre las comidas.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Para quienes cuidan sus comidas por diabetes u otras razones. Menos arroz, fideos y papas. Siga a su médico.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Al activarlo, se proponen primero los platos con menos carbohidratos; los platos de arroz, fideos o con mucha papa, los guisos dulces, los fritos con rebozado grueso y las sopas con papa, fideos de soja o fideos quedan para después (no se quita nada y las comidas ya decididas no cambian). El acompañamiento se muestra en porción pequeña.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Si sigue indicaciones de alimentación por diabetes u otro motivo, siga primero las de su médico o nutricionista. Los números que se muestran son estimaciones.",
     "わかりました": "Entendido",
@@ -639,6 +640,7 @@ GOHAN_I18N('es', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Ha empezado la descarga de {name}. Mira la lista de descargas del navegador.",
     "やめる": "Cancelar",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Se borrarán el diario, los favoritos, los ingredientes, la despensa, los trucos del chef, tus recetas y los ajustes. No se puede deshacer.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "También se borran las fotos de tus platos (tus fotos y el álbum). La fecha de inicio de la prueba gratuita y el estado de la compra se conservan (las compras las gestiona el App Store).",
     "すべて消す": "Borrar todo",
     "すべてのデータを消す": "Borrar todos los datos",
     "このアプリについて": "Acerca de la app",

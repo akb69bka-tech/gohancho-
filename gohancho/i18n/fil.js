@@ -2,7 +2,8 @@
 GOHAN_I18N('fil', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Mas kaunting carbs",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Mga pagkain na mas kaunti ang kanin, noodles at patatas, at mas marami ang ulam na gulay at protina. Ipinapakita ang tantiyang carbohydrates (g) bawat tao",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Para sa mga nag-iingat sa pagkain dahil sa diabetes o katulad na kondisyon. Mga pagkain na mas kaunti ang kanin, noodles at patatas, at mas marami ang ulam na gulay at protina. Ipinapakita ang tantiyang carbohydrates (g) bawat tao. Sundin ang payo ng iyong doktor tungkol sa pagkain.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Para sa mga nag-iingat sa pagkain dahil sa diabetes o katulad. Mas kaunting kanin, noodles at patatas. Sundin ang payo ng iyong doktor.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Kapag naka-on, unang imumungkahi ang mga ulam na mas kaunti ang carbohydrates; mamaya na ang mga ulam na kanin, noodles at maraming patatas, mga matamis na nilaga, mga pritong makapal ang balot at mga sabaw na may patatas, sotanghon o noodles (walang tinatanggal, at hindi binabago ang napagpasyahang pagkain). Ipinapakita ang pangunahing kanin o tinapay bilang maliit na bahagi.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Kung sumusunod ka sa payo sa pagkain dahil sa diabetes o ibang dahilan, unahin ang payo ng iyong doktor o dietitian. Mga tantiya ang mga numerong ipinapakita.",
     "わかりました": "Naintindihan ko",
@@ -638,6 +639,7 @@ GOHAN_I18N('fil', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Nagsimula na ang pag-download ng {name}. Tingnan ang listahan ng downloads sa browser.",
     "やめる": "Kanselahin",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Buburahin nito ang talaan, paborito, sangkap, pantry, dagdag-diskarte, sarili mong recipe at settings. Hindi na ito maibabalik.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Mabubura rin ang mga larawan ng iyong mga ulam (iyong mga larawan at album). Mananatili ang petsa ng simula ng libreng trial at ang status ng pagbili (ang App Store ang namamahala sa mga pagbili).",
     "すべて消す": "Burahin lahat",
     "すべてのデータを消す": "Burahin ang lahat ng data",
     "このアプリについて": "Tungkol dito",

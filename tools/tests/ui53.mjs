@@ -91,8 +91,8 @@ if (want('C')){
     // 11/23（オーナー決定）: index.html の billingMode にあわせる。'off' なら課金の質問3つは hidden のまま。'native'・'all' なら課金の質問（4つ）を見せ、全員無料の質問は hidden で残す（ui51 と同じ出し分け）
     const OFF = /billingMode:\s*'off'/.test(fs.readFileSync(ROOT + '/index.html', 'utf8'));
     ok([ja, en].map(s => s.replace(/<!--[\s\S]*?-->/g, '')).every(s => OFF ? (s.match(/data-billing="paid" hidden/g) || []).length === 3
-        : !/data-billing="paid" hidden/.test(s) && (s.match(/data-billing="paid"/g) || []).length === 4 && (s.match(/data-billing="free" hidden/g) || []).length === (s.match(/data-billing="free"/g) || []).length && /data-billing="free" hidden/.test(s)),
-        OFF ? 'C3 課金の質問3つは hidden のまま残っている' : 'C3 課金ありのとき: 課金の質問4つが見え、全員無料の質問は hidden で残っている');
+        : !/data-billing="paid" hidden/.test(s) && (s.match(/data-billing="paid"/g) || []).length >= 4 && (s.match(/data-billing="free" hidden/g) || []).length === (s.match(/data-billing="free"/g) || []).length && /data-billing="free" hidden/.test(s)),
+        OFF ? 'C3 課金の質問3つは hidden のまま残っている' : 'C3 課金ありのとき: 課金の質問（4つ以上。11/23 faq200 で8つ）が見え、全員無料の質問は hidden で残っている');
 }
 
 await b.close();

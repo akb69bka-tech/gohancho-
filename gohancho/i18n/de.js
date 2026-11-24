@@ -2,7 +2,8 @@
 GOHAN_I18N('de', {
     // 糖質ひかえめモード（dm41）
     "糖質ひかえめ": "Weniger Kohlenhydrate",
-    "ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示": "Mahlzeiten mit weniger Reis, Nudeln und Kartoffeln und mehr Gemüse- und Eiweißgerichten. Zeigt eine Schätzung der Kohlenhydrate (g) pro Person",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにし、野菜・たんぱく質のおかずを多めにした献立。1人分の糖質の目安（g）を表示。食事は医師の指示に従ってください。": "Für Menschen, die wegen Diabetes oder Ähnlichem auf ihre Ernährung achten. Mahlzeiten mit weniger Reis, Nudeln und Kartoffeln und mehr Gemüse- und Eiweißgerichten. Zeigt eine Schätzung der Kohlenhydrate (g) pro Person. Folgen Sie den Anweisungen Ihres Arztes zur Ernährung.",
+    "糖尿病などで食事に気をつけている方へ。ご飯・めん・いもを控えめにした献立。食事は医師の指示に従ってください。": "Für Menschen, die wegen Diabetes oder Ähnlichem auf ihre Ernährung achten. Weniger Reis, Nudeln und Kartoffeln. Folgen Sie Ihrem Arzt.",
     "オンにすると、献立を選ぶときに、糖質の少ない料理を先に出し、ご飯もの・めん・いもの多い料理や、甘い煮もの・衣の厚い揚げ物、いも・春雨・めんの入った汁ものは後にします（外しはしません。決めた献立は変えません）。主食は小盛りで表示します。": "Wenn eingeschaltet, werden Gerichte mit weniger Kohlenhydraten zuerst vorgeschlagen; Reisgerichte, Nudeln und kartoffelreiche Gerichte, süß geschmorte Gerichte, dick panierte Frittiergerichte und Suppen mit Kartoffeln, Glasnudeln oder Nudeln kommen später (nichts wird entfernt, festgelegte Mahlzeiten bleiben unverändert). Die Beilage wird als kleine Portion angezeigt.",
     "糖尿病などで食事の指示を受けている方は、主治医・管理栄養士の指示を優先してください。表示の数値は目安です。": "Wenn Sie wegen Diabetes oder aus einem anderen Grund Ernährungsvorgaben haben, folgen Sie zuerst den Anweisungen Ihrer Ärztin, Ihres Arztes oder Ihrer Ernährungsfachkraft. Die angezeigten Zahlen sind Schätzungen.",
     "わかりました": "Verstanden",
@@ -639,6 +640,7 @@ GOHAN_I18N('de', {
     "{name} のダウンロードを始めました。ブラウザのダウンロード一覧で確認できます": "Der Download von {name} wurde gestartet. Schau in die Download-Liste deines Browsers.",
     "やめる": "Abbrechen",
     "記録・お気に入り・材料・常備品・ひと手間・わが家のレシピ・設定をすべて消します。元には戻せません。": "Löscht Tagebuch, Favoriten, Zutaten, Vorrat, Küchentipps, eigene Rezepte und Einstellungen. Das lässt sich nicht rückgängig machen.",
+    "料理の写真（わが家の一枚・アルバム）も消えます。お試しを始めた日と購入の状態は残ります（購入は App Store が管理しています）。": "Auch deine Fotos von Gerichten (eigene Fotos und Album) werden gelöscht. Das Startdatum des kostenlosen Probezeitraums und der Kaufstatus bleiben erhalten (Käufe verwaltet der App Store).",
     "すべて消す": "Alles löschen",
     "すべてのデータを消す": "Alle Daten löschen",
     "このアプリについて": "Über die App",
