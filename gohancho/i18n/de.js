@@ -2092,4 +2092,13 @@ GOHAN_I18N('de', {
     "{name}の写真を大きく見る": "Foto von {name} groß ansehen",
     "2本の指で広げる・2回たたくと、さらに大きく見られます": "Mit zwei Fingern aufziehen oder zweimal tippen, um weiter zu vergrößern",
     "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Zum Senden mit {app} „Mit anderer App senden“ oder „Kopieren“ nutzen und dort einfügen.",
+    "1週間": "Woche",
+    "かんたん表示": "Einfache Ansicht",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "In der einfachen Ansicht gibt es unten nur 4 Tabs: {list}. Mit „Normal“ siehst du wieder alle Tabs.",
+    "うちにない道具": "Geräte, die ich nicht habe",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Gerichte mit den angetippten Geräten werden nicht vorgeschlagen. Das gilt ab dem nächsten neuen Plan (ein festgelegter Plan bleibt).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Zum Home-Bildschirm hinzufügen – so gehen Einträge seltener verloren",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "In Safari können auf diesem Gerät gespeicherte Daten gelöscht werden, wenn du die Seite länger nicht öffnest. Tippe auf Teilen (□ mit ↑) → „Zum Home-Bildschirm“. Dann öffnest du die App per Symbol und deine Einträge bleiben sicherer.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Koscher (Schwein, Garnelen, Krabben, Schalentiere, Fleisch mit Milchprodukten)",
+    "肉と乳製品をいっしょに使う料理": "Gerichte mit Fleisch und Milchprodukten zusammen",
 });

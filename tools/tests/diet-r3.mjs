@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 食の決まり（第2班 第2回 R2-06・R2-14）の回帰テスト（Playwright。使い方: node tools/tests/diet-r3.mjs [http://localhost:8765/]）
-//  1) 束ねたチップ（ハラール・ベジタリアン・ヴィーガン）: 押すと既存のなかまのチップの組み合わせに広げるだけ（ハラール=豚+お酒、ベジタリアン=豚鶏牛魚貝、ヴィーガン=＋卵乳）。
+//  1) 束ねたチップ（ハラール・ベジタリアン・ヴィーガン・コーシャ（11/24））: 押すと既存のなかまのチップの組み合わせに広げるだけ（ハラール=豚+お酒、ベジタリアン=豚鶏牛魚貝、ヴィーガン=＋卵乳）。
 //     もう一度押すと外れる。選んだあとに個別のチップを足し引きできる（押した形の表示も合わせて変わる）。ほかの束に必要ななかまは外さない
 //  2) 全21か国の全料理: 外した材料（苦手に当たって「入れない」になった材料）が、材料の一覧にも手順の文にも出ない。手順の文に「（入れない）」などの添え書きが残らない
 //  3) 画面の言語18種: 同じ設定なら、どの言語でも入れない材料・出す料理・手順の文（飛ばす手順を除く）が同じ
@@ -27,7 +27,7 @@ async function open(cc = 'JP', settings = {}, vp = { width: 390, height: 844 }){
     await p.evaluate(() => { hasPro = () => true; });
     return { ctx, p };
 }
-const FAM = { halal: ['pork', 'alcohol'], vegi: ['pork', 'chicken', 'beef', 'fish', 'shellfish'], vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy'] };
+const FAM = { kosher: ['pork', 'shellfish', 'meatdairy'], halal: ['pork', 'alcohol'], vegi: ['pork', 'chicken', 'beef', 'fish', 'shellfish'], vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy'] };
 const MARKS = ['入れない', 'بدون', 'weglassen', 'leave out', 'omitir', 'huwag isama', 'à omettre', 'न डालें', 'tidak dipakai', 'da omettere', '넣지 않음', 'pomiń', 'ไม่ใส่', 'koymayın', 'bỏ qua', '不放'];
 const openSettings = async p => {
     await p.evaluate(() => { setTab('settings'); setTabShow('food'); });   // 設定はタブ分け（11/09）。苦手な食材は「苦手・食の決まり」のタブの中（ほかのタブを開いていると hidden で押せない）
@@ -46,8 +46,8 @@ const reset = async (p, list = []) => { await p.evaluate(l => { S.settings.avoid
     await p.evaluate(() => { S.settings.allergens = []; });
     await reset(p);
     const n = await p.evaluate(() => document.querySelectorAll('.diet-bundle').length);
-    ok(n === 3, `設定の苦手に束ねたチップが3つある: ${n}`);
-    for (const k of ['halal', 'vegi', 'vegan']){
+    ok(n === 4, `設定の苦手に束ねたチップが4つある（11/24 コーシャを足した）: ${n}`);
+    for (const k of ['halal', 'vegi', 'vegan', 'kosher']){
         await reset(p);
         await p.click(`.diet-bundle[data-v="${k}"]`); await p.waitForTimeout(200);
         ok(same(await famsNow(p), FAM[k]), `${k}: 押すと ${FAM[k].join('+')} に広げる（実際 ${await famsNow(p)}）`);
@@ -81,7 +81,7 @@ const reset = async (p, list = []) => { await p.evaluate(l => { S.settings.avoid
     const cnt = await p.evaluate(() => { S.settings.avoid = ['@pork', '@alcohol']; const a = RECIPES.filter(r => r.items && !isAvoided(r)).map(r => r.id).join(); S.settings.avoid = dietBundleToggle([], 'halal'); const b = RECIPES.filter(r => r.items && !isAvoided(r)).map(r => r.id).join(); return a === b; });
     ok(cnt, 'ハラールの束の判定は、豚＋お酒のチップと同じ');
     const html = await p.evaluate(() => { S.settings.avoid = []; return avoidChipsHtml([], 'ob-avoid', 'ob-avoid-fam') + avoidChipsHtml([], 'fam-avoid', 'fam-avoid-fam', false); });
-    ok((html.match(/data-act="ob-avoid-diet"/g) || []).length === 3 && (html.match(/data-act="fam-avoid-diet"/g) || []).length === 3, 'はじめての設定・家族の苦手にも束がある');
+    ok((html.match(/data-act="ob-avoid-diet"/g) || []).length === 4 && (html.match(/data-act="fam-avoid-diet"/g) || []).length === 4, 'はじめての設定・家族の苦手にも束がある');
     await ctx.close();
 }
 
@@ -159,7 +159,7 @@ const reset = async (p, list = []) => { await p.evaluate(l => { S.settings.avoid
             await openSettings(p);
             const r = await p.evaluate(() => {
                 const bs = [...document.querySelectorAll('.diet-bundle')], rs = bs.map(e => e.getBoundingClientRect()), out = [];
-                if (bs.length !== 3) out.push('個数 ' + bs.length);
+                if (bs.length !== 4) out.push('個数 ' + bs.length);
                 rs.forEach((a, i) => { if (a.right > innerWidth + 0.5 || a.left < -0.5) out.push(`横にはみ出す #${i} (${Math.round(a.left)}-${Math.round(a.right)})`); if (a.height < 36) out.push(`低い #${i} (${Math.round(a.height)}px)`); if (a.width < 40) out.push(`細い #${i}`);
                     rs.forEach((c, j) => { if (j > i && a.left < c.right - 1 && c.left < a.right - 1 && a.top < c.bottom - 1 && c.top < a.bottom - 1) out.push(`重なる #${i}/#${j}`); }); });
                 bs.forEach((e, i) => { e.scrollIntoView({block: 'center'}); const a = e.getBoundingClientRect(), hit = document.elementFromPoint(a.left + a.width / 2, a.top + a.height / 2); if (!hit || !(hit === e || e.contains(hit))) out.push(`押せない #${i}`); if (e.scrollWidth > e.clientWidth + 1) out.push(`文字が切れる #${i}`); });

@@ -452,12 +452,12 @@ for (const [cc, style, n] of [['JP', 'jp', 29], ['US', 'us', 9], ['FR', 'fr', 14
         const card = document.querySelector('#allergy-card'); if (!card) return null;
         const chips = [...card.querySelectorAll('.chip[data-act="alg-toggle"]')];
         const main = [...card.querySelectorAll('.avoid-grp .chip[data-act="alg-toggle"]')];
-        return { title: card.querySelector('.set-title').innerText, disclaimer: t('アプリの判定は参考です。重度のアレルギーの方は、必ず原材料表示・医師の指示に従ってください。'), chips: chips.length, main: main.length, text: card.innerText, order: main.map(c => c.dataset.v).join(), style: algStyle(), first: card.getBoundingClientRect().top < document.querySelector('.set-group:not(.allergy-card)').getBoundingClientRect().top };
+        return { title: card.querySelector('.set-title').innerText, disclaimer: t('アプリの判定は参考です。重度のアレルギーの方は、必ず原材料表示・医師の指示に従ってください。'), chips: chips.length, main: main.length, text: card.innerText, order: main.map(c => c.dataset.v).join(), style: algStyle(), first: card.getBoundingClientRect().top < document.querySelector('.set-group:not(.allergy-card):not(#sv-card)').getBoundingClientRect().top && (s => !!s && s.getBoundingClientRect().top < card.getBoundingClientRect().top)(document.querySelector('#sv-card')) };   // オーナー回答 89A（11/24）: いちばん上は「何人分」。アレルギー対策はその次（ほかのまとまりより上）
     });
     ok(!!r, cc + ' 設定に「アレルギー対策」カード');
     if (r){
         ok(r.style === style, cc + ' 並び: ' + r.style); ok(r.main === n, cc + ' 主な品目の数 ' + n + ': ' + r.main); ok(r.chips === 38 || r.chips > r.main, cc + ' ほかのアレルゲンも選べる: ' + r.chips);
-        ok(r.text.includes(r.disclaimer) && (/[\u3040-\u30ff]/.test(r.disclaimer) === (cc === 'JP')), cc + ' 免責: ' + r.disclaimer); ok(r.first, cc + ' カードがいちばん上');
+        ok(r.text.includes(r.disclaimer) && (/[\u3040-\u30ff]/.test(r.disclaimer) === (cc === 'JP')), cc + ' 免責: ' + r.disclaimer); ok(r.first, cc + ' カードは「何人分」のすぐあと（ほかのまとまりより上）');
         if (style === 'jp') ok(r.order.startsWith('shrimp,cashew,crab,walnut,wheat,buckwheat,egg,milk,peanut,abalone,squid'), 'JP の並び: ' + r.order);
         if (style === 'fr') ok(r.order.startsWith('gluten,crustacean,egg,fish,peanut,soy,milk,treenut,celery,mustard,sesame,sulphite,lupin,mollusc'), 'EU の並び: ' + r.order);
         if (style === 'us') ok(r.order === 'milk,egg,fish,crustacean,treenut,peanut,wheat,soy,sesame', 'US の並び: ' + r.order);

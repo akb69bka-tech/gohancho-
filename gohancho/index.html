@@ -2181,6 +2181,10 @@ body.on-today.tray-tight5 header.top .req-btn{max-width:calc(100% - 152px)}
 .tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .shuffle,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > .mb-back{flex-direction:row;align-items:center;gap:8px;width:auto;max-width:min(14rem,calc(50% - 7px))}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .sh-tx,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide.mb-stack.mb-stack > * > .mb-tx{text-align:start}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide{align-items:center}.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::before,.tray.grid2.tight2 .tg-mid.mb-stack.mb-wide::after{margin-top:0}   /* 幅500px以上で、まるごと入れ替えが「丸の横に字」（お膳を詰めたとき）なら、前の献立も同じ形にそろえて並べる（帯の高さが変わらず、下の段の料理が動かない） */
 .tg-mid .shuffle .sh-tx{word-break:keep-all}   /* R153: 丸だけのとき（前の献立がないとき）も、語の切れ目（<wbr>）で折る */
 
+.actionbar>.btn.wk-quick{flex:0 0 auto;min-width:var(--tap-sm,44px);padding:0 6px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;align-self:stretch;font-size:var(--fs12);line-height:1.1;font-weight:700;white-space:nowrap}   /* 88A: 決める帯の「1週間」（条件の入口と同じ高さ） */
+.wk-quick svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+body.ah-row .decide-bar:has(>.alg-hint.ah-in) .wk-quick{display:none}
+@media (max-width:299px){.actionbar>.btn.wk-quick{display:none}}.decide-bar.wq-off .wk-quick{display:none}   /* 幅300px未満: 「この献立に決定」が細くなりすぎるので出さない（1週間は今までどおり下の「1週間の主菜」から） */
 /* オーナーの依頼（11/23）: 料理の絵を前面に大きく見る。暗い地（生成りの茶）・青は使わない。絵の枠は画面の幅（16px のすき間）か、高さに入る大きさ。
    写真風の絵（512px）は、絵の1画素が画面の1点より大きくならない 512px で止める（--zcap）。2本の指・2回たたくでの拡大は JS（ZOOM.max）で止める */
 .zoom{position:fixed;inset:0;z-index:62;background:rgba(29,20,14,.9);display:flex;align-items:center;justify-content:center;padding:calc(var(--safe-top,0px) + 8px) 16px calc(env(safe-area-inset-bottom,0px) + 12px)}
@@ -2995,6 +2999,7 @@ function normalizeState(d){
       if (typeof k.grill === 'boolean') o.grill = k.grill;
       if (typeof k.oven === 'boolean') o.oven = k.oven;
       if (['new', 'some', 'ok'].includes(k.skill)) o.skill = k.skill;
+      { const nt = [...new Set(arr(k.noTools).filter(x => typeof x === 'string' && /^[a-z]{2,12}$/.test(x)))].slice(0, 16); if (nt.length) o.noTools = nt; }   // 45A: うちにない道具
       if (Number.isInteger(k.riceMin) && k.riceMin >= 10 && k.riceMin <= 180) o.riceMin = k.riceMin;   // 炊飯器の炊く時間（分）。既定の値はない
       if (Object.keys(o).length) st.settings.kitchen = o; else delete st.settings.kitchen; }
     st.settings.seasNo = [...new Set(arr(st.settings.seasNo).filter(x => typeof x === 'string' && x.startsWith('p|')))].slice(0, 80); if (!st.settings.seasNo.length) delete st.settings.seasNo;
@@ -4970,6 +4975,7 @@ function toolLabel(k){ const x = TOOLS.find(v => v.k === k); return x ? x.l() : 
 // 台所の設定（魚焼きグリルなし・オーブンなし・電子レンジだけ）の人には、持っていない道具の欄を出さない
 function toolHave(k){
     const kc = S.settings.kitchen || {};
+    if (Array.isArray(kc.noTools) && kc.noTools.includes(k)) return false;   // 45A: うちにない道具
     if (k === 'fishgrill') return kc.grill !== false;
     if (k === 'oven') return kc.oven !== false;
     if (kc.burners === 'mw') return !['pan', 'pot', 'donabe', 'pressure', 'deepfry'].includes(k);
@@ -4978,12 +4984,35 @@ function toolHave(k){
 // 道具から選べる主菜（主菜の枠に入る料理で、アレルギー・苦手・食の決まり・品薄・今は出さないに当たらないもの）
 function toolPool(){ return poolFor('主菜').filter(r => r.main && toolsOf(r).length && !slotOut(r) && !allergyConflict(r)); }
 function toolMains(k, pool){ return (pool || toolPool()).filter(r => hasTool(r, k)); }
+// オーナー回答 41A（11/24）: 選んだ道具（条件の「今日使う道具」と、道具のタブの「道具から選ぶ」）を覚えて、次に開いたときも使う（S.settings.toolPref・ttSel）。
+// 今日使う道具は、次に献立を作るときの選び方に効くだけ（いまの献立・決めた献立は変えない）
+function toolRemember(){
+    if (session.tool) S.settings.toolPref = session.tool; else delete S.settings.toolPref;
+    if (session.ttCat) S.settings.ttSel = {c: session.ttCat, k: session.ttTool || null}; else delete S.settings.ttSel;
+    save();
+}
+function toolRestore(){
+    const p = S.settings.toolPref; session.tool = typeof p === 'string' && TOOL_KEYS.includes(p) && toolHave(p) ? p : null;
+    const q = S.settings.ttSel; if (q && typeof q === 'object' && typeof q.c === 'string'){ session.ttCat = q.c; session.ttTool = typeof q.k === 'string' && TOOL_KEYS.includes(q.k) ? q.k : null; }
+}
+// オーナー回答 45A（11/24）: うちにない道具（設定の台所の「うちにない道具」・オーブン「ない」・魚焼きグリル「ない」）を使う料理は、新しく献立を作るときに出さない。
+// 道具のタグの「+」（ほかの道具でも作れる。お好み焼きのホットプレートなど）はなくても作れる。魚焼きグリルの料理は、フライパンでも作る料理なら出す。
+// 決めた献立・いまの献立は変えない（次に献立を作るときから）
+function toolsMissing(){ const kc = S.settings.kitchen || {}, out = new Set(Array.isArray(kc.noTools) ? kc.noTools : []); if (kc.oven === false) out.add('oven'); if (kc.grill === false) out.add('fishgrill'); return out; }
+function noToolOut(r){
+    const miss = toolsMissing(); if (!miss.size || !r) return false;
+    const ts = toolsOf(r); if (!ts.length) return false;
+    const opt = String(TOOL_TAGS[r.id] || '').split(/\s+/).filter(w => w[0] === '+').map(w => w.slice(1));
+    return ts.some(k => miss.has(k) && !opt.includes(k) && !(k === 'fishgrill' && ts.includes('pan') && !miss.has('pan')));
+}
 function toolShown(){ const pool = toolPool(); return TOOLS.filter(x => toolHave(x.k) && pool.some(r => hasTool(r, x.k))); }
 const TOOL_MIN = 3;   // 今日使う道具で主菜を絞るのは、その道具の主菜が3品以上選べるときだけ（少ないときは点数で先にするだけ）
 // 今日使う道具（session.tool）の点数。主菜は大きく、副菜・汁ものは少しだけ（足りないときは通常の選びになる。候補から外すことはしない）
 function toolBias(r, ctx){ return session.tool && hasTool(r, session.tool) ? (ctx && ctx.main ? 0.6 : ctx && ctx.toolFew ? 0.5 : 1.6) : 0; }   // toolFew: その道具の主菜が少ない（無理に絞らない）
 function scoreRecipe(r, ctx){
     if (S.hidden.includes(r.id) || session.rejected.has(r.id) || isAvoided(r)) return -Infinity;
+    if (noToolOut(r)) return -Infinity;   // 45A: うちにない道具の料理
+    if (kosherOn() && ctx && [ctx.main, ...(ctx.others || [])].filter(Boolean).some(o => o.id !== r.id && kosherClash(r, o))) return -Infinity;   // 65A: 肉の料理と乳製品の料理を同じ献立にしない
     const avoid = S.settings.avoidDays;
     const ds = daysSince(r.id);
     if (ds < avoid && !ctx.relax) return -Infinity;
@@ -5852,7 +5881,7 @@ function weekToday(){
     return r;
 }
 // 1週間プランの今日の主菜を、そのまま今日の献立にしてよいか（苦手・今は出さない・最近作った料理は除く）
-function planUsable(p){ return !!p && !isAvoided(p) && !S.hidden.includes(p.id) && daysSince(p.id) >= (Number(S.settings.avoidDays) || 0); }
+function planUsable(p){ return !!p && !isAvoided(p) && !noToolOut(p) && !S.hidden.includes(p.id) && daysSince(p.id) >= (Number(S.settings.avoidDays) || 0); }
 
 /* =========================================================
    記録
@@ -5861,6 +5890,7 @@ function record(id, slot, d=TODAY){
     const r = byId(id); if (!r) return;
     if (S.history.some(h => h.id === id && h.d === d)) return;
     S.history.push({d, id, name:r.name, slot});
+    if (!S.settings.a2hsTip && a2hsWanted()) session.a2hsDue = true;   // 49A: 記録のあと1回だけ「ホーム画面に追加」
     S.history.sort((a,b) => a.d < b.d ? 1 : a.d > b.d ? -1 : 0);
     if (r.isTwist && !S.seenTwists.includes(id)) S.seenTwists.push(id);
     save();
@@ -6300,6 +6330,7 @@ function fitTrayRun(){
     if (tab === 'today') fixGreetFit();   // 第26回 R113（お膳の上端を測る前に。行の高さは変えない）
     const tr = document.querySelector('#view .tray.grid2'); if (!tr || tab !== 'today') return;
     svFit();   // 第21回 R77: 条件のボタンの字（お膳の上端を測る前に、ボタンの高さを決める）
+    wqFit();   // 88A: 決める帯の「1週間」で帯が高くなるなら出さない（お膳の大きさを変えない）
     // 第12回 R34: 詰め方は毎回、何も詰めていない形から決め直す（前に決めた大きさ・詰め方を引きつがない）。
     // 前は同じ画面の大きさ・同じ並びなら前の詰め方をそのまま使っていたため、一度入らない献立（帯をお膳の下に置く形）になると、入る献立に入れ替えても戻らなかった（再読み込みで戻る）。
     // 献立が変わったときは、再読み込みしたときと同じ形になる。同じ献立で1品かえただけのときだけ、前の形が入るならそれを使う（下の last）
@@ -6795,6 +6826,7 @@ function flushRecheck(draw){
 }
 addEventListener('pagehide', () => { try{ flushRecheck(false); }catch(e){} });
 function render(){
+    if (session.a2hsDue) setTimeout(a2hsMaybe, 500);   // 49A: 記録のあと、開いている画面がなければ1回だけ
     if (recheckDue && tab !== 'settings') flushRecheck(false);
     renderFail.clear();
     guard('menuback', menuBackCheck);   // 1つ前に戻る帯（まるごと入れ替えのあと）
@@ -7846,6 +7878,24 @@ function titlesHtml(){
 /* ---- スマホのアプリとして使う（PWA） ---- */
 let installEvent = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvent = e; if (tab === 'log') render(); });
+// オーナー回答 49A（11/24）: iPhone の Safari（ホーム画面に追加していない人）に、記録のあと1回だけ「ホーム画面に追加すると消えにくい」と出す。
+// Safari は、しばらく開かないサイトの保存を消すことがある（ホーム画面のアプリは消えにくい）。iPhone アプリ版・ほかのブラウザ・追加済みの人には出さない
+function a2hsWanted(){
+    try{
+        const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+        return ios && /Safari\//.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|Line\/|FBAN|FBAV|Instagram|MicroMessenger|KAKAOTALK/.test(ua) && !isStandalone() && !(typeof isNative === 'function' && isNative());
+    }catch(e){ return false; }
+}
+function a2hsMaybe(){
+    if (!session.a2hsDue || sheet || modalId || (typeof zoomId !== 'undefined' && zoomId)) return;
+    session.a2hsDue = false; S.settings.a2hsTip = TODAY; save();
+    sheet = {kind: 'a2hs'}; renderSheet();
+}
+function a2hsSheetHtml(){
+    return `<h2>${esc(t('ホーム画面に追加すると、記録が消えにくくなります'))}</h2>
+        <p class="small">${esc(t('Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。'))}</p>
+        <button class="btn primary wide" data-act="sheet-close">${esc(t('閉じる'))}</button>`;
+}
 function isStandalone(){ try{ return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }catch(e){ return false; } }
 function installHtml(){
     if (isStandalone()) return `<div class="note"><span>${esc(t('アプリとして起動しています。ホーム画面のアイコンから開けます。'))}</span></div>`;
@@ -8425,6 +8475,7 @@ function renderSheetBody(){
     if (sheet.kind === 'mode') body = modeSheetHtml();
     if (sheet.kind === 'reroll-ok') body = rerollOkSheetHtml();
     if (sheet.kind === 'tools') body = toolsSheetHtml();
+    else if (sheet.kind === 'a2hs') body = a2hsSheetHtml();
     if (sheet.kind === 'tool-ok') body = toolOkSheetHtml();
     if (sheet.kind === 'swap') body = swapSheetHtml();
     if (sheet.kind === 'bf') body = breakfastSheetHtml();
@@ -10125,6 +10176,8 @@ const AVOID_FAM = {
     // 食の決まり（第2班 R2-01・R2-03）: 材料のキーと元の言葉の名前で見分ける（fn）。チップは avoidChipsHtml で足す
     alcohol:{head:/^(酒|お酒|おさけ|料理酒|りょうりしゅ|日本酒|にほんしゅ|清酒|みりん|味醂|本みりん|わいん|赤わいん|白わいん|あかわいん|しろわいん|料理わいん|びーる|あるこーる|alcohol|alcool|alkohol|alkol|sake|mirin|wine|redwine|whitewine|cookingwine|beer|vino|vin|wein|vinho|wino|piwo|cerveza|cerveja|술|와인|맥주|소주|미림|청주|酒精|料酒|啤酒|葡萄酒|红酒|黄酒|米酒|rượu|ไวน์|เหล้า|เบียร์|نبيذ|كحول|şarap|alak|anggur)$/, jp:[], re:/(?!)/, fn:dietAlc},
     othermeat:{head:/^(羊肉|羊|ひつじ|らむ|らむにく|まとん|鴨|鴨肉|合鴨|あいがも|あひる|がちょう|七面鳥|たーきー|lamb|mutton|duck|goose|turkey|rabbit|venison|goat|양고기|오리|鸭|鹅|แกะ|เป็ด|cừu|vịt|cordero|agneau|lamm|agnello|cordeiro|pato|canard|ente|anatra)$/, jp:[], re:/(?!)/, fn:t => DIET_OTHERMEAT.test(t)},
+    // 65A コーシャの「肉と乳製品の組み合わせ」: 1つの材料では当たらない（料理・献立で見る。kosherMix・kosherClash）。チップの一覧には出さない（いまの国の材料に当たらないため）
+    meatdairy:{head:/^(肉と乳製品|meatdairy)$/, jp:[], re:/(?!)/, fn: () => false},
 };
 // アレルギーに設定した人にだけ、さらに広く見る言葉（食品表示で特定原材料が表示される加工品・調味料。苦手なだけの人には使わない＝出す料理を減らしすぎない）。
 // 日本の食材は、ひらがなにそろえたキーでも照らす。しょうゆ・みそ・めんつゆなど、小麦や大豆を含んでいても多くの人が食べられる発酵調味料は、ここに入れない（食品表示で確かめてもらう）
@@ -10582,13 +10635,30 @@ function avoidFamOf(x){
     const k = keyOf(x);
     return Object.keys(AVOID_FAM).find(f => AVOID_FAM[f].head.test(k)) || null;
 }
+// 65A: コーシャの「肉と乳製品の組み合わせ」。1つの材料では決まらないので、料理ごと（kosherMix）と献立ごと（kosherClash）で見る
+const KOSHER_MEAT = ['pork', 'chicken', 'beef', 'othermeat'];
+function kosherMeatItem(i){ return KOSHER_MEAT.some(f => inFam(f, i)) || ['pork', 'chicken', 'beef'].some(id => ALG_DEF[id] && algKind(id, i)); }
+function kosherDairyItem(i){ return inFam('dairy', i) || (ALG_DEF.milk && !!algKind('milk', i)); }
+function kosherParts(r){ const its = (r.items || []).concat(seasItems(r)); return {meat: its.some(kosherMeatItem), dairy: its.some(kosherDairyItem)}; }
+// コーシャでは、えび・かに・貝・豚が「よく入る」加工品（オイスターソース・沙茶醬・えびのペースト・ハムなど。アレルゲンの判定の 1〜3）も出さない（ベジタリアンの 🔍 より厳しく）
+const KOSHER_ALG = ['crustacean', 'mollusc', 'shrimp', 'crab', 'squid', 'abalone', 'shellfish', 'pork'];
+function kosherAlgItem(i){ return KOSHER_ALG.some(id => ALG_DEF[id] && [1, 2, 3].includes(algKind(id, i))); }
+function kosherBad(r){
+    if (!r || !r.items) return false;
+    const its = rr => (rr.items || []).concat(seasItems(rr));
+    const s = swappedRecipe(r) || r;
+    return kosherMix(r) || its(r).some(kosherAlgItem) && its(s).some(kosherAlgItem);   // 置き換えで外れる物（豚→鶏）は、置き換えたあとで見る
+}
+function kosherMix(r){ if (!r || !r.items) return false; const a = kosherParts(r); if (a.meat && a.dairy) return true; const s = swappedRecipe(r); if (s && s !== r){ const b = kosherParts(s); return b.meat && b.dairy; } return false; }
+function kosherClash(a, b){ const x = kosherParts(swappedRecipe(a) || a), y = kosherParts(swappedRecipe(b) || b); return (x.meat && y.dairy) || (x.dairy && y.meat); }
+function kosherOn(){ return effAvoid().some(x => avoidFamOf(x) === 'meatdairy'); }
 function inFam(f, i){ const d = AVOID_FAM[f]; if (d.fn) return d.fn(algTok(i).t); return d.jp.includes(i.key) || d.re.test((i.key + '|' + (i.en || '')).toLowerCase()); }
 // いまの国の料理に出てくるなかまだけをチップにする
 const DIET_CHIPS = ['alcohol', 'othermeat'];   // 食の決まりのチップ（材料の一覧によらず、いつも出す。家族のアレルギーのチップには出さない）
 const DIET_RULE_FAMS = ['pork', 'beef'];   // 第41回 R191: 食の決まりとみなすなかま（豚肉を食べない・牛肉を食べない・コーシャ）。その国の料理に出てこなくてもチップを出す
 function avoidFamChips(){ return Object.keys(AVOID_FAM).filter(f => RECIPES.some(r => r.items && r.items.some(i => inFam(f, i)))); }
 function avoidFamLabel(f){
-    return {pork:t('豚肉（ひき肉・ハム・ベーコンも）'), chicken:t('鶏肉（ひき肉も）'), beef:t('牛肉（ひき肉も）'), fish:t('魚（ツナ缶なども）'), shellfish:t('えび・かに・いか・たこ・貝'),
+    return {meatdairy:t('肉と乳製品をいっしょに使う料理'), pork:t('豚肉（ひき肉・ハム・ベーコンも）'), chicken:t('鶏肉（ひき肉も）'), beef:t('牛肉（ひき肉も）'), fish:t('魚（ツナ缶なども）'), shellfish:t('えび・かに・いか・たこ・貝'),
         alcohol:t('お酒（酒・みりん・ワイン・ビール。調味料も）'), othermeat:t('羊・鴨・がちょうなど（ほかの肉）'), egg:t('卵（うずらの卵なども）'), dairy:t('乳製品（牛乳・チーズ・バター）'), nuts:t('ナッツ・ピーナッツ'), wheat:t('小麦（パン・麺・小麦粉）')}[f] || f;
 }
 // 画面に出す苦手の名前（なかまを避けるものは、なかまの名前で出す）
@@ -10605,16 +10675,18 @@ function avoidCoveredBy(q, fams){
 const DIET_BUNDLES = {
     halal: ['pork', 'alcohol'],
     vegi: ['pork', 'chicken', 'beef', 'fish', 'shellfish'],
-    vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy']
+    vegan: ['pork', 'chicken', 'beef', 'fish', 'shellfish', 'egg', 'dairy'],
+    // オーナー回答 65A（11/24）: コーシャ向け。豚・えび・かに・いか・たこ・貝と、肉と乳製品の組み合わせ（1つの料理の中も、同じ献立の中も）。宗教・認証の判断は言わない
+    kosher: ['pork', 'shellfish', 'meatdairy']
 };
-function dietBundleLabel(k){ return {halal: t('ハラール向け（豚・酒類）'), vegi: t('ベジタリアン向け（肉・魚・貝）'), vegan: t('ヴィーガン向け（卵・乳製品も）')}[k] || k; }
+function dietBundleLabel(k){ return {kosher: t('コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）'), halal: t('ハラール向け（豚・酒類）'), vegi: t('ベジタリアン向け（肉・魚・貝）'), vegan: t('ヴィーガン向け（卵・乳製品も）')}[k] || k; }
 function dietBundleOn(list, k){ const sel = new Set(list.map(avoidFamOf).filter(Boolean)); return DIET_BUNDLES[k].every(f => sel.has(f)); }
 // 押したあとの苦手の一覧（配列）。押した形なら外す（関係のないほかの束＝ハラールとヴィーガンなどが必要とするなかまは残す）、そうでなければ足す
 // 束が足したぶんだけを覚えて（owner＝設定・はじめての設定・家族ごと）、外すときは足したぶんだけを外す。束を押す前に自分で選んでいた苦手は残す（R126）
 // 記録は owner.dietAdd（設定・家族・はじめての設定の画面のそれぞれ。保存データに入り、開き直しても残る）: {束: {added: [束が新たに足したなかま], removed: [置きかわった個別の食材]}}
 function dietAddClean(x){
     const out = {}; if (!x || typeof x !== 'object' || Array.isArray(x)) return out;
-    ['halal', 'vegi', 'vegan'].forEach(k => { const r = x[k]; if (!r || typeof r !== 'object' || !Array.isArray(r.added)) return;
+    ['halal', 'vegi', 'vegan', 'kosher'].forEach(k => { const r = x[k]; if (!r || typeof r !== 'object' || !Array.isArray(r.added)) return;
         out[k] = {added: [...new Set(r.added.filter(f => typeof f === 'string' && f.length < 20))].slice(0, 12), removed: Array.isArray(r.removed) ? [...new Set(r.removed.filter(v => typeof v === 'string' && v.length < 60))].slice(0, 40) : []}; });
     return out;
 }
@@ -11162,6 +11234,7 @@ function isAvoidedCore(r){
     if (allergyOn() && seasItems(r).some(i => itemAvoided(i, allergyCtx()))) return true;   // 調味料の欄のアレルギーの食材（マヨネーズの卵・オイスターソースの貝など）も   // アレルギーの食材は、なくても可の材料でも使う料理を出さない（置き換え・抜くこともしない）
     if (!effAvoid().length) return false;
     const c = avoidCtx();
+    if (c.fams.includes('meatdairy') && kosherBad(r)) return true;   // 65A: 肉と乳製品を1つの料理に使う（置き換えたあとも）・えび・かに・貝・豚の加工品
     if (!r.pack && !r.trLang && swapOn() && algIds().length && SEAS_SWAP.some(([f, re, to]) => { re.lastIndex = 0; return c.fams.includes(f) && re.test(String(r.seasBase != null ? r.seasBase : r.seas || '')) && !seasToOk(to); })) return true;   // 調味料を替えたら選んだアレルゲンが入る（オイスターソース→醤油）なら、替えずに、その料理を出さない
     if (seasAvoided(r, c)) return true;   // 調味料に苦手な食材（小麦粉・卵・バターなど）がある料理は出さない
     if (r.items.some(i => i.opt && itemAvoided(i, c) && nameHasOmitFam(r, i))) return true;   // 料理の名前が、なくても可の材料（Feldsalat mit Speck・Ham and cheese omelette）を名乗る料理は、その材料を外した人に出さない（名前を直さない）
@@ -11769,6 +11842,7 @@ function familySettingsHtml(){
 }
 function fmtPortion(v){ return Number.isInteger(v) ? String(v) : (Math.round(v * 10) / 10).toLocaleString(LANG === 'pt-BR' ? 'pt' : LANG); }
 // 台所（八木）: コンロの数・魚焼きグリル・オーブン・料理の慣れ。S.settings.kitchen に残す（コンロの数と料理の慣れは kitchenBias() で献立の選び方に効く）
+const NO_TOOL_CHOICES = ['deepfry', 'pressure', 'donabe', 'steamer', 'toaster', 'hotplate', 'blender', 'microwave', 'ricecooker'];   // 45A（オーブン・魚焼きグリルは上の「ある・ない」）
 function kitchenSettingsHtml(){
     const k = S.settings.kitchen || {};
     const seg = (key, list, cur) => `<div class="chips" role="radiogroup" aria-label="${esc(list.label)}">${list.opts.map(([v, l]) => `<button class="chip" role="radio" data-act="kitchen" data-k="${key}" data-v="${v}" aria-checked="${cur === v}" aria-pressed="${cur === v}">${esc(l)}</button>`).join('')}</div>`;
@@ -11778,6 +11852,8 @@ function kitchenSettingsHtml(){
         <div class="field"><label>${esc(t('コンロの数'))}</label>${seg('burners', {label: t('コンロの数'), opts: [['1', t('1つ')], ['2', t('2つ以上')], ['mw', t('電子レンジだけ')]]}, k.burners || '')}</div>
         <div class="field"><label>${esc(t('魚焼きグリル'))}</label>${seg('grill', {label: t('魚焼きグリル'), opts: yn}, b(k.grill))}</div>
         <div class="field"><label>${esc(t('オーブン'))}</label>${seg('oven', {label: t('オーブン'), opts: yn}, b(k.oven))}</div>
+        <div class="field"><label>${esc(t('うちにない道具'))}</label><div class="chips" role="group" aria-label="${esc(t('うちにない道具'))}">${NO_TOOL_CHOICES.map(tk => `<button class="chip" data-act="kitchen-notool" data-v="${tk}" aria-pressed="${(k.noTools || []).includes(tk)}">${esc(toolLabel(tk))}</button>`).join('')}</div>
+            <span class="small muted">${esc(t('押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。'))}</span></div>
         <div class="field"><label>${esc(t('料理の慣れ'))}</label>${seg('skill', {label: t('料理の慣れ'), opts: [['new', t('はじめて')], ['some', t('少し')], ['ok', t('ふつう')]]}, k.skill || '')}</div>
         <div class="field"><label for="kitchen-rice">${esc(t('炊飯器の炊く時間（分）'))}</label><input type="number" id="kitchen-rice" inputmode="numeric" min="10" max="180" step="1" value="${k.riceMin ? esc(k.riceMin) : ''}" placeholder="${esc(t('例: 50'))}">
             <span class="small muted">${esc(t('入れたときだけ、作る段で炊飯器のスイッチを入れる時刻の目安を出します。空のままなら出しません。'))}</span></div>
@@ -11845,13 +11921,13 @@ function viewSettings(){
         <div class="settings-head"><button class="btn sm ghost" data-act="settings-back">${esc(t('← もどる'))}</button><h2>${esc(t('設定'))}</h2></div>
         ${setTabsHtml(curT)}
         ${pan('family', sec('family', `
-        ${allergySettingsHtml()}
-        ${familySettingsHtml()}
-        <div class="set-group">
+        ${/* オーナー回答 89A（11/24）: 「何人分」を設定のいちばん上へ（人数を変える人が多い。100人の確かめ 2位） */''}<div class="set-group" id="sv-card">
             <div class="field"><label>${esc(t('何人分つくるか'))}</label>
                 <div class="chips">${SV_LIST.map(n => `<button class="chip" data-act="servings" data-v="${n}" aria-pressed="${sv===n}">${esc(t('{n}人', {n}))}</button>`).join('')}</div>
                 <span class="small muted">${esc(t('材料の分量と、作り方の文中の分量（大さじ・g など）をこの人数に合わせて表示します。'))}</span></div>
-        </div>`))}
+        </div>
+        ${allergySettingsHtml()}
+        ${familySettingsHtml()}`))}
         ${pan('food', sec('food', `<div class="set-group">
             <div class="field"><label>${esc(t('苦手な食材（使わない料理か、置き換えて作れる料理だけを出します）'))}</label>
                 ${avoidChipsHtml(S.settings.avoid, 'toggle-avoid', 'toggle-avoid-fam', true)}
@@ -11890,6 +11966,11 @@ function viewSettings(){
             <div class="field"><label>🌐 ${esc(t('表示する言語 / Language'))}</label>
                 <div class="chips">${langChips}</div>
                 <span class="small muted">${esc(t('国を選び直すと、表示する言語もその国の言葉に変わります（確かめの画面で、今の言葉のままにもできます）。ほかの国の料理は、この言語の訳があれば訳して出します（訳がない料理は英語で出します）。'))}</span></div>
+        </div>
+        <div class="set-group" id="simple-tabs-card">
+            <div class="set-title">${esc(t('かんたん表示'))}</div>
+            <div class="chips" role="group" aria-label="${esc(t('かんたん表示'))}">${[[0, t('ふつう')], [1, t('かんたん')]].map(([v, l]) => `<button class="chip" data-act="simple-tabs" data-v="${v}" aria-pressed="${(S.settings.simpleTabs ? 1 : 0) === v}">${esc(l)}</button>`).join('')}</div>
+            <span class="small muted">${esc(t('かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。', {list: joinNames(SIMPLE_TABS.map(tabName))}))}</span>
         </div>
         <div class="set-group">
             <div class="set-title">${esc(t('文字の大きさ'))}</div>
@@ -15274,6 +15355,16 @@ function adoptDayDecided(){
     S.cook = {d: TODAY, ids: its.map(x => x.id), slots: its.map(x => x.slot), done: {}, adj: its.length !== menuCount(), salt: 0, ahead: true}; save();   // ahead: 先に決めた一膳（品数・形の照らし合わせをせず、そのまま出す）
     return true;
 }
+// オーナー回答 88A（11/24）: 「1週間分を考える」を、今日の献立のすぐ下（最初の画面に入る、決める帯の中）にも置く。帯の高さ・お膳の形は変えない（条件の入口と同じ大きさの四角）
+// 押すと 1週間プランがなければ作り、下の「1週間の主菜」を開いてそこへ送る（今日の献立は変えない。プランがあれば作り直さない）
+// 「1週間」を足すと決めるボタンの字が折り返して帯が高くなる（言葉・文字の大きさによる）ときは出さない。帯の高さ・お膳の大きさは前のまま
+function wqFit(){
+    const bar = document.querySelector('#view .decide-bar'); if (!bar || !bar.querySelector('.wk-quick')) return;
+    bar.classList.add('wq-off'); const h0 = bar.getBoundingClientRect().height;
+    bar.classList.remove('wq-off'); const h1 = bar.getBoundingClientRect().height;
+    if (h1 > h0 + .5) bar.classList.add('wq-off');
+}
+function weekQuickBtn(){ return `<button type="button" class="btn ghost wk-quick" data-act="week-quick" aria-label="${esc(t('1週間分を考える'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span class="wq-t">${esc(t('1週間'))}</span></button>`; }
 function condLowBtn(){   // R2-10 片手: 上の端の「条件」に届かない人のため、親指の届く決定の帯の中にも入口を置く（同じシートが開く）
     const lb = [t('条件を変える'), eatersOutLine(), easyRelaxText()].filter(Boolean).join(t('・'));
     return `<button type="button" class="btn ghost cond-low" data-act="cond-open-low" aria-label="${esc(lb)}" title="${esc(lb)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button>`;
@@ -15544,7 +15635,7 @@ function viewToday(){
         ${fridgeUseHtml()}
         ${leftoversHtml()}
         ${algHintHtml('st')}
-        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${algHintHtml('in')}${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${condLowBtn()}${decided
+        ${/* いちばん押してほしい1つ（決める／決めたあとは作り方へ）を、親指の届く画面の下に貼りつける。決めたあとは「買い物メモ」も並べる */''}<div class="actionbar decide-bar${decided ? ' done' : ''}">${algHintHtml('in')}${(aw => aw ? `<p class="alg-bar" role="status">⚠ ${esc(aw)}</p>` : '')(algWarnLine())}${condLowBtn()}${weekQuickBtn()}${decided
             ? `<button class="btn primary big-decide" data-act="stage" data-k="cook"><span>✓ ${esc(t('決めました'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`
             : `<button class="btn primary big-decide" data-act="decide" ${main ? '' : 'disabled'}><span>${esc(S.cook && S.cook.d === TODAY ? t('この献立に決め直す') : t('この献立に決定'))}</span><small>${esc(t('作り方へ進みます'))}</small></button>`}</div>
     </section>
@@ -17797,7 +17888,7 @@ document.addEventListener('click', e => {
         case 'swap-more': if (sheet && sheet.kind === 'swap'){ sheet.cands.forEach(r => session.rejected.add(r.id)); sheet.cands = swapCands(sheet.i, sheet.f); renderSheet(); } break;
         case 'swap-find': closeSheet(); setTab('fridge'); break;
         case 'swap-pick': { if (!sheet || sheet.kind !== 'swap') break; const s0 = sheet, r = byId(el.dataset.id); closeSheet(); if (r) swapApply(s0.i, r, s0.ok); break; }
-        case 'tool-set': { const k = el.dataset.k; session.tool = session.tool === k ? null : k; if (sheet) renderSheet(); else render(); break; }   // 今日使う道具。いまの献立・決めた献立は変えない
+        case 'tool-set': { const k = el.dataset.k; session.tool = session.tool === k ? null : k; toolRemember(); if (sheet) renderSheet(); else render(); break; }   // 今日使う道具。いまの献立・決めた献立は変えない
         case 'tool-find': sheet = {kind: 'tools'}; renderSheet(); break;
         case 'tool-pick': { const r = byId(el.dataset.id); if (!r || !session.menu || !session.menu.items[0] || slotOut(r) || allergyConflict(r) || toolKindOff(r)) break;   // アレルギー・苦手に当たる料理・形のちがう主菜は、一覧から押されても入れない
             if (menuIsDecided()){ sheet = {kind: 'tool-ok', id: r.id}; renderSheet(); break; }
@@ -17806,8 +17897,8 @@ document.addEventListener('click', e => {
             if (s0.tt){ if (!ttOff(r) && ttSlotIndex(r) === s0.i) swapApply(s0.i, r, true); break; }   // 調理道具のタブから: 押した料理の欄だけ
             if (!slotOut(r) && !allergyConflict(r) && !toolKindOff(r)) swapApply(0, r, true); break; }
         // 下のタブ「調理道具」: 調理法 → 道具 → 料理。選んでも献立は変わらない
-        case 'tt-cat': { const v = el.dataset.v; session.ttCat = session.ttCat === v ? null : v; session.ttTool = null; render(); break; }
-        case 'tt-tool': { const v = el.dataset.v; session.ttTool = session.ttTool === v ? null : v; render(); break; }
+        case 'tt-cat': { const v = el.dataset.v; session.ttCat = session.ttCat === v ? null : v; session.ttTool = null; toolRemember(); render(); break; }
+        case 'tt-tool': { const v = el.dataset.v; session.ttTool = session.ttTool === v ? null : v; toolRemember(); render(); break; }
         case 'tt-all': { (session.ttAll || (session.ttAll = new Set())).add(el.dataset.v); render(); break; }
         case 'tt-add': { const r = byId(el.dataset.id); if (!r || ttOff(r)) break;   // アレルギー・苦手に当たる料理・入る欄がない料理・形のちがう主菜は、押されても入れない
             const i = ttSlotIndex(r);
@@ -17902,6 +17993,9 @@ document.addEventListener('click', e => {
         }
         case 'fam-role': { const m = famOf(el); if (m){ m.role = el.dataset.v === 'child' ? 'child' : 'adult'; session.famOpen = m.id; save(); render(); } break; }
         case 'fam-portion': { const m = famOf(el), v = Number(el.dataset.v); if (m && [0.5, 1, 1.5].includes(v)){ if (v === 1) delete m.portion; else m.portion = v; session.famOpen = m.id; save(); render(); } break; }   // 量は今日の人数（svToday）に入り、材料・買い物メモ・手順・ご飯の合数に効く。献立は変えないだけに使う（献立は変えない）
+        case 'kitchen-notool': { const v = el.dataset.v; if (!NO_TOOL_CHOICES.includes(v)) break; const kc = Object.assign({}, S.settings.kitchen), a = new Set(kc.noTools || []);
+            if (a.has(v)) a.delete(v); else a.add(v); if (a.size) kc.noTools = [...a]; else delete kc.noTools;
+            S.settings.kitchen = kc; if (session.tool && kc.noTools && kc.noTools.includes(session.tool)){ session.tool = null; toolRemember(); } save(); render(); keepPressed(`[data-act="kitchen-notool"][data-v="${v}"]`); break; }
         case 'kitchen': {
             const k = el.dataset.k, v = el.dataset.v, kc = Object.assign({}, S.settings.kitchen);
             if (k === 'burners' && ['1', '2', 'mw'].includes(v)) kc.burners = v;
@@ -18267,6 +18361,11 @@ document.addEventListener('click', e => {
             setMenuMain(tw);
             markSeen([tw]); toast(t('主菜をひとひねり案にしました')); render(); break;
         }
+        case 'week-quick': {   // 88A: 決める帯の「1週間」。プランがなければ作る（今日の献立は変えない）。「1週間の主菜」を開いてそこへ
+            if (!(S.week && Array.isArray(S.week.days) && S.week.days.some(x => x.d >= TODAY))) makeWeek();
+            S.foldOpen = Object.assign({}, S.foldOpen, {week: true}); save(); render();
+            requestAnimationFrame(() => { const fd = document.querySelector('details.fold[data-fold="week"]'); if (fd){ fd.open = true; fd.scrollIntoView({block: 'start'}); const h = fd.querySelector('summary'); if (h && kbNav()) h.focus({preventScroll: true}); } });
+            break; }
         case 'make-week': {
             makeWeek();   // 今日の献立は変えない（プランの主菜は「献立にする」で選べる）
             render(); break;
@@ -18409,6 +18508,7 @@ document.addEventListener('click', e => {
         case 'left-clean': { const old = S.leftovers.filter(x => leftDay(x) >= 4); if (old.length){ S.leftovers = S.leftovers.filter(x => leftDay(x) < 4); save(); render(); toast(t('消しました'), false, () => { S.leftovers = S.leftovers.concat(old); save(); render(); }); } break; }
         case 'left-done': { const [id, d] = String(el.dataset.i).split('|'); const i = S.leftovers.findIndex(x => String(x.id) === id && x.d === d); if (i >= 0){ const was = S.leftovers.splice(i, 1)[0]; save(); render(); toast(t('消しました'), false, () => { S.leftovers.push(was); save(); render(); }); } break; }
         case 'spend-del': { const i = S.spend.findIndex(x => x.id === el.dataset.i); if (i >= 0){ const was = S.spend.splice(i, 1)[0]; session.spendOpen = true; save(); render(); toast(t('消しました'), false, () => { S.spend.push(was); save(); render(); }); } break; }
+        case 'simple-tabs': { const on = el.dataset.v === '1'; if (on) S.settings.simpleTabs = true; else delete S.settings.simpleTabs; save(); updateTabs(); render(); keepPressed(`[data-act="simple-tabs"][data-v="${el.dataset.v}"]`); break; }
         case 'text-size': { const v = Number(el.dataset.v), y0 = el.getBoundingClientRect().top; if (v === 1 || v === 2) S.settings.textSize = v; else delete S.settings.textSize; save(); applyTextSize(); render(); keepPressed(`[data-act="text-size"][data-v="${v}"]`, y0); break; }
         case 'eat-clear': S.settings.dinnerAt = null; session.eatOpen = true; save(); render(); break;
         case 'keep-awake': S.settings.keepAwake = el.type === 'checkbox' ? el.checked : S.settings.keepAwake === false; save(); syncWake(); if (el.type !== 'checkbox') el.setAttribute('aria-pressed', String(S.settings.keepAwake !== false)); break;
@@ -19298,8 +19398,15 @@ function fitTabs(){
     if (ico){ let f = 12; const over = () => bs.some(b => { const e = b.querySelector('.tsn'); return e && (e.scrollWidth > e.clientWidth + .5 || e.scrollHeight > e.clientHeight + 1); }); while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } if (over()){ nv.classList.add('tsn2'); nv.style.removeProperty('--tsnfs'); f = 12; while (f > 11 && over()){ f -= .5; nv.style.setProperty('--tsnfs', f + 'px'); } } if (over()){ nv.classList.remove('tsn2'); nv.classList.add('tsn-off'); } }
 }
 window.addEventListener('resize', () => guard('tabs', fitTabs));
+// オーナー回答 90A（11/24）: 設定の「かんたん表示」を選んだ人だけ、下のタブを4つにする（ふつうは今のまま）。
+// 4つは 100人の確かめ（panel100.md 9位）で使われたタブ: 今日・作る・材料・料理名から（ひとひねり・世界・道具・記録は、この流れでは100人とも使わなかった）
+const SIMPLE_TABS = ['today', 'cook', 'fridge', 'name'];
+function tabName(k){ const b = document.querySelector(`nav.tabs [data-tab="${k}"]`), l = b && (b.querySelector('.tl') || b); return l ? l.textContent.trim() : k; }
 function updateTabs(){
     const tw = document.querySelector('nav.tabs [data-tab="twist"]'); if (tw) tw.hidden = !twistAvailable();
+    const simple = !!S.settings.simpleTabs;
+    document.querySelectorAll('nav.tabs button[data-tab]').forEach(bt => { const k = bt.dataset.tab; if (k === 'twist' && !twistAvailable()) return; bt.hidden = simple && !SIMPLE_TABS.includes(k); });
+    if (simple && !SIMPLE_TABS.includes(tab) && document.querySelector(`nav.tabs [data-tab="${tab}"]`)) tab = 'today';
     const n = document.querySelectorAll('nav.tabs button[data-tab]:not([hidden])').length;
     document.querySelector('nav.tabs .in').style.gridTemplateColumns = `repeat(${n},minmax(0,1fr))`;   // 長い言葉の言語・大きい字でも、タブの列が画面より広がらない
     document.querySelector('nav.tabs').classList.toggle('many', n >= 5);   // 5〜6つ（ひとひねりは日本＋日本語だけ）は、文字を 12px に
@@ -19716,6 +19823,7 @@ async function retryPack(){
             packFail = currentCountry(); S.settings.country = 'JP'; delete PACKS[packFail]; storeInfo.pending.push('pack');
             applyCountry('JP');
         }
+        guard('tools', toolRestore);   // 41A: 前に選んだ道具（今日使う道具・道具のタブ）を使う
         bootReady = true;
         guard('stage', openStage);   // 開いたときの段（進み具合で決める）
         guard('trial', scheduleTrialReminder);

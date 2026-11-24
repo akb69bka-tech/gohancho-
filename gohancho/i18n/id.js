@@ -2092,4 +2092,13 @@ GOHAN_I18N('id', {
     "{name}の写真を大きく見る": "Lihat foto {name} lebih besar",
     "2本の指で広げる・2回たたくと、さらに大きく見られます": "Rentangkan dua jari atau ketuk dua kali untuk memperbesar lagi",
     "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Untuk mengirim lewat {app}, pakai “Kirim lewat aplikasi lain” atau “Salin” lalu tempel di sana.",
+    "1週間": "Minggu",
+    "かんたん表示": "Tampilan sederhana",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Tampilan sederhana hanya menampilkan 4 tab di bawah: {list}. Kembali ke “Normal” untuk melihat tab lainnya.",
+    "うちにない道具": "Alat yang tidak saya punya",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Masakan yang butuh alat yang ditandai tidak akan disarankan. Berlaku mulai menu baru berikutnya (menu yang sudah dipilih tidak berubah).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Tambahkan ke Layar Utama agar catatan tidak mudah hilang",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "Di Safari, data yang tersimpan di perangkat ini bisa terhapus jika situs tidak dibuka beberapa waktu. Ketuk tombol Bagikan (□ dengan ↑) → “Tambahkan ke Layar Utama” agar bisa dibuka dari ikon dan catatan lebih aman.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (babi, udang, kepiting, kerang, daging dengan susu)",
+    "肉と乳製品をいっしょに使う料理": "Masakan dengan daging dan produk susu sekaligus",
 });

@@ -2093,4 +2093,13 @@ GOHAN_I18N('en', {
     "{name}の写真を大きく見る": "View the photo of {name} larger",
     "2本の指で広げる・2回たたくと、さらに大きく見られます": "Spread two fingers or double-tap to zoom in further",
     "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "To send with {app}, use “Send with another app” or “Copy” and paste it there.",
+    "1週間": "Week",
+    "かんたん表示": "Simple view",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Simple view shows only 4 tabs at the bottom: {list}. Switch back to “Normal” to see the other tabs.",
+    "うちにない道具": "Tools I don’t have",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Dishes that need the tools you tap won’t be suggested. This applies from the next new plan (a plan you’ve decided stays the same).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Add to Home Screen so your records are less likely to be lost",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "In Safari, data saved on this device can be deleted if you don’t open the site for a while. Tap the Share button (□ with ↑) → “Add to Home Screen” to open it from an icon and keep your records safer.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (pork, shrimp, crab, shellfish, meat with dairy)",
+    "肉と乳製品をいっしょに使う料理": "Dishes with both meat and dairy",
 });

@@ -2092,4 +2092,13 @@ GOHAN_I18N('pt-BR', {
     "{name}の写真を大きく見る": "Ver a foto de {name} em tamanho grande",
     "2本の指で広げる・2回たたくと、さらに大きく見られます": "Afaste dois dedos ou toque duas vezes para ampliar mais",
     "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Para enviar pelo {app}, use “Enviar por outro app” ou “Copiar” e cole lá.",
+    "1週間": "Semana",
+    "かんたん表示": "Visualização simples",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "A visualização simples mostra só 4 abas embaixo: {list}. Volte para “Normal” para ver as outras.",
+    "うちにない道具": "Utensílios que não tenho",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Pratos que precisam dos utensílios marcados não serão sugeridos. Vale a partir do próximo cardápio novo (o cardápio já decidido não muda).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Adicione à Tela de Início para seus registros não se perderem tão fácil",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "No Safari, os dados salvos neste aparelho podem ser apagados se você ficar um tempo sem abrir o site. Toque em Compartilhar (□ com ↑) → “Adicionar à Tela de Início” para abrir pelo ícone e proteger melhor seus registros.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (porco, camarão, caranguejo, frutos do mar, carne com laticínios)",
+    "肉と乳製品をいっしょに使う料理": "Pratos com carne e laticínios juntos",
 });
