@@ -834,19 +834,6 @@ Object.assign(D, {
         ].join('');
     },
 
-    // ピュレ・ジ・バタタ: 緑の線の白い器に、なめらかなマッシュポテト、溶けたバター、ナツメグとパセリ
-    br_pure_batata: p => [
-        K.bowl(p, { glaze: '#f3efe7', inside: '#fbf9f4' }),
-        `<circle cx="100" cy="100" r="86" fill="none" stroke="#2f7a52" stroke-width="1.6" opacity=".8"/>`,
-        `<g ${p.sh(.8)}>`, xbrCream(p, { R: 76, c: '#f4dfa0', seed: 1, rings: 7 }), `</g>`,
-        `<path d="M58,96 C64,64 112,52 136,76 C152,94 140,128 110,134 C84,138 72,118 82,100 C90,86 112,86 116,100" stroke="#e3c47a" stroke-width="5" fill="none" stroke-linecap="round" opacity=".6"/>`,
-        `<path d="M58,96 C64,64 112,52 136,76 C152,94 140,128 110,134" stroke="#fff8e0" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8" transform="translate(-1.5 -2)"/>`,
-        xbrBlob(p, 104, 102, 30, 22, '#f6cf4a', { seed: 1, op: .85, l: .4 }),
-        `<rect ${T(104, 100, 18)} x="-7" y="-5.5" width="14" height="11" rx="2.4" fill="${p.g('#fbe7a0', .4, .15)}" stroke="#e0bf5a" stroke-width=".6"/>`,
-        K.sprinkle(p, 100, 100, 120, { c: '#9a6a3a', n: 24, r: .5 }),
-        xbrHerbs(p, 100, 100, 120, { n: 16 }),
-    ].join(''),
-
     // バタタ・ソテー: 黄色い縁の白い皿に、バターで焼いた小さなじゃがいも、パセリ
     br_batata_saute: p => {
         const sp = xbrSpots('bs', 12, 52, 27);
@@ -1012,18 +999,6 @@ Object.assign(D, {
             xbrShine(100, 100, 74, .55), xbrGlassHi(),
         ].join('');
     },
-
-    // ピラォン・ジ・ペイシ: 素焼きの器に、魚のだしとキャッサバ粉を練ったとろりとした黄土色の粥、トマト・玉ねぎ・香菜
-    br_pirao: p => [
-        K.bowl(p, { glaze: '#7a4a2c', inside: '#efe2c8' }),
-        xbrCream(p, { R: 76, c: '#ddb466', seed: 2, rings: 6 }),
-        xbrGrains(p, 100, 100, 140, { cols: ['#c9994a', '#efd49a'], n: 60, size: .8, seed: 1 }),
-        xbrOil(p, 100, 100, 120, { n: 10, c: '#e8a23a', op: .6, rmax: 2.2 }),
-        `<g ${p.sh(.5)}>`, xbrSpots('pr', 12, 52, 18).map(([x, y, r]) => xbrCube(p, x, y, 8, r, '#e0482e')).join(''), `</g>`,
-        xbrLeaf(p, 92, 92, 15, 20), xbrLeaf(p, 124, 70, 13, -30), xbrLeaf(p, 70, 128, 13, 60), xbrLeaf(p, 134, 124, 12, 100),
-        xbrHerbs(p, 100, 100, 120, { n: 20, cols: ['#3f8a2c'] }),
-        xbrShine(100, 100, 76, .4),
-    ].join(''),
 
     // ポレンタ・フリッタ: 赤い縁の白い皿に、棒状に切って揚げたポレンタを山盛り、粉チーズ
     br_polenta_frita: p => {
@@ -1205,16 +1180,6 @@ Object.assign(D, {
         xbrHerbs(p, 100, 100, 124, { n: 16 }),
         K.sprinkle(p, 100, 100, 120, { c: '#2a2420', n: 14, r: .6 }),
         xbrShine(100, 100, 76, .4),
-    ].join(''),
-
-    // クレミ・ジ・マンジョキーニャ・コン・フランゴ: 黄色の帯の深皿に、淡い黄色のクリームスープ、生クリームのうず、ほぐした鶏
-    br_creme_mandioquinha: p => [
-        xbrDeep(p, { rim: '#d9a441', band: true, well: .74 }),
-        xbrCream(p, { R: 70, c: '#ecd27a', seed: 1, rings: 5 }),
-        xbrSwirl(84, 96, 52, '#fff6e0', { r: -10 }),
-        xbrShred(p, 120, 112, 58, { seed: 1, n: 26 }),
-        xbrHerbs(p, 104, 104, 110, { n: 22 }),
-        xbrShine(100, 100, 70, .4),
     ].join(''),
 
     // カンジキーニャ・コン・コステリーニャ: 黒い鍋に、ひき割りとうもろこしの黄色いおかゆ、豚のスペアリブ、couve、トマト

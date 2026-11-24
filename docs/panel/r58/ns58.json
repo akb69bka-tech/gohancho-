@@ -1,0 +1,6317 @@
+[
+ {
+  "ui": "ja",
+  "cond": "none",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 44,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 6,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 531,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 35,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 6,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 15,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 133,
+    "world": 5,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 3,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 8,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 44,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 499,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 6,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 51,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "halal",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 40,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 2,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 425,
+    "world": 6,
+    "twist": 4,
+    "hidden": 106,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "us_lentil",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "パスタ",
+    "same": 30,
+    "world": 8,
+    "twist": 4,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 13,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 1,
+    "world": 2,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 121,
+    "world": 6,
+    "twist": 4,
+    "hidden": 12,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "gb_salad",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_tomates",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_betteraves",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "us_cuketomato",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_tomatosalad",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_concombre",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 6,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "タコス",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [
+     {
+      "tier": "world",
+      "id": "id_supmakaroni",
+      "k": "pork",
+      "w": "ソーセージ",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "グラタン",
+    "same": 12,
+    "world": 8,
+    "twist": 2,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "シチュー",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 11,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 40,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 406,
+    "world": 8,
+    "twist": 4,
+    "hidden": 93,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "us_lentil",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 2,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 44,
+    "world": 8,
+    "twist": 3,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "vegi",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 25,
+    "world": 8,
+    "twist": 2,
+    "hidden": 19,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "gb_parsnip",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "in_palaksoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 171,
+    "world": 1,
+    "twist": 4,
+    "hidden": 360,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "cornsoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": false
+     },
+     {
+      "tier": "same",
+      "id": "consomme",
+      "k": "meat",
+      "w": "コンソメ",
+      "where": "seas",
+      "other": false
+     },
+     {
+      "tier": "same",
+      "id": "tr_karnabaharcorba",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_tomato",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_caulicheese",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_carrotcoriander",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "パスタ",
+    "same": 19,
+    "world": 8,
+    "twist": 2,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 3
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 3,
+    "twist": 1,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 11,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 100,
+    "world": 3,
+    "twist": 4,
+    "hidden": 33,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 4,
+    "world": 8,
+    "twist": 4,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 6,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [
+     {
+      "tier": "world",
+      "id": "es_berenjenasmiel",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 1,
+    "hidden": 0,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "omurice",
+      "k": "meat",
+      "w": "牛",
+      "where": "seas",
+      "other": false
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "グラタン",
+    "same": 8,
+    "world": 8,
+    "twist": 1,
+    "hidden": 8,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "gratin",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": false
+     },
+     {
+      "tier": "same",
+      "id": "fr_dauphinois",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_choufleurgratin",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_gratinchoufleur",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "de_kartoffelgratin",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "br_couve_flor_gratinada",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "it_cavolfiore",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "br_pao_de_queijo",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "シチュー",
+    "same": 5,
+    "world": 8,
+    "twist": 1,
+    "hidden": 3,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "stew",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": false
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 10,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 25,
+    "world": 8,
+    "twist": 2,
+    "hidden": 19,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "gb_parsnip",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "in_palaksoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "soup",
+    "same": 185,
+    "world": 8,
+    "twist": 4,
+    "hidden": 314,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "cornsoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": false
+     },
+     {
+      "tier": "same",
+      "id": "tr_karnabaharcorba",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_tomato",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_caulicheese",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "it_vellutatacavolfiore",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "eg_broccoli",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "burger",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 28,
+    "world": 8,
+    "twist": 2,
+    "hidden": 23,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "de_kartoffelpueree",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_parsnip",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "vegan",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 28,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaitahu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_lontong_sayur",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaidaunsingkong",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 74,
+    "world": 8,
+    "twist": 4,
+    "hidden": 457,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "consomme",
+      "k": "meat",
+      "w": "コンソメ",
+      "where": "seas",
+      "other": false
+     },
+     {
+      "tier": "same",
+      "id": "fr_lentcorail",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_redpepper",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "es_cremacalabaza",
+      "k": "animal",
+      "w": "バター",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "in_vegishtu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 11
+   },
+   {
+    "q": "パスタ",
+    "same": 11,
+    "world": 8,
+    "twist": 0,
+    "hidden": 24,
+    "bad": [],
+    "words": [
+     {
+      "tier": "world",
+      "id": "fr_lentcorail",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 4
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 2,
+    "twist": 1,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ステーキ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 11,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 71,
+    "world": 8,
+    "twist": 4,
+    "hidden": 62,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "fr_salade",
+      "k": "meat",
+      "w": "lamb",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "fr_salade",
+      "k": "animal",
+      "w": "バター",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "卵焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 6,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "in_vegishtu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 12,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 28,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaitahu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_lontong_sayur",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaidaunsingkong",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "soup",
+    "same": 76,
+    "world": 8,
+    "twist": 4,
+    "hidden": 423,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "gb_redpepper",
+      "k": "meat",
+      "w": "ブイヨン",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "in_vegishtu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 9
+   },
+   {
+    "q": "burger",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 35,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaidaunsingkong",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "id_gulaitahu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "world",
+      "id": "id_lontong_sayur",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 3
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "alg_egg_milk_wheat",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 22,
+    "world": 8,
+    "twist": 0,
+    "hidden": 22,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 197,
+    "world": 8,
+    "twist": 0,
+    "hidden": 334,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 35,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 12,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 69,
+    "world": 8,
+    "twist": 0,
+    "hidden": 64,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 22,
+    "world": 8,
+    "twist": 0,
+    "hidden": 22,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 167,
+    "world": 8,
+    "twist": 0,
+    "hidden": 332,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 21,
+    "world": 8,
+    "twist": 0,
+    "hidden": 30,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "alg_fish_crust",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 33,
+    "world": 8,
+    "twist": 4,
+    "hidden": 11,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 6,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 409,
+    "world": 7,
+    "twist": 4,
+    "hidden": 122,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 29,
+    "world": 8,
+    "twist": 2,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 4,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 12,
+    "world": 8,
+    "twist": 2,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 108,
+    "world": 2,
+    "twist": 4,
+    "hidden": 25,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 4,
+    "world": 8,
+    "twist": 4,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 5,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 15,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 9,
+    "world": 8,
+    "twist": 2,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 33,
+    "world": 8,
+    "twist": 4,
+    "hidden": 11,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 381,
+    "world": 8,
+    "twist": 4,
+    "hidden": 118,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 6,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 39,
+    "world": 8,
+    "twist": 4,
+    "hidden": 12,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "alg_pns",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 29,
+    "world": 8,
+    "twist": 3,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 431,
+    "world": 8,
+    "twist": 4,
+    "hidden": 100,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 33,
+    "world": 8,
+    "twist": 4,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 8,
+    "world": 8,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 1,
+    "world": 3,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 113,
+    "world": 8,
+    "twist": 4,
+    "hidden": 20,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 2,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 1,
+    "world": 3,
+    "twist": 0,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 29,
+    "world": 8,
+    "twist": 3,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 392,
+    "world": 8,
+    "twist": 2,
+    "hidden": 107,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 37,
+    "world": 8,
+    "twist": 3,
+    "hidden": 14,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "fam_dairy",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 29,
+    "world": 8,
+    "twist": 2,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 335,
+    "world": 7,
+    "twist": 4,
+    "hidden": 196,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 17,
+    "world": 8,
+    "twist": 2,
+    "hidden": 18,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 6,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 10,
+    "world": 8,
+    "twist": 2,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 3,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 109,
+    "world": 3,
+    "twist": 4,
+    "hidden": 24,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 3,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 7,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 16,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 29,
+    "world": 8,
+    "twist": 2,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 298,
+    "world": 8,
+    "twist": 4,
+    "hidden": 201,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 4,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 30,
+    "world": 8,
+    "twist": 2,
+    "hidden": 21,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "ja",
+  "cond": "nopork",
+  "lang": "ja",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 41,
+    "world": 8,
+    "twist": 4,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 2,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 443,
+    "world": 6,
+    "twist": 4,
+    "hidden": 88,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "パスタ",
+    "same": 30,
+    "world": 8,
+    "twist": 4,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "ラーメン",
+    "same": 1,
+    "world": 6,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 14,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 2,
+    "world": 2,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 124,
+    "world": 3,
+    "twist": 4,
+    "hidden": 9,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 2,
+    "world": 8,
+    "twist": 2,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "グラタン",
+    "same": 14,
+    "world": 8,
+    "twist": 2,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "シチュー",
+    "same": 7,
+    "world": 8,
+    "twist": 4,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 11,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 41,
+    "world": 8,
+    "twist": 4,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 423,
+    "world": 8,
+    "twist": 4,
+    "hidden": 76,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 2,
+    "world": 8,
+    "twist": 3,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 45,
+    "world": 8,
+    "twist": 4,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "none",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 32,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 7,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 3,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 2,
+    "world": 6,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 8,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 16,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 32,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 527,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "halal",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 26,
+    "world": 8,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "パスタ",
+    "same": 3,
+    "world": 2,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 5,
+    "world": 4,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "炒飯",
+    "same": 11,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 26,
+    "world": 8,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "soup",
+    "same": 422,
+    "world": 8,
+    "twist": 0,
+    "hidden": 105,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "us_lentil",
+      "k": "alcohol",
+      "w": "wine",
+      "where": "seas",
+      "other": false
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "burger",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "vegi",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 16,
+    "world": 8,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 2,
+    "world": 0,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "cornsoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "consomme",
+      "k": "meat",
+      "w": "コンソメ",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "パスタ",
+    "same": 1,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 5,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 3
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [
+     {
+      "tier": "world",
+      "id": "fr_tianchevre",
+      "k": "meat",
+      "w": "goat",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 10,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "curry",
+    "same": 16,
+    "world": 8,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "soup",
+    "same": 195,
+    "world": 8,
+    "twist": 0,
+    "hidden": 332,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "cornsoup",
+      "k": "meat",
+      "w": "牛",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 5
+   },
+   {
+    "q": "burger",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "vegan",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 13,
+    "world": 8,
+    "twist": 0,
+    "hidden": 19,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_lontong_sayur",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaidaunsingkong",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaitahu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 1,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "consomme",
+      "k": "meat",
+      "w": "コンソメ",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 1
+   },
+   {
+    "q": "パスタ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 4,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 2,
+    "world": 0,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "卵焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 12,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "curry",
+    "same": 13,
+    "world": 8,
+    "twist": 0,
+    "hidden": 19,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "vn_carichay",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_lontong_sayur",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaidaunsingkong",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "id_gulaitahu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_green_curry_tofu",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "th_massaman_je",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     },
+     {
+      "tier": "same",
+      "id": "gb_chickpeacurry",
+      "k": "animal",
+      "w": "milk",
+      "where": "seas",
+      "other": true
+     }
+    ],
+    "omitNotes": 2
+   },
+   {
+    "q": "soup",
+    "same": 85,
+    "world": 8,
+    "twist": 0,
+    "hidden": 442,
+    "bad": [],
+    "words": [
+     {
+      "tier": "same",
+      "id": "fr_lentcorail",
+      "k": "animal",
+      "w": "milk",
+      "where": "items",
+      "other": true
+     }
+    ],
+    "omitNotes": 7
+   },
+   {
+    "q": "burger",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "alg_egg_milk_wheat",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 18,
+    "world": 8,
+    "twist": 0,
+    "hidden": 14,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 8,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 16,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 18,
+    "world": 8,
+    "twist": 0,
+    "hidden": 14,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 181,
+    "world": 8,
+    "twist": 0,
+    "hidden": 346,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 4,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "alg_fish_crust",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 22,
+    "world": 8,
+    "twist": 0,
+    "hidden": 10,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 7,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 1,
+    "world": 2,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 2,
+    "world": 4,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 7,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 9,
+    "world": 8,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 22,
+    "world": 8,
+    "twist": 0,
+    "hidden": 10,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 402,
+    "world": 8,
+    "twist": 0,
+    "hidden": 125,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "alg_pns",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 19,
+    "world": 8,
+    "twist": 0,
+    "hidden": 13,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 2,
+    "world": 2,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 3,
+    "world": 1,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 1,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 1,
+    "world": 3,
+    "twist": 0,
+    "hidden": 15,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 19,
+    "world": 8,
+    "twist": 0,
+    "hidden": 13,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 394,
+    "world": 8,
+    "twist": 0,
+    "hidden": 133,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "fam_dairy",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 25,
+    "world": 8,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "パスタ",
+    "same": 1,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ラーメン",
+    "same": 2,
+    "world": 6,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 4,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "餃子",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 8,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 4,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ピザ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 7,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 16,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "curry",
+    "same": 25,
+    "world": 8,
+    "twist": 0,
+    "hidden": 7,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "soup",
+    "same": 325,
+    "world": 8,
+    "twist": 0,
+    "hidden": 202,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "burger",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ },
+ {
+  "ui": "en",
+  "cond": "nopork",
+  "lang": "en",
+  "rows": [
+   {
+    "q": "カレー",
+    "same": 26,
+    "world": 8,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ハンバーグ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "スープ",
+    "same": 6,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "パスタ",
+    "same": 3,
+    "world": 2,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ラーメン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ステーキ",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "餃子",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 2,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "サラダ",
+    "same": 5,
+    "world": 4,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "卵焼き",
+    "same": 1,
+    "world": 5,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "ピザ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "タコス",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "フォー",
+    "same": 4,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ガパオ",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ムサカ",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "シャクシュカ",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "おでん",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "やきにく",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "すき焼き",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "オムライス",
+    "same": 1,
+    "world": 1,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "グラタン",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "シチュー",
+    "same": 2,
+    "world": 8,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "炒飯",
+    "same": 11,
+    "world": 8,
+    "twist": 0,
+    "hidden": 5,
+    "bad": [],
+    "words": [],
+    "omitNotes": 2
+   },
+   {
+    "q": "curry",
+    "same": 26,
+    "world": 8,
+    "twist": 0,
+    "hidden": 6,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "soup",
+    "same": 448,
+    "world": 8,
+    "twist": 0,
+    "hidden": 79,
+    "bad": [],
+    "words": [],
+    "omitNotes": 1
+   },
+   {
+    "q": "burger",
+    "same": 3,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "lasagna",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ポケモン",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "あいうえお",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 0,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "ﾊﾝﾊﾞｰｸﾞ",
+    "same": 1,
+    "world": 8,
+    "twist": 0,
+    "hidden": 1,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   },
+   {
+    "q": "カ レー",
+    "same": 0,
+    "world": 0,
+    "twist": 0,
+    "hidden": 3,
+    "bad": [],
+    "words": [],
+    "omitNotes": 0
+   }
+  ]
+ }
+]

@@ -1,0 +1,514 @@
+[
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 250,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 500,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 1
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 800,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 300,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 500,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 700,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "servings-two",
+  "gap": 200,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "servings-two",
+  "gap": 400,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "toast-undo",
+  "gap": 300,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "toast-undo",
+  "gap": 600,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "open-again",
+  "gap": 300,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "open-again",
+  "gap": 600,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "stage-two",
+  "gap": 250,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "ja",
+  "t": "stage-two",
+  "gap": 500,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 250,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 500,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 1
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 800,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 300,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 500,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 700,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "servings-two",
+  "gap": 200,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "servings-two",
+  "gap": 400,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "toast-undo",
+  "gap": 300,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "toast-undo",
+  "gap": 600,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "open-again",
+  "gap": 300,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "open-again",
+  "gap": 600,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "stage-two",
+  "gap": 250,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v155",
+  "ui": "en",
+  "t": "stage-two",
+  "gap": 500,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 250,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 500,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "decide-double",
+  "gap": 800,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 300,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 500,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "chip-repress",
+  "gap": 700,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "servings-two",
+  "gap": 200,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "servings-two",
+  "gap": 400,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "toast-undo",
+  "gap": 300,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "toast-undo",
+  "gap": 600,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "open-again",
+  "gap": 300,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "open-again",
+  "gap": 600,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "stage-two",
+  "gap": 250,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "ja",
+  "t": "stage-two",
+  "gap": 500,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 250,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 500,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "decide-double",
+  "gap": 800,
+  "under": "stage:cook",
+  "state": "decided",
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 300,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 500,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "chip-repress",
+  "gap": 700,
+  "moved": 0,
+  "egg": false,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "servings-two",
+  "gap": 200,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "servings-two",
+  "gap": 400,
+  "sv": 4,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "toast-undo",
+  "gap": 300,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "toast-undo",
+  "gap": 600,
+  "undoShown": true,
+  "egg": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "open-again",
+  "gap": 300,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "open-again",
+  "gap": 600,
+  "open1": true,
+  "open2": true,
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "stage-two",
+  "gap": 250,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ },
+ {
+  "ver": "v154",
+  "ui": "en",
+  "t": "stage-two",
+  "gap": 500,
+  "ks": [
+   "shop",
+   "cook"
+  ],
+  "tips": 0
+ }
+]

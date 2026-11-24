@@ -1,0 +1,973 @@
+[
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ブロッコリーのごまマヨ和え → にんじんのグラッセ"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: オムライス → ソース焼きそば・ポテトサラダ → たけのこの土"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: きのこの和風パスタ → 豚バラとキャベツの塩炒め・コーンスープ"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: あじの南蛮漬け → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 野菜炒め → さんまの塩焼き・ワンタンスープ → しじみの味噌"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: かじきのバター醤油ソテー → エビチリ・ミネストローネ → な"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭のバター醤油焼き → 豚バラとキャベツの塩炒め・だんご汁 →"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭のムニエル → 豚バラとキャベツの塩炒め・コーンスープ → "
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 青椒肉絲 → 鮭のちゃんちゃん焼き・ワンタンスープ → 豆腐と"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: かれいの煮付け → なすと豚肉の味噌炒め"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: きつねうどん → タンドリーチキン・大根サラダ → なす田楽"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 肉じゃが → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 豚の生姜焼き → さんまの塩焼き・けんちん汁 → あさりの味噌"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Japch"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Yudof"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Hayas"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 3,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Buri "
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 4,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Dry c"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 5,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Karei"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: お好み焼き → 豚しゃぶ鍋"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: カルボナーラ → 肉うどん・コールスロー → 焼きとうもろこし"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 中華風卵スープ → ワンタンスープ"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "same-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:egg",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ちらし寿司 → いなり寿司"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 豆腐ハンバーグ → タンドリーチキン"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ニラ豚炒め → さんまの塩焼き・ワンタンスープ → なすと油揚"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 焼きうどん → さんまの塩焼き・なすの揚げびたし → なす田楽"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: タッカルビ → なすと豚肉の味噌炒め・韓国風わかめスープ → "
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": null,
+  "dy": 52,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: クリームシチュー → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 豆腐ハンバーグ → 豚バラとキャベツの塩炒め・だんご汁 → 呉"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: ドライカレー → 鶏むね肉のねぎ塩焼き・クラムチャウダー → "
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 筑前煮 → なすと豚肉の味噌炒め"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 棒棒鶏 → さんまの塩焼き・ワンタンスープ → なめこと豆腐の"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 390,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: コーンスープ → 鮭の粕汁"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: かじきのバター醤油ソテー → 鮭の塩焼き・クラムチャウダー →"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 3,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 4,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": []
+ },
+ {
+  "ver": "v153",
+  "test": "milk-with-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 5,
+  "under": "alg-toggle:milk",
+  "dy": 26,
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: たらこスパゲッティ → 肉うどん・にんじんのグラッセ → 里芋"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Niku "
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Salmo"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Japan"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 3,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Stir-"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 4,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Sword"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "wheat-with-egg",
+  "W": 320,
+  "ui": "en",
+  "rep": 5,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Chinj"
+  ]
+ }
+]

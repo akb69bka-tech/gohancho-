@@ -1,0 +1,5536 @@
+[
+ {
+  "ver": "v160",
+  "cc": "JP",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 64,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "JP",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "JP",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "ankakeyakisoba"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gomokutakikomi"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "curry"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ankakeyakisoba"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ankakeyakisoba"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 6,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "US",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 18,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "US",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "US",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "us_primavera",
+     "us_sweetpotato_stew"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_veg_chili"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_burrito_bowl"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_veg_chili"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_lentil_joes"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "GB",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "GB",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "GB",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "gb_barley_stew",
+     "gb_cauli_potato_curry",
+     "gb_lentil_pie",
+     "gb_red_dal",
+     "gb_jacket_beans_corn"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_red_dal",
+     "gb_barley_stew",
+     "gb_jacket_beans_corn",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_red_dal",
+     "gb_barley_stew",
+     "gb_jacket_beans_corn",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_barley_stew",
+     "gb_red_dal",
+     "gb_jacket_beans_corn",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_red_dal",
+     "gb_barley_stew",
+     "gb_lentil_pie",
+     "gb_jacket_beans_corn"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "FR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 30,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "FR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "FR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "DE",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "DE",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "DE",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "de_bratkartoffeln_pilze",
+     "de_kartoffelgulasch",
+     "de_kuerbis_linsen_curry",
+     "de_weisse_bohnen_eintopf"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_weisse_bohnen_eintopf",
+     "de_linseneintopf_veg"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_linseneintopf_veg",
+     "de_kuerbis_linsen_curry"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_linseneintopf_veg",
+     "de_bratkartoffeln_pilze",
+     "de_weisse_bohnen_eintopf"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_bratkartoffeln_pilze",
+     "de_kartoffelgulasch",
+     "de_kuerbis_linsen_curry",
+     "de_linseneintopf_veg"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 3,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "IT",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 23,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "IT",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "IT",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ES",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ES",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ES",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_garbanzos_espinacas",
+     "es_paella_verduras",
+     "es_lentejas_verduras",
+     "es_alubias_estofadas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_paella_verduras",
+     "es_alubias_estofadas",
+     "es_garbanzos_espinacas",
+     "es_lentejas_verduras"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_paella_verduras",
+     "es_alubias_estofadas",
+     "es_garbanzos_espinacas",
+     "es_lentejas_verduras"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_paella_verduras",
+     "es_alubias_estofadas",
+     "es_lentejas_verduras",
+     "es_garbanzos_espinacas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_paella_verduras",
+     "es_pisto_pan",
+     "es_garbanzos_espinacas",
+     "es_alubias_estofadas",
+     "es_lentejas_verduras"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "PL",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 15,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PL",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PL",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "pl_fasolka_wege",
+     "pl_pierogi_kapusta",
+     "pl_gulasz_soczewica",
+     "pl_golabki_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_fasolka_wege",
+     "pl_pierogi_kapusta",
+     "pl_gulasz_soczewica",
+     "pl_golabki_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_fasolka_wege",
+     "pl_golabki_wege",
+     "pl_pierogi_kapusta",
+     "pl_gulasz_soczewica"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_gulasz_soczewica",
+     "pl_fasolka_wege",
+     "pl_golabki_wege",
+     "pl_pierogi_kapusta"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_gulasz_soczewica",
+     "pl_golabki_wege",
+     "pl_pierogi_kapusta",
+     "pl_fasolka_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "TR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 20,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "tr_domatesli_bulgur",
+     "tr_nohutlu_pilav",
+     "tr_turlu"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_domatesli_bulgur",
+     "tr_turlu"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_domatesli_bulgur",
+     "tr_turlu",
+     "tr_nohutlu_pilav"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_turlu",
+     "tr_nohutlu_pilav",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_turlu",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "EG",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 21,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "EG",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "EG",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_bessara"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_koshari",
+     "eg_mahshi",
+     "eg_bessara"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_koshari",
+     "eg_mahshi",
+     "eg_bessara"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_bessara",
+     "eg_mahshi",
+     "eg_koshari"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_bessara"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "IN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "IN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "IN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "in_hakkanoodles",
+     "in_vegkurma",
+     "in_lemonrice",
+     "in_soyacurry",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_lemonrice",
+     "in_chole",
+     "in_vegkurma",
+     "in_hakkanoodles",
+     "in_soyacurry"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_lemonrice",
+     "in_vegkurma",
+     "in_chole",
+     "in_hakkanoodles",
+     "in_soyacurry"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_vegkurma",
+     "in_soyacurry",
+     "in_lemonrice",
+     "in_chole",
+     "in_hakkanoodles"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_lemonrice",
+     "in_soyacurry",
+     "in_vegkurma",
+     "in_hakkanoodles",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "CN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 27,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "CN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "CN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "cn_di_san_xian",
+     "cn_congyou_banmian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_di_san_xian",
+     "cn_congyou_banmian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "TW",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TW",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TW",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_majiangmian",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_digua_zhou",
+     "tw_majiangmian"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_majiangmian",
+     "tw_chao_mifen",
+     "tw_digua_zhou"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_majiangmian",
+     "tw_chao_mifen",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_digua_zhou",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "KR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "KR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "KR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TH",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 29,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TH",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "TH",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 6,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "VN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 46,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "VN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 9,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "VN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ID",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ID",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "ID",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "id_bacem",
+     "id_sayur_lodeh_v"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_bacem",
+     "id_sayur_lodeh_v"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_tempe_orek",
+     "id_bacem"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_bacem",
+     "id_tempe_orek"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_sayur_lodeh_v",
+     "id_bacem"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "PH",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PH",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PH",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_lumpiang_gulay_v",
+     "ph_ginisang_munggo_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_lumpiang_gulay_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_ginisang_munggo_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_lumpiang_gulay_v",
+     "ph_pancit_gulay"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_ginisang_munggo_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v160",
+  "cc": "MX",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 29,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "MX",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "MX",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "BR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "BR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 14,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "BR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PE",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 16,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PE",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v160",
+  "cc": "PE",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_estofado_quinua",
+     "pe_pallares",
+     "pe_tacu_tacu"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_lentejas",
+     "pe_estofado_quinua",
+     "pe_pallares"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_estofado_quinua",
+     "pe_lentejas",
+     "pe_tacu_tacu"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_tacu_tacu",
+     "pe_saltado_verduras",
+     "pe_pallares",
+     "pe_lentejas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_lentejas",
+     "pe_estofado_quinua",
+     "pe_pallares"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 3,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "JP",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 64,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "JP",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "JP",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "ankakeyakisoba"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "curry"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "chikuzen"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ankakeyakisoba"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "curry"
+    ],
+    "note": true,
+    "noteText": "食の決まり・苦手などの条件と糖質ひかえめの両方に合う主菜が少ないため、ごはん・めん・いもの主菜も出ます",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 6,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "US",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 18,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "US",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "US",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "us_primavera",
+     "us_sweetpotato_stew"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_burrito_bowl"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_burrito_bowl"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_lentil_joes"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "us_primavera",
+     "us_burrito_bowl"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "GB",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "GB",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "GB",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_barley_stew",
+     "gb_lentil_pie",
+     "gb_jacket_beans_corn",
+     "gb_red_dal"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_barley_stew",
+     "gb_red_dal",
+     "gb_jacket_beans_corn",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_barley_stew",
+     "gb_cauli_potato_curry",
+     "gb_jacket_beans_corn",
+     "gb_red_dal",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_barley_stew",
+     "gb_red_dal",
+     "gb_lentil_pie",
+     "gb_jacket_beans_corn"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "gb_cauli_potato_curry",
+     "gb_barley_stew",
+     "gb_red_dal",
+     "gb_jacket_beans_corn",
+     "gb_lentil_pie"
+    ],
+    "note": true,
+    "noteText": "Few main dishes fit both your food rules or dislikes and “Lower carb”, so main dishes with rice, noodles or potatoes wil",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "FR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 30,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "FR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "FR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "DE",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "DE",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "DE",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_weisse_bohnen_eintopf",
+     "de_linseneintopf_veg"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_weisse_bohnen_eintopf",
+     "de_linseneintopf_veg"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_bratkartoffeln_pilze",
+     "de_kartoffelgulasch",
+     "de_kuerbis_linsen_curry",
+     "de_weisse_bohnen_eintopf"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_linseneintopf_veg",
+     "de_kuerbis_linsen_curry"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "de_kartoffelgulasch",
+     "de_bratkartoffeln_pilze",
+     "de_kuerbis_linsen_curry",
+     "de_linseneintopf_veg"
+    ],
+    "note": true,
+    "noteText": "Es gibt nur wenige Hauptgerichte, die zu deinen Essensregeln und Abneigungen und zugleich zu „Weniger Kohlenhydrate“ pas",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 3,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "IT",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 23,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "IT",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "IT",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ES",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ES",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ES",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "es_alubias_estofadas",
+     "es_paella_verduras",
+     "es_pisto_pan",
+     "es_garbanzos_espinacas",
+     "es_lentejas_verduras"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_paella_verduras",
+     "es_garbanzos_espinacas",
+     "es_lentejas_verduras",
+     "es_alubias_estofadas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_lentejas_verduras",
+     "es_paella_verduras",
+     "es_alubias_estofadas",
+     "es_garbanzos_espinacas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_pisto_pan",
+     "es_lentejas_verduras",
+     "es_paella_verduras",
+     "es_alubias_estofadas",
+     "es_garbanzos_espinacas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "es_lentejas_verduras",
+     "es_pisto_pan",
+     "es_alubias_estofadas",
+     "es_paella_verduras",
+     "es_garbanzos_espinacas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "PL",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 15,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PL",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PL",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "pl_fasolka_wege",
+     "pl_golabki_wege",
+     "pl_gulasz_soczewica",
+     "pl_pierogi_kapusta"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_fasolka_wege",
+     "pl_gulasz_soczewica",
+     "pl_pierogi_kapusta",
+     "pl_golabki_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_gulasz_soczewica",
+     "pl_fasolka_wege",
+     "pl_pierogi_kapusta",
+     "pl_golabki_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_gulasz_soczewica",
+     "pl_golabki_wege",
+     "pl_pierogi_kapusta",
+     "pl_fasolka_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pl_gulasz_soczewica",
+     "pl_fasolka_wege",
+     "pl_pierogi_kapusta",
+     "pl_golabki_wege"
+    ],
+    "note": true,
+    "noteText": "Niewiele dań głównych pasuje jednocześnie do Twoich zasad żywienia lub unikanych produktów i do trybu „Mniej węglowodanó",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "TR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 20,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "tr_domatesli_bulgur",
+     "tr_turlu",
+     "tr_nohutlu_pilav"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_turlu",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_turlu",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_turlu",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tr_nohutlu_pilav",
+     "tr_turlu",
+     "tr_domatesli_bulgur"
+    ],
+    "note": true,
+    "noteText": "Hem beslenme kurallarınıza veya sevmediğiniz yiyeceklere hem de “Daha az karbonhidrat” moduna uyan ana yemek az olduğu i",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "EG",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 21,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "EG",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "EG",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_bessara"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_koshari"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_koshari"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_koshari"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "eg_ful_medames_v",
+     "eg_mahshi",
+     "eg_koshari"
+    ],
+    "note": true,
+    "noteText": "الأطباق الرئيسية التي تناسب قيودك الغذائية والأطعمة التي تتجنبها ونمط «كربوهيدرات أقل» معًا قليلة، لذلك ستظهر أيضًا أطبا",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "IN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 19,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "IN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "IN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "in_hakkanoodles",
+     "in_lemonrice",
+     "in_soyacurry",
+     "in_vegkurma",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_soyacurry",
+     "in_lemonrice",
+     "in_hakkanoodles",
+     "in_vegkurma",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_vegkurma",
+     "in_soyacurry",
+     "in_lemonrice",
+     "in_chole",
+     "in_hakkanoodles"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_hakkanoodles",
+     "in_soyacurry",
+     "in_vegkurma",
+     "in_lemonrice",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "in_vegkurma",
+     "in_hakkanoodles",
+     "in_soyacurry",
+     "in_lemonrice",
+     "in_chole"
+    ],
+    "note": true,
+    "noteText": "आपके खान-पान के नियमों या नापसंद चीज़ों और “कम कार्ब”, दोनों से मेल खाने वाले मुख्य व्यंजन कम हैं, इसलिए चावल, नूडल्स या",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 2,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "CN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 27,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "CN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "CN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "cn_di_san_xian",
+     "cn_congyou_banmian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "cn_congyou_banmian",
+     "cn_di_san_xian"
+    ],
+    "note": true,
+    "noteText": "同时符合饮食规定、忌口等条件和“少碳水”的主菜较少，因此也会出现米饭、面条或土豆类的主菜",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "TW",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TW",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TW",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_su_lurou_fan",
+     "tw_digua_zhou"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_digua_zhou",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_digua_zhou",
+     "tw_majiangmian",
+     "tw_chao_mifen"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_digua_zhou",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "tw_chao_mifen",
+     "tw_majiangmian",
+     "tw_su_lurou_fan"
+    ],
+    "note": true,
+    "noteText": "同時符合飲食規定、忌口等條件和「少醣」的主菜較少，因此也會出現米飯、麵條或馬鈴薯類的主菜",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "KR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "KR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "KR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TH",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 29,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TH",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "TH",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "th_khao_pad_pak"
+    ],
+    "note": true,
+    "noteText": "มีกับข้าวจานหลักที่เข้ากับข้อจำกัดด้านอาหารหรือของที่ไม่กิน และ“คาร์บน้อย”พร้อมกันไม่มาก จึงจะมีจานหลักที่มีข้าว เส้น หร",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 6,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "VN",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 46,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "VN",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 9,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "VN",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 8,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ID",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 17,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ID",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "ID",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "id_gado_gado_vegan",
+     "id_bacem"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_tempe_orek",
+     "id_bacem"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_gado_gado_vegan",
+     "id_tempe_orek"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_gado_gado_vegan",
+     "id_tempe_orek"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "id_bacem",
+     "id_gado_gado_vegan"
+    ],
+    "note": true,
+    "noteText": "Hanya sedikit hidangan utama yang cocok dengan aturan makan atau pantangan Anda sekaligus “Rendah karbohidrat”, jadi hid",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 5,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "PH",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PH",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PH",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_ginisang_munggo_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_lumpiang_gulay_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_lumpiang_gulay_v",
+     "ph_pancit_gulay"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_lumpiang_gulay_v",
+     "ph_pancit_gulay"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "ph_ginataang_kalabasa_v",
+     "ph_pancit_gulay",
+     "ph_lumpiang_gulay_v"
+    ],
+    "note": true,
+    "noteText": "Kaunti ang ulam na pasok sa iyong mga patakaran sa pagkain o iniiwasan at sa “Mas kaunting carbs”, kaya lalabas din ang ",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 4,
+  "fewNote": true
+ },
+ {
+  "ver": "v159",
+  "cc": "MX",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 29,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "MX",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 13,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "MX",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "BR",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 25,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "BR",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 14,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "BR",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PE",
+  "dk": "none",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 16,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PE",
+  "dk": "vegi",
+  "runs": [
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   },
+   {
+    "heavy": [],
+    "note": false,
+    "noteText": null,
+    "weekShown": true
+   }
+  ],
+  "fewMains": 7,
+  "fewNote": false
+ },
+ {
+  "ver": "v159",
+  "cc": "PE",
+  "dk": "vegan",
+  "runs": [
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_lentejas",
+     "pe_estofado_quinua",
+     "pe_tacu_tacu"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_estofado_quinua",
+     "pe_saltado_verduras",
+     "pe_tacu_tacu",
+     "pe_pallares"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_tacu_tacu",
+     "pe_lentejas",
+     "pe_pallares"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_saltado_verduras",
+     "pe_tacu_tacu",
+     "pe_lentejas",
+     "pe_estofado_quinua"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   },
+   {
+    "heavy": [
+     "pe_estofado_quinua",
+     "pe_saltado_verduras",
+     "pe_tacu_tacu",
+     "pe_lentejas"
+    ],
+    "note": true,
+    "noteText": "Hay pocos platos principales que encajen a la vez con tus restricciones o alimentos que evitas y con «Menos carbohidrato",
+    "weekShown": true
+   }
+  ],
+  "fewMains": 3,
+  "fewNote": true
+ }
+]

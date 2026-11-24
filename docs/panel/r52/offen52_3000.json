@@ -1,0 +1,322 @@
+[
+ {
+  "ver": "v151",
+  "id": "N009",
+  "cc": "JP",
+  "ui": "vi",
+  "lang0": "vi",
+  "sw": true,
+  "off0": {
+   "lang": "vi",
+   "kana": 0,
+   "sample": "Thực đơn hôm nay Cho 2 người · Tự động ▾ Món chính Gà chiên giòn sốt hành Đổi Mó",
+   "dishes": 4
+  },
+  "off1": {
+   "lang": "vi",
+   "kana": 0,
+   "sample": "Thực đơn hôm nay Cho 2 người · Tự động ▾ Món chính Gà chiên giòn sốt hành Đổi Mó",
+   "dishes": 4
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N009",
+  "cc": "JP",
+  "ui": "vi",
+  "lang0": "vi",
+  "sw": true,
+  "off0": {
+   "lang": "vi",
+   "kana": 0,
+   "sample": "Thực đơn hôm nay Cho 2 người · Tự động ▾ Món chính Gà chiên giòn sốt hành Đổi Mó",
+   "dishes": 4
+  },
+  "off1": {
+   "lang": "vi",
+   "kana": 0,
+   "sample": "Thực đơn hôm nay Cho 2 người · Tự động ▾ Món chính Gà chiên giòn sốt hành Đổi Mó",
+   "dishes": 4
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N020",
+  "cc": "KR",
+  "ui": "ko",
+  "lang0": "ko",
+  "sw": true,
+  "off0": {
+   "lang": "ko",
+   "kana": 0,
+   "sample": "오늘의 식단 2인분 · 자동 ▾ 메인 채소 볶음밥 바꾸기 반찬 두부부침 바꾸기 반찬 소고기장조림 바꾸기 새 식단 반찬 멸치볶음 바꾸기 국 삼계탕",
+   "dishes": 5
+  },
+  "off1": {
+   "lang": "ko",
+   "kana": 0,
+   "sample": "오늘의 식단 2인분 · 자동 ▾ 메인 채소 볶음밥 바꾸기 반찬 두부부침 바꾸기 반찬 소고기장조림 바꾸기 새 식단 반찬 멸치볶음 바꾸기 국 삼계탕",
+   "dishes": 5
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N020",
+  "cc": "KR",
+  "ui": "ko",
+  "lang0": "ko",
+  "sw": true,
+  "off0": {
+   "lang": "ko",
+   "kana": 0,
+   "sample": "오늘의 식단 2인분 · 자동 ▾ 메인 채소 볶음밥 바꾸기 반찬 두부부침 바꾸기 반찬 소고기장조림 바꾸기 새 식단 반찬 멸치볶음 바꾸기 국 삼계탕",
+   "dishes": 5
+  },
+  "off1": {
+   "lang": "ko",
+   "kana": 0,
+   "sample": "오늘의 식단 2인분 · 자동 ▾ 메인 채소 볶음밥 바꾸기 반찬 두부부침 바꾸기 반찬 소고기장조림 바꾸기 새 식단 반찬 멸치볶음 바꾸기 국 삼계탕",
+   "dishes": 5
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N033",
+  "cc": "JP",
+  "ui": "zh-Hant",
+  "lang0": "zh-Hant",
+  "sw": true,
+  "off0": {
+   "lang": "zh-Hant",
+   "kana": 0,
+   "sample": "今日菜單 2人份 · 自動 ▾ 主菜 油淋鶏 更換 配菜 Kabocha no nimono 更換 配菜 Garlic chive and egg stir-f",
+   "dishes": 4
+  },
+  "off1": {
+   "lang": "zh-Hant",
+   "kana": 0,
+   "sample": "今日菜單 2人份 · 自動 ▾ 主菜 油淋鶏 更換 配菜 Kabocha no nimono 更換 配菜 Garlic chive and egg stir-f",
+   "dishes": 4
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N033",
+  "cc": "JP",
+  "ui": "zh-Hant",
+  "lang0": "zh-Hant",
+  "sw": true,
+  "off0": {
+   "lang": "zh-Hant",
+   "kana": 0,
+   "sample": "今日菜單 2人份 · 自動 ▾ 主菜 油淋鶏 更換 配菜 Kabocha no nimono 更換 配菜 Garlic chive and egg stir-f",
+   "dishes": 4
+  },
+  "off1": {
+   "lang": "zh-Hant",
+   "kana": 0,
+   "sample": "今日菜單 2人份 · 自動 ▾ 主菜 油淋鶏 更換 配菜 Kabocha no nimono 更換 配菜 Garlic chive and egg stir-f",
+   "dishes": 4
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N043",
+  "cc": "JP",
+  "ui": "zh-Hans",
+  "lang0": "zh-Hans",
+  "sw": true,
+  "off0": {
+   "lang": "zh-Hans",
+   "kana": 0,
+   "sample": "今日菜单 2人份 · 10分钟内 ▾ 主菜10分钟 Pork and kimchi stir-fry 更换 配菜10分钟 Moyashi namul 更换 换个",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "zh-Hans",
+   "kana": 0,
+   "sample": "今日菜单 2人份 · 10分钟内 ▾ 主菜10分钟 Pork and kimchi stir-fry 更换 配菜10分钟 Moyashi namul 更换 换个",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N043",
+  "cc": "JP",
+  "ui": "zh-Hans",
+  "lang0": "zh-Hans",
+  "sw": true,
+  "off0": {
+   "lang": "zh-Hans",
+   "kana": 0,
+   "sample": "今日菜单 2人份 · 10分钟内 ▾ 主菜10分钟 Pork and kimchi stir-fry 更换 配菜10分钟 Moyashi namul 更换 换个",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "zh-Hans",
+   "kana": 0,
+   "sample": "今日菜单 2人份 · 10分钟内 ▾ 主菜10分钟 Pork and kimchi stir-fry 更换 配菜10分钟 Moyashi namul 更换 换个",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N048",
+  "cc": "JP",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N048",
+  "cc": "JP",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N060",
+  "cc": "JP",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N060",
+  "cc": "JP",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Pork and kimchi stir-fry Swap ",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N069",
+  "cc": "GB",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Steak sandwich Swap Side10 min",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Steak sandwich Swap Side10 min",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N069",
+  "cc": "GB",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Steak sandwich Swap Side10 min",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Steak sandwich Swap Side10 min",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v151",
+  "id": "N081",
+  "cc": "US",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Sausage and peppers skillet Sw",
+   "dishes": 3
+  },
+  "off1": {
+   "lang": "en",
+   "kana": 0,
+   "sample": "Today's menu Serves 2 · Under 10 min ▾ Main10 min Sausage and peppers skillet Sw",
+   "dishes": 3
+  }
+ },
+ {
+  "ver": "v150",
+  "id": "N081",
+  "cc": "US",
+  "ui": "en",
+  "lang0": "en",
+  "sw": true,
+  "off0": {
+   "lang": "ja",
+   "kana": 3,
+   "sample": "読みこみ中…",
+   "dishes": 0
+  },
+  "off1": {
+   "lang": "ja",
+   "kana": 3,
+   "sample": "読みこみ中…",
+   "dishes": 0
+  }
+ }
+]

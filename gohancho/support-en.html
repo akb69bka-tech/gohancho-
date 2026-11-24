@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gohancho Support</title>
 <style>
-:root{--bg:#eef1f4;--fg:#172033;--muted:#5b6679;--accent:#22406b;--line:#d4dbe4;--card:#fff}
-@media (prefers-color-scheme: dark){:root{--bg:#10151d;--fg:#e6eaf0;--muted:#94a1b3;--accent:#9dbbe6;--line:#2c3746;--card:#18202b;color-scheme:dark}}
+:root{--bg:#fbf5ec;--fg:#3a2a1f;--muted:#756354;--accent:#a84a1b;--line:#eadccb;--card:#fff}
+@media (prefers-color-scheme: dark){:root{--bg:#1d1814;--fg:#f6ece0;--muted:#c2ae9b;--accent:#f08a5c;--line:#43372d;--card:#2a231d;color-scheme:dark}}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.8;padding-inline:16px}
 main{max-width:680px;margin:0 auto;padding-block:28px 60px}
 h1{font-size:1.4rem;margin:0 0 4px} h2{font-size:1.05rem;margin:28px 0 8px;color:var(--accent)}
 details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
-summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(--muted);font-size:.85rem}
+h3{font-size:.98rem;margin:20px 0 8px} summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(--muted);font-size:.85rem}
 </style>
 </head>
 <body>
@@ -19,19 +19,64 @@ summary{cursor:pointer;font-weight:700} p,li{font-size:.95rem} .muted{color:var(
 <h1>Gohancho Support</h1>
 <p class="muted">A meal planner that suggests a complete home-cooked dinner from your country's everyday dishes.</p>
 
+<!--
+  R212（ui51）・オーナー決定（2026-11-23）: index.html の PLAN.billingMode は 'native'。課金は iPhone アプリ版だけ（登録した最初の1か月は無料、次の月から月額300円）。Web 版は無料のまま。
+  ・data-billing="paid" … 課金ありのときの質問（billingMode が 'native' か 'all' のときに見せる）。月額だけの方針に合わせ、年額・「年の縛り」の文は書かない（年額は確認まとめ85で確認中）
+  ・data-billing="free" … 全員無料（billingMode 'off'）のときの質問。消さずに hidden で残している。
+    同じ「料金はかかりますか？」が2つ並んで見えないよう（読み上げ・リーダー表示・CSS なしの表示でも）、<template> に入れてページの中身から外している（2026-11-23 オーナー指摘）
+  ・data-billing なし … どちらでも見せる（機種変更のときの記録の移し方など）
+  billingMode を 'off' に戻すとき: paid に hidden を付け、free を <template> から出して hidden を外す（support-en.html も同じ）。
+  tools/tests/ui51.mjs が、billingMode とこのページの出し分けが合っているかを確かめる
+  11/24（オーナー回答82B・86B）: iPhone 版も Web 版も課金モデル（最初の1か月無料・その後 月額300円）。<span data-presale> は販売前のいまの動きの説明。
+  App Store に申請するとき（RevenueCat のキーを入れるとき）に、この span を消す（Web 版は Web の課金を始めるときに書きかえる）。
+-->
 <h2>Frequently asked questions</h2>
-<details><summary>Will it keep suggesting the same dishes?</summary><p>When you save a plan or tap "Made today", dishes you made within the set number of days (10 by default) are left out, and the App avoids repeating yesterday's meat or fish. You can change the number of days in Settings (the gear icon).</p></details>
-<details><summary>How do I change my country or language?</summary><p>Open Settings and choose your country or region. The screen language follows your country; you can also choose a language in Settings.</p></details>
+<p class="muted">If your question is not here, contact us below. Button and field names match the App's English screens.</p>
+<h3>Price and cancelling</h3>
+<template data-billing-off><details data-billing="free" hidden><summary>Does it cost anything?</summary><p>Gohancho is currently free for everyone. There are no fees, and you can use every feature.</p></details></template>
+<details data-billing="paid"><summary>Does it cost anything?</summary><p>Gohancho is used with a paid plan, Gohancho Plus (both the iPhone app and the web version). Your first month after you subscribe is free; after that, the monthly price applies (JPY 300 a month in Japan; in the App Store, the price shown for your country), renewing automatically. Apple handles payment in the iPhone app, and a payment company handles payment in the web version. <span data-presale>While sales are being prepared, every feature of the iPhone app and the web version is free (we will post here when sales start).</span></p></details>
+<details data-billing="paid"><summary>When does billing start?</summary><p>Billing starts when your free month ends. It renews automatically unless you cancel at least 24 hours before the end of the period, and payment is charged to your Apple Account.</p></details>
+<details data-billing="paid"><summary>How do I cancel Gohancho Plus?</summary><p>On your iPhone, open Settings → your name → Subscriptions → Gohancho, and tap Cancel Subscription. While subscribed, you can also open it from "Manage or cancel plan" on the Gohancho Plus screen in the App. After cancelling, you can use it until the end of the period.</p></details>
+<details data-billing="paid"><summary>Can I use only the free month and stop?</summary><p>Yes. Cancel at least 24 hours before the free month ends and you will not be charged.</p></details>
+<details data-billing="paid"><summary>Will my records be deleted if I cancel?</summary><p>No. Your records and settings stay on this device.</p></details>
+<details data-billing="paid"><summary>What happens if I don't continue after the free month?</summary><p>If you do not continue after the free month, the menu screens can no longer be used. You can still save your records to a file with "Export your log".</p></details>
+<details data-billing="paid"><summary>I want a refund</summary><p>Payments and refunds are handled by Apple. Please use Apple's "Report a Problem".</p></details>
+<details data-billing="paid"><summary>I got a new phone. What about my purchase?</summary><p>Sign in with the same Apple Account and tap "Restore purchases" in the App on your new iPhone. To move your meal history, see "I got a new phone. How do I move my data?" below.</p></details>
+<details><summary>What is the difference between the web version and the iPhone app? Does it work on Android?</summary><p>The web version runs in a browser. The price is the same as the iPhone app (first month free, then monthly; how to pay and cancel on the web will be added here when sales start). Purchases in the iPhone app and the web version are separate. On Android or a computer, use the web version (you can add it to your home screen with "Add to Home Screen" in Settings › Plan &amp; more). Daily reminders (notifications) and automatic reading of fridge and flyer photos work in the iPhone app. There is no Android app.</p></details>
+<h3>Data and new phones</h3>
+<details><summary>Where is my data stored?</summary><p>Only on your device. There is no account, and your records are not sent anywhere. Dish photos are also stored only on your device. See the <a href="privacy-en.html">Privacy Policy</a> for details.</p></details>
+<details><summary>I got a new phone. How do I move my data?</summary><p>Your history, favourites and settings are stored only on this device. On your old phone, open Settings › Data and tap "Save as file". On the new phone, open the same Settings › Data, tap "Move or back up your data" to open it, then tap "Load from file" inside it and choose that file. You can also copy the text in that box and paste it into the same box on the new phone. Photos (your own dish photos and album) are not moved. If the App is set to another language, the buttons show in that language: "Save as file" is the first button under Data, and "Load from file" is inside the box below it.</p></details>
+<details><summary>Can my family see the same menu on their phones?</summary><p>There is no automatic sync between devices. You can send the menu or shopping list with "Send to family".</p></details>
+<details><summary>Do I need an account or personal information?</summary><p>No. You can use the App without entering your name or email.</p></details>
+<details><summary>How do I delete all data?</summary><p>Open Settings › Data › "Move or back up your data", then tap "Erase all data" and "Erase everything". This removes records, favourites, ingredients, settings and dish photos (your photos and album), and cannot be undone. The date your free trial started and your purchase status are kept (purchases are managed by the App Store), so that the free trial cannot be started again on the same device.</p></details>
+<h3>Allergies and diets</h3>
+<details><summary>Will allergens always be removed?</summary><p>The App checks ingredient names against the allergens you chose and avoids dishes that don't fit. This is a guide based on ingredient names, not a guarantee. For processed foods (stock, roux, seasonings), check the package label where you see 🔍. If you have a severe allergy, always follow the ingredient label and your doctor's advice.</p></details>
+<details><summary>Can I set allergies for each family member?</summary><p>Yes. In Settings › Family &amp; allergies, tap "Add a family member" and choose that person's allergies. When a dish doesn't suit someone, the App tells you.</p></details>
+<details><summary>Which allergens can I choose?</summary><p>43 groups, including Japan's 9 mandatory and 20 recommended allergens and the groups used in other countries.</p></details>
+<details><summary>Can it follow halal, vegetarian or vegan diets?</summary><p>Yes, with "Pick a whole diet at once" in Settings › Avoid &amp; diet. It removes dishes that may not fit, as a guide, not a guarantee. Vegetarian does not remove eggs or dairy; tap "Also no eggs" or "Also no dairy" if needed.</p></details>
+<details><summary>I have disliked foods or allergies</summary><p>When you choose ingredients you avoid in Settings, the App swaps them for another ingredient when the dish allows it (e.g. pork → chicken). Dishes that cannot be swapped are left out. If you have allergies, always check the ingredients of seasonings and processed foods yourself.</p></details>
+<h3>Sharing with family</h3>
+<details><summary>Can I send the menu or shopping list to my family?</summary><p>Yes, with the send button under today's menu or this week's mains. Depending on your country, a LINE button (Japan, Thailand, Taiwan) or a WhatsApp button (such as the UK, France, Germany, Brazil and India) appears. "Send with another app" and "Copy" also work.</p></details>
+<details><summary>I don't see a LINE or WhatsApp button</summary><p>In some countries, such as China, Korea, the US, the Philippines, Poland and Vietnam, no button for a specific app appears. Use "Send with another app" to pick your messaging app, or "Copy" and paste the text into it.</p></details>
+<h3>Using the App</h3>
+<details><summary>Will it keep suggesting the same dishes?</summary><p>When you save a plan or tap "Made today", dishes you made within the set number of days (10 by default) are left out, and the same meat, fish or cuisine as the day before is avoided. You can change the number of days in Settings › Menus.</p></details>
+<details><summary>I want to change just one dish</summary><p>Tap "Swap" on the dish and pick from the suggestions. After a menu is decided, the App asks first and changes only that dish.</p></details>
+<details><summary>How do I change the number of people or dishes?</summary><p>People: Settings › Family &amp; allergies › "Servings" (1–15). Dishes: "Usual number of dishes" in Settings › Menus, or "Options" on today's menu.</p></details>
+<details><summary>Where do I make a menu for the whole week?</summary><p>Scroll down on today's menu to "This week's mains", open it and tap "Plan my week".</p></details>
+<details><summary>How does the shopping list work?</summary><p>When you decide a menu, a list of things to buy appears. Tap "Have it" for items you already have. You can sort "By dish" or "By aisle".</p></details>
+<details><summary>Some ingredients are hard to find near me</summary><p>Add them under hard-to-find ingredients in Settings › Avoid &amp; diet, and dishes that use them will not be suggested.</p></details>
+<details><summary>How do I make the text bigger?</summary><p>In Settings › Display, choose "Text size": Normal, Large or Extra large. You can also choose it on the first screen.</p></details>
+<details><summary>Can I use it without a signal?</summary><p>Open the App once with a connection. The App and your country's recipes are then saved on your device and open without a signal. Browsing other countries' dishes or changing the language may need a connection.</p></details>
+<details><summary>Can I use it in other languages?</summary><p>Yes, 18 languages. Change it in Settings › Display.</p></details>
+<details><summary>Can it read the recipe aloud?</summary><p>Yes. Use "Hands-free" on the recipe screen to hear the steps. Tap "Next step" to hear the next one.</p></details>
+<details><summary>Can I get daily reminders?</summary><p>Yes, in the iPhone app: choose a time for "Daily reminder" in Settings › Plan &amp; more. With a weekly plan, it tells you the day's main dish and main ingredients. Allow notifications in iPhone Settings → Gohancho → Notifications.</p></details>
+<details><summary>I want to cut down on carbs or salt</summary><p>In Settings › Modes, choose "Lower carb" or "Low-salt mode (show salt guide)". These change how dishes are chosen and show guides.</p></details>
 <details><summary>Can I see recipes from other countries?</summary><p>Yes. Tap "World recipes" at the bottom and pick a country. Your daily meal plans stay based on your own country.</p></details>
-<details><summary>How do I send the plan to my family?</summary><p>Tap the send button under today's meal or the weekly plan. The App opens the messaging app most used in your country (or the share sheet) so you can pick who to send it to.</p></details>
-<details><summary>I have disliked foods or allergies</summary><p>Dishes using ingredients you choose under "Ingredients to avoid" in Settings are never suggested. If you have allergies, always check the ingredients of seasonings and processed foods yourself.</p></details>
-<details><summary>How does the free trial work?</summary><p>Start the monthly plan and your first month is free. When the free month ends, your Apple Account is charged the monthly price and it renews each month automatically, unless you cancel at least 24 hours before the trial ends. There is no yearly commitment; cancel anytime. The free trial is available to new subscribers only. Subscribers who stay a full year are offered a special yearly price in the app.</p></details>
-<details><summary>How do I cancel Gohancho Plus?</summary><p>On your iPhone, open Settings → your name → Subscriptions → Gohancho, and tap Cancel Subscription. The monthly plan has no yearly commitment.</p></details>
-<details><summary>I got a new phone. What about my purchase?</summary><p>Sign in with the same Apple Account and tap "Restore purchases" in Settings. You can move your meal history with "Move or back up your data" in Settings.</p></details>
-<details><summary>About the dish illustrations</summary><p>Each dish has an original illustration built into the App, so it shows even offline. You can also replace it with your own photo (stored only on your device).</p></details>
+<details><summary>About the dish illustrations</summary><p>The dish pictures are AI-generated images; the actual dish and plating will look different. They are built into the App, so they show even offline. You can also replace it with your own photo (stored only on your device).</p></details>
 
 <h2>Contact</h2>
-<p>Email [contact email address] with your device model, iOS version and a description of the problem.</p>
+<p>Operator: Wagaya no Gohancho (わが家のご飯帖 運営)</p>
+<p>Please write to the <a href="https://github.com/akb69bka-tech/gohancho-/issues/1" target="_blank" rel="noopener">Gohancho support desk on GitHub (Issue #1)</a>, with your device model, iOS (or browser) version and a description of the problem. You need a free GitHub account to post. Everything you write there is public, so do not include personal information such as your name, address or email.</p>
 <p><a href="privacy-en.html">Privacy Policy</a> · <a href="support.html">日本語</a></p>
 </main>
 </body>

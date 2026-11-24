@@ -1,0 +1,987 @@
+[
+ {
+  "case": "DE/en",
+  "v0": "v154",
+  "cook0": "de_kuerbis_linsen_curry,de_fischsuppe",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "de_kuerbis_linsen_curry,de_fischsuppe"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "de_kuerbis_linsen_curry,de_fischsuppe"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 17,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "de.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "en",
+   "cc": "DE",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "de_kuerbis_linsen_curry,de_fischsuppe",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087708942,
+    "menu": 1795087709799
+   },
+   "wh": [
+    "mwngvfms7qt",
+    "mwngvfvcufx",
+    "mwngvh2zg18",
+    "mwngvhqs4ee",
+    "mwngvol8i9v",
+    "mwngvv6lgg5"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "JP/ja",
+  "v0": "v154",
+  "cook0": "ajihimono,cabbagemiso",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "ajihimono,cabbagemiso"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "ajihimono,cabbagemiso"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 19,
+    "idx": "v155",
+    "en": null,
+    "packs": [],
+    "i18n": []
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "ja",
+   "cc": "JP",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "ajihimono,cabbagemiso",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087732180,
+    "menu": 1795087732984
+   },
+   "wh": [
+    "mwngvxlub78",
+    "mwngvz0gyaq",
+    "mwngvzmurzn",
+    "mwngw6fygg1",
+    "mwngwd2gfib"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "EG/ar",
+  "v0": "v154",
+  "cook0": "eg_shawarmafirakh,eg_qar3",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "eg_shawarmafirakh,eg_qar3"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "eg_shawarmafirakh,eg_qar3"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 19,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "eg.js?v=v155",
+     "i18n/eg.ar.js?v=v155"
+    ],
+    "i18n": [
+     "ar.js?v=v155",
+     "en.js?v=v155",
+     "eg.ar.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "ar",
+   "cc": "EG",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "eg_shawarmafirakh,eg_qar3",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087758232,
+    "menu": 1795087762142
+   },
+   "wh": [
+    "mwngwfew25g",
+    "mwngwfno698",
+    "mwngwj4537u",
+    "mwngwm4q2zg",
+    "mwngwt21u5q",
+    "mwngwzoytyl"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "MX/es",
+  "v0": "v154",
+  "cook0": "mx_camaronesajo,mx_sopa_flor",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "mx_camaronesajo,mx_sopa_flor"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "mx_camaronesajo,mx_sopa_flor"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 20,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "mx.js?v=v155",
+     "i18n/mx.es.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155",
+     "es.js?v=v155",
+     "mx.es.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "es",
+   "cc": "MX",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "mx_camaronesajo,mx_sopa_flor",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087784842,
+    "menu": 1795087785681
+   },
+   "wh": [
+    "mwngx2728fr",
+    "mwngx2fhul9",
+    "mwngx3na3fs",
+    "mwngx4al3wo",
+    "mwngxb7qn44",
+    "mwngxhvw9ug"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "KR/ko",
+  "v0": "v154",
+  "cook0": "kr_chadolsukju,kr_eomuktang",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "kr_chadolsukju,kr_eomuktang"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "kr_chadolsukju,kr_eomuktang"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 22,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "kr.js?v=v155",
+     "i18n/kr.ko.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155",
+     "ko.js?v=v155",
+     "kr.ko.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "ko",
+   "cc": "KR",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "kr_chadolsukju,kr_eomuktang",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087811040,
+    "menu": 1795087814936
+   },
+   "wh": [
+    "mwngxkgemii",
+    "mwngxkpbgj3",
+    "mwngxnv1epv",
+    "mwngxqv9osq",
+    "mwngxxsiadq",
+    "mwngy4dtm2s"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "US/auto",
+  "v0": "v154",
+  "cook0": "us_garlicshrimp,us_mashed,us_stuffedpepper",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "us_garlicshrimp,us_mashed,us_stuffedpepper"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "us_garlicshrimp,us_mashed,us_stuffedpepper"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 19,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "us.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "en",
+   "cc": "US",
+   "menu": 3,
+   "ja": [],
+   "pack": null,
+   "cook": "us_garlicshrimp,us_mashed,us_stuffedpepper",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087837499,
+    "menu": 1795087838325
+   },
+   "wh": [
+    "mwngy6u8pe7",
+    "mwngy72todt",
+    "mwngy8a0h1r",
+    "mwngy8wxgdn",
+    "mwngyfugf9j",
+    "mwngymekrj0"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "TH/th",
+  "v0": "v154",
+  "cook0": "th_kaiphadkhing,th_tomklong",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "th_kaiphadkhing,th_tomklong"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "@pork,@alcohol",
+   "staples": "塩,こしょう",
+   "alg": "egg",
+   "fam": 1,
+   "mood": "all",
+   "diet": false,
+   "cook": "th_kaiphadkhing,th_tomklong"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 22,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "th.js?v=v155",
+     "i18n/th.th.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155",
+     "th.js?v=v155",
+     "th.th.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "th",
+   "cc": "TH",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "th_kaiphadkhing,th_tomklong",
+   "alg": [
+    "egg"
+   ],
+   "fam": 1,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087860787,
+    "menu": 1795087861667
+   },
+   "wh": [
+    "mwngyotccul",
+    "mwngyp27589",
+    "mwngyq8w2hx",
+    "mwngyqxcez5",
+    "mwngyxvdau4",
+    "mwngz4i7iiu"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [
+    "egg"
+   ],
+   "fam": 1
+  },
+  "delsAfter": [
+   "a:egg",
+   "f:f1"
+  ],
+  "afterReload": {
+   "v": "v155",
+   "dels": [
+    "a:egg",
+    "f:f1"
+   ],
+   "alg": [],
+   "fam": 0,
+   "export": true,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "JP/ja",
+  "v0": "v154",
+  "cook0": "chikuzen,cabbagemiso",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "",
+   "staples": "塩,こしょう",
+   "alg": "",
+   "fam": 0,
+   "mood": "all",
+   "diet": false,
+   "cook": "chikuzen,cabbagemiso"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "",
+   "staples": "塩,こしょう",
+   "alg": "",
+   "fam": 0,
+   "mood": "all",
+   "diet": false,
+   "cook": "chikuzen,cabbagemiso"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 18,
+    "idx": "v155",
+    "en": null,
+    "packs": [],
+    "i18n": []
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "ja",
+   "cc": "JP",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "chikuzen,cabbagemiso",
+   "alg": [],
+   "fam": 0,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087884500,
+    "menu": 1795087885324
+   },
+   "wh": [
+    "mwngz6ziayt",
+    "mwngz7d1vaw",
+    "mwngz8jlp6r",
+    "mwngz96g443",
+    "mwngzg313ch",
+    "mwngzmo5wyk"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [],
+   "fam": 0
+  },
+  "delsAfter": [],
+  "afterReload": {
+   "v": "v155",
+   "dels": [],
+   "alg": [],
+   "fam": 0,
+   "export": false,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ },
+ {
+  "case": "FR/fr",
+  "v0": "v154",
+  "cook0": "fr_omelette,fr_vermicelle",
+  "v1": "v155",
+  "newLook": {
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "",
+   "staples": "塩,こしょう",
+   "alg": "",
+   "fam": 0,
+   "mood": "all",
+   "diet": false,
+   "cook": "fr_omelette,fr_vermicelle"
+  },
+  "keys": [
+   "gohancho-v155"
+  ],
+  "v2": "v155",
+  "newLook2": {
+   "v": "v155",
+   "sheet": null,
+   "hint": false,
+   "algHint": false,
+   "onb": true,
+   "sv": 4,
+   "dc": 3,
+   "avoid": "",
+   "staples": "塩,こしょう",
+   "alg": "",
+   "fam": 0,
+   "mood": "all",
+   "diet": false,
+   "cook": "fr_omelette,fr_vermicelle"
+  },
+  "cache": {
+   "gohancho-v155": {
+    "n": 22,
+    "idx": "v155",
+    "en": null,
+    "packs": [
+     "fr.js?v=v155",
+     "i18n/fr.fr.js?v=v155"
+    ],
+    "i18n": [
+     "en.js?v=v155",
+     "fr.js?v=v155",
+     "fr.fr.js?v=v155"
+    ]
+   }
+  },
+  "enNew": 203085,
+  "enOld": 202871,
+  "off": {
+   "v": "v155",
+   "lang": "fr",
+   "cc": "FR",
+   "menu": 2,
+   "ja": [],
+   "pack": null,
+   "cook": "fr_omelette,fr_vermicelle",
+   "alg": [],
+   "fam": 0,
+   "bad": 0,
+   "notes": ""
+  },
+  "cookSame": true,
+  "mtAfterUpd": {
+   "mt": {
+    "day.2026-11-19": 1795087908056,
+    "menu": 1795087908907
+   },
+   "wh": [
+    "mwngzp7rjw",
+    "mwngzpih7oo",
+    "mwngzqpyrya",
+    "mwngzrdk2nv",
+    "mwngzyalpkl",
+    "mwnh04vqv2h"
+   ]
+  },
+  "lsBeforeDel": {
+   "dels": null,
+   "alg": [],
+   "fam": 0
+  },
+  "delsAfter": [],
+  "afterReload": {
+   "v": "v155",
+   "dels": [],
+   "alg": [],
+   "fam": 0,
+   "export": false,
+   "exportMt": false,
+   "lsMt": true,
+   "lsWh": true
+  },
+  "errs": []
+ }
+]

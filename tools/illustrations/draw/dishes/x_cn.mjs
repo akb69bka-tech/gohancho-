@@ -1307,18 +1307,6 @@ export default {
         ].join('');
     },
 
-    // 莲藕排骨汤: 砂锅に、ほんのり紫がかった澄んだスープ、ほくほくの蓮根の厚切りとスペアリブ、青ねぎ
-    cn_lianou_paigu: p => [
-        xcnClayPot(p),
-        xcnBroth(p, 74, '#d8c0aa', { op: .92 }),
-        ...[[100, 70, 10], [136, 108, -30], [66, 112, 40], [104, 138, 70], [70, 76, 0]].map(([x, y, r]) => K.lotus(p, x, y, 36, r, { c: '#dcc0b4' })),
-        ...[[128, 74, 20], [100, 104, -40], [70, 144, 100], [140, 140, 160], [48, 96, -70]].map(([x, y, r], i) => xcnRib(p, x, y, 32, r, { c: '#b88a6a', seed: i })),
-        `<circle cx="100" cy="100" r="74" fill="#e2cdb8" opacity=".14"/>`,
-        xcnOil(p, 100, 100, 130, { n: 10, c: '#f2d27a', op: .5, rmax: 1.8 }),
-        xcnScallions(p, 100, 100, 110, { n: 16 }),
-        xcnShine(100, 100, 74, .35),
-    ].join(''),
-
     // 鲫鱼豆腐汤: ミルクのように白いスープに、こんがり煎った鲫鱼一尾、豆腐、青ねぎと香菜
     cn_jiyu_doufu: p => [
         xcnGlazeBowl(p, { R: 94, glaze: '#f2eee4', inside: '#faf8f2', lip: .88 }),

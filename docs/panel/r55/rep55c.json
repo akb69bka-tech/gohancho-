@@ -1,0 +1,678 @@
+[
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: オムライス → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: お好み焼き → タンドリーチキン"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: さばの味噌煮 → 鮭のちゃんちゃん焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: クリームシチュー → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 筑前煮 → さんまの塩焼き"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 焼肉 → 豚バラとキャベツの塩炒め"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Squid"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Brocc"
+  ]
+ },
+ {
+  "ver": "v154",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 2,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Japan"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:crab",
+  "dy": -52,
+  "alg": [
+   "egg",
+   "crab"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-egg",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": -52,
+  "alg": [],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました アレルギー対策から「卵」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-wheat",
+  "W": 390,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「小麦」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "off-milk",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": null,
+  "dy": -78,
+  "alg": [
+   "egg",
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "アレルギー対策から「乳（牛乳・乳製品）」を外しました 元に戻す"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: オムライス → 鶏むね肉のねぎ塩焼き"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: トマトと卵のスープ → 呉汁"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 320,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:egg",
+  "dy": 52,
+  "alg": [
+   "wheat",
+   "egg"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭の塩焼き → タンドリーチキン"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 0,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 鮭のムニエル → さんまの塩焼き・かぼちゃのポタージュ → じ"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 1,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 寄せ鍋 → 豚バラとキャベツの塩炒め・きのこのバター醤油炒め "
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-wheat",
+  "W": 195,
+  "ui": "ja",
+  "rep": 2,
+  "under": "alg-toggle:wheat",
+  "dy": 0,
+  "alg": [
+   "wheat"
+  ],
+  "tips": 0,
+  "toast": [
+   "設定に合わせて、まだ決めていない今日の献立をかえました: 酸辣湯 → トマトと卵のスープ"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 0,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Buri "
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 1,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": [
+   "Updated today's undecided menu to match your settings: Teppa"
+  ]
+ },
+ {
+  "ver": "v153",
+  "test": "on-soy",
+  "W": 320,
+  "ui": "en",
+  "rep": 2,
+  "under": "alg-toggle:soy",
+  "dy": 0,
+  "alg": [
+   "soy"
+  ],
+  "tips": 0,
+  "toast": []
+ }
+]

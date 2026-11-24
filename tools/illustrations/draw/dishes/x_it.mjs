@@ -973,19 +973,6 @@ export default {
             K.sprinkle(p, 100, 100, 26, { c: '#fff', n: 10, r: .8 }), xitPepper(p, 100, 100, 26, 10),
         ].join('');
     },
-    // insalata di carote: yellow bowl of finely julienned raw carrot, parsley, lemon wedge, oil
-    it_carote: p => [
-        xitBowl(p, '#e0b23a'),
-        `<circle cx="100" cy="100" r="70" fill="#e8742a" opacity=".9"/>`,
-        `<g ${p.sh(.5)}>`,
-        K.shreds(p, 100, 100, 120, { c: '#ef7f30', n: 60, w: 2.6, len: .32, seed: 1 }),
-        K.shreds(p, 100, 100, 100, { c: '#f59a42', n: 40, w: 2.4, len: .3, seed: 2 }),
-        `</g>`,
-        xitParsley(p, 100, 100, 110, { n: 34 }),
-        xitOil(p, 100, 100, 100, { n: 6, op: .45 }),
-        xitLemonWedge(p, 138, 128, 34, -40),
-    ].join(''),
-
     // insalata di fagioli e cipolla rossa: speckled borlotti, red onion, tuna flakes, parsley, oil
     it_borlotti: p => {
         const R = rng(p.id + 'bt');
@@ -1388,15 +1375,4 @@ export default {
         xitArc(76, .45),
     ].join(''),
 
-    // passato di verdure: smooth golden-green vegetable purée, olive oil, Parmigiano, croutons, parsley
-    it_passatoverdure: p => [
-        xitBowl(p, '#b9472f'),
-        K.liquid(p, { R: 76, c: '#c6a242', op: 1, shine: false }),
-        `<circle cx="94" cy="92" r="50" fill="#d8b85a" opacity=".45"/>`,
-        xitOilLine(p, [[60, 96], [80, 78], [108, 76], [130, 92], [124, 118], [100, 122], [92, 104]], { c: '#a8a020', w: 2.6 }),
-        xitCrouton(p, 126, 124, 13, 20), xitCrouton(p, 140, 106, 12, -20), xitCrouton(p, 112, 140, 12, 40),
-        K.sprinkle(p, 100, 100, 70, { c: '#fbf3d2', n: 24, r: 1.1 }),
-        xitArc(76, .45),
-        xitParsley(p, 100, 100, 90, { n: 18 }),
-    ].join(''),
 };

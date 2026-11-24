@@ -1,0 +1,1076 @@
+[
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "カレー",
+  "tFirst": 387,
+  "tDone": 935,
+  "cards": 54,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり",
+   "ほかの国からも見つかりました",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・洋食 カレーライス 40分 2人分 豚肉 主な食材 豚肉・じゃがいも・玉ねぎ おすすめの理由 まだ作ったことのない料理です この料理に含まれる主"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "ハンバーグ",
+  "tFirst": 516,
+  "tDone": 925,
+  "cards": 36,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "スープ",
+  "tFirst": 391,
+  "tDone": 800,
+  "cards": 48,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 汁物・中華 春雨スープ 15分 2人分 豚肉 主な食材 春雨・しいたけ・にんじん おすすめの理由 まだ作ったことのない料理です 目安15分で作れます こ"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "ムサカ",
+  "tFirst": 410,
+  "tDone": 815,
+  "cards": 22,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・エジプト メサアア（揚げなすのトマト煮・エジプト風ムサカ） مسقعة 60分 2人分 主な食材 なす・ピーマン・トマト おすすめの理由 まだ作っ"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "シャクシュカ",
+  "tFirst": 508,
+  "tDone": 916,
+  "cards": 18,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 副菜・トルコ シャクシュカ（揚げなすのトマトソースあえ） Şakşuka 40分 2人分 主な食材 なす・ピーマン・ししとう・トマト おすすめの理由 ま"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "ぱすた",
+  "tFirst": 380,
+  "tDone": 788,
+  "cards": 48,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 麺・和食 きのこの和風パスタ 15分 2人分 ハム・ベーコン 主な食材 スパゲッティ・しめじ おすすめの理由 まだ作ったことのない料理です 目安15分で"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "はんばーぐ",
+  "tFirst": 515,
+  "tDone": 929,
+  "cards": 36,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "カツ",
+  "tFirst": 352,
+  "tDone": 759,
+  "cards": 48,
+  "visible": 5,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・和食 かつ丼 35分 2人分 豚肉 主な食材 豚肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なアレルゲン "
+ },
+ {
+  "W": 360,
+  "ui": "ja",
+  "q": "ほげほげ",
+  "tFirst": 405,
+  "tDone": 809,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "「ほげほげ」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "curry",
+  "tFirst": 659,
+  "tDone": 1065,
+  "cards": 40,
+  "visible": 6,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Western Curry rice 40 min Serves 2 Pork Main ingredients Pork,"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "hamburger",
+  "tFirst": 397,
+  "tDone": 801,
+  "cards": 26,
+  "visible": 6,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main Cheeseburgers 25 min Serves 2 Ground meat Main ingredients Ground bee"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "soup",
+  "tFirst": 378,
+  "tDone": 783,
+  "cards": 40,
+  "visible": 6,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Soup Lentil soup 50 min Serves 2 Tofu & beans Main ingredients Lentils, Ca"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "moussaka",
+  "tFirst": 352,
+  "tDone": 755,
+  "cards": 22,
+  "visible": 6,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Türkiye Patlıcan musakka Aubergine moussaka with mince 60 min Serve"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "shakshuka",
+  "tFirst": 392,
+  "tDone": 796,
+  "cards": 18,
+  "visible": 5,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Egypt Egyptian shakshuka شكشوكة 25 min Serves 2 Eggs Main ingredien"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "pho",
+  "tFirst": 133,
+  "tDone": 535,
+  "cards": 24,
+  "visible": 6,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles · Vietnam Phở gà Chicken pho 40 min Serves 2 Chicken Main ingredie"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "katsu",
+  "tFirst": 425,
+  "tDone": 829,
+  "cards": 20,
+  "visible": 5,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Japanese Katsudon (pork cutlet and egg rice bowl) 35 min Serve"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "lasagne",
+  "tFirst": 307,
+  "tDone": 710,
+  "cards": 18,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles Lasagna 90 min Serves 2 Ground meat Main ingredients Pasta, Ground"
+ },
+ {
+  "W": 360,
+  "ui": "en",
+  "q": "qwerty",
+  "tFirst": 448,
+  "tDone": 851,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "No dish named “qwerty” was found. Try another spelling or the English name. To search by ingredient, use the “Fridge” ta",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "カレー",
+  "tFirst": 436,
+  "tDone": 999,
+  "cards": 54,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり",
+   "ほかの国からも見つかりました",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・洋食 カレーライス 40分 2人分 豚肉 主な食材 豚肉・じゃがいも・玉ねぎ おすすめの理由 まだ作ったことのない料理です この料理に含まれる主"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "ハンバーグ",
+  "tFirst": 550,
+  "tDone": 956,
+  "cards": 36,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "スープ",
+  "tFirst": 387,
+  "tDone": 790,
+  "cards": 48,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 汁物・中華 春雨スープ 15分 2人分 豚肉 主な食材 春雨・しいたけ・にんじん おすすめの理由 まだ作ったことのない料理です 目安15分で作れます こ"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "ムサカ",
+  "tFirst": 415,
+  "tDone": 819,
+  "cards": 22,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・エジプト メサアア（揚げなすのトマト煮・エジプト風ムサカ） مسقعة 60分 2人分 主な食材 なす・ピーマン・トマト おすすめの理由 まだ作っ"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "シャクシュカ",
+  "tFirst": 497,
+  "tDone": 901,
+  "cards": 18,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 副菜・トルコ シャクシュカ（揚げなすのトマトソースあえ） Şakşuka 40分 2人分 主な食材 なす・ピーマン・ししとう・トマト おすすめの理由 ま"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "ぱすた",
+  "tFirst": 392,
+  "tDone": 798,
+  "cards": 48,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 麺・和食 きのこの和風パスタ 15分 2人分 ハム・ベーコン 主な食材 スパゲッティ・しめじ おすすめの理由 まだ作ったことのない料理です 目安15分で"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "はんばーぐ",
+  "tFirst": 510,
+  "tDone": 914,
+  "cards": 36,
+  "visible": 1,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "カツ",
+  "tFirst": 338,
+  "tDone": 745,
+  "cards": 48,
+  "visible": 2,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・和食 かつ丼 35分 2人分 豚肉 主な食材 豚肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なアレルゲン "
+ },
+ {
+  "W": 195,
+  "ui": "ja",
+  "q": "ほげほげ",
+  "tFirst": 410,
+  "tDone": 814,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "「ほげほげ」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "curry",
+  "tFirst": 724,
+  "tDone": 1132,
+  "cards": 40,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Western Curry rice 40 min Serves 2 Pork Main ingredients Pork,"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "hamburger",
+  "tFirst": 646,
+  "tDone": 1053,
+  "cards": 26,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main Cheeseburgers 25 min Serves 2 Ground meat Main ingredients Ground bee"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "soup",
+  "tFirst": 185,
+  "tDone": 587,
+  "cards": 40,
+  "visible": 0,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Soup Lentil soup 50 min Serves 2 Tofu & beans Main ingredients Lentils, Ca"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "moussaka",
+  "tFirst": 346,
+  "tDone": 749,
+  "cards": 22,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Türkiye Patlıcan musakka Aubergine moussaka with mince 60 min Serve"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "shakshuka",
+  "tFirst": 388,
+  "tDone": 790,
+  "cards": 18,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Egypt Egyptian shakshuka شكشوكة 25 min Serves 2 Eggs Main ingredien"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "pho",
+  "tFirst": 336,
+  "tDone": 742,
+  "cards": 24,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles · Vietnam Phở gà Chicken pho 40 min Serves 2 Chicken Main ingredie"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "katsu",
+  "tFirst": 220,
+  "tDone": 623,
+  "cards": 20,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Japanese Katsudon (pork cutlet and egg rice bowl) 35 min Serve"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "lasagne",
+  "tFirst": 302,
+  "tDone": 705,
+  "cards": 18,
+  "visible": 1,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles Lasagna 90 min Serves 2 Ground meat Main ingredients Pasta, Ground"
+ },
+ {
+  "W": 195,
+  "ui": "en",
+  "q": "qwerty",
+  "tFirst": 260,
+  "tDone": 663,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "No dish named “qwerty” was found. Try another spelling or the English name. To search by ingredient, use the “Fridge” ta",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "カレー",
+  "tFirst": 375,
+  "tDone": 886,
+  "cards": 54,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり",
+   "ほかの国からも見つかりました",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・洋食 カレーライス 40分 2人分 豚肉 主な食材 豚肉・じゃがいも・玉ねぎ おすすめの理由 まだ作ったことのない料理です この料理に含まれる主"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "ハンバーグ",
+  "tFirst": 501,
+  "tDone": 906,
+  "cards": 36,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "スープ",
+  "tFirst": 394,
+  "tDone": 797,
+  "cards": 48,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 汁物・中華 春雨スープ 15分 2人分 豚肉 主な食材 春雨・しいたけ・にんじん おすすめの理由 まだ作ったことのない料理です 目安15分で作れます こ"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "ムサカ",
+  "tFirst": 412,
+  "tDone": 821,
+  "cards": 22,
+  "visible": 2,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・エジプト メサアア（揚げなすのトマト煮・エジプト風ムサカ） مسقعة 60分 2人分 主な食材 なす・ピーマン・トマト おすすめの理由 まだ作っ"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "シャクシュカ",
+  "tFirst": 491,
+  "tDone": 893,
+  "cards": 18,
+  "visible": 2,
+  "heads": [
+   "その料理",
+   "世界の似た料理"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 副菜・トルコ シャクシュカ（揚げなすのトマトソースあえ） Şakşuka 40分 2人分 主な食材 なす・ピーマン・ししとう・トマト おすすめの理由 ま"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "ぱすた",
+  "tFirst": 383,
+  "tDone": 789,
+  "cards": 48,
+  "visible": 3,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 麺・和食 きのこの和風パスタ 15分 2人分 ハム・ベーコン 主な食材 スパゲッティ・しめじ おすすめの理由 まだ作ったことのない料理です 目安15分で"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "はんばーぐ",
+  "tFirst": 551,
+  "tDone": 955,
+  "cards": 36,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる 主菜・洋食 ハンバーグ 30分 2人分 ひき肉 主な食材 合いびき肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なア"
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "カツ",
+  "tFirst": 347,
+  "tDone": 754,
+  "cards": 48,
+  "visible": 4,
+  "heads": [
+   "その料理",
+   "世界の似た料理",
+   "ひとひねり"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "閉じる ごはん・和食 かつ丼 35分 2人分 豚肉 主な食材 豚肉・玉ねぎ・卵 おすすめの理由 まだ作ったことのない料理です この料理に含まれる主なアレルゲン "
+ },
+ {
+  "W": 320,
+  "ui": "ja",
+  "q": "ほげほげ",
+  "tFirst": 410,
+  "tDone": 815,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "「ほげほげ」という名前の料理は見つかりませんでした。ひらがな・カタカナ・英語の名前でも試せます。材料の名前でさがすときは「材料から」のタブへ",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "curry",
+  "tFirst": 652,
+  "tDone": 1056,
+  "cards": 40,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Western Curry rice 40 min Serves 2 Pork Main ingredients Pork,"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "hamburger",
+  "tFirst": 391,
+  "tDone": 792,
+  "cards": 26,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main Cheeseburgers 25 min Serves 2 Ground meat Main ingredients Ground bee"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "soup",
+  "tFirst": 194,
+  "tDone": 607,
+  "cards": 40,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Soup Lentil soup 50 min Serves 2 Tofu & beans Main ingredients Lentils, Ca"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "moussaka",
+  "tFirst": 345,
+  "tDone": 748,
+  "cards": 22,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Türkiye Patlıcan musakka Aubergine moussaka with mince 60 min Serve"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "shakshuka",
+  "tFirst": 598,
+  "tDone": 1003,
+  "cards": 18,
+  "visible": 3,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Main · Egypt Egyptian shakshuka شكشوكة 25 min Serves 2 Eggs Main ingredien"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "pho",
+  "tFirst": 353,
+  "tDone": 759,
+  "cards": 24,
+  "visible": 4,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles · Vietnam Phở gà Chicken pho 40 min Serves 2 Chicken Main ingredie"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "katsu",
+  "tFirst": 424,
+  "tDone": 831,
+  "cards": 20,
+  "visible": 3,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Rice dish · Japanese Katsudon (pork cutlet and egg rice bowl) 35 min Serve"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "lasagne",
+  "tFirst": 305,
+  "tDone": 710,
+  "cards": 18,
+  "visible": 3,
+  "heads": [
+   "This dish",
+   "Similar dishes around the world"
+  ],
+  "none": null,
+  "hid": null,
+  "first": "",
+  "hscroll": false,
+  "opened": "Close Noodles Lasagna 90 min Serves 2 Ground meat Main ingredients Pasta, Ground"
+ },
+ {
+  "W": 320,
+  "ui": "en",
+  "q": "qwerty",
+  "tFirst": 262,
+  "tDone": 666,
+  "cards": 0,
+  "visible": 0,
+  "heads": [],
+  "none": "No dish named “qwerty” was found. Try another spelling or the English name. To search by ingredient, use the “Fridge” ta",
+  "hid": null,
+  "first": null,
+  "hscroll": false
+ },
+ {
+  "diet": "halal",
+  "ui": "ja",
+  "cand": {
+   "q": "スープ",
+   "id": "fr_poiscasses",
+   "omit": [
+    "燻製ベーコン（ラルドン）"
+   ],
+   "stepMention": false
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "燻製ベーコン（ラルドン） は入れません（なくても作れます）"
+  }
+ },
+ {
+  "diet": "halal",
+  "ui": "en",
+  "cand": {
+   "q": "スープ",
+   "id": "harusamesoup",
+   "omit": [
+    "Ground pork"
+   ],
+   "stepMention": false
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "Leave out Ground pork (the dish works without it)"
+  }
+ },
+ {
+  "diet": "vegi",
+  "ui": "ja",
+  "cand": {
+   "q": "スープ",
+   "id": "fr_poiscasses",
+   "omit": [
+    "燻製ベーコン（ラルドン）"
+   ],
+   "stepMention": false
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "燻製ベーコン（ラルドン） は入れません（なくても作れます）"
+  }
+ },
+ {
+  "diet": "vegi",
+  "ui": "en",
+  "cand": {
+   "q": "スープ",
+   "id": "consomme",
+   "omit": [
+    "Bacon"
+   ],
+   "stepMention": true
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "Leave out Bacon (the dish works without it)"
+  }
+ },
+ {
+  "diet": "vegan",
+  "ui": "ja",
+  "cand": {
+   "q": "スープ",
+   "id": "us_zucchinisoup",
+   "omit": [
+    "粉チーズ（パルメザン）"
+   ],
+   "stepMention": false
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "粉チーズ（パルメザン） は入れません（なくても作れます）"
+  }
+ },
+ {
+  "diet": "vegan",
+  "ui": "en",
+  "cand": {
+   "q": "スープ",
+   "id": "consomme",
+   "omit": [
+    "Bacon"
+   ],
+   "stepMention": true
+  },
+  "detail": {
+   "omitLine": true,
+   "stepNote": true,
+   "sample": "Leave out Bacon (the dish works without it)"
+  }
+ }
+]

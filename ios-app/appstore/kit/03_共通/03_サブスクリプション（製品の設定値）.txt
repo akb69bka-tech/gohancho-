@@ -1,25 +1,19 @@
+オーナー決定（2026-11-23・確認まとめ82 B）: 課金ありで出す。最初の1か月無料、その後 月額300円の自動更新。今回審査に出すのは月額の1つだけ。
+
 サブスクリプショングループ: ご飯帖プラス（英語: Gohancho Plus）
 
 [月額]
 参照名: ご飯帖プラス 月額
 製品 ID: gohancho_plus_monthly
 期間: 1か月
-価格（日本）: 380円
-お試しオファー: 無料トライアル 1か月（新規の利用者・すべての国）
-表示名（日本語）: ご飯帖プラス ／ 説明: 献立・買い物メモ・世界のレシピが使えます
-Display name (English): Gohancho Plus / Description: Meal plans, shopping lists and world recipes
+価格（日本）: 300円（基準の国: 日本。ほかの国は Apple の自動の価格）
+お試しオファー: 無料トライアル 1か月（新規の利用者・配信するすべての国）
+表示名（日本語）: ご飯帖プラス 月額 ／ 説明: 献立・買い物メモ・世界のレシピが使えます
+Display name (English): Gohancho Plus Monthly / Description: Meal plans, shopping lists and world recipes
 審査メモ: Monthly plan with 1-month free trial.
 
-[年額（1年ありがとう価格）]
-参照名: ご飯帖プラス 年額（1年ありがとう価格）
-製品 ID: gohancho_plus_yearly_loyal
-期間: 1年
-価格（日本）: 3,500円
-お試しオファー: なし
-表示名（日本語）: ご飯帖プラス 年額 ／ 説明: 1年つづけてくださった方への特別価格です
-Display name (English): Gohancho Plus Yearly / Description: Special price for members of one year or more
-審査メモ: Shown in the app only to users subscribed for 12+ months.
+[年額]  ※保留（確認まとめ85でオーナーに確認中）。決まるまでは作らない・審査に出さない。決まったら、ここに製品の設定値を書き足す
 
 [RevenueCat]
-Entitlement: plus
-Offering: current（Current にする）。Package: $rc_monthly = 月額、$rc_annual = 年額
+Entitlement: plus（今回は月額を Attach。年額を作ったら、それも Attach）
+Offering: current（Current にする）。Package: $rc_monthly = 月額（年額を作ったら $rc_annual を足す）

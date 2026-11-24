@@ -543,15 +543,4 @@ export default {
         wsShine('M44,88 A58,58 0 0 1 76,46', 2, .45),
     ].join(''),
 
-    // crema de calabacin: white bowl, pale green creamy soup with a swirl of oil, croutons and black pepper
-    es_crema: p => [
-        wsBowl(p, '#3e7a5a', '#f6f3ea'),
-        K.liquid(p, { R: 72, c: '#b8c876', op: 1 }),
-        `<circle cx="100" cy="100" r="56" fill="#c8d488" opacity=".4"/>`,
-        `<path d="M78,100 Q78,80 100,80 Q122,80 122,100 Q122,116 104,116 Q90,116 90,102 Q90,92 100,92" stroke="#efe6b0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/>`,
-        `<path d="M78,100 Q78,80 100,80 Q122,80 122,100 Q122,116 104,116 Q90,116 90,102 Q90,92 100,92" stroke="#d9b83a" stroke-width="1" fill="none" stroke-linecap="round" opacity=".6"/>`,
-        wsCrouton(p, 132, 118, 10, 20), wsCrouton(p, 124, 132, 9, -10), wsCrouton(p, 142, 102, 9, 40), wsCrouton(p, 66, 74, 9, 30),
-        K.sprinkle(p, 100, 100, 90, { c: '#2a2420', n: 30, r: .7 }),
-        wsShine('M44,88 A58,58 0 0 1 76,46', 2, .45),
-    ].join(''),
 };

@@ -1,0 +1,770 @@
+[
+ {
+  "ver": "v160",
+  "ui": "en",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "slices | Ham Glass noodle salad 3 slices Buy Have it"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Buy Have it",
+   "Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "Gyoza wrappers Pan-fried gyoza 24 Buy Have it",
+   "Glass noodles (harusame) Glass noodle salad 40 g Buy Have it"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Buy Have it",
+   "Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "Gyoza wrappers Pan-fried gyoza 24 Buy Have it"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "zh-Hans",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g 买 家里有",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 颗 买 家里有",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 把 买 家里有",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 买 家里有",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g 买 家里有"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g 买 家里有",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 颗 买 家里有",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 把 买 家里有",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 买 家里有"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "zh-Hant",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g 買 家裡有",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 顆 買 家裡有",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 把 買 家裡有",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 買 家裡有",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g 買 家裡有"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g 買 家裡有",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 顆 買 家裡有",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 把 買 家裡有",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 買 家裡有"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "ko",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "돼지고기 다짐육 군만두 (교자) 150 g 사기 집에 있음",
+   "양배추 군만두 (교자) 1/4 통 사기 집에 있음",
+   "부추 군만두 (교자) 1/2 단 사기 집에 있음",
+   "만두피 군만두 (교자) 24 사기 집에 있음",
+   "당면 당면 샐러드 40 g 사기 집에 있음"
+  ],
+  "sample": [
+   "돼지고기 다짐육 군만두 (교자) 150 g 사기 집에 있음",
+   "양배추 군만두 (교자) 1/4 통 사기 집에 있음",
+   "부추 군만두 (교자) 1/2 단 사기 집에 있음",
+   "만두피 군만두 (교자) 24 사기 집에 있음"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "vi",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "thịt heo xay Há cảo áp chảo (gyoza) 150 g Mua Có rồi",
+   "bắp cải Há cảo áp chảo (gyoza) 1/4 bắp Mua Có rồi",
+   "hẹ Há cảo áp chảo (gyoza) 1/2 bó Mua Có rồi",
+   "vỏ há cảo (gyoza) Há cảo áp chảo (gyoza) 24 Mua Có rồi",
+   "miến Salad miến 40 g Mua Có rồi"
+  ],
+  "sample": [
+   "thịt heo xay Há cảo áp chảo (gyoza) 150 g Mua Có rồi",
+   "bắp cải Há cảo áp chảo (gyoza) 1/4 bắp Mua Có rồi",
+   "hẹ Há cảo áp chảo (gyoza) 1/2 bó Mua Có rồi",
+   "vỏ há cảo (gyoza) Há cảo áp chảo (gyoza) 24 Mua Có rồi"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "pt-BR",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Comprar Tenho",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 unidade Comprar Tenho",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 maço Comprar Tenho",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Comprar Tenho",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Comprar Tenho"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Comprar Tenho",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 unidade Comprar Tenho",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 maço Comprar Tenho",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Comprar Tenho"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "fil",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Bilhin Mayroon",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 ulo Bilhin Mayroon",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 tali Bilhin Mayroon",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Bilhin Mayroon",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Bilhin Mayroon"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Bilhin Mayroon",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 ulo Bilhin Mayroon",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 tali Bilhin Mayroon",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Bilhin Mayroon"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "id",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Beli Ada",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 buah Beli Ada",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 ikat Beli Ada",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Beli Ada",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Beli Ada"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Beli Ada",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 buah Beli Ada",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 ikat Beli Ada",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Beli Ada"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "es",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 pan-fried gyoza（焼き餃子） 150 g Comprar Lo tengo",
+   "Cabbage キャベツ pan-fried gyoza（焼き餃子） 1/4 pieza Comprar Lo tengo",
+   "Garlic chives ニラ pan-fried gyoza（焼き餃子） 1/2 manojo Comprar Lo tengo",
+   "Gyoza wrappers 餃子の皮 pan-fried gyoza（焼き餃子） 24 Comprar Lo tengo",
+   "Glass noodles (harusame) 春雨 glass noodle salad（春雨サラダ） 40 g Comprar Lo tengo"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 pan-fried gyoza（焼き餃子） 150 g Comprar Lo tengo",
+   "Cabbage キャベツ pan-fried gyoza（焼き餃子） 1/4 pieza Comprar Lo tengo",
+   "Garlic chives ニラ pan-fried gyoza（焼き餃子） 1/2 manojo Comprar Lo tengo",
+   "Gyoza wrappers 餃子の皮 pan-fried gyoza（焼き餃子） 24 Comprar Lo tengo"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "th",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "หมูบด เกี๊ยวซ่าทอด 150 g ซื้อ มีแล้ว",
+   "กะหล่ำปลี เกี๊ยวซ่าทอด 1/4 หัว ซื้อ มีแล้ว",
+   "กุยช่าย เกี๊ยวซ่าทอด 1/2 กำ ซื้อ มีแล้ว",
+   "แผ่นเกี๊ยวซ่า เกี๊ยวซ่าทอด 24 ซื้อ มีแล้ว",
+   "วุ้นเส้น ยำวุ้นเส้นแบบญี่ปุ่น 40 g ซื้อ มีแล้ว"
+  ],
+  "sample": [
+   "หมูบด เกี๊ยวซ่าทอด 150 g ซื้อ มีแล้ว",
+   "กะหล่ำปลี เกี๊ยวซ่าทอด 1/4 หัว ซื้อ มีแล้ว",
+   "กุยช่าย เกี๊ยวซ่าทอด 1/2 กำ ซื้อ มีแล้ว",
+   "แผ่นเกี๊ยวซ่า เกี๊ยวซ่าทอด 24 ซื้อ มีแล้ว"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "hi",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） खरीदें घर पर है",
+   "bunch | Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） खरीदें घर पर है",
+   "slices | Ham ハム Glass noodle salad（春雨サラダ） 3 slices（枚） खरीदें घर पर है"
+  ],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g खरीदें घर पर है",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） खरीदें घर पर है",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） खरीदें घर पर है",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 खरीदें घर पर है",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g खरीदें घर पर है"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g खरीदें घर पर है",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） खरीदें घर पर है",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） खरीदें घर पर है",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 खरीदें घर पर है"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "fr",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Acheter J’en ai",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 tête Acheter J’en ai",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 botte Acheter J’en ai",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Acheter J’en ai",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Acheter J’en ai"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Acheter J’en ai",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 tête Acheter J’en ai",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 botte Acheter J’en ai",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Acheter J’en ai"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "de",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Kaufen Vorhanden",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 Kopf Kaufen Vorhanden",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 Bund Kaufen Vorhanden",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Kaufen Vorhanden",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Kaufen Vorhanden"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Kaufen Vorhanden",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 Kopf Kaufen Vorhanden",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 Bund Kaufen Vorhanden",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Kaufen Vorhanden"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "it",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Compra Ce l’ho",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 cespo Compra Ce l’ho",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 mazzetto Compra Ce l’ho",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Compra Ce l’ho",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Compra Ce l’ho"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Compra Ce l’ho",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 cespo Compra Ce l’ho",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 mazzetto Compra Ce l’ho",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Compra Ce l’ho"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "pl",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Kup Mam",
+   "bunch | Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Kup Mam",
+   "slices | Ham ハム Glass noodle salad（春雨サラダ） 3 slices（枚） Kup Mam"
+  ],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Kup Mam",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Kup Mam",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Kup Mam",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Kup Mam",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Kup Mam"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Kup Mam",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Kup Mam",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Kup Mam",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Kup Mam"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "tr",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Al Evde var",
+   "bunch | Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Al Evde var",
+   "slices | Ham ハム Glass noodle salad（春雨サラダ） 3 slices（枚） Al Evde var"
+  ],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Al Evde var",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Al Evde var",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Al Evde var",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Al Evde var",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g Al Evde var"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g Al Evde var",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） Al Evde var",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） Al Evde var",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 Al Evde var"
+  ]
+ },
+ {
+  "ver": "v160",
+  "ui": "ar",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） شراء موجود",
+   "bunch | Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） شراء موجود",
+   "slices | Ham ハム Glass noodle salad（春雨サラダ） 3 slices（枚） شراء موجود"
+  ],
+  "noJa": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g شراء موجود",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） شراء موجود",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） شراء موجود",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 شراء موجود",
+   "Glass noodles (harusame) 春雨 Glass noodle salad（春雨サラダ） 40 g شراء موجود"
+  ],
+  "sample": [
+   "Ground pork 豚ひき肉 Pan-fried gyoza（焼き餃子） 150 g شراء موجود",
+   "Cabbage キャベツ Pan-fried gyoza（焼き餃子） 1/4 head（個） شراء موجود",
+   "Garlic chives ニラ Pan-fried gyoza（焼き餃子） 1/2 bunch（束） شراء موجود",
+   "Gyoza wrappers 餃子の皮 Pan-fried gyoza（焼き餃子） 24 شراء موجود"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "en",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "slices | Ham Glass noodle salad 3 slices Buy Have it"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Buy Have it",
+   "Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "Gyoza wrappers Pan-fried gyoza 24 Buy Have it",
+   "Glass noodles (harusame) Glass noodle salad 40 g Buy Have it"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Buy Have it",
+   "Cabbage Pan-fried gyoza 1/4 head Buy Have it",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Buy Have it",
+   "Gyoza wrappers Pan-fried gyoza 24 Buy Have it"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "zh-Hans",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head 买 家里有",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch 买 家里有",
+   "slices | Ham Glass noodle salad 3 slices 买 家里有"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g 买 家里有",
+   "Cabbage Pan-fried gyoza 1/4 head 买 家里有",
+   "Garlic chives Pan-fried gyoza 1/2 bunch 买 家里有",
+   "Gyoza wrappers Pan-fried gyoza 24 买 家里有",
+   "Glass noodles (harusame) Glass noodle salad 40 g 买 家里有"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g 买 家里有",
+   "Cabbage Pan-fried gyoza 1/4 head 买 家里有",
+   "Garlic chives Pan-fried gyoza 1/2 bunch 买 家里有",
+   "Gyoza wrappers Pan-fried gyoza 24 买 家里有"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "zh-Hant",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head 買 家裡有",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch 買 家裡有",
+   "slices | Ham Glass noodle salad 3 slices 買 家裡有"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g 買 家裡有",
+   "Cabbage Pan-fried gyoza 1/4 head 買 家裡有",
+   "Garlic chives Pan-fried gyoza 1/2 bunch 買 家裡有",
+   "Gyoza wrappers Pan-fried gyoza 24 買 家裡有",
+   "Glass noodles (harusame) Glass noodle salad 40 g 買 家裡有"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g 買 家裡有",
+   "Cabbage Pan-fried gyoza 1/4 head 買 家裡有",
+   "Garlic chives Pan-fried gyoza 1/2 bunch 買 家裡有",
+   "Gyoza wrappers Pan-fried gyoza 24 買 家裡有"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "ko",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | 양배추 군만두 (교자) 1/4 head 사기 집에 있음",
+   "bunch | 부추 군만두 (교자) 1/2 bunch 사기 집에 있음",
+   "slices | 햄 당면 샐러드 3 slices 사기 집에 있음"
+  ],
+  "noJa": [
+   "돼지고기 다짐육 군만두 (교자) 150 g 사기 집에 있음",
+   "양배추 군만두 (교자) 1/4 head 사기 집에 있음",
+   "부추 군만두 (교자) 1/2 bunch 사기 집에 있음",
+   "만두피 군만두 (교자) 24 사기 집에 있음",
+   "당면 당면 샐러드 40 g 사기 집에 있음"
+  ],
+  "sample": [
+   "돼지고기 다짐육 군만두 (교자) 150 g 사기 집에 있음",
+   "양배추 군만두 (교자) 1/4 head 사기 집에 있음",
+   "부추 군만두 (교자) 1/2 bunch 사기 집에 있음",
+   "만두피 군만두 (교자) 24 사기 집에 있음"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "vi",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | bắp cải Há cảo áp chảo (gyoza) 1/4 head Mua Có rồi",
+   "bunch | hẹ Há cảo áp chảo (gyoza) 1/2 bunch Mua Có rồi",
+   "slices | giăm bông Salad miến 3 slices Mua Có rồi"
+  ],
+  "noJa": [
+   "thịt heo xay Há cảo áp chảo (gyoza) 150 g Mua Có rồi",
+   "bắp cải Há cảo áp chảo (gyoza) 1/4 head Mua Có rồi",
+   "hẹ Há cảo áp chảo (gyoza) 1/2 bunch Mua Có rồi",
+   "vỏ há cảo (gyoza) Há cảo áp chảo (gyoza) 24 Mua Có rồi",
+   "miến Salad miến 40 g Mua Có rồi"
+  ],
+  "sample": [
+   "thịt heo xay Há cảo áp chảo (gyoza) 150 g Mua Có rồi",
+   "bắp cải Há cảo áp chảo (gyoza) 1/4 head Mua Có rồi",
+   "hẹ Há cảo áp chảo (gyoza) 1/2 bunch Mua Có rồi",
+   "vỏ há cảo (gyoza) Há cảo áp chảo (gyoza) 24 Mua Có rồi"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "pt-BR",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Comprar Tenho",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Comprar Tenho",
+   "slices | Ham Glass noodle salad 3 slices Comprar Tenho"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Comprar Tenho",
+   "Cabbage Pan-fried gyoza 1/4 head Comprar Tenho",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Comprar Tenho",
+   "Gyoza wrappers Pan-fried gyoza 24 Comprar Tenho",
+   "Glass noodles (harusame) Glass noodle salad 40 g Comprar Tenho"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Comprar Tenho",
+   "Cabbage Pan-fried gyoza 1/4 head Comprar Tenho",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Comprar Tenho",
+   "Gyoza wrappers Pan-fried gyoza 24 Comprar Tenho"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "fil",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Bilhin Mayroon",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Bilhin Mayroon",
+   "slices | Ham Glass noodle salad 3 slices Bilhin Mayroon"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Bilhin Mayroon",
+   "Cabbage Pan-fried gyoza 1/4 head Bilhin Mayroon",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Bilhin Mayroon",
+   "Gyoza wrappers Pan-fried gyoza 24 Bilhin Mayroon",
+   "Glass noodles (harusame) Glass noodle salad 40 g Bilhin Mayroon"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Bilhin Mayroon",
+   "Cabbage Pan-fried gyoza 1/4 head Bilhin Mayroon",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Bilhin Mayroon",
+   "Gyoza wrappers Pan-fried gyoza 24 Bilhin Mayroon"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "id",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Beli Ada",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Beli Ada",
+   "slices | Ham Glass noodle salad 3 slices Beli Ada"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Beli Ada",
+   "Cabbage Pan-fried gyoza 1/4 head Beli Ada",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Beli Ada",
+   "Gyoza wrappers Pan-fried gyoza 24 Beli Ada",
+   "Glass noodles (harusame) Glass noodle salad 40 g Beli Ada"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Beli Ada",
+   "Cabbage Pan-fried gyoza 1/4 head Beli Ada",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Beli Ada",
+   "Gyoza wrappers Pan-fried gyoza 24 Beli Ada"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "es",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage pan-fried gyoza 1/4 head Comprar Lo tengo",
+   "bunch | Garlic chives pan-fried gyoza 1/2 bunch Comprar Lo tengo",
+   "slices | Ham glass noodle salad 3 slices Comprar Lo tengo"
+  ],
+  "noJa": [
+   "Ground pork pan-fried gyoza 150 g Comprar Lo tengo",
+   "Cabbage pan-fried gyoza 1/4 head Comprar Lo tengo",
+   "Garlic chives pan-fried gyoza 1/2 bunch Comprar Lo tengo",
+   "Gyoza wrappers pan-fried gyoza 24 Comprar Lo tengo",
+   "Glass noodles (harusame) glass noodle salad 40 g Comprar Lo tengo"
+  ],
+  "sample": [
+   "Ground pork pan-fried gyoza 150 g Comprar Lo tengo",
+   "Cabbage pan-fried gyoza 1/4 head Comprar Lo tengo",
+   "Garlic chives pan-fried gyoza 1/2 bunch Comprar Lo tengo",
+   "Gyoza wrappers pan-fried gyoza 24 Comprar Lo tengo"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "th",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | กะหล่ำปลี เกี๊ยวซ่าทอด 1/4 head ซื้อ มีแล้ว",
+   "bunch | กุยช่าย เกี๊ยวซ่าทอด 1/2 bunch ซื้อ มีแล้ว",
+   "slices | แฮม ยำวุ้นเส้นแบบญี่ปุ่น 3 slices ซื้อ มีแล้ว"
+  ],
+  "noJa": [
+   "หมูบด เกี๊ยวซ่าทอด 150 g ซื้อ มีแล้ว",
+   "กะหล่ำปลี เกี๊ยวซ่าทอด 1/4 head ซื้อ มีแล้ว",
+   "กุยช่าย เกี๊ยวซ่าทอด 1/2 bunch ซื้อ มีแล้ว",
+   "แผ่นเกี๊ยวซ่า เกี๊ยวซ่าทอด 24 ซื้อ มีแล้ว",
+   "วุ้นเส้น ยำวุ้นเส้นแบบญี่ปุ่น 40 g ซื้อ มีแล้ว"
+  ],
+  "sample": [
+   "หมูบด เกี๊ยวซ่าทอด 150 g ซื้อ มีแล้ว",
+   "กะหล่ำปลี เกี๊ยวซ่าทอด 1/4 head ซื้อ มีแล้ว",
+   "กุยช่าย เกี๊ยวซ่าทอด 1/2 bunch ซื้อ มีแล้ว",
+   "แผ่นเกี๊ยวซ่า เกี๊ยวซ่าทอด 24 ซื้อ มีแล้ว"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "hi",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head खरीदें घर पर है",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch खरीदें घर पर है",
+   "slices | Ham Glass noodle salad 3 slices खरीदें घर पर है"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g खरीदें घर पर है",
+   "Cabbage Pan-fried gyoza 1/4 head खरीदें घर पर है",
+   "Garlic chives Pan-fried gyoza 1/2 bunch खरीदें घर पर है",
+   "Gyoza wrappers Pan-fried gyoza 24 खरीदें घर पर है",
+   "Glass noodles (harusame) Glass noodle salad 40 g खरीदें घर पर है"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g खरीदें घर पर है",
+   "Cabbage Pan-fried gyoza 1/4 head खरीदें घर पर है",
+   "Garlic chives Pan-fried gyoza 1/2 bunch खरीदें घर पर है",
+   "Gyoza wrappers Pan-fried gyoza 24 खरीदें घर पर है"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "fr",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Acheter J’en ai",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Acheter J’en ai",
+   "slices | Ham Glass noodle salad 3 slices Acheter J’en ai"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Acheter J’en ai",
+   "Cabbage Pan-fried gyoza 1/4 head Acheter J’en ai",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Acheter J’en ai",
+   "Gyoza wrappers Pan-fried gyoza 24 Acheter J’en ai",
+   "Glass noodles (harusame) Glass noodle salad 40 g Acheter J’en ai"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Acheter J’en ai",
+   "Cabbage Pan-fried gyoza 1/4 head Acheter J’en ai",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Acheter J’en ai",
+   "Gyoza wrappers Pan-fried gyoza 24 Acheter J’en ai"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "de",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Kaufen Vorhanden",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Kaufen Vorhanden",
+   "slices | Ham Glass noodle salad 3 slices Kaufen Vorhanden"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Kaufen Vorhanden",
+   "Cabbage Pan-fried gyoza 1/4 head Kaufen Vorhanden",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Kaufen Vorhanden",
+   "Gyoza wrappers Pan-fried gyoza 24 Kaufen Vorhanden",
+   "Glass noodles (harusame) Glass noodle salad 40 g Kaufen Vorhanden"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Kaufen Vorhanden",
+   "Cabbage Pan-fried gyoza 1/4 head Kaufen Vorhanden",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Kaufen Vorhanden",
+   "Gyoza wrappers Pan-fried gyoza 24 Kaufen Vorhanden"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "it",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Compra Ce l’ho",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Compra Ce l’ho",
+   "slices | Ham Glass noodle salad 3 slices Compra Ce l’ho"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Compra Ce l’ho",
+   "Cabbage Pan-fried gyoza 1/4 head Compra Ce l’ho",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Compra Ce l’ho",
+   "Gyoza wrappers Pan-fried gyoza 24 Compra Ce l’ho",
+   "Glass noodles (harusame) Glass noodle salad 40 g Compra Ce l’ho"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Compra Ce l’ho",
+   "Cabbage Pan-fried gyoza 1/4 head Compra Ce l’ho",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Compra Ce l’ho",
+   "Gyoza wrappers Pan-fried gyoza 24 Compra Ce l’ho"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "pl",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Kup Mam",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Kup Mam",
+   "slices | Ham Glass noodle salad 3 slices Kup Mam"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Kup Mam",
+   "Cabbage Pan-fried gyoza 1/4 head Kup Mam",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Kup Mam",
+   "Gyoza wrappers Pan-fried gyoza 24 Kup Mam",
+   "Glass noodles (harusame) Glass noodle salad 40 g Kup Mam"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Kup Mam",
+   "Cabbage Pan-fried gyoza 1/4 head Kup Mam",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Kup Mam",
+   "Gyoza wrappers Pan-fried gyoza 24 Kup Mam"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "tr",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head Al Evde var",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch Al Evde var",
+   "slices | Ham Glass noodle salad 3 slices Al Evde var"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g Al Evde var",
+   "Cabbage Pan-fried gyoza 1/4 head Al Evde var",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Al Evde var",
+   "Gyoza wrappers Pan-fried gyoza 24 Al Evde var",
+   "Glass noodles (harusame) Glass noodle salad 40 g Al Evde var"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g Al Evde var",
+   "Cabbage Pan-fried gyoza 1/4 head Al Evde var",
+   "Garlic chives Pan-fried gyoza 1/2 bunch Al Evde var",
+   "Gyoza wrappers Pan-fried gyoza 24 Al Evde var"
+  ]
+ },
+ {
+  "ver": "v159",
+  "ui": "ar",
+  "rows": 26,
+  "withJa": 0,
+  "enUnit": [
+   "head | Cabbage Pan-fried gyoza 1/4 head شراء موجود",
+   "bunch | Garlic chives Pan-fried gyoza 1/2 bunch شراء موجود",
+   "slices | Ham Glass noodle salad 3 slices شراء موجود"
+  ],
+  "noJa": [
+   "Ground pork Pan-fried gyoza 150 g شراء موجود",
+   "Cabbage Pan-fried gyoza 1/4 head شراء موجود",
+   "Garlic chives Pan-fried gyoza 1/2 bunch شراء موجود",
+   "Gyoza wrappers Pan-fried gyoza 24 شراء موجود",
+   "Glass noodles (harusame) Glass noodle salad 40 g شراء موجود"
+  ],
+  "sample": [
+   "Ground pork Pan-fried gyoza 150 g شراء موجود",
+   "Cabbage Pan-fried gyoza 1/4 head شراء موجود",
+   "Garlic chives Pan-fried gyoza 1/2 bunch شراء موجود",
+   "Gyoza wrappers Pan-fried gyoza 24 شراء موجود"
+  ]
+ }
+]

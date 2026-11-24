@@ -1,0 +1,3109 @@
+[
+ {
+  "cc": "BR",
+  "ui": "pt-BR",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Chuchu refogado com ovos",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cogumelos na manteiga",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Couve-flor gratinada",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de ervilha seca com calabresa",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Chuchu refogado com ovos",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cogumelos na manteiga",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Couve-flor gratinada",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de ervilha seca com calabresa",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Chuchu refogado com ovos",
+   "Cogumelos na manteiga",
+   "Couve-flor gratinada",
+   "Sopa de ervilha seca com calabresa"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "BR",
+  "ui": "pt-BR",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Grão-de-bico refogado com couve",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Mandioca frita",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Brócolis alho e óleo",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de macarrão com ovo",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Grão-de-bico refogado com couve",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Mandioca frita",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Brócolis alho e óleo",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Creme de cenoura com gengibre",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Regras alimentares: trocamos os pratos que não combinam (Sopa: Sopa de macarrão com ovo → Creme de cenoura com gengibre) Outras opções",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Grão-de-bico refogado com couve",
+   "Mandioca frita",
+   "Brócolis alho e óleo",
+   "Creme de cenoura com gengibre"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "BR",
+  "ui": "pt-BR",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Grão-de-bico refogado com couve",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Batata sauté",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Mandioca frita",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de cebola",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Grão-de-bico refogado com couve",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Batata sauté",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Mandioca frita",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de cebola",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Grão-de-bico refogado com couve",
+   "Batata sauté",
+   "Mandioca frita",
+   "Sopa de cebola"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "alcohol"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "いなり寿司",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "なす田楽",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "沢煮椀",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_alcohol": "scrolled",
+  "avoid": [
+   "",
+   "@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "チャーハン",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "チンゲン菜のにんにく炒め",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "春雨スープ",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "食の決まりに合わない料理を替えました（主菜：いなり寿司 → チャーハン・副菜：なす田楽 → チンゲン菜のにんにく炒め・汁もの：沢煮椀 → 春雨スープ） ほかの候補",
+   "top": 658,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "チャーハン",
+   "チンゲン菜のにんにく炒め",
+   "大根サラダ",
+   "春雨スープ"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "alcohol"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "さばの塩焼き",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ほうれん草のおひたし",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "切り干し大根の煮物",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "あさりの味噌汁",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_alcohol": "scrolled",
+  "avoid": [
+   "",
+   "@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "さばの塩焼き",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ほうれん草のおひたし",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "かぶの甘酢漬け",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "あさりの味噌汁",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "食の決まりに合わない料理を替えました（副菜：切り干し大根の煮物 → かぶの甘酢漬け） ほかの候補",
+   "top": 658,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "さばの塩焼き",
+   "ほうれん草のおひたし",
+   "かぶの甘酢漬け",
+   "あさりの味噌汁"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "alcohol"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "きのこの和風パスタ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "にんじんのグラッセ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "トマトのマリネ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "コールスロー",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "かぼちゃのポタージュ",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_alcohol": "scrolled",
+  "avoid": [
+   "",
+   "@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "きのこの和風パスタ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "にんじんのグラッセ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "トマトのマリネ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "コールスロー",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "かぼちゃのポタージュ",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "きのこの和風パスタ",
+   "にんじんのグラッセ",
+   "トマトのマリネ",
+   "コールスロー",
+   "かぼちゃのポタージュ"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "EG",
+  "ui": "ar",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "halal"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "مكرونة بالصلصة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "سلطة طحينة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "رز بالشعرية",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "كوسة سوتيه",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة كريمة الفراخ",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_halal": "ok",
+  "avoid": [
+   "",
+   "@pork,@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "مكرونة بالصلصة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "سلطة طحينة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "رز بالشعرية",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "كوسة سوتيه",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة كريمة الفراخ",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "مكرونة بالصلصة",
+   "سلطة طحينة",
+   "رز بالشعرية",
+   "كوسة سوتيه",
+   "شوربة كريمة الفراخ"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "EG",
+  "ui": "ar",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "halal"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "عجة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "رز بالشعرية",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "بطاطس سوتيه",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة مشروم بالكريمة",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_halal": "ok",
+  "avoid": [
+   "",
+   "@pork,@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "عجة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "رز بالشعرية",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "بطاطس سوتيه",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة مشروم بالكريمة",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "عجة",
+   "رز بالشعرية",
+   "بطاطس سوتيه",
+   "شوربة مشروم بالكريمة"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "EG",
+  "ui": "ar",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "halal"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "سجق إسكندراني",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "بطاطس بيوريه",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "قرنبيط مقلي",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ملوخية",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_halal": "ok",
+  "avoid": [
+   "",
+   "@pork,@alcohol"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "سجق إسكندراني",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "بطاطس بيوريه",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "قرنبيط مقلي",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ملوخية",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "سجق إسكندراني",
+   "بطاطس بيوريه",
+   "قرنبيط مقلي",
+   "ملوخية"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "KR",
+  "ui": "ko",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegan"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "삼겹살구이",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "애호박전",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "갈비탕",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegan": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish,@egg,@dairy"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "채소 된장찌개",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "시금치나물",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "식단 규칙: 맞지 않는 요리를 바꿨습니다 (메인: 삼겹살구이 → 채소 된장찌개, 반찬: 애호박전 → 시금치나물, 국: 갈비탕(뺐어요))",
+   "top": 764,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "채소 된장찌개",
+   "시금치나물",
+   "연근조림"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "KR",
+  "ui": "ko",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegan"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "비빔밥",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "무생채",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "김치전",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "미역국",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegan": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish,@egg,@dairy"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "콩나물밥",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "도토리묵무침",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "김치전",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "애호박감자국",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "식단 규칙: 맞지 않는 요리를 바꿨습니다 (메인: 비빔밥 → 콩나물밥, 반찬: 무생채 → 도토리묵무침, 국: 미역국 → 애호박감자국) 다른 후보",
+   "top": 747,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "콩나물밥",
+   "도토리묵무침",
+   "연근조림",
+   "김치전",
+   "애호박감자국"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "KR",
+  "ui": "ko",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegan"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "차돌박이숙주볶음",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "도토리묵무침",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "만둣국",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegan": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish,@egg,@dairy"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "버섯전골",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "도토리묵무침",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "연근조림",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "식단 규칙: 맞지 않는 요리를 바꿨습니다 (메인: 차돌박이숙주볶음 → 버섯전골, 국: 만둣국(뺐어요))",
+   "top": 764,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "버섯전골",
+   "도토리묵무침",
+   "연근조림"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "MX",
+  "ui": "es",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Chiles rellenos de queso sin capear",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada rusa",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Jícama y pepino con chile",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Caldo de elote y calabacita",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Chiles rellenos de queso sin capear",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada rusa",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Jícama y pepino con chile",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de lentejas",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "reglas de alimentación: se cambiaron los platos que no encajan (sopa: Caldo de elote y calabacita → Sopa de lentejas) Otras opciones",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Chiles rellenos de queso sin capear",
+   "Ensalada rusa",
+   "Jícama y pepino con chile",
+   "Sopa de lentejas"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "MX",
+  "ui": "es",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Calabacitas en salsa verde",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Esquites",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada de betabel",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de letras",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Calabacitas en salsa verde",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Esquites",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada de betabel",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de lentejas",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "reglas de alimentación: se cambiaron los platos que no encajan (sopa: Sopa de letras → Sopa de lentejas) Otras opciones",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Calabacitas en salsa verde",
+   "Esquites",
+   "Ensalada de betabel",
+   "Sopa de lentejas"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "MX",
+  "ui": "es",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Calabacitas en salsa verde",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada de betabel",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Chayotes con crema",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Caldo de elote y calabacita",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Calabacitas en salsa verde",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Ensalada de betabel",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Chayotes con crema",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Sopa de lentejas",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "reglas de alimentación: se cambiaron los platos que no encajan (sopa: Caldo de elote y calabacita → Sopa de lentejas) Otras opciones",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Calabacitas en salsa verde",
+   "Ensalada de betabel",
+   "Chayotes con crema",
+   "Sopa de lentejas"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IT",
+  "ui": "it",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Ceci e spinaci in umido",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rucola, pomodorini e scaglie di grana",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cipolline in agrodolce",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Crema di zucchine veloce",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Ceci e spinaci in umido",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rucola, pomodorini e scaglie di grana",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cipolline in agrodolce",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Crema di zucchine veloce",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Ceci e spinaci in umido",
+   "Rucola, pomodorini e scaglie di grana",
+   "Cipolline in agrodolce",
+   "Crema di zucchine veloce"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IT",
+  "ui": "it",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Scaloppine di pollo al limone",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Insalata mista",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Verdure grigliate",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Crema di piselli veloce",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Carciofi e piselli",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Insalata mista",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Verdure grigliate",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Crema di piselli veloce",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Regole alimentari: sostituiti i piatti non adatti (Secondo: Scaloppine di pollo al limone → Carciofi e piselli) Altre idee",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Carciofi e piselli",
+   "Insalata mista",
+   "Verdure grigliate",
+   "Crema di piselli veloce"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IT",
+  "ui": "it",
+  "set": [
+   [
+    "toggle-avoid-diet",
+    "vegi"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Pasta al tonno",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Pinzimonio",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Zucchine alla scapece",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Purè di patate",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_vegi": "ok",
+  "avoid": [
+   "",
+   "@pork,@chicken,@beef,@fish,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Pasta alla Norma",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Pinzimonio",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Zucchine alla scapece",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Purè di patate",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Regole alimentari: sostituiti i piatti non adatti (Secondo: Pasta al tonno → Pasta alla Norma) Altre idee",
+   "top": 689,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Pasta alla Norma",
+   "Pinzimonio",
+   "Zucchine alla scapece",
+   "Purè di patate"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "alg": [
+   "egg"
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "いなり寿司",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "なす田楽",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "沢煮椀",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "avoid": [
+   "egg",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "いなり寿司",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "なす田楽",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "沢煮椀",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "いなり寿司",
+   "なす田楽",
+   "大根サラダ",
+   "沢煮椀"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "alg": [
+   "egg"
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "さばの塩焼き",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ほうれん草のおひたし",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "切り干し大根の煮物",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "あさりの味噌汁",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "avoid": [
+   "egg",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "さばの塩焼き",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ほうれん草のおひたし",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "切り干し大根の煮物",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "あさりの味噌汁",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "さばの塩焼き",
+   "ほうれん草のおひたし",
+   "切り干し大根の煮物",
+   "あさりの味噌汁"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "alg": [
+   "egg"
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "きのこの和風パスタ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "にんじんのグラッセ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "トマトのマリネ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "コールスロー",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "かぼちゃのポタージュ",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "avoid": [
+   "egg",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "きのこの和風パスタ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "にんじんのグラッセ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "トマトのマリネ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ほうれん草とベーコンのソテー",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "かぼちゃのポタージュ",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "アレルギーに合わない料理を替えました（副菜：コールスロー → ほうれん草とベーコンのソテー） ほかの候補",
+   "top": 740,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "きのこの和風パスタ",
+   "にんじんのグラッセ",
+   "トマトのマリネ",
+   "ほうれん草とベーコンのソテー",
+   "かぼちゃのポタージュ"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Egg and cheese muffin",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rice pilaf",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Waldorf salad",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Zucchini basil soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "t_milk": "ok",
+  "avoid": [
+   "egg,milk",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Three-bean veggie chili",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Brussels sprouts",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Quick chicken and rice soup",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Allergy: replaced dishes that don't fit (Main: Egg and cheese muffin → Three-bean veggie chili, Side: Rice pilaf → Roasted sweet potatoes, Soup: Zucchini basil soup → Quick chicken and rice soup) Other options",
+   "top": 761,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Three-bean veggie chili",
+   "Roasted sweet potatoes",
+   "Brussels sprouts",
+   "Quick chicken and rice soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Sheet-pan sausage and vegetables",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Garlic bread",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Coleslaw",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Tortellini soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "t_milk": "ok",
+  "avoid": [
+   "egg,milk",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Sheet-pan sausage and vegetables",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Three-bean salad",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Quick chicken and rice soup",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Allergy: replaced dishes that don't fit (Soup: Tortellini soup → Quick chicken and rice soup, Side: Garlic bread → Roasted sweet potatoes) Other options",
+   "top": 761,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Sheet-pan sausage and vegetables",
+   "Roasted sweet potatoes",
+   "Three-bean salad",
+   "Quick chicken and rice soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "alg": [
+   "egg",
+   "milk"
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Zucchini boats with tomato and mozzarella",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Creamed spinach",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Egg drop soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "t_milk": "ok",
+  "avoid": [
+   "egg,milk",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Sheet-pan sausage and vegetables",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Tossed salad",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Quick chicken and rice soup",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Allergy: replaced dishes that don't fit (Main: Zucchini boats with tomato and mozzarella → Sheet-pan sausage and vegetables, Side: Creamed spinach → Tossed salad, Soup: Broccoli cheddar soup → Quick chicken and rice soup) Other options",
+   "top": 761,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Sheet-pan sausage and vegetables",
+   "Roasted sweet potatoes",
+   "Tossed salad",
+   "Quick chicken and rice soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "TH",
+  "ui": "th",
+  "alg": [
+   "shrimp",
+   "crab"
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "แกงมัสมั่นเจ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ผักกาดขาวต้มซีอิ๊ว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ยำวุ้นเส้น",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ต้มแซ่บกระดูกหมู",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_shrimp": "forced",
+  "t_crab": "scrolled",
+  "avoid": [
+   "shrimp,crab",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "แกงมัสมั่นเจ",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ผักกาดขาวต้มซีอิ๊ว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ผัดผักบุ้งไฟแดง",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ต้มแซ่บกระดูกหมู",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "แพ้อาหาร: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ยำวุ้นเส้น → ผัดผักบุ้งไฟแดง) ตัวเลือกอื่น",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "แกงมัสมั่นเจ",
+   "ผักกาดขาวต้มซีอิ๊ว",
+   "ผัดผักบุ้งไฟแดง",
+   "ต้มแซ่บกระดูกหมู"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "TH",
+  "ui": "th",
+  "alg": [
+   "shrimp",
+   "crab"
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "ไข่เจียว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ส้มตำไทย",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "เต้าหู้ทอด",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ต้มจืดผักรวม",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_shrimp": "forced",
+  "t_crab": "scrolled",
+  "avoid": [
+   "shrimp,crab",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "ไข่เจียว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "หมูหวาน",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "เต้าหู้ทอด",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "ต้มจืดผักรวม",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "แพ้อาหาร: เปลี่ยนเมนูที่ไม่เหมาะแล้ว (จานเคียง: ส้มตำไทย → หมูหวาน) ตัวเลือกอื่น",
+   "top": 677,
+   "inView": true
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "ไข่เจียว",
+   "หมูหวาน",
+   "เต้าหู้ทอด",
+   "ต้มจืดผักรวม"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "TH",
+  "ui": "th",
+  "alg": [
+   "shrimp",
+   "crab"
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "ราดหน้าหมู",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "กะหล่ำปลีผัดน้ำปลา",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ยำไข่ดาว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ฟักทองนึ่ง",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "แกงจืดฟักหมูสับ",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_shrimp": "forced",
+  "t_crab": "scrolled",
+  "avoid": [
+   "shrimp,crab",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "ราดหน้าหมู",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "กะหล่ำปลีผัดน้ำปลา",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ยำไข่ดาว",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "ฟักทองนึ่ง",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "แกงจืดฟักหมูสับ",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "ราดหน้าหมู",
+   "กะหล่ำปลีผัดน้ำปลา",
+   "ยำไข่ดาว",
+   "ฟักทองนึ่ง",
+   "แกงจืดฟักหมูสับ"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IN",
+  "ui": "hi",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "beef"
+   ]
+  ],
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "मसाला मछली फ्राई (तवा फ़िश)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "नारियल की चटनी",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "गाजर मटर की सूखी सब्ज़ी",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "मटन शोरबा",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_beef": "scrolled",
+  "avoid": [
+   "",
+   "@beef"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "मसाला मछली फ्राई (तवा फ़िश)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "नारियल की चटनी",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "गाजर मटर की सूखी सब्ज़ी",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "मटन शोरबा",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "मसाला मछली फ्राई (तवा फ़िश)",
+   "नारियल की चटनी",
+   "गाजर मटर की सूखी सब्ज़ी",
+   "मटन शोरबा"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IN",
+  "ui": "hi",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "beef"
+   ]
+  ],
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "मछली करी",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "अवियल (केरल की नारियल-दही वाली मिली-जुली सब्ज़ी)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "बेगुन भाजा (बंगाली तले बैंगन)",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "लेमन कोरिएंडर सूप",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_beef": "scrolled",
+  "avoid": [
+   "",
+   "@beef"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "मछली करी",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "अवियल (केरल की नारियल-दही वाली मिली-जुली सब्ज़ी)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "बेगुन भाजा (बंगाली तले बैंगन)",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "लेमन कोरिएंडर सूप",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "मछली करी",
+   "अवियल (केरल की नारियल-दही वाली मिली-जुली सब्ज़ी)",
+   "बेगुन भाजा (बंगाली तले बैंगन)",
+   "लेमन कोरिएंडर सूप"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "IN",
+  "ui": "hi",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "beef"
+   ]
+  ],
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "नींबू चावल (चित्रान्न)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "बीन्स पोरियल",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "खट्टा-मीठा कद्दू",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "खीरे का रायता",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "झटपट मिलागु रसम",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_beef": "scrolled",
+  "avoid": [
+   "",
+   "@beef"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "नींबू चावल (चित्रान्न)",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "बीन्स पोरियल",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "खट्टा-मीठा कद्दू",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "खीरे का रायता",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "झटपट मिलागु रसम",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "नींबू चावल (चित्रान्न)",
+   "बीन्स पोरियल",
+   "खट्टा-मीठा कद्दू",
+   "खीरे का रायता",
+   "झटपट मिलागु रसम"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "pork"
+   ],
+   [
+    "toggle-avoid-fam",
+    "shellfish"
+   ]
+  ],
+  "kosher": true,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Egg and cheese muffin",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rice pilaf",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Waldorf salad",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Zucchini basil soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_pork": "ok",
+  "s_shellfish": "forced",
+  "avoid": [
+   "",
+   "@pork,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Egg and cheese muffin",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rice pilaf",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Waldorf salad",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Zucchini basil soup",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Egg and cheese muffin",
+   "Rice pilaf",
+   "Waldorf salad",
+   "Zucchini basil soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "pork"
+   ],
+   [
+    "toggle-avoid-fam",
+    "shellfish"
+   ]
+  ],
+  "kosher": true,
+  "seed": 23,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Sheet-pan sausage and vegetables",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Garlic bread",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Coleslaw",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Tortellini soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_pork": "ok",
+  "s_shellfish": "forced",
+  "avoid": [
+   "",
+   "@pork,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "White chicken chili",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Garlic bread",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Coleslaw",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Tortellini soup",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Diet rules: replaced dishes that don't fit (Main: Sheet-pan sausage and vegetables → White chicken chili) Other options",
+   "top": 702,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "White chicken chili",
+   "Garlic bread",
+   "Coleslaw",
+   "Tortellini soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "US",
+  "ui": "en",
+  "set": [
+   [
+    "toggle-avoid-fam",
+    "pork"
+   ],
+   [
+    "toggle-avoid-fam",
+    "shellfish"
+   ]
+  ],
+  "kosher": true,
+  "seed": 37,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Zucchini boats with tomato and mozzarella",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Creamed spinach",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Egg drop soup",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "s_pork": "ok",
+  "s_shellfish": "forced",
+  "avoid": [
+   "",
+   "@pork,@shellfish"
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Zucchini boats with tomato and mozzarella",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Roasted sweet potatoes",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Creamed spinach",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Egg drop soup",
+    "bad": ""
+   }
+  ],
+  "note": null,
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Zucchini boats with tomato and mozzarella",
+   "Roasted sweet potatoes",
+   "Creamed spinach",
+   "Egg drop soup"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "alg": [
+   "egg",
+   "milk",
+   "wheat",
+   "soy",
+   "fish",
+   "shrimp",
+   "sesame"
+  ],
+  "many": true,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "いなり寿司",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "なす田楽",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "沢煮椀",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "t_milk": "ok",
+  "t_wheat": "ok",
+  "t_soy": "scrolled",
+  "t_fish": "forced",
+  "t_shrimp": "ok",
+  "t_sesame": "ok",
+  "avoid": [
+   "egg,milk,wheat,soy,fish,shrimp,sesame",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "副菜",
+    "name": "粉ふきいも",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "かぶの甘酢漬け",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "アレルギーに合わない料理を替えました（汁もの：トムヤムクン（外しました）・主菜：豚バラとキャベツの塩炒め（外しました）・副菜：チンゲン菜のにんにく炒め → 粉ふきいも） ほかの候補",
+   "top": 760,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": null
+ },
+ {
+  "cc": "JP",
+  "ui": "ja",
+  "alg": [
+   "egg",
+   "milk",
+   "wheat",
+   "soy",
+   "fish",
+   "shrimp",
+   "sesame"
+  ],
+  "many": true,
+  "w": 195,
+  "h": 422,
+  "ts": 2,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "いなり寿司",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "なす田楽",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "大根サラダ",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "沢煮椀",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "scrolled",
+  "t_milk": "ok",
+  "t_wheat": "ok",
+  "t_soy": "scrolled",
+  "t_fish": "forced",
+  "t_shrimp": "scrolled",
+  "t_sesame": "scrolled",
+  "avoid": [
+   "egg,milk,wheat,soy,fish,shrimp,sesame",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "副菜",
+    "name": "粉ふきいも",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "かぶの甘酢漬け",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "アレルギーに合わない料理を替えました（汁もの：トムヤムクン（外しました）・主菜：豚バラとキャベツの塩炒め（外しました）・副菜：チンゲン菜のにんにく炒め → 粉ふきいも） ほかの候補",
+   "top": 710,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": null
+ },
+ {
+  "cc": "DE",
+  "ui": "de",
+  "alg": [
+   "egg",
+   "milk",
+   "wheat",
+   "soy",
+   "fish",
+   "celery",
+   "mustard"
+  ],
+  "many": true,
+  "w": 195,
+  "h": 422,
+  "ts": 2,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Weiße-Bohnen-Eintopf mit Gemüse",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Rosenkohl in Butter",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Gurken-Radieschen-Salat",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Spargelcremesuppe",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "scrolled",
+  "t_milk": "scrolled",
+  "t_wheat": "forced",
+  "t_soy": "scrolled",
+  "t_fish": "ok",
+  "t_celery": "scrolled",
+  "t_mustard": "ok",
+  "avoid": [
+   "egg,milk,wheat,soy,fish,celery,mustard",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Kürbis-Linsen-Curry",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Krautsalat",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Gurken-Radieschen-Salat",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Grüne-Bohnen-Eintopf",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Allergie: unpassende Gerichte ersetzt (Beilage: Rosenkohl in Butter → Krautsalat, Suppe: Spargelcremesuppe → Grüne-Bohnen-Eintopf, Hauptgericht: Weiße-Bohnen-Eintopf mit Gemüse → Kürbis-Linsen-Curry) Weitere Vorschläge",
+   "top": 1397,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Kürbis-Linsen-Curry",
+   "Krautsalat",
+   "Gurken-Radieschen-Salat",
+   "Grüne-Bohnen-Eintopf"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "VN",
+  "ui": "vi",
+  "alg": [
+   "egg",
+   "wheat",
+   "soy",
+   "fish",
+   "shrimp",
+   "peanut"
+  ],
+  "many": true,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "Nấm kho tiêu",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Dưa giá",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cải thìa luộc",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Canh mọc",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "ok",
+  "t_wheat": "forced",
+  "t_soy": "ok",
+  "t_fish": "ok",
+  "t_shrimp": "scrolled",
+  "t_peanut": "scrolled",
+  "avoid": [
+   "egg,wheat,soy,fish,shrimp,peanut",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "Gà luộc lá chanh",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Dưa giá",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "Cải thìa luộc",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "Canh bầu nấu thịt",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "Dị ứng: đã đổi các món không phù hợp (Canh: Canh mọc → Canh bầu nấu thịt, Món chính: Tôm hấp nước dừa → Gà luộc lá chanh) Lựa chọn khác",
+   "top": 778,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "Gà luộc lá chanh",
+   "Dưa giá",
+   "Cải thìa luộc",
+   "Canh bầu nấu thịt"
+  ],
+  "s4": null
+ },
+ {
+  "cc": "EG",
+  "ui": "ar",
+  "alg": [
+   "egg",
+   "milk",
+   "wheat",
+   "sesame",
+   "fish"
+  ],
+  "many": true,
+  "w": 320,
+  "h": 640,
+  "ts": 2,
+  "seed": 11,
+  "menu0": [
+   {
+    "slot": "主菜",
+    "name": "مكرونة بالصلصة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "سلطة طحينة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "رز بالشعرية",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "كوسة سوتيه",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة كريمة الفراخ",
+    "bad": ""
+   }
+  ],
+  "s1": "alg-ask",
+  "askFocus": {
+   "act": "H2",
+   "inSheet": true
+  },
+  "focusBack": "BODY",
+  "t_egg": "scrolled",
+  "t_milk": "ok",
+  "t_wheat": "forced",
+  "t_sesame": "scrolled",
+  "t_fish": "scrolled",
+  "avoid": [
+   "egg,milk,wheat,sesame,fish",
+   ""
+  ],
+  "back": [
+   {
+    "slot": "主菜",
+    "name": "قرنبيط بالصلصة",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "سلطة بنجر",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "بتنجان مخلل",
+    "bad": ""
+   },
+   {
+    "slot": "副菜",
+    "name": "طماطم مقلية",
+    "bad": ""
+   },
+   {
+    "slot": "汁物",
+    "name": "شوربة كوارع",
+    "bad": ""
+   }
+  ],
+  "note": {
+   "t": "حساسية: تم استبدال الأطباق غير المناسبة (شوربة: شوربة كريمة الفراخ → شوربة كوارع، طبق رئيسي: صيادية → قرنبيط بالصلصة، طبق جانبي: سلطة طحينة → سلطة بنجر) خيارات أخرى",
+   "top": 548,
+   "inView": false
+  },
+  "toast": "",
+  "warn": [],
+  "s2": null,
+  "decided": [
+   "قرنبيط بالصلصة",
+   "سلطة بنجر",
+   "بتنجان مخلل",
+   "طماطم مقلية",
+   "شوربة كوارع"
+  ],
+  "s4": null
+ }
+]

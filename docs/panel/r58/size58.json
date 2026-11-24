@@ -1,0 +1,740 @@
+[
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 195,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 320,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": 11.5,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": 13,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": 11.5,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": 13,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": 11.5,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": 13,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v160",
+  "W": 390,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "44x44",
+   "44x44",
+   "44x44"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 195,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": null,
+  "kaeruBtn": null,
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 320,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "ja",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "ja",
+  "ts": 1,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "ja",
+  "ts": 2,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "ja",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "en",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "en",
+  "ts": 1,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "en",
+  "ts": 2,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "en",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "hi",
+  "ts": 0,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "hi",
+  "ts": 1,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "hi",
+  "ts": 2,
+  "kaeru": 10,
+  "kaeruBtn": "44x44",
+  "wish": null,
+  "small": []
+ },
+ {
+  "ver": "v159",
+  "W": 390,
+  "ui": "hi",
+  "ob": true,
+  "obts": [
+   "40x40",
+   "40x40",
+   "44x40"
+  ]
+ }
+]

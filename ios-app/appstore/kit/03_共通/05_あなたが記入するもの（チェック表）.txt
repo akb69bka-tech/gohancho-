@@ -1,8 +1,7 @@
-[ ] gohancho/privacy.html の【公開日を記入】【運営者名】【連絡先メールアドレス】（最後の「下書きです」の行は削除）
-[ ] gohancho/support.html の【連絡先メールアドレス】（最後の「下書きです」の行は削除）
-[ ] gohancho/privacy-en.html の [enter publication date] [Developer name] [Contact email address]
-[ ] gohancho/support-en.html の [contact email address]
-[ ] gohancho/index.html の const SUPPORT_EMAIL = '' にメールアドレス
+[ ] gohancho/privacy.html の【公開日を記入】（申請の直前。運営者名・問い合わせ先は記入済み）
+[ ] gohancho/privacy-en.html の [enter publication date]（申請の直前）
+（任意）gohancho/index.html の const SUPPORT_EMAIL = '' にメールアドレス（入れると設定に「ご意見・不具合を送る」が出る。問い合わせは GitHub の窓口 Issue #1 で受けるので、空のままでもよい）
 [ ] gohancho/index.html の revenueCatApiKey: '' に RevenueCat の appl_ の鍵（ステップ5のあと）
-[ ] App Store Connect の「著作権」に名前
+[ ] App Store Connect の「著作権」に「2026 わが家のご飯帖 運営」
 [ ] GitHub の gohancho リポジトリが最新か確認（Claude が main に入れます）
+[ ] App Store に申請する前（revenueCatApiKey を入れるとき）に、support.html / support-en.html の <span data-presale>…</span>（「いまは販売の準備中のため無料」）を「Web 版は販売の準備中のため、いまは無料です」に書きかえる（Web 版で販売を始めるときに、この一文も消す）

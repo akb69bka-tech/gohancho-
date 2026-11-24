@@ -1,0 +1,383 @@
+[
+ {
+  "relation": "第43回 safe43 の確かめ",
+  "id": "S43",
+  "key": "safe43",
+  "dept": "安全",
+  "sev": "大",
+  "title": "（確かめ）肉・魚・貝の加工品のなかま → 0件のまま。21か国×14通りで 出せる料理 26422件・出た献立 54934品の取りこぼし 0（v159 0）。69の国×言語の組み合わせ（101920件）も 0",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "21か国×14通り＋69組み合わせ",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "safe43",
+    "group": "A・B",
+    "status": "0件のまま（v140）"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "新しい",
+  "id": "S51",
+  "key": "namesafe",
+  "dept": "安全",
+  "sev": "大",
+  "title": "（確かめ）料理名から の安全 → 取りこぼし 0。日本語・英語 × 9通り（決まりなし・ハラール・ベジ・ヴィーガン・卵乳小麦・魚えびかに貝・落花生ごま大豆木の実・家族の乳・豚なし）× 30の料理名で、出したカード（その料理・世界の似た料理・ひとひねり）に合わない料理は 0件。材料と調味料の文字も見た（95件の語が当たったが、ココナッツミルク・牛乳（ベジ）・野菜ブイヨン・バターナッツ・ちりめんキャベツ・lamb's lettuce・赤ワインビネガー・牛肉か鶏肉のソーセージ・🔍付きのコンソメで、すべて合う）。ハラール・ベジ・ヴィーガンでほかの国の料理を開くと、「〜は入れません（なくても作れます）」と「手順の文に出てきても入れないでください」が出る（6/6）",
+  "repro": "",
+  "note": "赤ワインビネガー（ハラール）は、酢として出している。気にする人には 🔍 があるとよいかもしれない（オーナー判断）",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "2言語×9通り×30語＋6通り",
+  "inScore": false,
+  "prevRounds": [],
+  "isNew": true,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R184 から残る",
+  "id": "R184",
+  "key": "slowfirst",
+  "dept": "速さ",
+  "sev": "中",
+  "title": "遅い回線で、はじめての国の画面まで約50秒（8人。前回 約49秒）。試験のサーバーは圧縮なしのまま（本番はわからない）",
+  "repro": "360×740・回線を遅くする → 開く",
+  "note": "",
+  "measured": "",
+  "countA": 5,
+  "countB": 3,
+  "ids": [
+   "N018",
+   "N034",
+   "N054",
+   "N095",
+   "N100",
+   "W084",
+   "W086",
+   "W095"
+  ],
+  "scan": "遅い回線の人",
+  "inScore": true,
+  "prevRounds": [
+   {
+    "id": "R184",
+    "group": "A・B",
+    "status": "残り"
+   }
+  ],
+  "isNew": false,
+  "pt": {
+   "N018": "遅い回線で、はじめての画面まで 50秒",
+   "N034": "遅い回線で、はじめての画面まで 50秒",
+   "N054": "遅い回線で、はじめての画面まで 50秒",
+   "N095": "遅い回線で、はじめての画面まで 58秒",
+   "N100": "遅い回線で、はじめての画面まで 58秒",
+   "W084": "遅い回線で、はじめての画面まで 50秒",
+   "W086": "遅い回線で、はじめての画面まで 50秒",
+   "W095": "遅い回線で、はじめての画面まで 60秒"
+  }
+ },
+ {
+  "relation": "前回 R196 の確かめ",
+  "id": "R196",
+  "key": "carbmisread",
+  "dept": "機能",
+  "sev": "中",
+  "title": "（確かめ）egg noodles などの読み違い → 直ったまま（21か国で 0品）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "21か国",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R196",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R199 の確かめ",
+  "id": "R199",
+  "key": "vegslow",
+  "dept": "速さ",
+  "sev": "中",
+  "title": "（確かめ）ベジタリアン・ヴィーガン向けで止まる → 直ったまま（CPU 1/4 で v160 の中央 380ms・いちばん遅くて 470ms）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "単体",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R199",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "回帰の確かめ",
+  "id": "REG",
+  "key": "reg44",
+  "dept": "機能",
+  "sev": "中",
+  "title": "（確かめ）第44回の回帰 → 直ったまま（主食の副菜を 288回替えて なくなった 0回）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "単体",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "REG44",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R146 の確かめ",
+  "id": "R146",
+  "key": "planshow",
+  "dept": "機能",
+  "sev": "小",
+  "title": "（確かめ）アプリの中の購入・プラス・お試し・復元の文字 → 0件（直ったまま）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "7か国×3",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R146",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "新しい",
+  "id": "R18B",
+  "key": "r18b",
+  "dept": "画面",
+  "sev": "小",
+  "title": "（確かめ）幅195・240px・文字もっと大きい・家族あり（⚠）で、料理名が長い日にも料理が最初の画面に見えるか → v160 は 300回すべてで少なくとも1品が半分以上見えた（見えない回 0）。⚠ の札が切れる 0・重なる 0・横にはみ出る 0（6言語・料理名は最長50字）",
+  "repro": "",
+  "note": "v159 でも 300回で見えない回 0 だった。GitHub の SEED の形（上の段が1〜4px下のタブにかかる日）は、こちらの組み合わせでは出なかった",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "6言語×2幅×25献立×2版",
+  "inScore": false,
+  "prevRounds": [],
+  "isNew": true,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R195 の確かめ",
+  "id": "R195",
+  "key": "carbhidden",
+  "dept": "画面",
+  "sev": "小",
+  "title": "（確かめ）使い方の6番目「糖質ひかえめ」→ 直ったまま（隠れても「▼ 続きを見る」。200人中 8人の画面・前回 8人）。糖質を気にする層は 32人とも選べた",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "200人",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R195",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R197 の確かめ",
+  "id": "R197",
+  "key": "roux",
+  "dept": "安全",
+  "sev": "小",
+  "title": "（確かめ）菜食でルウ・コンソメに 🔍 → 直ったまま（roux の点検で、印なしは置き換え済みの料理だけ）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "11か国×2",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R197",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R198 の確かめ",
+  "id": "R198",
+  "key": "carbveg",
+  "dept": "機能",
+  "sev": "小",
+  "title": "（確かめ）糖質ひかえめの1品目・2品目 → 直ったまま（W056 と同じ作った記録で100回作って糖質の多い主菜 0回。32人×7日で菜食の人の主菜に糖質の多い料理 0人。1週間プランの糖質の多い主菜 75回はすべて知らせ付き・知らせなし 0回）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "32人×7日＋再現100回＋21か国×3×5回",
+  "inScore": true,
+  "prevRounds": [
+   {
+    "id": "R198",
+    "group": "B",
+    "status": "直った（v143）"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R200 の確かめ",
+  "id": "R200",
+  "key": "swapfocus",
+  "dept": "画面",
+  "sev": "小",
+  "title": "（確かめ）［替える］の焦点 → 直ったまま（28/28）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "8言語×3幅",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R200",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R201 の確かめ",
+  "id": "R201",
+  "key": "carbdesc",
+  "dept": "文言",
+  "sev": "小",
+  "title": "（確かめ）説明と動き → 直ったまま（めん・皮の汁もの 1品: ワンタンスープ）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "32人×7日",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R201",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R202 の確かめ",
+  "id": "R202",
+  "key": "carbweek",
+  "dept": "機能",
+  "sev": "小",
+  "title": "（確かめ）1週間プランに糖質の多い主菜 → 直ったまま（菜食でない 27人中 0人）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "32人",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R202",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ },
+ {
+  "relation": "前回 R208 の確かめ",
+  "id": "R208",
+  "key": "catpilav",
+  "dept": "機能",
+  "sev": "小",
+  "title": "（確かめ）仲間はずれの点検 → 乱数43 0件・乱数4343 0件（直ったまま）",
+  "repro": "",
+  "note": "",
+  "measured": "",
+  "countA": 0,
+  "countB": 0,
+  "ids": [],
+  "scan": "21か国×2回",
+  "inScore": false,
+  "prevRounds": [
+   {
+    "id": "R208",
+    "group": "A・B",
+    "status": "直ったまま"
+   }
+  ],
+  "isNew": false,
+  "pt": {}
+ }
+]
