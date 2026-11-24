@@ -33,7 +33,7 @@ const putAndRead = (p, id) => p.evaluate(id => {
     const r = byId(id); if (!r) return { missing: true };
     const it = session.menu.items; let k = it.findIndex(x => x.r && slotOf(x.r) === slotOf(r)); if (k < 0) k = 0;
     it[k].r = r; keepDraft(); setTab('today'); render();
-    const btn = document.querySelector(`#view .tray [data-act="open"][data-id="${CSS.escape(id)}"]`), spot = btn && btn.closest('.spot');
+    const btn = document.querySelector(`#view .tray :is([data-act="open"],[data-act="zoom"])[data-id="${CSS.escape(id)}"]`), spot = btn && btn.closest('.spot');
     return { name: r.name, avoided: isAvoidedCore(r), hits: dietMayHits(r), tag: spot ? [...spot.querySelectorAll('.alg-tag.may')].map(e => e.textContent.trim()).join(' / ') : null };
 }, id);
 
@@ -57,7 +57,8 @@ if (want('A1')){
         ok(r.hits && r.hits.some(x => re.test(x)), `A1 ${label}: 🔍 の名前に入る: ` + JSON.stringify(r.hits));
         ok(r.tag && /^🔍 /.test(r.tag) && r.hits && r.hits.every(x => r.tag.includes(x)), `A1 ${label}: 献立のトレイに 🔍 の札: ` + JSON.stringify(r.tag));
         if (id === 'curry' && lang === 'ja'){   // 料理の詳しい画面にも「食の決まりに合わない可能性があるもの」の一言
-            await p.evaluate(() => { const b = document.querySelector('#view .tray [data-act="open"][data-id="curry"]'); if (b) b.click(); }); await p.waitForTimeout(600);
+            await p.evaluate(() => { const b = document.querySelector('#view .tray :is([data-act="open"],[data-act="zoom"])[data-id="curry"]'); if (b) b.click(); }); await p.waitForTimeout(600);
+            await p.evaluate(() => { const z = document.querySelector('#zoom-root [data-act="zoom-recipe"]'); if (z) z.click(); }); await p.waitForTimeout(600);   // 絵を大きく見る画面から「作り方を見る」
             const d = await p.evaluate(() => [...document.querySelectorAll('.caution')].map(e => e.textContent).find(x => /食の決まりに合わない可能性/.test(x)) || '');
             ok(/カレールウ/.test(d), `A1 ${label}: 料理の詳しい画面にも 🔍（カレールウ）: ` + JSON.stringify(d));
         }
