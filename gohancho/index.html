@@ -8624,12 +8624,14 @@ function suggestFor(slot, items, main){
     if (slot === '汁物'){
         if (main.id === 'nikuudon' || main.type === '汁物' || soupyMain(main) || (primoMain(main) && !mixCc('汁物'))) return null;   // イタリアの Primo（パスタ・リゾット）にズッパ（これも Primo）を重ねない
         // ラクの日・お弁当の日の絞りこみ（easyPool）を、「似ていない料理」の絞りこみより先にかける（似ていない料理を選ぶために、ラクの日に合わない料理が入っていた）
-        const base = carbPrefer(moodPrefer(fitMain(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '汁物', main), '汁物')), pre = easyPool('汁物', base);   // 糖質ひかえめ: 糖質の多くない汁ものを先に（「似ていない料理」の絞りこみより前に。なければ今までどおり）
+        // 糖質ひかえめ: 糖質の多い汁ものは、なかま（洋・中）の絞りこみ（fitMain）より先に外す。同じなかまに糖質の多くない汁ものが残っていなければ、別のなかまの糖質の多くない汁ものへ
+        // （先に fitMain をかけると、1週間プランで洋の糖質の多くない汁ものを使い切った日に、洋の糖質の多い汁もの（コーンスープなど）だけが残っていた。dm41 D5・SEED=2676281614）。糖質ひかえめでないときは carbPrefer は何もしない
+        const base = carbPrefer(moodPrefer(fitMain(carbPrefer(poolFor('汁物').filter(r => r.type === '汁物' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id))), '汁物', main), '汁物')), pre = easyPool('汁物', base);   // 糖質ひかえめ: 糖質の多くない汁ものを先に（「似ていない料理」の絞りこみより前に。なければ今までどおり）
         if (tenHard()) return pick(unlike(pre), ctx);   // 10分以内の日は、上限の中の汁ものだけ（なければ席をなしに。第21回 R74）
         return pick(unlike(pre.length ? pre : base), ctx) || (session.mood === 'easy' || modeOf() ? pick(unlike(base), ctx) : null);   // お弁当は汁ものの枠がないので、ここには来ない
     }
     if (slot === '副菜'){
-        const base = carbPrefer(moodPrefer(fitMain(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id)), '副菜', main), '副菜')), pre = easyPool('副菜', base);   // 糖質ひかえめ: 糖質の多くない副菜を先に
+        const base = carbPrefer(moodPrefer(fitMain(carbPrefer(poolFor('副菜').filter(r => r.type === '副菜' && !used.includes(r.id) && !isAvoided(r) && !S.hidden.includes(r.id))), '副菜', main), '副菜')), pre = easyPool('副菜', base);   // 糖質ひかえめ: 糖質の多くない副菜を先に。汁ものと同じく、なかまの絞りこみ（fitMain）より先に外す
         const ps0 = unlike(pre.length || tenHard() ? pre : base);   // 10分以内の日は、上限の中の副菜だけ（第21回 R74）   // お弁当向き・ラクの日の料理を、似ていない料理より先に（似ていない料理を選ぶために、お弁当に向かない副菜が入っていた）
         // おなかにたまる副菜（いも・かぼちゃ・マカロニ）は1献立に1つまで。パスタの日はマカロニ・パスタの副菜を付けない（ほかに候補があるときだけ絞る。R31）
         const ps = sideBalance(ps0, onTray, main);
