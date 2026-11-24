@@ -2089,4 +2089,16 @@ GOHAN_I18N('vi', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Một số nước vẫn đang tải. Kết quả sẽ hiện ở đây khi tải xong",   // 第53回 R225 の続き
     "卵も外す": "Không trứng nữa",
     "乳製品も外す": "Không sữa nữa",
+    "{name}の写真を大きく見る": "Xem ảnh {name} cỡ lớn",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Mở rộng hai ngón tay hoặc chạm hai lần để phóng to thêm",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Để gửi qua {app}, hãy dùng “Gửi bằng ứng dụng khác” hoặc “Sao chép” rồi dán vào.",
+    "1週間": "Tuần",
+    "かんたん表示": "Chế độ đơn giản",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Chế độ đơn giản chỉ hiện 4 thẻ ở dưới: {list}. Chọn lại “Bình thường” để thấy các thẻ khác.",
+    "うちにない道具": "Dụng cụ nhà không có",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Sẽ không gợi ý món cần dụng cụ bạn đã chọn. Áp dụng từ thực đơn mới lần sau (thực đơn đã chọn không đổi).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Thêm vào Màn hình chính để ghi chép khó bị mất hơn",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "Trên Safari, dữ liệu lưu trên máy này có thể bị xóa nếu bạn không mở trang một thời gian. Chạm nút Chia sẻ (□ có ↑) → “Thêm vào MH chính” để mở từ biểu tượng và giữ ghi chép an toàn hơn.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (thịt heo, tôm, cua, hải sản có vỏ, thịt cùng sữa)",
+    "肉と乳製品をいっしょに使う料理": "Món có cả thịt và sản phẩm từ sữa",
 });

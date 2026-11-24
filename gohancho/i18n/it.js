@@ -2089,4 +2089,16 @@ GOHAN_I18N('it', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Alcuni paesi sono ancora in caricamento. I risultati appariranno qui all’arrivo",   // 第53回 R225 の続き
     "卵も外す": "Anche senza uova",
     "乳製品も外す": "Anche senza latticini",
+    "{name}の写真を大きく見る": "Vedi la foto di {name} in grande",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Allarga due dita o tocca due volte per ingrandire ancora",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Per inviarlo con {app}, usa «Invia con un'altra app» o «Copia» e incollalo lì.",
+    "1週間": "Settimana",
+    "かんたん表示": "Vista semplice",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "La vista semplice mostra solo 4 schede in basso: {list}. Torna a «Normale» per vedere le altre.",
+    "うちにない道具": "Attrezzi che non ho",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "I piatti che richiedono gli attrezzi selezionati non verranno proposti. Vale dal prossimo menù nuovo (il menù già scelto non cambia).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Aggiungila alla schermata Home: i tuoi dati si perdono meno facilmente",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "In Safari i dati salvati su questo dispositivo possono essere cancellati se non apri il sito per un po’. Tocca Condividi (□ con ↑) → «Aggiungi alla schermata Home» per aprirla da un’icona e proteggere meglio i tuoi dati.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (maiale, gamberi, granchio, frutti di mare, carne con latticini)",
+    "肉と乳製品をいっしょに使う料理": "Piatti con carne e latticini insieme",
 });

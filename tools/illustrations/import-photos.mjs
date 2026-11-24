@@ -5,6 +5,8 @@
  *   node tools/illustrations/import-photos.mjs <画像のフォルダ> [--dry-run] [--quality 0.8] [--max-kb 40] [--keep-original] [--thumb 192] [--thumb-quality 0.8]
  *   --keep-original: 元がもう 512×512 の WebP なら、作り直さずにそのままのバイトで入れる（オーナーの元の絵がいちばんくっきりしているため。品質・大きさの上限は使わない）
  *   --thumb / --thumb-quality: 一覧用の小さい絵の大きさ（px）と品質。くっきりさせるなら --thumb 256 --thumb-quality 0.92
+ *   --zoom 1024 [--zoom-quality 0.85]: 絵を大きく見る画面（11/23）用に、元が 512px より大きい画像から <ID> の大きい絵 z/<ID>.webp（最大 1024px）も作り、
+ *       manifest の zoom に登録する。アプリは大きく見るときだけ読みこむ（ふだんの表示・電波のない時の保存には入れない）。元が 512px 以下なら作らない（引きのばしになるため）
  *
  * 入力: フォルダの中（下のフォルダも見る）の <料理のID>.png / .jpg / .jpeg / .webp
  *       （ID は gohancho/img/dish/manifest.json の items のキーか、絵がまだない料理のレシピの ID。オーナーの一覧の C 列「画像ID」、D 列「<ID>.png」）
@@ -37,6 +39,8 @@ const QUALITY = Number(opt('--quality', '0.8'));
 const KEEP = flag('--keep-original');
 const THUMB = Number(opt('--thumb', '192')), THUMB_Q = Number(opt('--thumb-quality', '0.8'));
 const MAX_KB = Number(opt('--max-kb', '40'));
+const ZOOM = Number(opt('--zoom', '0')), ZOOM_Q = Number(opt('--zoom-quality', '0.85'));
+if (ZOOM && !(ZOOM > 512 && ZOOM <= 2048)){ console.error('--zoom は 513〜2048 で指定してください（例: --zoom 1024）'); process.exit(2); }
 const SRC = args[0];
 if (!SRC || !fs.existsSync(SRC) || !fs.statSync(SRC).isDirectory()){
     console.error('使い方: node tools/illustrations/import-photos.mjs <画像のフォルダ> [--dry-run] [--quality 0.8] [--max-kb 40]');
@@ -87,7 +91,7 @@ const page = await ctx.newPage();
 await page.setContent('<!doctype html><title>import-photos</title>');
 
 // 1枚を「真ん中の正方形 → 512px と 192px の WebP」にする（大きいものは品質を少しずつ下げて MAX_KB 以内に）
-const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX, KEEP }) => {
+const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX, KEEP, ZOOM, ZOOM_Q }) => {
     const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     const bmp = await createImageBitmap(new Blob([bytes]));   // 拡張子と中身が違っても（.png の中身が JPEG など）読める
     const s = Math.min(bmp.width, bmp.height), sx = (bmp.width - s) / 2, sy = (bmp.height - s) / 2;
@@ -129,17 +133,20 @@ const convert = (b64) => page.evaluate(async ({ b64, SIZE, THUMB, THUMB_Q, BG, Q
     };
     const enc = (c, q) => c.toDataURL('image/webp', q).split(',')[1];
     const thumb = enc(draw(THUMB), THUMB_Q);
+    const zoom = ZOOM && S0 >= SIZE * 1.2 ? enc(draw(Math.min(ZOOM, S0)), ZOOM_Q) : null;   // 大きく見る画面用（元が 512px より十分大きいときだけ）
     // 元がもう 512×512 の WebP: 作り直さない（そのままのバイトを使う。null を返すと Node 側で元のファイルを写す）
     const webp = bytes.length > 12 && String.fromCharCode(...bytes.slice(0, 4)) === 'RIFF' && String.fromCharCode(...bytes.slice(8, 12)) === 'WEBP';
-    if (KEEP && webp && bmp.width === SIZE && bmp.height === SIZE) return { w: bmp.width, h: bmp.height, q: null, data: null, thumb };
+    if (KEEP && webp && bmp.width === SIZE && bmp.height === SIZE) return { w: bmp.width, h: bmp.height, q: null, data: null, thumb, zoom };
     const big = draw(SIZE);
     let q = QUALITY, data = enc(big, q);
     while (data.length * 3 / 4 > MAX && q > 0.55){ q = Math.round((q - 0.05) * 100) / 100; data = enc(big, q); }
-    return { w: bmp.width, h: bmp.height, q, data, thumb };
-}, { b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX: MAX_KB * 1024, KEEP });
+    return { w: bmp.width, h: bmp.height, q, data, thumb, zoom };
+}, { b64, SIZE, THUMB, THUMB_Q, BG, QUALITY, MAX: MAX_KB * 1024, KEEP, ZOOM, ZOOM_Q });
 
 const today = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })();
 fs.mkdirSync(path.join(DISH, 't'), { recursive: true });
+if (ZOOM) fs.mkdirSync(path.join(DISH, 'z'), { recursive: true });
+let nz = 0;
 let n = 0, total = 0, maxB = 0, maxId = '';
 const over = [], fail = [], notSquare = [];
 for (const [id, file] of [...found].sort((a, b) => a[0].localeCompare(b[0]))){
@@ -152,6 +159,7 @@ for (const [id, file] of [...found].sort((a, b) => a[0].localeCompare(b[0]))){
     fs.writeFileSync(path.join(DISH, 't', `${id}.webp`), th);
     const v = crypto.createHash('sha1').update(big).update(th).digest('hex').slice(0, 8);   // thumbs.mjs の stamp と同じ作り方
     items[id] = Object.assign({}, items[id], { file: `${id}.webp`, via: 'photo', model: 'gemini', date: today, thumb: `t/${id}.webp`, v });
+    if (r.zoom){ fs.writeFileSync(path.join(DISH, 'z', `${id}.webp`), Buffer.from(r.zoom, 'base64')); items[id].zoom = `z/${id}.webp`; nz++; }   // 大きく見る画面用
     n++; total += big.length;
     if (big.length > maxB){ maxB = big.length; maxId = id; }
     if (big.length > MAX_KB * 1024 && r.data != null) over.push(`${id}（${Math.round(big.length / 1024)}KB）`);
@@ -160,6 +168,7 @@ for (const [id, file] of [...found].sort((a, b) => a[0].localeCompare(b[0]))){
 await browser.close();
 fs.writeFileSync(MANIFEST, JSON.stringify(m, null, 2) + '\n');
 
+if (ZOOM) console.log(`大きく見る画面用の絵（z/）: ${nz}枚（元が ${Math.round(SIZE * 1.2)}px より小さいものは作っていません）`);
 const photos = Object.values(items).filter(it => it && it.via === 'photo').length;
 console.log(`${n}枚を取りこみました（512px の WebP: 平均 ${n ? Math.round(total / n / 1024) : 0}KB・いちばん大きいもの ${maxId} ${Math.round(maxB / 1024)}KB）`);
 console.log(`写真の絵: ${photos}品 / 全 ${Object.keys(items).length}品（残り ${Object.keys(items).length - photos}品はいままでの絵）`);

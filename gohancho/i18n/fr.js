@@ -2089,4 +2089,16 @@ GOHAN_I18N('fr', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Certains pays sont encore en chargement. Les résultats s’afficheront ici à leur arrivée",   // 第53回 R225 の続き
     "卵も外す": "Sans œufs aussi",
     "乳製品も外す": "Sans laitages aussi",
+    "{name}の写真を大きく見る": "Voir la photo de {name} en grand",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Écartez deux doigts ou touchez deux fois pour agrandir encore",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Pour l’envoyer avec {app}, utilisez « Envoyer avec une autre appli » ou « Copier », puis collez-le.",
+    "1週間": "Semaine",
+    "かんたん表示": "Affichage simple",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "L’affichage simple ne garde que 4 onglets en bas : {list}. Revenez à « Normale » pour voir les autres.",
+    "うちにない道具": "Ustensiles que je n’ai pas",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Les plats qui demandent les ustensiles touchés ne seront pas proposés. Valable à partir du prochain menu (un menu déjà choisi ne change pas).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Ajoutez-la à l’écran d’accueil pour moins risquer de perdre vos notes",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "Dans Safari, les données enregistrées sur cet appareil peuvent être effacées si vous n’ouvrez pas le site pendant un moment. Touchez Partager (□ avec ↑) → « Sur l’écran d’accueil » pour l’ouvrir depuis une icône et mieux garder vos notes.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Casher (porc, crevettes, crabe, fruits de mer, viande avec laitages)",
+    "肉と乳製品をいっしょに使う料理": "Plats avec viande et produits laitiers ensemble",
 });

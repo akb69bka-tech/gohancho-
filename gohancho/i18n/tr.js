@@ -2089,4 +2089,16 @@ GOHAN_I18N('tr', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Bazı ülkeler hâlâ yükleniyor. Sonuçlar gelince burada görünecek",   // 第53回 R225 の続き
     "卵も外す": "Yumurta da olmasın",
     "乳製品も外す": "Süt ürünü de olmasın",
+    "{name}の写真を大きく見る": "{name} fotoğrafını büyük gör",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Daha da büyütmek için iki parmağınızı açın veya iki kez dokunun",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "{app} ile göndermek için “Başka bir uygulamayla gönder” veya “Kopyala”yı kullanıp yapıştırın.",
+    "1週間": "Hafta",
+    "かんたん表示": "Basit görünüm",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Basit görünümde altta yalnızca 4 sekme olur: {list}. Diğer sekmeler için “Normal”e dönün.",
+    "うちにない道具": "Bende olmayan araçlar",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Seçtiğiniz araçları gerektiren yemekler önerilmez. Bir sonraki yeni menüden itibaren geçerlidir (kararlaştırılan menü değişmez).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Ana Ekrana ekleyin, kayıtlarınız daha zor silinir",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "Safari’de siteyi bir süre açmazsanız bu cihazda kayıtlı veriler silinebilir. Paylaş (↑ olan □) → “Ana Ekrana Ekle”ye dokunun; simgeden açarsınız ve kayıtlarınız daha güvende kalır.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Koşer (domuz, karides, yengeç, kabuklu deniz ürünleri, et ile süt ürünleri)",
+    "肉と乳製品をいっしょに使う料理": "Et ve süt ürünlerini birlikte kullanan yemekler",
 });

@@ -2089,4 +2089,16 @@ GOHAN_I18N('fil', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "May mga bansang naglo-load pa. Lalabas dito ang resulta pagdating",   // 第53回 R225 の続き
     "卵も外す": "Walang itlog din",
     "乳製品も外す": "Walang gatas din",
+    "{name}の写真を大きく見る": "Tingnan nang malaki ang litrato ng {name}",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Ibuka ang dalawang daliri o i-double tap para lumaki pa",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Para ipadala sa {app}, gamitin ang “Ipadala gamit ang ibang app” o “Kopyahin” at i-paste doon.",
+    "1週間": "Linggo",
+    "かんたん表示": "Simpleng view",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Sa simpleng view, 4 tab lang ang nasa ibaba: {list}. Bumalik sa “Karaniwan” para makita ang iba.",
+    "うちにない道具": "Mga gamit na wala ako",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Hindi imumungkahi ang mga ulam na kailangan ang mga gamit na pinindot mo. Simula ito sa susunod na bagong menu (hindi magbabago ang napiling menu).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Idagdag sa Home Screen para hindi madaling mawala ang mga tala",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "Sa Safari, puwedeng mabura ang data na naka-save sa device na ito kapag matagal mong hindi nabuksan ang site. Pindutin ang Share (□ na may ↑) → “Add to Home Screen” para mabuksan mula sa icon at mas ligtas ang mga tala.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (baboy, hipon, alimango, kabibe, karne na may gatas)",
+    "肉と乳製品をいっしょに使う料理": "Mga ulam na may karne at gatas nang sabay",
 });

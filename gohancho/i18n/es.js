@@ -2089,4 +2089,16 @@ GOHAN_I18N('es', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Aún se están cargando algunos países. Los resultados aparecerán aquí cuando lleguen",   // 第53回 R225 の続き
     "卵も外す": "Sin huevo también",
     "乳製品も外す": "Sin lácteos también",
+    "{name}の写真を大きく見る": "Ver la foto de {name} en grande",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Separa dos dedos o toca dos veces para ampliar más",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Para enviarlo por {app}, usa «Enviar con otra app» o «Copiar» y pégalo allí.",
+    "1週間": "Semana",
+    "かんたん表示": "Vista sencilla",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "La vista sencilla muestra solo 4 pestañas abajo: {list}. Vuelve a «Normal» para ver las demás.",
+    "うちにない道具": "Utensilios que no tengo",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "No se sugerirán platos que necesiten los utensilios marcados. Se aplica desde el próximo menú nuevo (el menú ya decidido no cambia).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Añádela a la pantalla de inicio para que tus registros no se borren tan fácilmente",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "En Safari, los datos guardados en este dispositivo pueden borrarse si no abres la página durante un tiempo. Toca Compartir (□ con ↑) → «Añadir a pantalla de inicio» para abrirla desde un icono y proteger mejor tus registros.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Kosher (cerdo, gambas, cangrejo, mariscos, carne con lácteos)",
+    "肉と乳製品をいっしょに使う料理": "Platos con carne y lácteos juntos",
 });

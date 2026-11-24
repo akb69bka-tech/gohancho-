@@ -2089,4 +2089,16 @@ GOHAN_I18N('pl', {
     "まだ読みこみ中の国があります。届いたら、ここに出します": "Niektóre kraje wciąż się wczytują. Wyniki pojawią się tutaj, gdy dotrą",   // 第53回 R225 の続き
     "卵も外す": "Też bez jajek",
     "乳製品も外す": "Też bez nabiału",
+    "{name}の写真を大きく見る": "Zobacz duże zdjęcie: {name}",
+    "2本の指で広げる・2回たたくと、さらに大きく見られます": "Rozsuń dwa palce lub stuknij dwa razy, aby jeszcze powiększyć",
+    "{app} に送るときは、「ほかのアプリで送る」か「コピーする」で貼りつけてください。": "Aby wysłać przez {app}, użyj „Wyślij inną aplikacją” lub „Kopiuj” i wklej tam tekst.",
+    "1週間": "Tydzień",
+    "かんたん表示": "Widok prosty",
+    "かんたんにすると、下のタブを{list}の4つにします。「ふつう」に戻すと、ほかのタブも出ます。": "Widok prosty pokazuje na dole tylko 4 karty: {list}. Wróć do „Normalny”, aby zobaczyć pozostałe.",
+    "うちにない道具": "Sprzęty, których nie mam",
+    "押した道具を使う料理は出しません。次に献立を作るときから変わります（決めた献立は変えません）。": "Dania wymagające zaznaczonych sprzętów nie będą proponowane. Dotyczy to następnego nowego jadłospisu (wybrany jadłospis się nie zmienia).",
+    "ホーム画面に追加すると、記録が消えにくくなります": "Dodaj do ekranu początkowego, by zapiski rzadziej znikały",
+    "Safari では、しばらく開かないと、この端末に保存した記録が消えることがあります。下の共有ボタン（□に↑）→「ホーム画面に追加」を押すと、アイコンから開けて、記録が消えにくくなります。": "W Safari dane zapisane na tym urządzeniu mogą zostać usunięte, jeśli przez jakiś czas nie otworzysz strony. Stuknij Udostępnij (□ ze ↑) → „Do ekranu początkowego”, aby otwierać ją z ikony i lepiej chronić zapiski.",
+    "コーシャ向け（豚・えび・かに・貝・肉と乳製品の組み合わせ）": "Koszerne (wieprzowina, krewetki, kraby, owoce morza, mięso z nabiałem)",
+    "肉と乳製品をいっしょに使う料理": "Dania z mięsem i nabiałem razem",
 });
